@@ -10,7 +10,7 @@ import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR, mesAno, num } from "@/lib/energia/formato";
+import { dataBR, horaLocal, mesAno, num } from "@/lib/energia/formato";
 import {
   COLUNAS_BALANCO_MENSAL,
   COLUNAS_EXTERIOR_12M,
@@ -30,6 +30,7 @@ import {
   linhasIdentidades,
   linhasItaipu,
   linhasResiduoMensal,
+  listaTexto,
   marcosQuebras,
   paraTabela,
   respostaBalanco,
@@ -96,6 +97,9 @@ export function RedeBalanco({
   const ext12 = useMemo(() => linhasExterior12m(exterior), [exterior]);
   const itaipu = useMemo(() => linhasItaipu(exterior), [exterior]);
   const semHoraNoPais = ext.every((l) => l.horas === null);
+  // última hora publicada de cada país: onde ela fica antes da dos outros, o fim da linha do gráfico é ausência, e a página diz isso junto dele
+  const ultimaHoraPais = exterior.por_pais[pais]?.ultima_hora ?? null;
+  const ultimaHoraExterior = PAISES.map((x) => exterior.por_pais[x]?.ultima_hora ?? "").sort().at(-1) ?? "";
 
   return (
     <div className="space-y-6">
@@ -110,7 +114,7 @@ export function RedeBalanco({
         titulo={`Horas em que cada conta fecha e horas com resíduo, ${sm === "SIN" ? "SIN" : NOME_SM[sm]}`}
         dados={paraTabela(ids)}
         chaveCategoria="id"
-        chaveRotulo="identidade"
+        chaveRotulo="identidade_curta"
         series={[
           { id: "horas_fecham", rotulo: "Fecha (até a tolerância)", cor: "var(--cor-energia)" },
           { id: "horas_residuo", rotulo: "Com resíduo", cor: "var(--cor-erro)" },
@@ -189,7 +193,7 @@ export function RedeBalanco({
           Cada soma mensal usa só as horas da sua conta: o balanço interno nas horas com geração, carga e intercâmbio; o perímetro nas horas com o intercâmbio e todas as
           fronteiras e o exterior.{" "}
           {marcos.length
-            ? `A marca no gráfico (${marcos.map((m) => m.rotulo).join("; ")}) separa meses de geração e carga que não se comparam diretamente; o resíduo e o intercâmbio não mudam com ela.`
+            ? `A marca de ${listaTexto(balanco.quebras.map((q) => dataBR(q.dia)))} no gráfico separa meses de geração e carga que não se comparam diretamente: desde essa data, a MMGD estimada pelo ONS entra na geração solar e na carga; o resíduo e o intercâmbio não mudam com ela.`
             : ""}
         </p>
         <TabelaInterativa
@@ -297,6 +301,11 @@ export function RedeBalanco({
             intervalo={intervalo}
             onIntervalo={aoIntervalo}
           />
+        )}
+        {!semHoraNoPais && ultimaHoraPais && ultimaHoraPais < ultimaHoraExterior && (
+          <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">
+            {NOME_PAIS[pais]}: a última hora publicada é {horaLocal(ultimaHoraPais)}; depois dela há ausência de dado, não zero.
+          </p>
         )}
         <TabelaInterativa
           titulo={`Tabela equivalente: ${NOME_PAIS[pais]} por mês`}

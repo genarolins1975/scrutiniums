@@ -90,6 +90,9 @@ export default function PerfilHorarioPage() {
   const picoEv = p.picos_90d.find((x) => x.d === ev.p026_pico_sin?.periodo?.fim && x.hora !== null) ?? null;
   // hora em que o pico do dia caiu mais vezes no último ano, lida das mesmas contagens do mapa de calor
   const modal = picoModalDoAno(p, "SIN");
+  // a ficha prova o pico do dia que ela escolheu; se a série vai além dele, o último dia publicado e o pico dele ficam ditos junto do cartão
+  const ultimoPico = p.picos_90d.length ? p.picos_90d[p.picos_90d.length - 1] : null;
+  const alemDaFicha = picoEv && ultimoPico && ultimoPico.d > picoEv.d && ultimoPico.hora !== null ? ultimoPico : null;
   // onde a carga global da API se afasta da curva, lido da tabela por hora (nunca escrito à mão)
   const porHora = p.compatibilidade.por_hora_sin_365d;
   const diferencaCurva = textoDiferencaHoraria(porHora);
@@ -141,7 +144,11 @@ export default function PerfilHorarioPage() {
             />
           }
           metricas={
-            <FaixaMetricas colunas={3} rotulo="Indicadores da MMGD e do pico no SIN">
+            <FaixaMetricas
+              colunas={3}
+              rotulo="Indicadores da MMGD e do pico no SIN"
+              nota="Valores do SIN, fixos: a região escolhida abaixo muda a resposta, a curva horária e o mapa de calor, não estes números."
+            >
               <Numero
                 variante="faixa"
                 rotulo="Parcela da carga global do SIN atendida por MMGD, último mês completo"
@@ -160,7 +167,12 @@ export default function PerfilHorarioPage() {
                 evidencia={ev.p026_pico_sin}
                 casas={0}
                 cor="var(--cor-energia-dark)"
-                nota={picoEv?.hora != null ? `Às ${rotuloHora(picoEv.hora)} de ${dataBR(picoEv.d)}; a curva inclui MMGD estimada, não separada.` : "Inclui MMGD estimada, não separada."}
+                nota={
+                  <>
+                    {picoEv?.hora != null ? `Às ${rotuloHora(picoEv.hora)} de ${dataBR(picoEv.d)}; a curva inclui MMGD estimada, não separada.` : "Inclui MMGD estimada, não separada."}
+                    {alemDaFicha ? ` A série vai até ${dataBR(alemDaFicha.d)}, com pico de ${num(alemDaFicha.pico, 0)} MWmed às ${rotuloHora(alemDaFicha.hora as number)}.` : ""}
+                  </>
+                }
                 endereco={`${rotaPainel("p026")}#p026`}
               />
               {modal && (

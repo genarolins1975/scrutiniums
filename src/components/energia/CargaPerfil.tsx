@@ -178,6 +178,9 @@ export function CargaPerfil({
   // o mapa de calor abre nos anos da carga verificada (o HTML do servidor fica leve: cada célula é um alvo
   // de foco com rótulo); "todos os anos" monta o histórico desde 2000 no navegador, com os dados já na página
   const desdeApi = p.hora_pico_api_sin_por_ano[0]?.ano;
+  // as duas opções de anos só existem quando a série da região começa antes da carga verificada; se coincidem, a escolha não muda nada
+  const primeiroAno = (p.hora_pico_por_ano[sm] ?? [])[0]?.ano;
+  const escolheAnos = desdeApi !== undefined && primeiroAno !== undefined && primeiroAno !== desdeApi;
   const todosAnos = v.hp === "todos" || desdeApi === undefined;
   const matriz = useMemo(() => matrizHoraPico(p, sm, todosAnos ? undefined : desdeApi), [p, sm, todosAnos, desdeApi]);
   const anoApi = p.hora_pico_api_sin_por_ano[p.hora_pico_api_sin_por_ano.length - 1];
@@ -203,6 +206,11 @@ export function CargaPerfil({
         </RespostaCurta>
         <CargaEscolha legenda="Região" opcoes={OPCOES_REGIAO} valor={sm} onEscolher={(x) => definir({ sm: x })} />
       </div>
+
+      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-resumo-cargas="">
+        São dois produtos do ONS: a curva de carga horária, que já inclui a MMGD estimada sem separá-la, e a carga verificada, que traz a carga global, a MMGD estimada e a carga
+        líquida de MMGD (a global menos a MMGD). As definições completas estão em &ldquo;Que carga é cada série?&rdquo;, mais abaixo.
+      </p>
 
       <div className="space-y-4">
         <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
@@ -291,7 +299,7 @@ export function CargaPerfil({
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">MWmed por hora local de início; parcela da MMGD em % da carga global</dd>
+          <dd className="mt-0.5">MWmed por hora local de início (potência média da hora; 1 MWmed durante uma hora equivale a 1 MWh); parcela da MMGD em % da carga global</dd>
         </div>
       </dl>
 
@@ -300,7 +308,7 @@ export function CargaPerfil({
       {aposNotas}
 
       <SecaoDoPainel id="pico" titulo="Em que hora cai o pico do dia?" lead="Dias de cada ano em que o maior valor horário caiu em cada hora; a hora é a de início.">
-        {desdeApi !== undefined && (
+        {escolheAnos && desdeApi !== undefined && (
           <CargaEscolha
             legenda="Anos no mapa"
             opcoes={[

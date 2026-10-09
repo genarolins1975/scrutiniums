@@ -172,7 +172,8 @@ export default function CargaPage() {
           }
           metricas={<CargaMetricas comparacoes={p.comparacoes} evidencias={{ equivalente: ev.p025_7d_equivalente ?? null, mesmasDatas: ev.a07_reproducao ?? null }} />}
         >
-          A <Termo slug="carga">carga</Termo> é a energia atendida no sistema interligado, publicada pelo ONS por subsistema, em <Unidade u="MWmed" />. Esta página compara a
+          A <Termo slug="carga">carga</Termo> é a energia que o sistema interligado atende, publicada pelo ONS por subsistema; aqui ela vem como a potência média do dia, em{" "}
+          <Unidade u="MWmed" /> (1 MWmed durante um dia equivale a 24 MWh). Esta página compara a
           carga média de uma janela de dias com a de uma janela de comparação, e diz quando as duas não têm a mesma mistura de dias úteis, sábados e domingos ou feriados.
           Só compara janelas completas e medidas do mesmo modo: {textoRegimesCarga(g.regimes)}. O perfil horário e a MMGD estão na página MMGD e perfil horário, e a
           decomposição por clima e calendário na página Clima e calendário.
@@ -230,14 +231,14 @@ export default function CargaPage() {
                 <SecaoDoPainel id="a07" nivel="analisar" titulo={`O ${sinal(a.referencia.variacao_publicada_pct, 1)}% publicado em ${carimbo(a.referencia.gerado_em)}: o que se reproduz e o que não se conclui`}>
                   <div className="max-w-sm">
                     <Numero
-                      rotulo="Variação da carga do SIN: os mesmos 7 dias contra as mesmas datas do ano anterior (reprodução do diagnóstico)"
+                      rotulo="Variação da carga do SIN: os mesmos 7 dias contra as mesmas datas do ano anterior, a taxa que o observatório publicou antes"
                       natureza="CALCULADO"
                       evidencia={ev.a07_reproducao}
                       formato="pct"
                       casas={2}
                       tamanho="medio"
                       cor="var(--serie-referencia)"
-                      nota="Variação maior que zero não indica, sozinha, mais atividade econômica."
+                      nota={`Variação maior que zero não indica, sozinha, mais atividade econômica.${ev.a07_reproducao ? ` Na ficha de prova, o mesmo valor aparece com uma casa: ${ev.a07_reproducao.valor_exibido}.` : ""}`}
                       endereco={`${rotaPainel("p025")}#a07`}
                     />
                   </div>

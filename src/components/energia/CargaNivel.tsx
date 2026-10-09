@@ -74,6 +74,9 @@ const ESQUEMA = {
   sms: campo(tiposUrl.lista(tiposUrl.opcao(REGIOES), { max: LIMITE_COMPARACAO }), [...SUBSISTEMAS]),
 };
 
+/** Dias que o gráfico diário mostra quando o recorte não está na URL. */
+const JANELA_PADRAO_DIARIA = 90;
+
 const OPCOES_REGIAO = REGIOES.map((sm) => ({ id: sm, rotulo: sm === "SE" ? "SE/CO" : NOME_REGIAO[sm], detalhe: NOME_REGIAO[sm] }));
 const OPCOES_BASE = TIPOS_COMPARACAO.map((t) => ({
   id: t,
@@ -143,6 +146,9 @@ export function CargaMetricas({
         casas={2}
         periodo={BASE_CURTA[tipo]}
         evidencia={ficha}
+        // a ficha de prova mostra o valor com uma casa; o cartão, com duas: dito aqui para os dois não parecerem divergir
+        nota={ficha ? `Na ficha de prova, o mesmo valor aparece com uma casa: ${ficha.valor_exibido}.` : undefined}
+
         endereco={ficha ? (tipo === "equivalente" ? "/setor-eletrico/carga#p025" : "/setor-eletrico/carga#a07") : undefined}
         motivoAusencia={
           l?.media === null || l === null
@@ -200,7 +206,11 @@ export function CargaNivel({
   const diaria = useMemo(() => serieComReferencia(serie, sm), [serie, sm]);
   const inicioSerie = serie.d[0] ?? "";
   const fimSerie = serie.d[serie.d.length - 1] ?? "";
-  const intervalo = v.de && v.ate ? { inicio: v.de, fim: v.ate } : null;
+  // sem recorte na URL, o gráfico diário abre nos últimos 90 dias: com os 1.096 dias a oscilação semanal domina e a janela de 7 dias não
+  // aparece. "Restaurar intervalo" grava a série inteira (início e fim explícitos), porque a série inteira não é mais o padrão.
+  const nSerie = serie.d.length;
+  const padrao = nSerie > JANELA_PADRAO_DIARIA ? { inicio: serie.d[nSerie - JANELA_PADRAO_DIARIA], fim: serie.d[nSerie - 1] } : null;
+  const intervalo = v.de && v.ate ? { inicio: v.de, fim: v.ate } : padrao;
   const marcosDiarios = [
     ...marcosRegimes(regimes, inicioSerie, fimSerie),
     ...(j && j.inicio >= inicioSerie ? [{ x: j.inicio, rotulo: `início da janela de ${j.rotulo}` }] : []),
@@ -268,7 +278,7 @@ export function CargaNivel({
         marcos={marcosDiarios}
         zoom
         intervalo={intervalo}
-        onIntervalo={(i) => definir({ de: i?.inicio ?? "", ate: i?.fim ?? "" })}
+        onIntervalo={(i) => definir({ de: i?.inicio ?? inicioSerie, ate: i?.fim ?? fimSerie })}
         legendaInterativa
       />
 
@@ -287,7 +297,7 @@ export function CargaNivel({
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">MWmed (média diária de potência); variação em %</dd>
+          <dd className="mt-0.5">MWmed, a potência média do dia (1 MWmed durante um dia equivale a 24 MWh); variação em %</dd>
         </div>
       </dl>
 

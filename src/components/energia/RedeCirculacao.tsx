@@ -51,6 +51,7 @@ import {
   respostaDia,
   respostaHora,
   respostaSubsistemasDia,
+  rotaPainel,
   sentidoNegativo,
   sentidoPositivo,
   serieJanela,
@@ -422,7 +423,13 @@ export function RedeCirculacao({
         </div>
         <div className="min-w-0">
           <dt className="rotulo text-mineral">Universo</dt>
-          <dd className="mt-0.5">As quatro fronteiras entre subsistemas publicadas pelo ONS{escala === "hora" ? "; Argentina e Uruguai ligados ao Sul" : ""}</dd>
+          <dd className="mt-0.5">
+            As quatro fronteiras entre subsistemas publicadas pelo ONS{escala === "hora" ? "; Argentina e Uruguai ligados ao Sul" : ""}. O intercâmbio com outros países está em{" "}
+            <a href={rotaPainel("p029")} className="text-energia-dark underline underline-offset-4">
+              Balanço e exterior
+            </a>
+            .
+          </dd>
         </div>
         <div className="min-w-0">
           <dt className="rotulo text-mineral">Unidade</dt>

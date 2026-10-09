@@ -9,12 +9,14 @@ import PaginaAfluencia from "@/app/setor-eletrico/agua-e-clima/afluencia/page";
 import PaginaClima from "@/app/setor-eletrico/agua-e-clima/chuva-e-temperatura/page";
 import PaginaReservatorios from "@/app/setor-eletrico/agua-e-clima/reservatorios/page";
 import { MedidasAfluencia } from "@/components/energia/AguaAfluencia";
+import { MedidasArmazenamento } from "@/components/energia/AguaArmazenamento";
 import { MedidasClima } from "@/components/energia/AguaClima";
 import { AguaLista } from "@/components/energia/AguaControles";
 import { AguaIndisponivel } from "@/components/energia/AguaPagina";
 import { MedidasBalanco, MedidasDecomposicao } from "@/components/energia/AguaReservatorios";
 import {
   ANCORAS_AFLUENCIA,
+  COR_REGIAO,
   CORES_ANOMALIA,
   COLUNAS_AFLUENCIA,
   COLUNAS_ARMAZENAMENTO,
@@ -26,9 +28,15 @@ import {
   COLUNAS_PREVISAO_TEMPERATURA,
   COLUNAS_TEMPERATURA,
   PONTUACAO_PROIBIDA,
+  LIMITE_VARIACAO_CAPACIDADE,
+  OPCOES_UNIDADE_EAR,
   REGRA_CAPTURA_ENA,
   REGRA_FAIXA_ENA,
+  REVISOES_CAPACIDADE,
   REVISOES_CAPTURA_UNICA,
+  TEXTO_EAR_DERIVADA,
+  TEXTO_TIPOS_DE_EVENTO,
+  amplitudeCapacidade,
   baciaPadraoChuva,
   baciasSemChuva,
   barrasBalanco,
@@ -37,10 +45,15 @@ import {
   barrasBalancoTotais,
   barrasDecomposicao,
   barrasDecomposicaoComRestante,
+  capacidadeMuitoAlterada,
   classificacaoChuva,
+  colunasArmazenamento,
+  corDoRecorte,
   dadosChuvaMes,
   diasPreliminares,
+  diasRegulares,
   ehGrupoOns,
+  eventosSoPelaToleranciaLarga,
   entidadesEar,
   entidadesEna,
   itensPontosAfluencia,
@@ -64,6 +77,7 @@ import {
   modeloCurto,
   motivoSemBalanco,
   motivoSemEna30d,
+  mwmes,
   nomeProprio,
   notaChuvaBacia,
   notaChuvaMes,
@@ -75,12 +89,14 @@ import {
   periodosMapa,
   recortePadrao,
   restanteDecomposicao,
+  rotuloBandaDaFaixa,
   rotuloRecorte,
   serieDiferencaMlt,
   serieMltJanJul,
   serieMltMensal,
   ultimoDiaDoMes,
   vereditoAfluencia,
+  vereditoArmazenamento,
   vereditoAssociacao,
   vereditoBalancoReservatorio,
   vereditoChuva,
@@ -89,16 +105,23 @@ import {
   vereditoTemperatura,
   vizinhaNoMapa,
   volumeForaDaFaixa,
+  textoAmplitude,
   textoBaciasSemChuva,
+  textoBaseDaFaixa,
   textoCobertura,
+  textoEarProvisoria,
   textoEnaProvisoria,
   textoFaixaJanela,
+  textoJanelasDaVariacao,
   textoMudancaMltNoMes,
   textoOutraJanelaNaArmazenamento,
   textoParcelasFaltantes,
+  textoPeriodoDoRecorte,
   textoPreliminarChuva,
   textoPreliminarTemperatura,
   textoRevisoesFicha,
+  textoRevisoesFichaEar,
+  textoToleranciaEventos,
   textoUltimoMesFinalChuva,
   textoUltimoMesFinalTemperatura,
   textoVolumeForaDaFaixa,
@@ -738,6 +761,131 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
     const semArm = ents.find((e) => e.sem_armazenamento)!;
     expect(respostaArmazenamento(semArm)).toContain("não se aplicam");
     expect(respostaArmazenamento(semArm)).not.toMatch(/\d% da EAR máxima/);
+  });
+
+  it("P017: com a EAR máxima variando além do limite na base, a posição frente à faixa não é dita e a amplitude entra no lugar", () => {
+    const porId = (id: string) => ents.find((x) => x.id === id)!;
+    // o formato da amplitude: "vezes" quando mais que dobrou, % quando não
+    expect(textoAmplitude(5.67)).toBe("5,7 vezes");
+    expect(textoAmplitude(1.38)).toBe("38%");
+    // a regra vale para todos os recortes, com os mesmos números da gold
+    for (const e of ents) {
+      const amp = amplitudeCapacidade(e);
+      expect(capacidadeMuitoAlterada(e), e.id).toBe(!!amp && e.capacidade_mudou_na_base && amp.razao - 1 > LIMITE_VARIACAO_CAPACIDADE);
+      if (e.sem_armazenamento || e.dia === null) continue;
+      const v = vereditoArmazenamento(e);
+      if (capacidadeMuitoAlterada(e)) {
+        expect(v, e.id).toContain(`a capacidade variou ${textoAmplitude(amp!.razao)} na base`);
+        expect(v, e.id).toContain("a posição frente à faixa usual não é dita");
+        expect(v, e.id).not.toMatch(/(dentro|acima|abaixo) da faixa/);
+        const r = respostaArmazenamento(e);
+        expect(r, e.id).toContain(`de ${mwmes(amp!.min)} a ${mwmes(amp!.max)} MWmês`);
+        expect(r, e.id).toContain(`vai de ${mwmes(e.p10_mwmes)} (10º percentil) a ${mwmes(e.p90_mwmes)} (90º percentil)`);
+        expect(r, e.id).not.toMatch(/(dentro|acima|abaixo) da faixa/);
+      } else if (e.faixa) {
+        expect(v, e.id).toMatch(/(dentro|acima|abaixo) da faixa usual da data/);
+      }
+    }
+    expect(ents.some(capacidadeMuitoAlterada)).toBe(true);
+    // abaixo do limite, nada muda: o SIN mantém a posição dita e o aviso de que a capacidade mudou
+    expect(capacidadeMuitoAlterada(sin)).toBe(false);
+    expect(vereditoArmazenamento(sin)).toContain("A faixa compara capacidades que mudaram ao longo dos anos.");
+    // a tabela diz a posição da gold, com a ressalva ao lado quando a posição não é dita na página
+    const uruguai = porId("bacia:URUGUAI");
+    const linhaU = linhasArmazenamento([uruguai])[0];
+    expect(String(linhaU.faixa)).toContain(`a capacidade variou ${textoAmplitude(amplitudeCapacidade(uruguai)!.razao)} na base`);
+    expect(linhasArmazenamento([sin])[0].faixa).toBe(sin.faixa === "dentro" ? "dentro da faixa usual" : sin.faixa === "acima" ? "acima da faixa usual" : "abaixo da faixa usual");
+    // a figura principal na outra unidade: a EAR e a mediana em MWmês, com a faixa em MWmês na dica
+    const emMw = itensPontosArmazenamento(ents.filter((x) => x.tipo === "subsistema"), "mwmes");
+    const emPct = itensPontosArmazenamento(ents.filter((x) => x.tipo === "subsistema"), "pct");
+    expect(emMw.map((i) => i.id)).toEqual(emPct.map((i) => i.id));
+    for (const i of emMw) {
+      const e = porId(i.id);
+      expect(i.valor, i.id).toBe(e.ear_mwmes);
+      expect(i.referencia, i.id).toBe(e.p50_mwmes);
+      expect(i.detalhe, i.id).toContain(`${mwmes(e.p10_mwmes)} MWmês a ${mwmes(e.p90_mwmes)} MWmês`);
+    }
+    expect(emPct.find((i) => i.id === "SIN")!.valor).toBe(sin.ear_pct);
+    expect(itensPontosArmazenamento([uruguai], "pct")[0].detalhe).toContain("a posição não é dita");
+  });
+
+  it("P017: a legenda da faixa diz que a base exclui o ano do ponto; sem faixa, o período diz o motivo exato", () => {
+    const [ini, fim] = sin.periodo_base!.split("-").map(Number);
+    const anos = new Set(diasRegulares(sin.semanal!.d0, sin.semanal!.passo_dias, sin.semanal!.v.length).map((d) => Number(d.slice(0, 4))));
+    const t = textoBaseDaFaixa(sin);
+    expect(t).toContain("exclui o ano do próprio ponto");
+    expect(anos.has(fim)).toBe(true);
+    expect(t).toContain(`${ini} a ${fim - 1} nos pontos de ${fim}`);
+    if (anos.has(fim + 1)) expect(t).toContain(`${ini} a ${fim} nos pontos de ${fim + 1}`);
+    // todos os recortes com faixa dizem o mesmo sobre o período deles; sem faixa, a frase fica vazia
+    for (const e of ents.filter((x) => x.periodo_base && x.semanal)) expect(textoBaseDaFaixa(e), e.id).toContain(`${e.periodo_base!.split("-")[0]} a ${Number(e.periodo_base!.split("-")[1]) - 1} nos pontos de ${e.periodo_base!.split("-")[1]}`);
+    expect(textoBaseDaFaixa({ periodo_base: null, semanal: sin.semanal })).toBe("");
+    // o rótulo da faixa só leva o período quando ele existe
+    expect(rotuloBandaDaFaixa(sin)).toBe(`10º a 90º percentil da data (${sin.periodo_base!.replace("-", " a ")})`);
+    expect(rotuloBandaDaFaixa({ periodo_base: null })).toBe("10º a 90º percentil da data");
+    // período do recorte: o dia e a base, ou o motivo exato (nunca "sem base")
+    expect(textoPeriodoDoRecorte(sin)).toBe(`${sin.dia!.split("-").reverse().join("/")}; faixa do mesmo dia do calendário nos anos completos de ${sin.periodo_base!.replace("-", " a ")}`);
+    const semFaixa = clone(sin);
+    semFaixa.periodo_base = null;
+    semFaixa.faixa = null;
+    semFaixa.anos_na_base = 3;
+    expect(textoPeriodoDoRecorte(semFaixa)).toContain("sem faixa do mesmo dia: 3 anos na base, menos que os 5 exigidos");
+    const semArm = ents.find((x) => x.sem_armazenamento && x.dia)!;
+    expect(textoPeriodoDoRecorte(semArm)).toContain("o recorte não tem armazenamento (EAR máxima zero)");
+    for (const e of ents) expect(textoPeriodoDoRecorte(e), e.id).not.toMatch(/sem base|undefined|NaN/);
+    expect(textoPeriodoDoRecorte({ ...sin, dia: null })).toBe("sem dia de referência");
+  });
+
+  it("P017: a outra janela do subsistema, as revisões da EAR e o aviso de provisório vêm dos mesmos dados da tabela da página", () => {
+    const br = (d: string) => d.split("-").reverse().join("/");
+    const frase = textoJanelasDaVariacao(sin.dia, R.decomposicao_ear);
+    expect(frase).toContain("A página de reservatórios mede a variação por reservatório numa janela que termina em");
+    for (const fim of Array.from(new Set(R.decomposicao_ear.filter((d) => d.delta_ear_mwmes !== null).map((d) => d.fim)))) expect(frase).toContain(br(fim));
+    expect(frase).toContain(`esta página termina em ${br(sin.dia!)}`);
+    // dias iguais, ou sem decomposição: nada a dizer
+    expect(textoJanelasDaVariacao(sin.dia, R.decomposicao_ear.map((d) => ({ ...d, fim: sin.dia! })))).toBe("");
+    expect(textoJanelasDaVariacao(sin.dia, [])).toBe("");
+    expect(textoJanelasDaVariacao(null, R.decomposicao_ear)).toBe("");
+    // a ficha da EAR diz o que a tabela de revisões mostra (a da gold dizia "nenhuma revisão")
+    const rs = G.reconciliacao_ear.revisoes_entre_capturas_30d;
+    const com = rs.filter((r) => r.serie === "ear_mwmes" && r.dias_revisados > 0);
+    expect(com.length).toBeGreaterThan(0);
+    const f = textoRevisoesFichaEar(rs);
+    expect(f).toContain("O ONS revisou a EAR dos subsistemas entre as duas capturas mais recentes");
+    for (const r of com) expect(f).toContain(String(r.dias_revisados));
+    expect(f).not.toContain("Nenhuma revisão detectada");
+    expect(textoRevisoesFichaEar(rs.map((r) => ({ ...r, dias_revisados: 0 })))).toBe("Nenhum valor da EAR dos últimos 30 dias mudou entre as duas capturas mais recentes.");
+    // as linhas da ENA não entram na ficha da EAR
+    expect(textoRevisoesFichaEar(rs.filter((r) => r.serie !== "ear_mwmes"))).toContain("Nenhum valor da EAR");
+    const dias = com.map((r) => r.dias_revisados);
+    expect(textoEarProvisoria(rs)).toContain(`de ${Math.min(...dias)} a ${Math.max(...dias)} dos 30 dias`);
+    expect(textoEarProvisoria(rs)).toContain("A EAR dos últimos dias é provisória");
+    expect(textoEarProvisoria([])).toContain("nenhum valor dos últimos 30 dias mudou");
+    // a capacidade: eventos de uma única captura por reservatório, dito assim
+    expect(REVISOES_CAPACIDADE).toContain("única captura");
+  });
+
+  it("P017: os eventos de 01/01/2018 que só fecham pela tolerância larga são ditos com a regra do dia anterior, e os tipos de evento são explicados", () => {
+    const evs = G.armazenamento.capacidade.eventos;
+    const so = eventosSoPelaToleranciaLarga(evs);
+    expect(so.length).toBeGreaterThan(0);
+    for (const e of so) {
+      expect(e.fechado).toBe(true);
+      expect(Math.abs(e.residuo_mwmes!)).toBeGreaterThan(0.05);
+      expect(e.data >= "2018-01-01").toBe(true);
+    }
+    const f3 = (v: number) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(3).replace(".", ",")}`;
+    const t = textoToleranciaEventos(evs);
+    expect(t).toContain("10 MWmês quando o dia anterior ainda tem valores inteiros na fonte");
+    expect(t).toContain(`${so.length} ${so.length === 1 ? "evento fecha" : "eventos fecham"} só por essa regra`);
+    expect(t).toContain("01/01/2018");
+    for (const e of so) expect(t).toContain(f3(e.residuo_mwmes!));
+    expect(t).toContain("CSV, que não traz a tolerância");
+    // sem evento assim, só a regra
+    const limpo = textoToleranciaEventos(evs.filter((e) => !so.includes(e)));
+    expect(limpo).toContain("Tolerância do resíduo");
+    expect(limpo).not.toContain("só por essa regra");
+    for (const x of ["entra", "sai", "é alterado", "A fonte não informa a causa de cada alteração", "usina a jusante"]) expect(TEXTO_TIPOS_DE_EVENTO).toContain(x);
   });
 
   it("recorte padrão: SIN nos subsistemas e o de maior EAR máxima nos REE e nas bacias", () => {
@@ -1434,6 +1582,8 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
 
   it("tabelas de Água: em Entender cabem em 360 px (nome, números e no máximo uma coluna de texto), e o arquivo exportado leva todas as colunas", () => {
     const tabelas = [
+      ["armazenamento, em %", colunasArmazenamento("pct")],
+      ["armazenamento, em MWmês", colunasArmazenamento("mwmes")],
       ["afluência", COLUNAS_AFLUENCIA],
       ["chuva", COLUNAS_CHUVA],
       ["temperatura", COLUNAS_TEMPERATURA],
@@ -1650,6 +1800,133 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
 });
 
 /* ---------- componentes ---------- */
+
+/* ---------- a página mãe (armazenamento) no sistema editorial ---------- */
+
+describe("página mãe (armazenamento) no sistema editorial", () => {
+  const h = renderToStaticMarkup(createElement(PaginaArmazenamento));
+  const textoDe = (x: string) => x.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  const t = textoDe(h);
+  const ents = entidadesEar(G.armazenamento);
+  const sin = ents.find((e) => e.id === "SIN")!;
+  const rev = G.reconciliacao_ear.revisoes_entre_capturas_30d;
+  const evid = { earSin: G.evidencias.ear_sin, earSinMwmes: G.evidencias.ear_sin_mwmes };
+  const medidas = (id: string) => renderToStaticMarkup(createElement(MedidasArmazenamento, { e: ents.find((x) => x.id === id)!, revisoes: rev, decomposicoes: R.decomposicao_ear, evidencias: evid }));
+  // o mesmo arredondamento da página (toFixed erra no meio, como 56,65)
+  const virg = (v: number, c = 1) => v.toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c });
+
+  it("abertura: EAR e SIN por extenso no lead, faixa fixa rotulada do SIN com a nota de que não segue o recorte, e as siglas da página", () => {
+    expect(t).toContain("A energia armazenada (EAR) do Sistema Interligado Nacional (SIN) e de cada região do país");
+    for (const x of ["Armazenamento do SIN", "Mediana do SIN na mesma data", "Energia armazenada do SIN", "Variação do SIN em 30 dias"]) expect(t, x).toContain(x);
+    expect(t).not.toContain("Armazenamento no SIN");
+    // a faixa de abertura é fixa: o nome acessível e o rótulo dos números do recorte escolhido dizem isso
+    expect(h).toContain("Indicadores do armazenamento no SIN, fixos: não mudam com o recorte escolhido nos gráficos");
+    expect(t).toContain("Os do alto da página são sempre os do SIN.");
+    // o primeiro número, o do dia mais recente, diz em palavras que os últimos dias são provisórios
+    expect(t).toContain("Os últimos dias são provisórios: o ONS os revisa.");
+    // EAR e MLT na lista de siglas da página (o nome por extenso vem do dicionário)
+    const siglas = /data-siglas="true"[\s\S]*?<\/ul>|data-siglas="true"[\s\S]*?<\/dl>|data-siglas="true"[\s\S]{0,1500}/.exec(h)?.[0] ?? "";
+    for (const x of ["EAR", "MLT"]) expect(siglas, x).toContain(x);
+    // a etiqueta Observado diz que a EAR e a ENA são derivadas pelo ONS, não medição direta
+    expect(t).toContain("EAR, derivada pelo ONS, não medição direta");
+    expect(t).toContain("ENA, derivada pelo ONS das vazões naturais reconstituídas");
+    expect(t).toContain(TEXTO_EAR_DERIVADA);
+  });
+
+  it("figura principal: a unidade se escolhe (% da EAR máxima ou MWmês), a faixa da data do recorte aparece, e a tabela do gráfico não é uma segunda porta", () => {
+    expect(h).toContain("Unidade da figura");
+    expect(OPCOES_UNIDADE_EAR.map((o) => o.id)).toEqual(["pct", "mwmes"]);
+    for (const o of OPCOES_UNIDADE_EAR) expect(t, o.id).toContain(o.rotulo);
+    expect(h).toContain(`data-faixa-da-data="SIN"`);
+    expect(t).toContain(`Faixa usual: ${virg(sin.p10!)}% a ${virg(sin.p90!)}%`);
+    expect(t).toContain(`Mediana da data: ${virg(sin.p50!)}%`);
+    // a figura de pontos fica dentro de um recipiente que esconde a tabela própria; a tabela equivalente da página é a única porta
+    expect(h).toContain('data-grafico-pontos="armazenamento"');
+    expect(h).toMatch(/data-grafico-pontos="armazenamento" class="[^"]*\[&amp;_details\]:hidden/);
+    // a base da faixa do último ano
+    expect(t).toContain(textoBaseDaFaixa(sin));
+    expect(t).not.toMatch(/em sem base|sem base\b/);
+  });
+
+  it("os números do recorte escolhido acompanham a seleção; a ficha de prova é só a do SIN, com as revisões da própria página", () => {
+    const hSin = medidas("SIN");
+    expect(textoDe(hSin)).toContain("Números do recorte escolhido: SIN");
+    expect(textoDe(hSin)).toContain("Os do alto da página são sempre os do SIN.");
+    expect(hSin.match(/Comprove este número/g)?.length).toBe(2);
+    expect(textoDe(hSin)).toContain(textoEarProvisoria(rev));
+    // sem decomposição do SIN, não há a outra janela
+    expect(textoDe(hSin)).not.toContain("A página de reservatórios mostra");
+    // um subsistema: os números dele, a outra janela dita, sem a ficha do SIN
+    const se = ents.find((e) => e.id === "SE")!;
+    const hSe = textoDe(medidas("SE"));
+    expect(hSe).toContain("Números do recorte escolhido: Sudeste/Centro-Oeste");
+    expect(hSe).toContain(virg(se.ear_pct!));
+    expect(hSe).toContain(virg(se.p50!));
+    expect(hSe).not.toContain(virg(sin.ear_pct!));
+    expect(medidas("SE")).not.toContain("Comprove este número");
+    expect(hSe).toContain(textoOutraJanelaNaArmazenamento(se, R.decomposicao_ear));
+    expect(textoOutraJanelaNaArmazenamento(se, R.decomposicao_ear)).toContain("A página de reservatórios mostra");
+    // um REE e uma bacia com a EAR máxima variando além do limite: a amplitude entra na nota
+    const ree = ents.find((e) => e.tipo === "ree" && !e.sem_armazenamento)!;
+    expect(textoDe(medidas(ree.id))).toContain(ree.rotulo);
+    const uruguai = ents.find((e) => e.id === "bacia:URUGUAI")!;
+    const hU = medidas(uruguai.id);
+    expect(hU).toContain('data-texto="capacidade-alterada"');
+    expect(textoDe(hU)).toContain(`A EAR máxima variou ${textoAmplitude(amplitudeCapacidade(uruguai)!.razao)} na base`);
+    expect(textoDe(hU)).toContain("Nas duas unidades, a posição frente à faixa não é dita");
+    // recorte sem armazenamento: o motivo, nunca um número em branco
+    const semArm = ents.find((e) => e.sem_armazenamento && e.dia)!;
+    const hS = textoDe(medidas(semArm.id));
+    expect(hS).toContain("Sem armazenamento (EAR máxima zero)");
+    expect(hS).not.toMatch(/undefined|NaN/);
+  });
+
+  it("a mesma cor para o mesmo recorte em todos os gráficos: a do subsistema, e a da energia para o SIN, os REE e as bacias", () => {
+    for (const x of ["SE", "S", "NE", "N"] as const) expect(corDoRecorte({ tipo: "subsistema", id: x })).toBe(COR_REGIAO[x]);
+    expect(corDoRecorte({ tipo: "subsistema", id: "SIN" })).toBe("var(--cor-energia)");
+    expect(corDoRecorte({ tipo: "ree", id: "ree:PARANA" })).toBe("var(--cor-energia)");
+    expect(corDoRecorte({ tipo: "bacia", id: "bacia:GRANDE" })).toBe("var(--cor-energia)");
+    // os rótulos das séries dos pequenos múltiplos não dependem do painel (a legenda os junta)
+    expect(ler("src/components/energia/AguaArmazenamento.tsx")).toContain('rotulo: "EAR", cor: corDoRecorte(x)');
+    expect(ler("src/components/energia/AguaArmazenamento.tsx")).not.toContain("COR_COMPARACAO");
+  });
+
+  it("capacidade: tipos de evento explicados, regra da tolerância com o dia anterior, ficha de revisões coerente e série diária completa nos arquivos", () => {
+    expect(t).toContain(TEXTO_TIPOS_DE_EVENTO);
+    expect(t).toContain(textoToleranciaEventos(G.armazenamento.capacidade.eventos));
+    expect(t).toContain(textoJanelasDaVariacao(sin.dia, R.decomposicao_ear));
+    expect(h).toContain("/energia/series/ear_diario.csv");
+    expect(existsSync(join(raiz, "public/energia/series/ear_diario.csv"))).toBe(true);
+    // o CSV é em % da EAR máxima, com os quatro subsistemas e o SIN calculado (o rótulo do arquivo diz isso)
+    expect(ler("public/energia/series/ear_diario.csv").split("\n")[0]).toBe("data;SE;S;NE;N;SIN_calculado");
+    // as fichas da EAR e da capacidade passam a linha de revisões que a página mostra
+    const fonte = ler("src/app/setor-eletrico/agua-e-clima/page.tsx");
+    expect(fonte.match(/revisoes=\{revisoesEar\}/g)?.length).toBe(2);
+    expect(fonte).toContain("revisoes={REVISOES_CAPACIDADE}");
+    expect(fonte).toContain("revisoes: revisoesEar");
+    expect(fonte).toContain("revisoes: REVISOES_CAPACIDADE");
+  });
+
+  it("nenhum texto novo da mãe tem hífen como pontuação, 'hoje', 'undefined' ou 'NaN'", () => {
+    const textos = [
+      textoBaseDaFaixa(sin),
+      textoJanelasDaVariacao(sin.dia, R.decomposicao_ear),
+      textoRevisoesFichaEar(rev),
+      textoEarProvisoria(rev),
+      textoToleranciaEventos(G.armazenamento.capacidade.eventos),
+      TEXTO_TIPOS_DE_EVENTO,
+      TEXTO_EAR_DERIVADA,
+      REVISOES_CAPACIDADE,
+      ...ents.map((e) => vereditoArmazenamento(e)),
+      ...ents.map((e) => respostaArmazenamento(e)),
+      ...ents.map((e) => textoPeriodoDoRecorte(e)),
+    ];
+    for (const x of textos) {
+      expect(x).not.toMatch(PONTUACAO_PROIBIDA);
+      expect(x).not.toMatch(/\bhoje\b|undefined|NaN/);
+    }
+  });
+});
 
 describe("componentes do módulo", () => {
   const dir = join(raiz, "src/components/energia");

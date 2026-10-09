@@ -119,7 +119,10 @@ export function MedidasArmazenamento({
     : `Sem faixa do mesmo dia: ${plural(e.anos_na_base, "ano", "anos")} na base, menos que os 5 exigidos.`;
   return (
     <div data-medidas-recorte="" className="space-y-2">
-      <p className="rotulo text-mineral">Números do recorte escolhido: {e.rotulo}</p>
+      <p className="rotulo text-mineral">
+        Números do recorte escolhido: {e.rotulo}
+        <span className="ml-2 normal-case tracking-normal text-carvao-muted">Os do alto da página são sempre os do SIN.</span>
+      </p>
       <FaixaMetricas
         colunas={4}
         rotulo={`Indicadores do armazenamento: ${e.rotulo}`}
@@ -267,12 +270,9 @@ export function AguaArmazenamento({
   return (
     <div className="space-y-6">
       <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
-        <div className="flex flex-col gap-3">
-          <RespostaCurta id="p017" vivo veredito={e ? vereditoArmazenamento(e) : "Recorte sem dado nesta publicação."}>
-            {e ? respostaArmazenamento(e) : "Recorte sem dado nesta publicação."}
-          </RespostaCurta>
-          <AguaEscolha legenda="Unidade da figura" opcoes={OPCOES_UNIDADE_EAR} valor={unidade} onEscolher={(x) => definir({ uni: x })} />
-        </div>
+        <RespostaCurta id="p017" vivo veredito={e ? vereditoArmazenamento(e) : "Recorte sem dado nesta publicação."}>
+          {e ? respostaArmazenamento(e) : "Recorte sem dado nesta publicação."}
+        </RespostaCurta>
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
           <AguaEscolha legenda="Recorte" opcoes={OPCOES_TIPO} valor={tipo} onEscolher={(x) => definir({ rec: x, ent: "" })} />
           <AguaLista
@@ -285,7 +285,11 @@ export function AguaArmazenamento({
       </div>
 
       {/* a tabela equivalente da página é a única porta para estes dados: a do próprio gráfico repetiria as mesmas linhas */}
-      <div data-grafico-pontos="armazenamento" className="[&_details]:hidden">
+      <div data-grafico-pontos="armazenamento" className="relative [&_details]:hidden">
+        {/* a unidade da figura: no cabeçalho dela, à direita do título em tela larga (onde há espaço), e acima dela nas demais */}
+        <div className="mb-3 xl:absolute xl:right-0 xl:top-0 xl:z-[1] xl:mb-0">
+          <AguaEscolha legenda="Unidade da figura" opcoes={OPCOES_UNIDADE_EAR} valor={unidade} onEscolher={(x) => definir({ uni: x })} emLinha />
+        </div>
         <GraficoPontos
           titulo={`EAR de cada recorte (${ROTULO_TIPO_RECORTE[tipo]}) no dia e a mediana da mesma data`}
           itens={itens}

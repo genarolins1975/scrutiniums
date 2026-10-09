@@ -695,7 +695,7 @@ describe("abertura editorial da Rede: faixas lidas dos mesmos seletores das figu
     expect(G.evidencias.a05_balanco_sin!.valor_calculo).toBe(sin.horas_residuo);
     expect(G.evidencias.a05_perimetro_sul!.valor_calculo).toBe(sul.horas_residuo);
     expect(faixa).toContain(`De ${num(sin.horas, 0)} horas conferidas`);
-    expect(faixa).toContain(`De ${num(sul.horas, 0)} horas conferidas`);
+    expect(faixa).toContain(`; de ${num(sul.horas, 0)} horas conferidas`);
     expect(faixa).toContain(escapa(G.evidencias.exterior_12m!.valor_exibido));
     expect((faixa.match(/Comprove este número/g) ?? []).length).toBeGreaterThanOrEqual(3);
     // o perímetro está dito em palavras à vista: a segunda conta (intercâmbio contra fronteiras e exterior) tem nome e fórmula
@@ -763,6 +763,91 @@ describe("abertura editorial da Rede: faixas lidas dos mesmos seletores das figu
     expect(faixa).toContain("a fonte não informa o motivo");
     expect(faixa).toContain("Comprove este número");
     expect(faixa).toContain("Horas com o fluxo no sentido oposto ao programado");
+  });
+
+  it("P028: o título, o zero escondido e o intercâmbio com outros países ficam explicados no ponto de uso", () => {
+    const h = html.p028;
+    // cada cartão de energia escondida diz o sentido do saldo; o zero não parece ausência de fluxo
+    for (const par of R.FRONTEIRAS) {
+      const r = G.circulacao.resumo_30d.find((x) => x.par === par)!;
+      const contra = r.liquido_mwh >= 0 ? r.horas_inverso : r.horas_canonico;
+      const sentido = R.textoSentidoSaldo(par, r.liquido_mwh);
+      if (contra === 0) expect(h, par).toContain(`Fluxo sempre ${sentido} nas ${num(r.horas, 0)} horas: nada passou no sentido contrário.`);
+      else expect(h, par).toContain(`${num(contra, 0)} de ${num(r.horas, 0)} horas no sentido contrário ao saldo (saldo ${sentido}).`);
+    }
+    // a linha de universo leva ao exterior, que fica na página de balanço
+    expect(h).toContain(`O intercâmbio com outros países está em <a href="${R.rotaPainel("p029")}"`);
+  });
+
+  it("P029: a pergunta não sugere causa, as barras usam nomes curtos, o veredito diz em que ano estão as horas com resíduo e o último dia de cada país fica dito", () => {
+    expect(R.perguntaPainel("p029")).toBe("As contas do balanço de energia fecham?");
+    const periodo = { inicio: G.cobertura.inicio, fim: G.cobertura.fim };
+    const anos = (id: string) => Object.entries(G.balanco.identidades.find((x) => x.id === id)!.horas_residuo_por_ano).filter(([, n]) => n > 0).map(([a]) => a);
+    const todos = Array.from(new Set(["balanco.SIN", "perimetro.SIN", "soma_sin"].flatMap(anos)));
+    const v = R.vereditoBalanco(G.balanco, "SIN", periodo);
+    if (todos.length === 1) expect(v).toContain(`As horas com resíduo estão todas em ${todos[0]}.`);
+    // com resíduo em dois anos, a frase não afirma um só
+    const dois = copia(G.balanco);
+    const sin = dois.identidades.find((x) => x.id === "balanco.SIN")!;
+    sin.horas_residuo_por_ano = { ...sin.horas_residuo_por_ano, "2023": 5 };
+    sin.horas_residuo = Object.values(sin.horas_residuo_por_ano).reduce((a, n) => a + n, 0);
+    const antigos = anos("balanco.SIN");
+    expect(R.vereditoBalanco(dois, "SIN", periodo)).not.toContain("estão todas em");
+    expect(antigos.length).toBeGreaterThan(0);
+    // sem resíduo, sem a frase de causa nem de ano
+    const limpo = copia(G.balanco);
+    for (const i of limpo.identidades) {
+      i.horas_residuo = 0;
+      i.horas_fecham = i.horas;
+      i.horas_residuo_por_ano = {};
+    }
+    expect(R.vereditoBalanco(limpo, "SIN", periodo)).toContain("todas as horas conferidas");
+    expect(R.vereditoBalanco(limpo, "SIN", periodo)).not.toContain("estão todas em");
+    // as barras usam o nome curto da conta; a tabela segue com o longo
+    const linhas = R.linhasIdentidades(R.identidadesDa(G.balanco, "SIN"));
+    expect(linhas.map((l) => l.identidade_curta)).toEqual(["Balanço interno", "Perímetro", "Soma dos subsistemas"]);
+    expect(linhas[0].identidade).toContain("geração − carga − intercâmbio");
+    const h = html.p029;
+    expect(h).toContain(`>${R.perguntaPainel("p029")}</h1>`);
+    // a marca da quebra no eixo é curta (cabe em 390 px); a explicação inteira vem no parágrafo sob o gráfico
+    expect(R.marcosQuebras(G.balanco)[0].rotulo.length).toBeLessThan(25);
+    expect(h).toContain("desde essa data, a MMGD estimada pelo ONS entra na geração solar e na carga");
+    // Paraguai: o fim da linha do gráfico é ausência, e a página diz até quando o país publicou (a nota aparece com o país escolhido)
+    expect(G.exterior.por_pais.PARAGUAI.ultima_hora).not.toBeNull();
+    expect(G.exterior.por_pais.PARAGUAI.ultima_hora! < G.exterior.por_pais.ARGENTINA.ultima_hora!).toBe(true);
+    const t = ler("src/components/energia/RedeBalanco.tsx");
+    expect(t).toContain("a última hora publicada é {horaLocal(ultimaHoraPais)}; depois dela há ausência de dado, não zero.");
+  });
+
+  it("P030: ATLS definido na abertura, sigla sem definição marcada no gráfico, ano parcial dito no título do gráfico e nota de revisão com título descritivo", () => {
+    const h = html.p030;
+    expect(principal(h)).toContain("indicador ATLS, Atendimento aos Limites Sistêmicos");
+    expect(h).toContain("ATLS, Atendimento aos Limites Sistêmicos) e cortes de carga");
+    const sem = G.restricoes.atls.fluxos.filter((f) => f.ativo && !f.definicao).map((f) => f.fluxo);
+    expect(sem.length).toBeGreaterThan(0);
+    // o eixo do gráfico leva asterisco nas siglas sem definição pública, e a legenda diz o que o asterisco quer dizer
+    for (const f of sem) expect(h).toContain(`${f}*`);
+    expect(h).toContain("* Sigla do ONS sem definição em documento público conferido");
+    for (const f of G.restricoes.atls.fluxos.filter((x) => x.ativo && x.definicao)) expect(h).not.toContain(`${R.nomeFluxo(f)}*`);
+    // ano parcial: o título do gráfico dos cortes por ano diz qual barra é parcial (o eixo pode omitir o rótulo dela)
+    const anosParciais = G.restricoes.interrupcoes.anual.anos.filter((_, k) => G.restricoes.interrupcoes.anual.parcial[k]);
+    if (anosParciais.length > 0) expect(h).toContain(`(${anosParciais.join(", ")} ${anosParciais.length === 1 ? "é parcial, a última barra" : "são parciais, as últimas barras"})`);
+    expect(h).toContain("Nota de revisão sobre a página de metodologia");
+    expect(h).not.toContain("Correção pedida na página de metodologia");
+  });
+
+  it("P031: o dia rotulado é explicado junto da base, o sinal do saldo vai no título do gráfico diário e as cinco maiores horas de desvio ficam à vista", () => {
+    const h = html.p031;
+    expect(h).toContain(`Dia rotulado é um dia em que o mesmo valor programado se repetiu por ${G.programado.programa_repetido.minimo_horas} horas seguidas ou mais`);
+    expect(h).toContain(`(positivo ${R.sentidoPositivo("N_NE")}; negativo ${R.sentidoNegativo("N_NE")})`);
+    // as cinco primeiras linhas da lista são as cinco primeiras da tabela das maiores horas de desvio (mesma variável)
+    const maiores = R.linhasMaioresDesvios(G.programado.maiores_desvios).slice(0, 5);
+    const i = h.indexOf("data-maiores-desvios");
+    expect(i).toBeGreaterThan(0);
+    const lista = h.slice(i, h.indexOf("</ol>", i));
+    expect((lista.match(/<li>/g) ?? []).length).toBe(5);
+    for (const l of maiores) expect(lista).toContain(`desvio de ${num(l.desvio_mwmed, 1)} MWmed`);
+    if (maiores.some((l) => l.dia_rotulado === "sim")) expect(lista).toContain("dia rotulado por programa repetido");
   });
 
   it("esquema de fluxos: toda seta termina fora dos retângulos e à vista, o rótulo traz o sentido, o saldo e o contrário, e nada sai da área do desenho", () => {

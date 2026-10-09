@@ -12,8 +12,10 @@ import { RodapeEnergia } from "@/components/energia/RodapeEnergia";
 import { CONCEITOS, GRUPOS, conceito } from "@/lib/energia/conteudo/conceitos";
 import { CONTRASTES, contrastesDe } from "@/lib/energia/conteudo/complementos";
 import { exemploDe } from "@/lib/energia/conteudo/exemplos";
+import { perguntaPratica } from "@/lib/energia/conteudo/perguntas-praticas";
 import { provaDoVerbete } from "@/lib/energia/conteudo/provas";
 import { TRILHAS_APRENDA } from "@/lib/energia/conteudo/trilhas";
+import { TIPOS_LIGACAO } from "@/lib/energia/mapa";
 
 /**
  * Fechamento dos achados abertos da revisão adversarial do Aprenda (07/10/2026), rodada r7. Cada bloco cita os achados
@@ -165,8 +167,13 @@ describe("verbete: exemplo em cartão (L-11, F08) e achados de fonte (F22, L-24,
 describe("índice (L-26, L-28)", () => {
   const h = renderToStaticMarkup(createElement(AprendaPage));
 
-  it("L-26: grupos recolhidos com a contagem, busca por termo, todos os verbetes no HTML e abertura curta", () => {
+  // redesenho: no celular um tema por vez, recolhido, com a contagem e a prévia; a partir de 768 px a lista aparece aberta (as duas
+  // apresentações estão no HTML e o CSS escolhe uma); a busca vem primeiro, depois as trilhas, depois os verbetes
+  it("L-26: temas recolhidos com a contagem no celular, lista aberta em tela larga, busca por termo, todos os verbetes no HTML e abertura curta", () => {
     expect((h.match(/<details id="g-/g) ?? []).length).toBe(GRUPOS.length);
+    expect((h.match(/data-lista="aberta"/g) ?? []).length).toBe(1);
+    expect(h.indexOf('id="aprenda-busca"')).toBeLessThan(h.indexOf('id="aprenda-trilhas"'));
+    expect(h.indexOf('id="aprenda-trilhas"')).toBeLessThan(h.indexOf('id="aprenda-todos"'));
     expect(h).not.toMatch(/<details id="g-[^>]* open/);
     expect(h).toContain('type="search"');
     expect(h).toContain('id="aprenda-busca"');
@@ -174,11 +181,12 @@ describe("índice (L-26, L-28)", () => {
     expect(h).not.toContain("Ir para o grupo");
     const abertura = texto(h.slice(h.indexOf("<h1"), h.indexOf("</header>", h.indexOf("<h1"))));
     expect(abertura.length).toBeLessThan(700);
-    expect(abertura).toContain("Comece por uma trilha");
+    expect(abertura).toContain("Procure um termo ou comece por uma trilha");
   });
 
-  it("L-26: o cartão mostra o texto em palavras simples quando o verbete tem, e o texto da fonte no verbete", () => {
-    expect(h).toContain(conceito("constrained-off")!.emPalavrasSimples!.slice(0, 50));
+  it("L-26: a linha do verbete abre pela pergunta prática; a definição (em palavras simples ou da fonte) fica no verbete, não no índice", () => {
+    expect(h).toContain(perguntaPratica("constrained-off")!);
+    expect(h).not.toContain(conceito("constrained-off")!.emPalavrasSimples!.slice(0, 50));
     expect(h).not.toContain(conceito("constrained-off")!.emUmaFrase!.slice(0, 60));
   });
 
@@ -217,17 +225,26 @@ describe("trilhas (L-30 a L-36, F04, F20)", () => {
     expect(texto(custo)).toContain("Não compare com o peso medido pela POF");
   });
 
-  it("L-36: o índice das trilhas não traz a legenda dos cinco tipos de ligação antes de qualquer trilha", () => {
+  it("L-36: o índice das trilhas não traz a legenda dos cinco tipos de ligação; cada trilha define os tipos que usa, onde cada um aparece pela primeira vez", () => {
     const h = renderToStaticMarkup(createElement(TrilhasPage));
     expect(h).not.toContain(">Tipos de ligação<");
     expect(h).toContain("vem explicado na página de cada trilha");
-    expect(agua).toContain('aria-label="Tipos de ligação nesta trilha"');
+    // a definição do tipo fica ao lado do primeiro traço que o representa (uma só vez), e só os tipos da trilha são definidos
+    for (const [html, trilha] of [[agua, TRILHAS_APRENDA[0]], [custo, TRILHAS_APRENDA[1]]] as const) {
+      const usados = Array.from(new Set(trilha.passos.flatMap((p) => (p.ligacao ? [p.ligacao.tipo] : []))));
+      for (const tipo of Object.keys(TIPOS_LIGACAO) as (keyof typeof TIPOS_LIGACAO)[]) {
+        const n = html.split(TIPOS_LIGACAO[tipo].definicao).length - 1;
+        expect(n, `${trilha.id}: ${tipo}`).toBe(usados.indexOf(tipo) >= 0 ? 1 : 0);
+      }
+    }
   });
 
   it("F20: os títulos das seções da trilha seguem a hierarquia dos títulos dos passos", () => {
     for (const h of [agua, custo]) {
-      expect(h).toContain('<h2 id="sintetico" class="font-serif text-2xl text-carvao">');
-      expect(h).toContain('<h2 id="nao-conclua" class="font-serif text-2xl text-carvao">');
+      // redesenho: os títulos dos passos e das duas seções usam a mesma escala editorial (ed-h2)
+      expect(h).toContain('<h2 id="sintetico" class="ed-h2 font-serif text-carvao">');
+      expect(h).toContain('<h2 id="nao-conclua" class="ed-h2 font-serif text-carvao">');
+      expect(h).toMatch(/<h2 id="t-[a-z-]+" class="ed-h2 mt-1 font-serif text-carvao">/);
     }
   });
 

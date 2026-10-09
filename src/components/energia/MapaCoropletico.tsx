@@ -105,6 +105,12 @@ export type MapaCoropleticoProps = {
   escalaMaxima?: number;
   periodo?: string;
   nota?: string;
+  /**
+   * Frase curta sobre o que o valor da região representa, quando ele resume unidades menores (por exemplo "maior entre 22 conjuntos
+   * elétricos"). Entra na dica, na linha Seleção, na leitura para leitor de tela e numa coluna da tabela, para o valor não ser lido
+   * como medida da região inteira. Sem a prop, nada muda.
+   */
+  detalheRegiao?: (id: string) => string | null | undefined;
 };
 
 /** Largura usada no HTML do servidor, antes da medição real (a mesma de GraficoLinhas). */
@@ -192,7 +198,7 @@ const CamadaRotulos = memo(function CamadaRotulos({ rotulos, upx }: { rotulos: r
   );
 });
 
-type LinhaTabela = { id: string; nome: string; uf: string; v: ValorClassificavel };
+type LinhaTabela = { id: string; nome: string; uf: string; v: ValorClassificavel; detalhe: string | null };
 
 const TabelaRegioes = memo(function TabelaRegioes({
   titulo,
@@ -214,6 +220,7 @@ const TabelaRegioes = memo(function TabelaRegioes({
   const [aberta, setAberta] = useState(false);
   const [ordem, setOrdem] = useState<{ por: "nome" | "valor"; dir: Direcao }>({ por: "nome", dir: "asc" });
   const montar = linhas.length <= LIMITE_TABELA_MONTADA || aberta;
+  const temDetalhe = linhas.some((l) => l.detalhe);
   const ordenadas = useMemo(
     () =>
       montar
@@ -251,6 +258,7 @@ const TabelaRegioes = memo(function TabelaRegioes({
                   </button>
                 </th>
                 <th scope="col" className="border-b border-linha px-2 font-medium text-mineral">Classe</th>
+                {temDetalhe && <th scope="col" className="border-b border-linha px-2 font-medium text-mineral">O valor representa</th>}
               </tr>
             </thead>
             <tbody>
@@ -268,6 +276,7 @@ const TabelaRegioes = memo(function TabelaRegioes({
                     <td className="px-2 py-1 text-carvao-muted">{l.id}</td>
                     <td className={`px-2 py-1 ${d.estado === "valor" ? "text-carvao" : "text-carvao-muted"}`}>{d.valor}</td>
                     <td className="px-2 py-1 text-carvao-muted">{d.classe ?? "sem classe"}</td>
+                    {temDetalhe && <td className="px-2 py-1 text-carvao-muted">{l.detalhe ?? ""}</td>}
                   </tr>
                 );
               })}
@@ -303,6 +312,7 @@ export function MapaCoropletico({
   escalaMaxima,
   periodo,
   nota,
+  detalheRegiao,
 }: MapaCoropleticoProps) {
   const uid = useId().replace(/:/g, "");
 
@@ -344,10 +354,10 @@ export function MapaCoropletico({
   const linhasTabela = useMemo<LinhaTabela[]>(
     () =>
       features.length
-        ? features.map((f) => ({ id: f.id, nome: f.nome, uf: f.uf, v: valores[f.id] }))
+        ? features.map((f) => ({ id: f.id, nome: f.nome, uf: f.uf, v: valores[f.id], detalhe: detalheRegiao?.(f.id) ?? null }))
         : // sem malha (carregando ou erro), a tabela lista os valores pelo código
-          Object.keys(valores).map((id) => ({ id, nome: id, uf: "", v: valores[id] })),
-    [features, valores],
+          Object.keys(valores).map((id) => ({ id, nome: id, uf: "", v: valores[id], detalhe: detalheRegiao?.(id) ?? null })),
+    [features, valores, detalheRegiao],
   );
 
   /* seleção */
@@ -358,7 +368,11 @@ export function MapaCoropletico({
   const [leitura, setLeitura] = useState("");
 
   const descricao = (id: string) => descreveRegiao(valores[id], classes, casas, unidade);
-  const frase = (f: FeatureGeo) => fraseRegiao(f, descricao(f.id));
+  const detalhe = (id: string) => detalheRegiao?.(id) ?? null;
+  const frase = (f: FeatureGeo) => {
+    const det = detalhe(f.id);
+    return fraseRegiao(f, descricao(f.id)) + (det ? `; ${det}` : "");
+  };
 
   function selecionar(id: string | null) {
     if (!controlado) setSelInterna(id);
@@ -773,6 +787,7 @@ export function MapaCoropletico({
             <p className="rotulo text-mineral">{dicaFeature.uf && dicaFeature.uf !== dicaFeature.nome ? `${dicaFeature.nome} · ${dicaFeature.uf}` : dicaFeature.nome}</p>
             <p className="mt-1 tabular-nums text-carvao">{dicaDesc.valor}</p>
             {dicaDesc.classe && <p className="text-carvao-muted">classe {dicaDesc.classe}</p>}
+            {detalhe(dicaFeature.id) && <p className="text-carvao-muted">{detalhe(dicaFeature.id)}</p>}
           </div>
         )}
       </div>
@@ -790,6 +805,7 @@ export function MapaCoropletico({
             <strong className="font-medium">{selFeature.nome}</strong>
             {selFeature.uf && selFeature.uf !== selFeature.nome ? ` (${selFeature.uf})` : ""}: <span className="tabular-nums">{descricao(selFeature.id).valor}</span>
             {descricao(selFeature.id).classe && <span className="text-carvao-muted">, classe {descricao(selFeature.id).classe}</span>}
+            {detalhe(selFeature.id) && <span className="text-carvao-muted">; {detalhe(selFeature.id)}</span>}
           </p>
         ) : selecionado && geo ? (
           <p className="text-carvao">

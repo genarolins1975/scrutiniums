@@ -27,7 +27,7 @@ import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvi
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
+import { carimbo, dataBR, mesAno, num, plural } from "@/lib/energia/formato";
 import { URL_GOLD_GERACAO_DETALHE } from "@/lib/energia/geracao-tabelas";
 import {
   COR_CATEGORIA,
@@ -38,12 +38,16 @@ import {
   ROTULO_REGRA,
   datasDoModulo,
   downloadsDoPainel,
+  emPortugues,
   fontePrincipalDaJanela,
   fontesDoGrupoTipo3,
+  lacunaDasComparaveis,
   linhasDozeMeses,
   linhasMmgdApi,
   linhasNaturezaMensal,
   marcosMensais,
+  mesesComPresencaParcial,
+  minusculaPalavras,
   nomesCategorias,
   perguntaPainel,
   rotaPainel,
@@ -82,6 +86,8 @@ export default function GeracaoPage() {
   const doze = m.comparacao_12m ? linhasDozeMeses(m.comparacao_12m, sin12) : [];
   const dozeGrafico = doze.filter((l) => !m.comparacao_12m?.variacao_suprimida[l.id]);
   const natureza = linhasNaturezaMensal(m.natureza_mensal_sin);
+  const presencaMmgd = mesesComPresencaParcial(m.mensal_sin, "solar_mmgd");
+  const lacunas = m.comparacao_12m ? lacunaDasComparaveis(m.comparacao_12m, m.universo) : [];
   const a11 = g.a11;
   const mmgdApi = linhasMmgdApi(a11);
   const marcos = marcosMensais(g.quebras, m.mensal_sin.meses);
@@ -133,7 +139,7 @@ export default function GeracaoPage() {
         <CabecalhoModulo
           siglas={["ONS", "MWmed", "SIN", "MMGD", "CEG", "CVU", "SIGA", "ANEEL"]}
           titulo={TITULO}
-          lead="A participação de cada fonte na energia gerada no Sistema Interligado Nacional (SIN), com a micro e minigeração distribuída (MMGD) estimada pelo ONS identificada à parte."
+          lead="A participação de cada fonte na energia gerada no Sistema Interligado Nacional (SIN), com a micro e minigeração distribuída (MMGD) estimada pelo ONS identificada à parte. Mostra de onde veio a energia que atendeu a carga e quanto dela é medição, previsão ou estimativa."
           recorte={sin30 ? `${dataBR(sin30.inicio)} a ${dataBR(sin30.fim)} (${ROTULO_JANELA["30d"]}) · SIN · MWmed e % da geração com a MMGD estimada` : undefined}
           fonte={FONTE}
           referencia={
@@ -143,7 +149,7 @@ export default function GeracaoPage() {
           }
           datas={<GeracaoDatas itens={datasDoModulo(g)} />}
           metricas={
-            <FaixaMetricas colunas={3} rotulo="Indicadores da geração no SIN, em 30 dias" nota="Perímetro: SIN, energia gerada com a MMGD estimada pelo ONS, que é estimativa com previsão meteorológica, não medição.">
+            <FaixaMetricas colunas={3} rotulo="Indicadores da geração no SIN, em 30 dias" nota="Perímetro: SIN, energia gerada com a MMGD estimada pelo ONS, que é estimativa com previsão meteorológica, não medição. As três medidas são sempre as dos 30 dias do SIN e não mudam com Região, Janela e Perímetro, escolhidos mais abaixo.">
               <Numero
                 variante="faixa"
                 rotulo="Geração média do SIN, com a MMGD estimada"
@@ -249,6 +255,12 @@ export default function GeracaoPage() {
                         zeroNoEixo
                         marcos={marcos}
                       />
+                      {presencaMmgd.length > 0 && (
+                        <GeracaoAviso>
+                          Presença parcial da MMGD: {presencaMmgd.map((x) => `${mesAno(x.mes)} tem estimativa em ${num(x.dias, 0)} de ${num(x.diasDoMes, 0)} dias`).join("; ")}. Nesses meses a parcela da MMGD é a energia dos dias com estimativa sobre a energia
+                          do mês inteiro, e fica abaixo da de um mês completo.
+                        </GeracaoAviso>
+                      )}
                       <div data-nivel="analisar">
                         <GeracaoTabelaSobDemanda tabela="natureza" versao={versao} />
                       </div>
@@ -259,7 +271,18 @@ export default function GeracaoPage() {
                       <SecaoDoPainel
                         id="doze-meses"
                         titulo={`O que mudou em 365 dias: ${dataBR(m.comparacao_12m.atual.inicio)} a ${dataBR(m.comparacao_12m.atual.fim)} contra o ano anterior`}
-                        lead="Geração média de cada categoria nos 365 dias mais recentes e nos 365 anteriores, no SIN. Fica fora do gráfico a categoria cuja cobertura na fonte mudou dentro das janelas: a variação dela, na tabela, aparece como suprimida."
+                        lead={
+                          <>
+                            Geração média de cada categoria nos 365 dias mais recentes e nos 365 anteriores, no SIN. Fica fora do gráfico a categoria cuja cobertura na fonte mudou dentro das janelas: a variação dela, na tabela, aparece como suprimida.
+                            {lacunas.length > 0 && (
+                              <>
+                                {" "}
+                                As categorias que seguem comparáveis também têm usinas sem dado em {mesAno(lacunas[0].mes)}; a geração delas em {mesAno(lacunas[0].mesAnoAnterior)} dá a ordem de grandeza da lacuna:{" "}
+                                {lacunas.map((x) => `${minusculaPalavras(x.rotulo)} ${num(x.gwh, 1)} GWh`).join("; ")}. A tabela traz uma coluna com esse valor.
+                              </>
+                            )}
+                          </>
+                        }
                       >
                         <GraficoPontos
                           titulo="Geração média por categoria nos 365 dias mais recentes e nos 365 anteriores, SIN"
@@ -287,13 +310,13 @@ export default function GeracaoPage() {
                   <GeracaoTabelaSobDemanda tabela="horaria" versao={versao} />
                 </SecaoDoPainel>
 
-                <SecaoDoPainel nivel="analisar" id="anos" titulo="Participação por ano, no perímetro sem MMGD">
+                <SecaoDoPainel nivel="analisar" id="anos" titulo="Participação por ano, sem a MMGD, e a MMGD estimada à parte">
                   <GeracaoTabelaSobDemanda tabela="anual" versao={versao} />
                 </SecaoDoPainel>
 
                 <SecaoDoPainel nivel="analisar" id="a11" titulo="A quebra de 29/04/2023: MMGD estimada dentro da solar">
-                  <p className="text-sm leading-relaxed text-carvao">{a11.conclusao}</p>
-                  <p className="text-sm text-carvao-muted">{textoA11(a11)}</p>
+                  <p className="text-sm leading-relaxed text-carvao">{emPortugues(a11.conclusao ?? "")}</p>
+                  <p className="text-sm text-carvao-muted">{emPortugues(textoA11(a11))}</p>
                   <GeracaoDocumentos documentos={a11.evidencias_documentais} />
                   <p className="rotulo text-mineral">Tratamento aplicado</p>
                   <GeracaoFrases itens={a11.tratamento} />
@@ -317,7 +340,7 @@ export default function GeracaoPage() {
                 <SecaoDoPainel nivel="auditar" id="reconciliacao" titulo="Reconciliação com o Balanço de Energia nos Subsistemas">
                   <p className="text-sm text-carvao-muted">
                     Soma das usinas por fonte do Balanço (térmica com a nuclear), subsistema e dia, contra o Balanço publicado pelo ONS, com tolerância de{" "}
-                    {num(rec.tolerancia_mwh_por_subsistema_dia, 0)} MWh por subsistema e dia. Nada é corrigido: o painel mostra os dois. {rec.roraima.regra} Último dia com a
+                    {num(rec.tolerancia_mwh_por_subsistema_dia, 0)} MWh por subsistema e dia. Nada é corrigido: o painel mostra os dois. {emPortugues(rec.roraima.regra)} Último dia com a
                     térmica de Roraima fora do Balanço: {dataBR(rec.roraima.ultimo_dia_excluida)} ({num(rec.roraima.dias_balanco_exclui, 0)} dias).
                   </p>
                   <GeracaoTabelaSobDemanda tabela="rec-fonte" versao={versao} />
@@ -326,12 +349,12 @@ export default function GeracaoPage() {
                 </SecaoDoPainel>
 
                 <SecaoDoPainel nivel="auditar" id="universo" titulo="Universo da fonte: usinas com dado, saltos e mudanças de rótulo">
-                  <p className="text-sm text-carvao-muted">{m.universo.regra}</p>
-                  <p className="text-sm text-carvao-muted">{m.universo.regra_ressalvas}</p>
+                  <p className="text-sm text-carvao-muted">{emPortugues(m.universo.regra)}</p>
+                  <p className="text-sm text-carvao-muted">{emPortugues(m.universo.regra_ressalvas)}</p>
                   {lac && <GeracaoTabelaSobDemanda tabela="lacuna" versao={versao} />}
                   <GeracaoTabelaSobDemanda tabela="quebras" versao={versao} />
                   <p className="text-sm text-carvao-muted">
-                    {m.universo.regra_sequencias_zero} {num(seq.n, 0)} identificadores com zero exato por 6 meses ou mais depois de produção positiva (
+                    {emPortugues(m.universo.regra_sequencias_zero)} {num(seq.n, 0)} identificadores com zero exato por 6 meses ou mais depois de produção positiva (
                     {num(seq.continuam_no_ultimo_mes, 0)} até o último mês). Nada é excluído: térmica sem despacho e usina parada também produzem zero.
                   </p>
                   <GeracaoTabelaSobDemanda tabela="rotulos" versao={versao} />

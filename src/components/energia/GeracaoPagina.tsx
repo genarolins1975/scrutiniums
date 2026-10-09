@@ -6,7 +6,7 @@ export { GeracaoAviso, GeracaoRecorte } from "@/components/energia/GeracaoContro
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { carimbo } from "@/lib/energia/formato";
-import { PAINEIS_GERACAO, ROTA_GERACAO, rotaPainel, type PainelGeracao } from "@/lib/energia/geracao";
+import { PAINEIS_GERACAO, ROTA_GERACAO, emPortugues, rotaPainel, type PainelGeracao } from "@/lib/energia/geracao";
 import type { Natureza } from "@/lib/energia/tipos";
 import type { EvidenciaDocumental } from "@/lib/energia/tipos-geracao";
 
@@ -93,7 +93,7 @@ export function GeracaoRegras({ regras }: { regras: { rotulo: string; texto: str
       {regras.map((r) => (
         <div key={r.rotulo} className="min-w-0">
           <dt className="rotulo text-mineral">{r.rotulo}</dt>
-          <dd className="mt-1 text-sm leading-relaxed text-carvao [overflow-wrap:anywhere]">{r.texto}</dd>
+          <dd className="mt-1 text-sm leading-relaxed text-carvao [overflow-wrap:anywhere]">{emPortugues(r.texto)}</dd>
         </div>
       ))}
     </dl>
@@ -105,7 +105,7 @@ export function GeracaoFrases({ itens }: { itens: string[] }) {
   return (
     <ul className="list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-carvao-muted [overflow-wrap:anywhere]">
       {itens.map((t) => (
-        <li key={t}>{t}</li>
+        <li key={t}>{emPortugues(t)}</li>
       ))}
     </ul>
   );

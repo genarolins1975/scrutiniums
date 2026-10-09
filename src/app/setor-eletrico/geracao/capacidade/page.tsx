@@ -33,6 +33,7 @@ import {
   ROTULO_REGRA,
   colunasCapacidade,
   downloadsDoPainel,
+  emPortugues,
   linhasCapacidade,
   linhasFcAcima100,
   linhasFcConferencia,
@@ -338,14 +339,14 @@ export default function GeracaoCapacidadePage() {
                   />
                   {sigaHist && (
                     <>
-                      <p className="text-sm leading-relaxed text-carvao-muted">{sigaHist.regra}</p>
+                      <p className="text-sm leading-relaxed text-carvao-muted">{emPortugues(sigaHist.regra)}</p>
                       <GeracaoCapacidadeAneel historico={sigaHist} fonte={FONTE_ANEEL} />
                     </>
                   )}
                   {mmgd?.mensal && (
                     <>
                       <p className="text-sm leading-relaxed text-carvao-muted">
-                        Micro e minigeração distribuída: {num(mmgd.potencia_mw, 0)} MW cadastrados na ANEEL em {mmgd.data_cadastro ? dataBR(mmgd.data_cadastro) : "data não informada"}. {mmgd.mensal.regra}
+                        Micro e minigeração distribuída: {num(mmgd.potencia_mw, 0)} MW cadastrados na ANEEL em {mmgd.data_cadastro ? dataBR(mmgd.data_cadastro) : "data não informada"}. {emPortugues(mmgd.mensal.regra)}
                       </p>
                       <GraficoLinhas
                         titulo="Potência de micro e minigeração distribuída cadastrada na ANEEL, fim de cada mês"
@@ -387,7 +388,7 @@ export default function GeracaoCapacidadePage() {
                 </SecaoDoPainel>
 
                 <SecaoDoPainel nivel="auditar" id="pareamento" titulo="Pareamento de usinas e controles">
-                  <p className="text-sm leading-relaxed text-carvao-muted">{par.regra}</p>
+                  <p className="text-sm leading-relaxed text-carvao-muted">{emPortugues(par.regra)}</p>
                   <p className="text-sm leading-relaxed text-carvao-muted">
                     Usina-meses por forma de pareamento:{" "}
                     {Object.entries(par.usina_meses_por_casamento)

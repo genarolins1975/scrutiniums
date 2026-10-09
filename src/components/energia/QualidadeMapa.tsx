@@ -8,6 +8,7 @@ import { QualidadeEscala } from "@/components/energia/QualidadeEscala";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { quebrasFixas } from "@/lib/energia/escalas";
+import { num } from "@/lib/energia/formato";
 import { URL_GEO } from "@/lib/energia/geo";
 import type { EscalaPaineis } from "@/lib/energia/series-temporais";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
@@ -160,6 +161,18 @@ export function QualidadeMapa({
   const linhas = useMemo(() => (municipios ? linhasMunicipios(municipios, rotuloCnpj) : []), [municipios]); // eslint-disable-line react-hooks/exhaustive-deps
   const med = ROTULO_MEDIDA[v.med];
   const selecionar = (id: string | null) => definir({ mun: id ?? "" });
+  // o valor do município é o de um conjunto (o maior ou o menor entre os que o atendem): a dica, a linha Seleção e a tabela dizem entre quantos
+  const detalheMunicipio = useMemo(() => {
+    if (!municipios) return undefined;
+    const porCodigo = new Map(municipios.map((m) => [m.cod, m]));
+    const maior = v.med.endsWith("max");
+    return (id: string): string | null => {
+      const n = porCodigo.get(id)?.conjuntos.length ?? 0;
+      if (n === 0) return null;
+      if (n === 1) return "valor do conjunto que atende o município";
+      return `${maior ? "maior" : "menor"} valor entre os ${num(n, 0)} conjuntos que atendem o município`;
+    };
+  }, [municipios, v.med]);
 
   // os pequenos múltiplos e a comparação aceitam no máximo LIMITE_COMPARACAO distribuidoras
   const cnpjsSel = selecionado ? selecionado.cnpjs.slice(0, LIMITE_COMPARACAO) : [];
@@ -192,6 +205,7 @@ export function QualidadeMapa({
             rotuloRegiao={{ singular: "município", plural: "municípios" }}
             selecionado={v.mun || null}
             onSelecionar={selecionar}
+            detalheRegiao={detalheMunicipio}
             contornos
             periodo={String(ano)}
             nota="Valor do conjunto inteiro que atende o município, não medido no município. Hachura: município sem conjunto com DEC no ano ou não citado na base da ANEEL."

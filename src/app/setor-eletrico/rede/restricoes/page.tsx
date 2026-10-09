@@ -73,7 +73,7 @@ export default function RedeRestricoesPage() {
           siglas={["SIN", "ONS", "CCEE", "ATLS"]}
           rotulo="Rede · Restrições publicadas"
           titulo={perguntaPainel("p030")}
-          lead="O que o ONS publica de limitação: horas em que fluxos acompanhados ficaram acima do limite estabelecido e cortes de carga. Os limites de cada fronteira não são públicos."
+          lead="Horas em que fluxos acompanhados pelo ONS ficaram acima do limite estabelecido (indicador ATLS, Atendimento aos Limites Sistêmicos) e cortes de carga."
           recorte={`${m.fluxosAcima ? `ATLS de ${m.fluxosAcima.periodo}` : "ATLS"} · cortes de carga de ${dataBR(u12.inicio)} a ${dataBR(u12.fim)} · horas e MWh`}
           fonte="ONS, ATLS e Interrupção de Carga"
           referencia={
@@ -150,7 +150,7 @@ export default function RedeRestricoesPage() {
             <PainelEvidencia
               id="p030"
               pergunta="Horas acima do limite e cortes de carga publicados"
-              subtitulo="Horas acima do limite sistêmico (ATLS) e cortes de carga · horas e MWh"
+              subtitulo="Horas acima do limite sistêmico (ATLS, Atendimento aos Limites Sistêmicos) e cortes de carga · horas e MWh"
               natureza="CALCULADO"
               porQueImporta={
                 <>
@@ -226,7 +226,7 @@ export default function RedeRestricoesPage() {
                   )}
                 </SecaoDoPainel>
 
-                <SecaoDoPainel id="metodologia-a06" nivel="auditar" titulo="Correção pedida na página de metodologia">
+                <SecaoDoPainel id="metodologia-a06" nivel="auditar" titulo="Nota de revisão sobre a página de metodologia">
                   <p className="text-sm text-carvao-muted">{a6.correcao_metodologia}</p>
                   <RedeRegras regras={[{ rotulo: ROTULO_REGRA.limites, texto: g.regras.limites }]} />
                 </SecaoDoPainel>

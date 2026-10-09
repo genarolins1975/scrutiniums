@@ -669,12 +669,15 @@ describe("Verbetes: números que parecem divergir, relidos de outro artefato", (
 /* ---------- Aprenda ---------- */
 
 describe("Aprenda: índice e trilhas", () => {
-  it("o índice explica trilha e exemplo sintético, põe 'Como ler um verbete' antes dos grupos e mostra uma prévia de cada grupo", () => {
+  it("o índice explica trilha e exemplo sintético, diz o estado de conferência dos verbetes antes da lista e mostra uma prévia de cada tema", () => {
     const h = pagina.aprenda();
     const t = texto(h);
     expect(t).toContain("Uma trilha é um percurso em ordem pelos verbetes");
     expect(t).toContain("Valores hipotéticos, escolhidos para ensinar.");
-    expect(h.indexOf('id="como-ler"')).toBeLessThan(h.indexOf("Procurar um termo"));
+    // a ordem da tela "Entenda um conceito": busca, trilhas, depois os verbetes por tema, com a frase de estado logo abaixo do título da lista
+    expect(h.indexOf('id="aprenda-trilhas"')).toBeLessThan(h.indexOf('id="aprenda-todos"'));
+    expect(h.indexOf('data-estados-do-acervo')).toBeGreaterThan(h.indexOf('id="aprenda-todos"'));
+    expect(t).toMatch(/Os \d+ verbetes estão conferidos na fonte primária/);
     expect(h).toContain('data-previa="true"');
     expect(t).toContain("PLD, CMO, Submercado, CVU, Limites do PLD");
   });

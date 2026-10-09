@@ -122,6 +122,23 @@ export function descricoesCompletas(raiz = join(process.cwd(), "public")): Map<s
   return m;
 }
 
+/**
+ * O exemplo reproduzível da Metodologia: conta, no arquivo que o leitor baixa (dados_catalogo.csv), as linhas do catálogo e as de um
+ * estado. É a conta que a página pede ao leitor, feita aqui com o mesmo arquivo; nada vem do catalogo.json. Sem o arquivo, nulo.
+ */
+export function contagemNoCsvDoCatalogo(estado: string, raiz = join(process.cwd(), "public")): { linhas: number; doEstado: number } | null {
+  try {
+    const t = lerCsvComAspas(readFileSync(join(raiz, "energia/series/dados_catalogo.csv"), "utf-8"));
+    const cab = t[0] ?? [];
+    const i = cab.indexOf("estado");
+    if (i < 0) return null;
+    const corpo = t.slice(1).filter((l) => l.length === cab.length);
+    return { linhas: corpo.length, doEstado: corpo.filter((l) => l[i] === estado).length };
+  } catch {
+    return null;
+  }
+}
+
 /** Registro de acesso à CCEE da gold de Mercado (decisão do responsável e capturas feitas no portal), ou nulo sem a gold. */
 export function acessoCceeDados(): MercadoGold["acesso_ccee"] | null {
   const g = lerGold<MercadoGold>("mercado.json");

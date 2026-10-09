@@ -425,7 +425,7 @@ export function TabelaInterativa({
           {linhas.length === 1 ? "linha" : "linhas"}
         </p>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-carvao-muted">Recorte atual:</span>
+          <span className="text-xs text-carvao-muted">Linhas mostradas:</span>
           {(["csv", "xlsx"] as const).map((f) => (
             <button
               key={f}
@@ -442,7 +442,7 @@ export function TabelaInterativa({
 
       {selecionadaFora && (
         <p className="mt-2 text-sm text-carvao-muted">
-          A linha selecionada ({textoCelula(valorColuna(selecionadaFora, colRot), colRot)}) está fora do recorte atual.{" "}
+          A linha selecionada ({textoCelula(valorColuna(selecionadaFora, colRot), colRot)}) está fora dos filtros aplicados.{" "}
           <button type="button" onClick={limparTudo} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
             Mostrar todas as linhas
           </button>

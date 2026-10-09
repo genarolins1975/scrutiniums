@@ -97,7 +97,7 @@ export function PainelEvidencia({
         </p>
       </header>
       <div className="mt-5">{children}</div>
-      {!naoConcluirNoCorpo && <NotasDoPainel oQueMudou={r.oQueMudou} comoInterpretar={r.comoInterpretar} naoConcluir={r.naoConcluir} />}
+      {!naoConcluirNoCorpo && <NotasDoPainel oQueMudou={r.oQueMudou} comoInterpretar={r.comoInterpretar} naoConcluir={r.naoConcluir} nome={r.pergunta} />}
       <DetalheDoNivel resumo="Por que isso importa" abreEm="analisar" className="mt-1" dados={{ "data-por-que-importa": "" }}>
         <div className="max-w-prose2 border-t border-linha pb-2 pt-3 text-sm leading-relaxed text-carvao-muted">{r.porQueImporta}</div>
       </DetalheDoNivel>
@@ -133,19 +133,33 @@ export function PainelEvidencia({
  * interpretar" (a regra de leitura, com as definições no ponto de uso) e "O que não é possível concluir" (a ressalva essencial que
  * evita a leitura errada). Em três colunas a partir de 768 px. "Por que isso importa" fica em bloco recolhível, porque a abertura da
  * página já traz a razão da medida.
+ *
+ * `nome` (a pergunta do painel) entra no fim do nome acessível de cada nota: com dois painéis na mesma página, as seis notas não repetem
+ * o mesmo nome de região e o leitor de tela distingue de que painel cada uma fala (axe `landmark-unique`). O texto visível não muda.
  */
-export function NotasDoPainel({ oQueMudou, comoInterpretar, naoConcluir }: { oQueMudou: ReactNode; comoInterpretar: ReactNode; naoConcluir: ReactNode }) {
+export function NotasDoPainel({
+  oQueMudou,
+  comoInterpretar,
+  naoConcluir,
+  nome,
+}: {
+  oQueMudou: ReactNode;
+  comoInterpretar: ReactNode;
+  naoConcluir: ReactNode;
+  nome?: string;
+}) {
+  const sufixo = nome ? `: ${nome}` : "";
   return (
     <div data-notas-painel="" className="grid gap-x-8 gap-y-4 md:grid-cols-3">
-      <aside aria-label="O que mudou" data-que-mudou="" className="border-l-2 border-linha pl-4">
+      <aside aria-label={`O que mudou${sufixo}`} data-que-mudou="" className="border-l-2 border-linha pl-4">
         <p className="rotulo text-mineral">O que mudou</p>
         <div className="mt-1 text-sm leading-relaxed text-carvao-muted">{oQueMudou}</div>
       </aside>
-      <aside aria-label="Como interpretar" data-como-interpretar="" className="border-l-2 border-linha pl-4">
+      <aside aria-label={`Como interpretar${sufixo}`} data-como-interpretar="" className="border-l-2 border-linha pl-4">
         <p className="rotulo text-mineral">Como interpretar</p>
         <div className="mt-1 text-sm leading-relaxed text-carvao-muted">{comoInterpretar}</div>
       </aside>
-      <aside aria-label="O que não é possível concluir" data-ressalva="" className="border-l-2 border-energia-soft pl-4">
+      <aside aria-label={`O que não é possível concluir${sufixo}`} data-ressalva="" className="border-l-2 border-energia-soft pl-4">
         <p className="rotulo text-mineral">O que não é possível concluir</p>
         <div className="mt-1 text-sm leading-relaxed text-carvao-muted">{naoConcluir}</div>
       </aside>

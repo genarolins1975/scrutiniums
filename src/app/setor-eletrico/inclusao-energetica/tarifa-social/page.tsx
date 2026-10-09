@@ -154,7 +154,7 @@ export default function TarifaSocialPage() {
           titulo="Tarifa Social de Energia Elétrica"
           lead="A Tarifa Social é um desconto na conta de luz de famílias de baixa renda e de quem recebe o Benefício de Prestação Continuada (BPC). Quantas unidades consumidoras (UC) o recebem, onde estão e quanto vale; UC e faturas vêm de fontes e meses diferentes e não se somam."
           recorte={`UC de ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)} · faturas de ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} · R$ correntes`}
-          fonte="ANEEL: Sistema de Controle de Subvenções e Programas Sociais (SCS) e Beneficiários da Conta de Desenvolvimento Energético (CDE)"
+          fonte="ANEEL, Sistema de Controle de Subvenções e Programas Sociais (SCS) e Beneficiários da Conta de Desenvolvimento Energético (CDE)"
           referencia={
             <>
               SCS da ANEEL até {mes(ultimoScs)} (arquivo gerado pela fonte em {dataBR(geracaoScs)}; último mês completo {mes(t.mes_referencia)}); Beneficiários da CDE até{" "}
@@ -208,7 +208,7 @@ export default function TarifaSocialPage() {
               />
               <Numero
                 variante="faixa"
-                rotulo="Diferença Mensal de Receita (DMR) do mês"
+                rotulo="Diferença Mensal de Receita (DMR)"
                 natureza="OBSERVADO"
                 evidencia={k.dmr_mes_reais.evidencia}
                 formato="reais"

@@ -21,6 +21,7 @@ import {
   colunasLacuna,
   colunasRecentes,
   combustiveisCvu,
+  emPortugues,
   linhasA11,
   linhasAnuais,
   linhasControles,
@@ -40,6 +41,7 @@ import {
   linhasRecentes,
   linhasRotulos,
   linhasUniversoTermica,
+  notaAnual,
   paraTabela,
 } from "@/lib/energia/geracao";
 import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
@@ -66,12 +68,12 @@ export const REGISTRO_TABELAS_GERACAO = {
       if (!m.comparacao_12m) return null;
       return {
         titulo: "Tabela equivalente: 365 dias contra os 365 anteriores, com a variação publicada",
-        colunas: colunasDozeMeses(m.comparacao_12m),
-        linhas: paraTabela(linhasDozeMeses(m.comparacao_12m, m.janelas.SIN["12m"])),
+        colunas: colunasDozeMeses(m.comparacao_12m, m.universo),
+        linhas: paraTabela(linhasDozeMeses(m.comparacao_12m, m.janelas.SIN["12m"], m.universo)),
         colunaRotulo: "rotulo",
         fonte: FONTE,
         nomeArquivo: "geracao-365-dias",
-        nota: "Categorias com variação suprimida ficam fora do gráfico de pontos: o número de usinas com dado na fonte mudou dentro das janelas, e a diferença não mede mudança na geração.",
+        nota: "Categorias com variação suprimida ficam fora do gráfico de pontos: o número de usinas com dado na fonte mudou dentro das janelas, e a diferença não mede mudança na geração. A última coluna mostra, para as demais, a geração das usinas que ficaram sem dado no último mês, como ordem de grandeza da lacuna.",
       };
     },
   },
@@ -102,7 +104,7 @@ export const REGISTRO_TABELAS_GERACAO = {
         fonte: FONTE,
         nomeArquivo: "geracao-horaria-72-horas",
         ordemInicial: { coluna: "x", direcao: "desc" },
-        nota: "Horário de Brasília; cada hora é o início do intervalo. A solar fica em zero à noite, um valor publicado, não ausência. Os últimos 366 dias horários estão no arquivo para download.",
+        nota: "Horário de Brasília; cada hora é o início do intervalo. À noite a solar centralizada publica valores próximos de zero, nem sempre nulos, e a MMGD estimada publica zero: são valores publicados, não ausência. Os últimos 365 dias horários estão no arquivo para download.",
       };
     },
   },
@@ -126,7 +128,7 @@ export const REGISTRO_TABELAS_GERACAO = {
       colunaRotulo: "ano",
       fonte: FONTE,
       nomeArquivo: "geracao-anual",
-      nota: "O ano em curso é parcial e não se compara com anos completos sem esse aviso. A MMGD não entra na participação anual: só existe a partir de 29/04/2023; ela aparece em MWmed, na coluna própria.",
+      nota: notaAnual(g.matriz.anual_sin, g.a11.primeiro_dia_mmgd),
     }),
   },
   a11: {
@@ -205,7 +207,7 @@ export const REGISTRO_TABELAS_GERACAO = {
         colunaRotulo: "categoria",
         fonte: FONTE,
         nomeArquivo: "geracao-universo-lacuna",
-        nota: lac.nota,
+        nota: emPortugues(lac.nota),
       };
     },
   },
@@ -249,7 +251,7 @@ export const REGISTRO_TABELAS_GERACAO = {
         colunaRotulo: "codigo",
         fonte: FONTE,
         nomeArquivo: "geracao-outros-por-ceg",
-        nota: o.regra,
+        nota: emPortugues(o.regra),
       };
     },
   },

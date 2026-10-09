@@ -13,7 +13,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
-import { dataBR, num, plural } from "@/lib/energia/formato";
+import { dataBR, horaLocal, num, plural } from "@/lib/energia/formato";
 import {
   COLUNAS_MAIORES_DESVIOS,
   COLUNAS_PROGRAMA_REPETIDO,
@@ -37,6 +37,7 @@ import {
   paraTabela,
   respostaProgramado,
   semCaminhosInternos,
+  sentidoNegativo,
   sentidoPositivo,
   textoProgramaRepetido,
   vereditoProgramado,
@@ -199,6 +200,10 @@ export function RedeProgramado({
           <RedeEscolha legenda="Fronteira ou país" opcoes={OPCOES_PAR} valor={par} onEscolher={(x) => definir({ par: x })} />
           <RedeEscolha legenda="Base" opcoes={OPCOES_BASE} valor={base} onEscolher={(x) => definir({ base: x })} />
         </div>
+        <p className="max-w-prose2 text-sm text-carvao-muted" data-dia-rotulado="">
+          Dia rotulado é um dia em que o mesmo valor programado se repetiu por {p.programa_repetido.minimo_horas} horas seguidas ou mais; &ldquo;Sem dias rotulados&rdquo; os deixa de fora, e só vale para as
+          fronteiras entre subsistemas.
+        </p>
       </div>
 
       <GraficoBarras
@@ -240,7 +245,7 @@ export function RedeProgramado({
       </div>
 
       <GraficoLinhas
-        titulo={`Saldo programado e verificado por dia, ${nomePar(par)}`}
+        titulo={`Saldo programado e verificado por dia, ${nomePar(par)} (positivo ${sentidoPositivo(par)}; negativo ${sentidoNegativo(par)})`}
         dados={diario}
         chaveX="d"
         formatoX="data"
@@ -295,8 +300,17 @@ export function RedeProgramado({
       <SecaoDoPainel
         id="maiores-desvios"
         titulo={`Quais foram as horas de maior desvio${base === "sem" ? ", fora dos dias rotulados" : ""}?`}
-        lead={`São as ${maiores.length} horas em que o fluxo medido mais se afastou do programado, cada uma com o programado, o verificado e o desvio.`}
+        lead={`São as ${maiores.length} horas em que o fluxo medido mais se afastou do programado, cada uma com o programado, o verificado e o desvio. As cinco primeiras estão abaixo; a tabela traz todas.`}
       >
+        <ol className="max-w-prose2 list-decimal space-y-1 pl-5 text-sm leading-relaxed text-carvao" data-maiores-desvios="">
+          {maiores.slice(0, 5).map((l) => (
+            <li key={l.id}>
+              {horaLocal(l.hora)}, {l.par}: desvio de {num(l.desvio_mwmed, 1)} MWmed (verificado {num(l.verificado_mwmed, 1)}, programado {num(l.programado_mwmed, 1)})
+              {l.dia_rotulado === "sim" ? "; dia rotulado por programa repetido" : ""}
+              {l.inversao === "sim" ? "; sentido oposto ao programa" : ""}.
+            </li>
+          ))}
+        </ol>
         <TabelaInterativa
           titulo={`Os ${maiores.length} maiores desvios absolutos${base === "sem" ? " fora dos dias rotulados" : ""}`}
           colunas={COLUNAS_MAIORES_DESVIOS}

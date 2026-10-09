@@ -65,6 +65,7 @@ import {
   recorteEvolucao,
   regimeDoMes,
   textoAvisoRegimes,
+  textoCoberturaIntervalos,
   textoDiferencaHoraria,
   textoEventosJanela,
   textoMesCorrente,
@@ -344,6 +345,9 @@ describe("P025: gráfico, tabela e exportação usam as mesmas linhas", () => {
       } else {
         expect(x.proporcaoClima).toBeCloseTo(x.clima / d.real_log100, 10);
         expect(x.proporcaoResto).toBeCloseTo(d.residuo_log100 / d.real_log100, 10);
+        expect(x.proporcaoNivel).toBeCloseTo(x.nivelTendencia / d.real_log100, 10);
+        // as três proporções fecham a diferença (até o arredondamento das contribuições publicadas)
+        expect(Math.abs(x.proporcaoClima! + x.proporcaoNivel! + x.proporcaoResto! - 1), `${d.sm} ${d.variante} ${d.comparacao}`).toBeLessThan(0.04);
         // o veredito lê as duas proporções desta mesma conta: arredondadas a inteiro quando positivas e, quando negativas, em palavras
         // (parte contrária à diferença), nunca como percentual negativo
         const v = vereditoClima(d, G.p027!, d.sm);
@@ -750,6 +754,22 @@ describe("páginas renderizadas no servidor", () => {
     for (const id of ["historico", "mensal", "anual"]) expect(principal, id).toContain(`id="${id}"`);
   });
 
+  it("P025: o gráfico diário abre nos últimos 90 dias, restaurar o intervalo grava a série inteira e a unidade diz o que é MWmed", () => {
+    const t = ler("src/components/energia/CargaNivel.tsx");
+    expect(t).toContain("const JANELA_PADRAO_DIARIA = 90;");
+    // sem recorte na URL, o intervalo é o padrão; com os dois parâmetros, o da URL; restaurar (null = série inteira) grava início e fim explícitos
+    expect(t).toContain("v.de && v.ate ? { inicio: v.de, fim: v.ate } : padrao");
+    expect(t).toContain("definir({ de: i?.inicio ?? inicioSerie, ate: i?.fim ?? fimSerie })");
+    expect(t).not.toContain('definir({ de: i?.inicio ?? "", ate: i?.fim ?? "" })');
+    const h = html.p025;
+    expect(h).toContain("MWmed, a potência média do dia (1 MWmed durante um dia equivale a 24 MWh)");
+    expect(h).toContain("1 MWmed durante um dia equivale a 24 MWh");
+    // a ficha de prova arredonda a uma casa: o cartão diz isso, para 11,45% e +11,4% não parecerem divergir
+    expect(h).toContain(`Na ficha de prova, o mesmo valor aparece com uma casa: ${G.evidencias.p025_7d_equivalente!.valor_exibido}.`);
+    // o cartão de Analisar nomeia a taxa em palavras do leitor (o texto da ficha, que vem da gold, segue como está)
+    expect(h).toContain("a taxa que o observatório publicou antes");
+  });
+
   it("P026: conceitos de cada carga, natureza por série e as duas fontes em gráficos separados", () => {
     const h = html.p026;
     expect(h).toContain('data-conceitos="p026"');
@@ -758,6 +778,62 @@ describe("páginas renderizadas no servidor", () => {
     expect(h).toMatch(/Natureza do dado: (<[^>]+>)*Estimado/);
     expect(h).toContain('data-textos="a11"');
     expect(h).toContain("Curva de carga horária do SIN (já inclui MMGD estimada, não separada)");
+  });
+
+  it("P027: a cobertura medida dos intervalos aparece em Entender, junto do gráfico do último dia, e a faixa fecha as três partes da diferença", () => {
+    const h = html.p027;
+    const m = G.p027!.metricas.SIN;
+    // o aviso está na seção visível "validacao" (sem data-nivel), antes do gráfico, com a cobertura medida e a nominal
+    const iSecao = h.indexOf('<section id="validacao"');
+    expect(iSecao).toBeGreaterThan(0);
+    expect(h.slice(iSecao, iSecao + 160)).not.toContain("data-nivel");
+    const iAviso = h.indexOf('data-aviso="cobertura-do-intervalo"');
+    expect(iAviso).toBeGreaterThan(iSecao);
+    expect(iAviso).toBeLessThan(h.indexOf("Carga diária do SIN e previsão fora da amostra"));
+    const aviso = h.slice(iAviso, h.indexOf("</p>", iAviso));
+    expect(aviso).toContain(`${num(m.cobertura_80_pct, 1)}%`);
+    expect(aviso).toContain(`${num(m.cobertura_95_pct, 1)}%`);
+    expect(aviso).toContain("mais estreitos que a incerteza real");
+    expect(aviso).toContain("faixa em que o modelo esperava a carga em 80% dos dias");
+    // a mesma frase vem do seletor, e a resposta completa (Analisar) a reaproveita: uma só fonte
+    expect(textoCoberturaIntervalos(G.p027!, "SIN")).toContain(`${num(m.cobertura_80_pct, 1)}%`);
+    expect(respostaClima(G.p027!, "SIN")).toContain(textoCoberturaIntervalos(G.p027!, "SIN"));
+    // cobertura no nível nominal ou acima não leva o aviso de intervalo estreito
+    const ok = clone(G.p027!);
+    ok.metricas.SIN.cobertura_80_pct = 81;
+    ok.metricas.SIN.cobertura_95_pct = 96;
+    expect(textoCoberturaIntervalos(ok, "SIN")).not.toContain("mais estreitos");
+    // a faixa de abertura dita as três partes da diferença (a frase da resposta cita duas), com o arredondamento avisado
+    const d = decomposicaoEscolhida(G.a07, "SIN", "principal", "equivalente")!;
+    const x = partesDaDiferenca(d);
+    const faixa = h.slice(h.indexOf('data-faixa-metricas=""'), h.indexOf('aria-label="Nível de profundidade"'));
+    expect(faixa).toContain(`acompanham ${Math.round(x.proporcaoClima! * 100)}%, nível e tendência ${Math.round(x.proporcaoNivel! * 100)}% e o resíduo ${Math.round(x.proporcaoResto! * 100)}% (arredondados)`);
+    // os termos do modelo têm definição no ponto de uso: a origem mensal e a avaliação em dias que o modelo não viu
+    expect(h).toContain("todo mês o modelo é reestimado só com o passado");
+    expect(h).toContain("testado em dias que não viu");
+  });
+
+  it("P026: resumo das cargas antes dos gráficos, valores fixos do SIN ditos na faixa, o último dia da série ao lado do dia da ficha e a escolha de anos só quando muda algo", () => {
+    const h = html.p026;
+    // o resumo das duas fontes vem antes do primeiro gráfico; o glossário completo segue no fim
+    const iResumo = h.indexOf("data-resumo-cargas");
+    expect(iResumo).toBeGreaterThan(0);
+    expect(iResumo).toBeLessThan(h.indexOf("Carga verificada do SIN, dia útil médio"));
+    expect(h.indexOf('data-conceitos="p026"')).toBeGreaterThan(iResumo);
+    expect(h).toContain("a curva de carga horária, que já inclui a MMGD estimada sem separá-la");
+    // a faixa diz que os números são do SIN e não seguem a região escolhida
+    const faixa = h.slice(h.indexOf('data-faixa-metricas=""'), h.indexOf('aria-label="Nível de profundidade"'));
+    expect(faixa).toContain("Valores do SIN, fixos");
+    // o pico da ficha é de um dia; se a série vai além, o último dia e o pico dele ficam ditos junto do cartão
+    const dia = G.evidencias.p026_pico_sin!.periodo!.fim;
+    const ultimo = G.p026.picos_90d[G.p026.picos_90d.length - 1];
+    if (ultimo.d > dia && ultimo.hora !== null) expect(faixa).toContain(`A série vai até ${dataBR(ultimo.d)}, com pico de ${num(ultimo.pico, 0)} MWmed`);
+    // MWmed e MWh na unidade da própria página
+    expect(h).toContain("1 MWmed durante uma hora equivale a 1 MWh");
+    // as duas opções de anos do mapa só aparecem quando a série da região começa antes da carga verificada (senão, as duas coincidem)
+    const t = ler("src/components/energia/CargaPerfil.tsx");
+    expect(t).toContain("primeiroAno !== desdeApi");
+    expect(t).toContain("{escolheAnos && desdeApi !== undefined && (");
   });
 
   it("P027: decomposição chamada de estatística, com backtest, sensibilidade e resíduos", () => {

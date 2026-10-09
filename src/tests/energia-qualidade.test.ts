@@ -1636,8 +1636,8 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: a págin
     expect(texto).not.toMatch(/(dec|fec)_concessionarias/);
     expect(texto).not.toMatch(/__[^_\s][^_<]*__/);
     expect(texto).not.toMatch(/\((dec|fec)(, (dec|fec))?\)/);
-    // a descrição longa da fonte vem resumida
-    expect(texto).toMatch(/\(texto resumido; a descrição completa está na página da fonte\)/);
+    // a descrição longa da fonte vem resumida; o diálogo "Sobre este dado" monta o texto só ao abrir, então a conferência é na ficha que ele recebe
+    expect(Object.values(gold.proveniencia).some((p) => (limpaProveniencia(p).notas_fonte ?? "").includes("(texto resumido; a descrição completa está na página da fonte)"))).toBe(true);
   });
 
   it("o que mudou do P051 traz a quebra do apurado junto da frase do maior DEC; o do P052 traz a contagem mínima de FEC; o universo dos conjuntos vem na seção ano a ano", () => {

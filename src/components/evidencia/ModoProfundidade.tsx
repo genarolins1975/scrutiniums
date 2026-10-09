@@ -210,6 +210,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
   }
 
   const ativoIdx = Math.max(0, MODOS.findIndex((m) => m.id === modo));
+  const nivelAtual = MODOS.find((m) => m.id === modo);
   return (
     <div data-modo={modo} className="modo-profundidade">
       <AbreDetalhesAoImprimir />
@@ -245,6 +246,16 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
           <span className="hidden text-xs text-carvao-muted md:inline">{MODOS.find((m) => m.id === modo)?.dica ?? "Todos os níveis visíveis"}</span>
         </div>
       </div>
+      {/* abaixo de 768 px a barra só tem os três botões; o que o nível escolhido acrescenta fica numa linha sob ela, fora da barra presa */}
+      <p className="pt-1.5 text-xs text-carvao-muted md:hidden print:hidden" data-descricao-nivel="">
+        {nivelAtual ? (
+          <>
+            <span className="font-medium text-carvao">{nivelAtual.rotulo}:</span> {nivelAtual.dica.charAt(0).toLowerCase() + nivelAtual.dica.slice(1)}.
+          </>
+        ) : (
+          "Todos os níveis visíveis."
+        )}
+      </p>
       {children}
     </div>
   );

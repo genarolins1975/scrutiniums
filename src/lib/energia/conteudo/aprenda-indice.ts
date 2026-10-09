@@ -5,6 +5,7 @@
  *
  * Não altera texto, estado, fonte nem definição de verbete: lê o acervo e a pergunta prática (perguntas-praticas.ts).
  */
+import { normalizaBusca } from "../aprenda-busca";
 import { dataBR, plural } from "../formato";
 import { DESTINOS_NAVEGACAO } from "../navegacao";
 import { CONCEITOS, GRUPOS, type Conceito, type GrupoConceito } from "./conceitos";
@@ -34,14 +35,6 @@ export type ItemDoIndice = {
 };
 
 export type GrupoDoIndice = { id: string; nome: GrupoConceito; itens: ItemDoIndice[] };
-
-/** Texto sem acento e em minúsculas, para a busca não depender de como o leitor digita. */
-export function normalizaBusca(t: string): string {
-  return t
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
-}
 
 /** Identificador de âncora do tema: sem acento, espaço nem maiúscula (#g-preco, #g-qualidade-e-perdas). */
 export function idDoGrupo(g: string): string {

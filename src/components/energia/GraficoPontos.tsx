@@ -78,6 +78,12 @@ export type GraficoPontosProps = {
   chaveUrl?: string;
   selecionado?: string | null;
   onSelecionar?: (id: string | null) => void;
+  /**
+   * Sentido da diferença na dica, na coluna de diferença e no leitor de tela. Padrão: "acima da referência", "abaixo da referência" e
+   * "igual à referência". Quando a referência não é uma meta (por exemplo, o trecho anterior da própria entidade), a página diz isso
+   * aqui ("maior que no trecho anterior"), para a dica não ser lida como comparação com uma meta.
+   */
+  textoSentido?: { acima: string; abaixo: string; igual: string };
   /** Altura de cada linha em px (mínimo recomendado 44, o alvo de toque). */
   alturaLinha?: number;
   /** Acima desta altura a área das linhas rola na vertical. */
@@ -123,9 +129,11 @@ export function GraficoPontos({
   chaveUrl,
   selecionado = null,
   onSelecionar,
+  textoSentido,
   alturaLinha = 44,
   alturaMaxima = 528,
 }: GraficoPontosProps) {
+  const sentidos = textoSentido ?? TEXTO_SENTIDO;
   const uid = useId().replace(/:/g, "");
   const [largura, setLargura] = useState(LARGURA_SSR);
   const [todas, setTodas] = useState(false);
@@ -213,7 +221,7 @@ export function GraficoPontos({
     const sentido = sentidoDiferenca(dif, casas);
     return (
       `${p.rotulo}: ${rotuloValor} ${formatarValor(p.valor, casas, unidade)}; ${rotuloReferencia} ${formatarValor(p.referencia, casas, unidade)}; ` +
-      (sentido ? `diferença ${formatarDiferenca(dif, casas, uDif)}, ${TEXTO_SENTIDO[sentido]}` : "diferença sem dado")
+      (sentido ? `diferença ${formatarDiferenca(dif, casas, uDif)}, ${sentidos[sentido]}` : "diferença sem dado")
     );
   };
 
@@ -371,7 +379,7 @@ export function GraficoPontos({
           <li className="flex justify-between gap-3 border-t border-linha pt-0.5">
             <span className="text-carvao-muted">Diferença</span>
             <span className="text-right tabular-nums text-carvao">
-              {sentido ? `${formatarDiferenca(dif, casas, uDif)}, ${TEXTO_SENTIDO[sentido]}` : "sem dado: falta um dos valores"}
+              {sentido ? `${formatarDiferenca(dif, casas, uDif)}, ${sentidos[sentido]}` : "sem dado: falta um dos valores"}
             </span>
           </li>
         </ul>

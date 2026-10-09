@@ -92,6 +92,7 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
         casas={3}
         rotuloValor="Trecho mais recente"
         rotuloReferencia="Trecho anterior"
+        textoSentido={{ acima: "maior que no trecho anterior", abaixo: "menor que no trecho anterior", igual: "igual ao trecho anterior" }}
         selecionado={linhaSel ? linhaSel.id : null}
         onSelecionar={selecionar}
         ordemInicial={{ por: "valor", direcao: "desc" }}

@@ -94,7 +94,10 @@ export function RedeRestricoes({
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const ativos = useMemo(() => fluxosAtivos(r.atls), [r.atls]);
   const escolhido = fluxoEscolhido(r.atls, v.fl);
-  const linhasAtivos = useMemo(() => linhasAtls(ativos), [ativos]);
+  // as linhas dos fluxos publicados no último mês: o gráfico, a tabela e a exportação recebem esta mesma variável; `nome_grafico` só serve ao eixo
+  // das barras (a sigla sem definição pública leva asterisco, com a legenda sob o gráfico) e a tabela não o usa
+  const semDefinicao = useMemo(() => new Set(r.atls.fluxos.filter((f) => !f.definicao).map((f) => f.fluxo)), [r.atls.fluxos]);
+  const linhasAtivos = useMemo(() => linhasAtls(ativos).map((l) => ({ ...l, nome_grafico: semDefinicao.has(l.fluxo) ? `${l.nome}*` : l.nome })), [ativos, semDefinicao]);
   const linhasTodos = useMemo(() => linhasAtls(r.atls.fluxos), [r.atls.fluxos]);
   const conhecidos = new Set(r.atls.fluxos.map((f) => f.fluxo));
   const comparados = (v.fls as string[]).filter((f) => conhecidos.has(f));
@@ -108,10 +111,12 @@ export function RedeRestricoes({
   const anual = useMemo(() => linhasInterrupcoesAno(r.interrupcoes, smi), [r.interrupcoes, smi]);
   const intervalo = v.de && v.ate ? { inicio: v.de, fim: v.ate } : null;
   const selecionar = (id: string | null) => definir({ fl: id ?? "" });
+  const semDefinicaoNoGrafico = linhasAtivos.some((l) => semDefinicao.has(l.fluxo));
   const ev = escolhido ? evidencias[`atls_12m.${escolhido.fluxo}`] : undefined;
   const ultimo = r.atls.ultimo_mes;
   const inicioArquivo = inicioArquivoAtls(r.atls);
   const parciais = anual.filter((l) => l.parcial === "sim").map((l) => l.id);
+
 
   return (
     <div className="space-y-6">
@@ -127,7 +132,7 @@ export function RedeRestricoes({
         titulo={`Horas acima do limite em 12 meses, fluxos publicados em ${ultimo ? mesAno(ultimo) : "último mês"}`}
         dados={paraTabela(linhasAtivos)}
         chaveCategoria="id"
-        chaveRotulo="nome"
+        chaveRotulo="nome_grafico"
         series={[{ id: "horas_12m", rotulo: "Horas acima do limite", cor: "var(--cor-energia)" }]}
         unidade="h"
         casas={1}
@@ -136,6 +141,11 @@ export function RedeRestricoes({
         selecionado={escolhido?.fluxo ?? null}
         onSelecionar={selecionar}
       />
+      {semDefinicaoNoGrafico && (
+        <p className="max-w-prose2 text-sm text-carvao-muted">
+          * Sigla do ONS sem definição em documento público conferido; as demais aparecem com o nome que o documento dá ao fluxo.
+        </p>
+      )}
       <TabelaInterativa
         titulo="Tabela equivalente: fluxos publicados no último mês"
         colunas={COLUNAS_ATLS}
@@ -268,7 +278,8 @@ export function RedeRestricoes({
       <SecaoDoPainel id="cortes-de-carga" titulo="Quanta energia deixou de ser entregue em cortes de carga, por ano?">
         <RedeEscolha legenda="Região" opcoes={OPCOES_REGIAO} valor={smi} onEscolher={(x) => definir({ smi: x })} />
         <GraficoBarras
-          titulo={`Energia não suprida em cortes de carga por ano, ${smi === "SIN" ? "SIN" : NOME_SM[smi]}`}
+          // o último ano, parcial, tem a mesma cor das barras dos anos completos e o eixo pode omitir o rótulo dele: a figura diz isso no título
+          titulo={`Energia não suprida em cortes de carga por ano, ${smi === "SIN" ? "SIN" : NOME_SM[smi]}${parciais.length ? ` (${listaTexto(parciais)} ${parciais.length === 1 ? "é parcial" : "são parciais"}, ${parciais.length === 1 ? "a última barra" : "as últimas barras"})` : ""}`}
           dados={paraTabela(anual)}
           chaveCategoria="id"
           chaveRotulo="ano"

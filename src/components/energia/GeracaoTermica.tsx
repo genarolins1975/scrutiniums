@@ -179,7 +179,7 @@ export function GeracaoTermica({
           titulo={`Geração térmica média do SIN por motivo de despacho, ${mensal[0] ? mesAno(mensal[0].m) : ""} a ${ultimoMensal ? mesAno(ultimoMensal.m) : ""}`}
           dados={paraTabela(mensal)}
           chaveCategoria="id"
-          chaveRotulo="mes"
+          chaveRotulo="rotulo"
           series={mensalEscolhido.motivos.map((m) => ({ id: m, rotulo: CURTO_MOTIVO[m], cor: COR_MOTIVO[m] }))}
           unidade="MWmed"
           casas={0}

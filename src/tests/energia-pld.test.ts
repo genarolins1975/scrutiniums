@@ -1499,10 +1499,10 @@ describe("geração do Balanço do ONS no diagrama e na ideia central: a MMGD es
       expect(t).not.toMatch(SEM_TRAVESSAO);
       expect(t).not.toMatch(/\bhoje\b|\bagora\b|undefined|NaN/i);
     }
-    expect(textos[0]).toContain(`${num(sin["7d"].participacao.eolica, 1)}%`);
-    expect(textos[0]).toContain(`${num(sin["7d"].participacao.solar, 1)}%`);
+    expect(textos[0]).toContain(`${num(sin["7d"]!.participacao.eolica, 1)}%`);
+    expect(textos[0]).toContain(`${num(sin["7d"]!.participacao.solar, 1)}%`);
     expect(textos[1]).toContain(`${num(ger.termica_contexto.participacao_7d!, 1)}%`);
-    expect(textos[2]).toContain(`${num(sin["12m"].participacao.hidraulica, 1)}%`);
+    expect(textos[2]).toContain(`${num(sin["12m"]!.participacao.hidraulica, 1)}%`);
     expect(textos[2]).toContain("Sistema Interligado Nacional (SIN)");
     expect(textos[2]).toContain("a MMGD estimada entra no total");
   });

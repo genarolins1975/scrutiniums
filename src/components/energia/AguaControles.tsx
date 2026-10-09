@@ -22,17 +22,25 @@ export function AguaEscolha<T extends string>({
   opcoes,
   valor,
   onEscolher,
+  emLinha = false,
 }: {
   legenda: string;
   opcoes: readonly OpcaoAgua<T>[];
   valor: T;
   onEscolher: (v: T) => void;
+  /** A legenda fica ao lado das opções, na mesma linha, em vez de acima delas (controle de uma escolha só, que não pede título separado). */
+  emLinha?: boolean;
 }) {
   const nome = useId();
   return (
-    <fieldset className="min-w-0">
-      <legend className="rotulo text-mineral">{legenda}</legend>
-      <div className="mt-1 flex flex-wrap gap-1.5">
+    <fieldset className={`min-w-0 ${emLinha ? "flex flex-wrap items-center gap-x-3 gap-y-1" : ""}`}>
+      <legend className={emLinha ? "sr-only" : "rotulo text-mineral"}>{legenda}</legend>
+      {emLinha && (
+        <span aria-hidden="true" className="rotulo text-mineral">
+          {legenda}
+        </span>
+      )}
+      <div className={`${emLinha ? "" : "mt-1 "}flex flex-wrap gap-1.5`}>
         {opcoes.map((o) => {
           const ativo = o.id === valor;
           return (

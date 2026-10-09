@@ -230,28 +230,3 @@ export function EstadoDaComparacao({ titulo, itens }: { titulo: string; itens: I
     </section>
   );
 }
-
-/**
- * As três notas do painel (o que mudou, como interpretar, o que não é possível concluir) com o nome do painel no nome acessível de cada
- * uma. A `NotasDoPainel` compartilhada dá o mesmo nome às notas de todos os painéis, e uma página com dois painéis (a abertura de Perdas e
- * Custo e contexto) repetiria três marcos "aside" com o mesmo nome (axe, regra landmark-unique). Mesma marcação, mesmas classes e mesmos
- * atributos data-* da compartilhada; o pedido de nome opcional no componente compartilhado está em docs/energia/redesign/pedidos/perdas.md.
- */
-export function NotasDoPainelNomeadas({ painel, oQueMudou, comoInterpretar, naoConcluir }: { painel: string; oQueMudou: ReactNode; comoInterpretar: ReactNode; naoConcluir: ReactNode }) {
-  return (
-    <div data-notas-painel="" className="grid gap-x-8 gap-y-4 md:grid-cols-3">
-      <aside aria-label={`O que mudou: ${painel}`} data-que-mudou="" className="border-l-2 border-linha pl-4">
-        <p className="rotulo text-mineral">O que mudou</p>
-        <div className="mt-1 text-sm leading-relaxed text-carvao-muted">{oQueMudou}</div>
-      </aside>
-      <aside aria-label={`Como interpretar: ${painel}`} data-como-interpretar="" className="border-l-2 border-linha pl-4">
-        <p className="rotulo text-mineral">Como interpretar</p>
-        <div className="mt-1 text-sm leading-relaxed text-carvao-muted">{comoInterpretar}</div>
-      </aside>
-      <aside aria-label={`O que não é possível concluir: ${painel}`} data-ressalva="" className="border-l-2 border-energia-soft pl-4">
-        <p className="rotulo text-mineral">O que não é possível concluir</p>
-        <div className="mt-1 text-sm leading-relaxed text-carvao-muted">{naoConcluir}</div>
-      </aside>
-    </div>
-  );
-}

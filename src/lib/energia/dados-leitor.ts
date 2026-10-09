@@ -338,6 +338,51 @@ export function textoEstadoDoArquivo(e: EstadoDoArquivo): { frase: string; tecni
   return { frase, tecnico };
 }
 
+/**
+ * A explicação das checagens automáticas reprovadas, em três camadas: `curta` cabe na nota da faixa de métricas, `frase` explica em
+ * palavras de leitor (sem nome de arquivo nem de campo) e `tecnico` traz, para Analisar, cada arquivo, a checagem como o validador a
+ * escreve, as impressões digitais comparadas e a releitura. Nada é reaprovado: o relatório da publicação continua sendo o registro.
+ * `checagens` é o número que o relatório informa; `arquivos` são os estados dos arquivos que ele reprova.
+ */
+export function textoChecagensReprovadas(arquivos: readonly EstadoDoArquivo[], checagens: number): { curta: string; frase: string; tecnico: string } {
+  const reprovados = arquivos.filter((e) => e.veredito === "reprovado");
+  if (!reprovados.length || checagens <= 0) return { curta: "", frase: "", tecnico: "" };
+  const n = reprovados.length;
+  const outra = reprovados.filter((e) => e.outraVersao).length;
+  const relidos = reprovados.filter((e) => e.releitura && e.releitura.divergentes === 0).length;
+  const tipos = Array.from(new Set(reprovados.reduce<string[]>((s, e) => s.concat(e.problemas.filter((p) => p.resultado === "reprovado").map((p) => p.tipo)), [])));
+  const o = n === 1 ? "o arquivo" : `os ${n} arquivos`;
+  const curta =
+    outra === n
+      ? `${n === 1 ? "É de um arquivo reescrito" : `São de ${n} arquivos reescritos`} depois da validação.`
+      : `${plural(n, "arquivo reprovado", "arquivos reprovados")}; ${outra === 0 ? "nenhum" : outra} reescrito${outra === 1 ? "" : "s"} depois da validação.`;
+  const onde = checagens === n ? (n === 1 ? "A checagem reprovada é" : `As ${n} checagens reprovadas são`) : `As ${checagens} checagens reprovadas estão em ${n} arquivos`;
+  const oQue = tipos.length === 1 && tipos[0] === "esquema" ? "linhas com número de colunas diferente do cabeçalho" : "problemas no formato do arquivo";
+  const versao =
+    outra === n
+      ? ` ${n === 1 ? "O arquivo foi reescrito" : `Os ${n} arquivos foram reescritos`} depois da validação: a impressão digital que o relatório julgou é diferente da que está na lista de arquivos publicados, então o relatório não diz nada sobre a versão que você baixa.`
+      : outra > 0
+        ? ` ${outra} de ${n} arquivos foram reescritos depois da validação: o relatório julgou outra versão deles.`
+        : " O relatório julgou a mesma versão que está publicada.";
+  const releitura =
+    relidos === n
+      ? ` Relido na construção desta página, ${n === 1 ? "o arquivo publicado tem" : "cada arquivo publicado tem"} o número de colunas do cabeçalho em todas as linhas.`
+      : relidos > 0
+        ? ` Relidos na construção desta página, ${relidos} dos ${n} arquivos publicados têm o número de colunas do cabeçalho em todas as linhas; os outros ainda têm linhas diferentes.`
+        : ` Relidos na construção desta página, ${o} publicado${n === 1 ? "" : "s"} ainda tem linhas com número de colunas diferente do cabeçalho.`;
+  const frase = `${onde} de arquivos CSV: ${oQue}.${versao}${releitura} Nada foi reaprovado à mão: o relatório da publicação continua como foi gerado.`;
+  const tecnico = reprovados
+    .map((e) => {
+      const nome = e.caminho.split("/").pop() ?? e.caminho;
+      const checagem = e.problemas.filter((p) => p.resultado === "reprovado").map((p) => `${p.tipo}: ${datasLegiveis(p.detalhe)}`).join("; ");
+      const digitais = e.outraVersao ? ` Impressão digital julgada: ${e.outraVersao.julgada}. Impressão digital na lista de arquivos: ${e.outraVersao.publicada}.` : "";
+      const r = e.releitura ? ` Releitura: ${num(e.releitura.linhas, 0)} linhas, ${num(e.releitura.colunas, 0)} colunas no cabeçalho, ${num(e.releitura.divergentes, 0)} linhas com número de colunas diferente.` : "";
+      return `${nome}: ${checagem}.${digitais}${r}`;
+    })
+    .join(" ");
+  return { curta, frase, tecnico };
+}
+
 /* ---------------------------------------------------------------- versão do código das bases */
 
 /**

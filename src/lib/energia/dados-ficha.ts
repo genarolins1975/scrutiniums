@@ -122,6 +122,36 @@ export function contextoDoCatalogo(cat: Pick<CatalogoDados, "entradas">, pub: Pi
   return { nomes, periodos, fichas };
 }
 
+/**
+ * A ficha de cada fonte que uma regra de indicador cita. A regra escreve a fonte pelo identificador interno do módulo ("ear_subsistema_di"):
+ * a entrada do catálogo a que ele corresponde é a que tem esse identificador interno ou, quando não há, a que tem uma integração cujo
+ * identificador termina nele ("aneel_distribuicao/aneel_continuidade_limites"). Fonte sem entrada no catálogo, ou cuja entrada não tem
+ * ficha, fica fora do mapa: a regra diz que ela não tem ficha própria, em vez de inventar um nome.
+ */
+export function fichasDasFontes(
+  fontes: readonly string[],
+  cat: Pick<CatalogoDados, "entradas">,
+  pub: Pick<PublicacaoGold, "conjuntos"> | null,
+  fichas: ReadonlySet<string>,
+): Record<string, { slug: string; nome: string }> {
+  const porInterno = new Map<string, EntradaDados>();
+  const porIntegracao = new Map<string, EntradaDados>();
+  cat.entradas.forEach((e) => {
+    if (e.interno && !porInterno.has(e.interno)) porInterno.set(e.interno, e);
+    (e.integracoes ?? []).forEach((i) => {
+      const fim = i.id.split("/").pop() ?? i.id;
+      if (!porIntegracao.has(fim)) porIntegracao.set(fim, e);
+    });
+  });
+  const nomes = contextoDoCatalogo(cat, pub, fichas).nomes;
+  const out: Record<string, { slug: string; nome: string }> = {};
+  fontes.forEach((f) => {
+    const e = porInterno.get(f) ?? porIntegracao.get(f);
+    if (e?.slug && fichas.has(e.slug)) out[f] = { slug: e.slug, nome: nomes.get(e.id) ?? e.titulo };
+  });
+  return out;
+}
+
 /* ---------------------------------------------------------------- abertura */
 
 /**

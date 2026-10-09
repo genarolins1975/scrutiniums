@@ -27,7 +27,7 @@ Medidas depois do reordenamento local (figura antes da faixa de medidas): ver o 
 
 ## 4. Peso das páginas (meta de cerca de 600 kB)
 
-HTML servido pelo servidor de desenvolvimento (inclui o fluxo RSC): `/pld` 659 kB, `/pld/cmo-e-formacao` 476 kB, `/pld/diferencas-regionais` 384 kB, `/pld/historico` 619 kB e `/pld/limites` 540 kB. As duas acima da meta passam pouco dela. O que é das páginas já foi cortado (a aula de 1.000 palavras caiu para 460 em Entender, com o resto em Analisar e Auditar; o boxplot do Histórico é HTML em vez de SVG por faixa). O que depende de compartilhado: `MapaCalor` (item 3), os diálogos "Sobre este dado" e as fichas "Comprove este número" (cada uma leva o objeto de evidência inteiro no fluxo), e os `Termo` (cada um leva o texto da definição no HTML). Proposta, a mesma de outras famílias: montar o conteúdo do diálogo e da ficha na primeira abertura.
+HTML servido pelo servidor de desenvolvimento (inclui o fluxo RSC): `/pld` 659 kB, `/pld/cmo-e-formacao` 476 kB, `/pld/diferencas-regionais` 384 kB, `/pld/historico` 619 kB e `/pld/limites` 540 kB. As duas acima da meta passam pouco dela. O que é das páginas já foi cortado (a aula de cerca de 1.000 palavras caiu para 423 em Entender, com o resto em Analisar e Auditar; o boxplot do Histórico é HTML em vez de SVG por faixa). O que depende de compartilhado: `MapaCalor` (item 3), os diálogos "Sobre este dado" e as fichas "Comprove este número" (cada uma leva o objeto de evidência inteiro no fluxo), e os `Termo` (cada um leva o texto da definição no HTML). Proposta, a mesma de outras famílias: montar o conteúdo do diálogo e da ficha na primeira abertura.
 
 ## 5. Campos de dado que o pipeline poderia publicar (nenhum foi alterado aqui)
 
@@ -42,7 +42,7 @@ HTML servido pelo servidor de desenvolvimento (inclui o fluxo RSC): `/pld` 659 k
 
 - Um dado de produto, não de página: o "Mapa hora × dia" só se monta no cliente, ao entrar na tela (arquivo de 95 kB sob demanda); sem JavaScript fica o mapa hora × mês e a tabela equivalente.
 - O calendário de limites cobre só os 366 dias mais recentes da gold; o leitor não escolhe o calendário de anos anteriores (a gold de limites não o publica). A página nomeia o calendário ("Em quais dos últimos dias o preço ficou no limite?"), diz que ele não segue o Ano escolhido acima e lista por data os dias no limite quando são poucos. O histórico de cada ano está nas barras e no CSV diário de limites.
-- Os valores de Médias ponderadas pela carga do balanço de set/2026 só entram com as horas de carga publicadas (672 das 720 do mês): a página mostra ago/2026 como último mês com as três médias e diz por quê.
+- As médias ponderadas de set/2026 usam só as horas com carga do balanço publicada (672 das 720 do mês). As medidas da página usam ago/2026, o último mês com as três médias calculadas em todas as horas, e o texto diz isso.
 - "Geração verificada" continua escrito em um lugar: o cabeçalho de coluna do exemplo sintético de liquidação (conceito da CCEE de energia contabilizada, com quantidades hipotéticas). Nenhuma participação de fonte do Balanço do ONS é chamada de verificada (a solar inclui a MMGD estimada desde 29/04/2023, e os textos e o selo dizem isso).
 
 ## 7. Medidas da primeira tela (posição vertical do topo da primeira figura)
@@ -50,12 +50,12 @@ HTML servido pelo servidor de desenvolvimento (inclui o fluxo RSC): `/pld` 659 k
 | Rota | 1440 por 900 | 390 por 844 |
 | --- | --- | --- |
 | `/pld` | 741 | 1.129 |
-| `/pld/cmo-e-formacao` | 891 | 1.547 |
-| `/pld/diferencas-regionais` | 772 | 1.453 |
-| `/pld/historico` | 821 | 1.388 |
-| `/pld/limites` | 703 | 1.234 |
+| `/pld/cmo-e-formacao` | 891 | 1.461 |
+| `/pld/diferencas-regionais` | 703 | 1.184 |
+| `/pld/historico` | 821 | 1.302 |
+| `/pld/limites` | 703 | 1.148 |
 
-Antes do reordenamento local as filhas ficavam em 1.114, 1.053, 1.266 e 936 (1440) e em 2.081, 2.029, 2.320 e 1.687 (390). O que mudou: a resposta e a escolha abrem o painel, a figura vem logo depois e a faixa de medidas vem depois da figura (no Histórico, antes das médias mensais, junto das definições das réguas). Referência de outras famílias na mesma medida: Água e clima, filhas, 638 e 665 (1440) e 1.038 e 1.055 (390); Geração, filhas, 764 e 832 (1440); Qualidade, 769 (1440) e 1.340 (390).
+Antes do reordenamento local as filhas ficavam em 1.114 (CMO), 1.053 (diferenças regionais), 1.266 (histórico) e 936 (limites) em 1440, e em 2.081, 2.029, 2.320 e 1.687 em 390 (a faixa de abas em duas colunas no celular, do coordenador, já está nas medidas de 390). O que mudou: a resposta e a escolha abrem o painel, a figura vem logo depois e a faixa de medidas vem depois da figura (no Histórico, antes das médias mensais, junto das definições das réguas). Referência de outras famílias na mesma medida: Água e clima, filhas, 638 e 665 (1440) e 1.038 e 1.055 (390); Geração, filhas, 764 e 832 (1440); Qualidade, 769 (1440) e 1.340 (390).
 
 ## 8. Matriz de preservação: visão anterior, nova localização, nível
 
@@ -66,7 +66,7 @@ Fonte das visões anteriores: `dados/visoes_antes.json`. Níveis: E é visível 
 | Visão anterior | Nova localização | Nível |
 | --- | --- | --- |
 | Painel P008, "O que o PLD remunera e como é formado?" | Seção `#p008` (aula e diagrama), depois do preço e das medidas | E |
-| Painel da etapa selecionada (EAR) | `#formacao-painel`, ao lado do diagrama (hoje abre na etapa escolhida, com o estado de cada etapa) | E |
+| Painel da etapa selecionada (EAR) | `#formacao-painel`, ao lado do diagrama (mostra a etapa escolhida e o último dado de cada etapa) | E |
 | Painel sem título | Painel do preço do dia (`#hoje` e `#precos`), com a faixa de três medidas no cabeçalho | E |
 | Painel `#periodos`, "Em que horas o preço sobe, e as regiões se separam?" | Mesmo `#periodos`, com `?per=` na URL, "Copiar link deste período" e "Baixar este período (CSV)" | E |
 | Tabela recolhida de 24 linhas e gráfico do dia | Mesmo painel, aba Dia | E |
@@ -81,7 +81,7 @@ Fonte das visões anteriores: `dados/visoes_antes.json`. Níveis: E é visível 
 | Arquivos do PLD horário e do PLD médio diário (CSV) | "Baixar os dados" do painel | E |
 | Como classificamos | `#regras` | A |
 
-Novos nesta página: aula curta (460 palavras em Entender), cartão "Não é a sua tarifa de energia" com link para `/setor-eletrico/conta-de-luz`, ponte entre os limiares de R$ 1,00 e R$ 0,01, texto nominal e regimes, estados do diagrama com o Balanço do ONS e o selo Estimado, e a lista de horas por sentido.
+Novos nesta página: aula curta (423 palavras em Entender), cartão "Não é a sua tarifa de energia" com link para `/setor-eletrico/conta-de-luz`, ponte entre os limiares de R$ 1,00 e R$ 0,01, texto nominal e regimes, estados do diagrama com o Balanço do ONS e o selo Estimado, e a lista de horas por sentido.
 
 ### `/setor-eletrico/pld/cmo-e-formacao` (24 visões)
 
@@ -93,7 +93,7 @@ Novos nesta página: aula curta (460 palavras em Entender), cartão "Não é a s
 | Arquivos (3) e Baixar CSV | "Baixar os dados (3 arquivos)" e botões das tabelas (o arquivo da tabela segue o intervalo) | E |
 | 2 fichas Comprove (Entender) e 3 (Analisar e Auditar) | Faixa de medidas do painel (2 fichas) e `#a02` (ficha dos zeros) | E e A |
 | Gráfico sem título (quatro painéis, 168 horas) e "Dados dos painéis em tabela" | `#mesma-hora` | Sobe de A para E |
-| Gráfico e tabela "Horas de cada ano pela situação do PLD frente aos limites" | `#relacao-anual`, com a tabela de 13 colunas e a tabela recolhida de 6 linhas | Sobe de A para E |
+| Gráfico e tabela "Horas de cada ano pela situação do PLD frente aos limites" | `#relacao-anual`, com a tabela por ano e a tabela recolhida de 6 linhas | Sobe de A para E |
 | Tabela de sequências de semanas com CMO zero e filtro Subsistema | `#a02`, "Sequências de 4 semanas seguidas ou mais com CMO semanal zero, por subsistema (desde 2005)" | A |
 | Arquivos anuais relidos; conferência da data da semana; meias horas esperadas e publicadas | `#a02-arquivos`, `#alinhamento` e `#cobertura` | U |
 

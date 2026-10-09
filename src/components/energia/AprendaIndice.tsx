@@ -4,17 +4,12 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import { LinkDoPainel } from "@/components/energia/LinkDoPainel";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
+import { buscarVerbetes } from "@/lib/energia/aprenda-busca";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 // só tipos: o acervo de verbetes fica no servidor, e o cliente recebe a lista pronta
 import type { GrupoDoIndice, ItemDoIndice } from "@/lib/energia/conteudo/aprenda-indice";
 
 const ESQUEMA = { q: campo(tiposUrl.texto({ max: 80 }), "", { param: "q", historico: "replace" }) };
-
-const normaliza = (t: string) =>
-  t
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
 
 /** Marca de estado ao lado do verbete: só o que foge do padrão (conferido sem ressalva não leva marca; a legenda da lista diz isso). */
 const SELO: Record<ItemDoIndice["estado"], string | null> = {
@@ -72,17 +67,6 @@ function Linha({ i, comTema = false }: { i: ItemDoIndice; comTema?: boolean }) {
       )}
     </li>
   );
-}
-
-/** Quanto o item combina com o termo: 0 sigla igual, 1 sigla ou nome começa pelo termo, 2 termo no nome ou na pergunta, 3 só no texto. */
-function pontua(i: ItemDoIndice, termo: string, termos: string[]): number | null {
-  if (!termos.every((t) => i.busca.includes(t))) return null;
-  const titulo = normaliza(i.titulo);
-  const nome = i.subtitulo ? normaliza(i.subtitulo) : "";
-  if (titulo === termo) return 0;
-  if (titulo.startsWith(termo) || nome.startsWith(termo)) return 1;
-  if (titulo.includes(termo) || nome.includes(termo) || (i.pergunta !== null && normaliza(i.pergunta).includes(termo))) return 2;
-  return 3;
 }
 
 const plural = (n: number) => `${n} ${n === 1 ? "verbete" : "verbetes"}`;
@@ -160,17 +144,8 @@ export function AprendaIndice({
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const campoBusca = useRef<HTMLInputElement>(null);
-  const termo = normaliza(v.q).trim();
   const todos = useMemo(() => grupos.flatMap((g) => g.itens), [grupos]);
-  const achados = useMemo(() => {
-    if (termo.length < 2) return null;
-    const termos = termo.split(/\s+/).filter(Boolean);
-    return todos
-      .map((i, ordem) => ({ i, ordem, p: pontua(i, termo, termos) }))
-      .filter((x): x is { i: ItemDoIndice; ordem: number; p: number } => x.p !== null)
-      .sort((a, b) => a.p - b.p || a.ordem - b.ordem)
-      .map((x) => x.i);
-  }, [todos, termo]);
+  const achados = useMemo(() => buscarVerbetes(todos, v.q), [todos, v.q]);
 
   // link com #g-<tema>: no celular abre o tema recolhido; em tela larga leva à lista aberta do tema
   useEffect(() => {

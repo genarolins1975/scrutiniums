@@ -6,9 +6,9 @@ Rotas `/setor-eletrico/inclusao-energetica` (síntese), `/acesso`, `/cobertura`,
 
 - `src/components/energia/InclusaoLinkPainel.tsx`: nenhum arquivo o importa mais. O rodapé de cada painel e da síntese passou a usar o `SeguirPainel` compartilhado (pelo envoltório `InclusaoSeguir`, em `InclusaoPagina.tsx`), com o mesmo botão "Copiar link deste painel", o mesmo endereço e a mesma mensagem de cópia. Nenhum teste depende dele.
 
-## 1. `SeguirPainel`: a lista de arquivos fica num `<details>` que nenhum nível abre
+## 1. `SeguirPainel`: a lista de arquivos nunca abre sozinha
 
-Com mais de um arquivo, o componente usa `DetalheDoNivel` com `abreEm="nunca"`. A lista continua no HTML do servidor, mas o inventário mecânico de visões (`scripts/energia-visoes.mjs`) não conta conteúdo de `<details>` fechado, e quem escolhe Analisar não vê os arquivos. As cinco páginas da família têm de 2 a 16 arquivos cada. Proposta: `abreEm="analisar"` (a lista abre ao escolher Analisar e Auditar) ou, se o fechado for intencional, o inventário abrir `[data-downloads]` antes de contar. Local: cada tabela interativa já traz "Baixar CSV" e "Baixar XLSX" à vista, e o painel principal traz o link do CSV no rodapé de fontes, então nenhum dado deixa de ter caminho de download; a síntese passa todos os 16 arquivos e uma nota de formato (`extra`), que é o que o leitor encontra ao abrir a lista.
+Com mais de um arquivo o componente usa `DetalheDoNivel` com `abreEm="nunca"`: em Analisar e Auditar, onde o leitor procura os dados, a lista continua recolhida atrás de "Baixar os dados (N arquivos)". Nada se perdeu (o inventário mecânico de visões conta os mesmos arquivos de antes: 16 na síntese, 5 em Acesso, 5 em Tarifa Social, 2 em Cobertura e 1 em Orçamento), e cada tabela interativa traz "Baixar CSV" e "Baixar XLSX" à vista. O pedido é de uso: `abreEm="analisar"` abriria a lista nesses níveis. Arquivo: `src/components/energia/SeguirPainel.tsx`. Local: a síntese passa os 16 arquivos e uma nota de formato (`extra`), que o leitor encontra ao abrir a lista.
 
 ## 2. A regra de `globals.css` que põe `[data-resposta]` primeiro age dentro de `SecaoDoPainel`
 

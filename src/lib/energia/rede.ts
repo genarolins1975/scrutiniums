@@ -60,7 +60,7 @@ export const PERGUNTA_MODULO_REDE = "Como a energia circula entre regiões e que
  */
 export const PAINEIS_REDE: { id: PainelRede; rotulo: string; caminho: string; pergunta: string }[] = [
   { id: "p028", rotulo: "Circulação de energia", caminho: "", pergunta: "Como a energia circula entre regiões?" },
-  { id: "p029", rotulo: "Balanço e exterior", caminho: "/balanco-e-exterior", pergunta: "De onde vem a diferença de energia?" },
+  { id: "p029", rotulo: "Balanço e exterior", caminho: "/balanco-e-exterior", pergunta: "As contas do balanço de energia fecham?" },
   { id: "p030", rotulo: "Restrições publicadas", caminho: "/restricoes", pergunta: "Quando há evidência publicada de limitação da rede?" },
   { id: "p031", rotulo: "Programado e verificado", caminho: "/programado", pergunta: "Quanto o fluxo divergiu do programa?" },
 ];
@@ -1004,6 +1004,13 @@ export const ROTULO_IDENTIDADE: Record<IdentidadeBalanco["identidade"], string> 
   soma_sin: "Soma: intercâmbio do SIN − soma dos quatro subsistemas",
 };
 
+/** Nome curto de cada conta, para o eixo das barras (o rótulo longo, com a conta escrita, fica na tabela e na legenda sob o gráfico). */
+export const ROTULO_CURTO_IDENTIDADE: Record<IdentidadeBalanco["identidade"], string> = {
+  balanco: "Balanço interno",
+  perimetro: "Perímetro",
+  soma_sin: "Soma dos subsistemas",
+};
+
 /** As identidades de uma região, na ordem balanço interno, perímetro, soma. */
 export function identidadesDa(b: Pick<BalancoRede, "identidades">, sm: SubsistemaOuSin): IdentidadeBalanco[] {
   const ordem = { balanco: 0, perimetro: 1, soma_sin: 2 } as const;
@@ -1013,6 +1020,8 @@ export function identidadesDa(b: Pick<BalancoRede, "identidades">, sm: Subsistem
 export type LinhaIdentidade = {
   id: string;
   identidade: string;
+  /** Nome curto da conta, para o eixo das barras. */
+  identidade_curta: string;
   regiao: string;
   horas: number;
   horas_fecham: number;
@@ -1035,6 +1044,7 @@ export function linhasIdentidades(ids: readonly IdentidadeBalanco[]): LinhaIdent
   return ids.map((x) => ({
     id: x.id,
     identidade: ROTULO_IDENTIDADE[x.identidade],
+    identidade_curta: ROTULO_CURTO_IDENTIDADE[x.identidade],
     regiao: NOME_SM[x.sm],
     horas: x.horas,
     horas_fecham: x.horas_fecham,
@@ -1137,7 +1147,10 @@ export function vereditoBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia
     menor === 1
       ? "todas as horas conferidas"
       : `pelo menos ${num(Math.floor(menor * 100), 0)}% das horas conferidas`;
-  const resto = ids.some((y) => y.horas_residuo > 0) ? " Nas horas em que não conferem, a fonte não informa o motivo e o observatório não atribui causa." : "";
+  // quando todas as horas com resíduo da região caem num só ano, a frase diz qual: a média de 95% ou mais sozinha esconderia onde elas estão
+  const anosComResiduo = Array.from(new Set(ids.flatMap((y) => Object.entries(y.horas_residuo_por_ano).filter(([, n]) => n > 0).map(([a]) => a))));
+  const quando = anosComResiduo.length === 1 ? ` As horas com resíduo estão todas em ${anosComResiduo[0]}.` : "";
+  const resto = ids.some((y) => y.horas_residuo > 0) ? ` Nas horas em que não conferem, a fonte não informa o motivo e o observatório não atribui causa.${quando}` : "";
   return `${onde}, geração, carga e intercâmbio conferem entre si em ${confere}, de ${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)}.${resto}`;
 }
 
@@ -1231,7 +1244,7 @@ export function linhasResiduoMensal(b: Pick<BalancoRede, "mensal">, sms: readonl
 
 /** Marcos das quebras metodológicas do balanço no eixo mensal. */
 export function marcosQuebras(b: Pick<BalancoRede, "quebras">): { x: string; rotulo: string }[] {
-  return b.quebras.map((q) => ({ x: q.dia.slice(0, 7), rotulo: `${dataBR(q.dia)}: ${q.id === "mmgd_2023" ? "MMGD estimada passa a entrar na geração solar e na carga" : "quebra metodológica"}` }));
+  return b.quebras.map((q) => ({ x: q.dia.slice(0, 7), rotulo: `${dataBR(q.dia)}: ${q.id === "mmgd_2023" ? "MMGD" : "quebra"}` }));
 }
 
 /** Frases do achado A05 (geradas no pipeline pelos contadores), com datas no formato brasileiro. */

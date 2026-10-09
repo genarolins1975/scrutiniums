@@ -11,7 +11,8 @@ import { useId, type ReactNode } from "react";
  * voltar desfaz.
  */
 
-export type OpcaoGeracao<T extends string> = { id: T; rotulo: string; detalhe?: string };
+/** `desativada`: a opção continua à vista, sem ação, e o `detalhe` diz por quê (a janela de um dia só existe para o SIN, por exemplo). */
+export type OpcaoGeracao<T extends string> = { id: T; rotulo: string; detalhe?: string; desativada?: boolean };
 
 export function GeracaoEscolha<T extends string>({
   legenda,
@@ -35,13 +36,17 @@ export function GeracaoEscolha<T extends string>({
             <label
               key={o.id}
               title={o.detalhe}
-              className={`inline-flex min-h-[44px] cursor-pointer items-center border px-3 text-sm focus-within:outline focus-within:outline-2 focus-within:outline-energia ${
-                ativo ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
+              className={`inline-flex min-h-[44px] items-center border px-3 text-sm focus-within:outline focus-within:outline-2 focus-within:outline-energia ${
+                o.desativada
+                  ? "cursor-not-allowed border-dashed border-linha bg-superficie text-carvao-muted opacity-70"
+                  : ativo
+                    ? "cursor-pointer border-energia bg-energia-fundo text-carvao"
+                    : "cursor-pointer border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
               }`}
             >
-              <input type="radio" name={nome} value={o.id} checked={ativo} onChange={() => onEscolher(o.id)} className="sr-only" />
+              <input type="radio" name={nome} value={o.id} checked={ativo} disabled={o.desativada} onChange={() => onEscolher(o.id)} className="sr-only" />
               {o.rotulo}
-              {/* o detalhe (nome por extenso, o que a opção mostra) também chega ao leitor de tela e ao toque, não só ao passar o mouse */}
+              {/* o detalhe (nome por extenso, o que a opção mostra, ou por que está desativada) também chega ao leitor de tela e ao toque, não só ao passar o mouse */}
               {o.detalhe && o.detalhe !== o.rotulo && <span className="sr-only">: {o.detalhe}</span>}
             </label>
           );

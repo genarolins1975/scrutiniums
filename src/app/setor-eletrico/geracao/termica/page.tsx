@@ -28,6 +28,7 @@ import {
   ROTULO_REGRA,
   combustiveisCvu,
   downloadsDoPainel,
+  emPortugues,
   explicacaoDoMotivo,
   linhasCvuMensal,
   inflexibilidadeSemNuclear,
@@ -262,7 +263,7 @@ export default function GeracaoTermicaPage() {
                 )}
 
                 <SecaoDoPainel nivel="auditar" id="universo-termica" titulo="Universo: a térmica por motivo contra a Geração por Usina">
-                  <p className="text-sm text-carvao-muted">{universo.regra}</p>
+                  <p className="text-sm text-carvao-muted">{emPortugues(universo.regra)}</p>
                   <GeracaoTabelaSobDemanda tabela="universo-termica" versao={versao} />
                   <p className="text-sm text-carvao-muted">
                     Combustível de {num(mapa.usinas, 0)} usinas, pela autoridade publicada:{" "}
@@ -275,7 +276,7 @@ export default function GeracaoTermicaPage() {
                       : "Todas com combustível identificado."}
                   </p>
                   <p className="text-sm text-carvao-muted">
-                    {identidade.regra}{" "}
+                    {emPortugues(identidade.regra)}{" "}
                     {identidade.usinas_com_mais_de_uma_chave.length
                       ? `Usinas com mais de uma chave na fonte: ${identidade.usinas_com_mais_de_uma_chave.map((x) => `${x.nome ?? x.usina} (${x.chaves.join(", ")})`).join("; ")}.`
                       : ""}

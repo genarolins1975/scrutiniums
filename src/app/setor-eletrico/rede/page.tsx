@@ -37,6 +37,7 @@ import {
   textoCobertura,
   textoConferenciaSilver,
   textoOrientacaoArquivos,
+  textoSentidoSaldo,
 } from "@/lib/energia/rede";
 import { textoAmplitude, textoFluxos30d } from "@/lib/energia/resumos";
 import type { ColunaTabela } from "@/lib/energia/tabela";
@@ -196,7 +197,13 @@ export default function RedePage() {
                           motivoAusencia="Sem fluxo publicado na janela de 30 dias."
                           nota={(() => {
                             const x = resumo.find((y) => y.par === par);
-                            return x ? `${num(x.liquido_mwh >= 0 ? x.horas_inverso : x.horas_canonico, 0)} de ${num(x.horas, 0)} horas no sentido contrário ao saldo.` : undefined;
+                            if (!x) return undefined;
+                            // o título usa o sentido do nome da fronteira; a nota diz o sentido que o saldo teve, para o zero não parecer ausência de fluxo
+                            const sentido = textoSentidoSaldo(par, x.liquido_mwh);
+                            const contra = x.liquido_mwh >= 0 ? x.horas_inverso : x.horas_canonico;
+                            return contra === 0
+                              ? `Fluxo sempre ${sentido ?? "no mesmo sentido"} nas ${num(x.horas, 0)} horas: nada passou no sentido contrário.`
+                              : `${num(contra, 0)} de ${num(x.horas, 0)} horas no sentido contrário ao saldo${sentido ? ` (saldo ${sentido})` : ""}.`;
                           })()}
                           endereco={`${rotaPainel("p028")}#p028`}
                         />

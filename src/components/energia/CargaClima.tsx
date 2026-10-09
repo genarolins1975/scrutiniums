@@ -32,6 +32,7 @@ import {
   respostaClima,
   respostaDecomposicao,
   respostaUltimoDia,
+  textoCoberturaIntervalos,
   textoJanelaCurta,
   vereditoClima,
   textoDefasagemTemperatura,
@@ -135,8 +136,18 @@ export function CargaClimaMetricas({
   const periodoJanela = d ? `${dataBR(d.inicio)} a ${dataBR(d.fim)} contra ${dataBR(d.inicio_ant)} a ${dataBR(d.fim_ant)}` : undefined;
   const semDecomposicao = "Esta combinação de região, variante e comparação não tem decomposição publicada.";
   const porCento = (x: number | null) => (x === null ? undefined : `${num(Math.round(x * 100), 0)}% da diferença entre as janelas`);
+  const pct = (x: number) => `${num(Math.round(x * 100), 0)}%`;
+  // as três partes fecham a diferença: a frase da resposta cita duas, e a terceira (nível e tendência) fica à vista aqui, em Entender
+  const fechamento =
+    partes && partes.proporcaoClima !== null && partes.proporcaoNivel !== null && partes.proporcaoResto !== null
+      ? ` Da diferença, calendário, temperatura e estação do ano acompanham ${pct(partes.proporcaoClima)}, nível e tendência ${pct(partes.proporcaoNivel)} e o resíduo ${pct(partes.proporcaoResto)} (arredondados).`
+      : "";
   return (
-    <FaixaMetricas colunas={4} rotulo="Diferença entre as janelas, partes do modelo e erro fora da amostra" nota="Associação estatística, não causa: cada parte é a mudança da previsão associada a um grupo de variáveis, e o resíduo é o que o modelo não reproduz.">
+    <FaixaMetricas
+      colunas={4}
+      rotulo="Diferença entre as janelas, partes do modelo e erro fora da amostra"
+      nota={`Associação estatística, não causa: cada parte é a mudança da previsão associada a um grupo de variáveis, e o resíduo é o que o modelo não reproduz.${fechamento}`}
+    >
       <Numero
         variante="faixa"
         rotulo={`Diferença entre as janelas ${DO_REGIAO[sm]}`}
@@ -320,9 +331,13 @@ export function CargaClima({
       <SecaoDoPainel
         id="validacao"
         titulo={`Últimos ${plural(recente.length, "dia previsto", "dias previstos")}: real, previsto e intervalo (SIN)`}
-        lead="O modelo acerta dias que não viu? A carga real contra a prevista com os dados anteriores a cada origem mensal, e o que cada grupo de variáveis contribuiu à previsão."
+        lead="O modelo acerta dias que não viu? A carga real contra a prevista com os dados anteriores a cada origem mensal (todo mês o modelo é reestimado só com o passado), e o que cada grupo de variáveis contribuiu à previsão."
       >
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao">{respostaUltimoDia(p)}</p>
+        {/* a ressalva do intervalo vai com ele: sem ela, a faixa de 80% parece valer mais do que cobriu fora da amostra */}
+        <p className="max-w-prose2 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao" data-aviso="cobertura-do-intervalo">
+          {textoCoberturaIntervalos(p, "SIN")} O intervalo de 80% é a faixa em que o modelo esperava a carga em 80% dos dias.
+        </p>
         <CursorSincronizado>
           <GraficoLinhas
             titulo="Carga diária do SIN e previsão fora da amostra, com o intervalo de 80%"
@@ -354,7 +369,7 @@ export function CargaClima({
           />
         </CursorSincronizado>
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          No primeiro gráfico, a linha contínua é a carga real e a tracejada, a prevista pelo modelo; a faixa é o intervalo de 80%. No segundo, cada linha é a contribuição de um
+          No primeiro gráfico, a linha contínua é a carga real e a tracejada, a prevista pelo modelo; a faixa é o intervalo de 80%, com a cobertura medida dita acima. No segundo, cada linha é a contribuição de um
           grupo de variáveis. A do calendário sobe e desce ao longo da semana porque dia útil, sábado e domingo ou feriado entram no modelo como grupos diferentes.
         </p>
         <TabelaInterativa

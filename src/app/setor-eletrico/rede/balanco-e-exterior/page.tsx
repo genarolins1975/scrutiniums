@@ -137,13 +137,13 @@ export default function RedeBalancoPage() {
               />
               <Numero
                 variante="faixa"
-                rotulo="Horas em que o intercâmbio do Sul difere da fronteira com o Sudeste/Centro-Oeste somada ao exterior"
+                rotulo="Horas em que o intercâmbio do Sul não fecha com fronteira e exterior"
                 natureza="CALCULADO"
                 evidencia={ev.a05_perimetro_sul ?? null}
                 casas={0}
                 periodo={`${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)}`}
                 cor="var(--serie-sm-s)"
-                nota={horasSul !== null ? `De ${num(horasSul, 0)} horas conferidas no perímetro do Sul, que inclui Argentina e Uruguai.` : undefined}
+                nota={`Intercâmbio do Sul no balanço contra a fronteira com o Sudeste/Centro-Oeste somada a Argentina e Uruguai${horasSul !== null ? `; de ${num(horasSul, 0)} horas conferidas` : ""}.`}
                 endereco={`${rotaPainel("p029")}#p029`}
               />
               <Numero

@@ -38,6 +38,7 @@ import {
   linhasCategoriasMensal,
   linhasMatriz,
   linhasMensalMatriz,
+  listaTexto,
   maioresFontes,
   notaTipoIII,
   paraTabela,
@@ -80,7 +81,16 @@ const ESQUEMA = {
   cmp: campo(tiposUrl.lista(tiposUrl.opcao(CATEGORIAS), { max: LIMITE_COMPARACAO }), [] as CategoriaGeracao[]),
   de: campo(tiposUrl.mes(), ""),
   ate: campo(tiposUrl.mes(), ""),
+  tp: campo(tiposUrl.opcao(["agrupadas", "separadas"] as const), "agrupadas"),
 };
+
+/** Térmicas pequenas, somadas por padrão no gráfico mensal empilhado: camadas finas e de cor parecida não se distinguem só pela cor. A tabela mantém uma coluna por categoria. */
+const GRUPO_TERMICAS: readonly CategoriaGeracao[] = ["carvao", "oleo", "biomassa", "outros", "termica_sem_combustivel"];
+const ID_DEMAIS_TERMICAS = "demais_termicas";
+const OPCOES_TERMICAS = [
+  { id: "agrupadas" as const, rotulo: "Somadas em demais térmicas" },
+  { id: "separadas" as const, rotulo: "Separadas" },
+];
 
 const OPCOES_REGIAO = REGIOES.map((r) => ({ id: r, rotulo: r === "SE" ? "SE/CO" : r === "SIN" ? "SIN" : NOME_REGIAO[r], detalhe: NOME_REGIAO[r] }));
 const OPCOES_PERIMETRO = PERIMETROS.map((p) => ({ id: p, rotulo: ROTULO_PERIMETRO[p] }));
@@ -145,11 +155,32 @@ export function GeracaoMatriz({
   const presencas = linhas.filter((l) => l.presenca);
   const sel = linhas.some((l) => l.id === v.cat) ? (v.cat as CategoriaGeracao) : null;
   const selecionar = (id: string | null) => definir({ cat: id ?? "" });
-  const opcoesJanela = janelasDisponiveis(m, rg).map((j) => ({ id: j, rotulo: ROTULO_JANELA[j] }));
+  const disponiveis = janelasDisponiveis(m, rg);
+  const opcoesJanela = JANELAS.map((j) => ({ id: j, rotulo: ROTULO_JANELA[j], desativada: !disponiveis.includes(j), detalhe: disponiveis.includes(j) ? undefined : `indisponível ${NO_REGIAO[rg]}: só o SIN tem a janela de ${ROTULO_JANELA[j].toLowerCase()}` }));
+  const janelasFaltam = disponiveis.length < JANELAS.length;
   const total = totalDaJanela(mix, per);
 
   const mensalEscolhido = useMemo(() => linhasMensalMatriz(mensal, per), [mensal, per]);
   const mensalLinhas = mensalEscolhido.linhas;
+  // gráfico mensal: as térmicas pequenas somadas (padrão) ou separadas; a soma só existe quando todas as partes existem no mês (ausência não vira zero)
+  const grupoNaSerie = GRUPO_TERMICAS.filter((c) => mensalEscolhido.series.includes(c));
+  const chaveGrupo = grupoNaSerie.join(",");
+  const somar = v.tp === "agrupadas" && grupoNaSerie.length >= 2;
+  const barrasMensais = useMemo(() => {
+    if (!somar) return { dados: paraTabela(mensalLinhas), series: mensalEscolhido.series.map((c) => ({ id: c as string, rotulo: CURTO_CATEGORIA[c], cor: COR_CATEGORIA[c] })) };
+    const dados = paraTabela(
+      mensalLinhas.map((l) => {
+        const partes = grupoNaSerie.map((c) => l[c]);
+        return { ...l, [ID_DEMAIS_TERMICAS]: partes.some((x) => x === null || x === undefined) ? null : partes.reduce<number>((t, x) => t + (x as number), 0) };
+      }),
+    );
+    const series = [
+      ...mensalEscolhido.series.filter((c) => !grupoNaSerie.includes(c)).map((c) => ({ id: c as string, rotulo: CURTO_CATEGORIA[c], cor: COR_CATEGORIA[c] })),
+      { id: ID_DEMAIS_TERMICAS, rotulo: "Demais térmicas", cor: "var(--serie-2)" },
+    ];
+    return { dados, series };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- o grupo é recriado a cada render; a chave textual estabiliza
+  }, [somar, mensalLinhas, mensalEscolhido.series, chaveGrupo]);
   const inicioMmgd = primeiroMesComMmgd(mensal);
   const ultimo = mensalLinhas[mensalLinhas.length - 1];
   const coberturaDaSerie = coberturaMensal(mensal).filter((c) => !(per === "sem" && c.id === "solar_mmgd"));
@@ -186,6 +217,11 @@ export function GeracaoMatriz({
           <div className="flex flex-col gap-3">
             <GeracaoEscolha legenda="Região" opcoes={OPCOES_REGIAO} valor={rg} onEscolher={(x) => definir({ rg: x })} />
             <GeracaoEscolha legenda="Janela" opcoes={opcoesJanela} valor={janela} onEscolher={(x) => definir({ jan: x })} />
+            {janelasFaltam && (
+              <p className="-mt-1 text-xs leading-relaxed text-carvao-muted" data-janelas-indisponiveis="">
+                Para {NOME_REGIAO[rg]}, a base publicada tem só as janelas de 30 e 365 dias; as de um dia e de 7 dias existem só para o SIN.
+              </p>
+            )}
             <GeracaoEscolha legenda="Perímetro" opcoes={OPCOES_PERIMETRO} valor={per} onEscolher={(x) => definir({ per: x })} />
           </div>
           {ajustada && (
@@ -277,7 +313,7 @@ export function GeracaoMatriz({
         <TabelaInterativa
           titulo={`Tabela equivalente: geração e participação por categoria, ${NOME_REGIAO[rg]}`}
           colunas={colunasMatriz(janela, per)}
-          linhas={paraTabela(linhas)}
+          linhas={paraTabela(linhas.map((l) => ({ ...l, ressalva: l.ressalva ?? "sem ressalva", presenca: l.presenca ?? "não" })))}
           chaveLinha="id"
           colunaRotulo="categoria"
           fonte={fonte}
@@ -347,12 +383,18 @@ export function GeracaoMatriz({
         titulo="Como a energia de cada fonte evoluiu, mês a mês?"
         lead={`Geração média mensal do SIN por categoria, ${PERIMETRO_EM_FRASE[per]}: as barras empilhadas somam o total do mês.`}
       >
+        {grupoNaSerie.length >= 2 && <GeracaoEscolha legenda="Térmicas pequenas no gráfico" opcoes={OPCOES_TERMICAS} valor={somar ? "agrupadas" : "separadas"} onEscolher={(x) => definir({ tp: x })} />}
+        {somar && (
+          <p className="text-xs leading-relaxed text-carvao-muted" data-termicas-somadas="">
+            Demais térmicas soma {listaTexto(grupoNaSerie.map((c) => CURTO_CATEGORIA[c].toLowerCase()))}. Uma categoria sem valor num mês deixa a soma do mês sem valor (hachura), nunca zero. A tabela abaixo traz uma coluna por categoria.
+          </p>
+        )}
         <GraficoBarras
           titulo={`Geração média mensal do SIN por categoria, ${PERIMETRO_EM_FRASE[per]}`}
-          dados={paraTabela(mensalLinhas)}
+          dados={barrasMensais.dados}
           chaveCategoria="id"
-          chaveRotulo="mes"
-          series={mensalEscolhido.series.map((c) => ({ id: c, rotulo: CURTO_CATEGORIA[c], cor: COR_CATEGORIA[c] }))}
+          chaveRotulo="rotulo"
+          series={barrasMensais.series}
           unidade="MWmed"
           casas={0}
           empilhado

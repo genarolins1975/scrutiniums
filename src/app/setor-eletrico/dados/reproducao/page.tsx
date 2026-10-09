@@ -49,10 +49,10 @@ export default function DadosReproducaoPage() {
   const estados = new Map(m.arquivos.map((a) => [a.caminho, estadoDoArquivo(a.caminho, pub, m)]));
   const linhas = linhasManifesto(m, dic, new Map(Array.from(estados, ([k, e]): [string, VereditoDoArquivo] => [k, e.veredito])));
   const frasesDeEstado: Record<string, string> = {};
-  for (const [k, e] of estados) {
+  Array.from(estados).forEach(([k, e]) => {
     const frase = textoEstadoDoArquivo(e).frase;
     if (frase) frasesDeEstado[k] = frase;
-  }
+  });
   const parquets: Record<string, ParquetEquivalente> = {};
   for (const p of pub.arquivos.parquet) {
     if (!p.csv) continue;

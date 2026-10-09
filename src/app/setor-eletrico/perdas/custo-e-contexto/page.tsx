@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Termo } from "@/components/evidencia/Termo";
 import { PerdasCusto } from "@/components/energia/PerdasCusto";
@@ -10,7 +10,7 @@ import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { PerdasContexto } from "@/components/energia/PerdasContexto";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
 import { PerdasLevaEscolha } from "@/components/energia/PerdasLevaEscolha";
-import { NotasDoPainelNomeadas, PERGUNTA_ABERTURA, PERGUNTA_CUSTO, PerdasNavegacao, PerdasSeguir, Recorte, ReferenciaPerdas, Resposta } from "@/components/energia/PerdasPainel";
+import { PERGUNTA_ABERTURA, PERGUNTA_CUSTO, PerdasNavegacao, PerdasSeguir, Recorte, ReferenciaPerdas, Resposta } from "@/components/energia/PerdasPainel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { dataBR, mesAno, num } from "@/lib/energia/formato";
@@ -157,7 +157,7 @@ export default function PerdasCustoContextoPage() {
                     </span>
                   </p>
                 )}
-                <NotasDoPainelNomeadas painel="custo na tarifa" oQueMudou={oQueMudouCusto} comoInterpretar={comoInterpretarCusto} naoConcluir={naoConcluirCusto} />
+                <NotasDoPainel nome="custo na tarifa" oQueMudou={oQueMudouCusto} comoInterpretar={comoInterpretarCusto} naoConcluir={naoConcluirCusto} />
                 <PerdasSeguir
                   ancora="custo"
                   proxima={{ pergunta: "Que características das áreas aparecem associadas às perdas?", href: "#contexto" }}
@@ -207,7 +207,7 @@ export default function PerdasCustoContextoPage() {
                   universo={`${assoc.n_taxa_total} concessionárias com ${assoc.ano_perdas} completo e sem alerta; ${assoc.n_pnt_bt} delas com a separação fechando`}
                   unidade={`R$ de ${censo} por mês; % da energia injetada; % do mercado de baixa tensão`}
                 />
-                <NotasDoPainelNomeadas painel="contexto das áreas" oQueMudou={oQueMudouContexto} comoInterpretar={comoInterpretarContexto} naoConcluir={naoConcluirContexto} />
+                <NotasDoPainel nome="contexto das áreas" oQueMudou={oQueMudouContexto} comoInterpretar={comoInterpretarContexto} naoConcluir={naoConcluirContexto} />
                 <PerdasSeguir
                   ancora="contexto"
                   proxima={{ pergunta: PERGUNTA_ABERTURA, href: "/setor-eletrico/perdas" }}
