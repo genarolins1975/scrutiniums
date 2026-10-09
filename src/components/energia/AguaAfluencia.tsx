@@ -256,7 +256,7 @@ export function AguaAfluencia({
       <AguaLegenda
         periodo={e ? `30 dias até ${dataBR(e.dia)}; ${textoFaixaJanela(e)}` : "sem janela"}
         universo={universo(tipo, reeNovos)}
-        unidade="% da MLT: soma da ENA bruta dos 30 dias (MWmed·dia: a média de cada dia, em MWmed, o megawatt médio, somada ao longo dos dias) dividida pela soma da MLT vigente em cada dia. p.p.: ponto percentual, a diferença entre dois percentuais"
+        unidade="% da MLT: soma da ENA bruta dos 30 dias (MWmed·dia: a média de cada dia, em MWmed, o megawatt médio, somada ao longo dos dias) dividida pela soma da MLT vigente em cada dia. Percentil: a posição da ENA entre as dos mesmos dias de anos anteriores. p.p.: ponto percentual, a diferença entre dois percentuais"
       />
 
       {e && <MedidasAfluencia e={e} revisoes={revisoes} evidencias={evidencias} endereco={enderecoMedidas} />}

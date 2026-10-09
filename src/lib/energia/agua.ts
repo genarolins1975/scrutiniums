@@ -825,8 +825,8 @@ export function vereditoAfluencia(e: EntidadeEna): string {
 }
 
 /**
- * Colunas da tabela equivalente da afluência. Em Entender ficam o recorte, a ENA de 30 dias e a posição (cabem em 360 px, com o número
- * junto do nome); as demais vão para Analisar. O arquivo exportado sempre leva todas.
+ * Colunas da tabela equivalente da afluência. Em Entender ficam o recorte, a ENA de 30 dias e o percentil (cabem em 360 px, com o número
+ * junto do nome; a coluna de texto da posição não cabe ao lado de duas numéricas); as demais vão para Analisar. O arquivo exportado sempre leva todas.
  */
 export const COLUNAS_AFLUENCIA: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Recorte", tipo: "texto" },
@@ -838,8 +838,8 @@ export const COLUNAS_AFLUENCIA: ColunaTabela[] = [
   { id: "p10_30d", rotulo: "10º percentil da janela", tipo: "numero", unidade: "% da MLT", casas: 1, nivel: "analisar" },
   { id: "p50_30d", rotulo: "Mediana da janela", tipo: "numero", unidade: "% da MLT", casas: 1, nivel: "analisar" },
   { id: "p90_30d", rotulo: "90º percentil da janela", tipo: "numero", unidade: "% da MLT", casas: 1, nivel: "analisar" },
-  { id: "faixa", rotulo: "Posição", tipo: "texto", categorica: true },
-  { id: "percentil_30d", rotulo: "Percentil", tipo: "numero", casas: 1, nivel: "analisar" },
+  { id: "faixa", rotulo: "Posição", tipo: "texto", categorica: true, nivel: "analisar" },
+  { id: "percentil_30d", rotulo: "Percentil", tipo: "numero", casas: 1 },
   { id: "anos_na_base_30d", rotulo: "Anos na base", tipo: "numero", casas: 0, nivel: "analisar" },
   { id: "periodo_base", rotulo: "Período da base", tipo: "texto", nivel: "analisar" },
   { id: "pct_mlt_dia", rotulo: "ENA do dia", tipo: "numero", unidade: "% da MLT", casas: 1, nivel: "analisar" },

@@ -26,6 +26,10 @@ Itens achados pelas avaliações independentes iniciais e pelos executores que n
 | S7 | Ficha "Comprove" com texto de revisões que contradiz a tabela da página | `Numero` aceita `revisoes?: string` e substitui só a linha "Revisões" da ficha | feito |
 | S8 | Barra de profundidade presa ao topo cobria o controle focado (WCAG 2.2, 2.4.11) e tinha fundo translúcido | `ModoProfundidade`: fundo opaco e, ao receber foco, a página rola o suficiente para o controle ficar abaixo da barra | feito |
 | S9 | Seletor de profundidade passava da borda em 390 px com texto a 175% ou mais; tabelas largas cortavam números no limite da janela sem indicação visual além do aviso em texto | `ModoProfundidade`: botões com quebra de linha; `TabelaInterativa` marca `data-mais-direita` e o CSS esmaece a borda direita enquanto há mais colunas | feito |
+| S10 | Diálogos "Sobre este dado" somavam cerca de 7 kB de HTML cada (12 na página de Qualidade: 87 kB) e só se veem depois de abertos | `SobreEsteDado` monta o corpo na primeira abertura, como `ComproveNumero`; o teste de M1 que procurava o identificador técnico no HTML passou a conferi-lo na proveniência da gold | feito |
+| S11 | Dica do `Termo` trazia só a definição literal da fonte | Com `emPalavrasSimples`, a dica mostra a frase em palavras simples e depois "Na fonte: ..." | feito |
+| S12 | Rótulo "Mapa" e "Mapa do observatório" para a porta de entrada; a palavra "agora" nos resumos do menu | `navegacao.ts`: "Início" nos dois lugares e resumos sem "agora" | feito |
+| S13 | Verbete DEC não dizia que o divulgado é o apurado | `conceitos-qualidade.ts`: limitação sobre expurgos, sem número, com fatos que a página de Qualidade mostra com fonte | feito |
 | S6 | Cores diferentes para a mesma entidade entre gráficos da mesma página | Regra no guia dos executores (mesma cor por entidade); verificação na reavaliação | em curso |
 
 ## Arquivos sem uso para apagar no fim (com o servidor parado)

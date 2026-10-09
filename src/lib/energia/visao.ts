@@ -340,7 +340,8 @@ export function recorteMultiplos(m: MultiplosVisao, dias: number): LinhaMultiplo
 /** Cor de cada coluna dos pequenos múltiplos (só tokens; a identidade dos submercados é a do PLD). */
 const COR_COLUNA: Record<string, string> = {
   preco_SE: "var(--serie-sm-se)",
-  preco_S: "var(--serie-sm-s)",
+  // o verde do Sul (token compartilhado) tem 2,97:1 sobre a superfície do gráfico; um pouco mais escuro passa dos 3:1 de elemento gráfico sem mudar de matiz
+  preco_S: "color-mix(in srgb, var(--serie-sm-s) 92%, #000)",
   preco_NE: "var(--serie-sm-ne)",
   preco_N: "var(--serie-sm-n)",
   agua_SIN: "var(--serie-hidraulica)",
