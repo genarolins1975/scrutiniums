@@ -11,7 +11,7 @@ import { getSessionUser } from "@/lib/session";
 const NAV: { href: string; label: string; soXl?: boolean }[] = [
   { href: "/observatorio-do-credito", label: "Crédito" },
   { href: "/setor-eletrico", label: "Setor Elétrico" },
-  { href: "/eficiencia-estatal/educacao-municipal-capitais", label: "Eficiência Estatal" },
+  { href: "/eficiencia-estatal", label: "Eficiência Estatal" },
   { href: "/dados", label: "Dados do crédito" },
   { href: "/#observatorios", label: "Plataforma", soXl: true },
   { href: "/#plataforma", label: "Método", soXl: true },

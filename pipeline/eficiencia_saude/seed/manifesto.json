@@ -15,6 +15,18 @@
    "linhas_recorte": 4365,
    "parametros": "26 capitais; tipos de unidade 01 e 02 (atenção primária) e 15, 32, 40, 71 e 74 (contexto); sem endereço, sem coordenadas, sem tipo 22. O arquivo substitui o anterior todo dia e não tem competência: a data de captura é a única referência temporal."
   },
+  "cnes_historico_estabelecimentos": {
+   "instituicao": "Ministério da Saúde (CNES, API de dados abertos)",
+   "conjunto": "CNES, estabelecimentos por competência (família assistencia-a-saude/cnes-estabelecimentos), dezembro de 2021 a 2025 e competência mais recente",
+   "pagina": "https://apidadosabertos.saude.gov.br/v1/",
+   "url": "https://apidadosabertos.saude.gov.br/assistencia-a-saude/cnes-estabelecimentos?limit=1000&co_cnes=<7 dígitos>",
+   "capturado_em": "2026-10-09T14:32:35Z",
+   "recorte": "pipeline/eficiencia_saude/seed/cnes/historico_aps_dezembros.json.gz",
+   "sha256_recorte": "8aa4e38bfbee4048254919a6aef53ae012cc99906850844a6450fdf50010fb65",
+   "estabelecimentos": 3746,
+   "estabelecimentos_alvo": 3746,
+   "parametros": "estabelecimentos que, no retrato da captura, têm tipo 01 ou 02 (ativos e desabilitados) nas 26 capitais; só as competências de dezembro e a mais recente; um estabelecimento hoje reclassificado ou renumerado não está no conjunto (viés declarado)."
+  },
   "relatorio_aps_cobertura": {
    "instituicao": "Ministério da Saúde (SAPS, Relatório APS)",
    "conjunto": "Cobertura Potencial Estimada da Atenção Primária à Saúde e equipes, por município e competência mensal",

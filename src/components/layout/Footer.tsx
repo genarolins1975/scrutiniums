@@ -41,7 +41,9 @@ export function Footer() {
         <nav aria-label="Observatório Brasileiro de Eficiência Estatal">
           <p className="rotulo mb-4 text-mineral-soft">Eficiência Estatal</p>
           <ul className="space-y-2 text-sm">
+            <li><Link href="/eficiencia-estatal" className="hover:text-bronze-soft">Eficiência Estatal</Link></li>
             <li><Link href="/eficiencia-estatal/educacao-municipal-capitais" className="hover:text-bronze-soft">Educação nas capitais</Link></li>
+            <li><Link href="/eficiencia-estatal/saude-capitais" className="hover:text-bronze-soft">Saúde nas capitais</Link></li>
             <li><Link href="/eficiencia-estatal/educacao-municipal-capitais/gastos" className="hover:text-bronze-soft">Gastos</Link></li>
             <li><Link href="/eficiencia-estatal/educacao-municipal-capitais/comparar" className="hover:text-bronze-soft">Comparar capitais</Link></li>
             <li><Link href="/eficiencia-estatal/educacao-municipal-capitais/metodos" className="hover:text-bronze-soft">Dados e métodos</Link></li>

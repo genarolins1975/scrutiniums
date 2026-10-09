@@ -70,7 +70,7 @@ export type FichaIndicador = {
   estado: EstadoPublicacao;
   ressalvas: string[];
   motivo_nao_publicacao?: string[];
-  granularidade: { etapa: boolean; anos: "exercicios" | "censo" | "edicoes_ideb" };
+  granularidade: { etapa: boolean; anos: "exercicios" | "censo" | "edicoes_ideb" | "dezembros" | "retrato" };
   download: string | null;
   /** id do indicador que esta ficha substitui, quando a definição mudou e o identificador antigo não foi reaproveitado */
   substitui?: IndicadorId | null;

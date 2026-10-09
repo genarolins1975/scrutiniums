@@ -36,6 +36,7 @@ export function DistribuicaoCapitais({
   rotuloGrupo = "capitais na comparação",
   rotuloMediana = "Mediana",
   fora = [],
+  alturaLinha = 28,
 }: {
   linhas: LinhaDistribuicao[];
   referencias: ReferenciasDistribuicao;
@@ -47,11 +48,13 @@ export function DistribuicaoCapitais({
   rotuloGrupo?: string;
   rotuloMediana?: string;
   fora?: LinhaForaDaComparacao[];
+  /** altura de cada linha em px; o texto não encolhe com ela */
+  alturaLinha?: number;
 }) {
   const [ref, w, medido] = useLargura<HTMLDivElement>(640);
   const [ativo, setAtivo] = useState<number | null>(null);
   const estreito = w < 520;
-  const linhaH = 28;
+  const linhaH = alturaLinha;
   const fonte = estreito ? 11.5 : 12.5;
   const larg = (t: string, f: number) => t.length * f * 0.56;
   const maiorValor = Math.max(...linhas.map((l) => formata(l.valor).length), 1);

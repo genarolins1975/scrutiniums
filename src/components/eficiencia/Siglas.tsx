@@ -17,6 +17,19 @@ export const SIGLAS: Record<string, string> = {
   Siconfi: "Sistema de Informações Contábeis e Fiscais do Setor Público Brasileiro",
   SIDRA: "Sistema IBGE de Recuperação Automática",
   Saeb: "Sistema de Avaliação da Educação Básica",
+  SUS: "Sistema Único de Saúde",
+  SIOPS: "Sistema de Informações sobre Orçamentos Públicos em Saúde",
+  CNES: "Cadastro Nacional de Estabelecimentos de Saúde",
+  APS: "atenção primária à saúde",
+  ASPS: "ações e serviços públicos de saúde",
+  ICSAP: "internações por condições sensíveis à atenção primária",
+  RIPSA: "Rede Interagencial de Informações para a Saúde",
+  SIH: "Sistema de Informações Hospitalares",
+  AIH: "autorização de internação hospitalar",
+  ANS: "Agência Nacional de Saúde Suplementar",
+  UBS: "unidade básica de saúde",
+  eSF: "equipe de Saúde da Família",
+  eAP: "equipe de Atenção Primária",
 };
 
 const PADRAO = new RegExp(`\\b(${Object.keys(SIGLAS).join("|")})\\b`, "g");

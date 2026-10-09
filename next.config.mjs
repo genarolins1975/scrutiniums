@@ -68,9 +68,6 @@ const nextConfig = {
       { source: "/app", destination: "/app/observatorios", permanent: false },
       // Atalho simétrico ao /setor-eletrico; a SPA do Crédito segue em /observatorio.
       { source: "/credito", destination: "/observatorio", permanent: false },
-      // OBEE: na etapa inicial há um único painel publicado; a raiz do
-      // observatório leva a ele, sem página vazia de módulos futuros.
-      { source: "/eficiencia-estatal", destination: "/eficiencia-estatal/educacao-municipal-capitais", permanent: false },
       { source: "/app/atividade", destination: "/observatorio/credit", permanent: true },
       { source: "/app/risco", destination: "/observatorio/sectors", permanent: true },
       { source: "/app/regulatorio", destination: "/observatorio/alerts", permanent: true },

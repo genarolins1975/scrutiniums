@@ -200,11 +200,16 @@ export function coberturaDoBuild(app: string, rotasObrigatorias: string[], minim
   // o painel tem uma rota por visão (panorama, gastos, atendimento, resultados, comparar, métodos): todas obedecem ao contrato
   const obeePaginas = paginas(join(app, "eficiencia-estatal", "educacao-municipal-capitais"));
   if (fs.existsSync(obee)) obeePaginas.unshift(obee);
+  // módulo Saúde nas capitais (panorama e cinco visões) e a entrada do observatório
+  const saudeRaiz = join(app, "eficiencia-estatal", "saude-capitais.html");
+  const saudePaginas = paginas(join(app, "eficiencia-estatal", "saude-capitais"));
+  if (fs.existsSync(saudeRaiz)) saudePaginas.unshift(saudeRaiz);
+  const entradaObee = join(app, "eficiencia-estatal.html");
   const erros: string[] = [];
   if (!existe) erros.push(`${app} não existe: o CI precisa gerar o build (npm run build) antes dos testes`);
   else {
     if (faltando.length) erros.push(`rotas esperadas ausentes do build: ${faltando.join(", ")}`);
     if (setor.length < minimoSetorEletrico) erros.push(`poucas páginas do setor elétrico no build (${setor.length}); mínimo ${minimoSetorEletrico}`);
   }
-  return { existe, faltando, setor, obee: fs.existsSync(obee) ? obee : null, obeePaginas, erros };
+  return { existe, faltando, setor, obee: fs.existsSync(obee) ? obee : null, obeePaginas, saude: fs.existsSync(saudeRaiz) ? saudeRaiz : null, saudePaginas, entrada: fs.existsSync(entradaObee) ? entradaObee : null, erros };
 }

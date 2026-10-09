@@ -32,6 +32,13 @@ const ROTAS_OBRIGATORIAS = [
   "eficiencia-estatal/educacao-municipal-capitais/resultados.html",
   "eficiencia-estatal/educacao-municipal-capitais/comparar.html",
   "eficiencia-estatal/educacao-municipal-capitais/metodos.html",
+  "eficiencia-estatal.html",
+  "eficiencia-estatal/saude-capitais.html",
+  "eficiencia-estatal/saude-capitais/gastos.html",
+  "eficiencia-estatal/saude-capitais/rede-e-atencao-primaria.html",
+  "eficiencia-estatal/saude-capitais/atendimento-e-resultados.html",
+  "eficiencia-estatal/saude-capitais/comparar.html",
+  "eficiencia-estatal/saude-capitais/metodos.html",
 ];
 /** Piso de páginas do setor elétrico: um build que gerou muito menos que isto está incompleto. */
 const MINIMO_PAGINAS_SETOR_ELETRICO = 100;
@@ -78,6 +85,20 @@ describe(`HTML gerado pelo build (${EXIGIR ? "verificação obrigatória" : "mod
     const { analises, violacoes } = analisa(cobertura.obeePaginas);
     expect(readFileSync(cobertura.obee as string, "utf-8")).toContain("Educação nas capitais");
     console.info(`HTML verificado (OBEE): ${cobertura.obeePaginas.length} páginas; literais: ${resumoLiterais(analises)}`);
+    expect(violacoes).toEqual([]);
+  });
+
+  it("OBEE, Saúde nas capitais: a entrada do observatório e as seis páginas do módulo obedecem ao mesmo contrato", (ctx) => {
+    if (!temBuild && !EXIGIR) ctx.skip(AVISO_SEM_BUILD);
+    if (!cobertura.saude || !cobertura.entrada) {
+      if (EXIGIR) expect.fail(`rota ausente do build: ${!cobertura.saude ? join(APP, "eficiencia-estatal", "saude-capitais.html") : join(APP, "eficiencia-estatal.html")}`);
+      ctx.skip("build sem as rotas de Saúde nas capitais");
+    }
+    const arquivos = [cobertura.entrada as string, ...cobertura.saudePaginas];
+    const { analises, violacoes } = analisa(arquivos);
+    expect(readFileSync(cobertura.saude as string, "utf-8")).toContain("Saúde nas capitais");
+    expect(cobertura.saudePaginas.length).toBeGreaterThanOrEqual(6);
+    console.info(`HTML verificado (OBEE, Saúde e entrada): ${arquivos.length} páginas; literais: ${resumoLiterais(analises)}`);
     expect(violacoes).toEqual([]);
   });
 });
