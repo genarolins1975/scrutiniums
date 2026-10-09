@@ -35,7 +35,7 @@ import { SobreDadoSaude as SobreEsteDado } from "./SobreDadoSaude";
 import { TabelaSimples } from "../TabelaSimples";
 import { Alternancia, Selecao } from "../controles";
 import { NotasMateriais, Ressalva, SemValor } from "../estados";
-import { AjudaDenominador, AjudaMoeda, AvisoDoPeriodo, EtiquetaDePerimetro, ForaDaComparacaoSaude, GlossarioDaPagina } from "./AvisosSaude";
+import { AjudaDenominador, AjudaMoeda, AvisoDoPeriodo, EtiquetaDePerimetro, ForaDaComparacaoSaude, GlossarioDaPagina, RecorteRecolhivel } from "./AvisosSaude";
 import { MiniSerie, type Anotacao } from "../graficos";
 import { DetalheGastos, DetalheRede, DetalheResultados } from "./DetalhesSaude";
 import { ReferenciasExternasSaude, ReferenciasGrupoSaude } from "./ReferenciasSaude";
@@ -191,7 +191,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
           </h1>
           <p className="mt-3 text-[1.0625rem] leading-snug text-obee-tinta">{TITULO_TEMA[tema].pergunta}</p>
           <EtiquetaDePerimetro tema={tema} href={tituloMetodos} />
-          <div className="mt-6 space-y-4">
+          <RecorteRecolhivel id="recorte" resumo={`${m.rotuloCurto} · ${m.periodo === "dezembro" ? `dez. ${ano}` : ano}${m.moeda && s.moeda === "real" ? " · reais de 2025" : ""} · ${cap ? `${cap.nome} (${cap.uf})` : "todas as capitais"}`}>
             <Selecao
               id="med"
               rotulo="Medida"
@@ -222,7 +222,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
               </div>
             )}
             {cap && <Alternancia rotulo="Grupo de comparação" valor={grupo} opcoes={[{ v: "todas", t: "Todas as capitais" }, { v: "regiao", t: `Região ${dados.regioes[cap.regiao]}` }]} aoMudar={(v) => definir({ grp: v })} />}
-          </div>
+          </RecorteRecolhivel>
         </div>
 
         <div className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
@@ -238,19 +238,20 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
               <p className="mt-1 text-xs text-carvao-muted">Ordenar por valor é recurso de leitura, não classificação.</p>
             </div>
           )}
-          <h2 className="mt-4 font-serif text-[1.3rem] leading-snug text-obee-tinta md:text-[1.45rem]">{s.vis === "evolucao" ? fraseSerie : titulo}</h2>
+          <h2 className="mt-4 font-serif text-[1.1rem] leading-snug text-obee-tinta sm:text-[1.3rem] md:text-[1.45rem]">{s.vis === "evolucao" ? fraseSerie : titulo}</h2>
           <p className="mt-1.5 text-[0.8125rem] leading-snug text-carvao-muted">{s.vis === "evolucao" ? `${[m.rotulo, unidadeNoTitulo].filter(Boolean).join(" · ")} · série de ${anos[0]} a ${anos[anos.length - 1]} · ${cap ? `${cap.nome} (${cap.uf})` : "mediana das capitais"}` : subtitulo}</p>
-          <AvisoDoPeriodo texto={aviso} />
+          <div className="flex flex-col">
+          <div className="order-3 lg:order-none"><AvisoDoPeriodo texto={aviso} /></div>
           {s.vis !== "evolucao" && notaZero && <p className="mt-2 max-w-prose2 text-sm leading-snug text-obee-tinta">{notaZero}</p>}
           {s.vis !== "evolucao" && c.excluidas.length > 0 && (
             <p className="mt-2 max-w-prose2 text-sm leading-snug text-obee-tinta">
               {c.excluidas.length <= 4 ? `Fora da comparação neste recorte: ${c.excluidas.map((x) => `${x.cap.nome} (${x.cap.uf})`).join(", ")}.` : `${c.excluidas.length} capitais fora da comparação neste recorte.`}{" "}
-              <a href="#fora-da-comparacao" className="text-obee-dark underline underline-offset-4">Motivo e detalhe abaixo</a>.
+              <a href="#fora-da-comparacao" className="inline-block py-1 text-obee-dark underline underline-offset-4">Motivo e detalhe abaixo</a>.
             </p>
           )}
           {fraseCap && s.vis !== "evolucao" && <p className="mt-2 text-sm leading-snug text-obee-tinta">{fraseCap}</p>}
 
-          <div className="mt-4">
+          <div className="order-2 mt-4 lg:order-none">
             {s.vis === "grafico" && (
               c.incluidas.length > 0 ? (
                 <DistribuicaoCapitais
@@ -281,6 +282,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
               </div>
             )}
           </div>
+          </div>
           {pt && cap && <Ressalva ponto={pt} />}
           {pt && pt.valor === null && cap && <SemValor ponto={pt} />}
         </div>
@@ -294,7 +296,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
           {tema === "resultados" && (
             <p className="mt-3 border-l-2 border-linha pl-3 text-sm leading-snug text-obee-tinta">
               <span className="font-semibold">Atendimento:</span> nenhuma série de produção da atenção primária é publicada, porque a fonte oficial não oferece série municipal extraível e verificável. O que existe aqui é resultado por residência e contexto. Motivo e lacunas em{" "}
-              <a href="#res-fora" className="text-obee-dark underline underline-offset-4">Atendimento: o que não está nesta página</a>.
+              <a href="#res-fora" className="inline-block py-1 text-obee-dark underline underline-offset-4">Atendimento: o que não está nesta página</a>.
             </p>
           )}
           <GlossarioDaPagina tema={tema} />

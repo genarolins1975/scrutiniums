@@ -150,6 +150,8 @@ export function MiniSerie({
       if (p.valor !== null) ocupado.push({ x0: x(i) - 7, x1: x(i) + 7, y0: y(p.valor) - 7, y1: y(p.valor) + 7 });
       const rv = refPorAno.get(p.ano)?.valor ?? null;
       if (rv !== null) ocupado.push({ x0: x(i) - 6, x1: x(i) + 6, y0: y(rv) - 6, y1: y(rv) + 6 });
+      // o número da nota fica no alto do gráfico: o valor do ponto não pode ser escrito por cima dele
+      if (anot.has(p.ano)) ocupado.push({ x0: x(i) - 7, x1: x(i) + 7, y0: m.t - 13, y1: m.t + 3 });
     });
     const bate = (c: Caixa, o: Caixa) => c.x0 < o.x1 && c.x1 > o.x0 && c.y0 < o.y1 && c.y1 > o.y0;
     const ordem = pontos.map((_, i) => i).filter((i) => pontos[i].valor !== null);

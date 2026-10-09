@@ -13,7 +13,7 @@ import { DistribuicaoCapitais } from "../DistribuicaoCapitais";
 import { SobreDadoSaude as SobreEsteDado } from "./SobreDadoSaude";
 import { Alternancia, Selecao } from "../controles";
 import { Ressalva, SemValor } from "../estados";
-import { AjudaDenominador, AjudaMoeda, AvisoDoPeriodo, ForaDaComparacaoSaude, GlossarioDaPagina, PERIMETRO_DO_TEMA } from "./AvisosSaude";
+import { AjudaDenominador, AjudaMoeda, AvisoDoPeriodo, ForaDaComparacaoSaude, GlossarioDaPagina, PERIMETRO_DO_TEMA, RecorteRecolhivel } from "./AvisosSaude";
 import { MiniSerie } from "../graficos";
 
 /**
@@ -141,7 +141,7 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
           <p className="rotulo text-mineral">Saúde nas capitais</p>
           <h1 id="titulo-comparar" className="mt-2 font-serif text-[2.1rem] leading-[1.08] tracking-tight text-obee-tinta md:text-[2.6rem]">Comparar capitais</h1>
           <p className="mt-3 text-[1.0625rem] leading-snug text-obee-tinta">Como cada capital se situa na mesma medida e no mesmo período?</p>
-          <div className="mt-6 space-y-4">
+          <RecorteRecolhivel id="recorte-cmp" resumo={`${m.rotuloCurto} · ${m.periodo === "dezembro" ? `dez. ${ano}` : ano}${m.moeda && s.moeda === "real" ? " · reais de 2025" : ""} · ${A ? A.nome : "sem capital A"}${B ? ` × ${B.nome}` : ""}`}>
             <Selecao id="cmp-med" rotulo="Medida" ajuda="Vale para as duas capitais e para a distribuição." ajudaNoCelular={false} valor={s.med} opcoes={opcoesMedida} aoMudar={(v) => definir({ med: v as MedidaSaudeId, ano: anosDaMedida(ix, MEDIDAS_SAUDE[v as MedidaSaudeId], o).includes(ano) ? ano : 0 })} />
             <Selecao id="cmp-ano" rotulo={m.periodo === "dezembro" ? "Competência" : m.periodo === "processamento" ? "Ano de processamento" : "Exercício"} ajuda="O mesmo período para as duas capitais." ajudaNoCelular={false} valor={String(ano)} opcoes={anos.map((a) => ({ v: String(a), t: m.periodo === "dezembro" ? `dez. ${a}` : String(a) }))} aoMudar={(v) => definir({ ano: Number(v) })} />
             <div className="grid grid-cols-2 gap-4">
@@ -160,7 +160,7 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
                 <AjudaDenominador iguais={m.id === "icsap_taxa" ? denominadoresIcsapIguais(ix, ano).iguais : 0} total={m.id === "icsap_taxa" ? denominadoresIcsapIguais(ix, ano).total : 0} ano={ano} />
               </div>
             )}
-          </div>
+          </RecorteRecolhivel>
         </div>
 
         <div className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
@@ -177,8 +177,15 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
             <button type="button" onClick={exportarMedida} className="rotulo inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-obee-dark hover:border-obee">Baixar CSV da medida</button>
           </div>
           <p className="mt-1 text-[0.8125rem] leading-snug text-carvao-muted">{m.unidade(s.moeda)} · {c.ref ? `${c.ref.n} de ${c.noGrupo} capitais na comparação` : "sem capital na comparação"} · {m.universo}</p>
-          <AvisoDoPeriodo texto={aviso} />
-          <div className="mt-3">
+          <div className="flex flex-col">
+          <div className="order-3 lg:order-none"><AvisoDoPeriodo texto={aviso} /></div>
+          {c.excluidas.length > 0 && (
+            <p className="mt-2 max-w-prose2 text-sm leading-snug text-obee-tinta">
+              {c.excluidas.length <= 4 ? `Fora da comparação neste recorte: ${c.excluidas.map((x) => `${x.cap.nome} (${x.cap.uf})`).join(", ")}.` : `${c.excluidas.length} capitais fora da comparação neste recorte.`}{" "}
+              <a href="#fora-da-comparacao" className="inline-block py-1 text-obee-dark underline underline-offset-4">Motivo e detalhe abaixo</a>.
+            </p>
+          )}
+          <div className="order-2 mt-3 lg:order-none">
             {c.incluidas.length > 0 ? (
               <DistribuicaoCapitais
                 linhas={c.incluidas.map((i) => ({ chave: i.cap.id, rotulo: `${i.cap.nome} (${i.cap.uf})`, valor: i.valor, destacada: i.cap.id === A?.id || i.cap.id === B?.id }))}
@@ -193,6 +200,7 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
             ) : (
               <p className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-obee-tinta" role="note">Nenhuma capital tem valor comparável para este recorte.</p>
             )}
+          </div>
           </div>
           <div className="mt-5"><ForaDaComparacaoSaude itens={c.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_ESTADO[x.status], motivo: x.motivo }))} /></div>
         </div>

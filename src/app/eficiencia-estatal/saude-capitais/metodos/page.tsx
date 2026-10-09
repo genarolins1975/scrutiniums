@@ -33,6 +33,51 @@ const Secao = ({ id, titulo, intro, children }: { id: string; titulo: string; in
   </section>
 );
 
+
+function Numero({ valor, rotulo }: { valor: string; rotulo: string }) {
+  return (
+    <div className="border-t-2 border-obee pt-2">
+      <p className="font-serif text-[1.8rem] leading-none text-obee-tinta">{valor}</p>
+      <p className="mt-1 text-sm leading-snug text-carvao-muted">{rotulo}</p>
+    </div>
+  );
+}
+
+/** Quadro do módulo em números: o que está publicado, o que foi avaliado e não publicado, e quantas verificações rodam. A barra repete os números por extenso. */
+function ResumoDoModulo({ publicados, avaliados, decisoes, validacoes, observacoes }: { publicados: number; avaliados: number; decisoes: [string, number][]; validacoes: [string, number][]; observacoes: number }) {
+  const total = decisoes.reduce((s, [, n]) => s + n, 0);
+  const tons = ["bg-obee", "bg-mineral", "bg-carvao-muted"];
+  return (
+    <section aria-labelledby="resumo-modulo" className="mt-8">
+      <h2 id="resumo-modulo" className="sr-only">O módulo em números</h2>
+      <dl className="grid max-w-[64rem] grid-cols-2 gap-x-8 gap-y-5 md:grid-cols-4">
+        <Numero valor={String(publicados)} rotulo="indicadores publicados, todos com ressalvas na ficha" />
+        <Numero valor={String(avaliados - publicados)} rotulo="indicadores avaliados e não publicados, com o motivo" />
+        <Numero valor={inteiroBr(observacoes)} rotulo="observações, 26 capitais, 5 exercícios financeiros" />
+        <Numero valor={String(validacoes.reduce((s, [, n]) => s + n, 0))} rotulo={validacoes.map(([r, n]) => `${n} ${r}`).join(", ")} />
+      </dl>
+      <div className="mt-6 max-w-[64rem]">
+        <p className="rotulo text-carvao-muted">Decisão sobre as {total} medidas candidatas</p>
+        <div className="mt-2 flex h-4 w-full overflow-hidden border border-linha" role="img" aria-label={decisoes.map(([d, n]) => `${n} ${d}`).join(", ")}>
+          {decisoes.map(([d, n], i) => (
+            <div key={d} className={tons[i % tons.length]} style={{ width: `${(100 * n) / total}%` }} title={`${n} ${d}`} />
+          ))}
+        </div>
+        <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm text-obee-tinta">
+          {decisoes.map(([d, n], i) => (
+            <li key={d} className="inline-flex items-center gap-2">
+              <span aria-hidden="true" className={`inline-block h-3 w-3 ${tons[i % tons.length]}`} />
+              <span className="tabular-nums font-semibold">{n}</span> {d}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+const inteiroBr = (n: number) => n.toLocaleString("pt-BR");
+
 export default function PaginaMetodos() {
   const g = goldSaude();
   if (!g) {
@@ -55,11 +100,22 @@ export default function PaginaMetodos() {
         </ul>
         <dl className="mt-6 grid max-w-[64rem] gap-x-10 gap-y-3 text-sm leading-snug sm:grid-cols-2">
           <div><dt className="font-semibold text-obee-tinta">Quero entender o que um número significa</dt><dd className="text-carvao-muted">Três perímetros, Referências e Siglas, abaixo. Em cada medida, o botão Sobre este dado abre a ficha.</dd></div>
-          <div><dt className="font-semibold text-obee-tinta">Sou jornalista e preciso citar</dt><dd className="text-carvao-muted">Arquivos: CSV com fonte, endereço, data de captura, versão e hash. Cite a data de geração e o hash da linha.</dd></div>
+          <div><dt className="font-semibold text-obee-tinta">Sou jornalista e preciso citar</dt><dd className="text-carvao-muted">Arquivos: CSV com fonte, páginas oficiais, data de captura, versão e hash. Cite a data de geração e o hash da linha.</dd></div>
           <div><dt className="font-semibold text-obee-tinta">Sou gestor e quero saber por que uma capital ficou fora</dt><dd className="text-carvao-muted">Decisões sobre as fontes e Validações; em cada página, o aviso de capitais fora da comparação traz o motivo.</dd></div>
           <div><dt className="font-semibold text-obee-tinta">Sou pesquisador e quero reproduzir</dt><dd className="text-carvao-muted">Reprodução: exemplos passo a passo, comando e arquivos do repositório; Atualidade e versões traz as capturas.</dd></div>
         </dl>
       </section>
+
+      <ResumoDoModulo
+        publicados={publicados.length}
+        avaliados={fichas.length}
+        decisoes={["publicar com ressalva", "apenas contexto", "não publicar"].map((d): [string, number] => [d, g.matriz_fontes.filter((l) => l.decisao === d).length])}
+        validacoes={[
+          ["verificações automáticas", g.validacoes.filter((v) => v.tipo === "automatica").length],
+          ["medições", g.validacoes.filter((v) => v.tipo === "medicao").length],
+        ]}
+        observacoes={g.meta.observacoes}
+      />
 
       <div className="mt-8 space-y-12">
         <Secao id="perimetros" titulo="Três perímetros que não se confundem" intro="O módulo separa o que o município executa, o que está localizado no território e quem reside nele. Cada medida diz a qual deles pertence.">
