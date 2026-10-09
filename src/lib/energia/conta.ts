@@ -1139,7 +1139,7 @@ export function textoReferenciasPerfil(r: ReferenciasPerfil): string {
 export function notaFaixaTarifa(resumo: ResumoTarifas): string {
   return (
     `Tarifa homologada (TE + TUSD), sem tributos (ICMS, PIS/Pasep e Cofins), iluminação pública e bandeira: não é o valor da fatura. ` +
-    `Mediana simples das ${resumo.n} distribuidoras com tarifa vigente, sem ponderar por consumidores; não é o custo médio do país.`
+    `Mediana simples das ${resumo.n} distribuidoras, sem ponderar por consumidores; não é o custo médio do país.`
   );
 }
 
@@ -1187,7 +1187,12 @@ export function textoSerieReal(r: ResumoSerieReal | null): string {
     r.primeira.real !== null && base
       ? `Em ${mes(r.primeira.m)}, a mediana era de ${rs(r.primeira.nominal)} nos valores da época e de ${rs(r.primeira.real)} em reais de ${base}`
       : `Em ${mes(r.primeira.m)}, a mediana era de ${rs(r.primeira.nominal)} nos valores da época`;
-  const fim = r.ultimaComReal ? `; em ${mes(r.ultimaComReal.m)}, de ${rs(r.ultimaComReal.nominal)} e de ${rs(r.ultimaComReal.real)}` : "";
+  // no mês-base os dois valores são o mesmo: dizer duas vezes o mesmo número soaria como dois resultados
+  const fim = r.ultimaComReal
+    ? r.ultimaComReal.nominal === r.ultimaComReal.real
+      ? `; em ${mes(r.ultimaComReal.m)}, de ${rs(r.ultimaComReal.nominal)} nas duas formas`
+      : `; em ${mes(r.ultimaComReal.m)}, de ${rs(r.ultimaComReal.nominal)} e de ${rs(r.ultimaComReal.real)}`
+    : "";
   const sem = r.semReal.length ? ` ${r.semReal.map(mes).join(", ")} ${r.semReal.length === 1 ? "fica" : "ficam"} sem valor em reais (IPCA do mês ainda não publicado).` : "";
   return `${inicio}${fim}.${sem}`;
 }

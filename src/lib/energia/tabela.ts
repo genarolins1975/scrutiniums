@@ -79,9 +79,14 @@ export function textoData(v: string): string {
 }
 
 /** Texto exibido na célula (pt-BR, sinal de menos tipográfico); ausência é "sem dado", nunca "0". */
+/** Coluna numérica que guarda um ano civil ("Ano", "Ano de operação"): o ano nunca leva separador de milhar ("2026", não "2.026"). */
+export function ehColunaDeAno(c: ColunaTabela): boolean {
+  return c.tipo === "numero" && (c.casas ?? 1) === 0 && /^ano(\s|$)/i.test(c.rotulo);
+}
+
 export function textoCelula(v: string | number | null, c: ColunaTabela): string {
   if (v === null) return TEXTO_SEM_DADO;
-  if (typeof v === "number") return num(v, c.casas ?? 1);
+  if (typeof v === "number") return ehColunaDeAno(c) && Number.isInteger(v) ? String(v) : num(v, c.casas ?? 1);
   if (c.tipo === "data") return textoData(v);
   // célula de texto que é só uma data ISO (mês, dia ou instante) sai no formato do site; o arquivo baixado segue ISO
   if (c.tipo === "texto" && /^\d{4}-\d{2}(-\d{2}(T\d{2}:\d{2}(:\d{2})?Z?)?)?$/.test(v)) return textoData(v);

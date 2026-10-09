@@ -159,6 +159,12 @@ describe("texto das células", () => {
     expect(textoCelula(null, colunas[2])).toBe("sem dado");
     expect(textoCelula("2025-12-31", colunas[4])).toBe("31/12/2025");
     expect(textoCelula("2025-12", colunas[4])).toBe("12/2025");
+    // ano civil em coluna numérica não leva separador de milhar; contagem de anos e valores comuns continuam com ele
+    const ano: ColunaTabela = { id: "ano", rotulo: "Ano", tipo: "numero", casas: 0 };
+    expect(textoCelula(2026, ano)).toBe("2026");
+    expect(textoCelula(2010, { ...ano, rotulo: "Ano de operação" })).toBe("2010");
+    expect(textoCelula(2026, { ...ano, rotulo: "Anos na base" })).toBe("2.026");
+    expect(textoCelula(2026, { ...ano, rotulo: "Unidades consumidoras" })).toBe("2.026");
     expect(textoCelula("2025-12-31T16:00", colunas[4])).toBe("31/12/2025 16:00");
   });
 });

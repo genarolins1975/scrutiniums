@@ -177,7 +177,7 @@ export const FAIXAS_MAPA: Record<FaixaMapa, { rotulo: string; resumo: string }> 
  * lado da operação (à esquerda do elo, onde nenhuma ligação passa) e abaixo dos dois últimos elos.
  */
 export const ROTULOS_FAIXA: Record<FaixaMapa, { x: number; y: number; alinha: "esq" | "centro" }> = {
-  fisico: { x: 27, y: 34, alinha: "esq" },
+  fisico: { x: 27, y: 14, alinha: "esq" },
   operacao: { x: 27, y: 348, alinha: "esq" },
   economia: { x: 250, y: 652, alinha: "centro" },
   pessoas: { x: 750, y: 652, alinha: "centro" },

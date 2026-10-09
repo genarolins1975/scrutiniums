@@ -48,7 +48,22 @@ function Rotulo({ alinhar, marcador, titulo, valor }: { alinhar: "left" | "cente
   );
 }
 
-export function ContaReferencias({ referencias: r, destaques, seletor }: { referencias: ReferenciasPerfil; destaques: DestaquePerfil[]; seletor?: ReactNode }) {
+export function ContaReferencias({
+  referencias: r,
+  destaques,
+  controle,
+  resposta,
+  seletor,
+}: {
+  referencias: ReferenciasPerfil;
+  destaques: DestaquePerfil[];
+  /** Controle do perfil, na linha do título da figura. */
+  controle?: ReactNode;
+  /** Frase que lê a figura (a resposta curta do painel), logo abaixo da legenda. */
+  resposta?: ReactNode;
+  /** Seletor da distribuidora em destaque, ao lado da lista dos destaques. */
+  seletor?: ReactNode;
+}) {
   const raiz = useRef<HTMLDivElement>(null);
   const [largura, setLargura] = useState(LARGURA_SSR);
   useEffect(() => {
@@ -64,10 +79,14 @@ export function ContaReferencias({ referencias: r, destaques, seletor }: { refer
   if (!r.menor || !r.maior || r.mediana === null) {
     return (
       <div ref={raiz} data-grafico="referencias" className="w-full">
-        <p className="mb-1 text-sm font-medium text-carvao">{titulo}</p>
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+          <p className="text-sm font-medium text-carvao">{titulo}</p>
+          {controle}
+        </div>
         <p role="status" className="border border-dashed border-linha bg-superficie px-5 py-4 text-sm text-carvao-muted">
           Sem referências do custo de {r.perfil} kWh por mês nesta publicação: nenhuma distribuidora tem tarifa B1 residencial vigente na data.
         </p>
+        {resposta && <div className="mt-4">{resposta}</div>}
       </div>
     );
   }
@@ -91,10 +110,13 @@ export function ContaReferencias({ referencias: r, destaques, seletor }: { refer
 
   return (
     <div ref={raiz} data-grafico="referencias" className="w-full">
-      <p className="mb-2 text-sm font-medium text-carvao" data-titulo-grafico="true">
-        {titulo}
-        <span className="font-normal text-mineral">, em R$/mês</span>
-      </p>
+      <div className="mb-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+        <p className="text-sm font-medium text-carvao" data-titulo-grafico="true">
+          Menor, mediana e maior custo de {num(r.perfil, 0)} kWh/mês
+          <span className="font-normal text-mineral">, em R$/mês</span>
+        </p>
+        {controle}
+      </div>
       <div className="grid grid-cols-3 gap-x-3">
         <Rotulo alinhar="left" marcador="extremo" titulo={`Menor · ${menor.sigla}`} valor={reais(menor.valor)} />
         <Rotulo alinhar="center" marcador="mediana" titulo="Mediana" valor={reais(mediana)} />
@@ -161,8 +183,11 @@ export function ContaReferencias({ referencias: r, destaques, seletor }: { refer
           <Marcador tipo="destaque" />
           distribuidora em destaque
         </li>
-        <li className="text-mineral">Valores em R$/mês para {num(r.perfil, 0)} kWh</li>
+        <li className="text-mineral">
+          {r.n} distribuidoras com tarifa B1 residencial vigente, sem tributos e sem bandeira
+        </li>
       </ul>
+      {resposta && <div className="mt-4">{resposta}</div>}
       <div className="mt-3 grid gap-x-8 gap-y-3 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:items-start">
         {seletor}
         {destaques.length > 0 ? (

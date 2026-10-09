@@ -34,8 +34,7 @@ import {
   respostaGeral,
   rotuloDistribuidora,
   serieNacional,
-  textoPontaFaixa,
-  textoUniversoFaixa,
+  textoNumero,
   valoresDoPeriodo,
   variacaoMesmas,
   vereditoComposicao,
@@ -144,8 +143,8 @@ export default function PerdasPage() {
           titulo={PERGUNTA_ABERTURA}
           lead={
             <>
-              <Termo slug="perdas-de-energia">Perda</Termo> é a energia que entra na rede da distribuidora e não chega como consumo medido. A página mostra a taxa e o volume, o agregado das concessionárias e a diferença
-              entre distribuidoras, cada um com a sua base de cálculo.
+              <Termo slug="perdas-de-energia">Perda</Termo> é a energia que entra na rede da distribuidora e não chega como consumo medido. Aqui, a taxa e o volume das concessionárias somadas e de cada
+              distribuidora.
             </>
           }
           recorte={
@@ -167,7 +166,7 @@ export default function PerdasPage() {
                   evidencia={ev.taxa_nacional}
                   formato="pct"
                   casas={2}
-                  unidade="% da energia injetada de referência"
+                  unidade="% da energia injetada"
                   periodo={nac ? `${ref} · ${num(nac.n_distribuidoras, 0)} concessionárias` : String(ref)}
                   cor="var(--cor-energia)"
                   endereco="https://scrutiniums.com/setor-eletrico/perdas#resumo"
@@ -195,23 +194,22 @@ export default function PerdasPage() {
                   unidade="p.p."
                   periodo={mesmas ? `${ref} contra ${ref - 1} · as mesmas ${num(mesmas.n_total, 0)} concessionárias` : undefined}
                   motivoAusencia={`Sem comparação nas mesmas concessionárias para ${ref}.`}
-                  nota={parTaxa && parTaxa[0] !== null && parTaxa[1] !== null ? <>A taxa agregada {fraseMudanca(parTaxa[0], parTaxa[1])}.</> : undefined}
                   cor="var(--cor-energia)"
                 />
                 <Numero
                   variante="faixa"
-                  rotulo={`Mediana entre as distribuidoras comparáveis, ${ref}`}
+                  rotulo={`Mediana simples das distribuidoras, ${ref}`}
                   natureza="CALCULADO"
                   valor={faixaRef?.mediana ?? null}
                   formato="pct"
                   casas={2}
-                  unidade="% da energia injetada de referência"
-                  periodo={faixaRef ? `${ref} · ${textoUniversoFaixa(faixaRef)}` : String(ref)}
+                  unidade="% da energia injetada"
+                  periodo={faixaRef ? `${ref} · ${num(faixaRef.n, 0)} distribuidoras comparáveis` : String(ref)}
                   motivoAusencia="Nenhuma distribuidora com valor comparável no ano."
                   nota={
                     faixaRef?.minimo && faixaRef.maximo ? (
                       <>
-                        Faixa observada, de {textoPontaFaixa(faixaRef.minimo, MEDIDAS.taxa)} a {textoPontaFaixa(faixaRef.maximo, MEDIDAS.taxa)}. Mediana simples, sem ponderar pelo tamanho.
+                        Faixa observada: {textoNumero(faixaRef.minimo.v, MEDIDAS.taxa)} a {textoNumero(faixaRef.maximo.v, MEDIDAS.taxa)}.
                       </>
                     ) : undefined
                   }

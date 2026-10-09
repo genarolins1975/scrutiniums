@@ -4,6 +4,7 @@ import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GeracaoMatriz } from "@/components/energia/GeracaoMatriz";
+import { GeracaoSerieRecente } from "@/components/energia/GeracaoSerieRecente";
 import {
   GeracaoAviso,
   GeracaoCapitulos,
@@ -43,7 +44,6 @@ import {
   linhasDozeMeses,
   linhasMmgdApi,
   linhasNaturezaMensal,
-  linhasRecentes,
   marcosMensais,
   nomesCategorias,
   perguntaPainel,
@@ -82,8 +82,6 @@ export default function GeracaoPage() {
   const periodo30 = sin30 ? `${ROTULO_JANELA["30d"]}, de ${dataBR(sin30.inicio)} a ${dataBR(sin30.fim)}` : undefined;
   const doze = m.comparacao_12m ? linhasDozeMeses(m.comparacao_12m, sin12) : [];
   const dozeGrafico = doze.filter((l) => !m.comparacao_12m?.variacao_suprimida[l.id]);
-  const diario = linhasRecentes(m.diario_sin_recente.dias, m.diario_sin_recente);
-  const horario = linhasRecentes(m.horario_sin_recente.horas, m.horario_sin_recente);
   const natureza = linhasNaturezaMensal(m.natureza_mensal_sin);
   const a11 = g.a11;
   const mmgdApi = linhasMmgdApi(a11);
@@ -91,7 +89,6 @@ export default function GeracaoPage() {
   const rec = m.reconciliacao_balanco;
   const lac = m.universo.lacuna_ultimo_mes;
   const seq = m.universo.sequencias_zero_identificadores;
-  const serieCats = (cats: readonly (keyof typeof COR_CATEGORIA)[]) => cats.map((c) => ({ id: c, rotulo: CURTO_CATEGORIA[c], cor: COR_CATEGORIA[c] }));
   const oQueMudou = (
     <>
       {atual.texto} {m.comparacao_12m ? textoDozeMeses(m.comparacao_12m) : "Sem duas janelas de 365 dias comparáveis nesta publicação."}
@@ -285,31 +282,9 @@ export default function GeracaoPage() {
                 />
 
                 <SecaoDoPainel nivel="analisar" id="recentes" titulo={`Os últimos ${plural(m.diario_sin_recente.dias.length, "dia", "dias")} e as últimas ${plural(m.horario_sin_recente.horas.length, "hora", "horas")}, SIN`}>
-                  <GraficoLinhas
-                    chaveUrl="dia"
-                    titulo={`Geração diária do SIN por categoria, ${dataBR(m.diario_sin_recente.dias[0])} a ${dataBR(m.diario_sin_recente.dias[m.diario_sin_recente.dias.length - 1])}`}
-                    dados={diario}
-                    chaveX="x"
-                    formatoX="data"
-                    series={serieCats(m.diario_sin_recente.categorias)}
-                    unidade="MWmed"
-                    casas={0}
-                    zeroNoEixo
-                    legendaInterativa
-                  />
+                  <GeracaoSerieRecente tipo="diaria" />
                   <GeracaoTabelaSobDemanda tabela="diaria" versao={versao} />
-                  <GraficoLinhas
-                    chaveUrl="hor"
-                    titulo={`Geração horária do SIN por categoria, de ${dataBR(m.horario_sin_recente.horas[0])} a ${dataBR(m.horario_sin_recente.horas[m.horario_sin_recente.horas.length - 1])}`}
-                    dados={horario}
-                    chaveX="x"
-                    formatoX="hora"
-                    series={serieCats(m.horario_sin_recente.categorias)}
-                    unidade="MWmed"
-                    casas={0}
-                    zeroNoEixo
-                    legendaInterativa
-                  />
+                  <GeracaoSerieRecente tipo="horaria" />
                   <GeracaoTabelaSobDemanda tabela="horaria" versao={versao} />
                 </SecaoDoPainel>
 

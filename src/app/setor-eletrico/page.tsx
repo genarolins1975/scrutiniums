@@ -6,7 +6,6 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
 import { EscolhaDistribuidora } from "@/components/energia/EscolhaDistribuidora";
-import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
 import { MapaConceitual } from "@/components/energia/MapaConceitual";
 import { RedirecionaAncoraAntiga } from "@/components/energia/RedirecionaAncoraAntiga";
@@ -167,66 +166,94 @@ function TiposDeLigacao() {
 }
 
 /**
- * Conteúdo de um elo do mapa: explicação, onde explorar, conceitos e ligações com o tipo de cada uma. `soSaem`: na versão em texto cada
- * ligação aparece uma vez, no elo de onde ela parte; o painel do desenho mostra as que saem e as que chegam ao elo escolhido.
+ * Conteúdo de um elo do mapa: explicação, onde explorar, conceitos e ligações com o tipo de cada uma. O painel do desenho mostra tudo do elo
+ * escolhido, com as ligações que saem e as que chegam. Na versão em texto (`compacto`, o mapa do celular) cada ligação aparece uma vez, no elo
+ * de onde ela parte; a frase do elo fica à vista, "onde explorar" e os conceitos seguem numa linha cada, e a explicação longa vem num bloco
+ * recolhível do próprio elo (o mapa, as ligações e os tipos ficam sempre à vista).
  */
-function DetalheNo({ no, soSaem = false }: { no: NoMapa; soSaem?: boolean }) {
+function DetalheNo({ no, compacto = false }: { no: NoMapa; compacto?: boolean }) {
   const saem = LIGACOES.filter((l) => l.de === no.id);
-  const chegam = soSaem ? [] : LIGACOES.filter((l) => l.para === no.id);
+  const chegam = compacto ? [] : LIGACOES.filter((l) => l.para === no.id);
+  const destinos = no.destinos.map((s) => destino(s));
+  const conceitos = no.conceitos.map((c) => (
+    <span key={c.slug} className="text-carvao">
+      <Termo slug={c.slug} alvo={!compacto}>
+        {c.rotulo}
+      </Termo>
+      {nomeDoConceito(c.slug, c.rotulo) && <span className="ml-1 text-carvao-muted">({nomeDoConceito(c.slug, c.rotulo)})</span>}
+    </span>
+  ));
+  const ligacoes = (saem.length > 0 || chegam.length > 0) && (
+    <div>
+      <p className="rotulo text-mineral">Ligações</p>
+      <ul className={compacto ? "mt-1 space-y-1.5" : "space-y-2"}>
+        {saem.map((l) => (
+          <li key={`s-${l.para}`}>
+            <span className="text-carvao">
+              Para {porId.get(l.para)!.titulo.toLowerCase()} · {TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()}:
+            </span>{" "}
+            {l.texto}
+          </li>
+        ))}
+        {chegam.map((l) => (
+          <li key={`c-${l.de}`}>
+            <span className="text-carvao">
+              De {porId.get(l.de)!.titulo.toLowerCase()} · {TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()}:
+            </span>{" "}
+            {l.texto}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+  if (compacto) {
+    return (
+      <>
+        <p className="text-carvao">{no.curto}</p>
+        {ligacoes}
+        <div className="flex flex-wrap items-center gap-x-4">
+          <span className="rotulo text-mineral">Onde explorar</span>
+          {destinos.map((d) => (
+            <Link key={d.slug} href={d.href} className={`${linkTexto} inline-flex min-h-[32px] items-center`}>
+              {d.rotulo}
+            </Link>
+          ))}
+        </div>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+          <span className="rotulo text-mineral">Conceitos</span>
+          {conceitos}
+        </div>
+        <details className="group">
+          <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4 hover:text-carvao">Explicação do elo</summary>
+          <p className="pb-1">{no.explicacao}</p>
+        </details>
+      </>
+    );
+  }
   return (
     <>
       <p>{no.explicacao}</p>
       <div>
         <p className="rotulo text-mineral">Onde explorar</p>
         <ul className="flex flex-wrap gap-x-4">
-          {no.destinos.map((s) => {
-            const d = destino(s);
-            return (
-              <li key={s}>
-                <Link href={d.href} className={link}>
-                  {d.rotulo}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-      <div>
-        <p className="rotulo text-mineral">Conceitos</p>
-        <ul className="flex flex-wrap gap-x-3 text-carvao">
-          {no.conceitos.map((c) => (
-            <li key={c.slug}>
-              <Termo slug={c.slug} alvo>
-                {c.rotulo}
-              </Termo>
-              {nomeDoConceito(c.slug, c.rotulo) && <span className="ml-1 text-carvao-muted">({nomeDoConceito(c.slug, c.rotulo)})</span>}
+          {destinos.map((d) => (
+            <li key={d.slug}>
+              <Link href={d.href} className={link}>
+                {d.rotulo}
+              </Link>
             </li>
           ))}
         </ul>
       </div>
-      {(saem.length > 0 || chegam.length > 0) && (
-        <div>
-          <p className="rotulo text-mineral">Ligações</p>
-          <ul className="space-y-2">
-            {saem.map((l) => (
-              <li key={`s-${l.para}`}>
-                <span className="text-carvao">
-                  Para {porId.get(l.para)!.titulo.toLowerCase()} · {TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()}:
-                </span>{" "}
-                {l.texto}
-              </li>
-            ))}
-            {chegam.map((l) => (
-              <li key={`c-${l.de}`}>
-                <span className="text-carvao">
-                  De {porId.get(l.de)!.titulo.toLowerCase()} · {TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()}:
-                </span>{" "}
-                {l.texto}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div>
+        <p className="rotulo text-mineral">Conceitos</p>
+        <ul className="flex flex-wrap gap-x-3">
+          {conceitos.map((c, i) => (
+            <li key={no.conceitos[i].slug}>{c}</li>
+          ))}
+        </ul>
+      </div>
+      {ligacoes}
     </>
   );
 }
@@ -250,7 +277,7 @@ function MapaEmTexto() {
                   {n.titulo}
                 </h5>
                 <div className="mt-2 space-y-3 text-sm leading-relaxed text-carvao-muted">
-                  <DetalheNo no={n} soSaem />
+                  <DetalheNo no={n} compacto />
                 </div>
               </li>
             ))}
@@ -343,7 +370,7 @@ function ItemDoIndice({ d }: { d: DestinoNavegacao }) {
 function Variacao({ v }: { v: NonNullable<SinalDisponivel["variacao"]> }) {
   const d = descreverVariacao(v);
   return (
-    <p className="mt-1.5 text-xs tabular-nums text-carvao-muted">
+    <p className="col-span-2 mt-1 text-xs tabular-nums text-carvao-muted sm:col-auto sm:mt-1.5">
       <span aria-hidden="true">
         {d.glifo && <span className="mr-1">{d.glifo}</span>}
         {d.texto} {v.referencia}
@@ -353,17 +380,30 @@ function Variacao({ v }: { v: NonNullable<SinalDisponivel["variacao"]> }) {
   );
 }
 
-/** A medida de abertura de uma pergunta: o que se mede, o valor, o período, o selo de natureza, a ficha de prova, a variação, o universo, a referência e a ressalva. */
+/** Ficha "Comprove este número" no tamanho da faixa de métricas: texto de 12 px sem caixa alta, 32 px de altura (44 px no toque). */
+const COMPROVE_COMPACTO =
+  "[&_[data-comprove]]:min-h-[2rem] [&_[data-comprove]]:text-xs [&_[data-comprove]]:normal-case [&_[data-comprove]]:tracking-normal [@media(pointer:coarse)]:[&_[data-comprove]]:min-h-[2.75rem]";
+
+/**
+ * A medida de abertura de uma pergunta: o que se mede, o valor, o período, o selo de natureza, a ficha de prova, a variação, a referência, o
+ * universo e a ressalva. No celular a medida é uma linha de lista (rótulo e contexto à esquerda, valor e unidade à direita), como na faixa de
+ * métricas das aberturas; a partir de 640 px o valor vem abaixo do rótulo.
+ */
 function MedidaDisponivel({ s }: { s: SinalDisponivel }) {
   return (
     <>
-      <div role="group" aria-label={s.medida} className="mt-3" data-medida={s.id}>
-        <p className="text-[0.8125rem] leading-snug text-carvao-muted">{s.medida}</p>
-        <p className="mt-1.5 font-serif text-[1.75rem] leading-none tabular-nums text-carvao sm:text-[2.25rem]">
+      <div
+        role="group"
+        aria-label={s.medida}
+        data-medida={s.id}
+        className={`mt-3 grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-0.5 sm:block ${COMPROVE_COMPACTO}`}
+      >
+        <p className="text-[0.8125rem] leading-snug text-carvao-muted sm:mb-1.5 lg:min-h-[2.25rem]">{s.medida}</p>
+        <p className="col-start-2 row-span-2 row-start-1 text-right font-serif text-[1.75rem] leading-none tabular-nums text-carvao sm:text-left sm:text-[2.25rem]">
           {s.valorTexto}
-          <span className="ml-1.5 font-sans text-xs text-carvao-muted sm:text-sm">{s.unidade}</span>
+          <span className="block pt-1 font-sans text-xs leading-tight text-carvao-muted sm:ml-1.5 sm:inline sm:pt-0 sm:text-sm">{s.unidade}</span>
         </p>
-        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs leading-snug text-carvao-muted">
+        <div className="col-start-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs leading-snug text-carvao-muted sm:mt-1.5">
           <span>{s.periodo}</span>
           <SeloNatureza natureza={s.natureza} texto />
           {s.prova && <ComproveNumero sobDemanda={s.prova} endereco={s.endereco} />}
@@ -386,8 +426,8 @@ function MedidaDisponivel({ s }: { s: SinalDisponivel }) {
 /** Ausência é um estado, com o motivo: hachura e "sem dado" (ou "indisponível nesta publicação"), nunca um zero. */
 function MedidaAusente({ s }: { s: SinalAusente }) {
   return (
-    <div role="group" aria-label={s.medida} className="mt-3" data-medida={s.id}>
-      <p className="text-[0.8125rem] leading-snug text-carvao-muted">{s.medida}</p>
+    <div role="group" aria-label={s.medida} data-medida={s.id} className="mt-3">
+      <p className="text-[0.8125rem] leading-snug text-carvao-muted lg:min-h-[2.25rem]">{s.medida}</p>
       <p className="mt-1.5 inline-flex items-center gap-2 font-serif text-xl leading-none text-carvao-muted">
         <span
           aria-hidden="true"
@@ -410,8 +450,8 @@ function BlocoPergunta({ p, sinal, escolhas }: { p: PerguntaPrioritaria; sinal: 
   const comEscolha =
     p.porDistribuidora === "perdas" ? escolhas.opcoesPerdas.length > 0 : p.porDistribuidora === "qualidade" ? escolhas.opcoesQualidade.length > 0 : false;
   return (
-    <article aria-labelledby={`pergunta-${p.id}`} className="flex min-w-0 flex-col" data-sinal={p.id} data-estado={sinal.estado}>
-      <h3 id={`pergunta-${p.id}`} className="ed-h3 font-serif text-carvao">
+    <article aria-labelledby={`pergunta-${p.id}`} className="min-w-0 border-t border-linha pb-2 pt-4" data-sinal={p.id} data-estado={sinal.estado}>
+      <h3 id={`pergunta-${p.id}`} className="ed-h3 font-serif text-carvao lg:min-h-[2.5rem]">
         {p.pergunta}
       </h3>
       {sinal.estado === "disponivel" ? <MedidaDisponivel s={sinal} /> : <MedidaAusente s={sinal} />}
@@ -422,7 +462,7 @@ function BlocoPergunta({ p, sinal, escolhas }: { p: PerguntaPrioritaria; sinal: 
           </Termo>
         </p>
       )}
-      <div className="mt-auto pt-2">
+      <div className="pt-1">
         {comEscolha && p.porDistribuidora === "perdas" ? (
           <EscolhaDistribuidora opcoes={escolhas.opcoesPerdas} destino="/setor-eletrico/perdas" parametro="d" ancora="painel-mapa" rotulo="Ver em Perdas" ano={escolhas.anoPerdas} />
         ) : comEscolha && p.porDistribuidora === "qualidade" ? (
@@ -577,11 +617,11 @@ export default function MapaDoObservatorio() {
           titulo="Seis perguntas para começar"
           subtitulo="Cada resposta abre com uma medida, o período e a referência; a página de destino traz o resto. Nas perguntas sobre a sua distribuidora, escolha-a e a página abre com ela selecionada."
         >
-          <FaixaMetricas colunas={6} rotulo="Seis perguntas, cada uma com a medida de abertura, o período e a referência">
+          <section aria-label="Seis perguntas, cada uma com a medida de abertura, o período e a referência" className="grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3" data-seis-perguntas="">
             {PERGUNTAS_PRIORITARIAS.map((p) => (
               <BlocoPergunta key={p.id} p={p} sinal={sinais.find((s) => s.id === p.id)!} escolhas={escolhas} />
             ))}
-          </FaixaMetricas>
+          </section>
           <div className="mt-6">
             <Recolhivel id="mais-perguntas" titulo="Outras perguntas do dia a dia" dica="Nove perguntas comuns e a página que responde a cada uma">
               <ul className="grid gap-x-10 gap-y-5 md:grid-cols-2">

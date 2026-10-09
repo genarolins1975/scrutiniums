@@ -124,7 +124,7 @@ export default function PerfilHorarioPage() {
           rotulo="Carga · MMGD e perfil horário"
           siglas={["MWmed", "MMGD", "SIN", "ONS", "CCEE"]}
           titulo={perguntaPainel("p026")}
-          lead="A que horas a carga do sistema chega ao pico e quanto dela o ONS estima como micro e minigeração distribuída (MMGD). O ONS publica dois produtos de carga com definições diferentes, e esta página nunca soma nem subtrai um do outro."
+          lead="A que horas a carga chega ao pico e quanto dela o ONS estima como micro e minigeração distribuída (MMGD). Os dois produtos de carga do ONS têm definições diferentes."
           recorte={`hora a hora até ${dataBR(p.ultimo_dia)} · SIN e subsistemas · MWmed e %`}
           fonte="ONS, Curva de Carga Horária e Carga de Energia Verificada"
           referencia={

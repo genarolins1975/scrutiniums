@@ -45,9 +45,6 @@ export function PerdasDistribuicao({ titulo, medida, classes, faixa, periodo, es
         <p id={`${uid}-t`} data-titulo-grafico="" className="text-sm font-medium text-carvao">
           {titulo}
         </p>
-        <p className="mt-0.5 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-          Cada barra conta as distribuidoras com valor comparável cuja medida cai na faixa. As faixas são fixas e as mesmas do mapa e da tabela; cada faixa inclui o limite inferior.
-        </p>
       </figcaption>
 
       <ol aria-label={`Distribuidoras por faixa de ${medida.rotulo.toLowerCase()}, em ${medida.unidade}`} className="space-y-1.5">
@@ -124,7 +121,8 @@ export function PerdasDistribuicao({ titulo, medida, classes, faixa, periodo, es
         </dl>
       )}
       <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-        Os extremos são os valores observados no período, não metas nem classificação de desempenho. A mediana é simples entre as distribuidoras, sem ponderar pelo tamanho, e não é o agregado das concessionárias.
+        Cada barra conta as distribuidoras com valor comparável cuja medida cai na faixa; as faixas são fixas, as mesmas do mapa e da tabela, e cada faixa inclui o limite inferior. Os extremos são os valores observados no
+        período, não metas nem classificação de desempenho. A mediana é simples entre as distribuidoras, sem ponderar pelo tamanho, e não é o agregado das concessionárias.
       </p>
 
       <details className="text-xs">

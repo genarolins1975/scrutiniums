@@ -361,7 +361,7 @@ export function CargaNivel({
         titulo="E no ano, a carga média muda?"
         lead="Média de cada ano e acumulado do ano até o último dia publicado, contra o mesmo período 52 semanas antes (mesmos dias da semana)."
       >
-        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p025-acumulado">
+        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p025-acumulado" data-resposta-depois="">
           {respostaAcumulado(p.acumulado_ano, sm)}
         </p>
         <GraficoBarras

@@ -229,7 +229,7 @@ export function CargaClima({
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+      <div className="grid gap-y-4">
         <RespostaCurta id="p027" vivo veredito={vereditoClima(d, p, sm)}>
           {respostaClima(p, sm)}
         </RespostaCurta>

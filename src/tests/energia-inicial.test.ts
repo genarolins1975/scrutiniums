@@ -11,7 +11,7 @@ import Home from "@/app/setor-eletrico/page";
 import { lerCaminho } from "@/lib/energia/carregaJson";
 import { sinaisDaInicial, sinalAgua, sinalConta, sinalExpansao, sinalPerdas, sinalPld, sinalQualidade, universoPerdas, type SinalDisponivel, type SinalHome } from "@/lib/energia/home-sinais";
 import { linhasAtualidade } from "@/lib/energia/home";
-import { CARTOES, CAMINHOS_INTENCAO, ID_SINAIS, NOS_MAPA, PERGUNTAS_COTIDIANAS, PERGUNTAS_PRIORITARIAS, TRANSVERSAIS, TRILHAS } from "@/lib/energia/mapa";
+import { CARTOES, CAMINHOS_INTENCAO, ID_SINAIS, LIGACOES, NOS_MAPA, PERGUNTAS_COTIDIANAS, PERGUNTAS_PRIORITARIAS, TRANSVERSAIS, TRILHAS } from "@/lib/energia/mapa";
 import { DESTINOS_NAVEGACAO, destino } from "@/lib/energia/navegacao";
 import { ANCORAS_VISAO_GERAL } from "@/lib/energia/mapa";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
@@ -370,13 +370,22 @@ describe("a página renderizada", () => {
 
   it("o mapa conceitual está à vista (desenho no desktop, versão em texto no celular), com os tipos de ligação e 'O que o mapa não diz' junto", () => {
     const mapa = secao("mapa-conceitual").html;
-    expect(mapa).not.toMatch(/<details/);
-    expect(mapa).toContain("O mapa em texto");
-    expect(mapa).toContain("O que o mapa não diz");
-    for (const f of ["Caminho físico", "Coordenação da operação", "Relações econômicas", "Experiência das pessoas"]) expect(texto(mapa), f).toContain(f);
-    for (const n of NOS_MAPA) expect(texto(mapa), n.id).toContain(n.titulo);
-    // cada ligação aparece uma vez na versão em texto (no elo de onde parte), com o tipo
-    for (const t of ["fluxo físico", "decisão de operação", "regra de mercado", "componente de custo", "associação analítica"]) expect(texto(mapa), t).toContain(t);
+    // o sistema inteiro não está num acordeão: o que fica fora dos blocos recolhíveis já traz o desenho, as faixas, os elos, as ligações e os tipos
+    const aVista = mapa.replace(/<details[\s\S]*?<\/details>/g, "");
+    expect(aVista).toContain('<svg viewBox="0 0 1000 680"');
+    expect(texto(aVista)).toContain("O mapa em texto");
+    expect(texto(aVista)).toContain("O que o mapa não diz");
+    for (const f of ["Caminho físico", "Coordenação da operação", "Relações econômicas", "Experiência das pessoas"]) expect(texto(aVista), f).toContain(f);
+    for (const n of NOS_MAPA) {
+      expect(texto(aVista), n.id).toContain(n.titulo);
+      expect(texto(aVista), n.id).toContain(n.curto);
+    }
+    // cada ligação aparece uma vez na versão em texto (no elo de onde parte), com o tipo, à vista
+    for (const l of LIGACOES) expect(texto(aVista), `${l.de} para ${l.para}`).toContain(l.texto);
+    for (const t of ["fluxo físico", "decisão de operação", "regra de mercado", "componente de custo", "associação analítica"]) expect(texto(aVista), t).toContain(t);
+    // a explicação longa de cada elo está no HTML, num bloco recolhível do próprio elo
+    for (const n of NOS_MAPA) expect(texto(mapa), n.id).toContain(n.explicacao);
+    expect(mapa.match(/<details/g)).toHaveLength(NOS_MAPA.length);
   });
 
   it("o que saiu do fluxo principal continua no HTML, em blocos recolhíveis, com todos os links", () => {

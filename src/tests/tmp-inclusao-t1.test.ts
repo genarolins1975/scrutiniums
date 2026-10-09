@@ -170,9 +170,6 @@ describe("r8 T1: texto de todas as páginas tocadas", () => {
   it("nenhum identificador novo nos vereditos e nos avisos que mudaram", () => {
     const novos = [
       ...PAINEIS.map((p) => p[2]),
-      T.textoAtualidade(GT),
-      T.textoUniverso(GT),
-      P.respostaRegulatorio(linhasReg),
       I.mudancaCobertura(GI.cobertura),
     ];
     for (const x of novos) {

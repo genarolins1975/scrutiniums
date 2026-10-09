@@ -100,16 +100,15 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte, recorte,
 
   return (
     <div className="space-y-5">
-      <div className="grid gap-x-10 gap-y-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-        <RespostaCurta id="p047" vivo veredito={vereditoTarifa(dataReferencia, resumo, vigentes, perfil)}>
-          {resposta}
-        </RespostaCurta>
-        <ContaEscolha emLinha legenda="Perfil de consumo" opcoes={OPCOES_PERFIL} valor={v.perfil} onEscolher={(p) => definir({ perfil: p })} />
-      </div>
-
       <ContaReferencias
         referencias={referencias}
         destaques={destaques}
+        controle={<ContaEscolha emLinha legenda="Perfil de consumo" opcoes={OPCOES_PERFIL} valor={v.perfil} onEscolher={(p) => definir({ perfil: p })} />}
+        resposta={
+          <RespostaCurta id="p047" vivo veredito={vereditoTarifa(dataReferencia, resumo, vigentes, perfil)}>
+            {resposta}
+          </RespostaCurta>
+        }
         seletor={
           <ContaLista rotulo="Distribuidora em destaque" opcoes={opcoesDistribuidora} valor={naRanking && destaque ? destaque : ""} onEscolher={(id) => selecionar(id || null)} />
         }
