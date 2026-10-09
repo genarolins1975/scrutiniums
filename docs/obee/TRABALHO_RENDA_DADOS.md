@@ -98,3 +98,33 @@ No SIDRA, `-` representa zero absoluto; `...`, `..` e `X` permanecem indisponív
 Os testes verificam hashes, unicidade de chaves, referências, ausência sem substituição, integridade do CSV, saldo formal calculado contra o SGS e contagens de registros e códigos dos cursos. A revisão independente deve também reconciliar observações aos originais e avaliar universos, filtros e apresentações.
 
 Não há dados publicados nesta entrega sobre trajetórias individuais ou mobilidade longitudinal, colocação pelo Sine, vagas abertas, filas de atendimento ou avaliação causal de qualificação. Cursos autorizados, famílias cadastradas, despesa municipal e contexto do mercado de trabalho são dimensões diferentes e não recebem uma nota composta de eficiência.
+
+## Distribuição canônica e materialização do snapshot
+
+A versão aprovada de `snapshot.json` é distribuída também como `snapshot.payload.gz.b64`: gzip determinístico (`mtime=0`), codificado em base64 e quebrado em linhas de 76 caracteres. Isso permite transportar o conteúdo integral por editores com limite de tamanho, sem simplificar, truncar ou recalcular os dados.
+
+`scripts/materializar-trabalho-renda.mjs` decodifica o payload, descomprime o gzip e confere o SHA-256 dos bytes JSON contra a constante da versão aprovada. Somente depois da validação escreve `snapshot.json`, de modo atômico e byte a byte. A versão desta entrega tem 6.593.631 bytes e SHA-256 `1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a`.
+
+O arquivo JSON legado permanece versionado temporariamente. O payload compacto é a fonte canônica na materialização; payload ausente, inválido ou com hash incompatível interrompe o processo, sem recorrer ao JSON antigo. Os hooks `predev` e `prebuild` executam o materializador no início de `scripts/minify-obs.mjs`; `pretest` também o executa antes de `npm test`. Em execução direta do Vitest, materializar primeiro:
+
+```sh
+node scripts/materializar-trabalho-renda.mjs
+npx vitest run src/tests/trabalho-renda-dados.test.ts
+```
+
+Após uma captura nova revisada e aprovada, atualizar o payload a partir do JSON completo:
+
+```sh
+python3 - <<'PY'
+from pathlib import Path
+import base64, gzip, hashlib, textwrap
+snapshot = Path('public/eficiencia/trabalho-renda/snapshot.json').read_bytes()
+encoded = base64.b64encode(gzip.compress(snapshot, mtime=0)).decode('ascii')
+Path('public/eficiencia/trabalho-renda/snapshot.payload.gz.b64').write_text(
+    '\n'.join(textwrap.wrap(encoded, 76)) + '\n', encoding='ascii'
+)
+print(hashlib.sha256(snapshot).hexdigest())
+PY
+```
+
+Atualizar a constante `SHA256_SNAPSHOT` do materializador com o hash dos bytes aprovados, revisar os dois arquivos conjuntamente e executar a verificação novamente. Sem essa atualização explícita, o materializador rejeita uma nova versão. Hash do payload comprimido não substitui o hash do JSON descomprimido.
