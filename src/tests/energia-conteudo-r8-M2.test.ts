@@ -218,7 +218,8 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
     expect(e).not.toMatch(/silver principal|sintese\.json|energia-0\.1\.0|685bb4bc29fd|aneel_scs|\bhoje\b/);
     // em Analisar o código volta
     expect(texto(html)).toContain("código ear_faixa");
-    expect(html).toMatch(/data-nivel="analisar"[^>]*>\s*P004/);
+    // o código do painel (P004) é nome interno: nenhum nível o mostra mais
+    expect(html).not.toMatch(/data-nivel="analisar"[^>]*>\s*P004/);
     expect(html).toContain("685bb4bc29fd");
   });
 
@@ -417,17 +418,17 @@ describe("Página inicial: contagens de distribuidoras (123, 102, 51 e 49), clas
   });
 
   const h = pagina.home();
-  it("os seletores listam só quem tem dado no ano e dizem quantas são; as extintas e as siglas repetidas saem", () => {
+  it("o seletor único lista só quem tem dado em alguma das três páginas e diz quantas são em cada uma; as extintas e as siglas repetidas saem", () => {
     const t = texto(h);
-    // a contagem e o ano seguem à vista, agora no rótulo do seletor (a opção padrão ficou curta para caber em 390 px)
-    expect(t).toContain("Sua distribuidora em Perdas (103 com dado de 2025)");
-    expect(t).toContain("Sua distribuidora em Qualidade (102 com dado de 2025)");
+    // as contagens seguem à vista, na frase sob o seletor: a da Qualidade fecha com os 98 da Visão geral e põe à parte os 4 de parte do ano
+    expect(t).toContain("Perdas: 103 com dado de 2025.");
+    expect(t).toContain("Qualidade: 98 com DEC anual de 2025, mais 4 com dado de parte do ano e sem DEC anual.");
+    expect(t).toContain("Conta de luz: 81 com tarifa em vigor.");
     expect(t).not.toContain("com dados)");
-    // CELESC, RGE e CPFL Santa Cruz aparecem uma vez em cada seletor
-    for (const s of ["CELESC (", "RGE (", "CPFL Santa Cruz ("]) {
-      const blocos = h.split('<option value="">').slice(1).map((b) => b.slice(0, b.indexOf("</select>")));
-      for (const b of blocos) expect((b.match(new RegExp(s.replace("(", "\\("), "g")) ?? []).length, s).toBeLessThanOrEqual(1);
-    }
+    expect(h.match(/<select/g)).toHaveLength(1);
+    // CELESC, RGE e CPFL Santa Cruz aparecem no máximo uma vez no seletor
+    const seletor = h.slice(h.indexOf("<select"), h.indexOf("</select>"));
+    for (const s of ["CELESC (", "RGE (", "CPFL Santa Cruz ("]) expect((seletor.match(new RegExp(`>${s.replace("(", "\\(")}`, "g")) ?? []).length, s).toBeLessThanOrEqual(1);
     expect(texto(h)).not.toMatch(/DISTRIBUICAO/);
   });
 

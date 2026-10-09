@@ -2,11 +2,11 @@
  * Página inicial do Observatório do Setor Elétrico: a porta de entrada (seção 6 da
  * especificação, painéis P001 e P003). Este arquivo é o conteúdo editorial da inicial:
  *
- *  - os quatro caminhos de intenção do alto da página e as seis perguntas prioritárias
- *    (a medida de cada uma vem de home-sinais.ts, nunca daqui);
+ *  - os cinco caminhos de intenção do alto da página (o quinto leva ao mapa) e as seis perguntas prioritárias, mais as duas de
+ *    acesso e desigualdade (a medida de cada uma vem de home-sinais.ts, nunca daqui);
  *  - o mapa conceitual (sete elos em quatro faixas, ligações tipificadas e temas transversais);
- *  - o cartão de cada destino (para que serve, o que se encontra, recorte), que fica num
- *    bloco recolhível depois do índice completo;
+ *  - o cartão de cada destino (para que serve, o que se encontra, recorte), que abre dentro do
+ *    próprio item do índice completo;
  *  - as perguntas do dia a dia (as nove da especificação) e as trilhas por interesse;
  *  - as fontes principais de cada tema, pelo id do conjunto em publicacao.json.
  *
@@ -19,7 +19,7 @@
 // Alto da página: quatro caminhos de intenção e seis perguntas prioritárias
 // ---------------------------------------------------------------------------
 
-export type IdCaminho = "acompanhar" | "regiao" | "aprender" | "conferir";
+export type IdCaminho = "acompanhar" | "regiao" | "sistema" | "aprender" | "conferir";
 
 export type CaminhoIntencao = {
   id: IdCaminho;
@@ -27,14 +27,20 @@ export type CaminhoIntencao = {
   titulo: string;
   /** Uma frase sobre o que a página de destino entrega. */
   descricao: string;
-  /** Slugs de DESTINOS_NAVEGACAO: o primeiro é o link do título; os demais viram links de apoio. */
+  /** Slugs de DESTINOS_NAVEGACAO: o primeiro é o link do título; os demais viram links de apoio. Vazio quando o caminho é uma seção desta própria página. */
   slugs: string[];
+  /** Âncora desta página para onde o título leva, quando o caminho não é outra página (o mapa de como o sistema se liga). */
+  ancora?: string;
 };
 
-/** Os quatro caminhos do hero: acompanhar o sistema, explorar uma região, aprender e conferir ou baixar. */
+/**
+ * Os cinco caminhos do hero: acompanhar o sistema, explorar uma região, entender como o sistema se liga (o mapa, nesta página), aprender e
+ * conferir ou baixar. O mapa é o atalho de quem quer o caminho da geração ao consumo sem rolar pelas seis perguntas.
+ */
 export const CAMINHOS_INTENCAO: CaminhoIntencao[] = [
   { id: "acompanhar", titulo: "Acompanhar o sistema", descricao: "Preço, água, geração, carga e rede, cada um com a sua data.", slugs: ["visao-geral"] },
   { id: "regiao", titulo: "Explorar uma região", descricao: "Submercado, distribuidora, município e usinas no mesmo mapa, cada número no seu grão.", slugs: ["territorio"] },
+  { id: "sistema", titulo: "Entender como o sistema se liga", descricao: "Sete elos, da água à vida das pessoas, no mapa logo abaixo das seis perguntas.", slugs: [], ancora: "#mapa-conceitual" },
   { id: "aprender", titulo: "Aprender um conceito", descricao: "Verbetes com a definição da fonte oficial e o painel onde cada conceito aparece.", slugs: ["aprenda"] },
   { id: "conferir", titulo: "Conferir ou baixar os dados", descricao: "A fonte, o arquivo e o cálculo de cada número, e os conjuntos para baixar.", slugs: ["dados", "metodologia"] },
 ];
@@ -46,52 +52,90 @@ export type IdSinal = (typeof ID_SINAIS)[number];
 export type PerguntaPrioritaria = {
   id: IdSinal;
   pergunta: string;
+  /** Para que serve a medida, em uma frase: o porquê de olhar para ela, sem número e sem juízo. */
+  importa: string;
   /** Slug do destino em DESTINOS_NAVEGACAO (de onde saem o estado e o conceito da pergunta). */
   slug: string;
   /** Painel que aprofunda a medida: o que se faz lá e o endereço, com a âncora do painel. */
   link: { rotulo: string; href: string };
-  /** A pergunta é sobre uma distribuidora: a inicial oferece a escolha e leva a página com ela já selecionada. */
-  porDistribuidora?: "perdas" | "qualidade";
+  /**
+   * A pergunta tem resposta própria por distribuidora (Conta de luz, Qualidade e Perdas): a escolha é uma só, no alto da seção, e o link do
+   * cartão leva a página com ela já selecionada. `rotuloEscolhida` é o texto do link com a escolha feita, com `{sigla}` no lugar da sigla.
+   */
+  porDistribuidora?: { tema: "conta" | "qualidade" | "perdas"; parametro: "d" | "dist"; rotuloEscolhida: string };
 };
 
 export const PERGUNTAS_PRIORITARIAS: PerguntaPrioritaria[] = [
   {
     id: "conta",
     pergunta: "Quanto custa a energia numa residência?",
+    importa: "Para comparar a tarifa que a ANEEL fixa para cada distribuidora, antes de tributos.",
     slug: "conta-de-luz",
     link: { rotulo: "Comparar as tarifas das distribuidoras", href: "/setor-eletrico/conta-de-luz#tarifa" },
+    porDistribuidora: { tema: "conta", parametro: "dist", rotuloEscolhida: "Ver a tarifa de {sigla} em Conta de luz" },
   },
   {
     id: "qualidade",
     pergunta: "Quanto tempo falta energia?",
+    importa: "Para saber quanto tempo, no ano, a unidade consumidora média ficou sem energia.",
     slug: "qualidade",
     link: { rotulo: "Ver a duração e a frequência das interrupções", href: "/setor-eletrico/qualidade#p051" },
-    porDistribuidora: "qualidade",
+    porDistribuidora: { tema: "qualidade", parametro: "dist", rotuloEscolhida: "Ver as interrupções de {sigla} em Qualidade" },
   },
   {
     id: "perdas",
     pergunta: "Quanta energia se perde na distribuição?",
+    importa: "Para ver quanta da energia que entra na rede da distribuidora não chega ao consumidor.",
     slug: "perdas",
     link: { rotulo: "Ver as perdas no mapa das distribuidoras", href: "/setor-eletrico/perdas#painel-mapa" },
-    porDistribuidora: "perdas",
+    porDistribuidora: { tema: "perdas", parametro: "d", rotuloEscolhida: "Ver as perdas de {sigla} em Perdas" },
   },
   {
     id: "agua",
     pergunta: "Quanta energia está armazenada nos reservatórios?",
+    importa: "Para ver quanta água há guardada, em energia, para as hidrelétricas gerarem.",
     slug: "agua-e-clima",
     link: { rotulo: "Comparar cada região com a mediana do dia", href: "/setor-eletrico/agua-e-clima#p017" },
   },
   {
     id: "pld",
     pergunta: "Quanto custa a energia no curto prazo?",
+    importa: "Para ver o preço do dia no mercado em que se liquidam as diferenças de energia.",
     slug: "pld",
     link: { rotulo: "Ver o último dia nos quatro submercados", href: "/setor-eletrico/pld#hoje" },
   },
   {
     id: "expansao",
     pergunta: "O que está sendo construído?",
+    importa: "Para ver as usinas em obra e a potência que a ANEEL autorizou para elas.",
     slug: "expansao",
     link: { rotulo: "Ver a carteira por estágio", href: "/setor-eletrico/expansao/carteira#p040" },
+  },
+];
+
+/** Os dois números de acesso e desigualdade, que a inicial mostra abaixo das seis perguntas em vez de só apontar para a página de Inclusão. */
+export const ID_SINAIS_INCLUSAO = ["tarifa-social", "acesso"] as const;
+export type IdSinalInclusao = (typeof ID_SINAIS_INCLUSAO)[number];
+
+export type PerguntaDeInclusao = {
+  id: IdSinalInclusao;
+  pergunta: string;
+  importa: string;
+  link: { rotulo: string; href: string };
+};
+
+export const PERGUNTAS_DE_INCLUSAO: PerguntaDeInclusao[] = [
+  {
+    id: "tarifa-social",
+    pergunta: "Quantas unidades consumidoras têm desconto na conta?",
+    importa: "Para ver o alcance da Tarifa Social, o desconto para famílias de baixa renda.",
+    link: { rotulo: "Ver a Tarifa Social por distribuidora e estado", href: "/setor-eletrico/inclusao-energetica/tarifa-social#p059" },
+  },
+  {
+    id: "acesso",
+    pergunta: "Quantos domicílios ainda estão sem energia elétrica?",
+    importa: "Para ver quem ainda não tem acesso à rede ou a outra fonte de energia em casa.",
+    link: { rotulo: "Ver o acesso à energia por região e situação", href: "/setor-eletrico/inclusao-energetica/acesso#p062" },
   },
 ];
 
@@ -135,15 +179,18 @@ export type IdPagina = keyof typeof PAGINAS_MAPA;
 // Seção B: mapa conceitual
 // ---------------------------------------------------------------------------
 
-/** Tipo de ligação entre dois elos (seção 6.2 B). A forma da linha muda com o tipo, não só a cor. */
+/** Tipo de ligação entre dois elos (seção 6.2 B). Cada tipo muda a forma da linha (traço e espessura) e a da ponta; a cor nunca é o único sinal. */
 export type TipoLigacao = "fisico" | "operacao" | "mercado" | "custo" | "associacao";
 
-export const TIPOS_LIGACAO: Record<TipoLigacao, { rotulo: string; definicao: string; traco: string }> = {
-  fisico: { rotulo: "Fluxo físico", definicao: "a energia, a água ou o combustível passa de um elo ao outro.", traco: "" },
-  operacao: { rotulo: "Decisão de operação", definicao: "o ONS usa a informação para programar e despachar o sistema.", traco: "9 5" },
-  mercado: { rotulo: "Regra de mercado", definicao: "uma regra de comercialização transforma uma grandeza em valor a liquidar.", traco: "2 5 9 5" },
-  custo: { rotulo: "Componente de custo", definicao: "o custo de um elo vira parcela de uma tarifa ou de uma conta, por regra regulatória.", traco: "2 4" },
-  associacao: { rotulo: "Associação analítica", definicao: "as grandezas costumam variar juntas; a associação não prova causa.", traco: "14 6" },
+/** Forma da ponta da ligação: seta cheia, seta aberta, losango, quadrado ou círculo nas duas pontas (a associação não tem sentido). */
+export type PontaLigacao = "seta" | "seta-aberta" | "losango" | "quadrado" | "circulo";
+
+export const TIPOS_LIGACAO: Record<TipoLigacao, { rotulo: string; definicao: string; traco: string; espessura: number; ponta: PontaLigacao }> = {
+  fisico: { rotulo: "Fluxo físico", definicao: "a energia, a água ou o combustível passa de um elo ao outro.", traco: "", espessura: 3.2, ponta: "seta" },
+  operacao: { rotulo: "Decisão de operação", definicao: "o ONS usa a informação para programar e despachar o sistema.", traco: "10 6", espessura: 2, ponta: "seta-aberta" },
+  mercado: { rotulo: "Regra de mercado", definicao: "uma regra de comercialização transforma uma grandeza em valor a liquidar.", traco: "12 4 2 4", espessura: 2, ponta: "losango" },
+  custo: { rotulo: "Componente de custo", definicao: "o custo de um elo vira parcela de uma tarifa ou de uma conta, por regra regulatória.", traco: "1.5 4.5", espessura: 3, ponta: "quadrado" },
+  associacao: { rotulo: "Associação analítica", definicao: "as grandezas costumam variar juntas; a associação não prova causa.", traco: "3 3", espessura: 1.6, ponta: "circulo" },
 };
 
 export type IdNo = "recursos" | "geracao" | "rede" | "consumo" | "operacao" | "contratos" | "pessoas";
@@ -850,15 +897,16 @@ export const ANCORAS_VISAO_GERAL = [
 ];
 
 /**
- * Ids das sete seções da inicial, na ordem em que aparecem: o hero com a busca e os quatro caminhos, as seis perguntas, o índice
- * completo, o mapa conceitual, as trilhas, "Como ler e conferir" e as fontes com a atualidade. Outras páginas apontam para estes ids
- * (por exemplo, o Aprenda leva a #mapa-conceitual), e o link antigo de qualquer um deles continua abrindo a seção.
+ * Ids das sete seções da inicial, na ordem em que aparecem: o hero com a busca e os caminhos, as seis perguntas, o mapa conceitual (a resposta
+ * a "como o sistema se liga", antes do índice para não ficar telas abaixo), o índice completo, as trilhas, "Como ler e conferir" e as fontes com
+ * a atualidade. Outras páginas apontam para estes ids (por exemplo, o Aprenda leva a #mapa-conceitual), e o link antigo de qualquer um deles
+ * continua abrindo a seção.
  */
 export const SECOES_HOME = [
   { id: "proposito", rotulo: "Para que serve" },
   { id: "perguntas", rotulo: "Seis perguntas para começar" },
-  { id: "destinos", rotulo: "Todas as páginas, por tema" },
   { id: "mapa-conceitual", rotulo: "Como as partes se ligam" },
+  { id: "destinos", rotulo: "Todas as páginas, por tema" },
   { id: "trilhas", rotulo: "Trilhas de leitura" },
   { id: "como-confiar", rotulo: "Como ler e conferir" },
   { id: "aprofundar", rotulo: "Fontes e atualidade" },

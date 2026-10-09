@@ -10,6 +10,7 @@ import {
   estadoDoDestino,
   indiceBusca,
   linhasAtualidade,
+  marcaDoGrupo,
   nomeDoPeriodoEmCurso,
   periodoLegivel,
   refinosDePeriodo,
@@ -86,10 +87,11 @@ function confereDestino(href: string) {
 }
 
 describe("página inicial: mapa didático (P001)", () => {
-  it("tem as sete âncoras (as que outras páginas usam), a proposta, a busca e os quatro caminhos, e mantém a Visão geral numa página própria", () => {
+  it("tem as sete âncoras (as que outras páginas usam), a proposta, a busca e os cinco caminhos, e mantém a Visão geral numa página própria", () => {
     const t = ler(HOME);
     // a ordem em que as seções aparecem; cada id é a âncora que outras páginas e links antigos usam
-    expect(SECOES_HOME.map((s) => s.id)).toEqual(["proposito", "perguntas", "destinos", "mapa-conceitual", "trilhas", "como-confiar", "aprofundar"]);
+    // o mapa vem logo depois das seis perguntas, antes do índice: a resposta a "como o sistema se liga" não fica telas abaixo
+    expect(SECOES_HOME.map((s) => s.id)).toEqual(["proposito", "perguntas", "mapa-conceitual", "destinos", "trilhas", "como-confiar", "aprofundar"]);
     for (const s of SECOES_HOME) expect(t, s.id).toContain(`id="${s.id}"`);
     const posicoes = SECOES_HOME.map((s) => t.indexOf(`id="${s.id}"`));
     expect([...posicoes].sort((a, b) => a - b)).toEqual(posicoes);
@@ -104,9 +106,9 @@ describe("página inicial: mapa didático (P001)", () => {
     expect(ler("src/app/setor-eletrico/aprenda/trilhas/page.tsx")).toContain("/setor-eletrico#mapa-conceitual");
   });
 
-  it("os quatro caminhos de intenção levam a Visão geral, Território, Aprenda, Dados e Metodologia, cada um com link publicado", () => {
-    expect(CAMINHOS_INTENCAO.map((c) => c.id)).toEqual(["acompanhar", "regiao", "aprender", "conferir"]);
-    expect(CAMINHOS_INTENCAO.map((c) => c.slugs)).toEqual([["visao-geral"], ["territorio"], ["aprenda"], ["dados", "metodologia"]]);
+  it("os cinco caminhos de intenção levam a Visão geral, Território, o mapa desta página, Aprenda, Dados e Metodologia, cada um com link publicado", () => {
+    expect(CAMINHOS_INTENCAO.map((c) => c.id)).toEqual(["acompanhar", "regiao", "sistema", "aprender", "conferir"]);
+    expect(CAMINHOS_INTENCAO.map((c) => c.slugs)).toEqual([["visao-geral"], ["territorio"], [], ["aprenda"], ["dados", "metodologia"]]);
     for (const c of CAMINHOS_INTENCAO) {
       expect(c.titulo.length, c.id).toBeGreaterThan(10);
       expect(c.descricao.length, c.id).toBeGreaterThan(30);
@@ -116,6 +118,10 @@ describe("página inicial: mapa didático (P001)", () => {
         confereDestino(d!.href);
       }
     }
+    // o caminho do mapa é uma seção desta página, e a âncora existe
+    const sistema = CAMINHOS_INTENCAO.find((c) => c.id === "sistema")!;
+    expect(sistema.ancora).toBe("#mapa-conceitual");
+    expect(ler(HOME)).toContain(`id="${sistema.ancora!.slice(1)}"`);
   });
 
   it("as seis perguntas prioritárias: conta, qualidade, perdas, reservatórios, PLD e expansão, cada uma com destino e âncora que existem", () => {
@@ -128,14 +134,22 @@ describe("página inicial: mapa didático (P001)", () => {
       expect(p.link.href.startsWith(DESTINOS_NAVEGACAO.find((d) => d.slug === p.slug)!.href), p.id).toBe(true);
       confereDestino(p.link.href);
     }
-    // só perdas e qualidade oferecem "sua distribuidora", pelo parâmetro que a página de destino lê
-    expect(PERGUNTAS_PRIORITARIAS.filter((p) => p.porDistribuidora).map((p) => [p.id, p.porDistribuidora])).toEqual([
-      ["qualidade", "qualidade"],
-      ["perdas", "perdas"],
+    // conta, qualidade e perdas oferecem "sua distribuidora", pelo parâmetro que a página de destino lê, com a escolha feita uma vez só
+    expect(PERGUNTAS_PRIORITARIAS.filter((p) => p.porDistribuidora).map((p) => [p.id, p.porDistribuidora!.tema, p.porDistribuidora!.parametro])).toEqual([
+      ["conta", "conta", "dist"],
+      ["qualidade", "qualidade", "dist"],
+      ["perdas", "perdas", "d"],
     ]);
+    for (const p of PERGUNTAS_PRIORITARIAS) {
+      expect(p.importa.length, p.id).toBeGreaterThan(30);
+      if (p.porDistribuidora) expect(p.porDistribuidora.rotuloEscolhida, p.id).toContain("{sigla}");
+    }
+    // a página de Conta de luz lê ?dist= (lista de CNPJ), a de Qualidade também, e a de Perdas lê ?d=
+    expect(ler("src/lib/energia/conta.ts")).toContain('{ param: "dist" }');
     const t = ler(HOME);
-    expect(t).toContain('destino="/setor-eletrico/perdas" parametro="d"');
-    expect(t).toContain('destino="/setor-eletrico/qualidade" parametro="dist"');
+    expect(t).toContain("<SuaDistribuidora");
+    expect(t).toContain("<LinkPorDistribuidora");
+    expect(t).not.toContain("<EscolhaDistribuidora");
   });
 
   it("a inicial não depende de constante de número: os sinais saem de home-sinais.ts e a página só escreve o que recebe", () => {
@@ -395,14 +409,20 @@ describe("busca da página inicial", () => {
     expect(buscar(indice, "perdas").itens.every((i) => i.viaSinonimo === undefined || !normalizarBusca(i.titulo).includes("perda"))).toBe(true);
   });
 
-  it("frase que nenhum item reúne inteira devolve os que têm parte dela, marcados como parciais; sem nada, fica vazio", () => {
+  it("frase que nenhum item reúne inteira devolve os que têm parte dela, marcados como parciais, só a partir de três palavras úteis; sem nada, fica vazio", () => {
     const parcial = buscar(indice, "perdas zzzz qqqq");
     expect(parcial.parcial).toBe(false);
     expect(parcial.total).toBe(0);
-    const dois = buscar(indice, "perdas zzzz");
-    expect(dois.parcial).toBe(true);
-    expect(dois.total).toBeGreaterThan(0);
-    expect(dois.itens.every((i) => normalizarBusca(`${i.titulo} ${(i.sinonimos ?? []).join(" ")}`).includes("perda"))).toBe(true);
+    const tres = buscar(indice, "perdas energia zzzz");
+    expect(tres.parcial).toBe(true);
+    expect(tres.total).toBeGreaterThan(0);
+    // com duas palavras, uma só não basta: "Belo Horizonte" não traz a cooperativa de Novo Horizonte, e a tela aponta para Minha região
+    const comCoop = indiceBusca(DESTINOS_NAVEGACAO, verbetes, [...dist, { slug: "cernovo", sigla: "CERNOVO", nome: "COOPERATIVA DE ELETRIFICACAO NOVO HORIZONTE", cnpj: "00000000000191", ufs: ["SP"] }]);
+    expect(buscar(comCoop, "Novo Horizonte").itens.map((i) => i.href)).toContain("/setor-eletrico/empresas/cernovo");
+    const bh = buscar(comCoop, "Belo Horizonte");
+    expect(bh.itens).toEqual([]);
+    expect(bh.parcial).toBe(false);
+    expect(buscar(indice, "perdas zzzz")).toMatchObject({ itens: [], total: 0, parcial: false });
     // resultado completo nunca é parcial
     expect(buscar(indice, "perdas").parcial).toBe(false);
     // nome de município não está no índice: a busca não inventa, e a tela aponta para Minha região
@@ -612,19 +632,54 @@ describe("índice completo: estado de cada destino e seletor de distribuidora", 
     expect(t).not.toMatch(/todas as páginas publicam/i);
   });
 
-  it("cada seletor lista só quem tem dado no ano do módulo e diz o ano; as extintas ficam de fora", () => {
+  it("o seletor único lista quem tem dado em ao menos uma das três páginas, e cada pergunta sabe de quem tem o dado dela; as extintas ficam de fora", () => {
     const dist = [
-      { cnpj: "1", sigla: "B-D", nome: "B", ufs: ["MG"], perdas: { ano: 2025 }, qualidade: { ano: 2025 } },
-      { cnpj: "2", sigla: "A-D", nome: "A", ufs: ["SP"], perdas: { ano: 2025 }, qualidade: { ano: 2024 } },
-      { cnpj: "3", sigla: "EXT", nome: "Extinta", ufs: ["RS"], perdas: { ano: 2005 }, qualidade: null },
+      { cnpj: "1", sigla: "B-D", nome: "B", ufs: ["MG"], perdas: { ano: 2025 }, qualidade: { ano: 2025, dec: 7.1 }, tarifa: { vigente: true } },
+      { cnpj: "2", sigla: "A-D", nome: "A", ufs: ["SP"], perdas: { ano: 2025 }, qualidade: { ano: 2024, dec: 5 }, tarifa: { vigente: false } },
+      { cnpj: "3", sigla: "EXT", nome: "Extinta", ufs: ["RS"], perdas: { ano: 2005 }, qualidade: null, tarifa: null },
+      { cnpj: "4", sigla: "COOP", nome: "Coop", ufs: ["PR"], perdas: null, qualidade: { ano: 2025, dec: null }, tarifa: null },
     ];
     const e = escolhasDeDistribuidora(dist, 2025);
     expect(e.anoPerdas).toBe(2025);
     expect(e.anoQualidade).toBe(2025);
     expect(e.opcoesPerdas.map((o) => o.sigla)).toEqual(["A-D", "B-D"]);
-    expect(e.opcoesQualidade.map((o) => o.sigla)).toEqual(["B-D"]);
-    // sem ano de perdas (gold indisponível) nenhuma distribuidora entra: a lista nunca é preenchida por outro ano
-    expect(escolhasDeDistribuidora(dist, null).opcoesPerdas).toEqual([]);
+    expect(e.opcoesQualidade.map((o) => o.sigla)).toEqual(["B-D", "COOP"]);
+    expect(e.opcoesConta.map((o) => o.sigla)).toEqual(["B-D"]);
+    expect(e.opcoes.map((o) => o.sigla)).toEqual(["A-D", "B-D", "COOP"]);
+    // quem enviou só parte do ano (DEC nulo) fica à parte, sem DEC anual: é a diferença entre 102 e 98 distribuidoras na Qualidade
+    expect(e.comDado).toEqual({ conta: ["1"], qualidade: ["1"], qualidadeParcial: ["4"], perdas: ["1", "2"] });
+    // sem ano de perdas (gold indisponível) nenhuma distribuidora entra por perdas: a lista nunca é preenchida por outro ano
+    const sem = escolhasDeDistribuidora(dist, null);
+    expect(sem.opcoesPerdas).toEqual([]);
+    expect(sem.comDado.perdas).toEqual([]);
+  });
+
+  it("a marca do grupo controlador vira nome a mais da distribuidora na busca, só quando o grupo tem mais de uma", () => {
+    expect(marcaDoGrupo("ENEL BRASIL S.A")).toBe("Enel Brasil");
+    expect(marcaDoGrupo("ENERGISA S/A")).toBe("Energisa");
+    expect(marcaDoGrupo("EDP - ENERGIAS DO BRASIL S.A.")).toBe("EDP Energias do Brasil");
+    expect(marcaDoGrupo("State Grid Brazil Power Participações S.A.")).toBe("State Grid Brazil Power");
+    expect(marcaDoGrupo("LIGHT S.A. - EM RECUPERAÇÃO JUDICIAL")).toBe("Light");
+    for (const governo of ["ESTADO DE SANTA CATARINA", "DISTRITO FEDERAL", "PREFEITURA MUNICIPAL DE CAMPO LARGO", "MUNICIPIO DE CARAZINHO"]) expect(marcaDoGrupo(governo), governo).toBeNull();
+    expect(marcaDoGrupo(null)).toBeNull();
+    const verbetes: never[] = [];
+    const d = (slug: string, sigla: string, nome: string, grupo: string | null, cnpj: string) => ({ slug, sigla, nome, cnpj, ufs: ["SP"], grupo });
+    const indice = indiceBusca(DESTINOS_NAVEGACAO, verbetes, [
+      d("eletropaulo", "ELETROPAULO", "ELETROPAULO METROPOLITANA ELETRICIDADE DE SAO PAULO S.A.", "ENEL BRASIL S.A", "61695227000193"),
+      d("enel-ce", "ENEL CE", "COMPANHIA ENERGETICA DO CEARA", "ENEL BRASIL S.A", "07047251000170"),
+      d("sozinha", "SOZ", "SOZINHA DISTRIBUIDORA", "SOZINHA S.A", "00000000000272"),
+    ]);
+    // "enel" acha a ELETROPAULO pelo grupo, e a tela mostra o termo que casou; a que já tem ENEL no nome não precisa dele
+    const r = buscar(indice, "enel");
+    expect(r.itens.map((i) => i.href)).toEqual(expect.arrayContaining(["/setor-eletrico/empresas/eletropaulo", "/setor-eletrico/empresas/enel-ce"]));
+    expect(r.itens.find((i) => i.href.endsWith("/eletropaulo"))!.viaSinonimo).toBe("grupo Enel Brasil");
+    expect(r.itens.find((i) => i.href.endsWith("/enel-ce"))!.viaSinonimo).toBeUndefined();
+    // grupo de uma distribuidora só não vira nome a mais
+    expect(indice.find((i) => i.href.endsWith("/sozinha"))!.sinonimos).toBeUndefined();
+    // "racionamento" leva ao armazenamento dos reservatórios e aos cortes de carga, onde as páginas dizem o que não medem
+    const rac = buscar(indiceBusca(DESTINOS_NAVEGACAO, verbetes, []), "racionamento").itens.map((i) => i.href);
+    expect(rac).toContain("/setor-eletrico/agua-e-clima");
+    expect(rac).toContain("/setor-eletrico/rede/restricoes#p030");
   });
 });
 

@@ -11,7 +11,8 @@
  *    procura "congestionamento" chega aos fluxos e às diferenças de preço, onde está escrito que o observatório não classifica
  *    hora congestionada;
  *  - nenhum termo afirma uma causa nem dá o assunto por medido: "apagão" leva às interrupções e aos cortes de carga que o
- *    observatório mostra, e a página diz o que cada um mede.
+ *    observatório mostra, e a página diz o que cada um mede; "racionamento" leva ao armazenamento dos reservatórios e aos cortes de carga
+ *    pedidos pelo ONS, e as duas páginas dizem que o percentual não mede risco de desabastecimento.
  */
 export type GrupoDeSinonimos = {
   /** Endereços exatos dos itens do índice que respondem ao assunto. */
@@ -47,7 +48,7 @@ export const SINONIMOS_BUSCA: readonly GrupoDeSinonimos[] = [
   // água
   {
     alvos: [`${S}/agua-e-clima`, `${S}/agua-e-clima#p017`],
-    termos: ["nível dos reservatórios", "nível das represas", "represas", "barragens", "seca", "crise hídrica", "falta de chuva", "água das usinas"],
+    termos: ["nível dos reservatórios", "nível das represas", "represas", "barragens", "seca", "crise hídrica", "falta de chuva", "água das usinas", "racionamento", "racionamento de energia"],
   },
   // preço de curto prazo
   { alvos: [`${S}/pld`, `${S}/pld#hoje`, `${S}/aprenda/pld`], termos: ["preço da energia", "preço da energia no mercado", "preço spot", "preço no atacado", "preço por hora", "preço horário"] },
@@ -57,7 +58,7 @@ export const SINONIMOS_BUSCA: readonly GrupoDeSinonimos[] = [
     alvos: [`${S}/rede`, `${S}/rede#p028`, `${S}/pld/diferencas-regionais#p012`],
     termos: ["congestionamento", "congestionamento de linhas", "gargalo na transmissão", "linhas lotadas", "limite de transmissão"],
   },
-  { alvos: [`${S}/rede/restricoes#p030`], termos: ["apagão", "blecaute", "corte de carga"] },
+  { alvos: [`${S}/rede/restricoes#p030`], termos: ["apagão", "blecaute", "corte de carga", "racionamento"] },
   // carga
   { alvos: [`${S}/carga`, `${S}/carga#p025`], termos: ["consumo de energia", "consumo do país", "consumo do Brasil", "demanda de energia"] },
   { alvos: [`${S}/carga/clima-e-calendario#p027`], termos: ["calor e consumo", "temperatura e consumo", "feriado e consumo"] },

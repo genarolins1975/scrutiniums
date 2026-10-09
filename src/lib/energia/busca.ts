@@ -17,6 +17,8 @@
  *
  * Se nenhum item tem todas as palavras, a busca devolve os que têm parte delas no título ou nos
  * sinônimos e diz que o resultado é parcial: quem escreve uma frase inteira não fica com a tela vazia.
+ * Só frases de três palavras úteis ou mais entram nesse caso: com duas, a metade é uma palavra só
+ * ("Belo Horizonte" trazia a cooperativa de Novo Horizonte), e o nome de lugar vai para Minha região.
  */
 export type ItemBusca = {
   tipo: "Página" | "Painel" | "Pergunta" | "Conceito" | "Distribuidora";
@@ -78,6 +80,9 @@ const PONTOS = {
 function formasDe(p: string): string[] {
   return p.length > 3 && p.endsWith("s") ? [p, p.slice(0, -1)] : [p];
 }
+
+/** Quantas palavras úteis uma frase precisa ter para a busca devolver resultado parcial. */
+const PALAVRAS_PARA_PARCIAL = 3;
 
 /** Palavra de até três letras: quase sempre uma sigla (DEC, EAR, ONS, PLD). Casa como palavra inteira, para "dec" não achar "declarados". */
 const CURTA = 3;
@@ -170,8 +175,8 @@ export function buscar(itens: readonly ItemBusca[], consulta: string, limite = L
     const achados = rodar(prefixoCurto);
     const completos = achados.filter((a) => a.ausentes === 0).sort(ordena);
     if (completos.length) return { itens: completos.slice(0, limite).map(paraResultado), total: completos.length, parcial: false };
-    // nenhum item tem todas as palavras: ficam os que têm ao menos metade delas no título ou nos sinônimos
-    if (palavras.length > 1) {
+    // nenhum item tem todas as palavras: ficam os que têm ao menos metade delas no título ou nos sinônimos, e só para frases de três palavras ou mais
+    if (palavras.length >= PALAVRAS_PARA_PARCIAL) {
       const parciais = achados.filter((a) => a.fortes >= Math.ceil(palavras.length / 2)).sort((a, b) => b.fortes - a.fortes || ordena(a, b));
       if (parciais.length) return { itens: parciais.slice(0, limite).map(paraResultado), total: parciais.length, parcial: true };
     }

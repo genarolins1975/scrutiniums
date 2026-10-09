@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import type { IdNo, TipoLigacao } from "@/lib/energia/mapa";
+import type { IdNo, PontaLigacao, TipoLigacao } from "@/lib/energia/mapa";
 
 /**
  * Mapa conceitual da página inicial (seção 6.2 B): sete elos em cartões e as
- * ligações entre eles, cada uma com o traço do seu tipo (fluxo físico, decisão de
- * operação, regra de mercado, componente de custo, associação analítica). O
+ * ligações entre eles, cada uma com a forma do seu tipo (fluxo físico, decisão de
+ * operação, regra de mercado, componente de custo, associação analítica): o traço, a
+ * espessura e a ponta mudam de um tipo para o outro, e a cor nunca é o único sinal. O
  * cartão escolhido por clique, toque ou foco acende as suas ligações e abre a
  * explicação ao lado. Os elos estão em quatro faixas (caminho físico, coordenação
  * da operação, relações econômicas e experiência das pessoas): o nome de cada faixa
@@ -21,7 +22,7 @@ export type NoDiagrama = { id: IdNo; titulo: string; curto: string; faixa: strin
 /** Nome de uma faixa e onde ele fica no diagrama (unidades do viewBox; `alinha` diz de que lado do ponto o texto cresce). */
 export type RotuloFaixa = { texto: string; x: number; y: number; alinha: "esq" | "centro" };
 export type LigacaoDiagrama = { de: IdNo; para: IdNo; tipo: TipoLigacao };
-export type TipoDiagrama = { id: TipoLigacao; rotulo: string; definicao: string; traco: string };
+export type TipoDiagrama = { id: TipoLigacao; rotulo: string; definicao: string; traco: string; espessura: number; ponta: PontaLigacao };
 
 const LARGURA = 1000;
 const ALTURA = 680;
@@ -56,6 +57,35 @@ function caminho(a: { x: number; y: number }, b: { x: number; y: number }): stri
 
 const pct = (v: number, total: number) => `${(100 * v) / total}%`;
 
+/** Ponta de cada tipo de ligação, no viewBox 0 0 10 10 de um marcador: o ponto de ancoragem (refX) é a ponta da forma que toca o cartão. */
+function FormaDaPonta({ ponta }: { ponta: PontaLigacao }) {
+  if (ponta === "seta") return <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />;
+  if (ponta === "seta-aberta") return <path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" />;
+  if (ponta === "losango") return <path d="M 0 5 L 5 0 L 10 5 L 5 10 z" fill="currentColor" />;
+  if (ponta === "quadrado") return <rect x="1" y="1" width="8" height="8" fill="currentColor" />;
+  return <circle cx="5" cy="5" r="4" fill="currentColor" />;
+}
+
+/** A amostra de um tipo na legenda: a linha com o traço e a espessura do tipo e a ponta dele (a associação tem círculo nas duas pontas). */
+function Amostra({ t }: { t: TipoDiagrama }) {
+  const dupla = t.ponta === "circulo";
+  return (
+    <svg width="50" height="14" viewBox="0 0 50 14" aria-hidden="true" focusable="false" className="mt-0.5 shrink-0 text-carvao">
+      <line x1={dupla ? 8 : 1} y1="7" x2="38" y2="7" stroke="currentColor" strokeWidth={t.espessura} strokeDasharray={t.traco || undefined} strokeLinecap={t.traco && t.ponta === "quadrado" ? "round" : "butt"} />
+      {dupla && (
+        <svg x="0" y="2" width="10" height="10" viewBox="0 0 10 10">
+          <FormaDaPonta ponta="circulo" />
+        </svg>
+      )}
+      <svg x="38" y="1" width="12" height="12" viewBox="0 0 10 10">
+        <FormaDaPonta ponta={t.ponta} />
+      </svg>
+    </svg>
+  );
+}
+
+const PONTAS: PontaLigacao[] = ["seta", "seta-aberta", "losango", "quadrado", "circulo"];
+
 export function MapaConceitual({
   nos,
   ligacoes,
@@ -73,7 +103,7 @@ export function MapaConceitual({
 }) {
   const [atual, setAtual] = useState<IdNo>(inicial);
   const porId = new Map(nos.map((n) => [n.id, n]));
-  const tracos = new Map(tipos.map((t) => [t.id, t.traco]));
+  const formas = new Map(tipos.map((t) => [t.id, t]));
   const ligadas = (l: LigacaoDiagrama) => l.de === atual || l.para === atual;
   const escolhido = porId.get(atual)!;
 
@@ -96,9 +126,12 @@ export function MapaConceitual({
         <div className="relative w-full" style={{ aspectRatio: `${LARGURA} / ${ALTURA}` }}>
           <svg viewBox={`0 0 ${LARGURA} ${ALTURA}`} className="absolute inset-0 h-full w-full" aria-hidden="true" focusable="false">
             <defs>
-              <marker id="mapa-seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
-              </marker>
+              {/* um marcador por forma de ponta, em tamanho fixo (markerUnits userSpaceOnUse): a espessura da linha muda de um tipo para o outro, o tamanho da ponta não */}
+              {PONTAS.map((p) => (
+                <marker key={p} id={`mapa-ponta-${p}`} viewBox="0 0 10 10" refX={p === "circulo" ? 5 : 9} refY="5" markerUnits="userSpaceOnUse" markerWidth="15" markerHeight="15" orient="auto-start-reverse" className="text-carvao">
+                  <FormaDaPonta ponta={p} />
+                </marker>
+              ))}
             </defs>
             {ligacoes.map((l) => {
               const ativa = ligadas(l);
@@ -108,9 +141,12 @@ export function MapaConceitual({
                   d={caminho(porId.get(l.de)!.pos, porId.get(l.para)!.pos)}
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth={ativa ? 2.8 : 2}
-                  strokeDasharray={tracos.get(l.tipo) || undefined}
-                  markerEnd="url(#mapa-seta)"
+                  strokeWidth={(formas.get(l.tipo)?.espessura ?? 2) + (ativa ? 0.8 : 0)}
+                  strokeDasharray={formas.get(l.tipo)?.traco || undefined}
+                  strokeLinecap={formas.get(l.tipo)?.ponta === "quadrado" ? "round" : "butt"}
+                  markerEnd={`url(#mapa-ponta-${formas.get(l.tipo)?.ponta ?? "seta"})`}
+                  // a associação analítica não tem sentido: círculo nas duas pontas
+                  markerStart={formas.get(l.tipo)?.ponta === "circulo" ? "url(#mapa-ponta-circulo)" : undefined}
                   // fora da seleção o traço continua legível (contraste de objeto gráfico, 3:1): o tipo da ligação se lê pelo padrão do traço, e a seleção só o escurece e engrossa
                   className={ativa ? "text-energia-dark" : "text-mineral opacity-90"}
                 />
@@ -157,9 +193,7 @@ export function MapaConceitual({
         <ul aria-label="Tipos de ligação" className="mt-4 grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-2">
           {tipos.map((t) => (
             <li key={t.id} className="flex items-start gap-2">
-              <svg width="38" height="10" viewBox="0 0 38 10" aria-hidden="true" focusable="false" className="mt-1 shrink-0 text-carvao">
-                <line x1="1" y1="5" x2="37" y2="5" stroke="currentColor" strokeWidth="2" strokeDasharray={t.traco || undefined} />
-              </svg>
+              <Amostra t={t} />
               <span>
                 <strong className="font-medium text-carvao">{t.rotulo}:</strong> {t.definicao}
               </span>

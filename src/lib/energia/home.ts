@@ -1,7 +1,7 @@
 /**
  * Lógica pura da página inicial: o quadro de atualidade das fontes e o resumo dele, o índice da
- * busca do alto da página, o estado de cada destino e as opções de "sua distribuidora" das
- * perguntas de perdas e de qualidade. Nada aqui calcula indicador: a atualidade vem de
+ * busca do alto da página, o estado de cada destino e as opções do seletor único de "sua distribuidora"
+ * (conta de luz, qualidade e perdas). Nada aqui calcula indicador: a atualidade vem de
  * publicacao.json (módulo Dados), os destinos do conteúdo editorial (mapa.ts e navegacao.ts), os
  * verbetes conferidos de conteudo/conceitos.ts, o vocabulário leigo da busca (busca-sinonimos.ts) e
  * as distribuidoras do índice de empresas.json. Os números das seis perguntas prioritárias ficam
@@ -190,10 +190,34 @@ export function regraDeAtualidade(linhas: readonly LinhaAtualidade[]): RegraDeAt
 /** Verbete no formato que a busca lê (só conferidos entram no índice). */
 export type VerbeteBusca = { slug: string; nome: string; sigla?: string; emUmaFrase?: string; estado: string };
 
-/** Distribuidora com ficha no módulo Empresas. */
-export type DistribuidoraBusca = { slug: string; sigla: string; nome: string | null; cnpj: string; ufs: string[] };
+/**
+ * Distribuidora com ficha no módulo Empresas. `grupo` é o nome do controlador no topo da cadeia (empresas.json, controle.topo_nome): o leitor
+ * procura pela marca ("enel"), e a distribuidora ainda leva o nome antigo (ELETROPAULO).
+ */
+export type DistribuidoraBusca = { slug: string; sigla: string; nome: string | null; cnpj: string; ufs: string[]; grupo?: string | null };
 
 const cnpjFormatado = (c: string) => `${c.slice(0, 2)}.${c.slice(2, 5)}.${c.slice(5, 8)}/${c.slice(8, 12)}-${c.slice(12)}`;
+
+/** Controlador que é governo (estado, prefeitura, município, Distrito Federal): não é uma marca que o leitor digita. */
+const GOVERNO = /^(estado|prefeitura|munic[ií]pio|distrito federal)\b/i;
+
+/**
+ * A marca de um grupo controlador, sem a forma societária: "ENEL BRASIL S.A" vira "Enel Brasil", "EDP - ENERGIAS DO BRASIL S.A." vira "EDP Energias
+ * do Brasil". Null para quem não tem controlador no topo e para o controlador que é governo.
+ */
+export function marcaDoGrupo(topoNome: string | null | undefined): string | null {
+  if (!topoNome) return null;
+  let t = topoNome.replace(/\s+/g, " ").trim();
+  if (!t || GOVERNO.test(t)) return null;
+  t = t.replace(/\s*-\s*em recupera[çc][ãa]o judicial.*$/i, "");
+  t = t.replace(/\s+(?:S\s*[./]\s*A\.?|LTDA\.?)$/i, "");
+  t = t.replace(/\s+Participa[çc][õo]es$/i, "");
+  t = t.replace(/\s+-\s+/g, " ").trim();
+  if (!t) return null;
+  const ligacao = new Set(["DO", "DA", "DE", "DOS", "DAS", "E"]);
+  // o nome todo em caixa alta ganha caixa de título; as siglas curtas (EDP) ficam como estão
+  return t === t.toUpperCase() ? t.split(" ").map((w) => (ligacao.has(w) ? w.toLowerCase() : w.length <= 3 ? w : w.charAt(0) + w.slice(1).toLowerCase())).join(" ") : t;
+}
 
 export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: readonly VerbeteBusca[], distribuidoras: readonly DistribuidoraBusca[]): ItemBusca[] {
   const itens: ItemBusca[] = [];
@@ -218,19 +242,28 @@ export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: rea
     if (v.estado !== "CONFERIDO") continue;
     itens.push({ tipo: "Conceito", titulo: v.sigla ? `${v.sigla} · ${v.nome}` : v.nome, detalhe: v.emUmaFrase, href: `/setor-eletrico/aprenda/${v.slug}`, ...(v.sigla ? { sigla: v.sigla } : {}) });
   }
+  // a marca de um grupo só vale como nome a mais quando o grupo tem mais de uma distribuidora: é ela que o leitor procura sem saber o nome antigo
+  const porMarca = new Map<string, number>();
   for (const d of distribuidoras) {
+    const m = marcaDoGrupo(d.grupo);
+    if (m) porMarca.set(m, (porMarca.get(m) ?? 0) + 1);
+  }
+  for (const d of distribuidoras) {
+    const marca = marcaDoGrupo(d.grupo);
     itens.push({
       tipo: "Distribuidora",
       titulo: d.nome && d.nome !== d.sigla ? `${d.sigla} · ${d.nome}` : d.sigla,
       detalhe: `${d.ufs.join(", ")}${d.ufs.length ? " · " : ""}CNPJ ${cnpjFormatado(d.cnpj)}`,
       href: `/setor-eletrico/empresas/${d.slug}`,
       sigla: d.sigla,
+      ...(marca && (porMarca.get(marca) ?? 0) > 1 ? { sinonimos: [`grupo ${marca}`] } : {}),
     });
   }
   // o vocabulário leigo entra por endereço: o mesmo nome vale para a página, o painel e a pergunta que levam ao mesmo lugar
   return itens.map((i) => {
     const s = sinonimosDe(i.href);
-    return s.length ? { ...i, sinonimos: [...s] } : i;
+    if (!s.length) return i;
+    return { ...i, sinonimos: [...(i.sinonimos ?? []), ...s.filter((t) => !(i.sinonimos ?? []).includes(t))] };
   });
 }
 
@@ -277,20 +310,42 @@ export type DistribuidoraDoIndice = {
   nome: string | null;
   ufs?: string[];
   perdas?: { ano: number | null } | null;
-  qualidade?: { ano: number | null } | null;
+  /** `dec` nulo com ano preenchido: a distribuidora enviou parte do ano e não tem DEC anual. */
+  qualidade?: { ano: number | null; dec?: number | null } | null;
+  /** Tarifa B1 residencial: `vigente` é verdadeiro quando há vigência cobrindo a data da gold de Conta de luz. */
+  tarifa?: { vigente?: boolean } | null;
 };
 
 /**
- * Opções do seletor "sua distribuidora" de cada pergunta. O índice traz as distribuidoras de todo o histórico, entre elas as extintas
- * (a série de perdas de algumas termina em 2005): cada seletor só lista quem tem dado no ano de referência do módulo, e o rótulo diz qual
- * é o ano e quantas são. O ano de Perdas é o da gold de Perdas; o de Qualidade é o mais recente entre as distribuidoras do índice.
+ * Opções do seletor "sua distribuidora", um só para as três perguntas que têm resposta por distribuidora. O índice traz as distribuidoras de
+ * todo o histórico, entre elas as extintas (a série de perdas de algumas termina em 2005): a lista só tem quem tem dado em ao menos uma das
+ * três páginas, e cada pergunta sabe de quem tem o dado dela:
+ *  - Conta de luz: tarifa B1 residencial vigente na data da gold;
+ *  - Qualidade: DEC anual no ano mais recente do índice, e à parte as que enviaram só parte desse ano (sem DEC anual, e por isso fora da
+ *    contagem nacional do DEC);
+ *  - Perdas: dado no ano de referência da gold de Perdas.
+ * O ano de Perdas é o da gold de Perdas; o de Qualidade é o mais recente entre as distribuidoras do índice.
  */
 export function escolhasDeDistribuidora(distribuidoras: readonly DistribuidoraDoIndice[], anoPerdas: number | null) {
   const anoQualidade = distribuidoras.reduce<number | null>((m, d) => (d.qualidade?.ano != null && (m === null || d.qualidade.ano > m) ? d.qualidade.ano : m), null);
+  const temConta = (d: DistribuidoraDoIndice) => d.tarifa?.vigente === true;
+  const temPerdas = (d: DistribuidoraDoIndice) => d.perdas?.ano != null && d.perdas.ano === anoPerdas;
+  const temQualidade = (d: DistribuidoraDoIndice) => d.qualidade?.ano != null && d.qualidade.ano === anoQualidade;
+  const temDecAnual = (d: DistribuidoraDoIndice) => temQualidade(d) && d.qualidade?.dec != null;
+  const cnpjs = (tem: (d: DistribuidoraDoIndice) => boolean) => distribuidoras.filter(tem).map((d) => d.cnpj);
   return {
     anoPerdas,
     anoQualidade,
-    opcoesPerdas: opcoesDistribuidora(distribuidoras, (d) => d.perdas?.ano != null && d.perdas.ano === anoPerdas),
-    opcoesQualidade: opcoesDistribuidora(distribuidoras, (d) => d.qualidade?.ano != null && d.qualidade.ano === anoQualidade),
+    opcoes: opcoesDistribuidora(distribuidoras, (d) => temConta(d) || temPerdas(d) || temQualidade(d)),
+    opcoesPerdas: opcoesDistribuidora(distribuidoras, temPerdas),
+    opcoesQualidade: opcoesDistribuidora(distribuidoras, temQualidade),
+    opcoesConta: opcoesDistribuidora(distribuidoras, temConta),
+    /** Quem tem o dado de cada pergunta, por CNPJ. */
+    comDado: {
+      conta: cnpjs(temConta),
+      qualidade: cnpjs(temDecAnual),
+      qualidadeParcial: cnpjs((d) => temQualidade(d) && !temDecAnual(d)),
+      perdas: cnpjs(temPerdas),
+    },
   };
 }
