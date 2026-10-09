@@ -767,7 +767,9 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
 
   it("toda medida de destaque, em qualquer página, traz um ano na própria data", () => {
     for (const [k, h] of Object.entries(html)) {
-      for (const b of blocosDaFaixa(h)) expect(texto(b), `${k}: ${rotuloDe(b)}`).toMatch(/\b(19|20)\d{2}\b/);
+      const blocos = blocosDaFaixa(h);
+      expect(blocos.length, `${k}: medidas de destaque`).toBeGreaterThanOrEqual(3);
+      for (const b of blocos) expect(texto(b), `${k}: ${rotuloDe(b)}`).toMatch(/\b(19|20)\d{2}\b/);
     }
   });
 
