@@ -83,7 +83,7 @@ export function ReferenciaDados({ processadoEm, geradoEm, referencia, manifestoE
 export function DadosResposta({ painel, veredito, children, prova, depois = false }: { painel: string; veredito?: string; children: ReactNode; prova?: ReactNode; depois?: boolean }) {
   if (veredito === undefined) {
     return (
-      <div className="border-l-2 border-energia pl-4" data-resposta={painel}>
+      <div className="border-l-2 border-energia pl-4" data-resposta={painel} data-resposta-depois={depois ? "" : undefined}>
         <p className="text-base leading-relaxed text-carvao md:text-lg">{children}</p>
         {prova && <div className="mt-1 flex flex-wrap items-center gap-x-5">{prova}</div>}
       </div>

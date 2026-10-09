@@ -288,7 +288,7 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
   };
 
   return (
-    <div className="min-w-0 max-w-full" data-componente="lista-consultavel" data-prefixo={prefixo}>
+    <div className="min-w-0 max-w-full scroll-mt-28" data-componente="lista-consultavel" data-prefixo={prefixo}>
       <div ref={topoRef} className="scroll-mt-28">
         <label htmlFor={`${uid}-busca`} className="rotulo block text-mineral">
           {p.rotuloBusca}

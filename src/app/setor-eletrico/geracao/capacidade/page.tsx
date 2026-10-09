@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -32,6 +33,8 @@ import {
   ROTULO_CASAMENTO,
   ROTULO_REGRA,
   colunasCapacidade,
+  coberturaDaPotencia,
+  diferencasAneelOns,
   downloadsDoPainel,
   emPortugues,
   linhasCapacidade,
@@ -45,6 +48,7 @@ import {
   respostaCapacidade,
   rotaPainel,
   situacaoMensal,
+  textoMudancaMensal,
   textoSemComparacaoMensal,
   vereditoCapacidade,
 } from "@/lib/energia/geracao";
@@ -87,7 +91,20 @@ export default function GeracaoCapacidadePage() {
   const sigaHist = c.contexto.siga_historico;
   const par = c.pareamento;
 
-  const oQueMudou = <>{textoSemComparacaoMensal(ultimoMes, g.gerado_em, "o fator de capacidade mensal")}</>;
+  const diferencas = diferencasAneelOns(linhas);
+  const parteDaPotencia = coberturaDaPotencia(linhas);
+  const usinasNoRetrato = Object.fromEntries(c.retrato.por_categoria.map((x) => [x.categoria, x.usinas]));
+  // o que mudou: o fator de capacidade e a potência das fontes de referência no último mês completo, contra o mês anterior e o mesmo mês de um ano antes
+  const mudancas = [
+    textoMudancaMensal({ nome: "o fator de capacidade das eólicas", unidade: "%", percentual: true, casas: 1, meses: c.mensal.meses, valores: c.mensal.fator_capacidade_pct.eolica ?? [], mes: ultimoMes }),
+    textoMudancaMensal({ nome: "o fator de capacidade da solar centralizada", unidade: "%", percentual: true, casas: 1, meses: c.mensal.meses, valores: c.mensal.fator_capacidade_pct.solar_centralizada ?? [], mes: ultimoMes }),
+    textoMudancaMensal({ nome: "a potência eólica em operação comercial, média do mês,", unidade: "MW", casas: 0, meses: c.mensal.meses, valores: c.mensal.potencia_operacional_mw.eolica ?? [], mes: ultimoMes }),
+  ].filter((x) => x);
+  const oQueMudou = (
+    <>
+      {mudancas.join(" ")} {textoSemComparacaoMensal(ultimoMes, g.gerado_em, "o fator de capacidade mensal")}
+    </>
+  );
   const comoInterpretar = (
     <>
       Fator de capacidade = geração do mês ÷ (potência em operação comercial média do mês × horas com dado), somado nos 12 meses como razão de energias, só nas usinas pareadas com a Capacidade
@@ -240,6 +257,23 @@ export default function GeracaoCapacidadePage() {
                   )}
                 </p>
 
+                {parteDaPotencia.length > 0 && (
+                  <p className="text-xs leading-relaxed text-carvao-muted" data-nota="cobertura-potencia">
+                    Fator de capacidade com parte da potência: {parteDaPotencia.map((x) => `${x.categoria.toLowerCase()} ${num(x.fc, 1)}% usa ${num(x.denominador, 1)} MW de potência com dado de geração, de ${num(x.potencia, 1)} MW em operação em média (${num(x.pct, 0)}%)`).join("; ")}. A Geração por Usina
+                    publicou menos usinas dessas categorias, como mostram as ressalvas de universo da{" "}
+                    <Link href={`${rotaPainel("p021")}#composicao`} className="text-energia-dark underline underline-offset-4">
+                      matriz efetiva
+                    </Link>
+                    .
+                  </p>
+                )}
+                {diferencas.length > 0 && (
+                  <p className="text-xs leading-relaxed text-carvao-muted" data-nota="aneel-ons">
+                    A capacidade fiscalizada da ANEEL (SIGA) é outro universo: inclui usinas fora do despacho do ONS e classifica as fontes de outro modo. Onde a diferença passa de 25%:{" "}
+                    {diferencas.map((x) => `${x.categoria.toLowerCase()}, ${num(x.aneel, 1)} MW na ANEEL contra ${num(x.ons, 1)} MW no ONS`).join("; ")}. As duas colunas ficam lado a lado na tabela e nunca se somam.
+                  </p>
+                )}
+
                 <GeracaoRecorte
                   periodo={`retrato de ${dataBR(c.retrato.data)}; fator de capacidade de ${periodo12} (12 meses completos); série mensal de ${mesAno(c.mensal.meses[0])} a ${ultimoMes ? mesAno(ultimoMes) : "mês não publicado"}`}
                   universo={
@@ -268,7 +302,7 @@ export default function GeracaoCapacidadePage() {
 
                 {u && (
                   <SecaoDoPainel id="distribuicao" titulo={`Quanto o fator de capacidade varia entre as usinas, ${periodo12}?`}>
-                    <GeracaoCapacidadeDistribuicao ultimos12m={u} fonte={FONTE} versao={versao} />
+                    <GeracaoCapacidadeDistribuicao ultimos12m={u} fonte={FONTE} versao={versao} usinasNoRetrato={usinasNoRetrato} />
                   </SecaoDoPainel>
                 )}
 
@@ -288,9 +322,13 @@ export default function GeracaoCapacidadePage() {
                     zoom
                     altura={300}
                   />
+                  <GeracaoAviso>
+                    Fator de capacidade acima de 100% numa usina num mês aparece em {num(par.fc_acima_de_100.n, 0)} usina-meses da série ({num(par.fc_acima_de_100.ultimos_12m, 0)} nos 12 meses): geração em teste antes da operação comercial e potência
+                    nominal da ANEEL abaixo da geração bruta, como na nuclear. Esses valores ficam como publicados e entram na soma de cada fonte; o detalhe está em Auditar.
+                  </GeracaoAviso>
                   <GraficoLinhas
                     chaveUrl="pot"
-                    titulo="Potência em operação comercial, média de cada mês"
+                    titulo={`Potência em operação comercial, média de cada mês, a partir do retrato de ${dataBR(c.retrato.data)}`}
                     dados={linhasPotenciaMensal(c, CATEGORIAS_CAPACIDADE)}
                     chaveX="m"
                     formatoX="mes"

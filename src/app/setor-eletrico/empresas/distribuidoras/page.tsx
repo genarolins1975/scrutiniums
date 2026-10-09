@@ -118,7 +118,7 @@ export default function PaginaP037() {
             <FaixaMetricas
               colunas={4}
               rotulo="Indicadores das distribuidoras"
-              nota="Contagens do índice inteiro e referência nacional, fixas: não mudam com a comparação escolhida. Distribuidora sem número em uma base fica sem dado nela, nunca com zero."
+              nota="Contagens do índice inteiro e referência nacional, fixas: não mudam com a comparação escolhida."
             >
               <Numero
                 variante="faixa"
@@ -140,7 +140,7 @@ export default function PaginaP037() {
                   formato="pct"
                   casas={2}
                   unidade="da energia injetada"
-                  nota={`Taxa das concessionárias em conjunto (perdas somadas sobre energia injetada somada, não a média das taxas): ${evTaxaNacional2.universo}. Mesmo ano das perdas por distribuidora.`}
+                  nota={`Concessionárias em conjunto (somas, não média das taxas): ${evTaxaNacional2.universo}.`}
                   endereco={ancoraPainel("p037")}
                 />
               ) : (
@@ -206,9 +206,6 @@ export default function PaginaP037() {
               ]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p037" veredito={vereditoDistribuidoras(d, refPerdas?.valor ?? null, anoPerdas)}>
-                  {respostaDistribuidoras(d)}
-                </RespostaCurta>
                 <EmpresasComparador
                   entidades={entidadesDistribuidoras(d.indice)}
                   padrao={padraoComparacao(d.indice)}
@@ -218,6 +215,10 @@ export default function PaginaP037() {
                   )}
                   referenciaPerdas={refPerdas}
                 />
+                {/* a faixa já traz os números; a resposta vem depois das figuras, para o comparador começar na primeira tela */}
+                <RespostaCurta id="p037" veredito={vereditoDistribuidoras(d, refPerdas?.valor ?? null, anoPerdas)} depois>
+                  {respostaDistribuidoras(d)}
+                </RespostaCurta>
                 <EmpresasComoLer />
                 <EmpresasRecorte
                   periodo={

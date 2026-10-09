@@ -959,7 +959,8 @@ class ConferenciaQuebra2023(unittest.TestCase):
         self.assertFalse(par["2023-05-01"]["entra_na_mediana"])  # Dia do Trabalho
         self.assertFalse(par["2023-05-05"]["entra_na_mediana"])  # comparado a 21/04, Tiradentes
         self.assertEqual(q["pares_na_mediana"], 6)
-        self.assertEqual((q["mediana_diferenca_solar_mwmed"], q["mediana_diferenca_carga_mwmed"]), (2840, 559))
+        # a mediana de seis diferenças é a média das duas do meio (2840 e 2841): 2840,5 arredondado meio para cima dá 2841
+        self.assertEqual((q["mediana_diferenca_solar_mwmed"], q["mediana_diferenca_carga_mwmed"]), (2841, 559))
         self.assertIs(q["degrau_na_carga"], False)
         self.assertIn("não aparece degrau", q["leitura"])
         self.assertIn("não publica explicação", q["leitura"])

@@ -8,30 +8,52 @@ import GeracaoRestricoesPage from "@/app/setor-eletrico/geracao/restricoes/page"
 import GeracaoCapacidadePage from "@/app/setor-eletrico/geracao/capacidade/page";
 import GeracaoTermicaPage from "@/app/setor-eletrico/geracao/termica/page";
 import { BarraNatureza, BarrasPorFonte, type ItemBarraFonte } from "@/components/energia/GeracaoBarrasFontes";
+import { GeracaoCapacidadeDistribuicao } from "@/components/energia/GeracaoCapacidade";
+import { GeracaoMapaUsinas } from "@/components/energia/GeracaoMapaUsinas";
 import { dataBR, mesAno, num } from "@/lib/energia/formato";
 import { lerCaminho, pontoNaRegiao, type CamadaGeo } from "@/lib/energia/geo";
 import {
   CATEGORIAS,
   FRASE_CATEGORIA,
+  MINIMO_PARA_DISTRIBUICAO,
   PAINEIS_GERACAO,
   TOLERANCIA_SOMA_PP,
+  coberturaDaPotencia,
   coberturaMensal,
+  colunasAnuais,
   comparacaoEntreJanelas,
   composicaoDaJanela,
   datasDoModulo,
   deContraido,
+  diasDoBalancoForaDoPadrao,
+  diferencasAneelOns,
+  downloadsDoPainel,
+  emPortugues,
   fechamentoDaComposicao,
   fontePrincipalDaJanela,
   histogramaFc,
   inflexibilidadeSemNuclear,
+  lacunaDasComparaveis,
+  linhasAnuais,
   linhasCapacidade,
+  linhasDozeMeses,
   linhasMmgdCapacidade,
   linhasRazoes12m,
   maioresFontes,
+  mesDeslocado,
+  mesesComPresencaParcial,
   minusculaPalavras,
+  mmgdNosDiasComEstimativa,
   naturezaDaCategoria,
+  notaAnual,
+  notaCvuZero,
+  observacoesFc,
   partesDaNatureza,
+  presencaMmgdNoAno,
+  textoMudancaMensal,
   textoNatureza,
+  usinasPadraoComparacao,
+  zerosDoCvu,
   linhasRestricaoMensal,
   linhasSigaHistorico,
   perguntaPainel,
@@ -578,6 +600,313 @@ describe("barras por fonte: lista com um único tab stop, valor em texto e natur
     expect(n).toContain("Natureza da energia: Medição 80,0%; Estimativa do ONS (MMGD) 20,0%");
     expect(n).toContain("width:80%");
     expect(n).toContain("width:20%");
+  });
+});
+
+describe("participação anual: a MMGD de 2023 não vira média de ano inteiro sem aviso (ausência não é zero)", () => {
+  const anos = G.matriz.anual_sin;
+  const a23 = anos.find((a) => a.ano === 2023)!;
+
+  it("2023 tem estimativa em 247 de 365 dias: a média dos dias com estimativa é a contribuição vezes 365 sobre 247, maior que a contribuição", () => {
+    expect([a23.dias, a23.mmgd_dias]).toEqual([365, 247]);
+    const v = mmgdNosDiasComEstimativa(a23)!;
+    expect(v).toBeCloseTo((a23.mwmed.solar_mmgd! * 365) / 247, 6);
+    // 3.875,7 pelo CSV diário (soma ÷ horas de 247 dias); a gold traz a contribuição com uma casa, daí 3.875,8 aqui: a diferença é de arredondamento
+    expect(v).toBeCloseTo(3875.7, 0);
+    expect(v).toBeGreaterThan(a23.mwmed.solar_mmgd!);
+    // fica entre o menor e o maior mês com estimativa de 2023 (a contribuição de 2.622,8 ficava abaixo de todos)
+    const m = G.matriz.mensal_sin;
+    const meses = m.meses.map((x, i) => ({ x, v: m.solar_mmgd[i] })).filter((o) => o.x >= "2023-05" && o.x <= "2023-12").map((o) => o.v!);
+    expect(a23.mwmed.solar_mmgd!).toBeLessThan(Math.min(...meses));
+    expect(v).toBeGreaterThan(Math.min(...meses));
+    expect(v).toBeLessThan(Math.max(...meses));
+  });
+
+  it("ano sem estimativa fica sem valor, e ano com estimativa em todos os dias coincide com a média do ano", () => {
+    for (const a of anos.filter((x) => x.mmgd_dias === 0)) expect(mmgdNosDiasComEstimativa(a), String(a.ano)).toBeNull();
+    for (const a of anos.filter((x) => x.mmgd_dias === x.dias)) expect(mmgdNosDiasComEstimativa(a)!, String(a.ano)).toBeCloseTo(a.mwmed.solar_mmgd!, 6);
+  });
+
+  it("a linha de 2023 sinaliza a presença parcial, e as colunas dizem o denominador de cada número", () => {
+    const l = linhasAnuais(anos);
+    const l23 = l.find((x) => x.ano === "2023")!;
+    expect(l23.presenca_mmgd).toBe("parcial: estimativa em 247 de 365 dias");
+    expect(l23.mmgd_dias).toBe(247);
+    expect(l23.mmgd_nos_dias_mwmed).toBeCloseTo(3875.8, 1);
+    expect(l.find((x) => x.ano === "2021")!.presenca_mmgd).toBe("sem estimativa no ano");
+    expect(presencaMmgdNoAno({ dias: 366, mmgd_dias: 366 })).toBe("estimativa em todos os dias");
+    const rotulos = colunasAnuais(anos).map((c) => c.rotulo);
+    for (const r of ["MMGD estimada, contribuição à média anual", "MMGD estimada, média dos dias com estimativa", "Dias com estimativa de MMGD", "Parcela de medição no total com MMGD"]) expect(rotulos, r).toContain(r);
+    expect(rotulos).not.toContain("MMGD estimada");
+    expect(rotulos).not.toContain("Energia medida");
+    // os ids antigos seguem, para o link com ordem por coluna que já circula
+    const ids = colunasAnuais(anos).map((c) => c.id);
+    expect(ids).toContain("mmgd_mwmed");
+    expect(ids).toContain("verificada_pct");
+  });
+
+  it("a nota diz as duas médias da MMGD e que o total da parcela de medição passa a incluir a MMGD, sem nenhum número fixo no código", () => {
+    const n = notaAnual(anos, G.a11.primeiro_dia_mmgd);
+    expect(n).toContain(dataBR(G.a11.primeiro_dia_mmgd!));
+    expect(n).toContain("em 2023, 247 dos 365 dias");
+    expect(n).toContain("247/365 da média dos dias com estimativa");
+    expect(n).toContain("antes, o total não a inclui");
+    expect(n).not.toMatch(/\bporque\b/);
+    // outra gold, outro texto: sem ano parcial, a nota não cita 2023
+    const sem = notaAnual(anos.map((a) => ({ ...a, mmgd_dias: a.mmgd_dias > 0 ? a.dias : 0 })), G.a11.primeiro_dia_mmgd);
+    expect(sem).not.toContain("247");
+  });
+});
+
+describe("texto da gold em português de leitor e o que a página corrige sozinha", () => {
+  it("troca nome de campo e identificador interno pela descrição, sem mexer no resto do texto", () => {
+    expect(emPortugues("a fração sai em natureza_pct e em natureza_mensal_sin; cada janela leva em ressalvas_universo as categorias")).toBe(
+      "a fração sai em parcela por natureza e em série mensal por natureza; cada janela leva em ressalvas de universo as categorias",
+    );
+    expect(emPortugues("Identificador = usina, conjunto ou grupo (id_ons) da natureza verificada")).toContain("(código do ONS)");
+    expect(emPortugues("rótulos e os 10 identificadores estão em matriz.universo")).toContain("o universo da matriz");
+    expect(emPortugues("Reconciliação diária com o Balanço (hidraulica)")).toBe("Reconciliação diária com o Balanço (hidráulica)");
+    expect(emPortugues("(termica)")).toBe("(térmica)");
+    expect(emPortugues("(eolica)")).toBe("(eólica)");
+    // palavras que só contêm o termo não mudam
+    expect(emPortugues("termicas e eolicas")).toBe("termicas e eolicas");
+  });
+
+  it("a frase 'igual ao do Balanço' vira 'próximo, com divergências listadas em Auditar' (a reconciliação diz 88% dos dias do SIN na hidráulica e 49,8% na térmica)", () => {
+    const frase = G.a11.tratamento.find((t) => /igual ao do Balanço/.test(t))!;
+    expect(frase).toBeDefined();
+    const t = emPortugues(frase);
+    expect(t).not.toContain("igual ao do Balanço");
+    expect(t).toContain("próximo ao do Balanço, com divergências listadas em Auditar");
+    const rec = G.matriz.reconciliacao_balanco.por_fonte;
+    expect(rec.termica.pct_sin_dias_conciliados).toBeLessThan(60);
+  });
+
+  it("nenhum texto de gold exibido nas páginas traz nome de campo depois da tradução", () => {
+    const textos = [...G.a11.tratamento, ...(G.proveniencia.matriz?.limitacoes ?? []), G.matriz.universo.regra, G.matriz.universo.regra_ressalvas, ...G.controles.map((x) => `${x.nome} ${x.detalhe}`)];
+    for (const t of textos) expect(emPortugues(t), t.slice(0, 60)).not.toMatch(/\b(id_ons|ressalvas_universo|natureza_pct|natureza_mensal_sin|outros_por_ceg|matriz\.\w+|hidraulica|termica|eolica)\b/);
+  });
+
+  it("o rótulo do arquivo horário diz 365 dias, como as 8.760 linhas do CSV (o rótulo da gold ainda diz 366)", () => {
+    const d = downloadsDoPainel(G.downloads, "p021").find((x) => /horaria/.test(x.url))!;
+    expect(d.rotulo).toContain("últimos 365 dias");
+    expect(d.rotulo).not.toContain("366");
+    const csv = readFileSync(join(raiz, "public/energia/series/geracao_matriz_horaria_12m.csv"), "utf-8").trim().split("\n");
+    expect(csv.length - 1).toBe(365 * 24);
+  });
+});
+
+describe("o que mudou, notas de universo e referências ao lado do dado", () => {
+  const t = G.termica!;
+
+  it("o que mudou compara o último mês completo com o mês anterior e com o mesmo mês de um ano antes; mês sem valor é dito, não zerado", () => {
+    expect(mesDeslocado("2026-01", -1)).toBe("2025-12");
+    expect(mesDeslocado("2026-08", -12)).toBe("2025-08");
+    const f = textoMudancaMensal({ nome: "a geração das térmicas despachadas", unidade: "MWmed", casas: 0, meses: t.mensal_sin.meses, valores: t.mensal_sin.total_mwmed, mes: t.ultimo_mes_completo });
+    const i = t.mensal_sin.meses.indexOf(t.ultimo_mes_completo);
+    expect(f).toContain(`${mesAno(t.ultimo_mes_completo)}: ${num(t.mensal_sin.total_mwmed[i]!, 0)} MWmed`);
+    expect(f).toContain(`contra ${num(t.mensal_sin.total_mwmed[i - 1]!, 0)} MWmed em ${mesAno(t.mensal_sin.meses[i - 1])}`);
+    expect(f).toContain(`${num(t.mensal_sin.total_mwmed[i - 12]!, 0)} MWmed em ${mesAno(t.mensal_sin.meses[i - 12])}`);
+    expect(f).toMatch(/\([+−]\d/);
+    // valor percentual vira diferença em pontos percentuais
+    const p = textoMudancaMensal({ nome: "o fator", unidade: "%", percentual: true, meses: ["2025-07", "2026-06", "2026-07"], valores: [20, 30, 33], mes: "2026-07" });
+    expect(p).toContain("+3,0 pontos percentuais");
+    expect(p).toContain("+13,0 pontos percentuais");
+    // sem o mês do ano anterior na série
+    expect(textoMudancaMensal({ nome: "x", unidade: "u", meses: ["2026-06", "2026-07"], valores: [1, 2], mes: "2026-07" })).toContain("sem valor em jul/2025");
+    expect(textoMudancaMensal({ nome: "x", unidade: "u", meses: ["2026-07"], valores: [null], mes: "2026-07" })).toBe("");
+    expect(textoMudancaMensal({ nome: "x", unidade: "u", meses: [], valores: [], mes: null })).toBe("");
+  });
+
+  it("CVU zero é valor publicado: a nota conta as parcelas com zero por combustível, direto da gold", () => {
+    const cvu = t.cvu!;
+    const z = zerosDoCvu(cvu);
+    const esperado = cvu.usinas.filter((u) => u.cvu === 0).length;
+    expect(z.zeros).toBe(esperado);
+    expect(z.total).toBe(cvu.usinas.length);
+    expect(z.porCombustivel.reduce((s, x) => s + x.zeros, 0)).toBe(esperado);
+    const oleo = z.porCombustivel.find((x) => x.categoria === "oleo")!;
+    expect(oleo.zeros).toBe(cvu.usinas.filter((u) => u.categoria === "oleo" && u.cvu === 0).length);
+    const nota = notaCvuZero(cvu);
+    expect(nota).toContain(`${num(esperado, 0)} das ${num(cvu.usinas.length, 0)} parcelas`);
+    expect(nota).toContain("nunca é tratado como ausência");
+    expect(nota).toContain("sem peso pela geração");
+    expect(notaCvuZero({ usinas: [{ ...cvu.usinas[0], cvu: 10 }] })).not.toContain("CVU 0,00");
+  });
+
+  it("a comparação de usinas abre com a maior de cada um de três combustíveis, e a lista das maiores vem ordenada pela geração", () => {
+    const padrao = usinasPadraoComparacao(t.usinas_12m, 3);
+    expect(padrao).toHaveLength(3);
+    expect(new Set(padrao.map((x) => x.categoria)).size).toBe(3);
+    const maior = [...t.usinas_12m].sort((a, b) => (b.mwmed ?? 0) - (a.mwmed ?? 0))[0];
+    expect(padrao[0].id).toBe(maior.id);
+    for (let i = 1; i < padrao.length; i++) expect(padrao[i - 1].mwmed ?? 0).toBeGreaterThanOrEqual(padrao[i].mwmed ?? 0);
+  });
+
+  it("os dias em que o Balanço registra a eólica muito abaixo da soma das usinas saem das maiores divergências da própria gold", () => {
+    const dias = diasDoBalancoForaDoPadrao(G.matriz.reconciliacao_balanco);
+    expect(dias.map((x) => x.d)).toEqual(expect.arrayContaining(["2026-01-16", "2026-05-09"]));
+    for (const x of dias) expect(x.balanco_mwh).toBeLessThan(0.1 * x.usinas_mwh);
+    expect(dias.map((x) => x.d)).toEqual([...dias.map((x) => x.d)].sort());
+  });
+
+  it("a lacuna de usinas sem dado aparece ao lado da variação das categorias que seguem comparáveis, e a categoria suprimida fica de fora", () => {
+    const c = G.matriz.comparacao_12m!;
+    const lac = lacunaDasComparaveis(c, G.matriz.universo);
+    expect(lac.length).toBeGreaterThan(0);
+    for (const x of lac) {
+      expect(c.variacao_suprimida[x.id], x.id).toBeUndefined();
+      expect(c.variacao_pct[x.id], x.id).not.toBeNull();
+      expect(x.gwh).toBeGreaterThan(0);
+    }
+    for (let i = 1; i < lac.length; i++) expect(lac[i - 1].gwh).toBeGreaterThanOrEqual(lac[i].gwh);
+    const linhas = linhasDozeMeses(c, G.matriz.janelas.SIN["12m"], G.matriz.universo);
+    const hid = linhas.find((l) => l.id === "hidraulica")!;
+    expect(hid.lacuna_gwh).toBeCloseTo(G.matriz.universo.lacuna_ultimo_mes!.detalhe_por_categoria.hidraulica!.mwh_dos_ausentes_mesmo_mes_ano_anterior / 1000, 1);
+    expect(linhasDozeMeses(c, G.matriz.janelas.SIN["12m"]).every((l) => l.lacuna_gwh === null)).toBe(true);
+  });
+
+  it("a MMGD em abril de 2023 tem presença parcial dita (2 de 30 dias), e o mês incompleto leva a marca no rótulo do eixo", () => {
+    const p = mesesComPresencaParcial(G.matriz.mensal_sin, "solar_mmgd");
+    expect(p).toEqual([{ mes: "2023-04", dias: 2, diasDoMes: 30 }]);
+    expect(mesesComPresencaParcial(G.matriz.mensal_sin, "hidraulica")).toEqual([]);
+  });
+
+  it("capacidade: a potência fiscalizada pela ANEEL e a do ONS divergem em mais de 25% em categorias nomeadas, e o fator que usa parte da potência diz qual parte", () => {
+    const linhas = linhasCapacidade(cap);
+    const d = diferencasAneelOns(linhas);
+    expect(d.map((x) => x.id)).toEqual(expect.arrayContaining(["biomassa", "outros"]));
+    for (const x of d) expect(Math.abs(x.aneel / x.ons - 1)).toBeGreaterThan(0.25);
+    const parte = coberturaDaPotencia(linhas);
+    const bio = parte.find((x) => x.id === "biomassa")!;
+    expect(bio.pct).toBeCloseTo((100 * bio.denominador) / bio.potencia, 6);
+    expect(bio.pct).toBeLessThan(50);
+    expect(parte.find((x) => x.id === "hidraulica")).toBeUndefined();
+  });
+
+  it("com menos de 10 observações a distribuição mostra o valor de cada usina e não descreve quantis; com 10 ou mais, o histograma marca só a mediana", () => {
+    expect(MINIMO_PARA_DISTRIBUICAO).toBe(10);
+    const u12 = cap.ultimos_12m!;
+    const nuclear = u12.por_categoria.find((x) => x.categoria === "nuclear")!;
+    expect(nuclear.distribuicao_usinas!.n).toBeLessThan(MINIMO_PARA_DISTRIBUICAO);
+    const obs = observacoesFc(nuclear);
+    expect(obs).toHaveLength(nuclear.distribuicao_usinas!.n);
+    for (let i = 1; i < obs.length; i++) expect(obs[i - 1].fc_pct).toBeGreaterThanOrEqual(obs[i].fc_pct);
+    const pequena = renderToStaticMarkup(createElement(GeracaoCapacidadeDistribuicao, { ultimos12m: { ...u12, por_categoria: [nuclear] }, fonte: "f", versao: "v" }));
+    expect(pequena).toContain("a figura mostra o valor de");
+    expect(pequena).toContain("não há distribuição nem quantis a descrever");
+    expect(pequena).not.toContain("Quantis");
+    expect(pequena).not.toContain("metade teve fator entre");
+    expect(pequena).toContain("Entram só as usinas e conjuntos pareados");
+    const eolica = u12.por_categoria.find((x) => x.categoria === "eolica")!;
+    const grande = renderToStaticMarkup(createElement(GeracaoCapacidadeDistribuicao, { ultimos12m: { ...u12, por_categoria: [eolica] }, fonte: "f", versao: "v", usinasNoRetrato: { eolica: 162 } }));
+    expect(grande).toContain("metade teve fator entre");
+    expect(grande).toContain("Quantis (Mediana)");
+    expect(grande).not.toContain("Quantis (P10");
+    expect(grande).toContain("de 162 usinas no retrato de capacidade");
+  });
+});
+
+describe("páginas com as correções das avaliações independentes", () => {
+  const abertura = renderToStaticMarkup(createElement(GeracaoPage as never));
+  const termica = renderToStaticMarkup(createElement(GeracaoTermicaPage as never));
+  const restricoes = renderToStaticMarkup(createElement(GeracaoRestricoesPage));
+  const capacidade = renderToStaticMarkup(createElement(GeracaoCapacidadePage));
+  const texto = (h: string) => h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  const t = G.termica!;
+
+  it("abertura: por que importa junto da resposta, medidas que não seguem os filtros ditas, sazonalidade, térmicas somadas e presença parcial da MMGD", () => {
+    const x = texto(abertura);
+    expect(x).toContain("Mostra de onde veio a energia que atendeu a carga e quanto dela é medição, previsão ou estimativa.");
+    expect(x).toContain("não mudam com Região, Janela e Perímetro, escolhidos mais abaixo");
+    expect(abertura).toContain('data-sazonalidade="p021"');
+    expect(x).toContain("a sazonalidade (vento, sol e chuva variam ao longo do ano)");
+    expect(abertura).toContain("data-termicas-somadas");
+    expect(x).toContain("Térmicas pequenas no gráfico");
+    expect(x).toContain("Demais térmicas soma carvão mineral, óleo e diesel, biomassa, outras térmicas e térmicas Tipo III");
+    expect(x).toContain("Presença parcial da MMGD: abr/2023 tem estimativa em 2 de 30 dias");
+    expect(x).toContain("Participação por ano, sem a MMGD, e a MMGD estimada à parte");
+    // a tabela diz 'sem ressalva' em vez de 'sem dado' nas colunas de ressalva e de presença
+    expect(x).toContain("Ressalva de universo");
+    // a lacuna das categorias comparáveis ao lado da comparação de 365 dias
+    expect(x).toContain("a geração delas em ago/2025 dá a ordem de grandeza da lacuna");
+  });
+
+  it("abertura: a janela de um dia e a de 7 dias só existem para o SIN; para subsistema ficam desativadas com o motivo (aviso só fora do SIN)", () => {
+    // no recorte padrão (SIN) todas as janelas estão ativas e não há aviso
+    expect(abertura).not.toContain("data-janelas-indisponiveis");
+    const ativas = (abertura.match(/<input type="radio"[^>]*value="(dia|7d|30d|12m)"[^>]*>/g) ?? []).filter((i) => !/disabled/.test(i));
+    expect(ativas.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("térmica: o cartão diz que inclui a nuclear, o que cada motivo quer dizer está em palavras simples, as dez maiores usinas aparecem e a comparação abre com três combustíveis", () => {
+    const x = texto(termica);
+    expect(x).toContain("Geração das térmicas despachadas pelo ONS, inclusive a nuclear");
+    expect(x).toContain("Térmica despachada é a que o ONS manda gerar na programação da operação");
+    expect(x).toContain("Usina mantida ligada para respeitar a rampa (velocidade de subida e descida) e os tempos mínimos de operação.");
+    expect(x).toContain("Geração decidida pelo CMSE (Comitê de Monitoramento do Setor Elétrico) para garantir o suprimento de energia.");
+    expect(x).toContain("As 10 usinas térmicas com mais geração");
+    expect(x).toContain("a maior usina de cada um de 3 combustíveis");
+    expect(termica).toContain("data-cvu-comparadas");
+    expect(x).toContain("CVU da semana vigente:");
+  });
+
+  it("térmica: notas de universo e de método junto da figura (não classificado, combustível, universo que cresce, ponte com a matriz) e o CVU zero explicado", () => {
+    const x = texto(termica);
+    expect(x).toContain("As barras somam só os motivos classificados");
+    expect(x).toContain("Combustível: até 2025 vem do CEG da usina em outros conjuntos do ONS; desde 2026, do campo do próprio conjunto");
+    expect(x).toContain("O universo muda dentro dos 12 meses: as usinas pareadas entre os dois conjuntos do ONS passam de 88");
+    expect(x).toMatch(/Este total, [\d.]+ MWmed, não é o da matriz efetiva/);
+    expect(x).toContain("sem as térmicas Tipo III, em 365 dias");
+    expect(x).toContain("CVU 0,00 é valor publicado pela fonte");
+    expect(x).toContain("nunca é tratado como ausência");
+    expect(x).toContain("que reúnem todas as estações do ano, não só esta época");
+    expect(x).toContain("No Balanço, a eólica do Nordeste fica muito abaixo da soma das usinas em 16/01/2026, 07/03/2026 e 09/05/2026");
+    expect(x).toContain("podem ter a participação térmica distorcida");
+    // o que mudou traz a variação mensal da térmica
+    expect(x).toContain(`A geração das térmicas despachadas em ${mesAno(t.ultimo_mes_completo)}:`);
+  });
+
+  it("restrições: a norma de ressarcimento é citada como lida em cópia de 08/01/2025, com as alterações de fontes secundárias ditas como não verificadas", () => {
+    const x = texto(restricoes);
+    expect(x).toContain("norma lida (REN ANEEL nº 1.030/2022, em cópia de 08/01/2025)");
+    expect(x).toContain("alterações posteriores indicadas em fontes secundárias (Lei 15.269/2025; Portaria Normativa MME 140/2026) não foram verificadas aqui");
+    expect(x).not.toContain("regra lida (REN");
+    expect(x).toContain("Compensação: pela norma lida em cópia de 08/01/2025, só a razão elétrica (indisponibilidade externa) dá direito ao ESS");
+    expect(x).toContain("Universos e períodos diferentes: eólicas, 157 usinas e conjuntos, série desde");
+    expect(x).toContain("As duas taxas não se comparam como se fossem do mesmo conjunto");
+    expect(restricoes).toContain("data-referencia-corte");
+    expect(x).toContain("Para ler o maior corte: a potência em operação comercial era de");
+    expect(x).toContain("Corte e potência são medidas de datas e universos diferentes");
+    expect(x).toContain(`A energia não gerada estimada das eólicas em ${mesAno(G.restricoes.eolica!.ultimo_mes_completo!)}:`);
+  });
+
+  it("restrições: o mapa tem lista das maiores usinas com um único tab stop e não tem título solto por estado", () => {
+    const pontos = [3, 2, 1].map((k) => ({ id: `u${k}`, nome: `Usina ${k}`, uf: "RN", x: 10 * k, y: 10 * k, classe: 2, razao: "ENE" as const, nao_gerada_gwh: 100 * k, taxa_pct: 10 * k }));
+    const h = renderToStaticMarkup(
+      createElement(GeracaoMapaUsinas, { titulo: "Mapa", ufs: [{ id: "1", uf: "RO", d: "M0,0L100,0L100,100Z" }], viewBox: "0 0 100 100", pontos, rotulosClasse: ["a", "b", "c"], selecionado: "u2", onSelecionar: () => undefined, semCoordenada: 0 }),
+    );
+    expect(h).toContain("data-lista-usinas");
+    expect(h.indexOf("Usina 3")).toBeLessThan(h.indexOf("Usina 1"));
+    const lista = h.slice(h.indexOf("data-lista-usinas"));
+    expect((lista.match(/tabindex="0"/g) ?? []).length).toBe(1);
+    expect((lista.match(/aria-pressed="true"/g) ?? []).length).toBe(1);
+    expect(h).not.toContain("<title>RO</title>");
+    expect(h).toContain("a lista ao lado e a tabela equivalente abaixo");
+  });
+
+  it("capacidade: o que mudou traz o fator e a potência contra o mês anterior e o ano anterior, e as notas de universo ficam visíveis fora da tabela recolhida", () => {
+    const x = texto(capacidade);
+    const ultimo = cap.mensal.meses[cap.mensal.meses.length - 1];
+    expect(x).toContain(`O fator de capacidade das eólicas em ${mesAno(ultimo)}:`);
+    expect(x).toContain("pontos percentuais");
+    expect(x).toContain("A potência eólica em operação comercial, média do mês, em");
+    expect(x).toContain("A capacidade fiscalizada da ANEEL (SIGA) é outro universo");
+    expect(x).toContain("biomassa, 18.050,9 MW na ANEEL contra 4.211,9 MW no ONS");
+    expect(x).toContain("Fator de capacidade com parte da potência: biomassa 16,8% usa 1.794,2 MW");
+    expect(x).toContain("Fator de capacidade acima de 100% numa usina num mês aparece em 228 usina-meses");
+    expect(x).toContain(`Potência em operação comercial, média de cada mês, a partir do retrato de ${dataBR(cap.retrato.data)}`);
+    expect(x).toContain("Entram só as usinas e conjuntos pareados com a Capacidade Instalada do ONS nos 12 meses: 149 nesta categoria, de 1.059 usinas no retrato de capacidade");
   });
 });
 

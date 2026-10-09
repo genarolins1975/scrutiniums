@@ -140,7 +140,7 @@ export default function AguaPage() {
           titulo={perguntaPainel("p017")}
           lead="A energia armazenada (EAR) do Sistema Interligado Nacional (SIN) e de cada região do país, frente à capacidade e à mediana da mesma data nos anos anteriores."
           recorte={sin?.dia ? `${dataBR(sin.dia)} · SIN e subsistemas · % da EAR máxima e MWmês` : undefined}
-          fonte="ONS, energia armazenada (EAR) e afluente (ENA)"
+          fonte="ONS, energia armazenada (EAR) e energia natural afluente (ENA)"
           referencia={
             <>
               ONS (EAR, ENA e dados hidráulicos), NASA POWER (chuva e temperatura estimadas) e ECMWF pelo Open-Meteo (previsão); processado em{" "}
@@ -166,7 +166,7 @@ export default function AguaPage() {
                 natureza="CALCULADO"
                 evidencia={ev.ear_sin}
                 revisoes={revisoesEar}
-                nota="Os últimos dias são provisórios: o ONS os revisa."
+                nota="Últimos dias são provisórios."
                 formato="pct"
                 casas={1}
                 unidade="da EAR máxima"

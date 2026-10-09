@@ -94,7 +94,7 @@ export default function RedeRestricoesPage() {
             <FaixaMetricas
               colunas={3}
               rotulo="Fluxos acima do limite em 12 meses e energia não suprida em cortes de carga"
-              nota="Horas acima do limite e cortes de carga são as evidências públicas de limitação; nenhum percentual de utilização é calculado, porque os limites operativos de cada fronteira não são públicos."
+              nota="Horas acima do limite e cortes de carga são as evidências públicas de limitação; nenhum percentual de utilização é calculado: os limites operativos de cada fronteira não são públicos."
             >
               {m.fluxosAcima && (
                 <Numero

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { comFolga, lerViewBox, textoViewBox, type Caixa } from "@/lib/energia/geo";
 import { num } from "@/lib/energia/formato";
 import { COR_RAZAO, CURTO_RAZAO, RAZOES, type PontoUsina } from "@/lib/energia/geracao";
@@ -20,10 +20,12 @@ import type { RazaoRestricao } from "@/lib/energia/tipos-geracao";
  * portador. O tamanho é a classe de energia não gerada (tercis das usinas publicadas),
  * marca e não escala de área.
  *
- * Acessibilidade: as marcas não são alvos de Tab (seriam dezenas); o teclado usa a tabela
- * equivalente logo abaixo (busca, ordem, seleção), sincronizada com o mapa pela URL. A
- * usina selecionada fica rotulada no próprio mapa e é anunciada numa região aria-live.
- * Toque ou clique numa marca seleciona; a dica do ponteiro também aparece no toque.
+ * Acessibilidade: as marcas não são alvos de Tab (seriam dezenas, sobrepostas em parte do Nordeste); ao lado do mapa
+ * há a lista das usinas com mais energia não gerada, com um único tab stop (setas, Home e End percorrem, Enter
+ * seleciona), e a tabela equivalente logo abaixo traz todas (busca, ordem, seleção), sincronizadas com o mapa pela URL.
+ * A usina selecionada fica rotulada no próprio mapa e é anunciada numa região aria-live. Toque ou clique numa marca
+ * seleciona; a dica do ponteiro também aparece no toque e no foco da lista. A malha de UF é só pano de fundo: não leva
+ * título por estado (o nome da UF de cada usina está na lista, na dica e na tabela).
  */
 export type MapaUsinasProps = {
   titulo: string;
@@ -35,6 +37,11 @@ export type MapaUsinasProps = {
   onSelecionar: (id: string | null) => void;
   semCoordenada: number;
   nota?: string;
+  /** Vista controlada pela página (na URL): ampliada nas usinas ou Brasil inteiro. Sem ela, o mapa guarda a vista. */
+  ampliado?: boolean;
+  onAmpliar?: (ampliado: boolean) => void;
+  /** Quantas usinas a lista ao lado mostra (as de mais energia não gerada). */
+  naLista?: number;
 };
 
 const RAIO_PX = [3.5, 5.5, 8] as const;
@@ -50,12 +57,16 @@ function marca(razao: RazaoRestricao, x: number, y: number, r: number): string {
   return `M${f(x - r)},${f(y)}a${f(r)},${f(r)} 0 1,0 ${f(2 * r)},0a${f(r)},${f(r)} 0 1,0 ${f(-2 * r)},0Z`;
 }
 
-export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse, selecionado, onSelecionar, semCoordenada, nota }: MapaUsinasProps) {
+export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse, selecionado, onSelecionar, semCoordenada, nota, ampliado: ampliadoControlado, onAmpliar, naLista = 10 }: MapaUsinasProps) {
   const uid = useId().replace(/:/g, "");
   const raiz = useRef<HTMLDivElement>(null);
   const [largura, setLargura] = useState(LARGURA_SSR);
-  const [ampliado, setAmpliado] = useState(true);
+  const [ampliadoLocal, setAmpliadoLocal] = useState(true);
+  const ampliado = ampliadoControlado ?? ampliadoLocal;
+  const setAmpliado = (b: boolean) => (onAmpliar ? onAmpliar(b) : setAmpliadoLocal(b));
   const [sobre, setSobre] = useState<string | null>(null);
+  const [cursor, setCursor] = useState(0);
+  const alvos = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
     const el = raiz.current;
@@ -89,6 +100,21 @@ export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse,
   const ordenados = [...pontos].sort((a, b) => (a.id === selecionado ? 1 : b.id === selecionado ? -1 : b.classe - a.classe));
   const razoesPresentes = RAZOES.filter((z) => pontos.some((p) => p.razao === z));
   const tela = (x: number, y: number) => [((x - janela.x) / janela.largura) * largura, ((y - janela.y) / janela.altura) * altura] as const;
+  const lista = [...pontos].sort((a, b) => (b.nao_gerada_gwh ?? 0) - (a.nao_gerada_gwh ?? 0)).slice(0, naLista);
+  const cursorEfetivo = Math.min(cursor, Math.max(lista.length - 1, 0));
+  const irPara = (j: number) => {
+    const alvo = Math.max(0, Math.min(lista.length - 1, j));
+    setCursor(alvo);
+    alvos.current[alvo]?.focus();
+  };
+  const teclado = (e: KeyboardEvent<HTMLButtonElement>, i: number) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") irPara(i + 1);
+    else if (e.key === "ArrowUp" || e.key === "ArrowLeft") irPara(i - 1);
+    else if (e.key === "Home") irPara(0);
+    else if (e.key === "End") irPara(lista.length - 1);
+    else return;
+    e.preventDefault();
+  };
 
   return (
     <figure className="space-y-2" aria-labelledby={`${uid}-t`}>
@@ -118,61 +144,104 @@ export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse,
           </button>
         )}
       </div>
-      <div ref={raiz} className="relative w-full max-w-2xl">
-        <svg
-          viewBox={textoViewBox(janela)}
-          width="100%"
-          height={altura}
-          role="img"
-          aria-label={`${titulo}. ${pontos.length} usinas e conjuntos com coordenada; a tabela equivalente abaixo traz os mesmos dados e permite selecionar pelo teclado.`}
-          className="block border border-linha bg-superficie"
-          onPointerLeave={() => setSobre(null)}
-        >
-          <g>
-            {ufs.map((u) => (
-              <path key={u.id} d={u.d} fill="var(--cor-papel)" stroke="var(--cor-linha)" strokeWidth={1} vectorEffect="non-scaling-stroke">
-                <title>{u.uf}</title>
-              </path>
-            ))}
-          </g>
-          <g>
-            {ordenados.map((p) => {
-              const r = RAIO_PX[p.classe] * unidadesPorPx;
-              const sel = p.id === selecionado;
-              const vazado = p.razao === "SEM";
+      <div className="grid gap-x-8 gap-y-4 lg:grid-cols-[minmax(0,40rem)_minmax(0,1fr)] lg:items-start">
+        <div ref={raiz} className="relative w-full max-w-2xl">
+          <svg
+            viewBox={textoViewBox(janela)}
+            width="100%"
+            height={altura}
+            role="img"
+            aria-label={`${titulo}. ${pontos.length} usinas e conjuntos com coordenada; a lista ao lado e a tabela equivalente abaixo trazem os mesmos dados e permitem selecionar pelo teclado.`}
+            className="block border border-linha bg-superficie"
+            onPointerLeave={() => setSobre(null)}
+          >
+            <g aria-hidden="true">
+              {ufs.map((u) => (
+                <path key={u.id} d={u.d} fill="var(--cor-papel)" stroke="var(--cor-linha)" strokeWidth={1} vectorEffect="non-scaling-stroke" />
+              ))}
+            </g>
+            <g>
+              {ordenados.map((p) => {
+                const r = RAIO_PX[p.classe] * unidadesPorPx;
+                const sel = p.id === selecionado;
+                const vazado = p.razao === "SEM";
+                return (
+                  <path
+                    key={p.id}
+                    d={marca(p.razao, p.x, p.y, r)}
+                    fill={vazado ? "var(--cor-superficie)" : COR_RAZAO[p.razao]}
+                    fillOpacity={vazado ? 1 : 0.85}
+                    stroke={sel ? "var(--cor-carvao)" : vazado ? COR_RAZAO[p.razao] : "var(--cor-superficie)"}
+                    strokeWidth={sel ? 2.5 : 1}
+                    vectorEffect="non-scaling-stroke"
+                    style={{ cursor: "pointer" }}
+                    onPointerEnter={() => setSobre(p.id)}
+                    onClick={() => onSelecionar(sel ? null : p.id)}
+                  >
+                    <title>{`${p.nome}${p.uf ? ` (${p.uf})` : ""}: ${num(p.nao_gerada_gwh, 1)} GWh não gerados, taxa ${num(p.taxa_pct, 1)}%, ${CURTO_RAZAO[p.razao]}`}</title>
+                  </path>
+                );
+              })}
+            </g>
+          </svg>
+          {emFoco &&
+            (() => {
+              const [px, py] = tela(emFoco.x, emFoco.y);
+              const esquerda = px > largura / 2;
               return (
-                <path
-                  key={p.id}
-                  d={marca(p.razao, p.x, p.y, r)}
-                  fill={vazado ? "var(--cor-superficie)" : COR_RAZAO[p.razao]}
-                  fillOpacity={vazado ? 1 : 0.85}
-                  stroke={sel ? "var(--cor-carvao)" : vazado ? COR_RAZAO[p.razao] : "var(--cor-superficie)"}
-                  strokeWidth={sel ? 2.5 : 1}
-                  vectorEffect="non-scaling-stroke"
-                  style={{ cursor: "pointer" }}
-                  onPointerEnter={() => setSobre(p.id)}
-                  onClick={() => onSelecionar(sel ? null : p.id)}
+                <div
+                  className="pointer-events-none absolute z-10 max-w-[min(18rem,calc(100%-1rem))] border border-linha bg-superficie px-2 py-1 text-xs text-carvao shadow-sm"
+                  style={{ top: Math.min(Math.max(0, py + 10), Math.max(0, altura - 64)), ...(esquerda ? { right: Math.max(0, largura - px + 10) } : { left: Math.max(0, px + 10) }) }}
                 >
-                  <title>{`${p.nome}${p.uf ? ` (${p.uf})` : ""}: ${num(p.nao_gerada_gwh, 1)} GWh não gerados, taxa ${num(p.taxa_pct, 1)}%, ${CURTO_RAZAO[p.razao]}`}</title>
-                </path>
+                  <span className="font-medium">{emFoco.nome}</span>
+                  {emFoco.uf ? ` (${emFoco.uf})` : ""}: {num(emFoco.nao_gerada_gwh, 1)} GWh não gerados; taxa {num(emFoco.taxa_pct, 1)}%; {CURTO_RAZAO[emFoco.razao]}
+                </div>
+              );
+            })()}
+        </div>
+        <div className="min-w-0" data-lista-usinas="">
+          <p className="rotulo text-mineral">As {lista.length} com mais energia não gerada, em 12 meses</p>
+          <ol className="mt-1" aria-label="Usinas e conjuntos com mais energia não gerada">
+            {lista.map((p, i) => {
+              const sel = p.id === selecionado;
+              return (
+                <li key={p.id} className={sel ? "bg-energia-fundo" : undefined}>
+                  <button
+                    type="button"
+                    ref={(el) => {
+                      alvos.current[i] = el;
+                    }}
+                    aria-pressed={sel}
+                    tabIndex={i === cursorEfetivo ? 0 : -1}
+                    onFocus={() => {
+                      setCursor(i);
+                      setSobre(p.id);
+                    }}
+                    onBlur={() => setSobre(null)}
+                    onPointerEnter={() => setSobre(p.id)}
+                    onPointerLeave={() => setSobre(null)}
+                    onKeyDown={(e) => teclado(e, i)}
+                    onClick={() => onSelecionar(sel ? null : p.id)}
+                    className="grid min-h-[44px] w-full grid-cols-[1.25rem_minmax(0,1fr)_auto] items-center gap-x-2 border-b border-linha px-1 py-1 text-left text-sm text-carvao hover:bg-energia-fundo focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-energia"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                      <path d={marca(p.razao, 8, 8, 5)} fill={p.razao === "SEM" ? "var(--cor-superficie)" : COR_RAZAO[p.razao]} stroke={COR_RAZAO[p.razao]} />
+                    </svg>
+                    <span className="min-w-0 [overflow-wrap:anywhere]">
+                      {p.nome}
+                      {p.uf ? <span className="text-xs text-carvao-muted"> ({p.uf})</span> : null}
+                    </span>
+                    <span className="text-right tabular-nums">
+                      {num(p.nao_gerada_gwh, 0)} GWh
+                      <span className="block text-xs text-carvao-muted">taxa {num(p.taxa_pct, 1)}%</span>
+                    </span>
+                  </button>
+                </li>
               );
             })}
-          </g>
-        </svg>
-        {emFoco &&
-          (() => {
-            const [px, py] = tela(emFoco.x, emFoco.y);
-            const esquerda = px > largura / 2;
-            return (
-              <div
-                className="pointer-events-none absolute z-10 max-w-[min(18rem,calc(100%-1rem))] border border-linha bg-superficie px-2 py-1 text-xs text-carvao shadow-sm"
-                style={{ top: Math.min(Math.max(0, py + 10), Math.max(0, altura - 64)), ...(esquerda ? { right: Math.max(0, largura - px + 10) } : { left: Math.max(0, px + 10) }) }}
-              >
-                <span className="font-medium">{emFoco.nome}</span>
-                {emFoco.uf ? ` (${emFoco.uf})` : ""}: {num(emFoco.nao_gerada_gwh, 1)} GWh não gerados; taxa {num(emFoco.taxa_pct, 1)}%; {CURTO_RAZAO[emFoco.razao]}
-              </div>
-            );
-          })()}
+          </ol>
+          <p className="mt-2 text-xs text-carvao-muted">As {num(pontos.length, 0)} usinas e conjuntos do mapa estão na tabela completa, logo abaixo.</p>
+        </div>
       </div>
       <p role="status" aria-live="polite" className="sr-only">
         {escolhido ? `Selecionada: ${escolhido.nome}, ${num(escolhido.nao_gerada_gwh, 1)} GWh não gerados, taxa ${num(escolhido.taxa_pct, 1)}%.` : ""}

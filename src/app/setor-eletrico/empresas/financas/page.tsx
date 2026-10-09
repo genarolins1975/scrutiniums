@@ -194,9 +194,6 @@ export default function PaginaP038() {
               complementares={[{ rotulo: "Valores com a escala convertida", p: g.proveniencia.financas_escala }]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p038" veredito={vereditoFinancas(f)}>
-                  {respostaFinancas(f)}
-                </RespostaCurta>
                 <EmpresasEvolucaoFinancas
                   entidades={entidadesCompanhias(f.companhias)}
                   contas={contasGrafico(f.contas)}
@@ -209,6 +206,10 @@ export default function PaginaP038() {
                   fonte={fonteCvm}
                   versao={f.periodos.ultimo_trimestre ?? String(f.periodos.ultimo_exercicio ?? "")}
                 />
+                {/* a faixa já traz as contagens; a resposta vem depois da figura, para o comparador começar na primeira tela */}
+                <RespostaCurta id="p038" veredito={vereditoFinancas(f)} depois>
+                  {respostaFinancas(f)}
+                </RespostaCurta>
 
                 {bloqueioP038.map((b) => (
                   <EmpresasAviso key={b.id} rotulo="Fonte indisponível">

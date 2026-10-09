@@ -1821,17 +1821,18 @@ def _resumo_conferencia(atos, pendencias=None):
 
 
 def _nota_estrutural(perm):
-    """Texto determinístico: o teto estrutural é verificado sobre a média diária por
-    conferência empírica, porque a regra de aplicação não está nos trechos dos atos."""
+    """Texto determinístico: o teto estrutural é verificado sobre a média diária, e a conferência empírica
+    confirma a regra que a Resolução Normativa ANEEL nº 1.032/2022 (art. 23, § 3º) escreve."""
     no_teto = sum(x["dias_teto_estrutural"] for x in perm)
     com_acima = sum(x["dias_teto_estrutural_com_hora_acima"] for x in perm)
     acima = sum(x["controle_dias_acima_estrutural"] for x in perm)
     anos = sorted({x["ano"] for x in perm if x["dias_teto_estrutural"]})
     return (f"O teto estrutural é conferido sobre a média diária das 24 horas. Em {no_teto} dias-submercado do histórico "
             f"({', '.join(str(a) for a in anos) if anos else 'nenhum ano'}) a média diária ficou no teto; em {com_acima} deles houve horas "
-            f"acima do teto no mesmo dia; em {acima} a média passou do teto. O padrão é compatível com um limite aplicado à média diária. A regra de aplicação "
-            "não está nos trechos dos atos integrados e as regras de comercialização da CCEE estão inacessíveis (HTTP 403); a leitura é "
-            "conferência empírica, não citação da regra.")
+            f"acima do teto no mesmo dia; em {acima} a média passou do teto. A regra de aplicação é a da Resolução Normativa ANEEL nº 1.032/2022 "
+            "(art. 23, § 3º): se a média diária dos PLDs horários passa do teto estrutural, a CCEE ajusta a série horária até que a média "
+            "seja igual ao teto. Os trechos dos atos integrados não a reproduzem e as regras de comercialização da CCEE ficaram inacessíveis "
+            "(HTTP 403); a conferência acima é empírica, feita sobre a série publicada, e confirma a leitura da norma.")
 
 
 def _bloco_historico(d):

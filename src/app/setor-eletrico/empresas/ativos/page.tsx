@@ -137,7 +137,7 @@ export default function PaginaP036() {
           rotulo="Empresas"
           siglas={["SIGA", "CEG", "SIGET", "CNPJ", "ANEEL"]}
           titulo={painel("p036").pergunta}
-          lead={`Quem é dono de cada usina e de cada linha de transmissão, pelo CNPJ (${SIGLAS.CNPJ}) que a ANEEL (${SIGLAS.ANEEL}) publica no registro do ativo. O ativo sem vínculo completo continua identificado, com o motivo.`}
+          lead={`Donos de usinas e de linhas de transmissão, pelo CNPJ (${SIGLAS.CNPJ}) que a ANEEL (${SIGLAS.ANEEL}) publica no registro do ativo.`}
           recorte={`Usinas do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · linhas do SIGET (${SIGLAS.SIGET}) de ${dataTexto(t?.data)} · MW, km de circuito e contagens`}
           fonte="ANEEL, cadastros de geração, de transmissão e de agentes"
           referencia={
@@ -174,30 +174,30 @@ export default function PaginaP036() {
                 formato="num"
                 casas={1}
                 unidade="MW"
-                periodo={`usinas em operação, SIGA de ${dataSiga}`}
-                nota="Capacidade instalada: não é energia gerada."
+                periodo={`SIGA de ${dataSiga}`}
+                nota="Capacidade, não energia gerada."
               />
               <Numero
                 variante="faixa"
-                rotulo="Potência com todos os donos identificados"
+                rotulo="Potência com donos identificados"
                 natureza="CALCULADO"
                 evidencia={comValorExibido(a.evidencia, pctTexto(a.evidencia.valor_calculo, 2))}
                 formato="pct"
                 casas={2}
-                unidade="da potência fiscalizada"
-                nota={`${pctTexto(a.pct_usinas_operacao_vinculadas, 2)} das usinas em operação; ${pctTexto(a.pct_usinas_vinculadas, 2)} das ${a.universo_pct_usinas_vinculadas}.`}
+                unidade="da potência"
+                nota={`${pctTexto(a.pct_usinas_operacao_vinculadas, 2)} das usinas em operação.`}
                 endereco={ancoraPainel("p036")}
               />
               {t && (
                 <Numero
                   variante="faixa"
-                  rotulo="Módulos de transmissão ligados ao CNPJ"
+                  rotulo="Módulos de transmissão com CNPJ"
                   natureza="CALCULADO"
                   evidencia={comValorExibido(t.evidencia, pctTexto(t.evidencia.valor_calculo, 1))}
                   formato="pct"
                   casas={1}
                   unidade="dos módulos"
-                  nota={`${inteiro(t.resumo.modulos_com_cnpj)} de ${inteiro(t.resumo.modulos)} módulos do SIGET; ${inteiro(t.resumo.cnpjs_com_modulos)} concessionárias com módulos.`}
+                  nota={`${inteiro(t.resumo.modulos_com_cnpj)} de ${inteiro(t.resumo.modulos)} módulos do SIGET.`}
                   endereco={ancoraPainel("p036")}
                 />
               )}
@@ -231,10 +231,11 @@ export default function PaginaP036() {
               ]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p036" veredito={vereditoCadastro(c)}>
+                <EmpresasProprietarios proprietarios={c.proprietarios} totalComCnpj={a.proprietarios_cnpj} csv={csvProprietarios} fonte={fonteCadastro} versao={a.data ?? ""} />
+                {/* a faixa já traz o número; a resposta vem depois da figura, para o gráfico começar na primeira tela */}
+                <RespostaCurta id="p036" veredito={vereditoCadastro(c)} depois>
                   {respostaCadastro(c)}
                 </RespostaCurta>
-                <EmpresasProprietarios proprietarios={c.proprietarios} totalComCnpj={a.proprietarios_cnpj} csv={csvProprietarios} fonte={fonteCadastro} versao={a.data ?? ""} />
                 <EmpresasRecorte
                   periodo={
                     <>

@@ -147,7 +147,7 @@ export default function PerfilHorarioPage() {
             <FaixaMetricas
               colunas={3}
               rotulo="Indicadores da MMGD e do pico no SIN"
-              nota="Valores do SIN, fixos: a região escolhida abaixo muda a resposta, a curva horária e o mapa de calor, não estes números."
+              nota="Valores do SIN, fixos: a região escolhida abaixo não os altera."
             >
               <Numero
                 variante="faixa"

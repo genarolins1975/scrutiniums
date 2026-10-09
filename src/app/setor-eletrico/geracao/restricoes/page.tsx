@@ -34,6 +34,7 @@ import {
   rotaPainel,
   situacaoMensal,
   textoControlesRestricao,
+  textoMudancaMensal,
   textoSemComparacaoMensal,
   type FonteRestricao,
 } from "@/lib/energia/geracao";
@@ -80,7 +81,33 @@ export default function GeracaoRestricoesPage() {
   const u12 = principal.ultimos_12m;
   const ultimoDia = principal.diario_recente.dias.at(-1) ?? g.dia_referencia;
 
-  const oQueMudou = <>{textoSemComparacaoMensal(ultimoMes, g.gerado_em, "as restrições de eólicas e fotovoltaicas")}</>;
+  // o que mudou: a energia não gerada de cada fonte no último mês completo, contra o mês anterior e o mesmo mês de um ano antes
+  const mudancas = fontes
+    .map((f) => {
+      const r = restricoes[f]!;
+      return textoMudancaMensal({
+        nome: `a energia não gerada estimada das ${NOME_FONTE_RESTRICAO[f].toLowerCase()}`,
+        unidade: "GWh",
+        casas: 0,
+        meses: r.mensal_sin.meses,
+        valores: r.mensal_sin.energia_nao_gerada_total_mwh.map((x) => (x === null ? null : x / 1000)),
+        mes: r.ultimo_mes_completo,
+      });
+    })
+    .filter((x) => x);
+  const oQueMudou = (
+    <>
+      {mudancas.join(" ")} {textoSemComparacaoMensal(ultimoMes, g.gerado_em, "as restrições de eólicas e fotovoltaicas")}
+    </>
+  );
+  const retratoPotencia = g.capacidade?.retrato;
+  const potenciaOperacao = retratoPotencia
+    ? {
+        data: retratoPotencia.data,
+        eolica: retratoPotencia.por_categoria.find((x) => x.categoria === "eolica")?.mw ?? null,
+        solar: retratoPotencia.por_categoria.find((x) => x.categoria === "solar_centralizada")?.mw ?? null,
+      }
+    : undefined;
   const comoInterpretar = (
     <>
       Energia não gerada = geração de referência estimada pelo ONS menos a verificada, só nas meias horas em que o ONS limitou a usina. Taxa = não gerada ÷ (verificada + não gerada), nas mesmas
@@ -92,11 +119,11 @@ export default function GeracaoRestricoesPage() {
     <>
       Que a usina estava indisponível ou que faltou vento ou sol: meia hora sem limitação do ONS não entra, mesmo que a usina tenha gerado abaixo da referência. Que a energia não gerada foi medida: a
       referência é estimativa do ONS. Que a usina no mapa é o lugar onde o corte foi decidido: a marca é a usina afetada, não o ponto da rede que limitou. Que toda razão dá direito a compensação: pela
-      regra lida (REN ANEEL nº 1.030/2022, em cópia de 08/01/2025), só a razão de indisponibilidade externa dá direito a <Termo slug="ess">ESS</Termo>, como diz o verbete{" "}
+      norma lida (REN ANEEL nº 1.030/2022, em cópia de 08/01/2025), só a razão de indisponibilidade externa dá direito a <Termo slug="ess">ESS</Termo>, como diz o verbete{" "}
       <Link href="/setor-eletrico/aprenda/constrained-off" className="text-energia-dark underline underline-offset-4">
         Constrained-off
       </Link>
-      ; alterações posteriores do ressarcimento não foram verificadas.
+      ; alterações posteriores indicadas em fontes secundárias (Lei 15.269/2025; Portaria Normativa MME 140/2026) não foram verificadas aqui.
     </>
   );
 
@@ -201,6 +228,7 @@ export default function GeracaoRestricoesPage() {
                   versao={versao}
                   notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                   rotulosRazao={Object.fromEntries(g.razoes.map((z) => [z.id, z.rotulo]))}
+                  potenciaOperacao={potenciaOperacao}
                 />
 
                 <SecaoDoPainel nivel="analisar" id="analise-restricoes" titulo="Razões, origem, subsistemas, os últimos dias e o detalhamento publicado pelo ONS">

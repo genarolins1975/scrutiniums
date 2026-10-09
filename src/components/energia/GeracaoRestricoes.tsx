@@ -35,6 +35,7 @@ import {
   linhasSubsistemas12m,
   linhasUsinasRestricao,
   notaRazoesRestricao,
+  notaUniversoRestricoes,
   paraTabela,
   pontosUsinas,
   respostaRestricao,
@@ -65,6 +66,8 @@ import type { RazaoRestricao, Restricao } from "@/lib/energia/tipos-geracao";
 const ESQUEMA = {
   f: campo(tiposUrl.opcao(FONTES_RESTRICAO), "eolica" as FonteRestricao),
   ru: campo(tiposUrl.texto({ max: 40 }), ""),
+  // vista do mapa: ampliada nas usinas (padrão) ou Brasil inteiro; entra na URL para o link do painel reproduzir a vista
+  vm: campo(tiposUrl.opcao(["usinas", "brasil"] as const), "usinas"),
 };
 
 const URL_USINAS_MES = "/energia/series/geracao_restricao_usina_mensal.csv";
@@ -85,12 +88,15 @@ export function GeracaoRestricoes({
   versao,
   notas,
   rotulosRazao,
+  potenciaOperacao,
 }: {
   restricoes: Partial<Record<FonteRestricao, RestricaoCliente>>;
   fonte: string;
   versao: string;
   /** Notas do painel (NotasDoPainel), logo depois da figura principal e do recorte. */
   notas?: ReactNode;
+  /** Potência em operação comercial de cada fonte no retrato da Capacidade Instalada: referência do maior corte simultâneo (outra data e outro universo). */
+  potenciaOperacao?: { data: string; eolica: number | null; solar: number | null };
   /** Rótulo oficial de cada razão (a gold publica; vai para a chave sob o gráfico mensal). */
   rotulosRazao?: Partial<Record<RazaoRestricao, string>>;
 }) {
@@ -165,6 +171,11 @@ export function GeracaoRestricoes({
           <RespostaCurta id="p023" veredito={vereditoRestricao(restricoes) || respostaRestricao(r)}>
             <span data-fonte={f}>{respostaRestricao(r)}</span>
           </RespostaCurta>
+          {notaUniversoRestricoes(restricoes) && (
+            <p className="text-xs leading-relaxed text-carvao-muted" data-nota="universo-fontes">
+              {notaUniversoRestricoes(restricoes)}
+            </p>
+          )}
         </div>
         <div id="restricao-mensal" className="scroll-mt-28 space-y-3">
           <GraficoBarras
@@ -181,6 +192,9 @@ export function GeracaoRestricoes({
           {ultimo?.parcial === "sim" && (
             <GeracaoAviso>O último mês ({ultimo.mes}) é parcial: soma só os dias já publicados e não se compara com meses completos.</GeracaoAviso>
           )}
+          <p className="text-xs leading-relaxed text-carvao-muted" data-nota="ess-restricao">
+            Compensação: pela norma lida em cópia de 08/01/2025, só a razão elétrica (indisponibilidade externa) dá direito ao ESS, o encargo de serviços do sistema; alterações posteriores indicadas em fontes secundárias não foram verificadas aqui.
+          </p>
           {notaRazoesRestricao(r, rotulosRazao ?? {}, mensal.razoes) && (
             <p className="text-xs leading-relaxed text-carvao-muted" data-nota="razoes-restricao">
               {notaRazoesRestricao(r, rotulosRazao ?? {}, mensal.razoes)}
@@ -241,6 +255,18 @@ export function GeracaoRestricoes({
             altura={220}
           />
         </div>
+        {potenciaOperacao && (potenciaOperacao.eolica !== null || potenciaOperacao.solar !== null) && (
+          <p className="text-xs leading-relaxed text-carvao-muted" data-referencia-corte="">
+            Para ler o maior corte: a potência em operação comercial era de{" "}
+            {[
+              potenciaOperacao.eolica !== null ? `${num(potenciaOperacao.eolica, 1)} MW nas eólicas` : null,
+              potenciaOperacao.solar !== null ? `${num(potenciaOperacao.solar, 1)} MW na solar centralizada` : null,
+            ]
+              .filter((x): x is string => x !== null)
+              .join(" e ")}{" "}
+            em {dataBR(potenciaOperacao.data)} (retrato da Capacidade Instalada, usinas despachadas pelo ONS). Corte e potência são medidas de datas e universos diferentes: a razão entre elas não é publicada.
+          </p>
+        )}
         <TabelaInterativa
           titulo="Tabela equivalente: energia não gerada, taxa e maior corte, mês a mês"
           colunas={colunasRestricaoMensal(mensal.razoes).map((c) => (c.id === "mes" ? { ...c, id: "m", tipo: "data" as const } : c))}
@@ -269,6 +295,8 @@ export function GeracaoRestricoes({
             rotulosClasse={classes.rotulos}
             selecionado={usina?.id ?? null}
             onSelecionar={selecionar}
+            ampliado={v.vm === "usinas"}
+            onAmpliar={(b) => definir({ vm: b ? "usinas" : "brasil" })}
             semCoordenada={mapa.semCoordenada}
             nota={`Cada marca é uma usina ou um conjunto de usinas como o ONS publica; o ponto não indica onde o corte foi decidido.${
               foraDaUf.length
@@ -394,6 +422,7 @@ export function GeracaoRestricoesAnalise({ restricoes, fonte, versao }: { restri
             fonte={fonte}
             versao={versao}
             nomeArquivo={`geracao-restricao-subsistemas-${f}`}
+            nota="Subsistema com pouca geração verificada tem taxa sobre base pequena: a taxa de poucos GWh se move mais que a do Nordeste. Leia a taxa junto da energia verificada."
           />
         </>
       )}

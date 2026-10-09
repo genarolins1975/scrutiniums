@@ -5,7 +5,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasArvore } from "@/components/energia/EmpresasArvore";
 import { EmpresasFichaPares } from "@/components/energia/EmpresasFichaPares";
-import { EmpresasAviso, EmpresasComoLer, EmpresasDatas, EmpresasNavegacao, EmpresasRecorte, EmpresasSeguir } from "@/components/energia/EmpresasPagina";
+import { EmpresasAviso, EmpresasComoLer, EmpresasDatas, EmpresasNavegacao, EmpresasRecorte, EmpresasSeguir, type ParteComoLer } from "@/components/energia/EmpresasPagina";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
@@ -96,10 +96,10 @@ const CONTAS_FICHA = ["receita", "ebit", "lucro_liquido", "ativo_total", "divida
 /** Frase do limite que a ANEEL fixa para a própria distribuidora: o valor, a diferença e o sentido dela em palavras. */
 function notaLimite(valor: number | null | undefined, limite: number | null | undefined, sufixo: string): string {
   if (!temValor(limite)) return "Limite sem dado nesta publicação.";
-  const base = `Limite fixado pela ANEEL para a própria distribuidora: ${numTexto(limite, 2)}${sufixo}.`;
+  const base = `Limite da ANEEL para ela: ${numTexto(limite, 2)}${sufixo}.`;
   const s = sentidoLimite(valor, limite);
   if (!temValor(valor) || !s) return base;
-  const sentido = s === "igual" ? "igual ao limite" : s === "abaixo" ? "abaixo do limite, ou seja, dentro dele" : "acima do limite";
+  const sentido = s === "igual" ? "igual ao limite" : s === "abaixo" ? "abaixo do limite" : "acima do limite";
   return `${base} Diferença: ${sinal(valor - limite, 2, sufixo)}, ${sentido}.`;
 }
 
@@ -172,6 +172,10 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
   const semAcento = (x: string) => x.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
   const siglasDiferentes = new Set(d.siglas.map((x) => semAcento(x.sigla))).size > 1;
   const janela = `${trimestreTexto(g.datas.polimero_janela[0])} a ${trimestreTexto(g.datas.polimero_janela.at(-1))}`;
+  const semSerie: ParteComoLer[] = [];
+  if (!evol.perdas.length) semSerie.push("perdas");
+  if (!evol.qualidade.length) semSerie.push("continuidade");
+  if (!evol.tarifa.length) semSerie.push("tarifa");
 
   const oQueMudou = (
     <>
@@ -201,10 +205,10 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <EmpresasNavegacao atual="ficha" />
         <CabecalhoModulo
-          rotulo="Perfil da distribuidora"
+          rotulo="Empresas"
           siglas={["SAMP", "DEC", "FEC", "TE", "TUSD", "REH"]}
-          titulo={`${d.sigla}: ${d.nome ?? "razão social sem registro"}`}
-          lead={`CNPJ ${cnpjFormatado(d.cnpj)} · ${d.classificacao ?? rotuloGrupo(d.grupo)} · ${d.ufs.length ? `área em ${d.ufs.join(", ")}` : "sem conjunto elétrico vigente (UF sem registro)"} · ${d.ativa ? "ativa" : "inativa"}. Perdas, continuidade e tarifa residencial pelo mesmo CNPJ das bases de origem.`}
+          titulo={`Perfil da ${d.sigla}: perdas, continuidade e tarifa`}
+          lead={`${d.nome ?? "Razão social sem registro"} · CNPJ (${SIGLAS.CNPJ}) ${cnpjFormatado(d.cnpj)} · ${d.classificacao ?? rotuloGrupo(d.grupo)} · ${d.ufs.length ? `área em ${d.ufs.join(", ")}` : "sem conjunto elétrico vigente (UF sem registro)"} · ${d.ativa ? "ativa" : "inativa"}.`}
           recorte={`Perdas de ${p?.ano ?? "sem dado"} · continuidade de ${q?.ano ?? "sem dado"} · tarifa ${t && t.vigente ? `vigente de ${dataTexto(t.inicio)} a ${dataTexto(t.fim)}` : "sem vigência na data do arquivo de tarifas"}`}
           fonte="ANEEL, bases de perdas, continuidade e tarifas, pelo mesmo CNPJ"
           referencia={
@@ -224,7 +228,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
             />
           }
           metricas={
-            <FaixaMetricas colunas={4} rotulo={`Indicadores da ${d.sigla}`} nota={`Medidas do último ano de referência de cada base, fixas: não mudam com a distribuidora escolhida nos pares. ${SIGLAS.CNPJ} identifica a empresa em todas as bases.`}>
+            <FaixaMetricas colunas={4} rotulo={`Indicadores da ${d.sigla}`} nota="Medidas do último ano de referência de cada base, fixas: não mudam com a distribuidora escolhida nos pares. As perdas têm ficha de prova; DEC, FEC e tarifa são cópias das bases de Qualidade e de Conta de luz, que não publicam ficha por distribuidora.">
               {evPerdas ? (
                 <Numero
                   variante="faixa"
@@ -287,7 +291,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                 motivoAusencia={
                   t && !t.vigente ? `Distribuidora sem tarifa vigente na data do arquivo de tarifas: ${t.motivo ?? "motivo não publicado"}.` : "A distribuidora não aparece nas tarifas de aplicação."
                 }
-                nota={t && t.vigente ? `Sem tributos nem bandeira; TE ${numTexto(t.te, 2)} e TUSD ${numTexto(t.tusd, 2)}; ${t.ato ?? "ato sem número"}.` : undefined}
+                nota={t && t.vigente ? `Sem tributos nem bandeira; ${(t.ato ?? "ato sem número").replace(/^REH\b/, "Resolução Homologatória")}.` : undefined}
               />
             </FaixaMetricas>
           }
@@ -329,11 +333,6 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                     {alertas.length ? ` O módulo Perdas marca a ${d.sigla} em ${p.ano} com os alertas: ${alertas.join("; ")}.` : ""}
                   </p>
                 )}
-                <EmpresasComoLer />
-                <p className="max-w-prose2 text-xs text-carvao-muted">
-                  DEC, FEC e tarifa são cópias das bases publicadas de Qualidade e de Conta de luz, que não publicam ficha Comprove por distribuidora; a proveniência de cada um está nos selos abaixo, e o número pode
-                  ser conferido na página de origem com a mesma distribuidora escolhida.
-                </p>
 
                 {evol.perdas.length > 0 && (
                   <SecaoDoPainel id="perdas" titulo={`Como as perdas da ${d.sigla} evoluíram?`}>
@@ -358,6 +357,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                         {textoAnosNegativos(evol.perdas)}
                       </p>
                     )}
+                    <EmpresasComoLer partes={["perdas"]} />
                   </SecaoDoPainel>
                 )}
 
@@ -408,6 +408,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                         altura={260}
                       />
                     </div>
+                    <EmpresasComoLer partes={["continuidade"]} />
                   </SecaoDoPainel>
                 )}
                 {evol.tarifa.length > 0 && (
@@ -429,6 +430,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                       legendaInterativa
                       altura={280}
                     />
+                    <EmpresasComoLer partes={["tarifa"]} />
                   </SecaoDoPainel>
                 )}
                 {!evol.perdas.length && !evol.qualidade.length && !evol.tarifa.length && (
@@ -436,6 +438,8 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                     <p>Nenhuma das bases publicadas de origem publica série histórica para este CNPJ nesta publicação.</p>
                   </EmpresasAviso>
                 )}
+                {/* a leitura de cada medida fica ao lado da sua figura; a de uma medida sem série própria vem aqui, porque o número dela está na faixa */}
+                {semSerie.length > 0 && <EmpresasComoLer partes={semSerie} />}
 
                 <SecaoDoPainel id="pares" titulo="Como ela se compara com as pares?">
                   <ul className="space-y-1 text-sm text-carvao">

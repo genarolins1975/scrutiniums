@@ -610,7 +610,7 @@ export function RedeCirculacao({
           chaveUrl="r30"
           selecionado={fr}
           onSelecionar={selecionar}
-          nota="Escondida pelo saldo de 30 dias: o menor dos dois sentidos na janela inteira. A soma dia a dia é menor ou igual, porque dias inteiros no sentido oposto entram na janela e não no dia."
+          nota="Escondida pelo saldo de 30 dias: o menor dos dois sentidos na janela inteira. A soma dia a dia é menor ou igual: dias inteiros no sentido oposto entram na janela e não no dia."
         />
       </SecaoDoPainel>
     </div>

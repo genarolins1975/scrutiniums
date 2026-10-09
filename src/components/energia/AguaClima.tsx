@@ -405,10 +405,10 @@ export function AguaClima({
             paineis={escolhidas.map((b) => ({
               id: b.bacia,
               titulo: nomes[b.bacia],
-              // a mesma grandeza tem a mesma cor em todos os painéis e na seção da bacia (chuva estimada no mês); o nome da bacia é o do painel
+              // a mesma grandeza tem a mesma cor e o mesmo rótulo em todos os painéis e na seção da bacia (chuva estimada no mês); o nome da bacia é o título do painel
               series: [
-                { id: b.bacia, rotulo: `Chuva no mês, ${nomes[b.bacia]}`, cor: "var(--serie-hidraulica)", espessura: 2 },
-                { id: `${b.bacia}·media`, rotulo: `Média do mês, ${nomes[b.bacia]}`, cor: "var(--serie-referencia)", tracejada: true, espessura: 1 },
+                { id: b.bacia, rotulo: "Chuva no mês", cor: "var(--serie-hidraulica)", espessura: 2 },
+                { id: `${b.bacia}·media`, rotulo: "Média do mês", cor: "var(--serie-referencia)", tracejada: true, espessura: 1 },
               ],
             }))}
           />

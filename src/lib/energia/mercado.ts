@@ -3,6 +3,7 @@ import { datasLegiveis } from "./visao";
 import type { Proveniencia } from "./tipos";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
 import type { ResultadoTeste } from "./evidencia";
+import type { EntradaDados } from "./tipos-dados";
 import type {
   ConferenciaInfoMercado,
   EstadoPainel,
@@ -33,6 +34,17 @@ export const PAGINAS_MERCADO = [
 
 export type IdPaginaMercado = (typeof PAGINAS_MERCADO)[number]["id"];
 export type IdPainelMercado = PainelMercado["id"];
+
+/**
+ * Pergunta que é o título de cada página, em até 9 palavras. O painel de cada página faz uma pergunta mais específica (a da gold
+ * ou uma sobre a primeira figura), nunca a mesma do título.
+ */
+export const TITULO_PAGINA_MERCADO: Record<IdPaginaMercado, string> = {
+  "livre-regulado": "Como a energia é contratada, alocada e liquidada?",
+  agentes: "Quem participa do mercado e como a composição mudou?",
+  "mre-gsf": "Como foi o ajuste da garantia física do MRE?",
+  encargos: "Quais custos públicos aparecem na liquidação do mercado?",
+};
 
 export const URL_GOLD_MERCADO = "/energia/gold/mercado.json";
 export const URL_DETALHE_MERCADO = "/energia/series/mercado_detalhe.json";
@@ -719,3 +731,127 @@ export function mesesAntes(mes: string, n: number): string {
   const t = a * 12 + (m - 1) - n;
   return `${Math.floor(t / 12)}-${String((t % 12) + 1).padStart(2, "0")}`;
 }
+
+/* ---------------------------------------------------------------- o que ainda não aparece (estado honesto) */
+
+/** "2023 a 2025" para três anos seguidos ou mais, "2023 e 2024" para dois, "2023, 2025 e 2026" para anos soltos. */
+export function textoAnos(anos: readonly string[]): string {
+  const a = Array.from(new Set(anos)).sort();
+  if (a.length <= 1) return a[0] ?? "";
+  const n = a.map(Number);
+  const seguidos = n.every((v, i) => i === 0 || v === n[i - 1] + 1);
+  if (a.length > 2 && seguidos) return `${a[0]} a ${a[a.length - 1]}`;
+  return `${a.slice(0, -1).join(", ")} e ${a[a.length - 1]}`;
+}
+
+export type ItemAusenteMercado = { id: string; titulo: string; texto: string; paineis: string[] };
+
+const TITULO_PENDENCIA: Record<string, string> = {
+  infomercado_dados_gerais: "Séries da CCEE antes de 2023",
+  historico_perfis: "Fluxo mensal de perfis de agentes",
+};
+
+/**
+ * O que a gold declara como não integrado (pendências) ou como inacessível (bloqueios), em frases de Entender: o título e o texto
+ * saem do campo `efeito` de cada item e, no bloqueio do boletim do MME, dos anos cujas pastas pedem login. Nenhum código de
+ * conjunto nem identificador interno entra no texto; a descrição completa e a evidência ficam em Analisar.
+ */
+export function itensAusentesMercado(g: Pick<MercadoGold, "pendencias" | "bloqueios">): ItemAusenteMercado[] {
+  const pend = g.pendencias.map((p) => ({ id: p.id, titulo: TITULO_PENDENCIA[p.id] ?? "Dado ainda não integrado", texto: p.efeito, paineis: p.paineis }));
+  const bloq = g.bloqueios.map((b) => {
+    const pastas = (b.evidencia.pastas ?? []).filter((x) => x.redireciona_login);
+    const anos = textoAnos(pastas.map((x) => String(x.ano)));
+    const acesso = pastas.length ? `As pastas de ${anos} do Boletim de Monitoramento do MME pedem login, e o observatório não tentou outro caminho de acesso. ` : "";
+    return { id: b.id, titulo: pastas.length ? `Boletim de Monitoramento do MME, ${anos}` : "Fonte com acesso bloqueado", texto: `${acesso}${b.efeito}`, paineis: b.paineis };
+  });
+  return [...pend, ...bloq];
+}
+
+export type EntradaCatalogoMercado = Pick<EntradaDados, "id" | "orgao" | "estado" | "titulo"> & { paginas?: { rotulo: string; href: string }[] };
+
+/**
+ * O que o catálogo do observatório diz das fontes do módulo: quantas estão publicadas nas páginas de mercado (por órgão) e quantos
+ * conjuntos de montantes de contratos da CCEE estão só verificados ou catalogados, sem integração. A contagem sai do catálogo
+ * publicado; quando um conjunto de contrato é integrado, ele deixa de contar e a frase desaparece sozinha.
+ */
+export function resumoCatalogoMercado(entradas: readonly EntradaCatalogoMercado[]): { publicadas: number; porOrgao: { orgao: string; n: number }[]; contratos: number; contratosSoVerificados: boolean } {
+  const dePagina = entradas.filter((e) => (e.paginas ?? []).some((p) => p.href.startsWith("/setor-eletrico/mercado")));
+  const publicadas = dePagina.filter((e) => e.estado === "PUBLICADO");
+  const contagem = new Map<string, number>();
+  publicadas.forEach((e) => contagem.set(e.orgao, (contagem.get(e.orgao) ?? 0) + 1));
+  const contratos = entradas.filter((e) => e.orgao === "CCEE" && e.id.startsWith("ccee:contrato_montante_") && (e.estado === "CATALOGADO" || e.estado === "RECURSO VERIFICADO"));
+  return {
+    publicadas: publicadas.length,
+    porOrgao: Array.from(contagem).map(([orgao, n]) => ({ orgao, n })).sort((a, b) => b.n - a.n || a.orgao.localeCompare(b.orgao, "pt-BR")),
+    contratos: contratos.length,
+    contratosSoVerificados: contratos.length > 0 && contratos.every((e) => e.estado === "RECURSO VERIFICADO"),
+  };
+}
+
+const DO_ORGAO: Record<string, string> = { CCEE: "da", ANEEL: "da", EPE: "da", MME: "do", ONS: "do" };
+
+/** "24 fontes publicadas nestas páginas: 18 da CCEE, 3 da ANEEL, 2 da EPE e 1 do MME." */
+export function textoFontesPublicadas(r: Pick<ReturnType<typeof resumoCatalogoMercado>, "publicadas" | "porOrgao">): string {
+  if (!r.publicadas) return "";
+  const partes = r.porOrgao.map((o) => `${num(o.n, 0)} ${DO_ORGAO[o.orgao] ?? "de"} ${o.orgao}`);
+  const lista = partes.length > 1 ? `${partes.slice(0, -1).join(", ")} e ${partes[partes.length - 1]}` : partes[0];
+  return `${num(r.publicadas, 0)} ${r.publicadas === 1 ? "fonte publicada" : "fontes publicadas"} nestas páginas: ${lista}.`;
+}
+
+/** Frase do que falta em contratos de energia; null quando nenhum conjunto de montantes de contrato está só verificado ou catalogado. */
+export function textoContratosAusentes(r: Pick<ReturnType<typeof resumoCatalogoMercado>, "contratos" | "contratosSoVerificados">): string | null {
+  if (!r.contratos) return null;
+  const conjuntos = `${num(r.contratos, 0)} ${r.contratos === 1 ? "conjunto de dados aberto" : "conjuntos de dados abertos"} com montantes de contratos de energia`;
+  const estado = r.contratosSoVerificados ? "O observatório confirmou que os arquivos existem, mas ainda não os integrou" : "O observatório ainda não os integrou";
+  return `A CCEE publica ${conjuntos}. ${estado}: por isso nenhum montante contratado aparece nestas páginas. O observatório também não publica preço de contrato.`;
+}
+
+const ROTULO_ESTADO_CATALOGO: Record<string, string> = {
+  PUBLICADO: "publicado",
+  "RECURSO VERIFICADO": "recurso verificado (acessível), não integrado",
+  CATALOGADO: "catalogado, recurso não verificado",
+};
+
+/** Linhas da tabela de Auditar com as fontes do módulo no catálogo: as publicadas nas páginas de mercado e os conjuntos de contratos sem integração. */
+export function linhasCatalogoMercado(entradas: readonly EntradaCatalogoMercado[]): (string | number | null)[][] {
+  const contratos = (e: EntradaCatalogoMercado) => e.orgao === "CCEE" && e.id.startsWith("ccee:contrato_montante_") && (e.estado === "CATALOGADO" || e.estado === "RECURSO VERIFICADO");
+  const publicada = (e: EntradaCatalogoMercado) => e.estado === "PUBLICADO" && (e.paginas ?? []).some((p) => p.href.startsWith("/setor-eletrico/mercado"));
+  return entradas
+    .filter((e) => publicada(e) || contratos(e))
+    .slice()
+    .sort((a, b) => Number(contratos(a)) - Number(contratos(b)) || a.orgao.localeCompare(b.orgao, "pt-BR") || a.id.localeCompare(b.id))
+    .map((e) => [
+      e.orgao,
+      e.titulo,
+      ROTULO_ESTADO_CATALOGO[e.estado] ?? e.estado.toLowerCase(),
+      (e.paginas ?? []).filter((p) => p.href.startsWith("/setor-eletrico/mercado")).map((p) => p.rotulo).join("; ") || "nenhuma página",
+    ]);
+}
+
+/**
+ * Quantas vezes o consumo da CCEE é o da EPE no último mês que os dois universos publicam: o ACR da CCEE sobre o cativo da EPE e o
+ * ACL da CCEE (sem a exportação) sobre o livre da EPE. Mostra de onde vem a diferença entre os dois percentuais do mercado livre,
+ * sem decompô-la. Null quando falta algum dos quatro valores.
+ */
+export function razoesCceeSobEpe(g: Pick<MercadoGold, "livre_regulado">): { mes: string; regulado: number; livre: number } | null {
+  const lr = g.livre_regulado;
+  for (let i = lr.ccee_mensal.length - 1; i >= 0; i--) {
+    const c = lr.ccee_mensal[i];
+    const e = lr.epe_mensal.find((x) => x.mes === c.mes);
+    if (e && e.cativo_mwh && e.livre_mwh && c.acr_mwh !== null && c.acr_mwh !== undefined && c.acl_mwh !== null && c.acl_mwh !== undefined) {
+      return { mes: c.mes, regulado: c.acr_mwh / e.cativo_mwh, livre: c.acl_mwh / e.livre_mwh };
+    }
+  }
+  return null;
+}
+
+/** "em ago/2026 a CCEE mede 1,21 vez o consumo cativo da EPE no ambiente regulado e 1,04 vez o livre, ou seja, a diferença vem sobretudo do regulado"; vazio sem os valores. */
+export function textoRazaoUniversos(g: Pick<MercadoGold, "livre_regulado">): string {
+  const r = razoesCceeSobEpe(g);
+  if (!r) return "";
+  const vez = (v: number) => `${num(v, 2)} ${v < 2 ? "vez" : "vezes"}`;
+  const dif = r.regulado - r.livre;
+  const origem = Math.abs(dif) < 0.03 ? "aparece nos dois ambientes" : dif > 0 ? "vem sobretudo do regulado" : "vem sobretudo do livre";
+  return `em ${mesAno(r.mes)} a CCEE mede ${vez(r.regulado)} o consumo cativo da EPE no ambiente regulado e ${vez(r.livre)} o livre, ou seja, a diferença ${origem}`;
+}
+

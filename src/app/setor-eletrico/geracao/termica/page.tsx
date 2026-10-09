@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -24,6 +25,7 @@ import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
 import {
   COR_COMBUSTIVEL,
   CURTO_COMBUSTIVEL,
+  DO_REGIAO,
   ROTULO_ORIGEM_COMBUSTIVEL,
   ROTULO_REGRA,
   combustiveisCvu,
@@ -32,11 +34,18 @@ import {
   explicacaoDoMotivo,
   linhasCvuMensal,
   inflexibilidadeSemNuclear,
+  diasDoBalancoForaDoPadrao,
+  listaTexto,
+  notaCrescimentoUniverso,
+  notaCvuZero,
+  notaNaoClassificado,
   painelPublicado,
   perguntaPainel,
   rotaPainel,
   situacaoMensal,
+  somaTermicaDaMatriz,
   textoCvu,
+  textoMudancaMensal,
   textoSemComparacaoMensal,
   textoTermica7d,
   type TermicaCliente,
@@ -74,9 +83,35 @@ export default function GeracaoTermicaPage() {
   const { cvu: cvuDados, universo, identidade, mapa_combustivel: mapa, ...cliente } = t;
   const termicaCliente: TermicaCliente = cliente;
   const cvuMensal = cvuDados ? linhasCvuMensal(cvuDados, combustiveisCvu(cvuDados)) : [];
+  const sin12 = g.matriz.janelas.SIN["12m"];
+  const somaMatriz = somaTermicaDaMatriz(sin12);
+  const anomalos = diasDoBalancoForaDoPadrao(g.matriz.reconciliacao_balanco);
+  const doSm = (DO_REGIAO as Record<string, string>)[anomalos[0]?.sm ?? ""] ?? "de um subsistema";
+  const crescimento = notaCrescimentoUniverso(universo);
+  const notasUniverso = (
+    <ul className="space-y-1 text-xs leading-relaxed text-carvao-muted" data-notas-universo="p022">
+      <li>{notaNaoClassificado(u)}</li>
+      <li>Combustível: até 2025 vem do CEG da usina em outros conjuntos do ONS; desde 2026, do campo do próprio conjunto de térmica por motivo, e os 12 meses misturam os dois métodos.</li>
+      {crescimento && <li>{crescimento}</li>}
+      {sin12 && somaMatriz !== null && u.total_mwmed !== null && (
+        <li>
+          Este total, {num(u.total_mwmed, 0)} MWmed, não é o da{" "}
+          <Link href={`${rotaPainel("p021")}#composicao`} className="text-energia-dark underline underline-offset-4">
+            matriz efetiva
+          </Link>
+          : aqui são as térmicas despachadas pelo ONS, com a nuclear, nos 12 meses completos de {periodo12}; lá, as categorias térmicas da Geração por Usina, sem as térmicas Tipo III, em 365 dias de {dataBR(sin12.inicio)} a {dataBR(sin12.fim)}, {num(somaMatriz, 0)} MWmed.
+        </li>
+      )}
+    </ul>
+  );
   const serie7d = ctx && integra(op) && op.serie_termica_7d?.length ? op.serie_termica_7d.map((p) => ({ ...p, mediana: ctx.mediana_365d, p10: ctx.p10_365d, p90: ctx.p90_365d })) : [];
 
-  const oQueMudou = <>{textoSemComparacaoMensal(t.ultimo_mes_completo, g.gerado_em, "a térmica por motivo de despacho")}</>;
+  const mudanca = textoMudancaMensal({ nome: "a geração das térmicas despachadas", unidade: "MWmed", casas: 0, meses: t.mensal_sin.meses, valores: t.mensal_sin.total_mwmed, mes: t.ultimo_mes_completo });
+  const oQueMudou = (
+    <>
+      {mudanca} {textoSemComparacaoMensal(t.ultimo_mes_completo, g.gerado_em, "a térmica por motivo de despacho")}
+    </>
+  );
   const comoInterpretar = (
     <>
       A geração verificada de cada usina é dividida pelos motivos que o ONS publica, sem dupla contagem: a inflexibilidade embutida na ordem de mérito conta como inflexibilidade, e o mérito conta só
@@ -133,7 +168,7 @@ export default function GeracaoTermicaPage() {
             >
               <Numero
                 variante="faixa"
-                rotulo="Geração das térmicas despachadas pelo ONS"
+                rotulo="Geração das térmicas despachadas pelo ONS, inclusive a nuclear"
                 natureza="CALCULADO"
                 evidencia={ev.termica_12m_total}
                 casas={0}
@@ -203,6 +238,7 @@ export default function GeracaoTermicaPage() {
                   fonte={FONTE}
                   versao={versao}
                   notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                  notasUniverso={notasUniverso}
                   contextoSemana={
                     <SecaoDoPainel
                       id="termica"
@@ -213,7 +249,14 @@ export default function GeracaoTermicaPage() {
                           <p className="text-sm leading-relaxed text-carvao">{textoTermica7d(ctx)}</p>
                           <p className="text-sm text-carvao-muted">
                             Base diferente da do motivo de despacho: o Balanço de Energia do ONS, até {dataBR(op.dia_referencia)}, com a nuclear entre as térmicas e sem separar
-                            combustível. O percentil compara a semana com as {num(ctx.n_janelas, 0)} janelas de 7 dias do ano anterior e vai de 0 (entre as menores participações) a 100 (entre as maiores); a faixa usual é do 10º ao 90º percentil dessas janelas.
+                            combustível. O percentil compara a semana com as {num(ctx.n_janelas, 0)} janelas de 7 dias do ano anterior e vai de 0 (entre as menores participações) a 100 (entre as maiores); a faixa usual é do 10º ao 90º percentil dessas janelas, que reúnem todas as estações do ano, não só esta época.
+                            {anomalos.length > 0 && (
+                              <>
+                                {" "}
+                                No Balanço, a eólica {doSm} fica muito abaixo da soma das usinas em {listaTexto(anomalos.map((x) => dataBR(x.d)))} (por exemplo, {num(anomalos[0].balanco_mwh / 1000, 1)} GWh contra {num(anomalos[0].usinas_mwh / 1000, 1)} GWh em {dataBR(anomalos[0].d)}):
+                                as janelas de 7 dias que incluem esses dias usam esse Balanço e podem ter a participação térmica distorcida; a divergência está listada em Auditar.
+                              </>
+                            )}
                           </p>
                           {serie7d.length > 0 && (
                             <GraficoLinhas
@@ -243,6 +286,9 @@ export default function GeracaoTermicaPage() {
                 {cvuDados && (
                   <SecaoDoPainel nivel="analisar" id="cvu" titulo="Custo Variável Unitário declarado para a semana operativa vigente">
                     <p className="text-sm text-carvao-muted">{textoCvu(cvuDados)}</p>
+                    <p className="text-sm text-carvao-muted" data-nota="cvu-zero">
+                      {notaCvuZero(cvuDados)}
+                    </p>
                     <GeracaoTabelaSobDemanda tabela="cvu-combustivel" versao={versao} />
                     <GraficoLinhas
                       chaveUrl="cvu"

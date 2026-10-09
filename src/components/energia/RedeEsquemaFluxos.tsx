@@ -144,7 +144,7 @@ export function RedeEsquemaFluxos({
         <span className="font-medium">{titulo}</span>
         <span className="block text-xs text-carvao-muted">
           {periodo} · {unidade}. Esquema sem escala geográfica: cada fronteira soma várias linhas de transmissão. A espessura é proporcional ao valor (a mais grossa vale{" "}
-          {num(max, 0)} {unidade}) e não indica capacidade nem proximidade de limite, porque os limites operativos não são públicos.
+          {num(max, 0)} {unidade}) e não indica capacidade nem proximidade de limite: os limites operativos não são públicos.
           {precos ? ` ${rotuloPrecos ?? "PLD"} em R$/MWh dentro de cada região.` : ""}
         </span>
       </figcaption>

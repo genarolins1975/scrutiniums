@@ -135,8 +135,7 @@ export default function PaginaP039() {
               rotulo="Indicadores de controle e concentração"
               nota={
                 <>
-                  {g.definicoes.hhi} A leitura por faixas do Guia do CADE e a fronteira de usinas estão na seção sobre os níveis de concentração. Medidas da fronteira inteira, fixas: não mudam com o grupo escolhido
-                  nos gráficos, na tabela ou na árvore.
+                  {g.definicoes.hhi} Medidas da fronteira inteira, fixas: não mudam com o grupo escolhido nos gráficos, na tabela ou na árvore.
                 </>
               }
             >
@@ -211,9 +210,6 @@ export default function PaginaP039() {
               complementares={[{ rotulo: "Concentração (HHI, CR4, CR10)", p: g.proveniencia.concentracao }]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p039" veredito={vereditoControle(ct)}>
-                  {respostaControle(ct)}
-                </RespostaCurta>
                 <EmpresasControle
                   linhasGrupos={linhasGrupos(ct.grupos)}
                   barras={barrasGrupos(ct.grupos)}
@@ -228,6 +224,10 @@ export default function PaginaP039() {
                   versao={datas.polimero_referencia ?? ""}
                   aposFigura={
                     <div className="space-y-6">
+                      {/* a faixa já traz o HHI; a resposta vem depois da figura, para o gráfico começar na primeira tela */}
+                      <RespostaCurta id="p039" veredito={vereditoControle(ct)} depois>
+                        {respostaControle(ct)}
+                      </RespostaCurta>
                       <EmpresasRecorte
                         periodo={
                           <>

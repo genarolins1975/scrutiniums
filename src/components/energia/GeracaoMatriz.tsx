@@ -40,6 +40,7 @@ import {
   linhasMensalMatriz,
   listaTexto,
   maioresFontes,
+  minusculaPalavras,
   notaTipoIII,
   paraTabela,
   partesDaNatureza,
@@ -386,7 +387,7 @@ export function GeracaoMatriz({
         {grupoNaSerie.length >= 2 && <GeracaoEscolha legenda="Térmicas pequenas no gráfico" opcoes={OPCOES_TERMICAS} valor={somar ? "agrupadas" : "separadas"} onEscolher={(x) => definir({ tp: x })} />}
         {somar && (
           <p className="text-xs leading-relaxed text-carvao-muted" data-termicas-somadas="">
-            Demais térmicas soma {listaTexto(grupoNaSerie.map((c) => CURTO_CATEGORIA[c].toLowerCase()))}. Uma categoria sem valor num mês deixa a soma do mês sem valor (hachura), nunca zero. A tabela abaixo traz uma coluna por categoria.
+            Demais térmicas soma {listaTexto(grupoNaSerie.map((c) => minusculaPalavras(CURTO_CATEGORIA[c])))}. Uma categoria sem valor num mês deixa a soma do mês sem valor (hachura), nunca zero. A tabela abaixo traz uma coluna por categoria.
           </p>
         )}
         <GraficoBarras

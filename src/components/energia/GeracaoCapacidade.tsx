@@ -1,6 +1,7 @@
 "use client";
 
 import { GeracaoAviso, GeracaoEscolha, GeracaoLista } from "@/components/energia/GeracaoControles";
+import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Histograma } from "@/components/energia/Histograma";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -13,10 +14,12 @@ import {
   COLUNAS_SIGA_HISTORICO,
   CURTO_CATEGORIA,
   GRUPOS_ANEEL,
+  MINIMO_PARA_DISTRIBUICAO,
   NOME_GRUPO_ANEEL,
   histogramaFc,
   linhasExtremosFc,
   linhasSigaHistorico,
+  observacoesFc,
   paraTabela,
   type GrupoAneel,
 } from "@/lib/energia/geracao";
@@ -34,12 +37,14 @@ import type { Capacidade, Capacidade12m, CategoriaCapacidade } from "@/lib/energ
 const ESQUEMA_DISTRIBUICAO = { cat: campo(tiposUrl.opcao(CATEGORIAS_CAPACIDADE), "eolica" as CategoriaCapacidade) };
 const ESQUEMA_ANEEL = { ga: campo(tiposUrl.opcao(GRUPOS_ANEEL), "eolica" as GrupoAneel) };
 
-export function GeracaoCapacidadeDistribuicao({ ultimos12m, fonte, versao }: { ultimos12m: NonNullable<Capacidade["ultimos_12m"]>; fonte: string; versao: string }) {
+export function GeracaoCapacidadeDistribuicao({ ultimos12m, fonte, versao, usinasNoRetrato }: { ultimos12m: NonNullable<Capacidade["ultimos_12m"]>; fonte: string; versao: string; usinasNoRetrato?: Record<string, number> }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_DISTRIBUICAO);
   const comDistribuicao = ultimos12m.por_categoria.filter((x) => x.distribuicao_usinas && x.distribuicao_usinas.n > 0);
   const u: Capacidade12m | undefined = comDistribuicao.find((x) => x.categoria === v.cat) ?? comDistribuicao[0];
   if (!u) return <GeracaoAviso>Nenhuma categoria tem distribuição por usina publicada nos 12 meses.</GeracaoAviso>;
   const h = histogramaFc(u);
+  const n = u.distribuicao_usinas!.n;
+  const pequena = n < MINIMO_PARA_DISTRIBUICAO;
   const periodo = `${mesAno(ultimos12m.inicio)} a ${mesAno(ultimos12m.fim)}`;
   return (
     <div className="space-y-4" data-categoria={u.categoria}>
@@ -49,28 +54,55 @@ export function GeracaoCapacidadeDistribuicao({ ultimos12m, fonte, versao }: { u
         valor={u.categoria}
         onEscolher={(x) => definir({ cat: x })}
       />
-      <p className="text-sm leading-relaxed text-carvao">
-        {CURTO_CATEGORIA[u.categoria]}: fator de capacidade agregado de {num(u.fator_capacidade_pct, 1)}% nos 12 meses; entre as {num(u.distribuicao_usinas!.n, 0)} usinas e conjuntos
-        pareados, a mediana foi {num(u.distribuicao_usinas!.p50, 1)}%, com metade entre {num(u.distribuicao_usinas!.p25, 1)}% e {num(u.distribuicao_usinas!.p75, 1)}%.
-        {u.histograma_10pp[10] > 0 ? ` ${num(u.histograma_10pp[10], 0)} com 100% ou mais ficam fora das classes (ver os controles).` : ""}
-      </p>
-      {h ? (
-        <Histograma
-          titulo={`Fator de capacidade das usinas e conjuntos, ${CURTO_CATEGORIA[u.categoria].toLowerCase()}, ${periodo}`}
-          dados={h}
-          rotuloX="Fator de capacidade em 12 meses"
-          unidade="%"
-          casas={1}
-          contagem={{ singular: "usina ou conjunto", plural: "usinas e conjuntos" }}
-          periodo={periodo}
-          marcadores={["mediana"]}
-          valorAtual={{ valor: u.fator_capacidade_pct, rotulo: "Agregado da categoria" }}
-          cor="var(--cor-energia-soft)"
-          nota="Cada observação é uma usina (mesmo CEG) ou um conjunto com relacionamento vigente, pareados com a Capacidade Instalada do ONS. Classes de 10 pontos publicadas pelo observatório."
-        />
+      {pequena ? (
+        <>
+          <p className="text-sm leading-relaxed text-carvao">
+            {CURTO_CATEGORIA[u.categoria]}: fator de capacidade agregado de {num(u.fator_capacidade_pct, 1)}% nos 12 meses. Com só {num(n, 0)} {n === 1 ? "usina ou conjunto pareado" : "usinas e conjuntos pareados"}, a figura mostra o valor de
+            cada um: com tão poucas observações não há distribuição nem quantis a descrever.
+          </p>
+          <GraficoBarras
+            titulo={`Fator de capacidade de cada usina ou conjunto, ${CURTO_CATEGORIA[u.categoria].toLowerCase()}, ${periodo}`}
+            dados={observacoesFc(u).map((x) => ({ id: x.id, rotulo: x.nome, fc: x.fc_pct }))}
+            chaveCategoria="id"
+            chaveRotulo="rotulo"
+            series={[{ id: "fc", rotulo: "Fator de capacidade em 12 meses", cor: "var(--cor-energia)" }]}
+            unidade="%"
+            casas={1}
+            orientacao="horizontal"
+            alturaCategoria={44}
+            rotulosValor
+          />
+        </>
       ) : (
-        <GeracaoAviso>A distribuição desta categoria não foi publicada em classes.</GeracaoAviso>
+        <>
+          <p className="text-sm leading-relaxed text-carvao">
+            {CURTO_CATEGORIA[u.categoria]}: fator de capacidade agregado de {num(u.fator_capacidade_pct, 1)}% nos 12 meses; entre as {num(n, 0)} usinas e conjuntos pareados, metade teve fator entre {num(u.distribuicao_usinas!.p25, 1)}% e{" "}
+            {num(u.distribuicao_usinas!.p75, 1)}%.
+            {u.histograma_10pp[10] > 0 ? ` ${num(u.histograma_10pp[10], 0)} com 100% ou mais ficam fora das classes (ver os controles).` : ""}
+          </p>
+          {h ? (
+            <Histograma
+              titulo={`Fator de capacidade das usinas e conjuntos, ${CURTO_CATEGORIA[u.categoria].toLowerCase()}, ${periodo}`}
+              dados={h}
+              rotuloX="Fator de capacidade em 12 meses"
+              unidade="%"
+              casas={1}
+              contagem={{ singular: "usina ou conjunto", plural: "usinas e conjuntos" }}
+              periodo={periodo}
+              marcadores={["mediana"]}
+              valorAtual={{ valor: u.fator_capacidade_pct, rotulo: "Agregado da categoria" }}
+              cor="var(--cor-energia-soft)"
+              nota="Cada observação é uma usina (mesmo CEG) ou um conjunto com relacionamento vigente, pareados com a Capacidade Instalada do ONS. Classes de 10 pontos publicadas pelo observatório."
+            />
+          ) : (
+            <GeracaoAviso>A distribuição desta categoria não foi publicada em classes.</GeracaoAviso>
+          )}
+        </>
       )}
+      <p className="text-xs leading-relaxed text-carvao-muted" data-criterio-distribuicao="">
+        Entram só as usinas e conjuntos pareados com a Capacidade Instalada do ONS nos 12 meses: {num(n, 0)} nesta categoria
+        {usinasNoRetrato?.[u.categoria] ? `, de ${num(usinasNoRetrato[u.categoria], 0)} usinas no retrato de capacidade` : ""}. O que não tem os 12 meses pareados fica fora.
+      </p>
       <TabelaInterativa
         titulo={`Usinas e conjuntos com menor e maior fator de capacidade, ${CURTO_CATEGORIA[u.categoria].toLowerCase()}`}
         colunas={COLUNAS_EXTREMOS_FC}

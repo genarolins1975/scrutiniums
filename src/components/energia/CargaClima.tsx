@@ -370,7 +370,7 @@ export function CargaClima({
         </CursorSincronizado>
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
           No primeiro gráfico, a linha contínua é a carga real e a tracejada, a prevista pelo modelo; a faixa é o intervalo de 80%, com a cobertura medida dita acima. No segundo, cada linha é a contribuição de um
-          grupo de variáveis. A do calendário sobe e desce ao longo da semana porque dia útil, sábado e domingo ou feriado entram no modelo como grupos diferentes.
+          grupo de variáveis. A do calendário sobe e desce ao longo da semana: dia útil, sábado e domingo ou feriado entram no modelo como grupos diferentes.
         </p>
         <TabelaInterativa
           titulo="Tabela equivalente: os mesmos dias dos dois gráficos"

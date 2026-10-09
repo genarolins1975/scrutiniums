@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { carregaJson } from "@/lib/energia/carregaJson";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { num } from "@/lib/energia/formato";
 import { datasLegiveis } from "@/lib/energia/visao";
+import { expandirLinhas, type MatrizLinhas } from "@/lib/energia/dados";
 import { COLUNAS_PAGINAS, ORDEM_DIMENSOES, ROTULO_SEVERIDADE, ROTULO_TIPO, URL_AVALIACAO, dimensaoPorId, metaDaDimensao, textoDeducao, textoNota, textoTeto } from "@/lib/energia/avaliacao";
-import type { LinhaTabela } from "@/lib/energia/tabela";
 import type { AvaliacaoGold, IdDimensao, PaginaAvaliada } from "@/lib/energia/tipos-avaliacao";
 
 /**
@@ -135,7 +135,9 @@ function Ficha({ a, rota }: { a: AvaliacaoGold; rota: string }) {
   );
 }
 
-export function AvaliacaoPaginas({ linhas, versao }: { linhas: LinhaTabela[]; versao: string }) {
+/** `matriz` leva as chaves uma vez e os valores de cada página (89 linhas com 17 campos): o HTML não repete o nome de cada campo em cada linha. */
+export function AvaliacaoPaginas({ matriz, versao }: { matriz: MatrizLinhas; versao: string }) {
+  const linhas = useMemo(() => expandirLinhas(matriz), [matriz]);
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const escolhida = v.pag ? linhas.find((l) => l.rota === v.pag) : undefined;
   const c = useAvaliacao(!!escolhida);
@@ -152,7 +154,7 @@ export function AvaliacaoPaginas({ linhas, versao }: { linhas: LinhaTabela[]; ve
         nomeArquivo="avaliacao-paginas"
         chaveUrl="ava"
         ordemInicial={{ coluna: "ponderada", direcao: "asc" }}
-        tamanhoPagina={25}
+        tamanhoPagina={12}
         dicaBusca="Nome ou rota da página"
         selecionado={escolhida ? String(escolhida.rota) : null}
         onSelecionar={(id) => definir({ pag: id ?? "" })}

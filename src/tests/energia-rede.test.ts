@@ -836,10 +836,12 @@ describe("abertura editorial da Rede: faixas lidas dos mesmos seletores das figu
     expect(h).not.toContain("Correção pedida na página de metodologia");
   });
 
-  it("P031: o dia rotulado é explicado junto da base, o sinal do saldo vai no título do gráfico diário e as cinco maiores horas de desvio ficam à vista", () => {
+  it("P031: o dia rotulado é explicado junto da base, o sinal do saldo vai numa linha sob o gráfico diário e as cinco maiores horas de desvio ficam à vista", () => {
     const h = html.p031;
     expect(h).toContain(`Dia rotulado é um dia em que o mesmo valor programado se repetiu por ${G.programado.programa_repetido.minimo_horas} horas seguidas ou mais`);
-    expect(h).toContain(`(positivo ${R.sentidoPositivo("N_NE")}; negativo ${R.sentidoNegativo("N_NE")})`);
+    // o título do gráfico fica como era (o comparador de visões casa por título); o sinal vai numa linha logo abaixo
+    expect(h).toContain("Saldo programado e verificado por dia, Norte → Nordeste<span");
+    expect(h).toContain(`Saldo positivo: ${R.sentidoPositivo("N_NE")}; negativo: ${R.sentidoNegativo("N_NE")}.`);
     // as cinco primeiras linhas da lista são as cinco primeiras da tabela das maiores horas de desvio (mesma variável)
     const maiores = R.linhasMaioresDesvios(G.programado.maiores_desvios).slice(0, 5);
     const i = h.indexOf("data-maiores-desvios");

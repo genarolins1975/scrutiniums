@@ -1375,11 +1375,12 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     expect(regras).toContain(REGRA_FAIXA_ENA);
     expect(regras).toContain(REGRA_CAPTURA_ENA);
     expect(regras).not.toMatch(/EAR máxima zero|periodo_base|silver/);
-    // a legenda da grade de janeiro e julho tem as oito linhas, cada uma com o subsistema, sem rótulo repetido
-    for (const sm of ["SE/CO", "S", "NE", "N"]) {
-      expect(visivel).toContain(`${sm}, 15 de janeiro`);
-      expect(visivel).toContain(`${sm}, 15 de julho`);
-    }
+    // a legenda da grade de janeiro e julho junta as séries pelo rótulo e pelo traço: duas entradas, e a cor identifica o painel
+    const grade = h.slice(h.indexOf('data-grafico="pequenos-multiplos"', h.indexOf('id="mlt"')));
+    const legenda = grade.slice(grade.indexOf('aria-label="Legenda"'), grade.indexOf("</ul>", grade.indexOf('aria-label="Legenda"')));
+    expect(legenda.match(/15 de janeiro/g)?.length).toBe(1);
+    expect(legenda.match(/15 de julho/g)?.length).toBe(1);
+    expect(legenda).toContain("A cor identifica o painel");
   });
 
   it("chuva e temperatura: sem faixa no alto; duas medidas estimadas em seção própria, com data e selo de estimativa; separação visível e previsão rotulada", () => {
@@ -1823,7 +1824,7 @@ describe("página mãe (armazenamento) no sistema editorial", () => {
     expect(h).toContain("Indicadores do armazenamento no SIN, fixos: não mudam com o recorte escolhido nos gráficos");
     expect(t).toContain("Os do alto da página são sempre os do SIN.");
     // o primeiro número, o do dia mais recente, diz em palavras que os últimos dias são provisórios
-    expect(t).toContain("Os últimos dias são provisórios: o ONS os revisa.");
+    expect(t).toContain("Últimos dias são provisórios.");
     // EAR e MLT na lista de siglas da página (o nome por extenso vem do dicionário)
     const siglas = /data-siglas="true"[\s\S]*?<\/ul>|data-siglas="true"[\s\S]*?<\/dl>|data-siglas="true"[\s\S]{0,1500}/.exec(h)?.[0] ?? "";
     for (const x of ["EAR", "MLT"]) expect(siglas, x).toContain(x);

@@ -69,7 +69,7 @@ export type PainelEmpresas = "p036" | "p037" | "p038" | "p039";
  * dinâmica [entidade] é irmã deles); o teste confere.
  */
 export const PAINEIS_EMPRESAS: readonly { id: PainelEmpresas; rotulo: string; pergunta: string; segmento: string }[] = [
-  { id: "p036", rotulo: "Cadastro e ativos", pergunta: "Quem opera quais ativos?", segmento: "ativos" },
+  { id: "p036", rotulo: "Cadastro e ativos", pergunta: "Quem são os donos dos ativos?", segmento: "ativos" },
   { id: "p037", rotulo: "Perfil da distribuidora", pergunta: "Como a empresa atende sua área?", segmento: "distribuidoras" },
   { id: "p038", rotulo: "Finanças e investimentos", pergunta: "Como evoluem os fundamentos reportados?", segmento: "financas" },
   { id: "p039", rotulo: "Controle e concentração", pergunta: "Quem controla e qual a concentração?", segmento: "controle" },
@@ -1438,15 +1438,19 @@ function listaE(itens: readonly string[]): string {
   return itens.length <= 1 ? (itens[0] ?? "") : `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
 }
 
-/** P036: quanto da potência em operação e dos módulos de transmissão tem dono identificado pelo CNPJ, com o limite de leitura. */
+/**
+ * P036: o maior dono direto de usinas em operação (pela capacidade proporcional, a mesma ordem do gráfico), quanto da potência em
+ * operação tem todos os donos identificados pelo CNPJ e o limite de leitura. A ligação dos módulos de transmissão ao CNPJ está no número
+ * da página e na resposta completa; só a ausência do SIGET é dita aqui.
+ */
 export function vereditoCadastro(c: Cadastro): string {
   const a = c.ativos;
   const t = c.transmissao;
-  const usinas = `No SIGA de ${dataTexto(a.data)}, ${pctTexto(a.pct_mw_operacao_vinculado, 2)} da potência das usinas em operação tem todos os donos identificados pelo CNPJ.`;
-  const linhas = t
-    ? `No SIGET de ${dataTexto(t.data)}, ${pctTexto(t.resumo.pct_modulos_com_cnpj)} dos módulos de transmissão estão ligados a um CNPJ.`
-    : "Os ativos de transmissão não estão nesta publicação.";
-  return `${usinas} ${linhas} Capacidade instalada não é energia gerada.`;
+  const maior = c.proprietarios.reduce<Proprietario | null>((m, p) => (temValor(p.mw_proporcional) && (!m || p.mw_proporcional > (m.mw_proporcional as number)) ? p : m), null);
+  const dono = maior ? `O maior dono direto é ${nomeOuCnpj(maior.nome, maior.cnpj)}, com ${mwTexto(maior.mw_proporcional)} de capacidade proporcional.` : "";
+  const usinas = `No SIGA de ${dataTexto(a.data)}, ${pctTexto(a.pct_mw_operacao_vinculado, 2)} da potência em operação tem todos os donos identificados.`;
+  const linhas = t ? "" : " Os ativos de transmissão não estão nesta publicação.";
+  return `${dono ? `${dono} ` : ""}${usinas}${linhas} Capacidade instalada não é energia gerada.`;
 }
 
 /**

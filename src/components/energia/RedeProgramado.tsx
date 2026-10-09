@@ -245,7 +245,7 @@ export function RedeProgramado({
       </div>
 
       <GraficoLinhas
-        titulo={`Saldo programado e verificado por dia, ${nomePar(par)} (positivo ${sentidoPositivo(par)}; negativo ${sentidoNegativo(par)})`}
+        titulo={`Saldo programado e verificado por dia, ${nomePar(par)}`}
         dados={diario}
         chaveX="d"
         formatoX="data"
@@ -258,6 +258,9 @@ export function RedeProgramado({
         zeroNoEixo
         legendaInterativa
       />
+      <p className="text-sm text-carvao-muted" data-sinal-do-saldo="">
+        Saldo positivo: {sentidoPositivo(par)}; negativo: {sentidoNegativo(par)}.
+      </p>
       <TabelaInterativa
         titulo={`Tabela equivalente: ${nomePar(par)} por dia`}
         colunas={COLUNAS_PROGRAMADO_DIARIO}

@@ -85,6 +85,8 @@ function Regra({ id, n, fichasPorFonte }: { id: string; n: number; fichasPorFont
     );
   const m = c.m;
   const fontes = m.fontes.map((f) => ({ id: f, ficha: fichasPorFonte[f] }));
+  const comFicha = fontes.filter((f) => f.ficha);
+  const semFicha = fontes.filter((f) => !f.ficha);
   return (
     <div className="space-y-5" data-regra={m.id}>
       <header>
@@ -132,21 +134,28 @@ function Regra({ id, n, fichasPorFonte }: { id: string; n: number; fichasPorFont
       <section aria-label="De onde vem">
         <h4 className="text-sm font-medium text-carvao">De onde vem</h4>
         <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-linhagem-do-indicador="">
-          Fonte{fontes.length === 1 ? "" : "s"}:{" "}
-          {fontes.map((f, i) => (
-            <span key={f.id}>
-              {i > 0 ? "; " : ""}
-              {f.ficha ? (
-                <Link href={`/setor-eletrico/dados/${f.ficha.slug}`} className="text-energia-dark underline underline-offset-4">
-                  {f.ficha.nome}
-                </Link>
-              ) : (
-                "conjunto sem ficha própria"
-              )}
-              <span data-nivel="analisar"> ({f.id})</span>
-            </span>
-          ))}
-          . Elas alimentam a base publicada do módulo {moduloDaGold(m.gold)}
+          {comFicha.length > 0 && (
+            <>
+              {comFicha.length === 1 ? "Fonte" : "Fontes"} com ficha:{" "}
+              {comFicha.map((f, i) => (
+                <span key={f.id}>
+                  {i > 0 ? "; " : ""}
+                  <Link href={`/setor-eletrico/dados/${f.ficha!.slug}`} className="text-energia-dark underline underline-offset-4">
+                    {f.ficha!.nome}
+                  </Link>
+                  <span data-nivel="analisar"> ({f.id})</span>
+                </span>
+              ))}
+              .{" "}
+            </>
+          )}
+          {semFicha.length > 0 && (
+            <>
+              {comFicha.length > 0 ? "Usa também" : "Usa"} {semFicha.length === 1 ? "uma fonte" : `${semFicha.length} fontes`} que não {semFicha.length === 1 ? "tem" : "têm"} ficha de conjunto própria
+              <span data-nivel="analisar"> ({semFicha.map((f) => f.id).join(", ")})</span>.{" "}
+            </>
+          )}
+          Elas alimentam a base publicada do módulo {moduloDaGold(m.gold)}
           <span data-nivel="analisar"> ({m.gold})</span>, e esta regra a transforma neste indicador.
         </p>
         <dl className="mt-2 grid gap-x-8 gap-y-3 md:grid-cols-2">

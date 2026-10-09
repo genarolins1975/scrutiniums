@@ -20,6 +20,7 @@ import os
 import sqlite3
 import subprocess
 from datetime import datetime, timezone
+from decimal import ROUND_HALF_UP, Decimal, InvalidOperation
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DADOS = os.path.join(RAIZ, "data", "energia")
@@ -38,6 +39,20 @@ DOMINIO = "energia"
 
 def agora_utc():
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+def arredonda_meio_para_cima(v, casas=2):
+    """Arredonda em decimal, com o meio para cima (longe do zero), que é a regra do que a interface exibe.
+
+    O `round()` do Python arredonda o valor binário exato e, no empate, para o par: 70,175 (guardado como
+    70,17499999999999999) virava 70,17, e 0,125 virava 0,12, enquanto a página e a conta feita à mão dão 70,18 e 0,13.
+    Aqui o arredondamento age sobre a menor cadeia decimal que reproduz o número (`repr`), como quem lê o valor impresso.
+    """
+    x = float(v)
+    try:
+        return float(Decimal(repr(x)).quantize(Decimal(1).scaleb(-casas), rounding=ROUND_HALF_UP))
+    except InvalidOperation:  # valor grande demais para a precisão do Decimal: o `round()` já não perde casas ali
+        return round(x, casas)
 
 
 def instante_utc(valor):
@@ -446,7 +461,7 @@ def escreve_csv(nome, cabecalho, linhas, destino=None):
     w = csv.writer(buf, delimiter=";", quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
     w.writerow(cabecalho)
     for linha in linhas:
-        w.writerow(["" if v is None else (repr(round(v, 4)) if isinstance(v, float) else str(v)) for v in linha])
+        w.writerow(["" if v is None else (repr(arredonda_meio_para_cima(v, 4)) if isinstance(v, float) else str(v)) for v in linha])
     return _escreve_atomico(os.path.join(base, nome), buf.getvalue())
 
 

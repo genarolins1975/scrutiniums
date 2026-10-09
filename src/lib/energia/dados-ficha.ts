@@ -143,7 +143,7 @@ export function fichasDasFontes(
       if (!porIntegracao.has(fim)) porIntegracao.set(fim, e);
     });
   });
-  const nomes = contextoDoCatalogo(cat, pub, fichas).nomes;
+  const nomes = contextoDoCatalogo(cat, pub, fichas).nomes ?? new Map<string, string>();
   const out: Record<string, { slug: string; nome: string }> = {};
   fontes.forEach((f) => {
     const e = porInterno.get(f) ?? porIntegracao.get(f);

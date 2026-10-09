@@ -209,9 +209,9 @@ export default function AfluenciaPage() {
                       id: sm,
                       titulo: NOME_REGIAO[sm],
                       series: [
-                        // o rótulo leva o subsistema: a legenda da grade lista as oito linhas, cada uma na cor do seu subsistema
-                        { id: `${sm}_1`, rotulo: `${CURTO_REGIAO[sm]}, 15 de janeiro`, cor: COR_REGIAO[sm], espessura: 2 },
-                        { id: `${sm}_7`, rotulo: `${CURTO_REGIAO[sm]}, 15 de julho`, cor: COR_REGIAO[sm], tracejada: true, espessura: 2 },
+                        // o mesmo rótulo em todos os painéis: a legenda os junta em dois (a cor é a do subsistema, e o título do painel o nomeia)
+                        { id: `${sm}_1`, rotulo: "15 de janeiro", cor: COR_REGIAO[sm], espessura: 2 },
+                        { id: `${sm}_7`, rotulo: "15 de julho", cor: COR_REGIAO[sm], tracejada: true, espessura: 2 },
                       ],
                     }))}
                   />

@@ -211,44 +211,55 @@ export function EmpresasNota({ children }: { children: ReactNode }) {
   return <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{children}</p>;
 }
 
+export type ParteComoLer = "perdas" | "continuidade" | "tarifa";
+const NOME_PARTE: Record<ParteComoLer, string> = { perdas: "perdas", continuidade: "continuidade", tarifa: "tarifa" };
+
 /**
- * Como ler os números de continuidade e a tarifa, junto dos números: DEC e FEC com a frase que os verbetes publicam, o sentido da
- * diferença diante do limite e o que é a tarifa B1. Nenhuma definição é escrita aqui: as frases vêm dos verbetes (conferidos) e das
- * siglas do observatório.
+ * Como ler as perdas, a continuidade e a tarifa, junto dos números: a taxa de perdas, DEC e FEC com a frase que os verbetes publicam,
+ * o sentido da diferença diante do limite e o que é a tarifa B1. Nenhuma definição é escrita aqui: as frases vêm dos verbetes
+ * (conferidos) e das siglas do observatório. `partes` escolhe quais explicações entram: a ficha põe cada uma ao lado da sua figura,
+ * e a página das distribuidoras, que mostra as três juntas, usa todas.
  */
-export function EmpresasComoLer() {
+export function EmpresasComoLer({ partes = ["perdas", "continuidade", "tarifa"] }: { partes?: ParteComoLer[] }) {
+  const tem = (x: ParteComoLer) => partes.indexOf(x) >= 0;
   const perdas = conceito("perdas-de-energia")?.emUmaFrase;
   const dec = conceito("dec")?.emUmaFrase;
   const fec = conceito("fec")?.emUmaFrase;
   // conversão de centésimos de hora em minutos, como o verbete do DEC a publica (sem número escrito aqui)
   const horas = conceito("dec")?.limitacoes?.find((x) => x.startsWith("Centésimos de hora"));
+  const nomes = partes.map((x) => NOME_PARTE[x]);
+  const titulo = `Como ler ${nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}` : nomes[0]}`;
   return (
-    <div className="space-y-1.5 border-l-2 border-linha pl-3 text-sm leading-relaxed text-carvao-muted" data-como-ler="continuidade-e-tarifa">
-      <p className="rotulo text-mineral">Como ler perdas, continuidade e tarifa</p>
-      {perdas && (
+    <div className="space-y-1.5 border-l-2 border-linha pl-3 text-sm leading-relaxed text-carvao-muted" data-como-ler={partes.join(" ")}>
+      <p className="rotulo text-mineral">{titulo}</p>
+      {tem("perdas") && perdas && (
         <p>
           <span className="text-carvao">Perdas totais (SAMP, {SIGLAS.SAMP}).</span> {perdas} A taxa é a perda total medida, em % da energia injetada na rede da própria distribuidora.
         </p>
       )}
-      {dec && (
+      {tem("continuidade") && dec && (
         <p>
           <span className="text-carvao">DEC ({SIGLAS.DEC}).</span> {dec}
           {horas ? ` ${horas}` : ""}
         </p>
       )}
-      {fec && (
+      {tem("continuidade") && fec && (
         <p>
           <span className="text-carvao">FEC ({SIGLAS.FEC}).</span> {fec}
         </p>
       )}
-      <p>
-        O limite de DEC e de FEC é o que a ANEEL fixa para cada distribuidora. Nos gráficos de pontos, a diferença é o valor apurado menos o limite: diferença negativa quer dizer abaixo do limite, ou seja,
-        dentro dele; diferença positiva, acima do limite.
-      </p>
-      <p>
-        <span className="text-carvao">Tarifa B1.</span> A tarifa residencial é, no conjunto de dados da ANEEL, a do subgrupo B1. O valor é a soma da {SIGLAS.TE} (TE) e da {SIGLAS.TUSD} (TUSD), em R$/MWh, sem tributos e
-        sem bandeira. O ato é a resolução homologatória em que a ANEEL a publica ({SIGLAS.REH}, REH).
-      </p>
+      {tem("continuidade") && (
+        <p>
+          O limite de DEC e de FEC é o que a ANEEL fixa para cada distribuidora. A diferença é o valor apurado menos o limite: diferença negativa quer dizer abaixo do limite, ou seja, dentro dele;
+          diferença positiva, acima do limite.
+        </p>
+      )}
+      {tem("tarifa") && (
+        <p>
+          <span className="text-carvao">Tarifa B1.</span> A tarifa residencial é, no conjunto de dados da ANEEL, a do subgrupo B1. O valor é a soma da {SIGLAS.TE} (TE) e da {SIGLAS.TUSD} (TUSD), em R$/MWh, sem
+          tributos e sem bandeira. O ato é a resolução homologatória em que a ANEEL a publica ({SIGLAS.REH}, REH).
+        </p>
+      )}
     </div>
   );
 }
