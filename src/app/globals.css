@@ -141,8 +141,9 @@ body {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-/* Setor Elétrico: sombra nas bordas indica conteúdo além da área visível (some quando não há) */
-.dominio-energia div.tabela-scroll {
+/* Setor Elétrico: sombra nas bordas indica conteúdo além da área visível. Só quando o contêiner rola de fato (MarcaRolagem grava data-rolavel):
+   pintada em todo contêiner, ela deixava uma mancha branca nas bordas de tabelas que não rolam sobre fundo que não é o da superfície. */
+.dominio-energia div.tabela-scroll[data-rolavel="sim"] {
   background:
     linear-gradient(to right, var(--cor-superficie) 30%, transparent) left / 2.5rem 100% no-repeat local,
     linear-gradient(to left, var(--cor-superficie) 30%, transparent) right / 2.5rem 100% no-repeat local,

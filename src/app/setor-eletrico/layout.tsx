@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
+import { MarcaRolagem } from "@/components/energia/MarcaRolagem";
 import { RodapeEnergia } from "@/components/energia/RodapeEnergia";
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function SetorEletricoLayout({ children }: { children: React.Reac
       >
         Pular para o conteúdo
       </a>
+      <MarcaRolagem />
       <div className="flex-1">{children}</div>
       <RodapeEnergia />
       <Footer compacto />
