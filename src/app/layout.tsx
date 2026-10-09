@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "../../public/observatorios.css";
 
 /**
  * Fontes auto-hospedadas (variáveis, subsets latin + latin-ext via
