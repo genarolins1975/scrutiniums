@@ -125,3 +125,42 @@ def despesa_por_habitante(despesa_obs, pop_obs):
                         componente=d["componente"], nota=" ".join(notas) or None, elegivel_comparacao=eleg,
                         nota_material=bool(d.get("nota_material") or p.get("nota_material")), **extra))
     return obs
+
+
+def despesa_natureza(despesa_obs):
+    """Composição da despesa liquidada na função Saúde por categoria de natureza (pessoal, outras correntes e capital).
+
+    A MSC de dezembro (função 10, contas de despesa liquidada, sem a modalidade 91) é aberta por natureza da despesa. A
+    abertura só é publicada quando as três categorias, somadas, reproduzem a DCA (R$ 1,00 de tolerância): categoria completa
+    e mutuamente exclusiva. Onde a MSC não reproduz a DCA, o par fica INCONSISTENTE com a diferença registrada, e nenhuma
+    categoria é publicada ou rateada."""
+    from pipeline.eficiencia_saude import derivados as DV2
+    dca = {(o["ente"], o["ano"]): o for o in despesa_obs if o["indicador"] == "sau.despesa.funcao_saude" and o["componente"] == "nominal"}
+    obs = []
+    for cod, nome, uf in entes.CAPITAIS:
+        for ano in ANOS_FINANCEIROS:
+            d = dca[(cod, ano)]
+            caminho = os.path.join(base.SEED, "siconfi", "msc_funcao10", f"{cod}_{ano}_12.json.gz")
+            reg = f"MSC de dezembro de {ano}, função 10, contas 6.2.2.1.3.03, .04 e .07 (saldo líquido D e C), sem a modalidade 91; natureza da despesa"
+            if d["status"] != "OBSERVADO" or not os.path.exists(caminho):
+                obs.append(_obs("sau.despesa.natureza", cod, ano, None, "AUSENTE_NA_COLETA", "siconfi_msc_funcao10", reg, componente=None,
+                                nota="DCA da função 10 ou MSC de dezembro indisponível no seed.", nota_material=True))
+                continue
+            soma, desconhecidos, intra = DV2.liquido_por_categoria(base.le_json_gz(caminho))
+            total = round(sum(soma.values()), 2)
+            if desconhecidos or not DV2.reconcilia(soma, d["valor"]):
+                motivo = (f"A MSC aberta por natureza ({CF.brl(total)}, sem modalidade 91) não reproduz a DCA ({CF.brl(d['valor'])}); "
+                          f"diferença de {CF.brl(round(total - d['valor'], 2))}. "
+                          + (f"Linhas sem natureza identificável na MSC: {', '.join(desconhecidos)}. " if desconhecidos else "")
+                          + "A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.")
+                for cat, rotulo, _ in DV2.CATEGORIAS:
+                    obs.append(_obs("sau.despesa.natureza", cod, ano, None, "INCONSISTENTE", "siconfi_msc_funcao10", reg, componente=cat,
+                                    nota=motivo, nota_material=True))
+                continue
+            nota = None if d["elegivel_comparacao"] else d.get("nota")
+            for cat, rotulo, _ in DV2.CATEGORIAS:
+                v = soma[cat]
+                obs.append(_obs("sau.despesa.natureza", cod, ano, v, "OBSERVADO", "siconfi_msc_funcao10", reg, componente=cat,
+                                nota=nota, elegivel_comparacao=d["elegivel_comparacao"], nota_material=bool(d.get("nota_material")),
+                                participacao=round(100 * v / total, 4) if total else None))
+    return obs
