@@ -180,6 +180,11 @@ function CapituloRecursos({
               <Numero valor={fmt(r.maior!.valor)} legenda={`Maior valor · ${nomesDoExtremo(r.maior!)}`} />
             </dl>
             <p className="mt-4 text-center text-[0.8125rem] leading-snug text-carvao-muted">{r.definicao}</p>
+            {r.perimetro && (
+              <p className="mx-auto mt-1.5 max-w-[46rem] text-center text-[0.8125rem] leading-snug text-obee-tinta" role="note">
+                <span className="font-semibold">Perímetro.</span> {r.perimetro}
+              </p>
+            )}
             <NotaCapital r={r} cap={cap} />
             <div className="mt-6">
               {visao === "grafico" ? (

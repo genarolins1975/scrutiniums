@@ -61,6 +61,8 @@ export type DadosPainel = {
   nacionalCalculada: ReferenciaNacionalCalculada[];
   populacao: Record<string, { tipo: string | null; referencia: string | null }>;
   limiarQuartis: number;
+  /** parcela intraorçamentária da função Educação em cada capital e ano, em % da função (RREO, 6º bimestre): [ano, código IBGE, %] */
+  intraPct: [number, number, number][];
   fontes: Record<string, { instituicao: string; conjunto: string; pagina: string; capturado_em: string }>;
   meta: {
     gerado_em: string;
@@ -300,6 +302,23 @@ export function serie(ix: Indice, m: MedidaId, cod: number, etapa: EtapaId, moed
   const e = etapaDaMedida(m, etapa);
   const k = componente(m, moeda, disc);
   return anosDaMedida(ix.d, m).map((ano) => ({ ano, ...ix.ponto(MEDIDA[m].indicador, cod, ano, e, k) }));
+}
+
+/**
+ * Mediana das capitais em cada ano, com o número de capitais na comparação. Herda a mudança de base do dado: o ano é marcado como
+ * quebra de série quando a maioria das capitais tem o valor desse ano marcado (a população de referência, por exemplo, muda para todas).
+ */
+export type PontoMediana = { ano: number; valor: number | null; n: number; quebraSerie: boolean };
+
+export function serieDaMediana(ix: Indice, m: MedidaId, etapa: EtapaId, moeda: Moeda, disc: Disciplina): PontoMediana[] {
+  const e = etapaDaMedida(m, etapa);
+  const k = componente(m, moeda, disc);
+  const ind = MEDIDA[m].indicador;
+  return anosDaMedida(ix.d, m).map((ano) => {
+    const r = ix.referencia(ind, k, e, ano, "todas");
+    const marcadas = ix.d.capitais.filter((c) => ix.ponto(ind, c.cod, ano, e, k).quebraSerie).length;
+    return { ano, valor: r?.mediana ?? null, n: r?.n ?? 0, quebraSerie: marcadas > ix.d.capitais.length / 2 };
+  });
 }
 
 /* ------------------------------------------------------------------ comparação */
@@ -609,7 +628,7 @@ export const CABECALHO_CSV_COMPARACAO = [
   "incluida_na_comparacao", "conferencia", "motivo_exclusao", "nota", "mediana_das_incluidas", "capitais_no_grupo",
   "capitais_com_valor", "capitais_incluidas", "versao_metodologica", "dados_gerados_em", "hash_dados", "fonte",
   "media_simples_das_incluidas", "minimo_das_incluidas", "maximo_das_incluidas", "primeiro_quartil", "terceiro_quartil", "quartis_exibidos",
-  "razao_agregada_do_grupo", "politica_de_referencias",
+  "razao_agregada_do_grupo", "politica_de_referencias", "parcela_intraorcamentaria_pct_da_funcao",
 ];
 
 export function linhasCsvComparacao(
@@ -627,12 +646,14 @@ export function linhasCsvComparacao(
     comp.ref?.quartisExibicao ? "sim" : "nao", comp.ref?.razaoAgregada == null ? "" : String(comp.ref.razaoAgregada),
     "média simples (peso igual por capital), mediana, quartis de tipo 7 (exibidos com 8 ou mais valores) e razão agregada dos mesmos pares; ver politica_referencias na gold"];
   const sit = (p: Ponto) => (p.situacao ? d.rotulosSituacao[p.situacao] ?? p.situacao : "");
+  // despesa: a parcela intraorçamentária da função fica fora do valor e difere entre capitais; vai junto de cada linha
+  const intra = (cap: CapitalPainel) => (ehDespesa(m) ? String(intraDaCapital(d, cap.cod, ano) ?? "") : "");
   const linhas = [
     ...comp.incluidas.map((i) => [...comum(i.cap), String(i.valor), formata(m, i.valor), unidade(m, moeda), ROTULO_STATUS.OBSERVADO,
-      "sim", "sim", sit(i.ponto), "", i.ponto.nota ?? "", ...cauda]),
+      "sim", "sim", sit(i.ponto), "", i.ponto.nota ?? "", ...cauda, intra(i.cap)]),
     ...comp.excluidas.map((x) => [...comum(x.cap), x.comValor && x.ponto.valor !== null ? String(x.ponto.valor) : "",
       x.comValor && x.ponto.valor !== null ? formata(m, x.ponto.valor) : "", unidade(m, moeda), ROTULO_STATUS[x.ponto.status],
-      x.comValor ? "nao" : "", "nao", sit(x.ponto), x.motivo, x.ponto.nota ?? "", ...cauda]),
+      x.comValor ? "nao" : "", "nao", sit(x.ponto), x.motivo, x.ponto.nota ?? "", ...cauda, intra(x.cap)]),
   ];
   const ordem = new Map(d.capitais.map((c, i) => [String(c.cod), i]));
   return linhas.sort((a, b) => (ordem.get(a[7]) ?? 0) - (ordem.get(b[7]) ?? 0));
@@ -781,6 +802,7 @@ export type ColunaId =
   | "despesa"
   | "populacao"
   | "despesa_hab"
+  | "intra_pct"
   | "matriculas"
   | "despesa_mat"
   | "conveniadas_pct"
@@ -805,6 +827,7 @@ export const COLUNAS: ColunaDef[] = [
   { id: "despesa", rotulo: "Despesa total na função Educação", grupo: "recursos", medida: "despesa", porEtapa: false, central: true },
   { id: "populacao", rotulo: "População residente", grupo: "recursos", medida: null, porEtapa: false, central: false },
   { id: "despesa_hab", rotulo: "Despesa por habitante", grupo: "recursos", medida: "despesa_hab", porEtapa: false, central: true },
+  { id: "intra_pct", rotulo: "Parcela intraorçamentária da função (RREO)", grupo: "recursos", medida: null, porEtapa: false, central: false },
   { id: "matriculas", rotulo: "Matrículas na rede municipal", grupo: "recursos", medida: "matriculas", porEtapa: false, central: true },
   { id: "despesa_mat", rotulo: "Despesa por matrícula", grupo: "recursos", medida: "despesa_mat", porEtapa: false, central: true },
   { id: "conveniadas_pct", rotulo: "Conveniadas ÷ rede municipal", grupo: "atendimento", medida: null, porEtapa: false, central: false },
@@ -847,6 +870,9 @@ export function tabelaComparativa(
       despesa: get("despesa"),
       populacao: ix.ponto("ctx.populacao.residente", cap.cod, ano, null, null),
       despesa_hab: get("despesa_hab"),
+      intra_pct: intraDaCapital(d, cap.cod, ano) === null
+        ? { ...SEM_OBS, nota: "O RREO do ano não traz a parcela intraorçamentária desta capital" }
+        : { ...SEM_OBS, valor: intraDaCapital(d, cap.cod, ano), status: "OBSERVADO" as StatusDado, nota: null, notaMaterial: false, elegivel: true },
       matriculas: ix.ponto("edu.matriculas.rede_municipal", cap.cod, ano, "total", null),
       despesa_mat: get("despesa_mat"),
       conveniadas_pct: { ...SEM_OBS },
@@ -865,7 +891,7 @@ export function tabelaComparativa(
       const fora = p === SEM_ESCOPO;
       const medidaCol = c.medida;
       const txt =
-        p.valor === null ? "" : c.id === "populacao" ? inteiro(p.valor) : c.id === "conveniadas_pct" ? percentual(p.valor, 1) : medidaCol ? formata(medidaCol, p.valor) : String(p.valor);
+        p.valor === null ? "" : c.id === "populacao" ? inteiro(p.valor) : c.id === "conveniadas_pct" || c.id === "intra_pct" ? percentual(p.valor, 1) : medidaCol ? formata(medidaCol, p.valor) : String(p.valor);
       celulas[c.id] = { valor: p.valor, texto: txt, ponto: p, elegivel: p.elegivel, foraDoEscopo: fora };
     }
     const ressalvas: LinhaComparativa["ressalvas"] = [];
@@ -912,7 +938,7 @@ export function ordenaTabela(linhas: LinhaComparativa[], coluna: ColunaId | "alf
   if (coluna === "alfabetica") return [...linhas].sort(nome);
   const num = (l: LinhaComparativa) => {
     const c = l.celulas[coluna];
-    return c.valor !== null && c.ponto.status === "OBSERVADO" && (c.elegivel || coluna === "populacao" || coluna === "conveniadas_pct") && !c.foraDoEscopo ? c.valor : null;
+    return c.valor !== null && c.ponto.status === "OBSERVADO" && (c.elegivel || coluna === "populacao" || coluna === "conveniadas_pct" || coluna === "intra_pct") && !c.foraDoEscopo ? c.valor : null;
   };
   return [...linhas].sort((a, b) => {
     const x = num(a);
@@ -934,6 +960,7 @@ const UNIDADE_COLUNA: Record<ColunaId, (moeda: Moeda) => string> = {
   despesa: (m) => unidade("despesa", m),
   populacao: () => "habitantes",
   despesa_hab: (m) => unidade("despesa_hab", m),
+  intra_pct: () => "% da despesa da função Educação (RREO, 6º bimestre)",
   matriculas: () => "matrículas",
   despesa_mat: (m) => unidade("despesa_mat", m),
   conveniadas_pct: () => "% das matrículas da rede municipal",
@@ -965,6 +992,47 @@ export function linhasCsvTabelaComparativa(
     }
   }
   return out;
+}
+
+
+/* ------------------------------------------------------------------ perímetro da despesa: intraorçamentárias */
+
+export type PerimetroIntra = {
+  ano: number;
+  /** capitais com a parcela conhecida no ano */
+  n: number;
+  menor: { nome: string; uf: string; pct: number };
+  maior: { nome: string; uf: string; pct: number };
+};
+
+/** Parcela das despesas intraorçamentárias na função Educação de uma capital, em % da função (RREO); null quando o RREO do ano não a traz. */
+export function intraDaCapital(d: DadosPainel, cod: number, ano: number): number | null {
+  return d.intraPct.find((x) => x[0] === ano && x[1] === cod)?.[2] ?? null;
+}
+
+/**
+ * Menor e maior parcela intraorçamentária entre as capitais no ano. A despesa do painel (DCA, exceto intraorçamentárias) é calculada
+ * por uma regra única, mas a parcela excluída difere muito entre as capitais: o leitor precisa saber disso junto do número.
+ */
+export function perimetroIntra(d: DadosPainel, ano: number): PerimetroIntra | null {
+  const linhas = d.intraPct.filter((x) => x[0] === ano);
+  if (!linhas.length) return null;
+  const com = linhas.map((x) => ({ cap: d.capitais.find((c) => c.cod === x[1]), pct: x[2] })).filter((x): x is { cap: CapitalPainel; pct: number } => !!x.cap);
+  if (!com.length) return null;
+  const ord = [...com].sort((a, b) => a.pct - b.pct || a.cap.nome.localeCompare(b.cap.nome, "pt-BR"));
+  const f = (x: { cap: CapitalPainel; pct: number }) => ({ nome: x.cap.nome, uf: x.cap.uf, pct: x.pct });
+  return { ano, n: com.length, menor: f(ord[0]), maior: f(ord[ord.length - 1]) };
+}
+
+/** Ressalva do perímetro, para ficar junto do número de despesa. */
+export function textoPerimetroIntra(p: PerimetroIntra | null, ano: number, medida: MedidaId = "despesa"): string {
+  const base =
+    medida === "despesa_mat"
+      ? "O numerador parte da despesa liquidada na função Educação (DCA), exceto as operações intraorçamentárias."
+      : "Despesa liquidada na função Educação (DCA), exceto as operações intraorçamentárias.";
+  if (!p) return `${base} A parcela intraorçamentária de ${ano} não consta do RREO usado pelo painel, e a comparação entre capitais não a corrige.`;
+  const pc = (v: number) => `${decimal(v, 1)}%`;
+  return `${base} Em ${p.ano} essa parcela pesa de ${pc(p.menor.pct)} da função em ${p.menor.nome} (${p.menor.uf}) a ${pc(p.maior.pct)} em ${p.maior.nome} (${p.maior.uf}) (RREO): a comparação entre capitais não corrige a diferença.`;
 }
 
 /* ------------------------------------------------------------------ população e ponte da despesa por matrícula */

@@ -16,6 +16,9 @@ import {
   etapaDaMedida,
   formata,
   nacionalCalculada,
+  ehDespesa,
+  perimetroIntra,
+  textoPerimetroIntra,
   nomeEtapa,
   referenciasExternas,
   unidade,
@@ -25,7 +28,7 @@ import {
 } from "./consulta";
 import { fraseAmplitude, fraseCobertura, type ItemFrase } from "./frases";
 import { inteiro } from "./formato";
-import { DEFINICAO_CURTA, SEM_NACIONAL, type Tema } from "./visao";
+import { DEFINICAO_CURTA, SEM_NACIONAL, universoDaMedida, type Tema } from "./visao";
 
 export type PontoCapitulo = { id: string; cod: number; nome: string; uf: string; valor: number };
 
@@ -83,6 +86,8 @@ export type ResumoMedida = {
   dominioFixo: [number, number] | null;
   /** frase curta de definição, com a ressalva essencial do número */
   definicao: string;
+  /** ressalva do perímetro da despesa (intraorçamentárias), junto do número; null nas demais medidas */
+  perimetro: string | null;
   /** id do indicador, para a ficha "Sobre este dado" */
   indicador: string;
   pontos: PontoCapitulo[];
@@ -186,7 +191,7 @@ function resumo(d: DadosPainel, ix: Indice, tema: Tema, c: Escolha): ResumoMedid
   const titulo = fraseAmplitude(itens, { medida: c.medida, ano, etapa });
   const md = MEDIDA[c.medida];
   const periodo = md.anos === "ideb" ? `edição ${ano}` : md.anos === "censo" ? `Censo Escolar ${ano}` : `exercício ${ano}`;
-  const subtitulo = [md.rotulo, unidade(c.medida, "nominal"), etapa ? nomeEtapa(d, etapa) : null, periodo, "rede municipal das capitais estaduais"].filter(Boolean).join(" · ");
+  const subtitulo = [md.rotulo, unidade(c.medida, "nominal"), etapa ? nomeEtapa(d, etapa) : null, periodo, `capitais estaduais, ${universoDaMedida(c.medida)}`].filter(Boolean).join(" · ");
   const contexto =
     tema === "gastos"
       ? `${ano} · R$ correntes`
@@ -235,6 +240,7 @@ function resumo(d: DadosPainel, ix: Indice, tema: Tema, c: Escolha): ResumoMedid
     zero: c.medida === "despesa_hab" || c.medida === "despesa_mat",
     dominioFixo: c.medida === "ideb" ? [0, 10] : null,
     definicao: DEFINICAO_CURTA[c.medida].texto,
+    perimetro: ehDespesa(c.medida) ? textoPerimetroIntra(perimetroIntra(d, ano), ano, c.medida) : null,
     indicador: md.indicador,
     pontos,
     semDado: comp.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, motivo: x.motivo })),

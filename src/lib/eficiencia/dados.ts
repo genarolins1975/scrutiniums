@@ -43,6 +43,21 @@ export function metaEducacao(): { gerado_em: string | null; dados_capturados_ate
   }
 }
 
+
+/** Parcela intraorçamentária da função Educação por capital e ano (RREO, 6º bimestre), em % da função; pares sem RREO ficam de fora. */
+function intraPct(g: GoldEducacao): [number, number, number][] {
+  const out: [number, number, number][] = [];
+  for (const o of g.observacoes) {
+    if (o.indicador !== "edu.despesa.funcao_educacao" || o.componente !== "nominal" || o.status !== "OBSERVADO") continue;
+    const r = o.conferencia?.rreo;
+    if (!r || r.intra === null || r.intra === undefined) continue;
+    const total = r.exceto_intra + r.intra;
+    if (!(total > 0)) continue;
+    out.push([o.ano, o.ente, Number(((100 * r.intra) / total).toFixed(4))]);
+  }
+  return out;
+}
+
 /**
  * Payload do cliente: só o recorte que a página exibe, em tuplas e com textos
  * repetidos deduplicados (o registro detalhado de cada valor fica no CSV e na
@@ -152,6 +167,7 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     nacionalCalculada: g.referencia_nacional_calculada,
     populacao,
     limiarQuartis: g.politica_referencias.limiar_quartis,
+    intraPct: intraPct(g),
     fontes,
     meta: {
       gerado_em: g.meta.gerado_em,

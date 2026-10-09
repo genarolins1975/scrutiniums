@@ -89,6 +89,11 @@ export const SEM_NACIONAL: Record<MedidaId, string> = {
   saeb: "A referência nacional da rede municipal do INEP existe para anos iniciais e anos finais, nas edições bienais.",
 };
 
+/** Universo a que a medida se refere: o gasto total e por habitante é do orçamento do município, não só da rede de escolas. */
+export function universoDaMedida(m: MedidaId): string {
+  return m === "despesa" || m === "despesa_hab" ? "orçamento do município, função Educação" : "rede municipal";
+}
+
 export const CAMINHO_COMPARAR = "/comparar";
 export const CAMINHO_METODOS = "/metodos";
 

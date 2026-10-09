@@ -14,6 +14,8 @@ import {
   comparar,
   csv,
   ehDespesa,
+  perimetroIntra,
+  textoPerimetroIntra,
   formata,
   formataEixo,
   linhasCsvTabelaComparativa,
@@ -30,7 +32,7 @@ import {
 } from "@/lib/eficiencia/consulta";
 import { fraseAmplitude, fraseCobertura } from "@/lib/eficiencia/frases";
 import type { EtapaId } from "@/lib/eficiencia/tipos";
-import { anoValido, etapaEfetiva, temEtapa } from "@/lib/eficiencia/visao";
+import { anoValido, etapaEfetiva, temEtapa, universoDaMedida } from "@/lib/eficiencia/visao";
 import { DistribuicaoCapitais } from "./DistribuicaoCapitais";
 import { ReferenciasDoGrupo } from "./ReferenciasPainel";
 import { TabelaComparativa, type VisaoColunas } from "./TabelaComparativa";
@@ -97,7 +99,7 @@ export function ComparadorCapitais({ dados }: { dados: DadosPainel }) {
     comp.incluidas.map((i) => ({ nome: i.cap.nome, uf: i.cap.uf, valor: i.valor })),
     { medida, ano, etapa, disciplina: s.disc === "matematica" ? "Matemática" : "Língua Portuguesa" },
   );
-  const subtitulo = [md.rotulo, unidade(medida, s.moeda), md.etapas ? nomeEtapa(dados, etapa) : null, medida === "saeb" ? (s.disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null, periodo, "rede municipal"].filter(Boolean).join(" · ");
+  const subtitulo = [md.rotulo, unidade(medida, s.moeda), md.etapas ? nomeEtapa(dados, etapa) : null, medida === "saeb" ? (s.disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null, periodo, `capitais estaduais, ${universoDaMedida(medida)}`].filter(Boolean).join(" · ");
 
   const alternarDestaque = (id: string) => {
     const novo = destacadas.includes(id) ? destacadas.filter((x) => x !== id) : [...destacadas, id].slice(-MAX_DESTAQUES);
@@ -139,6 +141,11 @@ export function ComparadorCapitais({ dados }: { dados: DadosPainel }) {
         <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
           {subtitulo}. {fraseCobertura(comp.incluidas.length, comp.universo.length)}
         </p>
+        {ehDespesa(medida) && (
+          <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-obee-tinta" role="note">
+            <span className="font-semibold">Perímetro.</span> {textoPerimetroIntra(perimetroIntra(dados, ano), ano, medida)}
+          </p>
+        )}
 
         <div className="mt-6 grid gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
           <Selecao

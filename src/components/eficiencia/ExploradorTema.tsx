@@ -13,6 +13,9 @@ import {
   componente,
   csv,
   ehDespesa,
+  perimetroIntra,
+  serieDaMediana,
+  textoPerimetroIntra,
   etapaDaMedida,
   formata,
   formataEixo,
@@ -34,7 +37,7 @@ import {
 import { fraseAmplitude, fraseCapital, fraseCobertura, fraseEvolucao } from "@/lib/eficiencia/frases";
 import { inteiro } from "@/lib/eficiencia/formato";
 import type { EtapaId, IndicadorId } from "@/lib/eficiencia/tipos";
-import { DEFINICAO_CURTA, DEFINICAO_TEMA, SEM_NACIONAL, anoValido, etapaEfetiva, temEtapa, type Tema } from "@/lib/eficiencia/visao";
+import { DEFINICAO_CURTA, DEFINICAO_TEMA, SEM_NACIONAL, universoDaMedida, anoValido, etapaEfetiva, temEtapa, type Tema } from "@/lib/eficiencia/visao";
 import { ComposicaoDespesa, MatriculasPorEtapa, PonteDaRazao } from "./DetalhesMedida";
 import { DistribuicaoCapitais } from "./DistribuicaoCapitais";
 import type { ContextoFicha } from "./FichaConteudo";
@@ -123,7 +126,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     md.etapas ? nomeEtapa(dados, etapa) : null,
     medida === "saeb" ? (s.disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null,
     periodo,
-    "capitais estaduais, rede municipal",
+    `capitais estaduais, ${universoDaMedida(medida)}`,
   ]
     .filter(Boolean)
     .join(" · ");
@@ -157,13 +160,10 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
   })();
 
   // evolução: a capital, quando escolhida; senão a mediana das capitais, ano a ano
-  const medianaPorAno = anos.map((a) => {
-    const r = ix.referencia(md.indicador, k, e, a, "todas");
-    return { ano: a, valor: r?.mediana ?? null, n: r?.n ?? 0 };
-  });
+  const medianaPorAno = serieDaMediana(ix, medida, etapa, s.moeda, s.disc);
   const pontosSerie = cap
     ? serie(ix, medida, cap.cod, etapa, s.moeda, s.disc)
-    : medianaPorAno.map((m) => ({ ano: m.ano, ...(m.valor === null ? pontoVazio() : { ...pontoVazio(), valor: m.valor, status: "OBSERVADO" as const, elegivel: true }) }));
+    : medianaPorAno.map((m) => ({ ano: m.ano, ...(m.valor === null ? pontoVazio() : { ...pontoVazio(), valor: m.valor, status: "OBSERVADO" as const, elegivel: true, quebraSerie: m.quebraSerie }) }));
   const anotacoes = medida === "aprovacao" ? [PANDEMIA_APROVACAO] : medida === "ideb" || medida === "saeb" ? [PANDEMIA_IDEB] : [];
   const fraseSerie = fraseEvolucao(
     pontosSerie.map((p) => ({ ano: p.ano, valor: p.valor, elegivel: p.elegivel, quebraSerie: p.quebraSerie })),
@@ -280,6 +280,11 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
         <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
           {subtitulo}. {fraseCobertura(comp.incluidas.length, comp.universo.length)}
         </p>
+        {ehDespesa(medida) && (
+          <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-obee-tinta" role="note">
+            <span className="font-semibold">Perímetro.</span> {textoPerimetroIntra(perimetroIntra(dados, ano), ano, medida)}
+          </p>
+        )}
         {fraseCap && visao !== "evolucao" && visao !== "detalhe" && <p className="mt-3 max-w-prose2 text-[0.95rem] leading-relaxed text-obee-tinta">{fraseCap}</p>}
 
         {/* controles locais, junto do gráfico */}

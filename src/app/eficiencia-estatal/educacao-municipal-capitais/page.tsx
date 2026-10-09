@@ -56,7 +56,7 @@ export default function PaginaPanorama() {
           </h1>
           <p className="mt-3 max-w-[40rem] font-serif text-[1.35rem] leading-snug text-obee-tinta md:text-[1.65rem]">Quanto se gasta, quem é atendido e quais resultados são observados.</p>
           <p className="mt-3 max-w-[44rem] text-[0.9375rem] leading-relaxed text-carvao-muted">
-            {g.universo.capitais.length} capitais estaduais · rede municipal · dados capturados até {dataBr(g.meta.dados_capturados_ate)} · anos de referência indicados em cada indicador
+            {g.universo.capitais.length} capitais estaduais · educação municipal · dados capturados até {dataBr(g.meta.dados_capturados_ate)} · anos de referência indicados em cada indicador
           </p>
         </div>
         <div className="lg:pt-3">

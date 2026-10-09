@@ -91,13 +91,26 @@ export function MiniSerie({
   const x = (i: number) => (pontos.length > 1 ? m.l + i * passoX : (m.l + w - m.r) / 2);
   // segmentos só entre anos consecutivos com valor elegível: ausência é lacuna, nunca ponte; um valor fora
   // das comparações (perímetro distinto ou conferência pendente) fica isolado, sem linha que sugira continuidade
+  // mudança de base entre dois anos consecutivos com valor elegível (ex.: população de referência): a linha se interrompe ali e
+  // o ponto de mudança é marcado, porque os valores dos dois lados não são diretamente comparáveis
   const segs: string[] = [];
+  const rupturas: number[] = [];
   let atual: string[] = [];
+  let anterior = -1;
   pontos.forEach((p, i) => {
     if (p.valor === null || !p.elegivel) {
       if (atual.length > 1) segs.push(atual.join(" "));
       atual = [];
-    } else atual.push(`${atual.length ? "L" : "M"}${x(i).toFixed(1)},${y(p.valor).toFixed(1)}`);
+      anterior = -1;
+    } else {
+      if (anterior >= 0 && pontos[anterior].quebraSerie !== p.quebraSerie) {
+        if (atual.length > 1) segs.push(atual.join(" "));
+        atual = [];
+        rupturas.push(i);
+      }
+      atual.push(`${atual.length ? "L" : "M"}${x(i).toFixed(1)},${y(p.valor).toFixed(1)}`);
+      anterior = i;
+    }
   });
   if (atual.length > 1) segs.push(atual.join(" "));
   // referência: linha tracejada só entre anos consecutivos que têm mediana
@@ -161,6 +174,16 @@ export function MiniSerie({
               )}
               {p.valor === null && (
                 <circle cx={x(i)} cy={H - m.b} r={3.5} fill={COR.superficie} stroke={COR.eixo} strokeWidth={1.2} />
+              )}
+            </g>
+          ))}
+          {rupturas.map((i, n) => (
+            <g key={`rp${pontos[i].ano}`}>
+              <line x1={(x(i - 1) + x(i)) / 2} x2={(x(i - 1) + x(i)) / 2} y1={m.t} y2={H - m.b} stroke={COR.referencia} strokeWidth={1.25} strokeDasharray="2 3" />
+              {n === 0 && (
+                <text x={(x(i - 1) + x(i)) / 2} y={m.t - 3} textAnchor="middle" fontSize={10} fill={COR.referencia}>
+                  mudança de base
+                </text>
               )}
             </g>
           ))}
@@ -247,8 +270,13 @@ export function MiniSerie({
           </div>
         )}
       </div>
-      {(pontos.some((p) => p.valor === null || !p.elegivel) || anotacoes.length > 0 || segsRef.length > 0) && (
+      {(pontos.some((p) => p.valor === null || !p.elegivel) || anotacoes.length > 0 || segsRef.length > 0 || rupturas.length > 0) && (
         <ul className="mt-1 space-y-0.5 text-xs leading-snug text-carvao-muted">
+          {rupturas.map((i) => (
+            <li key={`mb${pontos[i].ano}`} className="text-obee-tinta">
+              <span aria-hidden="true">┆</span> Mudança de base entre {pontos[i - 1].ano} e {pontos[i].ano}: a linha se interrompe, porque os valores dos dois lados não são diretamente comparáveis.
+            </li>
+          ))}
           {segsRef.length > 0 && (
             <li>
               <span aria-hidden="true">┄</span> Linha tracejada: {rotuloReferencia.toLowerCase()} em cada ano. O número de capitais na comparação pode mudar de um ano para outro (de{" "}
