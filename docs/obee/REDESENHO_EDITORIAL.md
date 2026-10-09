@@ -40,7 +40,7 @@ Medida de tamanho (Chromium, 08/10/2026, build de produção): a página anterio
 
 ## 4. Frases factuais e linguagem
 
-A unidade editorial é pergunta, frase factual, evidência visual, referência, aprofundamento. As frases são calculadas em `src/lib/eficiencia/frases.ts` só com valores elegíveis do recorte: amplitude com extremos nomeados e empates, capital frente à mediana em valores, cobertura, referência nacional, evolução entre dois períodos com bloqueio por quebra de série. Ausência tem frase própria e nunca vira zero. Nenhum texto avalia governo, sugere meta ou infere causa; testes varrem as frases e os arquivos novos contra o vocabulário avaliativo. O título comunicativo (a frase) é separado do subtítulo técnico.
+A unidade editorial é pergunta, frase factual, evidência visual, referência, aprofundamento. As frases são calculadas em `src/lib/eficiencia/frases.ts` só com valores elegíveis do recorte: amplitude com extremos nomeados e empates, capital frente à mediana em valores, cobertura, referência nacional, evolução entre dois períodos com bloqueio por quebra de série. Ausência tem frase própria e nunca vira zero. Nenhum texto avalia governo, sugere meta ou infere causa; testes varrem as frases e os arquivos novos contra o vocabulário avaliativo. O título comunicativo (a frase) é separado do subtítulo técnico. Quando há empate no menor ou no maior valor, a frase e os rótulos de extremo da faixa de distribuição citam as mesmas capitais, em ordem alfabética, com o mesmo limite (dois nomes e "e mais N"); correção de 09/10/2026, depois de a captura em produção mostrar a frase com duas capitais empatadas no Ideb e o gráfico com uma.
 
 ## 5. Referências com pouco ruído
 
