@@ -239,7 +239,7 @@ Use o quadro abaixo como conteúdo mínimo. Melhore a redação sem mudar o sent
 | Previsões e modelos | O que se projeta para o PLD e como a previsão tem se saído? | Examinar cenários probabilísticos e qualidade preditiva | Horizonte, intervalos, histórico de emissões e erros |
 | Mercado | Como a energia é contratada, alocada e liquidada? | Compreender os mecanismos comerciais | ACL/ACR, agentes, MRE/GSF e encargos públicos |
 | Conta de luz | Quanto custa a energia ao consumidor e o que compõe a conta? | Comparar perfis e entender mudanças de custo | Tarifas, componentes, bandeiras e simulação |
-| Perdas | Onde se perde energia, quanto e com que efeito econômico? | Comparar desempenho e dimensionar o problema | Técnicas, não técnicas, realizado e regulatório |
+| Perdas | Onde a energia se perde? | Comparar desempenho e dimensionar o problema | Técnicas, não técnicas, percentual técnico regulatório e custo na tarifa |
 | Qualidade | Com que frequência e por quanto tempo falta energia? | Comparar o serviço recebido e sua evolução | DEC, FEC, limites, parcelas e compensações |
 | Inclusão energética | Quem tem acesso adequado e para quem a energia pesa mais? | Examinar acesso, benefícios e desigualdade | Tarifa Social, universalização e orçamento familiar |
 | Empresas | Quem participa do setor e como atua? | Relacionar agentes, ativos e resultados públicos | Cadastro, portfólio, distribuidoras e finanças |

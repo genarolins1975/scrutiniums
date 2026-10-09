@@ -302,7 +302,7 @@ export default function PaginaP037() {
 
                 <EmpresasSeguir
                   ancora="p037"
-                  proximo={{ href: perdasDestino?.href ?? "/setor-eletrico/perdas", pergunta: perdasDestino?.pergunta ?? "Onde se perde energia, quanto e com que efeito econômico?" }}
+                  proximo={{ href: perdasDestino?.href ?? "/setor-eletrico/perdas", pergunta: perdasDestino?.pergunta ?? "Onde a energia se perde?" }}
                   downloads={downloadsDe(g.downloads, ["/energia/series/empresas_distribuidoras.csv"])}
                 />
               </div>

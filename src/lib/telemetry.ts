@@ -213,7 +213,7 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "energia:conta-de-luz:reajustes": "Setor Elétrico · Conta de luz: reajustes, bandeiras e subsídios",
   "energia:perdas": "Setor Elétrico · Perdas",
   "energia:perdas:composicao": "Setor Elétrico · Perdas: técnicas e não técnicas",
-  "energia:perdas:regulatorio": "Setor Elétrico · Perdas: realizado e regulatório",
+  "energia:perdas:regulatorio": "Setor Elétrico · Perdas: percentual técnico regulatório",
   "energia:perdas:custo": "Setor Elétrico · Perdas: custo e contexto social",
   "energia:qualidade": "Setor Elétrico · Qualidade do serviço",
   "energia:inclusao-energetica": "Setor Elétrico · Inclusão energética",

@@ -50,7 +50,7 @@ export const ROTA_REDE = "/setor-eletrico/rede";
 export type PainelRede = "p028" | "p029" | "p030" | "p031";
 
 /** Pergunta do destino Rede no menu (navegacao.ts) e título da página principal. */
-export const PERGUNTA_MODULO_REDE = "Como a energia circula entre regiões e que restrições são documentadas?";
+export const PERGUNTA_MODULO_REDE = "Como a energia circula entre regiões?";
 
 /**
  * Um painel por página: cada um tem séries, várias tabelas equivalentes e fichas de

@@ -17,18 +17,27 @@ export function normalizaBusca(t: string): string {
 }
 
 /**
+ * A palavra do termo começa uma palavra do texto, não é um pedaço do meio dela: "ons" acha ONS e não "consumo", "epe" acha EPE e não
+ * "depende". Quem digita o começo de uma palavra ("reservat") continua achando; o texto já vem sem acento e em minúsculas.
+ */
+function comecaPalavra(texto: string, palavra: string): boolean {
+  return new RegExp("(^|[^a-z0-9])" + palavra.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).test(texto);
+}
+
+/**
  * Quanto o verbete combina com o termo, do melhor para o pior: 0 sigla igual ao termo; 1 sigla ou nome começa pelo termo; 2 termo no
  * nome ou na pergunta prática; 3 só no texto (definição). Sem o termo (ou com palavra do termo faltando), null: o verbete não entra.
- * Termo com várias palavras exige todas elas, em qualquer ordem.
+ * Termo com várias palavras exige todas elas, em qualquer ordem, cada uma no começo de uma palavra do texto.
  */
 export function notaDoVerbete(i: ItemDoIndice, termo: string): number | null {
   const palavras = termo.split(/\s+/).filter(Boolean);
-  if (palavras.length === 0 || !palavras.every((p) => i.busca.indexOf(p) >= 0)) return null;
+  if (palavras.length === 0 || !palavras.every((p) => comecaPalavra(i.busca, p))) return null;
   const titulo = normalizaBusca(i.titulo);
   const nome = i.subtitulo ? normalizaBusca(i.subtitulo) : "";
   if (titulo === termo) return 0;
   if (titulo.indexOf(termo) === 0 || nome.indexOf(termo) === 0) return 1;
-  if (titulo.indexOf(termo) >= 0 || nome.indexOf(termo) >= 0 || (i.pergunta !== null && normalizaBusca(i.pergunta).indexOf(termo) >= 0)) return 2;
+  const nomes = `${titulo} ${nome}`;
+  if (palavras.every((p) => comecaPalavra(nomes, p)) || (i.pergunta !== null && palavras.every((p) => comecaPalavra(normalizaBusca(i.pergunta as string), p)))) return 2;
   return 3;
 }
 
