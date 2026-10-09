@@ -1,6 +1,6 @@
 import { inteiro } from "../formato";
 import type { MedidaSaude } from "./medidas";
-import { ROTULO_PERIODO, type PeriodoTipo } from "./medidas";
+import { periodoCurto, ROTULO_PERIODO, type PeriodoTipo } from "./medidas";
 
 export const QUANDO: Record<PeriodoTipo, (a: number) => string> = {
   exercicio: (a) => `no exercício de ${a}`,
@@ -8,8 +8,8 @@ export const QUANDO: Record<PeriodoTipo, (a: number) => string> = {
   processamento: (a) => `no ano de processamento ${a}`,
 };
 export const cap1 = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
-/** Primeira letra minúscula, preservando siglas como eSF e eAP no restante do texto. */
-export const minuscula = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
+/** Primeira letra minúscula, preservando siglas iniciais como UBS e ICSAP e siglas internas como eSF e eAP. */
+export const minuscula = (t: string) => (/^[A-ZÀ-Ý]{2}/.test(t) ? t : t.charAt(0).toLowerCase() + t.slice(1));
 
 export type ItemFrase = { nome: string; uf: string; valor: number };
 
@@ -32,25 +32,76 @@ export function fraseAmplitude(itens: ItemFrase[], m: MedidaSaude, ano: number, 
   return `${quando}, ${minuscula(m.rotulo)} vai de ${m.formata(min)} em ${lista(nomesMin)} a ${m.formata(max)} em ${lista(nomesMax)}.${med}`;
 }
 
-/** Frase da capital escolhida: posição numérica diante da mediana do grupo, sem classificação. */
+/** Frase da capital escolhida: posição numérica diante da mediana do grupo, sem classificação. A medida dita a comparação: relativa para razões, em pontos percentuais para parcelas, nenhuma para totais. */
 export function fraseCapital(nome: string, uf: string, valor: number | null, mediana: number | null, n: number, m: MedidaSaude, foraDaComparacao: boolean): string {
   if (valor === null) return `${nome} (${uf}) não tem valor para este recorte.`;
   if (foraDaComparacao) return `${nome} (${uf}): ${m.formata(valor)}. O valor oficial fica fora da comparação e das medianas (motivo no aviso abaixo).`;
   if (mediana === null || !n) return `${nome} (${uf}): ${m.formata(valor)}.`;
   if (valor === mediana) return `${nome} (${uf}): ${m.formata(valor)}, igual à mediana das ${n} capitais.`;
+  const base = `${nome} (${uf}): ${m.formata(valor)}; mediana das ${n} capitais: ${m.formata(mediana)}`;
+  if (m.tipo === "escala") return `${base}. É um total que depende do porte da capital.`;
+  const sentido = valor > mediana ? "acima" : "abaixo";
+  if (m.tipo === "percentual") return `${base}, ${m.difAbsoluta(Math.abs(valor - mediana))} ${sentido} da mediana.`;
   const dif = mediana ? Math.abs(valor / mediana - 1) * 100 : null;
-  const rel = dif !== null && Number.isFinite(dif) ? `, ${inteiro(Math.round(dif))}% ${valor > mediana ? "acima" : "abaixo"} da mediana` : "";
-  return `${nome} (${uf}): ${m.formata(valor)}; mediana das ${n} capitais: ${m.formata(mediana)}${rel}.`;
+  return dif !== null && Number.isFinite(dif) ? `${base}, ${inteiro(Math.round(dif))}% ${sentido} da mediana.` : `${base}.`;
 }
 
-/** Frase da evolução: o primeiro e o último valor comparáveis da série e o que bloqueia a variação. */
-export function fraseEvolucao(pontos: { ano: number; valor: number | null; elegivel: boolean; quebraSerie: boolean }[], m: MedidaSaude, sujeito: string, motivoQuebra: string): string {
+/** Posição de um valor diante da mediana do grupo, na unidade da medida: relativa para razões, em pontos percentuais para parcelas, nenhuma para totais. */
+export function posicaoNaMediana(valor: number, mediana: number, m: MedidaSaude): string {
+  if (valor === mediana) return "igual à mediana das capitais";
+  const sentido = valor > mediana ? "acima" : "abaixo";
+  if (m.tipo === "escala") return `mediana das capitais: ${m.formata(mediana)}`;
+  if (m.tipo === "percentual") return `${m.difAbsoluta(Math.abs(valor - mediana))} ${sentido} da mediana das capitais (${m.formata(mediana)})`;
+  const dif = mediana ? Math.abs(valor / mediana - 1) * 100 : null;
+  return dif !== null && Number.isFinite(dif) ? `${inteiro(Math.round(dif))}% ${sentido} da mediana das capitais (${m.formata(mediana)})` : `mediana das capitais: ${m.formata(mediana)}`;
+}
+
+/** Diferença entre duas capitais na mesma medida e no mesmo período, na unidade da medida. */
+export function fraseDiferenca(a: { nome: string; valor: number }, b: { nome: string; valor: number }, m: MedidaSaude, ano: number): string {
+  const d = a.valor - b.valor;
+  const quando = QUANDO[m.periodo](ano);
+  if (d === 0) return `${a.nome} e ${b.nome} têm o mesmo valor ${quando}: ${m.formata(a.valor)}.`;
+  const sentido = d > 0 ? "a mais" : "a menos";
+  const abs = `${a.nome} tem ${m.difAbsoluta(Math.abs(d))} ${sentido} que ${b.nome} ${quando}`;
+  if (m.tipo !== "razao" || !b.valor) return `${abs}.`;
+  const rel = (a.valor / b.valor - 1) * 100;
+  return Number.isFinite(rel) ? `${abs} (${inteiro(Math.round(Math.abs(rel)))}% ${d > 0 ? "maior" : "menor"} em valor relativo).` : `${abs}.`;
+}
+
+type PontoFrase = { ano: number; valor: number | null; elegivel: boolean; quebraSerie: boolean };
+
+/**
+ * Frase da evolução. A variação direta só existe entre anos consecutivos da mesma base: a frase usa o último trecho assim, com pelo menos dois
+ * anos, e diz que os demais anos usam outra base. Sem trecho, não há variação direta e a frase diz isso em vez de um salto bruto.
+ */
+export function fraseEvolucao(pontos: PontoFrase[], m: MedidaSaude, sujeito: string, motivoQuebra: string): string {
   const com = pontos.filter((p) => p.valor !== null && p.elegivel);
   if (com.length === 0) return `${sujeito} não tem valor comparável em nenhum ano da série.`;
-  const a = com[0];
-  const b = com[com.length - 1];
-  const quebras = new Set(com.map((p) => p.quebraSerie));
-  if (com.length === 1) return `${sujeito} tem valor comparável só em ${a.ano}: ${m.formata(a.valor!)}.`;
-  const base = `${sujeito}: de ${m.formata(a.valor!)} em ${a.ano} para ${m.formata(b.valor!)} em ${b.ano}.`;
-  return quebras.size > 1 ? `${base} A variação entre esses anos não é uma medida direta: ${motivoQuebra}.` : base;
+  const quando = (p: PontoFrase) => periodoCurto(m, p.ano);
+  if (com.length === 1) return `${sujeito} tem valor comparável só em ${quando(com[0])}: ${m.formata(com[0].valor!)}.`;
+  const trechos: PontoFrase[][] = [];
+  let atual: PontoFrase[] = [];
+  let anterior = -2;
+  pontos.forEach((p, i) => {
+    const ok = p.valor !== null && p.elegivel;
+    if (!ok) {
+      if (atual.length) trechos.push(atual);
+      atual = [];
+    } else {
+      if (atual.length && (anterior !== i - 1 || atual[atual.length - 1].quebraSerie !== p.quebraSerie)) {
+        trechos.push(atual);
+        atual = [];
+      }
+      atual.push(p);
+      anterior = i;
+    }
+  });
+  if (atual.length) trechos.push(atual);
+  const ultimo = [...trechos].reverse().find((t) => t.length >= 2);
+  if (!ultimo) return `${sujeito}: cada ano usa uma base diferente da do vizinho, então a série mostra os valores sem variação direta entre eles (${motivoQuebra}).`;
+  const a = ultimo[0];
+  const b = ultimo[ultimo.length - 1];
+  const base = `${sujeito}: de ${m.formata(a.valor!)} em ${quando(a)} para ${m.formata(b.valor!)} em ${quando(b)}.`;
+  const fora = com.filter((p) => !ultimo.includes(p));
+  return fora.length ? `${base} Os valores de ${fora.map(quando).join(", ")} usam outra base e não entram nesta variação: ${motivoQuebra}.` : base;
 }

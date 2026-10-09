@@ -53,12 +53,12 @@ export function ReferenciasExternasSaude({ itens, m, valorCapital }: { itens: Re
             <li key={e.id} className="border-l-2 border-linha pl-3 text-sm leading-snug">
               <p className="font-semibold text-obee-tinta">
                 {e.rotulo}: <span className="tabular-nums">{e.tipo === "normativa" ? `${inteiro(e.valor)}%` : m.formata(e.valor)}</span>
-                <span className="rotulo ml-2 !text-[0.66rem] text-carvao-muted">{e.classe}</span>
+                <span className="rotulo ml-2 !text-xs text-carvao-muted">{e.classe}</span>
               </p>
               <p className="mt-1 max-w-prose2 text-carvao-muted">{e.escopo}</p>
               {dif !== null && (
                 <p className="mt-1 max-w-prose2 text-obee-tinta">
-                  Diferença da capital escolhida para esta referência: {dif >= 0 ? "+" : "−"}{m.formata(Math.abs(dif))}.
+                  Diferença da capital escolhida para esta referência: {m.difAbsoluta(Math.abs(dif))} {dif >= 0 ? "a mais" : "a menos"}.
                 </p>
               )}
               <p className="mt-1 text-xs text-carvao-muted">Fonte: {e.fonte}.</p>

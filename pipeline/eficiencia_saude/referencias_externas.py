@@ -42,10 +42,13 @@ def nacionais():
             comp = str(l["nuComp"])
             if comp.startswith("12/") and int(comp[3:]) in P.ANOS_FINANCEIROS:
                 ano = int(comp[3:])
+                pre_censo = ano - 1 <= P.ANO_BASE_POPULACAO_PRE_CENSO  # a população de referência é a do ano anterior ao da competência
+                nota_base = (" A população de referência desta competência é anterior ao Censo 2022 (ano base " + str(ano - 1) + "); de dezembro de 2023 em diante a base é outra, "
+                             "e a variação entre as duas bases não é uma medida direta da cobertura.") if pre_censo else ""
                 out.append({
                     "id": f"br.aps.cobertura_potencial.{ano}", "indicador": "sau.aps.cobertura_potencial", "componente": None, "ano": ano, "tipo": "nacional_oficial",
                     "rotulo": "Brasil (Relatório APS)", "valor": float(l["qtCobertura"]), "unidade": "% da população de referência",
-                    "escopo": "Cobertura potencial estimada da APS do Brasil na competência de dezembro, publicada pelo mesmo serviço e pela mesma fórmula que a das capitais (Nota Técnica nº 2/2025). O Brasil inclui as capitais.",
+                    "escopo": "Cobertura potencial estimada da APS do Brasil na competência de dezembro, publicada pelo mesmo serviço e pela mesma fórmula que a das capitais (Nota Técnica nº 2/2025). O Brasil inclui as capitais." + nota_base,
                     "fonte": "Ministério da Saúde, SAPS, Relatório APS (serviço /cobertura/aps, unidadeGeografica=BRASIL)", "registro": f"Relatório APS, Brasil, competência {comp}; capacidade {int(l['qtCapacidadeEquipe'])}; população de referência {int(l['qtPopulacao'])}",
                     "origem": "oficial_publicado", "comparabilidade": "direta" if ano >= P.ANO_INICIO_REGRA_VIGENTE else "contexto", "classe": "Oficial publicado"})
     # ICSAP, Brasil e Brasil sem as 26 capitais: soma de todos os municípios do próprio arquivo do RIPSA
@@ -53,8 +56,9 @@ def nacionais():
         ano = int(r["ano"])
         n, pop = int(r["icsap_total"]), int(r["populacao_denominador"])
         nc, pc = int(r["icsap_26_capitais"]), int(r["populacao_26_capitais"])
-        escopo = (f"Soma das internações ICSAP de {int(r['municipios']):,} municípios do arquivo do RIPSA dividida pela soma das populações do mesmo arquivo, por 100 mil, no mesmo ano e pela mesma regra; "
-                  "razão agregada, que pesa cada município pela população. Municípios de todos os portes não são comparáveis às capitais automaticamente.").replace(",", ".")
+        milhares = f"{int(r['municipios']):,}".replace(",", ".")
+        escopo = (f"Soma das internações ICSAP de {milhares} municípios do arquivo do RIPSA dividida pela soma das populações do mesmo arquivo, por 100 mil habitantes, no mesmo ano e pela mesma regra "
+                  "(razão agregada, que pesa cada município pela população). Municípios de todos os portes não são comparáveis às capitais automaticamente.")
         out.append({"id": f"br.icsap.taxa.{ano}", "indicador": "sau.icsap.taxa", "componente": "ripsa", "ano": ano, "tipo": "nacional_calculado", "rotulo": "Brasil, todos os municípios (calculado pelo OBEE)",
                     "valor": n / pop * 100000, "unidade": "internações por 100 mil habitantes", "escopo": escopo,
                     "fonte": "RIPSA MRB.4.02, arquivo mgdi_ms_qu3.csv.zip (soma dos municípios)", "registro": f"Soma de {n} internações ICSAP e {pop} habitantes, {ano}",
@@ -62,7 +66,7 @@ def nacionais():
         if pop - pc > 0:
             out.append({"id": f"br_sem_capitais.icsap.taxa.{ano}", "indicador": "sau.icsap.taxa", "componente": "ripsa", "ano": ano, "tipo": "nacional_calculado",
                         "rotulo": "Brasil sem as 26 capitais (calculado pelo OBEE)", "valor": (n - nc) / (pop - pc) * 100000, "unidade": "internações por 100 mil habitantes",
-                        "escopo": escopo.replace("de " + f"{int(r['municipios']):,}".replace(",", ".") + " municípios", "dos demais municípios"),
+                        "escopo": escopo.replace("de " + milhares + " municípios", "dos demais municípios"),
                         "fonte": "RIPSA MRB.4.02, arquivo mgdi_ms_qu3.csv.zip (soma dos municípios, menos as 26 capitais)", "registro": f"Soma de {n - nc} internações ICSAP e {pop - pc} habitantes, {ano}",
                         "origem": "calculado_obee", "comparabilidade": "contexto", "classe": "Calculado pelo OBEE com o mesmo arquivo"})
     return out

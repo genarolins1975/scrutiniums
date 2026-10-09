@@ -1,6 +1,7 @@
 import type { ContextoFicha } from "@/components/eficiencia/FichaConteudo";
 import { resumoCobertura } from "../contexto";
 import { dataBr } from "../formato";
+import { ROTULO_FONTE } from "./rotulos";
 import type { GoldSaude } from "./tipos";
 
 /** Validações (ids de pipeline/eficiencia_saude/validacoes.py) que conferem cada indicador. */
@@ -19,7 +20,7 @@ export const VALIDACOES_DO_INDICADOR_SAUDE: Record<string, string[]> = {
   "sau.rede.ubs_retrato": ["S10", "S13", "M03"],
   "sau.aps.equipes": ["S08", "S10", "S13"],
   "sau.aps.equipes_por_10mil": ["S08", "S10", "S13", "S15"],
-  "sau.aps.cobertura_potencial": ["S08", "S10", "S11", "S13"],
+  "sau.aps.cobertura_potencial": ["S08", "S10", "S11", "S13", "M05"],
   "sau.icsap.internacoes": ["S09", "S10", "S13"],
   "sau.icsap.taxa": ["S09", "S10", "S13", "S15", "M04"],
   "sau.icsap.participacao": ["S09", "S10", "S13", "S15"],
@@ -28,22 +29,6 @@ export const VALIDACOES_DO_INDICADOR_SAUDE: Record<string, string[]> = {
   "sau.aps.producao": ["S16"],
   "sau.rede.profissionais_carga_horaria": ["S16"],
   "sau.despesa.por_atendimento": ["S16"],
-};
-
-const ROTULO_FONTE: Record<string, string> = {
-  siconfi_dca_anexo_i_e: "Siconfi, DCA Anexo I-E",
-  siconfi_rreo_anexo_02_b6: "Siconfi, RREO 6º bimestre, Anexo 02",
-  siconfi_msc_funcao10: "Siconfi, MSC de dezembro, função 10",
-  siops_rreo_anexo_12: "SIOPS, RREO Anexo 12 (ASPS)",
-  siops_despesas_por_fonte: "SIOPS, despesa por fonte de recursos",
-  cnes_estabelecimentos: "CNES, retrato (OpenDataSUS)",
-  cnes_historico_estabelecimentos: "CNES, histórico por estabelecimento (API de dados abertos)",
-  relatorio_aps_cobertura: "Relatório APS, cobertura e equipes",
-  ripsa_mrb402_icsap: "RIPSA MRB.4.02, ICSAP",
-  ripsa_cob201_internacoes: "RIPSA COB.2.01, internações SUS",
-  ripsa_cob501_planos: "RIPSA COB.5.01, planos privados",
-  ibge_populacao: "IBGE, população residente (SIDRA)",
-  ibge_ipca: "IBGE, IPCA",
 };
 
 export function contextosSaude(g: GoldSaude): Record<string, ContextoFicha> {

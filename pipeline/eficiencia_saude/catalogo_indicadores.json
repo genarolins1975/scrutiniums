@@ -299,7 +299,8 @@
     "Não é meta de qualidade nem prova de eficiência: o mínimo de 15% (LC 141/2012, art. 7º) é referência normativa, e ultrapassar o mínimo não é indicador de qualidade do serviço.",
     "Não é o gasto total em saúde: despesas custeadas por transferências do SUS e outras fontes ficam fora do cálculo do mínimo.",
     "Não é recalculado pelo OBEE quanto ao conteúdo: o que conta como ASPS é declarado pelo município e homologado no SIOPS.",
-    "Não é a proporção de recursos próprios na despesa total com saúde."
+    "Não é a proporção de recursos próprios na despesa total com saúde.",
+    "Não usa o mesmo estágio da despesa total: o demonstrativo informa o valor aplicado pela despesa empenhada no último bimestre, enquanto a despesa em Saúde das demais medidas é a liquidada. Os dois estágios diferem em muitos exercícios, e em alguns (por exemplo, Vitória em 2021 e 2022) o valor aplicado em ASPS supera a despesa liquidada na função Saúde."
    ],
    "formula": "Percentual = valor aplicado em ASPS (XVI) ÷ receita de impostos e transferências constitucionais e legais (III) × 100, com XVI = XII − XIII − XIV − XV; no último bimestre vale a coluna da despesa empenhada.",
    "numerador": "Valor aplicado em ASPS, coluna de despesa empenhada (R$).",
@@ -508,6 +509,7 @@
     "Não comprova funcionamento, acesso, vaga disponível nem horário de atendimento: é cadastro.",
     "Não é capacidade: uma unidade pode ter uma ou muitas equipes, e esta contagem não as distingue.",
     "Não é rede municipal: um estabelecimento situado na capital pode ter gestão estadual ou dupla, e a gestão não equivale a propriedade.",
+    "Não inclui as UBS de gestão municipal operadas por entidades de natureza jurídica não pública (125 no retrato de 09/10/2026, 52 delas no Rio de Janeiro e 38 em São Paulo); essas unidades aparecem na linha Gestão municipal e natureza jurídica não pública do retrato.",
     "Não inclui outros tipos de unidade com equipe de atenção primária (como unidades móveis)."
    ],
    "formula": "Número de estabelecimentos de tipo 01 ou 02, com status ativo e natureza jurídica pública (grupo PUBLICO), na competência de dezembro, localizados no município.",
@@ -874,7 +876,7 @@
    "o_que_nao_mede": [
     "Não é taxa ajustada por idade: descreve a ocorrência bruta e não isola a composição demográfica.",
     "Não é taxa de pessoas internadas.",
-    "Não inclui internações pagas por planos privados: capitais com maior cobertura de planos têm menos internações SUS por habitante por esse motivo.",
+    "Não inclui internações pagas por planos privados ou particulares. A cobertura de planos varia entre as capitais e é mostrada ao lado como contexto, sem relação estabelecida com a taxa.",
     "Não mede o desempenho da atenção primária nem da prefeitura, e um valor maior ou menor não demonstra mais ou menos eficiência."
    ],
    "formula": "Taxa = internações ICSAP ÷ população estimada do indicador × 100.000. Sensibilidade: o mesmo numerador ÷ população residente do exercício (IBGE) × 100.000.",

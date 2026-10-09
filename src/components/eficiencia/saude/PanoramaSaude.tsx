@@ -8,6 +8,7 @@ import { IndiceSaude, anosDaMedida, comparar } from "@/lib/eficiencia/saude/cons
 import type { DadosSaude } from "@/lib/eficiencia/saude/payload";
 import { MEDIDAS_SAUDE, ROTULO_PERIODO, type MedidaSaudeId, type TemaSaude } from "@/lib/eficiencia/saude/medidas";
 import { CAMINHO_TEMA, hrefSaude } from "@/lib/eficiencia/saude/rotas";
+import { inteiro } from "@/lib/eficiencia/formato";
 import type { ContextoFicha } from "../FichaConteudo";
 import { PanoramaFaixa } from "./PanoramaFaixa";
 import { Selecao } from "../controles";
@@ -105,6 +106,7 @@ export function PanoramaSaude({ dados, contextos }: { dados: DadosSaude; context
                 const c = comparar(ix, m, ano, o, "todas", cap, "alfabetica");
                 const ficha = dados.fichas.find((f) => f.id === m.indicador)!;
                 const ptCap = cap ? ix.ponto(m.indicador, cap.cod, ano, m.componente("nominal", "ripsa")) : null;
+                const externas = ix.externas(m.indicador, m.componente("nominal", "ripsa"), ano).filter((e) => e.comparabilidade === "direta");
                 return (
                   <li key={id} className="grid gap-x-10 gap-y-3 py-5 md:grid-cols-[minmax(0,19rem)_minmax(0,1fr)]">
                     <div className="min-w-0">
@@ -118,6 +120,12 @@ export function PanoramaSaude({ dados, contextos }: { dados: DadosSaude; context
                           <span className="ml-2 text-[0.8125rem] font-sans text-carvao-muted">mediana das capitais</span>
                         </p>
                       )}
+                      {externas.map((e) => (
+                        <p key={e.id} className="mt-1.5 text-sm leading-snug text-obee-tinta">
+                          <span className="font-semibold">{e.tipo === "normativa" ? "Mínimo legal" : e.rotulo}:</span> <span className="tabular-nums">{e.tipo === "normativa" ? `${inteiro(e.valor)}%` : m.formata(e.valor)}</span>
+                          <span className="text-carvao-muted"> · {e.tipo === "normativa" ? "referência normativa, não meta" : e.classe}</span>
+                        </p>
+                      ))}
                       <p className="mt-2 text-sm leading-snug text-carvao-muted"><Siglas texto={m.definicao} /></p>
                       <div className="mt-1 flex flex-wrap items-center gap-x-5">
                         <SobreEsteDado f={ficha} ctx={contextos[ficha.id]} />

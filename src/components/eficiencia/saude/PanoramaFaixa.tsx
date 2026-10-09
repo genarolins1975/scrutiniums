@@ -30,7 +30,7 @@ export function PanoramaFaixa({ m, c, ano, destaque, semDestaqueMotivo }: { m: M
         descricao={descricao}
       />
       <p className="mt-2 text-[0.8125rem] leading-snug text-carvao-muted">
-        Menor: {nomes(r.capitaisMinimo)}. Maior: {nomes(r.capitaisMaximo)}.{faixa ? "" : " Metade central não exibida: menos de 8 capitais."}
+        Menor: {nomes(r.capitaisMinimo)}. Maior: {nomes(r.capitaisMaximo)}.{faixa ? ` Faixa clara: metade central das capitais, de ${m.formata(faixa.q1, true)} a ${m.formata(faixa.q3, true)}.` : " Metade central não exibida: menos de 8 capitais."}
       </p>
       {semDestaqueMotivo && <p className="mt-1 text-[0.8125rem] leading-snug text-obee-tinta" role="note">{semDestaqueMotivo}</p>}
     </div>

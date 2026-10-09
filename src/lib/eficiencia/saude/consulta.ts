@@ -147,18 +147,49 @@ export function composicao(ix: IndiceSaude, indicador: string, cod: number, ano:
   };
 }
 
-/** Composição agregada: soma, em reais, das categorias nas capitais elegíveis do ano; pesa cada capital pelo seu valor. */
-export function composicaoAgregada(ix: IndiceSaude, indicador: string, ano: number, categorias: [string, string][]): { linhas: LinhaComposicao[]; capitais: number } {
+export type ForaDaSoma = { cap: CapitalPainel; motivo: string };
+export type ComposicaoAgregada = { linhas: LinhaComposicao[]; capitais: number; universo: number; fora: ForaDaSoma[] };
+
+/**
+ * Composição agregada: soma, em reais, de cada categoria nas capitais que entram no agregado, com cada capital pesando pelo seu valor.
+ * Entra a capital com pelo menos uma categoria observada e elegível e nenhuma categoria observada fora das comparações. Com `exigeTodas`
+ * (natureza e fonte, em que a abertura é completa ou não existe) a capital precisa ter todas as categorias observadas; sem ela (subfunção,
+ * em que a categoria sem linha na declaração não existe e vale ausência de despesa naquela subfunção, não dado faltante) soma-se o que a
+ * declaração traz, que reproduz o total da função. Quem fica de fora é devolvido com o motivo, para a interface nomear.
+ */
+export function composicaoAgregada(ix: IndiceSaude, indicador: string, ano: number, categorias: [string, string][], opcoes: { exigeTodas?: boolean } = {}): ComposicaoAgregada {
   const somas = new Map<string, number>();
+  const fora: ForaDaSoma[] = [];
   let n = 0;
   for (const cap of ix.d.capitais) {
     const ps = categorias.map(([k]) => ix.ponto(indicador, cap.cod, ano, k));
-    if (ps.some((p) => p.status !== "OBSERVADO" || p.valor === null || !p.elegivel)) continue;
+    const observadas = ps.filter((p) => p.status === "OBSERVADO" && p.valor !== null);
+    if (observadas.length === 0) {
+      const inconsistente = ps.some((p) => p.status === "INCONSISTENTE");
+      fora.push({ cap, motivo: inconsistente ? "abertura não publicada: não reproduz a DCA" : "sem abertura publicada" });
+      continue;
+    }
+    if (observadas.some((p) => !p.elegivel)) {
+      fora.push({ cap, motivo: "valor oficial fora das comparações" });
+      continue;
+    }
+    if (opcoes.exigeTodas && observadas.length < categorias.length) {
+      fora.push({ cap, motivo: "abertura incompleta" });
+      continue;
+    }
     n++;
-    categorias.forEach(([k], i) => somas.set(k, (somas.get(k) ?? 0) + ps[i].valor!));
+    categorias.forEach(([k], i) => {
+      const p = ps[i];
+      if (p.status === "OBSERVADO" && p.valor !== null) somas.set(k, (somas.get(k) ?? 0) + p.valor);
+    });
   }
   const total = Array.from(somas.values()).reduce((a, b) => a + b, 0);
-  return { linhas: categorias.filter(([k]) => somas.has(k)).map(([k, rot]) => ({ chave: k, rotulo: rot, valor: somas.get(k)!, participacao: total ? (100 * somas.get(k)!) / total : 0 })), capitais: n };
+  return {
+    linhas: categorias.filter(([k]) => somas.has(k)).map(([k, rot]) => ({ chave: k, rotulo: rot, valor: somas.get(k)!, participacao: total ? (100 * somas.get(k)!) / total : 0 })),
+    capitais: n,
+    universo: ix.d.capitais.length,
+    fora,
+  };
 }
 
 export function notasMateriais(c: Comparacao): { texto: string; capitais: string[] }[] {
@@ -178,13 +209,94 @@ export function variacao(atual: Ponto, anterior: Ponto): { pct: number } | { blo
   return { pct: (atual.valor / anterior.valor - 1) * 100 };
 }
 
-export const CABECALHO_CSV_COMPARACAO = ["Capital", "UF", "Região", "Medida", "Período", "Valor", "Valor numérico", "Unidade", "Estado do dado", "Na comparação", "Nota", "Fonte"];
+export const RESSALVA_CSV = "Os valores descrevem recursos, estrutura registrada e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. A mediana descreve as capitais na comparação e não é referência de desempenho.";
 
-export function linhasCsvComparacao(ix: IndiceSaude, m: MedidaSaude, ano: number, o: Opcoes, c: Comparacao, periodo: string, fonte: string): string[][] {
+/** Metadados que acompanham toda exportação: o arquivo precisa se explicar fora do site (fonte, endereço, captura, versão e hash). */
+export function metaCsv(ix: IndiceSaude, m: MedidaSaude) {
+  const ficha = ix.d.fichas.find((f) => f.id === m.indicador);
+  const ids = ficha?.fontes ?? [];
+  const fontes = ids.map((i) => ix.d.fontes[i]).filter(Boolean);
+  const datas = fontes.map((f) => f.capturado_em).filter(Boolean).sort();
+  return {
+    fonte: fontes.map((f) => f.nome).join("; "),
+    url: fontes.map((f) => f.url).filter(Boolean).join(" "),
+    captura: datas.length ? datas[datas.length - 1] : "",
+    versao: ficha?.versao_metodologica ?? "",
+    geradoEm: ix.d.meta.gerado_em,
+    hash: ix.d.meta.hash_dados,
+  };
+}
+
+const CAUDA_META = ["Fonte", "Endereço da fonte", "Data de captura", "Versão metodológica", "Dados gerados em", "Hash dos dados", "Leia antes de usar"];
+const caudaMeta = (ix: IndiceSaude, m: MedidaSaude) => {
+  const x = metaCsv(ix, m);
+  return [x.fonte, x.url, x.captura, x.versao, x.geradoEm, x.hash, RESSALVA_CSV];
+};
+
+export const CABECALHO_CSV_COMPARACAO = ["Capital", "UF", "Região", "Medida", "Período", "Valor (texto formatado)", "Valor numérico (ponto decimal)", "Unidade", "Estado do dado", "Na comparação", "Nota", "Numerador", "Denominador", "Mediana do grupo", "Capitais na comparação", ...CAUDA_META];
+
+export function linhasCsvComparacao(ix: IndiceSaude, m: MedidaSaude, ano: number, o: Opcoes, c: Comparacao, periodo: string): string[][] {
   const regioes = ix.d.regioes;
   const fmt = (v: number) => m.formata(v);
-  const linha = (cap: CapitalPainel, p: Ponto, na: boolean) => [cap.nome, cap.uf, regioes[cap.regiao] ?? cap.regiao, m.rotulo, periodo, p.valor === null ? "" : fmt(p.valor), p.valor === null ? "" : String(p.valor), m.unidade(o.moeda), ROTULO_ESTADO[p.status], na ? "sim" : "não", p.nota ?? "", fonte];
+  const mediana = c.ref?.mediana ?? null;
+  const cauda = caudaMeta(ix, m);
+  const linha = (cap: CapitalPainel, p: PontoComCalculo, na: boolean) => [
+    cap.nome, cap.uf, regioes[cap.regiao] ?? cap.regiao, m.rotulo, periodo, p.valor === null ? "" : fmt(p.valor), p.valor === null ? "" : String(p.valor), m.unidade(o.moeda), ROTULO_ESTADO[p.status], na ? "sim" : "não",
+    p.nota ?? "", p.numerador === null ? "" : String(p.numerador), p.denominador === null ? "" : String(p.denominador), mediana === null ? "" : String(mediana), c.ref ? String(c.ref.n) : "", ...cauda,
+  ];
   return [...c.incluidas.map((i) => linha(i.cap, i.ponto, true)), ...c.excluidas.map((x) => linha(x.cap, x.ponto, false))];
+}
+
+export const CABECALHO_CSV_SERIE = ["Capital ou conjunto", "UF", "Medida", "Período", "Valor (texto formatado)", "Valor numérico (ponto decimal)", "Unidade", "Estado do dado", "Na comparação", "Marca de base do denominador (anos consecutivos só são comparáveis com a mesma marca)", "Nota", "Mediana das capitais no período", "Capitais na mediana", ...CAUDA_META];
+
+/** Série mostrada na visão Evolução: um ano por linha, com a marca de base e a mediana do grupo no mesmo ano. */
+export function linhasCsvSerie(ix: IndiceSaude, m: MedidaSaude, o: Opcoes, cap: CapitalPainel | null, regiao: string | null, periodoDe: (ano: number) => string): string[][] {
+  const cauda = caudaMeta(ix, m);
+  const medianas = serieDaMediana(ix, m, o, regiao);
+  const porAno = new Map(medianas.map((x) => [x.ano, x]));
+  const nome = cap ? cap.nome : regiao ? `Mediana das capitais da região ${ix.d.regioes[regiao] ?? regiao}` : "Mediana das 26 capitais na comparação";
+  const pontos = cap
+    ? serie(ix, m, cap.cod, o)
+    : medianas.map((x) => ({ ano: x.ano, valor: x.valor, status: (x.valor === null ? "AUSENTE_NA_COLETA" : "OBSERVADO") as StatusDado, nota: null, notaMaterial: false, participacao: null, elegivel: x.valor !== null, situacao: null, motivo: null, quebraSerie: x.quebraSerie }));
+  return pontos.map((p) => {
+    const x = porAno.get(p.ano);
+    return [
+      nome, cap?.uf ?? "", m.rotulo, periodoDe(p.ano), p.valor === null ? "" : m.formata(p.valor), p.valor === null ? "" : String(p.valor), m.unidade(o.moeda), ROTULO_ESTADO[p.status], p.elegivel ? "sim" : "não",
+      p.quebraSerie ? "sim" : "nao", p.nota ?? "", x?.valor === null || x === undefined ? "" : String(x.valor), x ? String(x.n) : "", ...cauda,
+    ];
+  });
+}
+
+const POR_POPULACAO_DO_EXERCICIO: MedidaSaudeId[] = ["despesa_hab", "ubs_10mil", "esf_10mil", "eap_10mil"];
+
+/**
+ * Aviso único sobre o período escolhido: base da população do denominador nas medidas por habitante e a regra de cálculo e a base da população de referência
+ * na cobertura potencial. Texto curto, sempre visível, no lugar de ressalvas repetidas em blocos recolhidos.
+ */
+export function avisoDoPeriodo(m: MedidaSaude, ano: number, o: Opcoes, d: DadosSaude): string | null {
+  if (m.id === "cobertura_aps") {
+    if (ano === 2021) return "Dezembro de 2021 segue regra anterior de equipes e de cadastro e não reproduz a fórmula da Nota Técnica nº 2/2025: os valores oficiais ficam à vista, fora das medianas e das comparações.";
+    if (ano === 2022) return "A população de referência de dezembro de 2022 é anterior ao Censo 2022; de dezembro de 2023 em diante a base é outra. A variação entre 2022 e 2023 não mede só a cobertura.";
+    return null;
+  }
+  const porPopulacao = POR_POPULACAO_DO_EXERCICIO.includes(m.id) || (m.id === "icsap_taxa" && o.denominador === "obee");
+  const base = d.basePopulacional[ano];
+  if (!porPopulacao || !base) return null;
+  return `População de ${ano}: ${base}. Dois exercícios vizinhos só têm variação por habitante comparável quando a base é a mesma; a visão Evolução interrompe a linha onde a base muda.`;
+}
+
+/** Quantas capitais têm a mesma população nos dois denominadores do ICSAP no ano: quando todas, alternar o denominador não muda nada. */
+export function denominadoresIcsapIguais(ix: IndiceSaude, ano: number): { iguais: number; total: number } {
+  let iguais = 0;
+  let total = 0;
+  for (const c of ix.d.capitais) {
+    const a = ix.ponto("sau.icsap.taxa", c.cod, ano, "ripsa");
+    const b = ix.ponto("sau.icsap.taxa", c.cod, ano, "populacao_ibge_obee");
+    if (a.valor === null || b.valor === null) continue;
+    total++;
+    if (a.valor === b.valor) iguais++;
+  }
+  return { iguais, total };
 }
 
 export function medida(id: MedidaSaudeId): MedidaSaude {

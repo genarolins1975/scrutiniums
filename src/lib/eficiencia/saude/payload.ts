@@ -24,6 +24,10 @@ export type DadosSaude = {
   externas: ReferenciaExternaSaude[];
   fichas: (FichaExibivel & { motivo_nao_publicacao?: string[] })[];
   rotulos: { subfuncoes: Record<string, string>; natureza: Record<string, string>; fontes: Record<string, string>; grupos: Record<string, string>; equipes: Record<string, string>; ubs: Record<string, string> };
+  /** fontes citadas pelas fichas: nome legível, endereço e data da última captura (para as exportações, que precisam servir fora do site) */
+  fontes: Record<string, { nome: string; url: string; capturado_em: string }>;
+  /** base da população do exercício (estimativa anterior ao Censo, Censo 2022, estimativa posterior), por ano */
+  basePopulacional: Record<number, string>;
   meta: { gerado_em: string; dados_capturados_ate: string; hash_dados: string; versao_catalogo: string };
 };
 

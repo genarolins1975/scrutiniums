@@ -4,7 +4,7 @@
 
 ```
 fonte oficial → seed (recorte + manifesto: URL, data, sha256) → padroniza.py (observação tipada) → derivados.py
-             → validacoes.py (S01 a S16, M01 a M04) → gold.py (JSON + CSVs) → promove (atômico) → interface
+             → validacoes.py (S01 a S16, M01 a M05) → gold.py (JSON + CSVs) → promove (atômico) → interface
 ```
 
 | Etapa | Arquivo | Regra |
@@ -14,9 +14,9 @@ fonte oficial → seed (recorte + manifesto: URL, data, sha256) → padroniza.py
 | Conferência da despesa | `conferencia.py` | Política 1.2 de Educação aplicada à função 10: DCA × RREO 02 e, na diferença material, MSC de dezembro (saldo líquido C menos D; modalidade 91 é intraorçamentária) |
 | Padronização | `padroniza.py` | Observação tipada: indicador, ente, ano, componente, valor, status, nota, elegibilidade, registro de origem e cálculo (numerador e denominador). Ausência nunca vira zero |
 | Derivados | `derivados.py` | Natureza (pessoal, outras correntes, capital) só se a soma reproduz a DCA com tolerância de R$ 1,00 |
-| Validações | `validacoes.py` | 16 automáticas e 4 medições. Uma reprovada impede a promoção |
-| Referências | `pipeline.eficiencia.referencias` (compartilhado) e `referencias_externas.py` | Mediana, média, quartis e razão agregada calculados no pipeline sobre as observações elegíveis, por grupo (todas e regiões). Mínimo legal de 15% e referência nacional com fonte e data |
-| Gold e séries | `gold.py` | `public/eficiencia/gold/saude_capitais.json` (5,9 MB) e 25 CSVs `sau_*` e `saude_*` em `public/eficiencia/series/` |
+| Validações | `validacoes.py` | 16 automáticas e 5 medições. Uma reprovada impede a promoção |
+| Referências | `pipeline.eficiencia.referencias` (compartilhado) e `referencias_externas.py` | Mediana, média, quartis e razão agregada calculados no pipeline sobre as observações elegíveis, por grupo (todas e regiões). A razão agregada sai na unidade do indicador (fator por 10 mil, por 100 mil ou em %), registrado em cada linha. Mínimo legal de 15% e referência nacional com fonte e data |
+| Gold e séries | `gold.py` | `public/eficiencia/gold/saude_capitais.json` (6,2 MB) e 24 arquivos `sau_*` e `saude_*` em `public/eficiencia/series/` (23 CSV e o manifesto das capturas em JSON), com fonte legível, endereço e data de captura em cada linha |
 | Promoção | `gold.promove` | Gera tudo numa área de trabalho e só substitui a saída pública sem validação reprovada; em falha, grava diagnóstico e mantém a última versão válida |
 
 Estados de dado (`OBSERVADO`, `NAO_APLICAVEL`, `NAO_DIVULGADO`, `AUSENTE_NA_COLETA`, `INCONSISTENTE` e outros) são os de Educação (`base.STATUS`). Elegibilidade para comparação é um campo separado do estado: a observação pode ter valor oficial e estar fora das medianas.

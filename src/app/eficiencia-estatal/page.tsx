@@ -40,7 +40,7 @@ export default function PaginaEntradaEficiencia() {
       titulo: "Saúde nas capitais",
       pergunta: "Quanto as capitais aplicam em Saúde, que estrutura e atendimento são registrados e quais resultados são observados entre seus moradores?",
       escopo: "Três perímetros separados nas 26 capitais: recursos executados pelo município (despesa, ASPS, fonte de recursos), serviços localizados no território (UBS, equipes e cobertura da atenção primária) e resultados por residência (internações por condições sensíveis à atenção primária).",
-      naoInclui: "Gasto de União e estado no território; rede privada e filantrópica; produção da atenção primária, profissionais, filas e custo por atendimento (avaliados e não publicados, com o motivo).",
+      naoInclui: "Gasto de União e estado no território; rede privada e filantrópica; produção da atenção primária, profissionais e custo por atendimento (avaliados e não publicados, com o motivo); filas e tempo de espera (não pesquisados nesta rodada).",
       entradas: [
         { href: "/eficiencia-estatal/saude-capitais", rotulo: "Panorama" },
         { href: "/eficiencia-estatal/saude-capitais/gastos", rotulo: "Gastos" },

@@ -318,9 +318,15 @@ export function MiniSerie({
           )}
           {segsRef.length > 0 && (
             <li>
-              <span aria-hidden="true">┄</span> Linha tracejada: {rotuloReferencia.toLowerCase()} em cada ano. O número de capitais na comparação pode mudar de um ano para outro (de{" "}
-              {Math.min(...(referencia ?? []).filter((r) => r.valor !== null).map((r) => r.n))} a {Math.max(...(referencia ?? []).filter((r) => r.valor !== null).map((r) => r.n))}); a variação da linha
-              não é a evolução de um grupo constante.
+              <span aria-hidden="true">┄</span> Linha tracejada: {rotuloReferencia.toLowerCase()} em cada ano.
+              {(() => {
+                const ns = (referencia ?? []).filter((r) => r.valor !== null).map((r) => r.n);
+                const min = Math.min(...ns);
+                const max = Math.max(...ns);
+                return min === max
+                  ? ` Em todos os anos a mediana usa as mesmas ${max} capitais.`
+                  : ` O número de capitais na comparação muda de um ano para outro (de ${min} a ${max}); a variação da linha não é a evolução de um grupo constante.`;
+              })()}
             </li>
           )}
           {pontos

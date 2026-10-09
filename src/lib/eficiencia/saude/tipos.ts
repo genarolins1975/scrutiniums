@@ -43,6 +43,7 @@ export type ObservacaoSaude = {
   ano_base_populacao_ms?: string;
   origem_populacao_ms?: string | null;
   tipo_populacao?: string | null;
+  base_populacional?: string | null;
   data_referencia?: string | null;
 };
 

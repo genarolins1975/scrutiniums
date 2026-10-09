@@ -89,6 +89,18 @@ def classifica(dca, r, m):
         if isinstance(c.get(k), str):
             c[k] = c[k].replace("função Educação", "função Saúde").replace("da Educação", "da Saúde").replace("função 12", "função 10")
     c["evidencias"] = [e.replace("função 12", "função 10") for e in c.get("evidencias", [])]
+    if c.get("situacao") == "PENDENTE" and m is not None and r and r.get("exceto_intra") is not None and isinstance(c.get("explicacao"), str):
+        sem_intra = round(m["liquidado_total"] - m["intra_mod91"], 2)
+        com_rreo = abs(sem_intra - r["exceto_intra"]) <= TOL_ARREDONDAMENTO
+        com_dca = abs(sem_intra - dca) <= TOL_ARREDONDAMENTO
+        frase = f" A MSC de dezembro, sem a modalidade 91, soma {brl(sem_intra)}"
+        if com_rreo and not com_dca:
+            frase += ": igual ao RREO e diferente da DCA, que é a única das três fontes com valor distinto. A DCA não foi retificada até a data da captura e o OBEE não a corrige."
+        elif com_dca:
+            frase += ": igual à DCA e diferente do RREO."
+        else:
+            frase += ": diferente da DCA e do RREO, de modo que nenhuma das duas é confirmada."
+        c["explicacao"] = c["explicacao"].replace(" A MSC capturada também não reconcilia.", frase)
     return c
 
 

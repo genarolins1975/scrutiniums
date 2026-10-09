@@ -1,36 +1,66 @@
-coluna,descricao
-indicador_id,Identificador do indicador no catálogo do OBEE.
-indicador,Nome do indicador.
-codigo_ibge,Código do município no IBGE (7 dígitos).
-capital,Nome da capital.
-uf,Sigla da unidade da federação.
-periodo_tipo,"O que a coluna 'ano' representa: exercício financeiro, competência de dezembro, ano de processamento da AIH ou retrato de captura."
-ano,"Ano do exercício, da competência de dezembro, do processamento ou da captura do retrato (2026 marca o retrato de 09/10/2026)."
-componente,"Parte do indicador: base monetária (nominal ou real_2025), categoria (por exemplo, pessoal, ou uma fonte de recursos) ou tipo (por exemplo, esf)."
-valor,Valor numérico com ponto decimal e a precisão da fonte. Vazio quando não há valor observado; vazio nunca significa zero.
-unidade,Unidade do valor.
-base_monetaria,"Base monetária dos valores em reais, quando se aplica."
-universo,O que o indicador cobre e o que o numerador e o denominador incluem.
-status,"Estado do dado: OBSERVADO, AUSENTE_NA_COLETA, INCONSISTENTE etc."
-elegivel_comparacao,"'sim' quando o valor entra em medianas, médias e comparações; 'nao' quando há valor oficial mas ele fica fora."
-situacao_conferencia,"Resultado da conferência da despesa entre DCA, RREO e MSC."
-motivo_inelegibilidade,"Por que o valor oficial não entra na comparação, quando é o caso."
-nota,Nota ou ressalva do dado nesta capital e período.
-nota_material,'sim' quando a nota é uma restrição que precisa aparecer junto do dado.
-participacao_pct,"Participação da parte no total, em %, nos indicadores de composição."
-fonte,Fontes combinadas no valor.
-registro,"Registro de origem: documento, conjunto, conta ou coluna de onde o valor foi lido."
-versao_metodologica,Versão metodológica do indicador.
-dados_gerados_em,Data e hora de geração dos dados publicados.
-hash_dados,Hash do conteúdo dos dados publicados; identifica a base exata da linha.
-numerador,"Numerador, nos indicadores em razão."
-denominador,"Denominador, nos indicadores em razão."
-referencia_numerador,Referência de fonte do numerador.
-referencia_denominador,Referência de fonte do denominador.
-tipo_populacao,Tipo da população usada: estimativa de 1º de julho ou população do Censo 2022.
-data_referencia,Data de referência da população.
-quebra_serie,'sim' quando o valor usa base diferente da do ano anterior; a variação entre os dois lados não é comparável.
-minimo_pct,"Mínimo de aplicação em ASPS do município, em % da base, quando o demonstrativo o informa (15% pela LC 141/2012, ou o da lei orgânica quando maior)."
-(leia antes de usar),"Os valores descrevem recursos, estrutura registrada e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. Mediana e média descrevem o grupo de capitais e não são referência de desempenho."
-(perímetros),"Recursos executados pelo município, serviços localizados no território e população residente são perímetros diferentes: um estabelecimento na capital pode não ser municipal, e resultados por residência não são produção da prefeitura."
-(como citar),"Scrutiniums, Observatório Brasileiro de Eficiência Estatal, Saúde nas capitais. Indique dados_gerados_em e hash_dados da linha utilizada."
+arquivo,coluna,descricao
+sau_*.csv (um por indicador),indicador_id,Identificador do indicador no catálogo do OBEE.
+sau_*.csv (um por indicador),indicador,Nome do indicador.
+sau_*.csv (um por indicador),codigo_ibge,Código do município no IBGE (7 dígitos).
+sau_*.csv (um por indicador),capital,Nome da capital.
+sau_*.csv (um por indicador),uf,Sigla da unidade da federação.
+sau_*.csv (um por indicador),periodo_tipo,"O que a coluna 'ano' representa: exercício financeiro, competência de dezembro, ano de processamento da AIH ou retrato de captura."
+sau_*.csv (um por indicador),ano,"Ano do exercício, da competência de dezembro, do processamento ou da captura do retrato (2026 marca o retrato de 09/10/2026)."
+sau_*.csv (um por indicador),componente,"Parte do indicador: base monetária (nominal ou real_2025), categoria (por exemplo, pessoal, ou uma fonte de recursos) ou tipo (por exemplo, esf)."
+sau_*.csv (um por indicador),valor,Valor numérico com ponto decimal e a precisão da fonte. Vazio quando não há valor observado; vazio nunca significa zero.
+sau_*.csv (um por indicador),unidade,Unidade do valor.
+sau_*.csv (um por indicador),base_monetaria,"Base monetária dos valores em reais, quando se aplica."
+sau_*.csv (um por indicador),universo,O que o indicador cobre e o que o numerador e o denominador incluem.
+sau_*.csv (um por indicador),status,"Estado do dado: OBSERVADO, AUSENTE_NA_COLETA, INCONSISTENTE etc."
+sau_*.csv (um por indicador),elegivel_comparacao,"'sim' quando o valor entra em medianas, médias e comparações; 'nao' quando há valor oficial mas ele fica fora."
+sau_*.csv (um por indicador),situacao_conferencia,"Resultado da conferência da despesa entre DCA, RREO e MSC."
+sau_*.csv (um por indicador),motivo_inelegibilidade,"Por que o valor oficial não entra na comparação, quando é o caso."
+sau_*.csv (um por indicador),nota,Nota ou ressalva do dado nesta capital e período.
+sau_*.csv (um por indicador),nota_material,'sim' quando a nota é uma restrição que precisa aparecer junto do dado.
+sau_*.csv (um por indicador),participacao_pct,"Participação da parte no total, em %, nos indicadores de composição."
+sau_*.csv (um por indicador),fonte,Fontes combinadas no valor: instituição e conjunto de dados.
+sau_*.csv (um por indicador),fonte_url,Endereço da página ou do serviço de cada fonte (separados por espaço).
+sau_*.csv (um por indicador),data_captura,Data da captura mais recente das fontes do valor (AAAA-MM-DD).
+sau_*.csv (um por indicador),registro,"Registro de origem: documento, conjunto, conta ou coluna de onde o valor foi lido."
+sau_*.csv (um por indicador),versao_metodologica,Versão metodológica do indicador.
+sau_*.csv (um por indicador),dados_gerados_em,Data e hora de geração dos dados publicados.
+sau_*.csv (um por indicador),hash_dados,Hash do conteúdo dos dados publicados; identifica a base exata da linha.
+sau_*.csv (um por indicador),numerador,"Numerador, nos indicadores em razão."
+sau_*.csv (um por indicador),denominador,"Denominador, nos indicadores em razão."
+sau_*.csv (um por indicador),referencia_numerador,Referência de fonte do numerador.
+sau_*.csv (um por indicador),referencia_denominador,Referência de fonte do denominador.
+sau_*.csv (um por indicador),tipo_populacao,Tipo da população usada: estimativa de 1º de julho ou população do Censo 2022.
+sau_*.csv (um por indicador),base_populacional,"Base da população do denominador: estimativa anterior ao Censo 2022, Censo 2022 (2022 e 2023, mesma população) ou estimativa posterior ao Censo 2022. Variação entre exercícios de bases diferentes mistura a mudança do denominador."
+sau_*.csv (um por indicador),data_referencia,Data de referência da população.
+sau_*.csv (um por indicador),quebra_serie,"Marca a base do denominador: dois exercícios consecutivos só têm variação comparável quando a marca é a mesma (sim e sim, ou nao e nao). Marcas diferentes indicam mudança de base populacional ou de método entre os dois."
+sau_*.csv (um por indicador),minimo_pct,"Mínimo de aplicação em ASPS do município, em % da base, quando o demonstrativo o informa (15% pela LC 141/2012, ou o da lei orgânica quando maior)."
+saude_referencias_capitais.csv,indicador_id,Identificador do indicador no catálogo do OBEE.
+saude_referencias_capitais.csv,indicador,Nome do indicador.
+saude_referencias_capitais.csv,componente,"Parte do indicador (base monetária, categoria ou tipo), quando houver."
+saude_referencias_capitais.csv,ano,"Ano do exercício, da competência de dezembro ou do processamento, conforme o indicador."
+saude_referencias_capitais.csv,grupo,"Grupo de capitais: todas ou a região (N, NE, SE, S, CO)."
+saude_referencias_capitais.csv,capitais_no_grupo,Número de capitais do grupo.
+saude_referencias_capitais.csv,capitais_com_valor,"Capitais do grupo com valor observado, elegível ou não."
+saude_referencias_capitais.csv,capitais_na_comparacao,Capitais com valor observado e elegível: as que entram nas estatísticas da linha.
+saude_referencias_capitais.csv,media_simples,Média aritmética simples das capitais na comparação; cada capital pesa igual.
+saude_referencias_capitais.csv,mediana,Valor central das capitais na comparação.
+saude_referencias_capitais.csv,minimo,Menor valor das capitais na comparação.
+saude_referencias_capitais.csv,capitais_do_minimo,"Capitais com o menor valor (todas, em caso de empate)."
+saude_referencias_capitais.csv,maximo,Maior valor das capitais na comparação.
+saude_referencias_capitais.csv,capitais_do_maximo,"Capitais com o maior valor (todas, em caso de empate)."
+saude_referencias_capitais.csv,primeiro_quartil,"Primeiro quartil (interpolação linear, tipo 7)."
+saude_referencias_capitais.csv,terceiro_quartil,"Terceiro quartil (interpolação linear, tipo 7)."
+saude_referencias_capitais.csv,quartis_exibidos,"'sim' quando o grupo tem 8 capitais ou mais e a interface mostra a faixa entre quartis; política de apresentação, não garantia estatística."
+saude_referencias_capitais.csv,soma_numerador,"Soma dos numeradores das capitais na comparação, na unidade do numerador (vazio quando o indicador não é razão)."
+saude_referencias_capitais.csv,soma_denominador,"Soma dos denominadores das capitais na comparação, na unidade do denominador."
+saude_referencias_capitais.csv,fator_razao,"Fator da unidade do indicador aplicado à razão agregada: 1 (R$ por habitante), 10000 (por 10 mil habitantes), 100000 (por 100 mil habitantes) ou 100 (em %)."
+saude_referencias_capitais.csv,razao_agregada,"Soma do numerador ÷ soma do denominador × fator_razao, na unidade do indicador; pesa cada capital pelo seu denominador. Não é a média das capitais."
+saude_referencias_capitais.csv,pares_codigos_ibge,"Códigos IBGE das capitais na comparação, separados por espaço."
+saude_referencias_capitais.csv,politica_versao,Versão da política de referências.
+saude_referencias_capitais.csv,versao_metodologica,Versão metodológica do indicador.
+saude_referencias_capitais.csv,dados_gerados_em,Data e hora de geração dos dados publicados.
+saude_referencias_capitais.csv,hash_dados,Hash do conteúdo dos dados publicados; identifica a base exata da linha.
+,(números),Valores decimais usam ponto e têm até 8 casas; a precisão original do cálculo é preservada na gold.
+,(leia antes de usar),"Os valores descrevem recursos, estrutura registrada e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. Mediana e média descrevem o grupo de capitais e não são referência de desempenho."
+,(perímetros),"Recursos executados pelo município, serviços localizados no território e população residente são perímetros diferentes: um estabelecimento na capital pode não ser municipal, e resultados por residência não são produção da prefeitura."
+,(como citar),"Scrutiniums, Observatório Brasileiro de Eficiência Estatal, Saúde nas capitais. Indique dados_gerados_em e hash_dados da linha utilizada."

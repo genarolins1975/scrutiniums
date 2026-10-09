@@ -39,7 +39,7 @@ MATRIZ = [
     ("F13", "Contexto internacional: gasto nacional em saúde por habitante (OMS, Banco Mundial)", "API do Banco Mundial (indicadores de contas nacionais de saúde)", "Testada em 09/10/2026: respostas intermitentes, sem dado obtido", "Não aplicável", "Não aplicável", NAO,
      "Não obtido nesta rodada. O gasto nacional inclui União, estados, municípios e setor privado, perímetro diferente do gasto municipal: não seria meta nem base para déficit. Fica como expansão."),
     # estrutura e APS
-    ("E01", "UBS ativas de tipo 01 e 02: retrato por natureza, gestão e atendimento SUS", "CNES, arquivo diário do OpenDataSUS (S3)", "HTTP 200, 56 MB, 638.547 linhas; igual à API de dados abertos nas 26 capitais", "26 de 26 (3.180 ativas, 3.052 públicas, 2.895 públicas com SUS)", "Retrato de 09/10/2026", RESSALVA,
+    ("E01", "UBS ativas de tipo 01 e 02: retrato por natureza, gestão e atendimento SUS", "CNES, arquivo diário do OpenDataSUS (S3)", "HTTP 200, 56 MB, 638.547 linhas; a contagem de UBS públicas da competência mais recente da API de dados abertos coincide em 21 das 26 capitais (nas outras cinco as datas de referência diferem; medição M03)", "26 de 26 (3.180 ativas, 3.052 públicas, 2.895 públicas com SUS)", "Retrato de 09/10/2026", RESSALVA,
      "Sem competência nem versão: a data de captura é a única referência. A esfera administrativa do arquivo repete a gestão; público é a natureza jurídica (código iniciado em 1). Gestão não equivale a propriedade."),
     ("E02", "UBS públicas ativas em dezembro, por 10 mil habitantes", "CNES, API de dados abertos (família com competência)", "HTTP 200; uma chamada por estabelecimento (co_cnes com 7 dígitos)", "26 de 26", "Dezembro de 2021 a 2025", RESSALVA,
      "Só acompanha os estabelecimentos que hoje têm tipo 01 ou 02: um estabelecimento reclassificado ou renumerado não entra (viés declarado). A lista de UBS da API não serve de inventário (inclui 493 desabilitadas e omite 172 ativas)."),
@@ -59,7 +59,7 @@ MATRIZ = [
      "As capitais são polo regional e leitos por habitante distorce; avaliação própria numa expansão."),
     # atendimento e resultados
     ("R01", "Internações por condições sensíveis à atenção primária (ICSAP), número e taxa por 100 mil, por residência", "RIPSA MRB.4.02, Portal de Dados Abertos do SUS (S3)", "HTTP 200, 46 MB", "26 de 26 em todos os anos", "2021 a 2024 (2025 não publicado)", RESSALVA,
-     "Residência confirmada; só SUS; AIH tipo 1 sem hospital dia; ano de processamento. Regra verificada por recálculo dos microdados do SIH espelhados por terceiros (nacional dentro de 0,05%; por capital a diferença mediana é de 1% a 2%, acima de 5% em alguns anos em cinco capitais). Sem ficha de qualificação nem histórico de versões."),
+     "Residência confirmada; só SUS; AIH tipo 1 sem hospital dia; ano de processamento. A regra da lista de ICSAP foi conferida na fase de viabilidade contra um espelho de terceiros do SIH; os resultados dessa conferência não estão guardados no repositório e nenhum número publicado depende dela. Os valores publicados reproduzem o arquivo do RIPSA em 104 de 104 pares. Sem ficha de qualificação nem histórico de versões."),
     ("R02", "Participação das ICSAP nas internações SUS por residência", "RIPSA MRB.4.02 e COB.2.01", "HTTP 200", "26 de 26", "2021 a 2024", CONTEXTO,
      "Composição do conjunto de internações, não desempenho."),
     ("R03", "Cobertura de planos de saúde privados", "RIPSA COB.5.01 (base ANS)", "HTTP 200, 27 MB", "26 de 26", "Dezembro de 2021 a 2024", CONTEXTO,
@@ -67,7 +67,7 @@ MATRIZ = [
     ("R04", "ICSAP recalculada do SIH/RD (espelho PySUS) e 2025 provisório", "Espelho de terceiros em Parquet", "1.620 de 1.620 arquivos de 2021 a 2025 responderam 200", "26 de 26", "2021 a 07/2026", CONTEXTO,
      "Usada só como conferência independente: espelho de terceiros hospedado fora do país, sem dicionário oficial. Os 12 meses mais recentes do SIH são provisórios; 2025 não entra."),
     ("R05", "ICSAP por local de internação", "SIH", "Não obtido", "Não aplicável", "Não aplicável", NAO,
-     "Por ocorrência a ICSAP das capitais seria de 1,07 a 2,79 vezes a de residência (2023): o perímetro de residência é o adequado ao leitor."),
+     "A série por local de internação não foi obtida. Em capitais que são polo regional, a ocorrência no município tende a diferir da residência dos moradores; o perímetro de residência é o adequado ao leitor e é o publicado. O módulo não apresenta razão entre os dois perímetros."),
     ("R06", "Produção e atendimentos da APS (atendimentos individuais, procedimentos, visitas)", "Siaps e Sisab", "Consulta pública do Siaps: HTTP 400 sem corpo; Sisab: formulário JSF, sem API; cubos do Siaps na API: uma competência", "Não aplicável", "Não aplicável", NAO,
      "Sem série oficial documentada e estável por município. Atendimentos, procedimentos e pessoas atendidas não se somam como produtividade genérica."),
     ("R07", "Filas e tempo de espera", "Nenhuma comparável", "Não pesquisado nesta rodada", "Não aplicável", "Não aplicável", NAO,

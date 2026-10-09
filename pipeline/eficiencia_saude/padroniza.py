@@ -50,6 +50,12 @@ def despesa():
             eleg = conf["elegivel_comparacao"]
             material = conf["situacao"] in ("RECONCILIADA_MSC", "PENDENTE", "PERIMETRO_INTRA_MSC", "NAO_CONFERIDO")
             nota = None if conf["situacao"] == "CONFERE" else conf["explicacao"]
+            est = {x["coluna"]: float(x["valor"]) for x in linhas if x["conta"] == "10 - Saúde"}
+            if "Despesas Pagas" in est and "Despesas Liquidadas" in est and est["Despesas Pagas"] > est["Despesas Liquidadas"] + 1.0:
+                aviso_estagio = (f"Na DCA desta declaração a despesa paga ({CF.brl(est['Despesas Pagas'])}) é maior que a liquidada ({CF.brl(est['Despesas Liquidadas'])}): a ordem dos estágios "
+                                 "está violada na própria fonte. O módulo usa o valor liquidado e não corrige a fonte.")
+                nota = f"{nota} {aviso_estagio}" if nota else aviso_estagio
+                material = True
             comuns = dict(conferencia=conf, elegivel_comparacao=eleg, nota_material=material)
             obs.append(_obs("sau.despesa.funcao_saude", cod, ano, v, "OBSERVADO", "siconfi_dca_anexo_i_e", reg,
                             componente="nominal", nota=nota, **comuns))
@@ -81,9 +87,30 @@ def despesa():
     return obs
 
 
+BASES_POPULACIONAIS = {
+    "estimativa_pre_censo_2022": ("estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010)", False),
+    "censo": ("Censo 2022, população de 31 de julho de 2022", True),
+    "censo_relacao_dou_2023": ("Censo 2022, população de 31 de julho de 2022 (relação de 2023)", True),
+    "estimativa_pos_censo_2022": ("estimativa de 1º de julho posterior ao Censo 2022", False),
+}
+"""Bases da população do exercício. A marca `quebra_serie` alterna entre bases vizinhas: dois exercícios consecutivos só têm variação por habitante
+comparável quando a marca é a mesma. 2021 (estimativa anterior ao Censo) e 2024 e 2025 (estimativas posteriores) têm a marca falsa; 2022 e 2023 usam
+a mesma população do Censo 2022 e têm a marca verdadeira. Assim, a variação entre 2022 e 2023 é só da despesa, e as passagens 2021 para 2022 e
+2023 para 2024 (duas gerações de população) ficam bloqueadas."""
+
+
 def populacao():
-    """População residente das capitais (IBGE), a mesma de Educação: denominador da despesa por habitante."""
-    return PE.populacao()
+    """População residente das capitais (IBGE), a mesma de Educação, com a base populacional de cada exercício explicitada.
+
+    O valor, o registro e as notas são os de Educação. Só a marca de quebra de série é recalculada aqui, por base (ver BASES_POPULACIONAIS):
+    Educação marca 2021 e 2023 e, por isso, bloqueia também a variação entre 2022 e 2023, que usa a mesma população."""
+    obs = PE.populacao()
+    for o in obs:
+        base_pop = BASES_POPULACIONAIS.get(o.get("tipo_populacao"))
+        if base_pop is None:
+            continue
+        o["base_populacional"], o["quebra_serie"] = base_pop
+    return obs
 
 
 def _conf_resumo(conf):
@@ -118,7 +145,7 @@ def despesa_por_habitante(despesa_obs, pop_obs):
             continue
         notas = [x for x in (d.get("nota"), p.get("nota")) if x]
         eleg = bool(d["elegivel_comparacao"] and p["elegivel_comparacao"])
-        extra = dict(conferencia=_conf_resumo(d["conferencia"]), quebra_serie=bool(p.get("quebra_serie")),
+        extra = dict(conferencia=_conf_resumo(d["conferencia"]), quebra_serie=bool(p.get("quebra_serie")), base_populacional=p.get("base_populacional"),
                      calculo={"numerador": d["valor"], "numerador_ref": "sau.despesa.funcao_saude", "numerador_componente": d["componente"],
                               "denominador": p["valor"], "denominador_ref": "ctx.populacao.residente"})
         obs.append(_obs("sau.despesa.por_habitante", d["ente"], d["ano"], round(v, 6), "OBSERVADO", fonte, reg,
@@ -146,13 +173,23 @@ def despesa_natureza(despesa_obs):
                 obs.append(_obs("sau.despesa.natureza", cod, ano, None, "AUSENTE_NA_COLETA", "siconfi_msc_funcao10", reg, componente=None,
                                 nota="DCA da função 10 ou MSC de dezembro indisponível no seed.", nota_material=True))
                 continue
-            soma, desconhecidos, intra = DV2.liquido_por_categoria(base.le_json_gz(caminho))
+            linhas_msc = base.le_json_gz(caminho)
+            soma, desconhecidos, intra = DV2.liquido_por_categoria(linhas_msc)
+            n_linhas = sum(1 for x in linhas_msc if str(x.get("funcao")) == "10" and str(x.get("conta_contabil", ""))[:7] in CF.MSC_CONTAS_LIQUIDADO)
             total = round(sum(soma.values()), 2)
-            if desconhecidos or not DV2.reconcilia(soma, d["valor"]):
+            if n_linhas == 0:
+                motivo = ("A MSC de dezembro deste ente e exercício não traz linhas da função 10 nas contas de despesa liquidada (nenhum registro): a abertura por natureza "
+                          "não pode ser calculada. Não é um valor zero. A abertura não é publicada para este exercício e nenhuma categoria é estimada.")
+            elif desconhecidos:
+                motivo = (f"A MSC traz linhas da função 10 sem natureza da despesa identificável ({', '.join(desconhecidos)}), de modo que a soma das categorias identificadas "
+                          f"({CF.brl(total)}) não pode ser conferida contra a DCA ({CF.brl(d['valor'])}) com segurança. A abertura por natureza não é publicada "
+                          "para este exercício e nenhuma categoria é estimada.")
+            elif not DV2.reconcilia(soma, d["valor"]):
                 motivo = (f"A MSC aberta por natureza ({CF.brl(total)}, sem modalidade 91) não reproduz a DCA ({CF.brl(d['valor'])}); "
-                          f"diferença de {CF.brl(round(total - d['valor'], 2))}. "
-                          + (f"Linhas sem natureza identificável na MSC: {', '.join(desconhecidos)}. " if desconhecidos else "")
-                          + "A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.")
+                          f"diferença de {CF.brl(round(total - d['valor'], 2))}. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.")
+            else:
+                motivo = None
+            if motivo:
                 for cat, rotulo, _ in DV2.CATEGORIAS:
                     obs.append(_obs("sau.despesa.natureza", cod, ano, None, "INCONSISTENTE", "siconfi_msc_funcao10", reg, componente=cat,
                                     nota=motivo, nota_material=True))
@@ -321,6 +358,10 @@ PARAM_ESF, PARAM_EAP20, PARAM_EAP30 = 3500, 1750, 2625
 ANO_INICIO_REGRA_VIGENTE = 2022
 """A fórmula da NT 2/2025 reproduz todas as linhas do serviço de 01/2022 em diante; em 2021 o serviço segue regra anterior de eAP e de
 cadastro (292 de 312 linhas divergem), então a cobertura de 2021 fica fora das comparações e das variações."""
+ANO_BASE_POPULACAO_PRE_CENSO = 2021
+"""Último ano base da população de referência do Ministério anterior ao Censo 2022 (estimativas calculadas a partir do Censo de 2010):
+dezembro de 2021 e de 2022 usam essa base; de dezembro de 2023 em diante a população de referência é a do Censo 2022 e das estimativas posteriores.
+Por isso a cobertura de dezembro de 2022 e a de 2023 não são comparáveis como variação."""
 
 
 def _seed_aps(cod):
@@ -366,7 +407,7 @@ def aps(pop_obs):
                 for comp_id, num in (("esf", esf), ("eap", eap)):
                     obs.append(_obs("sau.aps.equipes_por_10mil", cod, ano, round(num / p["valor"] * 10000, 6), "OBSERVADO",
                                     "relatorio_aps_cobertura+ibge_populacao", reg + "; população: " + p["registro"], componente=comp_id,
-                                    elegivel_comparacao=True, nota_material=bool(p.get("nota_material")), quebra_serie=bool(p.get("quebra_serie")),
+                                    elegivel_comparacao=True, nota_material=bool(p.get("nota_material")), quebra_serie=bool(p.get("quebra_serie")), base_populacional=p.get("base_populacional"),
                                     nota=p.get("nota") if p.get("nota_material") else None,
                                     calculo={"numerador": num, "denominador": p["valor"], "numerador_ref": "sau.aps.equipes", "denominador_ref": "ctx.populacao.residente",
                                              "numerador_componente": "esf" if comp_id == "esf" else "eap20+eap30"}))
@@ -376,6 +417,7 @@ def aps(pop_obs):
             cap_formula = l["qtEsf"] * PARAM_ESF + l["qtEap20"] * PARAM_EAP20 + l["qtEap30"] * PARAM_EAP30 + l["qtCadastroEquipeEsfrEcrEapp"]
             confere = abs(cap_formula - l["qtCapacidadeEquipe"]) <= 1 and l["qtPopulacao"] > 0 and abs(l["qtCapacidadeEquipe"] / l["qtPopulacao"] * 100 - l["qtCobertura"]) <= 0.01
             antes_regra = ano < ANO_INICIO_REGRA_VIGENTE
+            base_pre_censo = int(l["nuAnoReferencia"]) <= ANO_BASE_POPULACAO_PRE_CENSO
             notas = ["Cobertura Potencial Estimada: capacidade das equipes (eSF × 3.500, eAP 20 h × 1.750, eAP 30 h × 2.625, mais pessoas com cadastro vinculado de eCR, "
                      "eSFR e eAPP) dividida pela população que o Ministério adota (a do ano anterior ao da competência). Não é cadastro, atendimento nem pessoas "
                      "atendidas, e o serviço não limita o valor a 100%."]
@@ -383,13 +425,18 @@ def aps(pop_obs):
                 notas.append(f"Capacidade acima da população de referência ({l['qtCobertura']:.2f}%)".replace(".", ",") + ": o valor oficial passa de 100% e não é truncado.")
             if antes_regra:
                 notas.append("Dezembro de 2021 segue regra anterior de equipes e de cadastro e não reproduz a fórmula da Nota Técnica nº 2/2025: fora das comparações e das variações.")
+            if base_pre_censo and not antes_regra:
+                notas.append("A população de referência do Ministério neste mês é estimativa anterior ao Censo 2022 (ano base " + str(l["nuAnoReferencia"]) + "); de dezembro de 2023 em diante a base é outra "
+                             "(Censo 2022 e estimativas posteriores). A variação entre esse mês e os seguintes mistura a mudança do denominador e não é uma medida direta da cobertura.")
             if not confere and not antes_regra:
                 obs.append(_obs("sau.aps.cobertura_potencial", cod, ano, None, "INCONSISTENTE", "relatorio_aps_cobertura", reg, nota_material=True,
                                 nota="A capacidade informada não reproduz a fórmula da Nota Técnica nº 2/2025 ou a cobertura informada não é capacidade ÷ população."))
                 continue
             obs.append(_obs("sau.aps.cobertura_potencial", cod, ano, float(l["qtCobertura"]), "OBSERVADO", "relatorio_aps_cobertura", reg,
-                            elegivel_comparacao=not antes_regra, nota_material=True, nota=" ".join(notas), quebra_serie=antes_regra,
+                            elegivel_comparacao=not antes_regra, nota_material=True, nota=" ".join(notas), quebra_serie=antes_regra or base_pre_censo,
                             populacao_referencia_ms=int(l["qtPopulacao"]), ano_base_populacao_ms=l["nuAnoReferencia"], origem_populacao_ms=l.get("tpOrigemBasePopulacao"),
+                            base_populacional=("população de referência do Ministério: estimativa anterior ao Censo 2022 (ano base " + str(l["nuAnoReferencia"]) + ")") if base_pre_censo
+                            else ("população de referência do Ministério: Censo 2022 e estimativas posteriores (ano base " + str(l["nuAnoReferencia"]) + ")"),
                             calculo={"numerador": float(l["qtCapacidadeEquipe"]), "denominador": float(l["qtPopulacao"]), "numerador_ref": "capacidade das equipes (Relatório APS)",
                                      "denominador_ref": "população de referência do Ministério da Saúde"}))
     return obs
@@ -473,8 +520,9 @@ def icsap(pop_obs):
             if p is not None and p["status"] == "OBSERVADO" and p["valor"]:
                 obs.append(_obs("sau.icsap.taxa", cod, ano, round(total / p["valor"] * 100000, 6), "OBSERVADO", fonte + "+ibge_populacao", reg + "; população: " + p["registro"],
                                 componente="populacao_ibge_obee", nota=("Sensibilidade: a mesma contagem dividida pela população residente do exercício usada nos demais indicadores por habitante do OBEE "
-                                                                         "(IBGE). Difere da taxa principal porque os denominadores diferem. " + RESSALVA_ICSAP),
-                                elegivel_comparacao=elegivel, nota_material=True, quebra_serie=bool(p.get("quebra_serie")),
+                                                                         "(IBGE). " + ("Nesta capital e neste ano a população do RIPSA e a do IBGE coincidem, e as duas taxas são iguais. " if pop_r == p["valor"]
+                                                                                       else "Difere da taxa principal porque as populações diferem. ") + RESSALVA_ICSAP),
+                                elegivel_comparacao=elegivel, nota_material=True, quebra_serie=bool(p.get("quebra_serie")), base_populacional=p.get("base_populacional"),
                                 calculo={"numerador": total, "denominador": p["valor"], "numerador_ref": "sau.icsap.internacoes", "denominador_ref": "ctx.populacao.residente"}))
             else:
                 obs.append(_obs("sau.icsap.taxa", cod, ano, None, "AUSENTE_NA_COLETA", "ibge_populacao", reg, componente="populacao_ibge_obee", nota="População do exercício indisponível.", nota_material=True))
@@ -580,7 +628,7 @@ def rede_serie(pop_obs):
             if p is not None and p["status"] == "OBSERVADO" and p["valor"]:
                 obs.append(_obs("sau.rede.ubs_publicas_por_10mil", cod, ano, round(c["publicas"] / p["valor"] * 10000, 6), "OBSERVADO",
                                 "cnes_historico_estabelecimentos+ibge_populacao", reg + "; população: " + p["registro"], componente="publicas",
-                                nota=RESSALVA_UBS + RESSALVA_UBS_SERIE, elegivel_comparacao=True, nota_material=True, quebra_serie=bool(p.get("quebra_serie")),
+                                nota=RESSALVA_UBS + RESSALVA_UBS_SERIE, elegivel_comparacao=True, nota_material=True, quebra_serie=bool(p.get("quebra_serie")), base_populacional=p.get("base_populacional"),
                                 calculo={"numerador": c["publicas"], "denominador": p["valor"], "numerador_ref": "sau.rede.ubs_publicas", "denominador_ref": "ctx.populacao.residente",
                                          "numerador_componente": "publicas"}))
             else:
@@ -601,7 +649,7 @@ def rede_retrato():
         if cod is None or r["CO_MOTIVO_DESAB"]:
             continue
         c = por_cap.setdefault(cod, {k: 0 for k in ("tp01", "tp02", "total_ativas", "publicas", "publicas_sus", "nao_publicas", "gestao_municipal",
-                                                     "gestao_estadual", "gestao_dupla", "tp15", "tp32", "tp40", "tp71", "tp74")})
+                                                     "gestao_municipal_nao_publica", "gestao_estadual", "gestao_dupla", "tp15", "tp32", "tp40", "tp71", "tp74")})
         tp = r["TP_UNIDADE"]
         if tp in TIPOS_CONTEXTO:
             c["tp" + tp] += 1
@@ -617,6 +665,8 @@ def rede_retrato():
         g = {"M": "gestao_municipal", "E": "gestao_estadual", "D": "gestao_dupla"}.get(r["TP_GESTAO"])
         if g:
             c[g] += 1
+        if g == "gestao_municipal" and not publico:
+            c["gestao_municipal_nao_publica"] += 1
     reg = "CNES, retrato do arquivo cnes_estabelecimentos_csv.zip do OpenDataSUS, capturado em 09/10/2026"
     for cod, nome, uf in entes.CAPITAIS:
         c = por_cap.get(cod)

@@ -98,7 +98,7 @@ export function Alternancia<T extends string>({
           <label
             key={o.v}
             className={`relative inline-flex min-h-[44px] cursor-pointer items-center px-3 text-sm focus-within:outline focus-within:outline-2 focus-within:outline-obee ${
-              valor === o.v ? "bg-obee-fundo font-semibold text-obee-tinta" : "text-carvao-muted hover:text-obee-tinta"
+              valor === o.v ? "bg-obee-fundo font-semibold text-obee-tinta shadow-[inset_0_-3px_0_0_currentColor]" : "text-carvao-muted hover:text-obee-tinta"
             }`}
           >
             <input type="radio" className="sr-only" name={rotulo} value={o.v} checked={valor === o.v} onChange={() => aoMudar(o.v)} />

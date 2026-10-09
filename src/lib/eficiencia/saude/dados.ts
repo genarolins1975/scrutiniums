@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { GRUPOS_REF, type CapitalSaude, type DadosSaude, type ObsC, type RefC } from "./payload";
+import { ROTULO_FONTE } from "./rotulos";
 import type { GoldSaude, StatusDado } from "./tipos";
 
 export { GRUPOS_REF };
@@ -119,6 +120,16 @@ export function dadosSaude(g: GoldSaude, pagina: keyof typeof INDICADORES_DA_PAG
     externas: g.referencias_externas.filter((e) => incluidos.has(e.indicador)),
     fichas: g.indicadores.filter((f) => incluidos.has(f.id)),
     rotulos: { subfuncoes: g.subfuncoes, natureza: g.categorias_natureza, fontes: g.fontes_recurso, grupos: g.grupos_icsap, equipes: g.tipos_equipe, ubs: g.componentes_ubs },
+    basePopulacional: Object.fromEntries(
+      g.observacoes.filter((o) => o.indicador === "ctx.populacao.residente" && o.base_populacional).map((o) => [o.ano, o.base_populacional as string]),
+    ),
+    fontes: Object.fromEntries(
+      g.fontes.map((f) => {
+        const caps = f.capturas;
+        const datas = caps.map((c) => c.capturado_em).filter((d): d is string => !!d).sort();
+        return [f.id, { nome: ROTULO_FONTE[f.id] ?? f.id, url: caps[0]?.url ?? caps[0]?.pagina ?? "", capturado_em: datas.length ? datas[datas.length - 1].slice(0, 10) : "" }];
+      }),
+    ),
     meta: { gerado_em: g.meta.gerado_em, dados_capturados_ate: g.meta.dados_capturados_ate, hash_dados: g.meta.hash_dados, versao_catalogo: g.meta.versao_catalogo },
   };
 }

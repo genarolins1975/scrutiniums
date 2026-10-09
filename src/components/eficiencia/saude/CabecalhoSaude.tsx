@@ -13,10 +13,11 @@ export function CabecalhoSaude() {
           <span className="hidden font-serif text-base uppercase tracking-wide2 text-carvao sm:inline">Scrutiniums</span>
         </Link>
         <span aria-hidden="true" className="h-5 w-px bg-linha" />
-        <p className="text-sm text-carvao-muted">
+        <p className="min-w-0 text-sm text-carvao-muted">
           <span aria-hidden="true" className="mr-2 inline-block h-2 w-2 bg-obee align-middle" />
           <Link href={ROTA_ENTRADA} className="inline-flex min-h-[44px] items-center underline-offset-4 hover:underline">
-            Observatório Brasileiro de Eficiência Estatal
+            <span className="sm:hidden">Eficiência Estatal</span>
+            <span className="hidden sm:inline">Observatório Brasileiro de Eficiência Estatal</span>
           </Link>
           <span aria-hidden="true" className="mx-2">
             /

@@ -40,7 +40,7 @@ export function NavegacaoSaude() {
         <ul className="grid grid-cols-4 sm:flex sm:gap-1">
           {ABAS_SAUDE.map((a) => (
             <li key={a.id} className="min-w-0">
-              <Link href={hrefSaude(a.caminho, params)} aria-current={atual(a.caminho) ? "page" : undefined} className={classeAba(atual(a.caminho))}>
+              <Link prefetch={false} href={hrefSaude(a.caminho, params)} aria-current={atual(a.caminho) ? "page" : undefined} className={classeAba(atual(a.caminho))}>
                 {a.rotulo}
               </Link>
             </li>
@@ -48,12 +48,12 @@ export function NavegacaoSaude() {
         </ul>
         <ul className="flex flex-wrap gap-x-5 border-t border-linha sm:border-t-0">
           <li>
-            <Link href={hrefSaude(CAMINHO_COMPARAR, params)} aria-current={atual(CAMINHO_COMPARAR) ? "page" : undefined} className={classeAcao(atual(CAMINHO_COMPARAR))}>
+            <Link prefetch={false} href={hrefSaude(CAMINHO_COMPARAR, params)} aria-current={atual(CAMINHO_COMPARAR) ? "page" : undefined} className={classeAcao(atual(CAMINHO_COMPARAR))}>
               Comparar capitais <span aria-hidden="true">→</span>
             </Link>
           </li>
           <li>
-            <Link href={hrefSaude(CAMINHO_METODOS)} aria-current={atual(CAMINHO_METODOS) ? "page" : undefined} className={classeAcao(atual(CAMINHO_METODOS))}>
+            <Link prefetch={false} href={hrefSaude(CAMINHO_METODOS)} aria-current={atual(CAMINHO_METODOS) ? "page" : undefined} className={classeAcao(atual(CAMINHO_METODOS))}>
               Dados e métodos
             </Link>
           </li>

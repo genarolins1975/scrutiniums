@@ -1,18 +1,19 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { inteiro } from "@/lib/eficiencia/formato";
-import { CABECALHO_CSV_COMPARACAO, IndiceSaude, ROTULO_ESTADO, anosDaMedida, comparar, componenteDe, csv, linhasCsvComparacao, serie, type Ponto } from "@/lib/eficiencia/saude/consulta";
-import { QUANDO } from "@/lib/eficiencia/saude/frases";
+import { CABECALHO_CSV_COMPARACAO, denominadoresIcsapIguais, IndiceSaude, RESSALVA_CSV, ROTULO_ESTADO, anosDaMedida, avisoDoPeriodo, comparar, componenteDe, csv, linhasCsvComparacao, metaCsv, serie, type Ponto } from "@/lib/eficiencia/saude/consulta";
+import { fraseDiferenca, posicaoNaMediana } from "@/lib/eficiencia/saude/frases";
 import type { DadosSaude } from "@/lib/eficiencia/saude/payload";
-import { MEDIDAS_ORDEM, MEDIDAS_SAUDE, ROTULO_PERIODO, TEMAS_SAUDE, type MedidaSaudeId, type Moeda } from "@/lib/eficiencia/saude/medidas";
+import { MEDIDAS_ORDEM, MEDIDAS_SAUDE, ROTULO_PERIODO, TEMAS_SAUDE, periodoCurto, type MedidaSaudeId, type Moeda } from "@/lib/eficiencia/saude/medidas";
+import { CAMINHO_METODOS, hrefSaude } from "@/lib/eficiencia/saude/rotas";
 import type { ContextoFicha } from "../FichaConteudo";
 import { DistribuicaoCapitais } from "../DistribuicaoCapitais";
 import { SobreDadoSaude as SobreEsteDado } from "./SobreDadoSaude";
 import { Alternancia, Selecao } from "../controles";
-import { ForaDaComparacao, Ressalva, SemValor } from "../estados";
+import { Ressalva, SemValor } from "../estados";
+import { AjudaDenominador, AjudaMoeda, AvisoDoPeriodo, ForaDaComparacaoSaude, GlossarioDaPagina, PERIMETRO_DO_TEMA } from "./AvisosSaude";
 import { MiniSerie } from "../graficos";
 
 /**
@@ -58,6 +59,9 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
   const comp = componenteDe(m, o);
   const anos = anosDaMedida(ix, m, o);
   const ano = s.ano && anos.includes(s.ano) ? s.ano : anos[anos.length - 1];
+  useEffect(() => {
+    if (s.ano && !anos.includes(s.ano)) definir({ ano: 0 });
+  }, [s.ano, anos, definir]);
   const A = dados.capitais.find((c) => c.id === s.cap) ?? null;
   const B = dados.capitais.find((c) => c.id === s.vs) ?? null;
   const c = comparar(ix, m, ano, o, "todas", A, "alfabetica");
@@ -76,25 +80,25 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
         <p className="rotulo text-mineral">{cap.nome} ({cap.uf})</p>
         <p className="mt-1 font-serif text-[2rem] leading-none text-obee-tinta">{p.valor === null ? "sem valor" : m.formata(p.valor)}</p>
         <p className="mt-1.5 text-[0.8125rem] leading-snug text-carvao-muted">
-          {periodo} · {dentro && mediana !== null && p.valor !== null ? (p.valor === mediana ? "igual à mediana das capitais" : `${inteiro(Math.round(Math.abs(p.valor / mediana - 1) * 100))}% ${p.valor > mediana ? "acima" : "abaixo"} da mediana das capitais (${m.formata(mediana)})`) : p.valor !== null ? "valor oficial fora da comparação" : ROTULO_ESTADO[p.status].toLowerCase()}
+          {periodo} · {dentro && mediana !== null && p.valor !== null ? posicaoNaMediana(p.valor, mediana, m) : p.valor !== null ? "valor oficial fora da comparação" : ROTULO_ESTADO[p.status].toLowerCase()}
         </p>
         {p.valor === null ? <SemValor ponto={p} /> : <Ressalva ponto={p} />}
       </div>
     );
   };
-  const diferenca = A && B && naComparacao(pa) && naComparacao(pb) && pa!.valor !== null && pb!.valor !== null ? (() => {
-    const d = pa!.valor! - pb!.valor!;
-    const rel = pb!.valor ? Math.abs(pa!.valor! / pb!.valor! - 1) * 100 : null;
-    return `${A.nome} tem ${m.formata(Math.abs(d))} ${d >= 0 ? "a mais" : "a menos"} que ${B.nome} ${QUANDO[m.periodo](ano)}${rel !== null && Number.isFinite(rel) ? ` (${inteiro(Math.round(rel))}% ${d >= 0 ? "maior" : "menor"}, em valor)` : ""}. É diferença descritiva: não classifica as capitais nem explica a causa.`;
-  })() : A && B ? "Pelo menos uma das duas capitais tem o valor fora da comparação ou sem valor neste recorte; os motivos estão em cada cartão." : null;
+  const diferenca = A && B && naComparacao(pa) && naComparacao(pb) && pa!.valor !== null && pb!.valor !== null
+    ? `${fraseDiferenca({ nome: A.nome, valor: pa!.valor! }, { nome: B.nome, valor: pb!.valor! }, m, ano)} É diferença descritiva: não classifica as capitais nem explica a causa.`
+    : A && B ? "Pelo menos uma das duas capitais tem o valor fora da comparação ou sem valor neste recorte; os motivos estão em cada cartão." : null;
+  const aviso = avisoDoPeriodo(m, ano, o, dados);
 
   // tabela completa: todas as medidas no mesmo ano
   const cols = MEDIDAS_ORDEM.map((id) => MEDIDAS_SAUDE[id]);
   const celula = (cod: number, mm: (typeof cols)[number]) => {
     const oo = { moeda: s.moeda, denominador: s.den };
     const p = ix.ponto(mm.indicador, cod, ano, mm.componente(oo.moeda, oo.denominador));
-    const cobre = anosDaMedida(ix, mm, oo).includes(ano);
-    return { p, cobre };
+    const anosMm = anosDaMedida(ix, mm, oo);
+    const cobre = anosMm.includes(ano);
+    return { p, cobre, ultimo: anosMm[anosMm.length - 1] };
   };
   const linhasTab = dados.capitais.map((cap) => ({ cap, cel: cols.map((mm) => celula(cap.cod, mm)) }));
   const ordenadas = [...linhasTab].sort((a, b) => {
@@ -109,41 +113,67 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
   });
   const cabecalhoOrd = (col: Colunas) => (s.ord === col ? (s.dir === "desc" ? "descending" : "ascending") : "none");
   const alternar = (col: Colunas) => definir({ ord: col, dir: s.ord === col && s.dir === "cres" ? "desc" : "cres" });
+  const rotuloPeriodoMedida = (mm: (typeof cols)[number]) => (mm.periodo === "dezembro" ? `dezembro de ${ano}` : mm.periodo === "processamento" ? `ano de processamento ${ano}` : `exercício ${ano}`);
   const exportarTabela = () => {
-    const cab = ["Capital", "UF", ...cols.map((mm) => `${mm.rotulo} (${mm.unidade(s.moeda)})`), "Observações"];
-    const linhas = ordenadas.map(({ cap, cel }) => [cap.nome, cap.uf, ...cel.map(({ p }) => (p.valor === null ? "" : String(p.valor))), cel.map(({ p, cobre }, i) => (!cobre ? `${cols[i].rotuloCurto}: ${periodo} não coberto` : p.valor === null ? `${cols[i].rotuloCurto}: ${ROTULO_ESTADO[p.status]}` : !p.elegivel ? `${cols[i].rotuloCurto}: fora da comparação` : "")).filter(Boolean).join("; ")]);
+    const cab = ["Capital", "UF", ...cols.map((mm) => `${mm.rotulo} (${mm.unidade(s.moeda)}; ${rotuloPeriodoMedida(mm)}; valor numérico com ponto decimal)`), "Observações", "Fontes das medidas", "Dados gerados em", "Hash dos dados", "Leia antes de usar"];
+    const fontes = cols.map((mm) => `${mm.rotuloCurto}: ${metaCsv(ix, mm).fonte}`).join(" | ");
+    const linhas = ordenadas.map(({ cap, cel }) => [
+      cap.nome,
+      cap.uf,
+      ...cel.map(({ p }) => (p.valor === null ? "" : String(p.valor))),
+      cel.map(({ p, cobre, ultimo }, i) => (!cobre ? `${cols[i].rotuloCurto}: sem dado em ${ano}; a série vai até ${ultimo}` : p.valor === null ? `${cols[i].rotuloCurto}: ${ROTULO_ESTADO[p.status]}` : !p.elegivel ? `${cols[i].rotuloCurto}: valor oficial fora da comparação` : "")).filter(Boolean).join("; "),
+      fontes,
+      dados.meta.gerado_em,
+      dados.meta.hash_dados,
+      RESSALVA_CSV,
+    ]);
     baixar(`saude_comparacao_${ano}.csv`, csv(cab, linhas));
   };
-  const exportarMedida = () => baixar(`saude_${m.id}_${ano}.csv`, csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(ix, m, ano, o, c, periodo, `${ficha.nome_curto}. ${ficha.fontes.join("; ")}.`)));
+  const exportarMedida = () => baixar(`saude_${m.id}_${ano}.csv`, csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(ix, m, ano, o, c, periodo)));
 
   const opcoesMedida = TEMAS_ORDEM.flatMap((t) => TEMAS_SAUDE[t].medidas.map((id) => ({ v: id, t: MEDIDAS_SAUDE[id].rotulo, grupo: GRUPO_MEDIDA[t] })));
   const opcoesCapital = (vazio: string) => [{ v: "", t: vazio }, ...dados.capitais.map((x) => ({ v: x.id, t: `${x.nome} (${x.uf})` }))];
 
   return (
     <div>
-      <section aria-labelledby="titulo-comparar" className="grid gap-x-10 gap-y-8 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:items-start">
-        <div className="min-w-0">
+      <section aria-labelledby="titulo-comparar" className="grid gap-x-10 gap-y-8 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:items-start">
+        <div className="min-w-0 lg:col-start-1 lg:row-start-1">
           <p className="rotulo text-mineral">Saúde nas capitais</p>
           <h1 id="titulo-comparar" className="mt-2 font-serif text-[2.1rem] leading-[1.08] tracking-tight text-obee-tinta md:text-[2.6rem]">Comparar capitais</h1>
           <p className="mt-3 text-[1.0625rem] leading-snug text-obee-tinta">Como cada capital se situa na mesma medida e no mesmo período?</p>
           <div className="mt-6 space-y-4">
-            <Selecao id="cmp-med" rotulo="Medida" ajuda="Vale para as duas capitais e para a distribuição." valor={s.med} opcoes={opcoesMedida} aoMudar={(v) => definir({ med: v as MedidaSaudeId, ano: 0 })} />
+            <Selecao id="cmp-med" rotulo="Medida" ajuda="Vale para as duas capitais e para a distribuição." valor={s.med} opcoes={opcoesMedida} aoMudar={(v) => definir({ med: v as MedidaSaudeId, ano: anosDaMedida(ix, MEDIDAS_SAUDE[v as MedidaSaudeId], o).includes(ano) ? ano : 0 })} />
             <Selecao id="cmp-ano" rotulo={m.periodo === "dezembro" ? "Competência" : m.periodo === "processamento" ? "Ano de processamento" : "Exercício"} ajuda="O mesmo período para as duas capitais." valor={String(ano)} opcoes={anos.map((a) => ({ v: String(a), t: m.periodo === "dezembro" ? `dez. ${a}` : String(a) }))} aoMudar={(v) => definir({ ano: Number(v) })} />
             <div className="grid grid-cols-2 gap-4">
-              <Selecao id="cmp-a" rotulo="Capital A" ajuda="Primeira capital." valor={s.cap} opcoes={opcoesCapital("Nenhuma")} aoMudar={(v) => definir({ cap: v })} />
-              <Selecao id="cmp-b" rotulo="Capital B" ajuda="Segunda capital." valor={s.vs} opcoes={opcoesCapital("Nenhuma")} aoMudar={(v) => definir({ vs: v })} />
+              <Selecao id="cmp-a" rotulo="Capital A" ajuda="A capital que aparece primeiro." valor={s.cap} opcoes={opcoesCapital("Nenhuma")} aoMudar={(v) => definir({ cap: v })} />
+              <Selecao id="cmp-b" rotulo="Capital B" ajuda="Opcional: a capital de comparação." valor={s.vs} opcoes={opcoesCapital("Nenhuma")} aoMudar={(v) => definir({ vs: v })} />
             </div>
-            {m.moeda && <Alternancia rotulo="Valores" valor={s.moeda} opcoes={[{ v: "nominal", t: "Nominais" }, { v: "real", t: "Reais de 2025" }]} aoMudar={(v) => definir({ moeda: v })} />}
-            {m.denominador && <Alternancia rotulo="População do denominador" valor={s.den} opcoes={[{ v: "ripsa", t: "Ministério da Saúde" }, { v: "obee", t: "IBGE do exercício" }]} aoMudar={(v) => definir({ den: v })} />}
-          </div>
-          <div className="mt-6 border-l-2 border-obee pl-3 text-sm leading-snug text-obee-tinta">
-            <p>{m.definicao}</p>
-            <p className="mt-2 text-carvao-muted">{m.naoE}</p>
-            <div className="mt-1"><SobreEsteDado f={ficha} ctx={contextos[ficha.id]} /></div>
+            {m.moeda && (
+              <div>
+                <Alternancia rotulo="Valores" valor={s.moeda} opcoes={[{ v: "nominal", t: "Nominais" }, { v: "real", t: "Reais de 2025" }]} aoMudar={(v) => definir({ moeda: v })} />
+                <AjudaMoeda />
+              </div>
+            )}
+            {m.denominador && (
+              <div>
+                <Alternancia rotulo="População do denominador" valor={s.den} opcoes={[{ v: "ripsa", t: "Ministério da Saúde" }, { v: "obee", t: "IBGE do exercício" }]} aoMudar={(v) => definir({ den: v })} />
+                <AjudaDenominador iguais={m.id === "icsap_taxa" ? denominadoresIcsapIguais(ix, ano).iguais : 0} total={m.id === "icsap_taxa" ? denominadoresIcsapIguais(ix, ano).total : 0} ano={ano} />
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="min-w-0">
+        <div className="min-w-0 lg:col-start-1 lg:row-start-2">
+          <div className="border-l-2 border-obee pl-3 text-sm leading-snug text-obee-tinta">
+            <p>{m.definicao}</p>
+            <p className="mt-2 text-carvao-muted">{m.naoE}</p>
+            <p className="mt-2 text-carvao-muted"><span className="font-semibold text-obee-tinta">Perímetro:</span> {PERIMETRO_DO_TEMA[m.tema].rotulo}. <a href={`${hrefSaude(CAMINHO_METODOS)}#perimetros`} className="text-obee-dark underline underline-offset-4">Os três perímetros</a></p>
+            <div className="mt-1"><SobreEsteDado f={ficha} ctx={contextos[ficha.id]} /></div>
+          </div>
+          <GlossarioDaPagina tema="comparar" />
+        </div>
+
+        <div className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           {(A || B) && (
             <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
               {cartao(A, pa)}
@@ -157,6 +187,7 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
             <button type="button" onClick={exportarMedida} className="rotulo inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-obee-dark hover:border-obee">Baixar CSV da medida</button>
           </div>
           <p className="mt-1 text-[0.8125rem] leading-snug text-carvao-muted">{m.unidade(s.moeda)} · {c.ref ? `${c.ref.n} de ${c.noGrupo} capitais na comparação` : "sem capital na comparação"} · {m.universo}</p>
+          <AvisoDoPeriodo texto={aviso} />
           <div className="mt-3">
             {c.incluidas.length > 0 ? (
               <DistribuicaoCapitais
@@ -173,7 +204,7 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
               <p className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-obee-tinta" role="note">Nenhuma capital tem valor comparável para este recorte.</p>
             )}
           </div>
-          <div className="mt-5"><ForaDaComparacao itens={c.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_ESTADO[x.status], motivo: x.motivo }))} /></div>
+          <div className="mt-5"><ForaDaComparacaoSaude itens={c.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_ESTADO[x.status], motivo: x.motivo }))} /></div>
         </div>
       </section>
 
@@ -197,19 +228,26 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
           <h2 id="cmp-tabela" className="font-serif text-[1.45rem] leading-snug text-obee-tinta">As 26 capitais, todas as medidas, em {ano}</h2>
           <button type="button" onClick={exportarTabela} className="rotulo inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-obee-dark hover:border-obee">Baixar CSV da tabela</button>
         </div>
-        <p className="mt-1 max-w-prose2 text-sm leading-snug text-carvao-muted">Cada coluna tem a sua unidade e o seu universo; as medidas não se somam. Ordenar por uma coluna é recurso de leitura, não classificação. Valor em itálico: valor oficial fora da comparação. {s.moeda === "real" ? "Valores em reais de 2025." : "Valores em reais correntes."}</p>
+        <p className="mt-1 max-w-prose2 text-sm leading-snug text-carvao-muted">Cada coluna tem a sua unidade, o seu perímetro e o seu tipo de período (exercício, dezembro ou ano de processamento); as medidas não se somam. Ordenar por uma coluna é recurso de leitura, não classificação. Valor em itálico: valor oficial fora da comparação. {s.moeda === "real" ? "Valores em reais de 2025." : "Valores em reais correntes."}</p>
         <div className="tabela-scroll mt-4 min-w-0 max-w-full border border-linha" tabIndex={0} role="region" aria-label="Tabela das 26 capitais em todas as medidas (role na horizontal se necessário)">
           <table className="w-full min-w-[64rem] border-collapse text-sm">
             <caption className="sr-only">Capitais e medidas de Saúde em {ano}</caption>
             <thead>
               <tr>
-                <th scope="col" aria-sort={cabecalhoOrd("alfabetica")} className="sticky left-0 z-10 border-b border-carvao-muted bg-superficie px-2 py-2 text-left font-semibold">
+                <th scope="col" rowSpan={2} aria-sort={cabecalhoOrd("alfabetica")} className="sticky left-0 z-10 border-b border-carvao-muted bg-superficie px-2 py-2 text-left align-bottom font-semibold">
                   <button type="button" onClick={() => alternar("alfabetica")} className="inline-flex min-h-[44px] items-center gap-1">Capital {s.ord === "alfabetica" ? (s.dir === "desc" ? "↓" : "↑") : ""}</button>
                 </th>
+                {(["gastos", "rede", "resultados"] as const).map((tm) => (
+                  <th key={tm} scope="colgroup" colSpan={cols.filter((mm) => mm.tema === tm).length} className="border-b border-linha px-2 pt-2 text-left align-bottom text-xs font-semibold text-obee-tinta">
+                    {PERIMETRO_DO_TEMA[tm].rotulo}
+                  </th>
+                ))}
+              </tr>
+              <tr>
                 {cols.map((mm) => (
                   <th key={mm.id} scope="col" aria-sort={cabecalhoOrd(mm.id)} className="border-b border-carvao-muted px-2 py-2 text-right align-bottom font-semibold">
                     <button type="button" onClick={() => alternar(mm.id)} className="inline-flex min-h-[44px] items-end gap-1 text-right">
-                      <span>{mm.rotuloCurto}<span className="block text-[0.7rem] font-normal text-carvao-muted">{mm.unidade(s.moeda)}</span></span>
+                      <span>{mm.rotuloCurto}<span className="block text-xs font-normal text-carvao-muted">{mm.unidade(s.moeda)}</span><span className="block text-xs font-normal text-carvao-muted">{periodoCurto(mm, ano)}</span></span>
                       {s.ord === mm.id ? <span aria-hidden="true">{s.dir === "desc" ? "↓" : "↑"}</span> : null}
                     </button>
                   </th>
@@ -219,10 +257,10 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
             <tbody>
               {ordenadas.map(({ cap, cel }) => (
                 <tr key={cap.id} className={`border-b border-linha ${cap.id === A?.id || cap.id === B?.id ? "bg-obee-fundo" : ""}`}>
-                  <th scope="row" className="sticky left-0 z-10 bg-inherit px-2 py-2 text-left font-normal text-obee-tinta">{cap.nome} ({cap.uf})</th>
-                  {cel.map(({ p, cobre }, i) => (
+                  <th scope="row" className={`sticky left-0 z-10 px-2 py-2 text-left font-normal text-obee-tinta ${cap.id === A?.id || cap.id === B?.id ? "bg-obee-fundo" : "bg-superficie"}`}>{cap.nome} ({cap.uf})</th>
+                  {cel.map(({ p, cobre, ultimo }, i) => (
                     <td key={cols[i].id} className="px-2 py-2 text-right tabular-nums text-obee-tinta">
-                      {!cobre ? <span className="text-carvao-muted">não coberto</span> : p.valor === null ? <span className="text-carvao-muted">sem valor</span> : <span className={p.elegivel ? "" : "italic"}>{cols[i].formata(p.valor, true)}</span>}
+                      {!cobre ? <span className="text-carvao-muted">série até {ultimo}</span> : p.valor === null ? <span className="text-carvao-muted">sem valor</span> : <span className={p.elegivel ? "" : "italic"}>{cols[i].formata(p.valor, true)}</span>}
                     </td>
                   ))}
                 </tr>

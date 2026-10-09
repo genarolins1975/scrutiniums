@@ -288,6 +288,30 @@ def m04_denominadores_icsap(obs):
               "As duas taxas são publicadas porque a taxa muda na mesma proporção conforme o denominador.", sorted(linhas, key=lambda l: -abs(l["dif_pct"]))[:30])
 
 
+def m05_base_populacional_da_cobertura(obs):
+    """Troca de base da população de referência do Ministério entre dezembro de 2022 (anterior ao Censo 2022) e dezembro de 2023 (Censo 2022):
+    quanto da diferença da cobertura vem só do denominador. Medição que sustenta a marca de quebra de série da cobertura potencial."""
+    cob = {(o["ente"], o["ano"]): o for o in obs if o["indicador"] == "sau.aps.cobertura_potencial" and o["status"] == "OBSERVADO" and o.get("calculo")}
+    linhas = []
+    for cod, _, _ in entes.CAPITAIS:
+        a, b = cob.get((cod, 2022)), cob.get((cod, 2023))
+        if not a or not b:
+            continue
+        pop_a, pop_b, cap_b = a["calculo"]["denominador"], b["calculo"]["denominador"], b["calculo"]["numerador"]
+        linhas.append({"ente": cod, "nome": _nome(cod), "cobertura_2022": a["valor"], "cobertura_2023": b["valor"], "populacao_ref_2022": pop_a, "populacao_ref_2023": pop_b,
+                       "variacao_populacao_pct": round((pop_b / pop_a - 1) * 100, 2), "cobertura_2023_com_populacao_2022": round(cap_b / pop_a * 100, 2)})
+    if not linhas:
+        return _v("M05", "Cobertura potencial: troca da base da população de referência entre dezembro de 2022 e dezembro de 2023", "medicao", "medicao", "Sem pares para medir.")
+    med = lambda xs: sorted(xs)[len(xs) // 2] if len(xs) % 2 else (sorted(xs)[len(xs) // 2 - 1] + sorted(xs)[len(xs) // 2]) / 2
+    m22, m23, m23_pop22 = med([l["cobertura_2022"] for l in linhas]), med([l["cobertura_2023"] for l in linhas]), med([l["cobertura_2023_com_populacao_2022"] for l in linhas])
+    dpop = sorted(l["variacao_populacao_pct"] for l in linhas)
+    br = lambda v: f"{v:.1f}".replace(".", ",").replace("-", "−")
+    return _v("M05", "Cobertura potencial: troca da base da população de referência entre dezembro de 2022 e dezembro de 2023", "medicao", "medicao",
+              f"{len(linhas)} capitais. A população de referência do Ministério cai em mediana {br(abs(med(dpop)))}% (de {br(dpop[0])}% a {br(dpop[-1])}%) com a passagem da estimativa anterior ao Censo para o Censo 2022. "
+              f"A mediana da cobertura vai de {br(m22)}% a {br(m23)}%; recalculada com a população de 2022, a de 2023 seria {br(m23_pop22)}%: {br(m23 - m23_pop22)} dos {br(m23 - m22)} pontos percentuais vêm só do denominador. "
+              "Por isso dezembro de 2022 e dezembro de 2023 não são comparáveis como variação.", sorted(linhas, key=lambda l: l["variacao_populacao_pct"])[:30])
+
+
 def s10_ausencia_nao_zero(obs):
     ruins = [o for o in obs if (o["status"] != "OBSERVADO" and o["valor"] is not None) or (o["status"] == "OBSERVADO" and o["valor"] is None)]
     return _v("S10", "Estados de dado: só observação com estado \"observado\" tem valor; ausência nunca vira zero", "automatica", "aprovada" if not ruins else "reprovada",
@@ -379,5 +403,5 @@ def s16_nao_publicaveis(obs):
 
 def todas(obs):
     return [s01_entes(), s02_identidades_dca(), s03_dca_rreo(obs), s04_natureza(obs), m01_sinais_msc(), m02_ordem_estagios(), s05_asps(), s06_asps_percentual(obs),
-            s07_por_fonte(obs), s08_aps(obs), m03_ubs_api_x_retrato(), s09_icsap(obs), m04_denominadores_icsap(obs), s10_ausencia_nao_zero(obs),
+            s07_por_fonte(obs), s08_aps(obs), m03_ubs_api_x_retrato(), s09_icsap(obs), m04_denominadores_icsap(obs), m05_base_populacional_da_cobertura(obs), s10_ausencia_nao_zero(obs),
             s11_elegibilidade(obs), s12_df_fora(obs), s13_unicidade(obs), s14_por_habitante(obs), s15_razoes(obs), s16_nao_publicaveis(obs)]

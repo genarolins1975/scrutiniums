@@ -1,18 +1,22 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { inteiro } from "@/lib/eficiencia/formato";
 import {
   CABECALHO_CSV_COMPARACAO,
+  CABECALHO_CSV_SERIE,
   ROTULO_ESTADO,
   anosDaMedida,
+  avisoDoPeriodo,
   comparar,
   componenteDe,
   csv,
+  denominadoresIcsapIguais,
   IndiceSaude,
   linhasCsvComparacao,
+  linhasCsvSerie,
   notasMateriais,
   serie,
   serieDaMediana,
@@ -23,15 +27,15 @@ import {
 import type { DadosSaude } from "@/lib/eficiencia/saude/payload";
 import { fraseCapital, fraseEvolucao, fraseAmplitude } from "@/lib/eficiencia/saude/frases";
 import { MEDIDAS_SAUDE, ROTULO_PERIODO, TEMAS_SAUDE, type MedidaSaudeId, type Moeda, type TemaSaude } from "@/lib/eficiencia/saude/medidas";
-import { CAMINHO_COMPARAR } from "@/lib/eficiencia/saude/rotas";
-import { hrefSaude } from "@/lib/eficiencia/saude/rotas";
+import { CAMINHO_COMPARAR, CAMINHO_METODOS, hrefSaude } from "@/lib/eficiencia/saude/rotas";
 import type { ContextoFicha } from "../FichaConteudo";
 import { DistribuicaoCapitais } from "../DistribuicaoCapitais";
 import { Siglas } from "../Siglas";
 import { SobreDadoSaude as SobreEsteDado } from "./SobreDadoSaude";
 import { TabelaSimples } from "../TabelaSimples";
 import { Alternancia, Selecao } from "../controles";
-import { ForaDaComparacao, NotasMateriais, Ressalva, SemValor } from "../estados";
+import { NotasMateriais, Ressalva, SemValor } from "../estados";
+import { AjudaDenominador, AjudaMoeda, AvisoDoPeriodo, EtiquetaDePerimetro, ForaDaComparacaoSaude, GlossarioDaPagina } from "./AvisosSaude";
 import { MiniSerie, type Anotacao } from "../graficos";
 import { DetalheGastos, DetalheRede, DetalheResultados } from "./DetalhesSaude";
 import { ReferenciasExternasSaude, ReferenciasGrupoSaude } from "./ReferenciasSaude";
@@ -75,7 +79,21 @@ const TITULO_TEMA: Record<TemaSaude, { titulo: string; pergunta: string }> = {
   resultados: { titulo: "Atendimento e resultados", pergunta: "Que resultados são observados entre os moradores, e que parte do atendimento a fonte não permite mostrar?" },
 };
 
-const ANOTACAO_ICSAP: Anotacao[] = [];
+const ANOTACOES_COBERTURA: Anotacao[] = [
+  { ano: 2021, texto: "dezembro de 2021 segue regra anterior de equipes e cadastro e não reproduz a fórmula da Nota Técnica nº 2/2025." },
+  { ano: 2022, texto: "a população de referência de dezembro de 2022 é anterior ao Censo 2022; de dezembro de 2023 em diante a base é outra." },
+];
+const ANOTACOES_POPULACAO: Anotacao[] = [
+  { ano: 2021, texto: "população de 2021: estimativa anterior ao Censo 2022." },
+  { ano: 2024, texto: "a partir de 2024 a população é estimativa posterior ao Censo 2022; 2022 e 2023 usam a mesma população do Censo." },
+];
+const POR_POPULACAO = ["despesa_hab", "ubs_10mil", "esf_10mil", "eap_10mil"];
+const ORDENS: { v: Ordem; t: string }[] = [
+  { v: "alfabetica", t: "Alfabética" },
+  { v: "valor_desc", t: "Maior ao menor" },
+  { v: "valor", t: "Menor ao maior" },
+];
+const LEGENDA_PERIODO = { exercicio: "Exercício", dezembro: "Competência", processamento: "Ano de processamento" } as const;
 
 export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; dados: DadosSaude; contextos: Record<string, ContextoFicha> }) {
   const def = TEMAS_SAUDE[tema];
@@ -89,6 +107,10 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
   const comp = componenteDe(m, o);
   const anos = anosDaMedida(ix, m, o);
   const ano = s.ano && anos.includes(s.ano) ? s.ano : anos[anos.length - 1];
+  // um ano que a medida não tem (link antigo, ICSAP em 2025) é corrigido na própria URL, para a página e o link dizerem a mesma coisa
+  useEffect(() => {
+    if (s.ano && !anos.includes(s.ano)) definir({ ano: 0 });
+  }, [s.ano, anos, definir]);
   const grupo: Grupo = cap && s.grp === "regiao" ? "regiao" : "todas";
   const nomeGrupo = grupo === "regiao" && cap ? `capitais da região ${dados.regioes[cap.regiao]}` : "capitais na comparação";
   const c = comparar(ix, m, ano, o, grupo, cap, s.ord);
@@ -96,13 +118,14 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
   const incluidaCap = cap ? c.incluidas.find((i) => i.cap.id === cap.id) : undefined;
   const ficha = dados.fichas.find((f) => f.id === m.indicador)!;
   const periodo = ROTULO_PERIODO[m.periodo](ano);
-  const fonteTexto = `${ficha.nome_curto}. ${ficha.fontes.join("; ")}.`;
+  const aviso = avisoDoPeriodo(m, ano, o, dados);
 
   const regiao = grupo === "regiao" && cap ? cap.regiao : null;
   const itensFrase = c.incluidas.map((i) => ({ nome: i.cap.nome, uf: i.cap.uf, valor: i.valor }));
   const titulo = fraseAmplitude(itensFrase, m, ano, c.ref?.mediana ?? null);
   const fraseCap = cap ? fraseCapital(cap.nome, cap.uf, pt?.valor ?? null, c.ref?.mediana ?? null, c.ref?.n ?? 0, m, !!pt && pt.valor !== null && !incluidaCap) : null;
-  const subtitulo = [m.rotulo, m.unidade(s.moeda), periodo, `capitais estaduais${grupo === "regiao" && cap ? `, região ${dados.regioes[cap.regiao]}` : ""}`, m.universo].join(" · ");
+  const unidadeNoTitulo = m.id === "icsap_taxa" ? null : m.unidade(s.moeda); // o rótulo da taxa já traz a unidade
+  const subtitulo = [m.rotulo, unidadeNoTitulo, periodo, `capitais estaduais${grupo === "regiao" && cap ? `, região ${dados.regioes[cap.regiao]}` : ""}`, m.universo].filter(Boolean).join(" · ");
 
   // referências externas válidas para o gráfico: a primeira de comparabilidade direta (nacional, ou o mínimo normativo)
   const externas = ix.externas(m.indicador, comp, ano);
@@ -114,19 +137,24 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
     : serieDaMediana(ix, m, o, regiao).map((x) => ({ ano: x.ano, valor: x.valor, status: (x.valor === null ? "AUSENTE_NA_COLETA" : "OBSERVADO") as Ponto["status"], nota: null, notaMaterial: false, participacao: null, elegivel: x.valor !== null, situacao: null, motivo: null, quebraSerie: x.quebraSerie }));
   const medianaPorAno = serieDaMediana(ix, m, o, regiao);
   const referenciaSerie = cap ? medianaPorAno.map((x) => ({ ano: x.ano, valor: x.valor, n: x.n })) : undefined;
-  const anotacoes: Anotacao[] = m.id === "cobertura_aps" ? [{ ano: 2021, texto: "dezembro de 2021 segue regra anterior de equipes e cadastro e não reproduz a fórmula da Nota Técnica nº 2/2025." }] : ANOTACAO_ICSAP;
+  const anotacoes: Anotacao[] = m.id === "cobertura_aps" ? ANOTACOES_COBERTURA : POR_POPULACAO.includes(m.id) || (m.id === "icsap_taxa" && s.den === "obee") ? ANOTACOES_POPULACAO : [];
+  const motivoQuebra = m.id === "cobertura_aps" ? "a população de referência do Ministério mudou de base" : "a base da população do denominador mudou entre os anos";
   const fraseSerie = fraseEvolucao(
     pontosSerie.map((p) => ({ ano: p.ano, valor: p.valor, elegivel: p.elegivel, quebraSerie: p.quebraSerie })),
     m,
     cap ? `${cap.nome} (${cap.uf})` : "Na mediana das capitais",
-    "a base populacional ou o método mudou entre os dois anos",
+    motivoQuebra,
   );
   const comValorSerie = medianaPorAno.filter((x) => x.valor !== null);
   const conjuntoVaria = !cap && comValorSerie.length > 1 && new Set(comValorSerie.map((x) => x.n)).size > 1;
 
   const exportar = () => {
-    const linhas = linhasCsvComparacao(ix, m, ano, o, c, periodo, fonteTexto);
-    baixar(`saude_${m.id}_${ano}.csv`, csv(CABECALHO_CSV_COMPARACAO, linhas));
+    if (s.vis === "evolucao") {
+      const linhas = linhasCsvSerie(ix, m, o, cap, regiao, (a) => ROTULO_PERIODO[m.periodo](a));
+      baixar(`saude_${m.id}_serie_${cap ? cap.id : regiao ? `mediana_${regiao}` : "mediana"}.csv`, csv(CABECALHO_CSV_SERIE, linhas));
+    } else {
+      baixar(`saude_${m.id}_${ano}.csv`, csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(ix, m, ano, o, c, periodo)));
+    }
   };
 
   const temRazao = m.razaoAgregada && ficha.numerador && ficha.denominador;
@@ -142,47 +170,67 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
     ...c.incluidas.map((i) => [`${i.cap.nome} (${i.cap.uf})`, m.formata(i.valor), i.ponto.numerador !== null && i.ponto.denominador !== null ? `${inteiro(Math.round(i.ponto.numerador))} ÷ ${inteiro(Math.round(i.ponto.denominador))}` : "", "Na comparação"]),
     ...c.excluidas.map((x) => [`${x.cap.nome} (${x.cap.uf})`, x.comValor && x.ponto.valor !== null ? m.formata(x.ponto.valor) : "sem valor", "", x.comValor ? "Valor oficial, fora da comparação" : ROTULO_ESTADO[x.status]]),
   ];
+  const tituloMetodos = hrefSaude(CAMINHO_METODOS) + "#perimetros";
 
   return (
     <div>
-      <section aria-labelledby="titulo-tema" className="grid gap-x-10 gap-y-8 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:items-start">
-        <div className="min-w-0">
+      <section aria-labelledby="titulo-tema" className="grid gap-x-10 gap-y-8 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:items-start">
+        <div className="min-w-0 lg:col-start-1 lg:row-start-1">
           <p className="rotulo text-mineral">Saúde nas capitais</p>
           <h1 id="titulo-tema" className="mt-2 font-serif text-[2.1rem] leading-[1.08] tracking-tight text-obee-tinta md:text-[2.6rem]">
             {TITULO_TEMA[tema].titulo}
           </h1>
           <p className="mt-3 text-[1.0625rem] leading-snug text-obee-tinta">{TITULO_TEMA[tema].pergunta}</p>
+          <EtiquetaDePerimetro tema={tema} href={tituloMetodos} />
           <div className="mt-6 space-y-4">
-            <Selecao id="med" rotulo="Medida" ajuda="O gráfico, a tabela e a evolução mostram a medida escolhida." valor={s.med} opcoes={medidasOpcoes} aoMudar={(v) => definir({ med: v as MedidaSaudeId, ano: 0 })} />
+            <Selecao
+              id="med"
+              rotulo="Medida"
+              ajuda="O gráfico, a tabela e a evolução mostram a medida escolhida."
+              valor={s.med}
+              opcoes={medidasOpcoes}
+              aoMudar={(v) => {
+                const nova = MEDIDAS_SAUDE[v as MedidaSaudeId];
+                // o exercício escolhido é mantido quando a nova medida também o tem
+                definir({ med: v as MedidaSaudeId, ano: anosDaMedida(ix, nova, o).includes(ano) ? ano : 0 });
+              }}
+            />
             <div className="grid grid-cols-2 gap-4">
-              <Selecao id="ano" rotulo={m.periodo === "dezembro" ? "Competência" : m.periodo === "processamento" ? "Ano de processamento" : "Exercício"} ajuda="Período do dado." valor={String(ano)} opcoes={anos.map((a) => ({ v: String(a), t: m.periodo === "dezembro" ? `dez. ${a}` : String(a) }))} aoMudar={(v) => definir({ ano: Number(v) })} />
+              <Selecao id="ano" rotulo={LEGENDA_PERIODO[m.periodo]} ajuda="Período do dado." valor={String(ano)} opcoes={anos.map((a) => ({ v: String(a), t: m.periodo === "dezembro" ? `dez. ${a}` : String(a) }))} aoMudar={(v) => definir({ ano: Number(v) })} />
               <Selecao id="cap" rotulo="Capital" ajuda="Opcional: destaca uma capital." valor={s.cap} opcoes={[{ v: "", t: "Nenhuma" }, ...dados.capitais.map((x) => ({ v: x.id, t: `${x.nome} (${x.uf})` }))]} aoMudar={(v) => definir({ cap: v, grp: "todas" })} />
             </div>
-            {m.moeda && <Alternancia rotulo="Valores" valor={s.moeda} opcoes={[{ v: "nominal", t: "Nominais" }, { v: "real", t: "Reais de 2025" }]} aoMudar={(v) => definir({ moeda: v })} />}
-            {m.denominador && <Alternancia rotulo="População do denominador" valor={s.den} opcoes={[{ v: "ripsa", t: "Ministério da Saúde" }, { v: "obee", t: "IBGE do exercício" }]} aoMudar={(v) => definir({ den: v })} />}
+            {m.moeda && (
+              <div>
+                <Alternancia rotulo="Valores" valor={s.moeda} opcoes={[{ v: "nominal", t: "Nominais" }, { v: "real", t: "Reais de 2025" }]} aoMudar={(v) => definir({ moeda: v })} />
+                <AjudaMoeda />
+              </div>
+            )}
+            {m.denominador && (
+              <div>
+                <Alternancia rotulo="População do denominador" valor={s.den} opcoes={[{ v: "ripsa", t: "Ministério da Saúde" }, { v: "obee", t: "IBGE do exercício" }]} aoMudar={(v) => definir({ den: v })} />
+                <AjudaDenominador iguais={m.id === "icsap_taxa" ? denominadoresIcsapIguais(ix, ano).iguais : 0} total={m.id === "icsap_taxa" ? denominadoresIcsapIguais(ix, ano).total : 0} ano={ano} />
+              </div>
+            )}
             {cap && <Alternancia rotulo="Grupo de comparação" valor={grupo} opcoes={[{ v: "todas", t: "Todas as capitais" }, { v: "regiao", t: `Região ${dados.regioes[cap.regiao]}` }]} aoMudar={(v) => definir({ grp: v })} />}
           </div>
-          <div className="mt-6 border-l-2 border-obee pl-3 text-sm leading-snug text-obee-tinta">
-            <p><Siglas texto={m.definicao} /></p>
-            <p className="mt-2 text-carvao-muted"><Siglas texto={m.naoE} /></p>
-            <div className="mt-1"><SobreEsteDado f={ficha} ctx={contextos[ficha.id]} /></div>
-          </div>
-          <p className="mt-4 text-sm">
-            <Link href={hrefSaude(CAMINHO_COMPARAR, { med: m.id, ano, ...(cap ? { cap: cap.id } : {}) })} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
-              Comparar capitais nesta medida <span aria-hidden="true">→</span>
-            </Link>
-          </p>
         </div>
 
-        <div className="min-w-0">
+        <div className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <Alternancia<Visao> rotulo="Visão" valor={s.vis} opcoes={[{ v: "grafico", t: "Distribuição" }, { v: "tabela", t: "Tabela" }, { v: "evolucao", t: "Evolução" }]} aoMudar={(v) => definir({ vis: v })} rotuloVisivel={false} />
             <button type="button" onClick={exportar} className="rotulo inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-obee-dark hover:border-obee">
-              Baixar CSV
+              {s.vis === "evolucao" ? "Baixar CSV da série" : "Baixar CSV do recorte"}
             </button>
           </div>
+          {s.vis !== "evolucao" && (
+            <div className="mt-3">
+              <Alternancia<Ordem> rotulo="Ordem das capitais" valor={s.ord} opcoes={ORDENS} aoMudar={(v) => definir({ ord: v })} />
+              <p className="mt-1 text-xs text-carvao-muted">Ordenar por valor é recurso de leitura, não classificação.</p>
+            </div>
+          )}
           <h2 className="mt-4 font-serif text-[1.3rem] leading-snug text-obee-tinta md:text-[1.45rem]">{s.vis === "evolucao" ? fraseSerie : titulo}</h2>
-          <p className="mt-1.5 text-[0.8125rem] leading-snug text-carvao-muted">{s.vis === "evolucao" ? `${m.rotulo} · ${m.unidade(s.moeda)} · série de ${anos[0]} a ${anos[anos.length - 1]} · ${cap ? `${cap.nome} (${cap.uf})` : "mediana das capitais"}` : subtitulo}</p>
+          <p className="mt-1.5 text-[0.8125rem] leading-snug text-carvao-muted">{s.vis === "evolucao" ? `${[m.rotulo, unidadeNoTitulo].filter(Boolean).join(" · ")} · série de ${anos[0]} a ${anos[anos.length - 1]} · ${cap ? `${cap.nome} (${cap.uf})` : "mediana das capitais"}` : subtitulo}</p>
+          <AvisoDoPeriodo texto={aviso} />
           {fraseCap && s.vis !== "evolucao" && <p className="mt-2 text-sm leading-snug text-obee-tinta">{fraseCap}</p>}
 
           <div className="mt-4">
@@ -200,7 +248,10 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
                   fora={c.excluidas.map((x) => ({ chave: x.cap.id, rotulo: `${x.cap.nome} (${x.cap.uf})`, valor: x.comValor ? x.ponto.valor : null, texto: x.comValor ? "fora da comparação (motivo abaixo)" : `${ROTULO_ESTADO[x.status].toLowerCase()} (motivo abaixo)`, destacada: x.cap.id === cap?.id }))}
                 />
               ) : (
-                <SemValor ponto={pt ?? { valor: null, status: "AUSENTE_NA_COLETA", nota: null, notaMaterial: false, participacao: null, elegivel: false, situacao: null, motivo: null, quebraSerie: false }} contexto="Nenhuma capital tem valor comparável para este recorte." />
+                <p className="max-w-prose2 border border-dashed border-mineral bg-papel px-4 py-3 text-sm leading-snug text-obee-tinta" role="note">
+                  Nenhuma capital entra na comparação deste período.{" "}
+                  {aviso ?? "Os motivos estão abaixo, agrupados."}
+                </p>
               )
             )}
             {s.vis === "tabela" && (
@@ -216,6 +267,26 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
           {pt && cap && <Ressalva ponto={pt} />}
           {pt && pt.valor === null && cap && <SemValor ponto={pt} />}
         </div>
+
+        <div className="min-w-0 lg:col-start-1 lg:row-start-2">
+          <div className="border-l-2 border-obee pl-3 text-sm leading-snug text-obee-tinta">
+            <p><Siglas texto={m.definicao} /></p>
+            <p className="mt-2 text-carvao-muted"><Siglas texto={m.naoE} /></p>
+            <div className="mt-1"><SobreEsteDado f={ficha} ctx={contextos[ficha.id]} /></div>
+          </div>
+          {tema === "resultados" && (
+            <p className="mt-3 border-l-2 border-linha pl-3 text-sm leading-snug text-obee-tinta">
+              <span className="font-semibold">Atendimento:</span> nenhuma série de produção da atenção primária é publicada, porque a fonte oficial não oferece série municipal extraível e verificável. O que existe aqui é resultado por residência e contexto. Motivo e lacunas em{" "}
+              <a href="#res-fora" className="text-obee-dark underline underline-offset-4">Atendimento: o que não está nesta página</a>.
+            </p>
+          )}
+          <GlossarioDaPagina tema={tema} />
+          <p className="mt-4 text-sm">
+            <Link href={hrefSaude(CAMINHO_COMPARAR, { med: m.id, ano, ...(cap ? { cap: cap.id } : {}) })} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+              Comparar capitais nesta medida <span aria-hidden="true">→</span>
+            </Link>
+          </p>
+        </div>
       </section>
 
       <div className="mt-10 grid gap-10 border-t border-linha pt-8 lg:grid-cols-2">
@@ -224,7 +295,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
             const notas = notasMateriais(c);
             return notas.length ? <NotasMateriais notas={notas} n={c.incluidas.length} /> : null;
           })()}
-          <ForaDaComparacao itens={c.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_ESTADO[x.status], motivo: x.motivo }))} />
+          <ForaDaComparacaoSaude itens={c.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_ESTADO[x.status], motivo: x.motivo }))} />
         </div>
         <div className="space-y-8">
           {c.ref && <ReferenciasGrupoSaude r={c.ref} m={m} nomeGrupo={nomeGrupo} textoRazao={textoRazao} />}

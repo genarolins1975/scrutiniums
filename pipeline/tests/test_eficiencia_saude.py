@@ -103,11 +103,20 @@ class TestSaude(unittest.TestCase):
             ph = self.v("sau.despesa.por_habitante", SP, ano, "nominal")["valor"]
             self.assertAlmostEqual(ph, d / pop, delta=0.01)
 
-    def test_populacao_2021_marcada_como_estimativa_pre_censo(self):
-        o = self.v("ctx.populacao.residente", SP, 2021, None)
-        self.assertEqual(o["tipo_populacao"], "estimativa_pre_censo_2022")
-        self.assertTrue(o["quebra_serie"] and o["nota_material"])
-        self.assertNotEqual(self.v("ctx.populacao.residente", SP, 2022, None)["tipo_populacao"], "estimativa_pre_censo_2022")
+    def test_populacao_com_base_explicita_e_marca_de_quebra_por_base(self):
+        """2021: estimativa anterior ao Censo; 2022 e 2023: a mesma população do Censo 2022; 2024 e 2025: estimativas posteriores.
+        A marca alterna entre bases vizinhas: 2022 para 2023 e 2024 para 2025 comparáveis; 2021 para 2022 e 2023 para 2024 bloqueadas."""
+        o21 = self.v("ctx.populacao.residente", SP, 2021, None)
+        self.assertEqual(o21["tipo_populacao"], "estimativa_pre_censo_2022")
+        self.assertTrue(o21["nota_material"])
+        marcas = [self.v("ctx.populacao.residente", SP, a, None)["quebra_serie"] for a in P.ANOS_FINANCEIROS]
+        self.assertEqual(marcas, [False, True, True, False, False])
+        self.assertEqual(self.v("ctx.populacao.residente", SP, 2022, None)["valor"], self.v("ctx.populacao.residente", SP, 2023, None)["valor"])
+        for cod, _, _ in entes.CAPITAIS:
+            self.assertEqual(self.v("ctx.populacao.residente", cod, 2022, None)["valor"], self.v("ctx.populacao.residente", cod, 2023, None)["valor"], cod)
+        for ind, comp in (("sau.despesa.por_habitante", "nominal"), ("sau.aps.equipes_por_10mil", "esf"), ("sau.rede.ubs_publicas_por_10mil", "publicas")):
+            self.assertEqual([self.v(ind, SP, a, comp)["quebra_serie"] for a in P.ANOS_FINANCEIROS], [False, True, True, False, False], ind)
+        self.assertIn("Censo 2022", self.v("sau.despesa.por_habitante", SP, 2022, "nominal")["base_populacional"])
 
     # ---------------------------------------------------------------- conferência DCA x RREO x MSC
 
@@ -331,6 +340,90 @@ class TestSaude(unittest.TestCase):
         for ind in self.g["indicadores"]:
             if ind.get("download"):
                 self.assertTrue(os.path.basename(ind["download"]).startswith("sau_"), ind["download"])
+
+    # ---------------------------------------------------------------- correções da rodada 1 de avaliação
+
+    def test_razao_agregada_na_unidade_do_indicador(self):
+        """A razão agregada pesa as capitais pelo denominador e tem a unidade do indicador: fica entre o menor e o maior valor do grupo."""
+        for r in self.g["referencias"]:
+            if r["razao_agregada"] is None:
+                continue
+            fator = gold.FATOR_RAZAO.get(r["indicador"], 1)
+            self.assertEqual(r["fator_razao"], fator)
+            self.assertAlmostEqual(r["razao_agregada"], r["soma_numerador"] / r["soma_denominador"] * fator, places=6)
+            self.assertGreaterEqual(r["razao_agregada"], r["minimo"] - 1e-6, (r["indicador"], r["ano"], r["grupo"]))
+            self.assertLessEqual(r["razao_agregada"], r["maximo"] + 1e-6, (r["indicador"], r["ano"], r["grupo"]))
+
+    def test_razao_agregada_valores_conhecidos(self):
+        def razao(ind, comp, ano):
+            return next(r for r in self.g["referencias"] if r["indicador"] == ind and r["componente"] == comp and r["ano"] == ano and r["grupo"] == "todas")["razao_agregada"]
+        self.assertAlmostEqual(razao("sau.aps.equipes_por_10mil", "esf", 2025), 1.89, delta=0.01)
+        self.assertAlmostEqual(razao("sau.icsap.taxa", "ripsa", 2024), 776.1, delta=0.1)
+        self.assertAlmostEqual(razao("sau.asps.percentual_aplicado", None, 2025), 21.8, delta=0.1)
+
+    def test_cobertura_potencial_marca_a_troca_de_base_populacional(self):
+        qb = {ano: {self.v("sau.aps.cobertura_potencial", cod, ano)["quebra_serie"] for cod, _, _ in entes.CAPITAIS} for ano in P.ANOS_FINANCEIROS}
+        self.assertEqual(qb, {2021: {True}, 2022: {True}, 2023: {False}, 2024: {False}, 2025: {False}})
+        self.assertIn("anterior ao Censo 2022", self.v("sau.aps.cobertura_potencial", SP, 2022)["nota"])
+        brasil = {e["ano"]: e for e in self.g["referencias_externas"] if e["indicador"] == "sau.aps.cobertura_potencial"}
+        self.assertIn("anterior ao Censo 2022", brasil[2022]["escopo"])
+        self.assertNotIn("anterior ao Censo 2022", brasil[2023]["escopo"])
+
+    def test_notas_de_natureza_distinguem_ausencia_de_valor_zero(self):
+        sao_luis, rio, florianopolis = 2111300, 3304557, 4205407
+        for ente, ano in ((sao_luis, 2022), (rio, 2022)):
+            nota = self.v("sau.despesa.natureza", ente, ano, "pessoal")["nota"]
+            self.assertIn("nenhum registro", nota)
+            self.assertNotIn("R$ 0,00", nota)
+        nota = self.v("sau.despesa.natureza", florianopolis, 2022, "pessoal")["nota"]
+        self.assertIn("sem natureza da despesa identificável", nota)
+        self.assertNotIn("diferença de R$ 0,00", nota)
+
+    def test_medicao_da_troca_de_base_da_cobertura_potencial(self):
+        m05 = next(v for v in self.g["validacoes"] if v["id"] == "M05")
+        self.assertEqual(m05["resultado"], "medicao")
+        self.assertIn("9,1 dos 14,6 pontos percentuais vêm só do denominador", m05["detalhe"])
+        self.assertEqual(len(m05["casos"]), 26 if len(m05["casos"]) < 30 else 30)
+
+    def test_macapa_2025_explica_que_a_msc_confirma_o_rreo(self):
+        c = self.v("sau.despesa.funcao_saude", MACAPA, 2025, "nominal")["conferencia"]
+        self.assertIn("igual ao RREO e diferente da DCA", c["explicacao"])
+        self.assertEqual(c["situacao"], "PENDENTE")
+
+    def test_ubs_de_gestao_municipal_com_natureza_nao_publica_aparecem_no_retrato(self):
+        total = sum(self.v("sau.rede.ubs_retrato", cod, 2026, "gestao_municipal_nao_publica")["valor"] for cod, _, _ in entes.CAPITAIS)
+        self.assertEqual(total, 125)
+        self.assertEqual(self.v("sau.rede.ubs_retrato", 3304557, 2026, "gestao_municipal_nao_publica")["valor"], 52)
+        self.assertEqual(self.v("sau.rede.ubs_retrato", SP, 2026, "gestao_municipal_nao_publica")["valor"], 38)
+
+    def test_textos_sem_causalidade_implicita_nem_numero_sem_fonte(self):
+        causais = r"\b(por esse motivo|por isso mesmo|devido a|em razão de|em consequência|causad[oa]|1,07 a 2,79)\b"
+        texto = json.dumps({"i": self.g["indicadores"], "m": self.g["matriz_fontes"], "e": self.g["referencias_externas"]}, ensure_ascii=False).lower()
+        achado = re.search(causais, texto)
+        self.assertIsNone(achado, achado and texto[max(0, achado.start() - 100):achado.end() + 60])
+        self.assertNotIn("capitais com maior cobertura de planos têm menos", texto)
+
+    def test_csv_com_fonte_legivel_numeros_limpos_e_dicionario_completo(self):
+        with open(os.path.join(RAIZ, "public", "eficiencia", "series", "sau_despesa_por_habitante.csv"), encoding="utf-8") as f:
+            linhas = list(csv.DictReader(f))
+        self.assertTrue(linhas)
+        for l in linhas:
+            self.assertNotIn("siconfi_dca", l["fonte"])
+            self.assertIn("Siconfi", l["fonte"])
+            self.assertTrue(l["fonte_url"].startswith("http"))
+            self.assertRegex(l["data_captura"], r"^\d{4}-\d{2}-\d{2}$")
+        series = os.path.join(RAIZ, "public", "eficiencia", "series")
+        for nome in os.listdir(series):
+            if nome.startswith(("sau_", "saude_")) and nome.endswith(".csv"):
+                with open(os.path.join(series, nome), encoding="utf-8") as f:
+                    texto = f.read()
+                self.assertNotRegex(texto, r"\d\.\d*(0000000|9999999)\d*[,\n]", nome)
+        with open(os.path.join(series, "saude_dicionario_das_colunas.csv"), encoding="utf-8") as f:
+            descritas = {(l["arquivo"], l["coluna"]) for l in csv.DictReader(f)}
+        for c in gold.CAMPOS_CSV:
+            self.assertIn(("sau_*.csv (um por indicador)", c), descritas)
+        for c in gold.CAMPOS_CSV_REFERENCIAS:
+            self.assertIn(("saude_referencias_capitais.csv", c), descritas)
 
 
 class TestIsolamentoEPromocao(unittest.TestCase):

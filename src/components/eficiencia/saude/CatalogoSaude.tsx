@@ -73,6 +73,12 @@ export function CatalogoIndicadores({ fichas, contextos }: { fichas: FichaExibiv
   );
 }
 
+const GRUPOS_MATRIZ = [
+  { id: "recursos", titulo: "Recursos executados pelo município", prefixos: ["F"] },
+  { id: "servicos", titulo: "Serviços localizados no território", prefixos: ["E"] },
+  { id: "residentes", titulo: "População residente e contexto demográfico", prefixos: ["R", "D"] },
+];
+
 const DECISOES = ["todas", "publicar com ressalva", "apenas contexto", "não publicar"];
 
 export function MatrizDeFontes({ linhas }: { linhas: LinhaMatrizFonte[] }) {
@@ -99,9 +105,21 @@ export function MatrizDeFontes({ linhas }: { linhas: LinhaMatrizFonte[] }) {
         </div>
       </div>
       <p className="mt-3 text-sm text-carvao-muted" role="status">{visiveis.length} de {linhas.length} medidas candidatas</p>
-      <ul className="mt-2 divide-y divide-linha border-y border-linha">
-        {visiveis.map((l) => (
-          <li key={l.id} className="py-4">
+      <div className="mt-2 space-y-3">
+        {GRUPOS_MATRIZ.map((g) => {
+          const itens = visiveis.filter((l) => g.prefixos.includes(l.id.charAt(0)));
+          if (!itens.length) return null;
+          const por = (dec: string) => itens.filter((l) => l.decisao === dec).length;
+          return (
+            <details key={g.id} open={q.trim() !== "" || d !== "todas"} className="border-t border-linha pt-1">
+              <summary className="flex min-h-[44px] cursor-pointer list-none flex-wrap items-baseline gap-x-4 gap-y-0.5">
+                <span className="font-semibold text-obee-tinta">{g.titulo}</span>
+                <span className="text-sm text-carvao-muted">{itens.length} medidas: {por("publicar com ressalva")} publicar com ressalva, {por("apenas contexto")} apenas contexto, {por("não publicar")} não publicar</span>
+                <span className="sr-only">(abrir a lista)</span>
+              </summary>
+              <ul className="divide-y divide-linha border-y border-linha">
+                {itens.map((l) => (
+                  <li key={l.id} className="py-4">
             <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
               <span className="font-mono text-[0.8rem] text-carvao-muted">{l.id}</span>
               <span className="min-w-0 flex-1 basis-[18rem] font-semibold leading-snug text-obee-tinta">{l.medida}</span>
@@ -114,9 +132,13 @@ export function MatrizDeFontes({ linhas }: { linhas: LinhaMatrizFonte[] }) {
               <div><dt className="rotulo text-carvao-muted">Período</dt><dd className="text-obee-tinta">{l.periodo}</dd></div>
             </dl>
             <p className="mt-2 max-w-prose2 text-sm leading-snug text-carvao-muted">{l.fundamento}</p>
-          </li>
-        ))}
-      </ul>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -137,7 +159,7 @@ export function ListaValidacoes({ validacoes }: { validacoes: Validacao[] }) {
             {v.casos.length > 0 && (
               <details className="mt-2">
                 <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Casos listados ({v.casos.length}, dado técnico)</summary>
-                <pre className="mt-2 max-h-64 overflow-auto bg-papel p-3 text-[0.75rem] leading-snug text-obee-tinta" tabIndex={0}>{JSON.stringify(v.casos.slice(0, 40), null, 1)}</pre>
+                <pre role="region" aria-label={`Casos listados da validação ${v.id}, em formato técnico`} className="mt-2 max-h-64 overflow-auto bg-papel p-3 text-xs leading-snug text-obee-tinta" tabIndex={0}>{JSON.stringify(v.casos.slice(0, 40), null, 1)}</pre>
               </details>
             )}
           </details>

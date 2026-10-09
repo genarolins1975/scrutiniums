@@ -6,6 +6,8 @@ import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { contextosSaude } from "@/lib/eficiencia/saude/contexto";
 import { ARQUIVO_GOLD_SAUDE, goldSaude } from "@/lib/eficiencia/saude/dados";
 import { dataBr, decimal, rotuloVersaoCatalogo } from "@/lib/eficiencia/formato";
+import { SIGLAS } from "@/components/eficiencia/Siglas";
+import { REPOSITORIO } from "@/lib/energia/datasets";
 
 export const dynamic = "force-static";
 
@@ -24,7 +26,7 @@ function tamanho(caminho: string): string {
 }
 
 const Secao = ({ id, titulo, intro, children }: { id: string; titulo: string; intro?: string; children: React.ReactNode }) => (
-  <section id={id} aria-labelledby={`${id}-t`} className="scroll-mt-24 border-t border-linha pt-8">
+  <section id={id} tabIndex={-1} aria-labelledby={`${id}-t`} className="scroll-mt-24 border-t border-linha pt-8 focus:outline-none">
     <h2 id={`${id}-t`} className="font-serif text-[1.6rem] leading-snug text-obee-tinta">{titulo}</h2>
     {intro && <p className="mt-1 max-w-prose2 text-[0.9375rem] leading-relaxed text-carvao-muted">{intro}</p>}
     <div className="mt-5">{children}</div>
@@ -47,10 +49,16 @@ export default function PaginaMetodos() {
         <h1 id="titulo-metodos" className="mt-2 font-serif text-[2.1rem] leading-[1.08] tracking-tight text-obee-tinta md:text-[2.6rem]">Dados e métodos</h1>
         <p className="mt-3 max-w-prose2 text-[1.0625rem] leading-snug text-obee-tinta">De onde vem cada medida, como reproduzir o cálculo e o que foi avaliado e não publicado.</p>
         <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-1 text-[0.9375rem]">
-          {[["#perimetros", "Três perímetros"], ["#indicadores", "Indicadores"], ["#decisoes-fontes", "Decisões sobre as fontes"], ["#validacoes", "Validações"], ["#reproducao", "Reprodução"], ["#arquivos", "Arquivos"], ["#atualidade", "Atualidade e versões"]].map(([h, t]) => (
+          {[["#perimetros", "Três perímetros"], ["#referencias", "Referências"], ["#siglas", "Siglas"], ["#indicadores", "Indicadores"], ["#decisoes-fontes", "Decisões sobre as fontes"], ["#validacoes", "Validações"], ["#reproducao", "Reprodução"], ["#arquivos", "Arquivos"], ["#atualidade", "Atualidade e versões"]].map(([h, t]) => (
             <li key={h}><a href={h} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">{t}</a></li>
           ))}
         </ul>
+        <dl className="mt-6 grid max-w-[64rem] gap-x-10 gap-y-3 text-sm leading-snug sm:grid-cols-2">
+          <div><dt className="font-semibold text-obee-tinta">Quero entender o que um número significa</dt><dd className="text-carvao-muted">Três perímetros, Referências e Siglas, abaixo. Em cada medida, o botão Sobre este dado abre a ficha.</dd></div>
+          <div><dt className="font-semibold text-obee-tinta">Sou jornalista e preciso citar</dt><dd className="text-carvao-muted">Arquivos: CSV com fonte, endereço, data de captura, versão e hash. Cite a data de geração e o hash da linha.</dd></div>
+          <div><dt className="font-semibold text-obee-tinta">Sou gestor e quero saber por que uma capital ficou fora</dt><dd className="text-carvao-muted">Decisões sobre as fontes e Validações; em cada página, o aviso de capitais fora da comparação traz o motivo.</dd></div>
+          <div><dt className="font-semibold text-obee-tinta">Sou pesquisador e quero reproduzir</dt><dd className="text-carvao-muted">Reprodução: exemplos passo a passo, comando e arquivos do repositório; Atualidade e versões traz as capturas.</dd></div>
+        </dl>
       </section>
 
       <div className="mt-8 space-y-12">
@@ -64,6 +72,27 @@ export default function PaginaMetodos() {
           {g.universo.excluidos.map((e) => (
             <p key={e.cod_ibge} className="mt-3 max-w-prose2 text-sm leading-relaxed text-obee-tinta"><span className="font-semibold">Fora do recorte: {e.nome}.</span> {e.motivo}</p>
           ))}
+        </Secao>
+
+        <Secao id="referencias" titulo="Como as referências são calculadas" intro="As referências descrevem o grupo de capitais; não são meta, padrão nem classificação.">
+          <dl className="grid max-w-[64rem] gap-x-10 gap-y-3 text-sm leading-relaxed text-obee-tinta md:grid-cols-2">
+            <div><dt className="font-semibold">Quem entra</dt><dd className="text-carvao-muted">{g.politica_referencias.elegibilidade}</dd></div>
+            <div><dt className="font-semibold">Mediana</dt><dd className="text-carvao-muted">{g.politica_referencias.mediana}</dd></div>
+            <div><dt className="font-semibold">Média simples</dt><dd className="text-carvao-muted">{g.politica_referencias.media}</dd></div>
+            <div><dt className="font-semibold">Razão agregada</dt><dd className="text-carvao-muted">{g.politica_referencias.razao_agregada} Na unidade do indicador: por 10 mil habitantes, por 100 mil habitantes ou em %.</dd></div>
+            <div><dt className="font-semibold">Metade central</dt><dd className="text-carvao-muted">{g.politica_referencias.quartis} {g.politica_referencias.limiar_quartis_nota}</dd></div>
+            <div><dt className="font-semibold">Empates</dt><dd className="text-carvao-muted">{g.politica_referencias.empates}</dd></div>
+            <div><dt className="font-semibold">Referência nacional</dt><dd className="text-carvao-muted">{g.politica_referencias.nacional} Só aparece quando o conceito, o perímetro e o período são os mesmos; senão fica como contexto separado.</dd></div>
+            <div><dt className="font-semibold">Mínimo legal</dt><dd className="text-carvao-muted">15% da receita de impostos e transferências em ASPS (LC 141/2012, art. 7º): referência normativa, não meta.</dd></div>
+          </dl>
+        </Secao>
+
+        <Secao id="siglas" titulo="Siglas" intro="Todas as siglas usadas nas páginas do módulo, por extenso.">
+          <dl className="grid max-w-[64rem] gap-x-10 gap-y-1.5 text-sm leading-snug md:grid-cols-2">
+            {Object.entries(SIGLAS).filter(([s]) => ["DCA", "RREO", "MSC", "IPCA", "SUS", "SIOPS", "CNES", "APS", "ASPS", "ICSAP", "RIPSA", "SIH", "AIH", "ANS", "UBS", "eSF", "eAP", "Siconfi", "SIDRA", "DOU"].includes(s)).map(([s, t]) => (
+              <div key={s} className="flex gap-2"><dt className="w-14 shrink-0 font-semibold text-obee-tinta">{s}</dt><dd className="text-carvao-muted">{t}</dd></div>
+            ))}
+          </dl>
         </Secao>
 
         <Secao id="indicadores" titulo={`Catálogo de indicadores (${publicados.length} publicados, ${fichas.length - publicados.length} avaliados e não publicados)`} intro="Cada indicador tem ficha com definição, fórmula, fonte, período, perímetro, ausências, comparação, ressalvas e validações. Abra a ficha para ver os 16 campos.">
@@ -83,7 +112,8 @@ export default function PaginaMetodos() {
             <li>Baixe o CSV do indicador (seção Arquivos): cada linha traz valor, estado, nota, fonte, registro de origem, numerador e denominador, versão metodológica e o hash dos dados.</li>
             <li>Encontre a fonte e a data de captura no manifesto das capturas. Cada captura registra a URL, a data e o sha256 do arquivo original ou da resposta integral.</li>
             <li>Refaça o cálculo com a fórmula da ficha: o numerador e o denominador estão no CSV, e a população e o IPCA são os mesmos do painel de Educação nas capitais.</li>
-            <li>Para reconstruir tudo sem rede, no repositório: <code className="font-mono text-[0.8rem]">python3 -m pipeline.eficiencia_saude.run</code>. A reconstrução imprime as validações e termina com erro se alguma for reprovada.</li>
+            <li>Para reconstruir tudo sem rede, no <a href={REPOSITORIO} target="_blank" rel="noopener noreferrer" className="text-obee-dark underline underline-offset-4">repositório do Scrutiniums</a> (código em <code className="font-mono text-[0.8rem]">pipeline/eficiencia_saude</code>, recortes das fontes em <code className="font-mono text-[0.8rem]">pipeline/eficiencia_saude/seed</code>): <code className="font-mono text-[0.8rem]">python3 -m pipeline.eficiencia_saude.run</code>. A reconstrução imprime as validações e termina com erro se alguma for reprovada.</li>
+            <li>Conferências de integridade: o sha256 do manifesto vale para o conteúdo descomprimido de cada recorte (o hash do arquivo compactado difere). O <code className="font-mono text-[0.8rem]">hash_dados</code> é o sha256 do JSON das observações, com chaves ordenadas, separadores compactos e codificação UTF-8; reconstruir com o mesmo seed e o mesmo código reproduz o mesmo hash.</li>
           </ol>
           <details className="mt-4 max-w-prose2">
             <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Exemplos de reconstrução passo a passo (dado técnico)</summary>

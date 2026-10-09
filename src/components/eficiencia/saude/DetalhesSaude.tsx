@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { inteiro, percentual, reaisExtenso } from "@/lib/eficiencia/formato";
-import { composicao, composicaoAgregada, type CapitalPainel, type IndiceSaude, type LinhaComposicao } from "@/lib/eficiencia/saude/consulta";
+import { composicao, composicaoAgregada, type CapitalPainel, type ComposicaoAgregada, type IndiceSaude, type LinhaComposicao } from "@/lib/eficiencia/saude/consulta";
 import { ROTA_SAUDE } from "@/lib/eficiencia/saude/rotas";
 import type { ContextoFicha } from "../FichaConteudo";
 import { SobreDadoSaude as SobreEsteDado } from "./SobreDadoSaude";
@@ -33,6 +33,18 @@ function Composicao({ linhas, detalhe }: { linhas: LinhaComposicao[]; detalhe: (
   return <BarrasComposicao linhas={linhas.map((l) => ({ chave: l.chave, rotulo: l.rotulo, pct: l.participacao, detalhe: detalhe(l) }))} />;
 }
 
+/** Quantas capitais entram na soma e quais ficam de fora, com o motivo: o agregado nunca esconde o seu universo. */
+function UniversoDoAgregado({ ag, ano }: { ag: ComposicaoAgregada; ano: number }) {
+  return (
+    <p className="mt-3 max-w-prose2 text-sm leading-snug text-obee-tinta">
+      <span className="font-semibold">Soma de {ag.capitais} de {ag.universo} capitais em {ano}.</span> Cada capital pesa pelo seu valor.
+      {ag.fora.length > 0 && (
+        <> Fora da soma: {ag.fora.map((f) => `${f.cap.nome} (${f.cap.uf}), ${f.motivo}`).join("; ")}.</>
+      )}
+    </p>
+  );
+}
+
 const pctValor = (l: LinhaComposicao) => `${percentual(l.participacao, 1)} · ${reaisExtenso(l.valor)}`;
 
 function Aviso({ children }: { children: ReactNode }) {
@@ -56,11 +68,11 @@ export function DetalheGastos({ ix, cap, ano, contextos }: Base) {
   const cSub = cap ? composicao(ix, "sau.despesa.subfuncao", cap.cod, ano, sub) : null;
   const aSub = !cap ? composicaoAgregada(ix, "sau.despesa.subfuncao", ano, sub) : null;
   const cNat = cap ? composicao(ix, "sau.despesa.natureza", cap.cod, ano, nat) : null;
-  const aNat = !cap ? composicaoAgregada(ix, "sau.despesa.natureza", ano, nat) : null;
+  const aNat = !cap ? composicaoAgregada(ix, "sau.despesa.natureza", ano, nat, { exigeTodas: true }) : null;
   const cFon = cap ? composicao(ix, "sau.despesa.por_fonte", cap.cod, ano, fon) : null;
-  const aFon = !cap ? composicaoAgregada(ix, "sau.despesa.por_fonte", ano, fon) : null;
+  const aFon = !cap ? composicaoAgregada(ix, "sau.despesa.por_fonte", ano, fon, { exigeTodas: true }) : null;
   const dca = cap ? ix.ponto("sau.despesa.funcao_saude", cap.cod, ano, "nominal") : null;
-  const escopo = cap ? `${nomeCap}, exercício ${ano}` : `soma das capitais com valor comparável, exercício ${ano}`;
+  const escopo = (ag: ComposicaoAgregada | null) => (cap ? `${nomeCap}, exercício ${ano}` : ag ? `soma de ${ag.capitais} de ${ag.universo} capitais, exercício ${ano}` : `exercício ${ano}`);
   return (
     <div className="space-y-12">
       <Bloco id="gastos-perimetro" titulo="O que a despesa inclui, e o que não inclui" subtitulo="Os recursos executados pelo município são um dos três perímetros do módulo.">
@@ -83,25 +95,27 @@ export function DetalheGastos({ ix, cap, ano, contextos }: Base) {
       <Bloco
         id="gastos-subfuncao"
         titulo="Por subfunção orçamentária"
-        subtitulo={`Participação de cada subfunção na despesa liquidada na função Saúde. ${escopo}.`}
+        subtitulo={`Participação de cada subfunção na despesa liquidada na função Saúde. ${escopo(aSub)}.`}
         acao={fichaSub && <SobreEsteDado f={fichaSub} ctx={contextos[fichaSub.id]} />}
       >
         {cSub?.indisponivel && <Aviso>{cSub.indisponivel}</Aviso>}
         {cSub && !cSub.indisponivel && <Composicao linhas={cSub.linhas} detalhe={pctValor} />}
         {aSub && <Composicao linhas={aSub.linhas} detalhe={pctValor} />}
-        {aSub && <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted">Soma das despesas de {aSub.capitais} capitais: cada capital pesa pelo seu valor. A classificação por subfunção é contábil e varia entre municípios; subfunção sem linha na fonte não aparece e não vale zero.</p>}
+        {aSub && <UniversoDoAgregado ag={aSub} ano={ano} />}
+        {aSub && <p className="mt-2 max-w-prose2 text-xs leading-snug text-carvao-muted">A classificação por subfunção é contábil e varia entre municípios. Subfunção sem linha na declaração não aparece: a soma das linhas de cada declaração reproduz o total da função.</p>}
         {cSub && !cSub.indisponivel && <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted">A classificação por subfunção é contábil: a subfunção Atenção básica não é a despesa da rede de atenção primária, e a prática de classificação varia entre municípios.</p>}
       </Bloco>
 
       <Bloco
         id="gastos-natureza"
         titulo="Por natureza da despesa"
-        subtitulo={`Pessoal, outras despesas correntes e despesas de capital, pela Matriz de Saldos Contábeis. ${escopo}.`}
+        subtitulo={`Pessoal, outras despesas correntes e despesas de capital, pela Matriz de Saldos Contábeis. ${escopo(aNat)}.`}
         acao={fichaNat && <SobreEsteDado f={fichaNat} ctx={contextos[fichaNat.id]} />}
       >
         {cNat?.indisponivel && <Aviso>{cNat.indisponivel}</Aviso>}
         {cNat && !cNat.indisponivel && <Composicao linhas={cNat.linhas} detalhe={pctValor} />}
         {aNat && <Composicao linhas={aNat.linhas} detalhe={pctValor} />}
+        {aNat && <UniversoDoAgregado ag={aNat} ano={ano} />}
         <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted">
           A natureza não indica quem presta o serviço: outras despesas correntes incluem serviços de terceiros, organizações sociais e consórcios, e a composição muda conforme o modelo de gestão sem mudar o que é entregue. A abertura só é publicada onde as três categorias reproduzem a <Siglas texto="DCA" />.
         </p>
@@ -110,12 +124,13 @@ export function DetalheGastos({ ix, cap, ano, contextos }: Base) {
       <Bloco
         id="gastos-fonte"
         titulo="Por fonte de recursos, segundo o SIOPS"
-        subtitulo={`Despesa total em saúde empenhada, por fonte, no perímetro declarado pelo município. ${escopo}. Contexto: não é a despesa liquidada da DCA e não se soma a ela.`}
+        subtitulo={`Despesa total em saúde empenhada, por fonte, no perímetro declarado pelo município. ${escopo(aFon)}. Contexto: não é a despesa liquidada da DCA e não se soma a ela.`}
         acao={fichaFon && <SobreEsteDado f={fichaFon} ctx={contextos[fichaFon.id]} />}
       >
         {cFon?.indisponivel && <Aviso>{cFon.indisponivel}</Aviso>}
-        {cFon && !cFon.indisponivel && <Composicao linhas={cFon.linhas.filter((l) => l.valor > 0 || true)} detalhe={pctValor} />}
+        {cFon && !cFon.indisponivel && <Composicao linhas={cFon.linhas} detalhe={pctValor} />}
         {aFon && <Composicao linhas={aFon.linhas} detalhe={pctValor} />}
+        {aFon && <UniversoDoAgregado ag={aFon} ano={ano} />}
         <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted">
           A fonte financia, e não prova quem executa o serviço. A participação de transferências do <Siglas texto="SUS" /> descreve a origem declarada dos recursos e depende da divisão de responsabilidades no território; não é indicador de mérito.
         </p>
@@ -153,6 +168,7 @@ const COMP_UBS_RETRATO: [string, string][] = [
   ["publicas_sus", "Públicas com atendimento ambulatorial SUS declarado"],
   ["nao_publicas", "Natureza não pública"],
   ["gestao_municipal", "Gestão municipal"],
+  ["gestao_municipal_nao_publica", "Gestão municipal e natureza jurídica não pública (fora da contagem de UBS públicas)"],
   ["gestao_estadual", "Gestão estadual"],
   ["gestao_dupla", "Gestão dupla"],
 ];
@@ -193,17 +209,18 @@ export function DetalheRede({ ix, cap, ano, contextos }: Base) {
     return [rot, cap ? (v && v.valor !== null ? inteiro(v.valor) : "sem valor") : inteiro(s.total)];
   });
   const eq = (k: string, c: CapitalPainel) => ix.ponto("sau.aps.equipes", c.cod, ano, k);
+  const capsComEquipe = ix.d.capitais.filter((c) => eq("esf", c).status === "OBSERVADO" && eq("esf", c).valor !== null);
   const linhasEq = TIPOS_EQUIPE.map(([k, rot]) => {
     if (cap) {
       const p = eq(k, cap);
       return [rot, p.valor === null ? "sem valor" : inteiro(p.valor)];
     }
     let t = 0;
-    for (const c of ix.d.capitais) t += eq(k, c).valor ?? 0;
+    for (const c of capsComEquipe) t += eq(k, c).valor ?? 0;
     return [rot, inteiro(t)];
   });
   const cob = cap ? ix.ponto("sau.aps.cobertura_potencial", cap.cod, ano, null) : null;
-  const rotulo = cap ? `${cap.nome} (${cap.uf})` : "soma das 26 capitais";
+  const rotulo = cap ? `${cap.nome} (${cap.uf})` : `soma de ${capsComEquipe.length} de ${ix.d.capitais.length} capitais`;
   return (
     <div className="space-y-12">
       <Bloco id="rede-conceitos" titulo="Estabelecimento, equipe, cobertura e pessoas atendidas são coisas diferentes" subtitulo="O módulo mostra cadastro e capacidade registrada, não atendimento efetivo.">
@@ -248,7 +265,8 @@ export function DetalheRede({ ix, cap, ano, contextos }: Base) {
                 Capacidade das equipes: <span className="tabular-nums font-semibold">{cob.numerador !== null ? inteiro(cob.numerador) : "sem valor"}</span> pessoas. População de referência do Ministério da Saúde: <span className="tabular-nums font-semibold">{cob.denominador !== null ? inteiro(cob.denominador) : "sem valor"}</span> habitantes. Cobertura potencial: <span className="tabular-nums font-semibold">{percentual(cob.valor, 2)}</span>.
               </p>
               {cob.valor > 100 && <p className="mt-2">O valor passa de 100%: a capacidade das equipes registradas é maior que a população de referência, e o serviço não limita o resultado. Isso não significa que toda a população seja atendida.</p>}
-              {cob.quebraSerie && <p className="mt-2 text-carvao-muted">Dezembro de 2021 segue regra anterior e fica fora das comparações.</p>}
+              {ano === 2021 && <p className="mt-2 text-carvao-muted">Dezembro de 2021 segue regra anterior de equipes e de cadastro e não reproduz a fórmula da Nota Técnica nº 2/2025: fica fora das comparações.</p>}
+              {ano === 2022 && <p className="mt-2 text-carvao-muted">A população de referência de dezembro de 2022 é anterior ao Censo 2022. De dezembro de 2023 em diante a base é outra, e a variação entre esses meses não é uma medida direta da cobertura.</p>}
               <p className="mt-3 text-xs text-carvao-muted">A população de referência é a do ano anterior ao da competência e muda a cada janeiro: um salto entre dezembro e janeiro é efeito do denominador, não da capacidade.</p>
             </div>
           )}
@@ -265,16 +283,16 @@ export function DetalheResultados({ ix, cap, ano, contextos }: Base) {
   const fichaPl = ix.d.fichas.find((f) => f.id === "sau.ctx.cobertura_planos");
   const grupos: [string, string][] = Object.entries(ix.d.rotulos.grupos);
   const cGr = cap ? composicao(ix, "sau.icsap.grupos", cap.cod, ano, grupos) : null;
-  const aGr = !cap ? composicaoAgregada(ix, "sau.icsap.grupos", ano, grupos) : null;
+  const aGr = !cap ? composicaoAgregada(ix, "sau.icsap.grupos", ano, grupos, { exigeTodas: true }) : null;
   const linhas = (cGr?.linhas ?? aGr?.linhas ?? []).slice().sort((a, b) => b.valor - a.valor);
-  const rotulo = cap ? `${cap.nome} (${cap.uf})` : "soma das capitais com valor comparável";
+  const rotulo = cap ? `${cap.nome} (${cap.uf})` : aGr ? `soma de ${aGr.capitais} de ${aGr.universo} capitais` : "";
   const plano = cap ? ix.ponto("sau.ctx.cobertura_planos", cap.cod, ano, null) : null;
   const planosVals = ix.d.capitais.map((c) => ix.ponto("sau.ctx.cobertura_planos", c.cod, ano, null).valor).filter((v): v is number => v !== null).sort((a, b) => a - b);
   return (
     <div className="space-y-12">
       <Bloco id="res-perimetro" titulo="O que este resultado mede, e o que não mede" subtitulo="Resultado por residência: descreve o sistema de saúde que atende os moradores, não a produção da prefeitura.">
         <div className="grid max-w-[60rem] gap-x-10 gap-y-4 text-sm leading-relaxed text-obee-tinta md:grid-cols-2">
-          <p><span className="font-semibold">Universo:</span> internações pagas pelo <Siglas texto="SUS" />, de residentes da capital, por ano de processamento da <Siglas texto="AIH" />. A internação de um morador em outro município conta para a capital de residência. Por local de internação, as capitais teriam de 1,07 a 2,79 vezes as internações por residência (2023), por isso o módulo usa residência.</p>
+          <p><span className="font-semibold">Universo:</span> internações pagas pelo <Siglas texto="SUS" />, de residentes da capital, por ano de processamento da <Siglas texto="AIH" />. A internação de um morador em outro município conta para a capital de residência. Por local de internação o número seria outro, sobretudo em capitais que são polo regional; por isso o módulo usa residência.</p>
           <p><span className="font-semibold">Só SUS:</span> internações pagas por planos privados ou particulares não entram, e a cobertura de planos varia muito entre as capitais (bloco abaixo). A <Siglas texto="AIH" /> é a unidade, não a pessoa: reinternação e transferência contam mais de uma vez.</p>
           <p><span className="font-semibold">Taxa bruta:</span> não é ajustada por idade nem por cobertura de planos. Ajuste exigiria população por idade, população padrão e fórmula verificada, e não foi feito.</p>
           <p><span className="font-semibold">Não é falha de gestão:</span> cada internação não é um caso individual evitável. A taxa também depende de oferta de leitos, critérios de internação e registro, e não identifica a causa de diferenças entre capitais.</p>
@@ -289,6 +307,7 @@ export function DetalheResultados({ ix, cap, ano, contextos }: Base) {
       >
         {cGr?.indisponivel && <Aviso>{cGr.indisponivel}</Aviso>}
         {linhas.length > 0 && <Composicao linhas={linhas} detalhe={(l) => `${percentual(l.participacao, 1)} · ${inteiro(l.valor)}`} />}
+        {aGr && <UniversoDoAgregado ag={aGr} ano={ano} />}
         <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted">Os grupos descrevem o diagnóstico principal da internação paga pelo SUS, não a incidência da doença nem o que a atenção primária teria evitado em cada caso. A composição por idade de cada capital influencia a distribuição.</p>
       </Bloco>
 
@@ -305,7 +324,7 @@ export function DetalheResultados({ ix, cap, ano, contextos }: Base) {
             </p>
           )}
           {!plano && <p>Entre as {planosVals.length} capitais, a cobertura de planos privados vai de {planosVals.length ? percentual(planosVals[0], 1) : "sem valor"} a {planosVals.length ? percentual(planosVals[planosVals.length - 1], 1) : "sem valor"} em dezembro de {ano}.</p>}
-          <p className="mt-2 text-carvao-muted">Capitais com mais beneficiários de planos têm menos internações pagas pelo SUS por habitante por esse motivo. O módulo não estima usuários do SUS subtraindo beneficiários da população.</p>
+          <p className="mt-2 text-carvao-muted">As internações pagas por planos privados não entram na taxa. A cobertura de planos varia entre as capitais e é mostrada aqui como contexto, sem relação estabelecida com a taxa. O módulo não estima usuários do SUS subtraindo beneficiários da população.</p>
         </div>
       </Bloco>
 
@@ -315,7 +334,7 @@ export function DetalheResultados({ ix, cap, ano, contextos }: Base) {
           <li><span className="font-semibold">Filas e tempo de espera:</span> não pesquisados nesta rodada; volume de consultas não substitui acesso oportuno.</li>
           <li><span className="font-semibold">Custo por atendimento ou internação:</span> não calculado, porque a despesa da função Saúde e a produção de um serviço não são do mesmo processo assistencial.</li>
         </ul>
-        <p className="mt-3 text-xs"><a href={`${ROTA_SAUDE}/metodos#decisoes-fontes`} className="text-obee-dark underline underline-offset-4">Ver as decisões sobre cada fonte em Dados e métodos</a></p>
+        <p className="mt-3 text-sm"><a href={`${ROTA_SAUDE}/metodos#decisoes-fontes`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Ver as decisões sobre cada fonte em Dados e métodos</a></p>
       </Bloco>
     </div>
   );

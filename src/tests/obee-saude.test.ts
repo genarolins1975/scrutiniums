@@ -4,11 +4,14 @@ import { join } from "node:path";
 import { dadosSaude, goldSaude, INDICADORES_DA_PAGINA } from "@/lib/eficiencia/saude/dados";
 import {
   CABECALHO_CSV_COMPARACAO,
+  CABECALHO_CSV_SERIE,
   IndiceSaude,
+  avisoDoPeriodo,
   comparar,
   composicao,
   composicaoAgregada,
   linhasCsvComparacao,
+  linhasCsvSerie,
   medida,
   notasMateriais,
   serie,
@@ -16,7 +19,7 @@ import {
   variacao,
 } from "@/lib/eficiencia/saude/consulta";
 import { contextosSaude } from "@/lib/eficiencia/saude/contexto";
-import { fraseAmplitude, fraseCapital, fraseEvolucao } from "@/lib/eficiencia/saude/frases";
+import { fraseAmplitude, fraseCapital, fraseDiferenca, fraseEvolucao, minuscula, posicaoNaMediana } from "@/lib/eficiencia/saude/frases";
 import { MEDIDAS_ORDEM, MEDIDAS_SAUDE, TEMAS_SAUDE } from "@/lib/eficiencia/saude/medidas";
 import { ABAS_SAUDE, CAMINHO_COMPARAR, CAMINHO_METODOS, CAMINHO_TEMA, hrefSaude, ROTA_ENTRADA, ROTA_SAUDE } from "@/lib/eficiencia/saude/rotas";
 import sitemap from "@/app/sitemap";
@@ -139,17 +142,40 @@ describe("regras de comparação", () => {
     expect([...v].sort((x, y) => y - x)).toEqual(v);
   });
 
-  it("o CSV da comparação tem uma linha por capital do grupo e os mesmos valores da tabela", () => {
+  it("o CSV da comparação tem uma linha por capital do grupo, os mesmos valores da tabela e metadados que o explicam fora do site", () => {
     const c = comparar(ix, m, 2025, OPC, "todas", null, "alfabetica");
-    const linhas = linhasCsvComparacao(ix, m, 2025, OPC, c, "exercício de 2025", "Siconfi, IBGE");
+    const linhas = linhasCsvComparacao(ix, m, 2025, OPC, c, "exercício de 2025");
     expect(linhas).toHaveLength(26);
     expect(linhas.every((l) => l.length === CABECALHO_CSV_COMPARACAO.length)).toBe(true);
-    const idxNa = CABECALHO_CSV_COMPARACAO.indexOf("Na comparação");
-    expect(linhas.filter((l) => l[idxNa] === "sim")).toHaveLength(c.incluidas.length);
+    const col = (nome: string) => CABECALHO_CSV_COMPARACAO.findIndex((h) => h.startsWith(nome));
+    expect(linhas.filter((l) => l[col("Na comparação")] === "sim")).toHaveLength(c.incluidas.length);
     const macapa = linhas.find((l) => l[0] === "Macapá")!;
-    expect(macapa[idxNa]).toBe("não");
-    const idxNum = CABECALHO_CSV_COMPARACAO.indexOf("Valor numérico");
-    for (const i of c.incluidas) expect(Number(linhas.find((l) => l[0] === i.cap.nome)![idxNum])).toBe(i.valor);
+    expect(macapa[col("Na comparação")]).toBe("não");
+    for (const i of c.incluidas) expect(Number(linhas.find((l) => l[0] === i.cap.nome)![col("Valor numérico")])).toBe(i.valor);
+    for (const l of linhas) {
+      expect(l[col("Fonte")]).toContain("Siconfi");
+      expect(l[col("Fonte")]).not.toMatch(/siconfi_dca/);
+      expect(l[col("Endereço da fonte")]).toMatch(/^https?:\/\//);
+      expect(l[col("Data de captura")]).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(l[col("Hash dos dados")]).toBe(d.meta.hash_dados);
+      expect(l[col("Mediana do grupo")]).toBe(String(c.ref!.mediana));
+      expect(l[col("Leia antes de usar")]).toMatch(/não classificam governos/);
+    }
+  });
+
+  it("o CSV da série entrega os anos mostrados, com marca de base e mediana do ano", () => {
+    const sp = cap("São Paulo");
+    const linhas = linhasCsvSerie(ix, m, OPC, sp, null, (a) => `exercício de ${a}`);
+    expect(linhas).toHaveLength(5);
+    expect(linhas.every((l) => l.length === CABECALHO_CSV_SERIE.length)).toBe(true);
+    const col = (nome: string) => CABECALHO_CSV_SERIE.findIndex((h) => h.startsWith(nome));
+    expect(linhas.map((l) => l[col("Marca de base")])).toEqual(["nao", "sim", "sim", "nao", "nao"]);
+    expect(linhas.map((l) => l[col("Período")])).toEqual([2021, 2022, 2023, 2024, 2025].map((a) => `exercício de ${a}`));
+    const medianas = serieDaMediana(ix, m, OPC, null);
+    linhas.forEach((l, i) => expect(Number(l[col("Mediana das capitais")])).toBe(medianas[i].valor));
+    const semCapital = linhasCsvSerie(ix, m, OPC, null, null, (a) => String(a));
+    expect(semCapital).toHaveLength(5);
+    expect(semCapital[0][0]).toMatch(/Mediana/);
   });
 
   it("notas materiais das capitais incluídas aparecem agrupadas por texto", () => {
@@ -160,19 +186,42 @@ describe("regras de comparação", () => {
 });
 
 describe("séries e quebras", () => {
-  it("a série de uma capital não ponteia anos sem valor e marca a quebra de base populacional de 2021", () => {
+  it("a série de uma capital não ponteia anos sem valor e marca a base da população de cada ano", () => {
     const sp = cap("São Paulo");
     const s = serie(ix, medida("despesa_hab"), sp.cod, OPC);
     expect(s.map((p) => p.ano)).toEqual([2021, 2022, 2023, 2024, 2025]);
-    expect(s[0].quebraSerie).toBe(true);
-    expect(s[1].quebraSerie).toBe(false);
+    // 2021: estimativa anterior ao Censo; 2022 e 2023: a mesma população do Censo 2022; 2024 e 2025: estimativas posteriores
+    expect(s.map((p) => p.quebraSerie)).toEqual([false, true, true, false, false]);
   });
 
-  it("a variação entre 2021 e 2022 por habitante é bloqueada pela mudança de base populacional; 2024 e 2025 têm variação", () => {
+  it("a variação por habitante só existe dentro da mesma base: 2022 para 2023 e 2024 para 2025", () => {
     const sp = cap("São Paulo");
     const s = serie(ix, medida("despesa_hab"), sp.cod, OPC);
-    expect(variacao(s[1], s[0])).toEqual({ bloqueio: expect.stringMatching(/base populacional|fora das comparações/) });
+    expect(variacao(s[1], s[0])).toEqual({ bloqueio: expect.stringMatching(/base populacional/) });
+    expect(variacao(s[2], s[1])).toHaveProperty("pct");
+    expect(variacao(s[3], s[2])).toEqual({ bloqueio: expect.stringMatching(/base populacional/) });
     expect(variacao(s[4], s[3])).toHaveProperty("pct");
+  });
+
+  it("a frase da evolução usa o último trecho da mesma base e diz o que ficou de fora", () => {
+    const m2 = medida("despesa_hab");
+    const pts = (flags: boolean[]) => flags.map((q, i) => ({ ano: 2021 + i, valor: 100 + i, elegivel: true, quebraSerie: q }));
+    const f = fraseEvolucao(pts([false, true, true, false, false]), m2, "A", "a base mudou");
+    expect(f).toMatch(/em 2024 para .* em 2025/);
+    expect(f).toMatch(/2021, 2022, 2023 usam outra base/);
+    expect(fraseEvolucao(pts([false, true, false]), m2, "A", "a base mudou")).toMatch(/sem variação direta/);
+    expect(fraseEvolucao(pts([false, false, false]), m2, "A", "x")).toMatch(/de .* em 2021 para .* em 2023\.$/);
+  });
+
+  it("a cobertura potencial marca a troca de base da população de referência entre dezembro de 2022 e 2023", () => {
+    const sp = cap("São Paulo");
+    const s = serie(ix, medida("cobertura_aps"), sp.cod, OPC);
+    expect(s.map((p) => p.quebraSerie)).toEqual([true, true, false, false, false]);
+    expect(variacao(s[2], s[1])).toEqual({ bloqueio: expect.stringMatching(/base populacional|fora das comparações/) });
+    expect(variacao(s[3], s[2])).toHaveProperty("pct");
+    expect(avisoDoPeriodo(medida("cobertura_aps"), 2022, OPC, d)).toMatch(/anterior ao Censo 2022/);
+    expect(avisoDoPeriodo(medida("cobertura_aps"), 2021, OPC, d)).toMatch(/regra anterior/);
+    expect(avisoDoPeriodo(medida("cobertura_aps"), 2024, OPC, d)).toBeNull();
   });
 
   it("a cobertura potencial de 2021 não entra nas comparações", () => {
@@ -218,11 +267,65 @@ describe("composições", () => {
     expect(r.indisponivel).toBeTruthy();
   });
 
-  it("a composição agregada só soma capitais com todas as categorias observadas e elegíveis", () => {
-    const r = composicaoAgregada(gastos, "sau.despesa.natureza", 2024, NAT);
+  it("a composição agregada de natureza só soma capitais com todas as categorias observadas e elegíveis, e nomeia as que ficam fora", () => {
+    const r = composicaoAgregada(gastos, "sau.despesa.natureza", 2024, NAT, { exigeTodas: true });
     expect(r.capitais).toBeGreaterThan(15);
-    expect(r.capitais).toBeLessThanOrEqual(26);
+    expect(r.capitais + r.fora.length).toBe(26);
     expect(r.linhas.reduce((s, l) => s + l.participacao, 0)).toBeCloseTo(100, 1);
+    const r25 = composicaoAgregada(gastos, "sau.despesa.natureza", 2025, NAT, { exigeTodas: true });
+    expect(r25.fora.map((f) => f.cap.nome)).toContain("Macapá");
+    expect(r25.fora.find((f) => f.cap.nome === "Macapá")!.motivo).toMatch(/não publicada|fora das comparações/);
+  });
+
+  it("a composição agregada por subfunção usa as capitais comparáveis (25 ou 26), não 1 a 6, e reproduz o total das despesas somadas", () => {
+    for (const ano of [2021, 2022, 2023, 2024, 2025]) {
+      const r = composicaoAgregada(gastos, "sau.despesa.subfuncao", ano, SUBS);
+      expect(r.capitais, String(ano)).toBeGreaterThanOrEqual(25);
+      expect(r.capitais + r.fora.length).toBe(26);
+      const somaCats = r.linhas.reduce((s, l) => s + l.valor, 0);
+      const somaTotais = gastos.d.capitais
+        .filter((c) => !r.fora.some((f) => f.cap.cod === c.cod))
+        .reduce((s, c) => s + (gastos.ponto("sau.despesa.funcao_saude", c.cod, ano, "nominal").valor ?? 0), 0);
+      expect(somaCats).toBeCloseTo(somaTotais, -1);
+      expect(r.linhas.reduce((s, l) => s + l.participacao, 0)).toBeCloseTo(100, 1);
+    }
+    expect(composicaoAgregada(gastos, "sau.despesa.subfuncao", 2021, SUBS).fora.map((f) => f.cap.nome)).toContain("Campo Grande");
+  });
+});
+
+describe("razão agregada e comparações na unidade da medida", () => {
+  it("a razão agregada tem a unidade do indicador: fica entre o menor e o maior valor do grupo, em todas as medidas e anos", () => {
+    const comRazao = Object.values(MEDIDAS_SAUDE).filter((x) => x.razaoAgregada);
+    expect(comRazao.length).toBeGreaterThanOrEqual(8);
+    for (const x of comRazao) {
+      for (const ano of ix.anos(x.indicador, x.componente("nominal", "ripsa"))) {
+        const r = ix.referencia(x.indicador, x.componente("nominal", "ripsa"), ano, "todas");
+        if (!r || r.razaoAgregada === null || r.minimo === null || r.maximo === null) continue;
+        expect(r.razaoAgregada, `${x.id} ${ano}`).toBeGreaterThanOrEqual(r.minimo - 1e-6);
+        expect(r.razaoAgregada, `${x.id} ${ano}`).toBeLessThanOrEqual(r.maximo + 1e-6);
+      }
+    }
+    const esf = ix.referencia("sau.aps.equipes_por_10mil", "esf", 2025, "todas")!;
+    expect(esf.razaoAgregada!).toBeCloseTo(1.89, 1);
+    const icsap = ix.referencia("sau.icsap.taxa", "ripsa", 2024, "todas")!;
+    expect(icsap.razaoAgregada!).toBeCloseTo(776.1, 0);
+  });
+
+  it("diferença entre duas capitais: pontos percentuais para parcelas, unidade explícita nas razões, sem percentual sobre totais", () => {
+    const asps = medida("asps_pct");
+    expect(fraseDiferenca({ nome: "A", valor: 21.8 }, { nome: "B", valor: 18.5 }, asps, 2025)).toMatch(/3,3 pontos percentuais a mais que B/);
+    expect(fraseDiferenca({ nome: "A", valor: 21.8 }, { nome: "B", valor: 18.5 }, asps, 2025)).not.toMatch(/maior|menor/);
+    expect(fraseDiferenca({ nome: "A", valor: 800 }, { nome: "B", valor: 1655 }, medida("icsap_taxa"), 2024)).toMatch(/855 internações por 100 mil habitantes a menos que B/);
+    expect(fraseDiferenca({ nome: "A", valor: 3e9 }, { nome: "B", valor: 1e9 }, medida("despesa"), 2025)).not.toMatch(/%/);
+    expect(posicaoNaMediana(23342248911, 1.6e8, medida("despesa"))).not.toMatch(/%/);
+    expect(posicaoNaMediana(21.8, 20.5, asps)).toMatch(/pontos percentuais acima/);
+  });
+
+  it("a primeira letra minúscula preserva siglas: UBS e ICSAP não viram uBS e iCSAP", () => {
+    expect(minuscula("UBS públicas ativas")).toBe("UBS públicas ativas");
+    expect(minuscula("ICSAP por 100 mil")).toBe("ICSAP por 100 mil");
+    expect(minuscula("Equipes de Saúde da Família")).toBe("equipes de Saúde da Família");
+    expect(minuscula("eSF por 10 mil")).toBe("eSF por 10 mil");
   });
 });
 
@@ -282,7 +385,7 @@ describe("medidas, frases e rotas", () => {
 /* ------------------------------------------------------------------ neutralidade */
 
 const PROIBIDAS =
-  /\b(eficiente|ineficiente|ineficiência|desperdício|desperdicio|melhores?|piores?|ranking|insights?|principais achados|nossa análise|o que os dados revelam|merece atenção|sinaliza|excesso|bom desempenho|mau desempenho|destaque positivo|destaque negativo|campeã|lanterna)\b/i;
+  /\b(eficiente|ineficiente|ineficiência|desperdício|desperdicio|melhores?|piores?|ranking|insights?|principais achados|nossa análise|o que os dados revelam|merece atenção|sinaliza|excesso|bom desempenho|mau desempenho|destaque positivo|destaque negativo|campeã|lanterna|por esse motivo|devido a|em razão d[oae]|em consequência d[oae]|por causa d[oae]|1,07 a 2,79)\b/i;
 
 function arquivos(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? arquivos(join(dir, e.name)) : [join(dir, e.name)]));
