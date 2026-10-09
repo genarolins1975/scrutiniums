@@ -2,8 +2,8 @@
 
 export function TabelaSimples({ legenda, cabecalho, linhas }: { legenda: string; cabecalho: string[]; linhas: (string | number)[][] }) {
   return (
-    <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={`${legenda} (tabela; role na horizontal se necessário)`}>
-      <table className="w-full min-w-[22rem] border-collapse text-sm">
+    <div className="tabela-scroll mt-2 min-w-0 max-w-full" tabIndex={0} role="region" aria-label={`${legenda} (tabela; role na horizontal se necessário)`}>
+      <table className="w-full min-w-[18rem] border-collapse text-sm">
         <caption className="sr-only">{legenda}</caption>
         <thead>
           <tr>

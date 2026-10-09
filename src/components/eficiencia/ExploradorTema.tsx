@@ -517,6 +517,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
           Referências para ler o número
         </h2>
         <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+          {visao === "evolucao" ? `As referências valem para ${periodo}. ` : ""}
           {avisoDoGrupo(medida)}
         </p>
         <div className="mt-6">

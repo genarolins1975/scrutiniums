@@ -302,3 +302,15 @@ describe("frase da capital e diferença da tabela dizem o mesmo número", () => 
     expect(n).toBeGreaterThan(40);
   });
 });
+
+describe("CSV da série: marca de base e mudança de base", () => {
+  it("a mudança só é 'sim' quando a marca difere da do último ano com valor elegível", () => {
+    const base = serie(ix, "despesa_hab", d.capitais[0].cod, "total", "nominal", "matematica");
+    const sint = [true, false, false, true, true].map((q, i) => ({ ...base[0], ano: 2021 + i, valor: 100 + i, elegivel: true, status: "OBSERVADO" as const, quebraSerie: q }));
+    const linhas = linhasCsvSerie(d, "despesa_hab", "total", "nominal", "matematica", null, sint, []);
+    const im = CABECALHO_CSV_SERIE.indexOf("mudanca_de_base");
+    const ib = CABECALHO_CSV_SERIE.indexOf("marca_de_base");
+    expect(linhas.map((l) => l[ib])).toEqual(["sim", "nao", "nao", "sim", "sim"]);
+    expect(linhas.map((l) => l[im])).toEqual(["nao", "sim", "nao", "sim", "nao"]);
+  });
+});

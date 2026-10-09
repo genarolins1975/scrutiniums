@@ -150,7 +150,7 @@ function CapituloRecursos({
   const ref = r.referencia;
   const vazio = !r.menor || !r.maior || ref?.mediana == null;
   return (
-    <section aria-labelledby={idTitulo} id={`capitulo-${c.id}`} className="scroll-mt-24">
+    <section aria-labelledby={idTitulo} id={`capitulo-${c.id}`} className="min-w-0 scroll-mt-24">
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
         <div>
           <Etiqueta numero={c.numero} texto={c.etiqueta.toUpperCase()} />
@@ -362,7 +362,7 @@ function CapituloReferencia({ c, cap, fichas }: { c: CapituloPanorama; cap: stri
   const oficial = r.externas.find((e) => e.classe === "oficial") ?? null;
   const vazio = !r.menor || !r.maior || ref?.mediana == null;
   return (
-    <section aria-labelledby={idTitulo} id={`capitulo-${c.id}`} className="scroll-mt-24">
+    <section aria-labelledby={idTitulo} id={`capitulo-${c.id}`} className="min-w-0 scroll-mt-24">
       <Etiqueta numero={c.numero} texto={c.etiqueta.toUpperCase()} />
       <h2 id={idTitulo} className="mt-2 font-serif text-[1.9rem] leading-[1.15] text-obee-tinta md:text-[2.35rem]">
         {r.pergunta}

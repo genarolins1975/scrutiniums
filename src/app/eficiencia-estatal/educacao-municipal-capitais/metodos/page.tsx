@@ -132,8 +132,8 @@ function ComoLer({ g }: { g: GoldEducacao }) {
           O gasto total mede volume e depende do tamanho da cidade. Por habitante, ele coloca capitais de portes diferentes na mesma escala territorial. Por matrícula, ele aproxima a despesa da rede atendida: do total
           declarado na DCA sai o que não tem matrícula correspondente (transferências, delegações, inativos, ensino superior), e a ponte mostra cada parcela, inclusive a de beneficiário indeterminado. Nenhuma das três escalas substitui as outras, e nenhuma
           é custo integral de um aluno. A despesa de toda a educação tampouco é específica de uma etapa:{" "}
-          <Link href={`${hrefTema("gastos", { med: "despesa_mat" })}#ponte`} className="text-obee-dark underline underline-offset-2">
-            veja a ponte na área de gastos
+          <Link href={`${hrefTema("gastos", { med: "despesa_mat", vis: "detalhe" })}`} className="text-obee-dark underline underline-offset-2">
+            veja a ponte na área de gastos (escolha uma capital para ver a dela)
           </Link>
           .
         </p>

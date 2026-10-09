@@ -635,7 +635,7 @@ export const CABECALHO_CSV_COMPARACAO = [
 
 export const CABECALHO_CSV_SERIE = [
   "indicador_id", "indicador", "serie_de", "etapa", "componente", "ano", "valor_numerico", "valor_exibido", "unidade", "estado_do_dado",
-  "elegivel_comparacao", "mudanca_de_base", "mediana_das_capitais", "capitais_na_mediana", "nota", "versao_metodologica", "dados_gerados_em", "hash_dados", "fonte",
+  "elegivel_comparacao", "marca_de_base", "mudanca_de_base", "mediana_das_capitais", "capitais_na_mediana", "nota", "versao_metodologica", "dados_gerados_em", "hash_dados", "fonte",
 ];
 
 /** Série ao longo dos anos de uma capital (ou da mediana das capitais), com a mediana de referência e o estado de cada ano. */
@@ -648,12 +648,14 @@ export function linhasCsvSerie(
   const e = etapaDaMedida(m, etapa);
   const k = componente(m, moeda, disc);
   const medPorAno = new Map(medianas.map((x) => [x.ano, x]));
-  return pontos.map((p) => {
+  return pontos.map((p, i) => {
     const med = medPorAno.get(p.ano);
+    const anterior = [...pontos.slice(0, i)].reverse().find((x) => x.valor !== null && x.elegivel);
+    const mudou = p.valor !== null && p.elegivel && !!anterior && anterior.quebraSerie !== p.quebraSerie;
     return [
       md.indicador, f.nome, cap ? `${cap.nome} (${cap.uf})` : "Mediana das capitais", e ? nomeEtapa(d, e) : "Não se aplica", rotuloComponente(d, md.indicador, k),
       String(p.ano), p.valor === null ? "" : String(p.valor), p.valor === null ? "" : formata(m, p.valor), unidade(m, moeda), ROTULO_STATUS[p.status],
-      p.valor === null ? "" : p.elegivel ? "sim" : "nao", p.quebraSerie ? "sim" : "nao", med?.valor == null ? "" : String(med.valor), med ? String(med.n) : "",
+      p.valor === null ? "" : p.elegivel ? "sim" : "nao", p.quebraSerie ? "sim" : "nao", mudou ? "sim" : "nao", med?.valor == null ? "" : String(med.valor), med ? String(med.n) : "",
       p.nota ?? "", f.versao_metodologica, d.meta.gerado_em, d.meta.hash_dados, fonteLegivel(d, md.indicador, p.ano),
     ];
   });
@@ -1179,7 +1181,8 @@ const DESCRICAO_COLUNA: Record<string, string> = {
   diferenca_para_a_mediana: "Diferença descritiva entre a capital e a mediana do grupo, na unidade da medida; não é avaliação.",
   ano: "Ano do recorte: exercício financeiro, Censo Escolar ou edição bienal.",
   serie_de: "Capital da série, ou a mediana das capitais quando nenhuma foi escolhida.",
-  mudanca_de_base: "'sim' quando o valor do ano usa outra base que o do ano anterior (população de referência, por exemplo); os dois lados não são diretamente comparáveis.",
+  marca_de_base: "'sim' quando o valor do ano pertence a uma base marcada (por exemplo, população de 2021 pelo Censo de 2010 ou população de 2023 pela relação do DOU); 'nao' nas demais. Anos seguidos com a mesma marca têm a mesma base.",
+  mudanca_de_base: "'sim' quando a marca de base do ano difere da do último ano anterior com valor elegível: a variação entre os dois não é diretamente comparável. 'nao' no primeiro ano e quando a base se mantém.",
   mediana_das_capitais: "Mediana das capitais com valor elegível no mesmo ano, para leitura ao lado da série.",
   capitais_na_mediana: "Número de capitais usado na mediana do ano; pode mudar de um ano para outro.",
   nota_ou_ressalva: "Nota ou ressalva do dado.",
