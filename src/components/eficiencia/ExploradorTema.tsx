@@ -5,6 +5,9 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
   CABECALHO_CSV_COMPARACAO,
+  CABECALHO_CSV_SERIE,
+  linhasCsvSerie,
+  dicionarioExportacoes,
   Indice,
   MEDIDA,
   ROTULO_STATUS,
@@ -13,6 +16,12 @@ import {
   componente,
   csv,
   ehDespesa,
+  notasMateriais,
+  perimetroIntra,
+  referenciaExternaDoGrafico,
+  regioesDoPainel,
+  serieDaMediana,
+  textoPerimetroIntra,
   etapaDaMedida,
   formata,
   formataEixo,
@@ -26,6 +35,7 @@ import {
   unidade,
   type DadosPainel,
   type Disciplina,
+  type Grupo,
   type MedidaId,
   type Moeda,
   type Ordem,
@@ -34,15 +44,16 @@ import {
 import { fraseAmplitude, fraseCapital, fraseCobertura, fraseEvolucao } from "@/lib/eficiencia/frases";
 import { inteiro } from "@/lib/eficiencia/formato";
 import type { EtapaId, IndicadorId } from "@/lib/eficiencia/tipos";
-import { DEFINICAO_CURTA, DEFINICAO_TEMA, SEM_NACIONAL, anoValido, etapaEfetiva, temEtapa, type Tema } from "@/lib/eficiencia/visao";
+import { avisoDoGrupo, NAO_MOSTRA, DEFINICAO_CURTA, DEFINICAO_TEMA, SEM_NACIONAL, universoDaMedida, anoValido, etapaEfetiva, temEtapa, type Tema } from "@/lib/eficiencia/visao";
 import { ComposicaoDespesa, MatriculasPorEtapa, PonteDaRazao } from "./DetalhesMedida";
 import { DistribuicaoCapitais } from "./DistribuicaoCapitais";
 import type { ContextoFicha } from "./FichaConteudo";
 import { ContextoInternacionalBloco, ReferenciaNacionalCalculadaBloco, ReferenciasDoGrupo, ReferenciasNacionais, SemReferencia } from "./ReferenciasPainel";
+import { Siglas } from "./Siglas";
 import { SobreEsteDado } from "./SobreEsteDado";
 import { TabelaSimples } from "./TabelaSimples";
 import { Alternancia, Selecao } from "./controles";
-import { ForaDaComparacao, ForaDoEscopo, Ressalva, SemValor } from "./estados";
+import { ForaDaComparacao, NotasMateriais, ForaDoEscopo, Ressalva, SemValor } from "./estados";
 import { MiniSerie, type Anotacao } from "./graficos";
 
 /**
@@ -67,8 +78,9 @@ function esquema(ids: string[], tema: Tema) {
     moeda: campo(tiposUrl.opcao(["nominal", "real"] as const), "nominal" as Moeda),
     disc: campo(tiposUrl.opcao(["matematica", "portugues"] as const), "matematica" as Disciplina),
     vis: campo(tiposUrl.opcao(["grafico", "tabela", "evolucao", "detalhe"] as const), "grafico" as Visao),
-    ord: campo(tiposUrl.opcao(["alfabetica", "valor"] as const), "alfabetica" as Ordem),
+    ord: campo(tiposUrl.opcao(["alfabetica", "valor", "valor_desc"] as const), "alfabetica" as Ordem),
     eixo: campo(tiposUrl.opcao(["linear", "log"] as const), "linear" as "linear" | "log"),
+    grp: campo(tiposUrl.opcao(["todas", "regiao"] as const), "todas" as Grupo),
   };
 }
 
@@ -102,7 +114,19 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
   const etapa = etapaEfetiva(medida, s.etapa, def.etapaInicial);
   const anos = anosDaMedida(dados, medida);
   const ano = s.ano ? anoValido(dados, medida, s.ano) : anos[anos.length - 1];
-  const comp = comparar(ix, medida, ano, etapa, s.moeda, s.disc, "todas", cap ?? dados.capitais[0], s.ord);
+  // o grupo regional é o da capital escolhida; sem capital, o grupo é sempre o das capitais estaduais
+  const grupo: Grupo = cap && s.grp === "regiao" ? "regiao" : "todas";
+  const grupoRef = grupo === "regiao" && cap ? cap.regiao : "todas";
+  const nomeGrupo = grupo === "regiao" && cap ? `capitais da região ${dados.regioes[cap.regiao]}` : "capitais na comparação";
+  const comp = comparar(ix, medida, ano, etapa, s.moeda, s.disc, grupo, cap ?? dados.capitais[0], s.ord);
+  const itensFora = comp.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_STATUS[x.status], motivo: x.motivo }));
+  const linhasForaDoGrafico = comp.excluidas.map((x) => ({
+    chave: x.cap.id,
+    rotulo: `${x.cap.nome} (${x.cap.uf})`,
+    valor: x.comValor ? x.ponto.valor : null,
+    texto: x.comValor ? "fora da comparação (motivo abaixo)" : `${ROTULO_STATUS[x.status].toLowerCase()} (motivo abaixo)`,
+    destacada: x.cap.id === cap?.id,
+  }));
   const k = componente(medida, s.moeda, s.disc);
   const e = etapaDaMedida(medida, etapa);
   const ptCap = cap ? ix.ponto(md.indicador, cap.cod, ano, e, k) : null;
@@ -122,8 +146,8 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     unidade(medida, s.moeda),
     md.etapas ? nomeEtapa(dados, etapa) : null,
     medida === "saeb" ? (s.disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null,
-    periodo,
-    "capitais estaduais, rede municipal",
+    visao === "evolucao" ? `série de ${anos[0]} a ${anos[anos.length - 1]}` : periodo,
+    `capitais estaduais${grupo === "regiao" && cap ? `, região ${dados.regioes[cap.regiao]}` : ""}, ${universoDaMedida(medida)}`,
   ]
     .filter(Boolean)
     .join(" · ");
@@ -134,15 +158,10 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
 
   // referências externas válidas
   const extComp = referenciasExternas(dados, medida, ano, etapa, k);
-  const extMesmo = extComp.filter((x) => x.tipo === "nacional_mesmo_universo");
   const nacCalc = nacionalCalculada(dados, medida, ano);
-  const gNac = nacCalc?.grupos.find((g) => g.id === "elegiveis");
   const intl = internacionaisDa(dados, medida, etapa);
-  const externaGrafico = extMesmo[0]
-    ? { rotulo: "Brasil", valor: extMesmo[0].valor }
-    : gNac && gNac.mediana !== null
-      ? { rotulo: "Municípios do país", valor: gNac.mediana }
-      : null;
+  const externaGrafico = referenciaExternaDoGrafico(dados, medida, ano, etapa, k);
+  const notas = notasMateriais(comp);
 
   const textoRazao = (() => {
     const r = comp.ref;
@@ -157,20 +176,25 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
   })();
 
   // evolução: a capital, quando escolhida; senão a mediana das capitais, ano a ano
-  const medianaPorAno = anos.map((a) => {
-    const r = ix.referencia(md.indicador, k, e, a, "todas");
-    return { ano: a, valor: r?.mediana ?? null, n: r?.n ?? 0 };
-  });
+  const medianaPorAno = serieDaMediana(ix, medida, etapa, s.moeda, s.disc, grupo === "regiao" && cap ? cap.regiao : null);
   const pontosSerie = cap
     ? serie(ix, medida, cap.cod, etapa, s.moeda, s.disc)
-    : medianaPorAno.map((m) => ({ ano: m.ano, ...(m.valor === null ? pontoVazio() : { ...pontoVazio(), valor: m.valor, status: "OBSERVADO" as const, elegivel: true }) }));
+    : medianaPorAno.map((m) => ({ ano: m.ano, ...(m.valor === null ? pontoVazio() : { ...pontoVazio(), valor: m.valor, status: "OBSERVADO" as const, elegivel: true, quebraSerie: m.quebraSerie }) }));
   const anotacoes = medida === "aprovacao" ? [PANDEMIA_APROVACAO] : medida === "ideb" || medida === "saeb" ? [PANDEMIA_IDEB] : [];
-  const fraseSerie = fraseEvolucao(
+  const fraseSerieBase = fraseEvolucao(
     pontosSerie.map((p) => ({ ano: p.ano, valor: p.valor, elegivel: p.elegivel, quebraSerie: p.quebraSerie })),
     medida,
     medida === "despesa_hab" ? "a população de referência muda de base (estimativa, Censo ou relação do DOU)" : "a base do dado mudou",
     cap ? `Em ${nomeCap}` : "Na mediana das capitais",
+    anotacoes,
   );
+  // mediana sem capital: o conjunto de capitais com valor muda de um ano para outro, e a frase precisa dizer isso
+  const comValorNaSerie = medianaPorAno.filter((m) => m.valor !== null);
+  const conjuntoVaria = !cap && comValorNaSerie.length > 1 && new Set(comValorNaSerie.map((m) => m.n)).size > 1;
+  const fraseSerie =
+    conjuntoVaria && !fraseSerieBase.startsWith("Entre ")
+      ? `${fraseSerieBase} Cada mediana usa as capitais com valor comparável no ano (${comValorNaSerie.map((m) => `${m.n} em ${m.ano}`).join(", ")}): o conjunto muda, então a variação não é a de um grupo constante.`
+      : fraseSerieBase;
 
   const linhasTabela = [
     ...comp.incluidas.map((i) => [`${i.cap.nome} (${i.cap.uf})`, fmt(i.valor), i.ponto.nota ? "Incluída, com nota" : "Incluída"]),
@@ -185,8 +209,10 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
       setAviso("Não foi possível copiar automaticamente. O endereço na barra do navegador reproduz este recorte.");
     }
   };
+  const baixarCsvSerie = () =>
+    baixar(`obee_${tema}_${medida}_serie_${cap ? cap.id : "mediana"}${md.etapas ? `_${etapa}` : ""}${ehDespesa(medida) ? `_${s.moeda}` : ""}${medida === "saeb" ? `_${s.disc}` : ""}.csv`, csv(CABECALHO_CSV_SERIE, linhasCsvSerie(dados, medida, etapa, s.moeda, s.disc, cap ?? null, pontosSerie, medianaPorAno)));
   const baixarCsv = () =>
-    baixar(`obee_${tema}_${medida}_${ano}${md.etapas ? `_${etapa}` : ""}.csv`, csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(dados, comp, medida, ano, etapa, s.moeda, s.disc)));
+    baixar(`obee_${tema}_${medida}_${ano}${md.etapas ? `_${etapa}` : ""}${ehDespesa(medida) ? `_${s.moeda}` : ""}${medida === "saeb" ? `_${s.disc}` : ""}${grupo === "regiao" && cap ? `_regiao_${cap.regiao}` : ""}.csv`, csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(dados, comp, medida, ano, etapa, s.moeda, s.disc)));
 
   const opcoesVisao: { v: Visao; t: string }[] = [
     { v: "grafico", t: "Gráfico" },
@@ -202,7 +228,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     const an = s.ano ? anoValido(dados, m, s.ano) : (() => { const a = anosDaMedida(dados, m); return a[a.length - 1]; })();
     const kk = componente(m, s.moeda, s.disc);
     const ee = etapaDaMedida(m, et);
-    const r = ix.referencia(mm.indicador, kk, ee, an, "todas");
+    const r = ix.referencia(mm.indicador, kk, ee, an, grupoRef);
     const p = cap ? ix.ponto(mm.indicador, cap.cod, an, ee, kk) : null;
     return { m, mm, an, et, r, p };
   });
@@ -278,13 +304,18 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
           {visao === "evolucao" ? fraseSerie : visao === "detalhe" ? `${DEFINICAO_CURTA[medida].titulo}: ${opcoesDetalhe?.toLowerCase()}${cap ? `, ${nomeCap}` : ""}` : titulo}
         </h2>
         <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          {subtitulo}. {fraseCobertura(comp.incluidas.length, comp.universo.length)}
+          {subtitulo}.{visao === "evolucao" ? "" : ` ${fraseCobertura(comp.incluidas.length, comp.universo.length)}`}
         </p>
+        {ehDespesa(medida) && (
+          <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-obee-tinta" role="note">
+            <span className="font-semibold">Perímetro.</span> <Siglas texto={`${textoPerimetroIntra(perimetroIntra(dados, ano), ano, medida)} A parcela de cada capital está na tabela completa de Comparar capitais e no CSV.`} />
+          </p>
+        )}
         {fraseCap && visao !== "evolucao" && visao !== "detalhe" && <p className="mt-3 max-w-prose2 text-[0.95rem] leading-relaxed text-obee-tinta">{fraseCap}</p>}
 
         {/* controles locais, junto do gráfico */}
         <div className="mt-6 flex flex-wrap items-end gap-x-6 gap-y-4">
-          <div className="w-full min-w-0 sm:w-44">
+          <div className={`w-full min-w-0 sm:w-44 ${visao === "evolucao" ? "hidden" : ""}`}>
             <Selecao
               id="f-ano"
               rotulo={md.anos === "ideb" ? "Edição" : "Ano"}
@@ -294,7 +325,24 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               aoMudar={(v) => definir({ ano: Number(v) })}
             />
           </div>
-          {temEtapa(medida) && (
+          <div className="w-full min-w-0 sm:w-72">
+            <Selecao
+              id="f-grupo"
+              rotulo="Grupo de comparação"
+              ajuda="Define a mediana, a média e os extremos do recorte."
+              valor={grupo}
+              opcoes={[
+                { v: "todas", t: `Todas as capitais estaduais (${dados.capitais.length})` },
+                {
+                  v: "regiao",
+                  t: cap ? `Capitais da região ${dados.regioes[cap.regiao]} (${regioesDoPainel(dados).find((r) => r.id === cap.regiao)?.n ?? 0})` : "Região da capital escolhida (escolha uma capital)",
+                  desab: !cap,
+                },
+              ]}
+              aoMudar={(v) => definir({ grp: v as Grupo })}
+            />
+          </div>
+          {temEtapa(medida) && visao !== "detalhe" && (
             <div className="w-full min-w-0 sm:w-72">
               <Selecao
                 id="f-etapa"
@@ -306,7 +354,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               />
             </div>
           )}
-          {ehDespesa(medida) && (
+          {ehDespesa(medida) && visao !== "detalhe" && (
             <Alternancia
               rotulo="Valores"
               valor={s.moeda}
@@ -334,15 +382,16 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
           {visao === "grafico" && (
             <Alternancia
               rotulo="Ordem das capitais"
-              rotuloVisivel={false}
-              valor={s.ord}
+                            valor={s.ord}
               opcoes={[
-                { v: "alfabetica", t: "Ordem alfabética" },
-                { v: "valor", t: "Por valor, crescente" },
+                { v: "alfabetica", t: "Alfabética" },
+                { v: "valor", t: "Crescente" },
+                { v: "valor_desc", t: "Decrescente" },
               ]}
               aoMudar={(v) => definir({ ord: v })}
             />
           )}
+          {visao === "grafico" && s.ord !== "alfabetica" && <p className="max-w-xs text-xs leading-snug text-carvao-muted">A ordem por valor organiza a leitura; não classifica as capitais.</p>}
           {visao === "grafico" && medida === "despesa" && (
             <Alternancia
               rotulo="Escala do eixo"
@@ -375,8 +424,20 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
                 formataEixo={fmtEixo}
                 zero={ehDespesa(medida) || medida === "matriculas" || medida === "conveniadas" || medida === "atu"}
                 escala={medida === "despesa" ? s.eixo : "linear"}
+                rotuloGrupo={nomeGrupo}
+                fora={linhasForaDoGrafico}
               />
             ))}
+          {visao === "grafico" && comp.excluidas.length > 0 && (
+            <div className="mt-4">
+              <ForaDaComparacao itens={itensFora} />
+            </div>
+          )}
+          {visao === "grafico" && comp.incluidas.length > 0 && notas.length > 0 && (
+            <div className="mt-4">
+              <NotasMateriais notas={notas} n={comp.incluidas.length} />
+            </div>
+          )}
           {visao === "tabela" &&
             (linhasTabela.length === 0 ? null : (
               <TabelaSimples legenda={`${md.rotulo}, ${periodo}: valor de cada capital e situação na comparação`} cabecalho={["Capital", unidade(medida, s.moeda), "Situação"]} linhas={linhasTabela} />
@@ -394,6 +455,11 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
                 rotuloReferencia="Mediana das capitais"
                 altura={260}
               />
+              {ehDespesa(medida) && s.moeda === "nominal" && (
+                <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted" role="note">
+                  Valores em reais correntes: cada ano a preços do próprio ano, o que inclui o efeito da inflação. Para ler a mudança em termos reais, escolha “Reais de 2025 (IPCA)” em Valores.
+                </p>
+              )}
               {!cap && <p className="mt-3 text-xs leading-snug text-carvao-muted">Sem capital escolhida, a linha é a mediana das capitais em cada ano; o número de capitais na comparação pode mudar de um ano para outro.</p>}
               <details className="mt-2 text-sm">
                 <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
@@ -431,16 +497,23 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               Baixar estes valores (CSV)
             </button>
           ) : null}
+          {visao === "evolucao" ? (
+            <button type="button" onClick={baixarCsvSerie} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
+              Baixar esta série (CSV)
+            </button>
+          ) : null}
+          {visao === "grafico" || visao === "tabela" || visao === "evolucao" ? (<button type="button" onClick={() => baixar("obee_dicionario_das_colunas.csv", csv(["arquivo", "coluna", "descricao"], dicionarioExportacoes()))} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
+              Dicionário das colunas (CSV)
+            </button>
+          ) : null}
         </div>
         <p role="status" aria-live="polite" className="min-h-[1.25rem] text-sm text-obee-dark">
           {aviso}
         </p>
 
-        {comp.excluidas.length > 0 && visao !== "detalhe" && (
+        {comp.excluidas.length > 0 && visao !== "detalhe" && visao !== "grafico" && (
           <div className="mt-4">
-            <ForaDaComparacao
-              itens={comp.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_STATUS[x.status], motivo: x.motivo }))}
-            />
+            <ForaDaComparacao itens={itensFora} />
           </div>
         )}
       </section>
@@ -451,7 +524,8 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
           Referências para ler o número
         </h2>
         <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          A mediana e a média simples descrevem o grupo de capitais; não são meta nem padrão. Menor gasto não demonstra eficiência, e gasto maior não demonstra qualidade.
+          {visao === "evolucao" ? `As referências valem para ${periodo}. ` : ""}
+          {avisoDoGrupo(medida)}
         </p>
         <div className="mt-6">
           {comp.ref ? <ReferenciasDoGrupo r={comp.ref} m={medida} textoRazao={textoRazao} /> : <SemReferencia medida={medida} motivo="Escolha uma etapa e um ano em que a medida exista para ver as referências do grupo." />}
@@ -475,6 +549,10 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               )}
             </div>
           </div>
+        </div>
+        <div className="mt-10 max-w-prose2 border-t border-linha pt-5" role="note">
+          <h3 className="font-semibold text-obee-tinta">O que este painel não mostra</h3>
+          <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{NAO_MOSTRA[tema]}</p>
         </div>
       </section>
     </div>

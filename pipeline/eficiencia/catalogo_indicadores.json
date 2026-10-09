@@ -1,5 +1,5 @@
 {
- "versao_catalogo": "2026-10-08.4",
+ "versao_catalogo": "2026-10-09.1",
  "painel": {
   "id": "educacao-municipal-capitais",
   "titulo": "Educação municipal nas capitais",
@@ -90,7 +90,7 @@
    "transformacoes": [
     "Leitura da resposta da API do Siconfi preservada no seed (JSON gzip com sha256).",
     "Seleção da linha \"12 - Educação\" e da coluna \"Despesas Liquidadas\".",
-    "Conferência com o RREO do 6º bimestre e, na diferença material, com a MSC de dezembro (política 1.1, pipeline/eficiencia/conferencia.py).",
+    "Conferência com o RREO do 6º bimestre e, na diferença material, com a MSC de dezembro (política 1.2, pipeline/eficiencia/conferencia.py).",
     "Correção monetária opcional: valor nominal × (média do número-índice IPCA de 2025 ÷ média do número-índice IPCA do exercício)."
    ],
    "correcao_monetaria": "IPCA, IBGE, tabela 1737, variável 2266 (número-índice, base dezembro de 1993 = 100). Média aritmética dos 12 números-índice mensais de cada ano. Período-base: média de 2025.",
@@ -193,7 +193,7 @@
    "transformacoes": [
     "Divisão do valor liquidado da DCA pela população do mesmo ano, com a precisão original de ambos.",
     "Correção monetária opcional: o numerador nominal × fator IPCA do exercício; a população não é corrigida.",
-    "Herda a elegibilidade e as ressalvas do numerador (política de conferência 1.1) e as da população (estimativa anterior ao Censo 2022)."
+    "Herda a elegibilidade e as ressalvas do numerador (política de conferência 1.2) e as da população (estimativa anterior ao Censo 2022)."
    ],
    "correcao_monetaria": "Mesmo fator do IPCA da despesa total: média anual do número-índice de 2025 ÷ média do ano.",
    "comparacao": "Compara-se, no mesmo exercício, a razão entre capitais com despesa elegível e população oficial. A média simples das capitais dá o mesmo peso a cada uma; a razão agregada (soma da despesa ÷ soma da população dos mesmos pares) pesa pela população. As duas respondem a perguntas diferentes e são rotuladas separadamente. Variações entre 2021 e anos posteriores são bloqueadas: a população de 2021 tem outra base.",
@@ -263,7 +263,7 @@
    "versao_metodologica": "1.3",
    "estado": "PUBLICAVEL_COM_RESSALVAS",
    "ressalvas": [
-    "Aplicação direta não é sinônimo de rede própria: pode incluir pagamento a prestadores privados de serviços que atendem alunos da rede (transporte, alimentação) e, em tese, vagas contratadas fora dela; a MSC não separa o beneficiário do serviço. O ID e o nome mudaram na rodada 6 (antes, \"por matrícula da rede própria\") justamente por isso; a série anterior não é reutilizada.",
+    "Aplicação direta não é sinônimo de rede própria: pode incluir pagamento a prestadores privados de serviços que atendem alunos da rede (transporte, alimentação) e, em tese, vagas contratadas fora dela; a MSC não separa o beneficiário do serviço. O ID e o nome mudaram na revisão 1.3 (antes, \"por matrícula da rede própria\") justamente por isso; a série anterior não é reutilizada.",
     "O Censo tem referência em maio e a despesa cobre o ano; uma rede que cresce ou encolhe ao longo do ano tem os dois períodos desalinhados.",
     "Herda as ressalvas da despesa total: Campo Grande 2021 não tem valor (a DCA inclui intraorçamentárias e a ponte não fecha); Boa Vista 2024 mantém a ressalva de reconciliação.",
     "Um estudante com mais de uma matrícula conta mais de uma vez; o denominador é matrícula, não pessoa."
@@ -684,7 +684,7 @@
   {
    "versao": "1.0",
    "data": "2026-10-08",
-   "resumo": "Primeira publicação (PR #117, commit 8ad77db)."
+   "resumo": "Primeira publicação do painel."
   },
   {
    "versao": "1.1",
@@ -699,7 +699,12 @@
   {
    "versao": "1.3",
    "data": "2026-10-08",
-   "resumo": "Rodada 6: despesa de aplicação direta por matrícula (novo ID, no lugar de \"por matrícula da rede própria\"), baldes da ponte pela norma da modalidade de aplicação, parcela de beneficiário indeterminado, política de conferência 1.2 (saldo líquido D/C da MSC), população de 2023 do Censo 2022, referência nacional calculada pelo OBEE, referências com origem e comparabilidade."
+   "resumo": "Despesa de aplicação direta por matrícula (novo ID, no lugar de \"por matrícula da rede própria\"), baldes da ponte pela norma da modalidade de aplicação, parcela de beneficiário indeterminado, política de conferência 1.2 (saldo líquido D/C da MSC), população de 2023 do Censo 2022 (a ficha da população continua na revisão 1.2: a fórmula não mudou), referência nacional calculada pelo OBEE, referências com origem e comparabilidade."
+  },
+  {
+   "versao": "1.4",
+   "data": "2026-10-09",
+   "resumo": "Sem mudança de fórmula, valor ou elegibilidade: trilhas de reprodução de população, despesa por habitante e por matrícula; data de referência do Censo 2022 padronizada em 31 de julho de 2022 (segunda apuração); referências à política de conferência 1.2 nas notas; texto da validação V18."
   }
  ]
 }

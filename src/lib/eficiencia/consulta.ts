@@ -61,6 +61,8 @@ export type DadosPainel = {
   nacionalCalculada: ReferenciaNacionalCalculada[];
   populacao: Record<string, { tipo: string | null; referencia: string | null }>;
   limiarQuartis: number;
+  /** parcela intraorçamentária da função Educação em cada capital e ano, em % da função (RREO, 6º bimestre): [ano, código IBGE, %] */
+  intraPct: [number, number, number][];
   fontes: Record<string, { instituicao: string; conjunto: string; pagina: string; capturado_em: string }>;
   meta: {
     gerado_em: string;
@@ -302,10 +304,28 @@ export function serie(ix: Indice, m: MedidaId, cod: number, etapa: EtapaId, moed
   return anosDaMedida(ix.d, m).map((ano) => ({ ano, ...ix.ponto(MEDIDA[m].indicador, cod, ano, e, k) }));
 }
 
+/**
+ * Mediana das capitais em cada ano, com o número de capitais na comparação. Herda a mudança de base do dado: o ano é marcado como
+ * quebra de série quando a maioria das capitais tem o valor desse ano marcado (a população de referência, por exemplo, muda para todas).
+ */
+export type PontoMediana = { ano: number; valor: number | null; n: number; quebraSerie: boolean };
+
+export function serieDaMediana(ix: Indice, m: MedidaId, etapa: EtapaId, moeda: Moeda, disc: Disciplina, regiao: string | null = null): PontoMediana[] {
+  const e = etapaDaMedida(m, etapa);
+  const k = componente(m, moeda, disc);
+  const ind = MEDIDA[m].indicador;
+  return anosDaMedida(ix.d, m).map((ano) => {
+    const r = ix.referencia(ind, k, e, ano, regiao ?? "todas");
+    const grupo = ix.d.capitais.filter((c) => !regiao || c.regiao === regiao);
+    const marcadas = grupo.filter((c) => ix.ponto(ind, c.cod, ano, e, k).quebraSerie).length;
+    return { ano, valor: r?.mediana ?? null, n: r?.n ?? 0, quebraSerie: marcadas > grupo.length / 2 };
+  });
+}
+
 /* ------------------------------------------------------------------ comparação */
 
 export type Grupo = "todas" | "regiao";
-export type Ordem = "alfabetica" | "valor";
+export type Ordem = "alfabetica" | "valor" | "valor_desc";
 
 export type ItemComparacao = { cap: CapitalPainel; valor: number; ponto: Ponto };
 /** comValor: há valor oficial, mas fora da comparação (perímetro distinto ou conferência pendente). */
@@ -377,6 +397,7 @@ export function comparar(
     }
   }
   if (ordem === "valor") incluidas.sort((a, b) => a.valor - b.valor || a.cap.nome.localeCompare(b.cap.nome, "pt-BR"));
+  if (ordem === "valor_desc") incluidas.sort((a, b) => b.valor - a.valor || a.cap.nome.localeCompare(b.cap.nome, "pt-BR"));
   const f = ficha(d, MEDIDA[m].indicador);
   const regiao = d.regioes[capSel.regiao];
   const recorte = [rotuloPeriodoMedida(m, ano), e ? nomeEtapa(d, e).toLowerCase() : null, m === "saeb" ? (disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null,
@@ -609,8 +630,36 @@ export const CABECALHO_CSV_COMPARACAO = [
   "incluida_na_comparacao", "conferencia", "motivo_exclusao", "nota", "mediana_das_incluidas", "capitais_no_grupo",
   "capitais_com_valor", "capitais_incluidas", "versao_metodologica", "dados_gerados_em", "hash_dados", "fonte",
   "media_simples_das_incluidas", "minimo_das_incluidas", "maximo_das_incluidas", "primeiro_quartil", "terceiro_quartil", "quartis_exibidos",
-  "razao_agregada_do_grupo", "politica_de_referencias",
+  "razao_agregada_do_grupo", "politica_de_referencias", "parcela_intraorcamentaria_pct_da_funcao",
 ];
+
+export const CABECALHO_CSV_SERIE = [
+  "indicador_id", "indicador", "serie_de", "etapa", "componente", "ano", "valor_numerico", "valor_exibido", "unidade", "estado_do_dado",
+  "elegivel_comparacao", "marca_de_base", "mudanca_de_base", "mediana_das_capitais", "capitais_na_mediana", "nota", "versao_metodologica", "dados_gerados_em", "hash_dados", "fonte",
+];
+
+/** Série ao longo dos anos de uma capital (ou da mediana das capitais), com a mediana de referência e o estado de cada ano. */
+export function linhasCsvSerie(
+  d: DadosPainel, m: MedidaId, etapa: EtapaId, moeda: Moeda, disc: Disciplina, cap: CapitalPainel | null,
+  pontos: (Ponto & { ano: number })[], medianas: PontoMediana[],
+): string[][] {
+  const md = MEDIDA[m];
+  const f = ficha(d, md.indicador);
+  const e = etapaDaMedida(m, etapa);
+  const k = componente(m, moeda, disc);
+  const medPorAno = new Map(medianas.map((x) => [x.ano, x]));
+  return pontos.map((p, i) => {
+    const med = medPorAno.get(p.ano);
+    const anterior = [...pontos.slice(0, i)].reverse().find((x) => x.valor !== null && x.elegivel);
+    const mudou = p.valor !== null && p.elegivel && !!anterior && anterior.quebraSerie !== p.quebraSerie;
+    return [
+      md.indicador, f.nome, cap ? `${cap.nome} (${cap.uf})` : "Mediana das capitais", e ? nomeEtapa(d, e) : "Não se aplica", rotuloComponente(d, md.indicador, k),
+      String(p.ano), p.valor === null ? "" : String(p.valor), p.valor === null ? "" : formata(m, p.valor), unidade(m, moeda), ROTULO_STATUS[p.status],
+      p.valor === null ? "" : p.elegivel ? "sim" : "nao", p.quebraSerie ? "sim" : "nao", mudou ? "sim" : "nao", med?.valor == null ? "" : String(med.valor), med ? String(med.n) : "",
+      p.nota ?? "", f.versao_metodologica, d.meta.gerado_em, d.meta.hash_dados, fonteLegivel(d, md.indicador, p.ano),
+    ];
+  });
+}
 
 export function linhasCsvComparacao(
   d: DadosPainel, comp: Comparacao, m: MedidaId, ano: number, etapa: EtapaId, moeda: Moeda, disc: Disciplina,
@@ -627,12 +676,14 @@ export function linhasCsvComparacao(
     comp.ref?.quartisExibicao ? "sim" : "nao", comp.ref?.razaoAgregada == null ? "" : String(comp.ref.razaoAgregada),
     "média simples (peso igual por capital), mediana, quartis de tipo 7 (exibidos com 8 ou mais valores) e razão agregada dos mesmos pares; ver politica_referencias na gold"];
   const sit = (p: Ponto) => (p.situacao ? d.rotulosSituacao[p.situacao] ?? p.situacao : "");
+  // despesa: a parcela intraorçamentária da função fica fora do valor e difere entre capitais; vai junto de cada linha
+  const intra = (cap: CapitalPainel) => (ehDespesa(m) ? String(intraDaCapital(d, cap.cod, ano) ?? "") : "");
   const linhas = [
     ...comp.incluidas.map((i) => [...comum(i.cap), String(i.valor), formata(m, i.valor), unidade(m, moeda), ROTULO_STATUS.OBSERVADO,
-      "sim", "sim", sit(i.ponto), "", i.ponto.nota ?? "", ...cauda]),
+      "sim", "sim", sit(i.ponto), "", i.ponto.nota ?? "", ...cauda, intra(i.cap)]),
     ...comp.excluidas.map((x) => [...comum(x.cap), x.comValor && x.ponto.valor !== null ? String(x.ponto.valor) : "",
       x.comValor && x.ponto.valor !== null ? formata(m, x.ponto.valor) : "", unidade(m, moeda), ROTULO_STATUS[x.ponto.status],
-      x.comValor ? "nao" : "", "nao", sit(x.ponto), x.motivo, x.ponto.nota ?? "", ...cauda]),
+      x.comValor ? "nao" : "", "nao", sit(x.ponto), x.motivo, x.ponto.nota ?? "", ...cauda, intra(x.cap)]),
   ];
   const ordem = new Map(d.capitais.map((c, i) => [String(c.cod), i]));
   return linhas.sort((a, b) => (ordem.get(a[7]) ?? 0) - (ordem.get(b[7]) ?? 0));
@@ -643,6 +694,10 @@ export function linhasCsvComparacao(
 export type Diferenca = {
   /** diferença na escala da medida: reais, alunos por turma, pontos percentuais, pontos ou matrículas */
   abs: number;
+  /** diferença entre os valores como aparecem na tela (mesma precisão), em módulo; a exata só no total da despesa */
+  absExibida: number;
+  /** os dois valores aparecem iguais na tela, mas não são */
+  abaixoDaPrecisao: boolean;
   /** diferença relativa em %, só em escala de razão e com base diferente de zero; null quando bloqueada */
   pct: number | null;
   unidade: string;
@@ -662,7 +717,14 @@ export function diferenca(m: MedidaId, valor: number, referencia: number | null,
   const igual = Math.abs(abs) < 1e-9;
   const sentido: Diferenca["sentido"] = igual ? "igual à" : abs > 0 ? "acima da" : "abaixo da";
   const sinalTxt = abs >= 0 ? "+" : "−";
-  const a = Math.abs(abs);
+  // a diferença escrita é a dos valores como aparecem na tela (arredondados à mesma precisão), para que a conta feita pelo leitor feche;
+  // só o total da despesa, mostrado em milhões ou bilhões, usa a diferença exata
+  const casas = m === "saeb" ? 2 : m === "atu" || m === "aprovacao" || m === "ideb" ? 1 : 0;
+  const arred = (v: number) => Math.round(v * 10 ** casas) / 10 ** casas;
+  const exibida = Math.abs(arred(valor) - arred(referencia));
+  const a = m === "despesa" || exibida === 0 ? Math.abs(abs) : exibida;
+  // dois valores que aparecem iguais na tela mas não são: a diferença é menor que a precisão mostrada, e o texto diz isso em vez de escrever um número que a conta do leitor não reproduz
+  const abaixoDaPrecisao = !igual && m !== "despesa" && exibida === 0;
   let txt: string;
   let pct: number | null = null;
   let unidadeD: string;
@@ -684,7 +746,11 @@ export function diferenca(m: MedidaId, valor: number, referencia: number | null,
     unidadeD = "pontos";
     txt = `${sinalTxt}${decimal(a, m === "saeb" ? 2 : 1)} ponto${a >= 1.05 ? "s" : ""}`;
   }
-  return { abs, pct, unidade: unidadeD, sentido, texto: igual ? `igual à ${nomeRef}` : `${txt}, ${sentido} ${nomeRef}` };
+  if (abaixoDaPrecisao) {
+    const MENOS: Record<string, string> = { despesa_hab: "R$ 1", despesa_mat: "R$ 1", matriculas: "1 matrícula", conveniadas: "1 matrícula", atu: "0,1 aluno por turma", aprovacao: "0,1 ponto percentual", ideb: "0,1 ponto", saeb: "0,01 ponto" };
+    txt = `${abs > 0 ? "+" : "−"}menos de ${MENOS[m]}`;
+  }
+  return { abs, absExibida: a, abaixoDaPrecisao, pct, unidade: unidadeD, sentido, texto: igual ? `igual à ${nomeRef}` : `${txt}, ${sentido} ${nomeRef}` };
 }
 
 /* ------------------------------------------------------------------ referências externas */
@@ -781,6 +847,7 @@ export type ColunaId =
   | "despesa"
   | "populacao"
   | "despesa_hab"
+  | "intra_pct"
   | "matriculas"
   | "despesa_mat"
   | "conveniadas_pct"
@@ -805,6 +872,7 @@ export const COLUNAS: ColunaDef[] = [
   { id: "despesa", rotulo: "Despesa total na função Educação", grupo: "recursos", medida: "despesa", porEtapa: false, central: true },
   { id: "populacao", rotulo: "População residente", grupo: "recursos", medida: null, porEtapa: false, central: false },
   { id: "despesa_hab", rotulo: "Despesa por habitante", grupo: "recursos", medida: "despesa_hab", porEtapa: false, central: true },
+  { id: "intra_pct", rotulo: "Parcela intraorçamentária da função (RREO)", grupo: "recursos", medida: null, porEtapa: false, central: false },
   { id: "matriculas", rotulo: "Matrículas na rede municipal", grupo: "recursos", medida: "matriculas", porEtapa: false, central: true },
   { id: "despesa_mat", rotulo: "Despesa por matrícula", grupo: "recursos", medida: "despesa_mat", porEtapa: false, central: true },
   { id: "conveniadas_pct", rotulo: "Conveniadas ÷ rede municipal", grupo: "atendimento", medida: null, porEtapa: false, central: false },
@@ -827,6 +895,8 @@ export type LinhaComparativa = {
 export type ResumoColuna = { n: number; media: number | null; mediana: number | null; minimo: number | null; maximo: number | null; noGrupo: number; comValor: number };
 
 const SEM_ESCOPO: Ponto = { ...SEM_OBS, status: "NAO_APLICAVEL", nota: "Fora do escopo desta etapa", notaMaterial: false };
+/** Ideb e Saeb são bienais: em ano par não há edição, o que é diferente de a medida não existir na etapa. */
+const SEM_EDICAO: Ponto = { ...SEM_OBS, status: "NAO_APLICAVEL", nota: "Sem edição neste ano: o Ideb e o Saeb são bienais", notaMaterial: false };
 
 /**
  * Tabela comparativa: uma linha por capital do grupo, com despesa total, população, despesa por habitante, matrículas, despesa por
@@ -847,13 +917,16 @@ export function tabelaComparativa(
       despesa: get("despesa"),
       populacao: ix.ponto("ctx.populacao.residente", cap.cod, ano, null, null),
       despesa_hab: get("despesa_hab"),
+      intra_pct: intraDaCapital(d, cap.cod, ano) === null
+        ? { ...SEM_OBS, nota: "O RREO do ano não traz a parcela intraorçamentária desta capital" }
+        : { ...SEM_OBS, valor: intraDaCapital(d, cap.cod, ano), status: "OBSERVADO" as StatusDado, nota: null, notaMaterial: false, elegivel: true },
       matriculas: ix.ponto("edu.matriculas.rede_municipal", cap.cod, ano, "total", null),
       despesa_mat: get("despesa_mat"),
       conveniadas_pct: { ...SEM_OBS },
       atu: etapaValida("atu", etapa) ? get("atu") : SEM_ESCOPO,
       aprovacao: etapaValida("aprovacao", etapa) ? get("aprovacao") : SEM_ESCOPO,
-      ideb: etapaValida("ideb", etapa) && exata ? get("ideb") : SEM_ESCOPO,
-      saeb: etapaValida("saeb", etapa) && exata ? get("saeb") : SEM_ESCOPO,
+      ideb: !etapaValida("ideb", etapa) ? SEM_ESCOPO : exata ? get("ideb") : SEM_EDICAO,
+      saeb: !etapaValida("saeb", etapa) ? SEM_ESCOPO : exata ? get("saeb") : SEM_EDICAO,
     };
     const conv = ix.ponto("edu.matriculas.conveniadas_municipais", cap.cod, ano, "total", null);
     const mt = bruto.matriculas;
@@ -862,16 +935,16 @@ export function tabelaComparativa(
     const celulas = {} as Record<ColunaId, Celula>;
     for (const c of COLUNAS) {
       const p = bruto[c.id];
-      const fora = p === SEM_ESCOPO;
+      const fora = p === SEM_ESCOPO || p === SEM_EDICAO;
       const medidaCol = c.medida;
       const txt =
-        p.valor === null ? "" : c.id === "populacao" ? inteiro(p.valor) : c.id === "conveniadas_pct" ? percentual(p.valor, 1) : medidaCol ? formata(medidaCol, p.valor) : String(p.valor);
+        p.valor === null ? "" : c.id === "populacao" ? inteiro(p.valor) : c.id === "conveniadas_pct" || c.id === "intra_pct" ? percentual(p.valor, 1) : medidaCol ? formata(medidaCol, p.valor) : String(p.valor);
       celulas[c.id] = { valor: p.valor, texto: txt, ponto: p, elegivel: p.elegivel, foraDoEscopo: fora };
     }
     const ressalvas: LinhaComparativa["ressalvas"] = [];
     for (const c of COLUNAS) {
       const p = bruto[c.id];
-      if (p === SEM_ESCOPO) continue;
+      if (p === SEM_ESCOPO || p === SEM_EDICAO) continue;
       if (p.status === "OBSERVADO") {
         const texto = !p.elegivel ? p.motivo ?? p.nota : p.nota;
         if (texto) ressalvas.push({ coluna: c.rotulo, texto, material: p.notaMaterial || !p.elegivel });
@@ -912,7 +985,7 @@ export function ordenaTabela(linhas: LinhaComparativa[], coluna: ColunaId | "alf
   if (coluna === "alfabetica") return [...linhas].sort(nome);
   const num = (l: LinhaComparativa) => {
     const c = l.celulas[coluna];
-    return c.valor !== null && c.ponto.status === "OBSERVADO" && (c.elegivel || coluna === "populacao" || coluna === "conveniadas_pct") && !c.foraDoEscopo ? c.valor : null;
+    return c.valor !== null && c.ponto.status === "OBSERVADO" && (c.elegivel || coluna === "populacao" || coluna === "conveniadas_pct" || coluna === "intra_pct") && !c.foraDoEscopo ? c.valor : null;
   };
   return [...linhas].sort((a, b) => {
     const x = num(a);
@@ -930,10 +1003,26 @@ export const CABECALHO_CSV_TABELA_COMPARATIVA = [
   "diferenca_para_a_mediana", "versao_metodologica", "dados_gerados_em", "hash_dados",
 ];
 
+/** Indicador de cada coluna da tabela comparativa, para gravar no CSV a versão metodológica que vale para ela. */
+const INDICADOR_DA_COLUNA: Record<ColunaId, IndicadorId> = {
+  despesa: "edu.despesa.funcao_educacao",
+  populacao: "ctx.populacao.residente",
+  despesa_hab: "edu.despesa.por_habitante",
+  intra_pct: "edu.despesa.funcao_educacao",
+  matriculas: "edu.matriculas.rede_municipal",
+  despesa_mat: "edu.despesa.aplicacao_direta_por_matricula",
+  conveniadas_pct: "edu.matriculas.conveniadas_municipais",
+  atu: "edu.atu.rede_municipal",
+  aprovacao: "edu.aprovacao.rede_municipal",
+  ideb: "edu.ideb.rede_municipal",
+  saeb: "edu.saeb.rede_municipal",
+};
+
 const UNIDADE_COLUNA: Record<ColunaId, (moeda: Moeda) => string> = {
   despesa: (m) => unidade("despesa", m),
   populacao: () => "habitantes",
   despesa_hab: (m) => unidade("despesa_hab", m),
+  intra_pct: () => "% da despesa da função Educação (RREO, 6º bimestre; MSC onde o RREO diverge da DCA)",
   matriculas: () => "matrículas",
   despesa_mat: (m) => unidade("despesa_mat", m),
   conveniadas_pct: () => "% das matrículas da rede municipal",
@@ -942,6 +1031,10 @@ const UNIDADE_COLUNA: Record<ColunaId, (moeda: Moeda) => string> = {
   ideb: () => "índice de 0 a 10",
   saeb: () => "pontos na escala Saeb",
 };
+
+/** Rótulo da coluna com a disciplina, no Saeb: o valor muda com a disciplina e o cabeçalho tem de dizer qual. */
+export const rotuloColuna = (c: { id: string; rotulo: string }, disc: Disciplina): string =>
+  c.id === "saeb" ? `${c.rotulo}, ${disc === "matematica" ? "Matemática" : "Língua Portuguesa"}` : c.rotulo;
 
 export function linhasCsvTabelaComparativa(
   d: DadosPainel, t: ReturnType<typeof tabelaComparativa>, ano: number, etapa: EtapaId, moeda: Moeda, grupo: Grupo, capSel: CapitalPainel, medida: MedidaId, ix: Indice, disc: Disciplina,
@@ -954,17 +1047,161 @@ export function linhasCsvTabelaComparativa(
     for (const c of COLUNAS) {
       const cel = l.celulas[c.id];
       out.push([
-        l.cap.nome, String(l.cap.cod), l.cap.uf, String(ano), c.porEtapa ? nomeEtapa(d, etapa) : "Não depende da etapa", grp, c.rotulo,
+        l.cap.nome, String(l.cap.cod), l.cap.uf, String(ano), c.porEtapa ? nomeEtapa(d, etapa) : "Não depende da etapa", grp, rotuloColuna(c, disc),
         cel.valor === null ? "" : String(cel.valor), cel.texto, UNIDADE_COLUNA[c.id](moeda),
-        cel.foraDoEscopo ? "Fora do escopo da etapa" : ROTULO_STATUS[cel.ponto.status],
+        cel.foraDoEscopo ? (cel.ponto === SEM_EDICAO ? "Sem edição neste ano (medida bienal)" : "Fora do escopo da etapa") : ROTULO_STATUS[cel.ponto.status],
         cel.ponto.status !== "OBSERVADO" || cel.foraDoEscopo ? "" : cel.elegivel ? "sim" : "nao",
         (cel.ponto.status === "OBSERVADO" ? (!cel.elegivel ? cel.ponto.motivo ?? cel.ponto.nota : cel.ponto.nota) : cel.ponto.nota) ?? "",
         MEDIDA[medida].rotulo, refSel?.mediana == null ? "" : String(refSel.mediana), refSel?.media == null ? "" : String(refSel.media), refSel ? String(refSel.n) : "",
-        c.id === colSel && l.diferenca ? l.diferenca.texto : "", "1.2", d.meta.gerado_em, d.meta.hash_dados,
+        c.id === colSel && l.diferenca ? l.diferenca.texto : "", ficha(d, INDICADOR_DA_COLUNA[c.id]).versao_metodologica, d.meta.gerado_em, d.meta.hash_dados,
       ]);
     }
   }
   return out;
+}
+
+
+/* ------------------------------------------------------------------ perímetro da despesa: intraorçamentárias */
+
+export type PerimetroIntra = {
+  ano: number;
+  /** capitais com a parcela conhecida no ano */
+  n: number;
+  menor: { nome: string; uf: string; pct: number };
+  maior: { nome: string; uf: string; pct: number };
+};
+
+/** Parcela das despesas intraorçamentárias na função Educação de uma capital, em % da função (RREO); null quando o RREO do ano não a traz. */
+export function intraDaCapital(d: DadosPainel, cod: number, ano: number): number | null {
+  return d.intraPct.find((x) => x[0] === ano && x[1] === cod)?.[2] ?? null;
+}
+
+/**
+ * Menor e maior parcela intraorçamentária entre as capitais no ano. A despesa do painel (DCA, exceto intraorçamentárias) é calculada
+ * por uma regra única, mas a parcela excluída difere muito entre as capitais: o leitor precisa saber disso junto do número.
+ */
+export function perimetroIntra(d: DadosPainel, ano: number): PerimetroIntra | null {
+  const linhas = d.intraPct.filter((x) => x[0] === ano);
+  if (!linhas.length) return null;
+  const com = linhas.map((x) => ({ cap: d.capitais.find((c) => c.cod === x[1]), pct: x[2] })).filter((x): x is { cap: CapitalPainel; pct: number } => !!x.cap);
+  if (!com.length) return null;
+  const ord = [...com].sort((a, b) => a.pct - b.pct || a.cap.nome.localeCompare(b.cap.nome, "pt-BR"));
+  const f = (x: { cap: CapitalPainel; pct: number }) => ({ nome: x.cap.nome, uf: x.cap.uf, pct: x.pct });
+  return { ano, n: com.length, menor: f(ord[0]), maior: f(ord[ord.length - 1]) };
+}
+
+/** Ressalva do perímetro, para ficar junto do número de despesa. */
+export function textoPerimetroIntra(p: PerimetroIntra | null, ano: number, medida: MedidaId = "despesa"): string {
+  const base =
+    medida === "despesa_mat"
+      ? "O numerador parte da despesa liquidada na função Educação (DCA), exceto as operações intraorçamentárias."
+      : "Despesa liquidada na função Educação (DCA), exceto as operações intraorçamentárias.";
+  if (!p) return `${base} A parcela intraorçamentária de ${ano} não consta do RREO usado pelo painel, e a comparação entre capitais não a corrige.`;
+  const pc = (v: number) => `${decimal(v, 1)}%`;
+  return `${base} Em ${p.ano} essa parcela pesa de ${pc(p.menor.pct)} da função em ${p.menor.nome} (${p.menor.uf}) a ${pc(p.maior.pct)} em ${p.maior.nome} (${p.maior.uf}) (RREO): a comparação entre capitais não corrige a diferença.`;
+}
+
+/* ------------------------------------------------------------------ referência no gráfico, notas materiais e grupos */
+
+/**
+ * Referência que aparece como traço no gráfico das capitais: a nacional do mesmo universo, quando existe; senão a mediana nacional
+ * calculada pelo OBEE (outro universo, rotulado). Gráfico e legenda dizem de onde vem.
+ */
+export function referenciaExternaDoGrafico(d: DadosPainel, m: MedidaId, ano: number, etapa: EtapaId, comp: string | null): { rotulo: string; valor: number; nota: string } | null {
+  const mesmo = referenciasExternas(d, m, ano, etapa, comp).filter((x) => x.tipo === "nacional_mesmo_universo");
+  if (mesmo[0]) return { rotulo: "Brasil", valor: mesmo[0].valor, nota: "agregado nacional da rede municipal (INEP), não é média das capitais" };
+  const g = nacionalCalculada(d, m, ano)?.grupos.find((x) => x.id === "elegiveis");
+  return g && g.mediana !== null
+    ? { rotulo: "Municípios do país", valor: g.mediana, nota: `mediana de ${inteiro(g.n_municipios)} municípios elegíveis de todos os portes, outro universo: não é comparação direta com as capitais` }
+    : null;
+}
+
+/**
+ * Notas materiais do recorte, sem depender de a capital estar escolhida: cada texto distinto com as capitais a que se aplica.
+ * A restrição que vale para o conjunto (a população de 2021, por exemplo) precisa estar à vista junto do gráfico.
+ */
+export function notasMateriais(comp: Comparacao): { texto: string; capitais: string[] }[] {
+  const mapa = new Map<string, string[]>();
+  for (const i of comp.incluidas) {
+    if (i.ponto.nota && i.ponto.notaMaterial) mapa.set(i.ponto.nota, [...(mapa.get(i.ponto.nota) ?? []), `${i.cap.nome} (${i.cap.uf})`]);
+  }
+  return Array.from(mapa.entries()).map(([texto, capitais]) => ({ texto, capitais })).sort((a, b) => b.capitais.length - a.capitais.length || a.texto.localeCompare(b.texto, "pt-BR"));
+}
+
+/** Regiões com capitais no painel, na ordem do catálogo, com o número de capitais de cada uma. */
+export function regioesDoPainel(d: DadosPainel): { id: string; nome: string; n: number }[] {
+  return Object.entries(d.regioes).map(([id, nome]) => ({ id, nome, n: d.capitais.filter((c) => c.regiao === id).length })).filter((r) => r.n > 0);
+}
+
+/* ------------------------------------------------------------------ dicionário das exportações */
+
+/**
+ * Dicionário de colunas dos dois CSV baixáveis (comparação de um indicador e tabela comparativa), com as ressalvas que valem para
+ * qualquer arquivo e a citação sugerida. Vai num arquivo à parte porque o CSV não admite comentários sem quebrar leitores de planilha.
+ */
+const DESCRICAO_COLUNA: Record<string, string> = {
+  indicador_id: "Identificador do indicador no catálogo do OBEE.",
+  indicador: "Nome do indicador.",
+  universo_do_indicador: "O que o indicador cobre: orçamento do município na função Educação, rede municipal de ensino etc.",
+  grupo_de_comparacao: "Conjunto de capitais em que a mediana e as demais estatísticas foram calculadas (todas as capitais estaduais ou as de uma região).",
+  periodo: "Exercício financeiro, ano do Censo Escolar ou edição bienal, conforme o indicador.",
+  etapa: "Etapa de ensino do recorte; 'Não se aplica' quando o indicador não varia por etapa.",
+  componente: "Base do valor: nominal (reais correntes), real (reais de 2025 pelo IPCA) ou, no Saeb, a disciplina.",
+  codigo_ibge: "Código do município no IBGE (7 dígitos).",
+  capital: "Nome da capital.",
+  uf: "Sigla da unidade da federação.",
+  valor_numerico: "Valor do indicador, em número, na unidade da coluna 'unidade'. Pode estar arredondado a 12 algarismos significativos; a série completa está na gold.",
+  valor_exibido: "O mesmo valor como aparece no painel.",
+  unidade: "Unidade do valor.",
+  estado_do_dado: "Observado, não divulgado, não aplicável, ausente na coleta, inconsistente etc. Valor vazio nunca significa zero.",
+  elegivel_comparacao: "'sim' quando o valor entra em medianas, médias e comparações; 'nao' quando há valor oficial mas ele fica fora (perímetro distinto, conferência pendente).",
+  incluida_na_comparacao: "'sim' quando a capital entrou nas estatísticas do grupo neste recorte.",
+  conferencia: "Resultado da conferência da despesa entre DCA, RREO e MSC.",
+  motivo_exclusao: "Por que a capital ficou fora da comparação, quando ficou.",
+  nota: "Nota ou ressalva do dado nesta capital e período.",
+  mediana_das_incluidas: "Mediana das capitais incluídas no grupo.",
+  capitais_no_grupo: "Número de capitais do grupo.",
+  capitais_com_valor: "Capitais do grupo com valor oficial observado.",
+  capitais_incluidas: "Capitais do grupo que entraram nas estatísticas.",
+  versao_metodologica: "Versão metodológica do indicador (a da última revisão que o alterou).",
+  dados_gerados_em: "Data e hora de geração dos dados publicados.",
+  hash_dados: "Hash do conteúdo dos dados publicados; identifica a base exata de onde saiu a linha.",
+  fonte: "Fonte oficial e conjunto de dados.",
+  media_simples_das_incluidas: "Média simples (peso igual por capital) das capitais incluídas.",
+  minimo_das_incluidas: "Menor valor entre as capitais incluídas.",
+  maximo_das_incluidas: "Maior valor entre as capitais incluídas.",
+  primeiro_quartil: "Primeiro quartil (tipo 7); só vale quando 'quartis_exibidos' é 'sim'.",
+  terceiro_quartil: "Terceiro quartil (tipo 7); só vale quando 'quartis_exibidos' é 'sim'.",
+  quartis_exibidos: "'sim' quando há 8 ou mais valores e os quartis são mostrados.",
+  razao_agregada_do_grupo: "Soma dos numeradores ÷ soma dos denominadores das mesmas capitais (despesa por habitante e por matrícula); é diferente da média simples.",
+  politica_de_referencias: "Como as referências foram calculadas.",
+  parcela_intraorcamentaria_pct_da_funcao: "Despesa: parcela das operações intraorçamentárias na despesa liquidada da função Educação (RREO, 6º bimestre; MSC de dezembro onde o RREO diverge da DCA e a MSC confirma a DCA), em %, que fica fora do valor. Vazio nas demais medidas.",
+  etapa_dos_resultados: "Etapa de ensino que vale para as colunas de resultado e atendimento por etapa.",
+  coluna: "Medida a que a linha se refere.",
+  medida_de_referencia: "Medida usada nas colunas de mediana, média e diferença.",
+  mediana_do_grupo: "Mediana do grupo para a medida de referência.",
+  media_do_grupo: "Média simples do grupo para a medida de referência.",
+  capitais_na_referencia: "Número de capitais usado na referência.",
+  diferenca_para_a_mediana: "Diferença descritiva entre a capital e a mediana do grupo, na unidade da medida; não é avaliação.",
+  ano: "Ano do recorte: exercício financeiro, Censo Escolar ou edição bienal.",
+  serie_de: "Capital da série, ou a mediana das capitais quando nenhuma foi escolhida.",
+  marca_de_base: "'sim' quando o valor do ano pertence a uma base marcada (por exemplo, população de 2021 pelo Censo de 2010 ou população de 2023 pela relação do DOU); 'nao' nas demais. Anos seguidos com a mesma marca têm a mesma base.",
+  mudanca_de_base: "'sim' quando a marca de base do ano difere da do último ano anterior com valor elegível: a variação entre os dois não é diretamente comparável. 'nao' no primeiro ano e quando a base se mantém.",
+  mediana_das_capitais: "Mediana das capitais com valor elegível no mesmo ano, para leitura ao lado da série.",
+  capitais_na_mediana: "Número de capitais usado na mediana do ano; pode mudar de um ano para outro.",
+  nota_ou_ressalva: "Nota ou ressalva do dado.",
+};
+
+export function dicionarioExportacoes(): string[][] {
+  const arquivo = (nome: string, cols: string[]) => cols.map((c) => [nome, c, DESCRICAO_COLUNA[c] ?? ""]);
+  return [
+    ...arquivo("comparação de um indicador", CABECALHO_CSV_COMPARACAO),
+    ...arquivo("tabela comparativa", CABECALHO_CSV_TABELA_COMPARATIVA),
+    ...arquivo("série ao longo dos anos", CABECALHO_CSV_SERIE),
+    ["todos", "(leia antes de usar)", "Os valores descrevem o gasto, o atendimento e os resultados observados; não classificam governos, não indicam meta e não demonstram causa. Mediana e média descrevem o grupo de capitais e não são referência de desempenho. Células vazias não são zero."],
+    ["todos", "(universo e período)", "As 26 capitais estaduais, na rede municipal de ensino; a despesa de total e por habitante é do orçamento do município na função Educação, exceto operações intraorçamentárias. Gasto anual, Censo Escolar e Ideb têm períodos próprios e não devem ser alinhados sem cuidado."],
+    ["todos", "(como citar)", "Scrutiniums, Observatório Brasileiro de Eficiência Estatal, Educação nas capitais. Indique a data de geração (dados_gerados_em) e o hash_dados da linha utilizada."],
+  ];
 }
 
 /* ------------------------------------------------------------------ população e ponte da despesa por matrícula */

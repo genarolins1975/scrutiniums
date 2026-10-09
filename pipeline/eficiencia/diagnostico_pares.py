@@ -26,7 +26,7 @@ CAUSAS = {
     "SINAL_CORRIGIDO": "Defeito do pipeline, corrigido: a política 1.1 somava em módulo as linhas D da MSC",
     "MSC_SEM_FUNCAO_12": "Externa: a MSC entregue ao Siconfi não traz a função 12 (a despesa vem em outra função ou sem função)",
     "MSC_ABAIXO_EM_TODAS_AS_FUNCOES": "Externa: a MSC entregue fica abaixo da DCA em todas as funções, não só na Educação",
-    "PERIMETRO_INTRA": "Perímetro: a DCA inclui intraorçamentárias na função Educação (política 1.1 de conferência)",
+    "PERIMETRO_INTRA": "Perímetro: a DCA inclui intraorçamentárias na função Educação (política 1.2 de conferência)",
     "EM_ABERTO": "Em aberto: a diferença não é explicada pelas hipóteses examinadas",
     "RECONCILIA": "Reconcilia",
 }

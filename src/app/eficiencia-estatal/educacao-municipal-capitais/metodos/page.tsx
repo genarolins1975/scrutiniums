@@ -3,7 +3,7 @@ import { TextoComDatas } from "@/components/TextoComDatas";
 import { ESTADO_PUBLICACAO, FichaConteudo } from "@/components/eficiencia/FichaConteudo";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { contextos } from "@/lib/eficiencia/contexto";
-import { goldEducacao } from "@/lib/eficiencia/dados";
+import { goldEducacao, historicoDoCatalogo } from "@/lib/eficiencia/dados";
 import { dataBr, decimal, inteiro, rotuloVersaoCatalogo } from "@/lib/eficiencia/formato";
 import type { GoldEducacao } from "@/lib/eficiencia/tipos";
 import { hrefTema } from "@/lib/eficiencia/visao";
@@ -132,8 +132,8 @@ function ComoLer({ g }: { g: GoldEducacao }) {
           O gasto total mede volume e depende do tamanho da cidade. Por habitante, ele coloca capitais de portes diferentes na mesma escala territorial. Por matrícula, ele aproxima a despesa da rede atendida: do total
           declarado na DCA sai o que não tem matrícula correspondente (transferências, delegações, inativos, ensino superior), e a ponte mostra cada parcela, inclusive a de beneficiário indeterminado. Nenhuma das três escalas substitui as outras, e nenhuma
           é custo integral de um aluno. A despesa de toda a educação tampouco é específica de uma etapa:{" "}
-          <Link href={`${hrefTema("gastos", { med: "despesa_mat" })}#ponte`} className="text-obee-dark underline underline-offset-2">
-            veja a ponte na área de gastos
+          <Link href={`${hrefTema("gastos", { med: "despesa_mat", vis: "detalhe" })}`} className="text-obee-dark underline underline-offset-2">
+            veja a ponte na área de gastos (escolha uma capital para ver a dela)
           </Link>
           .
         </p>
@@ -148,6 +148,7 @@ function ComoLer({ g }: { g: GoldEducacao }) {
 }
 
 function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos> }) {
+  const historico = historicoDoCatalogo();
   const m01 = g.validacoes.find((v) => v.id === "M01");
   const naoPub = g.indicadores.find((i) => i.estado === "NAO_PUBLICAVEL");
   const v04 = g.validacoes.find((v) => v.id === "V04");
@@ -162,7 +163,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
     <Secao id="metodos" rotulo="Dados e métodos" titulo="Fichas, fontes, validações e reprodução">
       <div className="space-y-12">
         <div>
-          <h3 className="font-serif text-xl text-obee-tinta">Sobre cada dado: fichas dos indicadores</h3>
+          <h3 id="fichas" className="scroll-mt-24 font-serif text-xl text-obee-tinta">Sobre cada dado: fichas dos indicadores</h3>
           <p className="mt-1 max-w-prose2 text-sm text-carvao-muted">
             Cada ficha existe antes da publicação do número e tem os mesmos dezesseis campos. Estado de publicação entre parênteses.
           </p>
@@ -395,7 +396,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
         </div>
 
         <div>
-          <h3 className="font-serif text-xl text-obee-tinta">Fontes e capturas</h3>
+          <h3 id="fontes" className="scroll-mt-24 font-serif text-xl text-obee-tinta">Fontes e capturas</h3>
           <div className="tabela-scroll mt-3 border border-linha" tabIndex={0} role="region" aria-label="Fontes e capturas (role na horizontal se necessário)">
             <table className="w-full min-w-[52rem] border-collapse text-sm">
               <caption className="sr-only">Fontes usadas pelo painel, papel de cada uma e capturas</caption>
@@ -452,7 +453,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
         </div>
 
         <div>
-          <h3 className="font-serif text-xl text-obee-tinta">Validações executadas</h3>
+          <h3 id="validacoes" className="scroll-mt-24 font-serif text-xl text-obee-tinta">Validações executadas</h3>
           <p className="mt-1 max-w-prose2 text-sm text-carvao-muted">
             Conferem o produto: cálculo, integridade, perímetros e estados de dado. Rodam a cada reconstrução da gold; uma validação reprovada
             impede a publicação.
@@ -484,7 +485,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
 
         <div className="grid gap-10 lg:grid-cols-2">
           <div className="min-w-0">
-            <h3 className="font-serif text-xl text-obee-tinta">Exemplos de reprodução</h3>
+            <h3 id="exemplos" className="scroll-mt-24 font-serif text-xl text-obee-tinta">Exemplos de reprodução</h3>
             <p className="mt-1 text-sm text-carvao-muted">
               Uma trilha completa por indicador publicado, da fonte ao número. Regra de escolha: a primeira capital, em ordem alfabética, com
               valor no período mais recente.
@@ -493,7 +494,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
               {g.trilhas.map((t) => (
                 <details key={t.indicador} className="text-sm">
                   <summary className="flex min-h-[44px] cursor-pointer items-center py-3 text-obee-tinta">
-                    {g.indicadores.find((i) => i.id === t.indicador)?.nome}: {t.nome}, {t.ano}
+                    {g.indicadores.find((i) => i.id === t.indicador)?.nome ?? t.indicador}: {t.nome}, {t.ano}
                   </summary>
                   <ol className="mt-2 list-decimal space-y-1 pl-5 text-xs leading-relaxed text-obee-tinta">
                     {t.passos.map((p) => (
@@ -505,7 +506,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
                 </details>
               ))}
             </div>
-            <h3 className="mt-8 font-serif text-xl text-obee-tinta">Como reproduzir</h3>
+            <h3 id="reproduzir" className="mt-8 scroll-mt-24 font-serif text-xl text-obee-tinta">Como reproduzir</h3>
             <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-sm leading-relaxed text-obee-tinta">
               <li>
                 Reconstruir a gold a partir dos recortes versionados, sem rede: <code className="break-all font-mono text-[0.8rem]">python3 -m pipeline.eficiencia.run</code>.
@@ -518,14 +519,58 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
                 <code className="break-all font-mono text-[0.8rem]">--inep-nacional &lt;pasta&gt;</code>.
               </li>
               <li>
+                Ao baixar os pacotes do INEP, o servidor <code className="break-all font-mono text-[0.8rem]">download.inep.gov.br</code> entrega a cadeia de certificados
+                incompleta (falta o intermediário da RNP). A coleta do OBEE obtém o intermediário pelo endereço do próprio certificado e nunca desliga a verificação TLS;
+                quem reproduzir por conta própria pode baixar o pacote pelo navegador, na página do INEP, e apontar a pasta com <code className="font-mono text-[0.8rem]">--inep</code>.
+              </li>
+              <li>
                 Recoletar a MSC, a população, a OCDE e o SIOPE examinado: <code className="break-all font-mono text-[0.8rem]">--coleta-msc</code>, <code className="break-all font-mono text-[0.8rem]">--coleta-populacao</code>,{" "}
                 <code className="break-all font-mono text-[0.8rem]">--coleta-ocde</code> e <code className="break-all font-mono text-[0.8rem]">--coleta-siope</code>.
               </li>
               <li>
                 Testes: <code className="break-all font-mono text-[0.8rem]">python3 -m unittest pipeline.tests.test_eficiencia pipeline.tests.test_eficiencia_comparacoes</code>.
               </li>
+              <li>
+                Arquivos públicos para quem reproduz fora do site:{" "}
+                <a href="/eficiencia/series/dicionario_das_colunas.csv" className="text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">dicionário das colunas dos CSV de séries</a>
+                {" "}e{" "}
+                <a href="/eficiencia/series/manifesto_das_capturas.json" className="text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">manifesto das capturas</a>
+                {" "}(endereço, data de captura e sha256 de cada insumo).
+              </li>
             </ol>
-            <p className="mt-2 text-xs text-carvao-muted">
+            <h3 id="versoes" className="mt-8 scroll-mt-24 font-serif text-xl text-obee-tinta">Versões e revisões</h3>
+            <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+              A versão de cada indicador é a da última revisão metodológica que o alterou, por isso difere de um indicador para outro. A versão do catálogo identifica o conjunto publicado; o hash dos dados identifica o conteúdo.
+            </p>
+            <div className="tabela-scroll mt-3 overflow-x-auto" tabIndex={0} role="region" aria-label="Versão metodológica de cada indicador">
+              <table className="w-full min-w-[22rem] border-collapse text-sm">
+                <caption className="sr-only">Versão metodológica de cada indicador publicado</caption>
+                <thead>
+                  <tr className="border-b border-linha text-left">
+                    <th scope="col" className="py-1.5 pr-3 font-semibold text-obee-tinta">Indicador</th>
+                    <th scope="col" className="py-1.5 font-semibold text-obee-tinta">Versão</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {g.indicadores.map((f) => (
+                    <tr key={f.id} className="border-b border-linha/60">
+                      <th scope="row" className="py-1.5 pr-3 text-left font-normal text-obee-tinta">{f.nome}</th>
+                      <td className="py-1.5 tabular-nums text-obee-tinta">{f.versao_metodologica}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {historico.length > 0 && (
+              <ol className="mt-4 space-y-2 text-sm leading-relaxed text-obee-tinta">
+                {historico.map((r) => (
+                  <li key={r.versao}>
+                    <span className="font-semibold">Revisão {r.versao}</span> <span className="text-carvao-muted">({dataBr(r.data)})</span>: {r.resumo}
+                  </li>
+                ))}
+              </ol>
+            )}
+            <p className="mt-4 text-xs text-carvao-muted">
               Processamento {g.meta.versao_pipeline}, catálogo de <data value={g.meta.versao_catalogo}>{rotuloVersaoCatalogo(g.meta.versao_catalogo)}</data>
               {g.meta.versao_codigo ? `, código gerador ${g.meta.versao_codigo}` : ""}, gerado em {dataBr(g.meta.gerado_em)}.
             </p>
@@ -539,7 +584,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
             )}
           </div>
           <div className="min-w-0">
-            <h3 className="font-serif text-xl text-obee-tinta">Glossário</h3>
+            <h3 id="glossario" className="scroll-mt-24 font-serif text-xl text-obee-tinta">Glossário</h3>
             <dl className="mt-3 space-y-3 text-sm leading-relaxed">
               {GLOSSARIO.map(([t, d]) => (
                 <div key={t}>
@@ -552,7 +597,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
         </div>
 
         <div className="min-w-0">
-          <h3 className="font-serif text-xl text-obee-tinta">Limitações gerais</h3>
+          <h3 id="limitacoes" className="scroll-mt-24 font-serif text-xl text-obee-tinta">Limitações gerais</h3>
           <ul className="mt-3 max-w-prose2 list-disc space-y-1.5 pl-5 text-[0.95rem] leading-relaxed text-obee-tinta">
             <li>O universo é o das 26 capitais estaduais. Brasília não entra: {g.universo.excluidos[0]?.motivo}</li>
             <li>As comparações são descritivas. Não há ajuste por população, renda, composição da rede ou atribuições de cada município.</li>
@@ -571,7 +616,17 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
 
 const SECOES: [string, string][] = [
   ["como-ler", "Como ler as medidas"],
-  ["metodos", "Fichas, fontes, validações e reprodução"],
+  ["fichas", "Fichas dos indicadores"],
+  ["conferencia", "Conferência da despesa"],
+  ["despesa-por-matricula", "Despesa por matrícula"],
+  ["matriz-referencias", "Referências nacionais e internacionais"],
+  ["fontes", "Fontes e capturas"],
+  ["validacoes", "Validações"],
+  ["exemplos", "Exemplos de reprodução"],
+  ["reproduzir", "Como reproduzir"],
+  ["versoes", "Versões e revisões"],
+  ["glossario", "Glossário"],
+  ["limitacoes", "Limitações gerais"],
 ];
 
 export default function PaginaMetodos() {

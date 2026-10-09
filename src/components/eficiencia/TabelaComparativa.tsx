@@ -4,15 +4,18 @@ import { useMemo, type CSSProperties } from "react";
 import {
   COLUNAS,
   MEDIDA,
+  rotuloColuna,
   ROTULO_STATUS,
   formata,
   nomeEtapa,
   ordenaTabela,
   tabelaComparativa,
   type ColunaDef,
+  type CapitalPainel,
   type ColunaId,
   type DadosPainel,
   type Disciplina,
+  type Grupo,
   type Indice,
   type LinhaComparativa,
   type MedidaId,
@@ -46,6 +49,8 @@ export function TabelaComparativa({
   moeda,
   disc,
   destacadas,
+  grupo,
+  capGrupo,
   medida,
   ordem,
   decrescente,
@@ -63,6 +68,9 @@ export function TabelaComparativa({
   disc: Disciplina;
   /** capitais destacadas (poucas), sem tirar o contexto do grupo */
   destacadas: string[];
+  /** grupo de comparação: todas as capitais ou as da região de capGrupo */
+  grupo: Grupo;
+  capGrupo: CapitalPainel;
   medida: MedidaId;
   ordem: ColunaId | "alfabetica";
   decrescente: boolean;
@@ -72,11 +80,13 @@ export function TabelaComparativa({
   aoSelecionar: (id: string) => void;
   aoBaixar: () => void;
 }) {
-  const t = useMemo(() => tabelaComparativa(ix, ano, etapa, moeda, disc, "todas", dados.capitais[0], medida), [ix, ano, etapa, moeda, disc, dados.capitais, medida]);
+  const t = useMemo(() => tabelaComparativa(ix, ano, etapa, moeda, disc, grupo, capGrupo, medida), [ix, ano, etapa, moeda, disc, grupo, capGrupo, medida]);
   const linhas = useMemo(() => ordenaTabela(t.linhas, ordem, decrescente), [t.linhas, ordem, decrescente]);
   const colunas = COLUNAS.filter((c) => visao === "todas" || c.grupo === visao);
   const colSel = COLUNAS.find((c) => c.medida === medida)?.id;
-  const nomeGrupo = "todas as capitais estaduais";
+  const nomeGrupo = grupo === "regiao" ? `capitais da região ${dados.regioes[capGrupo.regiao]}` : "todas as capitais estaduais";
+  /** a medida da coluna não existe na etapa escolhida (por exemplo, Ideb na creche); alunos por turma existe também em creche e pré-escola */
+  const semEscopo = (c: ColunaDef) => c.porEtapa && !!c.medida && !(MEDIDA[c.medida].etapas ?? []).includes(etapa);
   const resultadoSemEscopo = !["anos_iniciais", "anos_finais"].includes(etapa);
   /** em tela estreita, a visão "Todas" mostra só as medidas centrais; as demais aparecem ao escolher um grupo de colunas */
   const esconde = (c: ColunaDef) => (visao === "todas" && !c.central ? "hidden md:table-cell" : "");
@@ -122,13 +132,15 @@ export function TabelaComparativa({
         ) : (
           <strong className="font-semibold text-obee-tinta">{nomeEtapa(dados, etapa).toLowerCase()}</strong>
         )}
-        . Ideb e Saeb usam a edição {t.edicao}
-        {t.edicaoExata ? "" : ` (não há edição ${ano}; as colunas ficam sem valor)`}. A mediana de cada coluna usa só as capitais com valor observado e elegível; a cobertura difere entre colunas e está na última
+        . {t.edicaoExata ? `Ideb e Saeb usam a edição ${t.edicao}` : `Ideb e Saeb são bienais e não há edição em ${ano}: essas colunas ficam sem valor (a edição mais recente é a de ${t.edicao}, disponível ao escolher o ano ${t.edicao})`}. A mediana de cada coluna usa só as capitais com valor observado e elegível; a cobertura difere entre colunas e está na última
         linha.
       </p>
       {visao === "todas" && (
         <p className="mt-1 text-xs text-carvao-muted md:hidden">Em tela estreita, a visão Todas mostra as medidas centrais de gasto e matrículas. Escolha um grupo de colunas para ver população, atendimento e resultados.</p>
       )}
+      <p className="mt-1 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+        A tabela põe gasto, atendimento e resultado de cada capital na mesma linha para consulta; a leitura conjunta não indica causa nem efeito de um sobre o outro, e os períodos de cada coluna são os do cabeçalho.
+      </p>
       <p className="mt-1 text-xs text-carvao-muted" id="aviso-rolagem">
         A tabela rola na horizontal e na vertical dentro da caixa; a capital fica visível. Clique no título de uma coluna para ordenar; clique no nome da capital para destacá-la (ou retirar o destaque) no gráfico e na tabela.
       </p>
@@ -141,26 +153,26 @@ export function TabelaComparativa({
       >
         <table
           className="w-full min-w-[var(--mw-estreita)] border-collapse text-sm md:min-w-[var(--mw-larga)]"
-          style={{ "--mw-estreita": `${9 + colunas.filter((c) => esconde(c) === "").length * 9}rem`, "--mw-larga": `${14 + colunas.length * 9.5}rem` } as CSSProperties}
+          style={{ "--mw-estreita": `${6.25 + colunas.filter((c) => esconde(c) === "").length * 6.75}rem`, "--mw-larga": `${14 + colunas.length * 9.5}rem` } as CSSProperties}
         >
           <caption className="sr-only">
             Comparação entre as capitais, {ano}: despesa total, população, despesa por habitante, matrículas, despesa por matrícula e resultados da etapa escolhida
           </caption>
           <thead className="sticky top-0 z-20 bg-superficie">
             <tr>
-              <th scope="col" aria-sort={aria("alfabetica")} className="sticky left-0 z-30 min-w-[8.5rem] border-b border-r border-carvao-muted bg-superficie px-2.5 py-2 text-left align-bottom md:min-w-[10rem]">
+              <th scope="col" aria-sort={aria("alfabetica")} className="sticky left-0 z-30 min-w-[6.25rem] border-b border-r border-carvao-muted bg-superficie px-2 py-2 text-left align-bottom md:min-w-[10rem] md:px-2.5">
                 <button type="button" onClick={() => aoOrdenar("alfabetica")} className="inline-flex min-h-[44px] items-center gap-1 text-left font-semibold text-obee-tinta">
                   Capital{ordem === "alfabetica" ? <span aria-hidden="true"> ↓</span> : null}
                 </button>
               </th>
               {colunas.map((c) => (
-                <th key={c.id} scope="col" aria-sort={aria(c.id)} className={`${esconde(c)} min-w-[8.5rem] border-b border-carvao-muted px-2.5 py-2 text-right align-bottom ${c.id === colSel ? "bg-obee-fundo" : ""}`}>
+                <th key={c.id} scope="col" aria-sort={aria(c.id)} className={`${esconde(c)} min-w-[6.75rem] border-b border-carvao-muted px-2 py-2 text-right md:min-w-[8.5rem] md:px-2.5 align-bottom ${c.id === colSel ? "bg-obee-fundo" : ""}`}>
                   <span className="block text-[0.66rem] font-normal uppercase tracking-wide text-carvao-muted">
                     {ROTULO_GRUPO[c.grupo]}
                     {c.porEtapa ? ` · ${nomeEtapa(dados, etapa)}` : ""}
                   </span>
                   <button type="button" onClick={() => aoOrdenar(c.id)} className="inline-flex min-h-[44px] min-w-[44px] items-end justify-end gap-1 text-right font-semibold text-obee-tinta">
-                    {c.rotulo}
+                    {rotuloColuna(c, disc)}
                     {ordem === c.id ? <span aria-hidden="true">{decrescente ? "↓" : "↑"}</span> : null}
                   </button>
                 </th>
@@ -194,7 +206,7 @@ export function TabelaComparativa({
                 </th>
                 {colunas.map((c) => {
                   const r = t.resumo[c.id];
-                  const sem = c.porEtapa && resultadoSemEscopo;
+                  const sem = semEscopo(c);
                   return (
                     <td key={c.id} className={`${esconde(c)} px-2.5 py-1.5 text-right tabular-nums text-obee-tinta ${c.id === colSel ? "bg-obee-fundo" : ""}`}>
                       {sem ? "—" : r ? fmtResumo(c, r[k]) : ""}
@@ -211,7 +223,7 @@ export function TabelaComparativa({
               </th>
               {colunas.map((c) => {
                 const r = t.resumo[c.id];
-                const sem = c.porEtapa && resultadoSemEscopo;
+                const sem = semEscopo(c);
                 return (
                   <td key={c.id} className={`${esconde(c)} px-2.5 py-1.5 text-right text-xs tabular-nums text-carvao-muted ${c.id === colSel ? "bg-obee-fundo" : ""}`}>
                     {sem ? "—" : r ? `${r.comValor} com valor; ${r.n} na comparação (de ${r.noGrupo})` : c.medida === null && c.id !== "populacao" ? "não se aplica" : "sem valor no grupo"}

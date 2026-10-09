@@ -22,8 +22,10 @@ import { decimal, inteiro, percentual, reaisCurto, reaisInteiro } from "@/lib/ef
 
 const nomeCap = (c: CapitalPainel) => `${c.nome} (${c.uf})`;
 
+/** Capitais empatadas em ordem alfabética, igual à da frase factual, com "e" antes da última. */
 export function listaCapitais(cs: CapitalPainel[]): string {
-  return cs.map(nomeCap).join(", ");
+  const nomes = cs.map(nomeCap).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  return nomes.length < 2 ? nomes.join("") : `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}`;
 }
 
 /** Referências nacionais oficiais: mesmo universo (com diferença, na unidade da escala) ou outro universo (só ao lado). */

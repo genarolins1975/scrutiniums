@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { formata, formataEixo, type MedidaId } from "@/lib/eficiencia/consulta";
+import { ehDespesa, formata, formataEixo, type MedidaId } from "@/lib/eficiencia/consulta";
 import { fraseCapital, listaRotulos } from "@/lib/eficiencia/frases";
 import type { CapituloPanorama, ExtremoPanorama, ReferenciaExternaCapitulo, ResumoMedida } from "@/lib/eficiencia/panorama";
 import type { FichaIndicador } from "@/lib/eficiencia/tipos";
@@ -12,6 +12,7 @@ import { CAMINHO_COMPARAR, CAMINHO_METODOS, hrefTema, href, type Tema } from "@/
 import { Alternancia, Selecao } from "./controles";
 import type { ContextoFicha } from "./FichaConteudo";
 import { ComparacaoReferencia, FaixaResumo, type LinhaReferencia } from "./PanoramaGraficos";
+import { Siglas } from "./Siglas";
 import { SobreEsteDado } from "./SobreEsteDado";
 import { TabelaSimples } from "./TabelaSimples";
 
@@ -149,7 +150,7 @@ function CapituloRecursos({
   const ref = r.referencia;
   const vazio = !r.menor || !r.maior || ref?.mediana == null;
   return (
-    <section aria-labelledby={idTitulo} id={`capitulo-${c.id}`} className="scroll-mt-24">
+    <section aria-labelledby={idTitulo} id={`capitulo-${c.id}`} className="min-w-0 scroll-mt-24">
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
         <div>
           <Etiqueta numero={c.numero} texto={c.etiqueta.toUpperCase()} />
@@ -179,7 +180,18 @@ function CapituloRecursos({
               <Numero valor={fmt(ref!.mediana!)} legenda="Mediana das capitais" destaque />
               <Numero valor={fmt(r.maior!.valor)} legenda={`Maior valor · ${nomesDoExtremo(r.maior!)}`} />
             </dl>
-            <p className="mt-4 text-center text-[0.8125rem] leading-snug text-carvao-muted">{r.definicao}</p>
+            <p className="mt-4 text-center text-[0.8125rem] leading-snug text-carvao-muted"><Siglas texto={r.definicao} /></p>
+            {ehDespesa(r.medida) && (
+              <p className="mx-auto mt-1.5 max-w-[46rem] text-center text-[0.8125rem] leading-snug text-carvao-muted">
+                Valores em reais correntes: preços do próprio ano, sem correção pela inflação. A evolução em reais constantes está no painel Gastos.
+                {r.escala === "log" && " O gráfico usa escala logarítmica porque as capitais diferem em ordens de grandeza: distâncias iguais representam razões iguais, não diferenças iguais."}
+              </p>
+            )}
+            {r.perimetro && (
+              <p className="mx-auto mt-1.5 max-w-[46rem] text-center text-[0.8125rem] leading-snug text-obee-tinta" role="note">
+                <span className="font-semibold">Perímetro.</span> <Siglas texto={r.perimetro} />
+              </p>
+            )}
             <NotaCapital r={r} cap={cap} />
             <div className="mt-6">
               {visao === "grafico" ? (
@@ -350,12 +362,13 @@ function CapituloReferencia({ c, cap, fichas }: { c: CapituloPanorama; cap: stri
   const oficial = r.externas.find((e) => e.classe === "oficial") ?? null;
   const vazio = !r.menor || !r.maior || ref?.mediana == null;
   return (
-    <section aria-labelledby={idTitulo} id={`capitulo-${c.id}`} className="scroll-mt-24">
+    <section aria-labelledby={idTitulo} id={`capitulo-${c.id}`} className="min-w-0 scroll-mt-24">
       <Etiqueta numero={c.numero} texto={c.etiqueta.toUpperCase()} />
       <h2 id={idTitulo} className="mt-2 font-serif text-[1.9rem] leading-[1.15] text-obee-tinta md:text-[2.35rem]">
         {r.pergunta}
       </h2>
       <p className="mt-1.5 text-[0.9375rem] text-carvao-muted">{r.contexto}</p>
+      <p className="mt-1.5 max-w-prose2 text-[0.8125rem] leading-snug text-carvao-muted"><Siglas texto={r.definicao} /></p>
       {vazio ? (
         <p className="mt-6 border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-obee-tinta" role="note">
           Nenhuma capital tem dado comparável para esta medida neste período.

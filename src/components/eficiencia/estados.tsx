@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Siglas } from "./Siglas";
 import { ROTULO_STATUS, type Ponto } from "@/lib/eficiencia/consulta";
 
 /**
@@ -18,11 +19,11 @@ export function SemValor({ ponto, contexto }: { ponto: Ponto; contexto?: string 
         <span aria-hidden="true" className="inline-block h-2 w-2 border border-carvao-muted" />
         {ponto.status === "NAO_COMPARAVEL" && ponto.valor === null ? "Sem valor publicável" : ROTULO_STATUS[ponto.status]}
       </p>
-      <p className="mt-1 leading-snug">{inicio}</p>
+      <p className="mt-1 leading-snug"><Siglas texto={inicio} /></p>
       {resto && (
         <details className="mt-1">
           <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver o motivo completo</summary>
-          <p className="mt-1 leading-snug text-carvao-muted">{resto}</p>
+          <p className="mt-1 leading-snug text-carvao-muted"><Siglas texto={resto} /></p>
         </details>
       )}
     </div>
@@ -47,11 +48,11 @@ export function Ressalva({ ponto }: { ponto: Ponto }) {
     return (
       <div className="mt-3 max-w-prose2 border-l-2 border-obee-tinta pl-3 text-sm leading-snug text-obee-tinta" role="note">
         <p className="rotulo !text-[0.66rem] text-carvao-muted">{ponto.elegivel ? "Ressalva" : "Ressalva: fora das comparações"}</p>
-        <p className="mt-0.5">{inicio}</p>
+        <p className="mt-0.5"><Siglas texto={inicio} /></p>
         {(resto || extra) && (
           <details className="mt-0.5">
             <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver o restante</summary>
-            {resto && <p className="text-carvao-muted">{resto}</p>}
+            {resto && <p className="text-carvao-muted"><Siglas texto={resto} /></p>}
             {extra && <p className="mt-1 text-carvao-muted">{extra}</p>}
           </details>
         )}
@@ -65,7 +66,7 @@ export function Ressalva({ ponto }: { ponto: Ponto }) {
         Nota
         <span className="sr-only"> (abrir detalhe)</span>
       </summary>
-      <p className="mt-1.5 text-obee-tinta">{texto}</p>
+      <p className="mt-1.5 text-obee-tinta"><Siglas texto={texto} /></p>
     </details>
   );
 }
@@ -74,7 +75,7 @@ export function ForaDoEscopo({ texto, children }: { texto: string; children?: Re
   return (
     <div className="border border-dashed border-mineral bg-papel px-4 py-4 text-sm leading-relaxed text-obee-tinta" role="note">
       <p className="rotulo !text-[0.66rem] text-carvao-muted">Fora do escopo deste indicador</p>
-      <p className="mt-1">{texto}</p>
+      <p className="mt-1"><Siglas texto={texto} /></p>
       {children}
     </div>
   );
@@ -88,7 +89,7 @@ export function ForaDoEscopo({ texto, children }: { texto: string; children?: Re
 export function ForaDaComparacao({ itens }: { itens: { nome: string; uf: string; status: string; motivo: string }[] }) {
   if (!itens.length) return null;
   return (
-    <div className="border-t border-linha pt-4" role="note">
+    <div id="fora-da-comparacao" className="scroll-mt-24 border-t border-linha pt-4" role="note">
       <p className="rotulo text-mineral">
         {itens.length === 1 ? "1 capital fora desta comparação" : `${itens.length} capitais fora desta comparação`}
       </p>
@@ -105,11 +106,43 @@ export function ForaDaComparacao({ itens }: { itens: { nome: string; uf: string;
               </span>
               <span className="text-carvao-muted"> · {x.status}</span>
               <br />
-              {inicio}
+              <Siglas texto={inicio} />
               {resto && (
                 <details className="mt-0.5">
                   <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver o motivo completo</summary>
-                  <p className="text-carvao-muted">{resto}</p>
+                  <p className="text-carvao-muted"><Siglas texto={resto} /></p>
+                </details>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+/**
+ * Ressalvas materiais do recorte inteiro, à vista junto do gráfico e sem depender de uma capital escolhida: cada texto distinto,
+ * com a que capitais se aplica. A frase inicial fica visível; o restante abre por clique ou teclado.
+ */
+export function NotasMateriais({ notas, n }: { notas: { texto: string; capitais: string[] }[]; n: number }) {
+  if (!notas.length) return null;
+  return (
+    <div className="border-l-2 border-obee-tinta bg-papel px-3 py-2 text-sm text-obee-tinta" role="note" aria-label="Ressalvas materiais deste recorte">
+      <p className="rotulo !text-[0.66rem] text-carvao-muted">Ressalvas deste recorte</p>
+      <ul className="mt-1 space-y-2">
+        {notas.map((x) => {
+          const corte = x.texto.length > 190 ? x.texto.search(/\.\s/) : -1;
+          const inicio = corte > 0 ? x.texto.slice(0, corte + 1) : x.texto;
+          const resto = corte > 0 ? x.texto.slice(corte + 1).trim() : "";
+          const aplica = x.capitais.length === n ? `Vale para as ${n} capitais.` : `Vale para ${x.capitais.length} ${x.capitais.length === 1 ? "capital" : "capitais"}: ${x.capitais.slice(0, 4).join(", ")}${x.capitais.length > 4 ? ` e mais ${x.capitais.length - 4}` : ""}.`;
+          return (
+            <li key={x.texto} className="leading-snug">
+              <Siglas texto={inicio} /> <span className="text-carvao-muted">{aplica}</span>
+              {resto && (
+                <details className="mt-0.5">
+                  <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver o restante</summary>
+                  <p className="text-carvao-muted"><Siglas texto={resto} /></p>
                 </details>
               )}
             </li>

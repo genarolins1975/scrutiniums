@@ -80,7 +80,7 @@ describe("panorama editorial", () => {
     // contra a gold crua, em cada uma das três escalas do gasto: elegível, observada e nominal
     for (const m of recursos.medidas) {
       const cru = g.observacoes.filter((o) => o.indicador === MEDIDA[m.medida].indicador && o.ano === m.ano && o.componente === "nominal" && o.status === "OBSERVADO" && o.elegivel_comparacao);
-      expect(m.pontos.map((p) => p.valor).sort((a, b) => a - b), m.medida).toEqual(cru.map((o) => Number(o.valor!.toPrecision(12))).sort((a, b) => a - b));
+      expect(m.pontos.map((p) => p.valor).sort((a, b) => a - b), m.medida).toEqual(cru.map((o) => Number(o.valor!.toPrecision(Math.abs(o.valor!) >= 1e9 ? 15 : 12))).sort((a, b) => a - b));
     }
   });
 

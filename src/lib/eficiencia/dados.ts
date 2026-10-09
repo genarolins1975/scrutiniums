@@ -12,6 +12,18 @@ const ARQUIVO = join(process.cwd(), "public", "eficiencia", "gold", "educacao_ca
 
 let cache: GoldEducacao | null | undefined;
 
+export type RevisaoCatalogo = { versao: string; data: string; resumo: string };
+
+/** Histórico de revisões metodológicas do catálogo (pipeline/eficiencia/catalogo_indicadores.json), lido na geração da página; vazio se o arquivo não estiver disponível. */
+export function historicoDoCatalogo(): RevisaoCatalogo[] {
+  try {
+    const c = JSON.parse(readFileSync(join(process.cwd(), "pipeline", "eficiencia", "catalogo_indicadores.json"), "utf-8")) as { historico?: RevisaoCatalogo[] };
+    return Array.isArray(c.historico) ? c.historico : [];
+  } catch {
+    return [];
+  }
+}
+
 export function goldEducacao(): GoldEducacao | null {
   if (cache !== undefined) return cache;
   try {
@@ -43,6 +55,27 @@ export function metaEducacao(): { gerado_em: string | null; dados_capturados_ate
   }
 }
 
+
+/** Parcela intraorçamentária da função Educação por capital e ano (RREO, 6º bimestre; MSC quando o RREO diverge da DCA), em % da função; pares sem RREO ficam de fora. */
+function intraPct(g: GoldEducacao): [number, number, number][] {
+  const out: [number, number, number][] = [];
+  for (const o of g.observacoes) {
+    if (o.indicador !== "edu.despesa.funcao_educacao" || o.componente !== "nominal" || o.status !== "OBSERVADO") continue;
+    // onde o RREO diverge da DCA e a MSC de dezembro confirma a DCA, a parcela vem da MSC (modalidade 91 sobre o total liquidado)
+    const m = o.conferencia?.msc as { liquidado_total?: number; intra_mod91?: number } | null | undefined;
+    if (o.conferencia?.situacao === "RECONCILIADA_MSC" && m && typeof m.intra_mod91 === "number" && typeof m.liquidado_total === "number" && m.liquidado_total > 0) {
+      out.push([o.ano, o.ente, Number(((100 * m.intra_mod91) / m.liquidado_total).toFixed(4))]);
+      continue;
+    }
+    const r = o.conferencia?.rreo;
+    if (!r || r.intra === null || r.intra === undefined) continue;
+    const total = r.exceto_intra + r.intra;
+    if (!(total > 0)) continue;
+    out.push([o.ano, o.ente, Number(((100 * r.intra) / total).toFixed(4))]);
+  }
+  return out;
+}
+
 /**
  * Payload do cliente: só o recorte que a página exibe, em tuplas e com textos
  * repetidos deduplicados (o registro detalhado de cada valor fica no CSV e na
@@ -71,7 +104,7 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     return i;
   };
   /** 12 algarismos significativos bastam à exibição e ao CSV do cliente; a gold e os CSV do servidor guardam a precisão original. */
-  const p12 = (v: number | null) => (v === null ? null : Number(v.toPrecision(12)));
+  const p12 = (v: number | null) => (v === null ? null : Number(v.toPrecision(Math.abs(v) >= 1e9 ? 15 : 12)));
   const situacoes: string[] = [];
   const posSit = new Map<string, number>();
   const obs: ObsCompacta[] = g.observacoes.map((o) => [
@@ -152,6 +185,7 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     nacionalCalculada: g.referencia_nacional_calculada,
     populacao,
     limiarQuartis: g.politica_referencias.limiar_quartis,
+    intraPct: intraPct(g),
     fontes,
     meta: {
       gerado_em: g.meta.gerado_em,

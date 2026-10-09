@@ -31,7 +31,7 @@ Capturas antes e depois: `docs/obee/capturas/rodada-5/` (24 arquivos, prefixos `
 | Ano | Publicação usada | Referência |
 | --- | --- | --- |
 | 2021 | Estimativa anterior ao Censo 2022 | 1º de julho de 2021 |
-| 2022 | Censo Demográfico | 1º de agosto de 2022 |
+| 2022 | Censo Demográfico (segunda apuração) | 31 de julho de 2022 |
 | 2023 | **Sem publicação municipal do IBGE**: sem valor, sem interpolação, sem reaproveitar outro ano | não se aplica |
 | 2024 | Estimativa posterior ao Censo 2022 | 1º de julho de 2024 |
 | 2025 | Estimativa posterior ao Censo 2022 | 1º de julho de 2025 |

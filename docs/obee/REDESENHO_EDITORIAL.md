@@ -58,6 +58,8 @@ Não se afirma que a interface seja "a melhor" por critério externo; as decisõ
 
 `NavegacaoPainel`, `FaixaResumo`, `ComparacaoReferencia` e `Abas` (panorama), `DistribuicaoCapitais` (exploração e comparação), `ExploradorTema`, `ComparadorCapitais`, `PanoramaInterativo`, `SobreEsteDado`, `Alternancia` e `Selecao` (controles), `estados` (ausência, ressalva, exclusão da comparação), `ReferenciasPainel`, `DetalhesMedida`, `TabelaSimples`. Lógica pura em `src/lib/eficiencia/visao.ts`, `frases.ts` e `panorama.ts`.
 
+`Selecao` mantém o `select` nativo (teclado, leitor de tela, seletor do celular), mas desenha a opção escolhida numa caixa visível que quebra linha, com o `select` transparente por cima, borda incluída. Motivo (09/10/2026): o `select` nativo corta em reticências o que não cabe na largura, e o nome da medida em Comparar chegava a 60 caracteres ("Despesa liquidada em Educação por habitar" em 390 px em produção). Capturas `antes-seletor-medida-390.png`, `depois-seletor-medida-390.png` e `depois-seletor-medida-longa-390.png` e `-320.png`.
+
 ## 8. Carga e hidratação
 
 * O panorama é montado no servidor com os pontos de cada medida (as três escalas do gasto, alunos por turma e Ideb); o navegador recebe só isso (HTML de 169 kB depois da seção 12; era 138 kB), mais os gráficos, as abas e o seletor de capital como ilhas interativas.

@@ -81,6 +81,7 @@ def trilhas(obs):
     out = []
 
     o = _primeira_capital_com_valor(obs, "edu.despesa.funcao_educacao", 2025, componente="nominal")
+    desp = o
     if o:
         arq = os.path.join(base.SEED, "siconfi", "dca_anexo_i_e", f"{o['ente']}_2025.json.gz")
         cap = m["siconfi_dca_anexo_i_e"]["arquivos"][f"{o['ente']}_2025"]
@@ -111,6 +112,48 @@ def trilhas(obs):
             f"Soma de QT_MAT_BAS: {o['valor']:,}.".replace(",", "."),
             "Conferência com a Sinopse Estatística 2025, tabela 1.2, coluna Municipal: valor idêntico (validação V06).",
         ], "valor": o["valor"]})
+
+    def _inteiro(v):
+        return f"{int(round(v)):,}".replace(",", ".")
+
+    # população, despesa por habitante e despesa por matrícula: mesma capital e mesmo exercício da trilha da despesa total
+    if desp:
+        cod = desp["ente"]
+        pop = next((x for x in obs if x["indicador"] == "ctx.populacao.residente" and x["ente"] == cod and x["ano"] == 2025 and x["status"] == "OBSERVADO"), None)
+        ph = next((x for x in obs if x["indicador"] == "edu.despesa.por_habitante" and x["ente"] == cod and x["ano"] == 2025
+                   and x["componente"] == "nominal" and x["status"] == "OBSERVADO"), None)
+        src = m["ibge_populacao"]["fontes"].get("sidra_6579_2025")
+        if pop and src:
+            out.append({"indicador": "ctx.populacao.residente", "ente": cod, "nome": nomes[cod], "ano": 2025, "passos": [
+                f"Consulta ao SIDRA do IBGE: {src['url']} (capturada em {m['ibge_populacao']['capturado_em']}).",
+                f"Resposta preservada com sha256 {src['sha256_resposta']}; tabela 6579, variável 9324, município {cod}, ano 2025.",
+                f"População residente estimada, referência em 1º de julho de 2025: {_inteiro(pop['valor'])}.",
+                "O valor vigente do SIDRA prevalece sobre a publicação original do Diário Oficial; a diferença, quando existe, fica registrada na observação (validação V14).",
+            ], "valor": pop["valor"]})
+        if pop and ph:
+            out.append({"indicador": "edu.despesa.por_habitante", "ente": cod, "nome": nomes[cod], "ano": 2025, "passos": [
+                f"Numerador: despesa liquidada na função 12 (Educação) da DCA 2025, Anexo I-E: {P.brl(desp['valor'])} (trilha da despesa total).",
+                f"Denominador: população residente estimada em 1º de julho de 2025: {_inteiro(pop['valor'])} (trilha da população).",
+                f"{P.brl(desp['valor'])} ÷ {_inteiro(pop['valor'])} = {P.brl(ph['valor'])} por habitante.",
+                "A conferência de elegibilidade é a da despesa (DCA contra RREO); a população não entra na comparação como estimativa de outro ano.",
+            ], "valor": ph["valor"]})
+        pm = next((x for x in obs if x["indicador"] == "edu.despesa.aplicacao_direta_por_matricula" and x["ente"] == cod and x["ano"] == 2025
+                   and x["componente"] == "nominal" and x["status"] == "OBSERVADO"), None)
+        mat = next((x for x in obs if x["indicador"] == "edu.matriculas.rede_municipal" and x["ente"] == cod and x["ano"] == 2025
+                    and x["etapa"] == "total" and x["status"] == "OBSERVADO"), None)
+        ponte = {x["componente"]: x["valor"] for x in obs if x["indicador"] == "edu.despesa.ponte_matricula" and x["ente"] == cod
+                 and x["ano"] == 2025 and x["status"] == "OBSERVADO"}
+        if pm and mat and "ad_demais_elementos" in ponte and "ad_beneficiario_indeterminado" in ponte:
+            num = ponte["ad_demais_elementos"] + ponte["ad_beneficiario_indeterminado"]
+            out.append({"indicador": "edu.despesa.aplicacao_direta_por_matricula", "ente": cod, "nome": nomes[cod], "ano": 2025, "passos": [
+                f"Total da função 12 na DCA 2025: {P.brl(ponte['dca_total'])}; as intraorçamentárias ({P.brl(ponte.get('intra', 0))}) ficam fora do total.",
+                f"Consulta à API do Siconfi (MSC, saldo final de dezembro): {m['siconfi_msc_funcao12']['url'].replace('<código IBGE>', str(cod)).replace('<ano>', '2025')}.",
+                f"MSC de dezembro de 2025, função 12, contas 6.2.2.1.3.03, .04 e .07 (saldo líquido D e C): aplicação direta com beneficiário não indeterminado, "
+                f"{P.brl(ponte['ad_demais_elementos'])}; com beneficiário indeterminado, {P.brl(ponte['ad_beneficiario_indeterminado'])}.",
+                f"Numerador (soma das duas parcelas): {P.brl(num)}.",
+                f"Denominador: matrículas da rede municipal no Censo Escolar 2025, soma de QT_MAT_BAS: {_inteiro(mat['valor'])} (trilha das matrículas).",
+                f"{P.brl(num)} ÷ {_inteiro(mat['valor'])} = {P.brl(pm['valor'])} por matrícula. É razão orçamentária, não custo do aluno.",
+            ], "valor": pm["valor"]})
 
     alvo = None
     for cap in entes.capitais():
@@ -223,6 +266,57 @@ CAMPOS_CSV = [
     "numerador", "denominador", "referencia_numerador", "referencia_denominador", "tipo_populacao", "data_referencia",
     "quebra_serie",
 ]
+
+
+DESCRICAO_CAMPOS = {
+    "indicador_id": "Identificador do indicador no catálogo do OBEE.",
+    "indicador": "Nome do indicador.",
+    "codigo_ibge": "Código do município no IBGE (7 dígitos).",
+    "capital": "Nome da capital.",
+    "uf": "Sigla da unidade da federação.",
+    "periodo_tipo": "O que a coluna 'ano' representa: exercício financeiro, ano do Censo Escolar ou edição bienal.",
+    "ano": "Ano do exercício, do Censo Escolar ou da edição do Ideb e do Saeb.",
+    "etapa": "Etapa de ensino do recorte; vazio quando o indicador não varia por etapa.",
+    "componente": "Base do valor: nominal (reais correntes), real_2025 (reais de 2025 pelo IPCA) ou componente do indicador (por exemplo, disciplina do Saeb).",
+    "valor": "Valor numérico com ponto decimal e a precisão da fonte. Vazio quando não há valor observado; vazio nunca significa zero.",
+    "unidade": "Unidade do valor.",
+    "base_monetaria": "Base monetária dos valores em reais, quando se aplica.",
+    "universo": "O que o indicador cobre e o que o numerador e o denominador incluem.",
+    "status": "Estado do dado: OBSERVADO, NAO_DIVULGADO, NAO_APLICAVEL, AUSENTE_NA_COLETA, INCONSISTENTE etc.",
+    "elegivel_comparacao": "'sim' quando o valor entra em medianas, médias e comparações; 'nao' quando há valor oficial mas ele fica fora.",
+    "situacao_conferencia": "Resultado da conferência da despesa entre DCA (Declaração de Contas Anuais), RREO (Relatório Resumido da Execução Orçamentária) e MSC (Matriz de Saldos Contábeis).",
+    "motivo_inelegibilidade": "Por que o valor oficial não entra na comparação, quando é o caso.",
+    "nota": "Nota ou ressalva do dado nesta capital e período.",
+    "nota_material": "'true' quando a nota é uma restrição que precisa aparecer junto do dado.",
+    "participacao_pct": "Participação da parte no total, em %, nos indicadores de composição.",
+    "fonte": "Fontes combinadas no valor.",
+    "registro": "Registro de origem: documento, conjunto, conta ou coluna de onde o valor foi lido.",
+    "versao_metodologica": "Versão metodológica do indicador.",
+    "dados_gerados_em": "Data e hora de geração dos dados publicados.",
+    "hash_dados": "Hash do conteúdo dos dados publicados; identifica a base exata da linha.",
+    "numerador": "Descrição do numerador, nos indicadores em razão.",
+    "denominador": "Descrição do denominador, nos indicadores em razão.",
+    "referencia_numerador": "Referência temporal e de fonte do numerador.",
+    "referencia_denominador": "Referência temporal e de fonte do denominador.",
+    "tipo_populacao": "Tipo da população usada: estimativa de 1º de julho ou população do Censo 2022.",
+    "data_referencia": "Data de referência da população.",
+    "quebra_serie": "'true' quando o valor usa base diferente da do ano anterior; a variação entre os dois lados não é comparável.",
+}
+
+
+def _csv_dicionario(caminho):
+    """Dicionário das colunas dos CSV de séries por indicador; arquivo à parte porque o CSV não admite comentários."""
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(["coluna", "descricao"])
+    for c in CAMPOS_CSV:
+        w.writerow([c, DESCRICAO_CAMPOS[c]])
+    w.writerow(["(leia antes de usar)", "Os valores descrevem gasto, atendimento e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. Mediana e média descrevem o grupo de capitais e não são referência de desempenho."])
+    w.writerow(["(como citar)", "Scrutiniums, Observatório Brasileiro de Eficiência Estatal, Educação nas capitais. Indique dados_gerados_em e hash_dados da linha utilizada."])
+    with open(caminho, "w", encoding="utf-8", newline="") as f:
+        f.write(buf.getvalue())
+
 
 PERIODO_TIPO = {"exercicios": "exercício financeiro", "censo": "ano do Censo Escolar (referência em maio)",
                 "edicoes_ideb": "edição bienal do Ideb/Saeb"}
@@ -461,6 +555,9 @@ def publica(gold, raiz_publica=None):
     _csv_referencias(gold["referencias"], os.path.join(raiz, "eficiencia", "series", "referencias_educacao_capitais.csv"),
                      catalogo, gold["meta"])
     _csv_diagnostico(gold["diagnostico_pares_msc"], os.path.join(raiz, "eficiencia", "series", "edu_diagnostico_pares_msc.csv"), gold["meta"])
+    _csv_dicionario(os.path.join(raiz, "eficiencia", "series", "dicionario_das_colunas.csv"))
+    # manifesto das capturas: fonte, endereço, data de captura e sha256 de cada insumo, para quem reproduz fora do repositório
+    base.grava_json(os.path.join(raiz, "eficiencia", "series", "manifesto_das_capturas.json"), base.le_manifesto())
     for ref in gold["referencia_nacional_calculada"]:
         _csv_referencia_nacional(ref["ano"], os.path.join(raiz, "eficiencia", "series", f"referencia_nacional_despesa_habitante_{ref['ano']}.csv"), gold["meta"])
     return arquivo

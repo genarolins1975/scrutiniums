@@ -15,11 +15,14 @@ import { COR, dimensoes, ticksLog, useLargura } from "./graficos";
 
 export type LinhaDistribuicao = { chave: string; rotulo: string; valor: number; destacada: boolean };
 
+/** Capital fora da comparação: aparece no gráfico, sem entrar nas estatísticas, com o motivo curto ao lado (o completo vem logo abaixo). */
+export type LinhaForaDaComparacao = { chave: string; rotulo: string; valor: number | null; texto: string; destacada: boolean };
+
 export type ReferenciasDistribuicao = {
   mediana: number | null;
   media: number | null;
   faixa: { q1: number; q3: number } | null;
-  externa?: { rotulo: string; valor: number } | null;
+  externa?: { rotulo: string; valor: number; nota?: string } | null;
 };
 
 export function DistribuicaoCapitais({
@@ -32,6 +35,7 @@ export function DistribuicaoCapitais({
   escala = "linear",
   rotuloGrupo = "capitais na comparação",
   rotuloMediana = "Mediana",
+  fora = [],
 }: {
   linhas: LinhaDistribuicao[];
   referencias: ReferenciasDistribuicao;
@@ -42,31 +46,59 @@ export function DistribuicaoCapitais({
   escala?: "linear" | "log";
   rotuloGrupo?: string;
   rotuloMediana?: string;
+  fora?: LinhaForaDaComparacao[];
 }) {
   const [ref, w, medido] = useLargura<HTMLDivElement>(640);
   const [ativo, setAtivo] = useState<number | null>(null);
   const estreito = w < 520;
   const linhaH = 28;
   const fonte = estreito ? 11.5 : 12.5;
-  const m = { t: 30, r: estreito ? 58 : 84, b: referencias.externa ? 52 : 34, l: estreito ? Math.min(124, Math.round(w * 0.4)) : 184 };
-  const H = m.t + m.b + linhas.length * linhaH;
+  const larg = (t: string, f: number) => t.length * f * 0.56;
+  const maiorValor = Math.max(...linhas.map((l) => formata(l.valor).length), 1);
+  const margemDireita = Math.max(w < 360 ? 50 : estreito ? 58 : 84, Math.ceil(maiorValor * fonte * 0.6) + 16);
+  const m = { t: 30, r: margemDireita, b: referencias.externa ? 52 : 34, l: w < 360 ? 100 : estreito ? Math.min(124, Math.round(w * 0.4)) : 184 };
+  const nLinhas = linhas.length + fora.length;
+  const H = m.t + m.b + nLinhas * linhaH;
   const { mediana, media, faixa, externa = null } = referencias;
   const todos = [...linhas.map((l) => l.valor), ...[mediana, media, faixa?.q1 ?? null, faixa?.q3 ?? null, externa?.valor ?? null].filter((v): v is number => v !== null)];
   const log = escala === "log" && todos.every((v) => v > 0);
   const dom = log
     ? { min: Math.min(...todos) * 0.85, max: Math.max(...todos) * 1.15, ticks: ticksLog(Math.min(...todos) * 0.85, Math.max(...todos) * 1.15) }
     : dominioBonito(todos, { zero, n: estreito ? 3 : 5 });
-  const util = w - m.l - m.r;
-  const ticks = util < 150 ? dom.ticks.filter((_, i, a) => i === 0 || i === a.length - 1) : dom.ticks;
   const lin = escalaLinear([dom.min, dom.max], [m.l, w - m.r]);
   const x = (v: number) => (log ? m.l + ((Math.log10(v) - Math.log10(dom.min)) / (Math.log10(dom.max) - Math.log10(dom.min))) * (w - m.r - m.l) : lin(v));
   const yc = (i: number) => m.t + i * linhaH + linhaH / 2;
-  const base = m.t + linhas.length * linhaH;
+  const base = m.t + nLinhas * linhaH;
+  // faixa central e mediana cobrem só as capitais da comparação; as linhas fora dela ficam abaixo, sem atravessá-las
+  const baseComparadas = m.t + linhas.length * linhaH;
   const min = Math.min(...linhas.map((l) => l.valor));
   const max = Math.max(...linhas.map((l) => l.valor));
   // valor visível na própria linha: extremos (todos os empatados), capitais destacadas e a linha ativa
   const comRotulo = (l: LinhaDistribuicao, i: number) => l.valor === min || l.valor === max || l.destacada || ativo === i;
   const destacadas = linhas.filter((l) => l.destacada);
+  // nome e UF em duas linhas quando não cabem na margem, em vez de cortar o nome
+  const capacidade = m.l - 14;
+  const partes = (rotulo: string): [string, string | null] => {
+    if (larg(rotulo, fonte) <= capacidade) return [rotulo, null];
+    const i = rotulo.lastIndexOf(" (");
+    return i > 0 ? [rotulo.slice(0, i), rotulo.slice(i + 1)] : [rotulo, null];
+  };
+  // marcas do eixo sem sobreposição: cada rótulo é ancorado para caber na figura e a marca que encosta na anterior é descartada
+  const larguraMarca = (t: number) => formataEixo(t).length * 6.8;
+  const caixaMarca = (t: number) => {
+    const l = larguraMarca(t);
+    const ancora: "start" | "middle" | "end" = x(t) - l / 2 < 2 ? "start" : x(t) + l / 2 > w - 2 ? "end" : "middle";
+    const ini = ancora === "start" ? x(t) : ancora === "end" ? x(t) - l : x(t) - l / 2;
+    return { ancora, ini, fim: ini + l };
+  };
+  const ticks: { t: number; ancora: "start" | "middle" | "end" }[] = [];
+  let fimAnterior = -Infinity;
+  dom.ticks.forEach((t) => {
+    const c = caixaMarca(t);
+    if (c.ini < fimAnterior + 8) return;
+    ticks.push({ t, ancora: c.ancora });
+    fimAnterior = c.fim;
+  });
 
   const linhaDoPonteiro = (e: PointerEvent<SVGRectElement>) => {
     const r = e.currentTarget.ownerSVGElement!.getBoundingClientRect();
@@ -95,22 +127,22 @@ export function DistribuicaoCapitais({
         className="outline-offset-4"
       >
         <svg {...dimensoes(medido, w, H)} aria-hidden="true" className="block">
-          {faixa && <rect x={x(faixa.q1)} y={m.t - 2} width={Math.max(1, x(faixa.q3) - x(faixa.q1))} height={base - m.t + 2} fill="var(--cor-obee-fundo)" />}
-          {ticks.map((t, it) => (
+          {faixa && <rect x={x(faixa.q1)} y={m.t - 2} width={Math.max(1, x(faixa.q3) - x(faixa.q1))} height={baseComparadas - m.t + 2} fill="var(--cor-obee-fundo)" />}
+          {ticks.map(({ t, ancora }) => (
             <g key={t}>
               <line x1={x(t)} x2={x(t)} y1={m.t - 2} y2={base} stroke={COR.grade} strokeWidth={1} />
-              <text x={x(t)} y={base + 16} textAnchor={it === ticks.length - 1 && estreito ? "end" : it === 0 && estreito ? "start" : "middle"} fontSize={11.5} fill={COR.eixo}>
+              <text x={x(t)} y={base + 16} textAnchor={ancora} fontSize={11.5} fill={COR.eixo}>
                 {formataEixo(t)}
               </text>
             </g>
           ))}
           {mediana !== null && (
             <g>
-              <line x1={x(mediana)} x2={x(mediana)} y1={m.t - 8} y2={base} stroke="var(--cor-obee-tinta)" strokeWidth={1.75} />
+              <line x1={x(mediana)} x2={x(mediana)} y1={m.t - 8} y2={baseComparadas} stroke="var(--cor-obee-tinta)" strokeWidth={1.75} />
               <text
                 x={x(mediana)}
                 y={m.t - 14}
-                textAnchor={x(mediana) > w - m.r - 90 ? "end" : x(mediana) < m.l + 60 ? "start" : "middle"}
+                textAnchor={x(mediana) + larg(`${rotuloMediana} ${formata(mediana)}`, 12) / 2 > w - 2 ? "end" : x(mediana) - larg(`${rotuloMediana} ${formata(mediana)}`, 12) / 2 < 2 ? "start" : "middle"}
                 fontSize={12}
                 fontWeight={600}
                 fill="var(--cor-obee-tinta)"
@@ -119,7 +151,7 @@ export function DistribuicaoCapitais({
               </text>
             </g>
           )}
-          {media !== null && <path d={`M${x(media)},${base - 1} l-5,-8 l10,0 z`} fill="var(--cor-obee-tinta)" />}
+          {media !== null && <path d={`M${x(media)},${baseComparadas - 1} l-5,-8 l10,0 z`} fill="var(--cor-obee-tinta)" />}
           {externa && (
             <g>
               <line x1={x(externa.valor)} x2={x(externa.valor)} y1={m.t - 2} y2={base + 22} stroke={COR.referencia} strokeWidth={1.5} strokeDasharray="2 3" strokeLinecap="round" />
@@ -135,13 +167,18 @@ export function DistribuicaoCapitais({
               <text
                 x={m.l - 10}
                 y={yc(i)}
-                dy="0.32em"
+                dy={partes(l.rotulo)[1] ? "-0.1em" : "0.32em"}
                 textAnchor="end"
                 fontSize={fonte}
                 fontWeight={l.destacada ? 700 : 400}
                 fill={l.destacada ? "var(--cor-obee-tinta)" : "var(--cor-carvao-muted)"}
               >
-                {l.rotulo}
+                {partes(l.rotulo)[0]}
+                {partes(l.rotulo)[1] && (
+                  <tspan x={m.l - 10} dy="1.15em">
+                    {partes(l.rotulo)[1]}
+                  </tspan>
+                )}
               </text>
               <circle cx={x(l.valor)} cy={yc(i)} r={l.destacada ? 6.5 : 4.5} fill={l.destacada ? COR.selecao : COR.neutro} stroke={COR.superficie} strokeWidth={2} />
               {comRotulo(l, i) && (
@@ -151,6 +188,26 @@ export function DistribuicaoCapitais({
               )}
             </g>
           ))}
+          {fora.map((l, k) => {
+            const i = linhas.length + k;
+            const [n1, n2] = partes(l.rotulo);
+            return (
+              <g key={l.chave} data-fora-da-comparacao={l.chave}>
+                <line x1={m.l} x2={w - m.r} y1={yc(i)} y2={yc(i)} stroke={COR.grade} strokeWidth={1} strokeDasharray="2 4" />
+                <text x={m.l - 10} y={yc(i)} dy={n2 ? "-0.1em" : "0.32em"} textAnchor="end" fontSize={fonte} fontWeight={l.destacada ? 700 : 400} fill={l.destacada ? "var(--cor-obee-tinta)" : "var(--cor-carvao-muted)"}>
+                  {n1}
+                  {n2 && (
+                    <tspan x={m.l - 10} dy="1.15em">
+                      {n2}
+                    </tspan>
+                  )}
+                </text>
+                <text x={m.l + 8} y={yc(i)} dy="0.32em" fontSize={fonte - 0.5} fontStyle="italic" fill="var(--cor-carvao-muted)">
+                  {larg(l.texto, fonte - 0.5) <= w - m.l - 14 ? l.texto : l.texto.replace(/ \(.*\)$/, "")}
+                </text>
+              </g>
+            );
+          })}
           <rect
             x={0}
             y={m.t}
@@ -198,6 +255,15 @@ export function DistribuicaoCapitais({
             Média simples: {formata(media)}
           </span>
         )}
+        {externa && (
+          <span className="inline-flex items-center gap-1.5">
+            <svg width="22" height="14" aria-hidden="true">
+              <line x1="2" x2="20" y1="7" y2="7" stroke={COR.referencia} strokeWidth="1.5" strokeDasharray="2 3" strokeLinecap="round" />
+            </svg>
+            {externa.rotulo}: {formata(externa.valor)}
+            {externa.nota ? ` (${externa.nota})` : ""}
+          </span>
+        )}
         {faixa && (
           <span className="inline-flex items-center gap-1.5">
             <svg width="22" height="14" aria-hidden="true">
@@ -216,6 +282,11 @@ export function DistribuicaoCapitais({
           <p className="rotulo text-mineral">{linhas[ativo].rotulo}</p>
           <p className="mt-0.5 text-sm font-semibold text-obee-tinta">{formata(linhas[ativo].valor)}</p>
         </div>
+      )}
+      {!log && !zero && dom.min > 0 && (
+        <p className="mt-2 text-xs leading-snug text-carvao-muted" role="note">
+          O eixo não parte de zero (começa em {formataEixo(dom.min)}): compare a posição das capitais, não o comprimento das hastes.
+        </p>
       )}
       {log && (
         <p className="mt-2 text-xs leading-snug text-carvao-muted">

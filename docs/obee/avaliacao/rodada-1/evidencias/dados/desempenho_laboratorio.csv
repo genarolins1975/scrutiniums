@@ -1,0 +1,17 @@
+perfil,rota,FCP_ms_mediana,LCP_ms_mediana,h1_visivel_ms_mediana,DCL_ms,load_ms,CLS_mediana,CLS_max,TBT_ms,requisicoes,html_decodificado_KB,js_KB,css_KB,fonte_KB
+sem estrangulamento,Panorama,176,176,278,63,197,0.0004,0.0004,18,34,165,487,53,222
+sem estrangulamento,Gastos,284,284,387,158,311,0,0,16,33,398,487,53,222
+sem estrangulamento,Atendimento,188,188,342,166,236,0,0,0,33,383,487,53,222
+sem estrangulamento,Resultados,168,168,349,110,229,0,0,0,33,371,487,53,222
+sem estrangulamento,Comparar,200,200,377,153,272,0,0,19,33,616,487,53,222
+sem estrangulamento,Comparar tabela,168,168,403,170,255,0.0028,0.0028,19,33,616,487,53,222
+sem estrangulamento,Metodos,256,256,410,205,323,0,0,44,32,706,487,53,222
+sem estrangulamento,Gastos SP detalhe,180,180,337,95,230,0.0113,0.0113,11,33,398,487,53,222
+"CPU 4x + 4G (9 Mbps, 170 ms)",Panorama,956,956,1456,506,1266,0.0004,0.0004,409,25,165,412,53,222
+"CPU 4x + 4G (9 Mbps, 170 ms)",Gastos,900,900,1559,523,1346,0,0,458,23,398,437,53,222
+"CPU 4x + 4G (9 Mbps, 170 ms)",Atendimento,948,948,1546,559,1344,0,0,429,23,383,437,53,222
+"CPU 4x + 4G (9 Mbps, 170 ms)",Resultados,892,892,1563,536,1365,0,0,462,27,371,437,53,222
+"CPU 4x + 4G (9 Mbps, 170 ms)",Comparar,816,816,1660,730,1429,0.0078,0.0078,536,21,616,426,53,222
+"CPU 4x + 4G (9 Mbps, 170 ms)",Comparar tabela,816,816,1645,741,1412,0.0106,0.0106,653,20,616,426,53,222
+"CPU 4x + 4G (9 Mbps, 170 ms)",Metodos,1072,1072,1607,533,1326,0,0,537,19,706,354,53,222
+"CPU 4x + 4G (9 Mbps, 170 ms)",Gastos SP detalhe,984,984,1603,559,1422,0.0113,0.0113,491,21,398,437,53,222
