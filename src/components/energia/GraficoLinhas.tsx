@@ -358,16 +358,18 @@ export function GraficoLinhas({
   const finaisVisiveis = rotulos.filter((r) => Math.abs(r.yy - r.alvo) <= 10 && r.yy <= h - B - 4 && r.yy >= T + 4);
 
   // marcos só dentro do intervalo exibido. O rótulo vai para o lado do traço com mais espaço, quebra em até três linhas dentro da área do
-  // gráfico (nunca passa da borda nem entra no eixo) e os de marcos próximos se empilham pela altura real de cada um
+  // gráfico (nunca passa da borda nem entra no eixo) e os de marcos próximos se empilham pela altura real de cada um.
+  // Com rótulos diretos, a margem direita é deles: o texto do marco para onde a área do gráfico termina
   const x0 = String(vis[0]?.[chaveX] ?? "");
   const x1 = String(vis[n - 1]?.[chaveX] ?? "");
+  const limiteDireito = (rotulosDiretos ? w - R : w) - 4;
   const marcosVisiveis: { m: { x: string; rotulo: string }; i: number; topo: number; linhas: string[]; ancora: "start" | "end" }[] = [];
   for (const m of marcos) {
     if (!n || m.x < x0 || m.x > x1) continue;
     const i = vis.findIndex((d) => String(d[chaveX]) >= m.x);
     if (i < 0) continue;
     const xi = x(i);
-    const direita = w - 4 - (xi + 4);
+    const direita = limiteDireito - (xi + 4);
     const esquerda = xi - 4 - L;
     const ancora: "start" | "end" = m.rotulo.length * PX_MARCO <= direita || direita >= esquerda ? "start" : "end";
     const linhas = quebraEmLinhas(m.rotulo, Math.floor(Math.max(24, ancora === "start" ? direita : esquerda) / PX_MARCO), 3);

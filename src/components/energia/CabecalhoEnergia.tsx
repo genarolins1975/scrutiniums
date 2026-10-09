@@ -136,7 +136,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
               </div>
             </DetalhesFechaveis>
             {grupoAtual && (
-              <p className="min-w-0 truncate text-sm text-carvao-muted" data-onde-estou="">
+              <p className="min-w-0 text-sm leading-tight text-carvao-muted" data-onde-estou="">
                 <span className="sr-only">Você está em: </span>
                 {grupoAtual.grupo.rotulo}
                 {paginaAtual && <span className="text-carvao"> · {paginaAtual.rotulo}</span>}

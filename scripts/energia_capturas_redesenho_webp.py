@@ -5,7 +5,7 @@ Dois tipos de origem, que podem ser dadas juntas:
   --aberturas <pasta com png/>     capturas de energia-capturas-redesenho.mjs (22 aberturas; 320, 390, 768 e 1440 px; nomes por abertura)
 
 Destino (--destino): um arquivo por rota, largura e tipo, nomeado <rota>__<largura>_<tipo>.webp.
-  Primeira dobra: todas as rotas, 1440 e 390 px, em tamanho real.
+  Primeira dobra: todas as rotas; 1440 px reduzida a 50% (720 por 450) e 390 px em tamanho real.
   Página inteira: só as 22 aberturas, em 1440 px (reduzida a 50%) e 390 px (reduzida a 60%). Dobras de 320 e 768 px: só as 22 aberturas.
 Uso:
   python3 scripts/energia_capturas_redesenho_webp.py --destino docs/energia/redesign/capturas/antes --coleta <rd> --aberturas <rd_antes>

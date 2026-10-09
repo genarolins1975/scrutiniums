@@ -323,6 +323,14 @@ describe("rótulo de marco dentro da área do gráfico", () => {
     expect(m).toMatch(/<text[^>]*data-marco=""[^>]*text-anchor="start"[^>]*>Troca de regra<\/text>/);
   });
 
+  it("com rótulos diretos, o marco não escreve na margem direita; sem eles, o texto curto continua à direita", () => {
+    // perto da borda, o texto (cerca de 72 px) caberia entre o traço e a borda do SVG, mas parte dessa faixa é dos rótulos finais das séries
+    const comRotulos = html({ ...base, marcos: [{ x: serie10[8].d as string, rotulo: "Troca regra" }] });
+    expect(comRotulos).toMatch(/<text[^>]*data-marco=""[^>]*text-anchor="end"[^>]*>Troca regra<\/text>/);
+    const semRotulos = html({ ...base, rotulosDiretos: false, marcos: [{ x: serie10[8].d as string, rotulo: "Troca regra" }] });
+    expect(semRotulos).toMatch(/<text[^>]*data-marco=""[^>]*text-anchor="start"[^>]*>Troca regra<\/text>/);
+  });
+
   it("marcos próximos se empilham pela altura de cada um (sem sobrepor o texto do anterior)", () => {
     const m = html({
       ...base,

@@ -454,11 +454,11 @@ export default function ContaReajustesPage() {
                     </caption>
                     <thead>
                       <tr className="border-b border-linha text-left text-xs text-mineral">
-                        <th scope="col" className="py-1.5 pr-3 font-normal">
+                        <th scope="col" className="py-1.5 pr-1 font-normal sm:pr-3">
                           Bandeira
                         </th>
                         {g.perfis_kwh.map((k) => (
-                          <th key={k} scope="col" className="py-1.5 pr-3 text-right font-normal">
+                          <th key={k} scope="col" className="py-1.5 pr-1 text-right font-normal sm:pr-3">
                             {k} kWh
                           </th>
                         ))}
@@ -469,11 +469,11 @@ export default function ContaReajustesPage() {
                         .filter((p) => p.rs_mwh !== null)
                         .map((p) => (
                           <tr key={p.bandeira} className="border-b border-linha">
-                            <th scope="row" className="py-1.5 pr-3 text-left font-normal text-carvao">
+                            <th scope="row" className="py-1.5 pr-1 text-left font-normal text-carvao sm:pr-3">
                               {p.bandeira}
                             </th>
                             {g.perfis_kwh.map((k) => (
-                              <td key={k} className="py-1.5 pr-3 text-right">
+                              <td key={k} className="py-1.5 pr-1 text-right sm:pr-3">
                                 {p.rs_mwh === 0 ? "sem acréscimo" : reais(custoDoPerfil(p.rs_mwh, k))}
                               </td>
                             ))}
