@@ -83,7 +83,7 @@ export default function CenariosPage() {
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <ExpansaoNavegacao atual="p043" />
         <CabecalhoModulo
-          siglas={["PDE", "SIGA", "RALIE", "SIN", "CDE", "CVU"]}
+          siglas={["PDE", "SIGA", "RALIE", "SIN", "CDE", "CVU", "MMGD"]}
           rotulo="Expansão"
           titulo={pp.pergunta}
           lead="O plano decenal oficial é um cenário, em camada separada do realizado e da carteira."
