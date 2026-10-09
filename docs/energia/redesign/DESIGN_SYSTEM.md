@@ -74,6 +74,16 @@ Largura de leitura: `ed-pagina` (conteúdo de 1.160 px a partir de 1.240 px de j
 - `Comprove este número` com a mesma ficha e o mesmo endereço de citação; `SobreEsteDado` por série.
 - Selo de natureza com forma e rótulo, nunca só cor.
 
+### Baixar imagem do gráfico
+
+`BaixarImagem` (`BaixarImagem.tsx`, com as funções puras em `lib/energia/imagem-grafico.ts`) leva um gráfico para um slide ou uma matéria com o contexto junto. O botão fica ao lado da legenda de `GraficoLinhas`, `GraficoBarras`, `GraficoPontos`, `PequenosMultiplos` e `Histograma` e não aparece quando o gráfico está em estado vazio. `MapaCoropletico` ainda não tem o botão.
+
+- **O que o PNG traz:** título em negrito, unidade, legenda com as amostras de cor, traço e hachura, o desenho do gráfico como está na tela, as notas de estado que o próprio gráfico escreve (recorte parcial, intervalo exibido, escala livre; no histograma, amostra e período, marcados com `data-nota-imagem`), a fonte, a versão dos dados, o endereço da página (com o recorte da URL e a âncora do painel), a data do clique em dd/mm/aaaa e a identificação "Scrutiniums, Observatório Brasileiro do Setor Elétrico". O svg tem de 720 a 800 px e o PNG, em 2x, de 1440 a 1600 px; gráfico de celular é ampliado e o largo é reduzido, sem perder a proporção entre texto e desenho. O nome do arquivo vem do título (sem acento, minúsculas, hífens, até 80 caracteres).
+- **De onde vêm título, fonte e versão:** o título e a unidade são os do próprio gráfico. Fonte e versão são os do rodapé do painel mais próximo (`section[data-painel-evidencia]`, parágrafo "Fonte: ..."): a versão é a de "Versão dos dados: X" ou as datas de "(referência até X)". Fora de painel, a imagem leva só o endereço e a data. Nenhuma fonte é inventada.
+- **Como funciona:** no clique lê o DOM, clona os svgs marcados com `data-svg-grafico`, tira a cruz do cursor, a seleção de intervalo e os realces de passagem e de foco (`data-nao-exportar`), troca `var(--token)` pelos valores calculados da página, leva junto os padrões de hachura e desenha num canvas. Sem biblioteca, sem rede, sem imagem externa. Gráfico novo entra marcando seus svgs com `data-svg-grafico` e plugando `BaixarImagem` ao lado da legenda.
+- **Botão:** texto "Baixar imagem", `aria-label` com o título, 24 px em ponteiro fino e 44 px em ponteiro grosso, oculto na impressão, erro em região `aria-live` (sem `alert`). Só aparece depois da hidratação; o HTML do servidor traz um espaço invisível do mesmo tamanho, para o layout não saltar e para os testes de servidor lerem o mesmo HTML.
+- **Limites:** fonte do sistema (a imagem não carrega as fontes da página); sem interatividade (nada de dica, cruz ou foco); a imagem mostra o gráfico no momento do clique, então série oculta, intervalo ampliado, ordem e seleção valem como estão; imagem muito alta usa escala menor que 2x para ficar dentro do limite de pixels dos navegadores.
+
 ## 4. Receita de uma abertura temática
 
 1. `CabecalhoModulo` com título de 5 a 9 palavras (a pergunta do tema, sem repetir o título da primeira figura), `lead` de uma ou duas frases sem "hoje" nem "agora" (o dado tem a própria data), `recorte` (data, universo, unidade) e `fonte` curta. O texto longo antigo vai em `children`; fontes por extenso em `referencia`; datas de cada parte em `datas`.

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { dominioComZero, empilhar, escalaLinear, formatarDiferenca, formatarValor, pxCaractere12, rotuloTick, ticksQueCabem, valido, type Pilha } from "@/lib/energia/escalas";
 
 /**
@@ -558,7 +559,7 @@ export function GraficoBarras({
               );
             })()}
         {focoVisivel === i && (
-          <rect x={r1(b.x + 1)} y={r1(b.y + 1)} width={r1(Math.max(0, b.w - 2))} height={r1(Math.max(0, b.h - 2))} fill="none" stroke="var(--cor-energia)" strokeWidth="2" rx="2" />
+          <rect data-nao-exportar="" x={r1(b.x + 1)} y={r1(b.y + 1)} width={r1(Math.max(0, b.w - 2))} height={r1(Math.max(0, b.h - 2))} fill="none" stroke="var(--cor-energia)" strokeWidth="2" rx="2" />
         )}
       </g>
     );
@@ -731,6 +732,7 @@ export function GraficoBarras({
       aria-labelledby={`${uid}-t`}
       aria-describedby={`${uid}-i`}
       className="block overflow-visible"
+      data-svg-grafico=""
     >
       <title id={`${uid}-t`}>{titulo}</title>
       {vertical &&
@@ -747,7 +749,7 @@ export function GraficoBarras({
           return i === iSel ? (
             <rect key={i} data-selecionada={ids[i]} x={r1(b.x)} y={r1(b.y)} width={r1(b.w)} height={r1(b.h)} fill="var(--cor-energia-fundo)" />
           ) : (
-            <rect key={i} x={r1(b.x)} y={r1(b.y)} width={r1(b.w)} height={r1(b.h)} fill="var(--cor-grade)" opacity="0.55" />
+            <rect key={i} data-nao-exportar="" x={r1(b.x)} y={r1(b.y)} width={r1(b.w)} height={r1(b.h)} fill="var(--cor-grade)" opacity="0.55" />
           );
         })}
       </g>
@@ -775,32 +777,35 @@ export function GraficoBarras({
           </pattern>
         </defs>
       </svg>
-      <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
-        {(series.length > 1 || empilhado) &&
-          series.map((s) => (
-            <li key={s.id} className="flex items-center gap-1.5">
-              <span aria-hidden="true" className="inline-block h-2.5 w-2.5 rounded-[2px]" style={{ background: s.cor }} />
-              {s.rotulo}
+      <div className="flex flex-wrap items-baseline gap-x-4">
+        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
+          {(series.length > 1 || empilhado) &&
+            series.map((s) => (
+              <li key={s.id} className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="inline-block h-2.5 w-2.5 rounded-[2px]" style={{ background: s.cor }} />
+                {s.rotulo}
+              </li>
+            ))}
+          {referencias.map((r, k) => (
+            <li key={`${k}-${r.rotulo}`} className="flex items-center gap-1.5">
+              <svg width="18" height="8" aria-hidden="true">
+                <line x1="0" y1="4" x2="18" y2="4" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" strokeDasharray="5 4" />
+              </svg>
+              {r.rotulo}: {formatarValor(r.valor, casas, unidade)}
             </li>
           ))}
-        {referencias.map((r, k) => (
-          <li key={`${k}-${r.rotulo}`} className="flex items-center gap-1.5">
-            <svg width="18" height="8" aria-hidden="true">
-              <line x1="0" y1="4" x2="18" y2="4" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" strokeDasharray="5 4" />
-            </svg>
-            {r.rotulo}: {formatarValor(r.valor, casas, unidade)}
-          </li>
-        ))}
-        {semDado && (
-          <li className="flex items-center gap-1.5" data-legenda="sem-dado">
-            <svg width="12" height="12" aria-hidden="true">
-              <rect x="0.5" y="0.5" width="11" height="11" fill={`url(#${uid}-hachura)`} stroke="var(--cor-mineral)" strokeDasharray="2 2" />
-            </svg>
-            sem dado (ausência, não zero)
-          </li>
-        )}
-        <li className="text-mineral">Valores em {unidade}</li>
-      </ul>
+          {semDado && (
+            <li className="flex items-center gap-1.5" data-legenda="sem-dado">
+              <svg width="12" height="12" aria-hidden="true">
+                <rect x="0.5" y="0.5" width="11" height="11" fill={`url(#${uid}-hachura)`} stroke="var(--cor-mineral)" strokeDasharray="2 2" />
+              </svg>
+              sem dado (ausência, não zero)
+            </li>
+          )}
+          <li className="text-mineral">Valores em {unidade}</li>
+        </ul>
+        <BaixarImagem raiz={raiz} titulo={titulo} unidade={unidade} />
+      </div>
       <p id={`${uid}-i`} className="sr-only">
         {instrucoes}
       </p>
@@ -812,7 +817,7 @@ export function GraficoBarras({
       ) : (
         <>
           {/* eixo de valores fora da área rolável: continua visível com muitas categorias */}
-          <svg width="100%" height="22" viewBox={`0 0 ${w} 22`} aria-hidden="true" className="block overflow-visible">
+          <svg width="100%" height="22" viewBox={`0 0 ${w} 22`} aria-hidden="true" className="block overflow-visible" data-svg-grafico="">
             {ticksEixo.map((t) => {
               const x = escala(t);
               const rotulo = rotuloTick(t, dom.passo);

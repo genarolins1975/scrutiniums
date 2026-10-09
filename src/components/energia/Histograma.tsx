@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { num, plural } from "@/lib/energia/formato";
 import {
   CHAVES_QUANTIS,
@@ -261,36 +262,39 @@ export function Histograma({
           </pattern>
         </defs>
       </svg>
-      <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
-        <li className="flex items-center gap-1.5">
-          <span aria-hidden="true" className="inline-block h-2.5 w-3" style={{ background: cor }} />
-          {legendaBarras.charAt(0).toUpperCase() + legendaBarras.slice(1)}
-        </li>
-        {massas.map((m) => (
-          <li key={`m${m.valor}`} className="flex items-center gap-1.5">
-            <svg width="12" height="12" aria-hidden="true">
-              <rect x="1" y="1" width="10" height="10" fill={`url(#${uid}-hachura)`} stroke={corMassa} strokeWidth="1.5" />
-            </svg>
-            Barra própria: {m.rotulo} ({textoValor(m.valor, casas, unidade)})
-          </li>
-        ))}
-        {marcadores.length > 0 && (
+      <div className="flex flex-wrap items-baseline gap-x-4">
+        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
           <li className="flex items-center gap-1.5">
-            <svg width="16" height="10" aria-hidden="true">
-              <line x1="8" y1="0" x2="8" y2="10" stroke="var(--cor-carvao-muted)" strokeWidth="1" strokeDasharray="2 2" />
-            </svg>
-            Quantis ({marcadores.map((k) => ROTULO_QUANTIL[k]).join(", ")})
+            <span aria-hidden="true" className="inline-block h-2.5 w-3" style={{ background: cor }} />
+            {legendaBarras.charAt(0).toUpperCase() + legendaBarras.slice(1)}
           </li>
-        )}
-        {atual !== null && valorAtual && (
-          <li className="flex items-center gap-1.5">
-            <svg width="16" height="10" aria-hidden="true">
-              <line x1="8" y1="0" x2="8" y2="10" stroke="var(--cor-carvao)" strokeWidth="2" />
-            </svg>
-            {valorAtual.rotulo}
-          </li>
-        )}
-      </ul>
+          {massas.map((m) => (
+            <li key={`m${m.valor}`} className="flex items-center gap-1.5">
+              <svg width="12" height="12" aria-hidden="true">
+                <rect x="1" y="1" width="10" height="10" fill={`url(#${uid}-hachura)`} stroke={corMassa} strokeWidth="1.5" />
+              </svg>
+              Barra própria: {m.rotulo} ({textoValor(m.valor, casas, unidade)})
+            </li>
+          ))}
+          {marcadores.length > 0 && (
+            <li className="flex items-center gap-1.5">
+              <svg width="16" height="10" aria-hidden="true">
+                <line x1="8" y1="0" x2="8" y2="10" stroke="var(--cor-carvao-muted)" strokeWidth="1" strokeDasharray="2 2" />
+              </svg>
+              Quantis ({marcadores.map((k) => ROTULO_QUANTIL[k]).join(", ")})
+            </li>
+          )}
+          {atual !== null && valorAtual && (
+            <li className="flex items-center gap-1.5">
+              <svg width="16" height="10" aria-hidden="true">
+                <line x1="8" y1="0" x2="8" y2="10" stroke="var(--cor-carvao)" strokeWidth="2" />
+              </svg>
+              {valorAtual.rotulo}
+            </li>
+          )}
+        </ul>
+        {n > 0 && <BaixarImagem raiz={ref} titulo={titulo} unidade={unidade} />}
+      </div>
       <div className="relative">
         <svg
           ref={svgRef}
@@ -304,6 +308,7 @@ export function Histograma({
           onKeyDown={teclado}
           onBlur={() => setAtivo(null)}
           className="block overflow-visible focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
+          data-svg-grafico=""
         >
           <title id={`${uid}-t`}>
             {`${titulo}. Histograma de ${contar(n)} com valor: ${nomeX}. Use as setas para percorrer as barras da esquerda para a direita.`}
@@ -403,6 +408,7 @@ export function Histograma({
 
           {ga && (
             <rect
+              data-nao-exportar=""
               pointerEvents="none"
               x={ga.x0 - 2}
               y={Math.min(ga.y, base - 2) - 2}
@@ -450,7 +456,7 @@ export function Histograma({
       </p>
 
       <div id={`${uid}-r`} className="mt-3 space-y-1.5 border-t border-linha pt-2 text-xs leading-relaxed text-carvao-muted">
-        <p>
+        <p data-nota-imagem="">
           <span className="rotulo mr-2 text-mineral">Amostra</span>
           <span className="tabular-nums">n = {num(n, 0)}</span> {n === 1 ? contagem.singular : contagem.plural} com valor
           {res.semDado > 0 && (
@@ -458,7 +464,7 @@ export function Histograma({
           )}
           .
         </p>
-        <p>
+        <p data-nota-imagem="">
           <span className="rotulo mr-2 text-mineral">Período</span>
           {periodo}
         </p>
@@ -491,7 +497,7 @@ export function Histograma({
           </p>
         )}
         {massas.map((m) => (
-          <p key={`e${m.valor}`} data-explica-massa={m.valor}>
+          <p key={`e${m.valor}`} data-explica-massa={m.valor} data-nota-imagem="">
             <span className="rotulo mr-2 text-mineral">Barra própria</span>
             {m.rotulo}: {contar(m.contagem)} ({doTotal(m.contagem)}) exatamente em {textoValor(m.valor, casas, unidade)}. {m.explicacao ?? TEXTO_MASSA_PADRAO}
             {cortar && m.contagem > dy.max && " A barra foi cortada no topo para não achatar as demais; a contagem exata está no rótulo."}
@@ -509,7 +515,7 @@ export function Histograma({
             .
           </p>
         )}
-        {nota && <p>{nota}</p>}
+        {nota && <p data-nota-imagem="">{nota}</p>}
       </div>
 
       <details className="mt-3 text-xs">

@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
+import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { useCursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { rotuloTick } from "@/lib/energia/escalas";
@@ -564,68 +565,71 @@ export function GraficoLinhas({
           </details>
         </div>
       )}
-      {legendaInterativa ? (
-        <ul className="mb-1 flex flex-wrap items-center gap-x-1 gap-y-0 text-xs text-carvao-muted" aria-label="Legenda: ative ou oculte séries">
-          {series.map((s) => {
-            const visivel = seriesVis.includes(s);
-            return (
-              <li key={s.id}>
-                <button
-                  type="button"
-                  aria-pressed={visivel}
-                  onClick={() => alternarSerie(s.id)}
-                  className={`inline-flex min-h-[44px] items-center gap-1.5 px-1.5 underline-offset-4 hover:underline ${visivel ? "text-carvao-muted" : "text-mineral"}`}
-                >
-                  <svg width="18" height="8" aria-hidden="true">
-                    <line
-                      x1="0"
-                      y1="4"
-                      x2="18"
-                      y2="4"
-                      stroke={visivel ? s.cor : "var(--cor-mineral-soft)"}
-                      strokeWidth="2.5"
-                      strokeDasharray={s.tracejada ? "4 3" : visivel ? undefined : "1 3"}
-                    />
-                  </svg>
-                  {s.rotulo}
-                  {!visivel && <span className="italic">(oculta)</span>}
-                </button>
+      <div className="flex flex-wrap items-baseline gap-x-4">
+        {legendaInterativa ? (
+          <ul className="mb-1 flex flex-wrap items-center gap-x-1 gap-y-0 text-xs text-carvao-muted" aria-label="Legenda: ative ou oculte séries">
+            {series.map((s) => {
+              const visivel = seriesVis.includes(s);
+              return (
+                <li key={s.id}>
+                  <button
+                    type="button"
+                    aria-pressed={visivel}
+                    onClick={() => alternarSerie(s.id)}
+                    className={`inline-flex min-h-[44px] items-center gap-1.5 px-1.5 underline-offset-4 hover:underline ${visivel ? "text-carvao-muted" : "text-mineral"}`}
+                  >
+                    <svg width="18" height="8" aria-hidden="true">
+                      <line
+                        x1="0"
+                        y1="4"
+                        x2="18"
+                        y2="4"
+                        stroke={visivel ? s.cor : "var(--cor-mineral-soft)"}
+                        strokeWidth="2.5"
+                        strokeDasharray={s.tracejada ? "4 3" : visivel ? undefined : "1 3"}
+                      />
+                    </svg>
+                    {s.rotulo}
+                    {!visivel && <span className="italic">(oculta)</span>}
+                  </button>
+                </li>
+              );
+            })}
+            {banda && (
+              <li className="flex min-h-[44px] items-center gap-1.5 px-1.5">
+                <span aria-hidden="true" className="inline-block h-2.5 w-4" style={{ background: banda.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)" }} />
+                {banda.rotulo}
               </li>
-            );
-          })}
-          {banda && (
-            <li className="flex min-h-[44px] items-center gap-1.5 px-1.5">
-              <span aria-hidden="true" className="inline-block h-2.5 w-4" style={{ background: banda.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)" }} />
-              {banda.rotulo}
-            </li>
-          )}
-          <li className="flex min-h-[44px] items-center px-1.5 text-mineral" data-legenda="unidade">
-            Valores em {unidade}
-          </li>
-        </ul>
-      ) : (
-        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
-          {series.map((s) => (
-            <li key={s.id} className="flex items-center gap-1.5">
-              <svg width="18" height="8" aria-hidden="true">
-                <line x1="0" y1="4" x2="18" y2="4" stroke={s.cor} strokeWidth="2.5" strokeDasharray={s.tracejada ? "4 3" : undefined} />
-              </svg>
-              {s.rotulo}
-            </li>
-          ))}
-          {banda && (
-            <li className="flex items-center gap-1.5">
-              <span aria-hidden="true" className="inline-block h-2.5 w-4" style={{ background: banda.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)" }} />
-              {banda.rotulo}
-            </li>
-          )}
-          {semTitulo && (
-            <li className="text-mineral" data-legenda="unidade">
+            )}
+            <li className="flex min-h-[44px] items-center px-1.5 text-mineral" data-legenda="unidade">
               Valores em {unidade}
             </li>
-          )}
-        </ul>
-      )}
+          </ul>
+        ) : (
+          <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
+            {series.map((s) => (
+              <li key={s.id} className="flex items-center gap-1.5">
+                <svg width="18" height="8" aria-hidden="true">
+                  <line x1="0" y1="4" x2="18" y2="4" stroke={s.cor} strokeWidth="2.5" strokeDasharray={s.tracejada ? "4 3" : undefined} />
+                </svg>
+                {s.rotulo}
+              </li>
+            ))}
+            {banda && (
+              <li className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="inline-block h-2.5 w-4" style={{ background: banda.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)" }} />
+                {banda.rotulo}
+              </li>
+            )}
+            {semTitulo && (
+              <li className="text-mineral" data-legenda="unidade">
+                Valores em {unidade}
+              </li>
+            )}
+          </ul>
+        )}
+        <BaixarImagem raiz={ref} titulo={titulo} unidade={unidade} />
+      </div>
       {(zoom || legendaInterativa) && (
         <div className="mb-2 flex min-h-[1.25rem] flex-wrap items-center gap-x-3 px-1">
           <p className="text-xs text-carvao-muted" aria-live="polite" data-estado-grafico="">
@@ -662,6 +666,7 @@ export function GraficoLinhas({
           onKeyDown={teclado}
           onBlur={() => setAtivo(null)}
           className="block overflow-visible focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
+          data-svg-grafico=""
         >
           <title id={`${uid}-t`}>{`${titulo}. Use as setas para percorrer os pontos.`}</title>
           {yt.map((v) => (

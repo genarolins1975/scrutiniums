@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import {
@@ -331,7 +332,7 @@ export function GraficoPontos({
           {formatarDiferenca(dif, casas, uDif)}
         </text>
         {focoVisivel === p.id && (
-          <rect x="1" y={y0 + 1} width={Math.max(0, w - 2)} height={Math.max(0, hc - 2)} fill="none" stroke="var(--cor-energia)" strokeWidth="2" rx="2" />
+          <rect data-nao-exportar="" x="1" y={y0 + 1} width={Math.max(0, w - 2)} height={Math.max(0, hc - 2)} fill="none" stroke="var(--cor-energia)" strokeWidth="2" rx="2" />
         )}
       </g>
     );
@@ -424,34 +425,37 @@ export function GraficoPontos({
           Ordem: {textoDirecao(ordem)}
         </button>
       </div>
-      <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
-        <li className="flex items-center gap-1.5">
-          <svg width="12" height="12" aria-hidden="true">
-            <circle cx="6" cy="6" r="5" fill={corValor} />
-          </svg>
-          {rotuloValor} (círculo cheio)
-        </li>
-        <li className="flex items-center gap-1.5">
-          <svg width="14" height="14" aria-hidden="true">
-            <polygon points={losango(7, 7, 6)} fill="var(--cor-superficie)" stroke={corReferencia} strokeWidth="2" />
-          </svg>
-          {rotuloReferencia} (losango vazado)
-        </li>
-        <li>
-          Diferença: {rotuloValor} menos {rotuloReferencia}, em {uDif}
-        </li>
-        {temAusencia && (
-          <li data-legenda="sem-dado">
-            <span className="italic">sem dado</span>: a marca ausente não é desenhada e a diferença não é calculada
+      <div className="flex flex-wrap items-baseline gap-x-4">
+        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
+          <li className="flex items-center gap-1.5">
+            <svg width="12" height="12" aria-hidden="true">
+              <circle cx="6" cy="6" r="5" fill={corValor} />
+            </svg>
+            {rotuloValor} (círculo cheio)
           </li>
-        )}
-        <li className="text-mineral">Valores em {unidade}</li>
-      </ul>
+          <li className="flex items-center gap-1.5">
+            <svg width="14" height="14" aria-hidden="true">
+              <polygon points={losango(7, 7, 6)} fill="var(--cor-superficie)" stroke={corReferencia} strokeWidth="2" />
+            </svg>
+            {rotuloReferencia} (losango vazado)
+          </li>
+          <li>
+            Diferença: {rotuloValor} menos {rotuloReferencia}, em {uDif}
+          </li>
+          {temAusencia && (
+            <li data-legenda="sem-dado">
+              <span className="italic">sem dado</span>: a marca ausente não é desenhada e a diferença não é calculada
+            </li>
+          )}
+          <li className="text-mineral">Valores em {unidade}</li>
+        </ul>
+        <BaixarImagem raiz={raiz} titulo={titulo} unidade={unidade} />
+      </div>
       <p id={`${uid}-i`} className="sr-only">
         {instrucoes}
       </p>
       {/* eixo e cabeçalho da diferença fora da área rolável: continuam visíveis com muitas entidades */}
-      <svg width="100%" height={rotuloEmCima ? 36 : 22} viewBox={`0 0 ${w} ${rotuloEmCima ? 36 : 22}`} aria-hidden="true" className="block overflow-visible">
+      <svg width="100%" height={rotuloEmCima ? 36 : 22} viewBox={`0 0 ${w} ${rotuloEmCima ? 36 : 22}`} aria-hidden="true" className="block overflow-visible" data-svg-grafico="">
         {/* celular: o cabeçalho da diferença ocupa a própria linha, para não encostar na última marca do eixo */}
         <text x={w - 4} y="11" textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
           Diferença
@@ -474,11 +478,11 @@ export function GraficoPontos({
       </svg>
       <div className="overflow-y-auto overflow-x-hidden" style={todas ? undefined : { maxHeight: alturaMaxima }} data-rolagem={h > alturaMaxima && !todas ? "sim" : "nao"}>
         <div className="relative">
-          <svg width="100%" height={h} viewBox={`0 0 ${w} ${h}`} role="group" aria-labelledby={`${uid}-t`} aria-describedby={`${uid}-i`} className="block overflow-visible">
+          <svg width="100%" height={h} viewBox={`0 0 ${w} ${h}`} role="group" aria-labelledby={`${uid}-t`} aria-describedby={`${uid}-i`} className="block overflow-visible" data-svg-grafico="">
             <title id={`${uid}-t`}>{titulo}</title>
             <g aria-hidden="true">
               {iSel >= 0 && <rect data-selecionada={ids[iSel]} x="0" y={iSel * hc} width={w} height={hc} fill="var(--cor-energia-fundo)" />}
-              {iAtivo >= 0 && iAtivo !== iSel && <rect x="0" y={iAtivo * hc} width={w} height={hc} fill="var(--cor-grade)" opacity="0.55" />}
+              {iAtivo >= 0 && iAtivo !== iSel && <rect data-nao-exportar="" x="0" y={iAtivo * hc} width={w} height={hc} fill="var(--cor-grade)" opacity="0.55" />}
               {ticksEixo.map((t) => (
                 <line key={t} x1={r1(x(t))} x2={r1(x(t))} y1="0" y2={h} stroke="var(--cor-grade)" strokeWidth="1" />
               ))}

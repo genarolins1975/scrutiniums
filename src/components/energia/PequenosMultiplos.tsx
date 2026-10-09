@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { useCursorSincronizado } from "@/components/energia/CursorSincronizado";
 import type { SerieLinha } from "@/components/energia/GraficoLinhas";
 import { escalaLinear, formatarValor, rotuloTick, valido, type Dominio } from "@/lib/energia/escalas";
@@ -100,6 +101,7 @@ export function PequenosMultiplos({
   const [anuncio, setAnuncio] = useState("");
   const [tabelaAberta, setTabelaAberta] = useState(tabelaAbertaInicial);
   const alvos = useRef<(SVGSVGElement | null)[]>([]);
+  const raiz = useRef<HTMLDivElement>(null);
 
   const n = dados.length;
   const xs = dados.map((d) => String(d[chaveX] ?? ""));
@@ -185,7 +187,7 @@ export function PequenosMultiplos({
   const instrucoes = `${paineis.length} painéis de ${titulo}, com o mesmo eixo de tempo. Use Tab para entrar na grade, as setas esquerda e direita para percorrer as datas, Home e End para os extremos e as setas acima e abaixo para trocar de painel. A tabela com os mesmos dados está abaixo da grade.`;
 
   return (
-    <div className="relative w-full" data-grafico="pequenos-multiplos" data-escala={escala}>
+    <div ref={raiz} className="relative w-full" data-grafico="pequenos-multiplos" data-escala={escala}>
       {escala === "livre" ? (
         <p role="note" data-aviso="escala-livre" className="mb-2 border-l-2 border-aviso bg-papel px-3 py-2 text-sm text-carvao">
           <strong className="font-medium">Escala livre:</strong> cada painel tem o próprio eixo vertical. Compare a forma das curvas, não a altura entre painéis.
@@ -196,20 +198,23 @@ export function PequenosMultiplos({
           {domCompartilhado ? `, de ${rotuloTick(domCompartilhado.min, domCompartilhado.passo)} a ${rotuloTick(domCompartilhado.max, domCompartilhado.passo)} ${unidade}` : ""}.
         </p>
       )}
-      <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
-        {multiSeries &&
-          entradasLegenda.map((e) => (
-            <li key={e.chave} className="flex items-center gap-1.5">
-              <svg width="18" height="8" aria-hidden="true">
-                <line x1="0" y1="4" x2="18" y2="4" stroke={e.cor} strokeWidth="2.5" strokeDasharray={e.tracejada ? "4 3" : undefined} />
-              </svg>
-              {e.rotulo}
-            </li>
-          ))}
-        {multiSeries && corPorPainel && <li className="text-mineral">A cor identifica o painel</li>}
-        <li className="text-mineral">Valores em {unidade}</li>
-        <li className="text-mineral">Lacuna na linha: sem dado</li>
-      </ul>
+      <div className="flex flex-wrap items-baseline gap-x-4">
+        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
+          {multiSeries &&
+            entradasLegenda.map((e) => (
+              <li key={e.chave} className="flex items-center gap-1.5">
+                <svg width="18" height="8" aria-hidden="true">
+                  <line x1="0" y1="4" x2="18" y2="4" stroke={e.cor} strokeWidth="2.5" strokeDasharray={e.tracejada ? "4 3" : undefined} />
+                </svg>
+                {e.rotulo}
+              </li>
+            ))}
+          {multiSeries && corPorPainel && <li className="text-mineral">A cor identifica o painel</li>}
+          <li className="text-mineral">Valores em {unidade}</li>
+          <li className="text-mineral">Lacuna na linha: sem dado</li>
+        </ul>
+        <BaixarImagem raiz={raiz} titulo={titulo} unidade={unidade} />
+      </div>
       <p id={`${uid}-i`} className="sr-only">
         {instrucoes}
       </p>
@@ -429,6 +434,7 @@ function Painel({
         onKeyDown={onTeclado}
         onFocus={onFoco}
         className="block overflow-visible focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
+        data-svg-grafico=""
       >
         <defs>
           <pattern id={`${uid}-hachura`} width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
