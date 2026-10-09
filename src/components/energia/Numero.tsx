@@ -41,6 +41,8 @@ export type NumeroProps = {
   unidade?: string;
   /** Período de referência; omitido, vem de `evidencia.periodo`. Texto é exibido como está. */
   periodo?: Periodo | string;
+  /** Recorte da medida (faixa de renda, subsistema, tipo de consumidor), escrito antes do período e separado dele por ponto médio. */
+  recorte?: string;
   natureza: Natureza;
   variacao?: Variacao;
   evidencia?: Evidencia | null;
@@ -76,6 +78,7 @@ export function Numero({
   casas = 1,
   unidade,
   periodo,
+  recorte,
   natureza,
   variacao,
   evidencia,
@@ -94,7 +97,8 @@ export function Numero({
   const ausente = v === null || !Number.isFinite(v);
   const u = unidadeDestaque(unidade ?? evidencia?.unidade, formato);
   const per = periodo ?? evidencia?.periodo;
-  const textoPer = typeof per === "string" ? per : per ? textoPeriodo(per) : null;
+  const textoPer0 = typeof per === "string" ? per : per ? textoPeriodo(per) : null;
+  const textoPer = recorte ? (textoPer0 ? `${recorte} · ${textoPer0}` : recorte) : textoPer0;
   const vari = variacao ? descreverVariacao(variacao) : null;
   const corpo = tamanho === "grande" ? "text-[2rem]" : "text-2xl";
 

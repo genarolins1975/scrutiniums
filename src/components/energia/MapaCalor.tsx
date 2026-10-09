@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { num, plural } from "@/lib/energia/formato";
 import { textoValor } from "@/lib/energia/distribuicao";
 import {
@@ -56,6 +56,11 @@ export type MapaCalorProps = {
   casas?: number;
   /** Mostra o rótulo visível de uma coluna a cada N (os demais seguem para leitor de tela). */
   passoRotuloColunas?: number;
+  /**
+   * Coluna (id) que a grade traz para o meio da janela ao abrir, quando ela rola na horizontal (celular): a leitura começa onde está a resposta
+   * (por exemplo a hora do pico) e não nas primeiras colunas. Sem ela, a grade abre à esquerda.
+   */
+  colunaInicial?: string;
   periodo?: string;
   nota?: string;
 };
@@ -77,12 +82,14 @@ export function MapaCalor({
   unidade,
   casas = 1,
   passoRotuloColunas = 1,
+  colunaInicial,
   periodo,
   nota,
 }: MapaCalorProps) {
   const uid = useId().replace(/:/g, "");
   const envoltorio = useRef<HTMLDivElement>(null);
   const grade = useRef<HTMLTableElement>(null);
+  const rolagem = useRef<HTMLDivElement>(null);
   const [foco, setFoco] = useState<Posicao>({ l: 0, c: 0 });
   const [ativo, setAtivo] = useState<(Posicao & { x: number; y: number; acima: boolean }) | null>(null);
   const [leitura, setLeitura] = useState("");
@@ -90,6 +97,35 @@ export function MapaCalor({
   const nC = colunas.length;
   const [tabelaAberta, setTabelaAberta] = useState(false);
   const montarTabela = nL * nC <= LIMITE_TABELA_MONTADA || tabelaAberta;
+
+  // grade mais larga que a janela (celular): a borda direita esmaece enquanto há colunas escondidas, para que um valor cortado não pareça
+  // completo, e a leitura abre na coluna que importa (`colunaInicial`) em vez das primeiras
+  useEffect(() => {
+    const el = rolagem.current;
+    if (!el) return;
+    const marcar = () => {
+      el.dataset.maisDireita = el.scrollWidth > el.clientWidth + 2 && el.scrollLeft + el.clientWidth < el.scrollWidth - 2 ? "sim" : "nao";
+    };
+    if (colunaInicial && el.scrollWidth > el.clientWidth + 2) {
+      const i = colunas.findIndex((c) => c.id === colunaInicial);
+      const celula = i >= 0 ? el.querySelector<HTMLElement>(`[data-l="0"][data-c="${i}"]`) : null;
+      if (celula) {
+        const dentro = celula.getBoundingClientRect().left - el.getBoundingClientRect().left + el.scrollLeft;
+        el.scrollLeft = Math.max(0, dentro - (el.clientWidth - celula.offsetWidth) / 2);
+      }
+    }
+    marcar();
+    el.addEventListener("scroll", marcar, { passive: true });
+    if (typeof ResizeObserver === "undefined") return () => el.removeEventListener("scroll", marcar);
+    const ro = new ResizeObserver(marcar);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("scroll", marcar);
+    };
+    // a coluna inicial vale só na abertura; trocar de dados não deve devolver a rolagem
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [colunas.length]);
 
   const rotulos = useMemo(() => rotulosClasses(escala, casas), [escala, casas]);
   const res = useMemo(() => resumoGrade(valores, escala.limites), [valores, escala.limites]);
@@ -165,7 +201,7 @@ export function MapaCalor({
       </div>
 
       {/* rolagem horizontal contida aqui: a página nunca transborda */}
-      <div className="tabela-scroll max-w-full" onScroll={() => setAtivo(null)}>
+      <div ref={rolagem} className="tabela-scroll max-w-full" onScroll={() => setAtivo(null)}>
         <table
           ref={grade}
           role="grid"

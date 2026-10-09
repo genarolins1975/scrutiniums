@@ -123,7 +123,8 @@ export default function OrcamentoPage() {
                   formato="pct"
                   casas={1}
                   unidade="da despesa total"
-                  periodo={`${destaques.baixa.rotulo} · ${periodoMedidas}`}
+                  recorte={destaques.baixa.rotulo}
+                  periodo={periodoMedidas}
                   motivoAusencia="Estimativa suprimida pela precisão."
                 />
               )}
@@ -136,7 +137,8 @@ export default function OrcamentoPage() {
                   formato="pct"
                   casas={1}
                   unidade="da despesa total"
-                  periodo={`${destaques.alta.rotulo} · ${periodoMedidas}`}
+                  recorte={destaques.alta.rotulo}
+                  periodo={periodoMedidas}
                   motivoAusencia="Estimativa suprimida pela precisão."
                 />
               )}

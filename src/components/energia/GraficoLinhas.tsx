@@ -128,6 +128,33 @@ function ticks(min: number, max: number, n = 4): number[] {
 /** Abaixo desta largura: rótulos curtos e, com zoom, sem arrasto (controles de período). */
 const ESTREITO = 520;
 const SEM_OCULTAS: string[] = [];
+/** Largura média de um caractere a 10 px, para decidir onde o rótulo de um marco quebra. */
+const PX_MARCO = 5.4;
+
+/** Quebra o texto em até `maxLinhas` linhas de `maxChars` caracteres, por palavra; o que passar da última linha vira reticências. */
+function quebraEmLinhas(texto: string, maxChars: number, maxLinhas: number): string[] {
+  const largura = Math.max(8, maxChars);
+  const linhas: string[] = [];
+  let atual = "";
+  const palavras = texto.split(" ");
+  for (let k = 0; k < palavras.length; k++) {
+    const candidata = atual ? `${atual} ${palavras[k]}` : palavras[k];
+    if (candidata.length <= largura || !atual) {
+      atual = candidata;
+      continue;
+    }
+    linhas.push(atual);
+    atual = palavras[k];
+    if (linhas.length === maxLinhas - 1) {
+      atual = palavras.slice(k).join(" ");
+      break;
+    }
+  }
+  linhas.push(atual);
+  const ultima = linhas[linhas.length - 1];
+  if (ultima.length > largura) linhas[linhas.length - 1] = `${ultima.slice(0, Math.max(1, largura - 1)).trimEnd()}…`;
+  return linhas;
+}
 
 export function GraficoLinhas({
   titulo,
@@ -320,17 +347,23 @@ export function GraficoLinhas({
   // do gráfico; o que não cabe fica identificado pela legenda
   const finaisVisiveis = rotulos.filter((r) => Math.abs(r.yy - r.alvo) <= 10 && r.yy <= h - B - 4 && r.yy >= T + 4);
 
-  // marcos só dentro do intervalo exibido; rótulos próximos são desempilhados
+  // marcos só dentro do intervalo exibido. O rótulo vai para o lado do traço com mais espaço, quebra em até três linhas dentro da área do
+  // gráfico (nunca passa da borda nem entra no eixo) e os de marcos próximos se empilham pela altura real de cada um
   const x0 = String(vis[0]?.[chaveX] ?? "");
   const x1 = String(vis[n - 1]?.[chaveX] ?? "");
-  const marcosVisiveis: { m: { x: string; rotulo: string }; i: number; linha: number }[] = [];
+  const marcosVisiveis: { m: { x: string; rotulo: string }; i: number; topo: number; linhas: string[]; ancora: "start" | "end" }[] = [];
   for (const m of marcos) {
     if (!n || m.x < x0 || m.x > x1) continue;
     const i = vis.findIndex((d) => String(d[chaveX]) >= m.x);
     if (i < 0) continue;
+    const xi = x(i);
+    const direita = w - 4 - (xi + 4);
+    const esquerda = xi - 4 - L;
+    const ancora: "start" | "end" = m.rotulo.length * PX_MARCO <= direita || direita >= esquerda ? "start" : "end";
+    const linhas = quebraEmLinhas(m.rotulo, Math.floor(Math.max(24, ancora === "start" ? direita : esquerda) / PX_MARCO), 3);
     const anterior = marcosVisiveis.at(-1);
-    const linha = anterior && x(i) - x(anterior.i) < 110 ? anterior.linha + 1 : 0;
-    marcosVisiveis.push({ m, i, linha });
+    const topo = anterior && xi - x(anterior.i) < 110 ? anterior.topo + anterior.linhas.length * 12 + 1 : 0;
+    marcosVisiveis.push({ m, i, topo, linhas, ancora });
   }
 
   // unidade de um caractere ("%", "h") fica fora do título, que não a repete ao lado do texto; o eixo a diz em cada rótulo ("40 %")
@@ -646,18 +679,18 @@ export function GraficoLinhas({
             </text>
           ))}
           {bandaPath && <path d={bandaPath} fill={banda?.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)"} stroke="none" />}
-          {marcosVisiveis.map(({ m, i, linha }) => (
+          {marcosVisiveis.map(({ m, i, topo, linhas, ancora }) => (
             <g key={m.x}>
               <line x1={x(i)} x2={x(i)} y1={T} y2={h - B} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
-              {/* rótulo que não cabe à direita do marco passa para a esquerda: com 10 px a letra mede cerca de 5,4 px */}
-              <text
-                x={x(i) + (x(i) + 4 + m.rotulo.length * 5.4 > w - 4 ? -4 : 4)}
-                textAnchor={x(i) + 4 + m.rotulo.length * 5.4 > w - 4 ? "end" : "start"}
-                y={T + 10 + linha * 13}
-                fontSize="10"
-                fill="var(--cor-mineral)"
-              >
-                {m.rotulo}
+              {/* com 10 px a letra mede cerca de 5,4 px: o texto quebra no espaço do lado escolhido */}
+              <text x={x(i) + (ancora === "start" ? 4 : -4)} textAnchor={ancora} y={T + 10 + topo} fontSize="10" fill="var(--cor-mineral)">
+                {linhas.length > 1
+                  ? linhas.map((l, q) => (
+                      <tspan key={q} x={x(i) + (ancora === "start" ? 4 : -4)} dy={q ? 12 : 0}>
+                        {l}
+                      </tspan>
+                    ))
+                  : linhas[0]}
               </text>
             </g>
           ))}

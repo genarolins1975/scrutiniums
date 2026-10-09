@@ -302,3 +302,37 @@ describe("rótulos do eixo X", () => {
     expect(rotulosDoEixoX(["x", "y"], undefined)).toEqual(["x", "y"]);
   });
 });
+
+describe("rótulo de marco dentro da área do gráfico", () => {
+  const longo = "29/04/2023: a MMGD entrou na curva de carga e a série passa a incluir a geração distribuída estimada pelo ONS";
+
+  it("marco perto da borda direita com texto longo vai para a esquerda e quebra em até três linhas, sem passar da área", () => {
+    const m = html({ ...base, marcos: [{ x: serie10[8].d as string, rotulo: longo }] });
+    const texto = m.match(/<text[^>]*text-anchor="end"[^>]*font-size="10"[^>]*>([\s\S]*?)<\/text>/)?.[1] ?? "";
+    const linhas = Array.from(texto.matchAll(/<tspan[^>]*>([^<]*)<\/tspan>/g)).map((l) => l[1]);
+    expect(linhas.length).toBeGreaterThan(1);
+    expect(linhas.length).toBeLessThanOrEqual(3);
+    // a esquerda do traço de x ≈ 8/9 da largura há cerca de 600 px: nenhuma linha passa disso (cerca de 5,4 px por caractere)
+    for (const l of linhas) expect(l.length * 5.4).toBeLessThanOrEqual(640);
+    // o que sobra do texto fica em reticências na última linha, e o começo é preservado
+    expect(linhas.join(" ")).toContain("29/04/2023: a MMGD");
+  });
+
+  it("texto curto continua numa linha só, à direita do traço quando cabe", () => {
+    const m = html({ ...base, marcos: [{ x: serie10[1].d as string, rotulo: "Troca de regra" }] });
+    expect(m).toMatch(/<text[^>]*text-anchor="start"[^>]*font-size="10"[^>]*>Troca de regra<\/text>/);
+  });
+
+  it("marcos próximos se empilham pela altura de cada um (sem sobrepor o texto do anterior)", () => {
+    const m = html({
+      ...base,
+      marcos: [
+        { x: serie10[2].d as string, rotulo: longo },
+        { x: serie10[3].d as string, rotulo: "Outro marco" },
+      ],
+    });
+    const ys = Array.from(m.matchAll(/<text[^>]*y="([\d.]+)"[^>]*font-size="10"/g)).map((r) => Number(r[1]));
+    expect(ys.length).toBeGreaterThanOrEqual(2);
+    expect(ys[1]).toBeGreaterThanOrEqual(ys[0] + 12);
+  });
+});

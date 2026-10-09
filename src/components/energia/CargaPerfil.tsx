@@ -183,6 +183,19 @@ export function CargaPerfil({
   const escolheAnos = desdeApi !== undefined && primeiroAno !== undefined && primeiroAno !== desdeApi;
   const todosAnos = v.hp === "todos" || desdeApi === undefined;
   const matriz = useMemo(() => matrizHoraPico(p, sm, todosAnos ? undefined : desdeApi), [p, sm, todosAnos, desdeApi]);
+  // no celular a grade rola na horizontal: ela abre na hora em que o pico mais caiu (a resposta), não nas horas da madrugada
+  const horaDoPicoMaisFrequente = useMemo(() => {
+    let melhor = -1;
+    let hora: string | undefined;
+    HORAS.forEach((h, j) => {
+      const total = matriz.valores.reduce((a, linha) => a + (typeof linha[j] === "number" ? (linha[j] as number) : 0), 0);
+      if (total > melhor) {
+        melhor = total;
+        hora = h.id;
+      }
+    });
+    return hora;
+  }, [matriz]);
   const anoApi = p.hora_pico_api_sin_por_ano[p.hora_pico_api_sin_por_ano.length - 1];
   const horasApi = useMemo(() => (anoApi ? linhasHoraPicoApi(p, anoApi.ano) : []), [p, anoApi]);
   const anosEscolhidos = (v.anos as string[]).filter((a) => anos.includes(a));
@@ -330,6 +343,7 @@ export function CargaPerfil({
           unidade="dias"
           casas={0}
           passoRotuloColunas={3}
+          colunaInicial={horaDoPicoMaisFrequente}
           periodo={`${matriz.anos[0]?.id ?? ""} a ${dataBR(p.ultimo_dia_curva)}`}
           nota={`Desde a inclusão da MMGD na curva${parentesesMmgd(regimes)}, o pico da curva inclui MMGD estimada; o pico da carga líquida está abaixo, na carga verificada.`}
         />
