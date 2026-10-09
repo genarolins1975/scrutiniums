@@ -1,0 +1,200 @@
+[
+ {
+  "id": "01",
+  "slug": "home",
+  "rota": "/setor-eletrico",
+  "nome": "Inicial / mapa",
+  "grupo": "Comece aqui",
+  "pergunta": "Energia, do sistema à sua conta",
+  "composicao": "Hero compacto, caminhos por intenção, seis perguntas prioritárias, índice completo"
+ },
+ {
+  "id": "02",
+  "slug": "geral",
+  "rota": "/setor-eletrico/visao-geral",
+  "nome": "Visão geral",
+  "grupo": "Comece aqui",
+  "pergunta": "O sistema em perspectiva",
+  "composicao": "Resumo de preço, água e carga; comparações próximas e datas próprias"
+ },
+ {
+  "id": "03",
+  "slug": "territorio",
+  "rota": "/setor-eletrico/territorio",
+  "nome": "Minha região",
+  "grupo": "Comece aqui",
+  "pergunta": "A energia no seu território",
+  "composicao": "Busca e mapa dominantes; ficha com medidas separadas por grão"
+ },
+ {
+  "id": "04",
+  "slug": "agua",
+  "rota": "/setor-eletrico/agua-e-clima",
+  "nome": "Água e clima",
+  "grupo": "Operação",
+  "pergunta": "Quanta energia está armazenada?",
+  "composicao": "Valor do SIN e comparação de cada região com sua mediana sazonal"
+ },
+ {
+  "id": "05",
+  "slug": "geracao",
+  "rota": "/setor-eletrico/geracao",
+  "nome": "Geração",
+  "grupo": "Operação",
+  "pergunta": "De onde vem a eletricidade?",
+  "composicao": "Barras por fonte, perímetro explícito e natureza da MMGD"
+ },
+ {
+  "id": "06",
+  "slug": "carga",
+  "rota": "/setor-eletrico/carga",
+  "nome": "Carga",
+  "grupo": "Operação",
+  "pergunta": "Quanto o sistema consome?",
+  "composicao": "Nível atual e janela equivalente lado a lado"
+ },
+ {
+  "id": "07",
+  "slug": "rede",
+  "rota": "/setor-eletrico/rede",
+  "nome": "Rede",
+  "grupo": "Operação",
+  "pergunta": "Como a energia circula?",
+  "composicao": "Fronteiras, sentido, saldo e reversões, sem inferência de congestionamento"
+ },
+ {
+  "id": "08",
+  "slug": "pld",
+  "rota": "/setor-eletrico/pld",
+  "nome": "Preço de curto prazo",
+  "grupo": "Preços e mercado",
+  "pergunta": "Quanto custa a energia no curto prazo?",
+  "composicao": "Quatro submercados em escala comum, extremos e diferença entre regiões"
+ },
+ {
+  "id": "09",
+  "slug": "modelos",
+  "rota": "/setor-eletrico/pld/modelos",
+  "nome": "Modelos e desempenho",
+  "grupo": "Preços e mercado",
+  "pergunta": "O que os modelos conseguem prever?",
+  "composicao": "Estado e comparação de modelos; desempenho real por protocolo"
+ },
+ {
+  "id": "10",
+  "slug": "previsoes",
+  "rota": "/setor-eletrico/pld/previsoes",
+  "nome": "Previsões / arquivo",
+  "grupo": "Preços e mercado",
+  "pergunta": "O que foi publicado antes do resultado?",
+  "composicao": "Entregas, corte, referência experimental e arquivo"
+ },
+ {
+  "id": "11",
+  "slug": "mercado",
+  "rota": "/setor-eletrico/mercado",
+  "nome": "Mercado",
+  "grupo": "Preços e mercado",
+  "pergunta": "Como a energia é contratada?",
+  "composicao": "Estado verdadeiro de integração e conteúdo verificável já disponível"
+ },
+ {
+  "id": "12",
+  "slug": "conta",
+  "rota": "/setor-eletrico/conta-de-luz",
+  "nome": "Conta de luz",
+  "grupo": "Consumidor",
+  "pergunta": "Quanto custa o mesmo consumo?",
+  "composicao": "Perfil comum, menor/mediana/maior e composição acessível"
+ },
+ {
+  "id": "13",
+  "slug": "perdas",
+  "rota": "/setor-eletrico/perdas",
+  "nome": "Perdas de energia",
+  "grupo": "Consumidor",
+  "pergunta": "Onde a energia se perde?",
+  "composicao": "Taxa e energia; agregado separado de comparação entre distribuidoras"
+ },
+ {
+  "id": "14",
+  "slug": "qualidade",
+  "rota": "/setor-eletrico/qualidade",
+  "nome": "Qualidade do serviço",
+  "grupo": "Consumidor",
+  "pergunta": "Quanto tempo falta luz?",
+  "composicao": "DEC e FEC em gráficos próprios; limite do mesmo ente e ano"
+ },
+ {
+  "id": "15",
+  "slug": "inclusao",
+  "rota": "/setor-eletrico/inclusao-energetica",
+  "nome": "Inclusão energética",
+  "grupo": "Consumidor",
+  "pergunta": "Para quem a energia pesa mais?",
+  "composicao": "Despesa por renda; acesso e benefício com unidades/datas próprias"
+ },
+ {
+  "id": "16",
+  "slug": "empresas",
+  "rota": "/setor-eletrico/empresas",
+  "nome": "Empresas",
+  "grupo": "Empresas e futuro",
+  "pergunta": "Quem atua no setor?",
+  "composicao": "Entrada para ativos, perfil, finanças e controle, unificados por identificadores"
+ },
+ {
+  "id": "17",
+  "slug": "expansao",
+  "rota": "/setor-eletrico/expansao",
+  "nome": "Expansão",
+  "grupo": "Empresas e futuro",
+  "pergunta": "O que está sendo construído?",
+  "composicao": "Operação, obras e obra não iniciada separados; cronogramas e cenários"
+ },
+ {
+  "id": "18",
+  "slug": "transicao",
+  "rota": "/setor-eletrico/transicao",
+  "nome": "Transição e ambiente",
+  "grupo": "Empresas e futuro",
+  "pergunta": "Como a matriz está mudando?",
+  "composicao": "Capacidade adicionada e intensidade de emissões em gráficos separados"
+ },
+ {
+  "id": "19",
+  "slug": "regulacao",
+  "rota": "/setor-eletrico/regulacao",
+  "nome": "Regulação",
+  "grupo": "Conhecimento",
+  "pergunta": "Que regra vale em cada período?",
+  "composicao": "Limites relevantes e linha do tempo de publicação e vigência"
+ },
+ {
+  "id": "20",
+  "slug": "aprenda",
+  "rota": "/setor-eletrico/aprenda",
+  "nome": "Aprenda",
+  "grupo": "Conhecimento",
+  "pergunta": "Entenda um conceito",
+  "composicao": "Busca, verbetes curtos e ligação ao painel"
+ },
+ {
+  "id": "21",
+  "slug": "dados",
+  "rota": "/setor-eletrico/dados",
+  "nome": "Dados e fontes",
+  "grupo": "Conhecimento",
+  "pergunta": "Encontre a fonte",
+  "composicao": "Busca e catálogo único, filtros, cobertura e download"
+ },
+ {
+  "id": "22",
+  "slug": "metodologia",
+  "rota": "/setor-eletrico/metodologia",
+  "nome": "Metodologia",
+  "grupo": "Conhecimento",
+  "pergunta": "Do arquivo ao número",
+  "composicao": "Linhagem visual e consulta de regras por indicador"
+ }
+]
