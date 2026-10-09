@@ -18,7 +18,7 @@ Seis painéis em `/eficiencia-estatal/educacao-municipal-capitais`: Panorama (ra
 
 ## Verificações executadas pelo executor (build `next build` do HEAD, servidor local na porta 3100)
 
-* Suíte completa: 142 arquivos, 2.664 testes aprovados, 1 ignorado (Vitest). Python: 41 testes do pipeline aprovados. `tsc` e ESLint sem erro.
+* Suíte completa (após a rodada 2): 142 arquivos, 2.667 testes aprovados, 1 ignorado (Vitest). Python: 41 testes do pipeline aprovados. `tsc` e ESLint sem erro.
 * Gate de HTML pré-renderizado (`EXIGIR_BUILD_HTML=1`) aprovado no build.
 * `scripts/obee/redesenho-verificacao.mjs`: 16 rotas por 5 larguras (1440, 1024, 768, 390, 320 px), 80 combinações, 2.766 controles medidos, axe-core (WCAG 2.2 AA) sem violações, sem rolagem horizontal da página, alvos de toque a partir de 44 px, foco visível, movimento reduzido.
 * `scripts/obee/interacoes-redesenho.mjs`: 59 verificações em 1280 px e 59 em 390 px (navegação, estado na URL, gráfico e tabela com o mesmo conjunto, downloads, teclado, toque, capitais fora da comparação, CSV da série).
@@ -36,3 +36,7 @@ Nenhuma regressão detectada pelos roteiros acima. O que foi conscientemente alt
 * `P18` (parâmetros inválidos de URL voltam ao padrão em silêncio e a URL só é normalizada na próxima mudança) é comportamento do hook compartilhado `useEstadoUrl`, documentado como regra do projeto; não foi alterado para não afetar Energia e Crédito.
 * Fora do escopo desta execução: P16 (posição da anotação da pandemia), P19 (zero de rede sem etapa na mediana), P20 (commit exato da geração da gold), P22 (rodapé compartilhado), P21 sem JavaScript e a observação editorial P23.
 * O seletor Medida é o mesmo commit do PR #122 (aberto): se o #122 for mergeado antes, este PR o recebe sem conflito.
+
+## Correções após a rodada 2 (lote 6)
+
+Itens dos relatórios independentes da rodada 2 tratados: colisão de rótulos na evolução, legenda única das mudanças de base, coerência da evolução (frase, subtítulo, controle Valores, seletor Ano), eixo sem zero avisado, legenda da referência externa com escopo, área útil em 320 px, ordem crescente e decrescente com rótulos curtos; frase da capital com a diferença dos valores exibidos; resumo de alunos por turma em creche e pré-escola; siglas por `abbr`; dicionário das séries e manifesto públicos; URL da MSC na trilha; histórico de revisões sem linguagem de processo (revisão 1.4); conteúdo escondido até a leitura do recorte da URL (com aviso sem JavaScript). Conhecido e não alterado: a perímetro intraorçamentário heterogêneo (0,0% a 32,2% da função em 2025) é declarado junto do número e não é corrigido nem oferecido em variante, por decisão metodológica documentada; link do repositório no painel não foi adicionado; o aviso de que o conteúdo só aparece depois da hidratação em links com recorte aumenta o tempo até o conteúdo nesses links.
