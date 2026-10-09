@@ -29,14 +29,14 @@ ok("panorama: nenhuma capital selecionada ao abrir", (await p.locator("#panorama
 const caps = await p.locator("main section > h2").allInnerTexts();
 ok("panorama: três capítulos com frase factual do conjunto", caps.length === 3 && caps.every((t) => /vai de .+ a .+ entre as 26 capitais/.test(t)), caps.join(" | "));
 ok("panorama: pergunta de cada capítulo", (await p.locator("main").innerText()).match(/QUANTO SE GASTA\?|Quanto se gasta\?/i) !== null);
-ok("panorama: uma faixa de distribuição por capítulo, com a mediana rotulada", (await p.locator("main svg").count()) >= 3 && (await p.locator("main svg text", { hasText: /Mediana/ }).count()) >= 3);
-ok("panorama: a primeira tela mostra o número (gráfico começa até 900 px)", await p.evaluate(() => { const s = document.querySelector("main svg"); return !!s && s.getBoundingClientRect().top < 900 + 400; }));
+ok("panorama: uma faixa de distribuição por capítulo, com a mediana rotulada", (await p.locator("main figure svg").count()) >= 3 && (await p.locator("main figure svg text", { hasText: /Mediana/ }).count()) >= 3);
+ok("panorama: a primeira tela mostra o número (gráfico começa até 900 px)", await p.evaluate(() => { const s = document.querySelector("main figure svg"); return !!s && s.getBoundingClientRect().top < 900 + 400; }));
 
 // seletor opcional
 await p.selectOption("#panorama-cap", "recife");
 await p.waitForTimeout(300);
 ok("panorama: escolher a capital grava ?cap= na URL", busca("cap") === "recife", p.url());
-ok("panorama: a capital escolhida é destacada com nome e valor", (await p.locator("main svg text", { hasText: /Recife \(PE\):/ }).count()) >= 3);
+ok("panorama: a capital escolhida é destacada com nome e valor", (await p.locator("main figure svg text", { hasText: /Recife \(PE\):/ }).count()) >= 3);
 ok("panorama: frase da capital frente à mediana, sem juízo", (await p.locator("main").innerText()).includes("Recife (PE) registra R$"));
 await p.goBack();
 await p.waitForTimeout(300);
@@ -46,9 +46,9 @@ await p.waitForTimeout(300);
 ok("panorama: avançar restaura a escolha", busca("cap") === "recife");
 
 // toque/ponteiro na faixa
-await p.locator("main svg").first().scrollIntoViewIfNeeded();
+await p.locator("main figure svg").first().scrollIntoViewIfNeeded();
 await p.waitForTimeout(1500); // fontes e hidratação assentam antes de medir a posição do toque
-const marca = await p.locator("main svg circle").nth(3).boundingBox();
+const marca = await p.locator("main figure svg circle").nth(3).boundingBox();
 if (marca) {
   const x = marca.x + marca.width / 2;
   const y = marca.y + marca.height / 2;
@@ -92,7 +92,7 @@ ok("gastos: ponte do total ao numerador com parcelas e soma conferida", (await p
 // gráfico/tabela mesmos dados
 await p.locator('label:has-text("Gráfico")').first().click();
 await p.waitForTimeout(300);
-const nPontos = await p.locator("main svg circle").count();
+const nPontos = await p.locator("main figure svg circle").count();
 await p.locator('label:has-text("Tabela")').first().click();
 await p.waitForTimeout(300);
 const nLinhas = await p.locator("main table:visible tbody tr").count();
@@ -119,7 +119,7 @@ await p.waitForTimeout(300);
 await p.locator('main [role="group"][tabindex="0"]').first().focus();
 await p.keyboard.press("ArrowDown");
 await p.waitForTimeout(200);
-ok("gastos: teclado percorre as capitais do gráfico e mostra o valor", (await p.locator('main [role="status"]').first().innerText()).match(/R\$/) !== null || (await p.locator("main svg text").count()) > 0);
+ok("gastos: teclado percorre as capitais do gráfico e mostra o valor", (await p.locator('main [role="status"]').first().innerText()).match(/R\$/) !== null || (await p.locator("main figure svg text").count()) > 0);
 
 /* ---------- parâmetros inválidos ---------- */
 await abre("/gastos?cap=nao-existe&med=xx&ano=1900&vis=zzz&etapa=outra");
@@ -135,7 +135,7 @@ await p.locator("summary", { hasText: "Destacar capitais" }).click();
 for (const nome of ["Recife (PE)", "Manaus (AM)", "Belém (PA)", "Natal (RN)", "Palmas (TO)", "Goiânia (GO)"]) await p.locator("label", { hasText: nome }).click();
 await p.waitForTimeout(300);
 ok("comparar: no máximo 5 capitais destacadas, a mais antiga sai", (busca("dest") ?? "").split(",").length === 5 && !(busca("dest") ?? "").includes("recife"), busca("dest") ?? "");
-ok("comparar: destaque não retira ninguém do conjunto", (await p.locator("main svg circle").count()) >= 26);
+ok("comparar: destaque não retira ninguém do conjunto", (await p.locator("main figure svg circle").count()) >= 26);
 await p.locator('label:has-text("Tabela completa")').click();
 await p.waitForTimeout(500);
 ok("comparar: tabela completa com população, matrículas e razões", (await p.locator("main table thead th").allInnerTexts().then((a) => a.join(" "))).includes("População residente") && (await p.locator("main table:visible tbody tr").count()) === 26);
