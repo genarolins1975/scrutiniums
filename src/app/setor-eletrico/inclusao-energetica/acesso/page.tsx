@@ -112,7 +112,7 @@ export default function AcessoPage() {
           siglas={["CDE", "CCC", "SIN", "EPE", "MME", "IBGE"]}
           rotulo="Inclusão energética"
           titulo="Acesso à energia e sistemas isolados"
-          lead="Quem ainda não tem energia, com que regularidade ela chega a quem tem ligação à rede e quem vive fora do Sistema Interligado Nacional (SIN). Domicílios, pessoas e ligações do Luz para Todos vêm de fontes diferentes e não se somam."
+          lead="Quem ainda não tem energia, com que regularidade ela chega a quem tem ligação à rede e quem vive fora do Sistema Interligado Nacional (SIN). Cada fonte conta uma unidade diferente."
           recorte={`PNAD ${primeiroAno} a ${a.ano_referencia} · PASI ciclo ${si?.ciclo ?? "sem dado"} · Luz para Todos até ${mes(lpt?.ultimo_mes)} · domicílios, pessoas e ligações`}
           fonte="IBGE, PNAD Contínua; EPE, PASI; MME, Luz para Todos"
           referencia={

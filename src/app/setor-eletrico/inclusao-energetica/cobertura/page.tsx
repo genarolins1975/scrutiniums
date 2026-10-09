@@ -71,7 +71,7 @@ export default function CoberturaPage() {
           siglas={["UC", "CDE", "REN", "IBGE", "ANEEL", "MME"]}
           rotulo="Inclusão energética"
           titulo="Cobertura potencial da Tarifa Social"
-          lead="Quantas faturas com Tarifa Social há para cada 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo. É uma proxy: as bases públicas contam faturas de um lado e famílias do outro."
+          lead="Faturas com Tarifa Social para cada 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo. É uma proxy: fatura não é família."
           recorte={`${mes(mesCob)} · ${c.ufs.length} UF e municípios · faturas por 100 famílias`}
           fonte="ANEEL, Beneficiários da CDE; MDS, Cadastro Único (MI Social)"
           referencia={

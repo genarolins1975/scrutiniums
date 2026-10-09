@@ -129,7 +129,8 @@ export default function TarifaSocialPage() {
   const oQueMudou = mudancaTarifaSocial(t);
   const comoInterpretar = (
     <>
-      O SCS conta UC no pedido de reembolso de cada distribuidora (despacho vigente, cinco faixas de consumo somadas, DMR lida uma vez por mês). Depois do fim do SCS, a evolução vem dos arquivos
+      UC, unidade consumidora, é o ponto de ligação com conta própria e a unidade do SCS; fatura é cada conta emitida com desconto no mês e a unidade dos arquivos de Beneficiários da CDE (uma UC
+      pode ter mais de uma fatura no arquivo). O SCS conta UC no pedido de reembolso de cada distribuidora (despacho vigente, cinco faixas de consumo somadas, DMR lida uma vez por mês). Depois do fim do SCS, a evolução vem dos arquivos
       mensais da CDE, que contam faturas: as duas séries ficam em gráficos separados e não se emendam. Mês em que falta distribuidora esperada fica em linha tracejada, fora da comparação. A
       participação é razão de somas das mesmas distribuidoras.
     </>
@@ -151,7 +152,7 @@ export default function TarifaSocialPage() {
           siglas={["UC", "SCS", "CDE", "DMR", "ANEEL", "UF"]}
           rotulo="Inclusão energética"
           titulo="Tarifa Social de Energia Elétrica"
-          lead="Quantas unidades consumidoras (UC) recebem o desconto da Tarifa Social, onde estão e quanto o desconto vale. UC e faturas vêm de fontes diferentes, com meses diferentes, e não se somam."
+          lead="Quantas unidades consumidoras (UC) recebem a Tarifa Social, onde estão e quanto o desconto vale. UC e faturas vêm de fontes e meses diferentes e não se somam."
           recorte={`SCS ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)} · CDE ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} · UC, faturas e R$ correntes`}
           fonte="ANEEL, SCS e Beneficiários da CDE"
           referencia={
@@ -170,12 +171,11 @@ export default function TarifaSocialPage() {
                   <p>Fonte defasada, declarada. Um mês só entra nas comparações quando todas as distribuidoras enviaram o informe.</p>
                   <ul className="mt-1 list-disc space-y-0.5 pl-5">
                     <li>
-                      SCS (UC): arquivo gerado em {dataBR(geracaoScs)}, publicado até {mes(ultimoScs)}; o último mês com todas as distribuidoras é {mes(t.mes_referencia)}, o dos números de UC. UC é o
-                      ponto de ligação com conta própria.
+                      SCS (UC): arquivo gerado em {dataBR(geracaoScs)}, publicado até {mes(ultimoScs)}; o último mês com todas as distribuidoras é {mes(t.mes_referencia)}, o dos números de UC.
                     </li>
                     <li>
                       Beneficiários da CDE (faturas): publicados até {mes(g.referencias.cde_mes_mais_recente)}; o último mês com todas as distribuidoras é {mes(mesMapa)}, o dos números de fatura e
-                      do mapa. Fatura é cada conta emitida com desconto no mês, e uma UC pode ter mais de uma fatura no arquivo.
+                      do mapa.
                     </li>
                   </ul>
                 </>

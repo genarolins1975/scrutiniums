@@ -37,7 +37,7 @@ export function ContaEscolha<T extends string>({
             <label
               key={o.id}
               title={o.detalhe}
-              className={`inline-flex min-h-[44px] cursor-pointer items-center border px-3 text-sm focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-energia ${
+              className={`inline-flex min-h-[44px] cursor-pointer items-center border px-2.5 text-sm sm:px-3 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-energia ${
                 ativo ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
               }`}
             >

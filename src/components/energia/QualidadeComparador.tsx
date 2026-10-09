@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Comparador, type EntidadeComparavel } from "@/components/energia/Comparador";
+import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl, type Leitor } from "@/lib/energia/estadoUrl";
@@ -67,27 +68,50 @@ export function QualidadeComparador({
       nota: serie?.distribuidoras[c]?.quebras.length ? `perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}` : undefined,
     }));
 
-  const bloco = (ind: "dec" | "fec", dados: ReturnType<typeof linhasSerieDistribuidoras>) => (
-    <div className="space-y-3" data-comparador-indicador={ind}>
-      {/* só a lista do DEC é região viva: a troca de escolha é anunciada uma vez, não duas */}
-      <ul className="space-y-1 text-sm text-carvao" aria-live={ind === "dec" ? "polite" : undefined}>
-        {escolhidas.map((c) => (
-          <li key={c}>{respostaHistoricoDistribuidora(nomes.get(c) ?? `CNPJ ${c}`, serie?.distribuidoras[c], ind)}</li>
-        ))}
-      </ul>
-      <PequenosMultiplos
-        titulo={`${ind === "dec" ? "DEC" : "FEC"} anual diante do limite de cada distribuidora`}
-        dados={dados}
-        chaveX="ano"
-        formatoX="texto"
-        unidade={ind === "dec" ? "h" : "interrupções"}
-        casas={2}
-        colunas={2}
-        nivelTitulo={4}
-        paineis={paineis(ind)}
-      />
-    </div>
-  );
+  const bloco = (ind: "dec" | "fec", dados: ReturnType<typeof linhasSerieDistribuidoras>) => {
+    const nome = ind === "dec" ? "DEC" : "FEC";
+    const unidade = ind === "dec" ? "h" : "interrupções";
+    const unica = escolhidas.length === 1 ? escolhidas[0] : null;
+    return (
+      <div className="space-y-3" data-comparador-indicador={ind}>
+        {/* só a lista do DEC é região viva: a troca de escolha é anunciada uma vez, não duas */}
+        <ul className="space-y-1 text-sm text-carvao" aria-live={ind === "dec" ? "polite" : undefined}>
+          {escolhidas.map((c) => (
+            <li key={c}>{respostaHistoricoDistribuidora(nomes.get(c) ?? `CNPJ ${c}`, serie?.distribuidoras[c], ind)}</li>
+          ))}
+        </ul>
+        {unica ? (
+          // uma distribuidora só (o link vindo de outra página): um gráfico com a largura da coluna, em vez de um painel com a célula vizinha vazia
+          <GraficoLinhas
+            titulo={`${nome} anual e limite de ${nomes.get(unica) ?? `CNPJ ${unica}`}`}
+            dados={dados}
+            chaveX="ano"
+            formatoX="texto"
+            series={[
+              { id: `${ind}_${unica}`, rotulo: `${nome} apurado`, cor: "var(--cor-energia)" },
+              { id: `lim_${unica}`, rotulo: "Limite do ano", cor: "var(--serie-referencia)", tracejada: true },
+            ]}
+            unidade={unidade}
+            casas={2}
+            altura={240}
+            marcos={(serie?.distribuidoras[unica]?.quebras ?? []).map((q) => ({ x: String(q), rotulo: `${q}: perímetro mudou` }))}
+          />
+        ) : (
+          <PequenosMultiplos
+            titulo={`${nome} anual diante do limite de cada distribuidora`}
+            dados={dados}
+            chaveX="ano"
+            formatoX="texto"
+            unidade={unidade}
+            casas={2}
+            colunas={2}
+            nivelTitulo={4}
+            paineis={paineis(ind)}
+          />
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="space-y-5">
