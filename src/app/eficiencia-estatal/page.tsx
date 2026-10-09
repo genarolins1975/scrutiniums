@@ -30,6 +30,7 @@ export default function PaginaEntradaEficiencia() {
         { href: "/eficiencia-estatal/educacao-municipal-capitais/gastos", rotulo: "Gastos" },
         { href: "/eficiencia-estatal/educacao-municipal-capitais/atendimento", rotulo: "Atendimento" },
         { href: "/eficiencia-estatal/educacao-municipal-capitais/resultados", rotulo: "Resultados" },
+        { href: "/eficiencia-estatal/educacao-municipal-capitais/comparar", rotulo: "Comparar capitais" },
         { href: "/eficiencia-estatal/educacao-municipal-capitais/metodos", rotulo: "Dados e métodos" },
       ],
       atualizacao: edu?.dados_capturados_ate ? dataBr(edu.dados_capturados_ate) : null,
@@ -60,7 +61,7 @@ export default function PaginaEntradaEficiencia() {
             Eficiência Estatal
           </h1>
           <p className="mt-3 max-w-[46rem] font-serif text-[1.25rem] leading-snug text-obee-tinta md:text-[1.5rem]">
-            Quanto o Estado aplica, que atendimento oferece e que resultados a fonte registra, com a mesma régua para cada ente.
+            Quanto o Estado aplica, que atendimento oferece e que resultados as fontes oficiais registram, com a mesma definição para cada capital.
           </p>
           <p className="mt-3 max-w-[46rem] text-[0.9375rem] leading-relaxed text-carvao-muted">
             Cada número traz definição, fonte, período, perímetro e limitação. O observatório mostra valores e referências; o leitor tira as conclusões. Não há nota, classificação das capitais, semáforo ou recomendação.
