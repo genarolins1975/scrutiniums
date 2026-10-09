@@ -1,0 +1,2470 @@
+{
+ "capturas": {
+  "siconfi_dca_anexo_i_e": {
+   "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+   "conjunto": "Declaração de Contas Anuais (DCA), Anexo I-E: Despesa por Função (função 10, Saúde)",
+   "pagina": "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos",
+   "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=<ano>&no_anexo=DCA-Anexo%20I-E&id_ente=<código IBGE>",
+   "parametros": "exercícios 2021 a 2025; 26 capitais; gravadas só as linhas da função 10 e os totais",
+   "arquivos": {
+    "1200401_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1200401",
+     "capturado_em": "2026-10-09T11:19:56Z",
+     "linhas_resposta": 258,
+     "linhas": 36,
+     "sha256_resposta_completa": "db6442b0061270eff6e07015c122f32e44566a35c83156df22daac80a4d48eec",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1200401_2021.json.gz",
+     "sha256": "21491e8e48ef30d5e7ff121b04a56188f1b0b061910f89cc2ee17d0a853b292d"
+    },
+    "2704302_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2704302",
+     "capturado_em": "2026-10-09T11:19:59Z",
+     "linhas_resposta": 296,
+     "linhas": 49,
+     "sha256_resposta_completa": "9ffeb51ebb0efeb121fc8f4ddd03afb0e403d5cee6dfb19a8272b489c206e9f9",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2704302_2021.json.gz",
+     "sha256": "82946e5f6bdfe76329b14bf7dc2cf72f1566752193cf92992658dddd61475132"
+    },
+    "1600303_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1600303",
+     "capturado_em": "2026-10-09T11:20:01Z",
+     "linhas_resposta": 244,
+     "linhas": 40,
+     "sha256_resposta_completa": "e7dfa605d0102588944796dd5864850b25ecbbce3db4a59e691d50c7d6f8d3e9",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1600303_2021.json.gz",
+     "sha256": "3714241f13b514375dbc858dcc8a6c91a4ce6041773abf69a6e6d76c0408e743"
+    },
+    "1302603_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1302603",
+     "capturado_em": "2026-10-09T11:20:04Z",
+     "linhas_resposta": 386,
+     "linhas": 49,
+     "sha256_resposta_completa": "a7ed2b57e866b60437c690fcdec1645fcfc727fc88f274096df378168f5d67e8",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1302603_2021.json.gz",
+     "sha256": "9ea935867cf748e03a64b1a7dc0f3b0fdcce148e09a0dba1c8769a472d134a87"
+    },
+    "2927408_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2927408",
+     "capturado_em": "2026-10-09T11:20:06Z",
+     "linhas_resposta": 378,
+     "linhas": 45,
+     "sha256_resposta_completa": "da2b3e4ea26e0eab212b089b18442942f8f1d13b9715092ab2416c0b82e1e56c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2927408_2021.json.gz",
+     "sha256": "8e336691d40adda0113e096898b82aedf9fdb5d9fe8d069fcd776908c0ede7fd"
+    },
+    "2304400_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2304400",
+     "capturado_em": "2026-10-09T11:20:09Z",
+     "linhas_resposta": 430,
+     "linhas": 48,
+     "sha256_resposta_completa": "6cbc4357b83f4fd2d21dc0a5b7b5f2208339db46860e04a4051e90dba3399a34",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2304400_2021.json.gz",
+     "sha256": "d7858a7f1d8c8b902255b0eed2c40f42a6d301ba5706adca356238e5dbf819ed"
+    },
+    "3205309_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=3205309",
+     "capturado_em": "2026-10-09T11:20:15Z",
+     "linhas_resposta": 367,
+     "linhas": 45,
+     "sha256_resposta_completa": "c098bb6ab7238ee9bbb8cd0924aa853a307471a5de63affc13a0c4c9daea8077",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3205309_2021.json.gz",
+     "sha256": "8e8fb10af3bd7c15b008798e6a9a31f4e6dfbadccddfa4e994b0de5fa3beb083"
+    },
+    "5208707_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=5208707",
+     "capturado_em": "2026-10-09T11:20:20Z",
+     "linhas_resposta": 265,
+     "linhas": 36,
+     "sha256_resposta_completa": "d43aeef97e59948283e531b804f5a9e798571220ab618409c95a142e7c998e32",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5208707_2021.json.gz",
+     "sha256": "dbe3ecc8f891dbcd38288e386203e9882283ac441b9e8ef7661fcdf90e974d74"
+    },
+    "2111300_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2111300",
+     "capturado_em": "2026-10-09T11:20:23Z",
+     "linhas_resposta": 308,
+     "linhas": 49,
+     "sha256_resposta_completa": "aa337e9137b9ffd47880bd280d44c957cff354ea929525af439989c3441d0158",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2111300_2021.json.gz",
+     "sha256": "e3d01078bed0a52b7439e676841c4ba1f975fdb42e1f6be9026ebb4dc2661878"
+    },
+    "5103403_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=5103403",
+     "capturado_em": "2026-10-09T11:20:25Z",
+     "linhas_resposta": 254,
+     "linhas": 36,
+     "sha256_resposta_completa": "8e3f7b3a70c2e5e66b13ef11680443aee01e877d7219e1597cfb7eb383e51d77",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5103403_2021.json.gz",
+     "sha256": "17c8bdc93ab7c7b3112b405bd72f1c4d95bd1fda469292cd63dc1ed282e70665"
+    },
+    "5002704_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=5002704",
+     "capturado_em": "2026-10-09T11:20:28Z",
+     "linhas_resposta": 361,
+     "linhas": 40,
+     "sha256_resposta_completa": "ab556ad1274a3163c93000a915a0b04f16c48175e1556d5de2d823d3c6792011",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5002704_2021.json.gz",
+     "sha256": "c65c6de1ad518c3243ee94daa36c5c6fa326f83d42d3cc5267616b609802909c"
+    },
+    "3106200_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=3106200",
+     "capturado_em": "2026-10-09T11:20:31Z",
+     "linhas_resposta": 405,
+     "linhas": 45,
+     "sha256_resposta_completa": "92fbcce9cc9ded7596759536896143a02dba5267c883ac8e4ae8373deb894786",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3106200_2021.json.gz",
+     "sha256": "6b1ec4733c590e8a673c8a367e34f7f5ce2d0dacab5d164dc1f0748e8f210b53"
+    },
+    "1501402_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1501402",
+     "capturado_em": "2026-10-09T11:20:33Z",
+     "linhas_resposta": 250,
+     "linhas": 29,
+     "sha256_resposta_completa": "eee46874ce98ecf61c90b402c5b6997d59cd63c6f5c9a8f8c34d3153718c2d91",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1501402_2021.json.gz",
+     "sha256": "95b46d1bbaefc5e7382e5880b9aac199528cbd34a27d71da9e5ee4b21a6e394e"
+    },
+    "2507507_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2507507",
+     "capturado_em": "2026-10-09T11:20:36Z",
+     "linhas_resposta": 265,
+     "linhas": 30,
+     "sha256_resposta_completa": "ad5cf79e7404ab5a51692d16d79b57b035d40c22f5b1a9a70e1cb56a4253f389",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2507507_2021.json.gz",
+     "sha256": "72e314fb298d28402fd814d869c5ba96503249a5ee9ffedae6c8907edcc3b502"
+    },
+    "4106902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=4106902",
+     "capturado_em": "2026-10-09T11:20:39Z",
+     "linhas_resposta": 376,
+     "linhas": 35,
+     "sha256_resposta_completa": "bce095f48a1804491737ee80b0e9689ffc3a7f11f7050888976562305beb1fbc",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4106902_2021.json.gz",
+     "sha256": "1d7453b93ff765c43488b81685ce8ee8f22b7397dde9c21235fa12255b846951"
+    },
+    "2611606_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2611606",
+     "capturado_em": "2026-10-09T11:20:41Z",
+     "linhas_resposta": 346,
+     "linhas": 41,
+     "sha256_resposta_completa": "36aac5911a83f56d6681e5fbd35679136f40771e01b0934cac5f4a926fafbd0f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2611606_2021.json.gz",
+     "sha256": "f0ca5ee6380f76e7a94604acb4f68f6194a414b175c3ea35283bebe531b71aa3"
+    },
+    "2211001_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2211001",
+     "capturado_em": "2026-10-09T11:20:44Z",
+     "linhas_resposta": 309,
+     "linhas": 49,
+     "sha256_resposta_completa": "a251a8302cbb20c8d84384b6d0f8c96a9ec6b749c1dd0aebd7c40f9222a0ecb3",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2211001_2021.json.gz",
+     "sha256": "68ee1d2ea753954c59409f407f67bdc48400e8e3af7f6efae74e7f5f3b738273"
+    },
+    "3304557_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=3304557",
+     "capturado_em": "2026-10-09T11:20:47Z",
+     "linhas_resposta": 495,
+     "linhas": 50,
+     "sha256_resposta_completa": "2f5c1d8a57a5446421c389b8205d57be400dcb7d7cf1db3e1772b15b85871762",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3304557_2021.json.gz",
+     "sha256": "c7f383aa2e15aba2e75d9107adb841a8f73a80be53f144ee9f3dd951051391c8"
+    },
+    "2408102_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2408102",
+     "capturado_em": "2026-10-09T11:20:50Z",
+     "linhas_resposta": 317,
+     "linhas": 54,
+     "sha256_resposta_completa": "d80904af26bf7d48fdb7272559b9c5f1f3e1421ad81e8549d46e7acbdf1667fb",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2408102_2021.json.gz",
+     "sha256": "f712278891ee2aa378e14c98b6561f6f0c05277dd069ea0ad13c2148a000b715"
+    },
+    "4314902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=4314902",
+     "capturado_em": "2026-10-09T11:20:53Z",
+     "linhas_resposta": 442,
+     "linhas": 50,
+     "sha256_resposta_completa": "dc66e557f17b3d7d7533f3fc5fcd23ee44324d77791b823af6bfe96da92054b0",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4314902_2021.json.gz",
+     "sha256": "4f73035aa84eb7d8fa76fbd5428bf0d16520c89d2fc532b6411e8ab90840c8de"
+    },
+    "1100205_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1100205",
+     "capturado_em": "2026-10-09T11:20:56Z",
+     "linhas_resposta": 316,
+     "linhas": 45,
+     "sha256_resposta_completa": "8126ca4602829bf2d63cd4dce2d51f050b758f72e1979047f4e350c9b021cb6b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1100205_2021.json.gz",
+     "sha256": "138e6583b46d22f48dad7cb6f47c82bcf176cc044d3ad32132664e191189c2d1"
+    },
+    "1400100_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1400100",
+     "capturado_em": "2026-10-09T11:20:59Z",
+     "linhas_resposta": 272,
+     "linhas": 47,
+     "sha256_resposta_completa": "f889561b1345eabae719e305bb2b0abd86bc7c75a2a228b86e88443bd0e76ec3",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1400100_2021.json.gz",
+     "sha256": "b82ad47dedd49f6f106abd9f41c761b1a3eee664972882513e7cef8f6ff41cf8"
+    },
+    "4205407_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=4205407",
+     "capturado_em": "2026-10-09T11:21:01Z",
+     "linhas_resposta": 283,
+     "linhas": 39,
+     "sha256_resposta_completa": "99306e1f9ccb06ebe7e4a479120ef9ca249189e904a7c29b98abc9efb7c00550",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4205407_2021.json.gz",
+     "sha256": "9ec1970547b502a01da1e3437fc70aff886840ab49c85d3b966ea3205731ca97"
+    },
+    "3550308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=3550308",
+     "capturado_em": "2026-10-09T11:21:04Z",
+     "linhas_resposta": 523,
+     "linhas": 45,
+     "sha256_resposta_completa": "ffd8d7f82dc21282d0ea7d3a1d864ed78b43c9bf483dfde914581483207dc230",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3550308_2021.json.gz",
+     "sha256": "540463407074258ae20892497a15ad2075055d96982f810d649577997057ca5f"
+    },
+    "2800308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2800308",
+     "capturado_em": "2026-10-09T11:21:07Z",
+     "linhas_resposta": 313,
+     "linhas": 44,
+     "sha256_resposta_completa": "492609469a3f807c70806e6026d3fcb2af2b1f849b63fb99cd92c3a2bb90fbe9",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2800308_2021.json.gz",
+     "sha256": "a23b9e4bd39730608aa8d4bddc8d83dc1dbbf0b0bd1c44ebaf14299dd3295a49"
+    },
+    "1721000_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1721000",
+     "capturado_em": "2026-10-09T11:21:10Z",
+     "linhas_resposta": 408,
+     "linhas": 45,
+     "sha256_resposta_completa": "4d639c3762f0c83b31d794a57440cf16351f1286e4a5dbc3c61b28a810d7dc60",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1721000_2021.json.gz",
+     "sha256": "46d599126d1239f82c810ba5901918ccf2cbbdab5f62d89beb32492eaa5bdfa0"
+    },
+    "1200401_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1200401",
+     "capturado_em": "2026-10-09T11:21:13Z",
+     "linhas_resposta": 278,
+     "linhas": 38,
+     "sha256_resposta_completa": "0761f36b210dc24784a6858da3022391fb84c46620054012b830487eb42bad4c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1200401_2022.json.gz",
+     "sha256": "d48c86956ef513c0045b11a5867026136454b06f69232f26d9cd697494d6516b"
+    },
+    "2704302_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2704302",
+     "capturado_em": "2026-10-09T11:21:15Z",
+     "linhas_resposta": 311,
+     "linhas": 49,
+     "sha256_resposta_completa": "b999d2b4b0ade85a36e37369dd6750b0a9e8d924b98915d89ba507638b91136d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2704302_2022.json.gz",
+     "sha256": "8f76abb63bed314cb34b2d562a5041cbeb4198b15a596dc97ab9cb6250b427af"
+    },
+    "1600303_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1600303",
+     "capturado_em": "2026-10-09T11:21:18Z",
+     "linhas_resposta": 266,
+     "linhas": 40,
+     "sha256_resposta_completa": "52c11b57499fb5966a55de49b5e877539beba1caac49cb052e6e44d45d1a4404",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1600303_2022.json.gz",
+     "sha256": "88d57bc7b047d4be2517cb952001a4b73aa8ea994d1fb2d99be0c09f908ddbb1"
+    },
+    "1302603_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1302603",
+     "capturado_em": "2026-10-09T11:21:21Z",
+     "linhas_resposta": 396,
+     "linhas": 48,
+     "sha256_resposta_completa": "bd32678316de12b3504e313ea028f626ab25d7c9a33a98f4858d68ad2b791c90",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1302603_2022.json.gz",
+     "sha256": "4dadec15bed497d18df46d7d38ba75e65658354f1aac544d95ab903babc6b023"
+    },
+    "2927408_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2927408",
+     "capturado_em": "2026-10-09T11:21:24Z",
+     "linhas_resposta": 427,
+     "linhas": 46,
+     "sha256_resposta_completa": "69930e117b2ebbf609cc7f1f8b985d35734930715d308b51355e5120c9f935da",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2927408_2022.json.gz",
+     "sha256": "077dadc6b7a83e971e5eae80eaba6eeda708acd4b4be14d3acd14c8d176a95dd"
+    },
+    "2304400_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2304400",
+     "capturado_em": "2026-10-09T11:21:26Z",
+     "linhas_resposta": 429,
+     "linhas": 47,
+     "sha256_resposta_completa": "045e6cf426b8bbbc7d6272b2571a82454e4e5ddad29dcc7845b50d383b75b432",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2304400_2022.json.gz",
+     "sha256": "2c88bdeb9656151bc26a0bc71c5217667f4680f358a35cab56770646f74300d4"
+    },
+    "3205309_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=3205309",
+     "capturado_em": "2026-10-09T11:21:29Z",
+     "linhas_resposta": 367,
+     "linhas": 48,
+     "sha256_resposta_completa": "002c6710a81d0bf5610d86f928ec2dade6cafba01b4dfe93c709acaabd5be0bf",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3205309_2022.json.gz",
+     "sha256": "3f3f318a92a886d72981dda8c034f7e798a97429b298beaf99d4abb772aeb202"
+    },
+    "5208707_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=5208707",
+     "capturado_em": "2026-10-09T11:21:32Z",
+     "linhas_resposta": 281,
+     "linhas": 40,
+     "sha256_resposta_completa": "f30a7f2042816d561c87e3cc3cb44f1c3841ab3f8abe86b766dd8356bded263f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5208707_2022.json.gz",
+     "sha256": "f31885ed33c4b31f8001e027e189b76c1b3dc1276f402b19ea52d396d5211b94"
+    },
+    "2111300_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2111300",
+     "capturado_em": "2026-10-09T11:21:34Z",
+     "linhas_resposta": 358,
+     "linhas": 51,
+     "sha256_resposta_completa": "824f229273f1c6ad74c1e2c6e561a2c7a079e3ae1323e9226af7a360f0da05d9",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2111300_2022.json.gz",
+     "sha256": "2edfc8174fdf3288a616c6e9c60b4fedbb7233bfe31c994a540e4298c436bad3"
+    },
+    "5103403_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=5103403",
+     "capturado_em": "2026-10-09T11:21:37Z",
+     "linhas_resposta": 276,
+     "linhas": 37,
+     "sha256_resposta_completa": "4c24ca52307a18ecf9f94f5bf512bc21d9c3c3482698352e329a4c3a7eeab9bd",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5103403_2022.json.gz",
+     "sha256": "011630dcc361b6e4eb0118e8e48ee834ef550a8b02ea13d39fa3c7a861e5a4c8"
+    },
+    "5002704_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=5002704",
+     "capturado_em": "2026-10-09T11:21:40Z",
+     "linhas_resposta": 359,
+     "linhas": 45,
+     "sha256_resposta_completa": "88135211fd88b5876dbc178c8842c21e610d66767ebf5c63d0932748a6113ad2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5002704_2022.json.gz",
+     "sha256": "702100661c3c0e91436fd8333ea8796173acd9c25b4eba57eddaeb8fc7dca754"
+    },
+    "3106200_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=3106200",
+     "capturado_em": "2026-10-09T11:21:43Z",
+     "linhas_resposta": 407,
+     "linhas": 50,
+     "sha256_resposta_completa": "28a59f7e849de5354e4bd0d48e863d2a43058e6ef5041e5052d0f1a2963da469",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3106200_2022.json.gz",
+     "sha256": "703654ff3bb4bc37b643fd7f5beb80860c541e392e6b6c26fc8dd5d4bba96534"
+    },
+    "1501402_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1501402",
+     "capturado_em": "2026-10-09T11:21:46Z",
+     "linhas_resposta": 234,
+     "linhas": 27,
+     "sha256_resposta_completa": "2b92cb1ddbf06fa55f5de0c80053725c72925a444681fa02d04aff1f6e2f9ead",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1501402_2022.json.gz",
+     "sha256": "4db1997e30f326b3f9deae12a9f6a0fc04249933c3d3b045b5d42b13f3596ad7"
+    },
+    "2507507_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2507507",
+     "capturado_em": "2026-10-09T11:21:49Z",
+     "linhas_resposta": 397,
+     "linhas": 46,
+     "sha256_resposta_completa": "05c0c36a155d301fe1933926b1bfc9ab6a5e8d7ac268e4079e43e186d131254a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2507507_2022.json.gz",
+     "sha256": "3ac4800e10f67788a809be2809ea13c7d63041ef33b149a58a286e9c81dc0e3b"
+    },
+    "4106902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=4106902",
+     "capturado_em": "2026-10-09T11:21:52Z",
+     "linhas_resposta": 389,
+     "linhas": 34,
+     "sha256_resposta_completa": "f8d25682252a98992d763f89a6928e2e1120a623a651093c195bdcb5e251ba82",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4106902_2022.json.gz",
+     "sha256": "2485a349877ea9f29ee01d384ee689b532e0c7d450602860c1971c31cd6a9c44"
+    },
+    "2611606_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2611606",
+     "capturado_em": "2026-10-09T11:21:57Z",
+     "linhas_resposta": 340,
+     "linhas": 42,
+     "sha256_resposta_completa": "07c40ecac874a9f4db2b6a8252618e1e3314a49ec1861863b44761f5b271b612",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2611606_2022.json.gz",
+     "sha256": "696c571d997c6447dc39a7d79882cec7f5a2dc1d75aa305fbb286cbf43fcdfed"
+    },
+    "2211001_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2211001",
+     "capturado_em": "2026-10-09T11:22:01Z",
+     "linhas_resposta": 327,
+     "linhas": 50,
+     "sha256_resposta_completa": "0688fefc19b8663430e085e6ed32a2558389fd99cbabd063dbe04f07b33fd849",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2211001_2022.json.gz",
+     "sha256": "aec22dad17a6fb34e5ad34c50e6ff2f0d7ed271469adf99ddb1ae5b056c2e4e5"
+    },
+    "3304557_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=3304557",
+     "capturado_em": "2026-10-09T11:22:04Z",
+     "linhas_resposta": 502,
+     "linhas": 50,
+     "sha256_resposta_completa": "76bef6a6bd066a7b0b5245f08708f030799da0aeace881d781e4d295af3e03e7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3304557_2022.json.gz",
+     "sha256": "308da6bf9c2a423835e644dff43d843a09fc49d99f7d7143b0356e55c5415d55"
+    },
+    "2408102_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2408102",
+     "capturado_em": "2026-10-09T11:22:07Z",
+     "linhas_resposta": 315,
+     "linhas": 54,
+     "sha256_resposta_completa": "0e6059923a908baa264020ff875144834fab5be382059d82f32871c9b04146a4",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2408102_2022.json.gz",
+     "sha256": "c10e535ec2a142bc6a1cd81e263663d6e7a81ec16893f026be50e92236df089d"
+    },
+    "4314902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=4314902",
+     "capturado_em": "2026-10-09T11:22:10Z",
+     "linhas_resposta": 441,
+     "linhas": 49,
+     "sha256_resposta_completa": "46058694579b53e765534993921894b01931e3051152d70e7c7ca9d998b4b65f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4314902_2022.json.gz",
+     "sha256": "eef925bc8f8c14f815ea5890bf2896ecefea5d87c964f84d89e7ba30a2ae1bbf"
+    },
+    "1100205_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1100205",
+     "capturado_em": "2026-10-09T11:22:13Z",
+     "linhas_resposta": 317,
+     "linhas": 43,
+     "sha256_resposta_completa": "040ce6d034e980e2678c3d4903e719834d2034ecaee5c01c9c5bbe86a3a742a2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1100205_2022.json.gz",
+     "sha256": "23f71bafb1a2c91d02aec634196d753ceaf6db3c876a9bb75f4ca06b9688bd25"
+    },
+    "1400100_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1400100",
+     "capturado_em": "2026-10-09T11:22:16Z",
+     "linhas_resposta": 317,
+     "linhas": 49,
+     "sha256_resposta_completa": "3aed99031732e577236da346989a05e54b35891903a93a1060da3bb3d820b663",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1400100_2022.json.gz",
+     "sha256": "3edd94db745641e1537f7cdb8a5b108ad0cdc5167c3a4118697fe7f4bd37b098"
+    },
+    "4205407_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=4205407",
+     "capturado_em": "2026-10-09T11:22:19Z",
+     "linhas_resposta": 306,
+     "linhas": 39,
+     "sha256_resposta_completa": "124082117cfbe66efdea59de453b7c4f3be5e6f2ecda899845ffc496bbe9ccba",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4205407_2022.json.gz",
+     "sha256": "3f0d8c47ed949c51ad58c8927c6164a27dbf0a184aa01cd7ac296443d681e122"
+    },
+    "3550308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=3550308",
+     "capturado_em": "2026-10-09T11:22:21Z",
+     "linhas_resposta": 542,
+     "linhas": 45,
+     "sha256_resposta_completa": "de64e944388ff86bac8c0049826654944489242cf048173307f441b7bbbd66f0",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3550308_2022.json.gz",
+     "sha256": "c6d031fc1f196d403945e0cfd09bfe7c7d3928138ca532ec77dc8cc90e31debf"
+    },
+    "2800308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2800308",
+     "capturado_em": "2026-10-09T11:22:24Z",
+     "linhas_resposta": 316,
+     "linhas": 43,
+     "sha256_resposta_completa": "35075040d0e5fe89c6833be3f795bafd78dd8bf0ca5b8bf81a463fe28f98f662",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2800308_2022.json.gz",
+     "sha256": "19e6cca560f27bce3dca25bfe6aeb0d074bcd7ded1ef1584db117e33991b1c6a"
+    },
+    "1721000_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1721000",
+     "capturado_em": "2026-10-09T11:22:28Z",
+     "linhas_resposta": 414,
+     "linhas": 43,
+     "sha256_resposta_completa": "f1c539c8f84a9f4f04a261fb8a5fc5a20694bd11e99d4426818b47c08a948342",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1721000_2022.json.gz",
+     "sha256": "e73b0b113e4adfcd5d1f72b5d1788420b3f913e7a9f63f5c7f3e51d59d9ec87f"
+    },
+    "1200401_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1200401",
+     "capturado_em": "2026-10-09T11:22:31Z",
+     "linhas_resposta": 284,
+     "linhas": 31,
+     "sha256_resposta_completa": "66ce17eb8fabf0852a76f77ebda7e1ab2c052465d9cd0be8c4dedd252561ed75",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1200401_2023.json.gz",
+     "sha256": "86e61e7ee4a014fef102df3a5c9abf1416410c1054802ddf0e81bb6bd2028eba"
+    },
+    "2704302_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2704302",
+     "capturado_em": "2026-10-09T11:22:34Z",
+     "linhas_resposta": 334,
+     "linhas": 54,
+     "sha256_resposta_completa": "fd8a9ff9ff3d6164a75160037775c03a25b8f820de4d413ded5e204ad72f3e9b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2704302_2023.json.gz",
+     "sha256": "5e9941c12d43e5937a0e334cc62b88ddf39075ba4a2b490cc0453ef0c26b5463"
+    },
+    "1600303_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1600303",
+     "capturado_em": "2026-10-09T11:22:36Z",
+     "linhas_resposta": 277,
+     "linhas": 40,
+     "sha256_resposta_completa": "cc64d305d30e0a2933e17db61e2990bb0dc5dc89662475c8e07b921ca79f4f3e",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1600303_2023.json.gz",
+     "sha256": "c65d922fd0b5160fc4e3fd95b8cc60f52e6a243f48c7c4ed6adb2efb3d7e1077"
+    },
+    "1302603_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1302603",
+     "capturado_em": "2026-10-09T11:22:39Z",
+     "linhas_resposta": 397,
+     "linhas": 48,
+     "sha256_resposta_completa": "a8511affe1b22093cfea99d16bf8d2554cc96119871e2334c14f47c0a8d5b291",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1302603_2023.json.gz",
+     "sha256": "f6340a40836467b75347d2f59e14538bae84d931d540702cae9f30cf1385c427"
+    },
+    "2927408_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2927408",
+     "capturado_em": "2026-10-09T11:22:42Z",
+     "linhas_resposta": 464,
+     "linhas": 49,
+     "sha256_resposta_completa": "4117263d18d82a8aab6a92ef7f6acfe0649f6c947dde80542bbb928327cf97e9",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2927408_2023.json.gz",
+     "sha256": "feccd783bb40075982ee2aaf323abf165342307591b7b73c496fb97d80a173c8"
+    },
+    "2304400_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2304400",
+     "capturado_em": "2026-10-09T11:22:45Z",
+     "linhas_resposta": 464,
+     "linhas": 48,
+     "sha256_resposta_completa": "96e4cdf703cae820aff3e19d6045d56975a2994f2fc74701f865d1264a4e68e4",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2304400_2023.json.gz",
+     "sha256": "4fd30afdd2feba767dcc68dbc2935cdfa035af2b004e848b67d38c86a218945e"
+    },
+    "3205309_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=3205309",
+     "capturado_em": "2026-10-09T11:22:48Z",
+     "linhas_resposta": 366,
+     "linhas": 48,
+     "sha256_resposta_completa": "2500b4606e2805f14d067ab6de104c326760ffb36fb5710556894f3007ca4e66",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3205309_2023.json.gz",
+     "sha256": "74d42ae370f0ee9bea6c0311e7d2b9f74cc77d652b05d498ca9f17ba6150f3eb"
+    },
+    "5208707_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=5208707",
+     "capturado_em": "2026-10-09T11:22:51Z",
+     "linhas_resposta": 251,
+     "linhas": 40,
+     "sha256_resposta_completa": "5e03f832b4aa14c082295cbddc76c0ced9cafcd67dd5d6e3352701f907c609ba",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5208707_2023.json.gz",
+     "sha256": "b98449d307591863c2d41e7dd765c493125067fec9b2f27f811403737921a7ee"
+    },
+    "2111300_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2111300",
+     "capturado_em": "2026-10-09T11:22:54Z",
+     "linhas_resposta": 379,
+     "linhas": 48,
+     "sha256_resposta_completa": "e75b66c4550c14b0615c55e771e60f63a96adea32bc53b49e734807d1bac38ed",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2111300_2023.json.gz",
+     "sha256": "d3a422ff08723eb7e9b04fb77ada7e9cedd3af7c80d39ee455c6680fdf61f519"
+    },
+    "5103403_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=5103403",
+     "capturado_em": "2026-10-09T11:22:57Z",
+     "linhas_resposta": 300,
+     "linhas": 45,
+     "sha256_resposta_completa": "145dc4d89c2d7392caab31efa3003bd200e026796e905224130f24f8ba190b45",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5103403_2023.json.gz",
+     "sha256": "ed71ec15912f303d3d3958c4e70ee8b494307f792c5df7d3ddaab24a475827c5"
+    },
+    "5002704_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=5002704",
+     "capturado_em": "2026-10-09T11:22:59Z",
+     "linhas_resposta": 325,
+     "linhas": 44,
+     "sha256_resposta_completa": "8dc4570727486145c7bc2df3b2aaf5dfb379ba8828fa4210e445f1188ecc2637",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5002704_2023.json.gz",
+     "sha256": "4472776fca2272c4c4c934b0e81609d84a8c7f766a1dc2f73ff1b066b44967a6"
+    },
+    "3106200_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=3106200",
+     "capturado_em": "2026-10-09T11:23:02Z",
+     "linhas_resposta": 411,
+     "linhas": 50,
+     "sha256_resposta_completa": "246fc1d5a69965b94fb0a31adfe646ace8bc0db3d0a52eee9105381e943bd322",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3106200_2023.json.gz",
+     "sha256": "c19f3177273fa1202c380e2c6cce71c1136ded33edaafa2171bce19c94aa9c5a"
+    },
+    "1501402_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1501402",
+     "capturado_em": "2026-10-09T11:23:05Z",
+     "linhas_resposta": 234,
+     "linhas": 28,
+     "sha256_resposta_completa": "45fd4c41a8793a8506c39559b4f2adc75b27e6ed4ac729dfcd7f2239727c4fe9",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1501402_2023.json.gz",
+     "sha256": "7fc14ea1c6da1d77abd0470f032172498b12bfa76b54a88e601b7d107029937a"
+    },
+    "2507507_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2507507",
+     "capturado_em": "2026-10-09T11:23:08Z",
+     "linhas_resposta": 446,
+     "linhas": 47,
+     "sha256_resposta_completa": "c4eeb1c4dd6c6be27de5630295efba1c286a5f18a0bbafc59156cf5c99ca27ac",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2507507_2023.json.gz",
+     "sha256": "7ffd6e10fd80bbd9d76a1ca04e013059140ea31d2975faf54ad7bd6ffdc3e4ff"
+    },
+    "4106902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=4106902",
+     "capturado_em": "2026-10-09T11:23:11Z",
+     "linhas_resposta": 393,
+     "linhas": 35,
+     "sha256_resposta_completa": "2157d370a21b20385cee8db362e4d3a1ca0de21ea6a463671adfe4038be0c447",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4106902_2023.json.gz",
+     "sha256": "705e18ca99867fa7e4b1779e2bfc0de1d4cc438a3101b89af7c2bcc70fd00fd5"
+    },
+    "2611606_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2611606",
+     "capturado_em": "2026-10-09T11:23:13Z",
+     "linhas_resposta": 340,
+     "linhas": 41,
+     "sha256_resposta_completa": "b51e3c2ed8122e37cc65dbe251e708bda66a3187e42826cca433db58e01f20a7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2611606_2023.json.gz",
+     "sha256": "b4ab8101c0cc9a1da92e4fdf895d6cc79f7b3dbf3fcd0b9b4c9017ce1418b3f0"
+    },
+    "2211001_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2211001",
+     "capturado_em": "2026-10-09T11:23:16Z",
+     "linhas_resposta": 374,
+     "linhas": 54,
+     "sha256_resposta_completa": "a6a8f915da464d6775f734e5e576be2d2e7bc0dc0bf29e93a3216a266b86148b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2211001_2023.json.gz",
+     "sha256": "2d5977486dda5234a4a135ef7686a24b0b815f4409f60c17ec22b7989575f65f"
+    },
+    "3304557_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=3304557",
+     "capturado_em": "2026-10-09T11:23:20Z",
+     "linhas_resposta": 505,
+     "linhas": 50,
+     "sha256_resposta_completa": "f5dece60fcb4fa56dbb314e69bb66e3e432db9d1d9f465b38b51fa0204477364",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3304557_2023.json.gz",
+     "sha256": "e9c44ea1fd02fa92e5ac04071e98cb68af0e527670aa2492fc4f2417779011ef"
+    },
+    "2408102_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2408102",
+     "capturado_em": "2026-10-09T11:23:23Z",
+     "linhas_resposta": 329,
+     "linhas": 55,
+     "sha256_resposta_completa": "141055402718837c8dd5410cb8997073ba861724f478c48209f5277f3d5b8343",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2408102_2023.json.gz",
+     "sha256": "a006fed0418f326210d8b496b81090a5c6d2c36406b5bda79f521c7f8ba9d16a"
+    },
+    "4314902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=4314902",
+     "capturado_em": "2026-10-09T11:23:26Z",
+     "linhas_resposta": 439,
+     "linhas": 48,
+     "sha256_resposta_completa": "c032863c9275924fc9700d18a74faab38a551e206fe1e0a950dce4b9ba8e0829",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4314902_2023.json.gz",
+     "sha256": "7b7665e52e69f397efa2fae0430b903f9c3a7f8bf6f9970cd5f05aafe76d177b"
+    },
+    "1100205_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1100205",
+     "capturado_em": "2026-10-09T11:23:29Z",
+     "linhas_resposta": 328,
+     "linhas": 45,
+     "sha256_resposta_completa": "68bdf6d6d93634524849fb3c38a5bca8b0d65e95eeef0f080587296072b4e21c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1100205_2023.json.gz",
+     "sha256": "e9ca5b72349c1081eeb49ff52f2dabb0b265a7cf6422ea2684efcca28c381872"
+    },
+    "1400100_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1400100",
+     "capturado_em": "2026-10-09T11:23:32Z",
+     "linhas_resposta": 297,
+     "linhas": 47,
+     "sha256_resposta_completa": "b1de2d163a22fa82e5515584256813fc39e6965c8bda4d11eff147cdf47154bd",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1400100_2023.json.gz",
+     "sha256": "c512ab9b56394c1af2a60160746933cfc1b582c8e5838326cfeffc5665545c15"
+    },
+    "4205407_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=4205407",
+     "capturado_em": "2026-10-09T11:23:35Z",
+     "linhas_resposta": 314,
+     "linhas": 39,
+     "sha256_resposta_completa": "f8515651e9d278c0121abfe1d69ca411020e19de679aa209c518fa91b8a7c297",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4205407_2023.json.gz",
+     "sha256": "351dc8bc8204cfb7da27385b748b30ff5aa37ac0de5f8be320bea4d599fe5ce5"
+    },
+    "3550308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=3550308",
+     "capturado_em": "2026-10-09T11:23:38Z",
+     "linhas_resposta": 567,
+     "linhas": 45,
+     "sha256_resposta_completa": "af05d00b0bba984a29aa895a118e2d0b380941072dc0c770d4f6f79249b4e85a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3550308_2023.json.gz",
+     "sha256": "e2119b7e7387e7919408c062924c87b7ace5637d87ecaf4b5975ec55757dc1f4"
+    },
+    "2800308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2800308",
+     "capturado_em": "2026-10-09T11:23:42Z",
+     "linhas_resposta": 332,
+     "linhas": 44,
+     "sha256_resposta_completa": "fee95f380f4b465a554e9b5b391e596676d6f3a1032bbb6138f727a4c8bc8862",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2800308_2023.json.gz",
+     "sha256": "97ed6001d0e21b83b5de6cef257ed3c4521d87c6e81254151476ddd1cd990213"
+    },
+    "1721000_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1721000",
+     "capturado_em": "2026-10-09T11:23:46Z",
+     "linhas_resposta": 426,
+     "linhas": 43,
+     "sha256_resposta_completa": "e538053ca3d609661b14a3728d29f3f0114ac5a1090ab6f1a84ac169b0dedf5c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1721000_2023.json.gz",
+     "sha256": "c6f79ac7b388783337aeae884bbaf876b16acee9ff69c46a41b87a5bd20be576"
+    },
+    "1200401_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1200401",
+     "capturado_em": "2026-10-09T11:23:52Z",
+     "linhas_resposta": 279,
+     "linhas": 30,
+     "sha256_resposta_completa": "135c7de81b595b337dac51ef509089af19af9da6ec2e6f25f2e2156a4ca6ee12",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1200401_2024.json.gz",
+     "sha256": "8d09ec97ab493e127045679e9d97cf37531b5bd6f31b6b4622427a92bd0f8b3c"
+    },
+    "2704302_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2704302",
+     "capturado_em": "2026-10-09T11:23:57Z",
+     "linhas_resposta": 332,
+     "linhas": 52,
+     "sha256_resposta_completa": "672953c3dacd6a2e98362ef53daaae6552bd8cf9e1e9f1c50d06abd4cc94a3c0",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2704302_2024.json.gz",
+     "sha256": "2131ba4aa481d3dc4e01b48ff26c92de2073d4dc1febb0cd7d1e8fdf096ee7a9"
+    },
+    "1600303_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1600303",
+     "capturado_em": "2026-10-09T11:24:01Z",
+     "linhas_resposta": 248,
+     "linhas": 33,
+     "sha256_resposta_completa": "96214f76efb530ad6b2e787a19f49dd5308fc21a040ee4cb70fbde16c8b1d606",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1600303_2024.json.gz",
+     "sha256": "57d4d164b485883f29e9370ebf1bd189b920291f314332cdc770ddf85c392132"
+    },
+    "1302603_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1302603",
+     "capturado_em": "2026-10-09T11:24:04Z",
+     "linhas_resposta": 405,
+     "linhas": 48,
+     "sha256_resposta_completa": "3a857828213c8a020e379449dd471e6724ba5eae5671a7e2b99ed3c3ceb7d22a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1302603_2024.json.gz",
+     "sha256": "c2ca65abd5fa0dd6f7dc46c83464a8cc2d758b078b1194a427e061959ae8bf10"
+    },
+    "2927408_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2927408",
+     "capturado_em": "2026-10-09T11:24:08Z",
+     "linhas_resposta": 444,
+     "linhas": 44,
+     "sha256_resposta_completa": "35b93cb3dda8c281f92b3c11e3962891d1a7690f0f97a9f68a937fbf273d9d4d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2927408_2024.json.gz",
+     "sha256": "124c3edf403a94e0c21c8359588f09405a096516523de87443f8b198320a803d"
+    },
+    "2304400_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2304400",
+     "capturado_em": "2026-10-09T11:24:10Z",
+     "linhas_resposta": 451,
+     "linhas": 50,
+     "sha256_resposta_completa": "b5d5e63706a24b104d5a773d0ccba01951876e3d6fe5bd628485c91e14da3db0",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2304400_2024.json.gz",
+     "sha256": "8af239cb53a8a9e5c900ca438f638aa5fc2e9efd85f813433a9cd78525eeec73"
+    },
+    "3205309_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=3205309",
+     "capturado_em": "2026-10-09T11:24:13Z",
+     "linhas_resposta": 370,
+     "linhas": 49,
+     "sha256_resposta_completa": "be6ac15ed93c59ef6cf14360e2383457bc781aaddeb7cd5bfd8c116646881980",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3205309_2024.json.gz",
+     "sha256": "3089ff21692cdacd8c1bc15cf9cb6f14c0f58014fdbf955afe1e1b687cbb06a5"
+    },
+    "5208707_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=5208707",
+     "capturado_em": "2026-10-09T11:24:16Z",
+     "linhas_resposta": 259,
+     "linhas": 36,
+     "sha256_resposta_completa": "408d6f31ebd306020db3dfa671b274cd1f2222edf3db4590a989268a58d744f8",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5208707_2024.json.gz",
+     "sha256": "d6d6513c16ddf9fcd04de02ffec743f287afb8a6fc0626ab66e96449b480e8c6"
+    },
+    "2111300_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2111300",
+     "capturado_em": "2026-10-09T11:24:18Z",
+     "linhas_resposta": 348,
+     "linhas": 52,
+     "sha256_resposta_completa": "f7d4548b4fdc64125d3054f1056f9af39fc177dbc1241aaa2437d531370312f8",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2111300_2024.json.gz",
+     "sha256": "8a8c67308c0bb1dcade50d8d9fe42b89e12d0f4f212ed6d06aeea46fc6a0a5c2"
+    },
+    "5103403_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=5103403",
+     "capturado_em": "2026-10-09T11:24:21Z",
+     "linhas_resposta": 312,
+     "linhas": 40,
+     "sha256_resposta_completa": "dda26b3807221e36fc36f67804182f95a4b35848c093581dc82d70bc31aa1f67",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5103403_2024.json.gz",
+     "sha256": "ebfc4acaac6fcff0c51ff1623afe80f73ac4d6e18cdc40e7bf8b71d4439dc0ca"
+    },
+    "5002704_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=5002704",
+     "capturado_em": "2026-10-09T11:24:23Z",
+     "linhas_resposta": 354,
+     "linhas": 45,
+     "sha256_resposta_completa": "8c107229d3ed60a550885dd89504ec7a372ef6aa2be20e54e1570b23408720fc",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5002704_2024.json.gz",
+     "sha256": "3ed626ac52e61cbcfb257992424086a0bbe5f29e6514c603b9bf6b7a0e7e0115"
+    },
+    "3106200_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=3106200",
+     "capturado_em": "2026-10-09T11:24:26Z",
+     "linhas_resposta": 417,
+     "linhas": 53,
+     "sha256_resposta_completa": "bee3a633409de5129cd50c6e9252343c01c029cc7495bfe4a237331e621dfac4",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3106200_2024.json.gz",
+     "sha256": "bce0153053ce0e6068fa685cb7dbd7006c4a4353cbc7467b69edb10f64d5072a"
+    },
+    "1501402_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1501402",
+     "capturado_em": "2026-10-09T11:24:29Z",
+     "linhas_resposta": 318,
+     "linhas": 36,
+     "sha256_resposta_completa": "3fa8fec24e0865deaef2dbe6e0915cb1e892c3b96dedb36ba48902ef3620d75d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1501402_2024.json.gz",
+     "sha256": "30d3b42a8a4e0022ad477085840867df5e0b9f408a0ef313c77db615a09e9ecb"
+    },
+    "2507507_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2507507",
+     "capturado_em": "2026-10-09T11:24:31Z",
+     "linhas_resposta": 435,
+     "linhas": 46,
+     "sha256_resposta_completa": "0652bd5480ef3a2310785544ec2e464d6df2320663302f35abb3bfabbe1c7a3d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2507507_2024.json.gz",
+     "sha256": "e6d9238961052bb4682daf6b486e8405b8cfcc2f7d69898d9081dace9be2b7d1"
+    },
+    "4106902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=4106902",
+     "capturado_em": "2026-10-09T11:24:34Z",
+     "linhas_resposta": 397,
+     "linhas": 35,
+     "sha256_resposta_completa": "3d7b10c916e5bb5ce6a534bef9e20b8c3f9ab5ef17f52fba1a8bc5e2e582d47b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4106902_2024.json.gz",
+     "sha256": "139e92e2e58ea1e39648b1a83c9cf10bd4ea87abb7e70bb6b58f935ca1ee6761"
+    },
+    "2611606_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2611606",
+     "capturado_em": "2026-10-09T11:24:37Z",
+     "linhas_resposta": 358,
+     "linhas": 41,
+     "sha256_resposta_completa": "97900a35eb960d001d99eaad6054c183d60a436428007e98f6ad2b5cea74e2cb",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2611606_2024.json.gz",
+     "sha256": "402749457fb6405f8dff95c36634ddc82d2f2f010c9465d6373a7a0123eb4f60"
+    },
+    "2211001_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2211001",
+     "capturado_em": "2026-10-09T11:24:39Z",
+     "linhas_resposta": 379,
+     "linhas": 54,
+     "sha256_resposta_completa": "4c3255128da6c6cbd5dc25d17a35d74666afc02e4c6d04ba8d9f7ba9f1db08d2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2211001_2024.json.gz",
+     "sha256": "9c0ce41f39aeeddfc5b4f1ee2968e7fd0482c197125f87cb2d5278dfeef9b58f"
+    },
+    "3304557_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=3304557",
+     "capturado_em": "2026-10-09T11:24:42Z",
+     "linhas_resposta": 493,
+     "linhas": 50,
+     "sha256_resposta_completa": "7eb0845a3847b36714606bd005227f672511c08c54568ce80be38f1e1cf74af2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3304557_2024.json.gz",
+     "sha256": "a9b04fa2fd0c399b091fef7e14a0807fa34af2b3570dc8d461eeafad18fd6581"
+    },
+    "2408102_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2408102",
+     "capturado_em": "2026-10-09T11:24:45Z",
+     "linhas_resposta": 317,
+     "linhas": 47,
+     "sha256_resposta_completa": "cd574a54b74a023ad56bd43b2633f11cb95c77afad64de7d65b27ef5172c837e",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2408102_2024.json.gz",
+     "sha256": "c1d102a8273700dc219f456d04615f06318bc1166f5d321b844e298c4ee9e69e"
+    },
+    "4314902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=4314902",
+     "capturado_em": "2026-10-09T11:24:47Z",
+     "linhas_resposta": 410,
+     "linhas": 48,
+     "sha256_resposta_completa": "4c3f0c139ef6480d20e68d19caae9572d3faaad800c522f022ba13eb50c1956c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4314902_2024.json.gz",
+     "sha256": "04b0b42fdcd802beb4375f4da06891ff4fff6d94bbfe5967cf1ea6d446683a94"
+    },
+    "1100205_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1100205",
+     "capturado_em": "2026-10-09T11:24:50Z",
+     "linhas_resposta": 314,
+     "linhas": 45,
+     "sha256_resposta_completa": "63bcc5d8805d7a27ea67f785a5147b812e7ca43fffee898b3b6426bc15e87a3a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1100205_2024.json.gz",
+     "sha256": "90cc1f6a284ff5fa2e3e45c2f9040ee6ca59ff6fa97356e3f496de14e2de3573"
+    },
+    "1400100_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1400100",
+     "capturado_em": "2026-10-09T11:24:53Z",
+     "linhas_resposta": 305,
+     "linhas": 47,
+     "sha256_resposta_completa": "ef216f3c76015c9a2624831b97733b290e729e023ed1361f7d27c09725a3dccc",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1400100_2024.json.gz",
+     "sha256": "9181a33aa65124fca428502fbb20f5cfa49fc900e274a2b08d46abe857588d11"
+    },
+    "4205407_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=4205407",
+     "capturado_em": "2026-10-09T11:24:55Z",
+     "linhas_resposta": 311,
+     "linhas": 40,
+     "sha256_resposta_completa": "baf69cd74aafdb6b1759c779e59ef4c18f491fad8ad6130a0e24c1bc7da4aa0c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4205407_2024.json.gz",
+     "sha256": "54de7c6902a3e9e2fa859b33d8fabe3bb201bf358eb1fc604b808a2711f043ae"
+    },
+    "3550308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=3550308",
+     "capturado_em": "2026-10-09T11:24:58Z",
+     "linhas_resposta": 568,
+     "linhas": 45,
+     "sha256_resposta_completa": "df980c895b8462a698ce8fab4682e8ad259baecbd03a6dd3293bf144ec25fa9c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3550308_2024.json.gz",
+     "sha256": "ede21856a3d04944027d18ca2afcc7889b4f00f4d0d24c9281514feb224f53db"
+    },
+    "2800308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2800308",
+     "capturado_em": "2026-10-09T11:25:01Z",
+     "linhas_resposta": 332,
+     "linhas": 42,
+     "sha256_resposta_completa": "2d01b31c6eef2e4dae6ee5c4e057956dbdcab1c8f40e7b1c09b1e5be4bcd1647",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2800308_2024.json.gz",
+     "sha256": "062f98596c7da46a69cd97ef87b271d530bfcfaf5e9a5cc83e00387582455eef"
+    },
+    "1721000_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1721000",
+     "capturado_em": "2026-10-09T11:25:03Z",
+     "linhas_resposta": 372,
+     "linhas": 41,
+     "sha256_resposta_completa": "fc0f4f3aeb40481695e6bf700f4f4d6e81a957366f347bb78a7161b557be4dd4",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1721000_2024.json.gz",
+     "sha256": "f163b112124692cd5034d8bc706263773d14ed220a61ddfc0a5cade5d3b865c2"
+    },
+    "1200401_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1200401",
+     "capturado_em": "2026-10-09T11:25:06Z",
+     "linhas_resposta": 287,
+     "linhas": 33,
+     "sha256_resposta_completa": "71818c1c024b8027fcfa7a0e0c24ddea9c830aee882543bae26738b7e0f14bc3",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1200401_2025.json.gz",
+     "sha256": "e7d9d4313d83ec0c68942abb744784bcc409ca7ffaa23bbca375c4f71cce9396"
+    },
+    "2704302_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2704302",
+     "capturado_em": "2026-10-09T11:25:09Z",
+     "linhas_resposta": 322,
+     "linhas": 52,
+     "sha256_resposta_completa": "2e2ddad449300685cadfe63ab81939569687c85c0f34a37e07b5b6cd97886b97",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2704302_2025.json.gz",
+     "sha256": "b99c29d98dadb66e6f731a6813fe0f6a2e5512aa0458ea7db56b5e8afd087d6f"
+    },
+    "1600303_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1600303",
+     "capturado_em": "2026-10-09T11:25:13Z",
+     "linhas_resposta": 253,
+     "linhas": 34,
+     "sha256_resposta_completa": "df9a3857a2cd388a3774fb66454505335ac226e8d4208c1f7bd64f4965417983",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1600303_2025.json.gz",
+     "sha256": "d63f089413d95951b8f7f6c91445707ca1d0484ee03a20e277fe88439752f975"
+    },
+    "1302603_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1302603",
+     "capturado_em": "2026-10-09T11:25:18Z",
+     "linhas_resposta": 405,
+     "linhas": 47,
+     "sha256_resposta_completa": "07b12fade8f85690e5ddab8d38eb09e79f10a5e31247189127f9e529bcc2b783",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1302603_2025.json.gz",
+     "sha256": "d886b426ca958b781d01f0e8fd1d490f4764efab708425cb0ff9ceace14fb158"
+    },
+    "2927408_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2927408",
+     "capturado_em": "2026-10-09T11:25:21Z",
+     "linhas_resposta": 447,
+     "linhas": 46,
+     "sha256_resposta_completa": "227b34e0fd784ee886e278ab9478634f384e4feafbaa16107380cc5189b19409",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2927408_2025.json.gz",
+     "sha256": "0dd850384449ed9b4ec6398572157b2706db2e05d242c326f38d70369d84613e"
+    },
+    "2304400_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2304400",
+     "capturado_em": "2026-10-09T11:25:24Z",
+     "linhas_resposta": 419,
+     "linhas": 44,
+     "sha256_resposta_completa": "40ce4ae06804f453631b1def86ec541b98cbabb2be017f06ffde101cd78c683c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2304400_2025.json.gz",
+     "sha256": "de000c5b362243d75c8912a3d9086fc0fa90376695302033c062c62f2a4cf325"
+    },
+    "3205309_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=3205309",
+     "capturado_em": "2026-10-09T11:25:26Z",
+     "linhas_resposta": 374,
+     "linhas": 46,
+     "sha256_resposta_completa": "440bff65ddcb2dc18790ea2530c812b93f2e9f625624dd95b37b2a9c40e3aabc",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3205309_2025.json.gz",
+     "sha256": "494259751c95dba5bf68e7215bac23cc6a2865669d761904236e2ea353c90157"
+    },
+    "5208707_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=5208707",
+     "capturado_em": "2026-10-09T11:25:29Z",
+     "linhas_resposta": 247,
+     "linhas": 38,
+     "sha256_resposta_completa": "c40b60a96d79523bd0d7cd382f76b378b1c5e38eb3e9238c4c7efd1ac14960c2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5208707_2025.json.gz",
+     "sha256": "47044cd9084c8cd2097df8c5af5a2e201f810387d12f592eebe8483f5015e357"
+    },
+    "2111300_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2111300",
+     "capturado_em": "2026-10-09T11:25:31Z",
+     "linhas_resposta": 351,
+     "linhas": 50,
+     "sha256_resposta_completa": "2739f7a76ce21d32b1c9f1c159b7be953be632512f70ffa11143c3dcb0f86332",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2111300_2025.json.gz",
+     "sha256": "058e933fadcb26716848312a7e368f9cd98a01c15bacdddb03acc50bc87247d1"
+    },
+    "5103403_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=5103403",
+     "capturado_em": "2026-10-09T11:25:34Z",
+     "linhas_resposta": 319,
+     "linhas": 43,
+     "sha256_resposta_completa": "95691fc4d1b1f7f0e3033fb2c4bb8b0b472f075df5b561db561746f3eba4654c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5103403_2025.json.gz",
+     "sha256": "137296999d51274bbf2fa4ae7562e7d59bfbaaaa0d89bc04cfb8cc6b974531e2"
+    },
+    "5002704_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=5002704",
+     "capturado_em": "2026-10-09T11:25:36Z",
+     "linhas_resposta": 340,
+     "linhas": 45,
+     "sha256_resposta_completa": "3ff349e3274055f076daa81244f85e69292a94a949309ac10ad3e88dc17c9359",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/5002704_2025.json.gz",
+     "sha256": "aac76a640f0d2350f9b30f4d6f3ca3403e5b1bebf33e47ad736dfadb3e84480c"
+    },
+    "3106200_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=3106200",
+     "capturado_em": "2026-10-09T11:25:39Z",
+     "linhas_resposta": 410,
+     "linhas": 50,
+     "sha256_resposta_completa": "6d87a6c241de26236505e0080d8e7f32fc9d99773336d9d1189202088c6fcf0a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3106200_2025.json.gz",
+     "sha256": "625553dc877d7cd9213d6faa2d1ba1dc3a0afa32e86e68535f28a2a589377832"
+    },
+    "1501402_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1501402",
+     "capturado_em": "2026-10-09T11:25:42Z",
+     "linhas_resposta": 319,
+     "linhas": 40,
+     "sha256_resposta_completa": "e1a65adb3a560e13183fbd7ec55b03cfd945c34250539f5dee9c25375744deb3",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1501402_2025.json.gz",
+     "sha256": "d196741d2775876ba3f531f8cf6da6c57cb7937443974cd9198ad14662738a6d"
+    },
+    "2507507_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2507507",
+     "capturado_em": "2026-10-09T11:25:45Z",
+     "linhas_resposta": 406,
+     "linhas": 47,
+     "sha256_resposta_completa": "efeaa2b21e62051d9bffcf612069495b024289d449d3a21c9e8fc79c00c8a947",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2507507_2025.json.gz",
+     "sha256": "3365de81e71bfa0ab72938745d09612a954831a0ccecacd28dc34139db4905df"
+    },
+    "4106902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=4106902",
+     "capturado_em": "2026-10-09T11:25:48Z",
+     "linhas_resposta": 409,
+     "linhas": 34,
+     "sha256_resposta_completa": "6759636daffbc7ba46da58a77e08268f3fc7b59deba9c71eeabdb5c54e46eedb",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4106902_2025.json.gz",
+     "sha256": "8bd4d88a56212197f9260aa701a3e1ffd9600d485fec21fc327f5afdcddeb331"
+    },
+    "2611606_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2611606",
+     "capturado_em": "2026-10-09T11:25:50Z",
+     "linhas_resposta": 355,
+     "linhas": 42,
+     "sha256_resposta_completa": "7c6633217a76478c5c70776bba4392771fb0537433cde6c788715e7fde800f5c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2611606_2025.json.gz",
+     "sha256": "cb98fdd0a3e2f79a1eceaeca6bd798f21e62a9b416b17e28a268785f073f449d"
+    },
+    "2211001_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2211001",
+     "capturado_em": "2026-10-09T11:25:54Z",
+     "linhas_resposta": 342,
+     "linhas": 52,
+     "sha256_resposta_completa": "f4ec0c6086c3712cbf62916f1f5b7e9a3773c98e2893549cab827f98bfb67555",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2211001_2025.json.gz",
+     "sha256": "a1ad4c0956a7cd1dd7eb1149fb056e729b32872b61a6716b8b4ec73f35940c7e"
+    },
+    "3304557_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=3304557",
+     "capturado_em": "2026-10-09T11:25:56Z",
+     "linhas_resposta": 520,
+     "linhas": 50,
+     "sha256_resposta_completa": "ae3140c979c6e543dd8f9f94ecef540de37fc2d68796fbde54848413a1dc3836",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3304557_2025.json.gz",
+     "sha256": "ecb912154f68ecb2c8de1b44cebc2e51c3dda203c244360574e214125d636a9a"
+    },
+    "2408102_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2408102",
+     "capturado_em": "2026-10-09T11:25:59Z",
+     "linhas_resposta": 335,
+     "linhas": 53,
+     "sha256_resposta_completa": "e4cfbaa99e9e9a60e67c372458c5df14d6822e94c6157eb0863a589884f674b4",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2408102_2025.json.gz",
+     "sha256": "40aa86196d75aecbf258e07ef4453fea2100135a2407dc1dec93e18de976ad56"
+    },
+    "4314902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=4314902",
+     "capturado_em": "2026-10-09T11:26:02Z",
+     "linhas_resposta": 413,
+     "linhas": 49,
+     "sha256_resposta_completa": "cc440a1b34a9cdcfd3280ca4593ca592565be4fe3a2fd87cdcd72ebd5c9c73de",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4314902_2025.json.gz",
+     "sha256": "e4a8fb51b88d1f0fe42911f561cd268184c8a3c161a1db6bbbe2414a6f2b2b56"
+    },
+    "1100205_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1100205",
+     "capturado_em": "2026-10-09T11:26:05Z",
+     "linhas_resposta": 348,
+     "linhas": 42,
+     "sha256_resposta_completa": "d453c08b20b540a97d5c91ee8cda63b6c8099228581caf77b731f29f89e0e28d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1100205_2025.json.gz",
+     "sha256": "6c1dbf2bb462d544224102f4f294b339e662a5b1c1453ec1be95b75abd165ef1"
+    },
+    "1400100_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1400100",
+     "capturado_em": "2026-10-09T11:26:07Z",
+     "linhas_resposta": 281,
+     "linhas": 47,
+     "sha256_resposta_completa": "e33ec388d6f5cb735bd3a617d02668e69f96a94b605c942599b53ec73bb4a50a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1400100_2025.json.gz",
+     "sha256": "8b8a92fe771cd76552fb8fedfae64bb04a9a2a5460aeed588407f1e639d7648e"
+    },
+    "4205407_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=4205407",
+     "capturado_em": "2026-10-09T11:26:10Z",
+     "linhas_resposta": 310,
+     "linhas": 39,
+     "sha256_resposta_completa": "35e5e4e7780f1fdd1cb1f75bef6faa576c02f71c5acb1b01958f46d636fee562",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/4205407_2025.json.gz",
+     "sha256": "7880486c4a18f6f06a28db3e2facb2a473efcd42ac15041dcdd2589824d475c4"
+    },
+    "3550308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=3550308",
+     "capturado_em": "2026-10-09T11:26:13Z",
+     "linhas_resposta": 545,
+     "linhas": 45,
+     "sha256_resposta_completa": "6265d9ea378fb5cdff75442a8f373290c9ccd17ac06f5ee20f1067f60aa62225",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/3550308_2025.json.gz",
+     "sha256": "820f3729ea2154d3d74c75ce8c48c5f1fd3b765ec8905342604adfa3b94ba11a"
+    },
+    "2800308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2800308",
+     "capturado_em": "2026-10-09T11:26:16Z",
+     "linhas_resposta": 330,
+     "linhas": 44,
+     "sha256_resposta_completa": "01682e41c719eeed3261b287a4a907b57494809fe403fc5b21f8f6e86aec8906",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/2800308_2025.json.gz",
+     "sha256": "95e744533e64db1ad3f0df137a071708c15382640059e8e38ea08d3326fd8cc6"
+    },
+    "1721000_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1721000",
+     "capturado_em": "2026-10-09T11:26:19Z",
+     "linhas_resposta": 328,
+     "linhas": 35,
+     "sha256_resposta_completa": "24166014285ea2897a9394ff6efb6ed93ef773bb8be01d1cdeca0b62efe20a95",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/dca_anexo_i_e/1721000_2025.json.gz",
+     "sha256": "81199cf5e20cf723bcd7d3ec1b1df38244ee05ff5419fd2084b2a46d7720f6c3"
+    }
+   }
+  },
+  "siconfi_msc_funcao10": {
+   "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+   "conjunto": "Matriz de Saldos Contábeis (MSC) agregada, classe 6, saldo final de dezembro (função 10)",
+   "pagina": "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos",
+   "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=<código IBGE>&an_referencia=<ano>&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+   "parametros": "26 capitais, exercícios 2021 a 2025; gravadas as linhas da função 10 nas contas 6.2.2.1.3.03 a .07",
+   "arquivos": {
+    "1200401_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1200401&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:26:29Z",
+     "linhas_resposta": 1640,
+     "linhas": 67,
+     "sha256_resposta_completa": "7c7ac42cfd41337ceef15f819dae75fb1717002d3ce2d0f269d3e9046e108685",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1200401_2021_12.json.gz",
+     "sha256": "83f3cabfe71199ed90c525543a392bb68c8fbf8df260d4b3d4bd06a61bc422f3"
+    },
+    "2704302_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2704302&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:26:31Z",
+     "linhas_resposta": 7332,
+     "linhas": 387,
+     "sha256_resposta_completa": "d08448dbd44e651bbec9437a25605fc8a861c9377355c55472102044b4819c32",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2704302_2021_12.json.gz",
+     "sha256": "dce8e0127378932d60716c3fa9db1b92e3de38b196f3170b15325d173a4f97df"
+    },
+    "1600303_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1600303&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:26:36Z",
+     "linhas_resposta": 2631,
+     "linhas": 357,
+     "sha256_resposta_completa": "b37ce936d491c340b27af40e3d2201b0e80d5f1e4e31a08cb432814efabbe0c5",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1600303_2021_12.json.gz",
+     "sha256": "d5c182fcc6f13673d704b239acc28b4d662d073752ed0c8d6a102136f0b92d62"
+    },
+    "1302603_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1302603&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:26:38Z",
+     "linhas_resposta": 4530,
+     "linhas": 525,
+     "sha256_resposta_completa": "8c0c183d67fc7a9743b6b3c9a67a5549df9b3f91c9590bd09cf06eb528ae9604",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1302603_2021_12.json.gz",
+     "sha256": "3de61a48951e30f65c8f8da7cbd582fb40459916371f13f206d00fe48cdb58dc"
+    },
+    "2927408_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2927408&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:26:40Z",
+     "linhas_resposta": 16879,
+     "linhas": 840,
+     "sha256_resposta_completa": "fe6b2a01b454419493dc2c99e592655802485cfc2979d591ee5418e4454e3e3f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2927408_2021_12.json.gz",
+     "sha256": "c805bb436393ccc4b3471c85c644d3c7ca044c870fd5714093901e67c231a195"
+    },
+    "2304400_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2304400&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:26:49Z",
+     "linhas_resposta": 5898,
+     "linhas": 426,
+     "sha256_resposta_completa": "4335dcd4726c8b4f832ed9733d50fd2de8451c122bd872a92ed87e715ff7e662",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2304400_2021_12.json.gz",
+     "sha256": "aa9df8716e0900d1ffe45c58102292d5c2fbaffdd17644d4121a35061b976fee"
+    },
+    "3205309_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3205309&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:26:53Z",
+     "linhas_resposta": 18217,
+     "linhas": 930,
+     "sha256_resposta_completa": "8766880fd187842e3b8642e72a977095dd7ead3e503abb0a3e5e73e0f6424fcf",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3205309_2021_12.json.gz",
+     "sha256": "471ba2987d016dc30c53594be4533d30aaa334218f5d1b478aef4883a24bac3b"
+    },
+    "5208707_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5208707&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:03Z",
+     "linhas_resposta": 6863,
+     "linhas": 345,
+     "sha256_resposta_completa": "8020aa851bf323bc5c4d72a809c0007bda5d65c8df385353e3693d1ebb4de8b0",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5208707_2021_12.json.gz",
+     "sha256": "b102c9b28cae50c1d1c8fe7b90f05419267cee8d1fe0a55fdd7ddef3da0a311a"
+    },
+    "2111300_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:07Z",
+     "linhas_resposta": 3588,
+     "linhas": 101,
+     "sha256_resposta_completa": "f30449a97daa45cb5b55283e5ed03b2a86c75591367a11fa9ca5ae2268eddcbc",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2111300_2021_12.json.gz",
+     "sha256": "6026be8a6a1236d9453e6ae1ae1c8ce381967532388affc23a1b7f0196ea7e37"
+    },
+    "5103403_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5103403&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:10Z",
+     "linhas_resposta": 3627,
+     "linhas": 237,
+     "sha256_resposta_completa": "8f2baa39459c77ad0582ba00cdbf3a5a1c7a005f706930a32a3278fe7c28ab29",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5103403_2021_12.json.gz",
+     "sha256": "9cabcc21f70f315d41948fa6cd7fd708e664818d765da031505c0f502437bde2"
+    },
+    "5002704_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:12Z",
+     "linhas_resposta": 7972,
+     "linhas": 409,
+     "sha256_resposta_completa": "f6971828a5dd694ac1904f5e858d0bd076396365fe4007c097bd7b9f72d947a5",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5002704_2021_12.json.gz",
+     "sha256": "9329f6179b0bed5420d4b9a961b1c3983bdc75db563d7c1c4d227f9ba4536e90"
+    }
+   }
+  },
+  "siconfi_rreo_anexo_02_b6": {
+   "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+   "conjunto": "Relatório Resumido da Execução Orçamentária (RREO), 6º bimestre, Anexo 02: Despesa por Função/Subfunção (Saúde)",
+   "pagina": "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos",
+   "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=<ano>&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo%2002&co_esfera=M&id_ente=<código IBGE>",
+   "parametros": "exercícios 2021 a 2025; 26 capitais; gravadas só as linhas da função Saúde e os totais",
+   "arquivos": {
+    "1200401_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1200401",
+     "capturado_em": "2026-10-09T11:19:57Z",
+     "linhas_resposta": 965,
+     "linhas": 129,
+     "sha256_resposta_completa": "8c2e207b90cb1d4c8514c88fb911251637d5043bbb5dc53ef30bb1ba18f1c2f2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1200401_2021.json.gz",
+     "sha256": "93670a5ec81df2efbc0505534aa21c58f5aa99cb54ab01ac3aea6398b6466e9e"
+    },
+    "2704302_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2704302",
+     "capturado_em": "2026-10-09T11:19:59Z",
+     "linhas_resposta": 920,
+     "linhas": 151,
+     "sha256_resposta_completa": "1c23619e115ca6a053177a7ae07a2bf676491693546f9aa2085ba51829372bb1",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2704302_2021.json.gz",
+     "sha256": "98a76c0478cdeb31a63cbca443580ada3e5beb658b45a0c110b90544ba410797"
+    },
+    "1600303_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1600303",
+     "capturado_em": "2026-10-09T11:20:02Z",
+     "linhas_resposta": 744,
+     "linhas": 156,
+     "sha256_resposta_completa": "1a612f528c1147d14ea35ffb93ce131bca9e7498c51baebf869aa2ff0657a632",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1600303_2021.json.gz",
+     "sha256": "79f051e6135b3ee9cd0332472a45312d94980937dadf5bff09415815b655e011"
+    },
+    "1302603_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1302603",
+     "capturado_em": "2026-10-09T11:20:04Z",
+     "linhas_resposta": 1319,
+     "linhas": 192,
+     "sha256_resposta_completa": "4c3471945be225241ddaf136e51b7ee36e54849606e9962ec7d383371796fd9c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1302603_2021.json.gz",
+     "sha256": "8a28bad49f90eb79e13d706e56bec2abb8fc00c49fa467975dccae8452729a71"
+    },
+    "2927408_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2927408",
+     "capturado_em": "2026-10-09T11:20:07Z",
+     "linhas_resposta": 1373,
+     "linhas": 150,
+     "sha256_resposta_completa": "ef8671026aaef6b350738db43fae988ed7fe5fe099348f4bd783a20a70a46a65",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2927408_2021.json.gz",
+     "sha256": "ce68e1bfff00ee9c7e0e5d2b1ee555b314d25f5839180113c1944d774b334fc0"
+    },
+    "2304400_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2304400",
+     "capturado_em": "2026-10-09T11:20:10Z",
+     "linhas_resposta": 1490,
+     "linhas": 186,
+     "sha256_resposta_completa": "803cd18f024639dc8092ee3d1b6c2c19d03e846aeeda52d10baaaa4ad00bc98b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2304400_2021.json.gz",
+     "sha256": "3a632077387a1d970c7fcd8f7d2cdea561703a815cc28162b4e691b8eed0df8f"
+    },
+    "3205309_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3205309",
+     "capturado_em": "2026-10-09T11:20:16Z",
+     "linhas_resposta": 1258,
+     "linhas": 189,
+     "sha256_resposta_completa": "6055d24792e19f4ebe285c494335488676124fd1fc1a2b91e7d9cd0e0b088aa5",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3205309_2021.json.gz",
+     "sha256": "d539ec36ad2a706dd624951bce7d27cbf375754189b4ea4007e2336754fa62c8"
+    },
+    "5208707_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5208707",
+     "capturado_em": "2026-10-09T11:20:21Z",
+     "linhas_resposta": 878,
+     "linhas": 120,
+     "sha256_resposta_completa": "9cccbf0b61177fd8017bbcb7f60efc23c0e3211d34a12b2aec9d738de8f20193",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5208707_2021.json.gz",
+     "sha256": "43d3848f476046a95b33aa4940d6b1acde78b15e092e8199d6dd82fb6198d582"
+    },
+    "2111300_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2111300",
+     "capturado_em": "2026-10-09T11:20:23Z",
+     "linhas_resposta": 861,
+     "linhas": 158,
+     "sha256_resposta_completa": "18b9331b2d862b55d9630fae666d60b95a610663b484c0597ae835cd0ac643c8",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2111300_2021.json.gz",
+     "sha256": "773628ca056e078c1c065b02e62a5ac84211b49a1020f9064878529f8a2dae01"
+    },
+    "5103403_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5103403",
+     "capturado_em": "2026-10-09T11:20:26Z",
+     "linhas_resposta": 968,
+     "linhas": 142,
+     "sha256_resposta_completa": "4c32bd7b016c847e032268721d96167e3580d42a6b8196d51524afd03440d96d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5103403_2021.json.gz",
+     "sha256": "b9f984afffd7ece2d9c54b10eeab21c52d8e1dfcabc4bf273d2597fdab2b9ee6"
+    },
+    "5002704_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5002704",
+     "capturado_em": "2026-10-09T11:20:28Z",
+     "linhas_resposta": 1480,
+     "linhas": 175,
+     "sha256_resposta_completa": "ce249959e1a7a6257625b8bbef6b9effe063776d443f663bf805c1482b908f82",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5002704_2021.json.gz",
+     "sha256": "88ec57b5219b456ce61810d883eed27cd0c5172382bd7e86a44945b70de86037"
+    },
+    "3106200_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3106200",
+     "capturado_em": "2026-10-09T11:20:31Z",
+     "linhas_resposta": 1477,
+     "linhas": 175,
+     "sha256_resposta_completa": "fbcb3ed138b9fa305e887a7e1deb0af2aa4713f81d9b7377c0d75aeec011ad92",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3106200_2021.json.gz",
+     "sha256": "09ee8282c3a3d98abee5d482c225c72caa26cd91513b813501b13e01b0ad42b2"
+    },
+    "1501402_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1501402",
+     "capturado_em": "2026-10-09T11:20:34Z",
+     "linhas_resposta": 1239,
+     "linhas": 143,
+     "sha256_resposta_completa": "1f7b61d271baca86d31662ea30665ff7717c7fe59c28f651ff9d8496842cecc4",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1501402_2021.json.gz",
+     "sha256": "490ca1141ed5a93e402e414a2070b0c811a29f379947400d94e0ee814ebaaee8"
+    },
+    "2507507_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2507507",
+     "capturado_em": "2026-10-09T11:20:37Z",
+     "linhas_resposta": 1150,
+     "linhas": 188,
+     "sha256_resposta_completa": "978b0fc49e86901bd2728dc658fabc4b3d77f5a1d24d98182a4070d2c84e3baf",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2507507_2021.json.gz",
+     "sha256": "2d87f618b27cc095cd0c36eb6c76499fe079ce4b0ff1176ecee7ae04acd8be87"
+    },
+    "4106902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4106902",
+     "capturado_em": "2026-10-09T11:20:39Z",
+     "linhas_resposta": 1365,
+     "linhas": 152,
+     "sha256_resposta_completa": "ceda461156f081036ed71f50d6164f3f712f9391d62bba5bff561ce1c4734667",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4106902_2021.json.gz",
+     "sha256": "861d39c91ef52eb5b5227b658d82f9d5f5bd45dc800e2a094da8b20abc03d186"
+    },
+    "2611606_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2611606",
+     "capturado_em": "2026-10-09T11:20:42Z",
+     "linhas_resposta": 1106,
+     "linhas": 142,
+     "sha256_resposta_completa": "94885d6ffb8c14bbee61e675ec90c143145b341afd2fa1e27c2523c219f89dfa",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2611606_2021.json.gz",
+     "sha256": "72126f0fea20d0d50aa32a751f856ad37069658df5c3a86635bd5b2b3911f9af"
+    },
+    "2211001_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2211001",
+     "capturado_em": "2026-10-09T11:20:45Z",
+     "linhas_resposta": 1008,
+     "linhas": 148,
+     "sha256_resposta_completa": "c4e93b4976b6187a91dfb15ba4c295f016eaa1a963b6be7ac8ee950b8f7db7d4",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2211001_2021.json.gz",
+     "sha256": "df0f7e4cfb54eb8c24e4d19bff4eb88a88909b2416e1990bc31cc0717a44cade"
+    },
+    "3304557_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3304557",
+     "capturado_em": "2026-10-09T11:20:47Z",
+     "linhas_resposta": 1616,
+     "linhas": 205,
+     "sha256_resposta_completa": "76e4a54777c07242316e9a38af5e41937ea796d8f22eb20e9110b47a71bce51f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3304557_2021.json.gz",
+     "sha256": "8c33f7048511f2a43e48b48f0899b6b27cc4b2c6818b50d83edd4f78578bd76a"
+    },
+    "2408102_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2408102",
+     "capturado_em": "2026-10-09T11:20:51Z",
+     "linhas_resposta": 902,
+     "linhas": 164,
+     "sha256_resposta_completa": "6e1ea991e0a3c6586f15c62a9515b93272a96f71f1598ab813fb925d68ca663a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2408102_2021.json.gz",
+     "sha256": "29ef9037b2a875441294c07848ac65d8eb5a1696d62f60a6c8f9fa4187cb4169"
+    },
+    "4314902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4314902",
+     "capturado_em": "2026-10-09T11:20:54Z",
+     "linhas_resposta": 1318,
+     "linhas": 164,
+     "sha256_resposta_completa": "c52cc66110ce92d35b78c6944b63460d8fc977c7b95422a9cda4bb2fb68611ea",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4314902_2021.json.gz",
+     "sha256": "ced767c6ea683af567a99c99bce80e6fc40bbc43eb42eb570f685c42840a759e"
+    },
+    "1100205_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1100205",
+     "capturado_em": "2026-10-09T11:20:57Z",
+     "linhas_resposta": 955,
+     "linhas": 149,
+     "sha256_resposta_completa": "4849455494843e29398b9a5a632dced73f2310dc603fd7dc9026b38735a1fcd7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1100205_2021.json.gz",
+     "sha256": "02d2762d08e8cde01d8ed47b518566cf9bd4c4b652f5a9d97ec0cfb4b17a8c5c"
+    },
+    "1400100_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1400100",
+     "capturado_em": "2026-10-09T11:20:59Z",
+     "linhas_resposta": 938,
+     "linhas": 177,
+     "sha256_resposta_completa": "ab701eecc3589624d9b71b46d72f543e243aa0124540f56496e479194e7a10ca",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1400100_2021.json.gz",
+     "sha256": "e40cf4bbaa8bceeb8dfce4f88ad3f08c0d3d36f44d974666bf2479a801f1a2da"
+    },
+    "4205407_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4205407",
+     "capturado_em": "2026-10-09T11:21:02Z",
+     "linhas_resposta": 954,
+     "linhas": 134,
+     "sha256_resposta_completa": "534ef10b459434eccad2cf8f980a9fb30c7694e1d3a45ab9358e1aefb2627805",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4205407_2021.json.gz",
+     "sha256": "3a893622b2cbb3c5863927acb6ef1ad279e5d67ceea3e3586fbc3b7755b1f765"
+    },
+    "3550308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3550308",
+     "capturado_em": "2026-10-09T11:21:05Z",
+     "linhas_resposta": 1602,
+     "linhas": 153,
+     "sha256_resposta_completa": "604bb191af1b1331d6543c04c9853e5ac5b115591d0c5c112a6404a40b994fe6",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3550308_2021.json.gz",
+     "sha256": "b7ca80a14ba65284f4ff8d7e258b547f3873e06eb144afffd69787de96ef9ee1"
+    },
+    "2800308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2800308",
+     "capturado_em": "2026-10-09T11:21:08Z",
+     "linhas_resposta": 1062,
+     "linhas": 173,
+     "sha256_resposta_completa": "642bd65a3a7a232003f05fc8edf60ed87c7d3376b246ddd87373af7b0dbd2e4b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2800308_2021.json.gz",
+     "sha256": "74e6878e2a1ffc67e73beaeb18a8dfc835c520b00bcd4ae7396038bb4014525a"
+    },
+    "1721000_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1721000",
+     "capturado_em": "2026-10-09T11:21:10Z",
+     "linhas_resposta": 1446,
+     "linhas": 179,
+     "sha256_resposta_completa": "f75128ee0be1b91da8b11cc1c859b7268878da65f4b49b7ae3ab9a7ea1ef6acb",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1721000_2021.json.gz",
+     "sha256": "510060333dba88713ed2d4785554e1da09e45c32efd7c408d15c636adefdb69e"
+    },
+    "1200401_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1200401",
+     "capturado_em": "2026-10-09T11:21:13Z",
+     "linhas_resposta": 1025,
+     "linhas": 142,
+     "sha256_resposta_completa": "03457009d517ae8324522f21e1159c866fc35f246aa9f017462fbdbbc7d30823",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1200401_2022.json.gz",
+     "sha256": "6eb28a84c25f2f0395ff681f9a6ee2f9252bafe0f95c8ccf88ae066b79d8c6b9"
+    },
+    "2704302_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2704302",
+     "capturado_em": "2026-10-09T11:21:16Z",
+     "linhas_resposta": 954,
+     "linhas": 185,
+     "sha256_resposta_completa": "052ae16cc0e4153092b170356f01d42522f8ab9e65e3d143c12b9b15ad59715c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2704302_2022.json.gz",
+     "sha256": "2a2763d33b6a2f81c4bfc8f78e9f8b202cfd9f334b8885f96fc6f70cbef6cdf8"
+    },
+    "1600303_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1600303",
+     "capturado_em": "2026-10-09T11:21:19Z",
+     "linhas_resposta": 858,
+     "linhas": 135,
+     "sha256_resposta_completa": "604e923a113790309e3444ce9c6c353efec3cfcd41faef00a6f8ccc8cf64f15e",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1600303_2022.json.gz",
+     "sha256": "6fd7fc3be0eef45023055e69e4df686b87f6943ce5e5b81c4b35a605eae4af45"
+    },
+    "1302603_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1302603",
+     "capturado_em": "2026-10-09T11:21:21Z",
+     "linhas_resposta": 1342,
+     "linhas": 191,
+     "sha256_resposta_completa": "5b04dc34d738b305e2c73308c50a87173e7d3237f5a489d21c1acf00c797d5ae",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1302603_2022.json.gz",
+     "sha256": "e2c0439394c1fbd0657916e175bb5ca285d9fdf1bb206ead961cafe511fc565f"
+    },
+    "2927408_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2927408",
+     "capturado_em": "2026-10-09T11:21:24Z",
+     "linhas_resposta": 1421,
+     "linhas": 149,
+     "sha256_resposta_completa": "3bb4471a330987ccdf5d1760bb3ed18cdbed4d2073eff94a05e450487c80c5f6",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2927408_2022.json.gz",
+     "sha256": "38809b87542f7fd83dd65c77b7ec858d8cd8d61a269e98e3dda532b2019a8e1b"
+    },
+    "2304400_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2304400",
+     "capturado_em": "2026-10-09T11:21:27Z",
+     "linhas_resposta": 1522,
+     "linhas": 190,
+     "sha256_resposta_completa": "8911358e86c6dfcb37e3314ec9e838ca6cd604580492410b3607ec66b9d9a8a7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2304400_2022.json.gz",
+     "sha256": "28058a6119a4ca1a0dc78d973883da07f858c0507cab87b1cda46b59864fdaf7"
+    },
+    "3205309_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3205309",
+     "capturado_em": "2026-10-09T11:21:30Z",
+     "linhas_resposta": 1188,
+     "linhas": 190,
+     "sha256_resposta_completa": "f5bcb52c679df4b2cc77fbd8de3424a2ecf7c35de3d6a5b1366bce509fe9161e",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3205309_2022.json.gz",
+     "sha256": "8a0084948b30c97791f2f9d053dfc3521eec44c4b6a4db17dcfd850485da9d43"
+    },
+    "5208707_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5208707",
+     "capturado_em": "2026-10-09T11:21:33Z",
+     "linhas_resposta": 861,
+     "linhas": 125,
+     "sha256_resposta_completa": "d8c4dcee8c02b2e6cbc574529e08785537905c063ebe633bb380864776f7ccd8",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5208707_2022.json.gz",
+     "sha256": "4850db4699b7b5c6305a9ca5c3707617f3b767bb0fe94d696cae1e67cea8cd09"
+    },
+    "2111300_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2111300",
+     "capturado_em": "2026-10-09T11:21:35Z",
+     "linhas_resposta": 999,
+     "linhas": 161,
+     "sha256_resposta_completa": "b880be68a1951f998d6e073046a112e150483cf1130d18d248b34e5b526772ac",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2111300_2022.json.gz",
+     "sha256": "4fa5e11a71e9676b8a6e42e2f3986509e628337b22bc92701ebabfc4ebc2bcd6"
+    },
+    "5103403_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5103403",
+     "capturado_em": "2026-10-09T11:21:38Z",
+     "linhas_resposta": 934,
+     "linhas": 142,
+     "sha256_resposta_completa": "374a1833395976193a24d2deb3e657c86243561afb142484592990eef00b0057",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5103403_2022.json.gz",
+     "sha256": "5ad9f1fdb8751e0fe8b64d575249d2369d8b0474000e5f6beb34f89aa1e6a18e"
+    },
+    "5002704_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5002704",
+     "capturado_em": "2026-10-09T11:21:41Z",
+     "linhas_resposta": 1486,
+     "linhas": 181,
+     "sha256_resposta_completa": "9da7ecddeb4e02d674b984417e243b120075a1272a0c782bfe7d9589c0e9c90c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5002704_2022.json.gz",
+     "sha256": "05a270f926097ca82ca148f31b7bea7757ad8325352a0f5d3613b51e8cfca16a"
+    },
+    "3106200_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3106200",
+     "capturado_em": "2026-10-09T11:21:44Z",
+     "linhas_resposta": 1493,
+     "linhas": 188,
+     "sha256_resposta_completa": "85d60661cd05ac0b2b7e7cb5b65c4e9882d27003749b10a0fad74d0597277529",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3106200_2022.json.gz",
+     "sha256": "5bc3a1c1f413e5589f461843744693c33e02f99655e0b620f5b6223ceb4eea95"
+    },
+    "1501402_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1501402",
+     "capturado_em": "2026-10-09T11:21:47Z",
+     "linhas_resposta": 1197,
+     "linhas": 146,
+     "sha256_resposta_completa": "2dc8232eaac83edc9467bcc44006d1f13b70d866e9890d353b2bfbd1750d8ab8",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1501402_2022.json.gz",
+     "sha256": "fcf085faae4d2bb661fcbda63a909112f6ffc844c210b8fb31c98160cdd1faac"
+    },
+    "2507507_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2507507",
+     "capturado_em": "2026-10-09T11:21:50Z",
+     "linhas_resposta": 1263,
+     "linhas": 188,
+     "sha256_resposta_completa": "022bd4736be51923ce7acad1eb159a6b91fcf01d96000a78f34c42cac4284c76",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2507507_2022.json.gz",
+     "sha256": "30c714f33a74edef7bfd262a709e8598f228f99fe6f46b0f061fa500f6a2dc58"
+    },
+    "4106902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4106902",
+     "capturado_em": "2026-10-09T11:21:54Z",
+     "linhas_resposta": 1380,
+     "linhas": 152,
+     "sha256_resposta_completa": "7738d7c3d6a2f2a0a72cdec84ef0e034959e2417984012e3effba9f90de9447c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4106902_2022.json.gz",
+     "sha256": "04cbbf817b614582e503f324762a0773061717a2f3efde27466da954282d0d89"
+    },
+    "2611606_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2611606",
+     "capturado_em": "2026-10-09T11:21:59Z",
+     "linhas_resposta": 1140,
+     "linhas": 144,
+     "sha256_resposta_completa": "dbfa870e5497cb1c3db83fe4104ef2dd616878273fbba10fc754571ac7fc6067",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2611606_2022.json.gz",
+     "sha256": "3065123114f5583fd235707b862d611e728cd6e493617f5fc9edcc90fbd5005a"
+    },
+    "2211001_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2211001",
+     "capturado_em": "2026-10-09T11:22:02Z",
+     "linhas_resposta": 1046,
+     "linhas": 147,
+     "sha256_resposta_completa": "1889fb3512374ac113341a45e09c2d12b33585e8e13b9f20b69560cb5c926c16",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2211001_2022.json.gz",
+     "sha256": "783bc90d37d1fb2225c9ef13ad01e4a40e93af51f07cb0055e00c7c895320d8d"
+    },
+    "3304557_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3304557",
+     "capturado_em": "2026-10-09T11:22:05Z",
+     "linhas_resposta": 1660,
+     "linhas": 200,
+     "sha256_resposta_completa": "b5c90afe4e4aa5206bdad213cf3d103958ebb0c863d985b2c6337637061c7fc2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3304557_2022.json.gz",
+     "sha256": "b076645091b7ce037f3a733cb1022a7c63d625ae95ab5d6b437f4c5035edefb1"
+    },
+    "2408102_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2408102",
+     "capturado_em": "2026-10-09T11:22:08Z",
+     "linhas_resposta": 927,
+     "linhas": 162,
+     "sha256_resposta_completa": "809f7cb1c45de5ef56aa338ace978d087bc0ec2d69839583692585b7c3a7e20a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2408102_2022.json.gz",
+     "sha256": "f8650757563d6eb74ef507c751413243ce0be00a076e75188c95f658cf3cfeca"
+    },
+    "4314902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4314902",
+     "capturado_em": "2026-10-09T11:22:11Z",
+     "linhas_resposta": 1334,
+     "linhas": 152,
+     "sha256_resposta_completa": "d8f2176f2b9e239df6c2658c33ac33e812d759e5f3d4c41dbd29bc22b3dfe27e",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4314902_2022.json.gz",
+     "sha256": "3133229efbe84f1cf6aefcdb215f721c7da526d5de5745b73602a1e5a8a2ac56"
+    },
+    "1100205_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1100205",
+     "capturado_em": "2026-10-09T11:22:14Z",
+     "linhas_resposta": 965,
+     "linhas": 147,
+     "sha256_resposta_completa": "c1bbb041389a2ad21ebb99deb23cff7e2397f3a7380fbf6acbe9afe347d28963",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1100205_2022.json.gz",
+     "sha256": "12c2ed98df7fdd48f84280ce53e13b9c00b7386b4d7861325332f9eca445d07d"
+    },
+    "1400100_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1400100",
+     "capturado_em": "2026-10-09T11:22:17Z",
+     "linhas_resposta": 973,
+     "linhas": 181,
+     "sha256_resposta_completa": "5a7105858021bc9e38b42f5c497acaf549e759c9bcd6805505959c6d7bd628e4",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1400100_2022.json.gz",
+     "sha256": "0c912dcda22bc3734a1acceaf41786651bd33190629ee2936c8fef05834abb2f"
+    },
+    "4205407_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4205407",
+     "capturado_em": "2026-10-09T11:22:19Z",
+     "linhas_resposta": 981,
+     "linhas": 134,
+     "sha256_resposta_completa": "ebd2b33987f5d7917ba7cffa61881b7bb6489e662ab696abb5044943df0e2e08",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4205407_2022.json.gz",
+     "sha256": "c896dc7bc7f2c82226cbf6c08dba1e53b6dcf7223ea79aa4e6aac48391f9a866"
+    },
+    "3550308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3550308",
+     "capturado_em": "2026-10-09T11:22:22Z",
+     "linhas_resposta": 1692,
+     "linhas": 149,
+     "sha256_resposta_completa": "777bb51b6b665e36645dbb1b9c7c3f610ca0d0902a454390f784119aa7067dc7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3550308_2022.json.gz",
+     "sha256": "02e7c61362e9b1d6a0309e3a65258c92f66d80a8508947030b24feb940e75f90"
+    },
+    "2800308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2800308",
+     "capturado_em": "2026-10-09T11:22:25Z",
+     "linhas_resposta": 1076,
+     "linhas": 177,
+     "sha256_resposta_completa": "4e82f542873fac6d57824b109af30ca06ae97c9ed75501cf153940b73e2820da",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2800308_2022.json.gz",
+     "sha256": "6b94a68b95b41cb68b53017936f9619304d46cd5d8c3234a86a6272246f3346b"
+    },
+    "1721000_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1721000",
+     "capturado_em": "2026-10-09T11:22:29Z",
+     "linhas_resposta": 1410,
+     "linhas": 169,
+     "sha256_resposta_completa": "a65af963be23eb67d8c66ea462ac316ac6c02cd9f4b3729bbe8a805e3d616b5c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1721000_2022.json.gz",
+     "sha256": "884f3020bbce5a09d3bf30d10a505547416ccbab60e096054b053547fdbda788"
+    },
+    "1200401_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1200401",
+     "capturado_em": "2026-10-09T11:22:32Z",
+     "linhas_resposta": 1053,
+     "linhas": 120,
+     "sha256_resposta_completa": "7e3098bc7cc21b960a4a538dac4ac2e4d7653af070f7c94dd49d26fa68ac4cb7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1200401_2023.json.gz",
+     "sha256": "bb064307af97c0c05eeb3f845594ef52cc2ad7adbf27318e6883952346ee37f3"
+    },
+    "2704302_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2704302",
+     "capturado_em": "2026-10-09T11:22:34Z",
+     "linhas_resposta": 959,
+     "linhas": 192,
+     "sha256_resposta_completa": "2e2ee0cab82583e3493f91a166638c77509633aedd8e4f1f7ae3388a990a7383",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2704302_2023.json.gz",
+     "sha256": "7f5bf23cae7141defe5cc53b12c149943254fee5001b88f2c5af78b5d2f560aa"
+    },
+    "1600303_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1600303",
+     "capturado_em": "2026-10-09T11:22:37Z",
+     "linhas_resposta": 777,
+     "linhas": 128,
+     "sha256_resposta_completa": "4c4d626e1cdb9ecdc1a27a68ba84b26e4a0138bcec080cc6ca2c6359fa7df1b0",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1600303_2023.json.gz",
+     "sha256": "b6d6399c0e4ae54eb56cd7e8bf2f7aa3a3c4971b8842f5d2a066816a25441e0f"
+    },
+    "1302603_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1302603",
+     "capturado_em": "2026-10-09T11:22:40Z",
+     "linhas_resposta": 1315,
+     "linhas": 186,
+     "sha256_resposta_completa": "b9b7c7d7c8e3635f0a6354d0c78e5ca5c2cc0cd2b95d11066e90af01f14107aa",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1302603_2023.json.gz",
+     "sha256": "b8aa456a8aa7a09ca385adfca2a07f6b45af3163ac8f1f1bc39b7c84ec98286e"
+    },
+    "2927408_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2927408",
+     "capturado_em": "2026-10-09T11:22:42Z",
+     "linhas_resposta": 1438,
+     "linhas": 150,
+     "sha256_resposta_completa": "ac07499c850afd1d2ec4e534bdeb5404d90cbc887f70a381beaac735c8a059f2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2927408_2023.json.gz",
+     "sha256": "57b470d4e07975099712f07730941743bd0ab923d6bcdd7b765de8da561b0b51"
+    },
+    "2304400_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2304400",
+     "capturado_em": "2026-10-09T11:22:46Z",
+     "linhas_resposta": 1558,
+     "linhas": 186,
+     "sha256_resposta_completa": "1965f23bdedab5fbf20c0786e0b211074d57ffe64e97d6a3d7a9c687e7d142ea",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2304400_2023.json.gz",
+     "sha256": "6c888e0286c10658d4f9ecdde60bbd47adcd825b54349b62bc972f8c44ded0fc"
+    },
+    "3205309_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3205309",
+     "capturado_em": "2026-10-09T11:22:48Z",
+     "linhas_resposta": 1199,
+     "linhas": 190,
+     "sha256_resposta_completa": "d519f6f6a8489ccb5b14cf0b3187fb8fb1a16b7878bc9b929264e671836c44da",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3205309_2023.json.gz",
+     "sha256": "0c1bf82dd10055acd25cd614a48a4d5f91c1a5de113e28e1df1a99230ddba903"
+    },
+    "5208707_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5208707",
+     "capturado_em": "2026-10-09T11:22:51Z",
+     "linhas_resposta": 844,
+     "linhas": 132,
+     "sha256_resposta_completa": "842499eaecb63fdd7445bb9b16ab424780470f6940ea0ab8cf2f32cf3c3924b6",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5208707_2023.json.gz",
+     "sha256": "9e97c878e750323cf233a8d16303cba946818676780c804937193137f24e94c5"
+    },
+    "2111300_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2111300",
+     "capturado_em": "2026-10-09T11:22:55Z",
+     "linhas_resposta": 1003,
+     "linhas": 158,
+     "sha256_resposta_completa": "b3b2a7362cb6726ecbd0d77ab0315076a6273f97b397687a3244b610140493ef",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2111300_2023.json.gz",
+     "sha256": "94f0c32eb367ecfdf4b6236e37db785491e77d167f0e062b14ff2ee5c1dd60d1"
+    },
+    "5103403_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5103403",
+     "capturado_em": "2026-10-09T11:22:57Z",
+     "linhas_resposta": 1026,
+     "linhas": 151,
+     "sha256_resposta_completa": "f8fa87819f41fdaebe5a6c3ae1e8a3b6ae3fd55fdc571ee150abdd822444f0c6",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5103403_2023.json.gz",
+     "sha256": "f349e4c7ca3697fc61a31da2d7d2c74e8fc9ac13825aa4f4584650019e63242f"
+    },
+    "5002704_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5002704",
+     "capturado_em": "2026-10-09T11:23:00Z",
+     "linhas_resposta": 1494,
+     "linhas": 177,
+     "sha256_resposta_completa": "674cb3a434a7f24eb73e2cbc3a0a2e620e796d9a1d672d10d2d69410de12b504",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5002704_2023.json.gz",
+     "sha256": "33234ac1907df0a2e386391b50f126b43efa8866bd214f56de9417a31b1085c4"
+    },
+    "3106200_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3106200",
+     "capturado_em": "2026-10-09T11:23:03Z",
+     "linhas_resposta": 1471,
+     "linhas": 189,
+     "sha256_resposta_completa": "51594da24d65a1569ff1d34fcd0ff3a0274da9018de871afc48cef82ad6cb52a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3106200_2023.json.gz",
+     "sha256": "4d34305f859fb15e132af82553361c427fe00a9bb1827dd938ddc2a81d8d32e0"
+    },
+    "1501402_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1501402",
+     "capturado_em": "2026-10-09T11:23:05Z",
+     "linhas_resposta": 1232,
+     "linhas": 145,
+     "sha256_resposta_completa": "81433964308cccab9cc02c2667b0f39adf103d4214fb946bfd932deb1d0b8b2a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1501402_2023.json.gz",
+     "sha256": "7a6efc7472968149884b20162342f1355bdaa87481e79258fe548962206db2b5"
+    },
+    "2507507_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2507507",
+     "capturado_em": "2026-10-09T11:23:08Z",
+     "linhas_resposta": 1288,
+     "linhas": 186,
+     "sha256_resposta_completa": "f06d52ebdac0b01039be292ced6c1ae2efecc67e8aa08182c86d463196009fc1",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2507507_2023.json.gz",
+     "sha256": "870e2e74932a0c82734b533413440543836fec995c5d611733d1d537fd81342e"
+    },
+    "4106902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4106902",
+     "capturado_em": "2026-10-09T11:23:11Z",
+     "linhas_resposta": 1382,
+     "linhas": 152,
+     "sha256_resposta_completa": "e0df8cd6a7cc6125e8d5ad6d147a6c101f59645927b22f96b92a0aeb08c1f0e6",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4106902_2023.json.gz",
+     "sha256": "6c37e332b037c5aad2b4aca0e1b6bfac73e3f24d6c100f4b3257511908638dbf"
+    },
+    "2611606_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2611606",
+     "capturado_em": "2026-10-09T11:23:14Z",
+     "linhas_resposta": 1121,
+     "linhas": 142,
+     "sha256_resposta_completa": "a6f17cd794fe712396858f4014e2c23ca75e0b640a850c962ddf28fce259cb19",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2611606_2023.json.gz",
+     "sha256": "e6994cf88a5370a85015540adb34f31b934ffe4e269684b7a53483cc48acbd7c"
+    },
+    "2211001_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2211001",
+     "capturado_em": "2026-10-09T11:23:18Z",
+     "linhas_resposta": 1078,
+     "linhas": 152,
+     "sha256_resposta_completa": "184b64a59cf38eb70f4eaf47d9e58e3e9c049211366ea8b339c7c7da32294751",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2211001_2023.json.gz",
+     "sha256": "c7e1799381da1a97cb972d9fa9fb5f400c27a515b6d19df4d1f9102a04f72eba"
+    },
+    "3304557_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3304557",
+     "capturado_em": "2026-10-09T11:23:21Z",
+     "linhas_resposta": 1660,
+     "linhas": 198,
+     "sha256_resposta_completa": "282599a9f6a757933a844b6d2cd56be166d0c614dcbd53346c6f46e948ba6d53",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3304557_2023.json.gz",
+     "sha256": "090525c1b6bd0c4973a059af08345740925aac67f0c185dc78523fb08050eefb"
+    },
+    "2408102_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2408102",
+     "capturado_em": "2026-10-09T11:23:23Z",
+     "linhas_resposta": 921,
+     "linhas": 163,
+     "sha256_resposta_completa": "462347d8f91230fd36a19d9588cdd9cb25f162f924e4c5484fcfab9ea66bb06f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2408102_2023.json.gz",
+     "sha256": "8636e29200214a1ca31c3ab4df22c290afa0f0b0437ecb59ac5a176866798b29"
+    },
+    "4314902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4314902",
+     "capturado_em": "2026-10-09T11:23:27Z",
+     "linhas_resposta": 1314,
+     "linhas": 154,
+     "sha256_resposta_completa": "5eb640268d948bce1bc6829b875667056c2bda03c00676c47c4b56884f393e92",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4314902_2023.json.gz",
+     "sha256": "7f98ebd20ed5f24864e98061ad41bffc37ebdd09e58b4403f91fa75efd7c365a"
+    },
+    "1100205_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1100205",
+     "capturado_em": "2026-10-09T11:23:30Z",
+     "linhas_resposta": 1000,
+     "linhas": 152,
+     "sha256_resposta_completa": "b95e4cb8c0ac13cc3cd7e8f5b445c04edcb217d4ed56bf589b2bc376691771b2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1100205_2023.json.gz",
+     "sha256": "12c78a564f821af658195f32fbd7241ca56f36801380491ee3130abb31e0f711"
+    },
+    "1400100_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1400100",
+     "capturado_em": "2026-10-09T11:23:33Z",
+     "linhas_resposta": 965,
+     "linhas": 165,
+     "sha256_resposta_completa": "c713ca1d4d9bda4af729a3b5f7b05177ca9b5461ea1d9422f20d70ac6bef6af4",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1400100_2023.json.gz",
+     "sha256": "7f838e253def8c725ec626a82b123533f73723cce4c5151c54cb1f3302fae883"
+    },
+    "4205407_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4205407",
+     "capturado_em": "2026-10-09T11:23:36Z",
+     "linhas_resposta": 976,
+     "linhas": 139,
+     "sha256_resposta_completa": "6a6fff9563a99abe88a3bea3e3adabec7d20a3efb56e317b476e3531b9c7b9f7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4205407_2023.json.gz",
+     "sha256": "b173253b540fa08cd96a74b83160f0c16a7d5c439ce04d892cb6ea807432a83c"
+    },
+    "3550308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3550308",
+     "capturado_em": "2026-10-09T11:23:40Z",
+     "linhas_resposta": 1764,
+     "linhas": 156,
+     "sha256_resposta_completa": "ce2c60577b53c8110fc40a00cea98429af2be6476fdaf3523c1921ccf102b44b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3550308_2023.json.gz",
+     "sha256": "e002c216617fb43dfe5198e8a36d03ee7ea0ed84b54337e09950297cc3583698"
+    },
+    "2800308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2800308",
+     "capturado_em": "2026-10-09T11:23:43Z",
+     "linhas_resposta": 1100,
+     "linhas": 181,
+     "sha256_resposta_completa": "fd26fdc7157e9f3b0fc5a8b8de089893193bc61dc2127a023dcfb0c82076b22c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2800308_2023.json.gz",
+     "sha256": "bf4aa0b61d7d1bd48fce9b7d4bf012d979708edb397f76bb774ade9f5c787f8a"
+    },
+    "1721000_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1721000",
+     "capturado_em": "2026-10-09T11:23:49Z",
+     "linhas_resposta": 1441,
+     "linhas": 175,
+     "sha256_resposta_completa": "adf4f00858aa7501631d29ebc710f08f310db046e490ceb8cb9f547cce3013c8",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1721000_2023.json.gz",
+     "sha256": "cd81c27d380d1607b81e3dca1f7af1ec57b515d2ab6461f190f2a69e13063495"
+    },
+    "1200401_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1200401",
+     "capturado_em": "2026-10-09T11:23:55Z",
+     "linhas_resposta": 1005,
+     "linhas": 117,
+     "sha256_resposta_completa": "33e7b9408e73c6d51accd66431f4c5dcbb4a2f7f2d893655dd8b250c52b6b601",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1200401_2024.json.gz",
+     "sha256": "1883d0ca06fe08a7b63b9be203dc7851aa90dc969c30f5702f08fd45a8d7fa62"
+    },
+    "2704302_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2704302",
+     "capturado_em": "2026-10-09T11:23:59Z",
+     "linhas_resposta": 986,
+     "linhas": 190,
+     "sha256_resposta_completa": "1db93c2fce7f80847425d469fb622f21bc799ecbc1c315c44caf8ecb831dcbbe",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2704302_2024.json.gz",
+     "sha256": "f2d5450f34941c27c729b5143fd846554ccc64b98245009322b6c1f430a9d408"
+    },
+    "1600303_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1600303",
+     "capturado_em": "2026-10-09T11:24:02Z",
+     "linhas_resposta": 863,
+     "linhas": 123,
+     "sha256_resposta_completa": "3894787126f45de468f2a886b42514a9061c2978cac743304bbb187d0e59e710",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1600303_2024.json.gz",
+     "sha256": "a9b65f8c892ad5a337c7612ad8d4ca852686169ac180a182a670a048ccb6e7b0"
+    },
+    "1302603_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1302603",
+     "capturado_em": "2026-10-09T11:24:06Z",
+     "linhas_resposta": 1347,
+     "linhas": 186,
+     "sha256_resposta_completa": "c389d1a43d0c2777140b64a0f6368f74a8ae2bd54d679209f9fb11f578aa924c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1302603_2024.json.gz",
+     "sha256": "18b6ca88fa7cac4428570bbdc46321ce2b108fa4169c1aa57c88bb0e236af5c8"
+    },
+    "2927408_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2927408",
+     "capturado_em": "2026-10-09T11:24:09Z",
+     "linhas_resposta": 1464,
+     "linhas": 148,
+     "sha256_resposta_completa": "1790447d8b95463d3046913ab145eecb1976a1f10568d2835b5f18c2d5ef5b2f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2927408_2024.json.gz",
+     "sha256": "f94587a6e896e2c8cc686a1704228b2047f492f19ed397e2288791d997b97912"
+    },
+    "2304400_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2304400",
+     "capturado_em": "2026-10-09T11:24:11Z",
+     "linhas_resposta": 1495,
+     "linhas": 187,
+     "sha256_resposta_completa": "eac41e083aa0ebd4fed16be749f3039b55d5aed87f3a175612503fd15a004654",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2304400_2024.json.gz",
+     "sha256": "1a7581fdaf1089934647eb242aaa4445bb533d8d5f9f88f17011e36a6db4bb38"
+    },
+    "3205309_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3205309",
+     "capturado_em": "2026-10-09T11:24:14Z",
+     "linhas_resposta": 1202,
+     "linhas": 192,
+     "sha256_resposta_completa": "02c49cd3bfb69d4f23e90e38d85ba286e42d38d9e5c8d4ecac503a7ce95fb4b9",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3205309_2024.json.gz",
+     "sha256": "cfca84d6a12769e2b92946cc495437312b3fb9f965d61fb17a6d87c967d1df49"
+    },
+    "5208707_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5208707",
+     "capturado_em": "2026-10-09T11:24:16Z",
+     "linhas_resposta": 857,
+     "linhas": 124,
+     "sha256_resposta_completa": "4a037ff2f4bd4619a5026d60c4f843f348e3609ec459d0ad9e5a51af2e3b1f6d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5208707_2024.json.gz",
+     "sha256": "c4bf2983cfe934fbf791787e1332f12a7cbf8b8d0c336e8d3ea89aa9ab86275e"
+    },
+    "2111300_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2111300",
+     "capturado_em": "2026-10-09T11:24:19Z",
+     "linhas_resposta": 954,
+     "linhas": 157,
+     "sha256_resposta_completa": "6ab3363789d5abd7a891985ec1cc058b1f13ee3ccb42d97c774b6d33247f286d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2111300_2024.json.gz",
+     "sha256": "1b5b09266ffb5d8336780663cccebf32a68b1dc589c0510944c4fb279ffbc692"
+    },
+    "5103403_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5103403",
+     "capturado_em": "2026-10-09T11:24:21Z",
+     "linhas_resposta": 1025,
+     "linhas": 147,
+     "sha256_resposta_completa": "78d7d3a8b8e8f8bba6e4892c648b35c7222412fea8dfbfb4b076ba221ef295ec",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5103403_2024.json.gz",
+     "sha256": "6d8ab34b143ca1c14efb49a9cc5cd80124ac8275298efdd7ebf8edacd7e9826a"
+    },
+    "5002704_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5002704",
+     "capturado_em": "2026-10-09T11:24:24Z",
+     "linhas_resposta": 1466,
+     "linhas": 187,
+     "sha256_resposta_completa": "2e9f0b8153be6188bfebe8278c190118e0b4adaae1e70d492b8f44ce51af58b2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5002704_2024.json.gz",
+     "sha256": "9e4028574136231637acebd5ea1ccb22fae1dc58206595895578086e61dc7da8"
+    },
+    "3106200_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3106200",
+     "capturado_em": "2026-10-09T11:24:27Z",
+     "linhas_resposta": 1485,
+     "linhas": 192,
+     "sha256_resposta_completa": "501f054f3d86223534bf16c2ecf8342dc64a41c47a9310f7bcf09be0cf8b6edf",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3106200_2024.json.gz",
+     "sha256": "e20656f7ef7a248341094e19055c7178af1e3f956cbb360648e92d246c31645d"
+    },
+    "1501402_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1501402",
+     "capturado_em": "2026-10-09T11:24:29Z",
+     "linhas_resposta": 1206,
+     "linhas": 149,
+     "sha256_resposta_completa": "a73f761307974186b0c1c6241829934d683d2e532311a7ee921d8bbe0b0d8c78",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1501402_2024.json.gz",
+     "sha256": "c8997dd9c6fed73abc67b5103df35305e567fccb217dc6ea1d343a8c12ae1cf6"
+    },
+    "2507507_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2507507",
+     "capturado_em": "2026-10-09T11:24:32Z",
+     "linhas_resposta": 1277,
+     "linhas": 187,
+     "sha256_resposta_completa": "cbe03bf5c90ca902a0bdecbed883f9f310f3638fe2066efb44a11c86be2962ba",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2507507_2024.json.gz",
+     "sha256": "38b6c3375bd0b4316d098d88fb475e8ade9f4764fded96f3405f21b60b481590"
+    },
+    "4106902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4106902",
+     "capturado_em": "2026-10-09T11:24:34Z",
+     "linhas_resposta": 1426,
+     "linhas": 152,
+     "sha256_resposta_completa": "eeda8c3860f1425edbfffa8be437902f5693bb3c927808f201aadee1ea8635d4",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4106902_2024.json.gz",
+     "sha256": "b4b86c05c4138c586f6338df6bc7c37c8bf65e43978769d4820572ca51879cec"
+    },
+    "2611606_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2611606",
+     "capturado_em": "2026-10-09T11:24:37Z",
+     "linhas_resposta": 1132,
+     "linhas": 142,
+     "sha256_resposta_completa": "a1ef12022f437c8303911676e0d612045f3723dee82375f85c9e6012c61a8f36",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2611606_2024.json.gz",
+     "sha256": "91bffce3b83de4c9402f18bdf4a92c150c16bb9e202d253da387740c18b7e4fe"
+    },
+    "2211001_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2211001",
+     "capturado_em": "2026-10-09T11:24:40Z",
+     "linhas_resposta": 1065,
+     "linhas": 170,
+     "sha256_resposta_completa": "de133a31d503b6fba94ebd7ec3225d297f3ebd1622e8d8bacad80e2b45032e72",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2211001_2024.json.gz",
+     "sha256": "8cd35add2ee296aec3e74737d433530439634c1ed3edc92410dd70f0f0e88ef9"
+    },
+    "3304557_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3304557",
+     "capturado_em": "2026-10-09T11:24:42Z",
+     "linhas_resposta": 1725,
+     "linhas": 197,
+     "sha256_resposta_completa": "a2459f7800fad5a18c2b4a9c221b54bd2b3e1a4dabfba0beed491729d503850a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3304557_2024.json.gz",
+     "sha256": "20b0beab179c8e3fc9b95eed85111d36c9ea4a1e7263a32fa4adcb51cf13cfdb"
+    },
+    "2408102_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2408102",
+     "capturado_em": "2026-10-09T11:24:45Z",
+     "linhas_resposta": 900,
+     "linhas": 149,
+     "sha256_resposta_completa": "0b56468a4083769402f8627c3173cb0df9f34a99cf41ec4b2347efadf39f6f27",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2408102_2024.json.gz",
+     "sha256": "977767084b4e44158b4d37375c308de361b1ec1aba0fe513a85c2953f586962d"
+    },
+    "4314902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4314902",
+     "capturado_em": "2026-10-09T11:24:48Z",
+     "linhas_resposta": 1347,
+     "linhas": 177,
+     "sha256_resposta_completa": "26430638aa6f76c6a77cfa16a0f36a25f87003afeaa1b488adcdbbdc9f81b0a9",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4314902_2024.json.gz",
+     "sha256": "5a52c7c4f99266bbe1a184b7dee14af4fed57cda790ff80162078dd7f8e96f90"
+    },
+    "1100205_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1100205",
+     "capturado_em": "2026-10-09T11:24:51Z",
+     "linhas_resposta": 991,
+     "linhas": 148,
+     "sha256_resposta_completa": "547efc1b697404bc81340de2725d12ed46f17bd20376d35fa03ef7db5f546178",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1100205_2024.json.gz",
+     "sha256": "29373b1f3c7742c5aa8fa05082fa2e875d640665615f2d210e848a3052d79712"
+    },
+    "1400100_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1400100",
+     "capturado_em": "2026-10-09T11:24:54Z",
+     "linhas_resposta": 877,
+     "linhas": 150,
+     "sha256_resposta_completa": "63df0a4b12e8f5a5ba08391d5aaa170a9cb5a609f98095da981a94a5871407b2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1400100_2024.json.gz",
+     "sha256": "70514418f4443adc277e9295e37c02e31944c4cc5e0f5ccfe3dd670798a2c2cb"
+    },
+    "4205407_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4205407",
+     "capturado_em": "2026-10-09T11:24:56Z",
+     "linhas_resposta": 1001,
+     "linhas": 144,
+     "sha256_resposta_completa": "92ba9c455c7b23afa7d5727f546e00a6b91190046484f927307750a860ef745f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4205407_2024.json.gz",
+     "sha256": "cb38f2eab3f6ad000d115398d09b42570487919b4a006892b678074683d22b76"
+    },
+    "3550308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3550308",
+     "capturado_em": "2026-10-09T11:24:59Z",
+     "linhas_resposta": 1775,
+     "linhas": 168,
+     "sha256_resposta_completa": "277127ba7639711343061d53e811912d6ec3e56ccc2b5765fabb1f4549b0402a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3550308_2024.json.gz",
+     "sha256": "1d7cc9aeaa8b7d2476508370d9f870821a58e16a1f594a642dadeac821203018"
+    },
+    "2800308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2800308",
+     "capturado_em": "2026-10-09T11:25:01Z",
+     "linhas_resposta": 1077,
+     "linhas": 177,
+     "sha256_resposta_completa": "f2ca2091923f2454c998080a5802a00596268c296f7b1f609f972ff49ce12560",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2800308_2024.json.gz",
+     "sha256": "99d328d55af3dc551831e60fcf5e79d46f0f28c55e8442e3c2103248e7694a7f"
+    },
+    "1721000_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1721000",
+     "capturado_em": "2026-10-09T11:25:04Z",
+     "linhas_resposta": 1339,
+     "linhas": 167,
+     "sha256_resposta_completa": "f39f83396178a096854a1c4652c32c498da072907ef21fe79804960841b2c2b9",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1721000_2024.json.gz",
+     "sha256": "ab924a8d41a3e5151efb976c2850157fb524cd2dceba3d7a7dfbac8d3946e008"
+    },
+    "1200401_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1200401",
+     "capturado_em": "2026-10-09T11:25:07Z",
+     "linhas_resposta": 1045,
+     "linhas": 117,
+     "sha256_resposta_completa": "dcebe3f5dde271ac9b431693c258b1fd3810250e7b0c68dfc6f8373322f04f3a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1200401_2025.json.gz",
+     "sha256": "41d605039a57deecb173c482f21c36993bafb8ac6d18b1731b58a6a78afa7014"
+    },
+    "2704302_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2704302",
+     "capturado_em": "2026-10-09T11:25:12Z",
+     "linhas_resposta": 950,
+     "linhas": 186,
+     "sha256_resposta_completa": "43b48985d2b9847359dd5bcdefb3f0121451bacf2bbb30f02bbf5591a5ec110b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2704302_2025.json.gz",
+     "sha256": "43e9f56815f5107f3f48f1427d001f83726858dd5dbbed57ee20b628ea4d472f"
+    },
+    "1600303_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1600303",
+     "capturado_em": "2026-10-09T11:25:14Z",
+     "linhas_resposta": 798,
+     "linhas": 124,
+     "sha256_resposta_completa": "4ed3ce6c507a7383b3dbd1e580b8efbc307e9252badf013a582fc43d857d9b32",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1600303_2025.json.gz",
+     "sha256": "b355fd65fce1c0de2147512e40d8767fde7b4fb09c9de025fc541765d9b12754"
+    },
+    "1302603_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1302603",
+     "capturado_em": "2026-10-09T11:25:18Z",
+     "linhas_resposta": 1368,
+     "linhas": 190,
+     "sha256_resposta_completa": "7d853d596b489d46cd3cb4af150bc15396b325e67b9c2a3b94135ef79471e563",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1302603_2025.json.gz",
+     "sha256": "3f5d44e61f8f50242705caa61ada8a26231114073cb25148e60ed5d7eea33ad3"
+    },
+    "2927408_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2927408",
+     "capturado_em": "2026-10-09T11:25:21Z",
+     "linhas_resposta": 1468,
+     "linhas": 146,
+     "sha256_resposta_completa": "646df1b77752028426519add5d2daa59ba460f83021bc26e3b2473c4d5fb70a0",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2927408_2025.json.gz",
+     "sha256": "9feab8b6828875a13d9a77a45989cc3ff9d9662c2b5e6ee1ab4470ddda07fffd"
+    },
+    "2304400_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2304400",
+     "capturado_em": "2026-10-09T11:25:24Z",
+     "linhas_resposta": 1450,
+     "linhas": 183,
+     "sha256_resposta_completa": "d7d64275ac13c9287c4a2d527cbb5fff157bba4228e34fd02c5051c49b1c2111",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2304400_2025.json.gz",
+     "sha256": "6665be8044df5c4c8509ff68f9a2fc8c86fef6896e2b3a1c73e2f9d8d78b0c4e"
+    },
+    "3205309_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3205309",
+     "capturado_em": "2026-10-09T11:25:27Z",
+     "linhas_resposta": 1152,
+     "linhas": 179,
+     "sha256_resposta_completa": "06f3879b1d751e927b22e421e1c6dffa99c100347bba045e562953338cc6c72c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3205309_2025.json.gz",
+     "sha256": "d0a387faa5962d8d5540546c95919a6458a2070eaa64bad8f832dceb742cb27f"
+    },
+    "5208707_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5208707",
+     "capturado_em": "2026-10-09T11:25:29Z",
+     "linhas_resposta": 845,
+     "linhas": 139,
+     "sha256_resposta_completa": "a07fabca4e25a55548e579a83c53defb2c6823b59f6c8f45a5e61a72262d33bd",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5208707_2025.json.gz",
+     "sha256": "0047157961c7d970be03b3e9494fe18aeb8b7d7a57c26794184835012346e621"
+    },
+    "2111300_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2111300",
+     "capturado_em": "2026-10-09T11:25:32Z",
+     "linhas_resposta": 947,
+     "linhas": 156,
+     "sha256_resposta_completa": "cf23744aeb673b67dc852977781103a03e30a83c715cfeb56d0595f806f6e93a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2111300_2025.json.gz",
+     "sha256": "a3d080bfd2ec8ec57b4698581e2d60af6cf9b16c4f81f20c934a2fb37183b28e"
+    },
+    "5103403_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5103403",
+     "capturado_em": "2026-10-09T11:25:34Z",
+     "linhas_resposta": 1060,
+     "linhas": 147,
+     "sha256_resposta_completa": "c911da95f9bb39bf916caf048ad1cdbacebd00490ed41f79e17e77c597e43c87",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5103403_2025.json.gz",
+     "sha256": "859025b3c054b4ffc594542abbc2c1cf493724a6138f51edf727ea57bd148644"
+    },
+    "5002704_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5002704",
+     "capturado_em": "2026-10-09T11:25:37Z",
+     "linhas_resposta": 1435,
+     "linhas": 184,
+     "sha256_resposta_completa": "f032fe1b75a03e495bec9a14cf0302ca040ea23eabe3d8aa4b56ba49fd0837e6",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/5002704_2025.json.gz",
+     "sha256": "b1356962408fa0781ff74f1e5b7f015943dcdf33d0a64fcd5ee75d7a81779fea"
+    },
+    "3106200_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3106200",
+     "capturado_em": "2026-10-09T11:25:40Z",
+     "linhas_resposta": 1490,
+     "linhas": 201,
+     "sha256_resposta_completa": "8f98efef77e4e1309c2c56228567c78d4efd157e49cb4e20e3848b615e8de66e",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3106200_2025.json.gz",
+     "sha256": "7cd3b91d293da384067d34584b366f9f67ab60a0d5cc8e3b06a58aea808b1b34"
+    },
+    "1501402_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1501402",
+     "capturado_em": "2026-10-09T11:25:43Z",
+     "linhas_resposta": 1247,
+     "linhas": 145,
+     "sha256_resposta_completa": "d05a89c4f07485beaf7f8f3dff804d9899cf1e00afb26e13a982ecbb3f1e35bd",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1501402_2025.json.gz",
+     "sha256": "baab83013f317c87e83d201d1cb1b224eed5494c04e0ab2a7d6f61985f4ef81b"
+    },
+    "2507507_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2507507",
+     "capturado_em": "2026-10-09T11:25:46Z",
+     "linhas_resposta": 1254,
+     "linhas": 187,
+     "sha256_resposta_completa": "8ed8b649f3d418536f4654c22d87f57587cc2b70fd70d66bcb7ecd8b6f2c43c3",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2507507_2025.json.gz",
+     "sha256": "c80de69594addce38f32238db3929e9ecca53d7c7136688efa4b2312b1e982a9"
+    },
+    "4106902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4106902",
+     "capturado_em": "2026-10-09T11:25:48Z",
+     "linhas_resposta": 1492,
+     "linhas": 152,
+     "sha256_resposta_completa": "de7a897f2e31898ead7587fc069d7d6d5323a7904aa9a6117958329d6a4d6c75",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4106902_2025.json.gz",
+     "sha256": "de71616e7d7a07c64fb2f56a843476e57a1fb56a4e0d513e71b91e0b7019de9f"
+    },
+    "2611606_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2611606",
+     "capturado_em": "2026-10-09T11:25:51Z",
+     "linhas_resposta": 1119,
+     "linhas": 144,
+     "sha256_resposta_completa": "0a65694fa17bceda09550a14a52a3e9384f837c72f2db0de053b3b73ca8ef3b5",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2611606_2025.json.gz",
+     "sha256": "adf9d571456606cfa9a1a81520073ba6a74057b8615e2eda5193828ed9906856"
+    },
+    "2211001_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2211001",
+     "capturado_em": "2026-10-09T11:25:55Z",
+     "linhas_resposta": 1084,
+     "linhas": 185,
+     "sha256_resposta_completa": "e532d2804c1bdd427ab2b7bdcf73276270aa10dcf070ef0239b8b0331b9954de",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2211001_2025.json.gz",
+     "sha256": "3d055e9a41a2e063f9a36b189ffbc2c5d4ba3f2e44137c293e5e7b49223ecbd1"
+    },
+    "3304557_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3304557",
+     "capturado_em": "2026-10-09T11:25:57Z",
+     "linhas_resposta": 1783,
+     "linhas": 197,
+     "sha256_resposta_completa": "2292223ef9fb49804449c31370a020429d54d2e577aa1d3a232984441b49ff70",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3304557_2025.json.gz",
+     "sha256": "eecd28e34265926bcf85207b36497ddec68f73827d7896d5847a0b8f749af60c"
+    },
+    "2408102_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2408102",
+     "capturado_em": "2026-10-09T11:26:00Z",
+     "linhas_resposta": 923,
+     "linhas": 166,
+     "sha256_resposta_completa": "f5fa9a5628af9ccc4b3a839789a5c36e1684e6e60d598fa0b1b6c5f87c31424f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2408102_2025.json.gz",
+     "sha256": "8505cf079b2d3a4190d6d26762ce33ee47b668e7d853a5b1c2cbcbfe98faf251"
+    },
+    "4314902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4314902",
+     "capturado_em": "2026-10-09T11:26:03Z",
+     "linhas_resposta": 1381,
+     "linhas": 188,
+     "sha256_resposta_completa": "f6488e3131c83544b1c7df89be6c25f4d44fa2553cdddfafcad566814d6901bf",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4314902_2025.json.gz",
+     "sha256": "9185e27fd3af73924a6e9e9ca6607b70d12533a9f4280b39cb74831ba29b5647"
+    },
+    "1100205_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1100205",
+     "capturado_em": "2026-10-09T11:26:05Z",
+     "linhas_resposta": 1048,
+     "linhas": 147,
+     "sha256_resposta_completa": "148101f429bffc3ebf896c392ab0683e329ee9800b882f15528f5bbe28eb807d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1100205_2025.json.gz",
+     "sha256": "b1c56a7760826dea2b7e819556b7ac37cfd22dcbab68008fb3dd548745601fb8"
+    },
+    "1400100_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1400100",
+     "capturado_em": "2026-10-09T11:26:08Z",
+     "linhas_resposta": 997,
+     "linhas": 180,
+     "sha256_resposta_completa": "6903548fca50509621cd7a0d113ba344e40a19c26ff6061954e6e6784c0e62b3",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1400100_2025.json.gz",
+     "sha256": "2537f17b06b441cc454c142a8f5d1589c5aef0379bf7a35a294983bf24c30367"
+    },
+    "4205407_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4205407",
+     "capturado_em": "2026-10-09T11:26:11Z",
+     "linhas_resposta": 664,
+     "linhas": 86,
+     "sha256_resposta_completa": "06f23345ca775208f1da38175cd0b3ee656ff1bc096a0232d11f151e0d6de508",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/4205407_2025.json.gz",
+     "sha256": "f391bf27ad3726a1459d25533f27975f9c50e9500db0bd98a430db8ee0313158"
+    },
+    "3550308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3550308",
+     "capturado_em": "2026-10-09T11:26:14Z",
+     "linhas_resposta": 1614,
+     "linhas": 162,
+     "sha256_resposta_completa": "a5e348c12ae2be47561237d86927d3c20b1f85a78978f5dd682b74d32d3c217d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/3550308_2025.json.gz",
+     "sha256": "76fd796e5788af65484b2ca9b195ae07b59580537a9dad864960dbf06b128cdf"
+    },
+    "2800308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2800308",
+     "capturado_em": "2026-10-09T11:26:17Z",
+     "linhas_resposta": 1055,
+     "linhas": 180,
+     "sha256_resposta_completa": "6694e5fa955046a2bed6a8c2529a954e8cbf9a2e25c02005d593d9299915ce96",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/2800308_2025.json.gz",
+     "sha256": "3da4f8b03e0098aecc7777124b08ab4a535717cdec8c902431b0833256c3e8e6"
+    },
+    "1721000_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1721000",
+     "capturado_em": "2026-10-09T11:26:20Z",
+     "linhas_resposta": 1212,
+     "linhas": 162,
+     "sha256_resposta_completa": "12be98ece0a010c92207332d7ab76fc0e841c66e869c24e3dc86c9e0af4a2242",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/rreo_anexo_02_b6/1721000_2025.json.gz",
+     "sha256": "7a3262d1bcb5f7567b4962b92f33711e6d71c53de83a04361cddbdc909a871eb"
+    }
+   }
+  }
+ }
+}
