@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
+  CABECALHO_CSV_COMPARACAO,
   CABECALHO_CSV_TABELA_COMPARATIVA,
   COLUNAS,
   Indice,
@@ -12,20 +13,26 @@ import {
   ROTULO_STATUS,
   anosDaMedida,
   comparar,
+  componente,
   csv,
   ehDespesa,
   perimetroIntra,
   textoPerimetroIntra,
   formata,
   formataEixo,
+  linhasCsvComparacao,
   linhasCsvTabelaComparativa,
   nomeEtapa,
+  notasMateriais,
+  referenciaExternaDoGrafico,
+  regioesDoPainel,
   rotuloPeriodoMedida,
   tabelaComparativa,
   unidade,
   type ColunaId,
   type DadosPainel,
   type Disciplina,
+  type Grupo,
   type MedidaId,
   type Moeda,
   type Ordem,
@@ -38,7 +45,9 @@ import { ReferenciasDoGrupo } from "./ReferenciasPainel";
 import { TabelaComparativa, type VisaoColunas } from "./TabelaComparativa";
 import { TabelaSimples } from "./TabelaSimples";
 import { Alternancia, Selecao } from "./controles";
-import { ForaDaComparacao } from "./estados";
+import { ForaDaComparacao, NotasMateriais, Ressalva } from "./estados";
+import type { ContextoFicha } from "./FichaConteudo";
+import { SobreEsteDado } from "./SobreEsteDado";
 
 /**
  * Comparador: visão de conjunto das 26 capitais, com poucas cidades destacadas sem tirar o contexto do grupo. Gráfico e
@@ -52,8 +61,10 @@ const GRUPO_MEDIDA: Record<string, string> = { recursos: "Gastos", atendimento: 
 
 type Visao = "grafico" | "tabela";
 
-function esquema(ids: string[]) {
+function esquema(ids: string[], regioes: string[]) {
   return {
+    cap: campo(tiposUrl.opcao(["", ...ids]), ""),
+    reg: campo(tiposUrl.opcao(["", ...regioes]), ""),
     med: campo(tiposUrl.opcao(MEDIDAS), "despesa_hab" as MedidaId),
     ano: campo(tiposUrl.inteiro({ min: 0, max: 2100 }), 0),
     etapa: campo(tiposUrl.opcao(ETAPAS), "anos_iniciais" as EtapaId),
@@ -79,10 +90,11 @@ function baixar(nome: string, conteudo: string) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export function ComparadorCapitais({ dados }: { dados: DadosPainel }) {
+export function ComparadorCapitais({ dados, contextos }: { dados: DadosPainel; contextos: Record<string, ContextoFicha> }) {
   const ix = useMemo(() => new Indice(dados), [dados]);
   const ids = useMemo(() => dados.capitais.map((c) => c.id), [dados]);
-  const esq = useMemo(() => esquema(ids), [ids]);
+  const regioes = useMemo(() => regioesDoPainel(dados), [dados]);
+  const esq = useMemo(() => esquema(ids, regioes.map((r) => r.id)), [ids, regioes]);
   const [s, definir] = useEstadoUrl(esq);
   const [aviso, setAviso] = useState("");
 
@@ -91,15 +103,22 @@ export function ComparadorCapitais({ dados }: { dados: DadosPainel }) {
   const etapa = etapaEfetiva(medida, s.etapa, "anos_iniciais");
   const anos = anosDaMedida(dados, medida);
   const ano = s.ano ? anoValido(dados, medida, s.ano) : anos[anos.length - 1];
-  const destacadas = s.dest.filter((id) => ids.includes(id));
-  const comp = comparar(ix, medida, ano, etapa, s.moeda, s.disc, "todas", dados.capitais[0], s.ord);
+  // a capital escolhida em outra visão (?cap=) entra como destaque inicial; escolher destaques aqui prevalece
+  const destacadas = s.dest.length ? s.dest.filter((id) => ids.includes(id)) : s.cap && ids.includes(s.cap) ? [s.cap] : [];
+  // grupo de comparação: todas as capitais ou as de uma região; a mediana, a média e os extremos seguem o grupo
+  const grupo: Grupo = s.reg ? "regiao" : "todas";
+  const capGrupo = (s.reg && dados.capitais.find((c) => c.regiao === s.reg)) || dados.capitais[0];
+  const comp = comparar(ix, medida, ano, etapa, s.moeda, s.disc, grupo, capGrupo, s.ord);
+  const k = componente(medida, s.moeda, s.disc);
+  const externa = referenciaExternaDoGrafico(dados, medida, ano, etapa, k);
+  const notas = notasMateriais(comp);
   const fmt = (v: number) => formata(medida, v);
   const periodo = rotuloPeriodoMedida(medida, ano);
   const titulo = fraseAmplitude(
     comp.incluidas.map((i) => ({ nome: i.cap.nome, uf: i.cap.uf, valor: i.valor })),
     { medida, ano, etapa, disciplina: s.disc === "matematica" ? "Matemática" : "Língua Portuguesa" },
   );
-  const subtitulo = [md.rotulo, unidade(medida, s.moeda), md.etapas ? nomeEtapa(dados, etapa) : null, medida === "saeb" ? (s.disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null, periodo, `capitais estaduais, ${universoDaMedida(medida)}`].filter(Boolean).join(" · ");
+  const subtitulo = [md.rotulo, unidade(medida, s.moeda), md.etapas ? nomeEtapa(dados, etapa) : null, medida === "saeb" ? (s.disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null, periodo, `capitais estaduais${s.reg ? `, região ${dados.regioes[s.reg]}` : ""}, ${universoDaMedida(medida)}`].filter(Boolean).join(" · ");
 
   const alternarDestaque = (id: string) => {
     const novo = destacadas.includes(id) ? destacadas.filter((x) => x !== id) : [...destacadas, id].slice(-MAX_DESTAQUES);
@@ -174,6 +193,14 @@ export function ComparadorCapitais({ dados }: { dados: DadosPainel }) {
               aoMudar={(v) => definir({ etapa: v as EtapaId })}
             />
           )}
+          <Selecao
+            id="c-grupo"
+            rotulo="Grupo de comparação"
+            ajuda="Define a mediana, a média e os extremos do recorte."
+            valor={s.reg}
+            opcoes={[{ v: "", t: `Todas as capitais estaduais (${dados.capitais.length})` }, ...regioes.map((r) => ({ v: r.id, t: `Capitais da região ${r.nome} (${r.n})` }))]}
+            aoMudar={(v) => definir({ reg: v })}
+          />
           {ehDespesa(medida) && (
             <Alternancia
               rotulo="Valores"
@@ -201,7 +228,7 @@ export function ComparadorCapitais({ dados }: { dados: DadosPainel }) {
         <details className="mt-5 border-y border-linha">
           <summary className="flex min-h-[44px] cursor-pointer items-center gap-3 text-[0.95rem] text-obee-tinta">
             <span className="font-semibold">Destacar capitais</span>
-            <span className="text-carvao-muted">{destacadas.length ? `${destacadas.length} de ${MAX_DESTAQUES}` : "nenhuma"}</span>
+            <span className="text-carvao-muted">{destacadas.length ? `${destacadas.length} de ${MAX_DESTAQUES}` : `até ${MAX_DESTAQUES}; clique para escolher`}</span>
           </summary>
           <fieldset className="pb-4">
             <legend className="sr-only">Escolha até {MAX_DESTAQUES} capitais para destacar</legend>
@@ -271,10 +298,12 @@ export function ComparadorCapitais({ dados }: { dados: DadosPainel }) {
                     mediana: comp.ref?.mediana ?? null,
                     media: comp.ref?.media ?? null,
                     faixa: comp.ref && comp.ref.quartisExibicao && comp.ref.q1 !== null && comp.ref.q3 !== null ? { q1: comp.ref.q1, q3: comp.ref.q3 } : null,
+                    externa,
                   }}
                   formata={fmt}
                   formataEixo={(v) => formataEixo(medida, v)}
                   zero={ehDespesa(medida) || medida === "matriculas" || medida === "conveniadas" || medida === "atu"}
+                  rotuloGrupo={s.reg ? `capitais da região ${dados.regioes[s.reg]}` : "capitais na comparação"}
                 />
                 {comp.ref && (
                   <div className="mt-8">
@@ -292,6 +321,8 @@ export function ComparadorCapitais({ dados }: { dados: DadosPainel }) {
               moeda={s.moeda}
               disc={s.disc}
               destacadas={destacadas}
+              grupo={grupo}
+              capGrupo={capGrupo}
               medida={medida}
               ordem={s.ot}
               decrescente={s.od === "desc"}
@@ -302,12 +333,42 @@ export function ComparadorCapitais({ dados }: { dados: DadosPainel }) {
               aoBaixar={() =>
                 baixar(
                   `obee_comparacao_capitais_${ano}.csv`,
-                  csv(CABECALHO_CSV_TABELA_COMPARATIVA, linhasCsvTabelaComparativa(dados, tabelaComparativa(ix, ano, etapa, s.moeda, s.disc, "todas", dados.capitais[0], medida), ano, etapa, s.moeda, "todas", dados.capitais[0], medida, ix, s.disc)),
+                  csv(CABECALHO_CSV_TABELA_COMPARATIVA, linhasCsvTabelaComparativa(dados, tabelaComparativa(ix, ano, etapa, s.moeda, s.disc, grupo, capGrupo, medida), ano, etapa, s.moeda, grupo, capGrupo, medida, ix, s.disc)),
                 )
               }
             />
           )}
         </div>
+        {s.vis === "grafico" && comp.incluidas.length > 0 && (
+          <div className="mt-6 space-y-3">
+            <NotasMateriais notas={notas} n={comp.incluidas.length} />
+            {comp.incluidas
+              .filter((i) => destacadas.includes(i.cap.id))
+              .map((i) => (
+                <div key={i.cap.id}>
+                  <p className="text-sm font-semibold text-obee-tinta">{i.cap.nome} ({i.cap.uf})</p>
+                  <Ressalva ponto={i.ponto} />
+                </div>
+              ))}
+          </div>
+        )}
+        {s.vis === "grafico" && (
+          <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-1">
+            <SobreEsteDado f={dados.fichas.find((f) => f.id === md.indicador)!} ctx={contextos[md.indicador]} />
+            <button
+              type="button"
+              onClick={() =>
+                baixar(
+                  `obee_comparacao_${medida}_${ano}${md.etapas ? `_${etapa}` : ""}${ehDespesa(medida) ? `_${s.moeda}` : ""}${medida === "saeb" ? `_${s.disc}` : ""}${s.reg ? `_regiao_${s.reg}` : ""}.csv`,
+                  csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(dados, comp, medida, ano, etapa, s.moeda, s.disc)),
+                )
+              }
+              className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta"
+            >
+              Baixar estes valores (CSV)
+            </button>
+          </div>
+        )}
         {s.vis === "grafico" && comp.excluidas.length > 0 && (
           <div className="mt-6">
             <ForaDaComparacao itens={comp.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_STATUS[x.status], motivo: x.motivo }))} />

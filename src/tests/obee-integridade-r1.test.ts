@@ -124,3 +124,42 @@ describe("universo do número", () => {
     for (const m of ["despesa_mat", "matriculas", "conveniadas", "atu", "aprovacao", "ideb", "saeb"] as const) expect(universoDaMedida(m)).toBe("rede municipal");
   });
 });
+
+describe("exibição consistente com a conta do leitor", () => {
+  it("a diferença escrita fecha com os valores mostrados (arredondados à mesma precisão)", async () => {
+    const { diferenca } = await import("@/lib/eficiencia/consulta");
+    // valores brutos 1877,6 e 1103,9: aparecem como R$ 1.878 e R$ 1.104; a diferença escrita é R$ 774, não R$ 774 exato de 773,7... e sim a dos exibidos
+    expect(diferenca("despesa_hab", 1877.6, 1103.9)!.texto).toContain("R$ 774");
+    expect(diferenca("atu", 25.04, 24.96)!.texto).toContain("menos de 0,1 aluno por turma");
+    expect(diferenca("ideb", 6.9, 6.1)!.texto).toContain("0,8 ponto");
+    // abaixo da precisão exibida, usa a diferença exata em vez de escrever zero
+    expect(diferenca("despesa_hab", 1000.2, 1000.1)!.abs).toBeCloseTo(0.1, 5);
+    expect(diferenca("despesa_hab", 1000.2, 1000.1)!.texto).toContain("menos de R$ 1");
+  });
+
+  it("valores acima de R$ 10 bilhões mantêm os centavos da fonte no payload", () => {
+    const grande = g.observacoes.filter((o) => o.indicador === "edu.despesa.funcao_educacao" && o.componente === "nominal" && o.valor !== null && o.valor >= 1e10);
+    expect(grande.length).toBeGreaterThan(0);
+    for (const o of grande) {
+      const c = d.obs.length ? ix.ponto("edu.despesa.funcao_educacao", o.ente, o.ano, null, "nominal").valor : null;
+      expect(c).toBeCloseTo(o.valor as number, 2);
+    }
+  });
+});
+
+describe("evolução: lacunas e notas de período", () => {
+  const pts = [2005, 2007, 2009, 2011].map((ano, i) => ({ ano, valor: i < 2 ? 4 + i / 2 : null, elegivel: i < 2, quebraSerie: false }));
+  it("diz que a série não termina onde o texto termina", () => {
+    const f = fraseEvolucao(pts, "ideb", "a base mudou", "Em Boa Vista (RR)");
+    expect(f).toContain("passou de 4,0 em 2005 para 4,5 em 2007");
+    expect(f).toContain("Sem valor comparável de 2009 a 2011.");
+  });
+  it("um único período sem valor depois do último", () => {
+    expect(fraseEvolucao(pts.slice(0, 3), "ideb")).toContain("Sem valor comparável em 2009.");
+  });
+  it("nota de período entre os extremos entra na frase", () => {
+    const p = [2019, 2021, 2023].map((ano) => ({ ano, valor: 5, elegivel: true, quebraSerie: false }));
+    expect(fraseEvolucao(p, "ideb", "x", undefined, [{ ano: 2021, texto: "edição afetada pela pandemia." }])).toContain("Em 2021: edição afetada pela pandemia.");
+    expect(fraseEvolucao(p, "ideb", "x", undefined, [{ ano: 2019, texto: "fora" }])).not.toContain("fora");
+  });
+});

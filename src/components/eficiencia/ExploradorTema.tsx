@@ -13,7 +13,10 @@ import {
   componente,
   csv,
   ehDespesa,
+  notasMateriais,
   perimetroIntra,
+  referenciaExternaDoGrafico,
+  regioesDoPainel,
   serieDaMediana,
   textoPerimetroIntra,
   etapaDaMedida,
@@ -29,6 +32,7 @@ import {
   unidade,
   type DadosPainel,
   type Disciplina,
+  type Grupo,
   type MedidaId,
   type Moeda,
   type Ordem,
@@ -45,7 +49,7 @@ import { ContextoInternacionalBloco, ReferenciaNacionalCalculadaBloco, Referenci
 import { SobreEsteDado } from "./SobreEsteDado";
 import { TabelaSimples } from "./TabelaSimples";
 import { Alternancia, Selecao } from "./controles";
-import { ForaDaComparacao, ForaDoEscopo, Ressalva, SemValor } from "./estados";
+import { ForaDaComparacao, NotasMateriais, ForaDoEscopo, Ressalva, SemValor } from "./estados";
 import { MiniSerie, type Anotacao } from "./graficos";
 
 /**
@@ -72,6 +76,7 @@ function esquema(ids: string[], tema: Tema) {
     vis: campo(tiposUrl.opcao(["grafico", "tabela", "evolucao", "detalhe"] as const), "grafico" as Visao),
     ord: campo(tiposUrl.opcao(["alfabetica", "valor"] as const), "alfabetica" as Ordem),
     eixo: campo(tiposUrl.opcao(["linear", "log"] as const), "linear" as "linear" | "log"),
+    grp: campo(tiposUrl.opcao(["todas", "regiao"] as const), "todas" as Grupo),
   };
 }
 
@@ -105,7 +110,11 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
   const etapa = etapaEfetiva(medida, s.etapa, def.etapaInicial);
   const anos = anosDaMedida(dados, medida);
   const ano = s.ano ? anoValido(dados, medida, s.ano) : anos[anos.length - 1];
-  const comp = comparar(ix, medida, ano, etapa, s.moeda, s.disc, "todas", cap ?? dados.capitais[0], s.ord);
+  // o grupo regional é o da capital escolhida; sem capital, o grupo é sempre o das capitais estaduais
+  const grupo: Grupo = cap && s.grp === "regiao" ? "regiao" : "todas";
+  const grupoRef = grupo === "regiao" && cap ? cap.regiao : "todas";
+  const nomeGrupo = grupo === "regiao" && cap ? `capitais da região ${dados.regioes[cap.regiao]}` : "capitais na comparação";
+  const comp = comparar(ix, medida, ano, etapa, s.moeda, s.disc, grupo, cap ?? dados.capitais[0], s.ord);
   const k = componente(medida, s.moeda, s.disc);
   const e = etapaDaMedida(medida, etapa);
   const ptCap = cap ? ix.ponto(md.indicador, cap.cod, ano, e, k) : null;
@@ -126,7 +135,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     md.etapas ? nomeEtapa(dados, etapa) : null,
     medida === "saeb" ? (s.disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null,
     periodo,
-    `capitais estaduais, ${universoDaMedida(medida)}`,
+    `capitais estaduais${grupo === "regiao" && cap ? `, região ${dados.regioes[cap.regiao]}` : ""}, ${universoDaMedida(medida)}`,
   ]
     .filter(Boolean)
     .join(" · ");
@@ -141,11 +150,8 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
   const nacCalc = nacionalCalculada(dados, medida, ano);
   const gNac = nacCalc?.grupos.find((g) => g.id === "elegiveis");
   const intl = internacionaisDa(dados, medida, etapa);
-  const externaGrafico = extMesmo[0]
-    ? { rotulo: "Brasil", valor: extMesmo[0].valor }
-    : gNac && gNac.mediana !== null
-      ? { rotulo: "Municípios do país", valor: gNac.mediana }
-      : null;
+  const externaGrafico = referenciaExternaDoGrafico(dados, medida, ano, etapa, k);
+  const notas = notasMateriais(comp);
 
   const textoRazao = (() => {
     const r = comp.ref;
@@ -160,7 +166,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
   })();
 
   // evolução: a capital, quando escolhida; senão a mediana das capitais, ano a ano
-  const medianaPorAno = serieDaMediana(ix, medida, etapa, s.moeda, s.disc);
+  const medianaPorAno = serieDaMediana(ix, medida, etapa, s.moeda, s.disc, grupo === "regiao" && cap ? cap.regiao : null);
   const pontosSerie = cap
     ? serie(ix, medida, cap.cod, etapa, s.moeda, s.disc)
     : medianaPorAno.map((m) => ({ ano: m.ano, ...(m.valor === null ? pontoVazio() : { ...pontoVazio(), valor: m.valor, status: "OBSERVADO" as const, elegivel: true, quebraSerie: m.quebraSerie }) }));
@@ -170,6 +176,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     medida,
     medida === "despesa_hab" ? "a população de referência muda de base (estimativa, Censo ou relação do DOU)" : "a base do dado mudou",
     cap ? `Em ${nomeCap}` : "Na mediana das capitais",
+    anotacoes,
   );
 
   const linhasTabela = [
@@ -202,7 +209,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     const an = s.ano ? anoValido(dados, m, s.ano) : (() => { const a = anosDaMedida(dados, m); return a[a.length - 1]; })();
     const kk = componente(m, s.moeda, s.disc);
     const ee = etapaDaMedida(m, et);
-    const r = ix.referencia(mm.indicador, kk, ee, an, "todas");
+    const r = ix.referencia(mm.indicador, kk, ee, an, grupoRef);
     const p = cap ? ix.ponto(mm.indicador, cap.cod, an, ee, kk) : null;
     return { m, mm, an, et, r, p };
   });
@@ -299,6 +306,23 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               aoMudar={(v) => definir({ ano: Number(v) })}
             />
           </div>
+          <div className="w-full min-w-0 sm:w-72">
+            <Selecao
+              id="f-grupo"
+              rotulo="Grupo de comparação"
+              ajuda="Define a mediana, a média e os extremos do recorte."
+              valor={grupo}
+              opcoes={[
+                { v: "todas", t: `Todas as capitais estaduais (${dados.capitais.length})` },
+                {
+                  v: "regiao",
+                  t: cap ? `Capitais da região ${dados.regioes[cap.regiao]} (${regioesDoPainel(dados).find((r) => r.id === cap.regiao)?.n ?? 0})` : "Região da capital escolhida (escolha uma capital)",
+                  desab: !cap,
+                },
+              ]}
+              aoMudar={(v) => definir({ grp: v as Grupo })}
+            />
+          </div>
           {temEtapa(medida) && (
             <div className="w-full min-w-0 sm:w-72">
               <Selecao
@@ -380,8 +404,14 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
                 formataEixo={fmtEixo}
                 zero={ehDespesa(medida) || medida === "matriculas" || medida === "conveniadas" || medida === "atu"}
                 escala={medida === "despesa" ? s.eixo : "linear"}
+                rotuloGrupo={nomeGrupo}
               />
             ))}
+          {visao === "grafico" && comp.incluidas.length > 0 && notas.length > 0 && (
+            <div className="mt-4">
+              <NotasMateriais notas={notas} n={comp.incluidas.length} />
+            </div>
+          )}
           {visao === "tabela" &&
             (linhasTabela.length === 0 ? null : (
               <TabelaSimples legenda={`${md.rotulo}, ${periodo}: valor de cada capital e situação na comparação`} cabecalho={["Capital", unidade(medida, s.moeda), "Situação"]} linhas={linhasTabela} />

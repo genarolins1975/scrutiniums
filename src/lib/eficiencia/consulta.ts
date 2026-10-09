@@ -310,14 +310,15 @@ export function serie(ix: Indice, m: MedidaId, cod: number, etapa: EtapaId, moed
  */
 export type PontoMediana = { ano: number; valor: number | null; n: number; quebraSerie: boolean };
 
-export function serieDaMediana(ix: Indice, m: MedidaId, etapa: EtapaId, moeda: Moeda, disc: Disciplina): PontoMediana[] {
+export function serieDaMediana(ix: Indice, m: MedidaId, etapa: EtapaId, moeda: Moeda, disc: Disciplina, regiao: string | null = null): PontoMediana[] {
   const e = etapaDaMedida(m, etapa);
   const k = componente(m, moeda, disc);
   const ind = MEDIDA[m].indicador;
   return anosDaMedida(ix.d, m).map((ano) => {
-    const r = ix.referencia(ind, k, e, ano, "todas");
-    const marcadas = ix.d.capitais.filter((c) => ix.ponto(ind, c.cod, ano, e, k).quebraSerie).length;
-    return { ano, valor: r?.mediana ?? null, n: r?.n ?? 0, quebraSerie: marcadas > ix.d.capitais.length / 2 };
+    const r = ix.referencia(ind, k, e, ano, regiao ?? "todas");
+    const grupo = ix.d.capitais.filter((c) => !regiao || c.regiao === regiao);
+    const marcadas = grupo.filter((c) => ix.ponto(ind, c.cod, ano, e, k).quebraSerie).length;
+    return { ano, valor: r?.mediana ?? null, n: r?.n ?? 0, quebraSerie: marcadas > grupo.length / 2 };
   });
 }
 
@@ -683,7 +684,14 @@ export function diferenca(m: MedidaId, valor: number, referencia: number | null,
   const igual = Math.abs(abs) < 1e-9;
   const sentido: Diferenca["sentido"] = igual ? "igual à" : abs > 0 ? "acima da" : "abaixo da";
   const sinalTxt = abs >= 0 ? "+" : "−";
-  const a = Math.abs(abs);
+  // a diferença escrita é a dos valores como aparecem na tela (arredondados à mesma precisão), para que a conta feita pelo leitor feche;
+  // só o total da despesa, mostrado em milhões ou bilhões, usa a diferença exata
+  const casas = m === "saeb" ? 2 : m === "atu" || m === "aprovacao" || m === "ideb" ? 1 : 0;
+  const arred = (v: number) => Math.round(v * 10 ** casas) / 10 ** casas;
+  const exibida = Math.abs(arred(valor) - arred(referencia));
+  const a = m === "despesa" || exibida === 0 ? Math.abs(abs) : exibida;
+  // dois valores que aparecem iguais na tela mas não são: a diferença é menor que a precisão mostrada, e o texto diz isso em vez de escrever um número que a conta do leitor não reproduz
+  const abaixoDaPrecisao = !igual && m !== "despesa" && exibida === 0;
   let txt: string;
   let pct: number | null = null;
   let unidadeD: string;
@@ -704,6 +712,10 @@ export function diferenca(m: MedidaId, valor: number, referencia: number | null,
   } else {
     unidadeD = "pontos";
     txt = `${sinalTxt}${decimal(a, m === "saeb" ? 2 : 1)} ponto${a >= 1.05 ? "s" : ""}`;
+  }
+  if (abaixoDaPrecisao) {
+    const MENOS: Record<string, string> = { despesa_hab: "R$ 1", despesa_mat: "R$ 1", matriculas: "1 matrícula", conveniadas: "1 matrícula", atu: "0,1 aluno por turma", aprovacao: "0,1 ponto percentual", ideb: "0,1 ponto", saeb: "0,01 ponto" };
+    txt = `${abs > 0 ? "+" : "−"}menos de ${MENOS[m]}`;
   }
   return { abs, pct, unidade: unidadeD, sentido, texto: igual ? `igual à ${nomeRef}` : `${txt}, ${sentido} ${nomeRef}` };
 }
@@ -850,6 +862,8 @@ export type LinhaComparativa = {
 export type ResumoColuna = { n: number; media: number | null; mediana: number | null; minimo: number | null; maximo: number | null; noGrupo: number; comValor: number };
 
 const SEM_ESCOPO: Ponto = { ...SEM_OBS, status: "NAO_APLICAVEL", nota: "Fora do escopo desta etapa", notaMaterial: false };
+/** Ideb e Saeb são bienais: em ano par não há edição, o que é diferente de a medida não existir na etapa. */
+const SEM_EDICAO: Ponto = { ...SEM_OBS, status: "NAO_APLICAVEL", nota: "Sem edição neste ano: o Ideb e o Saeb são bienais", notaMaterial: false };
 
 /**
  * Tabela comparativa: uma linha por capital do grupo, com despesa total, população, despesa por habitante, matrículas, despesa por
@@ -878,8 +892,8 @@ export function tabelaComparativa(
       conveniadas_pct: { ...SEM_OBS },
       atu: etapaValida("atu", etapa) ? get("atu") : SEM_ESCOPO,
       aprovacao: etapaValida("aprovacao", etapa) ? get("aprovacao") : SEM_ESCOPO,
-      ideb: etapaValida("ideb", etapa) && exata ? get("ideb") : SEM_ESCOPO,
-      saeb: etapaValida("saeb", etapa) && exata ? get("saeb") : SEM_ESCOPO,
+      ideb: !etapaValida("ideb", etapa) ? SEM_ESCOPO : exata ? get("ideb") : SEM_EDICAO,
+      saeb: !etapaValida("saeb", etapa) ? SEM_ESCOPO : exata ? get("saeb") : SEM_EDICAO,
     };
     const conv = ix.ponto("edu.matriculas.conveniadas_municipais", cap.cod, ano, "total", null);
     const mt = bruto.matriculas;
@@ -888,7 +902,7 @@ export function tabelaComparativa(
     const celulas = {} as Record<ColunaId, Celula>;
     for (const c of COLUNAS) {
       const p = bruto[c.id];
-      const fora = p === SEM_ESCOPO;
+      const fora = p === SEM_ESCOPO || p === SEM_EDICAO;
       const medidaCol = c.medida;
       const txt =
         p.valor === null ? "" : c.id === "populacao" ? inteiro(p.valor) : c.id === "conveniadas_pct" || c.id === "intra_pct" ? percentual(p.valor, 1) : medidaCol ? formata(medidaCol, p.valor) : String(p.valor);
@@ -897,7 +911,7 @@ export function tabelaComparativa(
     const ressalvas: LinhaComparativa["ressalvas"] = [];
     for (const c of COLUNAS) {
       const p = bruto[c.id];
-      if (p === SEM_ESCOPO) continue;
+      if (p === SEM_ESCOPO || p === SEM_EDICAO) continue;
       if (p.status === "OBSERVADO") {
         const texto = !p.elegivel ? p.motivo ?? p.nota : p.nota;
         if (texto) ressalvas.push({ coluna: c.rotulo, texto, material: p.notaMaterial || !p.elegivel });
@@ -983,7 +997,7 @@ export function linhasCsvTabelaComparativa(
       out.push([
         l.cap.nome, String(l.cap.cod), l.cap.uf, String(ano), c.porEtapa ? nomeEtapa(d, etapa) : "Não depende da etapa", grp, c.rotulo,
         cel.valor === null ? "" : String(cel.valor), cel.texto, UNIDADE_COLUNA[c.id](moeda),
-        cel.foraDoEscopo ? "Fora do escopo da etapa" : ROTULO_STATUS[cel.ponto.status],
+        cel.foraDoEscopo ? (cel.ponto === SEM_EDICAO ? "Sem edição neste ano (medida bienal)" : "Fora do escopo da etapa") : ROTULO_STATUS[cel.ponto.status],
         cel.ponto.status !== "OBSERVADO" || cel.foraDoEscopo ? "" : cel.elegivel ? "sim" : "nao",
         (cel.ponto.status === "OBSERVADO" ? (!cel.elegivel ? cel.ponto.motivo ?? cel.ponto.nota : cel.ponto.nota) : cel.ponto.nota) ?? "",
         MEDIDA[medida].rotulo, refSel?.mediana == null ? "" : String(refSel.mediana), refSel?.media == null ? "" : String(refSel.media), refSel ? String(refSel.n) : "",
@@ -1033,6 +1047,36 @@ export function textoPerimetroIntra(p: PerimetroIntra | null, ano: number, medid
   if (!p) return `${base} A parcela intraorçamentária de ${ano} não consta do RREO usado pelo painel, e a comparação entre capitais não a corrige.`;
   const pc = (v: number) => `${decimal(v, 1)}%`;
   return `${base} Em ${p.ano} essa parcela pesa de ${pc(p.menor.pct)} da função em ${p.menor.nome} (${p.menor.uf}) a ${pc(p.maior.pct)} em ${p.maior.nome} (${p.maior.uf}) (RREO): a comparação entre capitais não corrige a diferença.`;
+}
+
+/* ------------------------------------------------------------------ referência no gráfico, notas materiais e grupos */
+
+/**
+ * Referência que aparece como traço no gráfico das capitais: a nacional do mesmo universo, quando existe; senão a mediana nacional
+ * calculada pelo OBEE (outro universo, rotulado). Gráfico e legenda dizem de onde vem.
+ */
+export function referenciaExternaDoGrafico(d: DadosPainel, m: MedidaId, ano: number, etapa: EtapaId, comp: string | null): { rotulo: string; valor: number } | null {
+  const mesmo = referenciasExternas(d, m, ano, etapa, comp).filter((x) => x.tipo === "nacional_mesmo_universo");
+  if (mesmo[0]) return { rotulo: "Brasil", valor: mesmo[0].valor };
+  const g = nacionalCalculada(d, m, ano)?.grupos.find((x) => x.id === "elegiveis");
+  return g && g.mediana !== null ? { rotulo: "Municípios do país", valor: g.mediana } : null;
+}
+
+/**
+ * Notas materiais do recorte, sem depender de a capital estar escolhida: cada texto distinto com as capitais a que se aplica.
+ * A restrição que vale para o conjunto (a população de 2021, por exemplo) precisa estar à vista junto do gráfico.
+ */
+export function notasMateriais(comp: Comparacao): { texto: string; capitais: string[] }[] {
+  const mapa = new Map<string, string[]>();
+  for (const i of comp.incluidas) {
+    if (i.ponto.nota && i.ponto.notaMaterial) mapa.set(i.ponto.nota, [...(mapa.get(i.ponto.nota) ?? []), `${i.cap.nome} (${i.cap.uf})`]);
+  }
+  return Array.from(mapa.entries()).map(([texto, capitais]) => ({ texto, capitais })).sort((a, b) => b.capitais.length - a.capitais.length || a.texto.localeCompare(b.texto, "pt-BR"));
+}
+
+/** Regiões com capitais no painel, na ordem do catálogo, com o número de capitais de cada uma. */
+export function regioesDoPainel(d: DadosPainel): { id: string; nome: string; n: number }[] {
+  return Object.entries(d.regioes).map(([id, nome]) => ({ id, nome, n: d.capitais.filter((c) => c.regiao === id).length })).filter((r) => r.n > 0);
 }
 
 /* ------------------------------------------------------------------ população e ponte da despesa por matrícula */

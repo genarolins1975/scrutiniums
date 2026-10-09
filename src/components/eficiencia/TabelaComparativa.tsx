@@ -10,9 +10,11 @@ import {
   ordenaTabela,
   tabelaComparativa,
   type ColunaDef,
+  type CapitalPainel,
   type ColunaId,
   type DadosPainel,
   type Disciplina,
+  type Grupo,
   type Indice,
   type LinhaComparativa,
   type MedidaId,
@@ -46,6 +48,8 @@ export function TabelaComparativa({
   moeda,
   disc,
   destacadas,
+  grupo,
+  capGrupo,
   medida,
   ordem,
   decrescente,
@@ -63,6 +67,9 @@ export function TabelaComparativa({
   disc: Disciplina;
   /** capitais destacadas (poucas), sem tirar o contexto do grupo */
   destacadas: string[];
+  /** grupo de comparação: todas as capitais ou as da região de capGrupo */
+  grupo: Grupo;
+  capGrupo: CapitalPainel;
   medida: MedidaId;
   ordem: ColunaId | "alfabetica";
   decrescente: boolean;
@@ -72,11 +79,11 @@ export function TabelaComparativa({
   aoSelecionar: (id: string) => void;
   aoBaixar: () => void;
 }) {
-  const t = useMemo(() => tabelaComparativa(ix, ano, etapa, moeda, disc, "todas", dados.capitais[0], medida), [ix, ano, etapa, moeda, disc, dados.capitais, medida]);
+  const t = useMemo(() => tabelaComparativa(ix, ano, etapa, moeda, disc, grupo, capGrupo, medida), [ix, ano, etapa, moeda, disc, grupo, capGrupo, medida]);
   const linhas = useMemo(() => ordenaTabela(t.linhas, ordem, decrescente), [t.linhas, ordem, decrescente]);
   const colunas = COLUNAS.filter((c) => visao === "todas" || c.grupo === visao);
   const colSel = COLUNAS.find((c) => c.medida === medida)?.id;
-  const nomeGrupo = "todas as capitais estaduais";
+  const nomeGrupo = grupo === "regiao" ? `capitais da região ${dados.regioes[capGrupo.regiao]}` : "todas as capitais estaduais";
   const resultadoSemEscopo = !["anos_iniciais", "anos_finais"].includes(etapa);
   /** em tela estreita, a visão "Todas" mostra só as medidas centrais; as demais aparecem ao escolher um grupo de colunas */
   const esconde = (c: ColunaDef) => (visao === "todas" && !c.central ? "hidden md:table-cell" : "");
@@ -122,8 +129,7 @@ export function TabelaComparativa({
         ) : (
           <strong className="font-semibold text-obee-tinta">{nomeEtapa(dados, etapa).toLowerCase()}</strong>
         )}
-        . Ideb e Saeb usam a edição {t.edicao}
-        {t.edicaoExata ? "" : ` (não há edição ${ano}; as colunas ficam sem valor)`}. A mediana de cada coluna usa só as capitais com valor observado e elegível; a cobertura difere entre colunas e está na última
+        . {t.edicaoExata ? `Ideb e Saeb usam a edição ${t.edicao}` : `Ideb e Saeb são bienais e não há edição em ${ano}: essas colunas ficam sem valor (a edição mais recente é a de ${t.edicao}, disponível ao escolher o ano ${t.edicao})`}. A mediana de cada coluna usa só as capitais com valor observado e elegível; a cobertura difere entre colunas e está na última
         linha.
       </p>
       {visao === "todas" && (

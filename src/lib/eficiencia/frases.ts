@@ -142,7 +142,13 @@ export type PontoFrase = { ano: number; valor: number | null; elegivel: boolean;
  * Evolução entre dois períodos: só com valores elegíveis. Quebra de série entre os dois extremos bloqueia a comparação e
  * diz por quê; anos sem dado ficam fora da conta (nunca contam como zero) e nada de "melhorou" ou "piorou".
  */
-export function fraseEvolucao(pontos: PontoFrase[], medida: MedidaId, motivoQuebra = "a base do dado mudou", onde?: string): string {
+export function fraseEvolucao(
+  pontos: PontoFrase[],
+  medida: MedidaId,
+  motivoQuebra = "a base do dado mudou",
+  onde?: string,
+  notasDePeriodo: { ano: number; texto: string }[] = [],
+): string {
   const validos = pontos.filter((p) => p.valor !== null && p.elegivel);
   if (validos.length === 0) return "Não há dado comparável para mostrar a evolução neste recorte.";
   if (validos.length === 1) return `Há dado comparável em um só período (${validos[0].ano}: ${formata(medida, validos[0].valor as number)}).`;
@@ -157,5 +163,9 @@ export function fraseEvolucao(pontos: PontoFrase[], medida: MedidaId, motivoQueb
   const suj = SUJEITO[medida][0].toLowerCase() + SUJEITO[medida].slice(1);
   const quem = onde ? `${onde}, ` : "";
   const frase = `${quem}${suj} passou de ${formata(medida, a.valor as number)} em ${a.ano} para ${formata(medida, b.valor as number)} em ${b.ano}.`;
-  return frase[0].toUpperCase() + frase.slice(1);
+  // períodos seguintes sem valor comparável: a frase diz que a série não termina onde o texto termina
+  const depois = pontos.filter((p) => p.ano > b.ano);
+  const lacuna = depois.length === 0 ? "" : depois.length === 1 ? ` Sem valor comparável em ${depois[0].ano}.` : ` Sem valor comparável de ${depois[0].ano} a ${depois[depois.length - 1].ano}.`;
+  const periodo = notasDePeriodo.filter((n) => n.ano > a.ano && n.ano < b.ano).map((n) => ` Em ${n.ano}: ${n.texto}`).join("");
+  return frase[0].toUpperCase() + frase.slice(1) + periodo + lacuna;
 }

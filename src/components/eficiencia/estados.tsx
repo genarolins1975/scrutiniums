@@ -119,3 +119,35 @@ export function ForaDaComparacao({ itens }: { itens: { nome: string; uf: string;
     </div>
   );
 }
+
+/**
+ * Ressalvas materiais do recorte inteiro, à vista junto do gráfico e sem depender de uma capital escolhida: cada texto distinto,
+ * com a que capitais se aplica. A frase inicial fica visível; o restante abre por clique ou teclado.
+ */
+export function NotasMateriais({ notas, n }: { notas: { texto: string; capitais: string[] }[]; n: number }) {
+  if (!notas.length) return null;
+  return (
+    <div className="border-l-2 border-obee-tinta bg-papel px-3 py-2 text-sm text-obee-tinta" role="note" aria-label="Ressalvas materiais deste recorte">
+      <p className="rotulo !text-[0.66rem] text-carvao-muted">Ressalvas deste recorte</p>
+      <ul className="mt-1 space-y-2">
+        {notas.map((x) => {
+          const corte = x.texto.length > 190 ? x.texto.search(/\.\s/) : -1;
+          const inicio = corte > 0 ? x.texto.slice(0, corte + 1) : x.texto;
+          const resto = corte > 0 ? x.texto.slice(corte + 1).trim() : "";
+          const aplica = x.capitais.length === n ? `Vale para as ${n} capitais.` : `Vale para ${x.capitais.length} ${x.capitais.length === 1 ? "capital" : "capitais"}: ${x.capitais.slice(0, 4).join(", ")}${x.capitais.length > 4 ? ` e mais ${x.capitais.length - 4}` : ""}.`;
+          return (
+            <li key={x.texto} className="leading-snug">
+              {inicio} <span className="text-carvao-muted">{aplica}</span>
+              {resto && (
+                <details className="mt-0.5">
+                  <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver o restante</summary>
+                  <p className="text-carvao-muted">{resto}</p>
+                </details>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}

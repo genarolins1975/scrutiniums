@@ -86,7 +86,7 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     return i;
   };
   /** 12 algarismos significativos bastam à exibição e ao CSV do cliente; a gold e os CSV do servidor guardam a precisão original. */
-  const p12 = (v: number | null) => (v === null ? null : Number(v.toPrecision(12)));
+  const p12 = (v: number | null) => (v === null ? null : Number(v.toPrecision(Math.abs(v) >= 1e9 ? 15 : 12)));
   const situacoes: string[] = [];
   const posSit = new Map<string, number>();
   const obs: ObsCompacta[] = g.observacoes.map((o) => [

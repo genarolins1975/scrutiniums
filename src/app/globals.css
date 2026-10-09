@@ -182,6 +182,22 @@ body {
 .dominio-obee { overflow-wrap: break-word; }
 .dominio-obee ::selection { background: var(--cor-obee); color: #ffffff; }
 
+/* Blocos que se abrem por clique: um indício visual (seta) em todo resumo, em vez de texto que parece estático. Os que já trazem
+   o próprio indício (classe list-none) ficam como estão. */
+.dominio-obee details > summary:not(.list-none) { list-style: none; }
+.dominio-obee details > summary:not(.list-none)::-webkit-details-marker { display: none; }
+.dominio-obee details > summary:not(.list-none)::after {
+  content: "";
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin: -0.2rem 0 0 0.6rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+.dominio-obee details[open] > summary:not(.list-none)::after { margin-top: 0.2rem; transform: rotate(-135deg); }
+
 /* Domínio Energia: algarismos alinhados na serifa (Playfair usa estilo antigo
    por padrão, ruim para ler números de dados). */
 .dominio-energia .font-serif { font-variant-numeric: lining-nums; }
