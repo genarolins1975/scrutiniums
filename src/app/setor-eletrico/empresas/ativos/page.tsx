@@ -137,9 +137,9 @@ export default function PaginaP036() {
           rotulo="Empresas"
           siglas={["SIGA", "CEG", "SIGET", "CNPJ", "ANEEL"]}
           titulo={painel("p036").pergunta}
-          lead="Quem é dono de cada usina e de cada linha de transmissão, pelo CNPJ que a ANEEL publica no registro do ativo. O ativo sem vínculo completo continua identificado, com o motivo."
-          recorte={`Usinas do SIGA de ${dataSiga} · linhas do SIGET de ${dataTexto(t?.data)} · MW, km de circuito e contagens`}
-          fonte="ANEEL, cadastros de geração (SIGA) e de transmissão (SIGET) e de agentes"
+          lead={`Quem é dono de cada usina e de cada linha de transmissão, pelo CNPJ (${SIGLAS.CNPJ}) que a ANEEL (${SIGLAS.ANEEL}) publica no registro do ativo. O ativo sem vínculo completo continua identificado, com o motivo.`}
+          recorte={`Usinas do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · linhas do SIGET (${SIGLAS.SIGET}) de ${dataTexto(t?.data)} · MW, km de circuito e contagens`}
+          fonte="ANEEL, cadastros de geração, de transmissão e de agentes"
           referencia={
             <>
               SIGA de {dataSiga}; SIGET de {dataTexto(t?.data)}; cadastro de agentes e Agentes de Geração de {dataTexto(c.agentes.data)}. Processado em {carimbo(g.gerado_em)}.

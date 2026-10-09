@@ -129,7 +129,6 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16" data-tipo-pagina="trilha">
         <AprendaNavegacao atual="trilhas" />
         <AprendaCabecalho
-          tipo="trilha"
           rotulo="Trilha"
           titulo={t.titulo}
           lead={t.pergunta}

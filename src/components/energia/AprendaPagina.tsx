@@ -73,14 +73,12 @@ export function AprendaTrilhas() {
  * `ed-meta`), sem o bloco recolhível: no Aprenda não há seletor de profundidade que o abra, e a sigla precisa estar definida onde é usada.
  */
 export function AprendaCabecalho({
-  tipo,
   rotulo,
   titulo,
   lead,
   contexto,
   siglas,
 }: {
-  tipo: "trilha" | "verbete";
   rotulo: string;
   titulo: ReactNode;
   lead?: ReactNode;
@@ -89,7 +87,7 @@ export function AprendaCabecalho({
   siglas?: readonly string[];
 }) {
   return (
-    <header className="cab-modulo" data-abertura="editorial" data-tipo-pagina={tipo}>
+    <header className="cab-modulo" data-abertura="editorial">
       <p className="rotulo text-mineral">{rotulo}</p>
       <h1 className="ed-h1 mt-2 max-w-4xl font-serif text-carvao">{titulo}</h1>
       {lead && <p className="ed-lead mt-3 max-w-3xl text-carvao-muted">{lead}</p>}

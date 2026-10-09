@@ -2026,6 +2026,24 @@ export function notaChuvaMes(b: AguaPrecipitacaoBacia, per: string, base: string
   return `${cap(an)} média do mês em ${periodoBase(base)} (${num(d.media, 1)} mm). Com média de poucos milímetros, o percentual cresce muito: leia os milímetros e a faixa do mês.`;
 }
 
+/**
+ * Resposta completa da chuva de um mês completo (Analisar): milímetros, média e faixa do mês, a anomalia em % e o aviso de que o
+ * percentil do mês não é publicado (só o dos 30 dias mais recentes).
+ */
+export function respostaChuvaMes(b: AguaPrecipitacaoBacia, per: string, base: string): string {
+  const onde = `na bacia do ${nomeProprio(b.bacia)}`;
+  const d = dadosChuvaMes(b, per);
+  if (!d || d.mm === null) return `Sem estimativa de chuva de ${mesExtenso(per)} ${onde}: o mês só vale com todos os dias, e a soma nunca é feita com dia faltando.`;
+  const an = textoAnomaliaPct(d.anomalia);
+  const partes = [
+    `Em ${mesExtenso(per)}, a estimativa por satélite é de ${num(d.mm, 1)} mm de chuva ${onde}${an ? `, ${an} média do mesmo mês em ${periodoBase(base)} (${num(d.media, 1)} mm)` : ""}${
+      d.p10 !== null && d.p90 !== null ? `; 10º a 90º percentil do mês: ${num(d.p10, 1)} a ${num(d.p90, 1)} mm` : ""
+    }. O percentil do mês não é publicado: só o dos 30 dias mais recentes.`,
+  ];
+  if (d.preliminar) partes.push("O mês tem dias do IMERG Late, ainda sem calibração por pluviômetros (preliminar).");
+  return partes.join(" ");
+}
+
 /* --- janelas preliminares: o que é estimativa em tempo quase real contra a base de produto final --- */
 
 function diasEntre(a: string, b: string): number {

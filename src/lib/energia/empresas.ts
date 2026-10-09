@@ -1681,7 +1681,7 @@ export function passosVinculo(g: Pick<EmpresasGold, "cadastro" | "controle" | "d
     {
       id: "ativo",
       titulo: "Ativo",
-      liga: "o CEG da usina e o módulo de transmissão do SIGET, com o CNPJ do contrato",
+      liga: `o CEG (${SIGLAS.CEG}) da usina e o módulo de transmissão do SIGET (${SIGLAS.SIGET}), com o CNPJ do contrato`,
       contagem: `${inteiro(a.usinas)} usinas${t ? ` e ${inteiro(t.resumo.modulos)} módulos de transmissão` : ""}`,
     },
     {

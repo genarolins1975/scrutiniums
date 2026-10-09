@@ -18,10 +18,13 @@ import {
   PAINEIS_REGULACAO,
   abreviarAto,
   anoInicioHistorico,
+  avisoRevisaoAgenda,
   avisoToleranciaIpca,
   consultasNaData,
   contagemAgendaPorPainel,
+  contagemConsultasNaData,
   contagemPaineisAfetados,
+  contagemPorOrigem,
   contagemProcedimentos,
   contarSituacoes,
   defasagemAtas,
@@ -37,10 +40,15 @@ import {
   linhasConsultas,
   linhasLimites,
   linhasLinhaTempo,
+  limitesVigentes,
   linhasProcedimentos,
+  marcosDoAto,
   nomeAgenda,
+  notaContagemAgenda,
   oQueMudouLimites,
+  orgaosDosEventos,
   ordenarConsultas,
+  paresRegraIpca,
   perguntaPainel,
   proximoPainel,
   respostaAgenda,
@@ -51,8 +59,12 @@ import {
   respostaProcedimentos,
   rotaPainel,
   rotuloCurtoEvento,
+  rotuloDownload,
+  semTravessao,
   situacaoSeConfirmada,
   temaCurto,
+  textoAnosAgenda,
+  textoAtosDoAno,
   textoConferenciaAcionamento,
   textoCoberturaFaixa,
   textoDefasagemEvento,
@@ -743,6 +755,134 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
   it("o destino Regulação está publicado e marcado como integrado (publica números)", () => {
     expect(DESTINOS_NAVEGACAO.find((d) => d.slug === "regulacao")?.publicado).toBe(true);
     expect(MODULOS_ENERGIA.find((m) => m.slug === "regulacao")?.integrado).toBe(true);
+  });
+});
+
+describe.skipIf(!disponivel)("seletores da migração editorial da Regulação", () => {
+  const ato = (nome: string) => gold.limites_pld.atos.find((a) => a.ato === nome)!;
+
+  it("limites vigentes na data de referência: campo a campo, com ato, publicação e vigência em campos separados", () => {
+    const { vigencia, limites } = limitesVigentes(gold);
+    expect(vigencia).toEqual({ inicio: "2026-01-01", fim: "2026-12-31" });
+    expect(limites.map((l) => l.campo)).toEqual(CAMPOS_LIMITE);
+    const hoje = gold.resumo.limites_hoje;
+    for (const l of limites) {
+      expect(l.valor, l.campo).toBe(hoje[l.campo]);
+      expect(l.ato, l.campo).toBe("Despacho ANEEL nº 3.850/2025");
+      expect(l.publicacao, l.campo).toBe("2025-12-23");
+      expect([l.inicio, l.fim], l.campo).toEqual(["2026-01-01", "2026-12-31"]);
+    }
+    // fora da cobertura da série não há valor de reserva
+    expect(limitesVigentes({ ...gold, data_referencia: "2019-06-01" })).toEqual({ vigencia: null, limites: [] });
+  });
+
+  it("2022: o piso e os tetos vêm de atos distintos, cada um com a sua publicação", () => {
+    const { limites } = limitesVigentes({ ...gold, data_referencia: "2022-06-15" });
+    const por = Object.fromEntries(limites.map((l) => [l.campo, l]));
+    expect(por.pld_min).toMatchObject({ ato: "Resolução Homologatória ANEEL nº 2.994/2021", publicacao: "2021-12-20" });
+    expect(por.pld_max_horario).toMatchObject({ ato: "Despacho ANEEL nº 4.046/2021", publicacao: "2021-12-17" });
+    expect(por.pld_max_estrutural).toMatchObject({ ato: "Despacho ANEEL nº 4.046/2021", publicacao: "2021-12-17" });
+  });
+
+  it("marcos do ato: publicação, início e fim em ordem de data, com a publicação ausente dita e nunca preenchida", () => {
+    expect(marcosDoAto(ato("Despacho ANEEL nº 3.850/2025")).map((m) => [m.chave, m.data])).toEqual([
+      ["publicacao", "2025-12-23"],
+      ["inicio", "2026-01-01"],
+      ["fim", "2026-12-31"],
+    ]);
+    // REH nº 3.167/2022: publicada em 04/01/2023, depois do início da vigência (01/01/2023): a ordem é a real
+    expect(marcosDoAto(ato("Resolução Homologatória ANEEL nº 3.167/2022")).map((m) => m.chave)).toEqual(["inicio", "publicacao", "fim"]);
+    // REH nº 2.828/2020: o extrato não está acessível, então a publicação fica sem data
+    const sem = marcosDoAto(ato("Resolução Homologatória ANEEL nº 2.828/2020"));
+    expect(sem[0]).toMatchObject({ chave: "publicacao", data: null });
+    expect(sem[0].ausencia).toContain("não conferida");
+    expect(sem.slice(1).map((m) => m.data)).toEqual(["2021-01-01", "2021-12-31"]);
+    expect(JSON.stringify(sem)).not.toMatch(/2026-/);
+  });
+
+  it("texto dos atos do ano: um ato em 2026, dois em 2022 e em 2023, vazio sem ato, e a resposta do ano o contém", () => {
+    expect(textoAtosDoAno(gold, 2026)).toBe("Os três limites foram fixados pelo Despacho ANEEL nº 3.850/2025, com publicação no DOU em 23/12/2025; vigência de 01/01/2026 a 31/12/2026.");
+    expect(textoAtosDoAno(gold, 2022)).toContain("pela Resolução Homologatória ANEEL nº 2.994/2021");
+    expect(textoAtosDoAno(gold, 2022)).toContain("pelo Despacho ANEEL nº 4.046/2021");
+    expect(textoAtosDoAno(gold, 2023)).toContain("Retificação da Resolução Homologatória ANEEL nº 3.167/2022");
+    expect(textoAtosDoAno(gold, 2019)).toBe("");
+    for (const l of linhasLimites(gold)) expect(respostaLimites(gold, l.ano), String(l.ano)).toContain(textoAtosDoAno(gold, l.ano));
+  });
+
+  it("conferência pelo IPCA: o identificador e o rótulo de cada par são únicos, mesmo com dois atos no mesmo ano e campo", () => {
+    const pares = paresRegraIpca(gold);
+    expect(pares.length).toBeGreaterThan(0);
+    expect(new Set(pares.map((x) => x.id)).size).toBe(pares.length);
+    expect(new Set(pares.map((x) => x.rotulo)).size).toBe(pares.length);
+    // 2023 tem a REH e a retificação dela fixando os mesmos tetos
+    expect(pares.filter((x) => x.id.startsWith("2023:")).length).toBeGreaterThanOrEqual(4);
+    // os valores são os da conferência, sem mudança
+    const conf = gold.limites_pld.conferencias_detalhe.filter((c) => c.conferencia === "regra_ipca");
+    expect(pares.map((x) => x.valor)).toEqual(conf.map((c) => c.valor_ato));
+    expect(pares.map((x) => x.referencia)).toEqual(conf.map((c) => c.valor_esperado));
+  });
+
+  it("travessão copiado da fonte vira vírgula no texto do observatório, sem tocar no resto", () => {
+    expect(semTravessao("Otimização – TEO")).toBe("Otimização, TEO");
+    expect(semTravessao("Companhia – CEEE-D — filial")).toBe("Companhia, CEEE-D, filial");
+    expect(semTravessao("Metodologia de cálculo do PLD.")).toBe("Metodologia de cálculo do PLD.");
+    // intervalo escrito com hífen, sem espaços, não é separador de frase
+    expect(semTravessao("2026-2027")).toBe("2026-2027");
+    for (const a of gold.limites_em_revisao) expect(semTravessao(a.atividade)).not.toMatch(/[–—]/);
+  });
+
+  it("linha do tempo: órgãos emissores do mais ao menos frequente e contagem por origem que fecha com o total", () => {
+    const ev = gold.linha_do_tempo.eventos;
+    const orgaos = orgaosDosEventos(ev);
+    expect(orgaos.length).toBeGreaterThan(0);
+    expect(new Set(orgaos).size).toBe(orgaos.length);
+    expect(new Set(orgaos)).toEqual(new Set(ev.map((e) => e.orgao)));
+    const n = (o: string) => ev.filter((e) => e.orgao === o).length;
+    for (let i = 1; i < orgaos.length; i++) expect(n(orgaos[i - 1])).toBeGreaterThanOrEqual(n(orgaos[i]));
+    const { atos, registros } = contagemPorOrigem(ev);
+    expect(atos + registros).toBe(ev.length);
+    expect(atos).toBe(ev.filter((e) => e.origem === "curadoria").length);
+  });
+
+  it("P046: a contagem por situação na data de referência fecha com o total e com a ficha de prova", () => {
+    const n = contagemConsultasNaData(gold.consultas, gold.consultas.data_referencia);
+    expect(Object.values(n).reduce((a, b) => a + b, 0)).toBe(gold.consultas.itens.length);
+    expect(n.aberta).toBe(gold.evidencias.consultas_abertas!.valor_calculo);
+    // a mesma regra do gráfico: nada de situação que a regra de situação não dá
+    expect(n).toEqual(contarSituacoes(consultasNaData(gold.consultas.itens, gold.consultas.data_referencia)));
+    // dez dias depois, as de prazo vencido saem das abertas e entram em encerradas
+    const depois = contagemConsultasNaData(gold.consultas, "2026-10-12");
+    expect(depois.aberta).toBeLessThan(n.aberta);
+    expect(depois.encerrada_aguardando).toBeGreaterThan(n.encerrada_aguardando);
+  });
+
+  it("P046: anos e nome da agenda saem da portaria, e a nota da contagem diz quando a atualização não foi lida", () => {
+    expect(textoAnosAgenda(gold.agenda)).toBe("2026 e 2027");
+    expect(nomeAgenda(gold.agenda)).toBe("Agenda Regulatória de 2026 e 2027");
+    expect(textoAnosAgenda({ por_ano: {}, itens: [] })).toBeNull();
+    expect(nomeAgenda({ por_ano: {}, itens: [] })).toBe("Agenda Regulatória da ANEEL");
+    expect(textoAnosAgenda({ por_ano: { "2026": 3 }, itens: [] })).toBe("2026");
+    const r = gold.agenda.revisao;
+    expect(r.atualizada_por && !r.texto_lido).toBeTruthy();
+    const aviso = avisoRevisaoAgenda(gold.agenda)!;
+    expect(aviso).toContain(r.atualizada_por!);
+    expect(aviso).toContain("não pôde ser lido");
+    expect(aviso).toContain("podem ter mudado");
+    expect(aviso).not.toMatch(/HTTP|403|https?:/);
+    expect(notaContagemAgenda(gold.agenda)).toContain(`A ${r.atualizada_por}, que a atualiza, não pôde ser lida`);
+    // texto lido ou sem atualização: sem aviso, e a nota volta à ressalva do ano
+    const lida = { ...gold.agenda, revisao: { ...r, texto_lido: true } };
+    expect(avisoRevisaoAgenda(lida)).toBeNull();
+    expect(notaContagemAgenda(lida)).toBe("O ano de cada atividade é previsão da ANEEL e pode mudar.");
+    expect(avisoRevisaoAgenda({ ...gold.agenda, revisao: { ...r, atualizada_por: null } })).toBeNull();
+    expect(avisoRevisaoAgenda({ ...gold.agenda, disponivel: false })).toBeNull();
+  });
+
+  it("rótulo do arquivo para baixar: parênteses viram vírgula, o intervalo de anos ganha 'a' e o formato fecha o rótulo", () => {
+    expect(rotuloDownload("Consultas e audiências públicas (histórico)")).toBe("Consultas e audiências públicas, histórico (CSV)");
+    expect(rotuloDownload("Agenda Regulatória 2026-2027")).toBe("Agenda Regulatória 2026 a 2027 (CSV)");
+    expect(rotuloDownload("Linha do tempo")).toBe("Linha do tempo (CSV)");
+    for (const d of gold.downloads) expect(rotuloDownload(d.rotulo), d.rotulo).not.toMatch(/\)\s*\(|\d-\d|[–—]/);
   });
 });
 

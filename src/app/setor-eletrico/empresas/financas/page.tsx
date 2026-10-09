@@ -3,20 +3,22 @@ import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
-import { EmpresasFinancas } from "@/components/energia/EmpresasFinancas";
+import { EmpresasEvolucaoFinancas, EmpresasTabelaCompanhias } from "@/components/energia/EmpresasFinancas";
 import {
-  EmpresasAnalise,
-  EmpresasAuditoria,
   EmpresasAviso,
+  EmpresasDatas,
   EmpresasIndisponivel,
   EmpresasNavegacao,
   EmpresasRecorte,
   EmpresasSeguir,
 } from "@/components/energia/EmpresasPagina";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
+import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
   COLUNAS_CONTAS,
@@ -41,6 +43,7 @@ import {
 import { evidenciasReceita, seriesFinanceirasDe } from "@/lib/energia/empresas-arquivos";
 import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
+import { SIGLAS } from "@/lib/energia/siglas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 import { datasLegiveis } from "@/lib/energia/visao";
 
@@ -64,58 +67,129 @@ export default function PaginaP038() {
   const padraoFin = padraoFinancas(f.companhias);
   const seriesIniciais = seriesFinanceirasDe(g.series.financas, padraoFin) ?? {};
   const evidenciasIniciais = evidenciasReceita(g.series.evidencias, padraoFin);
+  const dataCadastro = dataTexto(g.datas.cvm_cadastro_capturado_em?.slice(0, 10));
+  const exercicios = `${f.periodos.exercicios[0] ?? "sem dado"} a ${f.periodos.ultimo_exercicio ?? "sem dado"}`;
+
+  const oQueMudou = (
+    <>
+      {inteiro(f.revisoes.documentos_com_mais_de_uma_versao)} documentos têm mais de uma versão na CVM e {inteiro(f.revisoes.valores_reapresentados)} valores foram reapresentados no comparativo do ano
+      seguinte; {inteiro(f.revisoes.inversoes_de_escala_resolvidas)} diferenças que eram só troca da marca de escala deixaram de contar como reapresentação.
+    </>
+  );
+  const comoInterpretar = (
+    <>
+      Consolidado (a companhia e as controladas) e individual (só a companhia) são séries separadas; o escopo exibido na tabela é o consolidado quando apresentado. Valores de fluxo (receita, lucro,
+      caixa) são do período; valores de saldo (ativo, dívida, patrimônio), do fim do período. No ITR, a receita é do trimestre e o caixa é acumulado desde janeiro.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      Não se soma nada entre companhias: a controladora já consolida as controladas. {f.universo.nota_cobertura} As demonstrações regulatórias da ANEEL, que usam outro plano de contas, não estão aqui
+      (ver o aviso &ldquo;Fonte indisponível&rdquo;, acima). O resultado antes do financeiro e dos tributos não é EBITDA.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="empresas" />
       <MarcaVisita secao="energia:empresas-financas" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["CVM", "DFP", "ITR", "ANEEL"]}
+        <EmpresasNavegacao atual="p038" />
+        <CabecalhoModulo
           rotulo="Empresas"
+          siglas={["CVM", "DFP", "ITR", "ANEEL"]}
           titulo={painel("p038").pergunta}
+          lead={`Receita, resultado, dívida, patrimônio e caixa das companhias abertas do setor, como reportados à CVM (${SIGLAS.CVM}), com o consolidado e o individual separados. Nada se soma entre companhias.`}
+          recorte={`Exercícios de ${exercicios} (DFP) · trimestres até ${dataTexto(f.periodos.ultimo_trimestre)} (ITR) · R$ nominais, em R$ milhões`}
+          fonte="CVM, Demonstrações Financeiras Padronizadas (DFP) e Informações Trimestrais (ITR)"
           referencia={
             <>
               Cadastro de companhias abertas da CVM capturado em {carimbo(g.datas.cvm_cadastro_capturado_em)}; DFP até o exercício de {f.periodos.ultimo_exercicio ?? "sem dado"}; ITR até{" "}
               {dataTexto(f.periodos.ultimo_trimestre)}. Processado em {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <EmpresasDatas
+              itens={[
+                { rotulo: "Cadastro da CVM", texto: `capturado em ${dataCadastro}`, natureza: "OBSERVADO" },
+                { rotulo: "DFP (anual)", texto: `exercícios de ${exercicios}`, natureza: "OBSERVADO" },
+                { rotulo: "ITR (trimestral)", texto: `até ${dataTexto(f.periodos.ultimo_trimestre)}`, natureza: "OBSERVADO" },
+                { rotulo: "Valores com escala convertida", texto: `${inteiro(f.exclusoes.escala.valores_corrigidos)} valores`, natureza: "ESTIMADO" },
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas
+              colunas={4}
+              rotulo="Indicadores do universo de companhias abertas"
+              nota={`${f.universo.nota_cobertura} Contagens do universo inteiro, fixas: não mudam com as companhias, a conta, o escopo nem a frequência escolhidos.`}
+            >
+              <Numero
+                variante="faixa"
+                rotulo="Companhias abertas no cadastro"
+                natureza="CALCULADO"
+                valor={f.universo.companhias}
+                formato="num"
+                casas={0}
+                unidade="companhias"
+                periodo={`cadastro da CVM de ${dataCadastro}`}
+                nota={`${inteiro(f.universo.ativas)} ativas, ${inteiro(f.universo.canceladas)} canceladas.`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Com demonstrações anuais (DFP)"
+                natureza="CALCULADO"
+                valor={f.universo.com_dfp}
+                formato="num"
+                casas={0}
+                unidade="companhias"
+                periodo={`exercícios de ${exercicios}`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Com informações trimestrais (ITR)"
+                natureza="CALCULADO"
+                valor={f.universo.com_itr}
+                formato="num"
+                casas={0}
+                unidade="companhias"
+                periodo={`até ${dataTexto(f.periodos.ultimo_trimestre)}`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Valores reapresentados"
+                natureza="CALCULADO"
+                valor={f.revisoes.valores_reapresentados}
+                formato="num"
+                casas={0}
+                unidade="valores"
+                periodo="no comparativo do ano seguinte"
+                nota={`${inteiro(f.revisoes.documentos_com_mais_de_uma_versao)} documentos têm mais de uma versão na CVM.`}
+              />
+            </FaixaMetricas>
+          }
         >
-          Receita, resultado, dívida, patrimônio e caixa das companhias abertas do setor, como reportados à CVM, com o consolidado e o individual separados, as reapresentações e as
-          conversões de escala declaradas. Nada se soma entre companhias: a controladora já consolida as controladas.
+          Cada companhia reporta à CVM as demonstrações anuais (DFP, {SIGLAS.DFP}) e as informações trimestrais (ITR, {SIGLAS.ITR}) no plano de contas padronizado; a controladora já consolida as
+          controladas, e por isso nenhum valor se soma entre companhias. Reapresentações e conversões de escala são tratadas e ditas, e as demonstrações regulatórias da ANEEL, bloqueadas na fonte, não foram
+          substituídas.
         </CabecalhoModulo>
-        <EmpresasNavegacao atual="p038" />
-        <ModoProfundidade>
 
+        <ModoProfundidade>
           <Bloco id="financas">
             <PainelEvidencia
               id="p038"
-              pergunta={painel("p038").pergunta}
+              pergunta="Como evolui uma conta em até quatro companhias?"
               subtitulo="Demonstrações societárias das companhias abertas na CVM, consolidadas e individuais separadas · R$ nominais"
               porQueImporta={
                 <>
-                  Receita, resultado, dívida e investimento mostram a capacidade das empresas de manter e expandir a rede e o parque gerador. As demonstrações padronizadas da CVM são a
-                  fonte pública comparável entre companhias abertas.
+                  Receita, resultado, dívida e investimento mostram a capacidade das empresas de manter e expandir a rede e o parque gerador. As demonstrações padronizadas da CVM são a fonte pública
+                  comparável entre companhias abertas.
                 </>
               }
-              oQueMudou={
-                <>
-                  {inteiro(f.revisoes.documentos_com_mais_de_uma_versao)} documentos têm mais de uma versão na CVM e {inteiro(f.revisoes.valores_reapresentados)} valores foram reapresentados no
-                  comparativo do ano seguinte; {inteiro(f.revisoes.inversoes_de_escala_resolvidas)} diferenças que eram só troca da marca de escala deixaram de contar como reapresentação.
-                </>
-              }
-              comoInterpretar={
-                <>
-                  Consolidado (a companhia e as controladas) e individual (só a companhia) são séries separadas; o escopo exibido na tabela é o consolidado quando apresentado. Valores de
-                  fluxo (receita, lucro, caixa) são do período; valores de saldo (ativo, dívida, patrimônio), do fim do período. No ITR, a receita é do trimestre e o caixa é acumulado
-                  desde janeiro.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Não se soma nada entre companhias: a controladora já consolida as controladas. {f.universo.nota_cobertura} As demonstrações regulatórias da ANEEL, que usam outro plano de
-                  contas, não estão aqui (ver o aviso &ldquo;Fonte indisponível&rdquo;, acima). O resultado antes do financeiro e dos tributos não é EBITDA.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={g.proveniencia.financas}
               complementares={[{ rotulo: "Valores com a escala convertida", p: g.proveniencia.financas_escala }]}
             >
@@ -123,23 +197,7 @@ export default function PaginaP038() {
                 <RespostaCurta id="p038" veredito={vereditoFinancas(f)}>
                   {respostaFinancas(f)}
                 </RespostaCurta>
-                <EmpresasRecorte
-                  periodo={
-                    <>
-                      Exercícios de {f.periodos.exercicios[0] ?? "sem dado"} a {f.periodos.ultimo_exercicio ?? "sem dado"} (DFP); trimestres de {dataTexto(f.periodos.trimestres[0])} a{" "}
-                      {dataTexto(f.periodos.ultimo_trimestre)} (ITR)
-                    </>
-                  }
-                  universo={
-                    <>
-                      {inteiro(f.universo.companhias)} companhias abertas com setor de energia elétrica declarado à CVM ({inteiro(f.universo.ativas)} ativas, {inteiro(f.universo.distribuidoras_abertas)}{" "}
-                      distribuidoras)
-                    </>
-                  }
-                  unidade="R$ nominais (R$ milhões nas tabelas e nos gráficos)"
-                />
-                <EmpresasFinancas
-                  linhas={linhasCompanhias(f.companhias)}
+                <EmpresasEvolucaoFinancas
                   entidades={entidadesCompanhias(f.companhias)}
                   contas={contasGrafico(f.contas)}
                   padrao={padraoFin}
@@ -161,7 +219,31 @@ export default function PaginaP038() {
                   </EmpresasAviso>
                 ))}
 
-                <EmpresasAnalise titulo="Contas, setores e revisões">
+                <EmpresasRecorte
+                  periodo={
+                    <>
+                      Exercícios de {exercicios} (DFP); trimestres de {dataTexto(f.periodos.trimestres[0])} a {dataTexto(f.periodos.ultimo_trimestre)} (ITR)
+                    </>
+                  }
+                  universo={
+                    <>
+                      {inteiro(f.universo.companhias)} companhias abertas com setor de energia elétrica declarado à CVM ({inteiro(f.universo.ativas)} ativas, {inteiro(f.universo.distribuidoras_abertas)}{" "}
+                      distribuidoras)
+                    </>
+                  }
+                  unidade="R$ nominais (R$ milhões nas tabelas e nos gráficos)"
+                />
+                <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
+
+                <SecaoDoPainel
+                  id="companhias"
+                  titulo="Quais companhias abertas estão no universo?"
+                  lead={`As ${inteiro(f.universo.companhias)} companhias do cadastro da CVM com setor de energia elétrica, com o último exercício de cada uma. Escolha uma linha para pô-la em primeiro lugar na comparação do alto da página.`}
+                >
+                  <EmpresasTabelaCompanhias linhas={linhasCompanhias(f.companhias)} padrao={padraoFin} fonte={fonteCvm} versao={f.periodos.ultimo_trimestre ?? String(f.periodos.ultimo_exercicio ?? "")} />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="contas" titulo="Contas, setores e revisões" nivel="analisar">
                   {decisoesP038.map((x) => (
                     <EmpresasAviso key={x.id} rotulo="Decisão de método">
                       <p>
@@ -183,9 +265,9 @@ export default function PaginaP038() {
                     Setor declarado à CVM: {Object.entries(f.universo.por_setor).map(([s, n]) => `${s}, ${inteiro(n)}`).join("; ")}. {inteiro(f.universo.com_dfp)} com DFP e {inteiro(f.universo.com_itr)} com ITR.{" "}
                     {f.revisoes.regra}
                   </p>
-                </EmpresasAnalise>
+                </SecaoDoPainel>
 
-                <EmpresasAuditoria titulo="O que saiu das séries e por quê">
+                <SecaoDoPainel id="saidas" titulo="O que saiu das séries e por quê" nivel="auditar">
                   <p className="text-sm text-carvao-muted">
                     {f.exclusoes.regra_nao_apresentada} Total: {inteiro(f.exclusoes.colunas_nao_apresentadas.documentos)} colunas e {inteiro(f.exclusoes.colunas_nao_apresentadas.valores)} valores.
                   </p>
@@ -227,7 +309,7 @@ export default function PaginaP038() {
                       Insumo disponível: {x.insumo_disponivel} Como mudar: {x.como_mudar}
                     </p>
                   ))}
-                </EmpresasAuditoria>
+                </SecaoDoPainel>
 
                 <EmpresasSeguir
                   ancora="p038"

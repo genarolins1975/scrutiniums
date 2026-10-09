@@ -53,6 +53,7 @@ import { arvoreDoArquivo } from "@/lib/energia/empresas-arquivos";
 import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { metrica } from "@/lib/energia/metricas";
+import { SIGLAS } from "@/lib/energia/siglas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 
 export const dynamic = "force-static";
@@ -112,8 +113,8 @@ export default function PaginaP039() {
           rotulo="Empresas"
           siglas={["SIGA", "HHI", "CR4", "CR10", "ANEEL", "CADE"]}
           titulo={painel("p039").pergunta}
-          lead="Quem está no topo da cadeia de controle que cada dono de usina declara à ANEEL, quanta capacidade instalada cada grupo detém e controla, e quão concentrada ela está."
-          recorte={`Usinas em operação do SIGA de ${dataSiga} · declarações de ${janela} · MW, % e pontos de HHI`}
+          lead={`Quem está no topo da cadeia de controle que cada dono de usina declara à ANEEL (${SIGLAS.ANEEL}), quanta capacidade instalada cada grupo detém e controla, e quão concentrada ela está.`}
+          recorte={`Usinas em operação do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · declarações de ${janela} · MW, % e pontos de HHI`}
           fonte="ANEEL, SIGA e Composição Societária"
           referencia={
             <>
@@ -147,7 +148,7 @@ export default function PaginaP039() {
                 casas={0}
                 unidade="pontos"
                 cor={COR_MEDIDA.hhi}
-                nota={grupo?.faixa ? `${ROTULO_FAIXA[grupo.faixa]} nas faixas do Guia do CADE.` : undefined}
+                nota={grupo?.faixa ? `${ROTULO_FAIXA[grupo.faixa]} nas faixas do Guia do CADE (${SIGLAS.CADE}).` : undefined}
                 endereco={ancoraPainel("p039")}
               />
               <Numero

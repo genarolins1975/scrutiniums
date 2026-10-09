@@ -1152,3 +1152,509 @@ describe.skipIf(!disponivel)("redesenho: primeira tela, níveis de profundidade 
     expect(blocos.filter((b) => /evidencia=\{evidenciaMediana\}/.test(b)).length).toBe(1);
   });
 });
+
+/* ============================================================================================================================
+ * Segunda passada (avaliações iniciais de 09/10/2026): os seletores novos, conferidos por outro caminho que o do código (laços
+ * próprios sobre os arquivos publicados) e, quando existe, contra o número que a própria gold publica.
+ * ========================================================================================================================== */
+
+const historico = JSON.parse(ler("public/energia/series/conta_historico_b1.json")) as HistoricoB1;
+const qualidadeGold = JSON.parse(ler("public/energia/gold/qualidade.json")) as { distribuidoras: { cnpj: string; classificacao?: string; ucs?: number; ano?: number }[] };
+const territorioGold = JSON.parse(ler("public/energia/gold/territorio.json")) as { distribuidoras: { cnpj: string; area?: { ufs?: string[] } }[] };
+
+/** Mediana escrita aqui por outro caminho (ordenação e meio da lista), sem o código da página. */
+function medianaDeFora(xs: number[]): number {
+  const o = [...xs].sort((a, b) => a - b);
+  const n = o.length;
+  return n % 2 ? o[(n - 1) / 2] : (o[n / 2 - 1] + o[n / 2]) / 2;
+}
+/** Tarifa de um dia lida da linha do tempo, por laço próprio. */
+function tarifaDeFora(vig: HistoricoB1["distribuidoras"][string]["vigencias"], dia: string): number | null {
+  const v = vig.filter((x) => x[0] <= dia && dia <= x[1]);
+  return v.length ? v[0][5] : null;
+}
+
+describe.skipIf(!disponivel)("aritmética e medianas novas", () => {
+  it("arredondar: meio para cima sobre o decimal, simétrico no zero, sem o resíduo binário", () => {
+    expect(arredondar(795.965, 2)).toBe(795.97);
+    expect(arredondar(443.545, 2)).toBe(443.55);
+    expect(arredondar(-1.95, 1)).toBe(-2);
+    expect(arredondar(1.95, 1)).toBe(2);
+    expect(arredondar(0.1 + 0.2, 2)).toBe(0.3);
+    expect(arredondar(0, 2)).toBe(0);
+    expect(Object.is(arredondar(-0.001, 2), -0)).toBe(false);
+    expect(arredondar(Number.NaN, 2)).toBeNaN();
+  });
+
+  it("mediana: valor do meio, média dos dois centrais no número par e null sem valores", () => {
+    expect(mediana([3, 1, 2])).toBe(2);
+    expect(mediana([4, 1, 3, 2])).toBe(2.5);
+    expect(mediana([])).toBeNull();
+    expect(mediana([Number.NaN, 5])).toBe(5);
+  });
+
+  it("a mediana mensal da gold sai da linha do tempo de cada distribuidora no dia 1º, com o mesmo n (a regra da evolução)", () => {
+    let comparados = 0;
+    for (const [m, n, publicada] of gold.tarifas.evolucao) {
+      const xs = Object.values(historico.distribuidoras)
+        .map((d) => tarifaDeFora(d.vigencias, `${m}-01`))
+        .filter((x): x is number => x !== null);
+      expect(xs.length, m).toBe(n);
+      if (publicada === null) continue;
+      comparados++;
+      expect(arredondar(medianaDeFora(xs), 2), m).toBe(publicada);
+      // a função da página faz o mesmo cálculo
+      expect(arredondar(mediana(xs) as number, 2), m).toBe(publicada);
+    }
+    expect(comparados).toBeGreaterThan(100);
+  });
+
+  it("janelas: a mediana publicada de cada janela é a mediana das suas linhas (o método vale para o conjunto inteiro)", () => {
+    for (const j of gold.reajustes.comparacao_inflacao!.janelas) {
+      const xs = j.distribuidoras.map((d) => d[2]).filter((x): x is number => x !== null);
+      expect(xs.length, `${j.meses}`).toBe(j.n);
+      expect(arredondar(mediana(xs) as number, 2), `${j.meses}`).toBe(j.mediana_pct);
+    }
+  });
+});
+
+describe.skipIf(!disponivel)("a mesma base de comparação: mediana nas distribuidoras com tarifa nas duas datas", () => {
+  const evolucao = linhasEvolucao(gold.tarifas.evolucao);
+  const c = compararMesmoConjunto({ vigentes: gold.tarifas.vigentes, semVigente: gold.tarifas.sem_vigente, historico: historico.distribuidoras, evolucao, dataReferencia: gold.data_referencia })!;
+
+  it("conjuntos e medianas batem com o laço próprio sobre a linha do tempo", () => {
+    expect(c).toBeTruthy();
+    const ult = [...evolucao].reverse().find((p) => p.mediana !== null)!;
+    expect(c.de).toBe(`${ult.m}-01`);
+    expect(c.ate).toBe(gold.data_referencia);
+    const emDe = new Map<string, number>();
+    for (const [cnpj, d] of Object.entries(historico.distribuidoras)) {
+      const t = tarifaDeFora(d.vigencias, c.de);
+      if (t !== null) emDe.set(cnpj, t);
+    }
+    const vig = new Map(gold.tarifas.vigentes.map((v) => [v.cnpj, v.total]));
+    const comuns = gold.tarifas.vigentes.filter((v) => emDe.has(v.cnpj));
+    const saidos = Array.from(emDe.keys()).filter((k) => !vig.has(k));
+    expect(c.nDe).toBe(emDe.size);
+    expect(c.nAte).toBe(gold.tarifas.resumo.n);
+    expect(c.nComum).toBe(comuns.length);
+    expect(c.saidas.n).toBe(saidos.length);
+    // nde = comuns + saídas: ninguém sai e entra ao mesmo tempo
+    expect(c.nDe).toBe(c.nComum + c.saidas.n);
+    expect(c.medianaDeTodas).toBe(ult.mediana);
+    expect(c.medianaDeComum).toBe(arredondar(medianaDeFora(comuns.map((v) => emDe.get(v.cnpj) as number)), 2));
+    expect(c.medianaAteComum).toBe(arredondar(medianaDeFora(comuns.map((v) => v.total)), 2));
+    expect(c.saidas.mediana).toBe(arredondar(medianaDeFora(saidos.map((k) => emDe.get(k) as number)), 2));
+    expect(c.variacaoPct).toBe(arredondar((medianaDeFora(comuns.map((v) => v.total)) / medianaDeFora(comuns.map((v) => emDe.get(v.cnpj) as number)) - 1) * 100, 2));
+    // quando todas as vigentes tinham tarifa na data de partida, a mediana final do conjunto comum é a publicada no ranking
+    if (c.nComum === gold.tarifas.resumo.n) expect(c.medianaAteComum).toBe(gold.tarifas.resumo.mediana);
+  });
+
+  it("os números da avaliação de 09/10/2026 (102 e 81 distribuidoras, 819,75 e 0,17%, 21 que saíram com 746,92) saem dos dados", () => {
+    if (gold.data_referencia !== "2026-09-30") return;
+    expect([c.nDe, c.nAte, c.nComum, c.saidas.n]).toEqual([102, 81, 81, 21]);
+    expect([c.medianaDeTodas, c.medianaDeComum, c.medianaAteComum, c.variacaoPct, c.saidas.mediana]).toEqual([795.97, 819.75, 821.18, 0.17, 746.92]);
+    expect(c.saidas.cooperativas).toBe(21);
+    expect(c.saidas.fimDaVigencia).toBe("2026-09-29");
+  });
+
+  it("o texto diz a variação no mesmo conjunto, quem saiu e o limite, sem causalidade nem tempo relativo", () => {
+    const t = textoComparacaoMesmoConjunto(c);
+    expect(t).toContain(`Nas mesmas ${c.nComum} distribuidoras`);
+    for (const v of [c.medianaDeComum, c.medianaAteComum, c.medianaDeTodas, c.saidas.mediana]) expect(t).toContain(num(v, 2));
+    expect(t).toContain(`as ${c.saidas.n} que ficaram fora do ranking`);
+    expect(t).toContain("mistura conjuntos diferentes");
+    expect(t).not.toMatch(/\b(hoje|agora|atual|porque|por isso)\b/i);
+    expect(t).not.toMatch(/—|–/);
+    // sem ninguém fora, só a frase da variação
+    expect(textoComparacaoMesmoConjunto({ ...c, saidas: { ...c.saidas, n: 0 } })).not.toContain("mistura conjuntos");
+    // a mudança do painel e a ressalva da faixa leem a mesma comparação
+    const m = mudancaTarifa(gold.data_referencia, gold.tarifas.resumo, evolucao, c);
+    expect(m).toContain(t);
+    expect(notaFaixaTarifa(gold.tarifas.resumo, c)).toContain(`eram ${c.nDe}: ${c.saidas.n} saíram do conjunto`);
+    expect(notaFaixaTarifa(gold.tarifas.resumo, { ...c, saidas: { ...c.saidas, n: 0 } })).toBe(notaFaixaTarifa(gold.tarifas.resumo));
+  });
+
+  it("sem mês com mediana publicada, não há comparação", () => {
+    expect(compararMesmoConjunto({ vigentes: [], semVigente: [], historico: {}, evolucao: [], dataReferencia: "2026-09-30" })).toBeNull();
+  });
+});
+
+describe.skipIf(!disponivel)("três valores típicos: o que cada um é e em que diferem", () => {
+  it("a frase traz a média, a mediana das mesmas e a mediana do ranking, com os conjuntos de cada uma", () => {
+    const t = textoTresValoresTipicos(gold.composicao, gold.tarifas.resumo)!;
+    const m = gold.composicao.media!;
+    expect(t).toContain(`${num(m.total_rs_mwh, 2)} R$/MWh`);
+    expect(t).toContain(num(gold.composicao.mediana.mediana_do_total_rs_mwh, 2));
+    expect(t).toContain(num(gold.tarifas.resumo.mediana, 2));
+    expect(t).toContain(`${m.n} distribuidoras têm componentes publicadas e ${gold.tarifas.resumo.n} têm tarifa vigente`);
+    expect(t).not.toMatch(/\b(hoje|agora|atual|porque)\b/i);
+    // no mesmo conjunto, a frase diz que as medianas coincidem em conjunto
+    expect(textoTresValoresTipicos(gold.composicao, { ...gold.tarifas.resumo, n: m.n })).toContain(`as duas medianas usam o mesmo conjunto de ${m.n}`);
+    expect(textoTresValoresTipicos({ media: null, mediana: gold.composicao.mediana }, gold.tarifas.resumo)).toBeNull();
+  });
+});
+
+describe.skipIf(!disponivel)("UF, tipo e UCs de cada distribuidora, grupos de pares e filtro por UF", () => {
+  const cnpjs = gold.tarifas.vigentes.map((v) => v.cnpj);
+  const info = infoDistribuidoras(cnpjs, qualidadeGold.distribuidoras, territorioGold.distribuidoras);
+
+  it("todas as distribuidoras do ranking têm tipo, UCs e UF, lidos das golds de Qualidade e de Território", () => {
+    for (const cnpj of cnpjs) {
+      const i = info[cnpj];
+      expect(i.tipo, cnpj).not.toBeNull();
+      expect(i.ucs, cnpj).toBeGreaterThan(0);
+      expect(i.uf, cnpj).toMatch(/^[A-Z]{2}(, [A-Z]{2})*$/);
+      const q = qualidadeGold.distribuidoras.find((x) => x.cnpj === cnpj)!;
+      expect(ROTULO_TIPO[i.tipo!]).toBe(q.classificacao);
+      expect(i.ucs).toBe(q.ucs);
+      expect(i.anoUcs).toBe(q.ano);
+      expect(i.uf!.split(", ")).toEqual([...territorioGold.distribuidoras.find((x) => x.cnpj === cnpj)!.area!.ufs!].sort());
+    }
+  });
+
+  it("ausência continua ausência: sem a gold, nada é inventado", () => {
+    const vazio = infoDistribuidoras(["12345678000199"], null, null)["12345678000199"];
+    expect(vazio).toEqual({ uf: null, tipo: null, ucs: null, anoUcs: null });
+    expect(infoDistribuidoras(["1"], [{ cnpj: "1", classificacao: "Outra" }], [{ cnpj: "1", area: { ufs: [] } }])["1"]).toEqual({ uf: null, tipo: null, ucs: null, anoUcs: null });
+  });
+
+  it("as linhas do ranking levam UF, tipo e UCs, e as colunas da tabela as nomeiam (a exportação segue o CSV publicado)", () => {
+    const linhas = linhasRanking(gold.tarifas.vigentes, 200, info);
+    expect(linhas.every((l) => l.uf && l.tipo && l.ucs)).toBe(true);
+    expect(COLUNAS_RANKING.map((c) => c.id).slice(0, 5)).toEqual(["posicao", "sigla", "uf", "tipo", "ucs"]);
+    const exportado = lerCsv(gerarCsv(COLUNAS_RANKING, linhas));
+    expect(exportado[0]["UF"]).toBe(linhas[0].uf);
+    expect(exportado[0]["Tipo"]).toBe(linhas[0].tipo);
+    expect(numero(exportado[0]["Consumidores (UCs)"])).toBe(linhas[0].ucs);
+    // sem informação, as três colunas ficam vazias e as demais não mudam
+    const sem = linhasRanking(gold.tarifas.vigentes, 200);
+    expect(sem.every((l) => l.uf === null && l.tipo === null && l.ucs === null)).toBe(true);
+  });
+
+  it("grupo de pares: concessionárias e permissionárias somam o ranking, e a UF restringe sem perder a ordem", () => {
+    const linhas = linhasRanking(gold.tarifas.vigentes, 200, info);
+    const todas = filtrarRanking(linhas, "todas", "");
+    const con = filtrarRanking(linhas, "concessionaria", "");
+    const per = filtrarRanking(linhas, "permissionaria", "");
+    expect(todas.length).toBe(linhas.length);
+    expect(con.length + per.length).toBe(linhas.length);
+    expect(con.every((l) => l.tipo === "Concessionária") && per.every((l) => l.tipo === "Permissionária")).toBe(true);
+    expect(con.map((l) => l.posicao)).toEqual([...con.map((l) => l.posicao)].sort((a, b) => a - b));
+    const ufs = ufsDoRanking(linhas);
+    expect(ufs.map((u) => u.uf)).toEqual([...ufs.map((u) => u.uf)].sort((a, b) => a.localeCompare(b, "pt-BR")));
+    for (const { uf, n } of ufs) {
+      const f = filtrarRanking(linhas, "todas", uf);
+      expect(f.length, uf).toBe(n);
+      expect(f.every((l) => l.uf!.split(", ").includes(uf)), uf).toBe(true);
+    }
+    // UF que não está no ranking não filtra (link antigo ou digitado)
+    expect(filtrarRanking(linhas, "todas", "ZZ").length).toBe(linhas.length);
+    expect(filtrarRanking(linhas, "concessionaria", "ZZ").length).toBe(con.length);
+  });
+
+  it("resumo do ranking: a mediana do conjunto inteiro é a publicada em cada perfil", () => {
+    for (const p of [100, 200, 300] as const) {
+      const r = resumoDoRanking(linhasRanking(gold.tarifas.vigentes, p, info));
+      expect(r.n).toBe(gold.tarifas.resumo.n);
+      expect(r.mediana, `${p}`).toBe(gold.tarifas.resumo.perfis_mediana[String(p) as "100"]);
+      expect(r.medianaTarifa).toBe(gold.tarifas.resumo.mediana);
+      expect(r.menor!.posicao).toBe(1);
+      expect(r.maior!.posicao).toBe(gold.tarifas.resumo.n);
+    }
+    const per = resumoDoRanking(filtrarRanking(linhasRanking(gold.tarifas.vigentes, 200, info), "permissionaria", ""));
+    expect(per.mediana).toBe(arredondar(medianaDeFora(gold.tarifas.vigentes.filter((v) => info[v.cnpj].tipo === "permissionaria").map((v) => v.perfis["200"] as number)), 2));
+    const t = textoResumoDoRanking(per, 200, "permissionaria", "");
+    expect(t).toContain(`Entre as ${per.n} permissionárias`);
+    expect(t).toContain(reais(per.mediana));
+    expect(textoResumoDoRanking(resumoDoRanking([]), 200, "todas", "")).toMatch(/Nenhuma das distribuidoras/);
+  });
+
+  it("os parâmetros da URL do grupo e da UF existem e têm padrão", () => {
+    expect(CAMPO_GRUPO.padrao).toBe("todas");
+    expect(CAMPO_UF.padrao).toBe("");
+    expect(CAMPO_GRUPO.param).toBe("grupo");
+    expect(CAMPO_UF.param).toBe("uf");
+  });
+});
+
+describe.skipIf(!disponivel)("busca por município", () => {
+  const csv = ler("public/energia/series/territorio_municipios.csv");
+  const indice = criarIndiceMunicipios(csv);
+  const preparado = prepararBuscaMunicipios(indice);
+  const linhasCsv = lerCsv(csv);
+
+  it("o índice tem os 5.571 municípios e as distribuidoras de cada um, com o estado do vínculo", () => {
+    expect(indice.m.length).toBe(linhasCsv.length);
+    for (const [k, l] of [0, 1, 2, 100, 2000, linhasCsv.length - 1].map((i) => [i, linhasCsv[i]] as const)) {
+      const [nome, uf, v] = indice.m[k];
+      expect(nome).toBe(l.municipio);
+      expect(uf).toBe(l.uf);
+      const esperado = l.distribuidoras
+        .split("|")
+        .filter(Boolean)
+        .map((p) => p.split(":").slice(-2).join(":"));
+      expect(v.map((x) => `${indice.d[Math.floor(x / 3)][0]}:${x % 3}`)).toEqual(esperado);
+    }
+    // cada vínculo guarda CNPJ de 14 dígitos
+    for (const [cnpj] of indice.d) expect(cnpj).toMatch(/^\d{14}$/);
+  });
+
+  it("acha por nome sem acento nem caixa, por prefixo de cada palavra e por UF digitada", () => {
+    const manaus = buscarMunicipios(indice, preparado, "MANAUS");
+    expect(manaus[0].nome).toBe("Manaus");
+    expect(manaus[0].uf).toBe("AM");
+    expect(manaus[0].vinculos.length).toBeGreaterThan(0);
+    const sp = buscarMunicipios(indice, preparado, "sao paulo sp")[0];
+    expect([sp.nome, sp.uf]).toEqual(["São Paulo", "SP"]);
+    expect(sp.vinculos.length).toBeGreaterThanOrEqual(2);
+    // o nome que começa pelo texto vem antes de quem só tem a palavra
+    expect(buscarMunicipios(indice, preparado, "campinas", 3)[0].nome).toBe("Campinas");
+    // acento e apóstrofo: "d oeste" acha "D'Oeste"
+    expect(buscarMunicipios(indice, preparado, "alta floresta d oeste")[0].nome).toBe("Alta Floresta D'Oeste");
+    // mesmo nome em UFs diferentes aparece mais de uma vez, com a UF
+    const nomesIguais = buscarMunicipios(indice, preparado, "bom jesus", 8);
+    expect(new Set(nomesIguais.map((x) => x.uf)).size).toBeGreaterThan(1);
+    // texto curto, sem resultado e limite
+    expect(buscarMunicipios(indice, preparado, "a")).toEqual([]);
+    expect(buscarMunicipios(indice, preparado, "xqzw")).toEqual([]);
+    expect(buscarMunicipios(indice, preparado, "sao", 5).length).toBe(5);
+  });
+
+  it("uma distribuidora do ranking aparece pelo município onde atua", () => {
+    const cnpjsRanking = new Set(gold.tarifas.vigentes.map((v) => v.cnpj));
+    const ateUm = indice.m.filter(([, , v]) => v.some((x) => cnpjsRanking.has(indice.d[Math.floor(x / 3)][0])));
+    expect(ateUm.length).toBeGreaterThan(5000);
+    const dmed = gold.tarifas.vigentes.find((v) => v.sigla === "DMED");
+    if (dmed) {
+      const com = indice.m.filter(([, , v]) => v.some((x) => indice.d[Math.floor(x / 3)][0] === dmed.cnpj));
+      expect(com.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("o índice compacto cabe num arquivo estático leve", () => {
+    expect(Buffer.byteLength(JSON.stringify(indice), "utf-8")).toBeLessThan(400_000);
+  });
+});
+
+describe.skipIf(!disponivel)("subsídios e orçamento da CDE em reais do mês-base", () => {
+  const ipca = lerIpcaCsv(ler("public/energia/series/conta_ipca.csv"));
+  const base = gold.reajustes.comparacao_inflacao!.ultimo_ipca;
+  const anos = Array.from(new Set([...gold.subsidios.anual.map((a) => a.ano), ...gold.financiamento_cde!.anos]));
+  const fatores = fatoresReaisPorAno(ipca, anos, base);
+
+  it("o fator de cada ano é o índice do mês-base dividido pela média dos índices do ano (ano do mês-base, parcial)", () => {
+    const indiceBase = ipca.find((x) => x.mes === base)!.indice;
+    for (const ano of anos) {
+      const doAno = ipca.filter((x) => x.mes.startsWith(`${ano}-`) && x.mes <= base).map((x) => x.indice);
+      const f = fatores[ano];
+      expect(f, ano).not.toBeNull();
+      expect(f!.meses).toBe(doAno.length);
+      expect(f!.fator).toBeCloseTo(indiceBase / (doAno.reduce((a, b) => a + b, 0) / doAno.length), 10);
+    }
+    expect(fatores[base.slice(0, 4)]!.meses).toBeLessThan(12);
+    expect(fatores["2014"]!.meses).toBe(12);
+    // ano depois do mês-base e ano sem índice: sem fator
+    expect(fatoresReaisPorAno(ipca, ["2099", "1900"], base)).toEqual({ "2099": null, "1900": null });
+    expect(fatoresReaisPorAno(ipca, ["2025"], "2099-01")["2025"]).toBeNull();
+  });
+
+  it("de 2014 a 2025 a soma dos subsídios multiplica por cerca de 4,3 em valores da época e por cerca de 2,35 em reais constantes", () => {
+    const nominal = linhasSubsidios(gold.subsidios);
+    const real = emReaisDoMesBase(nominal, ["soma", ...categoriasSubsidio(gold.subsidios)], fatores);
+    const de = (ls: typeof nominal, ano: string) => ls.find((l) => l.ano === ano)!.soma as number;
+    const crescNominal = de(nominal, "2025") / de(nominal, "2014");
+    const crescReal = de(real, "2025") / de(real, "2014");
+    expect(crescNominal).toBeGreaterThan(4.2);
+    expect(crescNominal).toBeLessThan(4.4);
+    // a avaliação independente recalculou 2,35 com o IPCA médio anual; o índice dez/2013 a dez/2025 foi de 94,0%
+    expect(crescReal).toBeGreaterThan(2.3);
+    expect(crescReal).toBeLessThan(2.4);
+    // o mês-base não muda a razão entre dois anos: só a unidade
+    const outra = emReaisDoMesBase(nominal, ["soma"], fatoresReaisPorAno(ipca, anos, "2026-06"));
+    expect(de(outra, "2025") / de(outra, "2014")).toBeCloseTo(crescReal, 8);
+  });
+
+  it("em reais, só os valores de dinheiro mudam: o ano, o rótulo e os meses ficam, a ausência continua ausência", () => {
+    const nominal = linhasSubsidios(gold.subsidios);
+    const real = emReaisDoMesBase(nominal, ["soma"], fatores);
+    nominal.forEach((l, i) => {
+      expect(real[i].ano).toBe(l.ano);
+      expect(real[i].rotulo).toBe(l.rotulo);
+      expect(real[i].meses).toBe(l.meses);
+      expect(real[i].total_publicado).toBe(l.total_publicado);
+    });
+    // ano sem fator vira ausência, nunca o valor nominal passando por real
+    expect(emReaisDoMesBase([{ ano: "2099", soma: 5 }], ["soma"], fatores)[0].soma).toBeNull();
+    expect(emReaisDoMesBase([{ ano: "2014", soma: null }], ["soma"], fatores)[0].soma).toBeNull();
+    // a série da CDE em reais: cada grupo de despesa multiplicado pelo fator do ano
+    const cde = linhasCde(gold.financiamento_cde!);
+    const cdeReal = emReaisDoMesBase(cde, [...GRUPOS_DESPESA_CDE, "despesa"], fatores);
+    cde.forEach((l, i) => {
+      const f = fatores[String(l.ano)]!.fator;
+      expect(cdeReal[i].despesa as number).toBeCloseTo((l.despesa as number) * f, 8);
+      expect(cdeReal[i].quotas_pct).toBe(l.quotas_pct);
+    });
+  });
+
+  it("lerIpcaCsv ignora cabeçalho e meses sem índice", () => {
+    expect(lerIpcaCsv("mes;indice;variacao\n2026-07;7657.73;4.44\n2026-08;;\nlixo;1;2\n2026-09;7700;\n")).toEqual([
+      { mes: "2026-07", indice: 7657.73 },
+      { mes: "2026-09", indice: 7700 },
+    ]);
+  });
+});
+
+describe.skipIf(!disponivel)("quotas da CDE: a série e a leitura do residual", () => {
+  const f = gold.financiamento_cde!;
+
+  it("a série é a participação das quotas de cada ano do orçamento, a mesma da tabela", () => {
+    const s = serieQuotas(f);
+    expect(s.map((p) => p.ano)).toEqual(f.anos);
+    expect(s.map((p) => p.pct)).toEqual(linhasCde(f).map((l) => l.quotas_pct));
+  });
+
+  it("as rubricas que passam a zero no último ano saem das rubricas publicadas, por outro caminho", () => {
+    const i = f.anos.indexOf(f.ultimo_ano);
+    const esperado = f.rubricas.filter((r) => r.tipo === "Receita" && r.grupo !== "quotas_tarifa" && r.valores[i] === 0 && (r.valores[i - 1] ?? 0) > 0).map((r) => r.fonte);
+    expect(receitasQueZeraram(f).map((x) => x.fonte)).toEqual(esperado);
+    if (f.ultimo_ano === "2026") expect(esperado.sort()).toEqual(["P&D", "Saldo Anterior"]);
+  });
+
+  it("a frase traz os dois anos anteriores, o ano do orçamento, o residual e o que mudou nas outras receitas", () => {
+    const t = textoResidualQuotas(f)!;
+    const s = serieQuotas(f);
+    const k = s.findIndex((p) => p.ano === f.ultimo_ano);
+    expect(t).toContain("A quota é o residual do orçamento");
+    expect(t).toContain(`${pct(s[k].pct, 1)} em ${f.ultimo_ano}`);
+    expect(t).toContain(`${pct(s[k - 1].pct, 1)} em ${s[k - 1].ano}`);
+    expect(t).toContain(`${pct(s[k - 2].pct, 1)} em ${s[k - 2].ano}`);
+    for (const z of receitasQueZeraram(f)) expect(t).toContain(z.fonte);
+    const sem = f.totais.find((x) => x.ano === f.ultimo_ano)!.rubricas_sem_valor;
+    if (sem.length) expect(t).toContain(`${sem.length} rubricas estão sem valor publicado`);
+    expect(t).not.toMatch(/\b(hoje|agora|atual|porque)\b/i);
+    expect(textoResidualQuotas(null)).toBeNull();
+    // a nota da gold diz a mesma coisa: a quota anual cobre a diferença
+    expect(f.nota).toMatch(/quota anual é fixada para cobrir a diferença/);
+  });
+});
+
+describe.skipIf(!disponivel)("janelas de comparação no mesmo conjunto", () => {
+  const janelas = gold.reajustes.comparacao_inflacao!.janelas;
+  const c = janelasNoMesmoConjunto(janelas)!;
+
+  it("o conjunto comum é o das distribuidoras com variação nas três janelas, e a mediana de cada uma sai só delas", () => {
+    const conjuntos = janelas.map((j) => new Set(j.distribuidoras.filter((d) => d[2] !== null).map((d) => d[0])));
+    const comuns = Array.from(conjuntos[0]).filter((k) => conjuntos.every((s) => s.has(k)));
+    expect(c.n).toBe(comuns.length);
+    expect(c.itens.map((i) => i.meses)).toEqual(janelas.map((j) => j.meses));
+    janelas.forEach((j, k) => {
+      const xs = j.distribuidoras.filter((d) => comuns.includes(d[0])).map((d) => d[2] as number);
+      expect(c.itens[k].medianaPct).toBe(arredondar(medianaDeFora(xs), 2));
+      expect(c.itens[k].ipcaPct).toBe(j.ipca_pct);
+      expect(c.itens[k].nDaJanela).toBe(j.n);
+      expect(c.itens[k].acima).toBe(xs.filter((x) => x > (j.ipca_pct as number)).length);
+    });
+    // o conjunto comum cabe em cada janela
+    for (const i of c.itens) expect(c.n).toBeLessThanOrEqual(i.nDaJanela);
+  });
+
+  it("a frase nomeia o conjunto, cada janela e o universo próprio de cada uma", () => {
+    const t = textoJanelasNoMesmoConjunto(c);
+    expect(t).toContain(`Nas ${c.n} distribuidoras com variação nas três janelas`);
+    for (const i of c.itens) expect(t).toContain(`${i.meses} meses, ${pct(i.medianaPct, 2)} contra IPCA de ${pct(i.ipcaPct, 2)}`);
+    expect(t).toContain(Array.from(new Set(c.itens.map((i) => i.nDaJanela))).join(", "));
+    expect(janelasNoMesmoConjunto(janelas.slice(0, 1))).toBeNull();
+  });
+});
+
+describe.skipIf(!disponivel)("simulador: tarifa usada, classes iguais à residencial e leituras não conferidas", () => {
+  const sim = gold.simulador;
+
+  it("rural e demais classes usam a tarifa B2 e B3 da fonte, e o cálculo confere em quantas distribuidoras ela é igual à residencial", () => {
+    for (const chave of ["rural", "demais"] as const) {
+      const { iguais, total } = igualdadeComResidencial(sim.distribuidoras, chave);
+      expect(total).toBe(sim.cobertura_classes[chave]);
+      // laço próprio sobre a gold
+      const esperado = sim.distribuidoras.filter((d) => d.tarifas.residencial && d.tarifas[chave] && d.tarifas.residencial[0] === d.tarifas[chave]![0] && d.tarifas.residencial[1] === d.tarifas[chave]![1]).length;
+      expect(iguais).toBe(esperado);
+    }
+    expect(descricaoDaTarifa(sim.chaves_tarifa.rural)).toBe("subgrupo B2, sem subclasse na fonte");
+    expect(descricaoDaTarifa(sim.chaves_tarifa.residencial)).toBe("subgrupo B1, subclasse Residencial");
+    // o cálculo de rural e de demais não aplica desconto: é a mesma fórmula da residencial sobre a tarifa da chave
+    const d = sim.distribuidoras[0];
+    const regras = sim.regras;
+    const r = simular(d.tarifas, "rural", 100, "monofasico", 0, regras);
+    const b = simular(d.tarifas, "residencial", 100, "monofasico", 0, regras);
+    if (r.disponivel && b.disponivel) {
+      expect(r.linhas.map((l) => l.rotulo)).toEqual(b.linhas.map((l) => l.rotulo));
+      expect(r.linhas.every((l) => l.valor >= 0)).toBe(true);
+    }
+    // diferença de uma tarifa muda o resultado
+    const igual = igualdadeComResidencial([{ tarifas: { residencial: [1, 2], rural: [1, 2] } }, { tarifas: { residencial: [1, 2], rural: [1, 3] } }, { tarifas: { residencial: null, rural: [1, 3] } }], "rural");
+    expect(igual).toEqual({ iguais: 1, total: 2 });
+  });
+
+  it("a leitura não conferida de que o resultado depende é só a da classe (Tarifa Social e Desconto Social), nunca a de outra", () => {
+    const ts = leiturasNaoConferidas("tarifa_social", sim.regras_texto);
+    const ds = leiturasNaoConferidas("desconto_social", sim.regras_texto);
+    expect(ts.length).toBeGreaterThan(0);
+    expect(ts.every((t) => /tarifa social/i.test(t))).toBe(true);
+    expect(ds.length).toBeGreaterThan(0);
+    for (const classe of ["residencial", "rural", "demais"] as const) expect(leiturasNaoConferidas(classe, sim.regras_texto), classe).toEqual([]);
+    // cada texto é o de uma parte não conferida da gold
+    const naoConferidas = sim.regras_texto.flatMap((r) => r.partes.filter((p) => p.estado !== "CONFERIDA").map((p) => p.texto));
+    for (const t of [...ts, ...ds]) expect(naoConferidas).toContain(t);
+    // regra toda conferida: sem selo
+    const conferidas = sim.regras_texto.map((r) => ({ ...r, partes: r.partes.map((p) => ({ ...p, estado: "CONFERIDA" })) }));
+    expect(leiturasNaoConferidas("tarifa_social", conferidas)).toEqual([]);
+    expect(leiturasNaoConferidas("desconto_social", conferidas)).toEqual([]);
+    // as regras de cada classe existem na gold
+    for (const classe of Object.keys(REGRAS_DA_CLASSE) as (keyof typeof REGRAS_DA_CLASSE)[]) for (const id of REGRAS_DA_CLASSE[classe]) expect(sim.regras_texto.some((r) => r.id === id), `${classe}: ${id}`).toBe(true);
+  });
+});
+
+describe.skipIf(!disponivel)("ficha com procedimento externo", () => {
+  const fichas = [gold.tarifas.evidencia_mediana, gold.composicao.evidencia, gold.simulador.evidencia, gold.reajustes.evidencia, gold.bandeiras.evidencia, gold.subsidios.evidencia, gold.financiamento_cde!.evidencia];
+
+  it("troca só o passo de reprodução: sem comando interno, com filtros, fórmula, valor exibido e data de corte", () => {
+    for (const ev of fichas) {
+      expect(ev).toBeTruthy();
+      const novo = comProcedimentoExterno(ev)!;
+      expect({ ...novo, reproducao: ev!.reproducao }).toEqual(ev);
+      expect(novo.reproducao).not.toMatch(/python|pipeline\/|executar_modulo|--sem-coleta/);
+      expect(novo.reproducao).toContain("Data de corte");
+      expect(novo.reproducao).toContain(ev!.valor_exibido);
+      expect(novo.reproducao).toContain(ev!.formula);
+      for (const f of ev!.filtros) expect(novo.reproducao).toContain(f);
+      if (ev!.fonte.capturado_em) expect(novo.reproducao).toContain(dataBR(ev!.fonte.capturado_em.slice(0, 10)));
+      expect(problemasEvidencia(novo), ev!.indicador).toEqual([]);
+    }
+    expect(comProcedimentoExterno(null)).toBeNull();
+  });
+});
+
+describe("pontos de uma faixa: cada um no seu lugar, sem encostar", () => {
+  const pontos = Array.from({ length: 81 }, (_, i) => ({ id: `p${i}`, x: 14 + ((i * 37) % 81) * 6.1 + (i % 7) * 0.3 }));
+
+  it("nenhum par da mesma linha chega mais perto que o diâmetro mais a folga, e a posição horizontal não muda", () => {
+    const r = 3.4;
+    const out = empilharPontos(pontos, r, 1.3);
+    expect(out.length).toBe(pontos.length);
+    const x0 = new Map(pontos.map((p) => [p.id, p.x]));
+    for (const o of out) expect(o.x).toBe(x0.get(o.id));
+    const porLinha = new Map<number, number[]>();
+    for (const o of out) porLinha.set(o.linha, [...(porLinha.get(o.linha) ?? []), o.x]);
+    for (const xs of Array.from(porLinha.values())) {
+      const o = [...xs].sort((a, b) => a - b);
+      for (let i = 1; i < o.length; i++) expect(o[i] - o[i - 1]).toBeGreaterThanOrEqual(2 * r + 1.3 - 1e-9);
+    }
+  });
+
+  it("é determinístico, começa pela linha central e alterna para cima e para baixo", () => {
+    expect(empilharPontos(pontos, 3.4)).toEqual(empilharPontos([...pontos].reverse(), 3.4));
+    const juntos = empilharPontos([{ id: "a", x: 10 }, { id: "b", x: 10 }, { id: "c", x: 10 }, { id: "d", x: 10 }, { id: "e", x: 10 }], 3, 1);
+    expect(juntos.map((j) => j.linha)).toEqual([0, 1, -1, 2, -2]);
+    expect(empilharPontos([], 3)).toEqual([]);
+  });
+});

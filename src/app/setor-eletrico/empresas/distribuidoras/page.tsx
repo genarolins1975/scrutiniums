@@ -94,7 +94,7 @@ export default function PaginaP037() {
           rotulo="Empresas"
           siglas={["SAMP", "DEC", "FEC", "TE", "TUSD", "ANEEL"]}
           titulo={painel("p037").pergunta}
-          lead="Perdas, continuidade do serviço e tarifa residencial de cada distribuidora, pelo CNPJ que as bases reguladas da ANEEL publicam. Compare até quatro ou abra a ficha de uma."
+          lead={`Perdas, continuidade do serviço e tarifa residencial de cada distribuidora, pelo CNPJ (${SIGLAS.CNPJ}) que as bases reguladas da ANEEL (${SIGLAS.ANEEL}) publicam. Compare até quatro ou abra a ficha de uma.`}
           recorte={`Perdas de ${anoPerdas ?? "sem dado"} · continuidade de ${anoQualidade ?? "sem dado"} · tarifa vigente na data do arquivo de tarifas · % da energia injetada, horas, interrupções e R$/MWh`}
           fonte="ANEEL, bases de perdas, continuidade e tarifas, copiadas dos módulos de origem"
           referencia={

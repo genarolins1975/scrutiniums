@@ -1477,3 +1477,113 @@ export function textoSaldoLiquidoRede(a: { dia: string; fronteiras: readonly { r
   const modulo = a.diaModulo && a.diaModulo !== a.dia ? ` A página Rede traz também ${dataBR(a.diaModulo)}.` : "";
   return `Saldo líquido do dia ${dataBR(a.dia)}: a média das 24 horas do fluxo verificado em cada fronteira, positiva da primeira para a segunda ponta; as horas em sentido contrário ficam compensadas no saldo.${horas}${modulo}`;
 }
+
+/* ---------------------------------------------------------------- r10: determinantes com poucas props para o cliente */
+
+/** Um painel dos determinantes com só o que o cartão mostra: textos prontos no servidor e nenhuma evidência no HTML. */
+export type PainelLeve = {
+  id: IdPainelMultiplo;
+  titulo: string;
+  pergunta: string;
+  unidade: string;
+  casas: number;
+  colunas: { id: string; rotulo: string }[];
+  referencia: { tipo: ReferenciaPainelTipo; rotulo: string; inferior?: number | string; superior?: number | string; coluna?: string };
+  dataReferencia: string;
+  /** Valor do dia de referência lido da mesma célula do gráfico e da tabela, escrito com uma só passagem de arredondamento. */
+  valorTexto: string;
+  rotuloValor: string | null;
+  leitura: string;
+  defasagem: string;
+  nota: string;
+  href: string;
+  /** Ficha "Comprove este número" lida sob demanda da gold (caminho dentro de sintese.json). */
+  comprove: { caminho: string; indicador: string; valorExibido: string } | null;
+  /** Por que a ficha não existe nesta execução, quando não existe. */
+  semEvidencia: string | null;
+};
+
+type ReferenciaPainelTipo = PainelDeterminante["referencia"]["tipo"];
+
+/** Determinantes como o cliente os recebe: linhas em colunas (sem repetir o nome de cada campo 90 vezes) e painéis leves. */
+export type DeterminantesLeves = {
+  janela: MultiplosVisao["janela"];
+  avisoDatas: string;
+  regra: string;
+  campos: string[];
+  linhas: (string | number | null)[][];
+  colunasTabela: ColunaTabela[];
+  paineis: PainelLeve[];
+};
+
+/**
+ * Os determinantes da página: as linhas com a EAR da série publicada e a mediana da data, e a leitura de cada painel feita sobre essas
+ * mesmas linhas. O valor do cartão, o gráfico, a tabela, o anúncio por teclado e o arquivo exportado leem a mesma célula e a arredondam uma vez.
+ */
+export function determinantesDaPagina(
+  m: MultiplosVisao,
+  ear: ReadonlyMap<string, number>,
+  bandas: readonly { md: string; SIN_p50?: number | null }[],
+  periodoMediana: string | null,
+): { m: MultiplosVisao; leves: DeterminantesLeves } {
+  const dados = comMedianaAgua(comEarPrecisa(m.dados, ear), bandas);
+  const temMediana = dados.some((l) => typeof l.agua_p50 === "number");
+  const paineis = m.paineis.map((p) => {
+    const v = valorDoDiaNaSerie(p, dados);
+    const base = v === p.valor_atual.valor ? p : { ...p, valor_atual: { ...p.valor_atual, valor: v } };
+    return base;
+  });
+  const exato: MultiplosVisao = { ...m, dados, paineis };
+  const campos = Array.from(new Set(dados.flatMap((l) => Object.keys(l))));
+  campos.sort((a, b) => (a === "d" ? -1 : b === "d" ? 1 : 0));
+  const colunasTabela = colunasMultiplos(exato);
+  if (temMediana) {
+    const i = colunasTabela.findIndex((c) => c.id === "agua_p10");
+    const agua = paineis.find((p) => p.id === "agua");
+    const col: ColunaTabela = { id: "agua_p50", rotulo: `Água: mediana da data${periodoMediana ? ` (${periodoMediana})` : ""}`, tipo: "numero", unidade: agua?.unidade, casas: agua?.casas ?? 1 };
+    colunasTabela.splice(i >= 0 ? i : colunasTabela.length, 0, col);
+  }
+  const leves: PainelLeve[] = paineis.map((p, k) => ({
+    id: p.id,
+    titulo: p.titulo,
+    pergunta: p.pergunta,
+    unidade: p.unidade,
+    casas: p.casas,
+    colunas: p.colunas,
+    referencia: {
+      tipo: p.referencia.tipo,
+      rotulo: p.referencia.rotulo,
+      ...(p.referencia.tipo === "faixa_constante" ? { inferior: p.referencia.inferior, superior: p.referencia.superior } : {}),
+      ...(p.referencia.tipo === "faixa_por_data" ? { inferior: p.referencia.inferior, superior: p.referencia.superior } : {}),
+      ...(p.referencia.tipo === "serie" ? { coluna: p.referencia.coluna } : {}),
+    },
+    dataReferencia: p.data_referencia,
+    valorTexto: valorAtualTexto(p),
+    rotuloValor: p.valor_atual.rotulo,
+    leitura: leituraDeterminante(p, exato),
+    defasagem: p.texto_defasagem,
+    nota: p.nota,
+    href: p.href,
+    comprove: p.evidencia
+      ? { caminho: `multiplos.paineis[${k}].evidencia`, indicador: p.valor_atual.rotulo ? `${p.titulo} (${p.valor_atual.rotulo})` : p.titulo, valorExibido: p.evidencia.valor_exibido }
+      : null,
+    semEvidencia: p.evidencia ? null : (p.evidencia_problemas?.join("; ") ?? ""),
+  }));
+  return {
+    m: exato,
+    leves: {
+      janela: m.janela,
+      avisoDatas: m.aviso_datas,
+      regra: m.regra,
+      campos,
+      linhas: dados.map((l) => campos.map((c) => (l[c] as string | number | null | undefined) ?? null)),
+      colunasTabela,
+      paineis: leves,
+    },
+  };
+}
+
+/** Linhas em colunas de volta a objetos (a mesma forma de `LinhaMultiplos`), no cliente. */
+export function linhasDeColunas(campos: readonly string[], linhas: readonly (readonly (string | number | null)[])[]): LinhaMultiplos[] {
+  return linhas.map((l) => Object.fromEntries(campos.map((c, i) => [c, l[i] ?? null])) as LinhaMultiplos);
+}

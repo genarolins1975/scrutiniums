@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MapaCalor } from "@/components/energia/MapaCalor";
 import { PldEscolha } from "@/components/energia/PldControles";
+import { PldMapaHoras } from "@/components/energia/PldMapaHoras";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR } from "@/lib/energia/formato";
@@ -73,7 +73,7 @@ export function PldHoraDia({ url, sm, nota }: { url: string; sm: Submercado; not
         onEscolher={(x) => definir({ hd: x })}
       />
       {estado.tipo === "ok" && recorte ? (
-        <MapaCalor
+        <PldMapaHoras
           titulo={`PLD por hora e dia, ${NOME_SM[sm]}, últimos ${janela} dias`}
           linhas={recorte.linhas}
           colunas={HORAS_DO_DIA}

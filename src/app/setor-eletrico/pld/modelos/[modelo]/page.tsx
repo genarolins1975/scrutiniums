@@ -46,6 +46,7 @@ import {
   respostaFicha,
   rotaModelo,
   rotuloEstadoModelo,
+  semCodigoDeEstado,
   semCodigosInternos,
   situacaoDoModelo,
   slugModelo,
@@ -281,7 +282,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                         ))}
                       </ul>
                     </PrevisoesFichaLinha>
-                    <PrevisoesFichaLinha rotulo="Faixa de incerteza">{g.governanca.referencia_experimental.faixas.replace(/\bCALIBRADO\b/g, "calibrado")}</PrevisoesFichaLinha>
+                    <PrevisoesFichaLinha rotulo="Faixa de incerteza">{semCodigoDeEstado(g.governanca.referencia_experimental.faixas)}</PrevisoesFichaLinha>
                     <PrevisoesFichaLinha rotulo="Principal limitação">
                       {resumoModelo?.limitacao_principal ?? (f.limitacoes?.length ? paraLeitorPrevisoes(f.limitacoes[0]) : "nenhuma registrada")}
                       {f.limitacoes && f.limitacoes.length > 1 ? ` Há mais ${f.limitacoes.length - 1 === 1 ? "uma limitação registrada" : `${f.limitacoes.length - 1} limitações registradas`}, em Analisar.` : ""}

@@ -503,13 +503,25 @@ describe("abertura de Geração e despacho térmico renderizados", () => {
   });
 
   it("textos novos sem julgamento, sem causalidade afirmada e sem data relativa nas quatro páginas", () => {
+    const achado = (texto: string, re: RegExp) => {
+      const x = re.exec(texto);
+      return x ? `...${texto.slice(Math.max(0, x.index - 70), x.index + 70)}...` : null;
+    };
     for (const [id, h] of Object.entries({ abertura, termica, restricoes, capacidade })) {
-      const texto = h.replace(/<[^>]+>/g, " ");
-      expect(texto, id).not.toMatch(/\b(hoje|agora)\b/i);
-      expect(texto, id).not.toMatch(/\b(melhor|pior|ineficiente|excelente|péssim[oa])\b/i);
-      expect(texto, id).not.toMatch(/\bporque\b/i);
-      expect(texto, id).not.toMatch(/[—–]/);
-      expect(texto, id).not.toMatch(/\bgold\b|\bsilver\b|\bpipeline\b/i);
+      // só o conteúdo da página (o menu do observatório é de outro módulo)
+      const texto = h.slice(h.indexOf("<main"), h.indexOf("</main>")).replace(/<[^>]+>/g, " ");
+      expect(texto.length, id).toBeGreaterThan(5000);
+      expect(achado(texto, /\b(hoje|agora)\b/i), `${id}: data relativa`).toBeNull();
+      expect(achado(texto, /\b(melhor|pior|ineficiente|excelente|péssim[oa])\b/i), `${id}: julgamento`).toBeNull();
+      expect(achado(texto, /\bporque\b/i), `${id}: causalidade`).toBeNull();
+      // jargão de bastidor só fora de Entender: o texto de Analisar e Auditar cita a base e as regras publicadas
+      const ini = h.indexOf("<main");
+      const corte = h.slice(ini).search(/<section[^>]*data-nivel="(analisar|auditar)"/);
+      const entender = h.slice(ini, corte > 0 ? ini + corte : h.indexOf("</main>")).replace(/<[^>]+>/g, " ");
+      expect(entender.length, `${id}: Entender`).toBeGreaterThan(3000);
+      expect(achado(entender, /[—–]/), `${id}: travessão em Entender`).toBeNull();
+      expect(achado(entender, /\bgold\b|\bsilver\b|\bpipeline\b/i), `${id}: jargão de bastidor em Entender`).toBeNull();
+      expect(achado(entender, /\bP0\d\d\b/), `${id}: código de painel em Entender`).toBeNull();
     }
   });
 });

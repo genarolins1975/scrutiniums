@@ -139,7 +139,7 @@ export default function EmpresasPage() {
           titulo="Quem atua no setor elétrico?"
           lead={`Donos de usinas e de linhas, distribuidoras, companhias abertas e grupos de controle, ligados pelo CNPJ (${SIGLAS.CNPJ}) que a fonte oficial publica no próprio registro.`}
           recorte={`Usinas do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · demais fontes com datas próprias`}
-          fonte="ANEEL (geração e transmissão: SIGA e SIGET) e CVM (demonstrações anuais e trimestrais: DFP e ITR)"
+          fonte={`ANEEL, ${SIGLAS.ANEEL} (cadastros de geração e de transmissão); CVM, ${SIGLAS.CVM} (demonstrações anuais e trimestrais)`}
           referencia={
             <>
               SIGA de {dataSiga}; SIGET de {dataTexto(t?.data)}; cadastro de agentes de {dataTexto(datas.cadastro_agentes)}; composição societária declarada à ANEEL de {janela}; CVM com DFP até{" "}
