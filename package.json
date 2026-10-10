@@ -12,7 +12,8 @@
     "pretest": "node scripts/materializar-trabalho-renda.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
-    "wcag": "node scripts/auditoria-wcag.mjs"
+    "wcag": "node scripts/auditoria-wcag.mjs",
+    "postbuild": "node scripts/verificar-alimentacao-serverless.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.4",
