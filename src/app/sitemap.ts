@@ -85,6 +85,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/setor-eletrico/metodologia", 0.7, "monthly"),
     // Observatório Brasileiro de Eficiência Estatal: entrada e dois temas publicados (Educação e Saúde nas capitais).
     rota("/eficiencia-estatal", 0.7, "monthly"),
+    ...["", "cobertura", "tempo-resposta", "conciliacao", "recursos", "dados"].map(s => rota(`/eficiencia-estatal/acesso-justica${s ? "/"+s : ""}`, 0.6, "monthly")),
     ...["", "necessidades", "acesso", "acompanhamento", "cuidado", "recursos", "dados", "metodos"].map(s => rota(`/eficiencia-estatal/assistencia-social${s ? "/"+s : ""}`, 0.6, "monthly")),
     ...["", "necessidades", "acesso", "qualidade", "recursos", "dados", "metodos"].map(s => rota(`/eficiencia-estatal/seguranca-alimentar${s ? "/"+s : ""}`, 0.6, "monthly")),
     rota("/eficiencia-estatal/educacao-municipal-capitais", 0.6, "monthly"),

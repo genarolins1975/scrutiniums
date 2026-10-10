@@ -1,0 +1,18 @@
+[
+  {
+    "id": "defensoria",
+    "nome": "Pesquisa Nacional da Defensoria Pública 2025",
+    "url": "https://pesquisanacionaldefensoria.com.br/download/bases_de_dados_da_pesquisa_nacional_da_defensoria_publica-2025.xlsx",
+    "sha256": "d2a6b6c531ce6415b0170cfcabda405c398387029143237598d2f14f45ec0476",
+    "referencia": "Comarcas: 24/04/2025; população estimada: 2024; administração: 2021–2024",
+    "localizadores": "Comarcas: A–I; Relatório Administrativo: A, B, D, S, T, AC, AD, AT. Número da linha preservado."
+  },
+  {
+    "id": "cnj",
+    "nome": "CNJ — Justiça em Números 2026",
+    "url": "https://bibliotecadigital.cnj.jus.br/bitstream/123456789/1126/1/relatorio_justica_em_numeros2026_1.pdf",
+    "sha256": "7aafbf664cbd3edadf46492151988468e154fe9cb131b460fe7dde335c3dca19",
+    "referencia": "Ano-base 2025; edição 2026",
+    "localizadores": "Páginas 22–24 (volumes e duração); 232–234 (conciliação); figura 285, p. 333 (27 tribunais)."
+  }
+]
