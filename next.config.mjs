@@ -8,6 +8,16 @@ const nextConfig = {
     // injetar metadados por rota; o tracing precisa incluí-los no bundle
     // da função (em serverless o public/ não está no filesystem por padrão).
     outputFileTracingIncludes: {
+      "/eficiencia-estatal/seguranca-alimentar/dados.csv": [
+        "./public/eficiencia/seguranca-alimentar/snapshot.json",
+        "./public/eficiencia/seguranca-alimentar/cadinsan.json",
+        "./public/eficiencia/seguranca-alimentar/sisan.json",
+        "./public/eficiencia/seguranca-alimentar/aquisicao.json",
+        "./public/eficiencia/seguranca-alimentar/precos.json",
+        "./public/eficiencia/seguranca-alimentar/escolar.json",
+        "./public/eficiencia/seguranca-alimentar/saude.json",
+        "./public/eficiencia/seguranca-alimentar/paa.json",
+      ],
       "/observatorio/[[...rota]]": [
         "./public/obs/index.html",
         "./public/obs/data/gold/inst_index.json",
@@ -16,6 +26,15 @@ const nextConfig = {
       "/api/boletim/enviar": [
         "./public/obs/data/gold/alertas_central.json",
         "./public/obs/data/gold/meta.json",
+      ],
+    },
+    // O exportador lê apenas as oito bases canônicas. Brutos e shards são
+    // downloads estáticos e não precisam inflar o bundle da função CSV.
+    outputFileTracingExcludes: {
+      "/eficiencia-estatal/seguranca-alimentar/dados.csv": [
+        "./public/eficiencia/seguranca-alimentar/brutos/**/*",
+        "./public/eficiencia/seguranca-alimentar/chunks/**/*",
+        "./public/eficiencia/seguranca-alimentar/indices/**/*",
       ],
     },
   },

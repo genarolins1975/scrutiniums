@@ -1,0 +1,237 @@
+{
+  "versao": 1,
+  "formato": "SAN1: header de hashes JSON + bytes originais, gzip/base64",
+  "bytes": 67177673,
+  "sha256": "5e51dd7d80ee5fcba081b65ad0661df50979a587efdd41a2cdef5ce9e27077f5",
+  "partes": [
+    "base-001.gz.b64",
+    "base-002.gz.b64",
+    "base-003.gz.b64",
+    "base-004.gz.b64",
+    "base-005.gz.b64",
+    "base-006.gz.b64",
+    "base-007.gz.b64",
+    "base-008.gz.b64",
+    "base-009.gz.b64",
+    "base-010.gz.b64",
+    "base-011.gz.b64",
+    "base-012.gz.b64",
+    "base-013.gz.b64",
+    "base-014.gz.b64",
+    "base-015.gz.b64",
+    "base-016.gz.b64",
+    "base-017.gz.b64",
+    "base-018.gz.b64",
+    "base-019.gz.b64",
+    "base-020.gz.b64",
+    "base-021.gz.b64",
+    "base-022.gz.b64",
+    "base-023.gz.b64",
+    "base-024.gz.b64",
+    "base-025.gz.b64",
+    "base-026.gz.b64",
+    "base-027.gz.b64",
+    "base-028.gz.b64",
+    "base-029.gz.b64",
+    "base-030.gz.b64",
+    "base-031.gz.b64",
+    "base-032.gz.b64",
+    "base-033.gz.b64",
+    "base-034.gz.b64",
+    "base-035.gz.b64",
+    "base-036.gz.b64",
+    "base-037.gz.b64",
+    "base-038.gz.b64",
+    "base-039.gz.b64",
+    "base-040.gz.b64",
+    "base-041.gz.b64",
+    "base-042.gz.b64",
+    "base-043.gz.b64",
+    "base-044.gz.b64",
+    "base-045.gz.b64",
+    "base-046.gz.b64",
+    "base-047.gz.b64",
+    "base-048.gz.b64",
+    "base-049.gz.b64"
+  ],
+  "arquivos": [
+    {
+      "path": "aquisicao.json",
+      "bytes": 12249755,
+      "sha256": "cc53398b4d04d62cfd19bb901525742f28bfac2b014ba940a1a4b7054d136650"
+    },
+    {
+      "path": "brutos/cadinsan-2025.pdf.gz",
+      "bytes": 2675359,
+      "sha256": "9328393855f2b70aae243d19a6b9c4018c8a3ebbec30fba3c02776d08e879270"
+    },
+    {
+      "path": "brutos/cadinsan-linhas-extraidas.json.gz",
+      "bytes": 92148,
+      "sha256": "6ebc6690de977044d738e2d6020b5ff531504076236b24a3634383172a3290d8"
+    },
+    {
+      "path": "brutos/ebia-9552-metadados.json.gz",
+      "bytes": 612,
+      "sha256": "cd5b6f591c85a5debbc6035da356a3ba1782f0b880e27fcf4aee5a4d965af48f"
+    },
+    {
+      "path": "brutos/ebia-9552.json.gz",
+      "bytes": 13288,
+      "sha256": "ead659d2bbd713f715b4767b079dcf49d2033012a4e767a609b9f2a0379e0c84"
+    },
+    {
+      "path": "brutos/ebia-9553-metadados.json.gz",
+      "bytes": 571,
+      "sha256": "f4a6df49dc8bac983af2d0cbb7a36a0c2c43309c759bd67ba76f55b7fc436a9b"
+    },
+    {
+      "path": "brutos/ebia-9553.json.gz",
+      "bytes": 966,
+      "sha256": "b15e9858dff7513e334b92bb3ad5dc1c01bb17cbb65b6304355a866d53ca4752"
+    },
+    {
+      "path": "brutos/ebia-9554-metadados.json.gz",
+      "bytes": 584,
+      "sha256": "b25222f56b2edfde7e5d99199f556385e6472f0acd2f9934d0be3f87617fcb1a"
+    },
+    {
+      "path": "brutos/ebia-9554.json.gz",
+      "bytes": 1144,
+      "sha256": "fa19ae3dc4c897bb18bc5257270bc26c454bf7577df21540052c56e17c0e58e1"
+    },
+    {
+      "path": "brutos/ebia-9555-metadados.json.gz",
+      "bytes": 647,
+      "sha256": "8ae3d3acc178387e31a6c9db310d024c0731f0b7462885e9545699db32ea68c2"
+    },
+    {
+      "path": "brutos/ebia-9555.json.gz",
+      "bytes": 1879,
+      "sha256": "fd83c3efa974cf74a56d984829fd18490f9b5d64a475d9434f50cc8f421ab96c"
+    },
+    {
+      "path": "brutos/ebia-9556-metadados.json.gz",
+      "bytes": 714,
+      "sha256": "e66c4a829401e0e0e9943a0fc6bafced8c40c5c5824f0b98b8ddb8b86f260668"
+    },
+    {
+      "path": "brutos/ebia-9556.json.gz",
+      "bytes": 1996,
+      "sha256": "db79533da55a5fad36513f51099e6cf080c43cde7719b142a2afe8a9239fdff7"
+    },
+    {
+      "path": "brutos/ebia-9557-metadados.json.gz",
+      "bytes": 586,
+      "sha256": "70be8f6802bb3565eeb172793242a00ed5532570c4c0baaef2bd71ac31327d50"
+    },
+    {
+      "path": "brutos/ebia-9557.json.gz",
+      "bytes": 1145,
+      "sha256": "a1b40f861f94ffc7b6d9b5f5c978825f811372c1d87558138d839e188d2d6f02"
+    },
+    {
+      "path": "brutos/ebia-9558-metadados.json.gz",
+      "bytes": 672,
+      "sha256": "9657ffd3880643e6b9bc18f839f0c912a809a56c0f4375791999bfa75dff8aba"
+    },
+    {
+      "path": "brutos/ebia-9558.json.gz",
+      "bytes": 1394,
+      "sha256": "ab64fcac7be7c1691593ff630567e5b1cf21bedbea68bf272cf65816a7c1a725"
+    },
+    {
+      "path": "brutos/ebia-9559-metadados.json.gz",
+      "bytes": 579,
+      "sha256": "3d98f852c46021b7dcb7fca9f4c93c0917d43e48fa617ee772d5c008e2ce8c81"
+    },
+    {
+      "path": "brutos/ebia-9559.json.gz",
+      "bytes": 968,
+      "sha256": "575094dcf856ef94eddb754b45212e8f333ed64d5c33faf66497f4813d1ba19f"
+    },
+    {
+      "path": "brutos/ebia-9560-metadados.json.gz",
+      "bytes": 580,
+      "sha256": "0a81d67d27da9f80243126c79baae9907c803b871b03d1b8e915c18ca5f42ede"
+    },
+    {
+      "path": "brutos/ebia-9560.json.gz",
+      "bytes": 975,
+      "sha256": "a8b8e60255b0e150db5fd0d8830b4db8294c2e9728c2a9089247dbee2a1dd04e"
+    },
+    {
+      "path": "brutos/ebia-9562-metadados.json.gz",
+      "bytes": 578,
+      "sha256": "b0982b92423367e92e1d6b382a1350b26015ad84373c5303d2bfcd5e6f6d1674"
+    },
+    {
+      "path": "brutos/ebia-9562.json.gz",
+      "bytes": 970,
+      "sha256": "613f0201adbf4528c456cac679c59dc4d774f30b92088daac5455ffcc9ab91f9"
+    },
+    {
+      "path": "brutos/fnde-pnae.txt.gz",
+      "bytes": 1331598,
+      "sha256": "2825b55c7205590c382c288f0671ef12f7f4b49b3b9b63056cba308a956c75f4"
+    },
+    {
+      "path": "brutos/ibge-ipca.json.gz",
+      "bytes": 1750,
+      "sha256": "68ffd9d6c00fcb8d5c78947bc2f14e76f2a96bf295ada8bea3ea8636e4481fa4"
+    },
+    {
+      "path": "brutos/ibge-municipios.json.gz",
+      "bytes": 105761,
+      "sha256": "fe317ec17d6b1ce86f129e354067f5b568404158ad5ef669f2d27d562fc2f2b0"
+    },
+    {
+      "path": "brutos/ms-sisvan-tabela10-2025.txt.gz",
+      "bytes": 1957,
+      "sha256": "4f82daece91d354a3d00d0d93fbd04d985da989812848fb6db8e14425de1992a"
+    },
+    {
+      "path": "brutos/munic-san-2024.xlsx.gz",
+      "bytes": 7167052,
+      "sha256": "368c713af6bf6f0f35b04606b22622649a6a436a215a06c0c735825bf9a97668"
+    },
+    {
+      "path": "brutos/pnae-conciliacao.json",
+      "bytes": 1460,
+      "sha256": "a21186bf2f2cd2dc7149a0194fda07c553d3a06c0fafcd8d66f14765c7547265"
+    },
+    {
+      "path": "cadinsan.json",
+      "bytes": 9339909,
+      "sha256": "aabe7b57e9ae64e79291cad734e702bab8154401845d1f932ba06a3c9d514a3c"
+    },
+    {
+      "path": "escolar.json",
+      "bytes": 8098553,
+      "sha256": "6cb2a08f72cceb0539b4f1fe4f1a08ff0c5c7acd50f66eb79c0e659ef44c8f09"
+    },
+    {
+      "path": "precos.json",
+      "bytes": 81776,
+      "sha256": "8ff31ce2015f2faf55f1673564a3853ff387243eeb9b3fc6598e068f65c44bc1"
+    },
+    {
+      "path": "saude.json",
+      "bytes": 6585,
+      "sha256": "7d2452e1643a5a6e6325a2910dfb69544db8bedd006640e144262b6068911f0b"
+    },
+    {
+      "path": "sisan.json",
+      "bytes": 25118181,
+      "sha256": "0d682cbda352a8c2a04586e8c14359b69eb540b996f4b60f4a796908b21912a2"
+    },
+    {
+      "path": "snapshot.json",
+      "bytes": 870520,
+      "sha256": "0bb30149c689a4c9b64d59836ad73db5098474b2104ba0b57b5df41861cb21ca"
+    }
+  ],
+  "suplementos": [
+    "paa-manifest.json"
+  ]
+}

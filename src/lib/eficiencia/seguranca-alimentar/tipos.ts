@@ -1,0 +1,6 @@
+/** Contrato público: universos e períodos não são intercambiáveis entre fontes. */
+export interface TerritorioAlimentar { id:string; nome:string; nivel:'brasil'|'regiao'|'uf'|'municipio'; uf?:string; }
+export interface FonteAlimentar { id:string; nome:string; url:string; consulta:string; periodo:{frequencia:string;inicio:number;fim:number}; universo:string; limitacoes:string[]; capturadoEm:string; sha256:string; bruto:string; documentacao?:string[]; transformacoes?:string[]; }
+export interface IndicadorAlimentar { id:string; nome:string; unidade:string; fonteId:string; universo:string; limitacao:string; categoria?:string; frequencia?:string; perimetro?:string; campoFonte?:string; }
+export interface ObservacaoAlimentar { indicadorId:string; territorioId:string; periodo:string; periodoNome:string; valor:number|null; status:'observado'|'ausente'|'calculado'; fonteId:string; grupo:string; dimensao:string; cv:number|null; nota?:string|null; numerador?:number|null; denominador?:number|null; formula?:string; municipiosComDado?:number; municipiosUniverso?:number; valorOriginal?:string|number|null; campoFonte?:string; paginaPdf?:number; }
+export interface SnapshotAlimentar { versao:number; capturadoEm:string; fontes:FonteAlimentar[]; territorios:TerritorioAlimentar[]; indicadores:IndicadorAlimentar[]; observacoes:ObservacaoAlimentar[]; notas:string[]; }

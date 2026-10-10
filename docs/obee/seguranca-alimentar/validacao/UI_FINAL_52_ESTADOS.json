@@ -1,0 +1,4115 @@
+[
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar",
+    "name": "Panorama",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom segurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Quatro perguntas para aprofundar",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 8830,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 239
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 239
+        },
+        {
+          "height": 258.9140625,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "smallControls": [],
+      "title": "A alimentação na vida das pessoas.",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/inseguranca-alimentar",
+    "name": "Insegurança alimentar",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 7824,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 239
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 239
+        },
+        {
+          "height": 258.9140625,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "smallControls": [],
+      "title": "Como os domicílios vivem o acesso à alimentação?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/desigualdades",
+    "name": "Desigualdades",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Sexo da pessoa responsável · Mulheres"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 6346,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 68,3%; Insegurança leve 20,8%; Insegurança moderada 6,2%; Insegurança grave 4,6%",
+          "width": 239
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 72,1%; Insegurança leve 18,9%; Insegurança moderada 5,4%; Insegurança grave 3,6%",
+          "width": 239
+        },
+        {
+          "height": 258.9140625,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "smallControls": [],
+      "title": "Em quais grupos o acesso à alimentação é diferente?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/territorios",
+    "name": "Territórios",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseDomicílios do recorte · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "O recorte no território",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 8790,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 239
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 239
+        },
+        {
+          "height": 258.9140625,
+          "name": "Evolução: 2 valores disponíveis, unidade mil domicílios. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "smallControls": [],
+      "title": "Onde o acesso à alimentação exige atenção?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/territorios-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/territorios-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/precos-poder-de-compra",
+    "name": "Preços e poder de compra",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseAlimentação no domicílio · variação em 12 meses · Brasil · setembro de 2026 · Total · Total"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Alimentos e índice geral, na mesma janela",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 5970,
+      "images": [
+        {
+          "height": 258.9140625,
+          "name": "Evolução: 45 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "smallControls": [],
+      "title": "Como os preços dos alimentos mudam?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-escolar",
+    "name": "Alimentação escolar",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseRepasses federais informados · Brasil · 2025 · Rede executora · Conjunto das redes"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Recursos e registros por rede executora",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 8885,
+      "images": [
+        {
+          "height": 258.9140625,
+          "name": "Evolução: 18 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "smallControls": [],
+      "title": "Que recursos chegam à alimentação escolar?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/equipamentos-atendimento",
+    "name": "Equipamentos e atendimento",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseRestaurantes populares sob gestão municipal · Brasil · 2024 · MUNIC 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Equipamentos declarados, por tipo",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 7474,
+      "images": [],
+      "scrollWidth": 305,
+      "smallControls": [],
+      "title": "Que estrutura pública apoia o acesso à alimentação?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/equipamentos-atendimento-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/equipamentos-atendimento-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/aquisicao-abastecimento",
+    "name": "Aquisição e abastecimento",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análisePagamentos registrados a fornecedores do PAA · Brasil · 2025 · referência dezembro · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Pagamentos e registros de fornecedores",
+        "As ações declaradas, lado a lado",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 10164,
+      "images": [
+        {
+          "height": 258.9140625,
+          "name": "Evolução: 3 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 239
+        },
+        {
+          "height": 258.9140625,
+          "name": "Evolução: 3 valores disponíveis, unidade registros de fornecedores. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "smallControls": [],
+      "title": "O que é pago e registrado na aquisição pública?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/aquisicao-abastecimento-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/aquisicao-abastecimento-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-saude",
+    "name": "Alimentação e saúde",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseIndivíduos com peso e altura avaliados · Brasil · 2025 · preliminar · Fase da vida · Crianças menores de 5 anos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Acompanhamento em cada fase da vida",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 5599,
+      "images": [],
+      "scrollWidth": 305,
+      "smallControls": [],
+      "title": "O que se observa entre as pessoas acompanhadas?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/gestao-recursos",
+    "name": "Gestão e recursos",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseMunicípios com órgão gestor de SAN · Brasil · 2024 · MUNIC 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As estruturas institucionais, lado a lado",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 7658,
+      "images": [],
+      "scrollWidth": 305,
+      "smallControls": [],
+      "title": "Que estruturas sustentam a política municipal?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/gestao-recursos-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/gestao-recursos-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/comparar",
+    "name": "Comparar",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseDomicílios do recorte · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 7862,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 239
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 239
+        },
+        {
+          "height": 258.9140625,
+          "name": "Evolução: 2 valores disponíveis, unidade mil domicílios. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "smallControls": [],
+      "title": "Compare com o mesmo contrato.",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/comparar-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/comparar-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/metodos",
+    "name": "Método e cobertura",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Domicílios do recorte · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com segurança alimentar — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com segurança alimentar — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Com insegurança alimentar — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com insegurança alimentar — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar leve — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar leve — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar grave — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar grave — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada ou grave — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada ou grave — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Índice geral · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação e bebidas · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação no domicílio · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação fora do domicílio · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Índice geral · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação e bebidas · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação no domicílio · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação fora do domicílio · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Repasses federais informados · R$"
+        },
+        {
+          "open": false,
+          "text": "Alunos registrados no PNAE · alunos registrados"
+        },
+        {
+          "open": false,
+          "text": "Escolas registradas no PNAE · escolas registradas"
+        },
+        {
+          "open": false,
+          "text": "Entidades com valor de repasse informado · %"
+        },
+        {
+          "open": false,
+          "text": "Municípios com órgão gestor de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com lei de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com plano de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com conselho de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com câmara intersetorial de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com fundo de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com restaurante popular sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Restaurantes populares sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com cozinha comunitária sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Cozinhas comunitárias sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com banco de alimentos sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Bancos de alimentos sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com central de recebimento da agricultura familiar · municípios"
+        },
+        {
+          "open": false,
+          "text": "Centrais de recebimento da agricultura familiar · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Fornecedores registrados no PAA · registros de fornecedores"
+        },
+        {
+          "open": false,
+          "text": "Pagamentos registrados a fornecedores do PAA · R$"
+        },
+        {
+          "open": false,
+          "text": "Indivíduos com peso e altura avaliados · indivíduos avaliados"
+        },
+        {
+          "open": false,
+          "text": "Cobertura do acompanhamento por fase da vida · %"
+        },
+        {
+          "open": false,
+          "text": "Famílias em risco estimado, considerando PBF · famílias"
+        },
+        {
+          "open": false,
+          "text": "Proporção em risco estimado, considerando PBF · %"
+        },
+        {
+          "open": false,
+          "text": "Famílias analisadas no anexo municipal do CadINSAN · famílias"
+        },
+        {
+          "open": false,
+          "text": "Famílias em risco estimado no cenário sem PBF · famílias"
+        },
+        {
+          "open": false,
+          "text": "Proporção em risco estimado no cenário sem PBF · %"
+        },
+        {
+          "open": false,
+          "text": "Municípios que declararam aquisição via PAA · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios que declararam aquisição via PNAE · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com ações de acesso a alimentos · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com distribuição de cestas básicas · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com oferta de refeições prontas · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com ticket ou vale-alimentação · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com oferta de benefício monetário · municípios"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9552"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9553"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9554"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9555"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9556"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9557"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9558"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9559"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9560"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9562"
+        },
+        {
+          "open": false,
+          "text": "IBGE · IPCA · tabela 7060"
+        },
+        {
+          "open": false,
+          "text": "FNDE · PNAE · repasses, alunos e escolas"
+        },
+        {
+          "open": false,
+          "text": "IBGE · MUNIC 2024 · Suplemento Segurança Alimentar e Nutricional"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2023"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2024"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2025"
+        },
+        {
+          "open": false,
+          "text": "MDS · Documenta Wiki · Ficha PAA IN002"
+        },
+        {
+          "open": false,
+          "text": "MDS · Documenta Wiki · Ficha PAA IN003"
+        },
+        {
+          "open": false,
+          "text": "Ministério da Saúde · SISVAN · Relatório de Gestão 2025, tabela 10"
+        },
+        {
+          "open": false,
+          "text": "MDS · CadINSAN 2025 · Relatório publicado em 2026"
+        }
+      ],
+      "headings": [
+        "Quatro distinções essenciais",
+        "Medidas e contratos",
+        "Fontes reproduzíveis",
+        "Cobertura por pergunta",
+        "Dados completos e notas da publicação"
+      ],
+      "height": 16074,
+      "images": [],
+      "scrollWidth": 320,
+      "smallControls": [],
+      "title": "O que os dados permitem dizer.",
+      "width": 320
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-320-y0.jpg",
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-320-y8037.jpg",
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-320-y15174.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-320-y0.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal",
+    "name": "Entrada OBEE",
+    "width": 320,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Ver escopo de Educação"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Saúde"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Trabalho e renda"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Segurança alimentar"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Assistência social"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Previdência"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Segurança pública"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Justiça e direitos"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Habitação"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Saneamento"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Mobilidade e transporte"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Energia e conectividade"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Meio ambiente e clima"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Cultura"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Esporte e lazer"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Serviços e cidadania"
+        },
+        {
+          "open": false,
+          "text": "Educação nas capitais: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Saúde nas capitais: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Trabalho e renda: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Segurança alimentar e nutricional: escopo, fontes e acessos"
+        }
+      ],
+      "headings": [
+        "Quanto se aplica?",
+        "Quem tem acesso?",
+        "O que se observa?",
+        "Escolha uma área, explore os dados.",
+        "O que você precisa do Estado?",
+        "Um mapa amplo. Um recorte declarado.",
+        "Educação nas capitais",
+        "Saúde nas capitais",
+        "Trabalho e renda",
+        "Segurança alimentar e nutricional",
+        "Quem financia, quem entrega, quem responde?"
+      ],
+      "height": 12084,
+      "images": [],
+      "scrollWidth": 305,
+      "smallControls": [
+        {
+          "height": 20,
+          "text": ""
+        }
+      ],
+      "title": "O Estado na vida de cada cidadão.",
+      "width": 320
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-320.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-320.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-320.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar",
+    "name": "Panorama",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom segurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Quatro perguntas para aprofundar",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 8168,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 309
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 309
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "A alimentação na vida das pessoas.",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/inseguranca-alimentar",
+    "name": "Insegurança alimentar",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 7231,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 309
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 309
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "Como os domicílios vivem o acesso à alimentação?",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/desigualdades",
+    "name": "Desigualdades",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Sexo da pessoa responsável · Mulheres"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 5664,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 68,3%; Insegurança leve 20,8%; Insegurança moderada 6,2%; Insegurança grave 4,6%",
+          "width": 309
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 72,1%; Insegurança leve 18,9%; Insegurança moderada 5,4%; Insegurança grave 3,6%",
+          "width": 309
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "Em quais grupos o acesso à alimentação é diferente?",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/territorios",
+    "name": "Territórios",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseDomicílios do recorte · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "O recorte no território",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 8136,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 309
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 309
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade mil domicílios. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "Onde o acesso à alimentação exige atenção?",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/territorios-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/territorios-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/territorios-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/precos-poder-de-compra",
+    "name": "Preços e poder de compra",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseAlimentação no domicílio · variação em 12 meses · Brasil · setembro de 2026 · Total · Total"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Alimentos e índice geral, na mesma janela",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 5488,
+      "images": [
+        {
+          "height": 260,
+          "name": "Evolução: 45 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "Como os preços dos alimentos mudam?",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-escolar",
+    "name": "Alimentação escolar",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseRepasses federais informados · Brasil · 2025 · Rede executora · Conjunto das redes"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Recursos e registros por rede executora",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 8138,
+      "images": [
+        {
+          "height": 260,
+          "name": "Evolução: 18 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "Que recursos chegam à alimentação escolar?",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/equipamentos-atendimento",
+    "name": "Equipamentos e atendimento",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseRestaurantes populares sob gestão municipal · Brasil · 2024 · MUNIC 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Equipamentos declarados, por tipo",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 6932,
+      "images": [],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "Que estrutura pública apoia o acesso à alimentação?",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/equipamentos-atendimento-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/equipamentos-atendimento-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/equipamentos-atendimento-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/aquisicao-abastecimento",
+    "name": "Aquisição e abastecimento",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análisePagamentos registrados a fornecedores do PAA · Brasil · 2025 · referência dezembro · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Pagamentos e registros de fornecedores",
+        "As ações declaradas, lado a lado",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 9402,
+      "images": [
+        {
+          "height": 260,
+          "name": "Evolução: 3 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 309
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 3 valores disponíveis, unidade registros de fornecedores. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "O que é pago e registrado na aquisição pública?",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/aquisicao-abastecimento-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/aquisicao-abastecimento-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/aquisicao-abastecimento-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-saude",
+    "name": "Alimentação e saúde",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseIndivíduos com peso e altura avaliados · Brasil · 2025 · preliminar · Fase da vida · Crianças menores de 5 anos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Acompanhamento em cada fase da vida",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 5169,
+      "images": [],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "O que se observa entre as pessoas acompanhadas?",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/gestao-recursos",
+    "name": "Gestão e recursos",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseMunicípios com órgão gestor de SAN · Brasil · 2024 · MUNIC 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As estruturas institucionais, lado a lado",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 7110,
+      "images": [],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "Que estruturas sustentam a política municipal?",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/gestao-recursos-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/gestao-recursos-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/gestao-recursos-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/comparar",
+    "name": "Comparar",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseDomicílios do recorte · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 7262,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 309
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 309
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade mil domicílios. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "Compare com o mesmo contrato.",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/comparar-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/comparar-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/comparar-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/metodos",
+    "name": "Método e cobertura",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Domicílios do recorte · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com segurança alimentar — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com segurança alimentar — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Com insegurança alimentar — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com insegurança alimentar — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar leve — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar leve — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar grave — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar grave — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada ou grave — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada ou grave — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Índice geral · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação e bebidas · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação no domicílio · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação fora do domicílio · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Índice geral · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação e bebidas · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação no domicílio · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação fora do domicílio · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Repasses federais informados · R$"
+        },
+        {
+          "open": false,
+          "text": "Alunos registrados no PNAE · alunos registrados"
+        },
+        {
+          "open": false,
+          "text": "Escolas registradas no PNAE · escolas registradas"
+        },
+        {
+          "open": false,
+          "text": "Entidades com valor de repasse informado · %"
+        },
+        {
+          "open": false,
+          "text": "Municípios com órgão gestor de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com lei de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com plano de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com conselho de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com câmara intersetorial de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com fundo de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com restaurante popular sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Restaurantes populares sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com cozinha comunitária sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Cozinhas comunitárias sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com banco de alimentos sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Bancos de alimentos sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com central de recebimento da agricultura familiar · municípios"
+        },
+        {
+          "open": false,
+          "text": "Centrais de recebimento da agricultura familiar · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Fornecedores registrados no PAA · registros de fornecedores"
+        },
+        {
+          "open": false,
+          "text": "Pagamentos registrados a fornecedores do PAA · R$"
+        },
+        {
+          "open": false,
+          "text": "Indivíduos com peso e altura avaliados · indivíduos avaliados"
+        },
+        {
+          "open": false,
+          "text": "Cobertura do acompanhamento por fase da vida · %"
+        },
+        {
+          "open": false,
+          "text": "Famílias em risco estimado, considerando PBF · famílias"
+        },
+        {
+          "open": false,
+          "text": "Proporção em risco estimado, considerando PBF · %"
+        },
+        {
+          "open": false,
+          "text": "Famílias analisadas no anexo municipal do CadINSAN · famílias"
+        },
+        {
+          "open": false,
+          "text": "Famílias em risco estimado no cenário sem PBF · famílias"
+        },
+        {
+          "open": false,
+          "text": "Proporção em risco estimado no cenário sem PBF · %"
+        },
+        {
+          "open": false,
+          "text": "Municípios que declararam aquisição via PAA · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios que declararam aquisição via PNAE · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com ações de acesso a alimentos · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com distribuição de cestas básicas · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com oferta de refeições prontas · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com ticket ou vale-alimentação · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com oferta de benefício monetário · municípios"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9552"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9553"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9554"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9555"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9556"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9557"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9558"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9559"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9560"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9562"
+        },
+        {
+          "open": false,
+          "text": "IBGE · IPCA · tabela 7060"
+        },
+        {
+          "open": false,
+          "text": "FNDE · PNAE · repasses, alunos e escolas"
+        },
+        {
+          "open": false,
+          "text": "IBGE · MUNIC 2024 · Suplemento Segurança Alimentar e Nutricional"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2023"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2024"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2025"
+        },
+        {
+          "open": false,
+          "text": "MDS · Documenta Wiki · Ficha PAA IN002"
+        },
+        {
+          "open": false,
+          "text": "MDS · Documenta Wiki · Ficha PAA IN003"
+        },
+        {
+          "open": false,
+          "text": "Ministério da Saúde · SISVAN · Relatório de Gestão 2025, tabela 10"
+        },
+        {
+          "open": false,
+          "text": "MDS · CadINSAN 2025 · Relatório publicado em 2026"
+        }
+      ],
+      "headings": [
+        "Quatro distinções essenciais",
+        "Medidas e contratos",
+        "Fontes reproduzíveis",
+        "Cobertura por pergunta",
+        "Dados completos e notas da publicação"
+      ],
+      "height": 14384,
+      "images": [],
+      "scrollWidth": 375,
+      "smallControls": [],
+      "title": "O que os dados permitem dizer.",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal",
+    "name": "Entrada OBEE",
+    "width": 390,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Ver escopo de Educação"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Saúde"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Trabalho e renda"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Segurança alimentar"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Assistência social"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Previdência"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Segurança pública"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Justiça e direitos"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Habitação"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Saneamento"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Mobilidade e transporte"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Energia e conectividade"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Meio ambiente e clima"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Cultura"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Esporte e lazer"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Serviços e cidadania"
+        },
+        {
+          "open": false,
+          "text": "Educação nas capitais: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Saúde nas capitais: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Trabalho e renda: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Segurança alimentar e nutricional: escopo, fontes e acessos"
+        }
+      ],
+      "headings": [
+        "Quanto se aplica?",
+        "Quem tem acesso?",
+        "O que se observa?",
+        "Escolha uma área, explore os dados.",
+        "O que você precisa do Estado?",
+        "Um mapa amplo. Um recorte declarado.",
+        "Educação nas capitais",
+        "Saúde nas capitais",
+        "Trabalho e renda",
+        "Segurança alimentar e nutricional",
+        "Quem financia, quem entrega, quem responde?"
+      ],
+      "height": 11170,
+      "images": [],
+      "scrollWidth": 375,
+      "smallControls": [
+        {
+          "height": 20,
+          "text": ""
+        }
+      ],
+      "title": "O Estado na vida de cada cidadão.",
+      "width": 390
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-390.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-390.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-390.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar",
+    "name": "Panorama",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom segurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Quatro perguntas para aprofundar",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 6414,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 671
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 671
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 671
+        }
+      ],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "A alimentação na vida das pessoas.",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/inseguranca-alimentar",
+    "name": "Insegurança alimentar",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 5859,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 671
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 671
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 671
+        }
+      ],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "Como os domicílios vivem o acesso à alimentação?",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/desigualdades",
+    "name": "Desigualdades",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Sexo da pessoa responsável · Mulheres"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 4160,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 68,3%; Insegurança leve 20,8%; Insegurança moderada 6,2%; Insegurança grave 4,6%",
+          "width": 671
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 72,1%; Insegurança leve 18,9%; Insegurança moderada 5,4%; Insegurança grave 3,6%",
+          "width": 671
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 671
+        }
+      ],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "Em quais grupos o acesso à alimentação é diferente?",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/territorios",
+    "name": "Territórios",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseDomicílios do recorte · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "O recorte no território",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 6932,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 671
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 671
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade mil domicílios. Tabela equivalente com valores exatos.",
+          "width": 671
+        }
+      ],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "Onde o acesso à alimentação exige atenção?",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/territorios-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/territorios-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/territorios-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/precos-poder-de-compra",
+    "name": "Preços e poder de compra",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseAlimentação no domicílio · variação em 12 meses · Brasil · setembro de 2026 · Total · Total"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Alimentos e índice geral, na mesma janela",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 3932,
+      "images": [
+        {
+          "height": 260,
+          "name": "Evolução: 45 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 671
+        }
+      ],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "Como os preços dos alimentos mudam?",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-escolar",
+    "name": "Alimentação escolar",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseRepasses federais informados · Brasil · 2025 · Rede executora · Conjunto das redes"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Recursos e registros por rede executora",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 6708,
+      "images": [
+        {
+          "height": 260,
+          "name": "Evolução: 18 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 671
+        }
+      ],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "Que recursos chegam à alimentação escolar?",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/equipamentos-atendimento",
+    "name": "Equipamentos e atendimento",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseRestaurantes populares sob gestão municipal · Brasil · 2024 · MUNIC 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Equipamentos declarados, por tipo",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 5773,
+      "images": [],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "Que estrutura pública apoia o acesso à alimentação?",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/equipamentos-atendimento-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/equipamentos-atendimento-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/equipamentos-atendimento-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/aquisicao-abastecimento",
+    "name": "Aquisição e abastecimento",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análisePagamentos registrados a fornecedores do PAA · Brasil · 2025 · referência dezembro · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Pagamentos e registros de fornecedores",
+        "As ações declaradas, lado a lado",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 7181,
+      "images": [
+        {
+          "height": 259.5703125,
+          "name": "Evolução: 3 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 302.5
+        },
+        {
+          "height": 259.5703125,
+          "name": "Evolução: 3 valores disponíveis, unidade registros de fornecedores. Tabela equivalente com valores exatos.",
+          "width": 302.5
+        }
+      ],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "O que é pago e registrado na aquisição pública?",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/aquisicao-abastecimento-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/aquisicao-abastecimento-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/aquisicao-abastecimento-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-saude",
+    "name": "Alimentação e saúde",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseIndivíduos com peso e altura avaliados · Brasil · 2025 · preliminar · Fase da vida · Crianças menores de 5 anos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Acompanhamento em cada fase da vida",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 3385,
+      "images": [],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "O que se observa entre as pessoas acompanhadas?",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/gestao-recursos",
+    "name": "Gestão e recursos",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseMunicípios com órgão gestor de SAN · Brasil · 2024 · MUNIC 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As estruturas institucionais, lado a lado",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 5874,
+      "images": [],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "Que estruturas sustentam a política municipal?",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/gestao-recursos-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/gestao-recursos-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/gestao-recursos-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/comparar",
+    "name": "Comparar",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseDomicílios do recorte · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 6020,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 671
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 671
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade mil domicílios. Tabela equivalente com valores exatos.",
+          "width": 671
+        }
+      ],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "Compare com o mesmo contrato.",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/comparar-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/comparar-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/comparar-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/metodos",
+    "name": "Método e cobertura",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Domicílios do recorte · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com segurança alimentar — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com segurança alimentar — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Com insegurança alimentar — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com insegurança alimentar — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar leve — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar leve — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar grave — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar grave — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada ou grave — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada ou grave — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Índice geral · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação e bebidas · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação no domicílio · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação fora do domicílio · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Índice geral · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação e bebidas · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação no domicílio · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação fora do domicílio · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Repasses federais informados · R$"
+        },
+        {
+          "open": false,
+          "text": "Alunos registrados no PNAE · alunos registrados"
+        },
+        {
+          "open": false,
+          "text": "Escolas registradas no PNAE · escolas registradas"
+        },
+        {
+          "open": false,
+          "text": "Entidades com valor de repasse informado · %"
+        },
+        {
+          "open": false,
+          "text": "Municípios com órgão gestor de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com lei de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com plano de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com conselho de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com câmara intersetorial de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com fundo de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com restaurante popular sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Restaurantes populares sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com cozinha comunitária sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Cozinhas comunitárias sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com banco de alimentos sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Bancos de alimentos sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com central de recebimento da agricultura familiar · municípios"
+        },
+        {
+          "open": false,
+          "text": "Centrais de recebimento da agricultura familiar · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Fornecedores registrados no PAA · registros de fornecedores"
+        },
+        {
+          "open": false,
+          "text": "Pagamentos registrados a fornecedores do PAA · R$"
+        },
+        {
+          "open": false,
+          "text": "Indivíduos com peso e altura avaliados · indivíduos avaliados"
+        },
+        {
+          "open": false,
+          "text": "Cobertura do acompanhamento por fase da vida · %"
+        },
+        {
+          "open": false,
+          "text": "Famílias em risco estimado, considerando PBF · famílias"
+        },
+        {
+          "open": false,
+          "text": "Proporção em risco estimado, considerando PBF · %"
+        },
+        {
+          "open": false,
+          "text": "Famílias analisadas no anexo municipal do CadINSAN · famílias"
+        },
+        {
+          "open": false,
+          "text": "Famílias em risco estimado no cenário sem PBF · famílias"
+        },
+        {
+          "open": false,
+          "text": "Proporção em risco estimado no cenário sem PBF · %"
+        },
+        {
+          "open": false,
+          "text": "Municípios que declararam aquisição via PAA · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios que declararam aquisição via PNAE · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com ações de acesso a alimentos · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com distribuição de cestas básicas · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com oferta de refeições prontas · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com ticket ou vale-alimentação · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com oferta de benefício monetário · municípios"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9552"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9553"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9554"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9555"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9556"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9557"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9558"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9559"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9560"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9562"
+        },
+        {
+          "open": false,
+          "text": "IBGE · IPCA · tabela 7060"
+        },
+        {
+          "open": false,
+          "text": "FNDE · PNAE · repasses, alunos e escolas"
+        },
+        {
+          "open": false,
+          "text": "IBGE · MUNIC 2024 · Suplemento Segurança Alimentar e Nutricional"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2023"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2024"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2025"
+        },
+        {
+          "open": false,
+          "text": "MDS · Documenta Wiki · Ficha PAA IN002"
+        },
+        {
+          "open": false,
+          "text": "MDS · Documenta Wiki · Ficha PAA IN003"
+        },
+        {
+          "open": false,
+          "text": "Ministério da Saúde · SISVAN · Relatório de Gestão 2025, tabela 10"
+        },
+        {
+          "open": false,
+          "text": "MDS · CadINSAN 2025 · Relatório publicado em 2026"
+        }
+      ],
+      "headings": [
+        "Quatro distinções essenciais",
+        "Medidas e contratos",
+        "Fontes reproduzíveis",
+        "Cobertura por pergunta",
+        "Dados completos e notas da publicação"
+      ],
+      "height": 11097,
+      "images": [],
+      "scrollWidth": 753,
+      "smallControls": [],
+      "title": "O que os dados permitem dizer.",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal",
+    "name": "Entrada OBEE",
+    "width": 768,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Ver escopo de Educação"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Saúde"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Trabalho e renda"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Segurança alimentar"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Assistência social"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Previdência"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Segurança pública"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Justiça e direitos"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Habitação"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Saneamento"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Mobilidade e transporte"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Energia e conectividade"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Meio ambiente e clima"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Cultura"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Esporte e lazer"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Serviços e cidadania"
+        },
+        {
+          "open": false,
+          "text": "Educação nas capitais: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Saúde nas capitais: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Trabalho e renda: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Segurança alimentar e nutricional: escopo, fontes e acessos"
+        }
+      ],
+      "headings": [
+        "Quanto se aplica?",
+        "Quem tem acesso?",
+        "O que se observa?",
+        "Escolha uma área, explore os dados.",
+        "O que você precisa do Estado?",
+        "Um mapa amplo. Um recorte declarado.",
+        "Educação nas capitais",
+        "Saúde nas capitais",
+        "Trabalho e renda",
+        "Segurança alimentar e nutricional",
+        "Quem financia, quem entrega, quem responde?"
+      ],
+      "height": 7041,
+      "images": [],
+      "scrollWidth": 753,
+      "smallControls": [
+        {
+          "height": 20,
+          "text": ""
+        }
+      ],
+      "title": "O Estado na vida de cada cidadão.",
+      "width": 768
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-768.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-768.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-768.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar",
+    "name": "Panorama",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": true,
+          "text": "Recorte da análiseCom segurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Quatro perguntas para aprofundar",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 5052,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 1126
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 1126
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "A alimentação na vida das pessoas.",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/inseguranca-alimentar",
+    "name": "Insegurança alimentar",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": true,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 4583,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 1126
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 1126
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "Como os domicílios vivem o acesso à alimentação?",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/desigualdades",
+    "name": "Desigualdades",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": true,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Sexo da pessoa responsável · Mulheres"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 3733,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 68,3%; Insegurança leve 20,8%; Insegurança moderada 6,2%; Insegurança grave 4,6%",
+          "width": 1126
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 72,1%; Insegurança leve 18,9%; Insegurança moderada 5,4%; Insegurança grave 3,6%",
+          "width": 1126
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "Em quais grupos o acesso à alimentação é diferente?",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/territorios",
+    "name": "Territórios",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": true,
+          "text": "Recorte da análiseDomicílios do recorte · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "O recorte no território",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 5545,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 1126
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 1126
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade mil domicílios. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "Onde o acesso à alimentação exige atenção?",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/territorios-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/territorios-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/territorios-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/precos-poder-de-compra",
+    "name": "Preços e poder de compra",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": true,
+          "text": "Recorte da análiseAlimentação no domicílio · variação em 12 meses · Brasil · setembro de 2026 · Total · Total"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Alimentos e índice geral, na mesma janela",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 3411,
+      "images": [
+        {
+          "height": 260,
+          "name": "Evolução: 45 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "Como os preços dos alimentos mudam?",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-escolar",
+    "name": "Alimentação escolar",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": true,
+          "text": "Recorte da análiseRepasses federais informados · Brasil · 2025 · Rede executora · Conjunto das redes"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Recursos e registros por rede executora",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 5204,
+      "images": [
+        {
+          "height": 260,
+          "name": "Evolução: 18 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "Que recursos chegam à alimentação escolar?",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/equipamentos-atendimento",
+    "name": "Equipamentos e atendimento",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": true,
+          "text": "Recorte da análiseRestaurantes populares sob gestão municipal · Brasil · 2024 · MUNIC 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Equipamentos declarados, por tipo",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 4601,
+      "images": [],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "Que estrutura pública apoia o acesso à alimentação?",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/equipamentos-atendimento-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/equipamentos-atendimento-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/equipamentos-atendimento-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/aquisicao-abastecimento",
+    "name": "Aquisição e abastecimento",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": true,
+          "text": "Recorte da análisePagamentos registrados a fornecedores do PAA · Brasil · 2025 · referência dezembro · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Pagamentos e registros de fornecedores",
+        "As ações declaradas, lado a lado",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 6066,
+      "images": [
+        {
+          "height": 260,
+          "name": "Evolução: 3 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 526
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 3 valores disponíveis, unidade registros de fornecedores. Tabela equivalente com valores exatos.",
+          "width": 526
+        }
+      ],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "O que é pago e registrado na aquisição pública?",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/aquisicao-abastecimento-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/aquisicao-abastecimento-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/aquisicao-abastecimento-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-saude",
+    "name": "Alimentação e saúde",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": true,
+          "text": "Recorte da análiseIndivíduos com peso e altura avaliados · Brasil · 2025 · preliminar · Fase da vida · Crianças menores de 5 anos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Acompanhamento em cada fase da vida",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 2975,
+      "images": [],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "O que se observa entre as pessoas acompanhadas?",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/gestao-recursos",
+    "name": "Gestão e recursos",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": true,
+          "text": "Recorte da análiseMunicípios com órgão gestor de SAN · Brasil · 2024 · MUNIC 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As estruturas institucionais, lado a lado",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 4841,
+      "images": [],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "Que estruturas sustentam a política municipal?",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/gestao-recursos-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/gestao-recursos-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/gestao-recursos-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/comparar",
+    "name": "Comparar",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": true,
+          "text": "Recorte da análiseDomicílios do recorte · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "height": 4653,
+      "images": [
+        {
+          "height": 38,
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 1126
+        },
+        {
+          "height": 38,
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 1126
+        },
+        {
+          "height": 260,
+          "name": "Evolução: 2 valores disponíveis, unidade mil domicílios. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "Compare com o mesmo contrato.",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/comparar-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/comparar-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/comparar-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/metodos",
+    "name": "Método e cobertura",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Domicílios do recorte · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com segurança alimentar — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com segurança alimentar — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Com insegurança alimentar — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Com insegurança alimentar — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar leve — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar leve — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar grave — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar grave — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada ou grave — domicílios · mil domicílios"
+        },
+        {
+          "open": false,
+          "text": "Insegurança alimentar moderada ou grave — proporção · %"
+        },
+        {
+          "open": false,
+          "text": "Índice geral · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação e bebidas · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação no domicílio · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação fora do domicílio · variação mensal · %"
+        },
+        {
+          "open": false,
+          "text": "Índice geral · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação e bebidas · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação no domicílio · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Alimentação fora do domicílio · variação em 12 meses · %"
+        },
+        {
+          "open": false,
+          "text": "Repasses federais informados · R$"
+        },
+        {
+          "open": false,
+          "text": "Alunos registrados no PNAE · alunos registrados"
+        },
+        {
+          "open": false,
+          "text": "Escolas registradas no PNAE · escolas registradas"
+        },
+        {
+          "open": false,
+          "text": "Entidades com valor de repasse informado · %"
+        },
+        {
+          "open": false,
+          "text": "Municípios com órgão gestor de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com lei de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com plano de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com conselho de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com câmara intersetorial de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com fundo de SAN · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com restaurante popular sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Restaurantes populares sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com cozinha comunitária sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Cozinhas comunitárias sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com banco de alimentos sob gestão municipal · municípios"
+        },
+        {
+          "open": false,
+          "text": "Bancos de alimentos sob gestão municipal · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Municípios com central de recebimento da agricultura familiar · municípios"
+        },
+        {
+          "open": false,
+          "text": "Centrais de recebimento da agricultura familiar · equipamentos"
+        },
+        {
+          "open": false,
+          "text": "Fornecedores registrados no PAA · registros de fornecedores"
+        },
+        {
+          "open": false,
+          "text": "Pagamentos registrados a fornecedores do PAA · R$"
+        },
+        {
+          "open": false,
+          "text": "Indivíduos com peso e altura avaliados · indivíduos avaliados"
+        },
+        {
+          "open": false,
+          "text": "Cobertura do acompanhamento por fase da vida · %"
+        },
+        {
+          "open": false,
+          "text": "Famílias em risco estimado, considerando PBF · famílias"
+        },
+        {
+          "open": false,
+          "text": "Proporção em risco estimado, considerando PBF · %"
+        },
+        {
+          "open": false,
+          "text": "Famílias analisadas no anexo municipal do CadINSAN · famílias"
+        },
+        {
+          "open": false,
+          "text": "Famílias em risco estimado no cenário sem PBF · famílias"
+        },
+        {
+          "open": false,
+          "text": "Proporção em risco estimado no cenário sem PBF · %"
+        },
+        {
+          "open": false,
+          "text": "Municípios que declararam aquisição via PAA · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios que declararam aquisição via PNAE · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com ações de acesso a alimentos · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com distribuição de cestas básicas · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com oferta de refeições prontas · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com ticket ou vale-alimentação · municípios"
+        },
+        {
+          "open": false,
+          "text": "Municípios com oferta de benefício monetário · municípios"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9552"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9553"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9554"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9555"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9556"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9557"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9558"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9559"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9560"
+        },
+        {
+          "open": false,
+          "text": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9562"
+        },
+        {
+          "open": false,
+          "text": "IBGE · IPCA · tabela 7060"
+        },
+        {
+          "open": false,
+          "text": "FNDE · PNAE · repasses, alunos e escolas"
+        },
+        {
+          "open": false,
+          "text": "IBGE · MUNIC 2024 · Suplemento Segurança Alimentar e Nutricional"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2023"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2024"
+        },
+        {
+          "open": false,
+          "text": "MDS · PAA · MI Social · referência dezembro de 2025"
+        },
+        {
+          "open": false,
+          "text": "MDS · Documenta Wiki · Ficha PAA IN002"
+        },
+        {
+          "open": false,
+          "text": "MDS · Documenta Wiki · Ficha PAA IN003"
+        },
+        {
+          "open": false,
+          "text": "Ministério da Saúde · SISVAN · Relatório de Gestão 2025, tabela 10"
+        },
+        {
+          "open": false,
+          "text": "MDS · CadINSAN 2025 · Relatório publicado em 2026"
+        }
+      ],
+      "headings": [
+        "Quatro distinções essenciais",
+        "Medidas e contratos",
+        "Fontes reproduzíveis",
+        "Cobertura por pergunta",
+        "Dados completos e notas da publicação"
+      ],
+      "height": 10335,
+      "images": [],
+      "scrollWidth": 1425,
+      "smallControls": [],
+      "title": "O que os dados permitem dizer.",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/metodos-final-1440.dom.txt"
+  },
+  {
+    "route": "/eficiencia-estatal",
+    "name": "Entrada OBEE",
+    "width": 1440,
+    "state": {
+      "badInputs": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Ver escopo de Educação"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Saúde"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Trabalho e renda"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Segurança alimentar"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Assistência social"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Previdência"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Segurança pública"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Justiça e direitos"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Habitação"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Saneamento"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Mobilidade e transporte"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Energia e conectividade"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Meio ambiente e clima"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Cultura"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Esporte e lazer"
+        },
+        {
+          "open": false,
+          "text": "Ver escopo de Serviços e cidadania"
+        },
+        {
+          "open": false,
+          "text": "Educação nas capitais: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Saúde nas capitais: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Trabalho e renda: escopo, fontes e acessos"
+        },
+        {
+          "open": false,
+          "text": "Segurança alimentar e nutricional: escopo, fontes e acessos"
+        }
+      ],
+      "headings": [
+        "Quanto se aplica?",
+        "Quem tem acesso?",
+        "O que se observa?",
+        "Escolha uma área, explore os dados.",
+        "O que você precisa do Estado?",
+        "Um mapa amplo. Um recorte declarado.",
+        "Educação nas capitais",
+        "Saúde nas capitais",
+        "Trabalho e renda",
+        "Segurança alimentar e nutricional",
+        "Quem financia, quem entrega, quem responde?"
+      ],
+      "height": 4262,
+      "images": [],
+      "scrollWidth": 1425,
+      "smallControls": [
+        {
+          "height": 20,
+          "text": ""
+        }
+      ],
+      "title": "O Estado na vida de cada cidadão.",
+      "width": 1440
+    },
+    "screenshots": [
+      "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-1440.jpg"
+    ],
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-1440.jpg",
+    "dom": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/eficiencia-estatal-final-1440.dom.txt"
+  }
+]

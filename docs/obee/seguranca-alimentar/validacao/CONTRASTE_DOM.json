@@ -1,0 +1,62 @@
+[
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar",
+    "count": 361,
+    "failures": []
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/inseguranca-alimentar",
+    "count": 348,
+    "failures": []
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/desigualdades",
+    "count": 149,
+    "failures": []
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/territorios",
+    "count": 327,
+    "failures": []
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/precos-poder-de-compra",
+    "count": 85,
+    "failures": []
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-escolar",
+    "count": 302,
+    "failures": []
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/equipamentos-atendimento",
+    "count": 304,
+    "failures": []
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/aquisicao-abastecimento",
+    "count": 330,
+    "failures": []
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-saude",
+    "count": 83,
+    "failures": []
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/gestao-recursos",
+    "count": 326,
+    "failures": []
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/comparar",
+    "count": 323,
+    "failures": []
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/metodos",
+    "count": 638,
+    "failures": []
+  }
+]

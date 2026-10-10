@@ -46,6 +46,7 @@ export function Footer({ compacto = false }: { compacto?: boolean }) {
             <li><Link href="/eficiencia-estatal/educacao-municipal-capitais" className="hover:text-bronze-soft">Educação nas capitais</Link></li>
             <li><Link href="/eficiencia-estatal/saude-capitais" className="hover:text-bronze-soft">Saúde nas capitais</Link></li>
             <li><Link href="/eficiencia-estatal/trabalho-renda" className="hover:text-bronze-soft">Trabalho e renda</Link></li>
+            <li><Link href="/eficiencia-estatal/seguranca-alimentar" className="hover:text-bronze-soft">Segurança alimentar</Link></li>
             <li><Link href="/eficiencia-estatal/educacao-municipal-capitais/metodos" className="hover:text-bronze-soft">Dados e métodos, Educação</Link></li>
             <li><Link href="/eficiencia-estatal/saude-capitais/metodos" className="hover:text-bronze-soft">Dados e métodos, Saúde</Link></li>
           </ul>

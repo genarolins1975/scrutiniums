@@ -1,0 +1,12 @@
+{
+  "municipiosReextraidos": 5570,
+  "linhasNumericasEncontradas": 5570,
+  "observacoesConferidas": 27990,
+  "divergencias": 0,
+  "shaPdfCorresponde": true,
+  "familiasAnexo": 21236683,
+  "universoCorpoRelatorio": 21460006,
+  "diferencaNaoReconciliada": 223323,
+  "cenarioSemPbfMenorQueComPbfMunicipios": 270,
+  "limite": "Somas do anexo não reproduzem universo do corpo; cenários não representam efeito causal. A redação final de metadados ainda será retestada."
+}

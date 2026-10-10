@@ -1,0 +1,142 @@
+{
+  "ebia": {
+    "observacoes": 2884,
+    "divergencias": 0,
+    "divergenciasCV": 0,
+    "hashesFontesConferidos": 10,
+    "fontes": 10,
+    "socialApenasBrasil": true
+  },
+  "sisan": {
+    "observacoes": 78442,
+    "municipiosXlsx": 5570,
+    "divergencias": 0,
+    "divergenciasValorOriginal": 0,
+    "shaXlsxCorresponde": true,
+    "ausentes": 1421
+  },
+  "aquisicao": {
+    "observacoes": 39221,
+    "municipiosXlsx": 5570,
+    "divergencias": 0,
+    "divergenciasValorOriginal": 0,
+    "shaXlsxCorresponde": true,
+    "ausentes": 3676
+  },
+  "paa": {
+    "observacoes": 33594,
+    "divergencias": 0,
+    "hashesConferidos": 5,
+    "fontes": 5,
+    "extratos": [
+      {
+        "periodo": "2023",
+        "docs": 5571,
+        "numFound": 5571
+      },
+      {
+        "periodo": "2024",
+        "docs": 5571,
+        "numFound": 5571
+      },
+      {
+        "periodo": "2025",
+        "docs": 5571,
+        "numFound": 5571
+      }
+    ],
+    "totaisBrasil": [
+      {
+        "indicadorId": "paa-fornecedores",
+        "territorioId": "1",
+        "periodo": "2023",
+        "periodoNome": "2023 · referência dezembro",
+        "grupo": "Total",
+        "dimensao": "total",
+        "valor": 44033.0,
+        "status": "calculado",
+        "cv": null,
+        "fonteId": "mds-paa-202312",
+        "nota": "Soma dos valores registrados em 2143 de 5571 municípios. Ausências não imputadas; contagens de fornecedores sem deduplicação entre municípios.",
+        "municipiosComDado": 2143,
+        "municipiosUniverso": 5571
+      },
+      {
+        "indicadorId": "paa-pagamentos",
+        "territorioId": "1",
+        "periodo": "2023",
+        "periodoNome": "2023 · referência dezembro",
+        "grupo": "Total",
+        "dimensao": "total",
+        "valor": 356555108.22,
+        "status": "calculado",
+        "cv": null,
+        "fonteId": "mds-paa-202312",
+        "nota": "Soma dos valores registrados em 2143 de 5571 municípios. Ausências não imputadas; contagens de fornecedores sem deduplicação entre municípios.",
+        "municipiosComDado": 2143,
+        "municipiosUniverso": 5571
+      },
+      {
+        "indicadorId": "paa-fornecedores",
+        "territorioId": "1",
+        "periodo": "2024",
+        "periodoNome": "2024 · referência dezembro",
+        "grupo": "Total",
+        "dimensao": "total",
+        "valor": 82573.0,
+        "status": "calculado",
+        "cv": null,
+        "fonteId": "mds-paa-202412",
+        "nota": "Soma dos valores registrados em 3212 de 5571 municípios. Ausências não imputadas; contagens de fornecedores sem deduplicação entre municípios.",
+        "municipiosComDado": 3212,
+        "municipiosUniverso": 5571
+      },
+      {
+        "indicadorId": "paa-pagamentos",
+        "territorioId": "1",
+        "periodo": "2024",
+        "periodoNome": "2024 · referência dezembro",
+        "grupo": "Total",
+        "dimensao": "total",
+        "valor": 794399458.23,
+        "status": "calculado",
+        "cv": null,
+        "fonteId": "mds-paa-202412",
+        "nota": "Soma dos valores registrados em 3212 de 5571 municípios. Ausências não imputadas; contagens de fornecedores sem deduplicação entre municípios.",
+        "municipiosComDado": 3212,
+        "municipiosUniverso": 5571
+      },
+      {
+        "indicadorId": "paa-fornecedores",
+        "territorioId": "1",
+        "periodo": "2025",
+        "periodoNome": "2025 · referência dezembro",
+        "grupo": "Total",
+        "dimensao": "total",
+        "valor": 64805.0,
+        "status": "calculado",
+        "cv": null,
+        "fonteId": "mds-paa-202512",
+        "nota": "Soma dos valores registrados em 2895 de 5571 municípios. Ausências não imputadas; contagens de fornecedores sem deduplicação entre municípios.",
+        "municipiosComDado": 2895,
+        "municipiosUniverso": 5571
+      },
+      {
+        "indicadorId": "paa-pagamentos",
+        "territorioId": "1",
+        "periodo": "2025",
+        "periodoNome": "2025 · referência dezembro",
+        "grupo": "Total",
+        "dimensao": "total",
+        "valor": 530784736.59,
+        "status": "calculado",
+        "cv": null,
+        "fonteId": "mds-paa-202512",
+        "nota": "Soma dos valores registrados em 2895 de 5571 municípios. Ausências não imputadas; contagens de fornecedores sem deduplicação entre municípios.",
+        "municipiosComDado": 2895,
+        "municipiosUniverso": 5571
+      }
+    ],
+    "ausentes": 16926
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "versao": 1,
+  "formato": "SAN1: header de hashes JSON + bytes originais, gzip/base64",
+  "bytes": 14031969,
+  "sha256": "a870623941e975082d75eee33a671342b369e0f0ccb1b523ce954c3eb6e4e2ed",
+  "partes": [
+    "paa-base-001.gz.b64",
+    "paa-base-002.gz.b64",
+    "paa-base-003.gz.b64"
+  ],
+  "arquivos": [
+    {
+      "path": "brutos/mds-paa-202312.json.gz",
+      "bytes": 78983,
+      "sha256": "62da996cd732517d93dced2f958b46266460f90f3ad5093cb635591d524a1e67"
+    },
+    {
+      "path": "brutos/mds-paa-202412.json.gz",
+      "bytes": 88818,
+      "sha256": "5b2edd51d0a55a33d0ab12122704ab1bcb636d503a405f8d545994c9c8643335"
+    },
+    {
+      "path": "brutos/mds-paa-202512.json.gz",
+      "bytes": 86078,
+      "sha256": "eda012f05d9117cbd2648e5458bc0af66326e981c3f634c18a90a9ddc6c8f8a5"
+    },
+    {
+      "path": "brutos/mds-paa-IN002.html.gz",
+      "bytes": 4528,
+      "sha256": "e34defbdbed9db7bb031352b60c5ac0915a21fecd2d4fdba9a052758f6f6516e"
+    },
+    {
+      "path": "brutos/mds-paa-IN003.html.gz",
+      "bytes": 4680,
+      "sha256": "1652fd576165ba3812a1dbd8c9340c74d74d3bd37c8e2d2bca5fcfb7fc679343"
+    },
+    {
+      "path": "paa.json",
+      "bytes": 13768109,
+      "sha256": "9178d16d43a1923f923e10775d2206c2219fb45bcbfad1cc3c1c1444159a71af"
+    }
+  ]
+}

@@ -1,0 +1,1410 @@
+{
+  "estado": "ACEITE_INDEPENDENTE_LOCAL",
+  "avaliadoEmUTC": "2026-10-10T00:54:57.285047+00:00",
+  "build": "Next produção local3030; últimos2textos no mesmo build isolado3032",
+  "limiar": ">9 por critério e rota",
+  "minimo": 9.1,
+  "compensacaoPorMedia": false,
+  "escopo": "12telas+integraçãoOBEE; notas editoriais, não notas dos territórios",
+  "limites": [
+    "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados.",
+    "48 estados+4 entrada capturados;4 rotasafetadas foram retestadas em 4 larguras; últimos 2 textos em build isolado 3032.",
+    "Métodos 320 usou 3 capturas por altura após timeout da captura integral; demais estados têm captura integral.",
+    "HTTP/CSV local e trace serverless não demonstram publicação: requerer leitura pública após deploy.",
+    "Saúde não incorpora distribuição nutricional; equipamento não comprova serviço; preços não medem poder de compra familiar; limites documentados."
+  ],
+  "rotas": [
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar",
+      "tela": "Panorama",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "seguranca-alimentar-final-320.jpg",
+            "seguranca-alimentar-final-390.jpg",
+            "seguranca-alimentar-final-768.jpg",
+            "seguranca-alimentar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "Composição EBIA completa, evolução 2023/24, 27 UFs e caminhos pelas perguntas; medida chega antes dos controles.",
+          "evidencia": [
+            "seguranca-alimentar-final-320.jpg",
+            "seguranca-alimentar-final-390.jpg",
+            "seguranca-alimentar-final-768.jpg",
+            "seguranca-alimentar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.2,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "seguranca-alimentar-final-320.jpg",
+            "seguranca-alimentar-final-390.jpg",
+            "seguranca-alimentar-final-768.jpg",
+            "seguranca-alimentar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.1,
+          "fundamento": "Composição EBIA completa, evolução 2023/24, 27 UFs e caminhos pelas perguntas; medida chega antes dos controles.",
+          "evidencia": [
+            "seguranca-alimentar-final-320.jpg",
+            "seguranca-alimentar-final-390.jpg",
+            "seguranca-alimentar-final-768.jpg",
+            "seguranca-alimentar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.2,
+          "fundamento": "Percentuais usam o total do próprio território/ano/recorte; quatro classes não se somam com Insegurança total.",
+          "evidencia": [
+            "seguranca-alimentar-final-320.jpg",
+            "seguranca-alimentar-final-390.jpg",
+            "seguranca-alimentar-final-768.jpg",
+            "seguranca-alimentar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "Percentuais usam o total do próprio território/ano/recorte; quatro classes não se somam com Insegurança total.",
+          "evidencia": [
+            "seguranca-alimentar-final-320.jpg",
+            "seguranca-alimentar-final-390.jpg",
+            "seguranca-alimentar-final-768.jpg",
+            "seguranca-alimentar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.1,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "seguranca-alimentar-final-320.jpg",
+            "seguranca-alimentar-final-390.jpg",
+            "seguranca-alimentar-final-768.jpg",
+            "seguranca-alimentar-final-1440.jpg"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.2,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "seguranca-alimentar-final-320.jpg",
+            "seguranca-alimentar-final-390.jpg",
+            "seguranca-alimentar-final-768.jpg",
+            "seguranca-alimentar-final-1440.jpg"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Composição EBIA completa, evolução 2023/24, 27 UFs e caminhos pelas perguntas; medida chega antes dos controles.",
+      "contratoCientifico": "Percentuais usam o total do próprio território/ano/recorte; quatro classes não se somam com Insegurança total."
+    },
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar/inseguranca-alimentar",
+      "tela": "Insegurança alimentar",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "inseguranca-alimentar-final-320.jpg",
+            "inseguranca-alimentar-final-390.jpg",
+            "inseguranca-alimentar-final-768.jpg",
+            "inseguranca-alimentar-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "Classes EBIA, composição, evolução e comparação estadual preservadas, com tabela e CSV.",
+          "evidencia": [
+            "inseguranca-alimentar-final-320.jpg",
+            "inseguranca-alimentar-final-390.jpg",
+            "inseguranca-alimentar-final-768.jpg",
+            "inseguranca-alimentar-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.2,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "inseguranca-alimentar-final-320.jpg",
+            "inseguranca-alimentar-final-390.jpg",
+            "inseguranca-alimentar-final-768.jpg",
+            "inseguranca-alimentar-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.2,
+          "fundamento": "Classes EBIA, composição, evolução e comparação estadual preservadas, com tabela e CSV.",
+          "evidencia": [
+            "inseguranca-alimentar-final-320.jpg",
+            "inseguranca-alimentar-final-390.jpg",
+            "inseguranca-alimentar-final-768.jpg",
+            "inseguranca-alimentar-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.3,
+          "fundamento": "Sexo fora da cobertura de UF permanece ausente; a fonte efetiva é 9553, sem emprestar o valor nacional.",
+          "evidencia": [
+            "inseguranca-alimentar-final-320.jpg",
+            "inseguranca-alimentar-final-390.jpg",
+            "inseguranca-alimentar-final-768.jpg",
+            "inseguranca-alimentar-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "Sexo fora da cobertura de UF permanece ausente; a fonte efetiva é 9553, sem emprestar o valor nacional.",
+          "evidencia": [
+            "inseguranca-alimentar-final-320.jpg",
+            "inseguranca-alimentar-final-390.jpg",
+            "inseguranca-alimentar-final-768.jpg",
+            "inseguranca-alimentar-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.1,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "inseguranca-alimentar-final-320.jpg",
+            "inseguranca-alimentar-final-390.jpg",
+            "inseguranca-alimentar-final-768.jpg",
+            "inseguranca-alimentar-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.2,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "inseguranca-alimentar-final-320.jpg",
+            "inseguranca-alimentar-final-390.jpg",
+            "inseguranca-alimentar-final-768.jpg",
+            "inseguranca-alimentar-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Classes EBIA, composição, evolução e comparação estadual preservadas, com tabela e CSV.",
+      "contratoCientifico": "Sexo fora da cobertura de UF permanece ausente; a fonte efetiva é 9553, sem emprestar o valor nacional."
+    },
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar/desigualdades",
+      "tela": "Desigualdades",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "desigualdades-final-320.jpg",
+            "desigualdades-final-390.jpg",
+            "desigualdades-final-768.jpg",
+            "desigualdades-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "Dimensão da pessoa responsável junto à medida; grupos, composição e evolução com denominadores próprios.",
+          "evidencia": [
+            "desigualdades-final-320.jpg",
+            "desigualdades-final-390.jpg",
+            "desigualdades-final-768.jpg",
+            "desigualdades-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.2,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "desigualdades-final-320.jpg",
+            "desigualdades-final-390.jpg",
+            "desigualdades-final-768.jpg",
+            "desigualdades-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.3,
+          "fundamento": "Dimensão da pessoa responsável junto à medida; grupos, composição e evolução com denominadores próprios.",
+          "evidencia": [
+            "desigualdades-final-320.jpg",
+            "desigualdades-final-390.jpg",
+            "desigualdades-final-768.jpg",
+            "desigualdades-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.3,
+          "fundamento": "Homens 20,1% e Mulheres 27,9% são prevalências dentro do grupo, não participação entre domicílios inseguros.",
+          "evidencia": [
+            "desigualdades-final-320.jpg",
+            "desigualdades-final-390.jpg",
+            "desigualdades-final-768.jpg",
+            "desigualdades-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "Homens 20,1% e Mulheres 27,9% são prevalências dentro do grupo, não participação entre domicílios inseguros.",
+          "evidencia": [
+            "desigualdades-final-320.jpg",
+            "desigualdades-final-390.jpg",
+            "desigualdades-final-768.jpg",
+            "desigualdades-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.1,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "desigualdades-final-320.jpg",
+            "desigualdades-final-390.jpg",
+            "desigualdades-final-768.jpg",
+            "desigualdades-final-1440.jpg"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.2,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "desigualdades-final-320.jpg",
+            "desigualdades-final-390.jpg",
+            "desigualdades-final-768.jpg",
+            "desigualdades-final-1440.jpg"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Dimensão da pessoa responsável junto à medida; grupos, composição e evolução com denominadores próprios.",
+      "contratoCientifico": "Homens 20,1% e Mulheres 27,9% são prevalências dentro do grupo, não participação entre domicílios inseguros."
+    },
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar/territorios",
+      "tela": "Territórios",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "territorios-final-320.jpg",
+            "territorios-final-390.jpg",
+            "territorios-final-768.jpg",
+            "territorios-final-1440.jpg",
+            "reteste--territorios-base-cadinsan.json-320.jpg",
+            "reteste--territorios-base-cadinsan.json-390.jpg",
+            "reteste--territorios-base-cadinsan.json-768.jpg",
+            "reteste--territorios-base-cadinsan.json-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "Mapa oficial de UF, comparação tabular, mudança de fonte e busca municipal em universo completo com opções limitadas na DOM.",
+          "evidencia": [
+            "territorios-final-320.jpg",
+            "territorios-final-390.jpg",
+            "territorios-final-768.jpg",
+            "territorios-final-1440.jpg",
+            "reteste--territorios-base-cadinsan.json-320.jpg",
+            "reteste--territorios-base-cadinsan.json-390.jpg",
+            "reteste--territorios-base-cadinsan.json-768.jpg",
+            "reteste--territorios-base-cadinsan.json-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.1,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "territorios-final-320.jpg",
+            "territorios-final-390.jpg",
+            "territorios-final-768.jpg",
+            "territorios-final-1440.jpg",
+            "reteste--territorios-base-cadinsan.json-320.jpg",
+            "reteste--territorios-base-cadinsan.json-390.jpg",
+            "reteste--territorios-base-cadinsan.json-768.jpg",
+            "reteste--territorios-base-cadinsan.json-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.3,
+          "fundamento": "Mapa oficial de UF, comparação tabular, mudança de fonte e busca municipal em universo completo com opções limitadas na DOM.",
+          "evidencia": [
+            "territorios-final-320.jpg",
+            "territorios-final-390.jpg",
+            "territorios-final-768.jpg",
+            "territorios-final-1440.jpg",
+            "reteste--territorios-base-cadinsan.json-320.jpg",
+            "reteste--territorios-base-cadinsan.json-390.jpg",
+            "reteste--territorios-base-cadinsan.json-768.jpg",
+            "reteste--territorios-base-cadinsan.json-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.3,
+          "fundamento": "EBIA e risco CadInsan são separados; diferença 223.323 anexo/corpo visível, cenários sem causalidade.",
+          "evidencia": [
+            "territorios-final-320.jpg",
+            "territorios-final-390.jpg",
+            "territorios-final-768.jpg",
+            "territorios-final-1440.jpg",
+            "reteste--territorios-base-cadinsan.json-320.jpg",
+            "reteste--territorios-base-cadinsan.json-390.jpg",
+            "reteste--territorios-base-cadinsan.json-768.jpg",
+            "reteste--territorios-base-cadinsan.json-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "EBIA e risco CadInsan são separados; diferença 223.323 anexo/corpo visível, cenários sem causalidade.",
+          "evidencia": [
+            "territorios-final-320.jpg",
+            "territorios-final-390.jpg",
+            "territorios-final-768.jpg",
+            "territorios-final-1440.jpg",
+            "reteste--territorios-base-cadinsan.json-320.jpg",
+            "reteste--territorios-base-cadinsan.json-390.jpg",
+            "reteste--territorios-base-cadinsan.json-768.jpg",
+            "reteste--territorios-base-cadinsan.json-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.2,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "territorios-final-320.jpg",
+            "territorios-final-390.jpg",
+            "territorios-final-768.jpg",
+            "territorios-final-1440.jpg",
+            "reteste--territorios-base-cadinsan.json-320.jpg",
+            "reteste--territorios-base-cadinsan.json-390.jpg",
+            "reteste--territorios-base-cadinsan.json-768.jpg",
+            "reteste--territorios-base-cadinsan.json-1440.jpg"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.1,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "territorios-final-320.jpg",
+            "territorios-final-390.jpg",
+            "territorios-final-768.jpg",
+            "territorios-final-1440.jpg",
+            "reteste--territorios-base-cadinsan.json-320.jpg",
+            "reteste--territorios-base-cadinsan.json-390.jpg",
+            "reteste--territorios-base-cadinsan.json-768.jpg",
+            "reteste--territorios-base-cadinsan.json-1440.jpg"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Mapa oficial de UF, comparação tabular, mudança de fonte e busca municipal em universo completo com opções limitadas na DOM.",
+      "contratoCientifico": "EBIA e risco CadInsan são separados; diferença 223.323 anexo/corpo visível, cenários sem causalidade."
+    },
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar/precos-poder-de-compra",
+      "tela": "Preços e poder de compra",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "precos-poder-de-compra-final-320.jpg",
+            "precos-poder-de-compra-final-390.jpg",
+            "precos-poder-de-compra-final-768.jpg",
+            "precos-poder-de-compra-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "Quatro categorias no mesmo mês/janela, diferença alimentos–índice geral, série 45 meses, tabela/CSV e precisão 2 decimais.",
+          "evidencia": [
+            "precos-poder-de-compra-final-320.jpg",
+            "precos-poder-de-compra-final-390.jpg",
+            "precos-poder-de-compra-final-768.jpg",
+            "precos-poder-de-compra-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.2,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "precos-poder-de-compra-final-320.jpg",
+            "precos-poder-de-compra-final-390.jpg",
+            "precos-poder-de-compra-final-768.jpg",
+            "precos-poder-de-compra-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.2,
+          "fundamento": "Quatro categorias no mesmo mês/janela, diferença alimentos–índice geral, série 45 meses, tabela/CSV e precisão 2 decimais.",
+          "evidencia": [
+            "precos-poder-de-compra-final-320.jpg",
+            "precos-poder-de-compra-final-390.jpg",
+            "precos-poder-de-compra-final-768.jpg",
+            "precos-poder-de-compra-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.3,
+          "fundamento": "Índice de preços ao consumidor não é preço da cesta, atacado ou comprometimento da renda individual.",
+          "evidencia": [
+            "precos-poder-de-compra-final-320.jpg",
+            "precos-poder-de-compra-final-390.jpg",
+            "precos-poder-de-compra-final-768.jpg",
+            "precos-poder-de-compra-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "Índice de preços ao consumidor não é preço da cesta, atacado ou comprometimento da renda individual.",
+          "evidencia": [
+            "precos-poder-de-compra-final-320.jpg",
+            "precos-poder-de-compra-final-390.jpg",
+            "precos-poder-de-compra-final-768.jpg",
+            "precos-poder-de-compra-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.1,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "precos-poder-de-compra-final-320.jpg",
+            "precos-poder-de-compra-final-390.jpg",
+            "precos-poder-de-compra-final-768.jpg",
+            "precos-poder-de-compra-final-1440.jpg"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.2,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "precos-poder-de-compra-final-320.jpg",
+            "precos-poder-de-compra-final-390.jpg",
+            "precos-poder-de-compra-final-768.jpg",
+            "precos-poder-de-compra-final-1440.jpg"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Quatro categorias no mesmo mês/janela, diferença alimentos–índice geral, série 45 meses, tabela/CSV e precisão 2 decimais.",
+      "contratoCientifico": "Índice de preços ao consumidor não é preço da cesta, atacado ou comprometimento da renda individual."
+    },
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar/alimentacao-escolar",
+      "tela": "Alimentação escolar",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "alimentacao-escolar-final-320.jpg",
+            "alimentacao-escolar-final-390.jpg",
+            "alimentacao-escolar-final-768.jpg",
+            "alimentacao-escolar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "Duas redes com total separado, transferências, alunos/escolas e cobertura; série histórica preserva parcialidade 2026.",
+          "evidencia": [
+            "alimentacao-escolar-final-320.jpg",
+            "alimentacao-escolar-final-390.jpg",
+            "alimentacao-escolar-final-768.jpg",
+            "alimentacao-escolar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.2,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "alimentacao-escolar-final-320.jpg",
+            "alimentacao-escolar-final-390.jpg",
+            "alimentacao-escolar-final-768.jpg",
+            "alimentacao-escolar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.3,
+          "fundamento": "Duas redes com total separado, transferências, alunos/escolas e cobertura; série histórica preserva parcialidade 2026.",
+          "evidencia": [
+            "alimentacao-escolar-final-320.jpg",
+            "alimentacao-escolar-final-390.jpg",
+            "alimentacao-escolar-final-768.jpg",
+            "alimentacao-escolar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.3,
+          "fundamento": "2026 não comparável ao ano completo: ponto aberto separado, nota sempre visível, variação bloqueada e tabela qualificada.",
+          "evidencia": [
+            "alimentacao-escolar-final-320.jpg",
+            "alimentacao-escolar-final-390.jpg",
+            "alimentacao-escolar-final-768.jpg",
+            "alimentacao-escolar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "2026 não comparável ao ano completo: ponto aberto separado, nota sempre visível, variação bloqueada e tabela qualificada.",
+          "evidencia": [
+            "alimentacao-escolar-final-320.jpg",
+            "alimentacao-escolar-final-390.jpg",
+            "alimentacao-escolar-final-768.jpg",
+            "alimentacao-escolar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.2,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "alimentacao-escolar-final-320.jpg",
+            "alimentacao-escolar-final-390.jpg",
+            "alimentacao-escolar-final-768.jpg",
+            "alimentacao-escolar-final-1440.jpg"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.1,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "alimentacao-escolar-final-320.jpg",
+            "alimentacao-escolar-final-390.jpg",
+            "alimentacao-escolar-final-768.jpg",
+            "alimentacao-escolar-final-1440.jpg"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Duas redes com total separado, transferências, alunos/escolas e cobertura; série histórica preserva parcialidade 2026.",
+      "contratoCientifico": "2026 não comparável ao ano completo: ponto aberto separado, nota sempre visível, variação bloqueada e tabela qualificada."
+    },
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar/equipamentos-atendimento",
+      "tela": "Equipamentos e atendimento",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "equipamentos-atendimento-final-320.jpg",
+            "equipamentos-atendimento-final-390.jpg",
+            "equipamentos-atendimento-final-768.jpg",
+            "equipamentos-atendimento-final-1440.jpg",
+            "reteste--equipamentos-atendimento-320.jpg",
+            "reteste--equipamentos-atendimento-390.jpg",
+            "reteste--equipamentos-atendimento-768.jpg",
+            "reteste--equipamentos-atendimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "Quatro tipos, existência, quantidade e cobertura lado a lado, com tabela completa acessível por teclado no celular.",
+          "evidencia": [
+            "equipamentos-atendimento-final-320.jpg",
+            "equipamentos-atendimento-final-390.jpg",
+            "equipamentos-atendimento-final-768.jpg",
+            "equipamentos-atendimento-final-1440.jpg",
+            "reteste--equipamentos-atendimento-320.jpg",
+            "reteste--equipamentos-atendimento-390.jpg",
+            "reteste--equipamentos-atendimento-768.jpg",
+            "reteste--equipamentos-atendimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.2,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "equipamentos-atendimento-final-320.jpg",
+            "equipamentos-atendimento-final-390.jpg",
+            "equipamentos-atendimento-final-768.jpg",
+            "equipamentos-atendimento-final-1440.jpg",
+            "reteste--equipamentos-atendimento-320.jpg",
+            "reteste--equipamentos-atendimento-390.jpg",
+            "reteste--equipamentos-atendimento-768.jpg",
+            "reteste--equipamentos-atendimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.2,
+          "fundamento": "Quatro tipos, existência, quantidade e cobertura lado a lado, com tabela completa acessível por teclado no celular.",
+          "evidencia": [
+            "equipamentos-atendimento-final-320.jpg",
+            "equipamentos-atendimento-final-390.jpg",
+            "equipamentos-atendimento-final-768.jpg",
+            "equipamentos-atendimento-final-1440.jpg",
+            "reteste--equipamentos-atendimento-320.jpg",
+            "reteste--equipamentos-atendimento-390.jpg",
+            "reteste--equipamentos-atendimento-768.jpg",
+            "reteste--equipamentos-atendimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.3,
+          "fundamento": "Existência municipal não representa funcionamento, capacidade, refeições ou atendimento; zero condicional identificado.",
+          "evidencia": [
+            "equipamentos-atendimento-final-320.jpg",
+            "equipamentos-atendimento-final-390.jpg",
+            "equipamentos-atendimento-final-768.jpg",
+            "equipamentos-atendimento-final-1440.jpg",
+            "reteste--equipamentos-atendimento-320.jpg",
+            "reteste--equipamentos-atendimento-390.jpg",
+            "reteste--equipamentos-atendimento-768.jpg",
+            "reteste--equipamentos-atendimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "Existência municipal não representa funcionamento, capacidade, refeições ou atendimento; zero condicional identificado.",
+          "evidencia": [
+            "equipamentos-atendimento-final-320.jpg",
+            "equipamentos-atendimento-final-390.jpg",
+            "equipamentos-atendimento-final-768.jpg",
+            "equipamentos-atendimento-final-1440.jpg",
+            "reteste--equipamentos-atendimento-320.jpg",
+            "reteste--equipamentos-atendimento-390.jpg",
+            "reteste--equipamentos-atendimento-768.jpg",
+            "reteste--equipamentos-atendimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.2,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "equipamentos-atendimento-final-320.jpg",
+            "equipamentos-atendimento-final-390.jpg",
+            "equipamentos-atendimento-final-768.jpg",
+            "equipamentos-atendimento-final-1440.jpg",
+            "reteste--equipamentos-atendimento-320.jpg",
+            "reteste--equipamentos-atendimento-390.jpg",
+            "reteste--equipamentos-atendimento-768.jpg",
+            "reteste--equipamentos-atendimento-1440.jpg"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.1,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "equipamentos-atendimento-final-320.jpg",
+            "equipamentos-atendimento-final-390.jpg",
+            "equipamentos-atendimento-final-768.jpg",
+            "equipamentos-atendimento-final-1440.jpg",
+            "reteste--equipamentos-atendimento-320.jpg",
+            "reteste--equipamentos-atendimento-390.jpg",
+            "reteste--equipamentos-atendimento-768.jpg",
+            "reteste--equipamentos-atendimento-1440.jpg"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Quatro tipos, existência, quantidade e cobertura lado a lado, com tabela completa acessível por teclado no celular.",
+      "contratoCientifico": "Existência municipal não representa funcionamento, capacidade, refeições ou atendimento; zero condicional identificado."
+    },
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar/aquisicao-abastecimento",
+      "tela": "Aquisição e abastecimento",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "aquisicao-abastecimento-final-320.jpg",
+            "aquisicao-abastecimento-final-390.jpg",
+            "aquisicao-abastecimento-final-768.jpg",
+            "aquisicao-abastecimento-final-1440.jpg",
+            "reteste--aquisicao-abastecimento-320.jpg",
+            "reteste--aquisicao-abastecimento-390.jpg",
+            "reteste--aquisicao-abastecimento-768.jpg",
+            "reteste--aquisicao-abastecimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "PAA pagamentos/fornecedores em duas séries e tabela; sete ações MUNIC aparecem em capítulo próprio 2023, com cobertura.",
+          "evidencia": [
+            "aquisicao-abastecimento-final-320.jpg",
+            "aquisicao-abastecimento-final-390.jpg",
+            "aquisicao-abastecimento-final-768.jpg",
+            "aquisicao-abastecimento-final-1440.jpg",
+            "reteste--aquisicao-abastecimento-320.jpg",
+            "reteste--aquisicao-abastecimento-390.jpg",
+            "reteste--aquisicao-abastecimento-768.jpg",
+            "reteste--aquisicao-abastecimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.1,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "aquisicao-abastecimento-final-320.jpg",
+            "aquisicao-abastecimento-final-390.jpg",
+            "aquisicao-abastecimento-final-768.jpg",
+            "aquisicao-abastecimento-final-1440.jpg",
+            "reteste--aquisicao-abastecimento-320.jpg",
+            "reteste--aquisicao-abastecimento-390.jpg",
+            "reteste--aquisicao-abastecimento-768.jpg",
+            "reteste--aquisicao-abastecimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.3,
+          "fundamento": "PAA pagamentos/fornecedores em duas séries e tabela; sete ações MUNIC aparecem em capítulo próprio 2023, com cobertura.",
+          "evidencia": [
+            "aquisicao-abastecimento-final-320.jpg",
+            "aquisicao-abastecimento-final-390.jpg",
+            "aquisicao-abastecimento-final-768.jpg",
+            "aquisicao-abastecimento-final-1440.jpg",
+            "reteste--aquisicao-abastecimento-320.jpg",
+            "reteste--aquisicao-abastecimento-390.jpg",
+            "reteste--aquisicao-abastecimento-768.jpg",
+            "reteste--aquisicao-abastecimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.3,
+          "fundamento": "Pagamentos nominais/fornecedores registrados não são total reconciliado de todo PAA nem pessoas únicas; MUNIC não é cadastro administrativo.",
+          "evidencia": [
+            "aquisicao-abastecimento-final-320.jpg",
+            "aquisicao-abastecimento-final-390.jpg",
+            "aquisicao-abastecimento-final-768.jpg",
+            "aquisicao-abastecimento-final-1440.jpg",
+            "reteste--aquisicao-abastecimento-320.jpg",
+            "reteste--aquisicao-abastecimento-390.jpg",
+            "reteste--aquisicao-abastecimento-768.jpg",
+            "reteste--aquisicao-abastecimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "Pagamentos nominais/fornecedores registrados não são total reconciliado de todo PAA nem pessoas únicas; MUNIC não é cadastro administrativo.",
+          "evidencia": [
+            "aquisicao-abastecimento-final-320.jpg",
+            "aquisicao-abastecimento-final-390.jpg",
+            "aquisicao-abastecimento-final-768.jpg",
+            "aquisicao-abastecimento-final-1440.jpg",
+            "reteste--aquisicao-abastecimento-320.jpg",
+            "reteste--aquisicao-abastecimento-390.jpg",
+            "reteste--aquisicao-abastecimento-768.jpg",
+            "reteste--aquisicao-abastecimento-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.1,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "aquisicao-abastecimento-final-320.jpg",
+            "aquisicao-abastecimento-final-390.jpg",
+            "aquisicao-abastecimento-final-768.jpg",
+            "aquisicao-abastecimento-final-1440.jpg",
+            "reteste--aquisicao-abastecimento-320.jpg",
+            "reteste--aquisicao-abastecimento-390.jpg",
+            "reteste--aquisicao-abastecimento-768.jpg",
+            "reteste--aquisicao-abastecimento-1440.jpg"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.1,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "aquisicao-abastecimento-final-320.jpg",
+            "aquisicao-abastecimento-final-390.jpg",
+            "aquisicao-abastecimento-final-768.jpg",
+            "aquisicao-abastecimento-final-1440.jpg",
+            "reteste--aquisicao-abastecimento-320.jpg",
+            "reteste--aquisicao-abastecimento-390.jpg",
+            "reteste--aquisicao-abastecimento-768.jpg",
+            "reteste--aquisicao-abastecimento-1440.jpg"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "PAA pagamentos/fornecedores em duas séries e tabela; sete ações MUNIC aparecem em capítulo próprio 2023, com cobertura.",
+      "contratoCientifico": "Pagamentos nominais/fornecedores registrados não são total reconciliado de todo PAA nem pessoas únicas; MUNIC não é cadastro administrativo."
+    },
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar/alimentacao-saude",
+      "tela": "Alimentação e saúde",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "alimentacao-saude-final-320.jpg",
+            "alimentacao-saude-final-390.jpg",
+            "alimentacao-saude-final-768.jpg",
+            "alimentacao-saude-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "Cinco fases da vida em visuais separados de quantidade/cobertura; tabela 10 observações e CSV, sem evolução fictícia.",
+          "evidencia": [
+            "alimentacao-saude-final-320.jpg",
+            "alimentacao-saude-final-390.jpg",
+            "alimentacao-saude-final-768.jpg",
+            "alimentacao-saude-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.2,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "alimentacao-saude-final-320.jpg",
+            "alimentacao-saude-final-390.jpg",
+            "alimentacao-saude-final-768.jpg",
+            "alimentacao-saude-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.1,
+          "fundamento": "Cinco fases da vida em visuais separados de quantidade/cobertura; tabela 10 observações e CSV, sem evolução fictícia.",
+          "evidencia": [
+            "alimentacao-saude-final-320.jpg",
+            "alimentacao-saude-final-390.jpg",
+            "alimentacao-saude-final-768.jpg",
+            "alimentacao-saude-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.3,
+          "fundamento": "AcompanhadosAPS não representam população geral; gestantes excluídas, dados preliminares e denominador não inferido.",
+          "evidencia": [
+            "alimentacao-saude-final-320.jpg",
+            "alimentacao-saude-final-390.jpg",
+            "alimentacao-saude-final-768.jpg",
+            "alimentacao-saude-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "AcompanhadosAPS não representam população geral; gestantes excluídas, dados preliminares e denominador não inferido.",
+          "evidencia": [
+            "alimentacao-saude-final-320.jpg",
+            "alimentacao-saude-final-390.jpg",
+            "alimentacao-saude-final-768.jpg",
+            "alimentacao-saude-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.1,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "alimentacao-saude-final-320.jpg",
+            "alimentacao-saude-final-390.jpg",
+            "alimentacao-saude-final-768.jpg",
+            "alimentacao-saude-final-1440.jpg"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.2,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "alimentacao-saude-final-320.jpg",
+            "alimentacao-saude-final-390.jpg",
+            "alimentacao-saude-final-768.jpg",
+            "alimentacao-saude-final-1440.jpg"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Cinco fases da vida em visuais separados de quantidade/cobertura; tabela 10 observações e CSV, sem evolução fictícia.",
+      "contratoCientifico": "AcompanhadosAPS não representam população geral; gestantes excluídas, dados preliminares e denominador não inferido."
+    },
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar/gestao-recursos",
+      "tela": "Gestão e recursos",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "gestao-recursos-final-320.jpg",
+            "gestao-recursos-final-390.jpg",
+            "gestao-recursos-final-768.jpg",
+            "gestao-recursos-final-1440.jpg",
+            "reteste--gestao-recursos-320.jpg",
+            "reteste--gestao-recursos-390.jpg",
+            "reteste--gestao-recursos-768.jpg",
+            "reteste--gestao-recursos-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "Seis estruturas institucionais, tabela/cobertura, UFs, recorte municipal e conexão explícita ao contexto financeiroPNAE.",
+          "evidencia": [
+            "gestao-recursos-final-320.jpg",
+            "gestao-recursos-final-390.jpg",
+            "gestao-recursos-final-768.jpg",
+            "gestao-recursos-final-1440.jpg",
+            "reteste--gestao-recursos-320.jpg",
+            "reteste--gestao-recursos-390.jpg",
+            "reteste--gestao-recursos-768.jpg",
+            "reteste--gestao-recursos-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.2,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "gestao-recursos-final-320.jpg",
+            "gestao-recursos-final-390.jpg",
+            "gestao-recursos-final-768.jpg",
+            "gestao-recursos-final-1440.jpg",
+            "reteste--gestao-recursos-320.jpg",
+            "reteste--gestao-recursos-390.jpg",
+            "reteste--gestao-recursos-768.jpg",
+            "reteste--gestao-recursos-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.2,
+          "fundamento": "Seis estruturas institucionais, tabela/cobertura, UFs, recorte municipal e conexão explícita ao contexto financeiroPNAE.",
+          "evidencia": [
+            "gestao-recursos-final-320.jpg",
+            "gestao-recursos-final-390.jpg",
+            "gestao-recursos-final-768.jpg",
+            "gestao-recursos-final-1440.jpg",
+            "reteste--gestao-recursos-320.jpg",
+            "reteste--gestao-recursos-390.jpg",
+            "reteste--gestao-recursos-768.jpg",
+            "reteste--gestao-recursos-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.3,
+          "fundamento": "Existência de órgão/conselho/plano não significa adesão ao SISAN; não se inventa orçamento consolidado municipal.",
+          "evidencia": [
+            "gestao-recursos-final-320.jpg",
+            "gestao-recursos-final-390.jpg",
+            "gestao-recursos-final-768.jpg",
+            "gestao-recursos-final-1440.jpg",
+            "reteste--gestao-recursos-320.jpg",
+            "reteste--gestao-recursos-390.jpg",
+            "reteste--gestao-recursos-768.jpg",
+            "reteste--gestao-recursos-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "Existência de órgão/conselho/plano não significa adesão ao SISAN; não se inventa orçamento consolidado municipal.",
+          "evidencia": [
+            "gestao-recursos-final-320.jpg",
+            "gestao-recursos-final-390.jpg",
+            "gestao-recursos-final-768.jpg",
+            "gestao-recursos-final-1440.jpg",
+            "reteste--gestao-recursos-320.jpg",
+            "reteste--gestao-recursos-390.jpg",
+            "reteste--gestao-recursos-768.jpg",
+            "reteste--gestao-recursos-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.1,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "gestao-recursos-final-320.jpg",
+            "gestao-recursos-final-390.jpg",
+            "gestao-recursos-final-768.jpg",
+            "gestao-recursos-final-1440.jpg",
+            "reteste--gestao-recursos-320.jpg",
+            "reteste--gestao-recursos-390.jpg",
+            "reteste--gestao-recursos-768.jpg",
+            "reteste--gestao-recursos-1440.jpg"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.2,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "gestao-recursos-final-320.jpg",
+            "gestao-recursos-final-390.jpg",
+            "gestao-recursos-final-768.jpg",
+            "gestao-recursos-final-1440.jpg",
+            "reteste--gestao-recursos-320.jpg",
+            "reteste--gestao-recursos-390.jpg",
+            "reteste--gestao-recursos-768.jpg",
+            "reteste--gestao-recursos-1440.jpg"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Seis estruturas institucionais, tabela/cobertura, UFs, recorte municipal e conexão explícita ao contexto financeiroPNAE.",
+      "contratoCientifico": "Existência de órgão/conselho/plano não significa adesão ao SISAN; não se inventa orçamento consolidado municipal."
+    },
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar/comparar",
+      "tela": "Comparar",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "comparar-final-320.jpg",
+            "comparar-final-390.jpg",
+            "comparar-final-768.jpg",
+            "comparar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "Seleção de base/medida, composição, evolução, comparaçãoUF e exportações preservam contrato e universo.",
+          "evidencia": [
+            "comparar-final-320.jpg",
+            "comparar-final-390.jpg",
+            "comparar-final-768.jpg",
+            "comparar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.2,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "comparar-final-320.jpg",
+            "comparar-final-390.jpg",
+            "comparar-final-768.jpg",
+            "comparar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.1,
+          "fundamento": "Seleção de base/medida, composição, evolução, comparaçãoUF e exportações preservam contrato e universo.",
+          "evidencia": [
+            "comparar-final-320.jpg",
+            "comparar-final-390.jpg",
+            "comparar-final-768.jpg",
+            "comparar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.2,
+          "fundamento": "Trocar fonte reinicia recorte; escalas/categorias não misturam EBIA, cadastro e declarações municipais.",
+          "evidencia": [
+            "comparar-final-320.jpg",
+            "comparar-final-390.jpg",
+            "comparar-final-768.jpg",
+            "comparar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "Trocar fonte reinicia recorte; escalas/categorias não misturam EBIA, cadastro e declarações municipais.",
+          "evidencia": [
+            "comparar-final-320.jpg",
+            "comparar-final-390.jpg",
+            "comparar-final-768.jpg",
+            "comparar-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.1,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "comparar-final-320.jpg",
+            "comparar-final-390.jpg",
+            "comparar-final-768.jpg",
+            "comparar-final-1440.jpg"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.2,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "comparar-final-320.jpg",
+            "comparar-final-390.jpg",
+            "comparar-final-768.jpg",
+            "comparar-final-1440.jpg"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Seleção de base/medida, composição, evolução, comparaçãoUF e exportações preservam contrato e universo.",
+      "contratoCientifico": "Trocar fonte reinicia recorte; escalas/categorias não misturam EBIA, cadastro e declarações municipais."
+    },
+    {
+      "rota": "/eficiencia-estatal/seguranca-alimentar/metodos",
+      "tela": "Métodos",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.2,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "metodos-final-320-y0.jpg",
+            "metodos-final-390.jpg",
+            "metodos-final-768.jpg",
+            "metodos-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.3,
+          "fundamento": "Contratos, fontes reproduzíveis, limites e oito exportações completas, com expansões semânticas e dados efetivamente recebidos.",
+          "evidencia": [
+            "metodos-final-320-y0.jpg",
+            "metodos-final-390.jpg",
+            "metodos-final-768.jpg",
+            "metodos-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.1,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "metodos-final-320-y0.jpg",
+            "metodos-final-390.jpg",
+            "metodos-final-768.jpg",
+            "metodos-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.3,
+          "fundamento": "Contratos, fontes reproduzíveis, limites e oito exportações completas, com expansões semânticas e dados efetivamente recebidos.",
+          "evidencia": [
+            "metodos-final-320-y0.jpg",
+            "metodos-final-390.jpg",
+            "metodos-final-768.jpg",
+            "metodos-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.3,
+          "fundamento": "Numerador/denominador, CV da contagem versus razão e ausência explícitos; gráficos não ampliam o universo das fontes.",
+          "evidencia": [
+            "metodos-final-320-y0.jpg",
+            "metodos-final-390.jpg",
+            "metodos-final-768.jpg",
+            "metodos-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "Numerador/denominador, CV da contagem versus razão e ausência explícitos; gráficos não ampliam o universo das fontes.",
+          "evidencia": [
+            "metodos-final-320-y0.jpg",
+            "metodos-final-390.jpg",
+            "metodos-final-768.jpg",
+            "metodos-final-1440.jpg"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.1,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "metodos-final-320-y0.jpg",
+            "metodos-final-390.jpg",
+            "metodos-final-768.jpg",
+            "metodos-final-1440.jpg"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.1,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "metodos-final-320-y0.jpg",
+            "metodos-final-390.jpg",
+            "metodos-final-768.jpg",
+            "metodos-final-1440.jpg"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Contratos, fontes reproduzíveis, limites e oito exportações completas, com expansões semânticas e dados efetivamente recebidos.",
+      "contratoCientifico": "Numerador/denominador, CV da contagem versus razão e ausência explícitos; gráficos não ampliam o universo das fontes."
+    },
+    {
+      "rota": "/eficiencia-estatal",
+      "tela": "Entrada OBEE",
+      "criterios": {
+        "Direção de arte": {
+          "nota": 9.3,
+          "fundamento": "Paleta e tokensOBEE, serifada editorial/sanslegível, composição sóbria e sem ornamentação concorrente.",
+          "evidencia": [
+            "eficiencia-estatal-final-320.jpg",
+            "eficiencia-estatal-final-390.jpg",
+            "eficiencia-estatal-final-768.jpg",
+            "eficiencia-estatal-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Hierarquia": {
+          "nota": 9.2,
+          "fundamento": "Quatro temas publicados,16 dimensões com busca/filtros e escopo de Segurança Alimentar incluindoPNAE/PAA.",
+          "evidencia": [
+            "eficiencia-estatal-final-320.jpg",
+            "eficiencia-estatal-final-390.jpg",
+            "eficiencia-estatal-final-768.jpg",
+            "eficiencia-estatal-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Tipografia e acabamento": {
+          "nota": 9.2,
+          "fundamento": "Rótulos, números, alinhamentos e nomes longos observados nas capturas; valores mantêm precisão apropriada à fonte.",
+          "evidencia": [
+            "eficiencia-estatal-final-320.jpg",
+            "eficiencia-estatal-final-390.jpg",
+            "eficiencia-estatal-final-768.jpg",
+            "eficiencia-estatal-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Densidade e profundidade": {
+          "nota": 9.2,
+          "fundamento": "Quatro temas publicados,16 dimensões com busca/filtros e escopo de Segurança Alimentar incluindoPNAE/PAA.",
+          "evidencia": [
+            "eficiencia-estatal-final-320.jpg",
+            "eficiencia-estatal-final-390.jpg",
+            "eficiencia-estatal-final-768.jpg",
+            "eficiencia-estatal-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Didática visual": {
+          "nota": 9.2,
+          "fundamento": "Quatro temas publicados não implicam cobertura integral das 16 dimensões; data de captura éBrasília.",
+          "evidencia": [
+            "eficiencia-estatal-final-320.jpg",
+            "eficiencia-estatal-final-390.jpg",
+            "eficiencia-estatal-final-768.jpg",
+            "eficiencia-estatal-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Comparabilidade": {
+          "nota": 9.3,
+          "fundamento": "Quatro temas publicados não implicam cobertura integral das 16 dimensões; data de captura éBrasília.",
+          "evidencia": [
+            "eficiencia-estatal-final-320.jpg",
+            "eficiencia-estatal-final-390.jpg",
+            "eficiencia-estatal-final-768.jpg",
+            "eficiencia-estatal-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        },
+        "Interação e acessibilidade": {
+          "nota": 9.1,
+          "fundamento": "Controles nomeados na rota; teclado/foco/URL/limpar/tabela/mapa em componentes e tarefas representativas, sem alegar certificação integral.",
+          "evidencia": [
+            "eficiencia-estatal-final-320.jpg",
+            "eficiencia-estatal-final-390.jpg",
+            "eficiencia-estatal-final-768.jpg",
+            "eficiencia-estatal-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": "Leitor de tela, zoom nativo 200% e axe integral não executados; contrasteDOM, controles nomeados e teclado manual verificados."
+        },
+        "Responsividade": {
+          "nota": 9.2,
+          "fundamento": "Mesma tarefa preservada em 320/390/768/1440; sem overflowglobal, rolagem localizada nas tabelas e valores essenciais disponíveis.",
+          "evidencia": [
+            "eficiencia-estatal-final-320.jpg",
+            "eficiencia-estatal-final-390.jpg",
+            "eficiencia-estatal-final-768.jpg",
+            "eficiencia-estatal-final-1440.jpg",
+            "TEXTOS_ULTIMOS_FINAIS.json"
+          ],
+          "limite": null
+        }
+      },
+      "observacaoEditorial": "Quatro temas publicados,16 dimensões com busca/filtros e escopo de Segurança Alimentar incluindoPNAE/PAA.",
+      "contratoCientifico": "Quatro temas publicados não implicam cobertura integral das 16 dimensões; data de captura éBrasília."
+    }
+  ]
+}

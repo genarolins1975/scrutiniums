@@ -9,12 +9,13 @@ import { metaEducacao } from "@/lib/eficiencia/dados";
 import { MapaServicos } from "@/components/eficiencia/MapaServicos";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { dataBr } from "@/lib/eficiencia/formato";
+import { diaCapturaAlimentar } from "@/lib/eficiencia/seguranca-alimentar/apresentacao";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: "Observatório Brasileiro de Eficiência Estatal",
-  description: "Indicadores públicos sobre recursos, atendimento e resultados do Estado brasileiro, por tema, com definição, fonte, período e limitações em cada número. Mapa dos serviços públicos ao cidadão. Educação e Saúde nas capitais e Trabalho e Renda nos recortes de cada fonte.",
+  description: "Indicadores públicos sobre recursos, atendimento e resultados do Estado brasileiro, por tema, com definição, fonte, período e limitações em cada número. Mapa dos serviços públicos ao cidadão. Educação e Saúde nas capitais, Trabalho e Renda e Segurança Alimentar nos recortes de cada fonte.",
   alternates: { canonical: "/eficiencia-estatal" },
 };
 
@@ -24,6 +25,7 @@ export default function PaginaEntradaEficiencia() {
   const edu = metaEducacao();
   const g = goldSaude();
   const trabalho = JSON.parse(readFileSync(join(process.cwd(), "public/eficiencia/trabalho-renda/snapshot.json"), "utf8")) as { capturadoEm: string };
+  const alimentar = JSON.parse(readFileSync(join(process.cwd(), "public/eficiencia/seguranca-alimentar/escolar.json"), "utf8")) as { capturadoEm: string };
   const temas: Tema[] = [
     {
       id: "educacao",
@@ -72,6 +74,15 @@ export default function PaginaEntradaEficiencia() {
       entradas: [{ href: "/eficiencia-estatal/trabalho-renda", rotulo: "Panorama" }, { href: "/eficiencia-estatal/trabalho-renda/metodos", rotulo: "Dados e métodos" }],
       atualizacao: dataBr(trabalho.capturadoEm.slice(0,10)),
     },
+    {
+      id: "alimentacao", titulo: "Segurança alimentar e nutricional", pergunta: "As pessoas conseguem se alimentar regularmente e que políticas públicas são registradas?",
+      escopo: "Insegurança alimentar nos domicílios pela EBIA; risco entre famílias do Cadastro Único pelo CadINSAN; estrutura das políticas municipais; repasses e registros do PNAE; pagamentos e registros de fornecedores do PAA; inflação dos alimentos e acompanhamento nutricional. Cada fonte mantém universo e calendário próprios.",
+      naoInclui: "Taxa de fome observada para todos os municípios; funcionamento ou refeições efetivamente entregues por todos os equipamentos; efeito causal das políticas; orçamento consolidado de segurança alimentar entre esferas.",
+      cobertura: "Brasil e estados nas estimativas da EBIA; municípios nos registros administrativos e nas declarações de estrutura; preços nacionais; alimentação escolar por entidade executora, com cobertura declarada.",
+      fontes: "IBGE (PNAD Contínua, MUNIC e IPCA), MDS (CadINSAN e PAA), FNDE (PNAE) e Ministério da Saúde (SISVAN).",
+      entradas: [{ href: "/eficiencia-estatal/seguranca-alimentar", rotulo: "Panorama" }, { href: "/eficiencia-estatal/seguranca-alimentar/metodos", rotulo: "Dados e métodos" }],
+      atualizacao: diaCapturaAlimentar(alimentar.capturadoEm),
+    },
   ];
   return (
     <div>
@@ -99,7 +110,7 @@ export default function PaginaEntradaEficiencia() {
         <dl className="grid grid-cols-2 border-b border-linha bg-superficie md:grid-cols-4">
           {[
             [String(DIMENSOES.length), "dimensões no mapa", "Visão geral dos serviços ao cidadão"],
-            [String(temas.length), "temas publicados", "Educação, Saúde e Trabalho e Renda"],
+            [String(temas.length), "temas publicados", "Educação, Saúde, Trabalho e Renda e Segurança Alimentar"],
             ["Brasil", "recortes territoriais", "Estados e municípios conforme a fonte"],
             ["3", "perspectivas de análise", "Recursos, acesso e resultados"],
           ].map(([n, titulo, texto]) => <div key={titulo} className="border-linha px-5 py-5 even:border-l md:border-l md:first:border-l-0"><dd className="font-serif text-3xl text-obee-tinta">{n}</dd><dt className="mt-1 text-sm font-semibold">{titulo}</dt><dd className="mt-1 text-xs leading-relaxed text-carvao-muted">{texto}</dd></div>)}
@@ -110,15 +121,15 @@ export default function PaginaEntradaEficiencia() {
             <div><p className="rotulo text-obee">Explore os dados</p><h2 id="dados-publicados" className="mt-1 font-serif text-2xl md:text-3xl">Escolha uma área, explore os dados.</h2></div>
             <a href="#cobertura" className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline underline-offset-4">Entender a cobertura ↓</a>
           </div>
-          <div className="mt-5 grid gap-4 lg:grid-cols-3">
+          <div className="mt-5 grid gap-4 lg:grid-cols-2">
             {temas.map((t, i) => <article key={t.id} className="border border-linha border-t-4 border-t-obee bg-superficie p-5 sm:p-6">
-              <div className="flex flex-wrap items-center justify-between gap-2"><span className="font-label text-xs uppercase tracking-label text-obee-dark">Dados publicados</span><span className="text-xs text-carvao-muted">{t.id === "trabalho" ? "Recortes próprios" : "26 capitais"} · captura {t.atualizacao ?? "não informada"}</span></div>
+              <div className="flex flex-wrap items-center justify-between gap-2"><span className="font-label text-xs uppercase tracking-label text-obee-dark">Dados publicados</span><span className="text-xs text-carvao-muted">{(t.id === "trabalho" || t.id === "alimentacao") ? "Recortes próprios" : "26 capitais"} · captura {t.atualizacao ?? "não informada"}</span></div>
               <h3 className="mt-4 font-serif text-2xl">{t.titulo}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{i === 0 ? "Da aplicação de recursos às condições de ensino e à aprendizagem na rede municipal." : i === 1 ? "Dos recursos municipais à rede de atenção primária e às internações dos moradores." : "Oportunidades, condições de trabalho e renda das pessoas, com recortes territoriais próprios."}</p>
+              <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{i === 0 ? "Da aplicação de recursos às condições de ensino e à aprendizagem na rede municipal." : i === 1 ? "Dos recursos municipais à rede de atenção primária e às internações dos moradores." : i === 2 ? "Oportunidades, condições de trabalho e renda das pessoas, com recortes territoriais próprios." : "Acesso aos alimentos, políticas públicas e acompanhamento nutricional, com universos distintos."}</p>
               <dl className="mt-5 grid grid-cols-3 gap-3 border-y border-linha py-4 text-xs leading-relaxed">
-                {(i === 0 ? [["Recursos", "Despesa e gasto por habitante"], ["Acesso", "Matrículas e alunos por turma"], ["Resultados", "Aprovação, Ideb e Saeb"]] : i === 2 ? [["Recursos", "Função Trabalho nas capitais"], ["Acesso", "Participação e ocupação"], ["Resultados", "Rendimento e emprego formal"]] : [["Recursos", "Despesa e aplicação em saúde"], ["Acesso", "Unidades, equipes e cobertura"], ["Resultados", "Internações sensíveis à atenção primária"]]).map(([dt, dd]) => <div key={dt}><dt className="font-semibold text-obee-dark">{dt}</dt><dd className="mt-1 text-carvao-muted">{dd}</dd></div>)}
+                {(i === 0 ? [["Recursos", "Despesa e gasto por habitante"], ["Acesso", "Matrículas e alunos por turma"], ["Resultados", "Aprovação, Ideb e Saeb"]] : i === 2 ? [["Recursos", "Função Trabalho nas capitais"], ["Acesso", "Participação e ocupação"], ["Resultados", "Rendimento e emprego formal"]] : i === 3 ? [["Recursos", "Repasses federais do PNAE"], ["Acesso", "Equipamentos e acompanhamento"], ["Resultados", "Insegurança alimentar nos domicílios"]] : [["Recursos", "Despesa e aplicação em saúde"], ["Acesso", "Unidades, equipes e cobertura"], ["Resultados", "Internações sensíveis à atenção primária"]]).map(([dt, dd]) => <div key={dt}><dt className="font-semibold text-obee-dark">{dt}</dt><dd className="mt-1 text-carvao-muted">{dd}</dd></div>)}
               </dl>
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><Link href={t.entradas[0].href} className="inline-flex min-h-[44px] items-center gap-6 bg-obee-tinta px-4 text-sm font-semibold text-superficie">Abrir painel <span aria-hidden="true">↗</span></Link><Link href={(t.entradas.find(e => e.rotulo === "Comparar capitais") ?? t.entradas[1]).href} className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline underline-offset-4">{t.id === "trabalho" ? "Dados e métodos" : "Comparar capitais"}</Link></div>
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><Link href={t.entradas[0].href} className="inline-flex min-h-[44px] items-center gap-6 bg-obee-tinta px-4 text-sm font-semibold text-superficie">Abrir painel <span aria-hidden="true">↗</span></Link><Link href={(t.entradas.find(e => e.rotulo === "Comparar capitais") ?? t.entradas[1]).href} className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline underline-offset-4">{(t.id === "trabalho" || t.id === "alimentacao") ? "Dados e métodos" : "Comparar capitais"}</Link></div>
             </article>)}
           </div>
         </section>
@@ -128,7 +139,7 @@ export default function PaginaEntradaEficiencia() {
         <section id="cobertura" aria-labelledby="titulo-cobertura" className="mt-12 scroll-mt-6 border-t border-linha pt-8">
           <p className="rotulo text-obee">Transparência da cobertura</p>
           <h2 id="titulo-cobertura" className="mt-1 font-serif text-2xl md:text-3xl">Um mapa amplo. Um recorte declarado.</h2>
-          <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">O mapa organiza as dimensões do Estado na vida do cidadão. Os dados cobrem Educação municipal e Saúde nas 26 capitais estaduais, além de Trabalho e Renda no Brasil, nos estados e nos municípios conforme a fonte. A União, os estados e os municípios têm responsabilidades distintas; as fontes e os perímetros de cada tema estão abaixo. O Distrito Federal fica fora das comparações financeiras entre prefeituras; os indicadores de Trabalho e Renda podem incluí-lo como Unidade da Federação.</p>
+          <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">O mapa organiza as dimensões do Estado na vida do cidadão. Os dados cobrem Educação municipal e Saúde nas 26 capitais estaduais, além de Trabalho e Renda e Segurança Alimentar no Brasil, nos estados e nos municípios conforme a fonte. A União, os estados e os municípios têm responsabilidades distintas; as fontes e os perímetros de cada tema estão abaixo. O Distrito Federal fica fora das comparações financeiras entre prefeituras; os indicadores de Trabalho e Renda podem incluí-lo como Unidade da Federação.</p>
           <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">Cada número tem definição, fonte, período e limitação. Os valores e as referências permitem comparações dentro de um mesmo recorte. O observatório não atribui nota nem classificação às capitais, e não infere causa a partir do gasto.</p>
         </section>
         <div className="mt-6 grid items-start gap-4 lg:grid-cols-2">
