@@ -12884,7 +12884,7 @@ function renderProducts() {
     const spark = sparkline(p.serie.map(x => x.total_brl), 130, 26);
     const lider = p.lider;
     return `<div class="card clickable" onclick="openProduct('${p.slug}')">
-      <h4><a href="/observatorio/products/${p.slug}" onclick="event.stopPropagation();openProduct('${p.slug}');return false">${p.nome.replace(/\s+(PF|PJ)$/i, "")}</a> <span class="chip" style="padding:1px 8px">${p.seg.toUpperCase()}</span> ${badge("observado")}</h4>
+      <h4><a href="/observatorio/products/${p.slug}" aria-label="${attr(p.nome.replace(/\s+(PF|PJ)$/i, "") + " " + p.seg.toUpperCase())}" onclick="event.stopPropagation();openProduct('${p.slug}');return false">${p.nome.replace(/\s+(PF|PJ)$/i, "")}</a> <span class="chip" style="padding:1px 8px">${p.seg.toUpperCase()}</span> ${badge("observado")}</h4>
       <div class="big" style="font-size:24px">${fmt.money(p.mercado_total_brl)}</div>
       <div class="delta ${p.crescimento_4t_pct >= 0 ? "down good" : "up"}">${p.crescimento_4t_pct != null ? (p.crescimento_4t_pct >= 0 ? "▲" : "▼") + " " + fmt.n(Math.abs(p.crescimento_4t_pct), 1) + "% em 4 trim. (pareado)" : "Δ4T indisponível"}</div>
       ${spark}
