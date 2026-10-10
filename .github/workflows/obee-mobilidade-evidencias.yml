@@ -1,0 +1,39 @@
+name: OBEE Mobilidade - contratos editoriais
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/obee-mobilidade-evidencias.yml'
+permissions:
+  contents: read
+jobs:
+  contratos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Identificar os contratos e preservar somente fontes pertinentes
+        run: |
+          python3 - <<'PY'
+          import pathlib, shutil
+          root=pathlib.Path('evidencias-contratos'); root.mkdir()
+          needles=['cada painel público','amostras exclusivas','Receber apoio','PAIF e PAEFI','CabecalhoSaude|Cabecalho']
+          paths=[]
+          for p in pathlib.Path('src/tests').glob('*.ts'):
+              text=p.read_text()
+              if any(n in text for n in needles):
+                  paths.append(p)
+                  print('CONTRATO',p)
+                  for i,line in enumerate(text.splitlines(),1):
+                      if any(n in line for n in needles): print(i,line)
+          paths.extend([pathlib.Path('src/app/eficiencia-estatal/page.tsx'),pathlib.Path('src/components/eficiencia/mobilidade/PainelMobilidade.tsx')])
+          for p in paths:
+              dest=root/p;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,dest)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: obee-mobilidade-contratos-${{ github.event.pull_request.head.sha }}
+          path: evidencias-contratos/
+          retention-days: 3
+          if-no-files-found: error
