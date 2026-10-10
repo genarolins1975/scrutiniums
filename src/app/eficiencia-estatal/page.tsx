@@ -22,7 +22,7 @@ const RESUMOS:Record<string,{texto:string;medidas:string[][]}>={
  saude:{texto:'Dos recursos municipais à rede de atenção primária e às internações dos moradores.',medidas:[['Recursos','Despesa e aplicação em saúde'],['Acesso','Unidades, equipes e cobertura'],['Resultados','Internações sensíveis à atenção primária']]},
  trabalho:{texto:'Oportunidades, condições de trabalho e renda das pessoas, com recortes territoriais próprios.',medidas:[['Recursos','Função Trabalho nas capitais'],['Acesso','Participação e ocupação'],['Resultados','Rendimento e emprego formal']]},
  alimentacao:{texto:'Situação alimentar dos domicílios, ações declaradas e estrutura pública municipal.',medidas:[['Necessidades','EBIA no Brasil e nas regiões'],['Atuação','Ações e equipamentos declarados'],['Avaliação','Critérios e lacunas do serviço']]},
- assistencia:{texto:'Rede socioassistencial, acompanhamento das famílias e cuidado declarado pelas unidades.',medidas:[['Rede','CRAS, CREAS e centros-dia'],['Acesso','Atributos e oferta declarados'],['Cuidado','Acompanhamento e limites da cobertura']]},
+ assistencia:{texto:'Rede socioassistencial, acompanhamento das famílias e cuidado declarado pelas unidades.',medidas:[['Receber apoio','CRAS, CREAS e centros-dia'],['Acompanhamento','PAIF e PAEFI'],['Ciclo de vida','Cuidado e proteção social']]},
  mobilidade:{texto:'Deslocamento até o trabalho, transporte e acessibilidade física, com períodos e universos separados.',medidas:[['Moradores','Tempo e meio principal em 2022'],['Rede','Frota, infraestrutura e tarifa'],['Recursos','Receitas e subsídios declarados']]},
 };
 export default function PaginaEntradaEficiencia(){
