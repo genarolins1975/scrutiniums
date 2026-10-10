@@ -1,0 +1,6 @@
+'use client';
+import Link from 'next/link';
+import {usePathname,useRouter} from 'next/navigation';
+import {BASE_ALIMENTAR,PAGINAS_ALIMENTARES} from '@/lib/eficiencia/seguranca-alimentar/paginas';
+const href=(slug:string)=>BASE_ALIMENTAR+(slug?'/'+slug:'');
+export function NavegacaoAlimentar(){const pathname=usePathname();const router=useRouter();const principais=['','inseguranca-alimentar','desigualdades','territorios','comparar'];const ativo=PAGINAS_ALIMENTARES.find(p=>href(p.slug)===pathname);const visiveis=PAGINAS_ALIMENTARES.filter(p=>principais.includes(p.slug)||p===ativo);return <><nav className="saa-nav" aria-label="Painéis de Segurança Alimentar">{visiveis.map(p=><Link key={p.slug} href={href(p.slug)} aria-current={href(p.slug)===pathname?'page':undefined}>{p.nome}</Link>)}<details><summary>Todos os painéis +</summary><div className="saa-nav-todos">{PAGINAS_ALIMENTARES.map(p=><Link key={p.slug} href={href(p.slug)} aria-current={href(p.slug)===pathname?'page':undefined}>{p.nome}</Link>)}</div></details></nav><label className="saa-nav-mobile">Painel de Segurança Alimentar<select value={pathname} onChange={e=>router.push(e.target.value)}>{PAGINAS_ALIMENTARES.map(p=><option key={p.slug} value={href(p.slug)}>{p.nome}</option>)}</select></label></>}
