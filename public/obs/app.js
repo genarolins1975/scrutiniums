@@ -2717,7 +2717,7 @@ const GUIA = {
     nao: "Nada aqui é recomendação de investimento, de crédito ou de política; o Observatório descreve, com fontes abertas, e não julga instituições." },
   overview: { q: "Como está o mercado de crédito brasileiro agora?",
     importa: "Reúne num só lugar o estoque de crédito, a inadimplência, o custo e os sinais de alerta — os quatro eixos que resumem a saúde do sistema.",
-    ler: "Comece pela classificação determinística no topo: ela posiciona o momento atual contra a própria história da série, não contra uma opinião. Depois desça para os painéis temáticos.",
+    ler: "Comece pelos indicadores e por sua comparação histórica. A classificação no topo aplica regras aos dados; não é uma previsão. Depois explore os painéis para distinguir volume, custo e risco.",
     nao: "Um mês isolado não caracteriza mudança de ciclo. Variações de um único indicador podem refletir sazonalidade ou revisão da fonte." },
   panorama: { q: "Onde está o crédito no Brasil e quem são os tomadores?",
     importa: "O crédito não é uniforme no território nem entre grupos sociais: a mesma carteira nacional esconde realidades muito diferentes por estado, renda, ocupação e produto.",
@@ -2725,8 +2725,8 @@ const GUIA = {
     nao: "Volume não é risco, e taxa alta num grupo pequeno não move o sistema. Diferenças demográficas refletem composição de produtos e acesso ao crédito — não causalidade." },
   pulse: { q: "Como evoluem estoque, concessões, juros e inadimplência?",
     importa: "São as séries mensais que o Banco Central publica há décadas: a espinha dorsal de qualquer diagnóstico do ciclo de crédito.",
-    ler: "Separe estoque (saldo acumulado) de fluxo (concessões do mês) — são conceitos distintos que respondem a perguntas diferentes. Use o seletor de segmento para isolar PF e PJ.",
-    nao: "Não compare o nível do saldo com o das concessões: um é acervo, o outro é vazão. Séries nominais crescem com a inflação; use a opção real quando o interesse for o poder de compra." },
+    ler: "Leia o saldo para dimensionar o crédito em aberto e as concessões para acompanhar novas contratações. Compare juros e inadimplência dentro do mesmo segmento: pessoas físicas (PF) ou jurídicas (PJ). Observe a unidade e o período de cada série.",
+    nao: "Saldo é o valor ainda a pagar em uma data; concessões são os novos empréstimos contratados no mês. Seus níveis não são diretamente comparáveis. Séries nominais crescem com a inflação; use a opção real quando o interesse for o poder de compra." },
   leading: { q: "Há estresse de crédito se formando — e quais sinais realmente antecedem?",
     importa: "Duas perguntas que só fazem sentido juntas: o radar combina fontes independentes (endividamento das famílias, garantias imobiliárias, crédito não bancário, judicialização) para detectar pressão antes da inadimplência; a aba Protocolo testa quais candidatos sobrevivem a quatro critérios estatísticos e podem, de fato, ser chamados de antecedentes.",
     ler: "Os subíndices são z-scores: medem a distância da própria história, não um nível absoluto. Alertas exigem persistência de pelo menos duas leituras — um pico isolado não dispara nada. No Protocolo, só é promovido quem passa em defasagem, Granger, ganho fora da amostra e estabilidade; reprovados ficam visíveis.",
@@ -2903,12 +2903,14 @@ const GUIA = {
 function guiaPagina(view) {
   const g = GUIA[view];
   if (!g) return "";
-  return `<details class="guia"><summary><span class="guiaq">${g.q}</span><span class="guiamais">entenda esta página</span></summary>
-    <div class="guiabody">
-      <div><h5>Por que importa</h5><p>${g.importa}</p></div>
-      <div><h5>Como ler</h5><p>${g.ler}</p></div>
-      <div><h5>O que os dados não permitem concluir</h5><p>${g.nao}</p></div>
-    </div></details>`;
+  return `<aside class="guia-leitura" aria-label="Orientação de leitura">
+    <p class="guia-pergunta">${g.q}</p>
+    <p class="guia-como"><strong>Como ler.</strong> ${g.ler}</p>
+    <p class="guia-limite"><strong>Limites da leitura.</strong> ${g.nao}</p>
+    <details class="guia"><summary><span class="guiaq">Por que acompanhar este tema?</span><span class="guiamais">saiba mais</span></summary>
+      <div class="guiabody"><div><p>${g.importa}</p></div></div>
+    </details>
+  </aside>`;
 }
 
 
