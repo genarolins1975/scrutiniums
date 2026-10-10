@@ -1,11 +1,12 @@
 {
-  "edition": "OBEE-servicos-v0.3-experimental",
+  "edition": "OBEE-servicos-v0.4-experimental",
   "validated": false,
   "basket": [
     "education",
     "health",
     "work",
-    "food"
+    "food",
+    "assistance"
   ],
   "scale": [
     0,
@@ -65,6 +66,17 @@
       },
       "review": "EBIA é necessidade/desfecho populacional. Existência de equipamentos, ações declaradas e orçamento são contexto. PNAE, refeições populares e auxílio emergencial exigem populações próprias.",
       "available": "PNADC Brasil/regiões 2023–2024; dez variáveis MUNIC em 5570 municípios. Faltam atendimento efetivo, denominadores, continuidade e conformidade."
+    },
+    {
+      "id": "assistance",
+      "name": "Assistência social e cuidado",
+      "pillars": {
+        "access": "Pessoas com necessidade elegível atendidas sem duplicidade e barreiras de acesso",
+        "response": "Espera por modalidade, acompanhamento contínuo e encaminhamento concluído",
+        "quality": "Segurança, adequação e resultados do apoio e cuidado verificados"
+      },
+      "review": "Oferta, estrutura e volume de atendimento são evidências descritivas. Inscritos no Cadastro Único não são demanda elegível de todos os serviços; pessoas e famílias podem reaparecer nos registros. Vínculos de trabalho não são pessoas únicas.",
+      "available": "Censo SUAS 2025: CRAS, CREAS e centros-dia e similares; RMA CRAS 2025. Espera cadastral e práticas de acompanhamento declaradas, sem cobertura dos três pilares ou referências de pontuação."
     }
   ]
 }

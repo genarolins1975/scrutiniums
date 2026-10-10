@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/minify-obs.mjs",
+    "predev": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/minify-obs.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/materializar-seguranca-alimentar.mjs && node scripts/minify-obs.mjs",
+    "prebuild": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/minify-obs.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "pretest": "node scripts/materializar-seguranca-alimentar.mjs && node scripts/materializar-trabalho-renda.mjs",
+    "pretest": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/materializar-trabalho-renda.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "wcag": "node scripts/auditoria-wcag.mjs"

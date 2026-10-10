@@ -66,3 +66,7 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 | 08/10/2026 | Rodada 4: datas e literais da fonte em Energia, contrato estrutural do teste de HTML e inventário reconciliado ([APRESENTACAO_DATAS_ENERGIA.md](./APRESENTACAO_DATAS_ENERGIA.md)); T11 resolvida |
 | 08/10/2026 | Verificação final ([VERIFICACAO_FINAL.md](./VERIFICACAO_FINAL.md)): data legível na gaveta de proveniência, gate obrigatório de HTML no CI, valor exato por toque e atalho para a tabela da comparação; gate reprovado por 21 páginas de Energia (T11) |
 | 08/10/2026 | Rodada 2 de correções ([RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md)): política de conferência 1.1 com MSC, elegibilidade separada do estado, portão de publicação, ausência sem zero, universo por indicador, CSVs autoexplicativos, metodologia 1.1 |
+
+## 6. Assistência social e cuidado — 10/10/2026
+
+Capítulo autorizado pelo responsável, com Censo SUAS e RMA CRAS 2025, oito páginas, dados por unidade e edição experimental v0.4 do escore (cinco capítulos). Escopo, reprodução, limites e verificação em [assistencia/README.md](./assistencia/README.md). Despesa e notas numéricas permanecem pendentes.

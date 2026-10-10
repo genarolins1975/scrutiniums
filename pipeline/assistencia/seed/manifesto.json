@@ -1,0 +1,64 @@
+{
+  "captured_at": "2026-10-10",
+  "period": "2025; cuidado no domicílio: agosto de 2025",
+  "sources": [
+    {
+      "file": "1_CRAS.zip",
+      "url": "https://aplicacoes.mds.gov.br/snas/defeso/censosuas/2025/1_CRAS.zip",
+      "sha256": "e19e0dd825edf739064f838b6405d8689149771dff46bdc971b5c57d5b5b6aa0"
+    },
+    {
+      "file": "2_CREAS.zip",
+      "url": "https://aplicacoes.mds.gov.br/snas/defeso/censosuas/2025/2_CREAS.zip",
+      "sha256": "a0ecf693bbac1c64a545bfa360512d62dadad0a1828d0631f1af9b9c57b500fa"
+    },
+    {
+      "file": "6_CENTRO_DIA.zip",
+      "url": "https://aplicacoes.mds.gov.br/snas/defeso/censosuas/2025/6_CENTRO_DIA.zip",
+      "sha256": "962d3cb2c679bcfb44d97093dc592ed64f19608eff3ff84dec853390d658db11"
+    },
+    {
+      "file": "rma-cras-2025.xlsx",
+      "url": "https://aplicacoes.mds.gov.br/sagi/dicivip_datain/ckfinder/userfiles/files/RMA_CRAS_Criterios_2025_divulgacao_150526.xlsx",
+      "sha256": "12d0a0bd0cb5bb3719eb2a72e90cc077ca0c80d94f16ec1f3203614f2ee79873"
+    }
+  ],
+  "seed_sha256": "414f53344c2d61f6e3856de0347fc17073d14f29d3c93fe5e9fdde0dc6d7e3d0",
+  "counts": {
+    "CRAS": 8903,
+    "CREAS": 3044,
+    "DIA": 2103
+  },
+  "rma_rows": 103847,
+  "audit": [
+    {
+      "file": "Censo_SUAS_2025_Centro_Dia_Dados_Gerais.xlsx",
+      "member": "xl/worksheets/sheet1.xml",
+      "removed_xml_controls": 1
+    },
+    {
+      "file": "Censo_SUAS_2025_CRAS_RH.csv",
+      "staff_records": 118327,
+      "unmatched_unit_records": 0
+    },
+    {
+      "file": "Censo_SUAS_2025_CREAS_RH.csv",
+      "staff_records": 29077,
+      "unmatched_unit_records": 0
+    }
+  ],
+  "rma_columns": [
+    "unit_id",
+    "code",
+    "uf",
+    "month",
+    "a1",
+    "a1_original",
+    "a2",
+    "a2_original",
+    "c1",
+    "c1_original",
+    "c5",
+    "c5_original"
+  ]
+}

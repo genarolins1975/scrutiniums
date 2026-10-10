@@ -1,5 +1,5 @@
 {
-  "edition": "OBEE-servicos-v0.4-experimental",
+  "edition": "OBEE-servicos-v0.3-experimental",
   "validated": false,
   "overall": {
     "value": null,
@@ -8,15 +8,13 @@
       "education",
       "health",
       "work",
-      "food",
-      "assistance"
+      "food"
     ],
     "weights_proposed": {
-      "education": 0.2,
-      "health": 0.2,
-      "work": 0.2,
-      "food": 0.2,
-      "assistance": 0.2
+      "education": 0.25,
+      "health": 0.25,
+      "work": 0.25,
+      "food": 0.25
     }
   },
   "chapters": [
@@ -126,33 +124,6 @@
         }
       },
       "available_evidence": "PNADC Brasil/regiões 2023–2024; dez variáveis MUNIC em 5570 municípios. Faltam atendimento efetivo, denominadores, continuidade e conformidade.",
-      "normalization": "No indicator normalized; fixed validated references absent"
-    },
-    {
-      "id": "assistance",
-      "value": null,
-      "status": "INSUFFICIENT_COVERAGE",
-      "pillars": {
-        "access": {
-          "value": null,
-          "status": "DATA_AND_REFERENCE_PENDING",
-          "weight_proposed": 0.3333333333333333,
-          "required_measure": "Pessoas com necessidade elegível atendidas sem duplicidade e barreiras de acesso"
-        },
-        "response": {
-          "value": null,
-          "status": "DATA_AND_REFERENCE_PENDING",
-          "weight_proposed": 0.3333333333333333,
-          "required_measure": "Espera por modalidade, acompanhamento contínuo e encaminhamento concluído"
-        },
-        "quality": {
-          "value": null,
-          "status": "DATA_AND_REFERENCE_PENDING",
-          "weight_proposed": 0.3333333333333333,
-          "required_measure": "Segurança, adequação e resultados do apoio e cuidado verificados"
-        }
-      },
-      "available_evidence": "Censo SUAS 2025: CRAS, CREAS e centros-dia e similares; RMA CRAS 2025. Espera cadastral e práticas de acompanhamento declaradas, sem cobertura dos três pilares ou referências de pontuação.",
       "normalization": "No indicator normalized; fixed validated references absent"
     }
   ]

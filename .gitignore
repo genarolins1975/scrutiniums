@@ -25,3 +25,6 @@ __pycache__/
 /public/eficiencia/seguranca-alimentar/uf-*.json
 /public/eficiencia/seguranca-alimentar/municipios.csv
 /public/eficiencia/seguranca-alimentar/pnad.csv
+
+# Build-only SUAS payloads; canonical seed has a pinned SHA-256
+/public/eficiencia/assistencia-social/
