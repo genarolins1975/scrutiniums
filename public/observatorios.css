@@ -104,3 +104,83 @@ html:not([data-theme="dark"]) .observatorio-credito { --bg:var(--obs-papel); --s
 .observatorio-credito .obs-index-arrow { color:var(--accent-ink); }
 .observatorio-credito .obs-index-group[open] .obs-index-arrow { transform:rotate(180deg); }
 .observatorio-credito .obs-index-group .mapa-perg { margin-top:16px; border-top:1px solid var(--border); }
+
+/* Crédito e Energia — ritmo editorial. Escopo explícito: não altera o OBEE.
+   Figuras, paletas de séries, filtros e contratos numéricos permanecem próprios. */
+.observatorio-credito, .dominio-energia {
+  --obs-papel:#F8F7F2; --obs-tinta:#182B36; --obs-destaque:#09697A;
+  --obs-regra:#D7DCD7; --obs-contexto:#E7EFEE;
+}
+.observatorio-credito .obs-hero, .dominio-energia .obs-hero {
+  background:transparent; color:var(--obs-tinta); padding:24px 0 28px;
+  border-top:2px solid var(--obs-destaque); border-bottom:1px solid var(--obs-regra);
+}
+.observatorio-credito .obs-hero h1, .dominio-energia .obs-hero h1 {
+  font-size:clamp(30px,3.2vw,46px); line-height:1.16; text-wrap:balance;
+}
+.observatorio-credito .obs-hero p, .observatorio-credito .obs-hero nav>a span,
+.dominio-energia .obs-hero [class*="text-carvao"],
+.dominio-energia .obs-hero [class*="text-mineral"] { color:#58666B; }
+.observatorio-credito .obs-hero a, .dominio-energia .obs-hero a { color:var(--obs-destaque); }
+.observatorio-credito .obs-hero .obs-primary { background:var(--obs-destaque); color:white; }
+.observatorio-credito .obs-hero nav, .observatorio-credito .obs-hero nav>a,
+.dominio-energia .obs-hero .border-linha, .dominio-energia .obs-hero .divide-linha>*+* { border-color:var(--obs-regra); }
+.observatorio-credito .obs-metrics, .dominio-energia .obs-metrics { background:transparent; }
+.observatorio-credito .obs-metrics>div, .dominio-energia .obs-metrics>div { padding:14px 16px; }
+.observatorio-credito .obs-metrics dd:first-child, .dominio-energia .obs-metrics dd:first-child {
+  font-family:inherit; font-size:20px; font-variant-numeric:tabular-nums;
+}
+.observatorio-credito .pagehead, .dominio-energia .cab-modulo {
+  background:transparent; padding:24px 0; border-top:2px solid var(--obs-destaque);
+  border-bottom:1px solid var(--obs-regra); margin-bottom:24px;
+}
+.observatorio-credito .obs-map-meta { border-top:0; }
+.observatorio-credito .pagehead .viewdesc, .dominio-energia .ed-lead { max-width:70ch; line-height:1.65; }
+.observatorio-credito .pagehead h1, .dominio-energia .ed-h1 { text-wrap:balance; }
+.observatorio-credito .grid { gap:24px; }
+.observatorio-credito .grid>* { min-width:0; }
+.observatorio-credito .card { box-shadow:none; border-color:var(--border); }
+.observatorio-credito .card h4 { font-size:16px; color:var(--text); margin-bottom:12px; }
+.observatorio-credito .sechead { margin-top:48px; padding-top:24px; }
+.observatorio-credito .sechead h3 { text-wrap:balance; }
+.observatorio-credito .guia-leitura {
+  margin:20px 0 28px; padding:20px 24px; border-left:3px solid var(--accent);
+  background:var(--surface); color:var(--text-2);
+}
+.observatorio-credito .guia-pergunta { font:400 22px/1.35 var(--serif); color:var(--text); margin:0 0 12px; }
+.observatorio-credito .guia-como, .observatorio-credito .guia-limite { max-width:75ch; margin:8px 0; font-size:14px; line-height:1.65; }
+.observatorio-credito .guia-leitura .guia { border:0; border-top:1px solid var(--border); border-radius:0; margin:16px 0 0; background:transparent; }
+.observatorio-credito .guia-leitura summary { padding:10px 0 0; min-height:44px; }
+.observatorio-credito .guia-leitura .guiabody { display:block; border:0; padding:12px 0 0; max-width:75ch; }
+.observatorio-credito table.data { font-variant-numeric:tabular-nums; }
+.observatorio-credito table.data td { padding-block:12px; }
+.observatorio-credito table.data tbody tr:hover { background:var(--surface-2); }
+.dominio-energia [data-painel-evidencia] { padding-top:32px; margin-top:16px; }
+.dominio-energia [data-painel-evidencia]>header { max-width:75ch; }
+.dominio-energia [data-notas-painel] { padding-block:16px; }
+.dominio-energia [data-notas-painel] aside { line-height:1.65; }
+.dominio-energia .ed-faixa { background:transparent; padding:20px 0; }
+.dominio-energia .obs-home-search { padding:16px 20px; }
+.dominio-energia .obs-catalogo>div { border:0; border-top:1px solid var(--obs-regra); background:transparent; padding:24px 0; }
+.dominio-energia .ed-meta { font-size:13px; line-height:1.6; margin-top:12px; }
+.dominio-energia [data-limite] { border-left:2px solid var(--obs-regra); padding-left:12px; margin-top:16px; line-height:1.6; }
+.observatorio-credito :is(a,button,input,select,summary):focus-visible,
+.dominio-energia :is(a,button,input,select,summary):focus-visible { outline:2px solid var(--obs-destaque); outline-offset:4px; }
+@media(max-width:639px) {
+  .observatorio-credito .obs-hero, .dominio-energia .obs-hero { padding:20px 0; }
+  .observatorio-credito .pagehead, .dominio-energia .cab-modulo { padding:20px 0; }
+  .observatorio-credito .guia-leitura { padding:16px; }
+  .observatorio-credito .guia-pergunta { font-size:20px; }
+  .observatorio-credito .guiamais { white-space:normal; }
+  .observatorio-credito .grid { gap:16px; }
+  .observatorio-credito .sechead { margin-top:32px; }
+  .dominio-energia [data-painel-evidencia] { padding-top:24px; }
+  .dominio-energia .obs-hero nav { border-color:var(--obs-regra); }
+}
+html[data-theme="dark"] .observatorio-credito { --obs-tinta:var(--text); --obs-regra:var(--border); --obs-destaque:var(--accent); }
+html[data-theme="dark"] .observatorio-credito .obs-hero p,
+html[data-theme="dark"] .observatorio-credito .obs-hero nav>a span { color:var(--text-2); }
+@media(prefers-reduced-motion:reduce) {
+  .observatorio-credito *, .dominio-energia * { scroll-behavior:auto!important; animation:none!important; transition:none!important; }
+}
+html[data-theme="dark"] .observatorio-credito .obs-hero .obs-primary { color:var(--bg); }

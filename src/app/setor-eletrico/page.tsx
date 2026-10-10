@@ -725,11 +725,11 @@ export default function MapaDoObservatorio() {
               <p className="rotulo text-mineral">Observatório Brasileiro do Setor Elétrico</p>
               <h1 className="mt-2 max-w-4xl font-serif">Energia, do sistema à sua conta</h1>
               <p className="ed-lead mt-3 max-w-3xl text-carvao-muted">
-                Entenda o que pesa na conta de luz e como o sistema elétrico funciona: compare regiões e confira cada número em dados públicos, com a fonte, o período e o método à vista.
+                Acompanhe preços, geração e reservatórios. Compare tarifas, interrupções e perdas por região. Cada painel explica o indicador e mostra sua fonte, período e referência.
               </p>
               <p className="mt-2 max-w-3xl text-sm leading-snug text-carvao" data-limite="">
                 <span className="rotulo mr-2 text-mineral">Não permite concluir</span>
-                As medidas de abertura são nacionais ou do sistema inteiro: não dizem quanto vai custar a fatura de uma casa, nem se vai faltar energia, nem como está a sua distribuidora.
+                As medidas nacionais não estimam a fatura de uma casa nem o risco de falta de luz. Para conhecer o serviço local, selecione a sua distribuidora.
               </p>
               <div className="ed-meta mt-1 items-center text-xs text-carvao-muted" data-recorte="">
                 <span>Cada número informa o próprio período e universo</span>
@@ -813,7 +813,7 @@ export default function MapaDoObservatorio() {
             ].map(([valor, rotulo, detalhe]) => <div key={rotulo}><dd>{valor}</dd><dt>{rotulo}</dt><dd>{detalhe}</dd></div>)}
           </dl>
         </header>
-        <div className="obs-home-search">              <div className="mt-6">
+        <div className="obs-home-search">              <div>
                 <BuscaObservatorio
                   itens={busca}
                   exemplos={["preço da luz", "falta de energia", "reservatórios", "Tarifa Social"]}
@@ -837,8 +837,7 @@ export default function MapaDoObservatorio() {
           <SuaDistribuidora opcoes={escolhas.opcoes} descricao={descricaoDaEscolha} />
           <p className="mb-6 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-como-ler="">
             <span className="font-medium text-carvao">Como ler. </span>
-            Nos gráficos de referência, a linha fina é a faixa observada, a caixa é a metade central dos casos, o traço fino é a mediana e o losango é o valor do cartão. Unidades: MW é a potência, a capacidade num
-            instante; MWh é a energia; MWmed é o MWh dividido pelas horas do período.
+            O losango marca o valor destacado. A linha mostra a faixa observada; a caixa reúne a metade central dos casos; o traço dentro dela é a mediana (o ponto que divide os casos em duas metades). Compare apenas medidas com a mesma unidade e período. MW mede potência; MWh mede energia; MWmed é a energia em MWh dividida pelas horas do período.
           </p>
           <section aria-label="Seis perguntas, cada uma com a medida de abertura, o período e a referência" className="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3" data-seis-perguntas="">
             {PERGUNTAS_PRIORITARIAS.map((p) => (
