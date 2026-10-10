@@ -1,7 +1,6 @@
 """Censo 2022: parcelas sobre o total publicado e reconciliação explícita.
-
-O total da tabela não coincide necessariamente com a soma de suas categorias.
-Nunca reescala parcelas para 100%, nunca atribui o resíduo a uma causa presumida.
+O total não coincide necessariamente com a soma de categorias. Não reescala
+parcelas para 100% e não atribui o resíduo a uma causa presumida.
 """
 from __future__ import annotations
 import argparse
@@ -9,13 +8,12 @@ import hashlib
 import json
 import math
 import pathlib
-import urllib.parse
 try:
     from .normalizar import gerar as gerar_pemob
-    from .coletar import baixar
+    from .consultas_censo import obter_dimensao
 except ImportError:
     from normalizar import gerar as gerar_pemob
-    from coletar import baixar
+    from consultas_censo import obter_dimensao
 
 TOTAL={'537':'31609','2088':'79488','86':'95251','469':'79176'}
 UNIVERSO=('Pessoas de 10 anos ou mais ocupadas na semana de referência, que trabalhavam fora do domicílio no trabalho principal e retornavam do trabalho para casa em três ou mais dias da semana. Não corresponde a toda a população nem a todas as viagens.')
@@ -45,14 +43,12 @@ def razao(n,ns,d,ds):
 
 
 def residuo(d,ds,parcelas):
-    """Somente com TODAS as células observadas; nunca infere célula suprimida."""
+    """Só com TODAS as células observadas; nunca infere célula suprimida."""
     if ds!='observado':return None,ds
     estado=next((s for _,s in parcelas if s!='observado'),'observado')
     if estado!='observado':return None,estado
     if d is None or any(v is None for v,_ in parcelas):return None,'nao_informado'
     diferenca=d-sum(v for v,_ in parcelas)
-    # Pequenas diferenças negativas são preservadas no diagnóstico, sem truncar
-    # a zero nem alterar parcelas. Um excesso maior bloqueia a promoção.
     if diferenca < -len(parcelas):raise ValueError('Soma das categorias excede o total além da margem de arredondamento')
     return diferenca,'observado' if diferenca>=0 else 'invalido'
 
@@ -90,17 +86,8 @@ def gerar(origem,saida,offline=False):
     for dimension,group in [('537','tempo'),('2088','modos')]:
         categories={str(c['id']):c for c in classes[dimension]['categorias']}
         if TOTAL[dimension] not in categories:raise ValueError('Total da classificação mudou')
-        filename='censo_2022_'+group+'.json'
-        query=urllib.parse.urlencode({'localidades':'N1[all]|N3[all]|N6[all]','classificacao':'|'.join(k+'['+('all' if k==dimension else v)+']' for k,v in TOTAL.items())})
-        url='https://servicodados.ibge.gov.br/api/v3/agregados/10330/periodos/2022/variaveis/13376?'+query
-        path=origem/filename
-        if not path.exists():
-            if offline:raise ValueError('Original ausente: '+filename)
-            sources[filename]=baixar(filename,url,origem)
-        source=sources.get(filename)
-        if not source or source['estado']!='coletado':raise ValueError('Coleta incompleta: '+filename)
-        if hashlib.sha256(path.read_bytes()).hexdigest()!=source['sha256']:raise ValueError('Hash divergente: '+filename)
-        values=resultados(json.loads(path.read_bytes()),dimension);codes=sorted({k[0] for k in values})
+        filename,payload=obter_dimensao(origem,sources,dimension,categories,TOTAL,offline)
+        values=resultados(payload,dimension);codes=sorted({k[0] for k in values})
         if '1' not in codes:raise ValueError('Brasil ausente')
         for (code,cat),item in values.items():
             if cat not in categories:raise ValueError('Categoria desconhecida')
