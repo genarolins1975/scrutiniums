@@ -123,7 +123,7 @@ export default function ExpansaoPage() {
         <CabecalhoModulo
           siglas={["SIGA", "RALIE", "PDE", "ANEEL", "EPE", "SIGET"]}
           titulo={PERGUNTA_EXPANSAO}
-          lead="Operação, obras e obra não iniciada em etapas separadas, cada uma na sua medida."
+          lead="Veja a potência já em operação, a que está em obras e a que ainda não começou a ser construída. Depois, compare os cronogramas das usinas com a expansão da rede; capacidade prevista ainda não é energia disponível."
           recorte={`SIGA de ${dataSiga} · RALIE de ${dataTexto(r.data_ralie)} · MW`}
           fonte="ANEEL, SIGA e RALIE"
           referencia={

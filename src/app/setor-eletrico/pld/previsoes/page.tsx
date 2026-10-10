@@ -249,7 +249,7 @@ export default function PrevisoesPage() {
         <CabecalhoModulo
           siglas={["PLD", "SIN", "CCEE"]}
           titulo="O que foi publicado antes do resultado?"
-          lead="A referência simples B0, por submercado e entrega, e o arquivo das emissões registradas."
+          lead="Veja a referência experimental B0 para cada região e período de entrega: ela repete o último valor completo disponível. O arquivo preserva o que foi publicado antes de conhecer o resultado, para permitir a conferência posterior."
           recorte={
             comRodada
               ? `Rodada de ${dataBR(at.origem)} · corte às 07h00 de Brasília · 4 submercados · R$/MWh nominais`

@@ -106,7 +106,7 @@ export default function TransicaoPage() {
         <CabecalhoModulo
           siglas={["MMGD", "MWmed", "SIN", "ANEEL", "ONS", "MCTI", "IBGE"]}
           titulo={PERGUNTA_TRANSICAO}
-          lead="Capacidade de geração distribuída adicionada por ano e intensidade das emissões do SIN."
+          lead="Acompanhe a potência de geração distribuída adicionada a cada ano e o CO₂ emitido por unidade de energia no Sistema Interligado Nacional (SIN). As séries mostram dimensões distintas da transição; uma não demonstra a causa da outra."
           recorte={`MMGD até ${data(m.data_cadastro)} · energia estimada até ${mes(mesOns?.m)} · emissões anuais até ${e?.ultimo_ano?.ano ?? "sem dado"}`}
           fonte="ANEEL, ONS e MCTI"
           referencia={

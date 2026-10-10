@@ -122,7 +122,7 @@ export default function GeracaoTransmissaoPage() {
           siglas={["RALIE", "RAP", "ANEEL", "EPE", "IBGE", "ONS"]}
           rotulo="Expansão"
           titulo={pp.pergunta}
-          lead="Geração e rede por UF e por ano, lado a lado, cada uma na sua unidade."
+          lead="Compare, por estado e por ano, a potência das usinas, a extensão das linhas e a capacidade de transformação. MW, quilômetros e MVA medem coisas diferentes: as séries ficam lado a lado, sem serem somadas."
           recorte={`RALIE de ${dataRalie} · SIGET de ${dataSiget} · MW, km e MVA`}
           fonte="ANEEL, RALIE, SIGET e leilões; EPE, rede de transmissão"
           referencia={

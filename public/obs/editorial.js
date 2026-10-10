@@ -60,6 +60,37 @@
       filtrar();
     }
   }
+  function indiceDaPagina(view) {
+    if (view.id === 'view-mapa' || !view.querySelector('.pagehead')) return;
+    const titulos = Array.from(view.querySelectorAll('h3')).filter(h =>
+      !h.closest('.card, .guia, .obs-page-index, details') && h.textContent.trim());
+    const anterior = view.querySelector('.obs-page-index');
+    const assinatura = titulos.map(h => h.textContent.trim()).join('|');
+    if (anterior?.dataset.assinatura === assinatura) return;
+    anterior?.remove();
+    if (titulos.length < 4) return;
+    const indice = document.createElement('details');
+    indice.className = 'obs-page-index'; indice.dataset.assinatura = assinatura;
+    const summary = document.createElement('summary');
+    summary.textContent = `Nesta página · ${titulos.length} seções`;
+    const nav = document.createElement('nav'); nav.setAttribute('aria-label', 'Seções desta página');
+    titulos.forEach((h, i) => {
+      if (!h.id) h.id = `${view.id}-secao-${i + 1}`;
+      const link = document.createElement('a');
+      link.href = '#' + h.id;
+      // Os selos e controles permanecem no título original, fora do índice.
+      const texto = h.cloneNode(true);
+      texto.querySelectorAll('.seal, .chip, button, select, .fav-star').forEach(n => n.remove());
+      link.textContent = texto.textContent.trim();
+      link.addEventListener('click', event => {
+        event.preventDefault(); h.tabIndex = -1;
+        h.scrollIntoView({ block: 'start' }); h.focus({ preventScroll: true });
+      });
+      nav.append(link);
+    });
+    indice.append(summary, nav);
+    (view.querySelector('.guia-leitura') || view.querySelector('.pagehead')).after(indice);
+  }
   function atualizar() {
     observer.disconnect();
     try {
@@ -75,6 +106,7 @@
           tabela.setAttribute('aria-label', `Tabela rolável${titulo ? ': ' + titulo : ''}. Use as setas para percorrer.`);
         }
       }
+      for (const view of main.querySelectorAll('.view.active')) indiceDaPagina(view);
       const mapa = document.getElementById('view-mapa');
       if (mapa) mapaEntrada(mapa);
     } finally { observer.observe(main, { childList: true, subtree: true }); }

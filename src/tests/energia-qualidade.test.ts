@@ -1122,9 +1122,9 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
 
   it("as ressalvas vão para onde evitam a leitura errada: média por UC na abertura, conjunto no mapa, expurgo na figura, divulgado na compensação", () => {
     const lead = /<p class="ed-lead[^>]*>([^<]*)<\/p>/.exec(html)?.[1] ?? "";
-    // o lead diz o que a medida é e por que importa (limites, ranking e compensações partem dela); a ressalva vai na linha própria da abertura
-    expect(lead).toMatch(/DEC e FEC medem quantas horas e quantas vezes/);
-    expect(lead).toMatch(/Deles partem os limites, o ranking das distribuidoras e as compensações/);
+    // O lead distingue duração e frequência MÉDIAS; os limites são próprios de cada distribuidora.
+    expect(lead).toMatch(/DEC mede a duração média.*FEC, a frequência média/);
+    expect(lead).toMatch(/cada distribuidora com o próprio limite/);
     const limite = /data-limite="">([\s\S]*?)<\/p>/.exec(html)?.[1] ?? "";
     expect(limite).toContain("Não permite concluir");
     expect(limite).toMatch(/o que cada consumidor viveu: DEC e FEC são médias por UC/);

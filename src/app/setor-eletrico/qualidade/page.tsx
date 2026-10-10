@@ -295,7 +295,7 @@ export default function QualidadePage() {
         <CabecalhoModulo
           siglas={["DEC", "FEC", "UC", "DIC", "FIC", "ANEEL", "IBGE", "ONS"]}
           titulo="Quanto tempo e quantas vezes falta luz?"
-          lead="DEC e FEC medem quantas horas e quantas vezes cada unidade consumidora (UC) ficou sem luz. Deles partem os limites, o ranking das distribuidoras e as compensações."
+          lead="DEC mede a duração média das interrupções; FEC, a frequência média por unidade consumidora (UC). Compare cada distribuidora com o próprio limite e explore, separadamente, as compensações e o atendimento."
           recorte={`${ref} · Brasil, ${distComDec} distribuidoras · horas e interrupções por UC`}
           fonte="ANEEL, indicadores coletivos de continuidade"
           limite="o que cada consumidor viveu: DEC e FEC são médias por UC, e há UCs bem acima delas."

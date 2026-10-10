@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.109.0";
+const APP_VERSION = "0.110.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -842,6 +842,14 @@ const COLOR_VARS = {
 };
 function ccol(c) { return COLOR_VARS[c] || c || "var(--c-line1)"; }
 
+function entenda(id, itens) {
+  return `<details class="charttable"><summary>Entenda este gráfico</summary>
+    <div class="note" style="margin:8px 0">${itens.map(([t, x]) => `<p style="margin:5px 0"><b>${t}:</b> ${x}</p>`).join("")}</div></details>`;
+}
+function leitura(itens) {
+  return `<div class="src" style="margin-top:8px;line-height:1.8">${itens.filter(Boolean).map(([t, x]) => `<b>${t}:</b> ${x}`).join(" · ")}</div>`;
+}
+
 function lineChart(opts) {
   const W = opts.w || 720, H = opts.h || 240;
   const all = [];
@@ -865,6 +873,9 @@ function lineChart(opts) {
   const maxLbl = Math.max(...tickLbls.map(t => t.length));
   const M = { t: 14, r: opts.endLabels ? 100 : 16, b: 26, l: Math.max(40, 12 + maxLbl * 6.3) };
   const allX = [...new Set(opts.series.flatMap(s => s.pts.map(p => p.x)).concat(opts.band ? opts.band.pts.map(p => p.x) : []))].sort();
+  // Mais de uma observação no mesmo mês exige a data completa; não agregar nem mudar a série.
+  const dailyDates = allX.some((x, i) => i > 0 && /^\d{4}-\d{2}-\d{2}$/.test(x) && x.slice(0, 7) === allX[i - 1].slice(0, 7));
+  const dateLabel = x => dailyDates && /^\d{4}-\d{2}-\d{2}$/.test(x) ? x.split("-").reverse().join("/") : fmt.my(x);
   const xi = x => allX.indexOf(x);
   const X = x => M.l + (xi(x) / Math.max(allX.length - 1, 1)) * (W - M.l - M.r);
   const Y = y => M.t + (1 - (T(y) - lo) / (hi - lo)) * (H - M.t - M.b);
@@ -879,7 +890,7 @@ function lineChart(opts) {
     bandData = { lo: allX.map(x => m.has(x) ? m.get(x).lo : null), hi: allX.map(x => m.has(x) ? m.get(x).hi : null) };
   }
   const payload = encodeURIComponent(JSON.stringify({
-    xs: allX, series: seriesData, band: bandData, dec,
+    xs: allX, series: seriesData, band: bandData, dec, dailyDates,
     unit: opts.unit || "", fonte: opts.fonte || "", status: opts.status || "",
     ml: M.l, mr: M.r, w: W, h: H, mt: M.t, mb: M.b, lo, hi, log: useLog,
   }));
@@ -894,7 +905,7 @@ function lineChart(opts) {
     const tx = X(allX[i]);
     // rótulo colado na borda ancora para dentro — senão "03/2026" vira "03/202"
     const anc = tx > W - 24 ? "end" : tx < M.l + 14 ? "start" : "middle";
-    out += `<text class="xl" x="${tx}" y="${H - 8}" text-anchor="${anc}" font-size="11" style="fill:var(--c-axis-text)">${fmt.my(allX[i])}</text>`;
+    out += `<text class="xl" x="${tx}" y="${H - 8}" text-anchor="${anc}" font-size="11" style="fill:var(--c-axis-text)">${dateLabel(allX[i])}</text>`;
   }
   if (opts.band) {
     const bp = opts.band.pts.filter(p => p.lo != null && p.hi != null);
@@ -964,7 +975,7 @@ function lineChart(opts) {
   if (!opts.noTable) {
     const heads = opts.series.map((sx, i) => sx.label || "série " + (i + 1));
     out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:260px"><table class="data compact"><thead><tr><th>Período</th>${heads.map(h2 => `<th style="text-align:right">${h2}</th>`).join("")}${opts.band ? "<th style='text-align:right'>banda p10</th><th style='text-align:right'>banda p90</th>" : ""}</tr></thead><tbody>` +
-      allX.map((x, i) => `<tr><td>${fmt.my(x)}</td>${seriesData.map(sd => `<td style="text-align:right">${sd.vals[i] != null ? fmt.n(sd.vals[i], dec) : "–"}</td>`).join("")}${bandData ? `<td style="text-align:right">${bandData.lo[i] != null ? fmt.n(bandData.lo[i], dec) : "–"}</td><td style="text-align:right">${bandData.hi[i] != null ? fmt.n(bandData.hi[i], dec) : "–"}</td>` : ""}</tr>`).join("") +
+      allX.map((x, i) => `<tr><td>${dateLabel(x)}</td>${seriesData.map(sd => `<td style="text-align:right">${sd.vals[i] != null ? fmt.n(sd.vals[i], dec) : "–"}</td>`).join("")}${bandData ? `<td style="text-align:right">${bandData.lo[i] != null ? fmt.n(bandData.lo[i], dec) : "–"}</td><td style="text-align:right">${bandData.hi[i] != null ? fmt.n(bandData.hi[i], dec) : "–"}</td>` : ""}</tr>`).join("") +
       `</tbody></table></div></details>`;
   }
   return out;
@@ -1013,7 +1024,7 @@ function chartShowIndex(svg, i, clientAnchor) {
       else { dot.setAttribute("cx", X); dot.setAttribute("cy", Y(s.vals[i])); }
     });
   }
-  let html = `<div class="tt-date">${fmt.my(c.xs[i])}</div>`;
+  let html = `<div class="tt-date">${c.dailyDates ? c.xs[i].split("-").reverse().join("/") : fmt.my(c.xs[i])}</div>`;
   c.series.forEach((s, si) => {
     const v = s.vals[i];
     if (v == null) return;
@@ -4047,6 +4058,7 @@ function pulseComparadorSec() {
   return `
   <h3>Comparar séries</h3>
   <div class="card">
+    <h4>Trajetórias na mesma régua</h4>
     <div class="controls">
       <label>série A <select onchange="pulseCmpSet('a', this.value)">${opcoes(pc.a)}</select></label>
       <label>série B <select onchange="pulseCmpSet('b', this.value)">${opcoes(pc.b)}</select></label>
@@ -4062,6 +4074,18 @@ function pulseComparadorSec() {
     <b>variação a/a</b> (compara ritmos). ${badge("calculado", "transformações no navegador sobre as séries observadas do gold")}
     ${omitidas.length ? `Fora do gráfico por transformação inaplicável: ${omitidas.join("; ")}.` : ""}</p>
   </div>`;
+}
+
+// Crescimento monetário é relativo; mudança de juros, spread e inadimplência é em p.p.
+function variacaoPulso(s, key, growth) {
+  const monetaria = key === "saldo" || key === "concessoes";
+  const real = monetaria && growth === "real" && s.yoy_real;
+  const serie = real ? s.yoy_real : s.yoy;
+  return {
+    monetaria,
+    valor: monetaria ? (serie && serie.length ? serie[serie.length - 1].v : null) : _d12(s),
+    rotulo: monetaria ? "% " + (real ? "a/a real (defl. IPCA)" : "a/a nominal") : " p.p. em 12 meses",
+  };
 }
 
 function renderPulse() {
@@ -4090,7 +4114,7 @@ function renderPulse() {
       series.push({ pts: [{ x: last.ref, y: last.v }, ...fc.pontos.map(p => ({ x: p.ref_date, y: p.p50 }))], color: "#1d4e89", dash: "5,4", label: "previsão p50" });
       band = { pts: [{ x: last.ref, lo: last.v, hi: last.v }, ...fc.pontos.map(p => ({ x: p.ref_date, lo: p.p10, hi: p.p90 }))] };
     }
-    const growthLabel = f.growth === "real" && s.yoy_real ? "a/a real (defl. IPCA)" : "a/a nominal";
+    const { valor: variacao, rotulo: growthLabel, monetaria } = variacaoPulso(s, c.key, f.growth);
     const rgs = state.data.regimes_series && state.data.regimes_series.series ? state.data.regimes_series.series.find(x => x.serie === `${c.key}_${f.seg}`) : null;
     const annotations = [];
     // marcadores de regime são datados sobre o NÍVEL — nas demais réguas saem
@@ -4099,7 +4123,7 @@ function renderPulse() {
     return `<div class="card">
       <h4>${c.title}${c.key === "inad" ? " " + inadChip("sgs") : ""} — ${segLabel} ${badge("observado")}${fc && fc.ok ? " " + badge("previsao") : ""} ${favStar("pulse", `${c.key}_${f.seg}`, `${c.title} ${segLabel}`)}</h4>
       <div class="big">${c.fmt(last.v)}</div>
-      <div class="delta ${yoy > 0 ? "up" : "down"} ${c.key === "saldo" || c.key === "concessoes" ? (yoy > 0 ? "good" : "bad") : ""}">${yoy != null ? (yoy > 0 ? "▲" : "▼") + " " + fmt.n(Math.abs(yoy), 1) + "% " + growthLabel : ""} · ref. ${fmt.my(last.ref)}</div>
+      <div class="delta ${yoy > 0 ? "up" : "down"} ${c.key === "saldo" || c.key === "concessoes" ? (yoy > 0 ? "good" : "bad") : ""}">${variacao != null ? (variacao > 0 ? "▲ " : variacao < 0 ? "▼ " : "") + fmt.n(Math.abs(variacao), monetaria ? 1 : 2) + growthLabel : "Variação indisponível"} · ref. ${fmt.my(last.ref)}</div>
       ${avisoTransf}
       ${lineChart({ series, band, h: 160, forecastStart: emNivel && fc && fc.ok ? last.ref : null, annotations, unit: tr.unit, fonte: s.meta.source + " " + s.meta.series_code, status: emNivel ? "observado" + (fc && fc.ok ? " + previsão" : "") : tr.status })}
       ${tr.rotulo ? `<div class="src">${badge("calculado", "transformação no navegador sobre a série observada")} ${tr.rotulo}${emNivel ? "" : " · projeções e bandas são de nível — fora desta régua"}</div>` : ""}
@@ -4506,7 +4530,7 @@ function renderRJ() {
       placar: [
         { l: "Pedidos de recuperação judicial no mês", v: uR ? fmt.n0(uR.v) : null, sub: uR ? `${_yoy(aR) != null ? _pp1(_yoy(aR)) + "% a/a · " : ""}CNJ/DataJud ${fmt.my(uR.ref)}` : "" },
         { l: "Recuperações em doze meses", v: fmt.n0(soma12(aR)), sub: uR ? `até ${fmt.my(uR.ref)}` : "" },
-        { l: "Falências decretadas no mês", v: uF ? fmt.n0(uF.v) : null, sub: uF ? `${_yoy(aF) != null ? _pp1(_yoy(aF)) + "% a/a · " : ""}${fmt.n0(soma12(aF))} em doze meses` : "" },
+        { l: "Falências ajuizadas no mês", v: uF ? fmt.n0(uF.v) : null, sub: uF ? `${_yoy(aF) != null ? _pp1(_yoy(aF)) + "% a/a · " : ""}${fmt.n0(soma12(aF))} em doze meses` : "" },
         { l: "Tribunais cobertos", v: nTrib ? fmt.n0(nTrib) : null, sub: cob },
       ],
       sintese: [
@@ -6799,7 +6823,7 @@ function guidCicloBloco(c) {
   return `
     <h5 style="margin:12px 0 4px">${c.banco} · ${c.ano}${c.tipo === "guidance_vigente" ? " (em curso)" : c.tipo === "ausencia_declarada" ? "" : " — fechado"}
       <span class="src">· aferido por: ${c.aferido_por === "companhia" ? "própria companhia" : "Observatório (fórmula declarada por métrica)"}</span></h5>
-    ${c.tipo === "ausencia_declarada" ? `<p class="src">${c.conceito}</p>` : `
+    ${c.tipo === "ausencia_declarada" ? "" : `
     <div class="tblwrap"><table class="data compact">
       <thead><tr><th>Métrica (conceito do próprio banco)</th><th>Intervalo → realizado</th><th>Situação</th></tr></thead>
       <tbody>${(c.metricas || []).map(m => `<tr>
@@ -8647,7 +8671,7 @@ function renderEstados() {
     "prazo", "pz-ufs", `Perfil de vencimentos, série mensal e as 27 UFs — Prazo da carteira`);
   const sub = u.subnacional || {};
   const snB = bloco("uf-subnacional", "Crédito ao estado e aos municípios", `Tesouro Nacional (Sadipem, Siconfi RGF, garantias) · 12 meses até ${sub.mes || U.datas.subnacional || "–"}`, sub.liberado_12m_valor == null ? `<p class="src">recorte ainda não publicado: o painel Crédito a estados e municípios precisa rodar antes desta página.</p>` : `
-    <dl class="ppgrid">${linha("Crédito liberado em 12 meses (PVL)", brl(sub.liberado_12m_valor), `${n0(sub.liberado_12m_n)} operações · ${n0(sub.entes)} entes · ${pos(u, "subnacional.valor_hab")} por habitante (R$ ${n0(sub.valor_hab)})`)}${linha("Maior credor", sub.credor_principal || "–")}
+    <dl class="ppgrid">${linha("Valor com parecer favorável em 12 meses (PVL)", brl(sub.liberado_12m_valor), `${n0(sub.liberado_12m_n)} operações · ${n0(sub.entes)} entes · ${pos(u, "subnacional.valor_hab")} por habitante (R$ ${n0(sub.valor_hab)})`)}${linha("Maior credor", sub.credor_principal || "–")}
       ${linha("Dívida consolidada líquida do estado", sub.dcl != null ? brl(sub.dcl) : "–", sub.dcl_rcl_pct != null ? `${fmt.n(sub.dcl_rcl_pct, 0)}% da RCL · ${pos(u, "subnacional.dcl_rcl_pct")} (1º = mais endividado) · ${sub.periodo_divida || ""}${sub.acima_limite ? " · acima do limite do Senado" : ""}` : "RGF não entregue")}${linha("Parte da dívida com a União", pct(sub.uniao_share_pct, 0))}${linha("Uso do limite do Senado", pct(sub.uso_limite_pct, 0), "DCL ÷ 200% da RCL")}
       ${linha("Contratos com garantia da União desde 2010", n0(sub.garantias_n), sub.garantias_internas_valor ? `${brl(sub.garantias_internas_valor)} nos internos` : "")}</dl>`,
     "subnacional", "sn-divida", `PVLs, dívida dos estados e garantias da União, com as 27 UFs — Crédito a estados e municípios`);
@@ -9407,13 +9431,6 @@ function mktColors(tks) {
 }
 window.mktSet = (k, v) => { state.mkt[k] = v; syncHash(); renderMarket(); };
 
-function entenda(id, itens) {
-  return `<details class="charttable"><summary>Entenda este gráfico</summary>
-    <div class="note" style="margin:8px 0">${itens.map(([t, x]) => `<p style="margin:5px 0"><b>${t}:</b> ${x}</p>`).join("")}</div></details>`;
-}
-function leitura(itens) {
-  return `<div class="src" style="margin-top:8px;line-height:1.8">${itens.filter(Boolean).map(([t, x]) => `<b>${t}:</b> ${x}`).join(" · ")}</div>`;
-}
 function metricCard(id, titulo, simples, tecnica, formula, fonte, cuidado) {
   const tip = encodeURIComponent(`<div class="tt-date">${titulo}</div><div class="tt-meta">${simples}<br><b>Fórmula:</b> ${formula}<br><b>Fonte:</b> ${fonte}<br><b>Cuidado:</b> ${cuidado}</div>`);
   return `data-tip="${tip}"`;
@@ -9568,7 +9585,7 @@ function mktProventos(M, emp, val) {
   const empresasSel = state.mkt.emp === "todas" ? M.empresas : M.empresas.filter(e => e.company_id === state.mkt.emp);
   const anos = [...new Set(empresasSel.flatMap(e => Object.keys(e.proventos_por_ano)))].sort().slice(-6);
   const bars = empresasSel.map(e => {
-    const tk = { itau: "ITUB4", btg: "BPAC11", abc: "ABCB4" }[e.company_id];
+    const tk = e.main_ticker || "ticker não informado";
     const maxv = Math.max(...anos.map(a => { const p = e.proventos_por_ano[a] || {}; return (p.DIV || 0) + (p.JCP || 0); }), 0.01);
     return `<div class="card"><h4>${e.legal_name.split(" S.A.")[0]} — proventos por ação (${tk}) ${badge("observado")}</h4>
       ${anos.map(a => { const p = e.proventos_por_ano[a] || {}; const d = p.DIV || 0, j = p.JCP || 0;
@@ -10039,7 +10056,7 @@ function renderSubnacional() {
   const head = pageHead({
     title: "Crédito a estados e municípios", vintage: D.mes,
     seals: `${badge("observado", "pedidos de verificação de limites (PVL) do Sadipem, registro administrativo da STN")} ${badge("calculado", "agregações por ano, credor, finalidade e UF; shares e posições calculados")}`,
-    desc: "Quanto crédito a verificação de limites da LRF liberou para estados e municípios, com quem, para quê e onde; quanto os estados devem e o que a União garante.",
+    desc: "Quanto crédito recebeu parecer favorável na verificação de limites da LRF para estados e municípios, com quem, para quê e onde; quanto os estados devem e o que a União garante.",
     fontes: "Tesouro Nacional (Sadipem, Siconfi RGF e garantias da União, Tesouro Transparente); IBGE (população)",
     actions: `<button class="btn ghost small" onclick="snCSV()">baixar CSV (série anual)</button>`,
   });
@@ -10048,8 +10065,8 @@ function renderSubnacional() {
   const sharePgfn = K.deferidos_12m_valor ? K.pgfn_12m_valor / K.deferidos_12m_valor * 100 : null;
   const aberturaHtml = abertura({
     placar: [
-      { l: "Liberado em 12 meses", v: bi(K.deferidos_12m_valor), sub: `${n0(K.deferidos_12m_n)} operações${K.var_12m_valor_pct != null ? ` · ${K.var_12m_valor_pct >= 0 ? "+" : ""}${fmt.n(K.var_12m_valor_pct, 0)}% em valor contra os 12 meses anteriores` : ""}`, href: "#sn-mensal" },
-      { l: "Entes atendidos", v: n0(K.entes_12m), sub: `${n0(K.municipios_12m_n)} operações de municípios e ${n0(K.estados_12m_n)} de estados`, href: "#sn-ufs" },
+      { l: "Com parecer favorável em 12 meses", v: bi(K.deferidos_12m_valor), sub: `${n0(K.deferidos_12m_n)} operações${K.var_12m_valor_pct != null ? ` · ${K.var_12m_valor_pct >= 0 ? "+" : ""}${fmt.n(K.var_12m_valor_pct, 0)}% em valor contra os 12 meses anteriores` : ""}`, href: "#sn-mensal" },
+      { l: "Entes com parecer favorável", v: n0(K.entes_12m), sub: `${n0(K.municipios_12m_n)} operações de municípios e ${n0(K.estados_12m_n)} de estados`, href: "#sn-ufs" },
       { l: "Municípios no valor", v: pct(shareMun, 0), sub: `${bi(K.municipios_12m_valor)} · estados ${bi(K.estados_12m_valor)}`, href: "#sn-anual" },
       { l: "Com garantia da União", v: pct(sharePgfn, 0), sub: `${n0(K.pgfn_12m_n)} operações, ${bi(K.pgfn_12m_valor)}, encaminhadas à PGFN`, href: "#sn-funil" },
       D.divida && D.divida.disponivel
@@ -10067,13 +10084,13 @@ function renderSubnacional() {
     { pts: fechados.map(a => ({ x: a.ano + "-07-01", y: a.municipios_valor / 1e9 })), color: "#1d4e89", label: "municípios" },
     { pts: fechados.map(a => ({ x: a.ano + "-07-01", y: a.estados_valor / 1e9 })), color: "#b45309", label: "estados e DF" },
   ];
-  const anual = secWrap("sn-anual", `${sechead("Ano a ano: quanto a verificação de limites liberou", `${fechados.length ? fechados[0].ano : "–"} a ${fechados.length ? fechados[fechados.length - 1].ano : "–"} · crédito de mercado, valores em reais`)}
+  const anual = secWrap("sn-anual", `${sechead("Ano a ano: quanto recebeu parecer favorável", `${fechados.length ? fechados[0].ano : "–"} a ${fechados.length ? fechados[fechados.length - 1].ano : "–"} · crédito de mercado, valores em reais`)}
   <div class="grid g2">
-    <div class="card"><h4>Valor liberado por ano, R$ bi ${badge("observado")}</h4>
-      ${lineChart({ series: seriesA, h: 220, endLabels: rotulosFim, unit: "R$ bi", dec: 1, fonte: "Tesouro Nacional, Sadipem", status: "observado", aria: "valor liberado por ano, municípios e estados" })}
+    <div class="card"><h4>Valor com parecer favorável por ano, R$ bi ${badge("observado")}</h4>
+      ${lineChart({ series: seriesA, h: 220, endLabels: rotulosFim, unit: "R$ bi", dec: 1, fonte: "Tesouro Nacional, Sadipem", status: "observado", aria: "valor com parecer favorável por ano, municípios e estados" })}
       <p class="src">Ano da data do status. Renegociações com a União ficam fora da série e aparecem na tabela ao lado; ${D.mes_parcial ? `${D.mes_parcial.slice(0, 4)} é parcial.` : ""}</p></div>
     <div class="card"><h4>Por ano ${badge("observado")}</h4>
-      <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th><th style="text-align:right">Operações</th><th style="text-align:right">Liberado</th><th style="text-align:right">Municípios</th><th style="text-align:right">Garantia da União</th><th style="text-align:right">Renegociação União</th><th style="text-align:right">Arquivados</th></tr></thead>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th><th style="text-align:right">Operações</th><th style="text-align:right">Parecer favorável</th><th style="text-align:right">Municípios</th><th style="text-align:right">Garantia da União</th><th style="text-align:right">Renegociação União</th><th style="text-align:right">Arquivados</th></tr></thead>
       <tbody>${SA.slice(-10).reverse().map(a => `<tr><td>${a.ano}${a.parcial ? " <span class='src'>parcial</span>" : ""}</td><td style="text-align:right">${n0(a.deferidos_n)}</td><td style="text-align:right">${bi(a.deferidos_valor)}</td><td style="text-align:right">${bi(a.municipios_valor)}</td><td style="text-align:right">${bi(a.garantia_uniao_valor)}</td><td style="text-align:right">${a.renegociacao_uniao_valor ? bi(a.renegociacao_uniao_valor) : "–"}</td><td style="text-align:right">${n0(a.arquivados_n)}</td></tr>`).join("")}</tbody></table></div>
       <p class="src">Renegociação com a União é reperfilamento de dívida antiga (São Paulo em 2017, Rio Grande do Sul em 2020), não crédito novo.</p></div>
   </div>`);
@@ -10083,7 +10100,7 @@ function renderSubnacional() {
     const mx = Math.max(...lista.map(x => x[campo] || 0), 1);
     return lista.map(x => `<div class="contrib"><span class="lbl" style="width:190px" title="${attr(x.nome)}">${x.nome.length > 34 ? x.nome.slice(0, 32) + "…" : x.nome}</span><span class="bar ${cor}" style="width:${Math.max(2, (x[campo] || 0) / mx * 150)}px"></span><span class="num">${pct(x[campo])} <span class="src">${brl(x.valor)} · ${n0(x.n)} op.${x.estados_n ? ` (${n0(x.estados_n)} de estados)` : ""}</span></span></div>`).join("");
   };
-  const credores = secWrap("sn-credores", `${sechead("Com quem e para quê", `12 meses até ${D.mes} · share do valor liberado`)}
+  const credores = secWrap("sn-credores", `${sechead("Com quem e para quê", `12 meses até ${D.mes} · share do valor com parecer favorável`)}
   <div class="grid g2">
     <div class="card"><h4>Credores ${badge("observado")}</h4>
       <div class="controls"><label class="src">janela <select onchange="snSet('cred', this.value)" aria-label="janela dos credores"><option value="12m" ${F.cred !== "60m" ? "selected" : ""}>12 meses</option><option value="60m" ${F.cred === "60m" ? "selected" : ""}>60 meses</option></select></label></div>
@@ -10101,13 +10118,13 @@ function renderSubnacional() {
   const chave = ["valor", "valor_hab", "n"].includes(F.uf) ? F.uf : "valor";
   const ufsOrd = D.ufs.slice().sort((a, b) => (b[chave] || 0) - (a[chave] || 0));
   const ufs = secWrap("sn-ufs", `${sechead("Onde", `27 UFs · 12 meses até ${D.mes} · estado mais os seus municípios`)}
-  <div class="card"><div class="controls"><label class="src">ordenar por <select onchange="snSet('uf', this.value)" aria-label="ordenar UFs"><option value="valor" ${chave === "valor" ? "selected" : ""}>valor liberado</option><option value="valor_hab" ${chave === "valor_hab" ? "selected" : ""}>valor por habitante</option><option value="n" ${chave === "n" ? "selected" : ""}>número de operações</option></select></label></div>
-    <div class="tblwrap"><table class="data compact"><thead><tr><th>#</th><th>UF</th><th>Região</th><th style="text-align:right">Liberado</th><th style="text-align:right">% do país</th><th style="text-align:right">R$/hab</th><th style="text-align:right">Operações</th><th style="text-align:right">Entes</th><th style="text-align:right">Do estado</th><th>Maior credor</th></tr></thead>
+  <div class="card"><div class="controls"><label class="src">ordenar por <select onchange="snSet('uf', this.value)" aria-label="ordenar UFs"><option value="valor" ${chave === "valor" ? "selected" : ""}>valor com parecer favorável</option><option value="valor_hab" ${chave === "valor_hab" ? "selected" : ""}>valor por habitante</option><option value="n" ${chave === "n" ? "selected" : ""}>número de operações</option></select></label></div>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>#</th><th>UF</th><th>Região</th><th style="text-align:right">Parecer favorável</th><th style="text-align:right">% do país</th><th style="text-align:right">R$/hab</th><th style="text-align:right">Operações</th><th style="text-align:right">Entes</th><th style="text-align:right">Do estado</th><th>Maior credor</th></tr></thead>
     <tbody>${ufsOrd.map((u, i) => `<tr><td>${i + 1}</td><td><a href="/observatorio/states/${u.uf}" onclick="ufNav('${u.uf}');return false"><b>${u.uf}</b> ${u.nome}</a></td><td class="src">${u.regiao || ""}</td><td style="text-align:right">${brl(u.valor)}</td><td style="text-align:right">${pct(u.share_valor_pct)}</td><td style="text-align:right">${u.valor_hab != null ? fmt.n(u.valor_hab, 0) : "–"}</td><td style="text-align:right">${n0(u.n)}</td><td style="text-align:right">${n0(u.entes)}</td><td style="text-align:right">${u.estado_valor ? brl(u.estado_valor) : "–"}</td><td class="src">${u.credor_principal || "–"}</td></tr>`).join("")}</tbody></table></div>
     <p class="src">Valor por habitante usa a população da UF (IBGE, SIDRA 6579). "Do estado" é a parte tomada pelo governo estadual; o resto é de municípios. Uma operação grande de um estado muda o ranking inteiro: leia junto com a coluna de operações.</p></div>`);
 
   /* ---------- maiores ---------- */
-  const maiores = secWrap("sn-maiores", `${sechead("As maiores operações liberadas", `12 meses até ${D.mes}`)}
+  const maiores = secWrap("sn-maiores", `${sechead("As maiores operações com parecer favorável", `12 meses até ${D.mes}`)}
   <div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>Ente</th><th>UF</th><th>Credor</th><th>Finalidade</th><th>Tipo</th><th style="text-align:right">Valor</th><th>Status em</th></tr></thead>
     <tbody>${D.maiores_12m.map(m => `<tr><td><b>${m.interessado}</b> <span class="src">${m.tipo_interessado}</span></td><td>${m.uf}</td><td class="src">${m.credor}</td><td class="src">${m.finalidade || "–"}</td><td class="src">${m.tipo_operacao || "–"}</td><td style="text-align:right">${brl(m.valor)}</td><td class="src">${fmt.d ? fmt.d(m.data_status) : m.data_status}</td></tr>`).join("")}</tbody></table></div>
     <p class="src">PVL deferido ou com manifestação favorável não é contrato assinado nem desembolso: a operação pode nunca ser contratada.</p></div>`);
@@ -10185,11 +10202,11 @@ function renderSubnacional() {
   const SM = (D.serie_mensal || []).filter(p => !p.parcial);
   const met = F.serie === "n" ? "n" : "valor";
   const seriesM = met === "n"
-    ? [{ pts: SM.map(p => ({ x: p.mes + "-01", y: p.n })), color: "#1d4e89", label: "operações liberadas" }]
+    ? [{ pts: SM.map(p => ({ x: p.mes + "-01", y: p.n })), color: "#1d4e89", label: "operações com parecer favorável" }]
     : [{ pts: SM.map(p => ({ x: p.mes + "-01", y: p.valor / 1e9 })), color: "#1d4e89", label: "total" }, { pts: SM.map(p => ({ x: p.mes + "-01", y: p.municipios_valor / 1e9 })), color: "#2f7d4f", label: "municípios" }];
   const mensal = secWrap("sn-mensal", `${sechead("Mês a mês", `${SM.length ? SM[0].mes : "–"} a ${D.mes} · mês corrente parcial fora`)}
-  <div class="card"><div class="controls"><label class="src">métrica <select onchange="snSet('serie', this.value)" aria-label="escolher métrica"><option value="valor" ${met === "valor" ? "selected" : ""}>valor liberado (R$ bi)</option><option value="n" ${met === "n" ? "selected" : ""}>operações liberadas</option></select></label></div>
-    ${lineChart({ series: seriesM, h: 200, endLabels: rotulosFim, unit: met === "n" ? "op." : "R$ bi", dec: met === "n" ? 0 : 1, fonte: "Tesouro Nacional, Sadipem", status: "observado", aria: (met === "n" ? "operações" : "valor") + " liberado por mês" })}
+  <div class="card"><div class="controls"><label class="src">métrica <select onchange="snSet('serie', this.value)" aria-label="escolher métrica"><option value="valor" ${met === "valor" ? "selected" : ""}>valor com parecer favorável (R$ bi)</option><option value="n" ${met === "n" ? "selected" : ""}>operações com parecer favorável</option></select></label></div>
+    ${lineChart({ series: seriesM, h: 200, endLabels: rotulosFim, unit: met === "n" ? "op." : "R$ bi", dec: met === "n" ? 0 : 1, fonte: "Tesouro Nacional, Sadipem", status: "observado", aria: (met === "n" ? "operações" : "valor") + " com parecer favorável por mês" })}
     <p class="src">Mês da data do status. A série é irregular por natureza: uma operação de estado com garantia da União vale meses de operações municipais. Meses recentes mudam nas coletas seguintes, quando pleitos em tramitação são decididos.</p></div>`);
 
   /* ---------- método ---------- */
@@ -10936,7 +10953,7 @@ function renderConsignado() {
 
   /* ============ 2. envelhecimento ============ */
   const maxP = Math.max(...B.piramide.map(p => p.pop));
-  const idade = `<section id="cg-idade">${sechead("2. Envelhecimento municipal", `Censo Demográfico 2022 · idade mediana ${fmt.n(B.idade_mediana, 1)} anos`)}
+  const idade = `<section id="cg-idade">${sechead("Envelhecimento municipal", `Censo Demográfico 2022 · idade mediana ${fmt.n(B.idade_mediana, 1)} anos`)}
   <div class="cg2col">
     <div class="card">
       <h4>Pirâmide etária ${cgSelo("observado")}</h4>
@@ -10967,7 +10984,7 @@ function renderConsignado() {
   </section>`;
 
   /* ============ 3. previdência ============ */
-  const prev = `<section id="cg-prev">${sechead("3. A Previdência na economia local", `dezembro de ${D.ano} · valores líquidos`)}
+  const prev = `<section id="cg-prev">${sechead("A Previdência na economia local", `dezembro de ${D.ano} · valores líquidos`)}
   <p class="desprosa">A massa de benefícios é comparada com a renda domiciliar do Censo, que é
   de julho de 2022. Para que a razão faça sentido, o valor de dezembro de ${D.ano} é trazido a
   preços de 2022 pelo IPCA — fator de ${fmt.n(D.fator_ipca, 4)}. Sem essa correção o peso dos
@@ -11026,7 +11043,7 @@ function renderConsignado() {
     rot, n: base.filter(m => m.peso != null && m.peso >= lo && m.peso < hi).length,
   }));
 
-  const mapa = `<section id="cg-mapa">${sechead("4. Mapa de dependência previdenciária", C.l)}
+  const mapa = `<section id="cg-mapa">${sechead("Mapa de dependência previdenciária", C.l)}
   <div class="controls">
     ${Object.entries(CG_CAMADAS).map(([k, v]) =>
       `<button class="btn ${cam === k ? "" : "ghost"} small" onclick="cgFiltra('cam','${k}')">${v.l}</button>`).join("")}
@@ -11088,10 +11105,10 @@ function cgExposicao(D) {
   if (!G) return "";
   const a = G.atual;
   const bi = fmt.brlBiDeMilhoes;
-  return `<section id="cg-expo">${sechead("5. Exposição ao consignado", `Banco Central · ${G.data_base.slice(0, 7)}`)}
+  return `<section id="cg-expo">${sechead("Exposição ao consignado", `Banco Central · ${G.data_base.slice(0, 7)}`)}
   <p class="desprosa">O consignado do INSS tem medida nacional direta e observada. O que não
   existe é carteira municipal — nem no Banco Central, nem no INSS, nem na Dataprev. O que a
-  página faz adiante é uma estimativa declarada, e o teste da seção 6 mostra por que ela não
+  página faz adiante é uma estimativa declarada, e o teste em “O que é observado e o que é mecânico” mostra por que ela não
   pode ser usada para afirmar relação entre dependência previdenciária e crédito.</p>
 
   <div class="card"><table class="data cgseg">
@@ -11160,7 +11177,7 @@ function cgCircularidade(D) {
   const py = v => 250 - 210 * (v - y0) / Math.max(y1 - y0, 1e-9);
   const ref = C.especificacoes.find(e => e.referencia);
 
-  return `<section id="cg-circ">${sechead("6. O que é observado e o que é mecânico", "quatro especificações da mesma pergunta")}
+  return `<section id="cg-circ">${sechead("O que é observado e o que é mecânico", "quatro especificações da mesma pergunta")}
   <p class="desprosa">A pergunta natural do painel é se municípios mais dependentes de
   benefícios têm mais consignado. Ela não pode ser respondida com o indicador municipal: como
   o consignado municipal é o estadual repartido por uma chave previdenciária, a correlação
@@ -11250,7 +11267,7 @@ function cgCircularidade(D) {
 function cgSaturacao(D, base) {
   const t = D.totais.saturacao, cr = D.saturacao_criterios;
   const cls = ["baixa_penetracao", "penetracao_elevada", "possivel_saturacao"];
-  return `<section id="cg-sat">${sechead("7. Saturação", "critérios explícitos, aplicados só onde há base")}
+  return `<section id="cg-sat">${sechead("Saturação", "critérios explícitos, aplicados só onde há base")}
   <p class="desprosa">Saturação não é tamanho de carteira. A classificação usa saldo estimado por
   benefício elegível e serviço da dívida, e tem uma trava: município cujo indicador é apenas
   alocação proporcional, sem nenhum sinal de intensidade, ou cuja confiabilidade é baixa, <b>não
@@ -11284,7 +11301,7 @@ function cgSaturacao(D, base) {
 function cgRisco(D, base) {
   const v = base.filter(m => m.indice != null && m.sel !== "baixa" && (m.pop || 0) >= 20000)
     .sort((a, b) => b.indice - a.indice).slice(0, 15);
-  return `<section id="cg-risco">${sechead("8. Sensibilidade social e regulatória", "três dimensões separadas, e depois combinadas")}
+  return `<section id="cg-risco">${sechead("Sensibilidade social e regulatória", "três dimensões separadas, e depois combinadas")}
   <div class="judalerta" role="note">
     <b>Este índice mede a sensibilidade do contexto, não a conduta de ninguém.</b> Ele não
     classifica moradores nem instituições. Um município no topo da lista é um lugar onde
@@ -11317,7 +11334,7 @@ function cgRisco(D, base) {
 function cgInstituicoes(D) {
   const I = D.instituicoes, R = D.reclamacoes;
   if (!I && !R) return "";
-  return `<section id="cg-if">${sechead("9. Instituições", "geografia nacional, e assim permanece")}
+  return `<section id="cg-if">${sechead("Instituições", "geografia nacional, e assim permanece")}
   <p class="desprosa">Nem a taxa cobrada nem a reclamação existem por município para cada
   instituição. Estimar participação municipal por instituição exigiria uma metodologia que
   nenhuma fonte sustenta, e a página não a inventa: as duas tabelas ficam na geografia em que
@@ -11391,12 +11408,12 @@ function cgPerfil(D, sel, comparar) {
   ];
   const alvos = sel ? [sel, ...comparar.filter(m => m.c !== sel.c)] : comparar;
   if (!alvos.length) {
-    return `<section id="cg-perfil">${sechead("10. Perfil municipal", "selecione no mapa")}
-      <p class="src">Clique num município no mapa da seção 4 para abrir o perfil. É possível
+    return `<section id="cg-perfil">${sechead("Perfil municipal", "selecione no mapa")}
+      <p class="src">Clique num município no Mapa de dependência previdenciária para abrir o perfil. É possível
       comparar até cinco municípios lado a lado.</p></section>`;
   }
   const cols = alvos.slice(0, 5);
-  return `<section id="cg-perfil">${sechead("10. Perfil municipal", `${cols.length} município${cols.length > 1 ? "s" : ""} em comparação`)}
+  return `<section id="cg-perfil">${sechead("Perfil municipal", `${cols.length} município${cols.length > 1 ? "s" : ""} em comparação`)}
   <div class="controls">
     ${cols.map(m => `<span class="cgchip">${m.n}<small>${m.uf}</small>
       <button type="button" onclick="cgTira('${m.c}')" aria-label="${attr("remover " + m.n)}">×</button></span>`).join("")}
@@ -11423,7 +11440,7 @@ function cgPerfil(D, sel, comparar) {
 function cgMetodo(D) {
   const tl = D.linha_do_tempo.slice().reverse();
   const TIPOROT = { margem: "margem", teto: "teto de juros", prazo: "prazo", fraude: "antifraude", sancao: "sanção" };
-  return `<section id="cg-metodo">${sechead("11. Fontes, definições e limites", "auditoria de viabilidade")}
+  return `<section id="cg-metodo">${sechead("Fontes, definições e limites", "auditoria de viabilidade")}
   <details class="charttable"><summary>Evolução regulatória — ${tl.length} eventos com norma e data</summary>
   <div class="card">
     <ol class="cgtl">${tl.map(e => `<li>
@@ -11431,7 +11448,7 @@ function cgMetodo(D) {
       <span class="c"><b>${e.t}</b> <span class="tp tp-${e.tipo}">${TIPOROT[e.tipo]}</span>
         <span class="src">${e.norma}</span><span class="o">${e.o}</span></span></li>`).join("")}</ol>
     <p class="src">${cgSelo("observado")} Cada evento traz a norma que o produziu. As mudanças
-    aparecem marcadas nas séries da seção 5 para permitir inspeção — <b>não</b> para atribuir a
+    aparecem marcadas nas séries de Exposição ao consignado para permitir inspeção — <b>não</b> para atribuir a
     elas a variação observada.</p>
   </div>
   </details>
@@ -12867,7 +12884,7 @@ function renderProducts() {
     const spark = sparkline(p.serie.map(x => x.total_brl), 130, 26);
     const lider = p.lider;
     return `<div class="card clickable" onclick="openProduct('${p.slug}')">
-      <h4>${p.nome} <span class="chip" style="padding:1px 8px">${p.seg.toUpperCase()}</span> ${badge("observado")}</h4>
+      <h4><a href="/observatorio/products/${p.slug}" aria-label="${attr(p.nome.replace(/\s+(PF|PJ)$/i, "") + " " + p.seg.toUpperCase())}" onclick="event.stopPropagation();openProduct('${p.slug}');return false">${p.nome.replace(/\s+(PF|PJ)$/i, "")}</a> <span class="chip" style="padding:1px 8px">${p.seg.toUpperCase()}</span> ${badge("observado")}</h4>
       <div class="big" style="font-size:24px">${fmt.money(p.mercado_total_brl)}</div>
       <div class="delta ${p.crescimento_4t_pct >= 0 ? "down good" : "up"}">${p.crescimento_4t_pct != null ? (p.crescimento_4t_pct >= 0 ? "▲" : "▼") + " " + fmt.n(Math.abs(p.crescimento_4t_pct), 1) + "% em 4 trim. (pareado)" : "Δ4T indisponível"}</div>
       ${spark}
@@ -13064,7 +13081,7 @@ function renderProductPageData(el, P) {
     return `<h3>Atraso × taxa × carteira, por instituição <span class="src">(${pts.length} IFs com os três dados na modalidade)</span></h3>
     <div class="card">
     ${tx.itens.length > 1 ? `<div class="controls" style="margin-bottom:4px"><span class="src">Modalidade da taxa (eixo y):</span>
-      <span class="seg">${tx.itens.map((x, i) => `<button class="${i === txIdx ? "active" : ""}" onclick="txSetIdx(${i})" title="${attr(x.modalidade)}">${modCurta(x.modalidade).slice(0, 42)}</button>`).join("")}</span></div>` : ""}
+      <span class="seg">${tx.itens.map((x, i) => `<button class="${i === txIdx ? "active" : ""}" onclick="txSetIdx(${i})" title="${attr(x.modalidade)}">${attr(x.modalidade)}</button>`).join("")}</span></div>` : ""}
     ${scatterPlot(pares, "atraso ≥15d no produto (%)", `taxa a.a. novas operações — ${txModCurta} (%)`, 680, 320,
       { sizeLabel: "carteira no produto", labels: pts.length <= 25,
         refX: med(pares.map(q => q.x)), refXLabel: "mediana do atraso",
@@ -13181,7 +13198,7 @@ function taxasSection(p) {
       ? `recorte ${PMX_SEG}: estatística de taxa indisponível nesta modalidade (menos de 5 IFs do segmento na janela — omitido, nunca aproximado); a tabela abaixo lista as ${rankRows.length} IF(s) do segmento individualmente`
       : `${it.n_inst} instituições · mediana <b>${fmt.n(it.mediana_aa, 1)}% a.a.</b> · quartis ${fmt.n(it.p25_aa, 1)}–${fmt.n(it.p75_aa, 1)}% · amplitude ${fmt.n(it.min_aa, 1)}–${fmt.n(it.max_aa, 1)}%`;
   return `<h3>Taxas de juros por instituição ${badge("observado")}</h3>
-  <div class="controls"><span class="seg">${t.itens.map((x, i) => `<button class="${i === idx ? "active" : ""}" onclick="txSetIdx(${i})" title="${attr(x.modalidade)}">${x.modalidade.replace(/ - Prefixado$/, "").replace(/ - Pós-fixado.*$/, " (pós)").slice(0, 42)}</button>`).join("")}</span></div>
+  <div class="controls"><span class="seg">${t.itens.map((x, i) => `<button class="${i === idx ? "active" : ""}" onclick="txSetIdx(${i})" title="${attr(x.modalidade)}">${attr(x.modalidade)}</button>`).join("")}</span></div>
   <div class="card">
     <div class="src" style="margin-bottom:8px">janela ${fmt.d(it.inicio)}–${fmt.d(it.fim)} · ${stats}
     ${it.moeda_estrangeira ? ` · <span class="seal aprox">TAXA REFERENCIADA EM MOEDA ESTRANGEIRA — não comparável a taxas em reais</span>` : ""}</div>
@@ -13660,12 +13677,12 @@ function renderCompare() {
     <div class="src" style="margin-top:10px">Aprofunde nas abas: Métricas-chave, Série histórica, Dispersão e Dados completos. Custos, tecnologia e produtividade têm aba própria com o estado das fontes.</div>`;
   } else if (cmp.ctab === "custos") {
     body = `
-    <div class="note"><b>Por que esta aba ainda não tem números:</b> os indicadores de custos, tecnologia e produtividade dependem de fontes que o pipeline ainda não coleta. Nada aqui será estimado ou simulado — cada bloco abaixo declara a fonte prevista e o motivo da ausência (ausência ≠ zero).</div>
+    <div class="note"><b>Por que esta aba ainda não tem números:</b> os indicadores de custos, tecnologia e produtividade ainda não estão integrados ao catálogo comparável desta aba. Há divulgações de pessoal e TI em <a href="/observatorio/operational-indicators">Rede, pessoas e auditoria</a>, com conceitos próprios de cada instituição. Os blocos abaixo descrevem as pendências do comparador; ausência não é zero.</div>
     <div class="grid g2" style="margin-top:12px">
-      ${(C.pendentes || []).map(pdt => `<div class="card"><h4>${pdt.grupo} <span class="seal aprox">NÃO COLETADO</span></h4>
+      ${(C.pendentes || []).map(pdt => `<div class="card"><h4>${pdt.grupo} <span class="seal aprox">NÃO INTEGRADO AO COMPARADOR</span></h4>
         <div class="chips" style="margin:6px 0">${pdt.metricas.map(mm => `<span class="chip">${mm}</span>`).join("")}</div>
         <div class="src"><b>Fonte prevista:</b> ${pdt.fonte_prevista}</div>
-        <div class="src" style="margin-top:4px"><b>Estado:</b> ${pdt.motivo}</div></div>`).join("")}
+        <div class="src" style="margin-top:4px"><b>Pendência registrada no catálogo:</b> ${pdt.motivo}</div></div>`).join("")}
     </div>
     <div class="card" style="margin-top:14px"><h4>O que já é possível hoje</h4>
       <p class="src" >Com os dados coletados (IF.data Resumo, Capital e Carteiras), o comparador cobre escala, funding, capital, mix e qualidade de carteira. Quando a DRE detalhada do IF.data e os balancetes COSIF entrarem no pipeline, esta aba passa a calcular: despesas de pessoal e administrativas agrupadas, índice de eficiência, TI restrita vs TI ampliada (sempre separadas), e produtividade por funcionário e por agência — cada valor com selo reportado/contábil/derivado e nunca um "gasto total com TI" exato a partir de componentes parciais.</p></div>`;

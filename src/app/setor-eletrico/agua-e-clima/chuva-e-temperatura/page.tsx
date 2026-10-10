@@ -101,7 +101,7 @@ export default function ClimaPage() {
           rotulo="Água e clima"
           siglas={["SIN", "ENA", "MLT", "EAR", "ONS", "IBGE", "UF"]}
           titulo={perguntaPainel("p019")}
-          lead="Chuva e temperatura estimadas frente à média dos mesmos dias, para ler a água que chega aos reservatórios e a demanda por energia; a previsão fica à parte."
+          lead="Compare a chuva e a temperatura estimadas com a média dos mesmos dias em anos anteriores. As previsões dos próximos dias aparecem separadas do histórico; a relação com afluência e demanda é examinada em outros painéis."
           limite="São estimativas, não medições de estação, e os dias mais recentes são preliminares. A relação com a afluência e a carga é medida em outros painéis."
           recorte={c ? `Chuva até ${dataBR(g.dias_referencia.precipitacao)} · temperatura até ${dataBR(g.dias_referencia.temperatura)}` : undefined}
           fonte="NASA POWER (estimativas) e ECMWF (previsão)"
