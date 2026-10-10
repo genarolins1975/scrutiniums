@@ -1,3 +1,5 @@
+import "./scripts/materializar-alimentacao.mjs";
+import "./scripts/preparar-alimentacao.mjs";
 import "./scripts/materializar-trabalho-renda.mjs";
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
