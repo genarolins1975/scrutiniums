@@ -51,7 +51,7 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 * **Estrutura administrativa**: servidores da atividade finalística (por área) separados de administração, cargos comissionados e terceirização (elementos 3.3.90.34 e 3.3.90.37), com a tabela de atribuições de cada ente registrada antes de qualquer razão. Pessoal por população não é diagnóstico de excesso.
 * **Outras áreas**: saúde (SIOPS, CNES) foi implementada em 09/10/2026 como módulo das capitais ([saude/CONTINUIDADE.md](./saude/CONTINUIDADE.md)); assistência, segurança e administração seguem no roteiro.
 * **Benchmark internacional**: só com compatibilidade documentada de conceito, perímetro, moeda (PPC) e período (por exemplo, OCDE Education at a Glance para gasto por estudante). Nada improvisado.
-* **Fora de escopo por desenho**: notas próprias, índices sintéticos, DEA ou SFA, cenários de corte, assistente conversacional.
+* **Atualização autorizada em 10/10/2026**: o responsável solicitou escores de qualidade do serviço por capítulo e panorama agregado. A metodologia experimental está em [Segurança alimentar](./seguranca-alimentar/README.md); notas numéricas continuam bloqueadas por cobertura e referências pendentes. DEA/SFA, cenários de corte e assistente conversacional seguem fora desta entrega.
 
 ## 5. Registro de progresso
 

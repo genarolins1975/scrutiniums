@@ -1,0 +1,130 @@
+{
+  "edition": "OBEE-servicos-v0.3-experimental",
+  "validated": false,
+  "overall": {
+    "value": null,
+    "status": "INSUFFICIENT_COVERAGE",
+    "basket": [
+      "education",
+      "health",
+      "work",
+      "food"
+    ],
+    "weights_proposed": {
+      "education": 0.25,
+      "health": 0.25,
+      "work": 0.25,
+      "food": 0.25
+    }
+  },
+  "chapters": [
+    {
+      "id": "education",
+      "value": null,
+      "status": "INSUFFICIENT_COVERAGE",
+      "pillars": {
+        "access": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Atendimento efetivo da população elegível e exclusão escolar"
+        },
+        "response": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Tempo de matrícula, continuidade e cumprimento do calendário"
+        },
+        "quality": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Aprendizagem com universo e composição comparáveis"
+        }
+      },
+      "available_evidence": "IDEB e aprovação: 26 capitais. Evidências de resultado; referências pendentes e acesso/resposta incompletos.",
+      "normalization": "No indicator normalized; fixed validated references absent"
+    },
+    {
+      "id": "health",
+      "value": null,
+      "status": "INSUFFICIENT_COVERAGE",
+      "pillars": {
+        "access": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Pessoas com necessidade atendidas e demanda não atendida"
+        },
+        "response": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Espera e continuidade do cuidado"
+        },
+        "quality": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Segurança e resultados do cuidado ajustados ao perfil da população"
+        }
+      },
+      "available_evidence": "APS potencial e ICSAP: 26 capitais. Não há cobertura dos três pilares.",
+      "normalization": "No indicator normalized; fixed validated references absent"
+    },
+    {
+      "id": "work",
+      "value": null,
+      "status": "INSUFFICIENT_COVERAGE",
+      "pillars": {
+        "access": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Pessoas elegíveis que acessam intermediação, qualificação e proteção"
+        },
+        "response": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Espera, conclusão e continuidade do atendimento"
+        },
+        "quality": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Inserção e permanência após atendimento, com desenho de avaliação"
+        }
+      },
+      "available_evidence": "Séries de condições de trabalho e renda no capítulo original; evidências dos serviços incompletas.",
+      "normalization": "No indicator normalized; fixed validated references absent"
+    },
+    {
+      "id": "food",
+      "value": null,
+      "status": "INSUFFICIENT_COVERAGE",
+      "pillars": {
+        "access": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Pessoas elegíveis efetivamente atendidas por modalidade, sem duplicidade"
+        },
+        "response": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Dias e entregas previstos efetivamente cumpridos; espera e interrupções"
+        },
+        "quality": {
+          "value": null,
+          "status": "DATA_AND_REFERENCE_PENDING",
+          "weight_proposed": 0.3333333333333333,
+          "required_measure": "Entregas conformes a parâmetros nutricionais e sanitários verificáveis"
+        }
+      },
+      "available_evidence": "PNADC Brasil/regiões 2023–2024; dez variáveis MUNIC em 5570 municípios. Faltam atendimento efetivo, denominadores, continuidade e conformidade.",
+      "normalization": "No indicator normalized; fixed validated references absent"
+    }
+  ]
+}

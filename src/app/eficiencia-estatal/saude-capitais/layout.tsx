@@ -1,3 +1,4 @@
+import { EscoresServicos } from "@/components/eficiencia/EscoresServicos";
 import { CabecalhoSaude } from "@/components/eficiencia/saude/CabecalhoSaude";
 import { LiberaRecorte } from "@/components/eficiencia/LiberaRecorte";
 import { SCRIPT_RECORTE_SAUDE } from "@/lib/eficiencia/saude/rotas";
@@ -9,7 +10,7 @@ export default function LayoutSaudeCapitais({ children }: { children: React.Reac
       <CabecalhoSaude />
       <script dangerouslySetInnerHTML={{ __html: SCRIPT_RECORTE_SAUDE }} />
       <main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-8 sm:px-6 md:pt-10">
-        {children}
+        {children}<EscoresServicos capitulo="health"/>
         <LiberaRecorte />
         <noscript>
           <p className="mt-8 border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-obee-tinta" role="note">

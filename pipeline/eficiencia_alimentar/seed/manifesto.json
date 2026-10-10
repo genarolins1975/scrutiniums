@@ -1,0 +1,21 @@
+{
+  "captured_at": "2026-10-10T04:10:31.809849+00:00",
+  "method": "food-v0.3",
+  "scope": "MUNIC: todos os 5570 municípios, respostas originais preservadas; PNADC: Brasil e cinco Grandes Regiões, 2023/2024; sem estimativas municipais da EBIA",
+  "sources": [
+    {
+      "file": "munic_seguranca_alimentar_2024.xlsx",
+      "url": "https://ftp.ibge.gov.br/Perfil_Municipios/Seguranca_Alimentar_2024/Base_de_dados_Seguranca_Alimentar_MUNIC.xlsx",
+      "sha256": "ec1ee7f050b965d33e772b285fe3cc4ded75f4cfeda5306f8a366502b72c2863"
+    },
+    {
+      "file": "ibge_seguranca_alimentar_2024.pdf",
+      "url": "https://biblioteca.ibge.gov.br/visualizacao/livros/liv102212_informativo.pdf",
+      "sha256": "fee3a5aef665907c676c0b7f05324d98b69a30a0d2d7250cafd090bcf261037e"
+    }
+  ],
+  "seed_sha256": "3f6c2cce094fe6028abadba7c3576b08c4d62d4b9db032fb3cd2afe43fd1c5da",
+  "seed_file": "recorte_ibge.json.gz",
+  "source_page": 6,
+  "review": "Tabela PNADC conferida visualmente no PDF oficial; MUNIC conferida pelo dicionário do XLSX."
+}
