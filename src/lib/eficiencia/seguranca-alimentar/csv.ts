@@ -1,0 +1,5 @@
+import type {SnapshotAlimentar} from './tipos';
+import {csvAlimentar} from './apresentacao';
+/** Mesmo contrato e ordem do CSV equivalente, entregue progressivamente. */
+export function* partesCsvAlimentar(dados:SnapshotAlimentar,observacoes=dados.observacoes,tamanho=250):Generator<string>{yield csvAlimentar(dados,[]);const limite=Math.max(1,Math.min(500,Math.trunc(tamanho)||250));for(let inicio=0;inicio<observacoes.length;inicio+=limite){const parte=csvAlimentar(dados,observacoes.slice(inicio,inicio+limite));const cabecalhoFim=parte.indexOf('\r\n');if(cabecalhoFim>=0)yield parte.slice(cabecalhoFim);}}
+export function streamCsvAlimentar(dados:SnapshotAlimentar,observacoes=dados.observacoes):ReadableStream<Uint8Array>{const partes=partesCsvAlimentar(dados,observacoes);const encoder=new TextEncoder();return new ReadableStream<Uint8Array>({pull(controller){const parte=partes.next();if(parte.done){controller.close();return;}controller.enqueue(encoder.encode(parte.value));},cancel(){partes.return(undefined);}})}
