@@ -1,65 +1,96 @@
 name: OBEE Mobilidade - auditoria de fontes
-
 on:
   pull_request:
     paths:
       - 'pipeline/eficiencia_mobilidade/**'
       - '.github/workflows/obee-mobilidade-auditoria.yml'
-  workflow_dispatch:
-
 permissions:
   contents: read
-
 concurrency:
   group: obee-mobilidade-fontes-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
   auditar-fontes:
+    # Não executa sobre forks, main ou qualquer outra branch. Não faz deploy/merge.
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'codex/obee-mobilidade-transporte'
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Coletar originais e metadados públicos
-        run: python3 pipeline/eficiencia_mobilidade/coletar.py --destino auditoria-mobilidade
-      - name: Inspecionar definições, sem publicar dados pessoais dos respondentes
-        if: always()
+      - name: Identificar versão do extrator
+        id: versao
         run: |
           python3 - <<'PY'
-          import json, pathlib, zipfile
-          from xml.etree import ElementTree as ET
-          p = pathlib.Path('auditoria-mobilidade')
-          ns={'s':'http://schemas.openxmlformats.org/spreadsheetml/2006/main'}
-          for f in sorted(p.glob('ibge_metadados_*.json')):
-              print('METADADOS', f.name, f.read_text())
-          for f in sorted(p.glob('*.xlsx')):
-              with zipfile.ZipFile(f) as z:
-                  shared=[]
-                  if 'xl/sharedStrings.xml' in z.namelist():
-                      shared=[''.join(si.itertext()) for si in ET.fromstring(z.read('xl/sharedStrings.xml'))]
-                  for name in z.namelist():
-                      if name.startswith('xl/worksheets/sheet') and name.endswith('.xml'):
-                          root=ET.fromstring(z.read(name))
-                          rows=root.findall('s:sheetData/s:row',ns)
-                          if not rows: continue
-                          headers=[]
-                          for c in rows[0].findall('s:c',ns):
-                              v=c.find('s:v',ns)
-                              text=v.text if v is not None else ''.join(c.itertext())
-                              if c.attrib.get('t')=='s' and text: text=shared[int(text)]
-                              headers.append({'coluna':c.attrib.get('r'),'cabecalho':text})
-                          print('ESTRUTURA',f.name,name,len(rows),'CABECALHOS',json.dumps(headers,ensure_ascii=False))
+          import hashlib, os, pathlib
+          files=[pathlib.Path('pipeline/eficiencia_mobilidade/'+n) for n in ['coletar.py','normalizar.py']]
+          sha=hashlib.sha256(b'\n'.join(p.read_bytes() for p in files)).hexdigest()
+          p=pathlib.Path('data/eficiencia_mobilidade/pipeline.sha256')
+          refresh=not p.exists() or p.read_text().strip()!=sha
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f: f.write('refresh='+str(refresh).lower()+'\nsha='+sha+'\n')
+          print('Coleta necessária:',refresh)
           PY
-      - name: Guardar evidências sem publicar dados ou alterar main
-        if: always()
+      - name: Coletar originais públicos
+        if: steps.versao.outputs.refresh == 'true'
+        run: python3 pipeline/eficiencia_mobilidade/coletar.py --destino auditoria-mobilidade/originais
+      - name: Normalizar e verificar reprodução sem rede
+        if: steps.versao.outputs.refresh == 'true'
+        run: |
+          python3 pipeline/eficiencia_mobilidade/normalizar.py --origem auditoria-mobilidade/originais --saida auditoria-mobilidade/candidato
+          python3 pipeline/eficiencia_mobilidade/normalizar.py --origem auditoria-mobilidade/originais --saida auditoria-mobilidade/reproduzido --offline
+          cmp auditoria-mobilidade/candidato/gold.json auditoria-mobilidade/reproduzido/gold.json
+          echo 'Reprodução offline: identidade byte a byte'
+      - name: Preservar candidato somente na branch autorizada
+        if: steps.versao.outputs.refresh == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
+          PIPELINE_SHA: ${{ steps.versao.outputs.sha }}
+        run: |
+          python3 - <<'PY'
+          import base64,gzip,hashlib,io,json,os,pathlib,tarfile,urllib.request
+          repo='genarolins1975/scrutiniums'; branch='codex/obee-mobilidade-transporte'
+          if os.environ['GITHUB_REPOSITORY']!=repo: raise SystemExit('Repositório não autorizado')
+          def api(path,data=None,method=None):
+              req=urllib.request.Request('https://api.github.com/repos/'+repo+'/'+path,data=None if data is None else json.dumps(data).encode(),method=method,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','Content-Type':'application/json'})
+              with urllib.request.urlopen(req,timeout=60) as r:return json.load(r)
+          ref=api('git/ref/heads/'+branch)
+          if ref['object']['sha']!=os.environ['EXPECTED_SHA']: raise SystemExit('Branch mudou; candidato não gravado')
+          root=pathlib.Path('auditoria-mobilidade'); candidate=root/'candidato'
+          raw=candidate.joinpath('gold.json').read_bytes()
+          if hashlib.sha256(raw).hexdigest()!=candidate.joinpath('gold.sha256').read_text().strip():raise SystemExit('Hash inválido')
+          bundle=io.BytesIO()
+          with tarfile.open(fileobj=bundle,mode='w') as tar:
+              for p in sorted(root.joinpath('originais').iterdir()):
+                  if not p.is_file() or p.name.endswith('.tmp'):continue
+                  content=p.read_bytes(); info=tarfile.TarInfo(p.name); info.size=len(content); info.mtime=0; info.mode=0o644
+                  tar.addfile(info,io.BytesIO(content))
+          files={n:candidate.joinpath(n).read_bytes() for n in ['gold.json','gold.sha256','resumo.json']}
+          files['originais.tar.gz.b64']=base64.b64encode(gzip.compress(bundle.getvalue(),mtime=0))
+          files['pipeline.sha256']=(os.environ['PIPELINE_SHA']+'\n').encode()
+          tree=[]
+          for name,content in files.items():
+              blob=api('git/blobs',{'content':base64.b64encode(content).decode(),'encoding':'base64'})
+              tree.append({'path':'data/eficiencia_mobilidade/'+name,'mode':'100644','type':'blob','sha':blob['sha']})
+          parent=api('git/commits/'+os.environ['EXPECTED_SHA'])
+          t=api('git/trees',{'base_tree':parent['tree']['sha'],'tree':tree})
+          commit=api('git/commits',{'message':'OBEE Mobilidade: snapshot candidato, originais e reprodução offline','tree':t['sha'],'parents':[os.environ['EXPECTED_SHA']]})
+          api('git/refs/heads/'+branch,{'sha':commit['sha'],'force':False},'PATCH')
+          print('SNAPSHOT_COMMIT',commit['sha'])
+          print(candidate.joinpath('resumo.json').read_text())
+          PY
+      - name: Guardar evidências da execução
+        if: always() && steps.versao.outputs.refresh == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: obee-mobilidade-fontes-${{ github.event.pull_request.head.sha || github.sha }}
+          name: obee-mobilidade-fontes-${{ github.event.pull_request.head.sha }}
           path: auditoria-mobilidade/
           if-no-files-found: error
-          retention-days: 3
+          retention-days: 7
