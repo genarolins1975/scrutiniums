@@ -1,0 +1,56 @@
+name: OBEE Mobilidade - oportunidades e evidências
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/obee-mobilidade-oportunidades.yml'
+      - 'pipeline/eficiencia_mobilidade/oportunidades*'
+permissions:
+  contents: read
+concurrency:
+  group: obee-oportunidades-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  evidencias:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'codex/obee-mobilidade-transporte'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Preservar fontes do capítulo para revisão reprodutível
+        run: |
+          mkdir -p evidencias
+          git rev-parse HEAD > evidencias/commit.txt
+          git archive --format=tar.gz -o evidencias/fontes-capitulo.tar.gz HEAD src pipeline/eficiencia_mobilidade pipeline/tests/test_eficiencia_mobilidade.py data/eficiencia_mobilidade scripts/obee .claude/skills/observatorio-layout docs/obee/mobilidade package.json package-lock.json next.config.mjs tsconfig.json vitest.config.ts tailwind.config.ts .github/workflows
+      - name: Consultar catálogo oficial do Acesso a Oportunidades
+        run: |
+          python3 - <<'PY'
+          import csv,datetime,hashlib,io,json,pathlib,urllib.request
+          out=pathlib.Path('evidencias/ipea'); out.mkdir()
+          urls=[('metadata-github.csv','https://github.com/ipeaGIT/aopdata/releases/download/v1.0.0/metadata.csv'),('metadata-ipea.csv','https://www.ipea.gov.br/geobr/aopdata/metadata/metadata.csv')]
+          log=[]
+          for name,url in urls:
+              entry={'arquivo':name,'url':url,'capturado_em':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+              try:
+                  req=urllib.request.Request(url,headers={'User-Agent':'Scrutiniums-public-data-audit/1.0'})
+                  with urllib.request.urlopen(req,timeout=60) as r:
+                      data=r.read(4000001);entry['url_final']=r.url;entry['content_type']=r.headers.get('Content-Type')
+                  if len(data)>4000000 or b'<html' in data[:1000].lower():raise ValueError('Resposta não é catálogo válido')
+                  rows=list(csv.DictReader(io.StringIO(data.decode('utf-8-sig'))))
+                  if not rows:raise ValueError('Catálogo vazio')
+                  out.joinpath(name).write_bytes(data);entry.update(estado='coletado',bytes=len(data),sha256=hashlib.sha256(data).hexdigest(),cabecalhos=list(rows[0]),linhas=len(rows),amostra=rows[:5])
+              except Exception as e:entry.update(estado='falha',erro=str(e))
+              log.append(entry)
+          out.joinpath('manifesto.json').write_text(json.dumps(log,ensure_ascii=False,indent=2))
+          print(json.dumps(log,ensure_ascii=False,indent=2))
+          if not any(e['estado']=='coletado' for e in log):raise SystemExit('Catálogo oficial inacessível; nenhum indicador produzido')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mobilidade-oportunidades-${{ github.event.pull_request.head.sha }}
+          path: evidencias/
+          retention-days: 7
+          if-no-files-found: error
