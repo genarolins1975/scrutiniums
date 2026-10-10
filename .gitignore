@@ -20,3 +20,6 @@ __pycache__/
 # Ferramentas locais
 .vercel/
 .claude/
+
+# Dados de Segurança Alimentar materializados do pacote canônico antes de build/testes.
+/public/eficiencia/seguranca-alimentar/
