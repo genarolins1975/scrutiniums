@@ -28,4 +28,4 @@ Os 63.843.170 registros somados das fases não autorizam tratar o resultado como
 
 ## Validação
 
-A compilação final e a suíte completa passaram em 9 de outubro de 2026: 180 arquivos, 4.385 testes aprovados e um teste preexistente ignorado. Os relatórios independentes registram recomputação das fontes, correções e avaliação das telas. Um aceite visual não transforma ausência de dados em cobertura publicada.
+A compilação final e a suíte completa passaram na versão final: 180 arquivos, 4.388 testes aprovados e um teste preexistente ignorado. Os relatórios independentes registram recomputação das fontes, correções e avaliação das telas. Um aceite visual não transforma ausência de dados em cobertura publicada.
