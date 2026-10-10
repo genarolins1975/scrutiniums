@@ -1,0 +1,110 @@
+{
+  "manifestos": [
+    {
+      "manifest": "manifest.json",
+      "partes": 49,
+      "arquivos": 35,
+      "bytesPayload": 67177673,
+      "sha256": "5e51dd7d80ee5fcba081b65ad0661df50979a587efdd41a2cdef5ce9e27077f5",
+      "divergenciasArquivosRuntime": []
+    },
+    {
+      "manifest": "paa-manifest.json",
+      "partes": 3,
+      "arquivos": 6,
+      "bytesPayload": 14031969,
+      "sha256": "a870623941e975082d75eee33a671342b369e0f0ccb1b523ce954c3eb6e4e2ed",
+      "divergenciasArquivosRuntime": []
+    }
+  ],
+  "testesIsolados": [
+    {
+      "caso": "valido",
+      "passou": true,
+      "exit": 0,
+      "mensagem": [
+        "Segurança Alimentar: 41 arquivos canônicos verificados e materializados."
+      ],
+      "arquivosGerados": 42
+    },
+    {
+      "caso": "parte-ausente",
+      "passou": true,
+      "exit": 1,
+      "mensagem": [
+        "node:fs:436",
+        "    return binding.readFileUtf8(path, stringToFlags(options.flag));",
+        "                   ^",
+        ""
+      ],
+      "arquivosGerados": 1
+    },
+    {
+      "caso": "base64-invalida",
+      "passou": true,
+      "exit": 1,
+      "mensagem": [
+        "file:///Users/gena/Documents/Codex/2026-10-09/m/work/seguranca-auditoria/tmp1ftizemp/scripts/materializar-alimentacao.mjs:14",
+        "if(!text||text.length%4||!/^[A-Za-z0-9+/]*={0,2}$/.test(text))throw new Error('Base64 inválida na base de Segurança Alimentar');",
+        "                                                                    ^",
+        ""
+      ],
+      "arquivosGerados": 1
+    },
+    {
+      "caso": "gzip-invalido",
+      "passou": true,
+      "exit": 1,
+      "mensagem": [
+        "node:internal/modules/run_main:107",
+        "    triggerUncaughtException(",
+        "    ^",
+        ""
+      ],
+      "arquivosGerados": 1
+    },
+    {
+      "caso": "hash-incorreto",
+      "passou": true,
+      "exit": 1,
+      "mensagem": [
+        "file:///Users/gena/Documents/Codex/2026-10-09/m/work/seguranca-auditoria/tmpqpzjdpgh/scripts/materializar-alimentacao.mjs:16",
+        "if(payload.length!==manifest.bytes||sha(payload)!==manifest.sha256||payload.subarray(0,4).toString()!=='SAN1')throw new Error('Integridade da base de Segurança Alimentar não confere');",
+        "                                                                                                                    ^",
+        ""
+      ],
+      "arquivosGerados": 1
+    },
+    {
+      "caso": "path-escape",
+      "passou": true,
+      "exit": 1,
+      "mensagem": [
+        "file:///Users/gena/Documents/Codex/2026-10-09/m/work/seguranca-auditoria/tmpky2xkc10/scripts/materializar-alimentacao.mjs:22",
+        "  if(typeof item.path!=='string'||!item.path||item.path.includes('\\\\')||item.path.startsWith('/')||item.path.split('/').some(p=>!p||p==='.'||p==='..')||paths.has(item.path))throw new Error('Caminho de dados inválido');",
+        "                                                                                                                                                                                   ^",
+        ""
+      ],
+      "arquivosGerados": 1
+    },
+    {
+      "caso": "suplemento-ausente",
+      "passou": true,
+      "exit": 1,
+      "mensagem": [
+        "node:fs:436",
+        "    return binding.readFileUtf8(path, stringToFlags(options.flag));",
+        "                   ^",
+        ""
+      ],
+      "arquivosGerados": 1
+    }
+  ],
+  "semFallback": true,
+  "hooks": {
+    "prebuild": "scripts/minify-obs.mjs importa materializador antes do build",
+    "predev": "scripts/minify-obs.mjs importa materializador antes do servidor",
+    "vitest": "import scripts/materializar-alimentacao.mjs antes dos testes"
+  },
+  "limite": "Testes isolados sem modificar fontes ou runtime do produto. Não demonstram publicação externa."
+}
