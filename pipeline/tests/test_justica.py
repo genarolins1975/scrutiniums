@@ -1,4 +1,6 @@
-import gzip,json,unittest
+import gzip,json,unittest,tempfile
+from unittest.mock import patch
+from pipeline.justica import capturar
 from pathlib import Path
 from pipeline.justica.capturar import months,number,validate
 
@@ -17,3 +19,12 @@ class JusticaTest(unittest.TestCase):
         d=json.loads(gzip.decompress(p.read_bytes()));validate(d)
         d['comarcas'].append(d['comarcas'][0])
         with self.assertRaises(AssertionError):validate(d)
+
+    def test_reproduction_identical_bytes(self):
+        seed=Path(__file__).resolve().parents[1]/'justica/seed/recorte.json.gz'
+        d=json.loads(gzip.decompress(seed.read_bytes()))
+        original=capturar.OUT
+        with tempfile.TemporaryDirectory() as tmp, patch.object(capturar,'OUT',Path(tmp)):
+            capturar.publish(d)
+            for name in ['snapshot.json','comarcas.csv','defensorias.csv','tribunais.csv','fontes.json']:
+                self.assertEqual((Path(tmp)/name).read_bytes(),(original/name).read_bytes(),name)

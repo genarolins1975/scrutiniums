@@ -77,11 +77,11 @@ def collect(args):
 
 def publish(d):
     validate(d); OUT.mkdir(parents=True,exist_ok=True)
-    (OUT/'snapshot.json').write_text(json.dumps(d,ensure_ascii=False,separators=(',',':'))+'\n')
-    for key in ['comarcas','defensorias','tribunais']:
-        s=io.StringIO(); writer=csv.DictWriter(s,fieldnames=list(d[key][0]),delimiter=';');writer.writeheader();writer.writerows(d[key])
+    (OUT/'snapshot.json').write_text(json.dumps(d,ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n')
+    for key,fields in {'comarcas':['codigo','nome','uf','estado','populacao','municipios','situacao','linha'],'defensorias':['uf','estado','ano','defensores','atendimentos','acordos','executado','notaAtendimentos','notaAcordos','linha'],'tribunais':['tribunal','uf','baixados','pendentes','pagina']}.items():
+        s=io.StringIO(); writer=csv.DictWriter(s,fieldnames=fields,delimiter=';');writer.writeheader();writer.writerows(d[key])
         (OUT/(key+'.csv')).write_text('\ufeff'+s.getvalue(),encoding='utf-8')
-    (OUT/'fontes.json').write_text(json.dumps(d['fontes'],ensure_ascii=False,indent=2)+'\n')
+    (OUT/'fontes.json').write_text(json.dumps(d['fontes'],ensure_ascii=False,sort_keys=True,indent=2)+'\n')
     print(json.dumps({'comarcas':len(d['comarcas']),'defensorias_uf_ano':len(d['defensorias']),'tribunais':len(d['tribunais']),'snapshot_sha256':hashlib.sha256((OUT/'snapshot.json').read_bytes()).hexdigest()}))
 
 if __name__=='__main__':

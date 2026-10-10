@@ -37,3 +37,7 @@ Filtros e ordenação persistem na URL pelo hook compartilhado do projeto. Gráf
 Leitor de XLSX da coleta usa XML/ZIP da biblioteca padrão. Conferência separada com openpyxl comparou todas as 2.563 comarcas e as 108 UF/ano com o original: nenhum desvio. Figura 285 e série total da figura 190 conferidas visualmente no PDF oficial. Testes de regressão verificam contagens, soma populacional, ausência versus zero, duplicatas, divisão inválida, durações e igualdade da publicação com a semente.
 
 A avaliação visual e o estado de publicação estão em `VALIDACAO.md`.
+
+## Ajustes da revisão
+
+Escala monetária distingue reais por habitante de milhões de reais. A série nacional usa geometria e rótulos próprios no celular. O comparador de acordos permite ampliar os valores abaixo do extremo, sinalizando explicitamente a barra truncada e mantendo o valor integral. Seletores têm nomes acessíveis explícitos. A reprodução ordena chaves JSON e fixa as colunas CSV, com teste de igualdade byte a byte dos cinco arquivos públicos.

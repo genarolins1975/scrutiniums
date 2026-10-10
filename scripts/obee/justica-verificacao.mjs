@@ -14,7 +14,7 @@ const axe=readFileSync(require.resolve('axe-core/axe.min.js'),'utf8');
 const slugs=['','cobertura','tempo-resposta','conciliacao','recursos','dados'];
 for(const width of [320,390,768,1440]){
  const page=await browser.newPage({viewport:{width,height:950},deviceScaleFactor:1});
- page.on('pageerror',e=>erros.push(String(e)));
+ page.on('pageerror',e=>erros.push(page.url()+": "+String(e)));
  for(const slug of slugs){
   const url=base+'/eficiencia-estatal/acesso-justica'+(slug?'/'+slug:'');
   const response=await page.goto(url,{waitUntil:'networkidle'});
@@ -31,6 +31,7 @@ for(const width of [320,390,768,1440]){
 }
 writeFileSync(join(out,'telas.json'),JSON.stringify({resultados,erros,falhas},null,2));
 const page=await browser.newPage({viewport:{width:390,height:950},acceptDownloads:true});
+page.on('pageerror',e=>erros.push(page.url()+": "+String(e)));
 const checks=[];
 function check(nome,ok){checks.push({nome,ok});if(!ok)falhas.push({interacao:nome});}
 await page.goto(base+'/eficiencia-estatal/acesso-justica/cobertura',{waitUntil:'networkidle'});
@@ -46,6 +47,10 @@ await page.getByLabel('Medida',{exact:true}).selectOption('executado');await pag
 await page.getByLabel('Medida',{exact:true}).selectOption('defensores');await page.goBack();check('Voltar restaura medida',await page.getByLabel('Medida',{exact:true}).inputValue()==='executado');
 await page.locator('summary').first().click();check('Tabela acessível',await page.getByRole('table').isVisible());
 const download2=page.waitForEvent('download');await page.getByRole('button',{name:'Baixar comparação CSV'}).click();const f2=await download2;await f2.saveAs(join(out,'comparacao.csv'));check('CSV com 27 entidades e cabeçalho',readFileSync(join(out,'comparacao.csv'),'utf8').split('\r\n').length===28);
+await page.getByRole('button',{name:'Limpar seleção'}).focus();await page.keyboard.press('Enter');check('Botão por teclado',await page.getByLabel('Medida',{exact:true}).inputValue()==='percapita');
+await page.goto(base+'/eficiencia-estatal/acesso-justica/conciliacao',{waitUntil:'networkidle'});
+await page.getByRole('button',{name:'Ampliar valores abaixo do extremo'}).click();check('Extremo permanece indicado na escala ampliada',await page.getByText('↑ Fora da escala',{exact:true}).count()===1&&await page.getByText('1.335.367',{exact:true}).count()>0);
+await page.locator('summary').last().click();check('Ausência e zero distintos na tabela',await page.getByRole('row',{name:/Pará Não informado/}).count()===1&&await page.getByRole('row',{name:/Roraima 0/}).count()===1);
 for(const name of ['snapshot.json','comarcas.csv','defensorias.csv','tribunais.csv','fontes.json']){const r=await page.request.get(base+'/eficiencia/justica/'+name);check('Download HTTP '+name,r.status()===200);}
 const sitemap=await page.request.get(base+'/sitemap.xml');check('Sitemap disponível',sitemap.status()===200);const sitemapText=await sitemap.text();check('Sitemap inclui páginas',slugs.every(s=>sitemapText.includes('/eficiencia-estatal/acesso-justica'+(s?'/'+s:''))));
 await page.goto(base+'/eficiencia-estatal',{waitUntil:'networkidle'});check('Entrada pelo panorama',await page.locator('a[href="/eficiencia-estatal/acesso-justica"]').count()>0);

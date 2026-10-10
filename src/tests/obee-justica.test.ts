@@ -46,6 +46,6 @@ describe('Acesso à Justiça — fontes e cálculo',()=>{
   for(const [slug] of PAGINAS_JUSTICA)expect(existsSync(join('src/app/eficiencia-estatal/acesso-justica',slug,'page.tsx'))).toBe(true);
   for(const file of ['snapshot.json','comarcas.csv','defensorias.csv','tribunais.csv','fontes.json'])expect(readFileSync('public/eficiencia/justica/'+file).length).toBeGreaterThan(100);
   for(const f of d.fontes)expect(f.sha256).toMatch(/^[a-f0-9]{64}$/);
-  expect(createHash('sha256').update(readFileSync('public/eficiencia/justica/snapshot.json')).digest('hex')).toBe('625b5677307fd0785e6d6a0ee11742aebbf746e88bf94037c115ef9ef53355c8');
+  expect(createHash('sha256').update(readFileSync('public/eficiencia/justica/snapshot.json')).digest('hex')).toBe('bdc06e9c40e2ca78db9613aafff5def1d94b8a9e478e4fd9c453c42202d61f65');
  });
 });
