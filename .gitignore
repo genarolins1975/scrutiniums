@@ -20,3 +20,8 @@ __pycache__/
 # Ferramentas locais
 .vercel/
 .claude/
+
+# Materialized Food Security downloads, generated from the verified seed at build.
+/public/eficiencia/seguranca-alimentar/uf-*.json
+/public/eficiencia/seguranca-alimentar/municipios.csv
+/public/eficiencia/seguranca-alimentar/pnad.csv

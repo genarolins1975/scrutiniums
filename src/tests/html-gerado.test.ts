@@ -33,6 +33,14 @@ const ROTAS_OBRIGATORIAS = [
   "eficiencia-estatal/educacao-municipal-capitais/comparar.html",
   "eficiencia-estatal/educacao-municipal-capitais/metodos.html",
   "eficiencia-estatal.html",
+  "eficiencia-estatal/seguranca-alimentar.html",
+  "eficiencia-estatal/seguranca-alimentar/necessidades.html",
+  "eficiencia-estatal/seguranca-alimentar/acesso.html",
+  "eficiencia-estatal/seguranca-alimentar/qualidade.html",
+  "eficiencia-estatal/seguranca-alimentar/recursos.html",
+  "eficiencia-estatal/seguranca-alimentar/dados.html",
+  "eficiencia-estatal/seguranca-alimentar/metodos.html",
+
   "eficiencia-estatal/saude-capitais.html",
   "eficiencia-estatal/saude-capitais/gastos.html",
   "eficiencia-estatal/saude-capitais/rede-e-atencao-primaria.html",
@@ -61,6 +69,8 @@ function resumoLiterais(analises: Analise[]): string {
   return CLASSES_LITERAL.map((c) => `${c}=${n[c] ?? 0}`).join(", ");
 }
 
+const ROTAS_ALIMENTARES = ROTAS_OBRIGATORIAS.filter(r => r.includes("seguranca-alimentar"));
+
 describe(`HTML gerado pelo build (${EXIGIR ? "verificação obrigatória" : "modo local, build opcional"})`, () => {
   it("o build existe e contém as rotas esperadas", (ctx) => {
     if (!temBuild && !EXIGIR) ctx.skip(AVISO_SEM_BUILD);
@@ -75,6 +85,14 @@ describe(`HTML gerado pelo build (${EXIGIR ? "verificação obrigatória" : "mod
     console.info(`HTML verificado (setor elétrico): ${cobertura.setor.length} páginas; literais: ${resumoLiterais(analises)}`);
     expect(violacoes).toEqual([]);
   }, LIMITE_ANALISE_MS);
+
+  it("Segurança alimentar: sete rotas geradas e obedecendo ao contrato de HTML", (ctx) => {
+    if (!temBuild && !EXIGIR) ctx.skip(AVISO_SEM_BUILD);
+    const arquivos = ROTAS_ALIMENTARES.map(r => join(APP, r));
+    for (const arquivo of arquivos) expect(existsSync(arquivo), arquivo).toBe(true);
+    expect(analisa(arquivos).violacoes).toEqual([]);
+    expect(readFileSync(arquivos[0], "utf8")).toContain("Segurança alimentar");
+  });
 
   it("OBEE: as páginas do painel pré-renderizadas (panorama e as cinco visões) obedecem ao mesmo contrato", (ctx) => {
     if (!temBuild && !EXIGIR) ctx.skip(AVISO_SEM_BUILD);
