@@ -39,9 +39,10 @@ try{
  page=await browser.newPage({viewport:{width:390,height:1000}});
  await step('Filtros, renda, tabela e CSV do mesmo recorte',async()=>{
   await page.goto(base+root,{waitUntil:'networkidle'});
-  await page.getByLabel('Cidade',{exact:true}).selectOption('2611606');
-  await page.getByLabel('Modo de transporte',{exact:true}).selectOption('public_transport');
-  await page.getByLabel('Oportunidade e tempo',{exact:true}).selectOption('CMATT60');
+  writeFileSync(output+'/oportunidades-form-aria.txt',await page.locator('form').ariaSnapshot());
+  await page.getByRole('combobox',{name:'Cidade',exact:true}).selectOption('2611606');
+  await page.getByRole('combobox',{name:'Modo de transporte',exact:true}).selectOption('public_transport');
+  await page.getByRole('combobox',{name:'Oportunidade e tempo',exact:true}).selectOption('CMATT60');
   await Promise.all([page.waitForURL(u=>u.searchParams.get('cidade')==='2611606',{waitUntil:'networkidle'}),page.getByRole('button',{name:'Aplicar oportunidades',exact:true}).click()]);
   assert(await page.locator('figure').count()===2,'Faltou a distribuição por renda');
   const expected=g.records.find(r=>r.city==='2611606'&&r.mode==='public_transport'&&r.peak==='1'&&r.metric==='CMATT60');
@@ -59,12 +60,12 @@ try{
   await page.goto(base+root+'?cidade=1501402&modo=public_transport',{waitUntil:'networkidle'});
   assert((await page.locator('main').innerText()).includes('Sem estimativa para este modo'),'Ausência não identificada');
   assert(await page.locator('figure').count()===0,'Ausência gerou figura');
-  await page.getByLabel('Modo de transporte',{exact:true}).selectOption('walk');
+  await page.getByRole('combobox',{name:'Modo de transporte',exact:true}).selectOption('walk');
   await Promise.all([page.waitForURL(u=>u.searchParams.get('modo')==='walk',{waitUntil:'networkidle'}),page.getByRole('button',{name:'Aplicar oportunidades',exact:true}).click()]);
   assert(await page.locator('figure').count()===2,'Modo coberto não exibido');
   assert((await page.locator('main').innerText()).includes('Sem distinção de horário'),'Modo ativo recebeu pico fictício');
   await Promise.all([page.waitForURL(u=>u.search==='',{waitUntil:'networkidle'}),page.getByRole('link',{name:'Limpar filtros',exact:true}).click()]);
-  assert(await page.getByLabel('Cidade',{exact:true}).inputValue()==='','Limpar não restaurou o recorte');
+  assert(await page.getByRole('combobox',{name:'Cidade',exact:true}).inputValue()==='','Limpar não restaurou o recorte');
  });
  await step('CSV integral: todos os valores e grupos',async()=>{
   const response=await fetch(base+api);assert(response.ok,'CSV indisponível');
