@@ -1,3 +1,5 @@
+import "./materializar-alimentacao.mjs";
+import "./preparar-alimentacao.mjs";
 import "./materializar-trabalho-renda.mjs";
 import { readFileSync, writeFileSync, statSync } from "node:fs";
 
