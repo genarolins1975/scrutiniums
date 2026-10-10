@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifySessionCookie } from "@/lib/sessionCookie";
+import { estadoRotaMobilidade } from "@/lib/eficiencia/mobilidade/roteamento";
 
 /**
  * Proteção de rotas internas com validação forte na borda: o cookie de
@@ -16,6 +17,17 @@ import { verifySessionCookie } from "@/lib/sessionCookie";
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  // A validação de um slug desconhecido precisa anteceder o streaming:
+  // notFound() depois do início do corpo pode manter status HTTP 200.
+  // As oito rotas válidas são públicas e não consultam cookie nem banco.
+  const mobilidade = estadoRotaMobilidade(pathname);
+  if (mobilidade === "inexistente") {
+    return new NextResponse("Página de Mobilidade não encontrada.", {
+      status: 404,
+      headers: { "Content-Type": "text/plain; charset=utf-8", "X-Robots-Tag": "noindex" },
+    });
+  }
+  if (mobilidade === "valida") return NextResponse.next();
   if (!pathname.startsWith("/app")) return NextResponse.next();
 
   const verified = await verifySessionCookie(
@@ -54,5 +66,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/app/:path*"],
+  matcher: ["/app/:path*", "/eficiencia-estatal/mobilidade-transporte/:path*"],
 };

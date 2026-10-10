@@ -10,16 +10,16 @@ const routes=['','tempo','transporte','acesso','seguranca','recursos','comparar'
 const gold=JSON.parse(readFileSync('data/eficiencia_mobilidade/gold.json','utf8'));
 const output='auditoria-interface-mobilidade';mkdirSync(output,{recursive:true});
 const browser=await chromium.launch({headless:true});
-const results=[],failures=[],interacoes=[];
+const results=[],failures=[],interacoes=[],falhasInteracoes=[];
 let etapa='início',activePage,exportacao=null,tracing=null,error=null;
 function assert(condition,message){if(!condition)throw new Error(message);}
-/** Leitor independente do CSV, incluindo CR/LF dentro de campos entre aspas. */
+/** Leitor independente, incluindo CR/LF dentro de campos entre aspas. */
 function* csvRows(text){let row=[],cell='',quoted=false;for(let i=text.charCodeAt(0)===0xfeff?1:0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(c===';'&&!quoted){row.push(cell);cell='';}else if((c==='\r'||c==='\n')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);yield row;row=[];cell='';}else cell+=c;}assert(!quoted,'CSV com aspas não fechadas');if(cell||row.length){row.push(cell);yield row;}}
-async function passo(nome,fn){etapa=nome;console.log('INICIAR',nome);await fn();interacoes.push(nome);console.log('APROVADO',nome);}
+/** Continua tarefas independentes após falha, mas reprova o aceite no final. */
+async function passo(nome,fn){etapa=nome;console.log('INICIAR',nome);try{await fn();interacoes.push(nome);console.log('APROVADO',nome);}catch(e){const f={etapa:nome,message:String(e?.message??e)};falhasInteracoes.push(f);console.error('REPROVADO',JSON.stringify(f));}}
 async function aplicar(page,expected){await Promise.all([page.waitForURL(expected,{waitUntil:'networkidle'}),page.getByRole('button',{name:'Aplicar recorte',exact:true}).click()]);}
 try{
- etapa='arquivos necessários à função serverless';
- tracing=[];
+ etapa='arquivos necessários à função serverless';tracing=[];
  for(const n of ['.next/server/app/eficiencia-estatal/mobilidade-transporte/[[...painel]]/page.js.nft.json','.next/server/app/api/eficiencia-mobilidade/exportar/route.js.nft.json']){
   const trace=JSON.parse(readFileSync(n,'utf8')),files=new Set(trace.files.map(p=>resolve(dirname(n),p)));
   for(const f of ['data/eficiencia_mobilidade/gold.json','data/eficiencia_mobilidade/gold.sha256'])assert(files.has(resolve(f)),'Arquivo necessário ausente do tracing: '+f+' em '+n);
@@ -49,8 +49,6 @@ try{
  const page=await browser.newPage({viewport:{width:390,height:1000}});activePage=page;
  await passo('selecionar indicador pelo nome acessível',async()=>{
   const response=await page.goto(base+root+'/transporte',{waitUntil:'networkidle'});assert(response.status()===200,'Transporte indisponível');
-  // getByRole usa o nome acessível; getByLabel(exact) também captura o texto
-  // de opções dentro do label implícito, apesar do nome acessível correto.
   await page.getByRole('combobox',{name:'Indicador',exact:true}).selectOption('pemob.tarifa');
   await aplicar(page,u=>u.searchParams.get('medida')==='pemob.tarifa');
  });
@@ -113,7 +111,7 @@ try{
   assert(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1)),'Entrada geral transborda no celular');
   await page.screenshot({path:output+'/entrada-obee-390.png',fullPage:true});
  });
- if(failures.length)throw new Error(failures.length+' estados responsivos reprovados');
+ if(failures.length||falhasInteracoes.length)throw new Error(failures.length+' estados responsivos e '+falhasInteracoes.length+' grupos de interação reprovados');
  console.log('ACEITE_AUTOMATIZADO',JSON.stringify({estados:results.length,exportacao,interacoes}));
 }catch(e){
  error={etapa,message:String(e?.message??e),url:activePage&&!activePage.isClosed()?activePage.url():null};console.error('FALHA',JSON.stringify(error));
@@ -121,7 +119,7 @@ try{
  process.exitCode=1;
 }finally{
  await browser.close();
- const report={sha:process.env.GITHUB_SHA,results,failures,error,interacoes,exportacao,tracing,limites:['Capturas e verificações automatizadas não equivalem a revisão estética independente.','Sem leitor de tela real, aparelho físico, zoom nativo ou teste com usuários.','HTTP validado no build de teste; não atesta produção.']};
+ const report={sha:process.env.GITHUB_SHA,results,failures,error,interacoes,falhasInteracoes,exportacao,tracing,limites:['Capturas e verificações automatizadas não equivalem a revisão estética independente.','Sem leitor de tela real, aparelho físico, zoom nativo ou teste com usuários.','HTTP validado no build de teste; não atesta produção.']};
  writeFileSync(output+'/resultado.json',JSON.stringify(report,null,2));
  writeFileSync(output+'/estados.json',JSON.stringify({results,failures},null,2));
 }
