@@ -1,0 +1,20 @@
+import {describe,it,expect} from 'vitest';
+import {dadosMobilidade} from '../lib/eficiencia/mobilidade/dados';
+import {mediana,valor,csvCelula,linhasDaMedida,referencia,exportarCSV,PAGINAS_MOBILIDADE,validarBase,hrefRecorte} from '../lib/eficiencia/mobilidade/modelo';
+const {base:g,hash}=dadosMobilidade();
+describe('Mobilidade: contratos compartilhados da interface e exportação',()=>{
+ it('confere hash e snapshot real',()=>{expect(hash).toMatch(/^[a-f0-9]{64}$/);expect(()=>validarBase(g)).not.toThrow();expect(g.observations.length).toBeGreaterThan(1000);});
+ it('mantém nove destinos únicos',()=>{expect(PAGINAS_MOBILIDADE).toHaveLength(9);expect(new Set(PAGINAS_MOBILIDADE.map(p=>p.slug)).size).toBe(9);});
+ it('calcula mediana sem mutar dados',()=>{const a=[4,0,2,10];expect(mediana(a)).toBe(3);expect(a).toEqual([4,0,2,10]);expect(mediana([])).toBeNull();});
+ it('distingue zero de ausência',()=>{expect(valor(0,'%')).toBe('0%');expect(valor(null,'%')).toBe('Não disponível');});
+ it('protege fórmulas no CSV',()=>{expect(csvCelula('=SUM(A1)')).toBe('"\'=SUM(A1)"');expect(csvCelula('a"b')).toBe('"a""b"');expect(csvCelula(0)).toBe('"0"');});
+ it('mantém fonte/período/universo de todas as medidas',()=>{for(const m of g.metrics){expect(m.definition.length).toBeGreaterThan(10);expect(m.universe.length).toBeGreaterThan(10);expect(m.warning.length).toBeGreaterThan(10);expect(g.sources.some(s=>s.arquivo===m.source&&s.estado==='coletado')).toBe(true);}});
+ it('referências da Pemob usam somente valores válidos do recorte',()=>{for(const m of g.metrics.filter(m=>m.reference==='median')){const rows=linhasDaMedida(g,m.id,{uf:'SP'});expect(referencia(g,m,rows).valor).toBe(mediana(rows.flatMap(r=>r.value===null?[]:[r.value])));}});
+ it('separa níveis territoriais',()=>{for(const m of g.metrics){const nivel=m.reference==='brasil'?'uf':'municipio';expect(linhasDaMedida(g,m.id).every(o=>o.local.level===nivel)).toBe(true);}});
+ it('ausência não recebe valor numérico',()=>{for(const o of g.observations){if(o.state==='observado')expect(Number.isFinite(o.value)).toBe(true);else expect(o.value).toBeNull();}});
+ it('razões publicadas reconciliam com seus componentes',()=>{for(const o of g.observations.filter(o=>o.value!==null&&o.numerator!=null&&o.denominator!=null)){expect(o.denominator).toBeGreaterThan(0);expect(o.value).toBeCloseTo(100*o.numerator!/o.denominator!,8);}});
+ it('exporta todas as observações, inclusive ausências',()=>{let n=0;for(const row of exportarCSV(g)){expect(row.endsWith('\r\n')).toBe(true);n++;}expect(n).toBe(g.observations.length+1);});
+ it('busca vazia é explícita',()=>{expect(linhasDaMedida(g,'pemob.tarifa',{busca:'zzzzz-inexistente'})).toHaveLength(0);});
+ it('ordenar não muda a população comparada',()=>{const a=linhasDaMedida(g,'pemob.tarifa'),b=linhasDaMedida(g,'pemob.tarifa',{ordem:'desc'});expect(new Set(a.map(x=>x.territory))).toEqual(new Set(b.map(x=>x.territory)));});
+ it('preserva e escapa recorte compartilhável',()=>{const u=hrefRecorte('comparar',{uf:'SP',busca:'São & João'},{pagina:'2'});expect(u).toContain('uf=SP');expect(u).toContain('pagina=2');expect(u).not.toContain('São & João');});
+});

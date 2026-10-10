@@ -1,0 +1,106 @@
+name: OBEE Mobilidade - oportunidades e evidências
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/obee-mobilidade-oportunidades.yml'
+      - 'pipeline/eficiencia_mobilidade/oportunidades*'
+      - 'pipeline/tests/test_mobilidade_oportunidades.py'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: obee-oportunidades-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  evidencias:
+    if: github.repository == 'genarolins1975/scrutiniums' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'codex/obee-mobilidade-transporte'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Testar ponderação, ausências, horários e grupos
+        run: python3 -m unittest pipeline.tests.test_mobilidade_oportunidades
+      - name: Identificar versão do normalizador
+        id: versao
+        run: |
+          python3 - <<'PY'
+          import hashlib,os,pathlib
+          sha=hashlib.sha256(pathlib.Path('pipeline/eficiencia_mobilidade/oportunidades_normalizar.py').read_bytes()).hexdigest()
+          p=pathlib.Path('data/eficiencia_mobilidade/aop/pipeline.sha256')
+          refresh=not p.exists() or p.read_text().strip()!=sha
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('refresh='+str(refresh).lower()+'\nsha='+sha+'\n')
+          PY
+      - name: Recuperar os 89 originais da coleta já validada
+        if: steps.versao.outputs.refresh == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 38074320067
+          name: mobilidade-oportunidades-bf8d8f1fc4b0e6a0620b293d1b53d2e40523de01
+          path: fonte-aop
+      - name: Reconciliar células e produzir semente reproduzível
+        if: steps.versao.outputs.refresh == 'true'
+        run: |
+          test "$(cat fonte-aop/commit.txt)" = 'bf8d8f1fc4b0e6a0620b293d1b53d2e40523de01'
+          python3 pipeline/eficiencia_mobilidade/oportunidades_normalizar.py --origem fonte-aop/ipea --saida data/eficiencia_mobilidade/aop
+          printf '%s\n' '${{ steps.versao.outputs.sha }}' > data/eficiencia_mobilidade/aop/pipeline.sha256
+      - name: Reproduzir integralmente a partir da semente, sem rede
+        run: |
+          python3 - <<'PY'
+          import base64,gzip,hashlib,json,pathlib
+          from pipeline.eficiencia_mobilidade.oportunidades_normalizar import aggregate
+          p=pathlib.Path('data/eficiencia_mobilidade/aop')
+          raw=(p/'resumo.json').read_bytes(); assert hashlib.sha256(raw).hexdigest()==(p/'resumo.sha256').read_text().strip()
+          summary=json.loads(raw); packed=base64.b64decode((p/'seed.json.gz.b64').read_bytes())
+          assert hashlib.sha256(packed).hexdigest()==summary['seedSha256']
+          result=aggregate(json.loads(gzip.decompress(packed)))
+          assert result=={k:v for k,v in summary.items() if k!='seedSha256'}
+          print('AOP: resumo reproduzido integralmente sem rede; cidades',len(summary['cities']),'recortes',len(summary['records']))
+          PY
+      - name: Gravar snapshot somente na branch autorizada
+        if: steps.versao.outputs.refresh == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python3 - <<'PY'
+          import base64,json,os,pathlib,urllib.request
+          repo='genarolins1975/scrutiniums'; branch='codex/obee-mobilidade-transporte'
+          if os.environ['GITHUB_REPOSITORY']!=repo:raise SystemExit('Repositório não autorizado')
+          def api(path,data=None,method=None):
+              req=urllib.request.Request('https://api.github.com/repos/'+repo+'/'+path,data=None if data is None else json.dumps(data).encode(),method=method,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','Content-Type':'application/json'})
+              with urllib.request.urlopen(req,timeout=90) as r:return json.load(r)
+          head=os.environ['EXPECTED_SHA']
+          if api('git/ref/heads/'+branch)['object']['sha']!=head:raise SystemExit('Branch mudou; nenhuma gravação')
+          root=pathlib.Path('data/eficiencia_mobilidade/aop'); tree=[]
+          for name in ['resumo.json','resumo.sha256','seed.json.gz.b64','pipeline.sha256']:
+              p=root/name;data=p.read_bytes()
+              if len(data)>30000000:raise SystemExit('Arquivo excede limite')
+              b=api('git/blobs',{'content':base64.b64encode(data).decode(),'encoding':'base64'})
+              tree.append({'path':str(p),'mode':'100644','type':'blob','sha':b['sha']})
+          parent=api('git/commits/'+head)
+          t=api('git/trees',{'base_tree':parent['tree']['sha'],'tree':tree})
+          if t['sha']!=parent['tree']['sha']:
+              c=api('git/commits',{'message':'OBEE Mobilidade: snapshot AOP 2019, pesos 2010 e reprodução validada','tree':t['sha'],'parents':[head]})
+              api('git/refs/heads/'+branch,{'sha':c['sha'],'force':False},'PATCH')
+              print('SNAPSHOT_COMMIT',c['sha'])
+          PY
+      - name: Guardar evidências da edição
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aop-normalizado-${{ github.event.pull_request.head.sha }}
+          path: |
+            data/eficiencia_mobilidade/aop/resumo.json
+            data/eficiencia_mobilidade/aop/resumo.sha256
+          retention-days: 7
+          if-no-files-found: warn

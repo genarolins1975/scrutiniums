@@ -1,0 +1,10 @@
+'use client';
+import {useState} from 'react';
+import s from './mobilidade.module.css';
+export function SimuladorCusto(){
+ const[tarifa,setTarifa]=useState(''),[dias,setDias]=useState('22'),[embarques,setEmbarques]=useState('2');
+ const t=Number(tarifa),d=Number(dias),e=Number(embarques);
+ const valido=tarifa.trim()!==''&&dias.trim()!==''&&embarques.trim()!==''&&Number.isFinite(t)&&t>=0&&t<=1000&&Number.isInteger(d)&&d>=0&&d<=31&&Number.isInteger(e)&&e>=0&&e<=20;
+ const format=(x:number)=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(x);
+ return <section className={s.secao} aria-labelledby="simulador-custo"><span className={s.pill}>Cenário · não é gasto observado</span><h2 id="simulador-custo" className="font-serif">Quanto custariam os embarques no mês?</h2><p className={'mt-3 '+s.nota}>Informe uma tarifa e suas hipóteses. O cálculo não usa dados pessoais, não é salvo e não altera os indicadores do painel.</p><div className={s.controles}><label>Tarifa por embarque (R$)<input type="number" min="0" max="1000" step="0.01" inputMode="decimal" value={tarifa} onChange={e=>setTarifa(e.target.value)}/></label><label>Dias no mês<input type="number" min="0" max="31" step="1" inputMode="numeric" value={dias} onChange={e=>setDias(e.target.value)}/></label><label>Embarques pagos por dia<input type="number" min="0" max="20" step="1" inputMode="numeric" value={embarques} onChange={e=>setEmbarques(e.target.value)}/></label></div><div aria-live="polite" aria-atomic="true">{valido?<><p className={s.numero+' font-serif'}>{format(t*d*e)}</p><p className={s.nota}>{format(t)} × {d} dias × {e} embarques pagos. Custo bruto nas hipóteses informadas.</p></>:<p className={s.nota}>Preencha valores válidos para calcular: tarifa de R$ 0 a R$ 1.000, até 31 dias e até 20 embarques por dia.</p>}</div><p className={s.aviso}>O padrão de 22 dias e dois embarques é apenas uma hipótese editável. O cálculo não desconta vale-transporte, integração tarifária, gratuidades ou benefícios; não representa a despesa média de uma família.</p></section>;
+}

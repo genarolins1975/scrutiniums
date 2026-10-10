@@ -1,0 +1,39 @@
+name: OBEE Mobilidade - auditoria de fontes
+on:
+  pull_request:
+    paths:
+      - 'pipeline/eficiencia_mobilidade/**'
+      - 'pipeline/tests/test_eficiencia_mobilidade.py'
+      - 'data/eficiencia_mobilidade/**'
+      - '.github/workflows/obee-mobilidade-auditoria.yml'
+permissions:
+  contents: read
+concurrency:
+  group: obee-mobilidade-fontes-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  auditar-fontes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Testar contratos e proteção de células suprimidas
+        run: python3 -m unittest pipeline.tests.test_eficiencia_mobilidade
+      - name: Reextrair todos os originais sem rede e reconciliar o snapshot
+        run: python3 pipeline/eficiencia_mobilidade/reproduzir.py --saida auditoria-mobilidade
+      - name: Guardar relatório da execução
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: obee-mobilidade-reproducao-${{ github.event.pull_request.head.sha }}
+          path: |
+            auditoria-mobilidade/resultado.json
+            auditoria-mobilidade/reproduzido/resumo.json
+            auditoria-mobilidade/reproduzido/gold.sha256
+          if-no-files-found: warn
+          retention-days: 7
