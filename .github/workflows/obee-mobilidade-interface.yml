@@ -5,7 +5,7 @@ on:
       - 'src/**/mobilidade/**'
       - 'src/app/eficiencia-estatal/mobilidade-transporte/**'
       - 'src/app/api/eficiencia-mobilidade/**'
-      - 'src/tests/obee-mobilidade.test.ts'
+      - 'src/tests/obee-mobilidade*.test.ts'
       - 'scripts/obee/mobilidade-auditoria.mjs'
       - 'data/eficiencia_mobilidade/**'
       - 'pipeline/eficiencia_mobilidade/**'
@@ -30,14 +30,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Diagnóstico nacional do Censo (não promove dados)
-        continue-on-error: true
-        run: python3 pipeline/eficiencia_mobilidade/diagnostico_censo.py
       - run: npm ci
       - run: npm run lint && npx tsc --noEmit
       - run: npm run build
-      - name: Testes dos contratos de Mobilidade
-        run: npx vitest run src/tests/obee-mobilidade.test.ts
+      - name: Testes dos contratos de Mobilidade e do Censo integrado
+        run: npx vitest run src/tests/obee-mobilidade.test.ts src/tests/obee-mobilidade-censo.test.ts
       - name: Instalar navegador apenas no ambiente de teste
         run: |
           npm install --no-save --package-lock=false playwright@1.56.0

@@ -4,6 +4,7 @@ on:
     paths:
       - 'pipeline/eficiencia_mobilidade/**'
       - 'pipeline/tests/test_eficiencia_mobilidade.py'
+      - 'data/eficiencia_mobilidade/**'
       - '.github/workflows/obee-mobilidade-auditoria.yml'
 permissions:
   contents: read
@@ -12,86 +13,27 @@ concurrency:
   cancel-in-progress: true
 jobs:
   auditar-fontes:
-    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'codex/obee-mobilidade-transporte'
-    permissions:
-      contents: write
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Testar contratos antes de coletar
+      - name: Testar contratos e proteção de células suprimidas
         run: python3 -m unittest pipeline.tests.test_eficiencia_mobilidade
-      - name: Identificar versão do extrator
-        id: versao
-        run: |
-          python3 - <<'PY'
-          import hashlib, os, pathlib
-          files=[pathlib.Path('pipeline/eficiencia_mobilidade/'+n) for n in ['coletar.py','normalizar.py','censo.py']]
-          sha=hashlib.sha256(b'\n'.join(p.read_bytes() for p in files)).hexdigest()
-          p=pathlib.Path('data/eficiencia_mobilidade/pipeline.sha256')
-          refresh=not p.exists() or p.read_text().strip()!=sha
-          with open(os.environ['GITHUB_OUTPUT'],'a') as f: f.write('refresh='+str(refresh).lower()+'\nsha='+sha+'\n')
-          print('Coleta necessária:',refresh)
-          PY
-      - name: Coletar originais públicos
-        if: steps.versao.outputs.refresh == 'true'
-        run: python3 pipeline/eficiencia_mobilidade/coletar.py --destino auditoria-mobilidade/originais
-      - name: Integrar Censo e Pemob e verificar reprodução sem rede
-        if: steps.versao.outputs.refresh == 'true'
-        run: |
-          python3 pipeline/eficiencia_mobilidade/censo.py --origem auditoria-mobilidade/originais --saida auditoria-mobilidade/candidato
-          python3 pipeline/eficiencia_mobilidade/censo.py --origem auditoria-mobilidade/originais --saida auditoria-mobilidade/reproduzido --offline
-          cmp auditoria-mobilidade/candidato/gold.json auditoria-mobilidade/reproduzido/gold.json
-          echo 'Reprodução offline: identidade byte a byte'
-      - name: Preservar candidato somente na branch autorizada
-        if: steps.versao.outputs.refresh == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
-          PIPELINE_SHA: ${{ steps.versao.outputs.sha }}
-        run: |
-          python3 - <<'PY'
-          import base64,gzip,hashlib,io,json,os,pathlib,tarfile,urllib.request
-          repo='genarolins1975/scrutiniums'; branch='codex/obee-mobilidade-transporte'
-          if os.environ['GITHUB_REPOSITORY']!=repo: raise SystemExit('Repositório não autorizado')
-          def api(path,data=None,method=None):
-              req=urllib.request.Request('https://api.github.com/repos/'+repo+'/'+path,data=None if data is None else json.dumps(data).encode(),method=method,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','Content-Type':'application/json'})
-              with urllib.request.urlopen(req,timeout=60) as r:return json.load(r)
-          ref=api('git/ref/heads/'+branch)
-          if ref['object']['sha']!=os.environ['EXPECTED_SHA']: raise SystemExit('Branch mudou; candidato não gravado')
-          root=pathlib.Path('auditoria-mobilidade'); candidate=root/'candidato'
-          raw=candidate.joinpath('gold.json').read_bytes()
-          if hashlib.sha256(raw).hexdigest()!=candidate.joinpath('gold.sha256').read_text().strip():raise SystemExit('Hash inválido')
-          bundle=io.BytesIO()
-          with tarfile.open(fileobj=bundle,mode='w') as tar:
-              for p in sorted(root.joinpath('originais').iterdir()):
-                  if not p.is_file() or p.name.endswith('.tmp'):continue
-                  content=p.read_bytes(); info=tarfile.TarInfo(p.name); info.size=len(content); info.mtime=0; info.mode=0o644
-                  tar.addfile(info,io.BytesIO(content))
-          files={n:candidate.joinpath(n).read_bytes() for n in ['gold.json','gold.sha256','resumo.json']}
-          files['originais.tar.gz.b64']=base64.b64encode(gzip.compress(bundle.getvalue(),mtime=0))
-          files['pipeline.sha256']=(os.environ['PIPELINE_SHA']+'\n').encode()
-          tree=[]
-          for name,content in files.items():
-              blob=api('git/blobs',{'content':base64.b64encode(content).decode(),'encoding':'base64'})
-              tree.append({'path':'data/eficiencia_mobilidade/'+name,'mode':'100644','type':'blob','sha':blob['sha']})
-          parent=api('git/commits/'+os.environ['EXPECTED_SHA'])
-          t=api('git/trees',{'base_tree':parent['tree']['sha'],'tree':tree})
-          commit=api('git/commits',{'message':'OBEE Mobilidade: snapshot Censo e Pemob reproduzido sem rede','tree':t['sha'],'parents':[os.environ['EXPECTED_SHA']]})
-          api('git/refs/heads/'+branch,{'sha':commit['sha'],'force':False},'PATCH')
-          print('SNAPSHOT_COMMIT',commit['sha']); print(candidate.joinpath('resumo.json').read_text())
-          PY
-      - name: Guardar evidências da execução
-        if: always() && steps.versao.outputs.refresh == 'true'
+      - name: Reextrair todos os originais sem rede e reconciliar o snapshot
+        run: python3 pipeline/eficiencia_mobilidade/reproduzir.py --saida auditoria-mobilidade
+      - name: Guardar relatório da execução
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: obee-mobilidade-fontes-${{ github.event.pull_request.head.sha }}
-          path: auditoria-mobilidade/
-          if-no-files-found: error
+          name: obee-mobilidade-reproducao-${{ github.event.pull_request.head.sha }}
+          path: |
+            auditoria-mobilidade/resultado.json
+            auditoria-mobilidade/reproduzido/resumo.json
+            auditoria-mobilidade/reproduzido/gold.sha256
+          if-no-files-found: warn
           retention-days: 7
