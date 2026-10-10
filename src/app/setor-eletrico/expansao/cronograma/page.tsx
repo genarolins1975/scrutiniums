@@ -123,7 +123,7 @@ export default function CronogramaPage() {
           siglas={["RALIE", "ANEEL"]}
           rotulo="Expansão"
           titulo={pp.pergunta}
-          lead="Previsões datadas da fiscalização, separadas das datas convencionais em bloco."
+          lead="Compare a entrada em operação prevista pela fiscalização com a data em que cada usina foi liberada para operar. Datas convencionais atribuídas em bloco ficam separadas: elas não têm a mesma precisão de um cronograma individual."
           recorte={`RALIE de ${dataRalie} · liberações até ${dataTexto(g.referencias.liberacoes_ultima_data)} · MW e % da potência`}
           fonte="ANEEL, RALIE e liberações para operação comercial"
           referencia={

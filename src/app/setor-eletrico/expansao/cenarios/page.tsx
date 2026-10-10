@@ -86,7 +86,7 @@ export default function CenariosPage() {
           siglas={["PDE", "SIGA", "RALIE", "SIN", "CDE", "CVU", "MMGD"]}
           rotulo="Expansão"
           titulo={pp.pergunta}
-          lead="O plano decenal oficial é um cenário, em camada separada do realizado e da carteira."
+          lead="Compare a matriz prevista no plano decenal oficial com a capacidade já instalada e os projetos em carteira. O plano descreve um cenário de dez anos, não uma garantia de que as obras serão entregues."
           recorte={`${c.edicao} · data-base ${c.data_base_premissas} · horizonte ${c.horizonte} · GW`}
           fonte="EPE e MME, PDE; ANEEL, SIGA e RALIE"
           referencia={

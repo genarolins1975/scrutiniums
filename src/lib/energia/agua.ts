@@ -54,8 +54,8 @@ export type PainelAgua = "p017" | "p018" | "p019" | "p020";
 export const PAINEIS_AGUA: { id: PainelAgua; rotulo: string; caminho: string; pergunta: string }[] = [
   { id: "p017", rotulo: "Armazenamento", caminho: "", pergunta: "Quanta energia está armazenada?" },
   { id: "p018", rotulo: "Afluência", caminho: "/afluencia", pergunta: "A água que chega está acima do normal?" },
-  { id: "p019", rotulo: "Chuva, temperatura e clima", caminho: "/chuva-e-temperatura", pergunta: "Como o clima se relaciona com a água e com a demanda?" },
-  { id: "p020", rotulo: "Reservatórios e balanço", caminho: "/reservatorios", pergunta: "Por que o armazenamento mudou?" },
+  { id: "p019", rotulo: "Chuva, temperatura e clima", caminho: "/chuva-e-temperatura", pergunta: "Onde a chuva e a temperatura se afastam da média?" },
+  { id: "p020", rotulo: "Reservatórios e balanço", caminho: "/reservatorios", pergunta: "Onde o armazenamento subiu ou caiu?" },
 ];
 
 export function rotaPainel(id: PainelAgua): string {

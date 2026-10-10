@@ -228,9 +228,9 @@ describe("2.2/2.3 — sem alert(), fontes do meta derivadas, uma metodologia", (
   it("a versão dos ativos subiu junto com o app", () => {
     // 0.107.0: seletor de observatório (Crédito, Setor Elétrico) no cabeçalho da SPA
     // 0.108.0: o seletor fecha com Esc, clique fora e perda de foco
-    // 0.109.0: revisão editorial e orientação de leitura do Crédito
-    expect(app).toContain('const APP_VERSION = "0.109.0";');
-    expect(html).toContain("app.min.js?v=0.109.0");
+    // 0.110.0: revisão editorial e orientação de leitura do Crédito
+    expect(app).toContain('const APP_VERSION = "0.110.0";');
+    expect(html).toContain("app.min.js?v=0.110.0");
     expect(html).not.toContain("?v=0.106.0");
     expect(html).not.toContain("?v=0.86.0");
   });

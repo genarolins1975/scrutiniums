@@ -132,7 +132,7 @@ export default function CarteiraPage() {
           siglas={["RALIE", "SIGA", "CEG", "ANEEL", "IBGE"]}
           rotulo="Expansão"
           titulo={pp.pergunta}
-          lead="Etapas do SIGA, carteira do RALIE e desfecho das usinas acompanhadas, em MW."
+          lead="Acompanhe as usinas desde a autorização até a operação, em megawatts (MW) de potência. O cadastro de geração (SIGA) mostra as etapas; a fiscalização da ANEEL (RALIE) permite acompanhar as obras e seu desfecho."
           recorte={`SIGA de ${dataSiga} · RALIE de ${dataTexto(r.data_ralie)} · MW`}
           fonte="ANEEL, SIGA, RALIE e atos de outorga"
           referencia={

@@ -121,7 +121,7 @@ export default function EnergiaEstimadaPage() {
           siglas={["MMGD", "SIN", "MWmed", "ANEEL", "ONS", "CCEE"]}
           rotulo="Transição e ambiente"
           titulo="Energia da geração distribuída no SIN"
-          lead="Estimativa do ONS, em MWmed e em participação na carga global. Não é medição e não se soma à capacidade cadastrada pela ANEEL."
+          lead="A produção estimada pelo ONS e sua participação na carga global. MWmed expressa potência média no período; MW de capacidade instalada é outra medida e não se soma a ela. Não é medição."
           recorte={`${data(o?.inicio_serie)} a ${data(o?.fim_serie)} · SIN · MWmed e % da carga global`}
           fonte="ONS, carga de energia verificada (parcela de MMGD)"
           referencia={

@@ -138,7 +138,7 @@ export default function MercadoPage() {
           siglas={["ACR", "ACL", "CCEE", "PLD", "MRE", "EPE", "GSF", "ESS", "ANEEL", "SIN", "MWmed", "ONS", "SAMP"]}
           rotulo="Mercado de energia"
           titulo={TITULO_PAGINA_MERCADO["livre-regulado"]}
-          lead="Parte do consumo compra energia da distribuidora, no Ambiente de Contratação Regulada (ACR); outra parte contrata no mercado livre, o Ambiente de Contratação Livre (ACL). A Câmara de Comercialização de Energia Elétrica (CCEE) liquida o que difere do medido."
+          lead="Parte do consumo compra energia da distribuidora, no Ambiente de Contratação Regulada (ACR); outra parte contrata no mercado livre, o Ambiente de Contratação Livre (ACL). A Câmara de Comercialização de Energia Elétrica (CCEE) liquida as diferenças entre a energia contratada e a verificada."
           recorte={versao}
           fonte="EPE, Empresa de Pesquisa Energética; CCEE; ANEEL, Agência Nacional de Energia Elétrica (SAMP)"
           referencia={<ReferenciaMercado g={g} />}

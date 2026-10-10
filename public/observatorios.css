@@ -184,3 +184,43 @@ html[data-theme="dark"] .observatorio-credito .obs-hero nav>a span { color:var(-
   .observatorio-credito *, .dominio-energia * { scroll-behavior:auto!important; animation:none!important; transition:none!important; }
 }
 html[data-theme="dark"] .observatorio-credito .obs-hero .obs-primary { color:var(--bg); }
+
+/* Revisão por subpainel: guia de leitura compacto e acesso aos capítulos longos. */
+.observatorio-credito .obs-page-index {
+  margin:0 0 28px; border-block:1px solid var(--border); background:transparent;
+}
+.observatorio-credito .obs-page-index summary {
+  padding:12px 0; min-height:44px; color:var(--accent-ink); cursor:pointer;
+  font-size:14px; font-weight:600;
+}
+.observatorio-credito .obs-page-index nav {
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 28px; padding:0 0 16px;
+}
+.observatorio-credito .obs-page-index a {
+  display:flex; align-items:center; min-height:44px; padding:8px 0;
+  border-top:1px solid var(--border); color:var(--text-2); line-height:1.45;
+  text-decoration:none; overflow-wrap:anywhere;
+}
+.observatorio-credito .obs-page-index a:hover { color:var(--accent-ink); text-decoration:underline; }
+.observatorio-credito h3[id] { scroll-margin-top:100px; }
+@media(min-width:1100px) {
+  .observatorio-credito .guia-leitura {
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:28px;
+  }
+  .observatorio-credito .guia-pergunta,
+  .observatorio-credito .guia-leitura .guia { grid-column:1 / -1; }
+  .observatorio-credito .guia-leitura .guia { margin-top:8px; }
+}
+/* Proventos: dezoito companhias precisam de duas colunas legíveis, não três minigráficos. */
+.observatorio-credito #view-market .ov-3col { grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media(max-width:639px) {
+  .observatorio-credito .obs-page-index nav,
+  .observatorio-credito #view-market .ov-3col { grid-template-columns:minmax(0,1fr); }
+}
+@media print { .observatorio-credito .obs-page-index { display:none; } }
+/* Modalidades do produto: conservar prazo e indexador também no celular. */
+.observatorio-credito #view-product .controls .seg { flex-wrap:wrap; }
+.observatorio-credito #view-product .controls .seg button {
+  white-space:normal; max-width:36ch; min-height:44px; text-align:left; line-height:1.4;
+}
+.observatorio-credito #view-products .card h4 a { color:inherit; text-underline-offset:4px; }
