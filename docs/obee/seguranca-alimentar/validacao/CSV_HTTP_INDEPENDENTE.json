@@ -1,0 +1,159 @@
+{
+  "bases": [
+    {
+      "base": "snapshot.json",
+      "status": 200,
+      "bytes": 1494406,
+      "linhas": 2884,
+      "esperadas": 2884,
+      "divergencias": 0,
+      "bomUnico": true,
+      "cabecalhoUnico": true,
+      "sha256": "fd6b83e7ee626e8fd527528047f0e3379c4854531ceff053cd4d07d6ffb9e1c2",
+      "streaming": true
+    },
+    {
+      "base": "precos.json",
+      "status": 200,
+      "bytes": 188413,
+      "linhas": 360,
+      "esperadas": 360,
+      "divergencias": 0,
+      "bomUnico": true,
+      "cabecalhoUnico": true,
+      "sha256": "e5e268536c3f5e9647e027811302fcb1fee368edd31b4f5f112d5cc5697fd013",
+      "streaming": true
+    },
+    {
+      "base": "escolar.json",
+      "status": 200,
+      "bytes": 18541194,
+      "linhas": 28172,
+      "esperadas": 28172,
+      "divergencias": 0,
+      "bomUnico": true,
+      "cabecalhoUnico": true,
+      "sha256": "c71f72f77ff3600e146446827e608d0b2af0ac3f337d619ac29b0e4b528916f4",
+      "streaming": true
+    },
+    {
+      "base": "sisan.json",
+      "status": 200,
+      "bytes": 44836255,
+      "linhas": 78442,
+      "esperadas": 78442,
+      "divergencias": 0,
+      "bomUnico": true,
+      "cabecalhoUnico": true,
+      "sha256": "77fba0e90d681e5f2a12b0ad646e7dadc28232aa3aae7bce30fcfef318cd899f",
+      "streaming": true
+    },
+    {
+      "base": "paa.json",
+      "status": 200,
+      "bytes": 30018897,
+      "linhas": 33594,
+      "esperadas": 33594,
+      "divergencias": 0,
+      "bomUnico": true,
+      "cabecalhoUnico": true,
+      "sha256": "7b6c50787c21e610c84d0375f6231a08794dfc9c889cc3703fcae49a29545832",
+      "streaming": true
+    },
+    {
+      "base": "saude.json",
+      "status": 200,
+      "bytes": 7172,
+      "linhas": 10,
+      "esperadas": 10,
+      "divergencias": 0,
+      "bomUnico": true,
+      "cabecalhoUnico": true,
+      "sha256": "8e9a08a174ba5d7fe9b3eff6eca7929e59e94f10156d334711ecb23a9c491743",
+      "streaming": true
+    },
+    {
+      "base": "cadinsan.json",
+      "status": 200,
+      "bytes": 19253083,
+      "linhas": 27990,
+      "esperadas": 27990,
+      "divergencias": 0,
+      "bomUnico": true,
+      "cabecalhoUnico": true,
+      "sha256": "a5f82bb142e8212d9975b4623e29cfe31a57af8d6f617e1b644c80d9d2250410",
+      "streaming": true
+    },
+    {
+      "base": "aquisicao.json",
+      "status": 200,
+      "bytes": 21967119,
+      "linhas": 39221,
+      "esperadas": 39221,
+      "divergencias": 0,
+      "bomUnico": true,
+      "cabecalhoUnico": true,
+      "sha256": "93fe0bd44338b9356dbaba0b174f3253fb294893fde13eaa756619b8527c14df",
+      "streaming": true
+    }
+  ],
+  "totalLinhas": 210673,
+  "passou": true,
+  "limite": "Respostas HTTP do build local efetivamente recebidas. CSV serverless público exige novo teste após deploy.",
+  "recortes": [
+    {
+      "filtros": {
+        "base": "escolar.json",
+        "ter": "1",
+        "per": "2026",
+        "grp": "Conjunto das redes"
+      },
+      "status": 200,
+      "linhas": 4,
+      "esperadas": 4,
+      "valor": null,
+      "passou": true,
+      "nota2026": true
+    },
+    {
+      "filtros": {
+        "base": "snapshot.json",
+        "ter": "35",
+        "dim": "sexo-responsavel",
+        "grp": "Homens"
+      },
+      "status": 200,
+      "linhas": 0,
+      "esperadas": 0,
+      "valor": null,
+      "passou": true,
+      "nota2026": null
+    },
+    {
+      "filtros": {
+        "base": "cadinsan.json",
+        "ter": "2304400",
+        "med": "cadinsan-cenario-sem-pbf-familias"
+      },
+      "status": 200,
+      "linhas": 1,
+      "esperadas": 1,
+      "valor": "43139",
+      "passou": true,
+      "nota2026": null
+    },
+    {
+      "filtros": {
+        "base": "precos.json",
+        "med": "ipca-7171-2265",
+        "per": "202609"
+      },
+      "status": 200,
+      "linhas": 1,
+      "esperadas": 1,
+      "valor": "4.21",
+      "passou": true,
+      "nota2026": null
+    }
+  ]
+}
