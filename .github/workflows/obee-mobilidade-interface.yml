@@ -6,6 +6,7 @@ on:
       - 'src/app/eficiencia-estatal/mobilidade-transporte/**'
       - 'src/app/api/eficiencia-mobilidade/**'
       - 'src/tests/obee-mobilidade*.test.ts'
+      - 'src/app/eficiencia-estatal/page.tsx'
       - 'scripts/obee/mobilidade-auditoria.mjs'
       - 'data/eficiencia_mobilidade/**'
       - 'pipeline/eficiencia_mobilidade/**'
@@ -35,10 +36,14 @@ jobs:
       - run: npm run build
       - name: Testes dos contratos de Mobilidade e do Censo integrado
         run: npx vitest run src/tests/obee-mobilidade.test.ts src/tests/obee-mobilidade-censo.test.ts
-      - name: Instalar navegador apenas no ambiente de teste
+      - name: Instalar navegador em diretório de teste isolado
+        # Não re-resolver nem modificar o grafo de dependências da aplicação.
         run: |
-          npm install --no-save --package-lock=false playwright@1.56.0
-          npx playwright install --with-deps chromium
+          BROWSER_DIR="$RUNNER_TEMP/obee-browser"
+          mkdir -p "$BROWSER_DIR"
+          npm install --prefix "$BROWSER_DIR" --no-audit --no-fund playwright@1.56.0
+          ln -s "$BROWSER_DIR/node_modules/playwright" node_modules/playwright
+          "$BROWSER_DIR/node_modules/.bin/playwright" install --with-deps chromium
       - name: Auditar oito páginas, controles e exportações
         run: |
           npm run start -- --port 3100 > /tmp/mobilidade-servidor.log 2>&1 &
