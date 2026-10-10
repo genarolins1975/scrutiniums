@@ -1,0 +1,30 @@
+{
+  "precos": {
+    "observacoes": 360,
+    "brutoValores": 360,
+    "divergencias": 0,
+    "shaCorresponde": true,
+    "menorValor": -1.51
+  },
+  "escolar": {
+    "linhasOriginais": 100682,
+    "observacoes": 28172,
+    "duplicadosEntidadeAno": 0,
+    "ausenciasRepasse": 921,
+    "divergencias": 0,
+    "shaArquivoGzipCorresponde": true,
+    "municipiosNaoConciliados": 18,
+    "chavesObservacoesUnicas": 28172,
+    "valoresNulos": 36
+  },
+  "saude": {
+    "observacoes": 10,
+    "linhasTabelaPdfReextraidas": 5,
+    "divergencias": 0,
+    "shaExtracaoTextoCorresponde": true,
+    "shaPdfOriginal": "17a1f8fd301d2c8b4370b519c5c363f0f4e0cd21bbc5b5fefb08290dfbdbcbc6",
+    "somaQuantidades": 63843170,
+    "limite": "Coberturas transcritas por faixa, sem recalcular denominador ausente ou agregar percentuais. Gráfico19 não integrado."
+  },
+  "estado": "VALORES_RECOMPUTADOS_SEM_DIVERGENCIAS"
+}
