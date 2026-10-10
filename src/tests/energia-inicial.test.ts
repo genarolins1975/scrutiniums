@@ -630,10 +630,10 @@ describe("a página renderizada", () => {
     expect(html).toContain("Busque por pergunta");
     // a abertura diz por que importa (na frase) e o que ela não permite concluir (no mesmo formato do CabecalhoModulo)
     const abertura = texto(html.slice(0, html.indexOf('type="search"')));
-    expect(abertura).toContain("Entenda o que pesa na conta de luz e como o sistema elétrico funciona");
+    expect(abertura).toContain("Acompanhe preços, geração e reservatórios. Compare tarifas, interrupções e perdas por região.");
     expect(html).toContain('data-limite=""');
     expect(abertura).toContain("Não permite concluir");
-    expect(abertura).toContain("não dizem quanto vai custar a fatura de uma casa, nem se vai faltar energia, nem como está a sua distribuidora");
+    expect(abertura).toContain("As medidas nacionais não estimam a fatura de uma casa nem o risco de falta de luz. Para conhecer o serviço local, selecione a sua distribuidora.");
   });
 
   it("os cinco caminhos têm link real: Visão geral, Território, o mapa desta página, Aprenda e Dados e Metodologia", () => {
@@ -687,8 +687,8 @@ describe("a página renderizada", () => {
     expect(html.match(/sm:row-span-9 sm:grid-rows-subgrid/g)).toHaveLength(8);
     // uma linha só de unidades e de leitura das figuras, à vista (não escondida no bloco recolhível)
     const aVista = texto(html.replace(/<details[\s\S]*?<\/details>/g, " "));
-    expect(aVista).toContain("MW é a potência, a capacidade num instante; MWh é a energia;");
-    expect(aVista).toContain("a linha fina é a faixa observada, a caixa é a metade central dos casos, o traço fino é a mediana e o losango é o valor do cartão");
+    expect(aVista).toContain("MW mede potência; MWh mede energia; MWmed é a energia em MWh dividida pelas horas do período.");
+    expect(aVista).toContain("O losango marca o valor destacado. A linha mostra a faixa observada; a caixa reúne a metade central dos casos; o traço dentro dela é a mediana (o ponto que divide os casos em duas metades).");
   });
 
   it("o seletor único diz quantas distribuidoras há em cada página, com a contagem do DEC que fecha com a da Visão geral, e guarda a escolha só no navegador", () => {
