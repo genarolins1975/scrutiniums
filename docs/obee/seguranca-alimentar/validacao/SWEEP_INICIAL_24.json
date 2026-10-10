@@ -1,0 +1,994 @@
+[
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar",
+    "width": 320,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom segurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Quatro perguntas para aprofundar",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 239
+        },
+        {
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 239
+        },
+        {
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "title": "A alimentação na vida das pessoas.",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-inicial-320.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/inseguranca-alimentar",
+    "width": 320,
+    "state": {
+      "badControls": [],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "scrollWidth": 305,
+      "title": "Como os domicílios vivem o acesso à alimentação?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-inicial-320.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/desigualdades",
+    "width": 320,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Sexo da pessoa responsável · Mulheres"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "2023: Segurança alimentar 68,3%; Insegurança leve 20,8%; Insegurança moderada 6,2%; Insegurança grave 4,6%",
+          "width": 239
+        },
+        {
+          "name": "2024: Segurança alimentar 72,1%; Insegurança leve 18,9%; Insegurança moderada 5,4%; Insegurança grave 3,6%",
+          "width": 239
+        },
+        {
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "title": "Em quais grupos o acesso à alimentação é diferente?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-inicial-320.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/precos-poder-de-compra",
+    "width": 320,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseAlimentação no domicílio · variação em 12 meses · Brasil · setembro de 2026 · Total · Total"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "Evolução: 45 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "title": "Como os preços dos alimentos mudam?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-inicial-320.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-escolar",
+    "width": 320,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseRepasses federais informados · Brasil · 2025 · Rede executora · Conjunto das redes"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "Evolução: 18 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 239
+        }
+      ],
+      "scrollWidth": 305,
+      "title": "Que recursos chegam à alimentação escolar?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-inicial-320.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-saude",
+    "width": 320,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseIndivíduos com peso e altura avaliados · Brasil · 2025 · preliminar · Fase da vida · Crianças menores de 5 anos"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [],
+      "scrollWidth": 305,
+      "title": "O que se observa entre as pessoas acompanhadas?",
+      "width": 320
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-inicial-320.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar",
+    "width": 390,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom segurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Quatro perguntas para aprofundar",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 309
+        },
+        {
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 309
+        },
+        {
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "title": "A alimentação na vida das pessoas.",
+      "width": 390
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-inicial-390.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/inseguranca-alimentar",
+    "width": 390,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 309
+        },
+        {
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 309
+        },
+        {
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "title": "Como os domicílios vivem o acesso à alimentação?",
+      "width": 390
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-inicial-390.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/desigualdades",
+    "width": 390,
+    "state": {
+      "badControls": [],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "scrollWidth": 375,
+      "title": "Em quais grupos o acesso à alimentação é diferente?",
+      "width": 390
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-inicial-390.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/precos-poder-de-compra",
+    "width": 390,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseAlimentação no domicílio · variação em 12 meses · Brasil · setembro de 2026 · Total · Total"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "Evolução: 45 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "title": "Como os preços dos alimentos mudam?",
+      "width": 390
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-inicial-390.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-escolar",
+    "width": 390,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseRepasses federais informados · Brasil · 2025 · Rede executora · Conjunto das redes"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "Evolução: 18 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 309
+        }
+      ],
+      "scrollWidth": 375,
+      "title": "Que recursos chegam à alimentação escolar?",
+      "width": 390
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-inicial-390.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-saude",
+    "width": 390,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseIndivíduos com peso e altura avaliados · Brasil · 2025 · preliminar · Fase da vida · Crianças menores de 5 anos"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [],
+      "scrollWidth": 375,
+      "title": "O que se observa entre as pessoas acompanhadas?",
+      "width": 390
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-inicial-390.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar",
+    "width": 768,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom segurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Quatro perguntas para aprofundar",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 671
+        },
+        {
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 671
+        },
+        {
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 671
+        }
+      ],
+      "scrollWidth": 753,
+      "title": "A alimentação na vida das pessoas.",
+      "width": 768
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-inicial-768.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/inseguranca-alimentar",
+    "width": 768,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 671
+        },
+        {
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 671
+        },
+        {
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 671
+        }
+      ],
+      "scrollWidth": 753,
+      "title": "Como os domicílios vivem o acesso à alimentação?",
+      "width": 768
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-inicial-768.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/desigualdades",
+    "width": 768,
+    "state": {
+      "badControls": [],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "scrollWidth": 753,
+      "title": "Em quais grupos o acesso à alimentação é diferente?",
+      "width": 768
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-inicial-768.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/precos-poder-de-compra",
+    "width": 768,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseAlimentação no domicílio · variação em 12 meses · Brasil · setembro de 2026 · Total · Total"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "Evolução: 45 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 671
+        }
+      ],
+      "scrollWidth": 753,
+      "title": "Como os preços dos alimentos mudam?",
+      "width": 768
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-inicial-768.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-escolar",
+    "width": 768,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseRepasses federais informados · Brasil · 2025 · Rede executora · Conjunto das redes"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "Evolução: 18 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 671
+        }
+      ],
+      "scrollWidth": 753,
+      "title": "Que recursos chegam à alimentação escolar?",
+      "width": 768
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-inicial-768.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-saude",
+    "width": 768,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseIndivíduos com peso e altura avaliados · Brasil · 2025 · preliminar · Fase da vida · Crianças menores de 5 anos"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [],
+      "scrollWidth": 753,
+      "title": "O que se observa entre as pessoas acompanhadas?",
+      "width": 768
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-inicial-768.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar",
+    "width": 1440,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom segurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Quatro perguntas para aprofundar",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 1126
+        },
+        {
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 1126
+        },
+        {
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "title": "A alimentação na vida das pessoas.",
+      "width": 1440
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/seguranca-alimentar-inicial-1440.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/inseguranca-alimentar",
+    "width": 1440,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Total dos domicílios · Total"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "2023: Segurança alimentar 72,4%; Insegurança leve 18,2%; Insegurança moderada 5,3%; Insegurança grave 4,1%",
+          "width": 1126
+        },
+        {
+          "name": "2024: Segurança alimentar 75,8%; Insegurança leve 16,4%; Insegurança moderada 4,5%; Insegurança grave 3,2%",
+          "width": 1126
+        },
+        {
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "title": "Como os domicílios vivem o acesso à alimentação?",
+      "width": 1440
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/inseguranca-alimentar-inicial-1440.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/desigualdades",
+    "width": 1440,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseCom insegurança alimentar — proporção · Brasil · 2024 · Sexo da pessoa responsável · Mulheres"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · composição completa"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "As quatro situações de acesso à alimentação",
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "2023: Segurança alimentar 68,3%; Insegurança leve 20,8%; Insegurança moderada 6,2%; Insegurança grave 4,6%",
+          "width": 1126
+        },
+        {
+          "name": "2024: Segurança alimentar 72,1%; Insegurança leve 18,9%; Insegurança moderada 5,4%; Insegurança grave 3,6%",
+          "width": 1126
+        },
+        {
+          "name": "Evolução: 2 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "title": "Em quais grupos o acesso à alimentação é diferente?",
+      "width": 1440
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/desigualdades-inicial-1440.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/precos-poder-de-compra",
+    "width": 1440,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseAlimentação no domicílio · variação em 12 meses · Brasil · setembro de 2026 · Total · Total"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "Evolução: 45 valores disponíveis, unidade %. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "title": "Como os preços dos alimentos mudam?",
+      "width": 1440
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/precos-poder-de-compra-inicial-1440.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-escolar",
+    "width": 1440,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseRepasses federais informados · Brasil · 2025 · Rede executora · Conjunto das redes"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os estados"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Estados, com a mesma referência",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [
+        {
+          "name": "Evolução: 18 valores disponíveis, unidade R$. Tabela equivalente com valores exatos.",
+          "width": 1126
+        }
+      ],
+      "scrollWidth": 1425,
+      "title": "Que recursos chegam à alimentação escolar?",
+      "width": 1440
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-escolar-inicial-1440.jpg"
+  },
+  {
+    "route": "/eficiencia-estatal/seguranca-alimentar/alimentacao-saude",
+    "width": 1440,
+    "state": {
+      "badControls": [],
+      "details": [
+        {
+          "open": false,
+          "text": "Todos os painéis +"
+        },
+        {
+          "open": false,
+          "text": "Recorte da análiseIndivíduos com peso e altura avaliados · Brasil · 2025 · preliminar · Fase da vida · Crianças menores de 5 anos"
+        },
+        {
+          "open": false,
+          "text": "Tabela equivalente · todos os grupos"
+        },
+        {
+          "open": false,
+          "text": "Ficha da medida e do recorte"
+        }
+      ],
+      "headings": [
+        "Como se comparam os grupos?",
+        "Como evoluiu a medida?",
+        "Fonte, interpretação e reprodução"
+      ],
+      "images": [],
+      "scrollWidth": 1425,
+      "title": "O que se observa entre as pessoas acompanhadas?",
+      "width": 1440
+    },
+    "screenshot": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/seguranca-alimentar-validacao/capturas/alimentacao-saude-inicial-1440.jpg"
+  }
+]
