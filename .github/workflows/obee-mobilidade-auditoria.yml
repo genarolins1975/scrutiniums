@@ -1,0 +1,65 @@
+name: OBEE Mobilidade - auditoria de fontes
+
+on:
+  pull_request:
+    paths:
+      - 'pipeline/eficiencia_mobilidade/**'
+      - '.github/workflows/obee-mobilidade-auditoria.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: obee-mobilidade-fontes-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  auditar-fontes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Coletar originais e metadados públicos
+        run: python3 pipeline/eficiencia_mobilidade/coletar.py --destino auditoria-mobilidade
+      - name: Inspecionar definições, sem publicar dados pessoais dos respondentes
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, zipfile
+          from xml.etree import ElementTree as ET
+          p = pathlib.Path('auditoria-mobilidade')
+          ns={'s':'http://schemas.openxmlformats.org/spreadsheetml/2006/main'}
+          for f in sorted(p.glob('ibge_metadados_*.json')):
+              print('METADADOS', f.name, f.read_text())
+          for f in sorted(p.glob('*.xlsx')):
+              with zipfile.ZipFile(f) as z:
+                  shared=[]
+                  if 'xl/sharedStrings.xml' in z.namelist():
+                      shared=[''.join(si.itertext()) for si in ET.fromstring(z.read('xl/sharedStrings.xml'))]
+                  for name in z.namelist():
+                      if name.startswith('xl/worksheets/sheet') and name.endswith('.xml'):
+                          root=ET.fromstring(z.read(name))
+                          rows=root.findall('s:sheetData/s:row',ns)
+                          if not rows: continue
+                          headers=[]
+                          for c in rows[0].findall('s:c',ns):
+                              v=c.find('s:v',ns)
+                              text=v.text if v is not None else ''.join(c.itertext())
+                              if c.attrib.get('t')=='s' and text: text=shared[int(text)]
+                              headers.append({'coluna':c.attrib.get('r'),'cabecalho':text})
+                          print('ESTRUTURA',f.name,name,len(rows),'CABECALHOS',json.dumps(headers,ensure_ascii=False))
+          PY
+      - name: Guardar evidências sem publicar dados ou alterar main
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: obee-mobilidade-fontes-${{ github.event.pull_request.head.sha || github.sha }}
+          path: auditoria-mobilidade/
+          if-no-files-found: error
+          retention-days: 3
