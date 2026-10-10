@@ -31,7 +31,7 @@ describe("descoberta de serviços públicos", () => {
     expect(DIMENSOES.filter(d => !d.href).map(d => d.id)).toEqual(["previdencia", "seguranca", "justica", "habitacao", "saneamento", "energia", "ambiente", "cultura", "esporte", "servicos"]);
   });
   it("a rota dinâmica não aceita subpáginas fictícias", () => {
-    expect(PAGINAS_MOBILIDADE.map(p => p.slug)).toEqual(["", "tempo", "transporte", "acesso", "seguranca", "recursos", "comparar", "metodos"]);
+    expect(PAGINAS_MOBILIDADE.map(p => p.slug)).toEqual(["", "tempo", "transporte", "acesso", "oportunidades", "seguranca", "recursos", "comparar", "metodos"]);
     for (const p of PAGINAS_MOBILIDADE) expect(estadoRotaMobilidade(ROTA_MOBILIDADE + (p.slug ? "/" + p.slug : ""))).toBe("valida");
     for (const p of ["inexistente", "tempo/inexistente", "metodos/inexistente"]) expect(estadoRotaMobilidade(ROTA_MOBILIDADE + "/" + p)).toBe("inexistente");
     expect(estadoRotaMobilidade("/app/admin")).toBe("fora");

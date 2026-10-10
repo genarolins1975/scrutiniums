@@ -16,8 +16,15 @@ const nextConfig = {
         "./public/obs/data/gold/meta.json",
       ],
       "/eficiencia-estatal/mobilidade-transporte/[[...painel]]": [
+        "./data/eficiencia_mobilidade/aop/resumo.json",
+        "./data/eficiencia_mobilidade/aop/resumo.sha256",
         "./data/eficiencia_mobilidade/gold.json",
         "./data/eficiencia_mobilidade/gold.sha256",
+      ],
+      "/api/eficiencia-mobilidade/oportunidades": [
+        "./data/eficiencia_mobilidade/aop/resumo.json",
+        "./data/eficiencia_mobilidade/aop/resumo.sha256",
+        "./data/eficiencia_mobilidade/aop/seed.json.gz.b64",
       ],
       "/api/eficiencia-mobilidade/exportar": [
         "./data/eficiencia_mobilidade/gold.json",

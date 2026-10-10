@@ -4,7 +4,7 @@ import {mediana,valor,csvCelula,linhasDaMedida,referencia,exportarCSV,PAGINAS_MO
 const {base:g,hash}=dadosMobilidade();
 describe('Mobilidade: contratos compartilhados da interface e exportação',()=>{
  it('confere hash e snapshot real',()=>{expect(hash).toMatch(/^[a-f0-9]{64}$/);expect(()=>validarBase(g)).not.toThrow();expect(g.observations.length).toBeGreaterThan(1000);});
- it('mantém oito destinos únicos',()=>{expect(PAGINAS_MOBILIDADE).toHaveLength(8);expect(new Set(PAGINAS_MOBILIDADE.map(p=>p.slug)).size).toBe(8);});
+ it('mantém nove destinos únicos',()=>{expect(PAGINAS_MOBILIDADE).toHaveLength(9);expect(new Set(PAGINAS_MOBILIDADE.map(p=>p.slug)).size).toBe(9);});
  it('calcula mediana sem mutar dados',()=>{const a=[4,0,2,10];expect(mediana(a)).toBe(3);expect(a).toEqual([4,0,2,10]);expect(mediana([])).toBeNull();});
  it('distingue zero de ausência',()=>{expect(valor(0,'%')).toBe('0%');expect(valor(null,'%')).toBe('Não disponível');});
  it('protege fórmulas no CSV',()=>{expect(csvCelula('=SUM(A1)')).toBe('"\'=SUM(A1)"');expect(csvCelula('a"b')).toBe('"a""b"');expect(csvCelula(0)).toBe('"0"');});

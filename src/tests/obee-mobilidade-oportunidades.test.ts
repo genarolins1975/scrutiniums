@@ -1,0 +1,25 @@
+import {describe,it,expect} from 'vitest';
+import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {dadosOportunidades} from '@/lib/eficiencia/mobilidade/oportunidades-dados';
+import {csvAop,recorteAop,validarAop,MODOS_AOP} from '@/lib/eficiencia/mobilidade/oportunidades';
+import {NextRequest} from 'next/server';
+import {GET} from '@/app/api/eficiencia-mobilidade/oportunidades/route';
+import {PAGINAS_MOBILIDADE} from '@/lib/eficiencia/mobilidade/modelo';
+const {base:g}=dadosOportunidades();
+const req=(qs='')=>new NextRequest('https://scrutiniums.com/api/eficiencia-mobilidade/oportunidades'+(qs?'?'+qs:''));
+describe('Ipea/AOP: estimativas históricas, suporte espacial e renda',()=>{
+ it('preserva períodos distintos, catálogo e fontes',()=>{expect(g.referenceYear).toBe(2019);expect(g.populationYear).toBe(2010);expect(g.sources).toHaveLength(89);expect(g.cities).toHaveLength(20);expect(g.metrics).toHaveLength(8);expect(g.records).toHaveLength(784);expect(g.accessRows).toBe(929319);expect(g.populationRows).toBe(390030);expect(()=>validarAop(g)).not.toThrow();});
+ it('não inventa transporte público nas outras onze cidades',()=>{for(const mode of Object.keys(MODOS_AOP)){const r=recorteAop(g,{modo:mode});expect(r.rows).toHaveLength(20);expect(r.rows.filter(x=>x.record)).toHaveLength(mode==='public_transport'?9:20);}});
+ it('não confunde zero com ausência de cobertura',()=>{const r=recorteAop(g,{modo:'public_transport',cidade:'1501402'});expect(r.city?.id).toBe('1501402');expect(r.rows[0].record).toBeNull();expect(g.records.some(r=>r.groups.some(x=>x.zeroPopulation>0))).toBe(true);});
+ it('filtra oportunidade, cidade e horário sem alterar a população',()=>{const r=recorteAop(g,{modo:'public_transport',cidade:'2611606',pico:'1',indicador:'CMATT60'});expect(r.rows).toHaveLength(1);expect(r.rows[0].record?.groups[0].mean).toBeCloseTo(145515.61454361054,7);expect(r.rows[0].record?.groups[0].coveredPopulation).toBe(1528300);expect(r.rows[0].record?.groups[0].coverage).toBe(100);});
+ it('todos os grupos reconciliam com o total e média nunca é soma de destinos',()=>{for(const r of g.records){const a=r.groups.find(x=>x.group==='all')!,rest=r.groups.filter(x=>x.group!=='all');expect(rest.reduce((s,x)=>s+x.totalPopulation,0)).toBe(a.totalPopulation);expect(rest.reduce((s,x)=>s+x.coveredPopulation,0)).toBe(a.coveredPopulation);for(const x of r.groups){if(x.coveredPopulation){expect(x.mean).toBeCloseTo(x.numerator!/x.coveredPopulation,8);expect(x.zeroShare).toBeCloseTo(100*x.zeroPopulation/x.coveredPopulation,8);}else expect(x.mean).toBeNull();}}});
+ it('modos ativos não recebem horário de pico fictício',()=>{expect(recorteAop(g,{modo:'walk',pico:'0'}).peak).toBe('na');expect(recorteAop(g,{modo:'car',pico:'0'}).peak).toBe('0');});
+ it('parâmetros desconhecidos têm aviso e não acessam propriedades herdadas',()=>{expect(recorteAop(g,{modo:'__proto__'}).mode).toBe('public_transport');expect(recorteAop(g,{cidade:'9999999'}).avisos).toHaveLength(1);expect(recorteAop(g,{indicador:'inventado'}).avisos).toHaveLength(1);});
+ it('CSV integral contém todos os grupos e recortes, inclusive ausência',()=>{const lines=[...csvAop(g)];expect(lines).toHaveLength(9409);expect(lines[0]).toContain('ano_populacao');expect(lines.some(x=>x.includes('Sem decil válido'))).toBe(true);});
+ it('JSON e semente têm integridade identificável',()=>{const bytes=Buffer.from(readFileSync('data/eficiencia_mobilidade/aop/seed.json.gz.b64','utf8'),'base64');expect(createHash('sha256').update(bytes).digest('hex')).toBe(g.seedSha256);});
+ it('a nova página participa da navegação finita',()=>{expect(PAGINAS_MOBILIDADE.map(x=>x.slug)).toContain('oportunidades');});
+ it('exportação de recorte mantém os doze grupos e não ignora filtros',async()=>{const r=await GET(req('escopo=recorte&modo=public_transport&cidade=2611606&pico=1&indicador=CMATT60'));expect(r.status).toBe(200);const text=await r.text();expect(text.split('\r\n').filter(Boolean)).toHaveLength(13);expect(text).toContain('145515.61454361054');expect(r.headers.has('content-length')).toBe(false);});
+ it('rota rejeita filtros inválidos e formatos que fingiriam recorte',async()=>{for(const q of ['modo=car','escopo=outro','escopo=recorte&cidade=9999999','formato=json&cidade=2611606','formato=html'])expect((await GET(req(q))).status).toBe(400);});
+ it('uma cidade sem modo gera CSV sem linhas de cálculo, não zeros',async()=>{const r=await GET(req('escopo=recorte&modo=public_transport&cidade=1501402'));expect((await r.text()).split('\r\n').filter(Boolean)).toHaveLength(1);});
+});
