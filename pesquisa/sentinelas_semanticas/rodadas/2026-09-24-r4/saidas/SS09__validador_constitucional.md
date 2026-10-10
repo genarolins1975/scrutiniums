@@ -1,0 +1,6 @@
+C1: ok
+C2: ok
+C3: falha grave: "Em doze meses, em termos nominais, a carteira das pessoas físicas teve alta de 10,8%, e a das pessoas jurídicas, alta de 7,4%." O texto apresenta só altas para o saldo e deixa de fora a única variação negativa do saldo no pacote, a das pessoas jurídicas no mês (saldo_pj.var_mes_pct, −0,7%). A própria tabela "Fontes dos números" lista as variações no mês de PF (+0,8%) e PJ (−0,7%), mas elas não aparecem na prosa. O leitor sai achando que a carteira PJ está em expansão no dado mais recente, quando ela recuou em jul/2026. Classifico como grave, e não como observação, porque a omissão inverte a direção do fato mais recente do segmento citado e deixa a tabela de fontes incoerente com o texto. Pelo mesmo motivo, em "No mês, nas pessoas físicas a taxa teve queda de 1,97 p.p.; nas pessoas jurídicas, alta de 0,24 p.p." os segmentos aparecem só no horizonte mensal, enquanto o total traz os dois horizontes; em doze meses o sinal se inverte nos dois segmentos (PF +1,00 p.p.; PJ −0,62 p.p.). Resolveria incluir a variação no mês do saldo PF e PJ e as diferenças em doze meses da taxa por segmento, ou alinhar a tabela de fontes ao texto e usar o mesmo conjunto de horizontes para total e segmentos.
+C4: ok
+C5: ok
+DECISÃO: devolver
