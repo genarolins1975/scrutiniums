@@ -4,9 +4,7 @@ const nextConfig = {
     // Drivers de banco fora do bundle do servidor: o PGlite carrega assets
     // (WASM) em tempo de execução e o pg usa require dinâmico.
     serverComponentsExternalPackages: ["@electric-sql/pglite", "pg"],
-    // O route handler do Observatório lê estes arquivos em runtime para
-    // injetar metadados por rota; o tracing precisa incluí-los no bundle
-    // da função (em serverless o public/ não está no filesystem por padrão).
+    // Arquivos usados pelos route handlers em runtime devem integrar o bundle.
     outputFileTracingIncludes: {
       "/observatorio/[[...rota]]": [
         "./public/obs/index.html",
@@ -17,67 +15,38 @@ const nextConfig = {
         "./public/obs/data/gold/alertas_central.json",
         "./public/obs/data/gold/meta.json",
       ],
+      "/eficiencia-estatal/mobilidade-transporte/[[...painel]]": [
+        "./data/eficiencia_mobilidade/gold.json",
+        "./data/eficiencia_mobilidade/gold.sha256",
+      ],
+      "/api/eficiencia-mobilidade/exportar": [
+        "./data/eficiencia_mobilidade/gold.json",
+        "./data/eficiencia_mobilidade/gold.sha256",
+      ],
     },
   },
-  // Cache dos estáticos do Observatório. A Vercel serve public/ com
-  // max-age=0, must-revalidate: cada navegação revalidava os golds municipais
-  // (1,2 MB comprimidos) e o bundle a cada página (medido em 06/09/2026,
-  // avaliação §13). Os golds mudam uma vez por dia e são pedidos com ?v=
-  // da versão da SPA; uma hora de frescor com revalidação em segundo plano
-  // basta. Bundle e CSS levam a versão na URL: podem ser imutáveis.
+  // Cache dos estáticos do Observatório. Bundle e CSS levam versão na URL.
   async headers() {
     return [
-      {
-        source: "/energia/gold/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" }],
-      },
-      {
-        source: "/energia/series/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" }],
-      },
-      {
-        source: "/eficiencia/:dir(gold|series)/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" }],
-      },
-      {
-        source: "/obs/data/gold/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" }],
-      },
-      {
-        source: "/obs/:arquivo(app.min.js|app-municipal.min.js|app-emergentes.min.js|styles.css)",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
+      {source: "/energia/gold/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
+      {source: "/energia/series/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
+      {source: "/eficiencia/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
+      {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
+      {source: "/obs/:arquivo(app.min.js|app-municipal.min.js|app-emergentes.min.js|styles.css)", headers: [{key: "Cache-Control", value: "public, max-age=31536000, immutable"}]},
     ];
   },
-  // As rotas sob /observatorio são servidas pelo route handler
-  // src/app/observatorio/[[...rota]]/route.ts, que entrega a SPA de
-  // public/obs com <head> específico por aba (title/OG/canonical/JSON-LD).
+  // Rotas legadas e atalhos; destinos e condições preservados.
   async redirects() {
-    // Painéis sintéticos aposentados: as séries eram geradas por função
-    // (dados de exemplo) e foram substituídas pelos painéis reais do
-    // Observatório. As rotas antigas apontam para o equivalente real.
     return [
-      // Visitante sem sessão: /app segue levando ao Observatório público, como
-      // antes (links legados). Com sessão, abre a escolha entre os observatórios.
-      {
-        source: "/app",
-        missing: [{ type: "cookie", key: "scrutiniums_session" }],
-        destination: "/observatorio",
-        permanent: false,
-      },
-      { source: "/app", destination: "/app/observatorios", permanent: false },
-      // Atalho simétrico ao /setor-eletrico; a SPA do Crédito segue em /observatorio.
-      { source: "/credito", destination: "/observatorio", permanent: false },
-      { source: "/app/atividade", destination: "/observatorio/credit", permanent: true },
-      { source: "/app/risco", destination: "/observatorio/sectors", permanent: true },
-      { source: "/app/regulatorio", destination: "/observatorio/alerts", permanent: true },
-      // Metodologia e fontes têm UMA versão, a viva do Observatório (gerada do
-      // gold): as páginas institucionais genéricas descreviam outra plataforma
-      // e competiam com a verdadeira na busca (2.3 da avaliação de 05/09).
-      { source: "/metodologia", destination: "/observatorio/methodology", permanent: true },
-      { source: "/fontes", destination: "/observatorio/methodology", permanent: true },
+      {source: "/app", missing: [{type: "cookie", key: "scrutiniums_session"}], destination: "/observatorio", permanent: false},
+      {source: "/app", destination: "/app/observatorios", permanent: false},
+      {source: "/credito", destination: "/observatorio", permanent: false},
+      {source: "/app/atividade", destination: "/observatorio/credit", permanent: true},
+      {source: "/app/risco", destination: "/observatorio/sectors", permanent: true},
+      {source: "/app/regulatorio", destination: "/observatorio/alerts", permanent: true},
+      {source: "/metodologia", destination: "/observatorio/methodology", permanent: true},
+      {source: "/fontes", destination: "/observatorio/methodology", permanent: true},
     ];
   },
 };
-
 export default nextConfig;
