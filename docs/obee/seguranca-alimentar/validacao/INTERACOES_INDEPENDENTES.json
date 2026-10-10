@@ -1,0 +1,50 @@
+{
+  "keyboard": {
+    "detailsEnter": true,
+    "focusOutline": "3px solid rgb(0,105,127)",
+    "mapEnter": {
+      "territory": "São Paulo",
+      "url": "?ter=35",
+      "value": 17335
+    },
+    "table320": {
+      "scrollLeftAfterArrowRight": 40,
+      "clientWidth": 256,
+      "scrollWidth": 441,
+      "globalOverflow": false
+    }
+  },
+  "cadinsanMunicipal": {
+    "search": "fortaleza ce",
+    "options": [
+      "Brasil · seleção atual",
+      "Fortaleza (CE)"
+    ],
+    "selected": "2304400",
+    "withPbf": 44890,
+    "withoutPbf": 43139,
+    "reloadPersistent": true
+  },
+  "pnae2026": {
+    "kpi": 1633006530.11,
+    "comparison": "Não comparável",
+    "openPoint": true,
+    "noteVisible": true,
+    "tablePartialLabel": true,
+    "clearKeyboardResets2025": true
+  },
+  "outsideCoverage": {
+    "territory": "35",
+    "dimension": "sexo-responsavel",
+    "group": "Homens",
+    "value": null,
+    "note": "Recorte fora da cobertura",
+    "noBrasilFallback": true,
+    "sourceCaptionPending": null,
+    "sourceCaptionFinal": "9553 conferida no build3032"
+  },
+  "limits": [
+    "Leitor de tela, zoom nativo200% e auditoriaaxe integral não executados. ContrasteDOM e controlesnomeados conferidos, sem equivaler a conformidade integral."
+  ],
+  "entryCaptureFinal": "09/10/2026 emBrasília"
+}
