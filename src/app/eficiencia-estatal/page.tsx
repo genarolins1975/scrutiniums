@@ -9,6 +9,7 @@ import { metaEducacao } from "@/lib/eficiencia/dados";
 import { MapaServicos } from "@/components/eficiencia/MapaServicos";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { dataBr } from "@/lib/eficiencia/formato";
+import { diaCapturaAlimentar } from "@/lib/eficiencia/seguranca-alimentar/apresentacao";
 
 export const dynamic = "force-static";
 
@@ -80,7 +81,7 @@ export default function PaginaEntradaEficiencia() {
       cobertura: "Brasil e estados nas estimativas da EBIA; municípios nos registros administrativos e nas declarações de estrutura; preços nacionais; alimentação escolar por entidade executora, com cobertura declarada.",
       fontes: "IBGE (PNAD Contínua, MUNIC e IPCA), MDS (CadINSAN e PAA), FNDE (PNAE) e Ministério da Saúde (SISVAN).",
       entradas: [{ href: "/eficiencia-estatal/seguranca-alimentar", rotulo: "Panorama" }, { href: "/eficiencia-estatal/seguranca-alimentar/metodos", rotulo: "Dados e métodos" }],
-      atualizacao: dataBr(alimentar.capturadoEm.slice(0,10)),
+      atualizacao: diaCapturaAlimentar(alimentar.capturadoEm),
     },
   ];
   return (
