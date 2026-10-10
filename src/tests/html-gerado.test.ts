@@ -23,7 +23,9 @@ const APP = join(raiz, ".next", "server", "app");
 const AVISO_SEM_BUILD = "sem build local (.next/server/app); rode `npm run build` e defina EXIGIR_BUILD_HTML=1 para a verificação obrigatória";
 
 /** Rotas que precisam existir no build quando a verificação é obrigatória. */
+const ROTAS_ASSISTENCIA = ["", "necessidades", "acesso", "acompanhamento", "cuidado", "recursos", "dados", "metodos"].map(s => `eficiencia-estatal/assistencia-social${s ? "/"+s : ""}.html`);
 const ROTAS_OBRIGATORIAS = [
+  ...ROTAS_ASSISTENCIA,
   "setor-eletrico.html",
   "setor-eletrico/agua-e-clima/chuva-e-temperatura.html",
   "eficiencia-estatal/educacao-municipal-capitais.html",
@@ -83,6 +85,14 @@ describe(`HTML gerado pelo build (${EXIGIR ? "verificação obrigatória" : "mod
     else if (cobertura.setor.length === 0) ctx.skip("build sem páginas do setor elétrico");
     const { analises, violacoes } = analisa(cobertura.setor);
     console.info(`HTML verificado (setor elétrico): ${cobertura.setor.length} páginas; literais: ${resumoLiterais(analises)}`);
+    expect(violacoes).toEqual([]);
+  }, LIMITE_ANALISE_MS);
+
+  it("Assistência: oito páginas de produção respeitam o contrato de HTML", (ctx) => {
+    if (!temBuild && !EXIGIR) ctx.skip(AVISO_SEM_BUILD);
+    const arquivos = ROTAS_ASSISTENCIA.map(r => join(APP,r));
+    expect(arquivos.every(existsSync)).toBe(true);
+    const { violacoes } = analisa(arquivos);
     expect(violacoes).toEqual([]);
   }, LIMITE_ANALISE_MS);
 

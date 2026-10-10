@@ -8,6 +8,7 @@ import { goldSaude } from "@/lib/eficiencia/saude/dados";
 import { metaEducacao } from "@/lib/eficiencia/dados";
 import { MapaServicos } from "@/components/eficiencia/MapaServicos";
 import { EscoresServicos } from "@/components/eficiencia/EscoresServicos";
+import { dadosAssistencia } from "@/lib/eficiencia/assistencia/dados";
 import { dadosAlimentares } from "@/lib/eficiencia/alimentar/dados";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { dataBr } from "@/lib/eficiencia/formato";
@@ -16,7 +17,7 @@ export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: "Observatório Brasileiro de Eficiência Estatal",
-  description: "Indicadores públicos sobre recursos, atendimento e resultados do Estado brasileiro, por tema, com definição, fonte, período e limitações em cada número. Mapa dos serviços públicos ao cidadão. Educação, Saúde, Trabalho e renda e Segurança alimentar, com dados e critérios de avaliação dos serviços.",
+  description: "Indicadores públicos sobre recursos, atendimento e resultados do Estado brasileiro, por tema, com definição, fonte, período e limitações em cada número. Mapa dos serviços públicos ao cidadão. Educação, Saúde, Trabalho e renda, Segurança alimentar e Assistência social e cuidado, com dados e critérios de avaliação dos serviços.",
   alternates: { canonical: "/eficiencia-estatal" },
 };
 
@@ -24,6 +25,7 @@ type Tema = { id: string; titulo: string; pergunta: string; escopo: string; naoI
 
 export default function PaginaEntradaEficiencia() {
   const alimentar = dadosAlimentares();
+  const assistencia = dadosAssistencia();
   const edu = metaEducacao();
   const g = goldSaude();
   const trabalho = JSON.parse(readFileSync(join(process.cwd(), "public/eficiencia/trabalho-renda/snapshot.json"), "utf8")) as { capturadoEm: string };
@@ -84,6 +86,7 @@ export default function PaginaEntradaEficiencia() {
       entradas: [{ href: "/eficiencia-estatal/seguranca-alimentar", rotulo: "Panorama" }, { href: "/eficiencia-estatal/seguranca-alimentar/dados", rotulo: "Explorar dados" }, { href: "/eficiencia-estatal/seguranca-alimentar/metodos", rotulo: "Dados e métodos" }],
       atualizacao: dataBr(alimentar.manifest.captured_at.slice(0,10)),
     },
+    {id:"assistencia",titulo:"Assistência social e cuidado",pergunta:"Quando uma pessoa precisa de apoio, a rede consegue acolher e acompanhar?",escopo:"Rede de CRAS, CREAS e centros-dia e similares; oferta declarada, acessibilidade, cuidado domiciliar e quatro medidas do RMA CRAS.",naoInclui:"Demanda elegível, usuários únicos, resolução, espera geral, despesa reconciliada ou escore numérico validado.",cobertura:`Censo SUAS ${assistencia.year}: ${Object.values(assistencia.manifest.counts).reduce((a,b)=>a+b,0).toLocaleString("pt-BR")} unidades, incluindo redes regionais, estaduais e organizações da sociedade civil; ${assistencia.manifest.rma_rows.toLocaleString("pt-BR")} formulários RMA CRAS unidade-mês de ${assistencia.year}.`,fontes:"MDS (Censo SUAS e RMA CRAS 2025).",entradas:[{href:"/eficiencia-estatal/assistencia-social",rotulo:"Panorama"},{href:"/eficiencia-estatal/assistencia-social/dados",rotulo:"Explorar dados"},{href:"/eficiencia-estatal/assistencia-social/metodos",rotulo:"Dados e métodos"}],atualizacao:dataBr(assistencia.manifest.captured_at)},
   ];
   return (
     <div>
@@ -111,7 +114,7 @@ export default function PaginaEntradaEficiencia() {
         <dl className="grid grid-cols-2 border-b border-linha bg-superficie md:grid-cols-4">
           {[
             [String(DIMENSOES.length), "dimensões no mapa", "Visão geral dos serviços ao cidadão"],
-            [String(temas.length), "temas publicados", "Educação, Saúde, Trabalho e renda e Segurança alimentar"],
+            [String(temas.length), "temas publicados", "Educação, Saúde, Trabalho e renda, Segurança alimentar e Assistência social e cuidado"],
             ["Brasil", "recortes territoriais", "Estados e municípios conforme a fonte"],
             ["3", "componentes do escore", "Acesso, resposta e qualidade"],
           ].map(([n, titulo, texto]) => <div key={titulo} className="border-linha px-5 py-5 even:border-l md:border-l md:first:border-l-0"><dd className="font-serif text-3xl text-obee-tinta">{n}</dd><dt className="mt-1 text-sm font-semibold">{titulo}</dt><dd className="mt-1 text-xs leading-relaxed text-carvao-muted">{texto}</dd></div>)}
@@ -126,13 +129,13 @@ export default function PaginaEntradaEficiencia() {
           </div>
           <div className="mt-5 grid gap-4 lg:grid-cols-2">
             {temas.map((t, i) => <article key={t.id} className="border border-linha border-t-4 border-t-obee bg-superficie p-5 sm:p-6">
-              <div className="flex flex-wrap items-center justify-between gap-2"><span className="font-label text-xs uppercase tracking-label text-obee-dark">Dados publicados</span><span className="text-xs text-carvao-muted">{["trabalho","alimentacao"].includes(t.id) ? "Recortes próprios" : "26 capitais"} · captura {t.atualizacao ?? "não informada"}</span></div>
+              <div className="flex flex-wrap items-center justify-between gap-2"><span className="font-label text-xs uppercase tracking-label text-obee-dark">Dados publicados</span><span className="text-xs text-carvao-muted">{["trabalho","alimentacao","assistencia"].includes(t.id) ? "Recortes próprios" : "26 capitais"} · captura {t.atualizacao ?? "não informada"}</span></div>
               <h3 className="mt-4 font-serif text-2xl">{t.titulo}</h3>
               <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{i === 0 ? "Da aplicação de recursos às condições de ensino e à aprendizagem na rede municipal." : i === 1 ? "Dos recursos municipais à rede de atenção primária e às internações dos moradores." : i === 2 ? "Oportunidades, condições de trabalho e renda das pessoas, com recortes territoriais próprios." : "Situação alimentar dos domicílios, ações declaradas e estrutura pública municipal."}</p>
               <dl className="mt-5 grid grid-cols-3 gap-3 border-y border-linha py-4 text-xs leading-relaxed">
                 {(i === 0 ? [["Recursos", "Despesa e gasto por habitante"], ["Acesso", "Matrículas e alunos por turma"], ["Resultados", "Aprovação, Ideb e Saeb"]] : i === 2 ? [["Recursos", "Função Trabalho nas capitais"], ["Acesso", "Participação e ocupação"], ["Resultados", "Rendimento e emprego formal"]] : i === 3 ? [["Necessidades", "EBIA no Brasil e nas regiões"], ["Atuação", "Ações e equipamentos declarados"], ["Avaliação", "Critérios e lacunas do serviço"]] : [["Recursos", "Despesa e aplicação em saúde"], ["Acesso", "Unidades, equipes e cobertura"], ["Resultados", "Internações sensíveis à atenção primária"]]).map(([dt, dd]) => <div key={dt}><dt className="font-semibold text-obee-dark">{dt}</dt><dd className="mt-1 text-carvao-muted">{dd}</dd></div>)}
               </dl>
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><Link href={t.entradas[0].href} className="inline-flex min-h-[44px] items-center gap-6 bg-obee-tinta px-4 text-sm font-semibold text-superficie">Abrir painel <span aria-hidden="true">↗</span></Link><Link href={(t.entradas.find(e => e.rotulo === "Comparar capitais") ?? t.entradas[1]).href} className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline underline-offset-4">{["trabalho","alimentacao"].includes(t.id) ? "Dados e métodos" : "Comparar capitais"}</Link></div>
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><Link href={t.entradas[0].href} className="inline-flex min-h-[44px] items-center gap-6 bg-obee-tinta px-4 text-sm font-semibold text-superficie">Abrir painel <span aria-hidden="true">↗</span></Link><Link href={(t.entradas.find(e => e.rotulo === "Comparar capitais") ?? t.entradas[1]).href} className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline underline-offset-4">{["trabalho","alimentacao","assistencia"].includes(t.id) ? "Dados e métodos" : "Comparar capitais"}</Link></div>
             </article>)}
           </div>
         </section>

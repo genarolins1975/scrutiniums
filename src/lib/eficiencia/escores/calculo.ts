@@ -1,5 +1,6 @@
 export type Resultado = { valor: number | null; estado: "CALCULADO_EXPERIMENTAL" | "COBERTURA_INSUFICIENTE" | "REFERENCIA_PENDENTE" | "RECORTE_INCOMPATIVEL"; territorio?: string; periodo?: string; edicao?: string };
-export const CESTA = ["education", "health", "work", "food"] as const;
+export const CESTA_V03 = ["education", "health", "work", "food"] as const;
+export const CESTA = [...CESTA_V03, "assistance"] as const;
 function geometrica(valores: (number | null)[]): Resultado {
   if (valores.some(v => v === null)) return { valor: null, estado: "COBERTURA_INSUFICIENTE" };
   if (valores.some(v => !Number.isFinite(v) || v! < 0 || v! > 100)) throw new Error("Valor fora da escala");
