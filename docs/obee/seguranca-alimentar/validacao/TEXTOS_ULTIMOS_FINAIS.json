@@ -1,0 +1,17 @@
+{
+  "source": {
+    "notes": [
+      "Recorte fora da cobertura. Esta medida, dimensão e grupo não têm observação no território escolhido. Nenhum valor de outro território é colocado no lugar.",
+      "Universo: Domicílios particulares permanentes na classe EBIA e recorte selecionados. Limite: Proporção calculada: contagem da classe / Total do mesmo recorte. Sem CV ou intervalo inferido.  "
+    ],
+    "text": "SEGURANÇA ALIMENTAR · INSEGURANÇA ALIMENTAR\n\nComo os domicílios vivem o acesso à alimentação?\n\nSegurança alimentar e insegurança leve, moderada e grave são categorias da mesma escala. Compare períodos e estados com o mesmo universo.\n\nCom insegurança alimentar — proporção · São Paulo\nNão disponível\n2024 · Sexo da pessoa responsável · Homens · %\nIBGE · PNAD Contínua · Segurança alimentar · tabela 9553\nDiferença para a referência anterior disponível\nNão disponível\nSem referência anterior · mesmo universo e recorte\nTerritórios disponíveis no recorte\n1\nCobertura própria da fonte, sem estimativa municipal implícita\nPanorama\nInsegurança alimentar\nDesigualdades\nTerritórios\nComparar\nTodos os painéis +\nRecorte da análise\nCom insegurança alimentar — p",
+    "url": "http://127.0.0.1:3032/eficiencia-estatal/seguranca-alimentar/inseguranca-alimentar?ter=35&dim=sexo-responsavel&grp=Homens",
+    "value": "Não disponível"
+  },
+  "entry": "DADOS PUBLICADOS\nRecortes próprios · captura 09/10/2026\nSegurança alimentar e nutricional\n\nAcesso aos alimentos, políticas públicas e acompanhamento nutricional, com universos distintos.\n\nRecursos\nRepasses federais do PNAE\nAcesso\nEquipamentos e acompanhamento\nResultados\nInsegurança alimentar nos domicílios\nAbrir painel\n↗\nDados e métodos",
+  "proof": {
+    "outsideAbsent": true,
+    "source9553": true,
+    "dateBrasilia": true
+  }
+}
