@@ -1,3 +1,4 @@
+import { PAGINAS_ALIMENTARES } from "@/lib/eficiencia/seguranca-alimentar/paginas";
 import type { MetadataRoute } from "next";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -88,6 +89,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/eficiencia-estatal/educacao-municipal-capitais", 0.6, "monthly"),
     ...["gastos", "atendimento", "resultados", "comparar", "metodos"].map((v) => rota(`/eficiencia-estatal/educacao-municipal-capitais/${v}`, 0.5, "monthly")),
     ...PAINEIS_TRABALHO_RENDA.map(p => rota(`/eficiencia-estatal/trabalho-renda${p.slug ? `/${p.slug}` : ""}`, 0.6, "monthly")),
+    ...PAGINAS_ALIMENTARES.map(p => rota(`/eficiencia-estatal/seguranca-alimentar${p.slug ? `/${p.slug}` : ""}`, 0.6, "monthly")),
     rota("/eficiencia-estatal/saude-capitais", 0.6, "monthly"),
     ...["gastos", "rede-e-atencao-primaria", "atendimento-e-resultados", "comparar", "metodos"].map((v) => rota(`/eficiencia-estatal/saude-capitais/${v}`, 0.5, "monthly")),
     rota("/setor-eletrico/pld/modelos", 0.6, "weekly"),
