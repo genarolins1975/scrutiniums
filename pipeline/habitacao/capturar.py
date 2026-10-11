@@ -53,7 +53,7 @@ def publish(d,out=OUT):
  (out/'fontes.json').write_text(json.dumps(d['fontes'],ensure_ascii=False,sort_keys=True,indent=2)+'\n')
  tables={'deficit':['deficit','relativoPublicado','domicilios','urbano','rural'],'componentes':['precaria','improvisados','rusticos','coabitacao','comodos','conviventes','aluguel'],'renda':['renda1','renda2','renda3','rendaMais3','rendaTotal'],'inadequacao':list(ABAS)+['fundiaria']}
  for name,cols in tables.items():
-  fields=['id','nome','tipo','regiao','ano']+cols+['origem'];s=io.StringIO();w=csv.DictWriter(s,fieldnames=fields,delimiter=';');w.writeheader()
+  fields=['id','nome','tipo','regiao','ano']+cols+['origem'];s=io.StringIO();w=csv.DictWriter(s,fieldnames=fields,delimiter=';',lineterminator='\n');w.writeheader()
   for r in d['territorios']:w.writerow({k:json.dumps(r[k],ensure_ascii=False,sort_keys=True) if k=='origem' else r[k] for k in fields})
   (out/(name+'.csv')).write_text('\ufeff'+s.getvalue(),encoding='utf-8')
  print('Publicado:',len(d['territorios']),'territórios')
