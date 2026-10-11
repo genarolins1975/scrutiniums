@@ -14,6 +14,8 @@ describe('Previdência: conciliação e universos',()=>{
   for(const t of ['b.1','a.1'])for(const year of ['2022','2023','2024'])expect(['BENEFÍCIOS DO RGPS','BENEFÍCIOS ASSISTENCIAIS','ENCARGOS PREV. UNIÃO - EPU'].reduce((s,g)=>s+valor(t,g,year)!,0)).toBe(total(t,year));
   expect(total('b.1')).toBe(40768493);expect(valor('b.1','BENEFÍCIOS DO RGPS')).toBe(34396083);
   expect(total('a.1')).toBe(6938784);
+  expect(['Tempo de Contribuição','Idade','Invalidez'].reduce((s,g)=>s+valor('b.1',g)!,0)).toBe(valor('b.1','Aposentadorias'));
+  expect(valor('b.1','Portador de Deficiência')!+valor('b.1','Idoso')!).toBe(valor('b.1','Amparos Assistenciais'));
  });
  it('usa o mesmo mês e universo para a razão monetária; não anualiza dezembro',()=>{
   expect(calcular(medidas.dezembro,tabelas['b.14'][0],'2024','total')).toBe(67883129000);
