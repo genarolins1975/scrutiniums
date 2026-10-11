@@ -31,3 +31,10 @@ export function filtraDimensoes(busca: string, grupo: GrupoDimensao | "Todas", s
   const termos = normalizaBusca(busca).trim().split(/\s+/).filter(Boolean);
   return DIMENSOES.filter(d => (grupo === "Todas" || grupo === d.grupo) && (!somentePublicados || !!d.href) && termos.every(t => normalizaBusca([d.titulo, d.verbo, d.descricao, d.recursos, d.acesso, d.resultados].join(" ")).includes(t)));
 }
+
+/** A ficha deve sempre pertencer aos resultados visíveis do catálogo. */
+export function estadoCatalogo(busca: string, grupo: GrupoDimensao | "Todas", selecionada: string) {
+  const visible = filtraDimensoes(busca, grupo);
+  const dimension = visible.find(d => d.id === selecionada) ?? visible[0] ?? null;
+  return {visible, dimension};
+}
