@@ -4,7 +4,6 @@ from pathlib import Path
 import csv, hashlib, json, re, zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-ORIGINAL = ROOT / 'data/previdencia/originais'
 OUT = ROOT / 'public/eficiencia/previdencia'
 
 class Tabela(HTMLParser):
@@ -38,8 +37,11 @@ def extrair():
         raw = archive.read(file)
         assert hashlib.sha256(raw).hexdigest() == source['sha256'], file
         parser = Tabela(); parser.feed(raw.decode('utf8'))
-        rows = [r for r in parser.rows if len(r)>1 and not r[0].isdigit() and any(re.fullmatch(r'[\d.,]+', v) for v in r[1:])]
         key = Path(file).stem
+        width = 7 if key in ('b.16','b.17') else 13 if key in ('43.1','43.2') else 10
+        # Reconhecer a estrutura, nunca exigir um valor informado: linhas inteiramente
+        # compostas de traços pertencem à tabela e precisam conservar seus nulls.
+        rows = [r for r in parser.rows if len(r)==width and not r[0].isdigit()]
         if key not in ('b.16','b.17','43.1','43.2'):
             assert any(r==['2022','2023','2024']*3 for r in parser.rows), key
         if key in ('b.16','b.17'):
@@ -47,7 +49,7 @@ def extrair():
             rows = [a+b[1:] for a,b in zip(rows[:33],rows[33:]) if a[0]==b[0]]
             assert len(rows)==33
         else:
-            assert len(rows)==(32 if key in ('b.1','b.2','b.3') else 26 if key=='a.1' else 33), (key,len(rows))
+            assert len(rows)==33, (key,len(rows))
         tables[key] = [{'id':str(i),'name':r[0], 'territory':re.sub(r'\s*\(\d+\)','',r[0]).strip(), 'values':[numero(v) for v in r[1:]]} for i,r in enumerate(rows)]
         assert all(len(r['values'])==(12 if key in ('b.16','b.17','43.1','43.2') else 9) for r in tables[key]),key
         source['id'] = key

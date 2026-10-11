@@ -29,6 +29,12 @@ describe('Previdência: conciliação e universos',()=>{
   expect(calcular(medidas.agencias,tabelas['43.1'][0],'2024','total')).toBe(1570);
   expect(calcular(medidas.atendimentos,{...tabelas['43.2'][0],values:[null,...Array(11).fill(10)]},'2024','total')).toBeNull();
  });
+ it('preserva linhas oficiais inteiramente compostas por ausência',()=>{
+  for(const rows of Object.values(tabelas))expect(rows).toHaveLength(33);
+  for(const t of ['b.1','b.2','b.3','a.1'])expect(tabelas[t].find(r=>r.name==='Salário-Família')?.values).toEqual(Array(9).fill(null));
+  expect(tabelas['a.1'].find(r=>r.name==='Rendas Mensais Vitalícias')?.values).toEqual(Array(9).fill(null));
+  expect(tabelas['a.1'].filter(r=>r.values.every(v=>v===null))).toHaveLength(7);
+ });
  it('preserva o manifesto auditado por SHA-256 e exporta null como célula vazia',()=>{
   expect(JSON.parse(readFileSync(join(process.cwd(),'data/previdencia/manifest.json'),'utf8'))).toEqual(fontes);
   expect(fontes.every(f=>/^[a-f0-9]{64}$/.test(f.sha256))).toBe(true);
