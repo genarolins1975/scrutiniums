@@ -1,0 +1,6887 @@
+{
+  "versao": "1.0",
+  "capturadoEm": "2026-10-11",
+  "fontes": [
+    {
+      "url": "https://cetic.br/media/microdados/942/tic_cultura_2024_tabelas_xlsx_v1.0.zip",
+      "titulo": "TIC Cultura 2024 · tabelas v1.0",
+      "publicadoEm": "2025-10-07",
+      "referencia": "2024",
+      "metodo": "https://cetic.br/media/microdados/990/tic_cultura_2024_relatorio_metodologico_v1.0.pdf",
+      "id": "tic",
+      "sha256": "5032a0a92946c87bfe9c067da0ad5acb538aca06987ce1ef507e8f70845c7b3c"
+    },
+    {
+      "url": "https://ftp.ibge.gov.br/Indicadores_Sociais/Sistema_de_Informacoes_e_Indicadores_Culturais/2024/xlsx/3_gastos_da_administracao_publica_20260310.xlsx",
+      "titulo": "IBGE · SIIC 2013–2024 · gastos da administração pública",
+      "publicadoEm": "2025-12-12",
+      "revisaoArquivo": "2026-03-10",
+      "referencia": "2013–2023",
+      "id": "ibge",
+      "sha256": "40d568853ddf051e62577d19d09d61c572fe1c51ed903c386a949b16f28d2781"
+    }
+  ],
+  "tipos": [
+    "Arquivo",
+    "Bem tombado",
+    "Biblioteca",
+    "Cinema",
+    "Museu",
+    "Ponto de Cultura",
+    "Teatro"
+  ],
+  "tic": [
+    {
+      "aba": "A3",
+      "tipo": "Arquivo",
+      "categoria": "Centro-Oeste",
+      "valor": 10.334,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 5,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Arquivo",
+      "categoria": "Nordeste",
+      "valor": 18.283,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 5,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Arquivo",
+      "categoria": "Norte",
+      "valor": 6.677,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 5,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Arquivo",
+      "categoria": "Sudeste",
+      "valor": 42.607,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 5,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Arquivo",
+      "categoria": "Sul",
+      "valor": 22.099,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 5,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Bem tombado",
+      "categoria": "Centro-Oeste",
+      "valor": 5.128,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 6,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Bem tombado",
+      "categoria": "Nordeste",
+      "valor": 34.744,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 6,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Bem tombado",
+      "categoria": "Norte",
+      "valor": 2.436,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 6,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Bem tombado",
+      "categoria": "Sudeste",
+      "valor": 45.513,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 6,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Bem tombado",
+      "categoria": "Sul",
+      "valor": 12.179,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 6,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Biblioteca",
+      "categoria": "Centro-Oeste",
+      "valor": 8.931,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 7,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Biblioteca",
+      "categoria": "Nordeste",
+      "valor": 30.211,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 7,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Biblioteca",
+      "categoria": "Norte",
+      "valor": 6.619,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 7,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Biblioteca",
+      "categoria": "Sudeste",
+      "valor": 28.473,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 7,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Biblioteca",
+      "categoria": "Sul",
+      "valor": 25.766,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 7,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Cinema",
+      "categoria": "Centro-Oeste",
+      "valor": 7.888,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 8,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Cinema",
+      "categoria": "Nordeste",
+      "valor": 16.383,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 8,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Cinema",
+      "categoria": "Norte",
+      "valor": 6.068,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 8,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Cinema",
+      "categoria": "Sudeste",
+      "valor": 51.335,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 8,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Cinema",
+      "categoria": "Sul",
+      "valor": 18.325,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 8,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Museu",
+      "categoria": "Centro-Oeste",
+      "valor": 7.23,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 9,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Museu",
+      "categoria": "Nordeste",
+      "valor": 21.888,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 9,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Museu",
+      "categoria": "Norte",
+      "valor": 4.423,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 9,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Museu",
+      "categoria": "Sudeste",
+      "valor": 39.042,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 9,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Museu",
+      "categoria": "Sul",
+      "valor": 27.417,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 9,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Centro-Oeste",
+      "valor": 7.271,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 10,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Nordeste",
+      "valor": 32.484,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 10,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Norte",
+      "valor": 5.968,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 10,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Sudeste",
+      "valor": 43.546,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 10,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Sul",
+      "valor": 10.731,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 10,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Teatro",
+      "categoria": "Centro-Oeste",
+      "valor": 10.008,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 11,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Teatro",
+      "categoria": "Nordeste",
+      "valor": 19.344,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 11,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Teatro",
+      "categoria": "Norte",
+      "valor": 4.878,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 11,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Teatro",
+      "categoria": "Sudeste",
+      "valor": 48.865,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 11,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A3",
+      "tipo": "Teatro",
+      "categoria": "Sul",
+      "valor": 16.905,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A3",
+        "linha": 11,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Arquivo",
+      "categoria": "Público federal",
+      "valor": 30.1081,
+      "margem": 7.0951,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 5,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Arquivo",
+      "categoria": "Público estadual",
+      "valor": 27.1322,
+      "margem": 6.9485,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 5,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Arquivo",
+      "categoria": "Público municipal",
+      "valor": 25.7441,
+      "margem": 6.6802,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 5,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Arquivo",
+      "categoria": "Privado com fins lucrativos",
+      "valor": 1.1277,
+      "margem": 1.6239,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 5,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Arquivo",
+      "categoria": "Privado sem fins lucrativos",
+      "valor": 13.5747,
+      "margem": 5.8074,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 5,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Arquivo",
+      "categoria": "Não sabe",
+      "valor": 1.7777,
+      "margem": 2.0357,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 5,
+        "coluna": 8
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Arquivo",
+      "categoria": "Não respondeu",
+      "valor": 0.5355,
+      "margem": 1.0814,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 5,
+        "coluna": 9
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Bem tombado",
+      "categoria": "Público federal",
+      "valor": 21.3085,
+      "margem": 11.303,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 6,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Bem tombado",
+      "categoria": "Público estadual",
+      "valor": 4.2447,
+      "margem": 4.2265,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 6,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Bem tombado",
+      "categoria": "Público municipal",
+      "valor": 8.4766,
+      "margem": 8.1938,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 6,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Bem tombado",
+      "categoria": "Privado com fins lucrativos",
+      "valor": 1.015,
+      "margem": 2.0494,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 6,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Bem tombado",
+      "categoria": "Privado sem fins lucrativos",
+      "valor": 60.3044,
+      "margem": 13.1121,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 6,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Bem tombado",
+      "categoria": "Não sabe",
+      "valor": 4.6508,
+      "margem": 5.4417,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 6,
+        "coluna": 8
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Bem tombado",
+      "categoria": "Não respondeu",
+      "valor": 0.0,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 6,
+        "coluna": 9
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Biblioteca",
+      "categoria": "Público federal",
+      "valor": 1.0566,
+      "margem": 1.5658,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 7,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Biblioteca",
+      "categoria": "Público estadual",
+      "valor": 3.6732,
+      "margem": 1.7656,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 7,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Biblioteca",
+      "categoria": "Público municipal",
+      "valor": 92.9582,
+      "margem": 2.9816,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 7,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Biblioteca",
+      "categoria": "Privado com fins lucrativos",
+      "valor": 0.0,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 7,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Biblioteca",
+      "categoria": "Privado sem fins lucrativos",
+      "valor": 0.8485,
+      "margem": 0.8756,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 7,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Biblioteca",
+      "categoria": "Não sabe",
+      "valor": 1.3171,
+      "margem": 1.7128,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 7,
+        "coluna": 8
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Biblioteca",
+      "categoria": "Não respondeu",
+      "valor": 0.1464,
+      "margem": 0.2856,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 7,
+        "coluna": 9
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Cinema",
+      "categoria": "Público federal",
+      "valor": 4.6618,
+      "margem": 5.4748,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 8,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Cinema",
+      "categoria": "Público estadual",
+      "valor": 4.9392,
+      "margem": 4.5477,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 8,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Cinema",
+      "categoria": "Público municipal",
+      "valor": 12.2858,
+      "margem": 6.0169,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 8,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Cinema",
+      "categoria": "Privado com fins lucrativos",
+      "valor": 57.5394,
+      "margem": 11.44,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 8,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Cinema",
+      "categoria": "Privado sem fins lucrativos",
+      "valor": 15.5409,
+      "margem": 8.4025,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 8,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Cinema",
+      "categoria": "Não sabe",
+      "valor": 5.0328,
+      "margem": 3.9028,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 8,
+        "coluna": 8
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Cinema",
+      "categoria": "Não respondeu",
+      "valor": 0.0,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 8,
+        "coluna": 9
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Museu",
+      "categoria": "Público federal",
+      "valor": 13.2051,
+      "margem": 3.1071,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 9,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Museu",
+      "categoria": "Público estadual",
+      "valor": 15.1085,
+      "margem": 3.2896,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 9,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Museu",
+      "categoria": "Público municipal",
+      "valor": 36.6157,
+      "margem": 4.6392,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 9,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Museu",
+      "categoria": "Privado com fins lucrativos",
+      "valor": 2.5922,
+      "margem": 1.5535,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 9,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Museu",
+      "categoria": "Privado sem fins lucrativos",
+      "valor": 30.5721,
+      "margem": 4.4348,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 9,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Museu",
+      "categoria": "Não sabe",
+      "valor": 1.6615,
+      "margem": 1.3809,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 9,
+        "coluna": 8
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Museu",
+      "categoria": "Não respondeu",
+      "valor": 0.2448,
+      "margem": 0.4872,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 9,
+        "coluna": 9
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Público federal",
+      "valor": 1.7661,
+      "margem": 1.6238,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 10,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Público estadual",
+      "valor": 1.0656,
+      "margem": 1.1093,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 10,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Público municipal",
+      "valor": 2.2825,
+      "margem": 1.7341,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 10,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Privado com fins lucrativos",
+      "valor": 4.0246,
+      "margem": 2.3757,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 10,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Privado sem fins lucrativos",
+      "valor": 84.9307,
+      "margem": 4.218,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 10,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Não sabe",
+      "valor": 4.5286,
+      "margem": 2.5317,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 10,
+        "coluna": 8
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Não respondeu",
+      "valor": 1.4018,
+      "margem": 1.2026,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 10,
+        "coluna": 9
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Teatro",
+      "categoria": "Público federal",
+      "valor": 4.8458,
+      "margem": 2.6809,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 11,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Teatro",
+      "categoria": "Público estadual",
+      "valor": 15.7247,
+      "margem": 4.235,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 11,
+        "coluna": 4
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Teatro",
+      "categoria": "Público municipal",
+      "valor": 38.4991,
+      "margem": 5.5881,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 11,
+        "coluna": 5
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Teatro",
+      "categoria": "Privado com fins lucrativos",
+      "valor": 11.6419,
+      "margem": 4.1807,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 11,
+        "coluna": 6
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Teatro",
+      "categoria": "Privado sem fins lucrativos",
+      "valor": 25.3267,
+      "margem": 4.8811,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 11,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Teatro",
+      "categoria": "Não sabe",
+      "valor": 3.2486,
+      "margem": 2.2094,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 11,
+        "coluna": 8
+      }
+    },
+    {
+      "aba": "A4",
+      "tipo": "Teatro",
+      "categoria": "Não respondeu",
+      "valor": 0.7134,
+      "margem": 1.0435,
+      "origem": {
+        "fonte": "tic",
+        "aba": "A4",
+        "linha": 11,
+        "coluna": 9
+      }
+    },
+    {
+      "aba": "B3C",
+      "tipo": "Arquivo",
+      "categoria": "Sim",
+      "valor": 54.6608,
+      "margem": 7.4058,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B3C",
+        "linha": 5,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B3C",
+      "tipo": "Bem tombado",
+      "categoria": "Sim",
+      "valor": 9.584,
+      "margem": 7.9587,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B3C",
+        "linha": 6,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B3C",
+      "tipo": "Biblioteca",
+      "categoria": "Sim",
+      "valor": 40.7704,
+      "margem": 5.4581,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B3C",
+        "linha": 7,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B3C",
+      "tipo": "Cinema",
+      "categoria": "Sim",
+      "valor": 36.2125,
+      "margem": 11.1783,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B3C",
+        "linha": 8,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B3C",
+      "tipo": "Museu",
+      "categoria": "Sim",
+      "valor": 13.5091,
+      "margem": 3.2618,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B3C",
+        "linha": 9,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B3C",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Sim",
+      "valor": 33.7597,
+      "margem": 5.4203,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B3C",
+        "linha": 10,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B3C",
+      "tipo": "Teatro",
+      "categoria": "Sim",
+      "valor": 14.1014,
+      "margem": 4.442,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B3C",
+        "linha": 11,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B5",
+      "tipo": "Arquivo",
+      "categoria": "Sim",
+      "valor": 100.0,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B5",
+        "linha": 5,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B5",
+      "tipo": "Bem tombado",
+      "categoria": "Sim",
+      "valor": 92.4761,
+      "margem": 6.4755,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B5",
+        "linha": 6,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B5",
+      "tipo": "Biblioteca",
+      "categoria": "Sim",
+      "valor": 83.3789,
+      "margem": 4.6257,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B5",
+        "linha": 7,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B5",
+      "tipo": "Cinema",
+      "categoria": "Sim",
+      "valor": 100.0,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B5",
+        "linha": 8,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B5",
+      "tipo": "Museu",
+      "categoria": "Sim",
+      "valor": 86.8498,
+      "margem": 3.2231,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B5",
+        "linha": 9,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B5",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Sim",
+      "valor": 95.9513,
+      "margem": 2.1355,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B5",
+        "linha": 10,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B5",
+      "tipo": "Teatro",
+      "categoria": "Sim",
+      "valor": 90.6292,
+      "margem": 3.7125,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B5",
+        "linha": 11,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B10",
+      "tipo": "Arquivo",
+      "categoria": "Sim",
+      "valor": 57.2153,
+      "margem": 8.0476,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B10",
+        "linha": 5,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B10",
+      "tipo": "Bem tombado",
+      "categoria": "Sim",
+      "valor": 33.9086,
+      "margem": 12.1863,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B10",
+        "linha": 6,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B10",
+      "tipo": "Biblioteca",
+      "categoria": "Sim",
+      "valor": 64.8432,
+      "margem": 5.563,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B10",
+        "linha": 7,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B10",
+      "tipo": "Cinema",
+      "categoria": "Sim",
+      "valor": 58.0116,
+      "margem": 10.8347,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B10",
+        "linha": 8,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B10",
+      "tipo": "Museu",
+      "categoria": "Sim",
+      "valor": 50.9305,
+      "margem": 5.0018,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B10",
+        "linha": 9,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B10",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Sim",
+      "valor": 64.0602,
+      "margem": 5.8329,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B10",
+        "linha": 10,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "B10",
+      "tipo": "Teatro",
+      "categoria": "Sim",
+      "valor": 51.1482,
+      "margem": 6.3559,
+      "origem": {
+        "fonte": "tic",
+        "aba": "B10",
+        "linha": 11,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C3",
+      "tipo": "Arquivo",
+      "categoria": "Sim",
+      "valor": 62.16,
+      "margem": 7.736,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C3",
+        "linha": 5,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C3",
+      "tipo": "Bem tombado",
+      "categoria": "Sim",
+      "valor": 43.142,
+      "margem": 12.349,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C3",
+        "linha": 6,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C3",
+      "tipo": "Biblioteca",
+      "categoria": "Sim",
+      "valor": 6.758,
+      "margem": 2.306,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C3",
+        "linha": 7,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C3",
+      "tipo": "Cinema",
+      "categoria": "Sim",
+      "valor": 71.601,
+      "margem": 9.87,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C3",
+        "linha": 8,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C3",
+      "tipo": "Museu",
+      "categoria": "Sim",
+      "valor": 36.918,
+      "margem": 4.755,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C3",
+        "linha": 9,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C3",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Sim",
+      "valor": 50.079,
+      "margem": 6.047,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C3",
+        "linha": 10,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C3",
+      "tipo": "Teatro",
+      "categoria": "Sim",
+      "valor": 31.259,
+      "margem": 5.635,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C3",
+        "linha": 11,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Arquivo",
+      "categoria": "Produção de conteúdos audiovisuais",
+      "valor": 58.4371,
+      "margem": 7.4537,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 5,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Arquivo",
+      "categoria": "Exibição de filmes",
+      "valor": 27.3285,
+      "margem": 7.4621,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 5,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Arquivo",
+      "categoria": "Produção ou exibição de peças ou espetáculos",
+      "valor": 15.2602,
+      "margem": 5.7811,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 5,
+        "coluna": 11
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Arquivo",
+      "categoria": "Produção ou exibição de shows ou apresentações musicais",
+      "valor": 17.417,
+      "margem": 6.6001,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 5,
+        "coluna": 15
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Arquivo",
+      "categoria": "Produção ou realização de exposições",
+      "valor": 72.5981,
+      "margem": 7.3286,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 5,
+        "coluna": 19
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Arquivo",
+      "categoria": "Realização de feiras de arte, artesanato ou antiguidades",
+      "valor": 18.1465,
+      "margem": 6.44,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 5,
+        "coluna": 23
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Arquivo",
+      "categoria": "Realização de festas, festivais ou eventos públicos",
+      "valor": 38.2777,
+      "margem": 7.4225,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 5,
+        "coluna": 27
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Arquivo",
+      "categoria": "Realização de seminários, palestras, debates ou encontros",
+      "valor": 76.715,
+      "margem": 6.3831,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 5,
+        "coluna": 31
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Arquivo",
+      "categoria": "Realização de atividades de promoção da leitura",
+      "valor": 40.758,
+      "margem": 8.252,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 5,
+        "coluna": 35
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Arquivo",
+      "categoria": "Realização de oficinas ou atividades de formação",
+      "valor": 60.2471,
+      "margem": 7.7468,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 5,
+        "coluna": 39
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Bem tombado",
+      "categoria": "Produção de conteúdos audiovisuais",
+      "valor": 52.874,
+      "margem": 12.861,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 6,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Bem tombado",
+      "categoria": "Exibição de filmes",
+      "valor": 30.0184,
+      "margem": 12.3539,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 6,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Bem tombado",
+      "categoria": "Produção ou exibição de peças ou espetáculos",
+      "valor": 32.5152,
+      "margem": 12.1328,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 6,
+        "coluna": 11
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Bem tombado",
+      "categoria": "Produção ou exibição de shows ou apresentações musicais",
+      "valor": 52.6193,
+      "margem": 11.8569,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 6,
+        "coluna": 15
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Bem tombado",
+      "categoria": "Produção ou realização de exposições",
+      "valor": 48.8596,
+      "margem": 13.0852,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 6,
+        "coluna": 19
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Bem tombado",
+      "categoria": "Realização de feiras de arte, artesanato ou antiguidades",
+      "valor": 38.5116,
+      "margem": 12.355,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 6,
+        "coluna": 23
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Bem tombado",
+      "categoria": "Realização de festas, festivais ou eventos públicos",
+      "valor": 66.328,
+      "margem": 13.2926,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 6,
+        "coluna": 27
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Bem tombado",
+      "categoria": "Realização de seminários, palestras, debates ou encontros",
+      "valor": 71.3092,
+      "margem": 12.3359,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 6,
+        "coluna": 31
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Bem tombado",
+      "categoria": "Realização de atividades de promoção da leitura",
+      "valor": 35.9832,
+      "margem": 13.324,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 6,
+        "coluna": 35
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Bem tombado",
+      "categoria": "Realização de oficinas ou atividades de formação",
+      "valor": 53.8852,
+      "margem": 12.8131,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 6,
+        "coluna": 39
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Biblioteca",
+      "categoria": "Produção de conteúdos audiovisuais",
+      "valor": 22.231,
+      "margem": 4.999,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 7,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Biblioteca",
+      "categoria": "Exibição de filmes",
+      "valor": 29.2741,
+      "margem": 5.7207,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 7,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Biblioteca",
+      "categoria": "Produção ou exibição de peças ou espetáculos",
+      "valor": 24.0027,
+      "margem": 5.3429,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 7,
+        "coluna": 11
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Biblioteca",
+      "categoria": "Produção ou exibição de shows ou apresentações musicais",
+      "valor": 22.8933,
+      "margem": 5.4017,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 7,
+        "coluna": 15
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Biblioteca",
+      "categoria": "Produção ou realização de exposições",
+      "valor": 46.732,
+      "margem": 5.9434,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 7,
+        "coluna": 19
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Biblioteca",
+      "categoria": "Realização de feiras de arte, artesanato ou antiguidades",
+      "valor": 26.0753,
+      "margem": 5.92,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 7,
+        "coluna": 23
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Biblioteca",
+      "categoria": "Realização de festas, festivais ou eventos públicos",
+      "valor": 40.8428,
+      "margem": 6.1787,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 7,
+        "coluna": 27
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Biblioteca",
+      "categoria": "Realização de seminários, palestras, debates ou encontros",
+      "valor": 53.8843,
+      "margem": 5.8831,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 7,
+        "coluna": 31
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Biblioteca",
+      "categoria": "Realização de atividades de promoção da leitura",
+      "valor": 87.249,
+      "margem": 3.836,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 7,
+        "coluna": 35
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Biblioteca",
+      "categoria": "Realização de oficinas ou atividades de formação",
+      "valor": 49.1748,
+      "margem": 6.0241,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 7,
+        "coluna": 39
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Cinema",
+      "categoria": "Produção de conteúdos audiovisuais",
+      "valor": 51.5935,
+      "margem": 11.2468,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 8,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Cinema",
+      "categoria": "Exibição de filmes",
+      "valor": 97.9869,
+      "margem": 2.803,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 8,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Cinema",
+      "categoria": "Produção ou exibição de peças ou espetáculos",
+      "valor": 32.0543,
+      "margem": 10.6317,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 8,
+        "coluna": 11
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Cinema",
+      "categoria": "Produção ou exibição de shows ou apresentações musicais",
+      "valor": 42.6544,
+      "margem": 11.0854,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 8,
+        "coluna": 15
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Cinema",
+      "categoria": "Produção ou realização de exposições",
+      "valor": 29.9149,
+      "margem": 10.8831,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 8,
+        "coluna": 19
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Cinema",
+      "categoria": "Realização de feiras de arte, artesanato ou antiguidades",
+      "valor": 15.6404,
+      "margem": 8.571,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 8,
+        "coluna": 23
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Cinema",
+      "categoria": "Realização de festas, festivais ou eventos públicos",
+      "valor": 42.0379,
+      "margem": 10.8216,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 8,
+        "coluna": 27
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Cinema",
+      "categoria": "Realização de seminários, palestras, debates ou encontros",
+      "valor": 56.4269,
+      "margem": 11.4773,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 8,
+        "coluna": 31
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Cinema",
+      "categoria": "Realização de atividades de promoção da leitura",
+      "valor": 27.3481,
+      "margem": 10.059,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 8,
+        "coluna": 35
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Cinema",
+      "categoria": "Realização de oficinas ou atividades de formação",
+      "valor": 41.2266,
+      "margem": 11.0768,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 8,
+        "coluna": 39
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Museu",
+      "categoria": "Produção de conteúdos audiovisuais",
+      "valor": 50.2067,
+      "margem": 4.8264,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 9,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Museu",
+      "categoria": "Exibição de filmes",
+      "valor": 41.6874,
+      "margem": 4.912,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 9,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Museu",
+      "categoria": "Produção ou exibição de peças ou espetáculos",
+      "valor": 29.7487,
+      "margem": 4.3873,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 9,
+        "coluna": 11
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Museu",
+      "categoria": "Produção ou exibição de shows ou apresentações musicais",
+      "valor": 37.3557,
+      "margem": 5.0664,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 9,
+        "coluna": 15
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Museu",
+      "categoria": "Produção ou realização de exposições",
+      "valor": 83.5406,
+      "margem": 3.7276,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 9,
+        "coluna": 19
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Museu",
+      "categoria": "Realização de feiras de arte, artesanato ou antiguidades",
+      "valor": 37.0196,
+      "margem": 5.21,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 9,
+        "coluna": 23
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Museu",
+      "categoria": "Realização de festas, festivais ou eventos públicos",
+      "valor": 55.7482,
+      "margem": 5.4072,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 9,
+        "coluna": 27
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Museu",
+      "categoria": "Realização de seminários, palestras, debates ou encontros",
+      "valor": 74.8956,
+      "margem": 4.2493,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 9,
+        "coluna": 31
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Museu",
+      "categoria": "Realização de atividades de promoção da leitura",
+      "valor": 44.9932,
+      "margem": 4.991,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 9,
+        "coluna": 35
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Museu",
+      "categoria": "Realização de oficinas ou atividades de formação",
+      "valor": 67.9658,
+      "margem": 4.7354,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 9,
+        "coluna": 39
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Produção de conteúdos audiovisuais",
+      "valor": 77.7864,
+      "margem": 4.6138,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 10,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Exibição de filmes",
+      "valor": 58.8431,
+      "margem": 5.737,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 10,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Produção ou exibição de peças ou espetáculos",
+      "valor": 72.355,
+      "margem": 5.0059,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 10,
+        "coluna": 11
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Produção ou exibição de shows ou apresentações musicais",
+      "valor": 75.3154,
+      "margem": 4.8192,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 10,
+        "coluna": 15
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Produção ou realização de exposições",
+      "valor": 69.7208,
+      "margem": 5.0681,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 10,
+        "coluna": 19
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Realização de feiras de arte, artesanato ou antiguidades",
+      "valor": 56.4994,
+      "margem": 5.525,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 10,
+        "coluna": 23
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Realização de festas, festivais ou eventos públicos",
+      "valor": 90.3276,
+      "margem": 3.0944,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 10,
+        "coluna": 27
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Realização de seminários, palestras, debates ou encontros",
+      "valor": 92.8962,
+      "margem": 2.8804,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 10,
+        "coluna": 31
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Realização de atividades de promoção da leitura",
+      "valor": 72.1278,
+      "margem": 4.79,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 10,
+        "coluna": 35
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Realização de oficinas ou atividades de formação",
+      "valor": 92.8081,
+      "margem": 2.7178,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 10,
+        "coluna": 39
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Teatro",
+      "categoria": "Produção de conteúdos audiovisuais",
+      "valor": 53.6021,
+      "margem": 6.4294,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 11,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Teatro",
+      "categoria": "Exibição de filmes",
+      "valor": 53.9686,
+      "margem": 5.5466,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 11,
+        "coluna": 7
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Teatro",
+      "categoria": "Produção ou exibição de peças ou espetáculos",
+      "valor": 90.4855,
+      "margem": 3.4315,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 11,
+        "coluna": 11
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Teatro",
+      "categoria": "Produção ou exibição de shows ou apresentações musicais",
+      "valor": 87.3703,
+      "margem": 4.0017,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 11,
+        "coluna": 15
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Teatro",
+      "categoria": "Produção ou realização de exposições",
+      "valor": 61.0322,
+      "margem": 6.2764,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 11,
+        "coluna": 19
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Teatro",
+      "categoria": "Realização de feiras de arte, artesanato ou antiguidades",
+      "valor": 36.9861,
+      "margem": 5.747,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 11,
+        "coluna": 23
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Teatro",
+      "categoria": "Realização de festas, festivais ou eventos públicos",
+      "valor": 82.6942,
+      "margem": 4.5217,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 11,
+        "coluna": 27
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Teatro",
+      "categoria": "Realização de seminários, palestras, debates ou encontros",
+      "valor": 88.4441,
+      "margem": 3.9272,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 11,
+        "coluna": 31
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Teatro",
+      "categoria": "Realização de atividades de promoção da leitura",
+      "valor": 55.3842,
+      "margem": 5.997,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 11,
+        "coluna": 35
+      }
+    },
+    {
+      "aba": "C11",
+      "tipo": "Teatro",
+      "categoria": "Realização de oficinas ou atividades de formação",
+      "valor": 76.8719,
+      "margem": 4.9978,
+      "origem": {
+        "fonte": "tic",
+        "aba": "C11",
+        "linha": 11,
+        "coluna": 39
+      }
+    },
+    {
+      "aba": "D1",
+      "tipo": "Arquivo",
+      "categoria": "Sim",
+      "valor": 98.136,
+      "margem": 2.0824,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D1",
+        "linha": 5,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D1",
+      "tipo": "Bem tombado",
+      "categoria": "Sim",
+      "valor": 100.0,
+      "margem": 0.0,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D1",
+        "linha": 6,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D1",
+      "tipo": "Biblioteca",
+      "categoria": "Sim",
+      "valor": 97.572,
+      "margem": 2.2136,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D1",
+        "linha": 7,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D1",
+      "tipo": "Cinema",
+      "categoria": "Sim",
+      "valor": 74.571,
+      "margem": 10.1241,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D1",
+        "linha": 8,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D1",
+      "tipo": "Museu",
+      "categoria": "Sim",
+      "valor": 98.97,
+      "margem": 0.8407,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D1",
+        "linha": 9,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D1",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Sim",
+      "valor": 95.418,
+      "margem": 2.408,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D1",
+        "linha": 10,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D1",
+      "tipo": "Teatro",
+      "categoria": "Sim",
+      "valor": 73.777,
+      "margem": 5.4501,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D1",
+        "linha": 11,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D2",
+      "tipo": "Arquivo",
+      "categoria": "Sim",
+      "valor": 88.12,
+      "margem": 4.943,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D2",
+        "linha": 5,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D2",
+      "tipo": "Bem tombado",
+      "categoria": "Sim",
+      "valor": 57.08,
+      "margem": 13.134,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D2",
+        "linha": 6,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D2",
+      "tipo": "Biblioteca",
+      "categoria": "Sim",
+      "valor": 36.79,
+      "margem": 6.087,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D2",
+        "linha": 7,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D2",
+      "tipo": "Cinema",
+      "categoria": "Sim",
+      "valor": 46.41,
+      "margem": 11.673,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D2",
+        "linha": 8,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D2",
+      "tipo": "Museu",
+      "categoria": "Sim",
+      "valor": 73.57,
+      "margem": 4.063,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D2",
+        "linha": 9,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D2",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Sim",
+      "valor": 76.34,
+      "margem": 5.059,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D2",
+        "linha": 10,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D2",
+      "tipo": "Teatro",
+      "categoria": "Sim",
+      "valor": 39.3,
+      "margem": 5.516,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D2",
+        "linha": 11,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D4B",
+      "tipo": "Arquivo",
+      "categoria": "Sim",
+      "valor": 82.63,
+      "margem": 6.189,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D4B",
+        "linha": 5,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D4B",
+      "tipo": "Bem tombado",
+      "categoria": "Sim",
+      "valor": 38.93,
+      "margem": 13.595,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D4B",
+        "linha": 6,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D4B",
+      "tipo": "Biblioteca",
+      "categoria": "Sim",
+      "valor": 11.26,
+      "margem": 4.228,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D4B",
+        "linha": 7,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D4B",
+      "tipo": "Cinema",
+      "categoria": "Sim",
+      "valor": 37.01,
+      "margem": 9.848,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D4B",
+        "linha": 8,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D4B",
+      "tipo": "Museu",
+      "categoria": "Sim",
+      "valor": 45.35,
+      "margem": 4.997,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D4B",
+        "linha": 9,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D4B",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Sim",
+      "valor": 64.12,
+      "margem": 5.894,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D4B",
+        "linha": 10,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D4B",
+      "tipo": "Teatro",
+      "categoria": "Sim",
+      "valor": 22.43,
+      "margem": 5.109,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D4B",
+        "linha": 11,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D8",
+      "tipo": "Arquivo",
+      "categoria": "Sim",
+      "valor": 53.8751,
+      "margem": 8.6709,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D8",
+        "linha": 5,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D8",
+      "tipo": "Bem tombado",
+      "categoria": "Sim",
+      "valor": 28.894,
+      "margem": 11.4277,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D8",
+        "linha": 6,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D8",
+      "tipo": "Biblioteca",
+      "categoria": "Sim",
+      "valor": 22.3247,
+      "margem": 4.5294,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D8",
+        "linha": 7,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D8",
+      "tipo": "Cinema",
+      "categoria": "Sim",
+      "valor": 27.9221,
+      "margem": 9.1882,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D8",
+        "linha": 8,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D8",
+      "tipo": "Museu",
+      "categoria": "Sim",
+      "valor": 24.5124,
+      "margem": 4.5668,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D8",
+        "linha": 9,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D8",
+      "tipo": "Ponto de Cultura",
+      "categoria": "Sim",
+      "valor": 19.4012,
+      "margem": 4.7999,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D8",
+        "linha": 10,
+        "coluna": 3
+      }
+    },
+    {
+      "aba": "D8",
+      "tipo": "Teatro",
+      "categoria": "Sim",
+      "valor": 10.2886,
+      "margem": 4.0394,
+      "origem": {
+        "fonte": "tic",
+        "aba": "D8",
+        "linha": 11,
+        "coluna": 3
+      }
+    }
+  ],
+  "gastos": [
+    {
+      "ano": 2013,
+      "entidade": "Total",
+      "valor": 8497353851.277467,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 5,
+        "coluna": 2
+      },
+      "pesoOrcamento": 0.40064361639447976
+    },
+    {
+      "ano": 2014,
+      "entidade": "Total",
+      "valor": 9770604201.32438,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 5,
+        "coluna": 4
+      },
+      "pesoOrcamento": 0.4081264421433079
+    },
+    {
+      "ano": 2015,
+      "entidade": "Total",
+      "valor": 9026468893.96251,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 5,
+        "coluna": 6
+      },
+      "pesoOrcamento": 0.3259235428362982
+    },
+    {
+      "ano": 2016,
+      "entidade": "Total",
+      "valor": 8278857503.682164,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 5,
+        "coluna": 8
+      },
+      "pesoOrcamento": 0.2902085332150682
+    },
+    {
+      "ano": 2017,
+      "entidade": "Total",
+      "valor": 8217737598.453215,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 5,
+        "coluna": 10
+      },
+      "pesoOrcamento": 0.28170036163083134
+    },
+    {
+      "ano": 2018,
+      "entidade": "Total",
+      "valor": 8930373329.637133,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 5,
+        "coluna": 12
+      },
+      "pesoOrcamento": 0.28859083867584334
+    },
+    {
+      "ano": 2019,
+      "entidade": "Total",
+      "valor": 9012106856.595743,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 5,
+        "coluna": 14
+      },
+      "pesoOrcamento": 0.28335552193399927
+    },
+    {
+      "ano": 2020,
+      "entidade": "Total",
+      "valor": 9865616269.289959,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 5,
+        "coluna": 16
+      },
+      "pesoOrcamento": 0.28075239756624293
+    },
+    {
+      "ano": 2021,
+      "entidade": "Total",
+      "valor": 9790015869.385847,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 5,
+        "coluna": 18
+      },
+      "pesoOrcamento": 0.2690828281362958
+    },
+    {
+      "ano": 2022,
+      "entidade": "Total",
+      "valor": 13780241045.251766,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 5,
+        "coluna": 20
+      },
+      "pesoOrcamento": 0.3146785443977089
+    },
+    {
+      "ano": 2023,
+      "entidade": "Total",
+      "valor": 18893947618.284584,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 5,
+        "coluna": 22
+      },
+      "pesoOrcamento": 0.38105296601758276
+    },
+    {
+      "ano": 2013,
+      "entidade": "Federal",
+      "valor": 923477398.1666876,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 6,
+        "coluna": 2
+      },
+      "pesoOrcamento": 0.09110778729897633
+    },
+    {
+      "ano": 2014,
+      "entidade": "Federal",
+      "valor": 1045248988.9000891,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 6,
+        "coluna": 4
+      },
+      "pesoOrcamento": 0.08984408991787429
+    },
+    {
+      "ano": 2015,
+      "entidade": "Federal",
+      "valor": 1114966837.828417,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 6,
+        "coluna": 6
+      },
+      "pesoOrcamento": 0.07715928338660413
+    },
+    {
+      "ano": 2016,
+      "entidade": "Federal",
+      "valor": 998041292.4239347,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 6,
+        "coluna": 8
+      },
+      "pesoOrcamento": 0.06792229188359011
+    },
+    {
+      "ano": 2017,
+      "entidade": "Federal",
+      "valor": 938148125.7526476,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 6,
+        "coluna": 10
+      },
+      "pesoOrcamento": 0.0615751870905131
+    },
+    {
+      "ano": 2018,
+      "entidade": "Federal",
+      "valor": 1024103752.4592583,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 6,
+        "coluna": 12
+      },
+      "pesoOrcamento": 0.0642404402784914
+    },
+    {
+      "ano": 2019,
+      "entidade": "Federal",
+      "valor": 795761816.1553317,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 6,
+        "coluna": 14
+      },
+      "pesoOrcamento": 0.04978489352036524
+    },
+    {
+      "ano": 2020,
+      "entidade": "Federal",
+      "valor": 828160676.5563488,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 6,
+        "coluna": 16
+      },
+      "pesoOrcamento": 0.044843025627695245
+    },
+    {
+      "ano": 2021,
+      "entidade": "Federal",
+      "valor": 671942056.077213,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 6,
+        "coluna": 18
+      },
+      "pesoOrcamento": 0.037735780602250586
+    },
+    {
+      "ano": 2022,
+      "entidade": "Federal",
+      "valor": 287742100.48153216,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 6,
+        "coluna": 20
+      },
+      "pesoOrcamento": 0.014133253717082643
+    },
+    {
+      "ano": 2023,
+      "entidade": "Federal",
+      "valor": 856113494.5743885,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 6,
+        "coluna": 22
+      },
+      "pesoOrcamento": 0.03606984309948134
+    },
+    {
+      "ano": 2013,
+      "entidade": "Estadual",
+      "valor": 3117948099.165602,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 7,
+        "coluna": 2
+      },
+      "pesoOrcamento": 0.4562562533537726
+    },
+    {
+      "ano": 2014,
+      "entidade": "Estadual",
+      "valor": 3206364743.1385694,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 7,
+        "coluna": 4
+      },
+      "pesoOrcamento": 0.42988287621452986
+    },
+    {
+      "ano": 2015,
+      "entidade": "Estadual",
+      "valor": 2766727220.820537,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 7,
+        "coluna": 6
+      },
+      "pesoOrcamento": 0.34459004807836874
+    },
+    {
+      "ano": 2016,
+      "entidade": "Estadual",
+      "valor": 2482310218.930181,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 7,
+        "coluna": 8
+      },
+      "pesoOrcamento": 0.2987858625459534
+    },
+    {
+      "ano": 2017,
+      "entidade": "Estadual",
+      "valor": 2623240348.352852,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 7,
+        "coluna": 10
+      },
+      "pesoOrcamento": 0.3103419389635024
+    },
+    {
+      "ano": 2018,
+      "entidade": "Estadual",
+      "valor": 2759533923.459539,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 7,
+        "coluna": 12
+      },
+      "pesoOrcamento": 0.3077109515519652
+    },
+    {
+      "ano": 2019,
+      "entidade": "Estadual",
+      "valor": 2641373995.808176,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 7,
+        "coluna": 14
+      },
+      "pesoOrcamento": 0.2863435289954022
+    },
+    {
+      "ano": 2020,
+      "entidade": "Estadual",
+      "valor": 3960976023.9146442,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 7,
+        "coluna": 16
+      },
+      "pesoOrcamento": 0.4181451132949481
+    },
+    {
+      "ano": 2021,
+      "entidade": "Estadual",
+      "valor": 3569172013.200043,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 7,
+        "coluna": 18
+      },
+      "pesoOrcamento": 0.3289824045932019
+    },
+    {
+      "ano": 2022,
+      "entidade": "Estadual",
+      "valor": 5129136391.519556,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 7,
+        "coluna": 20
+      },
+      "pesoOrcamento": 0.37445342317079944
+    },
+    {
+      "ano": 2023,
+      "entidade": "Estadual",
+      "valor": 5745401978.412651,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 7,
+        "coluna": 22
+      },
+      "pesoOrcamento": 0.39319820879030076
+    },
+    {
+      "ano": 2013,
+      "entidade": "Municipal",
+      "valor": 4455928353.945177,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 8,
+        "coluna": 2
+      },
+      "pesoOrcamento": 1.0510763354030008
+    },
+    {
+      "ano": 2014,
+      "entidade": "Municipal",
+      "valor": 5518990469.285722,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 8,
+        "coluna": 4
+      },
+      "pesoOrcamento": 1.1385431025581558
+    },
+    {
+      "ano": 2015,
+      "entidade": "Municipal",
+      "valor": 5144774835.313557,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 8,
+        "coluna": 6
+      },
+      "pesoOrcamento": 0.9863801352532805
+    },
+    {
+      "ano": 2016,
+      "entidade": "Municipal",
+      "valor": 4798505992.328049,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 8,
+        "coluna": 8
+      },
+      "pesoOrcamento": 0.8684433099085
+    },
+    {
+      "ano": 2017,
+      "entidade": "Municipal",
+      "valor": 4656349124.347714,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 8,
+        "coluna": 10
+      },
+      "pesoOrcamento": 0.8491790837212668
+    },
+    {
+      "ano": 2018,
+      "entidade": "Municipal",
+      "valor": 5146735653.718335,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 8,
+        "coluna": 12
+      },
+      "pesoOrcamento": 0.8528025122033254
+    },
+    {
+      "ano": 2019,
+      "entidade": "Municipal",
+      "valor": 5574971044.6322365,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 8,
+        "coluna": 14
+      },
+      "pesoOrcamento": 0.8451471365571512
+    },
+    {
+      "ano": 2020,
+      "entidade": "Municipal",
+      "valor": 5076479568.818965,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 8,
+        "coluna": 16
+      },
+      "pesoOrcamento": 0.7051454789374167
+    },
+    {
+      "ano": 2021,
+      "entidade": "Municipal",
+      "valor": 5548901800.108591,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 8,
+        "coluna": 18
+      },
+      "pesoOrcamento": 0.7180921114378334
+    },
+    {
+      "ano": 2022,
+      "entidade": "Municipal",
+      "valor": 8363362553.250678,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 8,
+        "coluna": 20
+      },
+      "pesoOrcamento": 0.8591379098483012
+    },
+    {
+      "ano": 2023,
+      "entidade": "Municipal",
+      "valor": 12292432145.297544,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.1",
+        "linha": 8,
+        "coluna": 22
+      },
+      "pesoOrcamento": 1.0939574318230967
+    }
+  ],
+  "ufs": [
+    {
+      "ano": 2013,
+      "entidade": "Rondônia",
+      "valor": 10068250.002845263,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 7,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Rondônia",
+      "valor": 1011882.7398654562,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 7,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Rondônia",
+      "valor": 1378988.2458931399,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 7,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Rondônia",
+      "valor": 2682058.681715327,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 7,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Rondônia",
+      "valor": 2381239.904011309,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 7,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Rondônia",
+      "valor": 7138995.808757085,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 7,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Rondônia",
+      "valor": 7517407.901203481,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 7,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Rondônia",
+      "valor": 24910751.341806017,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 7,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Rondônia",
+      "valor": 12053746.9848817,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 7,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Rondônia",
+      "valor": 13889865.548823586,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 7,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Rondônia",
+      "valor": 31444454.224094324,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 7,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Acre",
+      "valor": 27044226.617641635,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 8,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Acre",
+      "valor": 29263817.807609804,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 8,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Acre",
+      "valor": 22672612.538356654,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 8,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Acre",
+      "valor": 23546007.3164977,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 8,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Acre",
+      "valor": 20854900.956509262,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 8,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Acre",
+      "valor": 24693195.501620304,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 8,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Acre",
+      "valor": 16668395.98093586,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 8,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Acre",
+      "valor": 25052726.150051657,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 8,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Acre",
+      "valor": 18732315.596587542,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 8,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Acre",
+      "valor": 34255340.49830985,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 8,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Acre",
+      "valor": 33816720.687650025,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 8,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Amazonas",
+      "valor": 224055039.70453885,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 9,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Amazonas",
+      "valor": 207194298.3339548,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 9,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Amazonas",
+      "valor": 130468159.1695243,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 9,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Amazonas",
+      "valor": 105255012.75661048,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 9,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Amazonas",
+      "valor": 102686645.12265764,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 9,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Amazonas",
+      "valor": 145730780.7910444,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 9,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Amazonas",
+      "valor": 182175066.19748995,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 9,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Amazonas",
+      "valor": 201383776.4694541,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 9,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Amazonas",
+      "valor": 169524181.8923327,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 9,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Amazonas",
+      "valor": 403108076.9932116,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 9,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Amazonas",
+      "valor": 508289642.17868763,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 9,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Roraima",
+      "valor": 4968049.496589638,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 10,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Roraima",
+      "valor": 5474709.152548538,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 10,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Roraima",
+      "valor": 8242789.260858229,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 10,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Roraima",
+      "valor": 7752058.296127316,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 10,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Roraima",
+      "valor": 9294631.672146885,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 10,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Roraima",
+      "valor": 6398552.987440427,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 10,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Roraima",
+      "valor": 5077646.98410756,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 10,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Roraima",
+      "valor": 24306330.03725732,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 10,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Roraima",
+      "valor": 12302249.848163743,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 10,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Roraima",
+      "valor": 32307497.890514623,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 10,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Roraima",
+      "valor": 40527936.73146689,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 10,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Pará",
+      "valor": 128366708.23805583,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 11,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Pará",
+      "valor": 137367207.17596275,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 11,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Pará",
+      "valor": 148967573.25697407,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 11,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Pará",
+      "valor": 150478345.09637523,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 11,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Pará",
+      "valor": 132096541.94195034,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 11,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Pará",
+      "valor": 122685204.69532081,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 11,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Pará",
+      "valor": 162318137.71806937,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 11,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Pará",
+      "valor": 220609770.36203915,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 11,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Pará",
+      "valor": 301970783.47694886,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 11,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Pará",
+      "valor": 425905573.8457723,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 11,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Pará",
+      "valor": 479971529.7602886,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 11,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Amapá",
+      "valor": 21879888.02172467,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 12,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Amapá",
+      "valor": 20395814.492235288,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 12,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Amapá",
+      "valor": 17859147.646730617,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 12,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Amapá",
+      "valor": 10429733.503089119,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 12,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Amapá",
+      "valor": 12579041.109062543,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 12,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Amapá",
+      "valor": 10562184.344933337,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 12,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Amapá",
+      "valor": 10357984.595141744,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 12,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Amapá",
+      "valor": 23123997.606537707,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 12,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Amapá",
+      "valor": 13751716.893016636,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 12,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Amapá",
+      "valor": 41073705.31032312,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 12,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Amapá",
+      "valor": 49318616.96307726,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 12,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Tocantins",
+      "valor": 7041261.491196976,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 13,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Tocantins",
+      "valor": 13307583.38975513,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 13,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Tocantins",
+      "valor": 28288283.445006,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 13,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Tocantins",
+      "valor": 22615838.28675106,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 13,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Tocantins",
+      "valor": 42638136.8841049,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 13,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Tocantins",
+      "valor": 7859042.02347005,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 13,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Tocantins",
+      "valor": 24236590.750584353,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 13,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Tocantins",
+      "valor": 27802556.84608652,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 13,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Tocantins",
+      "valor": 6472630.078128697,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 13,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Tocantins",
+      "valor": 45872642.60044546,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 13,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Tocantins",
+      "valor": 28289853.08142909,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 13,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Maranhão",
+      "valor": 88743197.52058761,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 15,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Maranhão",
+      "valor": 106487073.38212928,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 15,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Maranhão",
+      "valor": 102095795.78040695,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 15,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Maranhão",
+      "valor": 88782790.07661098,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 15,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Maranhão",
+      "valor": 121814462.4454597,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 15,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Maranhão",
+      "valor": 128081607.65260923,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 15,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Maranhão",
+      "valor": 102409493.34676851,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 15,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Maranhão",
+      "valor": 146286025.47226122,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 15,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Maranhão",
+      "valor": 109698247.25298807,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 15,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Maranhão",
+      "valor": 141712769.81166893,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 15,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Maranhão",
+      "valor": 155606214.33670282,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 15,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Piauí",
+      "valor": 9139772.084136233,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 16,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Piauí",
+      "valor": 17306280.980109,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 16,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Piauí",
+      "valor": 14584546.105850426,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 16,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Piauí",
+      "valor": 38845496.20387879,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 16,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Piauí",
+      "valor": 54138849.754831,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 16,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Piauí",
+      "valor": 41630834.66054509,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 16,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Piauí",
+      "valor": 31472081.516751356,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 16,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Piauí",
+      "valor": 49234072.65351051,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 16,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Piauí",
+      "valor": 17381228.784962267,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 16,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Piauí",
+      "valor": 56416643.774608046,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 16,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Piauí",
+      "valor": 61420590.78099303,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 16,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Ceará",
+      "valor": 73768256.80095062,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 17,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Ceará",
+      "valor": 92123341.89835995,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 17,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Ceará",
+      "valor": 73789489.15043758,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 17,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Ceará",
+      "valor": 84335317.87806788,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 17,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Ceará",
+      "valor": 97708597.13868557,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 17,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Ceará",
+      "valor": 117588236.83708946,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 17,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Ceará",
+      "valor": 118168432.4527054,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 17,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Ceará",
+      "valor": 198748361.82383612,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 17,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Ceará",
+      "valor": 223348438.07567567,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 17,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Ceará",
+      "valor": 379319244.0363322,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 17,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Ceará",
+      "valor": 223542877.4045612,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 17,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Rio Grande Do Norte",
+      "valor": 33641675.686366685,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 18,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Rio Grande Do Norte",
+      "valor": 41006294.952377014,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 18,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Rio Grande Do Norte",
+      "valor": 33551488.308007784,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 18,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Rio Grande Do Norte",
+      "valor": 34492388.46970635,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 18,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Rio Grande Do Norte",
+      "valor": 23146354.955077946,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 18,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Rio Grande Do Norte",
+      "valor": 23797154.988520574,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 18,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Rio Grande Do Norte",
+      "valor": 24783452.71521387,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 18,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Rio Grande Do Norte",
+      "valor": 56814254.386259586,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 18,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Rio Grande Do Norte",
+      "valor": 23769920.86478789,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 18,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Rio Grande Do Norte",
+      "valor": 39502254.64746428,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 18,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Rio Grande Do Norte",
+      "valor": 79768833.38923232,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 18,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Paraíba",
+      "valor": 15239820.299650857,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 19,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Paraíba",
+      "valor": 15445641.676311588,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 19,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Paraíba",
+      "valor": 19303599.085400704,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 19,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Paraíba",
+      "valor": 13270943.884645049,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 19,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Paraíba",
+      "valor": 13271109.916115148,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 19,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Paraíba",
+      "valor": 14144143.127928518,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 19,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Paraíba",
+      "valor": 16186125.044008767,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 19,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Paraíba",
+      "valor": 33602062.184714705,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 19,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Paraíba",
+      "valor": 33737327.36643422,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 19,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Paraíba",
+      "valor": 26668375.785447914,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 19,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Paraíba",
+      "valor": 84916216.02219175,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 19,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Pernambuco",
+      "valor": 103384590.65693052,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 20,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Pernambuco",
+      "valor": 126329187.09884916,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 20,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Pernambuco",
+      "valor": 105862037.60238357,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 20,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Pernambuco",
+      "valor": 91905613.71279837,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 20,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Pernambuco",
+      "valor": 108273116.15773399,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 20,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Pernambuco",
+      "valor": 111463104.3036627,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 20,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Pernambuco",
+      "valor": 92690788.84407401,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 20,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Pernambuco",
+      "valor": 126116889.41646315,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 20,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Pernambuco",
+      "valor": 111200959.40171328,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 20,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Pernambuco",
+      "valor": 193573583.15555182,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 20,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Pernambuco",
+      "valor": 139778399.0413934,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 20,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Alagoas",
+      "valor": 14654363.357315153,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 21,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Alagoas",
+      "valor": 17815088.819723018,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 21,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Alagoas",
+      "valor": 10951970.463894648,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 21,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Alagoas",
+      "valor": 13720924.65085271,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 21,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Alagoas",
+      "valor": 22614994.88702572,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 21,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Alagoas",
+      "valor": 17558143.582771275,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 21,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Alagoas",
+      "valor": 22896502.75841712,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 21,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Alagoas",
+      "valor": 55699411.68540193,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 21,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Alagoas",
+      "valor": 19526935.61822075,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 21,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Alagoas",
+      "valor": 150127882.4850775,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 21,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Alagoas",
+      "valor": 95707901.57201919,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 21,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Sergipe",
+      "valor": 14181663.738265965,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 22,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Sergipe",
+      "valor": 12163096.261706384,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 22,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Sergipe",
+      "valor": 13551531.65131207,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 22,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Sergipe",
+      "valor": 13591506.375818083,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 22,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Sergipe",
+      "valor": 16713274.730797429,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 22,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Sergipe",
+      "valor": 16077204.81984383,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 22,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Sergipe",
+      "valor": 10746995.885229578,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 22,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Sergipe",
+      "valor": 46321114.09799751,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 22,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Sergipe",
+      "valor": 24534223.473836914,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 22,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Sergipe",
+      "valor": 40616152.5407948,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 22,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Sergipe",
+      "valor": 61623761.261020675,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 22,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Bahia",
+      "valor": 255393973.7604148,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 23,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Bahia",
+      "valor": 283188669.998247,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 23,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Bahia",
+      "valor": 264496798.39314276,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 23,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Bahia",
+      "valor": 226660209.1319971,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 23,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Bahia",
+      "valor": 187572809.71677682,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 23,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Bahia",
+      "valor": 191542010.5361768,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 23,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Bahia",
+      "valor": 182799848.43075213,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 23,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Bahia",
+      "valor": 276230480.06772053,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 23,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Bahia",
+      "valor": 169587105.09826237,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 23,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Bahia",
+      "valor": 239251151.1196067,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 23,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Bahia",
+      "valor": 245683189.67079714,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 23,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Minas Gerais",
+      "valor": 175468352.51929054,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 25,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Minas Gerais",
+      "valor": 171410821.22600842,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 25,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Minas Gerais",
+      "valor": 179422891.25015214,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 25,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Minas Gerais",
+      "valor": 169145889.2665507,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 25,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Minas Gerais",
+      "valor": 159189718.7302453,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 25,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Minas Gerais",
+      "valor": 160245466.2271028,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 25,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Minas Gerais",
+      "valor": 138537236.54604048,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 25,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Minas Gerais",
+      "valor": 264595544.83418477,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 25,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Minas Gerais",
+      "valor": 122435122.10258368,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 25,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Minas Gerais",
+      "valor": 143798550.1265049,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 25,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Minas Gerais",
+      "valor": 140270466.75521508,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 25,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Espírito Santo",
+      "valor": 69426416.73486897,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 26,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Espírito Santo",
+      "valor": 109011322.31197847,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 26,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Espírito Santo",
+      "valor": 38411009.45801625,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 26,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Espírito Santo",
+      "valor": 24989781.832747005,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 26,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Espírito Santo",
+      "valor": 32715288.1373162,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 26,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Espírito Santo",
+      "valor": 42333166.490987636,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 26,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Espírito Santo",
+      "valor": 38354840.293539144,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 26,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Espírito Santo",
+      "valor": 68529007.68696867,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 26,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Espírito Santo",
+      "valor": 42287451.20571177,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 26,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Espírito Santo",
+      "valor": 67452688.44448467,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 26,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Espírito Santo",
+      "valor": 112878520.14670703,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 26,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Rio De Janeiro",
+      "valor": 209490731.311782,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 27,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Rio De Janeiro",
+      "valor": 251572908.62545964,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 27,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Rio De Janeiro",
+      "valor": 202824097.7097434,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 27,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Rio De Janeiro",
+      "valor": 131017860.3742661,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 27,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Rio De Janeiro",
+      "valor": 125645979.97813445,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 27,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Rio De Janeiro",
+      "valor": 141562024.58101994,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 27,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Rio De Janeiro",
+      "valor": 119431655.50581662,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 27,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Rio De Janeiro",
+      "valor": 213507860.31564516,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 27,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Rio De Janeiro",
+      "valor": 193620531.38308695,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 27,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Rio De Janeiro",
+      "valor": 209922331.78531688,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 27,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Rio De Janeiro",
+      "valor": 395056268.9376661,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 27,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "São Paulo",
+      "valor": 1117757465.7164543,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 28,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "São Paulo",
+      "valor": 1034003647.2103323,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 28,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "São Paulo",
+      "valor": 887310189.0382905,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 28,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "São Paulo",
+      "valor": 761514924.0152702,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 28,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "São Paulo",
+      "valor": 800718750.9694905,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 28,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "São Paulo",
+      "valor": 872318231.9148542,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 28,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "São Paulo",
+      "valor": 869981266.2320007,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 28,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "São Paulo",
+      "valor": 1101862844.9240117,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 28,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "São Paulo",
+      "valor": 1165900947.4385111,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 28,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "São Paulo",
+      "valor": 1393802774.1031153,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 28,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "São Paulo",
+      "valor": 1645655224.573241,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 28,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Paraná",
+      "valor": 73931353.49471213,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 30,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Paraná",
+      "valor": 76636834.5598543,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 30,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Paraná",
+      "valor": 87584248.64797421,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 30,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Paraná",
+      "valor": 94890071.41210309,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 30,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Paraná",
+      "valor": 95862174.25621372,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 30,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Paraná",
+      "valor": 86862191.8181845,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 30,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Paraná",
+      "valor": 84112265.38081431,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 30,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Paraná",
+      "valor": 135671810.44289938,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 30,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Paraná",
+      "valor": 110343612.1014953,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 30,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Paraná",
+      "valor": 129171906.41776913,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 30,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Paraná",
+      "valor": 121974650.19501682,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 30,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Santa Catarina",
+      "valor": 42583864.35413636,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 31,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Santa Catarina",
+      "valor": 33207910.23859859,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 31,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Santa Catarina",
+      "valor": 45884765.38824323,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 31,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Santa Catarina",
+      "valor": 40809395.58494766,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 31,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Santa Catarina",
+      "valor": 40291926.047528036,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 31,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Santa Catarina",
+      "valor": 37663739.82066138,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 31,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Santa Catarina",
+      "valor": 37250535.833412886,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 31,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Santa Catarina",
+      "valor": 61777206.113317154,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 31,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Santa Catarina",
+      "valor": 67153172.04211953,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 31,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Santa Catarina",
+      "valor": 85475762.72300236,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 31,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Santa Catarina",
+      "valor": 130081824.3868952,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 31,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Rio Grande Do Sul",
+      "valor": 88695246.91232933,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 32,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Rio Grande Do Sul",
+      "valor": 108030784.60554083,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 32,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Rio Grande Do Sul",
+      "valor": 92566127.31724145,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 32,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Rio Grande Do Sul",
+      "valor": 82244985.63212606,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 32,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Rio Grande Do Sul",
+      "valor": 94140776.89398381,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 32,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Rio Grande Do Sul",
+      "valor": 85648543.44715847,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 32,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Rio Grande Do Sul",
+      "valor": 66166395.56076979,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 32,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Rio Grande Do Sul",
+      "valor": 142868019.0338776,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 32,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Rio Grande Do Sul",
+      "valor": 59778712.21042404,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 32,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Rio Grande Do Sul",
+      "valor": 137073317.4343328,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 32,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Rio Grande Do Sul",
+      "valor": 131805855.18602061,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 32,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Mato Grosso Do Sul",
+      "valor": 23147658.20439899,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 34,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Mato Grosso Do Sul",
+      "valor": 19495582.152783584,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 34,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Mato Grosso Do Sul",
+      "valor": 17057418.98549298,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 34,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Mato Grosso Do Sul",
+      "valor": 29713659.845276322,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 34,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Mato Grosso Do Sul",
+      "valor": 30476073.483976163,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 34,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Mato Grosso Do Sul",
+      "valor": 47032221.991312206,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 34,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Mato Grosso Do Sul",
+      "valor": 43215538.50268218,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 34,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Mato Grosso Do Sul",
+      "valor": 59926689.94559014,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 34,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Mato Grosso Do Sul",
+      "valor": 66946586.63441542,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 34,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Mato Grosso Do Sul",
+      "valor": 196611290.6655638,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 34,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Mato Grosso Do Sul",
+      "valor": 100745718.43474624,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 34,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Mato Grosso",
+      "valor": 35783545.45767855,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 35,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Mato Grosso",
+      "valor": 34067421.39617205,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 35,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Mato Grosso",
+      "valor": 37922379.83307597,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 35,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Mato Grosso",
+      "valor": 27234914.254440315,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 35,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Mato Grosso",
+      "valor": 63300431.769615255,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 35,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Mato Grosso",
+      "valor": 55495101.22478545,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 35,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Mato Grosso",
+      "valor": 45181948.539995395,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 35,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Mato Grosso",
+      "valor": 75167255.12264092,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 35,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Mato Grosso",
+      "valor": 91503341.08463743,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 35,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Mato Grosso",
+      "valor": 185975792.871041,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 35,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Mato Grosso",
+      "valor": 173501604.52680138,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 35,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Goiás",
+      "valor": 15638304.026316801,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 36,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Goiás",
+      "valor": 39244383.52316029,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 36,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Goiás",
+      "valor": 41653531.41670049,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 36,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Goiás",
+      "valor": 51148788.468967,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 36,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Goiás",
+      "valor": 53891945.59394014,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 36,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Goiás",
+      "valor": 45884461.5897107,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 36,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Goiás",
+      "valor": 5829508.642916119,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 36,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Goiás",
+      "valor": 103348971.69734268,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 36,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Goiás",
+      "valor": 88131083.61913596,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 36,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Goiás",
+      "valor": 52984040.19360523,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 36,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Goiás",
+      "valor": 152736041.00347733,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 36,
+        "coluna": 22
+      }
+    },
+    {
+      "ano": 2013,
+      "entidade": "Distrito Federal",
+      "valor": 234454422.95642266,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 37,
+        "coluna": 2
+      }
+    },
+    {
+      "ano": 2014,
+      "entidade": "Distrito Federal",
+      "valor": 203803139.1289369,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 37,
+        "coluna": 4
+      }
+    },
+    {
+      "ano": 2015,
+      "entidade": "Distrito Federal",
+      "valor": 140025751.67142832,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 37,
+        "coluna": 6
+      }
+    },
+    {
+      "ano": 2016,
+      "entidade": "Distrito Federal",
+      "valor": 141235703.9219449,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 37,
+        "coluna": 8
+      }
+    },
+    {
+      "ano": 2017,
+      "entidade": "Distrito Federal",
+      "valor": 159222575.19946083,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 37,
+        "coluna": 10
+      }
+    },
+    {
+      "ano": 2018,
+      "entidade": "Distrito Federal",
+      "valor": 197538377.692028,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 37,
+        "coluna": 12
+      }
+    },
+    {
+      "ano": 2019,
+      "entidade": "Distrito Federal",
+      "valor": 182807853.64873624,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 37,
+        "coluna": 14
+      }
+    },
+    {
+      "ano": 2020,
+      "entidade": "Distrito Federal",
+      "valor": 197478233.1967693,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 37,
+        "coluna": 16
+      }
+    },
+    {
+      "ano": 2021,
+      "entidade": "Distrito Federal",
+      "valor": 293479442.6709806,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 37,
+        "coluna": 18
+      }
+    },
+    {
+      "ano": 2022,
+      "entidade": "Distrito Federal",
+      "valor": 263267176.71086714,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 37,
+        "coluna": 20
+      }
+    },
+    {
+      "ano": 2023,
+      "entidade": "Distrito Federal",
+      "valor": 320989067.16125894,
+      "origem": {
+        "fonte": "ibge",
+        "aba": "Tabela 3.7",
+        "linha": 37,
+        "coluna": 22
+      }
+    }
+  ],
+  "catalogo": [
+    {
+      "id": "cultura.a3.equipamento",
+      "nome": "Distribuição por região",
+      "familia": "rede",
+      "pergunta": "Distribuição por região?",
+      "o_que_mede": "Percentual publicado da categoria no universo de cada tipo de equipamento cultural listado nos cadastros oficiais.",
+      "o_que_nao_mede": "Participação de cada região no universo de cada tipo; não é cobertura da população.",
+      "formula": "Transcrição da estimativa e da margem de erro da publicação; sem reponderação.",
+      "numerador": "Estimativa ponderada de equipamentos na categoria",
+      "denominador": "Total do mesmo tipo de equipamento no universo da pesquisa",
+      "unidade": "% de equipamentos; margem em pontos percentuais",
+      "fontes": [
+        "tic"
+      ],
+      "localizacao_registro": "A3; arquivo de proporções e de margens de erro, mesma linha e coluna",
+      "periodo": "2024; últimas atividades conforme janela do questionário",
+      "perimetro": "Brasil; sete tipos de equipamentos; inclui públicos e privados",
+      "ausencias": "Nenhuma ausência convertida em zero; respostas não publicadas no recorte não são inferidas por complemento.",
+      "transformacoes": "Sem alteração de estimativas; intervalos visuais valor ± margem limitados a 0–100%.",
+      "estado_publicacao": "publicado",
+      "limites": "Participação de cada região no universo de cada tipo; não é cobertura da população. Margens com confiança de 95%; diferenças pequenas não demonstram diferença estatística."
+    },
+    {
+      "id": "cultura.a4.equipamento",
+      "nome": "Natureza jurídica",
+      "familia": "rede",
+      "pergunta": "Natureza jurídica?",
+      "o_que_mede": "Percentual publicado da categoria no universo de cada tipo de equipamento cultural listado nos cadastros oficiais.",
+      "o_que_nao_mede": "Público e privado no mesmo universo. A natureza não identifica a origem de todos os recursos.",
+      "formula": "Transcrição da estimativa e da margem de erro da publicação; sem reponderação.",
+      "numerador": "Estimativa ponderada de equipamentos na categoria",
+      "denominador": "Total do mesmo tipo de equipamento no universo da pesquisa",
+      "unidade": "% de equipamentos; margem em pontos percentuais",
+      "fontes": [
+        "tic"
+      ],
+      "localizacao_registro": "A4; arquivo de proporções e de margens de erro, mesma linha e coluna",
+      "periodo": "2024; últimas atividades conforme janela do questionário",
+      "perimetro": "Brasil; sete tipos de equipamentos; inclui públicos e privados",
+      "ausencias": "Nenhuma ausência convertida em zero; respostas não publicadas no recorte não são inferidas por complemento.",
+      "transformacoes": "Sem alteração de estimativas; intervalos visuais valor ± margem limitados a 0–100%.",
+      "estado_publicacao": "publicado",
+      "limites": "Público e privado no mesmo universo. A natureza não identifica a origem de todos os recursos. Margens com confiança de 95%; diferenças pequenas não demonstram diferença estatística."
+    },
+    {
+      "id": "cultura.b3c.equipamento",
+      "nome": "Computadores para o público",
+      "familia": "acesso",
+      "pergunta": "Computadores para o público?",
+      "o_que_mede": "Percentual publicado da categoria no universo de cada tipo de equipamento cultural listado nos cadastros oficiais.",
+      "o_que_nao_mede": "Equipamentos que disponibilizam computadores para uso do público.",
+      "formula": "Transcrição da estimativa e da margem de erro da publicação; sem reponderação.",
+      "numerador": "Estimativa ponderada de equipamentos na categoria",
+      "denominador": "Total do mesmo tipo de equipamento no universo da pesquisa",
+      "unidade": "% de equipamentos; margem em pontos percentuais",
+      "fontes": [
+        "tic"
+      ],
+      "localizacao_registro": "B3C; arquivo de proporções e de margens de erro, mesma linha e coluna",
+      "periodo": "2024; últimas atividades conforme janela do questionário",
+      "perimetro": "Brasil; sete tipos de equipamentos; inclui públicos e privados",
+      "ausencias": "Nenhuma ausência convertida em zero; respostas não publicadas no recorte não são inferidas por complemento.",
+      "transformacoes": "Sem alteração de estimativas; intervalos visuais valor ± margem limitados a 0–100%.",
+      "estado_publicacao": "publicado",
+      "limites": "Equipamentos que disponibilizam computadores para uso do público. Margens com confiança de 95%; diferenças pequenas não demonstram diferença estatística."
+    },
+    {
+      "id": "cultura.b5.equipamento",
+      "nome": "Uso de internet pela instituição",
+      "familia": "acesso",
+      "pergunta": "Uso de internet pela instituição?",
+      "o_que_mede": "Percentual publicado da categoria no universo de cada tipo de equipamento cultural listado nos cadastros oficiais.",
+      "o_que_nao_mede": "Equipamentos que usaram internet nos últimos 12 meses; não implica acesso oferecido ao público.",
+      "formula": "Transcrição da estimativa e da margem de erro da publicação; sem reponderação.",
+      "numerador": "Estimativa ponderada de equipamentos na categoria",
+      "denominador": "Total do mesmo tipo de equipamento no universo da pesquisa",
+      "unidade": "% de equipamentos; margem em pontos percentuais",
+      "fontes": [
+        "tic"
+      ],
+      "localizacao_registro": "B5; arquivo de proporções e de margens de erro, mesma linha e coluna",
+      "periodo": "2024; últimas atividades conforme janela do questionário",
+      "perimetro": "Brasil; sete tipos de equipamentos; inclui públicos e privados",
+      "ausencias": "Nenhuma ausência convertida em zero; respostas não publicadas no recorte não são inferidas por complemento.",
+      "transformacoes": "Sem alteração de estimativas; intervalos visuais valor ± margem limitados a 0–100%.",
+      "estado_publicacao": "publicado",
+      "limites": "Equipamentos que usaram internet nos últimos 12 meses; não implica acesso oferecido ao público. Margens com confiança de 95%; diferenças pequenas não demonstram diferença estatística."
+    },
+    {
+      "id": "cultura.b10.equipamento",
+      "nome": "Wi-Fi para o público",
+      "familia": "acesso",
+      "pergunta": "Wi-Fi para o público?",
+      "o_que_mede": "Percentual publicado da categoria no universo de cada tipo de equipamento cultural listado nos cadastros oficiais.",
+      "o_que_nao_mede": "Equipamentos que disponibilizam Wi-Fi para o público; não mede qualidade ou velocidade.",
+      "formula": "Transcrição da estimativa e da margem de erro da publicação; sem reponderação.",
+      "numerador": "Estimativa ponderada de equipamentos na categoria",
+      "denominador": "Total do mesmo tipo de equipamento no universo da pesquisa",
+      "unidade": "% de equipamentos; margem em pontos percentuais",
+      "fontes": [
+        "tic"
+      ],
+      "localizacao_registro": "B10; arquivo de proporções e de margens de erro, mesma linha e coluna",
+      "periodo": "2024; últimas atividades conforme janela do questionário",
+      "perimetro": "Brasil; sete tipos de equipamentos; inclui públicos e privados",
+      "ausencias": "Nenhuma ausência convertida em zero; respostas não publicadas no recorte não são inferidas por complemento.",
+      "transformacoes": "Sem alteração de estimativas; intervalos visuais valor ± margem limitados a 0–100%.",
+      "estado_publicacao": "publicado",
+      "limites": "Equipamentos que disponibilizam Wi-Fi para o público; não mede qualidade ou velocidade. Margens com confiança de 95%; diferenças pequenas não demonstram diferença estatística."
+    },
+    {
+      "id": "cultura.c3.equipamento",
+      "nome": "Website próprio",
+      "familia": "acesso",
+      "pergunta": "Website próprio?",
+      "o_que_mede": "Percentual publicado da categoria no universo de cada tipo de equipamento cultural listado nos cadastros oficiais.",
+      "o_que_nao_mede": "Equipamentos que possuem website próprio; presença em sites de terceiros ou redes sociais é outra medida.",
+      "formula": "Transcrição da estimativa e da margem de erro da publicação; sem reponderação.",
+      "numerador": "Estimativa ponderada de equipamentos na categoria",
+      "denominador": "Total do mesmo tipo de equipamento no universo da pesquisa",
+      "unidade": "% de equipamentos; margem em pontos percentuais",
+      "fontes": [
+        "tic"
+      ],
+      "localizacao_registro": "C3; arquivo de proporções e de margens de erro, mesma linha e coluna",
+      "periodo": "2024; últimas atividades conforme janela do questionário",
+      "perimetro": "Brasil; sete tipos de equipamentos; inclui públicos e privados",
+      "ausencias": "Nenhuma ausência convertida em zero; respostas não publicadas no recorte não são inferidas por complemento.",
+      "transformacoes": "Sem alteração de estimativas; intervalos visuais valor ± margem limitados a 0–100%.",
+      "estado_publicacao": "publicado",
+      "limites": "Equipamentos que possuem website próprio; presença em sites de terceiros ou redes sociais é outra medida. Margens com confiança de 95%; diferenças pequenas não demonstram diferença estatística."
+    },
+    {
+      "id": "cultura.c11.equipamento",
+      "nome": "Atividades realizadas",
+      "familia": "atividades",
+      "pergunta": "Atividades realizadas?",
+      "o_que_mede": "Percentual publicado da categoria no universo de cada tipo de equipamento cultural listado nos cadastros oficiais.",
+      "o_que_nao_mede": "Uma instituição pode realizar várias atividades; percentuais não devem ser somados.",
+      "formula": "Transcrição da estimativa e da margem de erro da publicação; sem reponderação.",
+      "numerador": "Estimativa ponderada de equipamentos na categoria",
+      "denominador": "Total do mesmo tipo de equipamento no universo da pesquisa",
+      "unidade": "% de equipamentos; margem em pontos percentuais",
+      "fontes": [
+        "tic"
+      ],
+      "localizacao_registro": "C11; arquivo de proporções e de margens de erro, mesma linha e coluna",
+      "periodo": "2024; últimas atividades conforme janela do questionário",
+      "perimetro": "Brasil; sete tipos de equipamentos; inclui públicos e privados",
+      "ausencias": "Nenhuma ausência convertida em zero; respostas não publicadas no recorte não são inferidas por complemento.",
+      "transformacoes": "Sem alteração de estimativas; intervalos visuais valor ± margem limitados a 0–100%.",
+      "estado_publicacao": "publicado",
+      "limites": "Uma instituição pode realizar várias atividades; percentuais não devem ser somados. Margens com confiança de 95%; diferenças pequenas não demonstram diferença estatística."
+    },
+    {
+      "id": "cultura.d1.equipamento",
+      "nome": "Possui acervo",
+      "familia": "acervos",
+      "pergunta": "Possui acervo?",
+      "o_que_mede": "Percentual publicado da categoria no universo de cada tipo de equipamento cultural listado nos cadastros oficiais.",
+      "o_que_nao_mede": "Existência de acervo; não mede preservação, acessibilidade ou qualidade.",
+      "formula": "Transcrição da estimativa e da margem de erro da publicação; sem reponderação.",
+      "numerador": "Estimativa ponderada de equipamentos na categoria",
+      "denominador": "Total do mesmo tipo de equipamento no universo da pesquisa",
+      "unidade": "% de equipamentos; margem em pontos percentuais",
+      "fontes": [
+        "tic"
+      ],
+      "localizacao_registro": "D1; arquivo de proporções e de margens de erro, mesma linha e coluna",
+      "periodo": "2024; últimas atividades conforme janela do questionário",
+      "perimetro": "Brasil; sete tipos de equipamentos; inclui públicos e privados",
+      "ausencias": "Nenhuma ausência convertida em zero; respostas não publicadas no recorte não são inferidas por complemento.",
+      "transformacoes": "Sem alteração de estimativas; intervalos visuais valor ± margem limitados a 0–100%.",
+      "estado_publicacao": "publicado",
+      "limites": "Existência de acervo; não mede preservação, acessibilidade ou qualidade. Margens com confiança de 95%; diferenças pequenas não demonstram diferença estatística."
+    },
+    {
+      "id": "cultura.d2.equipamento",
+      "nome": "Digitaliza acervo",
+      "familia": "acervos",
+      "pergunta": "Digitaliza acervo?",
+      "o_que_mede": "Percentual publicado da categoria no universo de cada tipo de equipamento cultural listado nos cadastros oficiais.",
+      "o_que_nao_mede": "Equipamentos que digitalizam acervo; não é percentual de itens digitalizados.",
+      "formula": "Transcrição da estimativa e da margem de erro da publicação; sem reponderação.",
+      "numerador": "Estimativa ponderada de equipamentos na categoria",
+      "denominador": "Total do mesmo tipo de equipamento no universo da pesquisa",
+      "unidade": "% de equipamentos; margem em pontos percentuais",
+      "fontes": [
+        "tic"
+      ],
+      "localizacao_registro": "D2; arquivo de proporções e de margens de erro, mesma linha e coluna",
+      "periodo": "2024; últimas atividades conforme janela do questionário",
+      "perimetro": "Brasil; sete tipos de equipamentos; inclui públicos e privados",
+      "ausencias": "Nenhuma ausência convertida em zero; respostas não publicadas no recorte não são inferidas por complemento.",
+      "transformacoes": "Sem alteração de estimativas; intervalos visuais valor ± margem limitados a 0–100%.",
+      "estado_publicacao": "publicado",
+      "limites": "Equipamentos que digitalizam acervo; não é percentual de itens digitalizados. Margens com confiança de 95%; diferenças pequenas não demonstram diferença estatística."
+    },
+    {
+      "id": "cultura.d4b.equipamento",
+      "nome": "Acervo digital na internet",
+      "familia": "acervos",
+      "pergunta": "Acervo digital na internet?",
+      "o_que_mede": "Percentual publicado da categoria no universo de cada tipo de equipamento cultural listado nos cadastros oficiais.",
+      "o_que_nao_mede": "Equipamentos que disponibilizam acervo digital para o público na internet; não é percentual do acervo disponível.",
+      "formula": "Transcrição da estimativa e da margem de erro da publicação; sem reponderação.",
+      "numerador": "Estimativa ponderada de equipamentos na categoria",
+      "denominador": "Total do mesmo tipo de equipamento no universo da pesquisa",
+      "unidade": "% de equipamentos; margem em pontos percentuais",
+      "fontes": [
+        "tic"
+      ],
+      "localizacao_registro": "D4B; arquivo de proporções e de margens de erro, mesma linha e coluna",
+      "periodo": "2024; últimas atividades conforme janela do questionário",
+      "perimetro": "Brasil; sete tipos de equipamentos; inclui públicos e privados",
+      "ausencias": "Nenhuma ausência convertida em zero; respostas não publicadas no recorte não são inferidas por complemento.",
+      "transformacoes": "Sem alteração de estimativas; intervalos visuais valor ± margem limitados a 0–100%.",
+      "estado_publicacao": "publicado",
+      "limites": "Equipamentos que disponibilizam acervo digital para o público na internet; não é percentual do acervo disponível. Margens com confiança de 95%; diferenças pequenas não demonstram diferença estatística."
+    },
+    {
+      "id": "cultura.d8.equipamento",
+      "nome": "Catálogo na internet",
+      "familia": "acervos",
+      "pergunta": "Catálogo na internet?",
+      "o_que_mede": "Percentual publicado da categoria no universo de cada tipo de equipamento cultural listado nos cadastros oficiais.",
+      "o_que_nao_mede": "Equipamentos que disponibilizam catálogo do acervo na internet; catálogo não equivale ao conteúdo do acervo.",
+      "formula": "Transcrição da estimativa e da margem de erro da publicação; sem reponderação.",
+      "numerador": "Estimativa ponderada de equipamentos na categoria",
+      "denominador": "Total do mesmo tipo de equipamento no universo da pesquisa",
+      "unidade": "% de equipamentos; margem em pontos percentuais",
+      "fontes": [
+        "tic"
+      ],
+      "localizacao_registro": "D8; arquivo de proporções e de margens de erro, mesma linha e coluna",
+      "periodo": "2024; últimas atividades conforme janela do questionário",
+      "perimetro": "Brasil; sete tipos de equipamentos; inclui públicos e privados",
+      "ausencias": "Nenhuma ausência convertida em zero; respostas não publicadas no recorte não são inferidas por complemento.",
+      "transformacoes": "Sem alteração de estimativas; intervalos visuais valor ± margem limitados a 0–100%.",
+      "estado_publicacao": "publicado",
+      "limites": "Equipamentos que disponibilizam catálogo do acervo na internet; catálogo não equivale ao conteúdo do acervo. Margens com confiança de 95%; diferenças pequenas não demonstram diferença estatística."
+    },
+    {
+      "id": "cultura.despesa.governo",
+      "nome": "Despesa com cultura",
+      "familia": "recursos",
+      "pergunta": "Quanto registram as esferas e governos estaduais?",
+      "o_que_mede": "Despesa publicada no SIIC, com classificação e consolidação da STN; por esfera e por governo estadual/distrital.",
+      "o_que_nao_mede": "Custo por atendimento, renúncia fiscal, captação incentivada, despesa de uma capital ou efeito de políticas.",
+      "formula": "Valor de origem em mil reais × 1.000; participação no orçamento da Tabela 3.2 × 100.",
+      "numerador": "Despesa com cultura",
+      "denominador": "Despesa total da própria esfera, somente na medida de participação",
+      "unidade": "R$ nominais; % da despesa da esfera",
+      "fontes": [
+        "ibge"
+      ],
+      "localizacao_registro": "Tabelas 3.1, 3.2 e 3.7; células no seed",
+      "periodo": "2013–2023",
+      "perimetro": "Brasil; federal, estadual e municipal; 26 estados e DF na comparação estadual",
+      "ausencias": "Ausência não vira zero. Todos os 27 governos estaduais/distrital disponíveis.",
+      "transformacoes": "Conversão de unidade; sem deflator, per capita ou soma com renúncia fiscal.",
+      "estado_publicacao": "publicado",
+      "limites": "Valores correntes de cada ano; variação nominal não mede variação do poder de compra. DF tem competências próprias; origem do recurso não é separada nesta tabela."
+    }
+  ],
+  "validacoes": [
+    {
+      "ano": 2013,
+      "esferasReconciliadas": true,
+      "ufsReconciliadas": true
+    },
+    {
+      "ano": 2014,
+      "esferasReconciliadas": true,
+      "ufsReconciliadas": true
+    },
+    {
+      "ano": 2015,
+      "esferasReconciliadas": true,
+      "ufsReconciliadas": true
+    },
+    {
+      "ano": 2016,
+      "esferasReconciliadas": true,
+      "ufsReconciliadas": true
+    },
+    {
+      "ano": 2017,
+      "esferasReconciliadas": true,
+      "ufsReconciliadas": true
+    },
+    {
+      "ano": 2018,
+      "esferasReconciliadas": true,
+      "ufsReconciliadas": true
+    },
+    {
+      "ano": 2019,
+      "esferasReconciliadas": true,
+      "ufsReconciliadas": true
+    },
+    {
+      "ano": 2020,
+      "esferasReconciliadas": true,
+      "ufsReconciliadas": true
+    },
+    {
+      "ano": 2021,
+      "esferasReconciliadas": true,
+      "ufsReconciliadas": true
+    },
+    {
+      "ano": 2022,
+      "esferasReconciliadas": true,
+      "ufsReconciliadas": true
+    },
+    {
+      "ano": 2023,
+      "esferasReconciliadas": true,
+      "ufsReconciliadas": true
+    }
+  ]
+}

@@ -1,0 +1,596 @@
+fonte,aba,linha,coluna,ano,entidade,categoria,valor,margem,unidade
+tic,A3,5,3,2024,Arquivo,Centro-Oeste,10.334,0.0,percentual
+tic,A3,5,4,2024,Arquivo,Nordeste,18.283,0.0,percentual
+tic,A3,5,5,2024,Arquivo,Norte,6.677,0.0,percentual
+tic,A3,5,6,2024,Arquivo,Sudeste,42.607,0.0,percentual
+tic,A3,5,7,2024,Arquivo,Sul,22.099,0.0,percentual
+tic,A3,6,3,2024,Bem tombado,Centro-Oeste,5.128,0.0,percentual
+tic,A3,6,4,2024,Bem tombado,Nordeste,34.744,0.0,percentual
+tic,A3,6,5,2024,Bem tombado,Norte,2.436,0.0,percentual
+tic,A3,6,6,2024,Bem tombado,Sudeste,45.513,0.0,percentual
+tic,A3,6,7,2024,Bem tombado,Sul,12.179,0.0,percentual
+tic,A3,7,3,2024,Biblioteca,Centro-Oeste,8.931,0.0,percentual
+tic,A3,7,4,2024,Biblioteca,Nordeste,30.211,0.0,percentual
+tic,A3,7,5,2024,Biblioteca,Norte,6.619,0.0,percentual
+tic,A3,7,6,2024,Biblioteca,Sudeste,28.473,0.0,percentual
+tic,A3,7,7,2024,Biblioteca,Sul,25.766,0.0,percentual
+tic,A3,8,3,2024,Cinema,Centro-Oeste,7.888,0.0,percentual
+tic,A3,8,4,2024,Cinema,Nordeste,16.383,0.0,percentual
+tic,A3,8,5,2024,Cinema,Norte,6.068,0.0,percentual
+tic,A3,8,6,2024,Cinema,Sudeste,51.335,0.0,percentual
+tic,A3,8,7,2024,Cinema,Sul,18.325,0.0,percentual
+tic,A3,9,3,2024,Museu,Centro-Oeste,7.23,0.0,percentual
+tic,A3,9,4,2024,Museu,Nordeste,21.888,0.0,percentual
+tic,A3,9,5,2024,Museu,Norte,4.423,0.0,percentual
+tic,A3,9,6,2024,Museu,Sudeste,39.042,0.0,percentual
+tic,A3,9,7,2024,Museu,Sul,27.417,0.0,percentual
+tic,A3,10,3,2024,Ponto de Cultura,Centro-Oeste,7.271,0.0,percentual
+tic,A3,10,4,2024,Ponto de Cultura,Nordeste,32.484,0.0,percentual
+tic,A3,10,5,2024,Ponto de Cultura,Norte,5.968,0.0,percentual
+tic,A3,10,6,2024,Ponto de Cultura,Sudeste,43.546,0.0,percentual
+tic,A3,10,7,2024,Ponto de Cultura,Sul,10.731,0.0,percentual
+tic,A3,11,3,2024,Teatro,Centro-Oeste,10.008,0.0,percentual
+tic,A3,11,4,2024,Teatro,Nordeste,19.344,0.0,percentual
+tic,A3,11,5,2024,Teatro,Norte,4.878,0.0,percentual
+tic,A3,11,6,2024,Teatro,Sudeste,48.865,0.0,percentual
+tic,A3,11,7,2024,Teatro,Sul,16.905,0.0,percentual
+tic,A4,5,3,2024,Arquivo,Público federal,30.1081,7.0951,percentual
+tic,A4,5,4,2024,Arquivo,Público estadual,27.1322,6.9485,percentual
+tic,A4,5,5,2024,Arquivo,Público municipal,25.7441,6.6802,percentual
+tic,A4,5,6,2024,Arquivo,Privado com fins lucrativos,1.1277,1.6239,percentual
+tic,A4,5,7,2024,Arquivo,Privado sem fins lucrativos,13.5747,5.8074,percentual
+tic,A4,5,8,2024,Arquivo,Não sabe,1.7777,2.0357,percentual
+tic,A4,5,9,2024,Arquivo,Não respondeu,0.5355,1.0814,percentual
+tic,A4,6,3,2024,Bem tombado,Público federal,21.3085,11.303,percentual
+tic,A4,6,4,2024,Bem tombado,Público estadual,4.2447,4.2265,percentual
+tic,A4,6,5,2024,Bem tombado,Público municipal,8.4766,8.1938,percentual
+tic,A4,6,6,2024,Bem tombado,Privado com fins lucrativos,1.015,2.0494,percentual
+tic,A4,6,7,2024,Bem tombado,Privado sem fins lucrativos,60.3044,13.1121,percentual
+tic,A4,6,8,2024,Bem tombado,Não sabe,4.6508,5.4417,percentual
+tic,A4,6,9,2024,Bem tombado,Não respondeu,0.0,0.0,percentual
+tic,A4,7,3,2024,Biblioteca,Público federal,1.0566,1.5658,percentual
+tic,A4,7,4,2024,Biblioteca,Público estadual,3.6732,1.7656,percentual
+tic,A4,7,5,2024,Biblioteca,Público municipal,92.9582,2.9816,percentual
+tic,A4,7,6,2024,Biblioteca,Privado com fins lucrativos,0.0,0.0,percentual
+tic,A4,7,7,2024,Biblioteca,Privado sem fins lucrativos,0.8485,0.8756,percentual
+tic,A4,7,8,2024,Biblioteca,Não sabe,1.3171,1.7128,percentual
+tic,A4,7,9,2024,Biblioteca,Não respondeu,0.1464,0.2856,percentual
+tic,A4,8,3,2024,Cinema,Público federal,4.6618,5.4748,percentual
+tic,A4,8,4,2024,Cinema,Público estadual,4.9392,4.5477,percentual
+tic,A4,8,5,2024,Cinema,Público municipal,12.2858,6.0169,percentual
+tic,A4,8,6,2024,Cinema,Privado com fins lucrativos,57.5394,11.44,percentual
+tic,A4,8,7,2024,Cinema,Privado sem fins lucrativos,15.5409,8.4025,percentual
+tic,A4,8,8,2024,Cinema,Não sabe,5.0328,3.9028,percentual
+tic,A4,8,9,2024,Cinema,Não respondeu,0.0,0.0,percentual
+tic,A4,9,3,2024,Museu,Público federal,13.2051,3.1071,percentual
+tic,A4,9,4,2024,Museu,Público estadual,15.1085,3.2896,percentual
+tic,A4,9,5,2024,Museu,Público municipal,36.6157,4.6392,percentual
+tic,A4,9,6,2024,Museu,Privado com fins lucrativos,2.5922,1.5535,percentual
+tic,A4,9,7,2024,Museu,Privado sem fins lucrativos,30.5721,4.4348,percentual
+tic,A4,9,8,2024,Museu,Não sabe,1.6615,1.3809,percentual
+tic,A4,9,9,2024,Museu,Não respondeu,0.2448,0.4872,percentual
+tic,A4,10,3,2024,Ponto de Cultura,Público federal,1.7661,1.6238,percentual
+tic,A4,10,4,2024,Ponto de Cultura,Público estadual,1.0656,1.1093,percentual
+tic,A4,10,5,2024,Ponto de Cultura,Público municipal,2.2825,1.7341,percentual
+tic,A4,10,6,2024,Ponto de Cultura,Privado com fins lucrativos,4.0246,2.3757,percentual
+tic,A4,10,7,2024,Ponto de Cultura,Privado sem fins lucrativos,84.9307,4.218,percentual
+tic,A4,10,8,2024,Ponto de Cultura,Não sabe,4.5286,2.5317,percentual
+tic,A4,10,9,2024,Ponto de Cultura,Não respondeu,1.4018,1.2026,percentual
+tic,A4,11,3,2024,Teatro,Público federal,4.8458,2.6809,percentual
+tic,A4,11,4,2024,Teatro,Público estadual,15.7247,4.235,percentual
+tic,A4,11,5,2024,Teatro,Público municipal,38.4991,5.5881,percentual
+tic,A4,11,6,2024,Teatro,Privado com fins lucrativos,11.6419,4.1807,percentual
+tic,A4,11,7,2024,Teatro,Privado sem fins lucrativos,25.3267,4.8811,percentual
+tic,A4,11,8,2024,Teatro,Não sabe,3.2486,2.2094,percentual
+tic,A4,11,9,2024,Teatro,Não respondeu,0.7134,1.0435,percentual
+tic,B3C,5,3,2024,Arquivo,Sim,54.6608,7.4058,percentual
+tic,B3C,6,3,2024,Bem tombado,Sim,9.584,7.9587,percentual
+tic,B3C,7,3,2024,Biblioteca,Sim,40.7704,5.4581,percentual
+tic,B3C,8,3,2024,Cinema,Sim,36.2125,11.1783,percentual
+tic,B3C,9,3,2024,Museu,Sim,13.5091,3.2618,percentual
+tic,B3C,10,3,2024,Ponto de Cultura,Sim,33.7597,5.4203,percentual
+tic,B3C,11,3,2024,Teatro,Sim,14.1014,4.442,percentual
+tic,B5,5,3,2024,Arquivo,Sim,100.0,0.0,percentual
+tic,B5,6,3,2024,Bem tombado,Sim,92.4761,6.4755,percentual
+tic,B5,7,3,2024,Biblioteca,Sim,83.3789,4.6257,percentual
+tic,B5,8,3,2024,Cinema,Sim,100.0,0.0,percentual
+tic,B5,9,3,2024,Museu,Sim,86.8498,3.2231,percentual
+tic,B5,10,3,2024,Ponto de Cultura,Sim,95.9513,2.1355,percentual
+tic,B5,11,3,2024,Teatro,Sim,90.6292,3.7125,percentual
+tic,B10,5,3,2024,Arquivo,Sim,57.2153,8.0476,percentual
+tic,B10,6,3,2024,Bem tombado,Sim,33.9086,12.1863,percentual
+tic,B10,7,3,2024,Biblioteca,Sim,64.8432,5.563,percentual
+tic,B10,8,3,2024,Cinema,Sim,58.0116,10.8347,percentual
+tic,B10,9,3,2024,Museu,Sim,50.9305,5.0018,percentual
+tic,B10,10,3,2024,Ponto de Cultura,Sim,64.0602,5.8329,percentual
+tic,B10,11,3,2024,Teatro,Sim,51.1482,6.3559,percentual
+tic,C3,5,3,2024,Arquivo,Sim,62.16,7.736,percentual
+tic,C3,6,3,2024,Bem tombado,Sim,43.142,12.349,percentual
+tic,C3,7,3,2024,Biblioteca,Sim,6.758,2.306,percentual
+tic,C3,8,3,2024,Cinema,Sim,71.601,9.87,percentual
+tic,C3,9,3,2024,Museu,Sim,36.918,4.755,percentual
+tic,C3,10,3,2024,Ponto de Cultura,Sim,50.079,6.047,percentual
+tic,C3,11,3,2024,Teatro,Sim,31.259,5.635,percentual
+tic,C11,5,3,2024,Arquivo,Produção de conteúdos audiovisuais,58.4371,7.4537,percentual
+tic,C11,5,7,2024,Arquivo,Exibição de filmes,27.3285,7.4621,percentual
+tic,C11,5,11,2024,Arquivo,Produção ou exibição de peças ou espetáculos,15.2602,5.7811,percentual
+tic,C11,5,15,2024,Arquivo,Produção ou exibição de shows ou apresentações musicais,17.417,6.6001,percentual
+tic,C11,5,19,2024,Arquivo,Produção ou realização de exposições,72.5981,7.3286,percentual
+tic,C11,5,23,2024,Arquivo,"Realização de feiras de arte, artesanato ou antiguidades",18.1465,6.44,percentual
+tic,C11,5,27,2024,Arquivo,"Realização de festas, festivais ou eventos públicos",38.2777,7.4225,percentual
+tic,C11,5,31,2024,Arquivo,"Realização de seminários, palestras, debates ou encontros",76.715,6.3831,percentual
+tic,C11,5,35,2024,Arquivo,Realização de atividades de promoção da leitura,40.758,8.252,percentual
+tic,C11,5,39,2024,Arquivo,Realização de oficinas ou atividades de formação,60.2471,7.7468,percentual
+tic,C11,6,3,2024,Bem tombado,Produção de conteúdos audiovisuais,52.874,12.861,percentual
+tic,C11,6,7,2024,Bem tombado,Exibição de filmes,30.0184,12.3539,percentual
+tic,C11,6,11,2024,Bem tombado,Produção ou exibição de peças ou espetáculos,32.5152,12.1328,percentual
+tic,C11,6,15,2024,Bem tombado,Produção ou exibição de shows ou apresentações musicais,52.6193,11.8569,percentual
+tic,C11,6,19,2024,Bem tombado,Produção ou realização de exposições,48.8596,13.0852,percentual
+tic,C11,6,23,2024,Bem tombado,"Realização de feiras de arte, artesanato ou antiguidades",38.5116,12.355,percentual
+tic,C11,6,27,2024,Bem tombado,"Realização de festas, festivais ou eventos públicos",66.328,13.2926,percentual
+tic,C11,6,31,2024,Bem tombado,"Realização de seminários, palestras, debates ou encontros",71.3092,12.3359,percentual
+tic,C11,6,35,2024,Bem tombado,Realização de atividades de promoção da leitura,35.9832,13.324,percentual
+tic,C11,6,39,2024,Bem tombado,Realização de oficinas ou atividades de formação,53.8852,12.8131,percentual
+tic,C11,7,3,2024,Biblioteca,Produção de conteúdos audiovisuais,22.231,4.999,percentual
+tic,C11,7,7,2024,Biblioteca,Exibição de filmes,29.2741,5.7207,percentual
+tic,C11,7,11,2024,Biblioteca,Produção ou exibição de peças ou espetáculos,24.0027,5.3429,percentual
+tic,C11,7,15,2024,Biblioteca,Produção ou exibição de shows ou apresentações musicais,22.8933,5.4017,percentual
+tic,C11,7,19,2024,Biblioteca,Produção ou realização de exposições,46.732,5.9434,percentual
+tic,C11,7,23,2024,Biblioteca,"Realização de feiras de arte, artesanato ou antiguidades",26.0753,5.92,percentual
+tic,C11,7,27,2024,Biblioteca,"Realização de festas, festivais ou eventos públicos",40.8428,6.1787,percentual
+tic,C11,7,31,2024,Biblioteca,"Realização de seminários, palestras, debates ou encontros",53.8843,5.8831,percentual
+tic,C11,7,35,2024,Biblioteca,Realização de atividades de promoção da leitura,87.249,3.836,percentual
+tic,C11,7,39,2024,Biblioteca,Realização de oficinas ou atividades de formação,49.1748,6.0241,percentual
+tic,C11,8,3,2024,Cinema,Produção de conteúdos audiovisuais,51.5935,11.2468,percentual
+tic,C11,8,7,2024,Cinema,Exibição de filmes,97.9869,2.803,percentual
+tic,C11,8,11,2024,Cinema,Produção ou exibição de peças ou espetáculos,32.0543,10.6317,percentual
+tic,C11,8,15,2024,Cinema,Produção ou exibição de shows ou apresentações musicais,42.6544,11.0854,percentual
+tic,C11,8,19,2024,Cinema,Produção ou realização de exposições,29.9149,10.8831,percentual
+tic,C11,8,23,2024,Cinema,"Realização de feiras de arte, artesanato ou antiguidades",15.6404,8.571,percentual
+tic,C11,8,27,2024,Cinema,"Realização de festas, festivais ou eventos públicos",42.0379,10.8216,percentual
+tic,C11,8,31,2024,Cinema,"Realização de seminários, palestras, debates ou encontros",56.4269,11.4773,percentual
+tic,C11,8,35,2024,Cinema,Realização de atividades de promoção da leitura,27.3481,10.059,percentual
+tic,C11,8,39,2024,Cinema,Realização de oficinas ou atividades de formação,41.2266,11.0768,percentual
+tic,C11,9,3,2024,Museu,Produção de conteúdos audiovisuais,50.2067,4.8264,percentual
+tic,C11,9,7,2024,Museu,Exibição de filmes,41.6874,4.912,percentual
+tic,C11,9,11,2024,Museu,Produção ou exibição de peças ou espetáculos,29.7487,4.3873,percentual
+tic,C11,9,15,2024,Museu,Produção ou exibição de shows ou apresentações musicais,37.3557,5.0664,percentual
+tic,C11,9,19,2024,Museu,Produção ou realização de exposições,83.5406,3.7276,percentual
+tic,C11,9,23,2024,Museu,"Realização de feiras de arte, artesanato ou antiguidades",37.0196,5.21,percentual
+tic,C11,9,27,2024,Museu,"Realização de festas, festivais ou eventos públicos",55.7482,5.4072,percentual
+tic,C11,9,31,2024,Museu,"Realização de seminários, palestras, debates ou encontros",74.8956,4.2493,percentual
+tic,C11,9,35,2024,Museu,Realização de atividades de promoção da leitura,44.9932,4.991,percentual
+tic,C11,9,39,2024,Museu,Realização de oficinas ou atividades de formação,67.9658,4.7354,percentual
+tic,C11,10,3,2024,Ponto de Cultura,Produção de conteúdos audiovisuais,77.7864,4.6138,percentual
+tic,C11,10,7,2024,Ponto de Cultura,Exibição de filmes,58.8431,5.737,percentual
+tic,C11,10,11,2024,Ponto de Cultura,Produção ou exibição de peças ou espetáculos,72.355,5.0059,percentual
+tic,C11,10,15,2024,Ponto de Cultura,Produção ou exibição de shows ou apresentações musicais,75.3154,4.8192,percentual
+tic,C11,10,19,2024,Ponto de Cultura,Produção ou realização de exposições,69.7208,5.0681,percentual
+tic,C11,10,23,2024,Ponto de Cultura,"Realização de feiras de arte, artesanato ou antiguidades",56.4994,5.525,percentual
+tic,C11,10,27,2024,Ponto de Cultura,"Realização de festas, festivais ou eventos públicos",90.3276,3.0944,percentual
+tic,C11,10,31,2024,Ponto de Cultura,"Realização de seminários, palestras, debates ou encontros",92.8962,2.8804,percentual
+tic,C11,10,35,2024,Ponto de Cultura,Realização de atividades de promoção da leitura,72.1278,4.79,percentual
+tic,C11,10,39,2024,Ponto de Cultura,Realização de oficinas ou atividades de formação,92.8081,2.7178,percentual
+tic,C11,11,3,2024,Teatro,Produção de conteúdos audiovisuais,53.6021,6.4294,percentual
+tic,C11,11,7,2024,Teatro,Exibição de filmes,53.9686,5.5466,percentual
+tic,C11,11,11,2024,Teatro,Produção ou exibição de peças ou espetáculos,90.4855,3.4315,percentual
+tic,C11,11,15,2024,Teatro,Produção ou exibição de shows ou apresentações musicais,87.3703,4.0017,percentual
+tic,C11,11,19,2024,Teatro,Produção ou realização de exposições,61.0322,6.2764,percentual
+tic,C11,11,23,2024,Teatro,"Realização de feiras de arte, artesanato ou antiguidades",36.9861,5.747,percentual
+tic,C11,11,27,2024,Teatro,"Realização de festas, festivais ou eventos públicos",82.6942,4.5217,percentual
+tic,C11,11,31,2024,Teatro,"Realização de seminários, palestras, debates ou encontros",88.4441,3.9272,percentual
+tic,C11,11,35,2024,Teatro,Realização de atividades de promoção da leitura,55.3842,5.997,percentual
+tic,C11,11,39,2024,Teatro,Realização de oficinas ou atividades de formação,76.8719,4.9978,percentual
+tic,D1,5,3,2024,Arquivo,Sim,98.136,2.0824,percentual
+tic,D1,6,3,2024,Bem tombado,Sim,100.0,0.0,percentual
+tic,D1,7,3,2024,Biblioteca,Sim,97.572,2.2136,percentual
+tic,D1,8,3,2024,Cinema,Sim,74.571,10.1241,percentual
+tic,D1,9,3,2024,Museu,Sim,98.97,0.8407,percentual
+tic,D1,10,3,2024,Ponto de Cultura,Sim,95.418,2.408,percentual
+tic,D1,11,3,2024,Teatro,Sim,73.777,5.4501,percentual
+tic,D2,5,3,2024,Arquivo,Sim,88.12,4.943,percentual
+tic,D2,6,3,2024,Bem tombado,Sim,57.08,13.134,percentual
+tic,D2,7,3,2024,Biblioteca,Sim,36.79,6.087,percentual
+tic,D2,8,3,2024,Cinema,Sim,46.41,11.673,percentual
+tic,D2,9,3,2024,Museu,Sim,73.57,4.063,percentual
+tic,D2,10,3,2024,Ponto de Cultura,Sim,76.34,5.059,percentual
+tic,D2,11,3,2024,Teatro,Sim,39.3,5.516,percentual
+tic,D4B,5,3,2024,Arquivo,Sim,82.63,6.189,percentual
+tic,D4B,6,3,2024,Bem tombado,Sim,38.93,13.595,percentual
+tic,D4B,7,3,2024,Biblioteca,Sim,11.26,4.228,percentual
+tic,D4B,8,3,2024,Cinema,Sim,37.01,9.848,percentual
+tic,D4B,9,3,2024,Museu,Sim,45.35,4.997,percentual
+tic,D4B,10,3,2024,Ponto de Cultura,Sim,64.12,5.894,percentual
+tic,D4B,11,3,2024,Teatro,Sim,22.43,5.109,percentual
+tic,D8,5,3,2024,Arquivo,Sim,53.8751,8.6709,percentual
+tic,D8,6,3,2024,Bem tombado,Sim,28.894,11.4277,percentual
+tic,D8,7,3,2024,Biblioteca,Sim,22.3247,4.5294,percentual
+tic,D8,8,3,2024,Cinema,Sim,27.9221,9.1882,percentual
+tic,D8,9,3,2024,Museu,Sim,24.5124,4.5668,percentual
+tic,D8,10,3,2024,Ponto de Cultura,Sim,19.4012,4.7999,percentual
+tic,D8,11,3,2024,Teatro,Sim,10.2886,4.0394,percentual
+ibge,Tabela 3.1,5,2,2013,TOTAL,Despesa com cultura,8497353851.277467,,reais nominais
+ibge,Tabela 3.1,5,4,2014,TOTAL,Despesa com cultura,9770604201.32438,,reais nominais
+ibge,Tabela 3.1,5,6,2015,TOTAL,Despesa com cultura,9026468893.96251,,reais nominais
+ibge,Tabela 3.1,5,8,2016,TOTAL,Despesa com cultura,8278857503.682164,,reais nominais
+ibge,Tabela 3.1,5,10,2017,TOTAL,Despesa com cultura,8217737598.453215,,reais nominais
+ibge,Tabela 3.1,5,12,2018,TOTAL,Despesa com cultura,8930373329.637133,,reais nominais
+ibge,Tabela 3.1,5,14,2019,TOTAL,Despesa com cultura,9012106856.595743,,reais nominais
+ibge,Tabela 3.1,5,16,2020,TOTAL,Despesa com cultura,9865616269.289959,,reais nominais
+ibge,Tabela 3.1,5,18,2021,TOTAL,Despesa com cultura,9790015869.385847,,reais nominais
+ibge,Tabela 3.1,5,20,2022,TOTAL,Despesa com cultura,13780241045.251766,,reais nominais
+ibge,Tabela 3.1,5,22,2023,TOTAL,Despesa com cultura,18893947618.284584,,reais nominais
+ibge,Tabela 3.1,6,2,2013,FEDERAL,Despesa com cultura,923477398.1666876,,reais nominais
+ibge,Tabela 3.1,6,4,2014,FEDERAL,Despesa com cultura,1045248988.9000891,,reais nominais
+ibge,Tabela 3.1,6,6,2015,FEDERAL,Despesa com cultura,1114966837.828417,,reais nominais
+ibge,Tabela 3.1,6,8,2016,FEDERAL,Despesa com cultura,998041292.4239347,,reais nominais
+ibge,Tabela 3.1,6,10,2017,FEDERAL,Despesa com cultura,938148125.7526476,,reais nominais
+ibge,Tabela 3.1,6,12,2018,FEDERAL,Despesa com cultura,1024103752.4592583,,reais nominais
+ibge,Tabela 3.1,6,14,2019,FEDERAL,Despesa com cultura,795761816.1553317,,reais nominais
+ibge,Tabela 3.1,6,16,2020,FEDERAL,Despesa com cultura,828160676.5563488,,reais nominais
+ibge,Tabela 3.1,6,18,2021,FEDERAL,Despesa com cultura,671942056.077213,,reais nominais
+ibge,Tabela 3.1,6,20,2022,FEDERAL,Despesa com cultura,287742100.48153216,,reais nominais
+ibge,Tabela 3.1,6,22,2023,FEDERAL,Despesa com cultura,856113494.5743885,,reais nominais
+ibge,Tabela 3.1,7,2,2013,ESTADUAL,Despesa com cultura,3117948099.165602,,reais nominais
+ibge,Tabela 3.1,7,4,2014,ESTADUAL,Despesa com cultura,3206364743.1385694,,reais nominais
+ibge,Tabela 3.1,7,6,2015,ESTADUAL,Despesa com cultura,2766727220.820537,,reais nominais
+ibge,Tabela 3.1,7,8,2016,ESTADUAL,Despesa com cultura,2482310218.930181,,reais nominais
+ibge,Tabela 3.1,7,10,2017,ESTADUAL,Despesa com cultura,2623240348.352852,,reais nominais
+ibge,Tabela 3.1,7,12,2018,ESTADUAL,Despesa com cultura,2759533923.459539,,reais nominais
+ibge,Tabela 3.1,7,14,2019,ESTADUAL,Despesa com cultura,2641373995.808176,,reais nominais
+ibge,Tabela 3.1,7,16,2020,ESTADUAL,Despesa com cultura,3960976023.9146442,,reais nominais
+ibge,Tabela 3.1,7,18,2021,ESTADUAL,Despesa com cultura,3569172013.200043,,reais nominais
+ibge,Tabela 3.1,7,20,2022,ESTADUAL,Despesa com cultura,5129136391.519556,,reais nominais
+ibge,Tabela 3.1,7,22,2023,ESTADUAL,Despesa com cultura,5745401978.412651,,reais nominais
+ibge,Tabela 3.1,8,2,2013,MUNICIPAL,Despesa com cultura,4455928353.945177,,reais nominais
+ibge,Tabela 3.1,8,4,2014,MUNICIPAL,Despesa com cultura,5518990469.285722,,reais nominais
+ibge,Tabela 3.1,8,6,2015,MUNICIPAL,Despesa com cultura,5144774835.313557,,reais nominais
+ibge,Tabela 3.1,8,8,2016,MUNICIPAL,Despesa com cultura,4798505992.328049,,reais nominais
+ibge,Tabela 3.1,8,10,2017,MUNICIPAL,Despesa com cultura,4656349124.347714,,reais nominais
+ibge,Tabela 3.1,8,12,2018,MUNICIPAL,Despesa com cultura,5146735653.718335,,reais nominais
+ibge,Tabela 3.1,8,14,2019,MUNICIPAL,Despesa com cultura,5574971044.6322365,,reais nominais
+ibge,Tabela 3.1,8,16,2020,MUNICIPAL,Despesa com cultura,5076479568.818965,,reais nominais
+ibge,Tabela 3.1,8,18,2021,MUNICIPAL,Despesa com cultura,5548901800.108591,,reais nominais
+ibge,Tabela 3.1,8,20,2022,MUNICIPAL,Despesa com cultura,8363362553.250678,,reais nominais
+ibge,Tabela 3.1,8,22,2023,MUNICIPAL,Despesa com cultura,12292432145.297544,,reais nominais
+ibge,Tabela 3.2,6,4,2013,TOTAL,Participação da cultura na despesa,0.40064361639447976,,percentual
+ibge,Tabela 3.2,7,4,2013,FEDERAL,Participação da cultura na despesa,0.09110778729897633,,percentual
+ibge,Tabela 3.2,8,4,2013,ESTADUAL,Participação da cultura na despesa,0.4562562533537726,,percentual
+ibge,Tabela 3.2,9,4,2013,MUNICIPAL,Participação da cultura na despesa,1.0510763354030008,,percentual
+ibge,Tabela 3.2,11,4,2014,TOTAL,Participação da cultura na despesa,0.4081264421433079,,percentual
+ibge,Tabela 3.2,12,4,2014,FEDERAL,Participação da cultura na despesa,0.08984408991787429,,percentual
+ibge,Tabela 3.2,13,4,2014,ESTADUAL,Participação da cultura na despesa,0.42988287621452986,,percentual
+ibge,Tabela 3.2,14,4,2014,MUNICIPAL,Participação da cultura na despesa,1.1385431025581558,,percentual
+ibge,Tabela 3.2,16,4,2015,TOTAL,Participação da cultura na despesa,0.3259235428362982,,percentual
+ibge,Tabela 3.2,17,4,2015,FEDERAL,Participação da cultura na despesa,0.07715928338660413,,percentual
+ibge,Tabela 3.2,18,4,2015,ESTADUAL,Participação da cultura na despesa,0.34459004807836874,,percentual
+ibge,Tabela 3.2,19,4,2015,MUNICIPAL,Participação da cultura na despesa,0.9863801352532805,,percentual
+ibge,Tabela 3.2,21,4,2016,TOTAL,Participação da cultura na despesa,0.2902085332150682,,percentual
+ibge,Tabela 3.2,22,4,2016,FEDERAL,Participação da cultura na despesa,0.06792229188359011,,percentual
+ibge,Tabela 3.2,23,4,2016,ESTADUAL,Participação da cultura na despesa,0.2987858625459534,,percentual
+ibge,Tabela 3.2,24,4,2016,MUNICIPAL,Participação da cultura na despesa,0.8684433099085,,percentual
+ibge,Tabela 3.2,26,4,2017,TOTAL,Participação da cultura na despesa,0.28170036163083134,,percentual
+ibge,Tabela 3.2,27,4,2017,FEDERAL,Participação da cultura na despesa,0.0615751870905131,,percentual
+ibge,Tabela 3.2,28,4,2017,ESTADUAL,Participação da cultura na despesa,0.3103419389635024,,percentual
+ibge,Tabela 3.2,29,4,2017,MUNICIPAL,Participação da cultura na despesa,0.8491790837212668,,percentual
+ibge,Tabela 3.2,31,4,2018,TOTAL,Participação da cultura na despesa,0.28859083867584334,,percentual
+ibge,Tabela 3.2,32,4,2018,FEDERAL,Participação da cultura na despesa,0.0642404402784914,,percentual
+ibge,Tabela 3.2,33,4,2018,ESTADUAL,Participação da cultura na despesa,0.3077109515519652,,percentual
+ibge,Tabela 3.2,34,4,2018,MUNICIPAL,Participação da cultura na despesa,0.8528025122033254,,percentual
+ibge,Tabela 3.2,36,4,2019,TOTAL,Participação da cultura na despesa,0.28335552193399927,,percentual
+ibge,Tabela 3.2,37,4,2019,FEDERAL,Participação da cultura na despesa,0.04978489352036524,,percentual
+ibge,Tabela 3.2,38,4,2019,ESTADUAL,Participação da cultura na despesa,0.2863435289954022,,percentual
+ibge,Tabela 3.2,39,4,2019,MUNICIPAL,Participação da cultura na despesa,0.8451471365571512,,percentual
+ibge,Tabela 3.2,41,4,2020,TOTAL,Participação da cultura na despesa,0.28075239756624293,,percentual
+ibge,Tabela 3.2,42,4,2020,FEDERAL,Participação da cultura na despesa,0.044843025627695245,,percentual
+ibge,Tabela 3.2,43,4,2020,ESTADUAL,Participação da cultura na despesa,0.4181451132949481,,percentual
+ibge,Tabela 3.2,44,4,2020,MUNICIPAL,Participação da cultura na despesa,0.7051454789374167,,percentual
+ibge,Tabela 3.2,46,4,2021,TOTAL,Participação da cultura na despesa,0.2690828281362958,,percentual
+ibge,Tabela 3.2,47,4,2021,FEDERAL,Participação da cultura na despesa,0.037735780602250586,,percentual
+ibge,Tabela 3.2,48,4,2021,ESTADUAL,Participação da cultura na despesa,0.3289824045932019,,percentual
+ibge,Tabela 3.2,49,4,2021,MUNICIPAL,Participação da cultura na despesa,0.7180921114378334,,percentual
+ibge,Tabela 3.2,51,4,2022,TOTAL,Participação da cultura na despesa,0.3146785443977089,,percentual
+ibge,Tabela 3.2,52,4,2022,FEDERAL,Participação da cultura na despesa,0.014133253717082643,,percentual
+ibge,Tabela 3.2,53,4,2022,ESTADUAL,Participação da cultura na despesa,0.37445342317079944,,percentual
+ibge,Tabela 3.2,54,4,2022,MUNICIPAL,Participação da cultura na despesa,0.8591379098483012,,percentual
+ibge,Tabela 3.2,56,4,2023,TOTAL,Participação da cultura na despesa,0.38105296601758276,,percentual
+ibge,Tabela 3.2,57,4,2023,FEDERAL,Participação da cultura na despesa,0.03606984309948134,,percentual
+ibge,Tabela 3.2,58,4,2023,ESTADUAL,Participação da cultura na despesa,0.39319820879030076,,percentual
+ibge,Tabela 3.2,59,4,2023,MUNICIPAL,Participação da cultura na despesa,1.0939574318230967,,percentual
+ibge,Tabela 3.7,7,2,2013,RONDÔNIA,Despesa com cultura,10068250.002845263,,reais nominais
+ibge,Tabela 3.7,7,4,2014,RONDÔNIA,Despesa com cultura,1011882.7398654562,,reais nominais
+ibge,Tabela 3.7,7,6,2015,RONDÔNIA,Despesa com cultura,1378988.2458931399,,reais nominais
+ibge,Tabela 3.7,7,8,2016,RONDÔNIA,Despesa com cultura,2682058.681715327,,reais nominais
+ibge,Tabela 3.7,7,10,2017,RONDÔNIA,Despesa com cultura,2381239.904011309,,reais nominais
+ibge,Tabela 3.7,7,12,2018,RONDÔNIA,Despesa com cultura,7138995.808757085,,reais nominais
+ibge,Tabela 3.7,7,14,2019,RONDÔNIA,Despesa com cultura,7517407.901203481,,reais nominais
+ibge,Tabela 3.7,7,16,2020,RONDÔNIA,Despesa com cultura,24910751.341806017,,reais nominais
+ibge,Tabela 3.7,7,18,2021,RONDÔNIA,Despesa com cultura,12053746.9848817,,reais nominais
+ibge,Tabela 3.7,7,20,2022,RONDÔNIA,Despesa com cultura,13889865.548823586,,reais nominais
+ibge,Tabela 3.7,7,22,2023,RONDÔNIA,Despesa com cultura,31444454.224094324,,reais nominais
+ibge,Tabela 3.7,8,2,2013,ACRE,Despesa com cultura,27044226.617641635,,reais nominais
+ibge,Tabela 3.7,8,4,2014,ACRE,Despesa com cultura,29263817.807609804,,reais nominais
+ibge,Tabela 3.7,8,6,2015,ACRE,Despesa com cultura,22672612.538356654,,reais nominais
+ibge,Tabela 3.7,8,8,2016,ACRE,Despesa com cultura,23546007.3164977,,reais nominais
+ibge,Tabela 3.7,8,10,2017,ACRE,Despesa com cultura,20854900.956509262,,reais nominais
+ibge,Tabela 3.7,8,12,2018,ACRE,Despesa com cultura,24693195.501620304,,reais nominais
+ibge,Tabela 3.7,8,14,2019,ACRE,Despesa com cultura,16668395.98093586,,reais nominais
+ibge,Tabela 3.7,8,16,2020,ACRE,Despesa com cultura,25052726.150051657,,reais nominais
+ibge,Tabela 3.7,8,18,2021,ACRE,Despesa com cultura,18732315.596587542,,reais nominais
+ibge,Tabela 3.7,8,20,2022,ACRE,Despesa com cultura,34255340.49830985,,reais nominais
+ibge,Tabela 3.7,8,22,2023,ACRE,Despesa com cultura,33816720.687650025,,reais nominais
+ibge,Tabela 3.7,9,2,2013,AMAZONAS,Despesa com cultura,224055039.70453885,,reais nominais
+ibge,Tabela 3.7,9,4,2014,AMAZONAS,Despesa com cultura,207194298.3339548,,reais nominais
+ibge,Tabela 3.7,9,6,2015,AMAZONAS,Despesa com cultura,130468159.1695243,,reais nominais
+ibge,Tabela 3.7,9,8,2016,AMAZONAS,Despesa com cultura,105255012.75661048,,reais nominais
+ibge,Tabela 3.7,9,10,2017,AMAZONAS,Despesa com cultura,102686645.12265764,,reais nominais
+ibge,Tabela 3.7,9,12,2018,AMAZONAS,Despesa com cultura,145730780.7910444,,reais nominais
+ibge,Tabela 3.7,9,14,2019,AMAZONAS,Despesa com cultura,182175066.19748995,,reais nominais
+ibge,Tabela 3.7,9,16,2020,AMAZONAS,Despesa com cultura,201383776.4694541,,reais nominais
+ibge,Tabela 3.7,9,18,2021,AMAZONAS,Despesa com cultura,169524181.8923327,,reais nominais
+ibge,Tabela 3.7,9,20,2022,AMAZONAS,Despesa com cultura,403108076.9932116,,reais nominais
+ibge,Tabela 3.7,9,22,2023,AMAZONAS,Despesa com cultura,508289642.17868763,,reais nominais
+ibge,Tabela 3.7,10,2,2013,RORAIMA,Despesa com cultura,4968049.496589638,,reais nominais
+ibge,Tabela 3.7,10,4,2014,RORAIMA,Despesa com cultura,5474709.152548538,,reais nominais
+ibge,Tabela 3.7,10,6,2015,RORAIMA,Despesa com cultura,8242789.260858229,,reais nominais
+ibge,Tabela 3.7,10,8,2016,RORAIMA,Despesa com cultura,7752058.296127316,,reais nominais
+ibge,Tabela 3.7,10,10,2017,RORAIMA,Despesa com cultura,9294631.672146885,,reais nominais
+ibge,Tabela 3.7,10,12,2018,RORAIMA,Despesa com cultura,6398552.987440427,,reais nominais
+ibge,Tabela 3.7,10,14,2019,RORAIMA,Despesa com cultura,5077646.98410756,,reais nominais
+ibge,Tabela 3.7,10,16,2020,RORAIMA,Despesa com cultura,24306330.03725732,,reais nominais
+ibge,Tabela 3.7,10,18,2021,RORAIMA,Despesa com cultura,12302249.848163743,,reais nominais
+ibge,Tabela 3.7,10,20,2022,RORAIMA,Despesa com cultura,32307497.890514623,,reais nominais
+ibge,Tabela 3.7,10,22,2023,RORAIMA,Despesa com cultura,40527936.73146689,,reais nominais
+ibge,Tabela 3.7,11,2,2013,PARÁ,Despesa com cultura,128366708.23805583,,reais nominais
+ibge,Tabela 3.7,11,4,2014,PARÁ,Despesa com cultura,137367207.17596275,,reais nominais
+ibge,Tabela 3.7,11,6,2015,PARÁ,Despesa com cultura,148967573.25697407,,reais nominais
+ibge,Tabela 3.7,11,8,2016,PARÁ,Despesa com cultura,150478345.09637523,,reais nominais
+ibge,Tabela 3.7,11,10,2017,PARÁ,Despesa com cultura,132096541.94195034,,reais nominais
+ibge,Tabela 3.7,11,12,2018,PARÁ,Despesa com cultura,122685204.69532081,,reais nominais
+ibge,Tabela 3.7,11,14,2019,PARÁ,Despesa com cultura,162318137.71806937,,reais nominais
+ibge,Tabela 3.7,11,16,2020,PARÁ,Despesa com cultura,220609770.36203915,,reais nominais
+ibge,Tabela 3.7,11,18,2021,PARÁ,Despesa com cultura,301970783.47694886,,reais nominais
+ibge,Tabela 3.7,11,20,2022,PARÁ,Despesa com cultura,425905573.8457723,,reais nominais
+ibge,Tabela 3.7,11,22,2023,PARÁ,Despesa com cultura,479971529.7602886,,reais nominais
+ibge,Tabela 3.7,12,2,2013,AMAPÁ,Despesa com cultura,21879888.02172467,,reais nominais
+ibge,Tabela 3.7,12,4,2014,AMAPÁ,Despesa com cultura,20395814.492235288,,reais nominais
+ibge,Tabela 3.7,12,6,2015,AMAPÁ,Despesa com cultura,17859147.646730617,,reais nominais
+ibge,Tabela 3.7,12,8,2016,AMAPÁ,Despesa com cultura,10429733.503089119,,reais nominais
+ibge,Tabela 3.7,12,10,2017,AMAPÁ,Despesa com cultura,12579041.109062543,,reais nominais
+ibge,Tabela 3.7,12,12,2018,AMAPÁ,Despesa com cultura,10562184.344933337,,reais nominais
+ibge,Tabela 3.7,12,14,2019,AMAPÁ,Despesa com cultura,10357984.595141744,,reais nominais
+ibge,Tabela 3.7,12,16,2020,AMAPÁ,Despesa com cultura,23123997.606537707,,reais nominais
+ibge,Tabela 3.7,12,18,2021,AMAPÁ,Despesa com cultura,13751716.893016636,,reais nominais
+ibge,Tabela 3.7,12,20,2022,AMAPÁ,Despesa com cultura,41073705.31032312,,reais nominais
+ibge,Tabela 3.7,12,22,2023,AMAPÁ,Despesa com cultura,49318616.96307726,,reais nominais
+ibge,Tabela 3.7,13,2,2013,TOCANTINS,Despesa com cultura,7041261.491196976,,reais nominais
+ibge,Tabela 3.7,13,4,2014,TOCANTINS,Despesa com cultura,13307583.38975513,,reais nominais
+ibge,Tabela 3.7,13,6,2015,TOCANTINS,Despesa com cultura,28288283.445006,,reais nominais
+ibge,Tabela 3.7,13,8,2016,TOCANTINS,Despesa com cultura,22615838.28675106,,reais nominais
+ibge,Tabela 3.7,13,10,2017,TOCANTINS,Despesa com cultura,42638136.8841049,,reais nominais
+ibge,Tabela 3.7,13,12,2018,TOCANTINS,Despesa com cultura,7859042.02347005,,reais nominais
+ibge,Tabela 3.7,13,14,2019,TOCANTINS,Despesa com cultura,24236590.750584353,,reais nominais
+ibge,Tabela 3.7,13,16,2020,TOCANTINS,Despesa com cultura,27802556.84608652,,reais nominais
+ibge,Tabela 3.7,13,18,2021,TOCANTINS,Despesa com cultura,6472630.078128697,,reais nominais
+ibge,Tabela 3.7,13,20,2022,TOCANTINS,Despesa com cultura,45872642.60044546,,reais nominais
+ibge,Tabela 3.7,13,22,2023,TOCANTINS,Despesa com cultura,28289853.08142909,,reais nominais
+ibge,Tabela 3.7,15,2,2013,MARANHÃO,Despesa com cultura,88743197.52058761,,reais nominais
+ibge,Tabela 3.7,15,4,2014,MARANHÃO,Despesa com cultura,106487073.38212928,,reais nominais
+ibge,Tabela 3.7,15,6,2015,MARANHÃO,Despesa com cultura,102095795.78040695,,reais nominais
+ibge,Tabela 3.7,15,8,2016,MARANHÃO,Despesa com cultura,88782790.07661098,,reais nominais
+ibge,Tabela 3.7,15,10,2017,MARANHÃO,Despesa com cultura,121814462.4454597,,reais nominais
+ibge,Tabela 3.7,15,12,2018,MARANHÃO,Despesa com cultura,128081607.65260923,,reais nominais
+ibge,Tabela 3.7,15,14,2019,MARANHÃO,Despesa com cultura,102409493.34676851,,reais nominais
+ibge,Tabela 3.7,15,16,2020,MARANHÃO,Despesa com cultura,146286025.47226122,,reais nominais
+ibge,Tabela 3.7,15,18,2021,MARANHÃO,Despesa com cultura,109698247.25298807,,reais nominais
+ibge,Tabela 3.7,15,20,2022,MARANHÃO,Despesa com cultura,141712769.81166893,,reais nominais
+ibge,Tabela 3.7,15,22,2023,MARANHÃO,Despesa com cultura,155606214.33670282,,reais nominais
+ibge,Tabela 3.7,16,2,2013,PIAUÍ,Despesa com cultura,9139772.084136233,,reais nominais
+ibge,Tabela 3.7,16,4,2014,PIAUÍ,Despesa com cultura,17306280.980109,,reais nominais
+ibge,Tabela 3.7,16,6,2015,PIAUÍ,Despesa com cultura,14584546.105850426,,reais nominais
+ibge,Tabela 3.7,16,8,2016,PIAUÍ,Despesa com cultura,38845496.20387879,,reais nominais
+ibge,Tabela 3.7,16,10,2017,PIAUÍ,Despesa com cultura,54138849.754831,,reais nominais
+ibge,Tabela 3.7,16,12,2018,PIAUÍ,Despesa com cultura,41630834.66054509,,reais nominais
+ibge,Tabela 3.7,16,14,2019,PIAUÍ,Despesa com cultura,31472081.516751356,,reais nominais
+ibge,Tabela 3.7,16,16,2020,PIAUÍ,Despesa com cultura,49234072.65351051,,reais nominais
+ibge,Tabela 3.7,16,18,2021,PIAUÍ,Despesa com cultura,17381228.784962267,,reais nominais
+ibge,Tabela 3.7,16,20,2022,PIAUÍ,Despesa com cultura,56416643.774608046,,reais nominais
+ibge,Tabela 3.7,16,22,2023,PIAUÍ,Despesa com cultura,61420590.78099303,,reais nominais
+ibge,Tabela 3.7,17,2,2013,CEARÁ,Despesa com cultura,73768256.80095062,,reais nominais
+ibge,Tabela 3.7,17,4,2014,CEARÁ,Despesa com cultura,92123341.89835995,,reais nominais
+ibge,Tabela 3.7,17,6,2015,CEARÁ,Despesa com cultura,73789489.15043758,,reais nominais
+ibge,Tabela 3.7,17,8,2016,CEARÁ,Despesa com cultura,84335317.87806788,,reais nominais
+ibge,Tabela 3.7,17,10,2017,CEARÁ,Despesa com cultura,97708597.13868557,,reais nominais
+ibge,Tabela 3.7,17,12,2018,CEARÁ,Despesa com cultura,117588236.83708946,,reais nominais
+ibge,Tabela 3.7,17,14,2019,CEARÁ,Despesa com cultura,118168432.4527054,,reais nominais
+ibge,Tabela 3.7,17,16,2020,CEARÁ,Despesa com cultura,198748361.82383612,,reais nominais
+ibge,Tabela 3.7,17,18,2021,CEARÁ,Despesa com cultura,223348438.07567567,,reais nominais
+ibge,Tabela 3.7,17,20,2022,CEARÁ,Despesa com cultura,379319244.0363322,,reais nominais
+ibge,Tabela 3.7,17,22,2023,CEARÁ,Despesa com cultura,223542877.4045612,,reais nominais
+ibge,Tabela 3.7,18,2,2013,RIO GRANDE DO NORTE,Despesa com cultura,33641675.686366685,,reais nominais
+ibge,Tabela 3.7,18,4,2014,RIO GRANDE DO NORTE,Despesa com cultura,41006294.952377014,,reais nominais
+ibge,Tabela 3.7,18,6,2015,RIO GRANDE DO NORTE,Despesa com cultura,33551488.308007784,,reais nominais
+ibge,Tabela 3.7,18,8,2016,RIO GRANDE DO NORTE,Despesa com cultura,34492388.46970635,,reais nominais
+ibge,Tabela 3.7,18,10,2017,RIO GRANDE DO NORTE,Despesa com cultura,23146354.955077946,,reais nominais
+ibge,Tabela 3.7,18,12,2018,RIO GRANDE DO NORTE,Despesa com cultura,23797154.988520574,,reais nominais
+ibge,Tabela 3.7,18,14,2019,RIO GRANDE DO NORTE,Despesa com cultura,24783452.71521387,,reais nominais
+ibge,Tabela 3.7,18,16,2020,RIO GRANDE DO NORTE,Despesa com cultura,56814254.386259586,,reais nominais
+ibge,Tabela 3.7,18,18,2021,RIO GRANDE DO NORTE,Despesa com cultura,23769920.86478789,,reais nominais
+ibge,Tabela 3.7,18,20,2022,RIO GRANDE DO NORTE,Despesa com cultura,39502254.64746428,,reais nominais
+ibge,Tabela 3.7,18,22,2023,RIO GRANDE DO NORTE,Despesa com cultura,79768833.38923232,,reais nominais
+ibge,Tabela 3.7,19,2,2013,PARAÍBA,Despesa com cultura,15239820.299650857,,reais nominais
+ibge,Tabela 3.7,19,4,2014,PARAÍBA,Despesa com cultura,15445641.676311588,,reais nominais
+ibge,Tabela 3.7,19,6,2015,PARAÍBA,Despesa com cultura,19303599.085400704,,reais nominais
+ibge,Tabela 3.7,19,8,2016,PARAÍBA,Despesa com cultura,13270943.884645049,,reais nominais
+ibge,Tabela 3.7,19,10,2017,PARAÍBA,Despesa com cultura,13271109.916115148,,reais nominais
+ibge,Tabela 3.7,19,12,2018,PARAÍBA,Despesa com cultura,14144143.127928518,,reais nominais
+ibge,Tabela 3.7,19,14,2019,PARAÍBA,Despesa com cultura,16186125.044008767,,reais nominais
+ibge,Tabela 3.7,19,16,2020,PARAÍBA,Despesa com cultura,33602062.184714705,,reais nominais
+ibge,Tabela 3.7,19,18,2021,PARAÍBA,Despesa com cultura,33737327.36643422,,reais nominais
+ibge,Tabela 3.7,19,20,2022,PARAÍBA,Despesa com cultura,26668375.785447914,,reais nominais
+ibge,Tabela 3.7,19,22,2023,PARAÍBA,Despesa com cultura,84916216.02219175,,reais nominais
+ibge,Tabela 3.7,20,2,2013,PERNAMBUCO,Despesa com cultura,103384590.65693052,,reais nominais
+ibge,Tabela 3.7,20,4,2014,PERNAMBUCO,Despesa com cultura,126329187.09884916,,reais nominais
+ibge,Tabela 3.7,20,6,2015,PERNAMBUCO,Despesa com cultura,105862037.60238357,,reais nominais
+ibge,Tabela 3.7,20,8,2016,PERNAMBUCO,Despesa com cultura,91905613.71279837,,reais nominais
+ibge,Tabela 3.7,20,10,2017,PERNAMBUCO,Despesa com cultura,108273116.15773399,,reais nominais
+ibge,Tabela 3.7,20,12,2018,PERNAMBUCO,Despesa com cultura,111463104.3036627,,reais nominais
+ibge,Tabela 3.7,20,14,2019,PERNAMBUCO,Despesa com cultura,92690788.84407401,,reais nominais
+ibge,Tabela 3.7,20,16,2020,PERNAMBUCO,Despesa com cultura,126116889.41646315,,reais nominais
+ibge,Tabela 3.7,20,18,2021,PERNAMBUCO,Despesa com cultura,111200959.40171328,,reais nominais
+ibge,Tabela 3.7,20,20,2022,PERNAMBUCO,Despesa com cultura,193573583.15555182,,reais nominais
+ibge,Tabela 3.7,20,22,2023,PERNAMBUCO,Despesa com cultura,139778399.0413934,,reais nominais
+ibge,Tabela 3.7,21,2,2013,ALAGOAS,Despesa com cultura,14654363.357315153,,reais nominais
+ibge,Tabela 3.7,21,4,2014,ALAGOAS,Despesa com cultura,17815088.819723018,,reais nominais
+ibge,Tabela 3.7,21,6,2015,ALAGOAS,Despesa com cultura,10951970.463894648,,reais nominais
+ibge,Tabela 3.7,21,8,2016,ALAGOAS,Despesa com cultura,13720924.65085271,,reais nominais
+ibge,Tabela 3.7,21,10,2017,ALAGOAS,Despesa com cultura,22614994.88702572,,reais nominais
+ibge,Tabela 3.7,21,12,2018,ALAGOAS,Despesa com cultura,17558143.582771275,,reais nominais
+ibge,Tabela 3.7,21,14,2019,ALAGOAS,Despesa com cultura,22896502.75841712,,reais nominais
+ibge,Tabela 3.7,21,16,2020,ALAGOAS,Despesa com cultura,55699411.68540193,,reais nominais
+ibge,Tabela 3.7,21,18,2021,ALAGOAS,Despesa com cultura,19526935.61822075,,reais nominais
+ibge,Tabela 3.7,21,20,2022,ALAGOAS,Despesa com cultura,150127882.4850775,,reais nominais
+ibge,Tabela 3.7,21,22,2023,ALAGOAS,Despesa com cultura,95707901.57201919,,reais nominais
+ibge,Tabela 3.7,22,2,2013,SERGIPE,Despesa com cultura,14181663.738265965,,reais nominais
+ibge,Tabela 3.7,22,4,2014,SERGIPE,Despesa com cultura,12163096.261706384,,reais nominais
+ibge,Tabela 3.7,22,6,2015,SERGIPE,Despesa com cultura,13551531.65131207,,reais nominais
+ibge,Tabela 3.7,22,8,2016,SERGIPE,Despesa com cultura,13591506.375818083,,reais nominais
+ibge,Tabela 3.7,22,10,2017,SERGIPE,Despesa com cultura,16713274.730797429,,reais nominais
+ibge,Tabela 3.7,22,12,2018,SERGIPE,Despesa com cultura,16077204.81984383,,reais nominais
+ibge,Tabela 3.7,22,14,2019,SERGIPE,Despesa com cultura,10746995.885229578,,reais nominais
+ibge,Tabela 3.7,22,16,2020,SERGIPE,Despesa com cultura,46321114.09799751,,reais nominais
+ibge,Tabela 3.7,22,18,2021,SERGIPE,Despesa com cultura,24534223.473836914,,reais nominais
+ibge,Tabela 3.7,22,20,2022,SERGIPE,Despesa com cultura,40616152.5407948,,reais nominais
+ibge,Tabela 3.7,22,22,2023,SERGIPE,Despesa com cultura,61623761.261020675,,reais nominais
+ibge,Tabela 3.7,23,2,2013,BAHIA,Despesa com cultura,255393973.7604148,,reais nominais
+ibge,Tabela 3.7,23,4,2014,BAHIA,Despesa com cultura,283188669.998247,,reais nominais
+ibge,Tabela 3.7,23,6,2015,BAHIA,Despesa com cultura,264496798.39314276,,reais nominais
+ibge,Tabela 3.7,23,8,2016,BAHIA,Despesa com cultura,226660209.1319971,,reais nominais
+ibge,Tabela 3.7,23,10,2017,BAHIA,Despesa com cultura,187572809.71677682,,reais nominais
+ibge,Tabela 3.7,23,12,2018,BAHIA,Despesa com cultura,191542010.5361768,,reais nominais
+ibge,Tabela 3.7,23,14,2019,BAHIA,Despesa com cultura,182799848.43075213,,reais nominais
+ibge,Tabela 3.7,23,16,2020,BAHIA,Despesa com cultura,276230480.06772053,,reais nominais
+ibge,Tabela 3.7,23,18,2021,BAHIA,Despesa com cultura,169587105.09826237,,reais nominais
+ibge,Tabela 3.7,23,20,2022,BAHIA,Despesa com cultura,239251151.1196067,,reais nominais
+ibge,Tabela 3.7,23,22,2023,BAHIA,Despesa com cultura,245683189.67079714,,reais nominais
+ibge,Tabela 3.7,25,2,2013,MINAS GERAIS,Despesa com cultura,175468352.51929054,,reais nominais
+ibge,Tabela 3.7,25,4,2014,MINAS GERAIS,Despesa com cultura,171410821.22600842,,reais nominais
+ibge,Tabela 3.7,25,6,2015,MINAS GERAIS,Despesa com cultura,179422891.25015214,,reais nominais
+ibge,Tabela 3.7,25,8,2016,MINAS GERAIS,Despesa com cultura,169145889.2665507,,reais nominais
+ibge,Tabela 3.7,25,10,2017,MINAS GERAIS,Despesa com cultura,159189718.7302453,,reais nominais
+ibge,Tabela 3.7,25,12,2018,MINAS GERAIS,Despesa com cultura,160245466.2271028,,reais nominais
+ibge,Tabela 3.7,25,14,2019,MINAS GERAIS,Despesa com cultura,138537236.54604048,,reais nominais
+ibge,Tabela 3.7,25,16,2020,MINAS GERAIS,Despesa com cultura,264595544.83418477,,reais nominais
+ibge,Tabela 3.7,25,18,2021,MINAS GERAIS,Despesa com cultura,122435122.10258368,,reais nominais
+ibge,Tabela 3.7,25,20,2022,MINAS GERAIS,Despesa com cultura,143798550.1265049,,reais nominais
+ibge,Tabela 3.7,25,22,2023,MINAS GERAIS,Despesa com cultura,140270466.75521508,,reais nominais
+ibge,Tabela 3.7,26,2,2013,ESPÍRITO SANTO,Despesa com cultura,69426416.73486897,,reais nominais
+ibge,Tabela 3.7,26,4,2014,ESPÍRITO SANTO,Despesa com cultura,109011322.31197847,,reais nominais
+ibge,Tabela 3.7,26,6,2015,ESPÍRITO SANTO,Despesa com cultura,38411009.45801625,,reais nominais
+ibge,Tabela 3.7,26,8,2016,ESPÍRITO SANTO,Despesa com cultura,24989781.832747005,,reais nominais
+ibge,Tabela 3.7,26,10,2017,ESPÍRITO SANTO,Despesa com cultura,32715288.1373162,,reais nominais
+ibge,Tabela 3.7,26,12,2018,ESPÍRITO SANTO,Despesa com cultura,42333166.490987636,,reais nominais
+ibge,Tabela 3.7,26,14,2019,ESPÍRITO SANTO,Despesa com cultura,38354840.293539144,,reais nominais
+ibge,Tabela 3.7,26,16,2020,ESPÍRITO SANTO,Despesa com cultura,68529007.68696867,,reais nominais
+ibge,Tabela 3.7,26,18,2021,ESPÍRITO SANTO,Despesa com cultura,42287451.20571177,,reais nominais
+ibge,Tabela 3.7,26,20,2022,ESPÍRITO SANTO,Despesa com cultura,67452688.44448467,,reais nominais
+ibge,Tabela 3.7,26,22,2023,ESPÍRITO SANTO,Despesa com cultura,112878520.14670703,,reais nominais
+ibge,Tabela 3.7,27,2,2013,RIO DE JANEIRO,Despesa com cultura,209490731.311782,,reais nominais
+ibge,Tabela 3.7,27,4,2014,RIO DE JANEIRO,Despesa com cultura,251572908.62545964,,reais nominais
+ibge,Tabela 3.7,27,6,2015,RIO DE JANEIRO,Despesa com cultura,202824097.7097434,,reais nominais
+ibge,Tabela 3.7,27,8,2016,RIO DE JANEIRO,Despesa com cultura,131017860.3742661,,reais nominais
+ibge,Tabela 3.7,27,10,2017,RIO DE JANEIRO,Despesa com cultura,125645979.97813445,,reais nominais
+ibge,Tabela 3.7,27,12,2018,RIO DE JANEIRO,Despesa com cultura,141562024.58101994,,reais nominais
+ibge,Tabela 3.7,27,14,2019,RIO DE JANEIRO,Despesa com cultura,119431655.50581662,,reais nominais
+ibge,Tabela 3.7,27,16,2020,RIO DE JANEIRO,Despesa com cultura,213507860.31564516,,reais nominais
+ibge,Tabela 3.7,27,18,2021,RIO DE JANEIRO,Despesa com cultura,193620531.38308695,,reais nominais
+ibge,Tabela 3.7,27,20,2022,RIO DE JANEIRO,Despesa com cultura,209922331.78531688,,reais nominais
+ibge,Tabela 3.7,27,22,2023,RIO DE JANEIRO,Despesa com cultura,395056268.9376661,,reais nominais
+ibge,Tabela 3.7,28,2,2013,SÃO PAULO,Despesa com cultura,1117757465.7164543,,reais nominais
+ibge,Tabela 3.7,28,4,2014,SÃO PAULO,Despesa com cultura,1034003647.2103323,,reais nominais
+ibge,Tabela 3.7,28,6,2015,SÃO PAULO,Despesa com cultura,887310189.0382905,,reais nominais
+ibge,Tabela 3.7,28,8,2016,SÃO PAULO,Despesa com cultura,761514924.0152702,,reais nominais
+ibge,Tabela 3.7,28,10,2017,SÃO PAULO,Despesa com cultura,800718750.9694905,,reais nominais
+ibge,Tabela 3.7,28,12,2018,SÃO PAULO,Despesa com cultura,872318231.9148542,,reais nominais
+ibge,Tabela 3.7,28,14,2019,SÃO PAULO,Despesa com cultura,869981266.2320007,,reais nominais
+ibge,Tabela 3.7,28,16,2020,SÃO PAULO,Despesa com cultura,1101862844.9240117,,reais nominais
+ibge,Tabela 3.7,28,18,2021,SÃO PAULO,Despesa com cultura,1165900947.4385111,,reais nominais
+ibge,Tabela 3.7,28,20,2022,SÃO PAULO,Despesa com cultura,1393802774.1031153,,reais nominais
+ibge,Tabela 3.7,28,22,2023,SÃO PAULO,Despesa com cultura,1645655224.573241,,reais nominais
+ibge,Tabela 3.7,30,2,2013,PARANÁ,Despesa com cultura,73931353.49471213,,reais nominais
+ibge,Tabela 3.7,30,4,2014,PARANÁ,Despesa com cultura,76636834.5598543,,reais nominais
+ibge,Tabela 3.7,30,6,2015,PARANÁ,Despesa com cultura,87584248.64797421,,reais nominais
+ibge,Tabela 3.7,30,8,2016,PARANÁ,Despesa com cultura,94890071.41210309,,reais nominais
+ibge,Tabela 3.7,30,10,2017,PARANÁ,Despesa com cultura,95862174.25621372,,reais nominais
+ibge,Tabela 3.7,30,12,2018,PARANÁ,Despesa com cultura,86862191.8181845,,reais nominais
+ibge,Tabela 3.7,30,14,2019,PARANÁ,Despesa com cultura,84112265.38081431,,reais nominais
+ibge,Tabela 3.7,30,16,2020,PARANÁ,Despesa com cultura,135671810.44289938,,reais nominais
+ibge,Tabela 3.7,30,18,2021,PARANÁ,Despesa com cultura,110343612.1014953,,reais nominais
+ibge,Tabela 3.7,30,20,2022,PARANÁ,Despesa com cultura,129171906.41776913,,reais nominais
+ibge,Tabela 3.7,30,22,2023,PARANÁ,Despesa com cultura,121974650.19501682,,reais nominais
+ibge,Tabela 3.7,31,2,2013,SANTA CATARINA,Despesa com cultura,42583864.35413636,,reais nominais
+ibge,Tabela 3.7,31,4,2014,SANTA CATARINA,Despesa com cultura,33207910.23859859,,reais nominais
+ibge,Tabela 3.7,31,6,2015,SANTA CATARINA,Despesa com cultura,45884765.38824323,,reais nominais
+ibge,Tabela 3.7,31,8,2016,SANTA CATARINA,Despesa com cultura,40809395.58494766,,reais nominais
+ibge,Tabela 3.7,31,10,2017,SANTA CATARINA,Despesa com cultura,40291926.047528036,,reais nominais
+ibge,Tabela 3.7,31,12,2018,SANTA CATARINA,Despesa com cultura,37663739.82066138,,reais nominais
+ibge,Tabela 3.7,31,14,2019,SANTA CATARINA,Despesa com cultura,37250535.833412886,,reais nominais
+ibge,Tabela 3.7,31,16,2020,SANTA CATARINA,Despesa com cultura,61777206.113317154,,reais nominais
+ibge,Tabela 3.7,31,18,2021,SANTA CATARINA,Despesa com cultura,67153172.04211953,,reais nominais
+ibge,Tabela 3.7,31,20,2022,SANTA CATARINA,Despesa com cultura,85475762.72300236,,reais nominais
+ibge,Tabela 3.7,31,22,2023,SANTA CATARINA,Despesa com cultura,130081824.3868952,,reais nominais
+ibge,Tabela 3.7,32,2,2013,RIO GRANDE DO SUL,Despesa com cultura,88695246.91232933,,reais nominais
+ibge,Tabela 3.7,32,4,2014,RIO GRANDE DO SUL,Despesa com cultura,108030784.60554083,,reais nominais
+ibge,Tabela 3.7,32,6,2015,RIO GRANDE DO SUL,Despesa com cultura,92566127.31724145,,reais nominais
+ibge,Tabela 3.7,32,8,2016,RIO GRANDE DO SUL,Despesa com cultura,82244985.63212606,,reais nominais
+ibge,Tabela 3.7,32,10,2017,RIO GRANDE DO SUL,Despesa com cultura,94140776.89398381,,reais nominais
+ibge,Tabela 3.7,32,12,2018,RIO GRANDE DO SUL,Despesa com cultura,85648543.44715847,,reais nominais
+ibge,Tabela 3.7,32,14,2019,RIO GRANDE DO SUL,Despesa com cultura,66166395.56076979,,reais nominais
+ibge,Tabela 3.7,32,16,2020,RIO GRANDE DO SUL,Despesa com cultura,142868019.0338776,,reais nominais
+ibge,Tabela 3.7,32,18,2021,RIO GRANDE DO SUL,Despesa com cultura,59778712.21042404,,reais nominais
+ibge,Tabela 3.7,32,20,2022,RIO GRANDE DO SUL,Despesa com cultura,137073317.4343328,,reais nominais
+ibge,Tabela 3.7,32,22,2023,RIO GRANDE DO SUL,Despesa com cultura,131805855.18602061,,reais nominais
+ibge,Tabela 3.7,34,2,2013,MATO GROSSO DO SUL,Despesa com cultura,23147658.20439899,,reais nominais
+ibge,Tabela 3.7,34,4,2014,MATO GROSSO DO SUL,Despesa com cultura,19495582.152783584,,reais nominais
+ibge,Tabela 3.7,34,6,2015,MATO GROSSO DO SUL,Despesa com cultura,17057418.98549298,,reais nominais
+ibge,Tabela 3.7,34,8,2016,MATO GROSSO DO SUL,Despesa com cultura,29713659.845276322,,reais nominais
+ibge,Tabela 3.7,34,10,2017,MATO GROSSO DO SUL,Despesa com cultura,30476073.483976163,,reais nominais
+ibge,Tabela 3.7,34,12,2018,MATO GROSSO DO SUL,Despesa com cultura,47032221.991312206,,reais nominais
+ibge,Tabela 3.7,34,14,2019,MATO GROSSO DO SUL,Despesa com cultura,43215538.50268218,,reais nominais
+ibge,Tabela 3.7,34,16,2020,MATO GROSSO DO SUL,Despesa com cultura,59926689.94559014,,reais nominais
+ibge,Tabela 3.7,34,18,2021,MATO GROSSO DO SUL,Despesa com cultura,66946586.63441542,,reais nominais
+ibge,Tabela 3.7,34,20,2022,MATO GROSSO DO SUL,Despesa com cultura,196611290.6655638,,reais nominais
+ibge,Tabela 3.7,34,22,2023,MATO GROSSO DO SUL,Despesa com cultura,100745718.43474624,,reais nominais
+ibge,Tabela 3.7,35,2,2013,MATO GROSSO,Despesa com cultura,35783545.45767855,,reais nominais
+ibge,Tabela 3.7,35,4,2014,MATO GROSSO,Despesa com cultura,34067421.39617205,,reais nominais
+ibge,Tabela 3.7,35,6,2015,MATO GROSSO,Despesa com cultura,37922379.83307597,,reais nominais
+ibge,Tabela 3.7,35,8,2016,MATO GROSSO,Despesa com cultura,27234914.254440315,,reais nominais
+ibge,Tabela 3.7,35,10,2017,MATO GROSSO,Despesa com cultura,63300431.769615255,,reais nominais
+ibge,Tabela 3.7,35,12,2018,MATO GROSSO,Despesa com cultura,55495101.22478545,,reais nominais
+ibge,Tabela 3.7,35,14,2019,MATO GROSSO,Despesa com cultura,45181948.539995395,,reais nominais
+ibge,Tabela 3.7,35,16,2020,MATO GROSSO,Despesa com cultura,75167255.12264092,,reais nominais
+ibge,Tabela 3.7,35,18,2021,MATO GROSSO,Despesa com cultura,91503341.08463743,,reais nominais
+ibge,Tabela 3.7,35,20,2022,MATO GROSSO,Despesa com cultura,185975792.871041,,reais nominais
+ibge,Tabela 3.7,35,22,2023,MATO GROSSO,Despesa com cultura,173501604.52680138,,reais nominais
+ibge,Tabela 3.7,36,2,2013,GOIÁS,Despesa com cultura,15638304.026316801,,reais nominais
+ibge,Tabela 3.7,36,4,2014,GOIÁS,Despesa com cultura,39244383.52316029,,reais nominais
+ibge,Tabela 3.7,36,6,2015,GOIÁS,Despesa com cultura,41653531.41670049,,reais nominais
+ibge,Tabela 3.7,36,8,2016,GOIÁS,Despesa com cultura,51148788.468967,,reais nominais
+ibge,Tabela 3.7,36,10,2017,GOIÁS,Despesa com cultura,53891945.59394014,,reais nominais
+ibge,Tabela 3.7,36,12,2018,GOIÁS,Despesa com cultura,45884461.5897107,,reais nominais
+ibge,Tabela 3.7,36,14,2019,GOIÁS,Despesa com cultura,5829508.642916119,,reais nominais
+ibge,Tabela 3.7,36,16,2020,GOIÁS,Despesa com cultura,103348971.69734268,,reais nominais
+ibge,Tabela 3.7,36,18,2021,GOIÁS,Despesa com cultura,88131083.61913596,,reais nominais
+ibge,Tabela 3.7,36,20,2022,GOIÁS,Despesa com cultura,52984040.19360523,,reais nominais
+ibge,Tabela 3.7,36,22,2023,GOIÁS,Despesa com cultura,152736041.00347733,,reais nominais
+ibge,Tabela 3.7,37,2,2013,DISTRITO FEDERAL,Despesa com cultura,234454422.95642266,,reais nominais
+ibge,Tabela 3.7,37,4,2014,DISTRITO FEDERAL,Despesa com cultura,203803139.1289369,,reais nominais
+ibge,Tabela 3.7,37,6,2015,DISTRITO FEDERAL,Despesa com cultura,140025751.67142832,,reais nominais
+ibge,Tabela 3.7,37,8,2016,DISTRITO FEDERAL,Despesa com cultura,141235703.9219449,,reais nominais
+ibge,Tabela 3.7,37,10,2017,DISTRITO FEDERAL,Despesa com cultura,159222575.19946083,,reais nominais
+ibge,Tabela 3.7,37,12,2018,DISTRITO FEDERAL,Despesa com cultura,197538377.692028,,reais nominais
+ibge,Tabela 3.7,37,14,2019,DISTRITO FEDERAL,Despesa com cultura,182807853.64873624,,reais nominais
+ibge,Tabela 3.7,37,16,2020,DISTRITO FEDERAL,Despesa com cultura,197478233.1967693,,reais nominais
+ibge,Tabela 3.7,37,18,2021,DISTRITO FEDERAL,Despesa com cultura,293479442.6709806,,reais nominais
+ibge,Tabela 3.7,37,20,2022,DISTRITO FEDERAL,Despesa com cultura,263267176.71086714,,reais nominais
+ibge,Tabela 3.7,37,22,2023,DISTRITO FEDERAL,Despesa com cultura,320989067.16125894,,reais nominais
