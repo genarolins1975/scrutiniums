@@ -1,10 +1,10 @@
 # Cobertura doméstica — Educação
 
-Saeb 2023; 26 capitais estaduais, rede municipal; não representa Brasil.
+Saeb 2023; 26 capitais estaduais, escolas urbanas da rede municipal; não representa Brasil.
 
 96 de 104 observações elegíveis para comparação bruta segundo a base existente. 0 registros com participação integrada. Nenhum escore OBEE liberado.
 
-Este é um inventário de cobertura, não uma nova auditoria dos arquivos oficiais nem uma validação de representatividade.
+A conciliação primária de 2023 está em AUDITORIA_FONTE_SAEB.md: 96 valores e oito ausências coincidem com o recorte urbano. Isso não valida participação, motivos de supressão ou representatividade.
 
 | Etapa | Disciplina | Esperados | Valores elegíveis | Participação disponível |
 |---|---|---:|---:|---:|

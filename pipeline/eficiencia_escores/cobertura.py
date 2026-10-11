@@ -63,7 +63,7 @@ def audit(rows, cities, year=2023):
                 blockers.extend(('REFERENCIA_OBEE_NAO_VALIDADA', 'REPRESENTATIVIDADE_NAO_AUDITADA'))
                 output.append({
                     'territory': code, 'name': city['name'], 'uf': city['uf'],
-                    'year': year, 'stage': stage, 'subject': subject,
+                    'year': year, 'stage': stage, 'subject': subject, 'school_location': 'Urbana' if year == 2023 else 'NAO_AUDITADA',
                     'raw_value': value, 'raw_unit': 'pontos na escala Saeb',
                     'source_state': row['status'] if row else 'REGISTRO_AUSENTE',
                     'raw_comparison_eligible': eligible,
@@ -92,7 +92,7 @@ def build(root=ROOT, year=2023):
                 'raw_eligible': sum(r['raw_comparison_eligible'] for r in subset),
                 'participation_available': sum(r['participation_available'] for r in subset)})
     return {'schema_version': 1, 'purpose': 'AUDITORIA_COBERTURA_NAO_PUBLICA_ESCORE',
-        'year': year, 'geography': '26 capitais estaduais, rede municipal; não representa Brasil',
+        'year': year, 'geography': ('26 capitais estaduais, escolas urbanas da rede municipal; não representa Brasil' if year == 2023 else '26 capitais estaduais, rede municipal; localização escolar não auditada'),
         'provenance': [{ 'path': path, 'sha256_bytes': hashlib.sha256((root/path).read_bytes()).hexdigest()}
             for path in (SOURCE, ROSTER)],
         'summary': {'territories': len(cities), 'expected_observations': len(rows),
@@ -118,7 +118,7 @@ def markdown(report):
         f"Saeb {report['year']}; {report['geography']}.", '',
         f"{s['raw_eligible']} de {s['expected_observations']} observações elegíveis para comparação bruta segundo a base existente. "
         f"{s['participation_available']} registros com participação integrada. Nenhum escore OBEE liberado.", '',
-        'Este é um inventário de cobertura, não uma nova auditoria dos arquivos oficiais nem uma validação de representatividade.', '',
+        'A conciliação primária de 2023 está em AUDITORIA_FONTE_SAEB.md: 96 valores e oito ausências coincidem com o recorte urbano. Isso não valida participação, motivos de supressão ou representatividade.', '',
         '| Etapa | Disciplina | Esperados | Valores elegíveis | Participação disponível |',
         '|---|---|---:|---:|---:|']
     for g in report['groups']:

@@ -297,7 +297,7 @@
     "period": "2023",
     "unit": "pontos na escala Saeb",
     "source": "INEP · Saeb",
-    "universe": "Português, anos iniciais do ensino fundamental, escolas da rede municipal participantes.",
+    "universe": "Português, anos iniciais do ensino fundamental, escolas urbanas da rede municipal participantes.",
     "path": "public/eficiencia/series/edu_saeb_rede_municipal.csv",
     "sha256": "33f1e535a6ebfb119a7175e0d48cda60925408c76c34883fe482ad095b423a0f"
   },

@@ -8,7 +8,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from .cobertura import ROOT, build, number
 
-FIELDS = ('territory', 'year', 'stage', 'subject', 'network', 'participants',
+FIELDS = ('territory', 'year', 'stage', 'subject', 'network', 'school_location', 'participants',
           'eligible_students', 'reported_pct', 'denominator_definition', 'source_locator')
 
 
@@ -35,8 +35,8 @@ def reconcile(report, rows, provenance):
         if any(field not in row for field in FIELDS):
             raise ValueError('Extração sem campos obrigatórios')
         key = tuple(row[k] for k in ('territory', 'year', 'stage', 'subject'))
-        if key not in index or row['network'] != 'municipal':
-            raise ValueError('Rede, edição ou território incompatível')
+        if key not in index or row['network'] != 'municipal' or row['school_location'] != index[key].get('school_location'):
+            raise ValueError('Rede, localização escolar, edição ou território incompatível')
         if key in seen:
             raise ValueError('Participação duplicada')
         seen.add(key)

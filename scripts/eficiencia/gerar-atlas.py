@@ -25,7 +25,7 @@ if len(regions) != 6 or len({r['id'] for r in regions}) != 6:
     raise ValueError('Universo alimentar inesperado')
 data = {'cities': sorted(cities, key=lambda r: r['name']), 'regions': regions,
     'education': {'period': '2023', 'unit': 'pontos na escala Saeb', 'source': 'INEP · Saeb',
-        'universe': 'Português, anos iniciais do ensino fundamental, escolas da rede municipal participantes.',
+        'universe': 'Português, anos iniciais do ensino fundamental, escolas urbanas da rede municipal participantes.',
         'path': str(csv_path.relative_to(ROOT)), 'sha256': hashlib.sha256(csv_path.read_bytes()).hexdigest()},
     'food': {'period': '2024', 'unit': '% de domicílios', 'source': 'IBGE · PNAD Contínua',
         'universe': 'Domicílios particulares permanentes em situação de segurança alimentar.',

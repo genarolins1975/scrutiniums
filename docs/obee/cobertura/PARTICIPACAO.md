@@ -1,5 +1,7 @@
 # Participação Saeb — integração preparada, dados pendentes
 
+Atualização: arquivo oficial obtido e inspecionado em 11/10/2026. Ele contém proficiências e níveis, mas não participação. Auditoria primária em `AUDITORIA_FONTE_SAEB.md`; recorte dos valores existentes confirmado como urbano. O bloqueio de download descrito abaixo registra a tentativa anterior e foi superado.
+
 Entrega de 11/10/2026, segundo lote da etapa 4. O conciliador está implementado; nenhum percentual real foi incorporado. A auditoria continua com 96 valores brutos elegíveis em 104 posições e zero participações preenchidas. A obtenção dos arquivos oficiais permanece pendente: o acesso pelo terminal falhou na resolução DNS e a ferramenta de pesquisa não resolveu o link de download. Isso não é evidência de indisponibilidade pública do Inep.
 
 ## Contrato de entrada
@@ -13,6 +15,7 @@ O CSV intermediário é uma extração revisada, **não um suposto layout oficia
 | stage | Nome exato da etapa usado na auditoria |
 | subject | portugues ou matematica; não replicar entre disciplinas sem suporte da fonte |
 | network | municipal; dados estaduais não substituem rede municipal |
+| school_location | Urbana, correspondente ao recorte auditado; Total/Rural são rejeitados |
 | participants | Inteiro não negativo; zero é valor, não ausência |
 | eligible_students | Inteiro positivo, universo efetivamente usado no denominador |
 | reported_pct | Percentual publicado, opcional; deve conciliar com as contagens |

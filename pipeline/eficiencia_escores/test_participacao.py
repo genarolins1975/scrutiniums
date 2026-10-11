@@ -10,7 +10,7 @@ from .participacao import reconcile, load_evidence
 class ParticipationTests(unittest.TestCase):
     def setUp(self):
         self.report = build()
-        self.row = dict(territory='2611606', year='2023', stage=STAGES[0], subject='portugues', network='municipal', participants='80', eligible_students='100', reported_pct='80', denominator_definition='Universo sintético de teste', source_locator='fixture:1')
+        self.row = dict(territory='2611606', year='2023', stage=STAGES[0], subject='portugues', network='municipal', school_location='Urbana', participants='80', eligible_students='100', reported_pct='80', denominator_definition='Universo sintético de teste', source_locator='fixture:1')
         self.meta = dict(source_url='https://download.inep.gov.br/test-fixture', source_sha256='a'*64, extraction_sha256='b'*64, reviewer='fixture', reviewed_at='2026-10-11', review_status='REVIEWED')
 
     def test_join_preserves_values_missingness_and_score(self):
@@ -32,7 +32,7 @@ class ParticipationTests(unittest.TestCase):
             self.assertAlmostEqual(selected[0]['participation_pct'], 100*int(n)/int(d))
 
     def test_wrong_granularity_or_duplicates(self):
-        for changes in ({'year': '2025'}, {'network': 'estadual'}, {'territory': '26'}, {'subject': 'ambas'}):
+        for changes in ({'year': '2025'}, {'network': 'estadual'}, {'school_location': 'Total'}, {'territory': '26'}, {'subject': 'ambas'}):
             with self.subTest(changes=changes), self.assertRaises(ValueError):
                 reconcile(self.report, [{**self.row, **changes}], self.meta)
         with self.assertRaises(ValueError):
