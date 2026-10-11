@@ -1,0 +1,83 @@
+/* Paleta compartilhada pelos artefatos da página inicial. */
+.energia-atlas-inicial {
+  --atlas-fundo:#163640;
+  --atlas-texto:#f8f7f2;
+  --atlas-acento:#97cbc4;
+  --atlas-borda-ativa:#609d99;
+  --atlas-separador:#527078;
+  --atlas-link:#c0e4df;
+  --atlas-texto-secundario:#c0d8d8;
+  --atlas-borda-controle:#87a9af;
+  --atlas-texto-grafico:#d9e8e6;
+  --atlas-foco:#b08c51;
+  --atlas-texto-mapa:#d0dfdf;
+  --atlas-mineral:#b2ccce;
+  --atlas-linha:#55717a;
+  --atlas-superficie:#214650;
+  --atlas-selecao:#37616b;
+  --atlas-energia:#b0d8d2;
+  --atlas-foco-inverso:#e5bf76;
+}
+/* Apenas a porta de entrada; os painéis analíticos mantêm seus contratos. */
+.energia-atlas-inicial .obs-hero { padding-bottom:24px }
+.energia-atlas-inicial .obs-metrics { margin-top:20px;padding:12px 0;border-bottom:1px solid var(--cor-linha) }
+.energia-atlas-inicial .obs-metrics dd:first-child { font-size:18px }
+.energia-abertura-medidas { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--cor-linha);border-bottom:1px solid var(--cor-linha);margin-top:20px }
+.energia-abertura-medidas>a { display:flex;flex-direction:column;padding:24px;gap:6px;border-right:1px solid var(--cor-linha);color:var(--cor-carvao);font-size:13px }
+.energia-abertura-medidas>a:first-child { padding-left:0 }.energia-abertura-medidas>a:last-child { border:0 }.energia-abertura-medidas strong { font:400 40px/1.2 var(--font-serif),Georgia,serif;margin:6px 0 }.energia-abertura-medidas small { font-size:12px;color:var(--cor-carvao-muted) }.energia-abertura-link { text-decoration:underline;text-underline-offset:4px;margin-top:8px }
+.energia-atlas-inicial #mapa-conceitual { padding-top:28px }
+.energia-mapa-atlas { --cor-carvao:var(--atlas-texto);--cor-carvao-muted:var(--atlas-texto-mapa);--cor-mineral:var(--atlas-mineral);--cor-linha:var(--atlas-linha);--cor-superficie:var(--atlas-superficie);--cor-energia-dark:var(--atlas-link);--cor-energia-fundo:var(--atlas-selecao);--cor-energia:var(--atlas-energia);background:var(--atlas-fundo);padding:28px;color:var(--atlas-texto) }
+.energia-mapa-lentes { display:flex;flex-wrap:wrap;gap:8px;padding-bottom:12px }.energia-mapa-lentes button { min-height:44px;padding:8px 14px;border:1px solid var(--atlas-borda-controle);font-size:12px;line-height:1.5;color:var(--atlas-texto-grafico) }.energia-mapa-lentes button[aria-pressed=true] { background:var(--atlas-link);color:var(--atlas-fundo);border-color:var(--atlas-link) }
+.energia-mapa-instrucao { font-size:13px;line-height:1.6;color:var(--atlas-texto-mapa);min-height:44px;margin-bottom:24px }
+.energia-mapa-atlas #mapa-conceitual-detalhe { background:transparent;border:0;border-left:1px solid var(--atlas-linha);padding:8px 0 8px 28px }
+.energia-mapa-atlas #mapa-conceitual-detalhe h3 { font-size:30px;margin:12px 0 20px }.energia-mapa-atlas #mapa-conceitual-detalhe a { color:var(--atlas-link) }
+.energia-mapa-atlas [id^=mapa-no-] { border-color:var(--atlas-borda-controle);padding:8px;box-shadow:none }.energia-mapa-atlas [id^=mapa-no-][aria-pressed=true] { background:var(--atlas-selecao);border:2px solid var(--atlas-link) }.energia-mapa-numero { display:block;color:var(--atlas-link);font:12px var(--font-sans),sans-serif;margin-bottom:4px }
+.energia-mapa-atlas button:focus-visible { outline:3px solid var(--atlas-foco-inverso);outline-offset:4px }
+@media(max-width:1100px) { .energia-mapa-atlas { padding:20px }.energia-mapa-numero { display:none } }
+@media(max-width:1279px) { .energia-mapa-atlas #mapa-conceitual-detalhe { border-left:0;border-top:1px solid var(--atlas-linha);padding:24px 0 0 }.energia-mapa-atlas [id^=mapa-no-] { padding:8px }.energia-mapa-numero { display:block } }
+@media(max-width:639px) { .energia-abertura-medidas { grid-template-columns:1fr }.energia-abertura-medidas>a,.energia-abertura-medidas>a:first-child { padding:20px 0;border-right:0;border-bottom:1px solid var(--cor-linha) }.energia-abertura-medidas strong { font-size:34px } }
+@media print { .energia-mapa-lentes { display:none }.energia-mapa-atlas { background:white;--cor-carvao:#182b36;--cor-carvao-muted:#182b36;--cor-mineral:#58666b;--cor-superficie:white;--cor-energia-dark:#09697a }.energia-mapa-instrucao { color:#182b36 } }
+.energia-mapa-atlas .text-carvao { color:var(--cor-carvao) }
+.energia-mapa-atlas .text-carvao-muted { color:var(--cor-carvao-muted) }
+.energia-mapa-atlas .text-mineral { color:var(--cor-mineral) }
+.energia-mapa-atlas .text-energia-dark { color:var(--cor-energia-dark) }
+.energia-mapa-atlas .bg-superficie { background:var(--cor-superficie) }
+.energia-mapa-atlas .bg-energia-fundo { background:var(--cor-energia-fundo) }
+
+.energia-mapa-atlas [id^=mapa-no-] { padding:6px;overflow:visible }
+.energia-mapa-atlas [id^=mapa-no-]>.font-serif { font-size:13px;line-height:1.25 }
+
+/* Direção visual aprovada: a paisagem ensina o percurso, os números seguem a gold. */
+.energia-atlas-inicial { --atlas-papel:#f8f7f2;--atlas-tinta:#182b36;--atlas-sombra:rgba(24,43,54,.16) }
+.energia-atlas-inicial #proposito { padding-top:0;padding-bottom:28px }
+.energia-cenario { position:relative;isolation:isolate;min-height:560px;margin-inline:-40px;background:var(--atlas-papel);overflow:hidden }
+.energia-cenario-imagem { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-2 }
+.energia-cenario:before { content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--atlas-papel) 0%,transparent 55%);opacity:.16;pointer-events:none }
+.energia-cenario-texto { position:relative;padding:40px 40px 0;width:48%;max-width:570px }
+.energia-cenario-texto .rotulo { color:var(--atlas-tinta);font-size:11px;line-height:1.7;letter-spacing:.14em;max-width:400px }
+.energia-cenario-texto h1 { font:500 clamp(38px,4.6vw,62px)/1.06 var(--font-serif),Georgia,serif;letter-spacing:-.035em;color:var(--atlas-tinta);margin:18px 0 }
+.energia-cenario-texto>p:not(.rotulo) { font-size:16px;line-height:1.6;color:var(--atlas-tinta);max-width:360px }
+.energia-explorar { display:inline-flex;gap:28px;align-items:center;min-height:48px;padding:12px 20px;background:var(--cor-energia-dark);color:var(--cor-superficie);margin-top:22px;font-size:14px;border-radius:3px }
+.energia-explorar:hover { background:var(--cor-energia) }
+.energia-cenario-pontos a { position:absolute;display:flex;align-items:center;gap:10px;min-height:44px;padding:4px 16px 4px 5px;background:var(--atlas-fundo);color:var(--atlas-texto);border:1px solid var(--atlas-link);border-radius:28px;box-shadow:0 3px 14px var(--atlas-sombra);font-size:13px }
+.energia-cenario-pontos a>span { display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--atlas-superficie);border:1px solid var(--atlas-borda-controle);font-size:12px }
+.energia-cenario-pontos a:hover { background:var(--cor-energia-dark);transform:translateY(-2px) }
+.energia-cenario-pontos [data-etapa=geracao] { left:29%;top:60% }.energia-cenario-pontos [data-etapa=transmissao] { left:60%;top:36% }.energia-cenario-pontos [data-etapa=distribuicao] { left:65%;top:61% }.energia-cenario-pontos [data-etapa=consumo] { right:3%;top:49% }
+.energia-cenario-legenda { position:absolute;bottom:8px;right:20px;padding:5px 8px;background:var(--atlas-papel);font-size:10px;color:var(--atlas-tinta) }
+.energia-atlas-inicial .energia-abertura-medidas { margin-top:0;padding:8px 0;border-top:0 }
+.energia-atlas-inicial .energia-abertura-medidas>a,.energia-atlas-inicial .energia-abertura-medidas>a:first-child { padding:18px 24px;align-items:center;text-align:center }
+.energia-abertura-medidas>a>span:first-child { min-height:40px;max-width:290px;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1.45 }
+.energia-atlas-inicial .energia-abertura-medidas strong { font-size:44px;letter-spacing:-.025em;color:var(--atlas-tinta) }
+.energia-abertura-medidas .energia-abertura-link { font-size:12px }
+.energia-medidas-nota { text-align:center;font-size:12px;line-height:1.65;padding:14px 16px;color:var(--cor-carvao-muted) }
+.energia-contexto { border-top:1px solid var(--cor-linha);font-size:13px }.energia-contexto>summary,.energia-mapa-completo>summary { display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:48px;cursor:pointer;list-style:none;color:var(--cor-energia-dark) }.energia-contexto>summary::-webkit-details-marker,.energia-mapa-completo>summary::-webkit-details-marker { display:none }.energia-contexto[open]>summary>span,.energia-mapa-completo[open]>summary>span { transform:rotate(45deg) }.energia-contexto>.obs-hero { padding:24px 0 }.energia-contexto .obs-hero>.min-w-0>.rotulo { display:none }
+.energia-portas { margin:0 0 40px }.energia-portas h2 { font:400 clamp(28px,3vw,38px)/1.2 var(--font-serif),Georgia,serif;letter-spacing:-.02em;color:var(--atlas-tinta);margin-bottom:24px }
+.energia-portas-grade { display:grid;grid-template-columns:1fr 1fr;gap:32px }.energia-porta { position:relative;display:block;isolation:isolate;min-height:280px;overflow:hidden;border-bottom:1px solid var(--cor-linha) }.energia-porta>div { position:relative;width:62%;z-index:1;padding:20px 12px 24px 0 }.energia-porta h3 { font:400 29px/1.15 var(--font-serif),Georgia,serif;color:var(--atlas-tinta);letter-spacing:-.02em }.energia-porta p { font-size:14px;line-height:1.65;margin:18px 0;max-width:235px }.energia-porta span { display:inline-flex;align-items:center;min-height:44px;color:var(--cor-energia-dark);text-decoration:underline;text-underline-offset:5px;font-size:14px }.energia-porta>img { position:absolute;right:0;bottom:0;width:56%;height:100%;object-fit:cover;z-index:-1;mask-image:linear-gradient(90deg,transparent,black 45%) }.energia-porta-regiao>img { object-position:right center }.energia-porta-conta>img { object-position:right center }.energia-porta:hover span { text-decoration-thickness:2px }
+.energia-atlas-inicial #mapa-conceitual { padding-top:28px;padding-bottom:24px }.energia-mapa-completo[open] { padding-bottom:16px }.energia-mapa-completo>summary { border-top:1px solid var(--cor-linha);border-bottom:1px solid var(--cor-linha);margin-bottom:16px;font-size:14px }
+.energia-atlas-inicial a:focus-visible,.energia-atlas-inicial summary:focus-visible { outline:3px solid var(--atlas-foco);outline-offset:4px }
+@media(min-width:1240px) { .energia-cenario { min-height:600px } }
+@media(max-width:1000px) and (min-width:761px) { .energia-cenario { min-height:480px;margin-inline:-32px }.energia-cenario-texto { padding:32px 32px 0;width:48% }.energia-cenario-texto h1 { font-size:42px }.energia-porta h3 { font-size:25px }.energia-portas-grade { gap:24px }.energia-cenario-pontos a { font-size:12px;gap:6px;padding-right:10px } }
+@media(max-width:760px) { .energia-cenario { min-height:0;display:flex;flex-direction:column;margin-inline:-16px;overflow:visible }.energia-cenario-texto { padding:28px 16px 0;width:100%;max-width:none;order:0 }.energia-cenario-texto .rotulo { max-width:290px;font-size:10px }.energia-cenario-texto h1 { font-size:40px;max-width:380px;margin:14px 0;letter-spacing:-.025em }.energia-cenario-texto>p:not(.rotulo) { font-size:15px;max-width:310px }.energia-explorar { margin-top:18px;min-height:44px }.energia-cenario-imagem { position:relative;inset:auto;order:1;width:100%;height:auto;aspect-ratio:2;object-fit:contain;z-index:0;margin-top:12px }.energia-cenario:before { display:none }.energia-cenario-pontos { order:2;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px }.energia-cenario-pontos a { position:static;min-height:44px;font-size:12px;box-shadow:none;gap:8px;padding-right:10px }.energia-cenario-legenda { position:static;order:3;margin:8px 16px 0;padding:6px 0;font-size:10px }.energia-atlas-inicial .energia-abertura-medidas { grid-template-columns:1fr;padding-top:12px }.energia-atlas-inicial .energia-abertura-medidas>a,.energia-atlas-inicial .energia-abertura-medidas>a:first-child { display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;text-align:left;padding:18px 0;border:0;border-bottom:1px solid var(--cor-linha);gap:4px 16px }.energia-abertura-medidas>a>span:first-child { justify-content:start;min-height:0;grid-column:1;font-size:13px;max-width:230px }.energia-atlas-inicial .energia-abertura-medidas strong { font-size:32px;grid-column:2;grid-row:1/3;margin:0;white-space:nowrap }.energia-abertura-medidas>a>span:nth-of-type(2) { grid-column:1;font-size:12px }.energia-abertura-medidas small { grid-column:1/-1;margin-top:6px }.energia-abertura-medidas .energia-abertura-link { grid-column:1/-1;padding-top:5px }.energia-medidas-nota { padding:14px 0;text-align:left;font-size:11px }.energia-portas-grade { grid-template-columns:1fr;gap:20px }.energia-porta { min-height:245px }.energia-porta h3 { font-size:27px }.energia-porta>div { width:65% }.energia-porta p { max-width:190px }.energia-portas h2 { font-size:30px }.energia-porta>img { width:55% }.energia-contexto>.obs-hero { padding:16px 0 } }
+@media(max-width:380px) { .energia-cenario-texto h1 { font-size:35px }.energia-atlas-inicial .energia-abertura-medidas strong { font-size:28px }.energia-cenario-pontos a { gap:5px;font-size:11px }.energia-cenario-pontos a>span { width:28px;height:28px }.energia-porta h3 { font-size:25px } }
+@media(prefers-reduced-motion:reduce) { .energia-cenario-pontos a:hover { transform:none } }
+@media print { .energia-cenario { min-height:0;margin:0 }.energia-cenario-texto { width:100%;padding:20px 0 }.energia-cenario-imagem,.energia-cenario-pontos,.energia-explorar,.energia-cenario-legenda { display:none }.energia-porta>img { display:none }.energia-porta>div { width:100% } }

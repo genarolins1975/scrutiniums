@@ -40,7 +40,7 @@ export type CaminhoIntencao = {
 export const CAMINHOS_INTENCAO: CaminhoIntencao[] = [
   { id: "acompanhar", titulo: "Acompanhar o sistema", descricao: "Preço, água, geração, carga e rede, cada um com a sua data.", slugs: ["visao-geral"] },
   { id: "regiao", titulo: "Explorar uma região", descricao: "Submercado, distribuidora, município e usinas no mesmo mapa, cada número no seu grão.", slugs: ["territorio"] },
-  { id: "sistema", titulo: "Entender como o sistema se liga", descricao: "Sete elos, da água à vida das pessoas, no mapa logo abaixo das seis perguntas.", slugs: [], ancora: "#mapa-conceitual" },
+  { id: "sistema", titulo: "Entender como o sistema se liga", descricao: "Sete elos, da água à vida das pessoas, no mapa interativo desta página.", slugs: [], ancora: "#mapa-conceitual" },
   { id: "aprender", titulo: "Aprender um conceito", descricao: "Verbetes com a definição da fonte oficial e o painel onde cada conceito aparece.", slugs: ["aprenda"] },
   { id: "conferir", titulo: "Conferir ou baixar os dados", descricao: "A fonte, o arquivo e o cálculo de cada número, e os conjuntos para baixar.", slugs: ["dados", "metodologia"] },
 ];
@@ -904,8 +904,8 @@ export const ANCORAS_VISAO_GERAL = [
  */
 export const SECOES_HOME = [
   { id: "proposito", rotulo: "Para que serve" },
-  { id: "perguntas", rotulo: "Seis perguntas para começar" },
   { id: "mapa-conceitual", rotulo: "Como as partes se ligam" },
+  { id: "perguntas", rotulo: "Seis perguntas para começar" },
   { id: "destinos", rotulo: "Todas as páginas, por tema" },
   { id: "trilhas", rotulo: "Trilhas de leitura" },
   { id: "como-confiar", rotulo: "Como ler e conferir" },

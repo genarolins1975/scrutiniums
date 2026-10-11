@@ -108,10 +108,15 @@
       }
       for (const view of main.querySelectorAll('.view.active')) indiceDaPagina(view);
       const mapa = document.getElementById('view-mapa');
-      if (mapa) mapaEntrada(mapa);
+      if (mapa) {
+        mapaEntrada(mapa);
+        // The core owns the data; the atlas only reads its published metadata.
+        window.CreditAtlas?.enhance(mapa, typeof state === 'undefined' ? {} : state.data.meta || {});
+      }
     } finally { observer.observe(main, { childList: true, subtree: true }); }
   }
   const observer = new MutationObserver(atualizar);
   window.addEventListener('resize', atualizar);
   atualizar();
 })();
+

@@ -90,8 +90,8 @@ describe("página inicial: mapa didático (P001)", () => {
   it("tem as sete âncoras (as que outras páginas usam), a proposta, a busca e os cinco caminhos, e mantém a Visão geral numa página própria", () => {
     const t = ler(HOME);
     // a ordem em que as seções aparecem; cada id é a âncora que outras páginas e links antigos usam
-    // o mapa vem logo depois das seis perguntas, antes do índice: a resposta a "como o sistema se liga" não fica telas abaixo
-    expect(SECOES_HOME.map((s) => s.id)).toEqual(["proposito", "perguntas", "mapa-conceitual", "destinos", "trilhas", "como-confiar", "aprofundar"]);
+    // o mapa vem antes das seis perguntas, antes do índice: a resposta a "como o sistema se liga" não fica telas abaixo
+    expect(SECOES_HOME.map((s) => s.id)).toEqual(["proposito", "mapa-conceitual", "perguntas", "destinos", "trilhas", "como-confiar", "aprofundar"]);
     for (const s of SECOES_HOME) expect(t, s.id).toContain(`id="${s.id}"`);
     const posicoes = SECOES_HOME.map((s) => t.indexOf(`id="${s.id}"`));
     expect([...posicoes].sort((a, b) => a - b)).toEqual(posicoes);
