@@ -12,7 +12,7 @@ export function Explorador({grupo}:{grupo:Grupo}){
     <h1 id="pergunta-painel" className="mt-3 max-w-3xl font-serif text-3xl sm:text-4xl">{config.pergunta}</h1>
     <p className="mt-4 max-w-3xl leading-relaxed">{config.nota}</p>
     <div className="mt-6 flex flex-wrap items-end gap-4 border-y border-linha bg-superficie p-4">
-      <label className="flex min-w-0 flex-1 flex-col gap-2 text-sm">Buscar indicador<input value={busca} onChange={e=>setBusca(e.target.value)} className="min-h-[44px] w-full border border-obee-dark bg-superficie px-3" type="search"/></label>
+      <label className="flex w-full min-w-0 flex-col sm:w-auto sm:flex-1 gap-2 text-sm">Buscar indicador<input value={busca} onChange={e=>setBusca(e.target.value)} className="min-h-[44px] w-full border border-obee-dark bg-superficie px-3" type="search"/></label>
       <label className="flex max-w-full flex-col gap-2 text-sm">Ordenar por<select value={ordem} onChange={e=>setOrdem(e.target.value)} className="min-h-[44px] max-w-full border border-obee-dark bg-superficie px-3"><option value="titulo">Nome</option><option value="variacao">Variação, maior primeiro</option><option value="valor">Volume, maior primeiro</option></select></label>
       <button onClick={()=>{setBusca('');setOrdem('titulo');}} className="min-h-[44px] px-3 text-obee-dark underline">Limpar</button>
       <button onClick={baixar} disabled={!linhas.length} className="min-h-[44px] border border-obee-dark px-4 disabled:opacity-50">Baixar este recorte · CSV</button>
