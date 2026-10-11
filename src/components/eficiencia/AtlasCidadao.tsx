@@ -5,10 +5,12 @@ import Link from 'next/link';
 import {DIMENSOES, GRUPOS, normalizaBusca} from '@/lib/eficiencia/dimensoes';
 import dados from '@/lib/eficiencia/atlas-resumo.json';
 import styles from './AtlasCidadao.module.css';
+import {FrequenciaEscolar} from './FrequenciaEscolar';
+import frequencia from '@/lib/eficiencia/frequencia-escolar.json';
 
 type Scope = 'cidades' | 'regioes';
-type Selection = {scope: Scope; place: string; reference: string};
-const DEFAULT: Selection = {scope:'cidades',place:'2611606',reference:'4106902'};
+type Selection = {scope: Scope; place: string; reference: string; metric: 'frequencia' | 'saeb'; age: string};
+const DEFAULT: Selection = {scope:'cidades',place:'2611606',reference:'4106902',metric:'frequencia',age:'47813'};
 const options = (scope: Scope) => scope === 'cidades' ? dados.cities : dados.regions.filter(r=>r.id!=='Brasil');
 const format = (value: number | null) => value === null ? 'Não disponível' : value.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:2});
 function selectionFromUrl(): Selection {
@@ -19,7 +21,9 @@ function selectionFromUrl(): Selection {
   const reference = pool.find(p=>p.id===q.get('comparador') && p.id!==place)?.id
     ?? pool.find(p=>p.id===(scope==='cidades'?DEFAULT.reference:'Sul') && p.id!==place)?.id
     ?? pool.find(p=>p.id!==place)!.id;
-  return {scope,place,reference};
+  const metric=q.get('indicador')==='saeb'?'saeb':'frequencia';
+  const age=frequencia.ages.find(a=>a.id===q.get('idade'))?.id??DEFAULT.age;
+  return {scope,place,reference,metric,age};
 }
 
 export function AtlasCidadao(){
@@ -33,7 +37,7 @@ export function AtlasCidadao(){
     if(next.place===next.reference) next={...next,reference:pool.find(p=>p.id!==next.place)!.id};
     setSelection(next);
     const url=new URL(window.location.href);
-    url.searchParams.set('visao',next.scope);url.searchParams.set('territorio',next.place);url.searchParams.set('comparador',next.reference);
+    url.searchParams.set('visao',next.scope);url.searchParams.set('territorio',next.place);url.searchParams.set('comparador',next.reference);url.searchParams.set('indicador',next.metric);url.searchParams.set('idade',next.age);
     window.history.pushState(null,'',url);
   }
   const pool=options(selection.scope);
@@ -53,7 +57,7 @@ export function AtlasCidadao(){
   return <div className={styles.atlas}>
     <header className={styles.intro}><div><p className={styles.eyebrow}>OBEE / Atlas do cidadão</p><h1 id="titulo-eficiencia">O Estado na sua vida.</h1></div><p>Conheça os serviços, compare territórios e acompanhe as evidências de cada capítulo.</p></header>
     <div className={styles.toolbar}>
-      <fieldset className={styles.scope}><legend className={styles.srOnly}>Recorte territorial da comparação</legend>{(['cidades','regioes'] as const).map(s=><button key={s} type="button" aria-pressed={selection.scope===s} onClick={()=>select(s==='cidades'?DEFAULT:{scope:s,place:'Nordeste',reference:'Sul'})}>{s==='cidades'?'Cidades':'Regiões'}</button>)}</fieldset>
+      <fieldset className={styles.scope}><legend className={styles.srOnly}>Recorte territorial da comparação</legend>{(['cidades','regioes'] as const).map(s=><button key={s} type="button" aria-pressed={selection.scope===s} onClick={()=>select(s==='cidades'?DEFAULT:{...selection,scope:s,place:'Nordeste',reference:'Sul'})}>{s==='cidades'?'Cidades':'Regiões'}</button>)}</fieldset>
       <label>Território<select value={a.id} onChange={e=>select({...selection,place:e.target.value})}>{pool.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
       <label>Comparar com<select value={b.id} onChange={e=>select({...selection,reference:e.target.value})}>{pool.filter(p=>p.id!==a.id).map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
       <a className={styles.toolbarLink} href="#atlas-comparacao">Ver comparação ↓</a>
@@ -61,14 +65,16 @@ export function AtlasCidadao(){
     <section className={styles.hero} aria-label="Panorama do território e mapa dos capítulos">
       <div className={styles.place}><p className={styles.eyebrow}>{city?'Capital brasileira':'Grande Região'}</p><h2>{a.name}</h2><p className={styles.scoreLabel}>Escore agregado de serviços</p><p className={styles.pending}>Em construção<span>Acesso · resposta · qualidade</span></p><p className={styles.heroNote}>Faltam componentes e referências validadas para publicar uma nota.</p><a href="#atlas-score-method">Entender o que falta ↗</a></div>
       <div className={styles.orbitWrap}><svg viewBox="0 0 400 400" className={styles.orbit} role="img" aria-labelledby="atlas-orbit-title atlas-orbit-desc"><title id="atlas-orbit-title">Mapa dos 16 capítulos do OBEE</title><desc id="atlas-orbit-desc">Cada posição representa um capítulo. O desenho organiza temas; não representa notas, cobertura territorial ou desempenho. A lista interativa está logo abaixo.</desc><circle cx="200" cy="200" r="128" fill="none" stroke="var(--cor-obee-atlas-linha-inversa)" strokeDasharray="2 7"/><circle cx="200" cy="200" r="88" fill="none" stroke="var(--cor-obee-atlas-orbita)"/>{DIMENSOES.map((d,i)=>{const angle=(i*22.5-90)*Math.PI/180;const x=200+128*Math.cos(angle),y=200+128*Math.sin(angle);return <g key={d.id}><line x1={200+92*Math.cos(angle)} y1={200+92*Math.sin(angle)} x2={x} y2={y} stroke={d.id===chapter?'var(--cor-obee-atlas-acento-inverso)':'var(--cor-obee-atlas-linha-inversa)'} strokeWidth={d.id===chapter?3:1}/><circle cx={x} cy={y} r={d.id===chapter?15:12} fill={d.id===chapter?'var(--cor-obee-atlas-acento-inverso)':'var(--cor-obee-atlas-no)'} stroke={d.href?'var(--cor-obee-atlas-acento-inverso)':'var(--cor-obee-atlas-no-pendente)'}/><text x={x} y={y+4} textAnchor="middle" fill={d.id===chapter?'var(--cor-obee-atlas-tinta)':'var(--cor-obee-atlas-papel)'} fontSize="10">{String(i+1).padStart(2,'0')}</text></g>})}<text x="200" y="192" textAnchor="middle" fill="var(--cor-obee-atlas-papel)" fontSize="44" fontFamily="Georgia,serif">16</text><text x="200" y="219" textAnchor="middle" fill="var(--cor-obee-atlas-texto-inverso)" fontSize="12">dimensões da vida pública</text></svg><p>Mapa temático · não representa escores</p></div>
-      <div className={styles.heroAside}><div><p className={styles.eyebrow}>Evidência disponível / {meta.period}</p><h3>{measure}</h3><strong>{format(a.value)}</strong><p>{meta.unit}</p><a href="#atlas-comparacao">Comparar com {b.name} →</a></div><div className={styles.heroAsideBottom}><p className={styles.eyebrow}>Explore além da média</p><p>Recursos, atendimento e resultados têm universos próprios. Cada fonte explica seu recorte.</p></div></div>
+      <div className={styles.heroAside}><div><p className={styles.eyebrow}>Evidência disponível / {meta.period}</p><h3>{measure}</h3><strong>{format(a.value)}</strong><p>{meta.unit}</p><a href="#atlas-comparacao" onClick={()=>{if(city)select({...selection,metric:'saeb'});}}>Comparar com {b.name} →</a></div><div className={styles.heroAsideBottom}><p className={styles.eyebrow}>Explore além da média</p><p>Recursos, atendimento e resultados têm universos próprios. Cada fonte explica seu recorte.</p></div></div>
       <div className={styles.heroFooter}><span>Dados reais · períodos identificados em cada medida</span><span>Comparação internacional ainda não disponível</span></div>
     </section>
     <dl className={styles.strip}><div><dt>Dimensões no observatório</dt><dd>{DIMENSOES.length}<small>visão completa dos temas</small></dd></div><div><dt>Capítulos com painéis publicados</dt><dd>{published}<small>cobertura variável por fonte</small></dd></div><div><dt>Nota agregada</dt><dd className={styles.stripText}>Indisponível<small>dados publicados não equivalem a escore validado</small></dd></div></dl>
-    <section id="atlas-comparacao" className={styles.section} aria-labelledby="atlas-compare-title"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>01 / Comparar territórios</p><h2 id="atlas-compare-title">Uma medida. Dois contextos.</h2></div><p>{meta.source} · referência {meta.period}</p></div>
+    <section id="atlas-comparacao" className={styles.section} aria-labelledby="atlas-compare-title"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>01 / Comparar territórios</p><h2 id="atlas-compare-title">Uma medida. Diferentes contextos.</h2></div><p>{city&&selection.metric==='frequencia'?`${frequencia.source} · referência ${frequencia.period}`:`${meta.source} · referência ${meta.period}`}</p></div>
+      {city&&<fieldset className={styles.indicatorChoice}><legend>Escolha a medida de educação</legend>{(['frequencia','saeb'] as const).map(m=><button type="button" key={m} aria-pressed={selection.metric===m} onClick={()=>select({...selection,metric:m})}>{m==='frequencia'?`Frequência escolar · ${frequencia.period}`:`Aprendizagem · Saeb ${dados.education.period}`}</button>)}</fieldset>}
+      {city&&selection.metric==='frequencia'?<FrequenciaEscolar place={a.id} reference={b.id} age={selection.age} onAgeChange={age=>select({...selection,age})}/>:
       <div className={styles.comparison}><div><h3>{measure}</h3><p>{meta.universe}</p><p className={styles.difference} aria-live="polite">{diff===null?'Comparação indisponível':`${diff>0?'+':''}${format(diff)} ${city?'pontos Saeb':'pontos percentuais'}`}</p><p>{a.name} em relação a {b.name}. Esta diferença não é uma nota de serviço nem demonstra efeito da gestão pública.</p><p className={styles.universe}>{city?'Universo disponível: 26 capitais, rede municipal. Distrito Federal fora deste recorte.':'Universo disponível: cinco Grandes Regiões. Não há estimativa municipal da EBIA nesta base.'}</p></div>
         <div><div className={styles.bars} aria-hidden="true">{[a,b].map((p,i)=><div className={styles.barRow} key={p.id}><div><span>{p.name}</span><strong>{format(p.value)}</strong></div><div className={styles.track}>{p.value!==null&&<span className={i===0?styles.barPrimary:styles.barReference} style={{width:`${p.value/max*100}%`}}/>}</div></div>)}<p>Escala de 0 a {format(max)} {meta.unit}{city?' · limite visual fixo entre as 26 capitais':''}</p></div>
-        <table className={styles.values}><caption>{measure} · {meta.period}</caption><thead><tr><th scope="col">Território</th><th scope="col">{meta.unit}</th></tr></thead><tbody>{[a,b].map(p=><tr key={p.id}><th scope="row">{p.name}</th><td>{format(p.value)}</td></tr>)}</tbody></table><div className={styles.links}><Link href={valuesHref}>Explorar este indicador ↗</Link><Link href={sourceHref}>Fonte e método ↗</Link><a href={'/'+meta.path.replace(/^public\//, '')} download>Baixar base completa ↓</a></div><p className={styles.small}>O download contém a base completa da fonte, não apenas os dois territórios selecionados.</p></div></div>
+        <table className={styles.values}><caption>{measure} · {meta.period}</caption><thead><tr><th scope="col">Território</th><th scope="col">{meta.unit}</th></tr></thead><tbody>{[a,b].map(p=><tr key={p.id}><th scope="row">{p.name}</th><td>{format(p.value)}</td></tr>)}</tbody></table><div className={styles.links}><Link href={valuesHref}>Explorar este indicador ↗</Link><Link href={sourceHref}>Fonte e método ↗</Link><a href={'/'+meta.path.replace(/^public\//, '')} download>Baixar base completa ↓</a></div><p className={styles.small}>O download contém a base completa da fonte, não apenas os dois territórios selecionados.</p></div></div>}
     </section>
     <section id="dados-publicados" className={styles.section} aria-labelledby="atlas-chapters-title"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>02 / Explorar capítulos</p><h2 id="atlas-chapters-title">O que faz parte da sua vida?</h2></div><p>Os capítulos abrem seus próprios recortes e períodos.</p></div>
       <div className={styles.chapterTools}><label>Encontrar um tema<input type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Educação, moradia, direitos…"/></label><label>Área<select value={group} onChange={e=>setGroup(e.target.value)}>{['Todas',...GRUPOS].map(g=><option key={g}>{g}</option>)}</select></label></div>

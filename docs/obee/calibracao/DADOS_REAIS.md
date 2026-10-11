@@ -47,3 +47,14 @@ python3 -m pipeline.eficiencia_escores.verificar_frequencia
 
 A conferência valida hashes, 26 códigos municipais × quatro idades, quatro registros nacionais, ausência de duplicatas, período, variável, sexo, cor/raça, unidade e intervalo. Símbolos da fonte são preservados, sem conversão silenciosa em zero. Verificações desta captura passaram; não constituem validação metodológica do escore.
 
+
+
+## Integração ao Atlas — 11/10/2026
+
+A página inicial passa a oferecer frequência escolar e aprendizagem Saeb como medidas alternativas na mesma seção. Frequência usa as duas capitais selecionadas e a taxa nacional publicada, quatro faixas etárias, barras de 0–100%, tabela equivalente e CSV integral (108 observações). A referência temporal e a inclusão de redes públicas/privadas ficam visíveis. Indicador e faixa etária são preservados na URL junto às capitais, com restauração por histórico.
+
+A frequência é a medida inicial da comparação municipal; o resumo de aprendizagem no topo permanece identificado como Saeb e seu link abre essa medida. A comparação regional de segurança alimentar é preservada. Nenhum desses valores preenche escores.
+
+Reprodução: `python3 scripts/eficiencia/gerar-frequencia-atlas.py`. O gerador verifica os hashes originais, recortes, duplicatas e cobertura exata antes de materializar JSON/CSV. Oito testes Vitest conferem todos os valores/hashes, download e renderização das quatro faixas. Tipos e lint dos componentes passaram. Build e verificação visual são registrados no PR após a execução.
+
+Foi corrigida a preservação de bytes dos originais SIDRA de capitais e Brasil: a transferência anterior havia convertido CRLF em LF. Os arquivos foram restaurados da captura original preservada, sem mudança dos valores ou dos hashes declarados no manifesto.
