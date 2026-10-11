@@ -94,3 +94,75 @@
 @media(max-width:650px) { #view-mapa .credit-atlas { padding:10px 4px; } #view-mapa .atlas-wheel { min-width:0; max-width:390px; } #view-mapa .atlas-stage-button { width:90px; min-height:64px; gap:4px; } #view-mapa .atlas-stage-name { font-size:11px; max-width:90px; } #view-mapa .atlas-stage-number { width:26px; height:26px; font-size:14px; } #view-mapa .atlas-center { width:101px; } #view-mapa .atlas-center strong { font-size:39px; margin:5px 0; } #view-mapa .atlas-center small { font-size:9px; } #view-mapa .atlas-center span { font-size:14px; } #view-mapa .atlas-center em { display:none; } #view-mapa .atlas-panels { padding:10px 15px 18px; } #view-mapa .atlas-panel h4 { font-size:27px; } #view-mapa .atlas-panel ul { columns:auto; } #view-mapa .atlas-lab-grid, #view-mapa .atlas-concepts { grid-template-columns:1fr; gap:20px; } #view-mapa .atlas-lab-head { display:block; } #view-mapa .atlas-demo-label { display:inline-block; margin-top:14px; } #view-mapa .atlas-result { padding:20px; } #view-mapa .atlas-metrics { grid-template-columns:1fr; } #view-mapa .atlas-metric, #view-mapa .atlas-metric:first-child { padding:14px 0; border-right:0; border-bottom:1px solid var(--border); } #view-mapa .atlas-metric-value { font-size:32px; margin:7px 0; } #view-mapa .atlas-coverage { grid-template-columns:repeat(2,1fr); } #view-mapa .atlas-compare-row { grid-template-columns:80px 1fr 54px; gap:8px; } }
 @media(prefers-reduced-motion:reduce) { #view-mapa .atlas-stage-number, #view-mapa .atlas-loss-track i, #view-mapa .atlas-compare-track i { transition:none; } }
 @media print { #view-mapa .credit-atlas { display:block; background:white; color:black; } #view-mapa .atlas-wheel { display:none; } #view-mapa .atlas-panel[hidden] { display:block!important; } #view-mapa .atlas-panel h4, #view-mapa .atlas-panel p, #view-mapa .atlas-panel a { color:black!important; } #view-mapa .atlas-diagram { display:none; } }
+
+/* Maquete visual aprovada: conteúdo e controles são HTML; arte não contém dados. */
+#view-mapa .obs-hero.atlas-city { position:relative; display:block; min-height:560px; padding:0; border:0; margin:0; isolation:isolate; background:var(--atlas-cream); color:var(--atlas-petrol); }
+#view-mapa .atlas-city-image { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-1; }
+#view-mapa .atlas-city-copy { width:47%; padding:32px 24px; position:relative; }
+#view-mapa .atlas-city-copy h1 { font:400 clamp(34px,3.4vw,52px)/1.07 var(--serif,Georgia,serif); letter-spacing:-.04em; margin:14px 0 18px; color:var(--atlas-petrol); }
+#view-mapa .obs-credit-hero .atlas-city-copy p:not(.atlas-eyebrow) { color:var(--atlas-petrol); font-size:15px; line-height:1.6; }
+#view-mapa .atlas-city-copy .obs-primary { margin-top:12px; }
+#view-mapa .atlas-city nav.atlas-city-points { position:absolute; inset:0; border:0; padding:0; pointer-events:none; display:block; }
+#view-mapa .atlas-city-points a.atlas-city-point { position:absolute; pointer-events:auto; min-height:44px; padding:10px 16px; border:1px solid var(--atlas-mint); border-radius:28px; background:var(--atlas-petrol); color:var(--atlas-cream); font:13px/1.6 var(--sans,Inter,sans-serif); text-decoration:none; box-shadow:0 4px 14px #102e3620; }
+#view-mapa .atlas-city-point::before { content:'○'; padding-right:8px; color:var(--atlas-mint); }
+#view-mapa .point-0 { left:58%; top:42%; } #view-mapa .point-1 { right:5%; top:25%; } #view-mapa .point-2 { right:5%; top:65%; } #view-mapa .point-3 { left:15%; top:75%; }
+#view-mapa .atlas-city-caption { position:absolute; right:12px; bottom:8px; margin:0; padding:5px 8px; background:var(--atlas-cream); font-size:10px; color:var(--atlas-petrol); }
+#view-mapa .atlas-period-note { font-size:12px; color:var(--text-2); margin:10px 0 20px; text-align:center; }
+#view-mapa .atlas-orientation { border-block:1px solid var(--border); margin:20px 0 28px; }
+#view-mapa .atlas-orientation > summary { cursor:pointer; padding:15px 0; color:var(--accent); min-height:48px; font-size:13px; }
+#view-mapa .atlas-orientation > div, #view-mapa .atlas-orientation > nav { padding:20px 0; }
+#view-mapa .atlas-orientation nav a { display:block; padding:8px 0; }
+#view-mapa .atlas-orientation nav a span { display:block; font-size:12px; color:var(--text-2); }
+#view-mapa .atlas-visual-cycle > .sechead { display:none; }
+#view-mapa .credit-atlas { display:block; padding:32px; border-radius:0; scroll-margin-top:80px; }
+#view-mapa .atlas-cycle-intro h3 { font:400 clamp(30px,3vw,44px)/1.15 var(--serif,Georgia,serif); color:var(--atlas-cream); margin:8px 0 12px; }
+#view-mapa .atlas-cycle-intro p { color:var(--atlas-cream); }
+#view-mapa .atlas-wheel { display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:14px; aspect-ratio:auto; max-width:none; margin:24px 0; }
+#view-mapa .atlas-stage-button { position:relative; inset:auto; transform:none; width:100%; min-width:0; grid-column:span 2; flex-direction:row; flex-wrap:wrap; justify-content:center; gap:8px; padding:0 0 12px; border-radius:0; border-bottom:2px solid transparent; }
+#view-mapa .atlas-stage-button:nth-child(5) { grid-column:2 / span 2; }
+#view-mapa .atlas-artifact { display:block; width:100%; aspect-ratio:1; background-image:url('/obs/arte/etapas-v1.webp'); background-size:400% 200%; background-repeat:no-repeat; border-radius:3px; }
+#view-mapa .atlas-stage-name { font-size:12px; max-width:calc(100% - 46px); text-align:left; }
+#view-mapa .atlas-stage-number { flex-shrink:0; width:28px; height:28px; font-size:13px; }
+#view-mapa .atlas-stage-button[aria-pressed=true] { border-bottom-color:var(--atlas-mint); }
+#view-mapa .atlas-stage-button:hover .atlas-artifact { filter:brightness(1.1); }
+#view-mapa .atlas-panels { border-top:1px solid #49636a; padding:24px 0 0; }
+#view-mapa .atlas-panel ul { display:flex; flex-wrap:wrap; gap:8px 24px; columns:auto; }
+#view-mapa .atlas-panel li { flex:1 1 180px; }
+#view-mapa .atlas-stage-explanation { margin-top:20px; }
+#view-mapa .atlas-stage-explanation summary { cursor:pointer; min-height:44px; padding:12px 0; color:var(--atlas-mint); font-size:13px; }
+#view-mapa .atlas-stage-explanation .atlas-diagram { max-width:640px; margin:0; }
+#view-mapa .credit-atlas .atlas-note { color:#c0d4d3; line-height:1.6; margin-top:24px; }
+#view-mapa .atlas-doors { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:28px 0; }
+#view-mapa .atlas-doors > a { position:relative; overflow:hidden; min-height:220px; color:var(--atlas-petrol); background:var(--atlas-cream); border-block:1px solid var(--border); text-decoration:none; }
+#view-mapa .atlas-doors img { position:absolute; right:0; bottom:0; width:55%; height:100%; object-fit:cover; mask-image:linear-gradient(to right,transparent,black 40%); }
+#view-mapa .atlas-doors a > div { position:relative; padding:24px 10px 24px 18px; width:65%; }
+#view-mapa .atlas-doors h3 { font:400 28px/1.16 var(--serif,Georgia,serif); margin:0 0 14px; color:var(--atlas-petrol); }
+#view-mapa .atlas-doors p { font-size:13px; line-height:1.5; }
+#view-mapa .atlas-doors span { display:inline-block; padding:12px 0; text-decoration:underline; text-underline-offset:5px; font-size:12px; }
+#view-mapa .atlas-lab-grid { grid-template-columns:1fr .7fr 1fr; align-items:center; gap:20px; }
+#view-mapa .atlas-portfolio { border-radius:4px; }
+#view-mapa .atlas-city :focus-visible, #view-mapa .atlas-doors :focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+@media(max-width:1100px) {
+  #view-mapa .atlas-city-copy { width:52%; padding:24px 18px; }
+  #view-mapa .atlas-lab-grid { grid-template-columns:1fr 1fr; }
+  #view-mapa .atlas-portfolio { display:none; }
+  #view-mapa .credit-atlas { padding:24px; }
+}
+@media(max-width:760px) {
+  #view-mapa .obs-hero.atlas-city { display:flex; flex-direction:column; min-height:0; }
+  #view-mapa .atlas-city-copy { order:0; width:100%; padding:24px 18px 12px; }
+  #view-mapa .atlas-city-copy h1 { font-size:38px; max-width:480px; }
+  #view-mapa .atlas-city-image { order:1; position:static; height:auto; aspect-ratio:2; object-fit:contain; }
+  #view-mapa .atlas-city nav.atlas-city-points { order:2; position:static; display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:12px 18px; }
+  #view-mapa .atlas-city-points a.atlas-city-point { position:static; text-align:center; padding:10px 6px; }
+  #view-mapa .atlas-city-caption { order:3; position:static; text-align:center; padding:8px 12px 14px; }
+  #view-mapa .atlas-wheel { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+  #view-mapa .atlas-stage-button, #view-mapa .atlas-stage-button:nth-child(5) { grid-column:auto; }
+  #view-mapa .atlas-stage-button:last-child { grid-column:1 / -1; width:50%; justify-self:center; }
+  #view-mapa .atlas-stage-name { max-width:100%; width:100%; text-align:center; min-height:32px; }
+  #view-mapa .credit-atlas { padding:24px 16px; }
+  #view-mapa .atlas-doors, #view-mapa .atlas-lab-grid { grid-template-columns:1fr; }
+  #view-mapa .atlas-doors h3 { font-size:26px; }
+}
+@media(max-width:380px) { #view-mapa .atlas-city-copy h1 { font-size:32px; } }
+@media print { #view-mapa .atlas-city-image, #view-mapa .atlas-city-points, #view-mapa .atlas-portfolio, #view-mapa .atlas-doors img { display:none!important; } #view-mapa .obs-hero.atlas-city { min-height:0; } #view-mapa .atlas-city-copy { width:100%; } }
