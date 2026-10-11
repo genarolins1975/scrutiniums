@@ -1,0 +1,313 @@
+{
+  "cities": [
+    {
+      "id": "2800308",
+      "name": "Aracaju",
+      "uf": "SE",
+      "value": 192.01,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 2800308, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "3106200",
+      "name": "Belo Horizonte",
+      "uf": "MG",
+      "value": 208.71,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 3106200, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "1501402",
+      "name": "Belém",
+      "uf": "PA",
+      "value": 186.82,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 1501402, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "1400100",
+      "name": "Boa Vista",
+      "uf": "RR",
+      "value": 205.3,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 1400100, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "5002704",
+      "name": "Campo Grande",
+      "uf": "MS",
+      "value": 203.04,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 5002704, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "5103403",
+      "name": "Cuiabá",
+      "uf": "MT",
+      "value": 207.38,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 5103403, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "4106902",
+      "name": "Curitiba",
+      "uf": "PR",
+      "value": 218.13,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 4106902, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "4205407",
+      "name": "Florianópolis",
+      "uf": "SC",
+      "value": 209.25,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 4205407, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "2304400",
+      "name": "Fortaleza",
+      "uf": "CE",
+      "value": 214.36,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 2304400, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "5208707",
+      "name": "Goiânia",
+      "uf": "GO",
+      "value": 223.79,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 5208707, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "2507507",
+      "name": "João Pessoa",
+      "uf": "PB",
+      "value": 199.98,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 2507507, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "1600303",
+      "name": "Macapá",
+      "uf": "AP",
+      "value": 194.96,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 1600303, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "2704302",
+      "name": "Maceió",
+      "uf": "AL",
+      "value": 199.69,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 2704302, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "1302603",
+      "name": "Manaus",
+      "uf": "AM",
+      "value": 213.35,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 1302603, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "2408102",
+      "name": "Natal",
+      "uf": "RN",
+      "value": 184.72,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 2408102, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "1721000",
+      "name": "Palmas",
+      "uf": "TO",
+      "value": 217.09,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 1721000, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "4314902",
+      "name": "Porto Alegre",
+      "uf": "RS",
+      "value": 185.54,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 4314902, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "1100205",
+      "name": "Porto Velho",
+      "uf": "RO",
+      "value": 199.2,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 1100205, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "2611606",
+      "name": "Recife",
+      "uf": "PE",
+      "value": 199.9,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 2611606, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "1200401",
+      "name": "Rio Branco",
+      "uf": "AC",
+      "value": 223.38,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 1200401, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "3304557",
+      "name": "Rio de Janeiro",
+      "uf": "RJ",
+      "value": 209.99,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 3304557, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "2927408",
+      "name": "Salvador",
+      "uf": "BA",
+      "value": 197.67,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 2927408, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "2111300",
+      "name": "São Luís",
+      "uf": "MA",
+      "value": 201.41,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 2111300, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "3550308",
+      "name": "São Paulo",
+      "uf": "SP",
+      "value": 198.68,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 3550308, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "2211001",
+      "name": "Teresina",
+      "uf": "PI",
+      "value": 228.32,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 2211001, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    },
+    {
+      "id": "3205309",
+      "name": "Vitória",
+      "uf": "ES",
+      "value": 219.34,
+      "state": "OBSERVADO",
+      "reason": "",
+      "sourceId": "inep_ideb_ai_2025",
+      "locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 3205309, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023"
+    }
+  ],
+  "regions": [
+    {
+      "id": "Brasil",
+      "name": "Brasil",
+      "value": 75.8
+    },
+    {
+      "id": "Norte",
+      "name": "Norte",
+      "value": 62.4
+    },
+    {
+      "id": "Nordeste",
+      "name": "Nordeste",
+      "value": 65.2
+    },
+    {
+      "id": "Sudeste",
+      "name": "Sudeste",
+      "value": 80.3
+    },
+    {
+      "id": "Sul",
+      "name": "Sul",
+      "value": 86.4
+    },
+    {
+      "id": "Centro-Oeste",
+      "name": "Centro-Oeste",
+      "value": 79.5
+    }
+  ],
+  "education": {
+    "period": "2023",
+    "unit": "pontos na escala Saeb",
+    "source": "INEP · Saeb",
+    "universe": "Português, anos iniciais do ensino fundamental, escolas da rede municipal participantes.",
+    "path": "public/eficiencia/series/edu_saeb_rede_municipal.csv",
+    "sha256": "33f1e535a6ebfb119a7175e0d48cda60925408c76c34883fe482ad095b423a0f"
+  },
+  "food": {
+    "period": "2024",
+    "unit": "% de domicílios",
+    "source": "IBGE · PNAD Contínua",
+    "universe": "Domicílios particulares permanentes em situação de segurança alimentar.",
+    "path": "public/eficiencia/seguranca-alimentar/panorama.json",
+    "sha256": "f0fad87efccafeff6bdcc1e80c4215e82cc7286f8d993b72190aeff339af4b12",
+    "original": "https://biblioteca.ibge.gov.br/visualizacao/livros/liv102212_informativo.pdf"
+  }
+}
