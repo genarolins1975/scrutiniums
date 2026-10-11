@@ -1,5 +1,7 @@
 "use client";
 
+import { energiaConsumida } from "@/lib/energia/energia-consumida";
+
 import { Children, useEffect, useState, type ReactNode } from "react";
 import styles from "./ExploracaoInicial.module.css";
 
@@ -35,11 +37,6 @@ export function PerguntasExploraveis({ resumos, children }: { resumos: ResumoIni
   </div>;
 }
 
-/** Conversão dimensional, sem modelo do SIN ou hipótese de preço. */
-export function energiaConsumida(watts: number, horas: number, dias: number): number | null {
-  if (![watts, horas, dias].every(Number.isFinite) || watts < 0 || horas < 0 || horas > 24 || dias < 0) return null;
-  return watts / 1000 * horas * dias;
-}
 const num = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
 
 export function LaboratorioEnergia() {
@@ -68,7 +65,7 @@ export function LaboratorioEnergia() {
         <div className={styles.legendaGrafico}><span>Potência · kW</span><span>Área = {num(diario)} kWh/dia</span></div>
         <svg className={styles.grafico} viewBox="0 0 500 270" role="img" aria-label={`Potência de ${num(potencia / 1000)} kW por ${num(horas)} horas: ${num(diario)} kWh por dia. Escalas fixas: zero a seis kW e zero a vinte e quatro horas.`}>
           {[0, 2, 4, 6].map(v => <g key={v}><line x1="48" x2="475" y1={226 - v * 32} y2={226 - v * 32} stroke="currentColor" opacity=".25" /><text x="34" y={231 - v * 32} textAnchor="end">{v}</text></g>)}
-          <rect x="48" y={226 - potencia / 1000 * 32} width={horas / 24 * 427} height={potencia / 1000 * 32} fill="#97cbc4" opacity=".75" />
+          <rect x="48" y={226 - potencia / 1000 * 32} width={horas / 24 * 427} height={potencia / 1000 * 32} fill="var(--atlas-acento)" opacity=".75" />
           <path d="M48 26V226H475" fill="none" stroke="currentColor" />
           {[0, 6, 12, 18, 24].map(v => <text key={v} x={48 + v / 24 * 427} y="247" textAnchor="middle">{v} h</text>)}
 

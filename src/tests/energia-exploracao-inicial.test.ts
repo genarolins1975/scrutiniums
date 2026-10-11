@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { energiaConsumida } from "@/components/energia/ExploracaoInicial";
+import { energiaConsumida } from "@/lib/energia/energia-consumida";
 
 describe("laboratório dimensional da inicial de Energia", () => {
   it("converte W em kW antes de multiplicar por horas e dias", () => {
