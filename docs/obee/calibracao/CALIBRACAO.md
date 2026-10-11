@@ -87,3 +87,27 @@ python3 -m pipeline.eficiencia_escores.ancoras --output docs/obee/calibracao/anc
 ```
 
 26 testes locais aprovados. A demonstração HTML continua dedicada aos pesos; esta entrega de âncoras é analítica, em Python/JSON. Permanecem pendentes variações simultâneas, critérios de aceitação, dados empíricos compatíveis e aprovação metodológica. Nenhuma nota real publicada.
+
+## Quinta entrega: cenários conjuntos de pesos e referências
+
+`conjunta.py` recebe uma lista explícita de cenários e aplica as mesmas hipóteses aos dois perfis. Cada cenário pode combinar pesos de capítulos, pesos comuns dos pilares e deslocamentos das duas âncoras de vários componentes. Os deslocamentos são frações da amplitude original; cada um deve ter módulo menor que 0,5. Pesos positivos, cesta completa, contexto compatível e referências-base explicitamente validadas continuam obrigatórios. Hipóteses retornam `validated: false`, sem alteração de fichas.
+
+A demonstração usa um desenho fatorial 2⁴, totalizando 16 combinações dos extremos destes quatro fatores:
+
+| Fator | Nível inferior | Nível superior |
+|---|---:|---:|
+| Peso bruto de Educação | 0,8 | 1,2 |
+| Peso bruto de Acesso, comum aos capítulos | 0,8 | 1,2 |
+| Âncora inferior de educação.acesso | −10% da amplitude | +10% da amplitude |
+| Âncora superior de saúde.qualidade | −10% da amplitude | +10% da amplitude |
+
+Demais pesos brutos permanecem em 1; participações efetivas são normalizadas e registradas. Demais referências ficam fixas. Os sinais se referem ao deslocamento da âncora, não à melhora do serviço. Os identificadores de componentes no código são `education.access` e `health.quality`.
+
+Resultado sintético: oito inversões frente à comparação-base em 16 cenários; agregado A entre 68,1644 e 70,9385, B entre 69,3070 e 70,6863. As faixas são marginais entre cenários: não se deve comparar extremos de cenários diferentes como se fossem uma mesma hipótese. A frequência de inversões não é probabilidade, nem estimativa populacional. O desenho cobre os extremos dos quatro fatores selecionados, não todos os parâmetros ou valores intermediários.
+
+```sh
+python3 -m unittest pipeline.eficiencia_escores.test_calibracao pipeline.eficiencia_escores.test_hierarquia pipeline.eficiencia_escores.test_ancoras pipeline.eficiencia_escores.test_conjunta
+python3 -m pipeline.eficiencia_escores.conjunta --output docs/obee/calibracao/conjunta-sintetica.json
+```
+
+35 testes locais aprovados. Incluem identidade sem mudanças, equivalência ao teste isolado de âncora, reprodutibilidade, preservação dos insumos, ausência, zero, empate e rejeição de cenários inválidos. Esta entrega resolve a capacidade técnica de testar mudanças simultâneas. Permanecem pendentes a seleção empírica de hipóteses plausíveis, dependências entre indicadores, critérios de aceitação, cobertura real e aprovação metodológica. O HTML continua restrito à análise de pesos; não houve alteração visual ou publicação.
