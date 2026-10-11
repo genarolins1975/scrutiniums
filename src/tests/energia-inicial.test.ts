@@ -618,12 +618,12 @@ const secao = (id: string) => {
 };
 
 describe("a página renderizada", () => {
-  it("a abertura preserva título, contexto e cinco caminhos: orientação, cobertura, busca e conhecimento antes das seis perguntas", () => {
+  it("a abertura preserva título, contexto e cinco caminhos: orientação, cobertura, busca, mapa e perguntas antes da referência", () => {
     const h1 = /<h1[^>]*>([^<]+)<\/h1>/.exec(html)![1];
     expect(h1).toBe("Energia, do sistema à sua conta");
     expect(h1.split(/\s+/).length).toBeGreaterThanOrEqual(5);
     expect(h1.split(/\s+/).length).toBeLessThanOrEqual(9);
-    const ordem = [html.indexOf("<h1"), html.indexOf('aria-label="Por onde começar"'), html.indexOf('class="obs-metrics"'), html.indexOf('type="search"'), html.indexOf('aria-label="Conhecimento e fontes"'), html.indexOf('<section id="perguntas"')];
+    const ordem = [html.indexOf("<h1"), html.indexOf('aria-label="Por onde começar"'), html.indexOf('class="obs-metrics"'), html.indexOf('type="search"'), html.indexOf('<section id="perguntas"'), html.indexOf('aria-label="Conhecimento e fontes"')];
     expect(ordem.every((x) => x > 0)).toBe(true);
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
     // a busca é real: o campo e o índice vêm do mesmo conteúdo que a página publica (o teste da busca confere o índice)
@@ -642,10 +642,10 @@ describe("a página renderizada", () => {
       expect(html, c.id).toContain(`data-caminho="${c.id}"`);
       for (const s of c.slugs) expect(hrefs.has(destino(s).href), `${c.id}: ${s}`).toBe(true);
     }
-    // o atalho do alto leva ao mapa do sistema, que vem logo depois das seis perguntas e antes do índice
+    // o atalho do alto leva ao mapa do sistema, que vem antes das seis perguntas e do índice
     expect(CAMINHOS_INTENCAO.find((c) => c.id === "sistema")).toMatchObject({ slugs: [], ancora: "#mapa-conceitual" });
     expect(hrefs.has("#mapa-conceitual")).toBe(true);
-    const ordem = [html.indexOf('<section id="perguntas"'), html.indexOf('<section id="mapa-conceitual"'), html.indexOf('<section id="destinos"'), html.indexOf('<section id="trilhas"')];
+    const ordem = [html.indexOf('<section id="mapa-conceitual"'), html.indexOf('<section id="perguntas"'), html.indexOf('<section id="destinos"'), html.indexOf('<section id="trilhas"')];
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
     expect(ordem.every((x) => x > 0)).toBe(true);
   });
