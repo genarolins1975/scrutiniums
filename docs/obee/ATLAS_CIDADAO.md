@@ -20,7 +20,9 @@ O resumo versionado é pequeno e reproduzível; o browser não recebe as bases i
 
 Transpilação TSX via TypeScript 5.9.3 aprovada. Renderização estática React 18 aprovada, com conferência dos valores de Recife e Curitiba, capítulos e estado sem escore. Isso não substitui verificação completa de tipos, build Next ou interação no navegador.
 
-Revisão visual em 320, 390, 768 e 1440 pixels, zoom de 200%, teclado, histórico interativo e leitores de tela permanece pendente. CSS inclui adaptação e foco, mas não se declara aceite visual ou acessibilidade integral sem essa revisão.
+Prévia inspecionada em 320, 390, 768 e 1440 pixels sem overflow horizontal. Conferidos troca de cidade, comparação regional, retorno no histórico, busca sem acentos, estado vazio, seleção por Enter, abertura da metodologia e download do CSV. Nenhum erro de console capturado. Zoom de 200%, leitor de tela e auditoria integral de acessibilidade permanecem pendentes.
+
+Lint, tipos e build Next aprovados remotamente. Auditoria de interface aprovada na segunda execução. A suíte geral teve 4.505 testes aprovados, um ignorado e uma falha por cores literais no novo componente. As cores foram centralizadas nos tokens globais, preservando a composição visual; nova execução necessária para aceite final.
 
 ## Limite de aceite
 
