@@ -57,15 +57,15 @@ export function PanoramaTerritorial({place,reference,onEducation}:{place:string;
         <dl className={styles.pair}><div><dt>{a}</dt><dd>{panoramaValue(pair.a,m.unit)}</dd></div><div><dt>{b}</dt><dd>{panoramaValue(pair.b,m.unit)}</dd></div></dl>
         <figure className={styles.distribution}>
           <figcaption>Cada ponto, uma capital <span>· {distribution.points.length} de {distribution.rows.length} com valor elegível</span></figcaption>
-          <svg viewBox={`0 0 400 ${distribution.axisY+36}`} className={styles.plot} aria-hidden="true">
+          <svg viewBox={`0 0 400 ${distribution.axisY+8}`} className={styles.plot} aria-hidden="true">
             <line x1="32" x2="368" y1={distribution.axisY} y2={distribution.axisY} className={styles.axis}/>
             {midpoint!==null&&<><line x1={point(midpoint)*4} x2={point(midpoint)*4} y1="8" y2={distribution.axisY} className={styles.medianLine}/><path d={`M ${point(midpoint)*4} ${distribution.axisY-5} l 5 5 l -5 5 l -5 -5 Z`} className={styles.medianMark}/></>}
             {distribution.points.map(p=><g key={p.id}>
               <circle cx={p.x} cy={p.y} r={p.id===reference?5.5:p.id===place?4.5:3.5} className={p.id===reference?styles.referenceMark:p.id===place?styles.primaryMark:styles.contextMark}/>
               {p.id===place&&p.id===reference&&<circle cx={p.x} cy={p.y} r="2.5" className={styles.primaryMark}/>}
             </g>)}
-            <text x="32" y={distribution.axisY+28}>0</text><text x="368" y={distribution.axisY+28} textAnchor="end">{m.scaleMax.toLocaleString('pt-BR')} {m.unit}</text>
           </svg>
+          <div className={styles.scale} aria-label={`Escala de zero a ${m.scaleMax.toLocaleString('pt-BR')} ${m.unit}`}><span>0</span><span>{m.scaleMax.toLocaleString('pt-BR')} {m.unit}</span></div>
           <p className={styles.plotNote}>A posição horizontal mostra o valor. Pontos empilhados evitam sobreposição; a altura não representa outra medida. Distrito Federal fora do conjunto.</p>
         </figure>
         <p className={styles.benchmark}>Mediana: <strong>{panoramaValue(midpoint,m.unit)}</strong> · {m.reference.count}/{m.reference.total} capitais elegíveis</p>

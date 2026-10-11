@@ -29,3 +29,11 @@ O CI da entrega anterior (`2577896`) foi confirmado como aprovado. Build e suít
 4. Após validação da cesta, retomar escore por capítulo e agregado. Comparação internacional exige outra cesta harmonizada.
 
 Esta entrega permanece em PR de rascunho, sem merge ou publicação em produção.
+
+## Revisão de legibilidade — etapa seguinte
+
+Os limites da escala foram retirados do SVG e colocados em texto HTML a 13 px, preservando o alinhamento horizontal de 8% e 92% do gráfico. Antes, o texto de 12 unidades dentro de um SVG de 400 unidades podia ficar abaixo de 9 px quando o gráfico encolhia em telas estreitas. Agora o texto não encolhe com a figura. Valores do par usam tamanho responsivo entre 20 e 26 px no celular; a tabela completa usa 14 px. Sem alterações em valores ou coordenadas dos pontos.
+
+Sete testes existentes e tipos da cópia isolada novamente aprovados após o ajuste. Não se trata de homologação visual: a conexão do navegador falhou antes de abrir a prévia, com erro de carregamento da política de cabeçalhos, também após uma nova tentativa. Não houve login, alteração de proteção ou captura da página. CI da distribuição (`7673137`) confirmado aprovado nesta revisão; o ajuste de legibilidade terá seu próprio CI.
+
+Pendentes para conclusão desta etapa: conferir a tela completa, expansões e seletores; medir reflow em 320/390/768/1440 px e zoom 200%; verificar foco e ordem de teclado no navegador. Os critérios de acabamento, responsividade e interação permanecem **não verificados visualmente**. A falha de acesso não deve ser confundida com aprovação desses critérios.
