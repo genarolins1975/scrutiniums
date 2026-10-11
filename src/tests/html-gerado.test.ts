@@ -35,6 +35,7 @@ const ROTAS_OBRIGATORIAS = [
   "eficiencia-estatal/educacao-municipal-capitais/comparar.html",
   "eficiencia-estatal/educacao-municipal-capitais/metodos.html",
   "eficiencia-estatal.html",
+  ...["", "deficit", "aluguel-renda", "inadequacao", "dados"].map(s => `eficiencia-estatal/habitacao${s ? "/"+s : ""}.html`),
   ...["", "cobertura", "tempo-resposta", "conciliacao", "recursos", "dados"].map(s => `eficiencia-estatal/acesso-justica${s ? "/"+s : ""}.html`),
   "eficiencia-estatal/seguranca-alimentar.html",
   "eficiencia-estatal/seguranca-alimentar/necessidades.html",
