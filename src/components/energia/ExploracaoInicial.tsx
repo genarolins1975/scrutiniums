@@ -1,6 +1,6 @@
 "use client";
 
-import { Children, useState, type ReactNode } from "react";
+import { Children, useEffect, useState, type ReactNode } from "react";
 import styles from "./ExploracaoInicial.module.css";
 
 export type ResumoInicial = { id: string; titulo: string; valor: string; unidade: string; periodo: string };
@@ -9,6 +9,17 @@ export type ResumoInicial = { id: string; titulo: string; valor: string; unidade
 export function PerguntasExploraveis({ resumos, children }: { resumos: ResumoInicial[]; children: ReactNode }) {
   const [atual, setAtual] = useState(0);
   const [todos, setTodos] = useState(false);
+  useEffect(() => {
+    const abrirAncora = () => {
+      const i = resumos.findIndex(r => window.location.hash === `#pergunta-${r.id}`);
+      if (i < 0) return;
+      setAtual(i); setTodos(false);
+      requestAnimationFrame(() => document.getElementById(`energia-resposta-${resumos[i].id}`)?.scrollIntoView({ block: "start" }));
+    };
+    abrirAncora();
+    window.addEventListener("hashchange", abrirAncora);
+    return () => window.removeEventListener("hashchange", abrirAncora);
+  }, [resumos]);
   return <div className={styles.explorador}>
     <div className={styles.opcoes} role="group" aria-label="Escolha o indicador para explorar">
       {resumos.map((r, i) => <button type="button" key={r.id} aria-pressed={!todos && atual === i} aria-controls={`energia-resposta-${r.id}`} onClick={() => { setAtual(i); setTodos(false); }}>
@@ -54,12 +65,13 @@ export function LaboratorioEnergia() {
         </div>
       </div>
       <div>
+        <div className={styles.legendaGrafico}><span>Potência · kW</span><span>Área = {num(diario)} kWh/dia</span></div>
         <svg className={styles.grafico} viewBox="0 0 500 270" role="img" aria-label={`Potência de ${num(potencia / 1000)} kW por ${num(horas)} horas: ${num(diario)} kWh por dia. Escalas fixas: zero a seis kW e zero a vinte e quatro horas.`}>
           {[0, 2, 4, 6].map(v => <g key={v}><line x1="48" x2="475" y1={226 - v * 32} y2={226 - v * 32} stroke="currentColor" opacity=".25" /><text x="34" y={231 - v * 32} textAnchor="end">{v}</text></g>)}
           <rect x="48" y={226 - potencia / 1000 * 32} width={horas / 24 * 427} height={potencia / 1000 * 32} fill="#97cbc4" opacity=".75" />
           <path d="M48 26V226H475" fill="none" stroke="currentColor" />
           {[0, 6, 12, 18, 24].map(v => <text key={v} x={48 + v / 24 * 427} y="247" textAnchor="middle">{v} h</text>)}
-          <text x="48" y="17">Potência · kW</text><text x="475" y="17" textAnchor="end">Área = {num(diario)} kWh/dia</text>
+
         </svg>
         <div className={styles.resultado} aria-live="polite" aria-atomic="true"><span>Energia em {dias} dias</span><strong>{num(kwh)} <small>kWh</small></strong><p>{num(potencia / 1000)} kW × {num(horas)} h/dia × {dias} dias</p><p>{num(kwh - referencia)} kWh em relação à referência de {num(referencia)} kWh.</p></div>
       </div>

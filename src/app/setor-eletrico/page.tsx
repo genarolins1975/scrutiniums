@@ -807,7 +807,7 @@ export default function MapaDoObservatorio() {
             </nav>
           </div>
           <div className="energia-abertura-medidas" aria-label="Três medidas de entrada, com períodos próprios">
-            {["agua", "pld", "qualidade"].map(id => { const s = sinais.find(x => x.id === id)!; return <a href="#perguntas" key={id}>
+            {["agua", "pld", "qualidade"].map(id => { const s = sinais.find(x => x.id === id)!; return <a href={`#pergunta-${id}`} key={id}>
               <span>{s.medida}</span><strong>{s.estado === "disponivel" ? s.valorTexto : "Sem dado"}</strong>
               <span>{s.estado === "disponivel" ? s.unidade : s.motivo}</span><small>{s.periodo ?? "Período indisponível"} · {id === "agua" ? "ONS" : id === "pld" ? "CCEE" : "ANEEL"}</small>
               <span className="energia-abertura-link">Ver universo, referência e fonte ↓</span>

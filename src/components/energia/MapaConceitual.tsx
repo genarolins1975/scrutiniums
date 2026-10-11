@@ -115,7 +115,7 @@ export function MapaConceitual({
         {tipos.map(t => <button type="button" key={t.id} aria-pressed={lente === t.id} onClick={() => setLente(t.id)}>{t.rotulo}</button>)}
       </div>
       <p className="energia-mapa-instrucao">{lente === "todas" ? "Explore a rede completa ou isole um tipo de relação." : tipos.find(t => t.id === lente)?.definicao} O painel do elo conserva todas as suas ligações.</p>
-      <div className="energia-mapa-grade grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div className="energia-mapa-grade grid gap-6 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
       <div
         role="group"
         aria-label={rotulo}
@@ -192,7 +192,6 @@ export function MapaConceitual({
                   height: pct(2 * MH, ALTURA),
                 }}
               >
-                <span className="energia-mapa-numero" aria-hidden="true">{String(nos.indexOf(n) + 1).padStart(2, "0")}</span>
                 <span className="font-serif text-[0.8125rem] text-carvao xl:text-sm">{n.titulo}</span>
                 <span className="sr-only">: {n.curto}</span>
               </button>

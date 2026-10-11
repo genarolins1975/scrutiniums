@@ -30,3 +30,9 @@
 @media(max-width:380px) { .opcoes { grid-template-columns:1fr }.rotulo { min-height:0 }.laboratorio { padding:18px }.resultado strong { font-size:34px } }
 @media(prefers-reduced-motion:reduce) { .opcoes button { transition:none } }
 @media print { .opcoes,.barra,.controles { display:none }.resposta[hidden] { display:block }.resposta { margin-bottom:24px }.laboratorio { break-inside:avoid;background:white;color:black }.labGrade { display:block }.grafico { color:black }.nota,.resultado p { color:black } }
+
+.resposta { scroll-margin-top:120px }
+@media(min-width:381px) and (max-width:760px) { .rotulo { min-height:84px } }
+
+.legendaGrafico { display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:13px;color:#d9e8e6 }
+@media(max-width:760px) { .grafico text { font-size:22px } }
