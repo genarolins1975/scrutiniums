@@ -1,0 +1,490 @@
+{
+  "purpose": "DEMONSTRACAO_SINTETICA_NAO_REPRESENTA_TERRITORIOS",
+  "methodology_approved": false,
+  "real_scores_released": 0,
+  "real_card_readiness": {
+    "cards": 15,
+    "validated_references": 0
+  },
+  "cases": {
+    "equilibrado": {
+      "input": [
+        70,
+        70,
+        70
+      ],
+      "purpose": "SENSIBILIDADE_INTERNA_NAO_PUBLICA_ESCORE",
+      "baseline": {
+        "value": 69.99999999999996,
+        "state": "SIMULACAO_NAO_PUBLICAVEL",
+        "reasons": []
+      },
+      "scenarios": [
+        {
+          "component": "access",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.28571428571428575,
+            "response": 0.35714285714285715,
+            "quality": 0.35714285714285715
+          },
+          "value": 70.00000000000003,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 7.105427357601002e-14
+        },
+        {
+          "component": "access",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.37499999999999994,
+            "response": 0.3125,
+            "quality": 0.3125
+          },
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 0.0
+        },
+        {
+          "component": "response",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.35714285714285715,
+            "response": 0.28571428571428575,
+            "quality": 0.35714285714285715
+          },
+          "value": 70.00000000000003,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 7.105427357601002e-14
+        },
+        {
+          "component": "response",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.3125,
+            "response": 0.37499999999999994,
+            "quality": 0.3125
+          },
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 0.0
+        },
+        {
+          "component": "quality",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.35714285714285715,
+            "response": 0.35714285714285715,
+            "quality": 0.28571428571428575
+          },
+          "value": 70.00000000000003,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 7.105427357601002e-14
+        },
+        {
+          "component": "quality",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.3125,
+            "response": 0.3125,
+            "quality": 0.37499999999999994
+          },
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 0.0
+        }
+      ],
+      "scenario_range": {
+        "min": 69.99999999999996,
+        "max": 70.00000000000003
+      },
+      "range_meaning": "Faixa dos cenários escolhidos; não é intervalo de confiança."
+    },
+    "desigual": {
+      "input": [
+        95,
+        95,
+        20
+      ],
+      "purpose": "SENSIBILIDADE_INTERNA_NAO_PUBLICA_ESCORE",
+      "baseline": {
+        "value": 56.514393179605264,
+        "state": "SIMULACAO_NAO_PUBLICAVEL",
+        "reasons": []
+      },
+      "scenarios": [
+        {
+          "component": "access",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.28571428571428575,
+            "response": 0.35714285714285715,
+            "quality": 0.35714285714285715
+          },
+          "value": 54.45619793288877,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": -2.058195246716494
+        },
+        {
+          "component": "access",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.37499999999999994,
+            "response": 0.3125,
+            "quality": 0.3125
+          },
+          "value": 58.37902699069331,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 1.8646338110880478
+        },
+        {
+          "component": "response",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.35714285714285715,
+            "response": 0.28571428571428575,
+            "quality": 0.35714285714285715
+          },
+          "value": 54.45619793288877,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": -2.058195246716494
+        },
+        {
+          "component": "response",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.3125,
+            "response": 0.37499999999999994,
+            "quality": 0.3125
+          },
+          "value": 58.37902699069331,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 1.8646338110880478
+        },
+        {
+          "component": "quality",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.35714285714285715,
+            "response": 0.35714285714285715,
+            "quality": 0.28571428571428575
+          },
+          "value": 60.86709489700963,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 4.352701717404365
+        },
+        {
+          "component": "quality",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.3125,
+            "response": 0.3125,
+            "quality": 0.37499999999999994
+          },
+          "value": 52.961893258741505,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": -3.5524999208637595
+        }
+      ],
+      "scenario_range": {
+        "min": 52.961893258741505,
+        "max": 60.86709489700963
+      },
+      "range_meaning": "Faixa dos cenários escolhidos; não é intervalo de confiança."
+    },
+    "zero_observado": {
+      "input": [
+        80,
+        0,
+        75
+      ],
+      "purpose": "SENSIBILIDADE_INTERNA_NAO_PUBLICA_ESCORE",
+      "baseline": {
+        "value": 0,
+        "state": "SIMULACAO_NAO_PUBLICAVEL",
+        "reasons": []
+      },
+      "scenarios": [
+        {
+          "component": "access",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.28571428571428575,
+            "response": 0.35714285714285715,
+            "quality": 0.35714285714285715
+          },
+          "value": 0,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 0
+        },
+        {
+          "component": "access",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.37499999999999994,
+            "response": 0.3125,
+            "quality": 0.3125
+          },
+          "value": 0,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 0
+        },
+        {
+          "component": "response",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.35714285714285715,
+            "response": 0.28571428571428575,
+            "quality": 0.35714285714285715
+          },
+          "value": 0,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 0
+        },
+        {
+          "component": "response",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.3125,
+            "response": 0.37499999999999994,
+            "quality": 0.3125
+          },
+          "value": 0,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 0
+        },
+        {
+          "component": "quality",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.35714285714285715,
+            "response": 0.35714285714285715,
+            "quality": 0.28571428571428575
+          },
+          "value": 0,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 0
+        },
+        {
+          "component": "quality",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.3125,
+            "response": 0.3125,
+            "quality": 0.37499999999999994
+          },
+          "value": 0,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": [],
+          "delta_points": 0
+        }
+      ],
+      "scenario_range": {
+        "min": 0,
+        "max": 0
+      },
+      "range_meaning": "Faixa dos cenários escolhidos; não é intervalo de confiança."
+    },
+    "dado_ausente": {
+      "input": [
+        80,
+        null,
+        75
+      ],
+      "purpose": "SENSIBILIDADE_INTERNA_NAO_PUBLICA_ESCORE",
+      "baseline": {
+        "value": null,
+        "state": "BLOQUEADO",
+        "reasons": [
+          {
+            "id": "response",
+            "reason": "COBERTURA_INSUFICIENTE"
+          }
+        ]
+      },
+      "scenarios": [
+        {
+          "component": "access",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.28571428571428575,
+            "response": 0.35714285714285715,
+            "quality": 0.35714285714285715
+          },
+          "value": null,
+          "state": "BLOQUEADO",
+          "reasons": [
+            {
+              "id": "response",
+              "reason": "COBERTURA_INSUFICIENTE"
+            }
+          ],
+          "delta_points": null
+        },
+        {
+          "component": "access",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.37499999999999994,
+            "response": 0.3125,
+            "quality": 0.3125
+          },
+          "value": null,
+          "state": "BLOQUEADO",
+          "reasons": [
+            {
+              "id": "response",
+              "reason": "COBERTURA_INSUFICIENTE"
+            }
+          ],
+          "delta_points": null
+        },
+        {
+          "component": "response",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.35714285714285715,
+            "response": 0.28571428571428575,
+            "quality": 0.35714285714285715
+          },
+          "value": null,
+          "state": "BLOQUEADO",
+          "reasons": [
+            {
+              "id": "response",
+              "reason": "COBERTURA_INSUFICIENTE"
+            }
+          ],
+          "delta_points": null
+        },
+        {
+          "component": "response",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.3125,
+            "response": 0.37499999999999994,
+            "quality": 0.3125
+          },
+          "value": null,
+          "state": "BLOQUEADO",
+          "reasons": [
+            {
+              "id": "response",
+              "reason": "COBERTURA_INSUFICIENTE"
+            }
+          ],
+          "delta_points": null
+        },
+        {
+          "component": "quality",
+          "relative_change": -0.2,
+          "weights": {
+            "access": 0.35714285714285715,
+            "response": 0.35714285714285715,
+            "quality": 0.28571428571428575
+          },
+          "value": null,
+          "state": "BLOQUEADO",
+          "reasons": [
+            {
+              "id": "response",
+              "reason": "COBERTURA_INSUFICIENTE"
+            }
+          ],
+          "delta_points": null
+        },
+        {
+          "component": "quality",
+          "relative_change": 0.2,
+          "weights": {
+            "access": 0.3125,
+            "response": 0.3125,
+            "quality": 0.37499999999999994
+          },
+          "value": null,
+          "state": "BLOQUEADO",
+          "reasons": [
+            {
+              "id": "response",
+              "reason": "COBERTURA_INSUFICIENTE"
+            }
+          ],
+          "delta_points": null
+        }
+      ],
+      "scenario_range": null,
+      "range_meaning": "Faixa dos cenários escolhidos; não é intervalo de confiança."
+    }
+  },
+  "reference_example": {
+    "state": "SIMULACAO_NAO_PUBLICAVEL",
+    "baseline": 70.0,
+    "scenarios": [
+      {
+        "bound": "lower",
+        "shift": -10.0,
+        "candidate_reference": {
+          "lower": -10.0,
+          "upper": 100,
+          "direction": "higher",
+          "validated": false
+        },
+        "value": 72.72727272727273,
+        "delta_points": 2.7272727272727337
+      },
+      {
+        "bound": "lower",
+        "shift": 10.0,
+        "candidate_reference": {
+          "lower": 10.0,
+          "upper": 100,
+          "direction": "higher",
+          "validated": false
+        },
+        "value": 66.66666666666667,
+        "delta_points": -3.3333333333333286
+      },
+      {
+        "bound": "upper",
+        "shift": -10.0,
+        "candidate_reference": {
+          "lower": 0,
+          "upper": 90.0,
+          "direction": "higher",
+          "validated": false
+        },
+        "value": 77.77777777777777,
+        "delta_points": 7.7777777777777715
+      },
+      {
+        "bound": "upper",
+        "shift": 10.0,
+        "candidate_reference": {
+          "lower": 0,
+          "upper": 110.0,
+          "direction": "higher",
+          "validated": false
+        },
+        "value": 63.63636363636363,
+        "delta_points": -6.363636363636367
+      }
+    ],
+    "note": "Âncoras alternativas são hipóteses do laboratório, sem aprovação metodológica."
+  }
+}
