@@ -102,13 +102,20 @@ export function MapaConceitual({
   faixas?: RotuloFaixa[];
 }) {
   const [atual, setAtual] = useState<IdNo>(inicial);
+  const [lente, setLente] = useState<TipoLigacao | "todas">("todas");
   const porId = new Map(nos.map((n) => [n.id, n]));
   const formas = new Map(tipos.map((t) => [t.id, t]));
   const ligadas = (l: LigacaoDiagrama) => l.de === atual || l.para === atual;
   const escolhido = porId.get(atual)!;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+    <div className="energia-mapa-atlas">
+      <div className="energia-mapa-lentes" role="group" aria-label="Tipos de ligação visíveis">
+        <button type="button" aria-pressed={lente === "todas"} onClick={() => setLente("todas")}>Todas as relações</button>
+        {tipos.map(t => <button type="button" key={t.id} aria-pressed={lente === t.id} onClick={() => setLente(t.id)}>{t.rotulo}</button>)}
+      </div>
+      <p className="energia-mapa-instrucao">{lente === "todas" ? "Explore a rede completa ou isole um tipo de relação." : tipos.find(t => t.id === lente)?.definicao} O painel do elo conserva todas as suas ligações.</p>
+      <div className="energia-mapa-grade grid gap-6 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
       <div
         role="group"
         aria-label={rotulo}
@@ -135,6 +142,7 @@ export function MapaConceitual({
             </defs>
             {ligacoes.map((l) => {
               const ativa = ligadas(l);
+              if (lente !== "todas" && lente !== l.tipo) return null;
               return (
                 <path
                   key={`${l.de}-${l.para}`}
@@ -208,6 +216,7 @@ export function MapaConceitual({
         </p>
         <h3 className="mt-1 font-serif text-xl leading-snug text-carvao">{escolhido.titulo}</h3>
         <div className="mt-3 space-y-3 text-sm leading-relaxed text-carvao-muted">{escolhido.detalhe}</div>
+      </div>
       </div>
     </div>
   );
