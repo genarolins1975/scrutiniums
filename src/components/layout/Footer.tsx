@@ -6,8 +6,8 @@ export function Footer({ compacto = false }: { compacto?: boolean }) {
   if (compacto) return <FooterCompacto />;
   return (
     <footer className="border-t border-linha-escura bg-carvao text-marfim">
-      <div className="mx-auto grid max-w-page gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-6">
-        <div className="sm:col-span-2">
+      <div className="mx-auto grid grid-cols-1 max-w-page gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-6">
+        <div className="min-w-0 [overflow-wrap:anywhere] [&>span>span]:min-w-0 sm:col-span-2">
           <LogoWordmark onDark />
           <p className="mt-4 max-w-sm text-sm text-mineral-soft">
             Plataforma de inteligência analítica baseada em dados verificáveis.
