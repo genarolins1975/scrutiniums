@@ -46,3 +46,19 @@ Oito testes locais aprovados: equivalência à fundação com pesos iguais; inva
 5. Documentar a escolha dos pesos e suas consequências. Submeter versão metodológica à aprovação.
 
 As 15 fichas da edição atual seguem com referências não validadas. O laboratório não transforma disponibilidade de dados em qualidade do serviço, satisfação do cidadão ou eficiência causal.
+
+
+## Segunda entrega: encadeamento e inversões de comparação
+
+O módulo `hierarquia.py` encadeia a normalização por componente, a média dos três pilares de cada capítulo e o agregado dos cinco capítulos. As referências devem estar validadas; perfis comparados precisam compartilhar edição, janela e âncoras de normalização. As duas geografias podem ser diferentes, mas os registros de cada perfil precisam corresponder ao território declarado.
+
+O laboratório aplica 16 cenários: dez alterações nos pesos de capítulos e seis nos pesos comuns dos pilares, sempre um peso por vez em ±20%. O relatório mantém notas dos capítulos, agregado, diferenças, pesos efetivos e motivos de bloqueio. Uma mudança de sinal é registrada como inversão; empates numéricos (tolerância 1e-9 ponto) ficam separados. Essa tolerância é apenas computacional, não evidência de equivalência estatística.
+
+Demonstração: perfil A tem notas de capítulos 95/50/70/70/70; perfil B tem 70/70/70/70/70. Cada capítulo sintético recebe três pilares iguais à sua nota. A começa abaixo de B e ultrapassa B em dois dos 16 cenários. Isso ilustra dependência dos pesos, não mede probabilidade ou frequência de inversão no mundo real. Dados ausentes tornam a comparação incomparável em todos os cenários, sem exclusão de capítulos.
+
+```sh
+python3 -m unittest pipeline.eficiencia_escores.test_calibracao pipeline.eficiencia_escores.test_hierarquia -v
+python3 -m pipeline.eficiencia_escores.hierarquia --output docs/obee/calibracao/hierarquia-sintetica.json
+```
+
+17 testes locais aprovados (oito da calibração e nove hierárquicos). A saída continua interna e sintética. Esta entrega substitui a limitação anterior de operar somente em um nível: o encadeamento agora existe. Permanecem pendentes sensibilidade conjunta de múltiplos parâmetros, propagação das perturbações de âncoras pela hierarquia, validação empírica e critérios de aceitação. Nenhuma posição real ou nota pública foi produzida.
