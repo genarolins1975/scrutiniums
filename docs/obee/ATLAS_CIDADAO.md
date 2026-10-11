@@ -27,3 +27,9 @@ Lint, tipos e build Next aprovados remotamente. Auditoria de interface aprovada 
 ## Limite de aceite
 
 A etapa 3 entrega a interface e a comparação de medidas existentes. O perfil radial quantitativo, ranking agregado e evolução dependem de notas reais validadas. A implementação não cria valores para preencher essas funções. O PR deve permanecer em rascunho até concluir CI e inspeção visual.
+
+## Integração com a fundação de escores
+
+A página agora consome diretamente as 15 fichas versionadas da etapa 2, no servidor. A seção expansível apresenta evidência existente, bloqueios e próximo passo por pilar. O diagnóstico metodológico é global e não muda ao selecionar uma cidade; essa distinção aparece antes das fichas. Os cinco capítulos da cesta não são confundidos com os 16 temas do observatório. A metodologia de cálculo existente permanece acessível em uma expansão própria.
+
+A revisão anterior do Atlas (ec7b481) passou em todos os checks remotos. Na integração, os nove testes da fundação passaram e a renderização estática confirmou cinco capítulos e 15 componentes. A nova execução remota e inspeção da prévia devem fechar o aceite desta revisão.
