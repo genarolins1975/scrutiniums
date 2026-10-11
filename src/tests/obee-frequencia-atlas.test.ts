@@ -32,6 +32,8 @@ describe('Frequência escolar no Atlas',()=>{
       expect(html).toContain(`width:${row.value}%`);
       expect(html).toContain(`<td>${row.value.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`);
     }
+    for(const source of dados.sources)expect(html).toContain(source.url.replaceAll('&','&amp;'));
+    expect(html).toContain('Tabela 10056, variável 3795');
     expect(html).toContain('Inclui redes públicas e privadas');expect(html).toContain('Brasil é a taxa nacional');expect(html).toContain('100%');
   });
   it('entrada mantém agregado indisponível e oferece os dois indicadores',()=>{
