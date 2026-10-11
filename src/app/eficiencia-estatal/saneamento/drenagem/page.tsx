@@ -1,0 +1,8 @@
+import type {Metadata} from 'next';
+import {Abertura,Numeros,Secao,Fonte} from '@/components/eficiencia/saneamento/Editoria';
+import {Comparacao} from '@/components/eficiencia/saneamento/Comparacao';
+import {indicadores,valores,fontes,indicador,brasil} from '@/lib/eficiencia/saneamento/dados';
+import {formatar} from '@/lib/eficiencia/saneamento/modelo';
+export const dynamic='force-static';
+export const metadata:Metadata={"title": "Infraestrutura, exposição e impactos. — Saneamento", "alternates": {"canonical": "/eficiencia-estatal/saneamento/drenagem"}};
+export default function Pagina(){return <><Abertura numero="05" titulo="Infraestrutura, exposição e impactos." texto="A drenagem envolve condução, retenção e infiltração da água da chuva. A existência de redes subterrâneas é apenas uma parte do sistema; chuvas, ocupação do solo e condições locais também afetam os impactos."/><Numeros itens={["IAP0002", "DOM_RISCO", "IGR0002"].map(id=>({titulo:indicador(id).nome,valor:formatar(brasil(id),indicador(id)),nota:"Brasil, 2024. "+indicador(id).base}))}/><Fonte/><Secao titulo="Como as regiões se comparam?" texto="Agregados do relatório de águas pluviais; declarações referentes a 2024."><Comparacao medidas={indicadores.filter(m=>m.grupo==="drenagem")} dados={valores.filter(r=>indicadores.some(m=>m.id===r.indicador&&m.grupo==="drenagem"))} fontes={fontes}/><Fonte/></Secao><Secao titulo="Risco não é ocorrência"><p className="max-w-prose2 text-sm leading-relaxed">Os domicílios em risco descrevem exposição identificada pelos municípios. O indicador de população impactada considera desabrigados e desalojados declarados; não todas as pessoas afetadas. As contagens não substituem os registros do S2ID ou uma avaliação de risco local.</p></Secao></>}

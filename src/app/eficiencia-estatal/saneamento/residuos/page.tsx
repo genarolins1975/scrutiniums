@@ -1,0 +1,8 @@
+import type {Metadata} from 'next';
+import {Abertura,Numeros,Secao,Fonte} from '@/components/eficiencia/saneamento/Editoria';
+import {Comparacao} from '@/components/eficiencia/saneamento/Comparacao';
+import {indicadores,valores,fontes,indicador,brasil} from '@/lib/eficiencia/saneamento/dados';
+import {formatar} from '@/lib/eficiencia/saneamento/modelo';
+export const dynamic='force-static';
+export const metadata:Metadata={"title": "O que acontece depois da coleta? — Saneamento", "alternates": {"canonical": "/eficiencia-estatal/saneamento/residuos"}};
+export default function Pagina(){return <><Abertura numero="04" titulo="O que acontece depois da coleta?" texto="A coleta seletiva cria uma rota para separar materiais. A recuperação mede quanto retorna ao ciclo produtivo, enquanto a disposição final acompanha o destino dos rejeitos."/><Numeros itens={["IRS0006", "IRS3010", "IRS3002"].map(id=>({titulo:indicador(id).nome,valor:formatar(brasil(id),indicador(id)),nota:"Brasil, 2024. "+indicador(id).base}))}/><Fonte/><Secao titulo="Coleta, recuperação e destino" texto="Brasil e cinco regiões, conforme os agregados publicados nos relatórios."><Comparacao medidas={indicadores.filter(m=>m.grupo==="residuos")} dados={valores.filter(r=>indicadores.some(m=>m.id===r.indicador&&m.grupo==="residuos"))} fontes={fontes}/><Fonte/></Secao><Secao titulo="Três medidas que não formam uma composição"><p className="max-w-prose2 text-sm leading-relaxed">A cobertura de coleta seletiva é uma medida populacional. A recuperação é uma razão de massas. A disposição inadequada usa a massa coletada e não recuperada na amostra. Esses percentuais não devem ser somados, nem desenhados como partes de uma única barra.</p></Secao></>}
