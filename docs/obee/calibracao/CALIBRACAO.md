@@ -62,3 +62,11 @@ python3 -m pipeline.eficiencia_escores.hierarquia --output docs/obee/calibracao/
 ```
 
 17 testes locais aprovados (oito da calibração e nove hierárquicos). A saída continua interna e sintética. Esta entrega substitui a limitação anterior de operar somente em um nível: o encadeamento agora existe. Permanecem pendentes sensibilidade conjunta de múltiplos parâmetros, propagação das perturbações de âncoras pela hierarquia, validação empírica e critérios de aceitação. Nenhuma posição real ou nota pública foi produzida.
+
+## Terceira entrega: demonstração interativa interna
+
+`laboratorio-interativo.html` é um arquivo autossuficiente, sem bibliotecas externas ou requisições de rede. Abra-o em um navegador para editar os três pilares de qualquer um dos cinco capítulos dos perfis sintéticos A/B, observar a propagação das notas e comparar os 16 cenários. Os pesos da referência permanecem iguais; os pesos alternativos são exibidos na tabela. Alterações não persistem após recarregar.
+
+Os controles “Sem dado”, “Equilibrar em 70” e “Restaurar exemplo” permitem examinar ausência, empate e a demonstração inicial. Valores ausentes bloqueiam o agregado; zero é preservado. Nenhuma ficha real ou rota pública é modificada.
+
+Verificação: `node docs/obee/calibracao/verificar-laboratorio.cjs` compara a referência e os 16 cenários JavaScript com a saída Python versionada, incluindo inversões; verifica ausência, zero e empate. Os 17 testes Python também passaram. A inspeção visual e os testes de interação, responsividade e zoom em navegador permanecem pendentes: o navegador disponível bloqueou a abertura local por política de URL. Não se declara homologação visual desta entrega.
