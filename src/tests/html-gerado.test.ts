@@ -25,6 +25,7 @@ const AVISO_SEM_BUILD = "sem build local (.next/server/app); rode `npm run build
 /** Rotas que precisam existir no build quando a verificação é obrigatória. */
 const ROTAS_ASSISTENCIA = ["", "necessidades", "acesso", "acompanhamento", "cuidado", "recursos", "dados", "metodos"].map(s => `eficiencia-estatal/assistencia-social${s ? "/"+s : ""}.html`);
 const ROTAS_OBRIGATORIAS = [
+  ...["", "rede", "acesso", "atividades", "acervos", "recursos", "metodos"].map(s => `eficiencia-estatal/cultura${s ? "/"+s : ""}.html`),
   ...ROTAS_ASSISTENCIA,
   "setor-eletrico.html",
   "setor-eletrico/agua-e-clima/chuva-e-temperatura.html",
