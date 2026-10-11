@@ -66,6 +66,16 @@ try{
   assert((await page.locator('main').innerText()).includes('Sem distinção de horário'),'Modo ativo recebeu pico fictício');
   await Promise.all([page.waitForURL(u=>u.search==='',{waitUntil:'networkidle'}),page.getByRole('link',{name:'Limpar filtros',exact:true}).click()]);
   assert(await page.getByRole('combobox',{name:'Cidade',exact:true}).inputValue()==='','Limpar não restaurou o recorte');
+  for(const [name,value] of [['Modo de transporte','public_transport'],['Oportunidade e tempo',g.metrics[0].id],['Horário dos modos motorizados','1']]){
+   assert(await page.getByRole('combobox',{name,exact:true}).inputValue()===value,'Limpar não restaurou '+name);
+  }
+  await page.goBack({waitUntil:'networkidle'});
+  assert(new URL(page.url()).searchParams.get('cidade')==='1501402','Voltar perdeu a cidade');
+  assert(await page.getByRole('combobox',{name:'Cidade',exact:true}).inputValue()==='1501402','Voltar não restaurou o campo Cidade');
+  assert(await page.getByRole('combobox',{name:'Modo de transporte',exact:true}).inputValue()==='walk','Voltar não restaurou o modo');
+  assert(await page.locator('figure').count()===2,'Voltar não restaurou os gráficos');
+  await page.goForward({waitUntil:'networkidle'});
+  assert(await page.getByRole('combobox',{name:'Cidade',exact:true}).inputValue()==='','Avançar não restaurou o recorte limpo');
  });
  await step('CSV integral: todos os valores e grupos',async()=>{
   const response=await fetch(base+api);assert(response.ok,'CSV indisponível');
