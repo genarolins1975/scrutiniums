@@ -620,7 +620,7 @@ const secao = (id: string) => {
 describe("a página renderizada", () => {
   it("a abertura preserva título, contexto e cinco caminhos: orientação, cobertura, busca, mapa e perguntas antes da referência", () => {
     const h1 = /<h1[^>]*>([^<]+)<\/h1>/.exec(html)![1];
-    expect(h1).toBe("Energia, do sistema à sua conta");
+    expect(h1).toBe("A energia que move o Brasil.");
     expect(h1.split(/\s+/).length).toBeGreaterThanOrEqual(5);
     expect(h1.split(/\s+/).length).toBeLessThanOrEqual(9);
     const ordem = [html.indexOf("<h1"), html.indexOf('aria-label="Por onde começar"'), html.indexOf('class="obs-metrics"'), html.indexOf('type="search"'), html.indexOf('<section id="perguntas"'), html.indexOf('aria-label="Conhecimento e fontes"')];
@@ -755,9 +755,11 @@ describe("a página renderizada", () => {
     for (const d of DESTINOS_NAVEGACAO.filter((x) => x.slug !== "mapa")) expect(visivel.split(`href="${d.href}"`).length - 1, d.slug).toBe(1);
   });
 
-  it("o mapa conceitual está à vista (desenho no desktop, mapa vertical no celular), com os tipos de ligação e 'O que o mapa não diz' junto", () => {
-    const mapa = secao("mapa-conceitual").html;
-    // fora dos blocos recolhíveis (só a linha do <summary> de cada elo fica): o sistema inteiro já está à vista, com o desenho, as faixas, os elos,
+  it("o mapa completo abre em disclosure nativo e preserva desenho, versão mobile, tipos e limites", () => {
+    const secaoMapa = secao("mapa-conceitual").html;
+    expect(secaoMapa).toContain('<details class="energia-mapa-completo"><summary>Abrir o mapa completo de relações');
+    const mapa = secaoMapa.replace('<details class="energia-mapa-completo">', "");
+    // Após abrir o mapa completo, fora dos blocos recolhíveis (só a linha do <summary> de cada elo fica): o sistema inteiro já está à vista, com o desenho, as faixas, os elos,
     // o tipo e o destino de cada ligação e os tipos
     const aVista = mapa.replace(/<details[^>]*>([\s\S]*?)<\/details>/g, (_m, dentro: string) => /<summary[\s\S]*?<\/summary>/.exec(dentro)?.[0] ?? "");
     expect(aVista).toContain('<svg viewBox="0 0 1000 680"');
