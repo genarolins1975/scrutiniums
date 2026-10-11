@@ -1,3 +1,6 @@
+import Image from "next/image";
+import { PercursoVisualEnergia } from "@/components/energia/PercursoVisualEnergia";
+import { ETAPAS_ENERGIA } from "@/lib/energia/percurso-visual";
 import { PerguntasExploraveis, LaboratorioEnergia } from "@/components/energia/ExploracaoInicial";
 import "./atlas-inicial.css";
 import type { Metadata } from "next";
@@ -722,10 +725,32 @@ export default function MapaDoObservatorio() {
       <main id="conteudo" tabIndex={-1} className="ed-pagina energia-atlas-inicial pb-12">
         {/* hero: a proposta, a busca e os quatro caminhos, tudo na primeira tela */}
         <header id="proposito" className="scroll-mt-24 pb-8 pt-6 md:pb-10 md:pt-10">
+          <div className="energia-cenario">
+            <Image className="energia-cenario-imagem" src="/energia/arte/sistema-eletrico-v1.webp" alt="Maquete conceitual com reservatório, hidrelétrica, eólicas, painéis solares, linhas de transmissão, subestação e cidade." width={1774} height={887} sizes="(max-width: 1240px) 100vw, 1240px" priority />
+            <div className="energia-cenario-texto">
+              <p className="rotulo">Observatório Brasileiro do Setor Elétrico</p>
+              <h1>A energia que move o Brasil.</h1>
+              <p>Explore o sistema. Compare regiões. Entenda sua conta.</p>
+              <a className="energia-explorar" href="#percurso-energia">Explorar o sistema <span aria-hidden="true">↓</span></a>
+            </div>
+            <nav className="energia-cenario-pontos" aria-label="Explore as etapas na maquete">
+              {ETAPAS_ENERGIA.map(e => <a key={e.id} href={`#etapa-${e.id}`} data-etapa={e.id}><span>{e.numero}</span>{e.nome}</a>)}
+            </nav>
+            <p className="energia-cenario-legenda">Ilustração conceitual gerada por IA · sem escala geográfica</p>
+          </div>
+          <div className="energia-abertura-medidas" aria-label="Três medidas de entrada, com períodos próprios">
+            {["agua", "pld", "qualidade"].map(id => { const s = sinais.find(x => x.id === id)!; return <a href={`#pergunta-${id}`} key={id}>
+              <span>{s.medida}</span><strong>{s.estado === "disponivel" ? s.valorTexto : "Sem dado"}</strong>
+              <span>{s.estado === "disponivel" ? s.unidade : s.motivo}</span><small>{s.periodo ?? "Período indisponível"} · {id === "agua" ? `${SIGLAS.ONS} (ONS)` : id === "pld" ? `${SIGLAS.CCEE} (CCEE)` : `${SIGLAS.ANEEL} (ANEEL)`}</small>
+              <span className="energia-abertura-link">Ver universo, referência e fonte ↓</span>
+            </a>; })}
+          </div>
+          <p className="energia-medidas-nota">Cada indicador tem seu período. PLD não é tarifa; armazenamento não mede sozinho o risco de falta de energia.</p>
+          <details className="energia-contexto"><summary>Sobre o observatório, caminhos e fontes <span aria-hidden="true">+</span></summary>
           <div className="obs-hero grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
             <div className="min-w-0">
               <p className="rotulo text-mineral">Observatório Brasileiro do Setor Elétrico</p>
-              <h1 className="mt-2 max-w-4xl font-serif">Energia, do sistema à sua conta</h1>
+              <p className="font-serif text-2xl">Energia, do sistema à sua conta</p>
               <p className="ed-lead mt-3 max-w-3xl text-carvao-muted">
                 Acompanhe preços, geração e reservatórios. Compare tarifas, interrupções e perdas por região. Cada painel explica o indicador e mostra sua fonte, período e referência.
               </p>
@@ -806,13 +831,6 @@ export default function MapaDoObservatorio() {
               </p>
             </nav>
           </div>
-          <div className="energia-abertura-medidas" aria-label="Três medidas de entrada, com períodos próprios">
-            {["agua", "pld", "qualidade"].map(id => { const s = sinais.find(x => x.id === id)!; return <a href={`#pergunta-${id}`} key={id}>
-              <span>{s.medida}</span><strong>{s.estado === "disponivel" ? s.valorTexto : "Sem dado"}</strong>
-              <span>{s.estado === "disponivel" ? s.unidade : s.motivo}</span><small>{s.periodo ?? "Período indisponível"} · {id === "agua" ? "ONS" : id === "pld" ? "CCEE" : "ANEEL"}</small>
-              <span className="energia-abertura-link">Ver universo, referência e fonte ↓</span>
-            </a>; })}
-          </div>
           <dl className="obs-metrics">
             {[
               [String(DESTINOS_NAVEGACAO.filter(d => d.publicado && d.slug !== "mapa").length), "páginas disponíveis", "Painéis, conhecimento e evidência"],
@@ -821,7 +839,22 @@ export default function MapaDoObservatorio() {
               ["3", "níveis de leitura", "Entender, analisar e auditar"],
             ].map(([valor, rotulo, detalhe]) => <div key={rotulo}><dd>{valor}</dd><dt>{rotulo}</dt><dd>{detalhe}</dd></div>)}
           </dl>
+          </details>
         </header>
+        <PercursoVisualEnergia />
+        <section className="energia-portas" aria-labelledby="energia-portas-titulo">
+          <h2 id="energia-portas-titulo">Qual pergunta você quer responder?</h2>
+          <div className="energia-portas-grade">
+            <Link href="/setor-eletrico/conta-de-luz" className="energia-porta energia-porta-conta">
+              <div><h3>Por que minha conta tem esse valor?</h3><p>Tarifa, tributos e bandeiras: cada parcela no seu lugar.</p><span>Entender a conta ↗</span></div>
+              <Image src="/energia/arte/conta-regiao-v1.webp" alt="" width={800} height={800} sizes="(max-width: 639px) 45vw, 280px" />
+            </Link>
+            <Link href="/setor-eletrico/territorio" className="energia-porta energia-porta-regiao">
+              <div><h3>Como é o serviço na minha região?</h3><p>Explore distribuidoras, usinas e indicadores no território.</p><span>Explorar minha região ↗</span></div>
+              <Image src="/energia/arte/sistema-eletrico-v1.webp" alt="" width={1774} height={887} sizes="(max-width: 639px) 45vw, 280px" />
+            </Link>
+          </div>
+        </section>
         <div className="obs-home-search">              <div>
                 <BuscaObservatorio
                   itens={busca}
@@ -845,6 +878,7 @@ export default function MapaDoObservatorio() {
             </>
           }
         >
+          <details className="energia-mapa-completo"><summary>Abrir o mapa completo de relações <span aria-hidden="true">+</span></summary>
           <div className="hidden md:block">
             <MapaConceitual
               rotulo="Mapa conceitual do setor elétrico: escolha um elo para ver a explicação e as ligações"
@@ -891,6 +925,7 @@ export default function MapaDoObservatorio() {
               </ul>
             </div>
           </div>
+          </details>
         </Secao>
 
         {/* as seis perguntas, cada uma com a medida real, o período, a figura de referência e o link; a escolha da distribuidora é uma só */}
