@@ -1,0 +1,53 @@
+/* Mobilidade reutiliza a identidade compartilhada do OBEE. */
+.painel{font-variant-numeric:tabular-nums;min-width:0}
+.painel h1{max-width:850px;font-size:clamp(2rem,4.5vw,3.2rem);line-height:1.12}
+.intro{max-width:720px;line-height:1.65;margin-top:16px}
+.nav{display:flex;flex-wrap:wrap;gap:0 20px;border-top:1px solid var(--cor-linha);border-bottom:1px solid var(--cor-linha);margin:24px 0;padding:6px 0}
+.nav a,.acao{min-height:44px;display:inline-flex;align-items:center;text-decoration:underline;text-underline-offset:4px}
+.nav a[aria-current=page]{font-weight:600;text-decoration-thickness:2px}
+.nota{font-size:14px;line-height:1.65;max-width:850px}
+.faixa{padding:18px 0;border-block:1px solid var(--cor-linha);margin:24px 0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.duas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
+.numero{font-size:clamp(1.7rem,3vw,2.4rem);line-height:1.15;margin:10px 0;overflow-wrap:anywhere}
+.secao{margin-top:40px}
+.secao h2{font-size:clamp(1.5rem,3vw,2rem);line-height:1.25}
+.controles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:end;padding:20px 0;margin:16px 0;border-block:1px solid var(--cor-linha)}
+.controles label{display:grid;gap:8px;font-size:14px;min-width:0}
+.controles select,.controles input{width:100%;min-width:0;min-height:44px;padding:8px;border:1px solid currentColor;border-radius:2px;background:inherit;color:inherit;font:inherit}
+.controles button{min-height:44px;padding:10px 18px;border:1px solid currentColor;text-align:center;font-weight:600}
+.controles a{min-height:44px;display:inline-flex;align-items:center;text-decoration:underline}
+.linha{margin-top:18px}
+.linhaTopo{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:7px;font-size:14px;line-height:1.45}
+.linhaTopo span:first-child{min-width:0;overflow-wrap:anywhere}
+.linhaTopo strong{flex-shrink:0;font-weight:500}
+.trilho{height:13px;position:relative;border-bottom:1px solid var(--cor-linha)}
+.barra{height:12px;background:var(--cor-obee);display:block}
+.zero{width:2px;height:12px;background:var(--cor-obee);display:block}
+.referencia{position:absolute;top:-4px;bottom:-3px;width:0;border-left:2px dashed currentColor;opacity:.75}
+.legenda{font-size:13px;line-height:1.6;margin-top:14px}
+.acoes{display:flex;flex-wrap:wrap;gap:8px 24px;margin:14px 0}
+.tabela{max-width:100%;overflow-x:auto;margin-top:16px}
+.tabela table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.5}
+.tabela caption{text-align:left;padding-bottom:12px}
+.tabela th,.tabela td{text-align:left;vertical-align:top;padding:12px 10px;border-bottom:1px solid var(--cor-linha)}
+.tabela td[data-number],.tabela th[data-number]{text-align:right;white-space:nowrap}
+.painel summary{cursor:pointer;min-height:44px;padding:12px 0;font-weight:500;line-height:1.5}
+.painel details{border-bottom:1px solid var(--cor-linha)}
+.painel details>div{padding-bottom:16px}
+.catalogo a{display:block;border-bottom:1px solid var(--cor-linha);padding:20px 0;text-decoration:none;min-height:44px}
+.catalogo a h3{font-size:22px;line-height:1.3}
+.catalogo a p{font-size:14px;line-height:1.65;margin-top:8px}
+.painel a:hover{text-decoration:underline}
+.painel :focus-visible{outline:3px solid currentColor;outline-offset:4px}
+.mono{font-family:monospace;overflow-wrap:anywhere;font-size:12px}
+.aviso{border-left:3px solid currentColor;padding:12px 16px;margin:20px 0;font-size:14px;line-height:1.65;max-width:850px}
+.vazio{padding:24px 0;line-height:1.65}
+.painel small{font-size:13px;line-height:1.6}
+.pill{display:inline-block;font-size:12px;border:1px solid currentColor;padding:3px 7px;margin-bottom:12px}
+.navegar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:20px}
+.navegar a{min-height:44px;display:inline-flex;align-items:center;text-decoration:underline}
+.dist{margin-top:22px}.dist .trilho{height:18px}.dist .barra{height:17px}
+@media(max-width:700px){.grid,.duas{grid-template-columns:1fr;gap:20px}.grid>div+div{border-top:1px solid var(--cor-linha);padding-top:18px}.controles{grid-template-columns:1fr 1fr}.controles label:first-child{grid-column:1/-1}.nav{gap:0 16px;font-size:14px}.secao{margin-top:32px}.linhaTopo{font-size:14px}.numero{font-size:2rem}}
+@media(max-width:370px){.controles{grid-template-columns:1fr}.linhaTopo{flex-wrap:wrap;gap:4px 12px}.tabela th,.tabela td{padding:10px 6px}}
+@media(prefers-reduced-motion:reduce){.painel *{scroll-behavior:auto!important;transition:none!important}}

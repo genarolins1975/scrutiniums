@@ -1,0 +1,68 @@
+name: OBEE Mobilidade - interface
+on:
+  pull_request:
+    paths:
+      - 'src/**/mobilidade/**'
+      - 'src/app/eficiencia-estatal/mobilidade-transporte/**'
+      - 'src/app/api/eficiencia-mobilidade/**'
+      - 'src/tests/obee-mobilidade*.test.ts'
+      - 'src/app/eficiencia-estatal/page.tsx'
+      - 'scripts/obee/mobilidade-auditoria.mjs'
+      - 'scripts/obee/oportunidades-auditoria.mjs'
+      - 'data/eficiencia_mobilidade/**'
+      - 'pipeline/eficiencia_mobilidade/**'
+      - '.github/workflows/obee-mobilidade-interface.yml'
+permissions:
+  contents: read
+concurrency:
+  group: mobilidade-interface-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  interface:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npm run lint && npx tsc --noEmit
+      - run: npm run build
+      - name: Testes dos contratos de Mobilidade, Censo e Ipea
+        run: npx vitest run src/tests/obee-mobilidade.test.ts src/tests/obee-mobilidade-censo.test.ts src/tests/obee-mobilidade-oportunidades.test.ts
+      - name: Instalar navegador em diretório de teste isolado
+        # Não re-resolver nem modificar o grafo de dependências da aplicação.
+        run: |
+          BROWSER_DIR="$RUNNER_TEMP/obee-browser"
+          mkdir -p "$BROWSER_DIR"
+          npm install --prefix "$BROWSER_DIR" --no-audit --no-fund playwright@1.56.0
+          ln -s "$BROWSER_DIR/node_modules/playwright" node_modules/playwright
+          "$BROWSER_DIR/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Auditar nove páginas, controles e exportações
+        run: |
+          npm run start -- --port 3100 > /tmp/mobilidade-servidor.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 60); do
+            if curl -sf http://127.0.0.1:3100/eficiencia-estatal/mobilidade-transporte >/dev/null; then break; fi
+            sleep 2
+          done
+          STATUS=0
+          node scripts/obee/mobilidade-auditoria.mjs || STATUS=1
+          node scripts/obee/oportunidades-auditoria.mjs || STATUS=1
+          exit "$STATUS"
+      - name: Guardar capturas e resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobilidade-interface-${{ github.event.pull_request.head.sha }}
+          path: auditoria-interface-mobilidade/
+          retention-days: 7
+          if-no-files-found: warn

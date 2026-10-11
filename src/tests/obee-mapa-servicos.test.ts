@@ -11,14 +11,15 @@ describe("descoberta de serviços públicos", () => {
     expect(filtraDimensoes("termo inexistente", "Todas")).toEqual([]);
   });
   it("combina busca, grupo e disponibilidade, sem sugerir dados para as áreas sem publicação", () => {
-    expect(filtraDimensoes("", "Todas", true).map(d => d.id)).toEqual(["educacao", "saude", "trabalho", "alimentacao", "assistencia", "justica", "habitacao", "saneamento"]);
-    expect(filtraDimensoes("", GRUPOS[2], true).map(d => d.id)).toEqual(["habitacao", "saneamento"]);
+    expect(filtraDimensoes("", "Todas", true).map(d => d.id)).toEqual(["educacao", "saude", "trabalho", "alimentacao", "assistencia", "justica", "habitacao", "saneamento", "mobilidade"]);
+    expect(filtraDimensoes("", GRUPOS[2], true).map(d => d.id)).toEqual(["habitacao", "saneamento", "mobilidade"]);
     expect(filtraDimensoes("", GRUPOS[1]).every(d => d.grupo === GRUPOS[1])).toBe(true);
     expect(filtraDimensoes("", "Todas")).toEqual(DIMENSOES);
   });
   it("cada painel publicado aponta para uma rota existente e as demais áreas não têm link fictício", () => {
     for (const d of DIMENSOES.filter(d => d.href)) {
-      expect(existsSync(join(process.cwd(), "src/app", d.href!, "page.tsx"))).toBe(true);
+      const arquivo = d.id === "mobilidade" ? "[[...painel]]/page.tsx" : "page.tsx";
+      expect(existsSync(join(process.cwd(), "src/app", d.href!, arquivo))).toBe(true);
     }
     expect(new Set(DIMENSOES.map(d => d.id)).size).toBe(DIMENSOES.length);
   });
