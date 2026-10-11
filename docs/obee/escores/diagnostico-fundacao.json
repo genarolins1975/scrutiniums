@@ -1,0 +1,527 @@
+{
+  "schema_version": 1,
+  "purpose": "DIAGNOSTICO_INTERNO_NAO_PUBLICA_ESCORE",
+  "edition": "OBEE-servicos-fundacao-v0.1",
+  "validated": false,
+  "summary": {
+    "cards": 15,
+    "validated_pillars": 0,
+    "numeric_aggregate_scores": 0
+  },
+  "observations": [
+    {
+      "indicator": "edu.saeb.rede_municipal",
+      "territory": "2611606",
+      "territory_name": "Recife",
+      "geography": "municipality",
+      "period": "2023",
+      "stage": "Ensino fundamental, anos iniciais",
+      "component": "portugues",
+      "raw_value": 199.9,
+      "unit": "pontos na escala Saeb",
+      "universe": "Município da capital. Escolas da rede municipal participantes do Saeb. 5º e 9º anos do ensino fundamental.",
+      "source_state": "OBSERVADO",
+      "raw_comparison_eligible": "sim",
+      "source_locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 2611606, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023",
+      "source_id": "inep_ideb_ai_2025",
+      "source_generated_at": "2026-10-09T07:05:07Z",
+      "provenance": {
+        "path": "public/eficiencia/series/edu_saeb_rede_municipal.csv",
+        "sha256_bytes": "33f1e535a6ebfb119a7175e0d48cda60925408c76c34883fe482ad095b423a0f"
+      },
+      "score": null,
+      "score_state": "REFERENCIA_PENDENTE",
+      "role": "CANDIDATO_QUALIDADE_NAO_VALIDADO"
+    },
+    {
+      "indicator": "edu.saeb.rede_municipal",
+      "territory": "4106902",
+      "territory_name": "Curitiba",
+      "geography": "municipality",
+      "period": "2023",
+      "stage": "Ensino fundamental, anos iniciais",
+      "component": "portugues",
+      "raw_value": 218.13,
+      "unit": "pontos na escala Saeb",
+      "universe": "Município da capital. Escolas da rede municipal participantes do Saeb. 5º e 9º anos do ensino fundamental.",
+      "source_state": "OBSERVADO",
+      "raw_comparison_eligible": "sim",
+      "source_locator": "INEP, Ideb 2025 (anos iniciais), CO_MUNICIPIO = 4106902, REDE = Municipal, coluna VL_NOTA_PORTUGUES_2023",
+      "source_id": "inep_ideb_ai_2025",
+      "source_generated_at": "2026-10-09T07:05:07Z",
+      "provenance": {
+        "path": "public/eficiencia/series/edu_saeb_rede_municipal.csv",
+        "sha256_bytes": "33f1e535a6ebfb119a7175e0d48cda60925408c76c34883fe482ad095b423a0f"
+      },
+      "score": null,
+      "score_state": "REFERENCIA_PENDENTE",
+      "role": "CANDIDATO_QUALIDADE_NAO_VALIDADO"
+    }
+  ],
+  "regional_context_not_city_scores": [
+    {
+      "indicator": "food.households_secure",
+      "territory": "Nordeste",
+      "geography": "region",
+      "period": "2024",
+      "raw_value": 65.2,
+      "unit": "% de domicílios",
+      "role": "CONTEXTO_NAO_PONTUA",
+      "score": null,
+      "source_page": 6,
+      "sources": [
+        {
+          "file": "munic_seguranca_alimentar_2024.xlsx",
+          "url": "https://ftp.ibge.gov.br/Perfil_Municipios/Seguranca_Alimentar_2024/Base_de_dados_Seguranca_Alimentar_MUNIC.xlsx",
+          "sha256": "ec1ee7f050b965d33e772b285fe3cc4ded75f4cfeda5306f8a366502b72c2863"
+        },
+        {
+          "file": "ibge_seguranca_alimentar_2024.pdf",
+          "url": "https://biblioteca.ibge.gov.br/visualizacao/livros/liv102212_informativo.pdf",
+          "sha256": "fee3a5aef665907c676c0b7f05324d98b69a30a0d2d7250cafd090bcf261037e"
+        }
+      ],
+      "provenance": {
+        "path": "public/eficiencia/seguranca-alimentar/panorama.json",
+        "sha256_bytes": "f0fad87efccafeff6bdcc1e80c4215e82cc7286f8d993b72190aeff339af4b12"
+      }
+    },
+    {
+      "indicator": "food.households_secure",
+      "territory": "Sul",
+      "geography": "region",
+      "period": "2024",
+      "raw_value": 86.4,
+      "unit": "% de domicílios",
+      "role": "CONTEXTO_NAO_PONTUA",
+      "score": null,
+      "source_page": 6,
+      "sources": [
+        {
+          "file": "munic_seguranca_alimentar_2024.xlsx",
+          "url": "https://ftp.ibge.gov.br/Perfil_Municipios/Seguranca_Alimentar_2024/Base_de_dados_Seguranca_Alimentar_MUNIC.xlsx",
+          "sha256": "ec1ee7f050b965d33e772b285fe3cc4ded75f4cfeda5306f8a366502b72c2863"
+        },
+        {
+          "file": "ibge_seguranca_alimentar_2024.pdf",
+          "url": "https://biblioteca.ibge.gov.br/visualizacao/livros/liv102212_informativo.pdf",
+          "sha256": "fee3a5aef665907c676c0b7f05324d98b69a30a0d2d7250cafd090bcf261037e"
+        }
+      ],
+      "provenance": {
+        "path": "public/eficiencia/seguranca-alimentar/panorama.json",
+        "sha256_bytes": "f0fad87efccafeff6bdcc1e80c4215e82cc7286f8d993b72190aeff339af4b12"
+      }
+    }
+  ],
+  "profiles": [
+    {
+      "territory": "2611606",
+      "name": "Recife",
+      "edition": "OBEE-servicos-fundacao-v0.1",
+      "reference_period": null,
+      "chapters": [
+        {
+          "id": "education",
+          "value": null,
+          "state": "COBERTURA_INSUFICIENTE",
+          "pillars": [
+            {
+              "id": "education.access",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Matrículas não são pessoas únicas residentes; população total não é população elegível.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "education.response",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Calendário realizado e espera por matrícula não integrados.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "education.quality",
+              "value": null,
+              "state": "REFERENCIA_PENDENTE",
+              "reasons": [
+                "Âncoras e representatividade ainda não validadas; evitar duplicação com IDEB.",
+                "Referências de pontuação não validadas"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "health",
+          "value": null,
+          "state": "COBERTURA_INSUFICIENTE",
+          "pillars": [
+            {
+              "id": "health.access",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Capacidade teórica e cadastro não demonstram atendimento efetivo.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "health.response",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Só casos concluídos podem ocultar os que continuam aguardando.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "health.quality",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Taxa bruta não ajusta idade nem oferta; não mede causalmente qualidade.",
+                "Referências de pontuação não validadas"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "work",
+          "value": null,
+          "state": "COBERTURA_INSUFICIENTE",
+          "pillars": [
+            {
+              "id": "work.access",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Autorização não é vaga, matrícula nem atendimento; cadastro não é demanda.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "work.response",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Faltam datas, coortes, pendências e conclusão.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "work.quality",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Não há ligação entre serviço e trajetória individual; perdas podem enviesar.",
+                "Referências de pontuação não validadas"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "food",
+          "value": null,
+          "state": "COBERTURA_INSUFICIENTE",
+          "pillars": [
+            {
+              "id": "food.access",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "EBIA é desfecho; existência de equipamento não mede atendimento.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "food.response",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Faltam registros de entregas e interrupções.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "food.quality",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Quantidade e existência de programas não medem conformidade.",
+                "Referências de pontuação não validadas"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "assistance",
+          "value": null,
+          "state": "COBERTURA_INSUFICIENTE",
+          "pillars": [
+            {
+              "id": "assistance.access",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Registros podem repetir usuários; CadÚnico não é toda a demanda.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "assistance.response",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Espera cadastral não é espera geral; plano não prova continuidade.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "assistance.quality",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Autodeclaração não equivale a inspeção ou resultado do cuidado.",
+                "Referências de pontuação não validadas"
+              ]
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": null,
+        "state": "BLOQUEADO",
+        "reasons": [
+          {
+            "id": "education",
+            "reason": "COBERTURA_INSUFICIENTE"
+          },
+          {
+            "id": "health",
+            "reason": "COBERTURA_INSUFICIENTE"
+          },
+          {
+            "id": "work",
+            "reason": "COBERTURA_INSUFICIENTE"
+          },
+          {
+            "id": "food",
+            "reason": "COBERTURA_INSUFICIENTE"
+          },
+          {
+            "id": "assistance",
+            "reason": "COBERTURA_INSUFICIENTE"
+          }
+        ]
+      }
+    },
+    {
+      "territory": "4106902",
+      "name": "Curitiba",
+      "edition": "OBEE-servicos-fundacao-v0.1",
+      "reference_period": null,
+      "chapters": [
+        {
+          "id": "education",
+          "value": null,
+          "state": "COBERTURA_INSUFICIENTE",
+          "pillars": [
+            {
+              "id": "education.access",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Matrículas não são pessoas únicas residentes; população total não é população elegível.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "education.response",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Calendário realizado e espera por matrícula não integrados.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "education.quality",
+              "value": null,
+              "state": "REFERENCIA_PENDENTE",
+              "reasons": [
+                "Âncoras e representatividade ainda não validadas; evitar duplicação com IDEB.",
+                "Referências de pontuação não validadas"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "health",
+          "value": null,
+          "state": "COBERTURA_INSUFICIENTE",
+          "pillars": [
+            {
+              "id": "health.access",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Capacidade teórica e cadastro não demonstram atendimento efetivo.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "health.response",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Só casos concluídos podem ocultar os que continuam aguardando.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "health.quality",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Taxa bruta não ajusta idade nem oferta; não mede causalmente qualidade.",
+                "Referências de pontuação não validadas"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "work",
+          "value": null,
+          "state": "COBERTURA_INSUFICIENTE",
+          "pillars": [
+            {
+              "id": "work.access",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Autorização não é vaga, matrícula nem atendimento; cadastro não é demanda.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "work.response",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Faltam datas, coortes, pendências e conclusão.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "work.quality",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Não há ligação entre serviço e trajetória individual; perdas podem enviesar.",
+                "Referências de pontuação não validadas"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "food",
+          "value": null,
+          "state": "COBERTURA_INSUFICIENTE",
+          "pillars": [
+            {
+              "id": "food.access",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "EBIA é desfecho; existência de equipamento não mede atendimento.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "food.response",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Faltam registros de entregas e interrupções.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "food.quality",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Quantidade e existência de programas não medem conformidade.",
+                "Referências de pontuação não validadas"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "assistance",
+          "value": null,
+          "state": "COBERTURA_INSUFICIENTE",
+          "pillars": [
+            {
+              "id": "assistance.access",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Registros podem repetir usuários; CadÚnico não é toda a demanda.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "assistance.response",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Espera cadastral não é espera geral; plano não prova continuidade.",
+                "Referências de pontuação não validadas"
+              ]
+            },
+            {
+              "id": "assistance.quality",
+              "value": null,
+              "state": "COBERTURA_INSUFICIENTE",
+              "reasons": [
+                "Autodeclaração não equivale a inspeção ou resultado do cuidado.",
+                "Referências de pontuação não validadas"
+              ]
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": null,
+        "state": "BLOQUEADO",
+        "reasons": [
+          {
+            "id": "education",
+            "reason": "COBERTURA_INSUFICIENTE"
+          },
+          {
+            "id": "health",
+            "reason": "COBERTURA_INSUFICIENTE"
+          },
+          {
+            "id": "work",
+            "reason": "COBERTURA_INSUFICIENTE"
+          },
+          {
+            "id": "food",
+            "reason": "COBERTURA_INSUFICIENTE"
+          },
+          {
+            "id": "assistance",
+            "reason": "COBERTURA_INSUFICIENTE"
+          }
+        ]
+      }
+    }
+  ]
+}
