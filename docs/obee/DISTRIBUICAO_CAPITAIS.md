@@ -37,3 +37,11 @@ Os limites da escala foram retirados do SVG e colocados em texto HTML a 13 px, p
 Sete testes existentes e tipos da cópia isolada novamente aprovados após o ajuste. Não se trata de homologação visual: a conexão do navegador falhou antes de abrir a prévia, com erro de carregamento da política de cabeçalhos, também após uma nova tentativa. Não houve login, alteração de proteção ou captura da página. CI da distribuição (`7673137`) confirmado aprovado nesta revisão; o ajuste de legibilidade terá seu próprio CI.
 
 Pendentes para conclusão desta etapa: conferir a tela completa, expansões e seletores; medir reflow em 320/390/768/1440 px e zoom 200%; verificar foco e ordem de teclado no navegador. Os critérios de acabamento, responsividade e interação permanecem **não verificados visualmente**. A falha de acesso não deve ser confundida com aprovação desses critérios.
+
+## Escolha do comparador na tabela
+
+O nome de cada capital na tabela agora permite trocar o comparador dos quatro temas sem retornar ao topo. A cidade principal e os demais filtros são preservados. O componente Atlas encaminha a escolha ao mesmo `select` usado pelos controles centrais, mantendo os parâmetros da URL e o histórico. A alteração não navega para outro capítulo nem fecha a expansão.
+
+Botões nativos com altura mínima de 44 px, foco explícito e nome acessível identificam a ação. `aria-pressed` indica o comparador atual. Cidade principal e comparador atual têm `aria-disabled` e proteção no evento, conservando o elemento no DOM; não criam nova entrada de histórico quando acionados. A frase curta do par é uma região de status. Sem callback, o componente oferece apenas a tabela de leitura, sem botões inoperantes.
+
+Nove testes focados aprovados, incluindo acionamento das 26 opções nos quatro temas e estados após nova seleção. TypeScript da cópia de revisão, agora incluindo Atlas e suas dependências diretas, aprovado. Esses testes verificam eventos e renderização do componente; não substituem a verificação de foco, anúncio por leitor de tela, URL/histórico e interação no navegador, ainda pendente. Sem alterações de fontes, dados ou metodologia e sem publicação em produção.

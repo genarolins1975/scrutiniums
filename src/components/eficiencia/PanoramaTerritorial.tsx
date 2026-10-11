@@ -39,12 +39,12 @@ export function panoramaPair(place: string, reference: string, metric: Metric) {
   return {a:a??null, b:b??null, first, second, difference:a!=null&&b!=null?a-b:null};
 }
 
-export function PanoramaTerritorial({place,reference,onEducation}:{place:string;reference:string;onEducation:()=>void}) {
+export function PanoramaTerritorial({place,reference,onEducation,onReference}:{place:string;reference:string;onEducation:()=>void;onReference?:(id:string)=>void}) {
   const a = data.cities.find(c=>c.id===place)?.name??'Território selecionado';
   const b = data.cities.find(c=>c.id===reference)?.name??'Comparador selecionado';
   return <section id="atlas-panorama" className={styles.section} aria-labelledby="panorama-title">
     <div className={styles.heading}><div><p className={styles.eyebrow}>01 / Retrato em quatro perspectivas</p><h2 id="panorama-title">A vida no território, lado a lado.</h2></div><a href="/eficiencia/atlas/panorama-capitais.csv" download>Baixar 26 capitais · CSV ↓</a></div>
-    <p className={styles.lead}><strong>{a}</strong> e <strong>{b}</strong>, com uma referência entre capitais para cada medida. Os anos e os universos variam entre os temas; não formam uma nota nem um retrato do mesmo ano.</p>
+    <p className={styles.lead}><span role="status" aria-atomic="true">Comparação: <strong>{a}</strong> e <strong>{b}</strong>.</span> Uma referência entre capitais para cada medida. Os anos e os universos variam entre os temas; não formam uma nota nem um retrato do mesmo ano.</p>
     <div className={styles.legend}><span><i className={styles.primaryDot}/>{a}</span><span><i className={styles.referenceDot}/>{b}</span><span><i className={styles.contextDot}/>Demais capitais</span><span><i className={styles.medianDot}/>Mediana das capitais elegíveis</span></div>
     <div className={styles.grid}>{data.metrics.map((m,index)=>{
       const pair=panoramaPair(place,reference,m);
@@ -73,8 +73,8 @@ export function PanoramaTerritorial({place,reference,onEducation}:{place:string;
         <p className={styles.universe}>{m.universe}</p><p className={styles.warning}>{m.warning}</p>
         <p className={styles.source}>{m.source} · captura {date(m.capturedAt)}</p>
         <details className={`${styles.details} ${styles.capitals}`}><summary>Comparar as {distribution.rows.length} capitais</summary>
-          <p>Ordem alfabética. A tabela apresenta os mesmos valores da distribuição; as duas seleções estão identificadas por texto.</p>
-          <table><caption>{m.title} · {m.period} · {m.unit}</caption><thead><tr><th scope="col">Capital</th><th scope="col">Valor</th></tr></thead><tbody>{distribution.rows.map(row=><tr key={row.id} className={row.id===place||row.id===reference?styles.selectedRow:undefined}><th scope="row">{row.name}{row.id===place&&<small>Território selecionado</small>}{row.id===reference&&<small>Comparador selecionado</small>}</th><td>{panoramaValue(row.value,m.unit)}{row.value===null&&<small>{row.eligible?'Sem valor observado':'Fora da comparação'} · {row.state}</small>}</td></tr>)}</tbody></table>
+          <p>Ordem alfabética. A tabela apresenta os mesmos valores da distribuição; as duas seleções estão identificadas por texto.{onReference&&' Escolha outra capital pelo nome para atualizar o comparador nos quatro temas. O território principal é mantido e o endereço da página acompanha a seleção.'}</p>
+          <table><caption>{m.title} · {m.period} · {m.unit}</caption><thead><tr><th scope="col">Capital</th><th scope="col">Valor</th></tr></thead><tbody>{distribution.rows.map(row=><tr key={row.id} className={row.id===place||row.id===reference?styles.selectedRow:undefined}><th scope="row">{onReference?<button type="button" className={styles.chooseCapital} aria-label={`Comparar ${a} com ${row.name}`} aria-pressed={row.id===reference} aria-disabled={row.id===place||row.id===reference} onClick={()=>{if(row.id!==place&&row.id!==reference)onReference(row.id);}}>{row.name}</button>:row.name}{row.id===place&&<small>Território selecionado</small>}{row.id===reference&&<small>Comparador selecionado</small>}</th><td>{panoramaValue(row.value,m.unit)}{row.value===null&&<small>{row.eligible?'Sem valor observado':'Fora da comparação'} · {row.state}</small>}</td></tr>)}</tbody></table>
         </details>
         <details className={styles.details}><summary>Ver valores, recortes e fontes</summary>
           <table><caption>{m.title} · {m.period}</caption><thead><tr><th scope="col">Referência</th><th scope="col">{m.unit}</th></tr></thead><tbody>{[[a,pair.a],[b,pair.b],['Mediana das capitais',midpoint]].map(([name,value],i)=><tr key={i}><th scope="row">{name}</th><td>{panoramaValue(value as number|null,m.unit)}</td></tr>)}</tbody></table>

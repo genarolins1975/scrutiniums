@@ -1,10 +1,38 @@
 import {describe,it,expect} from 'vitest';
-import {createElement} from 'react';
+import {createElement,isValidElement,Children,type ReactNode,type ReactElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import data from '@/lib/eficiencia/panorama-atlas.json';
 import {PanoramaTerritorial,panoramaDistribution} from '@/components/eficiencia/PanoramaTerritorial';
 
+type ControlProps={children?:ReactNode;onClick?:()=>void;'aria-label'?:string;'aria-disabled'?:boolean;'aria-pressed'?:boolean};
+function controls(node:ReactNode):ReactElement<ControlProps>[] {
+  return Children.toArray(node).flatMap(child=>isValidElement<ControlProps>(child)?[child,...controls(child.props.children)]:[]);
+}
+
 describe('Distribuição das capitais no panorama',()=>{
+  it('escolha pela tabela envia a capital correta e atualiza os quatro temas',()=>{
+    const choices:string[]=[];
+    const tree=PanoramaTerritorial({place:'2611606',reference:'4106902',onEducation:()=>{},onReference:id=>choices.push(id)});
+    const buttons=controls(tree).filter(node=>node.type==='button');
+    expect(buttons).toHaveLength(104);
+    for(const city of data.cities){
+      const cityButtons=buttons.filter(node=>node.props['aria-label']===`Comparar Recife com ${city.name}`);
+      expect(cityButtons).toHaveLength(4);
+      choices.length=0;cityButtons.forEach(node=>node.props.onClick!());
+      if(['2611606','4106902'].includes(city.id))expect(choices).toEqual([]);
+      else expect(choices).toEqual([city.id,city.id,city.id,city.id]);
+      const updated=controls(PanoramaTerritorial({place:'2611606',reference:city.id,onEducation:()=>{},onReference:()=>{}})).filter(node=>node.type==='button'&&node.props['aria-pressed']);
+      expect(updated).toHaveLength(4);
+      expect(updated.every(node=>node.props['aria-label']===`Comparar Recife com ${city.name}`)).toBe(true);
+    }
+  });
+  it('sem ação fornecida mantém tabela de leitura sem botões inoperantes',()=>{
+    const tree=PanoramaTerritorial({place:'2611606',reference:'4106902',onEducation:()=>{}});
+    expect(controls(tree).filter(node=>node.type==='button')).toHaveLength(0);
+    const html=renderToStaticMarkup(tree);
+    expect(html).toContain('role="status"');
+    expect(html).not.toContain('Escolha outra capital pelo nome');
+  });
   it.each(data.metrics)('$id preserva todas as capitais, valores e escala',metric=>{
     const {points,rows,axisY}=panoramaDistribution(metric);
     expect(rows).toHaveLength(26);
