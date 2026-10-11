@@ -504,7 +504,7 @@ body:has(nav[data-retorno]) { padding-bottom: 5.5rem; }
   --cor-obee-atlas-foco: #b78639;
   --cor-obee-atlas-selecao: #e5eeea;
   --cor-obee-atlas-superficie: #fff;
-  --cor-obee-atlas-contorno: #879b9b;
+  --cor-obee-atlas-contorno: var(--cor-mineral);
   --cor-obee-atlas-rotulo-inverso: #bed8d6;
   --cor-obee-atlas-texto-inverso: #c4d7d7;
   --cor-obee-atlas-acento-inverso: #a3e3d7;
