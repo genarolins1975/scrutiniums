@@ -70,3 +70,20 @@ python3 -m pipeline.eficiencia_escores.hierarquia --output docs/obee/calibracao/
 Os controles “Sem dado”, “Equilibrar em 70” e “Restaurar exemplo” permitem examinar ausência, empate e a demonstração inicial. Valores ausentes bloqueiam o agregado; zero é preservado. Nenhuma ficha real ou rota pública é modificada.
 
 Verificação: `node docs/obee/calibracao/verificar-laboratorio.cjs` compara a referência e os 16 cenários JavaScript com a saída Python versionada, incluindo inversões; verifica ausência, zero e empate. Os 17 testes Python também passaram. A inspeção visual e os testes de interação, responsividade e zoom em navegador permanecem pendentes: o navegador disponível bloqueou a abertura local por política de URL. Não se declara homologação visual desta entrega.
+
+## Quarta entrega: referências propagadas até o agregado
+
+`ancoras.py` aplica a mesma alteração de referência aos dois perfis comparados e propaga a nota normalizada pelo capítulo até o agregado. São 60 cenários: 15 componentes × duas âncoras (inferior/superior) × dois deslocamentos (±10% da amplitude original). Apenas uma âncora muda por cenário; os pesos ficam iguais e fixos. Esta entrega resolve a pendência anterior de propagação isolada de âncoras pela hierarquia.
+
+A base precisa passar pelos bloqueios de elegibilidade, recorte e referências. Base incompleta produz relatório bloqueado sem cenários. As referências alternativas são hipóteses e retornam explicitamente `validated: false`; não são gravadas nas fichas nem aprovadas pelo experimento. O cálculo contrafactual reutiliza a elegibilidade da base apenas para operações internas. Não exporta registros candidatos como componentes elegíveis para publicação.
+
+O relatório preserva a referência inicial, notas por capítulo, agregado, diferenças entre perfis, mudança do agregado contra a base, inversões e indicação de valores no piso/teto. “No limite” inclui igualdade exata com 0/100 e não significa necessariamente extrapolação ou erro de dado.
+
+Resultado do exemplo sintético: 60 cenários, nenhuma inversão e três cenários com componente no limite da escala. Isso não demonstra estabilidade geral; o exemplo de pesos continua com duas inversões. Resultados dependem dos perfis e das hipóteses escolhidas.
+
+```sh
+python3 -m unittest pipeline.eficiencia_escores.test_calibracao pipeline.eficiencia_escores.test_hierarquia pipeline.eficiencia_escores.test_ancoras
+python3 -m pipeline.eficiencia_escores.ancoras --output docs/obee/calibracao/ancoras-sinteticas.json
+```
+
+26 testes locais aprovados. A demonstração HTML continua dedicada aos pesos; esta entrega de âncoras é analítica, em Python/JSON. Permanecem pendentes variações simultâneas, critérios de aceitação, dados empíricos compatíveis e aprovação metodológica. Nenhuma nota real publicada.
