@@ -1,0 +1,72 @@
+[
+  {
+    "id": "esgoto-indicadores",
+    "arquivo": "SINISA_ESGOTO_Indicadores_UF_MR_BR_2024.xlsx",
+    "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa/resultados-sinisa/SINISA_ESGOTO_Planilhas_2024.zip",
+    "sha256": "3a1aa48299cae4ea503c9cd1000448e41e3d042d1605bb510696d6673f9ddb3a",
+    "aba": "Indicadores - Esgoto"
+  },
+  {
+    "id": "esgoto-financeiro",
+    "arquivo": "SINISA_ESGOTO_Informações_Gestão Administrativa e Financeira_UF_MR_BR_2024.xlsx",
+    "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa/resultados-sinisa/SINISA_ESGOTO_Planilhas_2024.zip",
+    "sha256": "70a686d74e06c72c04c789c95970f8bc7e9e5e510c2eaf01b9da443290ad5386",
+    "aba": "Gestão Adm e Financeira"
+  },
+  {
+    "id": "esgoto-tecnico",
+    "arquivo": "SINISA_ESGOTO_Informações_Gestão Técnica de Esgoto_UF_MR_BR_2024.xlsx",
+    "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa/resultados-sinisa/SINISA_ESGOTO_Planilhas_2024.zip",
+    "sha256": "bb4693d5b11822ee8473c80ce7da03b6df404462c67d92b70a88a321789dd726",
+    "aba": "Gestão Técnica de Esgoto"
+  },
+  {
+    "id": "agua-financeiro",
+    "arquivo": "SINISA_AGUA_ Informações_Gestão Administrativa e Financeira_UF_MR_BR_2024.xlsx",
+    "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa/resultados-sinisa/SINISA_Resultados_Ref2024.zip",
+    "sha256": "62064e6eee436ac48e02f8c9f50c965dc286bd59c8accfe0065e775b5316ce4f",
+    "aba": "Gestão Adm e FInanceira"
+  },
+  {
+    "id": "agua-indicadores",
+    "arquivo": "SINISA_AGUA_Indicadores_UF_MR_BR_2024.xlsx",
+    "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa/resultados-sinisa/SINISA_Resultados_Ref2024.zip",
+    "sha256": "ceff0314989c7776191f2670b3cae3d70fbbc43fe2a174eecb4484ac3b170078",
+    "aba": "Indicadores de Gestão"
+  },
+  {
+    "id": "agua-tecnico",
+    "arquivo": "SINISA_AGUA_Informações_Gestão Técnica de Água_UF_MR_BR_2024.xlsx",
+    "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa/resultados-sinisa/SINISA_Resultados_Ref2024.zip",
+    "sha256": "ddea98596f66644ff8bc0f58550a909e0431f98763a5b99c594eec5485e12b98",
+    "aba": "Gestão Técnica de Água"
+  },
+  {
+    "id": "residuos-relatorio",
+    "arquivo": "010_RELATORIO_SINISA_RESIDUOS_SOLIDOS_2025_defeso.pdf",
+    "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa/resultados-sinisa/010_RELATORIO_SINISA_RESIDUOS_SOLIDOS_2025_defeso.pdf",
+    "sha256": "6d95c633aeb8586993ab33fc61fc8420fd8265a51541906b08235d3ad8d1b900",
+    "aba": "Relatório"
+  },
+  {
+    "id": "drenagem-relatorio",
+    "arquivo": "011_RELATORIO_SINISA_AGUAS_PLUVIAIS_2025_defeso.pdf",
+    "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa/resultados-sinisa/011_RELATORIO_SINISA_AGUAS_PLUVIAIS_2025_defeso.pdf",
+    "sha256": "a143e6eda857961a2a301a5845476fbf924de2597bdedd1e8a82d5516e0d6dab",
+    "aba": "Relatório"
+  },
+  {
+    "id": "agua-relatorio",
+    "arquivo": "008_RELATORIO_SINISA_ABASTECIMENTO_AGUA_2025_defeso.pdf",
+    "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa/resultados-sinisa/008_RELATORIO_SINISA_ABASTECIMENTO_AGUA_2025_defeso.pdf",
+    "sha256": "b3a812a4a62425c13ffb1adfaa947e845246dc7b2823dc68072fe9b3aa28366b",
+    "aba": "Relatório"
+  },
+  {
+    "id": "esgoto-relatorio",
+    "arquivo": "009_RELATORIO_SINISA_ESGOTAMENTO_SANITARIO_2025_defeso.pdf",
+    "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/sinisa/resultados-sinisa/009_RELATORIO_SINISA_ESGOTAMENTO_SANITARIO_2025_defeso.pdf",
+    "sha256": "b3c3c185874f528dc34376239cb1f30b5c924ce3ccebfea9400f686c535210f4",
+    "aba": "Relatório"
+  }
+]

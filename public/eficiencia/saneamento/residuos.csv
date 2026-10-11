@@ -1,0 +1,19 @@
+﻿territorio;tipo;indicador;nome;valor;unidade;ano;numerador;denominador;universo;origem;fonte
+Brasil;Brasil;IRS0006;Cobertura urbana com coleta seletiva;43.1;%;2024;;;População urbana do universo do indicador de coleta seletiva.;Relatório residuos, p. 23;residuos-relatorio
+Norte;Região;IRS0006;Cobertura urbana com coleta seletiva;10.4;%;2024;;;População urbana do universo do indicador de coleta seletiva.;Relatório residuos, p. 23;residuos-relatorio
+Nordeste;Região;IRS0006;Cobertura urbana com coleta seletiva;7.9;%;2024;;;População urbana do universo do indicador de coleta seletiva.;Relatório residuos, p. 23;residuos-relatorio
+Sudeste;Região;IRS0006;Cobertura urbana com coleta seletiva;54.1;%;2024;;;População urbana do universo do indicador de coleta seletiva.;Relatório residuos, p. 23;residuos-relatorio
+Sul;Região;IRS0006;Cobertura urbana com coleta seletiva;74.9;%;2024;;;População urbana do universo do indicador de coleta seletiva.;Relatório residuos, p. 23;residuos-relatorio
+Centro-Oeste;Região;IRS0006;Cobertura urbana com coleta seletiva;49.8;%;2024;;;População urbana do universo do indicador de coleta seletiva.;Relatório residuos, p. 23;residuos-relatorio
+Brasil;Brasil;IRS3010;Recuperação de recicláveis secos e orgânicos;2.17;%;2024;;;Quantidade total coletada considerada pelo indicador.;Relatório residuos, p. 37;residuos-relatorio
+Norte;Região;IRS3010;Recuperação de recicláveis secos e orgânicos;0.52;%;2024;;;Quantidade total coletada considerada pelo indicador.;Relatório residuos, p. 37;residuos-relatorio
+Nordeste;Região;IRS3010;Recuperação de recicláveis secos e orgânicos;0.58;%;2024;;;Quantidade total coletada considerada pelo indicador.;Relatório residuos, p. 37;residuos-relatorio
+Sudeste;Região;IRS3010;Recuperação de recicláveis secos e orgânicos;2.39;%;2024;;;Quantidade total coletada considerada pelo indicador.;Relatório residuos, p. 37;residuos-relatorio
+Sul;Região;IRS3010;Recuperação de recicláveis secos e orgânicos;5.67;%;2024;;;Quantidade total coletada considerada pelo indicador.;Relatório residuos, p. 37;residuos-relatorio
+Centro-Oeste;Região;IRS3010;Recuperação de recicláveis secos e orgânicos;2.48;%;2024;;;Quantidade total coletada considerada pelo indicador.;Relatório residuos, p. 37;residuos-relatorio
+Brasil;Brasil;IRS3002;Disposição final inadequada;23.2;%;2024;;;Massa de resíduos urbanos coletada e não recuperada nos municípios da amostra.;Relatório residuos, p. 43;residuos-relatorio
+Norte;Região;IRS3002;Disposição final inadequada;55.0;%;2024;;;Massa de resíduos urbanos coletada e não recuperada nos municípios da amostra.;Relatório residuos, p. 43;residuos-relatorio
+Nordeste;Região;IRS3002;Disposição final inadequada;33.1;%;2024;;;Massa de resíduos urbanos coletada e não recuperada nos municípios da amostra.;Relatório residuos, p. 43;residuos-relatorio
+Sudeste;Região;IRS3002;Disposição final inadequada;11.9;%;2024;;;Massa de resíduos urbanos coletada e não recuperada nos municípios da amostra.;Relatório residuos, p. 43;residuos-relatorio
+Sul;Região;IRS3002;Disposição final inadequada;2.3;%;2024;;;Massa de resíduos urbanos coletada e não recuperada nos municípios da amostra.;Relatório residuos, p. 43;residuos-relatorio
+Centro-Oeste;Região;IRS3002;Disposição final inadequada;48.7;%;2024;;;Massa de resíduos urbanos coletada e não recuperada nos municípios da amostra.;Relatório residuos, p. 43;residuos-relatorio
