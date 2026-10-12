@@ -1,0 +1,3 @@
+export interface RegistroRAP{periodo:string;orgao:string;origem:number;tipo:string;inscritos:number;reinscritos:number;pagos:number;cancelados:number;saldo:number}
+export function somarRAP(rs:RegistroRAP[]){return rs.reduce((a,r)=>({inscritos:a.inscritos+r.inscritos,reinscritos:a.reinscritos+r.reinscritos,pagos:a.pagos+r.pagos,cancelados:a.cancelados+r.cancelados,saldo:a.saldo+r.saldo}),{inscritos:0,reinscritos:0,pagos:0,cancelados:0,saldo:0})}
+export function porOrigemRAP(rs:RegistroRAP[]){const mapa=new Map<number,number>();for(const r of rs)mapa.set(r.origem,(mapa.get(r.origem)??0)+r.saldo);return [...mapa].sort((a,b)=>b[0]-a[0]).map(([ano,saldo])=>({ano,saldo}))}
