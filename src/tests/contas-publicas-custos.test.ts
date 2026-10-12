@@ -16,3 +16,21 @@ describe('custos RFC 2025',()=>{
   expect(100*(mora.ano2025/mora.ano2024-1)).not.toBeCloseTo(mora.nominalPublicado,1);
  });
 });
+
+import {resumirCustos} from '@/lib/contas-publicas/custos-leitura';
+describe('leitura direta de custos',()=>{
+ it('distingue maior componente, maior aumento nominal e maior alta real',()=>{
+  const r=resumirCustos(d.registros,'total');
+  expect(r.maiores[0].id).toBe('previdencia');expect(r.altas[0].id).toBe('financeiros');expect(r.quedas[0].id).toBe('outros');
+  expect(r.percentuais[0].id).toBe('financeiros');expect(r.maiores.reduce((s,x)=>s+x.ano2025,0)).toBeCloseTo(3661983.5,1);
+ });
+ it('recalcula o recorte e mantém a pequena base da alta percentual visível',()=>{
+  const r=resumirCustos(d.registros,'funcionamento');
+  expect(r.maiores[0].id).toBe('servicos');expect(r.altas[0].id).toBe('servicos');expect(r.percentuais[0].id).toBe('mora');
+  expect(r.percentuais[0].ano2024).toBe(11.3);expect(r.percentuais[0].realPublicado).toBe(123.7);expect(r.quedas).toHaveLength(0);
+ });
+ it('não inventa alta em conjunto de quedas e preserva empates',()=>{
+  const base={id:'a',parent:'grupo',nome:'A',ano2024:100,ano2025:80,diferencaPublicada:-20,nominalPublicado:-20,realPublicado:-24};
+  const r=resumirCustos([base,{...base,id:'b',nome:'B'}],'grupo');expect(r.altas).toHaveLength(0);expect(r.percentuais).toHaveLength(0);expect(r.maiores.filter(x=>x.ano2025===r.maiores[0].ano2025)).toHaveLength(2);
+ });
+});
