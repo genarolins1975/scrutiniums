@@ -1,10 +1,10 @@
-import {PainelFiscal,PainelOrcamento} from '@/components/contas-publicas/PaineisDados';
+import {RespostasIniciais} from '@/components/contas-publicas/artefatos/RespostasIniciais';
 import Link from 'next/link';
 import { CAPITULOS, INDICADORES } from '@/lib/contas-publicas/catalogo';
 export default function Page(){return <main id="conteudo-contas" className="cp-wrap cp-main">
- <p className="cp-eyebrow">Observatório Brasileiro de Contas Públicas</p><div className="cp-hero"><div><h1>Do orçamento à entrega.<br/>Cada etapa, uma evidência.</h1><p className="cp-lead">Como os recursos federais se transformam em serviços para a população? Explore planejamento, execução, custos e resultados com perguntas e critérios próprios para cada etapa.</p></div><aside className="cp-hero-aside" aria-label="Três perguntas essenciais"><dl><div><dt>Executou o que foi aprovado?</dt><dd>Confiabilidade e previsibilidade do orçamento.</dd></div><div><dt>Entregou o que prometeu?</dt><dd>Metas físicas, cobertura e qualidade dos serviços.</dd></div><div><dt>A que custo, com que resultado?</dt><dd>Eficiência operacional e evidências de impacto.</dd></div></dl></aside></div>
- <p className="cp-status"><strong>Primeiras séries oficiais integradas.</strong> Execução do orçamento de 2025 e 2026 e resultado fiscal do Governo Central, com recortes e fontes identificados. O projeto reúne {CAPITULOS.length} capítulos e {INDICADORES.length} indicadores propostos; restos a pagar e entregas físicas de 2025 agora têm recortes disponíveis. Custos agregados de 2025 também estão disponíveis; custos por entrega e impacto ainda aguardam integração.</p>
- <PainelOrcamento/><PainelFiscal/>
+ <p className="cp-eyebrow">Observatório Brasileiro de Contas Públicas</p><h1>Do orçamento à entrega.</h1><p className="cp-lead">Quanto o governo federal paga, o que fica para depois e quais entregas informa? Cada etapa tem uma medida e um perímetro próprios.</p>
+ <RespostasIniciais/>
+ <p className="cp-note">{CAPITULOS.length} capítulos · {INDICADORES.length} indicadores propostos. Quatro têm integração parcial. O panorama de custos agregados é complementar; custos por entrega e impacto aguardam integração.</p>
 
  <section className="cp-section" aria-labelledby="ciclo"><div className="cp-section-head"><div><p className="cp-eyebrow">O percurso da gestão</p><h2 id="ciclo">Acompanhe o caminho dos recursos</h2></div></div><div className="cp-cycle">{[
  ['01','Planejar','Receitas, prioridades e orçamento aprovado.','planejamento'],['02','Executar','Empenhos, liquidação, pagamentos e contratos.','execucao'],['03','Entregar','Serviços, projetos, custos e metas físicas.','metas'],['04','Prestar contas','Avaliações, transparência e riscos futuros.','avaliacao']
