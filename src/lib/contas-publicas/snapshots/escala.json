@@ -1,0 +1,75 @@
+{
+  "versao": 1,
+  "transformacao": "importar-escala.py v1",
+  "captura": "2026-10-12T22:15:53.012299+00:00",
+  "fontes": {
+    "pib": {
+      "arquivo": "pib.json",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/1846/periodos/202401|202402|202403|202404|202501|202502|202503|202504/variaveis/585?localidades=N1[1]&classificacao=11255[90707]",
+      "tabela": "https://sidra.ibge.gov.br/tabela/1846",
+      "sha256": "8c0e3398e1824d09ed1d3e2907626396d4ca539414bde9021d94c9fc82f2d58e",
+      "captura": "2026-10-12T22:15:53.012299+00:00",
+      "publicacao": null
+    },
+    "populacao": {
+      "arquivo": "populacao.json",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/2024|2025/variaveis/9324?localidades=N1[1]",
+      "tabela": "https://sidra.ibge.gov.br/tabela/6579",
+      "sha256": "c9183676e02faa483b0578dd98f7fa8963a59685c295c0a8d03a45da55c1fc23",
+      "captura": "2026-10-12T22:15:52.913346+00:00",
+      "publicacao": null
+    }
+  },
+  "metodo": "PIB anual: soma dos quatro trimestres a preços correntes, sem ajuste sazonal (IBGE 1846/585/90707). População residente estimada em 1º de julho (IBGE 6579/9324).",
+  "limite": "Razões calculadas para anos completos. Por habitante é uma escala do agregado, não valor recebido por cada pessoa. Percentual do PIB não mede participação na produção, impacto ou eficiência. Estimativas sujeitas a revisão.",
+  "registros": [
+    {
+      "ano": 2024,
+      "populacao": 212583750,
+      "referenciaPopulacao": "2024-07-01",
+      "pibMilhoes": 11779251.0,
+      "trimestres": [
+        {
+          "periodo": "202401",
+          "valorMilhoes": 2764833.0
+        },
+        {
+          "periodo": "202402",
+          "valorMilhoes": 2934759.0
+        },
+        {
+          "periodo": "202403",
+          "valorMilhoes": 3015936.0
+        },
+        {
+          "periodo": "202404",
+          "valorMilhoes": 3063723.0
+        }
+      ]
+    },
+    {
+      "ano": 2025,
+      "populacao": 213421037,
+      "referenciaPopulacao": "2025-07-01",
+      "pibMilhoes": 12738566.0,
+      "trimestres": [
+        {
+          "periodo": "202501",
+          "valorMilhoes": 3024723.0
+        },
+        {
+          "periodo": "202502",
+          "valorMilhoes": 3200345.0
+        },
+        {
+          "periodo": "202503",
+          "valorMilhoes": 3235708.0
+        },
+        {
+          "periodo": "202504",
+          "valorMilhoes": 3277790.0
+        }
+      ]
+    }
+  ]
+}
