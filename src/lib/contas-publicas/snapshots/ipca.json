@@ -1,0 +1,192 @@
+{
+  "versao": 1,
+  "transformacao": "importar-ipca.py v1",
+  "fonte": {
+    "arquivo": "ipca.json",
+    "url": "https://servicodados.ibge.gov.br/api/v3/agregados/1737/periodos/202301-202607/variaveis/2266?localidades=N1[1]",
+    "fonte": "IBGE · SIDRA 1737 · variável 2266 · Brasil",
+    "publicacao": null,
+    "captura": "2026-10-12T22:44:35.265224+00:00",
+    "sha256": "dc4ce74baa8b5e0a0c51588c1f3de3ccc627ae097b21d77ec858280caad5d562",
+    "referenciaInicial": "2023-01",
+    "referenciaFinal": "2026-07",
+    "basePrecos": "2026-07"
+  },
+  "basePrecos": "2026-07",
+  "metodo": "Cada fluxo mensal RTN é multiplicado por IPCA(base)/IPCA(mês do fluxo); somente depois os meses são somados. Mesma janela nos dois anos, sem anualização.",
+  "limite": "IPCA mede preços do consumo das famílias, não os custos específicos do governo. A variação real não mede volume de serviços, qualidade ou eficiência. Valores calculados pela Scrutiniums, não série real oficial do Tesouro.",
+  "registros": [
+    {
+      "periodo": "2023-01",
+      "indice": 6508.4
+    },
+    {
+      "periodo": "2023-02",
+      "indice": 6563.07
+    },
+    {
+      "periodo": "2023-03",
+      "indice": 6609.67
+    },
+    {
+      "periodo": "2023-04",
+      "indice": 6649.99
+    },
+    {
+      "periodo": "2023-05",
+      "indice": 6665.28
+    },
+    {
+      "periodo": "2023-06",
+      "indice": 6659.95
+    },
+    {
+      "periodo": "2023-07",
+      "indice": 6667.94
+    },
+    {
+      "periodo": "2023-08",
+      "indice": 6683.28
+    },
+    {
+      "periodo": "2023-09",
+      "indice": 6700.66
+    },
+    {
+      "periodo": "2023-10",
+      "indice": 6716.74
+    },
+    {
+      "periodo": "2023-11",
+      "indice": 6735.55
+    },
+    {
+      "periodo": "2023-12",
+      "indice": 6773.27
+    },
+    {
+      "periodo": "2024-01",
+      "indice": 6801.72
+    },
+    {
+      "periodo": "2024-02",
+      "indice": 6858.17
+    },
+    {
+      "periodo": "2024-03",
+      "indice": 6869.14
+    },
+    {
+      "periodo": "2024-04",
+      "indice": 6895.24
+    },
+    {
+      "periodo": "2024-05",
+      "indice": 6926.96
+    },
+    {
+      "periodo": "2024-06",
+      "indice": 6941.51
+    },
+    {
+      "periodo": "2024-07",
+      "indice": 6967.89
+    },
+    {
+      "periodo": "2024-08",
+      "indice": 6966.5
+    },
+    {
+      "periodo": "2024-09",
+      "indice": 6997.15
+    },
+    {
+      "periodo": "2024-10",
+      "indice": 7036.33
+    },
+    {
+      "periodo": "2024-11",
+      "indice": 7063.77
+    },
+    {
+      "periodo": "2024-12",
+      "indice": 7100.5
+    },
+    {
+      "periodo": "2025-01",
+      "indice": 7111.86
+    },
+    {
+      "periodo": "2025-02",
+      "indice": 7205.03
+    },
+    {
+      "periodo": "2025-03",
+      "indice": 7245.38
+    },
+    {
+      "periodo": "2025-04",
+      "indice": 7276.54
+    },
+    {
+      "periodo": "2025-05",
+      "indice": 7295.46
+    },
+    {
+      "periodo": "2025-06",
+      "indice": 7312.97
+    },
+    {
+      "periodo": "2025-07",
+      "indice": 7331.98
+    },
+    {
+      "periodo": "2025-08",
+      "indice": 7323.91
+    },
+    {
+      "periodo": "2025-09",
+      "indice": 7359.06
+    },
+    {
+      "periodo": "2025-10",
+      "indice": 7365.68
+    },
+    {
+      "periodo": "2025-11",
+      "indice": 7378.94
+    },
+    {
+      "periodo": "2025-12",
+      "indice": 7403.29
+    },
+    {
+      "periodo": "2026-01",
+      "indice": 7427.72
+    },
+    {
+      "periodo": "2026-02",
+      "indice": 7479.71
+    },
+    {
+      "periodo": "2026-03",
+      "indice": 7545.53
+    },
+    {
+      "periodo": "2026-04",
+      "indice": 7596.09
+    },
+    {
+      "periodo": "2026-05",
+      "indice": 7640.15
+    },
+    {
+      "periodo": "2026-06",
+      "indice": 7652.37
+    },
+    {
+      "periodo": "2026-07",
+      "indice": 7657.73
+    }
+  ]
+}
