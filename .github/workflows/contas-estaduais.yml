@@ -40,6 +40,17 @@ jobs:
         id: parcial
         continue-on-error: true
         run: python3 -m pipeline.contas_estaduais.coletar --ano 2026 --ufs AC AL AM AP BA CE DF ES GO MA MG MS MT PA PB PE PI PR RJ RN RO RR RS SC SE SP TO --quadrimestre 1 --somente-rgf --destino evidencia/parcial
+      - name: Exportar evidências públicas para conferência por conector
+        if: always()
+        run: |
+          python3 - <<'PYEXPORT'
+          import base64, gzip, hashlib, json
+          from pathlib import Path
+          for p in sorted(Path("evidencia").rglob("*.json")):
+              bruto = p.read_bytes()
+              pacote = dict(arquivo=str(p.relative_to("evidencia")), sha256=hashlib.sha256(bruto).hexdigest(), gzip_base64=base64.b64encode(gzip.compress(bruto, mtime=0)).decode())
+              print("SICONFI_EVIDENCIA " + json.dumps(pacote))
+          PYEXPORT
       - uses: actions/upload-artifact@v4
         if: always()
         with:
