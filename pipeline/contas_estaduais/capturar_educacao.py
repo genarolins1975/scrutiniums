@@ -37,6 +37,7 @@ def capturar(destino):
         except Exception as erro:
             registro.update(status="falha", erro=f"{type(erro).__name__}: {erro}")
         manifesto["fontes"].append(registro)
+        print(f"{nome}: {registro['status']} — {registro.get('erro', registro.get('sha256'))}")
     (destino / "manifesto.json").write_text(json.dumps(manifesto, ensure_ascii=False, indent=2)+"\n")
     return all(f["status"] == "capturado" for f in manifesto["fontes"])
 

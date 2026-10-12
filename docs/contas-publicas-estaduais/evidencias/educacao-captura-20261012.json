@@ -1,0 +1,18 @@
+{
+  "capturado_em": "2026-10-12T14:15:13.982812+00:00",
+  "ano": 2025,
+  "fontes": [
+    {
+      "fonte": "ideb",
+      "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_regioes_ufs_ideb_2025.zip",
+      "status": "falha",
+      "erro": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+    },
+    {
+      "fonte": "sinopse",
+      "url": "https://download.inep.gov.br/dados_abertos/sinopses_estatisticas/sinopse_estatistica_censo_escolar_2025.zip",
+      "status": "falha",
+      "erro": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>"
+    }
+  ]
+}

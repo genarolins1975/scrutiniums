@@ -66,3 +66,17 @@ Os testes usam apenas fixtures sintéticas em arquivo de testes. Cobrem incompat
 Executar: `python3 -m unittest pipeline.contas_estaduais.test_educacao -v`.
 
 Ainda faltam: capturar e preservar as fontes estaduais; reconciliar numerador e denominador; registrar participação e supressões do Inep; integrar resultados à ficha e revisar a interface. A queda da conexão com o ambiente local nesta retomada impediu nova inspeção visual. A implementação desta fase modifica apenas contrato, testes, documentação e verificação automática; não apresenta dados novos na página.
+
+## Retomada: captura primária em 12/10/2026
+
+Foi acrescentado `pipeline/contas_estaduais/capturar_educacao.py`, executado pelo job `educacao` do workflow de contas estaduais. Os endereços foram conferidos nas páginas oficiais do Inep, inclusive a subpágina `resultados/2005-2025` do Ideb e a Sinopse da Educação Básica.
+
+O coletor preserva o ZIP original, data de captura, URL, tamanho, SHA-256 e lista de membros somente após abrir o pacote, conferir CRC e encontrar planilha. Isso verifica transporte e estrutura do pacote; não valida valores, rede, etapa ou elegibilidade. Ainda são necessários o exame das abas, os hashes internos publicados pelo Inep quando disponíveis e as regras de divulgação. Nenhuma observação é promovida por esse comando.
+
+A tentativa local recebeu HTTP 502 para ambos os pacotes. A tentativa independente no GitHub Actions também falhou: conexão reiniciada no Ideb e falha na cadeia de certificado TLS da Sinopse. O manifesto original está em `evidencias/educacao-captura-20261012.json`. Execução: https://github.com/genarolins1975/scrutiniums/actions/runs/38261429509 ; artefato 11752019266, preservado neste diretório porque o artefato remoto expira em 30 dias. Essas falhas não demonstram ausência de dados na fonte. A validação TLS permanece habilitada.
+
+O job retorna falha quando qualquer pacote não é obtido, e preserva o manifesto mesmo nessa situação. Os testes simulam bytes preservados, HTML retornado como resposta, ZIP sem planilha e erro de rede. O pacote sintético usado nos testes não é uma base educacional nem entra na aplicação.
+
+Verificação local: 30 testes Python aprovados; 81 capturas fiscais íntegras e 162 observações reproduzidas. A interface e a cobertura educacional continuam inalteradas. A próxima etapa depende de uma captura válida: examinar ensino médio regular/rede estadual, preservar supressões e participação e só então implementar a visão educacional.
+
+Para repetir a captura: `python3 -m pipeline.contas_estaduais.capturar_educacao --destino /tmp/contas-estaduais-educacao`. Para testar sem rede: `python3 -m unittest pipeline.contas_estaduais.test_capturar_educacao -v`.
