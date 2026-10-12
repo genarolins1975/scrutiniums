@@ -37,14 +37,14 @@ const CONTEUDOS = [
 
 /**
  * Momento de manifesto: a frase de transparência em serifa grande sobre
- * carvão, seguida do sistema de evidências que os três observatórios
+ * carvão, seguida do sistema de evidências que os observatórios
  * compartilham, em lista editorial com filetes, sem cartões.
  */
 export function SecaoPlataforma() {
   return (
     <section id="plataforma" aria-labelledby="plataforma-titulo" className="bg-carvao text-marfim">
       <div className="mx-auto max-w-page px-6 py-24 md:py-32">
-        <p className="rotulo text-mineral-soft">O que os três observatórios compartilham</p>
+        <p className="rotulo text-mineral-soft">O que os observatórios compartilham</p>
         <h2
           id="plataforma-titulo"
           className="mt-7 max-w-5xl font-serif text-[clamp(1.9rem,4.5vw,3.4rem)] leading-[1.12] text-marfim"
