@@ -1,0 +1,50 @@
+name: Contas estaduais - contratos e captura
+on:
+  pull_request:
+    paths:
+      - 'pipeline/contas_estaduais/**'
+      - 'src/lib/contas-estaduais/**'
+      - 'src/components/contas-estaduais/**'
+      - 'src/app/contas-publicas-estaduais/**'
+      - 'src/tests/contas-estaduais.test.ts'
+      - '.github/workflows/contas-estaduais.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contratos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m unittest pipeline.contas_estaduais.test_contratos -v
+  captura:
+    needs: contratos
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Capturar encerramento de 2025 para as seis provas
+        id: anual
+        continue-on-error: true
+        run: python3 -m pipeline.contas_estaduais.coletar --ano 2025 --destino evidencia/anual
+      - name: Capturar 2026 Q1 para conferir o snapshot herdado
+        id: parcial
+        continue-on-error: true
+        run: python3 -m pipeline.contas_estaduais.coletar --ano 2026 --quadrimestre 1 --somente-rgf --destino evidencia/parcial
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: contas-estaduais-respostas-primarias
+          path: evidencia/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Falhas de captura devem ficar visíveis
+        if: steps.anual.outcome == 'failure' || steps.parcial.outcome == 'failure'
+        run: exit 1
