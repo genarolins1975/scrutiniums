@@ -1,4 +1,5 @@
 'use client';
+import {Termo} from './artefatos/Termo';
 import {Proveniencia} from './artefatos/Proveniencia';
 import {ORIGEM_CUSTOS} from '@/lib/contas-publicas/proveniencia';
 import {CemReaisCustos} from './artefatos/CemReaisCustos';
@@ -18,7 +19,7 @@ export function PainelCustos(){
  const fmt=(v:number)=>medida==='diferencaPublicada'?moeda(v,'milhoes',{variacao:true}):variacaoPercentual(v);
  const maiorNomes=maiores.filter(r=>r.ano2025===maior.ano2025).map(r=>r.nome).join(' / ');
  return <section className="cp-section cp-data-section cp-cost-dashboard" id="custos-observados" aria-labelledby="custos-titulo">
- <div className="cp-section-head"><div><p className="cp-eyebrow">01 / Leitura direta · União · RFC 2025</p><h2 id="custos-titulo">Onde estão os maiores custos?</h2><p>Valores de 2025 e mudanças frente a 2024 revisado. Custos contábeis da União; não são pagamentos do orçamento.</p></div><a className="cp-button" href="#custos-tabela">Conferir os números ↓</a></div>
+ <div className="cp-section-head"><div><p className="cp-eyebrow">01 / Leitura direta · União · RFC 2025</p><h2 id="custos-titulo">Onde estão os maiores custos?</h2><p>Valores de 2025 e mudanças frente a 2024 revisado. <Termo id="custo-contabil">Custos contábeis</Termo> da União; não são pagamentos do orçamento.</p></div><a className="cp-button" href="#custos-tabela">Conferir os números ↓</a></div>
  <div className="cp-controls"><label htmlFor="custos-grupo">Explorar composição<select id="custos-grupo" value={grupo} onChange={e=>setGrupo(e.target.value)}>{escopos.map(id=><option key={id} value={id}>{id==='total'?'Todos os custos':dados.registros.find(r=>r.id===id)!.nome}</option>)}</select></label><button className="cp-button" onClick={()=>{setGrupo('total');setMedida('diferencaPublicada')}}>Restaurar visão</button></div>
  <div className="cp-cost-spotlight">
  <div className="cp-cost-leader"><p className="cp-eyebrow">Maior componente · 2025</p><h3>{maiorNomes}</h3><strong className="cp-cost-number">{moeda(maior.ano2025,'milhoes')}</strong><p><b>{participacao(maior.ano2025,pai.ano2025)}</b> do grupo {pai.nome.toLocaleLowerCase('pt-BR')}.</p><div className="cp-cost-share" aria-hidden="true"><span style={{width:`${100*maior.ano2025/pai.ano2025}%`}}/></div><small>Participação calculada sobre {moeda(pai.ano2025,'milhoes')}. Comparação entre {linhas.length} componentes do mesmo nível.</small></div>
