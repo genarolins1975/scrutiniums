@@ -1,20 +1,32 @@
 # Etapa 3 — restos a pagar e entregas físicas
 
-Estado em 12/10/2026: fontes identificadas e arquivos baixados; leitura integral, conciliação e painéis desta etapa ainda pendentes. O ambiente local perdeu a conexão durante a análise. Nenhuma observação desta etapa foi publicada e nenhum indicador teve seu estado de integração alterado.
+Estado em 12/10/2026: bases lidas integralmente, conciliadas e integradas aos capítulos de restos a pagar e metas. A etapa acrescenta dois recortes observados ao catálogo, preservando como pendentes custos contábeis, impacto e pagamento de uma coorte inicial imutável de RAP.
 
 ## Fontes confirmadas
 
 1. [Tesouro: base RAP 2026](https://www.tesourotransparente.gov.br/ckan/dataset/relatorio-de-avaliacao-dos-restos-a-pagar-base-de-dados/resource/60affecf-6165-4d7d-bcb9-040913d17752). Arquivo XLSX de 13,9 MiB, publicado/atualizado em 29/01/2026, licença ODbL. [Download oficial](https://www.tesourotransparente.gov.br/ckan/dataset/5eba054b-84d7-4eff-9bd7-e8cabbf940e5/resource/60affecf-6165-4d7d-bcb9-040913d17752/download/dadosrelatoriorap2026.xlsx).
-2. [Relatório RAP 2026](https://www.tesourotransparente.gov.br/publicacoes/relatorio-de-avaliacao-dos-restos-a-pagar/2026/114), publicado em 29/01/2026. Conciliação com tabelas oficiais ainda necessária.
+2. [Relatório RAP 2026](https://www.tesourotransparente.gov.br/publicacoes/relatorio-de-avaliacao-dos-restos-a-pagar/2026/114), publicado em 29/01/2026. Dez totais conciliados com a tabela 2 do relatório (páginas 9–10). Travessões de fluxos na abertura não foram tratados como observações anuais iguais a zero.
 3. [SIOP: recursos abertos](https://www1.siop.planejamento.gov.br/siopdoc/doku.php/acesso_publico:dados_abertos). [ZIP AFFO 2025](https://www1.siop.planejamento.gov.br/siopdoc/lib/exe/fetch.php/acesso_publico:dados_abertos:acompanhamentoorcamentario_2025jandez_20260522_ascii.zip): captação final janeiro–dezembro/2025, edição identificada no nome de 22/05/2026; a data de publicação não foi confirmada separadamente.
 4. [Dicionário AFFO 2025](https://www1.siop.planejamento.gov.br/siopdoc/lib/exe/fetch.php/acesso_publico:dados_abertos:dicionario_de_dados_affo_2025_final_v22-05-2026.pdf), atualizado em 22/05/2026.
 5. [Orientador SIOP](https://www1.siop.planejamento.gov.br/siopdoc/doku.php/acompanhamento_orcamentario:orientador_acompanhamento_orcamentario), versão consultada atualizada em 16/06/2026. Seção 7 define ECLOA e EFLOA. Confirmar eventuais diferenças para o orientador de 2025 antes de homologar valores retrospectivos.
 
-## O que já foi inspecionado
+## Cobertura verificada
 
-O XLSX RAP contém duas abas: “Descrição das variáveis” (65 linhas, 3 colunas) e “Base Geral” (67.457 linhas, incluindo cabeçalho, 46 colunas). As primeiras linhas da base têm MES_LANCAMENTO = 000/2026 e NE_CCOR representando ano do empenho. Isso é posição de abertura; não significa fluxo realizado em janeiro nem posição corrente de outubro. Os demais períodos e os campos monetários ainda precisam ser inventariados. Não inferir total, inscrição, reinscrição, pagamento ou cancelamento a partir das primeiras linhas.
+RAP: 67.456 registros de origem, agregados em 3.128 combinações de posição, órgão, exercício de origem e tipo. Posições disponíveis: abertura de 2026 e encerramentos de 2024 e 2025. O saldo da abertura de 2026 é R$ 391.549.400.458,85. As pontes inscrições + reinscrições − pagamentos − cancelamentos = saldo foram conciliadas, com tolerância inferior a R$ 1 nos agregados após arredondamento a centavos.
 
-O ZIP AFFO possui quatro CSVs: FisicoFinanceiro, Regionalizacao, Agendas e PerguntasEstruturadas. A exploração inicial confirmou campos e exemplos, mas não estabeleceu universo completo ou totais. A fonte mistura localizadores e planos orçamentários; selecionar um nível por vista antes de agregar. Não juntar as quatro tabelas sem validar cardinalidade, pois agendas e regionalizações podem multiplicar programações.
+A base de 2025 desta edição é ajustada por aproximadamente R$ 1,9 bilhão de revalidações: R$ 312,5 bilhões, frente aos R$ 310,6 bilhões originalmente publicados na abertura. Não se calcula taxa de pagamento de uma coorte inicial imutável. A posição 000/2026 não representa execução mensal nem posição corrente de outubro. Não processados é uma classificação na inscrição; parte pode ter sido liquidada depois.
+
+AFFO: 21.249 linhas no CSV físico-financeiro, das quais 7.392 localizadores e 13.857 planos orçamentários. A interface usa somente localizadores, com chave única exercício/esfera/órgão/UO/programa/ação/localizador. As outras três tabelas do ZIP não são juntadas.
+
+| Condição, aplicada nesta ordem | Registros |
+| --- | ---: |
+| Sem produto ou unidade | 3.144 |
+| Meta ou realizado ausente, entre os demais | 102 |
+| Meta/realizado inelegível, entre os demais | 78 |
+| Razão calculável com data de apuração | 4.068 |
+| Total preservado | 7.392 |
+
+Há 3.246 realizações ausentes, 1.024 realizações explicitamente iguais a zero e quatro metas atuais negativas, preservadas sem gerar razão. Essas contagens de campos não são categorias exclusivas da tabela acima. Nenhuma média de cumprimento entre produtos é publicada.
 
 ## Contrato físico-financeiro
 
@@ -32,22 +44,21 @@ O ZIP AFFO possui quatro CSVs: FisicoFinanceiro, Regionalizacao, Agendas e Pergu
 
 A descrição de elementosemcaptacao no dicionário parece exigir esclarecimento frente ao nome do campo e aos exemplos: não usar esse sinalizador como filtro até validar sua semântica. Produto, unidade, nível, período e dados ausentes devem ser preservados.
 
-O módulo `src/lib/contas-publicas/entregas.ts` prepara:
+O módulo `src/lib/contas-publicas/entregas.ts` define:
 - cumprimento físico com a meta escolhida; zero observado distinto de ausência e de meta zero;
 - EFLOA conforme fórmula do orientador, com limites explícitos: índice físico-financeiro relativo ao plano, sem inferência de eficiência econômica, custo, qualidade ou impacto;
 - identificação completa e bloqueio de duplicatas ou mistura de localizadores com POs;
 - leitura numérica estrita do CSV brasileiro.
 
-O módulo ainda não é usado para publicar resultados. Não há escore agregado nem média entre produtos diferentes. A futura interface mostrará meta original, atualizada, reprogramada e realizado lado a lado. Valores acima de 100% permanecem visíveis. Um índice superior a 100% não comprova excelência.
+O cumprimento físico é usado na interface para as metas original e atualizada, mantendo o realizado LOA separado do RAP. A EFLOA permanece apenas como contrato testado: não há publicação de índice de eficiência econômica, custo unitário, qualidade ou impacto. Valores acima de 100% são preservados.
 
-## Sequência de conclusão
+## Implementação e reprodução
 
-1. Retomar ambiente, ler integralmente dicionários e arquivos; registrar hashes SHA-256, codificação e contagem por nível/cobertura.
-2. RAP: identificar campos monetários, inscrição/reinscrição, tipos processados e não processados, origem e períodos. Conferir totais com relatório antes de publicar.
-3. AFFO: validar chaves e semântica das lacunas; produzir relatório de cobertura, mantendo todos os registros e motivos de inelegibilidade. Não transformar campo vazio em zero.
-4. Implementar duas páginas: RAP com estoque por origem e tipo; entregas com busca por ação/órgão e ficha individual. Não misturar estoques RAP com fluxos, nem somar produtos em unidades diferentes.
-5. Validar importador e cálculos, testar filtros e downloads, revisar 320/390/768/1440 px e submeter o novo preview. Custos contábeis permanecem uma integração própria.
+- Importador: `python scripts/contas-publicas/importar-etapa3.py`, com Python 3, requests e openpyxl. `--cache DIRETORIO` reutiliza os dois arquivos oficiais. Extração manual fora do build; alterações de esquema/universo falham para revisão humana.
+- Snapshots: `src/lib/contas-publicas/snapshots/rap.json` e `metas.json`, com URLs, hashes SHA-256, captura, edição e controles. A data de publicação AFFO continua nula, sem ser inferida do nome do arquivo.
+- RAP: filtro de posição/órgão/tipo, saldo por origem, composição e valores exatos. Download da base completa em `/contas-publicas/rap.json`.
+- Metas: busca sem distinção de acentos, órgão e condição dos campos; aplicação explícita dos filtros, páginas de 25 registros, ficha individual e exportação integral do recorte. Ordem por autorização, explicitamente sem interpretação de desempenho.
+- A base AFFO completa fica no servidor; a página recebe somente metadados e 25 registros. Download em `/contas-publicas/metas-dados.json?estado=todos&download=1`.
+- Testes verificam controles externos RAP, pontes por posição/órgão, unicidade e cobertura AFFO, ausência versus zero, metas negativas, paginação, busca e exportação.
 
-## Continuidade local
-
-Downloads desta investigação ficaram temporariamente em `/tmp/contas-etapa3/`: rap2026.xlsx, metas.zip, metas.csv e dicionario.pdf. Esses arquivos temporários não são a entrega persistida; recuperar pelas URLs acima caso não estejam mais disponíveis. O CSV temporário metas.csv corresponde ao último membro extraído, FisicoFinanceiro; não o tratar como união das quatro tabelas.
+Custos contábeis, qualidade, impacto, séries físicas interanuais comparáveis e acompanhamento de coortes RAP exigem integrações próprias. A execução orçamentária não é apresentada como custo.

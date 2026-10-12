@@ -1,4 +1,4 @@
-/** Contratos para AFFO/SIOP. Ainda não representam uma base integrada.
+/** Contratos para AFFO/SIOP. Base física 2025 integrada por localizador.
  * As fórmulas relativas à meta atualizada seguem o orientador, seção 7.
  * Não agregar localizadores e planos orçamentários, nem somar produtos distintos.
  */
