@@ -1246,6 +1246,57 @@
         "CE-04": 88.91885441303208,
         "CE-05": 96.13019381104677,
         "CE-06": 98.43611757254907
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 6477257612.38,
+          "JurosEEncargosDaDivida": 203753172.3,
+          "OutrasDespesasCorrentes": 4494450749.43,
+          "Investimentos": 621703061.58,
+          "InversoesFinanceiras": 3197100,
+          "AmortizacaoDaDivida": 295266228.1,
+          "DespesasCorrentes": 11175461534.11,
+          "DespesasDeCapital": 920166389.68
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 6477257612.38,
+            "percentual": 53.550403940917846
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 203753172.3,
+            "percentual": 1.684519179853845
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 4494450749.43,
+            "percentual": 37.157647190768785
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 621703061.58,
+            "percentual": 5.1398990238218065
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 3197100,
+            "percentual": 0.026431864638559684
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 295266228.1,
+            "percentual": 2.441098799999152
+          }
+        ]
       }
     },
     {
@@ -1293,6 +1344,57 @@
         "CE-04": 78.57654482090555,
         "CE-05": 86.29657727597228,
         "CE-06": 97.64743287232108
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 9524470736.48,
+          "JurosEEncargosDaDivida": 1023118490.35,
+          "OutrasDespesasCorrentes": 5944986863.2,
+          "Investimentos": 1788617303.69,
+          "InversoesFinanceiras": 56571628.45,
+          "AmortizacaoDaDivida": 769569842,
+          "DespesasCorrentes": 16492576090.03,
+          "DespesasDeCapital": 2614758774.14
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 9524470736.48,
+            "percentual": 49.84719639964154
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 1023118490.35,
+            "percentual": 5.354585019957692
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 5944986863.2,
+            "percentual": 31.113637278362756
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 1788617303.69,
+            "percentual": 9.360893690328359
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 56571628.45,
+            "percentual": 0.2960728372227511
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 769569842,
+            "percentual": 4.027614774486914
+          }
+        ]
       }
     },
     {
@@ -1340,6 +1442,57 @@
         "CE-04": 95.32428442363782,
         "CE-05": 98.29278027819693,
         "CE-06": 99.03953999031623
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 13088124501.63,
+          "JurosEEncargosDaDivida": 1216280416.62,
+          "OutrasDespesasCorrentes": 17838875422.01,
+          "Investimentos": 1241210890.31,
+          "InversoesFinanceiras": 339382908.38,
+          "AmortizacaoDaDivida": 1184950407.57,
+          "DespesasCorrentes": 32143280340.26,
+          "DespesasDeCapital": 2765544206.26
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 13088124501.63,
+            "percentual": 37.49230938494815
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 1216280416.62,
+            "percentual": 3.4841631948940797
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 17838875422.01,
+            "percentual": 51.10133513157299
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 1241210890.31,
+            "percentual": 3.555579159235066
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 339382908.38,
+            "percentual": 0.9721980410074637
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 1184950407.57,
+            "percentual": 3.394415088342256
+          }
+        ]
       }
     },
     {
@@ -1387,6 +1540,57 @@
         "CE-04": 89.12663021954393,
         "CE-05": 94.53359248137355,
         "CE-06": 94.99943131693615
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 5981693296.28,
+          "JurosEEncargosDaDivida": 135212204,
+          "OutrasDespesasCorrentes": 3534175319.7,
+          "Investimentos": 723861597.88,
+          "InversoesFinanceiras": 86700,
+          "AmortizacaoDaDivida": 255562830.82,
+          "DespesasCorrentes": 9651080819.98,
+          "DespesasDeCapital": 979511128.7
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 5981693296.28,
+            "percentual": 56.26867558417334
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 135212204,
+            "percentual": 1.2719160386622619
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 3534175319.7,
+            "percentual": 33.2453294864623
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 723861597.88,
+            "percentual": 6.809231333254982
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 86700,
+            "percentual": 0.0008155707642486036
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 255562830.82,
+            "percentual": 2.40403198668286
+          }
+        ]
       }
     },
     {
@@ -1434,6 +1638,57 @@
         "CE-04": 84.62707024914246,
         "CE-05": 97.6665411723214,
         "CE-06": 99.17486635752866
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 36880674720.79,
+          "JurosEEncargosDaDivida": 1732865777.06,
+          "OutrasDespesasCorrentes": 26417407844.67,
+          "Investimentos": 7369038232.51,
+          "InversoesFinanceiras": 1533487550.19,
+          "AmortizacaoDaDivida": 1857820707.57,
+          "DespesasCorrentes": 65030948342.52,
+          "DespesasDeCapital": 10760346490.27
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 36880674720.79,
+            "percentual": 48.66083209444538
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 1732865777.06,
+            "percentual": 2.2863651833406875
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 26417407844.67,
+            "percentual": 34.85546447379191
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 7369038232.51,
+            "percentual": 9.722802927127052
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 1533487550.19,
+            "percentual": 2.0233030106863397
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 1857820707.57,
+            "percentual": 2.4512323106086336
+          }
+        ]
       }
     },
     {
@@ -1481,6 +1736,57 @@
         "CE-04": 87.94943455517488,
         "CE-05": 95.85669339140087,
         "CE-06": 99.38946833730242
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 20960021023.49,
+          "JurosEEncargosDaDivida": 1094543197.09,
+          "OutrasDespesasCorrentes": 14834818147.1,
+          "Investimentos": 4155179118.91,
+          "InversoesFinanceiras": 330436101.15,
+          "AmortizacaoDaDivida": 1615313840.22,
+          "DespesasCorrentes": 36889382367.68,
+          "DespesasDeCapital": 6100929060.28
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 20960021023.49,
+            "percentual": 48.7552202514589
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 1094543197.09,
+            "percentual": 2.546022954321126
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 14834818147.1,
+            "percentual": 34.5073521320242
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 4155179118.91,
+            "percentual": 9.66538501558181
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 330436101.15,
+            "percentual": 0.7686292333651048
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 1615313840.22,
+            "percentual": 3.7573904132488645
+          }
+        ]
       }
     },
     {
@@ -1528,6 +1834,57 @@
         "CE-04": 85.90130859085073,
         "CE-05": 95.8063102854829,
         "CE-06": 94.6798449495429
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 19170302702.17,
+          "JurosEEncargosDaDivida": 445626882.92,
+          "OutrasDespesasCorrentes": 16557459938.52,
+          "Investimentos": 1833483393.14,
+          "InversoesFinanceiras": 76702580.67,
+          "AmortizacaoDaDivida": 655716305.23,
+          "DespesasCorrentes": 36173389523.61,
+          "DespesasDeCapital": 2565902279.04
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 19170302702.17,
+            "percentual": 49.48542373936385
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 445626882.92,
+            "percentual": 1.1503227399978346
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 16557459938.52,
+            "percentual": 42.74073987430862
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 1833483393.14,
+            "percentual": 4.732877933030719
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 76702580.67,
+            "percentual": 0.19799685823051902
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 655716305.23,
+            "percentual": 1.6926388550684477
+          }
+        ]
       }
     },
     {
@@ -1575,6 +1932,57 @@
         "CE-04": 84.1572974336437,
         "CE-05": 94.17646378901794,
         "CE-06": 98.47654838111397
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 12709913852.11,
+          "JurosEEncargosDaDivida": 452356394.78,
+          "OutrasDespesasCorrentes": 9727687652.68,
+          "Investimentos": 4166401114.91,
+          "InversoesFinanceiras": 1293480450.95,
+          "AmortizacaoDaDivida": 395662138.37,
+          "DespesasCorrentes": 22889957899.57,
+          "DespesasDeCapital": 5855543704.23
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 12709913852.11,
+            "percentual": 44.215314198691246
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 452356394.78,
+            "percentual": 1.5736597712394795
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 9727687652.68,
+            "percentual": 33.84073023583646
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 4166401114.91,
+            "percentual": 14.494097797754986
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 1293480450.95,
+            "percentual": 4.49976649834842
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 395662138.37,
+            "percentual": 1.3764314981294172
+          }
+        ]
       }
     },
     {
@@ -1622,6 +2030,57 @@
         "CE-04": 89.84797945767444,
         "CE-05": 95.5704595926835,
         "CE-06": 99.4424738303628
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 25887372459.3,
+          "JurosEEncargosDaDivida": 905834472.83,
+          "OutrasDespesasCorrentes": 17130537614.55,
+          "Investimentos": 5695669457.57,
+          "InversoesFinanceiras": 253991867.01,
+          "AmortizacaoDaDivida": 769881753.02,
+          "DespesasCorrentes": 43923744546.68,
+          "DespesasDeCapital": 6719543077.6
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 25887372459.3,
+            "percentual": 51.11708515323316
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 905834472.83,
+            "percentual": 1.7886565334192763
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 17130537614.55,
+            "percentual": 33.82587983157925
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 5695669457.57,
+            "percentual": 11.24664239775641
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 253991867.01,
+            "percentual": 0.5015311582738327
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 769881753.02,
+            "percentual": 1.520204925738064
+          }
+        ]
       }
     },
     {
@@ -1669,6 +2128,57 @@
         "CE-04": 85.99595188023417,
         "CE-05": 96.20367319418158,
         "CE-06": 99.47074448869238
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 14467769318.31,
+          "JurosEEncargosDaDivida": 299889205.06,
+          "OutrasDespesasCorrentes": 12206167906.34,
+          "Investimentos": 4544809121.83,
+          "InversoesFinanceiras": 346216020.76,
+          "AmortizacaoDaDivida": 401358693.15,
+          "DespesasCorrentes": 26973826429.71,
+          "DespesasDeCapital": 5292383835.74
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 14467769318.31,
+            "percentual": 44.838762281921255
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 299889205.06,
+            "percentual": 0.9294218397290841
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 12206167906.34,
+            "percentual": 37.82956785417752
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 4544809121.83,
+            "percentual": 14.085351469665742
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 346216020.76,
+            "percentual": 1.072998712621423
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 401358693.15,
+            "percentual": 1.2438978418849724
+          }
+        ]
       }
     },
     {
@@ -1716,6 +2226,57 @@
         "CE-04": 85.81125089463481,
         "CE-05": 96.21599085618855,
         "CE-06": 94.69885042575616
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 72760560961.13,
+          "JurosEEncargosDaDivida": 3363040337.87,
+          "OutrasDespesasCorrentes": 26713873232.11,
+          "Investimentos": 6563089695.22,
+          "InversoesFinanceiras": 640989953.85,
+          "AmortizacaoDaDivida": 3051695487.75,
+          "DespesasCorrentes": 102837474531.11,
+          "DespesasDeCapital": 10255775136.82
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 72760560961.13,
+            "percentual": 64.33678506433688
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 3363040337.87,
+            "percentual": 2.9736879502045666
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 26713873232.11,
+            "percentual": 23.62110321398368
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 6563089695.22,
+            "percentual": 5.803255025822381
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 640989953.85,
+            "percentual": 0.5667800295173289
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 3051695487.75,
+            "percentual": 2.698388716135171
+          }
+        ]
       }
     },
     {
@@ -1763,6 +2324,57 @@
         "CE-04": 85.16184980510253,
         "CE-05": 96.89308239961568,
         "CE-06": 99.2069594779933
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 13083898408.26,
+          "JurosEEncargosDaDivida": 472520472.82,
+          "OutrasDespesasCorrentes": 7113172957,
+          "Investimentos": 2481459184.82,
+          "InversoesFinanceiras": 208796909.79,
+          "AmortizacaoDaDivida": 398209526.12,
+          "DespesasCorrentes": 20669591838.08,
+          "DespesasDeCapital": 3088465620.73
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 13083898408.26,
+            "percentual": 55.071414954458774
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 472520472.82,
+            "percentual": 1.9888851335561493
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 7113172957,
+            "percentual": 29.94004442211786
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 2481459184.82,
+            "percentual": 10.444705713512876
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 208796909.79,
+            "percentual": 0.8788467245354421
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 398209526.12,
+            "percentual": 1.6761030518188906
+          }
+        ]
       }
     },
     {
@@ -1810,6 +2422,57 @@
         "CE-04": 84.92364191769019,
         "CE-05": 91.9814346987206,
         "CE-06": 97.79518896135106
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 18134424693.42,
+          "JurosEEncargosDaDivida": 461936091.82,
+          "OutrasDespesasCorrentes": 12052367851.01,
+          "Investimentos": 4490360637.54,
+          "InversoesFinanceiras": 441010664.29,
+          "AmortizacaoDaDivida": 664886952.03,
+          "DespesasCorrentes": 30648728636.25,
+          "DespesasDeCapital": 5596258253.86
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 18134424693.42,
+            "percentual": 50.03291834095891
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 461936091.82,
+            "percentual": 1.2744827118313742
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 12052367851.01,
+            "percentual": 33.252509892060885
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 4490360637.54,
+            "percentual": 12.388915055078316
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 441010664.29,
+            "percentual": 1.2167494104138759
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 664886952.03,
+            "percentual": 1.8344245896566307
+          }
+        ]
       }
     },
     {
@@ -1857,6 +2520,57 @@
         "CE-04": 93.48564799774535,
         "CE-05": 99.66651368980558,
         "CE-06": 98.71621655739627
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 23460570567.62,
+          "JurosEEncargosDaDivida": 995634303.18,
+          "OutrasDespesasCorrentes": 17183688474.28,
+          "Investimentos": 5942373888.8,
+          "InversoesFinanceiras": 256977033.15,
+          "AmortizacaoDaDivida": 887530079.84,
+          "DespesasCorrentes": 41639893345.08,
+          "DespesasDeCapital": 7086881001.79
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 23460570567.62,
+            "percentual": 48.147185776369795
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 995634303.18,
+            "percentual": 2.0433002523261736
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 17183688474.28,
+            "percentual": 35.265393009508344
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 5942373888.8,
+            "percentual": 12.195295027120366
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 256977033.15,
+            "percentual": 0.5273836337301221
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 887530079.84,
+            "percentual": 1.821442300945191
+          }
+        ]
       }
     },
     {
@@ -1904,6 +2618,57 @@
         "CE-04": 87.69406683171992,
         "CE-05": 97.67604163635839,
         "CE-06": 99.57290355982926
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 12844189700.32,
+          "JurosEEncargosDaDivida": 180277427.75,
+          "OutrasDespesasCorrentes": 6475987344.07,
+          "Investimentos": 2547774888.35,
+          "InversoesFinanceiras": 341337925.42,
+          "AmortizacaoDaDivida": 174766130.56,
+          "DespesasCorrentes": 19500454472.14,
+          "DespesasDeCapital": 3063878944.33
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 12844189700.32,
+            "percentual": 56.92253107262127
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 180277427.75,
+            "percentual": 0.7989486080648549
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 6475987344.07,
+            "percentual": 28.700104827129937
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 2547774888.35,
+            "percentual": 11.29115955399926
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 341337925.42,
+            "percentual": 1.5127321473226105
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 174766130.56,
+            "percentual": 0.7745237908620687
+          }
+        ]
       }
     },
     {
@@ -1951,6 +2716,57 @@
         "CE-04": 92.0713271961554,
         "CE-05": 100.0,
         "CE-06": 97.85847759454634
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 25878080447.1,
+          "JurosEEncargosDaDivida": 1370742044.52,
+          "OutrasDespesasCorrentes": 18580726703.41,
+          "Investimentos": 4328282322.13,
+          "InversoesFinanceiras": 724563363.13,
+          "AmortizacaoDaDivida": 1492718929.57,
+          "DespesasCorrentes": 45829549195.03,
+          "DespesasDeCapital": 6545564614.83
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 25878080447.1,
+            "percentual": 49.40911544564178
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 1370742044.52,
+            "percentual": 2.617162894378184
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 18580726703.41,
+            "percentual": 35.476250745467674
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 4328282322.13,
+            "percentual": 8.264005569215907
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 724563363.13,
+            "percentual": 1.383411529682625
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 1492718929.57,
+            "percentual": 2.850053815613828
+          }
+        ]
       }
     },
     {
@@ -1998,6 +2814,57 @@
         "CE-04": 93.63626990713155,
         "CE-05": 97.15106901211118,
         "CE-06": 98.1664880574166
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 9519318145.06,
+          "JurosEEncargosDaDivida": 1392575852.35,
+          "OutrasDespesasCorrentes": 6911025441.19,
+          "Investimentos": 3192024671.69,
+          "InversoesFinanceiras": 845681506.66,
+          "AmortizacaoDaDivida": 1007447303.22,
+          "DespesasCorrentes": 17822919438.6,
+          "DespesasDeCapital": 5045153481.57
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 9519318145.06,
+            "percentual": 41.62711120561371
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 1392575852.35,
+            "percentual": 6.089607363118588
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 6911025441.19,
+            "percentual": 30.22128478125661
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 3192024671.69,
+            "percentual": 13.958433151901419
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 845681506.66,
+            "percentual": 3.6980882018882126
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 1007447303.22,
+            "percentual": 4.405475296221466
+          }
+        ]
       }
     },
     {
@@ -2045,6 +2912,57 @@
         "CE-04": 92.91506928266122,
         "CE-05": 95.16313155731427,
         "CE-06": 99.4509854324804
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 38974217878.55,
+          "JurosEEncargosDaDivida": 1259119018.58,
+          "OutrasDespesasCorrentes": 24196561935.92,
+          "Investimentos": 5950616522.28,
+          "InversoesFinanceiras": 991551412.81,
+          "AmortizacaoDaDivida": 765715910.25,
+          "DespesasCorrentes": 64429898833.05,
+          "DespesasDeCapital": 7707883845.34
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 38974217878.55,
+            "percentual": 54.02746859063821
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 1259119018.58,
+            "percentual": 1.7454362635368175
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 24196561935.92,
+            "percentual": 33.54214814696329
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 5950616522.28,
+            "percentual": 8.24895956229966
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 991551412.81,
+            "percentual": 1.3745243837485384
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 765715910.25,
+            "percentual": 1.0614630528134907
+          }
+        ]
       }
     },
     {
@@ -2092,6 +3010,57 @@
         "CE-04": 82.58622401755589,
         "CE-05": 98.5607463160085,
         "CE-06": 98.33517736775971
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 63532679201.34,
+          "JurosEEncargosDaDivida": 2957214054.25,
+          "OutrasDespesasCorrentes": 32087206911,
+          "Investimentos": 5409391134.07,
+          "InversoesFinanceiras": 120254849.23,
+          "AmortizacaoDaDivida": 230198122.82,
+          "DespesasCorrentes": 98577100166.59,
+          "DespesasDeCapital": 5759844106.12
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 63532679201.34,
+            "percentual": 60.891834281902945
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 2957214054.25,
+            "percentual": 2.834292373486232
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 32087206911,
+            "percentual": 30.753447050483167
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 5409391134.07,
+            "percentual": 5.18454050171456
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 120254849.23,
+            "percentual": 0.11525624990097916
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 230198122.82,
+            "percentual": 0.22062954251211456
+          }
+        ]
       }
     },
     {
@@ -2139,6 +3108,57 @@
         "CE-04": 90.11523480220453,
         "CE-05": 97.5835113212423,
         "CE-06": 93.62296325147044
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 14997034125.53,
+          "JurosEEncargosDaDivida": 216392395.3,
+          "OutrasDespesasCorrentes": 4525287425.81,
+          "Investimentos": 605189839.8,
+          "InversoesFinanceiras": 70490441.54,
+          "AmortizacaoDaDivida": 282179987.22,
+          "DespesasCorrentes": 19738713946.64,
+          "DespesasDeCapital": 957860268.56
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 14997034125.53,
+            "percentual": 72.46143235877105
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 216392395.3,
+            "percentual": 1.0455469250610416
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 4525287425.81,
+            "percentual": 21.86491048594184
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 605189839.8,
+            "percentual": 2.9241063448826026
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 70490441.54,
+            "percentual": 0.34058990056542954
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 282179987.22,
+            "percentual": 1.363413984778027
+          }
+        ]
       }
     },
     {
@@ -2186,6 +3206,57 @@
         "CE-04": 81.55716208510387,
         "CE-05": 88.87330619616893,
         "CE-06": 99.24000036731279
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 9167268349.34,
+          "JurosEEncargosDaDivida": 139175322.39,
+          "OutrasDespesasCorrentes": 4774728498.36,
+          "Investimentos": 565505471.3,
+          "InversoesFinanceiras": 329557.71,
+          "AmortizacaoDaDivida": 32878277.36,
+          "DespesasCorrentes": 14081172170.09,
+          "DespesasDeCapital": 598713306.37
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 9167268349.34,
+            "percentual": 62.44781925608491
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 139175322.39,
+            "percentual": 0.9480681754171396
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 4774728498.36,
+            "percentual": 32.52565223357184
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 565505471.3,
+            "percentual": 3.852247159603656
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 329557.71,
+            "percentual": 0.0022449610422946684
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 32878277.36,
+            "percentual": 0.2239682142801599
+          }
+        ]
       }
     },
     {
@@ -2233,6 +3304,57 @@
         "CE-04": 84.75746049161387,
         "CE-05": 95.55805658407824,
         "CE-06": 99.02649219756181
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 4707069329.25,
+          "JurosEEncargosDaDivida": 85591308.6,
+          "OutrasDespesasCorrentes": 3162320900.18,
+          "Investimentos": 296724634.34,
+          "InversoesFinanceiras": 4769283.21,
+          "AmortizacaoDaDivida": 131036409.81,
+          "DespesasCorrentes": 7954981538.03,
+          "DespesasDeCapital": 432530327.36
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 4707069329.25,
+            "percentual": 56.11997222529273
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 85591308.6,
+            "percentual": 1.020461252080985
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 3162320900.18,
+            "percentual": 37.702729378290535
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 296724634.34,
+            "percentual": 3.537695553843523
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 4769283.21,
+            "percentual": 0.056861716401020425
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 131036409.81,
+            "percentual": 1.5622798740912076
+          }
+        ]
       }
     },
     {
@@ -2280,6 +3402,57 @@
         "CE-04": 80.57585429221731,
         "CE-05": 92.73722015620763,
         "CE-06": 98.1670016782394
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 41134655841.03,
+          "JurosEEncargosDaDivida": 155419654.19,
+          "OutrasDespesasCorrentes": 20476246829.98,
+          "Investimentos": 2341594679.44,
+          "InversoesFinanceiras": 426332589.22,
+          "AmortizacaoDaDivida": 50286853.12,
+          "DespesasCorrentes": 61766322325.2,
+          "DespesasDeCapital": 2818214121.78
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 41134655841.03,
+            "percentual": 63.69118384057624
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 155419654.19,
+            "percentual": 0.24064530418607266
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 20476246829.98,
+            "percentual": 31.704565762099662
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 2341594679.44,
+            "percentual": 3.6256274462267104
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 426332589.22,
+            "percentual": 0.6601155828841371
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 50286853.12,
+            "percentual": 0.0778620640271723
+          }
+        ]
       }
     },
     {
@@ -2327,6 +3500,57 @@
         "CE-04": 86.99024482075632,
         "CE-05": 96.31500257500004,
         "CE-06": 99.70075633695077
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 27975031044.55,
+          "JurosEEncargosDaDivida": 1145227969.32,
+          "OutrasDespesasCorrentes": 16411644502.6,
+          "Investimentos": 5062338294.6,
+          "InversoesFinanceiras": 416386050.07,
+          "AmortizacaoDaDivida": 1028454906.13,
+          "DespesasCorrentes": 45531903516.47,
+          "DespesasDeCapital": 6507179250.8
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 27975031044.55,
+            "percentual": 53.75773275954992
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 1145227969.32,
+            "percentual": 2.2007074460587757
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 16411644502.6,
+            "percentual": 31.537151751879282
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 5062338294.6,
+            "percentual": 9.727954501503936
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 416386050.07,
+            "percentual": 0.8001410246452041
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 1028454906.13,
+            "percentual": 1.9763125163628885
+          }
+        ]
       }
     },
     {
@@ -2374,6 +3598,57 @@
         "CE-04": 91.39234897694726,
         "CE-05": 97.61423695560472,
         "CE-06": 98.70084134617024
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 8815202265.65,
+          "JurosEEncargosDaDivida": 231380911.19,
+          "OutrasDespesasCorrentes": 6336156903.15,
+          "Investimentos": 1075802773.67,
+          "InversoesFinanceiras": 78621153.45,
+          "AmortizacaoDaDivida": 718715325.96,
+          "DespesasCorrentes": 15382740079.99,
+          "DespesasDeCapital": 1873139253.08
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 8815202265.65,
+            "percentual": 51.085210411480574
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 231380911.19,
+            "percentual": 1.3408816017076015
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 6336156903.15,
+            "percentual": 36.718829454301314
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 1075802773.67,
+            "percentual": 6.23441293778799
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 78621153.45,
+            "percentual": 0.45561951339869783
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 718715325.96,
+            "percentual": 4.165046081323826
+          }
+        ]
       }
     },
     {
@@ -2421,6 +3696,57 @@
         "CE-04": 90.08322348589832,
         "CE-05": 95.76174027134947,
         "CE-06": 94.42334444282234
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 143575053312.56,
+          "JurosEEncargosDaDivida": 15405991033.83,
+          "OutrasDespesasCorrentes": 162222854724.43,
+          "Investimentos": 11829883529,
+          "InversoesFinanceiras": 10054585046.86,
+          "AmortizacaoDaDivida": 12350908551.18,
+          "DespesasCorrentes": 321203899070.82,
+          "DespesasDeCapital": 34235377127.04
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 143575053312.56,
+            "percentual": 40.39369392386368
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 15405991033.83,
+            "percentual": 4.3343524662294355
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 162222854724.43,
+            "percentual": 45.64010383425564
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 11829883529,
+            "percentual": 3.328243196853332
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 10054585046.86,
+            "percentual": 2.8287771555282433
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 12350908551.18,
+            "percentual": 3.4748294232696737
+          }
+        ]
       }
     },
     {
@@ -2468,6 +3794,57 @@
         "CE-04": 80.88446235897212,
         "CE-05": 95.4391325572404,
         "CE-06": 98.45290237519816
+      },
+      "composicao_despesa": {
+        "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)",
+        "valores": {
+          "PessoalEEncargosSociais": 9733127086.35,
+          "JurosEEncargosDaDivida": 375564924.32,
+          "OutrasDespesasCorrentes": 5311364745.59,
+          "Investimentos": 711475314.19,
+          "InversoesFinanceiras": 51183368.9,
+          "AmortizacaoDaDivida": 368228459.41,
+          "DespesasCorrentes": 15420056756.26,
+          "DespesasDeCapital": 1130887142.5
+        },
+        "partes": [
+          {
+            "conta": "PessoalEEncargosSociais",
+            "grupo": "correntes",
+            "valor": 9733127086.35,
+            "percentual": 58.807081613509716
+          },
+          {
+            "conta": "JurosEEncargosDaDivida",
+            "grupo": "correntes",
+            "valor": 375564924.32,
+            "percentual": 2.2691450506828037
+          },
+          {
+            "conta": "OutrasDespesasCorrentes",
+            "grupo": "correntes",
+            "valor": 5311364745.59,
+            "percentual": 32.09100809040824
+          },
+          {
+            "conta": "Investimentos",
+            "grupo": "capital",
+            "valor": 711475314.19,
+            "percentual": 4.298699328219606
+          },
+          {
+            "conta": "InversoesFinanceiras",
+            "grupo": "capital",
+            "valor": 51183368.9,
+            "percentual": 0.30924743152464357
+          },
+          {
+            "conta": "AmortizacaoDaDivida",
+            "grupo": "capital",
+            "valor": 368228459.41,
+            "percentual": 2.224818485654995
+          }
+        ]
       }
     }
   ],

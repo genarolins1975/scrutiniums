@@ -194,3 +194,20 @@ describe('Financiamento e margem corrente',()=>{
   expect(csv).toContain(financiamentoEstadual('PE',2025)!.dado.fontes[0].sha256);
  });
 });
+
+import { composicaoDespesa, csvDespesas } from '../lib/contas-estaduais/despesas';
+import { GET as exportarDespesas } from '../app/contas-publicas-estaduais/despesas.csv/route';
+describe('Composição econômica da despesa',()=>{
+ it('mantém seis parcelas reconciliadas e o mesmo denominador nas 27 UFs',()=>{
+  for(const u of snapshot.ufs){const d=composicaoDespesa(u.uf,2025)!;expect(d.partes).toHaveLength(6);expect(d.partes.reduce((s,p)=>s+p.valor,0)).toBeCloseTo(d.dado.valores.liquidada,2);expect(d.partes.reduce((s,p)=>s+p.percentual,0)).toBeCloseTo(100,8);}
+ });
+ it('preserva ausência e rejeita recortes inválidos',()=>{
+  expect(composicaoDespesa('PE',2026)).toBeNull();expect(csvDespesas('PE',2026)).toBeNull();
+  expect(exportarDespesas(new Request('https://x.test?uf=PE&ano=2026')).status).toBe(404);
+  expect(exportarDespesas(new Request('https://x.test?uf=XX&ano=2025')).status).toBe(400);
+ });
+ it('exporta as seis categorias com código e hash',async()=>{
+  const r=exportarDespesas(new Request('https://x.test?uf=PE&ano=2025'));expect(r.status).toBe(200);
+  const csv=await r.text();expect(csv.split('\r\n')).toHaveLength(7);expect(csv).toContain('Investimentos');expect(csv).toContain(execucaoPrimaria('PE',2025)!.fontes[0].sha256);
+ });
+});

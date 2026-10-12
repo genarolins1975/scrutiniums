@@ -3,6 +3,7 @@
 Executar: python3 -m pipeline.contas_estaduais.consolidar [--check]
 Conferência da fonte significa identidade, campos e aritmética; não auditoria.
 """
+from pipeline.contas_estaduais.despesas import mapear as mapear_despesas
 import argparse
 import hashlib
 import json
@@ -110,6 +111,7 @@ def consolidar():
                 obs.update(valores=m["valores"], percentual_calculado=m["percentual_calculado"], diferenca_pp=m["diferenca_pp"])
             else:
                 obs.update(mapear_rreo(itens, uf, ano))
+                obs["composicao_despesa"] = mapear_despesas(itens, obs["valores"]["liquidada"])
             resultado[fonte].append(obs)
     resultado["cobertura"] = dict(respostas=len(chaves), ufs=len({r["uf"] for r in resultado["rgf"] + resultado["rreo"]}), observacoes=len(resultado["rgf"])+6*len(resultado["rreo"]))
     return resultado
