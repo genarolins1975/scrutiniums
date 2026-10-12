@@ -1,7 +1,7 @@
 import {describe,it,expect} from 'vitest';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {pilotoResultados,pilotRow,pilotCsv,pilotDimensions,pilotPreviewEnabled,pilotGap} from '@/lib/eficiencia/piloto-resultados';
+import {pilotoResultados,pilotRow,pilotCsv,pilotDimensions,pilotPreviewEnabled,pilotGap,pilotStability,summarizePilotScenarios} from '@/lib/eficiencia/piloto-resultados';
 import {PilotoResultados} from '@/components/eficiencia/PilotoResultados';
 import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
 
@@ -57,5 +57,46 @@ describe('Apresentação experimental dos resultados',()=>{
   it('mantém zero para a mesma cidade e ausência para recorte não suportado',()=>{
    expect(pilotGap('2611606','2611606')!.components.every(d=>d.points===0)).toBe(true);
    expect(pilotGap('Brasil','2611606')).toBeNull();
+  });
+ });
+
+ describe('Estabilidade pareada',()=>{
+  it('reconcilia inversões com a auditoria e deduplica os pesos',()=>{
+   let reversals=0,tiesBroken=0;
+   const rows=pilotoResultados.rows;
+   for(let i=0;i<rows.length;i++)for(let j=i+1;j<rows.length;j++){
+    const result=pilotStability(rows[i].id,rows[j].id)!;
+    const weights=result.families[0];
+    expect(weights.scenarios).toHaveLength(31);
+    expect(weights.above+weights.below+weights.ties).toBe(31);
+    if(weights.reversed)reversals++;
+    if(weights.label==='Empate de referência desfeito')tiesBroken++;
+    const opposite=pilotStability(rows[j].id,rows[i].id)!.families[0];
+    expect(weights.lower).toBeCloseTo(-opposite.upper,10);
+    expect(weights.label).toBe(opposite.label);
+   }
+   expect(reversals).toBe(37);expect(tiesBroken).toBe(3);
+  });
+  it('calcula limites com diferenças do mesmo cenário, não extremos marginais',()=>{
+   const result=pilotStability('2611606','2927408')!;
+   expect(result.families[0].lower).toBeCloseTo(-9.090909090909093,10);
+   expect(result.families[0].upper).toBeCloseTo(0.8875739644970437,10);
+   expect(result.families[0].label).toBe('Há inversão da ordem');
+   expect(pilotStability('2611606','4106902')!.families.every(f=>f.label==='Ordem mantida')).toBe(true);
+  });
+  it('distingue empate alcançado, empate original desfeito e resíduos numéricos',()=>{
+   const scenario=(difference:number)=>({id:'s',label:'s',assumption:'s',difference});
+   expect(summarizePilotScenarios(1,[scenario(1e-12)]).label).toBe('A diferença chega a empate');
+   expect(summarizePilotScenarios(0,[scenario(1)]).label).toBe('Empate de referência desfeito');
+   expect(summarizePilotScenarios(0,[scenario(1e-12)]).label).toBe('Empate mantido');
+   expect(()=>summarizePilotScenarios(1,[])).toThrow();
+  });
+  it('mantém autopares empatados e territórios fora da referência ausentes',()=>{
+   expect(pilotStability('2611606','2611606')!.families.every(f=>f.label==='Empate mantido')).toBe(true);
+   expect(pilotStability('Brasil','2611606')).toBeNull();
+  });
+  it('expõe o resultado e as hipóteses do par no HTML acessível',()=>{
+   const html=renderToStaticMarkup(createElement(PilotoResultados,{place:'2611606',reference:'2927408',onReference:()=>{}}));
+   for(const text of ['Há inversão da ordem','31 combinações distintas','Contagens não são probabilidades','Conferir as hipóteses do par selecionado','−','Sem Educação'])expect(html).toContain(text);
   });
  });

@@ -31,3 +31,33 @@ export function pilotGap(place:string,reference:string){
  });
  return {components,total:a.pilot_five.score-b.pilot_five.score};
 }
+
+export type PilotScenario = {id:string;label:string;assumption:string;difference:number};
+export const pilotSign = (value:number) => Math.abs(value)<=1e-9?0:Math.sign(value);
+export function summarizePilotScenarios(baseline:number,scenarios:PilotScenario[]){
+ if(!scenarios.length||!Number.isFinite(baseline)||scenarios.some(s=>!Number.isFinite(s.difference)))throw new Error('Invalid paired scenarios');
+ const signs=scenarios.map(s=>pilotSign(s.difference)),original=pilotSign(baseline);
+ const above=signs.filter(s=>s>0).length,below=signs.filter(s=>s<0).length,ties=signs.filter(s=>s===0).length;
+ const reversed=original!==0&&signs.includes(-original);
+ const label=original===0?(above||below?'Empate de referência desfeito':'Empate mantido'):reversed?'Há inversão da ordem':ties?'A diferença chega a empate':'Ordem mantida';
+ return {label,above,below,ties,reversed,lower:Math.min(...scenarios.map(s=>s.difference)),upper:Math.max(...scenarios.map(s=>s.difference)),scenarios};
+}
+export function pilotStability(place:string,reference:string){
+ const a=pilotRow(place),b=pilotRow(reference);
+ if(!a||!b)return null;
+ const baseline=a.pilot_five.score-b.pilot_five.score;
+ const seen=new Set<string>();
+ const weights:PilotScenario[]=[];
+ snapshot.sensitivity.weights.forEach((w,index)=>{
+  const key=pilotDimensions.map(d=>w[d.id].toFixed(12)).join('|');
+  if(seen.has(key))return;seen.add(key);
+  weights.push({id:`weights-${index}`,label:`Pesos ${weights.length+1}`,assumption:pilotDimensions.map(d=>`${d.name}: ${pilotNumber(w[d.id]*100,2)}%`).join(' · '),difference:a.weight_scenarios[index]-b.weight_scenarios[index]});
+ });
+ const removal=pilotDimensions.map(d=>({id:`without-${d.id}`,label:`Sem ${d.name}`,assumption:'Quatro indicadores; pesos restantes renormalizados.',difference:a.leave_one_out[d.id]-b.leave_one_out[d.id]}));
+ const definitions=([{id:'network_only',label:'Saneamento: apenas rede'},{id:'registered_only',label:'Violência: apenas registros'}] as const).map(d=>({id:d.id,label:d.label,assumption:'Uma definição alternativa por vez; demais dimensões preservadas.',difference:a.definition_sensitivity[d.id]-b.definition_sensitivity[d.id]}));
+ return {baseline,families:[
+  {id:'weights',name:'Mudança de pesos',note:'31 combinações distintas após normalização dos 32 cenários de ±20%.',...summarizePilotScenarios(baseline,weights)},
+  {id:'removal',name:'Retirada de dimensão',note:'Cinco hipóteses: retirar um indicador por vez.',...summarizePilotScenarios(baseline,removal)},
+  {id:'definitions',name:'Definições alternativas',note:'Duas hipóteses: saneamento apenas rede; homicídios apenas registrados.',...summarizePilotScenarios(baseline,definitions)}
+ ]};
+}
