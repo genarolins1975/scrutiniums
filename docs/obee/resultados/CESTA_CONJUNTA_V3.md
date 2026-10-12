@@ -80,8 +80,8 @@ A [diligência anterior de precisão](HABITACAO_CENARIOS.md) não validou erro a
 | Etapa | Entrega | Critério para avançar |
 |---|---|---|
 | Concluída | Aquisição e análise conjunta de habitação/conectividade | Coorte reconciliada, 18 cenários reproduzíveis, decomposição e exportação auditáveis |
-| Próxima | Protocolo de precisão e divulgação municipal | Examinar o anexo oficial de variância já localizado e documentação municipal; registrar o que permite estimar precisão de proporções e sua covariância; se insuficiente, justificar regra de divulgação sem inferência ou manter bloqueio |
-| Depois | Parecer sobre conteúdo e pesos da candidata v3 | Aprovar ou rejeitar agrupamento material, orçamento e definição de adensamento por argumentos de conteúdo; registrar decisão sem otimização de posições |
+| Concluída como protocolo | Precisão e divulgação municipal | Anexo examinado e contrato descritivo documentado; precisão municipal não resolvida |
+| Concluída como proposta | Parecer sobre conteúdo e pesos | Candidatas e 40% mantidos apenas como referência experimental; ponderação oficial não aprovada |
 | Antes da promoção | Revisão metodológica independente | Confirmar interpretação, fontes, precisão/divulgação, sensibilidade e limites; aprovação explícita da edição |
 | Após aprovação | Integração da nova edição ao produto | Identificar edição, oferecer comparação v2/v3 e distinguir efeito de composição de evolução no tempo |
 
@@ -106,4 +106,4 @@ python3.12 -m unittest pipeline.eficiencia_resultados.test_cesta_conjunta pipeli
 
 ## Atualização: protocolo municipal
 
-O [protocolo de precisão e divulgação](PRECISAO_CANDIDATAS.md) examina o anexo oficial e a divulgação dos microdados de 2026. Há contrato descritivo auditável para 52 registros; a precisão municipal segue não quantificada. Não há mudança nos cenários, pesos propostos ou bloqueios. Próxima entrega: parecer de conteúdo e pesos.
+O [protocolo de precisão e divulgação](PRECISAO_CANDIDATAS.md) examina o anexo oficial e a divulgação dos microdados de 2026. Há contrato descritivo auditável para 52 registros; a precisão municipal segue não quantificada. Não há mudança nos cenários, pesos propostos ou bloqueios. O [parecer de conteúdo e pesos](PARECER_CONTEUDO_PESOS_V3.md) está concluído como proposta técnica; próxima entrega: pacote de revisão independente e critérios de promoção.
