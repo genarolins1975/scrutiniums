@@ -135,6 +135,16 @@ describe("Crédito preservado", () => {
 });
 
 describe("telemetria por domínio", () => {
+  it("a visita emitida pelo painel estadual é aceita e atribuída ao domínio estadual", () => {
+    const pagina = ler("src/app/contas-publicas-estaduais/page.tsx");
+    const secoes = Array.from(pagina.matchAll(/<MarcaVisita secao="([^"]+)"/g), (m) => m[1]);
+    expect(secoes).toHaveLength(1);
+    for (const s of secoes) {
+      expect(isViewSection(s), s).toBe(true);
+      expect(dominioDaSecao(s), s).toBe("estados");
+    }
+  });
+
   it("toda seção marcada nas páginas do Setor Elétrico é aceita pela telemetria", () => {
     const secoes = new Set<string>();
     for (const f of paginas(join(raiz, "src", "app", "setor-eletrico"))) {

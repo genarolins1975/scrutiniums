@@ -112,6 +112,8 @@ export const VIEW_SECTIONS = [
   "energia:inclusao-orcamento",
   "energia:inclusao-acesso",
   "energia:transicao",
+  // Contas Públicas Estaduais
+  "estados:ficha",
   // Plataforma (páginas Next)
   "app:conta",
   "app:observatorios",
@@ -222,6 +224,7 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "energia:inclusao-orcamento": "Setor Elétrico · Inclusão: peso no orçamento",
   "energia:inclusao-acesso": "Setor Elétrico · Inclusão: acesso e sistemas isolados",
   "energia:transicao": "Setor Elétrico · Transição e ambiente",
+  "estados:ficha": "Contas Públicas Estaduais · Painel",
   "app:conta": "Plataforma · Conta",
   "app:observatorios": "Plataforma · Escolha do observatório",
 };
