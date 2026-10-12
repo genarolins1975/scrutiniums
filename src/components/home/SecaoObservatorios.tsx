@@ -41,7 +41,7 @@ export function SecaoObservatorios() {
         <p className="mt-6 max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">
           A Scrutiniums organiza dados públicos, registros oficiais e séries setoriais para transformar
           informação dispersa em conhecimento verificável. Hoje, essa infraestrutura reúne
-          Crédito, Setor Elétrico, Eficiência Estatal e Contas Públicas Federais.
+          Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais e Contas Públicas Estaduais.
         </p>
 
         <ul className="mt-14 grid gap-6 lg:grid-cols-2">

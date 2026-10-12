@@ -1,0 +1,11 @@
+{
+  "arquivo": "ipca.json",
+  "url": "https://servicodados.ibge.gov.br/api/v3/agregados/1737/periodos/202301-202607/variaveis/2266?localidades=N1[1]",
+  "fonte": "IBGE · SIDRA 1737 · variável 2266 · Brasil",
+  "publicacao": null,
+  "captura": "2026-10-12T22:44:35.265224+00:00",
+  "sha256": "dc4ce74baa8b5e0a0c51588c1f3de3ccc627ae097b21d77ec858280caad5d562",
+  "referenciaInicial": "2023-01",
+  "referenciaFinal": "2026-07",
+  "basePrecos": "2026-07"
+}

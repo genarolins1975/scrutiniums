@@ -37,6 +37,8 @@
 
 .ce-expense-compare{display:block;min-height:44px;padding:10px 0;font-size:13px}.ce-compare-filters label:first-child{min-width:0;max-width:100%}
 
+.ce-nav .obs-dominios a{min-height:44px}
+
 /* Educational evidence remains distinct from published fiscal observations. */
 .ce-education{margin-top:40px;padding-top:32px;border-top:1px solid var(--ce-line)}
 .ce-education h3{font:28px/1.2 var(--font-serif),Georgia,serif}
