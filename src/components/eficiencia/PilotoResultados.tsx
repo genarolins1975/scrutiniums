@@ -1,15 +1,28 @@
 'use client';
-import {useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
 import {EstabilidadePiloto} from './EstabilidadePiloto';
-import {pilotoResultados as data,pilotDimensions,pilotRow,pilotNumber as n,pilotCsv,pilotGap} from '@/lib/eficiencia/piloto-resultados';
+import {pilotoResultados as data,pilotDimensions,pilotRow,pilotNumber as n,pilotCsv,pilotGap,pilotStability} from '@/lib/eficiencia/piloto-resultados';
 import styles from './PilotoResultados.module.css';
 const audit='https://github.com/genarolins1975/scrutiniums/blob/2c286cad4bb4bed6cc1d7999eb614baeb7a07394/docs/obee/resultados/';
 export function PilotoResultados({place,reference,onReference}:{place:string;reference:string;onReference:(id:string)=>void}){
  const [showSensitivity,setShowSensitivity]=useState(false);
+ const analysisRef=useRef<HTMLDetailsElement>(null);
+ useEffect(()=>{
+  const reveal=()=>{
+   const id=window.location.hash.slice(1);
+   if(['pilot-composition','pilot-gap-title','pilot-stability-title'].includes(id)&&analysisRef.current){
+    analysisRef.current.open=true;
+    requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView());
+   }
+  };
+  reveal();window.addEventListener('hashchange',reveal);
+  return()=>window.removeEventListener('hashchange',reveal);
+ },[]);
  const a=pilotRow(place),b=pilotRow(reference);
  if(!a||!b)return <section id="atlas-piloto" className={styles.section}><h2>Piloto indisponível neste recorte</h2><p>A referência contém somente 26 capitais estaduais. Não há imputação para regiões, países ou outros municípios.</p></section>;
  function download(){const url=URL.createObjectURL(new Blob(['\uFEFF'+pilotCsv()],{type:'text/csv;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download='obee-piloto-cinco-dimensoes-2022.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
  const gap=pilotGap(place,reference)!;
+ const stability=pilotStability(place,reference)!;
  const signed=(value:number)=>`${value>0?'+':''}${n(value,2)}`;
  const sorted=[...data.rows].sort((x,y)=>x.pilot_five.score-y.pilot_five.score);
  const lanes:number[]=[];
@@ -20,13 +33,15 @@ export function PilotoResultados({place,reference,onReference}:{place:string;ref
   <p className={styles.lead}>Compare condições dos moradores nas 26 capitais estaduais. Cinco indicadores, com peso de 20% cada. Este recorte não é a nota integral do OBEE e não mede satisfação, eficiência ou efeito da gestão.</p>
   <p className={styles.reading}><strong>Como interpretar:</strong> o escore resume posições relativas, não o percentual de serviços entregues. A média permite compensação entre dimensões; as incertezas das fontes ainda não foram propagadas à nota.</p>
   <div className={styles.overview}>
-   <div className={styles.score}><p>Escore do piloto · escala de 0 a 100</p><h3>{a.name}</h3><strong>{n(a.pilot_five.score)}</strong><p className={styles.reference}>{b.name} <b>{n(b.pilot_five.score)}</b></p><p>{n(a.pilot_five.score-b.pilot_five.score)} pontos em relação a {b.name}.</p><a href="#pilot-composition">Entender a composição ↓</a></div>
+   <div className={styles.score}><p>Escore do piloto · escala de 0 a 100</p><h3>{a.name}</h3><strong>{n(a.pilot_five.score)}</strong><p className={styles.reference}>{b.name} <b>{n(b.pilot_five.score)}</b></p><p>{n(a.pilot_five.score-b.pilot_five.score)} pontos em relação a {b.name}.</p><a href="#pilot-composition" onClick={()=>{if(analysisRef.current)analysisRef.current.open=true;}}>Entender a composição ↓</a></div>
    <div className={styles.distribution}><h3>Onde estão as capitais?</h3><p>Cada ponto representa uma capital. A posição horizontal mostra o escore; a altura apenas separa pontos próximos.</p><div className={styles.legend}><span><i className={styles.primary}/>{a.name}</span><span><i className={styles.peer}/>{b.name}</span><span><i className={styles.other}/>Demais capitais</span></div>
     <svg viewBox={`0 0 480 ${height}`} role="img" aria-labelledby="pilot-distribution-title"><title id="pilot-distribution-title">Escores das 26 capitais, de zero a cem. Valores completos na tabela abaixo.</title><line x1="24" x2="456" y1={height-30} y2={height-30} className={styles.axis}/>{[0,25,50,75,100].map(v=><g key={v}><line x1={24+v*4.32} x2={24+v*4.32} y1={height-34} y2={height-26} className={styles.axis}/><text x={24+v*4.32} y={height-8} textAnchor="middle">{v}</text></g>)}{points.map(p=>p.id===reference?<path key={p.id} d={`M ${p.x} ${p.y-7} l 7 7 l -7 7 l -7 -7 Z`} className={styles.peerMark}/>:<circle key={p.id} cx={p.x} cy={p.y} r={p.id===place?6:4} className={p.id===place?styles.primaryMark:styles.otherMark}/> )}</svg>
     <p className={styles.note}>Referência fixa de 2022, sem Distrito Federal. A média 50 decorre da construção dos percentis; não é uma meta de qualidade.</p>
     <details><summary>Escolher entre as 26 capitais</summary><p>Ordem alfabética. Selecione um comparador para atualizar toda a página.</p><table><caption>Escore do piloto · 2022 · pontos de 0 a 100</caption><thead><tr><th scope="col">Capital</th><th scope="col">Escore</th></tr></thead><tbody>{data.rows.map(r=><tr key={r.id}><th scope="row"><button type="button" aria-disabled={r.id===place||r.id===reference} onClick={()=>{if(r.id!==place&&r.id!==reference)onReference(r.id);}}>{r.name}</button>{r.id===place&&<small>Selecionada</small>}{r.id===reference&&<small>Comparador</small>}</th><td>{n(r.pilot_five.score,2)}</td></tr>)}</tbody></table></details>
    </div>
   </div>
+  <div className={styles.summaryContext}><p><strong>Cobertura: cinco indicadores.</strong> Não são cinco capítulos completos. <strong>Saúde permanece em pesquisa</strong> e a nota integral dos 16 temas está indisponível.</p><p><strong>Estabilidade deste par:</strong> {stability.families.map(f=>`${f.name}: ${f.label.toLocaleLowerCase('pt-BR')}`).join(' · ')}. Válido somente nas hipóteses testadas.</p></div>
+  <details ref={analysisRef} className={styles.analysisDisclosure} id="pilot-analysis"><summary><span>Composição e testes do escore</span><small>Cinco indicadores, contribuições à diferença, estabilidade e método</small></summary>
   <div className={styles.composition} id="pilot-composition"><div className={styles.heading}><div><p className={styles.kicker}>Da medida à pontuação</p><h3>O que compõe este escore?</h3></div><p>● {a.name} <span className={styles.peerText}>◆ {b.name}</span></p></div><p>Os pontos mostram a posição relativa de cada indicador na referência, de 0 a 100. Mais à direita corresponde à direção favorável definida no piloto. As distâncias nas unidades originais estão nos valores ao lado.</p>
    <div className={styles.dimensionHeader} aria-hidden="true"><span>Indicador / peso 20%</span><span>Posição relativa · 0 a 100</span><span>{a.name} / {b.name}</span></div>
    {pilotDimensions.map(d=>{const config=data.reference.basket.find(m=>m.id===d.id)!;const av=a.indicator_scores[d.id],bv=b.indicator_scores[d.id];return <article className={styles.dimension} key={d.id}><div><h4>{d.name}</h4><p>{d.note}</p><a href={d.source}>Fonte original ↗</a></div><div><svg viewBox="0 0 260 44" aria-hidden="true"><line x1="10" x2="250" y1="20" y2="20" className={styles.axis}/><line x1={10+av*2.4} x2={10+bv*2.4} y1="20" y2="20" className={styles.connector}/><path d={`M ${10+bv*2.4} 13 l 7 7 l -7 7 l -7 -7 Z`} className={styles.peerMark}/><circle cx={10+av*2.4} cy="20" r="5" className={styles.primaryMark}/><text x="10" y="43">0</text><text x="250" y="43" textAnchor="end">100</text></svg><p className={styles.percentiles}>Pontuação: {n(av)} / {n(bv)}</p></div><div className={styles.raw}><p><span>{a.name}</span><strong>{d.unit==='R$'?'R$ ':''}{n(a.raw_values[d.id],d.id==='seguranca'?1:2)} <small>{d.unit==='R$'?'':d.unit}</small></strong></p><p><span>{b.name}</span><strong>{d.unit==='R$'?'R$ ':''}{n(b.raw_values[d.id],d.id==='seguranca'?1:2)} <small>{d.unit==='R$'?'':d.unit}</small></strong></p><small>{config.direction==='higher'?'Maior valor, maior pontuação':'Menor valor, maior pontuação'} · {config.period}</small></div></article>;})}
@@ -38,6 +53,7 @@ export function PilotoResultados({place,reference,onReference}:{place:string;ref
   <EstabilidadePiloto place={place} reference={reference}/>
   <div className={styles.bottom}><div><h3>Faixas individuais sob mudança de pesos</h3><p>Cada faixa resume a variação de uma cidade nos cenários de pesos. Não subtraia extremos de cidades diferentes: eles podem vir de hipóteses distintas. Não é intervalo de confiança.</p><button className={styles.toggle} type="button" aria-expanded={showSensitivity} aria-controls="pilot-sensitivity" onClick={()=>setShowSensitivity(!showSensitivity)}>{showSensitivity?'Ocultar':'Ver'} sensibilidade aos pesos</button><div id="pilot-sensitivity" hidden={!showSensitivity}>{[a,b].map(r=><p className={styles.range} key={r.id}><span>{r.name}</span><strong>{n(r.weight_sensitivity_range[0],2)}–{n(r.weight_sensitivity_range[1],2)}</strong></p>)}<p>Definições alternativas e retirada de dimensões são testes separados, disponíveis na auditoria metodológica.</p></div></div><div className={styles.coverage}><p className={styles.kicker}>Cobertura do piloto</p><h3>5 indicadores de 5 previstos.</h3><p>Cinco indicadores não representam cinco capítulos completos, nem os 16 temas do observatório.</p><p><strong>Saúde permanece em pesquisa.</strong> Na cesta ampliada de seis dimensões, o escore está indisponível. A precisão das taxas infantis foi calculada; a cobertura específica dos registros municipais ainda não foi validada.</p><a href={audit+'PRECISAO_SAUDE.md'}>Consultar a auditoria de Saúde ↗</a></div></div>
   <details className={styles.method}><summary>Como ler, reproduzir e comparar este piloto</summary><p>Cada indicador vira um percentil orientado: 100 × (capitais com resultado menos favorável + metade das empatadas) ÷ 26. O escore é a média dos cinco percentis. A agregação permite compensação entre dimensões e perde as distâncias nas unidades originais.</p><p>A referência de 2022 está congelada. Mudar a cesta não representa evolução no tempo. As estimativas da amostra do Censo e do modelo de homicídios têm incertezas que não foram propagadas ao escore. O piloto não fornece comparações internacionais.</p><p>O modelo de acesso, resposta e qualidade dos serviços, apresentado mais abaixo, é um contrato distinto e continua sem nota.</p><a href={audit+'EXPANSAO_V2.md'}>Método, fontes e testes ↗</a><a href={audit+'piloto-2022-v2.json'}>Resultado técnico completo · JSON ↗</a></details>
+  </details>
   <footer className={styles.footer}><p>IBGE / Censo 2022 · Ipea e FBSP / Atlas da Violência 2024, dados de 2022.<br/>Versão {data.version} · revisão experimental, não aprovada para publicação oficial.</p><button type="button" onClick={download}>Baixar as 26 capitais · CSV ↓</button></footer>
  </section>;
 }
