@@ -8,6 +8,10 @@ import datetime as dt
 import hashlib
 import json
 import math
+import time
+import ssl
+from email.utils import parsedate_to_datetime
+from urllib.error import HTTPError, URLError
 from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -41,10 +45,44 @@ def parametros(uf, ano, demonstrativo, periodo=None):
     return dict(an_exercicio=ano, nr_periodo=6, co_tipo_demonstrativo="RREO",
                 no_anexo="RREO-Anexo 01", co_esfera="E", id_ente=UFS[uf], limit=5000)
 
+def espera_retry(valor, tentativa):
+    """Respeita Retry-After; não antecipa esperas superiores ao orçamento local."""
+    espera = 2 ** (tentativa + 1)
+    if valor:
+        try:
+            espera = max(espera, int(valor))
+        except ValueError:
+            try:
+                data = parsedate_to_datetime(valor)
+                espera = max(espera, math.ceil((data - dt.datetime.now(dt.timezone.utc)).total_seconds()))
+            except (ValueError, TypeError, OverflowError):
+                pass
+    if espera > 60:
+        return None
+    return espera
+
+
 def requisitar(url):
-    with urlopen(Request(url, headers={"User-Agent": "Scrutiniums-ContasEstaduais/0.1"}),
-                 timeout=45) as resposta:
-        return resposta.read()
+    for tentativa in range(3):
+        # Limita também chamadas bem-sucedidas para evitar rajadas nas 27 UFs.
+        time.sleep(1)
+        try:
+            with urlopen(Request(url, headers={"User-Agent": "Scrutiniums-ContasEstaduais/0.1"}),
+                         timeout=45) as resposta:
+                return resposta.read()
+        except HTTPError as erro:
+            if erro.code not in (429, 500, 502, 503, 504) or tentativa == 2:
+                raise
+            espera = espera_retry(erro.headers.get("Retry-After"), tentativa)
+            if espera is None:
+                raise  # não ignora um prazo de espera longo imposto pelo servidor
+            time.sleep(espera)
+        except (URLError, TimeoutError) as erro:
+            if isinstance(getattr(erro, "reason", None), ssl.SSLCertVerificationError):
+                raise
+            if tentativa == 2:
+                raise
+            time.sleep(2 ** (tentativa + 1))
 
 def paginas(base, params, destino, fetch=requisitar):
     itens, arquivos, offset = [], [], 0

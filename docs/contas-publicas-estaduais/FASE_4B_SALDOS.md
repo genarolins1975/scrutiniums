@@ -18,3 +18,7 @@ A nova seção integra a ficha, acompanha os seletores existentes de UF e ano e 
 - `tsc --noEmit` e lint dos módulos alterados aprovados; `git diff --check` sem erros.
 - Inspeção visual pendente: o navegador disponível foi redirecionado ao login da Vercel. Não se atribui nota estética, aprovação responsiva ou conformidade de acessibilidade sem essa inspeção.
 - A etapa educacional permanece bloqueada pela obtenção das planilhas oficiais, documentada em FASE_4A_EDUCACAO.md. Não houve merge ou publicação em produção.
+
+## Robustez da recaptura
+
+Na execução 38262719196, a reprodução das 81 respostas arquivadas e os 30 testes de contratos passaram. A recaptura de 2026 recebeu HTTP 429 para PA, PE, RS, SE, SP e TO. O coletor foi ajustado para espaçar cada chamada em um segundo e repetir até três tentativas em falhas transitórias, respeitando `Retry-After` em segundos ou data HTTP. Se a espera informada ultrapassar 60 segundos, a chamada termina com erro, sem antecipar a repetição. Erros permanentes HTTP e de certificado não são repetidos. Cinco testes adicionais cobrem esse contrato, totalizando 35 testes Python locais aprovados. Essa correção não transforma a fonte indisponível em dado ausente nem modifica os dados publicados.
