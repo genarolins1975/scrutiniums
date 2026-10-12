@@ -32,3 +32,12 @@ describe('identidades dos artefatos didáticos',()=>{
   }
  });
 });
+
+import {escalaCumprimento} from '../components/contas-publicas/artefatos/BarraCumprimento';
+it('não limita realizado a 100% e distingue original, atual e ausência',()=>{
+ const e=escalaCumprimento({metaAtual:100,metaOriginal:80,realizado:130,estado:'calculavel'})!;
+ expect(e.realizado).toBeGreaterThan(e.atual);expect(e.atual).toBeGreaterThan(e.original!);
+ expect(escalaCumprimento({metaAtual:100,metaOriginal:null,realizado:0,estado:'calculavel'})?.realizado).toBe(0);
+ expect(escalaCumprimento({metaAtual:100,metaOriginal:100,realizado:null,estado:'ausente'})).toBeNull();
+ expect(escalaCumprimento({metaAtual:0,metaOriginal:100,realizado:30,estado:'inelegivel'})).toBeNull();
+});
