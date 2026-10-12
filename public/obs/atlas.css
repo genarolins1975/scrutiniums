@@ -166,3 +166,23 @@
 }
 @media(max-width:380px) { #view-mapa .atlas-city-copy h1 { font-size:32px; } }
 @media print { #view-mapa .atlas-city-image, #view-mapa .atlas-city-points, #view-mapa .atlas-portfolio, #view-mapa .atlas-doors img { display:none!important; } #view-mapa .obs-hero.atlas-city { min-height:0; } #view-mapa .atlas-city-copy { width:100%; } }
+
+
+/* Conteúdo e destino legíveis antes do clique. */
+#view-mapa .atlas-metric-context { font-size:13px; line-height:1.6; margin:12px 0 6px; }
+#view-mapa .atlas-metric > a { display:inline-flex; align-items:center; min-height:44px; font-size:13px; text-underline-offset:4px; }
+#view-mapa .atlas-stage-question { display:block; width:100%; padding:0 8px; font-size:13px; line-height:1.5; color:var(--atlas-mint); }
+#view-mapa .atlas-cycle-intro h2 { font:400 clamp(30px,3.5vw,44px)/1.2 var(--serif,Georgia,serif); margin:10px 0; color:inherit; }
+#view-mapa .atlas-panel ul { columns:auto; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 24px; padding:0; list-style:none; }
+#view-mapa .atlas-panel li { margin:0; padding:0; border-bottom:1px solid #8bacac55; }
+#view-mapa .atlas-panel li::before { content:none; }
+#view-mapa .atlas-panel li > a { display:block; min-height:44px; padding:12px 0; text-decoration:none; }
+#view-mapa .atlas-panel li > a:hover { text-decoration:underline; text-underline-offset:4px; }
+#view-mapa .atlas-destination-question { display:block; color:#c7dcdb; font-size:13px; line-height:1.55; margin-top:6px; }
+#view-mapa .atlas-doors a > div { width:78%; background:linear-gradient(to right,var(--atlas-cream) 65%,transparent); }
+#view-mapa .atlas-definition summary { min-height:44px; padding-block:12px; }
+@media(max-width:650px) { #view-mapa .atlas-panel ul { grid-template-columns:1fr; } #view-mapa .atlas-stage-question { font-size:12px; padding:0 4px; } }
+#view-mapa .atlas-panel h3 { font:400 30px/1.2 var(--serif,Georgia,serif);margin:8px 0 12px;color:inherit; }
+#view-mapa .atlas-back { display:inline-flex;align-items:center;min-height:44px;margin-top:12px;color:var(--atlas-mint);font-size:13px;text-underline-offset:4px; }
+#view-mapa #mp-ciclo, #view-mapa #atlas-etapas, #view-mapa #atlas-analise { scroll-margin-top:90px; }
+#view-mapa .atlas-city-point::before { content:'';display:inline-block;width:8px;height:8px;border:1px solid currentColor;border-radius:50%;margin-right:8px; }

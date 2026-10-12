@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.110.0";
+const APP_VERSION = "0.110.1";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -13531,9 +13531,9 @@ function renderCompare() {
   if (cmp.insts.length < 2) {
     el.innerHTML = `${pageHead({ title: "Comparar instituições", fontes: "BCB IF.data" })}
     ${cmpAbertura()}
-    <p class="viewdesc">Compare de 2 a 10 instituições em ${C.metric_catalog.length} métricas trimestrais (5 períodos), com normalizações, série histórica, dispersão e exportação. Nível de consolidação sempre explícito; comparações incompatíveis são bloqueadas.</p>
+    <p class="viewdesc">Compare de 2 a 10 instituições em ${C.metric_catalog.length} métricas trimestrais (${C.anomes_list.length} períodos disponíveis), com normalizações, série histórica, dispersão e exportação. Nível de consolidação sempre explícito; comparações incompatíveis são bloqueadas.</p>
     ${selHtml}
-    <div class="note">Sugestões: <a href="javascript:void(0)" onclick="cmpQuick()">5 grandes bancos</a> · <a href="javascript:void(0)" onclick="cmpPreset('coops')">maiores cooperativas</a> · <a href="javascript:void(0)" onclick="cmpPreset('s2')">maiores S2</a> · <a href="javascript:void(0)" onclick="cmpPreset('s3')">maiores S3</a> · ou monte a partir da <a href="/observatorio/products" onclick="nav('products');return false">matriz de um produto</a> (checkbox → comparar selecionadas).</div>`;
+    <div class="note">Use a busca ou os grupos acima para escolher de 2 a 10 instituições. Outra opção é abrir a <a href="/observatorio/products" onclick="nav('products');return false">matriz de um produto</a>, marcar as instituições e usar “comparar selecionadas”.</div>`;
     return;
   }
 

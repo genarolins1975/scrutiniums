@@ -111,7 +111,8 @@
       if (mapa) {
         mapaEntrada(mapa);
         // The core owns the data; the atlas only reads its published metadata.
-        window.CreditAtlas?.enhance(mapa, typeof state === 'undefined' ? {} : state.data.meta || {});
+        window.CreditAtlas?.enhance(mapa, typeof state === 'undefined' ? {} : state.data.meta || {},
+          typeof GUIA === 'undefined' || typeof ROUTES === 'undefined' ? {} : Object.fromEntries(Object.entries(GUIA).filter(([v]) => ROUTES[v]).map(([v, g]) => ['/observatorio' + ROUTES[v], g.q])));
       }
     } finally { observer.observe(main, { childList: true, subtree: true }); }
   }
@@ -119,4 +120,5 @@
   window.addEventListener('resize', atualizar);
   atualizar();
 })();
+
 

@@ -20,3 +20,12 @@
 @media(max-width:760px) { .percurso { padding:24px 18px;margin-bottom:32px;scroll-margin-top:120px }.cabecalho>p:last-child { font-size:15px }.etapas { grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px }.objeto { aspect-ratio:.75 }.botao { font-size:13px;padding:6px 10px;gap:8px }.detalhe { grid-template-columns:minmax(0,1fr);gap:20px;padding-top:24px;min-height:0 }.miniatura { display:none }.conceito { grid-column:auto }.explicacao h3 { font-size:26px }.nota { margin-top:20px }.etapas>button { scroll-margin-top:120px } }
 @media(prefers-reduced-motion:reduce) { .objeto { transition:none }.etapas>button:hover .objeto { transform:none } }
 @media print { .percurso { break-inside:avoid }.objeto { display:none }.percurso a,.percurso p,.percurso h2,.percurso h3,.percurso span { color:var(--cor-carvao) }.percurso { background:var(--cor-superficie) }.miniatura { display:none }.detalhe { grid-template-columns:2fr 1fr } }
+
+.pergunta { display:block;color:var(--atlas-texto);font-size:14px;line-height:1.5;margin:14px 4px 6px }
+.encontra { display:block;color:var(--atlas-texto-secundario);font-size:12px;line-height:1.6;margin:0 4px }
+.explicacao .recorte { border-top:1px solid var(--atlas-separador);padding-top:12px }
+.etapas>button { display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start }
+.objeto { width:100% }
+@media(max-width:390px) { .botao { gap:5px;padding-inline:7px;font-size:12px }.botao>span:first-child { padding-right:5px }.pergunta { font-size:13px } }
+.etapas,.detalhe { scroll-margin-top:150px }
+.voltar { display:inline-flex;align-items:center;min-height:44px;margin-top:16px;font-size:13px;color:var(--atlas-link);text-decoration:underline;text-underline-offset:4px }
