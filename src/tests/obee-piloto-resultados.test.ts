@@ -1,7 +1,7 @@
 import {describe,it,expect} from 'vitest';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {pilotoResultados,pilotRow,pilotCsv,pilotDimensions,pilotPreviewEnabled} from '@/lib/eficiencia/piloto-resultados';
+import {pilotoResultados,pilotRow,pilotCsv,pilotDimensions,pilotPreviewEnabled,pilotGap} from '@/lib/eficiencia/piloto-resultados';
 import {PilotoResultados} from '@/components/eficiencia/PilotoResultados';
 import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
 
@@ -44,3 +44,18 @@ describe('Apresentação experimental dos resultados',()=>{
   expect(renderToStaticMarkup(createElement(AtlasCidadao,{showPilot:true}))).toContain('id="atlas-piloto"');
  });
 });
+
+ describe('Decomposição da diferença do piloto',()=>{
+  it('reconcilia todos os 676 pares com os escores congelados, sem arredondamento',()=>{
+   for(const a of pilotoResultados.rows)for(const b of pilotoResultados.rows){
+    const gap=pilotGap(a.id,b.id)!;
+    expect(gap.components.reduce((sum,d)=>sum+d.points,0)).toBeCloseTo(a.pilot_five.score-b.pilot_five.score,10);
+    expect(gap.components.every(d=>Math.abs(d.points)<=20)).toBe(true);
+    expect(gap.total).toBeCloseTo(-pilotGap(b.id,a.id)!.total,10);
+   }
+  });
+  it('mantém zero para a mesma cidade e ausência para recorte não suportado',()=>{
+   expect(pilotGap('2611606','2611606')!.components.every(d=>d.points===0)).toBe(true);
+   expect(pilotGap('Brasil','2611606')).toBeNull();
+  });
+ });

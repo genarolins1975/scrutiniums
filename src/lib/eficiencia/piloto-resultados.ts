@@ -20,3 +20,14 @@ export function pilotCsv(){
 export function pilotPreviewEnabled(environment:string|undefined,nodeEnvironment:string|undefined){
  return environment==='preview'||(!environment&&nodeEnvironment==='development');
 }
+
+/** Additive accounting of the frozen basket, not a causal attribution. */
+export function pilotGap(place:string,reference:string){
+ const a=pilotRow(place),b=pilotRow(reference);
+ if(!a||!b)return null;
+ const components=pilotDimensions.map(d=>{
+  const weight=snapshot.reference.basket.find(m=>m.id===d.id)!.weight;
+  return {id:d.id,name:d.name,weight,points:weight*(a.indicator_scores[d.id]-b.indicator_scores[d.id])};
+ });
+ return {components,total:a.pilot_five.score-b.pilot_five.score};
+}
