@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ANOS, PROVAS, STATUS, catalogo, conferir, cobertura, observacao, recorte, snapshot, type Estado } from "@/lib/contas-estaduais/dados";
 
 const numero = (n: number | null, casas = 1) => n === null ? "Sem registro" : n.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
@@ -7,19 +7,30 @@ const dataGold = new Date(snapshot.proveniencia.geracaoGold).toLocaleDateString(
 const normalizar = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 function Trajetoria({ estado }: { estado: Estado }) {
+ const area = useRef<SVGSVGElement>(null);
+ const [largura, setLargura] = useState(575);
+ useEffect(() => {
+  const svg = area.current;
+  if (!svg) return;
+  const medir = () => setLargura(Math.max(240, svg.getBoundingClientRect().width));
+  medir();
+  const observer = new ResizeObserver(medir);
+  observer.observe(svg);
+  return () => observer.disconnect();
+ }, []);
  const pontos = ANOS.filter(a => a < estado.exercicio).reverse().map(ano => ({ ano, valor: observacao(estado, ano).valor }));
  const valores = pontos.flatMap(p => p.valor === null ? [] : [p.valor]);
  if (!valores.length) return <p>Não há série anual neste snapshot para esta UF.</p>;
  const minimo = Math.min(0, ...valores), maximo = Math.max(0, ...valores), amplitude = maximo - minimo || 1;
- const x = (ano: number) => 65 + (ano - 2015) * 47;
+ const x = (ano: number) => 65 + (ano - 2015) * (largura - 100) / 10;
  const y = (v: number) => 185 - (v - minimo) / amplitude * 135;
  const trechos: { ano: number; valor: number }[][] = [[]];
  pontos.forEach(p => p.valor === null ? trechos.push([]) : trechos[trechos.length - 1].push({ ano: p.ano, valor: p.valor }));
  return <figure className="ce-figure">
  <figcaption><strong>A trajetória anual de {estado.uf}</strong><span>DCL/RCL · % · encerramento de cada exercício</span></figcaption>
- <svg viewBox="0 0 575 235" role="img" aria-label={"Série de " + estado.nome + ", 2015 a 2025. Valores completos na tabela abaixo. O período parcial de 2026 não integra a linha."}>
- {[minimo, maximo].filter((v,i,a) => a.indexOf(v) === i).map(v => <g key={v}><line x1="65" x2="535" y1={y(v)} y2={y(v)} stroke="#aab5b6" strokeDasharray="3 5"/><text x="54" y={y(v)+4} textAnchor="end">{numero(v)}</text></g>)}
- {minimo < 0 && maximo > 0 && <g><line x1="65" x2="535" y1={y(0)} y2={y(0)} stroke="#aab5b6"/><text x="54" y={y(0)+4} textAnchor="end">0</text></g>}
+ <svg ref={area} viewBox={"0 0 " + largura + " 235"} role="img" aria-label={"Série de " + estado.nome + ", 2015 a 2025. Valores completos na tabela abaixo. O período parcial de 2026 não integra a linha."}>
+ {[minimo, maximo].filter((v,i,a) => a.indexOf(v) === i).map(v => <g key={v}><line x1="65" x2={largura-35} y1={y(v)} y2={y(v)} stroke="#aab5b6" strokeDasharray="3 5"/><text x="54" y={y(v)+4} textAnchor="end">{numero(v)}</text></g>)}
+ {minimo < 0 && maximo > 0 && <g><line x1="65" x2={largura-35} y1={y(0)} y2={y(0)} stroke="#aab5b6"/><text x="54" y={y(0)+4} textAnchor="end">0</text></g>}
  {trechos.filter(t => t.length).map((t,i) => <polyline key={i} points={t.map(p => x(p.ano)+","+y(p.valor)).join(" ")} fill="none" stroke="#09697a" strokeWidth="2.5"/>)}
  {pontos.filter(p => p.valor !== null).map(p => <circle key={p.ano} cx={x(p.ano)} cy={y(p.valor!)} r="3.5" fill="#09697a"/>)}
  {[2015,2020,2025].map(a => <text key={a} x={x(a)} y="219" textAnchor="middle">{a}</text>)}
