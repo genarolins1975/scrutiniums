@@ -1,0 +1,417 @@
+{
+  "fonte": {
+    "nome": "Tesouro Nacional · RFC 2025",
+    "url": "https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/thot/arquivos/publicacoes/54904_1706197/RFC_2025%20de%2017_06_2026.pdf",
+    "pagina": "https://www.tesourotransparente.gov.br/publicacoes/relatorio-foco-em-custos-rfc/2025/114",
+    "sha256": "a4f30c1c0e6c1010a9e71eb3fb65c889ae412907c3884ab58343684c14c0d400",
+    "publicacao": "2026-06-17"
+  },
+  "captura": "2026-10-12T09:17:12.981761+00:00",
+  "unidade": "R$ milhões correntes",
+  "periodo": [
+    2024,
+    2025
+  ],
+  "metodo": "Extração das tabelas das páginas 9, 11 e 15; percentuais reais reproduzidos da fonte, calculados por ela com IPCA médio.",
+  "registros": [
+    {
+      "id": "total",
+      "parent": null,
+      "nome": "Custos",
+      "ano2025": 3661983.6,
+      "ano2024": 3429963.1,
+      "diferencaPublicada": 232020.5,
+      "nominalPublicado": 6.8,
+      "realPublicado": 1.7,
+      "pagina": 9
+    },
+    {
+      "id": "operacao",
+      "parent": "total",
+      "nome": "Mão de Obra e Funcionamento",
+      "ano2025": 356108.6,
+      "ano2024": 322470.1,
+      "diferencaPublicada": 33638.5,
+      "nominalPublicado": 10.4,
+      "realPublicado": 5.2,
+      "pagina": 9
+    },
+    {
+      "id": "transferencias",
+      "parent": "total",
+      "nome": "Transferências e Incentivos",
+      "ano2025": 341633.7,
+      "ano2024": 310357.5,
+      "diferencaPublicada": 31276.2,
+      "nominalPublicado": 10.1,
+      "realPublicado": 4.8,
+      "pagina": 9
+    },
+    {
+      "id": "previdencia",
+      "parent": "total",
+      "nome": "Previdenciários e Assistenciais",
+      "ano2025": 1532809.0,
+      "ano2024": 1419822.9,
+      "diferencaPublicada": 112986.2,
+      "nominalPublicado": 8.0,
+      "realPublicado": 2.8,
+      "pagina": 9
+    },
+    {
+      "id": "financeiros",
+      "parent": "total",
+      "nome": "Financeiros",
+      "ano2025": 1216620.5,
+      "ano2024": 1049250.2,
+      "diferencaPublicada": 167370.3,
+      "nominalPublicado": 16.0,
+      "realPublicado": 10.4,
+      "pagina": 9
+    },
+    {
+      "id": "outros",
+      "parent": "total",
+      "nome": "Outros Custos",
+      "ano2025": 214811.7,
+      "ano2024": 328062.5,
+      "diferencaPublicada": -113250.7,
+      "nominalPublicado": -34.5,
+      "realPublicado": -37.6,
+      "pagina": 9
+    },
+    {
+      "id": "mao-obra",
+      "parent": "operacao",
+      "nome": "Mão de Obra",
+      "ano2025": 237850.1,
+      "ano2024": 214927.5,
+      "diferencaPublicada": 22922.6,
+      "nominalPublicado": 10.7,
+      "realPublicado": 5.4,
+      "pagina": 9
+    },
+    {
+      "id": "funcionamento",
+      "parent": "operacao",
+      "nome": "Funcionamento",
+      "ano2025": 118258.5,
+      "ano2024": 107542.6,
+      "diferencaPublicada": 10715.9,
+      "nominalPublicado": 10.0,
+      "realPublicado": 4.7,
+      "pagina": 9
+    },
+    {
+      "id": "reducoes",
+      "parent": "fora-custos",
+      "nome": "Outras Reduções Patrimoniais",
+      "ano2025": 821451.9,
+      "ano2024": 757498.0,
+      "diferencaPublicada": 63953.9,
+      "nominalPublicado": 8.4,
+      "realPublicado": 3.3,
+      "pagina": 9
+    },
+    {
+      "id": "reparticao",
+      "parent": "fora-custos",
+      "nome": "Repartição de Receita",
+      "ano2025": 540783.4,
+      "ano2024": 497516.5,
+      "diferencaPublicada": 43266.9,
+      "nominalPublicado": 8.7,
+      "realPublicado": 3.5,
+      "pagina": 9
+    },
+    {
+      "id": "civil",
+      "parent": "mao-obra",
+      "nome": "Mão de Obra Civil",
+      "ano2025": 197426.5,
+      "ano2024": 175957.5,
+      "diferencaPublicada": 21468.9,
+      "nominalPublicado": 12.2,
+      "realPublicado": 6.8,
+      "pagina": 11
+    },
+    {
+      "id": "militar",
+      "parent": "mao-obra",
+      "nome": "Mão de Obra Militar",
+      "ano2025": 40423.6,
+      "ano2024": 38970.0,
+      "diferencaPublicada": 1453.7,
+      "nominalPublicado": 3.7,
+      "realPublicado": -1.2,
+      "pagina": 11
+    },
+    {
+      "id": "servicos",
+      "parent": "funcionamento",
+      "nome": "Serviços",
+      "ano2025": 73508.1,
+      "ano2024": 67490.1,
+      "diferencaPublicada": 6018.0,
+      "nominalPublicado": 8.9,
+      "realPublicado": 3.7,
+      "pagina": 15
+    },
+    {
+      "id": "material",
+      "parent": "funcionamento",
+      "nome": "Material de Consumo",
+      "ano2025": 38294.6,
+      "ano2024": 34188.0,
+      "diferencaPublicada": 4106.6,
+      "nominalPublicado": 12.0,
+      "realPublicado": 6.7,
+      "pagina": 15
+    },
+    {
+      "id": "depreciacao",
+      "parent": "funcionamento",
+      "nome": "Depreciação, Amortização e Exaustão",
+      "ano2025": 6429.5,
+      "ano2024": 5853.3,
+      "diferencaPublicada": 576.1,
+      "nominalPublicado": 9.8,
+      "realPublicado": 4.6,
+      "pagina": 15
+    },
+    {
+      "id": "mora",
+      "parent": "funcionamento",
+      "nome": "Juros e Encargos de Mora",
+      "ano2025": 26.4,
+      "ano2024": 11.3,
+      "diferencaPublicada": 15.2,
+      "nominalPublicado": 134.9,
+      "realPublicado": 123.7,
+      "pagina": 15
+    },
+    {
+      "id": "apoio",
+      "parent": "servicos",
+      "nome": "Serviços de Apoio",
+      "ano2025": 29436.4,
+      "ano2024": 26962.8,
+      "diferencaPublicada": 2473.6,
+      "nominalPublicado": 9.2,
+      "realPublicado": 4.0,
+      "pagina": 15
+    },
+    {
+      "id": "tecnicos",
+      "parent": "servicos",
+      "nome": "Serviços Técnicos",
+      "ano2025": 26604.0,
+      "ano2024": 24328.8,
+      "diferencaPublicada": 2275.2,
+      "nominalPublicado": 9.4,
+      "realPublicado": 4.1,
+      "pagina": 15
+    },
+    {
+      "id": "diarias",
+      "parent": "servicos",
+      "nome": "Diárias, Transportes e Passagens",
+      "ano2025": 6316.1,
+      "ano2024": 5411.8,
+      "diferencaPublicada": 904.3,
+      "nominalPublicado": 16.7,
+      "realPublicado": 11.1,
+      "pagina": 15
+    },
+    {
+      "id": "outros-servicos",
+      "parent": "servicos",
+      "nome": "Outros Serviços",
+      "ano2025": 4867.0,
+      "ano2024": 4786.4,
+      "diferencaPublicada": 80.6,
+      "nominalPublicado": 1.7,
+      "realPublicado": -3.2,
+      "pagina": 15
+    },
+    {
+      "id": "energia-agua",
+      "parent": "servicos",
+      "nome": "Energia Elétrica e Água",
+      "ano2025": 3642.0,
+      "ano2024": 3588.9,
+      "diferencaPublicada": 53.1,
+      "nominalPublicado": 1.5,
+      "realPublicado": -3.4,
+      "pagina": 15
+    },
+    {
+      "id": "locacao",
+      "parent": "servicos",
+      "nome": "Locação e Manutenção de Bens",
+      "ano2025": 2642.6,
+      "ano2024": 2411.4,
+      "diferencaPublicada": 231.2,
+      "nominalPublicado": 9.6,
+      "realPublicado": 4.4,
+      "pagina": 15
+    },
+    {
+      "id": "material-uso",
+      "parent": "material",
+      "nome": "Material para Uso",
+      "ano2025": 38208.5,
+      "ano2024": 34114.2,
+      "diferencaPublicada": 4094.3,
+      "nominalPublicado": 12.0,
+      "realPublicado": 6.7,
+      "pagina": 15
+    },
+    {
+      "id": "material-gratuito",
+      "parent": "material",
+      "nome": "Material para Distribuição Gratuita",
+      "ano2025": 86.1,
+      "ano2024": 73.8,
+      "diferencaPublicada": 12.3,
+      "nominalPublicado": 16.7,
+      "realPublicado": 11.1,
+      "pagina": 15
+    },
+    {
+      "id": "moveis",
+      "parent": "depreciacao",
+      "nome": "Depreciação de Bens Móveis",
+      "ano2025": 5864.3,
+      "ano2024": 5283.1,
+      "diferencaPublicada": 581.2,
+      "nominalPublicado": 11.0,
+      "realPublicado": 5.7,
+      "pagina": 15
+    },
+    {
+      "id": "imoveis",
+      "parent": "depreciacao",
+      "nome": "Depreciação de Bens Imóveis",
+      "ano2025": 340.2,
+      "ano2024": 367.7,
+      "diferencaPublicada": -27.5,
+      "nominalPublicado": -7.5,
+      "realPublicado": -11.9,
+      "pagina": 15
+    },
+    {
+      "id": "amortizacao",
+      "parent": "depreciacao",
+      "nome": "Amortização",
+      "ano2025": 225.0,
+      "ano2024": 202.6,
+      "diferencaPublicada": 22.4,
+      "nominalPublicado": 11.1,
+      "realPublicado": 5.8,
+      "pagina": 15
+    }
+  ],
+  "conferencia": [
+    {
+      "grupo": "total",
+      "ano": 2024,
+      "totalPublicado": 3429963.1,
+      "somaParcelas": 3429963.2,
+      "residuoMilhoes": -0.1
+    },
+    {
+      "grupo": "total",
+      "ano": 2025,
+      "totalPublicado": 3661983.6,
+      "somaParcelas": 3661983.5,
+      "residuoMilhoes": 0.1
+    },
+    {
+      "grupo": "operacao",
+      "ano": 2024,
+      "totalPublicado": 322470.1,
+      "somaParcelas": 322470.1,
+      "residuoMilhoes": 0.0
+    },
+    {
+      "grupo": "operacao",
+      "ano": 2025,
+      "totalPublicado": 356108.6,
+      "somaParcelas": 356108.6,
+      "residuoMilhoes": 0.0
+    },
+    {
+      "grupo": "mao-obra",
+      "ano": 2024,
+      "totalPublicado": 214927.5,
+      "somaParcelas": 214927.5,
+      "residuoMilhoes": 0.0
+    },
+    {
+      "grupo": "mao-obra",
+      "ano": 2025,
+      "totalPublicado": 237850.1,
+      "somaParcelas": 237850.1,
+      "residuoMilhoes": 0.0
+    },
+    {
+      "grupo": "funcionamento",
+      "ano": 2024,
+      "totalPublicado": 107542.6,
+      "somaParcelas": 107542.7,
+      "residuoMilhoes": -0.1
+    },
+    {
+      "grupo": "funcionamento",
+      "ano": 2025,
+      "totalPublicado": 118258.5,
+      "somaParcelas": 118258.6,
+      "residuoMilhoes": -0.1
+    },
+    {
+      "grupo": "servicos",
+      "ano": 2024,
+      "totalPublicado": 67490.1,
+      "somaParcelas": 67490.1,
+      "residuoMilhoes": 0.0
+    },
+    {
+      "grupo": "servicos",
+      "ano": 2025,
+      "totalPublicado": 73508.1,
+      "somaParcelas": 73508.1,
+      "residuoMilhoes": 0.0
+    },
+    {
+      "grupo": "material",
+      "ano": 2024,
+      "totalPublicado": 34188.0,
+      "somaParcelas": 34188.0,
+      "residuoMilhoes": 0.0
+    },
+    {
+      "grupo": "material",
+      "ano": 2025,
+      "totalPublicado": 38294.6,
+      "somaParcelas": 38294.6,
+      "residuoMilhoes": 0.0
+    },
+    {
+      "grupo": "depreciacao",
+      "ano": 2024,
+      "totalPublicado": 5853.3,
+      "somaParcelas": 5853.4,
+      "residuoMilhoes": -0.1
+    },
+    {
+      "grupo": "depreciacao",
+      "ano": 2025,
+      "totalPublicado": 6429.5,
+      "somaParcelas": 6429.5,
+      "residuoMilhoes": 0.0
+    }
+  ],
+  "notaRevisao": "A edição 2025 revisou a classificação de 2024 entre Previdenciários e Assistenciais e Outros Custos, devido à metodologia da Proteção Social dos Militares. Comparações usam os dois anos desta mesma edição.",
+  "notaPrecisao": "A tabela da página 9 informa totais de 3.661.983,6 e 3.429.963,1 milhões; o sumário informa 3.661.983,5 e 3.429.963,2 milhões, respectivamente. Mantêm-se os valores da tabela, sem ajustar parcelas. Resíduos de soma estão documentados no download."
+}
