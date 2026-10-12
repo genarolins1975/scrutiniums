@@ -26,3 +26,15 @@ O link no piloto leva as duas capitais selecionadas. O retorno ao panorama acomp
 Validação local: 21 testes passaram nos arquivos `obee-laboratorio-cesta.test.ts` e `obee-piloto-resultados.test.ts`; lint dos três arquivos TypeScript envolvidos sem avisos ou erros. HTTP real da rota respondeu 200 com `private, no-store`, `noindex` e `nosniff`. Percurso laboratório → panorama → laboratório confirmado no navegador com Recife/Curitiba; troca para São Paulo atualizou o destino de retorno. Captura: `preview-integrado.jpg`. O bloqueio de produção foi verificado pelos testes automatizados; não houve publicação da rota em produção nesta etapa.
 
 Para reproduzir localmente, instalar dependências, executar os scripts de materialização usados pelo projeto e iniciar `npm run dev`. A verificação completa de tipos e build pertence ao CI do PR; os testes locais acima não equivalem a essa passagem integral.
+
+## Reconciliação alternativa e correção de CI em 12/10/2026
+
+O CI da integração (`9f2f12c7`, execução `38279411825`) encontrou TS1501 no teste da rota: a flag `s` da expressão regular exige ES2018, acima do alvo configurado. O teste passou a usar `[\s\S]`, preservando a leitura multilinha sem alterar a configuração global de compilação. Verificação local de tipos concluída sem erros; os 21 testes da rota/piloto e o lint passaram após a correção.
+
+O novo `scripts/auditar-cesta-obee-v3.py` ordena valores originais das auditorias, calcula os pontos médios dos empates e faz agregação/decomposição com `fractions.Fraction`. Não importa as funções do motor original. Confere 18 cenários, 468 observações cidade–cenário, 49 comparações entre cenários e a concordância das notas no JSON, CSV e HTML. Os pesos são reconstruídos a partir das duas convenções declaradas. Empates e inversões de pares são comparados com aritmética exata, sem escolher tolerância para decidir a ordem.
+
+Resultado: nenhuma divergência acima de `1e-9`; maior diferença absoluta entre os números gravados e a reconstrução racional = `1,87 × 10⁻¹⁴` ponto, compatível com representação numérica. Relatório com hashes: [reconciliacao-aritmetica-v3.json](../reconciliacao-aritmetica-v3.json). Nove testes adversos cobrem, entre outros casos, nota/peso alterado, capital ausente, não finito, CSV truncado e HTML de outra edição. Essa verificação passou a integrar o CI. Os 66 testes existentes do motor/evidências também passaram localmente.
+
+Reprodução: `python3.12 -m unittest scripts.test_auditar_cesta_obee_v3` e `python3.12 scripts/auditar-cesta-obee-v3.py`. O script apenas lê as entradas e imprime o relatório; não escreve no pacote congelado nem promove publicação.
+
+**Limite da conclusão:** segunda implementação aritmética elaborada pela mesma assistência técnica, não revisão metodológica independente. Parte das auditorias preservadas, sem repetir a extração das fontes oficiais; não verifica a semântica dos dados nem quantifica incerteza amostral. Nenhum parecer foi preenchido. O aceite da definição de habitação, dos pesos/compensações e do escopo de divulgação continua dependente de revisão substantiva e decisão editorial.

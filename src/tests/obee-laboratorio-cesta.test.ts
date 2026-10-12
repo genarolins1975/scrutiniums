@@ -33,7 +33,7 @@ describe('OBEE: laboratório restrito ao preview', () => {
     expect(html).toContain('id="backlink"');
     expect(html).toContain('Prévia experimental para revisão');
     expect(html).toContain('Precisão municipal não quantificada');
-    const payload = JSON.parse(html.match(/<script id="data" type="application\/json">(.*?)<\/script>/s)![1]);
+    const payload = JSON.parse(html.match(/<script id="data" type="application\/json">([\s\S]*?)<\/script>/)![1]);
     expect(payload.scenarios).toHaveLength(18);
     expect(payload.scenarios.every((s: {rows: unknown[]}) => s.rows.length === 26)).toBe(true);
   });
