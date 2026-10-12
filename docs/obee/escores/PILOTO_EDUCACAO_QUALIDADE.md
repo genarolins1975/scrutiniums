@@ -65,3 +65,13 @@ python3 scripts/eficiencia/auditar-microdados-saeb.py --acquire --cache-dir /tmp
 ```
 
 Sem `--acquire`, o script confere os membros locais contra o manifesto e refaz a inspeção. A nova fonte prioritária passa a ser uma tabulação oficial de participação por **rede municipal, localização urbana e etapa**. Caso não esteja publicada, preparar pedido de tabulação ao Inep; nenhum pedido externo foi enviado nesta rodada.
+# Diligência complementar — Fundeb/VAAR (12/10/2026)
+
+Foram adquiridos e inspecionados os dois XLSX de dicionário e resultados de aprendizagem disponíveis na página oficial de bases do VAAR 2025. Há 5.595 entes e 26 capitais identificadas univocamente com IPSaeb 2023 numérico no intervalo 0–1. Evidências, hashes, linhas e valores estão em `FUNDEB_SAEB_2023_DILIGENCIA.json`.
+
+Nesta base específica, ID_MUNICIPIO é IBGE e ID_DEPENDENCIA_ADM distingue estadual/municipal. Isso não muda o significado dos IDs mascarados de TS_ESCOLA. O IPSaeb municipal reúne 5º e 9º anos, conforme as notas da planilha; o dicionário não oferece localização urbana. A exclusão de estudantes sem proficiência/peso impede tratar as linhas da microbase como denominador de elegibilidade. O ZIP VAAR não foi adquirido ou inspecionado. O piloto permanece sem participação compatível e sem escore validado.
+
+Reprodução: `python3 scripts/eficiencia/auditar-fundeb-saeb.py --cache-dir /tmp/obee-fundeb --cities src/lib/eficiencia/panorama-atlas.json --output docs/obee/escores/FUNDEB_SAEB_2023_DILIGENCIA.json`. Acrescentar `--acquire` para nova captura. Nesta entrega foi executada a auditoria local dos dois arquivos adquiridos.
+
+Próxima ação concreta: obter a tabulação especificada em `PARTICIPACAO_SAEB_SOLICITACAO.md`. Minuta preparada, sem envio externo. Acesso, resposta e referências continuam pendentes para o escore de capítulo. CI do commit anterior `1ebf7d8`: testes e interface aprovados. Esta diligência não altera a interface.
+

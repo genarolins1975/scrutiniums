@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "review_date": "2026-10-11",
+  "review_date": "2026-10-12",
   "candidate": "education.quality",
   "role": "PROPOSTA_DE_PILOTO_NAO_VALIDADA",
   "scope": {
@@ -155,7 +155,7 @@
   "score": null,
   "publication_eligible": false,
   "chapter_eligible": false,
-  "next_source": "Localizar participação oficial discriminada por rede municipal urbana; TS_ESCOLA obtida nesta rodada não distingue a dependência administrativa.",
+  "next_source": "Tabulacao oficial municipal urbana do 5o ano. VAAR publicado agrega 5o e 9o anos; dicionario sem localizacao. Minuta tecnica preparada, nao enviada.",
   "avoid": [
     "usar matrícula total como denominador sem conciliação",
     "atribuir cobertura Total à proficiência Urbana",
@@ -165,5 +165,6 @@
     "misturar escalas ou edições"
   ],
   "decision": "Manter indicador descritivo; não publicar nota até fechar evidências e referências.",
-  "microdata_review": "MICRODADOS_SAEB_2023_DILIGENCIA.json"
+  "microdata_review": "MICRODADOS_SAEB_2023_DILIGENCIA.json",
+  "fundeb_review": "FUNDEB_SAEB_2023_DILIGENCIA.json"
 }
