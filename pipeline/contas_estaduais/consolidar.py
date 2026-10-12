@@ -1,4 +1,4 @@
-"""Reproduz o piloto exclusivamente a partir dos bytes Siconfi arquivados.
+"""Reproduz a base nacional exclusivamente a partir dos bytes Siconfi arquivados.
 
 Executar: python3 -m pipeline.contas_estaduais.consolidar [--check]
 Conferência da fonte significa identidade, campos e aritmética; não auditoria.
@@ -11,7 +11,7 @@ from pathlib import Path
 from pipeline.contas_estaduais.coletar import UFS, mapear_rgf, CONTAS
 
 ROOT = Path(__file__).resolve().parents[2]
-RAW = ROOT / "public/contas-estaduais/evidencias/20261012"
+RAW = ROOT / "public/contas-estaduais/evidencias/20261012-nacional"
 OUT = ROOT / "src/lib/contas-estaduais/primarios.json"
 RECEITA = "ReceitasExcetoIntraOrcamentarias"
 DESPESA = "DespesasExcetoIntraOrcamentarias"
@@ -82,7 +82,7 @@ def ler(registro, pasta):
     return itens, fontes
 
 def consolidar():
-    resultado = dict(versao="0.2.0", captura="2026-10-12", escopo_conferencia="Identidade do ente, período, campos, integridade dos bytes e aritmética. Não constitui auditoria, certificação do Tesouro ou avaliação de eficiência.",
+    resultado = dict(versao="0.3.0", captura="2026-10-12", escopo_conferencia="Identidade do ente, período, campos, integridade dos bytes e aritmética. Não constitui auditoria, certificação do Tesouro ou avaliação de eficiência.",
                      perimetro_rreo="RREO Anexo 01, esfera estadual, acumulado janeiro a dezembro. Linhas de receitas e despesas exceto intra-orçamentárias; refinanciamento destacado fora dessas linhas. Valores nominais declarados; não inclui pagamentos de restos de exercícios anteriores.",
                      campos_rreo={k: dict(cod_conta=v[0], coluna=v[1]) for k, v in CAMPOS.items()},
                      campos_rgf=CONTAS, rgf=[], rreo=[])
@@ -107,6 +107,7 @@ def consolidar():
             else:
                 obs.update(mapear_rreo(itens, uf, ano))
             resultado[fonte].append(obs)
+    resultado["cobertura"] = dict(respostas=len(chaves), ufs=len({r["uf"] for r in resultado["rgf"] + resultado["rreo"]}), observacoes=len(resultado["rgf"])+4*len(resultado["rreo"]))
     return resultado
 
 if __name__ == "__main__":
@@ -117,6 +118,6 @@ if __name__ == "__main__":
     if args.check:
         if OUT.read_text() != texto:
             raise SystemExit("Dados publicados divergem da reprodução")
-        print("18 capturas íntegras; 36 observações reproduzidas.")
+        print("81 capturas íntegras; 162 observações reproduzidas.")
     else:
         OUT.write_text(texto)

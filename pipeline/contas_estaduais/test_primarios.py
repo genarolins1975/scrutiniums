@@ -11,8 +11,8 @@ class EvidenciasPrimarias(unittest.TestCase):
     def test_reproducao_integral_dos_arquivos_arquivados(self):
         resultado = consolidar()
         self.assertEqual(resultado, json.loads(OUT.read_text()))
-        self.assertEqual(len(resultado["rgf"]), 12)
-        self.assertEqual(len(resultado["rreo"]), 6)
+        self.assertEqual(len(resultado["rgf"]), 54)
+        self.assertEqual(len(resultado["rreo"]), 27)
 
     def test_integridade_nao_pode_ser_ignorada(self):
         r = copy.deepcopy(self.registro)

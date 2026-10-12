@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
  return <div className="ce-root">
  <a className="ce-skip" href="#conteudo-estados">Ir ao conteúdo</a>
  <header className="ce-header"><a className="ce-brand" href="/"><LogoMark size={22} /><span>Scrutiniums</span></a><span className="ce-header-name">Observatório Brasileiro de Contas Públicas</span><span className="ce-edition">Estados · Piloto</span></header>
- <nav className="ce-nav" aria-label="Nesta página"><a href="#ficha">Ficha estadual</a><a href="#provas">Seis fichas de prova</a><a href="#cobertura">Cobertura</a><a href="#catalogo">48 indicadores</a><a href="#metodo">Método e fontes</a></nav>
+ <nav className="ce-nav" aria-label="Nesta página"><a href="#ficha">Ficha estadual</a><a href="#comparacao">Comparar estados</a><a href="#provas">Seis fichas de prova</a><a href="#cobertura">Cobertura</a><a href="#catalogo">48 indicadores</a><a href="#metodo">Método e fontes</a></nav>
  {children}
  <footer className="ce-footer"><span>Scrutiniums · Evidências para decisões melhores</span><a href="#metodo">Versão, origem e limites desta etapa ↑</a></footer>
  </div>;

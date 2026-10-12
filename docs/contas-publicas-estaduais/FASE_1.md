@@ -1,4 +1,4 @@
-> Registro histórico da fase inicial. A implementação atual e a conferência das fontes estão descritas em [FASE_2.md](FASE_2.md).
+> Registro histórico da fase inicial. A implementação atual e a conferência das fontes estão descritas em [FASE_3.md](FASE_3.md).
 
 # Contas Públicas Estaduais — fase 1
 

@@ -1,3 +1,5 @@
+> Registro histórico do piloto. A cobertura atual está descrita em [FASE_3.md](FASE_3.md).
+
 # Piloto de execução orçamentária e dívida — v0.2.0
 
 A ficha passa a apresentar execução orçamentária, além da condição fiscal. A referência inicial é 2025, último exercício anual completo do piloto; 2026 continua disponível como período parcial da dívida.
