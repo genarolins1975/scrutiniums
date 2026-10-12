@@ -47,7 +47,8 @@ A [matriz JSON](elegibilidade-16-capitulos.json) preserva fontes, medidas, recor
 | 4 | Comparação conjunta das candidatas | Concluída: inclusões isoladas/conjuntas, pesos explícitos, definições, empates e decomposição; proposta documentada |
 | 5 | Precisão e divulgação municipal | Protocolo descritivo concluído e automatizado; anexo de 33 abas examinado. Precisão municipal não resolvida; aquisição adequada segue pendente, com bloqueio de inferência/agregado |
 | 6 | Parecer de conteúdo e pesos da candidata v3 | Concluído como proposta: manter candidatas e 40% apenas na referência experimental; conteúdo, compensações e limites explicitados, sem aprovação oficial |
-| 7 — próxima | Pacote de revisão independente e promoção de edição | Aprovar interpretação, precisão/divulgação, pesos, sensibilidade e limites; nenhuma liberação automática |
+| 7 | Pacote de revisão independente | Preparado: inventário congelado, seis critérios, registro vazio e triagem automática. Revisão independente ainda não realizada |
+| 7b — próxima | Revisão substantiva e decisão de edição | Responsável distinto examina os seis critérios e registra parecer; conferir autenticidade, independência e escopo antes de qualquer integração |
 | 8 | Integração ao produto | Identificar edição; comparar v2/v3; distinguir composição de variação temporal; conferir jornada e acessibilidade |
 
 Trilhas complementares: Saúde depende de cobertura/sub-registro infantil municipal por ano e do contrato temporal 2021–2023; Alimentação, Assistência, Justiça, Ambiente e Cultura exigem construtos e geografias compatíveis; Previdência, Esporte e Serviços precisam de contratos e fontes antes de notas. Não há prazo confiável para resolver dependências de evidência apenas com engenharia.
@@ -63,6 +64,8 @@ Trilhas complementares: Saúde depende de cobertura/sub-registro infantil munici
 - Países e escore integral dos 16 capítulos permanecem fora da implementação validada.
 
 ## Evidências e reprodução
+
+- [Pacote de revisão independente](REVISAO_INDEPENDENTE_V3.md): roteiro, inventário por hash, seis critérios e triagem documental.
 
 - [Parecer de conteúdo e pesos](PARECER_CONTEUDO_PESOS_V3.md): recomendação experimental, matriz de sete indicadores e critérios de revisão.
 

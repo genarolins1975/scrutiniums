@@ -155,14 +155,15 @@
       "scope": "Painel FJP: Brasil/regiões/UF, 2024. Auditoria adicional: SIDRA 9934 e 9940, 26 capitais, 2022, amostra preliminar.",
       "measure": "Percentual de domicílios com mais de dois moradores por dormitório; menor. Moradores e limiar >3 preservados como alternativas.",
       "blocker": "Precisão/divulgação municipal, conteúdo e aprovação dos pesos pendentes. Inclusão isolada e conjunta analisada em 18 cenários; forte associação com renda exige orçamento explícito.",
-      "next_action": "Parecer de conteúdo e pesos concluído como proposta experimental; preparar revisão independente e critérios de promoção. Precisão municipal permanece pendente.",
+      "next_action": "Pacote de revisão preparado. Obter parecer independente sobre os seis critérios e decisão de edição; precisão municipal permanece pendente.",
       "priority": "P1",
       "evidence": [
         "src/app/eficiencia-estatal/page.tsx",
         "docs/obee/resultados/HABITACAO_ADENSAMENTO.md",
         "docs/obee/resultados/CESTA_CONJUNTA_V3.md",
         "docs/obee/resultados/PRECISAO_CANDIDATAS.md",
-        "docs/obee/resultados/PARECER_CONTEUDO_PESOS_V3.md"
+        "docs/obee/resultados/PARECER_CONTEUDO_PESOS_V3.md",
+        "docs/obee/resultados/REVISAO_INDEPENDENTE_V3.md"
       ],
       "full_chapter_score_validated": false,
       "eligible_for_automatic_expansion": false
@@ -207,14 +208,15 @@
       "scope": "Painel existente: universos próprios de energia e PNAD TIC 2025. Auditoria adicional: SIDRA 9936, 26 capitais, 2022, amostra preliminar.",
       "measure": "Proporção de domicílios particulares permanentes ocupados com conexão à Internet; maior.",
       "blocker": "Precisão/divulgação municipal, conteúdo e aprovação dos pesos pendentes. Inclusão isolada e conjunta analisada em 18 cenários; forte associação com renda exige orçamento explícito.",
-      "next_action": "Parecer de conteúdo e pesos concluído como proposta experimental; preparar revisão independente e critérios de promoção. Precisão municipal permanece pendente.",
+      "next_action": "Pacote de revisão preparado. Obter parecer independente sobre os seis critérios e decisão de edição; precisão municipal permanece pendente.",
       "priority": "P2",
       "evidence": [
         "src/lib/eficiencia/energia/dados.ts",
         "docs/obee/resultados/CONECTIVIDADE_MUNICIPAL.md",
         "docs/obee/resultados/CESTA_CONJUNTA_V3.md",
         "docs/obee/resultados/PRECISAO_CANDIDATAS.md",
-        "docs/obee/resultados/PARECER_CONTEUDO_PESOS_V3.md"
+        "docs/obee/resultados/PARECER_CONTEUDO_PESOS_V3.md",
+        "docs/obee/resultados/REVISAO_INDEPENDENTE_V3.md"
       ],
       "full_chapter_score_validated": false,
       "eligible_for_automatic_expansion": false

@@ -1,0 +1,25 @@
+{
+  "version": "triagem-revisao-v3-v1",
+  "packet_sha256": "6707a21e499c774e838810541de48d81e760f520bb8ccd89c9f947f6542651fd",
+  "criteria": {
+    "conteudo": "pending",
+    "habitacao_definicao": "pending",
+    "pesos_compensacao": "pending",
+    "precisao_divulgacao": "pending",
+    "reproducao": "pending",
+    "edicao_apresentacao": "pending"
+  },
+  "pending": [
+    "conteudo",
+    "habitacao_definicao",
+    "pesos_compensacao",
+    "precisao_divulgacao",
+    "reproducao",
+    "edicao_apresentacao"
+  ],
+  "documentary_review_complete": false,
+  "human_authenticity_check_required": true,
+  "publication_ready": false,
+  "production_gate_changed": false,
+  "note": "Triagem documental não autentica revisores nem promove edição. Exige decisão editorial e integração explícitas."
+}
