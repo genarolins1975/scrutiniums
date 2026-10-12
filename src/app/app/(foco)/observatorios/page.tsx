@@ -9,6 +9,7 @@ import { COOKIE_OBSERVATORIO, DOMINIOS, type DominioId } from "@/lib/dominios";
 import { gold, integra } from "@/lib/energia/gold";
 import { metaEducacao } from "@/lib/eficiencia/dados";
 import { carimbo, dataBR, mesAno } from "@/lib/energia/formato";
+import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import custos from "@/lib/contas-publicas/snapshots/custos.json";
 import styles from "./escolha.module.css";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -21,6 +22,14 @@ export const dynamic = "force-dynamic";
 
 /** Última atualização de cada observatório, lida das golds publicadas. */
 function atualizacao(id: DominioId): { rotulo: string; linhas: string[] } {
+  if (id === "estados") {
+    return { rotulo: "Fontes e cobertura", linhas: [
+      "Tesouro Nacional / Siconfi: RREO Anexo 01 e RGF Anexo 02.",
+      `${primariosEstaduais.cobertura.ufs} UFs · ${primariosEstaduais.cobertura.observacoes} observações · ${primariosEstaduais.cobertura.respostas} respostas preservadas.`,
+      `Captura em ${dataBR(primariosEstaduais.captura)}. Encerramento de 2025 e dívida parcial de 2026.`,
+      "Indicadores de execução financeira; dados educacionais ainda não publicados.",
+    ] };
+  }
   if (id === "contas") {
     return { rotulo: "Fontes e cobertura", linhas: [
       "SIOP: execução orçamentária e acompanhamento das entregas físicas.",
@@ -59,6 +68,10 @@ function atualizacao(id: DominioId): { rotulo: string; linhas: string[] } {
 }
 
 const GUIAS: Record<DominioId, { chamada: string; temas: [string, string][] }> = {
+  estados: {
+    chamada: "Receitas, despesas e dívida nas 27 UFs.",
+    temas: [["Execução do orçamento", "Da autorização ao pagamento, com saldos e valores exatos"], ["Receitas, despesas e dívida", "Composição do gasto, financiamento e condição fiscal"], ["Comparação entre estados", "Recortes regionais, mediana, tabelas e fontes originais"]],
+  },
   contas: {
     chamada: "Do orçamento às entregas do governo federal.",
     temas: [["Orçamento e resultado fiscal", "Autorizações, pagamentos, receitas e saldo"], ["Custos e variações", "Maiores componentes e mudanças entre os anos"], ["Compromissos e entregas", "Restos a pagar e metas físicas registradas"]],
@@ -88,6 +101,8 @@ function Simbolo({ id }: { id: DominioId }) {
         <circle cx="40" cy="40" r="28" />
         <path d="m44 19-21 25h15l-2 18 22-26H43l1-17Z" />
         <path d="M40 5v7m0 56v7M5 40h7m56 0h7" />
+      </> : id === "estados" ? <>
+        <path d="M10 66h60M15 59V37h12v22m7 0V22h12v37m7 0V30h12v29M15 15h12m7 0h12m7 0h12" />
       </> : id === "contas" ? <>
         <path d="M20 10h30l12 12v48H20V10Zm30 0v14h12M28 33h26M28 41h26M28 60V50m12 10V46m12 14V52M26 64h30" />
       </> : <>

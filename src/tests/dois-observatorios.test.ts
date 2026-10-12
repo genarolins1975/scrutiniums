@@ -25,10 +25,14 @@ function paginas(dir: string, out: string[] = []): string[] {
 }
 
 describe("registro de domínios", () => {
-  it("quatro observatórios, ids e rotas estáveis, acento próprio", () => {
-    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas"]);
+  it("cinco observatórios, ids e rotas estáveis, acento próprio", () => {
+    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados"]);
     const [c, e, f, contas] = DOMINIOS;
     expect(contas.rotaRaiz).toBe("/contas-publicas");
+    expect(DOMINIOS[4].rotaRaiz).toBe("/contas-publicas-estaduais");
+    expect(dominioDoCaminho("/contas-publicas-estaduais")).toBe("estados");
+    expect(dominioDoCaminho("/contas-publicas-estaduais/despesas.csv")).toBe("estados");
+    expect(dominioDaSecao("estados:ficha")).toBe("estados");
     expect(dominioDoCaminho("/contas-publicas/custos")).toBe("contas");
     expect(dominioDaSecao("contas:metas")).toBe("contas");
     expect(c.rotaRaiz).toBe("/observatorio");
@@ -131,6 +135,16 @@ describe("Crédito preservado", () => {
 });
 
 describe("telemetria por domínio", () => {
+  it("a visita emitida pelo painel estadual é aceita e atribuída ao domínio estadual", () => {
+    const pagina = ler("src/app/contas-publicas-estaduais/page.tsx");
+    const secoes = Array.from(pagina.matchAll(/<MarcaVisita secao="([^"]+)"/g), (m) => m[1]);
+    expect(secoes).toHaveLength(1);
+    for (const s of secoes) {
+      expect(isViewSection(s), s).toBe(true);
+      expect(dominioDaSecao(s), s).toBe("estados");
+    }
+  });
+
   it("toda seção marcada nas páginas do Setor Elétrico é aceita pela telemetria", () => {
     const secoes = new Set<string>();
     for (const f of paginas(join(raiz, "src", "app", "setor-eletrico"))) {

@@ -6,7 +6,7 @@
  * telemetria e sitemap leem daqui. Um novo observatório é uma entrada nova.
  */
 
-export type DominioId = "credito" | "energia" | "eficiencia" | "contas";
+export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados";
 
 export type Dominio = {
   id: DominioId;
@@ -98,6 +98,20 @@ export const DOMINIOS: Dominio[] = [
     acento: "energia",
     prefixosTelemetria: ["contas:"],
   },
+  {
+    id: "estados",
+    nome: "Observatório Brasileiro de Contas Públicas Estaduais",
+    nomeCurto: "Contas Públicas Estaduais",
+    pergunta: "Como os estados executam o orçamento, financiam suas despesas e se comparam?",
+    descricao: "Execução orçamentária, composição de receitas e despesas, margem corrente e dívida das 27 unidades da Federação. Compare estados e regiões, consulte valores exatos e acesse as respostas originais do Tesouro. Execução financeira não comprova eficiência ou entrega de serviços.",
+    descricaoCurta: "Tesouro Nacional / Siconfi: RREO Anexo 01 e RGF Anexo 02. Execução e composição no encerramento de 2025; dívida também com recorte parcial de 2026.",
+    chips: ["27 UFs", "Execução", "Receitas e despesas", "Dívida"],
+    rotaRaiz: "/contas-publicas-estaduais",
+    rotaApresentacao: "/contas-publicas-estaduais",
+    cta: "Explorar Contas Públicas Estaduais",
+    acento: "obee",
+    prefixosTelemetria: ["estados:"],
+  },
 ];
 
 export const COOKIE_OBSERVATORIO = "scrutiniums_observatorio";
@@ -126,5 +140,6 @@ export function dominioDoCaminho(caminho: string): DominioId | null {
   if (caminho.startsWith("/setor-eletrico")) return "energia";
   if (caminho.startsWith("/eficiencia-estatal")) return "eficiencia";
   if (caminho === "/contas-publicas" || caminho.startsWith("/contas-publicas/")) return "contas";
+  if (caminho === "/contas-publicas-estaduais" || caminho.startsWith("/contas-publicas-estaduais/")) return "estados";
   return null;
 }

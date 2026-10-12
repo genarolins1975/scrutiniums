@@ -6,12 +6,12 @@ export function Footer({ compacto = false }: { compacto?: boolean }) {
   if (compacto) return <FooterCompacto />;
   return (
     <footer className="border-t border-linha-escura bg-carvao text-marfim">
-      <div className="mx-auto grid grid-cols-1 max-w-page gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-6">
+      <div className="mx-auto grid grid-cols-1 max-w-page gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-7">
         <div className="min-w-0 [overflow-wrap:anywhere] [&>span>span]:min-w-0 sm:col-span-2">
           <LogoWordmark onDark />
           <p className="mt-4 max-w-sm text-sm text-mineral-soft">
             Plataforma de inteligência analítica baseada em dados verificáveis.
-            Três observatórios, leitura aberta, sem cadastro.
+            Observatórios com leitura aberta, sem cadastro.
           </p>
           <p className="rotulo mt-6 text-bronze-soft">
             100% gratuito · sem assinatura · sem cobrança
@@ -50,6 +50,13 @@ export function Footer({ compacto = false }: { compacto?: boolean }) {
             <li><Link href="/eficiencia-estatal/saude-capitais/metodos" className="hover:text-bronze-soft">Dados e métodos, Saúde</Link></li>
           </ul>
         </nav>
+        <nav aria-label="Contas Públicas">
+          <p className="rotulo mb-4 text-mineral-soft">Contas Públicas</p>
+          <ul className="space-y-2 text-sm">
+            <li><Link href="/contas-publicas" className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Contas Públicas Federais</Link></li>
+            <li><Link href="/contas-publicas-estaduais" className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Contas Públicas Estaduais</Link></li>
+          </ul>
+        </nav>
         <nav aria-label="Institucional">
           <p className="rotulo mb-4 text-mineral-soft">Institucional</p>
           <ul className="space-y-2 text-sm">
@@ -86,7 +93,7 @@ function FooterCompacto() {
   const link = "inline-flex min-h-[32px] items-center hover:text-bronze-soft [@media(pointer:coarse)]:min-h-[44px]";
   return (
     <footer className="border-t border-linha-escura bg-carvao text-marfim">
-      <div className="ed-pagina grid gap-x-10 gap-y-5 py-8 md:grid-cols-[auto_1fr_1fr_1fr]">
+      <div className="ed-pagina grid gap-x-10 gap-y-5 py-8 md:grid-cols-[auto_1fr_1fr_1fr_1fr]">
         <div>
           <LogoWordmark onDark />
           <p className="mt-2 text-xs text-mineral-soft">Informação aberta, método verificável. 100% gratuito, sem assinatura.</p>
@@ -109,6 +116,13 @@ function FooterCompacto() {
             <li><Link href="/dados" className={link}>Dados abertos</Link></li>
             <li><Link href="/observatorio/methodology" className={link}>Metodologia e fontes</Link></li>
             <li><Link href="/glossario" className={link}>Glossário</Link></li>
+          </ul>
+        </nav>
+        <nav aria-label="Contas Públicas">
+          <p className="rotulo mb-4 text-mineral-soft">Contas Públicas</p>
+          <ul className="space-y-2 text-sm">
+            <li><Link href="/contas-publicas" className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Contas Públicas Federais</Link></li>
+            <li><Link href="/contas-publicas-estaduais" className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Contas Públicas Estaduais</Link></li>
           </ul>
         </nav>
         <nav aria-label="Institucional">

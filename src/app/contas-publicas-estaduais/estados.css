@@ -36,3 +36,5 @@
 @media(max-width:360px){.ce-ficha-guide li{flex-basis:100%}.ce-ficha-guide a{min-height:60px}.ce-budget-readings{grid-template-columns:1fr}}
 
 .ce-expense-compare{display:block;min-height:44px;padding:10px 0;font-size:13px}.ce-compare-filters label:first-child{min-width:0;max-width:100%}
+
+.ce-nav .obs-dominios a{min-height:44px}
