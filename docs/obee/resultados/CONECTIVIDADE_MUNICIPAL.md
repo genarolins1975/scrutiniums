@@ -53,7 +53,11 @@ A precisão municipal continua pendente. A [diligência da Nota metodológica 07
 
 A definição foi conferida na publicação [Características dos domicílios](https://www.ibge.gov.br/biblioteca/visualizacao/livros/liv102150.pdf), página impressa 42; documento adquirido e hash preservado no manifesto da auditoria de Habitação. O quesito de 2022 não equivale ao de microcomputador com Internet do Censo 2010.
 
-## Próxima etapa
+## Atualização — análise conjunta concluída
+
+A [proposta de cesta v3](CESTA_CONJUNTA_V3.md) conclui o experimento de 18 cenários e 468 linhas cidade–cenário. A próxima etapa é o protocolo de precisão/divulgação municipal, seguido do parecer sobre conteúdo e pesos. Nenhuma candidata foi promovida.
+
+## Encaminhamento original, agora concluído
 
 Concluir uma comparação conjunta das duas candidatas, Habitação e Conectividade, com a cesta v2. Examinar inclusão isolada e conjunta, preservando ou alterando explicitamente o peso das condições materiais. O produto será uma proposta de cesta e um quadro claro de ganhos, sobreposição e limitações, sem escolher pesos por conveniência do ranking. A promoção exige decisão metodológica e regra de precisão/divulgação justificada; os cinco indicadores vigentes permanecem congelados.
 

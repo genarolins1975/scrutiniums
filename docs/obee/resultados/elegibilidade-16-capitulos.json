@@ -2,7 +2,7 @@
   "version": "obee-eligibilidade-capitulos-v1",
   "reviewed_at": "2026-10-12",
   "repository": "genarolins1975/scrutiniums",
-  "evidence_commit": "64f6a9e1b42a64c8d161b29d3d3fa5f70f29ece7",
+  "evidence_commit": "bca955b0f611c534e903fc3f0c85785705b0be1e",
   "scope": "Inventário das evidências versionadas; não é busca exaustiva de todas as fontes públicas.",
   "reference": {
     "year": 2022,
@@ -154,12 +154,13 @@
       "panel_published": true,
       "scope": "Painel FJP: Brasil/regiões/UF, 2024. Auditoria adicional: SIDRA 9934 e 9940, 26 capitais, 2022, amostra preliminar.",
       "measure": "Percentual de domicílios com mais de dois moradores por dormitório; menor. Moradores e limiar >3 preservados como alternativas.",
-      "blocker": "Precisão municipal ainda não avaliada; forte associação com renda (0,846640) e saneamento (0,736752) nos percentis orientados; pesos/conteúdo pendentes.",
-      "next_action": "Investigar precisão e comparar definições; revisar sobreposição com condições materiais antes de propor cesta v3.",
+      "blocker": "Precisão/divulgação municipal, conteúdo e aprovação dos pesos pendentes. Inclusão isolada e conjunta analisada em 18 cenários; forte associação com renda exige orçamento explícito.",
+      "next_action": "Concluir protocolo de precisão/divulgação municipal; revisar conteúdo e pesos da proposta conjunta v3, sem promoção automática.",
       "priority": "P1",
       "evidence": [
         "src/app/eficiencia-estatal/page.tsx",
-        "docs/obee/resultados/HABITACAO_ADENSAMENTO.md"
+        "docs/obee/resultados/HABITACAO_ADENSAMENTO.md",
+        "docs/obee/resultados/CESTA_CONJUNTA_V3.md"
       ],
       "full_chapter_score_validated": false,
       "eligible_for_automatic_expansion": false
@@ -203,12 +204,13 @@
       "panel_published": true,
       "scope": "Painel existente: universos próprios de energia e PNAD TIC 2025. Auditoria adicional: SIDRA 9936, 26 capitais, 2022, amostra preliminar.",
       "measure": "Proporção de domicílios particulares permanentes ocupados com conexão à Internet; maior.",
-      "blocker": "Precisão municipal e pesos/conteúdo pendentes; não mede qualidade ou preço. Correlação orientada com renda: 0,801846.",
-      "next_action": "Comparar inclusão isolada e conjunta de conectividade e habitação, com peso explícito das condições materiais.",
+      "blocker": "Precisão/divulgação municipal, conteúdo e aprovação dos pesos pendentes. Inclusão isolada e conjunta analisada em 18 cenários; forte associação com renda exige orçamento explícito.",
+      "next_action": "Concluir protocolo de precisão/divulgação municipal; revisar conteúdo e pesos da proposta conjunta v3, sem promoção automática.",
       "priority": "P2",
       "evidence": [
         "src/lib/eficiencia/energia/dados.ts",
-        "docs/obee/resultados/CONECTIVIDADE_MUNICIPAL.md"
+        "docs/obee/resultados/CONECTIVIDADE_MUNICIPAL.md",
+        "docs/obee/resultados/CESTA_CONJUNTA_V3.md"
       ],
       "full_chapter_score_validated": false,
       "eligible_for_automatic_expansion": false
@@ -286,5 +288,14 @@
   "connectivity_review": {
     "date": "2026-10-12",
     "base_commit": "2068912f3c8103fd0fe66ab6f40357992fe3af88"
+  },
+  "joint_review": {
+    "date": "2026-10-12",
+    "base_commit": "bca955b0f611c534e903fc3f0c85785705b0be1e",
+    "report": "docs/obee/resultados/CESTA_CONJUNTA_V3.md",
+    "scenarios": 18,
+    "city_scenario_rows": 468,
+    "approved_weights": null,
+    "next_action": "Protocolo de precisão e divulgação municipal; depois, parecer normativo de conteúdo e pesos."
   }
 }

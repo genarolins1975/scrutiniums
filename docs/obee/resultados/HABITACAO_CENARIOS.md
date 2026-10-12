@@ -49,7 +49,11 @@ Foi adquirida a [Nota metodológica 07/2024](https://biblioteca.ibge.gov.br/visu
 
 Conclusão de uso: não transportar os parâmetros nacionais/estaduais para uma capital nem tratar totais expandidos como tamanho de amostra. Para inferir precisão de uma proporção municipal, é necessário um resultado oficial adequado ou informação sobre desenho amostral e covariância entre numerador e denominador. Não se afirma que esses recursos inexistam fora do material examinado.
 
-## Próxima etapa e critério de encerramento
+## Atualização de continuidade
+
+A aquisição de conectividade e a [comparação conjunta das candidatas](CESTA_CONJUNTA_V3.md) foram concluídas. A v2 segue congelada; precisão/divulgação municipal e aprovação de conteúdo/pesos continuam pendentes.
+
+## Encaminhamento original e critérios de promoção
 
 Avançar na auditoria de **conectividade domiciliar municipal de 2022**, usando a tabela SIDRA 9936 como candidata já identificada nos metadados da diligência anterior. Ainda é necessário adquirir os dados das capitais, reconciliar categorias e examinar redundância. Isso permite concluir a comparação dos candidatos antes de propor a cesta v3, mantendo as pendências de precisão explicitamente registradas.
 
