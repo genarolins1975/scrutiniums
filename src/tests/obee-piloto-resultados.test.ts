@@ -34,6 +34,7 @@ describe('Apresentação experimental dos resultados',()=>{
   const html=renderToStaticMarkup(createElement(PilotoResultados,{place:'2611606',reference:'4106902',onReference:()=>{}}));
   for(const text of ['Piloto experimental','33,5','77,3','Saúde permanece em pesquisa','Não é intervalo de confiança','por 100 mil','R$','peso de 20%'])expect(html).toContain(text);
   expect(html).not.toContain('Saúde</h4>');
+  expect(html).toContain('/eficiencia-estatal/laboratorio-cesta?cityA=2611606&amp;cityB=4106902');
  });
  it('não apresenta número para território fora da referência',()=>{
   const html=renderToStaticMarkup(createElement(PilotoResultados,{place:'Brasil',reference:'4106902',onReference:()=>{}}));
@@ -41,6 +42,7 @@ describe('Apresentação experimental dos resultados',()=>{
  });
  it('preserva a entrada pública por padrão e habilita o bloco somente com prop explícita',()=>{
   expect(renderToStaticMarkup(createElement(AtlasCidadao))).not.toContain('id="atlas-piloto"');
+  expect(renderToStaticMarkup(createElement(AtlasCidadao))).not.toContain('/eficiencia-estatal/laboratorio-cesta');
   expect(renderToStaticMarkup(createElement(AtlasCidadao,{showPilot:true}))).toContain('id="atlas-piloto"');
  });
 });

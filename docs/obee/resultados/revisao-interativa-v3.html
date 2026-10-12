@@ -36,6 +36,7 @@ $('breakdown').innerHTML=[a,b].map(r=>`<article><b>${r.name}</b><dl><dt>Novos in
 $('allCities').innerHTML=current.rows.map(r=>`<tr class="${[a.id,b.id].includes(r.id)?'selected':''}"><th scope="row">${r.name}</th><td>${fmt(r.baseline_score)}</td><td>${fmt(r.scenario_score)}</td><td>${sign(r.composition_delta)}</td></tr>`).join('');
 $('detailTable').innerHTML=`<table><thead><tr><th scope="col">Medida</th><th scope="col">${a.name}</th><th scope="col">${b.name}</th><th scope="col">Peso</th></tr></thead><tbody>${keys.map(k=>`<tr><th scope="row">${names[k]}</th><td>${fmt(a.indicator_scores[k])}</td><td>${fmt(b.indicator_scores[k])}</td><td>${fmt(current.weights[k]*100)}%</td></tr>`).join('')}</tbody></table>`;
 $('scenarioStats').textContent=`${current.versus_v2.strict_reversals} dos ${current.versus_v2.pairs} pares de capitais trocam de ordem em relação à v2. É sensibilidade à composição, não significância estatística.`;
+const back=$('backlink');if(back)back.href='/eficiencia-estatal?visao=cidades&territorio='+encodeURIComponent(a.id)+'&comparador='+encodeURIComponent(b.id)+'#atlas-piloto';
 $('live').textContent=a.id===b.id?'Mesma capital selecionada nos dois lados.':`${a.name} e ${b.name} · ${keys.length} indicadores · referência fixa 2022.`;
 const query=new URLSearchParams();for(const id of ['inclusion','model','housing','cityA','cityB'])query.set(id,$(id).value);history.replaceState(null,'','?'+query.toString());}
 for(const id of ['inclusion','model','housing','cityA','cityB'])$(id).addEventListener('change',render);

@@ -6,6 +6,9 @@ const nextConfig = {
     serverComponentsExternalPackages: ["@electric-sql/pglite", "pg"],
     // Arquivos usados pelos route handlers em runtime devem integrar o bundle.
     outputFileTracingIncludes: {
+      "/eficiencia-estatal/laboratorio-cesta": [
+        "./docs/obee/resultados/revisao-interativa-v3.html",
+      ],
       "/observatorio/[[...rota]]": [
         "./public/obs/index.html",
         "./public/obs/data/gold/inst_index.json",
