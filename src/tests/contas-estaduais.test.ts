@@ -132,3 +132,33 @@ describe("Comparação compartilhável",()=>{
   expect(exportarComparacao(new Request('https://example.test?df=true')).status).toBe(400);
  });
 });
+
+import { saldosExecucao, csvSaldos } from '../lib/contas-estaduais/saldos';
+import { GET as exportarSaldos } from '../app/contas-publicas-estaduais/saldos.csv/route';
+describe('Saldos da execução: conservação e recorte',()=>{
+ it('recompõe a autorização em 27 UFs sem dupla contagem',()=>{
+  for(const u of snapshot.ufs){
+   const s=saldosExecucao(u.uf,2025)!;
+   expect(s).not.toBeNull();
+   expect(s.partes.every(p=>p.valor>=0)).toBe(true);
+   expect(s.partes.reduce((a,p)=>a+p.valor,0)).toBeCloseTo(s.dado.valores.dotacao_atualizada,2);
+   expect(s.partes.reduce((a,p)=>a+p.percentual,0)).toBeCloseTo(100,10);
+   expect(s.alteracao).toBe(s.dado.valores.dotacao_atualizada-s.dado.valores.dotacao_inicial);
+  }
+ });
+ it('não preenche exercício sem fonte e rejeita recorte inválido',()=>{
+  expect(saldosExecucao('PE',2026)).toBeNull();
+  expect(csvSaldos('PE',2026)).toBeNull();
+  expect(exportarSaldos(new Request('https://x.test?uf=PE&ano=2026')).status).toBe(404);
+  expect(exportarSaldos(new Request('https://x.test?uf=XX&ano=2025')).status).toBe(400);
+ });
+ it('exporta todas as parcelas e a alteração com proveniência',async()=>{
+  const r=exportarSaldos(new Request('https://x.test?uf=DF&ano=2025'));
+  expect(r.status).toBe(200);
+  const csv=await r.text();
+  expect(csv.split('\r\n')).toHaveLength(6);
+  expect(csv).toContain('"DF";"2025"');
+  expect(csv).toContain('Dotação atualizada − inicial');
+  expect(csv).toContain(execucaoPrimaria('DF',2025)!.fontes[0].sha256);
+ });
+});
