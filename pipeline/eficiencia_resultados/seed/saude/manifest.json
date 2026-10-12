@@ -1,0 +1,840 @@
+{
+  "version": "health-counts-inputs-v1",
+  "acquired_on": "2026-10-12",
+  "sources": [
+    {
+      "system": "sim",
+      "query": {
+        "url": "http://tabnet.datasus.gov.br/cgi/tabcgi.exe?sim/cnv/inf10br.def",
+        "method": "POST",
+        "encoding": "iso-8859-1",
+        "params": [
+          [
+            "Linha",
+            "Município"
+          ],
+          [
+            "Coluna",
+            "Ano_do_Óbito"
+          ],
+          [
+            "Incremento",
+            "Óbitos_p/Residênc"
+          ],
+          [
+            "Arquivos",
+            "infbr23.dbf"
+          ],
+          [
+            "Arquivos",
+            "infbr22.dbf"
+          ],
+          [
+            "Arquivos",
+            "infbr21.dbf"
+          ],
+          [
+            "SMunicípio",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SCapital",
+            "1"
+          ],
+          [
+            "SCapital",
+            "2"
+          ],
+          [
+            "SCapital",
+            "3"
+          ],
+          [
+            "SCapital",
+            "4"
+          ],
+          [
+            "SCapital",
+            "5"
+          ],
+          [
+            "SCapital",
+            "6"
+          ],
+          [
+            "SCapital",
+            "7"
+          ],
+          [
+            "SCapital",
+            "8"
+          ],
+          [
+            "SCapital",
+            "9"
+          ],
+          [
+            "SCapital",
+            "10"
+          ],
+          [
+            "SCapital",
+            "11"
+          ],
+          [
+            "SCapital",
+            "12"
+          ],
+          [
+            "SCapital",
+            "13"
+          ],
+          [
+            "SCapital",
+            "14"
+          ],
+          [
+            "SCapital",
+            "15"
+          ],
+          [
+            "SCapital",
+            "16"
+          ],
+          [
+            "SCapital",
+            "17"
+          ],
+          [
+            "SCapital",
+            "18"
+          ],
+          [
+            "SCapital",
+            "19"
+          ],
+          [
+            "SCapital",
+            "20"
+          ],
+          [
+            "SCapital",
+            "21"
+          ],
+          [
+            "SCapital",
+            "22"
+          ],
+          [
+            "SCapital",
+            "23"
+          ],
+          [
+            "SCapital",
+            "24"
+          ],
+          [
+            "SCapital",
+            "25"
+          ],
+          [
+            "SCapital",
+            "26"
+          ],
+          [
+            "SRegião_de_Saúde_(CIR)",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SMacrorregião_de_Saúde",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SMicrorregião_IBGE",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SRegião_Metropolitana_-_RIDE",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "STerritório_da_Cidadania",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SMesorregião_PNDR",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SAmazônia_Legal",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SSemiárido",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SFaixa_de_Fronteira",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SZona_de_Fronteira",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SMunicípio_de_extrema_pobreza",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SCapítulo_CID-10",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SCategoria_CID-10",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SLista_Mort_CID-10",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SCausa_mal_definidas",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SCausas_evitáveis_-_0_a_4_anos",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SFaixa_etária_1",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SFaixa_etária_2",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SFaixa_etária_3",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SFaixa_etária_4",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SFaixa_etária_5",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SFaixa_etária_detalhada",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SSexo",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SCor/raça",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SLocal_ocorrência",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SIdade_mãe",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SEscolaridade_mãe",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SDuração_gestação",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "STipo_gravidez",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "STipo_parto",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SPeso_ao_nascer",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SÓbito_relação_parto",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SÓbito_investigado",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "formato",
+            "prn"
+          ],
+          [
+            "zeradas",
+            "exibirlz"
+          ],
+          [
+            "mostre",
+            "Mostra"
+          ]
+        ],
+        "municipality_mapping": [
+          {
+            "code_ibge": "1100205",
+            "form_value": "1",
+            "label": "110020 Porto Velho"
+          },
+          {
+            "code_ibge": "1200401",
+            "form_value": "2",
+            "label": "120040 Rio Branco"
+          },
+          {
+            "code_ibge": "1302603",
+            "form_value": "3",
+            "label": "130260 Manaus"
+          },
+          {
+            "code_ibge": "1400100",
+            "form_value": "4",
+            "label": "140010 Boa Vista"
+          },
+          {
+            "code_ibge": "1501402",
+            "form_value": "5",
+            "label": "150140 Belém"
+          },
+          {
+            "code_ibge": "1600303",
+            "form_value": "6",
+            "label": "160030 Macapá"
+          },
+          {
+            "code_ibge": "1721000",
+            "form_value": "7",
+            "label": "172100 Palmas"
+          },
+          {
+            "code_ibge": "2111300",
+            "form_value": "8",
+            "label": "211130 São Luís"
+          },
+          {
+            "code_ibge": "2211001",
+            "form_value": "9",
+            "label": "221100 Teresina"
+          },
+          {
+            "code_ibge": "2304400",
+            "form_value": "10",
+            "label": "230440 Fortaleza"
+          },
+          {
+            "code_ibge": "2408102",
+            "form_value": "11",
+            "label": "240810 Natal"
+          },
+          {
+            "code_ibge": "2507507",
+            "form_value": "12",
+            "label": "250750 João Pessoa"
+          },
+          {
+            "code_ibge": "2611606",
+            "form_value": "13",
+            "label": "261160 Recife"
+          },
+          {
+            "code_ibge": "2704302",
+            "form_value": "14",
+            "label": "270430 Maceió"
+          },
+          {
+            "code_ibge": "2800308",
+            "form_value": "15",
+            "label": "280030 Aracaju"
+          },
+          {
+            "code_ibge": "2927408",
+            "form_value": "16",
+            "label": "292740 Salvador"
+          },
+          {
+            "code_ibge": "3106200",
+            "form_value": "17",
+            "label": "310620 Belo Horizonte"
+          },
+          {
+            "code_ibge": "3205309",
+            "form_value": "18",
+            "label": "320530 Vitória"
+          },
+          {
+            "code_ibge": "3304557",
+            "form_value": "19",
+            "label": "330455 Rio de Janeiro"
+          },
+          {
+            "code_ibge": "3550308",
+            "form_value": "20",
+            "label": "355030 São Paulo"
+          },
+          {
+            "code_ibge": "4106902",
+            "form_value": "21",
+            "label": "410690 Curitiba"
+          },
+          {
+            "code_ibge": "4205407",
+            "form_value": "22",
+            "label": "420540 Florianópolis"
+          },
+          {
+            "code_ibge": "4314902",
+            "form_value": "23",
+            "label": "431490 Porto Alegre"
+          },
+          {
+            "code_ibge": "5002704",
+            "form_value": "24",
+            "label": "500270 Campo Grande"
+          },
+          {
+            "code_ibge": "5103403",
+            "form_value": "25",
+            "label": "510340 Cuiabá"
+          },
+          {
+            "code_ibge": "5208707",
+            "form_value": "26",
+            "label": "520870 Goiânia"
+          }
+        ]
+      },
+      "http_status": 200,
+      "response_bytes": 174810,
+      "response_sha256": "709dce4978c6b6f21ce08648904e23a3f6fb132fcf3cc7cb9f8bde81169132aa",
+      "original_encoding": "iso-8859-1",
+      "versioned_encoding": "utf-8",
+      "versioned_file": "sim-2021-2023.html",
+      "form_sha256": "0b53bb0678d2f1fc40affbc357563df13982e7956b7fe6e0d0fd44cafa5fabbd"
+    },
+    {
+      "system": "sinasc",
+      "query": {
+        "url": "http://tabnet.datasus.gov.br/cgi/tabcgi.exe?sinasc/cnv/nvbr.def",
+        "method": "POST",
+        "encoding": "iso-8859-1",
+        "params": [
+          [
+            "Linha",
+            "Município"
+          ],
+          [
+            "Coluna",
+            "Ano_do_nascimento"
+          ],
+          [
+            "Incremento",
+            "Nascim_p/resid.mãe"
+          ],
+          [
+            "Arquivos",
+            "nvbr23.dbf"
+          ],
+          [
+            "Arquivos",
+            "nvbr22.dbf"
+          ],
+          [
+            "Arquivos",
+            "nvbr21.dbf"
+          ],
+          [
+            "SMunicípio",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SCapital",
+            "1"
+          ],
+          [
+            "SCapital",
+            "2"
+          ],
+          [
+            "SCapital",
+            "3"
+          ],
+          [
+            "SCapital",
+            "4"
+          ],
+          [
+            "SCapital",
+            "5"
+          ],
+          [
+            "SCapital",
+            "6"
+          ],
+          [
+            "SCapital",
+            "7"
+          ],
+          [
+            "SCapital",
+            "8"
+          ],
+          [
+            "SCapital",
+            "9"
+          ],
+          [
+            "SCapital",
+            "10"
+          ],
+          [
+            "SCapital",
+            "11"
+          ],
+          [
+            "SCapital",
+            "12"
+          ],
+          [
+            "SCapital",
+            "13"
+          ],
+          [
+            "SCapital",
+            "14"
+          ],
+          [
+            "SCapital",
+            "15"
+          ],
+          [
+            "SCapital",
+            "16"
+          ],
+          [
+            "SCapital",
+            "17"
+          ],
+          [
+            "SCapital",
+            "18"
+          ],
+          [
+            "SCapital",
+            "19"
+          ],
+          [
+            "SCapital",
+            "20"
+          ],
+          [
+            "SCapital",
+            "21"
+          ],
+          [
+            "SCapital",
+            "22"
+          ],
+          [
+            "SCapital",
+            "23"
+          ],
+          [
+            "SCapital",
+            "24"
+          ],
+          [
+            "SCapital",
+            "25"
+          ],
+          [
+            "SCapital",
+            "26"
+          ],
+          [
+            "SRegião_de_Saúde_(CIR)",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SMacrorregião_de_Saúde",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SMicrorregião_IBGE",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SRegião_Metropolitana_-_RIDE",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "STerritório_da_Cidadania",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SMesorregião_PNDR",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SAmazônia_Legal",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SSemiárido",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SFaixa_de_Fronteira",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SZona_de_Fronteira",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SMunicípio_de_extrema_pobreza",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SLocal_ocorrência",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SIdade_da_mãe",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SInstrução_da_mãe",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SEstado_civil_mãe",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SDuração_gestação",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "STipo_de_gravidez",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SGrupos_de_Robson",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SAdeq_quant_pré-natal*",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "STipo_de_parto",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SConsult_pré-natal",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SSexo",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SCor/raça",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SApgar_1º_minuto",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SApgar_5º_minuto",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SPeso_ao_nascer",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "SAnomalia_congênita",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "STipo_anomal_congên",
+            "TODAS_AS_CATEGORIAS__"
+          ],
+          [
+            "formato",
+            "prn"
+          ],
+          [
+            "zeradas",
+            "exibirlz"
+          ],
+          [
+            "mostre",
+            "Mostra"
+          ]
+        ],
+        "municipality_mapping": [
+          {
+            "code_ibge": "1100205",
+            "form_value": "1",
+            "label": "110020 Porto Velho"
+          },
+          {
+            "code_ibge": "1200401",
+            "form_value": "2",
+            "label": "120040 Rio Branco"
+          },
+          {
+            "code_ibge": "1302603",
+            "form_value": "3",
+            "label": "130260 Manaus"
+          },
+          {
+            "code_ibge": "1400100",
+            "form_value": "4",
+            "label": "140010 Boa Vista"
+          },
+          {
+            "code_ibge": "1501402",
+            "form_value": "5",
+            "label": "150140 Belém"
+          },
+          {
+            "code_ibge": "1600303",
+            "form_value": "6",
+            "label": "160030 Macapá"
+          },
+          {
+            "code_ibge": "1721000",
+            "form_value": "7",
+            "label": "172100 Palmas"
+          },
+          {
+            "code_ibge": "2111300",
+            "form_value": "8",
+            "label": "211130 São Luís"
+          },
+          {
+            "code_ibge": "2211001",
+            "form_value": "9",
+            "label": "221100 Teresina"
+          },
+          {
+            "code_ibge": "2304400",
+            "form_value": "10",
+            "label": "230440 Fortaleza"
+          },
+          {
+            "code_ibge": "2408102",
+            "form_value": "11",
+            "label": "240810 Natal"
+          },
+          {
+            "code_ibge": "2507507",
+            "form_value": "12",
+            "label": "250750 João Pessoa"
+          },
+          {
+            "code_ibge": "2611606",
+            "form_value": "13",
+            "label": "261160 Recife"
+          },
+          {
+            "code_ibge": "2704302",
+            "form_value": "14",
+            "label": "270430 Maceió"
+          },
+          {
+            "code_ibge": "2800308",
+            "form_value": "15",
+            "label": "280030 Aracaju"
+          },
+          {
+            "code_ibge": "2927408",
+            "form_value": "16",
+            "label": "292740 Salvador"
+          },
+          {
+            "code_ibge": "3106200",
+            "form_value": "17",
+            "label": "310620 Belo Horizonte"
+          },
+          {
+            "code_ibge": "3205309",
+            "form_value": "18",
+            "label": "320530 Vitória"
+          },
+          {
+            "code_ibge": "3304557",
+            "form_value": "19",
+            "label": "330455 Rio de Janeiro"
+          },
+          {
+            "code_ibge": "3550308",
+            "form_value": "20",
+            "label": "355030 São Paulo"
+          },
+          {
+            "code_ibge": "4106902",
+            "form_value": "21",
+            "label": "410690 Curitiba"
+          },
+          {
+            "code_ibge": "4205407",
+            "form_value": "22",
+            "label": "420540 Florianópolis"
+          },
+          {
+            "code_ibge": "4314902",
+            "form_value": "23",
+            "label": "431490 Porto Alegre"
+          },
+          {
+            "code_ibge": "5002704",
+            "form_value": "24",
+            "label": "500270 Campo Grande"
+          },
+          {
+            "code_ibge": "5103403",
+            "form_value": "25",
+            "label": "510340 Cuiabá"
+          },
+          {
+            "code_ibge": "5208707",
+            "form_value": "26",
+            "label": "520870 Goiânia"
+          }
+        ]
+      },
+      "http_status": 200,
+      "response_bytes": 175014,
+      "response_sha256": "2d470626e43fc000560b98e5dba6c9b3301b84534ecbd1cc06f4e664662cb67f",
+      "original_encoding": "iso-8859-1",
+      "versioned_encoding": "utf-8",
+      "versioned_file": "sinasc-2021-2023.html",
+      "form_sha256": "d0f9716731ea7a3a41a127753d6ced24d6ec51e320414fe862a49bb8e66a047c"
+    }
+  ],
+  "input_sha256": {
+    "sim-2021-2023.html": "667dd054c7e4284ab8a4c063fa8447f195a8927fab076ff8f4a5b5b4cbd24d5d",
+    "sinasc-2021-2023.html": "53b1589d0c2aada431c9210203a61628bb83e02df7588f63e6d06c0db17171be"
+  }
+}

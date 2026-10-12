@@ -1,0 +1,1593 @@
+{
+  "version": "irc-health-counts-2021-2023-v1",
+  "years": [
+    "2021",
+    "2022",
+    "2023"
+  ],
+  "score_eligible": false,
+  "publication_ready": false,
+  "coverage": {
+    "territories": 26,
+    "years": 3,
+    "count_series": 2,
+    "observed_cells": 156,
+    "note": "Completeness of extraction, not completeness of vital registration"
+  },
+  "rows": [
+    {
+      "id": "1100205",
+      "name": "Porto Velho",
+      "deaths": {
+        "2021": 116,
+        "2022": 98,
+        "2023": 90
+      },
+      "live_births": {
+        "2021": 7703,
+        "2022": 7354,
+        "2023": 6643
+      },
+      "deaths_total": 304,
+      "live_births_total": 21700,
+      "annual_rates_per_1000": {
+        "2021": 15.05906789562508,
+        "2022": 13.326081044329616,
+        "2023": 13.548095739876562
+      },
+      "pooled_rate_per_1000": 14.009216589861751,
+      "source_rows": {
+        "sim": 19,
+        "sinasc": 19
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "1200401",
+      "name": "Rio Branco",
+      "deaths": {
+        "2021": 95,
+        "2022": 80,
+        "2023": 87
+      },
+      "live_births": {
+        "2021": 5666,
+        "2022": 5353,
+        "2023": 5149
+      },
+      "deaths_total": 262,
+      "live_births_total": 16168,
+      "annual_rates_per_1000": {
+        "2021": 16.766678432756795,
+        "2022": 14.944890715486643,
+        "2023": 16.89648475432123
+      },
+      "pooled_rate_per_1000": 16.204849084611578,
+      "source_rows": {
+        "sim": 70,
+        "sinasc": 70
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "1302603",
+      "name": "Manaus",
+      "deaths": {
+        "2021": 487,
+        "2022": 472,
+        "2023": 508
+      },
+      "live_births": {
+        "2021": 37041,
+        "2022": 34707,
+        "2023": 33479
+      },
+      "deaths_total": 1467,
+      "live_births_total": 105227,
+      "annual_rates_per_1000": {
+        "2021": 13.147593207526795,
+        "2022": 13.599562048001845,
+        "2023": 15.173690970459093
+      },
+      "pooled_rate_per_1000": 13.941288832714037,
+      "source_rows": {
+        "sim": 116,
+        "sinasc": 116
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "1400100",
+      "name": "Boa Vista",
+      "deaths": {
+        "2021": 108,
+        "2022": 109,
+        "2023": 140
+      },
+      "live_births": {
+        "2021": 8108,
+        "2022": 7839,
+        "2023": 7776
+      },
+      "deaths_total": 357,
+      "live_births_total": 23723,
+      "annual_rates_per_1000": {
+        "2021": 13.320177602368032,
+        "2022": 13.904834800357188,
+        "2023": 18.004115226337447
+      },
+      "pooled_rate_per_1000": 15.048686928297434,
+      "source_rows": {
+        "sim": 144,
+        "sinasc": 144
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "1501402",
+      "name": "Belém",
+      "deaths": {
+        "2021": 261,
+        "2022": 235,
+        "2023": 235
+      },
+      "live_births": {
+        "2021": 16816,
+        "2022": 15865,
+        "2023": 15146
+      },
+      "deaths_total": 731,
+      "live_births_total": 47827,
+      "annual_rates_per_1000": {
+        "2021": 15.5209324452902,
+        "2022": 14.812480302552789,
+        "2023": 15.515647695761258
+      },
+      "pooled_rate_per_1000": 15.284253664248228,
+      "source_rows": {
+        "sim": 176,
+        "sinasc": 176
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "1600303",
+      "name": "Macapá",
+      "deaths": {
+        "2021": 175,
+        "2022": 150,
+        "2023": 160
+      },
+      "live_births": {
+        "2021": 8589,
+        "2022": 7963,
+        "2023": 7414
+      },
+      "deaths_total": 485,
+      "live_births_total": 23966,
+      "annual_rates_per_1000": {
+        "2021": 20.37489812550937,
+        "2022": 18.837121687806103,
+        "2023": 21.58079309414621
+      },
+      "pooled_rate_per_1000": 20.237002420095134,
+      "source_rows": {
+        "sim": 311,
+        "sinasc": 311
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "1721000",
+      "name": "Palmas",
+      "deaths": {
+        "2021": 67,
+        "2022": 51,
+        "2023": 58
+      },
+      "live_births": {
+        "2021": 4941,
+        "2022": 4762,
+        "2023": 5018
+      },
+      "deaths_total": 176,
+      "live_births_total": 14721,
+      "annual_rates_per_1000": {
+        "2021": 13.560008095527222,
+        "2022": 10.709785804283914,
+        "2023": 11.558389796731765
+      },
+      "pooled_rate_per_1000": 11.95570953060254,
+      "source_rows": {
+        "sim": 452,
+        "sinasc": 452
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "2111300",
+      "name": "São Luís",
+      "deaths": {
+        "2021": 206,
+        "2022": 240,
+        "2023": 216
+      },
+      "live_births": {
+        "2021": 15164,
+        "2022": 13690,
+        "2023": 12938
+      },
+      "deaths_total": 662,
+      "live_births_total": 41792,
+      "annual_rates_per_1000": {
+        "2021": 13.584806119757319,
+        "2022": 17.531044558071585,
+        "2023": 16.6950069562529
+      },
+      "pooled_rate_per_1000": 15.840352220520673,
+      "source_rows": {
+        "sim": 645,
+        "sinasc": 645
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "2211001",
+      "name": "Teresina",
+      "deaths": {
+        "2021": 165,
+        "2022": 179,
+        "2023": 168
+      },
+      "live_births": {
+        "2021": 12375,
+        "2022": 11562,
+        "2023": 11418
+      },
+      "deaths_total": 512,
+      "live_births_total": 35355,
+      "annual_rates_per_1000": {
+        "2021": 13.333333333333334,
+        "2022": 15.481750562186473,
+        "2023": 14.713610089332633
+      },
+      "pooled_rate_per_1000": 14.481685758732853,
+      "source_rows": {
+        "sim": 893,
+        "sinasc": 893
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "2304400",
+      "name": "Fortaleza",
+      "deaths": {
+        "2021": 348,
+        "2022": 348,
+        "2023": 346
+      },
+      "live_births": {
+        "2021": 31744,
+        "2022": 29676,
+        "2023": 29370
+      },
+      "deaths_total": 1042,
+      "live_births_total": 90790,
+      "annual_rates_per_1000": {
+        "2021": 10.962701612903226,
+        "2022": 11.726647796198948,
+        "2023": 11.78072863466122
+      },
+      "pooled_rate_per_1000": 11.477034915739619,
+      "source_rows": {
+        "sim": 961,
+        "sinasc": 961
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "2408102",
+      "name": "Natal",
+      "deaths": {
+        "2021": 135,
+        "2022": 103,
+        "2023": 108
+      },
+      "live_births": {
+        "2021": 10222,
+        "2022": 9542,
+        "2023": 9357
+      },
+      "deaths_total": 346,
+      "live_births_total": 29121,
+      "annual_rates_per_1000": {
+        "2021": 13.206808843670515,
+        "2022": 10.794382728987634,
+        "2023": 11.542160949022122
+      },
+      "pooled_rate_per_1000": 11.881460114693864,
+      "source_rows": {
+        "sim": 1176,
+        "sinasc": 1176
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "2507507",
+      "name": "João Pessoa",
+      "deaths": {
+        "2021": 137,
+        "2022": 162,
+        "2023": 139
+      },
+      "live_births": {
+        "2021": 11126,
+        "2022": 10727,
+        "2023": 11045
+      },
+      "deaths_total": 438,
+      "live_births_total": 32898,
+      "annual_rates_per_1000": {
+        "2021": 12.313499910120438,
+        "2022": 15.102078866411858,
+        "2023": 12.584880036215482
+      },
+      "pooled_rate_per_1000": 13.313879263177093,
+      "source_rows": {
+        "sim": 1351,
+        "sinasc": 1351
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "2611606",
+      "name": "Recife",
+      "deaths": {
+        "2021": 182,
+        "2022": 189,
+        "2023": 210
+      },
+      "live_births": {
+        "2021": 18146,
+        "2022": 17291,
+        "2023": 17047
+      },
+      "deaths_total": 581,
+      "live_births_total": 52484,
+      "annual_rates_per_1000": {
+        "2021": 10.029758624490245,
+        "2022": 10.930541900410619,
+        "2023": 12.318883087933362
+      },
+      "pooled_rate_per_1000": 11.070040393262708,
+      "source_rows": {
+        "sim": 1611,
+        "sinasc": 1611
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "2704302",
+      "name": "Maceió",
+      "deaths": {
+        "2021": 156,
+        "2022": 166,
+        "2023": 158
+      },
+      "live_births": {
+        "2021": 13604,
+        "2022": 13027,
+        "2023": 13098
+      },
+      "deaths_total": 480,
+      "live_births_total": 39729,
+      "annual_rates_per_1000": {
+        "2021": 11.467215524845633,
+        "2022": 12.742765026483458,
+        "2023": 12.062910367995114
+      },
+      "pooled_rate_per_1000": 12.081854564675679,
+      "source_rows": {
+        "sim": 1712,
+        "sinasc": 1712
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "2800308",
+      "name": "Aracaju",
+      "deaths": {
+        "2021": 122,
+        "2022": 122,
+        "2023": 128
+      },
+      "live_births": {
+        "2021": 7917,
+        "2022": 7259,
+        "2023": 7367
+      },
+      "deaths_total": 372,
+      "live_births_total": 22543,
+      "annual_rates_per_1000": {
+        "2021": 15.409877478842995,
+        "2022": 16.80672268907563,
+        "2023": 17.37477942174562
+      },
+      "pooled_rate_per_1000": 16.501796566561683,
+      "source_rows": {
+        "sim": 1771,
+        "sinasc": 1771
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "2927408",
+      "name": "Salvador",
+      "deaths": {
+        "2021": 439,
+        "2022": 466,
+        "2023": 382
+      },
+      "live_births": {
+        "2021": 28598,
+        "2022": 27167,
+        "2023": 25708
+      },
+      "deaths_total": 1287,
+      "live_births_total": 81473,
+      "annual_rates_per_1000": {
+        "2021": 15.350723826841039,
+        "2022": 17.15316376486178,
+        "2023": 14.85918780146258
+      },
+      "pooled_rate_per_1000": 15.796644287064426,
+      "source_rows": {
+        "sim": 2180,
+        "sinasc": 2180
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "3106200",
+      "name": "Belo Horizonte",
+      "deaths": {
+        "2021": 241,
+        "2022": 227,
+        "2023": 242
+      },
+      "live_births": {
+        "2021": 25028,
+        "2022": 23759,
+        "2023": 23331
+      },
+      "deaths_total": 710,
+      "live_births_total": 72118,
+      "annual_rates_per_1000": {
+        "2021": 9.629215278887646,
+        "2022": 9.554274169788291,
+        "2023": 10.372465818010372
+      },
+      "pooled_rate_per_1000": 9.844976288859923,
+      "source_rows": {
+        "sim": 2328,
+        "sinasc": 2328
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "3205309",
+      "name": "Vitória",
+      "deaths": {
+        "2021": 29,
+        "2022": 42,
+        "2023": 40
+      },
+      "live_births": {
+        "2021": 3949,
+        "2022": 3862,
+        "2023": 3727
+      },
+      "deaths_total": 111,
+      "live_births_total": 11538,
+      "annual_rates_per_1000": {
+        "2021": 7.343631299063054,
+        "2022": 10.875194199896427,
+        "2023": 10.732492621411323
+      },
+      "pooled_rate_per_1000": 9.620384815392615,
+      "source_rows": {
+        "sim": 3194,
+        "sinasc": 3194
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "3304557",
+      "name": "Rio de Janeiro",
+      "deaths": {
+        "2021": 840,
+        "2022": 767,
+        "2023": 771
+      },
+      "live_births": {
+        "2021": 68874,
+        "2022": 64978,
+        "2023": 62850
+      },
+      "deaths_total": 2378,
+      "live_births_total": 196702,
+      "annual_rates_per_1000": {
+        "2021": 12.196184336614687,
+        "2022": 11.803995198374835,
+        "2023": 12.267303102625299
+      },
+      "pooled_rate_per_1000": 12.08935343819585,
+      "source_rows": {
+        "sim": 3263,
+        "sinasc": 3263
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "3550308",
+      "name": "São Paulo",
+      "deaths": {
+        "2021": 1420,
+        "2022": 1437,
+        "2023": 1414
+      },
+      "live_births": {
+        "2021": 136732,
+        "2022": 132050,
+        "2023": 128720
+      },
+      "deaths_total": 4271,
+      "live_births_total": 397502,
+      "annual_rates_per_1000": {
+        "2021": 10.385279232366965,
+        "2022": 10.882241575160924,
+        "2023": 10.98508390304537
+      },
+      "pooled_rate_per_1000": 10.744600027169675,
+      "source_rows": {
+        "sim": 3851,
+        "sinasc": 3851
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "4106902",
+      "name": "Curitiba",
+      "deaths": {
+        "2021": 135,
+        "2022": 158,
+        "2023": 142
+      },
+      "live_births": {
+        "2021": 18575,
+        "2022": 18396,
+        "2023": 17979
+      },
+      "deaths_total": 435,
+      "live_births_total": 54950,
+      "annual_rates_per_1000": {
+        "2021": 7.267833109017497,
+        "2022": 8.588823657316809,
+        "2023": 7.898103342788809
+      },
+      "pooled_rate_per_1000": 7.916287534121929,
+      "source_rows": {
+        "sim": 4028,
+        "sinasc": 4028
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "4205407",
+      "name": "Florianópolis",
+      "deaths": {
+        "2021": 36,
+        "2022": 47,
+        "2023": 39
+      },
+      "live_births": {
+        "2021": 5902,
+        "2022": 6082,
+        "2023": 5966
+      },
+      "deaths_total": 122,
+      "live_births_total": 17950,
+      "annual_rates_per_1000": {
+        "2021": 6.099627245001694,
+        "2022": 7.727721144360408,
+        "2023": 6.5370432450553135
+      },
+      "pooled_rate_per_1000": 6.796657381615599,
+      "source_rows": {
+        "sim": 4422,
+        "sinasc": 4422
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "4314902",
+      "name": "Porto Alegre",
+      "deaths": {
+        "2021": 130,
+        "2022": 106,
+        "2023": 116
+      },
+      "live_births": {
+        "2021": 14153,
+        "2022": 13679,
+        "2023": 13663
+      },
+      "deaths_total": 352,
+      "live_births_total": 41495,
+      "annual_rates_per_1000": {
+        "2021": 9.185331731788313,
+        "2022": 7.749104466700782,
+        "2023": 8.490082705116007
+      },
+      "pooled_rate_per_1000": 8.482949752982288,
+      "source_rows": {
+        "sim": 4956,
+        "sinasc": 4956
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "5002704",
+      "name": "Campo Grande",
+      "deaths": {
+        "2021": 131,
+        "2022": 132,
+        "2023": 138
+      },
+      "live_births": {
+        "2021": 12749,
+        "2022": 12345,
+        "2023": 11918
+      },
+      "deaths_total": 401,
+      "live_births_total": 37012,
+      "annual_rates_per_1000": {
+        "2021": 10.275315711036159,
+        "2022": 10.69258809234508,
+        "2023": 11.579124014096324
+      },
+      "pooled_rate_per_1000": 10.834324003026046,
+      "source_rows": {
+        "sim": 5148,
+        "sinasc": 5148
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "5103403",
+      "name": "Cuiabá",
+      "deaths": {
+        "2021": 108,
+        "2022": 130,
+        "2023": 109
+      },
+      "live_births": {
+        "2021": 9501,
+        "2022": 9535,
+        "2023": 9325
+      },
+      "deaths_total": 347,
+      "live_births_total": 28361,
+      "annual_rates_per_1000": {
+        "2021": 11.367224502683928,
+        "2022": 13.633980073413738,
+        "2023": 11.689008042895443
+      },
+      "pooled_rate_per_1000": 12.235111596911251,
+      "source_rows": {
+        "sim": 5247,
+        "sinasc": 5247
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    },
+    {
+      "id": "5208707",
+      "name": "Goiânia",
+      "deaths": {
+        "2021": 233,
+        "2022": 190,
+        "2023": 249
+      },
+      "live_births": {
+        "2021": 18698,
+        "2022": 18685,
+        "2023": 18750
+      },
+      "deaths_total": 672,
+      "live_births_total": 56133,
+      "annual_rates_per_1000": {
+        "2021": 12.461225799550753,
+        "2022": 10.168584426010169,
+        "2023": 13.28
+      },
+      "pooled_rate_per_1000": 11.971567527123083,
+      "source_rows": {
+        "sim": 5446,
+        "sinasc": 5446
+      },
+      "score_eligible": false,
+      "eligibility_reason": "Coverage/subregistration and precision review pending"
+    }
+  ],
+  "source_manifest": {
+    "version": "health-counts-inputs-v1",
+    "acquired_on": "2026-10-12",
+    "sources": [
+      {
+        "system": "sim",
+        "query": {
+          "url": "http://tabnet.datasus.gov.br/cgi/tabcgi.exe?sim/cnv/inf10br.def",
+          "method": "POST",
+          "encoding": "iso-8859-1",
+          "params": [
+            [
+              "Linha",
+              "Município"
+            ],
+            [
+              "Coluna",
+              "Ano_do_Óbito"
+            ],
+            [
+              "Incremento",
+              "Óbitos_p/Residênc"
+            ],
+            [
+              "Arquivos",
+              "infbr23.dbf"
+            ],
+            [
+              "Arquivos",
+              "infbr22.dbf"
+            ],
+            [
+              "Arquivos",
+              "infbr21.dbf"
+            ],
+            [
+              "SMunicípio",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SCapital",
+              "1"
+            ],
+            [
+              "SCapital",
+              "2"
+            ],
+            [
+              "SCapital",
+              "3"
+            ],
+            [
+              "SCapital",
+              "4"
+            ],
+            [
+              "SCapital",
+              "5"
+            ],
+            [
+              "SCapital",
+              "6"
+            ],
+            [
+              "SCapital",
+              "7"
+            ],
+            [
+              "SCapital",
+              "8"
+            ],
+            [
+              "SCapital",
+              "9"
+            ],
+            [
+              "SCapital",
+              "10"
+            ],
+            [
+              "SCapital",
+              "11"
+            ],
+            [
+              "SCapital",
+              "12"
+            ],
+            [
+              "SCapital",
+              "13"
+            ],
+            [
+              "SCapital",
+              "14"
+            ],
+            [
+              "SCapital",
+              "15"
+            ],
+            [
+              "SCapital",
+              "16"
+            ],
+            [
+              "SCapital",
+              "17"
+            ],
+            [
+              "SCapital",
+              "18"
+            ],
+            [
+              "SCapital",
+              "19"
+            ],
+            [
+              "SCapital",
+              "20"
+            ],
+            [
+              "SCapital",
+              "21"
+            ],
+            [
+              "SCapital",
+              "22"
+            ],
+            [
+              "SCapital",
+              "23"
+            ],
+            [
+              "SCapital",
+              "24"
+            ],
+            [
+              "SCapital",
+              "25"
+            ],
+            [
+              "SCapital",
+              "26"
+            ],
+            [
+              "SRegião_de_Saúde_(CIR)",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SMacrorregião_de_Saúde",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SMicrorregião_IBGE",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SRegião_Metropolitana_-_RIDE",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "STerritório_da_Cidadania",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SMesorregião_PNDR",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SAmazônia_Legal",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SSemiárido",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SFaixa_de_Fronteira",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SZona_de_Fronteira",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SMunicípio_de_extrema_pobreza",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SCapítulo_CID-10",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SCategoria_CID-10",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SLista_Mort_CID-10",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SCausa_mal_definidas",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SCausas_evitáveis_-_0_a_4_anos",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SFaixa_etária_1",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SFaixa_etária_2",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SFaixa_etária_3",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SFaixa_etária_4",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SFaixa_etária_5",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SFaixa_etária_detalhada",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SSexo",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SCor/raça",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SLocal_ocorrência",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SIdade_mãe",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SEscolaridade_mãe",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SDuração_gestação",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "STipo_gravidez",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "STipo_parto",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SPeso_ao_nascer",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SÓbito_relação_parto",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SÓbito_investigado",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "formato",
+              "prn"
+            ],
+            [
+              "zeradas",
+              "exibirlz"
+            ],
+            [
+              "mostre",
+              "Mostra"
+            ]
+          ],
+          "municipality_mapping": [
+            {
+              "code_ibge": "1100205",
+              "form_value": "1",
+              "label": "110020 Porto Velho"
+            },
+            {
+              "code_ibge": "1200401",
+              "form_value": "2",
+              "label": "120040 Rio Branco"
+            },
+            {
+              "code_ibge": "1302603",
+              "form_value": "3",
+              "label": "130260 Manaus"
+            },
+            {
+              "code_ibge": "1400100",
+              "form_value": "4",
+              "label": "140010 Boa Vista"
+            },
+            {
+              "code_ibge": "1501402",
+              "form_value": "5",
+              "label": "150140 Belém"
+            },
+            {
+              "code_ibge": "1600303",
+              "form_value": "6",
+              "label": "160030 Macapá"
+            },
+            {
+              "code_ibge": "1721000",
+              "form_value": "7",
+              "label": "172100 Palmas"
+            },
+            {
+              "code_ibge": "2111300",
+              "form_value": "8",
+              "label": "211130 São Luís"
+            },
+            {
+              "code_ibge": "2211001",
+              "form_value": "9",
+              "label": "221100 Teresina"
+            },
+            {
+              "code_ibge": "2304400",
+              "form_value": "10",
+              "label": "230440 Fortaleza"
+            },
+            {
+              "code_ibge": "2408102",
+              "form_value": "11",
+              "label": "240810 Natal"
+            },
+            {
+              "code_ibge": "2507507",
+              "form_value": "12",
+              "label": "250750 João Pessoa"
+            },
+            {
+              "code_ibge": "2611606",
+              "form_value": "13",
+              "label": "261160 Recife"
+            },
+            {
+              "code_ibge": "2704302",
+              "form_value": "14",
+              "label": "270430 Maceió"
+            },
+            {
+              "code_ibge": "2800308",
+              "form_value": "15",
+              "label": "280030 Aracaju"
+            },
+            {
+              "code_ibge": "2927408",
+              "form_value": "16",
+              "label": "292740 Salvador"
+            },
+            {
+              "code_ibge": "3106200",
+              "form_value": "17",
+              "label": "310620 Belo Horizonte"
+            },
+            {
+              "code_ibge": "3205309",
+              "form_value": "18",
+              "label": "320530 Vitória"
+            },
+            {
+              "code_ibge": "3304557",
+              "form_value": "19",
+              "label": "330455 Rio de Janeiro"
+            },
+            {
+              "code_ibge": "3550308",
+              "form_value": "20",
+              "label": "355030 São Paulo"
+            },
+            {
+              "code_ibge": "4106902",
+              "form_value": "21",
+              "label": "410690 Curitiba"
+            },
+            {
+              "code_ibge": "4205407",
+              "form_value": "22",
+              "label": "420540 Florianópolis"
+            },
+            {
+              "code_ibge": "4314902",
+              "form_value": "23",
+              "label": "431490 Porto Alegre"
+            },
+            {
+              "code_ibge": "5002704",
+              "form_value": "24",
+              "label": "500270 Campo Grande"
+            },
+            {
+              "code_ibge": "5103403",
+              "form_value": "25",
+              "label": "510340 Cuiabá"
+            },
+            {
+              "code_ibge": "5208707",
+              "form_value": "26",
+              "label": "520870 Goiânia"
+            }
+          ]
+        },
+        "http_status": 200,
+        "response_bytes": 174810,
+        "response_sha256": "709dce4978c6b6f21ce08648904e23a3f6fb132fcf3cc7cb9f8bde81169132aa",
+        "original_encoding": "iso-8859-1",
+        "versioned_encoding": "utf-8",
+        "versioned_file": "sim-2021-2023.html",
+        "form_sha256": "0b53bb0678d2f1fc40affbc357563df13982e7956b7fe6e0d0fd44cafa5fabbd"
+      },
+      {
+        "system": "sinasc",
+        "query": {
+          "url": "http://tabnet.datasus.gov.br/cgi/tabcgi.exe?sinasc/cnv/nvbr.def",
+          "method": "POST",
+          "encoding": "iso-8859-1",
+          "params": [
+            [
+              "Linha",
+              "Município"
+            ],
+            [
+              "Coluna",
+              "Ano_do_nascimento"
+            ],
+            [
+              "Incremento",
+              "Nascim_p/resid.mãe"
+            ],
+            [
+              "Arquivos",
+              "nvbr23.dbf"
+            ],
+            [
+              "Arquivos",
+              "nvbr22.dbf"
+            ],
+            [
+              "Arquivos",
+              "nvbr21.dbf"
+            ],
+            [
+              "SMunicípio",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SCapital",
+              "1"
+            ],
+            [
+              "SCapital",
+              "2"
+            ],
+            [
+              "SCapital",
+              "3"
+            ],
+            [
+              "SCapital",
+              "4"
+            ],
+            [
+              "SCapital",
+              "5"
+            ],
+            [
+              "SCapital",
+              "6"
+            ],
+            [
+              "SCapital",
+              "7"
+            ],
+            [
+              "SCapital",
+              "8"
+            ],
+            [
+              "SCapital",
+              "9"
+            ],
+            [
+              "SCapital",
+              "10"
+            ],
+            [
+              "SCapital",
+              "11"
+            ],
+            [
+              "SCapital",
+              "12"
+            ],
+            [
+              "SCapital",
+              "13"
+            ],
+            [
+              "SCapital",
+              "14"
+            ],
+            [
+              "SCapital",
+              "15"
+            ],
+            [
+              "SCapital",
+              "16"
+            ],
+            [
+              "SCapital",
+              "17"
+            ],
+            [
+              "SCapital",
+              "18"
+            ],
+            [
+              "SCapital",
+              "19"
+            ],
+            [
+              "SCapital",
+              "20"
+            ],
+            [
+              "SCapital",
+              "21"
+            ],
+            [
+              "SCapital",
+              "22"
+            ],
+            [
+              "SCapital",
+              "23"
+            ],
+            [
+              "SCapital",
+              "24"
+            ],
+            [
+              "SCapital",
+              "25"
+            ],
+            [
+              "SCapital",
+              "26"
+            ],
+            [
+              "SRegião_de_Saúde_(CIR)",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SMacrorregião_de_Saúde",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SMicrorregião_IBGE",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SRegião_Metropolitana_-_RIDE",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "STerritório_da_Cidadania",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SMesorregião_PNDR",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SAmazônia_Legal",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SSemiárido",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SFaixa_de_Fronteira",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SZona_de_Fronteira",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SMunicípio_de_extrema_pobreza",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SLocal_ocorrência",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SIdade_da_mãe",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SInstrução_da_mãe",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SEstado_civil_mãe",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SDuração_gestação",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "STipo_de_gravidez",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SGrupos_de_Robson",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SAdeq_quant_pré-natal*",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "STipo_de_parto",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SConsult_pré-natal",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SSexo",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SCor/raça",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SApgar_1º_minuto",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SApgar_5º_minuto",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SPeso_ao_nascer",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "SAnomalia_congênita",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "STipo_anomal_congên",
+              "TODAS_AS_CATEGORIAS__"
+            ],
+            [
+              "formato",
+              "prn"
+            ],
+            [
+              "zeradas",
+              "exibirlz"
+            ],
+            [
+              "mostre",
+              "Mostra"
+            ]
+          ],
+          "municipality_mapping": [
+            {
+              "code_ibge": "1100205",
+              "form_value": "1",
+              "label": "110020 Porto Velho"
+            },
+            {
+              "code_ibge": "1200401",
+              "form_value": "2",
+              "label": "120040 Rio Branco"
+            },
+            {
+              "code_ibge": "1302603",
+              "form_value": "3",
+              "label": "130260 Manaus"
+            },
+            {
+              "code_ibge": "1400100",
+              "form_value": "4",
+              "label": "140010 Boa Vista"
+            },
+            {
+              "code_ibge": "1501402",
+              "form_value": "5",
+              "label": "150140 Belém"
+            },
+            {
+              "code_ibge": "1600303",
+              "form_value": "6",
+              "label": "160030 Macapá"
+            },
+            {
+              "code_ibge": "1721000",
+              "form_value": "7",
+              "label": "172100 Palmas"
+            },
+            {
+              "code_ibge": "2111300",
+              "form_value": "8",
+              "label": "211130 São Luís"
+            },
+            {
+              "code_ibge": "2211001",
+              "form_value": "9",
+              "label": "221100 Teresina"
+            },
+            {
+              "code_ibge": "2304400",
+              "form_value": "10",
+              "label": "230440 Fortaleza"
+            },
+            {
+              "code_ibge": "2408102",
+              "form_value": "11",
+              "label": "240810 Natal"
+            },
+            {
+              "code_ibge": "2507507",
+              "form_value": "12",
+              "label": "250750 João Pessoa"
+            },
+            {
+              "code_ibge": "2611606",
+              "form_value": "13",
+              "label": "261160 Recife"
+            },
+            {
+              "code_ibge": "2704302",
+              "form_value": "14",
+              "label": "270430 Maceió"
+            },
+            {
+              "code_ibge": "2800308",
+              "form_value": "15",
+              "label": "280030 Aracaju"
+            },
+            {
+              "code_ibge": "2927408",
+              "form_value": "16",
+              "label": "292740 Salvador"
+            },
+            {
+              "code_ibge": "3106200",
+              "form_value": "17",
+              "label": "310620 Belo Horizonte"
+            },
+            {
+              "code_ibge": "3205309",
+              "form_value": "18",
+              "label": "320530 Vitória"
+            },
+            {
+              "code_ibge": "3304557",
+              "form_value": "19",
+              "label": "330455 Rio de Janeiro"
+            },
+            {
+              "code_ibge": "3550308",
+              "form_value": "20",
+              "label": "355030 São Paulo"
+            },
+            {
+              "code_ibge": "4106902",
+              "form_value": "21",
+              "label": "410690 Curitiba"
+            },
+            {
+              "code_ibge": "4205407",
+              "form_value": "22",
+              "label": "420540 Florianópolis"
+            },
+            {
+              "code_ibge": "4314902",
+              "form_value": "23",
+              "label": "431490 Porto Alegre"
+            },
+            {
+              "code_ibge": "5002704",
+              "form_value": "24",
+              "label": "500270 Campo Grande"
+            },
+            {
+              "code_ibge": "5103403",
+              "form_value": "25",
+              "label": "510340 Cuiabá"
+            },
+            {
+              "code_ibge": "5208707",
+              "form_value": "26",
+              "label": "520870 Goiânia"
+            }
+          ]
+        },
+        "http_status": 200,
+        "response_bytes": 175014,
+        "response_sha256": "2d470626e43fc000560b98e5dba6c9b3301b84534ecbd1cc06f4e664662cb67f",
+        "original_encoding": "iso-8859-1",
+        "versioned_encoding": "utf-8",
+        "versioned_file": "sinasc-2021-2023.html",
+        "form_sha256": "d0f9716731ea7a3a41a127753d6ced24d6ec51e320414fe862a49bb8e66a047c"
+      }
+    ],
+    "input_sha256": {
+      "sim-2021-2023.html": "667dd054c7e4284ab8a4c063fa8447f195a8927fab076ff8f4a5b5b4cbd24d5d",
+      "sinasc-2021-2023.html": "53b1589d0c2aada431c9210203a61628bb83e02df7588f63e6d06c0db17171be"
+    }
+  },
+  "limitations": [
+    "Registered period rates; not a linked birth cohort",
+    "No correction for underregistration",
+    "No confidence intervals yet",
+    "Health dimension remains missing in the score"
+  ]
+}

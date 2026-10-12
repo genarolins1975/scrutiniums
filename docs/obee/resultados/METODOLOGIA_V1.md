@@ -61,3 +61,7 @@ python3 -m unittest pipeline.eficiencia_resultados.test_motor
 - UNDP, notas tecnicas HDR 2025 (contraste com agregacao geometrica do HDI): https://hdr.undp.org/sites/default/files/2025_HDR/HDR25_Technical_Notes.pdf
 
 A formula de percentil, a cesta, os pesos e o agregado aqui implementados sao decisoes do projeto; nao sao um indice oficial dessas instituicoes.
+
+## Continuidade — expansão v2
+
+A [expansão v2](EXPANSAO_V2.md) acrescenta saneamento e violência letal ao piloto de 2022, com 130 observações, 32 cenários de pesos e um contrato separado de seis dimensões que mantém saúde ausente. A v1 e seus resultados permanecem preservados; a mudança entre versões é de composição, não temporal.
