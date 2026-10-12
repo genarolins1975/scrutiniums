@@ -1,9 +1,10 @@
+import {CemReaisPagos} from '@/components/contas-publicas/artefatos/CemReaisPagos';
 import {RespostasIniciais} from '@/components/contas-publicas/artefatos/RespostasIniciais';
 import Link from 'next/link';
 import { CAPITULOS, INDICADORES } from '@/lib/contas-publicas/catalogo';
 export default function Page(){return <main id="conteudo-contas" className="cp-wrap cp-main">
  <p className="cp-eyebrow">Observatório Brasileiro de Contas Públicas</p><h1>Do orçamento à entrega.</h1><p className="cp-lead">Quanto o governo federal paga, o que fica para depois e quais entregas informa? Cada etapa tem uma medida e um perímetro próprios.</p>
- <RespostasIniciais/>
+ <RespostasIniciais/><CemReaisPagos/>
  <p className="cp-note">{CAPITULOS.length} capítulos · {INDICADORES.length} indicadores propostos. Quatro têm integração parcial. O panorama de custos agregados é complementar; custos por entrega e impacto aguardam integração.</p>
 
  <section className="cp-section" aria-labelledby="ciclo"><div className="cp-section-head"><div><p className="cp-eyebrow">O percurso da gestão</p><h2 id="ciclo">Acompanhe o caminho dos recursos</h2></div></div><div className="cp-cycle">{[
