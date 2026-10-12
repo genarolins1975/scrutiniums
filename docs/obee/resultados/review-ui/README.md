@@ -38,3 +38,19 @@ Resultado: nenhuma divergência acima de `1e-9`; maior diferença absoluta entre
 Reprodução: `python3.12 -m unittest scripts.test_auditar_cesta_obee_v3` e `python3.12 scripts/auditar-cesta-obee-v3.py`. O script apenas lê as entradas e imprime o relatório; não escreve no pacote congelado nem promove publicação.
 
 **Limite da conclusão:** segunda implementação aritmética elaborada pela mesma assistência técnica, não revisão metodológica independente. Parte das auditorias preservadas, sem repetir a extração das fontes oficiais; não verifica a semântica dos dados nem quantifica incerteza amostral. Nenhum parecer foi preenchido. O aceite da definição de habitação, dos pesos/compensações e do escopo de divulgação continua dependente de revisão substantiva e decisão editorial.
+
+## Sensibilidade das comparações em 12/10/2026
+
+A seção “A ordem entre as capitais se mantém?” usa o diagnóstico reproduzível `../sensibilidade-pares-v3.json`. A análise cobre toda a faixa contínua de orçamento material de 2/5 a 4/7, com pesos iguais dentro dos dois blocos, nas quatro definições de habitação da cesta conjunta. Dos 325 pares, 294 preservam ordem estrita, 30 podem inverter e um pode empatar sem inversão. A prova pelos extremos da função afim, os limites e a recomendação estão em `../AVALIACAO_COMPENSACAO_V3.md`.
+
+Verificações desta etapa:
+
+- Seis testes do diagnóstico, nove da reconciliação alternativa e quatro do pacote congelado aprovados em Python 3.12. Os 21 testes Vitest da rota/piloto passaram, incluindo igualdade entre o diagnóstico e seus dados embutidos no HTML. Lint do teste TypeScript sem avisos ou erros.
+- Recife–Curitiba conserva a direção nas hipóteses testadas. Aracaju–Teresina mostra inversão e empate em 47,46% na definição domicílios >2. A troca A/B inverte o sinal e os limites corretamente.
+- São Paulo–Teresina mostra empate sem inversão; a tabela confirma diferença zero em material 40% com moradores >3. Selecionar a mesma cidade ou uma cesta isolada remove o gráfico e mostra a explicação correspondente.
+- Filtros preservados ao recarregar. O botão de exemplo funciona por Enter e transfere foco para a conclusão, com indicação visual. A tabela equivalente foi aberta e conferida no navegador.
+- Documento sem transbordamento horizontal em 320, 390, 768 e 1440 px. Inspeção visual da conclusão e figura em 320 px e no desktop; a figura mantém rolagem local no celular e requer deslocamento para ver o eixo. Sem validação com leitor de tela ou zoom 200% nesta rodada.
+
+Captura da comparação Aracaju–Teresina: `sensibilidade-pares.jpg`. Autoavaliação desta seção: direção de arte 8; hierarquia 9; tipografia 8; densidade 8; didática 9; comparabilidade 9; interação/acessibilidade 8; responsividade 8. O gráfico amplo e a ausência de ensaio com leitor de tela limitam a avaliação de acessibilidade; não há certificação integral.
+
+Nenhum arquivo do pacote congelado ou registro de aprovação foi alterado. O diagnóstico não estima incerteza amostral nem cobre todos os pesos possíveis. A candidata continua restrita à avaliação experimental.

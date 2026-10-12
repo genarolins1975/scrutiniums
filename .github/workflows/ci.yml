@@ -83,6 +83,7 @@ jobs:
         run: |
           python3 -m unittest scripts.test_auditar_cesta_obee_v3
           python3 scripts/auditar-cesta-obee-v3.py
+          python3 -m unittest scripts.test_obee_sensibilidade_pares
 
       - name: Build de produção
         # gera o HTML pré-renderizado (.next/server/app) do MESMO commit testado, no mesmo

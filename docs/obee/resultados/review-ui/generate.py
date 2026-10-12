@@ -20,6 +20,12 @@ for source in data['scenarios']:
                          'decomposition': {k: row['decomposition'][k] for k in ('added_total', 'reweighting_total')}} for row in source['rows']]
     scenarios.append(scenario)
 payload = {'sha256': hashlib.sha256(raw).hexdigest(), 'scenarios': scenarios}
+sensitivity = json.loads((HERE.parent / 'sensibilidade-pares-v3.json').read_text())
+assert sensitivity['source_sha256'] == payload['sha256']
+assert len(sensitivity['pairs']) == 325 and sensitivity['publication_ready'] is False
+payload['sensitivity'] = {'summary': sensitivity['summary'], 'pairs': [
+    {k: pair[k] for k in ('a', 'b', 'state', 'min_gap', 'max_gap', 'definitions')}
+    for pair in sensitivity['pairs']]}
 html = (HERE / 'template.html').read_text().replace('__DATA__', json.dumps(payload, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c'))
 output = HERE.parent / 'revisao-interativa-v3.html'
 output.write_text(html)

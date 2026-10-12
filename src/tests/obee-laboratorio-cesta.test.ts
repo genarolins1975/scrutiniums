@@ -36,6 +36,11 @@ describe('OBEE: laboratório restrito ao preview', () => {
     const payload = JSON.parse(html.match(/<script id="data" type="application\/json">([\s\S]*?)<\/script>/)![1]);
     expect(payload.scenarios).toHaveLength(18);
     expect(payload.scenarios.every((s: {rows: unknown[]}) => s.rows.length === 26)).toBe(true);
+    const sensitivity = JSON.parse(readFileSync('docs/obee/resultados/sensibilidade-pares-v3.json', 'utf8'));
+    expect(payload.sha256).toBe(sensitivity.source_sha256);
+    expect(payload.sensitivity.summary).toEqual(sensitivity.summary);
+    expect(payload.sensitivity.pairs).toEqual(sensitivity.pairs.map((p: Record<string, unknown>) =>
+      Object.fromEntries(['a', 'b', 'state', 'min_gap', 'max_gap', 'definitions'].map(k => [k, p[k]]))));
   });
 
   it('não permite geração estática ou cache entre ambientes', () => {
