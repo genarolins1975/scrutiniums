@@ -2,7 +2,7 @@
 import {useState} from 'react';
 import dados from '@/lib/contas-publicas/snapshots/custos.json';
 const n=(v:number)=>v.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});
-const bi=(v:number)=>`R$ ${n(v/1000)} bi`;
+const bi=(v:number)=>`R$ ${(v/1000).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:v<1000?3:1})} bi`;
 const escopos=['total','operacao','mao-obra','funcionamento','servicos','material','depreciacao'];
 export function PainelCustos(){
  const [grupo,setGrupo]=useState('total'),[vista,setVista]=useState('composicao'),[medida,setMedida]=useState<'realPublicado'|'nominalPublicado'>('realPublicado');
