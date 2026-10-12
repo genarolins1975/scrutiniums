@@ -82,8 +82,12 @@ jobs:
       - name: Reconciliação aritmética alternativa do OBEE
         run: |
           python3 -m unittest scripts.test_auditar_cesta_obee_v3
-          python3 scripts/auditar-cesta-obee-v3.py
-          python3 -m unittest scripts.test_obee_sensibilidade_pares
+          # o relatório versionado precisa ser exatamente o que o auditor produz hoje
+          python3 scripts/auditar-cesta-obee-v3.py | python3 -c "import json,sys; sys.exit(json.load(sys.stdin) != json.load(open('docs/obee/resultados/reconciliacao-aritmetica-v3.json')))"
+          python3 -m unittest scripts.test_obee_sensibilidade_pares scripts.test_obee_robustez_ampliada
+          # a prévia versionada precisa ser a saída do gerador (dados, robustez e ressalva)
+          python3 docs/obee/resultados/review-ui/generate.py
+          git diff --exit-code docs/obee/resultados/revisao-interativa-v3.html
 
       - name: Build de produção
         # gera o HTML pré-renderizado (.next/server/app) do MESMO commit testado, no mesmo

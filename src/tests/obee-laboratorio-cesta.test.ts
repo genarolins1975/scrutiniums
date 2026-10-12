@@ -43,6 +43,27 @@ describe('OBEE: laboratório restrito ao preview', () => {
       Object.fromEntries(['a', 'b', 'state', 'min_gap', 'max_gap', 'definitions'].map(k => [k, p[k]]))));
   });
 
+  it('embute valores originais, robustez e ressalva integral, sem links móveis', () => {
+    const payload = JSON.parse(artifact.match(/<script id="data" type="application\/json">([\s\S]*?)<\/script>/)![1]);
+    const pilot = JSON.parse(readFileSync('docs/obee/resultados/piloto-2022-v2.json', 'utf8'));
+    const robustness = JSON.parse(readFileSync('docs/obee/resultados/robustez-ampliada-v3.json', 'utf8'));
+    const precision = JSON.parse(readFileSync('docs/obee/resultados/precisao-candidatas.json', 'utf8'));
+    expect(Object.keys(payload.original)).toHaveLength(26);
+    for (const row of pilot.rows) {
+      const original = payload.original[row.id];
+      for (const [k, v] of Object.entries(row.raw_values)) expect(original[k]).toBe(v);
+      for (const k of ['conectividade', 'domicilios_gt2', 'domicilios_gt3', 'moradores_gt2', 'moradores_gt3']) expect(Number.isFinite(original[k])).toBe(true);
+    }
+    expect(payload.robustness.summary).toEqual(robustness.summary);
+    expect(payload.robustness.pairs.map((p: {robustness: string}) => p.robustness))
+      .toEqual(robustness.pairs.map((p: {robustness: string}) => p.robustness));
+    expect(payload.mandatory_label).toBe(precision.mandatory_label);
+    expect(artifact).not.toContain('/blob/codex/');
+    expect(artifact).not.toMatch(/min-width:\s*(660|700)px/);
+    expect(artifact).toContain('Maior é mais favorável');
+    expect(artifact).toContain('centro 50');
+  });
+
   it('não permite geração estática ou cache entre ambientes', () => {
     expect(dynamic).toBe('force-dynamic');expect(revalidate).toBe(0);
   });

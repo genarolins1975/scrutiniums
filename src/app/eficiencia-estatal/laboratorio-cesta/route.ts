@@ -1,6 +1,6 @@
 import {readFile} from 'node:fs/promises';
 import {join} from 'node:path';
-import {pilotPreviewEnabled} from '@/lib/eficiencia/piloto-resultados';
+import {pilotPreviewEnabled} from '@/lib/eficiencia/piloto-nucleo';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';

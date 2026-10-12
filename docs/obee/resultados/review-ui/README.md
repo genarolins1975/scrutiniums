@@ -54,3 +54,15 @@ Verificações desta etapa:
 Captura da comparação Aracaju–Teresina: `sensibilidade-pares.jpg`. Autoavaliação desta seção: direção de arte 8; hierarquia 9; tipografia 8; densidade 8; didática 9; comparabilidade 9; interação/acessibilidade 8; responsividade 8. O gráfico amplo e a ausência de ensaio com leitor de tela limitam a avaliação de acessibilidade; não há certificação integral.
 
 Nenhum arquivo do pacote congelado ou registro de aprovação foi alterado. O diagnóstico não estima incerteza amostral nem cobre todos os pesos possíveis. A candidata continua restrita à avaliação experimental.
+
+## Correções após revisão cruzada
+
+* **Valores originais na tela.** A seção "O que foi observado em cada capital?" mostra as sete medidas nas unidades originais, com direção favorável, universo e fonte. Homicídios trazem a parcela de ocultos estimados por capital. O percentil passa a ser apresentado como posição relativa, com rótulo orientado ("Menos homicídios estimados") e a faixa real de 1,9 a 98,1.
+* **Robustez por par.** Além da família de 40% a 4/7, a seção de sensibilidade informa a classe do par (dominância, estável só na família, inversão possível, empate possível) e os testes de `robustez-ampliada-v3.json`.
+* **Decomposição.** A convenção do centro 50 está declarada junto às parcelas; o total independe dela.
+* **Celular.** Gráficos redesenhados para a largura disponível (rótulo acima do segmento), sem rolagem lateral; ponto de empate marcado no gráfico.
+* **Precisão de exibição e CSV.** Uma casa decimal na tela (R$ com centavos). O CSV usa vírgula decimal e ponto e vírgula, e inclui valores originais, unidades, percentis, pesos, definição de habitação, SHA-256 da fonte, link do arquivo auditável e a ressalva obrigatória integral.
+* **Links fixos** no commit `ad1b8cf4`; sinal de menos tipográfico.
+* **Bundle de produção.** O piloto v2 deixou de ser importado por componentes cliente: o snapshot é lido no servidor e só chega ao navegador em preview. `src/tests/obee-piloto-bundle.test.ts` falha se dados do piloto ou da candidata aparecerem em `.next/static`.
+
+O CI passa a exigir que `reconciliacao-aritmetica-v3.json` seja a saída atual do auditor e que este HTML seja a saída atual do gerador.

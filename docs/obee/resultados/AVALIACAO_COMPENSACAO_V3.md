@@ -66,3 +66,19 @@ O [manual OECD/UE/JRC de índices compostos (2008)](https://doi.org/10.1787/9789
 - Interface: regenerar com `python3.12 docs/obee/resultados/review-ui/generate.py`.
 
 Fonte imediata: `cesta-conjunta.json`, SHA-256 `15339579dc2cceecd3c237569e011640aa2b7198329dbfd9c081075c3c1de7bd`. Nenhum dos 54 arquivos do pacote congelado foi alterado. Este documento, o diagnóstico e a apresentação são materiais complementares; não se autodeclaram pareceres recebidos nem mudam `publication_ready=false`.
+
+## Atualização: robustez além da família contínua
+
+Revisão técnica cruzada (Claude, automatizada, não independente no sentido do protocolo) reproduziu os 294/30/1 e os 55 pares com dominância, mas mostrou que a estabilidade é própria da família de um parâmetro. Para não induzir leitura de robustez geral, `scripts/obee_robustez_ampliada.py` gera `robustez-ampliada-v3.json` com quatro experimentos separados, todos com aritmética exata exceto o escore z:
+
+| Experimento | Pares que podem inverter (de 325) |
+|---|---:|
+| Cada peso entre 75% e 125% do peso de referência (material 40%), soma 1 | 53 |
+| Cada peso entre 50% e 150% do peso de referência | 99 |
+| Retirar uma medida, pesos renormalizados | 5 (conectividade) a 32 (segurança) |
+| Normalização por mínimo e máximo; escore z | 19; 20 |
+| Homicídios apenas registrados, família contínua | 8 pares mudam de estado |
+
+Cada par recebe uma classe: **dominância** (55; igual ou mais favorável nas sete medidas em todas as definições, ordem robusta a qualquer peso positivo e a qualquer normalização monotônica, não a erro amostral), **estável só na família** (239), **inversão possível** (30) e **empate possível** (1). O laboratório exibe a classe e os testes do par selecionado. Nenhum resultado é probabilidade ou intervalo de confiança; nenhum peso foi alterado.
+
+Reprodução: `python3.12 scripts/obee_robustez_ampliada.py` e `python3.12 -m unittest scripts.test_obee_robustez_ampliada`.

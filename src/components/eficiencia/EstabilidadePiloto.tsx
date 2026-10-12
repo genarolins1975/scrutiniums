@@ -1,8 +1,8 @@
-import {pilotStability,pilotRow,pilotNumber as n} from '@/lib/eficiencia/piloto-resultados';
+import {pilotNumber as n,type createPilot} from '@/lib/eficiencia/piloto-nucleo';
 import s from './PilotoResultados.module.css';
 const signed=(v:number)=>`${v>1e-9?'+':''}${n(Math.abs(v)<=1e-9?0:v,2)}`;
-export function EstabilidadePiloto({place,reference}:{place:string;reference:string}){
- const result=pilotStability(place,reference),a=pilotRow(place),b=pilotRow(reference);
+export function EstabilidadePiloto({pilot,place,reference}:{pilot:ReturnType<typeof createPilot>;place:string;reference:string}){
+ const result=pilot.pilotStability(place,reference),a=pilot.pilotRow(place),b=pilot.pilotRow(reference);
  if(!result||!a||!b)return null;
  const limit=Math.max(10,Math.ceil(Math.max(Math.abs(result.baseline),...result.families.flatMap(f=>[Math.abs(f.lower),Math.abs(f.upper)]))/10)*10);
  const position=(v:number)=>50+50*v/limit;
