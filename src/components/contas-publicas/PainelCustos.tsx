@@ -1,4 +1,6 @@
 'use client';
+import {Proveniencia} from './artefatos/Proveniencia';
+import {ORIGEM_CUSTOS} from '@/lib/contas-publicas/proveniencia';
 import {useState} from 'react';
 import dados from '@/lib/contas-publicas/snapshots/custos.json';
 import {resumirCustos,valorVariacao,type MedidaCustos} from '@/lib/contas-publicas/custos-leitura';
@@ -30,5 +32,5 @@ export function PainelCustos(){
  <section className="cp-section cp-method"><h3>O que fica fora do total de custos?</h3><p>Repartições de receitas e outras reduções patrimoniais aparecem separadamente no RFC. Não as somamos aos custos nem aos valores de execução orçamentária de outros painéis.</p><dl className="cp-facts">{dados.registros.filter(r=>r.parent==='fora-custos').map(r=><div key={r.id}><dt>{r.nome} · 2025</dt><dd>{moeda(r.ano2025,'milhoes')}</dd></div>)}</dl></section>
  <section className="cp-section cp-method"><h3>Do custo agregado à produtividade</h3><div className="cp-split"><div><p><strong>Custo por entrega.</strong> Exige identificar quais recursos foram consumidos por um serviço, inclusive pessoal, materiais e depreciação, e vinculá-los às entregas do mesmo período e perímetro.</p><p><strong>Comparação entre unidades.</strong> Exige serviços equivalentes e informação sobre complexidade, qualidade e prazo. Ministérios com missões distintas não formam um ranking de produtividade.</p></div><div><p><strong>Vínculo ainda não homologado.</strong> A base física AFFO identifica ações e localizadores; o RFC agregado não oferece a atribuição de custos a esses produtos. Dividir seus totais produziria uma medida sem correspondência.</p><a href="/contas-publicas/metas">Examinar metas e entregas físicas →</a></div></div></section>
  <details className="cp-data-details"><summary>Precisão, fonte e reprodução</summary><p className="cp-note">{dados.notaPrecisao} Os percentuais nominais e reais são os publicados, pois recalculá-los a partir de valores arredondados pode produzir diferenças. As vistas mostram somente componentes do mesmo nível, sem somar pais e filhos.</p><p className="cp-note">{dados.metodo} Fonte primária: DVP/Balanço Geral da União, conforme o RFC. Não há custos unitários ou produtividade estimados neste recorte.</p></details>
- <p className="cp-note cp-provenance"><a href={dados.fonte.url}>Relatório Foco em Custos 2025 · páginas 9, 11 e 15</a> · publicado em 17/06/2026 · captura: {dados.captura.slice(0,10).split('-').reverse().join('/')}. <a href="/contas-publicas/custos.json">Baixar todos os grupos, valores e conferências · JSON</a>.</p></section>
+ <Proveniencia {...ORIGEM_CUSTOS}/></section>
 }

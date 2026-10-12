@@ -41,3 +41,9 @@
 @media(max-width:760px){.cp-cost-spotlight{grid-template-columns:1fr}.cp-cost-leader{border-right:0;border-bottom:1px solid #65747b;padding:24px}.cp-cost-signals{padding:0 24px}.cp-cost-context{grid-template-columns:1fr;margin-bottom:32px}.cp-cost-context>div,.cp-cost-context>div:first-child{padding:18px 0;border-right:0;border-bottom:1px solid var(--cor-linha)}.cp-cost-row-head{grid-template-columns:20px minmax(0,1fr)}.cp-cost-row-head strong{grid-column:2}.cp-cost-twin,.cp-cost-row-foot,.cp-cost-drill{margin-left:28px}}
 
 .cp-bar-track.cp-reference span{background:var(--cp-referencia)}
+/* Artefatos didáticos: a proveniência usa sempre a mesma ordem. */
+.cp-provenance{font-size:13px;line-height:1.65;color:var(--cor-carvao-muted)}
+.cp-source-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 24px;margin-top:12px}.cp-source-facts dt{font-weight:600}.cp-source-facts dd{margin:2px 0 0}
+.cp-artifact{margin:32px 0;padding-block:24px;border-top:1px solid var(--cor-linha);min-width:0}.cp-artifact figcaption{margin-bottom:20px}.cp-artifact figcaption p{margin-top:8px}.cp-artifact .cp-note{max-width:78ch}
+.cp-exact{margin-top:20px}.cp-exact summary{cursor:pointer;min-height:44px;padding-block:12px}.cp-exact table{font-size:14px;min-width:0}.cp-exact td{text-align:right;font-variant-numeric:tabular-nums}
+@media(max-width:760px){.cp-source-facts{grid-template-columns:1fr 1fr;gap:12px}.cp-source-facts>div:nth-child(n+4){grid-column:1/-1}}
