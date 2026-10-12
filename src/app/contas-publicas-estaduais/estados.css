@@ -34,3 +34,5 @@
 #divida-estadual,#execucao-estadual{scroll-margin-top:24px}
 @media(max-width:650px){.ce-ficha-guide li{flex-basis:calc(50% - 12px)}.ce-ficha-guide a{min-height:88px}.ce-table-scroll::before{content:"Deslize a tabela para ver todas as colunas →";display:block;font-size:12px;color:var(--ce-muted);margin:8px 0}.ce-budget-readings{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:360px){.ce-ficha-guide li{flex-basis:100%}.ce-ficha-guide a{min-height:60px}.ce-budget-readings{grid-template-columns:1fr}}
+
+.ce-expense-compare{display:block;min-height:44px;padding:10px 0;font-size:13px}.ce-compare-filters label:first-child{min-width:0;max-width:100%}

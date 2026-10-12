@@ -211,3 +211,27 @@ describe('Composição econômica da despesa',()=>{
   const csv=await r.text();expect(csv.split('\r\n')).toHaveLength(7);expect(csv).toContain('Investimentos');expect(csv).toContain(execucaoPrimaria('PE',2025)!.fontes[0].sha256);
  });
 });
+
+import { CONTAS_DESPESA } from '../lib/contas-estaduais/comparacao';
+describe('Comparação da estrutura de despesas',()=>{
+ it('recompõe 100% nas 27 UFs e expõe numerador e denominador',()=>{
+  const medidas=Object.keys(CONTAS_DESPESA) as (keyof typeof CONTAS_DESPESA)[];
+  for(const u of snapshot.ufs){
+   const parcelas=medidas.map(id=>comparar(2025,id,'Todas',true).linhas.find(l=>l.uf===u.uf)!);
+   expect(parcelas.reduce((s,l)=>s+l.valor!,0)).toBeCloseTo(100,8);
+   for(const l of parcelas){expect(l.valor).toBeCloseTo(100*l.numerador!/l.denominador!,8);expect(l.sha256).toMatch(/^[a-f0-9]{64}$/);}
+  }
+ });
+ it('calcula referência regional, separa DF e conserva ausência',()=>{
+  const c=comparar(2025,'DESP-INVESTIMENTOS','Nordeste');
+  expect(c.elegiveis).toBe(9);expect(c.referencia).toBe(mediana(c.linhas.map(l=>l.valor!)));
+  expect(comparar(2025,'DESP-PESSOAL').universo).toBe(26);
+  expect(comparar(2025,'DESP-PESSOAL','Todas',true).universo).toBe(27);
+  const vazio=comparar(2026,'DESP-INVESTIMENTOS');expect(vazio.elegiveis).toBe(0);expect(vazio.referencia).toBeNull();expect(vazio.linhas.every(l=>l.valor===null&&l.numerador===null&&l.denominador===null)).toBe(true);
+  expect(lerFiltrosComparacao({indicador:'DESP-INVESTIMENTOS'}).indicador).toBe('DESP-INVESTIMENTOS');
+ });
+ it('exporta composição regional e valores de origem',async()=>{
+  const r=exportarComparacao(new Request('https://x.test?ano=2025&indicador=DESP-INVESTIMENTOS&regiao=Nordeste&df=0'));
+  expect(r.status).toBe(200);const csv=await r.text();expect(csv.split('\r\n')).toHaveLength(10);expect(csv).toContain('categoria_liquidada_BRL');expect(csv).toContain('4328282322.13');expect(csv).toContain('52375113809.86');expect(csv).toContain('Investimentos');
+ });
+});
