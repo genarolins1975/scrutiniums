@@ -1,9 +1,10 @@
 import snapshot from './snapshots/escala.json';
 import {fiscalAcumulado} from './dados';
+import {fiscalRealAcumulado,BASE_PRECOS,IPCA} from './inflacao';
 
 export const ESCALA = snapshot;
-export type EscalaFiscal = 'total' | 'habitante' | 'pib';
-export const UNIDADES_ESCALA = {total:'R$ milhões correntes',habitante:'R$ correntes por habitante',pib:'% do PIB'} as const;
+export type EscalaFiscal = 'total' | 'habitante' | 'pib' | 'real';
+export const UNIDADES_ESCALA = {total:'R$ milhões correntes',habitante:'R$ correntes por habitante',pib:'% do PIB',real:`R$ milhões a preços de ${BASE_PRECOS} (IPCA)`} as const;
 export function denominador(ano:number, mes=12) {
   return mes === 12 ? ESCALA.registros.find(r=>r.ano===ano) ?? null : null;
 }
@@ -11,6 +12,8 @@ export function denominador(ano:number, mes=12) {
 export function converterEscala(valor:number|null, ano:number, mes:number, escala:EscalaFiscal):number|null {
   if(valor===null || !Number.isFinite(valor) || !Number.isInteger(mes) || mes<1 || mes>12) return null;
   if(escala==='total') return valor;
+  // A correção exige os fluxos mensais, nunca um agregado anual.
+  if(escala==='real') return null;
   const d=denominador(ano,mes);
   if(!d) return null;
   const base=escala==='pib'?d.pibMilhoes:d.populacao;
@@ -24,12 +27,16 @@ export const GRUPOS_FISCAIS=[
   {id:'programacaoFinanceira',nome:'Executivo: sujeitas à programação financeira'},
 ] as const;
 export function compararDespesas(ano:number,mes:number,escala:EscalaFiscal) {
-  const atual=fiscalAcumulado(ano,mes), anterior=fiscalAcumulado(ano-1,mes);
+  const nominalAtual=fiscalAcumulado(ano,mes), nominalAnterior=fiscalAcumulado(ano-1,mes);
+  if(!nominalAtual||!nominalAnterior) return null;
+  const atual=escala==='real'?fiscalRealAcumulado(ano,mes):nominalAtual;
+  const anterior=escala==='real'?fiscalRealAcumulado(ano-1,mes):nominalAnterior;
   if(!atual||!anterior) return null;
   const linhas=GRUPOS_FISCAIS.map(g=>{
-    const a=converterEscala(atual[g.id],ano,mes,escala);
-    const b=converterEscala(anterior[g.id],ano-1,mes,escala);
-    return {...g,atual:a,anterior:b,diferenca:a===null||b===null?null:a-b,
+    const a=escala==='real'?atual[g.id]:converterEscala(atual[g.id],ano,mes,escala);
+    const b=escala==='real'?anterior[g.id]:converterEscala(anterior[g.id],ano-1,mes,escala);
+    return {...g,nominalAtual:nominalAtual[g.id],nominalAnterior:nominalAnterior[g.id],
+      variacaoNominal:nominalAnterior[g.id]>0?100*(nominalAtual[g.id]/nominalAnterior[g.id]-1):null,atual:a,anterior:b,diferenca:a===null||b===null?null:a-b,
       variacao:a===null||b===null||b<=0?null:100*(a/b-1),
       participacao:atual.despesa>0?100*atual[g.id]/atual.despesa:null};
   });
@@ -38,7 +45,7 @@ export function compararDespesas(ano:number,mes:number,escala:EscalaFiscal) {
 }
 export function exportarComparacaoFiscal(linhas:NonNullable<ReturnType<typeof compararDespesas>>,ano:number,mes:number,escala:EscalaFiscal) {
   const unidade=UNIDADES_ESCALA[escala];
-  return [['categoria',`valor_${ano-1}`,`valor_${ano}`,'diferenca','unidade_valores','unidade_diferenca','meses_comparados'],
-    ...linhas.map(l=>[l.nome,l.anterior,l.atual,l.diferenca,unidade,escala==='pib'?'p.p.':unidade,`1-${mes}`])]
+  return [['categoria',`valor_${ano-1}`,`valor_${ano}`,'diferenca','unidade_valores','unidade_diferenca','meses_comparados','base_precos','variacao_percentual','variacao_nominal_percentual','nominal_anterior_milhoes','nominal_atual_milhoes'],
+    ...linhas.map(l=>[l.nome,l.anterior,l.atual,l.diferenca,unidade,escala==='pib'?'p.p.':unidade,`1-${mes}`,escala==='real'?IPCA.basePrecos:'correntes',l.variacao??'',l.variacaoNominal??'',l.nominalAnterior,l.nominalAtual])]
     .map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(';')).join('\r\n');
 }
