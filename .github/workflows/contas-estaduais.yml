@@ -32,14 +32,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Capturar encerramento de 2025 para as seis provas
+      - name: Capturar encerramento de 2025 para as 27 UFs
         id: anual
         continue-on-error: true
-        run: python3 -m pipeline.contas_estaduais.coletar --ano 2025 --destino evidencia/anual
+        run: python3 -m pipeline.contas_estaduais.coletar --ano 2025 --ufs AC AL AM AP BA CE DF ES GO MA MG MS MT PA PB PE PI PR RJ RN RO RR RS SC SE SP TO --destino evidencia/anual
       - name: Capturar 2026 Q1 para conferir o snapshot herdado
         id: parcial
         continue-on-error: true
-        run: python3 -m pipeline.contas_estaduais.coletar --ano 2026 --quadrimestre 1 --somente-rgf --destino evidencia/parcial
+        run: python3 -m pipeline.contas_estaduais.coletar --ano 2026 --ufs AC AL AM AP BA CE DF ES GO MA MG MS MT PA PB PE PI PR RJ RN RO RR RS SC SE SP TO --quadrimestre 1 --somente-rgf --destino evidencia/parcial
       - uses: actions/upload-artifact@v4
         if: always()
         with:
