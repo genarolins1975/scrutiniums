@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-10-12T14:24:04.939414+00:00",
+  "sources": [
+    {
+      "path": "metadata.json",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/9936/metadados",
+      "sha256": "91f07325ad15764351d5b53d0d478471b811add63cdc629465d906ace12f78c2",
+      "transport_sha256": "1b53ea3f68e6a596d6e11217714a0e62d8c99a8e00e0d28f6c2f4cd7cd5ab75a",
+      "gzip_decoded": true
+    },
+    {
+      "path": "data.json",
+      "url": "https://apisidra.ibge.gov.br/values/t/9936/n6/2800308,3106200,1501402,1400100,5002704,5103403,4106902,4205407,2304400,5208707,2507507,1600303,2704302,1302603,2408102,1721000,4314902,1100205,2611606,1200401,3304557,2927408,2111300,3550308,2211001,3205309/v/381,1000381/p/2022/c2072/all/c63/95826/c125/2932",
+      "sha256": "306fa8adc598a736853d92472247f758dc4c668b6989f062312a918df7f75238",
+      "transport_sha256": "306fa8adc598a736853d92472247f758dc4c668b6989f062312a918df7f75238",
+      "gzip_decoded": false
+    }
+  ]
+}

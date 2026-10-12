@@ -199,15 +199,16 @@
     {
       "id": "energia",
       "name": "Energia e conectividade",
-      "status": "context_only",
+      "status": "candidate_under_review",
       "panel_published": true,
-      "scope": "Energia: séries PNAD, Brasil/distribuidoras conforme produto; internet: Brasil urbano/rural, 2025.",
-      "measure": "Acesso domiciliar, DEC/FEC e tarifas em universos distintos.",
-      "blocker": "Distribuidora não é município; tarifa homologada não é conta típica; internet nacional não representa capital.",
-      "next_action": "Auditar disponibilidade municipal de 2022 para acesso domiciliar, variabilidade entre capitais e redundância antes de escolher métrica.",
+      "scope": "Painel existente: universos próprios de energia e PNAD TIC 2025. Auditoria adicional: SIDRA 9936, 26 capitais, 2022, amostra preliminar.",
+      "measure": "Proporção de domicílios particulares permanentes ocupados com conexão à Internet; maior.",
+      "blocker": "Precisão municipal e pesos/conteúdo pendentes; não mede qualidade ou preço. Correlação orientada com renda: 0,801846.",
+      "next_action": "Comparar inclusão isolada e conjunta de conectividade e habitação, com peso explícito das condições materiais.",
       "priority": "P2",
       "evidence": [
-        "src/lib/eficiencia/energia/dados.ts"
+        "src/lib/eficiencia/energia/dados.ts",
+        "docs/obee/resultados/CONECTIVIDADE_MUNICIPAL.md"
       ],
       "full_chapter_score_validated": false,
       "eligible_for_automatic_expansion": false
@@ -281,5 +282,9 @@
     "date": "2026-10-12",
     "base_commit": "0a32b62293e391c8f78cf64e243d867c038d56d0",
     "report": "docs/obee/resultados/HABITACAO_ADENSAMENTO.md"
+  },
+  "connectivity_review": {
+    "date": "2026-10-12",
+    "base_commit": "2068912f3c8103fd0fe66ab6f40357992fe3af88"
   }
 }
