@@ -6,15 +6,12 @@ import {GET, dynamic, revalidate} from '../app/eficiencia-estatal/laboratorio-ce
 vi.mock('node:fs/promises', () => ({readFile: vi.fn()}));
 const artifact = readFileSync('docs/obee/resultados/revisao-interativa-v3.html', 'utf8');
 
-describe('OBEE: laboratório restrito ao preview', () => {
+describe('OBEE: laboratório público por decisão editorial, com desligamento', () => {
   beforeEach(() => {vi.mocked(readFile).mockResolvedValue(artifact);});
   afterEach(() => {vi.unstubAllEnvs();vi.clearAllMocks();});
 
-  it.each([
-    ['production', 'production'], ['production', 'development'],
-    ['development', 'production'], ['', 'production'], ['unknown', 'development'],
-  ])('recusa ambiente %s / %s antes de ler o artefato', async (environment, node) => {
-    vi.stubEnv('VERCEL_ENV', environment);vi.stubEnv('NODE_ENV', node);
+  it('desliga pela variável de ambiente antes de ler o artefato', async () => {
+    vi.stubEnv('VERCEL_ENV', 'production');vi.stubEnv('NODE_ENV', 'production');vi.stubEnv('OBEE_LABORATORIO_V3', 'desligado');
     const response = await GET();
     expect(response.status).toBe(404);
     expect(readFile).not.toHaveBeenCalled();
@@ -22,7 +19,12 @@ describe('OBEE: laboratório restrito ao preview', () => {
     expect(response.headers.get('Cache-Control')).toContain('no-store');
   });
 
-  it.each([['preview', 'production'], ['', 'development']])('serve revisão em %s / %s', async (environment, node) => {
+  it('a decisão editorial está registrada no repositório', () => {
+    const decisao = readFileSync('docs/obee/resultados/DECISAO_PUBLICACAO_LABORATORIO_V3.md', 'utf8');
+    for (const texto of ['não é índice oficial', 'publication_ready', 'OBEE_LABORATORIO_V3=desligado']) expect(decisao).toContain(texto);
+  });
+
+  it.each([['production', 'production'], ['', 'production'], ['preview', 'production'], ['', 'development']])('serve o laboratório em %s / %s, com ressalvas', async (environment, node) => {
     vi.stubEnv('VERCEL_ENV', environment);vi.stubEnv('NODE_ENV', node);
     const response = await GET();
     const html = await response.text();
