@@ -77,7 +77,7 @@ jobs:
         run: |
           python3 -m unittest discover -s pipeline/tests -t .
           python3 -m unittest discover -s pesquisa/tests -t .
-          python3 -m unittest pipeline.eficiencia_resultados.test_motor pipeline.eficiencia_resultados.test_expansao pipeline.eficiencia_resultados.test_saude_municipal
+          python3 -m unittest pipeline.eficiencia_resultados.test_motor pipeline.eficiencia_resultados.test_expansao pipeline.eficiencia_resultados.test_saude_municipal pipeline.eficiencia_resultados.test_precisao_saude
 
       - name: Build de produção
         # gera o HTML pré-renderizado (.next/server/app) do MESMO commit testado, no mesmo

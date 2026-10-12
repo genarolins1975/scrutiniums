@@ -77,3 +77,7 @@ python3 -m pipeline.eficiencia_resultados.coletar_saude --cache /tmp/obee-saude-
 ```
 
 O coletor de saúde foi executado de ponta a ponta nesta sessão: as duas novas respostas reproduziram exatamente os hashes dos snapshots versionados. Isso verifica a reprodução da extração, não o grau de sub-registro dos sistemas.
+
+## Continuidade: precisão e elegibilidade
+
+A revisão posterior está em [PRECISAO_SAUDE.md](PRECISAO_SAUDE.md): 104 intervalos condicionais calculados, recortes IBGE de subnotificação auditados e decisão de manter Saúde fora do escore. O estado pendente descrito na aquisição acima foi detalhado nessa auditoria; os snapshots de contagens permanecem inalterados.
