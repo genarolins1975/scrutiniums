@@ -77,3 +77,7 @@ Seis testes aprovados: saída congelada, denominadores/unidades, ausências e in
 - [Características dos domicílios: resultados preliminares da amostra](https://www.ibge.gov.br/biblioteca/visualizacao/livros/liv102150.pdf), páginas impressas 6–7 e 38–39. PDF adquirido e hash registrado; definição e limites consultados no texto.
 
 A apresentação de divulgação localizada na busca contém uma referência a 9942 junto ao gráfico de adensamento; os metadados dessa tabela identificam Internet. Por isso o contrato e a aquisição utilizam as tabelas verificadas 9934/9940, e nenhum valor foi transcrito daquele gráfico.
+
+## Continuidade
+
+A [análise de oito cenários de composição](HABITACAO_CENARIOS.md) foi concluída em 12/10/2026, com comparação de limiares, unidades e pesos e diligência da Nota metodológica 07/2024. Mantém Habitação como candidato, sem promoção ao escore.
