@@ -1,0 +1,30 @@
+{
+  "captured_at": "2026-10-11T18:32:55.868453+00:00",
+  "sources": [
+    {
+      "file": "ibge-10056-capitais.json",
+      "url": "https://apisidra.ibge.gov.br/values/t/10056/n6/1100205,1200401,1302603,1400100,1501402,1600303,1721000,2111300,2211001,2304400,2408102,2507507,2611606,2704302,2800308,2927408,3106200,3205309,3304557,3550308,4106902,4205407,4314902,5002704,5103403,5208707/v/3795/p/2022/c58/99749,47813,31615,2792/c2/6794/c86/95251",
+      "sha256": "95308f922842b06a8fa651601aa70d84edbe43a48899c5f1bafeef66745885a4"
+    },
+    {
+      "file": "ibge-10056-brasil.json",
+      "url": "https://apisidra.ibge.gov.br/values/t/10056/n1/1/v/3795/p/2022/c58/99749,47813,31615,2792/c2/6794/c86/95251",
+      "sha256": "a85652c932d4b743db5799104b59b9148b0c0808a92d190714f7aae39e17e1cb"
+    },
+    {
+      "file": "ibge-10056-metadados.json",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/10056/metadados",
+      "sha256": "b56727c36aff91f06a8062a7feec77b22c9cbc2e6604518a91a424493dad7946"
+    }
+  ],
+  "role": "CONTEXTO_EDUCACIONAL_NAO_ESCORE",
+  "period": 2022,
+  "public_network_identifiable": false,
+  "rows": 108,
+  "notes": [
+    "26 capitais estaduais; Brasília fora da cesta municipal.",
+    "Sexo total, cor ou raça total; quatro faixas etárias separadas.",
+    "Taxas publicadas, sem conversão em escore; não somar nem fazer média simples das idades.",
+    "A tabela não identifica dependência administrativa da escola; não mede cobertura exclusiva do Estado."
+  ]
+}

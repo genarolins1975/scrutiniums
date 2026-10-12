@@ -1,0 +1,145 @@
+{
+  "captured_at": "2026-10-12T14:02:38.500670+00:00",
+  "sources": [
+    {
+      "table": 9934,
+      "url": "https://apisidra.ibge.gov.br/values/t/9934/n6/2800308,3106200,1501402,1400100,5002704,5103403,4106902,4205407,2304400,5208707,2507507,1600303,2704302,1302603,2408102,1721000,4314902,1100205,2611606,1200401,3304557,2927408,2111300,3550308,2211001,3205309/v/381,1000381/p/2022/c1975/all/c1986/73103/c1988/73108",
+      "path": "9934-data.json",
+      "sha256": "7cf230787c436be6263bd411ba5072593f8a8a93958576f2cee21711b0947886",
+      "records": 260
+    },
+    {
+      "table": 9940,
+      "url": "https://apisidra.ibge.gov.br/values/t/9940/n6/2800308,3106200,1501402,1400100,5002704,5103403,4106902,4205407,2304400,5208707,2507507,1600303,2704302,1302603,2408102,1721000,4314902,1100205,2611606,1200401,3304557,2927408,2111300,3550308,2211001,3205309/v/382,1000382/p/2022/c1975/all/c86/95251/c58/95253",
+      "path": "9940-data.json",
+      "sha256": "19377a02df2bbd7be37d69583837d6169ca697a531d9fa9d8470771da2c1aa35",
+      "records": 260
+    },
+    {
+      "table": 9934,
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/9934/metadados",
+      "path": "9934-metadata.json",
+      "sha256": "542834e6d634411d52a0eddf2c697a11e9d2989b5218539eadc0a3a436131cc6"
+    },
+    {
+      "table": 9940,
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/9940/metadados",
+      "path": "9940-metadata.json",
+      "sha256": "1046084f040b33de9e83b4ccd65684d83b32114e18209ceaf1ed4bdd26a74c3f"
+    }
+  ],
+  "cohort": [
+    {
+      "id": "2800308",
+      "name": "Aracaju"
+    },
+    {
+      "id": "3106200",
+      "name": "Belo Horizonte"
+    },
+    {
+      "id": "1501402",
+      "name": "Belém"
+    },
+    {
+      "id": "1400100",
+      "name": "Boa Vista"
+    },
+    {
+      "id": "5002704",
+      "name": "Campo Grande"
+    },
+    {
+      "id": "5103403",
+      "name": "Cuiabá"
+    },
+    {
+      "id": "4106902",
+      "name": "Curitiba"
+    },
+    {
+      "id": "4205407",
+      "name": "Florianópolis"
+    },
+    {
+      "id": "2304400",
+      "name": "Fortaleza"
+    },
+    {
+      "id": "5208707",
+      "name": "Goiânia"
+    },
+    {
+      "id": "2507507",
+      "name": "João Pessoa"
+    },
+    {
+      "id": "1600303",
+      "name": "Macapá"
+    },
+    {
+      "id": "2704302",
+      "name": "Maceió"
+    },
+    {
+      "id": "1302603",
+      "name": "Manaus"
+    },
+    {
+      "id": "2408102",
+      "name": "Natal"
+    },
+    {
+      "id": "1721000",
+      "name": "Palmas"
+    },
+    {
+      "id": "4314902",
+      "name": "Porto Alegre"
+    },
+    {
+      "id": "1100205",
+      "name": "Porto Velho"
+    },
+    {
+      "id": "2611606",
+      "name": "Recife"
+    },
+    {
+      "id": "1200401",
+      "name": "Rio Branco"
+    },
+    {
+      "id": "3304557",
+      "name": "Rio de Janeiro"
+    },
+    {
+      "id": "2927408",
+      "name": "Salvador"
+    },
+    {
+      "id": "2111300",
+      "name": "São Luís"
+    },
+    {
+      "id": "3550308",
+      "name": "São Paulo"
+    },
+    {
+      "id": "2211001",
+      "name": "Teresina"
+    },
+    {
+      "id": "3205309",
+      "name": "Vitória"
+    }
+  ],
+  "methodology_sources": [
+    {
+      "url": "https://www.ibge.gov.br/biblioteca/visualizacao/livros/liv102150.pdf",
+      "sha256": "6e6ca6c94dde27957e6a930e9c2484e903ac4dbf4668eb95ae76190c715e15e0",
+      "pages": "6–7, 38–39 (numeração impressa)",
+      "notes": "Amostra preliminar; unidades de domicílios e moradores distintas; dormitório é cômodo usado permanentemente para dormir. Sem CV municipal individual nas tabelas adquiridas."
+    }
+  ]
+}

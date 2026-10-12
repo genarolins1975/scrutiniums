@@ -307,7 +307,7 @@
     "source": "IBGE · PNAD Contínua",
     "universe": "Domicílios particulares permanentes em situação de segurança alimentar.",
     "path": "public/eficiencia/seguranca-alimentar/panorama.json",
-    "sha256": "f0fad87efccafeff6bdcc1e80c4215e82cc7286f8d993b72190aeff339af4b12",
+    "sha256": "3043cd3c77a8c4b1efd679d84a893487de7a153521b908fc368f83bb430cbb43",
     "original": "https://biblioteca.ibge.gov.br/visualizacao/livros/liv102212_informativo.pdf"
   }
 }

@@ -1,0 +1,1484 @@
+{
+  "version": "irc-health-precision-2021-2023-v1",
+  "input_sha256": {
+    "docs/obee/resultados/saude-contagens-2021-2023.json": "1e322eb32a03593520f9a7f9925be1bb5f9cda049f37be55e034fff14b17f097",
+    "pipeline/eficiencia_resultados/seed/saude/ibge-subnotificacao-2023.json": "d68235f39b362369a91c05ac47a43189e03799ad78eb6ff7e05cfdc98af3ebd6"
+  },
+  "confidence_level": 0.95,
+  "method": "Central exact Poisson (Garwood), fixed live-birth denominator",
+  "interpretation": "Conditional random variation, not total uncertainty or a linked-cohort probability",
+  "precision_threshold": null,
+  "registration_review": {
+    "reference_year": 2023,
+    "municipal_births": "available",
+    "municipal_all_age_deaths": "available",
+    "municipal_infant_deaths": "not in inspected IBGE 2023 tables",
+    "infant_deaths": "state and region level only in inspected tables",
+    "correction_applied": false
+  },
+  "decision": "descriptive_research_only",
+  "score_eligible": false,
+  "publication_ready": false,
+  "remaining_requirements": [
+    "Municipal infant-specific registration evidence aligned to 2021-2023",
+    "Versioned temporal contract and content validity review before adding health"
+  ],
+  "rows": [
+    {
+      "id": "1100205",
+      "name": "Porto Velho",
+      "deaths": 304,
+      "births": 21700,
+      "pooled": {
+        "rate_per_1000": 14.009216589861751,
+        "lower_95": 12.478508989859588,
+        "upper_95": 15.675870452110033,
+        "relative_standard_error_pct": 5.735393346764043
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 15.05906789562508,
+          "lower_95": 12.443599182320249,
+          "upper_95": 18.061917496858015,
+          "relative_standard_error_pct": 9.284766908852594
+        },
+        "2022": {
+          "rate_per_1000": 13.326081044329616,
+          "lower_95": 10.818756741140774,
+          "upper_95": 16.240224407551697,
+          "relative_standard_error_pct": 10.101525445522107
+        },
+        "2023": {
+          "rate_per_1000": 13.548095739876562,
+          "lower_95": 10.89426887416942,
+          "upper_95": 16.6529097982698,
+          "relative_standard_error_pct": 10.540925533894598
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 14.009216589861751
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 14.746543778801843
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 13.308755760368662
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 14.009216589861751
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "1200401",
+      "name": "Rio Branco",
+      "deaths": 262,
+      "births": 16168,
+      "pooled": {
+        "rate_per_1000": 16.204849084611578,
+        "lower_95": 14.30187529551691,
+        "upper_95": 18.290547534512438,
+        "relative_standard_error_pct": 6.178020632152155
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 16.766678432756795,
+          "lower_95": 13.565244098716475,
+          "upper_95": 20.496394921206406,
+          "relative_standard_error_pct": 10.259783520851542
+        },
+        "2022": {
+          "rate_per_1000": 14.944890715486643,
+          "lower_95": 11.850368875582088,
+          "upper_95": 18.600210156442824,
+          "relative_standard_error_pct": 11.180339887498947
+        },
+        "2023": {
+          "rate_per_1000": 16.89648475432123,
+          "lower_95": 13.53339163639854,
+          "upper_95": 20.84175152117378,
+          "relative_standard_error_pct": 10.721125348377948
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 16.204849084611578
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 17.057735878538505
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 15.394606630380999
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 16.204849084611578
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "1302603",
+      "name": "Manaus",
+      "deaths": 1467,
+      "births": 105227,
+      "pooled": {
+        "rate_per_1000": 13.941288832714037,
+        "lower_95": 13.236927409004588,
+        "upper_95": 14.673397852148167,
+        "relative_standard_error_pct": 2.6108681666265245
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 13.147593207526795,
+          "lower_95": 12.00567390191433,
+          "upper_95": 14.3688413304039,
+          "relative_standard_error_pct": 4.531432544294438
+        },
+        "2022": {
+          "rate_per_1000": 13.599562048001845,
+          "lower_95": 12.40019602117493,
+          "upper_95": 14.883611545925286,
+          "relative_standard_error_pct": 4.6028730894916166
+        },
+        "2023": {
+          "rate_per_1000": 15.173690970459093,
+          "lower_95": 13.8827115695531,
+          "upper_95": 16.552412049124705,
+          "relative_standard_error_pct": 4.436782547080569
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 13.941288832714037
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 14.675040876541091
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 13.244224391078333
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 13.941288832714037
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "1400100",
+      "name": "Boa Vista",
+      "deaths": 357,
+      "births": 23723,
+      "pooled": {
+        "rate_per_1000": 15.048686928297434,
+        "lower_95": 13.52795300130759,
+        "upper_95": 16.693594319731996,
+        "relative_standard_error_pct": 5.292561240249631
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 13.320177602368032,
+          "lower_95": 10.92679986541482,
+          "upper_95": 16.08198202889723,
+          "relative_standard_error_pct": 9.622504486493762
+        },
+        "2022": {
+          "rate_per_1000": 13.904834800357188,
+          "lower_95": 11.417316232386877,
+          "upper_95": 16.77336925340414,
+          "relative_standard_error_pct": 9.578262852211514
+        },
+        "2023": {
+          "rate_per_1000": 18.004115226337447,
+          "lower_95": 15.145392391107602,
+          "upper_95": 21.245562037136143,
+          "relative_standard_error_pct": 8.451542547285166
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 15.048686928297434
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 15.840723082418352
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 14.29625258188256
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 15.048686928297434
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "1501402",
+      "name": "Belém",
+      "deaths": 731,
+      "births": 47827,
+      "pooled": {
+        "rate_per_1000": 15.284253664248228,
+        "lower_95": 14.196204008392188,
+        "upper_95": 16.433573261680362,
+        "relative_standard_error_pct": 3.6986336072765456
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 15.5209324452902,
+          "lower_95": 13.694894174350305,
+          "upper_95": 17.522660891270235,
+          "relative_standard_error_pct": 6.18984460590173
+        },
+        "2022": {
+          "rate_per_1000": 14.812480302552789,
+          "lower_95": 12.979035093051602,
+          "upper_95": 16.832349054523537,
+          "relative_standard_error_pct": 6.523280730534422
+        },
+        "2023": {
+          "rate_per_1000": 15.515647695761258,
+          "lower_95": 13.595166496188014,
+          "upper_95": 17.631402201902542,
+          "relative_standard_error_pct": 6.523280730534422
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 15.284253664248228
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 16.088688067629715
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 14.520040981035816
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 15.284253664248228
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "1600303",
+      "name": "Macapá",
+      "deaths": 485,
+      "births": 23966,
+      "pooled": {
+        "rate_per_1000": 20.237002420095134,
+        "lower_95": 18.475802731884958,
+        "upper_95": 22.12081368066221,
+        "relative_standard_error_pct": 4.540766091864998
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 20.37489812550937,
+          "lower_95": 17.467907879196325,
+          "upper_95": 23.62739299739462,
+          "relative_standard_error_pct": 7.559289460184544
+        },
+        "2022": {
+          "rate_per_1000": 18.837121687806103,
+          "lower_95": 15.943257729655736,
+          "upper_95": 22.104378512755776,
+          "relative_standard_error_pct": 8.16496580927726
+        },
+        "2023": {
+          "rate_per_1000": 21.58079309414621,
+          "lower_95": 18.36640177862053,
+          "upper_95": 25.1958926930371,
+          "relative_standard_error_pct": 7.905694150420948
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 20.237002420095134
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 21.30210781062646
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 19.225152299090375
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 20.237002420095134
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "1721000",
+      "name": "Palmas",
+      "deaths": 176,
+      "births": 14721,
+      "pooled": {
+        "rate_per_1000": 11.95570953060254,
+        "lower_95": 10.254592214600986,
+        "upper_95": 13.858398307440554,
+        "relative_standard_error_pct": 7.53778361444409
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 13.560008095527222,
+          "lower_95": 10.508820021291209,
+          "upper_95": 17.220730950778457,
+          "relative_standard_error_pct": 12.216944435630522
+        },
+        "2022": {
+          "rate_per_1000": 10.709785804283914,
+          "lower_95": 7.974138983261444,
+          "upper_95": 14.081390461277579,
+          "relative_standard_error_pct": 14.002800840280097
+        },
+        "2023": {
+          "rate_per_1000": 11.558389796731765,
+          "lower_95": 8.776769964178982,
+          "upper_95": 14.941899112135237,
+          "relative_standard_error_pct": 13.130643285972255
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 11.95570953060254
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 12.584957400634254
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 11.357924054072413
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 11.95570953060254
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "2111300",
+      "name": "São Luís",
+      "deaths": 662,
+      "births": 41792,
+      "pooled": {
+        "rate_per_1000": 15.840352220520673,
+        "lower_95": 14.656515870006636,
+        "upper_95": 17.094349820368944,
+        "relative_standard_error_pct": 3.886610371682359
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 13.584806119757319,
+          "lower_95": 11.792931680014352,
+          "upper_95": 15.572003032545505,
+          "relative_standard_error_pct": 6.967330142916177
+        },
+        "2022": {
+          "rate_per_1000": 17.531044558071585,
+          "lower_95": 15.38307728950911,
+          "upper_95": 19.895005509780667,
+          "relative_standard_error_pct": 6.454972243679028
+        },
+        "2023": {
+          "rate_per_1000": 16.6950069562529,
+          "lower_95": 14.542669402887277,
+          "upper_95": 19.076151511317914,
+          "relative_standard_error_pct": 6.804138174397717
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 15.840352220520673
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 16.67405496896913
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 15.048334609494638
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 15.840352220520673
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "2211001",
+      "name": "Teresina",
+      "deaths": 512,
+      "births": 35355,
+      "pooled": {
+        "rate_per_1000": 14.481685758732853,
+        "lower_95": 13.25429767212617,
+        "upper_95": 15.792155042062628,
+        "relative_standard_error_pct": 4.419417382415921
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 13.333333333333334,
+          "lower_95": 11.376478142323473,
+          "upper_95": 15.530164089755939,
+          "relative_standard_error_pct": 7.784989441615229
+        },
+        "2022": {
+          "rate_per_1000": 15.481750562186473,
+          "lower_95": 13.296754835681995,
+          "upper_95": 17.92333913590712,
+          "relative_standard_error_pct": 7.4743509275193585
+        },
+        "2023": {
+          "rate_per_1000": 14.713610089332633,
+          "lower_95": 12.57277643058059,
+          "upper_95": 17.114474409731873,
+          "relative_standard_error_pct": 7.715167498104595
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 14.481685758732853
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 15.243879746034583
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 13.75760147079621
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 14.481685758732853
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "2304400",
+      "name": "Fortaleza",
+      "deaths": 1042,
+      "births": 90790,
+      "pooled": {
+        "rate_per_1000": 11.477034915739619,
+        "lower_95": 10.790667779875218,
+        "upper_95": 12.19561407094672,
+        "relative_standard_error_pct": 3.0978910540439486
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 10.962701612903226,
+          "lower_95": 9.84102557438395,
+          "upper_95": 12.177195907467361,
+          "relative_standard_error_pct": 5.360562674188974
+        },
+        "2022": {
+          "rate_per_1000": 11.726647796198948,
+          "lower_95": 10.526806706875728,
+          "upper_95": 13.025775269128046,
+          "relative_standard_error_pct": 5.360562674188974
+        },
+        "2023": {
+          "rate_per_1000": 11.78072863466122,
+          "lower_95": 10.57196996070459,
+          "upper_95": 13.089813214514095,
+          "relative_standard_error_pct": 5.376033305704703
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 11.477034915739619
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 12.081089384989074
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 10.903183169952637
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 11.477034915739619
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "2408102",
+      "name": "Natal",
+      "deaths": 346,
+      "births": 29121,
+      "pooled": {
+        "rate_per_1000": 11.881460114693864,
+        "lower_95": 10.662365912774074,
+        "upper_95": 13.201738062232717,
+        "relative_standard_error_pct": 5.376033305704703
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 13.206808843670515,
+          "lower_95": 11.073048487327736,
+          "upper_95": 15.631856631245666,
+          "relative_standard_error_pct": 8.606629658238704
+        },
+        "2022": {
+          "rate_per_1000": 10.794382728987634,
+          "lower_95": 8.810725041377165,
+          "upper_95": 13.091328384723447,
+          "relative_standard_error_pct": 9.853292781642931
+        },
+        "2023": {
+          "rate_per_1000": 11.542160949022122,
+          "lower_95": 9.468258342287417,
+          "upper_95": 13.93531156249853,
+          "relative_standard_error_pct": 9.622504486493762
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 11.881460114693864
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 12.506800120730384
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 11.28738710895917
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 11.881460114693864
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "2507507",
+      "name": "João Pessoa",
+      "deaths": 438,
+      "births": 32898,
+      "pooled": {
+        "rate_per_1000": 13.313879263177093,
+        "lower_95": 12.096060638500091,
+        "upper_95": 14.621089432305771,
+        "relative_standard_error_pct": 4.778184825674966
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 12.313499910120438,
+          "lower_95": 10.337995185492842,
+          "upper_95": 14.556570617299426,
+          "relative_standard_error_pct": 8.54357657716761
+        },
+        "2022": {
+          "rate_per_1000": 15.102078866411858,
+          "lower_95": 12.866034926370007,
+          "upper_95": 17.615029996865655,
+          "relative_standard_error_pct": 7.856742013183862
+        },
+        "2023": {
+          "rate_per_1000": 12.584880036215482,
+          "lower_95": 10.579772901726983,
+          "upper_95": 14.85946213716234,
+          "relative_standard_error_pct": 8.481889296799709
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 13.313879263177093
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 14.01460975071273
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 12.648185300018238
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 13.313879263177093
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "2611606",
+      "name": "Recife",
+      "deaths": 581,
+      "births": 52484,
+      "pooled": {
+        "rate_per_1000": 11.070040393262708,
+        "lower_95": 10.188082272333503,
+        "upper_95": 12.007914920442666,
+        "relative_standard_error_pct": 4.1486990682251115
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 10.029758624490245,
+          "lower_95": 8.625490514780951,
+          "upper_95": 11.597486144624648,
+          "relative_standard_error_pct": 7.412493166611012
+        },
+        "2022": {
+          "rate_per_1000": 10.930541900410619,
+          "lower_95": 9.427692850903618,
+          "upper_95": 12.604856325088116,
+          "relative_standard_error_pct": 7.273929674533079
+        },
+        "2023": {
+          "rate_per_1000": 12.318883087933362,
+          "lower_95": 10.708987314413994,
+          "upper_95": 14.102488645461385,
+          "relative_standard_error_pct": 6.900655593423543
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 11.070040393262708
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 11.652674098171273
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 10.516538373599573
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 11.07004039326271
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "2704302",
+      "name": "Maceió",
+      "deaths": 480,
+      "births": 39729,
+      "pooled": {
+        "rate_per_1000": 12.081854564675679,
+        "lower_95": 11.025049640869748,
+        "upper_95": 13.212629056051073,
+        "relative_standard_error_pct": 4.564354645876384
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 11.467215524845633,
+          "lower_95": 9.738350729366832,
+          "upper_95": 13.414531758093625,
+          "relative_standard_error_pct": 8.006407690254356
+        },
+        "2022": {
+          "rate_per_1000": 12.742765026483458,
+          "lower_95": 10.877999771346662,
+          "upper_95": 14.835477861418038,
+          "relative_standard_error_pct": 7.7615052570633285
+        },
+        "2023": {
+          "rate_per_1000": 12.062910367995114,
+          "lower_95": 10.255307592350658,
+          "upper_95": 14.097366690965941,
+          "relative_standard_error_pct": 7.9555728417573
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 12.081854564675679
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 12.717741647027031
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 11.477761836441895
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 12.081854564675679
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "2800308",
+      "name": "Aracaju",
+      "deaths": 372,
+      "births": 22543,
+      "pooled": {
+        "rate_per_1000": 16.501796566561683,
+        "lower_95": 14.86729647161928,
+        "upper_95": 18.266923793297842,
+        "relative_standard_error_pct": 5.184758473652126
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 15.409877478842995,
+          "lower_95": 12.796971878424593,
+          "upper_95": 18.399415163782614,
+          "relative_standard_error_pct": 9.053574604251853
+        },
+        "2022": {
+          "rate_per_1000": 16.80672268907563,
+          "lower_95": 13.956967400673303,
+          "upper_95": 20.067250289525685,
+          "relative_standard_error_pct": 9.053574604251853
+        },
+        "2023": {
+          "rate_per_1000": 17.37477942174562,
+          "lower_95": 14.49536226320177,
+          "upper_95": 20.658669528556278,
+          "relative_standard_error_pct": 8.838834764831843
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 16.501796566561683
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 17.37031217532809
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 15.676706738233598
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 16.501796566561683
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "2927408",
+      "name": "Salvador",
+      "deaths": 1287,
+      "births": 81473,
+      "pooled": {
+        "rate_per_1000": 15.796644287064426,
+        "lower_95": 14.945302266198782,
+        "upper_95": 16.683844977159676,
+        "relative_standard_error_pct": 2.7874733666903024
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 15.350723826841039,
+          "lower_95": 13.94815704716288,
+          "upper_95": 16.856121239229815,
+          "relative_standard_error_pct": 4.772739599033477
+        },
+        "2022": {
+          "rate_per_1000": 17.15316376486178,
+          "lower_95": 15.630918457935758,
+          "upper_95": 18.783606321378628,
+          "relative_standard_error_pct": 4.632410546120795
+        },
+        "2023": {
+          "rate_per_1000": 14.85918780146258,
+          "lower_95": 13.406279149429306,
+          "upper_95": 16.426615996632858,
+          "relative_standard_error_pct": 5.116445100966509
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 15.796644287064426
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 16.628046617962553
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 15.006812072711204
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 15.796644287064426
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "3106200",
+      "name": "Belo Horizonte",
+      "deaths": 710,
+      "births": 72118,
+      "pooled": {
+        "rate_per_1000": 9.844976288859923,
+        "lower_95": 9.134039366874775,
+        "upper_95": 10.596553325006337,
+        "relative_standard_error_pct": 3.7529331252040077
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 9.629215278887646,
+          "lower_95": 8.451778586768462,
+          "upper_95": 10.924792644010166,
+          "relative_standard_error_pct": 6.4415662640083085
+        },
+        "2022": {
+          "rate_per_1000": 9.554274169788291,
+          "lower_95": 8.351716020719202,
+          "upper_95": 10.881362116426198,
+          "relative_standard_error_pct": 6.637233115999719
+        },
+        "2023": {
+          "rate_per_1000": 10.372465818010372,
+          "lower_95": 9.106683466053381,
+          "upper_95": 11.76497641987458,
+          "relative_standard_error_pct": 6.42824346533225
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 9.844976288859923
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 10.363132935642025
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 9.352727474416927
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 9.844976288859923
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "3205309",
+      "name": "Vitória",
+      "deaths": 111,
+      "births": 11538,
+      "pooled": {
+        "rate_per_1000": 9.620384815392615,
+        "lower_95": 7.914138314281645,
+        "upper_95": 11.585424890838604,
+        "relative_standard_error_pct": 9.49157995752499
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 7.343631299063054,
+          "lower_95": 4.918145134856449,
+          "upper_95": 10.546679523572195,
+          "relative_standard_error_pct": 18.56953381770519
+        },
+        "2022": {
+          "rate_per_1000": 10.875194199896427,
+          "lower_95": 7.837883410791727,
+          "upper_95": 14.700103256988772,
+          "relative_standard_error_pct": 15.43033499620919
+        },
+        "2023": {
+          "rate_per_1000": 10.732492621411323,
+          "lower_95": 7.667450078290459,
+          "upper_95": 14.614608790980428,
+          "relative_standard_error_pct": 15.811388300841896
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 9.620384815392615
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 10.126720858308017
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 9.139365574622984
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 9.620384815392615
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "3304557",
+      "name": "Rio de Janeiro",
+      "deaths": 2378,
+      "births": 196702,
+      "pooled": {
+        "rate_per_1000": 12.08935343819585,
+        "lower_95": 11.608288240963828,
+        "upper_95": 12.58523466858907,
+        "relative_standard_error_pct": 2.050661957987655
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 12.196184336614687,
+          "lower_95": 11.385252063903081,
+          "upper_95": 13.049628294806725,
+          "relative_standard_error_pct": 3.4503277967117714
+        },
+        "2022": {
+          "rate_per_1000": 11.803995198374835,
+          "lower_95": 10.98329480762133,
+          "upper_95": 12.669780170877353,
+          "relative_standard_error_pct": 3.6107907233705943
+        },
+        "2023": {
+          "rate_per_1000": 12.267303102625299,
+          "lower_95": 11.416565760032238,
+          "upper_95": 13.164650071669088,
+          "relative_standard_error_pct": 3.6014120303280985
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 12.08935343819585
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 12.725635198100896
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 11.484885766286057
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 12.08935343819585
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "3550308",
+      "name": "São Paulo",
+      "deaths": 4271,
+      "births": 397502,
+      "pooled": {
+        "rate_per_1000": 10.744600027169675,
+        "lower_95": 10.42475373944279,
+        "upper_95": 11.071765192936182,
+        "relative_standard_error_pct": 1.530154254974901
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 10.385279232366965,
+          "lower_95": 9.852079730101051,
+          "upper_95": 10.93983593722949,
+          "relative_standard_error_pct": 2.6537244621713763
+        },
+        "2022": {
+          "rate_per_1000": 10.882241575160924,
+          "lower_95": 10.32679857722136,
+          "upper_95": 11.459797862962168,
+          "relative_standard_error_pct": 2.637980712738325
+        },
+        "2023": {
+          "rate_per_1000": 10.98508390304537,
+          "lower_95": 10.419909698780716,
+          "upper_95": 11.572945084597087,
+          "relative_standard_error_pct": 2.6593487520457093
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 10.744600027169675
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 11.310105291757553
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 10.20737002581119
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 10.744600027169675
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "4106902",
+      "name": "Curitiba",
+      "deaths": 435,
+      "births": 54950,
+      "pooled": {
+        "rate_per_1000": 7.916287534121929,
+        "lower_95": 7.1897533662975865,
+        "upper_95": 8.696342391588328,
+        "relative_standard_error_pct": 4.794633014853842
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 7.267833109017497,
+          "lower_95": 6.093604395018256,
+          "upper_95": 8.602360079924264,
+          "relative_standard_error_pct": 8.606629658238704
+        },
+        "2022": {
+          "rate_per_1000": 8.588823657316809,
+          "lower_95": 7.301805764547125,
+          "upper_95": 10.037361867703408,
+          "relative_standard_error_pct": 7.9555728417573
+        },
+        "2023": {
+          "rate_per_1000": 7.898103342788809,
+          "lower_95": 6.6525065947389646,
+          "upper_95": 9.309198282941402,
+          "relative_standard_error_pct": 8.391813582966892
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 7.916287534121929
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 8.332934246444136
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 7.520473157415832
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 7.916287534121929
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "4205407",
+      "name": "Florianópolis",
+      "deaths": 122,
+      "births": 17950,
+      "pooled": {
+        "rate_per_1000": 6.796657381615599,
+        "lower_95": 5.644213167770892,
+        "upper_95": 8.115218376137435,
+        "relative_standard_error_pct": 9.053574604251853
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 6.099627245001694,
+          "lower_95": 4.272103933804654,
+          "upper_95": 8.4444551828594,
+          "relative_standard_error_pct": 16.666666666666668
+        },
+        "2022": {
+          "rate_per_1000": 7.727721144360408,
+          "lower_95": 5.67803883049428,
+          "upper_95": 10.276230901125778,
+          "relative_standard_error_pct": 14.586499149789455
+        },
+        "2023": {
+          "rate_per_1000": 6.5370432450553135,
+          "lower_95": 4.648476783345096,
+          "upper_95": 8.936353313079596,
+          "relative_standard_error_pct": 16.012815380508712
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 6.796657381615599
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 7.154376191174316
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 6.456824512534819
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 6.796657381615599
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "4314902",
+      "name": "Porto Alegre",
+      "deaths": 352,
+      "births": 41495,
+      "pooled": {
+        "rate_per_1000": 8.482949752982288,
+        "lower_95": 7.619808068631093,
+        "upper_95": 9.417091033593207,
+        "relative_standard_error_pct": 5.330017908890261
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 9.185331731788313,
+          "lower_95": 7.6743205467832265,
+          "upper_95": 10.90683554626417,
+          "relative_standard_error_pct": 8.770580193070293
+        },
+        "2022": {
+          "rate_per_1000": 7.749104466700782,
+          "lower_95": 6.344331805455493,
+          "upper_95": 9.372318629135702,
+          "relative_standard_error_pct": 9.712858623572641
+        },
+        "2023": {
+          "rate_per_1000": 8.490082705116007,
+          "lower_95": 7.015519615122073,
+          "upper_95": 10.183045486225373,
+          "relative_standard_error_pct": 9.284766908852594
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 8.482949752982288
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 8.929420792612936
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 8.058802265333172
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 8.482949752982288
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "5002704",
+      "name": "Campo Grande",
+      "deaths": 401,
+      "births": 37012,
+      "pooled": {
+        "rate_per_1000": 10.834324003026046,
+        "lower_95": 9.79972219365897,
+        "upper_95": 11.948437444198614,
+        "relative_standard_error_pct": 4.993761694389223
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 10.275315711036159,
+          "lower_95": 8.591169492552169,
+          "upper_95": 12.193110271234326,
+          "relative_standard_error_pct": 8.737040566610379
+        },
+        "2022": {
+          "rate_per_1000": 10.69258809234508,
+          "lower_95": 8.946400033881636,
+          "upper_95": 12.68004523386447,
+          "relative_standard_error_pct": 8.703882797784892
+        },
+        "2023": {
+          "rate_per_1000": 11.579124014096324,
+          "lower_95": 9.727883174867237,
+          "upper_95": 13.680125172320443,
+          "relative_standard_error_pct": 8.512565307587487
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 10.834324003026046
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 11.40455158213268
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 10.292607802874743
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 10.834324003026046
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "5103403",
+      "name": "Cuiabá",
+      "deaths": 347,
+      "births": 28361,
+      "pooled": {
+        "rate_per_1000": 12.235111596911251,
+        "lower_95": 10.98149214979327,
+        "upper_95": 13.592623612268294,
+        "relative_standard_error_pct": 5.36828127095019
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 11.367224502683928,
+          "lower_95": 9.324754584652496,
+          "upper_95": 13.724103809104172,
+          "relative_standard_error_pct": 9.622504486493762
+        },
+        "2022": {
+          "rate_per_1000": 13.633980073413738,
+          "lower_95": 11.391154556751234,
+          "upper_95": 16.189244204119223,
+          "relative_standard_error_pct": 8.770580193070293
+        },
+        "2023": {
+          "rate_per_1000": 11.689008042895443,
+          "lower_95": 9.597891897660132,
+          "upper_95": 14.100422689269175,
+          "relative_standard_error_pct": 9.578262852211514
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 12.235111596911251
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 12.87906483885395
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 11.623356017065689
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 12.235111596911251
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    },
+    {
+      "id": "5208707",
+      "name": "Goiânia",
+      "deaths": 672,
+      "births": 56133,
+      "pooled": {
+        "rate_per_1000": 11.971567527123083,
+        "lower_95": 11.083419907967105,
+        "upper_95": 12.911946413883467,
+        "relative_standard_error_pct": 3.8575837490522975
+      },
+      "annual": {
+        "2021": {
+          "rate_per_1000": 12.461225799550753,
+          "lower_95": 10.912427228579556,
+          "upper_95": 14.168216569765573,
+          "relative_standard_error_pct": 6.551217820804184
+        },
+        "2022": {
+          "rate_per_1000": 10.168584426010169,
+          "lower_95": 8.774044258689736,
+          "upper_95": 11.721787918818789,
+          "relative_standard_error_pct": 7.2547625011001164
+        },
+        "2023": {
+          "rate_per_1000": 13.28,
+          "lower_95": 11.681603088280635,
+          "upper_95": 15.036040782514277,
+          "relative_standard_error_pct": 6.337242505244779
+        }
+      },
+      "hypothetical_scenarios": [
+        {
+          "birth_coverage": 1,
+          "death_coverage": 1,
+          "rate_per_1000": 11.971567527123083
+        },
+        {
+          "birth_coverage": 1,
+          "death_coverage": 0.95,
+          "rate_per_1000": 12.601650028550614
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 1,
+          "rate_per_1000": 11.372989150766928
+        },
+        {
+          "birth_coverage": 0.95,
+          "death_coverage": 0.95,
+          "rate_per_1000": 11.971567527123083
+        }
+      ],
+      "municipal_infant_registration_coverage": null,
+      "score_eligible": false
+    }
+  ]
+}

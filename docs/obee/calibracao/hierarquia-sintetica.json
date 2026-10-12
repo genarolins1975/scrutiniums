@@ -1,0 +1,2097 @@
+{
+  "data_kind": "SINTETICO_SEM_TERRITORIOS_REAIS",
+  "real_scores_released": 0,
+  "input_profiles": {
+    "a": {
+      "context": {
+        "territory": "PERFIL_SINTETICO_A",
+        "edition": "SINTETICA",
+        "comparison_window": "CENARIO"
+      },
+      "records": [
+        {
+          "id": "education.access",
+          "raw_value": 95,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 95.0
+        },
+        {
+          "id": "education.response",
+          "raw_value": 95,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 95.0
+        },
+        {
+          "id": "education.quality",
+          "raw_value": 95,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 95.0
+        },
+        {
+          "id": "health.access",
+          "raw_value": 50,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 50.0
+        },
+        {
+          "id": "health.response",
+          "raw_value": 50,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 50.0
+        },
+        {
+          "id": "health.quality",
+          "raw_value": 50,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 50.0
+        },
+        {
+          "id": "work.access",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "work.response",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "work.quality",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "food.access",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "food.response",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "food.quality",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "assistance.access",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "assistance.response",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "assistance.quality",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_A",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        }
+      ]
+    },
+    "b": {
+      "context": {
+        "territory": "PERFIL_SINTETICO_B",
+        "edition": "SINTETICA",
+        "comparison_window": "CENARIO"
+      },
+      "records": [
+        {
+          "id": "education.access",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "education.response",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "education.quality",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "health.access",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "health.response",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "health.quality",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "work.access",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "work.response",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "work.quality",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "food.access",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "food.response",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "food.quality",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "assistance.access",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "assistance.response",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        },
+        {
+          "id": "assistance.quality",
+          "raw_value": 70,
+          "validated": true,
+          "state": "CALCULAVEL_EXPERIMENTAL",
+          "territory": "PERFIL_SINTETICO_B",
+          "edition": "SINTETICA",
+          "comparison_window": "CENARIO",
+          "reference_context": {
+            "lower": 0,
+            "upper": 100,
+            "direction": "higher"
+          },
+          "value": 70.0
+        }
+      ]
+    }
+  },
+  "purpose": "LABORATORIO_HIERARQUICO_NAO_PUBLICAVEL",
+  "baseline": {
+    "a": {
+      "chapters": [
+        {
+          "id": "education",
+          "value": 95.0,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        {
+          "id": "health",
+          "value": 49.99999999999999,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        {
+          "id": "work",
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        {
+          "id": "food",
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        {
+          "id": "assistance",
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        }
+      ],
+      "aggregate": {
+        "value": 69.56608225488078,
+        "state": "SIMULACAO_NAO_PUBLICAVEL",
+        "reasons": []
+      },
+      "publishable": false
+    },
+    "b": {
+      "chapters": [
+        {
+          "id": "education",
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        {
+          "id": "health",
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        {
+          "id": "work",
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        {
+          "id": "food",
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        {
+          "id": "assistance",
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        }
+      ],
+      "aggregate": {
+        "value": 69.99999999999996,
+        "state": "SIMULACAO_NAO_PUBLICAVEL",
+        "reasons": []
+      },
+      "publishable": false
+    },
+    "relation": "B_MAIOR",
+    "difference": -0.43391774511917447
+  },
+  "scenarios": [
+    {
+      "level": "chapter",
+      "component": "education",
+      "relative_change": -0.2,
+      "effective_weights": {
+        "education": 0.16666666666666669,
+        "health": 0.20833333333333334,
+        "work": 0.20833333333333334,
+        "food": 0.20833333333333334,
+        "assistance": 0.20833333333333334
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999999,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 68.66872126520698,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -1.3312787347929742,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "chapter",
+      "component": "education",
+      "relative_change": 0.2,
+      "effective_weights": {
+        "education": 0.23076923076923075,
+        "health": 0.1923076923076923,
+        "work": 0.1923076923076923,
+        "food": 0.1923076923076923,
+        "assistance": 0.1923076923076923
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999999,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 70.40482030468993,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "A_MAIOR",
+      "difference": 0.4048203046899772,
+      "order_reversal": true,
+      "relation_changed": true
+    },
+    {
+      "level": "chapter",
+      "component": "health",
+      "relative_change": -0.2,
+      "effective_weights": {
+        "education": 0.20833333333333334,
+        "health": 0.16666666666666669,
+        "work": 0.20833333333333334,
+        "food": 0.20833333333333334,
+        "assistance": 0.20833333333333334
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999999,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 70.52996908780557,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "A_MAIOR",
+      "difference": 0.5299690878056111,
+      "order_reversal": true,
+      "relation_changed": true
+    },
+    {
+      "level": "chapter",
+      "component": "health",
+      "relative_change": 0.2,
+      "effective_weights": {
+        "education": 0.1923076923076923,
+        "health": 0.23076923076923075,
+        "work": 0.1923076923076923,
+        "food": 0.1923076923076923,
+        "assistance": 0.1923076923076923
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999999,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 68.68803651765371,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -1.3119634823462434,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "chapter",
+      "component": "work",
+      "relative_change": -0.2,
+      "effective_weights": {
+        "education": 0.20833333333333334,
+        "health": 0.20833333333333334,
+        "work": 0.16666666666666669,
+        "food": 0.20833333333333334,
+        "assistance": 0.20833333333333334
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999999,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.54806083673803,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.45193916326192607,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "chapter",
+      "component": "work",
+      "relative_change": 0.2,
+      "effective_weights": {
+        "education": 0.1923076923076923,
+        "health": 0.1923076923076923,
+        "work": 0.23076923076923075,
+        "food": 0.1923076923076923,
+        "assistance": 0.1923076923076923
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999999,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.58272155480351,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.41727844519644464,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "chapter",
+      "component": "food",
+      "relative_change": -0.2,
+      "effective_weights": {
+        "education": 0.20833333333333334,
+        "health": 0.20833333333333334,
+        "work": 0.20833333333333334,
+        "food": 0.16666666666666669,
+        "assistance": 0.20833333333333334
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999999,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.54806083673803,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.45193916326192607,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "chapter",
+      "component": "food",
+      "relative_change": 0.2,
+      "effective_weights": {
+        "education": 0.1923076923076923,
+        "health": 0.1923076923076923,
+        "work": 0.1923076923076923,
+        "food": 0.23076923076923075,
+        "assistance": 0.1923076923076923
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999999,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.58272155480351,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.41727844519644464,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "chapter",
+      "component": "assistance",
+      "relative_change": -0.2,
+      "effective_weights": {
+        "education": 0.20833333333333334,
+        "health": 0.20833333333333334,
+        "work": 0.20833333333333334,
+        "food": 0.20833333333333334,
+        "assistance": 0.16666666666666669
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999999,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.54806083673803,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.45193916326192607,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "chapter",
+      "component": "assistance",
+      "relative_change": 0.2,
+      "effective_weights": {
+        "education": 0.1923076923076923,
+        "health": 0.1923076923076923,
+        "work": 0.1923076923076923,
+        "food": 0.1923076923076923,
+        "assistance": 0.23076923076923075
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999999,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.58272155480351,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.41727844519644464,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "pillar",
+      "component": "access",
+      "relative_change": -0.2,
+      "effective_weights": {
+        "access": 0.28571428571428575,
+        "response": 0.35714285714285715,
+        "quality": 0.35714285714285715
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 50.000000000000014,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.56608225488084,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 70.00000000000003,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.4339177451191887,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "pillar",
+      "component": "access",
+      "relative_change": 0.2,
+      "effective_weights": {
+        "access": 0.37499999999999994,
+        "response": 0.3125,
+        "quality": 0.3125
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999997,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.56608225488078,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.43391774511917447,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "pillar",
+      "component": "response",
+      "relative_change": -0.2,
+      "effective_weights": {
+        "access": 0.35714285714285715,
+        "response": 0.28571428571428575,
+        "quality": 0.35714285714285715
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 50.000000000000014,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.56608225488084,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 70.00000000000003,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.4339177451191887,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "pillar",
+      "component": "response",
+      "relative_change": 0.2,
+      "effective_weights": {
+        "access": 0.3125,
+        "response": 0.37499999999999994,
+        "quality": 0.3125
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999997,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.56608225488078,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.43391774511917447,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "pillar",
+      "component": "quality",
+      "relative_change": -0.2,
+      "effective_weights": {
+        "access": 0.35714285714285715,
+        "response": 0.35714285714285715,
+        "quality": 0.28571428571428575
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 50.000000000000014,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.56608225488084,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 70.00000000000003,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 70.00000000000003,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.4339177451191887,
+      "order_reversal": false,
+      "relation_changed": false
+    },
+    {
+      "level": "pillar",
+      "component": "quality",
+      "relative_change": 0.2,
+      "effective_weights": {
+        "access": 0.3125,
+        "response": 0.3125,
+        "quality": 0.37499999999999994
+      },
+      "a": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 95.0,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 49.99999999999997,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.56608225488078,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "b": {
+        "chapters": [
+          {
+            "id": "education",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "health",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "work",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "food",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          },
+          {
+            "id": "assistance",
+            "value": 69.99999999999996,
+            "state": "SIMULACAO_NAO_PUBLICAVEL",
+            "reasons": []
+          }
+        ],
+        "aggregate": {
+          "value": 69.99999999999996,
+          "state": "SIMULACAO_NAO_PUBLICAVEL",
+          "reasons": []
+        },
+        "publishable": false
+      },
+      "relation": "B_MAIOR",
+      "difference": -0.43391774511917447,
+      "order_reversal": false,
+      "relation_changed": false
+    }
+  ],
+  "summary": {
+    "scenarios": 16,
+    "comparable": 16,
+    "order_reversals": 2,
+    "assessment": "CENARIOS_CALCULADOS_SEM_APROVACAO"
+  },
+  "limitations": [
+    "Um peso alterado por cenário; não cobre perturbações simultâneas.",
+    "Pesos de pilares são comuns aos capítulos.",
+    "Inversões são descritivas, sem teste de significância ou probabilidade.",
+    "Ausência de inversão não demonstra robustez fora dos cenários testados."
+  ]
+}
