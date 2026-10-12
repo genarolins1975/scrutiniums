@@ -54,6 +54,17 @@ O workflow adicional roda testes Python e captura primária em PR, sem credencia
 
 Estados previstos: referência parcial/anual, dívida negativa, lacuna histórica, divergência aritmética, pesquisa sem resultados, DF e filtros compartilháveis. Gráfico e tabela mantêm a série anual separada do ponto parcial de 2026. O catálogo não atribui nota geral, ranking de governo, selo PEFA ou CAPAG analítica.
 
-CSS utiliza fontes existentes, identidade Scrutiniums, tabelas com rolagem localizada, foco visível e controles nativos. A revisão manual de responsividade (320/390/768/1440), zoom 200%, teclado e leitor de tela está **pendente**: o ambiente local e o navegador perderam conexão durante a implementação. Não foi atribuída nota estética nem conformidade WCAG sem essa evidência.
+CSS utiliza fontes existentes, identidade Scrutiniums, tabelas com rolagem localizada, foco visível e controles nativos. A revisão no Chrome da prévia Vercel verificou larguras 320/390/768/1440 sem transbordamento horizontal da página. Filtros AM/DF e 2025/2026, busca sem acento, busca vazia, limpeza e abertura de contrato com Enter funcionaram. O gráfico adapta sua largura para preservar a fonte dos eixos; a tabela mantém rolagem localizada. Foram vistos início, ficha, provas, catálogo e método. Zoom 200% e leitor de tela ainda não verificados; não se declara conformidade WCAG integral.
 
 Validação local em 12/10/2026: 7 testes Python e 8 testes TypeScript aprovados; tipos do novo módulo e lint aprovados. A coleta primária local falhou por resolução DNS e o servidor de prévia local não pôde abrir a porta (EPERM). A execução integral de CI e a revisão visual da prévia devem ser conferidas no commit da PR.
+
+
+## Evidência de execução em 12/10/2026
+
+- PR #155, código 8be39612df172c493ebc6735a78bd050ddbe0cf8: deploy de prévia Vercel concluído, workflow de contratos e captura aprovado.
+- 18 consultas concluídas: seis RGF02 de encerramento de 2025, seis RREO01 de 2025 e seis RGF02 do primeiro quadrimestre de 2026. Todas retornaram registros. Os 12 RGF produziram mapeamentos candidatos, sem promoção automática para a publicação.
+- O manifesto está em evidencias/manifesto-captura-20261012.json. Os bytes brutos permanecem no artefato de CI indicado, com expiração em 11/11/2026. Transferi-los para arquivo permanente antes da promoção.
+- AM 2026 Q1: a nova consulta declara 20,65%, com DCL/RCL calculada de 20,6531677%. A gold fixa guarda 20,6%. Esta nova evidência permite investigar o arredondamento em duas etapas; o aviso do snapshot refere-se à sua conferência interna, não a uma irregularidade do ente. TO ainda não foi incluído na nova consulta de seis provas.
+- A suíte integral do repositório estava em execução durante esta revisão. A aprovação da captura não equivale à aprovação de todo o CI.
+
+Autoavaliação desta página de fase 1 (não independente): direção de arte 8; hierarquia 8; tipografia 8; densidade 8; didática 8; comparabilidade 9; interação 8; responsividade 9. A avaliação abrange o catálogo e as evidências desta fase, não um painel completo de gestão. Pendências materiais: revisão dos dados primários, integração orçamento-serviço, zoom e leitor de tela.
