@@ -1,3 +1,4 @@
+import {participacao} from './formato';
 import snapshot from './snapshots/dados.json';
 export const DADOS = snapshot;
 export type Estagio = 'inicial'|'atualizada'|'empenhado'|'liquidado'|'pago';
@@ -19,5 +20,5 @@ export function fiscalAcumulado(ano:number,mesFinal:number):Record<CampoFiscal,n
 export function bilhoes(valor:number,unidade:'reais'|'milhoes'='reais') {
  return (valor/(unidade==='reais'?1e9:1000)).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});
 }
-export function percentual(n:number,d:number){return d>0?(100*n/d).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%':'Não calculável'}
+export const percentual=participacao;
 export function dataFonte(iso:string){return iso.slice(0,10).split('-').reverse().join('/')}
