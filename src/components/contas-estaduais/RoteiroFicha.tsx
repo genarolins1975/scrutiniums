@@ -10,6 +10,7 @@ export default function RoteiroFicha({ uf, ano }: { uf: string; ano: number }) {
    ['composicao-despesa', 'Despesas', 'Pessoal, juros e despesas de capital'],
    ['financiamento', 'Receitas', 'Composição e margem corrente'],
   ] : []),
+  ['educacao-estadual', 'Educação', 'Disponibilidade de gasto, matrículas e resultados'],
  ];
  return <nav className="ce-ficha-guide" aria-label={`Explorar ficha de ${uf}, ${ano}`}>
   <p className="ce-kicker">Explore a ficha · {uf} · {ano}</p>
