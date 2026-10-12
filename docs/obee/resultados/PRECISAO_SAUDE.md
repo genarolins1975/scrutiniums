@@ -2,6 +2,8 @@
 
 Auditoria de 12/10/2026. **Decisão: mortalidade infantil registrada permanece disponível para pesquisa descritiva, mas não entra no escore de seis dimensões.** A precisão foi quantificada; a cobertura específica dos óbitos infantis municipais continua sem evidência suficiente na fonte examinada. `saude=null`, `score_eligible=false` e `publication_ready=false` permanecem vigentes.
 
+Atualização da busca: [captura–recaptura no Ministério da Saúde](CAPTURA_RECAPTURA_SAUDE.md). Duas planilhas oficiais adicionais foram adquiridas e auditadas. As três abas oferecem dados de Brasil, regiões e UFs; o anúncio de divulgação municipal não se concretiza nos arquivos examinados. O contrato da próxima aquisição e os testes de nível geográfico estão registrados nessa revisão. A decisão de elegibilidade permanece a mesma.
+
 ## O que esta etapa resolveu
 
 As 156 contagens congeladas de SIM/SINASC geram 78 taxas anuais e 26 taxas de período para 2021–2023. Foram calculados 104 intervalos condicionais de 95%. A razão de somas e a janela pré-definida foram preservadas. Nenhum fator de correção foi aplicado.
