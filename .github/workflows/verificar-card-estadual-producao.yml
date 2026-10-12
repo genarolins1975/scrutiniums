@@ -1,0 +1,62 @@
+name: Verificar card estadual em producao
+on:
+  push:
+    branches: [codex/verificar-card-estadual-producao]
+permissions:
+  contents: read
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Conferir card publico e destino apos deploy
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from urllib.request import Request, urlopen
+          import json
+
+          class Conteudo(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.capturas = []
+                  self.titulos = []
+                  self.links = []
+              def handle_starttag(self, tag, attrs):
+                  if tag in ("h1", "h2", "h3", "a"):
+                      self.capturas.append([tag, dict(attrs), []])
+              def handle_data(self, data):
+                  for item in self.capturas:
+                      item[2].append(data)
+              def handle_endtag(self, tag):
+                  for i in range(len(self.capturas)-1, -1, -1):
+                      if self.capturas[i][0] == tag:
+                          nome, attrs, partes = self.capturas.pop(i)
+                          texto = " ".join("".join(partes).split())
+                          if nome == "a":
+                              self.links.append((attrs.get("href", ""), texto))
+                          else:
+                              self.titulos.append(texto)
+                          break
+
+          def ler(path):
+              url = "https://scrutiniums.com" + path
+              req = Request(url, headers={"Cache-Control": "no-cache", "User-Agent": "Scrutiniums-Production-Check/1.0"})
+              with urlopen(req, timeout=30) as r:
+                  assert r.status == 200, (url, r.status)
+                  html = r.read().decode("utf-8")
+              p = Conteudo()
+              p.feed(html)
+              return p
+
+          home = ler("/?release=4794c8a")
+          titulo = "Observatório Brasileiro de Contas Públicas Estaduais"
+          assert titulo in home.titulos, home.titulos
+          destino = "/contas-publicas-estaduais"
+          card = [(href, nome) for href, nome in home.links if href == destino and "Explorar Contas Públicas Estaduais" in nome]
+          assert card, "Card estadual sem link de exploracao na home"
+          painel = ler(destino + "?release=4794c8a")
+          assert painel.titulos, "Painel sem titulos renderizados"
+          assert any(href == destino and nome == "Contas Estaduais" for href, nome in painel.links), "Navegacao estadual nao publicada"
+          print(json.dumps({"home_http": 200, "card": titulo, "link": card, "painel_http": 200, "titulos_painel": painel.titulos[:5], "navegacao_estadual": True}, ensure_ascii=False, indent=2))
+          PY
