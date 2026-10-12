@@ -23,8 +23,8 @@ const ACENTO: Record<Dominio["acento"], { filete: string; texto: string; chip: s
 };
 
 /**
- * "Uma plataforma. Três observatórios.": a arquitetura de marca em uma dobra.
- * Três cards editoriais do mesmo registro (src/lib/dominios.ts), cada um com o
+ * "Uma plataforma. Diferentes perspectivas.": a arquitetura de marca em uma dobra.
+ * Cards editoriais do mesmo registro (src/lib/dominios.ts), cada um com o
  * acento do seu domínio; nenhum catálogo de funcionalidades.
  */
 export function SecaoObservatorios() {
@@ -36,15 +36,15 @@ export function SecaoObservatorios() {
           id="observatorios-titulo"
           className="mt-6 max-w-3xl font-serif text-[clamp(2rem,4.6vw,3.2rem)] leading-[1.1] text-carvao"
         >
-          Uma plataforma. Três observatórios.
+          Uma plataforma. Diferentes perspectivas.
         </h2>
         <p className="mt-6 max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">
           A Scrutiniums organiza dados públicos, registros oficiais e séries setoriais para transformar
-          informação dispersa em conhecimento verificável. Hoje, essa infraestrutura sustenta três
-          observatórios independentes: Crédito, Setor Elétrico e Eficiência Estatal.
+          informação dispersa em conhecimento verificável. Hoje, essa infraestrutura reúne
+          Crédito, Setor Elétrico, Eficiência Estatal e Contas Públicas Federais.
         </p>
 
-        <ul className="mt-14 grid gap-6 lg:grid-cols-3">
+        <ul className="mt-14 grid gap-6 lg:grid-cols-2">
           {DOMINIOS.map((d, i) => {
             const a = ACENTO[d.acento];
             return (

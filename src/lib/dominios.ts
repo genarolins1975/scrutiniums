@@ -6,7 +6,7 @@
  * telemetria e sitemap leem daqui. Um novo observatório é uma entrada nova.
  */
 
-export type DominioId = "credito" | "energia" | "eficiencia";
+export type DominioId = "credito" | "energia" | "eficiencia" | "contas";
 
 export type Dominio = {
   id: DominioId;
@@ -84,6 +84,20 @@ export const DOMINIOS: Dominio[] = [
     acento: "obee",
     prefixosTelemetria: ["eficiencia:"],
   },
+  {
+    id: "contas",
+    nome: "Observatório Brasileiro de Contas Públicas Federais",
+    nomeCurto: "Contas Públicas Federais",
+    pergunta: "Como o orçamento federal é executado, onde estão os maiores custos e quais entregas foram registradas?",
+    descricao: "Da autorização ao pagamento, acompanhe o orçamento federal, o resultado fiscal, os restos a pagar, as metas físicas e os custos da União. Explore composição e variações no tempo, com fontes oficiais e limites de comparação explícitos.",
+    descricaoCurta: "Orçamento e entregas físicas do SIOP, resultado fiscal e custos do Tesouro Nacional. Cada painel identifica período, fonte e cobertura; execução do gasto não comprova eficiência.",
+    chips: ["Orçamento", "Resultado fiscal", "Custos", "Entregas"],
+    rotaRaiz: "/contas-publicas",
+    rotaApresentacao: "/contas-publicas",
+    cta: "Explorar Contas Públicas Federais",
+    acento: "energia",
+    prefixosTelemetria: ["contas:"],
+  },
 ];
 
 export const COOKIE_OBSERVATORIO = "scrutiniums_observatorio";
@@ -111,5 +125,6 @@ export function dominioDoCaminho(caminho: string): DominioId | null {
   if (caminho === "/credito" || caminho.startsWith("/observatorio")) return "credito";
   if (caminho.startsWith("/setor-eletrico")) return "energia";
   if (caminho.startsWith("/eficiencia-estatal")) return "eficiencia";
+  if (caminho === "/contas-publicas" || caminho.startsWith("/contas-publicas/")) return "contas";
   return null;
 }

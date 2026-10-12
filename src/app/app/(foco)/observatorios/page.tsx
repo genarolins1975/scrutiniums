@@ -9,6 +9,7 @@ import { COOKIE_OBSERVATORIO, DOMINIOS, type DominioId } from "@/lib/dominios";
 import { gold, integra } from "@/lib/energia/gold";
 import { metaEducacao } from "@/lib/eficiencia/dados";
 import { carimbo, dataBR, mesAno } from "@/lib/energia/formato";
+import custos from "@/lib/contas-publicas/snapshots/custos.json";
 import styles from "./escolha.module.css";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
@@ -20,6 +21,14 @@ export const dynamic = "force-dynamic";
 
 /** Última atualização de cada observatório, lida das golds publicadas. */
 function atualizacao(id: DominioId): { rotulo: string; linhas: string[] } {
+  if (id === "contas") {
+    return { rotulo: "Fontes e cobertura", linhas: [
+      "SIOP: execução orçamentária e acompanhamento das entregas físicas.",
+      "Tesouro Nacional: resultado fiscal, restos a pagar e custos da União.",
+      `Custos: RFC ${custos.periodo[1]}; captura em ${dataBR(custos.captura.slice(0, 10))}.`,
+      "Os períodos variam por base e estão identificados em cada painel.",
+    ] };
+  }
   if (id === "credito") {
     try {
       const meta = JSON.parse(readFileSync(join(process.cwd(), "public", "obs", "data", "gold", "meta.json"), "utf-8"));
@@ -50,6 +59,10 @@ function atualizacao(id: DominioId): { rotulo: string; linhas: string[] } {
 }
 
 const GUIAS: Record<DominioId, { chamada: string; temas: [string, string][] }> = {
+  contas: {
+    chamada: "Do orçamento às entregas do governo federal.",
+    temas: [["Orçamento e resultado fiscal", "Autorizações, pagamentos, receitas e saldo"], ["Custos e variações", "Maiores componentes e mudanças entre os anos"], ["Compromissos e entregas", "Restos a pagar e metas físicas registradas"]],
+  },
   credito: {
     chamada: "O dinheiro, o acesso e o risco.",
     temas: [["Mercado de crédito", "Carteiras, juros e inadimplência"], ["Instituições e produtos", "Bancos, condições e comparações"], ["Pessoas e territórios", "Acesso, regiões e pagamentos"]],
@@ -75,6 +88,8 @@ function Simbolo({ id }: { id: DominioId }) {
         <circle cx="40" cy="40" r="28" />
         <path d="m44 19-21 25h15l-2 18 22-26H43l1-17Z" />
         <path d="M40 5v7m0 56v7M5 40h7m56 0h7" />
+      </> : id === "contas" ? <>
+        <path d="M20 10h30l12 12v48H20V10Zm30 0v14h12M28 33h26M28 41h26M28 60V50m12 10V46m12 14V52M26 64h30" />
       </> : <>
         <path d="M10 67h60M17 61V29h20v32m6 0V18h20v43M23 37h8m-8 8h8m-8 8h8m18-27h8m-8 9h8m-8 9h8m-8 9h8" />
         <path d="M8 21h14m-7-7v14M66 8v9m-4-4h8" />
@@ -95,7 +110,7 @@ export default async function EscolhaObservatorioPage() {
         <section className={styles.abertura} aria-labelledby="titulo-escolha">
           <div>
             <p className={styles.rotulo}>Seu espaço de análise</p>
-            <h1 id="titulo-escolha">O Brasil, sob três perspectivas.</h1>
+            <h1 id="titulo-escolha">O Brasil, sob diferentes perspectivas.</h1>
             <p className={styles.introducao}>Escolha seu observatório e explore o tema que importa para você.</p>
           </div>
           <p className={styles.metodo}>Dados públicos. Método transparente.<br />Fontes e limites à vista, em cada análise.</p>

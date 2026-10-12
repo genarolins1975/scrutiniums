@@ -6,11 +6,12 @@
 .abertura h1{font-family:var(--font-serif),Georgia,serif;font-size:clamp(30px,3.1vw,44px);font-weight:400;line-height:1.2;margin:10px 0 12px;letter-spacing:-.025em}
 .introducao{font-size:17px;line-height:1.6;color:#52626b}
 .metodo{border-left:1px solid var(--obs-regra);padding:8px 0 8px 24px;flex-shrink:0;font-size:14px;line-height:1.8;color:#52626b}
-.grade{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;list-style:none;padding:0;margin:0}
+.grade{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;list-style:none;padding:0;margin:0}
 .grade>li{min-width:0}
 .cartao{--acento:#78542f;--suave:#f3ede4;display:flex;flex-direction:column;height:100%;background:var(--cor-superficie);border:1px solid var(--obs-regra);border-top:4px solid var(--acento);transition:border-color .15s ease}
 .energia{--acento:#00697f;--suave:#e9f0f1}
 .eficiencia{--acento:#3f635c;--suave:#eaf0eb}
+.contas{--acento:#245365;--suave:#e9eff1}
 .recente{border-color:var(--acento)}
 .capa{padding:24px 24px 22px;background:var(--suave);min-height:218px;position:relative}
 .capa .rotulo{color:var(--acento)}
