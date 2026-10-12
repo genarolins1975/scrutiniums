@@ -26,6 +26,53 @@ describe('contratos de Contas Públicas',()=>{
  it('não deixa capítulo sem indicadores ou fonte sem destino',()=>{
   expect(new Set(INDICADORES.map(i=>i.id)).size).toBe(INDICADORES.length);
   for(const c of CAPITULOS)expect(INDICADORES.some(i=>i.capitulo===c.id)).toBe(true);
-  for(const i of INDICADORES){expect(CAPITULOS.some(c=>c.id===i.capitulo)).toBe(true);expect(new URL(FONTES[i.fonte].url).protocol).toBe('https:');expect(i.status).toBe('aguardando-integracao');expect(i.ressalva.length).toBeGreaterThan(10)}
+  for(const i of INDICADORES){expect(CAPITULOS.some(c=>c.id===i.capitulo)).toBe(true);expect(new URL(FONTES[i.fonte].url).protocol).toBe('https:');expect(['aguardando-integracao','integracao-parcial']).toContain(i.status);expect(i.ressalva.length).toBeGreaterThan(10)}
+ });
+});
+
+import {DADOS,CAMPOS_FISCAIS,fiscalAcumulado,bilhoes} from '../lib/contas-publicas/dados';
+import {createHash} from 'node:crypto';
+import {readFileSync} from 'node:fs';
+describe('dados oficiais e limites de comparação',()=>{
+ it('concilia cada mês: receita menos repartição, saldo e componentes exclusivos',()=>{
+  for(const r of DADOS.rtnMensal){
+   expect(r.receitaTotal-r.transferencias).toBeCloseTo(r.receitaLiquida,5);
+   expect(r.receitaLiquida-r.despesa).toBeCloseTo(r.resultado,5);
+   expect(r.previdencia+r.pessoal+r.outrasObrigatorias+r.programacaoFinanceira).toBeCloseTo(r.despesa,5);
+  }
+ });
+ it('confere a soma dos meses contra a tabela anual independente da fonte',()=>{
+  for(const r of DADOS.rtnAnual){const soma=fiscalAcumulado(Number(r.periodo),12);expect(soma).not.toBeNull();for(const k of CAMPOS_FISCAIS)expect(soma![k]).toBeCloseTo(r[k],5)}
+ });
+ it('não transforma ano parcial em ano completo nem meses ausentes em zero',()=>{
+  expect(fiscalAcumulado(2026,12)).toBeNull();expect(fiscalAcumulado(2026,8)).toBeNull();
+  expect(fiscalAcumulado(2019,7)).toBeNull();expect(fiscalAcumulado(2026,0)).toBeNull();expect(fiscalAcumulado(2026,1.5)).toBeNull();
+  expect(fiscalAcumulado(2026,7)).not.toBeNull();expect(fiscalAcumulado(2025,7)).not.toBeNull();
+  expect(fiscalAcumulado(2025,7)!.despesa).not.toEqual(fiscalAcumulado(2025,12)!.despesa);
+ });
+ it('mantém unidade, sinal e valor de controle da tabela anual de 2025',()=>{
+  const r=DADOS.rtnAnual.find(r=>r.periodo==='2025')!;
+  expect(r.resultado).toBeCloseTo(-61694.308980989066,5);
+  expect(bilhoes(r.resultado,'milhoes')).toBe('-61,7');
+  expect(bilhoes(1_000_000_000)).toBe('1,0');
+ });
+ it('reconcilia esferas e grupos com resíduos explícitos, sem ajustar a fonte',()=>{
+  for(const b of DADOS.orcamento){expect(b.esferas.map(e=>e.codigo).sort()).toEqual(['10','20']);
+   for(const k of ['inicial','atualizada','empenhado','liquidado','pago'] as const){
+    expect(b.esferas.reduce((s,r)=>s+r[k],0)).toBe(b.total[k]);
+    expect(b.total[k]-b.grupos.reduce((s,r)=>s+r[k],0)).toBe(b.residuosEsferasMenosGND[k]);
+    expect(Math.abs(b.residuosEsferasMenosGND[k])).toBeLessThanOrEqual(5);
+   }
+   expect(b.grupos.some(g=>g.codigo==='2')).toBe(true);expect(b.grupos.some(g=>g.codigo==='6')).toBe(true);
+  }
+ });
+ it('preserva os hashes dos arquivos SIOP e cobertura de todos os estágios',()=>{
+  for(const [file,hash] of Object.entries(DADOS.sha256)){if(file==='rtn.xlsx')continue;
+   const bytes=readFileSync(`data/contas-publicas/fontes/${file}`);
+   expect(createHash('sha256').update(bytes).digest('hex')).toBe(hash);
+   if(file.startsWith('gnd'))for(const r of JSON.parse(bytes.toString()).results.bindings){
+    for(const key of ['cobertura','coberturaAtualizada','coberturaEmpenhado','coberturaLiquidado','coberturaPago'])expect(r[key].value).toBe(r.itens.value);
+   }
+  }
  });
 });

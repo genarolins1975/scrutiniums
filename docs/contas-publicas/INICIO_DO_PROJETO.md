@@ -1,5 +1,7 @@
 # Observatório Brasileiro de Contas Públicas — Governo Federal
 
+> Atualização: a etapa 2 já integra recortes SIOP e RTN. Consulte [INTEGRACAO_DADOS.md](INTEGRACAO_DADOS.md). O texto abaixo preserva o escopo e os pendentes registrados na etapa inicial.
+
 ## Entrega 0.1
 
 Início autorizado em 11/10/2026. Entrega de estrutura e metodologia, sem séries fiscais integradas. Não apresentar como painel de resultados operacionais concluído.

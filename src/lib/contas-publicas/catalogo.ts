@@ -38,9 +38,9 @@ export type CapituloId = typeof CAPITULOS[number]['id'];
 export type Indicador = {
   id: string; capitulo: CapituloId; nome: string; unidade: string; formula: string;
   fonte: FonteId; periodicidade: string; referencia: string; ressalva: string;
-  perimetro: string; requisitos: string; status: 'aguardando-integracao';
+  perimetro: string; requisitos: string; status: 'aguardando-integracao'|'integracao-parcial';
 };
-const indicador = (id:string, capitulo:CapituloId, nome:string, unidade:string, formula:string, fonte:FonteId, referencia:string, ressalva:string, requisitos:string, perimetro='Orçamento Fiscal e da Seguridade Social da União', periodicidade='Anual; acompanhamento mensal quando conciliado'):Indicador => ({id,capitulo,nome,unidade,formula,fonte,referencia,ressalva,requisitos,perimetro,periodicidade,status:'aguardando-integracao'});
+const indicador = (id:string, capitulo:CapituloId, nome:string, unidade:string, formula:string, fonte:FonteId, referencia:string, ressalva:string, requisitos:string, perimetro='Orçamento Fiscal e da Seguridade Social da União', periodicidade='Anual; acompanhamento mensal quando conciliado'):Indicador => ({id,capitulo,nome,unidade,formula,fonte,referencia,ressalva,requisitos,perimetro,periodicidade,status:['resultado-primario','execucao-liquidada'].includes(id)?'integracao-parcial':'aguardando-integracao'});
 export const INDICADORES: Indicador[] = [
   indicador('resultado-primario','panorama','Resultado primário','R$ e % do PIB','Receita primária líquida − despesa primária','rtn','Série comparável e meta com vigência identificada','Apresentar resultado observado e ajustes para a meta separadamente.','Receitas, despesas e PIB com bases consistentes.','Governo Central'),
   indicador('composicao','panorama','Composição funcional da despesa','%','100 × despesa da função / despesa total do mesmo universo','siop','Composição histórica','As parcelas precisam reconciliar com o total e o mesmo estágio.','Função, exercício, estágio e total conciliado.'),
