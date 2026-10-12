@@ -73,3 +73,22 @@
 @media(max-width:900px){.ce-flag-list{grid-template-columns:repeat(6,minmax(0,1fr))}.ce-journey-grid,.ce-lab-grid{gap:28px}}
 @media(max-width:650px){.ce-journey,.ce-lab{padding:24px 18px}.ce-journey-grid,.ce-lab-grid,.ce-lab-conclusion{grid-template-columns:1fr;gap:24px}.ce-journey-answer{padding:0}.ce-journey-answer h3{font-size:26px}.ce-territory-heading{display:block}.ce-territory-heading>span{display:block;margin-top:12px}.ce-flag-list{grid-template-columns:repeat(3,minmax(0,1fr))}.ce-territory-identity{gap:16px}.ce-territory-identity h3{font-size:28px}.ce-flag-large{width:72px;height:48px}.ce-lab-header{display:block}.ce-lab-tag{display:block;margin-top:20px}.ce-intro{gap:24px}.ce-lab-controls label{flex-wrap:wrap}.ce-territory-name{font-size:12px}}
 @media print{.ce-flag-list,.ce-lab-controls{display:none}.ce-journey{background:white;color:#182b36}.ce-journey .ce-kicker,.ce-journey p,.ce-journey strong,.ce-journey small,.ce-journey a{color:#182b36}}
+
+/* Panorama is the entry point; the learning path is available on demand. */
+.ce-question-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ce-line);border-left:1px solid var(--ce-line);margin:28px 0}
+.ce-question-grid button{display:flex;flex-direction:column;gap:14px;min-height:170px;padding:24px 20px;text-align:left;background:white;color:var(--ce-ink);border:0;border-right:1px solid var(--ce-line);border-bottom:1px solid var(--ce-line);cursor:pointer}
+.ce-question-index{display:flex;justify-content:space-between;width:100%;font-size:12px;color:var(--ce-teal);letter-spacing:.08em}
+.ce-question-grid strong{font:400 22px/1.25 var(--font-serif),Georgia,serif}.ce-question-grid small{font-size:13px;line-height:1.5;color:var(--ce-muted);margin-top:auto}
+.ce-question-grid button[aria-pressed=true]{background:var(--ce-petrol);color:var(--ce-cream);box-shadow:inset 0 3px var(--ce-mint)}
+.ce-question-grid button[aria-pressed=true] small,.ce-question-grid button[aria-pressed=true] .ce-question-index{color:#c5dad5}
+.ce-question-grid button:hover{box-shadow:inset 0 3px var(--ce-teal)}.ce-question-grid button:focus-visible{outline:3px solid #09697a;outline-offset:4px;position:relative;z-index:1}
+.ce-comparison .ce-compare-row{grid-template-columns:78px minmax(50px,1fr) 108px;min-height:52px}
+.ce-compare-identity{display:flex;align-items:center;gap:10px}
+.ce-learning{margin:32px 0 48px;border-block:1px solid var(--ce-line)}
+.ce-learning>summary{padding:22px 0;min-height:60px;font:24px/1.3 var(--font-serif),Georgia,serif;cursor:pointer}
+.ce-learning[open]>summary{border-bottom:1px solid var(--ce-line)}
+.ce-learning .ce-journey{margin:24px 0}.ce-learning .ce-lab{margin-bottom:24px}
+#comparacao,#ficha{scroll-margin-top:24px}
+@media(max-width:1000px){.ce-question-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.ce-question-grid button{padding:18px 14px;min-height:184px}.ce-question-grid strong{font-size:20px}.ce-comparison .ce-compare-row{grid-template-columns:72px minmax(40px,1fr) 92px;gap:8px}.ce-learning>summary{font-size:21px}}
+@media(max-width:360px){.ce-question-grid{grid-template-columns:1fr}.ce-question-grid button{min-height:0}.ce-question-grid small{margin-top:0}}
