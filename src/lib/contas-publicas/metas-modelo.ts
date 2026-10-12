@@ -15,5 +15,5 @@ export function estadoMeta(m:MetaFisica):EstadoMeta{
  return m.apuracao?'calculavel':'sem-data';
 }
 export const normalizarBusca=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
-export const numeroFisico=(n:number|null)=>n===null?'Não informado':n.toLocaleString('pt-BR',{maximumFractionDigits:2});
+export const numeroFisico=(n:number|null)=>n===null?'Não informado':n.toLocaleString('pt-BR',{maximumFractionDigits:2}).replace('-', '−');
 export type RespostaMetas={total:number;pagina:number;paginas:number;registros:MetaExibida[]};

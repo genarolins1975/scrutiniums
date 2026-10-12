@@ -1,0 +1,110 @@
+[
+  {
+    "url": "/contas-publicas",
+    "width": 1440,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/panorama",
+    "width": 1440,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/execucao",
+    "width": 1440,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/restos-a-pagar",
+    "width": 1440,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/custos",
+    "width": 1440,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/metas",
+    "width": 1440,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/dados",
+    "width": 1440,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/metodologia",
+    "width": 1440,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/glossario",
+    "width": 1440,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas",
+    "width": 390,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/panorama",
+    "width": 390,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/execucao",
+    "width": 390,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/restos-a-pagar",
+    "width": 390,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/custos",
+    "width": 390,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/metas",
+    "width": 390,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/dados",
+    "width": 390,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/metodologia",
+    "width": 390,
+    "overflow": false,
+    "violations": []
+  },
+  {
+    "url": "/contas-publicas/glossario",
+    "width": 390,
+    "overflow": false,
+    "violations": []
+  }
+]

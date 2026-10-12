@@ -1,0 +1,10 @@
+import {Termo} from './Termo';
+import {DADOS,ESTAGIOS} from '@/lib/contas-publicas/dados';
+import {moeda,numero} from '@/lib/contas-publicas/formato';
+import {intervalosExecucao} from '@/lib/contas-publicas/artefatos';
+import {origemSIOP} from '@/lib/contas-publicas/proveniencia';
+import {Proveniencia} from './Proveniencia';
+export function EscadaExecucao({ano}:{ano:number}){
+ const b=DADOS.orcamento.find(b=>b.ano===ano)!;const max=Math.max(...ESTAGIOS.map(e=>b.total[e.id]));const intervalos=intervalosExecucao(b.total);
+ return <figure className="cp-artifact" aria-labelledby="escada-titulo"><figcaption><h3 id="escada-titulo">Quanto separa uma etapa da seguinte?</h3><p className="cp-note">{ano} · OFSS da União · R$ correntes. Barras na mesma escala, iniciadas em zero.</p><p className="cp-note">Entenda as etapas: <Termo id="dotacao-inicial"/>, <Termo id="dotacao-atualizada"/>, <Termo id="empenho"/>, <Termo id="liquidacao"/> e <Termo id="pagamento"/>.</p></figcaption><ol className="cp-stairs">{ESTAGIOS.map((e,i)=><li key={e.id}><div className="cp-stair-label"><span>{String(i+1).padStart(2,'0')} · {e.nome}</span><strong>{moeda(b.total[e.id],'reais')}</strong></div><div className="cp-bar-track" aria-hidden="true"><span style={{width:`${100*b.total[e.id]/max}%`}}/></div><p className="cp-note">{e.descricao}</p>{intervalos.find(d=>d.de===e.id)&&<p className="cp-stair-gap"><span>↳ {intervalos.find(d=>d.de===e.id)!.nome}</span><strong>{moeda(intervalos.find(d=>d.de===e.id)!.valor,'reais')}</strong></p>}</li>)}</ol><p className="cp-status">Os intervalos são diferenças contábeis entre estágios. Não representam, isoladamente, desperdício ou economia. Os cinco valores não devem ser somados.</p><details className="cp-exact"><summary>Conferir as diferenças exatas</summary><table className="cp-table"><caption>Diferenças entre estágios · R$ correntes</caption><thead><tr><th scope="col">Intervalo</th><th scope="col">Valor</th></tr></thead><tbody>{intervalos.map(d=><tr key={d.de}><th scope="row">{d.nome}</th><td>{numero(d.valor,0)}</td></tr>)}</tbody></table></details><Proveniencia {...origemSIOP(ano)}/></figure>;
+}
