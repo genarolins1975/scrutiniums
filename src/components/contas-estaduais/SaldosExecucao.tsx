@@ -3,7 +3,7 @@ const num = (v: number, casas = 2) => v.toLocaleString('pt-BR', {minimumFraction
 export default function SaldosExecucao({uf, ano}: {uf:string; ano:number}) {
  const s = saldosExecucao(uf, ano);
  if (!s) return null;
- return <section className="ce-balances" aria-labelledby="saldos-titulo">
+ return <section id="saldos-execucao" tabIndex={-1} className="ce-balances" aria-labelledby="saldos-titulo">
   <div className="ce-section-heading"><div><p className="ce-kicker">Leitura dos saldos / {uf} / {ano}</p><h3 id="saldos-titulo">Como se distribui a autorização?</h3></div><a className="ce-download" href={`/contas-publicas-estaduais/saldos.csv?uf=${uf}&ano=${ano}`}>Baixar este recorte · CSV ↓</a></div>
   <p className="ce-note">Janeiro a dezembro · RREO Anexo 01 · valores nominais. As quatro parcelas recompõem a dotação atualizada, sem dupla contagem.</p>
   <figure className="ce-balance-figure"><figcaption>R$ {num(s.dado.valores.dotacao_atualizada / 1e9)} bilhões autorizados <span>100% da dotação atualizada · mesma escala para todas as parcelas</span></figcaption>

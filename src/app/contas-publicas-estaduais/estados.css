@@ -17,3 +17,20 @@
 @media(max-width:440px){.ce-finance-total{grid-template-columns:1fr}.ce-finance-total p{padding:8px 0}.ce-finance-pair>div:first-child{flex-direction:column;gap:4px}.ce-finance-reading strong small{display:block;margin-top:6px}.ce-finance-legend li{font-size:14px}}
 .ce-expense-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:28px 0}.ce-expense-group{margin:0;min-width:0}.ce-expense-group figcaption{padding:0 0 20px;border-bottom:1px solid var(--ce-line);margin-bottom:20px}.ce-expense-group figcaption>span{display:block;font-size:16px}.ce-expense-group figcaption strong{display:block;font-size:28px;font-weight:500;font-variant-numeric:tabular-nums}.ce-expense-group figcaption small{font-size:13px;color:var(--ce-muted)}.ce-expense-row{margin:20px 0}.ce-expense-row>div:first-child{display:flex;justify-content:space-between;gap:12px;font-size:14px}.ce-expense-row strong{font-weight:500;white-space:nowrap}.ce-expense-row small{font-size:13px;color:var(--ce-muted)}.ce-expense-row .ce-bar-track{height:10px}.ce-expense-grid+ .ce-note{margin-bottom:20px}
 @media(max-width:650px){.ce-expense-grid{grid-template-columns:1fr;gap:24px}.ce-expense-group figcaption strong{font-size:25px}}
+
+/* Local chapter navigation keeps the full fiscal evidence accessible. */
+.ce-ficha-guide{margin:24px 0 32px;padding:20px 0;border-block:1px solid var(--ce-line)}
+.ce-ficha-guide .ce-kicker{margin-bottom:12px!important}
+.ce-ficha-guide ul{display:flex;flex-wrap:wrap;list-style:none;padding:0;margin:0;gap:12px 24px}
+.ce-ficha-guide li{flex:1 1 160px;min-width:0}
+.ce-ficha-guide a{display:flex;flex-direction:column;gap:4px;min-height:68px;padding:8px 0;text-decoration:none}
+.ce-ficha-guide a:hover strong{text-decoration:underline;text-underline-offset:4px}
+.ce-ficha-guide strong{display:flex;justify-content:space-between;gap:12px;font-size:16px;font-weight:500}
+.ce-ficha-guide a>span{font-size:13px;color:var(--ce-muted);line-height:1.5}
+.ce-ficha-guide>.ce-note{margin-top:16px}
+.ce-ficha-end{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px 24px;margin-top:28px;padding-top:16px;border-top:1px solid var(--ce-line)}
+.ce-ficha-end a{display:inline-flex;align-items:center;min-height:44px;font-size:14px}
+.ce-ficha-grid>*,.ce-budget-grid>*,.ce-budget-readings>*,.ce-finance-grid>*,.ce-expense-grid>*{min-width:0}
+#divida-estadual,#execucao-estadual{scroll-margin-top:24px}
+@media(max-width:650px){.ce-ficha-guide li{flex-basis:calc(50% - 12px)}.ce-ficha-guide a{min-height:88px}.ce-table-scroll::before{content:"Deslize a tabela para ver todas as colunas →";display:block;font-size:12px;color:var(--ce-muted);margin:8px 0}.ce-budget-readings{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:360px){.ce-ficha-guide li{flex-basis:100%}.ce-ficha-guide a{min-height:60px}.ce-budget-readings{grid-template-columns:1fr}}

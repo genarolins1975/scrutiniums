@@ -6,7 +6,7 @@ export default function FinanciamentoEstadual({uf,ano}:{uf:string;ano:number}) {
  const f=financiamentoEstadual(uf,ano); if(!f) return null;
  const v=f.valores, escala=Math.max(v.receitas_correntes,v.despesas_correntes), total=f.dado.valores.receita_arrecadada;
  const comparar=(id:string)=>`/contas-publicas-estaduais?uf=${uf}&ano=${ano}&indicador=${id}&regiao=Todas&df=0&ordem=uf#comparacao`;
- return <section id="financiamento" className="ce-financing" aria-labelledby="financiamento-titulo">
+ return <section id="financiamento" tabIndex={-1} className="ce-financing" aria-labelledby="financiamento-titulo">
   <div className="ce-section-heading"><div><p className="ce-kicker">Financiamento / {uf} / {ano}</p><h3 id="financiamento-titulo">De onde vêm as receitas?</h3></div><a className="ce-download" href={`/contas-publicas-estaduais/financiamento.csv?uf=${uf}&ano=${ano}`}>Baixar este recorte · CSV ↓</a></div>
   <p className="ce-note">RREO Anexo 01 · janeiro a dezembro · valores nominais · receitas e despesas exceto intra-orçamentárias; refinanciamento destacado fora deste perímetro.</p>
   <div className="ce-finance-total"><p><span>Receita arrecadada no perímetro</span><strong>R$ {n(total/1e9)} bi</strong></p><p><span>Receitas correntes</span><strong>R$ {n(v.receitas_correntes/1e9)} bi</strong><small>{n(100*v.receitas_correntes/total,1)}% da arrecadação</small></p><p><span>Receitas de capital</span><strong>R$ {n(v.receitas_capital/1e9)} bi</strong><small>{n(100*v.receitas_capital/total,1)}% da arrecadação</small></p></div>

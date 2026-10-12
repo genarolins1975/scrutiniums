@@ -14,10 +14,10 @@ const conceitos = {
 
 export default function ExecucaoEstadual({ uf, ano }: { uf: string; ano: number }) {
  const dado = execucaoPrimaria(uf, ano);
- if (!dado) return <aside className="ce-budget-empty"><h3>Execução orçamentária de {uf} · {ano}</h3><p>Este recorte ainda não foi conferido. A base conferida cobre o encerramento de 2025 nas 27 UFs. Ausência no painel não significa ausência na fonte.</p></aside>;
+ if (!dado) return <aside id="execucao-estadual" tabIndex={-1} className="ce-budget-empty"><h3>Execução orçamentária de {uf} · {ano}</h3><p>Este recorte ainda não foi conferido. A base conferida cobre o encerramento de 2025 nas 27 UFs. Ausência no painel não significa ausência na fonte.</p></aside>;
  const v = dado.valores;
  const etapas = [{ nome: "Autorizada", campo: "dotacao_atualizada", valor: v.dotacao_atualizada, explicacao: "Dotação atualizada" }, { nome: "Empenhada", campo: "empenhada", valor: v.empenhada, explicacao: "Compromissos registrados" }, { nome: "Liquidada", campo: "liquidada", valor: v.liquidada, explicacao: "Direito do credor verificado" }, { nome: "Paga", campo: "paga", valor: v.paga, explicacao: "Pagamento do exercício" }];
- return <section className="ce-budget" aria-labelledby="execucao-titulo">
+ return <section id="execucao-estadual" tabIndex={-1} className="ce-budget" aria-labelledby="execucao-titulo">
   <div className="ce-section-heading"><div><p className="ce-kicker">Execução orçamentária / {uf} / janeiro a dezembro de {ano}</p><h3 id="execucao-titulo">Da autorização ao pagamento</h3></div><span className="ce-status">Conferido na resposta original</span></div>
   <p className="ce-note">Siconfi · RREO Anexo 01 · esfera estadual · exceto intra-orçamentárias e refinanciamento destacado · captura de 12/10/2026. Valores declarados no acumulado do 6º bimestre.</p>
   <div className="ce-budget-grid"><figure className="ce-stages"><figcaption>Quatro etapas, uma mesma escala <span>R$ bilhões nominais · base zero</span></figcaption>{etapas.map(e => <div className="ce-stage-row" key={e.campo}><div><strong>{e.nome}</strong><span>R$ {numero(e.valor / 1e9)} bi</span></div><div className="ce-bar-track" aria-hidden="true"><span style={{width: (e.valor / v.dotacao_atualizada * 100) + "%"}}/></div><small>{e.explicacao}</small></div>)}</figure>
