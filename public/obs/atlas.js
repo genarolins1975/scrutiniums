@@ -16,6 +16,7 @@
     ['Regras e conduta', 'Camada transversal às demais etapas', ['Regulação e supervisão', 'Pagamentos e Open Finance', 'Conduta e proteção do cliente'], 'Todo o processo', 'Da captação à recuperação'],
   ];
   const LABELS = ['Recursos', 'Instituições', 'Produtos e preços', 'Pessoas e territórios', 'Ciclo e perspectivas', 'Atraso e recuperação', 'Regras e conduta'];
+  const QUESTIONS = ['Como os bancos captam recursos?', 'Quem empresta e com qual estrutura?', 'Quanto custa cada modalidade?', 'Quem toma crédito e onde?', 'O que cresce e o que atrasa?', 'Como a dívida é tratada?', 'Quais regras protegem o cliente?'];
   function node(tag, className, text) {
     const n = document.createElement(tag);
     if (className) n.className = className;
@@ -44,8 +45,8 @@
     const cta = link('Explorar o ciclo ↓', '#mp-ciclo'); cta.className = 'obs-primary';
     copy.append(subtitle('Observatório Brasileiro de Crédito'), title, node('p', '', 'Entenda de onde vêm os recursos, quem empresta e como o crédito chega à economia.'), cta);
     const points = node('nav', 'atlas-city-points'); points.setAttribute('aria-label', 'Explore a maquete do crédito');
-    [['Instituições', 1], ['Habitação', 3], ['Empresas', 3], ['Famílias', 3]].forEach(([name, stage], i) => {
-      const a = link(name, `#credito-etapa-${stage + 1}`); a.dataset.creditStage = String(stage); a.className = `atlas-city-point point-${i}`; points.append(a);
+    [['Instituições', '/institutions'], ['Habitação', '/housing-credit'], ['Empresas', '/credit-panorama?pcli=PJ'], ['Famílias', '/credit-panorama?pcli=PF']].forEach(([name, route], i) => {
+      const a = link(name, '/observatorio' + route); a.className = `atlas-city-point point-${i}`; points.append(a);
     });
     hero.append(image, copy, points, node('p', 'atlas-city-caption', 'Ilustração conceitual gerada por IA · sem proporções quantitativas'));
     const metric = mapa.querySelector('.atlas-metrics'); hero.after(metric);
@@ -56,7 +57,7 @@
   }
   function illustratedDoors() {
     const section = node('section', 'atlas-doors'); section.setAttribute('aria-label', 'Instituições e território');
-    [['Quem empresta, a que condições?', 'Instituições, produtos e taxas comparáveis.', 'Comparar instituições ↗', '/observatorio/institutions'], ['Como está o crédito na minha região?', 'Estados, municípios e perfis de tomadores.', 'Explorar território ↗', '/observatorio/states']].forEach(([title, desc, action, href], i) => {
+    [['Como as instituições se comparam?', 'Selecione instituições e indicadores de balanço. Compare séries e dispersões no mesmo período e perímetro do IF.data.', 'Abrir o comparador ↗', '/observatorio/compare'], ['Como está o crédito na minha região?', 'Compare saldo, inadimplência e perfis dos tomadores nas 27 UFs, com dados do SCR. A página informa o período e a cobertura de cada medida.', 'Explorar território ↗', '/observatorio/states']].forEach(([title, desc, action, href], i) => {
       const a = link('', href); const copy = node('div'); copy.append(node('h3', '', title), node('p', '', desc), node('span', '', action));
       const img = node('img'); img.src = '/obs/arte/economia-v1.webp'; img.alt = ''; img.width = 1774; img.height = 887; img.loading = 'lazy'; img.style.objectPosition = i ? '16% 75%' : '68% 48%';
       a.append(img, copy); section.append(a);
@@ -73,17 +74,18 @@
 
   function metrics(mapa, meta) {
     const definitions = [
-      { label: 'Saldo das operações', source: 'BCB · SGS 20539', value: meta.carteira_conceitos?.sgs?.v, ref: meta.carteira_conceitos?.sgs?.ref, def: meta.carteira_conceitos?.sgs?.def, format: v => `R$ ${FORMAT.format(v)} bi` },
-      { label: 'Sedes em funcionamento', source: 'BCB · Unicad', value: meta.if_contagens?.cadastro_sedes?.n, ref: meta.if_contagens?.cadastro_sedes?.ref, def: meta.if_contagens?.cadastro_sedes?.def, format: v => FORMAT.format(v) },
-      { label: 'Inadimplência · conceito SCR', source: 'BCB · SCR.data', value: meta.inad_conceitos?.scr?.v, ref: meta.inad_conceitos?.scr?.ref, def: meta.inad_conceitos?.scr?.def, format: v => `${FORMAT.format(v)}%` },
+      { href: '/observatorio/credit', action: 'Ver evolução do saldo', summary: 'Crédito em aberto no sistema financeiro em uma data; não mede apenas os novos empréstimos do mês.', label: 'Saldo das operações', source: 'BCB · SGS 20539', value: meta.carteira_conceitos?.sgs?.v, ref: meta.carteira_conceitos?.sgs?.ref, def: meta.carteira_conceitos?.sgs?.def, format: v => `R$ ${FORMAT.format(v)} bi` },
+      { href: '/observatorio/sfn-entries-exits', action: 'Explorar o cadastro do SFN', summary: 'Sedes de instituições em funcionamento no cadastro. Não é a contagem de agências nem de conglomerados do IF.data.', label: 'Sedes em funcionamento', source: 'BCB · Unicad', value: meta.if_contagens?.cadastro_sedes?.n, ref: meta.if_contagens?.cadastro_sedes?.ref, def: meta.if_contagens?.cadastro_sedes?.def, format: v => FORMAT.format(v) },
+      { href: '/observatorio/credit-panorama?pmet=inad', action: 'Explorar a inadimplência no SCR', summary: 'Carteira com atraso superior a 90 dias, no conceito arrastado do SCR. Não equivale à probabilidade de default.', label: 'Inadimplência · conceito SCR', source: 'BCB · SCR.data', value: meta.inad_conceitos?.scr?.v, ref: meta.inad_conceitos?.scr?.ref, def: meta.inad_conceitos?.scr?.def, format: v => `${FORMAT.format(v)}%` },
     ];
     const wrap = node('section', 'atlas-metrics'); wrap.setAttribute('aria-label', 'Indicadores do crédito com períodos próprios');
     definitions.forEach(d => {
       const item = node('div', 'atlas-metric'); const valid = Number.isFinite(d.value);
       item.append(node('p', 'atlas-metric-label', d.label), node('p', 'atlas-metric-value', valid ? d.format(d.value) : '—'), node('p', 'atlas-source', `${d.source} · ${d.ref || 'data não disponível'}`));
       if (!valid) item.append(node('p', 'atlas-source', 'Indicador não disponível nesta publicação da base.'));
+      item.append(node('p', 'atlas-metric-context', d.summary), link(d.action + ' →', d.href));
       const detail = node('details', 'atlas-definition');
-      detail.append(node('summary', '', 'Conceito e fonte'), node('p', '', d.def || 'Definição não disponível nesta publicação.'), link('Metodologia e fontes ↗', '/observatorio/methodology'));
+      detail.append(node('summary', '', `Definição de ${d.label.toLocaleLowerCase('pt-BR')}`), node('p', '', d.def || 'Definição não disponível nesta publicação.'), link('Metodologia e fontes ↗', '/observatorio/methodology'));
       item.append(detail); wrap.append(item);
     });
     const coverage = mapa.querySelector('.obs-metrics');
@@ -94,15 +96,20 @@
   function orbit(mapa, flow, cards) {
     const atlas = node('div', 'credit-atlas'); const wheel = node('div', 'atlas-wheel');
     wheel.setAttribute('role', 'group'); wheel.setAttribute('aria-label', 'Selecione uma das sete etapas do crédito');
-    const panel = node('div', 'atlas-panels'); panel.setAttribute('aria-live', 'polite');
+    const panel = node('div', 'atlas-panels'); panel.id = 'atlas-analise'; wheel.id = 'atlas-etapas';
     const buttons = cards.map((card, i) => {
-      const b = button('', () => select(i)); b.className = 'atlas-stage-button';
+      const b = button('', () => {
+        select(i);
+        if (window.matchMedia('(max-width: 760px)').matches) {
+          const h = cards[i].querySelector('h3'); h.focus({ preventScroll: true }); panel.scrollIntoView({ block: 'start' });
+        }
+      }); b.className = 'atlas-stage-button';
       b.id = `credito-etapa-${i + 1}`;
       b.append(artifact(i));
       b.setAttribute('aria-controls', `atlas-stage-${i + 1}`);
-      b.append(node('span', 'atlas-stage-number', String(i + 1).padStart(2, '0')), node('span', 'atlas-stage-name', LABELS[i]));
+      b.append(node('span', 'atlas-stage-number', String(i + 1).padStart(2, '0')), node('span', 'atlas-stage-name', LABELS[i]), node('span', 'atlas-stage-question', QUESTIONS[i]));
       card.id = `atlas-stage-${i + 1}`; card.classList.add('atlas-panel'); card.setAttribute('role', 'region');
-      const heading = card.querySelector('h4'); heading.id = `atlas-stage-title-${i + 1}`; card.setAttribute('aria-labelledby', heading.id);
+      const oldHeading = card.querySelector('h4'); const heading = node('h3', '', oldHeading.textContent); oldHeading.replaceWith(heading); heading.tabIndex = -1; heading.id = `atlas-stage-title-${i + 1}`; card.setAttribute('aria-labelledby', heading.id);
       card.querySelector('.mapa-num')?.remove();
       card.prepend(subtitle(`Etapa ${String(i + 1).padStart(2, '0')} · ${STAGES[i][0]}`));
       const diagram = node('div', 'atlas-diagram'); diagram.append(subtitle(STAGES[i][1]));
@@ -113,17 +120,19 @@
       diagramFlow.append(inputs, arrow, target);
       diagram.append(diagramFlow, node('p', 'atlas-diagram-note', 'Esquema conceitual, sem proporções quantitativas.'));
       const explanation = node('details', 'atlas-stage-explanation'); explanation.append(node('summary', '', 'Entender os conceitos desta etapa'), diagram);
-      card.append(explanation); panel.append(card); wheel.append(b); return b;
+      const back = link('Escolher outra etapa ↑', '#atlas-etapas'); back.className = 'atlas-back';
+      card.append(explanation, back); panel.append(card); wheel.append(b); return b;
     });
-    function select(index) {
+    function select(index, sync = true) {
+      if (sync) history.replaceState(history.state, '', '#credito-etapa-' + (index + 1));
       buttons.forEach((b, i) => { b.setAttribute('aria-pressed', String(i === index)); cards[i].hidden = i !== index; });
 
     }
-    const intro = node('div', 'atlas-cycle-intro'); intro.append(subtitle('Explore o ciclo do crédito'), node('h3', '', 'Do funding à recuperação.'), node('p', '', 'Sete etapas para entender o crédito. Escolha uma para explorar.'));
-    atlas.append(intro, wheel, panel); flow.replaceWith(atlas); select(0);
-    mapa.querySelectorAll('[data-credit-stage]').forEach(a => a.addEventListener('click', event => {
-      event.preventDefault(); const i = Number(a.dataset.creditStage); select(i); buttons[i].focus({ preventScroll: true }); atlas.scrollIntoView({ block: 'start' });
-    }));
+    const intro = node('div', 'atlas-cycle-intro'); intro.append(subtitle('Explore o ciclo do crédito'), node('h2', '', 'Do funding à recuperação.'), node('p', '', 'Sete etapas para entender o crédito. Escolha uma para explorar.'));
+    atlas.append(intro, wheel, panel); flow.replaceWith(atlas);
+    const initial = /^#credito-etapa-([1-7])$/.exec(location.hash);
+    select(initial ? Number(initial[1]) - 1 : 0, false);
+    if (initial) requestAnimationFrame(() => atlas.scrollIntoView({ block: 'start' }));
     // Buttons remain mounted, preserving focus; native Tab, Enter and Space work.
     wheel.addEventListener('keydown', e => {
       const i = buttons.indexOf(e.target); if (i < 0) return;
@@ -217,20 +226,27 @@
     grid.classList.add('atlas-profile-grid'); grid.before(controls); select(0);
   }
 
-  function enhance(mapa, meta = {}) {
+  function enhance(mapa, meta = {}, destinations = {}) {
     const flow = mapa.querySelector('.mapa-fluxo'); const cards = flow ? Array.from(flow.querySelectorAll('.mapa-no')) : [];
     if (mapa.querySelector('.credit-atlas') || cards.length !== STAGES.length || !mapa.querySelector('.obs-hero')) return;
     mapa.classList.add('has-credit-atlas');
     metrics(mapa, meta); visualHero(mapa); orbit(mapa, flow, cards);
     const cycle = mapa.querySelector('#mp-ciclo'); cycle.classList.add('atlas-visual-cycle'); cycle.after(illustratedDoors(), laboratory(), concepts());
     readingPaths(mapa);
+    // Explain every stage destination before navigation, using the canonical page guide.
+    mapa.querySelectorAll('.atlas-panel li > a').forEach(a => {
+      const info = destinations[new URL(a.href).pathname];
+      if (info) a.append(node('span', 'atlas-destination-question', info));
+    });
     // Preserve the full searchable catalogue, data definitions and source tables.
     const index = mapa.querySelector('#mp-perguntas'), paths = mapa.querySelector('#mp-trilhas');
     if (index && paths) {
       const disclosure = node('details', 'atlas-catalogue'); const summary = node('summary', '', 'Todos os painéis, por pergunta');
       paths.after(disclosure); disclosure.append(summary, index);
       mapa.querySelectorAll('a[href="#mp-perguntas"]').forEach(a => a.addEventListener('click', () => { disclosure.open = true; }));
+      if (location.hash === '#mp-perguntas') disclosure.open = true;
     }
   }
   window.CreditAtlas = Object.freeze({ enhance, lossScenario });
 })();
+

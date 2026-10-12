@@ -3,6 +3,7 @@
 import { energiaConsumida } from "@/lib/energia/energia-consumida";
 
 import { Children, useEffect, useState, type ReactNode } from "react";
+import { observarAncoras, guardarAncora } from "./navegacao-ancoras";
 import styles from "./ExploracaoInicial.module.css";
 
 export type ResumoInicial = { id: string; titulo: string; valor: string; unidade: string; periodo: string };
@@ -11,26 +12,22 @@ export type ResumoInicial = { id: string; titulo: string; valor: string; unidade
 export function PerguntasExploraveis({ resumos, children }: { resumos: ResumoInicial[]; children: ReactNode }) {
   const [atual, setAtual] = useState(0);
   const [todos, setTodos] = useState(false);
-  useEffect(() => {
-    const abrirAncora = () => {
-      const i = resumos.findIndex(r => window.location.hash === `#pergunta-${r.id}`);
-      if (i < 0) return;
-      setAtual(i); setTodos(false);
-      requestAnimationFrame(() => document.getElementById(`energia-resposta-${resumos[i].id}`)?.scrollIntoView({ block: "start" }));
-    };
-    abrirAncora();
-    window.addEventListener("hashchange", abrirAncora);
-    return () => window.removeEventListener("hashchange", abrirAncora);
-  }, [resumos]);
+  useEffect(() => observarAncoras(hash => {
+    if (hash === "#perguntas") { setTodos(true); return; }
+    const i = resumos.findIndex(r => hash === `#pergunta-${r.id}`);
+    if (i < 0) return;
+    setAtual(i); setTodos(false);
+    requestAnimationFrame(() => document.getElementById(`energia-resposta-${resumos[i].id}`)?.scrollIntoView({ block: "start" }));
+  }), [resumos]);
   return <div className={styles.explorador}>
     <div className={styles.opcoes} role="group" aria-label="Escolha o indicador para explorar">
-      {resumos.map((r, i) => <button type="button" key={r.id} aria-pressed={!todos && atual === i} aria-controls={`energia-resposta-${r.id}`} onClick={() => { setAtual(i); setTodos(false); }}>
+      {resumos.map((r, i) => <button type="button" key={r.id} aria-pressed={!todos && atual === i} aria-controls={`energia-resposta-${r.id}`} onClick={() => { setAtual(i); setTodos(false); guardarAncora(`#pergunta-${r.id}`); }}>
         <span className={styles.indice}>{String(i + 1).padStart(2, "0")} <span aria-hidden="true">↗</span></span>
         <span className={styles.rotulo}>{r.titulo}</span><strong>{r.valor}</strong><span>{r.unidade}</span><small>{r.periodo}</small>
       </button>)}
     </div>
     <div className={styles.barra}><p>Selecione uma medida para abrir sua referência, universo e fonte. Cada uma tem seu próprio período.</p>
-      <button type="button" aria-pressed={todos} onClick={() => setTodos(!todos)}>{todos ? "Voltar à exploração" : "Mostrar todas as análises"}</button></div>
+      <button type="button" aria-pressed={todos} onClick={() => { setTodos(!todos); guardarAncora(todos ? `#pergunta-${resumos[atual].id}` : "#perguntas"); }}>{todos ? "Voltar à exploração" : "Mostrar todas as análises"}</button></div>
     <div className={`${styles.respostas} ${todos ? styles.todas : ""}`}>
       {Children.map(children, (child, i) => <div id={`energia-resposta-${resumos[i].id}`} className={styles.resposta} hidden={!todos && atual !== i}>{child}</div>)}
     </div>
@@ -76,3 +73,4 @@ export function LaboratorioEnergia() {
     <p className={styles.nota}>Hipóteses de uso, sem dados de uma residência. Referência: 1.500 W, 3 h/dia e 30 dias. Potência constante durante o uso; não considera ciclos de funcionamento. O exercício calcula energia, não fatura, despacho ou PLD. O gráfico mantém as mesmas escalas em todos os cenários.</p>
   </section>;
 }
+

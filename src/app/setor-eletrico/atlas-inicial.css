@@ -81,3 +81,5 @@
 @media(max-width:380px) { .energia-cenario-texto h1 { font-size:35px }.energia-atlas-inicial .energia-abertura-medidas strong { font-size:28px }.energia-cenario-pontos a { gap:5px;font-size:11px }.energia-cenario-pontos a>span { width:28px;height:28px }.energia-porta h3 { font-size:25px } }
 @media(prefers-reduced-motion:reduce) { .energia-cenario-pontos a:hover { transform:none } }
 @media print { .energia-cenario { min-height:0;margin:0 }.energia-cenario-texto { width:100%;padding:20px 0 }.energia-cenario-imagem,.energia-cenario-pontos,.energia-explorar,.energia-cenario-legenda { display:none }.energia-porta>img { display:none }.energia-porta>div { width:100% } }
+
+.energia-porta small { display:block;font-size:12px;line-height:1.6;margin-top:12px;color:var(--cor-carvao-muted) }

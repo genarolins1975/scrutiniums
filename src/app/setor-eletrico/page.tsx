@@ -415,6 +415,7 @@ function ItemDoIndice({ d }: { d: DestinoNavegacao }) {
         )}
       </span>
       <span className="mt-0.5 block text-sm leading-snug text-carvao-muted">{d.pergunta}</span>
+      {c && d.integrado && <span className="mt-2 block text-xs leading-relaxed text-mineral">{c.recorte}</span>}
     </>
   );
   if (estado === "preparacao") return <div className="py-2">{corpo}</div>;
@@ -846,11 +847,11 @@ export default function MapaDoObservatorio() {
           <h2 id="energia-portas-titulo">Qual pergunta você quer responder?</h2>
           <div className="energia-portas-grade">
             <Link href="/setor-eletrico/conta-de-luz" className="energia-porta energia-porta-conta">
-              <div><h3>Por que minha conta tem esse valor?</h3><p>Tarifa, tributos e bandeiras: cada parcela no seu lugar.</p><span>Entender a conta ↗</span></div>
+              <div><h3>Por que minha conta tem esse valor?</h3><p>Explore TE e TUSD, tributos e bandeiras. Simule o consumo em kWh e veja o efeito de cada hipótese na conta.</p><small>Tarifa homologada não é o valor final da fatura. A página mostra fontes, vigência e hipóteses.</small><span>Entender e simular a conta ↗</span></div>
               <Image src="/energia/arte/conta-regiao-v1.webp" alt="" width={800} height={800} sizes="(max-width: 639px) 45vw, 280px" />
             </Link>
             <Link href="/setor-eletrico/territorio" className="energia-porta energia-porta-regiao">
-              <div><h3>Como é o serviço na minha região?</h3><p>Explore distribuidoras, usinas e indicadores no território.</p><span>Explorar minha região ↗</span></div>
+              <div><h3>Como é o serviço na minha região?</h3><p>Localize seu município ou estado, identifique distribuidoras e usinas e siga para tarifas e qualidade do serviço.</p><small>Os indicadores têm recortes próprios; a localização não estima o serviço de uma residência.</small><span>Explorar minha região ↗</span></div>
               <Image src="/energia/arte/sistema-eletrico-v1.webp" alt="" width={1774} height={887} sizes="(max-width: 639px) 45vw, 280px" />
             </Link>
           </div>
@@ -987,7 +988,7 @@ export default function MapaDoObservatorio() {
         <Secao
           id="destinos"
           titulo="Todas as páginas, por tema"
-          subtitulo={`Seis grupos e a pergunta que cada página responde. O ▾ de cada página abre para que ela serve, o que se encontra nela e o recorte. ${estadoDoIndice}`}
+          subtitulo={`Seis grupos e a pergunta que cada página responde. Cada página mostra sua pergunta e recorte. O ▾ abre os conteúdos e conceitos disponíveis. ${estadoDoIndice}`}
         >
           <div className="obs-catalogo grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {GRUPOS_NAVEGACAO.map((g) => {
@@ -1412,3 +1413,4 @@ export default function MapaDoObservatorio() {
     </>
   );
 }
+
