@@ -150,15 +150,16 @@
     {
       "id": "habitacao",
       "name": "Habitação",
-      "status": "context_only",
+      "status": "candidate_under_review",
       "panel_published": true,
-      "scope": "FJP edição 2026: estimativas de 2024 para Brasil, regiões e 27 UFs.",
-      "measure": "Déficit, ônus de aluguel e inadequação; não há indicador municipal elegível revisado nesta rodada.",
-      "blocker": "UF não representa capital e 2024 não é 2022; renda e esgotamento já entram na cesta.",
-      "next_action": "Auditar disponibilidade de medida municipal de adensamento domiciliar em 2022, com numerador/denominador e definição oficial. Candidato, não fonte confirmada.",
+      "scope": "Painel FJP: Brasil/regiões/UF, 2024. Auditoria adicional: SIDRA 9934 e 9940, 26 capitais, 2022, amostra preliminar.",
+      "measure": "Percentual de domicílios com mais de dois moradores por dormitório; menor. Moradores e limiar >3 preservados como alternativas.",
+      "blocker": "Precisão municipal ainda não avaliada; forte associação com renda (0,846640) e saneamento (0,736752) nos percentis orientados; pesos/conteúdo pendentes.",
+      "next_action": "Investigar precisão e comparar definições; revisar sobreposição com condições materiais antes de propor cesta v3.",
       "priority": "P1",
       "evidence": [
-        "src/app/eficiencia-estatal/page.tsx"
+        "src/app/eficiencia-estatal/page.tsx",
+        "docs/obee/resultados/HABITACAO_ADENSAMENTO.md"
       ],
       "full_chapter_score_validated": false,
       "eligible_for_automatic_expansion": false
@@ -275,5 +276,10 @@
       "full_chapter_score_validated": false,
       "eligible_for_automatic_expansion": false
     }
-  ]
+  ],
+  "supplemental_review": {
+    "date": "2026-10-12",
+    "base_commit": "0a32b62293e391c8f78cf64e243d867c038d56d0",
+    "report": "docs/obee/resultados/HABITACAO_ADENSAMENTO.md"
+  }
 }

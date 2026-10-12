@@ -2,7 +2,11 @@
 
 Revisão: 12/10/2026. Base examinada: commit `64f6a9e1b42a64c8d161b29d3d3fa5f70f29ece7`, PR #149 em rascunho.
 
-## Decisão
+## Atualização — auditoria de Habitação concluída
+
+A etapa de aquisição confirmou as tabelas SIDRA 9934/9940, com 520 células das 26 capitais em 2022. Habitação é agora candidato em revisão; precisão municipal e redundância/pesos continuam pendentes. O [dossiê de adensamento](HABITACAO_ADENSAMENTO.md) e a matriz JSON atualizada registram o avanço. Nenhum indicador foi acrescentado ao escore. A decisão e a fila abaixo documentam o diagnóstico anterior à aquisição.
+
+## Decisão inicial
 
 Há **13 painéis publicados**, **cinco indicadores no piloto de 2022** e **nenhum indicador adicional pronto para inclusão automática** entre os capítulos restantes nas evidências examinadas. Não há escore validado de capítulo completo. Cinco indicadores não representam cinco capítulos completos, e 5/16 não é uma medida de cobertura substantiva do OBEE.
 
