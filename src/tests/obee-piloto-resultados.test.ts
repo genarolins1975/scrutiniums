@@ -76,7 +76,8 @@ describe('Apresentação experimental dos resultados',()=>{
     expect(weights.label).toBe(opposite.label);
    }
    expect(reversals).toBe(37);expect(tiesBroken).toBe(3);
-  });
+  // 325 pares e suas inversas; orçamento de execução da reconciliação completa na CI.
+  },30000);
   it('calcula limites com diferenças do mesmo cenário, não extremos marginais',()=>{
    const result=pilotStability('2611606','2927408')!;
    expect(result.families[0].lower).toBeCloseTo(-9.090909090909093,10);
