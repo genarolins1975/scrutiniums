@@ -29,7 +29,7 @@ function selectionFromUrl(): Selection {
   return {scope,place,reference,metric,age};
 }
 
-export function AtlasCidadao({showPilot=false}:{showPilot?:boolean}={}){
+export function AtlasCidadao({showPilot=false}:{showPilot?:boolean}){
   const [selection,setSelection] = useState<Selection>(DEFAULT);
   const [chapter,setChapter] = useState('educacao');
   const [group,setGroup] = useState<GrupoDimensao | 'Todas'>('Todas');
