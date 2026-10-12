@@ -1,0 +1,1537 @@
+{
+  "versao": "0.1.0",
+  "indicador": "CE-11",
+  "proveniencia": {
+    "tipo": "snapshot_herdado",
+    "commit": "b02f2367786a02a8d3a3016ca076488991f280f1",
+    "gitBlob": "3735c67b2dd6d34b3db117ee07578eb0109fcfe9",
+    "url": "https://github.com/genarolins1975/scrutiniums/blob/b02f2367786a02a8d3a3016ca076488991f280f1/public/obs/data/gold/subnacional.json",
+    "fontePrimaria": {
+      "nome": "Tesouro Nacional — Siconfi, Relatório de Gestão Fiscal, Anexo 02 (dívida consolidada líquida), poder Executivo estadual",
+      "url": "https://www.tesourotransparente.gov.br/ckan/dataset/api-rgf-entes",
+      "api": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf",
+      "licenca": "dados abertos do Tesouro Nacional",
+      "nivel": "A — declaratório do ente, homologado no Siconfi"
+    },
+    "geracaoGold": "2026-09-24T15:25:14+00:00",
+    "capturaPrimaria": null,
+    "perimetro": "RGF, Anexo 02; poder Executivo estadual, conforme pipeline de origem",
+    "rcl": "Pipeline prioriza RCL ajustada e admite RCL sem ajuste como fallback; a gold não preserva a escolha por observação.",
+    "limitacoes": [
+      "Data da gold não é a data de captura de cada demonstrativo.",
+      "Respostas primárias ainda não arquivadas nesta versão; valores sujeitos a retificação.",
+      "Série anual preserva percentuais, sem seus numeradores e denominadores.",
+      "Conferência aritmética interna não comprova aderência ao conceito oficial."
+    ]
+  },
+  "ufs": [
+    {
+      "uf": "AC",
+      "nome": "Acre",
+      "regiao": "Norte",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 572837853.9,
+      "rcl": 11450334895.95,
+      "dcl_rcl_pct": 5,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 96.8
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 72.7
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 71.8
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 73.6
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 58.2
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 58.5
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 42.6
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 31.4
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 24.1
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 19.8
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 13.2
+        }
+      ]
+    },
+    {
+      "uf": "AL",
+      "nome": "Alagoas",
+      "regiao": "Nordeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 12999046928.05,
+      "rcl": 19637230247,
+      "dcl_rcl_pct": 66.2,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 166.8
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 102.8
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 95.3
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 85.6
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 74.8
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 57.8
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 38
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 55
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 70.3
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 75.8
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 71.5
+        }
+      ]
+    },
+    {
+      "uf": "AM",
+      "nome": "Amazonas",
+      "regiao": "Norte",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 5977228202.78,
+      "rcl": 28940975491.19,
+      "dcl_rcl_pct": 20.6,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 47.8
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 40.5
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 35.9
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 34.7
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 29.3
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 17.2
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 22.2
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 23.4
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 25.9
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 29.7
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 26.4
+        }
+      ]
+    },
+    {
+      "uf": "AP",
+      "nome": "Amapá",
+      "regiao": "Norte",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": -1641383917.36,
+      "rcl": 10091046473.65,
+      "dcl_rcl_pct": -16.3,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 27.4
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 14.4
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 1.2
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 34.6
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 39.7
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": -20.8
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 31.4
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 10.3
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": -6.9
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": -8
+        }
+      ]
+    },
+    {
+      "uf": "BA",
+      "nome": "Bahia",
+      "regiao": "Nordeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 21847134365.53,
+      "rcl": 70897886386.24,
+      "dcl_rcl_pct": 30.8,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 59.3
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 55.8
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 57.5
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 64.1
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 62.4
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 56.9
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 38.1
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 30.1
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 36.5
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 37.1
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 35.7
+        }
+      ]
+    },
+    {
+      "uf": "CE",
+      "nome": "Ceará",
+      "regiao": "Nordeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 9979447801.59,
+      "rcl": 40846075408.93,
+      "dcl_rcl_pct": 24.4,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 61.7
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 43.6
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 45.8
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 57.1
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 52.6
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 54.4
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 44.1
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 33.6
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 29.7
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 33.1
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 30.2
+        }
+      ]
+    },
+    {
+      "uf": "DF",
+      "nome": "Distrito Federal",
+      "regiao": "Centro-Oeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 5358924723.57,
+      "rcl": 40530379464.12,
+      "dcl_rcl_pct": 13.2,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 25.2
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 29.9
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 33.8
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 35.2
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 36.1
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 32.8
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 20.6
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 26.4
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 23
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 13.1
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 15.9
+        }
+      ]
+    },
+    {
+      "uf": "ES",
+      "nome": "Espírito Santo",
+      "regiao": "Sudeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": -16367714543.19,
+      "rcl": 29910676657.47,
+      "dcl_rcl_pct": -54.7,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 31.4
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 26.4
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 17.3
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 18.9
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 14
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 9.1
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": -0.8
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": -4.2
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": -6.6
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": -9.8
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": -52.5
+        }
+      ]
+    },
+    {
+      "uf": "GO",
+      "nome": "Goiás",
+      "regiao": "Centro-Oeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 14998911840.21,
+      "rcl": 46182836779.9,
+      "dcl_rcl_pct": 32.5,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 98.6
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 95.1
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 92
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 92.2
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 78.4
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 72.5
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 45.9
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 32.5
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 29.5
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 24.3
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 33.5
+        }
+      ]
+    },
+    {
+      "uf": "MA",
+      "nome": "Maranhão",
+      "regiao": "Nordeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 583726684.21,
+      "rcl": 33838786402.52,
+      "dcl_rcl_pct": 1.7,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 60.1
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 43.7
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 43.8
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 53.7
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 44.6
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 41.8
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 41.3
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 41.2
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 19.2
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 3
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 5.3
+        }
+      ]
+    },
+    {
+      "uf": "MG",
+      "nome": "Minas Gerais",
+      "regiao": "Sudeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 177958969766.06,
+      "rcl": 113027605632.06,
+      "dcl_rcl_pct": 157.4,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 198.7
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 203.1
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 186.3
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 189
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 191.5
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 188.5
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 169.4
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 156.9
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 168.4
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 162.6
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 167.5
+        }
+      ]
+    },
+    {
+      "uf": "MS",
+      "nome": "Mato Grosso do Sul",
+      "regiao": "Centro-Oeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 5714744731.03,
+      "rcl": 22800297482.26,
+      "dcl_rcl_pct": 25.1,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 89.2
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 78.2
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 76.1
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 72.4
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 61.1
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 40.8
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 21.4
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 22.1
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 15.8
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 24.8
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 25
+        }
+      ]
+    },
+    {
+      "uf": "MT",
+      "nome": "Mato Grosso",
+      "regiao": "Centro-Oeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": -7520012468.51,
+      "rcl": 38102468824.86,
+      "dcl_rcl_pct": -19.7,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 48.8
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 44
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 44.1
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 43
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 27.1
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 4.3
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": -17.6
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": -24.5
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": -19.8
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": -14.5
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": -14.9
+        }
+      ]
+    },
+    {
+      "uf": "PA",
+      "nome": "Pará",
+      "regiao": "Norte",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 785554675.09,
+      "rcl": 46764682844.01,
+      "dcl_rcl_pct": 1.7,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 12
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 9.3
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 6.4
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 13.3
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 7.5
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 2.2
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 1.6
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": -0.8
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 4.5
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 7.2
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 9
+        }
+      ]
+    },
+    {
+      "uf": "PB",
+      "nome": "Paraíba",
+      "regiao": "Nordeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 32283922.55,
+      "rcl": 21799657876.54,
+      "dcl_rcl_pct": 0.1,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 41.4
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 30.2
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 28.9
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 32.5
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 23.2
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 10.9
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": -3.1
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": -6.2
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": -1.2
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": -2.4
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 3.2
+        }
+      ]
+    },
+    {
+      "uf": "PE",
+      "nome": "Pernambuco",
+      "regiao": "Nordeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 12118481486.69,
+      "rcl": 49728634385.6,
+      "dcl_rcl_pct": 24.4,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 62.2
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 60.7
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 61.2
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 61.1
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 52.3
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 48.1
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 36.1
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 35.3
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 31.9
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 30.1
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 31.8
+        }
+      ]
+    },
+    {
+      "uf": "PI",
+      "nome": "Piauí",
+      "regiao": "Nordeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 12843933175.86,
+      "rcl": 19695114338.96,
+      "dcl_rcl_pct": 65.2,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 57
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 45.2
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 41.1
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 50.5
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 54.7
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 37.2
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 46.9
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 51
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 47.1
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 62.7
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 71.3
+        }
+      ]
+    },
+    {
+      "uf": "PR",
+      "nome": "Paraná",
+      "regiao": "Sul",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": -2304705408.33,
+      "rcl": 71010487165.57,
+      "dcl_rcl_pct": -3.2,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 50.4
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 38.8
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 29.3
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 38.6
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 43.7
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 37.1
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 22.3
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 10.6
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": -4.8
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": -5.1
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": -4.9
+        }
+      ]
+    },
+    {
+      "uf": "RJ",
+      "nome": "Rio de Janeiro",
+      "regiao": "Sudeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 220799036366.13,
+      "rcl": 100803846483.72,
+      "dcl_rcl_pct": 219,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 197.5
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 233.8
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 269.7
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 262.9
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 282.1
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 319
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 198.7
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 168.3
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 188.4
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 211.3
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 217.2
+        }
+      ]
+    },
+    {
+      "uf": "RN",
+      "nome": "Rio Grande do Norte",
+      "regiao": "Nordeste",
+      "exercicio": 2026,
+      "quadrimestre": 2,
+      "dcl": 8221978533.83,
+      "rcl": 20961883945.1,
+      "dcl_rcl_pct": 39.2,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 9
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 12.4
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 13.2
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 44.9
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 32
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 36.9
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 34.5
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 30.1
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 25.3
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 40.2
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 48.5
+        }
+      ]
+    },
+    {
+      "uf": "RO",
+      "nome": "Rondônia",
+      "regiao": "Norte",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 378813994.45,
+      "rcl": 16277323813.47,
+      "dcl_rcl_pct": 2.3,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 63.9
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 50.1
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 48.5
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 47
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 27.9
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 20.4
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": -5.1
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 4.9
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 5.3
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": -1.3
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": -5
+        }
+      ]
+    },
+    {
+      "uf": "RR",
+      "nome": "Roraima",
+      "regiao": "Norte",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 434745452.16,
+      "rcl": 8825559277.29,
+      "dcl_rcl_pct": 4.9,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 11.8
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 37.3
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 41.7
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 32.9
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 38.7
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 6.2
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": -3
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 4.1
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 5.4
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 10
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 9.5
+        }
+      ]
+    },
+    {
+      "uf": "RS",
+      "nome": "Rio Grande do Sul",
+      "regiao": "Sul",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 112755390478.2,
+      "rcl": 65574552736.89,
+      "dcl_rcl_pct": 171.9,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 227.2
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 212.9
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 218.9
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 222.9
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 224.4
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 221.8
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 182.6
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 199.3
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 185.4
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 184.7
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 174
+        }
+      ]
+    },
+    {
+      "uf": "SC",
+      "nome": "Santa Catarina",
+      "regiao": "Sul",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 9971804862.18,
+      "rcl": 52363380018.19,
+      "dcl_rcl_pct": 19,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 53
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 50.2
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 51.1
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 92.9
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 80.3
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 70.8
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 53.1
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 42.5
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 33.2
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 28.4
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 23.3
+        }
+      ]
+    },
+    {
+      "uf": "SE",
+      "nome": "Sergipe",
+      "regiao": "Nordeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 378000876.58,
+      "rcl": 16808237965.37,
+      "dcl_rcl_pct": 2.2,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 69
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 60.4
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 58
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 46.1
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 45.9
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 38.7
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 29.4
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 31.4
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 22.9
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 11.6
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 7
+        }
+      ]
+    },
+    {
+      "uf": "SP",
+      "nome": "São Paulo",
+      "regiao": "Sudeste",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 313388331856.48,
+      "rcl": 270576841926.75,
+      "dcl_rcl_pct": 115.8,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 167.8
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 175.5
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 171
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 175.7
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 166.2
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 166.5
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 126.7
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 115.4
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 127.9
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 126.5
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 124.2
+        }
+      ]
+    },
+    {
+      "uf": "TO",
+      "nome": "Tocantins",
+      "regiao": "Norte",
+      "exercicio": 2026,
+      "quadrimestre": 1,
+      "dcl": 2296056375.43,
+      "rcl": 15785565921.52,
+      "dcl_rcl_pct": 14.6,
+      "serie": [
+        {
+          "ano": 2015,
+          "dcl_rcl_pct": 40
+        },
+        {
+          "ano": 2016,
+          "dcl_rcl_pct": 33
+        },
+        {
+          "ano": 2017,
+          "dcl_rcl_pct": 38
+        },
+        {
+          "ano": 2018,
+          "dcl_rcl_pct": 63.6
+        },
+        {
+          "ano": 2019,
+          "dcl_rcl_pct": 57
+        },
+        {
+          "ano": 2020,
+          "dcl_rcl_pct": 36.2
+        },
+        {
+          "ano": 2021,
+          "dcl_rcl_pct": 19.6
+        },
+        {
+          "ano": 2022,
+          "dcl_rcl_pct": 7.6
+        },
+        {
+          "ano": 2023,
+          "dcl_rcl_pct": 4.6
+        },
+        {
+          "ano": 2024,
+          "dcl_rcl_pct": 10.9
+        },
+        {
+          "ano": 2025,
+          "dcl_rcl_pct": 16.2
+        }
+      ]
+    }
+  ]
+}
