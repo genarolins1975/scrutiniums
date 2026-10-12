@@ -22,7 +22,8 @@ export type ProductEventName =
   | "observatorio_escolhido:credito"
   | "observatorio_escolhido:energia"
   | "observatorio_escolhido:eficiencia"
-  | "observatorio_escolhido:contas";
+  | "observatorio_escolhido:contas"
+  | "observatorio_escolhido:estados";
 
 export async function trackEvent(name: ProductEventName, userId?: string): Promise<void> {
   try {

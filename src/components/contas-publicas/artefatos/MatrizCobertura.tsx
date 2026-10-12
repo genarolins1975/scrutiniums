@@ -1,0 +1,10 @@
+'use client';
+import Link from 'next/link';
+import {useState} from 'react';
+import {COBERTURA} from '@/lib/contas-publicas/cobertura';
+import {Proveniencia} from './Proveniencia';
+export function MatrizCobertura(){
+ const [estado,setEstado]=useState('todos');
+ const linhas=COBERTURA.filter(c=>estado==='todos'||(estado==='observados'?c.observados.length:estado==='pendentes'?c.pendentes.length:c.complementares.length)>0);
+ return <section className="cp-section" aria-labelledby="cobertura-titulo"><h2 id="cobertura-titulo">O que já tem dados e o que falta?</h2><p className="cp-reading">Cobertura dos 12 capítulos. Um indicador observado pode ter apenas parte do seu contrato integrada. Custos agregados formam um painel complementar, sem homologar custo por entrega.</p><label className="cp-select">Mostrar capítulos com<select value={estado} onChange={e=>setEstado(e.target.value)}><option value="todos">Todos os estados</option><option value="observados">Indicadores observados</option><option value="pendentes">Indicadores pendentes</option><option value="complementares">Painel complementar</option></select></label><p role="status" className="cp-note">{linhas.length} de {COBERTURA.length} capítulos.</p><table className="cp-table cp-coverage"><caption className="cp-sr-only">Quantidade de indicadores por estado e de painéis complementares</caption><thead><tr><th scope="col">Capítulo</th><th scope="col">Observados</th><th scope="col">Pendentes</th><th scope="col">Painéis extras</th></tr></thead><tbody>{linhas.map(c=><tr key={c.id}><th scope="row"><Link href={`/contas-publicas/${c.id}`}>{c.titulo}</Link></th><td>{c.observados.length}</td><td>{c.pendentes.length}</td><td>{c.complementares.length}</td></tr>)}</tbody></table><Proveniencia fonte="Catálogo do observatório" url="/contas-publicas/catalogo.json" referencia="Cobertura desta versão" publicacao={null} captura={null} perimetro="12 capítulos federais" unidade="Indicadores e painéis" natureza="Contagem calculada a partir do catálogo; não é avaliação de desempenho"/></section>;
+}
