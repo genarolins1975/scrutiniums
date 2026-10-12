@@ -1,0 +1,471 @@
+{
+  "versao": "0.2.0",
+  "captura": "2026-10-12",
+  "escopo_conferencia": "Identidade do ente, período, campos, integridade dos bytes e aritmética. Não constitui auditoria, certificação do Tesouro ou avaliação de eficiência.",
+  "perimetro_rreo": "RREO Anexo 01, esfera estadual, acumulado janeiro a dezembro. Linhas de receitas e despesas exceto intra-orçamentárias; refinanciamento destacado fora dessas linhas. Valores nominais declarados; não inclui pagamentos de restos de exercícios anteriores.",
+  "campos_rreo": {
+    "receita_prevista": {
+      "cod_conta": "ReceitasExcetoIntraOrcamentarias",
+      "coluna": "PREVISÃO INICIAL"
+    },
+    "receita_arrecadada": {
+      "cod_conta": "ReceitasExcetoIntraOrcamentarias",
+      "coluna": "Até o Bimestre (c)"
+    },
+    "dotacao_inicial": {
+      "cod_conta": "DespesasExcetoIntraOrcamentarias",
+      "coluna": "DOTAÇÃO INICIAL (d)"
+    },
+    "dotacao_atualizada": {
+      "cod_conta": "DespesasExcetoIntraOrcamentarias",
+      "coluna": "DOTAÇÃO ATUALIZADA (e)"
+    },
+    "empenhada": {
+      "cod_conta": "DespesasExcetoIntraOrcamentarias",
+      "coluna": "DESPESAS EMPENHADAS ATÉ O BIMESTRE (f)"
+    },
+    "liquidada": {
+      "cod_conta": "DespesasExcetoIntraOrcamentarias",
+      "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)"
+    },
+    "paga": {
+      "cod_conta": "DespesasExcetoIntraOrcamentarias",
+      "coluna": "DESPESAS PAGAS ATÉ O BIMESTRE (j)"
+    }
+  },
+  "campos_rgf": {
+    "DividaConsolidadaLiquida": "dcl",
+    "ReceitaCorrenteLiquidaAjustadaParaCalculoDosLimitesDeEndividamento": "rcl_ajustada",
+    "PercentualDaDCLSobreARCL": "percentual_declarado"
+  },
+  "rgf": [
+    {
+      "uf": "PE",
+      "ano": 2025,
+      "periodo": 3,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=26&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:53.900924+00:00",
+          "sha256": "b5277330329482394ab37b9ae2de2caa28be7631b1e75ced31f92ae2553e792d",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/PE-rgf/b5277330329482394ab37b9ae2de2caa28be7631b1e75ced31f92ae2553e792d.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 14981516040.5,
+        "rcl_ajustada": 47181384933.44,
+        "percentual_declarado": 31.75
+      },
+      "percentual_calculado": 31.75302306542042,
+      "diferenca_pp": 0.0030230654204217444
+    },
+    {
+      "uf": "SP",
+      "ano": 2025,
+      "periodo": 3,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=35&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.125560+00:00",
+          "sha256": "3ec587f7ec553275839260c43c3b5ec21a280a5df3b958d396dbea9e077c1a35",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/SP-rgf/3ec587f7ec553275839260c43c3b5ec21a280a5df3b958d396dbea9e077c1a35.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 330471301118.9,
+        "rcl_ajustada": 266021234077.37,
+        "percentual_declarado": 124.23
+      },
+      "percentual_calculado": 124.22741450134966,
+      "diferenca_pp": -0.0025854986503475175
+    },
+    {
+      "uf": "MG",
+      "ano": 2025,
+      "periodo": 3,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=31&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.153151+00:00",
+          "sha256": "e43865fe90b3cb92cd2a9671ceb9039bb69d6668c1b8407004b0fdad35fa5a60",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/MG-rgf/e43865fe90b3cb92cd2a9671ceb9039bb69d6668c1b8407004b0fdad35fa5a60.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 187101497500.28,
+        "rcl_ajustada": 111728299446.62,
+        "percentual_declarado": 167.46
+      },
+      "percentual_calculado": 167.46115212258357,
+      "diferenca_pp": 0.0011521225835622317
+    },
+    {
+      "uf": "RS",
+      "ano": 2025,
+      "periodo": 3,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=43&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.192145+00:00",
+          "sha256": "06326b11fca44e62317182c8c1f5cf3cdc9545d039ae57cd95e1108090d63346",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/RS-rgf/06326b11fca44e62317182c8c1f5cf3cdc9545d039ae57cd95e1108090d63346.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 113377582604.03,
+        "rcl_ajustada": 65146827300.12,
+        "percentual_declarado": 174.03
+      },
+      "percentual_calculado": 174.03392813240063,
+      "diferenca_pp": 0.003928132400631057
+    },
+    {
+      "uf": "AM",
+      "ano": 2025,
+      "periodo": 3,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=13&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.265430+00:00",
+          "sha256": "1325de32ba2d64e6822d95869ddc41b986a86a17e6e101e2dc7b63f2d84edac0",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/AM-rgf/1325de32ba2d64e6822d95869ddc41b986a86a17e6e101e2dc7b63f2d84edac0.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 7534524307.58,
+        "rcl_ajustada": 28525081741.78,
+        "percentual_declarado": 26.41
+      },
+      "percentual_calculado": 26.413681740811153,
+      "diferenca_pp": 0.0036817408111531336
+    },
+    {
+      "uf": "DF",
+      "ano": 2025,
+      "periodo": 3,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=53&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.296948+00:00",
+          "sha256": "43a1f07abf5b76657b72f8e99e9bcc5b04a7e94eac54bb48f83e79799963dfc9",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/DF-rgf/43a1f07abf5b76657b72f8e99e9bcc5b04a7e94eac54bb48f83e79799963dfc9.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 6221218399.07,
+        "rcl_ajustada": 39090948038.61,
+        "percentual_declarado": 15.91
+      },
+      "percentual_calculado": 15.914728885381145,
+      "diferenca_pp": 0.004728885381144465
+    },
+    {
+      "uf": "PE",
+      "ano": 2026,
+      "periodo": 1,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2026&in_periodicidade=Q&nr_periodo=1&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=26&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.398543+00:00",
+          "sha256": "9a331ab27dc0c30cdc856d80a61dbacfd0c65c1b89e30f62f1286f2a4c99b4e6",
+          "arquivo": "/contas-estaduais/evidencias/20261012/parcial/PE-rgf/9a331ab27dc0c30cdc856d80a61dbacfd0c65c1b89e30f62f1286f2a4c99b4e6.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 12118481486.69,
+        "rcl_ajustada": 49728634385.6,
+        "percentual_declarado": 24.37
+      },
+      "percentual_calculado": 24.36922235330711,
+      "diferenca_pp": -0.0007776466928923753
+    },
+    {
+      "uf": "SP",
+      "ano": 2026,
+      "periodo": 1,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2026&in_periodicidade=Q&nr_periodo=1&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=35&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.428957+00:00",
+          "sha256": "b870ad07cad8acaaf5f45e8d911d63bd84d67592e213c03f82931dda34fd02fc",
+          "arquivo": "/contas-estaduais/evidencias/20261012/parcial/SP-rgf/b870ad07cad8acaaf5f45e8d911d63bd84d67592e213c03f82931dda34fd02fc.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 313388331856.48,
+        "rcl_ajustada": 270576841926.75,
+        "percentual_declarado": 115.82
+      },
+      "percentual_calculado": 115.8223037954297,
+      "diferenca_pp": 0.002303795429710931
+    },
+    {
+      "uf": "MG",
+      "ano": 2026,
+      "periodo": 1,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2026&in_periodicidade=Q&nr_periodo=1&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=31&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.439821+00:00",
+          "sha256": "ff3ad0aad30d1e9c4fbb7eb660560a497853cb9a6323d23c84c93431d197b2a5",
+          "arquivo": "/contas-estaduais/evidencias/20261012/parcial/MG-rgf/ff3ad0aad30d1e9c4fbb7eb660560a497853cb9a6323d23c84c93431d197b2a5.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 177958969766.06,
+        "rcl_ajustada": 113027605632.06,
+        "percentual_declarado": 157.45
+      },
+      "percentual_calculado": 157.447349938007,
+      "diferenca_pp": -0.002650061992994779
+    },
+    {
+      "uf": "RS",
+      "ano": 2026,
+      "periodo": 1,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2026&in_periodicidade=Q&nr_periodo=1&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=43&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.482087+00:00",
+          "sha256": "358023fb507d7f7852a980b75e66cf59bec41c5eac0afcfeab6e7a9de782b771",
+          "arquivo": "/contas-estaduais/evidencias/20261012/parcial/RS-rgf/358023fb507d7f7852a980b75e66cf59bec41c5eac0afcfeab6e7a9de782b771.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 112755390478.2,
+        "rcl_ajustada": 65574552736.89,
+        "percentual_declarado": 171.95
+      },
+      "percentual_calculado": 171.94991924781772,
+      "diferenca_pp": -8.07521822707713e-05
+    },
+    {
+      "uf": "AM",
+      "ano": 2026,
+      "periodo": 1,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2026&in_periodicidade=Q&nr_periodo=1&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=13&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.494833+00:00",
+          "sha256": "212caf47129a787ca7b1f6346a764ffe2fd0278d88fd1a3e8e762b46b3b8e088",
+          "arquivo": "/contas-estaduais/evidencias/20261012/parcial/AM-rgf/212caf47129a787ca7b1f6346a764ffe2fd0278d88fd1a3e8e762b46b3b8e088.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 5977228202.78,
+        "rcl_ajustada": 28940975491.19,
+        "percentual_declarado": 20.65
+      },
+      "percentual_calculado": 20.653167701964794,
+      "diferenca_pp": 0.0031677019647951
+    },
+    {
+      "uf": "DF",
+      "ano": 2026,
+      "periodo": 1,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2026&in_periodicidade=Q&nr_periodo=1&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=53&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.506786+00:00",
+          "sha256": "7057ea28b03175dbe440fb4792f6a7144bfaa2c782f2e0ddfd2890dbde549fc0",
+          "arquivo": "/contas-estaduais/evidencias/20261012/parcial/DF-rgf/7057ea28b03175dbe440fb4792f6a7144bfaa2c782f2e0ddfd2890dbde549fc0.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "dcl": 5358924723.57,
+        "rcl_ajustada": 40530379464.12,
+        "percentual_declarado": 13.22
+      },
+      "percentual_calculado": 13.221994944098787,
+      "diferenca_pp": 0.001994944098786533
+    }
+  ],
+  "rreo": [
+    {
+      "uf": "PE",
+      "ano": 2025,
+      "periodo": 6,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=26&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.099798+00:00",
+          "sha256": "ea531794d506cb2e9b3ea9ce2f289be9ea8bceacfae4de8d5148177333a09513",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/PE-rreo/ea531794d506cb2e9b3ea9ce2f289be9ea8bceacfae4de8d5148177333a09513.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "receita_prevista": 52265324400,
+        "receita_arrecadada": 52540641986.05,
+        "dotacao_inicial": 51871259200,
+        "dotacao_atualizada": 56885368555.92,
+        "empenhada": 52375113809.86,
+        "liquidada": 52375113809.86,
+        "paga": 51253489012.74
+      },
+      "indicadores": {
+        "CE-01": 0.5267691135769637,
+        "CE-04": 92.0713271961554,
+        "CE-05": 100.0,
+        "CE-06": 97.85847759454634
+      }
+    },
+    {
+      "uf": "SP",
+      "ano": 2025,
+      "periodo": 6,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=35&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.137596+00:00",
+          "sha256": "e8fb24d693058fababe7df4ad33b1c3579ec27b1e45510eaa7f3f726cd6b1046",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/SP-rreo/e8fb24d693058fababe7df4ad33b1c3579ec27b1e45510eaa7f3f726cd6b1046.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "receita_prevista": 372454834120,
+        "receita_arrecadada": 358946518136.71,
+        "dotacao_inicial": 372454834120,
+        "dotacao_atualizada": 394567670253.83,
+        "empenhada": 371170443635.1,
+        "liquidada": 355439276197.86,
+        "paga": 335617652049.38
+      },
+      "indicadores": {
+        "CE-01": -3.6268333085825333,
+        "CE-04": 90.08322348589832,
+        "CE-05": 95.76174027134947,
+        "CE-06": 94.42334444282234
+      }
+    },
+    {
+      "uf": "MG",
+      "ano": 2025,
+      "periodo": 6,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=31&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.174036+00:00",
+          "sha256": "d8eae4d00c3ff75c48375c450766efd6cfac6d571f93e0bb59a6e6c6b8ed9f2b",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/MG-rreo/d8eae4d00c3ff75c48375c450766efd6cfac6d571f93e0bb59a6e6c6b8ed9f2b.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "receita_prevista": 114987458864,
+        "receita_arrecadada": 118732072790.59,
+        "dotacao_inicial": 123582017376,
+        "dotacao_atualizada": 131793032369.14,
+        "empenhada": 117541012321.92,
+        "liquidada": 113093249667.93,
+        "paga": 107098007344.66
+      },
+      "indicadores": {
+        "CE-01": 3.2565411598658667,
+        "CE-04": 85.81125089463481,
+        "CE-05": 96.21599085618855,
+        "CE-06": 94.69885042575616
+      }
+    },
+    {
+      "uf": "RS",
+      "ano": 2025,
+      "periodo": 6,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=43&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.248751+00:00",
+          "sha256": "439ef6ab648b532b7577d64c32bfb00ef8ca45a01eeec83ebc10d15169eddc0f",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/RS-rreo/439ef6ab648b532b7577d64c32bfb00ef8ca45a01eeec83ebc10d15169eddc0f.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "receita_prevista": 66190797420,
+        "receita_arrecadada": 72330264579.37,
+        "dotacao_inicial": 68157011137,
+        "dotacao_atualizada": 80153709835.65,
+        "empenhada": 69642519301.52,
+        "liquidada": 64584536446.98,
+        "paga": 63400702977.79
+      },
+      "indicadores": {
+        "CE-01": 9.275408967221344,
+        "CE-04": 80.57585429221731,
+        "CE-05": 92.73722015620763,
+        "CE-06": 98.1670016782394
+      }
+    },
+    {
+      "uf": "AM",
+      "ano": 2025,
+      "periodo": 6,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=13&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.281394+00:00",
+          "sha256": "46255e072422ed0629233b8948b872c98783e7fb515ce09110ea5fa76490eefd",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/AM-rreo/46255e072422ed0629233b8948b872c98783e7fb515ce09110ea5fa76490eefd.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "receita_prevista": 29983115000,
+        "receita_arrecadada": 35914826708.5,
+        "dotacao_inicial": 29660375900,
+        "dotacao_atualizada": 36621124152.77,
+        "empenhada": 35515146125.4,
+        "liquidada": 34908824546.52,
+        "paga": 34573539246.9
+      },
+      "indicadores": {
+        "CE-01": 19.783507178957226,
+        "CE-04": 95.32428442363782,
+        "CE-05": 98.29278027819693,
+        "CE-06": 99.03953999031623
+      }
+    },
+    {
+      "uf": "DF",
+      "ano": 2025,
+      "periodo": 6,
+      "fontes": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=53&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.311704+00:00",
+          "sha256": "aa87cf8737e731d0e07159651016163c7f7926816a23443590f2c3a1b6538acc",
+          "arquivo": "/contas-estaduais/evidencias/20261012/anual/DF-rreo/aa87cf8737e731d0e07159651016163c7f7926816a23443590f2c3a1b6538acc.json"
+        }
+      ],
+      "status": "fonte_primaria_conferida",
+      "valores": {
+        "receita_prevista": 35626068873,
+        "receita_arrecadada": 39145054314.93,
+        "dotacao_inicial": 37015522181,
+        "dotacao_atualizada": 45097440816.84,
+        "empenhada": 40435010686.89,
+        "liquidada": 38739291802.65,
+        "paga": 36678301413.3
+      },
+      "indicadores": {
+        "CE-01": 9.877557511255297,
+        "CE-04": 85.90130859085073,
+        "CE-05": 95.8063102854829,
+        "CE-06": 94.6798449495429
+      }
+    }
+  ]
+}

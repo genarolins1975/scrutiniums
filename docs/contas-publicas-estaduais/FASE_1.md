@@ -1,3 +1,5 @@
+> Registro histórico da fase inicial. A implementação atual e a conferência das fontes estão descritas em [FASE_2.md](FASE_2.md).
+
 # Contas Públicas Estaduais — fase 1
 
 Rota proposta: /contas-publicas-estaduais. Alteração independente do módulo federal em desenvolvimento no PR #153. Sem mudança no menu global ou nos dados dos demais observatórios.

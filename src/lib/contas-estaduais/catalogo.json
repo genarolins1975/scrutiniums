@@ -1,5 +1,5 @@
 {
-  "versao": "0.1.0",
+  "versao": "0.2.0",
   "escopo": "26 estados e Distrito Federal; contratos preliminares do projeto",
   "indicadores": [
     {
@@ -8,12 +8,12 @@
       "nome": "Erro da receita",
       "grupo": "Credibilidade e execução",
       "formula": "100 × (arrecadada / previsão inicial − 1). Mostrar sinal e erro absoluto.",
-      "fonteERegra": "RREO/LOA · anual. Mesmas deduções e classificação; previsão positiva.",
+      "fonteERegra": "RREO/LOA · anual. Mesmas deduções e classificação; previsão positiva. Piloto 2025: RREO Anexo 01, linhas exceto intra-orçamentárias; não inclui refinanciamento destacado. Previsão inicial conforme declarada no RREO, sem confronto com a LOA.",
       "unidade": "%",
-      "versao": "0.1.0",
+      "versao": "0.2.0",
       "statusContrato": "preliminar",
-      "statusMapeamento": "a_mapear",
-      "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação.",
+      "statusMapeamento": "piloto_fonte_primaria_conferida",
+      "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação. Piloto: PE, SP, MG, RS, AM e DF. Conferência de identidade, campos e aritmética; não certificação externa.",
       "comparabilidade": "Requer validação do perímetro, período, qualidade e competências do ente. DF com competências estaduais e municipais."
     },
     {
@@ -50,12 +50,12 @@
       "nome": "Execução atualizada",
       "grupo": "Credibilidade e execução",
       "formula": "100 × despesa liquidada / dotação atualizada.",
-      "fonteERegra": "RREO · bimestral. Comparar mesma janela; valor não mede qualidade.",
+      "fonteERegra": "RREO · bimestral. Comparar mesma janela; valor não mede qualidade. Piloto 2025: RREO Anexo 01, linhas exceto intra-orçamentárias; não inclui refinanciamento destacado. Previsão inicial conforme declarada no RREO, sem confronto com a LOA.",
       "unidade": "%",
-      "versao": "0.1.0",
+      "versao": "0.2.0",
       "statusContrato": "preliminar",
-      "statusMapeamento": "a_mapear",
-      "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação.",
+      "statusMapeamento": "piloto_fonte_primaria_conferida",
+      "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação. Piloto: PE, SP, MG, RS, AM e DF. Conferência de identidade, campos e aritmética; não certificação externa.",
       "comparabilidade": "Requer validação do perímetro, período, qualidade e competências do ente. DF com competências estaduais e municipais."
     },
     {
@@ -64,12 +64,12 @@
       "nome": "Liquidação de empenhos",
       "grupo": "Credibilidade e execução",
       "formula": "100 × liquidada / empenhada, líquidas de anulações, no exercício.",
-      "fonteERegra": "RREO · bimestral. Excluir restos de exercícios anteriores.",
+      "fonteERegra": "RREO · bimestral. Excluir restos de exercícios anteriores. Piloto 2025: RREO Anexo 01, linhas exceto intra-orçamentárias; não inclui refinanciamento destacado. Previsão inicial conforme declarada no RREO, sem confronto com a LOA.",
       "unidade": "%",
-      "versao": "0.1.0",
+      "versao": "0.2.0",
       "statusContrato": "preliminar",
-      "statusMapeamento": "a_mapear",
-      "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação.",
+      "statusMapeamento": "piloto_fonte_primaria_conferida",
+      "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação. Piloto: PE, SP, MG, RS, AM e DF. Conferência de identidade, campos e aritmética; não certificação externa.",
       "comparabilidade": "Requer validação do perímetro, período, qualidade e competências do ente. DF com competências estaduais e municipais."
     },
     {
@@ -78,12 +78,12 @@
       "nome": "Pagamento do exercício",
       "grupo": "Credibilidade e execução",
       "formula": "100 × paga / liquidada, ambas do orçamento do exercício.",
-      "fonteERegra": "RREO/MSC · bimestral. Pagamento de restos em série separada.",
+      "fonteERegra": "RREO/MSC · bimestral. Pagamento de restos em série separada. Piloto 2025: RREO Anexo 01, linhas exceto intra-orçamentárias; não inclui refinanciamento destacado. Previsão inicial conforme declarada no RREO, sem confronto com a LOA.",
       "unidade": "%",
-      "versao": "0.1.0",
+      "versao": "0.2.0",
       "statusContrato": "preliminar",
-      "statusMapeamento": "a_mapear",
-      "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação.",
+      "statusMapeamento": "piloto_fonte_primaria_conferida",
+      "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação. Piloto: PE, SP, MG, RS, AM e DF. Conferência de identidade, campos e aritmética; não certificação externa.",
       "comparabilidade": "Requer validação do perímetro, período, qualidade e competências do ente. DF com competências estaduais e municipais."
     },
     {
@@ -150,10 +150,10 @@
       "formula": "DCL / RCL ajustada para endividamento × 100.",
       "fonteERegra": "RGF · quadrimestral. Conservar valores negativos e apuração oficial.",
       "unidade": "% da RCL ajustada",
-      "versao": "0.1.0",
+      "versao": "0.2.0",
       "statusContrato": "preliminar",
-      "statusMapeamento": "snapshot_herdado",
-      "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação.",
+      "statusMapeamento": "piloto_fonte_primaria_conferida",
+      "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação. Piloto: PE, SP, MG, RS, AM e DF. Conferência de identidade, campos e aritmética; não certificação externa.",
       "comparabilidade": "Requer validação do perímetro, período, qualidade e competências do ente. DF com competências estaduais e municipais."
     },
     {

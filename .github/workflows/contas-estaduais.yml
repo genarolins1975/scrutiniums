@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'pipeline/contas_estaduais/**'
+      - 'public/contas-estaduais/**'
       - 'src/lib/contas-estaduais/**'
       - 'src/components/contas-estaduais/**'
       - 'src/app/contas-publicas-estaduais/**'
@@ -20,7 +21,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python3 -m unittest pipeline.contas_estaduais.test_contratos -v
+      - run: python3 -m unittest pipeline.contas_estaduais.test_contratos pipeline.contas_estaduais.test_primarios -v
+      - run: python3 -m pipeline.contas_estaduais.consolidar --check
   captura:
     needs: contratos
     runs-on: ubuntu-latest
