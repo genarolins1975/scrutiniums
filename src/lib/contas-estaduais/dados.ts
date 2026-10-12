@@ -3,7 +3,8 @@ import catalogo from "./catalogo.json";
 import primarios from "./primarios.json";
 
 export { snapshot, catalogo, primarios };
-export const INDICADORES_RREO = ["CE-01", "CE-04", "CE-05", "CE-06"] as const;
+export const INDICADORES_EXECUCAO = ["CE-01", "CE-04", "CE-05", "CE-06"] as const;
+export const INDICADORES_RREO = [...INDICADORES_EXECUCAO, "CE-10", "CE-14"] as const;
 export const dividaPrimaria = (uf: string, ano: number) => primarios.rgf.find(r => r.uf === uf && r.ano === ano);
 export const execucaoPrimaria = (uf: string, ano: number) => primarios.rreo.find(r => r.uf === uf && r.ano === ano);
 export const PROVAS = ["PE", "SP", "MG", "RS", "AM", "DF"] as const;

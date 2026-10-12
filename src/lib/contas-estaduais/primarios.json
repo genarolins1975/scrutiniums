@@ -1,5 +1,5 @@
 {
-  "versao": "0.3.0",
+  "versao": "0.4.0",
   "captura": "2026-10-12",
   "escopo_conferencia": "Identidade do ente, período, campos, integridade dos bytes e aritmética. Não constitui auditoria, certificação do Tesouro ou avaliação de eficiência.",
   "perimetro_rreo": "RREO Anexo 01, esfera estadual, acumulado janeiro a dezembro. Linhas de receitas e despesas exceto intra-orçamentárias; refinanciamento destacado fora dessas linhas. Valores nominais declarados; não inclui pagamentos de restos de exercícios anteriores.",
@@ -31,6 +31,32 @@
     "paga": {
       "cod_conta": "DespesasExcetoIntraOrcamentarias",
       "coluna": "DESPESAS PAGAS ATÉ O BIMESTRE (j)"
+    }
+  },
+  "campos_financiamento": {
+    "receitas_correntes": {
+      "cod_conta": "ReceitasCorrentes",
+      "coluna": "Até o Bimestre (c)"
+    },
+    "tributaria": {
+      "cod_conta": "ReceitaTributaria",
+      "coluna": "Até o Bimestre (c)"
+    },
+    "contribuicoes": {
+      "cod_conta": "ReceitaDeContribuicoes",
+      "coluna": "Até o Bimestre (c)"
+    },
+    "transferencias_correntes": {
+      "cod_conta": "TransferenciasCorrentes",
+      "coluna": "Até o Bimestre (c)"
+    },
+    "receitas_capital": {
+      "cod_conta": "ReceitasDeCapital",
+      "coluna": "Até o Bimestre (c)"
+    },
+    "despesas_correntes": {
+      "cod_conta": "DespesasCorrentes",
+      "coluna": "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)"
     }
   },
   "campos_rgf": {
@@ -1197,7 +1223,25 @@
         "liquidada": 12095627923.79,
         "paga": 11906466524.2
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 12380220873.7,
+          "tributaria": 3005693425.9,
+          "contribuicoes": 349322022.05,
+          "transferencias_correntes": 8415358984.01,
+          "receitas_capital": 272529941.36,
+          "despesas_correntes": 11175461534.11,
+          "demais_correntes_agrupadas": 609846441.7400017
+        },
+        "margem_nominal": 1204759339.5900002,
+        "indicadores": {
+          "CE-10": 9.731323470563746,
+          "CE-14": 67.9742233184807
+        }
+      },
       "indicadores": {
+        "CE-10": 9.731323470563746,
+        "CE-14": 67.9742233184807,
         "CE-01": 8.241417563951202,
         "CE-04": 88.91885441303208,
         "CE-05": 96.13019381104677,
@@ -1226,7 +1270,25 @@
         "liquidada": 19107334864.17,
         "paga": 18657821985.18
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 19747379519.7,
+          "tributaria": 7361272492.92,
+          "contribuicoes": 686276916.12,
+          "transferencias_correntes": 10497840345.58,
+          "receitas_capital": 1227294788.98,
+          "despesas_correntes": 16492576090.03,
+          "demais_correntes_agrupadas": 1201989765.08
+        },
+        "margem_nominal": 3254803429.67,
+        "indicadores": {
+          "CE-10": 16.48220426625723,
+          "CE-14": 53.16067549675311
+        }
+      },
       "indicadores": {
+        "CE-10": 16.48220426625723,
+        "CE-14": 53.16067549675311,
         "CE-01": 18.025387599149024,
         "CE-04": 78.57654482090555,
         "CE-05": 86.29657727597228,
@@ -1255,7 +1317,25 @@
         "liquidada": 34908824546.52,
         "paga": 34573539246.9
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 34593857409.42,
+          "tributaria": 17337861555.87,
+          "contribuicoes": 4514244139.57,
+          "transferencias_correntes": 10553025126.97,
+          "receitas_capital": 1320969299.08,
+          "despesas_correntes": 32143280340.26,
+          "demais_correntes_agrupadas": 2188726587.01
+        },
+        "margem_nominal": 2450577069.16,
+        "indicadores": {
+          "CE-10": 7.083850292140886,
+          "CE-14": 30.50548830699748
+        }
+      },
       "indicadores": {
+        "CE-10": 7.083850292140886,
+        "CE-14": 30.50548830699748,
         "CE-01": 19.783507178957226,
         "CE-04": 95.32428442363782,
         "CE-05": 98.29278027819693,
@@ -1284,7 +1364,25 @@
         "liquidada": 10630591948.68,
         "paga": 10099001896.87
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 11532445916.94,
+          "tributaria": 1973482838.76,
+          "contribuicoes": 602948748.71,
+          "transferencias_correntes": 7464943698.6,
+          "receitas_capital": 485722414.95,
+          "despesas_correntes": 9651080819.98,
+          "demais_correntes_agrupadas": 1491070630.8700008
+        },
+        "margem_nominal": 1881365096.960001,
+        "indicadores": {
+          "CE-10": 16.313669368234063,
+          "CE-14": 64.7299259182716
+        }
+      },
       "indicadores": {
+        "CE-10": 16.313669368234063,
+        "CE-14": 64.7299259182716,
         "CE-01": 9.220470595867036,
         "CE-04": 89.12663021954393,
         "CE-05": 94.53359248137355,
@@ -1313,7 +1411,25 @@
         "liquidada": 75791294832.79,
         "paga": 75165915361.06
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 72438709193.88,
+          "tributaria": 34166747636.78,
+          "contribuicoes": 4583209358.14,
+          "transferencias_correntes": 27919800179.58,
+          "receitas_capital": 5657516876.44,
+          "despesas_correntes": 65030948342.52,
+          "demais_correntes_agrupadas": 5768952019.380005
+        },
+        "margem_nominal": 7407760851.360008,
+        "indicadores": {
+          "CE-10": 10.22624634507686,
+          "CE-14": 38.54265280301103
+        }
+      },
       "indicadores": {
+        "CE-10": 10.22624634507686,
+        "CE-14": 38.54265280301103,
         "CE-01": 18.139635136540022,
         "CE-04": 84.62707024914246,
         "CE-05": 97.6665411723214,
@@ -1342,7 +1458,25 @@
         "liquidada": 42990311427.96,
         "paga": 42727841964.8
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 41573040064.24,
+          "tributaria": 18079169567.55,
+          "contribuicoes": 1799106407.71,
+          "transferencias_correntes": 18081964515.28,
+          "receitas_capital": 4393363453.09,
+          "despesas_correntes": 36889382367.68,
+          "demais_correntes_agrupadas": 3612799573.700001
+        },
+        "margem_nominal": 4683657696.559998,
+        "indicadores": {
+          "CE-10": 11.26609381782679,
+          "CE-14": 43.49444853525065
+        }
+      },
       "indicadores": {
+        "CE-10": 11.26609381782679,
+        "CE-14": 43.49444853525065,
         "CE-01": 11.515167383102298,
         "CE-04": 87.94943455517488,
         "CE-05": 95.85669339140087,
@@ -1371,7 +1505,25 @@
         "liquidada": 38739291802.65,
         "paga": 36678301413.3
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 38539795255.71,
+          "tributaria": 24014907536.27,
+          "contribuicoes": 3005087394.5,
+          "transferencias_correntes": 6715371031.67,
+          "receitas_capital": 605259059.22,
+          "despesas_correntes": 36173389523.61,
+          "demais_correntes_agrupadas": 4804429293.269999
+        },
+        "margem_nominal": 2366405732.0999985,
+        "indicadores": {
+          "CE-10": 6.140161659912803,
+          "CE-14": 17.42451143581273
+        }
+      },
       "indicadores": {
+        "CE-10": 6.140161659912803,
+        "CE-14": 17.42451143581273,
         "CE-01": 9.877557511255297,
         "CE-04": 85.90130859085073,
         "CE-05": 95.8063102854829,
@@ -1400,7 +1552,25 @@
         "liquidada": 28745501603.8,
         "paga": 28307577794.26
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 29537736122.86,
+          "tributaria": 17232116516.54,
+          "contribuicoes": 783309143.9,
+          "transferencias_correntes": 8092696776.62,
+          "receitas_capital": 1958532958.67,
+          "despesas_correntes": 22889957899.57,
+          "demais_correntes_agrupadas": 3429613685.8
+        },
+        "margem_nominal": 6647778223.290001,
+        "indicadores": {
+          "CE-10": 22.506051904719662,
+          "CE-14": 27.397823390929602
+        }
+      },
       "indicadores": {
+        "CE-10": 22.506051904719662,
+        "CE-14": 27.397823390929602,
         "CE-01": 8.191628984446675,
         "CE-04": 84.1572974336437,
         "CE-05": 94.17646378901794,
@@ -1429,7 +1599,25 @@
         "liquidada": 50643287624.28,
         "paga": 50360938042.61
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 47629457560.08,
+          "tributaria": 27213780560.94,
+          "contribuicoes": 2132041033.63,
+          "transferencias_correntes": 10583548633.96,
+          "receitas_capital": 131822870.28,
+          "despesas_correntes": 43923744546.68,
+          "demais_correntes_agrupadas": 7700087331.550003
+        },
+        "margem_nominal": 3705713013.4000015,
+        "indicadores": {
+          "CE-10": 7.780296487159441,
+          "CE-14": 22.22059451466535
+        }
+      },
       "indicadores": {
+        "CE-10": 7.780296487159441,
+        "CE-14": 22.22059451466535,
         "CE-01": 2.74479232826752,
         "CE-04": 89.84797945767444,
         "CE-05": 95.5704595926835,
@@ -1458,7 +1646,25 @@
         "liquidada": 32266210265.45,
         "paga": 32095439569.33
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 33415913948.61,
+          "tributaria": 12511369986.18,
+          "contribuicoes": 1050261045.43,
+          "transferencias_correntes": 18339067374.36,
+          "receitas_capital": 973373901.87,
+          "despesas_correntes": 26973826429.71,
+          "demais_correntes_agrupadas": 1515215542.6399994
+        },
+        "margem_nominal": 6442087518.900002,
+        "indicadores": {
+          "CE-10": 19.278501640886503,
+          "CE-14": 54.88123833022633
+        }
+      },
       "indicadores": {
+        "CE-10": 19.278501640886503,
+        "CE-14": 54.88123833022633,
         "CE-01": 8.737961497085678,
         "CE-04": 85.99595188023417,
         "CE-05": 96.20367319418158,
@@ -1487,7 +1693,25 @@
         "liquidada": 113093249667.93,
         "paga": 107098007344.66
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 116607690523.6,
+          "tributaria": 73428958984.06,
+          "contribuicoes": 6302304614.1,
+          "transferencias_correntes": 24265036018.35,
+          "receitas_capital": 2124382266.99,
+          "despesas_correntes": 102837474531.11,
+          "demais_correntes_agrupadas": 12611390907.090012
+        },
+        "margem_nominal": 13770215992.490005,
+        "indicadores": {
+          "CE-10": 11.809011850468883,
+          "CE-14": 20.80912151625115
+        }
+      },
       "indicadores": {
+        "CE-10": 11.809011850468883,
+        "CE-14": 20.80912151625115,
         "CE-01": 3.2565411598658667,
         "CE-04": 85.81125089463481,
         "CE-05": 96.21599085618855,
@@ -1516,7 +1740,25 @@
         "liquidada": 23758057458.81,
         "paga": 23569646435.92
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 23714121174.09,
+          "tributaria": 14113975657.05,
+          "contribuicoes": 1214941338.81,
+          "transferencias_correntes": 6368943820.33,
+          "receitas_capital": 778549055.36,
+          "despesas_correntes": 20669591838.08,
+          "demais_correntes_agrupadas": 2016260357.9000015
+        },
+        "margem_nominal": 3044529336.0099983,
+        "indicadores": {
+          "CE-10": 12.838465797064597,
+          "CE-14": 26.857178360413773
+        }
+      },
       "indicadores": {
+        "CE-10": 12.838465797064597,
+        "CE-14": 26.857178360413773,
         "CE-01": 1.2182402189920616,
         "CE-04": 85.16184980510253,
         "CE-05": 96.89308239961568,
@@ -1545,7 +1787,25 @@
         "liquidada": 36244986890.11,
         "paga": 35445853418.2
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 39055371177.81,
+          "tributaria": 20471847966.89,
+          "contribuicoes": 5703387139.06,
+          "transferencias_correntes": 8561489978.73,
+          "receitas_capital": 508466588.16,
+          "despesas_correntes": 30648728636.25,
+          "demais_correntes_agrupadas": 4318646093.129997
+        },
+        "margem_nominal": 8406642541.559998,
+        "indicadores": {
+          "CE-10": 21.524933160375085,
+          "CE-14": 21.9214149566049
+        }
+      },
       "indicadores": {
+        "CE-10": 21.524933160375085,
+        "CE-14": 21.9214149566049,
         "CE-01": 16.98368702915076,
         "CE-04": 84.92364191769019,
         "CE-05": 91.9814346987206,
@@ -1574,7 +1834,25 @@
         "liquidada": 48726774346.87,
         "paga": 48101228085.69
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 47095529006.16,
+          "tributaria": 22455174108.23,
+          "contribuicoes": 1751328724.17,
+          "transferencias_correntes": 19062354914.23,
+          "receitas_capital": 3272495246.16,
+          "despesas_correntes": 41639893345.08,
+          "demais_correntes_agrupadas": 3826671259.5300026
+        },
+        "margem_nominal": 5455635661.080002,
+        "indicadores": {
+          "CE-10": 11.584190211275502,
+          "CE-14": 40.47593331362024
+        }
+      },
       "indicadores": {
+        "CE-10": 11.584190211275502,
+        "CE-14": 40.47593331362024,
         "CE-01": 10.91837532964577,
         "CE-04": 93.48564799774535,
         "CE-05": 99.66651368980558,
@@ -1603,7 +1881,25 @@
         "liquidada": 22564333416.47,
         "paga": 22467961951.7
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 22087242500.34,
+          "tributaria": 8871951965.3,
+          "contribuicoes": 730561807.57,
+          "transferencias_correntes": 10611034168.44,
+          "receitas_capital": 971432735.55,
+          "despesas_correntes": 19500454472.14,
+          "demais_correntes_agrupadas": 1873694559.0300007
+        },
+        "margem_nominal": 2586788028.200001,
+        "indicadores": {
+          "CE-10": 11.711683919620935,
+          "CE-14": 48.04146179984513
+        }
+      },
       "indicadores": {
+        "CE-10": 11.711683919620935,
+        "CE-14": 48.04146179984513,
         "CE-01": 12.27445295161569,
         "CE-04": 87.69406683171992,
         "CE-05": 97.67604163635839,
@@ -1632,7 +1928,25 @@
         "liquidada": 52375113809.86,
         "paga": 51253489012.74
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 49224648640.69,
+          "tributaria": 22733945541.14,
+          "contribuicoes": 2520864914.36,
+          "transferencias_correntes": 20187959957.49,
+          "receitas_capital": 3315993345.36,
+          "despesas_correntes": 45829549195.03,
+          "demais_correntes_agrupadas": 3781878227.700001
+        },
+        "margem_nominal": 3395099445.6600037,
+        "indicadores": {
+          "CE-10": 6.897153234027458,
+          "CE-14": 41.011892446099175
+        }
+      },
       "indicadores": {
+        "CE-10": 6.897153234027458,
+        "CE-14": 41.011892446099175,
         "CE-01": 0.5267691135769637,
         "CE-04": 92.0713271961554,
         "CE-05": 100.0,
@@ -1661,7 +1975,25 @@
         "liquidada": 22868072920.17,
         "paga": 22448784072.14
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 19568651527.29,
+          "tributaria": 7129364137.52,
+          "contribuicoes": 1265729454.09,
+          "transferencias_correntes": 10267370041.76,
+          "receitas_capital": 3340052671.24,
+          "despesas_correntes": 17822919438.6,
+          "demais_correntes_agrupadas": 906187893.9200001
+        },
+        "margem_nominal": 1745732088.6900024,
+        "indicadores": {
+          "CE-10": 8.921064827872497,
+          "CE-14": 52.46845970679869
+        }
+      },
       "indicadores": {
+        "CE-10": 8.921064827872497,
+        "CE-14": 52.46845970679869,
         "CE-01": 8.223154093633077,
         "CE-04": 93.63626990713155,
         "CE-05": 97.15106901211118,
@@ -1690,7 +2022,25 @@
         "liquidada": 72137782678.39,
         "paga": 71741735742.8
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 74132655140.68,
+          "tributaria": 41654458592.9,
+          "contribuicoes": 3228378976.95,
+          "transferencias_correntes": 18285040102.01,
+          "receitas_capital": 1199452746.14,
+          "despesas_correntes": 64429898833.05,
+          "demais_correntes_agrupadas": 10964777468.819992
+        },
+        "margem_nominal": 9702756307.62999,
+        "indicadores": {
+          "CE-10": 13.088370151072118,
+          "CE-14": 24.665297725153454
+        }
+      },
       "indicadores": {
+        "CE-10": 13.088370151072118,
+        "CE-14": 24.665297725153454,
         "CE-01": 5.771222743711979,
         "CE-04": 92.91506928266122,
         "CE-05": 95.16313155731427,
@@ -1719,7 +2069,25 @@
         "liquidada": 104336944272.71,
         "paga": 102599919210.67
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 106064389744.5,
+          "tributaria": 55677241010.67,
+          "contribuicoes": 4504476983.65,
+          "transferencias_correntes": 10658021564.89,
+          "receitas_capital": 2680976302.81,
+          "despesas_correntes": 98577100166.59,
+          "demais_correntes_agrupadas": 35224650185.29
+        },
+        "margem_nominal": 7487289577.910004,
+        "indicadores": {
+          "CE-10": 7.059192624354169,
+          "CE-14": 10.048633278864148
+        }
+      },
       "indicadores": {
+        "CE-10": 7.059192624354169,
+        "CE-14": 10.048633278864148,
         "CE-01": 9.218448978821648,
         "CE-04": 82.58622401755589,
         "CE-05": 98.5607463160085,
@@ -1748,7 +2116,25 @@
         "liquidada": 20696574215.2,
         "paga": 19376746071.81
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 20748221952.85,
+          "tributaria": 8475661432.56,
+          "contribuicoes": 1120584186.33,
+          "transferencias_correntes": 10123473145.67,
+          "receitas_capital": 318362312.73,
+          "despesas_correntes": 19738713946.64,
+          "demais_correntes_agrupadas": 1028503188.2899971
+        },
+        "margem_nominal": 1009508006.2099991,
+        "indicadores": {
+          "CE-10": 4.865515746381014,
+          "CE-14": 48.7920033276848
+        }
+      },
       "indicadores": {
+        "CE-10": 4.865515746381014,
+        "CE-14": 48.7920033276848,
         "CE-01": 1.949048887050786,
         "CE-04": 90.11523480220453,
         "CE-05": 97.5835113212423,
@@ -1777,7 +2163,25 @@
         "liquidada": 14679885476.46,
         "paga": 14568318400.76
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 16611434814.25,
+          "tributaria": 6541647772.27,
+          "contribuicoes": 639893852.24,
+          "transferencias_correntes": 7232859337.73,
+          "receitas_capital": 71183740.4,
+          "despesas_correntes": 14081172170.09,
+          "demais_correntes_agrupadas": 2197033852.01
+        },
+        "margem_nominal": 2530262644.16,
+        "indicadores": {
+          "CE-10": 15.232053536937293,
+          "CE-14": 43.54144851789289
+        }
+      },
       "indicadores": {
+        "CE-10": 15.232053536937293,
+        "CE-14": 43.54144851789289,
         "CE-01": 5.954954009819269,
         "CE-04": 81.55716208510387,
         "CE-05": 88.87330619616893,
@@ -1806,7 +2210,25 @@
         "liquidada": 8387511865.39,
         "paga": 8305858782.95
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 9261778325.39,
+          "tributaria": 2130097936.83,
+          "contribuicoes": 295662031.68,
+          "transferencias_correntes": 6228959914.12,
+          "receitas_capital": 694023287,
+          "despesas_correntes": 7954981538.03,
+          "demais_correntes_agrupadas": 607058442.7599993
+        },
+        "margem_nominal": 1306796787.3599997,
+        "indicadores": {
+          "CE-10": 14.10956666688492,
+          "CE-14": 67.25446987911695
+        }
+      },
       "indicadores": {
+        "CE-10": 14.10956666688492,
+        "CE-14": 67.25446987911695,
         "CE-01": 16.727567818186806,
         "CE-04": 84.75746049161387,
         "CE-05": 95.55805658407824,
@@ -1835,7 +2257,25 @@
         "liquidada": 64584536446.98,
         "paga": 63400702977.79
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 69588668829.6,
+          "tributaria": 43657413609.38,
+          "contribuicoes": 6242072056.21,
+          "transferencias_correntes": 12980922761.2,
+          "receitas_capital": 2741595749.77,
+          "despesas_correntes": 61766322325.2,
+          "demais_correntes_agrupadas": 6708260402.810009
+        },
+        "margem_nominal": 7822346504.400009,
+        "indicadores": {
+          "CE-10": 11.240833652895976,
+          "CE-14": 18.653788008197218
+        }
+      },
       "indicadores": {
+        "CE-10": 11.240833652895976,
+        "CE-14": 18.653788008197218,
         "CE-01": 9.275408967221344,
         "CE-04": 80.57585429221731,
         "CE-05": 92.73722015620763,
@@ -1864,7 +2304,25 @@
         "liquidada": 52039082767.27,
         "paga": 51883359109.78
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 53181899958.75,
+          "tributaria": 35326010339.97,
+          "contribuicoes": 1999951593.36,
+          "transferencias_correntes": 11705331179.63,
+          "receitas_capital": 826162554.96,
+          "despesas_correntes": 45531903516.47,
+          "demais_correntes_agrupadas": 4150606845.789999
+        },
+        "margem_nominal": 7649996442.279999,
+        "indicadores": {
+          "CE-10": 14.38458657590955,
+          "CE-14": 22.009990595877774
+        }
+      },
       "indicadores": {
+        "CE-10": 14.38458657590955,
+        "CE-14": 22.009990595877774,
         "CE-01": 6.758390604630438,
         "CE-04": 86.99024482075632,
         "CE-05": 96.31500257500004,
@@ -1893,7 +2351,25 @@
         "liquidada": 17255879333.07,
         "paga": 17031698083.42
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 17042955106,
+          "tributaria": 5632166643.73,
+          "contribuicoes": 533723430.91,
+          "transferencias_correntes": 9296005842.68,
+          "receitas_capital": 981697629.48,
+          "despesas_correntes": 15382740079.99,
+          "demais_correntes_agrupadas": 1581059188.6800003
+        },
+        "margem_nominal": 1660215026.0100002,
+        "indicadores": {
+          "CE-10": 9.741356564540377,
+          "CE-14": 54.5445656863071
+        }
+      },
       "indicadores": {
+        "CE-10": 9.741356564540377,
+        "CE-14": 54.5445656863071,
         "CE-01": 10.030235525574627,
         "CE-04": 91.39234897694726,
         "CE-05": 97.61423695560472,
@@ -1922,7 +2398,25 @@
         "liquidada": 355439276197.86,
         "paga": 335617652049.38
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 350722458389.2,
+          "tributaria": 268400139170.31,
+          "contribuicoes": 8303068964.51,
+          "transferencias_correntes": 44385298358.47,
+          "receitas_capital": 8224059747.51,
+          "despesas_correntes": 321203899070.82,
+          "demais_correntes_agrupadas": 29633951895.91002
+        },
+        "margem_nominal": 29518559318.380005,
+        "indicadores": {
+          "CE-10": 8.416501028748772,
+          "CE-14": 12.655390978474271
+        }
+      },
       "indicadores": {
+        "CE-10": 8.416501028748772,
+        "CE-14": 12.655390978474271,
         "CE-01": -3.6268333085825333,
         "CE-04": 90.08322348589832,
         "CE-05": 95.76174027134947,
@@ -1951,7 +2445,25 @@
         "liquidada": 16550943898.76,
         "paga": 16294884638.82
       },
+      "financiamento": {
+        "valores": {
+          "receitas_correntes": 16629340799.48,
+          "tributaria": 5875088120.19,
+          "contribuicoes": 1173394651.41,
+          "transferencias_correntes": 8589014593.04,
+          "receitas_capital": 674995601.68,
+          "despesas_correntes": 15420056756.26,
+          "demais_correntes_agrupadas": 991843434.8400011
+        },
+        "margem_nominal": 1209284043.2199993,
+        "indicadores": {
+          "CE-10": 7.271990259877372,
+          "CE-14": 51.64975988289674
+        }
+      },
       "indicadores": {
+        "CE-10": 7.271990259877372,
+        "CE-14": 51.64975988289674,
         "CE-01": 8.818873984384169,
         "CE-04": 80.88446235897212,
         "CE-05": 95.4391325572404,
@@ -1962,6 +2474,6 @@
   "cobertura": {
     "respostas": 81,
     "ufs": 27,
-    "observacoes": 162
+    "observacoes": 216
   }
 }

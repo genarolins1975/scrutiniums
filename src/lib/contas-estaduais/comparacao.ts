@@ -5,6 +5,8 @@ export const MEDIDAS = [
  { id:'CE-01', nome:'Erro da receita', formula:'(Receita arrecadada / previsão inicial − 1) × 100', janela:'RREO · acumulado do 6º bimestre', ressalva:'O sinal mostra receita acima ou abaixo da previsão. A magnitude não avalia a qualidade dos serviços.' },
  { id:'CE-05', nome:'Liquidação de empenhos', formula:'Despesa liquidada / empenhada × 100', janela:'RREO · acumulado do 6º bimestre', ressalva:'Liquidação é um estágio contábil; não substitui a verificação da entrega física.' },
  { id:'CE-06', nome:'Pagamento do exercício', formula:'Despesa paga / liquidada × 100', janela:'RREO · acumulado do 6º bimestre', ressalva:'Não inclui pagamentos de restos de exercícios anteriores.' },
+ { id:'CE-10', nome:'Margem corrente', formula:'(Receitas correntes − despesas correntes liquidadas) / receitas correntes × 100', janela:'RREO · acumulado do 6º bimestre', ressalva:'É uma diferença contábil entre receitas arrecadadas e despesas liquidadas; não é caixa livre, resultado primário ou nota de eficiência.' },
+ { id:'CE-14', nome:'Participação das transferências correntes', formula:'Transferências correntes / receitas correntes × 100', janela:'RREO · acumulado do 6º bimestre', ressalva:'Mostra a composição do financiamento. Transferências não são classificadas automaticamente como boas ou ruins; receitas correntes não equivalem à RCL.' },
  { id:'CE-11', nome:'Dívida líquida / RCL ajustada', formula:'DCL / RCL ajustada para endividamento × 100', janela:'RGF · 2025 Q3 ou 2026 Q1', ressalva:'Valores negativos são preservados. A relação não mede eficiência da gestão.' },
 ] as const;
 export type Medida = typeof MEDIDAS[number]['id'];

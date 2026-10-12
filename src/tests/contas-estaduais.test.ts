@@ -29,7 +29,7 @@ describe("Contas estaduais: elegibilidade e rastreabilidade", () => {
   expect(new Set(snapshot.ufs.map(u=>u.uf)).size).toBe(27);
   expect(new Set(catalogo.indicadores.map(i=>i.id)).size).toBe(48);
   expect(matriz(2025)).toHaveLength(1296);
-  expect(matriz(2025).filter(r=>r.status==="nao_sondado")).toHaveLength(27*43);
+  expect(matriz(2025).filter(r=>r.status==="nao_sondado")).toHaveLength(27*41);
   const ap=snapshot.ufs.find(u=>u.uf==="AP")!;
   const falta=ANOS.find(a=>a!==ap.exercicio && !ap.serie.some(s=>s.ano===a))!;
   expect(observacao(ap,falta).valor).toBeNull();
@@ -67,7 +67,7 @@ describe("Contas estaduais: elegibilidade e rastreabilidade", () => {
   }
  });
  it("não estende a conferência para outro ano, UF ou indicador", () => {
-  expect(matriz(2025).filter(r=>r.conferidoNaFonte)).toHaveLength(135);
+  expect(matriz(2025).filter(r=>r.conferidoNaFonte)).toHaveLength(189);
   expect(matriz(2024).filter(r=>r.conferidoNaFonte)).toHaveLength(0);
   expect(execucaoPrimaria("PE",2026)).toBeUndefined();
   expect(execucaoPrimaria("XX",2025)).toBeUndefined();
@@ -160,5 +160,37 @@ describe('Saldos da execução: conservação e recorte',()=>{
   expect(csv).toContain('"DF";"2025"');
   expect(csv).toContain('Dotação atualizada − inicial');
   expect(csv).toContain(execucaoPrimaria('DF',2025)!.fontes[0].sha256);
+ });
+});
+
+import { financiamentoEstadual, csvFinanciamento } from '../lib/contas-estaduais/financiamento';
+import { GET as exportarFinanciamento } from '../app/contas-publicas-estaduais/financiamento.csv/route';
+describe('Financiamento e margem corrente',()=>{
+ it('recompõe a receita corrente e mantém o capital fora das duas razões',()=>{
+  for(const uf of snapshot.ufs){
+   const f=financiamentoEstadual(uf.uf,2025)!;
+   expect(f.partes.reduce((s,p)=>s+p.percentual,0)).toBeCloseTo(100,8);
+   expect(f.partes.reduce((s,p)=>s+p.valor,0)).toBeCloseTo(f.valores.receitas_correntes,2);
+   expect(f.indicadores['CE-14']).toBeCloseTo(100*f.valores.transferencias_correntes/f.valores.receitas_correntes,8);
+   expect(f.indicadores['CE-10']).toBeCloseTo(100*f.margem_nominal/f.valores.receitas_correntes,8);
+  }
+ });
+ it('publica as novas medidas no mesmo universo e distingue o recorte ausente',()=>{
+  expect(comparar(2025,'CE-10').elegiveis).toBe(26);
+  expect(comparar(2025,'CE-14','Nordeste').elegiveis).toBe(9);
+  expect(comparar(2026,'CE-10').elegiveis).toBe(0);
+  expect(financiamentoEstadual('PE',2026)).toBeNull();
+  expect(csvFinanciamento('XX',2025)).toBeNull();
+ });
+ it('exporta recorte, valores e origem completos',async()=>{
+  expect(exportarFinanciamento(new Request('https://x.test?uf=XX&ano=2025')).status).toBe(400);
+  expect(exportarFinanciamento(new Request('https://x.test?uf=PE&ano=2026')).status).toBe(404);
+  const r=exportarFinanciamento(new Request('https://x.test?uf=PE&ano=2025'));
+  expect(r.status).toBe(200);
+  const csv=await r.text();
+  expect(csv.trim().split('\r\n')).toHaveLength(11);
+  expect(csv).toContain('"CE-14"');
+  expect(csv).toContain('"CE-10"');
+  expect(csv).toContain(financiamentoEstadual('PE',2025)!.dado.fontes[0].sha256);
  });
 });

@@ -9,6 +9,7 @@ import json
 import math
 from pathlib import Path
 from pipeline.contas_estaduais.coletar import UFS, mapear_rgf, CONTAS
+from pipeline.contas_estaduais.financiamento import mapear as mapear_financiamento, CAMPOS as CAMPOS_FINANCIAMENTO
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "public/contas-estaduais/evidencias/20261012-nacional"
@@ -51,7 +52,9 @@ def mapear_rreo(itens, uf, ano):
         raise ValueError("Denominador não positivo; não converter em zero")
     if v["paga"] > v["liquidada"] + .02 or v["liquidada"] > v["empenhada"] + .02 or v["empenhada"] > v["dotacao_atualizada"] + .02:
         raise ValueError("Ordem dos estágios incompatível; requer conferência")
-    return dict(valores=v, indicadores={
+    f = mapear_financiamento(itens, v["receita_arrecadada"])
+    return dict(valores=v, financiamento=f, indicadores={
+        **f["indicadores"],
         "CE-01": 100 * (v["receita_arrecadada"] / v["receita_prevista"] - 1),
         "CE-04": 100 * v["liquidada"] / v["dotacao_atualizada"],
         "CE-05": 100 * v["liquidada"] / v["empenhada"],
@@ -82,9 +85,10 @@ def ler(registro, pasta):
     return itens, fontes
 
 def consolidar():
-    resultado = dict(versao="0.3.0", captura="2026-10-12", escopo_conferencia="Identidade do ente, período, campos, integridade dos bytes e aritmética. Não constitui auditoria, certificação do Tesouro ou avaliação de eficiência.",
+    resultado = dict(versao="0.4.0", captura="2026-10-12", escopo_conferencia="Identidade do ente, período, campos, integridade dos bytes e aritmética. Não constitui auditoria, certificação do Tesouro ou avaliação de eficiência.",
                      perimetro_rreo="RREO Anexo 01, esfera estadual, acumulado janeiro a dezembro. Linhas de receitas e despesas exceto intra-orçamentárias; refinanciamento destacado fora dessas linhas. Valores nominais declarados; não inclui pagamentos de restos de exercícios anteriores.",
                      campos_rreo={k: dict(cod_conta=v[0], coluna=v[1]) for k, v in CAMPOS.items()},
+                     campos_financiamento={k: dict(cod_conta=v[0], coluna=v[1]) for k, v in CAMPOS_FINANCIAMENTO.items()},
                      campos_rgf=CONTAS, rgf=[], rreo=[])
     chaves = set()
     for nome in ("anual", "parcial"):
@@ -107,7 +111,7 @@ def consolidar():
             else:
                 obs.update(mapear_rreo(itens, uf, ano))
             resultado[fonte].append(obs)
-    resultado["cobertura"] = dict(respostas=len(chaves), ufs=len({r["uf"] for r in resultado["rgf"] + resultado["rreo"]}), observacoes=len(resultado["rgf"])+4*len(resultado["rreo"]))
+    resultado["cobertura"] = dict(respostas=len(chaves), ufs=len({r["uf"] for r in resultado["rgf"] + resultado["rreo"]}), observacoes=len(resultado["rgf"])+6*len(resultado["rreo"]))
     return resultado
 
 if __name__ == "__main__":
@@ -118,6 +122,6 @@ if __name__ == "__main__":
     if args.check:
         if OUT.read_text() != texto:
             raise SystemExit("Dados publicados divergem da reprodução")
-        print("81 capturas íntegras; 162 observações reproduzidas.")
+        print("81 capturas íntegras; 216 observações reproduzidas.")
     else:
         OUT.write_text(texto)

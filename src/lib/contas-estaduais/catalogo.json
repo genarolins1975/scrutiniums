@@ -1,5 +1,5 @@
 {
-  "versao": "0.3.0",
+  "versao": "0.4.0",
   "escopo": "26 estados e Distrito Federal; contratos preliminares do projeto",
   "indicadores": [
     {
@@ -136,11 +136,11 @@
       "formula": "100 × (receitas correntes arrecadadas − despesas correntes liquidadas) / receitas correntes arrecadadas.",
       "fonteERegra": "DCA/RREO · anual. Medida analítica; não é o indicador de poupança da CAPAG.",
       "unidade": "%",
-      "versao": "0.1.0",
+      "versao": "0.4.0",
       "statusContrato": "preliminar",
-      "statusMapeamento": "a_mapear",
+      "statusMapeamento": "fonte_primaria_conferida",
       "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação.",
-      "comparabilidade": "Requer validação do perímetro, período, qualidade e competências do ente. DF com competências estaduais e municipais."
+      "comparabilidade": "RREO 01, receitas e despesas exceto intra-orçamentárias; janeiro a dezembro de 2025 nas 27 UFs. Receitas correntes não são RCL. DF tem competências estaduais e municipais. Não mede eficiência."
     },
     {
       "id": "CE-11",
@@ -192,11 +192,11 @@
       "formula": "Transferências correntes recebidas / receitas correntes × 100.",
       "fonteERegra": "DCA · anual. Mesmo tratamento de deduções; dependência não é falha de gestão.",
       "unidade": "%",
-      "versao": "0.1.0",
+      "versao": "0.4.0",
       "statusContrato": "preliminar",
-      "statusMapeamento": "a_mapear",
+      "statusMapeamento": "fonte_primaria_conferida",
       "regraComum": "Numerador, denominador, unidade, janela e perímetro compatíveis. Ausência não é zero. Mudanças de versão exigem nova observação.",
-      "comparabilidade": "Requer validação do perímetro, período, qualidade e competências do ente. DF com competências estaduais e municipais."
+      "comparabilidade": "RREO 01, receitas e despesas exceto intra-orçamentárias; janeiro a dezembro de 2025 nas 27 UFs. Receitas correntes não são RCL. DF tem competências estaduais e municipais. Não mede eficiência."
     },
     {
       "id": "CE-15",
