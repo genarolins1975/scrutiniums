@@ -36,3 +36,25 @@
 @media(max-width:360px){.ce-ficha-guide li{flex-basis:100%}.ce-ficha-guide a{min-height:60px}.ce-budget-readings{grid-template-columns:1fr}}
 
 .ce-expense-compare{display:block;min-height:44px;padding:10px 0;font-size:13px}.ce-compare-filters label:first-child{min-width:0;max-width:100%}
+
+/* Educational evidence remains distinct from published fiscal observations. */
+.ce-education{margin-top:40px;padding-top:32px;border-top:1px solid var(--ce-line)}
+.ce-education h3{font:28px/1.2 var(--font-serif),Georgia,serif}
+.ce-education-lead{font-size:16px;max-width:75ch;margin:20px 0}
+.ce-education .ce-filters{margin:24px 0 12px}
+.ce-education .ce-filters label{max-width:100%;min-width:0}
+.ce-education-scope{font-size:14px;color:var(--ce-muted);margin:12px 0 20px}
+.ce-education-status{border-left:2px solid var(--ce-teal);padding:4px 0 4px 18px;margin:24px 0;max-width:75ch}
+.ce-education-status strong{font-size:16px;font-weight:500}
+.ce-education-status p{font-size:14px;color:var(--ce-muted);margin-top:8px}
+.ce-education .ce-table-scroll table{min-width:780px;font-size:14px}
+.ce-education .ce-table-scroll td:nth-child(3){min-width:280px}
+.ce-education .ce-table-scroll td:last-child{min-width:190px}
+.ce-education-readings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;margin:28px 0}
+.ce-education-readings>div{border-top:1px solid var(--ce-line);padding-top:16px;min-width:0}
+.ce-education-readings dt{font-size:14px;color:var(--ce-muted)}
+.ce-education-readings dd{margin:8px 0;font-size:21px;font-weight:500}
+.ce-education-readings p,.ce-education details p{font-size:14px;line-height:1.6}
+.ce-education details p{max-width:75ch;margin:16px 0}
+.ce-education .ce-download{display:inline-flex;align-items:center;min-height:44px}
+@media(max-width:650px){.ce-education h3{font-size:24px}.ce-education-readings{grid-template-columns:1fr;gap:20px}.ce-education .ce-filters select{width:100%;min-width:0}.ce-education-lead{font-size:16px}}
