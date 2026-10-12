@@ -26,10 +26,10 @@ Estados referem-se à cesta municipal de 2022. Não julgam a utilidade dos pain�
 | Previdência | Sem painel publicado | Definir população elegível, proteção de renda e competência de cada regime antes da coleta. |
 | Segurança pública | Indicador na v2 | Preservar alternativa só registros e explicitar incerteza do modelo. |
 | Justiça e direitos | Contexto; fora da cesta | Resolver geografia e universo da demanda; não atribuir desempenho do tribunal à capital. |
-| Habitação | Candidato em revisão | Concluir protocolo de precisão/divulgação municipal; revisar conteúdo e pesos da proposta conjunta v3, sem promoção automática. |
+| Habitação | Candidato em revisão | Protocolo descritivo definido; precisão municipal pendente. Revisar conteúdo e pesos da proposta conjunta v3, sem promoção automática. |
 | Saneamento | Indicador na v2 | Preservar definição e alternativa apenas rede; evitar duplicação na expansão de Habitação. |
 | Mobilidade e transporte | Indicador na v2 | Preservar indicador e não misturar AOP ou oferta declarada na mesma referência. |
-| Energia e conectividade | Candidato em revisão | Concluir protocolo de precisão/divulgação municipal; revisar conteúdo e pesos da proposta conjunta v3, sem promoção automática. |
+| Energia e conectividade | Candidato em revisão | Protocolo descritivo definido; precisão municipal pendente. Revisar conteúdo e pesos da proposta conjunta v3, sem promoção automática. |
 | Meio ambiente e clima | Contexto; fora da cesta | Selecionar exposição ou resultado municipal com denominador comparável e cobertura explícita. |
 | Cultura | Contexto; fora da cesta | Definir participação/acesso municipal e precisão; manter despesa como contexto. |
 | Esporte e lazer | Sem painel publicado | Definir participação/uso e universo residente; mapear fonte territorial antes da coleta. |
@@ -45,8 +45,8 @@ A [matriz JSON](elegibilidade-16-capitulos.json) preserva fontes, medidas, recor
 | 2 | Aquisição municipal de Habitação | Concluída: domicílios e moradores, limiares >2 e >3 por dormitório, fontes e hashes |
 | 3 | Aquisição municipal de Conectividade | Concluída: Sim/Não/Total, numerador/denominador, percentuais e hashes |
 | 4 | Comparação conjunta das candidatas | Concluída: inclusões isoladas/conjuntas, pesos explícitos, definições, empates e decomposição; proposta documentada |
-| 5 — próxima | Precisão e divulgação municipal | Examinar anexo oficial de variância e documentação dos estimadores; determinar precisão de proporções e covariância ou justificar regra sem inferência; manter bloqueio se insuficiente |
-| 6 | Parecer de conteúdo e pesos da candidata v3 | Aceitar/rejeitar agrupamento, orçamento material e definição de adensamento por conteúdo, sem escolher pesos para favorecer estabilidade ou capitais |
+| 5 | Precisão e divulgação municipal | Protocolo descritivo concluído e automatizado; anexo de 33 abas examinado. Precisão municipal não resolvida; aquisição adequada segue pendente, com bloqueio de inferência/agregado |
+| 6 — próxima | Parecer de conteúdo e pesos da candidata v3 | Aceitar/rejeitar agrupamento, orçamento material e definição de adensamento por conteúdo, sem escolher pesos para favorecer estabilidade ou capitais |
 | 7 | Revisão independente e promoção de edição | Aprovar interpretação, precisão/divulgação, pesos, sensibilidade e limites; nenhuma liberação automática |
 | 8 | Integração ao produto | Identificar edição; comparar v2/v3; distinguir composição de variação temporal; conferir jornada e acessibilidade |
 
@@ -63,6 +63,8 @@ Trilhas complementares: Saúde depende de cobertura/sub-registro infantil munici
 - Países e escore integral dos 16 capítulos permanecem fora da implementação validada.
 
 ## Evidências e reprodução
+
+- [Protocolo de precisão e divulgação](PRECISAO_CANDIDATAS.md): anexo oficial, acesso aos microdados, 52 registros e dependências abertas.
 
 - [Cesta conjunta e proposta v3](CESTA_CONJUNTA_V3.md): código, 18 cenários, 468 linhas, oito testes novos e pendências.
 - [Aquisição de Habitação](HABITACAO_ADENSAMENTO.md) e [sensibilidade das definições](HABITACAO_CENARIOS.md).

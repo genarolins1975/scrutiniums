@@ -103,3 +103,7 @@ python3.12 -m unittest pipeline.eficiencia_resultados.test_cesta_conjunta pipeli
 - [Auditoria de Habitação](HABITACAO_ADENSAMENTO.md)
 - [Auditoria de Conectividade](CONECTIVIDADE_MUNICIPAL.md)
 - [Elegibilidade e roadmap dos 16 capítulos](ELEGIBILIDADE_16_CAPITULOS.md)
+
+## Atualização: protocolo municipal
+
+O [protocolo de precisão e divulgação](PRECISAO_CANDIDATAS.md) examina o anexo oficial e a divulgação dos microdados de 2026. Há contrato descritivo auditável para 52 registros; a precisão municipal segue não quantificada. Não há mudança nos cenários, pesos propostos ou bloqueios. Próxima entrega: parecer de conteúdo e pesos.
