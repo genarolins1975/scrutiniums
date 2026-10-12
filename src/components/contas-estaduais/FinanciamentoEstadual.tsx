@@ -1,4 +1,5 @@
 import { financiamentoEstadual, ROTULOS_FINANCIAMENTO } from '@/lib/contas-estaduais/financiamento';
+import { CAMPOS_RECEITA } from '@/lib/contas-estaduais/comparacao';
 import { primarios } from '@/lib/contas-estaduais/dados';
 
 const n=(v:number,c=2)=>v.toLocaleString('pt-BR',{minimumFractionDigits:c,maximumFractionDigits:c});
@@ -13,8 +14,8 @@ export default function FinanciamentoEstadual({uf,ano}:{uf:string;ano:number}) {
   <div className="ce-finance-grid">
    <figure><figcaption>Composição das receitas correntes <span>Base: R$ {n(v.receitas_correntes/1e9)} bi · 100%</span></figcaption>
     <div className="ce-finance-stack" aria-hidden="true">{f.partes.map((p,i)=><span key={p.id} className={`ce-finance-color-${i}`} style={{width:`${p.percentual}%`}}/>)}</div>
-    <ol className="ce-finance-legend">{f.partes.map((p,i)=><li key={p.id}><span className={`ce-finance-dot ce-finance-color-${i}`} aria-hidden="true"/><span>{p.nome}<small>R$ {n(p.valor/1e9)} bi</small></span><strong>{n(p.percentual,1)}%</strong></li>)}</ol>
-    <p className="ce-note">O último grupo reúne receitas patrimoniais, agropecuárias, industriais, de serviços e outras correntes. É calculado por diferença, sem somar linhas que já contêm subtotais.</p>
+    <ol className="ce-finance-legend">{f.partes.map((p,i)=><li key={p.id}><span className={`ce-finance-dot ce-finance-color-${i}`} aria-hidden="true"/><span><a className="inline-flex min-h-[44px] items-center" href={comparar(Object.entries(CAMPOS_RECEITA).find(([,campo])=>campo===p.id)![0])} aria-label={`Comparar ${p.nome.toLowerCase()} entre estados`}>{p.nome} ↗</a><small>R$ {n(p.valor/1e9)} bi</small></span><strong>{n(p.percentual,1)}%</strong></li>)}</ol>
+    <p className="ce-note">Selecione uma categoria para comparar sua participação entre estados. O último grupo reúne receitas patrimoniais, agropecuárias, industriais, de serviços e outras correntes. É calculado por diferença, sem somar linhas que já contêm subtotais.</p>
     <p className="ce-finance-reading"><span>CE-14 · participação das transferências</span><strong>{n(f.indicadores['CE-14'])}%</strong><a href={comparar('CE-14')}>Comparar entre estados →</a></p>
    </figure>
    <figure><figcaption>Receitas e despesas correntes <span>R$ bilhões nominais · mesma escala, a partir de zero</span></figcaption>

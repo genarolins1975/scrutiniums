@@ -212,7 +212,7 @@ describe('Composição econômica da despesa',()=>{
  });
 });
 
-import { CONTAS_DESPESA } from '../lib/contas-estaduais/comparacao';
+import { CAMPOS_RECEITA, CONTAS_DESPESA } from '../lib/contas-estaduais/comparacao';
 describe('Comparação da estrutura de despesas',()=>{
  it('recompõe 100% nas 27 UFs e expõe numerador e denominador',()=>{
   const medidas=Object.keys(CONTAS_DESPESA) as (keyof typeof CONTAS_DESPESA)[];
@@ -234,4 +234,70 @@ describe('Comparação da estrutura de despesas',()=>{
   const r=exportarComparacao(new Request('https://x.test?ano=2025&indicador=DESP-INVESTIMENTOS&regiao=Nordeste&df=0'));
   expect(r.status).toBe(200);const csv=await r.text();expect(csv.split('\r\n')).toHaveLength(10);expect(csv).toContain('categoria_liquidada_BRL');expect(csv).toContain('4328282322.13');expect(csv).toContain('52375113809.86');expect(csv).toContain('Investimentos');
  });
+});
+
+
+describe('Comparação das receitas correntes',()=>{
+ it('recompõe 100% nas 27 UFs com a base corrente, sem incluir capital',()=>{
+  const medidas=Object.keys(CAMPOS_RECEITA) as (keyof typeof CAMPOS_RECEITA)[];
+  for(const u of snapshot.ufs){
+   const f=financiamentoEstadual(u.uf,2025)!;
+   const partes=medidas.map(id=>comparar(2025,id,'Todas',true).linhas.find(l=>l.uf===u.uf)!);
+   expect(partes.reduce((s,l)=>s+l.valor!,0)).toBeCloseTo(100,8);
+   expect(partes.reduce((s,l)=>s+l.numerador!,0)).toBeCloseTo(f.valores.receitas_correntes,2);
+   for(const l of partes){
+    expect(l.denominador).toBe(f.valores.receitas_correntes);
+    expect(l.valor).toBeCloseTo(100*l.numerador!/l.denominador!,8);
+    expect(l.sha256).toBe(f.dado.fontes[0].sha256);
+   }
+   expect(partes[2].valor).toBeCloseTo(f.indicadores['CE-14'],10);
+  }
+ });
+ it('recalcula a mediana regional e preserva ausência, DF e filtros compartilháveis',()=>{
+  const c=comparar(2025,'REC-TRIBUTARIA','Nordeste');
+  expect(c.elegiveis).toBe(9);
+  expect(c.referencia).toBe(mediana(c.linhas.map(l=>l.valor!)));
+  expect(comparar(2025,'REC-CONTRIBUICOES').universo).toBe(26);
+  expect(comparar(2025,'REC-CONTRIBUICOES','Todas',true).universo).toBe(27);
+  for(const id of Object.keys(CAMPOS_RECEITA) as (keyof typeof CAMPOS_RECEITA)[]){
+   const vazio=comparar(2026,id);
+   expect(vazio.referencia).toBeNull();expect(vazio.elegiveis).toBe(0);
+   expect(vazio.linhas.every(l=>l.valor===null&&l.numerador===null&&l.denominador===null)).toBe(true);
+   expect(lerFiltrosComparacao({indicador:id}).indicador).toBe(id);
+  }
+ });
+ it('exporta receitas em colunas próprias e explicita o cálculo do residual',async()=>{
+  const r=exportarComparacao(new Request('https://x.test?ano=2025&indicador=REC-DEMAIS&regiao=Nordeste&df=0'));
+  expect(r.status).toBe(200);
+  const linhas=(await r.text()).replace(/^\uFEFF/,'').split('\r\n').map(l=>l.split(';').map(c=>c.slice(1,-1).replaceAll('""','"')));
+  const cab=linhas[0], pe=linhas.find(l=>l[0]==='PE')!;
+  expect(linhas).toHaveLength(10);
+  const campo=(nome:string)=>pe[cab.indexOf(nome)];
+  const f=financiamentoEstadual('PE',2025)!;
+  expect(Number(campo('categoria_arrecadada_BRL'))).toBe(f.valores.demais_correntes_agrupadas);
+  expect(Number(campo('receitas_correntes_BRL'))).toBe(f.valores.receitas_correntes);
+  expect(campo('categoria_liquidada_BRL')).toBe('');
+  expect(campo('total_liquidado_BRL')).toBe('');
+  expect(campo('cod_conta')).toBe('');
+  expect(campo('campo_receita')).toBe('demais_correntes_agrupadas');
+  expect(campo('formula_medida')).toContain('Receitas correntes − tributária − contribuições − transferências correntes');
+  expect(campo('sha256')).toBe(f.dado.fontes[0].sha256);
+ });
+});
+
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import ComparacaoEstadual from '../components/contas-estaduais/ComparacaoEstadual';
+it('renderiza receitas com unidade correta e sem duplicar CE-14 no seletor',()=>{
+ const html=renderToStaticMarkup(createElement(ComparacaoEstadual,{
+  ano:2025,uf:'PE',selecionar:()=>{},
+  inicial:{indicador:'REC-TRIBUTARIA',regiao:'Nordeste',df:false,ordem:'uf'},
+ }));
+ expect(html).toContain('Composição das receitas correntes');
+ expect(html).toContain('Categoria arrecadada (R$)');
+ expect(html).toContain('Receitas correntes (R$)');
+ expect(html).not.toContain('Categoria liquidada (R$)');
+ expect(html.match(/<option value="CE-14"/g)).toHaveLength(1);
+ expect(html).toContain('46,18%');
+ expect(html).toContain('não equivalem à RCL');
 });
