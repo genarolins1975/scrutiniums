@@ -358,8 +358,9 @@ Estimativa, com premissas declaradas: 8 posts por semana com 7 lâminas de cerca
 * Conta profissional do Instagram (empresa) com autenticação em dois fatores, no perfil institucional já criado (D1).
 * App na Meta for Developers com o produto Instagram API com login do Instagram.
 * Permissões: `instagram_business_basic`, `instagram_business_content_publish`, `instagram_business_manage_insights`, `instagram_business_manage_comments`. Para a fase de mensagens (seção 8.3), também `instagram_business_manage_messages`.
-* Evidência: a documentação exige acesso Standard ou Advanced. Inferência: como o app operará apenas a conta da própria Scrutiniums, com o titular nos papéis do app, o acesso Standard deve bastar sem revisão do app. Confirmar na criação.
-* Token de longa duração renovado por job semanal e guardado cifrado no Postgres de produção (tabela `social_credenciais`, chave derivada de `COOKIE_SECRET`), para não depender de reescrever segredos do GitHub.
+* Evidência (Business Login for Instagram, documentação Meta consultada em 13/10/2026): acesso Standard cobre contas que o desenvolvedor possui ou administra e que foram adicionadas ao app no painel; revisão do app só é exigida para acesso Advanced, voltado a contas de terceiros. O app da Scrutiniums opera só a própria conta: sem revisão.
+* Token gerado uma vez no painel do app (Instagram → API setup with Instagram business login → Generate token), válido por 60 dias, cadastrado no GitHub como `IG_ACCESS_TOKEN`. Na primeira execução o pipeline o copia, cifrado, para o Postgres de produção (tabela `social_credenciais`, chave derivada de `COOKIE_SECRET`) e passa a renová-lo por `GET https://graph.instagram.com/refresh_access_token` com `grant_type=ig_refresh_token`. Condições da Meta: token com pelo menos 24 horas, ainda válido e com `instagram_business_basic`; cada renovação vale mais 60 dias; token sem renovação por 60 dias expira e não pode mais ser renovado. Por isso o job de renovação entra na F0, antes de qualquer outra peça.
+* `IG_USER_ID` é obtido pelo próprio pipeline em `GET /me?fields=user_id,username`; não é segredo.
 
 ### 6.2 Fluxo
 
@@ -520,7 +521,7 @@ flowchart LR
 
 ### 9.3 Segredos novos
 
-`ANTHROPIC_API_KEY` (o orquestrador já tem backend Anthropic, mas o segredo não existe nos workflows), `IG_APP_ID`, `IG_APP_SECRET`, `IG_USER_ID`, `SOCIAL_RENDER_SECRET`, `SOCIAL_API_SECRET` (autoriza os workflows contra as rotas internas, no padrão de `BOLETIM_SECRET`).
+`ANTHROPIC_API_KEY` (o orquestrador já tem backend Anthropic, mas o segredo não existe nos workflows), `IG_ACCESS_TOKEN` (somente para a carga inicial), `SOCIAL_RENDER_SECRET`, `SOCIAL_API_SECRET` (autoriza os workflows contra as rotas internas, no padrão de `BOLETIM_SECRET`).
 
 ---
 
@@ -572,6 +573,7 @@ Primeiro conteúdo publicável: semana 6, condicionado ao critério de saída da
 Consultadas em 13/10/2026.
 
 * Meta for Developers, Instagram Platform, Content Publishing: https://developers.facebook.com/documentation/instagram-platform/content-publishing
+* Meta for Developers, Business Login for Instagram e Get started: https://developers.facebook.com/documentation/instagram-platform/instagram-api-with-instagram-login/business-login.md e https://developers.facebook.com/documentation/instagram-platform/instagram-api-with-instagram-login/get-started.md
 * Meta for Developers, Instagram Media Insights: https://developers.facebook.com/docs/instagram-platform/reference/instagram-media/insights/
 * Rival IQ, Social Media Industry Benchmark Report 2025, via https://socialk.it/en/blog/what-is-a-good-engagement-rate e https://rivaliq.com/?p=35627
 * Socialinsider 2025, engajamento por formato, via resumo em https://socialk.it/en/blog/what-is-a-good-engagement-rate
