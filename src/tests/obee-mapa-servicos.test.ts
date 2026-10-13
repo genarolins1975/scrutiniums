@@ -11,7 +11,7 @@ describe("descoberta de serviços públicos", () => {
     expect(filtraDimensoes("termo inexistente", "Todas")).toEqual([]);
   });
   it("combina busca, grupo e disponibilidade, sem sugerir dados para as áreas sem publicação", () => {
-    expect(filtraDimensoes("", "Todas", true).map(d => d.id)).toEqual(["educacao", "saude", "trabalho", "alimentacao", "assistencia", "seguranca", "justica", "habitacao", "saneamento", "mobilidade", "energia", "ambiente", "cultura"]);
+    expect(filtraDimensoes("", "Todas", true).map(d => d.id)).toEqual(["educacao", "saude", "trabalho", "alimentacao", "assistencia", "previdencia", "seguranca", "justica", "habitacao", "saneamento", "mobilidade", "energia", "ambiente", "cultura"]);
     expect(filtraDimensoes("", GRUPOS[2], true).map(d => d.id)).toEqual(["habitacao", "saneamento", "mobilidade", "energia", "ambiente"]);
     expect(filtraDimensoes("", GRUPOS[1]).every(d => d.grupo === GRUPOS[1])).toBe(true);
     expect(filtraDimensoes("", "Todas")).toEqual(DIMENSOES);
@@ -24,3 +24,4 @@ describe("descoberta de serviços públicos", () => {
     expect(new Set(DIMENSOES.map(d => d.id)).size).toBe(DIMENSOES.length);
   });
 });
+

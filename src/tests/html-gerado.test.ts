@@ -37,6 +37,7 @@ const ROTAS_OBRIGATORIAS = [
   "eficiencia-estatal/educacao-municipal-capitais/metodos.html",
   "eficiencia-estatal.html",
   ...["", "deficit", "aluguel-renda", "inadequacao", "dados"].map(s => `eficiencia-estatal/habitacao${s ? "/"+s : ""}.html`),
+  ...["", "beneficios", "territorio", "recursos", "atendimento", "dados", "metodos"].map(s => `eficiencia-estatal/previdencia${s ? "/"+s : ""}.html`),
   ...["", "agua", "esgoto", "residuos", "drenagem", "recursos", "dados"].map(s => `eficiencia-estatal/saneamento${s ? "/"+s : ""}.html`),
   ...["", "cobertura", "tempo-resposta", "conciliacao", "recursos", "dados"].map(s => `eficiencia-estatal/acesso-justica${s ? "/"+s : ""}.html`),
   "eficiencia-estatal/seguranca-alimentar.html",
@@ -134,3 +135,4 @@ describe(`HTML gerado pelo build (${EXIGIR ? "verificação obrigatória" : "mod
     expect(violacoes).toEqual([]);
   });
 });
+

@@ -1,0 +1,60 @@
+name: OBEE Previdência - dados e interface
+on:
+  pull_request:
+    paths:
+      - 'src/**/previdencia/**'
+      - 'src/app/eficiencia-estatal/page.tsx'
+      - 'src/lib/eficiencia/dimensoes.ts'
+      - 'src/tests/obee-previdencia.test.ts'
+      - 'data/previdencia/**'
+      - 'public/eficiencia/previdencia/**'
+      - 'scripts/obee/previdencia-*'
+      - 'scripts/materializar-previdencia.mjs'
+      - 'package.json'
+      - '.github/workflows/obee-previdencia-interface.yml'
+permissions:
+  contents: read
+concurrency:
+  group: previdencia-interface-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  interface:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reproduzir e conciliar fontes preservadas
+        run: |
+          python3 scripts/obee/previdencia-extrair.py
+          git diff --exit-code -- public/eficiencia/previdencia
+      - run: npm ci
+      - run: npm run lint && npx tsc --noEmit
+      - run: npm run build
+      - name: Verificar contratos e HTML gerado
+        run: EXIGIR_BUILD_HTML=1 npx vitest run src/tests/obee-previdencia.test.ts src/tests/obee-mapa-servicos.test.ts src/tests/html-gerado.test.ts
+      - name: Preparar navegador isolado
+        run: |
+          BROWSER_DIR="$RUNNER_TEMP/obee-browser"
+          npm install --prefix "$BROWSER_DIR" --no-audit --no-fund playwright@1.58.2
+          ln -s "$BROWSER_DIR/node_modules/playwright" node_modules/playwright
+          "$BROWSER_DIR/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Verificar páginas, sessão, filtros, acessibilidade e downloads
+        env:
+          COOKIE_SECRET: previdencia-ci-${{ github.run_id }}-${{ github.run_attempt }}-local
+        run: node scripts/obee/previdencia-verificacao.mjs
+      - name: Guardar evidências
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: previdencia-interface-${{ github.event.pull_request.head.sha }}
+          path: /tmp/previdencia-qa
+          if-no-files-found: warn

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/minify-obs.mjs",
+    "predev": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/minify-obs.mjs && node scripts/materializar-previdencia.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/minify-obs.mjs",
+    "prebuild": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/minify-obs.mjs && node scripts/materializar-previdencia.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

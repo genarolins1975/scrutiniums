@@ -48,6 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...["mercado/comercializacao", "empresas/analise", "territorio/atlas", "transicao/riscos"].map(p => rota(`/setor-eletrico/${p}`, 0.7, "monthly")),
     rota("/eficiencia-estatal", 0.7, "monthly"),
     ...["", "deficit", "aluguel-renda", "inadequacao", "dados"].map(s => rota(`/eficiencia-estatal/habitacao${s ? "/"+s : ""}`, 0.6, "yearly")),
+    ...["", "beneficios", "territorio", "recursos", "atendimento", "dados", "metodos"].map(s => rota(`/eficiencia-estatal/previdencia${s ? "/"+s : ""}`, 0.6, "yearly")),
     ...["", "agua", "esgoto", "residuos", "drenagem", "recursos", "dados"].map(s => rota(`/eficiencia-estatal/saneamento${s ? "/"+s : ""}`, 0.6, "yearly")),
     ...["", "cobertura", "tempo-resposta", "conciliacao", "recursos", "dados"].map(s => rota(`/eficiencia-estatal/acesso-justica${s ? "/"+s : ""}`, 0.6, "monthly")),
     ...PAGINAS_MOBILIDADE.map(p => rota(ROTA_MOBILIDADE+(p.slug?'/'+p.slug:''), 0.6, "monthly")),
@@ -78,3 +79,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter((e) => ehRotaPublica(e.url.slice(base.length) || "/"))
     .filter((e) => (vistas.has(e.url) ? false : (vistas.add(e.url), true)));
 }
+

@@ -33,3 +33,7 @@ __pycache__/
 /public/eficiencia/trabalho-renda/snapshot.json.tmp
 /vitest-resultado.json
 /dist/
+
+
+# CSV de Previdência materializado do snapshot versionado.
+/public/eficiencia/previdencia/tabelas.csv
