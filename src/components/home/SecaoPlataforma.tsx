@@ -1,82 +1,86 @@
-import { BotaoLink } from "@/components/home/BotaoLink";
+import Link from "next/link";
+import { registroErros } from "@/lib/sobre";
 
-const CONTEUDOS = [
-  {
-    titulo: "Natureza de cada número",
-    descricao:
-      "Observado, calculado, estimado, previsto ou cenário: o selo acompanha o valor e as categorias nunca se confundem.",
-  },
-  {
-    titulo: "Proveniência até a fonte primária",
-    descricao:
-      "Órgão, conjunto de dados, período de referência, momento da captura, transformação, fórmula e versão de cada indicador.",
-  },
-  {
-    titulo: "Regras publicadas",
-    descricao:
-      "Classificações como alto, baixo ou fora do padrão só existem com regra estatística declarada ao lado do número.",
-  },
-  {
-    titulo: "Ausência declarada",
-    descricao: "Dado que falta aparece como lacuna com motivo. Nunca como zero, nunca estimado em silêncio.",
-  },
-  {
-    titulo: "Previsões com estado e arquivo",
-    descricao:
-      "Modelo em pesquisa não vira previsão oficial, e o que foi publicado fica registrado com versão, dados e data.",
-  },
-  {
-    titulo: "Séries para download e citação",
-    descricao: "CSV das séries com fonte e data de referência, para verificar, reproduzir e citar.",
-  },
-  {
-    titulo: "Glossário e base de conhecimento",
-    descricao: "Definições com fonte oficial, abertas a qualquer pessoa, sem cadastro.",
-  },
-];
+type Item = { titulo: string; descricao: string; link?: { href: string; rotulo: string } };
 
 /**
- * Momento de manifesto: a frase de transparência em serifa grande sobre
- * carvão, seguida do sistema de evidências que os observatórios
- * compartilham, em lista editorial com filetes, sem cartões.
+ * O sistema de evidência, dito com o alcance que cada recurso tem hoje.
+ * Recurso que existe em um só observatório é atribuído a ele; nada é
+ * apresentado como comum aos cinco sem estar nos cinco.
  */
+function itens(): Item[] {
+  const nErros = registroErros().erros.length;
+  return [
+    {
+      titulo: "Fonte e data de referência",
+      descricao:
+        "Órgão, base e período de referência acompanham indicadores, gráficos e tabelas em todos os observatórios.",
+    },
+    {
+      titulo: "Ausência declarada",
+      descricao:
+        "Recorte sem dado aparece como indisponível, com o motivo. Nunca como zero, nunca preenchido por estimativa silenciosa.",
+    },
+    {
+      titulo: "Natureza de cada número",
+      descricao:
+        "No Setor Elétrico, cada valor traz o selo observado, calculado, estimado, previsto ou cenário. Nos demais observatórios, a natureza consta da ficha e da proveniência do indicador.",
+    },
+    {
+      titulo: "Previsão só com estado declarado",
+      descricao:
+        "Os modelos de previsão do PLD aparecem como pesquisa e cada emissão fica em arquivo imutável. Cenários e laboratórios didáticos são rotulados como tal.",
+    },
+    {
+      titulo: "Dados para reutilizar",
+      descricao:
+        "CSV e Parquet com hash SHA-256 no Setor Elétrico; CSV, XLSX e API pública no Crédito; CSV na maior parte dos temas da Eficiência Estatal e nas Contas Estaduais; JSON nas Contas Federais.",
+    },
+    {
+      titulo: "Erros corrigidos em público",
+      descricao:
+        nErros > 0
+          ? `O registro público reúne ${nErros} ${nErros === 1 ? "erro identificado" : "erros identificados"}, com descrição, gravidade e correção.`
+          : "O registro público de erros reúne cada correção com descrição, gravidade e onde foi corrigida.",
+      link: { href: "/sobre/erros", rotulo: "Registro de erros" },
+    },
+  ];
+}
+
 export function SecaoPlataforma() {
   return (
-    <section id="plataforma" aria-labelledby="plataforma-titulo" className="bg-carvao text-marfim">
-      <div className="mx-auto max-w-page px-6 py-24 md:py-32">
-        <p className="rotulo text-mineral-soft">O que os observatórios compartilham</p>
-        <h2
-          id="plataforma-titulo"
-          className="mt-7 max-w-5xl font-serif text-[clamp(1.9rem,4.5vw,3.4rem)] leading-[1.12] text-marfim"
-        >
-          Fontes, critérios, período e limitações —{" "}
-          <span className="text-bronze-soft">declarados em cada análise.</span>
-        </h2>
-        <p className="mt-8 max-w-prose2 leading-relaxed text-mineral-soft">
-          O mesmo sistema de evidências vale para o Crédito, o Setor Elétrico e a Eficiência Estatal.
-        </p>
-
-        <ul className="mt-16 border-t border-linha-escura">
-          {CONTEUDOS.map((item) => (
-            <li
-              key={item.titulo}
-              className="grid gap-1.5 border-b border-linha-escura py-6 md:grid-cols-[16rem_1fr] md:items-baseline md:gap-8 md:py-7 lg:grid-cols-[22rem_1fr] lg:gap-10"
+    <section id="plataforma" aria-labelledby="plataforma-titulo" className="scroll-mt-4 bg-carvao text-marfim">
+      <div className="mx-auto max-w-page px-6 py-20 md:py-28">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:sticky lg:top-10 lg:col-span-5 lg:self-start">
+            <p className="rotulo text-mineral-soft">Método</p>
+            <h2
+              id="plataforma-titulo"
+              className="mt-6 font-serif text-[clamp(1.9rem,4vw,3rem)] leading-[1.12] text-marfim [text-wrap:balance]"
             >
-              <h3 className="font-serif text-lg text-marfim md:text-xl">{item.titulo}</h3>
-              <p className="text-sm leading-relaxed text-mineral-soft md:text-base">
-                {item.descricao}
-              </p>
-            </li>
-          ))}
-        </ul>
+              Fonte, período e limites, <span className="text-bronze-soft">declarados junto ao número.</span>
+            </h2>
+            <p className="mt-6 max-w-md leading-relaxed text-mineral-soft">
+              Os observatórios apresentam indicadores, referências e ressalvas. A conclusão fica com quem lê.
+            </p>
+          </div>
 
-        <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <BotaoLink href="/cadastro" variant="dark">
-            Criar acesso
-          </BotaoLink>
-          <p className="rotulo text-mineral-soft">
-            100% gratuito · sem assinatura · sem cobrança
-          </p>
+          <ul className="border-t border-linha-escura lg:col-span-7">
+            {itens().map((item) => (
+              <li key={item.titulo} className="border-b border-linha-escura py-6 md:py-7">
+                <h3 className="font-serif text-lg text-marfim md:text-xl">{item.titulo}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-mineral-soft md:text-base">{item.descricao}</p>
+                {item.link && (
+                  <Link
+                    href={item.link.href}
+                    className="rotulo mt-3 inline-flex min-h-[44px] items-center gap-2 text-bronze-soft underline decoration-linha-escura underline-offset-8 hover:text-marfim"
+                  >
+                    {item.link.rotulo} <span aria-hidden="true">→</span>
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

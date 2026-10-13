@@ -1,66 +1,98 @@
-import Link from "next/link";
 import { BotaoLink } from "@/components/home/BotaoLink";
-import { LogoMark } from "@/components/ui/Logo";
+import { ACENTO } from "@/components/home/acentos";
+import { DOMINIOS, type DominioId } from "@/lib/dominios";
+import { observatoriosPorExtenso } from "@/lib/acesso";
+import type { Vitrine } from "@/lib/vitrine";
 
 /**
- * Hero editorial: título serifado com quebra pensada e uma palavra em
- * bronze como gesto tipográfico; à direita, um colofão abstrato com o
- * verbete latino de "scrutinium" — nenhuma amostra de produto.
+ * Abertura: promessa curta e, na mesma dobra, o índice dos observatórios.
+ * Cada lâmina usa a gravura editorial do próprio observatório e traz a
+ * contagem lida do registro do domínio, na unidade que ele publica.
  */
-export function Hero() {
+export function Hero({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
   return (
     <section aria-labelledby="hero-titulo" className="border-b border-linha bg-marfim">
-      <div className="mx-auto max-w-page px-6 pb-20 pt-16 md:pb-28 md:pt-24 lg:pb-32">
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-8">
+      <div className="mx-auto max-w-page px-6 pb-14 pt-14 md:pb-20 md:pt-20">
+        <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
           <div className="lg:col-span-8">
-            <p className="rotulo text-mineral">Plataforma de inteligência analítica</p>
+            <p className="rotulo text-mineral">Plataforma pública de observatórios</p>
             <h1
               id="hero-titulo"
-              className="mt-7 max-w-4xl font-serif text-[clamp(2.5rem,6.5vw,4.6rem)] leading-[1.06] tracking-[-0.015em] text-carvao"
+              className="mt-6 max-w-4xl font-serif text-[clamp(2.4rem,5.4vw,4.25rem)] leading-[1.06] tracking-[-0.015em] text-carvao [text-wrap:balance]"
             >
-              Da informação dispersa
-              <br className="hidden sm:block" /> ao conhecimento{" "}
-              <span className="text-bronze">verificável</span>.
+              Da informação dispersa ao conhecimento <span className="text-bronze">verificável</span>.
             </h1>
-            <p className="mt-8 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">
-              A Scrutiniums organiza fontes públicas, registros oficiais e séries
-              setoriais com estatística e método declarado. Cada análise diz de onde
-              veio, como foi feita — e onde termina a certeza.
-            </p>
-            <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <BotaoLink href="/cadastro">Criar acesso</BotaoLink>
-              <Link
-                href="/entrar"
-                className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
-              >
-                Já tenho cadastro
-              </Link>
-            </div>
-            <p className="rotulo mt-9 text-mineral">
-              100% gratuito · sem assinatura · sem cobrança
+            <p className="mt-7 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">
+              {observatoriosPorExtenso(true)} sobre crédito, setor elétrico, serviços públicos e contas da União e
+              dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o
+              que o dado não permite afirmar.
             </p>
           </div>
-
-          <aside
-            aria-label="Origem do nome Scrutiniums"
-            className="hidden lg:col-span-3 lg:col-start-10 lg:flex lg:flex-col lg:justify-between lg:border-l lg:border-linha lg:pl-10"
-          >
-            <LogoMark size={38} />
-            <div className="mt-16">
-              <p className="font-serif text-2xl text-carvao">
-                scru<span className="text-bronze">·</span>ti
-                <span className="text-bronze">·</span>ni
-                <span className="text-bronze">·</span>um
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-mineral">
-                substantivo latino: exame atento; verificação minuciosa, peça por
-                peça, do que se afirma.
-              </p>
-              <div aria-hidden="true" className="mt-9 h-px w-10 bg-bronze" />
-              <p className="rotulo mt-4 text-mineral">Método antes da conclusão</p>
+          <div className="lg:col-span-4 lg:border-l lg:border-linha lg:pl-8">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+              <BotaoLink href="#observatorios">Conhecer os observatórios</BotaoLink>
             </div>
-          </aside>
+            <ul className="mt-6 space-y-2 text-sm text-carvao-muted">
+              <li className="flex gap-3">
+                <span aria-hidden="true" className="mt-[0.55rem] h-px w-4 shrink-0 bg-bronze" />
+                Leitura aberta, sem cadastro
+              </li>
+              <li className="flex gap-3">
+                <span aria-hidden="true" className="mt-[0.55rem] h-px w-4 shrink-0 bg-bronze" />
+                Fonte, período e limitações em cada número
+              </li>
+              <li className="flex gap-3">
+                <span aria-hidden="true" className="mt-[0.55rem] h-px w-4 shrink-0 bg-bronze" />
+                Gratuito, sem assinatura
+              </li>
+            </ul>
+          </div>
         </div>
+
+        <nav aria-label="Índice dos observatórios" className="mt-12 md:mt-16">
+          <ol className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+            {DOMINIOS.map((d, i) => {
+              const v = vitrines[d.id];
+              const a = ACENTO[d.acento];
+              const ultimo = i === DOMINIOS.length - 1 && DOMINIOS.length % 2 === 1;
+              return (
+                <li key={d.id} className={ultimo ? "col-span-2 lg:col-span-1" : undefined}>
+                  <a
+                    href={`#obs-${d.id}`}
+                    className={`group relative block overflow-hidden bg-carvao ${ultimo ? "aspect-[2/1] lg:aspect-[4/5]" : "aspect-[4/5]"}`}
+                  >
+                    {/* ilustração editorial do observatório; o texto da lâmina nomeia o destino */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={v.imagem}
+                      alt=""
+                      width={480}
+                      height={600}
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    />
+                    <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-[3px] ${a.filete}`} />
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 bg-gradient-to-t from-carvao from-10% via-carvao/75 via-40% to-transparent to-80%"
+                    />
+                    <span className="absolute inset-x-0 bottom-0 flex flex-col p-4 md:p-5">
+                      <span className="rotulo text-marfim/75">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="mt-1.5 font-serif text-lg leading-snug text-marfim md:text-xl">{d.nomeCurto}</span>
+                      <span className="mt-2 text-xs leading-snug text-marfim/80">
+                        <span className="font-label text-sm tabular-nums text-marfim">{v.contagem.valor}</span>{" "}
+                        {v.contagem.unidade}
+                      </span>
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ol>
+          <p className="mt-4 text-xs text-mineral">
+            Ilustrações editoriais de cada observatório. Não representam dados nem lugares específicos.
+          </p>
+        </nav>
       </div>
     </section>
   );

@@ -1,88 +1,130 @@
 import Link from "next/link";
-import { DOMINIOS, type Dominio } from "@/lib/dominios";
-
-const ACENTO: Record<Dominio["acento"], { filete: string; texto: string; chip: string; hover: string }> = {
-  bronze: {
-    filete: "bg-bronze",
-    texto: "text-bronze-dark",
-    chip: "border-bronze/40 text-bronze-dark",
-    hover: "hover:border-bronze",
-  },
-  energia: {
-    filete: "bg-energia",
-    texto: "text-energia-dark",
-    chip: "border-energia/40 text-energia-dark",
-    hover: "hover:border-energia",
-  },
-  obee: {
-    filete: "bg-obee",
-    texto: "text-obee-dark",
-    chip: "border-obee/40 text-obee-dark",
-    hover: "hover:border-obee",
-  },
-};
+import { ACENTO } from "@/components/home/acentos";
+import { DOMINIOS, type DominioId } from "@/lib/dominios";
+import { atualizacaoObservatorio } from "@/lib/atualizacaoObservatorios";
+import type { Vitrine } from "@/lib/vitrine";
 
 /**
- * "Uma plataforma. Diferentes perspectivas.": a arquitetura de marca em uma dobra.
- * Cards editoriais do mesmo registro (src/lib/dominios.ts), cada um com o
- * acento do seu domínio; nenhum catálogo de funcionalidades.
+ * Um capítulo por observatório: pergunta, situação, atualidade lida das golds
+ * e os painéis publicados, com fontes ao pé. A situação (piloto, capítulos sem
+ * dados, ausência de notas) fica junto do nome, nunca em nota de rodapé.
  */
-export function SecaoObservatorios() {
+export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
   return (
-    <section id="observatorios" aria-labelledby="observatorios-titulo" className="border-b border-linha bg-papel">
-      <div className="mx-auto max-w-page px-6 py-20 md:py-28">
-        <p className="rotulo text-mineral">Arquitetura da plataforma</p>
-        <h2
-          id="observatorios-titulo"
-          className="mt-6 max-w-3xl font-serif text-[clamp(2rem,4.6vw,3.2rem)] leading-[1.1] text-carvao"
-        >
-          Uma plataforma. Diferentes perspectivas.
-        </h2>
-        <p className="mt-6 max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">
-          A Scrutiniums organiza dados públicos, registros oficiais e séries setoriais para transformar
-          informação dispersa em conhecimento verificável. Hoje, essa infraestrutura reúne
-          Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais e Contas Públicas Estaduais.
-        </p>
+    <section id="observatorios" aria-labelledby="observatorios-titulo" className="scroll-mt-4 bg-papel">
+      <div className="mx-auto max-w-page px-6 pb-8 pt-20 md:pt-28">
+        <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-7">
+            <p className="rotulo text-mineral">Os observatórios</p>
+            <h2
+              id="observatorios-titulo"
+              className="mt-6 font-serif text-[clamp(2rem,4.4vw,3.1rem)] leading-[1.1] text-carvao [text-wrap:balance]"
+            >
+              O que cada observatório já publica
+            </h2>
+          </div>
+          <p className="max-w-prose2 leading-relaxed text-carvao-muted lg:col-span-5 lg:self-end">
+            Painéis em produção, as fontes que os alimentam e a data do dado mais recente. O que ainda é piloto ou
+            método proposto aparece identificado como tal.
+          </p>
+        </div>
 
-        <ul className="mt-14 grid gap-6 lg:grid-cols-2">
+        <div className="mt-14 md:mt-20">
           {DOMINIOS.map((d, i) => {
+            const v = vitrines[d.id];
             const a = ACENTO[d.acento];
+            const at = atualizacaoObservatorio(d.id);
             return (
-              <li key={d.id}>
-                <article
-                  aria-labelledby={`obs-${d.id}-titulo`}
-                  className={`group relative flex h-full flex-col border border-linha bg-superficie p-8 transition-colors ${a.hover}`}
-                >
-                  <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-[3px] ${a.filete}`} />
-                  <p className="rotulo text-mineral">
-                    Observatório {String(i + 1).padStart(2, "0")} · {d.nomeCurto}
+              <article
+                key={d.id}
+                id={`obs-${d.id}`}
+                aria-labelledby={`obs-${d.id}-titulo`}
+                className="grid scroll-mt-6 gap-10 border-t border-linha py-14 md:py-16 lg:grid-cols-12 lg:gap-8"
+              >
+                <div className="lg:col-span-4 lg:pr-4">
+                  <p className="rotulo flex items-center gap-3 text-mineral">
+                    <span aria-hidden="true" className={`h-[3px] w-8 ${a.filete}`} />
+                    Observatório {String(i + 1).padStart(2, "0")}
                   </p>
-                  <h3 id={`obs-${d.id}-titulo`} className="mt-5 font-serif text-2xl leading-snug text-carvao md:text-[1.75rem]">
+                  <h3
+                    id={`obs-${d.id}-titulo`}
+                    className="mt-5 font-serif text-[1.65rem] leading-snug text-carvao md:text-[1.85rem]"
+                  >
                     {d.nome}
                   </h3>
-                  <p className={`mt-5 font-serif text-lg italic leading-relaxed ${a.texto}`}>{d.pergunta}</p>
-                  <p className="mt-5 flex-1 text-sm leading-relaxed text-carvao-muted md:text-base">{d.descricao}</p>
-                  <ul className="mt-7 flex flex-wrap gap-2" aria-label="Temas">
-                    {d.chips.map((c) => (
-                      <li key={c} className={`rotulo border px-2.5 py-1 ${a.chip}`}>
-                        {c}
+                  <p className={`mt-4 font-serif text-lg italic leading-relaxed ${a.texto}`}>{d.pergunta}</p>
+
+                  {v.situacao && (
+                    <p className="mt-6 border-l-2 border-linha pl-4 text-sm leading-relaxed text-carvao-muted">
+                      {v.situacao}
+                    </p>
+                  )}
+
+                  <div className="mt-6">
+                    <p className="rotulo text-mineral">{at.rotulo}</p>
+                    <ul className="mt-2 space-y-1 text-sm leading-relaxed text-carvao-muted">
+                      {at.linhas.map((l) => (
+                        <li key={l}>{l}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+                    <Link
+                      href={d.rotaRaiz}
+                      className="rotulo inline-flex min-h-[44px] items-center gap-2 border border-carvao bg-carvao px-5 text-marfim transition-colors hover:bg-carvao-soft"
+                    >
+                      {d.cta} <span aria-hidden="true">→</span>
+                    </Link>
+                    {v.metodologia && (
+                      <Link
+                        href={v.metodologia.href}
+                        className={`rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-carvao ${a.decoracao}`}
+                      >
+                        {v.metodologia.rotulo}
+                      </Link>
+                    )}
+                  </div>
+                </div>
+
+                <div className="lg:col-span-8">
+                  <p className="rotulo flex flex-wrap items-baseline justify-between gap-2 text-mineral">
+                    <span>Painéis</span>
+                    <span>
+                      <span className="tabular-nums text-carvao">{v.contagem.valor}</span> {v.contagem.unidade}
+                    </span>
+                  </p>
+                  <ul className="mt-3 grid border-t border-linha sm:grid-cols-2 sm:gap-x-8">
+                    {v.paineis.map((p) => (
+                      <li key={p.href} className="border-b border-linha">
+                        <Link href={p.href} className="group flex min-h-[44px] flex-col py-4">
+                          <span
+                            className={`flex items-baseline justify-between gap-3 font-serif text-lg leading-snug text-carvao transition-colors ${a.hover}`}
+                          >
+                            {p.titulo}
+                            <span
+                              aria-hidden="true"
+                              className="translate-x-0 font-sans text-sm text-mineral transition-transform group-hover:translate-x-0.5"
+                            >
+                              →
+                            </span>
+                          </span>
+                          <span className="mt-1 text-sm leading-relaxed text-mineral">{p.descricao}</span>
+                        </Link>
                       </li>
                     ))}
                   </ul>
-                  <Link
-                    href={d.rotaRaiz}
-                    className="rotulo mt-9 inline-flex min-h-[44px] items-center gap-2 self-start border border-carvao px-5 text-carvao transition-colors hover:bg-carvao hover:text-marfim"
-                  >
-                    {d.cta} <span aria-hidden="true">→</span>
-                  </Link>
-                </article>
-              </li>
+                  {v.fontes && (
+                    <p className="mt-6 text-sm leading-relaxed text-carvao-muted">
+                      <span className="rotulo mr-2 text-mineral">Fontes</span>
+                      {v.fontes}
+                    </p>
+                  )}
+                </div>
+              </article>
             );
           })}
-        </ul>
-        <p className="rotulo mt-10 text-mineral">
-          Mesma conta · mesmo método · mesma estrutura de fontes e evidências
-        </p>
+        </div>
       </div>
     </section>
   );
