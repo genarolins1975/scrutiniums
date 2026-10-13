@@ -38,6 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...MODULOS_ENERGIA.map((m) => rota(m.href, m.integrado ? 0.9 : 0.5, m.integrado ? "daily" : "monthly")),
     ...DESTINOS_NAVEGACAO.filter((d) => d.publicado && !MODULOS_ENERGIA.some((m) => m.href === d.href) && !d.href.includes("#")).map((d) => rota(d.href, 0.8, "weekly")),
     rota("/setor-eletrico/metodologia", 0.7, "monthly"),
+    ...["mercado/comercializacao", "empresas/analise", "territorio/atlas", "transicao/riscos"].map(p => rota(`/setor-eletrico/${p}`, 0.7, "monthly")),
     rota("/eficiencia-estatal", 0.7, "monthly"),
     ...["", "deficit", "aluguel-renda", "inadequacao", "dados"].map(s => rota(`/eficiencia-estatal/habitacao${s ? "/"+s : ""}`, 0.6, "yearly")),
     ...["", "agua", "esgoto", "residuos", "drenagem", "recursos", "dados"].map(s => rota(`/eficiencia-estatal/saneamento${s ? "/"+s : ""}`, 0.6, "yearly")),

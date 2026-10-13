@@ -1,3 +1,4 @@
+import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -221,6 +222,7 @@ export default function MercadoPage() {
           <Termo slug="ess">ESS</Termo>). Esta página mostra quanto do consumo está no mercado livre; as outras três tratam dos agentes e da migração, do ajuste das hidrelétricas (MRE e GSF) e dos encargos.
         </CabecalhoModulo>
 
+        <AtalhoLeitura href="/setor-eletrico/mercado/comercializacao" titulo="Como a operação física se conecta aos contratos?" texto="Entenda a comercialização e experimente o efeito dos horários na liquidação." />
         <ModoProfundidade>
           <Bloco id="livre-regulado">
             <PainelEvidencia

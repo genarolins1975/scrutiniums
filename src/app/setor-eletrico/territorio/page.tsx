@@ -1,3 +1,4 @@
+import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -130,6 +131,7 @@ export default function TerritorioPage() {
           }
         />
 
+        <AtalhoLeitura href="/setor-eletrico/territorio/atlas" titulo="Onde estão a geração e os novos projetos?" texto="Alterne quatro camadas por UF, com a mediana, o período e a unidade de cada medida." />
         <ModoProfundidade>
             <PainelEvidencia
               id={ID_PAINEL}
