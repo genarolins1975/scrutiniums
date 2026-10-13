@@ -31,3 +31,4 @@ __pycache__/
 # Saída derivada do payload canônico; materializada no prebuild e no setup Vitest.
 /public/eficiencia/trabalho-renda/snapshot.json
 /public/eficiencia/trabalho-renda/snapshot.json.tmp
+/vitest-resultado.json
