@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { GravuraEnergia } from "./GravuraEnergia";
 import Link from "@/components/energia/LinkSemPrefetch";
 import { ETAPAS_ENERGIA } from "@/lib/energia/percurso-visual";
 import { observarAncoras, guardarAncora } from "./navegacao-ancoras";
@@ -48,7 +48,7 @@ export function PercursoVisualEnergia() {
           if (seguinte === null) return;
           event.preventDefault(); selecionar(seguinte); botoes.current[seguinte]?.focus();
         }}>
-        <span className={styles.objeto} aria-hidden="true" style={{ backgroundPosition: `${i * 100 / 3}% center` }} />
+        <GravuraEnergia etapa={e.id} />
         <span className={styles.botao}><span>{e.numero}</span>{e.nome}<span className={styles.sinal} aria-hidden="true">{ativa === i ? "✓" : "↓"}</span></span>
         <span className={styles.pergunta}>{e.pergunta}</span>
         <span className={styles.encontra}>{e.encontra}</span>
@@ -56,8 +56,7 @@ export function PercursoVisualEnergia() {
     </div>
     <div id="percurso-detalhe" className={styles.detalhe} role="region" aria-labelledby="percurso-etapa-titulo">
       <div className={styles.miniatura}>
-        <Image src="/energia/arte/sistema-eletrico-v1.webp" alt="" fill sizes="(max-width: 760px) 1px, 280px" className={styles.recorte} style={{ objectPosition: ["20% 60%", "69% 40%", "76% 57%", "97% 40%"][ativa] }} />
-        <span>{etapa.pergunta}</span>
+        <GravuraEnergia etapa={etapa.id} />
       </div>
       <div className={styles.explicacao}>
         <p className={styles.sobretitulo}>{etapa.numero} · {etapa.nome}</p>

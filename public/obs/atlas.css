@@ -1,5 +1,5 @@
 /* Scoped to the map. Existing navigation, charts and theme tokens are retained. */
-#view-mapa.has-credit-atlas { --atlas-petrol:#102e36; --atlas-mint:#a6e3d7; --atlas-cream:#f7f5ec; }
+#view-mapa.has-credit-atlas { --atlas-petrol:#102e36; --atlas-mint:#a3e3d7; --atlas-cream:#f8f7f2; }
 #view-mapa.has-credit-atlas .obs-credit-hero > div > p:not(.obs-eyebrow) { color:var(--text-2); }
 #view-mapa .atlas-eyebrow { font:500 11px/1.5 var(--sans,Inter,sans-serif); text-transform:uppercase; letter-spacing:.12em; margin:0 0 10px; }
 #view-mapa .atlas-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-block:1px solid var(--border); margin:24px 0 12px; }
@@ -120,7 +120,7 @@
 #view-mapa .atlas-wheel { display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:14px; aspect-ratio:auto; max-width:none; margin:24px 0; }
 #view-mapa .atlas-stage-button { position:relative; inset:auto; transform:none; width:100%; min-width:0; grid-column:span 2; flex-direction:row; flex-wrap:wrap; justify-content:center; gap:8px; padding:0 0 12px; border-radius:0; border-bottom:2px solid transparent; }
 #view-mapa .atlas-stage-button:nth-child(5) { grid-column:2 / span 2; }
-#view-mapa .atlas-artifact { display:block; width:100%; aspect-ratio:1; background-image:url('/obs/arte/etapas-v1.webp'); background-size:400% 200%; background-repeat:no-repeat; border-radius:3px; }
+#view-mapa .atlas-artifact { display:block; width:100%; aspect-ratio:1; background-image:url('/obs/arte/etapas-gravura-v1.webp'); background-size:400% 200%; background-repeat:no-repeat; border-radius:3px; }
 #view-mapa .atlas-stage-name { font-size:12px; max-width:calc(100% - 46px); text-align:left; }
 #view-mapa .atlas-stage-number { flex-shrink:0; width:28px; height:28px; font-size:13px; }
 #view-mapa .atlas-stage-button[aria-pressed=true] { border-bottom-color:var(--atlas-mint); }

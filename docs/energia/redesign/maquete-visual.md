@@ -1,5 +1,6 @@
 # Página inicial: direção visual aprovada em 11/10/2026
 
+> Registro histórico: as artes abaixo foram substituídas pela [harmonização em gravura editorial de 13/10/2026](../../observatorios/HARMONIZACAO_FIGURAS.md).
 A inicial usa uma maquete conceitual como navegação para quatro etapas: geração, transmissão, distribuição e consumo. Os números continuam derivados de `sinaisDaInicial()`; não foram incorporados valores à imagem.
 
 ## Ativos e procedência

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import "../../public/observatorios.css";
+import "../../public/observatorios-gravuras.css";
 import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
 
 /**

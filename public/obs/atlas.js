@@ -40,11 +40,11 @@
     const oldTitle = hero.querySelector('h1'); const oldLabel = node('p', 'atlas-eyebrow', oldTitle.textContent); oldTitle.replaceWith(oldLabel);
     orientation.append(...hero.childNodes); hero.after(orientation);
     hero.classList.add('atlas-city'); hero.setAttribute('aria-labelledby', 'obs-credit-titulo');
-    const image = node('img', 'atlas-city-image'); image.src = '/obs/arte/economia-v1.webp'; image.width = 1774; image.height = 887; image.fetchPriority = 'high'; image.alt = 'Maquete conceitual de instituições, moradias, comércio e indústria; não representa uma localização real.';
+    const image = node('img', 'atlas-city-image'); image.src = '/obs/arte/economia-gravura-v1.webp'; image.width = 1600; image.height = 800; image.fetchPriority = 'high'; image.alt = 'Gravura conceitual de instituições, moradias, comércio e indústria; não representa uma localização real.';
     const copy = node('div', 'atlas-city-copy'); const title = node('h1', '', 'O crédito que conecta pessoas e negócios.'); title.id = 'obs-credit-titulo';
     const cta = link('Explorar o ciclo ↓', '#mp-ciclo'); cta.className = 'obs-primary';
     copy.append(subtitle('Observatório Brasileiro de Crédito'), title, node('p', '', 'Entenda de onde vêm os recursos, quem empresta e como o crédito chega à economia.'), cta);
-    const points = node('nav', 'atlas-city-points'); points.setAttribute('aria-label', 'Explore a maquete do crédito');
+    const points = node('nav', 'atlas-city-points'); points.setAttribute('aria-label', 'Explore os temas do crédito');
     [['Instituições', '/institutions'], ['Habitação', '/housing-credit'], ['Empresas', '/credit-panorama?pcli=PJ'], ['Famílias', '/credit-panorama?pcli=PF']].forEach(([name, route], i) => {
       const a = link(name, '/observatorio' + route); a.className = `atlas-city-point point-${i}`; points.append(a);
     });
@@ -59,8 +59,8 @@
     const section = node('section', 'atlas-doors'); section.setAttribute('aria-label', 'Instituições e território');
     [['Como as instituições se comparam?', 'Selecione instituições e indicadores de balanço. Compare séries e dispersões no mesmo período e perímetro do IF.data.', 'Abrir o comparador ↗', '/observatorio/compare'], ['Como está o crédito na minha região?', 'Compare saldo, inadimplência e perfis dos tomadores nas 27 UFs, com dados do SCR. A página informa o período e a cobertura de cada medida.', 'Explorar território ↗', '/observatorio/states']].forEach(([title, desc, action, href], i) => {
       const a = link('', href); const copy = node('div'); copy.append(node('h3', '', title), node('p', '', desc), node('span', '', action));
-      const img = node('img'); img.src = '/obs/arte/economia-v1.webp'; img.alt = ''; img.width = 1774; img.height = 887; img.loading = 'lazy'; img.style.objectPosition = i ? '16% 75%' : '68% 48%';
-      a.append(img, copy); section.append(a);
+      const art = artifact(i ? 3 : 1); art.classList.add('atlas-door-art');
+      a.append(art, copy); section.append(a);
     }); return section;
   }
 

@@ -24,7 +24,7 @@ describe("percurso visual da energia", () => {
     expect(html).toContain("Potência instalada é capacidade");
   });
   it("os ativos da página cabem no orçamento de 700 KB", () => {
-    const peso = ["sistema-eletrico-v1", "etapas-eletricas-v1", "conta-regiao-v1"].reduce((s, n) => s + statSync(join(process.cwd(), `public/energia/arte/${n}.webp`)).size, 0);
+    const peso = ["sistema-gravura-v1", "etapas-gravura-v1", "conta-gravura-v1"].reduce((s, n) => s + statSync(join(process.cwd(), `public/energia/arte/${n}.webp`)).size, 0);
     expect(peso).toBeLessThan(700 * 1024);
   });
 });

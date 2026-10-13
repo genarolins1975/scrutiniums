@@ -1,31 +1,32 @@
-.percurso { background:var(--atlas-fundo);color:var(--atlas-texto);padding:40px;margin:0 0 48px;scroll-margin-top:140px }
+.percurso { background:var(--atlas-fundo);color:var(--atlas-texto);padding:32px;margin:0 0 48px;scroll-margin-top:140px }
 .cabecalho h2 { font:400 clamp(30px,3.5vw,46px)/1.15 var(--font-serif),Georgia,serif;margin:10px 0 12px;max-width:850px }
 .cabecalho>p:last-child { font-size:17px;color:var(--atlas-texto-secundario) }
 .sobretitulo { font-size:11px;line-height:1.5;letter-spacing:.12em;text-transform:uppercase;color:var(--atlas-texto-secundario) }
 .etapas { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin:12px 0 28px }
 .etapas>button { min-width:0;scroll-margin-top:140px;text-align:left;background:transparent;border:0;padding:0 }
-.objeto { display:block;aspect-ratio:.75;background-image:url('/energia/arte/etapas-eletricas-v1.webp');background-size:400% auto;background-repeat:no-repeat;transition:transform .2s ease }
-.etapas>button:hover .objeto { transform:translateY(-5px) }
-.botao { display:flex;align-items:center;gap:10px;border:1px solid var(--atlas-borda-controle);border-radius:28px;min-height:48px;padding:6px 14px;font-size:14px;color:var(--atlas-texto) }
-.botao>span:first-child { font-size:12px;border-right:1px solid var(--atlas-borda-controle);padding-right:10px }.sinal { margin-left:auto }
-.etapas>button[aria-pressed=true] .botao { background:var(--atlas-acento);color:var(--atlas-fundo);border-color:var(--atlas-acento) }
+.botao { display:flex;align-items:center;gap:10px;border:0;border-bottom:2px solid var(--atlas-separador);border-radius:0;min-height:56px;padding:14px 0;font:400 22px/1.3 var(--font-serif),Georgia,serif;color:var(--atlas-texto) }
+.botao>span:first-child { font:12px var(--font-sans),sans-serif;color:var(--atlas-texto-secundario);padding-right:2px }.sinal { margin-left:auto }
+.etapas>button[aria-pressed=true] .botao { color:var(--atlas-acento);border-color:var(--atlas-acento) }
 .detalhe { display:grid;grid-template-columns:230px minmax(0,1.5fr) minmax(0,1fr);gap:28px;border-top:1px solid var(--atlas-separador);padding-top:28px;min-height:240px }
-.miniatura { position:relative;overflow:hidden;min-height:190px }.recorte { object-fit:cover }.miniatura>span { position:absolute;inset:auto 0 0;padding:40px 16px 14px;background:linear-gradient(transparent,var(--atlas-fundo));font:400 19px/1.3 var(--font-serif),Georgia,serif }
+.miniatura { align-self:start;overflow:hidden;aspect-ratio:1 }
 .explicacao h3 { font:400 27px/1.22 var(--font-serif),Georgia,serif;margin:8px 0 12px }.explicacao>p:not(.sobretitulo) { font-size:14px;line-height:1.65;color:var(--atlas-texto-secundario) }
 .links { display:flex;flex-wrap:wrap;gap:0 20px;margin-top:12px }.links a,.nota a { color:var(--atlas-link);text-decoration:underline;text-underline-offset:4px }.links a { display:inline-flex;align-items:center;min-height:44px;font-size:13px }
 .conceito { border-left:1px solid var(--atlas-separador);padding-left:24px;align-self:center }.conceito p { font-size:14px;line-height:1.65;margin-top:12px;color:var(--atlas-texto-secundario) }
 .nota { font-size:12px;line-height:1.7;color:var(--atlas-texto-secundario);border-top:1px solid var(--atlas-separador);margin-top:28px;padding-top:18px }.nota a { display:inline-flex;align-items:center;min-height:44px }
 .percurso button:focus-visible,.percurso a:focus-visible { outline:3px solid var(--atlas-foco-inverso);outline-offset:5px }
-@media(max-width:1100px) { .percurso { padding:28px }.detalhe { grid-template-columns:180px minmax(0,1fr) }.conceito { grid-column:2;padding-left:16px }.etapas { gap:12px }.botao { font-size:13px;padding-inline:10px;gap:7px } }
-@media(max-width:760px) { .percurso { padding:24px 18px;margin-bottom:32px;scroll-margin-top:120px }.cabecalho>p:last-child { font-size:15px }.etapas { grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px }.objeto { aspect-ratio:.75 }.botao { font-size:13px;padding:6px 10px;gap:8px }.detalhe { grid-template-columns:minmax(0,1fr);gap:20px;padding-top:24px;min-height:0 }.miniatura { display:none }.conceito { grid-column:auto }.explicacao h3 { font-size:26px }.nota { margin-top:20px }.etapas>button { scroll-margin-top:120px } }
-@media(prefers-reduced-motion:reduce) { .objeto { transition:none }.etapas>button:hover .objeto { transform:none } }
-@media print { .percurso { break-inside:avoid }.objeto { display:none }.percurso a,.percurso p,.percurso h2,.percurso h3,.percurso span { color:var(--cor-carvao) }.percurso { background:var(--cor-superficie) }.miniatura { display:none }.detalhe { grid-template-columns:2fr 1fr } }
+@media(max-width:1100px) { .percurso { padding:28px }.detalhe { grid-template-columns:180px minmax(0,1fr) }.conceito { grid-column:2;padding-left:16px }.etapas { gap:12px }.botao { font-size:19px;gap:7px } }
+@media(max-width:760px) { .percurso { padding:24px 18px;margin-bottom:32px;scroll-margin-top:120px }.cabecalho>p:last-child { font-size:15px }.etapas { grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px }.botao { font-size:20px;padding:12px 0;gap:8px }.detalhe { grid-template-columns:minmax(0,1fr);gap:20px;padding-top:24px;min-height:0 }.miniatura { display:none }.conceito { grid-column:auto }.explicacao h3 { font-size:26px }.nota { margin-top:20px }.etapas>button { scroll-margin-top:120px } }
+@media print { .percurso { break-inside:avoid }.percurso a,.percurso p,.percurso h2,.percurso h3,.percurso span { color:var(--cor-carvao) }.percurso { background:var(--cor-superficie) }.miniatura { display:none }.detalhe { grid-template-columns:2fr 1fr } }
 
 .pergunta { display:block;color:var(--atlas-texto);font-size:14px;line-height:1.5;margin:14px 4px 6px }
 .encontra { display:block;color:var(--atlas-texto-secundario);font-size:12px;line-height:1.6;margin:0 4px }
 .explicacao .recorte { border-top:1px solid var(--atlas-separador);padding-top:12px }
 .etapas>button { display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start }
-.objeto { width:100% }
-@media(max-width:390px) { .botao { gap:5px;padding-inline:7px;font-size:12px }.botao>span:first-child { padding-right:5px }.pergunta { font-size:13px } }
+@media(max-width:390px) { .botao { gap:5px;font-size:18px }.botao>span:first-child { padding-right:5px }.pergunta { font-size:13px } }
 .etapas,.detalhe { scroll-margin-top:150px }
 .voltar { display:inline-flex;align-items:center;min-height:44px;margin-top:16px;font-size:13px;color:var(--atlas-link);text-decoration:underline;text-underline-offset:4px }
+
+.etapas>button:hover .botao { border-color:var(--atlas-acento) }
+@media(min-width:761px) and (max-width:1000px) { .etapas { grid-template-columns:repeat(2,minmax(0,1fr));gap:24px }.botao { font-size:22px } }
+@media(max-width:390px) { .etapas { grid-template-columns:1fr;gap:28px }.etapas>button { max-width:340px;width:100%;justify-self:center }.botao { font-size:24px }.pergunta { font-size:14px } }
+@media(forced-colors:active) { .botao { border-color:CanvasText }.etapas>button[aria-pressed=true] .botao { outline:2px solid Highlight } }

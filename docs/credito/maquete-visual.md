@@ -1,5 +1,6 @@
 # Maquete visual da inicial de Crédito
 
+> Registro histórico: as artes abaixo foram substituídas pela [harmonização em gravura editorial de 13/10/2026](../observatorios/HARMONIZACAO_FIGURAS.md).
 Direção aprovada pelo proprietário em 11/10/2026, após a publicação da inicial do setor elétrico. Escopo: página Mapa do Observatório. Preserva menu lateral, sete etapas, rotas, catálogo, trilhas, fontes, definições e cálculos.
 
 ## Arte
