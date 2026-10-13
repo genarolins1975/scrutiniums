@@ -95,7 +95,7 @@ export function EntrarSenhaForm({ de }: { de?: string }) {
           Prefere ou precisa entrar sem senha?{" "}
           <Link
             href="/entrar/sms"
-            className="text-bronze underline underline-offset-4 hover:text-bronze-dark"
+            className="text-bronze-dark underline underline-offset-4 hover:text-carvao"
           >
             Entrar com código por SMS
           </Link>

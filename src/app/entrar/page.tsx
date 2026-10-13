@@ -46,13 +46,25 @@ export default async function EntrarPage({
         <div className="w-full max-w-md">
           <section className="border border-linha bg-papel p-8 md:p-10">
             <h1 className="font-serif text-3xl text-carvao">Entrar</h1>
-            <p className="mt-3 text-sm text-carvao-muted">
-              Use o e-mail e a senha da sua conta.
-            </p>
+            {de ? (
+              <p className="mt-3 text-sm leading-relaxed text-carvao-muted">
+                Os painéis dos observatórios são abertos a quem tem conta. Entre com seu e-mail e senha e você
+                volta direto à página que pediu.
+              </p>
+            ) : (
+              <p className="mt-3 text-sm text-carvao-muted">
+                Use o e-mail e a senha da sua conta.
+              </p>
+            )}
             <div className="mt-8">
               <EntrarSenhaForm de={de} />
             </div>
           </section>
+          {de && (
+            <p className="mt-6 text-center text-sm leading-relaxed text-carvao-muted">
+              Sem conta ainda? O cadastro é gratuito e, ao concluí-lo, você segue para a mesma página.
+            </p>
+          )}
         </div>
       </main>
 

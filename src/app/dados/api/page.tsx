@@ -34,8 +34,8 @@ export default function ApiPage() {
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <PageTitle
           label="Dados abertos"
-          title="API pública de leitura"
-          description="Os mesmos arquivos JSON que alimentam o Observatório do crédito, abertos para leitura por programa, sem cadastro e sem chave."
+          title="API de leitura"
+          description="Os mesmos arquivos JSON que alimentam o Observatório do crédito, disponíveis para quem está conectado com a conta gratuita, na mesma sessão do navegador."
         />
         <SeloFrescor geradoEm={geradoEmPublicado()} className="mt-6" />
 
@@ -43,14 +43,13 @@ export default function ApiPage() {
           <section aria-labelledby="api-acesso">
             <h2 id="api-acesso" className="font-serif text-2xl text-carvao">Acesso</h2>
             <p className="mt-3">
-              Base: <code className={code}>{BASE_API}</code>. Cada arquivo é um GET simples, sem autenticação, servido com
-              {" "}<code className={code}>Access-Control-Allow-Origin: *</code> e{" "}
-              <code className={code}>Cache-Control: public, max-age=3600, stale-while-revalidate=86400</code>: uma resposta pode
-              ter até uma hora de cache na rede de entrega. Não há backend nem consulta parametrizada: filtre do seu lado.
+              Base: <code className={code}>{BASE_API}</code>. Cada arquivo é um GET simples, servido a quem tem sessão
+              ativa na plataforma: a leitura acontece no próprio navegador conectado à conta gratuita, sem chave adicional.
+              Respostas podem ter até uma hora de cache. Não há backend nem consulta parametrizada: filtre do seu lado.
             </p>
             <p className="mt-3">
-              Exemplo: <code className={code}>curl {BASE_API}meta.json</code>. Para acompanhar por RSS, a central de alertas está em{" "}
-              <a href={URL_FEED_ALERTAS} className="text-bronze underline underline-offset-4">{URL_FEED_ALERTAS}</a>.
+              Exemplo: abra <code className={code}>{BASE_API}meta.json</code> com a sessão iniciada. O feed RSS da central de
+              alertas segue a mesma regra: <a href={URL_FEED_ALERTAS} className="text-bronze underline underline-offset-4">{URL_FEED_ALERTAS}</a>.
             </p>
           </section>
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { ACENTO } from "@/components/home/acentos";
 import { DOMINIOS, type DominioId } from "@/lib/dominios";
 import { atualizacaoObservatorio } from "@/lib/atualizacaoObservatorios";
@@ -25,7 +26,8 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
           </div>
           <p className="max-w-prose2 leading-relaxed text-carvao-muted lg:col-span-5 lg:self-end">
             Painéis em produção, as fontes que os alimentam e a data do dado mais recente. O que ainda é piloto ou
-            método proposto aparece identificado como tal.
+            método proposto aparece identificado como tal. Os painéis abrem com a conta gratuita; depois de entrar,
+            você segue direto para o painel escolhido.
           </p>
         </div>
 
@@ -72,6 +74,7 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
                   <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
                     <Link
                       href={d.rotaRaiz}
+                      prefetch={prefetchDoLink(d.rotaRaiz)}
                       className="rotulo inline-flex min-h-[44px] items-center gap-2 border border-carvao bg-carvao px-5 text-marfim transition-colors hover:bg-carvao-soft"
                     >
                       {d.cta} <span aria-hidden="true">→</span>
@@ -89,7 +92,16 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
 
                 <div className="lg:col-span-8">
                   <p className="rotulo flex flex-wrap items-baseline justify-between gap-2 text-mineral">
-                    <span>Painéis</span>
+                    <span className="flex items-center gap-2">
+                      Painéis
+                      <span className="flex items-center gap-1.5 normal-case tracking-normal text-carvao-muted">
+                        <svg aria-hidden="true" width="11" height="12" viewBox="0 0 11 12" fill="none" className="shrink-0">
+                          <rect x="0.75" y="5.25" width="9.5" height="6" stroke="currentColor" strokeWidth="1.2" />
+                          <path d="M2.75 5.25V3.5a2.75 2.75 0 0 1 5.5 0v1.75" stroke="currentColor" strokeWidth="1.2" />
+                        </svg>
+                        com conta gratuita
+                      </span>
+                    </span>
                     <span>
                       <span className="tabular-nums text-carvao">{v.contagem.valor}</span> {v.contagem.unidade}
                     </span>
@@ -97,7 +109,7 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
                   <ul className="mt-3 grid border-t border-linha sm:grid-cols-2 sm:gap-x-8">
                     {v.paineis.map((p) => (
                       <li key={p.href} className="border-b border-linha">
-                        <Link href={p.href} className="group flex min-h-[44px] flex-col py-4">
+                        <Link href={p.href} prefetch={prefetchDoLink(p.href)} className="group flex min-h-[44px] flex-col py-4">
                           <span
                             className={`flex items-baseline justify-between gap-3 font-serif text-lg leading-snug text-carvao transition-colors ${a.hover}`}
                           >

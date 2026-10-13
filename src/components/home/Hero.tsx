@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { BotaoLink } from "@/components/home/BotaoLink";
 import { ACENTO } from "@/components/home/acentos";
 import { DOMINIOS, type DominioId } from "@/lib/dominios";
-import { observatoriosPorExtenso } from "@/lib/acesso";
+import { ACESSO, observatoriosPorExtenso } from "@/lib/acesso";
 import type { Vitrine } from "@/lib/vitrine";
 
 /**
@@ -15,7 +16,7 @@ export function Hero({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
       <div className="mx-auto max-w-page px-6 pb-14 pt-14 md:pb-20 md:pt-20">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
           <div className="lg:col-span-8">
-            <p className="rotulo text-mineral">Plataforma pública de observatórios</p>
+            <p className="rotulo text-mineral">Observatórios de dados públicos</p>
             <h1
               id="hero-titulo"
               className="mt-6 max-w-4xl font-serif text-[clamp(2.4rem,5.4vw,4.25rem)] leading-[1.06] tracking-[-0.015em] text-carvao [text-wrap:balance]"
@@ -30,12 +31,18 @@ export function Hero({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
           </div>
           <div className="lg:col-span-4 lg:border-l lg:border-linha lg:pl-8">
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-              <BotaoLink href="#observatorios">Conhecer os observatórios</BotaoLink>
+              <BotaoLink href="/cadastro">{ACESSO.ctaConta}</BotaoLink>
+              <Link
+                href="/entrar"
+                className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
+              >
+                Já tenho cadastro
+              </Link>
             </div>
             <ul className="mt-6 space-y-2 text-sm text-carvao-muted">
               <li className="flex gap-3">
                 <span aria-hidden="true" className="mt-[0.55rem] h-px w-4 shrink-0 bg-bronze" />
-                Leitura aberta, sem cadastro
+                Todos os painéis com uma conta gratuita
               </li>
               <li className="flex gap-3">
                 <span aria-hidden="true" className="mt-[0.55rem] h-px w-4 shrink-0 bg-bronze" />

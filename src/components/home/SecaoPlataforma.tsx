@@ -34,7 +34,7 @@ function itens(): Item[] {
     {
       titulo: "Dados para reutilizar",
       descricao:
-        "CSV e Parquet com hash SHA-256 no Setor Elétrico; CSV, XLSX e API pública no Crédito; CSV na maior parte dos temas da Eficiência Estatal e nas Contas Estaduais; JSON nas Contas Federais.",
+        "Com a conta: CSV e Parquet com hash SHA-256 no Setor Elétrico; CSV, XLSX e API em JSON no Crédito; CSV na maior parte dos temas da Eficiência Estatal e nas Contas Estaduais; JSON nas Contas Federais.",
     },
     {
       titulo: "Erros corrigidos em público",

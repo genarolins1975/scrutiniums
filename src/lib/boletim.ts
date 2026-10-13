@@ -129,7 +129,7 @@ export function montarBoletim(agora: Date): Boletim | null {
     `${BASE}/observatorio/alerts`,
     "",
     ...(linhasVintages.length > 0 ? ["DATA-BASE DAS FONTES", ...linhasVintages, ""] : []),
-    "Todo o Observatório é aberto, sem cadastro:",
+    "Os painéis completos estão na sua conta:",
     `- Visão geral: ${BASE}/observatorio`,
     `- Apostas e crédito das famílias: ${BASE}/observatorio/bets-financial-risk`,
     `- Fraudes financeiras: ${BASE}/observatorio/financial-fraud`,

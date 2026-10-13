@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ehRotaPublica, prefetchDoLink } from "@/lib/rotasPublicas";
 
 const RECURSOS = [
   {
@@ -23,7 +24,7 @@ const RECURSOS = [
     escopo: "Crédito",
     titulo: "API pública",
     href: "/dados/api",
-    descricao: "Os arquivos publicados do Observatório em JSON, com contrato versionado e leitura de qualquer origem.",
+    descricao: "Os arquivos publicados do Observatório em JSON, com contrato versionado, para quem está conectado.",
   },
   {
     escopo: "Setor Elétrico",
@@ -76,16 +77,19 @@ export function SecaoRecursos() {
             </h2>
           </div>
           <p className="max-w-prose2 leading-relaxed text-carvao-muted lg:col-span-5 lg:self-end">
-            Resumos, alertas, catálogos e arquivos abertos, sem cadastro. Cada recurso indica o observatório a que
-            pertence.
+            Resumos, alertas, catálogos e arquivos disponíveis com a conta gratuita. Cada recurso indica o
+            observatório a que pertence.
           </p>
         </div>
 
         <ul className="mt-12 grid border-t border-linha sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-3">
           {RECURSOS.map((r) => (
             <li key={r.href} className="border-b border-linha">
-              <Link href={r.href} className="group flex h-full min-h-[44px] flex-col py-6">
-                <span className="rotulo text-mineral">{r.escopo}</span>
+              <Link href={r.href} prefetch={prefetchDoLink(r.href)} className="group flex h-full min-h-[44px] flex-col py-6">
+                <span className="rotulo flex items-center justify-between gap-2 text-mineral">
+                  {r.escopo}
+                  {!ehRotaPublica(r.href) && <span className="normal-case tracking-normal">com conta</span>}
+                </span>
                 <span className="mt-2 flex items-baseline justify-between gap-3 font-serif text-xl leading-snug text-carvao transition-colors group-hover:text-bronze-dark">
                   {r.titulo}
                   <span aria-hidden="true" className="font-sans text-sm text-mineral transition-transform group-hover:translate-x-0.5">

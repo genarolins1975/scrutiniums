@@ -3,6 +3,7 @@ import {createRequire} from 'node:module';
 import {mkdirSync,readFileSync,writeFileSync} from 'node:fs';
 import {resolve,dirname} from 'node:path';
 import {createHash} from 'node:crypto';
+import {autenticarAuditoria} from '../sessao-auditoria.mjs';
 const require=createRequire(import.meta.url);
 const base=process.env.BASE_URL??'http://127.0.0.1:3100';
 const root='/eficiencia-estatal/mobilidade-transporte/oportunidades';
@@ -10,6 +11,8 @@ const api='/api/eficiencia-mobilidade/oportunidades';
 const g=JSON.parse(readFileSync('data/eficiencia_mobilidade/aop/resumo.json','utf8'));
 const output='auditoria-interface-mobilidade';mkdirSync(output,{recursive:true});
 const browser=await chromium.launch({headless:true});
+// os painéis exigem sessão: páginas e fetch do script levam um cookie assinado com o COOKIE_SECRET do servidor local
+autenticarAuditoria(browser,base);
 const results=[],failures=[],steps=[];let page;
 const assert=(ok,message)=>{if(!ok)throw new Error(message);};
 async function step(name,fn){try{await fn();steps.push(name);console.log('APROVADO',name);}catch(e){failures.push({step:name,message:String(e?.message??e)});console.error('REPROVADO',name,e?.message);}}

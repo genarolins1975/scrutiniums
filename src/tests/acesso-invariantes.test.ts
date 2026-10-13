@@ -35,22 +35,28 @@ const linhasVisiveis = (p: string) =>
     .map((l, i) => ({ l, n: i + 1 }))
     .filter(({ l }) => !/^\s*(\/\/|\/?\*)/.test(l));
 
+// Desde 13/10/2026 os painéis exigem conta: nenhum texto visível volta a prometer leitura sem cadastro.
 const FRASES_ANTIGAS = [
-  /cadastro é a única exigência/i,
-  /única exigência/i,
-  /o cadastro é obrigatório/i,
+  /leitura (é )?aberta/i,
+  /abert[oa]s? para leitura/i,
+  /aberto,? sem cadastro/i,
+  /abertos,? sem cadastro/i,
+  /sem cadastro e sem (cobrança|chave)/i,
+  /acesso gratuito sem cadastro/i,
+  /a conta é opcional/i,
   /guarda preferências e a área de painéis/i,
 ];
 
 const EXTENSO: Record<string, number> = { um: 1, dois: 2, duas: 2, "três": 3, tres: 3, quatro: 4, cinco: 5, seis: 6, sete: 7, oito: 8, nove: 9 };
 
 describe("acesso: uma promessa", () => {
-  it("o middleware protege só /app; o resto é público", () => {
+  it("o middleware só libera a lista pública; painéis exigem sessão", () => {
     const m = ler("src/middleware.ts");
-    expect(m).toContain('if (!pathname.startsWith("/app")) return NextResponse.next();');
+    expect(m).toContain("if (ehRotaPublica(pathname)) return NextResponse.next();");
+    expect(m).toContain('matcher: ["/((?!_next/static|_next/image).*)"]');
   });
 
-  it("nenhuma página volta a dizer que o cadastro é exigido", () => {
+  it("nenhuma página volta a prometer leitura sem cadastro", () => {
     const achados: string[] = [];
     for (const p of FONTES)
       for (const { l, n } of linhasVisiveis(p))
@@ -78,8 +84,9 @@ describe("acesso: uma promessa", () => {
     expect(ACESSO.conta).toMatch(/boletim mensal/);
     expect(ler("src/app/app/(foco)/conta/page.tsx")).toMatch(/title="Boletim mensal"/);
     expect(ler("src/lib/boletim.ts")).toContain("marketingOptIn");
-    expect(ACESSO.conta).toMatch(/opcional/);
-    expect(ACESSO.leitura).toMatch(/sem cadastro/);
+    expect(ACESSO.conta).toMatch(/painéis/);
+    expect(ACESSO.leitura).toMatch(/quem tem conta/);
+    expect(ACESSO.leitura).toMatch(/gratuito/);
   });
 });
 

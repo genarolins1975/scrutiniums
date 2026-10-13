@@ -90,11 +90,14 @@ describe("API pública de leitura", () => {
     for (const d of contrato.diretorios) expect(existsSync(join(raiz, "public/obs/data/gold", d.diretorio)), d.diretorio).toBe(true);
   });
 
-  it("a página documenta acesso, cadência, esquema, versão e catálogo; o gold tem CORS aberto", () => {
+  it("a página documenta acesso, cadência, esquema, versão e catálogo; o gold exige sessão e não é compartilhado por CDN", () => {
     const p = ler("src/app/dados/api/page.tsx");
     for (const id of ["api-acesso", "api-cadencia", "api-esquema", "api-versao", "api-catalogo"]) expect(p).toContain(`id="${id}"`);
-    expect(ler("next.config.mjs")).toContain('{key: "Access-Control-Allow-Origin", value: "*"}');
-    expect(ler("src/app/sitemap.ts")).toContain('rota("/dados/api"');
+    // desde 13/10/2026 os painéis e seus arquivos exigem conta: sem CORS aberto, cache privado
+    const cfg = ler("next.config.mjs");
+    expect(cfg).not.toContain('{key: "Access-Control-Allow-Origin", value: "*"}');
+    expect(cfg).toContain('{source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]}');
+    expect(p).not.toMatch(/sem autenticação/);
   });
 });
 
