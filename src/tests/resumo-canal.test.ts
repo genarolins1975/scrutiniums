@@ -94,6 +94,20 @@ describe("assinatura do resumo: quem recebe", () => {
   });
 });
 
+describe("assinatura do resumo: envio sem duplicar", () => {
+  it("dois disparos simultâneos reservam a mesma edição uma vez só; falha devolve a reserva", async () => {
+    const agora = new Date("2026-10-13T12:00:00Z");
+    const { id, token } = await A.pedirAssinatura("dupla@exemplo.com", "diaria", agora);
+    await A.confirmarAssinatura(token, agora);
+    const r = (await linha("dupla@exemplo.com"))!;
+    const [x, y] = await Promise.all([A.reservarEnvio(r, "E9", agora), A.reservarEnvio(r, "E9", agora)]);
+    expect([x, y].filter(Boolean).length).toBe(1);
+    expect(await A.reservarEnvio(r, "E9", agora)).toBe(false);
+    await A.liberarEnvio(r);
+    expect(await A.reservarEnvio({ id, periodicidade: "diaria" }, "E9", agora)).toBe(true);
+  });
+});
+
 describe("assinatura do resumo: conteúdo", () => {
   it("o e-mail traz diagnóstico, fontes, link do resumo, frescor e saída em um clique", () => {
     const meta = JSON.parse(ler("public/obs/data/gold/meta.json"));
@@ -124,6 +138,10 @@ describe("assinatura do resumo: conteúdo", () => {
       expect(s).not.toContain("export async function GET");
     }
     expect(ler("src/app/api/resumo/enviar/route.ts")).toContain("bearerDisparoValido(req)");
+    expect(ler("src/app/api/resumo/enviar/route.ts")).toContain("await reservarEnvio(a, resumo.edicao, agora)");
+    expect(ler(".github/workflows/resumo-email.yml")).toContain("group: resumo-email");
+    // a página exibe a mesma versão que o cadastro grava
+    expect(ler("src/app/privacidade/page.tsx")).toContain("const VERSAO_POLITICA = PRIVACY_VERSION;");
     expect(ler("next.config.mjs")).toContain('"/api/resumo/enviar"');
     expect(ler("src/app/privacidade/page.tsx")).toContain('id="priv-resumo"');
     const wf = ler(".github/workflows/resumo-email.yml");

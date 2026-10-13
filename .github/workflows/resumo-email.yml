@@ -14,6 +14,11 @@ on:
 
 permissions: {}
 
+# um disparo por vez; a rota também reserva cada envio de forma atômica
+concurrency:
+  group: resumo-email
+  cancel-in-progress: false
+
 jobs:
   enviar:
     runs-on: ubuntu-latest

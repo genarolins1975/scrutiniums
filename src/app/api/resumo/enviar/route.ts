@@ -8,9 +8,10 @@ import {
   assinaturasAtivas,
   cabecalhosSaida,
   deveReceber,
+  liberarEnvio,
   montarResumoEmail,
   purgarPendentes,
-  registrarEnvio,
+  reservarEnvio,
   rodapeResumo,
 } from "@/lib/assinaturaResumo";
 
@@ -45,6 +46,8 @@ export async function POST(req: Request) {
   let falhas = 0;
   for (let i = 0; i < alvo.length; i++) {
     const a = alvo[i];
+    // reserva atômica antes do envio: outro disparo em paralelo não manda a mesma edição
+    if (!(await reservarEnvio(a, resumo.edicao, agora))) continue;
     if (i > 0) await pausa(INTERVALO_MS);
     const { sent } = await sendTransactionalEmail({
       to: a.email,
@@ -54,10 +57,10 @@ export async function POST(req: Request) {
     });
     if (sent) {
       enviados += 1;
-      await registrarEnvio(a.id, resumo.edicao, agora);
       await trackEvent("resumo_enviado");
     } else {
       falhas += 1;
+      await liberarEnvio(a);
     }
   }
   return NextResponse.json({ edicao: resumo.edicao, destinatarios: alvo.length, enviados, falhas });

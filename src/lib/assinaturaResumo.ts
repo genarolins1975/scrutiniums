@@ -13,7 +13,7 @@
  * - semanal: um e-mail às segundas-feiras (horário de Brasília) com a última
  *   publicação, com aviso de atraso quando ela tem 2 dias ou mais.
  */
-import { and, eq, lt } from "drizzle-orm";
+import { and, eq, isNull, lt, lte, ne, or } from "drizzle-orm";
 import { getDb, newId, schema } from "./db";
 import { BASE } from "./boletim";
 import { assinarToken, verificarToken } from "./tokenAssinado";
@@ -158,12 +158,33 @@ export function deveReceber(
   return false;
 }
 
-export async function registrarEnvio(id: string, edicao: string, agora: Date): Promise<void> {
+/**
+ * Reserva atômica do envio, ANTES de mandar o e-mail: o UPDATE só pega a linha se
+ * ela ainda não recebeu esta edição (diária) ou não recebeu nos últimos 6 dias
+ * (semanal). Dois disparos simultâneos não mandam a mesma edição duas vezes.
+ */
+export async function reservarEnvio(a: Pick<Assinatura, "id" | "periodicidade">, edicao: string, agora: Date): Promise<boolean> {
+  const db = await getDb();
+  const t = schema.assinaturasResumo;
+  const condicao =
+    a.periodicidade === "semanal"
+      ? or(isNull(t.ultimoEnvioEm), lte(t.ultimoEnvioEm, new Date(agora.getTime() - 6 * DIA_MS)))
+      : or(isNull(t.ultimaEdicao), ne(t.ultimaEdicao, edicao));
+  const r = await db
+    .update(t)
+    .set({ ultimaEdicao: edicao, ultimoEnvioEm: agora })
+    .where(and(eq(t.id, a.id), eq(t.status, "ATIVA"), condicao))
+    .returning({ id: t.id });
+  return r.length > 0;
+}
+
+/** Envio que falhou devolve a reserva: a assinatura volta a ser elegível no próximo disparo. */
+export async function liberarEnvio(a: Pick<Assinatura, "id" | "ultimaEdicao" | "ultimoEnvioEm">): Promise<void> {
   const db = await getDb();
   await db
     .update(schema.assinaturasResumo)
-    .set({ ultimaEdicao: edicao, ultimoEnvioEm: agora })
-    .where(eq(schema.assinaturasResumo.id, id));
+    .set({ ultimaEdicao: a.ultimaEdicao, ultimoEnvioEm: a.ultimoEnvioEm })
+    .where(eq(schema.assinaturasResumo.id, a.id));
 }
 
 export async function assinaturasAtivas(): Promise<Assinatura[]> {

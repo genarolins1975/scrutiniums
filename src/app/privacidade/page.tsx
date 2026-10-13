@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PRIVACY_VERSION } from "@/lib/versoesPoliticas";
 import { PublicHeader } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { PageTitle } from "@/components/ui/SectionHeading";
@@ -10,8 +11,8 @@ export const metadata: Metadata = {
     "Quais dados a Scrutiniums coleta, por que coleta, por quanto tempo guarda e como você exerce seus direitos.",
 };
 
-/** Mantida em sincronia com PRIVACY_VERSION em @/lib/onboarding. */
-const VERSAO_POLITICA = "2026-10";
+/** A mesma versão que o cadastro grava no aceite (src/lib/versoesPoliticas.ts). */
+const VERSAO_POLITICA = PRIVACY_VERSION;
 
 export default function PrivacidadePage() {
   return (
