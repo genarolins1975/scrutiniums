@@ -110,3 +110,9 @@ jobs:
         env:
           EXIGIR_BUILD_HTML: "1"
         run: npx vitest run
+
+      - name: Árvore versionada permanece limpa após build e testes
+        run: |
+          git diff --exit-code
+          git diff --cached --exit-code
+          test -z "$(git status --porcelain --untracked-files=normal)"

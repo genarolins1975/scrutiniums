@@ -23,3 +23,9 @@ Ambiente: macOS arm64, Python 3.12.13, Node 25.9.0, Next 14.2.35, Vitest 4.1.10.
 O build/setup materializou `public/eficiencia/trabalho-renda/snapshot.json` e alterou seus bytes versionados, reproduzindo M4. A alteração produzida pela validação foi restaurada antes da implementação. Nenhuma falha metodológica foi mascarada como ajuste de ambiente.
 
 Os complementos não resolvem a precisão municipal: erros e intervalos seguem ausentes. Pesos, coorte, referência temporal, pareceres e travas permanecem os da edição congelada. Sem merge ou deploy.
+
+## M4: materialização sem escrita em arquivo versionado
+
+`snapshot.json` é agora saída derivada, ignorada pelo Git, reconstruída do mesmo `snapshot.payload.gz.b64` canônico. O payload, seu hash esperado e os brutos permanecem intactos. O JSON anteriormente versionado tinha diferenças nos metadados `indicadores`, o que acionava a reescrita; não era mera diferença de espaços. O prebuild continua gerando o mesmo conteúdo servido em produção. O arquivo gerado só é escrito quando os bytes diferem, como antes.
+
+A configuração Vitest não importa mais o materializador como efeito lateral. O setup global captura `git status` e hashes dos diffs antes da materialização e devolve uma verificação executada depois de toda a suíte. Ela detecta inclusive nova edição num arquivo que já estava modificado antes dos testes. Um repositório temporário nos testes exercita modificações, exclusões, arquivos novos e mudanças do índice. O CI exige também árvore limpa ao terminar build e testes.
