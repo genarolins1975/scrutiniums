@@ -29,3 +29,21 @@ Os complementos não resolvem a precisão municipal: erros e intervalos seguem a
 `snapshot.json` é agora saída derivada, ignorada pelo Git, reconstruída do mesmo `snapshot.payload.gz.b64` canônico. O payload, seu hash esperado e os brutos permanecem intactos. O JSON anteriormente versionado tinha diferenças nos metadados `indicadores`, o que acionava a reescrita; não era mera diferença de espaços. O prebuild continua gerando o mesmo conteúdo servido em produção. O arquivo gerado só é escrito quando os bytes diferem, como antes.
 
 A configuração Vitest não importa mais o materializador como efeito lateral. O setup global captura `git status` e hashes dos diffs antes da materialização e devolve uma verificação executada depois de toda a suíte. Ela detecta inclusive nova edição num arquivo que já estava modificado antes dos testes. Um repositório temporário nos testes exercita modificações, exclusões, arquivos novos e mudanças do índice. O CI exige também árvore limpa ao terminar build e testes.
+
+## Validação final local, 13/10/2026 UTC
+
+| Verificação | Resultado |
+|---|---|
+| Python: pipeline / pesquisa / módulos OBEE | **1.608 (6 ignorados) / 69 / 66, todos OK** |
+| Auditor, pares e robustez ampliada | **20 testes, OK** |
+| Complemento de precisão / renda | **7 / 4 testes, OK**, ambos geradores com `--check` |
+| `npm run lint` e `npx tsc --noEmit` | **OK** |
+| `npm run build` | **OK** |
+| `EXIGIR_BUILD_HTML=1 npx vitest run` | **212 arquivos; 4.718 aprovados, 1 ignorado; OK** |
+| Pós-suíte | **`git status --porcelain` vazio**, verificador global aprovado |
+| Pacote, manifesto, pareceres, status e travas | **54/54 hashes intactos**, arquivos protegidos sem diff |
+| Reconciliação aritmética e HTML | Saídas atuais dos geradores; o único ajuste na reconciliação é o hash do HTML após a ressalva de renda |
+
+A primeira invocação local automatizada da comparação do auditor tratou o pipe do CI como argumento; foi reexecutada com comparação JSON equivalente. Essa comparação identificou o hash antigo do HTML, atualizado pelo gerador no artefato complementar. Não houve alteração aritmética. A validação do CI remoto e seu SHA serão registrados no PR.
+
+Pendências explícitas: erro municipal oficial ainda não obtido; decisões editoriais e acesso institucional não realizados; nova edição do pacote apenas proposta; página impressa da SIS 2018 não obtida por falha de acesso ao PDF, embora conceito e catálogo oficiais tenham sido localizados. Essa limitação documental de R1 não é apresentada como tarefa integralmente resolvida.
