@@ -13,7 +13,6 @@ import { ehRotaPublica } from "@/lib/rotasPublicas";
  */
 const pagina = readFileSync(join(process.cwd(), "src/app/observatorio-do-credito/page.tsx"), "utf-8");
 const middleware = readFileSync(join(process.cwd(), "src/middleware.ts"), "utf-8");
-const header = readFileSync(join(process.cwd(), "src/components/layout/PublicHeader.tsx"), "utf-8");
 const sitemap = readFileSync(join(process.cwd(), "src/app/sitemap.ts"), "utf-8");
 
 describe("vitrine pública do Observatório", () => {
@@ -37,8 +36,8 @@ describe("vitrine pública do Observatório", () => {
     expect(sitemap).toMatch(/observatorio-do-credito/);
   });
 
-  it("está acessível a partir do cabeçalho público", () => {
-    expect(header).toMatch(/observatorio-do-credito/);
+  it("está acessível a partir do rodapé público", () => {
+    expect(readFileSync(join(process.cwd(), "src/components/layout/Footer.tsx"), "utf-8")).toMatch(/href="\/observatorio-do-credito"/);
   });
 
   it("os números vêm do gold, não são literais no código", () => {
