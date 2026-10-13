@@ -83,9 +83,9 @@ export default function ApiPage() {
               {CONTRATO.arquivos.length} arquivos e {CONTRATO.diretorios.length} diretórios por entidade.
             </p>
             <ul className="mt-3 list-disc space-y-2 pl-5">
-              <li>É quebra: um arquivo do catálogo deixar de existir, ou uma chave de primeiro nível do contrato ser removida ou renomeada. Quebra só sai com nova versão principal do contrato, registrada nesta página.</li>
+              <li>É quebra: um arquivo do catálogo deixar de existir, ou uma chave de primeiro nível do contrato ser removida ou renomeada. Quebra é registrada com nova versão principal do contrato, nesta página.</li>
               <li>Não é quebra: arquivo novo, chave nova, valores novos e revisões de série feitas pela própria fonte.</li>
-              <li>Verificação automática: todo arquivo do catálogo precisa existir e ser JSON válido para que qualquer publicação vá ao ar. A diferença de chaves contra o contrato é conferida por <code className={code}>node scripts/contrato-gold.mjs</code>.</li>
+              <li>Verificação automática: todo arquivo do catálogo precisa existir e ser JSON válido para que qualquer publicação vá ao ar. A remoção de chave não bloqueia a publicação: é detectada por <code className={code}>node scripts/contrato-gold.mjs</code>, fora do ciclo diário.</li>
               {typeof aviso === "number" && aviso > 0 ? (
                 <li>Aviso prévio de quebra: {aviso} dias, nesta página.</li>
               ) : null}

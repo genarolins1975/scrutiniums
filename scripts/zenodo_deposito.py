@@ -160,7 +160,8 @@ def criar_rascunho(destino, pendencias):
     token = os.environ.get("ZENODO_TOKEN")
     if not token:
         raise SystemExit("rascunho recusado: ZENODO_TOKEN ausente")
-    base = os.environ.get("ZENODO_URL", "https://sandbox.zenodo.org").rstrip("/")
+    # variável vazia (repositório sem ZENODO_URL) vale como ausente: o padrão é o sandbox
+    base = (os.environ.get("ZENODO_URL") or "https://sandbox.zenodo.org").rstrip("/")
     dep = _req("POST", f"{base}/api/deposit/depositions", token, {})
     bucket = dep["links"]["bucket"]
     for nome in sorted(p.name for p in destino.iterdir() if p.name != "zenodo.json"):

@@ -42,7 +42,7 @@ describe("citação dos indicadores", () => {
       expect([...cartoesPulso, ...extras], i.slug).toContain(m![1]);
       if (m![2]) expect(i.key).toBe(`${m![1]}_${m![2]}`);
     }
-    expect(alvoEmbed("ibcc")).toBe("g=overview.ov-ibcc");
+    expect(alvoEmbed("ibcc")).toBe("g=overview.ov-ibcc&seg=total");
   });
 
   it("o código de incorporar é o iframe do embed.html com crédito e link de volta", () => {
