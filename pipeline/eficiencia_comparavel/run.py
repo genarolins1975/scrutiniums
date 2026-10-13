@@ -1,14 +1,15 @@
 """Reproduz a BMC offline; --check valida os bytes sem escrever saídas."""
 import argparse
 import json
-from .gold import OUT, build, serialize, csv_bytes
+from .gold import OUT, build, serialize, csv_bytes, distribution_csv_bytes
 from .validacoes import validate
 
 
 def run(*, check=False, only_capitals=False):
     data = build(only_capitals=only_capitals)
     validate(data, require_universe=not only_capitals)
-    outputs = {"base.json": serialize(data), "observacoes.csv": csv_bytes(data)}
+    outputs = {"base.json": serialize(data), "observacoes.csv": csv_bytes(data),
+               "distribuicoes.csv": distribution_csv_bytes(data)}
     if check:
         for name, expected in outputs.items():
             if not (OUT / name).exists() or (OUT / name).read_bytes() != expected:

@@ -1,13 +1,14 @@
 """Aceites BMC: referências reais, comparabilidade, ausências e pacote imutável."""
 import copy
 import csv
+import hashlib
 import io
 import json
 import unittest
 from pathlib import Path
 
 from pipeline.eficiencia_comparavel.contrato import ROOT, PRIMARY, SAMPLE_WARNING, compare, read_catalog, validate_measure, validate_peer_variables, verify_frozen
-from pipeline.eficiencia_comparavel.gold import build, csv_bytes, quantile
+from pipeline.eficiencia_comparavel.gold import build, csv_bytes, distribution_csv_bytes, quantile, serialize
 from pipeline.eficiencia_comparavel.padroniza import cell, normalize
 from pipeline.eficiencia_comparavel.validacoes import validate
 
@@ -119,6 +120,29 @@ class ContratoBMCTest(unittest.TestCase):
         wrong["observacoes"][0]["intervalo_95"] = [0, 100]
         with self.assertRaisesRegex(ValueError, "Incerteza não quantificada"):
             validate(wrong, require_universe=False)
+
+    def test_csv_das_distribuicoes_declara_cobertura_quartis_e_ressalvas(self):
+        data = copy.deepcopy(self.data)
+        # Renda sem observações num grupo: ausência nunca vira quartil zero.
+        group = data["distribuicoes"]["renda"]["universo"]
+        group.update(n_observados=0, n_ausentes=26, cobertura_completa=False,
+                     minimo=None, q1=None, mediana=None, q3=None, maximo=None)
+        rows = list(csv.DictReader(io.StringIO(distribution_csv_bytes(data).decode("utf-8-sig")), delimiter=";"))
+        self.assertEqual(len(rows), sum(len(groups) for groups in data["distribuicoes"].values()))
+        base_hash = hashlib.sha256(serialize(data)).hexdigest()
+        for row in rows:
+            self.assertEqual(row["sha256_base"], base_hash)
+            self.assertEqual(row["municipios_referencia"], "26")
+            self.assertEqual(row["estado_base"], "CAPITAIS_RECONCILIADAS_UNIVERSO_PENDENTE")
+            self.assertEqual(row["ressalva_precisao"], self.measures[row["medida"]]["ressalva_precisao"])
+            self.assertIn("NAO_SAO_INTERVALO_DE_CONFIANCA", row["natureza"])
+            if row["alinhamento"] == "B":
+                self.assertTrue(row["desvios"])
+        absent = next(row for row in rows if (row["medida"], row["grupo"]) == ("renda", "universo"))
+        self.assertEqual(absent["n_ausentes"], "26")
+        self.assertEqual([absent[k] for k in ("minimo", "q1", "mediana", "q3", "maximo")], [""] * 5)
+        housing = next(row for row in rows if (row["medida"], row["grupo"]) == ("habitacao", "universo"))
+        self.assertIn(",", housing["mediana"])
 
 
 class UniversoBMCTest(unittest.TestCase):

@@ -73,6 +73,8 @@ Mínimo, máximo, mediana e quartis tipo 7 descrevem os valores observados, com 
 
 O CSV usa UTF8 com BOM, ponto e vírgula e vírgula decimal. Cada linha contém sua própria ressalva, estado, classe, período, fonte, captura e hash. Ausências são campos vazios, nunca zero.
 
+`distribuicoes.csv` exporta mínimo, máximo, mediana e quartis por medida e grupo, contagens observadas e ausentes, classe, ressalva e hash do JSON de origem. O estado da base e o tamanho da referência acompanham cada linha para distinguir o recorte de trabalho da referência ampliada. Quartis não são intervalos de confiança.
+
 Seleção de cidades, medida, pares e ordem permanece na URL. A tabela inicia alfabeticamente; a ordem por valor depende de escolha explícita. A distribuição permite percorrer municípios pelo teclado e por controles de pelo menos 44 px. Cor identifica seleção, sem polaridade de desempenho.
 
 ## Reprodução

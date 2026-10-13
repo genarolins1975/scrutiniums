@@ -21,7 +21,7 @@ Comandos executados:
 python3.12 -m unittest pipeline.tests.test_base_comparavel_2022.ContratoBMCTest pipeline.eficiencia_resultados.test_revisao_v3
 ```
 
-13 testes aprovados, sendo nove do recorte BMC e quatro do verificador da v3.
+14 testes aprovados, sendo dez do recorte BMC e quatro do verificador da v3. O CSV das distribuições também verifica ausência sem quartil zero, marca de B, ressalvas e hash do JSON de origem.
 
 ```sh
 npx vitest run src/tests/base-comparavel-2022.test.ts src/tests/obee-panorama-atlas.test.ts src/tests/obee-distribuicao-atlas.test.ts --maxWorkers=2 --testTimeout=30000 -t 'ContratoBMC|Panorama municipal|Distribuição das capitais'
@@ -42,7 +42,21 @@ Todos concluíram com código zero. A reprodução do recorte manteve 208 observ
 python3.12 -m pipeline.eficiencia_comparavel.run --check
 ```
 
-Recusado com `Seed dos 318 municípios ausente; adquirir o SIDRA antes de promover a BMC`. Essa é a dependência que impede o build obrigatório. A suíte Python integral e o ciclo de build com Vitest integral não foram apresentados como verificados para esta branch.
+Recusado com `Seed dos 318 municípios ausente; adquirir o SIDRA antes de promover a BMC`.
+
+```sh
+python3.12 -m unittest discover -s pipeline/tests -t .
+```
+
+1.627 testes executados em 170,645 segundos: 1.620 aprovados, seis ignorados e um erro no teste obrigatório do universo de 318, por ausência do seed. A suíte não é considerada aprovada. Nenhuma asserção foi removida para contornar a dependência.
+
+```sh
+npm run build && EXIGIR_BUILD_HTML=1 npx vitest run
+```
+
+O prebuild recusou o estado parcial com o mesmo erro de seed. A compilação e a etapa Vitest com HTML obrigatório não foram executadas. Esse ciclo de aceite permanece bloqueado.
+
+Uma verificação adicional padronizou os recortes reais SIDRA 9934, 9940 e 9936 já auditados para as 26 capitais: diferença numérica máxima zero em cada tabela. `distribuicoes.csv` contém 72 linhas por medida e grupo, todas com referência declarada de 26 municípios e estado parcial, sem alegar aquisição de 318.
 
 ## Interface examinada
 
@@ -58,4 +72,4 @@ O rascunho do ambiente contém `apisidra.ibge.gov.br`, `servicodados.ibge.gov.br
 
 Depois de aplicada a rede, repetir a aquisição pelo coletor, validar 319 incluindo Brasília e 318 sem ela, conferir os seis recortes SIDRA contra as capitais, reproduzir JSON e CSV, executar os testes do universo e os comandos integrais exigidos, atualizar os resultados e só então criar o PR em rascunho.
 
-Não houve merge, deploy, revisão independente, aprovação de pesos, solicitação de microdados controlados ou criação de escore. Os números de 657 municípios e o universo informado de 318 são hipóteses fornecidas no pedido até a readquisição oficial nesta máquina.
+Não houve merge, deploy, revisão independente, aprovação de pesos, solicitação de microdados controlados ou criação de escore. Os números de 657 municípios e o universo informado de 318 são hipóteses fornecidas no pedido até a aquisição oficial nesta máquina.

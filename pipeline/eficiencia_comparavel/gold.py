@@ -231,3 +231,32 @@ def csv_bytes(data):
                 item[field] = str(item[field]).replace(".", ",")
         writer.writerow(item)
     return stream.getvalue().encode("utf-8-sig")
+
+
+def distribution_csv_bytes(data):
+    """Exporta quartis descritivos com cobertura e ressalva, nunca inferência."""
+    stream = io.StringIO(newline="")
+    fields = ["medida", "grupo", "periodo", "unidade", "estado_base", "municipios_referencia",
+              "n_universo", "n_observados", "n_ausentes", "cobertura_completa", "minimo", "q1",
+              "mediana", "q3", "maximo", "alinhamento", "desvios", "precisao", "ressalva_precisao",
+              "natureza", "sha256_base"]
+    writer = csv.DictWriter(stream, fieldnames=fields, delimiter=";", lineterminator="\n")
+    writer.writeheader()
+    measures = {m["id"]: m for m in data["medidas"]}
+    base_hash = hashlib.sha256(serialize(data)).hexdigest()
+    for measure_id in PRIMARY:
+        measure = measures[measure_id]
+        for group_id, distribution in sorted(data["distribuicoes"][measure_id].items()):
+            row = {key: distribution[key] for key in ("n_universo", "n_observados", "n_ausentes",
+                    "cobertura_completa", "minimo", "q1", "mediana", "q3", "maximo")}
+            row.update({"medida": measure_id, "grupo": group_id, "periodo": measure["periodo"],
+                        "unidade": measure["unidade"], "estado_base": data["estado"],
+                        "municipios_referencia": len(data["municipios"]), "alinhamento": measure["alinhamento"],
+                        "desvios": " | ".join(measure["desvios"]), "precisao": measure["precisao"],
+                        "ressalva_precisao": measure["ressalva_precisao"],
+                        "natureza": "DESCRITIVA_QUARTIS_NAO_SAO_INTERVALO_DE_CONFIANCA", "sha256_base": base_hash})
+            for field in ("minimo", "q1", "mediana", "q3", "maximo"):
+                if row[field] is not None:
+                    row[field] = str(row[field]).replace(".", ",")
+            writer.writerow(row)
+    return stream.getvalue().encode("utf-8-sig")
