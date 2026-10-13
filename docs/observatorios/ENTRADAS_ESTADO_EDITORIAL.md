@@ -51,6 +51,8 @@ serviços; não representam quantidades ou relações causais.
   situação alimentar regional e acesso a todos os capítulos federais.
 - HTML gerado de OBEE e Federal: um H1 por página; nenhum ID duplicado e
   nenhuma âncora local sem destino. Respectivamente, 118 e 50 links examinados.
+- Contraste calculado: seis combinações de texto entre 5,63:1 e 13,35:1;
+  bordas de seleção, botões de medida e bandeiras a 4,59:1 sobre petróleo.
 - SHA-256 dos 54 arquivos do pacote OBEE v3 conferidos e preservados. Nenhuma
   mudança de pesos, fontes, normalização, status, pareceres ou chaves de acesso.
 
