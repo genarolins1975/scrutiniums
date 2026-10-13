@@ -1,3 +1,5 @@
+import { DuasCamadasEnergia } from "@/components/energia/ComercializacaoDidatica";
+import { LeiturasIntegradas } from "@/components/energia/LeiturasIntegradas";
 import Image from "next/image";
 import { PercursoVisualEnergia } from "@/components/energia/PercursoVisualEnergia";
 import { ETAPAS_ENERGIA } from "@/lib/energia/percurso-visual";
@@ -843,6 +845,8 @@ export default function MapaDoObservatorio() {
           </details>
         </header>
         <PercursoVisualEnergia />
+        <DuasCamadasEnergia compacto />
+        <LeiturasIntegradas />
         <section className="energia-portas" aria-labelledby="energia-portas-titulo">
           <h2 id="energia-portas-titulo">Qual pergunta você quer responder?</h2>
           <div className="energia-portas-grade">
