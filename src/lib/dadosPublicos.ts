@@ -163,6 +163,16 @@ function lerGold(nome: string): Record<string, unknown> {
   );
 }
 
+/** `gerado_em` do meta.json publicado: base do selo de frescor, calculado no navegador. */
+export function geradoEmPublicado(): string | null {
+  try {
+    const g = lerGold("meta").gerado_em;
+    return typeof g === "string" ? g : null;
+  } catch {
+    return null;
+  }
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
 
 /** Carrega os indicadores públicos a partir do pulse.json (build time). */
