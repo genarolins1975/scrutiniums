@@ -138,13 +138,18 @@ def build(con, cfg=None):
     # recuo é declarado. Em 13/10/2026 o municipal da Olinda devolvia HTTP 500 para
     # 2026-08 com o nacional já servido; a janela nacional sem o municipal publicava
     # UFs e municípios vazios e reprovava a gold do dia nos testes de conteúdo.
+    # A janela escolhida é a mais recente cujos 12 meses estão INTEIROS nos dois
+    # recortes: depois de uma recarga do silver o municipal pode ter buraco no meio,
+    # e só o mês final presente não basta (o recorte estadual exige os 12).
     meses_mun_db = {r["mes"] for r in _rows(con, "SELECT DISTINCT mes FROM sicor_mun")}
+    meses_fonte = set(meses_db)
     janela_recuada = None
-    if meses_mun_db and mes_fechado not in meses_mun_db:
-        comuns = [m for m in fechados if m in meses_mun_db]
-        if comuns:
-            janela_recuada = {"fim_nacional": mes_fechado, "fim_municipal": comuns[-1]}
-            mes_fechado = comuns[-1]
+    completa = lambda m: all(x in meses_fonte and x in meses_mun_db for x in _janela12(m))
+    if meses_mun_db and not completa(mes_fechado):
+        candidatos = [m for m in reversed(fechados) if completa(m)]
+        if candidatos:
+            janela_recuada = {"fim_nacional": mes_fechado, "fim_municipal": candidatos[0]}
+            mes_fechado = candidatos[0]
     janela = _janela12(mes_fechado)
     ini, fim = janela[0], janela[-1]
     jan_ant = _janela12(_janela12(ini)[0])  # 12 meses anteriores à janela
