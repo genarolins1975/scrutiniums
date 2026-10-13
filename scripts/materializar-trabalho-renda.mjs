@@ -6,6 +6,8 @@ import { gunzipSync } from 'node:zlib';
 export const SHA256_SNAPSHOT = '1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a';
 const payloadUrl = new URL('../public/eficiencia/trabalho-renda/snapshot.payload.gz.b64', import.meta.url);
 const snapshotUrl = new URL('../public/eficiencia/trabalho-renda/snapshot.json', import.meta.url);
+// Artefato de build ignorado pelo Git: apenas o payload e os brutos são fontes
+// versionadas. O setup de testes verifica a árvore antes e depois da suíte.
 const encoded = readFileSync(payloadUrl, 'ascii').replace(/\s/g, '');
 if (!encoded || encoded.length % 4 !== 0 || !/^[A-Za-z0-9+/]*={0,2}$/.test(encoded)) {
   throw new Error('Trabalho e Renda: payload base64 inválido.');

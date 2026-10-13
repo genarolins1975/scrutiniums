@@ -28,3 +28,6 @@ __pycache__/
 
 # Build-only SUAS payloads; canonical seed has a pinned SHA-256
 /public/eficiencia/assistencia-social/
+# Saída derivada do payload canônico; materializada no prebuild e no setup Vitest.
+/public/eficiencia/trabalho-renda/snapshot.json
+/public/eficiencia/trabalho-renda/snapshot.json.tmp
