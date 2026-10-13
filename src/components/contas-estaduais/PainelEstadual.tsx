@@ -66,10 +66,10 @@ export default function PainelEstadual({ inicial, comparacaoInicial }: { inicial
 
  return <main id="conteudo-estados" className="ce-main">
  <AberturaEstadual uf={selecao.uf} ano={selecao.ano} selecionar={selecionar}/>
- <TrilhasEstado itens={[
-  {titulo:'Estados lado a lado',texto:'Uma medida, uma referência e o mesmo período para comparar.',href:'#comparacao',icone:'territorio'},
-  {titulo:'Por dentro de '+estado.nome,texto:'Execução, financiamento, dívida e educação na ficha estadual.',href:'#ficha',icone:'recursos'},
-  {titulo:'Do recurso ao serviço',texto:'Entenda as etapas e experimente o laboratório do orçamento.',href:'#leitura-gestao',icone:'servicos'},
+ <TrilhasEstado tema="estadual" itens={[
+  {titulo:'Estados lado a lado',texto:'Uma medida, uma referência e o mesmo período para comparar.',href:'#comparacao'},
+  {titulo:'Por dentro de '+estado.nome,texto:'Execução, financiamento, dívida e educação na ficha estadual.',href:'#ficha'},
+  {titulo:'Do recurso ao serviço',texto:'Entenda as etapas e experimente o laboratório do orçamento.',href:'#leitura-gestao'},
  ]}/>
  <ComparacaoEstadual inicial={comparacaoInicial} uf={selecao.uf} ano={selecao.ano} selecionar={selecionar}/>
  <details id="leitura-gestao" className="ce-learning"><summary>Entender o caminho do orçamento à entrega</summary><PercursoOrcamentario/>

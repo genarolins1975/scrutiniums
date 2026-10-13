@@ -62,10 +62,10 @@ export function AtlasCidadao({pilot=null}:{pilot?:PilotSnapshot|null}){
   const sourceHref=city?'/eficiencia-estatal/educacao-municipal-capitais/metodos':'/eficiencia-estatal/seguranca-alimentar/metodos';
   return <div className={styles.atlas}>
     <AberturaCidada selection={selection} onSelect={select}/>
-    <TrilhasEstado itens={[
-      {titulo:'A vida no território',texto:'Educação, saúde, renda e mobilidade: referências lado a lado.',href:city?'#atlas-panorama':'#atlas-comparacao',icone:'territorio'},
-      {titulo:'Encontre seu tema',texto:'Acesso, recursos e resultados em 16 dimensões da vida pública.',href:'#dados-publicados',icone:'servicos'},
-      {titulo:'Entenda a cobertura',texto:'O que cada fonte permite comparar e quais evidências ainda faltam.',href:'#cobertura',icone:'recursos'},
+    <TrilhasEstado tema="obee" itens={[
+      {titulo:'A vida no território',texto:'Educação, saúde, renda e mobilidade: referências lado a lado.',href:city?'#atlas-panorama':'#atlas-comparacao'},
+      {titulo:'Encontre seu tema',texto:'Acesso, recursos e resultados em 16 dimensões da vida pública.',href:'#dados-publicados'},
+      {titulo:'Entenda a cobertura',texto:'O que cada fonte permite comparar e quais evidências ainda faltam.',href:'#cobertura'},
     ]}/>
     <dl className={styles.strip}><div><dt>Dimensões no observatório</dt><dd>{DIMENSOES.length}<small>visão completa dos temas</small></dd></div><div><dt>Capítulos com painéis publicados</dt><dd>{published}<small>cobertura variável por fonte</small></dd></div><div><dt>{city&&showPilot?"Nota integral do OBEE":"Nota agregada"}</dt><dd className={styles.stripText}>Indisponível<small>Em construção · dados publicados não equivalem a escore validado</small></dd></div></dl>
     {city&&pilot&&<PilotoResultados data={pilot} place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})}/>}

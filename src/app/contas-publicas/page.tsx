@@ -7,10 +7,10 @@ import Link from 'next/link';
 import { CAPITULOS, INDICADORES } from '@/lib/contas-publicas/catalogo';
 export default function Page(){return <main id="conteudo-contas" className="cp-wrap cp-main cp-home">
  <AberturaFederal/>
- <TrilhasEstado itens={[
-  {titulo:'Acompanhe os recursos',texto:'Orçamento, resultado fiscal e compromissos que ficam para depois.',href:'/contas-publicas/panorama',icone:'recursos'},
-  {titulo:'Explore as entregas',texto:'Metas físicas e realizações, com unidade e período próprios.',href:'/contas-publicas/metas',icone:'servicos'},
-  {titulo:'Escolha uma pergunta',texto:'Navegue pelos capítulos e veja onde já há dados disponíveis.',href:'#capitulos',icone:'territorio'},
+ <TrilhasEstado tema="federal" itens={[
+  {titulo:'Acompanhe os recursos',texto:'Orçamento, resultado fiscal e compromissos que ficam para depois.',href:'/contas-publicas/panorama'},
+  {titulo:'Explore as entregas',texto:'Metas físicas e realizações, com unidade e período próprios.',href:'/contas-publicas/metas'},
+  {titulo:'Escolha uma pergunta',texto:'Navegue pelos capítulos e veja onde já há dados disponíveis.',href:'#capitulos'},
  ]}/>
  <div className="cp-home-section-heading"><p className="cp-eyebrow">01 / Primeiras respostas</p><h2>Três perspectivas das contas federais.</h2><p>Pagamento, resultado fiscal e compromissos de outros exercícios têm conceitos distintos.</p></div>
  <RespostasIniciais/>
