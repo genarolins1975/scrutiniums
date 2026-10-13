@@ -334,16 +334,20 @@ A Meta exige que a mídia esteja em URL pública no momento da publicação (doc
 1. Painel da Vercel → projeto `scrutiniums` → aba **Storage** → **Create** → **Blob**.
 2. Nome `scrutiniums-social`; acesso **Public** (não pode ser alterado depois); região São Paulo (`gru1`).
 3. Na aba **Projects** da loja → **Connect to Project** → `scrutiniums`, ambientes Production e Preview. A Vercel cria no projeto `BLOB_STORE_ID` e `BLOB_WEBHOOK_PUBLIC_KEY` e autentica o site por OIDC; o token de leitura e escrita não entra nas variáveis do projeto.
-4. Na página da loja, bloco Quickstart, aba `.env.local`: copiar o valor de `BLOB_READ_WRITE_TOKEN` para o GitHub, repositório → Settings → Secrets and variables → Actions → New repository secret, nome `BLOB_READ_WRITE_TOKEN`. Necessário porque a renderização e o envio rodam no GitHub Actions, fora da Vercel, onde o OIDC da Vercel não se aplica.
-5. Não usar o botão **Revoke Token** que o painel sugere: ele revogaria justamente o token usado pelo GitHub Actions.
+Situação em 13/10/2026: passos 1 a 3 concluídos (loja `scrutiniums-social`, pública, região GRU1, conectada ao projeto em Production e Preview, conforme captura de tela do painel enviada pelo titular). Configuração encerrada.
 
-Situação em 13/10/2026: passos 1 a 3 concluídos (loja `scrutiniums-social`, pública, região GRU1, conectada ao projeto em Production e Preview, conforme captura de tela do painel enviada pelo titular). Passo 4 pendente.
+**Sem token de longa duração.** O painel não exibe `BLOB_READ_WRITE_TOKEN` para lojas conectadas por OIDC, e a própria Vercel recomenda revogá-lo quando nada fora da Vercel o usa. O desenho evita esse token:
+
+* **Imagens.** O GitHub Actions envia cada JPEG a uma rota interna do site, `POST /api/social/midia`, autorizada por `SOCIAL_API_SECRET`. A rota roda na Vercel e grava no Blob com OIDC. Cada lâmina fica bem abaixo do limite de 4,5 MB de envio por servidor indicado pela Vercel.
+* **Reels.** O vídeo não passa pelo Blob: vai direto do GitHub Actions para a Meta pelo envio retomável (`upload_type=resumable`), que aceita arquivo local, conforme a documentação de publicação.
+
+Consequência: nenhuma credencial do Blob sai da Vercel, e o token de leitura e escrita pode ser revogado sem efeito no pipeline.
 
 Evidência (documentação Vercel Blob, atualizada em 26/08/2026 e 23/09/2026): loja pública entrega por URL direta a qualquer pessoa com o link; modo de acesso e região não mudam após a criação; no plano Hobby estão incluídos 1 GB por mês de armazenamento, 10.000 operações simples, 2.000 operações avançadas e 10 GB de transferência; ao exceder, o Blob fica indisponível por 30 dias, sem cobrança.
 
 A conta Vercel está no plano Pro (selo no painel, 13/10/2026). No Pro o Blob é cobrado por uso, abatido do crédito mensal do plano e depois sob demanda; os limites do Hobby não se aplicam. No exemplo de preços da documentação, para a região iad1, armazenamento custa US$ 0,023 por GB por mês e operações avançadas US$ 5,00 por milhão; o preço da região GRU1 não foi verificado.
 
-Estimativa, com premissas declaradas: 8 posts por semana com 7 lâminas de cerca de 400 KB e 2 reels de cerca de 15 MB somam cerca de 52 MB por semana; com exclusão em 7 dias, o armazenamento médio fica perto de 60 MB, e os envios ficam perto de 260 operações avançadas por mês. Na ordem de grandeza dos preços de iad1, o custo mensal fica abaixo de US$ 0,01 em armazenamento e operações; a transferência depende de quantas vezes a Meta busca cada arquivo, uma vez por publicação no fluxo esperado. Recomendação: alerta de gasto no Spend Management da Vercel; o pipeline volta para `sombra` se o uso do Blob sair da faixa esperada.
+Estimativa, com premissas declaradas: 8 posts por semana com 7 lâminas de cerca de 400 KB somam cerca de 22 MB por semana (reels não passam pelo Blob); com exclusão em 7 dias, o armazenamento médio fica perto de 25 MB, e os envios ficam perto de 240 operações avançadas por mês. Na ordem de grandeza dos preços de iad1, o custo mensal fica abaixo de US$ 0,01 em armazenamento e operações; a transferência depende de quantas vezes a Meta busca cada arquivo, uma vez por publicação no fluxo esperado. Recomendação: alerta de gasto no Spend Management da Vercel; o pipeline volta para `sombra` se o uso do Blob sair da faixa esperada.
 
 ---
 
@@ -516,7 +520,7 @@ flowchart LR
 
 ### 9.3 Segredos novos
 
-`ANTHROPIC_API_KEY` (o orquestrador já tem backend Anthropic, mas o segredo não existe nos workflows), `IG_APP_ID`, `IG_APP_SECRET`, `IG_USER_ID`, `BLOB_READ_WRITE_TOKEN`, `SOCIAL_RENDER_SECRET`, `SOCIAL_API_SECRET` (autoriza os workflows contra as rotas internas, no padrão de `BOLETIM_SECRET`).
+`ANTHROPIC_API_KEY` (o orquestrador já tem backend Anthropic, mas o segredo não existe nos workflows), `IG_APP_ID`, `IG_APP_SECRET`, `IG_USER_ID`, `SOCIAL_RENDER_SECRET`, `SOCIAL_API_SECRET` (autoriza os workflows contra as rotas internas, no padrão de `BOLETIM_SECRET`).
 
 ---
 
