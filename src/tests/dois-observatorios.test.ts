@@ -59,9 +59,20 @@ describe("registro de domínios", () => {
     expect(ler("src/components/home/SecaoObservatorios.tsx")).toContain("DOMINIOS.map");
     expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("DOMINIOS.map");
     expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("DOMINIOS.map");
-    expect(ler("src/components/layout/PublicHeader.tsx")).toContain(rota);
+    expect(ler("src/components/layout/PublicHeader.tsx")).toContain("ABAS_OBSERVATORIOS");
+    expect(ler("src/components/observatorios/NavegacaoObservatorios.tsx")).toContain(`href: "${rota}"`);
     expect(ler("src/components/layout/Footer.tsx")).toContain(rota);
     expect(ler("public/obs/index.html")).toContain(`href="${rota}"`);
+  });
+
+  it("todas as barras de abas listam os observatórios do registro, com os mesmos destinos", () => {
+    const abas = ler("src/components/observatorios/NavegacaoObservatorios.tsx");
+    const spa = ler("public/obs/index.html");
+    const barraSpa = spa.slice(spa.indexOf('class="obs-dominios"'), spa.indexOf("</nav>", spa.indexOf('class="obs-dominios"')));
+    for (const d of DOMINIOS) {
+      expect(abas, d.id).toContain(`{ id: "${d.id}", href: "${d.rotaRaiz}"`);
+      expect(barraSpa, d.id).toContain(`href="${d.rotaRaiz}"`);
+    }
   });
 
   it("os textos públicos da plataforma não falam mais em dois observatórios", () => {

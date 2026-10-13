@@ -3,20 +3,17 @@ import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { cookies } from "next/headers";
 import { LogoWordmark } from "@/components/ui/Logo";
 import { getSessionUser } from "@/lib/session";
+import { ABAS_OBSERVATORIOS } from "@/components/observatorios/NavegacaoObservatorios";
 
-// Navegação da plataforma: os observatórios com entrada no cabeçalho primeiro (o
-// registro completo está em src/lib/dominios.ts e na home), depois a superfície
-// citável de dados do Crédito. As demais páginas de cada domínio (resumo,
-// metodologia, glossário, aprenda) ficam no rodapé e dentro de cada observatório.
-// `soXl`: no cabeçalho de desktop o item só aparece a partir de 1280 px (com as entradas de observatório a linha
-// não cabe em 1024 px); a navegação rolável do celular mostra todos.
-const NAV: { href: string; label: string; soXl?: boolean }[] = [
-  { href: "/observatorio-do-credito", label: "Crédito" },
-  { href: "/setor-eletrico", label: "Setor Elétrico" },
-  { href: "/eficiencia-estatal", label: "Eficiência Estatal" },
-  { href: "/dados", label: "Dados do crédito" },
-  { href: "/#observatorios", label: "Plataforma", soXl: true },
-  { href: "/#plataforma", label: "Método", soXl: true },
+// Abas do cabeçalho: os cinco observatórios, com os mesmos destinos e rótulos das
+// barras internas (ABAS_OBSERVATORIOS), e a página de imprensa. Apresentação,
+// método, dados e demais páginas de cada domínio ficam na home, no rodapé e
+// dentro de cada observatório. Para quem não tem sessão, cada aba passa pelo
+// login e volta ao observatório escolhido (src/middleware.ts).
+// As abas ficam na linha da marca a partir de 1280 px; abaixo disso, numa segunda
+// linha que quebra em vez de rolar, para nenhuma aba ficar escondida.
+const NAV: { href: string; label: string }[] = [
+  ...ABAS_OBSERVATORIOS.map((a) => ({ href: a.href, label: a.rotulo })),
   { href: "/imprensa", label: "Imprensa" },
 ];
 
@@ -57,13 +54,13 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
         >
           <LogoWordmark />
         </Link>
-        <nav aria-label="Navegação principal" className="hidden items-center gap-6 lg:flex xl:gap-8">
+        <nav aria-label="Navegação principal" className="hidden items-center gap-7 xl:flex">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               prefetch={prefetchDoLink(item.href)}
-              className={`rotulo min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze ${item.soXl ? "hidden xl:inline-flex" : "inline-flex"}`}
+              className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze"
             >
               {item.label}
             </Link>
@@ -78,15 +75,15 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
           </Link>
           <Link
             href={authenticated ? "/app/observatorios" : "/cadastro"}
-            className="rotulo inline-flex min-h-[44px] items-center border border-carvao px-5 text-carvao hover:bg-carvao hover:text-marfim"
+            className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap border border-carvao px-5 text-carvao hover:bg-carvao hover:text-marfim"
           >
             {authenticated ? "Observatórios" : "Criar acesso"}
           </Link>
         </div>
       </div>
       <nav
-        aria-label="Navegação principal (celular)"
-        className="tabela-scroll flex gap-6 border-t border-linha px-6 py-3 lg:hidden"
+        aria-label="Navegação principal (telas menores)"
+        className="mx-auto flex max-w-page flex-wrap gap-x-6 border-t border-linha px-6 py-1.5 xl:hidden"
       >
         {NAV.map((item) => (
           <Link
@@ -98,6 +95,13 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
             {item.label}
           </Link>
         ))}
+        {/* no celular o "Entrar" da linha de cima não cabe; fica com as abas */}
+        <Link
+          href={authenticated ? "/app/conta" : "/entrar"}
+          className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao hover:text-bronze sm:hidden"
+        >
+          {authenticated ? "Minha conta" : "Entrar"}
+        </Link>
       </nav>
     </header>
   );
