@@ -56,13 +56,33 @@ TI × uso × PUE; ano de 8.760 h. Pico deve ser ≥ média. Conexão em MW é hi
 
 ## Interação e reprodução
 
-Todos os parâmetros e perspectiva são persistidos na URL usando `useEstadoUrl`. Cada laboratório exporta JSON com versão, natureza do cenário, URL, entradas e saídas integrais. Valores não válidos não substituem o modelo por zero. Controles numéricos complementam sliders. Métodos e tabelas completas usam `details`; ressalvas materiais ficam visíveis. Tabelas largas têm rolagem local e região nomeada.
+Todos os parâmetros e perspectiva são persistidos na URL usando `useEstadoUrl`. O adaptador local `useEstadoRisco` grava a última edição antes da troca de laboratório ou exportação, mesmo durante o debounce. Cada laboratório exporta JSON com versão, natureza do cenário, URL, entradas e saídas integrais. Valores não válidos não substituem o modelo por zero. Controles numéricos complementam sliders. Métodos e tabelas completas usam `details`; ressalvas materiais ficam visíveis. Tabelas largas têm rolagem local e região nomeada.
 
 ## Verificação
 
 - 30 testes numéricos em `energia-riscos-modelos.test.ts`: conservação, reconciliação, sinal do hedge, preço de equilíbrio, casos extremos, seguro, adaptação, recuperação de carga e entradas inválidas.
 - Os 15 testes anteriores de leitura integrada permanecem.
-- Lint, TypeScript, suíte Energia, build e inspeção responsiva: resultados registrados após execução, abaixo.
+- Lint e TypeScript sem erros; build de produção concluído. A rota inicial totalizou 24,7 kB, com 133 kB de JavaScript na primeira carga.
+- Suíte Energia: 74 arquivos, 2.972 testes aprovados e um ignorado. Após o ajuste de persistência, os testes de modelos e contratos de integração somaram 459 aprovações.
+- CI remoto da implementação inicial: execução 525, concluída com sucesso (lint, TypeScript, testes Python, testes JavaScript e build). A revisão seguinte exige CI verde antes do merge.
+- Prévia em 1.440, 768, 390 e 320 px, sem rolagem horizontal da página; tabelas mantêm rolagem local. Começo, meio, referências, matriz aberta e quatro laboratórios inspecionados.
+- Conferidos: escassez com contrato fixo, mudança de contrato, bateria indisponível, fluxo de 15 anos, seguro sem limite de cobertura e data center com recuperação acima da conexão. PUE 1,35 foi preservado após recarregar.
+- Exportação JSON baixada e lida: receita de referência de R$ 69.200.000, DSCR de 1,473333… e contrato fixo, em concordância com o cálculo. Slider por seta, passagem por Tab e foco de 3 px conferidos no navegador.
 - Capturas antes/depois em `docs/energia-riscos/`.
 
 A autoavaliação visual não equivale a revisão independente. Testes automatizados não demonstram conformidade integral com WCAG nem validação econômica dos modelos.
+
+### Autoavaliação da rota
+
+| Critério | Nota | Evidência e limite |
+|---|---:|---|
+| Direção de arte | 9 | Tokens e tipografia existentes; índice editorial, linhas e cores com função. |
+| Hierarquia | 9 | Cinco capítulos por pergunta; resultados, premissas e limitações próximos. |
+| Tipografia e acabamento | 9 | Títulos, rótulos e valores conferidos em quatro larguras; números brasileiros. |
+| Densidade e profundidade | 9 | Dez mecanismos, três choques conjuntos, quatro modelos e onze leituras comentadas. |
+| Didática visual | 9 | Unidades, fórmulas, comparações de contratos, barras assinadas e fluxo anual reproduzível. |
+| Comparabilidade | 9 | Hipóteses comuns explícitas; nenhuma referência estrangeira transformada em limite brasileiro. |
+| Interação e acessibilidade | 8 | Filtro, teclado, foco, estados extremos e exportação conferidos. Leitor de tela e zoom nativo de 200% não verificados; sem declaração integral de conformidade. |
+| Responsividade | 9 | 320, 390, 768 e 1.440 px sem sobreposição ou perda de campos; tabelas extensas rolam localmente. |
+
+A correção final de troca rápida de laboratório deve ser verificada na prévia atualizada e registrada no PR antes da publicação.

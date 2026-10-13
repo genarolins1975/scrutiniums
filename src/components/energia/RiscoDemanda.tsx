@@ -1,6 +1,6 @@
 "use client";
 import { DEMANDA_BASE, riscoDemanda } from "@/lib/energia/riscos-modelos";
-import { useEstadoUrl } from "./useEstadoUrl";
+import { useEstadoRisco } from "./useEstadoRisco";
 import { EntradaRisco, ExportarRisco, MetricasRisco } from "./RiscoControles";
 import { fmt, numeroRisco as num } from "@/lib/energia/riscos-formato";
 import { CitacoesRisco } from "./RiscosMatriz";
@@ -8,7 +8,7 @@ import r from "./Riscos.module.css";
 import s from "./LeiturasIntegradas.module.css";
 const esq={ti:num(100,1,500,"d_ti"),uso:num(80,0,100,"d_uso"),pue:num(1.3,1,2.5,"d_pue"),picoUso:num(100,0,100,"d_pico"),conexao:num(120,0,1000,"d_conexao"),flex:num(20,0,100,"d_flex"),horasEvento:num(4,0,24,"d_horas"),eventos:num(20,0,365,"d_eventos",true),recuperacaoHoras:num(8,1,48,"d_recuperacao"),atrasoMeses:num(3,0,12,"d_atraso")};
 export function RiscoDemanda(){
- const [v,set]=useEstadoUrl(esq);const entrada={...v,uso:v.uso/100,picoUso:v.picoUso/100,flex:v.flex/100};const a=riscoDemanda(entrada);
+ const [v,set]=useEstadoRisco(esq);const entrada={...v,uso:v.uso/100,picoUso:v.picoUso/100,flex:v.flex/100};const a=riscoDemanda(entrada);
  const campos=[{k:"ti",nome:"Potência nominal de TI (MW)",min:1,max:500},{k:"uso",nome:"Utilização média de TI (%)",min:0,max:100},{k:"picoUso",nome:"Utilização de TI no pico (%)",min:0,max:100},{k:"pue",nome:"PUE da instalação",min:1,max:2.5,passo:.05},{k:"conexao",nome:"Capacidade de conexão considerada (MW)",min:0,max:1000},{k:"atrasoMeses",nome:"Atraso da entrada em operação (meses)",min:0,max:12}] as const;
  const flex=[{k:"flex",nome:"Redução voluntária durante o evento (%)",min:0,max:100},{k:"horasEvento",nome:"Duração de cada evento (horas)",min:0,max:24},{k:"eventos",nome:"Eventos no ano (inteiros)",min:0,max:365},{k:"recuperacaoHoras",nome:"Janela para recuperar a energia (horas)",min:1,max:48}] as const;
  const cargas=a?[{nome:"Demanda média",valor:a.media},{nome:"Pico sem flexibilidade",valor:a.pico},{nome:"Durante o evento",valor:a.picoFlex},{nome:"Recuperação sobre média",valor:a.recuperacaoMW}]:[];const maior=Math.max(1,v.conexao,...cargas.map(x=>x.valor));

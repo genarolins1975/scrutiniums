@@ -16,6 +16,7 @@ export function BarrasRisco({linhas,unidade="R$ milhões"}:{linhas:{nome:string;
 }
 export function ExportarRisco({nome,entrada,saida}:{nome:string;entrada:object;saida:object}){
   const baixar=()=>{
+    window.dispatchEvent(new Event("scrutiniums:riscos-gravar"));
     const artefato={modelo:`scrutiniums-riscos-${nome}-v1`,natureza:"CENARIO_HIPOTETICO",metodo:"Modelos próprios, não calibrados para ativos reais. Consulte as fórmulas e limitações na página.",url:window.location.href,entrada,saida};
     const blob=new Blob([JSON.stringify(artefato,null,2)],{type:"application/json;charset=utf-8"});
     const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`cenario-${nome}.json`;a.click();URL.revokeObjectURL(url);

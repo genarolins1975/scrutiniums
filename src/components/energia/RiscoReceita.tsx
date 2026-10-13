@@ -1,7 +1,7 @@
 "use client";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { GERADOR_BASE, CHOQUES_GERADOR, riscoGerador, precoCapturado } from "@/lib/energia/riscos-modelos";
-import { useEstadoUrl } from "./useEstadoUrl";
+import { useEstadoRisco } from "./useEstadoRisco";
 import { BarrasRisco, EntradaRisco, ExportarRisco, MetricasRisco } from "./RiscoControles";
 import { fmt, milhoes, numeroRisco as num } from "@/lib/energia/riscos-formato";
 import { CitacoesRisco } from "./RiscosMatriz";
@@ -10,7 +10,7 @@ import s from "./LeiturasIntegradas.module.css";
 const esq={energiaGWh:num(400,10,2000,"g_energia"),recurso:num(100,0,150,"g_recurso"),corte:num(5,0,100,"g_corte"),preco:num(200,0,1000,"g_preco"),captura:num(80,0,150,"g_captura"),hedge:num(70,0,100,"g_hedge"),contrato:num(230,0,1000,"g_contrato"),estrutura:campo(tiposUrl.opcao(["fixo","producao"] as const),"fixo",{param:"g_estrutura"}),opexMilhoes:num(20,0,200,"g_opex"),outrosMilhoes:num(5,0,200,"g_outros"),dividaMilhoes:num(30,0,200,"g_divida")};
 const blocos=[{nome:"00–06h",horas:6,mwh:0,preco:180},{nome:"06–12h",horas:6,mwh:100,preco:220},{nome:"12–18h",horas:6,mwh:300,preco:80},{nome:"18–24h",horas:6,mwh:0,preco:350}];
 export function RiscoReceita(){
- const [v,set]=useEstadoUrl(esq);const entrada={...v,recurso:v.recurso/100,corte:v.corte/100,captura:v.captura/100,hedge:v.hedge/100};const a=riscoGerador(entrada)!;
+ const [v,set]=useEstadoRisco(esq);const entrada={...v,recurso:v.recurso/100,corte:v.corte/100,captura:v.captura/100,hedge:v.hedge/100};const a=riscoGerador(entrada)!;
  const referencia=riscoGerador({...entrada,...CHOQUES_GERADOR[0]})!;
  const caso=CHOQUES_GERADOR.find(c=>c.recurso===entrada.recurso&&c.corte===entrada.corte&&c.preco===entrada.preco&&c.captura===entrada.captura);
  const precos=precoCapturado(blocos)!;

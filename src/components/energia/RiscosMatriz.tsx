@@ -6,7 +6,7 @@ import { useEstadoUrl } from "./useEstadoUrl";
 import s from "./LeiturasIntegradas.module.css";
 import r from "./Riscos.module.css";
 const esquema={perfil:campo(tiposUrl.opcao(["todos","geracao","redes","comercial","consumo"] as const),"todos")};
-export function CitacoesRisco({ids}:{ids:FonteRiscoId[]}) {return <p className={r.citation}>Aprofunde: {ids.map(id=>{const f=FONTES_RISCO.find(x=>x.id===id)!;return <a key={id} href={`#fonte-${id}`}>{f.org}{id.startsWith("mck")?` · ${f.ano}`:""}</a>;})}</p>;}
+export function CitacoesRisco({ids}:{ids:FonteRiscoId[]}) {return <p className={r.citation}>Aprofunde: {ids.map(id=>{const f=FONTES_RISCO.find(x=>x.id===id)!;return <a key={id} href={`#fonte-${id}`}>{f.org}{(id.startsWith("mck")||id.startsWith("iea"))?` · ${f.ano}`:""}</a>;})}</p>;}
 export function RiscosMatriz(){
   const [v,definir]=useEstadoUrl(esquema);
   const temas=TEMAS_RISCO.filter(t=>v.perfil==="todos"||t.perfis.includes(v.perfil));
