@@ -1,0 +1,109 @@
+{
+  "versao": "BMC_2022_v1",
+  "ano_referencia": 2022,
+  "natureza": "CAMADA_DESCRITIVA",
+  "grupos_de_pares": ["populacao_censo_2022", "grande_regiao"],
+  "quartis": "Tipo 7, interpolação linear; municípios com igual peso",
+  "medidas": [
+    {
+      "id": "educacao", "titulo": "Frequência escolar de 4 e 5 anos", "unidade": "%", "unidade_diferenca": "p.p.",
+      "alinhamento": "A", "precisao": "NAO_QUANTIFICADA", "desvios": [], "base_2022": true,
+      "nivel": "N6", "base_geografica": "residencia", "ano_referencia": 2022, "periodo": "2022",
+      "universo": "Crianças residentes de 4 e 5 anos, sexo e cor ou raça totais, nas redes pública e privada.",
+      "fonte": "IBGE, Censo 2022, SIDRA 10056", "tabela": 10056, "variavel": "3795", "amostra_censo": true,
+      "ressalva_precisao": "Estimativa preliminar da amostra do Censo 2022. Precisão municipal não quantificada; diferenças observadas não demonstram diferenças estatisticamente significativas.",
+      "limites": "Frequência escolar não mede aprendizagem, vagas públicas ou qualidade do atendimento.",
+      "casas_publicadas": 2
+    },
+    {
+      "id": "renda", "titulo": "Renda domiciliar por pessoa, mediana", "unidade": "R$", "unidade_diferenca": "R$",
+      "alinhamento": "A", "precisao": "NAO_QUANTIFICADA", "desvios": [], "base_2022": true,
+      "nivel": "N6", "base_geografica": "residencia", "ano_referencia": 2022, "periodo": "Julho de 2022",
+      "universo": "Moradores em domicílios particulares permanentes ocupados, excluídos pensionistas, empregados domésticos e seus parentes.",
+      "fonte": "IBGE, Censo 2022, SIDRA 10295", "tabela": 10295, "variavel": "13534", "amostra_censo": true,
+      "ressalva_precisao": "Estimativa preliminar da amostra do Censo 2022. Precisão municipal não quantificada; diferenças observadas não demonstram diferenças estatisticamente significativas.",
+      "limites": "Reais nominais de julho de 2022, sem ajuste espacial de preços. Não corresponde a salário ou renda atual.",
+      "casas_publicadas": 2
+    },
+    {
+      "id": "mobilidade", "titulo": "Deslocamento ao trabalho acima de uma hora", "unidade": "%", "unidade_diferenca": "p.p.",
+      "alinhamento": "A", "precisao": "NAO_QUANTIFICADA", "desvios": [], "base_2022": true,
+      "nivel": "N6", "base_geografica": "residencia", "ano_referencia": 2022, "periodo": "2022",
+      "universo": "Pessoas de 10 anos ou mais ocupadas, que trabalhavam fora do domicílio no trabalho principal e retornavam para casa em três ou mais dias por semana.",
+      "fonte": "IBGE, Censo 2022, SIDRA 10330", "tabela": 10330, "variavel": "13376", "amostra_censo": true,
+      "ressalva_precisao": "Estimativa preliminar da amostra do Censo 2022. Precisão municipal não quantificada; diferenças observadas não demonstram diferenças estatisticamente significativas.",
+      "limites": "Soma das três faixas acima de uma hora sobre o total publicado. O resíduo não é redistribuído. Não mede todas as viagens.",
+      "casas_publicadas": 2
+    },
+    {
+      "id": "saneamento", "titulo": "Rede de esgoto ou fossa séptica", "unidade": "%", "unidade_diferenca": "p.p.",
+      "alinhamento": "A", "precisao": "UNIVERSO", "desvios": [], "base_2022": true,
+      "nivel": "N6", "base_geografica": "residencia", "ano_referencia": 2022, "periodo": "2022",
+      "universo": "Domicílios particulares permanentes ocupados, todos os municípios no mesmo universo censitário.",
+      "fonte": "IBGE, Censo 2022, SIDRA 6805", "tabela": 6805, "variavel": "381", "amostra_censo": false,
+      "ressalva_precisao": "Medida do universo do Censo 2022, sem erro amostral. Erros de cobertura, declaração e classificação não estão quantificados.",
+      "limites": "Categorias 46290 e 72112. As filhas 72110 e 72111 não são somadas novamente. Não comprova tratamento do esgoto.",
+      "casas_publicadas": 2
+    },
+    {
+      "id": "habitacao", "titulo": "Mais de dois moradores por dormitório", "unidade": "%", "unidade_diferenca": "p.p.",
+      "alinhamento": "A", "precisao": "NAO_QUANTIFICADA", "desvios": [], "base_2022": true,
+      "nivel": "N6", "base_geografica": "residencia", "ano_referencia": 2022, "periodo": "2022",
+      "universo": "Domicílios particulares permanentes ocupados, situação e rendimento totais.",
+      "fonte": "IBGE, Censo 2022, SIDRA 9934", "tabela": 9934, "variavel": "381", "amostra_censo": true,
+      "ressalva_precisao": "Estimativa preliminar da amostra do Censo 2022. Precisão municipal não quantificada; diferenças observadas não demonstram diferenças estatisticamente significativas.",
+      "limites": "Condição descritiva por domicílio, não déficit habitacional. Alternativas por moradores e acima de três são sensibilidade de definição, nunca intervalo de confiança.",
+      "casas_publicadas": 2
+    },
+    {
+      "id": "internet", "titulo": "Internet no domicílio", "unidade": "%", "unidade_diferenca": "p.p.",
+      "alinhamento": "A", "precisao": "NAO_QUANTIFICADA", "desvios": [], "base_2022": true,
+      "nivel": "N6", "base_geografica": "residencia", "ano_referencia": 2022, "periodo": "2022",
+      "universo": "Domicílios particulares permanentes ocupados, situação e tipo totais.",
+      "fonte": "IBGE, Censo 2022, SIDRA 9936", "tabela": 9936, "variavel": "381", "amostra_censo": true,
+      "ressalva_precisao": "Estimativa preliminar da amostra do Censo 2022. Precisão municipal não quantificada; diferenças observadas não demonstram diferenças estatisticamente significativas.",
+      "limites": "Presença de Internet. Não mede velocidade, preço, continuidade ou capacidade digital.",
+      "casas_publicadas": 2
+    },
+    {
+      "id": "homicidios", "titulo": "Homicídios estimados por 100 mil", "unidade": "por 100 mil", "unidade_diferenca": "por 100 mil",
+      "alinhamento": "B", "precisao": "NAO_QUANTIFICADA", "desvios": ["Componente de homicídios ocultos modelado pela fonte"], "base_2022": true,
+      "nivel": "N6", "base_geografica": "residencia", "ano_referencia": 2022, "periodo": "2022",
+      "universo": "Mortes por residência: CID X85 a Y09 e Y35 a Y36, mais homicídios ocultos estimados pela fonte.",
+      "fonte": "Ipea e FBSP, Atlas da Violência 2024, tabela 3, página 18", "tabela": null, "variavel": null, "amostra_censo": false,
+      "ressalva_precisao": "Precisão municipal não quantificada. A taxa inclui um componente modelado; diferenças observadas não demonstram diferenças estatisticamente significativas.",
+      "limites": "O recorte auditado cobre as 26 capitais estaduais. Nenhum valor do Atlas é atribuído aos demais municípios.",
+      "casas_publicadas": 1
+    },
+    {
+      "id": "mortalidade_infantil", "titulo": "Mortalidade infantil registrada", "unidade": "por mil", "unidade_diferenca": "por mil",
+      "alinhamento": "B", "precisao": "QUANTIFICADA", "desvios": ["Janela de três anos, de 2021 a 2023"], "base_2022": true,
+      "nivel": "N6", "base_geografica": "residencia", "ano_referencia": 2022, "periodo": "2021 a 2023",
+      "universo": "Óbitos registrados de menores de um ano por residência e nascidos vivos por residência da mãe, razão das somas no triênio.",
+      "fonte": "Ministério da Saúde, SIM e SINASC", "tabela": null, "variavel": null, "amostra_censo": false,
+      "ressalva_precisao": "Precisão quantificada sob Poisson condicional ao denominador registrado. O intervalo de 95% não incorpora subnotificação municipal, viés de classificação ou incerteza do denominador.",
+      "limites": "Subnotificação de óbitos infantis municipais não avaliada no triênio. Não é probabilidade de morte em uma coorte acompanhada.",
+      "casas_publicadas": 2
+    },
+    {
+      "id": "homicidios_registrados", "titulo": "Homicídios registrados por 100 mil", "unidade": "por 100 mil", "unidade_diferenca": "por 100 mil",
+      "alinhamento": "A", "precisao": "NAO_QUANTIFICADA", "desvios": [], "base_2022": false,
+      "nivel": "N6", "base_geografica": "residencia", "ano_referencia": 2022, "periodo": "2022",
+      "universo": "Óbitos registrados no SIM por residência, CID X85 a Y09 e Y35 a Y36, sobre a população do Censo 2022.",
+      "fonte": "Ministério da Saúde, SIM", "tabela": null, "variavel": null, "amostra_censo": false,
+      "ressalva_precisao": "Precisão municipal não quantificada. Erros de registro e classificação não foram quantificados; diferenças observadas não demonstram diferenças estatisticamente significativas.",
+      "limites": "A alternativa auditada das capitais está no Atlas. No universo ampliado, exige aquisição reproduzível do SIM, com consulta, filtros e hash.",
+      "casas_publicadas": 2
+    },
+    {
+      "id": "aps", "titulo": "Cobertura potencial de APS", "unidade": "%", "unidade_diferenca": "p.p.",
+      "alinhamento": "C", "precisao": "NAO_APLICAVEL", "desvios": ["Período e natureza de capacidade de serviço diferentes"], "base_2022": false,
+      "nivel": "N6", "base_geografica": "capacidade_dos_servicos", "ano_referencia": 2025, "periodo": "Dezembro de 2025",
+      "universo": "Capacidade potencial das equipes dividida pela população de referência do Ministério da Saúde.",
+      "fonte": "Ministério da Saúde, Relatório APS", "tabela": null, "variavel": null, "amostra_censo": false,
+      "ressalva_precisao": "Precisão amostral não se aplica a esta medida administrativa de capacidade potencial. A capacidade teórica não equivale a pessoas atendidas e pode superar 100%.",
+      "limites": "Camada Capacidade dos serviços, fora da justaposição de 2022.",
+      "casas_publicadas": 2
+    }
+  ]
+}

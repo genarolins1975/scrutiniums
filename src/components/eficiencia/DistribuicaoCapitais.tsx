@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type KeyboardEvent, type PointerEvent } from "react";
+import { useState, useId, type ComponentProps, type KeyboardEvent, type PointerEvent } from "react";
 import { dominioBonito, escalaLinear } from "@/lib/energia/escalas";
 import { COR, dimensoes, ticksLog, useLargura } from "./graficos";
 
@@ -25,7 +25,7 @@ export type ReferenciasDistribuicao = {
   externa?: { rotulo: string; valor: number; nota?: string } | null;
 };
 
-export function DistribuicaoCapitais({
+function DistribuicaoDetalhada({
   linhas,
   referencias,
   formata,
@@ -300,4 +300,65 @@ export function DistribuicaoCapitais({
       )}
     </figure>
   );
+}
+
+type PropsDistribuicao = ComponentProps<typeof DistribuicaoDetalhada> & {compacta?: boolean; rotuloPrecisao?: string};
+
+/** Mantém o contrato das telas existentes; a BMC reutiliza a distribuição em uma faixa compacta. */
+export function DistribuicaoCapitais({compacta = false, rotuloPrecisao = '', ...props}: PropsDistribuicao) {
+  return compacta ? <DistribuicaoCompacta {...props} rotuloPrecisao={rotuloPrecisao}/> : <DistribuicaoDetalhada {...props}/>;
+}
+
+function DistribuicaoCompacta({linhas, referencias, formata, formataEixo, zero, titulo, rotuloGrupo, rotuloPrecisao}: PropsDistribuicao) {
+  const [ref, width, measured] = useLargura<HTMLDivElement>(640);
+  const [active, setActive] = useState<string | null>(null);
+  const descriptionId = useId();
+  if (!linhas.length) return <figure ref={ref}><figcaption>{titulo}</figcaption><p>Nenhum município com valor observado neste grupo.</p></figure>;
+  const margin = {left: 24, right: 24, top: 22, bottom: 34};
+  const values = linhas.map(r => r.valor);
+  const domain = dominioBonito(values, {zero, n: width < 400 ? 3 : 5});
+  const x = escalaLinear([domain.min, domain.max], [margin.left, width - margin.right]);
+  const lanes: number[] = [];
+  const points = [...linhas].sort((a, b) => a.valor - b.valor || a.rotulo.localeCompare(b.rotulo, 'pt-BR')).map(row => {
+    let lane = lanes.findIndex(last => x(row.valor) - last >= 12);
+    if (lane === -1) lane = lanes.length;
+    lanes[lane] = x(row.valor);
+    return {...row, x: x(row.valor), y: margin.top + lane * 12};
+  });
+  const axis = margin.top + lanes.length * 12 + 12;
+  const height = axis + margin.bottom;
+  const selected = linhas.find(r => r.chave === active);
+  const move = (offset: number) => {
+    const index = linhas.findIndex(r => r.chave === active);
+    const start = index < 0 ? (offset > 0 ? -1 : linhas.length) : index;
+    setActive(linhas[Math.max(0, Math.min(linhas.length - 1, start + offset))].chave);
+  };
+  const keyboard = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === 'Home' || event.key === 'End') setActive(linhas[event.key === 'Home' ? 0 : linhas.length - 1].chave);
+    else move(['ArrowDown', 'ArrowRight'].includes(event.key) ? 1 : -1);
+  };
+  const pointAt = (event: PointerEvent<SVGSVGElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const px = (event.clientX - bounds.left) / bounds.width * width;
+    const py = (event.clientY - bounds.top) / bounds.height * height;
+    const nearest = points.reduce((a, b) => Math.hypot(a.x - px, a.y - py) <= Math.hypot(b.x - px, b.y - py) ? a : b);
+    setActive(nearest.chave);
+  };
+  return <figure ref={ref} className="m-0 min-w-0">
+    <figcaption className="text-sm leading-relaxed">{titulo} · {linhas.length} {rotuloGrupo ?? 'municípios observados'}</figcaption>
+    <div tabIndex={0} role="group" aria-label={`${titulo}. Use as setas para percorrer os municípios em ordem alfabética.`} aria-describedby={descriptionId} onKeyDown={keyboard} className="mt-3 outline-offset-4">
+      <svg {...dimensoes(measured, width, height)} aria-hidden="true" className="block max-w-full" onPointerDown={pointAt}>
+        {referencias.faixa && <rect x={x(referencias.faixa.q1)} y="8" width={Math.max(1, x(referencias.faixa.q3) - x(referencias.faixa.q1))} height={axis - 8} fill="var(--cor-obee-fundo)"/>}
+        <line x1={margin.left} x2={width - margin.right} y1={axis} y2={axis} stroke={COR.eixo}/>
+        {referencias.mediana !== null && <line x1={x(referencias.mediana)} x2={x(referencias.mediana)} y1="8" y2={axis} stroke="var(--cor-obee-tinta)" strokeWidth="1.5"/>}
+        {points.map(point => <circle key={point.chave} cx={point.x} cy={point.y} r={point.destacada || active === point.chave ? 5 : 2.5} fill={point.destacada || active === point.chave ? COR.selecao : COR.neutro} stroke={COR.superficie} strokeWidth="1"/>)}
+        {domain.ticks.map(tick => <g key={tick}><line x1={x(tick)} x2={x(tick)} y1={axis} y2={axis + 5} stroke={COR.eixo}/><text x={x(tick)} y={axis + 22} textAnchor={tick === domain.ticks[0] ? 'start' : tick === domain.ticks.at(-1) ? 'end' : 'middle'} fontSize="12" fill={COR.eixo}>{formataEixo(tick)}</text></g>)}
+      </svg>
+    </div>
+    <p id={descriptionId} className="mt-2 text-sm leading-relaxed text-carvao-muted">Cada ponto representa um município. A posição horizontal é o valor; o empilhamento evita sobreposição e não mede outra variável. Cor identifica apenas seleção. A faixa clara mostra os quartis e a linha indica a mediana. {rotuloPrecisao}</p>
+    <div className="mt-3 flex flex-wrap gap-2"><button type="button" className="min-h-[44px] border border-linha px-3 text-sm" onClick={() => move(-1)}>Município anterior</button><button type="button" className="min-h-[44px] border border-linha px-3 text-sm" onClick={() => move(1)}>Próximo município</button></div>
+    {selected && <p role="status" aria-atomic="true" className="mt-3 text-sm leading-relaxed"><strong>{selected.rotulo}: {formata(selected.valor)}</strong><br/>{rotuloPrecisao}</p>}
+  </figure>;
 }

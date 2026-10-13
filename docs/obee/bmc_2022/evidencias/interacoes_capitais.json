@@ -1,0 +1,38 @@
+[
+  {
+    "largura": 320,
+    "rolagem_horizontal": false,
+    "teclado": true,
+    "url_e_historico": true,
+    "alvos_44px": true,
+    "axe": [],
+    "coorte_examinada": 26
+  },
+  {
+    "largura": 390,
+    "rolagem_horizontal": false,
+    "teclado": true,
+    "url_e_historico": true,
+    "alvos_44px": true,
+    "axe": [],
+    "coorte_examinada": 26
+  },
+  {
+    "largura": 768,
+    "rolagem_horizontal": false,
+    "teclado": true,
+    "url_e_historico": true,
+    "alvos_44px": true,
+    "axe": [],
+    "coorte_examinada": 26
+  },
+  {
+    "largura": 1440,
+    "rolagem_horizontal": false,
+    "teclado": true,
+    "url_e_historico": true,
+    "alvos_44px": true,
+    "axe": [],
+    "coorte_examinada": 26
+  }
+]

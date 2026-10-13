@@ -57,6 +57,7 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 
 | Data | Entrega |
 | --- | --- |
+| 13/10/2026 | BMC 2022 em preparação na branch `codex/obee-base-comparavel-2022`: contrato independente de alinhamento e precisão, 208 observações das capitais reconciliadas, grupos descritivos por porte e região, nova comparação e APS em camada C separada. A coleta dos 318 e o PR permanecem pendentes de rede e aceite integral. Os 54 arquivos da v3 e os gates do escore foram preservados. Estado, consultas e reprodução em [BASE_COMPARAVEL_2022.md](./BASE_COMPARAVEL_2022.md) |
 | 09/10/2026 | Módulo Saúde nas capitais ([saude/](./saude/README.md)): pipeline próprio com Siconfi, SIOPS, CNES, Relatório APS e RIPSA, 16 validações, 23 fichas (3 não publicáveis), seis páginas, entrada `/eficiencia-estatal` com Educação e Saúde (o redirecionamento antigo foi removido), componentes compartilhados com ajustes retrocompatíveis. Educação não foi alterada em dados nem em regras |
 | 08/10/2026 | Etapa inicial: inventário, arquitetura, pipeline com 12 validações e 1 medição, painel Educação municipal nas capitais, documentação |
 | 08/10/2026 | OBEE incluído na home, no seletor, na escolha pós login, no cabeçalho, no rodapé e na SPA do Crédito (P2) |

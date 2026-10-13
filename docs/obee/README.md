@@ -2,13 +2,16 @@
 
 **Objetivo.** Apresentar indicadores públicos sobre recursos, atendimento e resultados do Estado brasileiro, com definição, fonte, período, perímetro e limitações declarados em cada número. O observatório apresenta os indicadores; o leitor tira as conclusões.
 
-**Estado em 09/10/2026.** Dois módulos com dados oficiais, ambos nas 26 capitais estaduais: **Educação municipal nas capitais** (referência, entregue em 08/10/2026) e **Saúde nas capitais** (09/10/2026, em revisão). A raiz `/eficiencia-estatal` é a entrada do observatório e leva aos dois. Não há outros módulos publicados.
+**Estado em 13/10/2026.** O catálogo tem 13 capítulos com painéis publicados: Educação, Saúde, Trabalho e renda, Segurança alimentar, Assistência social e cuidado, Segurança pública, Justiça e direitos, Habitação, Saneamento, Mobilidade e transporte, Energia e conectividade, Meio ambiente e clima e Cultura. Os recortes variam entre municípios, capitais, UFs, regiões e Brasil; publicação de um painel não demonstra cobertura integral do capítulo. Previdência, Esporte e lazer e Serviços e cidadania ainda não têm painel. A raiz `/eficiencia-estatal` reúne a comparação territorial e os acessos aos capítulos.
+
+**BMC 2022 nesta branch.** A nova Base Municipal Comparável está em preparação, com 208 observações reconciliadas das capitais e gate de cobertura dos 318 municípios. Aquisição ampliada, aceite integral e PR ainda dependem da liberação das fontes oficiais na rede. Contrato, cobertura, consultas e reprodução em [BASE_COMPARAVEL_2022.md](./BASE_COMPARAVEL_2022.md). APS de dezembro de 2025 fica em uma camada própria de capacidade, fora da justaposição de 2022.
 
 ## Onde está
 
 | Item | Caminho |
 | --- | --- |
 | Entrada | `/eficiencia-estatal` (`src/app/eficiencia-estatal/page.tsx`) |
+| Base Municipal Comparável 2022 | `pipeline/eficiencia_comparavel/`, `src/components/eficiencia/CompararCidades.tsx`, `public/eficiencia/base_comparavel_2022/`; cobertura ampliada pendente |
 | Painel Educação | `/eficiencia-estatal/educacao-municipal-capitais` |
 | Módulo Saúde | `/eficiencia-estatal/saude-capitais` (documentação em [saude/](./saude/README.md)) |
 | Página (servidor) | `src/app/eficiencia-estatal/educacao-municipal-capitais/page.tsx` |

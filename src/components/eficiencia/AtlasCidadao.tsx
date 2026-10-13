@@ -12,6 +12,8 @@ import frequencia from '@/lib/eficiencia/frequencia-escolar.json';
 import {AberturaCidada} from './AberturaCidada';
 import {TrilhasEstado} from '@/components/observatorios/TrilhasEstado';
 import {PanoramaTerritorial} from './PanoramaTerritorial';
+import {CompararCidades} from './CompararCidades';
+import type {BaseComparavel} from '@/lib/eficiencia/base_comparavel';
 
 type Scope = 'cidades' | 'regioes';
 type Selection = {scope: Scope; place: string; reference: string; metric: 'frequencia' | 'saeb'; age: string; perspective?: string};
@@ -33,7 +35,7 @@ function selectionFromUrl(): Selection {
 }
 
 /** `pilot` só é fornecido pelo servidor em preview/desenvolvimento; sem ele, nada do piloto é exibido. */
-export function AtlasCidadao({pilot=null}:{pilot?:PilotSnapshot|null}){
+export function AtlasCidadao({pilot=null,base=null}:{pilot?:PilotSnapshot|null;base?:BaseComparavel|null}){
   const showPilot=pilot!==null;
   const [selection,setSelection] = useState<Selection>(DEFAULT);
   const [chapter,setChapter] = useState('educacao');
@@ -61,22 +63,22 @@ export function AtlasCidadao({pilot=null}:{pilot?:PilotSnapshot|null}){
   const valuesHref=city?'/eficiencia-estatal/educacao-municipal-capitais/resultados':'/eficiencia-estatal/seguranca-alimentar/necessidades';
   const sourceHref=city?'/eficiencia-estatal/educacao-municipal-capitais/metodos':'/eficiencia-estatal/seguranca-alimentar/metodos';
   return <div className={styles.atlas}>
-    <AberturaCidada selection={selection} onSelect={select}/>
+    {city&&base?<CompararCidades data={base}/>:<AberturaCidada selection={selection} onSelect={select}/>}
     <TrilhasEstado tema="obee" itens={[
       {titulo:'A vida no território',texto:'Educação, saúde, renda e mobilidade: referências lado a lado.',href:city?'#atlas-panorama':'#atlas-comparacao'},
       {titulo:'Encontre seu tema',texto:'Acesso, recursos e resultados em 16 dimensões da vida pública.',href:'#dados-publicados'},
       {titulo:'Entenda a cobertura',texto:'O que cada fonte permite comparar e quais evidências ainda faltam.',href:'#cobertura'},
     ]}/>
     <dl className={styles.strip}><div><dt>Dimensões no observatório</dt><dd>{DIMENSOES.length}<small>visão completa dos temas</small></dd></div><div><dt>Capítulos com painéis publicados</dt><dd>{published}<small>cobertura variável por fonte</small></dd></div><div><dt>{city&&showPilot?"Nota integral do OBEE":"Nota agregada"}</dt><dd className={styles.stripText}>Indisponível<small>Em construção · dados publicados não equivalem a escore validado</small></dd></div></dl>
-    {city&&pilot&&<PilotoResultados data={pilot} place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})}/>}
-    {city&&<PanoramaTerritorial place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})} onEducation={()=>select({...selection,metric:'frequencia',age:'47813'})}/>}
-    <section id="atlas-comparacao" className={styles.section} aria-labelledby="atlas-compare-title"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>02 / Aprofundar a comparação</p><h2 id="atlas-compare-title">Uma medida. Diferentes contextos.</h2></div><p>{city&&selection.metric==='frequencia'?`${frequencia.source} · referência ${frequencia.period}`:`${meta.source} · referência ${meta.period}`}</p></div>
+    {city&&!base&&pilot&&<PilotoResultados data={pilot} place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})}/>}
+    {city&&!base&&<PanoramaTerritorial place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})} onEducation={()=>select({...selection,metric:'frequencia',age:'47813'})}/>}
+    {(!city||!base)&&<section id="atlas-comparacao" className={styles.section} aria-labelledby="atlas-compare-title"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>02 / Aprofundar a comparação</p><h2 id="atlas-compare-title">Uma medida. Diferentes contextos.</h2></div><p>{city&&selection.metric==='frequencia'?`${frequencia.source} · referência ${frequencia.period}`:`${meta.source} · referência ${meta.period}`}</p></div>
       {city&&<fieldset className={styles.indicatorChoice}><legend>Escolha a medida de educação</legend>{(['frequencia','saeb'] as const).map(m=><button type="button" key={m} aria-pressed={selection.metric===m} onClick={()=>select({...selection,metric:m})}>{m==='frequencia'?`Frequência escolar · ${frequencia.period}`:`Aprendizagem · Saeb ${dados.education.period}`}</button>)}</fieldset>}
       {city&&selection.metric==='frequencia'?<FrequenciaEscolar place={a.id} reference={b.id} age={selection.age} onAgeChange={age=>select({...selection,age})}/>:
       <div className={styles.comparison}><div><h3>{measure}</h3><p>{meta.universe}</p><p className={styles.difference} aria-live="polite">{diff===null?'Comparação indisponível':`${diff>0?'+':''}${format(diff)} ${city?'pontos Saeb':'pontos percentuais'}`}</p><p>{a.name} em relação a {b.name}. Esta diferença não é uma nota de serviço nem demonstra efeito da gestão pública.</p><p className={styles.universe}>{city?'Universo disponível: 26 capitais, rede municipal. Distrito Federal fora deste recorte.':'Universo disponível: cinco Grandes Regiões. Não há estimativa municipal da EBIA nesta base.'}</p></div>
         <div><div className={styles.bars} aria-hidden="true">{[a,b].map((p,i)=><div className={styles.barRow} key={p.id}><div><span>{p.name}</span><strong>{format(p.value)}</strong></div><div className={styles.track}>{p.value!==null&&<span className={i===0?styles.barPrimary:styles.barReference} style={{width:`${p.value/max*100}%`}}/>}</div></div>)}<p>Escala de 0 a {format(max)} {meta.unit}{city?' · limite visual fixo entre as 26 capitais':''}</p></div>
         <table className={styles.values}><caption>{measure} · {meta.period}</caption><thead><tr><th scope="col">Território</th><th scope="col">{meta.unit}</th></tr></thead><tbody>{[a,b].map(p=><tr key={p.id}><th scope="row">{p.name}</th><td>{format(p.value)}</td></tr>)}</tbody></table><div className={styles.links}><Link href={valuesHref}>Explorar este indicador ↗</Link><Link href={sourceHref}>Fonte e método ↗</Link><a href={'/'+meta.path.replace(/^public\//, '')} download>Baixar base completa ↓</a></div><p className={styles.small}>O download contém a base completa da fonte, não apenas os dois territórios selecionados.</p></div></div>}
-    </section>
+    </section>}
     <section id="dados-publicados" className={styles.section} aria-labelledby="atlas-chapters-title"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>03 / Explorar capítulos</p><h2 id="atlas-chapters-title">O que faz parte da sua vida?</h2></div><p>Os capítulos abrem seus próprios recortes e períodos.</p></div>
       <div className={styles.chapterTools}><label>Encontrar um tema<input type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Educação, moradia, direitos…"/></label><label>Área<select value={group} onChange={e=>setGroup(e.target.value as GrupoDimensao | 'Todas')}>{['Todas',...GRUPOS].map(g=><option key={g}>{g}</option>)}</select></label></div>
       <div className={styles.chaptersLayout}><div className={styles.chapterList}>{visible.map(d=><button type="button" key={d.id} aria-pressed={dimension?.id===d.id} onClick={()=>setChapter(d.id)}><span className={styles.chapterNumber}>{String(DIMENSOES.indexOf(d)+1).padStart(2,'0')}</span><span>{d.titulo}<small>{d.href?'Painel publicado':'Em desenvolvimento'}</small></span><span aria-hidden="true">↗</span></button>)}{visible.length===0&&<p role="status">Nenhum tema encontrado. Tente outro termo ou selecione Todas.</p>}</div>
