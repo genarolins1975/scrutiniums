@@ -36,7 +36,8 @@ export function citacao(c: DadosCitacao, acesso: Date): string {
  * `pu-X` do Pulso com o segmento na URL; chaves sem segmento são cartões extras.
  */
 export function alvoEmbed(chave: string): string {
-  if (chave === "ibcc") return "g=overview.ov-ibcc";
+  // segmento fixo na URL: sem ele, o embed herda o segmento salvo no navegador do leitor
+  if (chave === "ibcc") return "g=overview.ov-ibcc&seg=total";
   const m = chave.match(/^(inad|taxa|spread|saldo|concessoes)_(total|pf|pj)$/);
   if (m) return `g=pulse.pu-${m[1]}&seg=${m[2]}`;
   return `g=pulse.pu-${chave}`;

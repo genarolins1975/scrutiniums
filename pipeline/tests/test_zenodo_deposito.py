@@ -39,6 +39,7 @@ class PacoteZenodo(unittest.TestCase):
             Z.criar_rascunho(Path("."), ["criadores"])
         fonte = (RAIZ / "scripts" / "zenodo_deposito.py").read_text()
         self.assertNotIn("/actions/publish", fonte)
+        self.assertIn('os.environ.get("ZENODO_URL") or "https://sandbox.zenodo.org"', fonte)
 
 
 if __name__ == "__main__":
