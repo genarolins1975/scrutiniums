@@ -6,6 +6,7 @@ import {DIMENSOES, GRUPOS, estadoCatalogo, type GrupoDimensao} from '@/lib/efici
 import dados from '@/lib/eficiencia/atlas-resumo.json';
 import styles from './AtlasCidadao.module.css';
 import {PilotoResultados} from './PilotoResultados';
+import type {PilotSnapshot} from '@/lib/eficiencia/piloto-nucleo';
 import {FrequenciaEscolar} from './FrequenciaEscolar';
 import frequencia from '@/lib/eficiencia/frequencia-escolar.json';
 import panorama from '@/lib/eficiencia/panorama-atlas.json';
@@ -29,7 +30,9 @@ function selectionFromUrl(): Selection {
   return {scope,place,reference,metric,age};
 }
 
-export function AtlasCidadao({showPilot=false}:{showPilot?:boolean}){
+/** `pilot` só é fornecido pelo servidor em preview/desenvolvimento; sem ele, nada do piloto é exibido. */
+export function AtlasCidadao({pilot=null}:{pilot?:PilotSnapshot|null}){
+  const showPilot=pilot!==null;
   const [selection,setSelection] = useState<Selection>(DEFAULT);
   const [chapter,setChapter] = useState('educacao');
   const [group,setGroup] = useState<GrupoDimensao | 'Todas'>('Todas');
@@ -70,7 +73,7 @@ export function AtlasCidadao({showPilot=false}:{showPilot?:boolean}){
       <div className={styles.heroFooter}><span>Dados reais · períodos identificados em cada medida</span><span>Comparação internacional ainda não disponível</span></div>
     </section>
     <dl className={styles.strip}><div><dt>Dimensões no observatório</dt><dd>{DIMENSOES.length}<small>visão completa dos temas</small></dd></div><div><dt>Capítulos com painéis publicados</dt><dd>{published}<small>cobertura variável por fonte</small></dd></div><div><dt>{city&&showPilot?"Nota integral do OBEE":"Nota agregada"}</dt><dd className={styles.stripText}>Indisponível<small>dados publicados não equivalem a escore validado</small></dd></div></dl>
-    {city&&showPilot&&<PilotoResultados place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})}/>}
+    {city&&pilot&&<PilotoResultados data={pilot} place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})}/>}
     {city&&<PanoramaTerritorial place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})} onEducation={()=>select({...selection,metric:'frequencia',age:'47813'})}/>}
     <section id="atlas-comparacao" className={styles.section} aria-labelledby="atlas-compare-title"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>02 / Aprofundar a comparação</p><h2 id="atlas-compare-title">Uma medida. Diferentes contextos.</h2></div><p>{city&&selection.metric==='frequencia'?`${frequencia.source} · referência ${frequencia.period}`:`${meta.source} · referência ${meta.period}`}</p></div>
       {city&&<fieldset className={styles.indicatorChoice}><legend>Escolha a medida de educação</legend>{(['frequencia','saeb'] as const).map(m=><button type="button" key={m} aria-pressed={selection.metric===m} onClick={()=>select({...selection,metric:m})}>{m==='frequencia'?`Frequência escolar · ${frequencia.period}`:`Aprendizagem · Saeb ${dados.education.period}`}</button>)}</fieldset>}

@@ -1,90 +1,80 @@
 # Elegibilidade dos 16 capítulos e roadmap de expansão
 
-Revisão: 12/10/2026. Base examinada: commit `64f6a9e1b42a64c8d161b29d3d3fa5f70f29ece7`, PR #149 em rascunho.
+Revisão: 12/10/2026. Base integrada: `bca955b0f611c534e903fc3f0c85785705b0be1e`.
 
-## Atualização — auditoria de Habitação concluída
+## Situação atual
 
-A etapa de aquisição confirmou as tabelas SIDRA 9934/9940, com 520 células das 26 capitais em 2022. Habitação é agora candidato em revisão; precisão municipal e redundância/pesos continuam pendentes. O [dossiê de adensamento](HABITACAO_ADENSAMENTO.md) e a matriz JSON atualizada registram o avanço. Nenhum indicador foi acrescentado ao escore. A decisão e a fila abaixo documentam o diagnóstico anterior à aquisição.
+Há **13 painéis publicados**, **cinco indicadores no piloto congelado de 2022**, **duas candidatas adquiridas e analisadas conjuntamente** e **zero indicadores adicionais aprovados para promoção**. Nenhum capítulo completo tem escore validado. A contagem de indicadores não mede a cobertura substantiva dos 16 capítulos.
 
-## Decisão inicial
+O panorama descritivo foi publicado em produção após a integração dos PRs #145, #147 e #149, com build e CI aprovados. A trava do escore experimental em produção permanece ativa. O timeout que motivou a revisão inicial de elegibilidade foi resolvido preservando as assertivas; não é mais a próxima etapa.
 
-Há **13 painéis publicados**, **cinco indicadores no piloto de 2022** e **nenhum indicador adicional pronto para inclusão automática** entre os capítulos restantes nas evidências examinadas. Não há escore validado de capítulo completo. Cinco indicadores não representam cinco capítulos completos, e 5/16 não é uma medida de cobertura substantiva do OBEE.
+A aquisição de Habitação (SIDRA 9934/9940, 520 células) e de Conectividade (SIDRA 9936, 156 células) está concluída para a mesma coorte de 26 capitais em 2022. A [comparação conjunta](CESTA_CONJUNTA_V3.md) produziu **18 cenários e 468 linhas cidade–cenário**, além da matriz de correlações e da decomposição do efeito de novos indicadores e pesos.
 
-A próxima aquisição recomendada é uma **auditoria de viabilidade de Habitação municipal em 2022**, com foco em adensamento domiciliar. Trata-se de uma hipótese de aquisição: ainda não foi confirmada uma tabela oficial com o recorte necessário. A prioridade decorre da aderência temática à vida do cidadão e da possibilidade de investigar o mesmo ano e universo territorial; não de uma certificação prévia da fonte.
+A proposta para revisão é examinar as duas inclusões preservando em 40% o conjunto renda–saneamento–habitação–conectividade. Esse agrupamento e seus pesos ainda precisam de justificação normativa; menor alteração na ordem das capitais não prova superioridade metodológica. A próxima etapa é o protocolo de precisão/divulgação municipal.
 
-A base FJP já publicada não pode ser convertida em notas de capitais. Energia e conectividade vêm na sequência para auditoria de acesso municipal; Saúde permanece em pesquisa com condições objetivas de desbloqueio. Nenhum desses trabalhos altera automaticamente a cesta v2.
+## Matriz atual
 
-## Matriz de decisão
+Estados referem-se à cesta municipal de 2022. Não julgam a utilidade dos painéis nos seus próprios anos e universos. O inventário de publicação corresponde ao catálogo da base acima.
 
-| Capítulo | Estado | Evidência territorial e temporal | Principal restrição | Fila |
-|---|---|---|---|---|
-| Educação | Indicador no piloto | 26 capitais; frequência 4–5 anos, 2022; painel municipal de ensino tem outros períodos e universos. | Aprendizagem municipal urbana 2023 exige participação compatível; não equivale ao construto de frequência de 2022. | P2 |
-| Saúde | Pesquisa bloqueada | 26 capitais; 156 contagens SIM/SINASC, 2021–2023. APS potencial: dezembro de 2025. | Cobertura/sub-registro infantil municipal sem evidência elegível; janela trienal diferente de 2022; precisão condicional não corrige cobertura. | P2 |
-| Trabalho e renda | Indicador no piloto | 26 capitais na cesta; rendimento do Censo 2022. Conjuntura Brasil/UF em outros períodos. | Renda não mede toda a inserção laboral nem eficiência da política; redundância com condições habitacionais. | P2 |
-| Segurança alimentar | Contexto; fora da cesta | PNADC: Brasil/cinco regiões, 2023–2024; MUNIC: 5.570 municípios, 2024. | Sem EBIA municipal comparável em 2022; existência de programa não mede segurança alimentar. | P3 |
-| Assistência social e cuidado | Contexto; fora da cesta | Censo SUAS/RMA CRAS 2025: unidades e formulários unidade-mês, incluindo redes regionais/estaduais/OSC. | Sem demanda elegível, usuários únicos e resolução; volume de atendimentos não tem polaridade universal; período 2025. | P3 |
-| Previdência | Sem painel publicado | Catálogo editorial sem painel publicado neste snapshot. | Sem contrato e evidência numérica revisados nesta rodada. | P4 |
-| Segurança pública | Indicador no piloto | Piloto: 26 capitais, Atlas da Violência 2024, referência 2022. Painel: Brasil, 2025. | Depende do modelo de homicídios ocultos; não equivale a todos os crimes ou à resposta policial. | P2 |
-| Justiça e direitos | Contexto; fora da cesta | 2.563 comarcas, abril/2025; defensorias de 27 UFs, 2024; tribunais, 2025. | Comarca/tribunal não equivale a município; sem demanda elegível ou resolução individual; períodos incompatíveis. | P3 |
-| Habitação | Contexto; fora da cesta | FJP edição 2026: estimativas de 2024 para Brasil, regiões e 27 UFs. | UF não representa capital e 2024 não é 2022; renda e esgotamento já entram na cesta. | P1 |
-| Saneamento | Indicador no piloto | Piloto municipal Censo/SIDRA 6805, 2022. Painel SINISA 2025: referência 2024, Brasil/regiões/UF. | Não mede tratamento, qualidade ou continuidade; não somar categorias filhas à categoria agregada. | P2 |
-| Mobilidade e transporte | Indicador no piloto | Censo 2022 municipal; Pemob 2025 com respondentes; AOP 2019 com população de 2010. | Universo de trabalhadores com deslocamento; não cobre toda acessibilidade. AOP não tem a mesma coorte/ano. | P2 |
-| Energia e conectividade | Contexto; fora da cesta | Energia: séries PNAD, Brasil/distribuidoras conforme produto; internet: Brasil urbano/rural, 2025. | Distribuidora não é município; tarifa homologada não é conta típica; internet nacional não representa capital. | P2 |
-| Meio ambiente e clima | Contexto; fora da cesta | SINISA 2025, referência 2024; Brasil e cinco regiões, universos elegíveis. | Recorte não municipal/2022; planos e infraestrutura não equivalem a resultado ambiental; sobreposição com Saneamento. | P3 |
-| Cultura | Contexto; fora da cesta | TIC Cultura 2024: estimativas nacionais; SIIC: despesas 2013–2023 por esfera/UF. | Sem frequência individual ou acesso municipal; equipamentos públicos/privados; gasto maior não implica resultado melhor. | P3 |
-| Esporte e lazer | Sem painel publicado | Catálogo editorial sem painel publicado neste snapshot. | Sem contrato e evidência numérica revisados nesta rodada. | P4 |
-| Serviços e cidadania | Sem painel publicado | Catálogo editorial sem painel publicado neste snapshot. | Sem contrato e evidência numérica revisados nesta rodada. | P4 |
+| Capítulo | Estado na cesta | Próxima ação |
+|---|---|---|
+| Educação | Indicador na v2 | Preservar frequência; auditar aprendizagem apenas em contrato próprio. |
+| Saúde | Pesquisa com impedimento | Obter evidência municipal de cobertura para cada ano e revisar contrato temporal; não aplicar fatores de UF. |
+| Trabalho e renda | Indicador na v2 | Preservar renda e avaliar redundância antes de acrescentar condições de moradia. |
+| Segurança alimentar | Contexto; fora da cesta | Manter comparação regional; definir aquisição de resultado municipal antes de pontuar. |
+| Assistência social e cuidado | Contexto; fora da cesta | Auditar agregação territorial e denominador de necessidade em contrato de acesso separado. |
+| Previdência | Sem painel publicado | Definir população elegível, proteção de renda e competência de cada regime antes da coleta. |
+| Segurança pública | Indicador na v2 | Preservar alternativa só registros e explicitar incerteza do modelo. |
+| Justiça e direitos | Contexto; fora da cesta | Resolver geografia e universo da demanda; não atribuir desempenho do tribunal à capital. |
+| Habitação | Candidato em revisão | Protocolo descritivo definido; precisão municipal pendente. Parecer propositivo concluído; preparar revisão independente da v3, sem promoção automática. |
+| Saneamento | Indicador na v2 | Preservar definição e alternativa apenas rede; evitar duplicação na expansão de Habitação. |
+| Mobilidade e transporte | Indicador na v2 | Preservar indicador e não misturar AOP ou oferta declarada na mesma referência. |
+| Energia e conectividade | Candidato em revisão | Protocolo descritivo definido; precisão municipal pendente. Parecer propositivo concluído; preparar revisão independente da v3, sem promoção automática. |
+| Meio ambiente e clima | Contexto; fora da cesta | Selecionar exposição ou resultado municipal com denominador comparável e cobertura explícita. |
+| Cultura | Contexto; fora da cesta | Definir participação/acesso municipal e precisão; manter despesa como contexto. |
+| Esporte e lazer | Sem painel publicado | Definir participação/uso e universo residente; mapear fonte territorial antes da coleta. |
+| Serviços e cidadania | Sem painel publicado | Definir resolução e tempo de atendimento com demanda comparável; separar canal digital de acesso efetivo. |
 
-A [matriz JSON](elegibilidade-16-capitulos.json) registra também ação seguinte, fonte de evidência, estado de publicação e impedimento de promoção automática de cada capítulo. Estados se referem à referência municipal de 2022; não julgam a utilidade dos painéis em seus próprios recortes. “Sem painel” se limita ao catálogo deste commit.
+A [matriz JSON](elegibilidade-16-capitulos.json) preserva fontes, medidas, recortes, prioridades e impedimentos por capítulo. As duas candidatas continuam com `eligible_for_automatic_expansion=false`; a contagem de indicadores elegíveis adicionais permanece zero.
 
 ## Roadmap por critérios de conclusão
 
-| Ordem | Entrega concreta | Critério de conclusão | Se a condição falhar |
-|---|---|---|---|
-| P0 — confiabilidade | Resolver timeout da reconciliação exaustiva do piloto e conferir nova CI | Mesmo teste de 325 pares e inversas aprovado; interface e suíte integral verdes no novo commit | Manter bloqueio de integração e investigar a falha, sem retirar assertivas |
-| P1 — próxima etapa | Dossiê de viabilidade de Habitação municipal 2022 | Fonte oficial, códigos IBGE, 26 capitais, unidade/ano/universo, numerador e denominador auditáveis; definição de adensamento justificada | Registrar ausência/limite e seguir para Energia; não usar a UF nem mudar o ano silenciosamente |
-| P2 — aquisições e manutenção | Auditar acesso municipal em Energia; manter dossiê de Saúde; preservar as cinco dimensões | Para Energia: mesma coorte/ano, ausências e dispersão avaliadas. Para Saúde: cobertura infantil municipal por ano, precisão e contrato temporal resolvidos | Permanecer como contexto/pesquisa; não estimar acesso municipal a partir de distribuidoras |
-| P3 — construtos e geografias | Alimentação, Assistência, Justiça, Ambiente e Cultura | Definir resultado/acesso relevante, população elegível, geografia e período comparáveis antes da coleta | Manter indicadores próprios; não pontuar gasto, existência de programa ou volume como qualidade |
-| P4 — fundação dos capítulos | Previdência, Esporte e Serviços | Contrato de indicador e fonte selecionados, coleta reproduzível e painel descritivo auditado | Exibir estágio de desenvolvimento, sem notas de preenchimento |
-| Após candidato aprovado | Cesta v3 separada e análise de impacto | Recalcular toda a coorte; justificar pesos por conteúdo; analisar redundância, definições, ausências, pares invertidos e efeito da nova composição | Preservar v2 e apresentar motivo de rejeição do candidato |
-| Antes da liberação | Revisão metodológica independente e integração ao produto | Aprovar construto, interpretação e limites; validar jornada, acessibilidade e identificação de edição | Continuar experimental, com produção bloqueada |
+| Ordem | Entrega | Estado / critério |
+|---|---|---|
+| 1 | Confiabilidade da v2 e integração do panorama | Concluída: reconciliação exaustiva mantida, CI aprovada e panorama em produção |
+| 2 | Aquisição municipal de Habitação | Concluída: domicílios e moradores, limiares >2 e >3 por dormitório, fontes e hashes |
+| 3 | Aquisição municipal de Conectividade | Concluída: Sim/Não/Total, numerador/denominador, percentuais e hashes |
+| 4 | Comparação conjunta das candidatas | Concluída: inclusões isoladas/conjuntas, pesos explícitos, definições, empates e decomposição; proposta documentada |
+| 5 | Precisão e divulgação municipal | Protocolo descritivo concluído e automatizado; anexo de 33 abas examinado. Precisão municipal não resolvida; aquisição adequada segue pendente, com bloqueio de inferência/agregado |
+| 6 | Parecer de conteúdo e pesos da candidata v3 | Concluído como proposta: manter candidatas e 40% apenas na referência experimental; conteúdo, compensações e limites explicitados, sem aprovação oficial |
+| 7 | Pacote de revisão independente | Preparado: inventário congelado, seis critérios, registro vazio e triagem automática. Revisão independente ainda não realizada |
+| 7b — próxima | Revisão substantiva e decisão de edição | Responsável distinto examina os seis critérios e registra parecer; conferir autenticidade, independência e escopo antes de qualquer integração |
+| 8 | Integração ao produto | Identificar edição; comparar v2/v3; distinguir composição de variação temporal; conferir jornada e acessibilidade |
 
-As prioridades não são estimativas de duração. A existência de publicação oficial e a resolução dos contratos são dependências externas; não há prazo confiável sem concluí-las.
+Trilhas complementares: Saúde depende de cobertura/sub-registro infantil municipal por ano e do contrato temporal 2021–2023; Alimentação, Assistência, Justiça, Ambiente e Cultura exigem construtos e geografias compatíveis; Previdência, Esporte e Serviços precisam de contratos e fontes antes de notas. Não há prazo confiável para resolver dependências de evidência apenas com engenharia.
 
-## Contrato da próxima aquisição: Habitação
+## Regras de expansão
 
-1. Investigar uma medida oficial de adensamento domiciliar entre residentes/domicílios de municípios em 2022. Registrar exatamente o que constitui cômodo/dormitório, o limiar e o universo; não escolher um limiar para favorecer resultados.
-2. Confirmar as 26 capitais por código IBGE e excluir DF da coorte. Não aceitar geografia estadual, região metropolitana ou arranjo populacional como substituta.
-3. Preservar metadados, consulta, data de captura, bytes/hash e notas. Informar se são contagens censitárias ou estimativas amostrais e as medidas de precisão disponíveis.
-4. Conferir numerador, denominador positivo, hierarquias, totais, ausências e marcadores de sigilo. Ausência permanece ausência. Percentual deve respeitar 0–100.
-5. Examinar validade de conteúdo e correlação com renda e saneamento; investigar piso/teto e dispersão. Correlação alta não determina exclusão sozinha, mas exige justificativa do peso conjunto.
-6. Produzir um dossiê de aceitar/rejeitar para revisão. Não recalibrar v2, não preencher os demais capítulos e não anunciar escore integral.
+- Resultados dos moradores, acesso, recursos, satisfação e eficiência causal são objetos diferentes. Os percentis do piloto representam condições relativas observadas.
+- Referência congelada: 26 capitais, 2022, sem DF. Não substituir capital por UF, distribuidora, tribunal ou região metropolitana.
+- Ausências permanecem ausências. Não preencher Saúde nem redistribuir silenciosamente seu peso.
+- Média 50 é propriedade da normalização, não meta. Mudança de cesta não é melhora histórica.
+- Um indicador não resolve um capítulo completo. Número maior de séries não deve conferir peso maior por acidente.
+- Precisão municipal não pode ser inferida de funções nacionais/estaduais sem suporte nem de totais populacionais expandidos tratados como amostra.
+- Países e escore integral dos 16 capítulos permanecem fora da implementação validada.
 
-Caso uma fonte municipal de 2022 não seja confirmada, o resultado válido da etapa é uma decisão documentada de não inclusão. Uma nova referência temporal exige outra edição e uma revisão de toda a cesta, não apenas do capítulo novo.
+## Evidências e reprodução
 
-## Regras para qualquer expansão
+- [Pacote de revisão independente](REVISAO_INDEPENDENTE_V3.md): roteiro, inventário por hash, seis critérios e triagem documental.
 
-- Resultados do cidadão, acesso, recursos e eficiência causal são objetos diferentes. O piloto mede resultados descritivos relativos; nenhuma expansão pode transformar o nome em avaliação causal do Estado.
-- Referência congelada: 26 capitais, 2022; a janela de Saúde 2021–2023 depende de revisão explícita. Média 50 continua sendo propriedade da normalização.
-- Pontuação por capítulo completo exige cobertura conceitual e justificativa dos componentes. Um único indicador proxy não basta para declarar capítulo resolvido.
-- Entrada de indicador exige nova versão, pesos explícitos e comparação lado a lado com a cesta anterior. Variação por composição não é evolução histórica.
-- Não somar os indicadores de todos os painéis com pesos iguais: isso premiaria capítulos com mais séries e duplicaria fenômenos como renda, infraestrutura e esgotamento.
-- Comparação entre países e escore integral dos 16 capítulos continuam fora da implementação validada.
+- [Parecer de conteúdo e pesos](PARECER_CONTEUDO_PESOS_V3.md): recomendação experimental, matriz de sete indicadores e critérios de revisão.
 
-## Verificação desta revisão
+- [Protocolo de precisão e divulgação](PRECISAO_CANDIDATAS.md): anexo oficial, acesso aos microdados, 52 registros e dependências abertas.
 
-O commit anterior teve `interface: success` e `testes: failure`. A falha foi timeout de 5.000 ms em “reconcilia inversões com a auditoria e deduplica os pesos”, não divergência numérica reportada: 4.608 testes passaram, um foi ignorado e um expirou. Nesta entrega o prazo daquele teste passa a 30.000 ms; todas as 325 comparações e inversas, contagens e assertivas são preservadas. Não é uma alteração de fórmula nem um teste de desempenho.
+- [Cesta conjunta e proposta v3](CESTA_CONJUNTA_V3.md): código, 18 cenários, 468 linhas, oito testes novos e pendências.
+- [Aquisição de Habitação](HABITACAO_ADENSAMENTO.md) e [sensibilidade das definições](HABITACAO_CENARIOS.md).
+- [Aquisição de Conectividade](CONECTIVIDADE_MUNICIPAL.md).
+- [Expansão v2](EXPANSAO_V2.md) e [robustez empírica](ROBUSTEZ_EMPIRICA.md).
+- [Dossiê de cobertura de Saúde](CAPTURA_RECAPTURA_SAUDE.md).
 
-O inventário foi reconciliado com os 16 IDs do catálogo, seus 13 links publicados e as cinco dimensões do snapshot. Caminhos das evidências conferidos na árvore do commit. O corpo numérico do teste exaustivo foi executado localmente com Node 24, remoção de tipos e assertivas equivalentes: 650 avaliações, 37 pares com inversão e três empates desfeitos, em aproximadamente dois segundos. Essa execução não substitui a suíte Vitest/React nem o build completo.
-
-Nova CI integral deve ser conferida no commit da entrega; não se atribui a ele o resultado da execução anterior.
-
-## Evidências versionadas
-
-- [docs/obee/resultados/EXPANSAO_V2.md](https://github.com/genarolins1975/scrutiniums/blob/64f6a9e1b42a64c8d161b29d3d3fa5f70f29ece7/docs/obee/resultados/EXPANSAO_V2.md)
-- [docs/obee/resultados/CAPTURA_RECAPTURA_SAUDE.md](https://github.com/genarolins1975/scrutiniums/blob/64f6a9e1b42a64c8d161b29d3d3fa5f70f29ece7/docs/obee/resultados/CAPTURA_RECAPTURA_SAUDE.md)
-- [src/app/eficiencia-estatal/page.tsx](https://github.com/genarolins1975/scrutiniums/blob/64f6a9e1b42a64c8d161b29d3d3fa5f70f29ece7/src/app/eficiencia-estatal/page.tsx)
-- [src/lib/eficiencia/dimensoes.ts](https://github.com/genarolins1975/scrutiniums/blob/64f6a9e1b42a64c8d161b29d3d3fa5f70f29ece7/src/lib/eficiencia/dimensoes.ts)
-- [src/lib/eficiencia/energia/dados.ts](https://github.com/genarolins1975/scrutiniums/blob/64f6a9e1b42a64c8d161b29d3d3fa5f70f29ece7/src/lib/eficiencia/energia/dados.ts)
-
-Também foram considerados os contratos e limites documentados em [EXPANSAO_V2.md](EXPANSAO_V2.md), [CAPTURA_RECAPTURA_SAUDE.md](CAPTURA_RECAPTURA_SAUDE.md) e [ROBUSTEZ_EMPIRICA.md](ROBUSTEZ_EMPIRICA.md). Esta é uma revisão das evidências versionadas, não um levantamento exaustivo de todas as fontes públicas existentes.
+Esta revisão reconcilia as evidências versionadas. Não é um levantamento exaustivo de fontes externas. Os resultados dos testes da nova entrega devem ser conferidos no seu próprio commit; a aprovação da integração anterior não substitui essa verificação.

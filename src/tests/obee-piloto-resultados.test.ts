@@ -31,17 +31,20 @@ describe('Apresentação experimental dos resultados',()=>{
   expect(pilotPreviewEnabled(undefined,'development')).toBe(true);
  });
  it('identifica unidades, interpretação e saúde ausente na apresentação',()=>{
-  const html=renderToStaticMarkup(createElement(PilotoResultados,{place:'2611606',reference:'4106902',onReference:()=>{}}));
+  const html=renderToStaticMarkup(createElement(PilotoResultados,{data:pilotoResultados,place:'2611606',reference:'4106902',onReference:()=>{}}));
   for(const text of ['Piloto experimental','33,5','77,3','Saúde permanece em pesquisa','Não é intervalo de confiança','por 100 mil','R$','peso de 20%'])expect(html).toContain(text);
   expect(html).not.toContain('Saúde</h4>');
+  expect(html).toContain('/eficiencia-estatal/laboratorio-cesta?cityA=2611606&amp;cityB=4106902');
  });
  it('não apresenta número para território fora da referência',()=>{
-  const html=renderToStaticMarkup(createElement(PilotoResultados,{place:'Brasil',reference:'4106902',onReference:()=>{}}));
+  const html=renderToStaticMarkup(createElement(PilotoResultados,{data:pilotoResultados,place:'Brasil',reference:'4106902',onReference:()=>{}}));
   expect(html).toContain('Piloto indisponível neste recorte');expect(html).not.toContain('77,3');
  });
  it('preserva a entrada pública por padrão e habilita o bloco somente com prop explícita',()=>{
   expect(renderToStaticMarkup(createElement(AtlasCidadao))).not.toContain('id="atlas-piloto"');
-  expect(renderToStaticMarkup(createElement(AtlasCidadao,{showPilot:true}))).toContain('id="atlas-piloto"');
+  expect(renderToStaticMarkup(createElement(AtlasCidadao))).not.toContain('/eficiencia-estatal/laboratorio-cesta');
+  expect(renderToStaticMarkup(createElement(AtlasCidadao,{pilot:pilotoResultados}))).toContain('id="atlas-piloto"');
+  expect(renderToStaticMarkup(createElement(AtlasCidadao,{pilot:null}))).not.toContain('id="atlas-piloto"');
  });
 });
 
@@ -97,7 +100,7 @@ describe('Apresentação experimental dos resultados',()=>{
    expect(pilotStability('Brasil','2611606')).toBeNull();
   });
   it('expõe o resultado e as hipóteses do par no HTML acessível',()=>{
-   const html=renderToStaticMarkup(createElement(PilotoResultados,{place:'2611606',reference:'2927408',onReference:()=>{}}));
+   const html=renderToStaticMarkup(createElement(PilotoResultados,{data:pilotoResultados,place:'2611606',reference:'2927408',onReference:()=>{}}));
    for(const text of ['Há inversão da ordem','31 combinações distintas','Contagens não são probabilidades','Conferir as hipóteses do par selecionado','−','Sem Educação'])expect(html).toContain(text);
   });
  });
