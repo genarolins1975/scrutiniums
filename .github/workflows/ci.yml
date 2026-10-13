@@ -93,6 +93,8 @@ jobs:
         run: |
           python3 -m unittest scripts.test_obee_precisao_cesta
           python3 scripts/obee_precisao_cesta.py --check
+          python3 -m unittest scripts.test_obee_renda_sensibilidade
+          python3 scripts/obee_renda_sensibilidade.py --check
 
       - name: Build de produção
         # gera o HTML pré-renderizado (.next/server/app) do MESMO commit testado, no mesmo
