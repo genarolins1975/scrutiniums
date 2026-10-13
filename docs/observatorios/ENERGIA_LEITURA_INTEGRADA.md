@@ -37,4 +37,21 @@ O uso de vínculos societários não estabelece beneficiário final, favorecimen
 - TypeScript, lint e compilação de produção concluídos.
 - Filtros e hipóteses são serializados no endereço pelo mecanismo de estado já utilizado no observatório.
 
-Revisão visual e interações devem usar a prévia do mesmo commit antes da publicação. A verificação automatizada não substitui inspeção manual do mapa, rolagem de tabelas, foco e reflow em telas pequenas.
+## Revisão da prévia
+
+A compilação, o lint, os tipos, os testes Python e a suíte completa passaram no CI do commit `1054bb7261b03fd72232b90c2ed4d5a755fd8bc2` (execução 38328240127). A execução local completa encontrou somente dois arquivos brutos de Contas Públicas ausentes do checkout; esses arquivos estão presentes no CI remoto, que passou.
+
+Inspeção manual no Chrome:
+
+- 1440 px: hierarquia, camadas física/comercial, mapa e laboratório de contratos.
+- 768 px: filtros e disposição do atlas.
+- 390 e 320 px: controles e leitura; páginas de comercialização, empresas, atlas e riscos sem transbordamento horizontal da página. As tabelas preservam sua própria rolagem.
+- Ampliação real de 200%: laboratório de flexibilidade reorganizado em 720 px úteis, sem transbordamento; zoom e tamanho do navegador restaurados.
+- Contratos: troca do perfil uniforme para o perfil casado reduz o ajuste de R$ 5.250 de débito para zero; restauração recupera o cenário inicial.
+- Atlas: Minas Gerais resulta em 301,5 W/habitante de MMGD e 69 MW outorgados em construção; troca de camada, seleção e zoom conferidos.
+- Empresas: troca de Neoenergia para Copel e de consolidado para individual; seis exercícios e links mantêm o CNPJ e o perímetro selecionados.
+- Flexibilidade: bateria de 200 MWh úteis e 50 MW dura quatro horas; data center de 100 MW de TI, 80% de uso e PUE 1,35 resulta em 108 MW médios e 946,1 GWh anuais apresentados.
+
+![Atlas na prévia final, com Minas Gerais selecionado](../energia-leitura-integrada/atlas-desktop.jpg)
+
+Produção não alterada por esta revisão. Os limites de cobertura descritos acima continuam aplicáveis.
