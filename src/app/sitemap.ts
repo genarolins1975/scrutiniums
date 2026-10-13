@@ -32,6 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/resumo", 0.9, "daily"),
     ...INDICADORES.map((i) => rota(`/dados/${i.slug}`, 0.8, "daily")),
     rota("/dados/ibcc", 0.8, "daily"),
+    rota("/dados/api", 0.6, "monthly"),
     ...instituicoes.map((i) => rota(`/observatorio/institutions/${i.cod}`, 0.6, "weekly")),
     ...ufs.map((u) => rota(`/observatorio/states/${u.uf}`, 0.8, "daily")),
     ...municipios.map((m) => rota(`/observatorio/presenca/${m.cod}`, 0.5, "weekly")),

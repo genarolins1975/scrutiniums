@@ -5,6 +5,8 @@ import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { GraficoLinha } from "@/components/dados/GraficoSerie";
 import { SeloFrescor } from "@/components/dados/SeloFrescor";
+import { CitarIncorporar } from "@/components/dados/CitarIncorporar";
+import { codigoIncorporar } from "@/lib/citacao";
 import { fmtPercentil, fmtRefMes, fmtSinal, geradoEmPublicado } from "@/lib/dadosPublicos";
 import { ROTULOS_COMPONENTES, REGRAS_NOTA, ibccPublico, notaMensalIbcc } from "@/lib/ibcc";
 
@@ -63,6 +65,17 @@ export default function IbccPage() {
               Série desde {fmtRefMes(d.serie[0].ref)} · {d.serie.length} observações mensais ·{" "}
               <a href="/obs/data/gold/ibcc.json" className="text-bronze underline underline-offset-4">dados em JSON</a>
             </p>
+            <CitarIncorporar
+              dados={{
+                titulo: "Índice Brasileiro de Condições de Crédito (IBCC)",
+                fonte: "Scrutiniums, calculado sobre séries do BCB/SGS e do IBGE",
+                referencia: fmtRefMes(d.atual.ref),
+                natureza: "dado calculado",
+                processadoEm: geradoEmPublicado(),
+                caminho: "/dados/ibcc",
+              }}
+              incorporar={codigoIncorporar("ibcc", "Índice Brasileiro de Condições de Crédito (IBCC)", "/dados/ibcc")}
+            />
           </section>
 
           <aside className="border border-linha bg-papel p-8">

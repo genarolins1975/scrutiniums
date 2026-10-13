@@ -46,7 +46,8 @@ const nextConfig = {
       {source: "/energia/gold/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
       {source: "/energia/series/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
       {source: "/eficiencia/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
-      {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
+      // API pública de leitura (/dados/api): leitura cruzada liberada para qualquer origem
+      {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}, {key: "Access-Control-Allow-Origin", value: "*"}]},
       {source: "/obs/:arquivo(app.min.js|app-municipal.min.js|app-emergentes.min.js|styles.css)", headers: [{key: "Cache-Control", value: "public, max-age=31536000, immutable"}]},
     ];
   },

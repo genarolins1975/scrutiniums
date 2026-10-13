@@ -48,6 +48,11 @@ novas viram comentários nela. Um cheque de vigília que quebre (código ≠ 0 e
 - `resumo-email.yml` (depois de cada execução do diário, com reserva às 21:47
   UTC): envia o resumo do crédito às assinaturas confirmadas em /resumo, sem
   conta. Idempotente: a diária só recebe edição nova; a semanal, às segundas.
+- `zenodo-mensal.yml` (dia 6): prepara o pacote mensal das séries para o Zenodo
+  (`scripts/zenodo_deposito.py`) e o guarda como artefato. Rascunho no Zenodo só
+  com `ZENODO_RASCUNHO=1` e o segredo `ZENODO_TOKEN`; a publicação é sempre
+  manual. Pendências: conta no Zenodo, criadores e licença dos dados derivados em
+  `config/institucional.json`, e a primeira publicação.
 - **Pendência de configuração dos dois envios** (não resolvível no código):
   1. segredo `BOLETIM_SECRET` (16 caracteres ou mais) no GitHub Actions;
   2. variável `BOLETIM_SECRET` com o mesmo valor na Vercel;

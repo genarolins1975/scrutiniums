@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.111.0";
+const APP_VERSION = "0.112.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -762,20 +762,41 @@ function srcLine(meta, q) {
 }
 function chartFooter(opts) {
   // rodapé obrigatório: fonte · período · atualização · unidade · nota metodológica
-  // + citação (P2: OWID/FRED têm permalink/embed por gráfico; aqui o
-  // compartilhável era só a página). O alvo é a seção ancorada mais próxima.
-  return `<div class="chartfoot">Fonte: ${opts.fonte || "–"} · Período: ${opts.periodo || "–"} · Atualizado: ${opts.atualizado || "–"} · Unidade: ${opts.unidade || "–"}${opts.nota ? ` · <span title="${attr(opts.nota)}">nota metodológica ⓘ</span>` : ""} · <a href="javascript:void(0)" onclick="grafLink(this,0)" title="copia a URL desta seção, com os filtros atuais">copiar link</a> · <a href="javascript:void(0)" onclick="grafLink(this,1)" title="copia um iframe para citar este gráfico em outra página">embed</a></div>`;
+  // + três ações por gráfico: link da seção, citação pronta e iframe do embed.html
+  // (com crédito e link de volta). A citação lê fonte e período daqui (data-*).
+  return `<div class="chartfoot" data-fonte="${attr(opts.fonte || "")}" data-periodo="${attr(opts.periodo || "")}">Fonte: ${opts.fonte || "–"} · Período: ${opts.periodo || "–"} · Atualizado: ${opts.atualizado || "–"} · Unidade: ${opts.unidade || "–"}${opts.nota ? ` · <span title="${attr(opts.nota)}">nota metodológica ⓘ</span>` : ""} · <a href="javascript:void(0)" onclick="grafLink(this,0)" title="copia a URL desta seção, com os filtros atuais">copiar link</a> · <a href="javascript:void(0)" onclick="grafLink(this,2)" title="copia a citação do gráfico, com fonte, período e data de acesso">Copiar citação</a> · <a href="javascript:void(0)" onclick="grafLink(this,1)" title="copia o código para incorporar este gráfico em outra página, com crédito e link de volta">Incorporar</a></div>`;
 }
-window.grafLink = (el, embed) => {
+/* Citação no padrão da casa: título do gráfico, observatório, fonte primária,
+   período, natureza do número, URL da seção e data de acesso. Pura, testada. */
+function citacaoGrafico(o) {
+  const hoje = o.acesso || new Date();
+  const dd = String(hoje.getDate()).padStart(2, "0"), mm = String(hoje.getMonth() + 1).padStart(2, "0");
+  return `${o.titulo}. In: Observatório Brasileiro de Crédito. Scrutiniums, ${hoje.getFullYear()}. `
+    + `Fonte primária: ${o.fonte || "não declarada"}. Período: ${o.periodo || "não declarado"}. `
+    + (o.processado ? `Processado em ${o.processado}. ` : "")
+    + `Disponível em: ${o.url}. Acesso em: ${dd}/${mm}/${hoje.getFullYear()}.`;
+}
+function embedSnippet(src, voltar, titulo) {
+  return `<iframe src="${src}" width="720" height="520" loading="lazy" style="border:1px solid #ccc;border-radius:8px" title="${attr(titulo)}"></iframe>`
+    + `<p style="font:12px/1.4 sans-serif;margin:4px 0 0">Gráfico: <a href="${voltar}">${attr(titulo)}</a>, Observatório Brasileiro de Crédito (Scrutiniums). Fonte e período no rodapé do gráfico.</p>`;
+}
+window.grafLink = (el, modo) => {
   const sec = el.closest("section[id]");
   const v = currentView();
+  const u = new URL(location.href);
+  if (sec) u.searchParams.set("sec", sec.id); else u.searchParams.delete("sec");
+  const card = el.closest(".card");
+  const h = card && card.querySelector("h4");
+  const titulo = ((h ? h.textContent : "") || VIEW_TITLES[v] || "Observatório Brasileiro de Crédito").replace(/[★☆]/g, "").replace(/\s+/g, " ").trim();
   let texto;
-  if (embed) {
-    const alvo = v + (sec ? "." + sec.id : "");
-    texto = `<iframe src="${location.origin}/obs/embed.html?g=${alvo}" width="720" height="520" loading="lazy" style="border:1px solid #ccc;border-radius:8px" title="Observatório Brasileiro de Crédito"></iframe>`;
+  if (modo === 1) {
+    const alvo = card && card.id ? card.id : (sec ? sec.id : "");
+    texto = embedSnippet(`${location.origin}/obs/embed.html?g=${v}${alvo ? "." + alvo : ""}`, u.toString(), titulo);
+  } else if (modo === 2) {
+    const pe = el.closest(".chartfoot");
+    const m = state.data.meta || {};
+    texto = citacaoGrafico({ titulo, fonte: pe && pe.dataset.fonte, periodo: pe && pe.dataset.periodo, processado: (m.gerado_em || "").slice(0, 10), url: u.toString() });
   } else {
-    const u = new URL(location.href);
-    if (sec) u.searchParams.set("sec", sec.id); else u.searchParams.delete("sec");
     texto = u.toString();
   }
   navigator.clipboard.writeText(texto).then(() => {
@@ -3598,7 +3619,7 @@ function renderOverview() {
   const secCondicoes = `
   <div class="sechead" id="ov-icc"><h3>Condições de crédito</h3><a href="javascript:void(0)" class="seeall" onclick="nav('pulse')">ver pulso do crédito →</a></div>
   <div class="ov-2col">
-    <div class="card">
+    <div class="card" id="ov-ibcc">
       <h4>IBCC — série histórica ${seg !== "total" ? "(" + segName() + ")" : ""} ${badge("calculado", ibcc.metodo)}</h4>
       <div class="src" style="margin-bottom:6px">fase: <b>${ibcc.fase_ciclo}</b> · percentil histórico <b>${pos ? fmt.n(pos.percentil_historico, 0) : "–"}</b> · vs. 3m ${pos ? fmt.pp(pos.delta_3m) : "–"} · vs. 12m ${pos ? fmt.pp(pos.delta_12m) : "–"}</div>
       ${iccChart}
@@ -4121,7 +4142,7 @@ function renderPulse() {
     // marcadores de regime são datados sobre o NÍVEL — nas demais réguas saem
     if (emNivel && rgs && rgs.quebra_estrutural && rgs.quebra_estrutural.significativa) annotations.push({ x: rgs.quebra_estrutural.data_quebra, label: "quebra de regime", color: "#b45309" });
     if (emNivel && rgs && rgs.cusum && rgs.cusum.ultimo_disparo) annotations.push({ x: rgs.cusum.ultimo_disparo.data, label: "CUSUM " + rgs.cusum.ultimo_disparo.direcao, color: "#6b46a3" });
-    return `<div class="card">
+    return `<div class="card" id="pu-${c.key}">
       <h4>${c.title}${c.key === "inad" ? " " + inadChip("sgs") : ""} — ${segLabel} ${badge("observado")}${fc && fc.ok ? " " + badge("previsao") : ""} ${favStar("pulse", `${c.key}_${f.seg}`, `${c.title} ${segLabel}`)}</h4>
       <div class="big">${c.fmt(last.v)}</div>
       <div class="delta ${yoy > 0 ? "up" : "down"} ${c.key === "saldo" || c.key === "concessoes" ? (yoy > 0 ? "good" : "bad") : ""}">${variacao != null ? (variacao > 0 ? "▲ " : variacao < 0 ? "▼ " : "") + fmt.n(Math.abs(variacao), monetaria ? 1 : 2) + growthLabel : "Variação indisponível"} · ref. ${fmt.my(last.ref)}</div>
@@ -4198,7 +4219,7 @@ function extraCard(k) {
   const s = state.data.pulse.series[k];
   if (!s) return "";
   const last = s.obs[s.obs.length - 1];
-  return `<div class="card"><h4>${s.meta.name} ${badge("observado")} ${favStar("pulse", k, s.meta.name)}</h4>
+  return `<div class="card" id="pu-${k}"><h4>${s.meta.name} ${badge("observado")} ${favStar("pulse", k, s.meta.name)}</h4>
     <div class="big" style="font-size:20px">${fmt.n(last.v, 2)} <span style="font-size:12px;color:var(--text-3)">${s.meta.unit}</span></div>
     ${lineChart({ series: [{ pts: s.obs.slice(-state.filters.range).map(o => ({ x: o.ref, y: o.v })), color: "#0e7c7b", label: s.meta.name }], h: 110, unit: s.meta.unit, fonte: s.meta.source + " " + s.meta.series_code, status: "observado" })}
     ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `até ${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}

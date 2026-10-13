@@ -1,0 +1,36 @@
+name: Depósito mensal no Zenodo (preparo, sem publicar)
+
+# Prepara o pacote mensal das séries (scripts/zenodo_deposito.py) e o guarda como
+# artefato da execução. O rascunho no Zenodo só é criado com a variável
+# ZENODO_RASCUNHO=1 e o segredo ZENODO_TOKEN; a publicação, que cunha o DOI, é
+# sempre manual no próprio Zenodo.
+on:
+  schedule:
+    - cron: "17 13 6 * *" # dia 6, depois do fechamento do mês nas fontes mensais
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preparar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Preparar pacote
+        run: python3 scripts/zenodo_deposito.py
+      - name: Guardar pacote como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: zenodo-pacote
+          path: dist/zenodo/
+      - name: Criar rascunho no Zenodo (não publica)
+        if: vars.ZENODO_RASCUNHO == '1'
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          ZENODO_URL: ${{ vars.ZENODO_URL }}
+        run: python3 scripts/zenodo_deposito.py --rascunho
