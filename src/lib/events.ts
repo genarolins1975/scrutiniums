@@ -15,6 +15,11 @@ export type ProductEventName =
   | "boletim_enviado"
   | "boletim_optin"
   | "boletim_optout"
+  // assinatura do resumo sem conta: só o fato, nunca o endereço
+  | "resumo_assinatura_pedida"
+  | "resumo_assinatura_confirmada"
+  | "resumo_assinatura_cancelada"
+  | "resumo_enviado"
   | "onboarding_completed"
   | "verification_failed"
   | "onboarding_abandoned"

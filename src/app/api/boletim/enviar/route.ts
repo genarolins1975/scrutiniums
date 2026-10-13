@@ -1,7 +1,7 @@
-import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { isAdmin } from "@/lib/admin";
+import { bearerDisparoValido } from "@/lib/disparo";
 import { sendTransactionalEmail } from "@/lib/mailer";
 import { trackEvent } from "@/lib/events";
 import {
@@ -25,22 +25,11 @@ export const maxDuration = 300;
  * Nenhum conteúdo por usuário: o corpo é único, só o rodapé de saída muda.
  */
 
-function bearerValido(req: Request): boolean {
-  const segredo = process.env.BOLETIM_SECRET;
-  if (!segredo || segredo.length < 16) return false;
-  const auth = req.headers.get("authorization") ?? "";
-  if (!auth.startsWith("Bearer ")) return false;
-  const token = auth.slice("Bearer ".length);
-  const a = Buffer.from(token, "utf-8");
-  const b = Buffer.from(segredo, "utf-8");
-  return a.length === b.length && timingSafeEqual(a, b);
-}
-
 const INTERVALO_MS = 400;
 const pausa = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export async function POST(req: Request) {
-  let autorizado = bearerValido(req);
+  let autorizado = bearerDisparoValido(req);
   if (!autorizado) {
     const user = await getSessionUser();
     autorizado = !!user && isAdmin(user);

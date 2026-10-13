@@ -18,6 +18,11 @@ const nextConfig = {
         "./public/obs/data/gold/alertas_central.json",
         "./public/obs/data/gold/meta.json",
       ],
+      "/api/resumo/enviar": [
+        "./public/obs/data/gold/overview.json",
+        "./public/obs/data/gold/pulse.json",
+        "./public/obs/data/gold/meta.json",
+      ],
       "/eficiencia-estatal/mobilidade-transporte/[[...painel]]": [
         "./data/eficiencia_mobilidade/aop/resumo.json",
         "./data/eficiencia_mobilidade/aop/resumo.sha256",

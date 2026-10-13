@@ -4,10 +4,13 @@ import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { SeloFrescor } from "@/components/dados/SeloFrescor";
 import { ChamadaObservatorio } from "@/components/dados/ChamadaObservatorio";
+import { Acompanhe } from "@/components/resumo/Acompanhe";
+import { URL_FEED_RESUMO } from "@/lib/feedResumo";
 import { PageTitle } from "@/components/ui/SectionHeading";
 import {
   fmtDelta,
   fmtRefMes,
+  fmtPercentil,
   fmtValor,
   geradoEmPublicado,
   indicadoresPublicos,
@@ -27,7 +30,7 @@ export const metadata: Metadata = {
   title: "Resumo diário do crédito",
   description:
     "O estado do mercado de crédito brasileiro em uma página: diagnóstico determinístico, principais mudanças do mês e números centrais com fonte oficial declarada. URL estável; coleta diária e publicação somente depois dos testes de conteúdo.",
-  alternates: { canonical: "/resumo" },
+  alternates: { canonical: "/resumo", types: { "application/rss+xml": URL_FEED_RESUMO } },
 };
 
 function nbr(v: number, dec = 2) {
@@ -91,7 +94,7 @@ export default function ResumoPage() {
           <p className="mt-4 max-w-3xl font-serif text-2xl leading-snug text-carvao md:text-3xl">{r.frase}</p>
           <p className="mt-4 text-xs leading-relaxed text-mineral">
             <span className="border border-linha px-1.5 py-0.5 uppercase tracking-wide">dado calculado</span>
-            {" "}· IBCC {nbr(r.ibcc.atual, 1)} (percentil histórico {nbr(r.ibcc.percentil, 0)};
+            {" "}· IBCC {nbr(r.ibcc.atual, 1)} (percentil histórico {fmtPercentil(r.ibcc.percentil)};
             {" "}{r.ibcc.delta1m != null ? `${r.ibcc.delta1m > 0 ? "+" : ""}${nbr(r.ibcc.delta1m)} pt no mês` : ""}
             {r.ibcc.delta12m != null ? `; ${r.ibcc.delta12m > 0 ? "+" : ""}${nbr(r.ibcc.delta12m)} pt em 12 meses` : ""}) · {r.metodo}
           </p>
@@ -133,6 +136,8 @@ export default function ResumoPage() {
             pela direção econômica de cada indicador, normalizada pelo desvio histórico.
           </p>
         </section>
+
+        <Acompanhe />
 
         <ChamadaObservatorio
           titulo="A análise completa no Observatório"

@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.110.1";
+const APP_VERSION = "0.111.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -2562,10 +2562,11 @@ const MAPA_CICLO = [
   { n: 6, id: "cobranca", titulo: "Quando o crédito atrasa", pergunta: "Renegociação, cobrança judicial, recuperações e falências e dívida com a União", views: ["desenrola", "cobranca", "rj", "pgfn"] },
   { n: 7, id: "supervisao", titulo: "Regras, trilhos e conduta", pergunta: "Regulação, sanções e reclamações, litígios de consumo, Pix, Open Finance e as fronteiras do risco", views: ["regulacao", "conduta", "judicial", "pix", "openfinance", "bets", "fraudes"] },
 ];
+// Três trilhas de entrada, cinco páginas cada: só navegação, nenhuma página duplicada.
 const MAPA_TRILHAS = [
-  { perfil: "Cidadão ou jornalista", quem: "quer entender o quadro sem jargão e achar o número certo para citar", passos: ["overview", "pulse", "juros", "estados", "cobranca", "method"] },
-  { perfil: "Analista de risco de crédito", quem: "acompanha ciclo, setores, instituições e funding", passos: ["pulse", "leading", "sectors", "institutions", "funding", "cobranca", "scenarios"] },
-  { perfil: "Regulador ou supervisor", quem: "olha estrutura do sistema, conduta e efeitos de regra", passos: ["sfn", "funding", "conduta", "cobranca", "rj", "regulacao", "method"] },
+  { perfil: "Conselho e risco", quem: "acompanha ciclo, carteira e instituições para decidir e supervisionar", passos: ["pulse", "leading", "institutions", "funding", "scenarios"] },
+  { perfil: "Imprensa", quem: "precisa do número certo, com fonte e data, para citar sem erro", passos: ["overview", "juros", "estados", "cobranca", "method"] },
+  { perfil: "Pesquisa", quem: "precisa de série longa, método declarado e recorte territorial para reproduzir", passos: ["method", "panorama", "penetracao", "products", "research"] },
 ];
 const MAPA_FONTES = { sgs: "BCB/SGS (séries de crédito, juros e moeda)", ifdata: "BCB/IF.data (balanços por instituição)", scr: "BCB/SCR.data (carteira por UF e tomador)", b3: "B3 (mercado)", fidc: "CVM (FIDC)", sadipem: "Tesouro Nacional/Sadipem (PVL de estados e municípios)",
   datajud: "CNJ/DataJud (recuperações e falências)", trends: "Google Trends", txjuros: "BCB (taxas por instituição)", susep_ses: "SUSEP/SES (seguro prestamista)", sicor: "BCB/MDCR (crédito rural)", cvm_ofertas: "CVM (ofertas públicas)", securit: "CVM (CRI e CRA)",
@@ -2597,7 +2598,7 @@ function renderMapa() {
   });
   const perguntas = secWrap("mp-perguntas", `${sechead("Por pergunta", "a pergunta que cada página responde, na ordem do menu")}
   <div class="grid g2">${porGrupo.map(g => `<div class="card"><h4>${g.rot}</h4><dl class="mapa-perg">${g.vistas.map(v => `<div><dt>${GUIA[v].q}</dt><dd>${mapaLink(v)}</dd></div>`).join("")}</dl></div>`).join("")}</div>`);
-  const trilhas = secWrap("mp-trilhas", `${sechead("Trilhas de leitura", "três perfis, seis ou sete páginas cada")}
+  const trilhas = secWrap("mp-trilhas", `${sechead("Trilhas de entrada", "três perfis, cinco páginas cada")}
   <div class="grid g3">${MAPA_TRILHAS.map(t => `<div class="card"><h4>${t.perfil}</h4><p class="src">${t.quem}.</p><ol class="mapa-trilha">${t.passos.map(v => `<li>${mapaLink(v)}<span class="src"> · ${GUIA[v] ? GUIA[v].q : ""}</span></li>`).join("")}</ol></div>`).join("")}</div>`);
   const ler = secWrap("mp-ler", `${sechead("Como ler o Observatório", "quatro regras que valem em todas as páginas")}
   <div class="grid g2">

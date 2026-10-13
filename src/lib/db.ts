@@ -127,6 +127,17 @@ async function migrate(db: Db): Promise<void> {
       created_at TIMESTAMPTZ NOT NULL
     )`,
     `CREATE INDEX IF NOT EXISTS idx_suggestions_created ON suggestions(created_at)`,
+    `CREATE TABLE IF NOT EXISTS assinaturas_resumo (
+      id TEXT PRIMARY KEY,
+      email TEXT NOT NULL UNIQUE,
+      periodicidade TEXT NOT NULL,
+      status TEXT NOT NULL,
+      consentimento_em TIMESTAMPTZ NOT NULL,
+      confirmada_em TIMESTAMPTZ,
+      ultimo_envio_em TIMESTAMPTZ,
+      ultima_edicao TEXT,
+      created_at TIMESTAMPTZ NOT NULL
+    )`,
     // Fim do acesso antecipado por código: contas paradas na etapa do código
     // ou na lista de espera são promovidas a acesso completo (idempotente).
     `UPDATE users SET onboarding_status = 'COMPLETE'
