@@ -13,8 +13,8 @@ import { fmtRefMes, geradoEmPublicado, resumoDiario } from "@/lib/dadosPublicos"
 /**
  * Vitrine pública do Observatório Brasileiro de Crédito.
  *
- * Com o Observatório aberto para leitura sem cadastro, esta página é a
- * porta de entrada editorial: números reais da última data-base, as
+ * Com os painéis atrás da conta gratuita, esta página é a vitrine aberta
+ * do Crédito e a porta de entrada editorial: números reais da última data-base, as
  * perguntas que cada área responde e o que diferencia o Observatório de
  * consultar as fontes primárias — com o convite direto para explorar.
  *
@@ -202,7 +202,7 @@ export default function ObservatorioPublicoPage() {
             )}
 
             <div className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <BotaoLink href="/observatorio">Explorar o Observatório, aberto e sem cadastro</BotaoLink>
+              <BotaoLink href="/observatorio">Explorar o Observatório</BotaoLink>
               <LinkEntrarComDestino className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze" />
               <Link
                 href="/resumo"

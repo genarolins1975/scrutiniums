@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSessionUser } from "@/lib/session";
-import { findUserByCpf, updateUser } from "@/lib/onboarding";
+import { cookies } from "next/headers";
+import { findUserByCpf, safeInternalPath, updateUser } from "@/lib/onboarding";
+import { COOKIE_DESTINO } from "@/lib/rotasPublicas";
 import { hashPassword, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from "@/lib/password";
 import { isValidCpf, normalizeCpf } from "@/lib/cpf";
 import { AREAS_SET, NIVEIS_SET, TIPOS_SET, UFS_SET } from "@/lib/perfilOpcoes";
@@ -78,5 +80,9 @@ export async function POST(req: Request) {
   await trackEvent("profile_completed", user.id);
   await trackEvent("onboarding_completed", user.id);
 
-  return NextResponse.json({ ok: true, next: "/app/observatorios" });
+  // Quem chegou ao cadastro vindo de um painel volta direto a ele.
+  const jar = cookies();
+  const destino = safeInternalPath(jar.get(COOKIE_DESTINO)?.value);
+  if (destino) jar.delete(COOKIE_DESTINO);
+  return NextResponse.json({ ok: true, next: destino ?? "/app/observatorios" });
 }

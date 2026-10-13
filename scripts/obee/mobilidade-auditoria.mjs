@@ -3,6 +3,7 @@ import {createRequire} from 'node:module';
 import {mkdirSync,readFileSync,writeFileSync} from 'node:fs';
 import {resolve,dirname} from 'node:path';
 import {createHash} from 'node:crypto';
+import {autenticarAuditoria} from '../sessao-auditoria.mjs';
 const require=createRequire(import.meta.url);
 const base=process.env.BASE_URL??'http://127.0.0.1:3100';
 const root='/eficiencia-estatal/mobilidade-transporte';
@@ -10,6 +11,8 @@ const routes=['','tempo','transporte','acesso','seguranca','recursos','comparar'
 const gold=JSON.parse(readFileSync('data/eficiencia_mobilidade/gold.json','utf8'));
 const output='auditoria-interface-mobilidade';mkdirSync(output,{recursive:true});
 const browser=await chromium.launch({headless:true});
+// os painéis exigem sessão: páginas e fetch do script levam um cookie assinado com o COOKIE_SECRET do servidor local
+autenticarAuditoria(browser,base);
 const results=[],failures=[],interacoes=[],falhasInteracoes=[];
 let etapa='início',activePage,exportacao=null,tracing=null,error=null;
 function assert(condition,message){if(!condition)throw new Error(message);}

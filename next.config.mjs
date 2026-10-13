@@ -40,21 +40,22 @@ const nextConfig = {
       ],
     },
   },
-  // Cache dos estáticos do Observatório. Bundle e CSS levam versão na URL.
+  // Cache dos estáticos do Observatório. Dados atrás de sessão usam cache privado
+  // (nunca compartilhado por CDN); bundle e CSS levam versão na URL.
   async headers() {
     return [
-      {source: "/energia/gold/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
-      {source: "/energia/series/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
-      {source: "/eficiencia/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
-      // API pública de leitura (/dados/api): leitura cruzada liberada para qualquer origem
-      {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}, {key: "Access-Control-Allow-Origin", value: "*"}]},
+      {source: "/energia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/energia/series/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/eficiencia/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      // API de leitura (/dados/api): exige sessão (src/lib/rotasPublicas.ts); cache privado do navegador
+      {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/obs/:arquivo(app.min.js|app-municipal.min.js|app-emergentes.min.js|styles.css)", headers: [{key: "Cache-Control", value: "public, max-age=31536000, immutable"}]},
     ];
   },
   // Rotas legadas e atalhos; destinos e condições preservados.
   async redirects() {
     return [
-      {source: "/app", missing: [{type: "cookie", key: "scrutiniums_session"}], destination: "/observatorio", permanent: false},
+      {source: "/app", missing: [{type: "cookie", key: "scrutiniums_session"}], destination: "/entrar", permanent: false},
       {source: "/app", destination: "/app/observatorios", permanent: false},
       {source: "/credito", destination: "/observatorio", permanent: false},
       {source: "/app/atividade", destination: "/observatorio/credit", permanent: true},

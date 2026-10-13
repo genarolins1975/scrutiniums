@@ -3,6 +3,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import sitemap from "@/app/sitemap";
 import { DOMINIOS, dominioDaSecao, dominioDoCaminho } from "@/lib/dominios";
+import { ehRotaPublica } from "@/lib/rotasPublicas";
 import { isViewSection } from "@/lib/telemetry";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { MODULOS_ENERGIA } from "@/lib/energia/navegacao";
@@ -47,7 +48,10 @@ describe("registro de domínios", () => {
     expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "page.tsx"))).toBe(true);
     expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "educacao-municipal-capitais", "page.tsx"))).toBe(true);
     expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "saude-capitais", "page.tsx"))).toBe(true);
-    expect(sitemap().map((u) => u.url)).toContain("https://scrutiniums.com" + DOMINIOS[2].rotaRaiz);
+    // painel exige conta: fica fora do sitemap; a página de método do tema entra
+    const urls = sitemap().map((u) => u.url);
+    expect(urls).not.toContain("https://scrutiniums.com" + DOMINIOS[2].rotaRaiz);
+    expect(urls).toContain("https://scrutiniums.com/eficiencia-estatal/educacao-municipal-capitais/metodos");
   });
 
   it("a Eficiência Estatal está na home, no seletor, na escolha pós login, no cabeçalho, no rodapé e na SPA do Crédito", () => {
@@ -186,11 +190,13 @@ describe("páginas do Setor Elétrico", () => {
 describe("sitemap", () => {
   const urls = sitemap().map((u) => u.url.replace("https://scrutiniums.com", ""));
 
-  it("inclui os módulos do Setor Elétrico e mantém o Crédito", () => {
-    for (const m of MODULOS_ENERGIA) expect(urls, m.href).toContain(m.href);
-    for (const p of ["", "/observatorio", "/observatorio-do-credito", "/dados", "/setor-eletrico/metodologia", "/setor-eletrico/pld/previsoes"]) {
+  it("só lista a vitrine pública: método e apresentação entram, painéis ficam de fora", () => {
+    for (const p of ["", "/observatorio-do-credito", "/setor-eletrico/metodologia", "/setor-eletrico/aprenda", "/imprensa", "/glossario"]) {
       expect(urls, p).toContain(p);
     }
+    for (const m of MODULOS_ENERGIA.filter((m) => !ehRotaPublica(m.href))) expect(urls, m.href).not.toContain(m.href);
+    for (const p of ["/observatorio", "/dados", "/setor-eletrico/pld/previsoes", "/resumo"]) expect(urls, p).not.toContain(p);
+    for (const u of urls) expect(ehRotaPublica(u || "/"), u).toBe(true);
   });
 
   it("verbete em preparação e área logada ficam fora; verbete conferido entra", () => {

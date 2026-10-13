@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { cookies } from "next/headers";
 import { LogoWordmark } from "@/components/ui/Logo";
 import { getSessionUser } from "@/lib/session";
@@ -61,6 +62,7 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
             <Link
               key={item.href}
               href={item.href}
+              prefetch={prefetchDoLink(item.href)}
               className={`rotulo min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze ${item.soXl ? "hidden xl:inline-flex" : "inline-flex"}`}
             >
               {item.label}
@@ -90,6 +92,7 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
           <Link
             key={item.href}
             href={item.href}
+            prefetch={prefetchDoLink(item.href)}
             className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze"
           >
             {item.label}

@@ -400,12 +400,13 @@ describe("medidas, frases e rotas", () => {
     for (const c of [CAMINHO_COMPARAR, CAMINHO_METODOS, ...Object.values(CAMINHO_TEMA)]) expect(existsSync(join(base, c.replace(/^\//, ""), "page.tsx")), c).toBe(true);
   });
 
-  it("o sitemap lista a entrada do observatório e as seis páginas de Saúde, sem duplicar Educação", () => {
+  it("o sitemap lista só a página de métodos de Saúde; painéis exigem conta e ficam de fora, sem duplicação", () => {
     const urls = sitemap().map((x) => new URL(x.url).pathname);
-    expect(urls).toContain(ROTA_ENTRADA);
-    for (const p of ["", ...Object.values(CAMINHO_TEMA), CAMINHO_COMPARAR, CAMINHO_METODOS]) expect(urls).toContain(`${ROTA_SAUDE}${p}`);
+    expect(urls).not.toContain(ROTA_ENTRADA);
+    for (const p of ["", ...Object.values(CAMINHO_TEMA), CAMINHO_COMPARAR]) expect(urls).not.toContain(`${ROTA_SAUDE}${p}`);
+    expect(urls).toContain(`${ROTA_SAUDE}${CAMINHO_METODOS}`);
     expect(new Set(urls).size).toBe(urls.length);
-    expect(urls).toContain("/eficiencia-estatal/educacao-municipal-capitais");
+    expect(urls).toContain("/eficiencia-estatal/educacao-municipal-capitais/metodos");
   });
 
   it("cada ficha publicável tem contexto com validações e cobertura", () => {

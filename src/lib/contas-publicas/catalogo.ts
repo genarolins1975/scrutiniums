@@ -13,6 +13,8 @@ export const FONTES = {
   tcu: { nome: 'TCU · Controle de políticas públicas', url: 'https://portal.tcu.gov.br/publicacoes-institucionais/cartilha-manual-ou-tutorial/referencial-de-controle-de-politicas-publicas', uso: 'Referencial e evidências de controle; achados não são condenações.' },
 } as const;
 export type FonteId = keyof typeof FONTES;
+/** Capítulos com painel de dados publicado (id do capítulo, rótulo da navegação). Os demais mostram só o método proposto. */
+export const PAINEIS_COM_DADOS = [['execucao','Pagamentos'],['panorama','Resultado fiscal'],['restos-a-pagar','Restos a pagar'],['custos','Custos'],['metas','Entregas']] as const;
 export const REFERENCIAS = [
   {nome:'PEFA', papel:'Confiabilidade, execução e controle do orçamento.', url:'https://www.pefa.org/node/119'},
   {nome:'OCDE · Government at a Glance', papel:'Orçamento orientado a desempenho e comparações internacionais.', url:'https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report.html'},

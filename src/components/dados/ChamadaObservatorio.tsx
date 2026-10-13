@@ -3,7 +3,7 @@ import { ACESSO } from "@/lib/acesso";
 
 /**
  * Chamada ao fim das páginas públicas do crédito: o caminho principal é abrir o
- * Observatório (leitura aberta); a conta aparece pelo que de fato oferece. O texto
+ * Observatório (painéis com conta gratuita); a conta aparece pelo que de fato oferece. O texto
  * de acesso vem de src/lib/acesso.ts, nunca escrito à mão na página.
  */
 export function ChamadaObservatorio({ titulo, texto, extra }: { titulo: string; texto: string; extra?: React.ReactNode }) {

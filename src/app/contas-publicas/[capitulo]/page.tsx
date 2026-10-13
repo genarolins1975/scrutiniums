@@ -8,12 +8,12 @@ import {RecorteCompartilhavel} from '@/components/contas-publicas/RecorteCompart
 import type {Metadata} from 'next';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
-import {CAPITULOS,INDICADORES} from '@/lib/contas-publicas/catalogo';
+import {CAPITULOS,INDICADORES,PAINEIS_COM_DADOS} from '@/lib/contas-publicas/catalogo';
 import {FichaIndicador} from '@/components/contas-publicas/FichaIndicador';
 export const dynamicParams=false;
 export function generateStaticParams(){return CAPITULOS.map(c=>({capitulo:c.id}))}
 export function generateMetadata({params}:{params:{capitulo:string}}):Metadata{const c=CAPITULOS.find(c=>c.id===params.capitulo);return {title:c?`${c.titulo} · Contas Públicas`:'Capítulo não encontrado',alternates:{canonical:`/contas-publicas/${params.capitulo}`}}}
-const paineis=[['execucao','Pagamentos'],['panorama','Resultado fiscal'],['restos-a-pagar','Restos a pagar'],['custos','Custos'],['metas','Entregas']];
+const paineis=PAINEIS_COM_DADOS;
 export default function Page({params}:{params:{capitulo:string}}){
  const c=CAPITULOS.find(c=>c.id===params.capitulo);if(!c)notFound();
  const cobertura=coberturaCapitulo(c.id),indicadores=INDICADORES.filter(i=>i.capitulo===c.id),observado=cobertura.observados.length+cobertura.complementares.length>0;
