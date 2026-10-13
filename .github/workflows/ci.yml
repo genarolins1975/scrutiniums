@@ -89,6 +89,11 @@ jobs:
           python3 docs/obee/resultados/review-ui/generate.py
           git diff --exit-code docs/obee/resultados/revisao-interativa-v3.html
 
+      - name: Precisão complementar da cesta OBEE
+        run: |
+          python3 -m unittest scripts.test_obee_precisao_cesta
+          python3 scripts/obee_precisao_cesta.py --check
+
       - name: Build de produção
         # gera o HTML pré-renderizado (.next/server/app) do MESMO commit testado, no mesmo
         # job, sem credenciais de produção: as páginas são estáticas. Até 08/10/2026 este
