@@ -23,8 +23,8 @@
 
 /* Três pranchas editoriais próprias: a arte orienta o tema, sem codificar dados. */
 .illustrated {
-  background: var(--cor-obee-atlas-tinta);
-  color: var(--cor-obee-atlas-papel);
+  background: var(--gravura-fundo, var(--cor-obee-atlas-tinta));
+  color: var(--gravura-papel, var(--cor-obee-atlas-papel));
   padding: 28px 32px 22px;
   margin: 0 0 36px;
 }

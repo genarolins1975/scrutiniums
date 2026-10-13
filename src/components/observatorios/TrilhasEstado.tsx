@@ -11,7 +11,7 @@ type Tema = 'obee' | 'federal' | 'estadual';
 /** Cada tema tem um tríptico exclusivo, na mesma ordem dos três destinos. */
 export function TrilhasEstado({tema,itens,label='Escolha seu caminho de leitura'}:{tema:Tema;label?:string;itens:[Trilha,Trilha,Trilha]}) {
  const arte=`/estado/arte/${tema}-gravura-v1.webp`;
- return <nav className={styles.illustrated} aria-label={label}>
+ return <nav className={`${styles.illustrated} observatorio-gravuras`} aria-label={label}>
   <div className={styles.illustratedHeading}><p>Explore por uma pergunta</p><span>Escolha um caminho para aprofundar a leitura.</span></div>
   <div className={styles.illustratedLinks}>{itens.map((i,index)=>{
    return <Link key={i.href} href={i.href}>
@@ -20,6 +20,6 @@ export function TrilhasEstado({tema,itens,label='Escolha seu caminho de leitura'
     </span>
     <span className={styles.journeyText}><span className={styles.journeyIndex}>0{index+1}<span aria-hidden="true">↗</span></span><strong>{i.titulo}</strong><small>{i.texto}</small></span>
    </Link>;
-  })}</div><p className={styles.illustrationNote}>Ilustrações conceituais; não representam dados nem obras avaliadas. Fontes e recortes estão identificados nos painéis.</p>
+  })}</div><p className={styles.illustrationNote}>Ilustrações conceituais geradas por IA; não representam dados nem obras avaliadas. Fontes e recortes estão identificados nos painéis.</p>
  </nav>;
 }

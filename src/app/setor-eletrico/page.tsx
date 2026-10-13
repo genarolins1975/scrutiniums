@@ -1,3 +1,4 @@
+import { GravuraEnergia } from "@/components/energia/GravuraEnergia";
 import { DuasCamadasEnergia } from "@/components/energia/ComercializacaoDidatica";
 import { LeiturasIntegradas } from "@/components/energia/LeiturasIntegradas";
 import Image from "next/image";
@@ -729,14 +730,14 @@ export default function MapaDoObservatorio() {
         {/* hero: a proposta, a busca e os quatro caminhos, tudo na primeira tela */}
         <header id="proposito" className="scroll-mt-24 pb-8 pt-6 md:pb-10 md:pt-10">
           <div className="energia-cenario">
-            <Image className="energia-cenario-imagem" src="/energia/arte/sistema-eletrico-v1.webp" alt="Maquete conceitual com reservatório, hidrelétrica, eólicas, painéis solares, linhas de transmissão, subestação e cidade." width={1774} height={887} sizes="(max-width: 1240px) 100vw, 1240px" priority />
+            <Image className="energia-cenario-imagem" src="/energia/arte/sistema-gravura-v1.webp" alt="Gravura conceitual de uma paisagem imaginária com reservatório, hidrelétrica, eólicas, painéis solares, linhas de transmissão, subestação e cidade." width={1440} height={720} sizes="(max-width: 1240px) 100vw, 1240px" priority />
             <div className="energia-cenario-texto">
               <p className="rotulo">Observatório Brasileiro do Setor Elétrico</p>
               <h1>A energia que move o Brasil.</h1>
               <p>Explore o sistema. Compare regiões. Entenda sua conta.</p>
               <a className="energia-explorar" href="#percurso-energia">Explorar o sistema <span aria-hidden="true">↓</span></a>
             </div>
-            <nav className="energia-cenario-pontos" aria-label="Explore as etapas na maquete">
+            <nav className="energia-cenario-pontos" aria-label="Explore as etapas do sistema elétrico">
               {ETAPAS_ENERGIA.map(e => <a key={e.id} href={`#etapa-${e.id}`} data-etapa={e.id}><span>{e.numero}</span>{e.nome}</a>)}
             </nav>
             <p className="energia-cenario-legenda">Ilustração conceitual gerada por IA · sem escala geográfica</p>
@@ -852,11 +853,11 @@ export default function MapaDoObservatorio() {
           <div className="energia-portas-grade">
             <Link href="/setor-eletrico/conta-de-luz" className="energia-porta energia-porta-conta">
               <div><h3>Por que minha conta tem esse valor?</h3><p>Explore TE e TUSD, tributos e bandeiras. Simule o consumo em kWh e veja o efeito de cada hipótese na conta.</p><small>Tarifa homologada não é o valor final da fatura. A página mostra fontes, vigência e hipóteses.</small><span>Entender e simular a conta ↗</span></div>
-              <Image src="/energia/arte/conta-regiao-v1.webp" alt="" width={800} height={800} sizes="(max-width: 639px) 45vw, 280px" />
+              <Image src="/energia/arte/conta-gravura-v1.webp" alt="" width={720} height={720} sizes="(max-width: 480px) 100vw, 280px" />
             </Link>
             <Link href="/setor-eletrico/territorio" className="energia-porta energia-porta-regiao">
               <div><h3>Como é o serviço na minha região?</h3><p>Localize seu município ou estado, identifique distribuidoras e usinas e siga para tarifas e qualidade do serviço.</p><small>Os indicadores têm recortes próprios; a localização não estima o serviço de uma residência.</small><span>Explorar minha região ↗</span></div>
-              <Image src="/energia/arte/sistema-eletrico-v1.webp" alt="" width={1774} height={887} sizes="(max-width: 639px) 45vw, 280px" />
+              <GravuraEnergia etapa="distribuicao" className="energia-porta-arte" />
             </Link>
           </div>
         </section>
