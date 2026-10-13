@@ -1,0 +1,88 @@
+import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { INSTITUCIONAL, type Institucional } from "@/lib/institucional";
+import { secoesInstitucionais, registroErros, dataOuNaoApurado } from "@/lib/sobre";
+import { contato, LINKEDIN_URL } from "@/lib/contato";
+
+/**
+ * Frente 5: identidade institucional sem texto inventado. O que se trava:
+ * - os campos de decisão do mantenedor nascem vazios em config/institucional.json;
+ * - seção sem conteúdo não é renderizada; preenchida, aparece;
+ * - contato do rodapé é o e-mail institucional quando há, com o LinkedIn secundário;
+ * - /sobre é da plataforma e está no rodapé de todos os observatórios;
+ * - a política de correção leva ao registro público de erros, publicado no site.
+ */
+const raiz = process.cwd();
+const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
+const cheio: Institucional = {
+  ...INSTITUCIONAL,
+  mantenedor: { nome: "Associação Exemplo", natureza_juridica: "associação civil sem fins lucrativos" },
+  financiamento: "Recursos próprios.",
+  conflitos_de_interesse: "Nenhum declarado.",
+  email_institucional: "contato@exemplo.org",
+  conselho_consultivo: [{ nome: "Pessoa A", afiliacao: "Universidade X" }],
+};
+
+describe("campos institucionais", () => {
+  it("nascem vazios: nada de nome, financiamento, conflitos, e-mail ou conselho inventados", () => {
+    const c = JSON.parse(ler("config/institucional.json"));
+    expect(c.mantenedor).toEqual({ nome: "", natureza_juridica: "" });
+    expect(c.financiamento).toBe("");
+    expect(c.conflitos_de_interesse).toBe("");
+    expect(c.email_institucional).toBe("");
+    expect(c.conselho_consultivo).toEqual([]);
+  });
+
+  it("seção vazia não é renderizada; preenchida, aparece com o texto do mantenedor", () => {
+    const vazio: Institucional = { ...cheio, mantenedor: { nome: "", natureza_juridica: "" }, financiamento: " ", conflitos_de_interesse: "", email_institucional: "", conselho_consultivo: [] };
+    expect(secoesInstitucionais(vazio)).toEqual([]);
+    const s = secoesInstitucionais(cheio);
+    expect(s.map((x) => x.id)).toEqual(["quem-mantem", "financiamento", "independencia", "conselho"]);
+    expect(s[0].paragrafos[0]).toBe("Associação Exemplo (associação civil sem fins lucrativos).");
+    expect(s[3].itens).toEqual(["Pessoa A, Universidade X"]);
+  });
+
+  it("contato: e-mail institucional quando preenchido, LinkedIn secundário; sem e-mail, só o LinkedIn", () => {
+    expect(contato(cheio)).toEqual({
+      principal: { rotulo: "contato@exemplo.org", href: "mailto:contato@exemplo.org" },
+      secundario: { rotulo: "LinkedIn do responsável", href: LINKEDIN_URL },
+    });
+    expect(contato({ ...cheio, email_institucional: "" })).toEqual({ principal: { rotulo: "LinkedIn do responsável", href: LINKEDIN_URL }, secundario: null });
+  });
+});
+
+describe("/sobre e rodapés", () => {
+  it("a página tem política de correção, como citar e contato, e só renderiza as seções institucionais preenchidas", () => {
+    const p = ler("src/app/sobre/page.tsx");
+    for (const id of ['id="correcao"', 'id="citar"', 'id="contato"']) expect(p).toContain(id);
+    expect(p).toContain("secoesInstitucionais()");
+    expect(p).toContain('href="/sobre/erros"');
+    expect(p).not.toMatch(/projeto pessoal|associação|fundação|financiado por/i);
+  });
+
+  it("/sobre está no rodapé de todos os observatórios", () => {
+    const footer = ler("src/components/layout/Footer.tsx");
+    expect(footer.match(/href="\/sobre"/g)?.length).toBe(2); // rodapé completo e compacto
+    expect(ler("src/app/setor-eletrico/layout.tsx")).toContain("<Footer compacto />");
+    expect(ler("src/app/eficiencia-estatal/layout.tsx")).toContain("<Footer />");
+    expect(ler("src/app/contas-publicas/layout.tsx")).toContain('href="/sobre"');
+    expect(ler("src/app/contas-publicas-estaduais/layout.tsx")).toContain('href="/sobre"');
+    expect(ler("public/obs/index.html")).toContain('<a href="/sobre">Sobre a Scrutiniums</a>');
+    expect(footer).toContain("<ContatoItens");
+    expect(footer).not.toContain("Contato · LinkedIn");
+  });
+
+  it("o registro de erros publicado é o mesmo arquivo da auditoria, e nulo é 'não apurado'", () => {
+    expect(ler(".github/workflows/auditoria-notas.yml")).toContain("pesquisa/registro_erros.json");
+    const r = registroErros();
+    expect(r.erros.length).toBeGreaterThan(0);
+    const bruto = JSON.parse(ler("pesquisa/registro_erros.json")).erros as { publicado: boolean }[];
+    expect(r.erros.length).toBe(bruto.filter((e) => e.publicado === true).length);
+    expect(r.erros.every((e) => e.publicado === true)).toBe(true);
+    for (const e of r.erros) expect(e.id).toMatch(/^E\d{3}$/);
+    expect(dataOuNaoApurado(null)).toBe("não apurado");
+    expect(dataOuNaoApurado("2026-09-05")).toBe("05/09/2026");
+    expect(ler("src/app/sobre/erros/page.tsx")).toContain('export const dynamic = "force-static"');
+  });
+});
