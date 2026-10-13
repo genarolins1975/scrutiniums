@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LogoWordmark } from "@/components/ui/Logo";
 import { LINKEDIN_URL } from "@/lib/contato";
+import { ACESSO } from "@/lib/acesso";
 
 export function Footer({ compacto = false }: { compacto?: boolean }) {
   if (compacto) return <FooterCompacto />;
@@ -11,7 +12,7 @@ export function Footer({ compacto = false }: { compacto?: boolean }) {
           <LogoWordmark onDark />
           <p className="mt-4 max-w-sm text-sm text-mineral-soft">
             Plataforma de inteligência analítica baseada em dados verificáveis.
-            Observatórios com leitura aberta, sem cadastro.
+            {" "}{ACESSO.curto}
           </p>
           <p className="rotulo mt-6 text-bronze-soft">
             100% gratuito · sem assinatura · sem cobrança

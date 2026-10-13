@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { SeloFrescor } from "@/components/dados/SeloFrescor";
+import { ChamadaObservatorio } from "@/components/dados/ChamadaObservatorio";
 import { PageTitle } from "@/components/ui/SectionHeading";
 import {
   fmtDelta,
@@ -133,20 +134,10 @@ export default function ResumoPage() {
           </p>
         </section>
 
-        <div className="mt-10 border border-linha bg-papel p-8">
-          <h2 className="font-serif text-2xl text-carvao">A análise completa no Observatório</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-carvao-muted">
-            No Observatório este resumo vira análise: abertura por instituição, modalidade e estado,
-            projeções com banda declarada, comparador de bancos e alertas com regra publicada.
-            Gratuito; o cadastro é a única exigência.
-          </p>
-          <Link
-            href="/cadastro"
-            className="rotulo mt-5 inline-flex min-h-[44px] items-center border border-carvao px-5 text-carvao hover:bg-carvao hover:text-marfim"
-          >
-            Criar acesso gratuito
-          </Link>
-        </div>
+        <ChamadaObservatorio
+          titulo="A análise completa no Observatório"
+          texto="No Observatório este resumo vira análise: abertura por instituição, modalidade e estado, projeções com banda declarada, comparador de bancos e alertas com regra publicada."
+        />
       </main>
       <Footer />
     </div>

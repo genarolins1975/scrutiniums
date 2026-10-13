@@ -1,5 +1,6 @@
 import { BotaoLink } from "@/components/home/BotaoLink";
 import { LogoMark } from "@/components/ui/Logo";
+import { ACESSO } from "@/lib/acesso";
 
 export function SecaoAcesso() {
   return (
@@ -16,12 +17,11 @@ export function SecaoAcesso() {
             A leitura é aberta. A conta é opcional.
           </h2>
           <p className="mx-auto mt-5 max-w-prose2 leading-relaxed text-carvao-muted">
-            Explore os observatórios sem cadastro: análises, séries e
-            metodologia abertas ao seu escrutínio. A conta gratuita guarda
-            preferências e vale para o Crédito, o Setor Elétrico e a Eficiência Estatal.
+            {ACESSO.leitura} Análises, séries e metodologia ficam abertas ao seu escrutínio.
           </p>
+          <p className="mx-auto mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{ACESSO.conta}</p>
           <div className="mt-10 flex justify-center">
-            <BotaoLink href="/cadastro">Criar acesso</BotaoLink>
+            <BotaoLink href="/cadastro">{ACESSO.ctaConta}</BotaoLink>
           </div>
           <p className="rotulo mt-7 text-mineral">
             100% gratuito · sem assinatura · sem cobrança

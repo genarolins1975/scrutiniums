@@ -5,6 +5,7 @@ import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { GraficoLinha } from "@/components/dados/GraficoSerie";
 import { SeloFrescor } from "@/components/dados/SeloFrescor";
+import { ChamadaObservatorio } from "@/components/dados/ChamadaObservatorio";
 import {
   INDICADORES,
   fmtDelta,
@@ -118,20 +119,10 @@ export default function IndicadorPage({ params }: { params: { slug: string } }) 
           </section>
         </div>
 
-        <div className="mt-10 border border-linha bg-papel p-8">
-          <h2 className="font-serif text-2xl text-carvao">Vá além do número agregado</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-carvao-muted">
-            No Observatório, este indicador abre por segmento, por modalidade, por instituição
-            financeira e por estado, com projeções, sinais antecedentes e alertas de regra publicada.
-            Acesso gratuito; o cadastro é a única exigência.
-          </p>
-          <Link
-            href="/cadastro"
-            className="rotulo mt-5 inline-flex min-h-[44px] items-center border border-carvao px-5 text-carvao hover:bg-carvao hover:text-marfim"
-          >
-            Criar acesso gratuito
-          </Link>
-        </div>
+        <ChamadaObservatorio
+          titulo="Vá além do número agregado"
+          texto="No Observatório, este indicador abre por segmento, por modalidade, por instituição financeira e por estado, com projeções, sinais antecedentes e alertas de regra publicada."
+        />
 
         <nav aria-label="Outros indicadores" className="mt-10">
           <p className="rotulo text-mineral">Outros indicadores públicos</p>

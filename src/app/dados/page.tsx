@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { PageTitle } from "@/components/ui/SectionHeading";
 import { Sparkline } from "@/components/dados/GraficoSerie";
 import { SeloFrescor } from "@/components/dados/SeloFrescor";
+import { ChamadaObservatorio } from "@/components/dados/ChamadaObservatorio";
 import { fmtDelta, fmtRefMes, fmtValor, geradoEmPublicado, indicadoresPublicos } from "@/lib/dadosPublicos";
 
 /**
@@ -62,28 +63,15 @@ export default function DadosPage() {
           ))}
         </div>
 
-        <div className="mt-14 border border-linha bg-papel p-8">
-          <h2 className="font-serif text-2xl text-carvao">A análise completa é gratuita</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-carvao-muted">
-            O Observatório Brasileiro de Crédito abre estes números por instituição financeira, por
-            modalidade e por estado: taxas de juros de cada banco em 20 modalidades, comparador de
-            instituições, sinais antecedentes e alertas com regra publicada. O cadastro é a única exigência.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-4">
-            <Link
-              href="/cadastro"
-              className="rotulo inline-flex min-h-[44px] items-center border border-carvao px-5 text-carvao hover:bg-carvao hover:text-marfim"
-            >
-              Criar acesso gratuito
-            </Link>
-            <Link
-              href="/observatorio/methodology"
-              className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted hover:text-bronze"
-            >
+        <ChamadaObservatorio
+          titulo="A análise completa é gratuita"
+          texto="O Observatório Brasileiro de Crédito abre estes números por instituição financeira, por modalidade e por estado: taxas de juros de cada banco em 20 modalidades, comparador de instituições, sinais antecedentes e alertas com regra publicada."
+          extra={
+            <Link href="/observatorio/methodology" className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted hover:text-bronze">
               Como calculamos →
             </Link>
-          </div>
-        </div>
+          }
+        />
       </main>
       <Footer />
     </div>

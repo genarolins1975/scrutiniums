@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
+import { ACESSO, listaObservatorios } from "@/lib/acesso";
 import { PublicHeader } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
@@ -13,7 +14,7 @@ import { SecaoAcesso } from "@/components/home/SecaoAcesso";
 
 export const metadata: Metadata = {
   description:
-    "Da informação dispersa ao conhecimento verificável. Uma plataforma, observatórios de Crédito, Setor Elétrico, Eficiência Estatal e Contas Públicas Federais, com bases públicas, registros oficiais e método declarado. Gratuita, com leitura aberta e sem cadastro.",
+    `Da informação dispersa ao conhecimento verificável. Uma plataforma, observatórios de ${listaObservatorios()}, com bases públicas, registros oficiais e método declarado. Gratuita. ${ACESSO.curto}`,
 };
 
 export default async function HomePage() {
