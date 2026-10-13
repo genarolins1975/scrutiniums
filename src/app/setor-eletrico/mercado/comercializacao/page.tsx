@@ -4,6 +4,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { DuasCamadasEnergia, LaboratorioContratos } from "@/components/energia/ComercializacaoDidatica";
 import s from "@/components/energia/LeiturasIntegradas.module.css";
 
+export const dynamic = "force-static";
 export const metadata: Metadata = { title: "Comercialização: da energia física ao resultado financeiro", alternates: { canonical: "/setor-eletrico/mercado/comercializacao" } };
 export default function Comercializacao() {
   return <><CabecalhoEnergia atual="mercado" /><main id="conteudo" tabIndex={-1} className="ed-pagina">

@@ -28,7 +28,7 @@ export function DuasCamadasEnergia({ compacto = false }: { compacto?: boolean })
       <div className={s.nodes}><span className={s.node}>Geradores e comercializadores</span><span aria-hidden="true">↔</span><span className={s.node}>Contratos de compra e venda</span><span aria-hidden="true">↔</span><span className={s.node}>Distribuidoras e consumidores livres</span></div>
     </div>
     <div className={s.bridge}><strong>A ponte é a contabilização.</strong> Medições ajustadas pelas regras e posições contratuais entram no balanço da CCEE. As diferenças são valoradas ao PLD de cada hora e submercado. O pagamento do contrato segue o preço e as condições negociadas.</div>
-    <p className={s.note}>Esquema simplificado do sistema interligado. As setas sólidas indicam o percurso físico; as relações tracejadas representam contratos. Operação, medição, registro, contabilização e liquidação são etapas distintas. Contratos não são ordens de despacho.</p>
+    <p className={s.note}>Esquema simplificado do sistema interligado. As setas sólidas indicam o percurso físico; os contornos tracejados identificam a camada comercial. Operação, medição, registro, contabilização e liquidação são etapas distintas. Contratos não são ordens de despacho.</p>
     <div className={s.links}>
       {compacto ? <Link className={s.link} href="/setor-eletrico/mercado/comercializacao">Experimente a liquidação por horário →</Link> : <a className={s.link} href="#laboratorio-contratos">Abrir o laboratório de contratos ↓</a>}
       <Link className={s.link} href="/setor-eletrico/mercado/agentes">Quem participa da comercialização →</Link>
