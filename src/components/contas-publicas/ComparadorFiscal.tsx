@@ -1,7 +1,7 @@
 'use client';
 import {IPCA,BASE_PRECOS} from '@/lib/contas-publicas/inflacao';
 import {dataFonte} from '@/lib/contas-publicas/dados';
-import {useState} from 'react';
+import {useRecorte} from './RecorteCompartilhavel';
 import {compararDespesas,denominador,exportarComparacaoFiscal,UNIDADES_ESCALA,type EscalaFiscal} from '@/lib/contas-publicas/escala';
 import {moeda,numero,variacaoPercentual} from '@/lib/contas-publicas/formato';
 import {FonteEscala} from './artefatos/EscalaDoAgregado';
@@ -11,9 +11,11 @@ function exibir(v:number,escala:EscalaFiscal,delta=false) {
   if(escala==='pib') return delta?`${v>0?'+':''}${numero(v,2)} p.p.`:`${numero(v,2)}% do PIB`;
   return moeda(v,escala==='total'||escala==='real'?'milhoes':'reais',{curta:escala==='total'||escala==='real',variacao:delta});
 }
+const escalaValida=(s:string)=>['total','real','habitante','pib'].includes(s);
+const ordemValida=(s:string)=>['valor','diferenca'].includes(s);
 export function ComparadorFiscal({ano,mes}:{ano:number;mes:number}) {
-  const [escala,setEscala]=useState<EscalaFiscal>('total');
-  const [ordem,setOrdem]=useState('valor');
+  const [escala,setEscala]=useRecorte<EscalaFiscal>('escala','total',escalaValida);
+  const [ordem,setOrdem]=useRecorte<string>('ordem','valor',ordemValida);
   const denominadores=!!denominador(ano,mes)&&!!denominador(ano-1,mes);
   const temReal=!!compararDespesas(ano,mes,'real');
   const efetiva=escala==='real'?(temReal?'real':'total'):denominadores?escala:'total';
