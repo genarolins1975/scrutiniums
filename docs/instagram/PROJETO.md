@@ -2,7 +2,7 @@
 
 Projeto de distribuição da Scrutiniums no Instagram: identidade visual, escolha de temas, produção, revisão, publicação, medição de engajamento e conversão em usuários da plataforma.
 
-Versão 1, 13/10/2026. Base: `main` no commit `8b27b33`. Documento de desenho; nenhum código de produção foi alterado.
+Versão 2, 13/10/2026. Base: `main` no commit `8b27b33`. Documento de desenho; nenhum código de produção foi alterado. A versão 2 incorpora as decisões D1 a D7 (seção 12) e corrige a premissa sobre código de acesso (seção 1.3).
 
 Convenção usada em todo o texto:
 
@@ -20,24 +20,24 @@ Convenção usada em todo o texto:
 
 **Arquitetura em uma linha.** Gold publicada → candidatos de pauta com pacote de fatos → pontuação e escolha → redação com números inseridos por código → validador mecânico e três revisores (infraestrutura de `pesquisa/` já existente) → renderização com Playwright nos componentes reais → fila → publicação pela API oficial → coleta de insights → aprendizado da pauta.
 
-**O que já existe e será reaproveitado.** Gold com proveniência nos três observatórios, central de alertas, síntese por regras da Energia, números citáveis com grau de evidência em `/imprensa`, gerador de imagem de gráfico da Energia, scripts de captura com Playwright, constituição editorial e o pipeline de notas com validador, sentinelas, três revisores e auditor.
+**O que já existe e será reaproveitado.** Gold com proveniência nos cinco observatórios (Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais, Contas Públicas Estaduais), central de alertas, síntese por regras da Energia, números citáveis com grau de evidência em `/imprensa`, gerador de imagem de gráfico da Energia, scripts de captura com Playwright, constituição editorial e o pipeline de notas com validador, sentinelas, três revisores e auditor.
 
 **O que falta e bloqueia a meta de usuários.**
 
 1. Visitante anônimo não é medido. `POST /api/telemetria` só grava com sessão ativa e não há captura de UTM ou referência. Sem isso, nenhum resultado do Instagram em usuários pode ser atribuído.
-2. O cadastro termina em lista de espera para quem não tem código de acesso. Tráfego do Instagram vira fila, não usuário.
-3. Não existem credenciais da Meta, conta profissional vinculada nem armazenamento público de mídia.
+2. Não existem credenciais da Meta nem armazenamento público de mídia.
 
-**Decisões que dependem de você** (detalhadas na seção 12):
+**Decisões registradas** (detalhe na seção 12):
 
-| # | Decisão | Recomendação |
+| # | Decisão | Situação |
 |---|---|---|
-| D1 | Conta: criar perfil institucional novo ou usar um existente | Perfil novo `@scrutiniums`, conta profissional, sem vínculo com perfil pessoal |
-| D2 | Código de acesso dedicado ao canal Instagram | Sim, um código por canal em `ACCESS_CODES`, que também serve de atribuição |
-| D3 | Pausa eleitoral até o segundo turno de 25/10/2026 | Sim para contas estaduais e OBEE; crédito e energia liberados |
-| D4 | Autonomia de publicação | Mesma escada da constituição: modo sombra, depois publicação automática |
-| D5 | Armazenamento de mídia | Vercel Blob (mesmo fornecedor do deploy) |
-| D6 | Verba de impulsionamento | Zero na fase 1; decidir após 8 semanas de linha de base orgânica |
+| D1 | Perfil institucional próprio | Criado |
+| D2 | Código de acesso para o canal | Não se aplica: a etapa de código foi extinta no código e o cadastro já é aberto |
+| D3 | Pausa eleitoral | Sem restrição de calendário; regras permanentes de neutralidade mantidas |
+| D4 | Autonomia | Fluxo integralmente automático, sem aprovação humana em nenhuma etapa |
+| D5 | Armazenamento de mídia | Vercel Blob, loja pública, roteiro de configuração na seção 5.5 |
+| D6 | Impulsionamento | Zero na fase inicial |
+| D7 | Cor de acento por observatório | Segue o registro de domínios já existente (seção 3.5) |
 
 **Prazo.** 10 semanas até operação automática estável, em 5 fases com critério de saída (seção 11).
 
@@ -77,13 +77,14 @@ Fonte de todas as linhas: repositório, commit `8b27b33`, lido em 13/10/2026.
 ### 1.3 Evidência: lacunas
 
 * `product_events` tem apenas `id, user_id, name, created_at` (`src/lib/schema.ts`). Visitas são registradas só com sessão (`src/app/api/telemetria/route.ts`). Não há UTM, referência ou campanha em nenhum ponto do código.
+* **Correção da versão 1.** A etapa de código de acesso foi extinta: o cadastro termina em `COMPLETE` quando o perfil é preenchido, e os estados `ACCESS_PENDING` e `WAITLIST` são legados promovidos automaticamente (`src/lib/onboarding.ts`, comentário da máquina de estados). `README.md` e `ARCHITECTURE.md` ainda descrevem a etapa antiga e estão desatualizados.
 * Sem rota de imagem Open Graph (`opengraph-image`), sem `next/og`. A SPA do Crédito usa uma imagem estática única `obs/og-image.png`.
 * Nenhum segredo de rede social ou de API de modelo de linguagem nos workflows; o único segredo é `BOLETIM_SECRET`.
 * Playwright não é dependência do projeto; os scripts o carregam de `/opt/node-tools`. Em GitHub Actions precisa ser instalado no job.
 
 ### 1.4 Inferência
 
-1. O gargalo para "mais usuários" não está no Instagram, está na medição e na porta de entrada. Sem atribuição de visitante anônimo e com cadastro que termina em lista de espera, qualquer ganho de alcance fica invisível ou represado.
+1. O gargalo para "mais usuários" não está no Instagram, está na medição. Sem atribuição de visitante anônimo, qualquer ganho de alcance fica invisível. A porta de entrada já está aberta: o cadastro não exige código.
 2. A constituição elimina os ganchos mais usados para engajamento (adjetivo, alarme, opinião, previsão). O pipeline precisa competir com outros instrumentos: pergunta, identificação regional, utilidade prática, contraste factual e transparência de método. Isso é viável e diferencia a marca, mas exige mais engenharia de formato.
 3. Das 5 famílias da central de alertas, `openfinance` está vetada pelo Art. 5, e `operacional` é construída por instituição (CVM e ESTBAN por banco), portanto também vetada enquanto houver nome de instituição. O estoque elegível de alertas hoje é pequeno; a pauta precisa vir majoritariamente dos painéis, não da central.
 4. O arquivo `alertas_central.json` publicado tem `gerado_em` de 24/09/2026, 19 dias antes desta leitura, apesar do workflow diário. Pode ser comportamento esperado (alertas só mudam quando a fonte muda) ou falha silenciosa; o portão de atualidade do pipeline precisa distinguir os dois casos.
@@ -177,9 +178,10 @@ Corpo mínimo de 24 px em tela de 1080 px. Formato brasileiro de números e data
 | Texto secundário | `mineral` | `#6B6D6A` |
 | Regras | `linha` | `#D8D2C6` |
 | Acento Crédito e marca | `bronze` | `#966B48` |
-| Acento Energia | `energia` | `#0E6170` |
-| Acento Eficiência Estatal | `obee` | `#00697F` |
-| Acento Contas Públicas | a definir | sem token próprio no repositório; usar `carvao` até decisão |
+| Acento Setor Elétrico e Contas Públicas Federais | `energia` | `#0E6170` |
+| Acento Eficiência Estatal e Contas Públicas Estaduais | `obee` | `#00697F` |
+
+Evidência: o campo `acento` de cada observatório em `src/lib/dominios.ts` define bronze para Crédito, `energia` para Setor Elétrico e Contas Públicas Federais, `obee` para Eficiência Estatal e Contas Públicas Estaduais. O post usa a mesma cor do site. Como dois pares de observatórios compartilham acento, a identificação no Instagram vem do rótulo do cabeçalho, nunca só da cor.
 
 Regras herdadas do design system: uma cor focal e referências neutras; sem gradiente decorativo, neon ou mostrador; sem verde e vermelho para dizer bom ou ruim; selos de natureza com forma, glifo e cor (observado ●, calculado ◆, estimado ◐, previsto ◌ tracejado, cenário ◇ pontilhado). Contraste de texto AA verificado por script no renderizador, não por inspeção.
 
@@ -252,8 +254,7 @@ Gatilhos:
 3. **Grau de evidência.** Na capa só graus A, B e C da escala de `/imprensa`. D e E podem aparecer no interior com rótulo explícito, nunca como número de capa.
 4. **Natureza do dado.** Previsto e cenário só com selo e lâmina de método; a previsão de PLD só quando houver modelo em estado PRODUÇÃO no `registro_modelos.json`.
 5. **Neutralidade.** Pacotes de OBEE e contas estaduais passam pelo mesmo teste de termos proibidos do `docs/obee/VALIDACAO.md`; ordenação alfabética ou por região, nunca por valor.
-6. **Janela eleitoral.** Bloqueio de pautas de contas estaduais e OBEE entre a data configurada e o fim do segundo turno (decisão D3).
-7. **Repetição.** Mesmo indicador publicado nos últimos 21 dias sem nova divulgação é descartado.
+6. **Repetição.** Mesmo indicador publicado nos últimos 21 dias sem nova divulgação é descartado.
 
 ### 4.4 Pontuação
 
@@ -312,6 +313,8 @@ Links em legenda não são clicáveis no Instagram; por isso o destino é o link
 
 O post é um novo tipo de nota na escada do Art. 9. Erro publicado gera errata (modelo M8), comentário fixado no post original e rebaixamento ao degrau 1.
 
+**Fluxo sem aprovação humana (decisão D4).** Nenhuma etapa espera leitura, clique ou aprovação de pessoa. As únicas intervenções humanas são de configuração, feitas uma vez: criar o app na Meta e autorizar a conta, criar a loja de mídia e cadastrar os segredos. A entrada em publicação também é automática: o pipeline roda em `sombra` até cumprir, por medição própria, o critério do degrau 2 (três ciclos limpos e pelo menos 90% dos erros plantados detectados) e então passa a `ligada` sozinho. Erro publicado, falha de validação ou erro da API devolvem a `sombra` sem intervenção, gerando errata quando houver post afetado.
+
 ### 5.4 Renderização
 
 **Recomendação: Playwright sobre rotas internas do próprio Next.js.**
@@ -324,7 +327,18 @@ O post é um novo tipo de nota na escada do Art. 9. Erro publicado gera errata (
 
 ### 5.5 Armazenamento
 
-A Meta exige que a mídia esteja em URL pública no momento da publicação (documentação de publicação, consultada em 13/10/2026). Recomendação: Vercel Blob, com caminho `social/AAAA/MM/<id>/`, retenção de 90 dias para mídia e permanente para manifesto no repositório em `social/registro/`. Gravar imagens em `public/` aumentaria o repositório e acoplaria o deploy à publicação.
+A Meta exige que a mídia esteja em URL pública no momento da publicação (documentação de publicação, consultada em 13/10/2026). Decisão: Vercel Blob, loja pública, caminho `social/AAAA/MM/<id>/`. A mídia é apagada 7 dias após a publicação (a Meta já tem a cópia); o manifesto com sha256 fica permanente no repositório em `social/registro/`. Gravar imagens em `public/` aumentaria o repositório e acoplaria o deploy à publicação.
+
+**Configuração (uma única vez, feita pelo titular da conta Vercel):**
+
+1. Painel da Vercel → projeto `scrutiniums` → aba **Storage** → **Create** → **Blob**.
+2. Nome `scrutiniums-social`; acesso **Public** (não pode ser alterado depois); região São Paulo (`gru1`).
+3. Na aba **Projects** da loja → **Connect to Project** → `scrutiniums`, ambientes Production e Preview. A Vercel cria no projeto as variáveis `BLOB_STORE_ID` e `BLOB_READ_WRITE_TOKEN`.
+4. Copiar o valor de `BLOB_READ_WRITE_TOKEN` (Settings → Environment Variables) para o GitHub: repositório → Settings → Secrets and variables → Actions → New repository secret, nome `BLOB_READ_WRITE_TOKEN`. Necessário porque a renderização e o envio rodam no GitHub Actions, fora da Vercel, onde a autenticação automática por OIDC não se aplica.
+
+Evidência (documentação Vercel Blob, atualizada em 26/08/2026 e 23/09/2026): loja pública entrega por URL direta a qualquer pessoa com o link; modo de acesso e região não mudam após a criação; no plano Hobby estão incluídos 1 GB por mês de armazenamento, 10.000 operações simples, 2.000 operações avançadas e 10 GB de transferência; ao exceder, o Blob fica indisponível por 30 dias, sem cobrança.
+
+Estimativa, com premissas declaradas: 8 posts por semana com 7 lâminas de cerca de 400 KB e 2 reels de cerca de 15 MB somam cerca de 52 MB por semana; com exclusão em 7 dias, o armazenamento médio fica perto de 60 MB, e os envios ficam perto de 260 operações avançadas por mês. Ambos abaixo do incluído no Hobby. Não verifiquei em qual plano o projeto está; o pipeline lê o uso no painel de observabilidade e volta para `sombra` se passar de 70% de qualquer limite.
 
 ---
 
@@ -332,7 +346,7 @@ A Meta exige que a mídia esteja em URL pública no momento da publicação (doc
 
 ### 6.1 Conta e acesso
 
-* Conta profissional do Instagram (empresa) com autenticação em dois fatores.
+* Conta profissional do Instagram (empresa) com autenticação em dois fatores, no perfil institucional já criado (D1).
 * App na Meta for Developers com o produto Instagram API com login do Instagram.
 * Permissões: `instagram_business_basic`, `instagram_business_content_publish`, `instagram_business_manage_insights`, `instagram_business_manage_comments`. Para a fase de mensagens (seção 8.3), também `instagram_business_manage_messages`.
 * Evidência: a documentação exige acesso Standard ou Advanced. Inferência: como o app operará apenas a conta da própria Scrutiniums, com o titular nos papéis do app, o acesso Standard deve bastar sem revisão do app. Confirmar na criação.
@@ -362,12 +376,12 @@ A Meta exige que a mídia esteja em URL pública no momento da publicação (doc
 
 ### 6.4 Recursos da API usados para crescer
 
-* **Reels de teste (`trial_params`).** Exibidos só para não seguidores, com graduação manual ou automática por desempenho (`SS_PERFORMANCE`). Uso: testar duas capas ou dois ganchos para o mesmo conteúdo sem desgastar a base.
+* **Reels de teste (`trial_params`).** Exibidos só para não seguidores; o pipeline usa sempre a graduação automática por desempenho (`SS_PERFORMANCE`), nunca a manual. Uso: testar duas capas ou dois ganchos para o mesmo conteúdo sem desgastar a base.
 * **Rótulo de conteúdo gerado por IA (`is_ai_generated`).** Gráficos e números são determinísticos e não se enquadram. Recomendação de transparência: biografia do perfil informa "Textos redigidos com apoio de IA sob regras públicas", com link para a constituição.
 
 ### 6.5 Limites conhecidos da API
 
-* Adesivos interativos de story (enquete, link, pergunta) não constam na documentação de publicação; inferência: exigem operação manual no aplicativo. O pipeline gera o story e uma ficha com o adesivo sugerido para publicação manual opcional.
+* Adesivos interativos de story (enquete, link, pergunta) não constam na documentação de publicação; inferência: só existem no aplicativo. O pipeline publica stories sem adesivos e direciona ao link do perfil.
 * Edição de legenda publicada não é um fluxo previsto no pipeline; correção é sempre errata.
 * Filtros e marcação de produtos não são suportados.
 
@@ -430,19 +444,20 @@ Evidência sobre os pesos: segundo resumos secundários de declarações de Adam
 
 * Middleware leve grava, para visitante anônimo, a contagem agregada em `visitas_atribuidas` quando a URL de entrada traz `utm_source`, sem cookie de identificação.
 * Cookie funcional de primeira parte com a origem da campanha, validade de 30 dias, sem dado pessoal, lido no início do cadastro.
+* O botão "Criar conta" da página `/ig` e dos painéis abertos a partir dela leva os parâmetros UTM na própria URL de `/cadastro`, que os grava junto do evento. Isso preserva a atribuição quando o navegador interno do Instagram descarta o cookie.
 * Eventos novos em `ProductEventName`: `onboarding_started:instagram`, `onboarding_completed:instagram`, `boletim_optin:instagram`.
 * Atualização da página `/privacidade` descrevendo a medição agregada e o cookie funcional.
 
 ### 8.3 Porta de entrada
 
-* Código de acesso dedicado ao canal (decisão D2), divulgado na página `/ig`. Converte tráfego do Instagram em usuário em vez de lista de espera e atribui o cadastro mesmo sem cookie.
+* Cadastro aberto, sem código de acesso (seção 1.3). A página `/ig` traz chamada direta para criar conta.
 * Chamada secundária para o boletim mensal, já existente, com consentimento de marketing.
 * **Fase 4, opcional:** comentário com palavra chave aciona resposta privada com o link do painel, via API de mensagens. Aumenta comentários e entrega o link clicável. Depende da permissão de mensagens e de confirmação, na documentação vigente, do endpoint de resposta privada a comentário.
 
 ### 8.4 Comentários
 
 * Respostas automáticas só a partir de modelos fechados: link do painel, método, errata, "esta pergunta foi registrada".
-* Perguntas livres vão para fila com resumo diário. O Art. 2 da constituição veda recomendação; resposta livre por modelo de linguagem não entra no escopo.
+* Perguntas livres recebem resposta automática de modelo fechado ("a metodologia e as fontes estão no painel, link no perfil"). O Art. 2 da constituição veda recomendação; resposta livre por modelo de linguagem não entra no escopo. As perguntas são agregadas no relatório semanal como sinal de pauta, sem nenhuma etapa que dependa de leitura humana.
 * Ocultação automática de comentários ofensivos pelos filtros nativos da conta.
 
 ---
@@ -452,7 +467,7 @@ Evidência sobre os pesos: segundo resumos secundários de declarações de Adam
 ```mermaid
 flowchart LR
   G[Gold publicada<br/>Crédito, Energia, OBEE, Contas] --> C[Candidatos<br/>pacote de fatos]
-  C --> E[Portões mecânicos<br/>Art. 5, atualidade, grau, eleitoral]
+  C --> E[Portões mecânicos<br/>Art. 5, atualidade, grau, neutralidade]
   E --> P[Pontuação e otimizador]
   P --> R[Redação com marcadores<br/>pesquisa/papeis]
   R --> V[Validador M1 a M11<br/>três revisores]
@@ -506,7 +521,7 @@ flowchart LR
 |---|---|
 | Número errado publicado | Número só por inserção mecânica, verificação contra a gold e fonte primária, auditor semanal, errata e rebaixamento |
 | Tema vetado (instituição, FGC, Open Finance) | Portão mecânico antes da redação e de novo no validador; famílias `openfinance` e `operacional` excluídas na origem |
-| Leitura político eleitoral de dados de estados e capitais | Pausa até 25/10/2026 (segundo turno, calendário do TSE); depois, ordem alfabética, sem comparação de gestões, sem nomes de governantes |
+| Leitura político partidária de dados de estados e capitais | Regras permanentes: ordem alfabética ou por região, sem comparação de gestões, sem nomes de governantes ou partidos, vocabulário avaliativo bloqueado por código |
 | Pressão do otimizador por ganchos sensacionalistas | Otimizador só escolhe entre itens já aprovados; vocabulário vetado é regra de código |
 | Dado defasado | Portão de atualidade e conferência de `disponivel` e regressões em `meta.json` |
 | Falha ou mudança da API | Interruptor para `sombra`, alerta ao administrador, leitura dinâmica de limites e métricas |
@@ -521,29 +536,27 @@ flowchart LR
 
 | Fase | Semanas | Entregas | Critério de saída |
 |---|---|---|---|
-| F0 Fundações | 1 e 2 | Conta, app Meta, token, `visitas_atribuidas`, eventos de origem, página `/ig`, código de canal, `/privacidade` | Visita de teste com UTM contada; cadastro de teste com `onboarding_completed:instagram` |
-| F1 Identidade e renderização | 2 a 4 | Modelos M1 a M8, rota `/social/[id]`, renderizador, contraste automático, texto alternativo | 8 modelos renderizados com dado real, contraste AA em todos, revisão visual sua |
+| F0 Fundações | 1 e 2 | App Meta, token, loja Blob, segredos, `visitas_atribuidas`, eventos de origem, página `/ig`, `/privacidade` | Visita de teste com UTM contada; cadastro de teste com `onboarding_completed:instagram` |
+| F1 Identidade e renderização | 2 a 4 | Modelos M1 a M8, rota `/social/[id]`, renderizador, testes visuais automáticos (contraste, texto transbordado, corpo mínimo, comparação com imagens de referência), texto alternativo | 8 modelos renderizados com dado real e aprovados em todos os testes visuais automáticos |
 | F2 Pauta e portão editorial em sombra | 4 a 6 | Candidatos, portões, pontuação, papéis de redação, regras novas do validador, sentinelas de post | Três ciclos semanais limpos e pelo menos 90% dos erros plantados detectados (Art. 9) |
-| F3 Publicação automática | 6 a 8 | Publicação, coleta de insights, painel no admin, relatório semanal | Duas semanas sem falha de publicação e sem errata |
+| F3 Publicação automática, ativada pelo próprio pipeline | 6 a 8 | Publicação, coleta de insights, painel no admin, relatório semanal | Duas semanas sem falha de publicação e sem errata |
 | F4 Otimização e crescimento | 8 a 10 | Amostragem de Thompson, reels de teste, regressão, resposta privada por palavra chave (se aprovada) | Linha de base fixada; pesos recalibrados; meta de cadastros proposta com intervalo |
 
-Primeiro conteúdo publicável: semana 6, condicionado ao critério de saída da F2. A pausa eleitoral (D3) termina antes dessa data e não afeta o cronograma.
+Primeiro conteúdo publicável: semana 6, condicionado ao critério de saída da F2, verificado por código.
 
 ---
 
-## 12. Decisões pendentes
+## 12. Decisões registradas
 
-| # | Pergunta | Opções | Recomendação e motivo |
+| # | Decisão | Situação em 13/10/2026 | Efeito no projeto |
 |---|---|---|---|
-| D1 | Qual perfil usar? | Novo institucional; existente | Novo `@scrutiniums`: separa a marca do titular e evita contaminar a linha de base |
-| D2 | Código de acesso para o canal? | Sim; não | Sim: sem ele o tráfego vira lista de espera, e o código atribui o cadastro mesmo sem cookie |
-| D3 | Pausa eleitoral? | Pausar contas estaduais e OBEE até 25/10/2026; não pausar | Pausar: custo baixo, já que a primeira publicação só ocorre na semana 6 |
-| D4 | Aprovação humana nos primeiros posts? | Seguir a constituição (sem revisão humana); acrescentar sua aprovação nas fases F2 e F3 | Seguir a constituição, com sua revisão visual apenas na F1, que é decisão de identidade e não de conteúdo |
-| D5 | Onde hospedar mídia? | Vercel Blob; R2 ou S3; `public/` | Vercel Blob: mesmo fornecedor, sem nova conta |
-| D6 | Impulsionamento pago? | Zero; verba fixa | Zero até a semana 8; sem linha de base orgânica não há como medir retorno |
-| D7 | Cor de acento de Contas Públicas | Token novo; usar `carvao` | Token novo, desenhado na F1 com teste de contraste |
-
----
+| D1 | Perfil institucional próprio | Criado | Próximo passo: converter para conta profissional e autorizar o app na F0 |
+| D2 | Código de acesso para o canal | Não se aplica | A etapa de código foi extinta; atribuição do cadastro feita por UTM na URL e cookie funcional (seção 8.2) |
+| D3 | Pausa eleitoral | Sem restrição de calendário | Portão eleitoral removido; regras permanentes de neutralidade mantidas (seções 4.3 e 10) |
+| D4 | Autonomia | Integralmente automático | Sem aprovação humana; ativação e desativação da publicação por critério de código (seção 5.3) |
+| D5 | Armazenamento de mídia | Vercel Blob público | Roteiro de configuração na seção 5.5 |
+| D6 | Impulsionamento | Zero na fase inicial | Reavaliar com a linha de base da semana 10 |
+| D7 | Cor de acento | Segue `src/lib/dominios.ts` | Tabela da seção 3.5 |
 
 ## 13. Fontes externas
 
@@ -554,4 +567,5 @@ Consultadas em 13/10/2026.
 * Rival IQ, Social Media Industry Benchmark Report 2025, via https://socialk.it/en/blog/what-is-a-good-engagement-rate e https://rivaliq.com/?p=35627
 * Socialinsider 2025, engajamento por formato, via resumo em https://socialk.it/en/blog/what-is-a-good-engagement-rate
 * Sinais de ranqueamento citados a partir de Adam Mosseri, janeiro de 2025, fontes secundárias: https://posteverywhere.ai/blog/how-the-instagram-algorithm-works e https://dataslayer.ai/blog/instagram-algorithm-2025-complete-guide-for-marketers
-* TSE, calendário das Eleições 2026, via https://www.oliberal.com/politica/calendario-das-eleicoes-2026-e-aprovado-pelo-tse-veja-as-datas-dos-turnos-1.1091913
+* Vercel, Vercel Blob: https://vercel.com/docs/vercel-blob
+* Vercel, Vercel Blob Pricing: https://vercel.com/docs/vercel-blob/usage-and-pricing
