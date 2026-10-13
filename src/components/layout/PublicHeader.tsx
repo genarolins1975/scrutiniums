@@ -3,10 +3,11 @@ import { cookies } from "next/headers";
 import { LogoWordmark } from "@/components/ui/Logo";
 import { getSessionUser } from "@/lib/session";
 
-// Navegação da plataforma: os três observatórios primeiro, depois a superfície
+// Navegação da plataforma: os observatórios com entrada no cabeçalho primeiro (o
+// registro completo está em src/lib/dominios.ts e na home), depois a superfície
 // citável de dados do Crédito. As demais páginas de cada domínio (resumo,
 // metodologia, glossário, aprenda) ficam no rodapé e dentro de cada observatório.
-// `soXl`: no cabeçalho de desktop o item só aparece a partir de 1280 px (com três observatórios a linha
+// `soXl`: no cabeçalho de desktop o item só aparece a partir de 1280 px (com as entradas de observatório a linha
 // não cabe em 1024 px); a navegação rolável do celular mostra todos.
 const NAV: { href: string; label: string; soXl?: boolean }[] = [
   { href: "/observatorio-do-credito", label: "Crédito" },

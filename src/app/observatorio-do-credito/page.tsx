@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { BotaoLink } from "@/components/home/BotaoLink";
 import { LinkEntrarComDestino } from "@/components/home/LinkEntrarComDestino";
 import { SeloFrescor } from "@/components/dados/SeloFrescor";
+import { ACESSO } from "@/lib/acesso";
 import { fmtRefMes, geradoEmPublicado, resumoDiario } from "@/lib/dadosPublicos";
 
 /**
@@ -201,7 +202,7 @@ export default function ObservatorioPublicoPage() {
             )}
 
             <div className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <BotaoLink href="/observatorio">Explorar o Observatório — aberto, sem cadastro</BotaoLink>
+              <BotaoLink href="/observatorio">Explorar o Observatório, aberto e sem cadastro</BotaoLink>
               <LinkEntrarComDestino className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze" />
               <Link
                 href="/resumo"
@@ -323,11 +324,11 @@ export default function ObservatorioPublicoPage() {
                 href="/cadastro"
                 className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
               >
-                Criar conta gratuita
+                {ACESSO.ctaConta}
               </Link>
-              <span className="rotulo text-mineral">
-                leitura aberta, sem cadastro · a conta guarda preferências e a área de painéis
-              </span>
+            </p>
+            <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+              {ACESSO.leitura} {ACESSO.conta}
             </p>
           </div>
         </section>

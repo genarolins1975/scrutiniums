@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import "../../public/observatorios.css";
+import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
 
 /**
  * Fontes auto-hospedadas (variáveis, subsets latin + latin-ext via
@@ -41,14 +42,14 @@ export const metadata: Metadata = {
     template: "%s · Scrutiniums",
   },
   description:
-    "Plataforma gratuita de inteligência analítica baseada em dados verificáveis: o Observatório Brasileiro de Crédito e o Observatório Brasileiro do Setor Elétrico, com bases públicas, registros oficiais e método declarado.",
+    `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}`,
   openGraph: {
     siteName: "Scrutiniums",
     locale: "pt_BR",
     type: "website",
-    title: "Scrutiniums: Crédito, Setor Elétrico e Eficiência Estatal",
+    title: `Scrutiniums: ${listaObservatorios()}`,
     description:
-      "Três observatórios, a mesma filosofia de evidência: dados oficiais, fonte e data em cada número, metodologia aberta. Gratuito, com leitura aberta e sem cadastro.",
+      `${observatoriosPorExtenso(true)}, a mesma filosofia de evidência: dados oficiais, fonte e data em cada número, metodologia aberta. Gratuito. ${ACESSO.curto}`,
   },
   alternates: { canonical: "/" },
 };

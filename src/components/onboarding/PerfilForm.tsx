@@ -8,6 +8,7 @@ import { SelectField } from "@/components/ui/SelectField";
 import { Alert } from "@/components/ui/Alert";
 import { formatCpf, isValidCpf, normalizeCpf } from "@/lib/cpf";
 import { AREAS_ATUACAO, NIVEIS_CARGO, TIPOS_INSTITUICAO, UFS } from "@/lib/perfilOpcoes";
+import { ACESSO } from "@/lib/acesso";
 
 /**
  * Etapa 3 do onboarding: senha de acesso, CPF e perfil ESTRUTURADO.
@@ -154,8 +155,7 @@ export function PerfilForm() {
       </Button>
 
       <p className="text-sm text-mineral">
-        Seu cadastro é a única exigência para usar a plataforma. Os dados de perfil contextualizam o
-        uso e nunca são exibidos publicamente.
+        {ACESSO.leitura} Os dados de perfil contextualizam o uso e nunca são exibidos publicamente.
       </p>
     </form>
   );
