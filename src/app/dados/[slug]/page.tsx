@@ -4,11 +4,13 @@ import { notFound } from "next/navigation";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { GraficoLinha } from "@/components/dados/GraficoSerie";
+import { SeloFrescor } from "@/components/dados/SeloFrescor";
 import {
   INDICADORES,
   fmtDelta,
   fmtRefMes,
   fmtValor,
+  geradoEmPublicado,
   indicadorPorSlug,
   indicadoresPublicos,
 } from "@/lib/dadosPublicos";
@@ -63,6 +65,7 @@ export default function IndicadorPage({ params }: { params: { slug: string } }) 
           <Link href="/dados" className="hover:text-bronze">Dados abertos</Link> / {i.tituloCurto}
         </nav>
         <h1 className="mt-4 max-w-3xl font-serif text-3xl text-carvao md:text-4xl">{i.titulo}</h1>
+        <SeloFrescor geradoEm={geradoEmPublicado()} className="mt-4" />
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
           <section className="border border-linha bg-papel p-8">

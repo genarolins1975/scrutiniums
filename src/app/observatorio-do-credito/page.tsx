@@ -6,7 +6,8 @@ import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { BotaoLink } from "@/components/home/BotaoLink";
 import { LinkEntrarComDestino } from "@/components/home/LinkEntrarComDestino";
-import { fmtRefMes, resumoDiario } from "@/lib/dadosPublicos";
+import { SeloFrescor } from "@/components/dados/SeloFrescor";
+import { fmtRefMes, geradoEmPublicado, resumoDiario } from "@/lib/dadosPublicos";
 
 /**
  * Vitrine pública do Observatório Brasileiro de Crédito.
@@ -162,6 +163,7 @@ const DIFERENCAS = [
 export default function ObservatorioPublicoPage() {
   const { numeros, vintages } = numerosVivos();
   const r = resumoDiario();
+  const geradoEm = geradoEmPublicado();
 
   return (
     <>
@@ -289,13 +291,15 @@ export default function ObservatorioPublicoPage() {
         <section aria-labelledby="acesso" className="bg-marfim">
           <div className="mx-auto max-w-page px-6 py-16 md:py-20">
             <h2 id="acesso" className="font-serif text-3xl tracking-[-0.012em] text-carvao">
-              Atualizado todos os dias, sem custo
+              Coleta diária, sem custo
             </h2>
             <p className="mt-6 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-              O pipeline roda diariamente e republica a base inteira. Cada fonte tem seu próprio
-              calendário — e a plataforma mostra a data-base real de cada uma, em vez de uma data
-              única de atualização que esconderia a diferença.
+              O pipeline roda todos os dias e só publica a base inteira quando ela passa nos testes
+              de conteúdo; reprovada, a última publicação aprovada segue no ar. Cada fonte tem seu
+              próprio calendário, e a plataforma mostra a data-base real de cada uma, em vez de uma
+              data única de atualização que esconderia a diferença.
             </p>
+            <SeloFrescor geradoEm={geradoEm} className="mt-4" />
             {Object.keys(vintages).length > 0 && (
               <dl className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
                 {[

@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
+import { SeloFrescor } from "@/components/dados/SeloFrescor";
 import { PageTitle } from "@/components/ui/SectionHeading";
 import {
   fmtDelta,
   fmtRefMes,
   fmtValor,
+  geradoEmPublicado,
   indicadoresPublicos,
   resumoDiario,
   type MudancaResumo,
@@ -23,7 +25,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Resumo diário do crédito",
   description:
-    "O estado do mercado de crédito brasileiro em uma página: diagnóstico determinístico, principais mudanças do mês e números centrais com fonte oficial declarada. URL estável, conteúdo atualizado diariamente.",
+    "O estado do mercado de crédito brasileiro em uma página: diagnóstico determinístico, principais mudanças do mês e números centrais com fonte oficial declarada. URL estável; coleta diária e publicação somente depois dos testes de conteúdo.",
   alternates: { canonical: "/resumo" },
 };
 
@@ -62,6 +64,7 @@ export default function ResumoPage() {
         <PublicHeaderView />
         <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
           <PageTitle label="Resumo diário" title="Resumo indisponível" description="O diagnóstico do dia não pôde ser gerado. Os números-síntese seguem disponíveis em Dados abertos." />
+          <SeloFrescor geradoEm={geradoEmPublicado()} className="mt-6" />
           <Link href="/dados" className="rotulo mt-6 inline-flex text-bronze hover:underline">Ver dados abertos →</Link>
         </main>
         <Footer />
@@ -75,9 +78,10 @@ export default function ResumoPage() {
         <PageTitle
           label="Resumo diário"
           title="O crédito no Brasil hoje"
-          description="Uma página, atualizada todos os dias no mesmo endereço, com o essencial do mercado de crédito: diagnóstico, principais mudanças e números centrais — sempre com fonte, série e referência declaradas."
+          description="Uma página, sempre no mesmo endereço, com o essencial do mercado de crédito: diagnóstico, principais mudanças e números centrais, sempre com fonte, série e referência declaradas."
         />
-        <p className="rotulo mt-6 text-mineral">
+        <SeloFrescor geradoEm={r.geradoEm} className="mt-6" />
+        <p className="rotulo mt-3 text-mineral">
           Processado em {r.geradoEm.slice(0, 16).replace("T", " ")} UTC · referência {fmtRefMes(r.refDiagnostico)} · confiança {r.confianca}
         </p>
 
@@ -130,7 +134,7 @@ export default function ResumoPage() {
         </section>
 
         <div className="mt-10 border border-linha bg-papel p-8">
-          <h2 className="font-serif text-2xl text-carvao">A análise completa, todos os dias</h2>
+          <h2 className="font-serif text-2xl text-carvao">A análise completa no Observatório</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-carvao-muted">
             No Observatório este resumo vira análise: abertura por instituição, modalidade e estado,
             projeções com banda declarada, comparador de bancos e alertas com regra publicada.

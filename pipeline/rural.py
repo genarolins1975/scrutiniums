@@ -132,6 +132,24 @@ def build(con, cfg=None):
     fechados = [m for m in meses_db if m not in parciais]
     mes_recente = meses_db[-1]
     mes_fechado = fechados[-1]
+    # A janela publicada precisa existir nos dois recortes que se reconciliam
+    # (nacional FonteRecursos e municipal). Quando o municipal atrasa em relação ao
+    # nacional, a janela recua até o último mês fechado presente em ambos, e o
+    # recuo é declarado. Em 13/10/2026 o municipal da Olinda devolvia HTTP 500 para
+    # 2026-08 com o nacional já servido; a janela nacional sem o municipal publicava
+    # UFs e municípios vazios e reprovava a gold do dia nos testes de conteúdo.
+    # A janela escolhida é a mais recente cujos 12 meses estão INTEIROS nos dois
+    # recortes: depois de uma recarga do silver o municipal pode ter buraco no meio,
+    # e só o mês final presente não basta (o recorte estadual exige os 12).
+    meses_mun_db = {r["mes"] for r in _rows(con, "SELECT DISTINCT mes FROM sicor_mun")}
+    meses_fonte = set(meses_db)
+    janela_recuada = None
+    completa = lambda m: all(x in meses_fonte and x in meses_mun_db for x in _janela12(m))
+    if meses_mun_db and not completa(mes_fechado):
+        candidatos = [m for m in reversed(fechados) if completa(m)]
+        if candidatos:
+            janela_recuada = {"fim_nacional": mes_fechado, "fim_municipal": candidatos[0]}
+            mes_fechado = candidatos[0]
     janela = _janela12(mes_fechado)
     ini, fim = janela[0], janela[-1]
     jan_ant = _janela12(_janela12(ini)[0])  # 12 meses anteriores à janela
@@ -509,7 +527,7 @@ def build(con, cfg=None):
         "fonte": FONTE,
         "universo": {"serie_nacional": "FonteRecursos (fecha com Faixa ao centavo)", "estadual_e_municipal": "CusteioInvestimentoComercialIndustrialSemFiltros (idem)",
                      "cobertura_regiao_uf_pct": cobertura_regiao_uf},
-        "mes_recente": mes_recente, "mes_fechado": mes_fechado,
+        "mes_recente": mes_recente, "mes_fechado": mes_fechado, "janela_recuada": janela_recuada,
         "meses_parciais": parciais,
         "janela": {"ini": ini, "fim": fim},
         "janela_anterior": {"ini": jan_ant[0], "fim": jan_ant[-1]} if len(jan_ant) == 12 else None,
@@ -569,6 +587,9 @@ def build(con, cfg=None):
              "desta aba é o municipal agregado pelo código IBGE, que fecha com o universo ao centavo." if cobertura_regiao_uf else
              "O recorte estadual desta aba é o municipal agregado pelo código IBGE, que fecha com o universo (recurso Faixa) ao centavo."),
             f"Os meses {', '.join(parciais)} são parciais (cédulas entram no Sicor com atraso). Ficam fora da janela de 12 meses e de todo ranking.",
+            *([f"A janela termina em {janela_recuada['fim_municipal']}, não em {janela_recuada['fim_nacional']}: o recorte municipal da MDCR ainda "
+               f"não foi servido para {janela_recuada['fim_nacional']}, e a aba só publica a janela em que nacional e municipal fecham entre si."]
+              if janela_recuada else []),
             "Programa, fonte e finalidade são os declarados na cédula; reclassificações posteriores não voltam à MDCR.",
             "O recorte por instituição é do CNPJ contratante; cooperativas singulares e bancos do mesmo grupo não são consolidados.",
             "Valor por habitante e valor por hectare são intensidades, não medidas de acesso: não dizem quantos produtores foram atendidos.",

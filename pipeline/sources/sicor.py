@@ -26,13 +26,15 @@ FonteRecursos e RegiaoUFGenero e trava em anos cheios de RegiaoUF (medido em
 - `sicor_fonte`   ← FonteRecursos (nacional), todos os meses;
 - `sicor_faixa`   ← Faixa (nacional, 13 faixas de valor), todos os meses;
 - `sicor_genero`  ← RegiaoUFGenero, todos os meses, agregado a (mês, UF, sexo, atividade);
-- `sicor_if`      ← SegmentoIF, últimos 15 meses, agregado a (mês, IF, programa, atividade);
-- `sicor_mun`     ← municipal, últimos 14 meses, grão da fonte (município × programa × fonte × atividade);
-- `sicor_produto` ← Custeio/InvestRegiaoUFProduto, últimos 14 meses
-  (14 e 15 porque a janela publicada, de 12 meses fechados, termina dois meses antes do corrente).
+- `sicor_if`      ← SegmentoIF, últimos 17 meses, agregado a (mês, IF, programa, atividade);
+- `sicor_mun`     ← municipal, últimos 16 meses, grão da fonte (município × programa × fonte × atividade);
+- `sicor_produto` ← Custeio/InvestRegiaoUFProduto, últimos 16 meses
+  (a janela publicada, de 12 meses fechados, termina dois meses antes do corrente, ou
+  mais cedo quando o municipal atrasa; ver MESES_MUN).
 Nomes de programa e subprograma vêm de ProgramaSubprogramaRegiaoUF (um mês), em
-`sicor_nomes`. Cap por execução nos recursos pesados: a primeira carga converge
-em poucas execuções diárias; falha consome o cap, nunca trava num mês quebrado.
+`sicor_nomes`. Cap e orçamento por execução, separados: pesados primeiro, leves depois. A primeira
+carga converge em poucas execuções diárias; falha consome o cap, nunca trava num
+mês quebrado.
 """
 import hashlib
 import json
@@ -42,13 +44,24 @@ from pipeline import common
 
 BASE = "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata"
 PRIMEIRO_ANO = 2013
-MESES_IF = 15         # a janela publicada (12 meses fechados) termina 2 meses antes do corrente
-MESES_MUN = 14
-MESES_PRODUTO = 14
+# A janela publicada (12 meses fechados) termina 2 meses antes do corrente, e mais
+# cedo quando o recorte municipal da Olinda atrasa em relação ao nacional (em
+# 13/10/2026 o municipal devolvia HTTP 500 para 2026-08 e 2026-09 e servia 2026-07).
+# Os dois meses extras cobrem esse atraso sem deixar a janela recuada sem dado.
+MESES_IF = 17
+MESES_MUN = 16
+MESES_PRODUTO = 16
 MESES_RECOLETA = 2       # mês corrente e anterior: parciais, sempre recoletados
 CAP_PESADOS = 40         # requisições pesadas (IF, município, produto) por execução
 CAP_LEVES = 200          # requisições leves (UF, fonte, faixa, gênero) por execução
-ORCAMENTO_S = 1500       # 25 min por execução: a Olinda responde em segundos ou em minutos (504 aos 60 s); o resto fica para o dia seguinte
+# Orçamentos SEPARADOS, pesados primeiro. Até 13/10/2026 havia um orçamento único
+# de 25 min, gasto antes pelos leves; depois da perda do cache em 03/10, a recarga da
+# cauda histórica dos leves (2013 em diante, com HTTP 500 recorrente em meses
+# antigos) consumiu o orçamento inteiro todos os dias, os pesados nunca rodaram, o
+# silver ficou sem sicor_mun e o rural.json saiu sem UFs e municípios, o que
+# reprovou a gold do dia nos testes de conteúdo de 04/10 em diante.
+ORCAMENTO_PESADOS_S = 750
+ORCAMENTO_S = 750        # leves; a Olinda responde em segundos ou em minutos (504 aos 60 s); o resto fica para o dia seguinte
 
 VALORES = ("QtdCusteio", "VlCusteio", "QtdInvestimento", "VlInvestimento",
            "QtdComercializacao", "VlComercializacao", "QtdIndustrializacao", "VlIndustrializacao")
@@ -297,50 +310,48 @@ def collect(con, cfg):
     import time as _time
     _ensure(con)
     results = []
+
+    def _executa(recurso, fn, mes, lineage):
+        key = f"sicor_{recurso}:{mes}"
+        try:
+            n, meta = fn(con, mes)
+            _registra(con, recurso, mes, n)
+            common.record_lineage(con, lineage, meta.get("url", ""), meta.get("sha256", "-"), key)
+            con.commit()
+            results.append({"key": key, "ok": True, "rows": n})
+        except Exception as e:
+            con.rollback()
+            results.append({"key": key, "ok": False, "error": str(e)[:300]})
+
+    # 1) pesados, com orçamento próprio: são a janela publicada (UFs, municípios,
+    # instituições, produtos) e nunca podem esperar a cauda histórica dos leves.
+    # Município primeiro: é o recorte que fecha com o universo nacional.
     t0 = _time.monotonic()
-    estourou = lambda: _time.monotonic() - t0 > ORCAMENTO_S
-    leves = [("uf", _coleta_uf), ("fonte", _coleta_fonte), ("faixa", _coleta_faixa), ("genero", _coleta_genero)]
-    gasto_leve = 0
-    # mês-maior, recurso-menor: os quatro recursos leves recebem os meses recentes primeiro. Na ordem
-    # antiga (recurso-maior) o gênero só era coletado depois de UF, fonte e faixa esgotarem a história,
-    # e o runner publicou rural.json com gênero zerado em 07/09/2026.
-    for mes in _meses_historia():
-        for recurso, fn in leves:
-            if gasto_leve >= CAP_LEVES or estourou():
-                break
-            key = f"sicor_{recurso}:{mes}"
-            if _ja_coletado(con, recurso, mes):
-                continue
-            gasto_leve += 1
-            try:
-                n, meta = fn(con, mes)
-                _registra(con, recurso, mes, n)
-                common.record_lineage(con, "rural.json", meta.get("url", ""), meta.get("sha256", "-"), key)
-                con.commit()
-                results.append({"key": key, "ok": True, "rows": n})
-            except Exception as e:
-                con.rollback()
-                results.append({"key": key, "ok": False, "error": str(e)[:300]})
-    pesados = [("if", _coleta_if, MESES_IF), ("mun", _coleta_mun, MESES_MUN), ("produto", _coleta_produto, MESES_PRODUTO)]
+    pesados = [("mun", _coleta_mun, MESES_MUN), ("if", _coleta_if, MESES_IF), ("produto", _coleta_produto, MESES_PRODUTO)]
     gasto = 0
     for recurso, fn, n_meses in pesados:
         for mes in _meses_atras(n_meses):
-            if gasto >= CAP_PESADOS or estourou():
+            if gasto >= CAP_PESADOS or _time.monotonic() - t0 > ORCAMENTO_PESADOS_S:
                 break
-            key = f"sicor_{recurso}:{mes}"
             if _ja_coletado(con, recurso, mes):
                 continue
             gasto += 1
-            try:
-                n, meta = fn(con, mes)
-                _registra(con, recurso, mes, n)
-                common.record_lineage(con, "rural_mun.json" if recurso == "mun" else "rural.json",
-                                      meta.get("url", ""), meta.get("sha256", "-"), key)
-                con.commit()
-                results.append({"key": key, "ok": True, "rows": n})
-            except Exception as e:
-                con.rollback()
-                results.append({"key": key, "ok": False, "error": str(e)[:300]})
+            _executa(recurso, fn, mes, "rural_mun.json" if recurso == "mun" else "rural.json")
+
+    # 2) leves, mês-maior e recurso-menor: os meses recentes primeiro. Na ordem
+    # antiga (recurso-maior) o gênero só era coletado depois de UF, fonte e faixa
+    # esgotarem a história, e o runner publicou rural.json com gênero zerado em 07/09/2026.
+    t0 = _time.monotonic()
+    leves = [("uf", _coleta_uf), ("fonte", _coleta_fonte), ("faixa", _coleta_faixa), ("genero", _coleta_genero)]
+    gasto_leve = 0
+    for mes in _meses_historia():
+        for recurso, fn in leves:
+            if gasto_leve >= CAP_LEVES or _time.monotonic() - t0 > ORCAMENTO_S:
+                break
+            if _ja_coletado(con, recurso, mes):
+                continue
+            gasto_leve += 1
+            _executa(recurso, fn, mes, "rural.json")
     # nomes de programa/subprograma: do mês anterior (mais completo que o corrente)
     try:
         n, _ = _coleta_nomes(con, _meses_atras(2)[1])

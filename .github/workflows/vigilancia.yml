@@ -4,7 +4,8 @@ name: Vigília do Observatório
 #
 # - **frescor** (diário, 15:00 UTC — depois da janela do pipeline das 9:00):
 #   o gold publicado no main envelheceu além de 2 dias? Cobre o caso em que as
-#   execuções "concluem" sem publicar, que o alerta de falha não enxerga.
+#   execuções "concluem" sem publicar, que o alerta de falha não enxerga. Também
+#   confere que a produção serve o mesmo gold do main.
 # - **pane** (diário, 15:20 UTC): coletor essencial com zero chaves ok, ou
 #   vintage parado além do prazo da fonte, com o gold íntegro e em dia — o
 #   buraco entre as duas outras vigílias (SCR 3/3 e DJEN 8/8 falhando em
@@ -97,8 +98,16 @@ jobs:
           fi
           EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
             --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          # A issue de frescor de 26/09/2026 recebeu 33 comentários em 17 dias sem
+          # ninguém atribuído: comentário em issue sem responsável não chega a ninguém.
+          # Frescor e cheque quebrado passam a ter o mantenedor como responsável.
+          RESP=""
+          if [ "${{ matrix.cheque }}" = "frescor" ] || [ "$CODIGO" != "3" ]; then
+            RESP="$GITHUB_REPOSITORY_OWNER"
+          fi
           if [ -n "$EXISTENTE" ]; then
             gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
+            [ -z "$RESP" ] || gh issue edit "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --add-assignee "$RESP" || true
           else
-            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO" ${RESP:+--assignee "$RESP"}
           fi

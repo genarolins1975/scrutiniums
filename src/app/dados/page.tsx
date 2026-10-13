@@ -4,7 +4,8 @@ import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { PageTitle } from "@/components/ui/SectionHeading";
 import { Sparkline } from "@/components/dados/GraficoSerie";
-import { fmtDelta, fmtRefMes, fmtValor, indicadoresPublicos } from "@/lib/dadosPublicos";
+import { SeloFrescor } from "@/components/dados/SeloFrescor";
+import { fmtDelta, fmtRefMes, fmtValor, geradoEmPublicado, indicadoresPublicos } from "@/lib/dadosPublicos";
 
 /**
  * Camada pública: números-síntese do crédito com selo e fonte, congelados no
@@ -16,7 +17,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Dados do crédito no Brasil",
   description:
-    "Inadimplência, juros médios, spread bancário, saldo e concessões de crédito, endividamento e comprometimento de renda das famílias. Dados oficiais do Banco Central, atualizados diariamente, com fonte e série declaradas.",
+    "Inadimplência, juros médios, spread bancário, saldo e concessões de crédito, endividamento e comprometimento de renda das famílias. Dados oficiais do Banco Central, com coleta diária, fonte e série declaradas.",
   alternates: { canonical: "/dados" },
 };
 
@@ -33,10 +34,11 @@ export default function DadosPage() {
           description="Os indicadores centrais do mercado de crédito, direto das séries oficiais do Banco Central. Cada número traz fonte, código da série e período de referência; nenhum é estimado ou interpolado."
         />
         <p className="rotulo mt-6 text-mineral">
-          Referência mais recente: {refMax ? fmtRefMes(refMax) : "–"} · fonte: BCB/SGS · atualização diária
+          Referência mais recente: {refMax ? fmtRefMes(refMax) : "–"} · fonte: BCB/SGS
           · <Link href="/resumo" className="text-bronze underline underline-offset-4 hover:text-carvao">resumo diário</Link>
           · <Link href="/observatorio/methodology" className="text-bronze underline underline-offset-4 hover:text-carvao">metodologia</Link>
         </p>
+        <SeloFrescor geradoEm={geradoEmPublicado()} className="mt-3" />
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {inds.map((i) => (
