@@ -9,7 +9,10 @@ Implementação em 13/10/2026. Referência de código: `main` em
 A linguagem acompanha Crédito e Energia: papel claro, títulos em serifa,
 contraste em petróleo, números tabulares, linhas discretas e uma figura útil
 na abertura. As ilustrações de navegação representam recursos, território e
-serviços; não representam quantidades ou relações causais.
+serviços; não representam quantidades ou relações causais. As maquetes dos
+percursos reutilizam a arte já aprovada no ciclo de Crédito
+(`/obs/arte/etapas-v1.webp`), com aviso de ilustração conceitual. No celular,
+cada percurso fica em uma linha com miniatura e texto, preservando a leitura.
 
 | Entrada | Tarefa principal | Nova abertura |
 | --- | --- | --- |
