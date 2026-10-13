@@ -56,6 +56,7 @@ async function postResend(
   to: string,
   subject: string,
   text: string,
+  headers?: Record<string, string>,
 ): Promise<{ ok: boolean; error?: string }> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return { ok: false, error: "RESEND_API_KEY ausente" };
@@ -67,7 +68,7 @@ async function postResend(
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ from, to: [to], subject, text }),
+      body: JSON.stringify({ from, to: [to], subject, text, ...(headers ? { headers } : {}) }),
     });
     if (!res.ok) {
       console.error(`[mail] falha no envio para ${maskEmail(to)}: HTTP ${res.status}`);
@@ -90,10 +91,13 @@ export async function sendTransactionalEmail({
   to,
   subject,
   text,
+  headers,
 }: {
   to: string;
   subject: string;
   text: string;
+  /** Cabeçalhos extras (ex.: List-Unsubscribe e List-Unsubscribe-Post, RFC 8058). */
+  headers?: Record<string, string>;
 }): Promise<{ sent: boolean; error?: string }> {
   if (!process.env.RESEND_API_KEY) {
     if (process.env.NODE_ENV !== "production") {
@@ -107,7 +111,7 @@ export async function sendTransactionalEmail({
     }
     return { sent: false, error: "RESEND_API_KEY ausente" };
   }
-  const result = await postResend(to, subject, text);
+  const result = await postResend(to, subject, text, headers);
   return result.ok ? { sent: true } : { sent: false, error: result.error };
 }
 

@@ -17,12 +17,15 @@ const app = read("public/obs/app.js");
 const embed = read("public/obs/embed.html");
 
 describe("citação no rodapé metodológico", () => {
-  it("chartFooter oferece copiar link e embed, com o alvo na seção ancorada", () => {
+  it("chartFooter oferece copiar link, Copiar citação e Incorporar, com o alvo na seção ancorada", () => {
     expect(app).toMatch(/grafLink\(this,0\)[^>]*>copiar link<\/a>/);
-    expect(app).toMatch(/grafLink\(this,1\)[^>]*>embed<\/a>/);
+    expect(app).toMatch(/grafLink\(this,2\)[^>]*>Copiar citação<\/a>/);
+    expect(app).toMatch(/grafLink\(this,1\)[^>]*>Incorporar<\/a>/);
     expect(app).toContain('const sec = el.closest("section[id]");');
     expect(app).toContain('u.searchParams.set("sec", sec.id)');
-    expect(app).toMatch(/iframe src="\$\{location\.origin\}\/obs\/embed\.html\?g=/);
+    expect(app).toMatch(/embedSnippet\(`\$\{location\.origin\}\/obs\/embed\.html\?g=/);
+    // o código copiado leva crédito e link de volta além do iframe
+    expect(app).toMatch(/function embedSnippet\(src, voltar, titulo\)[\s\S]*?<a href="\$\{voltar\}">/);
     // clipboard indisponível não engole a ação
     expect(app).toContain('prompt("Copie manualmente:", texto)');
   });

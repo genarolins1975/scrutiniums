@@ -1,3 +1,4 @@
+import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -188,6 +189,7 @@ export default function TransicaoPage() {
         </CabecalhoModulo>
         <TransicaoNavegacao atual="sintese" />
 
+        <AtalhoLeitura href="/setor-eletrico/transicao/riscos" titulo="Ativos, riscos e novas tecnologias" texto="Conecte curtailment, clima, data centers, baterias e geração distribuída." />
         <ModoProfundidade>
           <Bloco id="transicao">
             <PainelEvidencia

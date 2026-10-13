@@ -493,3 +493,27 @@ body:has(nav[data-retorno]) { padding-bottom: 5.5rem; }
     text-decoration: underline;
   }
 }
+
+/* Atlas OBEE: cores editoriais e de identidade territorial, sem juízo de desempenho.
+   Centralizadas para reutilização em CSS e SVG; a seleção também usa texto e estado acessível. */
+:root {
+  --cor-obee-atlas-tinta: #102e36;
+  --cor-obee-atlas-texto-secundario: #52666c;
+  --cor-obee-atlas-linha: #d4dedb;
+  --cor-obee-atlas-papel: #f8f7f2;
+  --cor-obee-atlas-foco: #b78639;
+  --cor-obee-atlas-selecao: #e5eeea;
+  --cor-obee-atlas-superficie: #fff;
+  --cor-obee-atlas-contorno: var(--cor-mineral);
+  --cor-obee-atlas-rotulo-inverso: #bed8d6;
+  --cor-obee-atlas-texto-inverso: #c4d7d7;
+  --cor-obee-atlas-acento-inverso: #a3e3d7;
+  --cor-obee-atlas-linha-inversa: #557278;
+  --cor-obee-atlas-marcador: #9caeac;
+  --cor-obee-atlas-trilho: #e2e9e6;
+  --cor-obee-atlas-serie-territorio: #09697a;
+  --cor-obee-atlas-serie-par: #806a45;
+  --cor-obee-atlas-orbita: #38565e;
+  --cor-obee-atlas-no: #173b44;
+  --cor-obee-atlas-no-pendente: #7e969b;
+}

@@ -4,7 +4,10 @@ import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { PageTitle } from "@/components/ui/SectionHeading";
 import { Sparkline } from "@/components/dados/GraficoSerie";
-import { fmtDelta, fmtRefMes, fmtValor, indicadoresPublicos } from "@/lib/dadosPublicos";
+import { SeloFrescor } from "@/components/dados/SeloFrescor";
+import { ChamadaObservatorio } from "@/components/dados/ChamadaObservatorio";
+import { URL_FEED_ALERTAS, URL_FEED_RESUMO } from "@/lib/feedResumo";
+import { fmtDelta, fmtRefMes, fmtValor, geradoEmPublicado, indicadoresPublicos } from "@/lib/dadosPublicos";
 
 /**
  * Camada pública: números-síntese do crédito com selo e fonte, congelados no
@@ -16,7 +19,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Dados do crédito no Brasil",
   description:
-    "Inadimplência, juros médios, spread bancário, saldo e concessões de crédito, endividamento e comprometimento de renda das famílias. Dados oficiais do Banco Central, atualizados diariamente, com fonte e série declaradas.",
+    "Inadimplência, juros médios, spread bancário, saldo e concessões de crédito, endividamento e comprometimento de renda das famílias. Dados oficiais do Banco Central, com coleta diária, fonte e série declaradas.",
   alternates: { canonical: "/dados" },
 };
 
@@ -33,9 +36,22 @@ export default function DadosPage() {
           description="Os indicadores centrais do mercado de crédito, direto das séries oficiais do Banco Central. Cada número traz fonte, código da série e período de referência; nenhum é estimado ou interpolado."
         />
         <p className="rotulo mt-6 text-mineral">
-          Referência mais recente: {refMax ? fmtRefMes(refMax) : "–"} · fonte: BCB/SGS · atualização diária
+          Referência mais recente: {refMax ? fmtRefMes(refMax) : "–"} · fonte: BCB/SGS
           · <Link href="/resumo" className="text-bronze underline underline-offset-4 hover:text-carvao">resumo diário</Link>
           · <Link href="/observatorio/methodology" className="text-bronze underline underline-offset-4 hover:text-carvao">metodologia</Link>
+        </p>
+        <SeloFrescor geradoEm={geradoEmPublicado()} className="mt-3" />
+        <p className="mt-2 text-xs text-mineral">
+          Acompanhe:{" "}
+          <Link href="/resumo#acompanhe" className="text-bronze underline underline-offset-4 hover:text-carvao">resumo por e-mail</Link>
+          {" "}·{" "}
+          <a href={URL_FEED_RESUMO} className="text-bronze underline underline-offset-4 hover:text-carvao">RSS do resumo</a>
+          {" "}·{" "}
+          <a href={URL_FEED_ALERTAS} className="text-bronze underline underline-offset-4 hover:text-carvao">RSS da central de alertas</a>
+          {" "}·{" "}
+          <Link href="/dados/ibcc" className="text-bronze underline underline-offset-4 hover:text-carvao">índice de condições de crédito (IBCC)</Link>
+          {" "}·{" "}
+          <Link href="/dados/api" className="text-bronze underline underline-offset-4 hover:text-carvao">API pública de leitura</Link>
         </p>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -60,28 +76,15 @@ export default function DadosPage() {
           ))}
         </div>
 
-        <div className="mt-14 border border-linha bg-papel p-8">
-          <h2 className="font-serif text-2xl text-carvao">A análise completa é gratuita</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-carvao-muted">
-            O Observatório Brasileiro de Crédito abre estes números por instituição financeira, por
-            modalidade e por estado: taxas de juros de cada banco em 20 modalidades, comparador de
-            instituições, sinais antecedentes e alertas com regra publicada. O cadastro é a única exigência.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-4">
-            <Link
-              href="/cadastro"
-              className="rotulo inline-flex min-h-[44px] items-center border border-carvao px-5 text-carvao hover:bg-carvao hover:text-marfim"
-            >
-              Criar acesso gratuito
-            </Link>
-            <Link
-              href="/observatorio/methodology"
-              className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted hover:text-bronze"
-            >
+        <ChamadaObservatorio
+          titulo="A análise completa é gratuita"
+          texto="O Observatório Brasileiro de Crédito abre estes números por instituição financeira, por modalidade e por estado: taxas de juros de cada banco em 20 modalidades, comparador de instituições, sinais antecedentes e alertas com regra publicada."
+          extra={
+            <Link href="/observatorio/methodology" className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted hover:text-bronze">
               Como calculamos →
             </Link>
-          </div>
-        </div>
+          }
+        />
       </main>
       <Footer />
     </div>

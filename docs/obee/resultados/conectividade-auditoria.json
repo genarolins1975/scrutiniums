@@ -1,0 +1,259 @@
+{
+  "version": "conectividade-auditoria-v1",
+  "reference_year": 2022,
+  "source_status": "resultados_preliminares_da_amostra",
+  "publication_ready": false,
+  "score_eligible": false,
+  "decision": "candidato_adquirido_para_revisao",
+  "observations_checked": 156,
+  "rank_correlations_oriented": {
+    "trabalho": 0.8018464812011634,
+    "saneamento": 0.6314529914529915,
+    "habitacao_gt2": 0.6492307692307693
+  },
+  "rows": [
+    {
+      "id": "2800308",
+      "name": "Aracaju",
+      "total": 218543.0,
+      "connected": 198019.0,
+      "not_connected": 20524.0,
+      "connected_pct": 90.608713159424,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "3106200",
+      "name": "Belo Horizonte",
+      "total": 889242.0,
+      "connected": 815713.0,
+      "not_connected": 73530.0,
+      "connected_pct": 91.73127225209785,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "1501402",
+      "name": "Belém",
+      "total": 422874.0,
+      "connected": 368081.0,
+      "not_connected": 54793.0,
+      "connected_pct": 87.04271248646168,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1400100",
+      "name": "Boa Vista",
+      "total": 119005.0,
+      "connected": 107776.0,
+      "not_connected": 11228.0,
+      "connected_pct": 90.56426200579807,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "5002704",
+      "name": "Campo Grande",
+      "total": 325824.0,
+      "connected": 299235.0,
+      "not_connected": 26589.0,
+      "connected_pct": 91.83945934001179,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "5103403",
+      "name": "Cuiabá",
+      "total": 232270.0,
+      "connected": 208515.0,
+      "not_connected": 23755.0,
+      "connected_pct": 89.77267834847376,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "4106902",
+      "name": "Curitiba",
+      "total": 685739.0,
+      "connected": 645858.0,
+      "not_connected": 39881.0,
+      "connected_pct": 94.1842304433611,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "4205407",
+      "name": "Florianópolis",
+      "total": 219689.0,
+      "connected": 210474.0,
+      "not_connected": 9215.0,
+      "connected_pct": 95.80543404540055,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2304400",
+      "name": "Fortaleza",
+      "total": 859995.0,
+      "connected": 767181.0,
+      "not_connected": 92815.0,
+      "connected_pct": 89.20761167216088,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "5208707",
+      "name": "Goiânia",
+      "total": 549614.0,
+      "connected": 507938.0,
+      "not_connected": 41676.0,
+      "connected_pct": 92.4172237242865,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2507507",
+      "name": "João Pessoa",
+      "total": 296223.0,
+      "connected": 270193.0,
+      "not_connected": 26029.0,
+      "connected_pct": 91.21270124196973,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "1600303",
+      "name": "Macapá",
+      "total": 123412.0,
+      "connected": 109933.0,
+      "not_connected": 13478.0,
+      "connected_pct": 89.07804751563867,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "2704302",
+      "name": "Maceió",
+      "total": 335482.0,
+      "connected": 300757.0,
+      "not_connected": 34725.0,
+      "connected_pct": 89.64922112065625,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1302603",
+      "name": "Manaus",
+      "total": 629888.0,
+      "connected": 561967.0,
+      "not_connected": 67921.0,
+      "connected_pct": 89.21697190611664,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2408102",
+      "name": "Natal",
+      "total": 270057.0,
+      "connected": 240568.0,
+      "not_connected": 29489.0,
+      "connected_pct": 89.0804533857667,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1721000",
+      "name": "Palmas",
+      "total": 106015.0,
+      "connected": 99470.0,
+      "not_connected": 6545.0,
+      "connected_pct": 93.82634532849126,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "4314902",
+      "name": "Porto Alegre",
+      "total": 557831.0,
+      "connected": 512714.0,
+      "not_connected": 45117.0,
+      "connected_pct": 91.9120665577926,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1100205",
+      "name": "Porto Velho",
+      "total": 152077.0,
+      "connected": 136380.0,
+      "not_connected": 15697.0,
+      "connected_pct": 89.67825509445873,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2611606",
+      "name": "Recife",
+      "total": 547539.0,
+      "connected": 489530.0,
+      "not_connected": 58009.0,
+      "connected_pct": 89.40550353490802,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1200401",
+      "name": "Rio Branco",
+      "total": 123858.0,
+      "connected": 106384.0,
+      "not_connected": 17473.0,
+      "connected_pct": 85.89190847583524,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "3304557",
+      "name": "Rio de Janeiro",
+      "total": 2436966.0,
+      "connected": 2182304.0,
+      "not_connected": 254663.0,
+      "connected_pct": 89.55003885979534,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "2927408",
+      "name": "Salvador",
+      "total": 958731.0,
+      "connected": 846760.0,
+      "not_connected": 111971.0,
+      "connected_pct": 88.32091587734203,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2111300",
+      "name": "São Luís",
+      "total": 348484.0,
+      "connected": 308801.0,
+      "not_connected": 39683.0,
+      "connected_pct": 88.61267662216916,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "3550308",
+      "name": "São Paulo",
+      "total": 4309163.0,
+      "connected": 3956265.0,
+      "not_connected": 352898.0,
+      "connected_pct": 91.81052097588325,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2211001",
+      "name": "Teresina",
+      "total": 279703.0,
+      "connected": 251748.0,
+      "not_connected": 27955.0,
+      "connected_pct": 90.00547008791469,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "3205309",
+      "name": "Vitória",
+      "total": 128624.0,
+      "connected": 119227.0,
+      "not_connected": 9396.0,
+      "connected_pct": 92.6942094787909,
+      "partition_residual": -1.0
+    }
+  ],
+  "pending": [
+    "precisao_municipal",
+    "validade_de_conteudo",
+    "ponderacao_conjunta"
+  ],
+  "limits": [
+    "Não mede velocidade, preço, continuidade ou uso de serviços públicos digitais.",
+    "Não representa todo o capítulo Energia e conectividade."
+  ]
+}

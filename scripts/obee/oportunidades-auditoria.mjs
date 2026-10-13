@@ -3,6 +3,7 @@ import {createRequire} from 'node:module';
 import {mkdirSync,readFileSync,writeFileSync} from 'node:fs';
 import {resolve,dirname} from 'node:path';
 import {createHash} from 'node:crypto';
+import {autenticarAuditoria} from '../sessao-auditoria.mjs';
 const require=createRequire(import.meta.url);
 const base=process.env.BASE_URL??'http://127.0.0.1:3100';
 const root='/eficiencia-estatal/mobilidade-transporte/oportunidades';
@@ -10,6 +11,8 @@ const api='/api/eficiencia-mobilidade/oportunidades';
 const g=JSON.parse(readFileSync('data/eficiencia_mobilidade/aop/resumo.json','utf8'));
 const output='auditoria-interface-mobilidade';mkdirSync(output,{recursive:true});
 const browser=await chromium.launch({headless:true});
+// os painéis exigem sessão: páginas e fetch do script levam um cookie assinado com o COOKIE_SECRET do servidor local
+autenticarAuditoria(browser,base);
 const results=[],failures=[],steps=[];let page;
 const assert=(ok,message)=>{if(!ok)throw new Error(message);};
 async function step(name,fn){try{await fn();steps.push(name);console.log('APROVADO',name);}catch(e){failures.push({step:name,message:String(e?.message??e)});console.error('REPROVADO',name,e?.message);}}
@@ -75,6 +78,17 @@ try{
   assert(await page.getByRole('combobox',{name:'Modo de transporte',exact:true}).inputValue()==='walk','Voltar não restaurou o modo');
   assert(await page.locator('figure').count()===2,'Voltar não restaurou os gráficos');
   await page.goForward({waitUntil:'networkidle'});
+  // History updates the URL before Next commits the restored server tree.
+  // Wait for the observable contract, with a bounded timeout (no fixed sleep).
+  await page.waitForFunction(({root,metric})=>{
+   const value=name=>document.querySelector('select[name="'+name+'"]')?.value;
+   return location.pathname===root&&location.search===''&&value('cidade')===''&&
+    value('modo')==='public_transport'&&value('indicador')===metric&&value('pico')==='1'&&
+    document.querySelectorAll('main figure').length===1;
+  },{root,metric:g.metrics[0].id},{timeout:5000});
+  assert(new URL(page.url()).search==='','Avançar não restaurou a URL limpa');
+  assert(await page.getByRole('combobox',{name:'Modo de transporte',exact:true}).inputValue()==='public_transport','Avançar não restaurou o modo padrão');
+  assert(await page.locator('figure').count()===1,'Avançar não restaurou o gráfico geral');
   assert(await page.getByRole('combobox',{name:'Cidade',exact:true}).inputValue()==='','Avançar não restaurou o recorte limpo');
  });
  await step('CSV integral: todos os valores e grupos',async()=>{

@@ -1,8 +1,13 @@
 import {describe,it,expect} from 'vitest';
+import {ehRotaPublica} from '@/lib/rotasPublicas';
 import {readFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {tabelas,fontes,regioes,valor,total,medidas,calcular,csv} from '@/lib/eficiencia/previdencia/dados';
 describe('Previdência: conciliação e universos',()=>{
+ it('respeita o método público e os painéis e downloads com sessão',()=>{
+  expect(ehRotaPublica('/eficiencia-estatal/previdencia/metodos')).toBe(true);
+  for(const p of ['/eficiencia-estatal/previdencia','/eficiencia-estatal/previdencia/dados','/eficiencia/previdencia/snapshot.json'])expect(ehRotaPublica(p)).toBe(false);
+ });
  it('preserva 27 UFs, cinco regiões e Brasil nas tabelas territoriais',()=>{
   for(const t of ['b.13','b.14','b.15','b.16','b.17','a.14','43.1','43.2']){
    expect(tabelas[t]).toHaveLength(33);expect(tabelas[t].filter(r=>regioes.includes(r.territory))).toHaveLength(5);

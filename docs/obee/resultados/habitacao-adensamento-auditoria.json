@@ -1,0 +1,491 @@
+{
+  "version": "habitacao-auditoria-v1",
+  "reference_year": 2022,
+  "source_status": "resultados_preliminares_da_amostra",
+  "publication_ready": false,
+  "score_eligible": false,
+  "decision": "candidato_adquirido_para_revisao",
+  "pending": [
+    "precisao_amostral_municipal",
+    "validade_de_conteudo_e_pesos",
+    "revisao_de_redundancia"
+  ],
+  "observations_checked": 520,
+  "households": [
+    {
+      "id": "2800308",
+      "name": "Aracaju",
+      "total": 218543.0,
+      "above_two": 16847.0,
+      "above_two_pct": 7.708780423074635,
+      "above_three_pct": 1.3837093844232027,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "3106200",
+      "name": "Belo Horizonte",
+      "total": 889242.0,
+      "above_two": 45744.0,
+      "above_two_pct": 5.144156483836796,
+      "above_three_pct": 1.0842942641035849,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "1501402",
+      "name": "Belém",
+      "total": 422874.0,
+      "above_two": 77401.0,
+      "above_two_pct": 18.30356087155985,
+      "above_three_pct": 5.516300363701717,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1400100",
+      "name": "Boa Vista",
+      "total": 119005.0,
+      "above_two": 32371.0,
+      "above_two_pct": 27.201378093357423,
+      "above_three_pct": 10.41048695432965,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "5002704",
+      "name": "Campo Grande",
+      "total": 325824.0,
+      "above_two": 29005.0,
+      "above_two_pct": 8.902045275977216,
+      "above_three_pct": 1.8482370850520526,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "5103403",
+      "name": "Cuiabá",
+      "total": 232270.0,
+      "above_two": 25576.0,
+      "above_two_pct": 11.01132302923322,
+      "above_three_pct": 2.733026219485943,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "4106902",
+      "name": "Curitiba",
+      "total": 685739.0,
+      "above_two": 29849.0,
+      "above_two_pct": 4.352822283696859,
+      "above_three_pct": 0.7833884320419285,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "4205407",
+      "name": "Florianópolis",
+      "total": 219689.0,
+      "above_two": 10994.0,
+      "above_two_pct": 5.004347054244865,
+      "above_three_pct": 0.9445170217898939,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2304400",
+      "name": "Fortaleza",
+      "total": 859995.0,
+      "above_two": 110813.0,
+      "above_two_pct": 12.885307472717864,
+      "above_three_pct": 3.1773440543258973,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "5208707",
+      "name": "Goiânia",
+      "total": 549614.0,
+      "above_two": 31413.0,
+      "above_two_pct": 5.71546576324475,
+      "above_three_pct": 0.9413879559108757,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2507507",
+      "name": "João Pessoa",
+      "total": 296223.0,
+      "above_two": 25316.0,
+      "above_two_pct": 8.546264132089675,
+      "above_three_pct": 1.4965076985919392,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1600303",
+      "name": "Macapá",
+      "total": 123412.0,
+      "above_two": 31371.0,
+      "above_two_pct": 25.419732278870775,
+      "above_three_pct": 8.540498492853207,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2704302",
+      "name": "Maceió",
+      "total": 335482.0,
+      "above_two": 35857.0,
+      "above_two_pct": 10.688203838059867,
+      "above_three_pct": 2.274935764064838,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "1302603",
+      "name": "Manaus",
+      "total": 629888.0,
+      "above_two": 160897.0,
+      "above_two_pct": 25.54374745986588,
+      "above_three_pct": 8.849350995732575,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2408102",
+      "name": "Natal",
+      "total": 270057.0,
+      "above_two": 27774.0,
+      "above_two_pct": 10.284495495395417,
+      "above_three_pct": 2.17768841392743,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1721000",
+      "name": "Palmas",
+      "total": 106015.0,
+      "above_two": 12935.0,
+      "above_two_pct": 12.201103617412631,
+      "above_three_pct": 2.915625147384804,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "4314902",
+      "name": "Porto Alegre",
+      "total": 557831.0,
+      "above_two": 32150.0,
+      "above_two_pct": 5.763394289668376,
+      "above_three_pct": 1.2960914685630593,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1100205",
+      "name": "Porto Velho",
+      "total": 152077.0,
+      "above_two": 23141.0,
+      "above_two_pct": 15.216633678991563,
+      "above_three_pct": 3.6599880323783345,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2611606",
+      "name": "Recife",
+      "total": 547539.0,
+      "above_two": 51354.0,
+      "above_two_pct": 9.379057930120046,
+      "above_three_pct": 2.27362799727508,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1200401",
+      "name": "Rio Branco",
+      "total": 123858.0,
+      "above_two": 20958.0,
+      "above_two_pct": 16.92099016615802,
+      "above_three_pct": 4.723958081028274,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "3304557",
+      "name": "Rio de Janeiro",
+      "total": 2436966.0,
+      "above_two": 285765.0,
+      "above_two_pct": 11.726261260928547,
+      "above_three_pct": 3.304765023393843,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "2927408",
+      "name": "Salvador",
+      "total": 958731.0,
+      "above_two": 83492.0,
+      "above_two_pct": 8.708595007358685,
+      "above_three_pct": 1.9587350362093225,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2111300",
+      "name": "São Luís",
+      "total": 348484.0,
+      "above_two": 51498.0,
+      "above_two_pct": 14.777722937064542,
+      "above_three_pct": 3.695435084537597,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "3550308",
+      "name": "São Paulo",
+      "total": 4309163.0,
+      "above_two": 542275.0,
+      "above_two_pct": 12.58423039462652,
+      "above_three_pct": 3.60582786030605,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2211001",
+      "name": "Teresina",
+      "total": 279703.0,
+      "above_two": 38870.0,
+      "above_two_pct": 13.896883479976976,
+      "above_three_pct": 3.157635062906011,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "3205309",
+      "name": "Vitória",
+      "total": 128624.0,
+      "above_two": 6882.0,
+      "above_two_pct": 5.3504789152879715,
+      "above_three_pct": 1.2548202512750342,
+      "partition_residual": 0.0
+    }
+  ],
+  "residents": [
+    {
+      "id": "2800308",
+      "name": "Aracaju",
+      "total": 601543.0,
+      "above_two": 78231.0,
+      "above_two_pct": 13.005055332702733,
+      "above_three_pct": 2.7136879657813324,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "3106200",
+      "name": "Belo Horizonte",
+      "total": 2306199.0,
+      "above_two": 210603.0,
+      "above_two_pct": 9.132039342658635,
+      "above_three_pct": 2.0990816490684456,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1501402",
+      "name": "Belém",
+      "total": 1301559.0,
+      "above_two": 352712.0,
+      "above_two_pct": 27.099194120281908,
+      "above_three_pct": 8.949498255553532,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "1400100",
+      "name": "Boa Vista",
+      "total": 403052.0,
+      "above_two": 162324.0,
+      "above_two_pct": 40.27371158063972,
+      "above_three_pct": 17.196788503716643,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "5002704",
+      "name": "Campo Grande",
+      "total": 891107.0,
+      "above_two": 136376.0,
+      "above_two_pct": 15.304110505247968,
+      "above_three_pct": 3.4959886972047127,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "5103403",
+      "name": "Cuiabá",
+      "total": 646795.0,
+      "above_two": 116682.0,
+      "above_two_pct": 18.04002813874566,
+      "above_three_pct": 4.810179423155714,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "4106902",
+      "name": "Curitiba",
+      "total": 1766408.0,
+      "above_two": 133204.0,
+      "above_two_pct": 7.54095316597298,
+      "above_three_pct": 1.4981250084918094,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "4205407",
+      "name": "Florianópolis",
+      "total": 532841.0,
+      "above_two": 47309.0,
+      "above_two_pct": 8.878633588631505,
+      "above_three_pct": 1.868099489341098,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2304400",
+      "name": "Fortaleza",
+      "total": 2424828.0,
+      "above_two": 478948.0,
+      "above_two_pct": 19.751833944510704,
+      "above_three_pct": 5.393330990899148,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "5208707",
+      "name": "Goiânia",
+      "total": 1435047.0,
+      "above_two": 142812.0,
+      "above_two_pct": 9.951729803971578,
+      "above_three_pct": 1.749559422095583,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2507507",
+      "name": "João Pessoa",
+      "total": 828840.0,
+      "above_two": 120654.0,
+      "above_two_pct": 14.556971188649197,
+      "above_three_pct": 2.8881328121229672,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "1600303",
+      "name": "Macapá",
+      "total": 440105.0,
+      "above_two": 163993.0,
+      "above_two_pct": 37.26224423717068,
+      "above_three_pct": 13.590620420127015,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "2704302",
+      "name": "Maceió",
+      "total": 953313.0,
+      "above_two": 166627.0,
+      "above_two_pct": 17.478729441432144,
+      "above_three_pct": 4.210684213894073,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1302603",
+      "name": "Manaus",
+      "total": 2058124.0,
+      "above_two": 775263.0,
+      "above_two_pct": 37.66843008487341,
+      "above_three_pct": 14.675986480892307,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2408102",
+      "name": "Natal",
+      "total": 748761.0,
+      "above_two": 124477.0,
+      "above_two_pct": 16.624396836907906,
+      "above_three_pct": 3.9568033057277288,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1721000",
+      "name": "Palmas",
+      "total": 301652.0,
+      "above_two": 58568.0,
+      "above_two_pct": 19.415750600029174,
+      "above_three_pct": 5.215612692771804,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "4314902",
+      "name": "Porto Alegre",
+      "total": 1322749.0,
+      "above_two": 144206.0,
+      "above_two_pct": 10.901992743899259,
+      "above_three_pct": 2.6729938937772775,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1100205",
+      "name": "Porto Velho",
+      "total": 457454.0,
+      "above_two": 106520.0,
+      "above_two_pct": 23.285401373690032,
+      "above_three_pct": 6.1440057360958695,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "2611606",
+      "name": "Recife",
+      "total": 1479417.0,
+      "above_two": 231523.0,
+      "above_two_pct": 15.649610623644314,
+      "above_three_pct": 4.271006754687827,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "1200401",
+      "name": "Rio Branco",
+      "total": 361836.0,
+      "above_two": 94092.0,
+      "above_two_pct": 26.004046031903957,
+      "above_three_pct": 8.216705910965189,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "3304557",
+      "name": "Rio de Janeiro",
+      "total": 6175256.0,
+      "above_two": 1240849.0,
+      "above_two_pct": 20.09388760563125,
+      "above_three_pct": 6.385063226528584,
+      "partition_residual": -1.0
+    },
+    {
+      "id": "2927408",
+      "name": "Salvador",
+      "total": 2408090.0,
+      "above_two": 361375.0,
+      "above_two_pct": 15.006706559970766,
+      "above_three_pct": 3.8479043557342125,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2111300",
+      "name": "São Luís",
+      "total": 1031749.0,
+      "above_two": 236594.0,
+      "above_two_pct": 22.9313524898013,
+      "above_three_pct": 6.296686500301915,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "3550308",
+      "name": "São Paulo",
+      "total": 11401805.0,
+      "above_two": 2320445.0,
+      "above_two_pct": 20.35155837167887,
+      "above_three_pct": 6.527948864236847,
+      "partition_residual": 0.0
+    },
+    {
+      "id": "2211001",
+      "name": "Teresina",
+      "total": 862824.0,
+      "above_two": 180561.0,
+      "above_two_pct": 20.926747517454313,
+      "above_three_pct": 5.2599371366582295,
+      "partition_residual": 1.0
+    },
+    {
+      "id": "3205309",
+      "name": "Vitória",
+      "total": 322296.0,
+      "above_two": 32378.0,
+      "above_two_pct": 10.046044629781319,
+      "above_three_pct": 2.6481867599970212,
+      "partition_residual": 0.0
+    }
+  ],
+  "rank_correlations_oriented": {
+    "trabalho": 0.8466404637330835,
+    "saneamento": 0.7367521367521368
+  },
+  "note": "Percentis usados somente para diagnóstico de redundância; nenhum novo escore agregado."
+}

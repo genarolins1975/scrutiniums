@@ -1,0 +1,449 @@
+{
+  "schema_version": 1,
+  "edition": "OBEE-servicos-fundacao-v0.1",
+  "validated": false,
+  "basket": [
+    "education",
+    "health",
+    "work",
+    "food",
+    "assistance"
+  ],
+  "cards": [
+    {
+      "id": "education.access",
+      "chapter": "education",
+      "chapter_name": "Educação",
+      "pillar": "access",
+      "indicator_candidate": "Atendimento da população elegível",
+      "formula": "100 × pessoas elegíveis atendidas / pessoas elegíveis",
+      "denominator": "Pessoas elegíveis residentes, por etapa",
+      "available_evidence": "Censo Escolar: matrículas; população total IBGE",
+      "available_scope_period": "26 capitais; rede municipal; edições por indicador",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "pipeline/eficiencia/catalogo_indicadores.json",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Matrículas não são pessoas únicas residentes; população total não é população elegível.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Integrar frequência por idade/residência e definir perímetro público."
+    },
+    {
+      "id": "education.response",
+      "chapter": "education",
+      "chapter_name": "Educação",
+      "pillar": "response",
+      "indicator_candidate": "Cumprimento do calendário",
+      "formula": "100 × dias de atendimento cumpridos / dias previstos",
+      "denominator": "Dias previstos no calendário da mesma rede e ano",
+      "available_evidence": "Aprovação escolar é fluxo; não mede calendário cumprido",
+      "available_scope_period": "26 capitais; rede municipal; edições por indicador",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "pipeline/eficiencia/catalogo_indicadores.json",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Calendário realizado e espera por matrícula não integrados.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Buscar execução do calendário e fila com coortes e datas."
+    },
+    {
+      "id": "education.quality",
+      "chapter": "education",
+      "chapter_name": "Educação",
+      "pillar": "quality",
+      "indicator_candidate": "Aprendizagem no Saeb",
+      "formula": "Proficiência média publicada, por etapa e disciplina; sem média entre escalas",
+      "denominator": "Universo de participantes da rede municipal na etapa e disciplina",
+      "available_evidence": "Saeb, edu.saeb.rede_municipal; piloto 2023",
+      "available_scope_period": "26 capitais; rede municipal; edições por indicador",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "escala específica",
+      "source_path": "pipeline/eficiencia/catalogo_indicadores.json",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "REFERENCIA_PENDENTE",
+      "blockers": [
+        "Âncoras e representatividade ainda não validadas; evitar duplicação com IDEB.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Validar participação, escala e referências por etapa/disciplina."
+    },
+    {
+      "id": "health.access",
+      "chapter": "health",
+      "chapter_name": "Saúde",
+      "pillar": "access",
+      "indicator_candidate": "Necessidade assistencial atendida",
+      "formula": "100 × pessoas com necessidade atendida / pessoas com necessidade",
+      "denominator": "Pessoas com necessidade na janela e modalidade",
+      "available_evidence": "APS potencial e CNES",
+      "available_scope_period": "26 capitais; APS por competência; ICSAP 2021–2024",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "docs/obee/saude/CATALOGO_COBERTURA_FORMULAS.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Capacidade teórica e cadastro não demonstram atendimento efetivo.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Localizar pesquisa de necessidade e atendimento ou registro com demanda completa."
+    },
+    {
+      "id": "health.response",
+      "chapter": "health",
+      "chapter_name": "Saúde",
+      "pillar": "response",
+      "indicator_candidate": "Espera por cuidado",
+      "formula": "Mediana de dias entre solicitação elegível e atendimento; fila aberta separada",
+      "denominator": "Solicitações da mesma coorte e procedimento; censura explicitada",
+      "available_evidence": "Não há série integrada de espera ou continuidade",
+      "available_scope_period": "26 capitais; APS por competência; ICSAP 2021–2024",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "dias",
+      "source_path": "docs/obee/saude/CATALOGO_COBERTURA_FORMULAS.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Só casos concluídos podem ocultar os que continuam aguardando.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Integrar coortes de solicitações e atendimento, com pendentes."
+    },
+    {
+      "id": "health.quality",
+      "chapter": "health",
+      "chapter_name": "Saúde",
+      "pillar": "quality",
+      "indicator_candidate": "Resultados e segurança do cuidado",
+      "formula": "Indicador específico após ajuste de risco validado; não fixado nesta edição",
+      "denominator": "População em risco e universo assistencial compatível",
+      "available_evidence": "ICSAP bruta por residência e cobertura de planos",
+      "available_scope_period": "26 capitais; APS por competência; ICSAP 2021–2024",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "escala específica",
+      "source_path": "docs/obee/saude/CATALOGO_COBERTURA_FORMULAS.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Taxa bruta não ajusta idade nem oferta; não mede causalmente qualidade.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Avaliar desfecho com ajuste e fontes de segurança, preservando bruto."
+    },
+    {
+      "id": "work.access",
+      "chapter": "work",
+      "chapter_name": "Trabalho e Renda",
+      "pillar": "access",
+      "indicator_candidate": "Acesso à intermediação ou qualificação",
+      "formula": "100 × elegíveis únicos atendidos / elegíveis demandantes",
+      "denominator": "Demandantes elegíveis por modalidade",
+      "available_evidence": "PNAD, Censo, CadÚnico e cursos autorizados",
+      "available_scope_period": "PNAD Brasil/UF até 2026T2; Censo municipal 2022; CNAP outubro 2026",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "docs/obee/TRABALHO_RENDA_DADOS.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Autorização não é vaga, matrícula nem atendimento; cadastro não é demanda.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Integrar registros de intermediação/qualificação com demanda e atendimento."
+    },
+    {
+      "id": "work.response",
+      "chapter": "work",
+      "chapter_name": "Trabalho e Renda",
+      "pillar": "response",
+      "indicator_candidate": "Conclusão do atendimento",
+      "formula": "100 × atendimentos concluídos na janela pactuada / solicitações elegíveis da coorte",
+      "denominator": "Solicitações elegíveis da mesma modalidade e coorte",
+      "available_evidence": "Cursos autorizados sem trajetórias de atendimento",
+      "available_scope_period": "PNAD Brasil/UF até 2026T2; Censo municipal 2022; CNAP outubro 2026",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "docs/obee/TRABALHO_RENDA_DADOS.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Faltam datas, coortes, pendências e conclusão.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Localizar acompanhamento dos atendimentos e cursos realizados."
+    },
+    {
+      "id": "work.quality",
+      "chapter": "work",
+      "chapter_name": "Trabalho e Renda",
+      "pillar": "quality",
+      "indicator_candidate": "Inserção e permanência após atendimento",
+      "formula": "100 × participantes inseridos e mantidos no horizonte / participantes acompanháveis da coorte",
+      "denominator": "Participantes elegíveis com acompanhamento; perdas explicitadas",
+      "available_evidence": "PNAD e vínculos Caged como contexto",
+      "available_scope_period": "PNAD Brasil/UF até 2026T2; Censo municipal 2022; CNAP outubro 2026",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "docs/obee/TRABALHO_RENDA_DADOS.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Não há ligação entre serviço e trajetória individual; perdas podem enviesar.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Definir horizonte, rastreamento e ajuste de perfil; não alegar causalidade."
+    },
+    {
+      "id": "food.access",
+      "chapter": "food",
+      "chapter_name": "Segurança Alimentar",
+      "pillar": "access",
+      "indicator_candidate": "Atendimento alimentar por modalidade",
+      "formula": "100 × pessoas elegíveis únicas atendidas / pessoas elegíveis",
+      "denominator": "Elegíveis à modalidade; sem somar PNAE, restaurantes e auxílio",
+      "available_evidence": "EBIA e equipamentos/ações MUNIC",
+      "available_scope_period": "PNADC Brasil/regiões 2023–2024; MUNIC 2024 com perguntas 2023",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "docs/obee/seguranca-alimentar/README.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "EBIA é desfecho; existência de equipamento não mede atendimento.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Integrar atendimentos e denominadores próprios por modalidade."
+    },
+    {
+      "id": "food.response",
+      "chapter": "food",
+      "chapter_name": "Segurança Alimentar",
+      "pillar": "response",
+      "indicator_candidate": "Regularidade das entregas",
+      "formula": "100 × entregas previstas efetivamente cumpridas / entregas previstas",
+      "denominator": "Entregas ou dias previstos na mesma modalidade",
+      "available_evidence": "Declaração de ações MUNIC",
+      "available_scope_period": "PNADC Brasil/regiões 2023–2024; MUNIC 2024 com perguntas 2023",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "docs/obee/seguranca-alimentar/README.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Faltam registros de entregas e interrupções.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Integrar calendário previsto e execução verificada."
+    },
+    {
+      "id": "food.quality",
+      "chapter": "food",
+      "chapter_name": "Segurança Alimentar",
+      "pillar": "quality",
+      "indicator_candidate": "Conformidade nutricional e sanitária",
+      "formula": "100 × entregas conformes / entregas avaliadas em amostra representativa",
+      "denominator": "Entregas avaliadas; desenho da amostra e cobertura explícitos",
+      "available_evidence": "Não há conformidade de entrega integrada",
+      "available_scope_period": "PNADC Brasil/regiões 2023–2024; MUNIC 2024 com perguntas 2023",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "docs/obee/seguranca-alimentar/README.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Quantidade e existência de programas não medem conformidade.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Localizar inspeções e amostras comparáveis; validar protocolos."
+    },
+    {
+      "id": "assistance.access",
+      "chapter": "assistance",
+      "chapter_name": "Assistência Social e Cuidado",
+      "pillar": "access",
+      "indicator_candidate": "Atendimento da demanda elegível",
+      "formula": "100 × pessoas ou famílias elegíveis únicas atendidas / demanda elegível",
+      "denominator": "Demanda da modalidade, unidade pessoa ou família fixa",
+      "available_evidence": "CRAS/CREAS/centros-dia e RMA a1,a2,c1,c5",
+      "available_scope_period": "Censo SUAS e RMA CRAS 2025; unidade/mês e agrupamento por UF",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "docs/obee/assistencia/README.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Registros podem repetir usuários; CadÚnico não é toda a demanda.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Deduplicar e definir demanda e cobertura das unidades ativas."
+    },
+    {
+      "id": "assistance.response",
+      "chapter": "assistance",
+      "chapter_name": "Assistência Social e Cuidado",
+      "pillar": "response",
+      "indicator_candidate": "Continuidade e encaminhamento concluído",
+      "formula": "100 × acompanhamentos previstos concluídos / acompanhamentos previstos da coorte",
+      "denominator": "Coorte elegível por modalidade; pendências mantidas",
+      "available_evidence": "Espera cadastral e práticas declaradas no Censo SUAS",
+      "available_scope_period": "Censo SUAS e RMA CRAS 2025; unidade/mês e agrupamento por UF",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "docs/obee/assistencia/README.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Espera cadastral não é espera geral; plano não prova continuidade.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Integrar trajetória e conclusão; não somar estoques mensais."
+    },
+    {
+      "id": "assistance.quality",
+      "chapter": "assistance",
+      "chapter_name": "Assistência Social e Cuidado",
+      "pillar": "quality",
+      "indicator_candidate": "Adequação e segurança do cuidado",
+      "formula": "100 × atendimentos conformes / atendimentos avaliados com desenho válido",
+      "denominator": "Atendimentos avaliados por modalidade e protocolo",
+      "available_evidence": "Estrutura e acessibilidade autodeclaradas",
+      "available_scope_period": "Censo SUAS e RMA CRAS 2025; unidade/mês e agrupamento por UF",
+      "target_scope": "Município por residência ou rede explicitada; população e janela ainda a validar",
+      "target_period": null,
+      "unit": "%",
+      "source_path": "docs/obee/assistencia/README.md",
+      "source_commit": "d14ca1c01b215cfae1afa10573c1e923bab27d12",
+      "source_status": "REPOSITORY_EVIDENCE_REVIEWED_NOT_NEW_PRIMARY_CAPTURE",
+      "reference": {
+        "validated": false,
+        "lower": null,
+        "upper": null
+      },
+      "weight_in_chapter": 0.3333333333333333,
+      "status": "COBERTURA_INSUFICIENTE",
+      "blockers": [
+        "Autodeclaração não equivale a inspeção ou resultado do cuidado.",
+        "Referências de pontuação não validadas"
+      ],
+      "next_action": "Integrar inspeção, segurança e resultado verificável."
+    }
+  ]
+}

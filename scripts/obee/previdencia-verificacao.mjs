@@ -1,16 +1,19 @@
 import {createRequire} from 'node:module';
 import {spawn} from 'node:child_process';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
-import {createHash} from 'node:crypto';
+import {createHash,randomBytes} from 'node:crypto';
+import {autenticarAuditoria} from '../sessao-auditoria.mjs';
 const require=createRequire(import.meta.url);
 const {chromium}=require(process.env.PREVIDENCIA_PLAYWRIGHT||'playwright');
 const base=process.env.PREVIDENCIA_URL||'http://127.0.0.1:3224';
 const out=process.env.PREVIDENCIA_QA_DIR||'/tmp/previdencia-qa';mkdirSync(out,{recursive:true});
+if(!process.env.PREVIDENCIA_URL&&!process.env.COOKIE_SECRET)process.env.COOKIE_SECRET=randomBytes(32).toString('hex');
 const server=process.env.PREVIDENCIA_URL?null:spawn(process.execPath,['node_modules/next/dist/bin/next','start','--hostname','127.0.0.1','--port','3224'],{stdio:'ignore'});
 if(server){process.on('exit',()=>server.kill());for(let i=0;i<40;i++){try{await fetch(base);break}catch{await new Promise(r=>setTimeout(r,500))}}}
 const browser=await chromium.launch({...(process.env.PREVIDENCIA_CHROME?{executablePath:process.env.PREVIDENCIA_CHROME}:{}),args:['--no-sandbox']});
+autenticarAuditoria(browser,base);
 const axe=readFileSync(require.resolve('axe-core/axe.min.js'),'utf8');
-const slugs=['','beneficios','territorio','recursos','atendimento','dados'];const telas=[],checks=[],erros=[];const check=(nome,ok)=>checks.push({nome,ok});
+const slugs=['','beneficios','territorio','recursos','atendimento','metodos','dados'];const telas=[],checks=[],erros=[];const check=(nome,ok)=>checks.push({nome,ok});
 try{
  for(const width of [320,390,768,1440]){
   const page=await browser.newPage({viewport:{width,height:950}});page.on('pageerror',e=>erros.push(e.message));
@@ -33,7 +36,11 @@ try{
  await page.goto(base+'/eficiencia-estatal/previdencia/recursos?medida=medio&ano=2023&clientela=urbana',{waitUntil:'networkidle'});check('Link direto à razão monetária',await page.getByLabel('Indicador',{exact:true}).inputValue()==='medio'&&await page.getByLabel('Ano',{exact:true}).inputValue()==='2023');
  await page.goto(base+'/eficiencia-estatal/previdencia/atendimento?ano=2022&clientela=rural',{waitUntil:'networkidle'});check('Atendimento mantém referência 2024 e sem filtro incompatível',await page.getByLabel('Ano',{exact:true}).count()===0&&await page.getByLabel('Clientela',{exact:true}).count()===0);await page.getByLabel('Indicador',{exact:true}).selectOption('atendimentos');check('Indicador de atendimentos',await page.getByText('Soma OBEE dos 12 meses de 2024',{exact:false}).isVisible());
  for(const f of ['snapshot.json','tabelas.csv','fontes.json','originais.zip']){const r=await page.request.get(base+'/eficiencia/previdencia/'+f);check('Download íntegro '+f,r.status()===200&&createHash('sha256').update(await r.body()).digest('hex')===createHash('sha256').update(readFileSync('public/eficiencia/previdencia/'+f)).digest('hex'));}
- const sitemap=await(await page.request.get(base+'/sitemap.xml')).text();check('Seis rotas no sitemap',slugs.every(s=>sitemap.includes('/eficiencia-estatal/previdencia'+(s?'/'+s:''))));
+ const sitemap=await(await page.request.get(base+'/sitemap.xml')).text();check('Método público no sitemap; painéis fechados fora',sitemap.includes('/eficiencia-estatal/previdencia/metodos')&&['','beneficios','territorio','recursos','atendimento','dados'].every(s=>!sitemap.includes('/eficiencia-estatal/previdencia'+(s?'/'+s:'')+'</loc>')));
+ const anonymous=await browser.newContext();
+ const ap=await anonymous.request.get(base+'/eficiencia-estatal/previdencia/territorio?ano=2023',{maxRedirects:0});check('Painel exige sessão e conserva recorte',ap.status()===307&&new URL(ap.headers().location,base).searchParams.get('de')==='/eficiencia-estatal/previdencia/territorio?ano=2023');
+ check('Método aberto sem sessão',(await anonymous.request.get(base+'/eficiencia-estatal/previdencia/metodos',{maxRedirects:0})).status()===200);
+ check('Download exige sessão',(await anonymous.request.get(base+'/eficiencia/previdencia/snapshot.json',{maxRedirects:0})).status()===307);await anonymous.close();
  await page.goto(base+'/eficiencia-estatal',{waitUntil:'networkidle'});check('Entrada no OBEE',await page.locator('a[href="/eficiencia-estatal/previdencia"]').count()>0);check('Rota inexistente é 404',(await page.request.get(base+'/eficiencia-estatal/previdencia/inexistente')).status()===404);
 }catch(e){erros.push(String(e))}finally{
  await browser.close();server?.kill();const falhas=[...telas.filter(t=>t.status!==200||t.h1!==1||t.overflow||t.violations.length),...checks.filter(c=>!c.ok)];writeFileSync(out+'/resultado.json',JSON.stringify({telas,checks,erros,falhas},null,2));console.log(JSON.stringify({telas:telas.length,checks:checks.length,erros,falhas},null,2));if(erros.length||falhas.length)process.exitCode=1;

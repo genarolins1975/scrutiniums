@@ -6,6 +6,9 @@ const nextConfig = {
     serverComponentsExternalPackages: ["@electric-sql/pglite", "pg"],
     // Arquivos usados pelos route handlers em runtime devem integrar o bundle.
     outputFileTracingIncludes: {
+      "/eficiencia-estatal/laboratorio-cesta": [
+        "./docs/obee/resultados/revisao-interativa-v3.html",
+      ],
       "/observatorio/[[...rota]]": [
         "./public/obs/index.html",
         "./public/obs/data/gold/inst_index.json",
@@ -13,6 +16,11 @@ const nextConfig = {
       ],
       "/api/boletim/enviar": [
         "./public/obs/data/gold/alertas_central.json",
+        "./public/obs/data/gold/meta.json",
+      ],
+      "/api/resumo/enviar": [
+        "./public/obs/data/gold/overview.json",
+        "./public/obs/data/gold/pulse.json",
         "./public/obs/data/gold/meta.json",
       ],
       "/eficiencia-estatal/mobilidade-transporte/[[...painel]]": [
@@ -32,20 +40,22 @@ const nextConfig = {
       ],
     },
   },
-  // Cache dos estáticos do Observatório. Bundle e CSS levam versão na URL.
+  // Cache dos estáticos do Observatório. Dados atrás de sessão usam cache privado
+  // (nunca compartilhado por CDN); bundle e CSS levam versão na URL.
   async headers() {
     return [
-      {source: "/energia/gold/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
-      {source: "/energia/series/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
-      {source: "/eficiencia/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
-      {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400"}]},
+      {source: "/energia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/energia/series/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/eficiencia/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      // API de leitura (/dados/api): exige sessão (src/lib/rotasPublicas.ts); cache privado do navegador
+      {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/obs/:arquivo(app.min.js|app-municipal.min.js|app-emergentes.min.js|styles.css)", headers: [{key: "Cache-Control", value: "public, max-age=31536000, immutable"}]},
     ];
   },
   // Rotas legadas e atalhos; destinos e condições preservados.
   async redirects() {
     return [
-      {source: "/app", missing: [{type: "cookie", key: "scrutiniums_session"}], destination: "/observatorio", permanent: false},
+      {source: "/app", missing: [{type: "cookie", key: "scrutiniums_session"}], destination: "/entrar", permanent: false},
       {source: "/app", destination: "/app/observatorios", permanent: false},
       {source: "/credito", destination: "/observatorio", permanent: false},
       {source: "/app/atividade", destination: "/observatorio/credit", permanent: true},

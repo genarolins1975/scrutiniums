@@ -1,0 +1,79 @@
+{
+  "version": "precisao-cesta-evidencias-v1",
+  "nota": "Classificação verificada nas notas oficiais; não implica erro municipal conhecido. Tentativas pelo serviço de busca falharam para SIDRA; consulta pelo navegador foi bem-sucedida.",
+  "evidencias": {
+    "10056": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/10056#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "10295": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/10295#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "10330": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/10330#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "9934": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/9934#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "9940": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/9940#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "9936": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/9936#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "6805": {
+      "natureza": "universo_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/6805#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados do Universo",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador."
+    },
+    "atlas2024": {
+      "natureza": "registro_mais_modelo",
+      "verificada": true,
+      "url": "https://repositorio.ipea.gov.br/bitstream/11058/14031/5/AtlasViolencia2024_Retrato_dos_municipios_brasileros.pdf",
+      "data_acesso": "2026-10-13",
+      "localizador": "Tabela 3, página impressa 18; nota abaixo da tabela e explicação do modelo na página 6",
+      "trecho": "dos homicídios ocultos estimados em Cerqueira e Lins (2024).",
+      "evidencia_adicional": "Tabela identifica registrados (A), ocultos (B) e estimados (A+B); fonte SIM e Censo 2022. A explicação metodológica descreve aprendizado supervisionado.",
+      "metodo_verificacao": "PDF oficial consultado; registros reconciliados com a extração congelada atlas-tabela3.txt."
+    }
+  }
+}

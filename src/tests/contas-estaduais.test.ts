@@ -1,0 +1,303 @@
+import { comparar, mediana, csvComparacao, lerFiltrosComparacao } from "../lib/contas-estaduais/comparacao";
+import { GET as exportarComparacao } from "../app/contas-publicas-estaduais/comparacao.csv/route";
+import { describe, expect, it } from "vitest";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { ANOS, catalogo, conferir, cobertura, csvCobertura, dividaPrimaria, execucaoPrimaria, primarios, matriz, observacao, razao, recorte, snapshot } from "../lib/contas-estaduais/dados";
+
+describe("Contas estaduais: elegibilidade e rastreabilidade", () => {
+ it("preserva zero e dívida negativa; bloqueia denominadores inválidos", () => {
+  expect(razao(0, 100)).toBe(0);
+  expect(razao(-10, 100)).toBe(-10);
+  for (const d of [null, 0, -1, NaN, Infinity]) expect(razao(10, d)).toBeNull();
+  expect(razao(null, 100)).toBeNull();
+  expect(razao(Infinity, 100)).toBeNull();
+ });
+ it("não promove compatibilidade aritmética a validação primária", () => {
+  expect(conferir(24.4,100,24.4).compativel).toBe(true);
+  expect(conferir(24.46,100,24.4).compativel).toBe(false);
+  expect(conferir(null,100,24.4).compativel).toBe(false);
+  expect(conferir(24.4,100,NaN).compativel).toBe(false);
+  expect(matriz(2026).filter(r => r.conferidoNaFonte)).toHaveLength(27);
+ });
+ it("confere AM e TO pela resposta original sem alterar o snapshot", () => {
+  const pendentes=snapshot.ufs.filter(u=>cobertura(u,2026,"CE-11")==="divergencia_aritmetica");
+  expect(pendentes.map(u=>u.uf)).toEqual([]);
+  expect(cobertura(snapshot.ufs.find(u=>u.uf==="PE")!,2026,"CE-11")).toBe("fonte_primaria_conferida");
+ });
+ it("cruza todas as UFs com todos os contratos, sem preencher ausências", () => {
+  expect(new Set(snapshot.ufs.map(u=>u.uf)).size).toBe(27);
+  expect(new Set(catalogo.indicadores.map(i=>i.id)).size).toBe(48);
+  expect(matriz(2025)).toHaveLength(1296);
+  expect(matriz(2025).filter(r=>r.status==="nao_sondado")).toHaveLength(27*41);
+  const ap=snapshot.ufs.find(u=>u.uf==="AP")!;
+  const falta=ANOS.find(a=>a!==ap.exercicio && !ap.serie.some(s=>s.ano===a))!;
+  expect(observacao(ap,falta).valor).toBeNull();
+  expect(cobertura(ap,falta,"CE-11")).toBe("sem_registro_snapshot");
+  expect(cobertura(ap,falta,"CE-04")).toBe("nao_sondado");
+ });
+ it("distingue encerramento de exercício de período parcial", () => {
+  const pe=snapshot.ufs.find(u=>u.uf==="PE")!;
+  expect(observacao(pe,2025)).toMatchObject({valor:31.75,parcial:false});
+  expect(observacao(pe,2026)).toMatchObject({valor:24.37,parcial:true});
+  expect(observacao(pe,2026).periodo).toContain("1º quadrimestre");
+ });
+ it("conserva o DF e saneia os parâmetros compartilháveis", () => {
+  expect(recorte("DF","2025")).toEqual({uf:"DF",ano:2025});
+  expect(recorte("XX","2030")).toEqual({uf:"PE",ano:2025});
+  expect(recorte(null,"NaN")).toEqual({uf:"PE",ano:2025});
+ });
+ it("exporta o universo completo e a incerteza, com CSV em português", () => {
+  const csv=csvCobertura(2026);
+  expect(csv.startsWith("\uFEFF")).toBe(true);
+  expect(csv.split("\r\n")).toHaveLength(1297);
+  expect(csv).toContain('"AM";"2026";"CE-11";"RGF";"fonte_primaria_conferida";"true"');
+  expect(csv).toContain('"DF";"2026";"CE-48"');
+ });
+ it("preserva os valores monetários e séries da origem quando a gold tem o blob fixado", () => {
+  const bytes=readFileSync("public/obs/data/gold/subnacional.json");
+  const blob=createHash("sha1").update("blob "+bytes.length+"\0").update(bytes).digest("hex");
+  // A gold de produção é atualizada pelo pipeline. Esta versão é independente
+  // dessas atualizações, portanto a comparação de bytes só vale no mesmo blob.
+  if(blob!==snapshot.proveniencia.gitBlob) return;
+  const original=JSON.parse(bytes.toString()).divida.ufs;
+  for(const u of snapshot.ufs) {
+   const fonte=original.find((o: {uf:string})=>o.uf===u.uf);
+   for(const campo of ["dcl","rcl","dcl_rcl_pct","serie"] as const) expect(u[campo]).toEqual(fonte[campo]);
+  }
+ });
+ it("não estende a conferência para outro ano, UF ou indicador", () => {
+  expect(matriz(2025).filter(r=>r.conferidoNaFonte)).toHaveLength(189);
+  expect(matriz(2024).filter(r=>r.conferidoNaFonte)).toHaveLength(0);
+  expect(execucaoPrimaria("PE",2026)).toBeUndefined();
+  expect(execucaoPrimaria("XX",2025)).toBeUndefined();
+  expect(dividaPrimaria("AM",2026)?.valores.percentual_declarado).toBe(20.65);
+  expect(snapshot.ufs.find(u=>u.uf==="AM")!.dcl_rcl_pct).toBe(20.6);
+ });
+ it("publica percentuais reproduzíveis e preserva o sinal do erro da receita", () => {
+  expect(execucaoPrimaria("SP",2025)!.indicadores["CE-01"]).toBeLessThan(0);
+  for(const r of primarios.rreo) {
+   expect(r.indicadores["CE-04"]).toBeCloseTo(100*r.valores.liquidada/r.valores.dotacao_atualizada,10);
+   expect(r.indicadores["CE-06"]).toBeCloseTo(100*r.valores.paga/r.valores.liquidada,10);
+  }
+  for(const r of primarios.rgf) {
+   expect(Math.abs(r.diferenca_pp)).toBeLessThanOrEqual(.005);
+   for(const f of r.fontes) expect(createHash("sha256").update(readFileSync("public"+f.arquivo)).digest("hex")).toBe(f.sha256);
+  }
+ });
+
+});
+
+
+describe("Comparação estadual: população da referência",()=>{
+ it("calcula mediana sem ponderação e preserva zero e negativos",()=>{
+  expect(mediana([])).toBeNull();
+  expect(mediana([-3,0,3])).toBe(0);
+  expect(mediana([1,100,2,3])).toBe(2.5);
+ });
+ it("separa as competências do DF na referência por padrão",()=>{
+  const estados=comparar(2025,"CE-04"), todos=comparar(2025,"CE-04","Todas",true);
+  expect(estados.elegiveis).toBe(26);expect(estados.universo).toBe(26);
+  expect(estados.linhas.some(l=>l.uf==="DF")).toBe(false);
+  expect(todos.elegiveis).toBe(27);
+  expect(comparar(2025,"CE-04","Nordeste").elegiveis).toBe(9);
+  expect(comparar(2025,"CE-04","Centro-Oeste").elegiveis).toBe(3);
+ });
+ it("não usa o snapshot herdado nem mistura anos na mediana",()=>{
+  expect(comparar(2024,"CE-11").elegiveis).toBe(0);
+  expect(comparar(2026,"CE-04").referencia).toBeNull();
+  expect(comparar(2026,"CE-11").elegiveis).toBe(26);
+ });
+ it("exporta precisamente o universo e as fontes do recorte",()=>{
+  const csv=csvComparacao(2025,"CE-04","Nordeste");
+  expect(csv.split("\r\n")).toHaveLength(10);
+  expect(csv).toContain('"PE";"Pernambuco";"Nordeste";"2025";"CE-04"');
+  expect(csv).not.toContain('"DF";');
+  expect(csv).toContain('sha256');
+ });
+ it("rejeita filtros inválidos e entrega CSV como arquivo",async()=>{
+  expect(exportarComparacao(new Request('https://example.test?indicador=CE-48')).status).toBe(400);
+  const r=exportarComparacao(new Request('https://example.test?ano=2025&indicador=CE-04&regiao=Nordeste'));
+  expect(r.status).toBe(200);expect(r.headers.get('content-disposition')).toContain('attachment');
+  expect((await r.text()).split('\r\n')).toHaveLength(10);
+ });
+});
+
+describe("Comparação compartilhável",()=>{
+ it("restaura todos os filtros do endereço e saneia entradas desconhecidas",()=>{
+  expect(lerFiltrosComparacao({indicador:'CE-11',regiao:'Norte',df:'1',ordem:'valor'})).toEqual({indicador:'CE-11',regiao:'Norte',df:true,ordem:'valor'});
+  expect(lerFiltrosComparacao({indicador:'CE-48',regiao:'Inválida',df:'true',ordem:'melhor'})).toEqual({indicador:'CE-04',regiao:'Todas',df:false,ordem:'uf'});
+ });
+ it("recusa opção ambígua do DF na exportação",()=>{
+  expect(exportarComparacao(new Request('https://example.test?df=true')).status).toBe(400);
+ });
+});
+
+import { saldosExecucao, csvSaldos } from '../lib/contas-estaduais/saldos';
+import { GET as exportarSaldos } from '../app/contas-publicas-estaduais/saldos.csv/route';
+describe('Saldos da execução: conservação e recorte',()=>{
+ it('recompõe a autorização em 27 UFs sem dupla contagem',()=>{
+  for(const u of snapshot.ufs){
+   const s=saldosExecucao(u.uf,2025)!;
+   expect(s).not.toBeNull();
+   expect(s.partes.every(p=>p.valor>=0)).toBe(true);
+   expect(s.partes.reduce((a,p)=>a+p.valor,0)).toBeCloseTo(s.dado.valores.dotacao_atualizada,2);
+   expect(s.partes.reduce((a,p)=>a+p.percentual,0)).toBeCloseTo(100,10);
+   expect(s.alteracao).toBe(s.dado.valores.dotacao_atualizada-s.dado.valores.dotacao_inicial);
+  }
+ });
+ it('não preenche exercício sem fonte e rejeita recorte inválido',()=>{
+  expect(saldosExecucao('PE',2026)).toBeNull();
+  expect(csvSaldos('PE',2026)).toBeNull();
+  expect(exportarSaldos(new Request('https://x.test?uf=PE&ano=2026')).status).toBe(404);
+  expect(exportarSaldos(new Request('https://x.test?uf=XX&ano=2025')).status).toBe(400);
+ });
+ it('exporta todas as parcelas e a alteração com proveniência',async()=>{
+  const r=exportarSaldos(new Request('https://x.test?uf=DF&ano=2025'));
+  expect(r.status).toBe(200);
+  const csv=await r.text();
+  expect(csv.split('\r\n')).toHaveLength(6);
+  expect(csv).toContain('"DF";"2025"');
+  expect(csv).toContain('Dotação atualizada − inicial');
+  expect(csv).toContain(execucaoPrimaria('DF',2025)!.fontes[0].sha256);
+ });
+});
+
+import { financiamentoEstadual, csvFinanciamento } from '../lib/contas-estaduais/financiamento';
+import { GET as exportarFinanciamento } from '../app/contas-publicas-estaduais/financiamento.csv/route';
+describe('Financiamento e margem corrente',()=>{
+ it('recompõe a receita corrente e mantém o capital fora das duas razões',()=>{
+  for(const uf of snapshot.ufs){
+   const f=financiamentoEstadual(uf.uf,2025)!;
+   expect(f.partes.reduce((s,p)=>s+p.percentual,0)).toBeCloseTo(100,8);
+   expect(f.partes.reduce((s,p)=>s+p.valor,0)).toBeCloseTo(f.valores.receitas_correntes,2);
+   expect(f.indicadores['CE-14']).toBeCloseTo(100*f.valores.transferencias_correntes/f.valores.receitas_correntes,8);
+   expect(f.indicadores['CE-10']).toBeCloseTo(100*f.margem_nominal/f.valores.receitas_correntes,8);
+  }
+ });
+ it('publica as novas medidas no mesmo universo e distingue o recorte ausente',()=>{
+  expect(comparar(2025,'CE-10').elegiveis).toBe(26);
+  expect(comparar(2025,'CE-14','Nordeste').elegiveis).toBe(9);
+  expect(comparar(2026,'CE-10').elegiveis).toBe(0);
+  expect(financiamentoEstadual('PE',2026)).toBeNull();
+  expect(csvFinanciamento('XX',2025)).toBeNull();
+ });
+ it('exporta recorte, valores e origem completos',async()=>{
+  expect(exportarFinanciamento(new Request('https://x.test?uf=XX&ano=2025')).status).toBe(400);
+  expect(exportarFinanciamento(new Request('https://x.test?uf=PE&ano=2026')).status).toBe(404);
+  const r=exportarFinanciamento(new Request('https://x.test?uf=PE&ano=2025'));
+  expect(r.status).toBe(200);
+  const csv=await r.text();
+  expect(csv.trim().split('\r\n')).toHaveLength(11);
+  expect(csv).toContain('"CE-14"');
+  expect(csv).toContain('"CE-10"');
+  expect(csv).toContain(financiamentoEstadual('PE',2025)!.dado.fontes[0].sha256);
+ });
+});
+
+import { composicaoDespesa, csvDespesas } from '../lib/contas-estaduais/despesas';
+import { GET as exportarDespesas } from '../app/contas-publicas-estaduais/despesas.csv/route';
+describe('Composição econômica da despesa',()=>{
+ it('mantém seis parcelas reconciliadas e o mesmo denominador nas 27 UFs',()=>{
+  for(const u of snapshot.ufs){const d=composicaoDespesa(u.uf,2025)!;expect(d.partes).toHaveLength(6);expect(d.partes.reduce((s,p)=>s+p.valor,0)).toBeCloseTo(d.dado.valores.liquidada,2);expect(d.partes.reduce((s,p)=>s+p.percentual,0)).toBeCloseTo(100,8);}
+ });
+ it('preserva ausência e rejeita recortes inválidos',()=>{
+  expect(composicaoDespesa('PE',2026)).toBeNull();expect(csvDespesas('PE',2026)).toBeNull();
+  expect(exportarDespesas(new Request('https://x.test?uf=PE&ano=2026')).status).toBe(404);
+  expect(exportarDespesas(new Request('https://x.test?uf=XX&ano=2025')).status).toBe(400);
+ });
+ it('exporta as seis categorias com código e hash',async()=>{
+  const r=exportarDespesas(new Request('https://x.test?uf=PE&ano=2025'));expect(r.status).toBe(200);
+  const csv=await r.text();expect(csv.split('\r\n')).toHaveLength(7);expect(csv).toContain('Investimentos');expect(csv).toContain(execucaoPrimaria('PE',2025)!.fontes[0].sha256);
+ });
+});
+
+import { CAMPOS_RECEITA, CONTAS_DESPESA } from '../lib/contas-estaduais/comparacao';
+describe('Comparação da estrutura de despesas',()=>{
+ it('recompõe 100% nas 27 UFs e expõe numerador e denominador',()=>{
+  const medidas=Object.keys(CONTAS_DESPESA) as (keyof typeof CONTAS_DESPESA)[];
+  for(const u of snapshot.ufs){
+   const parcelas=medidas.map(id=>comparar(2025,id,'Todas',true).linhas.find(l=>l.uf===u.uf)!);
+   expect(parcelas.reduce((s,l)=>s+l.valor!,0)).toBeCloseTo(100,8);
+   for(const l of parcelas){expect(l.valor).toBeCloseTo(100*l.numerador!/l.denominador!,8);expect(l.sha256).toMatch(/^[a-f0-9]{64}$/);}
+  }
+ });
+ it('calcula referência regional, separa DF e conserva ausência',()=>{
+  const c=comparar(2025,'DESP-INVESTIMENTOS','Nordeste');
+  expect(c.elegiveis).toBe(9);expect(c.referencia).toBe(mediana(c.linhas.map(l=>l.valor!)));
+  expect(comparar(2025,'DESP-PESSOAL').universo).toBe(26);
+  expect(comparar(2025,'DESP-PESSOAL','Todas',true).universo).toBe(27);
+  const vazio=comparar(2026,'DESP-INVESTIMENTOS');expect(vazio.elegiveis).toBe(0);expect(vazio.referencia).toBeNull();expect(vazio.linhas.every(l=>l.valor===null&&l.numerador===null&&l.denominador===null)).toBe(true);
+  expect(lerFiltrosComparacao({indicador:'DESP-INVESTIMENTOS'}).indicador).toBe('DESP-INVESTIMENTOS');
+ });
+ it('exporta composição regional e valores de origem',async()=>{
+  const r=exportarComparacao(new Request('https://x.test?ano=2025&indicador=DESP-INVESTIMENTOS&regiao=Nordeste&df=0'));
+  expect(r.status).toBe(200);const csv=await r.text();expect(csv.split('\r\n')).toHaveLength(10);expect(csv).toContain('categoria_liquidada_BRL');expect(csv).toContain('4328282322.13');expect(csv).toContain('52375113809.86');expect(csv).toContain('Investimentos');
+ });
+});
+
+
+describe('Comparação das receitas correntes',()=>{
+ it('recompõe 100% nas 27 UFs com a base corrente, sem incluir capital',()=>{
+  const medidas=Object.keys(CAMPOS_RECEITA) as (keyof typeof CAMPOS_RECEITA)[];
+  for(const u of snapshot.ufs){
+   const f=financiamentoEstadual(u.uf,2025)!;
+   const partes=medidas.map(id=>comparar(2025,id,'Todas',true).linhas.find(l=>l.uf===u.uf)!);
+   expect(partes.reduce((s,l)=>s+l.valor!,0)).toBeCloseTo(100,8);
+   expect(partes.reduce((s,l)=>s+l.numerador!,0)).toBeCloseTo(f.valores.receitas_correntes,2);
+   for(const l of partes){
+    expect(l.denominador).toBe(f.valores.receitas_correntes);
+    expect(l.valor).toBeCloseTo(100*l.numerador!/l.denominador!,8);
+    expect(l.sha256).toBe(f.dado.fontes[0].sha256);
+   }
+   expect(partes[2].valor).toBeCloseTo(f.indicadores['CE-14'],10);
+  }
+ });
+ it('recalcula a mediana regional e preserva ausência, DF e filtros compartilháveis',()=>{
+  const c=comparar(2025,'REC-TRIBUTARIA','Nordeste');
+  expect(c.elegiveis).toBe(9);
+  expect(c.referencia).toBe(mediana(c.linhas.map(l=>l.valor!)));
+  expect(comparar(2025,'REC-CONTRIBUICOES').universo).toBe(26);
+  expect(comparar(2025,'REC-CONTRIBUICOES','Todas',true).universo).toBe(27);
+  for(const id of Object.keys(CAMPOS_RECEITA) as (keyof typeof CAMPOS_RECEITA)[]){
+   const vazio=comparar(2026,id);
+   expect(vazio.referencia).toBeNull();expect(vazio.elegiveis).toBe(0);
+   expect(vazio.linhas.every(l=>l.valor===null&&l.numerador===null&&l.denominador===null)).toBe(true);
+   expect(lerFiltrosComparacao({indicador:id}).indicador).toBe(id);
+  }
+ });
+ it('exporta receitas em colunas próprias e explicita o cálculo do residual',async()=>{
+  const r=exportarComparacao(new Request('https://x.test?ano=2025&indicador=REC-DEMAIS&regiao=Nordeste&df=0'));
+  expect(r.status).toBe(200);
+  const linhas=(await r.text()).replace(/^\uFEFF/,'').split('\r\n').map(l=>l.split(';').map(c=>c.slice(1,-1).replaceAll('""','"')));
+  const cab=linhas[0], pe=linhas.find(l=>l[0]==='PE')!;
+  expect(linhas).toHaveLength(10);
+  const campo=(nome:string)=>pe[cab.indexOf(nome)];
+  const f=financiamentoEstadual('PE',2025)!;
+  expect(Number(campo('categoria_arrecadada_BRL'))).toBe(f.valores.demais_correntes_agrupadas);
+  expect(Number(campo('receitas_correntes_BRL'))).toBe(f.valores.receitas_correntes);
+  expect(campo('categoria_liquidada_BRL')).toBe('');
+  expect(campo('total_liquidado_BRL')).toBe('');
+  expect(campo('cod_conta')).toBe('');
+  expect(campo('campo_receita')).toBe('demais_correntes_agrupadas');
+  expect(campo('formula_medida')).toContain('Receitas correntes − tributária − contribuições − transferências correntes');
+  expect(campo('sha256')).toBe(f.dado.fontes[0].sha256);
+ });
+});
+
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import ComparacaoEstadual from '../components/contas-estaduais/ComparacaoEstadual';
+it('renderiza receitas com unidade correta e sem duplicar CE-14 no seletor',()=>{
+ const html=renderToStaticMarkup(createElement(ComparacaoEstadual,{
+  ano:2025,uf:'PE',selecionar:()=>{},
+  inicial:{indicador:'REC-TRIBUTARIA',regiao:'Nordeste',df:false,ordem:'uf'},
+ }));
+ expect(html).toContain('Composição das receitas correntes');
+ expect(html).toContain('Categoria arrecadada (R$)');
+ expect(html).toContain('Receitas correntes (R$)');
+ expect(html).not.toContain('Categoria liquidada (R$)');
+ expect(html.match(/<option value="CE-14"/g)).toHaveLength(1);
+ expect(html).toContain('46,18%');
+ expect(html).toContain('não equivalem à RCL');
+});

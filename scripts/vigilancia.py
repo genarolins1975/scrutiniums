@@ -10,10 +10,10 @@ impresso em stdout é o corpo da issue a abrir. Qualquer outra saída é erro do
 próprio cheque — e também deve virar issue, porque vigia quebrado é pior que
 alerta falso.
 
-**frescor** lê o meta.json publicado no próprio main (via raw.githubusercontent,
-o que dispensa saber o domínio do site: a Vercel publica o que está no main).
-Um `gerado_em` com mais de LIMITE_DIAS acusa — cobre o caso em que o workflow
-diário "conclui" sem publicar, que o alerta de falha não vê.
+**frescor** lê o meta.json publicado no próprio main (via raw.githubusercontent).
+Um `gerado_em` com LIMITE_DIAS ou mais acusa, e cobre o caso em que o workflow
+diário "conclui" sem publicar, que o alerta de falha não vê. Também compara o
+gold da produção com o do main: deploy que não concluiu acusa.
 
 **fontes** cobre o que o pipeline não alcança: fontes SEM API cuja atualização
 é manual e documentada (FONTES_BETS.md §7). Hoje, a página de apresentações da
@@ -35,6 +35,12 @@ RAIZ = Path(__file__).resolve().parent.parent
 META_PUBLICADO = ("https://raw.githubusercontent.com/genarolins1975/scrutiniums/"
                   "main/public/obs/data/gold/meta.json")
 LIMITE_DIAS = 2
+# O que a Vercel serve. Até 13/10/2026 nada conferia que a produção servia o mesmo
+# gold do main (OPERACOES.md, pontos únicos de falha).
+META_PRODUCAO = "https://scrutiniums.com/obs/data/gold/meta.json"
+# folga para o deploy da Vercel depois do push do pipeline
+DEPLOY_FOLGA_HORAS = 3
+ISSUE_RETENCAO = "Testes de conteúdo reprovaram a gold do dia: publicação retida"
 
 PAGINA_SPA = ("https://www.gov.br/fazenda/pt-br/composicao/orgaos/"
               "secretaria-de-premios-e-apostas/apresentacoes")
@@ -49,20 +55,40 @@ def _baixa(url, timeout=60):
         return r.read()
 
 
+def _instante(iso):
+    d = datetime.fromisoformat(iso)
+    return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+
+
 def frescor():
     meta = json.loads(_baixa(META_PUBLICADO))
-    gerado = datetime.fromisoformat(meta["gerado_em"])
-    if gerado.tzinfo is None:
-        gerado = gerado.replace(tzinfo=timezone.utc)
-    idade = (datetime.now(timezone.utc) - gerado).days
-    if idade < LIMITE_DIAS:
+    gerado = _instante(meta["gerado_em"])
+    agora = datetime.now(timezone.utc)
+    idade = (agora - gerado).days
+    acusacoes = []
+    if idade >= LIMITE_DIAS:
+        acusacoes.append(
+            f"O gold publicado no main foi gerado em **{meta['gerado_em'][:16]}** UTC, há {idade} dias "
+            f"(limite: {LIMITE_DIAS}). As páginas /resumo e /dados exibem ao leitor o aviso de atraso.\n\n"
+            "Causa mais provável, pela ordem do histórico: a gold do dia reprovada nos testes de conteúdo "
+            f"(issue \"{ISSUE_RETENCAO}\", que lista os testes reprovados de cada execução); depois, "
+            "execução interrompida (issue \"Pipeline diário interrompido\"). Atenção: até 13/10/2026 a "
+            "execução retida terminava VERDE na aba Actions.")
+    # produção ≠ main: deploy que não concluiu ou cache servindo versão antiga
+    try:
+        prod = json.loads(_baixa(META_PRODUCAO))
+        gerado_prod = _instante(prod["gerado_em"])
+        if gerado_prod < gerado and (agora - gerado).total_seconds() > DEPLOY_FOLGA_HORAS * 3600:
+            acusacoes.append(
+                f"A produção ({META_PRODUCAO}) serve o gold de **{prod['gerado_em'][:16]}** UTC, mais antigo que "
+                f"o do main (**{meta['gerado_em'][:16]}** UTC) há mais de {DEPLOY_FOLGA_HORAS} h: conferir o "
+                "último deploy da Vercel (falha de build ou deploy pausado).")
+    except Exception as e:  # produção fora do ar também é achado
+        acusacoes.append(f"Não foi possível ler o gold da produção ({META_PRODUCAO}): `{str(e)[:160]}`.")
+    if not acusacoes:
         return 0
-    print(f"O gold publicado no main foi gerado em **{meta['gerado_em'][:16]}** — "
-          f"há {idade} dias (limite: {LIMITE_DIAS}).\n")
-    print("O pipeline diário pode estar concluindo sem publicar (push pulado ou "
-          "rejeitado), ou as execuções estão falhando — conferir a aba Actions "
-          "e a issue de falha do pipeline, se houver.\n")
-    print("Vintages no gold publicado:\n")
+    print("\n\n".join(acusacoes))
+    print("\nVintages no gold publicado:\n")
     for k, v in sorted((meta.get("vintages") or {}).items()):
         print(f"- `{k}`: {v}")
     return ACUSA

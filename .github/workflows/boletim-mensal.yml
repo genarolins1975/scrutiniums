@@ -17,7 +17,14 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Disparar envio do boletim
+        env:
+          BOLETIM_SECRET: ${{ secrets.BOLETIM_SECRET }}
         run: |
+          # Sem o segredo, a rota responde 403 e o motivo some no meio do log.
+          if [ "${#BOLETIM_SECRET}" -lt 16 ]; then
+            echo "::error::BOLETIM_SECRET ausente ou com menos de 16 caracteres no GitHub Actions; o mesmo valor precisa estar na Vercel (OPERACOES.md)"
+            exit 1
+          fi
           curl -sS --fail-with-body -X POST \
             "https://scrutiniums.com/api/boletim/enviar" \
-            -H "Authorization: Bearer ${{ secrets.BOLETIM_SECRET }}"
+            -H "Authorization: Bearer ${BOLETIM_SECRET}"

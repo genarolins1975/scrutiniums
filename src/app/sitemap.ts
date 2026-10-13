@@ -8,8 +8,13 @@ import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { PAGINAS as PAINEIS_TRABALHO_RENDA } from "@/components/eficiencia/trabalho-renda/modelo";
 import { PAGINAS_MOBILIDADE, ROTA_MOBILIDADE } from "@/lib/eficiencia/mobilidade/modelo";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
+import { ehRotaPublica } from "@/lib/rotasPublicas";
 
-/** Superfície pública indexável. A área logada (/app) fica de fora. */
+/**
+ * Superfície pública indexável. O inventário abaixo lista todas as páginas;
+ * só entram no sitemap as que src/lib/rotasPublicas.ts declara abertas. Os
+ * painéis exigem conta e ficam de fora, como a área logada (/app).
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://scrutiniums.com";
   const agora = new Date();
@@ -31,6 +36,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/dados", 0.9, "daily"),
     rota("/resumo", 0.9, "daily"),
     ...INDICADORES.map((i) => rota(`/dados/${i.slug}`, 0.8, "daily")),
+    rota("/dados/ibcc", 0.8, "daily"),
+    rota("/dados/api", 0.6, "monthly"),
     ...instituicoes.map((i) => rota(`/observatorio/institutions/${i.cod}`, 0.6, "weekly")),
     ...ufs.map((u) => rota(`/observatorio/states/${u.uf}`, 0.8, "daily")),
     ...municipios.map((m) => rota(`/observatorio/presenca/${m.cod}`, 0.5, "weekly")),
@@ -38,9 +45,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...MODULOS_ENERGIA.map((m) => rota(m.href, m.integrado ? 0.9 : 0.5, m.integrado ? "daily" : "monthly")),
     ...DESTINOS_NAVEGACAO.filter((d) => d.publicado && !MODULOS_ENERGIA.some((m) => m.href === d.href) && !d.href.includes("#")).map((d) => rota(d.href, 0.8, "weekly")),
     rota("/setor-eletrico/metodologia", 0.7, "monthly"),
+    ...["mercado/comercializacao", "empresas/analise", "territorio/atlas", "transicao/riscos"].map(p => rota(`/setor-eletrico/${p}`, 0.7, "monthly")),
     rota("/eficiencia-estatal", 0.7, "monthly"),
     ...["", "deficit", "aluguel-renda", "inadequacao", "dados"].map(s => rota(`/eficiencia-estatal/habitacao${s ? "/"+s : ""}`, 0.6, "yearly")),
-    ...["", "beneficios", "territorio", "recursos", "atendimento", "dados"].map(s => rota(`/eficiencia-estatal/previdencia${s ? "/"+s : ""}`, 0.6, "yearly")),
+    ...["", "beneficios", "territorio", "recursos", "atendimento", "dados", "metodos"].map(s => rota(`/eficiencia-estatal/previdencia${s ? "/"+s : ""}`, 0.6, "yearly")),
     ...["", "agua", "esgoto", "residuos", "drenagem", "recursos", "dados"].map(s => rota(`/eficiencia-estatal/saneamento${s ? "/"+s : ""}`, 0.6, "yearly")),
     ...["", "cobertura", "tempo-resposta", "conciliacao", "recursos", "dados"].map(s => rota(`/eficiencia-estatal/acesso-justica${s ? "/"+s : ""}`, 0.6, "monthly")),
     ...PAGINAS_MOBILIDADE.map(p => rota(ROTA_MOBILIDADE+(p.slug?'/'+p.slug:''), 0.6, "monthly")),
@@ -56,11 +64,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/setor-eletrico/pld/previsoes", 0.6, "daily"),
     ...CONCEITOS.filter((c) => c.estado === "CONFERIDO").map((c) => rota(`/setor-eletrico/aprenda/${c.slug}`, 0.6, "monthly")),
     ...DATASETS_INTEGRADOS.map((d) => rota(`/setor-eletrico/dados/${d.slug}`, 0.5, "weekly")),
+    rota("/sobre", 0.5, "yearly"),
+    rota("/sobre/erros", 0.4, "monthly"),
+    rota("/setor-eletrico/aprenda", 0.6, "monthly"),
+    rota("/contas-publicas/metodologia", 0.5, "monthly"),
+    rota("/contas-publicas/glossario", 0.5, "monthly"),
     rota("/cadastro", 0.6, "yearly"),
     rota("/entrar", 0.3, "yearly"),
     rota("/privacidade", 0.2, "yearly"),
     rota("/termos", 0.2, "yearly"),
   ];
   const vistas = new Set<string>();
-  return entradas.filter((e) => (vistas.has(e.url) ? false : (vistas.add(e.url), true)));
+  return entradas
+    .filter((e) => ehRotaPublica(e.url.slice(base.length) || "/"))
+    .filter((e) => (vistas.has(e.url) ? false : (vistas.add(e.url), true)));
 }
+

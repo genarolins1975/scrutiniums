@@ -1,3 +1,4 @@
+import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -214,6 +215,7 @@ export default function EmpresasPage() {
         </CabecalhoModulo>
         <EmpresasNavegacao atual="sintese" />
 
+        <AtalhoLeitura href="/setor-eletrico/empresas/analise" titulo="Controle, resultado e investimento na mesma leitura" texto="Selecione uma companhia, confronte lucro e caixa e avance aos segmentos de negócio." />
         <ModoProfundidade>
           <Bloco id="empresas">
             <section id="busca" aria-labelledby="busca-titulo" className="scroll-mt-28 pb-6">

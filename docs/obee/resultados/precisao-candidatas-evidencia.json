@@ -1,0 +1,58 @@
+{
+  "version": "precisao-candidatas-evidencia-v1",
+  "reviewed_at": "2026-10-12",
+  "scope": "Fontes examinadas; não constitui levantamento exaustivo nem prova de inexistência de outros estimadores.",
+  "methodological_note": {
+    "url": "https://biblioteca.ibge.gov.br/visualizacao/livros/liv102149.pdf",
+    "sha256": "4af6ea89f67bc4c62642833f2c7a315e3e17358145adda663fec61e843aac3f8",
+    "printed_pages": [
+      22,
+      23,
+      24
+    ],
+    "subject": "FGV para CV aproximado de totais, com pesos calibrados",
+    "geographies": [
+      "Brasil",
+      "Grandes Regiões",
+      "Unidades da Federação"
+    ],
+    "municipal_ratio_variance_supported": false
+  },
+  "annex": {
+    "url": "https://biblioteca.ibge.gov.br/visualizacao/livros/liv102149_tabela.zip",
+    "inventory": "precisao-anexo-inventario.json",
+    "sheet_count": 33,
+    "geography_counts": {
+      "Brasil": 1,
+      "Grandes Regiões": 5,
+      "Unidades da Federação": 27
+    },
+    "municipal_sheets": 0,
+    "ratio_covariance_supplied": false,
+    "review": "Todas as abas: títulos, tipos de estimativa, coeficientes A/B e tabelas de CV por tamanho de total. Não aplicar coeficientes de UF à capital de mesmo nome."
+  },
+  "microdata_release": {
+    "url": "https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/47888-ibge-disponibiliza-microdados-da-amostra-do-censo-demografico-2022-com-novo-modelo-de-acesso-e-reforco-a-confidencialidade",
+    "published": "2026-08-31",
+    "updated": "2026-09-01",
+    "verified_via": "Página oficial lida no navegador",
+    "public_max_geography": "UF",
+    "controlled_max_geography": "APOND",
+    "controlled_requirements": [
+      "autenticação gov.br",
+      "formulário",
+      "termo de confidencialidade e responsabilidade",
+      "termo de uso"
+    ],
+    "restricted": "SAR; projeto sujeito a análise; base completa sem subamostragem",
+    "access_requested": false,
+    "microdata_downloaded": false,
+    "inference": "Anúncio não basta para demonstrar que o desenho acessível permite reproduzir as razões municipais e seus erros. Exige exame de layout, pesos, desenho, subamostragem e concordância com a edição preliminar."
+  },
+  "decision": {
+    "municipal_precision_resolved": false,
+    "descriptive_protocol_defined": true,
+    "automatic_expansion_allowed": false,
+    "next": "Parecer de conteúdo e pesos; em paralelo, especificar aquisição autorizada de precisão municipal ou obter estimativas oficiais adequadas."
+  }
+}

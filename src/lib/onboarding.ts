@@ -4,7 +4,8 @@ import { generateOtp, hashToken } from "./crypto";
 import { sendEmailCode } from "./mailer";
 import type { OnboardingStatus, User } from "./schema";
 
-export const PRIVACY_VERSION = "2026-07";
+export { PRIVACY_VERSION } from "./versoesPoliticas";
+import { PRIVACY_VERSION } from "./versoesPoliticas";
 
 const EMAIL_CODE_TTL_MS = 15 * 60 * 1000;
 const EMAIL_MAX_ATTEMPTS = 5;
@@ -30,7 +31,7 @@ export function nextStepPath(status: OnboardingStatus): string {
       // Rota legada: promove a COMPLETE e redireciona ao Observatório.
       return "/cadastro/acesso";
     case "COMPLETE":
-      // Destino principal pós-login: a escolha entre os dois observatórios.
+      // Destino principal pós-login: a escolha do observatório.
       return "/app/observatorios";
   }
 }

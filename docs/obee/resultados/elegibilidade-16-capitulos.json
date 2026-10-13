@@ -1,0 +1,307 @@
+{
+  "version": "obee-eligibilidade-capitulos-v1",
+  "reviewed_at": "2026-10-12",
+  "repository": "genarolins1975/scrutiniums",
+  "evidence_commit": "bca955b0f611c534e903fc3f0c85785705b0be1e",
+  "scope": "Inventário das evidências versionadas; não é busca exaustiva de todas as fontes públicas.",
+  "reference": {
+    "year": 2022,
+    "municipalities": 26,
+    "df_included": false
+  },
+  "publication_ready": false,
+  "is_full_obee_score": false,
+  "summary": {
+    "chapters": 16,
+    "published_panels": 13,
+    "pilot_indicators": 5,
+    "additional_eligible_indicators": 0,
+    "validated_full_chapter_scores": 0
+  },
+  "chapters": [
+    {
+      "id": "educacao",
+      "name": "Educação",
+      "status": "pilot_indicator",
+      "panel_published": true,
+      "scope": "26 capitais; frequência 4–5 anos, 2022; painel municipal de ensino tem outros períodos e universos.",
+      "measure": "Frequência escolar de residentes (pública e privada), %; maior.",
+      "blocker": "Aprendizagem municipal urbana 2023 exige participação compatível; não equivale ao construto de frequência de 2022.",
+      "next_action": "Preservar frequência; auditar aprendizagem apenas em contrato próprio.",
+      "priority": "P2",
+      "evidence": [
+        "docs/obee/resultados/EXPANSAO_V2.md"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "saude",
+      "name": "Saúde",
+      "status": "research_blocked",
+      "panel_published": true,
+      "scope": "26 capitais; 156 contagens SIM/SINASC, 2021–2023. APS potencial: dezembro de 2025.",
+      "measure": "Mortalidade infantil registrada por mil nascidos vivos; menor, condicionada à qualidade dos registros.",
+      "blocker": "Cobertura/sub-registro infantil municipal sem evidência elegível; janela trienal diferente de 2022; precisão condicional não corrige cobertura.",
+      "next_action": "Obter evidência municipal de cobertura para cada ano e revisar contrato temporal; não aplicar fatores de UF.",
+      "priority": "P2",
+      "evidence": [
+        "docs/obee/resultados/CAPTURA_RECAPTURA_SAUDE.md"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "trabalho",
+      "name": "Trabalho e renda",
+      "status": "pilot_indicator",
+      "panel_published": true,
+      "scope": "26 capitais na cesta; rendimento do Censo 2022. Conjuntura Brasil/UF em outros períodos.",
+      "measure": "Mediana da renda domiciliar por pessoa, R$ nominais de julho de 2022; maior.",
+      "blocker": "Renda não mede toda a inserção laboral nem eficiência da política; redundância com condições habitacionais.",
+      "next_action": "Preservar renda e avaliar redundância antes de acrescentar condições de moradia.",
+      "priority": "P2",
+      "evidence": [
+        "docs/obee/resultados/EXPANSAO_V2.md"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "alimentacao",
+      "name": "Segurança alimentar",
+      "status": "context_only",
+      "panel_published": true,
+      "scope": "PNADC: Brasil/cinco regiões, 2023–2024; MUNIC: 5.570 municípios, 2024.",
+      "measure": "Restrição alimentar regional; medidas municipais de ações/gestão/equipamentos.",
+      "blocker": "Sem EBIA municipal comparável em 2022; existência de programa não mede segurança alimentar.",
+      "next_action": "Manter comparação regional; definir aquisição de resultado municipal antes de pontuar.",
+      "priority": "P3",
+      "evidence": [
+        "src/app/eficiencia-estatal/page.tsx"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "assistencia",
+      "name": "Assistência social e cuidado",
+      "status": "context_only",
+      "panel_published": true,
+      "scope": "Censo SUAS/RMA CRAS 2025: unidades e formulários unidade-mês, incluindo redes regionais/estaduais/OSC.",
+      "measure": "Rede, oferta declarada, acessibilidade e volumes de atendimento.",
+      "blocker": "Sem demanda elegível, usuários únicos e resolução; volume de atendimentos não tem polaridade universal; período 2025.",
+      "next_action": "Auditar agregação territorial e denominador de necessidade em contrato de acesso separado.",
+      "priority": "P3",
+      "evidence": [
+        "src/app/eficiencia-estatal/page.tsx"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "previdencia",
+      "name": "Previdência",
+      "status": "not_published",
+      "panel_published": false,
+      "scope": "Catálogo editorial sem painel publicado neste snapshot.",
+      "measure": "Indicador ainda não selecionado.",
+      "blocker": "Sem contrato e evidência numérica revisados nesta rodada.",
+      "next_action": "Definir população elegível, proteção de renda e competência de cada regime antes da coleta.",
+      "priority": "P4",
+      "evidence": [
+        "src/lib/eficiencia/dimensoes.ts"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "seguranca",
+      "name": "Segurança pública",
+      "status": "pilot_indicator",
+      "panel_published": true,
+      "scope": "Piloto: 26 capitais, Atlas da Violência 2024, referência 2022. Painel: Brasil, 2025.",
+      "measure": "Homicídios estimados por 100 mil habitantes; menor.",
+      "blocker": "Depende do modelo de homicídios ocultos; não equivale a todos os crimes ou à resposta policial.",
+      "next_action": "Preservar alternativa só registros e explicitar incerteza do modelo.",
+      "priority": "P2",
+      "evidence": [
+        "docs/obee/resultados/EXPANSAO_V2.md"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "justica",
+      "name": "Justiça e direitos",
+      "status": "context_only",
+      "panel_published": true,
+      "scope": "2.563 comarcas, abril/2025; defensorias de 27 UFs, 2024; tribunais, 2025.",
+      "measure": "Cobertura por comarca, duração, conciliação e atividade.",
+      "blocker": "Comarca/tribunal não equivale a município; sem demanda elegível ou resolução individual; períodos incompatíveis.",
+      "next_action": "Resolver geografia e universo da demanda; não atribuir desempenho do tribunal à capital.",
+      "priority": "P3",
+      "evidence": [
+        "src/app/eficiencia-estatal/page.tsx"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "habitacao",
+      "name": "Habitação",
+      "status": "candidate_under_review",
+      "panel_published": true,
+      "scope": "Painel FJP: Brasil/regiões/UF, 2024. Auditoria adicional: SIDRA 9934 e 9940, 26 capitais, 2022, amostra preliminar.",
+      "measure": "Percentual de domicílios com mais de dois moradores por dormitório; menor. Moradores e limiar >3 preservados como alternativas.",
+      "blocker": "Precisão/divulgação municipal, conteúdo e aprovação dos pesos pendentes. Inclusão isolada e conjunta analisada em 18 cenários; forte associação com renda exige orçamento explícito.",
+      "next_action": "Pacote de revisão preparado. Obter parecer independente sobre os seis critérios e decisão de edição; precisão municipal permanece pendente.",
+      "priority": "P1",
+      "evidence": [
+        "src/app/eficiencia-estatal/page.tsx",
+        "docs/obee/resultados/HABITACAO_ADENSAMENTO.md",
+        "docs/obee/resultados/CESTA_CONJUNTA_V3.md",
+        "docs/obee/resultados/PRECISAO_CANDIDATAS.md",
+        "docs/obee/resultados/PARECER_CONTEUDO_PESOS_V3.md",
+        "docs/obee/resultados/REVISAO_INDEPENDENTE_V3.md"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "saneamento",
+      "name": "Saneamento",
+      "status": "pilot_indicator",
+      "panel_published": true,
+      "scope": "Piloto municipal Censo/SIDRA 6805, 2022. Painel SINISA 2025: referência 2024, Brasil/regiões/UF.",
+      "measure": "% de domicílios nas categorias de esgotamento especificadas; maior.",
+      "blocker": "Não mede tratamento, qualidade ou continuidade; não somar categorias filhas à categoria agregada.",
+      "next_action": "Preservar definição e alternativa apenas rede; evitar duplicação na expansão de Habitação.",
+      "priority": "P2",
+      "evidence": [
+        "docs/obee/resultados/EXPANSAO_V2.md"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "mobilidade",
+      "name": "Mobilidade e transporte",
+      "status": "pilot_indicator",
+      "panel_published": true,
+      "scope": "Censo 2022 municipal; Pemob 2025 com respondentes; AOP 2019 com população de 2010.",
+      "measure": "% de deslocamentos ao trabalho acima de uma hora; menor.",
+      "blocker": "Universo de trabalhadores com deslocamento; não cobre toda acessibilidade. AOP não tem a mesma coorte/ano.",
+      "next_action": "Preservar indicador e não misturar AOP ou oferta declarada na mesma referência.",
+      "priority": "P2",
+      "evidence": [
+        "docs/obee/resultados/EXPANSAO_V2.md"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "energia",
+      "name": "Energia e conectividade",
+      "status": "candidate_under_review",
+      "panel_published": true,
+      "scope": "Painel existente: universos próprios de energia e PNAD TIC 2025. Auditoria adicional: SIDRA 9936, 26 capitais, 2022, amostra preliminar.",
+      "measure": "Proporção de domicílios particulares permanentes ocupados com conexão à Internet; maior.",
+      "blocker": "Precisão/divulgação municipal, conteúdo e aprovação dos pesos pendentes. Inclusão isolada e conjunta analisada em 18 cenários; forte associação com renda exige orçamento explícito.",
+      "next_action": "Pacote de revisão preparado. Obter parecer independente sobre os seis critérios e decisão de edição; precisão municipal permanece pendente.",
+      "priority": "P2",
+      "evidence": [
+        "src/lib/eficiencia/energia/dados.ts",
+        "docs/obee/resultados/CONECTIVIDADE_MUNICIPAL.md",
+        "docs/obee/resultados/CESTA_CONJUNTA_V3.md",
+        "docs/obee/resultados/PRECISAO_CANDIDATAS.md",
+        "docs/obee/resultados/PARECER_CONTEUDO_PESOS_V3.md",
+        "docs/obee/resultados/REVISAO_INDEPENDENTE_V3.md"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "ambiente",
+      "name": "Meio ambiente e clima",
+      "status": "context_only",
+      "panel_published": true,
+      "scope": "SINISA 2025, referência 2024; Brasil e cinco regiões, universos elegíveis.",
+      "measure": "Exposição/impactos de inundações, planos, drenagem e resíduos.",
+      "blocker": "Recorte não municipal/2022; planos e infraestrutura não equivalem a resultado ambiental; sobreposição com Saneamento.",
+      "next_action": "Selecionar exposição ou resultado municipal com denominador comparável e cobertura explícita.",
+      "priority": "P3",
+      "evidence": [
+        "src/app/eficiencia-estatal/page.tsx"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "cultura",
+      "name": "Cultura",
+      "status": "context_only",
+      "panel_published": true,
+      "scope": "TIC Cultura 2024: estimativas nacionais; SIIC: despesas 2013–2023 por esfera/UF.",
+      "measure": "Equipamentos/atividades estimados e gasto público.",
+      "blocker": "Sem frequência individual ou acesso municipal; equipamentos públicos/privados; gasto maior não implica resultado melhor.",
+      "next_action": "Definir participação/acesso municipal e precisão; manter despesa como contexto.",
+      "priority": "P3",
+      "evidence": [
+        "src/app/eficiencia-estatal/page.tsx"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "esporte",
+      "name": "Esporte e lazer",
+      "status": "not_published",
+      "panel_published": false,
+      "scope": "Catálogo editorial sem painel publicado neste snapshot.",
+      "measure": "Indicador ainda não selecionado.",
+      "blocker": "Sem contrato e evidência numérica revisados nesta rodada.",
+      "next_action": "Definir participação/uso e universo residente; mapear fonte territorial antes da coleta.",
+      "priority": "P4",
+      "evidence": [
+        "src/lib/eficiencia/dimensoes.ts"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    },
+    {
+      "id": "servicos",
+      "name": "Serviços e cidadania",
+      "status": "not_published",
+      "panel_published": false,
+      "scope": "Catálogo editorial sem painel publicado neste snapshot.",
+      "measure": "Indicador ainda não selecionado.",
+      "blocker": "Sem contrato e evidência numérica revisados nesta rodada.",
+      "next_action": "Definir resolução e tempo de atendimento com demanda comparável; separar canal digital de acesso efetivo.",
+      "priority": "P4",
+      "evidence": [
+        "src/lib/eficiencia/dimensoes.ts"
+      ],
+      "full_chapter_score_validated": false,
+      "eligible_for_automatic_expansion": false
+    }
+  ],
+  "supplemental_review": {
+    "date": "2026-10-12",
+    "base_commit": "0a32b62293e391c8f78cf64e243d867c038d56d0",
+    "report": "docs/obee/resultados/HABITACAO_ADENSAMENTO.md"
+  },
+  "connectivity_review": {
+    "date": "2026-10-12",
+    "base_commit": "2068912f3c8103fd0fe66ab6f40357992fe3af88"
+  },
+  "joint_review": {
+    "date": "2026-10-12",
+    "base_commit": "bca955b0f611c534e903fc3f0c85785705b0be1e",
+    "report": "docs/obee/resultados/CESTA_CONJUNTA_V3.md",
+    "scenarios": 18,
+    "city_scenario_rows": 468,
+    "approved_weights": null,
+    "next_action": "Protocolo de precisão e divulgação municipal; depois, parecer normativo de conteúdo e pesos."
+  }
+}

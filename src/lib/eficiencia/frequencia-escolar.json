@@ -1,0 +1,801 @@
+{
+  "period": 2022,
+  "source": "IBGE · Censo Demográfico",
+  "table": "10056",
+  "variable": "3795",
+  "capturedAt": "2026-10-11T18:32:55.868453+00:00",
+  "role": "CONTEXTO_NAO_ESCORE",
+  "ages": [
+    {
+      "id": "99749",
+      "label": "0 a 3 anos"
+    },
+    {
+      "id": "47813",
+      "label": "4 a 5 anos"
+    },
+    {
+      "id": "31615",
+      "label": "6 a 14 anos"
+    },
+    {
+      "id": "2792",
+      "label": "15 a 17 anos"
+    }
+  ],
+  "observations": [
+    {
+      "territory": "1100205",
+      "name": "Porto Velho",
+      "age": "99749",
+      "value": 16.76,
+      "raw": "16.76"
+    },
+    {
+      "territory": "1100205",
+      "name": "Porto Velho",
+      "age": "47813",
+      "value": 73.13,
+      "raw": "73.13"
+    },
+    {
+      "territory": "1100205",
+      "name": "Porto Velho",
+      "age": "31615",
+      "value": 95.87,
+      "raw": "95.87"
+    },
+    {
+      "territory": "1100205",
+      "name": "Porto Velho",
+      "age": "2792",
+      "value": 82.89,
+      "raw": "82.89"
+    },
+    {
+      "territory": "1200401",
+      "name": "Rio Branco",
+      "age": "99749",
+      "value": 20.67,
+      "raw": "20.67"
+    },
+    {
+      "territory": "1200401",
+      "name": "Rio Branco",
+      "age": "47813",
+      "value": 75.29,
+      "raw": "75.29"
+    },
+    {
+      "territory": "1200401",
+      "name": "Rio Branco",
+      "age": "31615",
+      "value": 97.81,
+      "raw": "97.81"
+    },
+    {
+      "territory": "1200401",
+      "name": "Rio Branco",
+      "age": "2792",
+      "value": 84.23,
+      "raw": "84.23"
+    },
+    {
+      "territory": "1302603",
+      "name": "Manaus",
+      "age": "99749",
+      "value": 12.92,
+      "raw": "12.92"
+    },
+    {
+      "territory": "1302603",
+      "name": "Manaus",
+      "age": "47813",
+      "value": 69.12,
+      "raw": "69.12"
+    },
+    {
+      "territory": "1302603",
+      "name": "Manaus",
+      "age": "31615",
+      "value": 96.55,
+      "raw": "96.55"
+    },
+    {
+      "territory": "1302603",
+      "name": "Manaus",
+      "age": "2792",
+      "value": 85.19,
+      "raw": "85.19"
+    },
+    {
+      "territory": "1400100",
+      "name": "Boa Vista",
+      "age": "99749",
+      "value": 16.54,
+      "raw": "16.54"
+    },
+    {
+      "territory": "1400100",
+      "name": "Boa Vista",
+      "age": "47813",
+      "value": 70.53,
+      "raw": "70.53"
+    },
+    {
+      "territory": "1400100",
+      "name": "Boa Vista",
+      "age": "31615",
+      "value": 94.23,
+      "raw": "94.23"
+    },
+    {
+      "territory": "1400100",
+      "name": "Boa Vista",
+      "age": "2792",
+      "value": 81.93,
+      "raw": "81.93"
+    },
+    {
+      "territory": "1501402",
+      "name": "Belém",
+      "age": "99749",
+      "value": 23.22,
+      "raw": "23.22"
+    },
+    {
+      "territory": "1501402",
+      "name": "Belém",
+      "age": "47813",
+      "value": 82.33,
+      "raw": "82.33"
+    },
+    {
+      "territory": "1501402",
+      "name": "Belém",
+      "age": "31615",
+      "value": 98.08,
+      "raw": "98.08"
+    },
+    {
+      "territory": "1501402",
+      "name": "Belém",
+      "age": "2792",
+      "value": 88.24,
+      "raw": "88.24"
+    },
+    {
+      "territory": "1600303",
+      "name": "Macapá",
+      "age": "99749",
+      "value": 10.91,
+      "raw": "10.91"
+    },
+    {
+      "territory": "1600303",
+      "name": "Macapá",
+      "age": "47813",
+      "value": 58.46,
+      "raw": "58.46"
+    },
+    {
+      "territory": "1600303",
+      "name": "Macapá",
+      "age": "31615",
+      "value": 95.87,
+      "raw": "95.87"
+    },
+    {
+      "territory": "1600303",
+      "name": "Macapá",
+      "age": "2792",
+      "value": 81.32,
+      "raw": "81.32"
+    },
+    {
+      "territory": "1721000",
+      "name": "Palmas",
+      "age": "99749",
+      "value": 35.83,
+      "raw": "35.83"
+    },
+    {
+      "territory": "1721000",
+      "name": "Palmas",
+      "age": "47813",
+      "value": 89.0,
+      "raw": "89.00"
+    },
+    {
+      "territory": "1721000",
+      "name": "Palmas",
+      "age": "31615",
+      "value": 98.85,
+      "raw": "98.85"
+    },
+    {
+      "territory": "1721000",
+      "name": "Palmas",
+      "age": "2792",
+      "value": 83.97,
+      "raw": "83.97"
+    },
+    {
+      "territory": "2111300",
+      "name": "São Luís",
+      "age": "99749",
+      "value": 30.41,
+      "raw": "30.41"
+    },
+    {
+      "territory": "2111300",
+      "name": "São Luís",
+      "age": "47813",
+      "value": 92.25,
+      "raw": "92.25"
+    },
+    {
+      "territory": "2111300",
+      "name": "São Luís",
+      "age": "31615",
+      "value": 98.46,
+      "raw": "98.46"
+    },
+    {
+      "territory": "2111300",
+      "name": "São Luís",
+      "age": "2792",
+      "value": 86.0,
+      "raw": "86.00"
+    },
+    {
+      "territory": "2211001",
+      "name": "Teresina",
+      "age": "99749",
+      "value": 26.73,
+      "raw": "26.73"
+    },
+    {
+      "territory": "2211001",
+      "name": "Teresina",
+      "age": "47813",
+      "value": 94.11,
+      "raw": "94.11"
+    },
+    {
+      "territory": "2211001",
+      "name": "Teresina",
+      "age": "31615",
+      "value": 98.82,
+      "raw": "98.82"
+    },
+    {
+      "territory": "2211001",
+      "name": "Teresina",
+      "age": "2792",
+      "value": 89.36,
+      "raw": "89.36"
+    },
+    {
+      "territory": "2304400",
+      "name": "Fortaleza",
+      "age": "99749",
+      "value": 34.2,
+      "raw": "34.20"
+    },
+    {
+      "territory": "2304400",
+      "name": "Fortaleza",
+      "age": "47813",
+      "value": 87.94,
+      "raw": "87.94"
+    },
+    {
+      "territory": "2304400",
+      "name": "Fortaleza",
+      "age": "31615",
+      "value": 97.98,
+      "raw": "97.98"
+    },
+    {
+      "territory": "2304400",
+      "name": "Fortaleza",
+      "age": "2792",
+      "value": 84.46,
+      "raw": "84.46"
+    },
+    {
+      "territory": "2408102",
+      "name": "Natal",
+      "age": "99749",
+      "value": 30.64,
+      "raw": "30.64"
+    },
+    {
+      "territory": "2408102",
+      "name": "Natal",
+      "age": "47813",
+      "value": 86.55,
+      "raw": "86.55"
+    },
+    {
+      "territory": "2408102",
+      "name": "Natal",
+      "age": "31615",
+      "value": 97.86,
+      "raw": "97.86"
+    },
+    {
+      "territory": "2408102",
+      "name": "Natal",
+      "age": "2792",
+      "value": 88.23,
+      "raw": "88.23"
+    },
+    {
+      "territory": "2507507",
+      "name": "João Pessoa",
+      "age": "99749",
+      "value": 35.03,
+      "raw": "35.03"
+    },
+    {
+      "territory": "2507507",
+      "name": "João Pessoa",
+      "age": "47813",
+      "value": 85.15,
+      "raw": "85.15"
+    },
+    {
+      "territory": "2507507",
+      "name": "João Pessoa",
+      "age": "31615",
+      "value": 97.57,
+      "raw": "97.57"
+    },
+    {
+      "territory": "2507507",
+      "name": "João Pessoa",
+      "age": "2792",
+      "value": 84.33,
+      "raw": "84.33"
+    },
+    {
+      "territory": "2611606",
+      "name": "Recife",
+      "age": "99749",
+      "value": 32.34,
+      "raw": "32.34"
+    },
+    {
+      "territory": "2611606",
+      "name": "Recife",
+      "age": "47813",
+      "value": 85.13,
+      "raw": "85.13"
+    },
+    {
+      "territory": "2611606",
+      "name": "Recife",
+      "age": "31615",
+      "value": 97.57,
+      "raw": "97.57"
+    },
+    {
+      "territory": "2611606",
+      "name": "Recife",
+      "age": "2792",
+      "value": 84.73,
+      "raw": "84.73"
+    },
+    {
+      "territory": "2704302",
+      "name": "Maceió",
+      "age": "99749",
+      "value": 23.6,
+      "raw": "23.60"
+    },
+    {
+      "territory": "2704302",
+      "name": "Maceió",
+      "age": "47813",
+      "value": 81.01,
+      "raw": "81.01"
+    },
+    {
+      "territory": "2704302",
+      "name": "Maceió",
+      "age": "31615",
+      "value": 96.82,
+      "raw": "96.82"
+    },
+    {
+      "territory": "2704302",
+      "name": "Maceió",
+      "age": "2792",
+      "value": 83.98,
+      "raw": "83.98"
+    },
+    {
+      "territory": "2800308",
+      "name": "Aracaju",
+      "age": "99749",
+      "value": 27.96,
+      "raw": "27.96"
+    },
+    {
+      "territory": "2800308",
+      "name": "Aracaju",
+      "age": "47813",
+      "value": 83.81,
+      "raw": "83.81"
+    },
+    {
+      "territory": "2800308",
+      "name": "Aracaju",
+      "age": "31615",
+      "value": 98.58,
+      "raw": "98.58"
+    },
+    {
+      "territory": "2800308",
+      "name": "Aracaju",
+      "age": "2792",
+      "value": 90.55,
+      "raw": "90.55"
+    },
+    {
+      "territory": "2927408",
+      "name": "Salvador",
+      "age": "99749",
+      "value": 34.2,
+      "raw": "34.20"
+    },
+    {
+      "territory": "2927408",
+      "name": "Salvador",
+      "age": "47813",
+      "value": 86.28,
+      "raw": "86.28"
+    },
+    {
+      "territory": "2927408",
+      "name": "Salvador",
+      "age": "31615",
+      "value": 97.47,
+      "raw": "97.47"
+    },
+    {
+      "territory": "2927408",
+      "name": "Salvador",
+      "age": "2792",
+      "value": 83.34,
+      "raw": "83.34"
+    },
+    {
+      "territory": "3106200",
+      "name": "Belo Horizonte",
+      "age": "99749",
+      "value": 50.95,
+      "raw": "50.95"
+    },
+    {
+      "territory": "3106200",
+      "name": "Belo Horizonte",
+      "age": "47813",
+      "value": 93.71,
+      "raw": "93.71"
+    },
+    {
+      "territory": "3106200",
+      "name": "Belo Horizonte",
+      "age": "31615",
+      "value": 98.67,
+      "raw": "98.67"
+    },
+    {
+      "territory": "3106200",
+      "name": "Belo Horizonte",
+      "age": "2792",
+      "value": 85.66,
+      "raw": "85.66"
+    },
+    {
+      "territory": "3205309",
+      "name": "Vitória",
+      "age": "99749",
+      "value": 60.08,
+      "raw": "60.08"
+    },
+    {
+      "territory": "3205309",
+      "name": "Vitória",
+      "age": "47813",
+      "value": 96.47,
+      "raw": "96.47"
+    },
+    {
+      "territory": "3205309",
+      "name": "Vitória",
+      "age": "31615",
+      "value": 99.24,
+      "raw": "99.24"
+    },
+    {
+      "territory": "3205309",
+      "name": "Vitória",
+      "age": "2792",
+      "value": 89.96,
+      "raw": "89.96"
+    },
+    {
+      "territory": "3304557",
+      "name": "Rio de Janeiro",
+      "age": "99749",
+      "value": 43.5,
+      "raw": "43.50"
+    },
+    {
+      "territory": "3304557",
+      "name": "Rio de Janeiro",
+      "age": "47813",
+      "value": 86.73,
+      "raw": "86.73"
+    },
+    {
+      "territory": "3304557",
+      "name": "Rio de Janeiro",
+      "age": "31615",
+      "value": 98.1,
+      "raw": "98.10"
+    },
+    {
+      "territory": "3304557",
+      "name": "Rio de Janeiro",
+      "age": "2792",
+      "value": 85.5,
+      "raw": "85.50"
+    },
+    {
+      "territory": "3550308",
+      "name": "São Paulo",
+      "age": "99749",
+      "value": 61.66,
+      "raw": "61.66"
+    },
+    {
+      "territory": "3550308",
+      "name": "São Paulo",
+      "age": "47813",
+      "value": 91.05,
+      "raw": "91.05"
+    },
+    {
+      "territory": "3550308",
+      "name": "São Paulo",
+      "age": "31615",
+      "value": 97.72,
+      "raw": "97.72"
+    },
+    {
+      "territory": "3550308",
+      "name": "São Paulo",
+      "age": "2792",
+      "value": 82.68,
+      "raw": "82.68"
+    },
+    {
+      "territory": "4106902",
+      "name": "Curitiba",
+      "age": "99749",
+      "value": 46.12,
+      "raw": "46.12"
+    },
+    {
+      "territory": "4106902",
+      "name": "Curitiba",
+      "age": "47813",
+      "value": 89.79,
+      "raw": "89.79"
+    },
+    {
+      "territory": "4106902",
+      "name": "Curitiba",
+      "age": "31615",
+      "value": 98.48,
+      "raw": "98.48"
+    },
+    {
+      "territory": "4106902",
+      "name": "Curitiba",
+      "age": "2792",
+      "value": 85.86,
+      "raw": "85.86"
+    },
+    {
+      "territory": "4205407",
+      "name": "Florianópolis",
+      "age": "99749",
+      "value": 55.42,
+      "raw": "55.42"
+    },
+    {
+      "territory": "4205407",
+      "name": "Florianópolis",
+      "age": "47813",
+      "value": 93.04,
+      "raw": "93.04"
+    },
+    {
+      "territory": "4205407",
+      "name": "Florianópolis",
+      "age": "31615",
+      "value": 98.18,
+      "raw": "98.18"
+    },
+    {
+      "territory": "4205407",
+      "name": "Florianópolis",
+      "age": "2792",
+      "value": 86.97,
+      "raw": "86.97"
+    },
+    {
+      "territory": "4314902",
+      "name": "Porto Alegre",
+      "age": "99749",
+      "value": 38.84,
+      "raw": "38.84"
+    },
+    {
+      "territory": "4314902",
+      "name": "Porto Alegre",
+      "age": "47813",
+      "value": 74.61,
+      "raw": "74.61"
+    },
+    {
+      "territory": "4314902",
+      "name": "Porto Alegre",
+      "age": "31615",
+      "value": 96.69,
+      "raw": "96.69"
+    },
+    {
+      "territory": "4314902",
+      "name": "Porto Alegre",
+      "age": "2792",
+      "value": 84.72,
+      "raw": "84.72"
+    },
+    {
+      "territory": "5002704",
+      "name": "Campo Grande",
+      "age": "99749",
+      "value": 34.63,
+      "raw": "34.63"
+    },
+    {
+      "territory": "5002704",
+      "name": "Campo Grande",
+      "age": "47813",
+      "value": 81.69,
+      "raw": "81.69"
+    },
+    {
+      "territory": "5002704",
+      "name": "Campo Grande",
+      "age": "31615",
+      "value": 98.07,
+      "raw": "98.07"
+    },
+    {
+      "territory": "5002704",
+      "name": "Campo Grande",
+      "age": "2792",
+      "value": 84.19,
+      "raw": "84.19"
+    },
+    {
+      "territory": "5103403",
+      "name": "Cuiabá",
+      "age": "99749",
+      "value": 39.67,
+      "raw": "39.67"
+    },
+    {
+      "territory": "5103403",
+      "name": "Cuiabá",
+      "age": "47813",
+      "value": 83.02,
+      "raw": "83.02"
+    },
+    {
+      "territory": "5103403",
+      "name": "Cuiabá",
+      "age": "31615",
+      "value": 96.33,
+      "raw": "96.33"
+    },
+    {
+      "territory": "5103403",
+      "name": "Cuiabá",
+      "age": "2792",
+      "value": 80.18,
+      "raw": "80.18"
+    },
+    {
+      "territory": "5208707",
+      "name": "Goiânia",
+      "age": "99749",
+      "value": 30.17,
+      "raw": "30.17"
+    },
+    {
+      "territory": "5208707",
+      "name": "Goiânia",
+      "age": "47813",
+      "value": 76.53,
+      "raw": "76.53"
+    },
+    {
+      "territory": "5208707",
+      "name": "Goiânia",
+      "age": "31615",
+      "value": 97.73,
+      "raw": "97.73"
+    },
+    {
+      "territory": "5208707",
+      "name": "Goiânia",
+      "age": "2792",
+      "value": 84.57,
+      "raw": "84.57"
+    },
+    {
+      "territory": "1",
+      "name": "Brasil",
+      "age": "99749",
+      "value": 33.88,
+      "raw": "33.88"
+    },
+    {
+      "territory": "1",
+      "name": "Brasil",
+      "age": "47813",
+      "value": 86.73,
+      "raw": "86.73"
+    },
+    {
+      "territory": "1",
+      "name": "Brasil",
+      "age": "31615",
+      "value": 98.26,
+      "raw": "98.26"
+    },
+    {
+      "territory": "1",
+      "name": "Brasil",
+      "age": "2792",
+      "value": 85.25,
+      "raw": "85.25"
+    }
+  ],
+  "sources": [
+    {
+      "file": "ibge-10056-capitais.json",
+      "url": "https://apisidra.ibge.gov.br/values/t/10056/n6/1100205,1200401,1302603,1400100,1501402,1600303,1721000,2111300,2211001,2304400,2408102,2507507,2611606,2704302,2800308,2927408,3106200,3205309,3304557,3550308,4106902,4205407,4314902,5002704,5103403,5208707/v/3795/p/2022/c58/99749,47813,31615,2792/c2/6794/c86/95251",
+      "sha256": "95308f922842b06a8fa651601aa70d84edbe43a48899c5f1bafeef66745885a4"
+    },
+    {
+      "file": "ibge-10056-brasil.json",
+      "url": "https://apisidra.ibge.gov.br/values/t/10056/n1/1/v/3795/p/2022/c58/99749,47813,31615,2792/c2/6794/c86/95251",
+      "sha256": "a85652c932d4b743db5799104b59b9148b0c0808a92d190714f7aae39e17e1cb"
+    },
+    {
+      "file": "ibge-10056-metadados.json",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/10056/metadados",
+      "sha256": "b56727c36aff91f06a8062a7feec77b22c9cbc2e6604518a91a424493dad7946"
+    }
+  ]
+}

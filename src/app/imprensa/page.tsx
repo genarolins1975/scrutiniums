@@ -123,7 +123,7 @@ export default function ImprensaPage() {
               O debate sobre apostas online e fraudes financeiras está cheio de números sem
               origem. Os painéis abaixo reúnem o que as fontes primárias de fato publicaram —
               cada dado com o documento original, o grau de evidência e a data de referência.
-              Todos os painéis do Observatório são abertos, sem cadastro.
+              Os painéis completos do Observatório abrem com a conta gratuita.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
               <BotaoLink href="/observatorio">Explorar o Observatório</BotaoLink>

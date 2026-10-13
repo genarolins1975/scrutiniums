@@ -25,6 +25,7 @@ const AVISO_SEM_BUILD = "sem build local (.next/server/app); rode `npm run build
 /** Rotas que precisam existir no build quando a verificação é obrigatória. */
 const ROTAS_ASSISTENCIA = ["", "necessidades", "acesso", "acompanhamento", "cuidado", "recursos", "dados", "metodos"].map(s => `eficiencia-estatal/assistencia-social${s ? "/"+s : ""}.html`);
 const ROTAS_OBRIGATORIAS = [
+  ...["", "rede", "acesso", "atividades", "acervos", "recursos", "metodos"].map(s => `eficiencia-estatal/cultura${s ? "/"+s : ""}.html`),
   ...ROTAS_ASSISTENCIA,
   "setor-eletrico.html",
   "setor-eletrico/agua-e-clima/chuva-e-temperatura.html",
@@ -36,7 +37,7 @@ const ROTAS_OBRIGATORIAS = [
   "eficiencia-estatal/educacao-municipal-capitais/metodos.html",
   "eficiencia-estatal.html",
   ...["", "deficit", "aluguel-renda", "inadequacao", "dados"].map(s => `eficiencia-estatal/habitacao${s ? "/"+s : ""}.html`),
-  ...["", "beneficios", "territorio", "recursos", "atendimento", "dados"].map(s => `eficiencia-estatal/previdencia${s ? "/"+s : ""}.html`),
+  ...["", "beneficios", "territorio", "recursos", "atendimento", "dados", "metodos"].map(s => `eficiencia-estatal/previdencia${s ? "/"+s : ""}.html`),
   ...["", "agua", "esgoto", "residuos", "drenagem", "recursos", "dados"].map(s => `eficiencia-estatal/saneamento${s ? "/"+s : ""}.html`),
   ...["", "cobertura", "tempo-resposta", "conciliacao", "recursos", "dados"].map(s => `eficiencia-estatal/acesso-justica${s ? "/"+s : ""}.html`),
   "eficiencia-estatal/seguranca-alimentar.html",
@@ -134,3 +135,4 @@ describe(`HTML gerado pelo build (${EXIGIR ? "verificação obrigatória" : "mod
     expect(violacoes).toEqual([]);
   });
 });
+

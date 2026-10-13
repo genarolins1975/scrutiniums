@@ -2,7 +2,7 @@ import type {Metadata} from 'next';
 import {Abertura,Nota,Secao} from '@/components/eficiencia/previdencia/Editoria';
 import {ROTA,fontes,medidas} from '@/lib/eficiencia/previdencia/dados';
 export const dynamic='force-static';
-export const metadata:Metadata={title:'Previdência — dados e métodos',alternates:{canonical:ROTA+'/dados'}};
+export const metadata:Metadata={title:'Previdência — dados e métodos',alternates:{canonical:ROTA+'/metodos'}};
 export default function Pagina(){return <><Abertura numero="06" titulo="Fontes, conceitos e reprodução." texto="Doze tabelas oficiais do AEPS 2024, com referências históricas de 2022 a 2024. Fonte, captura e período de referência são informações diferentes: a captura em outubro de 2026 não atualiza os dados para 2026."/>
  <div className="flex flex-wrap gap-4 border-y border-linha py-4">{[['snapshot.json','Base estruturada (JSON)'],['tabelas.csv','Tabelas normalizadas (CSV)'],['fontes.json','Manifesto e hashes (JSON)'],['originais.zip','HTMLs oficiais preservados (ZIP)']].map(([f,t])=><a key={f} className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline" href={'/eficiencia/previdencia/'+f} download>{t}</a>)}</div>
  <Nota>Este é um recorte histórico, não uma fotografia atual do INSS. Não produzimos nota de eficiência, cobertura populacional, taxa de aprovação, déficit previdenciário ou prazo de decisão a partir destas tabelas.</Nota>

@@ -15,13 +15,20 @@ export type ProductEventName =
   | "boletim_enviado"
   | "boletim_optin"
   | "boletim_optout"
+  // assinatura do resumo sem conta: só o fato, nunca o endereço
+  | "resumo_assinatura_pedida"
+  | "resumo_assinatura_confirmada"
+  | "resumo_assinatura_cancelada"
+  | "resumo_enviado"
   | "onboarding_completed"
   | "verification_failed"
   | "onboarding_abandoned"
   // escolha de observatório na tela pós login (domínio, nunca PII)
   | "observatorio_escolhido:credito"
   | "observatorio_escolhido:energia"
-  | "observatorio_escolhido:eficiencia";
+  | "observatorio_escolhido:eficiencia"
+  | "observatorio_escolhido:contas"
+  | "observatorio_escolhido:estados";
 
 export async function trackEvent(name: ProductEventName, userId?: string): Promise<void> {
   try {

@@ -1,0 +1,6 @@
+import type {Metadata} from 'next';
+import {GLOSSARIO,type TermoId} from '@/lib/contas-publicas/glossario';
+import {dataFonte} from '@/lib/contas-publicas/dados';
+import {Termo} from '@/components/contas-publicas/artefatos/Termo';
+export const metadata:Metadata={title:'Glossário · Contas Públicas',alternates:{canonical:'/contas-publicas/glossario'}};
+export default function Page(){return <main id="conteudo-contas" className="cp-wrap cp-main"><p className="cp-eyebrow">Conceitos para acompanhar as contas</p><h1>O significado de cada etapa.</h1><p className="cp-lead">Definições resumidas a partir de fontes oficiais. Nos painéis, os termos pontilhados abrem uma explicação por toque, clique ou teclado.</p><p className="cp-reading">Experimente: <Termo id="empenho"/>. Pressione Escape para fechar a definição e retornar ao termo.</p><nav aria-label="Índice do glossário" className="cp-glossary-index">{Object.entries(GLOSSARIO).map(([id,t])=><a key={id} href={`#${id}`}>{t.termo}</a>)}</nav><dl className="cp-glossary">{(Object.entries(GLOSSARIO) as [TermoId,typeof GLOSSARIO[TermoId]][]).map(([id,t])=><div key={id} id={id}><dt>{t.termo}</dt><dd><p>{t.definicao}</p><p className="cp-note"><a href={t.url}>{t.fonte} ↗</a> · consulta em {dataFonte(t.consulta)}</p></dd></div>)}</dl></main>}

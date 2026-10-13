@@ -1,6 +1,6 @@
 import bruto from '../../../../public/eficiencia/previdencia/snapshot.json';
 export const ROTA='/eficiencia-estatal/previdencia';
-export const PAGINAS=[['','Panorama'],['beneficios','Benefícios'],['territorio','Território'],['recursos','Valores emitidos'],['atendimento','Atendimento'],['dados','Dados e métodos']] as const;
+export const PAGINAS=[['','Panorama'],['beneficios','Benefícios'],['territorio','Território'],['recursos','Valores emitidos'],['atendimento','Atendimento'],['metodos','Dados e métodos']] as const;
 export type Linha={id:string;name:string;territory:string;values:(number|null)[]};
 export const tabelas=bruto.tables as Record<string,Linha[]>;
 export const fontes=bruto.sources;

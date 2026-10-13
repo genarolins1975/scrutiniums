@@ -47,7 +47,9 @@ jobs:
           npm install --prefix "$BROWSER_DIR" --no-audit --no-fund playwright@1.58.2
           ln -s "$BROWSER_DIR/node_modules/playwright" node_modules/playwright
           "$BROWSER_DIR/node_modules/.bin/playwright" install --with-deps chromium
-      - name: Verificar seis páginas, filtros, acessibilidade e downloads
+      - name: Verificar páginas, sessão, filtros, acessibilidade e downloads
+        env:
+          COOKIE_SECRET: previdencia-ci-${{ github.run_id }}-${{ github.run_attempt }}-local
         run: node scripts/obee/previdencia-verificacao.mjs
       - name: Guardar evidências
         if: always()
