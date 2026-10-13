@@ -77,6 +77,9 @@ describe("/sobre e rodapés", () => {
     expect(ler(".github/workflows/auditoria-notas.yml")).toContain("pesquisa/registro_erros.json");
     const r = registroErros();
     expect(r.erros.length).toBeGreaterThan(0);
+    const bruto = JSON.parse(ler("pesquisa/registro_erros.json")).erros as { publicado: boolean }[];
+    expect(r.erros.length).toBe(bruto.filter((e) => e.publicado === true).length);
+    expect(r.erros.every((e) => e.publicado === true)).toBe(true);
     for (const e of r.erros) expect(e.id).toMatch(/^E\d{3}$/);
     expect(dataOuNaoApurado(null)).toBe("não apurado");
     expect(dataOuNaoApurado("2026-09-05")).toBe("05/09/2026");

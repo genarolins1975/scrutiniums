@@ -51,9 +51,14 @@ export type ErroRegistrado = {
   fonte_registro?: string;
 };
 
+/**
+ * Só entradas com `publicado: true`: as páginas dizem "erros publicados", e um erro
+ * pego antes de chegar ao leitor não pode aparecer como se tivesse chegado.
+ */
 export function registroErros(): { descricao: string; erros: ErroRegistrado[] } {
   const r = JSON.parse(readFileSync(join(process.cwd(), "pesquisa", "registro_erros.json"), "utf-8"));
-  return { descricao: String(r.descricao ?? ""), erros: (r.erros ?? []) as ErroRegistrado[] };
+  const erros = ((r.erros ?? []) as ErroRegistrado[]).filter((e) => e.publicado === true);
+  return { descricao: String(r.descricao ?? ""), erros };
 }
 
 /** Data ISO para dd/mm/aaaa; nulo é "não apurado", nunca estimado (regra do próprio registro). */
