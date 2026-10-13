@@ -32,6 +32,9 @@ export const POLICIES = {
   invitesPerAdmin: { windowMs: 10 * 60 * 1000, max: 3, backoffBaseMs: 30_000 },
   /** Telemetria de visitas: navegação intensa legítima cabe; flood não. */
   viewsPerUser: { windowMs: 60 * 1000, max: 40, backoffBaseMs: 30_000 },
+  /** Assinatura do resumo por e-mail, sem conta: limita pedidos por IP e por endereço. */
+  assinaturaPorIp: { windowMs: 60 * 60 * 1000, max: 10, backoffBaseMs: 30_000 },
+  assinaturaPorEmail: { windowMs: 60 * 60 * 1000, max: 3, backoffBaseMs: 60_000 },
 } satisfies Record<string, RateLimitPolicy>;
 
 export function checkRateLimit(key: string, policy: RateLimitPolicy): { allowed: boolean; retryAfterMs: number } {

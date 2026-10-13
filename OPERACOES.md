@@ -45,8 +45,18 @@ novas viram comentários nela. Um cheque de vigília que quebre (código ≠ 0 e
   registro público de erros e issue "Auditoria achou erro factual em nota
   aprovada"; o tipo de nota volta ao degrau 1.
 - `boletim-mensal.yml` (dia 1º): envia o boletim da central de alertas.
-  **Pendência de configuração:** exige o segredo `BOLETIM_SECRET` no GitHub
-  Actions e a variável homônima na Vercel; sem eles a rota devolve 403.
+- `resumo-email.yml` (depois de cada execução do diário, com reserva às 21:47
+  UTC): envia o resumo do crédito às assinaturas confirmadas em /resumo, sem
+  conta. Idempotente: a diária só recebe edição nova; a semanal, às segundas.
+- **Pendência de configuração dos dois envios** (não resolvível no código):
+  1. segredo `BOLETIM_SECRET` (16 caracteres ou mais) no GitHub Actions;
+  2. variável `BOLETIM_SECRET` com o mesmo valor na Vercel;
+  3. `RESEND_API_KEY` e `MAIL_FROM` na Vercel, com o domínio do remetente
+     verificado no Resend;
+  4. `COOKIE_SECRET` na Vercel (assina os links de confirmação e de saída; sem
+     ele, em produção nenhum link é emitido nem aceito).
+  Sem o item 1, os workflows falham com mensagem explícita; sem o item 2, a
+  rota responde 403.
 
 ## O que permanece manual, o que deixou de ser, e por quê
 

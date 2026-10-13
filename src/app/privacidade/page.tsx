@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 /** Mantida em sincronia com PRIVACY_VERSION em @/lib/onboarding. */
-const VERSAO_POLITICA = "2026-07";
+const VERSAO_POLITICA = "2026-10";
 
 export default function PrivacidadePage() {
   return (
@@ -154,6 +154,27 @@ export default function PrivacidadePage() {
               Telefone, e-mail e códigos de verificação nunca são enviados a ferramentas de
               analytics. Registros internos de auditoria guardam apenas versões mascaradas desses
               dados.
+            </p>
+          </section>
+
+          <section aria-labelledby="priv-resumo">
+            <div className="mb-3 flex items-baseline gap-4">
+              <span className="font-serif text-xl text-bronze" aria-hidden="true">
+                07
+              </span>
+              <h2 id="priv-resumo" className="font-serif text-2xl text-carvao">
+                Resumo do crédito por e-mail, sem conta
+              </h2>
+            </div>
+            <p className="text-carvao-muted">
+              Quem assina o resumo em /resumo informa só o e-mail e a periodicidade (diária ou
+              semanal). Guardamos o endereço, a periodicidade, a data do consentimento, a data da
+              confirmação e a data e a edição do último envio. A base é o consentimento, marcado no
+              formulário e confirmado pelo link enviado ao endereço: sem a confirmação, nada é
+              enviado e o pedido é apagado em 7 dias. Todo e-mail do resumo traz descadastro em um
+              clique; ao sair, o registro é apagado. O endereço é usado apenas para enviar o resumo,
+              passa só pelo provedor que entrega os e-mails e não entra em ferramentas de analytics, que registram só o
+              fato do pedido, da confirmação, do envio e da saída.
             </p>
           </section>
 

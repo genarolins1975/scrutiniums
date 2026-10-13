@@ -92,4 +92,21 @@ export const suggestions = pgTable("suggestions", {
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull(),
 });
 
+/**
+ * Assinaturas do resumo do crédito por e-mail, sem conta. Dupla confirmação:
+ * nasce PENDENTE no formulário e só fica ATIVA pelo link enviado ao endereço.
+ * O descadastro apaga a linha (nada a reter de quem saiu).
+ */
+export const assinaturasResumo = pgTable("assinaturas_resumo", {
+  id: text("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  periodicidade: text("periodicidade").notNull(),
+  status: text("status").notNull(),
+  consentimentoEm: timestamp("consentimento_em", { withTimezone: true, mode: "date" }).notNull(),
+  confirmadaEm: timestamp("confirmada_em", { withTimezone: true, mode: "date" }),
+  ultimoEnvioEm: timestamp("ultimo_envio_em", { withTimezone: true, mode: "date" }),
+  ultimaEdicao: text("ultima_edicao"),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull(),
+});
+
 export type User = typeof users.$inferSelect;

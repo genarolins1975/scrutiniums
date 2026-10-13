@@ -110,8 +110,11 @@ describe("destinatários e guarda de reenvio", () => {
 describe("superfícies do boletim", () => {
   it("o disparo exige BOLETIM_SECRET (Bearer) ou sessão de admin", () => {
     const rota = readFileSync(join(raiz, "src/app/api/boletim/enviar/route.ts"), "utf-8");
-    expect(rota).toContain("BOLETIM_SECRET");
-    expect(rota).toContain("timingSafeEqual");
+    // a autorização por Bearer vive em src/lib/disparo.ts, compartilhada com o resumo por e-mail
+    expect(rota).toContain("bearerDisparoValido(req)");
+    const disparo = readFileSync(join(raiz, "src/lib/disparo.ts"), "utf-8");
+    expect(disparo).toContain("BOLETIM_SECRET");
+    expect(disparo).toContain("timingSafeEqual");
     expect(rota).toContain("isAdmin");
     expect(rota).toContain("boletimEnviadoNoMes");
     expect(rota).toContain("maxDuration");

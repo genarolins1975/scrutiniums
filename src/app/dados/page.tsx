@@ -6,6 +6,7 @@ import { PageTitle } from "@/components/ui/SectionHeading";
 import { Sparkline } from "@/components/dados/GraficoSerie";
 import { SeloFrescor } from "@/components/dados/SeloFrescor";
 import { ChamadaObservatorio } from "@/components/dados/ChamadaObservatorio";
+import { URL_FEED_ALERTAS, URL_FEED_RESUMO } from "@/lib/feedResumo";
 import { fmtDelta, fmtRefMes, fmtValor, geradoEmPublicado, indicadoresPublicos } from "@/lib/dadosPublicos";
 
 /**
@@ -40,6 +41,16 @@ export default function DadosPage() {
           · <Link href="/observatorio/methodology" className="text-bronze underline underline-offset-4 hover:text-carvao">metodologia</Link>
         </p>
         <SeloFrescor geradoEm={geradoEmPublicado()} className="mt-3" />
+        <p className="mt-2 text-xs text-mineral">
+          Acompanhe:{" "}
+          <Link href="/resumo#acompanhe" className="text-bronze underline underline-offset-4 hover:text-carvao">resumo por e-mail</Link>
+          {" "}·{" "}
+          <a href={URL_FEED_RESUMO} className="text-bronze underline underline-offset-4 hover:text-carvao">RSS do resumo</a>
+          {" "}·{" "}
+          <a href={URL_FEED_ALERTAS} className="text-bronze underline underline-offset-4 hover:text-carvao">RSS da central de alertas</a>
+          {" "}·{" "}
+          <Link href="/dados/ibcc" className="text-bronze underline underline-offset-4 hover:text-carvao">índice de condições de crédito (IBCC)</Link>
+        </p>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {inds.map((i) => (
