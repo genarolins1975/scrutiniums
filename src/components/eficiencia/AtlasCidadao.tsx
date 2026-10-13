@@ -9,12 +9,13 @@ import {PilotoResultados} from './PilotoResultados';
 import type {PilotSnapshot} from '@/lib/eficiencia/piloto-nucleo';
 import {FrequenciaEscolar} from './FrequenciaEscolar';
 import frequencia from '@/lib/eficiencia/frequencia-escolar.json';
-import panorama from '@/lib/eficiencia/panorama-atlas.json';
-import {PanoramaTerritorial, panoramaPair, panoramaValue} from './PanoramaTerritorial';
+import {AberturaCidada} from './AberturaCidada';
+import {TrilhasEstado} from '@/components/observatorios/TrilhasEstado';
+import {PanoramaTerritorial} from './PanoramaTerritorial';
 
 type Scope = 'cidades' | 'regioes';
-type Selection = {scope: Scope; place: string; reference: string; metric: 'frequencia' | 'saeb'; age: string};
-const DEFAULT: Selection = {scope:'cidades',place:'2611606',reference:'4106902',metric:'frequencia',age:'47813'};
+type Selection = {scope: Scope; place: string; reference: string; metric: 'frequencia' | 'saeb'; age: string; perspective?: string};
+const DEFAULT: Selection = {scope:'cidades',place:'2611606',reference:'4106902',metric:'frequencia',age:'47813',perspective:'educacao'};
 const options = (scope: Scope) => scope === 'cidades' ? dados.cities : dados.regions.filter(r=>r.id!=='Brasil');
 const format = (value: number | null) => value === null ? 'Não disponível' : value.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:2});
 function selectionFromUrl(): Selection {
@@ -27,7 +28,8 @@ function selectionFromUrl(): Selection {
     ?? pool.find(p=>p.id!==place)!.id;
   const metric=q.get('indicador')==='saeb'?'saeb':'frequencia';
   const age=frequencia.ages.find(a=>a.id===q.get('idade'))?.id??DEFAULT.age;
-  return {scope,place,reference,metric,age};
+  const perspective=['educacao','saude','trabalho','mobilidade'].find(p=>p===q.get('perspectiva'))??'educacao';
+  return {scope,place,reference,metric,age,perspective};
 }
 
 /** `pilot` só é fornecido pelo servidor em preview/desenvolvimento; sem ele, nada do piloto é exibido. */
@@ -43,7 +45,7 @@ export function AtlasCidadao({pilot=null}:{pilot?:PilotSnapshot|null}){
     if(next.place===next.reference) next={...next,reference:pool.find(p=>p.id!==next.place)!.id};
     setSelection(next);
     const url=new URL(window.location.href);
-    url.searchParams.set('visao',next.scope);url.searchParams.set('territorio',next.place);url.searchParams.set('comparador',next.reference);url.searchParams.set('indicador',next.metric);url.searchParams.set('idade',next.age);
+    url.searchParams.set('visao',next.scope);url.searchParams.set('territorio',next.place);url.searchParams.set('comparador',next.reference);url.searchParams.set('indicador',next.metric);url.searchParams.set('idade',next.age);url.searchParams.set('perspectiva',next.perspective??'educacao');
     window.history.pushState(null,'',url);
   }
   const pool=options(selection.scope);
@@ -59,20 +61,13 @@ export function AtlasCidadao({pilot=null}:{pilot?:PilotSnapshot|null}){
   const valuesHref=city?'/eficiencia-estatal/educacao-municipal-capitais/resultados':'/eficiencia-estatal/seguranca-alimentar/necessidades';
   const sourceHref=city?'/eficiencia-estatal/educacao-municipal-capitais/metodos':'/eficiencia-estatal/seguranca-alimentar/metodos';
   return <div className={styles.atlas}>
-    <header className={styles.intro}><div><p className={styles.eyebrow}>OBEE / Atlas do cidadão</p><h1 id="titulo-eficiencia">O Estado na sua vida.</h1></div><p>Conheça os serviços, compare territórios e acompanhe as evidências de cada capítulo.</p></header>
-    <div className={styles.toolbar}>
-      <fieldset className={styles.scope}><legend className={styles.srOnly}>Recorte territorial da comparação</legend>{(['cidades','regioes'] as const).map(s=><button key={s} type="button" aria-pressed={selection.scope===s} onClick={()=>select(s==='cidades'?DEFAULT:{...selection,scope:s,place:'Nordeste',reference:'Sul'})}>{s==='cidades'?'Cidades':'Regiões'}</button>)}</fieldset>
-      <label>Território<select value={a.id} onChange={e=>select({...selection,place:e.target.value})}>{pool.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
-      <label>Comparar com<select value={b.id} onChange={e=>select({...selection,reference:e.target.value})}>{pool.filter(p=>p.id!==a.id).map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
-    </div>
-    <nav className={styles.pageNav} aria-label="Nesta página"><span>Nesta página</span><a href={city?'#atlas-panorama':'#atlas-comparacao'}>{city?'Panorama territorial':'Comparação regional'}</a>{city&&showPilot&&<a href="#atlas-piloto">Escore experimental</a>}<a href="#dados-publicados">Explorar os 16 temas</a></nav>
-    <section className={styles.hero} aria-label="Panorama do território e mapa dos capítulos">
-      <div className={styles.place}><p className={styles.eyebrow}>{city?'Capital brasileira':'Grande Região'}</p><h2>{a.name}</h2><p className={styles.pending}>{city?'Quatro perspectivas da vida.':'A alimentação no território.'}</p><p className={styles.heroNote}>{city?'Educação, saúde, renda e mobilidade: medidas reais, referências e limites à vista.':'Situação alimentar dos domicílios, com o recorte regional da pesquisa.'}</p><a href={city?'#atlas-panorama':'#atlas-comparacao'}>Comparar com {b.name} ↓</a></div>
-      <div className={styles.orbitWrap}><svg viewBox="0 0 400 400" className={styles.orbit} role="img" aria-labelledby="atlas-orbit-title atlas-orbit-desc"><title id="atlas-orbit-title">Mapa dos 16 capítulos do OBEE</title><desc id="atlas-orbit-desc">Cada posição representa um capítulo. O desenho organiza temas; não representa notas, cobertura territorial ou desempenho. Os temas estão na seção Explorar os 16 temas.</desc><circle cx="200" cy="200" r="128" fill="none" stroke="var(--cor-obee-atlas-linha-inversa)" strokeDasharray="2 7"/><circle cx="200" cy="200" r="88" fill="none" stroke="var(--cor-obee-atlas-orbita)"/>{DIMENSOES.map((d,i)=>{const angle=(i*22.5-90)*Math.PI/180;const x=200+128*Math.cos(angle),y=200+128*Math.sin(angle);return <g key={d.id}><line x1={200+92*Math.cos(angle)} y1={200+92*Math.sin(angle)} x2={x} y2={y} stroke={d.id===dimension?.id?'var(--cor-obee-atlas-acento-inverso)':'var(--cor-obee-atlas-linha-inversa)'} strokeWidth={d.id===dimension?.id?3:1}/><circle cx={x} cy={y} r={d.id===dimension?.id?15:12} fill={d.id===dimension?.id?'var(--cor-obee-atlas-acento-inverso)':'var(--cor-obee-atlas-no)'} stroke={d.href?'var(--cor-obee-atlas-acento-inverso)':'var(--cor-obee-atlas-no-pendente)'}/><text x={x} y={y+4} textAnchor="middle" fill={d.id===dimension?.id?'var(--cor-obee-atlas-tinta)':'var(--cor-obee-atlas-papel)'} fontSize="10">{String(i+1).padStart(2,'0')}</text></g>})}<text x="200" y="192" textAnchor="middle" fill="var(--cor-obee-atlas-papel)" fontSize="44" fontFamily="Georgia,serif">16</text><text x="200" y="219" textAnchor="middle" fill="var(--cor-obee-atlas-texto-inverso)" fontSize="12">dimensões da vida pública</text></svg><p>Mapa temático · não representa escores</p></div>
-      <div className={styles.heroAside}>{city?<div className={styles.heroMeasures}><p className={styles.eyebrow}>Evidências de {a.name}</p>{panorama.metrics.map(m=><a key={m.id} href={`#panorama-${m.id}`}><span>{{educacao:'Escola · 4 a 5 anos',saude:'Capacidade potencial APS',trabalho:'Renda por pessoa · mediana',mobilidade:'Mais de 1h até o trabalho'}[m.id]}<small>{m.period}</small></span><strong>{panoramaValue(panoramaPair(a.id,b.id,m).a,m.unit)}</strong></a>)}</div>:<div><p className={styles.eyebrow}>Evidência disponível / {meta.period}</p><h3>{measure}</h3><strong>{format(a.value)}</strong><p>{meta.unit}</p><a href="#atlas-comparacao">Comparar com {b.name} →</a></div>}<div className={styles.heroAsideBottom}><p className={styles.eyebrow}>Escore agregado / Em construção</p><p>{city&&showPilot?"Piloto de cinco dimensões disponível para revisão. Nota integral ainda indisponível.":"Componentes e referências ainda não validados."}</p><a href={city&&showPilot?"#atlas-piloto":"#atlas-score-method"}>{city&&showPilot?"Explorar o piloto 2022 ↓":"Consultar disponibilidade ↗"}</a></div></div>
-      <div className={styles.heroFooter}><span>Dados reais · períodos identificados em cada medida</span><span>Comparação internacional ainda não disponível</span></div>
-    </section>
-    <dl className={styles.strip}><div><dt>Dimensões no observatório</dt><dd>{DIMENSOES.length}<small>visão completa dos temas</small></dd></div><div><dt>Capítulos com painéis publicados</dt><dd>{published}<small>cobertura variável por fonte</small></dd></div><div><dt>{city&&showPilot?"Nota integral do OBEE":"Nota agregada"}</dt><dd className={styles.stripText}>Indisponível<small>dados publicados não equivalem a escore validado</small></dd></div></dl>
+    <AberturaCidada selection={selection} onSelect={select}/>
+    <TrilhasEstado itens={[
+      {titulo:'A vida no território',texto:'Educação, saúde, renda e mobilidade: referências lado a lado.',href:city?'#atlas-panorama':'#atlas-comparacao',icone:'territorio'},
+      {titulo:'Encontre seu tema',texto:'Acesso, recursos e resultados em 16 dimensões da vida pública.',href:'#dados-publicados',icone:'servicos'},
+      {titulo:'Entenda a cobertura',texto:'O que cada fonte permite comparar e quais evidências ainda faltam.',href:'#cobertura',icone:'recursos'},
+    ]}/>
+    <dl className={styles.strip}><div><dt>Dimensões no observatório</dt><dd>{DIMENSOES.length}<small>visão completa dos temas</small></dd></div><div><dt>Capítulos com painéis publicados</dt><dd>{published}<small>cobertura variável por fonte</small></dd></div><div><dt>{city&&showPilot?"Nota integral do OBEE":"Nota agregada"}</dt><dd className={styles.stripText}>Indisponível<small>Em construção · dados publicados não equivalem a escore validado</small></dd></div></dl>
     {city&&pilot&&<PilotoResultados data={pilot} place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})}/>}
     {city&&<PanoramaTerritorial place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})} onEducation={()=>select({...selection,metric:'frequencia',age:'47813'})}/>}
     <section id="atlas-comparacao" className={styles.section} aria-labelledby="atlas-compare-title"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>02 / Aprofundar a comparação</p><h2 id="atlas-compare-title">Uma medida. Diferentes contextos.</h2></div><p>{city&&selection.metric==='frequencia'?`${frequencia.source} · referência ${frequencia.period}`:`${meta.source} · referência ${meta.period}`}</p></div>
