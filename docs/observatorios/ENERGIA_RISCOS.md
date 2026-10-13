@@ -85,4 +85,4 @@ A autoavaliação visual não equivale a revisão independente. Testes automatiz
 | Interação e acessibilidade | 8 | Filtro, teclado, foco, estados extremos e exportação conferidos. Leitor de tela e zoom nativo de 200% não verificados; sem declaração integral de conformidade. |
 | Responsividade | 9 | 320, 390, 768 e 1.440 px sem sobreposição ou perda de campos; tabelas extensas rolam localmente. |
 
-A correção final de troca rápida de laboratório deve ser verificada na prévia atualizada e registrada no PR antes da publicação.
+A revisão final de persistência foi verificada na prévia: edição e restauração seguidas de troca imediata preservaram o cenário; exportar PUE 1,35 gravou a URL antes de gerar o JSON, com 946,08 GWh no cálculo e na recarga. Os campos apresentam até 12 algarismos significativos, sem expor resíduos de ponto flutuante nem arredondar os resultados dos modelos. O CI obrigatório e a confirmação pública são registrados no PR.
