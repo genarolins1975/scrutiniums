@@ -5,17 +5,18 @@ import { LogoWordmark } from "@/components/ui/Logo";
 import { getSessionUser } from "@/lib/session";
 import { ABAS_OBSERVATORIOS } from "@/components/observatorios/NavegacaoObservatorios";
 
-// Abas do cabeçalho: os cinco observatórios, com os mesmos destinos e rótulos das
-// barras internas (ABAS_OBSERVATORIOS), e a página de imprensa. Apresentação,
-// método, dados e demais páginas de cada domínio ficam na home, no rodapé e
-// dentro de cada observatório. Para quem não tem sessão, cada aba passa pelo
-// login e volta ao observatório escolhido (src/middleware.ts).
+// Abas do cabeçalho: os cinco observatórios, com os rótulos das barras internas
+// (ABAS_OBSERVATORIOS), e a página de imprensa. Quem tem conta vai direto ao painel;
+// o visitante vai à seção do observatório na página inicial (pergunta, painéis,
+// fontes e o convite para entrar), em vez de cair na tela de login.
 // As abas ficam na linha da marca a partir de 1280 px; abaixo disso, numa segunda
 // linha que quebra em vez de rolar, para nenhuma aba ficar escondida.
-const NAV: { href: string; label: string }[] = [
-  ...ABAS_OBSERVATORIOS.map((a) => ({ href: a.href, label: a.rotulo })),
-  { href: "/imprensa", label: "Imprensa" },
-];
+export function navCabecalho(authenticated: boolean): { href: string; label: string }[] {
+  return [
+    ...ABAS_OBSERVATORIOS.map((a) => ({ href: authenticated ? a.href : `/#obs-${a.id}`, label: a.rotulo })),
+    { href: "/imprensa", label: "Imprensa" },
+  ];
+}
 
 /**
  * Cabeçalho público com ações de autenticação sensíveis à sessão:
@@ -44,6 +45,7 @@ export async function PublicHeader() {
 
 /** Variante presentacional (estática) — usada também na página 404. */
 export function PublicHeaderView({ authenticated = false }: { authenticated?: boolean }) {
+  const NAV = navCabecalho(authenticated);
   return (
     <header className="border-b border-linha bg-marfim">
       <div className="mx-auto flex max-w-page items-center justify-between gap-6 px-6 py-5">
