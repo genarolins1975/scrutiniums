@@ -21,9 +21,145 @@
 
 .panel :global(.cp-provenance){color:var(--cor-obee-atlas-texto-inverso);border-color:var(--cor-obee-atlas-linha-inversa);margin-top:8px;padding-top:8px}.panel :global(.cp-source-facts){display:block;font-size:12px}.panel :global(.cp-source-facts)>div{padding:8px 0;border-bottom:1px solid var(--cor-obee-atlas-linha-inversa)}.panel :global(.cp-source-facts) dt{font-weight:600;color:var(--cor-obee-atlas-papel)}.panel details dl{font-size:13px;margin-top:12px}.panel details dd{margin:4px 0 12px;overflow-wrap:anywhere}.panel select option{background:var(--cor-obee-atlas-tinta);color:var(--cor-obee-atlas-papel)}
 
-/* Mesma arte conceitual do ciclo de Crédito; nenhum tamanho ou posição codifica dados. */
-.illustrated{background:var(--cor-obee-atlas-tinta);color:var(--cor-obee-atlas-papel);padding:28px 32px 20px;margin:0 0 36px}.illustratedHeading{display:flex;justify-content:space-between;gap:24px;align-items:baseline;padding-bottom:16px;border-bottom:1px solid var(--cor-obee-atlas-linha-inversa)}.illustratedHeading p{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--cor-obee-atlas-rotulo-inverso);margin:0}.illustratedHeading>span{font-size:13px;color:var(--cor-obee-atlas-texto-inverso)}.illustratedLinks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}.illustratedLinks>a{min-width:0;color:var(--cor-obee-atlas-papel);text-decoration:none;display:flex;flex-direction:column;padding-bottom:20px;border-bottom:2px solid var(--cor-obee-atlas-linha-inversa)}.illustratedLinks>a:hover{border-color:var(--cor-obee-atlas-acento-inverso)}.illustratedLinks>a:hover strong{text-decoration:underline;text-underline-offset:5px}.illustratedLinks>a:focus-visible{outline:3px solid var(--cor-obee-atlas-acento-inverso);outline-offset:5px}.scene{display:block;width:100%;max-width:220px;aspect-ratio:1;margin:12px auto 8px;background-image:url('/obs/arte/etapas-v1.webp');background-size:400% 200%;background-repeat:no-repeat}.journeyText{display:block}.journeyIndex{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--cor-obee-atlas-rotulo-inverso);padding-bottom:12px}.journeyIndex>span{font-size:22px;line-height:1;color:var(--cor-obee-atlas-acento-inverso)}.illustratedLinks strong{display:block;font-family:var(--font-serif),Georgia,serif;font-weight:400;font-size:25px;line-height:1.25}.illustratedLinks small{display:block;font-size:14px;line-height:1.6;color:var(--cor-obee-atlas-texto-inverso);margin-top:10px}.illustrationNote{font-size:12px;color:var(--cor-obee-atlas-texto-inverso);line-height:1.6;margin:18px 0 0!important}
-@media(max-width:760px){.illustrated{padding:24px;margin-bottom:28px}.illustratedHeading{display:block}.illustratedHeading>span{display:block;margin-top:8px}.illustratedLinks{grid-template-columns:1fr;gap:0}.illustratedLinks>a{display:grid;grid-template-columns:104px minmax(0,1fr);gap:20px;align-items:center;padding:20px 0;border-bottom-width:1px}.scene{max-width:none;margin:0}.journeyIndex{padding-bottom:6px}.illustratedLinks strong{font-size:22px}.illustratedLinks small{font-size:13px;margin-top:8px}}
-@media(max-width:380px){.illustrated{padding:20px 16px}.illustratedLinks>a{grid-template-columns:76px minmax(0,1fr);gap:14px}.illustratedLinks strong{font-size:20px}.illustratedLinks small{font-size:13px}}
-@media(forced-colors:active){.illustrated{border:1px solid CanvasText}.illustratedLinks>a{border-color:CanvasText}}
-@media print{.illustrated{background:transparent;color:var(--cor-carvao)}.scene{display:none}.illustratedLinks{display:block}.illustratedLinks>a{display:block;color:var(--cor-carvao)}.illustrated small,.illustratedHeading p,.illustratedHeading>span,.journeyIndex,.illustrationNote{color:var(--cor-carvao)}}
+/* Três pranchas editoriais próprias: a arte orienta o tema, sem codificar dados. */
+.illustrated {
+  background: var(--cor-obee-atlas-tinta);
+  color: var(--cor-obee-atlas-papel);
+  padding: 28px 32px 22px;
+  margin: 0 0 36px;
+}
+.illustratedHeading {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: baseline;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--cor-obee-atlas-linha-inversa);
+}
+.illustratedHeading p {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--cor-obee-atlas-rotulo-inverso);
+  margin: 0;
+}
+.illustratedHeading > span {
+  font-size: 13px;
+  color: var(--cor-obee-atlas-texto-inverso);
+}
+.illustratedLinks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  padding-top: 24px;
+}
+.illustratedLinks > a {
+  min-width: 0;
+  color: var(--cor-obee-atlas-papel);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid var(--cor-obee-atlas-linha-inversa);
+}
+.illustratedLinks > a:hover {
+  border-color: var(--cor-obee-atlas-acento-inverso);
+}
+.illustratedLinks > a:hover strong {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.illustratedLinks > a:focus-visible {
+  outline: 3px solid var(--cor-obee-atlas-acento-inverso);
+  outline-offset: 5px;
+}
+.scene {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--cor-obee-atlas-tinta);
+}
+/* O tríptico tem 2172 × 724 px: cada janela exibe exatamente um terço. */
+.sceneImage {
+  position: absolute;
+  top: 0;
+  display: block;
+  width: 300%;
+  max-width: none;
+  height: 100%;
+}
+.journeyText { display: block; padding: 20px 0 24px; }
+.journeyIndex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--cor-obee-atlas-rotulo-inverso);
+  padding-bottom: 12px;
+}
+.journeyIndex > span {
+  font-size: 22px;
+  line-height: 1;
+  color: var(--cor-obee-atlas-acento-inverso);
+}
+.illustratedLinks strong {
+  display: block;
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+.illustratedLinks small {
+  display: block;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--cor-obee-atlas-texto-inverso);
+  margin-top: 10px;
+}
+.illustrationNote {
+  font-size: 12px;
+  color: var(--cor-obee-atlas-texto-inverso);
+  line-height: 1.6;
+  margin: 18px 0 0 !important;
+}
+@media (max-width: 1050px) {
+  .illustratedLinks { gap: 20px; }
+  .illustratedLinks strong { font-size: 23px; }
+}
+@media (max-width: 760px) {
+  .illustrated { padding: 24px; margin-bottom: 28px; }
+  .illustratedHeading { display: block; }
+  .illustratedHeading > span { display: block; margin-top: 8px; }
+  .illustratedLinks { grid-template-columns: 1fr; gap: 24px; }
+  .illustratedLinks > a {
+    display: grid;
+    grid-template-columns: minmax(140px, .8fr) minmax(0, 1.2fr);
+    gap: 24px;
+    align-items: center;
+    padding-bottom: 24px;
+    border-bottom-width: 1px;
+  }
+  .journeyText { padding: 0; }
+  .journeyIndex { padding-bottom: 8px; }
+}
+@media (max-width: 480px) {
+  .illustrated { padding: 22px 20px; }
+  .illustratedLinks > a { grid-template-columns: 1fr; gap: 18px; }
+  .scene { max-width: 340px; margin-inline: auto; }
+  .illustratedLinks strong { font-size: 24px; }
+  .illustratedLinks small { font-size: 14px; }
+}
+@media (forced-colors: active) {
+  .illustrated { border: 1px solid CanvasText; }
+  .illustratedLinks > a { border-color: CanvasText; }
+}
+@media print {
+  .illustrated { background: transparent; color: var(--cor-carvao); }
+  .scene { display: none; }
+  .illustratedLinks { display: block; }
+  .illustratedLinks > a { display: block; color: var(--cor-carvao); }
+  .illustrated small, .illustratedHeading p, .illustratedHeading > span,
+  .journeyIndex, .illustrationNote { color: var(--cor-carvao); }
+}
