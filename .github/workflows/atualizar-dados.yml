@@ -100,14 +100,17 @@ jobs:
       # Em 03/10/2026 a restauração não achou nenhum cache (Cache not found) e o silver
       # foi semeado de novo. Cada execução grava ~0,8 GB com chave nova, e o limite do
       # repositório é de 10 GB somando energia e previsão: guardar só os três mais
-      # recentes tira o estado do pipeline da fila de despejo. Falha aqui não bloqueia.
+      # recentes DO MESMO RAMO tira o estado do pipeline da fila de despejo. A poda é
+      # por ramo (--ref): o main não restaura cache de outro ramo, então uma execução
+      # manual em ramo de PR nunca pode apagar os caches do main. Falha aqui não bloqueia.
       - name: Podar caches antigos do estado
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh cache list --repo "$GITHUB_REPOSITORY" --key pipeline-estado- --sort created_at --order desc \
-            --limit 100 --json id --jq '.[3:][].id' | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
+          gh cache list --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF" --key pipeline-estado- \
+            --sort created_at --order desc --limit 100 --json id --jq '.[3:][].id' \
+            | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
 
       # A lição de 08/08: build quebrado publica stub de erro e o workflow
       # termina VERDE — painel fora do ar sem nenhum vigia acusar. O sentinela
