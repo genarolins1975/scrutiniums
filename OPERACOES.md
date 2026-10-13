@@ -200,6 +200,23 @@ desmentia o alerta.
 7. Selo de frescor nas páginas públicas, calculado no navegador; a promessa
    "atualizado diariamente" virou "coleta diária, publicação depois dos testes".
 
+**Primeira execução depois das correções (13/10/2026, run 38432361094).** Retida de
+novo, agora só pelo `rural-data` (4 testes: zero UFs, zero municípios). Os OBEE, o
+emprego e a cobrança passaram. O município rodou primeiro, como previsto, mas os 16
+meses falharam com HTTP 500 "Erro desconhecido" da Olinda em cerca de 1 s cada. O
+log não mostrava a causa: a mensagem era cortada em 300 caracteres e a URL ocupava
+todos. Medido no mesmo dia, fora do runner: o 500 é intermitente, no mesmo mês alterna
+com 200 em 35 a 90 s, e depois do primeiro sucesso o servidor responde do cache. Com
+2 tentativas e 6 s de espera o coletor desistia de todos os meses.
+8. O 500 rápido da Olinda é retentado por até 30 vezes, cerca de 6 s cada (até 3 min
+   por mês); os demais erros seguem com 2 tentativas. Na medição, quatro meses
+   que tinham falhado passaram entre a 1ª e a 11ª tentativa (até 132 s). O orçamento
+   dos pesados subiu para 25 min, o bastante para recarregar os 16 meses do municipal
+   (de 35 a 90 s cada) num só dia; o mês que não couber volta no dia seguinte. Não
+   subiu mais porque a coleta inteira levou 131 min contra o teto de 150 min do
+   `run.py`, e os coletores depois do Sicor (DataJud, judicial, CVM) seriam pulados.
+   A mensagem de falha guarda o começo e o fim, com a causa.
+
 **Produção e main.** Em 13/10/2026 às 10:43 UTC a produção servia o mesmo
 `gerado_em` do main (2026-09-24T15:25), em `/resumo` e em
 `/obs/data/gold/meta.json`. A leitura "Processado em 2026-08-12" relatada nesse dia

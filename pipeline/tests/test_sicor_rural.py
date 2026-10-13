@@ -1,10 +1,12 @@
-"""Crédito rural (MDCR/Sicor): as duas travas da pane de 03 a 13/10/2026.
+"""Crédito rural (MDCR/Sicor): as travas da pane de 03 a 13/10/2026.
 
 1. A coleta roda os recursos pesados (município primeiro) ANTES da cauda histórica
    dos leves, com orçamento próprio: a recarga da história nunca mais deixa a janela
    publicada sem município.
 2. A janela publicada só termina num mês que existe no nacional E no municipal;
    o recuo é declarado no payload e nas cautelas.
+3. O HTTP 500 intermitente da Olinda é retentado com espera curta, e a mensagem
+   de falha no log preserva a causa.
 """
 import sqlite3
 import unittest
@@ -51,8 +53,64 @@ class OrdemDaColeta(unittest.TestCase):
     def test_orcamentos_separados(self):
         self.assertGreater(sicor.ORCAMENTO_PESADOS_S, 0)
         self.assertGreater(sicor.ORCAMENTO_S, 0)
-        self.assertLessEqual(sicor.ORCAMENTO_PESADOS_S + sicor.ORCAMENTO_S, 1500,
-                             "o SICOR não pode tomar mais do que os 25 min de antes do orçamento global")
+        # recarga do municipal: 16 meses a cerca de 80 s cada precisam caber nos pesados
+        self.assertGreaterEqual(sicor.ORCAMENTO_PESADOS_S, sicor.MESES_MUN * 80)
+        # a coleta de 13/10/2026 levou 131 min (26 de SICOR) contra o teto de 150 min
+        # de run.py: o SICOR pode crescer no máximo 12,5 min sem pular os coletores seguintes
+        self.assertLessEqual(sicor.ORCAMENTO_PESADOS_S + sicor.ORCAMENTO_S, 1500 + 750)
+
+
+class OlindaIntermitente(unittest.TestCase):
+    """13/10/2026: HTTP 500 "Erro desconhecido" em ~1 s, intermitente, nos 16 meses
+    do municipal; com 2 tentativas o rural.json saiu sem UFs e municípios."""
+
+    URL_500 = "Falha ao coletar https://olinda.bcb.gov.br/" + "x" * 320 + ": HTTP Error 500: Internal Server Error"
+
+    def _get_com(self, respostas):
+        chamadas = []
+
+        def http_get(url, timeout, retries):
+            chamadas.append(retries)
+            r = respostas.pop(0)
+            if isinstance(r, Exception):
+                raise r
+            return b'{"value": [{"a": 1}]}', {"url": url}
+
+        with mock.patch.object(sicor.common, "http_get", side_effect=http_get), \
+                mock.patch.object(sicor._time, "sleep") as dorme:
+            try:
+                return sicor._get("Recurso", "AnoEmissao eq '2026'"), chamadas, dorme, None
+            except RuntimeError as e:
+                return None, chamadas, dorme, e
+
+    def test_500_rapido_e_retentado_ate_o_sucesso(self):
+        falhas = [RuntimeError(self.URL_500)] * 6
+        res, chamadas, dorme, erro = self._get_com(falhas + [None])
+        self.assertIsNone(erro)
+        rows, meta = res
+        self.assertEqual(rows, [{"a": 1}])
+        self.assertEqual(meta["attempt"], 7)
+        self.assertEqual(len(chamadas), 7)
+        self.assertEqual(dorme.call_count, 6)
+
+    def test_500_persistente_desiste_no_limite(self):
+        _, chamadas, _, erro = self._get_com([RuntimeError(self.URL_500)] * (sicor.TENTATIVAS_500 + 5))
+        self.assertEqual(len(chamadas), sicor.TENTATIVAS_500)
+        self.assertIn(f"após {sicor.TENTATIVAS_500} tentativas", str(erro))
+        # o limite de espera por mês é curto: não consome o orçamento dos pesados
+        # cada tentativa custa ~1 s de resposta, 2 s de espera do http_get e ESPERA_500_S
+        self.assertLessEqual(sicor.TENTATIVAS_500 * (sicor.ESPERA_500_S + 3), 200)
+
+    def test_outros_erros_mantem_duas_tentativas(self):
+        _, chamadas, _, erro = self._get_com([RuntimeError("Falha ao coletar u: timed out")] * 5)
+        self.assertEqual(len(chamadas), 2)
+        self.assertIn("timed out", str(erro))
+
+    def test_mensagem_de_falha_preserva_a_causa(self):
+        msg = sicor._resumo_erro(RuntimeError(self.URL_500))
+        self.assertLessEqual(len(msg), 300)
+        self.assertIn("HTTP Error 500", msg)
+        self.assertTrue(msg.startswith("Falha ao coletar https://olinda"))
 
 
 def _linha(mes, valor):

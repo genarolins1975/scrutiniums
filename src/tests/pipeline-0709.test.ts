@@ -57,9 +57,9 @@ describe("orçamento de tempo da coleta (08/09/2026: job cancelado aos 150 min s
     expect(w).toContain("python3 -u pipeline/run.py");
     expect(read("pipeline/sources/pilar3.py")).toContain("_fetch(url, timeout=60, tentativas=1)");
     const sc = read("pipeline/sources/sicor.py");
-    // 13/10/2026: orçamentos separados, pesados primeiro, somando os mesmos 25 min
-    // (pipeline/tests/test_sicor_rural.py trava a ordem e a soma)
-    expect(sc).toContain("ORCAMENTO_PESADOS_S = 750");
+    // 13/10/2026: orçamentos separados, pesados primeiro; o dos pesados cabe a recarga
+    // dos 16 meses do municipal (pipeline/tests/test_sicor_rural.py trava a ordem e os tetos)
+    expect(sc).toContain("ORCAMENTO_PESADOS_S = 1500");
     expect(sc).toContain("ORCAMENTO_S = 750");
     expect(sc).toContain("if gasto_leve >= CAP_LEVES or _time.monotonic() - t0 > ORCAMENTO_S:");
     expect(sc).toContain("if gasto >= CAP_PESADOS or _time.monotonic() - t0 > ORCAMENTO_PESADOS_S:");
