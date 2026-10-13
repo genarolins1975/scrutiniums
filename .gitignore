@@ -32,3 +32,4 @@ __pycache__/
 /public/eficiencia/trabalho-renda/snapshot.json
 /public/eficiencia/trabalho-renda/snapshot.json.tmp
 /vitest-resultado.json
+/dist/

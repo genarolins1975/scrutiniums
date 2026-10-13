@@ -6,6 +6,8 @@ import { Footer } from "@/components/layout/Footer";
 import { GraficoLinha } from "@/components/dados/GraficoSerie";
 import { SeloFrescor } from "@/components/dados/SeloFrescor";
 import { ChamadaObservatorio } from "@/components/dados/ChamadaObservatorio";
+import { CitarIncorporar } from "@/components/dados/CitarIncorporar";
+import { codigoIncorporar } from "@/lib/citacao";
 import {
   INDICADORES,
   fmtDelta,
@@ -86,6 +88,18 @@ export default function IndicadorPage({ params }: { params: { slug: string } }) 
             <p className="mt-2 text-xs text-mineral">
               Série desde {fmtRefMes(i.primeiraRef)} · {i.nObs} observações mensais · gráfico limitado aos últimos 12 anos
             </p>
+            <CitarIncorporar
+              dados={{
+                titulo: i.titulo,
+                fonte: i.fonte,
+                serie: i.serieCodigo,
+                referencia: fmtRefMes(i.ref),
+                natureza: "dado observado",
+                processadoEm: geradoEmPublicado(),
+                caminho: `/dados/${i.slug}`,
+              }}
+              incorporar={codigoIncorporar(i.key, i.titulo, `/dados/${i.slug}`)}
+            />
           </section>
 
           <aside className="border border-linha bg-papel p-8">

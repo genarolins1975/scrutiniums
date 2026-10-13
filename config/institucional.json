@@ -1,0 +1,11 @@
+{
+ "_leia": "Campos de decisão do mantenedor. Vazio = não publicado: a seção correspondente não é renderizada e nada é inventado no lugar. Preencher só com informação verdadeira e verificável.",
+ "mantenedor": { "nome": "", "natureza_juridica": "" },
+ "financiamento": "",
+ "conflitos_de_interesse": "",
+ "email_institucional": "",
+ "conselho_consultivo": [],
+ "api": { "aviso_previo_quebra_dias": null },
+ "dados": { "licenca_derivados": "" },
+ "zenodo": { "criadores": [], "comunidade": "", "doi_conceito": "" }
+}

@@ -52,6 +52,8 @@ export const metadata: Metadata = {
       `${observatoriosPorExtenso(true)}, a mesma filosofia de evidência: dados oficiais, fonte e data em cada número, metodologia aberta. Gratuito. ${ACESSO.curto}`,
   },
   alternates: { canonical: "/" },
+  // cartão grande nas redes; a imagem vem do opengraph-image de cada rota
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
