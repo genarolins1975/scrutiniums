@@ -85,6 +85,16 @@ class JanelaAlinhadaAoMunicipal(unittest.TestCase):
         self.assertTrue(any("recorte municipal" in c and _mes(2) in c for c in g["cautelas"]))
         self.assertEqual(g["municipios_meta"]["janela"]["meses"], 12)
 
+    def test_buraco_no_meio_do_municipal_recua_ate_janela_inteira(self):
+        fonte = [_mes(d) for d in range(30, -1, -1)]
+        mun = [_mes(d) for d in range(30, 1, -1) if d != 6]   # falta um mês no meio
+        g = self._build(self._con(fonte, mun))
+        # a primeira janela de 12 meses inteiros nos dois recortes termina antes do buraco
+        self.assertEqual(g["janela"]["fim"], _mes(7))
+        self.assertEqual(g["janela_recuada"], {"fim_nacional": _mes(2), "fim_municipal": _mes(7)})
+        self.assertEqual(g["municipios_meta"]["janela"]["meses"], 12)
+        self.assertEqual(len(g["ufs"]), 1)
+
     def test_sem_atraso_nada_muda(self):
         fonte = [_mes(d) for d in range(30, -1, -1)]
         g = self._build(self._con(fonte, fonte))
