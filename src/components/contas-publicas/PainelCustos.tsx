@@ -3,7 +3,7 @@ import {Termo} from './artefatos/Termo';
 import {Proveniencia} from './artefatos/Proveniencia';
 import {ORIGEM_CUSTOS} from '@/lib/contas-publicas/proveniencia';
 import {CemReaisCustos} from './artefatos/CemReaisCustos';
-import {useState} from 'react';
+import {useRecorte} from './RecorteCompartilhavel';
 import dados from '@/lib/contas-publicas/snapshots/custos.json';
 import {resumirCustos,valorVariacao,type MedidaCustos} from '@/lib/contas-publicas/custos-leitura';
 import {moeda,numero as n,participacao,variacaoPercentual} from '@/lib/contas-publicas/formato';
@@ -17,8 +17,10 @@ const descricoes:Record<string,{texto:string;pagina:number}>={
  outros:{texto:'Provisões, sentenças judiciais e demais custos.',pagina:39}
 };
 const escopos=['total','operacao','mao-obra','funcionamento','servicos','material','depreciacao'];
+const grupoValido=(s:string)=>escopos.includes(s);
+const medidaValida=(s:string)=>['diferencaPublicada','realPublicado','nominalPublicado'].includes(s);
 export function PainelCustos(){
- const [grupo,setGrupo]=useState('total'),[medida,setMedida]=useState<MedidaCustos>('diferencaPublicada');
+ const [grupo,setGrupo]=useRecorte<string>('grupo','total',grupoValido),[medida,setMedida]=useRecorte<MedidaCustos>('medida','diferencaPublicada',medidaValida);
  const pai=dados.registros.find(r=>r.id===grupo)!,total=dados.registros.find(r=>r.id==='total')!;
  const {linhas,maiores,altas,quedas,percentuais}=resumirCustos(dados.registros,grupo);
  const maior=maiores[0],alta=altas[0],queda=quedas[0],pct=percentuais[0];
