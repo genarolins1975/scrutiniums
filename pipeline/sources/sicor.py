@@ -38,6 +38,7 @@ mês quebrado.
 """
 import hashlib
 import json
+import time as _time
 from datetime import date
 
 from pipeline import common
@@ -60,8 +61,24 @@ CAP_LEVES = 200          # requisições leves (UF, fonte, faixa, gênero) por e
 # antigos) consumiu o orçamento inteiro todos os dias, os pesados nunca rodaram, o
 # silver ficou sem sicor_mun e o rural.json saiu sem UFs e municípios, o que
 # reprovou a gold do dia nos testes de conteúdo de 04/10 em diante.
-ORCAMENTO_PESADOS_S = 750
+# Em 13/10/2026 o municipal falhou nos 16 meses (ver TENTATIVAS_500) e o cache
+# ficou sem sicor_mun: a recarga completa custa de 35 a 90 s por mês, cerca de
+# 20 min só para o municipal, além de IF e produto. Teto: a coleta inteira levou
+# 131 min nesse dia contra os 150 min de run.py (ORCAMENTO_COLETA_MIN), e os
+# coletores depois do Sicor seriam pulados se ele tomasse mais.
+ORCAMENTO_PESADOS_S = 1500
 ORCAMENTO_S = 750        # leves; a Olinda responde em segundos ou em minutos (504 aos 60 s); o resto fica para o dia seguinte
+
+# A Olinda devolve HTTP 500 "Erro desconhecido" em cerca de 1 s, de forma
+# intermitente, para consultas que no instante seguinte respondem 200 (medido em
+# 13/10/2026: no mesmo mês do municipal, 2 sucessos em 8 tentativas antes de o
+# servidor passar a responder do cache; um mês ainda falhou após 15 tentativas em
+# 99 s, outro só passou na 8ª). Com 2 tentativas e 6 s de espera, os 16 meses do
+# municipal falharam no runner e o rural.json saiu sem UFs e municípios. O 500
+# rápido é retentado por até cerca de 3 min por mês; o mês que ainda falhar fica
+# para o dia seguinte. Os demais erros seguem com 2 tentativas.
+TENTATIVAS_500 = 30
+ESPERA_500_S = 3   # somada aos 2 s de http_get e ao ~1 s da resposta: ~6 s por tentativa
 
 VALORES = ("QtdCusteio", "VlCusteio", "QtdInvestimento", "VlInvestimento",
            "QtdComercializacao", "VlComercializacao", "QtdIndustrializacao", "VlIndustrializacao")
@@ -120,7 +137,20 @@ def _get(recurso, filtro, select=None, timeout=600):
     if select:
         url += "&$select=" + ",".join(select)
     url = url.replace(" ", "%20").replace("'", "%27")
-    body, meta = common.http_get(url, timeout=timeout, retries=2)
+    erros = 0
+    for tentativa in range(1, TENTATIVAS_500 + 1):
+        try:
+            body, meta = common.http_get(url, timeout=timeout, retries=1)
+            break
+        except RuntimeError as e:
+            if "HTTP Error 500" not in str(e):
+                erros += 1
+                if erros >= 2:
+                    raise
+            elif tentativa == TENTATIVAS_500:
+                raise RuntimeError(f"{e} (após {TENTATIVAS_500} tentativas)") from e
+            _time.sleep(ESPERA_500_S)
+    meta["attempt"] = tentativa
     meta["sha256"] = hashlib.sha256(body).hexdigest()
     return json.loads(body.decode("utf-8")).get("value", []), meta
 
@@ -306,8 +336,16 @@ def _coleta_nomes(con, mes):
     return len(rows), meta
 
 
+def _resumo_erro(e, limite=300):
+    """Mensagem curta que preserva a causa: a URL da Olinda tem mais de 300
+    caracteres e, cortada pelo começo, escondia o "HTTP Error 500" no log."""
+    msg = str(e)
+    if len(msg) <= limite:
+        return msg
+    return msg[:100] + " [...] " + msg[-(limite - 107):]
+
+
 def collect(con, cfg):
-    import time as _time
     _ensure(con)
     results = []
 
@@ -321,7 +359,7 @@ def collect(con, cfg):
             results.append({"key": key, "ok": True, "rows": n})
         except Exception as e:
             con.rollback()
-            results.append({"key": key, "ok": False, "error": str(e)[:300]})
+            results.append({"key": key, "ok": False, "error": _resumo_erro(e)})
 
     # 1) pesados, com orçamento próprio: são a janela publicada (UFs, municípios,
     # instituições, produtos) e nunca podem esperar a cauda histórica dos leves.
