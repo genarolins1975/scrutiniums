@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { LogoWordmark } from "@/components/ui/Logo";
-import { LINKEDIN_URL } from "@/lib/contato";
+import { contato } from "@/lib/contato";
 import { ACESSO } from "@/lib/acesso";
 
 export function Footer({ compacto = false }: { compacto?: boolean }) {
@@ -61,16 +61,13 @@ export function Footer({ compacto = false }: { compacto?: boolean }) {
         <nav aria-label="Institucional">
           <p className="rotulo mb-4 text-mineral-soft">Institucional</p>
           <ul className="space-y-2 text-sm">
+            <li><Link href="/sobre" className="hover:text-bronze-soft">Sobre a Scrutiniums</Link></li>
             <li><Link href="/imprensa" className="hover:text-bronze-soft">Para a imprensa</Link></li>
             <li><Link href="/termos" className="hover:text-bronze-soft">Termos de uso</Link></li>
             <li><Link href="/privacidade" className="hover:text-bronze-soft">Privacidade</Link></li>
             <li><Link href="/entrar" className="hover:text-bronze-soft">Entrar</Link></li>
             <li><Link href="/cadastro" className="hover:text-bronze-soft">Cadastro</Link></li>
-            <li>
-              <a href={LINKEDIN_URL} rel="noopener noreferrer" target="_blank" className="hover:text-bronze-soft">
-                Contato · LinkedIn
-              </a>
-            </li>
+            <ContatoItens classe="hover:text-bronze-soft" />
           </ul>
         </nav>
       </div>
@@ -129,16 +126,13 @@ function FooterCompacto() {
         <nav aria-label="Institucional">
           <p className="rotulo mb-1 text-mineral-soft">Institucional</p>
           <ul className="flex flex-wrap gap-x-4 text-sm md:block">
+            <li><Link href="/sobre" className={link}>Sobre a Scrutiniums</Link></li>
             <li><Link href="/imprensa" className={link}>Para a imprensa</Link></li>
             <li><Link href="/termos" className={link}>Termos de uso</Link></li>
             <li><Link href="/privacidade" className={link}>Privacidade</Link></li>
             <li><Link href="/entrar" className={link}>Entrar</Link></li>
             <li><Link href="/cadastro" className={link}>Cadastro</Link></li>
-            <li>
-              <a href={LINKEDIN_URL} rel="noopener noreferrer" target="_blank" className={link}>
-                Contato · LinkedIn
-              </a>
-            </li>
+            <ContatoItens classe={link} />
           </ul>
         </nav>
       </div>
@@ -149,5 +143,27 @@ function FooterCompacto() {
         </div>
       </div>
     </footer>
+  );
+}
+
+/** Contato do rodapé: e-mail institucional quando configurado; o LinkedIn fica como secundário. */
+function ContatoItens({ classe }: { classe: string }) {
+  const c = contato();
+  const externo = (href: string) => (href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {});
+  return (
+    <>
+      <li>
+        <a href={c.principal.href} className={classe} {...externo(c.principal.href)}>
+          Contato · {c.principal.rotulo}
+        </a>
+      </li>
+      {c.secundario ? (
+        <li>
+          <a href={c.secundario.href} className={classe} {...externo(c.secundario.href)}>
+            {c.secundario.rotulo}
+          </a>
+        </li>
+      ) : null}
+    </>
   );
 }
