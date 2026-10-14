@@ -6,7 +6,7 @@
  * telemetria e sitemap leem daqui. Um novo observatório é uma entrada nova.
  */
 
-export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados";
+export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados" | "saneamento";
 
 export type Dominio = {
   id: DominioId;
@@ -112,6 +112,22 @@ export const DOMINIOS: Dominio[] = [
     acento: "obee",
     prefixosTelemetria: ["estados:"],
   },
+  {
+    id: "saneamento",
+    nome: "Observatório Brasileiro do Saneamento",
+    nomeCurto: "Saneamento",
+    pergunta: "Quem ainda está sem água e esgoto adequados, quanto custa o serviço, quem o presta e se o planejamento vira atendimento?",
+    descricao:
+      "Acesso à água e ao esgoto em cada município, pelo Censo 2022 e pelo SINISA 2024, com prestadores, reguladores, investimentos declarados, planos e metas de universalização. O preço regulado tem eixo próprio: como a tarifa é autorizada, o que financia e como chega à conta, a partir das decisões dos reguladores.",
+    descricaoCurta:
+      "Água e esgoto nos 5.570 municípios: Censo 2022, SINISA 2024, prestadores, reguladores, investimentos, metas e preço regulado a partir de atos oficiais.",
+    chips: ["Acesso", "Preço regulado", "Prestadores", "Investimento", "Metas"],
+    rotaRaiz: "/saneamento",
+    rotaApresentacao: "/saneamento",
+    cta: "Explorar Saneamento",
+    acento: "obee",
+    prefixosTelemetria: ["saneamento:"],
+  },
 ];
 
 export const COOKIE_OBSERVATORIO = "scrutiniums_observatorio";
@@ -141,5 +157,6 @@ export function dominioDoCaminho(caminho: string): DominioId | null {
   if (caminho.startsWith("/eficiencia-estatal")) return "eficiencia";
   if (caminho === "/contas-publicas" || caminho.startsWith("/contas-publicas/")) return "contas";
   if (caminho === "/contas-publicas-estaduais" || caminho.startsWith("/contas-publicas-estaduais/")) return "estados";
+  if (caminho === "/saneamento" || caminho.startsWith("/saneamento/")) return "saneamento";
   return null;
 }

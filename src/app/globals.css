@@ -68,6 +68,12 @@
   --escala-div-pos-1: #7fb0b8;
   --escala-div-pos-2: #0e6170;
   --mapa-nao-se-aplica: #d8d2c6;
+  /* Saneamento: escala divergente sem vermelho e verde (variação entre Censos não é julgamento): sépia para queda, petróleo para alta. */
+  --san-div-neg-2: #6b4f3a;
+  --san-div-neg-1: #b59b7a;
+  --san-div-centro: #e4e1da;
+  --san-div-pos-1: #7fb0b8;
+  --san-div-pos-2: #0e6170;
   --cor-selecao: color-mix(in srgb, var(--cor-energia) 12%, transparent);
   /* Comparação de até quatro entidades (distribuidoras, empresas, usinas): mesmos tons
      validados das séries de submercado, com semântica própria dada pelo rótulo. */
@@ -517,3 +523,8 @@ body:has(nav[data-retorno]) { padding-bottom: 5.5rem; }
   --cor-obee-atlas-no: #173b44;
   --cor-obee-atlas-no-pendente: #7e969b;
 }
+
+/* Saneamento: foco e seleção no petróleo do domínio, algarismos alinhados. Herda o contrato de .dominio-energia (componentes de gráfico). */
+.dominio-saneamento :focus-visible { outline-color: var(--cor-obee); }
+.dominio-saneamento ::selection { background: var(--cor-obee); color: #ffffff; }
+.dominio-saneamento table { font-variant-numeric: tabular-nums; }
