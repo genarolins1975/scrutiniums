@@ -38,6 +38,7 @@ const PREFIXOS = [
   "/contas-publicas/metodologia",
   "/contas-publicas/glossario",
   "/saneamento/metodologia",
+  "/gas-natural/metodologia",
 ];
 
 /** Páginas de método de cada tema da Eficiência Estatal. */

@@ -2,7 +2,7 @@
 
 Plataforma **gratuita** de inteligência analítica sobre o crédito e a economia brasileira: o Observatório Brasileiro de Crédito — carteira, inadimplência, instituições, produtos, Pix, bets e fraudes financeiras — com metodologia aberta, dados oficiais e glossário público. **Os painéis exigem conta gratuita**: a página inicial, a apresentação do Crédito (`/observatorio-do-credito`), as páginas de método e glossário, as institucionais e o fluxo de entrada e cadastro são públicos; painéis, downloads, arquivos de dados, API, feeds RSS e gráficos incorporáveis exigem sessão. Desde 13/10/2026, a fronteira entre a vitrine pública e a área com conta é uma lista de rotas abertas em `src/lib/rotasPublicas.ts`, aplicada pelo `src/middleware.ts` e pelo sitemap; rota nova nasce fechada. O cadastro pede e-mail, telefone verificado por SMS, CPF e perfil básico, e a sessão só nasce depois do telefone verificado. Quem é barrado num painel volta a ele depois de entrar ou concluir o cadastro. Sem plano pago, sem cartão.
 
-Desde setembro de 2026 a Scrutiniums é uma plataforma de **três observatórios** sobre a mesma infraestrutura (sessão, telemetria, design system, sitemap): o **Observatório Brasileiro de Crédito**, o **Observatório Brasileiro do Setor Elétrico** (`/setor-eletrico`) e o **Observatório Brasileiro de Eficiência Estatal** (`/eficiencia-estatal`). Quem entra com conta escolhe o observatório em `/app/observatorios` e troca pelo cabeçalho sem novo login.
+Desde setembro de 2026 a Scrutiniums é uma plataforma de observatórios sobre a mesma infraestrutura (sessão, telemetria, design system, sitemap): o **Observatório Brasileiro de Crédito**, o **Observatório Brasileiro do Setor Elétrico** (`/setor-eletrico`), o **Observatório Brasileiro de Eficiência Estatal** (`/eficiencia-estatal`), os de Contas Públicas Federais e Estaduais e o **Observatório Brasileiro de Gás Natural** (`/gas-natural`). Quem entra com conta escolhe o observatório em `/app/observatorios` e troca pelo cabeçalho sem novo login.
 
 ## Stack
 
@@ -115,6 +115,18 @@ python3 -m unittest pipeline.tests.test_observatorio_saneamento
 ```
 
 Documentação, matriz de viabilidade, método e validação em [docs/saneamento/](./docs/saneamento/README.md).
+
+## Observatório Brasileiro de Gás Natural
+
+Domínio `gas`, em **`/gas-natural`**: inicial com o caminho do gás produzido até a oferta e dez páginas por pergunta (produção, aproveitamento, importação, preços na cadeia, gás de cozinha, GNV e gás encanado, abertura do mercado, infraestrutura, regulação, dados e método). O GLP do botijão tem página própria, separada do gás natural. O pipeline fica em `pipeline/gas/` (biblioteca padrão; seed versionado com sha256 de cada original) e escreve `public/gas/gold` e `public/gas/series`; roda pelo workflow `atualizar-gas.yml`:
+
+```bash
+python3 -m pipeline.gas.run             # reconstrói a gold a partir do seed (sem rede)
+python3 -m pipeline.gas.run --coleta    # recoleta ANP, IBGE, BCB, Comex Stat e Banco Mundial
+python3 -m unittest pipeline.tests.test_gas
+```
+
+Páginas, decisões de método e lacunas em [docs/gas/](./docs/gas/README.md).
 
 ## Documentação
 

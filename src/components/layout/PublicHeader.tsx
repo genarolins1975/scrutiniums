@@ -4,10 +4,10 @@ import { LogoWordmark } from "@/components/ui/Logo";
 import { getSessionUser } from "@/lib/session";
 import { AbasCabecalho } from "@/components/layout/AbasCabecalho";
 
-// Abas do cabeçalho: os cinco observatórios e a imprensa (navCabecalho). Quem tem
+// Abas do cabeçalho: os observatórios do registro e a imprensa (navCabecalho). Quem tem
 // conta vai ao painel; o visitante, à seção do observatório na página inicial.
-// As abas ficam na linha da marca a partir de 1280 px; abaixo disso, numa segunda
-// linha que quebra em vez de rolar, para nenhuma aba ficar escondida.
+// Com sete observatórios as abas não cabem na linha da marca nem a 1440 px: ficam
+// sempre numa segunda linha, que quebra em vez de rolar, para nenhuma aba ficar escondida.
 
 /**
  * Cabeçalho público com ações de autenticação sensíveis à sessão:
@@ -46,9 +46,6 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
         >
           <LogoWordmark />
         </Link>
-        <nav aria-label="Navegação principal" className="hidden items-center gap-7 xl:flex">
-          <AbasCabecalho logadoNoServidor={authenticated} className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze" />
-        </nav>
         <div className="flex items-center gap-4">
           <Link
             href={authenticated ? "/app/conta" : "/entrar"}
@@ -64,10 +61,7 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
           </Link>
         </div>
       </div>
-      <nav
-        aria-label="Navegação principal (telas menores)"
-        className="mx-auto flex max-w-page flex-wrap gap-x-6 border-t border-linha px-6 py-1.5 xl:hidden"
-      >
+      <nav aria-label="Navegação principal" className="mx-auto flex max-w-page flex-wrap gap-x-6 border-t border-linha px-6 py-1.5">
         <AbasCabecalho logadoNoServidor={authenticated} className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze" />
         {/* no celular o "Entrar" da linha de cima não cabe; fica com as abas */}
         <Link

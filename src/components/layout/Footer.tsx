@@ -8,7 +8,7 @@ export function Footer({ compacto = false }: { compacto?: boolean }) {
   if (compacto) return <FooterCompacto />;
   return (
     <footer className="border-t border-linha-escura bg-carvao text-marfim">
-      <div className="mx-auto grid grid-cols-1 max-w-page gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-7">
+      <div className="mx-auto grid grid-cols-1 max-w-page gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-8">
         <div className="min-w-0 [overflow-wrap:anywhere] [&>span>span]:min-w-0 sm:col-span-2">
           <LogoWordmark onDark />
           <p className="mt-4 max-w-sm text-sm text-mineral-soft">
@@ -58,6 +58,16 @@ export function Footer({ compacto = false }: { compacto?: boolean }) {
             <li><Link href="/contas-publicas" prefetch={prefetchDoLink("/contas-publicas")} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Contas Públicas Federais</Link></li>
             <li><Link href="/contas-publicas-estaduais" prefetch={prefetchDoLink("/contas-publicas-estaduais")} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Contas Públicas Estaduais</Link></li>
             <li><Link href="/saneamento" prefetch={prefetchDoLink("/saneamento")} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Saneamento</Link></li>
+          </ul>
+        </nav>
+        <nav aria-label="Observatório Brasileiro de Gás Natural">
+          <p className="rotulo mb-4 text-mineral-soft">Gás Natural</p>
+          <ul className="space-y-2 text-sm">
+            <li><Link href="/gas-natural" prefetch={prefetchDoLink("/gas-natural")} className="hover:text-bronze-soft">Mapa do Observatório</Link></li>
+            <li><Link href="/gas-natural/producao" prefetch={prefetchDoLink("/gas-natural/producao")} className="hover:text-bronze-soft">Produção</Link></li>
+            <li><Link href="/gas-natural/gas-de-cozinha" prefetch={prefetchDoLink("/gas-natural/gas-de-cozinha")} className="hover:text-bronze-soft">Gás de cozinha</Link></li>
+            <li><Link href="/gas-natural/precos" prefetch={prefetchDoLink("/gas-natural/precos")} className="hover:text-bronze-soft">Preços na cadeia</Link></li>
+            <li><Link href="/gas-natural/dados" prefetch={prefetchDoLink("/gas-natural/dados")} className="hover:text-bronze-soft">Dados e método</Link></li>
           </ul>
         </nav>
         <nav aria-label="Institucional">

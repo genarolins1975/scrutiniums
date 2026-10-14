@@ -45,6 +45,24 @@ const RECURSOS = [
     descricao: "Matriz de cobertura, catálogo de indicadores pesquisável e downloads em JSON.",
   },
   {
+    escopo: "Saneamento",
+    titulo: "Método, fontes e conferências",
+    href: "/saneamento/metodologia",
+    descricao: "Fontes com data e SHA-256, matriz de viabilidade por pergunta, conferências entre bases e limitações.",
+  },
+  {
+    escopo: "Gás Natural",
+    titulo: "Dados e downloads",
+    href: "/gas-natural/dados",
+    descricao: "Cada fonte com data de captura e SHA-256 do original, cada indicador com fórmula, e as séries em CSV.",
+  },
+  {
+    escopo: "Gás Natural",
+    titulo: "Método e glossário",
+    href: "/gas-natural/metodologia",
+    descricao: "Regras de cálculo, validações que retêm a publicação e o que separa gás natural, GLP, GNL e GNV.",
+  },
+  {
     escopo: "Plataforma",
     titulo: "Para a imprensa",
     href: "/imprensa",

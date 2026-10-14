@@ -50,6 +50,15 @@ const config: Config = {
           tinta: "#14243A",
           neutro: "#858072",
         },
+        // Acento do Observatório Brasileiro de Gás Natural (azul ardósia).
+        // DEFAULT mede 6,7:1 e dark 8,4:1 sobre o papel; soft só para marcação
+        // não textual. Seleção e identidade do domínio, nunca juízo de valor.
+        gas: {
+          DEFAULT: "#35598A",
+          dark: "#2B4A78",
+          soft: "#7A93B8",
+          fundo: "#E8EDF4",
+        },
         superficie: "#FFFFFF",
         // Selos de natureza do dado (texto AA sobre papel e branco).
         natureza: {
