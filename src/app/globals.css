@@ -537,6 +537,13 @@ body:has(nav[data-retorno]) { padding-bottom: 5.5rem; }
   --cor-obee-atlas-orbita: #38565e;
   --cor-obee-atlas-no: #173b44;
   --cor-obee-atlas-no-pendente: #7e969b;
+  /* Retrato da capital na entrada: texto claro, comparador e disco sobre a tinta do Atlas. */
+  --cor-obee-atlas-texto-claro: #f3f1ea;
+  --cor-obee-atlas-par-inverso: #d9ab5f;
+  --cor-obee-atlas-disco-centro: #1f4a54;
+  --cor-obee-atlas-disco-borda: #132f37;
+  /* Demais capitais nas faixas: 3,3:1 sobre o papel, distinto da série focal e do comparador. */
+  --cor-obee-atlas-ponto: #7a8c8f;
 }
 
 /* Saneamento: foco e seleção no petróleo do domínio, algarismos alinhados. Herda o contrato de .dominio-energia (componentes de gráfico). */
