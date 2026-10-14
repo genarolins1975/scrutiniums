@@ -37,12 +37,14 @@ Cada linha delimita uma entrega; migrações extensas podem ser subdivididas sem
 
 Na fase 0, páginas ainda não traduzidas continuam em português com marcador visível `Portuguese only` e `lang="pt-BR"`. A home é a única página cujo conteúdo é traduzido nessa fase. Infraestrutura de navegação e marcador não autorizam antecipar traduções dos observatórios.
 
+O roteamento usa `src/app/en` literal, preservando páginas e layouts portugueses. A série começa por helpers de URL e contratos, sem publicar rotas; segue por uma primeira irmã pública com fallback, documento e metadados corretos; depois amplia plataforma/conta e cada observatório separadamente. Parâmetros, layouts aninhados, redirects, portais e handlers exigem seus próprios adaptadores e verificações. Seletores e alternates só apontam para irmãs já existentes. Formatos e rotas podem avançar em recortes intercalados dentro da fase 0, sempre com o CI anterior verde; a fase só fecha depois da migração completa, da guarda contra locale fixo e da paridade integral.
+
 ## Fases seguintes
 
 | Fase | Série de entregas, sempre com CI verde entre PRs |
 | --- | --- |
 | 1 | Vitrine: home, Sobre, erros e governança; glossário e imprensa; termos e privacidade; métodos; entrada, cadastro e páginas de erro |
-| 2 | Países e política de SMS; CPF conforme telefone verificado; limites por país/prefixo; idioma na conta; comunicações; privacidade internacional |
+| 2 | Países e política de SMS; CPF conforme telefone verificado; limites por país/prefixo; idioma na conta; tradução das áreas de conta e administração da plataforma; comunicações; privacidade internacional |
 | 3 | Setor Elétrico |
 | 4 | Gás Natural |
 | 5 | Saneamento |
