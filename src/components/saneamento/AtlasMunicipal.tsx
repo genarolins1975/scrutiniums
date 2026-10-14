@@ -100,6 +100,8 @@ export function AtlasMunicipal({
     [doRecorte, med],
   );
 
+  /** O que a contagem conta: pessoas nas medidas de moradores; análises, famílias ou economias nas demais. */
+  const unidadeContagem = med.unidadeContagem && med.unidadeContagem !== "moradores" ? med.unidadeContagem : "pessoas";
   const pctRecorte = useMemo(() => doRecorte.map((m) => med.pct(m)), [doRecorte, med]);
   const histograma = useMemo(() => {
     const vs = pctRecorte.filter((v): v is number => v != null);
@@ -161,7 +163,7 @@ export function AtlasMunicipal({
                 : "Pessoas"}
             </label>
           </div>
-          {!med.contagem && <p className="text-xs text-carvao-muted">Esta medida não tem contagem de pessoas.</p>}
+          {!med.contagem && <p className="text-xs text-carvao-muted">Esta medida não tem contagem.</p>}
         </fieldset>
         <label className="min-w-0 text-sm text-carvao">
           Território
@@ -237,7 +239,7 @@ export function AtlasMunicipal({
           <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-2">
             {med.contagem && rankingPessoas.length > 0 && (
               <GraficoBarras
-                titulo={`Onde há mais ${med.unidadeContagem && med.unidadeContagem !== "moradores" ? med.unidadeContagem : "pessoas"}: ${inicialMinuscula(med.titulo)} (${nomeRecorte})`}
+                titulo={`Onde há mais ${unidadeContagem}: ${inicialMinuscula(med.titulo)} (${nomeRecorte})`}
                 dados={rankingPessoas.map((r) => ({ id: r.id, rotulo: r.rotulo, v: r.v }))}
                 chaveCategoria="id"
                 chaveRotulo="rotulo"
@@ -267,8 +269,8 @@ export function AtlasMunicipal({
             )}
           </div>
           <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-            Os dois rankings respondem a perguntas diferentes: onde está o maior número de pessoas e onde a proporção é maior. O corte de{" "}
-            {inteiro(LIMIAR_PROPORCAO)} moradores evita que municípios muito pequenos ocupem a lista por poucas pessoas; a tabela do mapa traz
+            Os dois rankings respondem a perguntas diferentes: onde está o maior número de {unidadeContagem} e onde a proporção é maior. O corte
+            de {inteiro(LIMIAR_PROPORCAO)} moradores evita que municípios muito pequenos ocupem a lista por poucos casos; a tabela do mapa traz
             todos.
           </p>
 
@@ -288,7 +290,7 @@ export function AtlasMunicipal({
                     ? { valor: med.pct(sel), rotulo: `${sel.nome} (${sel.uf})`, percentil: percentilDe(med.pct(sel), pctRecorte) }
                     : undefined
                 }
-                nota="Cada município conta uma vez, qualquer que seja a população. A referência territorial acima soma pessoas, não percentuais."
+                nota="Cada município conta uma vez, qualquer que seja a população. A referência territorial acima vem de somas de numeradores e denominadores, não de média de percentuais."
               />
             </div>
           )}

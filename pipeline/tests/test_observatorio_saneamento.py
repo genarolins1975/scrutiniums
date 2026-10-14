@@ -222,6 +222,22 @@ class Sisagua(unittest.TestCase):
         self.assertEqual(exc["linhas_ra_df"], 4)
         self.assertEqual(realizadas[("530010", "530033", "S5")], 5)
 
+    def test_pasta_temporaria_apagada(self):
+        s = self.s
+        vista = {}
+        original = s._coletar
+        def falso(anos, pasta):
+            vista["pasta"] = pasta
+            open(os.path.join(pasta, "x.zip"), "wb").close()
+            raise RuntimeError("falha simulada")
+        s._coletar = falso
+        try:
+            with self.assertRaises(RuntimeError):
+                s.coletar((2024,))
+        finally:
+            s._coletar = original
+        self.assertFalse(os.path.exists(vista["pasta"]))
+
     def test_rotulo_novo_interrompe(self):
         z = self.controle([("355030", "S1", "SAA", 1, "SISTEMA DE DISTRIBUIÇÃO", "Escherichia coli", "Número de amostras positivas", "1")])
         with self.assertRaisesRegex(ValueError, "não mapeado"):

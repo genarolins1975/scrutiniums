@@ -453,7 +453,14 @@ def gravar(nome, obj):
 
 
 def coletar(anos=ANOS, zips=None):
-    pasta = zips or tempfile.mkdtemp(prefix="sisagua-")
+    """Sem `zips`, baixa para uma pasta temporária apagada ao fim, com ou sem erro."""
+    if zips:
+        return _coletar(anos, zips)
+    with tempfile.TemporaryDirectory(prefix="sisagua-") as pasta:
+        return _coletar(anos, pasta)
+
+
+def _coletar(anos, pasta):
     arquivos = []
     seeds = {}
     for ano in anos:
