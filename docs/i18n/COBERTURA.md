@@ -1,6 +1,6 @@
 # Inventário inicial de cobertura
 
-`cobertura.json` é a saída determinística de `scripts/cobertura-i18n.mjs`. Nesta entrega, ele inventaria fontes e pendências, ainda sem catalogar traduções. Não conclui a fase 0 nem declara paridade de URLs, fallback verificado ou ausência de vazamento de idioma.
+`cobertura.json` é a saída determinística de `scripts/cobertura-i18n.mjs`. Ele inventaria fontes e pendências e registra separadamente as mensagens disponíveis no catálogo inicial. Não conclui a fase 0 nem declara tradução efetiva de páginas, paridade de URLs, fallback verificado ou ausência de vazamento de idioma.
 
 ## Gerar e conferir
 
@@ -20,7 +20,15 @@ Os workflows `atualizar-dados`, `atualizar-energia`, `atualizar-gas` e `previsao
 
 O inventário também declara `config/glossario-en.json`. O gerador valida sua estrutura e referências, assina seus bytes e informa termos, nomes preservados, fontes e pendências conhecidas em um bloco separado. Essas entradas não contam como chaves de interface ou campos da gold traduzidos: o uso pelos consumidores ainda não foi integrado nem verificado. Alterar uma nota, fonte ou pendência do glossário também exige regenerar o relatório. O arquivo declarado é obrigatório e não pode ser silenciosamente excluído do inventário.
 
+## Catálogo inicial de infraestrutura
 
+O mesmo inventário declara o par `src/i18n/pt.ts` e `src/i18n/en.ts`, do domínio plataforma. O português define as chaves; o tipo inglês exige todas elas. Há quatro pares disponíveis: Português/Portuguese, Inglês/English, Idioma/Language e Somente em português/Portuguese only. São mensagens comuns, sem termo técnico ou interpolação.
+
+`scripts/i18n/catalogo.mjs` extrai objetos literais pelo AST do TypeScript, sem executar módulos. Recusa expressões, spreads, chaves duplicadas, importações de valores, chaves ausentes ou extras, textos vazios e travessões na prosa inglesa. Uma entrada inglesa pode declarar `traduzido` com `texto` ou `portugues_marcado` com `motivo`, sem duplicar o original. Fragmentos, parâmetros e referências técnicas ainda não são admitidos; entrarão junto de seus consumidores e verificações.
+
+O bloco `catalogo` assina os dois arquivos e conta chaves, traduções disponíveis e fallbacks declarados. Esses arquivos saem dos candidatos sem extrator apenas após a validação. As quatro traduções disponíveis não incrementam as métricas de interface: `uso_na_interface_verificado` permanece `false`, pois não há consumidor neste recorte. Declarar um fallback também não comprova um marcador visível ou acessível no HTML.
+
+O par é obrigatório quando declarado. Arquivos sem declaração, par incompleto ou caminho que resolve fora do repositório causam erro. Alterações invalidam `--check`. A ausência do par e da declaração preserva o comportamento inicial para inventários sem catálogo.
 
 Para inspecionar os dados atuais, materialize as saídas e execute:
 
@@ -33,15 +41,17 @@ node scripts/cobertura-i18n.mjs --gold > /tmp/cobertura-gold.json
 
 Esse diagnóstico não versionado conserva as validações de integridade das materializações. Campos ainda não catalogados são pendências, nunca inglês comprovado. Sem catálogo semântico de campos, as contagens de campos catalogados continuam zero; isso não significa ausência de pendências. O comando não modifica o relatório de código.
 
+Essa integração não conclui a fase 0: consumidores do catálogo e do glossário, rotas e verificações semânticas continuam nas entregas seguintes.
+
 ## O que cada contagem significa
 
 - Interface: ocorrências sintáticas em código e HTML. Texto JSX, atributos, props, literais, templates, chaves de objetos e expressões não resolvidas têm contadores separados. Não são chaves de tradução; incluem códigos e outros conteúdos que exigem classificação.
 - Diagnóstico `--gold`: todas as strings JSON são candidatas, inclusive vazios, nomes, datas e códigos. `ocorrencias_textuais` conta valores string; `campos_candidatos_nao_catalogados` conta JSON Pointers distintos por arquivo, agrupando apenas índices de arrays como `*`. Chaves de objetos permanecem intactas.
 - Conteúdo adicional de código: Constituição, configuração institucional e contrato da API entram explicitamente. HTML derivado de dados só entra no diagnóstico de dados. Markdown conta linhas não vazias, sem afirmar equivalência a frases ou chaves. Scripts embutidos no HTML permanecem pendentes.
 - Rotas: conta arquivos `page` e `route`, inclusive templates com parâmetros. Não enumera URLs nem comprova sua política de acesso. A apresentação pública do Crédito pertence ao domínio Crédito; por isso a plataforma tem 28 páginas, além dessa página que constava entre as 29 páginas gerais do diagnóstico inicial.
-- Chaves e campos catalogados: todos permanecem zero, pois o catálogo ainda não existe. Isso não significa que estejam traduzidos ou corretamente marcados. O percentual é `null` e `cobertura_completa` é `false` em todos os domínios.
+- Chaves e campos nas métricas de interface e gold: permanecem zero, pois o uso das mensagens ainda não foi comprovado. Traduções disponíveis são contadas no bloco separado `catalogo`. O percentual é `null` e `cobertura_completa` é `false` em todos os domínios.
 
-Não há detecção de idioma por aproximação, tradução automática ou inferência de que strings em inglês já estejam aprovadas. A presença futura dos caminhos previstos para dicionários, arquivos paralelos ingleses ou páginas `/en` reprova este scanner inicial até que o catálogo seja integrado. Esse bloqueio é transitório: não substitui a futura verificação semântica de cobertura.
+Não há detecção de idioma por aproximação, tradução automática ou inferência de que strings em inglês já estejam aprovadas. Somente o par declarado e validado é admitido como catálogo. A presença do dicionário da SPA, arquivos paralelos ingleses ou páginas `/en` continua reprovando o scanner até que seus contratos sejam integrados. Esse bloqueio é transitório: não substitui a futura verificação semântica de cobertura.
 
 ## Fontes e integridade
 

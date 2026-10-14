@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
-  "etapa": "inventario_inicial_sem_catalogacao",
+  "etapa": "inventario_com_catalogo_de_infraestrutura",
   "interpretacao": {
     "candidatos": "Ocorrências mecânicas, incluindo nomes, códigos e texto técnico ainda sem classificação. Não equivalem a chaves de tradução.",
-    "zeros": "Nenhuma chave ou campo foi catalogado neste estágio; zeros não significam ausência de pendências.",
+    "zeros": "Zeros de interface e gold indicam ausência de tradução comprovada no consumidor; mensagens disponíveis no catálogo são contadas separadamente.",
     "percentual": "Indisponível enquanto o inventário semântico e a comprovação dos marcadores não estiverem implementados.",
     "rotas": "Contagem de arquivos e templates, não enumeração das URLs dinâmicas nem verificação da política de acesso.",
     "gold": "Dados não participam deste relatório nem do --check. Execute --gold para a situação atual, não versionada."
   },
   "escopo": {
-    "inventario_sha256": "6caf5ec4d7f95cba6c9000587e1b39131a5ca340430ac6cf2e09c74f7d31595e",
-    "arquivos_analisados": 990,
-    "fontes_sha256": "c3263495a897eaf8abd83188fa8732f3c60ec40a5f02e37da46ebc7b90163fdb",
+    "inventario_sha256": "df9f5edb17695d0a9acc0375b0a609bba1a2235c07bead206f616d8e8af64be8",
+    "arquivos_analisados": 991,
+    "fontes_sha256": "71807b9ca44d52359957c1294a020583795ef532ef7ee8b21d50176189695745",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -127,20 +127,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 178,
+        "arquivos": 179,
         "candidatos": {
           "jsx_text": 634,
           "atributos": 168,
           "props": 624,
-          "outros_literais": 3022,
+          "outros_literais": 3040,
           "templates": 370,
-          "expressoes_nao_resolvidas": 1911,
-          "chaves_objetos": 2296
+          "expressoes_nao_resolvidas": 1912,
+          "chaves_objetos": 2299
         },
         "exclusoes": {
-          "importacoes": 718,
+          "importacoes": 719,
           "atributos_tecnicos": 1162,
-          "tipos": 169
+          "tipos": 171
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -149,7 +149,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 9025,
+        "candidatos_nao_catalogados": 9047,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -611,5 +611,24 @@
     ],
     "uso_na_interface_verificado": false,
     "uso_no_pipeline_verificado": false
+  },
+  "catalogo": {
+    "schema_version": 1,
+    "leitor_version": 1,
+    "dominio": "plataforma",
+    "arquivos": {
+      "pt": {
+        "path": "src/i18n/pt.ts",
+        "sha256": "8cdae33c249c09028bee53be78af70941c40206a6744c667b34580c5af0ee6e3"
+      },
+      "en": {
+        "path": "src/i18n/en.ts",
+        "sha256": "4055b7e7f105118cb8c8673d7019c213767f13552f9145f57eab7ca59f643383"
+      }
+    },
+    "chaves": 4,
+    "traducoes_disponiveis": 4,
+    "portugues_marcado_declarado": 0,
+    "uso_na_interface_verificado": false
   }
 }

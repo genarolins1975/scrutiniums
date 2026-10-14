@@ -1,7 +1,8 @@
 {
   "schema_version": 1,
   "glossario": "config/glossario-en.json",
-  "descricao": "Inventário inicial de fontes, não catálogo de traduções. Prefixos incluem novos arquivos; omissões textuais conhecidas permanecem explícitas.",
+  "catalogo": { "schema_version": 1, "dominio": "plataforma", "pt": "src/i18n/pt.ts", "en": "src/i18n/en.ts" },
+  "descricao": "Inventário de fontes e catálogo inicial de mensagens, sem comprovação de uso na interface. Prefixos incluem novos arquivos; omissões textuais conhecidas permanecem explícitas.",
   "ui": { "raizes": ["src/app", "src/components", "src/lib", "public/obs"] },
   "dominios": [
     { "id": "plataforma", "nome": "Plataforma, conta e comunicações", "ui": ["src/app", "src/components", "src/lib"], "gold": [] },

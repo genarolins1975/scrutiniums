@@ -9,11 +9,13 @@ import { fileURLToPath } from "node:url";
 import { analisarCodigo, analisarHtml, analisarJson } from "./i18n/analise.mjs";
 import { descobrirFontes } from "./i18n/fontes.mjs";
 import { lerGlossario } from "./i18n/glossario.mjs";
+import { lerCatalogo } from "./i18n/catalogo.mjs";
 
 const RAIZ = fileURLToPath(new URL("../", import.meta.url));
 const INVENTARIO = "config/i18n-inventario.json";
 const RELATORIO = "docs/i18n/cobertura.json";
 const GLOSSARIO = "config/glossario-en.json";
+const DICIONARIOS = { pt: "src/i18n/pt.ts", en: "src/i18n/en.ts" };
 const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const porCaminho = (fontes) => [...fontes].sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
 
@@ -139,14 +141,58 @@ export function construirRelatorio(manifesto, fontes, ler) {
 
 export function gerarCobertura(raiz = RAIZ) {
   // Este scanner inicial não pode continuar afirmando zero depois de surgirem traduções.
-  for (const path of ["src/i18n/en.ts", "public/obs/i18n/en.json", "public/i18n/en", "src/app/en", "src/app/[lang]"]) {
+  for (const path of ["public/obs/i18n/en.json", "public/i18n/en", "src/app/en", "src/app/[lang]"]) {
     if (existsSync(join(raiz, path))) throw new Error(`A cobertura inicial precisa integrar o catálogo e as rotas antes de medir ${path}`);
   }
   const manifesto = JSON.parse(readFileSync(join(raiz, INVENTARIO), "utf8"));
   const glossario = resumirGlossario(raiz, manifesto);
+  const catalogo = resumirCatalogo(raiz, manifesto);
   const fontes = descobrirFontes(raiz, manifesto, { apenasCodigo: true });
+  if (catalogo) {
+    // O par validado tem hashes e métricas próprios, sem inflar candidatos de UI.
+    for (const grupo of ["ui", "gold", "conteudo", "naoClassificadas", "excluidas"]) {
+      fontes[grupo] = fontes[grupo].filter((fonte) => !Object.values(DICIONARIOS).includes(fonte.path));
+    }
+  }
   const relatorio = somenteCodigo(construirRelatorio(manifesto, fontes, (path) => readFileSync(join(raiz, path))));
-  return glossario ? { ...relatorio, glossario } : relatorio;
+  if (catalogo) {
+    relatorio.etapa = "inventario_com_catalogo_de_infraestrutura";
+    relatorio.interpretacao.zeros = "Zeros de interface e gold indicam ausência de tradução comprovada no consumidor; mensagens disponíveis no catálogo são contadas separadamente.";
+  }
+  return { ...relatorio, ...(glossario ? { glossario } : {}), ...(catalogo ? { catalogo } : {}) };
+}
+
+/** Catálogo disponível não comprova tradução ou marcador no HTML. */
+function resumirCatalogo(raiz, manifesto) {
+  const declaracao = manifesto.catalogo;
+  if (!declaracao && !Object.values(DICIONARIOS).some((path) => existsSync(join(raiz, path)))) return null;
+  if (!declaracao || declaracao.schema_version !== 1 || declaracao.dominio !== "plataforma"
+    || declaracao.pt !== DICIONARIOS.pt || declaracao.en !== DICIONARIOS.en
+    || Object.keys(declaracao).sort().join(",") !== "dominio,en,pt,schema_version"
+    || !manifesto.dominios.some((d) => d.id === declaracao.dominio)) {
+    throw new Error("O inventário deve declarar o catálogo único de infraestrutura em src/i18n/pt.ts e src/i18n/en.ts.");
+  }
+  const base = realpathSync(raiz);
+  const bytes = {};
+  /** @type {Record<string, { path: string, sha256: string }>} */
+  const arquivos = {};
+  for (const [idioma, path] of Object.entries(DICIONARIOS)) {
+    if (!realpathSync(join(raiz, path)).startsWith(base + sep)) throw new Error("Dicionário fora do repositório.");
+    bytes[idioma] = readFileSync(join(raiz, path));
+    arquivos[idioma] = { path, sha256: sha(bytes[idioma]) };
+  }
+  const { pt, en } = lerCatalogo(bytes.pt.toString("utf8"), bytes.en.toString("utf8"));
+  const entradas = Object.values(en);
+  return {
+    schema_version: 1,
+    leitor_version: 1,
+    dominio: declaracao.dominio,
+    arquivos,
+    chaves: Object.keys(pt).length,
+    traducoes_disponiveis: entradas.filter((e) => e.estado === "traduzido").length,
+    portugues_marcado_declarado: entradas.filter((e) => e.estado === "portugues_marcado").length,
+    uso_na_interface_verificado: false,
+  };
 }
 
 /** Termos documentados não equivalem a chaves traduzidas ou uso já comprovado. */
