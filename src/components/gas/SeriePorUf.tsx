@@ -4,7 +4,7 @@ import { useId } from "react";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 
 import { useSelecaoGas } from "./useSelecaoGas";
-import { mesExtenso, num, sinal } from "@/lib/gas/formato";
+import { mesExtenso, num, reais, sinal } from "@/lib/gas/formato";
 import type { PrecoUf } from "@/lib/gas/gold";
 
 type Ponto = Record<string, string | number | null>;
@@ -40,7 +40,11 @@ export function SeriePorUf({
   const escolha = useSelecaoGas("uf", ufs.map((x) => x.uf), inicial);
   const uf = escolha.valor;
   const ultimo = retrato.ufs.find((x) => x.uf === uf);
-  const formatar = (v: number | null | undefined) => v == null ? "sem dado" : `${num(v, casas)} ${unidade}`;
+  // "R$/13 kg" e "R$/m³": o valor sai como "R$ 142,81", e a unidade fica declarada uma vez, abaixo dos números
+  const emReais = unidade.startsWith("R$/");
+  const unidadeExtensa = unidade === "R$/13 kg" ? "por botijão de 13 kg" : `por ${unidade.slice(3)}`;
+  const formatar = (v: number | null | undefined) => v == null ? "sem dado" : emReais ? reais(v, casas) : `${num(v, casas)} ${unidade}`;
+  const extremos = ultimo?.minimo == null && ultimo?.maximo == null ? "sem dado" : `${formatar(ultimo?.minimo)} a ${formatar(ultimo?.maximo)}`;
   const nome = ufs.find((x) => x.uf === uf)?.nome ?? uf;
   const brasil = new Map(serieBrasil.map((x) => [x.mes, x.medio]));
   const dados = serieUf.map((p) => ({ mes: p.mes as string, uf: (p[uf] as number | null | undefined) ?? null, brasil: brasil.get(p.mes as string) ?? null }));
@@ -57,16 +61,17 @@ export function SeriePorUf({
           {ufs.map((x) => <option key={x.uf} value={x.uf}>{x.nome}</option>)}
         </select>
       </div>
-      {escolha.invalida && <p className="text-sm text-carvao-muted">A UF informada no endereço não está disponível nesta pesquisa. Exibimos a seleção inicial.</p>}
+      <p aria-live="polite" className="text-sm text-carvao-muted">{escolha.invalida ? "A UF informada no endereço não está disponível nesta pesquisa. Exibimos a seleção inicial." : ""}</p>
       <div role="status" className="border-l-2 border-gas bg-gas-fundo p-4 text-sm leading-relaxed text-carvao">
         <p>{nome} · {mesExtenso(retrato.periodo)} · Preços observados na pesquisa da ANP.</p>
         <dl className="mt-3 grid gap-x-6 gap-y-3 sm:grid-cols-2">
           <div><dt>Preço médio nominal</dt><dd className="font-medium">{formatar(ultimo?.medio)}</dd></div>
-          <div><dt>Extremos nominais da amostra</dt><dd>{formatar(ultimo?.minimo)} a {formatar(ultimo?.maximo)}</dd></div>
+          <div><dt>Extremos nominais da amostra</dt><dd>{extremos}</dd></div>
           <div><dt>Revendas pesquisadas</dt><dd>{ultimo?.postos == null ? "sem dado" : num(ultimo.postos, 0)}</dd></div>
-          <div><dt>Variação em doze meses, calculada</dt><dd>{ultimo?.variacao_12m_pct == null ? "sem dado" : sinal(ultimo.variacao_12m_pct, 1, "%")}</dd></div>
+          <div><dt>Variação em 12 meses, calculada</dt><dd>{ultimo?.variacao_12m_pct == null ? "sem dado" : sinal(ultimo.variacao_12m_pct, 1, "%")}</dd></div>
         </dl>
-        <p className="mt-3">Os extremos não são intervalo de confiança nem limites do mercado. Variação: preço médio do mês dividido pelo preço de doze meses antes, menos um, em percentual.</p>
+        {emReais && <p className="mt-3 text-xs text-carvao-muted">Valores em reais {unidadeExtensa}.</p>}
+        <p className="mt-3">Os extremos não são intervalo de confiança nem limites do mercado. Variação: preço médio do mês dividido pelo preço de 12 meses antes, menos um, em percentual.</p>
       </div>
       <GraficoLinhas
         titulo={`${titulo}: ${nome} e média Brasil`}

@@ -74,7 +74,7 @@ export default function ImportacaoPage() {
         <SecaoGas
           id="participacao"
           titulo="Quanto da oferta veio de fora"
-          subtitulo="Percentual do gás importado na soma do importado com o gás disponível da produção nacional, mês a mês."
+          subtitulo="Percentual do gás importado na soma do importado com o gás disponível da produção nacional, mês a mês. Mês com o balanço da produção reprovado fica sem valor."
         >
           <GraficoLinhas
             titulo="Participação do gás importado na oferta"

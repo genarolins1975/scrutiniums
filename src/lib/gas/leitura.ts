@@ -19,7 +19,7 @@ export const LEITURAS_GAS: Record<string, { titulo: string; texto: string; atalh
   },
   "aproveitamento": {
     "titulo": "Destino não é causa",
-    "texto": "Reinjeção é o retorno do gás ao reservatório e pode fazer parte da operação do campo. Não equivale a queima ou perda. Estes dados não identificam o motivo de cada reinjeção nem a composição do gás por campo.",
+    "texto": "Reinjeção é o retorno do gás ao reservatório e pode fazer parte da operação do campo. Não equivale a queima ou perda. Um mês sem uma das parcelas fica sem balanço, e um mês reprovado na conferência não exibe as parcelas.",
     "atalhos": [
       [
         "explorar",
@@ -73,7 +73,7 @@ export const LEITURAS_GAS: Record<string, { titulo: string; texto: string; atalh
   },
   "gas-de-cozinha": {
     "titulo": "O que a pesquisa mede",
-    "texto": "Mínimo e máximo são preços encontrados na amostra, não um intervalo de confiança nem limites de todo o mercado. O botijão contém GLP, um produto diferente do gás natural.",
+    "texto": "O preço é o cobrado do consumidor pelas revendas pesquisadas pela ANP, no botijão de 13 kg. Não é uma tarifa regulada. A correção pela inflação usa o IPCA geral, com a base indicada no gráfico.",
     "atalhos": [
       [
         "sua-uf",
@@ -127,7 +127,7 @@ export const LEITURAS_GAS: Record<string, { titulo: string; texto: string; atalh
   },
   "infraestrutura": {
     "titulo": "Entradas distintas",
-    "texto": "Produção nacional e importação são entradas distintas. O gás nacional pode passar por escoamento e processamento; o GNL importado passa por regaseificação. Um ato de autorização não comprova operação atual.",
+    "texto": "Produção nacional e importação são entradas distintas. O gás nacional pode passar por escoamento e processamento; o importado chega por gasoduto ou como GNL, que passa por regaseificação. Um ato de autorização não comprova operação atual.",
     "atalhos": [
       [
         "transporte",
@@ -163,7 +163,7 @@ export const LEITURAS_GAS: Record<string, { titulo: string; texto: string; atalh
   },
   "dados": {
     "titulo": "Como conferir uma medida",
-    "texto": "Encontre o período, a unidade e a fonte. A fórmula explica a transformação feita pelo observatório. O arquivo original e seu hash permitem identificar o snapshot utilizado.",
+    "texto": "Encontre o período, a unidade e a fonte. A fórmula explica a transformação feita pelo observatório. O arquivo original e seu hash permitem identificar a captura utilizada.",
     "atalhos": [
       [
         "fontes",

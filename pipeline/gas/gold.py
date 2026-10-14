@@ -136,7 +136,6 @@ def producao_e_aproveitamento(s):
     if not all(m in nac["producao"] for m in janela):
         raise validacoes.ErroValidacao("produção: janela de doze meses incompleta")
     tot12 = sum(nac["producao"][m] for m in janela)
-    tot12_ant = sum(nac["producao"].get(m, 0) for m in janela_ant)
     ufs = sorted({uf for (_, uf) in por_uf["producao"]})
     tabela_uf = []
     for uf in ufs:
@@ -207,6 +206,8 @@ def producao_e_aproveitamento(s):
     # A janela do aproveitamento termina no último mês em que os cinco conjuntos foram publicados: a ANP coleta cada um em
     # separado, e um mês que falta numa parcela não pode virar zero na soma. Mês reprovado no balanço também invalida a janela.
     situacao = {x["mes"]: x["situacao"] for x in serie_dest}
+    # Disponível só de meses aprovados no balanço: a participação do importado não usa parcela reprovada ou incompleta.
+    nac["disponivel_conferido"] = {m: v for m, v in nac["disponivel"].items() if situacao.get(m) == "ok"}
     def completo(m):
         return all(m in nac[k] for k in parcelas) and situacao.get(m) == "ok"
     ultimo_b = max(m for m in meses if all(m in nac[k] for k in parcelas))
@@ -262,7 +263,7 @@ def producao_e_aproveitamento(s):
     s.gold("producao", fp, {
         "ultimo_mes": ultimo, "indicadores": indicadores, "serie": serie_prod[-(12 * 30):], "anual": serie_anual,
         "por_uf": tabela_uf, "ufs_serie": top, "serie_uf": serie_uf,
-        "notas": ["O conjunto separa produção em terra e no mar, sem distinguir pré-sal e pós-sal.",
+        "notas": ["O conjunto separa produção em terra e no mar, sem separar os reservatórios por camada geológica.",
                   "Produção é o volume medido na saída do poço; parte dele é reinjetada, queimada ou consumida na própria produção (ver Aproveitamento)."],
     })
     s.gold("aproveitamento", fa, {
@@ -300,7 +301,7 @@ def importacao(s, nac, meses_prod):
     serie = []
     for m in meses:
         vol, usd = anp.get(m, (None, None))
-        disp = nac["disponivel"].get(m)
+        disp = nac["disponivel_conferido"].get(m)
         serie.append({
             "mes": m, "importado": _r(_mmd(vol, m)), "dispendio_musd": _r(usd / 1e6 if usd is not None else None),
             "preco_implicito_usd_mil_m3": _r(usd / vol if vol and usd is not None else None, 1),
@@ -309,7 +310,7 @@ def importacao(s, nac, meses_prod):
     janela = _meses_ate(ultimo, 12)
     vol12 = _soma_completa(anp.get(m, (None, None))[0] for m in janela)
     usd12 = _soma_completa(anp.get(m, (None, None))[1] for m in janela)
-    disp12 = _soma_completa(nac["disponivel"].get(m) for m in janela)
+    disp12 = _soma_completa(nac["disponivel_conferido"].get(m) for m in janela)
     per12 = f"{janela[0]} a {janela[-1]}"
     fi = ["anp_importacao"]
     ind = {
@@ -321,7 +322,7 @@ def importacao(s, nac, meses_prod):
                                    "soma do dispêndio mensal informado pela ANP"),
         "participacao_12m": indicador("Participação do gás importado na soma com o gás disponível da produção nacional", "%", C,
                                       ["anp_importacao", "anp_disponivel"], per12, _r(_participacao(vol12, disp12), 1),
-                                      "importado ÷ (importado + disponível da produção nacional) × 100, soma dos 12 meses",
+                                      "importado ÷ (importado + disponível da produção nacional) × 100, soma dos 12 meses; só meses com o balanço da produção aprovado",
                                       "Medida de composição da oferta, não de consumo: o gás disponível ainda passa por processamento antes de chegar ao mercado."),
     }
     ap = s.golds["aproveitamento"]["indicadores"]
