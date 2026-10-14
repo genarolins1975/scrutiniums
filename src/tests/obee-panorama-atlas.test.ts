@@ -1,6 +1,4 @@
-import {describe,it,expect,vi} from 'vitest';
-// A página importa módulos marcados com server-only; no teste, o marcador não tem efeito.
-vi.mock('server-only',()=>({}));
+import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {gunzipSync} from 'node:zlib';
@@ -8,11 +6,8 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import data from '@/lib/eficiencia/panorama-atlas.json';
 import frequency from '@/lib/eficiencia/frequencia-escolar.json';
-import {montarRetrato} from '@/lib/eficiencia/entrada';
-import {hrefPainel,diferenca} from '@/lib/eficiencia/entrada-nucleo';
-import PaginaEntradaEficiencia from '@/app/eficiencia-estatal/page';
-
-const retrato=montarRetrato();
+import {PanoramaTerritorial,panoramaPair,panoramaDetailHref} from '@/components/eficiencia/PanoramaTerritorial';
+import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
 
 describe('Panorama municipal do Atlas',()=>{
   it('preserva as 104 observações dos quatro contratos e seus hashes',()=>{
@@ -43,19 +38,24 @@ describe('Panorama municipal do Atlas',()=>{
     }
     expect(data.metrics.find(m=>m.id==='saude')!.scaleMax).toBeGreaterThan(100);
   });
-  it('a entrada usa os mesmos valores do panorama nas medidas em comum',()=>{
-    const pares:[string,string][]=[['educacao','educacao'],['trabalho','trabalho'],['mobilidade','mobilidade']];
-    for(const [panorama,condicao] of pares){
-      const m=data.metrics.find(x=>x.id===panorama)!,c=retrato.condicoes.find(x=>x.id===condicao)!;
-      for(const o of m.observations)expect(c.valores[o.territory].valor).toBe(o.value);
+  it.each(data.cities)('seleção de $name atualiza os quatro temas',city=>{
+    const other=data.cities.find(c=>c.id!==city.id)!;
+    const html=renderToStaticMarkup(createElement(PanoramaTerritorial,{place:city.id,reference:other.id,onEducation:()=>{}}));
+    for(const m of data.metrics){
+      const pair=panoramaPair(city.id,other.id,m);
+      expect(pair.a).toBe(m.observations.find(o=>o.territory===city.id)!.value);
+      expect(pair.difference).toBeCloseTo(pair.a!-pair.b!,10);
     }
-    const aps=data.metrics.find(x=>x.id==='saude')!,r=retrato.recursos.find(x=>x.id==='aps')!;
-    for(const o of aps.observations)expect(r.valores[o.territory].valor).toBe(o.eligible?o.value:null);
+    expect(html).toContain(city.name);expect(html).not.toContain('NaN');
   });
-  it('zero, ausência e inelegibilidade têm comportamentos distintos na diferença',()=>{
-    expect(diferenca(0,1,'%')).toBe('−1,0 p.p.');
-    expect(diferenca(null,1,'%')).toBe('Diferença indisponível');
-    expect(diferenca(2,2,'R$')).toBe('R$ 0,00');
+  it('zero, ausência e inelegibilidade têm comportamentos distintos',()=>{
+    const metric=structuredClone(data.metrics[0]);metric.observations[0].value=0;
+    expect(panoramaPair(metric.observations[0].territory,'4106902',metric).a).toBe(0);
+    metric.observations[0].eligible=false;
+    expect(panoramaPair(metric.observations[0].territory,'4106902',metric).difference).toBeNull();
+    expect(panoramaPair('ausente','4106902',metric).a).toBeNull();
+    const html=renderToStaticMarkup(createElement(PanoramaTerritorial,{place:'ausente',reference:'4106902',onEducation:()=>{}}));
+    expect(html).toContain('Não disponível');expect(html).toContain('Diferença indisponível');expect(html).not.toContain('NaN');
   });
   it('CSV mantém todos os territórios, precisão e estados',()=>{
     const csv=readFileSync('public/eficiencia/atlas/panorama-capitais.csv','utf8');
@@ -69,20 +69,19 @@ describe('Panorama municipal do Atlas',()=>{
     }
   });
   it('aprofundamento preserva parâmetros suportados pelos capítulos',()=>{
-    const painel=(id:string)=>[...retrato.condicoes,...retrato.recursos].find(m=>m.id===id)!.painel!;
-    expect(painel('educacao').href).toBe('#atlas-comparacao');
-    const h=new URL(hrefPainel(painel('aps'),'2611606','4106902'),'https://example.test');
+    const urls=data.metrics.map(m=>panoramaDetailHref(m,'2611606','4106902'));
+    expect(urls[0]).toBe('#atlas-comparacao');
+    const h=new URL(urls[1],'https://example.test');
     expect(h.searchParams.get('med')).toBe('cobertura_aps');expect(h.searchParams.get('ano')).toBe('2025');
-    const saude=data.metrics.find(m=>m.id==='saude')!;
-    expect(h.searchParams.get('cap')).toBe(saude.territoryKeys!['2611606']);
-    expect(h.searchParams.get('vs')).toBe(saude.territoryKeys!['4106902']);
-    expect(hrefPainel(painel('trabalho'),'2611606','4106902')).toContain('ter=2611606&med=renda-mediana&per=2022');
-    expect(hrefPainel(painel('mobilidade'),'2611606','4106902')).toContain('territorio=2611606');
+    expect(h.searchParams.get('cap')).toBe(data.metrics[1].territoryKeys!['2611606']);
+    expect(h.searchParams.get('vs')).toBe(data.metrics[1].territoryKeys!['4106902']);
+    expect(urls[2]).toContain('ter=2611606&med=renda-mediana&per=2022');
+    expect(urls[3]).toContain('territorio=2611606');
   });
-  it('entrada apresenta limites materiais, fontes e a faixa do índice de resultados',()=>{
-    const html=renderToStaticMarkup(createElement(PaginaEntradaEficiencia));
-    for(const text of ['Capacidade teórica','redes pública e privada','Reais nominais de julho de 2022','Não mede tratamento','Índice de resultados · referência 2022','Aprendizagem · Saeb','Sete perguntas sobre a vida em Recife','Até onde cada tema chega.'])expect(html).toContain(text);
-    for(const m of [...retrato.condicoes,...retrato.recursos])expect(html).toContain(m.fonteUrl.replaceAll('&','&amp;'));
-    expect(html).not.toContain('escore validado:');expect(html).not.toContain('NaN');expect(html).not.toContain('undefined');
+  it('entrada apresenta limites materiais e a faixa do índice de resultados',()=>{
+    const html=renderToStaticMarkup(createElement(AtlasCidadao));
+    for(const text of ['Capacidade teórica','Inclui redes públicas e privadas','Reais nominais de julho de 2022','o resíduo não é redistribuído','Índice de resultados · 2022','Aprendizagem · Saeb','A vida no território, lado a lado.'])expect(html).toContain(text);
+    for(const m of data.metrics)expect(html).toContain(m.sourceUrl.replaceAll('&','&amp;'));
+    expect(html).not.toContain('escore validado:');
   });
 });

@@ -3,15 +3,15 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {AberturaFederal} from '@/components/contas-publicas/AberturaFederal';
 import {AberturaEstadual} from '@/components/contas-estaduais/AberturaEstadual';
-import {RetratoCapital} from '@/components/eficiencia/entrada/RetratoCapital';
-import {montarRetrato} from '@/lib/eficiencia/entrada';
-import {naCapital,numero} from "@/lib/eficiencia/entrada-nucleo";
+import {AberturaCidada} from '@/components/eficiencia/AberturaCidada';
 import {IndiceFederal} from '@/components/contas-publicas/IndiceFederal';
 import {DADOS} from '@/lib/contas-publicas/dados';
 import {moeda} from '@/lib/contas-publicas/formato';
 import {CAPITULOS} from '@/lib/contas-publicas/catalogo';
 import {snapshot,dividaPrimaria} from '@/lib/contas-estaduais/dados';
 import {comparar} from '@/lib/contas-estaduais/comparacao';
+import atlas from '@/lib/eficiencia/atlas-resumo.json';
+import panorama from '@/lib/eficiencia/panorama-atlas.json';
 
 const percentual=(v:number)=>v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
 describe('Aberturas editoriais: números e perímetros preservados',()=>{
@@ -38,22 +38,29 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   expect(html.match(/Não conferido/g)).toHaveLength(2);
   expect(html).not.toContain('0,00%');
  });
- const retrato=montarRetrato();
- const retratoDe=(a:string,b:string)=>renderToStaticMarkup(createElement(RetratoCapital,{a:retrato.capitais.find(c=>c.id===a)!,b:retrato.capitais.find(c=>c.id===b)!,condicoes:retrato.condicoes,capitais:retrato.capitais,onSelect:()=>{},fonteContornos:retrato.fonteContornos,fontePopulacao:retrato.fontePopulacao}));
- it.each(retrato.capitais)('OBEE retrata $nome com os sete valores originais, contorno oficial e população do Censo',city=>{
+ it.each(atlas.cities)('OBEE apresenta a observação de $name sem alterar a referência',city=>{
   const reference=city.id==='4106902'?'2611606':'4106902';
-  const html=retratoDe(city.id,reference);
-  expect(html).toContain(`Como se vive ${naCapital(city.nome).split(" ")[0]} <em>${city.nome}</em>?`);
-  for(const m of retrato.condicoes)expect(html).toContain(numero(m.valores[city.id].valor,m.unidade));
-  expect(city.contorno).not.toBeNull();expect(html).toContain('retrato-hachura');
-  expect(city.populacao).toBeGreaterThan(0);expect(html).toContain(Math.round(city.populacao!).toLocaleString('pt-BR'));
-  expect(html).toContain('Posição relativa, não nota nem meta');
-  expect(html).not.toContain('NaN');
+  const html=renderToStaticMarkup(createElement(AberturaCidada,{selection:{scope:'cidades',place:city.id,reference,metric:'frequencia',age:'47813'},onSelect:()=>{}}));
+  const m=panorama.metrics.find(m=>m.id==='educacao')!;
+  expect(html).toContain(percentual(m.observations.find(o=>o.territory===city.id)!.value!));
+  expect(html).toContain('Inclui redes públicas e privadas');
+  expect(html).not.toContain('atlas-piloto');
  });
- it('o retrato declara partes remotas fora do enquadramento',()=>{
-  const vitoria=retrato.capitais.find(c=>c.nome==='Vitória')!;
-  expect(vitoria.contorno!.partesDistantes).toBeGreaterThan(0);
-  expect(retratoDe(vitoria.id,'2611606')).toMatch(/partes remotas ficam fora do enquadramento/);
+ it.each(panorama.metrics)('cada perspectiva da abertura respeita unidade e ressalva de $chapter',m=>{
+  const html=renderToStaticMarkup(createElement(AberturaCidada,{selection:{scope:'cidades',place:'2611606',reference:'4106902',metric:'frequencia',age:'47813',perspective:m.id},onSelect:()=>{}}));
+  expect(html).toContain(m.title);expect(html).toContain(m.warning);
+  expect(html).toContain(m.period);
+  if(m.id==='trabalho')expect(html).toContain('Sem ajuste espacial de preços');
+  for(const id of ['2611606','4106902']){
+   const v=m.observations.find(o=>o.territory===id)!.value!;
+   expect(html).toContain(m.unit==='%'?percentual(v):'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}));
+  }
+ });
+ it('a visão regional usa a situação alimentar e não reaproveita as medidas municipais',()=>{
+  const html=renderToStaticMarkup(createElement(AberturaCidada,{selection:{scope:'regioes',place:'Nordeste',reference:'Sul',metric:'frequencia',age:'47813'},onSelect:()=>{}}));
+  expect(html).toContain('Domicílios com segurança alimentar');
+  expect(html).toContain(percentual(atlas.regions.find(r=>r.id==='Nordeste')!.value!));
+  expect(html).not.toContain('Frequência escolar');
  });
  it('o índice federal preserva acesso a todos os capítulos e identifica os ainda não integrados',()=>{
   const html=renderToStaticMarkup(createElement(IndiceFederal));
