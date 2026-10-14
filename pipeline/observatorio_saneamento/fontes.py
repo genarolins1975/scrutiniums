@@ -72,3 +72,21 @@ CENSO = {
 
 # Estimativa da população residente (IBGE), a mesma usada pelo SINISA em DFE0001.
 POPULACAO_ESTIMADA = {"tabela": 6579, "variavel": 9324, "ano": 2024}
+
+# CadÚnico por município e mês (MDS, SAGI, API MI Social, a base do VIS Data).
+# Elegibilidade da tarifa social (Lei 14.898/2024, art. 2º): renda familiar per
+# capita até meio salário-mínimo. Dezembro de 2024 casa com o ano de referência do
+# SINISA; o mês mais recente publicado serve de contexto. O código do município
+# vem com 6 dígitos (sem o verificador).
+MISOCIAL = "https://aplicacoes.mds.gov.br/sagi/servicos/misocial"
+CADUNICO = {
+    "meses": ["202412", "202609"],
+    "campos": [
+        "codigo_ibge", "anomes_s", "sigla_uf",
+        "cadun_qtd_familias_cadastradas_i",
+        "cadun_qtd_familias_cadastradas_rfpc_ate_meio_sm_i",
+        "cadun_qtd_familias_cadastradas_rfpc_acima_meio_sm_i",
+        "cadun_qtd_familias_atualizadas_rfpc_ate_meio_sm_i",
+        "cadun_qtd_pessoas_cadastradas_rfpc_ate_meio_sm_i",
+    ],
+}
