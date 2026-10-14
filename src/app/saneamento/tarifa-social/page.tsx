@@ -210,7 +210,7 @@ export default function Pagina() {
           />
           <Ressalva
             permite="Saber onde o prestador declara oferecer tarifa social, com que critérios e para quantas economias."
-            naoPermite="Calcular a cobertura do benefício: falta o número de famílias elegíveis por município no mesmo período. Economias não são famílias, e vínculos sem resposta ficam fora."
+            naoPermite="Dizer quantas famílias recebem o benefício: o SINISA conta economias, não famílias, e vínculos sem resposta ficam fora. A comparação com as famílias elegíveis do CadÚnico está na seção seguinte, como razão entre contagens diferentes."
           />
           <Nota>
             {inteiro(semResposta)} vínculos não responderam se há tarifa social. O valor médio declarado da tarifa social (GFI1037) tem registros

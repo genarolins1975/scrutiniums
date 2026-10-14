@@ -21,6 +21,10 @@ function censoPct(a: Agregado, num: (a: Agregado) => number | null | undefined):
 }
 
 function referenciaDe(med: Medida, a: Agregado, membros: readonly Municipio[]): Referencia {
+  if (med.id.startsWith("des-")) {
+    const [num, den] = a.desigualdades?.[med.id.slice(4)] ?? [null, null];
+    return { pct: razaoPct(num, den), contagem: den != null && den > 0 ? num : null, origem: "Tabulação do IBGE no nível do território, Censo 2022" };
+  }
   const mor = a.censo2022.moradores;
   switch (med.id) {
     case "c22-agua-sem-ligacao":

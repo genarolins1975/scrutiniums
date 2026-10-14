@@ -43,7 +43,7 @@ Critérios: dado real com fonte e período (D), método e ressalvas visíveis (M
 | `/saneamento/comparar` | sim | sim | sim | sim | 8 | Até quatro municípios, link e CSV |
 | `/saneamento/metodologia` (pública) | sim | sim | sim | sim | 9 | Fontes com sha256, matriz, conferências, downloads |
 
-Páginas abaixo de 9 ficam abaixo por lacuna de dado declarada, não por defeito conhecido de interface. Capítulos 2 (desigualdades) e 13 (saúde e ambiente), comparação internacional (JMP) e explorador de prioridades não têm página.
+Páginas abaixo de 9 ficam abaixo por lacuna de dado declarada, não por defeito conhecido de interface. Na primeira entrega, capítulos 2 e 13 não tinham página. A entrega de desigualdades está registrada abaixo; saúde e ambiente, comparação internacional e explorador de prioridades seguem sem página.
 
 ## Recomendação
 
@@ -56,3 +56,40 @@ Antes de abrir o domínio ao público, revisão em contexto limpo por pessoa ou 
 - Testes: `saneamento-gold.test.ts` passa a exigir que a soma municipal reproduza o total do Brasil, que a razão seja razão de somas no mesmo universo, que "não oferece" conte zero e que "sem resposta" fique sem dado.
 - Navegador (servidor de desenvolvimento): tarifa social, ficha de Recife, metodologia e investimento em 320, 390 e 1440 px, HTTP 200, um H1, sem transbordo, sem erro de JavaScript.
 - Não verificado: número oficial independente do total de dezembro de 2024 (o total vem da própria base do MDS).
+
+## Desigualdades e correção da tarifa social (14/10/2026)
+
+**Autoavaliação, não revisão independente.** A correção `5028844bd` foi incorporada por cherry-pick. A referência nacional da tarifa social mostra 26.643.139 famílias elegíveis; 3.808.156 economias / 26.643.139 famílias mantém 14,3 por 100 (SINISA 2024 e CadÚnico dez/2024). A correção isolada não mudou a gold. O capítulo 2 acrescenta campos derivados do Censo 2022, sem alterar as medidas anteriores.
+
+### Dados e código
+
+- 56 respostas de dados e 6 metadados do IBGE preservados com SHA-256; 14 medidas municipais e referências oficiais de Brasil, regiões e UFs.
+- `python3 -m pipeline.observatorio_saneamento.gold`: gold reconstruída; os 8 testes de `pipeline.tests.test_observatorio_saneamento` passaram em Python 3.11, 3.12 e 3.13, incluindo comparação byte a byte de todos os arquivos, hashes, universos e divergências publicadas.
+- Tipos e lint sem erros. Build de produção aprovado com 620 páginas.
+- 55 testes específicos passaram (saneamento-gold, saneamento-conta, rotas-publicas e dois-observatorios).
+- Suíte completa após implementação do capítulo: 4.920 passaram e 1 ignorado. Repetição após o ajuste de texto ampliado, concorrendo com Chromium: 4.918 passaram, 1 ignorado e 2 timeouts de 5 s em `obee-mobilidade.test.ts`. Reexecução isolada do arquivo, sem mudar timeout ou assertions: 14/14 passaram. São resultados distintos, não uma suíte final integralmente verde. Nenhuma falha de asserção foi observada.
+
+### Navegador e acessibilidade
+
+Build de produção com sessão local de auditoria. `scripts/saneamento/verificacao.mjs` em `/saneamento/desigualdades` e `/saneamento/tarifa-social`, larguras 320, 390, 768 e 1440 px: 8/8 verificações com HTTP 200, um H1, sem transbordamento horizontal ou erro JavaScript. Capturas de página inteira registradas; leitura visual do capítulo em desktop e do atlas com favelas/Pernambuco.
+
+Conferência adicional da rota nova: números nacionais comparados com a gold, seleção de medida e UF preservada na URL após recarga, alternância de proporção para domicílios por foco e Espaço, CSV com todas as 392 linhas (Brasil + 27 UFs × 14 medidas), sem limitar a exportação às 20 linhas inicialmente exibidas. Texto a 200% em viewport de 390 px: sem transbordamento após limitar a largura mínima da busca do mapa ao espaço disponível e manter a marca tipográfica nas dimensões do logotipo.
+
+Axe, regras WCAG 2 A/AA e 2.1 AA: nenhuma violação automática; `color-contrast` permaneceu na lista de conferência incompleta. Não equivale a certificação WCAG. Não verificados: leitor de tela real, todas as tarefas de ponta a ponta só por teclado, contraste manual de todos os estados, rede lenta e as demais rotas nesta rodada. As capturas e relatórios da execução estão no workspace, em `/workspace/cloud-setup/desigualdades-final-visual/` e `/workspace/cloud-setup/desigualdades-visual/`.
+
+### Rubrica da rota nova
+
+| Critério | Autoavaliação | Evidência e limite |
+|---|---|---|
+| Direção de arte | 9/10 | Tokens existentes, peças editoriais e gráficos da plataforma, sem cores novas |
+| Hierarquia | 9/10 | Pergunta, síntese factual, comparação nacional, recortes e exploração territorial |
+| Tipografia e acabamento | 8/10 | Valores tabulares e rótulos completos; notas metodológicas extensas |
+| Densidade e profundidade | 9/10 | Contagens, razões, denominadores, atlas, tabelas, cobertura e CSV completo |
+| Didática visual | 9/10 | Moradores e domicílios separados; água e esgoto em figuras distintas |
+| Comparabilidade | 9/10 | Referências oficiais por grupo, sobreposição e supressões explícitas |
+| Interação e acessibilidade | 8/10 | URL, exportação, rádio por teclado e axe; leitor de tela e contraste manual pendentes |
+| Responsividade | 9/10 | Quatro larguras e texto a 200%, sem transbordamento; tabelas com rolagem própria |
+
+### Cobertura parcial
+
+Ainda não integram o capítulo: ligação à rede de água para quilombolas e indígenas pela identificação ampliada, urbano/rural e renda individual cruzada com saneamento. Não se inferiu ligação a partir de forma principal de abastecimento. As próximas entregas do roteiro (SISAGUA, DATASUS, expansão tarifária e outras integrações) não foram implementadas nesta entrega 4.1.

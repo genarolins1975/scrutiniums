@@ -13,7 +13,7 @@ Documentos desta pasta:
 | Eixo | Capítulo | Rota | Situação |
 |---|---|---|---|
 | A Acesso e qualidade | 1 Quantas pessoas estão sem atendimento adequado? | `/saneamento/acesso` | Publicado |
-| | 2 Quem fica para trás? | sem rota | Em preparação (tabelas do Censo por cor ou raça, quilombolas, indígenas e favelas mapeadas) |
+| | 2 Quem fica para trás? | `/saneamento/desigualdades` | Parcial (14 medidas do Censo 2022, com universos separados e supressões publicadas) |
 | | 3 A água chega regularmente e com qualidade monitorada? | `/saneamento/continuidade` | Parcial (continuidade publicada; SISAGUA não integrado) |
 | | 4 Para onde vai o esgoto? | `/saneamento/esgoto` | Publicado |
 | B Preço regulado | 5 Preço regulado: o que pagamos, por que foi autorizado, o que financia | `/saneamento/preco-regulado` e subpainéis 5.1 a 5.5 | Parcial (amostra verificada) |
@@ -65,3 +65,12 @@ npx vitest run src/tests/saneamento-gold.test.ts src/tests/saneamento-conta.test
 ## Relação com a Eficiência Estatal
 
 O capítulo de saneamento da Eficiência Estatal usa os mesmos arquivos consolidados do SINISA (sha256 idênticos). O teste `src/tests/saneamento-gold.test.ts` compara os 429 valores consolidados comuns e exige igualdade exata. A divergência de população do módulo de esgoto registrada lá é explicada aqui: os 1.154 municípios com delegação sem atendimento entram no denominador consolidado (173.640.502 + 14.615.404 = 188.255.906).
+
+## Desigualdades (Censo 2022)
+
+Coleta: `python3 -m pipeline.observatorio_saneamento.desigualdades --coletar`.
+O coletor valida todas as variáveis e classificações nos metadados antes das consultas, preserva 56 respostas de dados e 6 metadados originais comprimidos com `mtime=0`, e registra SHA-256 dos bytes JSON descomprimidos no manifesto. O build offline verifica os hashes antes de materializar a gold. Não é necessário recolher SINISA ou CadÚnico.
+
+O capítulo contém comparação nacional por cor ou raça, recortes separados de quilombolas, indígenas e favelas, atlas com 14 medidas, tabelas e CSV para Brasil, UFs e municípios. As medidas estão disponíveis também no comparador municipal. Referências territoriais vêm das tabulações oficiais.
+
+Limitações: ligação à rede de água para quilombolas e indígenas pela identificação ampliada, recortes urbano/rural e renda individual cruzada com saneamento não integrados. As tabelas 10105 e 9957 são de esgoto; a 9894 mede domicílios, a 9898 mede moradores. O capítulo permanece parcial.

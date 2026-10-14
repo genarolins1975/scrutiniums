@@ -1,0 +1,128 @@
+[
+  {
+    "id": "branca-agua",
+    "grupo": "branca",
+    "rotulo": "Branca",
+    "medida": "agua",
+    "tabela": 6894,
+    "unidade": "moradores",
+    "universo": "Moradores de cor ou raça branca em domicílios particulares permanentes ocupados"
+  },
+  {
+    "id": "branca-esgoto",
+    "grupo": "branca",
+    "rotulo": "Branca",
+    "medida": "esgoto",
+    "tabela": 7555,
+    "unidade": "moradores",
+    "universo": "Moradores de cor ou raça branca em domicílios particulares permanentes ocupados"
+  },
+  {
+    "id": "preta-agua",
+    "grupo": "preta",
+    "rotulo": "Preta",
+    "medida": "agua",
+    "tabela": 6894,
+    "unidade": "moradores",
+    "universo": "Moradores de cor ou raça preta em domicílios particulares permanentes ocupados"
+  },
+  {
+    "id": "preta-esgoto",
+    "grupo": "preta",
+    "rotulo": "Preta",
+    "medida": "esgoto",
+    "tabela": 7555,
+    "unidade": "moradores",
+    "universo": "Moradores de cor ou raça preta em domicílios particulares permanentes ocupados"
+  },
+  {
+    "id": "amarela-agua",
+    "grupo": "amarela",
+    "rotulo": "Amarela",
+    "medida": "agua",
+    "tabela": 6894,
+    "unidade": "moradores",
+    "universo": "Moradores de cor ou raça amarela em domicílios particulares permanentes ocupados"
+  },
+  {
+    "id": "amarela-esgoto",
+    "grupo": "amarela",
+    "rotulo": "Amarela",
+    "medida": "esgoto",
+    "tabela": 7555,
+    "unidade": "moradores",
+    "universo": "Moradores de cor ou raça amarela em domicílios particulares permanentes ocupados"
+  },
+  {
+    "id": "parda-agua",
+    "grupo": "parda",
+    "rotulo": "Parda",
+    "medida": "agua",
+    "tabela": 6894,
+    "unidade": "moradores",
+    "universo": "Moradores de cor ou raça parda em domicílios particulares permanentes ocupados"
+  },
+  {
+    "id": "parda-esgoto",
+    "grupo": "parda",
+    "rotulo": "Parda",
+    "medida": "esgoto",
+    "tabela": 7555,
+    "unidade": "moradores",
+    "universo": "Moradores de cor ou raça parda em domicílios particulares permanentes ocupados"
+  },
+  {
+    "id": "indigena-cor-agua",
+    "grupo": "indigena-cor",
+    "rotulo": "Indígena (cor ou raça)",
+    "medida": "agua",
+    "tabela": 6894,
+    "unidade": "moradores",
+    "universo": "Moradores de cor ou raça indígena (cor ou raça) em domicílios particulares permanentes ocupados"
+  },
+  {
+    "id": "indigena-cor-esgoto",
+    "grupo": "indigena-cor",
+    "rotulo": "Indígena (cor ou raça)",
+    "medida": "esgoto",
+    "tabela": 7555,
+    "unidade": "moradores",
+    "universo": "Moradores de cor ou raça indígena (cor ou raça) em domicílios particulares permanentes ocupados"
+  },
+  {
+    "id": "quilombolas-esgoto",
+    "grupo": "quilombolas",
+    "rotulo": "Quilombolas",
+    "medida": "esgoto",
+    "tabela": 10105,
+    "unidade": "moradores",
+    "universo": "Moradores quilombolas em domicílios particulares permanentes ocupados, dentro e fora de territórios quilombolas"
+  },
+  {
+    "id": "indigenas-esgoto",
+    "grupo": "indigenas",
+    "rotulo": "Indígenas (identificação ampliada)",
+    "medida": "esgoto",
+    "tabela": 9957,
+    "unidade": "moradores",
+    "universo": "Moradores indígenas em domicílios particulares permanentes ocupados, inclusive habitação indígena sem paredes ou maloca, dentro e fora de terras indígenas"
+  },
+  {
+    "id": "favelas-agua",
+    "grupo": "favelas",
+    "rotulo": "Favelas e comunidades urbanas",
+    "medida": "agua",
+    "tabela": 9894,
+    "unidade": "domicílios",
+    "universo": "Domicílios particulares permanentes ocupados em favelas e comunidades urbanas"
+  },
+  {
+    "id": "favelas-esgoto",
+    "grupo": "favelas",
+    "rotulo": "Favelas e comunidades urbanas",
+    "medida": "esgoto",
+    "tabela": 9898,
+    "unidade": "moradores",
+    "universo": "Moradores em domicílios particulares permanentes ocupados em favelas e comunidades urbanas"
+  }
+]

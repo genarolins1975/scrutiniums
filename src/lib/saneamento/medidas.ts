@@ -1,3 +1,4 @@
+import DESIGUALDADES from "./dados/desigualdades.json";
 import type { Municipio } from "./tipos";
 import { razaoPct } from "./municipios";
 import { numero, sinal } from "./formato";
@@ -66,6 +67,23 @@ export const FONTE_ROTULO: Record<Fonte, string> = {
   nr8_sinisa2024: "SINISA 2025 (2024) e IBGE, pela ficha da NR ANA 8/2024",
   sinisa_cadunico2024: "SINISA 2025 (2024) e MDS, CadÚnico de dezembro de 2024",
 };
+
+export const MEDIDAS_DESIGUALDADES: Medida[] = DESIGUALDADES.map((s) => {
+  const num = (m: Municipio) => m[`des_${s.id}_num`] ?? null;
+  const den = (m: Municipio) => m[`des_${s.id}_den`] ?? null;
+  const titulo = s.medida === "agua" ? "Sem ligação à rede geral de água" : "Sem rede nem fossa séptica";
+  return {
+    id: `des-${s.id}`, titulo: `${s.rotulo}: ${titulo.toLowerCase()}`,
+    pergunta: `${titulo}: qual a proporção entre ${s.universo.toLowerCase()}?`,
+    fonte: "censo2022", periodo: "2022", universo: s.universo,
+    unidadePct: "%", unidadeContagem: s.unidade, casas: 1,
+    pct: (m) => razaoPct(num(m), den(m)), contagem: num, numerador: num, denominador: den,
+    permite: `Comparar a carência no mesmo grupo e universo entre territórios. IBGE, SIDRA ${s.tabela}, Censo 2022.`,
+    naoPermite: "Inferir renda individual, qualidade da água, tratamento do esgoto ou causa das diferenças. Grupos se sobrepõem; domicílios e moradores não se somam nem se comparam como o mesmo universo.",
+    ausencia: "Sem tabulação, informação suprimida ou universo igual a zero. Ausência não significa ausência de carência.",
+    cortesPct: [5, 15, 30, 50], cortesContagem: [100, 1000, 10000, 100000],
+  };
+});
 
 export const MEDIDAS: Medida[] = [
   {
@@ -346,6 +364,7 @@ export const MEDIDAS: Medida[] = [
     cortesPct: [5, 15, 30, 60],
     limitesHistograma: [0, 5, 10, 15, 20, 30, 40, 60, 80, 100],
   },
+  ...MEDIDAS_DESIGUALDADES,
 ];
 
 /** Texto do valor principal da medida, com a unidade certa (percentual, pontos percentuais ou valor por habitante). */
@@ -368,7 +387,11 @@ export function valorMedida(med: Medida, m: Municipio, variante: Variante): numb
   return med.pct(m);
 }
 
-/** Agregação pela soma: pct = Σnumerador/Σdenominador; nunca média de percentuais municipais. */
+/**
+ * Agregação pela soma: pct = Σnumerador/Σdenominador; nunca média de percentuais municipais.
+ * A contagem agregada soma a contagem da própria medida (a unidade exibida), que pode
+ * diferir do numerador: na tarifa social o numerador é economias e a contagem, famílias.
+ */
 export function agregarMedida(
   med: Medida,
   lista: readonly Municipio[],
@@ -378,6 +401,7 @@ export function agregarMedida(
   }
   let num = 0;
   let den = 0;
+  let cont = 0;
   let n = 0;
   for (const m of lista) {
     const a = med.numerador(m);
@@ -385,7 +409,8 @@ export function agregarMedida(
     if (a == null || b == null || !(b > 0)) continue;
     num += a;
     den += b;
+    cont += med.contagem ? med.contagem(m) ?? 0 : a;
     n += 1;
   }
-  return { pct: den > 0 ? (num / den) * (med.fator ?? 100) : null, contagem: n ? num : null, municipios: n, universo: den };
+  return { pct: den > 0 ? (num / den) * (med.fator ?? 100) : null, contagem: n ? cont : null, municipios: n, universo: den };
 }
