@@ -55,7 +55,18 @@ describe('Faixa das 26 capitais na entrada',()=>{
     const html=renderToStaticMarkup(createElement(PerguntasCapital,{...props(()=>{}),medidas:[m],a:retrato.capitais.find(c=>c.id===x)!,b:retrato.capitais.find(c=>c.id===y)!}));
     expect(html).toContain('Não disponível');expect(html).toContain('Diferença indisponível');
     expect(html).toContain('Perímetro distinto; valor exibido, fora da faixa e da mediana.');
+    expect(html).toContain('Diferença indisponível: valor fora da comparação');
     expect(html).not.toContain('NaN');
+  });
+
+  it('valor fora da comparação aparece, mas não gera diferença (Macapá, Saúde 2025)',()=>{
+    const saude=retrato.recursos.find(m=>m.id==='saude_despesa')!;
+    expect(saude.valores['1600303'].foraDaComparacao).toBeTruthy();
+    const macapa=retrato.capitais.find(c=>c.id==='1600303')!;
+    const html=renderToStaticMarkup(createElement(PerguntasCapital,{...props(()=>{}),medidas:[saude],a:macapa,b}));
+    expect(html).toContain('R$ 1.011,42');
+    expect(html).toContain('Diferença indisponível: valor fora da comparação');
+    expect(html).not.toMatch(/−R\$ [\d.]+,\d{2}<\/p>|\+R\$ [\d.]+,\d{2} <span>/);
   });
 
   it('a tabela equivalente traz as 26 capitais e troca o comparador pelo nome',()=>{

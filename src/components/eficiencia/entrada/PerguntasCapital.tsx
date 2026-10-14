@@ -19,7 +19,7 @@ function Linha({m, a, b, nomes}: {m: Medida; a: CapitalRetrato; b: CapitalRetrat
     <div className={styles.rowValues}>
       <p><span>{a.nome}</span><strong className={styles.valueA}>{numero(va?.valor ?? null, m.unidade)}</strong></p>
       <p><span>{b.nome}</span><strong className={styles.valueB}>{numero(vb?.valor ?? null, m.unidade)}</strong></p>
-      <p className={styles.rowDiff}>{diferenca(va?.valor ?? null, vb?.valor ?? null, m.unidade)} <span>{daCapital(a.nome)} em relação {aCapital(b.nome)}</span></p>
+      <p className={styles.rowDiff}>{fora.length ? 'Diferença indisponível: valor fora da comparação' : diferenca(va?.valor ?? null, vb?.valor ?? null, m.unidade)} <span>{daCapital(a.nome)} em relação {aCapital(b.nome)}</span></p>
     </div>
     <div className={styles.rowStrip}>
       <svg viewBox={`0 0 400 ${alto + 6}`} role="img" aria-label={`${m.titulo}: ${f.pontos.length} capitais elegíveis; mediana ${numero(f.mediana, m.unidade)}; ${a.nome} ${numero(va?.valor ?? null, m.unidade)}; ${b.nome} ${numero(vb?.valor ?? null, m.unidade)}.`}>
