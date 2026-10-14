@@ -6,6 +6,17 @@ import type { Idioma } from "./idioma";
  */
 const locales = { pt: "pt-BR", en: "en-US" } as const;
 
+/** Opções explícitas preservam formatos variáveis; BRL inglês sempre usa R$. */
+export function formatadorNumero(idioma: Idioma, opcoes: Intl.NumberFormatOptions): Intl.NumberFormat {
+  const brlEmIngles = idioma === "en" && opcoes.style === "currency" && opcoes.currency?.toUpperCase() === "BRL";
+  return new Intl.NumberFormat(locales[idioma], brlEmIngles ? { ...opcoes, currencyDisplay: "narrowSymbol" } : opcoes);
+}
+
+/** O consumidor declara precisão e fuso; formatToParts preserva composições existentes. */
+export function formatadorDataHora(idioma: Idioma, opcoes: Intl.DateTimeFormatOptions): Intl.DateTimeFormat {
+  return new Intl.DateTimeFormat(locales[idioma], opcoes);
+}
+
 export function fmtNumber(value: number, decimals = 0, idioma: Idioma = "pt"): string {
   return value.toLocaleString(locales[idioma], {
     minimumFractionDigits: decimals,
@@ -14,13 +25,12 @@ export function fmtNumber(value: number, decimals = 0, idioma: Idioma = "pt"): s
 }
 
 export function fmtCurrency(value: number, currency = "BRL", decimals = 0, idioma: Idioma = "pt"): string {
-  return value.toLocaleString(locales[idioma], {
+  return formatadorNumero(idioma, {
     style: "currency",
     currency,
-    ...(idioma === "en" && currency.toUpperCase() === "BRL" ? { currencyDisplay: "narrowSymbol" as const } : {}),
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
-  });
+  }).format(value);
 }
 
 /** O valor já está em pontos percentuais: 1 representa 1%, não 100%. */

@@ -3,6 +3,8 @@ import { getDb, schema } from "./db";
 import { VIEW_EVENT_PREFIX } from "./telemetry";
 import { dominioDaSecao, type DominioId } from "./dominios";
 import type { OnboardingStatus } from "./schema";
+import type { Idioma } from "./idioma";
+import { formatadorDataHora } from "./format";
 
 /**
  * Agregações do painel de administração. Server-only.
@@ -17,11 +19,6 @@ export const DIAS_SERIE = 30;
 
 // en-CA → YYYY-MM-DD estável, usado como chave de bucket diário.
 const diaFmt = new Intl.DateTimeFormat("en-CA", { timeZone: TIMEZONE });
-const rotuloFmt = new Intl.DateTimeFormat("pt-BR", {
-  timeZone: TIMEZONE,
-  day: "2-digit",
-  month: "2-digit",
-});
 
 export function diaLocal(date: Date): string {
   return diaFmt.format(date);
@@ -90,7 +87,12 @@ export type AdminStats = {
 };
 
 /** Últimos N dias (fuso local), do mais antigo ao mais recente. */
-function janelaDias(agora: Date, n: number): { dia: string; rotulo: string }[] {
+function janelaDias(agora: Date, n: number, idioma: Idioma): { dia: string; rotulo: string }[] {
+  const rotuloFmt = formatadorDataHora(idioma, {
+    timeZone: TIMEZONE,
+    day: idioma === "en" ? "numeric" : "2-digit",
+    month: idioma === "en" ? "short" : "2-digit",
+  });
   const out: { dia: string; rotulo: string }[] = [];
   for (let i = n - 1; i >= 0; i--) {
     const d = new Date(agora.getTime() - i * 24 * 60 * 60 * 1000);
@@ -117,11 +119,11 @@ const STATUS_ONBOARDING: OnboardingStatus[] = [
   "PROFILE_PENDING",
 ];
 
-export async function getAdminStats(agora = new Date()): Promise<AdminStats> {
+export async function getAdminStats(agora = new Date(), idioma: Idioma = "pt"): Promise<AdminStats> {
   const db = await getDb();
   const corte7d = new Date(agora.getTime() - 7 * 24 * 60 * 60 * 1000);
   const corte30d = new Date(agora.getTime() - DIAS_SERIE * 24 * 60 * 60 * 1000);
-  const janela = janelaDias(agora, DIAS_SERIE);
+  const janela = janelaDias(agora, DIAS_SERIE, idioma);
 
   const [usuariosStatus, sessoesAtivasRows, sessoes30d, eventosTotais, eventos30d, usuariosRecentes, auditoriaRows, sugestoesRows, sugestoesRecentesRows] =
     await Promise.all([

@@ -15,6 +15,8 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { DominioId } from "@/lib/dominios";
+import type { Idioma } from "@/lib/idioma";
+import { formatadorNumero } from "@/lib/format";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
@@ -47,7 +49,7 @@ export type Vitrine = {
   metodologia?: { href: string; rotulo: string };
 };
 
-const fmt = (n: number) => n.toLocaleString("pt-BR");
+type FormatarNumero = (n: number) => string;
 
 function listaPt(itens: string[]): string {
   return itens.length > 1 ? `${itens.slice(0, -1).join(", ")} e ${itens.at(-1)}` : itens.join("");
@@ -72,7 +74,7 @@ function fontesCredito(): number | null {
   }
 }
 
-function vitrineCredito(): Vitrine {
+function vitrineCredito(fmt: FormatarNumero): Vitrine {
   const temas = ABAS_OBSERVATORIO.filter((a) => !a.caminho.endsWith("/") && !ABAS_INSTITUCIONAIS.has(a.caminho));
   const nFontes = fontesCredito();
   return {
@@ -100,7 +102,7 @@ function vitrineCredito(): Vitrine {
 
 const DESTAQUES_ENERGIA = ["visao-geral", "territorio", "agua-e-clima", "geracao", "pld", "conta-de-luz", "qualidade", "expansao"];
 
-function vitrineEnergia(): Vitrine {
+function vitrineEnergia(fmt: FormatarNumero): Vitrine {
   const publicados = DESTINOS_NAVEGACAO.filter((d) => d.publicado);
   const paineis = DESTAQUES_ENERGIA.map((slug) => {
     const d = publicados.find((x) => x.slug === slug);
@@ -127,7 +129,7 @@ function vitrineEnergia(): Vitrine {
 
 // ------------------------------------------------------ Eficiência Estatal
 
-function vitrineEficiencia(): Vitrine {
+function vitrineEficiencia(fmt: FormatarNumero): Vitrine {
   const publicadas = DIMENSOES.filter((d) => d.href);
   const semPainel = DIMENSOES.length - publicadas.length;
   return {
@@ -163,7 +165,7 @@ function vitrineContas(): Vitrine {
 
 // ------------------------------------------------ Contas Públicas Estaduais
 
-function vitrineEstados(): Vitrine {
+function vitrineEstados(fmt: FormatarNumero): Vitrine {
   const c = primariosEstaduais.cobertura;
   const nIndicadores = (catalogoEstadual as { indicadores: unknown[] }).indicadores.length;
   const base = "/contas-publicas-estaduais";
@@ -204,7 +206,7 @@ function vitrineSaneamento(): Vitrine {
 
 // ------------------------------------------------------------ Gás Natural
 
-function vitrineGas(): Vitrine {
+function vitrineGas(fmt: FormatarNumero): Vitrine {
   const meta = goldGas.meta();
   const orgaos = Array.from(new Set(meta.fontes.map((f) => f.orgao)));
   return {
@@ -218,14 +220,15 @@ function vitrineGas(): Vitrine {
   };
 }
 
-export function vitrines(): Record<DominioId, Vitrine> {
+export function vitrines(idioma: Idioma = "pt"): Record<DominioId, Vitrine> {
+  const fmt = formatadorNumero(idioma, {}).format;
   return {
-    credito: vitrineCredito(),
-    energia: vitrineEnergia(),
-    eficiencia: vitrineEficiencia(),
+    credito: vitrineCredito(fmt),
+    energia: vitrineEnergia(fmt),
+    eficiencia: vitrineEficiencia(fmt),
     contas: vitrineContas(),
-    estados: vitrineEstados(),
+    estados: vitrineEstados(fmt),
     saneamento: vitrineSaneamento(),
-    gas: vitrineGas(),
+    gas: vitrineGas(fmt),
   };
 }
