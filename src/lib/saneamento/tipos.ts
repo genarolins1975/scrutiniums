@@ -17,7 +17,6 @@ export type Municipio = {
   nome: string;
   uf: string;
   regiao: string;
-  censo: boolean;
   pop22: number | null;
   pop24: number | null;
   dfe0001: number | null;

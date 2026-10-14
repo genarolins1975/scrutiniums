@@ -10,13 +10,13 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { URL_GEO } from "@/lib/energia/geo";
 import { NAO_SE_APLICA, quebrasFixas, type ValorClassificavel } from "@/lib/energia/escalas";
 import { montaHistograma, percentilDe } from "@/lib/energia/distribuicao";
-import { FONTE_ROTULO, MEDIDAS, agregarMedida, valorMedida, type Medida, type Variante } from "@/lib/saneamento/medidas";
+import { FONTE_ROTULO, MEDIDAS, agregarMedida, formatarValor, valorMedida, type Medida, type Variante } from "@/lib/saneamento/medidas";
 import type { MapaReferencias } from "@/lib/saneamento/referencias";
 import { ROTA } from "@/lib/saneamento/capitulos";
 import type { Municipio } from "@/lib/saneamento/tipos";
 import { classePorte, ROTULO_PORTE, mediana } from "@/lib/saneamento/pares";
 import { baixarCsv } from "@/lib/saneamento/csv";
-import { inteiro, numero, sinal } from "@/lib/saneamento/formato";
+import { inteiro } from "@/lib/saneamento/formato";
 import { useMunicipios } from "./useMunicipios";
 
 const CORES_SEQ = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
@@ -52,7 +52,7 @@ export function AtlasMunicipal({
   const variante: Variante = s.unidade === "pessoas" && med.contagem ? "pessoas" : "pct";
   const carga = useMunicipios();
 
-  const lista = carga.estado === "pronto" ? carga.lista : [];
+  const lista = useMemo(() => (carga.estado === "pronto" ? carga.lista : []), [carga]);
   const doRecorte = useMemo(() => (s.uf === "BR" ? lista : lista.filter((m) => m.uf === s.uf)), [lista, s.uf]);
   const valores = useMemo(() => {
     const out: Record<string, ValorClassificavel> = {};
@@ -98,9 +98,9 @@ export function AtlasMunicipal({
   const histograma = useMemo(() => {
     const vs = pctRecorte.filter((v): v is number => v != null);
     if (vs.length < 5) return null;
-    const lim = med.paleta === "divergente" ? divergentes(vs) : [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    const lim = med.paleta === "divergente" ? divergentes(vs) : [...(med.limitesHistograma ?? [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])];
     const max = Math.max(...vs);
-    if (med.paleta !== "divergente" && max > 100) lim.push(Math.ceil(max / 10) * 10);
+    if (med.paleta !== "divergente" && max > lim[lim.length - 1]) lim.push(Math.ceil(max / 10) * 10);
     return montaHistograma(vs, { limites: lim });
   }, [pctRecorte, med]);
 
@@ -123,9 +123,7 @@ export function AtlasMunicipal({
   const textoRef = (r: { pct: number | null; contagem: number | null } | null) =>
     r == null
       ? "sem dado"
-      : med.paleta === "divergente"
-        ? `${sinal(r.pct, 1)} p.p.`
-        : `${numero(r.pct, 1)}%${r.contagem != null ? ` (${inteiro(r.contagem)} ${med.unidadeContagem ?? ""})` : ""}`;
+      : `${formatarValor(med, r.pct)}${med.paleta !== "divergente" && med.unidadeContagem && r.contagem != null ? ` (${inteiro(r.contagem)} ${med.unidadeContagem})` : ""}`;
 
   return (
     <div>
@@ -145,7 +143,7 @@ export function AtlasMunicipal({
           <div className="mt-1 flex min-h-[44px] flex-wrap items-center gap-x-4 gap-y-1">
             <label className="inline-flex min-h-[44px] items-center gap-2">
               <input type="radio" name="atlas-unidade" checked={variante === "pct"} onChange={() => set({ unidade: "pct" })} />
-              {med.paleta === "divergente" ? "Pontos percentuais" : "Proporção"}
+              {med.paleta === "divergente" ? "Pontos percentuais" : med.unidadePct === "%" ? "Proporção" : med.unidadePct}
             </label>
             <label className={`inline-flex min-h-[44px] items-center gap-2 ${med.contagem ? "" : "text-carvao-muted"}`}>
               <input type="radio" name="atlas-unidade" checked={variante === "pessoas"} disabled={!med.contagem} onChange={() => set({ unidade: "pessoas" })} />
@@ -243,7 +241,7 @@ export function AtlasMunicipal({
             )}
             {rankingPct.length > 0 && (
               <GraficoBarras
-                titulo={`Maiores ${med.paleta === "divergente" ? "variações" : "proporções"} entre municípios com ${inteiro(LIMIAR_PROPORCAO)} moradores ou mais (${nomeRecorte})`}
+                titulo={`Maiores ${med.paleta === "divergente" ? "variações" : med.unidadePct === "%" ? "proporções" : "valores"} entre municípios com ${inteiro(LIMIAR_PROPORCAO)} moradores ou mais (${nomeRecorte})`}
                 dados={rankingPct.map((r) => ({ id: r.id, rotulo: r.rotulo, v: r.v }))}
                 chaveCategoria="id"
                 chaveRotulo="rotulo"
@@ -324,8 +322,7 @@ function PainelSelecao({
 }) {
   const v = med.pct(m);
   const c = med.contagem ? med.contagem(m) : null;
-  const div = med.paleta === "divergente";
-  const fmt = (x: number | null | undefined) => (x == null ? "sem dado" : div ? `${sinal(x, 1)} p.p.` : `${numero(x, 1)}%`);
+  const fmt = (x: number | null | undefined) => formatarValor(med, x);
   return (
     <div>
       <p className="rotulo text-mineral">Município selecionado</p>

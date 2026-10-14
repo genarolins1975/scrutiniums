@@ -1,5 +1,6 @@
 import type { Municipio } from "./tipos";
 import { razaoPct } from "./municipios";
+import { numero, sinal } from "./formato";
 
 /**
  * Catálogo das medidas municipais do Observatório do Saneamento: a única
@@ -43,6 +44,10 @@ export type Medida = {
   cortesPct: number[];
   cortesContagem?: number[];
   paleta?: "sequencial" | "divergente";
+  /** Multiplicador da razão agregada Σnumerador/Σdenominador (100 para percentual, 1 para valor por habitante). */
+  fator?: number;
+  /** Limites das classes do histograma quando a medida não é percentual de 0 a 100. */
+  limitesHistograma?: number[];
 };
 
 const pop22 = (m: Municipio) => m.pop22;
@@ -189,7 +194,7 @@ export const MEDIDAS: Medida[] = [
   },
   {
     id: "evolucao-agua-rede",
-    titulo: "Rede geral de água como fonte principal: variação 2010–2022",
+    titulo: "Rede geral de água como fonte principal: variação de 2010 a 2022",
     pergunta: "A parcela de moradores abastecidos principalmente pela rede geral subiu ou caiu entre os Censos?",
     fonte: "censo2010_2022",
     periodo: "2010 e 2022",
@@ -210,7 +215,7 @@ export const MEDIDAS: Medida[] = [
   },
   {
     id: "evolucao-esgoto-rede",
-    titulo: "Rede geral de esgoto ou pluvial: variação 2010–2022",
+    titulo: "Rede geral de esgoto ou pluvial: variação de 2010 a 2022",
     pergunta: "A parcela de moradores ligados à rede geral de esgoto ou pluvial mudou entre os Censos?",
     fonte: "censo2010_2022",
     periodo: "2010 e 2022",
@@ -295,7 +300,38 @@ export const MEDIDAS: Medida[] = [
     ausencia: "Município sem informação de economias com tratamento no SINISA.",
     cortesPct: [25, 50, 75, 90],
   },
+  {
+    id: "sinisa-investimento-por-habitante",
+    titulo: "Investimento em água e esgoto por habitante",
+    pergunta: "Quanto foi investido em 2024 em água e esgoto, por habitante do município?",
+    fonte: "sinisa2024",
+    periodo: "2024",
+    universo: "População estimada pelo IBGE para 2024 (DFE0001), municípios que declararam ao menos um dos serviços",
+    unidadePct: "R$/hab.",
+    casas: 0,
+    pct: (m) => {
+      if (m.dfe0001 == null || !(m.dfe0001 > 0) || (m.inv_ag == null && m.inv_es == null)) return null;
+      return ((m.inv_ag ?? 0) + (m.inv_es ?? 0)) / m.dfe0001;
+    },
+    numerador: (m) => (m.dfe0001 == null || (m.inv_ag == null && m.inv_es == null) ? null : (m.inv_ag ?? 0) + (m.inv_es ?? 0)),
+    denominador: (m) => (m.inv_ag == null && m.inv_es == null ? null : m.dfe0001),
+    fator: 1,
+    permite: "Ver onde o investimento declarado de 2024 se concentrou, por habitante, somando prestador e Estado.",
+    naoPermite:
+      "Avaliar suficiência ou eficiência: um ano isolado oscila com o ciclo de obras, e investimento regional pode ser lançado num município que serve outros.",
+    ausencia: "Município sem declaração de água nem de esgoto ao SINISA 2024. Zero declarado aparece como zero.",
+    cortesPct: [10, 50, 100, 250],
+    limitesHistograma: [0, 10, 25, 50, 100, 250, 500, 1000],
+  },
 ];
+
+/** Texto do valor principal da medida, com a unidade certa (percentual, pontos percentuais ou valor por habitante). */
+export function formatarValor(med: Medida, x: number | null | undefined): string {
+  if (x == null || !Number.isFinite(x)) return "sem dado";
+  if (med.paleta === "divergente") return `${sinal(x, 1)} p.p.`;
+  if (med.unidadePct === "%") return `${numero(x, med.casas)}%`;
+  return `${numero(x, med.casas)} ${med.unidadePct}`;
+}
 
 export function medida(id: string): Medida {
   const m = MEDIDAS.find((x) => x.id === id);
@@ -328,5 +364,5 @@ export function agregarMedida(
     den += b;
     n += 1;
   }
-  return { pct: den > 0 ? (num / den) * 100 : null, contagem: n ? num : null, municipios: n, universo: den };
+  return { pct: den > 0 ? (num / den) * (med.fator ?? 100) : null, contagem: n ? num : null, municipios: n, universo: den };
 }

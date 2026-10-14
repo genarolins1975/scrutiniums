@@ -88,3 +88,9 @@ export function reguladores(): ReguladorCatalogo[] {
 export function etes(): EteCatalogo[] {
   return ler<EteCatalogo[]>("etes.json") ?? [];
 }
+
+/** Todas as fichas municipais, lidas UF a UF (só no build das páginas que precisam do detalhe técnico). */
+export function fichas(): FichaMunicipio[] {
+  const ufs = [...new Set(municipios().map((m) => m.uf))].sort();
+  return ufs.flatMap((uf) => Object.values(ler<Record<string, FichaMunicipio>>(`uf/${uf}.json`) ?? {}));
+}

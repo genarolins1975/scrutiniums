@@ -37,6 +37,7 @@ const PREFIXOS = [
   "/setor-eletrico/aprenda",
   "/contas-publicas/metodologia",
   "/contas-publicas/glossario",
+  "/saneamento/metodologia",
 ];
 
 /** Páginas de método de cada tema da Eficiência Estatal. */

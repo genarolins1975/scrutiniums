@@ -76,7 +76,7 @@ export function SimuladorConta() {
     const cab = ["tabela", "prestador", "uf", "regulador", "ato", "vigencia", "categoria", "consumo_m3", "agua_R$", "esgoto_R$", "total_R$"];
     const linhas: (string | number | null)[][] = [];
     for (const x of TARIFAS)
-      for (const [k, c] of Object.entries(x.categorias))
+      for (const c of Object.values(x.categorias))
         for (const m3 of [5, 10, 15, 20, 30]) {
           const r = calcularConta(c, m3);
           linhas.push([x.id, x.prestador, x.uf, x.regulador, x.ato, x.vigencia, c.rotulo, m3, r.agua, r.esgoto, r.total]);
