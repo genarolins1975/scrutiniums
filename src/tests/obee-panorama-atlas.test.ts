@@ -78,9 +78,9 @@ describe('Panorama municipal do Atlas',()=>{
     expect(urls[2]).toContain('ter=2611606&med=renda-mediana&per=2022');
     expect(urls[3]).toContain('territorio=2611606');
   });
-  it('entrada apresenta limites materiais e mantém comparações e escores pendentes',()=>{
+  it('entrada apresenta limites materiais e a faixa do índice de resultados',()=>{
     const html=renderToStaticMarkup(createElement(AtlasCidadao));
-    for(const text of ['Capacidade teórica','Inclui redes públicas e privadas','Reais nominais de julho de 2022','o resíduo não é redistribuído','Em construção','Aprendizagem · Saeb','A vida no território, lado a lado.'])expect(html).toContain(text);
+    for(const text of ['Capacidade teórica','Inclui redes públicas e privadas','Reais nominais de julho de 2022','o resíduo não é redistribuído','Índice de resultados · 2022','Aprendizagem · Saeb','A vida no território, lado a lado.'])expect(html).toContain(text);
     for(const m of data.metrics)expect(html).toContain(m.sourceUrl.replaceAll('&','&amp;'));
     expect(html).not.toContain('escore validado:');
   });

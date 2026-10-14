@@ -5,8 +5,8 @@ import Link from 'next/link';
 import {DIMENSOES, GRUPOS, estadoCatalogo, type GrupoDimensao} from '@/lib/eficiencia/dimensoes';
 import dados from '@/lib/eficiencia/atlas-resumo.json';
 import styles from './AtlasCidadao.module.css';
-import {PilotoResultados} from './PilotoResultados';
-import type {PilotSnapshot} from '@/lib/eficiencia/piloto-nucleo';
+import {IndiceResultados} from './IndiceResultados';
+import {indiceNumber,type IndiceSnapshot} from '@/lib/eficiencia/indice-v4-nucleo';
 import {FrequenciaEscolar} from './FrequenciaEscolar';
 import frequencia from '@/lib/eficiencia/frequencia-escolar.json';
 import {AberturaCidada} from './AberturaCidada';
@@ -32,9 +32,8 @@ function selectionFromUrl(): Selection {
   return {scope,place,reference,metric,age,perspective};
 }
 
-/** `pilot` só é fornecido pelo servidor em preview/desenvolvimento; sem ele, nada do piloto é exibido. */
-export function AtlasCidadao({pilot=null}:{pilot?:PilotSnapshot|null}){
-  const showPilot=pilot!==null;
+/** `indice` chega do servidor (página com login); sem ele, a entrada não exibe nota. */
+export function AtlasCidadao({indice=null}:{indice?:IndiceSnapshot|null}){
   const [selection,setSelection] = useState<Selection>(DEFAULT);
   const [chapter,setChapter] = useState('educacao');
   const [group,setGroup] = useState<GrupoDimensao | 'Todas'>('Todas');
@@ -67,8 +66,8 @@ export function AtlasCidadao({pilot=null}:{pilot?:PilotSnapshot|null}){
       {titulo:'Encontre seu tema',texto:'Acesso, recursos e resultados em 16 dimensões da vida pública.',href:'#dados-publicados'},
       {titulo:'Entenda a cobertura',texto:'O que cada fonte permite comparar e quais evidências ainda faltam.',href:'#cobertura'},
     ]}/>
-    <dl className={styles.strip}><div><dt>Dimensões no observatório</dt><dd>{DIMENSOES.length}<small>visão completa dos temas</small></dd></div><div><dt>Capítulos com painéis publicados</dt><dd>{published}<small>cobertura variável por fonte</small></dd></div><div><dt>{city&&showPilot?"Nota integral do OBEE":"Nota agregada"}</dt><dd className={styles.stripText}>Indisponível<small>Em construção · dados publicados não equivalem a escore validado</small></dd></div></dl>
-    {city&&pilot&&<PilotoResultados data={pilot} place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})}/>}
+    <dl className={styles.strip}><div><dt>Dimensões no observatório</dt><dd>{DIMENSOES.length}<small>visão completa dos temas</small></dd></div><div><dt>Capítulos com painéis publicados</dt><dd>{published}<small>cobertura variável por fonte</small></dd></div><div><dt>Índice de resultados · 2022</dt>{(()=>{const r=city?indice?.rows.find(x=>x.id===a.id):undefined;return r?<dd>{indiceNumber(r.score)}<small><a href="#atlas-indice">{a.name} · edição experimental v4 · faixa {indiceNumber(r.band[0])} a {indiceNumber(r.band[1])}</a></small></dd>:<dd className={styles.stripText}>{indice?'Somente capitais':'Indisponível'}<small>{indice?'Nota calculada para as 26 capitais estaduais em 2022':'Edição experimental não carregada'}</small></dd>;})()}</div></dl>
+    {city&&indice&&<IndiceResultados data={indice} place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})}/>}
     {city&&<PanoramaTerritorial place={a.id} reference={b.id} onReference={reference=>select({...selection,reference})} onEducation={()=>select({...selection,metric:'frequencia',age:'47813'})}/>}
     <section id="atlas-comparacao" className={styles.section} aria-labelledby="atlas-compare-title"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>02 / Aprofundar a comparação</p><h2 id="atlas-compare-title">Uma medida. Diferentes contextos.</h2></div><p>{city&&selection.metric==='frequencia'?`${frequencia.source} · referência ${frequencia.period}`:`${meta.source} · referência ${meta.period}`}</p></div>
       {city&&<fieldset className={styles.indicatorChoice}><legend>Escolha a medida de educação</legend>{(['frequencia','saeb'] as const).map(m=><button type="button" key={m} aria-pressed={selection.metric===m} onClick={()=>select({...selection,metric:m})}>{m==='frequencia'?`Frequência escolar · ${frequencia.period}`:`Aprendizagem · Saeb ${dados.education.period}`}</button>)}</fieldset>}
@@ -82,6 +81,6 @@ export function AtlasCidadao({pilot=null}:{pilot?:PilotSnapshot|null}){
       <div className={styles.chaptersLayout}><div className={styles.chapterList}>{visible.map(d=><button type="button" key={d.id} aria-pressed={dimension?.id===d.id} onClick={()=>setChapter(d.id)}><span className={styles.chapterNumber}>{String(DIMENSOES.indexOf(d)+1).padStart(2,'0')}</span><span>{d.titulo}<small>{d.href?'Painel publicado':'Em desenvolvimento'}</small></span><span aria-hidden="true">↗</span></button>)}{visible.length===0&&<p role="status">Nenhum tema encontrado. Tente outro termo ou selecione Todas.</p>}</div>
         <article className={styles.chapterDetail} aria-labelledby="atlas-detail-title">{dimension?<><p className={styles.eyebrow}>{dimension.grupo}</p><h3 id="atlas-detail-title">{dimension.verbo}.</h3><p>{dimension.descricao}</p><dl><div><dt>Recursos</dt><dd>{dimension.recursos}</dd></div><div><dt>Acesso</dt><dd>{dimension.acesso}</dd></div><div><dt>Resultados</dt><dd>{dimension.resultados}</dd></div></dl><p className={styles.small}>Escopo temático. A disponibilidade efetiva de cada indicador está declarada no painel. A seleção territorial atualiza o panorama e as comparações desta página. Os acessos no panorama preservam os recortes compatíveis; os demais capítulos abrem seus próprios universos.</p>{dimension.href?<Link className={styles.primaryLink} href={dimension.href}>Explorar {dimension.titulo} <span aria-hidden="true">→</span></Link>:<p className={styles.universe}>Este capítulo ainda não tem painel publicado.</p>}<a href={dimension.href?`#cobertura-${dimension.id}`:"#cobertura"} className={styles.detailLink}>Consultar cobertura e fontes{dimension.href?` de ${dimension.titulo}`:""} ↓</a></>:<><h3 id="atlas-detail-title">Nenhum capítulo neste recorte.</h3><p>Altere a busca ou a área para encontrar outro tema.</p><button type="button" className={styles.primaryLink} onClick={()=>{setSearch('');setGroup('Todas');}}>Limpar busca e área</button></>}</article></div>
     </section>
-    <section className={styles.method} aria-labelledby="atlas-method-title"><div><p className={styles.eyebrow}>04 / Da evidência ao escore</p><h2 id="atlas-method-title">Uma nota precisa ser explicável.</h2><p>O modelo experimental dos serviços reúne três perguntas e ainda não produz nota. É distinto do piloto de resultados para os moradores.</p></div><ol>{[['Acesso','Quem precisa consegue ser atendido?'],['Resposta','A entrega chega a tempo e tem continuidade?'],['Qualidade','O serviço cumpre o padrão esperado?']].map(([title,text],i)=><li key={title}><span>0{i+1}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol></section>
+    <section className={styles.method} aria-labelledby="atlas-method-title"><div><p className={styles.eyebrow}>04 / Da evidência ao escore</p><h2 id="atlas-method-title">Uma nota precisa ser explicável.</h2><p>O modelo experimental dos serviços reúne três perguntas e ainda não produz nota. É distinto do índice de resultados na vida dos moradores, que tem nota experimental para as 26 capitais.</p></div><ol>{[['Acesso','Quem precisa consegue ser atendido?'],['Resposta','A entrega chega a tempo e tem continuidade?'],['Qualidade','O serviço cumpre o padrão esperado?']].map(([title,text],i)=><li key={title}><span>0{i+1}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol></section>
   </div>;
 }
