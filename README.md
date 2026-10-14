@@ -105,6 +105,17 @@ python3 -m unittest pipeline.tests.test_eficiencia
 
 Regra editorial do domínio: apresenta indicadores, não conclusões sobre governos. Documentação, inventário, metodologia, validação e continuidade em [docs/obee/](./docs/obee/README.md). O OBEE está no registro de domínios (`src/lib/dominios.ts`) e, por ele, na home, no seletor de observatórios, na escolha pós login, no cabeçalho público e no rodapé.
 
+## Observatório Brasileiro do Saneamento (primeira entrega)
+
+Domínio `saneamento`, em **`/saneamento`**: catorze capítulos em cinco eixos (acesso e qualidade; preço regulado e conta das famílias; prestadores; investimento e planejamento; saúde, ambiente e resiliência), ficha de cada município e de cada prestador, comparadores de até quatro municípios ou prestadores com link compartilhável, simulador da conta com tabelas tarifárias verificadas nos atos dos reguladores e página pública de método. Fontes: SINISA 2025 (ano de referência 2024), Censos 2010 e 2022 e estimativa de população 2024 do IBGE, atos de cinco reguladores. Capítulos sem dado integrado aparecem como em preparação, com a dependência declarada. O pipeline fica em `pipeline/observatorio_saneamento/` (biblioteca padrão; originais com sha256 no seed) e escreve `public/saneamento/gold/`:
+
+```bash
+python3 -m pipeline.observatorio_saneamento.gold     # reconstrói a gold a partir do seed (sem rede)
+python3 -m unittest pipeline.tests.test_observatorio_saneamento
+```
+
+Documentação, matriz de viabilidade, método e validação em [docs/saneamento/](./docs/saneamento/README.md).
+
 ## Documentação
 
 As decisões técnicas (banco, autenticação, máquina de estados do onboarding, rate limiting, tokens de design, telemetria sem PII) estão registradas em [ARCHITECTURE.md](./ARCHITECTURE.md). A arquitetura da plataforma de dois observatórios e do domínio Energia está em [docs/observatorios/](./docs/observatorios/README.md).

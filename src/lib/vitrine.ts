@@ -24,6 +24,7 @@ import { CAPITULOS, PAINEIS_COM_DADOS } from "@/lib/contas-publicas/catalogo";
 import { MEDIDAS } from "@/lib/contas-estaduais/comparacao";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import catalogoEstadual from "@/lib/contas-estaduais/catalogo.json";
+import { CAPITULOS as CAPITULOS_SANEAMENTO, ROTA as ROTA_SANEAMENTO, rotaCapitulo } from "@/lib/saneamento/capitulos";
 
 export type PainelVitrine = { titulo: string; href: string; descricao: string };
 
@@ -179,6 +180,24 @@ function vitrineEstados(): Vitrine {
   };
 }
 
+// ------------------------------------------------ Saneamento
+
+function vitrineSaneamento(): Vitrine {
+  const comPainel = CAPITULOS_SANEAMENTO.filter((c) => c.situacao !== "em_preparacao");
+  return {
+    id: "saneamento",
+    imagem: "/home/saneamento.webp",
+    contagem: { valor: `${comPainel.length} de ${CAPITULOS_SANEAMENTO.length}`, unidade: "capítulos com dados" },
+    paineis: [
+      ...comPainel.map((c) => ({ titulo: c.pergunta, href: rotaCapitulo(c), descricao: c.resumo })),
+      { titulo: "Meu município", href: `${ROTA_SANEAMENTO}/municipio`, descricao: "Carência, prestador, regulador, plano, investimento e comparação com a UF." },
+    ],
+    situacao:
+      "Primeira entrega. Capítulos com cobertura parcial declaram o que falta; preço regulado em amostra de atos verificados; saúde, ambiente e desigualdades em preparação.",
+    metodologia: { href: `${ROTA_SANEAMENTO}/metodologia`, rotulo: "Método e fontes" },
+  };
+}
+
 export function vitrines(): Record<DominioId, Vitrine> {
   return {
     credito: vitrineCredito(),
@@ -186,5 +205,6 @@ export function vitrines(): Record<DominioId, Vitrine> {
     eficiencia: vitrineEficiencia(),
     contas: vitrineContas(),
     estados: vitrineEstados(),
+    saneamento: vitrineSaneamento(),
   };
 }
