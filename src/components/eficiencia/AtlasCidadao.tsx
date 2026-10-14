@@ -60,7 +60,7 @@ export function AtlasCidadao({indice=null}:{indice?:IndiceSnapshot|null}){
   const valuesHref=city?'/eficiencia-estatal/educacao-municipal-capitais/resultados':'/eficiencia-estatal/seguranca-alimentar/necessidades';
   const sourceHref=city?'/eficiencia-estatal/educacao-municipal-capitais/metodos':'/eficiencia-estatal/seguranca-alimentar/metodos';
   return <div className={styles.atlas}>
-    <AberturaCidada selection={selection} onSelect={select}/>
+    <AberturaCidada selection={selection} onSelect={select} indice={indice}/>
     <TrilhasEstado tema="obee" itens={[
       {titulo:'A vida no território',texto:'Educação, saúde, renda e mobilidade: referências lado a lado.',href:city?'#atlas-panorama':'#atlas-comparacao'},
       {titulo:'Encontre seu tema',texto:'Acesso, recursos e resultados em 16 dimensões da vida pública.',href:'#dados-publicados'},
