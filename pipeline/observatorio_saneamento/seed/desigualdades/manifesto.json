@@ -1,0 +1,429 @@
+{
+  "capturado_em": "2026-10-14T10:00:46.089963+00:00",
+  "metadados": {
+    "6894": {
+      "arquivo": "meta-6894.json.gz",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/6894/metadados",
+      "sha256": "f3df808bc7716fde4bb60aa4c2e005de95e222a4aa247b5d5f402a6fe6e11c09"
+    },
+    "7555": {
+      "arquivo": "meta-7555.json.gz",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/7555/metadados",
+      "sha256": "546549ca512c4b4aa54af6108ebab748c64d602b4659041c7770c23eb3a85e11"
+    },
+    "9894": {
+      "arquivo": "meta-9894.json.gz",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/9894/metadados",
+      "sha256": "d24c6c6296c00449f8a72a5a7c122938a5a94c223dca56e3465424c9feaff653"
+    },
+    "9898": {
+      "arquivo": "meta-9898.json.gz",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/9898/metadados",
+      "sha256": "476eea5395e3a84d7fc88ae520f5a22c61f44799ef49c4947e00636a6290593e"
+    },
+    "9957": {
+      "arquivo": "meta-9957.json.gz",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/9957/metadados",
+      "sha256": "473dea9eee76d4360cabd4f61bc2b37558cc933395da2c39cd79587f9e591af9"
+    },
+    "10105": {
+      "arquivo": "meta-10105.json.gz",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/10105/metadados",
+      "sha256": "b95f0a86ae65b72b26c031626b36bfbeb11b418653ba72a058536fbec2298872"
+    }
+  },
+  "consultas": [
+    {
+      "arquivo": "branca-agua-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n1/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2776/h/y/f/c",
+      "sha256": "1b6766f3db49c6b203edafe1668aa3c079f46b685d4457d60f601929c5fe3dde",
+      "id": "branca-agua",
+      "nivel": 1
+    },
+    {
+      "arquivo": "branca-agua-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n2/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2776/h/y/f/c",
+      "sha256": "c6f8929ae3889f9c3d046f5d5c704f8931e349f95f0699772a76d5dc850a6984",
+      "id": "branca-agua",
+      "nivel": 2
+    },
+    {
+      "arquivo": "branca-agua-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n3/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2776/h/y/f/c",
+      "sha256": "b19527d3d9ca86299fee57d13bf4b2e5b08f043846d0997ea614a796f012df6d",
+      "id": "branca-agua",
+      "nivel": 3
+    },
+    {
+      "arquivo": "branca-agua-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n6/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2776/h/y/f/c",
+      "sha256": "da3b80d4a90b5423ce156d56d98ff1a1c9dea86d87d6a2035887dc2a319c4ac7",
+      "id": "branca-agua",
+      "nivel": 6
+    },
+    {
+      "arquivo": "branca-esgoto-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n1/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2776/h/y/f/c",
+      "sha256": "8292ce5fb40fd589494a9cc8509b43ab9134b768c0da5a3ba0a5d81af782f668",
+      "id": "branca-esgoto",
+      "nivel": 1
+    },
+    {
+      "arquivo": "branca-esgoto-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n2/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2776/h/y/f/c",
+      "sha256": "47cbca58046ee3fdd163853c5dbaae7a4346c00601f47e1b7f8468869a2eb9b4",
+      "id": "branca-esgoto",
+      "nivel": 2
+    },
+    {
+      "arquivo": "branca-esgoto-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n3/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2776/h/y/f/c",
+      "sha256": "d2653c31ebfa1e7dd278515678bc617785fd2805df0e5bed8d465febec08dca8",
+      "id": "branca-esgoto",
+      "nivel": 3
+    },
+    {
+      "arquivo": "branca-esgoto-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n6/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2776/h/y/f/c",
+      "sha256": "26753672dd54593e807ddcc9a4db42fe4642cbadc1e58108c277dc2d0107596a",
+      "id": "branca-esgoto",
+      "nivel": 6
+    },
+    {
+      "arquivo": "preta-agua-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n1/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2777/h/y/f/c",
+      "sha256": "7dfd743500d2f867828ba8e1672fec921b738b4e90fec40c0d50d8f03a813e9c",
+      "id": "preta-agua",
+      "nivel": 1
+    },
+    {
+      "arquivo": "preta-agua-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n2/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2777/h/y/f/c",
+      "sha256": "24de5609ddc5b43c8543f84abb2108f0a8e89f0dd8b25b42d9065d72e8944d9a",
+      "id": "preta-agua",
+      "nivel": 2
+    },
+    {
+      "arquivo": "preta-agua-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n3/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2777/h/y/f/c",
+      "sha256": "ea5f117a17f41c0dc3bfd11288c17590dd362a8fa6f564961565636262f7d62b",
+      "id": "preta-agua",
+      "nivel": 3
+    },
+    {
+      "arquivo": "preta-agua-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n6/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2777/h/y/f/c",
+      "sha256": "ac069e8d61b9e19d72670d29a786a377020e5dc8e4343f68f7b0a0ea62e7821e",
+      "id": "preta-agua",
+      "nivel": 6
+    },
+    {
+      "arquivo": "preta-esgoto-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n1/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2777/h/y/f/c",
+      "sha256": "5f846f0dec9ab55514ce855aa17b376318c802520919f2890ca81640b5d1f4c3",
+      "id": "preta-esgoto",
+      "nivel": 1
+    },
+    {
+      "arquivo": "preta-esgoto-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n2/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2777/h/y/f/c",
+      "sha256": "b19c9ffb9a5041b63a4a18595f06a23ac174bf4285c4b07f4d548705e8d86e77",
+      "id": "preta-esgoto",
+      "nivel": 2
+    },
+    {
+      "arquivo": "preta-esgoto-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n3/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2777/h/y/f/c",
+      "sha256": "ee5277e9242a9ace697f07027f5d42ebc4880ff6fad1ba23b5918a6d1a3e2793",
+      "id": "preta-esgoto",
+      "nivel": 3
+    },
+    {
+      "arquivo": "preta-esgoto-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n6/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2777/h/y/f/c",
+      "sha256": "0df4c79a6c81323f2995b058c4bac8b6dc3911c6f9c6414af088dbe5ce957313",
+      "id": "preta-esgoto",
+      "nivel": 6
+    },
+    {
+      "arquivo": "amarela-agua-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n1/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2778/h/y/f/c",
+      "sha256": "fd0753f3fc1966c34a8040bd2f250111d19fbee94eaf410eae7b729bd6a7bb7e",
+      "id": "amarela-agua",
+      "nivel": 1
+    },
+    {
+      "arquivo": "amarela-agua-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n2/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2778/h/y/f/c",
+      "sha256": "b186cf8f6022f4a6c01e52412c72a5cde51cf87114325bcd7006afe64d173942",
+      "id": "amarela-agua",
+      "nivel": 2
+    },
+    {
+      "arquivo": "amarela-agua-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n3/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2778/h/y/f/c",
+      "sha256": "accfa4c77a41852c6b850fed8c5408d45659acd4cb9c3d40b6c9df9f1d5acf89",
+      "id": "amarela-agua",
+      "nivel": 3
+    },
+    {
+      "arquivo": "amarela-agua-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n6/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2778/h/y/f/c",
+      "sha256": "37dfa56fd85d9d48e24fe0bbb3b26df7e211de1809f56275378014e5bf90e125",
+      "id": "amarela-agua",
+      "nivel": 6
+    },
+    {
+      "arquivo": "amarela-esgoto-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n1/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2778/h/y/f/c",
+      "sha256": "a085e9b402d8b8830afd52e7599080a49cead87638301563c30fe8844ab064d8",
+      "id": "amarela-esgoto",
+      "nivel": 1
+    },
+    {
+      "arquivo": "amarela-esgoto-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n2/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2778/h/y/f/c",
+      "sha256": "608c4d90d73d0114ffa1078faac02c4455dd2fe19b6989fd7ccb10e24d544ba0",
+      "id": "amarela-esgoto",
+      "nivel": 2
+    },
+    {
+      "arquivo": "amarela-esgoto-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n3/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2778/h/y/f/c",
+      "sha256": "daec877062290f0dfd9e813d8d8a0812a8a725f2edc1e292522e81aea3ded669",
+      "id": "amarela-esgoto",
+      "nivel": 3
+    },
+    {
+      "arquivo": "amarela-esgoto-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n6/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2778/h/y/f/c",
+      "sha256": "eaae20187d5886f4c9afe899a35926b91414e781cd122a09e1bca7d9df94e189",
+      "id": "amarela-esgoto",
+      "nivel": 6
+    },
+    {
+      "arquivo": "parda-agua-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n1/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2779/h/y/f/c",
+      "sha256": "d6404e5e5bf4a8ec9204620e7fd691673b37e9a521a69fc7daf027364696f93d",
+      "id": "parda-agua",
+      "nivel": 1
+    },
+    {
+      "arquivo": "parda-agua-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n2/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2779/h/y/f/c",
+      "sha256": "26a31aaee7dbcde87ec3b162372b42f9855669d9a17a03b915d028a96dce9794",
+      "id": "parda-agua",
+      "nivel": 2
+    },
+    {
+      "arquivo": "parda-agua-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n3/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2779/h/y/f/c",
+      "sha256": "5e70bc52a4be269289bfea9d4feeab1a10b9161091aa922d56a5de6c34bb3bcf",
+      "id": "parda-agua",
+      "nivel": 3
+    },
+    {
+      "arquivo": "parda-agua-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n6/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2779/h/y/f/c",
+      "sha256": "cfff9258d770c7c33d05c423326696b962ea5aa38922650d20e25d2ae27cbe89",
+      "id": "parda-agua",
+      "nivel": 6
+    },
+    {
+      "arquivo": "parda-esgoto-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n1/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2779/h/y/f/c",
+      "sha256": "e6f4946f33b2f69dcef11a8dd2ca7d50245daef900d7d991faae1f2a689d5072",
+      "id": "parda-esgoto",
+      "nivel": 1
+    },
+    {
+      "arquivo": "parda-esgoto-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n2/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2779/h/y/f/c",
+      "sha256": "105e206ec7de96f35b4f6b996baa754276d22b4a9e6f5e3ce2340cbf90f80301",
+      "id": "parda-esgoto",
+      "nivel": 2
+    },
+    {
+      "arquivo": "parda-esgoto-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n3/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2779/h/y/f/c",
+      "sha256": "fa720f153a180a3c4c14b68a50343202778a2787c60dc04d6c8754dcfd4d6c77",
+      "id": "parda-esgoto",
+      "nivel": 3
+    },
+    {
+      "arquivo": "parda-esgoto-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n6/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2779/h/y/f/c",
+      "sha256": "5c5ec6224ce5436ccb2d589c7f6328b60acd91e4982637b677095191066f8f9f",
+      "id": "parda-esgoto",
+      "nivel": 6
+    },
+    {
+      "arquivo": "indigena-cor-agua-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n1/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2780/h/y/f/c",
+      "sha256": "c792edfbdfd7e49bbc9b1c06651968c423c7505dc5ccc10da84a4acca599321c",
+      "id": "indigena-cor-agua",
+      "nivel": 1
+    },
+    {
+      "arquivo": "indigena-cor-agua-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n2/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2780/h/y/f/c",
+      "sha256": "02330fb6e96d7cf07496dd1765bb15f57132e06c05bbeb1babc7ebe7dbb9608b",
+      "id": "indigena-cor-agua",
+      "nivel": 2
+    },
+    {
+      "arquivo": "indigena-cor-agua-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n3/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2780/h/y/f/c",
+      "sha256": "8494ed0d9d06bdb00ffbcab66eae6b2f8360921eb5e39e8ca42efb4adb503b09",
+      "id": "indigena-cor-agua",
+      "nivel": 3
+    },
+    {
+      "arquivo": "indigena-cor-agua-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/6894/n6/all/v/382/p/2022/c1821/72129,72153/c58/95253/c86/2780/h/y/f/c",
+      "sha256": "92f841a63871dd1188699333872f92b53ff78e51226876f6abe482ebdc0c498f",
+      "id": "indigena-cor-agua",
+      "nivel": 6
+    },
+    {
+      "arquivo": "indigena-cor-esgoto-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n1/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2780/h/y/f/c",
+      "sha256": "28cca77791a8622d016283e772fe04f6f1965da2a23eb469e3936827d2635db8",
+      "id": "indigena-cor-esgoto",
+      "nivel": 1
+    },
+    {
+      "arquivo": "indigena-cor-esgoto-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n2/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2780/h/y/f/c",
+      "sha256": "999d5a5fc2c8e59821cf1641fdbc4ac146988111408c09e79db81aec7565aadd",
+      "id": "indigena-cor-esgoto",
+      "nivel": 2
+    },
+    {
+      "arquivo": "indigena-cor-esgoto-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n3/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2780/h/y/f/c",
+      "sha256": "36e604df09594adb32f8f632f4b7858626b8d42de4b19f9f9ca095833fc72626",
+      "id": "indigena-cor-esgoto",
+      "nivel": 3
+    },
+    {
+      "arquivo": "indigena-cor-esgoto-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/7555/n6/all/v/382/p/2022/c11558/46292,72113,92858,72114,72115,92861/c58/95253/c86/2780/h/y/f/c",
+      "sha256": "92fe6c7ee469db7566e0c8f327938b475105249c93813f82c2a92eaea8a6c9d6",
+      "id": "indigena-cor-esgoto",
+      "nivel": 6
+    },
+    {
+      "arquivo": "quilombolas-esgoto-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/10105/n1/all/v/7097/p/2022/c11558/46292,72113,92858,72114,72115,92861/c2661/32776/c1/6795/h/y/f/c",
+      "sha256": "f821c53f7a01a52e26b6a0c3fb092209e213fa4ab59c7162b6b648470ec10e21",
+      "id": "quilombolas-esgoto",
+      "nivel": 1
+    },
+    {
+      "arquivo": "quilombolas-esgoto-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/10105/n2/all/v/7097/p/2022/c11558/46292,72113,92858,72114,72115,92861/c2661/32776/c1/6795/h/y/f/c",
+      "sha256": "c837fc9ee2657adb5a33c6c618620377ebe0e1b9c01a358b2662e8c6918c5fc1",
+      "id": "quilombolas-esgoto",
+      "nivel": 2
+    },
+    {
+      "arquivo": "quilombolas-esgoto-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/10105/n3/all/v/7097/p/2022/c11558/46292,72113,92858,72114,72115,92861/c2661/32776/c1/6795/h/y/f/c",
+      "sha256": "208d893b6df10fec8f8f94096c8bbd70c9368f50ef9a1fdeeb161d0190fe3c9d",
+      "id": "quilombolas-esgoto",
+      "nivel": 3
+    },
+    {
+      "arquivo": "quilombolas-esgoto-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/10105/n6/all/v/7097/p/2022/c11558/46292,72113,92858,72114,72115,92861/c2661/32776/c1/6795/h/y/f/c",
+      "sha256": "a240c284a817c18690225280f3eb24ecb0257df04deebeab6adbe74129c45a69",
+      "id": "quilombolas-esgoto",
+      "nivel": 6
+    },
+    {
+      "arquivo": "indigenas-esgoto-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9957/n1/all/v/8691/p/2022/c11558/46292,72113,92858,72114,72115,92861/c125/2932/c2661/32776/c1/6795/h/y/f/c",
+      "sha256": "c49485d1af7758f71f3652d7618fe62aeea05b2a4bf1f7633df443de31b56926",
+      "id": "indigenas-esgoto",
+      "nivel": 1
+    },
+    {
+      "arquivo": "indigenas-esgoto-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9957/n2/all/v/8691/p/2022/c11558/46292,72113,92858,72114,72115,92861/c125/2932/c2661/32776/c1/6795/h/y/f/c",
+      "sha256": "58d851e5e6820f6d1c498272161e3909d4ead3da8f7691c89b660f413d0dd0f9",
+      "id": "indigenas-esgoto",
+      "nivel": 2
+    },
+    {
+      "arquivo": "indigenas-esgoto-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9957/n3/all/v/8691/p/2022/c11558/46292,72113,92858,72114,72115,92861/c125/2932/c2661/32776/c1/6795/h/y/f/c",
+      "sha256": "ccacd6ad3076067c747380e2fe8e198ad490601f6f0d27e51f0fba7f5686f883",
+      "id": "indigenas-esgoto",
+      "nivel": 3
+    },
+    {
+      "arquivo": "indigenas-esgoto-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9957/n6/all/v/8691/p/2022/c11558/46292,72113,92858,72114,72115,92861/c125/2932/c2661/32776/c1/6795/h/y/f/c",
+      "sha256": "23142017bcd8ec5ea933cd63855fc13275e3cf02cb8871e1a278b53f6aa85cf7",
+      "id": "indigenas-esgoto",
+      "nivel": 6
+    },
+    {
+      "arquivo": "favelas-agua-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9894/n1/all/v/9913/p/2022/c1821/72129,72153/h/y/f/c",
+      "sha256": "e92da439d8fdbdbbd7db9984a00ef1271a31d6850e7f60b0b1f99d72bab7fbcf",
+      "id": "favelas-agua",
+      "nivel": 1
+    },
+    {
+      "arquivo": "favelas-agua-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9894/n2/all/v/9913/p/2022/c1821/72129,72153/h/y/f/c",
+      "sha256": "ad1028cc9162cd63143e893373b39a6c2ab3d0fd98779a57c50fbd5d6df244ed",
+      "id": "favelas-agua",
+      "nivel": 2
+    },
+    {
+      "arquivo": "favelas-agua-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9894/n3/all/v/9913/p/2022/c1821/72129,72153/h/y/f/c",
+      "sha256": "2e6ea1c8f670128c9f25a7b25a25656256ad17a7439723238f50af4885077eb1",
+      "id": "favelas-agua",
+      "nivel": 3
+    },
+    {
+      "arquivo": "favelas-agua-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9894/n6/all/v/9913/p/2022/c1821/72129,72153/h/y/f/c",
+      "sha256": "1524dfe56b6de325f5cdde980fbc184eda06121f6f24d53b4eb6160a3b7bbf2e",
+      "id": "favelas-agua",
+      "nivel": 6
+    },
+    {
+      "arquivo": "favelas-esgoto-n1.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9898/n1/all/v/9914/p/2022/c11558/46292,72113,92858,72114,72115,92861/c458/72117/c86/95251/c2/6794/c58/95253/h/y/f/c",
+      "sha256": "609c7d1ef9bec1ec841404918db1a8d312bbdae15d914ef7a0fd44394fa56a78",
+      "id": "favelas-esgoto",
+      "nivel": 1
+    },
+    {
+      "arquivo": "favelas-esgoto-n2.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9898/n2/all/v/9914/p/2022/c11558/46292,72113,92858,72114,72115,92861/c458/72117/c86/95251/c2/6794/c58/95253/h/y/f/c",
+      "sha256": "b67aa8c2c084d416a2b195d10828c198bb4b065c7bb1d0b94a4e8d9e7a444443",
+      "id": "favelas-esgoto",
+      "nivel": 2
+    },
+    {
+      "arquivo": "favelas-esgoto-n3.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9898/n3/all/v/9914/p/2022/c11558/46292,72113,92858,72114,72115,92861/c458/72117/c86/95251/c2/6794/c58/95253/h/y/f/c",
+      "sha256": "bce1144e52fea0dc89be3df856db9870a8373c23290aaf6155e790d3c2949328",
+      "id": "favelas-esgoto",
+      "nivel": 3
+    },
+    {
+      "arquivo": "favelas-esgoto-n6.json.gz",
+      "url": "https://apisidra.ibge.gov.br/values/t/9898/n6/all/v/9914/p/2022/c11558/46292,72113,92858,72114,72115,92861/c458/72117/c86/95251/c2/6794/c58/95253/h/y/f/c",
+      "sha256": "fedbe80e90836e13d365e34929660bb56e2ac3a47bbd07afb85772760056c280",
+      "id": "favelas-esgoto",
+      "nivel": 6
+    }
+  ]
+}

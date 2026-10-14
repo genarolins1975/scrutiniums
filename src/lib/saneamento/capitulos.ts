@@ -53,9 +53,9 @@ export const EIXOS: Eixo[] = [
         rotulo: "Quem fica para trás",
         pergunta: "Quem fica para trás?",
         resumo: "Diferenças por cor ou raça, quilombolas, indígenas, favelas e áreas urbanas e rurais nas tabelas do Censo 2022.",
-        situacao: "em_preparacao",
+        situacao: "parcial",
         pendencia:
-          "Tabulações do Censo 2022 por cor ou raça (SIDRA 6894 e 7555), quilombolas (10105), indígenas (9957) e favelas (9894 e 9898) mapeadas e com acesso confirmado; integração ainda não feita. Renda: o Censo 2022 não publicou cruzamento de renda com saneamento; não se usará renda média territorial como renda individual.",
+          "Censo 2022 por cor ou raça, esgoto de quilombolas e indígenas e água/esgoto em favelas integrados. Ligação à rede de água para quilombolas e indígenas pela identificação ampliada e recortes urbano/rural ainda não integrados. Renda individual cruzada com saneamento não publicada pelo Censo.",
       },
       {
         numero: 3,

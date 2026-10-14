@@ -48,6 +48,45 @@ class ObservatorioSaneamento(unittest.TestCase):
             self.assertIsNone(m["IAG0001"], m["id"])
             self.assertIsNone(m["ag_pop_at"], m["id"])
 
+    def test_desigualdades_hashes_e_totais_oficiais(self):
+        from pipeline.observatorio_saneamento.desigualdades import construir, SPECS, numero
+        d = construir()  # valida cada SHA-256, classificação, chave e limite de universo
+        self.assertEqual(len(SPECS), 14)
+        self.assertEqual(d["territorios"]["1:1"]["parda-esgoto"], [28509481, 91613309])
+        self.assertEqual(d["territorios"]["1:1"]["quilombolas-esgoto"], [936282, 1327483])
+        self.assertEqual(numero("-"), 0)
+        for v in ("X", "..", "...", ""):
+            self.assertIsNone(numero(v))
+        with self.assertRaises(ValueError):
+            numero("erro da API")
+
+    def test_desigualdades_divergencias_sao_publicadas_sem_redistribuir(self):
+        conf = self.g["meta"]["desigualdades"]["conferencias"]
+        divergencias = {(c["id"], c["nivel"], c["campo"]): c["diferenca"] for c in conf if c["diferenca"]}
+        self.assertEqual(divergencias, {
+            ("favelas-agua", 6, "numerador"): -259,
+            ("favelas-esgoto", 6, "numerador"): -679,
+            ("favelas-esgoto", 6, "denominador"): -819,
+        })
+        self.assertEqual(self.g["meta"]["desigualdades"]["residuos_cor_raca"], {"universo": 7164, "agua": 596, "esgoto": 1276})
+        for c in conf:
+            if c["diferenca"]:
+                self.assertEqual(c["ausentes"], 3)
+        br = next(a for a in self.g["agregados"] if a["id"] == "BR")
+        self.assertEqual(br["desigualdades"]["favelas-esgoto"], [4360958, 16349896])
+        self.assertEqual(sum(m["des_favelas-esgoto_num"] is not None and (m["des_favelas-esgoto_den"] or 0) > 0 for m in self.g["municipios"]), 652)
+
+    def test_desigualdades_catalogo_e_regioes(self):
+        import json
+        from pathlib import Path
+        from pipeline.observatorio_saneamento.desigualdades import SPECS
+        catalogo = json.loads((Path(gold.__file__).resolve().parents[2] / "src/lib/saneamento/dados/desigualdades.json").read_text())
+        self.assertEqual(catalogo, [{k: s[k] for k in ["id", "grupo", "rotulo", "medida", "tabela", "unidade", "universo"]} for s in SPECS])
+        for a in self.g["agregados"]:
+            self.assertEqual(len(a["desigualdades"]), 14, a["id"])
+        self.assertEqual(next(s for s in SPECS if s["id"] == "favelas-agua")["unidade"], "domicílios")
+        self.assertEqual(next(s for s in SPECS if s["id"] == "favelas-esgoto")["unidade"], "moradores")
+
 
 if __name__ == "__main__":
     unittest.main()

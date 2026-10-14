@@ -398,6 +398,8 @@ def _siglas(regs):
 # ---------------------------------------------------------------------------
 
 def construir():
+    from .desigualdades import construir as construir_desigualdades
+    desigualdades = construir_desigualdades()
     censo = ler_seed("censo.json.gz")
     manifesto = ler_seed("sinisa_manifesto.json.gz")
     T = censo["tabelas"]
@@ -1063,6 +1065,25 @@ def construir():
                                                           if l.get("Respondeu ao Módulo Gestão Municipal do SINISA 2024") == "Sim")
     meta["cobertura"]["reguladores_cnpj"] = len(lista_reg)
     meta["sinisa"]["gestao_municipal"] = {"url": gm_seed["url"], "sha256": gm_seed["sha256"], "capturado_em": gm_seed["capturado_em"]}
+    # Tabulações oficiais por grupo e nível territorial, sem média de percentuais.
+    from .desigualdades import SPECS
+    for r in regs:
+        valores = desigualdades["territorios"].get("6:" + r["id"], {})
+        for spec in SPECS:
+            num_, den_ = valores.get(spec["id"], [None, None])
+            r["des_" + spec["id"] + "_num"] = num_
+            r["des_" + spec["id"] + "_den"] = den_
+        detalhes_uf[r["uf"]][r["id"]]["desigualdades"] = valores
+    for a in agregados:
+        cod = "1:1" if a["id"] == "BR" else ("3:" + next(k for k, v in UF_COD.items() if v == a["id"]) if a["tipo"] == "UF" else "2:" + next(k for k, (rid, _) in REGIOES.items() if rid == a["id"]))
+        a["desigualdades"] = desigualdades["territorios"].get(cod, {})
+    meta["desigualdades"] = {k: v for k, v in desigualdades.items() if k != "territorios"}
+    br_des = next(a for a in agregados if a["id"] == "BR")
+    meta["desigualdades"]["residuos_cor_raca"] = {
+        "universo": br_des["censo2022"]["moradores"]["agua"]["total"] - sum(br_des["desigualdades"][s["id"]][1] for s in SPECS if s["tabela"] == 6894),
+        "agua": br_des["censo2022"]["moradores"]["agua"]["sem_ligacao"] - sum(br_des["desigualdades"][s["id"]][0] for s in SPECS if s["tabela"] == 6894),
+        "esgoto": br_des["censo2022"]["moradores"]["esgoto"]["sem_rede_nem_septica"] - sum(br_des["desigualdades"][s["id"]][0] for s in SPECS if s["tabela"] == 7555),
+    }
     return {
         "reguladores": lista_reg,
         "meta": meta,
@@ -1129,6 +1150,10 @@ CAMPOS_MUNICIPIOS = [
     ("cad_fam_ms", "CadÚnico dez/2024: famílias com renda per capita até meio salário-mínimo"),
     ("cad_fam_ms_atual", "CadÚnico set/2026: famílias com renda per capita até meio salário-mínimo"),
 ]
+
+
+from .desigualdades import SPECS as SPECS_DESIGUALDADES
+CAMPOS_MUNICIPIOS += [("des_" + s["id"] + "_" + c, s["rotulo"] + ": " + s["medida"] + ", " + rotulo + " (" + s["unidade"] + ", Censo 2022)") for s in SPECS_DESIGUALDADES for c, rotulo in [("num", "carência"), ("den", "universo")]]
 
 
 def json_bytes(obj):

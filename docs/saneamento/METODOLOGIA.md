@@ -56,3 +56,19 @@ Denominador: famílias do CadÚnico com renda familiar per capita até meio sal�
 
 
 Regra da Lei 14.898/2024, arts. 2º e 6º (renda per capita até meio salário-mínimo, CadÚnico ou BPC; 50% sobre a primeira faixa nos primeiros 15 m³). Salário-mínimo de 2026: R$ 1.621,00 (Decreto 12.797/2025, conforme Ministério da Previdência Social, gov.br, 05/01/2026). Cenários de peso da conta na renda usam famílias de 3 e 4 pessoas exatamente no limite e 10 m³; são cenários, não medidas. O valor médio da tarifa social declarado ao SINISA (GFI1037) tem registros incompatíveis com conta mensal e não é publicado.
+
+## Desigualdades: universos e conciliação
+
+Referência: Censo 2022. Cor ou raça (SIDRA 6894 e 7555, variável 382): cinco categorias, total de idades. Água: categoria 72153 / 72129. Esgoto: soma de 72113, 92858, 72114, 72115 e 92861 / 46292. Não se somam rede e fossa ligada porque são categorias hierárquicas.
+
+Quilombolas: SIDRA 10105, variável 7097, total de localização e situação domiciliar. Indígenas pela identificação ampliada: 9957, variável 8691, total de tipo de domicílio (inclusive maloca), localização e situação. Ambos usam as mesmas categorias de esgoto, dentro do próprio universo. Não equivalem à categoria indígena de cor ou raça, nem são mutuamente exclusivos em relação aos demais grupos.
+
+Favelas: SIDRA 9894, variável 9913, **domicílios** para água; 9898, variável 9914, **moradores** para esgoto (totais de banheiro, cor ou raça, sexo e idade). A página separa as unidades e não apresenta razão de domicílios sobre moradores.
+
+O sinal `-` do SIDRA significa zero absoluto; `X` significa supressão e continua `null`. `..`, `...` e vazio também ficam sem valor. Categoria faltante, valor desconhecido, chave duplicada, numerador fora de [0, denominador] ou hash divergente interrompem o pipeline. Universo zero não tem percentual. Sem tabulação não significa zero.
+
+As somas de região e UF reproduzem o Brasil em todas as 14 medidas. A soma municipal reproduz o Brasil salvo três conferências de favelas: água, numerador -259 domicílios; esgoto, numerador -679 moradores e denominador -819 moradores. Há 655 municípios tabulados e 652 com razão disponível; três têm células suprimidas. As referências mantêm o agregado oficial, e os totais municipais disponíveis não são inflados para fechar a diferença.
+
+A soma das cinco categorias de cor ou raça deixa diferença frente ao total oficial de 7.164 moradores no universo, 596 na carência de água e 1.276 na de esgoto. A diferença é publicada sem atribuição a uma categoria não tabulada. Todas as conferências e os originais estão em `meta.json.desigualdades` e `seed/desigualdades/`.
+
+Não foi inferida ausência de ligação a partir de forma principal de abastecimento, que é outro conceito. Não há renda individual cruzada com saneamento nem desagregação urbano/rural nesta edição.

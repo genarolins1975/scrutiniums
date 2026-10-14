@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { agregado, agregados, meta, municipios, prestadores, reguladores } from "@/lib/saneamento/gold";
-import { MEDIDAS, agregarMedida, formatarValor, medida } from "@/lib/saneamento/medidas";
+import { MEDIDAS_DESIGUALDADES, MEDIDAS, agregarMedida, formatarValor, medida } from "@/lib/saneamento/medidas";
 import { referencias } from "@/lib/saneamento/referencias";
 import { CAPITULOS, ROTA } from "@/lib/saneamento/capitulos";
 import { VIABILIDADE } from "@/lib/saneamento/viabilidade";
@@ -43,6 +43,34 @@ describe("Saneamento: gold e conferências", () => {
     expect(lista).toHaveLength(5571);
     expect(lista.filter((m) => m.pop22 != null)).toHaveLength(5570);
     expect(meta()?.cobertura.municipios_ibge).toBe(5571);
+  });
+
+  it("desigualdades: referências usam tabulações oficiais mesmo sob supressão municipal", () => {
+    expect(MEDIDAS_DESIGUALDADES).toHaveLength(14);
+    const refs = referencias(agregados(), lista, MEDIDAS_DESIGUALDADES.map((m) => m.id));
+    expect(refs["des-favelas-esgoto"].BR.contagem).toBe(4360958);
+    expect(refs["des-favelas-esgoto"].BR.pct).toBeCloseTo(4360958 / 16349896 * 100, 9);
+    expect(agregarMedida(medida("des-favelas-esgoto"), lista).contagem).toBe(4360279);
+    for (const med of MEDIDAS_DESIGUALDADES) {
+      const [num, den] = br.desigualdades[med.id.slice(4)];
+      expect(refs[med.id].BR.pct).toBeCloseTo(num! / den! * 100, 9);
+    }
+  });
+
+  it("desigualdades: zero de carência, universo vazio e supressão têm comportamentos diferentes", () => {
+    const med = medida("des-amarela-agua");
+    const vazio = lista.find((m) => m["des_amarela-agua_den"] === 0)!;
+    expect(vazio).toBeTruthy();
+    expect(med.pct(vazio)).toBeNull();
+    const zero = lista.find((m) => m["des_amarela-agua_num"] === 0 && m["des_amarela-agua_den"]! > 0)!;
+    expect(med.pct(zero)).toBe(0);
+    const favela = medida("des-favelas-esgoto");
+    const suprimido = lista.find((m) => m["des_favelas-esgoto_num"] == null && m["des_favelas-agua_den"]! > 0)!;
+    expect(suprimido).toBeTruthy();
+    expect(favela.pct(suprimido)).toBeNull();
+    expect(favela.contagem!(suprimido)).toBeNull();
+    expect(medida("des-favelas-agua").unidadeContagem).toBe("domicílios");
+    expect(favela.unidadeContagem).toBe("moradores");
   });
 
   it("a soma municipal do Censo reproduz a tabulação do IBGE para o Brasil", () => {

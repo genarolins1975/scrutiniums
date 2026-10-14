@@ -24,7 +24,7 @@ export function LogoWordmark({ onDark = false }: { onDark?: boolean }) {
     <span className="flex items-center gap-3">
       <LogoMark size={22} onDark={onDark} />
       <span
-        className={`font-serif text-lg tracking-wide2 uppercase ${onDark ? "text-marfim" : "text-carvao"}`}
+        className={`font-serif text-[18px] tracking-wide2 uppercase ${onDark ? "text-marfim" : "text-carvao"}`}
       >
         Scrutiniums
       </span>

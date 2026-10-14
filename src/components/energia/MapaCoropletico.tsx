@@ -613,7 +613,7 @@ export function MapaCoropletico({
 
       {/* busca e zoom */}
       <div className="mb-2 flex flex-wrap items-end gap-2">
-        <div className="relative min-w-[13rem] flex-1">
+        <div className="relative min-w-[min(13rem,100%)] flex-1">
           <label htmlFor={`${uid}-busca`} className="rotulo mb-1 block text-mineral">
             Buscar {rotulo.singular}
           </label>

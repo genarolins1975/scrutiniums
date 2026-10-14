@@ -13,6 +13,7 @@ export type SituacaoEsgoto = "participou" | "delegacao_sem_atendimento" | "infor
 
 /** Linha da tabela municipal compacta (municipios.json). */
 export type Municipio = {
+  [campo: `des_${string}`]: number | null;
   id: string;
   nome: string;
   uf: string;
@@ -209,6 +210,7 @@ export type FichaMunicipio = {
 };
 
 export type Agregado = {
+  desigualdades: Record<string, [number | null, number | null]>;
   id: string;
   nome: string;
   tipo: "Brasil" | "Região" | "UF";
@@ -329,6 +331,11 @@ export type EteCatalogo = Ete & { municipio: string; uf: string; prestador: stri
 export type Conferencia = { id: string; descricao: string; valores: Record<string, number | null>; conclusao: string };
 
 export type MetaSaneamento = {
+  desigualdades: {
+    proveniencia: { capturado_em: string };
+    residuos_cor_raca: { universo: number; agua: number; esgoto: number };
+    conferencias: { id: string; nivel: number; campo: string; informantes: number; ausentes: number; soma: number; brasil: number | null; diferenca: number | null }[];
+  };
   observatorio: string;
   gerado_de: string;
   sinisa: {
