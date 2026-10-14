@@ -43,6 +43,8 @@ O primeiro par é `/sobre` e `/en/sobre`: corpo português preservado e marcado 
 
 A ampliação institucional acrescenta `/sobre/erros` e `/sobre/governanca`, também estáticas e inteiramente em português marcado sob `/en`. O teste de HTML passa a percorrer todos os pares declarados e exige página compilada, entrada de prerender e HTML físico; um par sem prova estática falha até receber verificação adequada. Isso não conclui a tradução da Constituição, prevista para a fase 1, nem a paridade global.
 
+Imprensa e a vitrine pública do Crédito acrescentam dois pares estáticos com português marcado. O recorte preserva os metadados próprios das duas folhas e verifica a hidratação do selo e dos destinos de entrada, sem ampliar o acesso à SPA ou a seus arquivos. São cinco pares declarados, quatro da plataforma e um do Crédito; não representam cinco páginas traduzidas. As rotas dinâmicas exigirão prova HTTP e de DOM concluído, sem converter páginas com sessão para `force-static`.
+
 ## Fases seguintes
 
 | Fase | Série de entregas, sempre com CI verde entre PRs |

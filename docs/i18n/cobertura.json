@@ -9,9 +9,9 @@
     "gold": "Dados não participam deste relatório nem do --check. Execute --gold para a situação atual, não versionada."
   },
   "escopo": {
-    "inventario_sha256": "f18787dc3c9e926d74423e55c395a648db4631149aa99c30c0b8189b579292e7",
-    "arquivos_analisados": 999,
-    "fontes_sha256": "e1b8dece0e02f0ec74874c2cdab11b109c9ba7ccc870a8a456fef89b68aaa177",
+    "inventario_sha256": "ac92143fa592e7f0ade87b84c9fbd3cfedcfeb17a186aed4f51859501ce338e8",
+    "arquivos_analisados": 1001,
+    "fontes_sha256": "5dbaa0e8976badc67050177c239f6d7fea31b41d4e76d40cca1e5c2c5240ebb2",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -127,18 +127,18 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 187,
+        "arquivos": 188,
         "candidatos": {
           "jsx_text": 634,
           "atributos": 169,
           "props": 625,
-          "outros_literais": 3121,
+          "outros_literais": 3124,
           "templates": 375,
           "expressoes_nao_resolvidas": 1934,
           "chaves_objetos": 2361
         },
         "exclusoes": {
-          "importacoes": 752,
+          "importacoes": 756,
           "atributos_tecnicos": 1162,
           "tipos": 174
         },
@@ -149,19 +149,19 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 9219,
+        "candidatos_nao_catalogados": 9222,
         "percentual_traduzido": null
       },
       "rotas": {
         "paginas_pt": 28,
-        "paginas_en": 3,
+        "paginas_en": 4,
         "handlers": 29,
         "templates_com_parametros": 1,
         "paginas_pt_literais": 24,
         "paginas_pt_fora_do_adaptador": 4,
-        "paginas_pt_literais_sem_irma": 21,
-        "pares_estruturais": 3,
-        "fallbacks_declarados": 3,
+        "paginas_pt_literais_sem_irma": 20,
+        "pares_estruturais": 4,
+        "fallbacks_declarados": 4,
         "paridade_verificada": false
       },
       "conteudo_adicional": {
@@ -463,19 +463,19 @@
     "credito": {
       "nome": "Crédito",
       "interface": {
-        "arquivos": 10,
+        "arquivos": 11,
         "candidatos": {
           "jsx_text": 19,
           "atributos": 193,
           "props": 16,
-          "outros_literais": 12782,
+          "outros_literais": 12785,
           "templates": 2609,
           "expressoes_nao_resolvidas": 8863,
           "chaves_objetos": 5020,
           "textos": 149
         },
         "exclusoes": {
-          "importacoes": 17,
+          "importacoes": 21,
           "atributos_tecnicos": 459,
           "tipos": 0,
           "estilos": 1,
@@ -492,19 +492,19 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 29651,
+        "candidatos_nao_catalogados": 29654,
         "percentual_traduzido": null
       },
       "rotas": {
         "paginas_pt": 1,
-        "paginas_en": 0,
+        "paginas_en": 1,
         "handlers": 1,
         "templates_com_parametros": 1,
         "paginas_pt_literais": 1,
         "paginas_pt_fora_do_adaptador": 0,
-        "paginas_pt_literais_sem_irma": 1,
-        "pares_estruturais": 0,
-        "fallbacks_declarados": 0,
+        "paginas_pt_literais_sem_irma": 0,
+        "pares_estruturais": 1,
+        "fallbacks_declarados": 1,
         "paridade_verificada": false
       },
       "conteudo_adicional": {
@@ -675,6 +675,28 @@
     "schema_version": 1,
     "pares": [
       {
+        "pt": "/imprensa",
+        "en": "/en/imprensa",
+        "dominio": "plataforma",
+        "conteudo_declarado": "portugues_marcado",
+        "fontes": {
+          "pt": "src/app/imprensa/page.tsx",
+          "en": "src/app/en/imprensa/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/observatorio-do-credito",
+        "en": "/en/observatorio-do-credito",
+        "dominio": "credito",
+        "conteudo_declarado": "portugues_marcado",
+        "fontes": {
+          "pt": "src/app/observatorio-do-credito/page.tsx",
+          "en": "src/app/en/observatorio-do-credito/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
         "pt": "/sobre",
         "en": "/en/sobre",
         "dominio": "plataforma",
@@ -708,8 +730,8 @@
         "arquivos_presentes": true
       }
     ],
-    "pares_estruturais": 3,
-    "fallbacks_declarados": 3,
+    "pares_estruturais": 5,
+    "fallbacks_declarados": 5,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false
   }

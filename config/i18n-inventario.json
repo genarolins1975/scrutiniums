@@ -5,6 +5,8 @@
   "rotas": {
     "schema_version": 1,
     "literais": [
+      { "pt": "/imprensa", "conteudo": "portugues_marcado" },
+      { "pt": "/observatorio-do-credito", "conteudo": "portugues_marcado" },
       { "pt": "/sobre", "conteudo": "portugues_marcado" },
       { "pt": "/sobre/erros", "conteudo": "portugues_marcado" },
       { "pt": "/sobre/governanca", "conteudo": "portugues_marcado" }

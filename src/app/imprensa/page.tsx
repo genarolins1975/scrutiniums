@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { BotaoLink } from "@/components/home/BotaoLink";
 import { GraficoEpae, type DadosEpae } from "@/components/imprensa/GraficoEpae";
 import { LINKEDIN_URL } from "@/lib/contato";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 
 /**
  * Página para a imprensa: números citáveis dos dois painéis de maior
@@ -21,7 +22,7 @@ import { LINKEDIN_URL } from "@/lib/contato";
  */
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
+const metadadosOriginais: Metadata = {
   title: "Para a imprensa — números citáveis com fonte primária",
   description:
     "Bets e fraudes financeiras no Brasil em números verificáveis: cada dado com fonte primária, grau de evidência e data de referência, prontos para citação.",
@@ -33,6 +34,10 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/imprensa", metadadosOriginais, await parent);
+}
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
 function lerGold(nome: string): any {
