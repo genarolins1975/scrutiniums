@@ -26,3 +26,12 @@
 @media(min-width:761px) and (max-width:1050px){.profile th{width:10em}}
 @media(max-width:440px){.profile th{width:8.2em;font-size:12px;padding-right:8px}.profile td:last-child{width:4.6em;font-size:12px;padding-left:8px}.track{margin:0 6px}.scores dl{gap:14px}.scores dl>div+div{padding-left:14px}}
 @media(forced-colors:active){.dot{background:Highlight}.diamond{background:CanvasText}.track::before{background:CanvasText}}
+/* Impressão: o painel fica sem fundo escuro (EntradaEstado.module.css), então texto e marcas voltam às cores sobre papel. */
+@media print{
+.scores,.profile tr+tr th,.profile tr+tr td,.scores dl>div+div{border-color:var(--cor-obee-atlas-linha)}
+.kicker,.scores dt,.scores dd,.scores dd.main,.status,.profile caption,.profile th,.profile td:last-child{color:var(--cor-carvao)}
+.track::before{background:var(--cor-obee-atlas-linha)}.median{border-left-color:var(--cor-carvao)}.link{background:var(--cor-carvao);opacity:.3}
+.dot{background:var(--cor-obee-atlas-serie-territorio)}.diamond{background:var(--cor-obee-atlas-serie-par)}
+.dot,.diamond{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.panel label,.panel button,.panel p,.panel a,.panel summary{color:var(--cor-carvao)!important}.panel select{background:transparent!important;color:var(--cor-carvao)!important;border-color:var(--cor-obee-atlas-linha)!important}.panel hr,.panel fieldset+div,.panel div{border-color:var(--cor-obee-atlas-linha)}
+}
