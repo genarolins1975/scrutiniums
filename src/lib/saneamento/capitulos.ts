@@ -66,7 +66,7 @@ export const EIXOS: Eixo[] = [
           "Paralisações e racionamento declarados ao SINISA 2024; qualidade da água no SISAGUA, com controle do prestador, vigilância da saúde, plano de amostragem e população sob formas com controle, de 2014 a 2025.",
         situacao: "parcial",
         pendencia:
-          "SISAGUA integrado para E. coli, coliformes totais, cloro residual livre, turbidez, cor e fluoreto, plano de amostragem de SAA e SAC desde 2023 e população cadastrada. Ainda não integrados: cianobactérias e cianotoxinas, substâncias químicas, controle semestral e plano de amostragem até 2022 (só JSON até 2021; cálculo de 2022 não comparável). pH não tem limite na rede pela Portaria 888.",
+          "SISAGUA integrado para E. coli, coliformes totais, cloro residual livre, turbidez, cor e fluoreto, plano de amostragem de SAA e SAC desde 2023 e população cadastrada. Substâncias químicas, radioatividade e cianotoxinas na água tratada integradas em 2024 e 2025. Ainda não integrados: série das substâncias químicas antes de 2024 e plano de amostragem até 2022 (só JSON até 2021; cálculo de 2022 não comparável). pH não tem limite na rede pela Portaria 888.",
       },
       {
         numero: 4,

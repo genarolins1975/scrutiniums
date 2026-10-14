@@ -1,0 +1,71 @@
+{
+  "capturado_em": "2026-10-14T16:08:45+00:00",
+  "anos": [
+    2024,
+    2025
+  ],
+  "arquivos": [
+    {
+      "conjunto": "vigilancia_demais",
+      "ano": null,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_demais_parametros_csv.zip",
+      "sha256": "9c17dd46798758eb5126abf0a273f82990183055c4e29ec2ea8f2406e1ca2903",
+      "bytes": 106408986,
+      "last_modified": "Sun, 04 Oct 2026 12:43:22 GMT"
+    },
+    {
+      "conjunto": "vigilancia_ciano",
+      "ano": null,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_cianobacterias_cianotoxinas_csv.zip",
+      "sha256": "59a416be5652e79452160af0a67cc1406e0790864cb24b4d779acc0d27f3343f",
+      "bytes": 2419482,
+      "last_modified": "Sun, 04 Oct 2026 12:43:24 GMT"
+    },
+    {
+      "conjunto": "controle_demais_manancial",
+      "ano": null,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_demais_parametros_csv.zip",
+      "sha256": "b0a8b46099a53b70ddb287894be40d79d38a7c8023f1539e4b8e6876f1cc426c",
+      "bytes": 147425032,
+      "last_modified": "Sat, 03 Oct 2026 00:09:09 GMT"
+    },
+    {
+      "conjunto": "controle_semestral",
+      "ano": 2024,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_semestral_2024_csv.zip",
+      "sha256": "3c9267ee695f653b55bbf8160c63ddb7dae69b979d25204d57e7ab0c902f3780",
+      "bytes": 151143522,
+      "last_modified": "Fri, 18 Sep 2026 09:29:46 GMT"
+    },
+    {
+      "conjunto": "controle_semestral",
+      "ano": 2025,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_semestral_2025_csv.zip",
+      "sha256": "cd5bba479a25d5097bc6f3cda47cb6be468267117a65307234c1dbabae1da232",
+      "bytes": 198886014,
+      "last_modified": "Mon, 05 Oct 2026 00:55:30 GMT"
+    }
+  ],
+  "seeds": {
+    "sisagua_quimicos_2024.json.gz": "a765594d4675239144b253384b46ed8d530f8f5dce7ba26788f2339736fbffac",
+    "sisagua_quimicos_2025.json.gz": "095aacd4a39034953090f91b668def89eeba3ffa4822d5d52efc90dcbeabb747"
+  },
+  "dicionarios": {
+    "controle_semestral": {
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/dicionario_controle_semestral.odt",
+      "sha256": "aec98461b15e267b8f1331cf1256e669e0d353f93fb3b0229eff6cdfb4fc4e5b"
+    },
+    "controle_mensal_demais_parametros": {
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/dicionario_controle_mensal_demais_parametros.odt",
+      "sha256": "8763f1b5d1f204b40835f7820ecc05007931fda2c77f63fb90a8e21c971a9f6b"
+    },
+    "vigilancia_demais_parametros": {
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/dicionario_vigilancia_demais_parametros.odt",
+      "sha256": "5d552a51d90a41c326d8e0734e8ed6a831e9ac42384796e47e205ec05283142d"
+    },
+    "vigilancia_ciano": {
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/dicionario_vigilancia_ciano.odt",
+      "sha256": "464ee89e18347bffbb2a2594ae96cfdb6c129807b6b32511ca5c497e3f35440f"
+    }
+  }
+}

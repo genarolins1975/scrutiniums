@@ -14,7 +14,7 @@ Documentos desta pasta:
 |---|---|---|---|
 | A Acesso e qualidade | 1 Quantas pessoas estão sem atendimento adequado? | `/saneamento/acesso` | Publicado |
 | | 2 Quem fica para trás? | `/saneamento/desigualdades` | Parcial (14 medidas do Censo 2022, com universos separados e supressões publicadas) |
-| | 3 A água chega regularmente e com qualidade monitorada? | `/saneamento/continuidade` | Parcial (continuidade e SISAGUA de 2014 a 2025: seis parâmetros, plano de SAA e SAC desde 2023, população cadastrada; cianobactérias e substâncias químicas pendentes) |
+| | 3 A água chega regularmente e com qualidade monitorada? | `/saneamento/continuidade` | Parcial (continuidade e SISAGUA de 2014 a 2025: seis parâmetros, plano de SAA e SAC desde 2023, população cadastrada; substâncias químicas, radioatividade e cianotoxinas em 2024 e 2025) |
 | | 4 Para onde vai o esgoto? | `/saneamento/esgoto` | Publicado |
 | B Preço regulado | 5 Preço regulado: o que pagamos, por que foi autorizado, o que financia | `/saneamento/preco-regulado` e subpainéis 5.1 a 5.5 | Parcial (amostra verificada) |
 | | 6 A conta cabe no orçamento? A tarifa social chega a quem precisa? | `/saneamento/tarifa-social` | Parcial (economias por família elegível do CadÚnico; famílias beneficiadas não publicadas) |

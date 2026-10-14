@@ -211,6 +211,61 @@ const ESPEC_QUALIDADE: EspecQualidade[] = [
     limitesHistograma: [0, 1, 2, 5, 10, 25, 50],
   },
   {
+    campo: "ctrl_agro",
+    titulo: "Controle semestral: agrotóxicos acima do VMP",
+    pergunta: "Em que proporção das análises de agrotóxicos do prestador na água tratada o resultado passou do valor máximo permitido?",
+    universo:
+      "Análises de agrotóxicos e metabólitos do controle semestral do prestador na saída do tratamento, na rede e no ponto de consumo (água bruta fora)",
+    unidadeContagem: "análises acima do VMP",
+    permite:
+      "Localizar onde o prestador registrou agrotóxico acima do VMP do Anexo 9 da Portaria GM/MS 888/2021, parâmetro a parâmetro, sempre com o VMP da Portaria vigente.",
+    naoPermite:
+      "Somar agrotóxicos diferentes ou concluir que a água tem agrotóxico onde nada passou do VMP: resultado abaixo do limite de quantificação não é zero, e cada análise é de um único parâmetro.",
+    ausencia: "Município sem análise de agrotóxicos em água tratada no controle semestral do ano. Ausência de registro não indica água sem agrotóxico.",
+    cortesPct: [0.05, 0.25, 1, 3],
+    limitesHistograma: [0, 0.1, 0.5, 1, 2, 5, 10],
+  },
+  {
+    campo: "ctrl_quim",
+    titulo: "Controle semestral: substâncias de risco à saúde acima do VMP",
+    pergunta: "Em que proporção das análises de substâncias inorgânicas, orgânicas e subprodutos da desinfecção o resultado passou do VMP?",
+    universo:
+      "Análises de substâncias inorgânicas, orgânicas e subprodutos da desinfecção (Anexo 9) do controle semestral, na água tratada",
+    unidadeContagem: "análises acima do VMP",
+    permite: "Localizar onde o prestador registrou metal, nitrato, solvente ou subproduto da desinfecção acima do VMP da Portaria 888.",
+    naoPermite:
+      "Afirmar descumprimento: para subprodutos da desinfecção (trihalometanos e ácidos haloacéticos), a norma verifica a média móvel de 12 meses (Art. 40), e nitrato e nitrito seguem a soma das razões (Art. 39).",
+    ausencia: "Município sem análise desses grupos em água tratada no controle semestral do ano. Ausência de registro não indica água sem a substância.",
+    cortesPct: [0.25, 1, 3, 10],
+    limitesHistograma: [0, 0.5, 1, 2, 5, 10, 25],
+  },
+  {
+    campo: "ctrl_organol",
+    titulo: "Controle semestral: padrão organoléptico acima do VMP",
+    pergunta: "Em que proporção das análises de aceitação (gosto, odor, ferro, alumínio, dureza e outros) o resultado passou do VMP?",
+    universo: "Análises do padrão organoléptico (Anexo 11) do controle semestral, na água tratada",
+    unidadeContagem: "análises acima do VMP",
+    permite: "Localizar onde o prestador registrou água fora do padrão de aceitação para consumo da Portaria 888 (Anexo 11).",
+    naoPermite: "Concluir risco à saúde: o padrão organoléptico trata de aparência, gosto e odor.",
+    ausencia: "Município sem análise organoléptica em água tratada no controle semestral do ano.",
+    cortesPct: [0.5, 2, 5, 15],
+    limitesHistograma: [0, 1, 2, 5, 10, 25, 50],
+  },
+  {
+    campo: "vig_quim",
+    titulo: "Vigilância: substâncias químicas acima do VMP",
+    pergunta: "Em que proporção das análises químicas de rotina da vigilância na água tratada o resultado passou do VMP?",
+    universo:
+      "Análises de rotina da vigilância de agrotóxicos, substâncias inorgânicas, orgânicas e subprodutos da desinfecção (Anexo 9), na rede e na saída do tratamento de SAA e no ponto de consumo de SAC",
+    unidadeContagem: "análises acima do VMP",
+    permite: "Ver, nas coletas da autoridade de saúde, onde alguma substância química de risco à saúde passou do VMP da Portaria 888.",
+    naoPermite:
+      "Comparar com o controle do prestador como se medissem a mesma coisa, nem concluir sobre municípios sem análise: a vigilância química alcança poucos municípios.",
+    ausencia: "Município sem análise química de rotina da vigilância em água tratada no ano. Ausência de registro não indica água sem a substância.",
+    cortesPct: [0.25, 1, 3, 10],
+    limitesHistograma: [0, 0.5, 1, 2, 5, 10, 25],
+  },
+  {
     campo: "plano",
     titulo: "Plano de amostragem: análises exigidas cobertas",
     pergunta: "Das análises de coliformes totais que a norma exige na rede de cada sistema, quantas aparecem no controle informado?",
@@ -280,7 +335,7 @@ export const MEDIDAS_QUALIDADE: Medida[] = ANOS_SISAGUA.flatMap((ano) =>
       universo: e.universo,
       unidadePct: "%",
       unidadeContagem: e.unidadeContagem,
-      casas: e.campo === "ctrl_ecoli" ? 2 : 1,
+      casas: e.campo === "ctrl_ecoli" || e.campo === "ctrl_agro" ? 2 : 1,
       pct: (m: Municipio) => razaoPct(num(m), den(m)),
       contagem: num,
       numerador: num,

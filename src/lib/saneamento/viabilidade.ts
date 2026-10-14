@@ -102,9 +102,9 @@ export const VIABILIDADE: LinhaViabilidade[] = [
   {
     capitulo: "3",
     pergunta: "A água distribuída é monitorada?",
-    indicador: "Análises de controle e de vigilância com E. coli, coliformes totais, cloro residual livre abaixo de 0,2 mg/L, turbidez acima de 5,0 uT, cor acima de 15 uH e fluoreto acima de 1,5 mg/L; cobertura do plano de amostragem; população sob formas com controle",
-    fonte: "Ministério da Saúde, SISAGUA (controle mensal, plano de amostragem, vigilância, cadastro e amostras fora do padrão)",
-    periodo: "2014 a 2025 (plano desde 2023; atlas municipal em 2024 e 2025)",
+    indicador: "Análises de controle e de vigilância com E. coli, coliformes totais, cloro residual livre abaixo de 0,2 mg/L, turbidez acima de 5,0 uT, cor acima de 15 uH e fluoreto acima de 1,5 mg/L; substâncias químicas, radioatividade e cianotoxinas acima do VMP na água tratada; cobertura do plano de amostragem; população sob formas com controle",
+    fonte: "Ministério da Saúde, SISAGUA (controle mensal e semestral, plano de amostragem, vigilância, cadastro e amostras fora do padrão)",
+    periodo: "2014 a 2025 (plano desde 2023; substâncias químicas e atlas municipal em 2024 e 2025)",
     unidadeGeografica: "Município de coleta; DF agregado das Regiões Administrativas",
     unidadeObservacao: "Análise de um parâmetro (contadores mensais no controle; amostra a amostra na vigilância)",
     cobertura: "2024: 4.563 municípios com controle e 5.071 com vigilância, de 5.571",

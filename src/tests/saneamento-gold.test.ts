@@ -58,10 +58,10 @@ describe("Saneamento: gold e conferências", () => {
 
   it("SISAGUA: colunas da qualidade ficam fora da tabela geral e do comparador", () => {
     expect(Object.keys(lista[0]).some((k) => k.startsWith("qa_"))).toBe(false);
-    expect(Object.keys(listaQa[0]).filter((k) => k.startsWith("qa_"))).toHaveLength(56);
+    expect(Object.keys(listaQa[0]).filter((k) => k.startsWith("qa_"))).toHaveLength(72);
     expect(listaQa).toHaveLength(lista.length);
     expect(MEDIDAS_GERAIS.some((m) => m.id.startsWith("qa-"))).toBe(false);
-    expect(MEDIDAS_QUALIDADE).toHaveLength(26);
+    expect(MEDIDAS_QUALIDADE).toHaveLength(34);
   });
 
   it("SISAGUA: registro por ano confere com meta.json e ausência de registro nunca vira zero", () => {
@@ -107,6 +107,22 @@ describe("Saneamento: gold e conferências", () => {
       const r = agregarMedida(medida(`qa-vig-ecoli-${ano}`), listaQa);
       expect(sis.serie[String(ano)].BR.medidas.vig_ecoli).toEqual([r.contagem, r.universo, r.municipios]);
     }
+  });
+
+  it("SISAGUA químicos: medidas municipais reproduzem os totais por grupo de meta.json", () => {
+    const q = meta()!.sisagua.quimicos;
+    for (const ano of q.anos.map(String)) {
+      const g = q.por_ano[ano].grupos;
+      const agro = agregarMedida(medida(`qa-ctrl-agro-${ano}`), listaQa);
+      expect([agro.contagem, agro.universo, agro.municipios]).toEqual(g.controle.agrotoxicos);
+      const soma = (reg: "controle" | "vigilancia", gs: string[]) => gs.reduce((a, k) => a + (g[reg][k]?.[1] ?? 0), 0);
+      expect(agregarMedida(medida(`qa-ctrl-quim-${ano}`), listaQa).universo).toBe(soma("controle", ["inorganicas", "organicas", "subprodutos"]));
+      expect(agregarMedida(medida(`qa-vig-quim-${ano}`), listaQa).universo).toBe(soma("vigilancia", ["agrotoxicos", "inorganicas", "organicas", "subprodutos"]));
+      expect(q.por_ano[ano].registro.controle).toBeGreaterThan(1500);
+    }
+    // VMP de referência é sempre o da Portaria 888 (nunca o gravado no arquivo)
+    expect(q.vmp.find((v) => v.parametro === "Diuron")?.vmp).toBe(20);
+    expect(q.vmp_cianotoxinas).toEqual({ microcistina: 1, saxitoxina: 3, cilindrospermopsina: 1 });
   });
 
   it("SISAGUA: a ficha municipal traz os mesmos valores do arquivo da qualidade", () => {
