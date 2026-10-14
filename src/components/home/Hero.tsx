@@ -77,6 +77,7 @@ export function Hero({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
                       width={480}
                       height={600}
                       decoding="async"
+                      style={v.focoImagem ? { objectPosition: v.focoImagem } : undefined}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                     />
                     <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-[3px] ${a.filete}`} />
