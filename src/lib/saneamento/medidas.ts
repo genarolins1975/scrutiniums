@@ -13,7 +13,7 @@ import { numero, sinal } from "./formato";
  * 2024 (população estimada) no mesmo numerador e denominador.
  */
 
-export type Fonte = "censo2022" | "censo2010_2022" | "sinisa2024" | "nr8_sinisa2024" | "sinisa_cadunico2024";
+export type Fonte = "censo2022" | "censo2010_2022" | "sinisa2024" | "nr8_sinisa2024" | "sinisa_cadunico2024" | "sisagua";
 export type Variante = "pct" | "pessoas";
 
 export type Medida = {
@@ -66,7 +66,157 @@ export const FONTE_ROTULO: Record<Fonte, string> = {
   sinisa2024: "Ministério das Cidades, SINISA 2025 (ano de referência 2024)",
   nr8_sinisa2024: "SINISA 2025 (2024) e IBGE, pela ficha da NR ANA 8/2024",
   sinisa_cadunico2024: "SINISA 2025 (2024) e MDS, CadÚnico de dezembro de 2024",
+  sisagua: "Ministério da Saúde, SISAGUA (dados abertos)",
 };
+
+/** Rótulo curto da fonte no seletor de medidas. */
+export const FONTE_CURTA: Record<Fonte, string> = {
+  censo2022: "Censo 2022",
+  censo2010_2022: "Censos 2010 e 2022",
+  sinisa2024: "SINISA 2024",
+  nr8_sinisa2024: "NR 8 / SINISA 2024",
+  sinisa_cadunico2024: "SINISA e CadÚnico 2024",
+  sisagua: "SISAGUA",
+};
+
+/** Anos do SISAGUA publicados: 2024 casa com o SINISA; 2025 é o ano completo mais recente. */
+export const ANOS_SISAGUA = [2024, 2025] as const;
+
+type EspecQualidade = Pick<Medida, "permite" | "naoPermite" | "ausencia" | "cortesPct" | "limitesHistograma"> & {
+  campo: string;
+  titulo: string;
+  pergunta: string;
+  universo: string;
+  unidadeContagem: string;
+};
+
+const ESPEC_QUALIDADE: EspecQualidade[] = [
+  {
+    campo: "ctrl_ecoli",
+    titulo: "Controle: presença de E. coli",
+    pergunta: "Em que proporção das análises de E. coli informadas pelo prestador a bactéria apareceu na rede ou no ponto de consumo?",
+    universo: "Análises de E. coli do controle mensal do prestador no sistema de distribuição e no ponto de consumo de SAA e SAC",
+    unidadeContagem: "análises com presença",
+    permite:
+      "Localizar onde o próprio prestador registrou indicador de contaminação fecal na água distribuída. Pela Portaria GM/MS 888/2021, Anexo 1, a E. coli deve estar ausente em 100 mL.",
+    naoPermite:
+      "Concluir que a água é segura onde a proporção é zero: o número de análises varia muito entre municípios, recoletas entram no total e o resultado é declarado pelo prestador. Não se compara com a vigilância.",
+    ausencia: "Município sem registro de controle no SISAGUA no ano ou sem análise de E. coli na rede e no consumo. Ausência de registro não indica água de boa qualidade.",
+    cortesPct: [0.1, 0.5, 1, 3],
+    limitesHistograma: [0, 0.5, 1, 2, 5, 10, 25],
+  },
+  {
+    campo: "ctrl_colif",
+    titulo: "Controle: presença de coliformes totais",
+    pergunta: "Em que proporção das análises de coliformes totais informadas pelo prestador houve presença na rede ou no ponto de consumo?",
+    universo: "Análises de coliformes totais do controle mensal do prestador no sistema de distribuição e no ponto de consumo de SAA e SAC",
+    unidadeContagem: "análises com presença",
+    permite:
+      "Observar o indicador de integridade da rede (Portaria GM/MS 888/2021, Anexo 1) nas análises do próprio prestador, município a município.",
+    naoPermite:
+      "Ler como taxa de desconformidade: a norma tolera presença em parte das amostras mensais, conforme a população abastecida, e exige recoleta. Coliformes totais não indicam, sozinhos, contaminação fecal.",
+    ausencia: "Município sem registro de controle no SISAGUA no ano ou sem análise de coliformes totais na rede e no consumo. Ausência de registro não indica água de boa qualidade.",
+    cortesPct: [0.5, 2, 5, 10],
+    limitesHistograma: [0, 1, 2, 5, 10, 25, 50],
+  },
+  {
+    campo: "ctrl_cloro",
+    titulo: "Controle: cloro residual livre abaixo de 0,2 mg/L",
+    pergunta: "Em que proporção das análises de cloro residual livre do prestador o desinfetante ficou abaixo do mínimo na rede ou no consumo?",
+    universo: "Análises de cloro residual livre do controle mensal do prestador no sistema de distribuição e no ponto de consumo de SAA e SAC",
+    unidadeContagem: "análises abaixo do mínimo",
+    permite:
+      "Localizar onde o prestador registrou desinfetante abaixo do mínimo de 0,2 mg/L exigido em toda a rede e nos pontos de consumo (Portaria GM/MS 888/2021, Art. 32).",
+    naoPermite:
+      "Avaliar sistemas que desinfetam com cloro combinado ou dióxido de cloro, que informam outro parâmetro e ficam fora, nem concluir que houve contaminação.",
+    ausencia: "Município sem registro de controle no SISAGUA no ano ou sem análise de cloro residual livre na rede e no consumo. Ausência de registro não indica água de boa qualidade.",
+    cortesPct: [1, 5, 10, 25],
+    limitesHistograma: [0, 1, 5, 10, 25, 50, 100],
+  },
+  {
+    campo: "ctrl_turb",
+    titulo: "Controle: turbidez acima de 5,0 uT",
+    pergunta: "Em que proporção das análises de turbidez do prestador o valor passou do máximo permitido na rede ou no consumo?",
+    universo: "Análises de turbidez do controle mensal do prestador no sistema de distribuição e no ponto de consumo de SAA e SAC",
+    unidadeContagem: "análises acima do máximo",
+    permite:
+      "Localizar onde o prestador registrou turbidez acima do valor máximo de 5,0 uT na rede e nos pontos de consumo (Portaria GM/MS 888/2021, Art. 28, § 2º).",
+    naoPermite: "Avaliar a filtração na estação de tratamento, que tem limites próprios (Anexo 2) e não entra nesta medida.",
+    ausencia: "Município sem registro de controle no SISAGUA no ano ou sem análise de turbidez na rede e no consumo. Ausência de registro não indica água de boa qualidade.",
+    cortesPct: [0.5, 2, 5, 10],
+    limitesHistograma: [0, 1, 2, 5, 10, 25, 50],
+  },
+  {
+    campo: "vig_ecoli",
+    titulo: "Vigilância: presença de E. coli",
+    pergunta: "Em que proporção das análises de rotina da vigilância em saúde a E. coli apareceu na água distribuída?",
+    universo: "Análises de rotina da vigilância em saúde na rede de SAA e no ponto de consumo de SAC",
+    unidadeContagem: "análises com presença",
+    permite:
+      "Ver o resultado das coletas feitas pela autoridade de saúde, independentes do prestador, na rede de sistemas e no ponto de consumo de soluções coletivas.",
+    naoPermite:
+      "Comparar com o controle do prestador como se medissem a mesma coisa: coletores, pontos, frequência e laboratórios são outros. Amostras de denúncia, surto e desastre e coletas dentro dos domicílios ficam fora.",
+    ausencia: "Município sem amostra de rotina de E. coli da vigilância na rede de SAA ou no ponto de consumo de SAC no ano. Ausência de registro não indica água de boa qualidade.",
+    cortesPct: [1, 3, 10, 25],
+    limitesHistograma: [0, 2, 5, 10, 25, 50, 100],
+  },
+  {
+    campo: "vig_cloro",
+    titulo: "Vigilância: cloro residual livre abaixo de 0,2 mg/L",
+    pergunta: "Em que proporção das análises de rotina da vigilância o cloro residual livre ficou abaixo do mínimo?",
+    universo: "Análises de rotina da vigilância em saúde na rede de SAA e no ponto de consumo de SAC, com resultado numérico ou abaixo de limite conclusivo",
+    unidadeContagem: "análises abaixo do mínimo",
+    permite: "Ver, nas coletas da autoridade de saúde, onde o desinfetante ficou abaixo do mínimo de 0,2 mg/L (Portaria GM/MS 888/2021, Art. 32).",
+    naoPermite:
+      "Comparar com o controle do prestador como se medissem a mesma coisa. Resultado abaixo do limite de quantificação só conta quando esse limite é de até 0,2 mg/L; os demais ficam fora e são contados.",
+    ausencia: "Município sem amostra de rotina de cloro residual livre da vigilância na rede de SAA ou no ponto de consumo de SAC no ano. Ausência de registro não indica água de boa qualidade.",
+    cortesPct: [5, 10, 25, 50],
+    limitesHistograma: [0, 5, 10, 25, 50, 75, 100],
+  },
+  {
+    campo: "plano",
+    titulo: "Plano de amostragem: análises exigidas cobertas",
+    pergunta: "Das análises de coliformes totais que a norma exige na rede de cada sistema, quantas aparecem no controle informado?",
+    universo:
+      "Análises de coliformes totais exigidas no sistema de distribuição de cada SAA pelo plano de amostragem do SISAGUA (Portaria GM/MS 888/2021, Anexo 14)",
+    unidadeContagem: "análises cobertas",
+    permite:
+      "Ver quanto do mínimo de análises bacteriológicas exigido para a rede de cada SAA aparece no controle mensal. A cobertura é limitada a 100% por sistema: o excesso em um não compensa a falta em outro.",
+    naoPermite:
+      "Afirmar descumprimento da norma: análises podem ter sido feitas e não informadas, um SAA que atende vários municípios pode registrar as análises em outro município, e recoletas entram nas realizadas. Não cobre SAC.",
+    ausencia: "Município sem SAA com plano de amostragem no SISAGUA no ano.",
+    cortesPct: [25, 50, 75, 95],
+  },
+];
+
+/** Medidas do SISAGUA (capítulo 3): exigem a tabela própria qualidade_municipios.json. */
+export const MEDIDAS_QUALIDADE: Medida[] = ANOS_SISAGUA.flatMap((ano) =>
+  ESPEC_QUALIDADE.map((e) => {
+    const num = (m: Municipio) => m[`qa_${e.campo}_${ano}_num`] ?? null;
+    const den = (m: Municipio) => m[`qa_${e.campo}_${ano}_den`] ?? null;
+    const [grupo, resto] = e.titulo.split(": ");
+    return {
+      id: `qa-${e.campo.replace("_", "-")}-${ano}`,
+      titulo: `${grupo} ${ano}: ${resto}`,
+      pergunta: e.pergunta,
+      fonte: "sisagua" as const,
+      periodo: String(ano),
+      universo: e.universo,
+      unidadePct: "%",
+      unidadeContagem: e.unidadeContagem,
+      casas: e.campo === "ctrl_ecoli" ? 2 : 1,
+      pct: (m: Municipio) => razaoPct(num(m), den(m)),
+      contagem: num,
+      numerador: num,
+      denominador: den,
+      permite: e.permite,
+      naoPermite: e.naoPermite,
+      ausencia: e.ausencia,
+      cortesPct: e.cortesPct,
+      limitesHistograma: e.limitesHistograma,
+    };
+  }),
+);
 
 export const MEDIDAS_DESIGUALDADES: Medida[] = DESIGUALDADES.map((s) => {
   const num = (m: Municipio) => m[`des_${s.id}_num`] ?? null;
@@ -365,10 +515,11 @@ export const MEDIDAS: Medida[] = [
     limitesHistograma: [0, 5, 10, 15, 20, 30, 40, 60, 80, 100],
   },
   ...MEDIDAS_DESIGUALDADES,
+  ...MEDIDAS_QUALIDADE,
 ];
 
-/** Medidas de todo o território, sem os recortes por grupo do capítulo 2 (que exigem tabela própria). */
-export const MEDIDAS_GERAIS: Medida[] = MEDIDAS.filter((m) => !MEDIDAS_DESIGUALDADES.includes(m));
+/** Medidas que dependem só de municipios.json, sem os recortes do capítulo 2 e do SISAGUA (que exigem tabela própria). */
+export const MEDIDAS_GERAIS: Medida[] = MEDIDAS.filter((m) => !MEDIDAS_DESIGUALDADES.includes(m) && !MEDIDAS_QUALIDADE.includes(m));
 
 /** Texto do valor principal da medida, com a unidade certa (percentual, pontos percentuais ou valor por habitante). */
 export function formatarValor(med: Medida, x: number | null | undefined): string {

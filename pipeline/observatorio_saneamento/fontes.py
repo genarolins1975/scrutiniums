@@ -90,3 +90,42 @@ CADUNICO = {
         "cadun_qtd_pessoas_cadastradas_rfpc_ate_meio_sm_i",
     ],
 }
+
+# SISAGUA (Ministério da Saúde): controle e vigilância da qualidade da água para consumo
+# humano. Catálogo em dadosabertos.saude.gov.br, conferido em 14/10/2026; licença CC BY.
+# Arquivos CSV dentro de ZIP, latin-1, separador ';'. A lista de recursos de cada conjunto
+# está no JSON embutido da página (__NEXT_DATA__); a API CKAN padrão responde 404.
+SISAGUA_S3 = "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/"
+SISAGUA = {
+    "arquivos": {
+        "controle": "controle_mensal_parametros_basicos_{ano}_csv.zip",
+        "plano": "controle_mensal_plano_amostragem_{ano}_csv.zip",
+        "vigilancia": "vigilancia_parametros_basicos_{ano}_csv.zip",
+    },
+    "fora_padrao": SISAGUA_S3 + "controle_mensal_amostras_fora_padrao_csv.zip",
+    "paginas": {
+        "controle": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-parametros-basicos",
+        "plano": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-plano-amostragem",
+        "vigilancia": "https://dadosabertos.saude.gov.br/dataset/sisagua-vigilancia-parametros-basicos",
+        "fora_padrao": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-amostras-fora-do-padrao",
+    },
+    "dicionarios": {
+        "controle": SISAGUA_S3 + "SISAGUA%20-%20Controle%20Mensal%20Par%C3%A2metros%20B%C3%A1sicos%20-%20Dicion%C3%A1rio%20de%20Dados.pdf",
+        "plano": SISAGUA_S3 + "dicionario_controle_mensal_plano_de_amostragem.odt",
+        "vigilancia": SISAGUA_S3 + "dicionario_vigilancia_parametros_basicos.odt",
+        "fora_padrao": SISAGUA_S3 + "dicionario_controle_mensal_amostras_fora_do_padrao.odt",
+    },
+    # Norma de potabilidade: Portaria GM/MS 888/2021, que dá nova redação ao Anexo XX
+    # da Portaria de Consolidação GM/MS 5/2017.
+    "portaria": "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2021/prt0888_07_05_2021.html",
+    # O plano de amostragem de 2014 a 2021 está em outro host:
+    # https://arquivosdadosabertos.saude.gov.br/dados/sisagua/controle_mensal_plano_amostragem_{ano}_csv.zip
+    "erros_catalogo": [
+        "Na página do plano de amostragem, os recursos JSON e XML rotulados 2024 apontam para "
+        "controle_mensal_plano_amostragem_2025_json.zip e _xml.zip. O Observatório usa o CSV, cujo nome está correto.",
+    ],
+}
+
+
+def sisagua_url(conjunto, ano):
+    return SISAGUA_S3 + SISAGUA["arquivos"][conjunto].format(ano=ano)

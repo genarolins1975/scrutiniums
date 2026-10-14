@@ -28,7 +28,7 @@ Critérios: dado real com fonte e período (D), método e ressalvas visíveis (M
 |---|---|---|---|---|---|---|
 | `/saneamento` | sim | sim | sim | sim | 9 | Índice dos eixos com situação de cada capítulo |
 | `/saneamento/acesso` | sim | sim | sim | sim | 9 | Atlas, pessoas e proporção, composição das fontes, evolução |
-| `/saneamento/continuidade` | sim | sim | sim | parcial | 7 | Sem qualidade da água (SISAGUA) |
+| `/saneamento/continuidade` | sim | sim | sim | parcial | 8 | SISAGUA integrado para quatro parâmetros e o plano de coliformes de SAA; demais parâmetros pendentes |
 | `/saneamento/esgoto` | sim | sim | sim | sim | 9 | Mapa de estações não publicado por coordenadas inconsistentes |
 | `/saneamento/preco-regulado` e 5.1 a 5.5 | sim | sim | sim | parcial | 8 | Amostra de cinco prestadores; série da conta contra inflação ausente |
 | `/saneamento/tarifa-social` | sim | sim | sim | parcial | 8 | Economias com tarifa social por 100 famílias elegíveis do CadÚnico; famílias beneficiadas não publicadas |
@@ -101,3 +101,13 @@ Ainda não integram o capítulo: ligação à rede de água para quilombolas e i
 - Os dois CSVs da página do capítulo baixam com a extensão `.csv`, e a tabela de quilombolas, indígenas e favelas passa a ser região rolável por teclado.
 - Verificação: 56 testes específicos, 8 testes de pipeline (Python 3.11 e 3.13), tipos, lint e build sem erro; suíte completa com 4.926 testes aprovados e 1 ignorado. Navegador: capítulo 2, acesso, tarifa social, comparador e metodologia em 320, 390 e 1440 px, HTTP 200, um H1, sem transbordo e sem erro de JavaScript; o atlas do capítulo 2 carrega os valores do arquivo próprio.
 - Achado fora do escopo, não corrigido aqui: em 320 px, o cabeçalho público da home e do Crédito transborda 57 px pelos botões "Entrar / Criar acesso". Não decorre da troca de `text-lg` por `text-[18px]` no logotipo, que mantém o tamanho da fonte.
+
+## Qualidade da água, SISAGUA (14/10/2026)
+
+- Fontes: controle mensal (parâmetros básicos e plano de amostragem) e vigilância (parâmetros básicos) de 2024 e 2025, e amostras fora do padrão, baixados do S3 do Ministério da Saúde. Arquivos atualizados pelo Ministério entre 02 e 04/10/2026; sha256 e `Last-Modified` em `meta.json.sisagua`. Inventário completo antes de codificar: 10,4 milhões de linhas no controle de 2024, 3,08 milhões de análises na vigilância de 2024, 12 meses nos dois anos.
+- Números verificados (Brasil, soma de análises): controle 2024, E. coli presente em 3.929 de 1.744.151 análises (0,23%); vigilância de rotina 2024, 18.762 de 463.493 (4,0%); plano de amostragem 2024, 1.145.079 de 1.961.604 análises de coliformes exigidas na rede de SAA cobertas (58,4%). Registro em 2024: 4.563 municípios com controle, 5.071 com vigilância, 4.351 com os dois e 288 com nenhum, de 5.571.
+- Conferência publicada: E. coli no controle mensal de 2024, 3.929 contadores; no arquivo de amostras fora do padrão, 964 linhas. O dicionário informa que o registro por amostra não é obrigatório; a diferença não é ajustada.
+- Pipeline: 16 testes Python (inclui ZIP sintético com latin-1, vírgula decimal, rótulo de turbidez em duas grafias, RA do DF, amostra duplicada, resultado abaixo do LQ, motivo de denúncia, rótulo novo e cabeçalho mudado), aprovados em Python 3.11, 3.12 e 3.13; gold reproduzível byte a byte; seed com sha256 conferido pela gold.
+- Front: 23 testes da gold (colunas `qa_` fora da tabela geral e do comparador, registro igual ao de `meta.json`, ausência nunca zero, Brasil como soma, plano até 100%, ficha igual ao arquivo próprio); tipos, lint e build sem erro; suíte completa com 4.930 testes aprovados e 1 ignorado.
+- Navegador: capítulo 3, fichas de São Paulo e Brasília, metodologia e comparador em 320, 390, 768 e 1440 px, HTTP 200, um H1, sem transbordo e sem erro de JavaScript.
+- Não verificado: leitor de tela real e contraste por ferramenta automatizada na seção nova.

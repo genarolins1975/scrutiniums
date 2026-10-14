@@ -72,3 +72,40 @@ As somas de região e UF reproduzem o Brasil em todas as 14 medidas. A soma muni
 A soma das cinco categorias de cor ou raça deixa diferença frente ao total oficial de 7.164 moradores no universo, 596 na carência de água e 1.276 na de esgoto. A diferença é publicada sem atribuição a uma categoria não tabulada. Todas as conferências e os originais estão em `meta.json.desigualdades` e `seed/desigualdades/`.
 
 Não foi inferida ausência de ligação a partir de forma principal de abastecimento, que é outro conceito. Não há renda individual cruzada com saneamento nem desagregação urbano/rural nesta edição.
+
+## Qualidade da água (SISAGUA)
+
+Fonte: Ministério da Saúde, SISAGUA, dados abertos (dadosabertos.saude.gov.br, licença CC BY), arquivos de 2024 e 2025 atualizados pelo Ministério entre 02 e 04/10/2026 e extraídos em 14/10/2026. Conjuntos: controle mensal, parâmetros básicos; controle mensal, plano de amostragem; vigilância, parâmetros básicos; controle mensal, amostras fora do padrão (só para conferência). URL, sha256, tamanho e `Last-Modified` de cada ZIP, sha256 dos dicionários de dados e da Portaria e sha256 de cada seed estão em `seed/sisagua/manifesto.json` e em `meta.json.sisagua`. A gold recusa seed com sha256 divergente.
+
+Coleta: `python3 -m pipeline.observatorio_saneamento.sisagua --coletar --anos 2024,2025`. Os ZIPs têm de 45 a 212 MB e são lidos em fluxo (latin-1, separador `;`); só os contadores municipais entram em `seed/sisagua/`. Cabeçalho diferente do conferido, rótulo de `Campo` não mapeado ou ano diferente do arquivo interrompem a coleta.
+
+Grão. No controle mensal, cada linha é um contador de forma de abastecimento × mês × ponto × parâmetro (`Campo`, `Valor`). Na vigilância, cada linha é uma amostra × parâmetro. Nas duas, "análise" é o exame de um parâmetro, não a coleta física. Controle (prestador) e vigilância (secretaria de saúde) nunca se somam nem entram na mesma razão.
+
+Limites (Portaria GM/MS 888/2021, que dá nova redação ao Anexo XX da Portaria de Consolidação GM/MS 5/2017, texto em bvsms.saude.gov.br): E. coli ausente em 100 mL no sistema de distribuição e pontos de consumo (Anexo 1); coliformes totais com tolerância mensal conforme a população abastecida (Anexo 1), por isso a medida é "presença", não desconformidade; cloro residual livre mínimo de 0,2 mg/L em toda a extensão do sistema de distribuição e nos pontos de consumo (Art. 32); turbidez máxima de 5,0 uT no sistema de distribuição e pontos de consumo (Art. 28, § 2º).
+
+Medidas municipais (`qualidade_municipios.json|csv`, 2024 e 2025), todas Σ numerador ÷ Σ denominador:
+
+| Medida | Numerador | Denominador | Recorte |
+|---|---|---|---|
+| Controle: E. coli | análises com presença | análises | `SISTEMA DE DISTRIBUIÇÃO` e `PONTO DE CONSUMO`, SAA e SAC |
+| Controle: coliformes totais | análises com presença | análises | idem |
+| Controle: cloro residual livre | `Número de dados < 0,2 mg/L` | análises | idem |
+| Controle: turbidez | `Número de dados > 5,0 uT` | análises | idem |
+| Vigilância: E. coli | `PRESENTE` | `PRESENTE` + `AUSENTE` | rotina; SAA no sistema de distribuição e SAC no ponto de consumo (solução alternativa) |
+| Vigilância: cloro residual livre | resultado < 0,2 mg/L | resultados conclusivos | idem |
+| Plano de amostragem | Σ min(realizadas, exigidas) por sistema | Σ exigidas | coliformes totais, sistema de distribuição de SAA |
+
+Regras de validade. Controle: contagem "12,0" vale 12; contagem fracionária ("0,01"), grupo sem total ou sem resultado, resultado maior que o total ou presença + ausência diferente do total excluem o grupo inteiro (forma × mês × ponto × parâmetro), e cada exclusão é contada. Rótulos de `Campo` são normalizados por regra explícita (espaços e vírgula decimal), com tabela de mapeamento no código. Faixas de turbidez de pontos de tratamento (com grafias inconsistentes, como `> 1.0 uT e <= 0.5 uT`) não são usadas. Vigilância: só `Rotina` entra (denúncia, surto e desastre são contados à parte); `MENOR_LQ` ou `MENOR_LD` conta como abaixo de 0,2 mg/L só quando o limite informado é de até 0,2 mg/L, e como abaixo de 5,0 uT quando o limite é de até 5,0 uT; sem limite informado, fica fora e é contado. Decimal com vírgula ou ponto é aceito; texto ilegível é contado como inválido. Chave de deduplicação: código do município no arquivo, forma de abastecimento, número da amostra, parâmetro e data de coleta.
+
+Plano de amostragem. O dicionário do Ministério diz que os valores do plano são "calculados em função das regras definidas na norma de potabilidade": é o mínimo exigido, não o planejado pelo prestador. Cada forma aparece duas vezes, com razões habitantes/domicílio diferentes e o mesmo total; forma com totais diferentes é excluída e contada (uma em cada ano). A junção com o controle é pelo código do município e da forma de abastecimento; em 2024, 9.748 das 9.793 formas de SAA com controle de coliformes na rede têm plano. A cobertura é limitada a 100% por sistema, para que o excesso em um não compense a falta em outro. SAA que atende vários municípios pode registrar as análises em outro município (100 sistemas em 2024, 79 em 2025, publicados em meta.json); recoletas entram nas realizadas (Art. 44, § 2º, as exclui do mínimo).
+
+Território. Códigos de 6 dígitos, juntados pelos 6 primeiros do código IBGE. O SISAGUA usa códigos próprios para as Regiões Administrativas do DF; todos os códigos 53xxxx são agregados em 5300108 (Brasília), com contagem de linhas. Grupos e deduplicação usam o código original, porque o mesmo sistema aparece em várias RAs. Universo: 5.571 municípios do IBGE; nenhum código fora do universo nos dois anos.
+
+Ausência. Município sem registro de controle (ou de vigilância) no ano fica sem dado em todas as medidas daquele registro, nunca zero. Município com registro e sem análise do parâmetro também fica sem dado.
+
+Conferência. Os contadores de presença de E. coli do controle mensal de 2024 somam 3.929; o arquivo de amostras fora do padrão tem 964 linhas de E. coli no mesmo recorte. O dicionário do Ministério informa que o registro do resultado fora do padrão por amostra não é obrigatório. A diferença é publicada para os quatro parâmetros e nenhum lado é ajustado.
+
+Erro do catálogo do Ministério, registrado em `fontes.py`: na página do plano de amostragem, os recursos JSON e XML rotulados 2024 apontam para os arquivos de 2025. O Observatório usa o CSV, cujo nome está correto.
+
+Não integrados: demais parâmetros (cor, pH, fluoreto, cianobactérias e cianotoxinas, substâncias químicas, controle semestral), plano de amostragem de SAC, população abastecida por forma de abastecimento (cadastro) e anos anteriores a 2024.
+

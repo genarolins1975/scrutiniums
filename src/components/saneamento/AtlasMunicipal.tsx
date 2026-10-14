@@ -10,7 +10,7 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { URL_GEO } from "@/lib/energia/geo";
 import { NAO_SE_APLICA, quebrasFixas, type ValorClassificavel } from "@/lib/energia/escalas";
 import { montaHistograma, percentilDe } from "@/lib/energia/distribuicao";
-import { FONTE_ROTULO, MEDIDAS, agregarMedida, formatarValor, valorMedida, type Medida, type Variante } from "@/lib/saneamento/medidas";
+import { FONTE_CURTA, FONTE_ROTULO, MEDIDAS, agregarMedida, formatarValor, valorMedida, type Medida, type Variante } from "@/lib/saneamento/medidas";
 import type { MapaReferencias } from "@/lib/saneamento/referencias";
 import { ROTA } from "@/lib/saneamento/capitulos";
 import type { Municipio } from "@/lib/saneamento/tipos";
@@ -18,6 +18,9 @@ import { classePorte, ROTULO_PORTE, mediana } from "@/lib/saneamento/pares";
 import { baixarCsv } from "@/lib/saneamento/csv";
 import { inteiro } from "@/lib/saneamento/formato";
 import { useMunicipios } from "./useMunicipios";
+
+/** Só a primeira letra em minúscula: preserva siglas e nomes científicos (SAA, CadÚnico, E. coli). */
+const inicialMinuscula = (t: string) => (/^[A-ZÀ-Ý]{2}/.test(t) ? t : t.charAt(0).toLowerCase() + t.slice(1));
 
 const CORES_SEQ = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
 const CORES_DIV = ["var(--san-div-neg-2)", "var(--san-div-neg-1)", "var(--san-div-centro)", "var(--san-div-pos-1)", "var(--san-div-pos-2)"];
@@ -139,7 +142,7 @@ export function AtlasMunicipal({
           <select aria-label="Medida" className={controle} value={med.id} onChange={(e) => set({ medida: e.target.value })}>
             {medidas.map((m) => (
               <option key={m.id} value={m.id}>
-                {m.titulo} · {m.fonte === "sinisa2024" ? "SINISA 2024" : m.fonte === "censo2022" ? "Censo 2022" : m.fonte === "nr8_sinisa2024" ? "NR 8 / SINISA 2024" : m.fonte === "sinisa_cadunico2024" ? "SINISA e CadÚnico 2024" : "Censos 2010 e 2022"}
+                {m.titulo} · {FONTE_CURTA[m.fonte]}
               </option>
             ))}
           </select>
@@ -178,7 +181,7 @@ export function AtlasMunicipal({
           <p className="max-w-prose2 text-[0.95rem] leading-relaxed text-carvao">{med.pergunta}</p>
           <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
             {nomeRecorte}: <strong className="font-medium text-carvao">{textoRef(refTerritorio)}</strong>
-            {s.uf !== "BR" && <> · Brasil: {textoRef(refBrasil)}</>} · {FONTE_ROTULO[med.fonte]}, {med.periodo}. Universo: {med.universo.toLowerCase()}.
+            {s.uf !== "BR" && <> · Brasil: {textoRef(refBrasil)}</>} · {FONTE_ROTULO[med.fonte]}, {med.periodo}. Universo: {inicialMinuscula(med.universo)}.
           </p>
           {carga.estado === "pronto" && (
             <p className="mt-1 text-xs text-carvao-muted">
@@ -234,7 +237,7 @@ export function AtlasMunicipal({
           <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-2">
             {med.contagem && rankingPessoas.length > 0 && (
               <GraficoBarras
-                titulo={`Onde há mais ${med.unidadeContagem && med.unidadeContagem !== "moradores" ? med.unidadeContagem : "pessoas"}: ${med.titulo.toLowerCase()} (${nomeRecorte})`}
+                titulo={`Onde há mais ${med.unidadeContagem && med.unidadeContagem !== "moradores" ? med.unidadeContagem : "pessoas"}: ${inicialMinuscula(med.titulo)} (${nomeRecorte})`}
                 dados={rankingPessoas.map((r) => ({ id: r.id, rotulo: r.rotulo, v: r.v }))}
                 chaveCategoria="id"
                 chaveRotulo="rotulo"
@@ -272,7 +275,7 @@ export function AtlasMunicipal({
           {histograma && (
             <div className="mt-10">
               <Histograma
-                titulo={`Distribuição dos municípios: ${med.titulo.toLowerCase()} (${nomeRecorte})`}
+                titulo={`Distribuição dos municípios: ${inicialMinuscula(med.titulo)} (${nomeRecorte})`}
                 dados={histograma.dist}
                 tetoEixo={histograma.teto}
                 rotuloX={med.titulo}

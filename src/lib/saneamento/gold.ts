@@ -75,6 +75,19 @@ export function municipiosComDesigualdades(): Municipio[] {
   return lista;
 }
 
+/** Tabela do capítulo 3 (SISAGUA, qualidade da água), também em arquivo próprio. */
+export const URL_QUALIDADE_MUNICIPIOS = `${URL_GOLD}/qualidade_municipios.json`;
+
+let qualidadeCache: { fonte: TabelaMunicipios; lista: Municipio[] } | null = null;
+export function municipiosComQualidade(): Municipio[] {
+  const extra = ler<TabelaMunicipios>("qualidade_municipios.json");
+  if (!extra) return municipios();
+  if (qualidadeCache?.fonte === extra) return qualidadeCache.lista;
+  const lista = juntarComplemento(municipios(), extra);
+  qualidadeCache = { fonte: extra, lista };
+  return lista;
+}
+
 export function municipio(id: string): Municipio | null {
   return municipios().find((m) => m.id === id) ?? null;
 }

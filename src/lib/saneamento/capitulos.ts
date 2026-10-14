@@ -62,10 +62,11 @@ export const EIXOS: Eixo[] = [
         slug: "continuidade",
         rotulo: "Regularidade e qualidade",
         pergunta: "A água chega regularmente e com qualidade monitorada?",
-        resumo: "Paralisações, interrupções sistemáticas e racionamento declarados pelos prestadores ao SINISA 2024.",
+        resumo:
+          "Paralisações e racionamento declarados ao SINISA 2024; qualidade da água no SISAGUA, com controle do prestador, vigilância da saúde e plano de amostragem, em 2024 e 2025.",
         situacao: "parcial",
         pendencia:
-          "Qualidade da água: SISAGUA (controle e vigilância) ainda não integrado; os arquivos de amostras exigem tratamento por parâmetro, ponto e período. Até lá o capítulo mostra apenas continuidade.",
+          "SISAGUA integrado para E. coli, coliformes totais, cloro residual livre e turbidez na rede e no consumo, e para o plano de coliformes totais da rede de SAA. Ainda não integrados: demais parâmetros (cor, pH, fluoreto, cianobactérias, substâncias químicas), plano de SAC, população abastecida por forma de abastecimento e série anterior a 2024.",
       },
       {
         numero: 4,
