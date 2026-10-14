@@ -426,9 +426,15 @@ const LINHAS_QUALIDADE: { campo: string; registro: string; medida: string; casas
   { campo: "ctrl_colif", registro: "Controle", medida: "Presença de coliformes totais", casas: 1 },
   { campo: "ctrl_cloro", registro: "Controle", medida: "Cloro residual livre abaixo de 0,2 mg/L", casas: 1 },
   { campo: "ctrl_turb", registro: "Controle", medida: "Turbidez acima de 5,0 uT", casas: 1 },
+  { campo: "ctrl_cor", registro: "Controle", medida: "Cor aparente acima de 15 uH", casas: 1 },
+  { campo: "ctrl_fluor", registro: "Controle", medida: "Fluoreto acima de 1,5 mg/L", casas: 1 },
   { campo: "vig_ecoli", registro: "Vigilância", medida: "Presença de E. coli (rotina)", casas: 1 },
   { campo: "vig_cloro", registro: "Vigilância", medida: "Cloro residual livre abaixo de 0,2 mg/L (rotina)", casas: 1 },
+  { campo: "vig_fluor", registro: "Vigilância", medida: "Fluoreto acima de 1,5 mg/L (rotina)", casas: 1 },
   { campo: "plano", registro: "Plano de amostragem", medida: "Análises de coliformes exigidas na rede de SAA e cobertas", casas: 1 },
+  { campo: "plano_sac", registro: "Plano de amostragem", medida: "Análises de coliformes exigidas nas SAC e cobertas", casas: 1 },
+  { campo: "pop_saa", registro: "Cadastro", medida: "População de SAA sob sistemas com controle informado", casas: 1 },
+  { campo: "pop_sac", registro: "Cadastro", medida: "População de SAC sob soluções com controle informado", casas: 1 },
 ];
 
 function QualidadeMunicipio({ q }: { q?: Record<string, number> }) {
@@ -437,7 +443,8 @@ function QualidadeMunicipio({ q }: { q?: Record<string, number> }) {
     const num = q?.[`qa_${campo}_${ano}_num`];
     const den = q?.[`qa_${campo}_${ano}_den`];
     if (num == null || den == null || !(den > 0)) {
-      const reg = campo === "plano" ? null : q?.[`qa_reg_${campo.startsWith("vig") ? "vig" : "ctrl"}_${ano}`];
+      if (!campo.startsWith("ctrl") && !campo.startsWith("vig")) return <span className="text-carvao-muted">sem dado</span>;
+      const reg = q?.[`qa_reg_${campo.startsWith("vig") ? "vig" : "ctrl"}_${ano}`];
       return <span className="text-carvao-muted">{reg === 1 ? "sem análise" : "sem registro"}</span>;
     }
     return (

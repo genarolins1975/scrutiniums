@@ -147,6 +147,31 @@ const ESPEC_QUALIDADE: EspecQualidade[] = [
     limitesHistograma: [0, 1, 2, 5, 10, 25, 50],
   },
   {
+    campo: "ctrl_cor",
+    titulo: "Controle: cor aparente acima de 15 uH",
+    pergunta: "Em que proporção das análises de cor do prestador a água passou do máximo permitido na rede ou no consumo?",
+    universo: "Análises de cor aparente do controle mensal do prestador no sistema de distribuição e no ponto de consumo de SAA e SAC",
+    unidadeContagem: "análises acima do máximo",
+    permite: "Localizar onde o prestador registrou cor acima de 15 uH, valor máximo do padrão organoléptico (Portaria GM/MS 888/2021, Anexo 11).",
+    naoPermite: "Concluir risco à saúde: cor é padrão de aceitação (aparência), não indicador microbiológico ou químico.",
+    ausencia: "Município sem registro de controle no SISAGUA no ano ou sem análise de cor na rede e no consumo. Ausência de registro não indica água de boa qualidade.",
+    cortesPct: [1, 3, 10, 25],
+    limitesHistograma: [0, 1, 3, 5, 10, 25, 50],
+  },
+  {
+    campo: "ctrl_fluor",
+    titulo: "Controle: fluoreto acima de 1,5 mg/L",
+    pergunta: "Em que proporção das análises de fluoreto do prestador o valor passou do máximo permitido na rede ou no consumo?",
+    universo: "Análises de fluoreto do controle mensal do prestador no sistema de distribuição e no ponto de consumo de SAA e SAC",
+    unidadeContagem: "análises acima do máximo",
+    permite: "Localizar onde o prestador registrou fluoreto acima de 1,5 mg/L, valor máximo por risco à saúde (Portaria GM/MS 888/2021, Anexo 9).",
+    naoPermite:
+      "Avaliar a fluoretação: o teor recomendado para prevenir cárie (Anexo XXI da Portaria de Consolidação 5/2017) é outra faixa, e fluoreto baixo não entra nesta medida. Muitos sistemas medem fluoreto só na saída do tratamento.",
+    ausencia: "Município sem registro de controle no SISAGUA no ano ou sem análise de fluoreto na rede e no consumo. Ausência de registro não indica água de boa qualidade.",
+    cortesPct: [0.5, 2, 5, 10],
+    limitesHistograma: [0, 1, 2, 5, 10, 25, 50],
+  },
+  {
     campo: "vig_ecoli",
     titulo: "Vigilância: presença de E. coli",
     pergunta: "Em que proporção das análises de rotina da vigilância em saúde a E. coli apareceu na água distribuída?",
@@ -174,6 +199,18 @@ const ESPEC_QUALIDADE: EspecQualidade[] = [
     limitesHistograma: [0, 5, 10, 25, 50, 75, 100],
   },
   {
+    campo: "vig_fluor",
+    titulo: "Vigilância: fluoreto acima de 1,5 mg/L",
+    pergunta: "Em que proporção das análises de rotina da vigilância o fluoreto passou do máximo permitido?",
+    universo: "Análises de rotina da vigilância em saúde na rede de SAA e no ponto de consumo de SAC, com resultado numérico ou abaixo de limite conclusivo",
+    unidadeContagem: "análises acima do máximo",
+    permite: "Ver, nas coletas da autoridade de saúde, onde o fluoreto passou de 1,5 mg/L (Portaria GM/MS 888/2021, Anexo 9).",
+    naoPermite: "Avaliar a fluoretação, que tem faixa recomendada própria, nem comparar com o controle do prestador como se medissem a mesma coisa.",
+    ausencia: "Município sem amostra de rotina de fluoreto da vigilância na rede de SAA ou no ponto de consumo de SAC no ano. Ausência de registro não indica água de boa qualidade.",
+    cortesPct: [0.5, 2, 5, 10],
+    limitesHistograma: [0, 1, 2, 5, 10, 25, 50],
+  },
+  {
     campo: "plano",
     titulo: "Plano de amostragem: análises exigidas cobertas",
     pergunta: "Das análises de coliformes totais que a norma exige na rede de cada sistema, quantas aparecem no controle informado?",
@@ -185,6 +222,45 @@ const ESPEC_QUALIDADE: EspecQualidade[] = [
     naoPermite:
       "Afirmar descumprimento da norma: análises podem ter sido feitas e não informadas, um SAA que atende vários municípios pode registrar as análises em outro município, e recoletas entram nas realizadas. Não cobre SAC.",
     ausencia: "Município sem SAA com plano de amostragem no SISAGUA no ano.",
+    cortesPct: [25, 50, 75, 95],
+  },
+  {
+    campo: "plano_sac",
+    titulo: "Plano de amostragem SAC: análises exigidas cobertas",
+    pergunta: "Das análises de coliformes totais que a norma exige em cada solução alternativa coletiva, quantas aparecem no controle informado?",
+    universo:
+      "Análises de coliformes totais exigidas para cada SAC pelo plano de amostragem do SISAGUA (Portaria GM/MS 888/2021, Anexo 15), comparadas às do ponto de consumo no controle",
+    unidadeContagem: "análises cobertas",
+    permite:
+      "Ver quanto do mínimo exigido para as soluções coletivas (poços comunitários, chafarizes, redes locais) aparece no controle mensal, limitado a 100% por solução.",
+    naoPermite:
+      "Afirmar descumprimento: o plano registra a exigência como distribuição e o controle registra as análises no ponto de consumo; o Observatório trata os dois como o mesmo ponto da solução, mas a correspondência não é declarada pelo Ministério.",
+    ausencia: "Município sem SAC com plano de amostragem no SISAGUA no ano.",
+    cortesPct: [25, 50, 75, 95],
+  },
+  {
+    campo: "pop_saa",
+    titulo: "Cadastro SAA: população sob sistemas com controle informado",
+    pergunta: "Da população que o cadastro do SISAGUA atribui a sistemas de abastecimento, quanto vive sob sistemas que informaram controle no ano?",
+    universo: "População estimada das formas de abastecimento do tipo SAA no cadastro do SISAGUA, no mesmo ano",
+    unidadeContagem: "pessoas",
+    permite:
+      "Dimensionar, em pessoas, o alcance do controle informado: um sistema conta quando tem algum registro de controle no ano, em qualquer município que atenda.",
+    naoPermite:
+      "Comparar com o Censo ou com o SINISA: a população é a estimada no cadastro de cada sistema, e a completude do cadastro muda de um ano para outro. Ter registro não significa cumprir o plano de amostragem.",
+    ausencia: "Município sem SAA cadastrado no SISAGUA no ano ou com população não informada.",
+    cortesPct: [25, 50, 75, 95],
+  },
+  {
+    campo: "pop_sac",
+    titulo: "Cadastro SAC: população sob soluções com controle informado",
+    pergunta: "Da população que o cadastro atribui a soluções alternativas coletivas, quanto vive sob soluções que informaram controle no ano?",
+    universo: "População estimada das formas de abastecimento do tipo SAC no cadastro do SISAGUA, no mesmo ano",
+    unidadeContagem: "pessoas",
+    permite: "Dimensionar, em pessoas, o alcance do controle informado nas soluções coletivas.",
+    naoPermite:
+      "Somar com a população de SAA: quem recebe água de sistema e de solução coletiva aparece nas duas. A população é a estimada no cadastro, não a do Censo.",
+    ausencia: "Município sem SAC cadastrada no SISAGUA no ano ou com população não informada.",
     cortesPct: [25, 50, 75, 95],
   },
 ];

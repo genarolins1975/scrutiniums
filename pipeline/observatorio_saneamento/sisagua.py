@@ -5,8 +5,8 @@ O coletor lê cada CSV dentro do ZIP linha a linha, agrega por município e grav
 em seed/sisagua/ apenas contadores inteiros, com URL, sha256 e Last-Modified de
 cada ZIP original. O ZIP não entra no repositório.
 
-Coleta:
-    python3 -m pipeline.observatorio_saneamento.sisagua --coletar --anos 2024,2025
+Coleta (série de 2014 a 2025; o plano de amostragem só a partir de 2022):
+    python3 -m pipeline.observatorio_saneamento.sisagua --coletar
     python3 -m pipeline.observatorio_saneamento.sisagua --coletar --zips DIR   # ZIPs já baixados
 
 Regras (docs/saneamento/METODOLOGIA.md, seção SISAGUA):
@@ -71,15 +71,62 @@ CAB_FORA = [
     "PROVIDENCIA_CONTROLE",
 ]
 
+CAB_CADASTRO = [
+    "NO_REGIAO", "SG_UF", "NO_REGIONAL", "NO_MUNICIPIO", "CO_MUNICIPIO_IBGE", "TP_ABRANGENCIA", "SG_EMPRESA",
+    "NO_EMPRESA", "NU_CNPJ", "NO_EMPRESA_1", "NU_CNPJ_1", "TP_ABASTECIMENTO", "NU_SOLUCAO_ABASTECIMENTO",
+    "NO_SOLUCAO_ABASTECIMENTO", "NU_ANO", "DT_INCLUSAO_REGISTRO", "DT_FORMULARIO_CADASTRO", "CARRO_PIPA", "CHAFARIZ",
+    "FONTE", "CISTERNA", "CANALIZAÇÃO", "CAIXA_DAGUA", "SEM_RESERVACAO", "OUTRO_TIPO_SUPRIMENTO",
+    "CAPTACAO_SUPERFICIAL", "CAPTACAO_SUBTERRANEA", "CAPTACAO_AGUA_CHUVA", "FILTRACAO", "DESINFECCAO",
+    "NU_ECONOMIA_DOMICILIO_PERMAN", "NU_ECONOMIAS_DOMICILIOS_NAO_PE", "NU_VALOR_POPULACAO_ESTIMADA", "NU_VALOR_RURAL",
+    "NU_VALOR_URBANA", "POP_RECEBE_AGUA_SAA", "POP_RECEBE_AGUA_SAA_SAC",
+]
+
+# Controle mensal de 2014: mesmo conteúdo com nomes de coluna antigos (e duas datas a mais).
+CONTROLE_2014 = {
+    "cabecalho": [
+        "NO_REGIAO", "SG_UF", "NO_REGIONAL", "CO_MUNICIPIO_IBGE", "NO_MUNICIPIO", "TP_ABRANGENCIA", "SG_INSTITUICAO",
+        "NO_INSTITUICAO", "NU_CNPJ_INSTITUICAO", "NO_ESCRITORIO_REGIONAL_LOCAL", "NU_CNPJ_ESCRITORIO_REGIONAL_LOCAL",
+        "TP_ABASTECIMENTO", "NU_SOLUCAO_ABASTECIMENTO", "NO_SOLUCAO_ABASTECIMENTO", "NO_ETA", "TP_FILTRACAO", "NU_ANO",
+        "NU_MES", "DT_INCLUSAO_REGISTRO", "DT_FORMULARIO_CADASTRO", "TP_PONTO_COLETA", "PARAMETRO", "CAMPO", "VALOR",
+    ],
+    "nomes": {
+        "CO_MUNICIPIO_IBGE": "Código IBGE", "TP_ABASTECIMENTO": "Tipo da Forma de Abastecimento",
+        "NU_SOLUCAO_ABASTECIMENTO": "Código Forma de abastecimento", "NU_ANO": "Ano de referência",
+        "NU_MES": "Mês de referência", "TP_PONTO_COLETA": "Ponto de Monitoramento", "PARAMETRO": "Parâmetro",
+        "CAMPO": "Campo", "VALOR": "Valor",
+    },
+}
+
+# Série anual publicada; o atlas municipal usa os dois anos mais recentes completos.
+ANOS_SERIE = tuple(range(2014, 2026))
+ANOS_ATLAS = ANOS
+# O plano de amostragem de 2014 a 2021 só existe em JSON: o CSV do catálogo responde 404
+# (arquivosdadosabertos.saude.gov.br) e não há CSV no S3. O de 2022 tem outro layout de
+# Campo ("Amostras anuais") e exige 3,1 milhões de análises de coliformes na rede dos SAA,
+# contra cerca de 2,0 milhões em 2023 e 2024 com o mesmo número de sistemas: regra de
+# cálculo diferente, não comparável. A série do plano começa em 2023.
+ANO_INICIAL_PLANO = 2023
+
 # Parâmetros usados e o rótulo de cada um em cada conjunto.
 PARAMETROS = {
     "ecoli": {"controle": "Escherichia coli", "vigilancia": "Escherichia coli"},
     "coliformes": {"controle": "Coliformes totais", "vigilancia": "Coliformes totais"},
     "cloro": {"controle": "Cloro Residual Livre (mg/L)", "vigilancia": "Cloro residual livre (mg/L)"},
     "turbidez": {"controle": "Turbidez (uT)", "vigilancia": "Turbidez (uT)"},
+    "cor": {"controle": "Cor (uH)", "vigilancia": "Cor Aparente (uH)"},
+    "fluoreto": {"controle": "Fluoreto (mg/L)", "vigilancia": "Fluoreto (mg/L)"},
 }
 PARAM_CONTROLE = {v["controle"]: k for k, v in PARAMETROS.items()}
 PARAM_VIGILANCIA = {v["vigilancia"]: k for k, v in PARAMETROS.items()}
+
+# Rótulos conhecidos e não usados: rótulo novo interrompe a coleta em vez de sumir em silêncio.
+OUTROS_PARAM_CONTROLE = {"pH", "Dióxido de Cloro", "Cloro Residual Combinado (mg/L)", "Bactérias Heterotróficas (UFC/mL)"}
+OUTROS_PARAM_VIGILANCIA = {"pH", "Cloro residual combinado (mg/L)", "Dióxido de Cloro (mg/L)", "Bactérias Heterotróficas (UFC/mL)",
+                           "Bactérias Heterotróficas"}  # sem unidade até 2022
+PONTOS_CONHECIDOS = {"PONTO DE CONSUMO", "SISTEMA DE DISTRIBUIÇÃO", "SAÍDA DO TRATAMENTO",
+                     "Saída do tratamento (para água canalizada)", "Pós-filtração ou Pré-desinfecção"}
+TIPOS_VIGILANCIA = {"SAA", "SAC", "SAI", "CARRO-PIPA"}
+MOTIVOS_VIGILANCIA = {"Rotina", "Denúncia", "Desastre", "Surto"}
 
 # Limites da Portaria GM/MS 888/2021 (Anexo XX da Portaria de Consolidação 5/2017).
 LIMITES = {
@@ -87,6 +134,8 @@ LIMITES = {
     "coliformes": {"regra": "presença em 100 mL", "citacao": "Anexo 1: tolerância mensal conforme a população abastecida; presença não é, isoladamente, desconformidade"},
     "cloro": {"regra": "abaixo de 0,2 mg/L", "limite": 0.2, "citacao": "Art. 32: mínimo de 0,2 mg/L de cloro residual livre em toda a extensão do sistema de distribuição e nos pontos de consumo"},
     "turbidez": {"regra": "acima de 5,0 uT", "limite": 5.0, "citacao": "Art. 28, § 2º: VMP de 5,0 uT em toda a extensão do sistema de distribuição ou pontos de consumo"},
+    "cor": {"regra": "acima de 15 uH", "limite": 15.0, "citacao": "Anexo 11 (padrão organoléptico): VMP de 15 uH para cor aparente"},
+    "fluoreto": {"regra": "acima de 1,5 mg/L", "limite": 1.5, "citacao": "Anexo 9 (substâncias químicas que representam risco à saúde): VMP de 1,5 mg/L"},
 }
 
 # Controle mensal: pontos da rede e do consumo (o que chega à população).
@@ -129,6 +178,23 @@ CAMPOS_CONTROLE = {
         "Número de dados > 1.0 uT e <= 0.5 uT": None,
         "Percentil 95": None,
     },
+    "cor": {
+        "Número de amostras analisadas": "analisadas",
+        "Número de dados > 15,0 uH": "fora",
+        "Número de dados <= 15,0 uH": "dentro",
+        "Percentil 95": None,
+    },
+    "fluoreto": {
+        "Número de amostras analisadas": "analisadas",
+        "Número de dados > 1,5 mg/L": "fora",
+        "Número de dados <= 1,5 mg/L": "dentro",
+        # faixas de fluoretação (Anexo XXI da PRC 5/2017), sem o valor no rótulo; não usadas
+        "Número de dados <": None,
+        "Número de dados >": None,
+        "Número de dados >=": None,
+        "Média das temperaturas máximas diárias(°C)": None,
+        "Percentil 95": None,
+    },
 }
 MAPA_CAMPOS = {p: {rotulo(k): v for k, v in m.items()} for p, m in CAMPOS_CONTROLE.items()}
 
@@ -158,21 +224,29 @@ def numero(v):
     return float(v.replace(",", ".")) if NUMERO.match(v) else None
 
 
-def ler_csv(zpath, cabecalho):
-    """Itera as linhas do único CSV do ZIP, em latin-1 e separador ';', conferindo o cabeçalho."""
+def ler_csv(zpath, cabecalho, alternativos=()):
+    """Itera o único CSV do ZIP (latin-1, separador ';'), conferindo o cabeçalho.
+
+    O primeiro item é o índice nome → coluna, com os nomes do cabeçalho canônico; os
+    seguintes são as linhas. Um cabeçalho alternativo só vale se listado com seus nomes."""
     with zipfile.ZipFile(zpath) as z:
         nomes = [n for n in z.namelist() if n.lower().endswith(".csv")]
         if len(nomes) != 1:
             raise ValueError(f"{zpath}: esperado um CSV, encontrados {nomes}")
-        yield from _linhas(z, nomes[0], zpath, cabecalho)
+        yield from _linhas(z, nomes[0], zpath, cabecalho, alternativos)
 
 
-def _linhas(z, nome, zpath, cabecalho):
+def _linhas(z, nome, zpath, cabecalho, alternativos):
     with z.open(nome) as f:
         r = csv.reader(io.TextIOWrapper(f, encoding="latin-1", newline=""), delimiter=";")
         cab = next(r)
-        if cab != cabecalho:
-            raise ValueError(f"{zpath}: cabeçalho mudou: {cab}")
+        if cab == cabecalho:
+            yield {c: i for i, c in enumerate(cab)}
+        else:
+            alt = next((a for a in alternativos if a["cabecalho"] == cab), None)
+            if alt is None:
+                raise ValueError(f"{zpath}: cabeçalho mudou: {cab}")
+            yield {alt["nomes"].get(c, c): i for i, c in enumerate(cab)}
         largura = len(cab)
         for linha in r:
             if len(linha) != largura:
@@ -184,6 +258,11 @@ def mais(d, k, n=1):
     d[k] = d.get(k, 0) + n
 
 
+def desconhecido(valor, conhecidos, onde):
+    if valor not in conhecidos:
+        raise ValueError(f"{onde}: rótulo não previsto {valor!r}")
+
+
 # ---------------------------------------------------------------------------
 # agregação de cada conjunto
 # ---------------------------------------------------------------------------
@@ -191,13 +270,16 @@ def mais(d, k, n=1):
 def agregar_controle(zpath, ano):
     """Controle mensal, parâmetros básicos: contadores por forma × mês × ponto × parâmetro.
 
-    Devolve contadores municipais da rede e do consumo e, para o plano de amostragem,
-    as análises de coliformes totais realizadas no sistema de distribuição de cada SAA."""
-    I = {c: i for i, c in enumerate(CAB_CONTROLE)}
+    Devolve os contadores municipais da rede e do consumo; as análises de coliformes totais
+    de cada forma de abastecimento, para o plano de amostragem; e o conjunto de formas com
+    algum registro no ano, para o cadastro."""
+    linhas = ler_csv(zpath, CAB_CONTROLE, (CONTROLE_2014,))
+    I = next(linhas)
     exc = {}
     formas = {}
+    formas_ano = set()
     grupos = {}
-    for l in ler_csv(zpath, CAB_CONTROLE):
+    for l in linhas:
         if l[I["Ano de referência"]].strip() != str(ano):
             raise ValueError("ano diferente do arquivo")
         mun = municipio(l[I["Código IBGE"]], exc)
@@ -205,9 +287,15 @@ def agregar_controle(zpath, ano):
             continue
         forma = l[I["Código Forma de abastecimento"]].strip()
         formas.setdefault(mun, set()).add(forma)
-        par = PARAM_CONTROLE.get(l[I["Parâmetro"]].strip())
+        formas_ano.add(forma)
+        rot_par = l[I["Parâmetro"]].strip()
         ponto = l[I["Ponto de Monitoramento"]].strip()
-        if par is None or ponto not in PONTOS_CONTROLE:
+        desconhecido(ponto, PONTOS_CONHECIDOS, "controle, ponto")
+        par = PARAM_CONTROLE.get(rot_par)
+        if par is None:
+            desconhecido(rot_par, OUTROS_PARAM_CONTROLE, "controle, parâmetro")
+            continue
+        if ponto not in PONTOS_CONTROLE:
             continue
         campo = l[I["Campo"]].strip()
         rk = rotulo(campo)
@@ -220,12 +308,20 @@ def agregar_controle(zpath, ano):
         # código original na chave: no DF, o mesmo sistema aparece em várias Regiões Administrativas
         chave = (mun, l[I["Código IBGE"]].strip(), forma, tipo, int(l[I["Mês de referência"]]), ponto, par)
         g = grupos.setdefault(chave, {})
+        v = l[I["Valor"]].strip()
         if papel in g:
-            raise ValueError(f"Campo repetido no grupo {chave}")
-        g[papel] = l[I["Valor"]]
+            # o mesmo campo repetido com outro nome de ETA/UTA (raro, desde 2023): mesmo valor conta uma vez
+            mais(exc, f"linha_repetida_{par}")
+            if g[papel] != v:
+                g["conflito"] = True
+            continue
+        g[papel] = v
     mun_out = {}
-    realizadas_saa = {}
+    realizadas = {}
     for (mun, original, forma, tipo, _mes, ponto, par), g in sorted(grupos.items()):
+        if g.get("conflito"):
+            mais(exc, f"grupo_com_repeticao_divergente_{par}")
+            continue
         a = inteiro(g["analisadas"]) if "analisadas" in g else None
         f = inteiro(g["fora"]) if "fora" in g else None
         d = inteiro(g["dentro"]) if "dentro" in g else None
@@ -242,26 +338,33 @@ def agregar_controle(zpath, ano):
         acc = m.setdefault(par, [0, 0])
         acc[0] += f
         acc[1] += a
-        if par == "coliformes" and tipo == "SAA" and ponto == "SISTEMA DE DISTRIBUIÇÃO":
-            mais(realizadas_saa, (mun, original, forma), a)
+        # plano: SAA mede na rede; SAC registra no ponto de consumo o que o plano chama de distribuição
+        if par == "coliformes" and (ponto == "SISTEMA DE DISTRIBUIÇÃO" or tipo == "SAC"):
+            mais(realizadas, (tipo, mun, original, forma), a)
     for mun, fs in formas.items():
         mun_out.setdefault(mun, {})["formas"] = len(fs)
-    return mun_out, realizadas_saa, exc
+    return mun_out, realizadas, formas_ano, exc
 
 
-def agregar_plano(zpath, ano, realizadas_saa):
-    """Plano de amostragem: análises de coliformes totais exigidas pela norma no sistema de
-    distribuição de cada SAA (Anexo 14), cruzadas com as realizadas no controle.
+def agregar_plano(zpath, ano, realizadas):
+    """Plano de amostragem: análises de coliformes totais exigidas pela norma (Anexos 14 e 15)
+    na distribuição de cada SAA e no ponto de consumo de cada SAC, cruzadas com as realizadas.
 
     Coberta = min(realizada, exigida) por forma de abastecimento: excesso em um sistema
-    não compensa falta em outro."""
-    I = {c: i for i, c in enumerate(CAB_PLANO)}
+    não compensa falta em outro. Para SAC, o plano registra a exigência como "sistema de
+    distribuição" (às vezes "ponto de consumo") e o controle registra as análises no ponto de
+    consumo; os dois são tratados como o mesmo ponto, o único da solução alternativa depois do tratamento."""
+    linhas = ler_csv(zpath, CAB_PLANO)
+    I = next(linhas)
     exc = {}
     exigidas = {}
-    for l in ler_csv(zpath, CAB_PLANO):
+    for l in linhas:
         if l[I["NU_ANO"]].strip() != str(ano):
             raise ValueError("ano diferente do arquivo")
-        if (l[I["TP_ABASTECIMENTO"]].strip() != "SAA" or l[I["PT_MONITORAMENTO"]].strip() != "SISTEMA DE DISTRIBUIÇÃO"
+        tipo = l[I["TP_ABASTECIMENTO"]].strip()
+        ponto = l[I["PT_MONITORAMENTO"]].strip()
+        pontos = {"SISTEMA DE DISTRIBUIÇÃO"} if tipo == "SAA" else {"SISTEMA DE DISTRIBUIÇÃO", "PONTO DE CONSUMO"}
+        if (tipo not in ("SAA", "SAC") or ponto not in pontos
                 or l[I["PARAMETRO"]].strip() != "Coliformes totais" or l[I["CAMPO"]].strip() != "Total Anual de Análises"):
             continue
         mun = municipio(l[I["CO_MUNICIPIO_IBGE"]], exc)
@@ -269,32 +372,38 @@ def agregar_plano(zpath, ano, realizadas_saa):
             continue
         v = inteiro(l[I["VALOR"]])
         # a mesma forma aparece repetida com razões habitantes/domicílio diferentes; o valor é o mesmo
-        exigidas.setdefault((mun, l[I["CO_MUNICIPIO_IBGE"]].strip(), l[I["NU_SOLUCAO_ABASTECIMENTO"]].strip()), set()).add(v)
+        chave = (tipo, mun, l[I["CO_MUNICIPIO_IBGE"]].strip(), l[I["NU_SOLUCAO_ABASTECIMENTO"]].strip())
+        exigidas.setdefault(chave, {}).setdefault(ponto, set()).add(v)
     out = {}
-    formas_controle = {f for (_m, _o, f) in realizadas_saa}
-    com_plano = {(o, f) for (_m, o, f) in exigidas}
-    sem_plano = [(k, v) for k, v in realizadas_saa.items() if (k[1], k[2]) not in com_plano]
-    exc["formas_com_controle_sem_plano"] = len(sem_plano)
-    exc["analises_de_formas_sem_plano"] = sum(v for _, v in sem_plano)
-    for (mun, original, forma), vals in sorted(exigidas.items()):
-        if len(vals) != 1 or None in vals:
-            mais(exc, "forma_com_valor_conflitante_ou_invalido")
-            continue
-        e = vals.pop()
-        if e == 0:
-            mais(exc, "forma_sem_exigencia")
-            continue
-        r = realizadas_saa.get((mun, original, forma), 0)
-        m = out.setdefault(mun, {"cobertas": 0, "exigidas": 0, "realizadas": 0, "formas": 0, "formas_sem_controle": 0})
-        m["cobertas"] += min(r, e)
-        m["exigidas"] += e
-        m["realizadas"] += r
-        m["formas"] += 1
-        if (mun, original, forma) not in realizadas_saa:
-            m["formas_sem_controle"] += 1
-            if forma in formas_controle:
-                # SAA que atende vários municípios e registrou as análises em outro município
-                mais(exc, "formas_com_controle_em_outro_municipio")
+    for tipo in ("SAA", "SAC"):
+        t = tipo.lower()
+        real = {k[1:]: v for k, v in realizadas.items() if k[0] == tipo}
+        exig = {k[1:]: v for k, v in exigidas.items() if k[0] == tipo}
+        formas_controle = {f for (_m, _o, f) in real}
+        com_plano = {(o, f) for (_m, o, f) in exig}
+        sem_plano = [(k, v) for k, v in real.items() if (k[1], k[2]) not in com_plano]
+        exc[f"{t}_formas_com_controle_sem_plano"] = len(sem_plano)
+        exc[f"{t}_analises_de_formas_sem_plano"] = sum(v for _, v in sem_plano)
+        for (mun, original, forma), por_ponto in sorted(exig.items()):
+            vals = set().union(*por_ponto.values())
+            if len(por_ponto) != 1 or len(vals) != 1 or None in vals:
+                mais(exc, f"{t}_forma_com_valor_conflitante_ou_invalido")
+                continue
+            e = vals.pop()
+            if e == 0:
+                mais(exc, f"{t}_forma_sem_exigencia")
+                continue
+            r = real.get((mun, original, forma), 0)
+            m = out.setdefault(mun, {}).setdefault(t, {"cobertas": 0, "exigidas": 0, "realizadas": 0, "formas": 0, "formas_sem_controle": 0})
+            m["cobertas"] += min(r, e)
+            m["exigidas"] += e
+            m["realizadas"] += r
+            m["formas"] += 1
+            if (mun, original, forma) not in real:
+                m["formas_sem_controle"] += 1
+                if forma in formas_controle:
+                    # sistema que atende vários municípios e registrou as análises em outro município
+                    mais(exc, f"{t}_formas_com_controle_em_outro_municipio")
     return out, exc
 
 
@@ -332,12 +441,13 @@ def agregar_vigilancia(zpath, ano):
 
     Medida municipal: amostras de rotina da rede de SAA e do ponto de consumo de SAC.
     O quadro nacional guarda todos os tipos e procedências, separados."""
-    I = {c: i for i, c in enumerate(CAB_VIGILANCIA)}
+    linhas = ler_csv(zpath, CAB_VIGILANCIA)
+    I = next(linhas)
     exc = {}
     vistos = set()
     mun_out = {}
     nacional = {}
-    for l in ler_csv(zpath, CAB_VIGILANCIA):
+    for l in linhas:
         if l[I["NU_ANO"]].strip() != str(ano):
             raise ValueError("ano diferente do arquivo")
         mun = municipio(l[I["CO_MUNICIPIO_IBGE"]], exc)
@@ -345,8 +455,10 @@ def agregar_vigilancia(zpath, ano):
             continue
         m = mun_out.setdefault(mun, {"analises": 0})
         m["analises"] += 1
-        par = PARAM_VIGILANCIA.get(l[I["PARAMETRO"]].strip())
+        rot_par = l[I["PARAMETRO"]].strip()
+        par = PARAM_VIGILANCIA.get(rot_par)
         if par is None:
+            desconhecido(rot_par, OUTROS_PARAM_VIGILANCIA, "vigilância, parâmetro")
             continue
         chave = hashlib.blake2b("\x1f".join((l[I["CO_MUNICIPIO_IBGE"]].strip(), l[I["NU_SOLUCAO_ABASTECIMENTO"]].strip(), l[I["NU_AMOSTRA"]].strip(),
                                              par, l[I["DT_COLETA"]].strip())).encode(), digest_size=12).digest()
@@ -355,10 +467,12 @@ def agregar_vigilancia(zpath, ano):
             continue
         vistos.add(chave)
         motivo = l[I["TP_MOTIVO_COLETA"]].strip()
+        desconhecido(motivo, MOTIVOS_VIGILANCIA, "vigilância, motivo")
         if motivo != "Rotina":
             mais(exc, "motivo_" + slug(motivo))
             continue
         tipo = l[I["TP_ABASTECIMENTO"]].strip()
+        desconhecido(tipo, TIPOS_VIGILANCIA, "vigilância, tipo de abastecimento")
         proc = l[I["TP_PROCEDENCIA_COLETA"]].strip()
         c = classificar(par, l[I["RESULTADO"]], l[I["LD"]], l[I["LQ"]])
         n = nacional.setdefault(f"{tipo}|{proc}|{par}", [0, 0])
@@ -375,14 +489,49 @@ def agregar_vigilancia(zpath, ano):
     return mun_out, nacional, exc
 
 
+def agregar_cadastro(zpath, formas_por_ano):
+    """Cadastro, população abastecida: população estimada de cada forma de abastecimento,
+    somada por município e tipo, e a parte sob formas com algum registro de controle no ano.
+
+    A junção com o controle é pelo código da forma, em qualquer município: o código identifica
+    o sistema, e um sistema que atende vários municípios registra as análises onde coleta."""
+    linhas = ler_csv(zpath, CAB_CADASTRO)
+    I = next(linhas)
+    anos = {str(a): set(f) for a, f in formas_por_ano.items()}
+    out = {a: {} for a in anos}
+    exc = {a: {} for a in anos}
+    for l in linhas:
+        ano = l[I["NU_ANO"]].strip()
+        if ano not in anos:
+            continue
+        tipo = l[I["TP_ABASTECIMENTO"]].strip()
+        if tipo not in ("SAA", "SAC", "SAI"):
+            raise ValueError(f"cadastro, tipo não previsto {tipo!r}")
+        mun = municipio(l[I["CO_MUNICIPIO_IBGE"]], exc[ano])
+        if mun is None:
+            continue
+        pop = inteiro(l[I["NU_VALOR_POPULACAO_ESTIMADA"]])
+        if pop is None:
+            mais(exc[ano], f"populacao_vazia_ou_invalida_{tipo.lower()}")
+            continue
+        com = tipo != "SAI" and l[I["NU_SOLUCAO_ABASTECIMENTO"]].strip() in anos[ano]
+        acc = out[ano].setdefault(mun, {}).setdefault(tipo.lower(), [0, 0, 0, 0])
+        acc[0] += pop if com else 0
+        acc[1] += pop
+        acc[2] += 1 if com else 0
+        acc[3] += 1
+    return out, exc
+
+
 def agregar_fora_padrao(zpath, anos):
     """Amostras do controle fora do padrão (arquivo único com todos os anos), por ano e parâmetro.
 
     Serve só de conferência: o dicionário diz que o registro do resultado fora do padrão
     não é obrigatório, então o arquivo pode ficar abaixo dos contadores do controle mensal."""
-    I = {c: i for i, c in enumerate(CAB_FORA)}
+    linhas = ler_csv(zpath, CAB_FORA)
+    I = next(linhas)
     out = {str(a): {} for a in anos}
-    for l in ler_csv(zpath, CAB_FORA):
+    for l in linhas:
         ano = l[I["NU_ANO"]].strip()
         if ano not in out:
             continue
@@ -452,7 +601,7 @@ def gravar(nome, obj):
     return hashlib.sha256(dados).hexdigest()
 
 
-def coletar(anos=ANOS, zips=None):
+def coletar(anos=ANOS_SERIE, zips=None):
     """Sem `zips`, baixa para uma pasta temporária apagada ao fim, com ou sem erro."""
     if zips:
         return _coletar(anos, zips)
@@ -462,28 +611,39 @@ def coletar(anos=ANOS, zips=None):
 
 def _coletar(anos, pasta):
     arquivos = []
-    seeds = {}
+    dados = {}
+    formas_por_ano = {}
     for ano in anos:
         c_path, c_prov = obter(fontes.sisagua_url("controle", ano), pasta)
-        controle, realizadas, exc_c = agregar_controle(c_path, ano)
-        p_path, p_prov = obter(fontes.sisagua_url("plano", ano), pasta)
-        plano, exc_p = agregar_plano(p_path, ano, realizadas)
+        controle, realizadas, formas_ano, exc_c = agregar_controle(c_path, ano)
+        arquivos.append({"conjunto": "controle", "ano": ano, **c_prov})
+        plano, exc_p = {}, {}
+        if ano >= ANO_INICIAL_PLANO:
+            p_path, p_prov = obter(fontes.sisagua_url("plano", ano), pasta)
+            plano, exc_p = agregar_plano(p_path, ano, realizadas)
+            arquivos.append({"conjunto": "plano", "ano": ano, **p_prov})
         v_path, v_prov = obter(fontes.sisagua_url("vigilancia", ano), pasta)
         vig, nacional, exc_v = agregar_vigilancia(v_path, ano)
-        seeds[f"sisagua_{ano}.json.gz"] = gravar(f"sisagua_{ano}.json.gz", {
-            "ano": ano,
-            "controle": controle, "plano": plano, "vigilancia": vig, "vigilancia_nacional": nacional,
-            "exclusoes": {"controle": exc_c, "plano": exc_p, "vigilancia": exc_v},
-        })
-        for conjunto, prov in (("controle", c_prov), ("plano", p_prov), ("vigilancia", v_prov)):
-            arquivos.append({"conjunto": conjunto, "ano": ano, **prov})
+        arquivos.append({"conjunto": "vigilancia", "ano": ano, **v_prov})
+        formas_por_ano[ano] = formas_ano
+        dados[ano] = {"ano": ano, "controle": controle, "plano": plano, "vigilancia": vig, "vigilancia_nacional": nacional,
+                      "exclusoes": {"controle": exc_c, "plano": exc_p, "vigilancia": exc_v}}
         print(ano, "controle", len(controle), "plano", len(plano), "vigilancia", len(vig), flush=True)
+    k_path, k_prov = obter(fontes.SISAGUA["cadastro"], pasta)
+    cadastro, exc_k = agregar_cadastro(k_path, formas_por_ano)
+    arquivos.append({"conjunto": "cadastro", "ano": None, **k_prov})
+    seeds = {}
+    for ano in anos:
+        dados[ano]["cadastro"] = cadastro[str(ano)]
+        dados[ano]["exclusoes"]["cadastro"] = exc_k[str(ano)]
+        seeds[f"sisagua_{ano}.json.gz"] = gravar(f"sisagua_{ano}.json.gz", dados[ano])
     f_path, f_prov = obter(fontes.SISAGUA["fora_padrao"], pasta)
     seeds["sisagua_fora_padrao.json.gz"] = gravar("sisagua_fora_padrao.json.gz", agregar_fora_padrao(f_path, anos))
     arquivos.append({"conjunto": "fora_padrao", "ano": None, **f_prov})
     manifesto = {
         "capturado_em": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
         "anos": list(anos),
+        "ano_inicial_plano": ANO_INICIAL_PLANO,
         "arquivos": arquivos,
         "seeds": seeds,
         "dicionarios": {k: documento(u) for k, u in sorted(fontes.SISAGUA["dicionarios"].items())},
@@ -508,19 +668,35 @@ def ler(nome, manifesto):
     return json.loads(dados)
 
 
-# Medidas municipais: id → (conjunto, chave). Numerador e denominador por município e ano.
+# Medidas municipais: (id, conjunto, chave). Numerador e denominador por município e ano.
 MEDIDAS = [
     ("ctrl_ecoli", "controle", "ecoli"),
     ("ctrl_colif", "controle", "coliformes"),
     ("ctrl_cloro", "controle", "cloro"),
     ("ctrl_turb", "controle", "turbidez"),
+    ("ctrl_cor", "controle", "cor"),
+    ("ctrl_fluor", "controle", "fluoreto"),
     ("vig_ecoli", "vigilancia", "ecoli"),
     ("vig_cloro", "vigilancia", "cloro"),
-    ("plano", "plano", None),
+    ("vig_fluor", "vigilancia", "fluoreto"),
+    ("plano", "plano", "saa"),
+    ("plano_sac", "plano", "sac"),
+    ("pop_saa", "cadastro", "saa"),
+    ("pop_sac", "cadastro", "sac"),
 ]
 
 
-def campos(anos=ANOS):
+def valor(s, conjunto, chave, mun):
+    """[numerador, denominador] da medida no município, ou [None, None] sem denominador positivo."""
+    reg = s[conjunto].get(mun) or {}
+    v = reg.get(chave)
+    if v is None:
+        return [None, None]
+    num, den = (v["cobertas"], v["exigidas"]) if conjunto == "plano" else (v[0], v[1])
+    return [num, den] if den else [None, None]
+
+
+def campos(anos=ANOS_ATLAS):
     """Colunas do arquivo complementar qualidade_municipios, sem o id."""
     out = []
     for ano in anos:
@@ -530,54 +706,72 @@ def campos(anos=ANOS):
     return out
 
 
-def construir(ids6):
-    """Campos municipais por código IBGE de 6 dígitos e auditoria para meta.json.
+def construir(ids6, uf_de=None):
+    """Campos municipais (anos do atlas), auditoria por ano e série por território para meta.json.
 
-    ids6: códigos de 6 dígitos dos municípios do IBGE (universo de 5.570)."""
+    ids6: códigos de 6 dígitos dos municípios do IBGE; uf_de: código → sigla da UF."""
     with open(os.path.join(SEED, "manifesto.json"), encoding="utf-8") as f:
         manifesto = json.load(f)
     fora = ler("sisagua_fora_padrao.json.gz", manifesto)
     universo = set(ids6)
+    uf_de = uf_de or {}
     linhas = {i: {} for i in universo}
-    auditoria = {"anos": manifesto["anos"], "proveniencia": manifesto, "limites": LIMITES, "por_ano": {}}
+    auditoria = {"anos": manifesto["anos"], "anos_atlas": list(ANOS_ATLAS), "ano_inicial_plano": manifesto.get("ano_inicial_plano"),
+                 "proveniencia": manifesto, "limites": LIMITES, "por_ano": {}, "serie": {}}
     for ano in manifesto["anos"]:
         s = ler(f"sisagua_{ano}.json.gz", manifesto)
-        sem_municipio = {k: sorted(set(s[k]) - universo) for k in ("controle", "plano", "vigilancia")}
-        for i, l in linhas.items():
-            c = s["controle"].get(i)
-            v = s["vigilancia"].get(i)
-            p = s["plano"].get(i)
-            l[f"qa_reg_ctrl_{ano}"] = 1 if c else 0
-            l[f"qa_reg_vig_{ano}"] = 1 if v else 0
-            for mid, conjunto, chave in MEDIDAS:
-                if conjunto == "plano":
-                    num, den = (p["cobertas"], p["exigidas"]) if p else (None, None)
-                else:
-                    reg = {"controle": c, "vigilancia": v}[conjunto]
-                    num, den = (reg or {}).get(chave, [None, None])
-                if not den:
-                    num, den = None, None
-                l[f"qa_{mid}_{ano}_num"] = num
-                l[f"qa_{mid}_{ano}_den"] = den
+        ctrl = {i for i in universo if s["controle"].get(i)}
+        vig = {i for i in universo if s["vigilancia"].get(i)}
+        if ano in ANOS_ATLAS:
+            for i, l in linhas.items():
+                l[f"qa_reg_ctrl_{ano}"] = 1 if i in ctrl else 0
+                l[f"qa_reg_vig_{ano}"] = 1 if i in vig else 0
+                for mid, conjunto, chave in MEDIDAS:
+                    l[f"qa_{mid}_{ano}_num"], l[f"qa_{mid}_{ano}_den"] = valor(s, conjunto, chave, i)
+
+        # série: Brasil e UFs, sempre pela soma de numeradores e denominadores municipais
+        serie = {}
+        for i in sorted(universo):
+            for t in ("BR", uf_de.get(i)):
+                if t is None:
+                    continue
+                d = serie.setdefault(t, {"municipios": [0, 0, 0, 0], "medidas": {}})
+                d["municipios"][0] += i in ctrl
+                d["municipios"][1] += i in vig
+                d["municipios"][2] += i in ctrl and i in vig
+                d["municipios"][3] += 1
+                for mid, conjunto, chave in MEDIDAS:
+                    num, den = valor(s, conjunto, chave, i)
+                    if den:
+                        acc = d["medidas"].setdefault(mid, [0, 0, 0])
+                        acc[0] += num
+                        acc[1] += den
+                        acc[2] += 1
+        auditoria["serie"][str(ano)] = serie
 
         def soma(conjunto, chave, idx):
             return sum(m[chave][idx] for k, m in s[conjunto].items() if k in universo and chave in m)
 
-        ctrl = {i for i in universo if s["controle"].get(i)}
-        vig = {i for i in universo if s["vigilancia"].get(i)}
+        plano = {}
+        for t in ("saa", "sac"):
+            regs = [m[t] for i, m in s["plano"].items() if i in universo and t in m]
+            plano[t] = {k: sum(r[k] for r in regs) for k in ("cobertas", "exigidas", "realizadas", "formas", "formas_sem_controle")} if regs else None
         auditoria["por_ano"][str(ano)] = {
             "municipios": {"universo": len(universo), "controle": len(ctrl), "vigilancia": len(vig),
                            "ambos": len(ctrl & vig), "nenhum": len(universo - ctrl - vig)},
-            "codigos_fora_do_universo": sem_municipio,
+            "codigos_fora_do_universo": {k: sorted(set(s[k]) - universo) for k in ("controle", "plano", "vigilancia", "cadastro")},
             "exclusoes": s["exclusoes"],
             "vigilancia_nacional": s["vigilancia_nacional"],
-            "plano": {k: sum(m[k] for i, m in s["plano"].items() if i in universo)
-                      for k in ("cobertas", "exigidas", "realizadas", "formas", "formas_sem_controle")},
+            # compatível com a primeira edição: plano dos SAA no nível de cima
+            "plano": plano["saa"],
+            "plano_sac": plano["sac"],
+            "cadastro": {t: [sum(m[t][k] for i, m in s["cadastro"].items() if i in universo and t in m) for k in range(4)]
+                         for t in ("saa", "sac", "sai")},
             "conferencia_fora_padrao": [
                 {"parametro": par, "controle_mensal": soma("controle", par, 0),
                  "arquivo_fora_do_padrao": fora[str(ano)].get(par, 0),
                  "diferenca": fora[str(ano)].get(par, 0) - soma("controle", par, 0)}
-                for par in ("ecoli", "coliformes", "cloro", "turbidez")
+                for par in PARAMETROS
             ],
         }
     return linhas, auditoria
@@ -586,7 +780,7 @@ def construir(ids6):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--coletar", action="store_true")
-    ap.add_argument("--anos", default=",".join(map(str, ANOS)))
+    ap.add_argument("--anos", default=",".join(map(str, ANOS_SERIE)))
     ap.add_argument("--zips")
     a = ap.parse_args()
     if a.coletar:

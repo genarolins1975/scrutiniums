@@ -1,10 +1,189 @@
 {
-  "capturado_em": "2026-10-14T14:12:39+00:00",
+  "capturado_em": "2026-10-14T15:38:40+00:00",
   "anos": [
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
     2024,
     2025
   ],
+  "ano_inicial_plano": 2023,
   "arquivos": [
+    {
+      "conjunto": "controle",
+      "ano": 2014,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2014_csv.zip",
+      "sha256": "f7c5d0baea750ef968dfd7d202071bbb3044f50218c274b3c5fa32edb3e7d70e",
+      "bytes": 39506123,
+      "last_modified": "Sat, 28 Mar 2026 02:36:24 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2014,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2014_csv.zip",
+      "sha256": "40a9a02daf03082ea2fad7d78aae6a584688914acbb00e2312fb4b048a47c6d0",
+      "bytes": 85434855,
+      "last_modified": "Wed, 25 Mar 2026 15:38:22 GMT"
+    },
+    {
+      "conjunto": "controle",
+      "ano": 2015,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2015_csv.zip",
+      "sha256": "b05eb9499e3c5f9d51d948c75a29d08bcf3bfb6917338faf7f91d6ddd16b17c2",
+      "bytes": 54722227,
+      "last_modified": "Sat, 28 Mar 2026 02:30:17 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2015,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2015_csv.zip",
+      "sha256": "e56f8541b8eeab7f2101fd8dabbc50418e066b434a33ad658d98a57527373ec9",
+      "bytes": 96635454,
+      "last_modified": "Wed, 25 Mar 2026 15:38:17 GMT"
+    },
+    {
+      "conjunto": "controle",
+      "ano": 2016,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2016_csv.zip",
+      "sha256": "efdf48ab7aab4c6d806c3024767a2002a514216313c30322ad66431444af62b6",
+      "bytes": 66023538,
+      "last_modified": "Sat, 28 Mar 2026 02:31:41 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2016,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2016_csv.zip",
+      "sha256": "bee5c4bb373412e66d27d8f7870ed67a52889c10651d6f70e65082851b62132f",
+      "bytes": 97398347,
+      "last_modified": "Wed, 25 Mar 2026 15:38:14 GMT"
+    },
+    {
+      "conjunto": "controle",
+      "ano": 2017,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2017_csv.zip",
+      "sha256": "21cc72d80efb5c7885e9f143341fedac427334e00d2274625da85032716f0f7d",
+      "bytes": 91167235,
+      "last_modified": "Sat, 28 Mar 2026 02:32:54 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2017,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2017_csv.zip",
+      "sha256": "0765d0362db760c990df8b0c07ab7f1084c7b519d0bf0fa98a4e0274f6faf931",
+      "bytes": 110108403,
+      "last_modified": "Wed, 25 Mar 2026 15:38:11 GMT"
+    },
+    {
+      "conjunto": "controle",
+      "ano": 2018,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2018_csv.zip",
+      "sha256": "7142289ffb247a5f92f80df7e83323efed953eda5ca3ecae1a11838b56411ccd",
+      "bytes": 103958551,
+      "last_modified": "Sat, 28 Mar 2026 13:23:26 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2018,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2018_csv.zip",
+      "sha256": "ef86b31e24fddca994cb6e22fe57724fcab2ffcb65c4ec5f3b627c4233cc6e34",
+      "bytes": 119865386,
+      "last_modified": "Wed, 25 Mar 2026 15:38:06 GMT"
+    },
+    {
+      "conjunto": "controle",
+      "ano": 2019,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2019_csv.zip",
+      "sha256": "bd0b6852296583d194cb1dcc6682815a967e5e75c3d41f1fedb9d36708cf11f3",
+      "bytes": 107439454,
+      "last_modified": "Wed, 01 Apr 2026 18:26:47 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2019,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2019_csv.zip",
+      "sha256": "98fd24cf82f0a9b8b6810ea296f9da6af524d88238fad337a1ee0e1a27e74658",
+      "bytes": 131476141,
+      "last_modified": "Wed, 25 Mar 2026 15:38:02 GMT"
+    },
+    {
+      "conjunto": "controle",
+      "ano": 2020,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2020_csv.zip",
+      "sha256": "90637148a10f364cf2f6b71c830ab4fdf2bddcfc76c5ccf8e89cffc6c42b2500",
+      "bytes": 108113301,
+      "last_modified": "Wed, 01 Apr 2026 18:26:42 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2020,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2020_csv.zip",
+      "sha256": "4444bbef25ac891d022658e1b5e0199aa6669027f3da7a42e739f6182d21be60",
+      "bytes": 108887742,
+      "last_modified": "Wed, 25 Mar 2026 15:37:57 GMT"
+    },
+    {
+      "conjunto": "controle",
+      "ano": 2021,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2021_csv.zip",
+      "sha256": "219f75b5a696fc551ec01d0f8e27cac4fbabb20ffda09a8b864fffbe3da1fd3e",
+      "bytes": 107149269,
+      "last_modified": "Wed, 01 Apr 2026 18:26:36 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2021,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2021_csv.zip",
+      "sha256": "ff51188de4527bcab522454a8bcab8faca2da6e4af169404e42c76663268be9b",
+      "bytes": 132355199,
+      "last_modified": "Wed, 25 Mar 2026 15:37:55 GMT"
+    },
+    {
+      "conjunto": "controle",
+      "ano": 2022,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2022_csv.zip",
+      "sha256": "2366f55e146b05cd445ab05eb3698baa38226a72c6ad765fee0f93b04d67fa23",
+      "bytes": 111114246,
+      "last_modified": "Mon, 18 May 2026 02:45:02 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2022,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2022_csv.zip",
+      "sha256": "9c3a3044a4a20bac7b33b04c1c31b762c2f551048f373f5a5ce677a83c073caf",
+      "bytes": 148298909,
+      "last_modified": "Sun, 04 Oct 2026 12:43:19 GMT"
+    },
+    {
+      "conjunto": "controle",
+      "ano": 2023,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2023_csv.zip",
+      "sha256": "74adc6bba03387178dcb0f8689eff709ffc8b73518c2843ac81431a5f241f090",
+      "bytes": 129577427,
+      "last_modified": "Sat, 03 Oct 2026 00:09:02 GMT"
+    },
+    {
+      "conjunto": "plano",
+      "ano": 2023,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_plano_amostragem_2023_csv.zip",
+      "sha256": "0a6e344a6eb5fd9916e8acd77bc7bf68ef1594f775a24515385108371851e6c5",
+      "bytes": 80244981,
+      "last_modified": "Fri, 02 Oct 2026 12:07:22 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2023,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2023_csv.zip",
+      "sha256": "0a7c71727cee2df342e3f2341c2d79d9f73322af9fdfa649dbbc2d4cd6f4ac45",
+      "bytes": 196900347,
+      "last_modified": "Sun, 04 Oct 2026 12:43:17 GMT"
+    },
     {
       "conjunto": "controle",
       "ano": 2024,
@@ -54,6 +233,14 @@
       "last_modified": "Sun, 04 Oct 2026 12:43:11 GMT"
     },
     {
+      "conjunto": "cadastro",
+      "ano": null,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/cadastro_populacao_abastecida_csv.zip",
+      "sha256": "8a6ae6543ec92c0b0c0be04629e2a694e7f9f9a5def1e50c9270f0f914121f4d",
+      "bytes": 76671068,
+      "last_modified": "Thu, 01 Oct 2026 05:46:29 GMT"
+    },
+    {
       "conjunto": "fora_padrao",
       "ano": null,
       "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_amostras_fora_padrao_csv.zip",
@@ -63,11 +250,25 @@
     }
   ],
   "seeds": {
-    "sisagua_2024.json.gz": "1d657ccfc15168c31d557dad43113548c91a5b79f899bdf9729c88d1c746640e",
-    "sisagua_2025.json.gz": "8be2ecc0d8f1bbdc95eda512e31bcea6458bef4ee8fa6d1b723f154548f2a720",
-    "sisagua_fora_padrao.json.gz": "d02c5de28c0aefc789efdf50798850f5949552d8b252e607e7be317f61a346b8"
+    "sisagua_2014.json.gz": "249e5f29cac9ceca688453b7dec70e1670e2e3b429ed3ff7ba1f004492debb8d",
+    "sisagua_2015.json.gz": "7103facab63eaf491c5341a69325577fb40422b9548a0780521fedc5670ffc98",
+    "sisagua_2016.json.gz": "0670c3033c6ad9bb6352f88b0556c06e4031a2391688decd7edf2664d1bda11f",
+    "sisagua_2017.json.gz": "564864851b9b6d259c64d76fd1068a8f161ec57d24434b5faa4116bfec957488",
+    "sisagua_2018.json.gz": "6170dfda73e7118cceda31edf3483e4091ae428a4ad40b9094a4ed6aa7905eea",
+    "sisagua_2019.json.gz": "5c9f8cfb0874aebcfacd8074aa4d010852ca19e2a8155ccd91283e2d00c8ad61",
+    "sisagua_2020.json.gz": "1e68eec25fb6441deafdbb966119c4feb57c4b17f4dab626b7a77647af3cb3a1",
+    "sisagua_2021.json.gz": "6fadd6cb0b5466b2fab3b4fe0eb3ae42451bb247d7522214bc7a96879e7c68a9",
+    "sisagua_2022.json.gz": "c4e0e14c9396d18ce0da23f5a3013b07bd4ff78caee46cb5a6e55ff813d00c4c",
+    "sisagua_2023.json.gz": "5c35e005d435b0add5faf656182ad47fef1ddd38fc9993173790cc595f55e86f",
+    "sisagua_2024.json.gz": "7096f28858791b84fa3f370e8e7ba693a04d78b2f89664bb9da12a06adaa64ad",
+    "sisagua_2025.json.gz": "e6ea414230f33f91ebaa8edd82eaefdb17668c573dadceb3a3f766f6cda6ff2a",
+    "sisagua_fora_padrao.json.gz": "f51c4eac9cac02087a649e7a7c2e750ff7837a0c5fe091cd0d050822c6727d99"
   },
   "dicionarios": {
+    "cadastro": {
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/dicionario_cadastro_populacao_abastecida.odt",
+      "sha256": "3bdbd546bc7ca0dc599623c4c20fc8e1269c9295dd6df3adb4cf428d909e8419"
+    },
     "controle": {
       "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/SISAGUA%20-%20Controle%20Mensal%20Par%C3%A2metros%20B%C3%A1sicos%20-%20Dicion%C3%A1rio%20de%20Dados.pdf",
       "sha256": "0f61f6096ef15efafff0389b51443f31072c2dfb9b751142ff8f0b76727955c4"
@@ -93,9 +294,12 @@
     "controle": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-parametros-basicos",
     "plano": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-plano-amostragem",
     "vigilancia": "https://dadosabertos.saude.gov.br/dataset/sisagua-vigilancia-parametros-basicos",
-    "fora_padrao": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-amostras-fora-do-padrao"
+    "fora_padrao": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-amostras-fora-do-padrao",
+    "cadastro": "https://dadosabertos.saude.gov.br/dataset/sisagua-populacao-abastecida"
   },
   "erros_catalogo": [
+    "O CSV do plano de amostragem de 2014 a 2021 aponta para arquivosdadosabertos.saude.gov.br/dados/sisagua/, que responde 404 em 14/10/2026; não há CSV desses anos no S3, só JSON e XML.",
+    "O plano de amostragem de 2022 usa outros rótulos de Campo e exige 3.106.260 análises de coliformes totais na rede dos SAA, contra 1.985.700 em 2023 e 1.962.324 em 2024, com quase o mesmo número de sistemas: o cálculo não é comparável. A série do plano começa em 2023.",
     "Na página do plano de amostragem, os recursos JSON e XML rotulados 2024 apontam para controle_mensal_plano_amostragem_2025_json.zip e _xml.zip. O Observatório usa o CSV, cujo nome está correto."
   ]
 }

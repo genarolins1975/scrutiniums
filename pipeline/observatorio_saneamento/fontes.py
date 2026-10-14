@@ -103,24 +103,30 @@ SISAGUA = {
         "vigilancia": "vigilancia_parametros_basicos_{ano}_csv.zip",
     },
     "fora_padrao": SISAGUA_S3 + "controle_mensal_amostras_fora_padrao_csv.zip",
+    "cadastro": SISAGUA_S3 + "cadastro_populacao_abastecida_csv.zip",
     "paginas": {
         "controle": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-parametros-basicos",
         "plano": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-plano-amostragem",
         "vigilancia": "https://dadosabertos.saude.gov.br/dataset/sisagua-vigilancia-parametros-basicos",
         "fora_padrao": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-amostras-fora-do-padrao",
+        "cadastro": "https://dadosabertos.saude.gov.br/dataset/sisagua-populacao-abastecida",
     },
     "dicionarios": {
         "controle": SISAGUA_S3 + "SISAGUA%20-%20Controle%20Mensal%20Par%C3%A2metros%20B%C3%A1sicos%20-%20Dicion%C3%A1rio%20de%20Dados.pdf",
         "plano": SISAGUA_S3 + "dicionario_controle_mensal_plano_de_amostragem.odt",
         "vigilancia": SISAGUA_S3 + "dicionario_vigilancia_parametros_basicos.odt",
         "fora_padrao": SISAGUA_S3 + "dicionario_controle_mensal_amostras_fora_do_padrao.odt",
+        "cadastro": SISAGUA_S3 + "dicionario_cadastro_populacao_abastecida.odt",
     },
     # Norma de potabilidade: Portaria GM/MS 888/2021, que dá nova redação ao Anexo XX
     # da Portaria de Consolidação GM/MS 5/2017.
     "portaria": "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2021/prt0888_07_05_2021.html",
-    # O plano de amostragem de 2014 a 2021 está em outro host:
-    # https://arquivosdadosabertos.saude.gov.br/dados/sisagua/controle_mensal_plano_amostragem_{ano}_csv.zip
     "erros_catalogo": [
+        "O CSV do plano de amostragem de 2014 a 2021 aponta para arquivosdadosabertos.saude.gov.br/dados/sisagua/, "
+        "que responde 404 em 14/10/2026; não há CSV desses anos no S3, só JSON e XML.",
+        "O plano de amostragem de 2022 usa outros rótulos de Campo e exige 3.106.260 análises de coliformes totais na rede "
+        "dos SAA, contra 1.985.700 em 2023 e 1.962.324 em 2024, com quase o mesmo número de sistemas: o cálculo não é "
+        "comparável. A série do plano começa em 2023.",
         "Na página do plano de amostragem, os recursos JSON e XML rotulados 2024 apontam para "
         "controle_mensal_plano_amostragem_2025_json.zip e _xml.zip. O Observatório usa o CSV, cujo nome está correto.",
     ],

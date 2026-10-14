@@ -14,7 +14,7 @@ Documentos desta pasta:
 |---|---|---|---|
 | A Acesso e qualidade | 1 Quantas pessoas estão sem atendimento adequado? | `/saneamento/acesso` | Publicado |
 | | 2 Quem fica para trás? | `/saneamento/desigualdades` | Parcial (14 medidas do Censo 2022, com universos separados e supressões publicadas) |
-| | 3 A água chega regularmente e com qualidade monitorada? | `/saneamento/continuidade` | Parcial (continuidade e SISAGUA para E. coli, coliformes, cloro, turbidez e plano de coliformes de SAA; demais parâmetros pendentes) |
+| | 3 A água chega regularmente e com qualidade monitorada? | `/saneamento/continuidade` | Parcial (continuidade e SISAGUA de 2014 a 2025: seis parâmetros, plano de SAA e SAC desde 2023, população cadastrada; cianobactérias e substâncias químicas pendentes) |
 | | 4 Para onde vai o esgoto? | `/saneamento/esgoto` | Publicado |
 | B Preço regulado | 5 Preço regulado: o que pagamos, por que foi autorizado, o que financia | `/saneamento/preco-regulado` e subpainéis 5.1 a 5.5 | Parcial (amostra verificada) |
 | | 6 A conta cabe no orçamento? A tarifa social chega a quem precisa? | `/saneamento/tarifa-social` | Parcial (economias por família elegível do CadÚnico; famílias beneficiadas não publicadas) |
@@ -60,7 +60,7 @@ npx vitest run src/tests/saneamento-gold.test.ts src/tests/saneamento-conta.test
 | IBGE, estimativa de população | 2024 | Denominador do SINISA e domicílios estimados da NR 8 |
 | Atos de ARSESP, ARSAE-MG, AGEPAR, ARPE e ADASA | 2023 a 2026 | Tabelas tarifárias, estudos de caso e catálogo de reajustes |
 | MDS, CadÚnico (SAGI, API MI Social) | Dez/2024 e set/2026 | Famílias elegíveis à tarifa social pelo critério de renda |
-| Ministério da Saúde, SISAGUA (dados abertos) | 2024 e 2025; arquivos de 02 a 04/10/2026, extraídos em 14/10/2026 | Controle mensal, plano de amostragem e vigilância da qualidade da água; Portaria GM/MS 888/2021 para os limites |
+| Ministério da Saúde, SISAGUA (dados abertos) | 2014 a 2025 (plano desde 2023); arquivos atualizados em out/2026, extraídos em 14/10/2026 | Controle mensal, plano de amostragem, vigilância e cadastro de população abastecida; Portaria GM/MS 888/2021 para os limites |
 | Lei 11.445/2007, Lei 14.898/2024, NR ANA 8/2024, Decreto 12.797/2025 | Vigentes | Metas, tarifa social, medição das metas, salário-mínimo de 2026 |
 
 ## Relação com a Eficiência Estatal

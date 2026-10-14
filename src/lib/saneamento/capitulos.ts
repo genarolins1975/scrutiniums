@@ -63,10 +63,10 @@ export const EIXOS: Eixo[] = [
         rotulo: "Regularidade e qualidade",
         pergunta: "A água chega regularmente e com qualidade monitorada?",
         resumo:
-          "Paralisações e racionamento declarados ao SINISA 2024; qualidade da água no SISAGUA, com controle do prestador, vigilância da saúde e plano de amostragem, em 2024 e 2025.",
+          "Paralisações e racionamento declarados ao SINISA 2024; qualidade da água no SISAGUA, com controle do prestador, vigilância da saúde, plano de amostragem e população sob formas com controle, de 2014 a 2025.",
         situacao: "parcial",
         pendencia:
-          "SISAGUA integrado para E. coli, coliformes totais, cloro residual livre e turbidez na rede e no consumo, e para o plano de coliformes totais da rede de SAA. Ainda não integrados: demais parâmetros (cor, pH, fluoreto, cianobactérias, substâncias químicas), plano de SAC, população abastecida por forma de abastecimento e série anterior a 2024.",
+          "SISAGUA integrado para E. coli, coliformes totais, cloro residual livre, turbidez, cor e fluoreto, plano de amostragem de SAA e SAC desde 2023 e população cadastrada. Ainda não integrados: cianobactérias e cianotoxinas, substâncias químicas, controle semestral e plano de amostragem até 2022 (só JSON até 2021; cálculo de 2022 não comparável). pH não tem limite na rede pela Portaria 888.",
       },
       {
         numero: 4,

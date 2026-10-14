@@ -2,6 +2,7 @@ import { Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/E
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
+import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { agregados, meta, municipiosComQualidade, URL_QUALIDADE_MUNICIPIOS } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { ANOS_SISAGUA, MEDIDAS_QUALIDADE, agregarMedida, medida } from "@/lib/saneamento/medidas";
@@ -17,6 +18,11 @@ const ROTULO_PARAMETRO: Record<string, string> = {
   coliformes: "Coliformes totais (presença)",
   cloro: "Cloro residual livre abaixo de 0,2 mg/L",
   turbidez: "Turbidez acima de 5,0 uT",
+  cor: "Cor aparente acima de 15 uH",
+  fluoreto: "Fluoreto acima de 1,5 mg/L",
+  saa: "sistemas (SAA)",
+  sac: "soluções coletivas (SAC)",
+  sai: "soluções individuais (SAI)",
 };
 
 const ROTULO_PROCEDENCIA: Record<string, string> = {
@@ -47,9 +53,15 @@ const EXCLUSAO: Record<string, string> = {
   formas_com_controle_sem_plano: "Sistemas com controle de coliformes na rede e sem plano no ano",
   analises_de_formas_sem_plano: "Análises desses sistemas sem plano (fora da medida)",
   formas_com_controle_em_outro_municipio: "Sistemas sem controle no município do plano, mas com controle em outro município",
+  populacao_vazia_ou_invalida: "Forma cadastrada sem população estimada (fora da medida)",
+  codigo_invalido: "Código de município inválido (linha excluída)",
+  linha_repetida: "Linha repetida com outro nome de estação (conta uma vez)",
+  grupo_com_repeticao_divergente: "Linha repetida com valor diferente (grupo excluído)",
 };
 
 function rotuloExclusao(chave: string): string {
+  const tipo = /^(saa|sac)_/.exec(chave)?.[1];
+  if (tipo) return `${rotuloExclusao(chave.slice(4))} (${tipo.toUpperCase()})`;
   for (const [k, v] of Object.entries(EXCLUSAO)) {
     if (chave === k) return v;
     if (chave.startsWith(`${k}_`)) {
@@ -113,6 +125,8 @@ export function Qualidade() {
         ctrl_cloro: p("qa-ctrl-cloro"),
         vig_cloro: p("qa-vig-cloro"),
         plano: p("qa-plano"),
+        plano_sac: p("qa-plano-sac"),
+        pop_saa: p("qa-pop-saa"),
       };
     }),
   );
@@ -128,10 +142,11 @@ export function Qualidade() {
   const exclusoes = ANOS_SISAGUA.flatMap((ano) => {
     const e = auditoria?.por_ano[String(ano)]?.exclusoes;
     if (!e) return [];
-    return (["controle", "plano", "vigilancia"] as const).flatMap((conjunto) =>
-      Object.entries(e[conjunto]).map(([chave, n]) => ({
+    const NOME = { controle: "Controle mensal", plano: "Plano de amostragem", vigilancia: "Vigilância", cadastro: "Cadastro" } as const;
+    return (["controle", "plano", "vigilancia", "cadastro"] as const).flatMap((conjunto) =>
+      Object.entries(e[conjunto] ?? {}).map(([chave, n]) => ({
         ano: String(ano),
-        conjunto: conjunto === "vigilancia" ? "Vigilância" : conjunto === "plano" ? "Plano de amostragem" : "Controle mensal",
+        conjunto: NOME[conjunto],
         motivo: rotuloExclusao(chave),
         linhas: n,
       })),
@@ -156,6 +171,46 @@ export function Qualidade() {
   const ctrlEcoli = br(`qa-ctrl-ecoli-${ANO}`);
   const vigEcoli = br(`qa-vig-ecoli-${ANO}`);
   const plano = br(`qa-plano-${ANO}`);
+
+  // Série: Brasil e UFs, soma de numeradores e denominadores municipais em cada ano.
+  const anosSerie = (auditoria?.anos ?? []).map(String);
+  const pctSerie = (ano: string, t: string, mid: string) => {
+    const v = auditoria?.serie[ano]?.[t]?.medidas[mid];
+    return v ? razaoPct(v[0], v[1]) : null;
+  };
+  const serieBrasil = anosSerie.map((ano) => {
+    const reg = auditoria?.serie[ano]?.BR?.municipios;
+    return {
+      ano,
+      ctrl_ecoli: pctSerie(ano, "BR", "ctrl_ecoli"),
+      vig_ecoli: pctSerie(ano, "BR", "vig_ecoli"),
+      ctrl_cloro: pctSerie(ano, "BR", "ctrl_cloro"),
+      vig_cloro: pctSerie(ano, "BR", "vig_cloro"),
+      reg_ctrl: reg ? razaoPct(reg[0], reg[3]) : null,
+      reg_vig: reg ? razaoPct(reg[1], reg[3]) : null,
+    };
+  });
+  const linhasSerie = anosSerie.flatMap((ano) =>
+    Object.entries(auditoria?.serie[ano] ?? {}).map(([t, d]) => ({
+      territorio: t === "BR" ? "Brasil" : nomeUf[t] ?? t,
+      ano,
+      controle: d.municipios[0],
+      vigilancia: d.municipios[1],
+      ctrl_ecoli: pctSerie(ano, t, "ctrl_ecoli"),
+      vig_ecoli: pctSerie(ano, t, "vig_ecoli"),
+      ctrl_cloro: pctSerie(ano, t, "ctrl_cloro"),
+      vig_cloro: pctSerie(ano, t, "vig_cloro"),
+      ctrl_turb: pctSerie(ano, t, "ctrl_turb"),
+      plano: pctSerie(ano, t, "plano"),
+      pop_saa: pctSerie(ano, t, "pop_saa"),
+    })),
+  );
+  const primeiro = anosSerie[0];
+  const regPrimeiro = auditoria?.serie[primeiro]?.BR?.municipios;
+  const planoSac = br(`qa-plano-sac-${ANO}`);
+  const popSaa = br(`qa-pop-saa-${ANO}`);
+  const popSac = br(`qa-pop-sac-${ANO}`);
+  const cad = a?.cadastro;
 
   if (!auditoria || !a) {
     return (
@@ -247,7 +302,7 @@ export function Qualidade() {
               { id: "municipios", rotulo: "Municípios com dado", tipo: "inteiro" },
             ]}
             linhas={linhasBrasil}
-            limite={14}
+            limite={13}
             busca={false}
             rotuloLinhas={{ singular: "medida", plural: "medidas" }}
           />
@@ -308,38 +363,168 @@ export function Qualidade() {
       <Secao
         id="qualidade-plano"
         titulo="O prestador informa as análises que a norma exige?"
-        texto="O plano de amostragem do SISAGUA calcula, para cada sistema e município, o número mínimo de análises exigido pela norma. Aqui, coliformes totais na rede de distribuição dos sistemas (SAA), Anexo 14 da Portaria 888."
+        texto={`O plano de amostragem do SISAGUA calcula, para cada sistema e município, o número mínimo de análises exigido pela norma. Aqui, coliformes totais na rede dos sistemas (SAA, Anexo 14 da Portaria 888) e no ponto de consumo das soluções coletivas (SAC, Anexo 15). O plano em CSV existe a partir de ${auditoria.ano_inicial_plano}.`}
       >
-        <Numeros
-          colunas={3}
-          itens={[
-            {
-              rotulo: `Análises exigidas em ${ANO}`,
-              valor: inteiro(a.plano.exigidas),
-              contexto: <>Em {inteiro(a.plano.formas)} sistemas por município com plano.</>,
-            },
-            {
-              rotulo: "Cobertas pelo controle informado",
-              valor: `${numero(razaoPct(a.plano.cobertas, a.plano.exigidas), 1)}%`,
-              contexto: <>{inteiro(a.plano.cobertas)} análises, limitadas ao exigido em cada sistema. Informadas: {inteiro(a.plano.realizadas)}.</>,
-            },
-            {
-              rotulo: "Sistemas com plano e sem controle informado",
-              valor: inteiro(a.plano.formas_sem_controle),
-              contexto: <>{numero(razaoPct(a.plano.formas_sem_controle, a.plano.formas), 1)}% dos sistemas com plano, {ANO}.</>,
-            },
-          ]}
-        />
+        {a.plano && (
+          <Numeros
+            colunas={3}
+            itens={[
+              {
+                rotulo: `Sistemas (SAA): análises exigidas em ${ANO}`,
+                valor: inteiro(a.plano.exigidas),
+                contexto: <>Em {inteiro(a.plano.formas)} sistemas por município com plano.</>,
+              },
+              {
+                rotulo: "Cobertas pelo controle informado",
+                valor: `${numero(razaoPct(a.plano.cobertas, a.plano.exigidas), 1)}%`,
+                contexto: <>{inteiro(a.plano.cobertas)} análises, limitadas ao exigido em cada sistema. Informadas: {inteiro(a.plano.realizadas)}.</>,
+              },
+              {
+                rotulo: "Sistemas com plano e sem controle informado",
+                valor: inteiro(a.plano.formas_sem_controle),
+                contexto: <>{numero(razaoPct(a.plano.formas_sem_controle, a.plano.formas), 1)}% dos sistemas com plano, {ANO}.</>,
+              },
+            ]}
+          />
+        )}
+        {a.plano_sac && (
+          <Numeros
+            colunas={3}
+            itens={[
+              {
+                rotulo: `Soluções coletivas (SAC): análises exigidas em ${ANO}`,
+                valor: inteiro(a.plano_sac.exigidas),
+                contexto: <>Em {inteiro(a.plano_sac.formas)} soluções por município com plano.</>,
+              },
+              {
+                rotulo: "Cobertas pelo controle informado",
+                valor: `${numero(planoSac.pct, 1)}%`,
+                contexto: <>{inteiro(a.plano_sac.cobertas)} análises, limitadas ao exigido em cada solução. Informadas: {inteiro(a.plano_sac.realizadas)}.</>,
+              },
+              {
+                rotulo: "Soluções com plano e sem controle informado",
+                valor: inteiro(a.plano_sac.formas_sem_controle),
+                contexto: <>{numero(razaoPct(a.plano_sac.formas_sem_controle, a.plano_sac.formas), 1)}% das soluções com plano, {ANO}.</>,
+              },
+            ]}
+          />
+        )}
         <Nota titulo="Por que a cobertura é limitada a 100% por sistema">
           Se um sistema informa mais análises que o exigido e outro informa menos, somar tudo esconderia a falta. Por isso cada sistema conta, no
-          máximo, as análises exigidas. Em {ANO}, {inteiro(a.exclusoes.plano.formas_com_controle_em_outro_municipio ?? 0)} sistemas sem controle no
-          município do plano tinham controle registrado em outro município que também atendem; eles aparecem como não cobertos no município do
+          máximo, as análises exigidas. Em {ANO}, {inteiro(a.exclusoes.plano.saa_formas_com_controle_em_outro_municipio ?? 0)} sistemas sem controle
+          no município do plano tinham controle registrado em outro município que também atendem; eles aparecem como não cobertos no município do
           plano.
         </Nota>
+        <Nota titulo="Soluções coletivas: plano e controle chamam o mesmo ponto por nomes diferentes">
+          O plano registra a exigência das soluções coletivas como &ldquo;sistema de distribuição&rdquo;; o controle registra as análises como
+          &ldquo;ponto de consumo&rdquo;, o ponto em que a população tem acesso à água da solução. O Observatório trata os dois como o mesmo ponto. A
+          correspondência é inferida do dicionário de dados, não declarada pelo Ministério.
+        </Nota>
         <Ressalva
-          permite="Ver quanto do mínimo exigido de análises bacteriológicas na rede aparece no controle informado ao SISAGUA."
-          naoPermite="Afirmar que as análises não foram feitas: o dado mede o que foi informado. Recoletas entram nas realizadas, e soluções coletivas (SAC) não entram nesta medida."
+          permite="Ver quanto do mínimo exigido de análises bacteriológicas aparece no controle informado ao SISAGUA, para sistemas e para soluções coletivas, separadamente."
+          naoPermite="Afirmar que as análises não foram feitas: o dado mede o que foi informado. Recoletas entram nas realizadas. Sistemas e soluções coletivas não se somam."
         />
+      </Secao>
+
+      <Secao
+        id="qualidade-populacao"
+        titulo="Quanta população está sob formas de abastecimento com controle informado?"
+        texto="O cadastro do SISAGUA estima a população de cada forma de abastecimento. Uma forma conta como monitorada quando tem algum registro de controle no ano, em qualquer município que atenda."
+      >
+        {cad && (
+          <Numeros
+            colunas={3}
+            itens={[
+              {
+                rotulo: `Sistemas (SAA), ${ANO}`,
+                valor: `${numero(popSaa.pct, 1)}%`,
+                contexto: <>{inteiro(cad.saa[0])} de {inteiro(cad.saa[1])} pessoas cadastradas sob sistemas com controle informado.</>,
+              },
+              {
+                rotulo: `Soluções coletivas (SAC), ${ANO}`,
+                valor: `${numero(popSac.pct, 1)}%`,
+                contexto: <>{inteiro(cad.sac[0])} de {inteiro(cad.sac[1])} pessoas cadastradas.</>,
+              },
+              {
+                rotulo: `Soluções individuais (SAI), ${ANO}`,
+                valor: inteiro(cad.sai[1]),
+                contexto: <>pessoas em {inteiro(cad.sai[3])} soluções individuais cadastradas, que não têm controle mensal obrigatório.</>,
+              },
+            ]}
+          />
+        )}
+        <Ressalva
+          permite="Dimensionar, em pessoas, o alcance do controle informado, separando sistemas, soluções coletivas e individuais."
+          naoPermite="Comparar com o Censo ou com o SINISA, nem somar os três tipos: a população é a estimada no cadastro de cada forma, quem recebe água de mais de uma forma aparece mais de uma vez, e a completude do cadastro muda entre anos."
+        />
+        <Fonte>
+          Ministério da Saúde, SISAGUA, cadastro de população abastecida, {ANO}. Junção com o controle mensal pelo código da forma de abastecimento.
+        </Fonte>
+      </Secao>
+
+      <Secao
+        id="qualidade-serie"
+        titulo={`Como o registro e os resultados evoluíram desde ${primeiro}?`}
+        texto="Brasil, ano a ano, pela soma das análises de todos os municípios. A cobertura do registro muda ao longo do tempo: parte da variação dos resultados vem de quem passou a informar, não da água."
+      >
+        <div className="grid grid-cols-1 gap-10 xl:grid-cols-2">
+          <GraficoLinhas
+            titulo="Municípios com registro no SISAGUA (% dos municípios do IBGE)"
+            dados={serieBrasil}
+            chaveX="ano"
+            formatoX="texto"
+            series={[
+              { id: "reg_ctrl", rotulo: "Controle", cor: "var(--cor-obee)" },
+              { id: "reg_vig", rotulo: "Vigilância", cor: "var(--escala-seq-3)", tracejada: true },
+            ]}
+            unidade="%"
+            casas={1}
+          />
+          <GraficoLinhas
+            titulo="Análises com presença de E. coli (%)"
+            dados={serieBrasil}
+            chaveX="ano"
+            formatoX="texto"
+            series={[
+              { id: "ctrl_ecoli", rotulo: "Controle do prestador", cor: "var(--cor-obee)" },
+              { id: "vig_ecoli", rotulo: "Vigilância de rotina", cor: "var(--escala-seq-3)", tracejada: true },
+            ]}
+            unidade="%"
+            casas={2}
+            zeroNoEixo
+          />
+        </div>
+        <div className="mt-8">
+          <TabelaDados
+            titulo={`Série por território e ano, ${primeiro} a ${anosSerie[anosSerie.length - 1]}`}
+            arquivo="saneamento-qualidade-agua-serie.csv"
+            colunas={[
+              { id: "territorio", rotulo: "Território" },
+              { id: "ano", rotulo: "Ano" },
+              { id: "controle", rotulo: "Municípios com controle", tipo: "inteiro" },
+              { id: "vigilancia", rotulo: "Municípios com vigilância", tipo: "inteiro" },
+              { id: "ctrl_ecoli", rotulo: "Controle: E. coli", tipo: "pct", casas: 2 },
+              { id: "vig_ecoli", rotulo: "Vigilância: E. coli", tipo: "pct" },
+              { id: "ctrl_cloro", rotulo: "Controle: cloro baixo", tipo: "pct" },
+              { id: "vig_cloro", rotulo: "Vigilância: cloro baixo", tipo: "pct" },
+              { id: "ctrl_turb", rotulo: "Controle: turbidez alta", tipo: "pct" },
+              { id: "plano", rotulo: "Plano SAA coberto", tipo: "pct" },
+              { id: "pop_saa", rotulo: "População SAA com controle", tipo: "pct" },
+            ]}
+            linhas={linhasSerie}
+            limite={12}
+            ordemInicial={{ coluna: "ano", direcao: "desc" }}
+            rotuloLinhas={{ singular: "linha", plural: "linhas" }}
+          />
+        </div>
+        <Ressalva
+          permite={`Acompanhar, desde ${primeiro}, quantos municípios aparecem no SISAGUA e como os resultados registrados se movem, no controle e na vigilância.`}
+          naoPermite={`Ler a série como melhora ou piora da água: em ${primeiro}, ${inteiro(regPrimeiro?.[0])} municípios tinham controle registrado, contra ${inteiro(a.municipios.controle)} em ${ANO}, e a mudança de quem informa altera a média. O plano de amostragem só entra a partir de ${auditoria.ano_inicial_plano}.`}
+        />
+        <Fonte>
+          Ministério da Saúde, SISAGUA, controle mensal e vigilância de {primeiro} a {anosSerie[anosSerie.length - 1]}; plano de amostragem desde{" "}
+          {auditoria.ano_inicial_plano}; cadastro de população abastecida. Mesmas regras de validade em todos os anos.
+        </Fonte>
       </Secao>
 
       <Secao
@@ -348,7 +533,7 @@ export function Qualidade() {
         texto="Registro, resultados e cobertura do plano por UF, em cada ano. Proporções pela soma das análises dos municípios da UF."
       >
         <TabelaDados
-          titulo="Qualidade da água por UF e ano"
+          titulo="Registro e resultados por unidade da federação e ano"
           arquivo="saneamento-qualidade-agua-uf.csv"
           colunas={[
             { id: "uf", rotulo: "UF" },
@@ -361,7 +546,9 @@ export function Qualidade() {
             { id: "vig_ecoli", rotulo: "Vigilância: E. coli", tipo: "pct" },
             { id: "ctrl_cloro", rotulo: "Controle: cloro baixo", tipo: "pct" },
             { id: "vig_cloro", rotulo: "Vigilância: cloro baixo", tipo: "pct" },
-            { id: "plano", rotulo: "Plano coberto", tipo: "pct" },
+            { id: "plano", rotulo: "Plano SAA coberto", tipo: "pct" },
+            { id: "plano_sac", rotulo: "Plano SAC coberto", tipo: "pct" },
+            { id: "pop_saa", rotulo: "População SAA com controle", tipo: "pct" },
           ]}
           linhas={linhasUf}
           limite={27}
@@ -391,7 +578,7 @@ export function Qualidade() {
             { id: "pct", rotulo: "Arquivo ÷ controle", tipo: "pct" },
           ]}
           linhas={conferencia}
-          limite={8}
+          limite={12}
           busca={false}
           rotuloLinhas={{ singular: "linha", plural: "linhas" }}
         />

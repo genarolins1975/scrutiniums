@@ -92,8 +92,8 @@ class ObservatorioSaneamento(unittest.TestCase):
         a24 = sis["por_ano"]["2024"]
         self.assertEqual(a24["municipios"], {"universo": 5571, "controle": 4563, "vigilancia": 5071, "ambos": 4351, "nenhum": 288})
         self.assertEqual(sis["por_ano"]["2025"]["municipios"]["nenhum"], 219)
-        for ano in ("2024", "2025"):
-            self.assertEqual(sis["por_ano"][ano]["codigos_fora_do_universo"], {"controle": [], "plano": [], "vigilancia": []})
+        for ano in sis["por_ano"]:
+            self.assertEqual(sis["por_ano"][ano]["codigos_fora_do_universo"], {"controle": [], "plano": [], "vigilancia": [], "cadastro": []}, ano)
         # sem registro de controle: nenhuma medida de controle, nunca zero
         sem = [m for m in self.g["municipios"] if m["qa_reg_ctrl_2024"] == 0]
         self.assertEqual(len(sem), 5571 - 4563)
@@ -206,12 +206,14 @@ class Sisagua(unittest.TestCase):
             ("530033", "S5", "SAA", 1, D, "Coliformes totais", "N de amostras com presença de coliformes totais", "1"),
             ("530034", "S5", "SAA", 1, D, "Coliformes totais", "Número de amostras analisadas", "7"),
             ("530034", "S5", "SAA", 1, D, "Coliformes totais", "N de amostras com presença de coliformes totais", "0"),
+            # linha repetida com o mesmo valor: conta uma vez
+            ("355030", "C9", "SAC", 1, C, "Turbidez (uT)", "Número de amostras analisadas", "4"),
             # inconsistente: presença + ausência diferente do total
             ("110001", "S7", "SAA", 1, D, "Coliformes totais", "Número de amostras analisadas", "5"),
             ("110001", "S7", "SAA", 1, D, "Coliformes totais", "N de amostras com presença de coliformes totais", "1"),
             ("110001", "S7", "SAA", 1, D, "Coliformes totais", "N de amostras com ausência de coliformes totais", "3"),
         ])
-        mun, realizadas, exc = self.s.agregar_controle(z, 2024)
+        mun, realizadas, formas, exc = self.s.agregar_controle(z, 2024)
         self.assertEqual(mun["355030"]["ecoli"], [1, 12])
         self.assertEqual(mun["355030"]["turbidez"], [1, 4])
         self.assertEqual(mun["530010"]["coliformes"], [1, 12])
@@ -219,8 +221,53 @@ class Sisagua(unittest.TestCase):
         self.assertEqual(mun["110001"]["formas"], 1)  # há registro, sem medida válida
         self.assertEqual(exc["valor_nao_inteiro_ecoli"], 1)
         self.assertEqual(exc["grupo_inconsistente_coliformes"], 1)
+        self.assertEqual(exc["linha_repetida_turbidez"], 1)
         self.assertEqual(exc["linhas_ra_df"], 4)
-        self.assertEqual(realizadas[("530010", "530033", "S5")], 5)
+        self.assertEqual(realizadas[("SAA", "530010", "530033", "S5")], 5)
+        self.assertEqual(formas, {"S1", "C9", "S5", "S7"})
+
+    def test_cabecalho_de_2014_e_rotulo_desconhecido(self):
+        s = self.s
+        cab = s.CONTROLE_2014["cabecalho"]
+        I = {c: i for i, c in enumerate(cab)}
+        def l(par, campo, valor, ponto="SISTEMA DE DISTRIBUIÇÃO"):
+            r = [""] * len(cab)
+            r[I["CO_MUNICIPIO_IBGE"]], r[I["NU_SOLUCAO_ABASTECIMENTO"]], r[I["TP_ABASTECIMENTO"]] = "355030", "S1", "SAA"
+            r[I["NU_ANO"]], r[I["NU_MES"]], r[I["TP_PONTO_COLETA"]] = "2014", "3", ponto
+            r[I["PARAMETRO"]], r[I["CAMPO"]], r[I["VALOR"]] = par, campo, valor
+            return r
+        z = _zip(self.dir.name, "c2014_csv.zip", cab, [
+            l("Fluoreto (mg/L)", "Número de amostras analisadas", "4"),
+            l("Fluoreto (mg/L)", "Número de dados > 1,5 mg/L", "1"),
+            l("Fluoreto (mg/L)", "Número de dados <= 1,5 mg/L", "3"),
+        ])
+        mun, _, _, _ = s.agregar_controle(z, 2014)
+        self.assertEqual(mun["355030"]["fluoreto"], [1, 4])
+        z = _zip(self.dir.name, "c2014b_csv.zip", cab, [l("Fluoreto (mg/L)", "Número de amostras analisadas", "4", ponto="REDE")])
+        with self.assertRaisesRegex(ValueError, "não previsto"):
+            s.agregar_controle(z, 2014)
+
+    def test_cadastro_populacao_sob_controle(self):
+        s = self.s
+        I = {c: i for i, c in enumerate(s.CAB_CADASTRO)}
+        def l(mun, forma, tipo, pop, ano="2024"):
+            r = [""] * len(s.CAB_CADASTRO)
+            r[I["CO_MUNICIPIO_IBGE"]], r[I["NU_SOLUCAO_ABASTECIMENTO"]], r[I["TP_ABASTECIMENTO"]] = mun, forma, tipo
+            r[I["NU_VALOR_POPULACAO_ESTIMADA"]], r[I["NU_ANO"]] = pop, ano
+            return r
+        z = _zip(self.dir.name, "cad_csv.zip", s.CAB_CADASTRO, [
+            l("355030", "S1", "SAA", "1000"),
+            l("320000", "S1", "SAA", "300"),  # mesmo sistema em outro município: conta como monitorado
+            l("355030", "S2", "SAA", "500"),
+            l("355030", "C1", "SAC", ""),  # sem população: fora e contado
+            l("355030", "I1", "SAI", "7"),
+            l("355030", "S2", "SAA", "500", ano="2023"),  # ano fora da coleta
+        ])
+        out, exc = s.agregar_cadastro(z, {2024: {"S1"}})
+        self.assertEqual(out["2024"]["355030"]["saa"], [1000, 1500, 1, 2])
+        self.assertEqual(out["2024"]["320000"]["saa"], [300, 300, 1, 1])
+        self.assertEqual(out["2024"]["355030"]["sai"], [0, 7, 0, 1])
+        self.assertEqual(exc["2024"]["populacao_vazia_ou_invalida_sac"], 1)
 
     def test_pasta_temporaria_apagada(self):
         s = self.s
@@ -246,26 +293,29 @@ class Sisagua(unittest.TestCase):
     def test_cabecalho_mudado_interrompe(self):
         z = _zip(self.dir.name, "x_csv.zip", ["Outro"] + self.s.CAB_CONTROLE[1:], [])
         with self.assertRaisesRegex(ValueError, "cabeçalho"):
-            list(self.s.ler_csv(z, self.s.CAB_CONTROLE))
+            list(self.s.ler_csv(z, self.s.CAB_CONTROLE, (self.s.CONTROLE_2014,)))
 
     def test_plano_cobertura_limitada_por_sistema(self):
         s = self.s
         I = {c: i for i, c in enumerate(s.CAB_PLANO)}
-        def l(mun, forma, valor, razao):
+        def l(mun, forma, valor, razao, tipo="SAA"):
             r = [""] * len(s.CAB_PLANO)
             r[I["CO_MUNICIPIO_IBGE"]], r[I["NU_SOLUCAO_ABASTECIMENTO"]], r[I["VALOR"]], r[I["RAZAO_HAB_DOMICILIO"]] = mun, forma, valor, razao
-            r[I["TP_ABASTECIMENTO"]], r[I["PT_MONITORAMENTO"]], r[I["PARAMETRO"]] = "SAA", "SISTEMA DE DISTRIBUIÇÃO", "Coliformes totais"
+            r[I["TP_ABASTECIMENTO"]], r[I["PT_MONITORAMENTO"]], r[I["PARAMETRO"]] = tipo, "SISTEMA DE DISTRIBUIÇÃO", "Coliformes totais"
             r[I["CAMPO"]], r[I["NU_ANO"]] = "Total Anual de Análises", "2024"
             return r
         z = _zip(self.dir.name, "plano_csv.zip", s.CAB_PLANO, [
             l("355030", "S1", "120", "2.96"), l("355030", "S1", "120", "3.55"),  # repetida com outra razão: mesmo valor
             l("355030", "S2", "60", "2.96"),
             l("355030", "S3", "10", "2.96"), l("355030", "S3", "12", "3.55"),  # conflito: fora
+            l("355030", "C1", "24", "", tipo="SAC"),  # SAC: plano na "distribuição", controle no ponto de consumo
         ])
-        out, exc = s.agregar_plano(z, 2024, {("355030", "355030", "S1"): 200, ("355030", "355030", "S2"): 30, ("320000", "320000", "S9"): 5})
-        self.assertEqual(out["355030"], {"cobertas": 150, "exigidas": 180, "realizadas": 230, "formas": 2, "formas_sem_controle": 0})
-        self.assertEqual(exc["forma_com_valor_conflitante_ou_invalido"], 1)
-        self.assertEqual(exc["formas_com_controle_sem_plano"], 1)
+        out, exc = s.agregar_plano(z, 2024, {("SAA", "355030", "355030", "S1"): 200, ("SAA", "355030", "355030", "S2"): 30,
+                                              ("SAA", "320000", "320000", "S9"): 5, ("SAC", "355030", "355030", "C1"): 12})
+        self.assertEqual(out["355030"]["saa"], {"cobertas": 150, "exigidas": 180, "realizadas": 230, "formas": 2, "formas_sem_controle": 0})
+        self.assertEqual(out["355030"]["sac"], {"cobertas": 12, "exigidas": 24, "realizadas": 12, "formas": 1, "formas_sem_controle": 0})
+        self.assertEqual(exc["saa_forma_com_valor_conflitante_ou_invalido"], 1)
+        self.assertEqual(exc["saa_formas_com_controle_sem_plano"], 1)
 
     def test_vigilancia_regras(self):
         s = self.s

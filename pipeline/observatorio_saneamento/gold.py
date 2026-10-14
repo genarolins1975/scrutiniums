@@ -1088,7 +1088,7 @@ def construir():
         "esgoto": br_des["censo2022"]["moradores"]["esgoto"]["sem_rede_nem_septica"] - sum(br_des["desigualdades"][s["id"]][0] for s in SPECS if s["tabela"] == 7555),
     }
     # Qualidade da água (SISAGUA): contadores municipais por ano, em arquivo próprio.
-    qualidade, meta["sisagua"] = sisagua.construir([r["id"][:6] for r in regs])
+    qualidade, meta["sisagua"] = sisagua.construir([r["id"][:6] for r in regs], {r["id"][:6]: r["uf"] for r in regs})
     for r in regs:
         r.update(qualidade[r["id"][:6]])
         detalhes_uf[r["uf"]][r["id"]]["qualidade"] = qualidade[r["id"][:6]]
@@ -1177,6 +1177,12 @@ ROTULOS_QUALIDADE = {
     "vig_ecoli": "vigilância (rotina), amostras com presença de E. coli",
     "vig_cloro": "vigilância (rotina), amostras com cloro residual livre abaixo de 0,2 mg/L",
     "plano": "plano de amostragem, análises de coliformes totais exigidas e cobertas no sistema de distribuição de SAA",
+    "ctrl_cor": "controle, amostras com cor aparente acima de 15 uH",
+    "ctrl_fluor": "controle, amostras com fluoreto acima de 1,5 mg/L",
+    "vig_fluor": "vigilância (rotina), amostras com fluoreto acima de 1,5 mg/L",
+    "plano_sac": "plano de amostragem, análises de coliformes totais exigidas e cobertas no ponto de consumo de SAC",
+    "pop_saa": "cadastro, população estimada sob SAA com registro de controle no ano",
+    "pop_sac": "cadastro, população estimada sob SAC com registro de controle no ano",
 }
 
 
@@ -1187,8 +1193,10 @@ def _rotulo_qualidade(c):
         return f"SISAGUA {ano}: município com registro de {'controle' if partes[2] == 'ctrl' else 'vigilância'} (1 sim, 0 não)"
     mid = "_".join(partes[1:partes.index(ano)])
     papel = {"num": "numerador", "den": "denominador"}[partes[-1]]
-    if mid == "plano":
+    if mid.startswith("plano"):
         papel = {"num": "análises cobertas", "den": "análises exigidas"}[partes[-1]]
+    elif mid.startswith("pop"):
+        papel = {"num": "população sob formas com controle", "den": "população cadastrada"}[partes[-1]]
     elif papel == "denominador":
         papel = "amostras com resultado válido"
     else:
