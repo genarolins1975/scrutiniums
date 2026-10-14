@@ -6,6 +6,7 @@ import {join} from 'node:path';
 import {indice,indiceSnapshot,boxExtremes,STATUS_LABELS} from '@/lib/eficiencia/indice-v4';
 import {IndiceResultados} from '@/components/eficiencia/IndiceResultados';
 import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
+import {AberturaCidada} from '@/components/eficiencia/AberturaCidada';
 
 type Par={a:string;b:string;difference:number;status:keyof typeof STATUS_LABELS;families_reversing:string[];families_tying:string[];dominance:boolean;ranges:Record<string,[number,number]>};
 const completo=JSON.parse(readFileSync(join(process.cwd(),'docs/obee/resultados/v4/indice-resultados-v4.json'),'utf8')) as {pairs:Par[];rows:{id:string;score:number}[];edition:string};
@@ -102,6 +103,19 @@ describe('Índice de resultados v4: apresentação',()=>{
   const html=render('Brasil','4106902');
   expect(html).toMatch(/somente para as capitais estaduais/);
   expect(html).not.toMatch(/Nota do índice/);
+ });
+
+ it('a abertura mostra as notas das duas capitais e o perfil nos sete resultados',()=>{
+  const sel={scope:'cidades' as const,place:'2611606',reference:'4106902',metric:'frequencia' as const,age:'47813'};
+  const html=renderToStaticMarkup(createElement(AberturaCidada,{selection:sel,onSelect:()=>{},indice:indiceSnapshot}));
+  const fmt=(v:number)=>v.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});
+  for(const id of ['2611606','4106902'])expect(html).toContain(fmt(indiceSnapshot.rows.find(r=>r.id===id)!.score));
+  expect(html.match(/<th scope="row">/g)).toHaveLength(7);
+  expect(html).toContain('Moradia adensada');expect(html).toContain('Mais de 1 h até o trabalho');
+  expect(html).toMatch(/Precisão municipal não quantificada/);expect(html).toMatch(/Saúde ainda fora da nota/);
+  expect(html).toContain('href="#atlas-indice"');
+  const regional=renderToStaticMarkup(createElement(AberturaCidada,{selection:{...sel,scope:'regioes',place:'Nordeste',reference:'Sul'},onSelect:()=>{},indice:indiceSnapshot}));
+  expect(regional).toContain('Domicílios com segurança alimentar');expect(regional).not.toContain('Índice de resultados');
  });
 
  it('a entrada recebe o índice por prop e não o exibe sem ele',()=>{
