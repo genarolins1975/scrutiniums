@@ -303,9 +303,10 @@ def build():
 
     comparison = compare_v3(ids, raw, components, scores, direction)
     inputs = [PILOT, EXPANSION, INCOME, V3,
-              ROOT / 'pipeline/eficiencia_resultados/seed/habitacao/9940-data.json',
-              ROOT / 'pipeline/eficiencia_resultados/seed/habitacao/9934-data.json',
-              ROOT / 'pipeline/eficiencia_resultados/seed/conectividade/data.json']
+              *(ROOT / 'pipeline/eficiencia_resultados/seed' / f for f in (
+                  'habitacao/manifest.json', 'habitacao/9934-metadata.json', 'habitacao/9934-data.json',
+                  'habitacao/9940-metadata.json', 'habitacao/9940-data.json',
+                  'conectividade/manifest.json', 'conectividade/metadata.json', 'conectividade/data.json'))]
     return {
         'edition': EDITION, 'reference_year': 2022, 'cohort': ids,
         'nature': 'indice_experimental_de_resultados_sem_atribuicao_causal',

@@ -123,6 +123,15 @@ class Edicao(unittest.TestCase):
             self.assertAlmostEqual(row['change'], row['housing_definition_effect'] + row['weights_effect'], places=9)
             self.assertAlmostEqual(row['change'], row['v4_score'] - row['v3_score'], places=9)
 
+    def test_evidencia_inclui_manifestos_e_metadados_lidos_pelas_auditorias(self):
+        paths = {e['path'] for e in self.result['input_evidence']}
+        seed = 'pipeline/eficiencia_resultados/seed/'
+        for folder in ('habitacao', 'conectividade'):
+            manifest = json.loads((v4.ROOT / seed / folder / 'manifest.json').read_text())
+            self.assertIn(seed + folder + '/manifest.json', paths)
+            for source in manifest['sources']:
+                self.assertIn(seed + folder + '/' + source['path'], paths)
+
     def test_saidas_versionadas_atualizadas(self):
         v4.write(self.result, check=True)
 

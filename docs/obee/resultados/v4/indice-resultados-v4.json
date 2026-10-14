@@ -11492,12 +11492,32 @@
       "sha256": "15339579dc2cceecd3c237569e011640aa2b7198329dbfd9c081075c3c1de7bd"
     },
     {
-      "path": "pipeline/eficiencia_resultados/seed/habitacao/9940-data.json",
-      "sha256": "19377a02df2bbd7be37d69583837d6169ca697a531d9fa9d8470771da2c1aa35"
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/manifest.json",
+      "sha256": "23b4ca15302ac746af1e8ef0977e3c47aabfbefdac5946badefba74f2886a99f"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9934-metadata.json",
+      "sha256": "542834e6d634411d52a0eddf2c697a11e9d2989b5218539eadc0a3a436131cc6"
     },
     {
       "path": "pipeline/eficiencia_resultados/seed/habitacao/9934-data.json",
       "sha256": "7cf230787c436be6263bd411ba5072593f8a8a93958576f2cee21711b0947886"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9940-metadata.json",
+      "sha256": "1046084f040b33de9e83b4ccd65684d83b32114e18209ceaf1ed4bdd26a74c3f"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9940-data.json",
+      "sha256": "19377a02df2bbd7be37d69583837d6169ca697a531d9fa9d8470771da2c1aa35"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/conectividade/manifest.json",
+      "sha256": "051f3b82410007c7fd8acb927498d46ad9bdf076de5431e0cc108ec92a806243"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/conectividade/metadata.json",
+      "sha256": "91f07325ad15764351d5b53d0d478471b811add63cdc629465d906ace12f78c2"
     },
     {
       "path": "pipeline/eficiencia_resultados/seed/conectividade/data.json",

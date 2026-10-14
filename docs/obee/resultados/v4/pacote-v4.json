@@ -24,7 +24,7 @@
     },
     {
       "path": "docs/obee/resultados/v4/indice-resultados-v4.json",
-      "sha256": "142a0035438f3cba0f2fddbc77ae500a9c28748083e334c17c13ae75f0abe249"
+      "sha256": "4123460a24e1082c9d0dc15e2ccf5881a7facfea0ae72e0307943f831475b074"
     },
     {
       "path": "pipeline/eficiencia_resultados/cesta_conjunta.py",
@@ -44,11 +44,19 @@
     },
     {
       "path": "pipeline/eficiencia_resultados/indice_v4.py",
-      "sha256": "fd54954b7870e5da15250ec5108cc88976bea5ac9496b6d2c0a0f3bbdf7fc07a"
+      "sha256": "023682b732a13664585e73c981e81838047c4dec4fb516ec9d2c88fa7d1e7c89"
     },
     {
       "path": "pipeline/eficiencia_resultados/seed/conectividade/data.json",
       "sha256": "306fa8adc598a736853d92472247f758dc4c668b6989f062312a918df7f75238"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/conectividade/manifest.json",
+      "sha256": "051f3b82410007c7fd8acb927498d46ad9bdf076de5431e0cc108ec92a806243"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/conectividade/metadata.json",
+      "sha256": "91f07325ad15764351d5b53d0d478471b811add63cdc629465d906ace12f78c2"
     },
     {
       "path": "pipeline/eficiencia_resultados/seed/expansao-2022.json",
@@ -59,17 +67,29 @@
       "sha256": "7cf230787c436be6263bd411ba5072593f8a8a93958576f2cee21711b0947886"
     },
     {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9934-metadata.json",
+      "sha256": "542834e6d634411d52a0eddf2c697a11e9d2989b5218539eadc0a3a436131cc6"
+    },
+    {
       "path": "pipeline/eficiencia_resultados/seed/habitacao/9940-data.json",
       "sha256": "19377a02df2bbd7be37d69583837d6169ca697a531d9fa9d8470771da2c1aa35"
     },
     {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9940-metadata.json",
+      "sha256": "1046084f040b33de9e83b4ccd65684d83b32114e18209ceaf1ed4bdd26a74c3f"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/manifest.json",
+      "sha256": "23b4ca15302ac746af1e8ef0977e3c47aabfbefdac5946badefba74f2886a99f"
+    },
+    {
       "path": "pipeline/eficiencia_resultados/test_indice_v4.py",
-      "sha256": "f85dc4210181e8b8e688ce8bbe7c5555ae10128a1dda89647d2ba7a3ba4d70e3"
+      "sha256": "2f5cefa446bbf54c3419bca8902973b7da7b6dd6849381efb9a53b1f831effd5"
     },
     {
       "path": "public/eficiencia/trabalho-renda/brutos/censo-renda.json",
       "sha256": "f3a411db4391e3603e391837688935e2c5749244fbd80bec757f4592859af83a"
     }
   ],
-  "packet_sha256": "b142d26a89e81d6c96172c21b8f147f3c3979ba95e6496630133139677d45c6d"
+  "packet_sha256": "b318342ab0aad847eba6d946203c8d3bdfdb289632cc703bb3d9ac3e4c1656d8"
 }
