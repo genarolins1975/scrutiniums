@@ -12,7 +12,7 @@ describe("rotas públicas", () => {
       "/", "/termos", "/privacidade", "/imprensa", "/glossario", "/observatorio-do-credito",
       "/entrar", "/entrar/sms", "/cadastro", "/cadastro/perfil", "/sobre", "/sobre/erros", "/boletim/sair",
       "/setor-eletrico/metodologia", "/setor-eletrico/metodologia/avaliacao", "/setor-eletrico/aprenda/gsf",
-      "/contas-publicas/metodologia", "/contas-publicas/glossario",
+      "/contas-publicas/metodologia", "/contas-publicas/glossario", "/gas-natural/metodologia",
       "/eficiencia-estatal/saude-capitais/metodos", "/eficiencia-estatal/trabalho-renda/metodos/",
       "/home/credito.webp", "/robots.txt", "/sitemap.xml", "/icon.svg", "/opengraph-image",
       "/api/auth/login", "/api/onboarding/phone/check", "/api/telemetria",
@@ -25,13 +25,14 @@ describe("rotas públicas", () => {
       "/resumo", "/resumo/feed.xml", "/setor-eletrico", "/setor-eletrico/pld", "/energia/series/pld.csv",
       "/eficiencia-estatal", "/eficiencia-estatal/saude-capitais", "/eficiencia-estatal/saneamento/dados",
       "/contas-publicas", "/contas-publicas/execucao", "/contas-publicas-estaduais", "/contas-publicas-estaduais/comparacao.csv",
+      "/gas-natural", "/gas-natural/gas-de-cozinha", "/gas-natural/dados", "/gas/gold/meta.json", "/gas/series/preco-glp-por-uf.csv",
       "/app", "/app/observatorios", "/dados/pix/opengraph-image", "/rota-que-ainda-nao-existe",
       "/api/eficiencia-mobilidade/exportar",
     ]) expect(ehRotaPublica(p), p).toBe(false);
   });
 
   it("não aceita prefixo parcial nem caminho disfarçado", () => {
-    for (const p of ["/sobrecarga", "/entrarx", "/eficiencia-estatal/saude-capitais/metodos/extra", "/setor-eletrico/metodologiax"]) {
+    for (const p of ["/sobrecarga", "/entrarx", "/eficiencia-estatal/saude-capitais/metodos/extra", "/setor-eletrico/metodologiax", "/gas-natural/metodologiax"]) {
       expect(ehRotaPublica(p), p).toBe(false);
     }
   });

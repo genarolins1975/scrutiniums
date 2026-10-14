@@ -6,7 +6,7 @@ type Item = { titulo: string; descricao: string; link?: { href: string; rotulo: 
 /**
  * O sistema de evidência, dito com o alcance que cada recurso tem hoje.
  * Recurso que existe em um só observatório é atribuído a ele; nada é
- * apresentado como comum aos cinco sem estar nos cinco.
+ * apresentado como comum a todos sem estar em todos.
  */
 function itens(): Item[] {
   const nErros = registroErros().erros.length;
@@ -24,7 +24,7 @@ function itens(): Item[] {
     {
       titulo: "Natureza de cada número",
       descricao:
-        "No Setor Elétrico, cada valor traz o selo observado, calculado, estimado, previsto ou cenário. Nos demais observatórios, a natureza consta da ficha e da proveniência do indicador.",
+        "No Setor Elétrico, cada valor traz o selo observado, calculado, estimado, previsto ou cenário. No Gás Natural, cada indicador traz observado ou calculado, com a fórmula. Nos demais observatórios, a natureza consta da ficha e da proveniência do indicador.",
     },
     {
       titulo: "Previsão só com estado declarado",
@@ -34,7 +34,7 @@ function itens(): Item[] {
     {
       titulo: "Dados para reutilizar",
       descricao:
-        "Com a conta: CSV e Parquet com hash SHA-256 no Setor Elétrico; CSV, XLSX e API em JSON no Crédito; CSV na maior parte dos temas da Eficiência Estatal e nas Contas Estaduais; JSON nas Contas Federais.",
+        "Com a conta: CSV e Parquet com hash SHA-256 no Setor Elétrico; CSV, XLSX e API em JSON no Crédito; CSV na maior parte dos temas da Eficiência Estatal, nas Contas Estaduais e no Gás Natural; JSON nas Contas Federais.",
     },
     {
       titulo: "Erros corrigidos em público",

@@ -24,8 +24,8 @@ export function Hero({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
               Da informação dispersa ao conhecimento <span className="text-bronze">verificável</span>.
             </h1>
             <p className="mt-7 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">
-              {observatoriosPorExtenso(true)} sobre crédito, setor elétrico, serviços públicos e contas da União e
-              dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o
+              {observatoriosPorExtenso(true)} sobre crédito, setor elétrico, gás natural, serviços públicos e contas da
+              União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o
               que o dado não permite afirmar.
             </p>
           </div>
@@ -57,7 +57,7 @@ export function Hero({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
         </div>
 
         <nav aria-label="Índice dos observatórios" className="mt-12 md:mt-16">
-          <ol className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+          <ol className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {DOMINIOS.map((d, i) => {
               const v = vitrines[d.id];
               const a = ACENTO[d.acento];

@@ -13,6 +13,7 @@
 .eficiencia{--acento:#3f635c;--suave:#eaf0eb}
 .estados{--acento:#3f635c;--suave:#eaf0eb}
 .contas{--acento:#245365;--suave:#e9eff1}
+.gas{--acento:#35598a;--suave:#e8edf4}
 .recente{border-color:var(--acento)}
 .capa{padding:24px 24px 22px;background:var(--suave);min-height:218px;position:relative}
 .capa .rotulo{color:var(--acento)}

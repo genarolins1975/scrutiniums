@@ -2,7 +2,7 @@ import Link from "next/link";
 import { DOMINIOS, type DominioId } from "@/lib/dominios";
 import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
 
-const PONTO: Record<(typeof DOMINIOS)[number]["acento"], string> = { bronze: "bg-bronze", energia: "bg-energia", obee: "bg-obee" };
+const PONTO: Record<(typeof DOMINIOS)[number]["acento"], string> = { bronze: "bg-bronze", energia: "bg-energia", obee: "bg-obee", gas: "bg-gas" };
 
 /**
  * Switcher discreto de observatório ("Crédito ▾" / "Setor Elétrico ▾" / "Eficiência Estatal ▾").

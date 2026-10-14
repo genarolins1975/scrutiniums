@@ -26,8 +26,14 @@ function paginas(dir: string, out: string[] = []): string[] {
 }
 
 describe("registro de domínios", () => {
-  it("cinco observatórios, ids e rotas estáveis, acento próprio", () => {
-    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados"]);
+  it("seis observatórios, ids e rotas estáveis, acento próprio", () => {
+    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados", "gas"]);
+    expect(DOMINIOS[5].rotaRaiz).toBe("/gas-natural");
+    expect(DOMINIOS[5].acento).toBe("gas");
+    expect(dominioDoCaminho("/gas-natural")).toBe("gas");
+    expect(dominioDoCaminho("/gas-natural/gas-de-cozinha")).toBe("gas");
+    expect(dominioDoCaminho("/gas-naturalx")).toBeNull();
+    expect(dominioDaSecao("gas:producao")).toBe("gas");
     const [c, e, f, contas] = DOMINIOS;
     expect(contas.rotaRaiz).toBe("/contas-publicas");
     expect(DOMINIOS[4].rotaRaiz).toBe("/contas-publicas-estaduais");
@@ -150,6 +156,20 @@ describe("Crédito preservado", () => {
 });
 
 describe("telemetria por domínio", () => {
+  it("toda página do Gás Natural marca uma visita aceita e atribuída ao domínio do gás", () => {
+    const dir = join(raiz, "src", "app", "gas-natural");
+    const arquivos = paginas(dir);
+    expect(arquivos.length).toBeGreaterThanOrEqual(12);
+    for (const a of arquivos) {
+      const secoes = Array.from(readFileSync(a, "utf-8").matchAll(/secao="([^"]+)"/g), (m) => m[1]);
+      expect(secoes.length, a).toBeGreaterThan(0);
+      for (const s of secoes) {
+        expect(isViewSection(s), s).toBe(true);
+        expect(dominioDaSecao(s), s).toBe("gas");
+      }
+    }
+  });
+
   it("a visita emitida pelo painel estadual é aceita e atribuída ao domínio estadual", () => {
     const pagina = ler("src/app/contas-publicas-estaduais/page.tsx");
     const secoes = Array.from(pagina.matchAll(/<MarcaVisita secao="([^"]+)"/g), (m) => m[1]);
