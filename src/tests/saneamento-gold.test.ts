@@ -102,6 +102,15 @@ describe("Saneamento: gold e conferências", () => {
     expect(comparados).toBeGreaterThan(400);
   });
 
+  it("a contagem agregada de cada medida soma a própria contagem municipal", () => {
+    for (const med of MEDIDAS) {
+      if (!med.contagem || !med.numerador || !med.denominador) continue;
+      const r = agregarMedida(med, lista);
+      const incluidos = lista.filter((m) => med.numerador!(m) != null && med.denominador!(m) != null && med.denominador!(m)! > 0);
+      expect(r.contagem, med.id).toBe(incluidos.reduce((s, m) => s + (med.contagem!(m) ?? 0), 0));
+    }
+  });
+
   it("referências territoriais existem para todas as medidas e o investimento por habitante é razão de somas", () => {
     const refs = referencias(agregados(), lista);
     for (const m of MEDIDAS) expect(refs[m.id]?.BR, m.id).toBeTruthy();
@@ -127,8 +136,10 @@ describe("Saneamento: gold e conferências", () => {
     const ts = br.tarifa_social;
     const med = medida("tarifa-social-por-familia-elegivel");
     const r = agregarMedida(med, lista);
-    expect(r.contagem).toBe(ts.economias);
+    // a contagem exibida é a da medida (famílias elegíveis), não o numerador (economias)
+    expect(r.contagem).toBe(ts.familias_mesmo_universo);
     expect(r.universo).toBe(ts.familias_mesmo_universo);
+    expect(referencias(agregados(), lista, [med.id])[med.id].BR.contagem).toBe(ts.familias_mesmo_universo);
     expect(r.municipios).toBe(ts.municipios_mesmo_universo);
     expect(referencias(agregados(), lista, [med.id])[med.id].BR.pct).toBeCloseTo((ts.economias! / ts.familias_mesmo_universo!) * 100, 9);
   });

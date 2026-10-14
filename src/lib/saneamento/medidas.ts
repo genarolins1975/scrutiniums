@@ -368,7 +368,11 @@ export function valorMedida(med: Medida, m: Municipio, variante: Variante): numb
   return med.pct(m);
 }
 
-/** Agregação pela soma: pct = Σnumerador/Σdenominador; nunca média de percentuais municipais. */
+/**
+ * Agregação pela soma: pct = Σnumerador/Σdenominador; nunca média de percentuais municipais.
+ * A contagem agregada soma a contagem da própria medida (a unidade exibida), que pode
+ * diferir do numerador: na tarifa social o numerador é economias e a contagem, famílias.
+ */
 export function agregarMedida(
   med: Medida,
   lista: readonly Municipio[],
@@ -378,6 +382,7 @@ export function agregarMedida(
   }
   let num = 0;
   let den = 0;
+  let cont = 0;
   let n = 0;
   for (const m of lista) {
     const a = med.numerador(m);
@@ -385,7 +390,8 @@ export function agregarMedida(
     if (a == null || b == null || !(b > 0)) continue;
     num += a;
     den += b;
+    cont += med.contagem ? med.contagem(m) ?? 0 : a;
     n += 1;
   }
-  return { pct: den > 0 ? (num / den) * (med.fator ?? 100) : null, contagem: n ? num : null, municipios: n, universo: den };
+  return { pct: den > 0 ? (num / den) * (med.fator ?? 100) : null, contagem: n ? cont : null, municipios: n, universo: den };
 }
