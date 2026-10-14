@@ -25,13 +25,19 @@ const cheio: Institucional = {
 };
 
 describe("campos institucionais", () => {
-  it("nascem vazios: nada de nome, financiamento, conflitos, e-mail ou conselho inventados", () => {
+  it("só trazem o que o mantenedor decidiu (14/10/2026); e-mail e conselho seguem vazios, sem nada inventado", () => {
     const c = JSON.parse(ler("config/institucional.json"));
-    expect(c.mantenedor).toEqual({ nome: "", natureza_juridica: "" });
-    expect(c.financiamento).toBe("");
-    expect(c.conflitos_de_interesse).toBe("");
+    expect(c.mantenedor).toEqual({ nome: "Genaro Lins", natureza_juridica: "pessoa física" });
+    expect(c.financiamento).toMatch(/^Mantida com recursos próprios do mantenedor/);
+    expect(c.dados.licenca_derivados).toContain("CC BY 4.0");
     expect(c.email_institucional).toBe("");
     expect(c.conselho_consultivo).toEqual([]);
+  });
+
+  it("conflitos de interesse não nomeiam as entidades em que o responsável ocupa cargos", () => {
+    const c = JSON.parse(ler("config/institucional.json"));
+    expect(c.conflitos_de_interesse).toContain("/sobre/governanca");
+    expect(c.conflitos_de_interesse).not.toMatch(/FGC|Fundo Garantidor|Associação Open Finance|AOF/);
   });
 
   it("seção vazia não é renderizada; preenchida, aparece com o texto do mantenedor", () => {

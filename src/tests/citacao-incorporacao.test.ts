@@ -98,6 +98,9 @@ describe("API pública de leitura", () => {
     expect(cfg).not.toContain('{key: "Access-Control-Allow-Origin", value: "*"}');
     expect(cfg).toContain('{source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]}');
     expect(p).not.toMatch(/sem autenticação/);
+    // a descrição de busca não pode prometer acesso sem conta
+    expect(p).not.toMatch(/JSON aberto, sem chave/);
+    expect(p).toContain("para quem está conectado com a conta gratuita: catálogo");
   });
 });
 

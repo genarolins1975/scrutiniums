@@ -16,9 +16,9 @@ import { URL_FEED_ALERTAS } from "@/lib/feedResumo";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "API pública de leitura do crédito",
+  title: "API de leitura do crédito",
   description:
-    "Os dados do Observatório Brasileiro de Crédito em JSON aberto, sem chave: catálogo de arquivos, esquema, cadência de publicação e política de versão e de quebra.",
+    "Os dados do Observatório Brasileiro de Crédito em JSON, para quem está conectado com a conta gratuita: catálogo de arquivos, esquema, cadência de publicação, licença e política de versão e de quebra.",
   alternates: { canonical: "/dados/api" },
 };
 
