@@ -6,6 +6,6 @@
  "email_institucional": "",
  "conselho_consultivo": [],
  "api": { "aviso_previo_quebra_dias": null },
- "dados": { "licenca_derivados": "Os dados derivados publicados pela Scrutiniums (séries, tabelas, arquivos da API e gráficos) estão sob a licença Creative Commons Atribuição 4.0 Internacional (CC BY 4.0): podem ser copiados, adaptados e usados, inclusive para fins comerciais, desde que citem a Scrutiniums e a fonte primária. Dados de terceiros seguem a licença da fonte original." },
+ "dados": { "licenca_id": "cc-by-4.0", "licenca_derivados": "Os dados derivados publicados pela Scrutiniums (séries, tabelas, arquivos da API e gráficos) estão sob a licença Creative Commons Atribuição 4.0 Internacional (CC BY 4.0): podem ser copiados, adaptados e usados, inclusive para fins comerciais, desde que citem a Scrutiniums e a fonte primária. Dados de terceiros seguem a licença da fonte original." },
  "zenodo": { "criadores": [], "comunidade": "", "doi_conceito": "" }
 }
