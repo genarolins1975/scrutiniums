@@ -1,0 +1,2793 @@
+{
+  "schema_version": 1,
+  "etapa": "inventario_inicial_sem_catalogacao",
+  "interpretacao": {
+    "candidatos": "Ocorrências mecânicas, incluindo nomes, códigos e texto técnico ainda sem classificação. Não equivalem a chaves de tradução.",
+    "campos_gold": "JSON Pointers por arquivo, com índices de arrays agrupados; chaves de objetos preservadas. Nenhuma string é declarada traduzível por heurística.",
+    "zeros": "Nenhuma chave ou campo foi catalogado neste estágio; zeros não significam ausência de pendências.",
+    "percentual": "Indisponível enquanto o inventário semântico e a comprovação dos marcadores não estiverem implementados.",
+    "rotas": "Contagem de arquivos e templates, não enumeração das URLs dinâmicas nem verificação da política de acesso."
+  },
+  "escopo": {
+    "inventario_sha256": "6f3fbb68c48688a4208c3bdf70acc525b1ca81c3e8788a6b3e83fbded085f9b5",
+    "arquivos_analisados": 5091,
+    "fontes_sha256": "589b38a4854838bf10e2a764f5a1d378d38625c3725c7a3d3905de01af22546c",
+    "pendencias_sha256": "e91edaf61d71afbcf1bef4e3d5f78bc2ecba1686157046f34652df22d8790d68",
+    "nao_classificadas": [
+      {
+        "path": "data/eficiencia_mobilidade/aop/seed.json.gz.b64",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "data/eficiencia_mobilidade/originais.tar.gz.b64",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/ORIGEM.md",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/ac.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/al.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/am.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/ap.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/ba.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/ce.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/df.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/es.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/go.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/ma.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/mg.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/ms.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/mt.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/pa.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/pb.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/pe.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/pi.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/pr.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/rj.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/rn.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/ro.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/rr.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/rs.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/sc.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/se.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/sp.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/contas-estaduais/bandeiras/to.svg",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/assistencia-social/rma-cras.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/assistencia-social/unidades.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/atlas/frequencia-escolar-2022.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/atlas/panorama-capitais.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/cultura/celulas.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/habitacao/componentes.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/habitacao/deficit.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/habitacao/inadequacao.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/habitacao/renda.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/justica/comarcas.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/justica/defensorias.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/justica/tribunais.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/saneamento/agua.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/saneamento/drenagem.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/saneamento/esgoto.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/saneamento/recursos.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/saneamento/residuos.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/seguranca-alimentar/municipios.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/eficiencia/seguranca-alimentar/pnad.csv",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/estudos/copel-2025.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/geo/municipios.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/geo/uf.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_bacias_geo.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_capacidade_eventos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_clima_pontos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_ear_recortes_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_ear_recortes_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_mlt_mudancas.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_precipitacao_bacias_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_precipitacao_bacias_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_previsao.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_reservatorios.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_reservatorios_45d.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_reservatorios_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_subsistemas_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/agua_temperatura_uf_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_calendario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_comparacoes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_decomposicao_backtest.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_decomposicao_diaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_diaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_horaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_perfil_tipico.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_pico_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_revisoes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_temperatura_diaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_verificada_diaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/carga_verificada_horaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/clima_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/cmo_semanal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/conta_bandeiras.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/conta_cde_custeio.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/conta_composicao_b1.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/conta_conflitos_fonte.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/conta_historico_b1.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/conta_ipca.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/conta_reajuste_vs_ipca.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/conta_reajustes_b1.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/conta_subsidios_anual.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/conta_tarifas_b1_vigentes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/conta_tarifas_bt_historico.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/dados_calendario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/dados_catalogo.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/dados_conjuntos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/dados_eixos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/dados_recursos_aneel.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/dados_recursos_ccee.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/dados_recursos_ons.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/dados_revisoes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/dados_validacoes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/ear_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_agentes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_ativos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_ativos.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_cadeia.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_cadeia_societaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_companhias_cvm.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_distribuidoras.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_evidencias.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_financas.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_financas_ajustes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_financas_anual.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_financas_trimestral.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_grupos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_proprietarios.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/empresas_transmissao.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/ena_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_capacidade_uf_fonte.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_carteira_ralie.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_confiabilidade_previsoes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_contratos_transmissao.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_encerramentos_outorga.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_leiloes_transmissao.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_liberacoes_anuais.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_obras_transmissao.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_pde2035.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_rede_epe.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_trajetorias_ralie.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_unidades_ralie.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_usinas_pontos.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/expansao_usinas_siga.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_a11_conferencia.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_capacidade_fonte_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_capacidade_unidades.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_capacidade_usina_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_cvu_semanal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_diaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_matriz_diaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_matriz_horaria_12m.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_reconciliacao_balanco.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_restricao_diaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_restricao_usina_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_rotulos_fonte.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_termica_motivo_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/geracao_termica_usina_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_acesso_pnad.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_cde_custeio.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_cde_mensal_uf.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_cde_mensal_uf.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_cobertura_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_cobertura_mensal.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_luz_para_todos_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_luz_para_todos_municipios.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_luz_para_todos_recursos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_municipios.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_pof.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_sistemas_isolados.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_sistemas_isolados_pontos.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_tsee_antiga.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_tsee_distribuidoras.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/inclusao_tsee_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/intercambio_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/mercado_agentes_aneel.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/mercado_ccee_desligamentos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/mercado_ccee_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/mercado_consumo_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/mercado_consumo_uf.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/mercado_conta_bandeira.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/mercado_detalhe.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/mercado_distribuidoras_ano.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/mercado_distribuidoras_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/mercado_encargos_mme.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/mercado_nacional_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_acumulado_ano.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_anual.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_contexto_social.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_distribuidoras.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_evidencias.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_evidencias_tarifa.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_evidencias_tecnica.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_municipios.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_municipios.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_nacional.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_nacional.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_tarifa_b1.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/perdas_tecnicas_regulatorias.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_amplitude_diaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_cmo_horario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_cmo_semanal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_evidencias.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_hora_dia.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_horario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_horario_recente.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_limites_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_sazonal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/pld_separacao_diaria.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/previsoes_ajustes_c2.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/previsoes_emissoes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/previsoes_emissoes_2026-09.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_atendimento.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_atendimento_telefonico.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_brasil.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_compensacoes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_conjuntos_anual_2000_2009.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_conjuntos_anual_2010_2019.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_conjuntos_anual_2020_2029.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_conjuntos_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_distribuidoras_anual.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_distribuidoras_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_distribuidoras_serie.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_eventos_emergencia.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_mapa.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_municipios.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/qualidade_reconciliacao_dgc.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_atls.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_balanco_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_balanco_residuos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_exterior_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_fronteiras_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_horario_2021.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_horario_2022.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_horario_2023.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_horario_2024.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_horario_2025.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_horario_2026.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_interrupcoes_carga.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_janela_horaria.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_pdo_conferencia.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_programado_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_programado_horario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/rede_subsistemas_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/regulacao_agenda_2026_2027.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/regulacao_bandeiras_adicionais.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/regulacao_consultas.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/regulacao_limites_pld_atos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/regulacao_limites_pld_conferencias.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/regulacao_limites_pld_vigencias.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/regulacao_linha_do_tempo.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/regulacao_procedimentos_vigentes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/sintese_episodios.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/sintese_multiplos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/sintese_regras_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/sintese_revisoes.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/territorio_areas_alternativas.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/territorio_areas_carga.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/territorio_conjuntos.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/territorio_distribuidoras.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/territorio_municipios.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/territorio_municipios.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/territorio_usinas.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/territorio_usinas.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/transicao_mcti_fatores.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/transicao_mcti_om_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/transicao_mmgd_distribuidoras.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/transicao_mmgd_municipio_ano_fonte.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/transicao_mmgd_municipios.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/transicao_mmgd_perfil.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/transicao_mmgd_uf_mes_fonte.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/transicao_municipios.json",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/transicao_ons_mmgd_diario.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/energia/series/transicao_ons_mmgd_mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/carregadores-ativos-mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/destino-da-producao-mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/entregas-por-transportadora-mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/importacao-gas-natural-mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/importacao-por-origem-12m.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/ipca-gas-12-meses.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/preco-glp-brasil-mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/preco-glp-por-uf.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/preco-gnv-brasil-mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/preco-gnv-por-uf.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/preco-venda-distribuidoras-mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/precos-internacionais-mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/producao-gas-natural-mensal.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/gas/series/producao-por-uf-12m.csv",
+        "dominio": null,
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/obs/atlas.css",
+        "dominio": "credito",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/obs/data/gold/alerts.xml",
+        "dominio": "credito",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/obs/styles.css",
+        "dominio": "credito",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/saneamento/gold/desigualdades_municipios.csv",
+        "dominio": "saneamento",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/saneamento/gold/etes.csv",
+        "dominio": "saneamento",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/saneamento/gold/municipios.csv",
+        "dominio": "saneamento",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/saneamento/gold/prestadores.csv",
+        "dominio": "saneamento",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/saneamento/gold/qualidade_municipios.csv",
+        "dominio": "saneamento",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/app/app/(foco)/observatorios/escolha.module.css",
+        "dominio": "plataforma",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/app/contas-publicas-estaduais/estados.css",
+        "dominio": "contas_estaduais",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/app/contas-publicas/contas.css",
+        "dominio": "contas_federais",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/app/eficiencia-estatal/trabalho-renda/trabalho-renda.css",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/app/gas-natural/gas.css",
+        "dominio": "gas",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/app/globals.css",
+        "dominio": "plataforma",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/app/icon.svg",
+        "dominio": "plataforma",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/app/setor-eletrico/atlas-inicial.css",
+        "dominio": "energia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/contas-publicas/IndiceFederal.module.css",
+        "dominio": "contas_federais",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/eficiencia/AtlasCidadao.module.css",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/eficiencia/IndiceResultados.module.css",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/eficiencia/entrada/Entrada.module.css",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/eficiencia/mobilidade/mobilidade.module.css",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/energia/ExploracaoInicial.module.css",
+        "dominio": "energia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/energia/GravuraEnergia.module.css",
+        "dominio": "energia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/energia/LeiturasIntegradas.module.css",
+        "dominio": "energia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/energia/PercursoVisualEnergia.module.css",
+        "dominio": "energia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/energia/Riscos.module.css",
+        "dominio": "energia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/observatorios/EntradaEstado.module.css",
+        "dominio": "plataforma",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      }
+    ],
+    "exclusoes": [
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/AC-rgf/ef6d8719a609d82d798608950659f597954e6685bd09a70feac9b56c2a1c4095.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/AC-rreo/ed89f480f9810eea36e9578b2a54de87ec073311ea65016150bcd0f60c2fb8a0.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/AL-rgf/8a8ae82a2f992cb23296a1d4f0bae7444e5b55c9c738543c26a86c055370c59f.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/AL-rreo/f6b309279cbaf0684c1261a38d39fc99e15472b9809ce43ee98cac2e11391cce.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/AM-rgf/1325de32ba2d64e6822d95869ddc41b986a86a17e6e101e2dc7b63f2d84edac0.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/AM-rreo/46255e072422ed0629233b8948b872c98783e7fb515ce09110ea5fa76490eefd.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/AP-rgf/4d1177535e2902a9102ea7b3ad7140c518dd08ddaef6f09f77db524544bd4a3d.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/AP-rreo/a67e5594f52411db4323a4a2422a1ecc7910cd301134d954e65f998bdc4f41e2.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/BA-rgf/8fd612255377c442fe01eadee706e9d7a4ffe1c0c0edc5a0c1c6be6d51f07a51.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/BA-rreo/519b3be97233bec56ebe417cee5b79183f68d350dd216b44e26d21c9354c1d72.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/CE-rgf/0bc99956e53ea8e2faa0351a546c643e1c31dfc400d5623d30fab2bd7d55546d.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/CE-rreo/61d5701474dd657721426c4b67dd9aba4050feefdf39b43b7f939957a44309a8.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/DF-rgf/43a1f07abf5b76657b72f8e99e9bcc5b04a7e94eac54bb48f83e79799963dfc9.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/DF-rreo/aa87cf8737e731d0e07159651016163c7f7926816a23443590f2c3a1b6538acc.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/ES-rgf/98460d47b7da9a2cc1558a543525a1481194f570b5dd77a65b01bcc1a725928f.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/ES-rreo/499a70fb4492d4f63e59fb305ddd17880ea941d419d8c862404917690e01cfd9.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/GO-rgf/2f4f9413d323548d760eedc9831e8a136ecfaf6b5bc357726b2550d25089e47e.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/GO-rreo/ecd58be5af1ede03099ce7dd5f210c489aac3d7fea42656014794a37ee638761.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/MA-rgf/d5c58191748d006b1ffe80d6d40ef9e557bb76d50dd84878b192b5c2462ddd01.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/MA-rreo/96559e9fe94fa001d2c2ddeaa6f042404fa625be499419b751755c0e7ba2f37c.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/MG-rgf/e43865fe90b3cb92cd2a9671ceb9039bb69d6668c1b8407004b0fdad35fa5a60.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/MG-rreo/d8eae4d00c3ff75c48375c450766efd6cfac6d571f93e0bb59a6e6c6b8ed9f2b.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/MS-rgf/66f7da48522a31114af7e51a2da4729f8b0059db55b274803abe26c80652536f.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/MS-rreo/a37ebfd0a8492434a46c58c0cc5cf5c803791176a532a70685925acbabd502f3.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/MT-rgf/2d318468e4d003565b7c7fa1f1160858cbc1cb9fd878e24de9d41ac663eb7056.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/MT-rreo/8a6bced3b0f9834e75bb54c1463bcfe8fc3bb452182f168d752ddab4d2b3d2db.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/PA-rgf/728ef72e2bde043c949c167ade76b17810bc4124409430099945d78c171a6f2f.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/PA-rreo/9e4426347b28301f59d98b9b880aa6c945e5eb2bf431c53c548ddce37f6afa7a.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/PB-rgf/c826d23fa909083118b25ed9a5d67feb00d6259116c50502a17dbf207d179364.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/PB-rreo/23b53850a6b3d1dd906ab20f0830aa5c0781936dd58fbb42aca363b3fa3e5ba7.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/PE-rgf/b5277330329482394ab37b9ae2de2caa28be7631b1e75ced31f92ae2553e792d.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/PE-rreo/ea531794d506cb2e9b3ea9ce2f289be9ea8bceacfae4de8d5148177333a09513.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/PI-rgf/c79a79b751db882db0796034e216fd3e1d5a8df54baabe42c5ef5d6032180c7c.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/PI-rreo/4b0869236169fa4e5c0846d37c04ef38c8826fc55f860b02e84600f796090c41.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/PR-rgf/af7c504de3f770765d528e49289f8b0a056334ae9e215165e4e42facf92ccfe3.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/PR-rreo/ea2a6a2f7c39b7073ba251108af294c0bb5b9d04570f52f3cae246a3bef50ca9.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/RJ-rgf/31ea7e016615115f06bfe03e2b0f318f38763f52451ca30907f52286077ffcf7.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/RJ-rreo/388bbc60d0dbb78ae65a422bb051f57253f59bd7e5ca34cbcc6434930a8dd6e5.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/RN-rgf/93d9e9e120284133d7d8a88bc6e07f43cc887d5a2e5a328b2b13b91652e6d6bd.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/RN-rreo/8f632fa044bc781db3f78e1b06dd4d7cbcdb78716c43e076bfc0b0d8850950f3.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/RO-rgf/d1ca57011841691fa288ea99b59c0965cf8b31d9b1c4298251857b241e83c1ce.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/RO-rreo/1c6facc31062cb674c353f030480229a444bd3a06750bdafd3c68bee3fe92f86.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/RR-rgf/e9d23abf9fe51590a583690fc400667deb744fc19f5061b4042bb6b6cceac297.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/RR-rreo/53949f57d7d98ba92c2334b69db7944763b956550219c5b9e57c1e08c7ded106.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/RS-rgf/06326b11fca44e62317182c8c1f5cf3cdc9545d039ae57cd95e1108090d63346.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/RS-rreo/439ef6ab648b532b7577d64c32bfb00ef8ca45a01eeec83ebc10d15169eddc0f.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/SC-rgf/10cb491e3f3c44708399cd8a4826d2ad86e2ccb2d2a2736c1a17e43a0ff3f780.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/SC-rreo/48a587ca5b6f7fe89429a22c0f29e8bd950a5744a0432763638dd5abaa7e744d.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/SE-rgf/7b3905057a5ca42b04b882af74d8ea47dd047154447ce6971c878ea83d9cf4d6.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/SE-rreo/a2e31aaa0d06b5eebf2c6c22ae363d06aa8ae0942971990290b8af6c08ac7e9c.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/SP-rgf/3ec587f7ec553275839260c43c3b5ec21a280a5df3b958d396dbea9e077c1a35.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/SP-rreo/e8fb24d693058fababe7df4ad33b1c3579ec27b1e45510eaa7f3f726cd6b1046.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/TO-rgf/535925cac3b8d3bd57be88f06ae94102b15f2ed6b761103cca34a81b64dcea95.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/TO-rreo/95856c9162c115faf1b3db80e11062db1f51426480ce83620062a9fff0affebd.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/anual/manifesto.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/AC-rgf/f360e27370acabcb6813ce61e0fdfa4bc085cbb7556be87cdedece2495a917a1.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/AL-rgf/172ef6b7cc544ac5fc6d500f47c28a6635f391664534d4f503db44f6247cfff3.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/AM-rgf/212caf47129a787ca7b1f6346a764ffe2fd0278d88fd1a3e8e762b46b3b8e088.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/AP-rgf/e7353275b7a2d8bdbfb788f2f08794019aa5f3daa347b6439150961b3c19b7d6.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/BA-rgf/627da98a8ddc0224901642f8ae553e515a80bfa3f69bde65f1665a01c853f7f9.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/CE-rgf/7f814e7bb62b4c8e58dde16ef19e5bde289ab53368c0205da1b322a39f6d2b7a.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/DF-rgf/7057ea28b03175dbe440fb4792f6a7144bfaa2c782f2e0ddfd2890dbde549fc0.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/ES-rgf/6b4e0aa690f3836ff62a88192162912c43fcd1eb04a1e078385024b4721087dd.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/GO-rgf/31287294870da1243a4492e54d5ccbb00ccb4dd75329318cb1d06e6625e35157.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/MA-rgf/305de77da8f5f9ce3ac1c96f2d5ca64fc1c316bc5c4612a62d8daf76185e7aff.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/MG-rgf/ff3ad0aad30d1e9c4fbb7eb660560a497853cb9a6323d23c84c93431d197b2a5.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/MS-rgf/3192be1b020c0ee0269bbf3d0358e8b9b26b52e1079664968ddccfd1c90359ff.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/MT-rgf/4ce8d78dd67f97732c3cd5128e1ea0ba1d9fb4b2b81147682722f925bf5f48a0.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/PA-rgf/6207079a41e27cc70e66603fd2777fdc96de407c8e7f4be335bdf12f29112031.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/PB-rgf/7a483ee9a0b93e86a76208c91de6bcee4a53b8143ffae2d7c7f02e85a68d6456.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/PE-rgf/9a331ab27dc0c30cdc856d80a61dbacfd0c65c1b89e30f62f1286f2a4c99b4e6.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/PI-rgf/c1e453e5365c2fa32d1a8d0cedd01f1812713e7d98e376756a95a6bc91b3f3cd.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/PR-rgf/febe18672e4fe3143cb0d9d0efe29f22b9873277c1822923d4a48f59086cbcc5.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/RJ-rgf/7f012906da845b0c504a507b147c9bbf650f7532895e07eadb985e2b0d871eed.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/RN-rgf/e45edad4e3b372ad83a9c9062b09c9e375a9e1d891349847c3b358bae40274e7.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/RO-rgf/16fb736d5d5a4a0c7cb5c0796a904d843f3744547d322d5b1f2a290f2e15abbf.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/RR-rgf/8814177a78a8afcf9bafac0d765059fc915e60545d3e73c5bb53bf36dea3b0c5.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/RS-rgf/358023fb507d7f7852a980b75e66cf59bec41c5eac0afcfeab6e7a9de782b771.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/SC-rgf/ca6bd4553f8b179a4281cdca979e88dae20b46d9dc9ecb8471039c4911417749.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/SE-rgf/c88ae3bd52e8da806dcea641dc25aa95ae4764dff131a9ccd922a881c6cdb571.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/SP-rgf/b870ad07cad8acaaf5f45e8d911d63bd84d67592e213c03f82931dda34fd02fc.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/TO-rgf/eccf54de4454c71611326b16a2a9c08f2f32fb186f35756d52d16fd7aaca2b9c.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012-nacional/parcial/manifesto.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/AM-rgf/1325de32ba2d64e6822d95869ddc41b986a86a17e6e101e2dc7b63f2d84edac0.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/AM-rreo/46255e072422ed0629233b8948b872c98783e7fb515ce09110ea5fa76490eefd.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/DF-rgf/43a1f07abf5b76657b72f8e99e9bcc5b04a7e94eac54bb48f83e79799963dfc9.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/DF-rreo/aa87cf8737e731d0e07159651016163c7f7926816a23443590f2c3a1b6538acc.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/MG-rgf/e43865fe90b3cb92cd2a9671ceb9039bb69d6668c1b8407004b0fdad35fa5a60.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/MG-rreo/d8eae4d00c3ff75c48375c450766efd6cfac6d571f93e0bb59a6e6c6b8ed9f2b.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/PE-rgf/b5277330329482394ab37b9ae2de2caa28be7631b1e75ced31f92ae2553e792d.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/PE-rreo/ea531794d506cb2e9b3ea9ce2f289be9ea8bceacfae4de8d5148177333a09513.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/RS-rgf/06326b11fca44e62317182c8c1f5cf3cdc9545d039ae57cd95e1108090d63346.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/RS-rreo/439ef6ab648b532b7577d64c32bfb00ef8ca45a01eeec83ebc10d15169eddc0f.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/SP-rgf/3ec587f7ec553275839260c43c3b5ec21a280a5df3b958d396dbea9e077c1a35.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/SP-rreo/e8fb24d693058fababe7df4ad33b1c3579ec27b1e45510eaa7f3f726cd6b1046.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/anual/manifesto.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/parcial/AM-rgf/212caf47129a787ca7b1f6346a764ffe2fd0278d88fd1a3e8e762b46b3b8e088.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/parcial/DF-rgf/7057ea28b03175dbe440fb4792f6a7144bfaa2c782f2e0ddfd2890dbde549fc0.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/parcial/MG-rgf/ff3ad0aad30d1e9c4fbb7eb660560a497853cb9a6323d23c84c93431d197b2a5.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/parcial/PE-rgf/9a331ab27dc0c30cdc856d80a61dbacfd0c65c1b89e30f62f1286f2a4c99b4e6.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/parcial/RS-rgf/358023fb507d7f7852a980b75e66cf59bec41c5eac0afcfeab6e7a9de782b771.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/parcial/SP-rgf/b870ad07cad8acaaf5f45e8d911d63bd84d67592e213c03f82931dda34fd02fc.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/contas-estaduais/evidencias/20261012/parcial/manifesto.json",
+        "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais."
+      },
+      {
+        "path": "public/eficiencia/series/ctx_populacao_residente.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/dicionario_das_colunas.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_aprovacao_rede_municipal.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_atu_rede_municipal.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_despesa_aplicacao_direta_por_matricula.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_despesa_funcao_educacao.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_despesa_ponte_matricula.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_despesa_por_habitante.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_despesa_subfuncao.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_diagnostico_pares_msc.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_ideb_rede_municipal.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_matriculas_conveniadas_municipais.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_matriculas_rede_municipal.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/edu_saeb_rede_municipal.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/manifesto_das_capturas.json",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/referencia_nacional_despesa_habitante_2025.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/referencias_educacao_capitais.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_aps_cobertura_potencial.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_aps_equipes.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_aps_equipes_por_10mil.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_asps_base_receita.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_asps_percentual_aplicado.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_asps_valor_aplicado.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_ctx_cobertura_planos.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_ctx_populacao_residente.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_despesa_funcao_saude.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_despesa_natureza.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_despesa_por_fonte.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_despesa_por_habitante.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_despesa_subfuncao.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_icsap_grupos.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_icsap_internacoes.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_icsap_participacao.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_icsap_taxa.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_rede_ubs_publicas.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_rede_ubs_publicas_por_10mil.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/sau_rede_ubs_retrato.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/saude_dicionario_das_colunas.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/saude_manifesto_das_capturas.json",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/saude_matriz_de_fontes.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/saude_referencias_capitais.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/series/saude_referencias_nacionais.csv",
+        "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/caged-sgs.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/censo-ocupacoes-metadados.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/censo-ocupacoes.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/censo-renda-metadados.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/censo-renda-raca-metadados.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/censo-renda-raca.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/censo-renda-sexo-metadados.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/censo-renda-sexo.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/censo-renda.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/ibge-municipios-atuais-meta.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/ibge-municipios-atuais.json.gz",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/mds-cadunico-202312.json.gz",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/mds-cadunico-202412.json.gz",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/mds-cadunico-202512.json.gz",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/mds-cadunico-202609.json.gz",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-deciles-metadados.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-deciles.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-gini-metadados.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-gini.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-jornada-metadados.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-jornada.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-programas-metadados.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-programas.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-rendimento-metadados.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-rendimento.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-subutilizacao-metadados.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-subutilizacao.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-trabalho-metadados.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/brutos/pnad-trabalho.json",
+        "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente."
+      },
+      {
+        "path": "public/eficiencia/trabalho-renda/snapshot.payload.gz.b64",
+        "motivo": "Fonte canônica validada para materialização; a saída é contada uma única vez."
+      }
+    ],
+    "materializados": [
+      {
+        "id": "assistencia",
+        "dominio": "eficiencia",
+        "origem": "pipeline/assistencia/seed/recorte.json.gz",
+        "sha256": "414f53344c2d61f6e3856de0347fc17073d14f29d3c93fe5e9fdde0dc6d7e3d0",
+        "alvo_hash": "originais",
+        "gerador_sha256": "cb83a769bb66c4b5f74a2e37f9e97d405df393ea299892d02500a57a1fb7d43c",
+        "saidas": [
+          "public/eficiencia/assistencia-social/dicionario.json",
+          "public/eficiencia/assistencia-social/manifesto.json",
+          "public/eficiencia/assistencia-social/memoria-escore.json",
+          "public/eficiencia/assistencia-social/panorama.json",
+          "public/eficiencia/assistencia-social/rma-cras.csv",
+          "public/eficiencia/assistencia-social/uf-AC.json",
+          "public/eficiencia/assistencia-social/uf-AL.json",
+          "public/eficiencia/assistencia-social/uf-AM.json",
+          "public/eficiencia/assistencia-social/uf-AP.json",
+          "public/eficiencia/assistencia-social/uf-BA.json",
+          "public/eficiencia/assistencia-social/uf-CE.json",
+          "public/eficiencia/assistencia-social/uf-DF.json",
+          "public/eficiencia/assistencia-social/uf-ES.json",
+          "public/eficiencia/assistencia-social/uf-GO.json",
+          "public/eficiencia/assistencia-social/uf-MA.json",
+          "public/eficiencia/assistencia-social/uf-MG.json",
+          "public/eficiencia/assistencia-social/uf-MS.json",
+          "public/eficiencia/assistencia-social/uf-MT.json",
+          "public/eficiencia/assistencia-social/uf-PA.json",
+          "public/eficiencia/assistencia-social/uf-PB.json",
+          "public/eficiencia/assistencia-social/uf-PE.json",
+          "public/eficiencia/assistencia-social/uf-PI.json",
+          "public/eficiencia/assistencia-social/uf-PR.json",
+          "public/eficiencia/assistencia-social/uf-RJ.json",
+          "public/eficiencia/assistencia-social/uf-RN.json",
+          "public/eficiencia/assistencia-social/uf-RO.json",
+          "public/eficiencia/assistencia-social/uf-RR.json",
+          "public/eficiencia/assistencia-social/uf-RS.json",
+          "public/eficiencia/assistencia-social/uf-SC.json",
+          "public/eficiencia/assistencia-social/uf-SE.json",
+          "public/eficiencia/assistencia-social/uf-SP.json",
+          "public/eficiencia/assistencia-social/uf-TO.json",
+          "public/eficiencia/assistencia-social/unidades.csv"
+        ],
+        "verificacao": "hash_seed_presenca_json_saidas"
+      },
+      {
+        "id": "seguranca_alimentar",
+        "dominio": "eficiencia",
+        "origem": "pipeline/eficiencia_alimentar/seed/recorte_ibge.json.gz",
+        "sha256": "3f6c2cce094fe6028abadba7c3576b08c4d62d4b9db032fb3cd2afe43fd1c5da",
+        "alvo_hash": "originais",
+        "gerador_sha256": "17080f68796724ca8db58980982faa4e981b5dade976c3b07d5cf66046e57bc3",
+        "saidas": [
+          "public/eficiencia/seguranca-alimentar/municipios.csv",
+          "public/eficiencia/seguranca-alimentar/pnad.csv",
+          "public/eficiencia/seguranca-alimentar/uf-AC.json",
+          "public/eficiencia/seguranca-alimentar/uf-AL.json",
+          "public/eficiencia/seguranca-alimentar/uf-AM.json",
+          "public/eficiencia/seguranca-alimentar/uf-AP.json",
+          "public/eficiencia/seguranca-alimentar/uf-BA.json",
+          "public/eficiencia/seguranca-alimentar/uf-CE.json",
+          "public/eficiencia/seguranca-alimentar/uf-DF.json",
+          "public/eficiencia/seguranca-alimentar/uf-ES.json",
+          "public/eficiencia/seguranca-alimentar/uf-GO.json",
+          "public/eficiencia/seguranca-alimentar/uf-MA.json",
+          "public/eficiencia/seguranca-alimentar/uf-MG.json",
+          "public/eficiencia/seguranca-alimentar/uf-MS.json",
+          "public/eficiencia/seguranca-alimentar/uf-MT.json",
+          "public/eficiencia/seguranca-alimentar/uf-PA.json",
+          "public/eficiencia/seguranca-alimentar/uf-PB.json",
+          "public/eficiencia/seguranca-alimentar/uf-PE.json",
+          "public/eficiencia/seguranca-alimentar/uf-PI.json",
+          "public/eficiencia/seguranca-alimentar/uf-PR.json",
+          "public/eficiencia/seguranca-alimentar/uf-RJ.json",
+          "public/eficiencia/seguranca-alimentar/uf-RN.json",
+          "public/eficiencia/seguranca-alimentar/uf-RO.json",
+          "public/eficiencia/seguranca-alimentar/uf-RR.json",
+          "public/eficiencia/seguranca-alimentar/uf-RS.json",
+          "public/eficiencia/seguranca-alimentar/uf-SC.json",
+          "public/eficiencia/seguranca-alimentar/uf-SE.json",
+          "public/eficiencia/seguranca-alimentar/uf-SP.json",
+          "public/eficiencia/seguranca-alimentar/uf-TO.json"
+        ],
+        "verificacao": "hash_seed_presenca_json_saidas"
+      },
+      {
+        "id": "trabalho_renda",
+        "dominio": "eficiencia",
+        "origem": "public/eficiencia/trabalho-renda/snapshot.payload.gz.b64",
+        "sha256": "1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a",
+        "alvo_hash": "descomprimidos",
+        "gerador_sha256": "9ba20bcad593295db4cc2cc3a9de65b5813c29538d56bf92db4222ca396dd2b0",
+        "saidas": [
+          "public/eficiencia/trabalho-renda/snapshot.json"
+        ],
+        "verificacao": "payload_e_saida_identicos"
+      }
+    ]
+  },
+  "dominios": {
+    "plataforma": {
+      "nome": "Plataforma, conta e comunicações",
+      "interface": {
+        "arquivos": 178,
+        "candidatos": {
+          "jsx_text": 634,
+          "atributos": 168,
+          "props": 624,
+          "outros_literais": 3022,
+          "templates": 370,
+          "expressoes_nao_resolvidas": 1911,
+          "chaves_objetos": 2296
+        },
+        "exclusoes": {
+          "importacoes": 718,
+          "atributos_tecnicos": 1162,
+          "tipos": 169
+        },
+        "scripts_embutidos": {},
+        "chaves_catalogadas": {
+          "traduzidas": 0,
+          "portugues_marcado": 0,
+          "sem_traducao": 0,
+          "nomes_preservados": 0
+        },
+        "candidatos_nao_catalogados": 9025,
+        "percentual_traduzido": null
+      },
+      "rotas": {
+        "paginas_pt": 28,
+        "paginas_en": 0,
+        "handlers": 29,
+        "templates_com_parametros": 1,
+        "paridade_verificada": false
+      },
+      "gold": {
+        "arquivos": 0,
+        "ocorrencias_textuais": 0,
+        "campos_candidatos_nao_catalogados": 0,
+        "strings_vazias": 0,
+        "campos_catalogados": {
+          "com_ingles": 0,
+          "sem_ingles": 0,
+          "hash_incompativel": 0
+        }
+      },
+      "conteudo_adicional": {
+        "arquivos": 3,
+        "linhas_nao_vazias": 45,
+        "candidatos_nao_catalogados": 65,
+        "scripts_embutidos": {}
+      },
+      "cobertura_completa": false
+    },
+    "energia": {
+      "nome": "Setor Elétrico",
+      "interface": {
+        "arquivos": 439,
+        "candidatos": {
+          "jsx_text": 6427,
+          "atributos": 2454,
+          "props": 11914,
+          "outros_literais": 29029,
+          "templates": 6467,
+          "expressoes_nao_resolvidas": 32847,
+          "chaves_objetos": 31159
+        },
+        "exclusoes": {
+          "importacoes": 3431,
+          "atributos_tecnicos": 7679,
+          "tipos": 3516
+        },
+        "scripts_embutidos": {},
+        "chaves_catalogadas": {
+          "traduzidas": 0,
+          "portugues_marcado": 0,
+          "sem_traducao": 0,
+          "nomes_preservados": 0
+        },
+        "candidatos_nao_catalogados": 120297,
+        "percentual_traduzido": null
+      },
+      "rotas": {
+        "paginas_pt": 74,
+        "paginas_en": 0,
+        "handlers": 1,
+        "templates_com_parametros": 5,
+        "paridade_verificada": false
+      },
+      "gold": {
+        "arquivos": 32,
+        "ocorrencias_textuais": 115042,
+        "campos_candidatos_nao_catalogados": 15838,
+        "strings_vazias": 34,
+        "campos_catalogados": {
+          "com_ingles": 0,
+          "sem_ingles": 0,
+          "hash_incompativel": 0
+        }
+      },
+      "conteudo_adicional": {
+        "arquivos": 0,
+        "linhas_nao_vazias": 0,
+        "candidatos_nao_catalogados": 0,
+        "scripts_embutidos": {}
+      },
+      "cobertura_completa": false
+    },
+    "gas": {
+      "nome": "Gás Natural",
+      "interface": {
+        "arquivos": 27,
+        "candidatos": {
+          "jsx_text": 287,
+          "atributos": 23,
+          "props": 705,
+          "outros_literais": 539,
+          "templates": 74,
+          "expressoes_nao_resolvidas": 707,
+          "chaves_objetos": 813
+        },
+        "exclusoes": {
+          "importacoes": 151,
+          "atributos_tecnicos": 298,
+          "tipos": 17
+        },
+        "scripts_embutidos": {},
+        "chaves_catalogadas": {
+          "traduzidas": 0,
+          "portugues_marcado": 0,
+          "sem_traducao": 0,
+          "nomes_preservados": 0
+        },
+        "candidatos_nao_catalogados": 3148,
+        "percentual_traduzido": null
+      },
+      "rotas": {
+        "paginas_pt": 12,
+        "paginas_en": 0,
+        "handlers": 0,
+        "templates_com_parametros": 0,
+        "paridade_verificada": false
+      },
+      "gold": {
+        "arquivos": 9,
+        "ocorrencias_textuais": 5080,
+        "campos_candidatos_nao_catalogados": 629,
+        "strings_vazias": 0,
+        "campos_catalogados": {
+          "com_ingles": 0,
+          "sem_ingles": 0,
+          "hash_incompativel": 0
+        }
+      },
+      "conteudo_adicional": {
+        "arquivos": 0,
+        "linhas_nao_vazias": 0,
+        "candidatos_nao_catalogados": 0,
+        "scripts_embutidos": {}
+      },
+      "cobertura_completa": false
+    },
+    "saneamento": {
+      "nome": "Saneamento",
+      "interface": {
+        "arquivos": 52,
+        "candidatos": {
+          "jsx_text": 795,
+          "atributos": 172,
+          "props": 1332,
+          "outros_literais": 2451,
+          "templates": 268,
+          "expressoes_nao_resolvidas": 1776,
+          "chaves_objetos": 3300
+        },
+        "exclusoes": {
+          "importacoes": 360,
+          "atributos_tecnicos": 1068,
+          "tipos": 115
+        },
+        "scripts_embutidos": {},
+        "chaves_catalogadas": {
+          "traduzidas": 0,
+          "portugues_marcado": 0,
+          "sem_traducao": 0,
+          "nomes_preservados": 0
+        },
+        "candidatos_nao_catalogados": 10094,
+        "percentual_traduzido": null
+      },
+      "rotas": {
+        "paginas_pt": 24,
+        "paginas_en": 0,
+        "handlers": 0,
+        "templates_com_parametros": 2,
+        "paridade_verificada": false
+      },
+      "gold": {
+        "arquivos": 39,
+        "ocorrencias_textuais": 580743,
+        "campos_candidatos_nao_catalogados": 383241,
+        "strings_vazias": 18,
+        "campos_catalogados": {
+          "com_ingles": 0,
+          "sem_ingles": 0,
+          "hash_incompativel": 0
+        }
+      },
+      "conteudo_adicional": {
+        "arquivos": 0,
+        "linhas_nao_vazias": 0,
+        "candidatos_nao_catalogados": 0,
+        "scripts_embutidos": {}
+      },
+      "cobertura_completa": false
+    },
+    "eficiencia": {
+      "nome": "Eficiência Estatal",
+      "interface": {
+        "arquivos": 200,
+        "candidatos": {
+          "jsx_text": 2333,
+          "atributos": 635,
+          "props": 1072,
+          "outros_literais": 6289,
+          "templates": 634,
+          "expressoes_nao_resolvidas": 6099,
+          "chaves_objetos": 3705
+        },
+        "exclusoes": {
+          "importacoes": 728,
+          "atributos_tecnicos": 3032,
+          "tipos": 375
+        },
+        "scripts_embutidos": {},
+        "chaves_catalogadas": {
+          "traduzidas": 0,
+          "portugues_marcado": 0,
+          "sem_traducao": 0,
+          "nomes_preservados": 0
+        },
+        "candidatos_nao_catalogados": 20767,
+        "percentual_traduzido": null
+      },
+      "rotas": {
+        "paginas_pt": 65,
+        "paginas_en": 0,
+        "handlers": 3,
+        "templates_com_parametros": 5,
+        "paridade_verificada": false
+      },
+      "gold": {
+        "arquivos": 119,
+        "ocorrencias_textuais": 3579870,
+        "campos_candidatos_nao_catalogados": 4988,
+        "strings_vazias": 28880,
+        "campos_catalogados": {
+          "com_ingles": 0,
+          "sem_ingles": 0,
+          "hash_incompativel": 0
+        }
+      },
+      "conteudo_adicional": {
+        "arquivos": 1,
+        "linhas_nao_vazias": 0,
+        "candidatos_nao_catalogados": 83,
+        "scripts_embutidos": {
+          "inlinePendentes": 1,
+          "externos": 0,
+          "dadosPendentes": 1
+        }
+      },
+      "cobertura_completa": false
+    },
+    "contas_federais": {
+      "nome": "Contas Públicas Federais",
+      "interface": {
+        "arquivos": 52,
+        "candidatos": {
+          "jsx_text": 573,
+          "atributos": 110,
+          "props": 70,
+          "outros_literais": 1275,
+          "templates": 67,
+          "expressoes_nao_resolvidas": 862,
+          "chaves_objetos": 628
+        },
+        "exclusoes": {
+          "importacoes": 182,
+          "atributos_tecnicos": 475,
+          "tipos": 42
+        },
+        "scripts_embutidos": {},
+        "chaves_catalogadas": {
+          "traduzidas": 0,
+          "portugues_marcado": 0,
+          "sem_traducao": 0,
+          "nomes_preservados": 0
+        },
+        "candidatos_nao_catalogados": 3585,
+        "percentual_traduzido": null
+      },
+      "rotas": {
+        "paginas_pt": 5,
+        "paginas_en": 0,
+        "handlers": 7,
+        "templates_com_parametros": 1,
+        "paridade_verificada": false
+      },
+      "gold": {
+        "arquivos": 6,
+        "ocorrencias_textuais": 109340,
+        "campos_candidatos_nao_catalogados": 9974,
+        "strings_vazias": 6288,
+        "campos_catalogados": {
+          "com_ingles": 0,
+          "sem_ingles": 0,
+          "hash_incompativel": 0
+        }
+      },
+      "conteudo_adicional": {
+        "arquivos": 0,
+        "linhas_nao_vazias": 0,
+        "candidatos_nao_catalogados": 0,
+        "scripts_embutidos": {}
+      },
+      "cobertura_completa": false
+    },
+    "contas_estaduais": {
+      "nome": "Contas Públicas Estaduais",
+      "interface": {
+        "arquivos": 29,
+        "candidatos": {
+          "jsx_text": 424,
+          "atributos": 97,
+          "props": 15,
+          "outros_literais": 696,
+          "templates": 21,
+          "expressoes_nao_resolvidas": 585,
+          "chaves_objetos": 410
+        },
+        "exclusoes": {
+          "importacoes": 67,
+          "atributos_tecnicos": 337,
+          "tipos": 5
+        },
+        "scripts_embutidos": {},
+        "chaves_catalogadas": {
+          "traduzidas": 0,
+          "portugues_marcado": 0,
+          "sem_traducao": 0,
+          "nomes_preservados": 0
+        },
+        "candidatos_nao_catalogados": 2248,
+        "percentual_traduzido": null
+      },
+      "rotas": {
+        "paginas_pt": 1,
+        "paginas_en": 0,
+        "handlers": 9,
+        "templates_com_parametros": 0,
+        "paridade_verificada": false
+      },
+      "gold": {
+        "arquivos": 3,
+        "ocorrencias_textuais": 1499,
+        "campos_candidatos_nao_catalogados": 79,
+        "strings_vazias": 0,
+        "campos_catalogados": {
+          "com_ingles": 0,
+          "sem_ingles": 0,
+          "hash_incompativel": 0
+        }
+      },
+      "conteudo_adicional": {
+        "arquivos": 0,
+        "linhas_nao_vazias": 0,
+        "candidatos_nao_catalogados": 0,
+        "scripts_embutidos": {}
+      },
+      "cobertura_completa": false
+    },
+    "credito": {
+      "nome": "Crédito",
+      "interface": {
+        "arquivos": 9,
+        "candidatos": {
+          "jsx_text": 19,
+          "atributos": 192,
+          "props": 16,
+          "outros_literais": 12782,
+          "templates": 2609,
+          "expressoes_nao_resolvidas": 8862,
+          "chaves_objetos": 5020,
+          "textos": 89
+        },
+        "exclusoes": {
+          "importacoes": 17,
+          "atributos_tecnicos": 433,
+          "tipos": 0,
+          "estilos": 0,
+          "comentarios": 1
+        },
+        "scripts_embutidos": {
+          "inlinePendentes": 6,
+          "externos": 4,
+          "dadosPendentes": 0
+        },
+        "chaves_catalogadas": {
+          "traduzidas": 0,
+          "portugues_marcado": 0,
+          "sem_traducao": 0,
+          "nomes_preservados": 0
+        },
+        "candidatos_nao_catalogados": 29589,
+        "percentual_traduzido": null
+      },
+      "rotas": {
+        "paginas_pt": 1,
+        "paginas_en": 0,
+        "handlers": 1,
+        "templates_com_parametros": 1,
+        "paridade_verificada": false
+      },
+      "gold": {
+        "arquivos": 3892,
+        "ocorrencias_textuais": 929048,
+        "campos_candidatos_nao_catalogados": 118617,
+        "strings_vazias": 41,
+        "campos_catalogados": {
+          "com_ingles": 0,
+          "sem_ingles": 0,
+          "hash_incompativel": 0
+        }
+      },
+      "conteudo_adicional": {
+        "arquivos": 1,
+        "linhas_nao_vazias": 0,
+        "candidatos_nao_catalogados": 62,
+        "scripts_embutidos": {
+          "inlinePendentes": 1,
+          "externos": 0,
+          "dadosPendentes": 0
+        }
+      },
+      "cobertura_completa": false
+    }
+  }
+}
