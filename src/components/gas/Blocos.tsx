@@ -10,7 +10,7 @@ import { GRUPOS_GAS } from "@/lib/gas/navegacao";
 export function AberturaGas({ pagina, children, dadosAte }: { pagina: PaginaGas; children: ReactNode; dadosAte?: ReactNode }) {
   const grupo = GRUPOS_GAS.find((g) => g.id === pagina.grupo);
   return (
-    <div className="cab-modulo">
+    <div className="cab-modulo gas-abertura">
       <p className="rotulo text-gas-dark">{grupo?.rotulo} · {pagina.rotulo}</p>
       <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">{pagina.pergunta}</h1>
       <div className="ed-lead mt-4 max-w-prose2 space-y-3 text-carvao-muted">{children}</div>
@@ -22,7 +22,7 @@ export function AberturaGas({ pagina, children, dadosAte }: { pagina: PaginaGas;
 /** Seção da página: filete, título em serifa, subtítulo com unidade e universo. */
 export function SecaoGas({ id, titulo, subtitulo, children }: { id: string; titulo: string; subtitulo?: ReactNode; children: ReactNode }) {
   return (
-    <section id={id} aria-labelledby={`${id}-h`} className="scroll-mt-24 border-t border-linha py-8 md:py-10">
+    <section id={id} aria-labelledby={`${id}-h`} className="gas-secao scroll-mt-24 border-t border-linha py-8 md:py-10">
       <h2 id={`${id}-h`} className="ed-h2 max-w-3xl font-serif text-carvao">{titulo}</h2>
       {subtitulo && <div className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{subtitulo}</div>}
       <div className="mt-6 space-y-6">{children}</div>
@@ -44,7 +44,7 @@ export function valorComUnidade(v: number | string | null, unidade: string, casa
 }
 
 /**
- * Medida de destaque: rótulo, valor, unidade, período, recorte e natureza, com a ficha recolhida (fórmula, nota e fontes).
+ * Medida de destaque: rótulo, valor, unidade, período, recorte e natureza, com fonte e nota visíveis e detalhes de reprodução recolhidos.
  * Ausência aparece como "sem dado", nunca como zero.
  */
 export function MedidaGas({ ind, casas = 1, rotulo, comparacao, variacao = false }: { ind: Indicador; casas?: number; rotulo?: string; comparacao?: ReactNode; variacao?: boolean }) {
@@ -53,13 +53,17 @@ export function MedidaGas({ ind, casas = 1, rotulo, comparacao, variacao = false
   return (
     <div className="min-w-0 border-t-2 border-gas pt-3">
       <p className="text-sm leading-snug text-carvao-muted">{rotulo ?? ind.rotulo}</p>
-      <p className="mt-1 font-serif text-[1.75rem] leading-tight text-carvao [font-variant-numeric:tabular-nums]">
+      <p className="mt-1 font-sans text-[1.75rem] tracking-tight leading-tight text-carvao [font-variant-numeric:tabular-nums]">
         {valor} {unidade && <span className="text-base text-carvao-muted">{unidade}</span>}
       </p>
       <p className="mt-1 text-xs leading-relaxed text-mineral">
         {ind.recorte ? `${ind.recorte} · ` : ""}
         {periodoLegivel(ind.periodo)} · <SeloNatureza natureza={ind.natureza} texto />
       </p>
+      <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
+        Fonte: {fontes.map((f, i) => <span key={f.id}>{i > 0 && "; "}<Link href={`/gas-natural/dados#fonte-${f.id}`} className="inline-flex min-h-[44px] items-center underline underline-offset-4">{f.orgao}, {f.conjunto}</Link></span>)}.
+      </p>
+      {ind.nota && <p className="mt-1 border-l-2 border-gas pl-3 text-sm leading-relaxed text-carvao-muted">{ind.nota}</p>}
       {comparacao && <p className="mt-1 text-xs leading-relaxed text-carvao-muted">{comparacao}</p>}
       <details className="group mt-2">
         <summary className="inline-flex min-h-[44px] cursor-pointer list-none items-center text-xs text-gas-dark underline underline-offset-4 [&::-webkit-details-marker]:hidden">
@@ -67,7 +71,6 @@ export function MedidaGas({ ind, casas = 1, rotulo, comparacao, variacao = false
         </summary>
         <div className="space-y-1.5 pb-2 text-xs leading-relaxed text-carvao-muted">
           {ind.formula && <p><span className="text-carvao">Fórmula:</span> {ind.formula}.</p>}
-          {ind.nota && <p>{ind.nota}</p>}
           <p>
             <span className="text-carvao">Fonte:</span>{" "}
             {fontes.map((f, i) => (

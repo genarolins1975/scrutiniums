@@ -1,0 +1,30 @@
+/* Tokens e acabamento restritos ao observatório de gás. */
+.dominio-gas {
+  background: #F8F7F2;
+  --cor-gas: #35598A;
+  --cor-gas-dark: #2B4A78;
+  --cor-gas-soft: #7A93B8;
+  --cor-gas-fundo: #E8EDF4;
+}
+.dominio-gas main .text-carvao { color: #182B36; }
+.dominio-gas main .text-mineral { color: #5B6469; }
+.dominio-gas main :is(button, select, summary) { min-height: 44px; }
+.dominio-gas :is(a, button, select, input, summary, [tabindex]):focus-visible {
+  outline: 2px solid #2B4A78;
+  outline-offset: 4px;
+}
+.dominio-gas .gas-abertura { padding-bottom: 2rem; }
+.dominio-gas .gas-secao > h2 { text-wrap: balance; }
+.dominio-gas main :is(h1, h2, h3) { overflow-wrap: anywhere; }
+.dominio-gas main select { max-width: 100%; }
+@media (min-width: 1024px) {
+  .dominio-gas .gas-abertura { padding-top: 2.5rem; }
+  .dominio-gas .gas-secao { padding-block: 3rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dominio-gas *, .dominio-gas *::before, .dominio-gas *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

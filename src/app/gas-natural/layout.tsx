@@ -1,3 +1,4 @@
+import "./gas.css";
 import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { RodapeGas } from "@/components/gas/RodapeGas";
