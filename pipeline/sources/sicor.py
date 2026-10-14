@@ -336,6 +336,35 @@ def _coleta_nomes(con, mes):
     return len(rows), meta
 
 
+# Recursos nacionais que precisam ser da mesma fotografia que o municipal do mês:
+# o rural.json soma as UFs no municipal e o total no FonteRecursos, e o teste exige
+# que fechem ao centavo. Em 14/10/2026 o municipal inteiro foi recoletado (o cache
+# estava sem ele), mas o nacional de meses já "fechados" vinha de coletas anteriores;
+# o BCB ainda registrava contratos nesses meses e as UFs ficaram R$ 731,8 mi acima
+# do total. Coletados na mesma hora, os dois recortes fecham (2026-08: R$ 34.405.907.666,05
+# nos dois, medido em 14/10/2026).
+# Só o FonteRecursos: a Faixa entra numa reconciliação com tolerância de 0,5%, e na
+# primeira execução depois de uma recarga do municipal o realinhamento dos 16 meses
+# precisa caber no orçamento dos leves (FonteRecursos: de 1 a 62 s por mês em 14/10/2026).
+ALINHADOS_AO_MUN = ("fonte",)
+
+
+def _desalinhados(con):
+    """(recurso, mês) do nacional coletado antes do municipal do mesmo mês, ou ausente,
+    dentro da janela móvel do municipal; do mês mais recente para o mais antigo."""
+    out = []
+    for mes in _meses_atras(MESES_MUN):
+        r = con.execute("SELECT coletado_em FROM sicor_coleta WHERE recurso='mun' AND periodo=?", (mes,)).fetchone()
+        if not r:
+            continue
+        for recurso in ALINHADOS_AO_MUN:
+            n = con.execute("SELECT coletado_em FROM sicor_coleta WHERE recurso=? AND periodo=?",
+                            (recurso, mes)).fetchone()
+            if not n or n[0] < r[0]:
+                out.append((recurso, mes))
+    return out
+
+
 def _resumo_erro(e, limite=300):
     """Mensagem curta que preserva a causa: a URL da Olinda tem mais de 300
     caracteres e, cortada pelo começo, escondia o "HTTP Error 500" no log."""
@@ -382,6 +411,14 @@ def collect(con, cfg):
     t0 = _time.monotonic()
     leves = [("uf", _coleta_uf), ("fonte", _coleta_fonte), ("faixa", _coleta_faixa), ("genero", _coleta_genero)]
     gasto_leve = 0
+    # o nacional de cada mês do municipal é recoletado se for de fotografia anterior
+    # à dele, antes de qualquer outro leve (ver ALINHADOS_AO_MUN)
+    fn_leve = dict(leves)
+    for recurso, mes in _desalinhados(con):
+        if gasto_leve >= CAP_LEVES or _time.monotonic() - t0 > ORCAMENTO_S:
+            break
+        gasto_leve += 1
+        _executa(recurso, fn_leve[recurso], mes, "rural.json")
     for mes in _meses_historia():
         for recurso, fn in leves:
             if gasto_leve >= CAP_LEVES or _time.monotonic() - t0 > ORCAMENTO_S:

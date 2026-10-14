@@ -217,6 +217,20 @@ com 200 em 35 a 90 s, e depois do primeiro sucesso o servidor responde do cache.
    `run.py`, e os coletores depois do Sicor (DataJud, judicial, CVM) seriam pulados.
    A mensagem de falha guarda o começo e o fim, com a causa.
 
+**Segunda execução depois das correções (14/10/2026, run 38578966646).** O Sicor veio
+inteiro (66 ok, 0 falhas, 1.987 s) e o municipal cobriu 5.490 municípios. Retida por um
+único teste: a soma das UFs (municipal) ficou R$ 731,8 mi acima do total de 12 meses
+(FonteRecursos, nacional), contra tolerância de R$ 1. O municipal foi recoletado inteiro
+nesse dia; o nacional dos meses já "fechados" vinha de coletas anteriores, e o BCB
+continua registrando contratos em meses com mais de dois meses de idade. O total
+nacional do log foi R$ 336,9 bi em 13/10 e em 14/10. Coletados na mesma hora, os dois
+recortes fecham ao centavo (2026-08: R$ 34.405.907.666,05 nos dois, 14/10/2026).
+9. O nacional (FonteRecursos) de cada mês da janela do municipal é recoletado sempre
+   que for de fotografia anterior à do municipal do mesmo mês, antes de qualquer outro
+   recurso leve (`ALINHADOS_AO_MUN` em `pipeline/sources/sicor.py`). A Faixa ficou de
+   fora: entra numa reconciliação com tolerância de 0,5%, e o realinhamento inicial
+   dos 16 meses precisa caber no orçamento dos leves.
+
 **Produção e main.** Em 13/10/2026 às 10:43 UTC a produção servia o mesmo
 `gerado_em` do main (2026-09-24T15:25), em `/resumo` e em
 `/obs/data/gold/meta.json`. A leitura "Processado em 2026-08-12" relatada nesse dia
