@@ -28,7 +28,6 @@ const PARCELAS = [
 
 export default function AproveitamentoPage() {
   const g = goldGas.aproveitamento();
-  const p = goldGas.producao();
   const i = g.indicadores;
   const periodo = periodoLegivel(i.reinjecao.periodo);
   const serieAnual = g.anual.map((x) => ({ ano: x.ano, ...Object.fromEntries(PARCELAS.map((s) => [s.id, x[`${s.id}_pct`]])) }));
@@ -128,7 +127,7 @@ export default function AproveitamentoPage() {
                 foi corrigido; a lacuna aparece como ausência.
               </p>
             )}
-            <p>Produção total no período: {num(p.indicadores.producao_12m.valor as number, 1)} milhões de m³ por dia, como na página Produção.</p>
+            <p>Produção média no mesmo período: {num(i.producao_mmd_12m.valor as number | null, 1)} milhões de m³ por dia.</p>
           </NotaGas>
         </SecaoGas>
 

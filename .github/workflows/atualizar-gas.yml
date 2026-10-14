@@ -66,12 +66,24 @@ jobs:
           git add public/gas pipeline/gas/seed
           if git diff --cached --quiet; then
             echo "Sem mudanças nos dados do gás."
-          else
-            git commit -m "Atualiza dados do Gás Natural (pipeline automático)"
-            for tentativa in 1 2 3 4; do
-              git pull --rebase origin main && git push && exit 0
-              sleep $((tentativa * 5))
-            done
-            echo "::error::não foi possível publicar após 4 tentativas"
-            exit 1
+            exit 0
           fi
+          git commit -m "Atualiza dados do Gás Natural (pipeline automático)"
+          for tentativa in 1 2 3 4; do
+            git fetch origin main
+            # se o main avançou durante a coleta, a gold é refeita a partir do seed já capturado, com o código novo,
+            # e só segue com os testes verdes: nunca se publica gold gerada por código antigo
+            if ! git rebase origin/main; then
+              git rebase --abort
+              echo "::error::conflito ao trazer o main; publicação retida"
+              exit 1
+            fi
+            python3 -m pipeline.gas.run
+            python3 -m unittest pipeline.tests.test_gas
+            git add public/gas pipeline/gas/seed
+            git diff --cached --quiet || git commit --amend --no-edit
+            git push origin HEAD:main && exit 0
+            sleep $((tentativa * 5))
+          done
+          echo "::error::não foi possível publicar após 4 tentativas"
+          exit 1

@@ -197,40 +197,56 @@ def producao_e_aproveitamento(s):
             meses_inconsistentes.append({"mes": m, "diferenca_pct": linha["diferenca_pct"],
                                          "motivo": "a soma de reinjeção, queima, consumo próprio e disponível difere da produção em mais de 2%"})
         serie_dest.append(linha)
-    tot = {k: sum(nac[k].get(m, 0) for m in janela) for k in parcelas}
+    # A janela do aproveitamento termina no último mês em que os cinco conjuntos foram publicados: a ANP coleta cada um em
+    # separado, e um mês que falta numa parcela não pode virar zero na soma. Mês reprovado no balanço também invalida a janela.
+    situacao = {x["mes"]: x["situacao"] for x in serie_dest}
+    def completo(m):
+        return all(m in nac[k] for k in parcelas) and situacao.get(m) == "ok"
+    ultimo_b = max(m for m in meses if all(m in nac[k] for k in parcelas))
+    janela_b = _meses_ate(ultimo_b, 12)
+    janela_ok = all(completo(m) for m in janela_b)
+    tot = {k: sum(nac[k][m] for m in janela_b) for k in parcelas} if janela_ok else None
     anual_dest = []
     for a in sorted(anual):
         ms = [m for m in meses if m.startswith(a)]
-        if len(ms) < 12 or a < "2000":
+        if len(ms) < 12 or a < "2000" or not all(completo(m) for m in ms):
             continue
         pa = sum(nac["producao"][m] for m in ms)
-        anual_dest.append({"ano": a, **{k + "_pct": _r(100 * sum(nac[k].get(m, 0) for m in ms) / pa, 1)
+        anual_dest.append({"ano": a, **{k + "_pct": _r(100 * sum(nac[k][m] for m in ms) / pa, 1)
                                         for k in ("reinjecao", "queima", "consumo_proprio", "disponivel")}})
     reinj_uf = []
-    for uf in ufs:
-        p = sum(por_uf["producao"].get((m, uf), 0) for m in janela)
+    for uf in ufs if janela_ok else []:
+        p = sum(por_uf["producao"].get((m, uf), 0) for m in janela_b)
         if p <= 0:
             continue
-        linha = {"uf": uf, "nome": base.UF_NOME[uf], "producao_mmd_12m": _r(_mmd_janela(p, janela))}
+        linha = {"uf": uf, "nome": base.UF_NOME[uf], "producao_mmd_12m": _r(_mmd_janela(p, janela_b))}
         for k in ("reinjecao", "queima", "consumo_proprio", "disponivel"):
-            linha[k + "_pct"] = _r(100 * sum(por_uf[k].get((m, uf), 0) for m in janela) / p, 1)
+            # a UF sem linha numa parcela, num mês em que o conjunto nacional existe, não registrou aquela parcela
+            linha[k + "_pct"] = _r(100 * sum(por_uf[k].get((m, uf), 0) for m in janela_b) / p, 1)
         reinj_uf.append(linha)
     reinj_uf.sort(key=lambda x: -x["producao_mmd_12m"])
     fa = ["anp_producao", "anp_reinjecao", "anp_queima", "anp_consumo_proprio", "anp_disponivel"]
-    per12 = f"{janela[0]} a {janela[-1]}"
+    per12 = f"{janela_b[0]} a {janela_b[-1]}"
+    def _pct(k):
+        return _r(100 * tot[k] / tot["producao"], 1) if tot else None
+    def _media(k):
+        return _r(_mmd_janela(tot[k], janela_b)) if tot else None
+    nota_janela = None if janela_ok else "Algum mês da janela falta num dos cinco conjuntos ou foi reprovado no balanço: a medida fica sem valor."
     ind_dest = {
-        k: indicador(rot, "% da produção", C, fa, per12, _r(100 * tot[k] / tot["producao"], 1),
-                     f"soma de {rot.lower()} nos 12 meses ÷ soma da produção nos 12 meses × 100")
+        k: indicador(rot, "% da produção", C, fa, per12, _pct(k),
+                     f"soma de {rot.lower()} nos 12 meses ÷ soma da produção nos 12 meses × 100", nota_janela)
         for k, rot in (("reinjecao", "Reinjeção"), ("queima", "Queima e perda"), ("consumo_proprio", "Consumo próprio na produção"),
                        ("disponivel", "Gás disponível"))
     }
     for k, rot in (("reinjecao", "Reinjeção"), ("queima", "Queima e perda"), ("consumo_proprio", "Consumo próprio na produção")):
         ind_dest[k + "_mmd_12m"] = indicador(f"{rot}, média dos últimos 12 meses", "milhões de m³/dia", C, fa, per12,
-                                             _r(_mmd_janela(tot[k], janela)), f"soma de {rot.lower()} nos 12 meses ÷ dias ÷ 1.000")
+                                             _media(k), f"soma de {rot.lower()} nos 12 meses ÷ dias ÷ 1.000", nota_janela)
     ind_dest["disponivel_mmd_12m"] = indicador("Gás disponível, média dos últimos 12 meses", "milhões de m³/dia", C, fa, per12,
-                                               _r(_mmd_janela(tot["disponivel"], janela)), "soma do disponível nos 12 meses ÷ dias ÷ 1.000")
+                                               _media("disponivel"), "soma do disponível nos 12 meses ÷ dias ÷ 1.000", nota_janela)
+    ind_dest["producao_mmd_12m"] = indicador("Produção, média dos mesmos 12 meses", "milhões de m³/dia", C, fa, per12,
+                                             _media("producao"), "soma da produção nos 12 meses ÷ dias ÷ 1.000", nota_janela)
     ind_dest["diferenca_12m"] = indicador("Diferença entre a produção e a soma das quatro parcelas", "% da produção", C, fa, per12,
-                                          _r(100 * (tot["producao"] - sum(tot[k] for k in parcelas[1:])) / tot["producao"], 2),
+                                          _r(100 * (tot["producao"] - sum(tot[k] for k in parcelas[1:])) / tot["producao"], 2) if tot else None,
                                           "(produção − reinjeção − queima − consumo próprio − disponível) ÷ produção × 100",
                                           nota_diferenca(serie_dest))
     s.gold("producao", fp, {
@@ -240,7 +256,7 @@ def producao_e_aproveitamento(s):
                   "Produção é o volume medido na saída do poço; parte dele é reinjetada, queimada ou consumida na própria produção (ver Aproveitamento)."],
     })
     s.gold("aproveitamento", fa, {
-        "ultimo_mes": ultimo, "indicadores": ind_dest, "serie": serie_dest, "anual": anual_dest, "por_uf": reinj_uf,
+        "ultimo_mes": ultimo_b, "indicadores": ind_dest, "serie": serie_dest, "anual": anual_dest, "por_uf": reinj_uf,
         "meses_inconsistentes": meses_inconsistentes,
     })
     s.serie("producao-gas-natural-mensal", ["mes", "total", "mar", "terra"], [[x["mes"], x["total"], x["mar"], x["terra"]] for x in serie_prod],
@@ -541,6 +557,27 @@ def consumidor(s):
 
 # ------------------------------------------------------------------ mercado e transporte
 
+TERMINAIS_GNL = [
+    ("Pecém", "São Gonçalo do Amarante (CE)", ("pecém",)),
+    ("Baía de Guanabara", "Baía de Guanabara (RJ)", ("guanabara", "campos elíseos", "magé")),
+    ("Bahia (TRBA)", "Baía de Todos os Santos (BA)", ("trba", "gnl da bahia")),
+    ("Sergipe", "Barra dos Coqueiros (SE)", ("barra dos coqueiros",)),
+    ("Porto do Açu", "São João da Barra (RJ)", ("são joão da barra", "porto de açu", "porto do açu")),
+    ("Barcarena", "Barcarena (PA)", ("barcarena",)),
+    ("São Paulo (TRSP)", "Santos e Cubatão (SP)", ("trsp", "santos")),
+    ("Gás Sul (TGS)", "São Francisco do Sul (SC)", ("tgs", "gás sul", "babitonga")),
+]
+
+
+def terminal_de(nome):
+    """(terminal, local) pela localização escrita no nome do ato; None quando nenhuma entrada casa."""
+    n = nome.lower()
+    for terminal, local, termos in TERMINAIS_GNL:
+        if any(x in n for x in termos):
+            return terminal, local
+    return None
+
+
 def mercado_e_infraestrutura(s):
     mov = ler.movimentacao()
     meses = sorted({x["mes"] for x in mov})
@@ -602,18 +639,26 @@ def mercado_e_infraestrutura(s):
             por_ano[ano][grupo(a["TipoDeInstalacao"])] += 1
     grupos_aut = ["Gasodutos", "Pontos de entrega e recebimento", "Compressão", "GNL", "Outras instalações"]
     serie_aut = [{"ano": a, **{g: por_ano[a].get(g, 0) for g in grupos_aut}} for a in sorted(por_ano)]
+    # Identidade estável de cada terminal de GNL: o nome da instalação muda entre atos (renomeação, transferência de
+    # titular), então o terminal é reconhecido pela localização escrita no ato. Lista declarada e conferida contra o seed;
+    # ato de GNL que não casa com nenhuma entrada interrompe a publicação, para um terminal novo nunca sumir da tabela.
     terminais = {}
     for a in aut:
         t = a["TipoDeInstalacao"].lower()
-        if ("terminal" in t and "gnl" in t) or ("regaseif" in t and "terminal" in (a.get("NomeDaInstalacao") or "").lower()):
-            if not a["TipoDaAutorizacao"].startswith("Operação"):
-                continue
-            nome = (a.get("NomeDaInstalacao") or "").strip()
-            chave = nome[:40].lower()
-            reg = {"empresa": a["Empresa"].strip(), "instalacao": nome, "ato": f"{a['TipoDoAto']} {a['NumeroDoAto']}".strip(),
-                   "tipo": a["TipoDaAutorizacao"], "data": (a.get("DataDaOutorga") or "")[:10], "capacidade_informada": (a.get("Capacidade") or "").strip() or None}
-            if chave not in terminais or reg["data"] > terminais[chave]["data"]:
-                terminais[chave] = reg
+        nome = (a.get("NomeDaInstalacao") or "").strip()
+        eh_gnl = "gnl" in t or "regaseif" in t or "liquefeito" in t
+        if not eh_gnl or not a["TipoDaAutorizacao"].startswith("Operação"):
+            continue
+        if any(x in t for x in ("liquefação", "acondicionamento", "central de distribuição")):
+            continue  # liquefação e distribuição de GNL em pequena escala não são terminais de regaseificação
+        ident = terminal_de(nome)
+        if ident is None:
+            raise validacoes.ErroValidacao(f"ato de operação de GNL sem terminal identificado: {nome[:80]}")
+        reg = {"terminal": ident[0], "local": ident[1], "empresa": a["Empresa"].strip(), "instalacao": nome,
+               "ato": f"{a['TipoDoAto']} {a['NumeroDoAto']}".strip(), "tipo": a["TipoDaAutorizacao"],
+               "data": (a.get("DataDaOutorga") or "")[:10], "capacidade_informada": (a.get("Capacidade") or "").strip() or None}
+        if ident[0] not in terminais or reg["data"] > terminais[ident[0]]["data"]:
+            terminais[ident[0]] = reg
     tabela_terminais = sorted(terminais.values(), key=lambda x: x["data"], reverse=True)
     datas_aut = sorted(a["DataDaOutorga"][:10] for a in aut if a.get("DataDaOutorga"))
     ind_inf = {

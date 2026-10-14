@@ -141,6 +141,41 @@ class TestGold(unittest.TestCase):
                 if ind["natureza"] == "CALCULADO":
                     self.assertTrue(ind.get("formula"), f"{nome}.{chave}")
 
+    def test_um_terminal_de_gnl_por_linha(self):
+        nomes = [t["terminal"] for t in self.s.golds["infraestrutura"]["terminais_gnl"]]
+        self.assertEqual(len(nomes), len(set(nomes)))
+        self.assertIn("Pecém", nomes)
+        self.assertIn("Baía de Guanabara", nomes)
+
+    def test_janela_do_aproveitamento_so_com_meses_completos(self):
+        bal = ler.balanco_producao()
+        nac = {k: {m for (m, _, _) in d} for k, d in bal.items()}
+        ap = self.s.golds["aproveitamento"]
+        ini, fim = ap["indicadores"]["disponivel"]["periodo"].split(" a ")
+        for m in gold._meses_ate(fim, 12):
+            for k, meses in nac.items():
+                self.assertIn(m, meses, f"{k} sem {m} na janela publicada")
+
+    def test_parcela_ausente_nao_vira_zero_na_janela(self):
+        # o último mês da produção sem as demais parcelas desloca a janela para trás, em vez de somar zero
+        s = gold.Saida()
+        original = ler.balanco_producao
+        def com_mes_extra():
+            b = original()
+            ultimo = max(m for m, _, _ in b["producao"])
+            a, mm = (int(x) for x in ultimo.split("-"))
+            novo = f"{a + (mm == 12):04d}-{(mm % 12) + 1:02d}"
+            b["producao"] = {**b["producao"], (novo, "RJ", "mar"): 5_000_000.0}
+            return b
+        ler.balanco_producao = com_mes_extra
+        try:
+            gold.producao_e_aproveitamento(s)
+        finally:
+            ler.balanco_producao = original
+        ap = s.golds["aproveitamento"]
+        self.assertEqual(ap["ultimo_mes"], self.s.golds["aproveitamento"]["ultimo_mes"])
+        self.assertEqual(ap["indicadores"]["disponivel"]["valor"], self.s.golds["aproveitamento"]["indicadores"]["disponivel"]["valor"])
+
     def test_series_csv_publicadas_existem(self):
         for nome in self.s.series:
             self.assertTrue(os.path.exists(os.path.join(base.SERIES, f"{nome}.csv")), nome)

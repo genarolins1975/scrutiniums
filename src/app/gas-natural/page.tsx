@@ -69,12 +69,13 @@ export default function InicialGasPage() {
   const merc = goldGas.mercado();
   const meta = goldGas.meta();
 
-  const p12 = prod.indicadores.producao_12m.valor as number;
+  // a produção do fluxo é a da janela do aproveitamento (últimos 12 meses com os cinco conjuntos da ANP publicados)
+  const p12 = ap.indicadores.producao_mmd_12m.valor as number | null;
   const fr = (k: string) => ap.indicadores[`${k}_mmd_12m`].valor as number;
   const disponivel = ap.indicadores.disponivel_mmd_12m.valor as number;
   const importado = imp.indicadores.importado_12m.valor as number;
-  const periodo = periodoLegivel(prod.indicadores.producao_12m.periodo);
-  const mesmaJanela = prod.indicadores.producao_12m.periodo === imp.indicadores.importado_12m.periodo;
+  const periodo = periodoLegivel(ap.indicadores.producao_mmd_12m.periodo);
+  const mesmaJanela = ap.indicadores.producao_mmd_12m.periodo === imp.indicadores.importado_12m.periodo;
 
   const producao: Parte[] = [
     { id: "reinjecao", rotulo: "Reinjetado nos reservatórios", valor: fr("reinjecao"), cor: "var(--serie-comp-1)", href: "/gas-natural/aproveitamento" },
@@ -87,6 +88,8 @@ export default function InicialGasPage() {
     { id: "importado", rotulo: "Importado por gasoduto e GNL", valor: importado, cor: "var(--escala-gas-3)", href: "/gas-natural/importacao" },
   ];
 
+  const fluxoCompleto = p12 !== null && [...producao, ...oferta].every((x) => typeof x.valor === "number");
+  const escala = fluxoCompleto ? Math.max(p12!, producao.reduce((s, x) => s + x.valor, 0)) : 1;
   return (
     <>
       <MarcaVisita secao="gas:inicial" />
@@ -108,8 +111,14 @@ export default function InicialGasPage() {
           titulo="O que acontece com o gás produzido"
           subtitulo={<>Milhões de m³ por dia, média de {periodo}. A mesma escala nas duas barras: a de baixo soma o que sobrou da produção nacional ao gás importado.</>}
         >
-          <BarraFluxo titulo="Produção nacional" partes={producao} escala={Math.max(p12, producao.reduce((s, x) => s + x.valor, 0))} periodo={periodo} totalPublicado={p12} />
-          <BarraFluxo titulo="Oferta ao mercado" partes={oferta} escala={Math.max(p12, producao.reduce((s, x) => s + x.valor, 0))} periodo={periodo} />
+          {fluxoCompleto ? (
+            <>
+              <BarraFluxo titulo="Produção nacional" partes={producao} escala={escala} periodo={periodo} totalPublicado={p12!} />
+              <BarraFluxo titulo="Oferta ao mercado" partes={oferta} escala={escala} periodo={periodo} />
+            </>
+          ) : (
+            <p className="text-sm text-carvao-muted">Sem dado: algum mês da janela falta num dos conjuntos da ANP. Os detalhes estão em Aproveitamento e Importação.</p>
+          )}
           <p className="max-w-prose2 text-xs leading-relaxed text-mineral">
             Fonte: ANP, produção, reinjeção, queima, consumo próprio, gás disponível e importação de gás natural. Médias diárias dos 12 meses calculadas pela
             Scrutiniums{mesmaJanela ? "" : "; produção e importação em janelas diferentes, ver cada página"}.

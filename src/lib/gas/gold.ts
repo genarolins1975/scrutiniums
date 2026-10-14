@@ -121,7 +121,7 @@ export type InfraestruturaGold = Cabecalho & {
   quebras: { mes: string; transportadora: string; razao: number }[];
   autorizacoes_por_ano: Ponto[];
   grupos_autorizacao: string[];
-  terminais_gnl: { empresa: string; instalacao: string; ato: string; tipo: string; data: string; capacidade_informada: string | null }[];
+  terminais_gnl: { terminal: string; local: string; empresa: string; instalacao: string; ato: string; tipo: string; data: string; capacidade_informada: string | null }[];
   meses_incompletos: { mes: string; motivo: string[] }[];
 };
 

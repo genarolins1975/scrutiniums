@@ -112,12 +112,13 @@ export default function InfraestruturaPage() {
         <SecaoGas
           id="gnl"
           titulo="Terminais de GNL com autorização de operação"
-          subtitulo="Ato de operação mais recente de cada terminal no registro da ANP. A capacidade aparece como gravada no ato; o conjunto não informa a unidade."
+          subtitulo="Ato de operação mais recente de cada terminal no registro da ANP, com o terminal reconhecido pela localização escrita nos atos. A capacidade aparece como gravada no ato; o conjunto não informa a unidade."
         >
           <TabelaGas
             titulo="Terminais de regaseificação de GNL no registro de autorizações"
             colunas={[
-              { id: "instalacao", rotulo: "Instalação" },
+              { id: "terminal", rotulo: "Terminal" },
+              { id: "local", rotulo: "Local" },
               { id: "empresa", rotulo: "Empresa autorizada" },
               { id: "tipo", rotulo: "Tipo do ato" },
               { id: "ato", rotulo: "Ato" },
@@ -125,7 +126,7 @@ export default function InfraestruturaPage() {
               { id: "capacidade_informada", rotulo: "Capacidade no ato" },
             ]}
             linhas={g.terminais_gnl.map((t) => ({ ...t, data_br: dataBR(t.data) }))}
-            nota={<>O ato mais recente do registro é de {dataBR(i.atos_ultimo.valor as string)}; atos posteriores ainda não aparecem no arquivo da ANP. Um mesmo terminal pode ter mudado de titular, por isso a empresa é a do último ato.</>}
+            nota={<>O ato mais recente do registro é de {dataBR(i.atos_ultimo.valor as string)}; atos posteriores ainda não aparecem no arquivo da ANP. Um mesmo terminal pode ter mudado de nome ou de titular entre atos; a empresa é a do último ato. O registro não informa se o terminal segue em operação hoje.</>}
           />
           <FonteFigura ids={["anp_autorizacoes"]} />
         </SecaoGas>
