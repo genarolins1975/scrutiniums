@@ -1,37 +1,23 @@
-import {describe,it,expect} from 'vitest';
+import {describe,it,expect,vi} from 'vitest';
+// A página importa módulos marcados com server-only; no teste, o marcador não tem efeito.
+vi.mock('server-only',()=>({}));
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {DIMENSOES,GRUPOS,estadoCatalogo} from '@/lib/eficiencia/dimensoes';
-import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
+import {DIMENSOES} from '@/lib/eficiencia/dimensoes';
+import PaginaEntradaEficiencia from '@/app/eficiencia-estatal/page';
 
-describe('Catálogo do Atlas',()=>{
-  it('ficha acompanha a busca quando o capítulo anterior fica fora dos resultados',()=>{
-    const {visible,dimension}=estadoCatalogo('justiça','Todas','educacao');
-    expect(visible.map(d=>d.id)).toContain('justica');
-    expect(dimension?.id).toBe('justica');
-    expect(visible).toContain(dimension);
+describe('Matriz de cobertura da entrada',()=>{
+  const html=renderToStaticMarkup(createElement(PaginaEntradaEficiencia));
+  it('traz os 16 temas, com ficha para cada painel publicado',()=>{
+    for(const d of DIMENSOES)expect(html).toContain(`id="cobertura-${d.id}"`);
+    expect(html.match(/Painel publicado/g)).toHaveLength(13);
+    expect(html.match(/Em desenvolvimento/g)).toHaveLength(3);
+    for(const t of ['O que não inclui','Última captura de dados','Até onde cada tema chega.','Aprendizagem · Saeb'])expect(html).toContain(t);
+    expect(html).toContain('href="/eficiencia-estatal/saude-capitais/comparar"');
   });
-  it.each(GRUPOS)('a ficha pertence à área %s',grupo=>{
-    const {visible,dimension}=estadoCatalogo('',grupo,'educacao');
-    expect(visible.length).toBeGreaterThan(0);
-    expect(visible.every(d=>d.grupo===grupo)).toBe(true);
-    expect(dimension?.grupo).toBe(grupo);
-  });
-  it('a busca alcança recursos, acesso e resultados, ignorando acentos',()=>{
-    expect(estadoCatalogo('fiscalizacao','Todas','educacao').visible.map(d=>d.id)).toContain('ambiente');
-    expect(estadoCatalogo('regularizacao fundiaria','Todas','educacao').dimension?.id).toBe('habitacao');
-    expect(estadoCatalogo('aposentadorias','Todas','educacao').dimension?.id).toBe('previdencia');
-  });
-  it('sem resultado não mostra ficha residual; limpar recupera a seleção',()=>{
-    expect(estadoCatalogo('zzzinexistente','Todas','saude')).toEqual({visible:[],dimension:null});
-    expect(estadoCatalogo('','Todas','saude').dimension?.id).toBe('saude');
-    for(const d of DIMENSOES)expect(estadoCatalogo('',d.grupo,d.id).dimension?.id).toBe(d.id);
-  });
-  it('acesso de cobertura no estado inicial aponta ao capítulo, sem alterar o panorama',()=>{
-    const html=renderToStaticMarkup(createElement(AtlasCidadao));
-    expect(html).toContain('href="#cobertura-educacao"');
-    expect(html).toContain('Consultar cobertura e fontes de Educação');
-    expect(html).toContain('A vida no território, lado a lado.');
-    expect(html).toContain('Aprendizagem · Saeb');
+  it('cada nível territorial declarado tem marca e texto para leitor de tela',()=>{
+    expect(html.match(/: sim\./g)!.length).toBeGreaterThan(0);
+    expect((html.match(/: sim\./g)!.length)+(html.match(/: não\./g)!.length)).toBe(16*6);
+    expect(html).toContain('Tem indicador no índice de resultados v4, 26 capitais, 2022: sim.');
   });
 });
