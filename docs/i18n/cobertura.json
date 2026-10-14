@@ -9,9 +9,9 @@
     "gold": "Dados não participam deste relatório nem do --check. Execute --gold para a situação atual, não versionada."
   },
   "escopo": {
-    "inventario_sha256": "2a0464c35b1d74e02d431279b375b07037318a5e7fd305f53aedda641b39fd1c",
-    "arquivos_analisados": 997,
-    "fontes_sha256": "56d93e623dbccf76faf62c8e880b928e885db889b7fd48becac5e024b470492f",
+    "inventario_sha256": "f18787dc3c9e926d74423e55c395a648db4631149aa99c30c0b8189b579292e7",
+    "arquivos_analisados": 999,
+    "fontes_sha256": "e1b8dece0e02f0ec74874c2cdab11b109c9ba7ccc870a8a456fef89b68aaa177",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -127,20 +127,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 185,
+        "arquivos": 187,
         "candidatos": {
           "jsx_text": 634,
           "atributos": 169,
           "props": 625,
-          "outros_literais": 3114,
-          "templates": 374,
-          "expressoes_nao_resolvidas": 1928,
+          "outros_literais": 3121,
+          "templates": 375,
+          "expressoes_nao_resolvidas": 1934,
           "chaves_objetos": 2361
         },
         "exclusoes": {
-          "importacoes": 744,
+          "importacoes": 752,
           "atributos_tecnicos": 1162,
-          "tipos": 173
+          "tipos": 174
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -149,19 +149,19 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 9205,
+        "candidatos_nao_catalogados": 9219,
         "percentual_traduzido": null
       },
       "rotas": {
         "paginas_pt": 28,
-        "paginas_en": 1,
+        "paginas_en": 3,
         "handlers": 29,
         "templates_com_parametros": 1,
         "paginas_pt_literais": 24,
         "paginas_pt_fora_do_adaptador": 4,
-        "paginas_pt_literais_sem_irma": 23,
-        "pares_estruturais": 1,
-        "fallbacks_declarados": 1,
+        "paginas_pt_literais_sem_irma": 21,
+        "pares_estruturais": 3,
+        "fallbacks_declarados": 3,
         "paridade_verificada": false
       },
       "conteudo_adicional": {
@@ -684,10 +684,32 @@
           "en": "src/app/en/sobre/page.tsx"
         },
         "arquivos_presentes": true
+      },
+      {
+        "pt": "/sobre/erros",
+        "en": "/en/sobre/erros",
+        "dominio": "plataforma",
+        "conteudo_declarado": "portugues_marcado",
+        "fontes": {
+          "pt": "src/app/sobre/erros/page.tsx",
+          "en": "src/app/en/sobre/erros/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/sobre/governanca",
+        "en": "/en/sobre/governanca",
+        "dominio": "plataforma",
+        "conteudo_declarado": "portugues_marcado",
+        "fontes": {
+          "pt": "src/app/sobre/governanca/page.tsx",
+          "en": "src/app/en/sobre/governanca/page.tsx"
+        },
+        "arquivos_presentes": true
       }
     ],
-    "pares_estruturais": 1,
-    "fallbacks_declarados": 1,
+    "pares_estruturais": 3,
+    "fallbacks_declarados": 3,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false
   }

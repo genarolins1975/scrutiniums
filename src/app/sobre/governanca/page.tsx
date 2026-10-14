@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { PageTitle } from "@/components/ui/SectionHeading";
 import { constituicaoPublica } from "@/lib/governanca";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 
 /**
  * Constituição editorial publicada a partir de docs/CONSTITUICAO.md, com as
@@ -12,12 +13,16 @@ import { constituicaoPublica } from "@/lib/governanca";
  */
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
+const metadadosOriginais: Metadata = {
   title: "Governança editorial",
   description:
     "A Constituição editorial que rege as notas do Observatório Brasileiro de Crédito: origem dos números, classes de afirmação, temas vedados, revisão independente, erro e errata.",
   alternates: { canonical: "/sobre/governanca" },
 };
+
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/sobre/governanca", metadadosOriginais, await parent);
+}
 
 const code = "rounded-sm bg-marfim px-1 font-mono text-[0.85em] text-carvao";
 

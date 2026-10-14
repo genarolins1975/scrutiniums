@@ -6,7 +6,7 @@ import { PageTitle } from "@/components/ui/SectionHeading";
 import { contato, registroErros, secoesInstitucionais, type Secao } from "@/lib/sobre";
 import { INSTITUCIONAL, preenchido } from "@/lib/institucional";
 import { listaObservatorios } from "@/lib/acesso";
-import { alternativasDeIdioma } from "@/lib/i18n-metadata";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 
 /**
  * Sobre a plataforma, no nível de todos os observatórios. As seções de decisão do
@@ -15,23 +15,14 @@ import { alternativasDeIdioma } from "@/lib/i18n-metadata";
  */
 export const dynamic = "force-static";
 
+const metadadosOriginais: Metadata = {
+  title: "Sobre a Scrutiniums",
+  description: "Quem mantém a plataforma, como ela se financia, que regras editoriais seguem as notas, como erros são corrigidos e registrados, como citar, sob qual licença e como entrar em contato.",
+  alternates: { canonical: "/sobre" },
+};
+
 export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
-  const anterior = await parent;
-  return {
-    title: "Sobre a Scrutiniums",
-    description: "Quem mantém a plataforma, como ela se financia, que regras editoriais seguem as notas, como erros são corrigidos e registrados, como citar, sob qual licença e como entrar em contato.",
-    alternates: alternativasDeIdioma("/sobre", "pt"),
-    openGraph: {
-      title: anterior.openGraph?.title?.absolute,
-      description: anterior.openGraph?.description ?? undefined,
-      siteName: anterior.openGraph?.siteName ?? undefined,
-      type: "website",
-      images: anterior.openGraph?.images ?? undefined,
-      url: "/sobre",
-      locale: "pt_BR",
-      alternateLocale: "en_US",
-    },
-  };
+  return metadadosPortuguesComAlternativas("/sobre", metadadosOriginais, await parent);
 }
 
 const link = "text-bronze underline underline-offset-4 hover:text-bronze-dark";

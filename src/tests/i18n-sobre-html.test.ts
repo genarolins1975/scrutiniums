@@ -1,8 +1,10 @@
-import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join } from "node:path";
 import { parse, parseFragment, type DefaultTreeAdapterMap } from "parse5";
 import { describe, expect, it, type TestContext } from "vitest";
 import glossario from "../../config/glossario-en.json";
+import { PARES_DE_IDIOMA, type ParDeIdioma } from "@/lib/i18n-rotas";
 
 type No = DefaultTreeAdapterMap["node"];
 type Elemento = DefaultTreeAdapterMap["element"];
@@ -247,5 +249,110 @@ describe(`Sobre: HTML estático PT/EN (${EXIGIR ? "build obrigatório" : "build 
       expect(meta(erro, nome), nome).toEqual([]);
     }
     expect(vazamentos(tag(erro, "head"), "en")).toEqual([]);
+  });
+});
+
+/** Cada irmã precisa de evidência do build; HTML solto não comprova prerender. */
+function documentoEstatico(caminho: string, build = join(process.cwd(), ".next")): No {
+  const manifestoApp = join(build, "server", "app-paths-manifest.json");
+  const manifestoPrerender = join(build, "prerender-manifest.json");
+  for (const arquivo of [manifestoApp, manifestoPrerender]) {
+    if (!existsSync(arquivo)) throw new Error(`Build incompleto para ${caminho}: falta ${arquivo}`);
+  }
+  const app: Record<string, string> = JSON.parse(readFileSync(manifestoApp, "utf8"));
+  const prerender: { routes?: Record<string, unknown> } = JSON.parse(readFileSync(manifestoPrerender, "utf8"));
+  const segmento = caminho === "/" ? "" : caminho;
+  const modulo = app[`${segmento}/page`];
+  if (!modulo) {
+    if (app[`${segmento}/route`]) throw new Error(`Handler fora do adaptador de HTML de páginas: ${caminho}`);
+    throw new Error(`Página compilada ausente do manifesto: ${caminho}`);
+  }
+  const compilado = join(build, "server", modulo);
+  if (!existsSync(compilado) || !statSync(compilado).isFile()) throw new Error(`Página compilada ausente: ${caminho}`);
+  if (!prerender.routes?.[caminho]) {
+    throw new Error(`Página ${caminho} compilada sem prerender; integrar verificação HTTP antes de declarar sua cobertura HTML.`);
+  }
+  const arquivo = join(build, "server", "app", caminho === "/" ? "index.html" : `${caminho.slice(1)}.html`);
+  if (!existsSync(arquivo) || !statSync(arquivo).isFile()) throw new Error(`HTML ausente: ${caminho}; gere um build completo.`);
+  return parse(readFileSync(arquivo, "utf8"));
+}
+
+function documentosDoPar(ctx: TestContext, par: ParDeIdioma) {
+  if (!existsSync(APP) && !EXIGIR) ctx.skip("sem build local; rode npm run build para verificar todos os pares declarados");
+  expect(existsSync(APP), "EXIGIR_BUILD_HTML=1 requer .next/server/app").toBe(true);
+  return { pt: documentoEstatico(par.pt), en: documentoEstatico(par.en) };
+}
+
+// Não filtrar por existência de HTML ou acesso público: toda declaração precisa de prova.
+describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par) => {
+  it("comprova prerender, idioma documental e metadados recíprocos", (ctx) => {
+    const { pt, en } = documentosDoPar(ctx, par);
+    const base = "https://scrutiniums.com";
+    const alternates = [["pt-BR", base + par.pt], ["en", base + par.en], ["x-default", base + par.pt]];
+    expect(attr(tag(pt, "html"), "lang")).toBe("pt-BR");
+    expect(attr(tag(en, "html"), "lang")).toBe("en");
+    expect(attr(tag(pt, "html"), "class")).toBeTruthy();
+    expect(attr(tag(en, "html"), "class")).toBe(attr(tag(pt, "html"), "class"));
+    for (const [doc, caminho, locale, outroLocale] of [[pt, par.pt, "pt_BR", "en_US"], [en, par.en, "en_US", "pt_BR"]] as const) {
+      expect(attr(tag(doc, "body"), "class")).toBe("min-h-screen bg-marfim text-carvao");
+      expect(links(doc, "canonical").map((e) => attr(e, "href")), caminho).toEqual([base + caminho]);
+      expect(links(doc, "alternate").filter((e) => attr(e, "hreflang") !== undefined)
+        .map((e) => [attr(e, "hreflang"), attr(e, "href")]).sort(), caminho).toEqual([...alternates].sort());
+      expect(meta(doc, "og:locale"), caminho).toEqual([locale]);
+      expect(meta(doc, "og:locale:alternate"), caminho).toEqual([outroLocale]);
+      expect(meta(doc, "og:url"), caminho).toEqual([base + caminho]);
+    }
+    expect(par.conteudo).toBe("portugues_marcado");
+    expect(meta(en, "og:site_name")).toEqual(["Scrutiniums"]);
+    expect(meta(en, "og:type")).toEqual(["website"]);
+    expect(texto(tag(en, "title"))).toBe("Scrutiniums · Portuguese only");
+    expect(meta(en, "description")).toEqual(["Portuguese only"]);
+    expect(meta(en, "twitter:card")).toEqual(["summary"]);
+    for (const nome of ["og:image", "og:image:alt", "twitter:image", "twitter:image:alt"]) expect(meta(en, nome), nome).toEqual([]);
+    for (const nome of ["og:title", "twitter:title"]) expect(meta(en, nome), nome).toEqual(["Scrutiniums · Portuguese only"]);
+    for (const nome of ["og:description", "twitter:description"]) expect(meta(en, nome), nome).toEqual(["Portuguese only"]);
+  });
+
+  it("preserva todo o corpo PT e procura vazamentos nos dois documentos inteiros", (ctx) => {
+    const { pt, en } = documentosDoPar(ctx, par);
+    const corpoPt = tag(pt, "body");
+    const corpoEn = tag(en, "body");
+    const ilha = unico(corpoEn, (e) => attr(e, "data-i18n-estado") === "portugues_marcado", `ilha portuguesa em ${par.en}`);
+    const aviso = unico(corpoEn, (e) => attr(e, "data-i18n-aviso") !== undefined, `aviso em ${par.en}`);
+    expect(attr(ilha, "lang")).toBe("pt-BR");
+    expect(attr(aviso, "lang")).toBe("en");
+    expect(texto(aviso).trim()).toBe("Portuguese only");
+    expect(oculto(aviso)).toBe(false);
+    expect(oculto(ilha)).toBe(false);
+    expect(conteudo(ilha), par.en).toEqual(conteudo(corpoPt));
+    expect(conteudo(corpoEn)).toHaveLength(2);
+    expect(elementos(corpoPt).some((e) => attr(e, "data-i18n-estado") !== undefined)).toBe(false);
+    expect(vazamentos(en, "en"), par.en).toEqual([]);
+    expect(vazamentos(pt, "pt"), par.pt).toEqual([]);
+  });
+});
+
+describe("carregamento obrigatório do HTML de cada irmã", () => {
+  it.each([
+    { caso: "HTML faltante", compilada: true, prerender: true, html: false, erro: "HTML ausente: /en/sobre" },
+    { caso: "página dinâmica com HTML antigo", compilada: true, prerender: false, html: true, erro: "integrar verificação HTTP" },
+    { caso: "módulo compilado faltante", compilada: false, prerender: true, html: true, erro: "Página compilada ausente: /en/sobre" },
+  ])("recusa $caso mesmo quando a origem PT está completa", ({ compilada, prerender, html, erro }) => {
+    const build = mkdtempSync(join(tmpdir(), "i18n-html-par-"));
+    const escrever = (path: string, valor: string) => {
+      const arquivo = join(build, path);
+      mkdirSync(dirname(arquivo), { recursive: true });
+      writeFileSync(arquivo, valor);
+    };
+    try {
+      escrever("server/app-paths-manifest.json", JSON.stringify({ "/sobre/page": "app/sobre/page.js", "/en/sobre/page": "app/en/sobre/page.js" }));
+      escrever("prerender-manifest.json", JSON.stringify({ routes: { "/sobre": {}, ...(prerender ? { "/en/sobre": {} } : {}) } }));
+      escrever("server/app/sobre/page.js", "export default function Pagina() {}");
+      escrever("server/app/sobre.html", '<html lang="pt-BR"><body><h1>Sobre</h1></body></html>');
+      if (compilada) escrever("server/app/en/sobre/page.js", "export default function Pagina() {}");
+      if (html) escrever("server/app/en/sobre.html", '<html lang="en"><body><h1>About</h1></body></html>');
+      expect(texto(tag(documentoEstatico("/sobre", build), "h1"))).toBe("Sobre");
+      expect(() => documentoEstatico("/en/sobre", build)).toThrow(erro);
+    } finally { rmSync(build, { recursive: true, force: true }); }
   });
 });

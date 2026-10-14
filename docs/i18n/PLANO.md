@@ -41,6 +41,8 @@ O roteamento usa `src/app/en` literal, preservando páginas e layouts portuguese
 
 O primeiro par é `/sobre` e `/en/sobre`: corpo português preservado e marcado na irmã inglesa, sem antecipar a tradução institucional da fase 1. Ele inaugura documento por idioma e registro estrutural. A irmã sem tradução recebe `noindex`, fica fora do sitemap e não é anunciada por alternates. As demais irmãs, os seletores, a home traduzida, o JSON-LD e a infraestrutura da SPA continuam pendentes; esse recorte não encerra a fase 0.
 
+A ampliação institucional acrescenta `/sobre/erros` e `/sobre/governanca`, também estáticas e inteiramente em português marcado sob `/en`. O teste de HTML passa a percorrer todos os pares declarados e exige página compilada, entrada de prerender e HTML físico; um par sem prova estática falha até receber verificação adequada. Isso não conclui a tradução da Constituição, prevista para a fase 1, nem a paridade global.
+
 ## Fases seguintes
 
 | Fase | Série de entregas, sempre com CI verde entre PRs |

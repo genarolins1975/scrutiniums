@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import { en } from "@/i18n/en";
 import type { Idioma } from "./idioma";
 import { parDeIdioma, traducaoPublicada } from "./i18n-rotas";
@@ -10,6 +10,41 @@ export function alternativasDeIdioma(caminho: string, idioma: Idioma): Metadata[
   return {
     canonical: par[idioma],
     ...(traducaoPublicada(caminho) ? { languages: { "pt-BR": par.pt, en: par.en, "x-default": par.pt } } : {}),
+  };
+}
+
+/** Preserva o head PT e acrescenta somente o vínculo com a irmã declarada. */
+export function metadadosPortuguesComAlternativas(
+  caminho: string,
+  origem: Metadata,
+  anterior: Pick<Awaited<ResolvingMetadata>, "openGraph">,
+): Metadata {
+  const par = parDeIdioma(caminho);
+  if (!par) throw new Error(`Página sem irmã declarada: ${caminho}`);
+  // No Next, o campo presente com undefined também remove o OG herdado.
+  if (origem.openGraph === null || ("openGraph" in origem && origem.openGraph === undefined)) {
+    throw new Error("Open Graph removido explicitamente não é suportado pelos metadados bilíngues");
+  }
+
+  // Como no Next, um OG próprio substitui o herdado inteiro, inclusive imagens.
+  let openGraph = origem.openGraph;
+  if (openGraph === undefined && anterior.openGraph) {
+    openGraph = {
+      ...anterior.openGraph,
+      title: { absolute: anterior.openGraph.title.absolute },
+      url: anterior.openGraph.url ?? undefined,
+    };
+  }
+
+  return {
+    ...origem,
+    alternates: { ...origem.alternates, ...alternativasDeIdioma(caminho, "pt") },
+    openGraph: {
+      ...openGraph,
+      url: par.pt,
+      locale: "pt_BR",
+      alternateLocale: "en_US",
+    },
   };
 }
 
