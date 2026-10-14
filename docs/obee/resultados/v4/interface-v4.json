@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "nature": "manifesto_complementar_interface",
+  "edition": "indice-resultados-2022-v4",
+  "packet_sha256": "b318342ab0aad847eba6d946203c8d3bdfdb289632cc703bb3d9ac3e4c1656d8",
+  "note": "Identifica a interface do índice v4, que o pacote congelado não inclui. Não altera o pacote; mudança na interface exige regravar este manifesto.",
+  "files": [
+    {
+      "path": "src/components/eficiencia/IndiceResultados.tsx",
+      "sha256": "5389f65bc823c17705032ea942e29c2834a140a065319c8b45805ff73e0f910c"
+    },
+    {
+      "path": "src/components/eficiencia/IndiceResultados.module.css",
+      "sha256": "317ec7e15d58b7513f9c27fb497a6b93a8ae5d205626639af17555074f1b2d2a"
+    },
+    {
+      "path": "src/lib/eficiencia/indice-v4-nucleo.ts",
+      "sha256": "a24ee2f677826cd7f50d345941b993ce1c804d704e0c392b65c53a1b4686512f"
+    },
+    {
+      "path": "src/lib/eficiencia/indice-v4.ts",
+      "sha256": "e991d3d39fc1e553ce0d270391beb1249c1f91612d5610d8fe4fdc908a1241a8"
+    }
+  ]
+}
