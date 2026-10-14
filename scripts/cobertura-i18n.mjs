@@ -1,17 +1,19 @@
 /** Inventário inicial: candidatos textuais não são traduções nem chaves catalogadas.
  * Uso: node scripts/cobertura-i18n.mjs [--check | --stdout | --gold]
- * --check só lê fontes de código; --gold inspeciona os dados atuais sem gravar o relatório versionado.
+ * --check só lê fontes de código; --gold inspeciona os dados sem gravar o relatório versionado.
  */
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { analisarCodigo, analisarHtml, analisarJson } from "./i18n/analise.mjs";
 import { descobrirFontes } from "./i18n/fontes.mjs";
+import { lerGlossario } from "./i18n/glossario.mjs";
 
 const RAIZ = fileURLToPath(new URL("../", import.meta.url));
 const INVENTARIO = "config/i18n-inventario.json";
 const RELATORIO = "docs/i18n/cobertura.json";
+const GLOSSARIO = "config/glossario-en.json";
 const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const porCaminho = (fontes) => [...fontes].sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
 
@@ -141,8 +143,33 @@ export function gerarCobertura(raiz = RAIZ) {
     if (existsSync(join(raiz, path))) throw new Error(`A cobertura inicial precisa integrar o catálogo e as rotas antes de medir ${path}`);
   }
   const manifesto = JSON.parse(readFileSync(join(raiz, INVENTARIO), "utf8"));
+  const glossario = resumirGlossario(raiz, manifesto);
   const fontes = descobrirFontes(raiz, manifesto, { apenasCodigo: true });
-  return somenteCodigo(construirRelatorio(manifesto, fontes, (path) => readFileSync(join(raiz, path))));
+  const relatorio = somenteCodigo(construirRelatorio(manifesto, fontes, (path) => readFileSync(join(raiz, path))));
+  return glossario ? { ...relatorio, glossario } : relatorio;
+}
+
+/** Termos documentados não equivalem a chaves traduzidas ou uso já comprovado. */
+function resumirGlossario(raiz, manifesto) {
+  const path = join(raiz, GLOSSARIO);
+  if (!manifesto.glossario && !existsSync(path)) return null;
+  if (manifesto.glossario !== GLOSSARIO) throw new Error(`O inventário deve declarar o glossário único em ${GLOSSARIO}.`);
+  const base = realpathSync(raiz);
+  if (!realpathSync(path).startsWith(base + sep)) throw new Error("Glossário fora do repositório.");
+  const bytes = readFileSync(path);
+  const g = lerGlossario(bytes.toString("utf8"));
+  const entradas = Object.values(g.entradas);
+  return {
+    path: GLOSSARIO,
+    sha256: sha(bytes),
+    fontes: Object.keys(g.fontes).length,
+    termos: entradas.filter((e) => e.tipo === "termo").length,
+    nomes_preservados: entradas.filter((e) => e.tipo === "nome_proprio").length,
+    pendencias: g.pendencias.map(({ id, pt, depende_de }) => ({ id, pt, depende_de }))
+      .sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
+    uso_na_interface_verificado: false,
+    uso_no_pipeline_verificado: false,
+  };
 }
 
 /** Retira métricas de dados: zero seria uma declaração falsa de cobertura da gold. */

@@ -18,6 +18,10 @@ O CI exige `--check` somente sobre fontes de código. O relatório versionado n�
 
 Os workflows `atualizar-dados`, `atualizar-energia`, `atualizar-gas` e `previsao-pld` permanecem idênticos aos da main. Nenhum produtor de dados instala Node ou executa cobertura por causa da i18n. O antigo helper de publicação foi removido.
 
+O inventário também declara `config/glossario-en.json`. O gerador valida sua estrutura e referências, assina seus bytes e informa termos, nomes preservados, fontes e pendências conhecidas em um bloco separado. Essas entradas não contam como chaves de interface ou campos da gold traduzidos: o uso pelos consumidores ainda não foi integrado nem verificado. Alterar uma nota, fonte ou pendência do glossário também exige regenerar o relatório. O arquivo declarado é obrigatório e não pode ser silenciosamente excluído do inventário.
+
+
+
 Para inspecionar os dados atuais, materialize as saídas e execute:
 
 ```bash

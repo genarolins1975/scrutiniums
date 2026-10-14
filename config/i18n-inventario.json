@@ -1,5 +1,6 @@
 {
   "schema_version": 1,
+  "glossario": "config/glossario-en.json",
   "descricao": "Inventário inicial de fontes, não catálogo de traduções. Prefixos incluem novos arquivos; omissões textuais conhecidas permanecem explícitas.",
   "ui": { "raizes": ["src/app", "src/components", "src/lib", "public/obs"] },
   "dominios": [

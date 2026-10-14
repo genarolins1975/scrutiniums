@@ -9,7 +9,7 @@
     "gold": "Dados não participam deste relatório nem do --check. Execute --gold para a situação atual, não versionada."
   },
   "escopo": {
-    "inventario_sha256": "33a34e4b4b41df6d7f3f175d96acea6a9c02f3ccaf00d8f18cdf901da9af4764",
+    "inventario_sha256": "6caf5ec4d7f95cba6c9000587e1b39131a5ca340430ac6cf2e09c74f7d31595e",
     "arquivos_analisados": 990,
     "fontes_sha256": "c3263495a897eaf8abd83188fa8732f3c60ec40a5f02e37da46ebc7b90163fdb",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
@@ -475,5 +475,141 @@
       },
       "cobertura_completa": false
     }
+  },
+  "glossario": {
+    "path": "config/glossario-en.json",
+    "sha256": "d5b8ec951eadf35f7438b93187375a688893e8a3fd4fd723fc3026c00979379b",
+    "fontes": 8,
+    "termos": 21,
+    "nomes_preservados": 8,
+    "pendencias": [
+      {
+        "id": "editorial.contas_publicas_estaduais",
+        "pt": "Contas Públicas Estaduais",
+        "depende_de": "mantenedor"
+      },
+      {
+        "id": "editorial.contas_publicas_federais",
+        "pt": "Contas Públicas Federais",
+        "depende_de": "mantenedor"
+      },
+      {
+        "id": "editorial.eficiencia_estatal",
+        "pt": "Eficiência Estatal",
+        "depende_de": "mantenedor"
+      },
+      {
+        "id": "editorial.saneamento",
+        "pt": "Saneamento",
+        "depende_de": "mantenedor"
+      },
+      {
+        "id": "editorial.setor_eletrico",
+        "pt": "Setor Elétrico",
+        "depende_de": "mantenedor"
+      },
+      {
+        "id": "financeiro.juros_valor",
+        "pt": "juros",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "financeiro.saldo_generico",
+        "pt": "saldo",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.aneel",
+        "pt": "ANEEL",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.anp",
+        "pt": "ANP",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.bolsa_familia",
+        "pt": "Bolsa Família",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.ccee",
+        "pt": "CCEE",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.cnj",
+        "pt": "CNJ",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.comex_stat",
+        "pt": "Comex Stat",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.desenrola",
+        "pt": "Desenrola",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.estban",
+        "pt": "ESTBAN",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.if_data",
+        "pt": "IF.data",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.inep",
+        "pt": "INEP",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.mds",
+        "pt": "MDS",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.ons",
+        "pt": "ONS",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.pgfn",
+        "pt": "PGFN",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.sinesp",
+        "pt": "Sinesp",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.sinisa",
+        "pt": "SINISA",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.siop",
+        "pt": "SIOP",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.sisagua",
+        "pt": "SISAGUA",
+        "depende_de": "pesquisa"
+      },
+      {
+        "id": "nome.tarifa_social",
+        "pt": "Tarifa Social",
+        "depende_de": "pesquisa"
+      }
+    ],
+    "uso_na_interface_verificado": false,
+    "uso_no_pipeline_verificado": false
   }
 }
