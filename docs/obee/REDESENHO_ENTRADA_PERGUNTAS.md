@@ -10,15 +10,19 @@ A entrada somava quatro comparadores (abertura, índice, panorama de quatro pers
 
 | Ordem | Seção | Pergunta | Conteúdo |
 |---|---|---|---|
-| Topo | Retrato da capital | Como se vive na sua capital? | Contorno oficial do município (malha IBGE 2022) gravado em hachura, sete pétalas com a posição da capital em cada resultado de 2022, losangos do comparador, população do Censo 2022, área oficial e densidade |
+| Topo | Retrato da capital | Como se vive na sua capital? | Contorno oficial do município (malha IBGE 2022) gravado em hachura, sete pétalas com a posição da capital em cada resultado de 2022, losangos do comparador, população do Censo 2022, área oficial e densidade; nota experimental das duas capitais, classe de estabilidade do par e faixa nos testes |
 | 01 | A vida na capital | Sete perguntas | Uma linha por resultado: valores das duas capitais, diferença na unidade original e faixa das 26 capitais com a mediana simples; tabela equivalente das 26 e CSV com ressalva |
 | 02 | O que o poder público aplica e oferece | Quanto a prefeitura aplica, e que capacidade registra | Despesa municipal por habitante em Educação e em Saúde (2025) e cobertura potencial da atenção primária (dezembro de 2025), separadas dos resultados de 2022 e sem relação causal |
-| Índice | Uma nota que se explica | | Componente do índice v4 sem alteração (interface conferida por `interface-v4.json`) |
+| Índice | Uma nota que se explica | | Componente do índice v4 sem alteração |
 | 03 | Aprofundar a educação | Escola por idade e aprendizagem | Frequência escolar por faixa etária e Saeb, preservados |
 | 04 | O que ainda não se sabe | Até onde cada tema chega | Matriz de 16 temas por nível territorial (índice v4, capitais, municípios, UFs, regiões, Brasil); cada linha abre a ficha do tema, com o conteúdo das antigas sanfonas |
 | 05 | Da evidência ao escore | | Método dos escores dos serviços, disponibilidade e aviso sobre esferas, preservados |
 
 A seleção de capital e comparador fica na URL (`territorio`, `comparador`) e atualiza todas as seções; voltar no navegador restaura a seleção anterior. Os links profundos de Trabalho e renda, Mobilidade e Saúde levam o recorte das capitais selecionadas.
+
+## Integração com a abertura publicada em 14/10/2026
+
+O commit `823287e58` (PR #182) levou à abertura a nota das duas capitais, a classe de estabilidade, a faixa nos testes, o perfil nas sete posições, rótulos curtos fiéis ao valor exibido e regras de impressão. O retrato preserva esses elementos: a nota e a estabilidade ficam ao lado dos fatos da capital, o perfil é desenhado pelas pétalas, os rótulos curtos são os mesmos e o painel escuro tem regras próprias de impressão.
 
 ## Fontes novas
 

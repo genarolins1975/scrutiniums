@@ -1,11 +1,11 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import Link from 'next/link';
 import dados from '@/lib/eficiencia/atlas-resumo.json';
 import styles from './AtlasCidadao.module.css';
 import {IndiceResultados} from './IndiceResultados';
-import {type IndiceSnapshot} from '@/lib/eficiencia/indice-v4-nucleo';
+import {createIndice, STATUS_LABELS, type IndiceSnapshot} from '@/lib/eficiencia/indice-v4-nucleo';
 import {FrequenciaEscolar} from './FrequenciaEscolar';
 import frequencia from '@/lib/eficiencia/frequencia-escolar.json';
 import {RetratoCapital} from './entrada/RetratoCapital';
@@ -48,6 +48,9 @@ export function AtlasCidadao({retrato, indice = null, cobertura = null}: {retrat
   }
   const a = retrato.capitais.find(c => c.id === selection.place) ?? retrato.capitais[0];
   const b = retrato.capitais.find(c => c.id === selection.reference) ?? retrato.capitais[1];
+  const calculo = useMemo(() => indice ? createIndice(indice) : null, [indice]);
+  const ra = calculo?.row(a.id), rb = calculo?.row(b.id), par = calculo?.stability(a.id, b.id);
+  const nota = indice && ra && rb && par ? {a: ra.score, b: rb.score, faixaA: ra.band, estabilidade: STATUS_LABELS[par.status], ano: indice.reference_year} : null;
   const saeb = [a, b].map(c => ({c, v: dados.cities.find(x => x.id === c.id)?.value ?? null}));
   const max = Math.max(1, ...dados.cities.map(r => r.value ?? 0));
   const diff = saeb[0].v !== null && saeb[1].v !== null ? saeb[0].v - saeb[1].v : null;
@@ -59,7 +62,7 @@ export function AtlasCidadao({retrato, indice = null, cobertura = null}: {retrat
   return <div className={styles.atlas}>
     <RetratoCapital a={a} b={b} condicoes={retrato.condicoes} capitais={retrato.capitais}
       onSelect={(campo, id) => select(campo === 'territorio' ? {...selection, place: id} : {...selection, reference: id})}
-      fonteContornos={retrato.fonteContornos} fontePopulacao={retrato.fontePopulacao}/>
+      fonteContornos={retrato.fonteContornos} fontePopulacao={retrato.fontePopulacao} nota={nota}/>
     <div className={entrada.wrap}>
 
     <PerguntasCapital id="perguntas" eyebrow="01 · A vida na capital" titulo={`Sete perguntas sobre a vida ${naCapital(a.nome)}`}

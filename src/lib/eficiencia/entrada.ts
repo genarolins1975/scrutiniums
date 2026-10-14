@@ -20,15 +20,16 @@ const UF: Record<string, [string, string]> = {
   '50': ['MS', 'Centro-Oeste'], '51': ['MT', 'Centro-Oeste'], '52': ['GO', 'Centro-Oeste'],
 };
 
-/** Perguntas da sociedade para cada condição. Descritivas: nenhuma embute julgamento sobre gestão. */
+/** Perguntas da sociedade para cada condição. Descritivas: nenhuma embute julgamento sobre gestão.
+ *  Rótulos curtos fiéis ao valor: quando menor é mais favorável, nomeiam a condição contada. */
 const PERGUNTAS: Record<string, [string, string]> = {
   educacao: ['As crianças de 4 e 5 anos estão na escola?', 'Escola, 4 e 5 anos'],
-  trabalho: ['Qual é a renda típica de cada morador?', 'Renda'],
-  mobilidade: ['Quantos levam mais de uma hora para chegar ao trabalho?', 'Tempo até o trabalho'],
-  saneamento: ['As casas têm esgotamento por rede ou fossa séptica?', 'Esgotamento'],
-  seguranca: ['Quantas pessoas são vítimas de homicídio?', 'Violência letal'],
-  habitacao: ['Quantos moram com mais de 3 pessoas por dormitório?', 'Moradia'],
-  conectividade: ['As casas têm acesso à internet?', 'Internet'],
+  trabalho: ['Qual é a renda típica de cada morador?', 'Renda por pessoa'],
+  mobilidade: ['Quantos levam mais de uma hora para chegar ao trabalho?', 'Mais de 1 h até o trabalho'],
+  saneamento: ['As casas têm esgotamento por rede ou fossa séptica?', 'Rede ou fossa séptica'],
+  seguranca: ['Quantas pessoas são vítimas de homicídio?', 'Homicídios por 100 mil'],
+  habitacao: ['Quantos moram com mais de 3 pessoas por dormitório?', 'Moradia adensada'],
+  conectividade: ['As casas têm acesso à internet?', 'Internet em casa'],
 };
 
 type Observacao = {indicador: string; ente: number; ano: number; componente: string | null; valor: number | null; status: string;

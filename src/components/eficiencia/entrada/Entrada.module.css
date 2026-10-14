@@ -9,7 +9,7 @@
     repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 56px),
     repeating-linear-gradient(90deg,rgba(255,255,255,.028) 0 1px,transparent 1px 56px),
     var(--cor-obee-atlas-tinta)}
-.heroInner{max-width:76rem;margin:0 auto;padding:56px 32px 40px;display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:32px;align-items:center}
+.heroInner{max-width:76rem;margin:0 auto;padding:56px 32px 40px;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px;align-items:center}
 .kicker{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--cor-obee-atlas-rotulo-inverso)}
 .heroTitle{font-family:"Playfair Display Variable",Georgia,serif;font-weight:400;font-size:clamp(38px,4.6vw,62px)!important;line-height:1.06!important;letter-spacing:-.03em;margin-top:14px!important;color:var(--inv)}
 .heroTitle em{font-style:italic;color:var(--acc)}
@@ -25,12 +25,22 @@
 .facts dd{margin:6px 0 0;font-family:"Playfair Display Variable",Georgia,serif;font-size:24px;line-height:1.15;font-variant-numeric:tabular-nums;color:var(--inv)}
 .facts .unit{font-family:var(--font-sans),system-ui,sans-serif;font-size:14px;color:var(--inv-muted)}
 .facts small{display:block;margin-top:4px;font-family:var(--font-sans),system-ui,sans-serif;font-size:12px;color:var(--inv-muted)}
+.score{margin-top:24px;max-width:34rem;padding:16px 18px;border:1px solid var(--cor-obee-atlas-linha-inversa);background:rgba(255,255,255,.04)}
+.scoreKicker{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cor-obee-atlas-rotulo-inverso)}
+.score dl{display:flex;gap:28px;margin:8px 0 0}
+.score dt{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--inv-muted)}
+.score dd{margin:2px 0 0;font-family:"Playfair Display Variable",Georgia,serif;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--inv)}
+.score dd.scoreMain{font-size:40px;color:var(--acc)}
+.scoreDot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--acc)}
+.scoreDiamond{display:inline-block;width:9px;height:9px;background:var(--peer);transform:rotate(45deg)}
+.scoreNote{margin-top:10px!important;font-size:13px;line-height:1.55;color:var(--inv-muted)}
+.scoreNote a{color:var(--acc)}
 .heroNav{display:flex;flex-wrap:wrap;gap:4px 20px;margin-top:28px}
 .heroNav a{display:inline-flex;align-items:center;gap:6px;min-height:44px;color:var(--acc);font-size:15px;text-decoration:none;border-bottom:1px solid transparent}
 .heroNav a:hover{border-bottom-color:var(--acc)}
 
 .rosette{margin:0}
-.rosetteStage{position:relative;margin:0 auto;max-width:560px;aspect-ratio:1}
+.rosetteStage{position:relative;margin:0 auto;max-width:470px;aspect-ratio:1}
 .rosetteStage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .ringOuter{fill:none;stroke:var(--cor-obee-atlas-linha-inversa);stroke-width:1}
 .ringHalf{fill:none;stroke:var(--inv-muted);stroke-width:1.2;stroke-dasharray:3 6;opacity:.7}
@@ -46,9 +56,9 @@
 .scaleBar line{stroke:var(--inv);stroke-width:2}
 .scaleBar text{fill:var(--inv-muted);font:12px var(--font-sans),system-ui,sans-serif}
 .petalNumber{display:none;fill:var(--inv);font:600 16px var(--font-sans),system-ui,sans-serif}
-.petalLabel{position:absolute;width:9.5rem;margin:0!important;display:flex;flex-direction:column;gap:2px;line-height:1.25;transform:translateY(-50%);pointer-events:none}
+.petalLabel{position:absolute;width:8rem;margin:0!important;display:flex;flex-direction:column;gap:2px;line-height:1.25;transform:translateY(-50%);pointer-events:none}
 .petalLabel span{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--cor-obee-atlas-rotulo-inverso)}
-.petalLabel strong{font-family:"Playfair Display Variable",Georgia,serif;font-weight:400;font-size:21px;font-variant-numeric:tabular-nums;color:var(--inv)}
+.petalLabel strong{white-space:nowrap;font-family:"Playfair Display Variable",Georgia,serif;font-weight:400;font-size:21px;font-variant-numeric:tabular-nums;color:var(--inv)}
 .labelRight{text-align:left}
 .labelLeft{text-align:right;transform:translate(-100%,-50%)}
 .labelCenter{text-align:center;transform:translate(-50%,-100%)}
@@ -146,9 +156,12 @@
 .matrixKey{display:flex;flex-wrap:wrap;gap:8px 22px;padding:18px 0 0;font-size:13px!important;color:var(--muted)}
 .matrixKey span{display:inline-flex;align-items:center;gap:8px}
 
-@media(max-width:1023px){
+@media(max-width:1279px){
   .heroInner{grid-template-columns:1fr;gap:24px;padding:40px 24px 32px}
-  .rosetteStage{max-width:520px}
+  .rosetteStage{max-width:470px}
+  .rosette{padding-top:56px}
+}
+@media(max-width:1023px){
   .row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px 28px}
   .rowStrip{grid-column:1/-1}
 }
@@ -160,6 +173,7 @@
   .facts dd{font-size:19px}
   .facts div+div{padding-left:10px}
   .petalLabel{display:none}
+  .rosette{padding-top:0}
   .petalNumber{display:block}
   .petalList{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin:16px 0 0;padding:0;list-style:none;font-size:13px;color:var(--inv-muted)}
   .petalList li span b{display:inline-flex;justify-content:center;align-items:center;width:18px;height:18px;margin-right:6px;border:1px solid var(--acc);border-radius:50%;font-size:11px;color:var(--acc)}
@@ -177,4 +191,17 @@
   .matrixDetail dl div{grid-template-columns:1fr;gap:2px}
 }
 @media(max-width:400px){.facts dt{font-size:11px;letter-spacing:.03em}.facts dd{font-size:18px}}
+/* Impressão: o retrato sai sem fundo escuro; texto, linhas e marcas voltam às cores sobre papel. */
+@media print{
+  .hero{background:none;color:var(--cor-obee-atlas-tinta);--inv:var(--cor-obee-atlas-tinta);--inv-muted:var(--cor-obee-atlas-texto-secundario);--acc:var(--cor-obee-atlas-serie-territorio);--peer:var(--cor-obee-atlas-serie-par)}
+  .kicker,.selectors label,.facts dt,.petalLabel span,.scoreKicker{color:var(--cor-obee-atlas-texto-secundario)}
+  .selectors{display:none}
+  .score{background:none;border-color:var(--cor-obee-atlas-linha)}
+  .ringOuter,.spoke,.disc,.facts,.facts div+div{stroke:var(--cor-obee-atlas-linha);border-color:var(--cor-obee-atlas-linha)}
+  .petal{fill:var(--cor-obee-atlas-selecao)}
+  .discoCentro,.discoBorda{stop-color:var(--cor-obee-atlas-papel)}
+  .heroNav{display:none}
+  .heroInner{grid-template-columns:1fr;gap:24px}
+  .rosetteStage{max-width:380px}
+}
 @media(prefers-reduced-motion:reduce){.rosette *{transition:none}}
