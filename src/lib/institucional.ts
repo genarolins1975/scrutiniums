@@ -14,7 +14,7 @@ export type Institucional = {
   email_institucional: string;
   conselho_consultivo: MembroConselho[];
   api: { aviso_previo_quebra_dias: number | null };
-  dados: { licenca_derivados: string };
+  dados: { licenca_id: string; licenca_derivados: string };
   zenodo: { criadores: { nome: string; afiliacao?: string; orcid?: string }[]; comunidade: string; doi_conceito: string };
 };
 

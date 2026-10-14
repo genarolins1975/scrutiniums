@@ -75,12 +75,14 @@ def metadados(mes, meta, inst, fontes):
         {k: v for k, v in (("name", c.get("nome")), ("affiliation", c.get("afiliacao")), ("orcid", c.get("orcid"))) if v}
         for c in z.get("criadores") or [] if c.get("nome")
     ]
-    licenca = (inst.get("dados") or {}).get("licenca_derivados") or ""
+    # identificador do vocabulário de licenças do Zenodo (ex.: cc-by-4.0); o texto
+    # de licenca_derivados é para o site e seria recusado pela API de depósito
+    licenca = (inst.get("dados") or {}).get("licenca_id") or ""
     pendencias = []
     if not criadores:
         pendencias.append("criadores (config/institucional.json → zenodo.criadores)")
     if not licenca:
-        pendencias.append("licença dos dados derivados (config/institucional.json → dados.licenca_derivados)")
+        pendencias.append("identificador da licença dos dados derivados (config/institucional.json → dados.licenca_id)")
     md = {
         "upload_type": "dataset",
         "title": f"Observatório Brasileiro de Crédito: séries mensais do crédito no Brasil ({mes})",

@@ -1,11 +1,11 @@
 {
  "_leia": "Campos de decisão do mantenedor. Vazio = não publicado: a seção correspondente não é renderizada e nada é inventado no lugar. Preencher só com informação verdadeira e verificável.",
- "mantenedor": { "nome": "", "natureza_juridica": "" },
- "financiamento": "",
- "conflitos_de_interesse": "",
+ "mantenedor": { "nome": "Genaro Lins", "natureza_juridica": "pessoa física" },
+ "financiamento": "Mantida com recursos próprios do mantenedor, sem financiamento externo, patrocínio ou publicidade.",
+ "conflitos_de_interesse": "O responsável pela plataforma ocupa cargos de conselho e de diretoria em entidades do sistema financeiro. Como as notas editoriais não têm revisão humana, não há quem se declare impedido; por isso elas não tratam de instituição financeira nomeada, de garantia de depósitos e regimes de resolução, nem de Open Finance e seus participantes, e um validador por código bloqueia esses temas. As regras completas estão na Constituição editorial, publicada em /sobre/governanca.",
  "email_institucional": "",
  "conselho_consultivo": [],
  "api": { "aviso_previo_quebra_dias": null },
- "dados": { "licenca_derivados": "" },
+ "dados": { "licenca_id": "cc-by-4.0", "licenca_derivados": "Os dados derivados publicados pela Scrutiniums (séries, tabelas, arquivos da API e gráficos) estão sob a licença Creative Commons Atribuição 4.0 Internacional (CC BY 4.0): podem ser copiados, adaptados e usados, inclusive para fins comerciais, desde que citem a Scrutiniums e a fonte primária. Dados de terceiros seguem a licença da fonte original." },
  "zenodo": { "criadores": [], "comunidade": "", "doi_conceito": "" }
 }

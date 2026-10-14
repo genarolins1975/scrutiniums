@@ -66,6 +66,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...DATASETS_INTEGRADOS.map((d) => rota(`/setor-eletrico/dados/${d.slug}`, 0.5, "weekly")),
     rota("/sobre", 0.5, "yearly"),
     rota("/sobre/erros", 0.4, "monthly"),
+    rota("/sobre/governanca", 0.4, "yearly"),
     rota("/setor-eletrico/aprenda", 0.6, "monthly"),
     rota("/contas-publicas/metodologia", 0.5, "monthly"),
     rota("/contas-publicas/glossario", 0.5, "monthly"),

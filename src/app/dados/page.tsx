@@ -51,7 +51,7 @@ export default function DadosPage() {
           {" "}·{" "}
           <Link href="/dados/ibcc" className="text-bronze underline underline-offset-4 hover:text-carvao">índice de condições de crédito (IBCC)</Link>
           {" "}·{" "}
-          <Link href="/dados/api" className="text-bronze underline underline-offset-4 hover:text-carvao">API pública de leitura</Link>
+          <Link href="/dados/api" className="text-bronze underline underline-offset-4 hover:text-carvao">API de leitura</Link>
         </p>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

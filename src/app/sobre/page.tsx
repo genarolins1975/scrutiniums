@@ -16,7 +16,7 @@ export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: "Sobre a Scrutiniums",
-  description: "Quem mantém a plataforma, como ela se financia, como erros são corrigidos e registrados, como citar e como entrar em contato.",
+  description: "Quem mantém a plataforma, como ela se financia, que regras editoriais seguem as notas, como erros são corrigidos e registrados, como citar, sob qual licença e como entrar em contato.",
   alternates: { canonical: "/sobre" },
 };
 
@@ -40,6 +40,7 @@ export default function SobrePage() {
   const c = contato();
   const { erros } = registroErros();
   const doi = INSTITUCIONAL.zenodo.doi_conceito;
+  const licenca = INSTITUCIONAL.dados.licenca_derivados;
   let n = 0;
   return (
     <div className="flex min-h-screen flex-col bg-marfim">
@@ -70,6 +71,18 @@ export default function SobrePage() {
             </p>
           </section>
 
+          <section aria-labelledby="governanca">
+            <div className="mb-3 flex items-baseline gap-4">
+              <span className="font-serif text-xl text-bronze" aria-hidden="true">{String(++n).padStart(2, "0")}</span>
+              <h2 id="governanca" className="font-serif text-2xl text-carvao">Governança editorial</h2>
+            </div>
+            <p className="text-carvao-muted">
+              As notas do Observatório do crédito seguem uma Constituição editorial: todo número vem da camada gold, cada parágrafo
+              declara se é evidência ou inferência, há temas vedados e três revisões independentes, e a checagem de números é feita
+              por código. <Link href="/sobre/governanca" className={link}>Ler a Constituição editorial</Link>.
+            </p>
+          </section>
+
           <section aria-labelledby="citar">
             <div className="mb-3 flex items-baseline gap-4">
               <span className="font-serif text-xl text-bronze" aria-hidden="true">{String(++n).padStart(2, "0")}</span>
@@ -81,9 +94,10 @@ export default function SobrePage() {
               o botão Copiar citação, que monta esse texto com a data de acesso.
             </p>
             <p className="mt-3 text-carvao-muted">
-              Para uso por programa, os arquivos estão na <Link href="/dados/api" className={link}>API pública de leitura</Link>.
+              Para uso por programa, quem tem conta lê os arquivos pela <Link href="/dados/api" className={link}>API de leitura</Link>.
               {preenchido(doi) ? <> Séries depositadas com DOI: <a href={`https://doi.org/${doi}`} className={link}>{doi}</a>.</> : null}
             </p>
+            {preenchido(licenca) ? <p className="mt-3 text-carvao-muted">{licenca}</p> : null}
           </section>
 
           <section aria-labelledby="contato">
