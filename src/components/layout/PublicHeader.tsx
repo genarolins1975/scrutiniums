@@ -1,21 +1,13 @@
 import Link from "next/link";
-import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { cookies } from "next/headers";
 import { LogoWordmark } from "@/components/ui/Logo";
 import { getSessionUser } from "@/lib/session";
-import { ABAS_OBSERVATORIOS } from "@/components/observatorios/NavegacaoObservatorios";
+import { AbasCabecalho } from "@/components/layout/AbasCabecalho";
 
-// Abas do cabeçalho: os observatórios do registro, com os mesmos destinos e rótulos
-// das barras internas (ABAS_OBSERVATORIOS), e a página de imprensa. Apresentação,
-// método, dados e demais páginas de cada domínio ficam na home, no rodapé e
-// dentro de cada observatório. Para quem não tem sessão, cada aba passa pelo
-// login e volta ao observatório escolhido (src/middleware.ts).
+// Abas do cabeçalho: os observatórios do registro e a imprensa (navCabecalho). Quem tem
+// conta vai ao painel; o visitante, à seção do observatório na página inicial.
 // Com sete observatórios as abas não cabem na linha da marca nem a 1440 px: ficam
 // sempre numa segunda linha, que quebra em vez de rolar, para nenhuma aba ficar escondida.
-const NAV: { href: string; label: string }[] = [
-  ...ABAS_OBSERVATORIOS.map((a) => ({ href: a.href, label: a.rotulo })),
-  { href: "/imprensa", label: "Imprensa" },
-];
 
 /**
  * Cabeçalho público com ações de autenticação sensíveis à sessão:
@@ -70,16 +62,7 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
         </div>
       </div>
       <nav aria-label="Navegação principal" className="mx-auto flex max-w-page flex-wrap gap-x-6 border-t border-linha px-6 py-1.5">
-        {NAV.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            prefetch={prefetchDoLink(item.href)}
-            className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze"
-          >
-            {item.label}
-          </Link>
-        ))}
+        <AbasCabecalho logadoNoServidor={authenticated} className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze" />
         {/* no celular o "Entrar" da linha de cima não cabe; fica com as abas */}
         <Link
           href={authenticated ? "/app/conta" : "/entrar"}

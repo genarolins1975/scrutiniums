@@ -49,3 +49,33 @@ describe("rotas públicas", () => {
     for (const u of urls) expect(ehRotaPublica(u), u).toBe(true);
   });
 });
+
+describe("abas do cabeçalho", () => {
+  it("visitante vai à seção pública do observatório na home; quem tem conta vai ao painel", async () => {
+    const { navCabecalho } = await import("@/components/layout/navCabecalho");
+    const { DOMINIOS } = await import("@/lib/dominios");
+    const { readFileSync } = await import("node:fs");
+    const secao = readFileSync(`${process.cwd()}/src/components/home/SecaoObservatorios.tsx`, "utf-8");
+    expect(secao).toContain("id={`obs-${d.id}`}");
+    const visitante = navCabecalho(false);
+    for (const d of DOMINIOS) expect(visitante.map((n) => n.href)).toContain(`/#obs-${d.id}`);
+    for (const n of visitante) expect(ehRotaPublica(n.href.split("#")[0] || "/"), n.href).toBe(true);
+    const logado = navCabecalho(true).map((n) => n.href);
+    for (const d of DOMINIOS) expect(logado).toContain(d.rotaRaiz);
+  });
+});
+
+describe("abas em páginas estáticas", () => {
+  it("o cliente consulta a sessão e troca as abas para os painéis quando há sessão", async () => {
+    const { readFileSync } = await import("node:fs");
+    const c = readFileSync(`${process.cwd()}/src/components/layout/AbasCabecalho.tsx`, "utf-8");
+    expect(c).toMatch(/^"use client";/);
+    expect(c).toContain('fetch("/api/auth/eu"');
+    expect(c).toContain("r.status === 204");
+    expect(c).toContain("navCabecalho(logado)");
+    // a rota consultada responde 204 com sessão e 401 sem, sem cache
+    const rota = readFileSync(`${process.cwd()}/src/app/api/auth/eu/route.ts`, "utf-8");
+    expect(rota).toContain("user ? 204 : 401");
+    expect(rota).toContain('"Cache-Control": "no-store"');
+  });
+});

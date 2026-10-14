@@ -88,6 +88,17 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
                       </Link>
                     )}
                   </div>
+                  <p className="mt-3 text-sm text-carvao-muted">
+                    Sem conta?{" "}
+                    <Link href="/cadastro" className="text-carvao underline decoration-linha underline-offset-4 hover:text-bronze-dark">
+                      Criar conta gratuita
+                    </Link>{" "}
+                    ou{" "}
+                    <Link href="/entrar" className="text-carvao underline decoration-linha underline-offset-4 hover:text-bronze-dark">
+                      entrar
+                    </Link>
+                    .
+                  </p>
                 </div>
 
                 <div className="lg:col-span-8">
