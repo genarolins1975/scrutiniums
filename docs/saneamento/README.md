@@ -32,7 +32,7 @@ Ferramentas: `/saneamento/municipio` e `/saneamento/municipio/[id]` (Meu municí
 ## Arquitetura
 
 - `pipeline/observatorio_saneamento/`: `fontes.py` (catálogo), `coletar.py` (baixa e extrai para `seed/` com sha256), `gold.py` (constrói a gold sem rede), `tarifas.py` (tabelas verificadas → `src/lib/saneamento/dados/tarifas.json`, com exemplos conferidos em Decimal), `atos.py` e `curadoria/` (catálogo de atos → `atos.json`).
-- `public/saneamento/gold/`: `municipios.json|csv`, `indice.json`, `agregados.json`, `prestadores.json|csv`, `reguladores.json`, `etes.json|csv`, `meta.json` (proveniência e conferências), `uf/SIGLA.json` (fichas municipais completas).
+- `public/saneamento/gold/`: `municipios.json|csv`, `desigualdades_municipios.json|csv` (capítulo 2, carregado só pelo atlas do capítulo), `indice.json`, `agregados.json`, `prestadores.json|csv`, `reguladores.json`, `etes.json|csv`, `meta.json` (proveniência e conferências), `uf/SIGLA.json` (fichas municipais completas).
 - `src/lib/saneamento/`: tipos, leitura da gold, catálogo de medidas, referências territoriais, capítulos, prestadores, viabilidade, simulador.
 - `src/components/saneamento/`: cabeçalho, peças editoriais, atlas municipal, tabela de dados, comparadores, simulador.
 - `src/app/saneamento/`: páginas estáticas lidas da gold no build; fichas de município e prestador renderizadas sob demanda e guardadas.

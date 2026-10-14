@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { agregado, agregados, meta, municipios, prestadores, reguladores } from "@/lib/saneamento/gold";
-import { MEDIDAS_DESIGUALDADES, MEDIDAS, agregarMedida, formatarValor, medida } from "@/lib/saneamento/medidas";
+import { agregado, agregados, meta, municipios, municipiosComDesigualdades, prestadores, reguladores } from "@/lib/saneamento/gold";
+import { MEDIDAS_DESIGUALDADES, MEDIDAS, MEDIDAS_GERAIS, agregarMedida, formatarValor, medida } from "@/lib/saneamento/medidas";
 import { referencias } from "@/lib/saneamento/referencias";
 import { CAPITULOS, ROTA } from "@/lib/saneamento/capitulos";
 import { VIABILIDADE } from "@/lib/saneamento/viabilidade";
@@ -37,6 +37,7 @@ function csvObee(nome: string): Record<string, string>[] {
 
 describe("Saneamento: gold e conferências", () => {
   const lista = municipios();
+  const listaDes = municipiosComDesigualdades();
   const br = agregado("BR")!;
 
   it("cobre os 5.571 municípios do IBGE e os 5.570 do Censo 2022", () => {
@@ -45,12 +46,20 @@ describe("Saneamento: gold e conferências", () => {
     expect(meta()?.cobertura.municipios_ibge).toBe(5571);
   });
 
+  it("desigualdades: colunas do capítulo 2 ficam fora da tabela municipal geral e do comparador", () => {
+    expect(Object.keys(lista[0]).some((k) => k.startsWith("des_"))).toBe(false);
+    expect(Object.keys(listaDes[0]).filter((k) => k.startsWith("des_"))).toHaveLength(28);
+    expect(listaDes).toHaveLength(lista.length);
+    expect(MEDIDAS_GERAIS.some((m) => m.id.startsWith("des-"))).toBe(false);
+    expect(MEDIDAS_GERAIS.length + MEDIDAS_DESIGUALDADES.length).toBe(MEDIDAS.length);
+  });
+
   it("desigualdades: referências usam tabulações oficiais mesmo sob supressão municipal", () => {
     expect(MEDIDAS_DESIGUALDADES).toHaveLength(14);
-    const refs = referencias(agregados(), lista, MEDIDAS_DESIGUALDADES.map((m) => m.id));
+    const refs = referencias(agregados(), listaDes, MEDIDAS_DESIGUALDADES.map((m) => m.id));
     expect(refs["des-favelas-esgoto"].BR.contagem).toBe(4360958);
     expect(refs["des-favelas-esgoto"].BR.pct).toBeCloseTo(4360958 / 16349896 * 100, 9);
-    expect(agregarMedida(medida("des-favelas-esgoto"), lista).contagem).toBe(4360279);
+    expect(agregarMedida(medida("des-favelas-esgoto"), listaDes).contagem).toBe(4360279);
     for (const med of MEDIDAS_DESIGUALDADES) {
       const [num, den] = br.desigualdades[med.id.slice(4)];
       expect(refs[med.id].BR.pct).toBeCloseTo(num! / den! * 100, 9);
@@ -59,13 +68,13 @@ describe("Saneamento: gold e conferências", () => {
 
   it("desigualdades: zero de carência, universo vazio e supressão têm comportamentos diferentes", () => {
     const med = medida("des-amarela-agua");
-    const vazio = lista.find((m) => m["des_amarela-agua_den"] === 0)!;
+    const vazio = listaDes.find((m) => m["des_amarela-agua_den"] === 0)!;
     expect(vazio).toBeTruthy();
     expect(med.pct(vazio)).toBeNull();
-    const zero = lista.find((m) => m["des_amarela-agua_num"] === 0 && m["des_amarela-agua_den"]! > 0)!;
+    const zero = listaDes.find((m) => m["des_amarela-agua_num"] === 0 && m["des_amarela-agua_den"]! > 0)!;
     expect(med.pct(zero)).toBe(0);
     const favela = medida("des-favelas-esgoto");
-    const suprimido = lista.find((m) => m["des_favelas-esgoto_num"] == null && m["des_favelas-agua_den"]! > 0)!;
+    const suprimido = listaDes.find((m) => m["des_favelas-esgoto_num"] == null && m["des_favelas-agua_den"]! > 0)!;
     expect(suprimido).toBeTruthy();
     expect(favela.pct(suprimido)).toBeNull();
     expect(favela.contagem!(suprimido)).toBeNull();
@@ -133,8 +142,8 @@ describe("Saneamento: gold e conferências", () => {
   it("a contagem agregada de cada medida soma a própria contagem municipal", () => {
     for (const med of MEDIDAS) {
       if (!med.contagem || !med.numerador || !med.denominador) continue;
-      const r = agregarMedida(med, lista);
-      const incluidos = lista.filter((m) => med.numerador!(m) != null && med.denominador!(m) != null && med.denominador!(m)! > 0);
+      const r = agregarMedida(med, listaDes);
+      const incluidos = listaDes.filter((m) => med.numerador!(m) != null && med.denominador!(m) != null && med.denominador!(m)! > 0);
       expect(r.contagem, med.id).toBe(incluidos.reduce((s, m) => s + (med.contagem!(m) ?? 0), 0));
     }
   });

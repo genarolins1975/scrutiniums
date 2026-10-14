@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { baixarCsv } from "@/lib/saneamento/csv";
-import { FONTE_ROTULO, MEDIDAS, formatarValor } from "@/lib/saneamento/medidas";
+import { FONTE_ROTULO, MEDIDAS_GERAIS, formatarValor } from "@/lib/saneamento/medidas";
 import { inteiro } from "@/lib/saneamento/formato";
 import type { Municipio } from "@/lib/saneamento/tipos";
 import { BuscaMunicipio } from "./BuscaMunicipio";
@@ -52,7 +52,7 @@ export function ComparadorMunicipios({ sugestoes }: { sugestoes: { ids: string; 
       "saneamento-comparacao-municipios.csv",
       ["medida", "fonte", "periodo", "unidade", ...escolhidos.map((m) => `${m.nome} (${m.uf}) ${m.id}`)],
       [
-        ...MEDIDAS.map((med) => [med.titulo, FONTE_ROTULO[med.fonte], med.periodo, med.unidadePct, ...escolhidos.map((m) => med.pct(m))]),
+        ...MEDIDAS_GERAIS.map((med) => [med.titulo, FONTE_ROTULO[med.fonte], med.periodo, med.unidadePct, ...escolhidos.map((m) => med.pct(m))]),
         ...ARRANJO.map((l) => [l.rotulo, l.fonte, "", "", ...escolhidos.map((m) => l.valor(m))]),
       ],
     );
@@ -134,7 +134,7 @@ export function ComparadorMunicipios({ sugestoes }: { sugestoes: { ids: string; 
                 </tr>
               </thead>
               <tbody>
-                {MEDIDAS.map((med) => (
+                {MEDIDAS_GERAIS.map((med) => (
                   <tr key={med.id} className="border-b border-linha align-top">
                     <th scope="row" className="py-2 pr-4 text-left font-normal text-carvao">
                       {med.titulo}

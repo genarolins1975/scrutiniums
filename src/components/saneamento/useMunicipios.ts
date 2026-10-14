@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { paraMunicipios } from "@/lib/saneamento/municipios";
+import { juntarComplemento, paraMunicipios } from "@/lib/saneamento/municipios";
 import type { Municipio, TabelaMunicipios } from "@/lib/saneamento/tipos";
 
 /**
@@ -11,32 +11,39 @@ import type { Municipio, TabelaMunicipios } from "@/lib/saneamento/tipos";
  */
 export const URL_MUNICIPIOS = "/saneamento/gold/municipios.json";
 
-let promessa: Promise<Municipio[]> | null = null;
+const promessas = new Map<string, Promise<Municipio[]>>();
 
-function carregar(): Promise<Municipio[]> {
-  if (!promessa) {
-    promessa = fetch(URL_MUNICIPIOS)
-      .then(async (r) => {
-        if (!r.ok) throw new Error(`resposta ${r.status}`);
-        return paraMunicipios((await r.json()) as TabelaMunicipios);
-      })
+async function tabela(url: string): Promise<TabelaMunicipios> {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`resposta ${r.status}`);
+  return (await r.json()) as TabelaMunicipios;
+}
+
+/** Tabela municipal, opcionalmente unida (pelo código IBGE) a uma tabela complementar de outro capítulo. */
+function carregar(complemento?: string): Promise<Municipio[]> {
+  const chave = complemento ?? "";
+  let p = promessas.get(chave);
+  if (!p) {
+    p = Promise.all([tabela(URL_MUNICIPIOS), complemento ? tabela(complemento) : null])
+      .then(([base, extra]) => juntarComplemento(paraMunicipios(base), extra))
       .catch((e: unknown) => {
-        promessa = null;
+        promessas.delete(chave);
         throw e;
       });
+    promessas.set(chave, p);
   }
-  return promessa;
+  return p;
 }
 
 export type CargaMunicipios = { estado: "carregando" } | { estado: "pronto"; lista: Municipio[] } | { estado: "erro"; erro: string; tentar: () => void };
 
-export function useMunicipios(): CargaMunicipios {
+export function useMunicipios(complemento?: string): CargaMunicipios {
   const [carga, setCarga] = useState<CargaMunicipios>({ estado: "carregando" });
   const [tentativa, setTentativa] = useState(0);
   useEffect(() => {
     let vivo = true;
     setCarga({ estado: "carregando" });
-    carregar().then(
+    carregar(complemento).then(
       (lista) => vivo && setCarga({ estado: "pronto", lista }),
       (e: unknown) =>
         vivo &&
@@ -45,6 +52,6 @@ export function useMunicipios(): CargaMunicipios {
     return () => {
       vivo = false;
     };
-  }, [tentativa]);
+  }, [tentativa, complemento]);
   return carga;
 }

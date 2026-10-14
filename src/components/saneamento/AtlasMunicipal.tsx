@@ -31,11 +31,14 @@ export function AtlasMunicipal({
   referencias,
   nomesUf,
   titulo,
+  complemento,
 }: {
   ids: string[];
   referencias: MapaReferencias;
   nomesUf: Record<string, string>;
   titulo: string;
+  /** Tabela municipal complementar (mesmo formato colunar, primeira coluna = código IBGE) que as medidas exigem. */
+  complemento?: string;
 }) {
   const medidas = useMemo(() => MEDIDAS.filter((m) => ids.includes(m.id)), [ids]);
   const esquema = useMemo(
@@ -50,7 +53,7 @@ export function AtlasMunicipal({
   const [s, set] = useEstadoUrl(esquema);
   const med = medidas.find((x) => x.id === s.medida) ?? medidas[0];
   const variante: Variante = s.unidade === "pessoas" && med.contagem ? "pessoas" : "pct";
-  const carga = useMunicipios();
+  const carga = useMunicipios(complemento);
 
   const lista = useMemo(() => (carga.estado === "pronto" ? carga.lista : []), [carga]);
   const doRecorte = useMemo(() => (s.uf === "BR" ? lista : lista.filter((m) => m.uf === s.uf)), [lista, s.uf]);

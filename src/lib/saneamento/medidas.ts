@@ -367,6 +367,9 @@ export const MEDIDAS: Medida[] = [
   ...MEDIDAS_DESIGUALDADES,
 ];
 
+/** Medidas de todo o território, sem os recortes por grupo do capítulo 2 (que exigem tabela própria). */
+export const MEDIDAS_GERAIS: Medida[] = MEDIDAS.filter((m) => !MEDIDAS_DESIGUALDADES.includes(m));
+
 /** Texto do valor principal da medida, com a unidade certa (percentual, pontos percentuais ou valor por habitante). */
 export function formatarValor(med: Medida, x: number | null | undefined): string {
   if (x == null || !Number.isFinite(x)) return "sem dado";

@@ -36,6 +36,7 @@ const ARQUIVOS: [string, string][] = [
   ["prestadores.json", "Prestadores com volumes, receita, despesa e balanço declarados"],
   ["reguladores.json", "Entidades reguladoras por CNPJ e municípios que as declararam"],
   ["etes.csv", "Estações de tratamento de esgoto declaradas"],
+  ["desigualdades_municipios.csv", "Censo 2022 por grupo (cor ou raça, quilombolas, indígenas, favelas): carência e universo por município"],
   ["meta.json", "Proveniência: arquivos de origem, sha256, datas, cobertura e conferências"],
 ];
 

@@ -11,6 +11,21 @@ export function paraMunicipios(t: TabelaMunicipios): Municipio[] {
   });
 }
 
+/** Une a uma lista municipal os campos de uma tabela complementar (primeira coluna: código IBGE). */
+export function juntarComplemento(lista: Municipio[], extra: TabelaMunicipios | null): Municipio[] {
+  if (!extra) return lista;
+  const porId = new Map(extra.linhas.map((l) => [String(l[0]), l]));
+  return lista.map((m) => {
+    const l = porId.get(m.id);
+    if (!l) return m;
+    const r: Record<string, unknown> = { ...m };
+    extra.campos.forEach((c, i) => {
+      if (i > 0) r[c] = l[i];
+    });
+    return r as Municipio;
+  });
+}
+
 /** Busca por nome sem acento e sem caixa; prefixo antes de trecho, depois maior população. */
 export function normalizar(t: string): string {
   return t
