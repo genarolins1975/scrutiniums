@@ -10,6 +10,7 @@ import { analisarCodigo, analisarHtml, analisarJson } from "./i18n/analise.mjs";
 import { descobrirFontes } from "./i18n/fontes.mjs";
 import { lerGlossario } from "./i18n/glossario.mjs";
 import { lerCatalogo } from "./i18n/catalogo.mjs";
+import { caminhoDaPaginaLiteral, validarRotasLiterais } from "./i18n/rotas.mjs";
 
 const RAIZ = fileURLToPath(new URL("../", import.meta.url));
 const INVENTARIO = "config/i18n-inventario.json";
@@ -38,7 +39,9 @@ function dominioVazio(nome) {
       candidatos_nao_catalogados: 0,
       percentual_traduzido: null,
     },
-    rotas: { paginas_pt: 0, paginas_en: 0, handlers: 0, templates_com_parametros: 0, paridade_verificada: false },
+    rotas: { paginas_pt: 0, paginas_en: 0, handlers: 0, templates_com_parametros: 0,
+      paginas_pt_literais: 0, paginas_pt_fora_do_adaptador: 0, paginas_pt_literais_sem_irma: 0,
+      pares_estruturais: 0, fallbacks_declarados: 0, paridade_verificada: false },
     gold: {
       arquivos: 0,
       ocorrencias_textuais: 0,
@@ -81,6 +84,12 @@ export function construirRelatorio(manifesto, fontes, ler) {
       if (pagina) {
         const inglesa = /^src\/app\/(en|\[lang\])\//.test(fonte.path);
         d.rotas[inglesa ? "paginas_en" : "paginas_pt"]++;
+        if (!inglesa) {
+          if (caminhoDaPaginaLiteral(fonte.path) !== null) {
+            d.rotas.paginas_pt_literais++;
+            d.rotas.paginas_pt_literais_sem_irma++;
+          } else d.rotas.paginas_pt_fora_do_adaptador++;
+        }
       }
       if (handler) d.rotas.handlers++;
       if ((pagina || handler) && /\[[^\]]+\]/.test(fonte.path)) d.rotas.templates_com_parametros++;
@@ -141,7 +150,7 @@ export function construirRelatorio(manifesto, fontes, ler) {
 
 export function gerarCobertura(raiz = RAIZ) {
   // Este scanner inicial não pode continuar afirmando zero depois de surgirem traduções.
-  for (const path of ["public/obs/i18n/en.json", "public/i18n/en", "src/app/en", "src/app/[lang]"]) {
+  for (const path of ["public/obs/i18n/en.json", "public/i18n/en", "src/app/[lang]"]) {
     if (existsSync(join(raiz, path))) throw new Error(`A cobertura inicial precisa integrar o catálogo e as rotas antes de medir ${path}`);
   }
   const manifesto = JSON.parse(readFileSync(join(raiz, INVENTARIO), "utf8"));
@@ -154,12 +163,27 @@ export function gerarCobertura(raiz = RAIZ) {
       fontes[grupo] = fontes[grupo].filter((fonte) => !Object.values(DICIONARIOS).includes(fonte.path));
     }
   }
+  const irmas = validarRotasLiterais(raiz, manifesto, fontes);
+  if (irmas) {
+    const dominiosEn = new Map(irmas.pares.map((par) => [par.fontes.en, par.dominio]));
+    fontes.ui = fontes.ui.map((fonte) => ({ ...fonte, dominio: dominiosEn.get(fonte.path) ?? fonte.dominio }));
+  }
   const relatorio = somenteCodigo(construirRelatorio(manifesto, fontes, (path) => readFileSync(join(raiz, path))));
   if (catalogo) {
     relatorio.etapa = "inventario_com_catalogo_de_infraestrutura";
     relatorio.interpretacao.zeros = "Zeros de interface e gold indicam ausência de tradução comprovada no consumidor; mensagens disponíveis no catálogo são contadas separadamente.";
   }
-  return { ...relatorio, ...(glossario ? { glossario } : {}), ...(catalogo ? { catalogo } : {}) };
+  if (irmas) {
+    relatorio.etapa = "inventario_com_irmas_literais_declaradas";
+    relatorio.interpretacao.rotas = "Arquivos e pares literais presentes no código. Fallbacks são declarações, sem prova de HTML, autorização ou implantação; parâmetros, grupos e handlers continuam fora do adaptador.";
+    for (const par of irmas.pares) {
+      const rotas = relatorio.dominios[par.dominio].rotas;
+      rotas.pares_estruturais++;
+      rotas.fallbacks_declarados++;
+      rotas.paginas_pt_literais_sem_irma--;
+    }
+  }
+  return { ...relatorio, ...(glossario ? { glossario } : {}), ...(catalogo ? { catalogo } : {}), ...(irmas ? { irmas_declaradas: irmas } : {}) };
 }
 
 /** Catálogo disponível não comprova tradução ou marcador no HTML. */

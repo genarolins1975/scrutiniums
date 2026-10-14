@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifySessionCookie } from "@/lib/sessionCookie";
 import { estadoRotaMobilidade } from "@/lib/eficiencia/mobilidade/roteamento";
 import { COOKIE_DESTINO, ehApiDeDados, ehRotaPublica } from "@/lib/rotasPublicas";
+import { analisarUrlPagina } from "@/lib/i18n-url";
+import { parDeIdioma } from "@/lib/i18n-rotas";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Proteção de rotas com validação forte na borda: o cookie de sessão é
@@ -18,9 +21,10 @@ import { COOKIE_DESTINO, ehApiDeDados, ehRotaPublica } from "@/lib/rotasPublicas
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const caminhoPolitica = parDeIdioma(pathname)?.pt ?? pathname;
   // A validação de um slug desconhecido precisa anteceder o streaming:
   // notFound() depois do início do corpo pode manter status HTTP 200.
-  if (estadoRotaMobilidade(pathname) === "inexistente") {
+  if (estadoRotaMobilidade(caminhoPolitica) === "inexistente") {
     return new NextResponse("Página de Mobilidade não encontrada.", {
       status: 404,
       headers: { "Content-Type": "text/plain; charset=utf-8", "X-Robots-Tag": "noindex" },
@@ -47,15 +51,38 @@ export async function middleware(request: NextRequest) {
     res.headers.set("X-Robots-Tag", "noindex");
     return res;
   }
+  // A guarda administrativa vale também antes de existir uma irmã publicada.
+  // O pathname original continua sendo a origem do destino de autenticação.
+  const pagina = analisarUrlPagina(pathname);
+  if (pagina?.idioma === "en") {
+    // O Next também procura rotas estáticas pela grafia decodificada. O parser
+    // já validou os escapes; decodificar aqui não muda a URL nem abre a rota.
+    return protegerAdmin(request, decodeURIComponent(pagina.caminhoPt), "en");
+  }
+  if (!pagina) {
+    try {
+      const decodificado = decodeURIComponent(pathname);
+      // Um alias rejeitado pelo parser não pode ganhar uma rota inglesa só
+      // porque o servidor encontra a versão decodificada depois do middleware.
+      if (decodificado === "/en" || decodificado.startsWith("/en/")) {
+        return NextResponse.rewrite(new URL("/en/nao-encontrado-404", request.url));
+      }
+    } catch {
+      // Escape inválido não fornece um caminho de política alternativo.
+    }
+  }
   if (!pathname.startsWith("/app")) return NextResponse.next();
+  return protegerAdmin(request, pathname, "pt");
+}
 
+async function protegerAdmin(request: NextRequest, caminhoPolitica: string, idioma: Idioma): Promise<NextResponse> {
   // /app/admin só existe para administradores (ADMIN_EMAILS). O middleware
   // roda no edge e não acessa o banco, então consulta a rota interna
   // /api/admin/eu com o cookie da requisição; não-admin recebe rewrite
   // para um caminho inexistente → 404 real (com streaming/loading.tsx, o
   // notFound() da página chegaria com status 200). A página ainda chama
   // notFound() como defesa em profundidade.
-  if (pathname === "/app/admin" || pathname.startsWith("/app/admin/")) {
+  if (caminhoPolitica === "/app/admin" || caminhoPolitica.startsWith("/app/admin/")) {
     let admin = false;
     try {
       const res = await fetch(new URL("/api/admin/eu", request.url), {
@@ -66,7 +93,8 @@ export async function middleware(request: NextRequest) {
       admin = false;
     }
     if (!admin) {
-      return NextResponse.rewrite(new URL("/nao-encontrado-404", request.url));
+      const destino = idioma === "en" ? "/en/nao-encontrado-404" : "/nao-encontrado-404";
+      return NextResponse.rewrite(new URL(destino, request.url));
     }
   }
 

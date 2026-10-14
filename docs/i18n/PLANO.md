@@ -39,6 +39,8 @@ Na fase 0, páginas ainda não traduzidas continuam em português com marcador v
 
 O roteamento usa `src/app/en` literal, preservando páginas e layouts portugueses. A série começa por helpers de URL e contratos, sem publicar rotas; segue por uma primeira irmã pública com fallback, documento e metadados corretos; depois amplia plataforma/conta e cada observatório separadamente. Parâmetros, layouts aninhados, redirects, portais e handlers exigem seus próprios adaptadores e verificações. Seletores e alternates só apontam para irmãs já existentes. Formatos e rotas podem avançar em recortes intercalados dentro da fase 0, sempre com o CI anterior verde; a fase só fecha depois da migração completa, da guarda contra locale fixo e da paridade integral.
 
+O primeiro par é `/sobre` e `/en/sobre`: corpo português preservado e marcado na irmã inglesa, sem antecipar a tradução institucional da fase 1. Ele inaugura documento por idioma, metadados recíprocos, sitemap e registro estrutural. As demais irmãs, os seletores, a home traduzida, o JSON-LD e a infraestrutura da SPA continuam pendentes; esse recorte não encerra a fase 0.
+
 ## Fases seguintes
 
 | Fase | Série de entregas, sempre com CI verde entre PRs |

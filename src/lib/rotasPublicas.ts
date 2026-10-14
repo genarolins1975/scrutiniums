@@ -11,6 +11,7 @@
  * A regra é por lista de rotas abertas: rota nova nasce fechada. O middleware
  * e o sitemap leem daqui. Código puro, compatível com o Edge Runtime.
  */
+import { parDeIdioma } from "./i18n-rotas";
 
 /** Caminhos abertos exatamente como escritos. */
 const EXATAS = new Set([
@@ -61,6 +62,13 @@ export function ehApiDeDados(caminho: string): boolean {
 
 /** O caminho pode ser servido sem sessão? */
 export function ehRotaPublica(caminho: string): boolean {
+  // Só irmãs declaradas herdam a política PT. A guarda antecede imagens sociais
+  // para que uma imagem inglesa ainda inexistente não herde abertura da página.
+  if (sobPrefixo(caminho, "/en")) {
+    if (/[?#]/.test(caminho)) return false;
+    const par = parDeIdioma(caminho);
+    return par !== null && ehRotaPublica(par.pt);
+  }
   if (caminho.startsWith("/_next/")) return true;
   if (caminho === "/api" || caminho.startsWith("/api/")) return !ehApiDeDados(caminho);
   // a área de conta tem regra própria no middleware

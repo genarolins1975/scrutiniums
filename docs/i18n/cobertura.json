@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
-  "etapa": "inventario_com_catalogo_de_infraestrutura",
+  "etapa": "inventario_com_irmas_literais_declaradas",
   "interpretacao": {
     "candidatos": "Ocorrências mecânicas, incluindo nomes, códigos e texto técnico ainda sem classificação. Não equivalem a chaves de tradução.",
     "zeros": "Zeros de interface e gold indicam ausência de tradução comprovada no consumidor; mensagens disponíveis no catálogo são contadas separadamente.",
     "percentual": "Indisponível enquanto o inventário semântico e a comprovação dos marcadores não estiverem implementados.",
-    "rotas": "Contagem de arquivos e templates, não enumeração das URLs dinâmicas nem verificação da política de acesso.",
+    "rotas": "Arquivos e pares literais presentes no código. Fallbacks são declarações, sem prova de HTML, autorização ou implantação; parâmetros, grupos e handlers continuam fora do adaptador.",
     "gold": "Dados não participam deste relatório nem do --check. Execute --gold para a situação atual, não versionada."
   },
   "escopo": {
-    "inventario_sha256": "df9f5edb17695d0a9acc0375b0a609bba1a2235c07bead206f616d8e8af64be8",
-    "arquivos_analisados": 992,
-    "fontes_sha256": "b9377f793b91788c39a6a34edf018c4005833236b17e045a06344177b4093b57",
+    "inventario_sha256": "2a0464c35b1d74e02d431279b375b07037318a5e7fd305f53aedda641b39fd1c",
+    "arquivos_analisados": 997,
+    "fontes_sha256": "56c5c82775575dd2d99184221c98841455b0bd297eba00d05efdd51a0f9761f3",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -127,20 +127,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 180,
+        "arquivos": 185,
         "candidatos": {
           "jsx_text": 634,
-          "atributos": 168,
-          "props": 624,
-          "outros_literais": 3077,
-          "templates": 370,
-          "expressoes_nao_resolvidas": 1912,
-          "chaves_objetos": 2302
+          "atributos": 169,
+          "props": 625,
+          "outros_literais": 3113,
+          "templates": 374,
+          "expressoes_nao_resolvidas": 1927,
+          "chaves_objetos": 2358
         },
         "exclusoes": {
-          "importacoes": 724,
+          "importacoes": 744,
           "atributos_tecnicos": 1162,
-          "tipos": 171
+          "tipos": 173
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -149,14 +149,19 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 9087,
+        "candidatos_nao_catalogados": 9200,
         "percentual_traduzido": null
       },
       "rotas": {
         "paginas_pt": 28,
-        "paginas_en": 0,
+        "paginas_en": 1,
         "handlers": 29,
         "templates_com_parametros": 1,
+        "paginas_pt_literais": 24,
+        "paginas_pt_fora_do_adaptador": 4,
+        "paginas_pt_literais_sem_irma": 23,
+        "pares_estruturais": 1,
+        "fallbacks_declarados": 1,
         "paridade_verificada": false
       },
       "conteudo_adicional": {
@@ -200,6 +205,11 @@
         "paginas_en": 0,
         "handlers": 1,
         "templates_com_parametros": 5,
+        "paginas_pt_literais": 69,
+        "paginas_pt_fora_do_adaptador": 5,
+        "paginas_pt_literais_sem_irma": 69,
+        "pares_estruturais": 0,
+        "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
       "conteudo_adicional": {
@@ -243,6 +253,11 @@
         "paginas_en": 0,
         "handlers": 0,
         "templates_com_parametros": 0,
+        "paginas_pt_literais": 12,
+        "paginas_pt_fora_do_adaptador": 0,
+        "paginas_pt_literais_sem_irma": 12,
+        "pares_estruturais": 0,
+        "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
       "conteudo_adicional": {
@@ -286,6 +301,11 @@
         "paginas_en": 0,
         "handlers": 0,
         "templates_com_parametros": 2,
+        "paginas_pt_literais": 22,
+        "paginas_pt_fora_do_adaptador": 2,
+        "paginas_pt_literais_sem_irma": 22,
+        "pares_estruturais": 0,
+        "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
       "conteudo_adicional": {
@@ -329,6 +349,11 @@
         "paginas_en": 0,
         "handlers": 3,
         "templates_com_parametros": 5,
+        "paginas_pt_literais": 60,
+        "paginas_pt_fora_do_adaptador": 5,
+        "paginas_pt_literais_sem_irma": 60,
+        "pares_estruturais": 0,
+        "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
       "conteudo_adicional": {
@@ -372,6 +397,11 @@
         "paginas_en": 0,
         "handlers": 7,
         "templates_com_parametros": 1,
+        "paginas_pt_literais": 4,
+        "paginas_pt_fora_do_adaptador": 1,
+        "paginas_pt_literais_sem_irma": 4,
+        "pares_estruturais": 0,
+        "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
       "conteudo_adicional": {
@@ -415,6 +445,11 @@
         "paginas_en": 0,
         "handlers": 9,
         "templates_com_parametros": 0,
+        "paginas_pt_literais": 1,
+        "paginas_pt_fora_do_adaptador": 0,
+        "paginas_pt_literais_sem_irma": 1,
+        "pares_estruturais": 0,
+        "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
       "conteudo_adicional": {
@@ -465,6 +500,11 @@
         "paginas_en": 0,
         "handlers": 1,
         "templates_com_parametros": 1,
+        "paginas_pt_literais": 1,
+        "paginas_pt_fora_do_adaptador": 0,
+        "paginas_pt_literais_sem_irma": 1,
+        "pares_estruturais": 0,
+        "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
       "conteudo_adicional": {
@@ -630,5 +670,25 @@
     "traducoes_disponiveis": 4,
     "portugues_marcado_declarado": 0,
     "uso_na_interface_verificado": false
+  },
+  "irmas_declaradas": {
+    "schema_version": 1,
+    "pares": [
+      {
+        "pt": "/sobre",
+        "en": "/en/sobre",
+        "dominio": "plataforma",
+        "conteudo_declarado": "portugues_marcado",
+        "fontes": {
+          "pt": "src/app/sobre/page.tsx",
+          "en": "src/app/en/sobre/page.tsx"
+        },
+        "arquivos_presentes": true
+      }
+    ],
+    "pares_estruturais": 1,
+    "fallbacks_declarados": 1,
+    "html_verificado_pelo_inventario": false,
+    "acesso_verificado_pelo_inventario": false
   }
 }

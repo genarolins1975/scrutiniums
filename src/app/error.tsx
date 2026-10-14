@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { MolduraIdioma } from "@/components/i18n/DocumentoIdioma";
 
 /**
  * Erro global no padrão editorial. Client component obrigatório
@@ -21,7 +22,7 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <main className="bg-marfim">
+    <MolduraIdioma><main className="bg-marfim">
       <div className="mx-auto max-w-page px-6 py-24 md:py-32">
         <p className="rotulo text-mineral">Erro inesperado</p>
         <p className="mt-4 font-serif text-6xl text-erro md:text-7xl" aria-hidden="true">
@@ -49,6 +50,6 @@ export default function GlobalError({
           </Link>
         </div>
       </div>
-    </main>
+    </main></MolduraIdioma>
   );
 }

@@ -10,6 +10,7 @@ import { PAGINAS as PAINEIS_TRABALHO_RENDA } from "@/components/eficiencia/traba
 import { PAGINAS_MOBILIDADE, ROTA_MOBILIDADE } from "@/lib/eficiencia/mobilidade/modelo";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
+import { parDeIdioma } from "@/lib/i18n-rotas";
 
 /**
  * Superfície pública indexável. O inventário abaixo lista todas as páginas;
@@ -80,6 +81,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const vistas = new Set<string>();
   return entradas
+    .filter((e) => ehRotaPublica(e.url.slice(base.length) || "/"))
+    .flatMap((e): MetadataRoute.Sitemap => {
+      const par = parDeIdioma(e.url.slice(base.length) || "/");
+      if (!par) return [e];
+      const languages = { "pt-BR": base + par.pt, en: base + par.en, "x-default": base + par.pt };
+      const alternates = { ...e.alternates, languages };
+      return [{ ...e, alternates }, { ...e, url: base + par.en, alternates }];
+    })
     .filter((e) => ehRotaPublica(e.url.slice(base.length) || "/"))
     .filter((e) => (vistas.has(e.url) ? false : (vistas.add(e.url), true)));
 }
