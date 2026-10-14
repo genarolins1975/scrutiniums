@@ -1,3 +1,4 @@
+import { ExploradorBalanco } from "@/components/gas/ExploradorBalanco";
 import type { Metadata } from "next";
 import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
 import { AberturaGas, DownloadsGas, FaixaMedidas, FonteFigura, MedidaGas, NotaGas, ProximasPerguntas, SecaoGas, TabelaGas } from "@/components/gas/Blocos";
@@ -57,6 +58,11 @@ export default function AproveitamentoPage() {
             <MedidaGas ind={i.queima} />
           </FaixaMedidas>
         </section>
+
+        <SecaoGas id="explorar" titulo="Explore o balanço de um mês" subtitulo="Escolha um mês para distinguir composição, ausência e inconsistência.">
+          <ExploradorBalanco serie={g.serie} />
+          <FonteFigura ids={["anp_producao", "anp_reinjecao", "anp_queima", "anp_consumo_proprio", "anp_disponivel"]} />
+        </SecaoGas>
 
         <SecaoGas
           id="destino"

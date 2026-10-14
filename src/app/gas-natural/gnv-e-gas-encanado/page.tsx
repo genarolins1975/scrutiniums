@@ -83,6 +83,7 @@ export default function GnvPage() {
         <SecaoGas id="sua-uf" titulo="O preço do GNV no seu estado ao longo do tempo" subtitulo="R$ por m³, média mensal desde janeiro de 2019, ao lado da média Brasil.">
           <SeriePorUf
             titulo="Preço médio do GNV"
+            retrato={{ periodo: g.ultimo_mes, ufs: g.por_uf }}
             serieUf={g.serie_uf}
             serieBrasil={g.serie}
             ufs={ufs}

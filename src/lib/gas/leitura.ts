@@ -22,8 +22,8 @@ export const LEITURAS_GAS: Record<string, { titulo: string; texto: string; atalh
     "texto": "Reinjeção é o retorno do gás ao reservatório e pode fazer parte da operação do campo. Não equivale a queima ou perda. Estes dados não identificam o motivo de cada reinjeção nem a composição do gás por campo.",
     "atalhos": [
       [
-        "destino",
-        "Destinos por mês"
+        "explorar",
+        "Explorar um mês"
       ],
       [
         "estados",

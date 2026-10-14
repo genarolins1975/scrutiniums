@@ -93,6 +93,7 @@ export default function GasDeCozinhaPage() {
         <SecaoGas id="sua-uf" titulo="O preço no seu estado ao longo do tempo" subtitulo="R$ por botijão de 13 kg, média mensal desde janeiro de 2019, comparada com a média Brasil.">
           <SeriePorUf
             titulo="Preço médio do botijão de 13 kg"
+            retrato={{ periodo: g.ultimo_mes, ufs: g.por_uf }}
             serieUf={g.serie_uf}
             serieBrasil={g.serie}
             ufs={ufs}
