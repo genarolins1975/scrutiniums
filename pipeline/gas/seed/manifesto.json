@@ -1,0 +1,563 @@
+{
+ "anp_autorizacoes": {
+  "bytes_original": 325295,
+  "capturado_em": "2026-10-14T02:33:13Z",
+  "recorte": null,
+  "seed": "anp/autorizacoes-gas-natural.csv.gz",
+  "sha256_original": "d70e7b2cbf6bc57e08a8f9e69c6310b991133584ef949e382e46bb70fadfa3e8",
+  "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/autorizacoes-gas-natural/autorizacoes-construcao-operacao-gas-natural.csv"
+ },
+ "anp_consumo_proprio": {
+  "bytes_original": 430344,
+  "capturado_em": "2026-10-14T02:33:00Z",
+  "recorte": null,
+  "seed": "anp/consumo-proprio-gn1000m3.csv.gz",
+  "sha256_original": "218b8a2452e7cb0fc6ce6af2b52a3b9772268a2b8f6262df45b2e1116185a934",
+  "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ppgn-el/consumo-proprio-gn1000m3.csv"
+ },
+ "anp_disponivel": {
+  "bytes_original": 438451,
+  "capturado_em": "2026-10-14T02:33:02Z",
+  "recorte": null,
+  "seed": "anp/gn-disponivel-1000m3.csv.gz",
+  "sha256_original": "ec505edfe323e39f1e3d1c459f0bf57b8d4ca670770e465293628c8e9a73cef9",
+  "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ppgn-el/gn-disponivel-1000m3.csv"
+ },
+ "anp_glp_vasilhame": {
+  "bytes_original": 800180,
+  "capturado_em": "2026-10-14T02:33:05Z",
+  "recorte": null,
+  "seed": "anp/vendas-glp-tipo-vasilhame-m3.csv.gz",
+  "sha256_original": "ebd4370854ba19fa1c6193a9c1dd30dc4ce8703f88ee15109d375e343d54c2cd",
+  "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/vdpb/vct/vendas-glp-tipo-vasilhame-m3-2007-2025.csv"
+ },
+ "anp_importacao": {
+  "bytes_original": 19094,
+  "capturado_em": "2026-10-14T02:33:02Z",
+  "recorte": null,
+  "seed": "anp/importacao-gas-natural.csv.gz",
+  "sha256_original": "421ca04a53e08a237b08c99391a2e89d3aadb0557d9884bb7a9d04bc259b640e",
+  "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ie/gn/importacao-gas-natural-2000-2025.csv"
+ },
+ "anp_movimentacao": {
+  "arquivos_origem": [
+   {
+    "bytes": 775278,
+    "mes": "2021-01",
+    "sha256": "87b8f77671cfb5f9615e6f6f6bbee909f1f0da2a96bc434321e69fa10fc79ad7",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-janeiro-2021_rev1.csv"
+   },
+   {
+    "bytes": 738476,
+    "mes": "2021-02",
+    "sha256": "f67fe23ffbad97b12e17215e6eef58dfc63dd907ac25ffc6a1b257ac7282518d",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-fevereiro-2021_rev1.csv"
+   },
+   {
+    "bytes": 774893,
+    "mes": "2021-03",
+    "sha256": "deda69f31bad00060e4cf6891394bd0a5fa042e00a7e75d5ad5b1639c065b31b",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-marco-2021_rev1.csv"
+   },
+   {
+    "bytes": 763218,
+    "mes": "2021-04",
+    "sha256": "5d4891b3af50bfc4f40ec3d5902370e59ec4bc8f14d0b4816b3c6d2dadb12317",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-abril-2021_rev1.csv"
+   },
+   {
+    "bytes": 775062,
+    "mes": "2021-05",
+    "sha256": "8ba2c1ace7881a3f5988bc70794144f87dd8a8a8367b0fbe6e0e4e6305c5bcd7",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-maio-2021.csv"
+   },
+   {
+    "bytes": 764679,
+    "mes": "2021-06",
+    "sha256": "2313b2ffe2149b422c6c199dcd96c71cb4702c41eeabbde87031e9b6879dc825",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-junho-2021.csv"
+   },
+   {
+    "bytes": 794713,
+    "mes": "2021-07",
+    "sha256": "217bce624550093e02e9805ae189a5e079708f85d27d53a12fce18d2202ae1e9",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-julho-2021.csv"
+   },
+   {
+    "bytes": 793388,
+    "mes": "2021-08",
+    "sha256": "be00867ae4f6d35b8059dce8a6ef3fa4b096b264c2a2d08e6713fbe42893a259",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-agosto-2021.csv"
+   },
+   {
+    "bytes": 779467,
+    "mes": "2021-09",
+    "sha256": "b0190b725f68094a2316c1fc28fb9e9777340f28efe40554ae136f0af83f1e45",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-setembro-2021.csv"
+   },
+   {
+    "bytes": 793525,
+    "mes": "2021-10",
+    "sha256": "03e24c121c57dd04ceda4e97b3a8998a9ce54066ba5a5fb70c6a0140b7dab155",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-outubro-2021.csv"
+   },
+   {
+    "bytes": 781208,
+    "mes": "2021-11",
+    "sha256": "152485685cb8c65d002422586d19acb594436393c3e31a339413841130a85e03",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-novembro-2021.csv"
+   },
+   {
+    "bytes": 794645,
+    "mes": "2021-12",
+    "sha256": "200696a8cffdb945f4dc62b1acf0d11b7434411810adc6456b64ab080daa27ad",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2021/gn-dezembro-2021.csv"
+   },
+   {
+    "bytes": 856817,
+    "mes": "2022-01",
+    "sha256": "d53198151dc2caec212d0cece28750712deebe3e84bf7ff0330d91270ba24f3b",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-janeiro.csv"
+   },
+   {
+    "bytes": 821984,
+    "mes": "2022-02",
+    "sha256": "366148c08c9a55ff8007697b50a75fb43607e982c742ed213ab8685224014fd1",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-fevereiro.csv"
+   },
+   {
+    "bytes": 863661,
+    "mes": "2022-03",
+    "sha256": "9e123955c017cfd2c0be687865406f3fab910e2a4c248aa494a895f65b2cb256",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-marco.csv"
+   },
+   {
+    "bytes": 871029,
+    "mes": "2022-04",
+    "sha256": "e7c888de891dd4f7f49b024bfdef83b0c6895ffbb82bf2eec9bb4ee67c5198b5",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-abril.csv"
+   },
+   {
+    "bytes": 931670,
+    "mes": "2022-05",
+    "sha256": "cf96cdbd3c03c37035392a3765fefa2c8f585b682f56086fff7dd329cd2c67f9",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-maio.csv"
+   },
+   {
+    "bytes": 935970,
+    "mes": "2022-06",
+    "sha256": "a1c8b1e7c6bb22d403f4a23966d08222373e7dbf3f10b54767d08ae4a3c20134",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-junho.csv"
+   },
+   {
+    "bytes": 994237,
+    "mes": "2022-07",
+    "sha256": "ede5bdf658e2b17527a932dfeab942dfc2cc1172aef38966ceb4ef434f33d55b",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-julho.csv"
+   },
+   {
+    "bytes": 1007616,
+    "mes": "2022-08",
+    "sha256": "fde2ff59351fcefba558eead9e2638bb240ee492a4cac1d223b96de6e339c2d8",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-agosto.csv"
+   },
+   {
+    "bytes": 1023557,
+    "mes": "2022-09",
+    "sha256": "bf27d60eec935114f769c5b739e5e81ab8c644df30862e63e83140c045f8e5fc",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-setembro.csv"
+   },
+   {
+    "bytes": 1083526,
+    "mes": "2022-10",
+    "sha256": "b098e609ad49be82385f29c1a8d00679bab91a6dc3bbddb056b2e33640c0a25d",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-outubro.csv"
+   },
+   {
+    "bytes": 1076106,
+    "mes": "2022-11",
+    "sha256": "a4533c6af34a0a2d2fd08042931f75b5df0541ec0381c32ceeb417963d18d29e",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-novembro.csv"
+   },
+   {
+    "bytes": 1122301,
+    "mes": "2022-12",
+    "sha256": "635c82fe05320724470d9ba2002ea992659410bc3197857d36e32facba705646",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2022/gn-dezembro.csv"
+   },
+   {
+    "bytes": 994221,
+    "mes": "2023-01",
+    "sha256": "2d83ca34bbf936d238df01793437a7f1d0c74ae677097d2a2bd6ed4ae2f532b7",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn-janeiro-2023.csv"
+   },
+   {
+    "bytes": 959344,
+    "mes": "2023-02",
+    "sha256": "02e6ec3ce0235c29d80c5b1480d1277db0dea0091b25ea87bd453ee342198fad",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn-fevereiro-2023.csv"
+   },
+   {
+    "bytes": 1015377,
+    "mes": "2023-03",
+    "sha256": "f910e951ed3cf17a986127db305ccd3f4b614028f24336b9812089d17a160267",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn-marco-2023.csv"
+   },
+   {
+    "bytes": 1029957,
+    "mes": "2023-04",
+    "sha256": "2884cb641d681896a6ed8ddb5ffb081c44eb96f9e6b3aac682076e6592207ff3",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn-abril-2023.csv"
+   },
+   {
+    "bytes": 1037274,
+    "mes": "2023-05",
+    "sha256": "7d70a94b49f6032d3026756db3af467782b99ec00da358a80be147dc61d6c34d",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn-maio-2023.csv"
+   },
+   {
+    "bytes": 1029171,
+    "mes": "2023-06",
+    "sha256": "72011fd7b0f7827c2a87e63fd2d13e8d9d8e7009245dcfe40394af3a4f4e9d58",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn-junho-2023.csv"
+   },
+   {
+    "bytes": 1027616,
+    "mes": "2023-07",
+    "sha256": "05192b9acfb7d1eee83e1dff0ac376ecdd97022dc0b23ac072fe3f779b669235",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn-julho-2023.csv"
+   },
+   {
+    "bytes": 1195787,
+    "mes": "2023-08",
+    "sha256": "dc6c5a9720293851bcbc15f6a63aeff8a4e4151e1fc268a747b3fa7903645ca2",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn-agosto-2023.csv"
+   },
+   {
+    "bytes": 1032985,
+    "mes": "2023-09",
+    "sha256": "2aac21ecdea20358723eb427d809e642b4f0bd5860b5396683c037f9d126f355",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn-setembro-2023.csv"
+   },
+   {
+    "bytes": 1107461,
+    "mes": "2023-10",
+    "sha256": "8582871d7982999834ce2cbd098e328d34febe8169115fd0ba20f08758247ea2",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn-outubro-2023.csv"
+   },
+   {
+    "bytes": 1409559,
+    "mes": "2023-11",
+    "sha256": "5070689a7637760c1fb555cb0a1ee4b0f333e22f02a07da236714c7fcea75b5f",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn_novembro_2023.csv"
+   },
+   {
+    "bytes": 1419879,
+    "mes": "2023-12",
+    "sha256": "b5c71c24bd651acfc91a2113eac9d25df15b7d9ace26f35a7d4795034b5871b1",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2023/gn-dezembro-2023.csv"
+   },
+   {
+    "bytes": 1201541,
+    "mes": "2024-01",
+    "sha256": "d0ed3229b211cf0405bd575a6035fe8ef51114793ab39a19279e1a6aef4ea534",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn-janeiro.csv"
+   },
+   {
+    "bytes": 1176647,
+    "mes": "2024-02",
+    "sha256": "b67f4f2a3ceeb47f55bb5261e77ef3124369c39ad87f1e912abc9ca37ec2833d",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn-fevereiro.csv"
+   },
+   {
+    "bytes": 1200529,
+    "mes": "2024-03",
+    "sha256": "1744af051f0058168e772895e8769a6d73752ddb2272e46b397ab9ba49073fc7",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn-marco.csv"
+   },
+   {
+    "bytes": 1285380,
+    "mes": "2024-04",
+    "sha256": "ab92f1c1c52381537eacf6742704d3fa5df446cc03798a8317c30544938e10e9",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn-abril.csv"
+   },
+   {
+    "bytes": 1326410,
+    "mes": "2024-05",
+    "sha256": "ef72688293b3c7b7395dc0bd49caf35c52d1d284f89948493a40413b01182f2b",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn-maio.csv"
+   },
+   {
+    "bytes": 1673147,
+    "mes": "2024-06",
+    "sha256": "6f17173e70ab07567046b7a33f3e628210d88b24dc04f1823f407570d4d40cf6",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn-junho.csv"
+   },
+   {
+    "bytes": 1901129,
+    "mes": "2024-07",
+    "sha256": "778a5d75f33be1d0e08fd3773bda19335d650742a8afa12db06d7e537d9b8112",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn-julho.csv"
+   },
+   {
+    "bytes": 1819509,
+    "mes": "2024-08",
+    "sha256": "1b18c3b4b92b4d7628939072461f66e1fa48402cf070a4935dab20a7ceb74b77",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn-agosto.csv"
+   },
+   {
+    "bytes": 1440454,
+    "mes": "2024-09",
+    "sha256": "c2f2200a2d7e572118dc59afa1b4245c09f1a6d68cfde478304ead62f23dee5a",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn-setembro.csv"
+   },
+   {
+    "bytes": 1981379,
+    "mes": "2024-10",
+    "sha256": "5b0285f5f4af85c12f0e6efece55f001318260966d0ba4d0cda78a8007f6a5d3",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn-outubro.csv"
+   },
+   {
+    "bytes": 1959041,
+    "mes": "2024-11",
+    "sha256": "23ced098130163fa03b48375e247b5b7aa07647229828f1c4144b4505eb5f41d",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn-novembro.csv"
+   },
+   {
+    "bytes": 1964220,
+    "mes": "2024-12",
+    "sha256": "10da8084c1c825a10ae892d0ee5163a52c30f67565e4d634efdad2ad9f46f21a",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2024/gn_dezembro_2024.csv"
+   },
+   {
+    "bytes": 3996311,
+    "mes": "2025-01",
+    "sha256": "b8c7ef4ea91f6a17cb208760610706b231dd5ece768c97ebe4fe8032ca6cf733",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn-janeiro.csv"
+   },
+   {
+    "bytes": 2902793,
+    "mes": "2025-02",
+    "sha256": "32f5624084acb541d857f52f6a6cc89d9c6210c4d3b8d79ed8f5292738ad3128",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn-fevereiro.csv"
+   },
+   {
+    "bytes": 3597294,
+    "mes": "2025-03",
+    "sha256": "ba1704b3f22d6009a150520b3dc9305c09ea1a4836cc79a172b0d6119c0ef756",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn_marco_2025.csv"
+   },
+   {
+    "bytes": 3420486,
+    "mes": "2025-04",
+    "sha256": "d0448426ac57bf5843df087131af7e2c08be2530be3022c74e49724737c42827",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn_abril_2025.csv"
+   },
+   {
+    "bytes": 3537853,
+    "mes": "2025-05",
+    "sha256": "18749f3260c32ca2eee0b3c0ad22003b13406bd324adb23bdccfd1b87a5bebaa",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn_maio_2025.csv"
+   },
+   {
+    "bytes": 3549597,
+    "mes": "2025-06",
+    "sha256": "86bece1942e47d6b669d09ec7b7ec2004dd94b0151dbdac0a06a2695dbc27123",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn_junho_2025.csv"
+   },
+   {
+    "bytes": 3799146,
+    "mes": "2025-07",
+    "sha256": "e2660d2f32ddbc9fb1621e285f3342be417a7abc021244643c4edc530fbccf9d",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn_julho_2025.csv"
+   },
+   {
+    "bytes": 3768880,
+    "mes": "2025-08",
+    "sha256": "53f1527931a0c0a7913f493e51c1d9e7d1a1a499caa64cee558b72bed667b467",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn_agosto_2025.csv"
+   },
+   {
+    "bytes": 3753025,
+    "mes": "2025-09",
+    "sha256": "535b0dbaf741d5183f37bcc6f0b250d926b2688a70f2ddc35bca4836732995f2",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn_setembro_2025.csv"
+   },
+   {
+    "bytes": 2638179,
+    "mes": "2025-10",
+    "sha256": "75e6a9c61f3ea4db0dec466340b4bc91f3dcbc83e36f56a26ccf277116a3ee05",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn_outubro_2025.csv"
+   },
+   {
+    "bytes": 3657778,
+    "mes": "2025-11",
+    "sha256": "f63f6c40412c3ff8e42e70831060a9db9cfce9737de45a74ecfea262582db627",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn_novembro_2025.csv"
+   },
+   {
+    "bytes": 2961900,
+    "mes": "2025-12",
+    "sha256": "6309009909065e72660a2468ff4eeafb0327dcb6dae9307306f7ebecc9d56eff",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2025/gn_dezembro_2025.csv"
+   },
+   {
+    "bytes": 3906374,
+    "mes": "2026-01",
+    "sha256": "4ef7af53f5bab4dffdbeb4900befd147ccb986825f92282b4a8fc3b97a0cf768",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2026/gn_janeiro_2026.csv"
+   },
+   {
+    "bytes": 4313289,
+    "mes": "2026-02",
+    "sha256": "c0d517896d14bfce1a380482e6d2f2ebd742cab579a47f9bad7ae5add57860ce",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2026/gn_fevereiro_2026.csv"
+   },
+   {
+    "bytes": 4799104,
+    "mes": "2026-03",
+    "sha256": "9621fdb0b5bcd830b53416d08e7a66b591221c6a99fa7b3201ffcb7a16860f98",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2026/gn_marco_2026.csv"
+   },
+   {
+    "bytes": 5217143,
+    "mes": "2026-04",
+    "sha256": "4ae88c830ddd6c4e3e1181b9c898d7ed74590ffae1c3fa204d29252a22110873",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2026/gn_abril_2026.csv"
+   },
+   {
+    "bytes": 4799439,
+    "mes": "2026-05",
+    "sha256": "3f5326f1f759159c5330fca233f5f5a9d9ea14514ed6b96e75ef1d1a07f30f1e",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2026/gn_maio_2026.csv"
+   },
+   {
+    "bytes": 4288595,
+    "mes": "2026-06",
+    "sha256": "0ebb2cefd064052e4a6bab0b7c9298f6b0d61647434ccb33b7b70d18ef74fb7a",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2026/gn_junho_2026.csv"
+   },
+   {
+    "bytes": 4765669,
+    "mes": "2026-07",
+    "sha256": "c461e46eb9a50f8b55e671710135cbee41c013eb9b10940cea9918637fcb330a",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2026/gn_julho_2026.csv"
+   },
+   {
+    "bytes": 4416461,
+    "mes": "2026-08",
+    "sha256": "3b3cfb8aaeb752c9aeafd5c4feec78f988f566bfaab3b8c579c9c93ad2ab4f0c",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2026/gn_agosto_2026.csv"
+   },
+   {
+    "bytes": 4528710,
+    "mes": "2026-09",
+    "sha256": "99a112ed7d782c8ad822aa0dc4090ce0895e3d32d4355725c1e0cba385df2b1f",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/arquivos-movimentacao-de-gas-natural-em-gasodutos-de-transporte/2026/gn_setembro_2026.csv"
+   }
+  ],
+  "bytes_original": null,
+  "capturado_em": "2026-10-14T02:35:43Z",
+  "recorte": "soma no mês do 'Volume Realizado (mil m³)' por transportadora, tipo de ponto, UF e carregador (código e nome); um arquivo diário por mês na origem",
+  "seed": "anp/movimentacao-gasodutos-mensal.csv.gz",
+  "sha256_original": "a2ef18f223c997a371cd6cb4cd3f06a982e75e9d20c3b2eba29edfb862e102e4",
+  "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/dados-consolidados-movimentacao-de-gas-natural-em-gasodutos-de-transporte"
+ },
+ "anp_precos_brasil": {
+  "bytes_original": 113245,
+  "capturado_em": "2026-10-14T02:33:12Z",
+  "recorte": "linhas dos produtos GLP e GNV, todas as colunas",
+  "seed": "anp/precos-mensais-brasil-glp-gnv.csv.gz",
+  "sha256_original": "33193d652c05a38c5f157fd8cbc10eb6aaffaf2e426c7937e17ddbb0d08ef940",
+  "url": "https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/shlp/mensal/mensal-brasil-desde-jan2013.xlsx"
+ },
+ "anp_precos_estados": {
+  "bytes_original": 2835462,
+  "capturado_em": "2026-10-14T02:33:12Z",
+  "recorte": "linhas dos produtos GLP e GNV, todas as colunas",
+  "seed": "anp/precos-mensais-estados-glp-gnv.csv.gz",
+  "sha256_original": "9673e3979c55887a5f45f4b3a8b3fc4f6e6d8631407c11fb9234520ee8095b0b",
+  "url": "https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/shlp/mensal/mensal-estados-desde-jan2013.xlsx"
+ },
+ "anp_producao": {
+  "bytes_original": 479480,
+  "capturado_em": "2026-10-14T02:32:57Z",
+  "recorte": null,
+  "seed": "anp/producao-gas-natural-1000m3.csv.gz",
+  "sha256_original": "ff40942016b2d4523a0b75deed905f4918e051b930ed4e956082e81aabb1dd88",
+  "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ppgn-el/producao-gas-natural-1000m3.csv"
+ },
+ "anp_queima": {
+  "bytes_original": 429703,
+  "capturado_em": "2026-10-14T02:32:59Z",
+  "recorte": null,
+  "seed": "anp/queima-e-perda-gn-1000m3.csv.gz",
+  "sha256_original": "ba58fb1ab71d3de40c02199deb381c1ffcd46c88babae00894c78726f232acd7",
+  "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ppgn-el/queima-e-perda-gn-1000m3.csv"
+ },
+ "anp_reinjecao": {
+  "bytes_original": 413204,
+  "capturado_em": "2026-10-14T02:32:58Z",
+  "recorte": null,
+  "seed": "anp/reinjecao-gn-1000m3.csv.gz",
+  "sha256_original": "34b1a9e9238267360aaa6bc10c89b5854a03cfffdf4acf7e7aad3a9069de3df9",
+  "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ppgn-el/reinjecao-gn-1000m3"
+ },
+ "anp_vendas_comercializadores": {
+  "bytes_original": 2204,
+  "capturado_em": "2026-10-14T02:33:04Z",
+  "recorte": null,
+  "seed": "anp/vendas-aos-comercializadores.csv.gz",
+  "sha256_original": "05eee1b34f5e9e2b267f829c8961b840b050b6786d47e15eba2c51c27451cfd8",
+  "url": "https://www.gov.br/anp/pt-br/assuntos/movimentacao-estocagem-e-comercializacao-de-gas-natural/acompanhamento-do-mercado-de-gas-natural/ppg/vendas-aos-comercializadores.csv"
+ },
+ "anp_vendas_distribuidoras": {
+  "bytes_original": 40020,
+  "capturado_em": "2026-10-14T02:33:03Z",
+  "recorte": null,
+  "seed": "anp/vendas-distribuidoras-consumidores-livres.csv.gz",
+  "sha256_original": "7c3e0e93ae19b3bdd12305c15d4be47f21e5ca87ba339858abb2ddbc640f56da",
+  "url": "https://www.gov.br/anp/pt-br/assuntos/movimentacao-estocagem-e-comercializacao-de-gas-natural/acompanhamento-do-mercado-de-gas-natural/ppg/distribuidoras-consumidores-livres.csv"
+ },
+ "anp_vendas_produtores": {
+  "bytes_original": 14540,
+  "capturado_em": "2026-10-14T02:33:03Z",
+  "recorte": null,
+  "seed": "anp/vendas-entre-produtores.csv.gz",
+  "sha256_original": "bda1743e307e57ec47afadd6d2573e242a3215b037b4b2efb48079c87b9db80c",
+  "url": "https://www.gov.br/anp/pt-br/assuntos/movimentacao-estocagem-e-comercializacao-de-gas-natural/acompanhamento-do-mercado-de-gas-natural/ppg/vendas-entre-produtores.csv"
+ },
+ "bcb_ptax": {
+  "bytes_original": 35159,
+  "capturado_em": "2026-10-14T02:34:10Z",
+  "recorte": null,
+  "seed": "bcb/sgs-3698.json.gz",
+  "sha256_original": "f99e003b5b9eafcfb7e36039480fc9eac483d421c78340d6922769e2a49aae93",
+  "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.3698/dados?formato=json"
+ },
+ "comex_gas": {
+  "bytes_original": 54426,
+  "capturado_em": "2026-10-14T02:34:08Z",
+  "recorte": null,
+  "seed": "mdic/comex-gas-natural.json.gz",
+  "sha256_original": "de9ff5d683e4d57160774769bc0f8af18eb4bff7f2c0c88bef13cbb9b5117c1b",
+  "url": "https://api-comexstat.mdic.gov.br/general"
+ },
+ "ibge_ipca": {
+  "bytes_original": 30104,
+  "capturado_em": "2026-10-14T02:34:09Z",
+  "recorte": null,
+  "seed": "ibge/ipca-gas.json.gz",
+  "sha256_original": "1370e63791037240dadac8a9ce297f2c2303db8b97b3f5cf5e7698da013386b1",
+  "url": "https://servicodados.ibge.gov.br/api/v3/agregados/{1419,7060}"
+ },
+ "wb_pinksheet": {
+  "atualizado_na_fonte": "Updated on October 02, 2026",
+  "bytes_original": 586099,
+  "capturado_em": "2026-10-14T02:34:11Z",
+  "recorte": "colunas Natural gas, US; Natural gas, Europe; Liquefied natural gas, Japan e Crude oil, Brent da aba Monthly Prices",
+  "seed": "bancomundial/pinksheet-gas.csv.gz",
+  "sha256_original": "ea1c350827878ea3bbe30e3cda16a13fd3bd5b409b8458940dc94a36b5a33154",
+  "url": "https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Monthly.xlsx"
+ }
+}

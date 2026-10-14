@@ -24,8 +24,8 @@ export function Hero({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
               Da informação dispersa ao conhecimento <span className="text-bronze">verificável</span>.
             </h1>
             <p className="mt-7 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">
-              {observatoriosPorExtenso(true)} sobre crédito, setor elétrico, serviços públicos e contas da União e
-              dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o
+              {observatoriosPorExtenso(true)} sobre crédito, setor elétrico, gás natural, saneamento, serviços públicos e contas da
+              União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o
               que o dado não permite afirmar.
             </p>
           </div>
@@ -57,16 +57,17 @@ export function Hero({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
         </div>
 
         <nav aria-label="Índice dos observatórios" className="mt-12 md:mt-16">
-          <ol className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+          <ol className="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-7">
             {DOMINIOS.map((d, i) => {
               const v = vitrines[d.id];
               const a = ACENTO[d.acento];
+              // em duas colunas, o último de uma contagem ímpar ocupa a linha inteira; de 640 px em diante a grade já acomoda todos
               const ultimo = i === DOMINIOS.length - 1 && DOMINIOS.length % 2 === 1;
               return (
-                <li key={d.id} className={ultimo ? "col-span-2 lg:col-span-1" : undefined}>
+                <li key={d.id} className={ultimo ? "col-span-2 sm:col-span-1" : undefined}>
                   <a
                     href={`#obs-${d.id}`}
-                    className={`group relative block overflow-hidden bg-carvao ${ultimo ? "aspect-[2/1] lg:aspect-[4/5]" : "aspect-[4/5]"}`}
+                    className={`group relative block overflow-hidden bg-carvao ${ultimo ? "aspect-[2/1] sm:aspect-[4/5]" : "aspect-[4/5]"}`}
                   >
                     {/* ilustração editorial do observatório; o texto da lâmina nomeia o destino */}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -83,9 +84,9 @@ export function Hero({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
                       aria-hidden="true"
                       className="absolute inset-0 bg-gradient-to-t from-carvao from-10% via-carvao/75 via-40% to-transparent to-80%"
                     />
-                    <span className="absolute inset-x-0 bottom-0 flex flex-col p-4 md:p-5">
+                    <span className="absolute inset-x-0 bottom-0 flex flex-col p-4 md:p-5 xl:p-4">
                       <span className="rotulo text-marfim/75">{String(i + 1).padStart(2, "0")}</span>
-                      <span className="mt-1.5 font-serif text-lg leading-snug text-marfim md:text-xl">{d.nomeCurto}</span>
+                      <span className="mt-1.5 font-serif text-lg leading-snug text-marfim md:text-xl xl:text-lg [text-wrap:balance]">{d.nomeCurto}</span>
                       <span className="mt-2 text-xs leading-snug text-marfim/80">
                         <span className="font-label text-sm tabular-nums text-marfim">{v.contagem.valor}</span>{" "}
                         {v.contagem.unidade}

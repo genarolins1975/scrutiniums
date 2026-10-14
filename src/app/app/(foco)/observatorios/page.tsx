@@ -19,6 +19,10 @@ const GUIAS: Record<DominioId, { chamada: string; temas: [string, string][] }> =
     chamada: "Água, esgoto, preço regulado e metas em cada município.",
     temas: [["Acesso e carência", "Censo 2022 e SINISA 2024 nos 5.570 municípios"], ["Preço regulado", "Tarifas verificadas, decisões dos reguladores e conta das famílias"], ["Prestadores, investimento e metas", "Quem presta, quem regula, quanto se investe e quanto falta"]],
   },
+  gas: {
+    chamada: "Do poço ao botijão e ao gás canalizado.",
+    temas: [["Produção e aproveitamento", "Quanto se produz, reinjeta, queima e disponibiliza"], ["Importação e preços", "Origem do gás importado e preço em cada elo"], ["Consumidor", "Botijão, GNV e inflação do gás por UF"]],
+  },
   estados: {
     chamada: "Receitas, despesas e dívida nas 27 UFs.",
     temas: [["Execução do orçamento", "Da autorização ao pagamento, com saldos e valores exatos"], ["Receitas, despesas e dívida", "Composição do gasto, financiamento e condição fiscal"], ["Comparação entre estados", "Recortes regionais, mediana, tabelas e fontes originais"]],
@@ -57,6 +61,9 @@ function Simbolo({ id }: { id: DominioId }) {
         <path d="M10 66h60M18 58c4 0 4-4 8-4s4 4 8 4 4-4 8-4 4 4 8 4 4-4 8-4" />
       </> : id === "estados" ? <>
         <path d="M10 66h60M15 59V37h12v22m7 0V22h12v37m7 0V30h12v29M15 15h12m7 0h12m7 0h12" />
+      </> : id === "gas" ? <>
+        <path d="M40 10c9 12 18 21 18 34a18 18 0 0 1-36 0c0-8 4-14 9-19 1 7 4 11 8 12-3-8-2-17 1-27Z" />
+        <path d="M33 50a7 7 0 0 0 14 0c0-5-4-8-7-12-3 4-7 7-7 12ZM12 70h56" />
       </> : id === "contas" ? <>
         <path d="M20 10h30l12 12v48H20V10Zm30 0v14h12M28 33h26M28 41h26M28 60V50m12 10V46m12 14V52M26 64h30" />
       </> : <>

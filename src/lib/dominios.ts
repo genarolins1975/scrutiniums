@@ -6,7 +6,7 @@
  * telemetria e sitemap leem daqui. Um novo observatório é uma entrada nova.
  */
 
-export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados" | "saneamento";
+export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados" | "saneamento" | "gas";
 
 export type Dominio = {
   id: DominioId;
@@ -26,8 +26,8 @@ export type Dominio = {
   /** Rota de apresentação editorial, quando existe separada da raiz. */
   rotaApresentacao: string;
   cta: string;
-  /** Token de cor de acento (tailwind): bronze para Crédito, energia para Setor Elétrico, obee para Eficiência Estatal. */
-  acento: "bronze" | "energia" | "obee";
+  /** Token de cor de acento (tailwind): bronze para Crédito, energia para Setor Elétrico, obee para Eficiência Estatal, gas para Gás Natural. */
+  acento: "bronze" | "energia" | "obee" | "gas";
   /** Prefixos de seção de telemetria atribuídos ao domínio. */
   prefixosTelemetria: string[];
 };
@@ -128,6 +128,22 @@ export const DOMINIOS: Dominio[] = [
     acento: "obee",
     prefixosTelemetria: ["saneamento:"],
   },
+  {
+    id: "gas",
+    nome: "Observatório Brasileiro de Gás Natural",
+    nomeCurto: "Gás Natural",
+    pergunta: "Quanto gás o Brasil produz, quanto chega ao mercado, de onde vem o que é importado e quanto custa em cada elo até o consumidor?",
+    descricao:
+      "Produção por estado, gás reinjetado e queimado, importação por origem, preço de venda às distribuidoras comparado às referências internacionais, preço do botijão e do GNV em cada UF, inflação do gás e uso da malha de transporte, a partir dos dados abertos da ANP, do IBGE, do Banco Central, do Comex Stat e do Banco Mundial. O gás de cozinha (GLP) tem página própria, separada do gás natural.",
+    descricaoCurta:
+      "Produção, aproveitamento, importação, preços na cadeia, botijão, GNV e transporte a partir da ANP, IBGE, BCB, Comex Stat e Banco Mundial.",
+    chips: ["Produção", "Importação", "Preços", "Botijão", "Transporte"],
+    rotaRaiz: "/gas-natural",
+    rotaApresentacao: "/gas-natural",
+    cta: "Explorar Gás Natural",
+    acento: "gas",
+    prefixosTelemetria: ["gas:"],
+  },
 ];
 
 export const COOKIE_OBSERVATORIO = "scrutiniums_observatorio";
@@ -158,5 +174,6 @@ export function dominioDoCaminho(caminho: string): DominioId | null {
   if (caminho === "/contas-publicas" || caminho.startsWith("/contas-publicas/")) return "contas";
   if (caminho === "/contas-publicas-estaduais" || caminho.startsWith("/contas-publicas-estaduais/")) return "estados";
   if (caminho === "/saneamento" || caminho.startsWith("/saneamento/")) return "saneamento";
+  if (caminho === "/gas-natural" || caminho.startsWith("/gas-natural/")) return "gas";
   return null;
 }

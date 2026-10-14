@@ -4,7 +4,7 @@
  * Nada aqui é escrito à mão quando existe registro no código. Títulos, rotas,
  * perguntas e contagens vêm dos catálogos de cada domínio (abas do Crédito,
  * navegação do Setor Elétrico, dimensões da Eficiência Estatal, capítulos das
- * Contas Federais, medidas e catálogo das Contas Estaduais). Um painel que sai
+ * Contas Federais, medidas e catálogo das Contas Estaduais, páginas do Gás Natural). Um painel que sai
  * do registro some da home; um título que muda no registro muda aqui.
  *
  * As descrições curtas do Crédito resumem a descrição publicada de cada aba
@@ -25,6 +25,8 @@ import { MEDIDAS } from "@/lib/contas-estaduais/comparacao";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import catalogoEstadual from "@/lib/contas-estaduais/catalogo.json";
 import { CAPITULOS as CAPITULOS_SANEAMENTO, ROTA as ROTA_SANEAMENTO, rotaCapitulo } from "@/lib/saneamento/capitulos";
+import { PAGINAS_GAS } from "@/lib/gas/navegacao";
+import { goldGas } from "@/lib/gas/gold";
 
 export type PainelVitrine = { titulo: string; href: string; descricao: string };
 
@@ -198,6 +200,21 @@ function vitrineSaneamento(): Vitrine {
   };
 }
 
+// ------------------------------------------------------------ Gás Natural
+
+function vitrineGas(): Vitrine {
+  const meta = goldGas.meta();
+  const orgaos = Array.from(new Set(meta.fontes.map((f) => f.orgao)));
+  return {
+    id: "gas",
+    imagem: "/home/gas.webp",
+    contagem: { valor: fmt(PAGINAS_GAS.length), unidade: "páginas por pergunta" },
+    paineis: PAGINAS_GAS.filter((p) => p.grupo !== "dados").map((p) => ({ titulo: p.rotulo, href: p.href, descricao: p.pergunta })),
+    fontes: `${fmt(meta.fontes.length)} conjuntos de ${listaPt(orgaos)}.`,
+    metodologia: { href: "/gas-natural/dados", rotulo: "Dados e método" },
+  };
+}
+
 export function vitrines(): Record<DominioId, Vitrine> {
   return {
     credito: vitrineCredito(),
@@ -206,5 +223,6 @@ export function vitrines(): Record<DominioId, Vitrine> {
     contas: vitrineContas(),
     estados: vitrineEstados(),
     saneamento: vitrineSaneamento(),
+    gas: vitrineGas(),
   };
 }

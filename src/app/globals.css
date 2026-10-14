@@ -33,6 +33,17 @@
   --cor-obee-fundo: #e6eff0;
   --cor-obee-tinta: #14243a;
   --cor-obee-neutro: #858072;
+  /* Observatório Brasileiro de Gás Natural: azul ardósia (identidade e seleção). */
+  --cor-gas: #35598a;
+  --cor-gas-dark: #2b4a78;
+  --cor-gas-soft: #7a93b8;
+  --cor-gas-fundo: #e8edf4;
+  /* Escala sequencial do gás (mapas por UF), luminosidade monotônica no acento. Nunca cor de texto. */
+  --escala-gas-1: #dfe6f0;
+  --escala-gas-2: #b3c3da;
+  --escala-gas-3: #7a93b8;
+  --escala-gas-4: #48689a;
+  --escala-gas-5: #233f68;
   --cor-grade: #e5e0d5; /* grade de gráfico, recessiva */
   --cor-previsto: #5b3f8c; /* natureza PREVISTO (selo e ilustração) */
 
@@ -124,6 +135,10 @@ body {
 .dominio-energia :focus-visible {
   outline-color: var(--cor-energia);
 }
+.dominio-gas :focus-visible {
+  outline-color: var(--cor-gas);
+}
+.dominio-gas table { font-variant-numeric: tabular-nums; }
 
 ::selection {
   background: var(--cor-bronze);

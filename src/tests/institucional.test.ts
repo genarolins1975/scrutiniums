@@ -66,6 +66,7 @@ describe("/sobre e rodapés", () => {
     expect(footer.match(/href="\/sobre"/g)?.length).toBe(2); // rodapé completo e compacto
     expect(ler("src/app/setor-eletrico/layout.tsx")).toContain("<Footer compacto />");
     expect(ler("src/app/eficiencia-estatal/layout.tsx")).toContain("<Footer />");
+    expect(ler("src/app/gas-natural/layout.tsx")).toContain("<Footer />");
     expect(ler("src/app/contas-publicas/layout.tsx")).toContain('href="/sobre"');
     expect(ler("src/app/contas-publicas-estaduais/layout.tsx")).toContain('href="/sobre"');
     expect(ler("public/obs/index.html")).toContain('<a href="/sobre">Sobre a Scrutiniums</a>');

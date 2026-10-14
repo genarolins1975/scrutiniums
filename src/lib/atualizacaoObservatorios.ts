@@ -13,6 +13,8 @@ import { metaEducacao } from "@/lib/eficiencia/dados";
 import { carimbo, dataBR, mesAno } from "@/lib/energia/formato";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import custos from "@/lib/contas-publicas/snapshots/custos.json";
+import { goldGas } from "@/lib/gas/gold";
+import { mesExtenso } from "@/lib/gas/formato";
 
 export function atualizacaoObservatorio(id: DominioId): { rotulo: string; linhas: string[] } {
   if (id === "saneamento") {
@@ -35,6 +37,20 @@ export function atualizacaoObservatorio(id: DominioId): { rotulo: string; linhas
       `Captura em ${dataBR(primariosEstaduais.captura)}. Encerramento de 2025 e dívida parcial de 2026.`,
       "Indicadores de execução financeira; dados educacionais ainda não publicados.",
     ] };
+  }
+  if (id === "gas") {
+    try {
+      const m = goldGas.meta();
+      const u = m.ultimos_meses;
+      const linhas = [];
+      if (u.producao) linhas.push(`Produção e aproveitamento (ANP): até ${mesExtenso(u.producao)}`);
+      if (u["gas-de-cozinha"]) linhas.push(`Preço do botijão e do GNV (ANP): até ${mesExtenso(u["gas-de-cozinha"])}`);
+      if (u.precos) linhas.push(`Preço de venda às distribuidoras (ANP): até ${mesExtenso(u.precos)}`);
+      if (m.dados_capturados_em) linhas.push(`Fontes capturadas até ${carimbo(m.dados_capturados_em)}`);
+      return { rotulo: "Último dado disponível", linhas: linhas.length ? linhas : ["Data de referência indisponível no momento."] };
+    } catch {
+      return { rotulo: "Último dado disponível", linhas: ["Data de referência indisponível no momento."] };
+    }
   }
   if (id === "contas") {
     return { rotulo: "Fontes e cobertura", linhas: [

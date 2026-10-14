@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { INDICADORES } from "@/lib/dadosPublicos";
+import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
 import { DESTINOS_NAVEGACAO, MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
@@ -69,6 +70,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/contas-publicas/metodologia", 0.5, "monthly"),
     rota("/contas-publicas/glossario", 0.5, "monthly"),
     rota("/saneamento/metodologia", 0.6, "monthly"),
+    rota("/gas-natural", 0.8, "monthly"),
+    ...PAGINAS_GAS.map((p) => rota(p.href, 0.6, "monthly")),
     rota("/cadastro", 0.6, "yearly"),
     rota("/entrar", 0.3, "yearly"),
     rota("/privacidade", 0.2, "yearly"),
