@@ -27,6 +27,12 @@ class ObservatorioSaneamento(unittest.TestCase):
             if "diferenca" in c["valores"]:
                 self.assertEqual(c["valores"]["diferenca"], 0, c["id"])
 
+    def test_investimento_dos_prestadores_reproduz_o_consolidado(self):
+        br = next(a for a in self.g["agregados"] if a["id"] == "BR")
+        for campo, servico in (("investimento_agua", "agua"), ("investimento_esgoto", "esgoto")):
+            soma = gold.soma_parcial([p[campo] for p in self.g["prestadores"]])
+            self.assertAlmostEqual(soma, br["sinisa"][servico]["investimento"]["total"], places=2, msg=campo)
+
     def test_cobertura(self):
         cob = self.g["meta"]["cobertura"]
         self.assertEqual(cob["municipios_ibge"], 5571)

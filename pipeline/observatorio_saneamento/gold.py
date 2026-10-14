@@ -21,6 +21,7 @@ import csv
 import gzip
 import io
 import json
+import math
 import os
 import re
 import unicodedata
@@ -106,16 +107,25 @@ def estado_indicador(v):
     return "nao_informado"
 
 
+def somar(xs):
+    """Soma independente da versão do Python: inteiros exatos; reais por math.fsum
+    (arredondamento correto), porque sum() de reais mudou no Python 3.12."""
+    xs = list(xs)
+    if all(isinstance(x, int) and not isinstance(x, bool) for x in xs):
+        return sum(xs)
+    return math.fsum(xs)
+
+
 def soma(*vals):
-    """Soma só quando todas as parcelas existem (regra do OBEE para investimento)."""
+    """Soma só quando todas as parcelas existem."""
     if any(v is None for v in vals):
         return None
-    return sum(vals)
+    return somar(vals)
 
 
 def soma_parcial(vals):
     xs = [v for v in vals if v is not None]
-    return sum(xs) if xs else None
+    return somar(xs) if xs else None
 
 
 def r2(v, casas=2):
@@ -197,7 +207,7 @@ def bloco_censo22(agua, esgoto):
     out = {"agua": out, "esgoto": {k: g(esgoto, c) for k, c in ESGOTO_2022.items()}}
     e = out["esgoto"]
     parc = [e["rudimentar"], e["vala"], e["corpo_dagua"], e["outra"]]
-    e["sem_rede_nem_septica"] = None if any(v is None for v in parc + [e["sem_banheiro"]]) else sum(parc) + e["sem_banheiro"]
+    e["sem_rede_nem_septica"] = None if any(v is None for v in parc + [e["sem_banheiro"]]) else somar(parc + [e["sem_banheiro"]])
     return out
 
 
@@ -310,7 +320,7 @@ def bloco_factiveis(fichas):
     for servico, cod in (("agua", "GTA0007"), ("esgoto", "GTE0005")):
         vals = [_tec(f, servico).get(cod) for f in fichas]
         inf = [v for v in vals if v is not None]
-        out[servico] = {"imoveis": sum(inf) if inf else None, "municipios_informantes": len(inf)}
+        out[servico] = {"imoveis": somar(inf) if inf else None, "municipios_informantes": len(inf)}
     return out
 
 
@@ -320,7 +330,7 @@ def bloco_continuidade(fichas):
     tec = [t for t in tec if t]
     def s(c):
         xs = [t.get(c) for t in tec if t.get(c) is not None]
-        return (sum(xs), len(xs)) if xs else (None, 0)
+        return (somar(xs), len(xs)) if xs else (None, 0)
     par, n_par = s("GTA3001")
     eco_par, _ = s("GTA3002")
     h_par, _ = s("GTA3007")
@@ -762,7 +772,7 @@ def construir():
     for k, p in prestadores.items():
         ta, te, fa, fe = pm_tec_a.get(k, []), pm_tec_e.get(k, []), pm_fin_a.get(k, []), pm_fin_e.get(k, [])
         # perdas na distribuição pela fórmula do IAG2013 sobre as somas declaradas
-        vol = {c: somaf(ta, c) for c in ("GTA1001", "GTA1009", "GTA1203", "GTA1207", "GTA1211", "GTA1221", "GTA1214")}
+        vol = {c: r2(somaf(ta, c)) for c in ("GTA1001", "GTA1009", "GTA1203", "GTA1207", "GTA1211", "GTA1221", "GTA1214")}
         perdas = None
         if all(vol[c] is not None for c in ("GTA1001", "GTA1009", "GTA1203", "GTA1207", "GTA1211")):
             entrada = vol["GTA1001"] + vol["GTA1009"]
@@ -786,8 +796,9 @@ def construir():
             "receita_direta_usuarios_agua": r2(receita_ag),
             "despesa_exploracao_agua": r2(dex_ag),
             "receita_por_m3_faturado_agua": r2(receita_ag / (faturado * 1000)) if receita_ag and faturado else None,
-            "investimento_agua": r2(soma_parcial([soma(num(l.get("GFI2024")), num(l.get("GFI2036"))) for l in fa])),
-            "investimento_esgoto": r2(soma_parcial([soma(num(l.get("GFI2124")), num(l.get("GFI2136"))) for l in fe])),
+            # parcelas informadas de prestador e Estado, cada uma por si (a ausência de uma não apaga a outra)
+            "investimento_agua": r2(soma_parcial([num(l.get(c)) for l in fa for c in ("GFI2024", "GFI2036")])),
+            "investimento_esgoto": r2(soma_parcial([num(l.get(c)) for l in fe for c in ("GFI2124", "GFI2136")])),
             "investimento_agua_prestador": r2(somaf(fa, "GFI2024")),
             "investimento_esgoto_prestador": r2(somaf(fe, "GFI2124")),
             "pessoal_agua": somaf(fa, "GFI2047"),
