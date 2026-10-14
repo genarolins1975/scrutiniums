@@ -8,6 +8,8 @@
  */
 export type IndiceFamily = 'pesos' | 'habitacao' | 'definicoes' | 'retirada';
 export type IndiceStatus = 'mantida' | 'pode_empatar' | 'pode_inverter' | 'empate';
+/** Resultado de uma família para o par. Os três últimos valem só para par empatado na edição. */
+export type IndiceFamilyOutcome = 'inverte' | 'empata' | 'mantida' | 'desfaz_ambos' | 'desfaz_a' | 'desfaz_b' | 'empate_mantido';
 export type IndiceIndicator = {id: string; label: string; unit: string; direction: 'higher' | 'lower'; period: string;
   source: string; source_url: string; note: string; precision: string};
 export type IndiceRow = {id: string; name: string; score: number; band: [number, number];
@@ -28,10 +30,12 @@ export const FAMILIES: IndiceFamily[] = ['pesos', 'habitacao', 'definicoes', 're
 export const FAMILY_NAMES: Record<IndiceFamily, string> = {
   pesos: 'Mudança de pesos', habitacao: 'Definição de habitação', definicoes: 'Definições alternativas', retirada: 'Retirada de um indicador'};
 export const STATUS_LABELS: Record<IndiceStatus, string> = {
-  mantida: 'Ordem mantida em todos os testes', pode_empatar: 'Pode empatar em algum teste',
+  mantida: 'Ordem mantida em cada teste, avaliado separadamente', pode_empatar: 'Pode empatar em algum teste',
   pode_inverter: 'A ordem pode inverter', empate: 'Empate na edição'};
 /** Família de pesos declarada na edição: cada peso entre 75% e 125% de 1/7. */
 export const WEIGHT_BOX: [number, number] = [0.75, 1.25];
+/** Ressalva que acompanha nota e faixa na página e em cada linha do CSV (sem vírgulas, para leitura simples). */
+export const RESSALVA_FAIXA = 'Faixa metodológica e não intervalo de confiança; precisão municipal não quantificada; nota experimental sobre cobertura selecionada de 2022';
 const EPS = 1e-9;
 
 export const indiceNumber = (n: number | null, digits = 1) =>
@@ -83,17 +87,25 @@ export function createIndice(snapshot: IndiceSnapshot) {
     const reversing = FAMILIES.filter(f => s !== 0 && (indiceSign(ranges[f][0]) === -s || indiceSign(ranges[f][1]) === -s));
     const tying = FAMILIES.filter(f => s !== 0 && !reversing.includes(f) && (indiceSign(ranges[f][0]) === 0 || indiceSign(ranges[f][1]) === 0));
     const status: IndiceStatus = s === 0 ? 'empate' : reversing.length ? 'pode_inverter' : tying.length ? 'pode_empatar' : 'mantida';
+    // Par empatado na edição: a família pode desfazer o empate para um lado, para os dois ou para nenhum.
+    const outcomes = Object.fromEntries(FAMILIES.map(f => {
+      const [lo, hi] = ranges[f].map(indiceSign);
+      const outcome: IndiceFamilyOutcome = s !== 0
+        ? (reversing.includes(f) ? 'inverte' : tying.includes(f) ? 'empata' : 'mantida')
+        : lo < 0 && hi > 0 ? 'desfaz_ambos' : hi > 0 ? 'desfaz_a' : lo < 0 ? 'desfaz_b' : 'empate_mantido';
+      return [f, outcome];
+    })) as Record<IndiceFamily, IndiceFamilyOutcome>;
     const diffs = ids.map(d => a.percentiles[d] - b.percentiles[d]);
     const dominance = (diffs.every(v => v >= 0) && diffs.some(v => v > 0)) || (diffs.every(v => v <= 0) && diffs.some(v => v < 0));
-    return {baseline, ranges, status, reversing, tying, dominance, scenarios};
+    return {baseline, ranges, status, reversing, tying, outcomes, dominance, scenarios};
   }
 
   function csv() {
     const header = ['edition', 'reference_year', 'id', 'name', 'score', 'band_min', 'band_max',
-      ...ids.flatMap(d => [`${d}_raw`, `${d}_unit`, `${d}_percentile`, `${d}_weight`, `${d}_contribution`])];
+      ...ids.flatMap(d => [`${d}_raw`, `${d}_unit`, `${d}_percentile`, `${d}_weight`, `${d}_contribution`]), 'ressalva'];
     const units = Object.fromEntries(snapshot.indicators.map(i => [i.id, i.unit]));
     const lines = snapshot.rows.map(r => [snapshot.edition, snapshot.reference_year, r.id, r.name, r.score, ...r.band,
-      ...ids.flatMap(d => [r.raw_values[d], units[d], r.percentiles[d], snapshot.weights[d], r.contributions[d]])]);
+      ...ids.flatMap(d => [r.raw_values[d], units[d], r.percentiles[d], snapshot.weights[d], r.contributions[d]]), RESSALVA_FAIXA]);
     return [header, ...lines].map(l => l.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\r\n') + '\r\n';
   }
 
