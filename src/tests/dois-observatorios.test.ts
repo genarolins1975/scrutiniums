@@ -26,8 +26,11 @@ function paginas(dir: string, out: string[] = []): string[] {
 }
 
 describe("registro de domínios", () => {
-  it("cinco observatórios, ids e rotas estáveis, acento próprio", () => {
-    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados"]);
+  it("seis observatórios, ids e rotas estáveis, acento próprio", () => {
+    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados", "saneamento"]);
+    expect(DOMINIOS[5].rotaRaiz).toBe("/saneamento");
+    expect(dominioDoCaminho("/saneamento/municipio/2611606")).toBe("saneamento");
+    expect(dominioDaSecao("saneamento:acesso")).toBe("saneamento");
     const [c, e, f, contas] = DOMINIOS;
     expect(contas.rotaRaiz).toBe("/contas-publicas");
     expect(DOMINIOS[4].rotaRaiz).toBe("/contas-publicas-estaduais");
@@ -59,7 +62,8 @@ describe("registro de domínios", () => {
     expect(ler("src/components/home/SecaoObservatorios.tsx")).toContain("DOMINIOS.map");
     expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("DOMINIOS.map");
     expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("DOMINIOS.map");
-    expect(ler("src/components/layout/PublicHeader.tsx")).toContain("ABAS_OBSERVATORIOS");
+    expect(ler("src/components/layout/PublicHeader.tsx")).toContain("<AbasCabecalho");
+    expect(ler("src/components/layout/navCabecalho.ts")).toContain("ABAS_OBSERVATORIOS");
     expect(ler("src/components/observatorios/NavegacaoObservatorios.tsx")).toContain(`href: "${rota}"`);
     expect(ler("src/components/layout/Footer.tsx")).toContain(rota);
     expect(ler("public/obs/index.html")).toContain(`href="${rota}"`);

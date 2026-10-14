@@ -1,0 +1,2054 @@
+{
+ "acessado": "2026-10-14",
+ "tarifas": [
+  {
+   "id": "compesa-2025",
+   "prestador": "Companhia Pernambucana de Saneamento (COMPESA)",
+   "prestadorSinisa": "compesa-companhia-pernambucana-de-saneamento",
+   "uf": "PE",
+   "regulador": "ARPE",
+   "modelo": "Tarifa fixa até 10 m³ e faixas progressivas; esgoto como percentual da água",
+   "ato": "Resolução ARPE nº 289, de 26/03/2025",
+   "vigencia": "30 dias após a publicação (art. 6º); data de publicação no DOE-PE não verificada em fonte oficial",
+   "ultimoReajuste": "Reequilíbrio médio de 8,72% e reajuste de 1,16%; reposição de 9,98% (arts. 3º a 5º)",
+   "area": "Serviços prestados pela COMPESA em Pernambuco (tabela estadual única)",
+   "fontes": [
+    {
+     "rotulo": "Resolução ARPE 289/2025",
+     "url": "https://www.arpe.pe.gov.br/images/RESOLUCAO/RESOLUCOES2025/Resoluo-Arpe-289-2025---Tarifa-Social-Pernambucana._compressed.pdf",
+     "sha256": "11abb52d94935edde14e411ada0a9b15bce2ceb61a5df0747930a35626bfcd4b",
+     "localizador": "Anexo Único, PDF p.3-5"
+    },
+    {
+     "rotulo": "Estrutura tarifária publicada pela ARPE",
+     "url": "https://www.arpe.pe.gov.br/images/COORDENADORIAS/TARIFAS/SANEAMENTO/Estrutura-Tarifria-Compesa-2025---Resoluo-ARPE-n-289-2025.pdf",
+     "sha256": "d4073c6c24589833a72be3ccb0c850ffcc438445c5988821755d7a7b55146f00",
+     "localizador": "p.1-2"
+    },
+    {
+     "rotulo": "Regulamento Geral da COMPESA (Decreto estadual 18.251/1994)",
+     "url": "https://servicos.compesa.com.br/wp-content/uploads/2018/10/Regulamento-Geral-da-Compesa-decreto_18251_211294_.pdf",
+     "sha256": "caf9d817029a8ba8aba4ef11bf0668a05adb1badc2477a5807d702ea51f717a0",
+     "localizador": "arts. 68 e 72 (fatura mínima de 10 m³ por economia)"
+    },
+    {
+     "rotulo": "Resolução ARPE 292/2025 (Tarifa Social Pernambucana)",
+     "url": "https://www.arpe.pe.gov.br/images/RESOLUCAO/RESOLUCOES2025/Resoluo-Arpe-292-2025---Tarifa-Social-Pernambucana.pdf",
+     "sha256": "4663c2bff364aa8775c1aba9dc2b2a6bbe03ffcfb7978135d879b287cb7c9d9d",
+     "localizador": "art. 3º, §§ 1º e 2º"
+    }
+   ],
+   "unidade": "por economia",
+   "categorias": {
+    "residencial": {
+     "rotulo": "Residencial",
+     "agua": {
+      "faixas": [
+       {
+        "de": 10,
+        "ate": 20,
+        "preco": 7.09
+       },
+       {
+        "de": 20,
+        "ate": 30,
+        "preco": 8.42
+       },
+       {
+        "de": 30,
+        "ate": 50,
+        "preco": 11.59
+       },
+       {
+        "de": 50,
+        "ate": 90,
+        "preco": 13.74
+       },
+       {
+        "de": 90,
+        "ate": null,
+        "preco": 26.4
+       }
+      ],
+      "minimo": {
+       "m3": 10,
+       "valor": 61.77
+      }
+     },
+     "esgoto": {
+      "percentual": 100
+     }
+    },
+    "social_pernambucana": {
+     "rotulo": "Tarifa Social Pernambucana",
+     "agua": {
+      "faixas": [
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 0.0
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 7.09
+       },
+       {
+        "de": 20,
+        "ate": 30,
+        "preco": 8.42
+       },
+       {
+        "de": 30,
+        "ate": 50,
+        "preco": 11.59
+       },
+       {
+        "de": 50,
+        "ate": 90,
+        "preco": 13.74
+       },
+       {
+        "de": 90,
+        "ate": null,
+        "preco": 26.4
+       }
+      ],
+      "minimo": {
+       "m3": 10,
+       "valor": 27.5
+      }
+     },
+     "esgotoNaoVerificado": "A cobrança de esgoto da Tarifa Social Pernambucana não foi verificada em ato ou fatura; a simulação mostra só a água."
+    },
+    "vulneraveis": {
+     "rotulo": "Tarifa de Vulneráveis",
+     "agua": {
+      "faixas": [
+       {
+        "de": 10,
+        "ate": 20,
+        "preco": 7.09
+       },
+       {
+        "de": 20,
+        "ate": 30,
+        "preco": 8.42
+       },
+       {
+        "de": 30,
+        "ate": 50,
+        "preco": 11.59
+       },
+       {
+        "de": 50,
+        "ate": 90,
+        "preco": 13.74
+       },
+       {
+        "de": 90,
+        "ate": null,
+        "preco": 26.4
+       }
+      ],
+      "minimo": {
+       "m3": 10,
+       "valor": 10.39
+      }
+     },
+     "esgotoNaoVerificado": "O Regulamento Geral de 1994 cobra só a água na antiga tarifa social; a aplicação à categoria renomeada não foi verificada. A simulação mostra só a água."
+    }
+   },
+   "observacoes": [
+    "Esgoto convencional a 100% da conta de água (Anexo Único, PDF p.5). Ramal condominial, sistema simplificado e dreno têm percentuais menores, não simulados.",
+    "Fatura mínima de 10 m³ por economia; várias economias com um medidor dividem o consumo (Regulamento Geral, arts. 68 e 72).",
+    "Em 2026 as microrregiões do Sertão e da RMR-Pajeú foram concedidas à iniciativa privada; a Resolução ARPE 347/2026 estende às concessionárias as resoluções aplicáveis à COMPESA. Desconto de leilão e data de início da operação não verificados.",
+    "Não há nova resolução de reajuste da COMPESA na lista oficial da ARPE até a Resolução 351, de 23/09/2026."
+   ],
+   "exemplos": {
+    "residencial": {
+     "10": 123.54,
+     "20": 265.34
+    },
+    "social_pernambucana": {
+     "10": 27.5,
+     "15": 27.5,
+     "20": 62.95
+    }
+   },
+   "municipios": [
+    "2600054",
+    "2600104",
+    "2600203",
+    "2600302",
+    "2600500",
+    "2600609",
+    "2600708",
+    "2600807",
+    "2601003",
+    "2601052",
+    "2601102",
+    "2601201",
+    "2601300",
+    "2601409",
+    "2601508",
+    "2601607",
+    "2601706",
+    "2601805",
+    "2601904",
+    "2602001",
+    "2602100",
+    "2602209",
+    "2602308",
+    "2602407",
+    "2602506",
+    "2602605",
+    "2602704",
+    "2602803",
+    "2602902",
+    "2603009",
+    "2603108",
+    "2603207",
+    "2603306",
+    "2603405",
+    "2603454",
+    "2603504",
+    "2603603",
+    "2603702",
+    "2603801",
+    "2603900",
+    "2604007",
+    "2604106",
+    "2604155",
+    "2604304",
+    "2604403",
+    "2604502",
+    "2604601",
+    "2604700",
+    "2604908",
+    "2605004",
+    "2605103",
+    "2605152",
+    "2605202",
+    "2605301",
+    "2605400",
+    "2605459",
+    "2605509",
+    "2605608",
+    "2605707",
+    "2605806",
+    "2606002",
+    "2606101",
+    "2606200",
+    "2606309",
+    "2606408",
+    "2606606",
+    "2606705",
+    "2606804",
+    "2606903",
+    "2607109",
+    "2607208",
+    "2607307",
+    "2607406",
+    "2607505",
+    "2607604",
+    "2607703",
+    "2607752",
+    "2607802",
+    "2607901",
+    "2608008",
+    "2608057",
+    "2608107",
+    "2608206",
+    "2608255",
+    "2608305",
+    "2608404",
+    "2608453",
+    "2608503",
+    "2608602",
+    "2608701",
+    "2608750",
+    "2608800",
+    "2608909",
+    "2609006",
+    "2609105",
+    "2609154",
+    "2609204",
+    "2609303",
+    "2609402",
+    "2609501",
+    "2609600",
+    "2609709",
+    "2609808",
+    "2609907",
+    "2610103",
+    "2610202",
+    "2610301",
+    "2610400",
+    "2610509",
+    "2610608",
+    "2610707",
+    "2610806",
+    "2610905",
+    "2611002",
+    "2611101",
+    "2611200",
+    "2611309",
+    "2611408",
+    "2611507",
+    "2611533",
+    "2611606",
+    "2611705",
+    "2611804",
+    "2611903",
+    "2612000",
+    "2612109",
+    "2612208",
+    "2612307",
+    "2612406",
+    "2612455",
+    "2612471",
+    "2612505",
+    "2612554",
+    "2612604",
+    "2612703",
+    "2612802",
+    "2612901",
+    "2613008",
+    "2613107",
+    "2613206",
+    "2613305",
+    "2613404",
+    "2613503",
+    "2613602",
+    "2613701",
+    "2613800",
+    "2613909",
+    "2614006",
+    "2614105",
+    "2614204",
+    "2614303",
+    "2614402",
+    "2614501",
+    "2614600",
+    "2614709",
+    "2614808",
+    "2614857",
+    "2615003",
+    "2615102",
+    "2615201",
+    "2615300",
+    "2615409",
+    "2615508",
+    "2615607",
+    "2615706",
+    "2615805",
+    "2615904",
+    "2616001",
+    "2616100",
+    "2616183",
+    "2616209",
+    "2616308",
+    "2616407"
+   ],
+   "acessado": "2026-10-14"
+  },
+  {
+   "id": "copasa-2026",
+   "prestador": "Companhia de Saneamento de Minas Gerais (COPASA)",
+   "prestadorSinisa": "copasa-companhia-de-saneamento-de-minas-gerais",
+   "uf": "MG",
+   "regulador": "ARSAE-MG",
+   "modelo": "Tarifa fixa por economia e faixas progressivas sem consumo mínimo; esgoto com tabela própria",
+   "ato": "Resolução ARSAE-MG nº 217, de 22/12/2025 (3ª Revisão Tarifária Periódica)",
+   "vigencia": "Desde 22/01/2026, sobre volumes usados a partir dessa data (art. 1º, § 3º)",
+   "ultimoReajuste": "Índice de reposicionamento de 4,04% e efeito tarifário médio de 6,56% (art. 1º, §§ 1º e 2º)",
+   "area": "Municípios atendidos pela COPASA e regulados pela ARSAE-MG; Rio Pomba tem tabela própria (Resolução ARSAE-MG 232/2026)",
+   "fontes": [
+    {
+     "rotulo": "Jornal Minas Gerais, Diário do Executivo de 23/12/2025 (Resolução ARSAE-MG 217/2025)",
+     "url": "https://www.jornalminasgerais.mg.gov.br/api/v1/Caderno/ObterArquivoCadernoPorId?id=326039",
+     "sha256": "b53b1e09135a8e070e54c33d94c2085d1287e698917b728090d20ef0983e58c9",
+     "localizador": "p.78-79, Anexo I"
+    },
+    {
+     "rotulo": "Jornal Minas Gerais de 19/11/2019 (Resolução ARSAE-MG 131/2019, condições gerais)",
+     "url": "https://www.jornalminasgerais.mg.gov.br/api/v1/Caderno/ObterArquivoCadernoPorId?id=6220",
+     "sha256": "08aa1ad632284fe928c93376175223ecfb161c7a9c9cb57f2e76c1ddc1d16961",
+     "localizador": "art. 2º LX a LXIII e art. 89"
+    }
+   ],
+   "unidade": "por economia (unidade usuária)",
+   "categorias": {
+    "residencial": {
+     "rotulo": "Residencial",
+     "agua": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": 5,
+        "preco": 2.69
+       },
+       {
+        "de": 5,
+        "ate": 10,
+        "preco": 5.334
+       },
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 8.056
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 10.83
+       },
+       {
+        "de": 20,
+        "ate": 40,
+        "preco": 13.658
+       },
+       {
+        "de": 40,
+        "ate": null,
+        "preco": 16.538
+       }
+      ],
+      "fixo": 25.77
+     },
+     "esgoto": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": 5,
+        "preco": 1.98
+       },
+       {
+        "de": 5,
+        "ate": 10,
+        "preco": 3.948
+       },
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 5.962
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 8.014
+       },
+       {
+        "de": 20,
+        "ate": 40,
+        "preco": 10.106
+       },
+       {
+        "de": 40,
+        "ate": null,
+        "preco": 12.239
+       }
+      ],
+      "fixo": 19.07
+     }
+    },
+    "social_1": {
+     "rotulo": "Residencial Social, nível I",
+     "agua": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": 5,
+        "preco": 0.94
+       },
+       {
+        "de": 5,
+        "ate": 10,
+        "preco": 1.867
+       },
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 2.82
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 3.79
+       },
+       {
+        "de": 20,
+        "ate": 40,
+        "preco": 4.78
+       },
+       {
+        "de": 40,
+        "ate": null,
+        "preco": 5.788
+       }
+      ],
+      "fixo": 9.02
+     },
+     "esgoto": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": 5,
+        "preco": 0.7
+       },
+       {
+        "de": 5,
+        "ate": 10,
+        "preco": 1.381
+       },
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 2.087
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 2.804
+       },
+       {
+        "de": 20,
+        "ate": 40,
+        "preco": 3.536
+       },
+       {
+        "de": 40,
+        "ate": null,
+        "preco": 4.283
+       }
+      ],
+      "fixo": 6.67
+     }
+    },
+    "social_2": {
+     "rotulo": "Residencial Social, nível II",
+     "agua": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": 5,
+        "preco": 1.35
+       },
+       {
+        "de": 5,
+        "ate": 10,
+        "preco": 2.668
+       },
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 4.028
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 5.416
+       },
+       {
+        "de": 20,
+        "ate": 40,
+        "preco": 6.829
+       },
+       {
+        "de": 40,
+        "ate": null,
+        "preco": 8.27
+       }
+      ],
+      "fixo": 11.59
+     },
+     "esgoto": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": 5,
+        "preco": 1.0
+       },
+       {
+        "de": 5,
+        "ate": 10,
+        "preco": 1.974
+       },
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 2.981
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 4.007
+       },
+       {
+        "de": 20,
+        "ate": 40,
+        "preco": 5.054
+       },
+       {
+        "de": 40,
+        "ate": null,
+        "preco": 6.119
+       }
+      ],
+      "fixo": 8.58
+     }
+    }
+   },
+   "observacoes": [
+    "Esgoto dinâmico (coleta e afastamento) cobrado igualmente com ou sem tratamento (art. 2º); esgoto estático a 30% da água (art. 3º), não simulado.",
+    "Ciclo de faturamento com duas tabelas é cobrado pro rata die (Resolução 131/2019, art. 83, § 4º); a simulação usa só a tabela vigente.",
+    "Regras de tarifa social de 2026: Resoluções 150/2021 e 199/2024 (art. 4º). A Resolução ARSAE-MG 227/2026 muda as regras a partir do próximo reajuste.",
+    "O site da ARSAE-MG não respondeu a este ambiente (HTTP 403); a verificação usou a publicação oficial no Jornal Minas Gerais."
+   ],
+   "exemplos": {
+    "residencial": {
+     "10": 114.6,
+     "20": 278.91
+    },
+    "social_1": {
+     "10": 40.13,
+     "20": 97.64
+    },
+    "social_2": {
+     "10": 55.13,
+     "20": 137.29
+    }
+   },
+   "municipios": [
+    "3100104",
+    "3100203",
+    "3100500",
+    "3100906",
+    "3101607",
+    "3101631",
+    "3101706",
+    "3101805",
+    "3101904",
+    "3102001",
+    "3102100",
+    "3102209",
+    "3102308",
+    "3102407",
+    "3102506",
+    "3102605",
+    "3102803",
+    "3102902",
+    "3103108",
+    "3103207",
+    "3103306",
+    "3103405",
+    "3103603",
+    "3103702",
+    "3104007",
+    "3104106",
+    "3104205",
+    "3104304",
+    "3104502",
+    "3104601",
+    "3104700",
+    "3104809",
+    "3104908",
+    "3105004",
+    "3105103",
+    "3105509",
+    "3105707",
+    "3105905",
+    "3106002",
+    "3106101",
+    "3106200",
+    "3106309",
+    "3106408",
+    "3106655",
+    "3106705",
+    "3106903",
+    "3107000",
+    "3107406",
+    "3107505",
+    "3107604",
+    "3107703",
+    "3107802",
+    "3107901",
+    "3108107",
+    "3108206",
+    "3108255",
+    "3108305",
+    "3108404",
+    "3108552",
+    "3108602",
+    "3108909",
+    "3109006",
+    "3109105",
+    "3109204",
+    "3109253",
+    "3109501",
+    "3109709",
+    "3109907",
+    "3110103",
+    "3110202",
+    "3110301",
+    "3110400",
+    "3110509",
+    "3110707",
+    "3110905",
+    "3111002",
+    "3111101",
+    "3111408",
+    "3111507",
+    "3111606",
+    "3111705",
+    "3111804",
+    "3111903",
+    "3112059",
+    "3112109",
+    "3112208",
+    "3112307",
+    "3112505",
+    "3112604",
+    "3112802",
+    "3112901",
+    "3113404",
+    "3113503",
+    "3113602",
+    "3113701",
+    "3113909",
+    "3114303",
+    "3114402",
+    "3114550",
+    "3114709",
+    "3114808",
+    "3115003",
+    "3115102",
+    "3115201",
+    "3115300",
+    "3115508",
+    "3115607",
+    "3115805",
+    "3115904",
+    "3116159",
+    "3116308",
+    "3116605",
+    "3116704",
+    "3116803",
+    "3116902",
+    "3117108",
+    "3117504",
+    "3117603",
+    "3117702",
+    "3117801",
+    "3117836",
+    "3117900",
+    "3118007",
+    "3118205",
+    "3118304",
+    "3118601",
+    "3118809",
+    "3118908",
+    "3119005",
+    "3119104",
+    "3119203",
+    "3119302",
+    "3119401",
+    "3119500",
+    "3119708",
+    "3119807",
+    "3120003",
+    "3120201",
+    "3120300",
+    "3120607",
+    "3120706",
+    "3120839",
+    "3120870",
+    "3120904",
+    "3121001",
+    "3121209",
+    "3121308",
+    "3121506",
+    "3121605",
+    "3121803",
+    "3121902",
+    "3122009",
+    "3122108",
+    "3122355",
+    "3122405",
+    "3122454",
+    "3122504",
+    "3122603",
+    "3122702",
+    "3122900",
+    "3123205",
+    "3123304",
+    "3123528",
+    "3123700",
+    "3123809",
+    "3123858",
+    "3123908",
+    "3124104",
+    "3124203",
+    "3124302",
+    "3124500",
+    "3124609",
+    "3124708",
+    "3124807",
+    "3124906",
+    "3125101",
+    "3125200",
+    "3125309",
+    "3125705",
+    "3125804",
+    "3125903",
+    "3126000",
+    "3126208",
+    "3126307",
+    "3126604",
+    "3126752",
+    "3126901",
+    "3126950",
+    "3127008",
+    "3127107",
+    "3127206",
+    "3127354",
+    "3127388",
+    "3127404",
+    "3127602",
+    "3127800",
+    "3127909",
+    "3128204",
+    "3128253",
+    "3128303",
+    "3128501",
+    "3128600",
+    "3128709",
+    "3128808",
+    "3128907",
+    "3129004",
+    "3129103",
+    "3129202",
+    "3129301",
+    "3129400",
+    "3129608",
+    "3129657",
+    "3129707",
+    "3129806",
+    "3129905",
+    "3130101",
+    "3130200",
+    "3130408",
+    "3130507",
+    "3130556",
+    "3130606",
+    "3130655",
+    "3130705",
+    "3130804",
+    "3131109",
+    "3131158",
+    "3131307",
+    "3131505",
+    "3131604",
+    "3131802",
+    "3132404",
+    "3132503",
+    "3132602",
+    "3132909",
+    "3133006",
+    "3133204",
+    "3133303",
+    "3133501",
+    "3133600",
+    "3133709",
+    "3133758",
+    "3133907",
+    "3134103",
+    "3134400",
+    "3134509",
+    "3134608",
+    "3134806",
+    "3135050",
+    "3135100",
+    "3135209",
+    "3135357",
+    "3135605",
+    "3135704",
+    "3136306",
+    "3136405",
+    "3136504",
+    "3136553",
+    "3136801",
+    "3136900",
+    "3136959",
+    "3137106",
+    "3137536",
+    "3137601",
+    "3138005",
+    "3138203",
+    "3138302",
+    "3138401",
+    "3138625",
+    "3138658",
+    "3138682",
+    "3138807",
+    "3138906",
+    "3139102",
+    "3139201",
+    "3139300",
+    "3139706",
+    "3139805",
+    "3139904",
+    "3140100",
+    "3140159",
+    "3140209",
+    "3140506",
+    "3140555",
+    "3140605",
+    "3140803",
+    "3140852",
+    "3141009",
+    "3141108",
+    "3141207",
+    "3141306",
+    "3141405",
+    "3141603",
+    "3141702",
+    "3141801",
+    "3141900",
+    "3142007",
+    "3142106",
+    "3142254",
+    "3142304",
+    "3142502",
+    "3142601",
+    "3143005",
+    "3143203",
+    "3143302",
+    "3143401",
+    "3143450",
+    "3143500",
+    "3143609",
+    "3143807",
+    "3144003",
+    "3144102",
+    "3144359",
+    "3144375",
+    "3144409",
+    "3144508",
+    "3144805",
+    "3144904",
+    "3145059",
+    "3145109",
+    "3145307",
+    "3145802",
+    "3145877",
+    "3145901",
+    "3146206",
+    "3146305",
+    "3146404",
+    "3146552",
+    "3146701",
+    "3147006",
+    "3147402",
+    "3147501",
+    "3147709",
+    "3147808",
+    "3147956",
+    "3148004",
+    "3148202",
+    "3148301",
+    "3148400",
+    "3148608",
+    "3148707",
+    "3148806",
+    "3148905",
+    "3149101",
+    "3149200",
+    "3149309",
+    "3149705",
+    "3149903",
+    "3149952",
+    "3150158",
+    "3150208",
+    "3150307",
+    "3150539",
+    "3150570",
+    "3150802",
+    "3150901",
+    "3151008",
+    "3151107",
+    "3151305",
+    "3151404",
+    "3151602",
+    "3151701",
+    "3152006",
+    "3152131",
+    "3152204",
+    "3152501",
+    "3152709",
+    "3152808",
+    "3153103",
+    "3153202",
+    "3153400",
+    "3153509",
+    "3153608",
+    "3153707",
+    "3153905",
+    "3154200",
+    "3154309",
+    "3154408",
+    "3154457",
+    "3154507",
+    "3154606",
+    "3154705",
+    "3154903",
+    "3155306",
+    "3155405",
+    "3155603",
+    "3155702",
+    "3156007",
+    "3156106",
+    "3156304",
+    "3156452",
+    "3156601",
+    "3157005",
+    "3157104",
+    "3157203",
+    "3157252",
+    "3157302",
+    "3157401",
+    "3157500",
+    "3157609",
+    "3157708",
+    "3157906",
+    "3158003",
+    "3158201",
+    "3158300",
+    "3158409",
+    "3158508",
+    "3158607",
+    "3158805",
+    "3158904",
+    "3158953",
+    "3159357",
+    "3159407",
+    "3159506",
+    "3159605",
+    "3159704",
+    "3159803",
+    "3160009",
+    "3160108",
+    "3160207",
+    "3160306",
+    "3160405",
+    "3160454",
+    "3160603",
+    "3160702",
+    "3160801",
+    "3160900",
+    "3160959",
+    "3161007",
+    "3161205",
+    "3161502",
+    "3161700",
+    "3161809",
+    "3162005",
+    "3162104",
+    "3162609",
+    "3162708",
+    "3162807",
+    "3162906",
+    "3162922",
+    "3162955",
+    "3163201",
+    "3163409",
+    "3163508",
+    "3163607",
+    "3163805",
+    "3163904",
+    "3164001",
+    "3164100",
+    "3164308",
+    "3164431",
+    "3164472",
+    "3164506",
+    "3164605",
+    "3164704",
+    "3165008",
+    "3165107",
+    "3165206",
+    "3165305",
+    "3165503",
+    "3165537",
+    "3165578",
+    "3165909",
+    "3166105",
+    "3166303",
+    "3166501",
+    "3166709",
+    "3166808",
+    "3166907",
+    "3166956",
+    "3167103",
+    "3167301",
+    "3167608",
+    "3167707",
+    "3168002",
+    "3168101",
+    "3168200",
+    "3168408",
+    "3168507",
+    "3168606",
+    "3168705",
+    "3168903",
+    "3169109",
+    "3169307",
+    "3169356",
+    "3169505",
+    "3169703",
+    "3169901",
+    "3170008",
+    "3170057",
+    "3170438",
+    "3170503",
+    "3170529",
+    "3170602",
+    "3170651",
+    "3170701",
+    "3170750",
+    "3170800",
+    "3170909",
+    "3171006",
+    "3171030",
+    "3171402",
+    "3171600",
+    "3171907",
+    "3172103",
+    "3172202"
+   ],
+   "acessado": "2026-10-14"
+  },
+  {
+   "id": "sabesp-2026-t1",
+   "prestador": "Companhia de Saneamento Básico do Estado de São Paulo (SABESP)",
+   "prestadorSinisa": "sabesp-companhia-de-saneamento-basico-do-estado-de-sao-paulo",
+   "uf": "SP",
+   "regulador": "ARSESP",
+   "modelo": "Consumo mínimo de 10 m³ e faixas progressivas; esgoto igual à água na Tabela 1",
+   "ato": "Deliberação ARSESP nº 1.749, de 01/12/2025 (Tarifa de Aplicação, Contrato de Concessão 01/2024, URAE-1)",
+   "vigencia": "Desde 01/01/2026 (art. 3º)",
+   "ultimoReajuste": "6,1106% (IPCA de junho de 2024 a outubro de 2025) e PIS/Cofins efetivo de 7,2331%",
+   "area": "Tabela 1: unidades de negócio OC, OL, OO, ON (com exceções) e OS, Guararema e Santa Isabel, o que inclui a capital. O simulador associa só o município de São Paulo, citado expressamente; as demais nove tabelas não foram associadas a municípios",
+   "fontes": [
+    {
+     "rotulo": "Deliberação ARSESP 1.749/2025",
+     "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/1749.pdf",
+     "sha256": "f04bef7935f7657f066281822c49c6ecbbdb64421b54c1f56e16affbf5a84316",
+     "localizador": "Anexo I, Tabela 1, PDF p.20 (tabela em imagem)"
+    },
+    {
+     "rotulo": "Comunicado Sabesp 01/26 (mesmos valores em texto)",
+     "url": "https://www.sabesp.com.br/site/toq/comunicado-sabesp-urae-v5.pdf",
+     "sha256": "e23daf8f9df1e1647c48afb03c63bd8460f6d308196e2cf7615e94dec811b9c9",
+     "localizador": "Tabela 1 e item 8.1 (TRCF)"
+    },
+    {
+     "rotulo": "Decreto estadual 41.446/1996 (Regulamento do Sistema Tarifário)",
+     "url": "https://www.al.sp.gov.br/repositorio/legislacao/decreto/1996/decreto-41446-16.12.1996.html",
+     "sha256": "403c9529186aed312ee9bea7fe0a4b0a1f1931fcb884a40e91c7c60a37699c21",
+     "localizador": "arts. 4º a 6º"
+    },
+    {
+     "rotulo": "Deliberação ARSESP 1.699/2025 (Residencial Social II)",
+     "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl16992025.pdf",
+     "sha256": "15a4d63265cccdac115fa62044d128a232b1374a5b953d867db4f3f9b1fa21b6",
+     "localizador": "categoria Social II"
+    }
+   ],
+   "unidade": "por economia",
+   "categorias": {
+    "residencial": {
+     "rotulo": "Residencial",
+     "agua": {
+      "faixas": [
+       {
+        "de": 10,
+        "ate": 20,
+        "preco": 6.4
+       },
+       {
+        "de": 20,
+        "ate": 50,
+        "preco": 15.95
+       },
+       {
+        "de": 50,
+        "ate": null,
+        "preco": 17.57
+       }
+      ],
+      "minimo": {
+       "m3": 10,
+       "valor": 40.42
+      }
+     },
+     "esgoto": {
+      "percentual": 100
+     }
+    },
+    "social_2": {
+     "rotulo": "Residencial Social II",
+     "agua": {
+      "faixas": [
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 3.2
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 6.4
+       },
+       {
+        "de": 20,
+        "ate": 50,
+        "preco": 15.95
+       },
+       {
+        "de": 50,
+        "ate": null,
+        "preco": 17.57
+       }
+      ],
+      "minimo": {
+       "m3": 10,
+       "valor": 20.21
+      }
+     },
+     "esgoto": {
+      "percentual": 100
+     }
+    },
+    "social": {
+     "rotulo": "Residencial Social",
+     "agua": {
+      "faixas": [
+       {
+        "de": 10,
+        "ate": 20,
+        "preco": 2.18
+       },
+       {
+        "de": 20,
+        "ate": 30,
+        "preco": 7.79
+       },
+       {
+        "de": 30,
+        "ate": 50,
+        "preco": 11.1
+       },
+       {
+        "de": 50,
+        "ate": null,
+        "preco": 12.26
+       }
+      ],
+      "minimo": {
+       "m3": 10,
+       "valor": 11.46
+      }
+     },
+     "esgoto": {
+      "percentual": 100
+     }
+    },
+    "vulneravel": {
+     "rotulo": "Residencial Vulnerável",
+     "agua": {
+      "faixas": [
+       {
+        "de": 10,
+        "ate": 20,
+        "preco": 1.1
+       },
+       {
+        "de": 20,
+        "ate": 30,
+        "preco": 3.67
+       },
+       {
+        "de": 30,
+        "ate": 50,
+        "preco": 11.1
+       },
+       {
+        "de": 50,
+        "ate": null,
+        "preco": 12.26
+       }
+      ],
+      "minimo": {
+       "m3": 10,
+       "valor": 8.74
+      }
+     },
+     "esgoto": {
+      "percentual": 100
+     }
+    }
+   },
+   "adicionais": [
+    {
+     "id": "trcf",
+     "rotulo": "Taxa de Regulação, Controle e Fiscalização (TRCF), 0,5% da fatura",
+     "percentual": 0.5,
+     "nota": "Cobrada nos municípios listados no item 8.1 do Comunicado 01/26, entre eles São Paulo; base exata e arredondamento não verificados."
+    }
+   ],
+   "observacoes": [
+    "Não há tabela estadual única: a Deliberação traz 10 tabelas por região. Esta é a Tabela 1.",
+    "Consumo mínimo de 10 m³ por economia, também para o esgoto; o volume de esgoto é igual ao de água faturado (Decreto 41.446/1996, arts. 4º e 5º).",
+    "Imóvel não ligado a rede de esgoto disponível paga tarifa de disponibilidade igual à tarifa mínima (Comunicado 1/25), não simulada.",
+    "A tabela da Deliberação é imagem; os valores residenciais foram conferidos com o texto do Comunicado Sabesp 01/26."
+   ],
+   "exemplos": {
+    "residencial": {
+     "10": 80.84,
+     "20": 208.84
+    },
+    "social_2": {
+     "15": 72.42
+    }
+   },
+   "municipios": [
+    "3550308"
+   ],
+   "acessado": "2026-10-14"
+  },
+  {
+   "id": "sanepar-2026-curitiba",
+   "prestador": "Companhia de Saneamento do Paraná (SANEPAR)",
+   "prestadorSinisa": "sanepar-companhia-de-saneamento-do-parana-s-a",
+   "uf": "PR",
+   "regulador": "AGEPAR",
+   "modelo": "Valor da primeira faixa até 5 m³ e faixas progressivas; esgoto como percentual da conta de água",
+   "ato": "Resolução AGEPAR nº 23, de 15/04/2026 (reajuste tarifário anual)",
+   "vigencia": "Desde 17/05/2026 (art. 2º)",
+   "ultimoReajuste": "2,4993%; tarifa média de R$ 7,0032/m³",
+   "area": "Curitiba (esgoto a 85% da fatura de água)",
+   "fontes": [
+    {
+     "rotulo": "Diário Oficial do Paraná nº 12127, de 16/04/2026 (Resolução AGEPAR 23/2026)",
+     "url": "https://www.legislacao.pr.gov.br/legislacao/pesquisarAto.do?action=downloadDioe&idEdicao=16749&numero=12127",
+     "sha256": "94f6eb75662dfe8df84a6a2ee7bd90361f61abfddc0bc867dee209a7d8c3151c",
+     "localizador": "p.132-134, Anexo Único"
+    },
+    {
+     "rotulo": "Resolução AGEPAR 36/2025 (tarifa social)",
+     "url": "https://www.legislacao.pr.gov.br/legislacao/listarAtosAno.do?action=exibir&codAto=368129",
+     "sha256": "13e26b3c9bbcdeebbc033ff3c156f72398271fb2799d5ac7bc3631da2aefac9e",
+     "localizador": "art. 1º, § 1º"
+    }
+   ],
+   "unidade": "não verificada (economia ou ligação)",
+   "categorias": {
+    "residencial": {
+     "rotulo": "Residencial normal",
+     "agua": {
+      "faixas": [
+       {
+        "de": 5,
+        "ate": 10,
+        "preco": 1.7
+       },
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 9.49
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 9.54
+       },
+       {
+        "de": 20,
+        "ate": 30,
+        "preco": 9.62
+       },
+       {
+        "de": 30,
+        "ate": null,
+        "preco": 16.28
+       }
+      ],
+      "minimo": {
+       "m3": 5,
+       "valor": 55.09
+      }
+     },
+     "esgoto": {
+      "percentual": 85
+     }
+    },
+    "social": {
+     "rotulo": "Tarifa social de água e esgoto",
+     "agua": {
+      "faixas": [
+       {
+        "de": 5,
+        "ate": 10,
+        "preco": 5.51
+       },
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 5.51
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 9.54
+       },
+       {
+        "de": 20,
+        "ate": 30,
+        "preco": 9.62
+       },
+       {
+        "de": 30,
+        "ate": null,
+        "preco": 16.28
+       }
+      ],
+      "minimo": {
+       "m3": 5,
+       "valor": 27.54
+      }
+     },
+     "esgoto": {
+      "percentual": 85
+     }
+    }
+   },
+   "observacoes": [
+    "Esgoto a 85% da fatura de água (art. 3º); os valores de esgoto da tabela são referenciais e podem diferir na segunda casa decimal (Nota 01).",
+    "Pontal do Paraná, Matinhos e Guaratuba têm ajuste sazonal de 20% acima de 5 m³ (art. 6º); ficam fora do simulador.",
+    "Na tarifa social, o valor da primeira faixa tem 50% de desconto e o preço por m³ correspondente (R$ 5,51) se estende até 15 m³ (Resolução AGEPAR 36/2025); entre 6 e 10 m³ ele é maior que o da categoria residencial (R$ 1,70). O Observatório registra a regra sem avaliar sua conformidade com a Lei 14.898/2024.",
+    "Unidade de cobrança (economia ou ligação) e regra de arredondamento não verificadas."
+   ],
+   "exemplos": {
+    "residencial": {
+     "10": 117.64,
+     "20": 293.67
+    }
+   },
+   "municipios": [
+    "4106902"
+   ],
+   "acessado": "2026-10-14"
+  },
+  {
+   "id": "sanepar-2026-demais",
+   "prestador": "Companhia de Saneamento do Paraná (SANEPAR)",
+   "prestadorSinisa": "sanepar-companhia-de-saneamento-do-parana-s-a",
+   "uf": "PR",
+   "regulador": "AGEPAR",
+   "modelo": "Valor da primeira faixa até 5 m³ e faixas progressivas; esgoto como percentual da conta de água",
+   "ato": "Resolução AGEPAR nº 23, de 15/04/2026 (reajuste tarifário anual)",
+   "vigencia": "Desde 17/05/2026 (art. 2º)",
+   "ultimoReajuste": "2,4993%; tarifa média de R$ 7,0032/m³",
+   "area": "Demais localidades operadas pela SANEPAR (esgoto a 80% da fatura de água), exceto Pontal do Paraná, Matinhos e Guaratuba",
+   "fontes": [
+    {
+     "rotulo": "Diário Oficial do Paraná nº 12127, de 16/04/2026 (Resolução AGEPAR 23/2026)",
+     "url": "https://www.legislacao.pr.gov.br/legislacao/pesquisarAto.do?action=downloadDioe&idEdicao=16749&numero=12127",
+     "sha256": "94f6eb75662dfe8df84a6a2ee7bd90361f61abfddc0bc867dee209a7d8c3151c",
+     "localizador": "p.132-134, Anexo Único"
+    },
+    {
+     "rotulo": "Resolução AGEPAR 36/2025 (tarifa social)",
+     "url": "https://www.legislacao.pr.gov.br/legislacao/listarAtosAno.do?action=exibir&codAto=368129",
+     "sha256": "13e26b3c9bbcdeebbc033ff3c156f72398271fb2799d5ac7bc3631da2aefac9e",
+     "localizador": "art. 1º, § 1º"
+    }
+   ],
+   "unidade": "não verificada (economia ou ligação)",
+   "categorias": {
+    "residencial": {
+     "rotulo": "Residencial normal",
+     "agua": {
+      "faixas": [
+       {
+        "de": 5,
+        "ate": 10,
+        "preco": 1.7
+       },
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 9.49
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 9.54
+       },
+       {
+        "de": 20,
+        "ate": 30,
+        "preco": 9.62
+       },
+       {
+        "de": 30,
+        "ate": null,
+        "preco": 16.28
+       }
+      ],
+      "minimo": {
+       "m3": 5,
+       "valor": 55.09
+      }
+     },
+     "esgoto": {
+      "percentual": 80
+     }
+    },
+    "social": {
+     "rotulo": "Tarifa social de água e esgoto",
+     "agua": {
+      "faixas": [
+       {
+        "de": 5,
+        "ate": 10,
+        "preco": 5.51
+       },
+       {
+        "de": 10,
+        "ate": 15,
+        "preco": 5.51
+       },
+       {
+        "de": 15,
+        "ate": 20,
+        "preco": 9.54
+       },
+       {
+        "de": 20,
+        "ate": 30,
+        "preco": 9.62
+       },
+       {
+        "de": 30,
+        "ate": null,
+        "preco": 16.28
+       }
+      ],
+      "minimo": {
+       "m3": 5,
+       "valor": 27.54
+      }
+     },
+     "esgoto": {
+      "percentual": 80
+     }
+    }
+   },
+   "observacoes": [
+    "Esgoto a 80% da fatura de água (art. 3º); os valores de esgoto da tabela são referenciais e podem diferir na segunda casa decimal (Nota 01).",
+    "Pontal do Paraná, Matinhos e Guaratuba têm ajuste sazonal de 20% acima de 5 m³ (art. 6º); ficam fora do simulador.",
+    "Na tarifa social, o valor da primeira faixa tem 50% de desconto e o preço por m³ correspondente (R$ 5,51) se estende até 15 m³ (Resolução AGEPAR 36/2025); entre 6 e 10 m³ ele é maior que o da categoria residencial (R$ 1,70). O Observatório registra a regra sem avaliar sua conformidade com a Lei 14.898/2024.",
+    "Unidade de cobrança (economia ou ligação) e regra de arredondamento não verificadas."
+   ],
+   "exemplos": {
+    "residencial": {
+     "10": 114.46,
+     "20": 285.73
+    }
+   },
+   "municipios": [
+    "4100202",
+    "4100301",
+    "4100400",
+    "4100459",
+    "4100509",
+    "4100608",
+    "4100707",
+    "4100905",
+    "4101002",
+    "4101051",
+    "4101309",
+    "4101408",
+    "4101507",
+    "4101606",
+    "4101655",
+    "4101705",
+    "4101804",
+    "4101853",
+    "4101903",
+    "4102000",
+    "4102109",
+    "4102208",
+    "4102307",
+    "4102505",
+    "4102703",
+    "4102752",
+    "4102802",
+    "4102901",
+    "4103008",
+    "4103024",
+    "4103057",
+    "4103107",
+    "4103156",
+    "4103206",
+    "4103222",
+    "4103305",
+    "4103354",
+    "4103370",
+    "4103404",
+    "4103453",
+    "4103479",
+    "4103503",
+    "4103602",
+    "4103701",
+    "4103800",
+    "4103909",
+    "4103958",
+    "4104006",
+    "4104055",
+    "4104105",
+    "4104204",
+    "4104253",
+    "4104303",
+    "4104402",
+    "4104428",
+    "4104451",
+    "4104501",
+    "4104600",
+    "4104659",
+    "4104709",
+    "4104808",
+    "4104907",
+    "4105003",
+    "4105102",
+    "4105201",
+    "4105300",
+    "4105409",
+    "4105508",
+    "4105607",
+    "4105706",
+    "4105805",
+    "4106001",
+    "4106100",
+    "4106209",
+    "4106308",
+    "4106407",
+    "4106456",
+    "4106506",
+    "4106555",
+    "4106571",
+    "4106605",
+    "4106704",
+    "4106803",
+    "4106852",
+    "4107009",
+    "4107108",
+    "4107124",
+    "4107157",
+    "4107207",
+    "4107256",
+    "4107306",
+    "4107405",
+    "4107504",
+    "4107520",
+    "4107546",
+    "4107553",
+    "4107603",
+    "4107652",
+    "4107702",
+    "4107736",
+    "4107751",
+    "4107801",
+    "4107850",
+    "4107900",
+    "4108007",
+    "4108205",
+    "4108304",
+    "4108320",
+    "4108403",
+    "4108452",
+    "4108502",
+    "4108551",
+    "4108601",
+    "4108650",
+    "4108700",
+    "4108809",
+    "4108908",
+    "4108957",
+    "4109005",
+    "4109104",
+    "4109203",
+    "4109302",
+    "4109401",
+    "4109500",
+    "4109658",
+    "4109708",
+    "4109757",
+    "4109906",
+    "4110052",
+    "4110078",
+    "4110102",
+    "4110201",
+    "4110300",
+    "4110409",
+    "4110508",
+    "4110607",
+    "4110656",
+    "4110706",
+    "4110805",
+    "4110904",
+    "4110953",
+    "4111100",
+    "4111209",
+    "4111258",
+    "4111308",
+    "4111407",
+    "4111506",
+    "4111555",
+    "4111605",
+    "4111704",
+    "4111803",
+    "4112108",
+    "4112207",
+    "4112306",
+    "4112504",
+    "4112751",
+    "4112801",
+    "4112900",
+    "4112959",
+    "4113205",
+    "4113254",
+    "4113304",
+    "4113403",
+    "4113429",
+    "4113452",
+    "4113502",
+    "4113700",
+    "4113734",
+    "4113759",
+    "4113809",
+    "4113908",
+    "4114005",
+    "4114104",
+    "4114203",
+    "4114302",
+    "4114351",
+    "4114401",
+    "4114500",
+    "4114708",
+    "4114906",
+    "4115002",
+    "4115200",
+    "4115309",
+    "4115358",
+    "4115408",
+    "4115457",
+    "4115606",
+    "4115739",
+    "4115754",
+    "4115804",
+    "4115903",
+    "4116059",
+    "4116109",
+    "4116208",
+    "4116505",
+    "4116604",
+    "4116703",
+    "4116802",
+    "4116901",
+    "4116950",
+    "4117057",
+    "4117107",
+    "4117206",
+    "4117222",
+    "4117255",
+    "4117271",
+    "4117297",
+    "4117305",
+    "4117404",
+    "4117453",
+    "4117503",
+    "4117602",
+    "4117701",
+    "4117800",
+    "4117909",
+    "4118006",
+    "4118105",
+    "4118402",
+    "4118501",
+    "4118600",
+    "4118709",
+    "4118857",
+    "4118907",
+    "4119004",
+    "4119103",
+    "4119152",
+    "4119202",
+    "4119251",
+    "4119301",
+    "4119400",
+    "4119509",
+    "4119608",
+    "4119707",
+    "4119806",
+    "4119905",
+    "4120002",
+    "4120101",
+    "4120200",
+    "4120309",
+    "4120358",
+    "4120507",
+    "4120606",
+    "4120655",
+    "4120705",
+    "4120804",
+    "4120903",
+    "4121000",
+    "4121109",
+    "4121208",
+    "4121257",
+    "4121307",
+    "4121356",
+    "4121406",
+    "4121505",
+    "4121604",
+    "4121703",
+    "4121752",
+    "4121901",
+    "4122008",
+    "4122107",
+    "4122156",
+    "4122172",
+    "4122206",
+    "4122305",
+    "4122404",
+    "4122503",
+    "4122602",
+    "4122651",
+    "4122701",
+    "4122800",
+    "4122909",
+    "4123006",
+    "4123105",
+    "4123303",
+    "4123402",
+    "4123501",
+    "4123600",
+    "4123808",
+    "4123824",
+    "4123857",
+    "4123907",
+    "4124004",
+    "4124020",
+    "4124053",
+    "4124103",
+    "4124202",
+    "4124400",
+    "4124509",
+    "4124608",
+    "4124806",
+    "4124905",
+    "4125001",
+    "4125100",
+    "4125209",
+    "4125357",
+    "4125407",
+    "4125456",
+    "4125506",
+    "4125555",
+    "4125605",
+    "4125704",
+    "4125753",
+    "4125803",
+    "4125902",
+    "4126009",
+    "4126108",
+    "4126207",
+    "4126272",
+    "4126306",
+    "4126355",
+    "4126603",
+    "4126652",
+    "4126678",
+    "4126702",
+    "4126900",
+    "4127007",
+    "4127106",
+    "4127205",
+    "4127403",
+    "4127502",
+    "4127601",
+    "4127700",
+    "4127809",
+    "4127858",
+    "4127882",
+    "4127908",
+    "4127965",
+    "4128005",
+    "4128104",
+    "4128203",
+    "4128302",
+    "4128401",
+    "4128500",
+    "4128534",
+    "4128559",
+    "4128609",
+    "4128625",
+    "4128658",
+    "4128708",
+    "4128807",
+    "4213609"
+   ],
+   "acessado": "2026-10-14"
+  },
+  {
+   "id": "caesb-2026",
+   "prestador": "Companhia de Saneamento Ambiental do Distrito Federal (CAESB)",
+   "prestadorSinisa": "caesb-companhia-de-saneamento-ambiental-do-distrito-federal",
+   "uf": "DF",
+   "regulador": "ADASA",
+   "modelo": "Tarifa fixa por unidade de consumo e faixas progressivas sem consumo mínimo; esgoto como percentual da água",
+   "ato": "Resolução ADASA nº 70, de 17/04/2026 (reajuste tarifário anual 2026)",
+   "vigencia": "De 01/06/2026 a 31/05/2027 (art. 2º)",
+   "ultimoReajuste": "3,98% sobre as tarifas da Resolução ADASA 53/2025",
+   "area": "Distrito Federal (tabela única)",
+   "fontes": [
+    {
+     "rotulo": "Resolução ADASA 70/2026",
+     "url": "https://www.adasa.df.gov.br/images/storage/legislacao/resolucoes_adasa/2026/Resolu%C3%A7%C3%A3o_70_2026_1.pdf",
+     "sha256": "5570a39fe526e88ce7b6348b9c91b9c3e377bd30570e62773b640f3752ba8581",
+     "localizador": "Anexo, PDF p.1-2"
+    },
+    {
+     "rotulo": "Tabela publicada pela CAESB (idêntica)",
+     "url": "https://s3.caesb.df.gov.br/www/prod/site1/Tabela-01-06-2026-a-31-05-2027.pdf",
+     "sha256": "9dd9f6b3b69fb10b2c7b5d872b05b4121cff66eef6953d8209f2cb54eb5c4da0",
+     "localizador": "coluna Valor da Faixa"
+    },
+    {
+     "rotulo": "Resolução ADASA 14/2011 consolidada (condições gerais)",
+     "url": "https://www.adasa.df.gov.br/images/storage/legislacao/resolucoes_adasa/2011/ulitma_versao_n_14_2011/Resolu%C3%A7%C3%A3o_n%C2%BA_14_Consolidada.pdf",
+     "sha256": "fbca6c413009aef22c3bfc7bd1ad31cef397da70dfc1253410afc8816a389791",
+     "localizador": "arts. 99 a 106"
+    }
+   ],
+   "unidade": "por unidade de consumo",
+   "categorias": {
+    "residencial": {
+     "rotulo": "Residencial padrão",
+     "agua": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": 7,
+        "preco": 4.3
+       },
+       {
+        "de": 7,
+        "ate": 13,
+        "preco": 5.15
+       },
+       {
+        "de": 13,
+        "ate": 20,
+        "preco": 10.21
+       },
+       {
+        "de": 20,
+        "ate": 30,
+        "preco": 14.81
+       },
+       {
+        "de": 30,
+        "ate": 45,
+        "preco": 22.22
+       },
+       {
+        "de": 45,
+        "ate": null,
+        "preco": 28.88
+       }
+      ],
+      "fixo": 11.62
+     },
+     "esgoto": {
+      "percentual": 100
+     }
+    },
+    "social": {
+     "rotulo": "Residencial social",
+     "agua": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": 7,
+        "preco": 2.15
+       },
+       {
+        "de": 7,
+        "ate": 13,
+        "preco": 2.58
+       },
+       {
+        "de": 13,
+        "ate": 20,
+        "preco": 5.11
+       },
+       {
+        "de": 20,
+        "ate": 30,
+        "preco": 7.41
+       },
+       {
+        "de": 30,
+        "ate": 45,
+        "preco": 22.22
+       },
+       {
+        "de": 45,
+        "ate": null,
+        "preco": 28.88
+       }
+      ],
+      "fixo": 5.81
+     },
+     "esgoto": {
+      "percentual": 100
+     }
+    }
+   },
+   "observacoes": [
+    "Esgoto convencional a 100% da conta de água; ramal condominial interno a 60% (Resolução 14/2011, art. 103), não simulado.",
+    "Tarifa social com 50% de desconto até 30 m³ (Resolução 14/2011, art. 101, II).",
+    "Publicação no DODF não verificada (site inacessível a partir deste ambiente)."
+   ],
+   "exemplos": {
+    "residencial": {
+     "10": 114.34,
+     "20": 288.18
+    },
+    "social": {
+     "10": 57.2,
+     "20": 144.22
+    }
+   },
+   "municipios": [
+    "5300108"
+   ],
+   "acessado": "2026-10-14"
+  }
+ ]
+}

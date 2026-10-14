@@ -57,6 +57,7 @@ export function Footer({ compacto = false }: { compacto?: boolean }) {
           <ul className="space-y-2 text-sm">
             <li><Link href="/contas-publicas" prefetch={prefetchDoLink("/contas-publicas")} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Contas Públicas Federais</Link></li>
             <li><Link href="/contas-publicas-estaduais" prefetch={prefetchDoLink("/contas-publicas-estaduais")} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Contas Públicas Estaduais</Link></li>
+            <li><Link href="/saneamento" prefetch={prefetchDoLink("/saneamento")} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Saneamento</Link></li>
           </ul>
         </nav>
         <nav aria-label="Institucional">
@@ -122,6 +123,7 @@ function FooterCompacto() {
           <ul className="space-y-2 text-sm">
             <li><Link href="/contas-publicas" prefetch={prefetchDoLink("/contas-publicas")} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Contas Públicas Federais</Link></li>
             <li><Link href="/contas-publicas-estaduais" prefetch={prefetchDoLink("/contas-publicas-estaduais")} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Contas Públicas Estaduais</Link></li>
+            <li><Link href="/saneamento" prefetch={prefetchDoLink("/saneamento")} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">Saneamento</Link></li>
           </ul>
         </nav>
         <nav aria-label="Institucional">

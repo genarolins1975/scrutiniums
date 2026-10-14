@@ -68,6 +68,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/setor-eletrico/aprenda", 0.6, "monthly"),
     rota("/contas-publicas/metodologia", 0.5, "monthly"),
     rota("/contas-publicas/glossario", 0.5, "monthly"),
+    rota("/saneamento/metodologia", 0.6, "monthly"),
     rota("/cadastro", 0.6, "yearly"),
     rota("/entrar", 0.3, "yearly"),
     rota("/privacidade", 0.2, "yearly"),

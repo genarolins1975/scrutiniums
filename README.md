@@ -1,6 +1,6 @@
 # Scrutiniums
 
-Plataforma **gratuita** de inteligência analítica sobre o crédito e a economia brasileira: o Observatório Brasileiro de Crédito — carteira, inadimplência, instituições, produtos, Pix, bets e fraudes financeiras — com metodologia aberta, dados oficiais e glossário público. Desde 13/10/2026, **os painéis exigem conta gratuita**: a página inicial, a apresentação do Crédito (`/observatorio-do-credito`), as páginas de método e glossário, as institucionais e o fluxo de entrada e cadastro são públicos; painéis, downloads, arquivos de dados, API, feeds RSS e gráficos incorporáveis exigem sessão. A regra é uma lista de rotas abertas em `src/lib/rotasPublicas.ts`, aplicada pelo `src/middleware.ts` e pelo sitemap; rota nova nasce fechada. O cadastro pede e-mail, telefone verificado por SMS, CPF e perfil básico, e a sessão só nasce depois do telefone verificado. Quem é barrado num painel volta a ele depois de entrar ou concluir o cadastro. Sem plano pago, sem cartão.
+Plataforma **gratuita** de inteligência analítica sobre o crédito e a economia brasileira: o Observatório Brasileiro de Crédito — carteira, inadimplência, instituições, produtos, Pix, bets e fraudes financeiras — com metodologia aberta, dados oficiais e glossário público. **Os painéis exigem conta gratuita**: a página inicial, a apresentação do Crédito (`/observatorio-do-credito`), as páginas de método e glossário, as institucionais e o fluxo de entrada e cadastro são públicos; painéis, downloads, arquivos de dados, API, feeds RSS e gráficos incorporáveis exigem sessão. Desde 13/10/2026, a fronteira entre a vitrine pública e a área com conta é uma lista de rotas abertas em `src/lib/rotasPublicas.ts`, aplicada pelo `src/middleware.ts` e pelo sitemap; rota nova nasce fechada. O cadastro pede e-mail, telefone verificado por SMS, CPF e perfil básico, e a sessão só nasce depois do telefone verificado. Quem é barrado num painel volta a ele depois de entrar ou concluir o cadastro. Sem plano pago, sem cartão.
 
 Desde setembro de 2026 a Scrutiniums é uma plataforma de **três observatórios** sobre a mesma infraestrutura (sessão, telemetria, design system, sitemap): o **Observatório Brasileiro de Crédito**, o **Observatório Brasileiro do Setor Elétrico** (`/setor-eletrico`) e o **Observatório Brasileiro de Eficiência Estatal** (`/eficiencia-estatal`). Quem entra com conta escolhe o observatório em `/app/observatorios` e troca pelo cabeçalho sem novo login.
 
@@ -104,6 +104,17 @@ python3 -m unittest pipeline.tests.test_eficiencia
 ```
 
 Regra editorial do domínio: apresenta indicadores, não conclusões sobre governos. Documentação, inventário, metodologia, validação e continuidade em [docs/obee/](./docs/obee/README.md). O OBEE está no registro de domínios (`src/lib/dominios.ts`) e, por ele, na home, no seletor de observatórios, na escolha pós login, no cabeçalho público e no rodapé.
+
+## Observatório Brasileiro do Saneamento (primeira entrega)
+
+Domínio `saneamento`, em **`/saneamento`**: catorze capítulos em cinco eixos (acesso e qualidade; preço regulado e conta das famílias; prestadores; investimento e planejamento; saúde, ambiente e resiliência), ficha de cada município e de cada prestador, comparadores de até quatro municípios ou prestadores com link compartilhável, simulador da conta com tabelas tarifárias verificadas nos atos dos reguladores e página pública de método. Fontes: SINISA 2025 (ano de referência 2024), Censos 2010 e 2022 e estimativa de população 2024 do IBGE, atos de cinco reguladores. Capítulos sem dado integrado aparecem como em preparação, com a dependência declarada. O pipeline fica em `pipeline/observatorio_saneamento/` (biblioteca padrão; originais com sha256 no seed) e escreve `public/saneamento/gold/`:
+
+```bash
+python3 -m pipeline.observatorio_saneamento.gold     # reconstrói a gold a partir do seed (sem rede)
+python3 -m unittest pipeline.tests.test_observatorio_saneamento
+```
+
+Documentação, matriz de viabilidade, método e validação em [docs/saneamento/](./docs/saneamento/README.md).
 
 ## Documentação
 
