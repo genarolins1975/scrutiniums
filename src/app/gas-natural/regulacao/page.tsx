@@ -91,7 +91,7 @@ export default function RegulacaoPage() {
           <ProximasPerguntas itens={[
             { href: "/gas-natural/mercado", pergunta: "Mais empresas estão comprando e vendendo gás?", motivo: "O uso da malha de transporte depois da Lei 14.134/2021." },
             { href: "/gas-natural/precos", pergunta: "Quanto custa o gás antes da distribuidora?", motivo: "O preço declarado à ANP por região e por mercado." },
-            { href: "/gas-natural/gnv-e-gas-encanado", pergunta: "Quanto pagam residências e motoristas?", motivo: "O GNV por UF e a inflação do gás encanado." },
+            { href: "/gas-natural/gnv-e-gas-encanado", pergunta: "Quanto custa o GNV e como varia o gás encanado?", motivo: "O GNV por UF e a inflação do gás encanado." },
           ]} />
         </SecaoGas>
       </main>

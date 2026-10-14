@@ -97,7 +97,7 @@ export default function GnvPage() {
         <SecaoGas
           id="historico"
           titulo="O GNV desde 2013, em valores da época e corrigidos pela inflação"
-          subtitulo={<>R$ por m³, média Brasil. A linha corrigida expressa cada mês em reais de {mesExtenso(g.mes_base_real)} pelo IPCA índice geral; a faixa mostra o menor e o maior preço da pesquisa.</>}
+          subtitulo={<>R$ por m³, média Brasil. A linha corrigida expressa cada mês em reais de {mesExtenso(g.mes_base_real)} pelo IPCA índice geral; a faixa mostra extremos nominais da pesquisa, não da linha corrigida.</>}
         >
           <GraficoLinhas
             titulo="Preço médio do GNV no Brasil"

@@ -184,7 +184,7 @@ export default function PrecosPage() {
 
         <SecaoGas id="proximas" titulo="Para continuar">
           <ProximasPerguntas itens={[
-            { href: "/gas-natural/gnv-e-gas-encanado", pergunta: "Quanto pagam motoristas e residências?", motivo: "Preço do GNV por UF e a inflação do gás encanado." },
+            { href: "/gas-natural/gnv-e-gas-encanado", pergunta: "Quanto custa o GNV e como varia o gás encanado?", motivo: "Preço do GNV por UF e a inflação do gás encanado." },
             { href: "/gas-natural/mercado", pergunta: "Mais empresas estão comprando e vendendo gás?", motivo: "Carregadores na malha e volumes entre agentes." },
             { href: "/gas-natural/regulacao", pergunta: "Quem define as regras do gás?", motivo: "União, ANP e os estados, que regulam a distribuição." },
           ]} />

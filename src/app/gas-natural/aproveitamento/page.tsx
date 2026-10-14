@@ -45,7 +45,7 @@ export default function AproveitamentoPage() {
           </p>
           <p>
             Reinjetar gás é uma decisão de produção: pode manter a pressão do reservatório, aumentar a recuperação de petróleo ou guardar o gás quando não há
-            infraestrutura para escoá-lo. A ANP publica o volume reinjetado, mas não o motivo de cada campo.
+            infraestrutura para escoar o gás. A ANP publica o volume reinjetado, mas não o motivo de cada campo.
           </p>
         </AberturaGas>
 

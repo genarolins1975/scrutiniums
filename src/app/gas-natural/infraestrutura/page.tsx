@@ -20,9 +20,9 @@ export const metadata: Metadata = {
 };
 
 const ELOS: { titulo: string; texto: string }[] = [
-  { titulo: "Escoamento", texto: "Gasodutos levam o gás dos campos, quase todos no mar, às unidades de processamento em terra." },
+  { titulo: "Escoamento", texto: "Gasodutos levam o gás dos campos de produção às unidades de processamento em terra." },
   { titulo: "Processamento", texto: "As unidades de processamento (UPGN) retiram impurezas e separam líquidos, como o GLP; sai o gás seco, pronto para a malha." },
-  { titulo: "Importação", texto: "O gás importado entra pelo gasoduto Bolívia-Brasil ou chega em navios como GNL, regaseificado em terminais no litoral." },
+  { titulo: "Importação", texto: "O gás importado entra pelo gasoduto entre Bolívia e Brasil ou chega em navios como GNL, regaseificado em terminais no litoral." },
   { titulo: "Transporte", texto: "Transportadoras operam a malha de alta pressão e entregam o gás às distribuidoras estaduais, a térmicas e a grandes consumidores." },
   { titulo: "Distribuição", texto: "Cada estado concede a distribuição de gás canalizado; a distribuidora leva o gás a indústrias, comércio, residências e postos de GNV." },
 ];
@@ -38,16 +38,16 @@ export default function InfraestruturaPage() {
       <main id="conteudo" className="ed-pagina pb-12">
         <AberturaGas pagina={pagina} dadosAte={<>Movimentação nos gasodutos até {mesExtenso(g.ultimo_mes)}; registro de autorizações até {dataBR(i.atos_ultimo.valor as string)}.</>}>
           <p>
-            Do poço à casa, o gás natural passa por cinco elos físicos. Esta página mostra o que os dados abertos registram sobre o transporte e as instalações
+            A cadeia reúne entradas de gás nacional e importado, processamento, transporte e distribuição. Esta página mostra o que os dados abertos registram sobre o transporte e as instalações
             autorizadas pela ANP; a distribuição, regulada pelos estados, não tem base nacional estruturada de rede ou de clientes.
           </p>
         </AberturaGas>
 
         <section aria-label="Os elos da cadeia" className="py-6">
           <ol className="grid gap-x-6 gap-y-5 md:grid-cols-5">
-            {ELOS.map((e, k) => (
+            {ELOS.map((e) => (
               <li key={e.titulo} className="border-t-2 border-gas pt-3">
-                <p className="rotulo text-gas-dark">{k + 1}. {e.titulo}</p>
+                <p className="rotulo text-gas-dark">{e.titulo}</p>
                 <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{e.texto}</p>
               </li>
             ))}

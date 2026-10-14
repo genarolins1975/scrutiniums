@@ -107,7 +107,7 @@ export default function GasDeCozinhaPage() {
         <SecaoGas
           id="historico"
           titulo="O botijão desde 2013, em valores da época e corrigidos pela inflação"
-          subtitulo={<>R$ por botijão de 13 kg, média Brasil. A linha corrigida expressa cada mês em reais de {mesExtenso(g.mes_base_real)}, pelo IPCA índice geral. A faixa mostra o menor e o maior preço da pesquisa.</>}
+          subtitulo={<>R$ por botijão de 13 kg, média Brasil. A linha corrigida expressa cada mês em reais de {mesExtenso(g.mes_base_real)}, pelo IPCA índice geral. A faixa mostra o menor e o maior preço nominal da pesquisa; não acompanha a linha corrigida.</>}
         >
           <GraficoLinhas
             titulo="Preço médio do GLP em botijão de 13 kg no Brasil"
@@ -126,7 +126,7 @@ export default function GasDeCozinhaPage() {
               { id: "medio_real", rotulo: `Preço médio em reais de ${mesAno(g.mes_base_real)}`, sigla: "Corrigido", cor: COR.comp[1], tracejada: true },
             ]}
           />
-          <FonteFigura ids={["anp_precos_brasil", "ibge_ipca"]} extra="Correção: preço do mês × (IPCA acumulado até o mês-base ÷ IPCA acumulado até o mês)." />
+          <FonteFigura ids={["anp_precos_brasil", "ibge_ipca"]} extra="Correção: preço do mês × (IPCA acumulado até o mês da base ÷ IPCA acumulado até o mês)." />
           <NotaGas>
             <p>Não houve pesquisa de preços entre 18/8/2020 e 17/10/2020; os meses sem pesquisa aparecem como lacuna. A abrangência da pesquisa mudou em 2017 e em 2018, conforme notas da própria planilha da ANP.</p>
           </NotaGas>
@@ -193,7 +193,7 @@ export default function GasDeCozinhaPage() {
 
         <SecaoGas id="proximas" titulo="Para continuar">
           <ProximasPerguntas itens={[
-            { href: "/gas-natural/gnv-e-gas-encanado", pergunta: "Quanto custam o GNV e o gás encanado?", motivo: "O gás natural que chega ao consumidor por posto e por tubulação." },
+            { href: "/gas-natural/gnv-e-gas-encanado", pergunta: "Quanto custa o GNV e como varia o gás encanado?", motivo: "O gás natural que chega ao consumidor por posto e por tubulação." },
             { href: "/gas-natural/precos", pergunta: "Quanto custa o gás antes da distribuidora?", motivo: "O preço do gás natural nas vendas entre empresas." },
             { href: "/gas-natural/metodologia", pergunta: "Como ler estes números?", motivo: "Amostra da pesquisa de preços, correção pela inflação e glossário." },
           ]} />

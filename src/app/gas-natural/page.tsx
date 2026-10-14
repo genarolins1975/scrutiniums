@@ -100,7 +100,7 @@ export default function InicialGasPage() {
       <main id="conteudo" className="ed-pagina pb-12">
         <div className="cab-modulo">
           <p className="rotulo text-gas-dark">Observatório Brasileiro de Gás Natural</p>
-          <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">Do poço ao consumidor: quanto gás o Brasil tem, usa e paga</h1>
+          <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">Do poço ao consumidor: produção, oferta e preços do gás</h1>
           <div className="ed-lead mt-4 max-w-prose2 space-y-3 text-carvao-muted">
             <p>
               Produção, aproveitamento, importação, preços na cadeia, botijão, GNV e transporte, em páginas que respondem a uma pergunta cada. Os números vêm de{" "}
@@ -108,6 +108,17 @@ export default function InicialGasPage() {
             </p>
           </div>
         </div>
+
+        <nav aria-label="Percurso de aprendizagem" className="border-y border-linha py-5">
+          <p className="rotulo text-gas-dark">Siga o caminho do gás</p>
+          <p className="mt-2 max-w-prose2 text-sm text-carvao-muted">Comece pela produção e seus destinos. Depois, acompanhe a oferta e os preços. O botijão contém GLP, um produto diferente do gás natural.</p>
+          <ol className="mt-3 grid gap-x-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              ["producao", "Produção e destinos"], ["importacao", "Importação e oferta"],
+              ["precos", "Preços em cada elo"], ["gnv-e-gas-encanado", "GNV e inflação residencial"],
+            ].map(([slug, texto]) => <li key={slug}><Link href={`/gas-natural/${slug}`} className="inline-flex min-h-[44px] items-center text-sm text-gas-dark underline underline-offset-4">{texto}</Link></li>)}
+          </ol>
+        </nav>
 
         <SecaoGas
           id="fluxo"

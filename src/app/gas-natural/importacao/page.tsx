@@ -40,7 +40,7 @@ export default function ImportacaoPage() {
             {num(i.participacao_12m.valor as number, 1)}% desse total.
           </p>
           <p>
-            O gás chega de duas formas: pelo gasoduto Bolívia-Brasil, no estado gasoso, e por navio, como gás natural liquefeito (GNL), regaseificado nos
+            O gás chega de duas formas: pelo gasoduto entre Bolívia e Brasil, no estado gasoso, e por navio, como gás natural liquefeito (GNL), regaseificado nos
             terminais do litoral. Nos 12 meses do Comex Stat, o principal país de origem ({primeiro.pais}) respondeu por {num(primeiro.participacao_massa_pct, 1)}% da massa importada e o
             GNL, por {num(i.gnl_participacao_massa_12m.valor as number, 1)}%.
           </p>

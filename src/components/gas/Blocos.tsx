@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GuiaLeituraGas } from "./GuiaLeituraGas";
 import type { ReactNode } from "react";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { fontesPorId, type Indicador } from "@/lib/gas/gold";
@@ -15,6 +16,7 @@ export function AberturaGas({ pagina, children, dadosAte }: { pagina: PaginaGas;
       <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">{pagina.pergunta}</h1>
       <div className="ed-lead mt-4 max-w-prose2 space-y-3 text-carvao-muted">{children}</div>
       {dadosAte && <p className="mt-4 text-sm text-mineral">{dadosAte}</p>}
+      <GuiaLeituraGas slug={pagina.slug} />
     </div>
   );
 }

@@ -54,7 +54,7 @@ export const PAGINAS_GAS: PaginaGas[] = [
   },
   {
     slug: "gnv-e-gas-encanado", href: `${BASE}/gnv-e-gas-encanado`, rotulo: "GNV e gás encanado", grupo: "precos", secao: "gas:gnv-e-gas-encanado",
-    pergunta: "Quanto pagam motoristas e residências pelo gás natural?",
+    pergunta: "Quanto custa o GNV e como varia o preço do gás encanado?",
     descricao: "Preço do GNV por UF e a inflação do gás encanado e do gás veicular no IPCA.",
   },
   {

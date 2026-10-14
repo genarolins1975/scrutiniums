@@ -21,7 +21,7 @@ const REGRAS: [string, string][] = [
   ["Média diária", "Volumes mensais da ANP em mil m³ viram milhões de m³ por dia dividindo pelo número de dias do mês. Janelas de 12 meses exigem cobertura completa e dividem a soma pelos dias da janela. No aproveitamento, a janela termina no último mês com os cinco conjuntos presentes; um mês reprovado dentro da janela impede publicar a medida."],
   ["Médias ponderadas", "A média Brasil do preço de venda às distribuidoras pondera o preço de cada região pelo volume vendido nela. Mês sem alguma região fica sem média, em vez de média parcial."],
   ["Moeda", "O preço em reais vira dólar pela PTAX média de venda do mesmo mês (Banco Central, série 3698). Nenhum fator de poder calorífico é aplicado: m³ e MMBtu não são convertidos um no outro."],
-  ["Inflação", "Preço corrigido = preço do mês × IPCA acumulado até o mês-base ÷ IPCA acumulado até o mês, com o índice geral. A falta de um mês interrompe o encadeamento e impede calcular valores derivados até a base. A variação acumulada de cada subitem encadeia as variações mensais publicadas pelo IBGE."],
+  ["Inflação", "Preço corrigido = preço do mês × IPCA acumulado até o mês da base ÷ IPCA acumulado até o mês, com o índice geral. A falta de um mês interrompe o encadeamento e impede calcular valores derivados até a base. A variação acumulada de cada subitem encadeia as variações mensais publicadas pelo IBGE."],
   ["Ausência", "Mês sem dado, mês reprovado numa validação e UF sem pesquisa aparecem como lacuna ou sem dado. Nunca como zero, nunca preenchidos por estimativa."],
 ];
 
@@ -36,7 +36,7 @@ const VALIDACOES: [string, string][] = [
 
 const GLOSSARIO: [string, string][] = [
   ["Gás natural", "Mistura de hidrocarbonetos em estado gasoso, sobretudo metano, extraída de reservatórios. Chega ao consumidor por gasoduto ou como GNL."],
-  ["Gás associado", "Gás produzido junto com o petróleo, no mesmo reservatório. A produção de um depende da do outro."],
+  ["Gás associado", "Gás produzido junto com o petróleo, no mesmo reservatório. O conjunto usado aqui não separa a produção associada da não associada."],
   ["GLP", "Gás liquefeito de petróleo, mistura de propano e butano obtida no refino e no processamento do gás natural. É o gás de cozinha do botijão; não é gás natural."],
   ["GNL", "Gás natural liquefeito: resfriado a cerca de 162 graus negativos para ser transportado em navios e regaseificado no destino."],
   ["GNV", "Gás natural veicular: gás natural comprimido vendido em postos para abastecer veículos."],
@@ -105,7 +105,7 @@ export default function MetodologiaPage() {
 
         <SecaoGas id="limites" titulo="O que os números não permitem afirmar">
           <NotaGas titulo="Limites declarados">
-            <p>O preço de venda às distribuidoras não é a tarifa do consumidor: a margem de distribuição e os tributos da fatura vêm depois.</p>
+            <p>O preço de venda às distribuidoras já inclui impostos e não é a tarifa do consumidor. A composição da fatura depende das regras locais; esta base não separa seus componentes.</p>
             <p>A comparação com Henry Hub, TTF e GNL Japão mistura preço com impostos (Brasil) e sem impostos (referências).</p>
             <p>O preço do botijão e do GNV vem de amostra de revendas; mínimo e máximo são extremos da amostra, não limites do mercado.</p>
             <p>O número de carregadores mede quem movimenta gás, não concentração nem preço. Os volumes por transportadora têm quebras não explicadas pela fonte.</p>
