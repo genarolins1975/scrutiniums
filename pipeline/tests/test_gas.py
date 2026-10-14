@@ -220,6 +220,17 @@ class TestCoberturaAdversa(unittest.TestCase):
         self.assertEqual(g["indicadores"]["participacao_12m"]["valor"], 0)
         self.assertIsNone(gold._participacao(0, 0))
 
+    def test_participacao_nao_usa_disponivel_de_balanco_reprovado(self):
+        g = self.importar(ler.importacao_anp())
+        situacao = {x["mes"]: x["situacao"] for x in self.s.golds["aproveitamento"]["serie"]}
+        reprovados = [m for m, v in situacao.items() if v != "ok"]
+        self.assertTrue(reprovados)
+        for x in g["serie"]:
+            if x["mes"] in reprovados:
+                with self.subTest(mes=x["mes"]):
+                    self.assertIsNone(x["participacao_pct"])
+                    self.assertIsNotNone(x["importado"])
+
     def test_periodos_diferentes_impedem_composicao(self):
         self.s.golds["aproveitamento"]["indicadores"]["producao_mmd_12m"]["periodo"] = "outra janela"
         g = self.importar(ler.importacao_anp())
@@ -250,7 +261,15 @@ class TestCoberturaAdversa(unittest.TestCase):
     def test_contagem_da_transportadora_incompleta_nao_e_zero(self):
         gold.mercado_e_infraestrutura(self.s)
         serie = self.s.golds["mercado"]["carregadores"]
-        self.assertIsNone(next(x for x in serie if x["mes"] == "2025-08")["n:NTS"])
+        entregas = {x["mes"]: x for x in self.s.golds["infraestrutura"]["entregas"]}
+        siglas = self.s.golds["infraestrutura"]["transportadoras"]
+        # o par sinalizado na cobertura perde o volume e a contagem; vale para qualquer mês que a fonte vier a revisar
+        pares = [(x["mes"], t) for x in serie for t in siglas if entregas[x["mes"]][t] is None]
+        self.assertTrue(pares)
+        for x in serie:
+            for t in siglas:
+                with self.subTest(mes=x["mes"], transportadora=t):
+                    self.assertEqual(x[f"n:{t}"] is None, entregas[x["mes"]][t] is None)
         ind = self.s.golds["infraestrutura"]["indicadores"]["atos_total"]
         self.assertEqual(ind["natureza"], "CALCULADO")
         self.assertTrue(ind["formula"])

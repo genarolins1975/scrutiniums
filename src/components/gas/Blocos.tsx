@@ -45,6 +45,12 @@ export function valorComUnidade(v: number | string | null, unidade: string, casa
   return { valor: num(v, casas), unidade };
 }
 
+/** "ANP", "ANP e BCB", "ANP, BCB e IBGE": órgãos distintos na ordem em que aparecem. */
+function listaOrgaos(orgaos: string[]): string {
+  const u = Array.from(new Set(orgaos));
+  return u.length <= 1 ? (u[0] ?? "") : `${u.slice(0, -1).join(", ")} e ${u[u.length - 1]}`;
+}
+
 /**
  * Medida de destaque: rótulo, valor, unidade, período, recorte e natureza, com fonte e nota visíveis e detalhes de reprodução recolhidos.
  * Ausência aparece como "sem dado", nunca como zero.
@@ -62,9 +68,15 @@ export function MedidaGas({ ind, casas = 1, rotulo, comparacao, variacao = false
         {ind.recorte ? `${ind.recorte} · ` : ""}
         {periodoLegivel(ind.periodo)} · <SeloNatureza natureza={ind.natureza} texto />
       </p>
-      <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
-        Fonte: {fontes.map((f, i) => <span key={f.id}>{i > 0 && "; "}<Link href={`/gas-natural/dados#fonte-${f.id}`} className="inline-flex min-h-[44px] items-center underline underline-offset-4">{f.orgao}, {f.conjunto}</Link></span>)}.
-      </p>
+      {fontes.length > 0 && (
+        <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
+          {/* uma chamada só: a lista completa, com data de captura, fica em "Como este número é obtido" e em Dados */}
+          Fonte:{" "}
+          <Link href={fontes.length === 1 ? `/gas-natural/dados#fonte-${fontes[0].id}` : "/gas-natural/dados#fontes"} className="underline underline-offset-4">
+            {fontes.length === 1 ? `${fontes[0].orgao}, ${fontes[0].conjunto}` : `${listaOrgaos(fontes.map((f) => f.orgao))}, ${fontes.length} conjuntos`}
+          </Link>
+        </p>
+      )}
       {ind.nota && <p className="mt-1 border-l-2 border-gas pl-3 text-sm leading-relaxed text-carvao-muted">{ind.nota}</p>}
       {comparacao && <p className="mt-1 text-xs leading-relaxed text-carvao-muted">{comparacao}</p>}
       <details className="group mt-2">

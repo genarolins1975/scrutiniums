@@ -61,11 +61,12 @@ Só a biblioteca padrão do Python, inclusive para ler `.xlsx` (`pipeline/gas/xl
 ## Contrato gas 0.2.0
 
 A revisão de 14/10/2026 acrescenta `incompleto` a `aproveitamento.serie.situacao`.
-Nesse estado, parcelas, percentuais e diferença são nulos; produção permanece observada por sua série.
+Nesse estado, parcelas, percentuais e diferença são nulos; a produção continua publicada, calculada como média diária da própria série.
 O CSV de destinos acrescenta `situacao`. Zero publicado continua distinto de ausência.
 Importação exige todos os meses e valores da janela, separadamente para volume e dispêndio.
 Uma lacuna interna ganha linha mensal nula. O encadeamento do IPCA para na primeira falta.
 Contagens por transportadora também ficam nulas nos pares reprovados pela cobertura.
+A participação do importado, mensal e de 12 meses, só usa o gás disponível de meses com o balanço da produção aprovado (`situacao` igual a `ok`); jul/2005 fica sem participação.
 A contagem de atos passa a CALCULADO, com fórmula explícita.
 
 Indicadores adicionais: `soma_parcelas_mmd_12m` em aproveitamento;

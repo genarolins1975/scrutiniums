@@ -105,7 +105,7 @@ export default function MetodologiaPage() {
 
         <SecaoGas id="limites" titulo="O que os números não permitem afirmar">
           <NotaGas titulo="Limites declarados">
-            <p>O preço de venda às distribuidoras já inclui impostos e não é a tarifa do consumidor. A composição da fatura depende das regras locais; esta base não separa seus componentes.</p>
+            <p>O preço de venda às distribuidoras já inclui impostos e não é a tarifa do consumidor: a margem da distribuidora entra depois, e a fatura segue regras tarifárias e tributárias de cada estado. Esta base não separa esses componentes.</p>
             <p>A comparação com Henry Hub, TTF e GNL Japão mistura preço com impostos (Brasil) e sem impostos (referências).</p>
             <p>O preço do botijão e do GNV vem de amostra de revendas; mínimo e máximo são extremos da amostra, não limites do mercado.</p>
             <p>O número de carregadores mede quem movimenta gás, não concentração nem preço. Os volumes por transportadora têm quebras não explicadas pela fonte.</p>
