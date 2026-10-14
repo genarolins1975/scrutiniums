@@ -5,13 +5,13 @@ import { LogoWordmark } from "@/components/ui/Logo";
 import { getSessionUser } from "@/lib/session";
 import { ABAS_OBSERVATORIOS } from "@/components/observatorios/NavegacaoObservatorios";
 
-// Abas do cabeçalho: os cinco observatórios, com os mesmos destinos e rótulos das
-// barras internas (ABAS_OBSERVATORIOS), e a página de imprensa. Apresentação,
+// Abas do cabeçalho: os observatórios do registro, com os mesmos destinos e rótulos
+// das barras internas (ABAS_OBSERVATORIOS), e a página de imprensa. Apresentação,
 // método, dados e demais páginas de cada domínio ficam na home, no rodapé e
 // dentro de cada observatório. Para quem não tem sessão, cada aba passa pelo
 // login e volta ao observatório escolhido (src/middleware.ts).
-// As abas ficam na linha da marca a partir de 1280 px; abaixo disso, numa segunda
-// linha que quebra em vez de rolar, para nenhuma aba ficar escondida.
+// Com sete observatórios as abas não cabem na linha da marca nem a 1440 px: ficam
+// sempre numa segunda linha, que quebra em vez de rolar, para nenhuma aba ficar escondida.
 const NAV: { href: string; label: string }[] = [
   ...ABAS_OBSERVATORIOS.map((a) => ({ href: a.href, label: a.rotulo })),
   { href: "/imprensa", label: "Imprensa" },
@@ -54,18 +54,6 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
         >
           <LogoWordmark />
         </Link>
-        <nav aria-label="Navegação principal" className="hidden items-center gap-7 xl:flex">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              prefetch={prefetchDoLink(item.href)}
-              className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
         <div className="flex items-center gap-4">
           <Link
             href={authenticated ? "/app/conta" : "/entrar"}
@@ -81,10 +69,7 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
           </Link>
         </div>
       </div>
-      <nav
-        aria-label="Navegação principal (telas menores)"
-        className="mx-auto flex max-w-page flex-wrap gap-x-6 border-t border-linha px-6 py-1.5 xl:hidden"
-      >
+      <nav aria-label="Navegação principal" className="mx-auto flex max-w-page flex-wrap gap-x-6 border-t border-linha px-6 py-1.5">
         {NAV.map((item) => (
           <Link
             key={item.href}
