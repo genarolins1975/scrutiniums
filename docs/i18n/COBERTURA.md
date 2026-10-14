@@ -31,6 +31,8 @@ O CI exige `--check` depois do build, que já materializa os recortes necessári
 
 `registrar` exige que a referência recebida seja ancestral de HEAD, não haja rebase pendente nem alteração versionada fora do índice, e fontes novas nas raízes observadas estejam incluídas no índice. Isso evita registrar a cobertura de uma gold ou fonte que não entraria no commit. Arquivos canônicos ignorados pelo Git continuam sujeitos ao contrato de materialização. Os testes exercitam esses cenários com repositórios Git temporários e remotos locais, sem publicar dados reais.
 
+Se a publicação da rodada do PLD falhar, inclusive na instalação de dependências ou na preparação da cobertura, o workflow guarda o diretório de emissões em um artefato identificado pela execução e tentativa. Isso permite recuperar o registro factual sem publicar um relatório inválido. O artefato não é restaurado automaticamente e não substitui a verificação de rodada já emitida no repositório; uma recuperação exige conferir esse registro antes de repetir a rodada.
+
 Essa integração não conclui a fase 0: catálogo, glossário, idiomas, rotas e verificações semânticas continuam nas entregas seguintes.
 
 ## O que cada contagem significa

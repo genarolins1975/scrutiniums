@@ -183,6 +183,7 @@ jobs:
           key: energia-estado-previsao-${{ github.run_id }}
 
       - name: Commit do arquivo de emissões (e da gold, se os testes passaram)
+        id: publicar
         if: always() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1' && steps.dependencias_i18n.outcome == 'success'
         run: |
           git config user.name "pipeline-observatorio[bot]"
@@ -217,3 +218,11 @@ jobs:
           done
           echo "::error::não foi possível registrar a rodada após 5 tentativas"
           exit 1
+
+      - name: Preservar emissões quando a publicação falhar
+        if: failure() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1' && steps.publicar.outcome != 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: emissoes-pld-${{ github.run_id }}-${{ github.run_attempt }}
+          path: pipeline/energia/previsoes/emissoes
+          if-no-files-found: ignore
