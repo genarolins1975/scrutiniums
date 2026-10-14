@@ -1,0 +1,75 @@
+{
+  "version": "pacote-v4-v1",
+  "edition": "indice-resultados-2022-v4",
+  "files": [
+    {
+      "path": "docs/obee/resultados/cesta-conjunta.json",
+      "sha256": "15339579dc2cceecd3c237569e011640aa2b7198329dbfd9c081075c3c1de7bd"
+    },
+    {
+      "path": "docs/obee/resultados/piloto-2022-v2.json",
+      "sha256": "61d9df0b252048e98731aaea3155f27ed0cdf487aa10867105671951443360ef"
+    },
+    {
+      "path": "docs/obee/resultados/v4/DECISAO_EDICAO_V4.md",
+      "sha256": "98605e17bb4f5b3d022064b4fabb4c835d34229224f6f02fc13354c6f881f130"
+    },
+    {
+      "path": "docs/obee/resultados/v4/METODOLOGIA_V4.md",
+      "sha256": "73d26c0f8f97b52b7d9bff1470171af42f9fff5222178563720dda8aa65d2386"
+    },
+    {
+      "path": "docs/obee/resultados/v4/indice-resultados-v4.csv",
+      "sha256": "972f9dda10c2f83727fd6b3a2c08547c06e89eaa7cbda186edf029a1acc91303"
+    },
+    {
+      "path": "docs/obee/resultados/v4/indice-resultados-v4.json",
+      "sha256": "142a0035438f3cba0f2fddbc77ae500a9c28748083e334c17c13ae75f0abe249"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/cesta_conjunta.py",
+      "sha256": "a95fbfaad858fe02650b45f5de387fb8c2a6d18aa984ab49f2f7cbf8b3fba2ed"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/conectividade.py",
+      "sha256": "bac6ced2ba176cce5c9c2bd27a20f41b7a1bc7bfbd07332c9dd0b8d688eea29a"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/habitacao.py",
+      "sha256": "0273537da3142f5349dd7ac9f06cfad2f91fccfd854e18dab0dd8d150f1f22f3"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/habitacao_cenarios.py",
+      "sha256": "e5ca72c32bcd3f944dc8a982abb619bad40209cf59a6291e54032d7a08df15b9"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/indice_v4.py",
+      "sha256": "fd54954b7870e5da15250ec5108cc88976bea5ac9496b6d2c0a0f3bbdf7fc07a"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/conectividade/data.json",
+      "sha256": "306fa8adc598a736853d92472247f758dc4c668b6989f062312a918df7f75238"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/expansao-2022.json",
+      "sha256": "cb4cfd1b894739829ecb9e3aa2715460041f775fd126542923a669278c6dfb60"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9934-data.json",
+      "sha256": "7cf230787c436be6263bd411ba5072593f8a8a93958576f2cee21711b0947886"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9940-data.json",
+      "sha256": "19377a02df2bbd7be37d69583837d6169ca697a531d9fa9d8470771da2c1aa35"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_indice_v4.py",
+      "sha256": "f85dc4210181e8b8e688ce8bbe7c5555ae10128a1dda89647d2ba7a3ba4d70e3"
+    },
+    {
+      "path": "public/eficiencia/trabalho-renda/brutos/censo-renda.json",
+      "sha256": "f3a411db4391e3603e391837688935e2c5749244fbd80bec757f4592859af83a"
+    }
+  ],
+  "packet_sha256": "b142d26a89e81d6c96172c21b8f147f3c3979ba95e6496630133139677d45c6d"
+}

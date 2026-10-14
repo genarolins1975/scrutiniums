@@ -133,7 +133,7 @@ function vitrineEficiencia(): Vitrine {
     fontes:
       "Tesouro (Siconfi), INEP, IBGE, Ministério da Saúde, MDS, Ministério das Cidades, CNJ e Sinesp, declaradas tema a tema, com a página de métodos de cada tema.",
     situacao:
-      `Valores e referências, sem notas, rankings ou conclusões.` +
+      `Valores e referências por tema e um índice experimental de resultados nas 26 capitais, com memória de cálculo e testes de sensibilidade; sem conclusões sobre a gestão.` +
       (semPainel > 0 ? ` ${semPainel} temas do mapa ainda não têm painel publicado.` : ""),
   };
 }

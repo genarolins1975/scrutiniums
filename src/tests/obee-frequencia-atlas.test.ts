@@ -36,9 +36,9 @@ describe('Frequência escolar no Atlas',()=>{
     expect(html).toContain('Tabela 10056, variável 3795');
     expect(html).toContain('Inclui redes públicas e privadas');expect(html).toContain('Brasil é a taxa nacional');expect(html).toContain('100%');
   });
-  it('entrada mantém agregado indisponível e oferece os dois indicadores',()=>{
+  it('entrada sem o índice carregado não mostra nota e oferece os dois indicadores',()=>{
     const html=renderToStaticMarkup(createElement(AtlasCidadao));
-    expect(html).toContain('Em construção');expect(html).toContain('Aprendizagem · Saeb');expect(html).toContain('Frequência escolar');
+    expect(html).toContain('Edição experimental não carregada');expect(html).toContain('Aprendizagem · Saeb');expect(html).toContain('Frequência escolar');
   });
   it('ausência não desenha uma barra como zero',()=>{
     const html=renderToStaticMarkup(createElement(FrequenciaEscolar,{place:'inexistente',reference:'4106902',age:'47813',onAgeChange:()=>{}}));

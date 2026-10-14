@@ -1,4 +1,4 @@
-# Habitação: duas decisões editoriais ainda abertas
+# Habitação: duas decisões editoriais, registradas na edição v4
 
 13/10/2026. Referência do experimento: Censo 2022, 26 capitais estaduais. Este documento não escolhe unidade, limiar, pesos ou normalização, nem altera a definição principal congelada.
 
@@ -34,4 +34,4 @@ O arquivo `sensibilidade-pares-v3.json`, produzido por `scripts/obee_sensibilida
 
 ## Encaminhamento
 
-Decisão: **pendente**. Registrar unidade, limiar, fundamento conceitual, responsável e data somente após manifestação humana. Qualquer decisão que altere `habitacao_cenarios.py`, seeds, `cesta-conjunta.*` ou outro item congelado exige a proposta descrita em `PENDENCIAS_NOVA_VERSAO_PACOTE.md`; não executar `freeze()` sobre a v3. A documentação bibliográfica das duas fontes conceituais está concluída: SIS 2018 citada pela página do PDF, que não tem numeração impressa, e FJP pela página impressa.
+Decisão: **registrada em 14/10/2026** pelo titular do repositório para a edição v4: unidade **moradores**, limiar **mais de 3 moradores por dormitório**, com o fundamento conceitual descrito em `v4/DECISAO_EDICAO_V4.md`. A definição principal congelada da candidata v3 (domicílios acima de 2) permanece intacta como evidência. Qualquer decisão que altere `habitacao_cenarios.py`, seeds, `cesta-conjunta.*` ou outro item congelado exige a proposta descrita em `PENDENCIAS_NOVA_VERSAO_PACOTE.md`; não executar `freeze()` sobre a v3. A documentação bibliográfica das duas fontes conceituais está concluída: SIS 2018 citada pela página do PDF, que não tem numeração impressa, e FJP pela página impressa.

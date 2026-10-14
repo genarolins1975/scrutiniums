@@ -1,4 +1,6 @@
-# Proposta de nova versão do pacote — não executar
+# Proposta de nova versão do pacote
+
+**Atualização de 14/10/2026.** A edição v4 foi criada por decisão do titular (`v4/DECISAO_EDICAO_V4.md`), em arquivos próprios e com pacote congelado próprio (`v4/pacote-v4.json`). As validações de entrada e o contrato de pesos estritamente positivos estão no código da v4; unidade e limiar de habitação foram decididos. Precisão municipal e microdados continuam pendentes. O texto abaixo permanece como registro de 13/10/2026; a v3 não foi alterada.
 
 13/10/2026. O inventário de `revisao-v3-pacote.json` continua com seus 54 arquivos e hashes originais. Nada abaixo é autorização para editar o pacote, recongelar a v3 ou preencher pareceres. Pesos propostos, `approved_weights: null`, `publication_ready: false`, trava do piloto e chave de desligamento do laboratório permanecem intactos.
 

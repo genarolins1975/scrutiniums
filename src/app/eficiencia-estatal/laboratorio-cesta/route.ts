@@ -17,8 +17,10 @@ export async function GET() {
     return new Response('Not found', {status: 404, headers});
   }
   const html = await readFile(join(process.cwd(), 'docs/obee/resultados/revisao-interativa-v3.html'), 'utf8');
-  const navigation = '<nav aria-label="Voltar ao OBEE" style="max-width:1240px;margin:auto;padding:16px 40px 0"><a id="backlink" href="/eficiencia-estatal?visao=cidades#atlas-piloto">← Voltar ao panorama das capitais</a></nav>';
-  return new Response(html.replace('</header><main>', `</header>${navigation}<main>`), {
+  const navigation = '<nav aria-label="Voltar ao OBEE" style="max-width:1240px;margin:auto;padding:16px 40px 0"><a id="backlink" href="/eficiencia-estatal?visao=cidades#atlas-indice">← Voltar ao panorama das capitais</a></nav>';
+  // O piloto v2 deu lugar ao índice v4 na entrada; o modelo congelado da v3 ainda aponta para a âncora antiga.
+  const page = html.replace('</header><main>', `</header>${navigation}<main>`).replaceAll('#atlas-piloto', '#atlas-indice');
+  return new Response(page, {
     headers: {...headers, 'Content-Type': 'text/html; charset=utf-8'},
   });
 }
