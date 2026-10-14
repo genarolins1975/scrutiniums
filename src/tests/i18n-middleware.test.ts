@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { middleware } from "@/middleware";
 import { COOKIE_DESTINO } from "@/lib/rotasPublicas";
 import { signSessionCookie } from "@/lib/sessionCookie";
+import { parDeIdioma } from "@/lib/i18n-rotas";
 
 const ORIGEM = "https://scrutiniums.com";
 const TOKEN = "ab".repeat(32);
@@ -49,9 +50,35 @@ describe("middleware: primeira irmã inglesa publicada", () => {
     expect(fetchInterno).not.toHaveBeenCalled();
   });
 
-  it("não abre descendentes ausentes, imagens sociais, recursos ou aliases de API em inglês", async () => {
+  it.each([
+    ["/", "/en"],
+    ["/sobre/erros", "/en/sobre/erros"],
+    ["/sobre/governanca", "/en/sobre/governanca"],
+  ])("mantém %s pública e condiciona sua irmã %s à publicação", async (pt, en) => {
+    const portuguesa = await middleware(requisicao(pt));
+    expect(portuguesa.headers.get("x-middleware-next")).toBe("1");
+    expect(portuguesa.headers.get("location")).toBeNull();
+    expect(portuguesa.headers.get("x-middleware-rewrite")).toBeNull();
+
+    const inglesa = await middleware(requisicao(en));
+    if (parDeIdioma(en)) {
+      expect(inglesa.headers.get("x-middleware-next")).toBe("1");
+      expect(inglesa.headers.get("location")).toBeNull();
+    } else {
+      const login = new URL("/entrar", ORIGEM);
+      login.searchParams.set("de", en);
+      expect(inglesa.status).toBe(307);
+      expect(inglesa.headers.get("location")).toBe(login.href);
+      expect(inglesa.cookies.get(COOKIE_DESTINO)?.value).toBe(en);
+      expect(inglesa.headers.get("x-middleware-next")).toBeNull();
+    }
+    expect(inglesa.headers.get("x-middleware-rewrite")).toBeNull();
+    expect(fetchInterno).not.toHaveBeenCalled();
+  });
+
+  it("não abre descendentes desconhecidos, imagens sociais, recursos ou aliases de API em inglês", async () => {
     for (const caminho of [
-      "/en", "/en/sobre/erros", "/en/sobre/governanca", "/en/sobrecarga",
+      "/en/sobre/descendente-sintetico-nao-publicado", "/en/sobrecarga",
       "/en/sobre/opengraph-image", "/en/home/credito.webp", "/en/_next/static/app.js",
       "/en/api/auth/eu", "/en/api/eficiencia-mobilidade/exportar",
       "/en/rota-que-ainda-nao-existe",
