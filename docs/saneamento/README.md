@@ -17,7 +17,7 @@ Documentos desta pasta:
 | | 3 A água chega regularmente e com qualidade monitorada? | `/saneamento/continuidade` | Parcial (continuidade publicada; SISAGUA não integrado) |
 | | 4 Para onde vai o esgoto? | `/saneamento/esgoto` | Publicado |
 | B Preço regulado | 5 Preço regulado: o que pagamos, por que foi autorizado, o que financia | `/saneamento/preco-regulado` e subpainéis 5.1 a 5.5 | Parcial (amostra verificada) |
-| | 6 A conta cabe no orçamento? A tarifa social chega a quem precisa? | `/saneamento/tarifa-social` | Parcial (sem elegíveis do CadÚnico) |
+| | 6 A conta cabe no orçamento? A tarifa social chega a quem precisa? | `/saneamento/tarifa-social` | Parcial (economias por família elegível do CadÚnico; famílias beneficiadas não publicadas) |
 | C Prestadores | 7 Quem presta o serviço e quem controla as empresas? | `/saneamento/prestadores` e `/saneamento/prestadores/[id]` | Parcial (sem controle societário) |
 | | 8 Como os prestadores se comparam? | `/saneamento/prestadores/comparar` | Parcial (sem seleção de pares) |
 | D Investimento e planejamento | 9 Onde o investimento está chegando? | `/saneamento/investimento` | Parcial (sem obras) |
@@ -42,6 +42,7 @@ Ferramentas: `/saneamento/municipio` e `/saneamento/municipio/[id]` (Meu municí
 
 ```bash
 python3 -m pipeline.observatorio_saneamento.coletar --zips <pasta com os ZIPs do SINISA>   # com rede
+python3 -m pipeline.observatorio_saneamento.coletar --so-cadunico                         # com rede
 python3 -m pipeline.observatorio_saneamento.gold
 python3 -m pipeline.observatorio_saneamento.tarifas
 python3 -m pipeline.observatorio_saneamento.atos
@@ -58,6 +59,7 @@ npx vitest run src/tests/saneamento-gold.test.ts src/tests/saneamento-conta.test
 | IBGE, Censo Demográfico 2010 | 2010 | Evolução da rede de água e de esgoto |
 | IBGE, estimativa de população | 2024 | Denominador do SINISA e domicílios estimados da NR 8 |
 | Atos de ARSESP, ARSAE-MG, AGEPAR, ARPE e ADASA | 2023 a 2026 | Tabelas tarifárias, estudos de caso e catálogo de reajustes |
+| MDS, CadÚnico (SAGI, API MI Social) | Dez/2024 e set/2026 | Famílias elegíveis à tarifa social pelo critério de renda |
 | Lei 11.445/2007, Lei 14.898/2024, NR ANA 8/2024, Decreto 12.797/2025 | Vigentes | Metas, tarifa social, medição das metas, salário-mínimo de 2026 |
 
 ## Relação com a Eficiência Estatal

@@ -61,6 +61,13 @@ export type Municipio = {
   plano_ano: number | null;
   reg_ag: string | null;
   reg_es: string | null;
+  /** Tarifa social de água declarada ao SINISA 2024: oferece, nao_oferece ou null (sem resposta). */
+  ts_estado: "oferece" | "nao_oferece" | null;
+  /** Economias residenciais com tarifa social (GFI1036, soma dos prestadores de água); 0 quando não oferece. */
+  ts_economias: number | null;
+  /** CadÚnico: famílias com renda per capita até meio salário-mínimo, dez/2024 e mês mais recente. */
+  cad_fam_ms: number | null;
+  cad_fam_ms_atual: number | null;
 };
 
 export type CampoMunicipio = keyof Municipio;
@@ -153,6 +160,19 @@ export type Ete = {
   eficiencia_dbo_pct?: number;
 };
 
+export type CadunicoMes = {
+  familias_ate_meio_sm: number | null;
+  familias_atualizadas_ate_meio_sm: number | null;
+  pessoas_ate_meio_sm: number | null;
+  familias_cadastradas: number | null;
+};
+
+export type TarifaSocialMunicipio = {
+  estado: "oferece" | "nao_oferece" | null;
+  economias: number | null;
+  cadunico: Record<string, CadunicoMes>;
+};
+
 export type FichaMunicipio = {
   id: string;
   nome: string;
@@ -185,6 +205,7 @@ export type FichaMunicipio = {
     prestadores?: VinculoPrestador[];
   };
   gestao_municipal?: GestaoMunicipal;
+  tarifa_social?: TarifaSocialMunicipio;
 };
 
 export type Agregado = {
@@ -228,6 +249,16 @@ export type Agregado = {
     ouvidoria_sim: number;
     consorcio_sim: number;
   };
+  tarifa_social: {
+    municipios_oferece: number;
+    municipios_nao_oferece: number;
+    municipios_sem_resposta: number;
+    economias: number | null;
+    familias_mesmo_universo: number | null;
+    municipios_mesmo_universo: number;
+  };
+  /** Famílias do CadÚnico com renda per capita até meio salário-mínimo, por mês (aaaamm). */
+  cadunico: Record<string, number | null>;
   cobertura_sinisa: {
     agua_participantes: number;
     esgoto_participantes: number;
@@ -316,6 +347,15 @@ export type MetaSaneamento = {
     tabelas: Record<string, { tabela: number; titulo: string; ano: number; consultas: number; sha256_consultas: string[] }>;
     populacao_2024: { tabela: number; ano: number };
     municipios: { url: string; sha256: string; total: number };
+  };
+  cadunico: {
+    fonte: string;
+    url: string;
+    capturado_em: string;
+    criterio: string;
+    mes_referencia: string;
+    mes_mais_recente: string;
+    meses: Record<string, { url: string; sha256: string; registros: number }>;
   };
   metas: { agua: number; esgoto: number; data: string; base_legal: string };
   cobertura: {

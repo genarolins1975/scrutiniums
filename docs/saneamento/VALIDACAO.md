@@ -31,7 +31,7 @@ Critérios: dado real com fonte e período (D), método e ressalvas visíveis (M
 | `/saneamento/continuidade` | sim | sim | sim | parcial | 7 | Sem qualidade da água (SISAGUA) |
 | `/saneamento/esgoto` | sim | sim | sim | sim | 9 | Mapa de estações não publicado por coordenadas inconsistentes |
 | `/saneamento/preco-regulado` e 5.1 a 5.5 | sim | sim | sim | parcial | 8 | Amostra de cinco prestadores; série da conta contra inflação ausente |
-| `/saneamento/tarifa-social` | sim | sim | sim | parcial | 7 | Sem elegíveis por município, não há cobertura |
+| `/saneamento/tarifa-social` | sim | sim | sim | parcial | 8 | Economias com tarifa social por 100 famílias elegíveis do CadÚnico; famílias beneficiadas não publicadas |
 | `/saneamento/prestadores` e fichas | sim | sim | sim | parcial | 8 | Sem controle societário |
 | `/saneamento/prestadores/comparar` | sim | sim | sim | parcial | 8 | Sem seleção automática de pares |
 | `/saneamento/investimento` | sim | sim | sim | parcial | 8 | Sem ligação a obras |
@@ -48,3 +48,11 @@ Páginas abaixo de 9 ficam abaixo por lacuna de dado declarada, não por defeito
 ## Recomendação
 
 Antes de abrir o domínio ao público, revisão em contexto limpo por pessoa ou agente sem participação na construção, cobrindo: conferência amostral dos números da ficha municipal contra as planilhas do SINISA, leitura dos estudos de caso tarifários contra as notas técnicas, e acessibilidade com leitor de tela.
+
+## Integração do CadÚnico (14/10/2026)
+
+- Fonte: MDS, SAGI, API MI Social, meses 202412 e 202609, sha256 de cada consulta em `meta.json`.
+- Conferência: até meio salário-mínimo + acima = total de famílias em 11.141 de 11.141 registros municipais; um município sem dado em dez/2024 (510183, instalado depois).
+- Testes: `saneamento-gold.test.ts` passa a exigir que a soma municipal reproduza o total do Brasil, que a razão seja razão de somas no mesmo universo, que "não oferece" conte zero e que "sem resposta" fique sem dado.
+- Navegador (servidor de desenvolvimento): tarifa social, ficha de Recife, metodologia e investimento em 320, 390 e 1440 px, HTTP 200, um H1, sem transbordo, sem erro de JavaScript.
+- Não verificado: número oficial independente do total de dezembro de 2024 (o total vem da própria base do MDS).

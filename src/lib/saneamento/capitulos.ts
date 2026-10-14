@@ -104,10 +104,11 @@ export const EIXOS: Eixo[] = [
         slug: "tarifa-social",
         rotulo: "Conta e tarifa social",
         pergunta: "A conta cabe no orçamento? A tarifa social chega a quem precisa?",
-        resumo: "Regras da Lei 14.898/2024, o que cada prestador declarou ao SINISA sobre tarifa social e cenários de comprometimento de renda.",
+        resumo:
+          "Regras da Lei 14.898/2024, o que cada prestador declarou ao SINISA, economias com tarifa social por família elegível do CadÚnico e cenários de comprometimento de renda.",
         situacao: "parcial",
         pendencia:
-          "Elegíveis por município (CadÚnico com renda per capita até meio salário-mínimo) ainda não integrados; sem eles não se calcula cobertura do benefício.",
+          "O SINISA conta economias com tarifa social, não famílias beneficiadas; a razão sobre as famílias elegíveis do CadÚnico é aproximação declarada como tal. Famílias beneficiadas por município dependem de dado dos prestadores ou da ANA, ainda não publicado.",
       },
     ],
   },

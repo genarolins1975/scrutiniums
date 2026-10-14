@@ -100,8 +100,11 @@ export function AtlasMunicipal({
     if (vs.length < 5) return null;
     const lim = med.paleta === "divergente" ? divergentes(vs) : [...(med.limitesHistograma ?? [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])];
     const max = Math.max(...vs);
-    if (med.paleta !== "divergente" && max > lim[lim.length - 1]) lim.push(Math.ceil(max / 10) * 10);
-    return montaHistograma(vs, { limites: lim });
+    const teto = lim[lim.length - 1];
+    // Medidas com limites próprios: a cauda acima do último limite fica fora das classes (contada, não descartada) para não esmagar a distribuição.
+    if (med.limitesHistograma) return { dist: montaHistograma(vs, { limites: lim }), teto };
+    if (med.paleta !== "divergente" && max > teto) lim.push(Math.ceil(max / 10) * 10);
+    return { dist: montaHistograma(vs, { limites: lim }), teto: undefined };
   }, [pctRecorte, med]);
 
   const pares = useMemo(() => {
@@ -133,7 +136,7 @@ export function AtlasMunicipal({
           <select aria-label="Medida" className={controle} value={med.id} onChange={(e) => set({ medida: e.target.value })}>
             {medidas.map((m) => (
               <option key={m.id} value={m.id}>
-                {m.titulo} · {m.fonte === "sinisa2024" ? "SINISA 2024" : m.fonte === "censo2022" ? "Censo 2022" : m.fonte === "nr8_sinisa2024" ? "NR 8 / SINISA 2024" : "Censos 2010 e 2022"}
+                {m.titulo} · {m.fonte === "sinisa2024" ? "SINISA 2024" : m.fonte === "censo2022" ? "Censo 2022" : m.fonte === "nr8_sinisa2024" ? "NR 8 / SINISA 2024" : m.fonte === "sinisa_cadunico2024" ? "SINISA e CadÚnico 2024" : "Censos 2010 e 2022"}
               </option>
             ))}
           </select>
@@ -143,11 +146,13 @@ export function AtlasMunicipal({
           <div className="mt-1 flex min-h-[44px] flex-wrap items-center gap-x-4 gap-y-1">
             <label className="inline-flex min-h-[44px] items-center gap-2">
               <input type="radio" name="atlas-unidade" checked={variante === "pct"} onChange={() => set({ unidade: "pct" })} />
-              {med.paleta === "divergente" ? "Pontos percentuais" : med.unidadePct === "%" ? "Proporção" : med.unidadePct}
+              {med.paleta === "divergente" ? "Pontos percentuais" : med.unidadePct === "%" ? "Proporção" : med.unidadePct.charAt(0).toUpperCase() + med.unidadePct.slice(1)}
             </label>
             <label className={`inline-flex min-h-[44px] items-center gap-2 ${med.contagem ? "" : "text-carvao-muted"}`}>
               <input type="radio" name="atlas-unidade" checked={variante === "pessoas"} disabled={!med.contagem} onChange={() => set({ unidade: "pessoas" })} />
-              Pessoas
+              {med.contagem && med.unidadeContagem && med.unidadeContagem !== "moradores" && med.unidadeContagem !== "pessoas"
+                ? med.unidadeContagem.charAt(0).toUpperCase() + med.unidadeContagem.slice(1)
+                : "Pessoas"}
             </label>
           </div>
           {!med.contagem && <p className="text-xs text-carvao-muted">Esta medida não tem contagem de pessoas.</p>}
@@ -226,7 +231,7 @@ export function AtlasMunicipal({
           <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-2">
             {med.contagem && rankingPessoas.length > 0 && (
               <GraficoBarras
-                titulo={`Onde há mais pessoas: ${med.titulo.toLowerCase()} (${nomeRecorte})`}
+                titulo={`Onde há mais ${med.unidadeContagem && med.unidadeContagem !== "moradores" ? med.unidadeContagem : "pessoas"}: ${med.titulo.toLowerCase()} (${nomeRecorte})`}
                 dados={rankingPessoas.map((r) => ({ id: r.id, rotulo: r.rotulo, v: r.v }))}
                 chaveCategoria="id"
                 chaveRotulo="rotulo"
@@ -265,7 +270,8 @@ export function AtlasMunicipal({
             <div className="mt-10">
               <Histograma
                 titulo={`Distribuição dos municípios: ${med.titulo.toLowerCase()} (${nomeRecorte})`}
-                dados={histograma}
+                dados={histograma.dist}
+                tetoEixo={histograma.teto}
                 rotuloX={med.titulo}
                 unidade={med.unidadePct}
                 casas={med.casas}
