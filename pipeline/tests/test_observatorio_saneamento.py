@@ -431,6 +431,26 @@ class SisaguaQuimicos(unittest.TestCase):
         self.assertEqual(exc["unidade_divergente_inorganicas"], 1)
         self.assertEqual(reg, {"355030": 3, "530010": 1})
 
+    def test_vigilancia_dedup_por_forma(self):
+        import tempfile
+        q = self.q
+        I = {c: i for i, c in enumerate(q.CAB_VIG_DEMAIS)}
+        def l(forma, res):
+            r = [""] * len(q.CAB_VIG_DEMAIS)
+            for k, v in (("Código IBGE", "355030"), ("Número da amostra", "001"), ("Motivo da coleta", "Rotina"),
+                         ("Tipo da Forma de Abastecimento", "SAA"), ("Código Forma de abastecimento", forma), ("Ano", "2024"),
+                         ("Data da Coleta", "2024/04/19"), ("Procedência da Coleta", "SISTEMA DE DISTRIBUIÇÃO"),
+                         ("Grupo de parâmetros", "Substâncias Inorgânicas"), ("Parâmetro (demais parâmetros)", "Arsênio - VMP: 0,01 mg/L"),
+                         ("Resultado", res)):
+                r[I[k]] = v
+            return r
+        with tempfile.TemporaryDirectory() as d:
+            z = _zip(d, "vd_csv.zip", q.CAB_VIG_DEMAIS, [l("S1", "0,02"), l("S2", "0,005"), l("S2", "0,005")])
+            out = q.agregar_vigilancia_demais(z, (2024,))["2024"]
+        # mesma amostra em formas diferentes conta duas vezes; repetida na mesma forma, uma
+        self.assertEqual(out["municipios"]["355030"]["inorganicas"], [1, 2])
+        self.assertEqual(out["exclusoes"]["duplicata"], 1)
+
     def test_gold_quimicos(self):
         g = gold.construir()
         q = g["meta"]["sisagua"]["quimicos"]

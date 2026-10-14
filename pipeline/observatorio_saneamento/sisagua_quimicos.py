@@ -293,7 +293,9 @@ def agregar_vigilancia_demais(zpath, anos):
         mun = municipio(l[I["Código IBGE"]], exc)
         if mun is None:
             continue
-        chave = hashlib.blake2b("\x1f".join((l[I["Código IBGE"]].strip(), l[I["Número da amostra"]].strip(),
+        # mesma chave do módulo de parâmetros básicos: município, forma, amostra, parâmetro e data
+        chave = hashlib.blake2b("\x1f".join((l[I["Código IBGE"]].strip(), l[I["Código Forma de abastecimento"]].strip(),
+                                             l[I["Número da amostra"]].strip(),
                                              l[I["Parâmetro (demais parâmetros)"]].strip(), l[I["Data da Coleta"]].strip())).encode(),
                                 digest_size=12).digest()
         if chave in vistos:
