@@ -113,6 +113,16 @@ class ObservatorioSaneamento(unittest.TestCase):
         self.assertEqual(df["qa_reg_ctrl_2024"], 1)
         self.assertGreater(a24["exclusoes"]["vigilancia"]["linhas_ra_df"], 0)
 
+    def test_sisagua_sem_plano_antes_do_ano_inicial(self):
+        sis = self.g["meta"]["sisagua"]
+        inicial = sis["ano_inicial_plano"]
+        planos = {a["ano"] for a in sis["proveniencia"]["arquivos"] if a["conjunto"] == "plano"}
+        self.assertEqual(planos, {a for a in sis["anos"] if a >= inicial})
+        for ano in sis["anos"]:
+            if ano < inicial:
+                self.assertEqual(sis["por_ano"][str(ano)]["exclusoes"]["plano"], {}, ano)
+                self.assertIsNone(sis["por_ano"][str(ano)]["plano"], ano)
+
     def test_sisagua_conferencia_publicada_sem_ajuste(self):
         conf = {c["parametro"]: c for c in self.g["meta"]["sisagua"]["por_ano"]["2024"]["conferencia_fora_padrao"]}
         self.assertEqual(conf["ecoli"]["controle_mensal"], 3929)
