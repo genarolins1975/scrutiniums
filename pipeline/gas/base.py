@@ -27,7 +27,7 @@ MANIFESTO = os.path.join(SEED, "manifesto.json")
 GOLD = os.path.join(RAIZ, "public", "gas", "gold")
 SERIES = os.path.join(RAIZ, "public", "gas", "series")
 
-VERSAO_PIPELINE = "gas-0.1.0"
+VERSAO_PIPELINE = "gas-0.2.0"
 DOMINIO = "gas"
 
 # Naturezas do dado, as mesmas do Setor Elétrico (src/lib/energia/tipos.ts).

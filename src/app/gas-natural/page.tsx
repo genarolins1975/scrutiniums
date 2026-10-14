@@ -16,12 +16,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/gas-natural" },
 };
 
-type Parte = { id: string; rotulo: string; valor: number; cor: string; href: string };
+type Parte = { id: string; rotulo: string; valor: number; percentual: number; cor: string; href: string };
 
 /** Barra proporcional em milhões de m³/dia: as partes somam a largura da barra; a escala é a mesma nas duas barras. */
-function BarraFluxo({ titulo, partes, escala, periodo, totalPublicado }: { titulo: string; partes: Parte[]; escala: number; periodo: string; totalPublicado?: number }) {
-  const soma = partes.reduce((s, p) => s + p.valor, 0);
-  const total = totalPublicado ?? soma;
+function BarraFluxo({ titulo, partes, escala, periodo, totalPublicado, somaPublicada }: { titulo: string; partes: Parte[]; escala: number; periodo: string; totalPublicado: number; somaPublicada: number }) {
+  const soma = somaPublicada;
+  const total = totalPublicado;
   return (
     <figure className="min-w-0">
       <figcaption className="flex flex-wrap items-baseline justify-between gap-x-4 text-sm text-carvao">
@@ -42,7 +42,7 @@ function BarraFluxo({ titulo, partes, escala, periodo, totalPublicado }: { titul
             <span>
               <Link href={p.href} prefetch={false} className="text-carvao underline decoration-linha underline-offset-4 hover:decoration-gas">{p.rotulo}</Link>
               <span className="block text-carvao-muted [font-variant-numeric:tabular-nums]">
-                {num(p.valor, 1)} milhões de m³/dia · {num((100 * p.valor) / total, 1)}%
+                {num(p.valor, 1)} milhões de m³/dia · {num(p.percentual, 1)}%
               </span>
             </span>
           </li>
@@ -72,24 +72,27 @@ export default function InicialGasPage() {
   // a produção do fluxo é a da janela do aproveitamento (últimos 12 meses com os cinco conjuntos da ANP publicados)
   const p12 = ap.indicadores.producao_mmd_12m.valor as number | null;
   const fr = (k: string) => ap.indicadores[`${k}_mmd_12m`].valor as number;
+  const pct = (k: string) => ap.indicadores[k].valor as number;
+  const somaParcelas = ap.indicadores.soma_parcelas_mmd_12m.valor as number;
+  const totalOferta = imp.indicadores.oferta_12m.valor as number;
   const disponivel = ap.indicadores.disponivel_mmd_12m.valor as number;
   const importado = imp.indicadores.importado_12m.valor as number;
   const periodo = periodoLegivel(ap.indicadores.producao_mmd_12m.periodo);
   const mesmaJanela = ap.indicadores.producao_mmd_12m.periodo === imp.indicadores.importado_12m.periodo;
 
   const producao: Parte[] = [
-    { id: "reinjecao", rotulo: "Reinjetado nos reservatórios", valor: fr("reinjecao"), cor: "var(--serie-comp-1)", href: "/gas-natural/aproveitamento" },
-    { id: "consumo", rotulo: "Consumido nas plataformas", valor: fr("consumo_proprio"), cor: "var(--serie-comp-3)", href: "/gas-natural/aproveitamento" },
-    { id: "queima", rotulo: "Queimado ou perdido", valor: fr("queima"), cor: "var(--serie-comp-2)", href: "/gas-natural/aproveitamento" },
-    { id: "disponivel", rotulo: "Disponível para o mercado", valor: disponivel, cor: "var(--cor-gas)", href: "/gas-natural/aproveitamento" },
+    { id: "reinjecao", rotulo: "Reinjetado nos reservatórios", valor: fr("reinjecao"), percentual: pct("reinjecao"), cor: "var(--serie-comp-1)", href: "/gas-natural/aproveitamento" },
+    { id: "consumo", rotulo: "Consumido nas plataformas", valor: fr("consumo_proprio"), percentual: pct("consumo_proprio"), cor: "var(--serie-comp-3)", href: "/gas-natural/aproveitamento" },
+    { id: "queima", rotulo: "Queimado ou perdido", valor: fr("queima"), percentual: pct("queima"), cor: "var(--serie-comp-2)", href: "/gas-natural/aproveitamento" },
+    { id: "disponivel", rotulo: "Disponível para o mercado", valor: disponivel, percentual: pct("disponivel"), cor: "var(--cor-gas)", href: "/gas-natural/aproveitamento" },
   ];
   const oferta: Parte[] = [
-    { id: "disponivel", rotulo: "Disponível da produção nacional", valor: disponivel, cor: "var(--cor-gas)", href: "/gas-natural/aproveitamento" },
-    { id: "importado", rotulo: "Importado por gasoduto e GNL", valor: importado, cor: "var(--escala-gas-3)", href: "/gas-natural/importacao" },
+    { id: "disponivel", rotulo: "Disponível da produção nacional", valor: disponivel, percentual: imp.indicadores.disponivel_participacao_12m.valor as number, cor: "var(--cor-gas)", href: "/gas-natural/aproveitamento" },
+    { id: "importado", rotulo: "Importado por gasoduto e GNL", valor: importado, percentual: imp.indicadores.participacao_12m.valor as number, cor: "var(--escala-gas-3)", href: "/gas-natural/importacao" },
   ];
 
-  const fluxoCompleto = p12 !== null && [...producao, ...oferta].every((x) => typeof x.valor === "number");
-  const escala = fluxoCompleto ? Math.max(p12!, producao.reduce((s, x) => s + x.valor, 0)) : 1;
+  const fluxoCompleto = mesmaJanela && [p12, somaParcelas, totalOferta].every((v) => typeof v === "number" && Number.isFinite(v) && v > 0) && [...producao, ...oferta].every((x) => Number.isFinite(x.valor) && Number.isFinite(x.percentual));
+  const escala = fluxoCompleto ? Math.max(p12!, somaParcelas, totalOferta) : 1;
   return (
     <>
       <MarcaVisita secao="gas:inicial" />
@@ -113,11 +116,11 @@ export default function InicialGasPage() {
         >
           {fluxoCompleto ? (
             <>
-              <BarraFluxo titulo="Produção nacional" partes={producao} escala={escala} periodo={periodo} totalPublicado={p12!} />
-              <BarraFluxo titulo="Oferta ao mercado" partes={oferta} escala={escala} periodo={periodo} />
+              <BarraFluxo titulo="Produção nacional" partes={producao} escala={escala} periodo={periodo} totalPublicado={p12!} somaPublicada={somaParcelas} />
+              <BarraFluxo titulo="Importado mais disponível nacional" partes={oferta} escala={escala} periodo={periodo} totalPublicado={totalOferta} somaPublicada={totalOferta} />
             </>
           ) : (
-            <p className="text-sm text-carvao-muted">Sem dado: algum mês da janela falta num dos conjuntos da ANP. Os detalhes estão em Aproveitamento e Importação.</p>
+            <p className="text-sm text-carvao-muted">Composição indisponível: as janelas diferem ou falta um valor válido nos conjuntos da ANP. Os detalhes estão em Aproveitamento e Importação.</p>
           )}
           <p className="max-w-prose2 text-xs leading-relaxed text-mineral">
             Fonte: ANP, produção, reinjeção, queima, consumo próprio, gás disponível e importação de gás natural. Médias diárias dos 12 meses calculadas pela
@@ -170,8 +173,11 @@ export default function InicialGasPage() {
 
         <SecaoGas id="atualidade" titulo="Até quando vão os dados" subtitulo="Cada fonte tem calendário próprio; as páginas mostram o período de cada número.">
           <ul className="grid gap-x-8 gap-y-2 text-sm md:grid-cols-2">
-            <li className="border-t border-linha pt-2"><span className="text-carvao">Produção, aproveitamento e importação (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(prod.ultimo_mes)}</span></li>
-            <li className="border-t border-linha pt-2"><span className="text-carvao">Preço do botijão e do GNV (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(glp.ultimo_mes)}</span></li>
+            <li className="border-t border-linha pt-2"><span className="text-carvao">Produção (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(prod.ultimo_mes)}</span></li>
+            <li className="border-t border-linha pt-2"><span className="text-carvao">Preço do botijão (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(glp.ultimo_mes)}</span></li>
+            <li className="border-t border-linha pt-2"><span className="text-carvao">Aproveitamento (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(ap.ultimo_mes)}</span></li>
+            <li className="border-t border-linha pt-2"><span className="text-carvao">Importação (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(imp.ultimo_mes)}</span></li>
+            <li className="border-t border-linha pt-2"><span className="text-carvao">Preço do GNV (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(gnv.ultimo_mes)}</span></li>
             <li className="border-t border-linha pt-2"><span className="text-carvao">Venda às distribuidoras (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(pr.ultimo_mes)}</span></li>
             <li className="border-t border-linha pt-2"><span className="text-carvao">Origem das importações (Comex Stat):</span> <span className="text-carvao-muted">até {mesExtenso(imp.ultimo_mes_comex)}</span></li>
             <li className="border-t border-linha pt-2"><span className="text-carvao">IPCA do gás (IBGE):</span> <span className="text-carvao-muted">até {mesExtenso(glp.ipca.ultimo_mes)}</span></li>

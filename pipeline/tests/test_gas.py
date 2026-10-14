@@ -1,4 +1,7 @@
 """Testes do pipeline do Observatório Brasileiro de Gás Natural (pipeline/gas). Sem rede: tudo sai do seed versionado."""
+import csv
+import io
+from unittest.mock import patch
 import gzip
 import hashlib
 import json
@@ -179,6 +182,90 @@ class TestGold(unittest.TestCase):
     def test_series_csv_publicadas_existem(self):
         for nome in self.s.series:
             self.assertTrue(os.path.exists(os.path.join(base.SERIES, f"{nome}.csv")), nome)
+
+
+class TestCoberturaAdversa(unittest.TestCase):
+    def setUp(self):
+        self.s = gold.Saida()
+        self.nac, self.meses = gold.producao_e_aproveitamento(self.s)
+
+    def importar(self, registros):
+        with patch.object(ler, "importacao_anp", return_value=registros):
+            gold.importacao(self.s, self.nac, self.meses)
+        return self.s.golds["importacao"]
+
+    def test_mes_ausente_anula_janela_e_preserva_lacuna(self):
+        registros = ler.importacao_anp()
+        mes = gold._meses_ate(max(registros), 12)[3]
+        del registros[mes]
+        g = self.importar(registros)
+        for k in ("importado_12m", "dispendio_12m", "participacao_12m", "oferta_12m"):
+            self.assertIsNone(g["indicadores"][k]["valor"], k)
+        self.assertIsNone(next(x for x in g["serie"] if x["mes"] == mes)["importado"])
+
+    def test_dispendio_ausente_nao_apaga_volume_publicado(self):
+        registros = ler.importacao_anp()
+        mes = max(registros)
+        registros[mes] = (registros[mes][0], None)
+        g = self.importar(registros)
+        self.assertIsNone(g["indicadores"]["dispendio_12m"]["valor"])
+        self.assertIsNotNone(g["indicadores"]["importado_12m"]["valor"])
+
+    def test_zero_publicado_continua_zero(self):
+        registros = ler.importacao_anp()
+        for mes in gold._meses_ate(max(registros), 12):
+            registros[mes] = (0, 0)
+        g = self.importar(registros)
+        self.assertEqual(g["indicadores"]["importado_12m"]["valor"], 0)
+        self.assertEqual(g["indicadores"]["participacao_12m"]["valor"], 0)
+        self.assertIsNone(gold._participacao(0, 0))
+
+    def test_periodos_diferentes_impedem_composicao(self):
+        self.s.golds["aproveitamento"]["indicadores"]["producao_mmd_12m"]["periodo"] = "outra janela"
+        g = self.importar(ler.importacao_anp())
+        self.assertIsNone(g["indicadores"]["oferta_12m"]["valor"])
+        self.assertIsNone(g["indicadores"]["disponivel_participacao_12m"]["valor"])
+
+    def test_parcela_pequena_ausente_nao_e_balanco_valido(self):
+        bal = ler.balanco_producao()
+        mes = max(m for m, _, _ in bal["queima"])
+        bal["queima"] = {k: v for k, v in bal["queima"].items() if k[0] != mes}
+        with patch.object(ler, "balanco_producao", return_value=bal):
+            gold.producao_e_aproveitamento(self.s)
+        linha = next(x for x in self.s.golds["aproveitamento"]["serie"] if x["mes"] == mes)
+        self.assertEqual(linha["situacao"], "incompleto")
+        self.assertIsNone(linha["diferenca_pct"])
+        self.assertIsNone(linha["disponivel"])
+        self.assertGreater(linha["producao"], 0)
+
+    def test_ipca_nao_atravessa_lacuna(self):
+        self.assertEqual(gold._indice_encadeado({"2026-01": 0, "2026-03": 2}, "2026-01"), {"2026-01": 100})
+        self.assertEqual(gold._indice_encadeado({"2026-02": 1}, "2026-01"), {})
+
+    def test_nota_nao_declara_persistencia_com_um_mes(self):
+        nota = gold.nota_diferenca([{"mes": "2026-01", "situacao": "ok", "diferenca_pct": 0.2}])
+        self.assertNotIn("Desde", nota)
+        self.assertNotIn("abaixo", nota)
+
+    def test_contagem_da_transportadora_incompleta_nao_e_zero(self):
+        gold.mercado_e_infraestrutura(self.s)
+        serie = self.s.golds["mercado"]["carregadores"]
+        self.assertIsNone(next(x for x in serie if x["mes"] == "2025-08")["n:NTS"])
+        ind = self.s.golds["infraestrutura"]["indicadores"]["atos_total"]
+        self.assertEqual(ind["natureza"], "CALCULADO")
+        self.assertTrue(ind["formula"])
+
+    def test_csv_publicado_confere_com_todos_os_valores_gerados(self):
+        gold.importacao(self.s, self.nac, self.meses)
+        gold.precos(self.s)
+        gold.consumidor(self.s)
+        gold.mercado_e_infraestrutura(self.s)
+        for nome, serie in self.s.series.items():
+            with self.subTest(serie=nome):
+                with open(os.path.join(base.SERIES, nome + ".csv"), encoding="utf-8") as f:
+                    linhas = list(csv.reader(f, delimiter=";"))
+                esperado = [["" if v is None else str(v).replace(".", ",") if isinstance(v, float) else str(v) for v in row] for row in serie["linhas"]]
+                self.assertEqual(linhas, [serie["colunas"], *esperado])
 
 
 if __name__ == "__main__":

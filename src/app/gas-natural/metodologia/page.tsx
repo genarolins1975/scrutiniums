@@ -18,15 +18,15 @@ export const metadata: Metadata = {
 const REGRAS: [string, string][] = [
   ["Nenhum número digitado", "Todo valor das páginas sai da gold, gerada por código a partir dos arquivos oficiais guardados no repositório. Frases com números são montadas a partir da gold no momento da publicação."],
   ["Observado ou calculado", "Observado é o valor publicado pela fonte. Calculado é transformação feita pela Scrutiniums, sempre com a fórmula ao lado do número (média diária, soma de 12 meses, participação, média ponderada, conversão de moeda, correção pela inflação)."],
-  ["Média diária", "Volumes mensais da ANP em mil m³ viram milhões de m³ por dia dividindo pelo número de dias do mês. Janelas de 12 meses dividem a soma pelos dias da janela."],
+  ["Média diária", "Volumes mensais da ANP em mil m³ viram milhões de m³ por dia dividindo pelo número de dias do mês. Janelas de 12 meses exigem cobertura completa e dividem a soma pelos dias da janela. No aproveitamento, a janela termina no último mês com os cinco conjuntos presentes; um mês reprovado dentro da janela impede publicar a medida."],
   ["Médias ponderadas", "A média Brasil do preço de venda às distribuidoras pondera o preço de cada região pelo volume vendido nela. Mês sem alguma região fica sem média, em vez de média parcial."],
   ["Moeda", "O preço em reais vira dólar pela PTAX média de venda do mesmo mês (Banco Central, série 3698). Nenhum fator de poder calorífico é aplicado: m³ e MMBtu não são convertidos um no outro."],
-  ["Inflação", "Preço corrigido = preço do mês × IPCA acumulado até o mês-base ÷ IPCA acumulado até o mês, com o índice geral. A variação acumulada de cada subitem encadeia as variações mensais publicadas pelo IBGE."],
+  ["Inflação", "Preço corrigido = preço do mês × IPCA acumulado até o mês-base ÷ IPCA acumulado até o mês, com o índice geral. A falta de um mês interrompe o encadeamento e impede calcular valores derivados até a base. A variação acumulada de cada subitem encadeia as variações mensais publicadas pelo IBGE."],
   ["Ausência", "Mês sem dado, mês reprovado numa validação e UF sem pesquisa aparecem como lacuna ou sem dado. Nunca como zero, nunca preenchidos por estimativa."],
 ];
 
 const VALIDACOES: [string, string][] = [
-  ["Balanço da produção", "Reinjeção, queima, consumo próprio e disponível devem somar a produção. Mês com diferença acima de 2% fica sem as parcelas; a diferença dos demais é publicada."],
+  ["Balanço da produção", "Reinjeção, queima, consumo próprio e disponível devem somar a produção. Mês sem parcela fica com situação incompleta e sem diferença calculada. Mês com diferença acima de 2% fica sem as parcelas; a diferença dos demais é publicada."],
   ["Mar e terra", "Produção em mar mais produção em terra igual ao total, em todos os meses."],
   ["Participações", "Participação das UFs na produção soma 100%; participação da importação fica entre 0 e 100%."],
   ["Faixa de preço", "Em cada mês, o preço médio do botijão e do GNV fica entre o mínimo e o máximo da própria pesquisa."],

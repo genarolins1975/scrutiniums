@@ -1,0 +1,434 @@
+[
+  {
+    "rota": "/gas-natural",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Observatório Brasileiro de Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Observatório Brasileiro de Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Observatório Brasileiro de Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Observatório Brasileiro de Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/producao",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Produção de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/producao",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Produção de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/producao",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Produção de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/producao",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Produção de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/aproveitamento",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Aproveitamento do gás produzido · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/aproveitamento",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Aproveitamento do gás produzido · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/aproveitamento",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Aproveitamento do gás produzido · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/aproveitamento",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Aproveitamento do gás produzido · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/importacao",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Importação de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/importacao",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Importação de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/importacao",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Importação de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/importacao",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Importação de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/precos",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preços do gás natural na cadeia · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/precos",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preços do gás natural na cadeia · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/precos",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preços do gás natural na cadeia · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/precos",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preços do gás natural na cadeia · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/gas-de-cozinha",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preço do gás de cozinha (GLP) por estado · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/gas-de-cozinha",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preço do gás de cozinha (GLP) por estado · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/gas-de-cozinha",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preço do gás de cozinha (GLP) por estado · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/gas-de-cozinha",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preço do gás de cozinha (GLP) por estado · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/gnv-e-gas-encanado",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preço do GNV e inflação do gás encanado · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/gnv-e-gas-encanado",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preço do GNV e inflação do gás encanado · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/gnv-e-gas-encanado",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preço do GNV e inflação do gás encanado · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/gnv-e-gas-encanado",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Preço do GNV e inflação do gás encanado · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/mercado",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Abertura do mercado de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/mercado",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Abertura do mercado de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/mercado",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Abertura do mercado de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/mercado",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Abertura do mercado de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/infraestrutura",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Infraestrutura e transporte de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/infraestrutura",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Infraestrutura e transporte de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/infraestrutura",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Infraestrutura e transporte de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/infraestrutura",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Infraestrutura e transporte de gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/regulacao",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Regulação do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/regulacao",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Regulação do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/regulacao",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Regulação do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/regulacao",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Regulação do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/dados",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Dados e downloads do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/dados",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Dados e downloads do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/dados",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Dados e downloads do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/dados",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Dados e downloads do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/metodologia",
+    "largura": 320,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Método e glossário do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/metodologia",
+    "largura": 390,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Método e glossário do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/metodologia",
+    "largura": 768,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Método e glossário do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  },
+  {
+    "rota": "/gas-natural/metodologia",
+    "largura": 1440,
+    "status": 200,
+    "h1": 1,
+    "overflow": 0,
+    "titulo": "Método e glossário do gás natural · Gás Natural · Scrutiniums",
+    "erros": []
+  }
+]

@@ -72,7 +72,9 @@ def conferir(s):
             _exige(abs(x["mar"] + x["terra"] - x["total"]) < 0.01, f"mar + terra ≠ total em {x['mes']}")
     ap = g["aproveitamento"]
     for x in ap["serie"]:
-        if abs(x["diferenca_pct"]) >= 2.0:
+        if x["situacao"] == "incompleto":
+            _exige(x["diferenca_pct"] is None and x["diferenca"] is None, f"diferença sem cobertura em {x['mes']}")
+        if x["diferenca_pct"] is not None and abs(x["diferenca_pct"]) > 2.0:
             _exige(x["situacao"] == "inconsistente" and x["disponivel"] is None, f"mês com balanço aberto publicado como válido: {x['mes']}")
     _exige(len(ap["meses_inconsistentes"]) <= 3, f"meses inconsistentes demais no balanço: {len(ap['meses_inconsistentes'])}")
     for x in g["gas-de-cozinha"]["serie"]:
@@ -90,7 +92,7 @@ def conferir(s):
             _exige(0 <= x["participacao_pct"] <= 100, f"participação da importação fora de 0 a 100 em {x['mes']}")
     for x in g["mercado"]["carregadores"]:
         if x["ativos"] is not None:
-            _exige(x["ativos"] >= max(v for k, v in x.items() if k.startswith("n:")), f"total de carregadores menor que o de uma transportadora em {x['mes']}")
+            _exige(x["ativos"] >= max(v for k, v in x.items() if k.startswith("n:") and v is not None), f"total de carregadores menor que o de uma transportadora em {x['mes']}")
     # nenhum indicador publicado sem fonte, unidade e natureza
     for nome, gold in g.items():
         for chave, ind in (gold.get("indicadores") or {}).items():

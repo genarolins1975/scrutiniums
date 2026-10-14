@@ -57,3 +57,24 @@ Só a biblioteca padrão do Python, inclusive para ler `.xlsx` (`pipeline/gas/xl
 - Demanda por segmento (industrial, residencial, comercial, automotivo, cogeração) não tem conjunto aberto estruturado; o Boletim Mensal do MME traz em PDF.
 - Lista de consumidores livres, comercializadores e carregadores autorizados, limites estaduais de consumo livre, modelos tarifários e contratos de concessão: sem base nacional estruturada. A página Regulação declara a lacuna.
 - Reservas provadas: a ANP publica a tabela por campo com volume in situ (VGIP), não com reservas 1P, 2P e 3P; o boletim com as reservas é PDF.
+
+## Contrato gas 0.2.0
+
+A revisão de 14/10/2026 acrescenta `incompleto` a `aproveitamento.serie.situacao`.
+Nesse estado, parcelas, percentuais e diferença são nulos; produção permanece observada por sua série.
+O CSV de destinos acrescenta `situacao`. Zero publicado continua distinto de ausência.
+Importação exige todos os meses e valores da janela, separadamente para volume e dispêndio.
+Uma lacuna interna ganha linha mensal nula. O encadeamento do IPCA para na primeira falta.
+Contagens por transportadora também ficam nulas nos pares reprovados pela cobertura.
+A contagem de atos passa a CALCULADO, com fórmula explícita.
+
+Indicadores adicionais: `soma_parcelas_mmd_12m` em aproveitamento;
+`oferta_12m` e `disponivel_participacao_12m` em importação. Todos declaram fonte,
+unidade, período e fórmula. A composição da inicial requer períodos idênticos e valores válidos;
+a interface só calcula dimensões gráficas, nunca indicadores novos.
+A gold foi reconstruída a partir do mesmo seed, sem nova coleta ou revisão das fontes.
+A semântica de ausência de linhas estaduais permanece uma limitação documentada na avaliação.
+
+Verificação inicial: doze rotas em quatro larguras, total de 48 casos, todos com
+HTTP 200, um H1, nenhum erro de JavaScript e nenhum transbordamento horizontal
+da página. Resultado em `VERIFICACAO_ANTES_2026-10-14.json`. Isso não certifica WCAG.

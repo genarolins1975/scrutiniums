@@ -46,7 +46,7 @@ export type ProducaoGold = Cabecalho & {
 export type AproveitamentoGold = Cabecalho & {
   ultimo_mes: string;
   indicadores: Record<string, Indicador>;
-  serie: (Ponto & { mes: string; situacao: "ok" | "inconsistente" })[];
+  serie: (Ponto & { mes: string; situacao: "ok" | "inconsistente" | "incompleto" })[];
   anual: Ponto[];
   por_uf: { uf: string; nome: string; producao_mmd_12m: number; reinjecao_pct: number; queima_pct: number; consumo_proprio_pct: number; disponivel_pct: number }[];
   meses_inconsistentes: { mes: string; diferenca_pct: number; motivo: string }[];

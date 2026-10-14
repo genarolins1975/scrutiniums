@@ -30,7 +30,7 @@ def _mmd(mil_m3, mes):
 
 
 def _mmd_janela(mil_m3, meses):
-    return mil_m3 / 1000 / sum(base.dias_no_mes(m) for m in meses)
+    return None if mil_m3 is None else mil_m3 / 1000 / sum(base.dias_no_mes(m) for m in meses)
 
 
 def _meses_ate(fim, n):
@@ -92,13 +92,13 @@ def nota_diferenca(serie_dest, limiar=0.1):
     """Frase sobre a diferença do balanço, montada a partir dos próprios meses: desde quando ela passa de `limiar`% da produção."""
     validos = [x for x in serie_dest if x["situacao"] == "ok"]
     desde = None
-    for i in range(len(validos)):
+    for i in range(max(0, len(validos) - 2)):
         if all(abs(x["diferenca_pct"]) > limiar for x in validos[i:i + 3]) and all(abs(x["diferenca_pct"]) > limiar / 2 for x in validos[i:]):
             desde = validos[i]["mes"]
             break
     base_txt = "A ANP não publica a identidade entre os cinco conjuntos; a conferência é da Scrutiniums."
     if desde is None:
-        return f"{base_txt} Fora dos meses marcados como inconsistentes, a diferença fica abaixo de {str(limiar).replace('.', ',')}% da produção."
+        return f"{base_txt} Consulte a diferença de cada mês válido; meses incompletos ou inconsistentes não permitem publicar a composição."
     return (f"{base_txt} Desde {base.mes_legivel(desde)}, a soma das parcelas difere da produção em mais de {str(limiar).replace('.', ',')}% em quase todos os meses, "
             "sem explicação nos metadados.")
 
@@ -133,6 +133,8 @@ def producao_e_aproveitamento(s):
     serie_anual = [{"ano": a, "bilhoes_m3": _r(anual[a]["total"] / 1e6), "mar_pct": _r(100 * anual[a]["mar"] / anual[a]["total"], 1)}
                    for a in sorted(anual) if n_meses_ano[a] == 12]
 
+    if not all(m in nac["producao"] for m in janela):
+        raise validacoes.ErroValidacao("produção: janela de doze meses incompleta")
     tot12 = sum(nac["producao"][m] for m in janela)
     tot12_ant = sum(nac["producao"].get(m, 0) for m in janela_ant)
     ufs = sorted({uf for (_, uf) in por_uf["producao"]})
@@ -162,7 +164,7 @@ def producao_e_aproveitamento(s):
         "producao_mes_ano_anterior": indicador("Produção no mesmo mês do ano anterior", "milhões de m³/dia", C, fp,
                                                _mes_menos(ultimo, 12), _r(prod_ano_ant), "mesma fórmula, mês de comparação"),
         "producao_variacao_anual": indicador("Variação da produção sobre o mesmo mês do ano anterior", "%", C, fp, ultimo,
-                                             _r(_var_pct(prod_ultimo, prod_ano_ant), 1), "(produção do mês ÷ produção do mesmo mês do ano anterior − 1) × 100"),
+                                             _r(_var_pct(prod_ultimo, prod_ano_ant), 1), "(média diária do mês ÷ média diária do mesmo mês do ano anterior − 1) × 100"),
         "producao_12m": indicador("Produção média dos últimos 12 meses", "milhões de m³/dia", C, fp, f"{janela[0]} a {janela[-1]}",
                                   _r(_mmd_janela(tot12, janela)), "soma dos 12 meses (mil m³) ÷ dias dos 12 meses ÷ 1.000"),
         "mar_pct_12m": indicador("Participação da produção no mar", "% da produção", C, fp, f"{janela[0]} a {janela[-1]}",
@@ -186,10 +188,15 @@ def producao_e_aproveitamento(s):
             linha[k + "_pct"] = _r(100 * v / p, 2) if v is not None else None
             soma += v or 0
         linha["producao"] = _r(_mmd(p, m))
-        linha["diferenca"] = _r(_mmd(p - soma, m), 4)
-        linha["diferenca_pct"] = _r(100 * (p - soma) / p, 3)
+        cobertura = all(m in nac[k] for k in parcelas)
+        linha["diferenca"] = _r(_mmd(p - soma, m), 4) if cobertura else None
+        linha["diferenca_pct"] = _r(100 * (p - soma) / p, 3) if cobertura else None
         linha["situacao"] = "ok"
-        if abs(p - soma) / p > LIMITE_BALANCO:
+        if not cobertura:
+            linha["situacao"] = "incompleto"
+            for k in parcelas[1:]:
+                linha[k] = linha[k + "_pct"] = None
+        elif abs(p - soma) / p > LIMITE_BALANCO:
             # a soma das parcelas não fecha com a produção: o mês sai sem as parcelas, com o motivo publicado
             for k in ("reinjecao", "queima", "consumo_proprio", "disponivel"):
                 linha[k] = linha[k + "_pct"] = None
@@ -245,6 +252,9 @@ def producao_e_aproveitamento(s):
                                                _media("disponivel"), "soma do disponível nos 12 meses ÷ dias ÷ 1.000", nota_janela)
     ind_dest["producao_mmd_12m"] = indicador("Produção, média dos mesmos 12 meses", "milhões de m³/dia", C, fa, per12,
                                              _media("producao"), "soma da produção nos 12 meses ÷ dias ÷ 1.000", nota_janela)
+    ind_dest["soma_parcelas_mmd_12m"] = indicador("Soma dos destinos da produção", "milhões de m³/dia", C, fa, per12,
+        _r(_mmd_janela(sum(tot[k] for k in parcelas[1:]), janela_b)) if tot else None,
+        "soma de reinjeção, queima, consumo próprio e disponível nos doze meses ÷ dias da janela ÷ 1.000", nota_janela)
     ind_dest["diferenca_12m"] = indicador("Diferença entre a produção e a soma das quatro parcelas", "% da produção", C, fa, per12,
                                           _r(100 * (tot["producao"] - sum(tot[k] for k in parcelas[1:])) / tot["producao"], 2) if tot else None,
                                           "(produção − reinjeção − queima − consumo próprio − disponível) ÷ produção × 100",
@@ -261,8 +271,8 @@ def producao_e_aproveitamento(s):
     })
     s.serie("producao-gas-natural-mensal", ["mes", "total", "mar", "terra"], [[x["mes"], x["total"], x["mar"], x["terra"]] for x in serie_prod],
             fp, "Produção de gás natural, Brasil, milhões de m³/dia (média do mês), total, mar e terra")
-    s.serie("destino-da-producao-mensal", ["mes", "producao", "reinjecao", "queima", "consumo_proprio", "disponivel", "diferenca"],
-            [[x["mes"], x["producao"], x["reinjecao"], x["queima"], x["consumo_proprio"], x["disponivel"], x["diferenca"]] for x in serie_dest],
+    s.serie("destino-da-producao-mensal", ["mes", "producao", "reinjecao", "queima", "consumo_proprio", "disponivel", "diferenca", "situacao"],
+            [[x["mes"], x["producao"], x["reinjecao"], x["queima"], x["consumo_proprio"], x["disponivel"], x["diferenca"], x["situacao"]] for x in serie_dest],
             fa, "Destino do gás produzido, Brasil, milhões de m³/dia (média do mês)")
     s.serie("producao-por-uf-12m", ["uf", "nome", "mmd_12m", "participacao_pct", "mar_pct", "variacao_12m_pct"],
             [[x["uf"], x["nome"], x["mmd_12m"], x["participacao_pct"], x["mar_pct"], x["variacao_12m_pct"]] for x in tabela_uf],
@@ -272,24 +282,34 @@ def producao_e_aproveitamento(s):
 
 # ------------------------------------------------------------------ importação
 
+def _soma_completa(valores):
+    """Zero publicado é dado; uma ausência invalida toda a soma."""
+    valores = list(valores)
+    return sum(valores) if valores and all(v is not None for v in valores) else None
+
+
+def _participacao(parte, outra):
+    return 100 * parte / (parte + outra) if parte is not None and outra is not None and parte + outra > 0 else None
+
+
 def importacao(s, nac, meses_prod):
     anp = ler.importacao_anp()
-    meses = sorted(anp)
-    ultimo = meses[-1]
+    primeiro, ultimo = min(anp), max(anp)
+    n_meses = (int(ultimo[:4]) - int(primeiro[:4])) * 12 + int(ultimo[5:]) - int(primeiro[5:]) + 1
+    meses = _meses_ate(ultimo, n_meses)
     serie = []
     for m in meses:
-        vol, usd = anp[m]
+        vol, usd = anp.get(m, (None, None))
         disp = nac["disponivel"].get(m)
         serie.append({
             "mes": m, "importado": _r(_mmd(vol, m)), "dispendio_musd": _r(usd / 1e6 if usd is not None else None),
             "preco_implicito_usd_mil_m3": _r(usd / vol if vol and usd is not None else None, 1),
-            "participacao_pct": _r(100 * vol / (vol + disp), 1) if vol is not None and disp is not None else None,
+            "participacao_pct": _r(_participacao(vol, disp), 1),
         })
     janela = _meses_ate(ultimo, 12)
-    vol12 = sum(anp[m][0] or 0 for m in janela if m in anp)
-    usd12 = sum(anp[m][1] or 0 for m in janela if m in anp)
-    disp12 = sum(nac["disponivel"].get(m, 0) for m in janela)
-    cobre = all(m in nac["disponivel"] for m in janela)
+    vol12 = _soma_completa(anp.get(m, (None, None))[0] for m in janela)
+    usd12 = _soma_completa(anp.get(m, (None, None))[1] for m in janela)
+    disp12 = _soma_completa(nac["disponivel"].get(m) for m in janela)
     per12 = f"{janela[0]} a {janela[-1]}"
     fi = ["anp_importacao"]
     ind = {
@@ -297,13 +317,23 @@ def importacao(s, nac, meses_prod):
                                    "volume importado no mês (mil m³) ÷ dias do mês ÷ 1.000"),
         "importado_12m": indicador("Gás importado, média dos últimos 12 meses", "milhões de m³/dia", C, fi, per12, _r(_mmd_janela(vol12, janela)),
                                    "soma dos 12 meses ÷ dias ÷ 1.000"),
-        "dispendio_12m": indicador("Dispêndio com importação nos últimos 12 meses", "US$ milhões", C, fi, per12, _r(usd12 / 1e6, 1),
+        "dispendio_12m": indicador("Dispêndio com importação nos últimos 12 meses", "US$ milhões", C, fi, per12, _r(usd12 / 1e6, 1) if usd12 is not None else None,
                                    "soma do dispêndio mensal informado pela ANP"),
         "participacao_12m": indicador("Participação do gás importado na soma com o gás disponível da produção nacional", "%", C,
-                                      ["anp_importacao", "anp_disponivel"], per12, _r(100 * vol12 / (vol12 + disp12), 1) if cobre else None,
+                                      ["anp_importacao", "anp_disponivel"], per12, _r(_participacao(vol12, disp12), 1),
                                       "importado ÷ (importado + disponível da produção nacional) × 100, soma dos 12 meses",
                                       "Medida de composição da oferta, não de consumo: o gás disponível ainda passa por processamento antes de chegar ao mercado."),
     }
+    ap = s.golds["aproveitamento"]["indicadores"]
+    compativel = ap["producao_mmd_12m"]["periodo"] == per12 and ap["disponivel_mmd_12m"]["valor"] is not None
+    oferta = vol12 + disp12 if compativel and vol12 is not None and disp12 is not None else None
+    ind["oferta_12m"] = indicador("Importado mais disponível nacional", "milhões de m³/dia", C,
+        ["anp_importacao", "anp_disponivel"], per12, _r(_mmd_janela(oferta, janela)),
+        "soma de importado e disponível nacional nos mesmos doze meses ÷ dias da janela ÷ 1.000",
+        "Composição de volumes, não consumo final. Ausência ou janelas diferentes impedem a soma.")
+    ind["disponivel_participacao_12m"] = indicador("Disponível nacional na composição", "%", C,
+        ["anp_importacao", "anp_disponivel"], per12, _r(_participacao(disp12, vol12), 1) if compativel else None,
+        "disponível nacional ÷ (importado + disponível nacional) × 100, mesmos doze meses")
     # comércio exterior por origem
     cx = ler.comex()
     ult_cx = max(m for m, *_ in cx)
@@ -450,6 +480,9 @@ def _indice_encadeado(mensal, inicio):
     for m in sorted(mensal):
         if m < inicio:
             continue
+        esperado = inicio if not out else _mes_menos(m, 1)
+        if (not out and m != inicio) or (out and esperado not in out) or mensal[m] is None:
+            break  # sem cadeia completa não há índice para este mês nem para os seguintes
         nivel *= 1 + mensal[m] / 100
         out[m] = nivel
     return out
@@ -517,7 +550,7 @@ def consumidor(s):
                                ("veicular", "IPCA, gás veicular"))}
     for k in ("geral", "botijao", "encanado", "veicular"):
         ind_ipca[k + "_acumulado"] = indicador(f"Variação acumulada desde janeiro de 2012 ({k})", "%", C, fi, f"2012-01 a {ult_ipca}",
-                                               _r(indices[k][ult_ipca] - 100, 1), "produto de (1 + variação mensal ÷ 100) desde janeiro de 2012, menos 1, × 100")
+                                               _r(indices[k][ult_ipca] - 100, 1) if ult_ipca in indices[k] else None, "produto de (1 + variação mensal ÷ 100) desde janeiro de 2012, menos 1, × 100")
     # vendas de GLP por vasilhame
     vas = ler.glp_vasilhame()
     meses_v = sorted({m for m, _, _ in vas})
@@ -605,7 +638,7 @@ def mercado_e_infraestrutura(s):
                  for t in transp}
         completa = not flags.get(m)
         carregadores.append({"mes": m, "ativos": len(ativos) if completa else None, "ativos_registrados": len(ativos),
-                             **{f"n:{k}": v for k, v in por_t.items()}, "cobertura": "completa" if completa else "incompleta"})
+                             **{f"n:{sigla[t]}": None if (m, t) in flags["_pares"] else por_t[sigla[t]] for t in transp}, "cobertura": "completa" if completa else "incompleta"})
     validos = [x for x in carregadores if x["ativos"] is not None]
     ult = validos[-1]
     primeiro = validos[0]
@@ -662,7 +695,7 @@ def mercado_e_infraestrutura(s):
     tabela_terminais = sorted(terminais.values(), key=lambda x: x["data"], reverse=True)
     datas_aut = sorted(a["DataDaOutorga"][:10] for a in aut if a.get("DataDaOutorga"))
     ind_inf = {
-        "atos_total": indicador("Atos de autorização no registro da ANP", "atos", O, ["anp_autorizacoes"], f"{datas_aut[0][:4]} a {datas_aut[-1][:4]}", len(aut)),
+        "atos_total": indicador("Atos de autorização no registro da ANP", "atos", C, ["anp_autorizacoes"], f"{datas_aut[0][:4]} a {datas_aut[-1][:4]}", len(aut), "contagem de registros de atos no arquivo da ANP"),
         "atos_ultimo": indicador("Data do ato mais recente no registro", "data", O, ["anp_autorizacoes"], datas_aut[-1], datas_aut[-1]),
     }
     vc = ler.vendas_comercializadores()
