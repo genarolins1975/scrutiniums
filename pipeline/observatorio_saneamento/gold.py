@@ -30,6 +30,7 @@ from collections import Counter, defaultdict
 from .desigualdades import SPECS as SPECS_DESIGUALDADES
 from .desigualdades import construir as construir_desigualdades
 from . import sisagua
+from . import sisagua_quimicos
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(os.path.dirname(AQUI))
@@ -1088,7 +1089,12 @@ def construir():
         "esgoto": br_des["censo2022"]["moradores"]["esgoto"]["sem_rede_nem_septica"] - sum(br_des["desigualdades"][s["id"]][0] for s in SPECS if s["tabela"] == 7555),
     }
     # Qualidade da água (SISAGUA): contadores municipais por ano, em arquivo próprio.
-    qualidade, meta["sisagua"] = sisagua.construir([r["id"][:6] for r in regs], {r["id"][:6]: r["uf"] for r in regs})
+    ids6 = [r["id"][:6] for r in regs]
+    uf6 = {r["id"][:6]: r["uf"] for r in regs}
+    qualidade, meta["sisagua"] = sisagua.construir(ids6, uf6)
+    quimicos, meta["sisagua"]["quimicos"] = sisagua_quimicos.construir(ids6, uf6)
+    for i, campos_q in quimicos.items():
+        qualidade[i].update(campos_q)
     for r in regs:
         r.update(qualidade[r["id"][:6]])
         detalhes_uf[r["uf"]][r["id"]]["qualidade"] = qualidade[r["id"][:6]]
@@ -1183,6 +1189,10 @@ ROTULOS_QUALIDADE = {
     "plano_sac": "plano de amostragem, análises de coliformes totais exigidas e cobertas no ponto de consumo de SAC",
     "pop_saa": "cadastro, população estimada sob SAA com registro de controle no ano",
     "pop_sac": "cadastro, população estimada sob SAC com registro de controle no ano",
+    "ctrl_agro": "controle semestral, análises de agrotóxicos acima do VMP na água tratada",
+    "ctrl_quim": "controle semestral, análises de substâncias inorgânicas, orgânicas e subprodutos da desinfecção acima do VMP na água tratada",
+    "ctrl_organol": "controle semestral, análises do padrão organoléptico acima do VMP na água tratada",
+    "vig_quim": "vigilância (rotina), análises de agrotóxicos e demais substâncias químicas acima do VMP na água tratada",
 }
 
 
@@ -1204,7 +1214,7 @@ def _rotulo_qualidade(c):
     return f"SISAGUA {ano}, {ROTULOS_QUALIDADE[mid]}: {papel}"
 
 
-CAMPOS_QUALIDADE = [("id", "Código IBGE do município")] + [(c, _rotulo_qualidade(c)) for c in sisagua.campos()]
+CAMPOS_QUALIDADE = [("id", "Código IBGE do município")] + [(c, _rotulo_qualidade(c)) for c in sisagua.campos() + sisagua_quimicos.campos()]
 
 
 def json_bytes(obj):

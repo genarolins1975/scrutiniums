@@ -342,6 +342,31 @@ export type PlanoSisagua = { cobertas: number; exigidas: number; realizadas: num
 /** Série por território: municípios [controle, vigilância, ambos, universo] e medidas [num, den, municípios]. */
 export type SerieSisagua = Record<string, { municipios: [number, number, number, number]; medidas: Record<string, [number, number, number]> }>;
 
+/** [análises acima do VMP, análises com resultado válido, municípios]. */
+export type TrioSisagua = [number, number, number];
+
+export type QuimicosSisagua = {
+  anos: number[];
+  proveniencia: { capturado_em: string; arquivos: { conjunto: string; ano: number | null; url: string; sha256: string; last_modified: string | null }[] };
+  grupos: Record<string, string>;
+  vmp: { grupo: string; parametro: string; unidade: string; vmp: number }[];
+  vmp_cianotoxinas: Record<string, number>;
+  por_ano: Record<
+    string,
+    {
+      registro: { controle: number; vigilancia: number; cianotoxinas: number };
+      grupos: { controle: Record<string, TrioSisagua>; vigilancia: Record<string, TrioSisagua> };
+      ufs: { controle: Record<string, Record<string, TrioSisagua>>; vigilancia: Record<string, Record<string, TrioSisagua>> };
+      /** Chave "grupo|parâmetro": [acima do VMP, válidas, (não usado)]. */
+      parametros: { controle: Record<string, [number, number, number]>; vigilancia: Record<string, [number, number, number]> };
+      cianotoxinas: { nacional: Record<string, [number, number]>; municipios_com_analise: number; municipios_com_resultado_acima: number };
+      manancial: { ecoli_mgm: [number, number]; cianotoxinas: Record<string, [number, number]>; municipios: number; exclusoes: Record<string, number> };
+      exclusoes: { controle: Record<string, number>; vigilancia: Record<string, number>; cianotoxinas: Record<string, number> };
+      parametros_sem_vmp: string[];
+    }
+  >;
+};
+
 export type AnoSisagua = {
   municipios: { universo: number; controle: number; vigilancia: number; ambos: number; nenhum: number };
   codigos_fora_do_universo: Record<string, string[]>;
@@ -371,6 +396,7 @@ export type MetaSaneamento = {
       erros_catalogo: string[];
     };
     limites: Record<string, { regra: string; limite?: number; citacao: string }>;
+    quimicos: QuimicosSisagua;
     por_ano: Record<string, AnoSisagua>;
   };
   desigualdades: {

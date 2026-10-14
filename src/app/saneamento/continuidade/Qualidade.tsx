@@ -72,6 +72,17 @@ function rotuloExclusao(chave: string): string {
   return chave;
 }
 
+const GRUPO_QUIMICO: Record<string, string> = {
+  agrotoxicos: "Agrotóxicos",
+  inorganicas: "Substâncias inorgânicas",
+  organicas: "Substâncias orgânicas",
+  subprodutos: "Subprodutos da desinfecção",
+  organolepticos: "Padrão organoléptico",
+  radioatividade: "Radioatividade (triagem)",
+};
+
+const TOXINA: Record<string, string> = { microcistina: "Microcistinas", saxitoxina: "Saxitoxinas", cilindrospermopsina: "Cilindrospermopsinas" };
+
 function data(iso: string | null | undefined): string {
   if (!iso) return "sem data";
   const d = new Date(iso);
@@ -211,6 +222,50 @@ export function Qualidade() {
   const popSaa = br(`qa-pop-saa-${ANO}`);
   const popSac = br(`qa-pop-sac-${ANO}`);
   const cad = a?.cadastro;
+
+  // Substâncias químicas, radioatividade e cianotoxinas (controle semestral e vigilância)
+  const qm = auditoria?.quimicos;
+  const qa = qm?.por_ano[String(ANO)];
+  const anosQ = (qm?.anos ?? []).map(String);
+  const REGISTRO = { controle: "Controle semestral", vigilancia: "Vigilância" } as const;
+  const linhasGrupos = anosQ.flatMap((ano) =>
+    (["controle", "vigilancia"] as const).flatMap((reg) =>
+      Object.entries(qm?.por_ano[ano]?.grupos[reg] ?? {}).map(([g, [f, n, k]]) => ({
+        ano,
+        registro: REGISTRO[reg],
+        grupo: GRUPO_QUIMICO[g] ?? g,
+        acima: f,
+        validas: n,
+        pct: razaoPct(f, n),
+        municipios: k,
+      })),
+    ),
+  );
+  const linhasParametros = anosQ.flatMap((ano) =>
+    (["controle", "vigilancia"] as const).flatMap((reg) =>
+      Object.entries(qm?.por_ano[ano]?.parametros[reg] ?? {})
+        .filter(([, v]) => v[0] > 0)
+        .map(([k, [f, n]]) => {
+          const [g, p] = k.split("|");
+          return { ano, registro: REGISTRO[reg], grupo: GRUPO_QUIMICO[g] ?? g, parametro: p, acima: f, validas: n, pct: razaoPct(f, n) };
+        }),
+    ),
+  );
+  const pctGrupo = (reg: "controle" | "vigilancia", g: string) => {
+    const v = qa?.grupos[reg][g];
+    return v ? razaoPct(v[0], v[1]) : null;
+  };
+  const toxinas = anosQ.flatMap((ano) =>
+    Object.entries(qm?.por_ano[ano]?.cianotoxinas.nacional ?? {}).map(([t, [f, n]]) => ({
+      ano,
+      toxina: TOXINA[t] ?? t,
+      vmp: qm?.vmp_cianotoxinas[t] ?? null,
+      acima: f,
+      validas: n,
+      municipios: qm?.por_ano[ano]?.cianotoxinas.municipios_com_analise ?? null,
+    })),
+  );
+  const man = qa?.manancial;
 
   if (!auditoria || !a) {
     return (
@@ -461,6 +516,125 @@ export function Qualidade() {
           Ministério da Saúde, SISAGUA, cadastro de população abastecida, {ANO}. Junção com o controle mensal pelo código da forma de abastecimento.
         </Fonte>
       </Secao>
+
+      {qa && (
+        <Secao
+          id="qualidade-quimica"
+          titulo="Há substâncias químicas acima do permitido na água tratada?"
+          texto="O controle semestral do prestador e a vigilância de alta complexidade medem agrotóxicos, metais, solventes, subprodutos da desinfecção, o padrão de aceitação e a radioatividade. Cada análise é comparada ao valor máximo permitido (VMP) da Portaria GM/MS 888/2021, só na água tratada."
+        >
+          <Numeros
+            colunas={4}
+            itens={[
+              {
+                rotulo: `Municípios com análise química do prestador em ${ANO}`,
+                valor: inteiro(qa.registro.controle),
+                contexto: <>controle semestral em água tratada; {inteiro(qa.registro.vigilancia)} com análise química da vigilância.</>,
+              },
+              {
+                rotulo: "Agrotóxicos acima do VMP (controle)",
+                valor: `${numero(pctGrupo("controle", "agrotoxicos"), 2)}%`,
+                contexto: <>{inteiro(qa.grupos.controle.agrotoxicos?.[0])} de {inteiro(qa.grupos.controle.agrotoxicos?.[1])} análises, {ANO}.</>,
+              },
+              {
+                rotulo: "Subprodutos da desinfecção acima do VMP (controle)",
+                valor: `${numero(pctGrupo("controle", "subprodutos"), 1)}%`,
+                contexto: <>{inteiro(qa.grupos.controle.subprodutos?.[0])} de {inteiro(qa.grupos.controle.subprodutos?.[1])} análises; a norma verifica a média de 12 meses.</>,
+              },
+              {
+                rotulo: "Substâncias inorgânicas acima do VMP (controle)",
+                valor: `${numero(pctGrupo("controle", "inorganicas"), 2)}%`,
+                contexto: <>{inteiro(qa.grupos.controle.inorganicas?.[0])} de {inteiro(qa.grupos.controle.inorganicas?.[1])} análises, {ANO}.</>,
+              },
+            ]}
+          />
+          <div className="mt-8">
+            <TabelaDados
+              titulo="Análises acima do valor máximo permitido, por grupo de parâmetros e ano"
+              arquivo="saneamento-qualidade-quimica-grupos.csv"
+              colunas={[
+                { id: "registro", rotulo: "Registro" },
+                { id: "grupo", rotulo: "Grupo" },
+                { id: "ano", rotulo: "Ano" },
+                { id: "acima", rotulo: "Acima do VMP", tipo: "inteiro" },
+                { id: "validas", rotulo: "Análises válidas", tipo: "inteiro" },
+                { id: "pct", rotulo: "Proporção", tipo: "pct", casas: 2 },
+                { id: "municipios", rotulo: "Municípios", tipo: "inteiro" },
+              ]}
+              linhas={linhasGrupos}
+              limite={12}
+              busca={false}
+              rotuloLinhas={{ singular: "linha", plural: "linhas" }}
+            />
+          </div>
+          <div className="mt-8">
+            <TabelaDados
+              titulo="Parâmetros com alguma análise acima do valor máximo permitido"
+              arquivo="saneamento-qualidade-quimica-parametros.csv"
+              colunas={[
+                { id: "registro", rotulo: "Registro" },
+                { id: "ano", rotulo: "Ano" },
+                { id: "grupo", rotulo: "Grupo" },
+                { id: "parametro", rotulo: "Parâmetro" },
+                { id: "acima", rotulo: "Acima do VMP", tipo: "inteiro" },
+                { id: "validas", rotulo: "Análises válidas", tipo: "inteiro" },
+                { id: "pct", rotulo: "Proporção", tipo: "pct", casas: 2 },
+              ]}
+              linhas={linhasParametros}
+              limite={12}
+              ordemInicial={{ coluna: "acima", direcao: "desc" }}
+              rotuloLinhas={{ singular: "parâmetro", plural: "parâmetros" }}
+            />
+          </div>
+          <Nota titulo="Como ler">
+            Cada análise é de um parâmetro e é comparada ao VMP da Portaria 888, nunca ao VMP gravado no arquivo (parte dos registros ainda traz o da
+            norma anterior). Resultado abaixo do limite de quantificação conta como dentro do VMP quando esse limite é menor ou igual ao VMP; quando é
+            maior, a análise fica fora e é contada. Para subprodutos da desinfecção, a norma verifica a média móvel de 12 meses (Art. 40); para nitrato e
+            nitrito, a soma das razões (Art. 39); para radioatividade, os valores são níveis de triagem que pedem nova análise, não proibição (Art. 37).
+            Parâmetros sem VMP na Portaria 888 ficam fora: {qa.parametros_sem_vmp.join(", ") || "nenhum neste ano"}.
+          </Nota>
+          <Ressalva
+            permite="Ver, por grupo e por parâmetro, quantas análises de água tratada ficaram acima do valor máximo permitido, no controle do prestador e na vigilância, separadamente."
+            naoPermite="Afirmar que a água descumpriu a norma ou causou dano: a análise é pontual, alguns parâmetros têm regra de média ou soma, e a vigilância química alcança poucos municípios."
+          />
+          <h3 className="mt-12 font-serif text-xl text-carvao">Cianotoxinas na água tratada</h3>
+          <p className="mt-2 max-w-prose2 text-sm text-carvao">
+            Em {ANO}, a vigilância registrou análises de cianotoxinas na água tratada em {inteiro(qa.cianotoxinas.municipios_com_analise)} municípios; em{" "}
+            {inteiro(qa.cianotoxinas.municipios_com_resultado_acima)} deles houve resultado acima do VMP do Anexo 10 da Portaria 888.
+          </p>
+          <div className="mt-4">
+            <TabelaDados
+              titulo="Cianotoxinas na água tratada, vigilância de rotina"
+              arquivo="saneamento-qualidade-cianotoxinas.csv"
+              colunas={[
+                { id: "ano", rotulo: "Ano" },
+                { id: "toxina", rotulo: "Cianotoxina" },
+                { id: "vmp", rotulo: "VMP (µg/L)", tipo: "numero" },
+                { id: "acima", rotulo: "Acima do VMP", tipo: "inteiro" },
+                { id: "validas", rotulo: "Análises", tipo: "inteiro" },
+                { id: "municipios", rotulo: "Municípios com análise", tipo: "inteiro" },
+              ]}
+              linhas={toxinas}
+              limite={6}
+              busca={false}
+              rotuloLinhas={{ singular: "linha", plural: "linhas" }}
+            />
+          </div>
+          {man && (
+            <Nota titulo="Contexto: o manancial, antes do tratamento">
+              O controle mensal de demais parâmetros registra a água bruta. Em {ANO}, {inteiro(man.ecoli_mgm[0])} de {inteiro(man.ecoli_mgm[1])} registros
+              mensais de captação superficial tinham média geométrica móvel de E. coli de 1.000 por 100 mL ou mais, o que obriga a avaliar a eficiência da
+              estação de tratamento (Art. 29, § 1º). Cianotoxinas no manancial acima do VMP: microcistinas em {inteiro(man.cianotoxinas.microcistina?.[0])} de{" "}
+              {inteiro(man.cianotoxinas.microcistina?.[1])} análises, cilindrospermopsinas em {inteiro(man.cianotoxinas.cilindrospermopsina?.[0])} de{" "}
+              {inteiro(man.cianotoxinas.cilindrospermopsina?.[1])}. Água bruta não é água de consumo: esses números não medem potabilidade.
+            </Nota>
+          )}
+          <Fonte>
+            Ministério da Saúde, SISAGUA: controle semestral ({anosQ.join(" e ")}), vigilância de demais parâmetros e de cianobactérias e cianotoxinas,
+            controle mensal de demais parâmetros. VMP da Portaria GM/MS 888/2021, Anexos 9, 10 e 11 e Art. 37.
+          </Fonte>
+        </Secao>
+      )}
 
       <Secao
         id="qualidade-serie"
