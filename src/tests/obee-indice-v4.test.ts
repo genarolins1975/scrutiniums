@@ -7,7 +7,7 @@ import {createHash} from 'node:crypto';
 import {indice,indiceSnapshot,boxExtremes,STATUS_LABELS,RESSALVA_FAIXA} from '@/lib/eficiencia/indice-v4';
 import {IndiceResultados} from '@/components/eficiencia/IndiceResultados';
 import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
-import {AberturaCidada} from '@/components/eficiencia/AberturaCidada';
+import {montarRetrato} from '@/lib/eficiencia/entrada';
 
 type Par={a:string;b:string;difference:number;status:keyof typeof STATUS_LABELS;families_reversing:string[];families_tying:string[];dominance:boolean;ranges:Record<string,[number,number]>};
 const completo=JSON.parse(readFileSync(join(process.cwd(),'docs/obee/resultados/v4/indice-resultados-v4.json'),'utf8')) as {pairs:Par[];rows:{id:string;score:number}[];edition:string};
@@ -109,21 +109,21 @@ describe('Índice de resultados v4: apresentação',()=>{
  });
 
  it('a abertura mostra as notas das duas capitais e o perfil nos sete resultados',()=>{
-  const sel={scope:'cidades' as const,place:'2611606',reference:'4106902',metric:'frequencia' as const,age:'47813'};
-  const html=renderToStaticMarkup(createElement(AberturaCidada,{selection:sel,onSelect:()=>{},indice:indiceSnapshot}));
+  const html=renderToStaticMarkup(createElement(AtlasCidadao,{retrato:montarRetrato(),indice:indiceSnapshot}));
+  const abertura=html.slice(0,html.indexOf('id="perguntas"'));
   const fmt=(v:number)=>v.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});
-  for(const id of ['2611606','4106902'])expect(html).toContain(fmt(indiceSnapshot.rows.find(r=>r.id===id)!.score));
-  expect(html.match(/<th scope="row">/g)).toHaveLength(7);
-  expect(html).toContain('Moradia adensada');expect(html).toContain('Mais de 1 h até o trabalho');
-  expect(html).toMatch(/Precisão municipal não quantificada/);expect(html).toMatch(/Saúde ainda fora da nota/);
-  expect(html).toContain('href="#atlas-indice"');
-  const regional=renderToStaticMarkup(createElement(AberturaCidada,{selection:{...sel,scope:'regioes',place:'Nordeste',reference:'Sul'},onSelect:()=>{},indice:indiceSnapshot}));
-  expect(regional).toContain('Domicílios com segurança alimentar');expect(regional).not.toContain('Índice de resultados');
+  for(const id of ['2611606','4106902'])expect(abertura).toContain(fmt(indiceSnapshot.rows.find(r=>r.id===id)!.score));
+  expect(abertura).toContain(STATUS_LABELS[indice.stability('2611606','4106902')!.status]);
+  expect(abertura).toContain('Moradia adensada');expect(abertura).toContain('Mais de 1 h até o trabalho');
+  expect(abertura).toMatch(/Precisão municipal não quantificada/);expect(abertura).toMatch(/Saúde ainda fora da nota/);
+  expect(abertura).toContain('href="#atlas-indice"');
  });
 
  it('a entrada recebe o índice por prop e não o exibe sem ele',()=>{
-  expect(renderToStaticMarkup(createElement(AtlasCidadao,{indice:indiceSnapshot}))).toContain('id="atlas-indice"');
-  expect(renderToStaticMarkup(createElement(AtlasCidadao))).not.toContain('id="atlas-indice"');
+  const retrato=montarRetrato();
+  expect(renderToStaticMarkup(createElement(AtlasCidadao,{retrato,indice:indiceSnapshot}))).toContain('id="atlas-indice"');
+  const sem=renderToStaticMarkup(createElement(AtlasCidadao,{retrato}));
+  expect(sem).not.toContain('id="atlas-indice"');expect(sem).not.toContain('Nota do índice');
  });
 });
 

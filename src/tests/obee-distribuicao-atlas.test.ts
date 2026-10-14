@@ -1,78 +1,84 @@
 import {describe,it,expect} from 'vitest';
 import {createElement,isValidElement,Children,type ReactNode,type ReactElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import data from '@/lib/eficiencia/panorama-atlas.json';
-import {PanoramaTerritorial,panoramaDistribution} from '@/components/eficiencia/PanoramaTerritorial';
+import {montarRetrato} from '@/lib/eficiencia/entrada';
+import {faixa,mediana,type Medida} from '@/lib/eficiencia/entrada-nucleo';
+import {PerguntasCapital} from '@/components/eficiencia/entrada/PerguntasCapital';
 
-type ControlProps={children?:ReactNode;onClick?:()=>void;'aria-label'?:string;'aria-disabled'?:boolean;'aria-pressed'?:boolean};
+type ControlProps={children?:ReactNode;onClick?:()=>void;'aria-disabled'?:boolean};
 function controls(node:ReactNode):ReactElement<ControlProps>[] {
   return Children.toArray(node).flatMap(child=>isValidElement<ControlProps>(child)?[child,...controls(child.props.children)]:[]);
 }
+const retrato=montarRetrato();
+const medidas=[...retrato.condicoes,...retrato.recursos];
+const a=retrato.capitais.find(c=>c.id==='2611606')!,b=retrato.capitais.find(c=>c.id==='4106902')!;
+const props=(onReference:(id:string)=>void)=>({id:'perguntas',eyebrow:'01',titulo:'Sete perguntas',texto:'',medidas:retrato.condicoes,a,b,capitais:retrato.capitais,onReference});
 
-describe('Distribuição das capitais no panorama',()=>{
-  it('escolha pela tabela envia a capital correta e atualiza os quatro temas',()=>{
-    const choices:string[]=[];
-    const tree=PanoramaTerritorial({place:'2611606',reference:'4106902',onEducation:()=>{},onReference:id=>choices.push(id)});
-    const buttons=controls(tree).filter(node=>node.type==='button');
-    expect(buttons).toHaveLength(104);
-    for(const city of data.cities){
-      const cityButtons=buttons.filter(node=>node.props['aria-label']===`Comparar Recife com ${city.name}`);
-      expect(cityButtons).toHaveLength(4);
-      choices.length=0;cityButtons.forEach(node=>node.props.onClick!());
-      if(['2611606','4106902'].includes(city.id))expect(choices).toEqual([]);
-      else expect(choices).toEqual([city.id,city.id,city.id,city.id]);
-      const updated=controls(PanoramaTerritorial({place:'2611606',reference:city.id,onEducation:()=>{},onReference:()=>{}})).filter(node=>node.type==='button'&&node.props['aria-pressed']);
-      expect(updated).toHaveLength(4);
-      expect(updated.every(node=>node.props['aria-label']===`Comparar Recife com ${city.name}`)).toBe(true);
+describe('Faixa das 26 capitais na entrada',()=>{
+  it.each(medidas.map(m=>[m.id,m] as const))('%s preserva capitais elegíveis, valores, escala e mediana',(_,m)=>{
+    const f=faixa(m);
+    const elegiveis=Object.entries(m.valores).filter(([,v])=>v.valor!==null&&!v.foraDaComparacao);
+    expect(f.pontos).toHaveLength(elegiveis.length);
+    for(const p of f.pontos){
+      expect(p.valor).toBe(m.valores[p.id].valor);
+      expect(p.x).toBeGreaterThanOrEqual(12);expect(p.x).toBeLessThanOrEqual(388);
+      for(const q of f.pontos.filter(q=>q.id!==p.id&&q.trilha===p.trilha))expect(Math.abs(p.x-q.x)).toBeGreaterThanOrEqual(11);
+    }
+    expect(f.mediana).toBe(mediana(elegiveis.map(([,v])=>v.valor!)));
+  });
+
+  it('as condições usam as 26 capitais e a mediana simples, sem ponderação populacional',()=>{
+    for(const m of retrato.condicoes){
+      const v=Object.values(m.valores).map(x=>x.valor!).sort((x,y)=>x-y);
+      expect(v).toHaveLength(26);
+      expect(faixa(m).mediana).toBe((v[12]+v[13])/2);
     }
   });
-  it('sem ação fornecida mantém tabela de leitura sem botões inoperantes',()=>{
-    const tree=PanoramaTerritorial({place:'2611606',reference:'4106902',onEducation:()=>{}});
-    expect(controls(tree).filter(node=>node.type==='button')).toHaveLength(0);
-    const html=renderToStaticMarkup(tree);
-    expect(html).toContain('role="status"');
-    expect(html).not.toContain('Escolha outra capital pelo nome');
+
+  it('empates permanecem visíveis, inclusive zero',()=>{
+    const m:Medida=structuredClone(retrato.condicoes[0]);
+    for(const k of Object.keys(m.valores))m.valores[k]={valor:0};
+    const f=faixa(m);
+    expect(f.pontos).toHaveLength(26);
+    expect(new Set(f.pontos.map(p=>p.trilha)).size).toBe(26);
+    expect(new Set(f.pontos.map(p=>p.x)).size).toBe(1);
+    expect(f.mediana).toBe(0);
   });
-  it.each(data.metrics)('$id preserva todas as capitais, valores e escala',metric=>{
-    const {points,rows,axisY}=panoramaDistribution(metric);
-    expect(rows).toHaveLength(26);
-    expect(points).toHaveLength(metric.reference.count);
-    expect(rows.map(r=>r.name)).toEqual([...rows.map(r=>r.name)].sort((a,b)=>a.localeCompare(b,'pt-BR')));
-    for(const p of points){
-      expect(p.value).toBe(metric.observations.find(o=>o.territory===p.id)!.value);
-      expect(p.x).toBeGreaterThanOrEqual(32);expect(p.x).toBeLessThanOrEqual(368);
-      expect(p.y).toBeLessThan(axisY);
-      for(const other of points.filter(q=>q.id!==p.id&&q.y===p.y))expect(Math.abs(p.x-other.x)).toBeGreaterThanOrEqual(14);
-    }
-  });
-  it('empates permanecem visíveis, inclusive zero e seleção coincidente',()=>{
-    const metric=structuredClone(data.metrics[0]);
-    metric.observations.forEach(o=>{o.value=0;});
-    const result=panoramaDistribution(metric);
-    expect(result.points).toHaveLength(26);
-    expect(new Set(result.points.map(p=>p.y)).size).toBe(26);
-    expect(result.points.every(p=>p.x===32)).toBe(true);
-    const html=renderToStaticMarkup(createElement(PanoramaTerritorial,{place:'2611606',reference:'2611606',onEducation:()=>{}}));
-    expect(html).toContain('Território selecionado');expect(html).toContain('Comparador selecionado');
+
+  it('ausência e inelegibilidade não viram pontos nem entram na mediana',()=>{
+    const m:Medida=structuredClone(retrato.condicoes[0]);
+    const [x,y]=Object.keys(m.valores);
+    m.valores[x]={valor:null};m.valores[y]={valor:m.valores[y].valor,foraDaComparacao:'Perímetro distinto'};
+    const f=faixa(m);
+    expect(f.pontos).toHaveLength(24);
+    expect(f.pontos.some(p=>p.id===x||p.id===y)).toBe(false);
+    const html=renderToStaticMarkup(createElement(PerguntasCapital,{...props(()=>{}),medidas:[m],a:retrato.capitais.find(c=>c.id===x)!,b:retrato.capitais.find(c=>c.id===y)!}));
+    expect(html).toContain('Não disponível');expect(html).toContain('Diferença indisponível');
+    expect(html).toContain('Perímetro distinto; valor exibido, fora da faixa e da mediana.');
+    expect(html).toContain('Diferença indisponível: valor fora da comparação');
     expect(html).not.toContain('NaN');
   });
-  it('ausência e inelegibilidade não viram pontos no zero',()=>{
-    const metric=structuredClone(data.metrics[0]);
-    metric.observations[0].eligible=false;
-    metric.observations.splice(1,1);
-    const {rows,points}=panoramaDistribution(metric);
-    expect(rows).toHaveLength(26);expect(points).toHaveLength(24);
-    expect(rows.filter(r=>r.value===null)).toHaveLength(2);
+
+  it('valor fora da comparação aparece, mas não gera diferença (Macapá, Saúde 2025)',()=>{
+    const saude=retrato.recursos.find(m=>m.id==='saude_despesa')!;
+    expect(saude.valores['1600303'].foraDaComparacao).toBeTruthy();
+    const macapa=retrato.capitais.find(c=>c.id==='1600303')!;
+    const html=renderToStaticMarkup(createElement(PerguntasCapital,{...props(()=>{}),medidas:[saude],a:macapa,b}));
+    expect(html).toContain('R$ 1.011,42');
+    expect(html).toContain('Diferença indisponível: valor fora da comparação');
+    expect(html).not.toMatch(/−R\$ [\d.]+,\d{2}<\/p>|\+R\$ [\d.]+,\d{2} <span>/);
   });
-  it('tabela equivalente mantém 104 observações, seleções, notas e CSV',()=>{
-    const html=renderToStaticMarkup(createElement(PanoramaTerritorial,{place:'2611606',reference:'4106902',onEducation:()=>{}}));
-    expect(html.match(/Comparar as 26 capitais/g)).toHaveLength(4);
-    expect(html.match(/Território selecionado/g)).toHaveLength(4);
-    expect(html.match(/Comparador selecionado/g)).toHaveLength(4);
-    for(const city of data.cities)expect(html).toContain(city.name);
-    expect(html).toContain('a altura não representa outra medida');
-    expect(html).toContain('panorama-capitais.csv');
-    expect(html).toContain('Capacidade teórica');
-    expect(html).toContain('não formam uma nota');
+
+  it('a tabela equivalente traz as 26 capitais e troca o comparador pelo nome',()=>{
+    const escolhas:string[]=[];
+    const botoes=controls(PerguntasCapital(props(id=>escolhas.push(id)))).filter(n=>n.type==='button');
+    expect(botoes).toHaveLength(26);
+    botoes.forEach(n=>n.props.onClick!());
+    expect(escolhas).toHaveLength(24);
+    expect(escolhas).not.toContain(a.id);expect(escolhas).not.toContain(b.id);
+    const html=renderToStaticMarkup(createElement(PerguntasCapital,props(()=>{})));
+    for(const c of retrato.capitais)expect(html).toContain(c.nome);
+    expect(html).toContain('Selecionada');expect(html).toContain('Comparador');
+    expect(html).toContain('Mediana das capitais');
   });
 });
