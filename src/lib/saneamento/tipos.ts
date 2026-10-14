@@ -337,19 +337,31 @@ export type Conferencia = { id: string; descricao: string; valores: Record<strin
 /** Contadores [com o resultado medido, com resultado válido]. */
 export type ParSisagua = [number, number];
 
+export type PlanoSisagua = { cobertas: number; exigidas: number; realizadas: number; formas: number; formas_sem_controle: number };
+
+/** Série por território: municípios [controle, vigilância, ambos, universo] e medidas [num, den, municípios]. */
+export type SerieSisagua = Record<string, { municipios: [number, number, number, number]; medidas: Record<string, [number, number, number]> }>;
+
 export type AnoSisagua = {
   municipios: { universo: number; controle: number; vigilancia: number; ambos: number; nenhum: number };
   codigos_fora_do_universo: Record<string, string[]>;
-  exclusoes: { controle: Record<string, number>; plano: Record<string, number>; vigilancia: Record<string, number> };
+  exclusoes: { controle: Record<string, number>; plano: Record<string, number>; vigilancia: Record<string, number>; cadastro: Record<string, number> };
   /** Chave "tipo|procedência|parâmetro": amostras de rotina da vigilância. */
   vigilancia_nacional: Record<string, ParSisagua>;
-  plano: { cobertas: number; exigidas: number; realizadas: number; formas: number; formas_sem_controle: number };
+  /** Plano de amostragem (desde 2022): SAA na rede; SAC no ponto de consumo. null antes de 2022. */
+  plano: PlanoSisagua | null;
+  plano_sac: PlanoSisagua | null;
+  /** Cadastro: [população sob formas com controle, população cadastrada, formas com controle, formas cadastradas]. */
+  cadastro: Record<"saa" | "sac" | "sai", [number, number, number, number]>;
   conferencia_fora_padrao: { parametro: string; controle_mensal: number; arquivo_fora_do_padrao: number; diferenca: number }[];
 };
 
 export type MetaSaneamento = {
   sisagua: {
     anos: number[];
+    anos_atlas: number[];
+    ano_inicial_plano: number;
+    serie: Record<string, SerieSisagua>;
     proveniencia: {
       capturado_em: string;
       arquivos: { conjunto: string; ano: number | null; url: string; sha256: string; bytes: number; last_modified: string | null }[];

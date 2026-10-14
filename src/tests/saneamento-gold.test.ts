@@ -58,10 +58,10 @@ describe("Saneamento: gold e conferências", () => {
 
   it("SISAGUA: colunas da qualidade ficam fora da tabela geral e do comparador", () => {
     expect(Object.keys(lista[0]).some((k) => k.startsWith("qa_"))).toBe(false);
-    expect(Object.keys(listaQa[0]).filter((k) => k.startsWith("qa_"))).toHaveLength(32);
+    expect(Object.keys(listaQa[0]).filter((k) => k.startsWith("qa_"))).toHaveLength(56);
     expect(listaQa).toHaveLength(lista.length);
     expect(MEDIDAS_GERAIS.some((m) => m.id.startsWith("qa-"))).toBe(false);
-    expect(MEDIDAS_QUALIDADE).toHaveLength(14);
+    expect(MEDIDAS_QUALIDADE).toHaveLength(26);
   });
 
   it("SISAGUA: registro por ano confere com meta.json e ausência de registro nunca vira zero", () => {
@@ -84,9 +84,29 @@ describe("Saneamento: gold e conferências", () => {
     const refs = referencias(agregados(), listaQa, ["qa-vig-ecoli-2024"]);
     const vig = agregarMedida(medida("qa-vig-ecoli-2024"), listaQa);
     expect(refs["qa-vig-ecoli-2024"].BR.pct).toBeCloseTo(vig.pct!, 12);
-    const plano = meta()!.sisagua.por_ano["2024"].plano;
+    const plano = meta()!.sisagua.por_ano["2024"].plano!;
     expect(agregarMedida(medida("qa-plano-2024"), listaQa).pct).toBeCloseTo((plano.cobertas / plano.exigidas) * 100, 9);
     for (const ano of [2024, 2025]) for (const m of listaQa) expect(medida(`qa-plano-${ano}`).pct(m) ?? 0).toBeLessThanOrEqual(100);
+  });
+
+  it("SISAGUA: a série nacional é a soma das UFs e reproduz a soma municipal nos anos do atlas", () => {
+    const sis = meta()!.sisagua;
+    expect(sis.anos[0]).toBe(2014);
+    for (const ano of sis.anos.map(String)) {
+      const serie = sis.serie[ano];
+      const ufs = Object.entries(serie).filter(([t]) => t !== "BR");
+      expect(ufs).toHaveLength(27);
+      for (const [mid, [num, den, n]] of Object.entries(serie.BR.medidas)) {
+        const soma = ufs.reduce((acc, [, d]) => { const v = d.medidas[mid]; return v ? [acc[0] + v[0], acc[1] + v[1], acc[2] + v[2]] : acc; }, [0, 0, 0]);
+        expect([num, den, n], `${ano} ${mid}`).toEqual(soma);
+      }
+      expect(serie.BR.municipios[3]).toBe(5571);
+      if (Number(ano) < sis.ano_inicial_plano) expect(serie.BR.medidas.plano, ano).toBeUndefined();
+    }
+    for (const ano of [2024, 2025]) {
+      const r = agregarMedida(medida(`qa-vig-ecoli-${ano}`), listaQa);
+      expect(sis.serie[String(ano)].BR.medidas.vig_ecoli).toEqual([r.contagem, r.universo, r.municipios]);
+    }
   });
 
   it("SISAGUA: a ficha municipal traz os mesmos valores do arquivo da qualidade", () => {
