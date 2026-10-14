@@ -57,4 +57,3 @@ Só a biblioteca padrão do Python, inclusive para ler `.xlsx` (`pipeline/gas/xl
 - Demanda por segmento (industrial, residencial, comercial, automotivo, cogeração) não tem conjunto aberto estruturado; o Boletim Mensal do MME traz em PDF.
 - Lista de consumidores livres, comercializadores e carregadores autorizados, limites estaduais de consumo livre, modelos tarifários e contratos de concessão: sem base nacional estruturada. A página Regulação declara a lacuna.
 - Reservas provadas: a ANP publica a tabela por campo com volume in situ (VGIP), não com reservas 1P, 2P e 3P; o boletim com as reservas é PDF.
-- A gravura da home (`public/home/gas.webp`) é provisória, desenhada em SVG; deve ser substituída por uma gravura da mesma série das demais.
