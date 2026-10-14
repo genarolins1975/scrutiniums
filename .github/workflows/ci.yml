@@ -115,6 +115,10 @@ jobs:
         # ISO crua) retornava cedo por falta do diretório: passava sem verificar nada.
         run: npm run build
 
+      - name: Cobertura bilíngue confere com as fontes publicadas
+        # O prebuild já materializou os três recortes; a verificação só lê.
+        run: node scripts/cobertura-i18n.mjs --check
+
       - name: Testes (inclui a verificação obrigatória do HTML gerado)
         # EXIGIR_BUILD_HTML=1 faz src/tests/html-gerado.test.ts reprovar se o build, uma rota
         # esperada ou as páginas a inspecionar não existirem. O log mostra "HTML verificado

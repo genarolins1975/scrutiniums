@@ -45,15 +45,24 @@ jobs:
             python3 -m pipeline.gas.run --coleta
           fi
 
+      - name: Node para a cobertura bilíngue
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
       - name: Testes do pipeline
         id: testes
         continue-on-error: true
-        run: python3 -m unittest pipeline.tests.test_gas -v
+        run: |
+          npm ci
+          node scripts/i18n/publicacao.mjs preparar
+          python3 -m unittest pipeline.tests.test_gas -v
 
       - name: Reter publicação reprovada
         if: steps.testes.outcome == 'failure'
         run: |
-          git checkout -- public/gas pipeline/gas/seed
+          git checkout -- public/gas pipeline/gas/seed docs/i18n/cobertura.json
           git clean -fdq public/gas pipeline/gas/seed
           echo "::error::testes reprovaram a gold do gás; publicação retida"
           exit 1
@@ -63,7 +72,7 @@ jobs:
         run: |
           git config user.name "pipeline-observatorio[bot]"
           git config user.email "pipeline@scrutiniums.com"
-          git add public/gas pipeline/gas/seed
+          git add public/gas pipeline/gas/seed docs/i18n/cobertura.json
           if git diff --cached --quiet; then
             echo "Sem mudanças nos dados do gás."
             exit 0
@@ -73,15 +82,12 @@ jobs:
             git fetch origin main
             # se o main avançou durante a coleta, a gold é refeita a partir do seed já capturado, com o código novo,
             # e só segue com os testes verdes: nunca se publica gold gerada por código antigo
-            if ! git rebase origin/main; then
-              git rebase --abort
-              echo "::error::conflito ao trazer o main; publicação retida"
-              exit 1
-            fi
+            node scripts/i18n/publicacao.mjs rebase origin/main
+            npm ci
             python3 -m pipeline.gas.run
             python3 -m unittest pipeline.tests.test_gas
             git add public/gas pipeline/gas/seed
-            git diff --cached --quiet || git commit --amend --no-edit
+            node scripts/i18n/publicacao.mjs registrar origin/main
             git push origin HEAD:main && exit 0
             sleep $((tentativa * 5))
           done

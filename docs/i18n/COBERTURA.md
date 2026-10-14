@@ -17,7 +17,21 @@ node scripts/cobertura-i18n.mjs --check
 
 O minificador também materializa Trabalho e Renda. O comando sem argumento grava somente `docs/i18n/cobertura.json`; `--check` compara os bytes e falha se divergirem, sem corrigir o arquivo; `--stdout` imprime o relatório. O scanner não executa código do aplicativo, não materializa dados e não escreve nas fontes. Usa TypeScript e parse5, já presentes no projeto.
 
-O portão obrigatório do CI será ativado no PR seguinte, junto da regeneração do relatório nos workflows que publicam dados. Ativá-lo isoladamente deixaria a próxima coleta automática com cobertura desatualizada: o relatório assina os bytes da gold, mesmo quando apenas os valores mudam. Essa integração também precisa regenerar o relatório depois de trazer mudanças concorrentes de `main`, sem resolver automaticamente conflitos de dados. Esta subdivisão mantém pequeno o PR do inventário; a obrigação de conferência contínua da fase 0 permanece pendente.
+O CI exige `--check` depois do build, que já materializa os recortes necessários. Os quatro workflows que publicam dados também regeneram e versionam o relatório: Crédito, Setor Elétrico, Gás Natural e a rodada do PLD. O relatório assina os bytes da gold, mesmo quando apenas os valores mudam; por isso a atualização acompanha cada publicação.
+
+## Publicações automáticas
+
+`scripts/i18n/publicacao.mjs` mantém a cobertura coerente com os arquivos destinados ao commit. O script não coleta dados, emite previsões, faz fetch ou push. Essas operações continuam explícitas nos workflows.
+
+1. `preparar` executa os três materializadores canônicos existentes e gera o relatório. Qualquer falha interrompe a preparação.
+2. O produtor executa seus testes e inclui o relatório junto dos caminhos de dados que já publicava. Dados reprovados continuam retidos. A rodada do PLD preserva o teste Python independente de Node/npm; se a gold falhar, `reter-previsoes` restaura somente suas três golds e os arquivos `series/previsoes_*`, mantendo o registro factual das emissões. A cobertura é gerada depois dessa retenção.
+3. Antes de cada tentativa de push, o workflow faz fetch e chama `rebase <ref>`. Só um conflito exclusivamente em `docs/i18n/cobertura.json` recebe resolução automática: usa temporariamente a versão de upstream, que será regenerada. Conflito em dados ou código aborta o rebase e interrompe a publicação.
+4. O workflow reinstala as dependências do lockfile recebido. Gás também reconstrói e testa seus dados novamente, como já fazia. `registrar <ref>` prepara a cobertura de novo, inclui apenas o relatório no índice e incorpora as alterações ao commit local. Se o rebase descartou um commit equivalente, cria um novo commit quando necessário, sem amendar o commit de upstream.
+5. Só então ocorre a tentativa de push. Uma rejeição por concorrência repete fetch, rebase e regeneração. Mesmo um rebase sem conflito textual exige regeneração, pois outro observatório pode ter alterado as fontes.
+
+`registrar` exige que a referência recebida seja ancestral de HEAD, não haja rebase pendente nem alteração versionada fora do índice, e fontes novas nas raízes observadas estejam incluídas no índice. Isso evita registrar a cobertura de uma gold ou fonte que não entraria no commit. Arquivos canônicos ignorados pelo Git continuam sujeitos ao contrato de materialização. Os testes exercitam esses cenários com repositórios Git temporários e remotos locais, sem publicar dados reais.
+
+Essa integração não conclui a fase 0: catálogo, glossário, idiomas, rotas e verificações semânticas continuam nas entregas seguintes.
 
 ## O que cada contagem significa
 
@@ -41,9 +55,8 @@ Raízes futuras, exportações, comunicações e campos textuais ainda exigem in
 
 ## Atualização prevista
 
-1. Integrar regeneração nas publicações automáticas e exigir `--check` no CI.
-2. Catalogar chaves e campos com referências ao glossário, fontes e estado de tradução.
-3. Conferir o uso dos marcadores no HTML e no DOM da SPA, associando-o ao catálogo.
-4. Medir rotas concretas e exportações, incluindo parâmetros e política de acesso.
+1. Catalogar chaves e campos com referências ao glossário, fontes e estado de tradução.
+2. Conferir o uso dos marcadores no HTML e no DOM da SPA, associando-o ao catálogo.
+3. Medir rotas concretas e exportações, incluindo parâmetros e política de acesso.
 
 Nenhum desses passos autoriza alterar a gold portuguesa, números publicados, a Constituição original, notas editoriais ou decisões institucionais.
