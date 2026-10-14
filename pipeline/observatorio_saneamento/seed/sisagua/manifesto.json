@@ -1,0 +1,101 @@
+{
+  "capturado_em": "2026-10-14T14:12:39+00:00",
+  "anos": [
+    2024,
+    2025
+  ],
+  "arquivos": [
+    {
+      "conjunto": "controle",
+      "ano": 2024,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2024_csv.zip",
+      "sha256": "ed78c761d6e6b3e6cc4ff0678b58b837f4a12e05519dee43d9ecb611c25a92fb",
+      "bytes": 137880131,
+      "last_modified": "Sat, 03 Oct 2026 00:09:00 GMT"
+    },
+    {
+      "conjunto": "plano",
+      "ano": 2024,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_plano_amostragem_2024_csv.zip",
+      "sha256": "089452347dd14eaf85a1e2cb2c6efb487213239b4c9c36b103cc6f4302d7010b",
+      "bytes": 114256388,
+      "last_modified": "Fri, 02 Oct 2026 12:07:20 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2024,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2024_csv.zip",
+      "sha256": "146a3ed0248df03518c98ba1c035459d22cf2dd8a7c113a82eceaee7ce179768",
+      "bytes": 203168306,
+      "last_modified": "Sun, 04 Oct 2026 12:43:14 GMT"
+    },
+    {
+      "conjunto": "controle",
+      "ano": 2025,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2025_csv.zip",
+      "sha256": "39c69bc8d874ce5455022f3b46cf6a0d6c0ce28b7919457a87ea55525b2fe867",
+      "bytes": 145333710,
+      "last_modified": "Sat, 03 Oct 2026 00:08:57 GMT"
+    },
+    {
+      "conjunto": "plano",
+      "ano": 2025,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_plano_amostragem_2025_csv.zip",
+      "sha256": "41a532daaeada1889364aa5b360ccde6f099ba1fcdd721a4abd7f767e381d456",
+      "bytes": 120604201,
+      "last_modified": "Fri, 02 Oct 2026 12:07:17 GMT"
+    },
+    {
+      "conjunto": "vigilancia",
+      "ano": 2025,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2025_csv.zip",
+      "sha256": "4f3789ecf07c83e18e7dd7be5a9749e22a9fe9d4707e974fe72ee4d882758068",
+      "bytes": 212080633,
+      "last_modified": "Sun, 04 Oct 2026 12:43:11 GMT"
+    },
+    {
+      "conjunto": "fora_padrao",
+      "ano": null,
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_amostras_fora_padrao_csv.zip",
+      "sha256": "2b1c64f1dd98aa99ffd8f619e92c5eef6da1801c315edc7c894510b63d73faf4",
+      "bytes": 45300836,
+      "last_modified": "Sat, 03 Oct 2026 00:09:11 GMT"
+    }
+  ],
+  "seeds": {
+    "sisagua_2024.json.gz": "1d657ccfc15168c31d557dad43113548c91a5b79f899bdf9729c88d1c746640e",
+    "sisagua_2025.json.gz": "8be2ecc0d8f1bbdc95eda512e31bcea6458bef4ee8fa6d1b723f154548f2a720",
+    "sisagua_fora_padrao.json.gz": "d02c5de28c0aefc789efdf50798850f5949552d8b252e607e7be317f61a346b8"
+  },
+  "dicionarios": {
+    "controle": {
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/SISAGUA%20-%20Controle%20Mensal%20Par%C3%A2metros%20B%C3%A1sicos%20-%20Dicion%C3%A1rio%20de%20Dados.pdf",
+      "sha256": "0f61f6096ef15efafff0389b51443f31072c2dfb9b751142ff8f0b76727955c4"
+    },
+    "fora_padrao": {
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/dicionario_controle_mensal_amostras_fora_do_padrao.odt",
+      "sha256": "f828ea4906657d1f3e31f0d02c9333d07d97c8daba00d494e20b3b8250402188"
+    },
+    "plano": {
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/dicionario_controle_mensal_plano_de_amostragem.odt",
+      "sha256": "f44e222b600f702bfbb5952ecf2d2548917bc4f62ead889d9d3267188e46be39"
+    },
+    "vigilancia": {
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/dicionario_vigilancia_parametros_basicos.odt",
+      "sha256": "5e500ce8150a64787618bf650b84615e588ab4fcae77a8cd48a6ac79cba9c9d3"
+    }
+  },
+  "portaria": {
+    "url": "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2021/prt0888_07_05_2021.html",
+    "sha256": "751c2fabfd5ff41e9e5aca68caa00cef7924170362402755adc52b50c5a61923"
+  },
+  "paginas": {
+    "controle": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-parametros-basicos",
+    "plano": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-plano-amostragem",
+    "vigilancia": "https://dadosabertos.saude.gov.br/dataset/sisagua-vigilancia-parametros-basicos",
+    "fora_padrao": "https://dadosabertos.saude.gov.br/dataset/sisagua-controle-mensal-amostras-fora-do-padrao"
+  },
+  "erros_catalogo": [
+    "Na página do plano de amostragem, os recursos JSON e XML rotulados 2024 apontam para controle_mensal_plano_amostragem_2025_json.zip e _xml.zip. O Observatório usa o CSV, cujo nome está correto."
+  ]
+}

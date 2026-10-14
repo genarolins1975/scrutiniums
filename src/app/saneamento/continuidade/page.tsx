@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { agregado, agregados, fichas, municipios } from "@/lib/saneamento/gold";
+import { agregado, agregados, fichas, meta, municipios } from "@/lib/saneamento/gold";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { inteiro, numero } from "@/lib/saneamento/formato";
+import { Qualidade } from "./Qualidade";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: "A água chega regularmente?",
+  title: "A água chega regularmente e com qualidade monitorada?",
   description:
-    "Paralisações com falta de água, interrupções sistemáticas com racionamento ou rodízio e sua duração, declaradas pelos prestadores ao SINISA 2024, por UF e por município.",
+    "Paralisações, racionamento e rodízio declarados ao SINISA 2024, e qualidade da água no SISAGUA (controle do prestador, vigilância da saúde e plano de amostragem), 2024 e 2025, por UF e por município.",
   alternates: { canonical: "/saneamento/continuidade" },
 };
 
@@ -75,10 +76,16 @@ export default function Pagina() {
             <p>
               Ter rede não garante água na torneira. Os prestadores declaram ao SINISA quantas paralisações com falta de água ocorreram e quantas
               interrupções sistemáticas, com racionamento ou rodízio, houve no ano, com duração e economias atingidas.
-              São declarações do prestador, sem auditoria do SINISA.
+              São declarações do prestador, sem auditoria do SINISA. A qualidade da água vem de outra base, o SISAGUA, do Ministério da Saúde,
+              com o controle do prestador e a vigilância das secretarias de saúde em registros separados.
             </p>
           }
-          recorte={<>{inteiro(c?.municipios_participantes)} municípios do módulo de água do SINISA 2024 (ano de referência).</>}
+          recorte={
+            <>
+              Continuidade: {inteiro(c?.municipios_participantes)} municípios do módulo de água do SINISA 2024 (ano de referência). Qualidade: análises
+              do SISAGUA de 2024 e 2025 nos {inteiro(meta()?.sisagua.por_ano["2024"]?.municipios.universo)} municípios do IBGE.
+            </>
+          }
           situacao={cap.situacao}
           pendencia={cap.pendencia}
         />
@@ -197,15 +204,7 @@ export default function Pagina() {
           />
         </Secao>
 
-        <Secao id="qualidade" titulo="A água distribuída é monitorada?">
-          <Indisponivel titulo="Qualidade da água ainda não integrada">
-            <p>
-              O controle e a vigilância da qualidade da água para consumo humano são registrados no SISAGUA, do Ministério da Saúde. Os arquivos de
-              amostras exigem tratamento por parâmetro, ponto de coleta e período antes de virar indicador; essa integração não foi feita. O
-              Observatório não substitui essa lacuna por indicador do SINISA.
-            </p>
-          </Indisponivel>
-        </Secao>
+        <Qualidade />
       </main>
     </>
   );

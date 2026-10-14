@@ -11,6 +11,7 @@ import { classePorte, mediana, ROTULO_PORTE } from "@/lib/saneamento/pares";
 import { data, inteiro, numero, reais, reaisCompacto } from "@/lib/saneamento/formato";
 import { MOTIVO_TEXTO, NATUREZA_CURTA, SITUACAO_AGUA, SITUACAO_ESGOTO } from "@/lib/saneamento/rotulos";
 import { prestadorComTarifa } from "@/lib/saneamento/tarifas";
+import { ANOS_SISAGUA } from "@/lib/saneamento/medidas";
 import type { Agregado, FichaMunicipio, Municipio } from "@/lib/saneamento/tipos";
 
 export const dynamicParams = true;
@@ -389,17 +390,101 @@ export default function Pagina({ params }: { params: { id: string } }) {
           ) : (
             <Nota>Sem declaração de continuidade: o município não participou do módulo de água do SINISA 2024.</Nota>
           )}
-          <Nota>Registro declarado pelo prestador. Ausência de registro não prova fornecimento contínuo, e o SINISA não mede qualidade da água.</Nota>
+          <Nota>Registro declarado pelo prestador. Ausência de registro não prova fornecimento contínuo. A qualidade da água vem do SISAGUA, na seção seguinte.</Nota>
+        </Secao>
+
+        <Secao
+          id="qualidade"
+          titulo="A qualidade da água é monitorada?"
+          texto="Registros do SISAGUA, do Ministério da Saúde: o controle que o prestador informa e a vigilância da secretaria de saúde, sempre em separado."
+        >
+          <QualidadeMunicipio q={ficha.qualidade} />
+          <Nota>
+            Análise é o exame de um parâmetro. Com poucas análises, uma única amostra muda muito a proporção. Sem registro não quer dizer água boa
+            nem ruim: é falta de informação no sistema.{" "}
+            <Link href={`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`} className="text-obee-dark underline underline-offset-2">
+              Ver no atlas da qualidade da água
+            </Link>
+            .
+          </Nota>
         </Secao>
 
         <Fonte>
           IBGE, Censo 2022 e estimativa 2024; Ministério das Cidades, SINISA 2025 (ano de referência 2024), base municipal
           {ag.linha?.tecnica ? `, linha ${ag.linha.tecnica} da planilha técnica de água` : ""}
           {es.linha?.tecnica ? ` e ${es.linha.tecnica} da de esgoto` : ""}
-          {gm ? `; Gestão Municipal, linha ${gm.linha}` : ""}.
+          {gm ? `; Gestão Municipal, linha ${gm.linha}` : ""}; Ministério da Saúde, SISAGUA 2024 e 2025 (controle mensal, plano de amostragem e
+          vigilância).
         </Fonte>
       </main>
     </>
+  );
+}
+
+const LINHAS_QUALIDADE: { campo: string; registro: string; medida: string; casas: number }[] = [
+  { campo: "ctrl_ecoli", registro: "Controle", medida: "Presença de E. coli", casas: 2 },
+  { campo: "ctrl_colif", registro: "Controle", medida: "Presença de coliformes totais", casas: 1 },
+  { campo: "ctrl_cloro", registro: "Controle", medida: "Cloro residual livre abaixo de 0,2 mg/L", casas: 1 },
+  { campo: "ctrl_turb", registro: "Controle", medida: "Turbidez acima de 5,0 uT", casas: 1 },
+  { campo: "vig_ecoli", registro: "Vigilância", medida: "Presença de E. coli (rotina)", casas: 1 },
+  { campo: "vig_cloro", registro: "Vigilância", medida: "Cloro residual livre abaixo de 0,2 mg/L (rotina)", casas: 1 },
+  { campo: "plano", registro: "Plano de amostragem", medida: "Análises de coliformes exigidas na rede de SAA e cobertas", casas: 1 },
+];
+
+function QualidadeMunicipio({ q }: { q?: Record<string, number> }) {
+  const anos = ANOS_SISAGUA;
+  const celula = (campo: string, ano: number, casas: number) => {
+    const num = q?.[`qa_${campo}_${ano}_num`];
+    const den = q?.[`qa_${campo}_${ano}_den`];
+    if (num == null || den == null || !(den > 0)) {
+      const reg = campo === "plano" ? null : q?.[`qa_reg_${campo.startsWith("vig") ? "vig" : "ctrl"}_${ano}`];
+      return <span className="text-carvao-muted">{reg === 1 ? "sem análise" : "sem registro"}</span>;
+    }
+    return (
+      <>
+        {numero((num / den) * 100, casas)}%<span className="block text-xs text-carvao-muted">{inteiro(num)} de {inteiro(den)}</span>
+      </>
+    );
+  };
+  return (
+    <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Qualidade da água no SISAGUA, por ano (rolável)">
+      <table className="w-full min-w-[36rem] border-collapse text-sm">
+        <caption className="sr-only">SISAGUA: proporção de análises com o resultado medido, por registro e ano</caption>
+        <thead>
+          <tr className="border-b border-carvao text-left">
+            <th scope="col" className="py-2 pr-4 font-medium text-carvao">Registro e medida</th>
+            {anos.map((ano) => (
+              <th key={ano} scope="col" className="py-2 pr-4 text-right font-medium text-carvao">
+                {ano}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="border-b border-linha">
+            <th scope="row" className="py-2 pr-4 text-left font-normal text-carvao">Há registro de controle e de vigilância?</th>
+            {anos.map((ano) => (
+              <td key={ano} className="py-2 pr-4 text-right text-carvao">
+                {q?.[`qa_reg_ctrl_${ano}`] === 1 ? "controle sim" : "controle não"}, {q?.[`qa_reg_vig_${ano}`] === 1 ? "vigilância sim" : "vigilância não"}
+              </td>
+            ))}
+          </tr>
+          {LINHAS_QUALIDADE.map((l) => (
+            <tr key={l.campo} className="border-b border-linha">
+              <th scope="row" className="py-2 pr-4 text-left font-normal text-carvao">
+                <span className="block text-xs text-carvao-muted">{l.registro}</span>
+                {l.medida}
+              </th>
+              {anos.map((ano) => (
+                <td key={ano} className="py-2 pr-4 text-right tabular-nums text-carvao">
+                  {celula(l.campo, ano, l.casas)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

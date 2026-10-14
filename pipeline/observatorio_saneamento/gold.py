@@ -29,6 +29,7 @@ from collections import Counter, defaultdict
 
 from .desigualdades import SPECS as SPECS_DESIGUALDADES
 from .desigualdades import construir as construir_desigualdades
+from . import sisagua
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(os.path.dirname(AQUI))
@@ -1086,6 +1087,11 @@ def construir():
         "agua": br_des["censo2022"]["moradores"]["agua"]["sem_ligacao"] - sum(br_des["desigualdades"][s["id"]][0] for s in SPECS if s["tabela"] == 6894),
         "esgoto": br_des["censo2022"]["moradores"]["esgoto"]["sem_rede_nem_septica"] - sum(br_des["desigualdades"][s["id"]][0] for s in SPECS if s["tabela"] == 7555),
     }
+    # Qualidade da água (SISAGUA): contadores municipais por ano, em arquivo próprio.
+    qualidade, meta["sisagua"] = sisagua.construir([r["id"][:6] for r in regs])
+    for r in regs:
+        r.update(qualidade[r["id"][:6]])
+        detalhes_uf[r["uf"]][r["id"]]["qualidade"] = qualidade[r["id"][:6]]
     return {
         "reguladores": lista_reg,
         "meta": meta,
@@ -1162,6 +1168,37 @@ CAMPOS_DESIGUALDADES = [("id", "Código IBGE do município")] + [
 ]
 
 
+# Capítulo 3 (SISAGUA): arquivo próprio, carregado só pelo atlas da qualidade da água.
+ROTULOS_QUALIDADE = {
+    "ctrl_ecoli": "controle, amostras com presença de E. coli",
+    "ctrl_colif": "controle, amostras com presença de coliformes totais",
+    "ctrl_cloro": "controle, amostras com cloro residual livre abaixo de 0,2 mg/L",
+    "ctrl_turb": "controle, amostras com turbidez acima de 5,0 uT",
+    "vig_ecoli": "vigilância (rotina), amostras com presença de E. coli",
+    "vig_cloro": "vigilância (rotina), amostras com cloro residual livre abaixo de 0,2 mg/L",
+    "plano": "plano de amostragem, análises de coliformes totais exigidas e cobertas no sistema de distribuição de SAA",
+}
+
+
+def _rotulo_qualidade(c):
+    partes = c.split("_")
+    ano = next(p for p in partes if p.isdigit())
+    if partes[1] == "reg":
+        return f"SISAGUA {ano}: município com registro de {'controle' if partes[2] == 'ctrl' else 'vigilância'} (1 sim, 0 não)"
+    mid = "_".join(partes[1:partes.index(ano)])
+    papel = {"num": "numerador", "den": "denominador"}[partes[-1]]
+    if mid == "plano":
+        papel = {"num": "análises cobertas", "den": "análises exigidas"}[partes[-1]]
+    elif papel == "denominador":
+        papel = "amostras com resultado válido"
+    else:
+        papel = "amostras com o resultado medido"
+    return f"SISAGUA {ano}, {ROTULOS_QUALIDADE[mid]}: {papel}"
+
+
+CAMPOS_QUALIDADE = [("id", "Código IBGE do município")] + [(c, _rotulo_qualidade(c)) for c in sisagua.campos()]
+
+
 def json_bytes(obj):
     return (json.dumps(obj, ensure_ascii=False, sort_keys=False, separators=(",", ":")) + "\n").encode()
 
@@ -1211,6 +1248,13 @@ def arquivos(g):
         "linhas": [[r[c] for c in campos_des] for r in g["municipios"]],
     })
     out["desigualdades_municipios.csv"] = csv_bytes([r for _, r in CAMPOS_DESIGUALDADES], [[r[c] for c in campos_des] for r in g["municipios"]])
+    campos_qa = [c for c, _ in CAMPOS_QUALIDADE]
+    out["qualidade_municipios.json"] = json_bytes({
+        "campos": campos_qa,
+        "rotulos": dict(CAMPOS_QUALIDADE),
+        "linhas": [[r[c] for c in campos_qa] for r in g["municipios"]],
+    })
+    out["qualidade_municipios.csv"] = csv_bytes([r for _, r in CAMPOS_QUALIDADE], [[r[c] for c in campos_qa] for r in g["municipios"]])
     cab_p = ["id", "nome", "sigla", "natureza", "abrangencia", "ufs", "municipios_agua", "municipios_esgoto",
              "populacao_atendida_agua", "populacao_atendida_esgoto", "perdas_distribuicao_pct",
              "investimento_agua", "investimento_esgoto"]

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { agregado, agregados, meta, municipios, municipiosComDesigualdades, prestadores, reguladores } from "@/lib/saneamento/gold";
-import { MEDIDAS_DESIGUALDADES, MEDIDAS, MEDIDAS_GERAIS, agregarMedida, formatarValor, medida } from "@/lib/saneamento/medidas";
+import { agregado, agregados, fichaMunicipio, meta, municipios, municipiosComDesigualdades, municipiosComQualidade, prestadores, reguladores } from "@/lib/saneamento/gold";
+import { MEDIDAS_DESIGUALDADES, MEDIDAS, MEDIDAS_GERAIS, MEDIDAS_QUALIDADE, agregarMedida, formatarValor, medida } from "@/lib/saneamento/medidas";
 import { referencias } from "@/lib/saneamento/referencias";
 import { CAPITULOS, ROTA } from "@/lib/saneamento/capitulos";
 import { VIABILIDADE } from "@/lib/saneamento/viabilidade";
@@ -51,7 +51,49 @@ describe("Saneamento: gold e conferências", () => {
     expect(Object.keys(listaDes[0]).filter((k) => k.startsWith("des_"))).toHaveLength(28);
     expect(listaDes).toHaveLength(lista.length);
     expect(MEDIDAS_GERAIS.some((m) => m.id.startsWith("des-"))).toBe(false);
-    expect(MEDIDAS_GERAIS.length + MEDIDAS_DESIGUALDADES.length).toBe(MEDIDAS.length);
+    expect(MEDIDAS_GERAIS.length + MEDIDAS_DESIGUALDADES.length + MEDIDAS_QUALIDADE.length).toBe(MEDIDAS.length);
+  });
+
+  const listaQa = municipiosComQualidade();
+
+  it("SISAGUA: colunas da qualidade ficam fora da tabela geral e do comparador", () => {
+    expect(Object.keys(lista[0]).some((k) => k.startsWith("qa_"))).toBe(false);
+    expect(Object.keys(listaQa[0]).filter((k) => k.startsWith("qa_"))).toHaveLength(32);
+    expect(listaQa).toHaveLength(lista.length);
+    expect(MEDIDAS_GERAIS.some((m) => m.id.startsWith("qa-"))).toBe(false);
+    expect(MEDIDAS_QUALIDADE).toHaveLength(14);
+  });
+
+  it("SISAGUA: registro por ano confere com meta.json e ausência de registro nunca vira zero", () => {
+    const sis = meta()!.sisagua;
+    for (const ano of [2024, 2025]) {
+      const a = sis.por_ano[String(ano)];
+      const ctrl = listaQa.filter((m) => m[`qa_reg_ctrl_${ano}`] === 1).length;
+      const vig = listaQa.filter((m) => m[`qa_reg_vig_${ano}`] === 1).length;
+      expect([ctrl, vig]).toEqual([a.municipios.controle, a.municipios.vigilancia]);
+      for (const m of listaQa.filter((x) => x[`qa_reg_ctrl_${ano}`] === 0)) {
+        for (const id of ["ctrl-ecoli", "ctrl-colif", "ctrl-cloro", "ctrl-turb"]) expect(medida(`qa-${id}-${ano}`).pct(m), m.id).toBeNull();
+      }
+    }
+    expect(sis.por_ano["2024"].municipios).toEqual({ universo: 5571, controle: 4563, vigilancia: 5071, ambos: 4351, nenhum: 288 });
+  });
+
+  it("SISAGUA: Brasil é soma de análises, e a cobertura do plano nunca passa de 100%", () => {
+    const ecoli = agregarMedida(medida("qa-ctrl-ecoli-2024"), listaQa);
+    expect([ecoli.contagem, ecoli.universo]).toEqual([3929, 1744151]);
+    const refs = referencias(agregados(), listaQa, ["qa-vig-ecoli-2024"]);
+    const vig = agregarMedida(medida("qa-vig-ecoli-2024"), listaQa);
+    expect(refs["qa-vig-ecoli-2024"].BR.pct).toBeCloseTo(vig.pct!, 12);
+    const plano = meta()!.sisagua.por_ano["2024"].plano;
+    expect(agregarMedida(medida("qa-plano-2024"), listaQa).pct).toBeCloseTo((plano.cobertas / plano.exigidas) * 100, 9);
+    for (const ano of [2024, 2025]) for (const m of listaQa) expect(medida(`qa-plano-${ano}`).pct(m) ?? 0).toBeLessThanOrEqual(100);
+  });
+
+  it("SISAGUA: a ficha municipal traz os mesmos valores do arquivo da qualidade", () => {
+    const sp = listaQa.find((m) => m.id === "3550308")!;
+    const f = fichaMunicipio("3550308")!;
+    expect(f.qualidade?.qa_ctrl_ecoli_2024_den).toBe(sp.qa_ctrl_ecoli_2024_den);
+    expect(f.qualidade?.qa_vig_cloro_2025_num).toBe(sp.qa_vig_cloro_2025_num);
   });
 
   it("desigualdades: referências usam tabulações oficiais mesmo sob supressão municipal", () => {
@@ -142,8 +184,9 @@ describe("Saneamento: gold e conferências", () => {
   it("a contagem agregada de cada medida soma a própria contagem municipal", () => {
     for (const med of MEDIDAS) {
       if (!med.contagem || !med.numerador || !med.denominador) continue;
-      const r = agregarMedida(med, listaDes);
-      const incluidos = listaDes.filter((m) => med.numerador!(m) != null && med.denominador!(m) != null && med.denominador!(m)! > 0);
+      const base = med.id.startsWith("qa-") ? listaQa : listaDes;
+      const r = agregarMedida(med, base);
+      const incluidos = base.filter((m) => med.numerador!(m) != null && med.denominador!(m) != null && med.denominador!(m)! > 0);
       expect(r.contagem, med.id).toBe(incluidos.reduce((s, m) => s + (med.contagem!(m) ?? 0), 0));
     }
   });

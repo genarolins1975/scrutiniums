@@ -37,6 +37,7 @@ const ARQUIVOS: [string, string][] = [
   ["reguladores.json", "Entidades reguladoras por CNPJ e municípios que as declararam"],
   ["etes.csv", "Estações de tratamento de esgoto declaradas"],
   ["desigualdades_municipios.csv", "Censo 2022 por grupo (cor ou raça, quilombolas, indígenas, favelas): carência e universo por município"],
+  ["qualidade_municipios.csv", "SISAGUA 2024 e 2025: registro de controle e vigilância e numerador e denominador de cada medida de qualidade da água, por município"],
   ["meta.json", "Proveniência: arquivos de origem, sha256, datas, cobertura e conferências"],
 ];
 

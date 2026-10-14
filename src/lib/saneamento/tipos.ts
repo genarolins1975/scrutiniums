@@ -14,6 +14,8 @@ export type SituacaoEsgoto = "participou" | "delegacao_sem_atendimento" | "infor
 /** Linha da tabela municipal compacta (municipios.json). */
 export type Municipio = {
   [campo: `des_${string}`]: number | null;
+  /** SISAGUA (arquivo qualidade_municipios.json): registro por ano e numerador/denominador de cada medida. */
+  [campo: `qa_${string}`]: number | null;
   id: string;
   nome: string;
   uf: string;
@@ -207,6 +209,8 @@ export type FichaMunicipio = {
   };
   gestao_municipal?: GestaoMunicipal;
   tarifa_social?: TarifaSocialMunicipio;
+  /** SISAGUA: mesmos campos de qualidade_municipios.json; chave ausente = sem registro. */
+  qualidade?: Record<string, number>;
 };
 
 export type Agregado = {
@@ -330,7 +334,33 @@ export type EteCatalogo = Ete & { municipio: string; uf: string; prestador: stri
 
 export type Conferencia = { id: string; descricao: string; valores: Record<string, number | null>; conclusao: string };
 
+/** Contadores [com o resultado medido, com resultado válido]. */
+export type ParSisagua = [number, number];
+
+export type AnoSisagua = {
+  municipios: { universo: number; controle: number; vigilancia: number; ambos: number; nenhum: number };
+  codigos_fora_do_universo: Record<string, string[]>;
+  exclusoes: { controle: Record<string, number>; plano: Record<string, number>; vigilancia: Record<string, number> };
+  /** Chave "tipo|procedência|parâmetro": amostras de rotina da vigilância. */
+  vigilancia_nacional: Record<string, ParSisagua>;
+  plano: { cobertas: number; exigidas: number; realizadas: number; formas: number; formas_sem_controle: number };
+  conferencia_fora_padrao: { parametro: string; controle_mensal: number; arquivo_fora_do_padrao: number; diferenca: number }[];
+};
+
 export type MetaSaneamento = {
+  sisagua: {
+    anos: number[];
+    proveniencia: {
+      capturado_em: string;
+      arquivos: { conjunto: string; ano: number | null; url: string; sha256: string; bytes: number; last_modified: string | null }[];
+      dicionarios: Record<string, { url: string; sha256: string }>;
+      portaria: { url: string; sha256: string };
+      paginas: Record<string, string>;
+      erros_catalogo: string[];
+    };
+    limites: Record<string, { regra: string; limite?: number; citacao: string }>;
+    por_ano: Record<string, AnoSisagua>;
+  };
   desigualdades: {
     proveniencia: { capturado_em: string };
     residuos_cor_raca: { universo: number; agua: number; esgoto: number };

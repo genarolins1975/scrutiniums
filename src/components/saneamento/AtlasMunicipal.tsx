@@ -10,7 +10,7 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { URL_GEO } from "@/lib/energia/geo";
 import { NAO_SE_APLICA, quebrasFixas, type ValorClassificavel } from "@/lib/energia/escalas";
 import { montaHistograma, percentilDe } from "@/lib/energia/distribuicao";
-import { FONTE_ROTULO, MEDIDAS, agregarMedida, formatarValor, valorMedida, type Medida, type Variante } from "@/lib/saneamento/medidas";
+import { FONTE_CURTA, FONTE_ROTULO, MEDIDAS, agregarMedida, formatarValor, valorMedida, type Medida, type Variante } from "@/lib/saneamento/medidas";
 import type { MapaReferencias } from "@/lib/saneamento/referencias";
 import { ROTA } from "@/lib/saneamento/capitulos";
 import type { Municipio } from "@/lib/saneamento/tipos";
@@ -18,6 +18,9 @@ import { classePorte, ROTULO_PORTE, mediana } from "@/lib/saneamento/pares";
 import { baixarCsv } from "@/lib/saneamento/csv";
 import { inteiro } from "@/lib/saneamento/formato";
 import { useMunicipios } from "./useMunicipios";
+
+/** Só a primeira letra em minúscula: preserva siglas e nomes científicos (SAA, CadÚnico, E. coli). */
+const inicialMinuscula = (t: string) => (/^[A-ZÀ-Ý]{2}/.test(t) ? t : t.charAt(0).toLowerCase() + t.slice(1));
 
 const CORES_SEQ = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
 const CORES_DIV = ["var(--san-div-neg-2)", "var(--san-div-neg-1)", "var(--san-div-centro)", "var(--san-div-pos-1)", "var(--san-div-pos-2)"];
@@ -97,6 +100,8 @@ export function AtlasMunicipal({
     [doRecorte, med],
   );
 
+  /** O que a contagem conta: pessoas nas medidas de moradores; análises, famílias ou economias nas demais. */
+  const unidadeContagem = med.unidadeContagem && med.unidadeContagem !== "moradores" ? med.unidadeContagem : "pessoas";
   const pctRecorte = useMemo(() => doRecorte.map((m) => med.pct(m)), [doRecorte, med]);
   const histograma = useMemo(() => {
     const vs = pctRecorte.filter((v): v is number => v != null);
@@ -139,7 +144,7 @@ export function AtlasMunicipal({
           <select aria-label="Medida" className={controle} value={med.id} onChange={(e) => set({ medida: e.target.value })}>
             {medidas.map((m) => (
               <option key={m.id} value={m.id}>
-                {m.titulo} · {m.fonte === "sinisa2024" ? "SINISA 2024" : m.fonte === "censo2022" ? "Censo 2022" : m.fonte === "nr8_sinisa2024" ? "NR 8 / SINISA 2024" : m.fonte === "sinisa_cadunico2024" ? "SINISA e CadÚnico 2024" : "Censos 2010 e 2022"}
+                {m.titulo} · {FONTE_CURTA[m.fonte]}
               </option>
             ))}
           </select>
@@ -158,7 +163,7 @@ export function AtlasMunicipal({
                 : "Pessoas"}
             </label>
           </div>
-          {!med.contagem && <p className="text-xs text-carvao-muted">Esta medida não tem contagem de pessoas.</p>}
+          {!med.contagem && <p className="text-xs text-carvao-muted">Esta medida não tem contagem.</p>}
         </fieldset>
         <label className="min-w-0 text-sm text-carvao">
           Território
@@ -178,7 +183,7 @@ export function AtlasMunicipal({
           <p className="max-w-prose2 text-[0.95rem] leading-relaxed text-carvao">{med.pergunta}</p>
           <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
             {nomeRecorte}: <strong className="font-medium text-carvao">{textoRef(refTerritorio)}</strong>
-            {s.uf !== "BR" && <> · Brasil: {textoRef(refBrasil)}</>} · {FONTE_ROTULO[med.fonte]}, {med.periodo}. Universo: {med.universo.toLowerCase()}.
+            {s.uf !== "BR" && <> · Brasil: {textoRef(refBrasil)}</>} · {FONTE_ROTULO[med.fonte]}, {med.periodo}. Universo: {inicialMinuscula(med.universo)}.
           </p>
           {carga.estado === "pronto" && (
             <p className="mt-1 text-xs text-carvao-muted">
@@ -234,7 +239,7 @@ export function AtlasMunicipal({
           <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-2">
             {med.contagem && rankingPessoas.length > 0 && (
               <GraficoBarras
-                titulo={`Onde há mais ${med.unidadeContagem && med.unidadeContagem !== "moradores" ? med.unidadeContagem : "pessoas"}: ${med.titulo.toLowerCase()} (${nomeRecorte})`}
+                titulo={`Onde há mais ${unidadeContagem}: ${inicialMinuscula(med.titulo)} (${nomeRecorte})`}
                 dados={rankingPessoas.map((r) => ({ id: r.id, rotulo: r.rotulo, v: r.v }))}
                 chaveCategoria="id"
                 chaveRotulo="rotulo"
@@ -264,15 +269,15 @@ export function AtlasMunicipal({
             )}
           </div>
           <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-            Os dois rankings respondem a perguntas diferentes: onde está o maior número de pessoas e onde a proporção é maior. O corte de{" "}
-            {inteiro(LIMIAR_PROPORCAO)} moradores evita que municípios muito pequenos ocupem a lista por poucas pessoas; a tabela do mapa traz
+            Os dois rankings respondem a perguntas diferentes: onde está o maior número de {unidadeContagem} e onde a proporção é maior. O corte
+            de {inteiro(LIMIAR_PROPORCAO)} moradores evita que municípios muito pequenos ocupem a lista por poucos casos; a tabela do mapa traz
             todos.
           </p>
 
           {histograma && (
             <div className="mt-10">
               <Histograma
-                titulo={`Distribuição dos municípios: ${med.titulo.toLowerCase()} (${nomeRecorte})`}
+                titulo={`Distribuição dos municípios: ${inicialMinuscula(med.titulo)} (${nomeRecorte})`}
                 dados={histograma.dist}
                 tetoEixo={histograma.teto}
                 rotuloX={med.titulo}
@@ -285,7 +290,7 @@ export function AtlasMunicipal({
                     ? { valor: med.pct(sel), rotulo: `${sel.nome} (${sel.uf})`, percentil: percentilDe(med.pct(sel), pctRecorte) }
                     : undefined
                 }
-                nota="Cada município conta uma vez, qualquer que seja a população. A referência territorial acima soma pessoas, não percentuais."
+                nota="Cada município conta uma vez, qualquer que seja a população. A referência territorial acima vem de somas de numeradores e denominadores, não de média de percentuais."
               />
             </div>
           )}
