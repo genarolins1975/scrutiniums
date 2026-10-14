@@ -24,6 +24,7 @@ import { CAPITULOS, PAINEIS_COM_DADOS } from "@/lib/contas-publicas/catalogo";
 import { MEDIDAS } from "@/lib/contas-estaduais/comparacao";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import catalogoEstadual from "@/lib/contas-estaduais/catalogo.json";
+import { CAPITULOS as CAPITULOS_SANEAMENTO, ROTA as ROTA_SANEAMENTO, rotaCapitulo } from "@/lib/saneamento/capitulos";
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { goldGas } from "@/lib/gas/gold";
 
@@ -135,7 +136,7 @@ function vitrineEficiencia(): Vitrine {
     fontes:
       "Tesouro (Siconfi), INEP, IBGE, Ministério da Saúde, MDS, Ministério das Cidades, CNJ e Sinesp, declaradas tema a tema, com a página de métodos de cada tema.",
     situacao:
-      `Valores e referências, sem notas, rankings ou conclusões.` +
+      `Valores e referências por tema e um índice experimental de resultados nas 26 capitais, com memória de cálculo e testes de sensibilidade; sem conclusões sobre a gestão.` +
       (semPainel > 0 ? ` ${semPainel} temas do mapa ainda não têm painel publicado.` : ""),
   };
 }
@@ -181,6 +182,24 @@ function vitrineEstados(): Vitrine {
   };
 }
 
+// ------------------------------------------------ Saneamento
+
+function vitrineSaneamento(): Vitrine {
+  const comPainel = CAPITULOS_SANEAMENTO.filter((c) => c.situacao !== "em_preparacao");
+  return {
+    id: "saneamento",
+    imagem: "/home/saneamento.webp",
+    contagem: { valor: `${comPainel.length} de ${CAPITULOS_SANEAMENTO.length}`, unidade: "capítulos com dados" },
+    paineis: [
+      ...comPainel.map((c) => ({ titulo: c.pergunta, href: rotaCapitulo(c), descricao: c.resumo })),
+      { titulo: "Meu município", href: `${ROTA_SANEAMENTO}/municipio`, descricao: "Carência, prestador, regulador, plano, investimento e comparação com a UF." },
+    ],
+    situacao:
+      "Primeira entrega. Capítulos com cobertura parcial declaram o que falta; preço regulado em amostra de atos verificados; saúde, ambiente e desigualdades em preparação.",
+    metodologia: { href: `${ROTA_SANEAMENTO}/metodologia`, rotulo: "Método e fontes" },
+  };
+}
+
 // ------------------------------------------------------------ Gás Natural
 
 function vitrineGas(): Vitrine {
@@ -203,6 +222,7 @@ export function vitrines(): Record<DominioId, Vitrine> {
     eficiencia: vitrineEficiencia(),
     contas: vitrineContas(),
     estados: vitrineEstados(),
+    saneamento: vitrineSaneamento(),
     gas: vitrineGas(),
   };
 }

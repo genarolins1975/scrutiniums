@@ -12,6 +12,7 @@ export const ABAS_OBSERVATORIOS: { id: DominioId; href: string; rotulo: string }
   { id: "eficiencia", href: "/eficiencia-estatal", rotulo: "Eficiência Estatal" },
   { id: "contas", href: "/contas-publicas", rotulo: "Contas Federais" },
   { id: "estados", href: "/contas-publicas-estaduais", rotulo: "Contas Estaduais" },
+  { id: "saneamento", href: "/saneamento", rotulo: "Saneamento" },
   { id: "gas", href: "/gas-natural", rotulo: "Gás Natural" },
 ];
 

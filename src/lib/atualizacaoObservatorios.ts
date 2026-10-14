@@ -17,6 +17,19 @@ import { goldGas } from "@/lib/gas/gold";
 import { mesExtenso } from "@/lib/gas/formato";
 
 export function atualizacaoObservatorio(id: DominioId): { rotulo: string; linhas: string[] } {
+  if (id === "saneamento") {
+    try {
+      const m = JSON.parse(readFileSync(join(process.cwd(), "public", "saneamento", "gold", "meta.json"), "utf-8"));
+      return { rotulo: "Fontes e cobertura", linhas: [
+        `SINISA ${m.sinisa.ano_referencia + 1} (ano de referência ${m.sinisa.ano_referencia}): ${m.cobertura.agua_participantes.toLocaleString("pt-BR")} municípios em água e ${m.cobertura.esgoto_participantes.toLocaleString("pt-BR")} com indicadores de esgoto.`,
+        `IBGE, Censo 2022 e 2010: ${m.cobertura.municipios_censo_2022.toLocaleString("pt-BR")} municípios.`,
+        `Captura em ${dataBR(m.sinisa.capturado_em.slice(0, 10))}. Base municipal de água retificada em ${dataBR(m.sinisa.retificacao_agua_municipal)}.`,
+        "Preço regulado em amostra de atos verificados; capítulos de saúde e desigualdades em preparação.",
+      ] };
+    } catch {
+      return { rotulo: "Fontes e cobertura", linhas: ["Dados indisponíveis no momento."] };
+    }
+  }
   if (id === "estados") {
     return { rotulo: "Fontes e cobertura", linhas: [
       "Tesouro Nacional / Siconfi: RREO Anexo 01 e RGF Anexo 02.",

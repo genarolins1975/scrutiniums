@@ -27,9 +27,12 @@ function paginas(dir: string, out: string[] = []): string[] {
 
 describe("registro de domínios", () => {
   it("seis observatórios, ids e rotas estáveis, acento próprio", () => {
-    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados", "gas"]);
-    expect(DOMINIOS[5].rotaRaiz).toBe("/gas-natural");
-    expect(DOMINIOS[5].acento).toBe("gas");
+    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados", "saneamento", "gas"]);
+    expect(DOMINIOS[5].rotaRaiz).toBe("/saneamento");
+    expect(dominioDoCaminho("/saneamento/municipio/2611606")).toBe("saneamento");
+    expect(dominioDaSecao("saneamento:acesso")).toBe("saneamento");
+    expect(DOMINIOS[6].rotaRaiz).toBe("/gas-natural");
+    expect(DOMINIOS[6].acento).toBe("gas");
     expect(dominioDoCaminho("/gas-natural")).toBe("gas");
     expect(dominioDoCaminho("/gas-natural/gas-de-cozinha")).toBe("gas");
     expect(dominioDoCaminho("/gas-naturalx")).toBeNull();

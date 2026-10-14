@@ -29,6 +29,7 @@ export type ProductEventName =
   | "observatorio_escolhido:eficiencia"
   | "observatorio_escolhido:contas"
   | "observatorio_escolhido:estados"
+  | "observatorio_escolhido:saneamento"
   | "observatorio_escolhido:gas";
 
 export async function trackEvent(name: ProductEventName, userId?: string): Promise<void> {

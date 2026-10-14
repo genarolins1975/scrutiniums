@@ -6,7 +6,7 @@
  * telemetria e sitemap leem daqui. Um novo observatório é uma entrada nova.
  */
 
-export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados" | "gas";
+export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados" | "saneamento" | "gas";
 
 export type Dominio = {
   id: DominioId;
@@ -74,7 +74,7 @@ export const DOMINIOS: Dominio[] = [
     pergunta:
       "Quanto o Estado aplica, que atendimento oferece e que resultados a fonte registra, com a mesma régua para cada ente?",
     descricao:
-      "Indicadores públicos sobre recursos, atendimento e resultados, com definição, fonte, período e limitações em cada número. Educação municipal e Saúde publicadas nas 26 capitais: educação municipal (despesa total, por habitante e por matrícula, matrículas, alunos por turma, aprovação, Ideb e Saeb) e saúde (despesa, ações e serviços públicos de saúde, UBS, equipes e cobertura da atenção primária e internações por condições sensíveis à atenção primária). Trabalho e Renda reúne indicadores do IBGE, emprego formal, Cadastro Único, cursos de aprendizagem autorizados e despesas municipais de Trabalho, nos recortes e períodos próprios de cada fonte. Mostra valores e referências, sem notas, rankings ou conclusões.",
+      "Indicadores públicos sobre recursos, atendimento e resultados, com definição, fonte, período e limitações em cada número. Educação municipal e Saúde publicadas nas 26 capitais: educação municipal (despesa total, por habitante e por matrícula, matrículas, alunos por turma, aprovação, Ideb e Saeb) e saúde (despesa, ações e serviços públicos de saúde, UBS, equipes e cobertura da atenção primária e internações por condições sensíveis à atenção primária). Trabalho e Renda reúne indicadores do IBGE, emprego formal, Cadastro Único, cursos de aprendizagem autorizados e despesas municipais de Trabalho, nos recortes e períodos próprios de cada fonte. Mostra valores e referências e um índice experimental de resultados na vida dos moradores das 26 capitais, com memória de cálculo; sem conclusões sobre a gestão.",
     descricaoCurta:
       "Educação e Saúde nas capitais, Trabalho e Renda nos recortes das fontes: recursos públicos, serviços e condições de vida a partir de bases oficiais.",
     chips: ["Recursos", "Atendimento", "Resultados", "Educação", "Saúde", "Trabalho e Renda"],
@@ -111,6 +111,22 @@ export const DOMINIOS: Dominio[] = [
     cta: "Explorar Contas Públicas Estaduais",
     acento: "obee",
     prefixosTelemetria: ["estados:"],
+  },
+  {
+    id: "saneamento",
+    nome: "Observatório Brasileiro do Saneamento",
+    nomeCurto: "Saneamento",
+    pergunta: "Quem ainda está sem água e esgoto adequados, quanto custa o serviço, quem o presta e se o planejamento vira atendimento?",
+    descricao:
+      "Acesso à água e ao esgoto em cada município, pelo Censo 2022 e pelo SINISA 2024, com prestadores, reguladores, investimentos declarados, planos e metas de universalização. O preço regulado tem eixo próprio: como a tarifa é autorizada, o que financia e como chega à conta, a partir das decisões dos reguladores.",
+    descricaoCurta:
+      "Água e esgoto nos 5.570 municípios: Censo 2022, SINISA 2024, prestadores, reguladores, investimentos, metas e preço regulado a partir de atos oficiais.",
+    chips: ["Acesso", "Preço regulado", "Prestadores", "Investimento", "Metas"],
+    rotaRaiz: "/saneamento",
+    rotaApresentacao: "/saneamento",
+    cta: "Explorar Saneamento",
+    acento: "obee",
+    prefixosTelemetria: ["saneamento:"],
   },
   {
     id: "gas",
@@ -157,6 +173,7 @@ export function dominioDoCaminho(caminho: string): DominioId | null {
   if (caminho.startsWith("/eficiencia-estatal")) return "eficiencia";
   if (caminho === "/contas-publicas" || caminho.startsWith("/contas-publicas/")) return "contas";
   if (caminho === "/contas-publicas-estaduais" || caminho.startsWith("/contas-publicas-estaduais/")) return "estados";
+  if (caminho === "/saneamento" || caminho.startsWith("/saneamento/")) return "saneamento";
   if (caminho === "/gas-natural" || caminho.startsWith("/gas-natural/")) return "gas";
   return null;
 }

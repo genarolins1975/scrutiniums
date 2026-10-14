@@ -15,6 +15,10 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 const GUIAS: Record<DominioId, { chamada: string; temas: [string, string][] }> = {
+  saneamento: {
+    chamada: "Água, esgoto, preço regulado e metas em cada município.",
+    temas: [["Acesso e carência", "Censo 2022 e SINISA 2024 nos 5.570 municípios"], ["Preço regulado", "Tarifas verificadas, decisões dos reguladores e conta das famílias"], ["Prestadores, investimento e metas", "Quem presta, quem regula, quanto se investe e quanto falta"]],
+  },
   gas: {
     chamada: "Do poço ao botijão e ao gás canalizado.",
     temas: [["Produção e aproveitamento", "Quanto se produz, reinjeta, queima e disponibiliza"], ["Importação e preços", "Origem do gás importado e preço em cada elo"], ["Consumidor", "Botijão, GNV e inflação do gás por UF"]],
@@ -52,6 +56,9 @@ function Simbolo({ id }: { id: DominioId }) {
         <circle cx="40" cy="40" r="28" />
         <path d="m44 19-21 25h15l-2 18 22-26H43l1-17Z" />
         <path d="M40 5v7m0 56v7M5 40h7m56 0h7" />
+      </> : id === "saneamento" ? <>
+        <path d="M40 10c-9 13-16 22-16 31a16 16 0 0 0 32 0c0-9-7-18-16-31Z" />
+        <path d="M10 66h60M18 58c4 0 4-4 8-4s4 4 8 4 4-4 8-4 4 4 8 4 4-4 8-4" />
       </> : id === "estados" ? <>
         <path d="M10 66h60M15 59V37h12v22m7 0V22h12v37m7 0V30h12v29M15 15h12m7 0h12m7 0h12" />
       </> : id === "gas" ? <>

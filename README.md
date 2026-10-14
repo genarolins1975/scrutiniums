@@ -105,6 +105,17 @@ python3 -m unittest pipeline.tests.test_eficiencia
 
 Regra editorial do domínio: apresenta indicadores, não conclusões sobre governos. Documentação, inventário, metodologia, validação e continuidade em [docs/obee/](./docs/obee/README.md). O OBEE está no registro de domínios (`src/lib/dominios.ts`) e, por ele, na home, no seletor de observatórios, na escolha pós login, no cabeçalho público e no rodapé.
 
+## Observatório Brasileiro do Saneamento (primeira entrega)
+
+Domínio `saneamento`, em **`/saneamento`**: catorze capítulos em cinco eixos (acesso e qualidade; preço regulado e conta das famílias; prestadores; investimento e planejamento; saúde, ambiente e resiliência), ficha de cada município e de cada prestador, comparadores de até quatro municípios ou prestadores com link compartilhável, simulador da conta com tabelas tarifárias verificadas nos atos dos reguladores e página pública de método. Fontes: SINISA 2025 (ano de referência 2024), Censos 2010 e 2022 e estimativa de população 2024 do IBGE, atos de cinco reguladores. Capítulos sem dado integrado aparecem como em preparação, com a dependência declarada. O pipeline fica em `pipeline/observatorio_saneamento/` (biblioteca padrão; originais com sha256 no seed) e escreve `public/saneamento/gold/`:
+
+```bash
+python3 -m pipeline.observatorio_saneamento.gold     # reconstrói a gold a partir do seed (sem rede)
+python3 -m unittest pipeline.tests.test_observatorio_saneamento
+```
+
+Documentação, matriz de viabilidade, método e validação em [docs/saneamento/](./docs/saneamento/README.md).
+
 ## Observatório Brasileiro de Gás Natural
 
 Domínio `gas`, em **`/gas-natural`**: inicial com o caminho do gás produzido até a oferta e dez páginas por pergunta (produção, aproveitamento, importação, preços na cadeia, gás de cozinha, GNV e gás encanado, abertura do mercado, infraestrutura, regulação, dados e método). O GLP do botijão tem página própria, separada do gás natural. O pipeline fica em `pipeline/gas/` (biblioteca padrão; seed versionado com sha256 de cada original) e escreve `public/gas/gold` e `public/gas/series`; roda pelo workflow `atualizar-gas.yml`:
