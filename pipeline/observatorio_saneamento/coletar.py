@@ -303,12 +303,34 @@ def coletar_censo():
     gravar("censo.json.gz", saida)
 
 
+def coletar_cadunico():
+    """Famílias no CadÚnico por faixa de renda, por município, nos meses de fontes.CADUNICO."""
+    capturado = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    c = fontes.CADUNICO
+    saida = {"capturado_em": capturado, "fonte": fontes.MISOCIAL, "campos": c["campos"], "meses": {}}
+    for mes in c["meses"]:
+        url = (f"{fontes.MISOCIAL}?q=anomes_s:{mes}&fl={','.join(c['campos'])}"
+               "&rows=6000&wt=json&sort=codigo_ibge%20asc")
+        b = baixar(url, timeout=180)
+        docs = json.loads(b)["response"]["docs"]
+        saida["meses"][mes] = {
+            "url": url, "sha256": sha256(b), "registros": len(docs),
+            "municipios": {d["codigo_ibge"]: {k: v for k, v in d.items() if k not in ("codigo_ibge", "anomes_s")} for d in docs},
+        }
+        print(f"  CadÚnico {mes}: {len(docs)} municípios")
+    gravar("cadunico.json.gz", saida)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--so-sidra", action="store_true")
     ap.add_argument("--so-sinisa", action="store_true")
     ap.add_argument("--zips", help="diretório com os ZIPs do SINISA já baixados")
+    ap.add_argument("--so-cadunico", action="store_true")
     a = ap.parse_args()
+    if a.so_cadunico:
+        coletar_cadunico()
+        return
     if not a.so_sidra:
         coletar_sinisa(a.zips)
         coletar_gestao_municipal(os.path.join(a.zips, fontes.SINISA_GESTAO_MUNICIPAL.rsplit("/", 1)[1]) if a.zips else None)

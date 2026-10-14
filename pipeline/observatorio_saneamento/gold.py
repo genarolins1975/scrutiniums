@@ -525,6 +525,25 @@ def construir():
 
     # --- Gestão Municipal: plano, política, regulador e prestadores declarados pelo município
     gm_seed = ler_seed("sinisa_gestao_municipal.json.gz")
+    cad_seed = ler_seed("cadunico.json.gz")
+    CAD_MES, CAD_MES_ATUAL = "202412", "202609"
+
+    def cad(cod, mes, campo="cadun_qtd_familias_cadastradas_rfpc_ate_meio_sm_i"):
+        # o MDS publica o código do município com 6 dígitos (sem o verificador)
+        return (cad_seed["meses"][mes]["municipios"].get(cod[:6]) or {}).get(campo)
+
+    def bloco_tarifa_social(vinc):
+        """Declaração de tarifa social de água (GFI1019, GFI1036) somada sobre os prestadores de água do município.
+        oferece: algum prestador declara tarifa social; nao_oferece: todos respondem que não; None: sem resposta."""
+        resp = [(v.get("tarifa") or {}) for v in vinc if v["servico"] == "agua"]
+        sim = [t for t in resp if t.get("GFI1019") == "Sim"]
+        if sim:
+            econ = [t.get("GFI1036") for t in sim]
+            ok = all(isinstance(e, (int, float)) and not isinstance(e, bool) for e in econ)
+            return "oferece", (somar(econ) if ok else None)
+        if resp and all(t.get("GFI1019") == "Não" for t in resp):
+            return "nao_oferece", 0
+        return None, None
 
     def aba(nome):
         a = gm_seed["abas"][nome]
@@ -666,6 +685,7 @@ def construir():
         n_pe = sum(1 for v in vinc if v["servico"] == "esgoto")
         nat = lambda s: sorted({prestadores[v["prestador"]]["natureza"] for v in vinc if v["servico"] == s})  # noqa: E731
 
+        ts_estado, ts_econ = bloco_tarifa_social(vinc)
         regs.append({
             "id": cod, "nome": m["nome"], "uf": uf, "regiao": UF_REGIAO[uf],
             "censo": cod in ids_censo,
@@ -705,6 +725,10 @@ def construir():
             "plano_ano": _ano((gm.get(cod) or {}).get("OGM3007")),
             "reg_ag": _siglas(gm_reg.get(cod, {}).get("agua", [])),
             "reg_es": _siglas(gm_reg.get(cod, {}).get("esgoto", [])),
+            "ts_estado": ts_estado,
+            "ts_economias": ts_econ,
+            "cad_fam_ms": cad(cod, CAD_MES),
+            "cad_fam_ms_atual": cad(cod, CAD_MES_ATUAL),
         })
 
         etes_m = ete_mun.get(cod, [])
@@ -736,6 +760,16 @@ def construir():
                 "prestadores": vinc,
             },
             "gestao_municipal": bloco_gm(cod),
+            "tarifa_social": {
+                "estado": ts_estado,
+                "economias": ts_econ,
+                "cadunico": {mes: {
+                    "familias_ate_meio_sm": cad(cod, mes),
+                    "familias_atualizadas_ate_meio_sm": cad(cod, mes, "cadun_qtd_familias_atualizadas_rfpc_ate_meio_sm_i"),
+                    "pessoas_ate_meio_sm": cad(cod, mes, "cadun_qtd_pessoas_cadastradas_rfpc_ate_meio_sm_i"),
+                    "familias_cadastradas": cad(cod, mes, "cadun_qtd_familias_cadastradas_i"),
+                } for mes in (CAD_MES, CAD_MES_ATUAL)},
+            },
         }
 
     # --- prestadores: agregação por soma de campos declarados
@@ -860,6 +894,18 @@ def construir():
             "factiveis": bloco_factiveis(fichas),
             "continuidade": bloco_continuidade(fichas),
             "gestao": bloco_gestao(fichas),
+            "tarifa_social": {
+                "municipios_oferece": sum(1 for r in membros if r["ts_estado"] == "oferece"),
+                "municipios_nao_oferece": sum(1 for r in membros if r["ts_estado"] == "nao_oferece"),
+                "municipios_sem_resposta": sum(1 for r in membros if r["ts_estado"] is None),
+                # razão no mesmo universo: municípios com economias conhecidas e famílias do CadÚnico em dez/2024
+                "economias": soma_parcial([r["ts_economias"] for r in membros
+                                           if r["ts_economias"] is not None and r["cad_fam_ms"] is not None]),
+                "familias_mesmo_universo": soma_parcial([r["cad_fam_ms"] for r in membros
+                                                         if r["ts_economias"] is not None and r["cad_fam_ms"] is not None]),
+                "municipios_mesmo_universo": sum(1 for r in membros if r["ts_economias"] is not None and r["cad_fam_ms"] is not None),
+            },
+            "cadunico": {mes: soma_parcial([cad(r["id"], mes) for r in membros]) for mes in (CAD_MES, CAD_MES_ATUAL)},
             "cobertura_sinisa": {
                 "agua_participantes": sum(1 for r in membros if r["s_ag"] == "participou"),
                 "esgoto_participantes": sum(1 for r in membros if r["s_es"] == "participou"),
@@ -927,6 +973,30 @@ def construir():
                      "a soma dos municípios deve reproduzir o consolidado Brasil.",
     })
 
+    consistentes, inconsistentes = 0, 0
+    for mes in (CAD_MES, CAD_MES_ATUAL):
+        for v in cad_seed["meses"][mes]["municipios"].values():
+            t = [v.get(k) for k in ("cadun_qtd_familias_cadastradas_rfpc_ate_meio_sm_i",
+                                    "cadun_qtd_familias_cadastradas_rfpc_acima_meio_sm_i", "cadun_qtd_familias_cadastradas_i")]
+            if None in t:
+                continue
+            if t[0] + t[1] == t[2]:
+                consistentes += 1
+            else:
+                inconsistentes += 1
+    conferencias.append({
+        "id": "cadunico_faixas_de_renda",
+        "descricao": "CadÚnico: famílias até meio salário-mínimo mais famílias acima somam o total de famílias cadastradas, "
+                     "município a município, nos dois meses usados.",
+        "valores": {"registros_consistentes": consistentes, "registros_inconsistentes": inconsistentes,
+                    "diferenca": inconsistentes,
+                    "familias_ate_meio_sm_dez2024": br["cadunico"][CAD_MES],
+                    "familias_ate_meio_sm_mais_recente": br["cadunico"][CAD_MES_ATUAL]},
+        "conclusao": "As faixas de renda fecham com o total em todos os municípios publicados; o denominador da razão de "
+                     "tarifa social é a faixa até meio salário-mínimo."
+        if inconsistentes == 0 else "Há municípios em que as faixas não fecham com o total; ver registros_inconsistentes.",
+    })
+
     meta = {
         "observatorio": "Observatório Brasileiro do Saneamento",
         "gerado_de": "pipeline/observatorio_saneamento/seed (sha256 de cada original no manifesto)",
@@ -950,6 +1020,16 @@ def construir():
             "populacao_2024": {"tabela": censo["populacao_2024"]["tabela"], "ano": 2024},
             "municipios": {"url": censo["municipios"]["url"], "sha256": censo["municipios"]["sha256"],
                            "total": len(municipios_ibge)},
+        },
+        "cadunico": {
+            "fonte": "MDS, SAGI, API MI Social (base do VIS Data)",
+            "url": cad_seed["fonte"],
+            "capturado_em": cad_seed["capturado_em"],
+            "criterio": "Famílias cadastradas com renda familiar per capita até meio salário-mínimo (Lei 14.898/2024, art. 2º)",
+            "mes_referencia": CAD_MES,
+            "mes_mais_recente": CAD_MES_ATUAL,
+            "meses": {m: {"url": v["url"], "sha256": v["sha256"], "registros": v["registros"]}
+                      for m, v in sorted(cad_seed["meses"].items())},
         },
         "metas": {"agua": META_AGUA, "esgoto": META_ESGOTO, "data": DATA_META,
                   "base_legal": "Lei 11.445/2007, art. 11-B, redação da Lei 14.026/2020"},
@@ -1044,6 +1124,10 @@ CAMPOS_MUNICIPIOS = [
     ("plano_ano", "SINISA 2024, Gestão Municipal: ano do instrumento de aprovação do plano"),
     ("reg_ag", "SINISA 2024, Gestão Municipal: entidade reguladora declarada para água"),
     ("reg_es", "SINISA 2024, Gestão Municipal: entidade reguladora declarada para esgoto"),
+    ("ts_estado", "SINISA 2024: tarifa social de água (oferece, nao_oferece; vazio sem resposta)"),
+    ("ts_economias", "SINISA 2024: economias residenciais com tarifa social de água (GFI1036, soma dos prestadores)"),
+    ("cad_fam_ms", "CadÚnico dez/2024: famílias com renda per capita até meio salário-mínimo"),
+    ("cad_fam_ms_atual", "CadÚnico set/2026: famílias com renda per capita até meio salário-mínimo"),
 ]
 
 

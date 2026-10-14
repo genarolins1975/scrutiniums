@@ -121,6 +121,29 @@ describe("Saneamento: gold e conferências", () => {
     expect(ausente && med.pct(ausente)).toBeNull();
   });
 
+  it("CadÚnico: soma municipal é o total do Brasil e a razão da tarifa social é razão de somas", () => {
+    const mes = meta()!.cadunico.mes_referencia;
+    expect(lista.reduce((s, m) => s + (m.cad_fam_ms ?? 0), 0)).toBe(br.cadunico[mes]);
+    const ts = br.tarifa_social;
+    const med = medida("tarifa-social-por-familia-elegivel");
+    const r = agregarMedida(med, lista);
+    expect(r.contagem).toBe(ts.economias);
+    expect(r.universo).toBe(ts.familias_mesmo_universo);
+    expect(r.municipios).toBe(ts.municipios_mesmo_universo);
+    expect(referencias(agregados(), lista, [med.id])[med.id].BR.pct).toBeCloseTo((ts.economias! / ts.familias_mesmo_universo!) * 100, 9);
+  });
+
+  it("tarifa social: quem declara não oferecer conta zero; sem resposta fica sem dado", () => {
+    const med = medida("tarifa-social-por-familia-elegivel");
+    const nao = lista.filter((m) => m.ts_estado === "nao_oferece" && (m.cad_fam_ms ?? 0) > 0);
+    const sem = lista.filter((m) => m.ts_estado === null);
+    expect(nao.length).toBeGreaterThan(0);
+    expect(sem.length).toBeGreaterThan(0);
+    for (const m of nao) expect(med.pct(m), m.id).toBe(0);
+    for (const m of sem) expect(med.pct(m), m.id).toBeNull();
+    expect(br.tarifa_social.municipios_oferece + br.tarifa_social.municipios_nao_oferece + br.tarifa_social.municipios_sem_resposta).toBe(lista.length);
+  });
+
   it("prestadores e reguladores: cadastros completos e medidas com fórmula declarada", () => {
     expect(prestadores().length).toBe(meta()!.cobertura.prestadores);
     expect(reguladores().length).toBe(meta()!.cobertura.reguladores_cnpj);

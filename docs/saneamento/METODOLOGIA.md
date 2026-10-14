@@ -50,6 +50,9 @@ Ritmo aritmético = (meta − valor de 2024) ÷ 9 anos (2025 a 2033), sobre IAG0
 
 Municípios declarantes ordenados pela proporção de moradores sem rede nem fossa séptica (Censo 2022) e divididos em cinco grupos com o mesmo número de municípios; em cada grupo, investimento somado ÷ população somada. Descritivo, períodos diferentes declarados.
 
-## Tarifa social
+## Tarifa social e CadÚnico
+
+Denominador: famílias do CadÚnico com renda familiar per capita até meio salário-mínimo (`cadun_qtd_familias_cadastradas_rfpc_ate_meio_sm_i`), MDS, SAGI, API MI Social, dezembro de 2024 (mesmo ano do SINISA) e setembro de 2026 (mais recente publicado), com sha256 de cada consulta. O MDS publica o código do município com 6 dígitos; a junção usa os 6 primeiros do código IBGE. Conferência: até meio salário-mínimo + acima = total de famílias em todos os 11.141 registros municipais dos dois meses. Numerador: economias residenciais com tarifa social de água (GFI1036), somadas sobre os prestadores de água do município. Estado do município: oferece (algum prestador declara tarifa social), não oferece (todos declaram que não; conta zero), sem resposta (fica fora). Razão = Σ economias ÷ Σ famílias × 100, no mesmo universo de municípios. Não é percentual de famílias atendidas: economia não é família, parte das famílias não tem ligação ou não é titular da conta, e critérios locais podem incluir quem não está no CadÚnico. O BPC não é somado: desde o Decreto 8.805/2016 a inscrição no CadÚnico é requisito do benefício, e o MDS o publica por beneficiário.
+
 
 Regra da Lei 14.898/2024, arts. 2º e 6º (renda per capita até meio salário-mínimo, CadÚnico ou BPC; 50% sobre a primeira faixa nos primeiros 15 m³). Salário-mínimo de 2026: R$ 1.621,00 (Decreto 12.797/2025, conforme Ministério da Previdência Social, gov.br, 05/01/2026). Cenários de peso da conta na renda usam famílias de 3 e 4 pessoas exatamente no limite e 10 m³; são cenários, não medidas. O valor médio da tarifa social declarado ao SINISA (GFI1037) tem registros incompatíveis com conta mensal e não é publicado.

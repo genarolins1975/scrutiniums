@@ -34,6 +34,8 @@ export type Vitrine = {
   id: DominioId;
   /** Recorte da gravura editorial do próprio observatório (public/home). */
   imagem: string;
+  /** Ponto focal da gravura (object-position) quando a lâmina é cortada na horizontal; ausente, o centro. */
+  focoImagem?: string;
   /** Contagem principal, com a unidade própria de cada observatório. */
   contagem: { valor: string; unidade: string };
   paineis: PainelVitrine[];
@@ -208,6 +210,7 @@ function vitrineGas(): Vitrine {
   return {
     id: "gas",
     imagem: "/home/gas.webp",
+    focoImagem: "50% 22%",
     contagem: { valor: fmt(PAGINAS_GAS.length), unidade: "páginas por pergunta" },
     paineis: PAGINAS_GAS.filter((p) => p.grupo !== "dados").map((p) => ({ titulo: p.rotulo, href: p.href, descricao: p.pergunta })),
     fontes: `${fmt(meta.fontes.length)} conjuntos de ${listaPt(orgaos)}.`,

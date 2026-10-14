@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
+import { TabelaDados } from "@/components/saneamento/TabelaDados";
+import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { fichas } from "@/lib/saneamento/gold";
+import { agregado, agregados, fichas, meta, municipios } from "@/lib/saneamento/gold";
+import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { calcularConta } from "@/lib/saneamento/conta";
 import { TARIFAS } from "@/lib/saneamento/tarifas";
@@ -14,7 +18,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "A conta cabe no orçamento? A tarifa social chega a quem precisa?",
   description:
-    "Regras da tarifa social da Lei 14.898/2024, o que os prestadores declararam ao SINISA 2024 sobre tarifa social, desconto efetivo nas tabelas verificadas e cenários de peso da conta na renda de famílias no limite de elegibilidade.",
+    "Regras da tarifa social da Lei 14.898/2024, o que os prestadores declararam ao SINISA 2024, economias com tarifa social para cada 100 famílias elegíveis do CadÚnico, desconto efetivo nas tabelas verificadas e peso da conta na renda de famílias no limite de elegibilidade.",
   alternates: { canonical: "/saneamento/tarifa-social" },
 };
 
@@ -23,6 +27,14 @@ const SALARIO_MINIMO_2026 = 1621;
 const LIMITE_PER_CAPITA = SALARIO_MINIMO_2026 / 2;
 const CONSUMOS = [10, 15];
 const FAMILIAS = [3, 4];
+const ATLAS = ["tarifa-social-por-familia-elegivel"];
+
+/** "202412" → "dez/2024". */
+function mesAno(m: string | undefined): string {
+  if (!m) return "sem dado";
+  const nomes = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+  return `${nomes[Number(m.slice(4)) - 1]}/${m.slice(0, 4)}`;
+}
 
 export default function Pagina() {
   const cap = capituloPorSlug("tarifa-social")!;
@@ -88,6 +100,38 @@ export default function Pagina() {
 
   const cenarios = FAMILIAS.map((n) => ({ n, renda: n * LIMITE_PER_CAPITA }));
 
+  // Alcance: economias com tarifa social (SINISA 2024) sobre famílias elegíveis do CadÚnico (dez/2024).
+  const m = meta();
+  const ags = agregados();
+  const br = agregado("BR");
+  const lista = municipios();
+  const refs = referencias(ags, lista, ATLAS);
+  const ufs = ags.filter((a) => a.tipo === "UF");
+  const nomesUf = Object.fromEntries(ufs.map((u) => [u.id, u.nome]));
+  const mesRef = m?.cadunico.mes_referencia ?? "202412";
+  const mesAtual = m?.cadunico.mes_mais_recente ?? "";
+  const ts = br?.tarifa_social;
+  const razaoBr = ts?.economias != null && ts.familias_mesmo_universo ? (ts.economias / ts.familias_mesmo_universo) * 100 : null;
+  const porUf = ufs
+    .map((u) => ({
+      id: u.id,
+      rotulo: u.nome,
+      v: u.tarifa_social.economias != null && u.tarifa_social.familias_mesmo_universo ? (u.tarifa_social.economias / u.tarifa_social.familias_mesmo_universo) * 100 : null,
+    }))
+    .sort((a, b) => (b.v ?? -1) - (a.v ?? -1));
+  const ROTULO_ESTADO: Record<string, string> = { oferece: "Oferece", nao_oferece: "Não oferece" };
+  const linhasAlcance = lista
+    .filter((x) => x.cad_fam_ms != null)
+    .map((x) => ({
+      municipio: x.nome,
+      href: `${ROTA}/municipio/${x.id}`,
+      uf: x.uf,
+      estado: x.ts_estado ? ROTULO_ESTADO[x.ts_estado] : "Sem resposta",
+      familias: x.cad_fam_ms,
+      economias: x.ts_economias,
+      razao: x.ts_economias != null && x.cad_fam_ms ? (x.ts_economias / x.cad_fam_ms) * 100 : null,
+    }));
+
   return (
     <>
       <Cabecalho atual="tarifa-social" />
@@ -100,7 +144,8 @@ export default function Pagina() {
             <p>
               A Lei 14.898/2024 criou regras nacionais para a tarifa social de água e esgoto. Antes dela, cada prestador definia a sua, com critérios
               e descontos próprios. Este capítulo mostra a regra legal, o que os prestadores declararam ao SINISA para 2024, o desconto efetivo nas
-              tabelas verificadas e o peso da conta na renda de famílias no limite da elegibilidade.
+              tabelas verificadas, o alcance da tarifa social em relação às famílias elegíveis do CadÚnico e o peso da conta na renda de famílias no
+              limite da elegibilidade.
             </p>
           }
           recorte={<>SINISA 2024: {inteiro(vinculos)} vínculos prestador × município de água; tabelas verificadas de cinco prestadores, vigentes em 2026.</>}
@@ -280,14 +325,90 @@ export default function Pagina() {
           />
         </Secao>
 
-        <Secao id="cobertura" titulo="Quantas famílias elegíveis recebem o benefício?">
-          <Indisponivel titulo="Elegíveis por município ainda não integrados">
-            <p>
-              A cobertura exige o número de famílias do CadÚnico com renda per capita até meio salário-mínimo e de beneficiários do BPC, por município,
-              no mesmo período das economias com tarifa social. Esses dados não foram integrados; sem eles, o Observatório não calcula nem estima a
-              cobertura.
-            </p>
-          </Indisponivel>
+        <Secao
+          id="cobertura"
+          titulo="A tarifa social chega às famílias elegíveis?"
+          texto={
+            <>
+              Economias residenciais com tarifa social de água declaradas ao SINISA para 2024, para cada 100 famílias do CadÚnico com renda per capita
+              até meio salário-mínimo em {mesAno(mesRef)}, o critério de renda da lei. É razão entre duas contagens diferentes, não percentual de famílias
+              atendidas.
+            </>
+          }
+        >
+          <Numeros
+            colunas={4}
+            itens={[
+              {
+                rotulo: `Famílias elegíveis pelo critério de renda, ${mesAno(mesRef)}`,
+                valor: inteiro(br?.cadunico[mesRef]),
+                contexto: <>CadÚnico, renda per capita até meio salário-mínimo, 5.570 municípios. Em {mesAno(mesAtual)}: {inteiro(br?.cadunico[mesAtual])}.</>,
+              },
+              {
+                rotulo: "Economias com tarifa social de água, 2024",
+                valor: inteiro(ts?.economias),
+                contexto: <>SINISA, soma dos prestadores de água nos {inteiro(ts?.municipios_mesmo_universo)} municípios com resposta e CadÚnico.</>,
+              },
+              {
+                rotulo: "Economias com tarifa social por 100 famílias elegíveis",
+                valor: numero(razaoBr, 1),
+                contexto: <>Brasil, mesmo universo: {inteiro(ts?.economias)} ÷ {inteiro(ts?.familias_mesmo_universo)} famílias.</>,
+              },
+              {
+                rotulo: "Municípios cujo prestador declara não oferecer tarifa social",
+                valor: inteiro(ts?.municipios_nao_oferece),
+                contexto: <>{inteiro(ts?.municipios_oferece)} oferecem; {inteiro(ts?.municipios_sem_resposta)} sem resposta ou fora do módulo de água.</>,
+              },
+            ]}
+          />
+          <div className="mt-10">
+            <AtlasMunicipal ids={ATLAS} referencias={refs} nomesUf={nomesUf} titulo="Atlas municipal do alcance da tarifa social" />
+          </div>
+          <div className="mt-10">
+            <GraficoBarras
+              titulo={`Economias com tarifa social por 100 famílias elegíveis, por UF (SINISA 2024 e CadÚnico ${mesAno(mesRef)})`}
+              dados={porUf}
+              chaveCategoria="id"
+              chaveRotulo="rotulo"
+              series={[{ id: "v", rotulo: "por 100 famílias", cor: "var(--cor-obee)" }]}
+              unidade="por 100 famílias"
+              casas={1}
+              orientacao="horizontal"
+              referencias={razaoBr != null ? [{ valor: razaoBr, rotulo: "Brasil" }] : undefined}
+              limiteInicial={14}
+            />
+          </div>
+          <div className="mt-10">
+            <TabelaDados
+              titulo="Alcance da tarifa social por município"
+              arquivo="saneamento-tarifa-social-cadunico.csv"
+              colunas={[
+                { id: "municipio", rotulo: "Município", href: "href" },
+                { id: "uf", rotulo: "UF" },
+                { id: "estado", rotulo: "Tarifa social declarada" },
+                { id: "familias", rotulo: `Famílias elegíveis (${mesAno(mesRef)})`, tipo: "inteiro" },
+                { id: "economias", rotulo: "Economias com tarifa social (2024)", tipo: "inteiro" },
+                { id: "razao", rotulo: "Por 100 famílias", tipo: "numero" },
+              ]}
+              linhas={linhasAlcance}
+              ordemInicial={{ coluna: "familias", direcao: "desc" }}
+              rotuloLinhas={{ singular: "município", plural: "municípios" }}
+            />
+          </div>
+          <Ressalva
+            permite="Ver onde a tarifa social declarada alcança mais ou menos economias em relação ao público que a lei torna elegível, e onde o prestador declara não oferecê-la."
+            naoPermite="Dizer quantas famílias elegíveis recebem o desconto: uma economia pode abrigar mais de uma família, parte das famílias não tem ligação à rede ou não é titular da conta, e critérios locais anteriores à lei podem incluir quem não está no CadÚnico. A razão pode passar de 100."
+          />
+          <Nota titulo="Por que o BPC não entra somado">
+            Desde o Decreto 8.805/2016, a inscrição no CadÚnico é requisito para conceder e manter o BPC (MDS, Guia do BPC, 2018). As famílias com BPC
+            já estão no cadastro, e o MDS publica o BPC por beneficiário, não por família: somar as duas contagens contaria famílias duas vezes. O
+            denominador usa só o CadÚnico e pode deixar de fora famílias com BPC cuja renda, sem o benefício, fica abaixo do limite, porque a lei exclui
+            o BPC do cálculo da renda.
+          </Nota>
+          <Fonte>
+            Ministério das Cidades, SINISA 2025 (ano de referência 2024), campos GFI1019 e GFI1036 por prestador e município; MDS, SAGI, API MI Social
+            (base do VIS Data), CadÚnico de {mesAno(mesRef)} e {mesAno(mesAtual)}, consulta em {m?.cadunico.capturado_em.slice(0, 10).split("-").reverse().join("/")}.
+          </Fonte>
         </Secao>
       </main>
     </>

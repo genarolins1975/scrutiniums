@@ -3,7 +3,8 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {readFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {indice,indiceSnapshot,boxExtremes,STATUS_LABELS} from '@/lib/eficiencia/indice-v4';
+import {createHash} from 'node:crypto';
+import {indice,indiceSnapshot,boxExtremes,STATUS_LABELS,RESSALVA_FAIXA} from '@/lib/eficiencia/indice-v4';
 import {IndiceResultados} from '@/components/eficiencia/IndiceResultados';
 import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
 import {montarRetrato} from '@/lib/eficiencia/entrada';
@@ -76,6 +77,8 @@ describe('Índice de resultados v4: reconciliação com o pipeline exato',()=>{
   expect(Number(r[h.indexOf('score')])).toBe(row.score);
   expect(Number(r[h.indexOf('habitacao_raw')])).toBe(row.raw_values.habitacao);
   expect(r[h.indexOf('trabalho_weight')]).toBe('1/7');
+  expect(h[h.length-1]).toBe('ressalva');
+  expect(lines.slice(1).every(l=>l[l.length-1]===RESSALVA_FAIXA)).toBe(true);
  });
 });
 
@@ -121,5 +124,59 @@ describe('Índice de resultados v4: apresentação',()=>{
   expect(renderToStaticMarkup(createElement(AtlasCidadao,{retrato,indice:indiceSnapshot}))).toContain('id="atlas-indice"');
   const sem=renderToStaticMarkup(createElement(AtlasCidadao,{retrato}));
   expect(sem).not.toContain('id="atlas-indice"');expect(sem).not.toContain('Nota do índice');
+ });
+});
+
+describe('Índice de resultados v4: correções da análise automatizada de 14/10/2026',()=>{
+ const BOA_VISTA='1400100',RECIFE='2611606';
+ it('A1: par empatado na edição não aparece como ordem mantida quando o empate pode se desfazer',()=>{
+  const st=indice.stability(BOA_VISTA,RECIFE)!;
+  expect(st.status).toBe('empate');
+  expect(st.outcomes.pesos).toBe('desfaz_ambos');
+  const html=render(BOA_VISTA,RECIFE);
+  expect(html).not.toContain('Ordem mantida neste teste');
+  expect(html).toContain('O empate pode se desfazer a favor de qualquer uma');
+  expect(html).toMatch(/nos testes, o empate pode se desfazer \(mudança de pesos/);
+ });
+
+ it('A1: cada família de cada par tem resultado coerente com a classe do par',()=>{
+  for(const p of completo.pairs){
+   const st=indice.stability(p.a,p.b)!;
+   for(const f of Object.keys(st.outcomes) as (keyof typeof st.outcomes)[]){
+    const o=st.outcomes[f];
+    if(p.status==='empate')expect(['desfaz_ambos','desfaz_a','desfaz_b','empate_mantido']).toContain(o);
+    else expect(o).toBe(p.families_reversing.includes(f)?'inverte':p.families_tying.includes(f)?'empata':'mantida');
+   }
+  }
+ });
+
+ it('A2: a leitura da nota descreve posição relativa com metade dos empates, não porcentagem superada',()=>{
+  const html=render('2800308','2211001');
+  expect(html).not.toMatch(/mais favorável que o de 60%/);
+  expect(html).toMatch(/metade das que empatam, incluída a própria capital/);
+  expect(html).toMatch(/Não é a porcentagem de capitais superadas/);
+ });
+
+ it('A3: o rótulo de estabilidade explicita que as famílias são avaliadas separadamente',()=>{
+  expect(STATUS_LABELS.mantida).toMatch(/cada teste, avaliado separadamente/);
+  const html=render('2611606','4106902');
+  expect(html).not.toMatch(/em todos os testes/);
+  expect(html).toMatch(/combinações entre elas, como pesos e definição alternativa ao mesmo tempo, não foram testadas/);
+ });
+
+ it('A5: a ressalva de faixa e precisão acompanha a nota, a tabela das capitais e as faixas individuais',()=>{
+  const html=render('2611606','4106902');
+  const ressalva='Faixa metodológica, não intervalo de confiança. Precisão municipal não quantificada.';
+  expect(html.split(ressalva).length-1).toBeGreaterThanOrEqual(3);
+  const nota=html.indexOf('Faixa nos testes de sensibilidade');
+  expect(html.indexOf(ressalva,nota)-nota).toBeLessThan(200);
+ });
+
+ it('A9: a interface fora do pacote confere com o manifesto complementar',()=>{
+  const m=JSON.parse(readFileSync(join(process.cwd(),'docs/obee/resultados/v4/interface-v4.json'),'utf8')) as {packet_sha256:string;files:{path:string;sha256:string}[]};
+  expect(m.packet_sha256).toBe(indiceSnapshot.packet_sha256);
+  expect(m.files.length).toBeGreaterThanOrEqual(4);
+  for(const f of m.files)expect(createHash('sha256').update(readFileSync(join(process.cwd(),f.path))).digest('hex'),`${f.path}: rode python3 scripts/obee_interface_v4.py`).toBe(f.sha256);
+  expect(render('2611606','4106902')).toContain('interface-v4.json');
  });
 });

@@ -12,7 +12,7 @@ import { numero, sinal } from "./formato";
  * 2024 (população estimada) no mesmo numerador e denominador.
  */
 
-export type Fonte = "censo2022" | "censo2010_2022" | "sinisa2024" | "nr8_sinisa2024";
+export type Fonte = "censo2022" | "censo2010_2022" | "sinisa2024" | "nr8_sinisa2024" | "sinisa_cadunico2024";
 export type Variante = "pct" | "pessoas";
 
 export type Medida = {
@@ -64,6 +64,7 @@ export const FONTE_ROTULO: Record<Fonte, string> = {
   censo2010_2022: "IBGE, Censos Demográficos 2010 e 2022",
   sinisa2024: "Ministério das Cidades, SINISA 2025 (ano de referência 2024)",
   nr8_sinisa2024: "SINISA 2025 (2024) e IBGE, pela ficha da NR ANA 8/2024",
+  sinisa_cadunico2024: "SINISA 2025 (2024) e MDS, CadÚnico de dezembro de 2024",
 };
 
 export const MEDIDAS: Medida[] = [
@@ -322,6 +323,28 @@ export const MEDIDAS: Medida[] = [
     ausencia: "Município sem declaração de água nem de esgoto ao SINISA 2024. Zero declarado aparece como zero.",
     cortesPct: [10, 50, 100, 250],
     limitesHistograma: [0, 10, 25, 50, 100, 250, 500, 1000],
+  },
+  {
+    id: "tarifa-social-por-familia-elegivel",
+    titulo: "Economias com tarifa social por 100 famílias elegíveis",
+    pergunta: "Para cada 100 famílias que a lei torna elegíveis, quantas economias tinham tarifa social de água?",
+    fonte: "sinisa_cadunico2024",
+    periodo: "2024",
+    universo:
+      "Famílias do CadÚnico com renda per capita até meio salário-mínimo em dez/2024, nos municípios cujo prestador respondeu sobre tarifa social",
+    unidadePct: "por 100 famílias",
+    casas: 1,
+    pct: (m) => (m.ts_economias == null || m.cad_fam_ms == null || !(m.cad_fam_ms > 0) ? null : (m.ts_economias / m.cad_fam_ms) * 100),
+    contagem: (m) => (m.ts_economias == null || m.cad_fam_ms == null ? null : m.cad_fam_ms),
+    unidadeContagem: "famílias elegíveis",
+    numerador: (m) => (m.ts_economias == null || m.cad_fam_ms == null ? null : m.ts_economias),
+    denominador: (m) => (m.ts_economias == null || m.cad_fam_ms == null ? null : m.cad_fam_ms),
+    permite: "Ver onde a tarifa social declarada pelo prestador alcança mais e menos economias em relação ao número de famílias elegíveis.",
+    naoPermite:
+      "Ler como percentual de famílias atendidas: economia não é família (uma ligação pode abrigar mais de uma família), parte das elegíveis não tem ligação à rede ou não é titular da conta, e critérios locais podem incluir quem não está no CadÚnico. Valores acima de 100 são possíveis.",
+    ausencia: "Prestador sem resposta sobre tarifa social ou município sem dado do CadÚnico. Prestador que declara não oferecer conta como zero.",
+    cortesPct: [5, 15, 30, 60],
+    limitesHistograma: [0, 5, 10, 15, 20, 30, 40, 60, 80, 100],
   },
 ];
 

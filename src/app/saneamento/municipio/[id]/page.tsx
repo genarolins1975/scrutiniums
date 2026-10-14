@@ -288,9 +288,23 @@ export default function Pagina({ params }: { params: { id: string } }) {
           ) : (
             <Nota>Sem declaração de tarifa no SINISA 2024 para este município.</Nota>
           )}
+          <dl className="mt-6 grid max-w-3xl grid-cols-[1fr_auto] gap-x-6 gap-y-2 border-t border-linha pt-4 text-sm">
+            <dt className="text-carvao-muted">Famílias no CadÚnico com renda per capita até meio salário-mínimo, dez/2024</dt>
+            <dd className="tabular-nums text-carvao">{inteiro(m.cad_fam_ms)}</dd>
+            <dt className="text-carvao-muted">Mesmo critério, mês mais recente publicado</dt>
+            <dd className="tabular-nums text-carvao">{inteiro(m.cad_fam_ms_atual)}</dd>
+            <dt className="text-carvao-muted">Economias com tarifa social por 100 famílias elegíveis (2024)</dt>
+            <dd className="tabular-nums text-carvao">
+              {m.ts_economias != null && m.cad_fam_ms ? numero((m.ts_economias / m.cad_fam_ms) * 100, 1) : "sem dado"}
+            </dd>
+          </dl>
           <Nota>
-            Valores declarados pelo prestador, sem verificação do Observatório. Economias com tarifa social não equivalem a famílias elegíveis:
-            sem o número de elegíveis do CadÚnico no mesmo período, não se calcula cobertura do benefício.
+            Valores declarados pelo prestador, sem verificação do Observatório. Economia não é família: a razão compara contagens diferentes e não diz
+            quantas famílias elegíveis recebem o desconto.{" "}
+            <Link href={`${ROTA}/tarifa-social#cobertura`} className="text-obee-dark underline underline-offset-2">
+              Como ler a razão
+            </Link>
+            . Fonte do CadÚnico: MDS, SAGI, API MI Social.
           </Nota>
         </Secao>
 

@@ -103,6 +103,8 @@ jobs:
           python3 -m pipeline.eficiencia_resultados.indice_v4 --check
           # código, saídas, decisões e fontes conferem com o pacote congelado da edição
           python3 -m pipeline.eficiencia_resultados.indice_v4 --verificar
+          # a interface, fora do pacote, confere com o seu manifesto complementar
+          python3 scripts/obee_interface_v4.py --check
           # os contornos da entrada são os do recorte versionado da malha do IBGE
           python3 scripts/obee_contornos_capitais.py --check
 

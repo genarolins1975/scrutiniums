@@ -54,6 +54,8 @@ export type HistogramaProps = {
   cor?: string;
   corMassa?: string;
   nota?: string;
+  /** Limite do eixo horizontal: cauda acima dele fica fora do desenho (contada em foraDasClasses) sem esticar o eixo. */
+  tetoEixo?: number;
 };
 
 type Item = { tipo: "classe"; c: Classe; k: number } | { tipo: "massa"; m: MassaPontual; k: number };
@@ -81,6 +83,7 @@ export function Histograma({
   cor = "var(--cor-energia-soft)",
   corMassa = "var(--cor-energia-dark)",
   nota,
+  tetoEixo,
 }: HistogramaProps) {
   const uid = useId().replace(/:/g, "");
   const [largura, setLargura] = useState(760);
@@ -119,14 +122,14 @@ export function Histograma({
   const xs: number[] = [];
   if (classes.length) xs.push(classes[0].inicio, classes[classes.length - 1].fim);
   for (const m of massas) xs.push(m.valor);
-  for (const v of [res.min, res.max, atual]) if (typeof v === "number") xs.push(v);
+  for (const v of [res.min, res.max, atual]) if (typeof v === "number") xs.push(tetoEixo != null ? Math.min(v, tetoEixo) : v);
   let xMin = xs.length ? Math.min(...xs) : 0;
   let xMax = xs.length ? Math.max(...xs) : 1;
   if (xMin === xMax) {
     xMin -= Math.abs(xMin) * 0.1 || 1;
     xMax += Math.abs(xMax) * 0.1 || 1;
   }
-  const sx = (v: number) => L + P + ((v - xMin) / (xMax - xMin)) * (w - L - R - 2 * P);
+  const sx = (v: number) => L + P + (((tetoEixo != null ? Math.min(v, tetoEixo) : v) - xMin) / (xMax - xMin)) * (w - L - R - 2 * P);
 
   // marcadores (valor atual e quantis) com rótulos em fileiras para não colidir; quantis
   // iguais (comum com massa no piso: P10 = P25 = mediana) viram uma linha com rótulo conjunto
