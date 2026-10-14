@@ -5,7 +5,7 @@ import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { agregado, agregados, municipios, meta } from "@/lib/saneamento/gold";
+import { agregado, agregados, meta, municipiosComDesigualdades, URL_DESIGUALDADES_MUNICIPIOS } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { MEDIDAS_DESIGUALDADES } from "@/lib/saneamento/medidas";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
@@ -24,7 +24,7 @@ export default function Pagina() {
   const cap = capituloPorSlug("desigualdades")!;
   const br = agregado("BR");
   const ags = agregados();
-  const lista = municipios();
+  const lista = municipiosComDesigualdades();
   const auditoria = meta()?.desigualdades;
   const residuo = auditoria?.residuos_cor_raca;
   const divergencias = auditoria?.conferencias.filter((c) => c.diferenca !== 0 && c.diferenca != null) ?? [];
@@ -68,8 +68,8 @@ export default function Pagina() {
         <Fonte>IBGE, Censo 2022, SIDRA 6894 (água) e 7555 (esgoto). Valores absolutos; percentuais calculados com numerador e denominador do próprio grupo.</Fonte>
       </Secao>
       <Secao id="outros-universos" titulo="Quilombolas, indígenas e favelas: quais universos entram?" texto="Estes recortes se sobrepõem às categorias de cor ou raça e entre si. Não formam parcelas de um total. A ligação à rede de água em favelas é medida em domicílios, enquanto o esgoto é medido em moradores.">
-        <div className="tabela-scroll">
-          <table className="w-full text-sm"><caption className="sr-only">Brasil, Censo 2022: medidas por grupo e universo</caption>
+        <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Quilombolas, indígenas e favelas: medidas por grupo e universo (rolável)">
+          <table className="w-full min-w-[40rem] text-sm"><caption className="sr-only">Brasil, Censo 2022: medidas por grupo e universo</caption>
             <thead><tr>{["Grupo e medida", "Carência", "Universo", "Proporção", "Unidade e fonte"].map((x) => <th key={x} scope="col" className="border-b border-linha p-3 text-left">{x}</th>)}</tr></thead>
             <tbody>{ESPECIFICACOES.filter((s) => ![6894,7555].includes(s.tabela)).map((s) => {
               const [n,d] = br?.desigualdades?.[s.id] ?? [null,null];
@@ -83,15 +83,15 @@ export default function Pagina() {
         <Fonte>IBGE, Censo 2022, SIDRA 10105 (quilombolas), 9957 (indígenas), 9894 e 9898 (favelas e comunidades urbanas). Localização e situação do domicílio: totais das respectivas tabelas.</Fonte>
       </Secao>
       <Secao id="atlas" titulo="Onde estão as diferenças dentro de cada grupo?" texto="Escolha uma medida e um território. O mapa, a tabela e a contagem usam o mesmo grupo; as referências de UF e Brasil vêm das tabulações oficiais, não da média dos municípios.">
-        <AtlasMunicipal ids={ids} referencias={refs} nomesUf={Object.fromEntries(ags.filter((a) => a.tipo === "UF").map((a) => [a.id,a.nome]))} titulo="Atlas municipal das desigualdades" />
+        <AtlasMunicipal ids={ids} referencias={refs} nomesUf={Object.fromEntries(ags.filter((a) => a.tipo === "UF").map((a) => [a.id,a.nome]))} titulo="Atlas municipal das desigualdades" complemento={URL_DESIGUALDADES_MUNICIPIOS} />
         <Ressalva permite="Explorar contagens e proporções do mesmo grupo, compartilhar o recorte e exportar a tabela municipal." naoPermite="Ler ausência como zero. Sem população do grupo, sem tabulação ou sob supressão estatística, a proporção fica sem dado." />
         <Fonte>IBGE, Censo 2022. A tabela SIDRA e o universo de cada medida constam no catálogo. Referência: 2022.</Fonte>
       </Secao>
       <Secao id="dados" titulo="Conferir os números e a cobertura" texto="As referências abaixo são tabulações oficiais para Brasil e UFs. A exportação preserva grupo, unidade, numerador, denominador, tabela e ano.">
-        <TabelaDados titulo="Brasil e UFs por grupo, Censo 2022" arquivo="saneamento-desigualdades-brasil-ufs-2022" linhas={linhas} colunas={[
+        <TabelaDados titulo="Brasil e UFs por grupo, Censo 2022" arquivo="saneamento-desigualdades-brasil-ufs-2022.csv" linhas={linhas} colunas={[
           {id:"territorio",rotulo:"Território"},{id:"grupo",rotulo:"Grupo"},{id:"indicador",rotulo:"Medida"},{id:"unidade",rotulo:"Unidade"},{id:"carencia",rotulo:"Carência",tipo:"inteiro"},{id:"universo",rotulo:"Universo",tipo:"inteiro"},{id:"pct",rotulo:"Proporção",tipo:"pct"},{id:"tabela",rotulo:"SIDRA"},{id:"periodo",rotulo:"Ano"},
         ]} />
-        <TabelaDados titulo="Municípios com razão disponível, Censo 2022" arquivo="saneamento-desigualdades-cobertura-2022" linhas={cobertura} limite={20} busca={false} colunas={[{id:"grupo",rotulo:"Grupo"},{id:"indicador",rotulo:"Medida"},{id:"unidade",rotulo:"Unidade"},{id:"municipios",rotulo:"Municípios com dado e universo positivo",tipo:"inteiro"}]} />
+        <TabelaDados titulo="Municípios com razão disponível, Censo 2022" arquivo="saneamento-desigualdades-cobertura-2022.csv" linhas={cobertura} limite={20} busca={false} colunas={[{id:"grupo",rotulo:"Grupo"},{id:"indicador",rotulo:"Medida"},{id:"unidade",rotulo:"Unidade"},{id:"municipios",rotulo:"Municípios com dado e universo positivo",tipo:"inteiro"}]} />
         <Nota titulo="Supressões em favelas">Células suprimidas pelo IBGE ficam sem dado. As referências de Brasil e UF mantêm as tabulações oficiais, mesmo quando a soma municipal disponível é menor. Conferências da edição:
           <ul className="mt-2 list-disc pl-5">{divergencias.map((c) => <li key={`${c.id}-${c.campo}`}>{c.id === "favelas-agua" ? "Água em favelas, domicílios" : "Esgoto em favelas, moradores"}, {c.campo}: soma municipal {inteiro(Math.abs(c.diferenca!))} abaixo do Brasil; {inteiro(c.ausentes)} municípios com valor suprimido.</li>)}</ul>
           Diferenças publicadas em meta.json e nunca redistribuídas.

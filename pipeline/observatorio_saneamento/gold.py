@@ -27,6 +27,9 @@ import re
 import unicodedata
 from collections import Counter, defaultdict
 
+from .desigualdades import SPECS as SPECS_DESIGUALDADES
+from .desigualdades import construir as construir_desigualdades
+
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(os.path.dirname(AQUI))
 SEED = os.path.join(AQUI, "seed")
@@ -398,7 +401,6 @@ def _siglas(regs):
 # ---------------------------------------------------------------------------
 
 def construir():
-    from .desigualdades import construir as construir_desigualdades
     desigualdades = construir_desigualdades()
     censo = ler_seed("censo.json.gz")
     manifesto = ler_seed("sinisa_manifesto.json.gz")
@@ -1066,7 +1068,7 @@ def construir():
     meta["cobertura"]["reguladores_cnpj"] = len(lista_reg)
     meta["sinisa"]["gestao_municipal"] = {"url": gm_seed["url"], "sha256": gm_seed["sha256"], "capturado_em": gm_seed["capturado_em"]}
     # Tabulações oficiais por grupo e nível territorial, sem média de percentuais.
-    from .desigualdades import SPECS
+    SPECS = SPECS_DESIGUALDADES
     for r in regs:
         valores = desigualdades["territorios"].get("6:" + r["id"], {})
         for spec in SPECS:
@@ -1152,8 +1154,12 @@ CAMPOS_MUNICIPIOS = [
 ]
 
 
-from .desigualdades import SPECS as SPECS_DESIGUALDADES
-CAMPOS_MUNICIPIOS += [("des_" + s["id"] + "_" + c, s["rotulo"] + ": " + s["medida"] + ", " + rotulo + " (" + s["unidade"] + ", Censo 2022)") for s in SPECS_DESIGUALDADES for c, rotulo in [("num", "carência"), ("den", "universo")]]
+# Capítulo 2 (Censo 2022 por grupo): arquivo próprio, carregado só pelo atlas do capítulo,
+# para não pesar a tabela municipal que todos os atlas baixam.
+CAMPOS_DESIGUALDADES = [("id", "Código IBGE do município")] + [
+    ("des_" + s["id"] + "_" + c, s["rotulo"] + ": " + s["medida"] + ", " + rotulo + " (" + s["unidade"] + ", Censo 2022)")
+    for s in SPECS_DESIGUALDADES for c, rotulo in [("num", "carência"), ("den", "universo")]
+]
 
 
 def json_bytes(obj):
@@ -1198,6 +1204,13 @@ def arquivos(g):
     out["meta.json"] = json_bytes(g["meta"])
     out["reguladores.json"] = json_bytes(g["reguladores"])
     out["municipios.csv"] = csv_bytes([r for _, r in CAMPOS_MUNICIPIOS], [[r[c] for c in campos] for r in g["municipios"]])
+    campos_des = [c for c, _ in CAMPOS_DESIGUALDADES]
+    out["desigualdades_municipios.json"] = json_bytes({
+        "campos": campos_des,
+        "rotulos": dict(CAMPOS_DESIGUALDADES),
+        "linhas": [[r[c] for c in campos_des] for r in g["municipios"]],
+    })
+    out["desigualdades_municipios.csv"] = csv_bytes([r for _, r in CAMPOS_DESIGUALDADES], [[r[c] for c in campos_des] for r in g["municipios"]])
     cab_p = ["id", "nome", "sigla", "natureza", "abrangencia", "ufs", "municipios_agua", "municipios_esgoto",
              "populacao_atendida_agua", "populacao_atendida_esgoto", "perdas_distribuicao_pct",
              "investimento_agua", "investimento_esgoto"]

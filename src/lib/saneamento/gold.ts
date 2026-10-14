@@ -10,7 +10,7 @@ import type {
   ReguladorCatalogo,
   TabelaMunicipios,
 } from "./tipos";
-import { paraMunicipios } from "./municipios";
+import { juntarComplemento, paraMunicipios } from "./municipios";
 
 /**
  * Leitura da gold do Saneamento no servidor (build das páginas estáticas e
@@ -59,6 +59,19 @@ export function municipios(): Municipio[] {
   if (municipiosCache?.fonte === t) return municipiosCache.lista;
   const lista = paraMunicipios(t);
   municipiosCache = { fonte: t, lista };
+  return lista;
+}
+
+/** Tabela do capítulo 2 (Censo 2022 por grupo), em arquivo próprio para não pesar municipios.json. */
+export const URL_DESIGUALDADES_MUNICIPIOS = `${URL_GOLD}/desigualdades_municipios.json`;
+
+let desigualdadesCache: { fonte: TabelaMunicipios; lista: Municipio[] } | null = null;
+export function municipiosComDesigualdades(): Municipio[] {
+  const extra = ler<TabelaMunicipios>("desigualdades_municipios.json");
+  if (!extra) return municipios();
+  if (desigualdadesCache?.fonte === extra) return desigualdadesCache.lista;
+  const lista = juntarComplemento(municipios(), extra);
+  desigualdadesCache = { fonte: extra, lista };
   return lista;
 }
 

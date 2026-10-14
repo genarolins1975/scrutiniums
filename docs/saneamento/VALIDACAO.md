@@ -93,3 +93,11 @@ Axe, regras WCAG 2 A/AA e 2.1 AA: nenhuma violação automática; `color-contras
 ### Cobertura parcial
 
 Ainda não integram o capítulo: ligação à rede de água para quilombolas e indígenas pela identificação ampliada, urbano/rural e renda individual cruzada com saneamento. Não se inferiu ligação a partir de forma principal de abastecimento. As próximas entregas do roteiro (SISAGUA, DATASUS, expansão tarifária e outras integrações) não foram implementadas nesta entrega 4.1.
+
+## Ajustes pós-revisão do capítulo 2 (14/10/2026)
+
+- As 28 colunas do capítulo 2 saem de `municipios.json` para `desigualdades_municipios.json|csv`, carregado só pelo atlas do capítulo. `municipios.json` volta a 1.865.949 bytes, o tamanho anterior ao capítulo; o arquivo novo tem 654.199 bytes.
+- O comparador de municípios usa só as medidas gerais (`MEDIDAS_GERAIS`); os recortes por grupo ficam na página do capítulo.
+- Os dois CSVs da página do capítulo baixam com a extensão `.csv`, e a tabela de quilombolas, indígenas e favelas passa a ser região rolável por teclado.
+- Verificação: 56 testes específicos, 8 testes de pipeline (Python 3.11 e 3.13), tipos, lint e build sem erro; suíte completa com 4.926 testes aprovados e 1 ignorado. Navegador: capítulo 2, acesso, tarifa social, comparador e metodologia em 320, 390 e 1440 px, HTTP 200, um H1, sem transbordo e sem erro de JavaScript; o atlas do capítulo 2 carrega os valores do arquivo próprio.
+- Achado fora do escopo, não corrigido aqui: em 320 px, o cabeçalho público da home e do Crédito transborda 57 px pelos botões "Entrar / Criar acesso". Não decorre da troca de `text-lg` por `text-[18px]` no logotipo, que mantém o tamanho da fonte.
