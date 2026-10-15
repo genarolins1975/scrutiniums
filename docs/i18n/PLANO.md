@@ -45,7 +45,7 @@ A ampliação institucional acrescenta `/sobre/erros` e `/sobre/governanca`, tam
 
 Imprensa e a vitrine pública do Crédito acrescentam dois pares estáticos com português marcado. O recorte preserva os metadados próprios das duas folhas e verifica a hidratação do selo e dos destinos de entrada, sem ampliar o acesso à SPA ou a seus arquivos. São cinco pares declarados, quatro da plataforma e um do Crédito; não representam cinco páginas traduzidas. As rotas dinâmicas exigirão prova HTTP e de DOM concluído, sem converter páginas com sessão para `force-static`.
 
-O seletor público usa esses cinco pares: links presentes no HTML inicial, preservação de query/fragmento na interação e cookie de preferência sem redirecionamento automático. Seus rótulos ainda são portugueses, como o cabeçalho inteiro no fallback. A entrega não amplia o registro de rotas nem conclui os seletores dos sete observatórios. Provas de SSR e handlers são separadas das verificações de hidratação, histórico, teclado e cookies no navegador.
+O seletor público usa somente pares com tradução publicada: links presentes no HTML inicial, preservação de query/fragmento na interação e cookie de preferência sem redirecionamento automático. Os cinco pares com fallback integral não oferecem inglês. Seus rótulos ainda são portugueses, como o cabeçalho inteiro no fallback. A entrega não amplia o registro de rotas nem conclui os seletores dos sete observatórios. Provas de SSR e handlers são separadas das verificações de hidratação, histórico, teclado e cookies no navegador.
 
 ## Fases seguintes
 

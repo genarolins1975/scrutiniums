@@ -21,7 +21,7 @@ vi.mock("react", async () => ({
 // O teste SSR usa o inventário real e exige ausência do seletor em fallbacks.
 vi.mock("@/lib/i18n-rotas", async () => {
   const real = await vi.importActual<typeof import("@/lib/i18n-rotas")>("@/lib/i18n-rotas");
-  return { ...real, traducaoPublicada: (href: string) => real.parDeIdioma(href)?.pt === "/sobre" };
+  return { ...real, traducaoPublicada: (href: string) => real.parDeIdioma(href) !== null };
 });
 
 const limpezas: Array<() => void> = [];
