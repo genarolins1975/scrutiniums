@@ -47,6 +47,8 @@ Imprensa e a vitrine pública do Crédito acrescentam dois pares estáticos com 
 
 O seletor público usa somente pares com tradução publicada: links presentes no HTML inicial, preservação de query/fragmento na interação e cookie de preferência sem redirecionamento automático. Os cinco pares com fallback integral não oferecem inglês. Seus rótulos ainda são portugueses, como o cabeçalho inteiro no fallback. A entrega não amplia o registro de rotas nem conclui os seletores dos sete observatórios. Provas de SSR e handlers são separadas das verificações de hidratação, histórico, teclado e cookies no navegador.
 
+A prova parcial da home acrescenta o sexto par, `/` e `/en`, mantendo a consulta de sessão e a renderização dinâmica. Quatro chaves traduzem o título e as duas ações do Hero. Sete regiões ainda portuguesas recebem marcador visível; dados e destinos existentes são preservados. O inventário registra os usos declarados separadamente do catálogo disponível, e um teste com Chromium verifica o DOM concluído. Os cinco pares estáticos conservam suas provas integrais. Esse recorte não conclui a tradução da home, a paridade de rotas, a migração dos formatadores ou a fase 0.
+
 ## Fases seguintes
 
 | Fase | Série de entregas, sempre com CI verde entre PRs |
@@ -72,6 +74,8 @@ O relatório versionado agrupa fontes de código da plataforma e de cada observa
 - `sem_traducao`: item catalogado sem inglês, ainda sem comprovação do fallback; deve impedir sua exposição sem marcador em `/en`.
 - `nao_catalogado`: texto candidato encontrado fora do inventário; fica separado do denominador de chaves conhecidas, com localização e quantidade explícitas.
 - `preservado`: nome próprio registrado no glossário; contabilizado separadamente, com explicação inglesa onde exigida.
+
+O estado de rota `parcialmente_traduzido` reúne regiões com chaves inglesas declaradas e regiões portuguesas marcadas. Não equivale a uma página totalmente traduzida. A declaração de uso não é contada como verificação de HTML pelo gerador; a prova de DOM é uma etapa separada do CI.
 
 Campos técnicos como IDs, códigos, datas de máquina e valores não são traduções; a classificação precisa justificar sua exclusão. Uma área não catalogada não pode aparecer como 100% traduzida. Rotas têm estado próprio de existência, acesso e tradução, incluindo rotas dinâmicas e a SPA. O CI deve rejeitar diferença entre `docs/i18n/cobertura.json` e a saída atual do script.
 

@@ -11,6 +11,7 @@ import { descobrirFontes } from "./i18n/fontes.mjs";
 import { lerGlossario } from "./i18n/glossario.mjs";
 import { lerCatalogo } from "./i18n/catalogo.mjs";
 import { caminhoDaPaginaLiteral, validarRotasLiterais } from "./i18n/rotas.mjs";
+import { validarUsoInterface } from "./i18n/usos.mjs";
 
 const RAIZ = fileURLToPath(new URL("../", import.meta.url));
 const INVENTARIO = "config/i18n-inventario.json";
@@ -155,7 +156,8 @@ export function gerarCobertura(raiz = RAIZ) {
   }
   const manifesto = JSON.parse(readFileSync(join(raiz, INVENTARIO), "utf8"));
   const glossario = resumirGlossario(raiz, manifesto);
-  const catalogo = resumirCatalogo(raiz, manifesto);
+  const leituraCatalogo = resumirCatalogo(raiz, manifesto);
+  const catalogo = leituraCatalogo?.resumo;
   const fontes = descobrirFontes(raiz, manifesto, { apenasCodigo: true });
   if (catalogo) {
     // O par validado tem hashes e métricas próprios, sem inflar candidatos de UI.
@@ -164,6 +166,7 @@ export function gerarCobertura(raiz = RAIZ) {
     }
   }
   const irmas = validarRotasLiterais(raiz, manifesto, fontes);
+  const uso = validarUsoInterface(manifesto, irmas, leituraCatalogo?.en ?? {});
   if (irmas) {
     const dominiosEn = new Map(irmas.pares.map((par) => [par.fontes.en, par.dominio]));
     fontes.ui = fontes.ui.map((fonte) => ({ ...fonte, dominio: dominiosEn.get(fonte.path) ?? fonte.dominio }));
@@ -179,11 +182,22 @@ export function gerarCobertura(raiz = RAIZ) {
     for (const par of irmas.pares) {
       const rotas = relatorio.dominios[par.dominio].rotas;
       rotas.pares_estruturais++;
-      rotas.fallbacks_declarados++;
+      if (par.conteudo_declarado === "portugues_marcado") rotas.fallbacks_declarados++;
       rotas.paginas_pt_literais_sem_irma--;
     }
   }
-  return { ...relatorio, ...(glossario ? { glossario } : {}), ...(catalogo ? { catalogo } : {}), ...(irmas ? { irmas_declaradas: irmas } : {}) };
+  if (uso) {
+    relatorio.etapa = "inventario_com_uso_de_interface_declarado";
+    relatorio.interpretacao.zeros = "Catálogo disponível, uso declarado e HTML verificado são fatos distintos. No domínio com uso declarado, contadores de comprovação são null; os demais zeros preservam a ausência de comprovação no inventário.";
+    relatorio.interpretacao.uso_interface = "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução.";
+    for (const dominio of new Set(uso.rotas.map((rota) => rota.dominio))) {
+      const d = relatorio.dominios[dominio];
+      d.interface.chaves_catalogadas = Object.fromEntries(Object.keys(d.interface.chaves_catalogadas).map((chave) => [chave, null]));
+      d.rotas.parciais_declarados = uso.rotas.filter((rota) => rota.dominio === dominio).length;
+    }
+  }
+  return { ...relatorio, ...(glossario ? { glossario } : {}), ...(catalogo ? { catalogo } : {}),
+    ...(irmas ? { irmas_declaradas: irmas } : {}), ...(uso ? { uso_interface_declarado: uso } : {}) };
 }
 
 /** Catálogo disponível não comprova tradução ou marcador no HTML. */
@@ -207,7 +221,7 @@ function resumirCatalogo(raiz, manifesto) {
   }
   const { pt, en } = lerCatalogo(bytes.pt.toString("utf8"), bytes.en.toString("utf8"));
   const entradas = Object.values(en);
-  return {
+  const resumo = {
     schema_version: 1,
     leitor_version: 1,
     dominio: declaracao.dominio,
@@ -217,6 +231,7 @@ function resumirCatalogo(raiz, manifesto) {
     portugues_marcado_declarado: entradas.filter((e) => e.estado === "portugues_marcado").length,
     uso_na_interface_verificado: false,
   };
+  return { resumo, en };
 }
 
 /** Termos documentados não equivalem a chaves traduzidas ou uso já comprovado. */

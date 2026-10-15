@@ -58,7 +58,7 @@ beforeEach(() => { rota.pathname = "/sobre"; });
 afterEach(() => { vi.unstubAllGlobals(); });
 
 describe("seletor público no HTML inicial", () => {
-  it("usa os nomes portugueses do catálogo durante o fallback completo", () => {
+  it("usa os nomes portugueses do catálogo nas regiões portuguesas do cabeçalho", () => {
     expect(pt["idioma.seletor"]).toBe("Idioma");
     expect(pt["idioma.portugues"]).toBe("Português");
     expect(pt["idioma.ingles"]).toBe("Inglês");
@@ -69,7 +69,8 @@ describe("seletor público no HTML inicial", () => {
     const htmlPt = renderizar(par.pt);
     const htmlEn = renderizar(par.en);
     expect(htmlEn).toBe(htmlPt);
-    for (const pathname of [par.pt, par.en, par.pt + "/", par.en + "/"]) {
+    const variantes = [par.pt, par.en, ...(par.pt === "/" ? [] : [par.pt + "/"]), par.en + "/"];
+    for (const pathname of variantes) {
       if (!traducaoPublicada(pathname)) {
         expect(renderizar(pathname)).toBe("");
         continue;
@@ -80,7 +81,7 @@ describe("seletor público no HTML inicial", () => {
   });
 
   it.each([
-    null, "/", "/en", "/entrar", "/en/entrar", "/observatorio", "/en/observatorio",
+    null, "//", "/en//", "/entrar", "/en/entrar", "/observatorio", "/en/observatorio",
     "/app/conta", "/en/app/conta", "/api/auth/eu", "/en/api/auth/eu",
     "/_next/static/a.js", "/home/credito.webp", "/en/home/credito.webp",
     "/pagina-ainda-sem-irma", "/sobrecarga", "/en/sobre/rota-inexistente",
@@ -123,7 +124,7 @@ describe("integração estática no cabeçalho público", () => {
     }
   });
 
-  it.each(["/", "/entrar", "/en/rota-ainda-nao-publicada"])("preserva o cabeçalho sem seletor em %s", (pathname) => {
+  it.each(["/pagina-sintetica-sem-irma", "/entrar", "/en/rota-ainda-nao-publicada"])("preserva o cabeçalho sem seletor em %s", (pathname) => {
     rota.pathname = pathname;
     const todos = elementos(parseFragment(renderToStaticMarkup(createElement(PublicHeaderView))));
     expect(todos.filter((no) => no.tagName === "header")).toHaveLength(1);

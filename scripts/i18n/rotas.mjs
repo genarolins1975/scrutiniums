@@ -41,7 +41,8 @@ export function validarRotasLiterais(raiz, manifesto, fontes) {
     return real;
   };
   const pares = declaracao.literais.map((item) => {
-    if (chaves(item) !== "conteudo,pt" || !caminhoLiteral(item.pt) || item.conteudo !== "portugues_marcado") {
+    if (chaves(item) !== "conteudo,pt" || !caminhoLiteral(item.pt)
+      || !["portugues_marcado", "parcialmente_traduzido"].includes(item.conteudo)) {
       throw new Error("Rota literal i18n ou estado de conteúdo não suportado.");
     }
     if (vistos.has(item.pt)) throw new Error(`Rota literal i18n duplicada: ${item.pt}`);
@@ -80,6 +81,7 @@ export function validarRotasLiterais(raiz, manifesto, fontes) {
       throw new Error(`Fonte inglesa ausente do inventário de interface: ${path}`);
     }
   }
-  return { schema_version: 1, pares, pares_estruturais: pares.length, fallbacks_declarados: pares.length,
+  return { schema_version: 1, pares, pares_estruturais: pares.length,
+    fallbacks_declarados: pares.filter((par) => par.conteudo_declarado === "portugues_marcado").length,
     html_verificado_pelo_inventario: false, acesso_verificado_pelo_inventario: false };
 }

@@ -86,7 +86,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .flatMap((e): MetadataRoute.Sitemap => {
       const par = parDeIdioma(e.url.slice(base.length) || "/");
       if (!par || !traducaoPublicada(par.pt)) return [e];
-      const languages = { "pt-BR": base + par.pt, en: base + par.en, "x-default": base + par.pt };
+      // A entrada raiz portuguesa já é publicada sem barra final.
+      const languages = { "pt-BR": e.url, en: base + par.en, "x-default": e.url };
       const alternates = { ...e.alternates, languages };
       return [{ ...e, alternates }, { ...e, url: base + par.en, alternates }];
     })

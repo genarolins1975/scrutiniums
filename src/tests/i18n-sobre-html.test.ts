@@ -1,120 +1,13 @@
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { parse, parseFragment, type DefaultTreeAdapterMap } from "parse5";
-import { describe, expect, it, type TestContext } from "vitest";
-import glossario from "../../config/glossario-en.json";
+import { parse, parseFragment, serialize } from "parse5";
+import { afterAll, beforeAll, describe, expect, it, type TestContext } from "vitest";
 import { PARES_DE_IDIOMA, type ParDeIdioma } from "@/lib/i18n-rotas";
-
-type No = DefaultTreeAdapterMap["node"];
-type Elemento = DefaultTreeAdapterMap["element"];
-type Forma = string | { tag: string; atributos: [string, string][]; filhos: Forma[] };
-const attr = (no: Elemento, nome: string) => no.attrs.find((a) => a.name === nome)?.value;
-const filhos = (no: No): No[] => "childNodes" in no ? no.childNodes : [];
-const tecnicos = new Set(["script", "style", "template"]);
-const atributosHumanos = ["aria-label", "aria-description", "title", "alt", "placeholder"];
-function elementos(no: No): Elemento[] {
-  return [...("tagName" in no ? [no] : []), ...filhos(no).flatMap(elementos)];
-}
-function texto(no: No): string {
-  if ("tagName" in no && tecnicos.has(no.tagName)) return "";
-  return "value" in no ? no.value : filhos(no).map(texto).join("");
-}
-function unico(no: No, predicado: (e: Elemento) => boolean, descricao: string): Elemento {
-  const encontrados = elementos(no).filter(predicado);
-  expect(encontrados, descricao).toHaveLength(1);
-  return encontrados[0];
-}
-const tag = (no: No, nome: string) => unico(no, (e) => e.tagName === nome, nome);
-function meta(no: No, nome: string): string[] {
-  return elementos(no).filter((e) => e.tagName === "meta"
-    && (attr(e, "name") === nome || attr(e, "property") === nome)).map((e) => attr(e, "content") ?? "");
-}
-function links(no: No, rel: string): Elemento[] {
-  return elementos(no).filter((e) => e.tagName === "link" && attr(e, "rel") === rel);
-}
-
-/** Preserva texto, espaços, números, atributos e destinos; ignora só transporte React. */
-function conteudo(no: No): Forma[] {
-  const saida: Forma[] = [];
-  for (const filho of filhos(no)) {
-    if ("value" in filho) {
-      if (typeof saida[saida.length - 1] === "string") {
-        saida[saida.length - 1] = String(saida[saida.length - 1]) + filho.value;
-      } else saida.push(filho.value);
-    } else if ("tagName" in filho && !tecnicos.has(filho.tagName)) {
-      saida.push({
-        tag: filho.tagName,
-        atributos: filho.attrs.map((a): [string, string] => [a.name, a.value]).sort(([a], [b]) => a.localeCompare(b)),
-        filhos: conteudo(filho),
-      });
-    }
-  }
-  return saida;
-}
-
-const nomesProprios = Object.values(glossario.entradas)
-  .filter((entrada) => entrada.tipo === "nome_proprio")
-  .flatMap((entrada) => [entrada.pt, ...("formas_preservadas" in entrada ? entrada.formas_preservadas : [])]);
-const escapar = (valor: string) => valor.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-function semNomes(textoOriginal: string, nomes: readonly string[]): string {
-  return [...nomes].sort((a, b) => b.length - a.length).reduce((restante, nome) =>
-    restante.replace(new RegExp(`(^|[^\\p{L}\\p{N}_])${escapar(nome)}(?=$|[^\\p{L}\\p{N}_])`, "giu"), "$1"), textoOriginal);
-}
-function oculto(no: Elemento): boolean {
-  return attr(no, "hidden") !== undefined || attr(no, "aria-hidden") === "true"
-    || /(?:^|\s)(?:hidden|sr-only|invisible|opacity-0)(?:\s|$)/.test(attr(no, "class") ?? "")
-    || /display\s*:\s*none|visibility\s*:\s*hidden|opacity\s*:\s*0(?:[;\s]|$)/.test(attr(no, "style") ?? "")
-    || (no.parentNode !== null && "tagName" in no.parentNode && oculto(no.parentNode));
-}
-
-/** Detector incremental: ilhas válidas não dispensam o head nem atributos fora delas. */
-function vazamentos(doc: No, idioma: "pt" | "en", nomes: readonly string[] = nomesProprios): string[] {
-  const erros: string[] = [];
-  const todos = elementos(doc);
-  const ilhasValidas = new Set<Elemento>();
-  const avisosVinculados = new Set<Elemento>();
-  for (const ilha of todos.filter((e) => attr(e, "data-i18n-estado") !== undefined)) {
-    const irmaos = ilha.parentNode ? filhos(ilha.parentNode).filter((e): e is Elemento => "tagName" in e) : [];
-    const aviso = irmaos[irmaos.indexOf(ilha) - 1];
-    const valido = attr(ilha, "data-i18n-estado") === "portugues_marcado" && attr(ilha, "lang") === "pt-BR"
-      && aviso && attr(aviso, "data-i18n-aviso") !== undefined && attr(aviso, "lang") === "en"
-      && texto(aviso).trim() === "Portuguese only" && !oculto(aviso) && !oculto(ilha);
-    if (!valido) erros.push("ilha-sem-aviso-visivel-ou-idioma");
-    else {
-      ilhasValidas.add(ilha);
-      avisosVinculados.add(aviso);
-    }
-    if (idioma === "pt") erros.push("marcador-ingles-em-pagina-portuguesa");
-  }
-  for (const aviso of todos.filter((e) => attr(e, "data-i18n-aviso") !== undefined)) {
-    if (!avisosVinculados.has(aviso)) erros.push("aviso-sem-ilha");
-  }
-  const verifica = (valor: string, dentro: boolean, lang: string) => {
-    if (!valor.trim() || (idioma === "en" && dentro && lang === "pt-BR")) return;
-    const restante = semNomes(valor, nomes);
-    if (new RegExp("\\b(?:idioma|traducao)\\.[a-z_]+\\b", "u").test(restante)) erros.push(`chave-na-interface: ${valor}`);
-    const portugues = new RegExp("(?:^|[^\\p{L}])(?:não|são|dados)(?=$|[^\\p{L}])|[\\p{L}]+(?:ção|ções)\\b", "iu");
-    const ingles = new RegExp("\\b(?:the|are|with|only|your|Portuguese|English|Language)\\b", "iu");
-    if (idioma === "en" && portugues.test(restante)) erros.push(`portugues-sem-marca: ${valor}`);
-    if (idioma === "pt" && ingles.test(restante)) erros.push(`ingles-na-pagina-portuguesa: ${valor}`);
-  };
-  const visita = (no: No, dentro: boolean, lang: string) => {
-    if ("value" in no) { verifica(no.value, dentro, lang); return; }
-    if ("tagName" in no) {
-      if (tecnicos.has(no.tagName)) return;
-      dentro = dentro || ilhasValidas.has(no);
-      lang = attr(no, "lang") ?? lang;
-      for (const nome of atributosHumanos) verifica(attr(no, nome) ?? "", dentro, lang);
-      if (no.tagName === "meta" && /^(?:description|og:(?:title|description|image:alt)|twitter:(?:title|description|image:alt))$/.test(attr(no, "name") ?? attr(no, "property") ?? "")) {
-        verifica(attr(no, "content") ?? "", false, idioma === "pt" ? "pt-BR" : "en");
-      }
-    }
-    for (const filho of filhos(no)) visita(filho, dentro, lang);
-  };
-  visita(doc, false, idioma === "pt" ? "pt-BR" : "en");
-  return erros;
-}
+import { attr, conteudo, elementos, filhos, links, meta, oculto, tag, texto, unico, vazamentos, type No } from "./suporte/i18n-dom";
+import { documentoEstatico, modoDaPagina } from "./suporte/i18n-build";
+import { criarNavegadorI18n, type NavegadorI18n } from "./suporte/i18n-browser";
+import { verificarHomeParcial, verificarHeadHome } from "./suporte/i18n-home";
 
 const APP = join(process.cwd(), ".next", "server", "app");
 const EXIGIR = process.env.EXIGIR_BUILD_HTML === "1";
@@ -252,55 +145,69 @@ describe(`Sobre: HTML estático PT/EN (${EXIGIR ? "build obrigatório" : "build 
   });
 });
 
-/** Cada irmã precisa de evidência do build; HTML solto não comprova prerender. */
-function documentoEstatico(caminho: string, build = join(process.cwd(), ".next")): No {
-  const manifestoApp = join(build, "server", "app-paths-manifest.json");
-  const manifestoPrerender = join(build, "prerender-manifest.json");
-  for (const arquivo of [manifestoApp, manifestoPrerender]) {
-    if (!existsSync(arquivo)) throw new Error(`Build incompleto para ${caminho}: falta ${arquivo}`);
+let navegador: NavegadorI18n | undefined;
+const dinamicos = new Map<string, { pt: No; en: No }>();
+afterAll(async () => { await navegador?.fechar(); });
+
+function exigirBuild(ctx?: TestContext) {
+  if (!existsSync(APP) && !EXIGIR) {
+    if (ctx) ctx.skip("sem build local; rode npm run build para verificar todos os pares declarados");
+    return false;
   }
-  const app: Record<string, string> = JSON.parse(readFileSync(manifestoApp, "utf8"));
-  const prerender: { routes?: Record<string, unknown> } = JSON.parse(readFileSync(manifestoPrerender, "utf8"));
-  const segmento = caminho === "/" ? "" : caminho;
-  const modulo = app[`${segmento}/page`];
-  if (!modulo) {
-    if (app[`${segmento}/route`]) throw new Error(`Handler fora do adaptador de HTML de páginas: ${caminho}`);
-    throw new Error(`Página compilada ausente do manifesto: ${caminho}`);
-  }
-  const compilado = join(build, "server", modulo);
-  if (!existsSync(compilado) || !statSync(compilado).isFile()) throw new Error(`Página compilada ausente: ${caminho}`);
-  if (!prerender.routes?.[caminho]) {
-    throw new Error(`Página ${caminho} compilada sem prerender; integrar verificação HTTP antes de declarar sua cobertura HTML.`);
-  }
-  const arquivo = join(build, "server", "app", caminho === "/" ? "index.html" : `${caminho.slice(1)}.html`);
-  if (!existsSync(arquivo) || !statSync(arquivo).isFile()) throw new Error(`HTML ausente: ${caminho}; gere um build completo.`);
-  return parse(readFileSync(arquivo, "utf8"));
+  expect(existsSync(APP), "EXIGIR_BUILD_HTML=1 requer .next/server/app").toBe(true);
+  return true;
 }
 
 function documentosDoPar(ctx: TestContext, par: ParDeIdioma) {
-  if (!existsSync(APP) && !EXIGIR) ctx.skip("sem build local; rode npm run build para verificar todos os pares declarados");
-  expect(existsSync(APP), "EXIGIR_BUILD_HTML=1 requer .next/server/app").toBe(true);
-  return { pt: documentoEstatico(par.pt), en: documentoEstatico(par.en) };
+  exigirBuild(ctx);
+  const modoPt = modoDaPagina(par.pt);
+  const modoEn = modoDaPagina(par.en);
+  expect(modoEn, `modo de geração PT/EN: ${par.pt}`).toBe(modoPt);
+  if (modoPt === "estatico") return { pt: documentoEstatico(par.pt), en: documentoEstatico(par.en) };
+  if (modoPt === "dinamico") {
+    const documentos = dinamicos.get(par.pt);
+    if (!documentos) throw new Error(`Prova de navegador ausente: ${par.pt}`);
+    return documentos;
+  }
+  throw new Error(`Modo de geração não suportado: ${String(modoPt)}`);
 }
 
 // Não filtrar por existência de HTML ou acesso público: toda declaração precisa de prova.
 describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par) => {
-  it("comprova prerender, idioma documental e metadados recíprocos", (ctx) => {
+  beforeAll(async () => {
+    if (!exigirBuild()) return;
+    const modoPt = modoDaPagina(par.pt);
+    const modoEn = modoDaPagina(par.en);
+    expect(modoEn, `modo de geração PT/EN: ${par.pt}`).toBe(modoPt);
+    if (modoPt === "dinamico") {
+      if (par.pt !== "/" || par.en !== "/en") throw new Error(`Par dinâmico sem adaptador de cenário: ${par.pt}`);
+      navegador ??= await criarNavegadorI18n();
+      dinamicos.set(par.pt, { pt: parse(await navegador.documento(par.pt)), en: parse(await navegador.documento(par.en)) });
+    }
+  }, 90_000);
+
+  it("comprova modo de geração, idioma documental e metadados recíprocos", (ctx) => {
     const { pt, en } = documentosDoPar(ctx, par);
     const base = "https://scrutiniums.com";
-    const alternates: string[][] = [];
+    const url = (caminho: string) => caminho === "/" ? base : base + caminho;
+    const alternates = par.conteudo === "portugues_marcado" ? [] : [["pt-BR", url(par.pt)], ["en", url(par.en)], ["x-default", url(par.pt)]];
     expect(attr(tag(pt, "html"), "lang")).toBe("pt-BR");
     expect(attr(tag(en, "html"), "lang")).toBe("en");
     expect(attr(tag(pt, "html"), "class")).toBeTruthy();
     expect(attr(tag(en, "html"), "class")).toBe(attr(tag(pt, "html"), "class"));
     for (const [doc, caminho, locale, outroLocale] of [[pt, par.pt, "pt_BR", "en_US"], [en, par.en, "en_US", "pt_BR"]] as const) {
       expect(attr(tag(doc, "body"), "class")).toBe("min-h-screen bg-marfim text-carvao");
-      expect(links(doc, "canonical").map((e) => attr(e, "href")), caminho).toEqual([base + caminho]);
+      expect(links(doc, "canonical").map((e) => attr(e, "href")), caminho).toEqual([url(caminho)]);
       expect(links(doc, "alternate").filter((e) => attr(e, "hreflang") !== undefined)
         .map((e) => [attr(e, "hreflang"), attr(e, "href")]).sort(), caminho).toEqual([...alternates].sort());
       expect(meta(doc, "og:locale"), caminho).toEqual([locale]);
       expect(meta(doc, "og:locale:alternate"), caminho).toEqual([outroLocale]);
-      expect(meta(doc, "og:url"), caminho).toEqual([base + caminho]);
+      expect(meta(doc, "og:url"), caminho).toEqual([url(caminho)]);
+    }
+    if (par.conteudo === "parcialmente_traduzido") {
+      expect(par.pt).toBe("/");
+      verificarHeadHome(pt, en);
+      return;
     }
     expect(par.conteudo).toBe("portugues_marcado");
     expect(meta(en, "robots").some((valor) => /\bnoindex\b/.test(valor))).toBe(true);
@@ -316,6 +223,12 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
 
   it("preserva todo o corpo PT e procura vazamentos nos dois documentos inteiros", (ctx) => {
     const { pt, en } = documentosDoPar(ctx, par);
+    if (par.conteudo === "parcialmente_traduzido") {
+      expect(par.pt).toBe("/");
+      verificarHomeParcial(pt, en);
+      return;
+    }
+    expect(par.conteudo).toBe("portugues_marcado");
     const corpoPt = tag(pt, "body");
     const corpoEn = tag(en, "body");
     const ilha = unico(corpoEn, (e) => attr(e, "data-i18n-estado") === "portugues_marcado", `ilha portuguesa em ${par.en}`);
@@ -331,6 +244,33 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
     expect(vazamentos(en, "en"), par.en).toEqual([]);
     expect(vazamentos(pt, "pt"), par.pt).toEqual([]);
   });
+
+  if (par.conteudo === "parcialmente_traduzido") {
+    it("recusa número alterado, marca escondida, chave aparente e texto não declarado no DOM real", (ctx) => {
+      const { pt, en } = documentosDoPar(ctx, par);
+      if (!("childNodes" in en)) throw new Error("Documento inglês sem árvore DOM");
+      const original = serialize(en);
+      const comNumero = parse(original);
+      const indice = unico(comNumero, (e) => attr(e, "data-i18n-regiao") === "home-indice", "índice");
+      const numero = elementos(indice).flatMap(filhos).find((no) => "value" in no && /^\d+$/.test(no.value));
+      if (!numero || !("value" in numero)) throw new Error("Índice sem número para a prova de adulteração");
+      numero.value = String(Number(numero.value) + 1);
+      expect(() => verificarHomeParcial(pt, comNumero)).toThrow();
+      const semAvisoVisivel = parse(original);
+      const aviso = elementos(semAvisoVisivel).find((e) => attr(e, "data-i18n-aviso") !== undefined)!;
+      aviso.attrs.push({ name: "hidden", value: "" });
+      expect(() => verificarHomeParcial(pt, semAvisoVisivel)).toThrow();
+      const comChave = parse(original);
+      const titulo = unico(comChave, (e) => attr(e, "data-i18n-regiao") === "home-titulo", "título");
+      const primeira = filhos(titulo).find((no) => "value" in no);
+      if (!primeira || !("value" in primeira)) throw new Error("Título sem texto");
+      primeira.value = "home.hero.titulo_inicio";
+      expect(() => verificarHomeParcial(pt, comChave)).toThrow();
+      const comTextoExtra = parse(original);
+      tag(comTextoExtra, "body").childNodes.push(...parseFragment("<p>Additional sentence.</p>").childNodes);
+      expect(() => verificarHomeParcial(pt, comTextoExtra)).toThrow();
+    });
+  }
 });
 
 describe("carregamento obrigatório do HTML de cada irmã", () => {

@@ -2,6 +2,7 @@ import { Children, createElement, isValidElement, type ReactElement, type ReactN
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
+import { parDeIdioma } from "@/lib/i18n-rotas";
 
 const montagem = vi.hoisted(() => ({
   pathname: "/sobre" as string | null,
@@ -153,6 +154,11 @@ function montar() {
 }
 
 const URLs = [
+  { pt: "/", en: "/en" },
+  { pt: "/?origem=a+b&origem=a%20b#obs-credito", en: "/en?origem=a+b&origem=a%20b#obs-credito" },
+  { pt: "/?", en: "/en?" },
+  { pt: "/#", en: "/en#" },
+  { pt: "/?#", en: "/en?#" },
   {
     pt: "/sobre?uf=SP&uf=PE&q=a+b&q=a%20b&x=%2f&v=#se%C3%A7%C3%A3o",
     en: "/en/sobre?uf=SP&uf=PE&q=a+b&q=a%20b&x=%2f&v=#se%C3%A7%C3%A3o",
@@ -171,7 +177,8 @@ describe("destinos reais nas refs de uma montagem do seletor", () => {
     "preserva a grafia completa depois do efeito: $entrada", ({ entrada, pt, en }) => {
       const browser = navegador("https://scrutiniums.com" + entrada);
       const controle = montar();
-      expect(controle.hrefs()).toEqual(["/sobre", "/en/sobre"]);
+      const par = parDeIdioma(entrada)!;
+      expect(controle.hrefs()).toEqual([par.pt, par.en]);
       controle.efeitos();
       expect(controle.hrefs()).toEqual([pt, en]);
       expect(browser.escreverCookie).not.toHaveBeenCalled();
@@ -225,7 +232,8 @@ describe("destinos reais nas refs de uma montagem do seletor", () => {
   });
 
   it.each([
-    "https://scrutiniums.com/", "https://scrutiniums.com/entrar", "https://scrutiniums.com/en/observatorio",
+    "https://scrutiniums.com/pagina-sintetica-sem-irma", "https://scrutiniums.com//",
+    "https://scrutiniums.com/entrar", "https://scrutiniums.com/en/observatorio",
     "https://scrutiniums.com/api/auth/eu", "https://scrutiniums.com/en/home/credito.webp",
     "https://scrutiniums.com/en/sobre/nao-publicada", "https://scrutiniums.com/en/en/sobre",
     "https://scrutiniums.com/%65n/sobre", "https://scrutiniums.com.evil.invalid/sobre",

@@ -14,6 +14,7 @@
  * registro.
  */
 import { DOMINIOS } from "@/lib/dominios";
+import { pt } from "@/i18n/pt";
 
 const EXTENSO: Record<number, string> = { 1: "um", 2: "dois", 3: "três", 4: "quatro", 5: "cinco", 6: "seis", 7: "sete", 8: "oito", 9: "nove" };
 
@@ -47,5 +48,5 @@ export const ACESSO = {
     "Com a conta, você acessa todos os painéis, downloads e arquivos de dados, pode se inscrever no boletim mensal " +
     "da central de alertas do crédito e administra senha, sessões e consentimentos.",
   /** Rótulo do botão de cadastro. */
-  ctaConta: "Criar conta gratuita",
+  ctaConta: pt["acesso.criar_conta"],
 } as const;

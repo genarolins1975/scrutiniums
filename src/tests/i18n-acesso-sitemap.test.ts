@@ -57,7 +57,8 @@ describe("sitemap dos pares publicados", () => {
       expect(pt, par.pt).toBeDefined();
       expect(en, par.en).toEqual({ ...pt, url: base + par.en });
       expect(pt?.alternates?.languages).toEqual({
-        "pt-BR": base + par.pt, en: base + par.en, "x-default": base + par.pt,
+        "pt-BR": base + (par.pt === "/" ? "" : par.pt), en: base + par.en,
+        "x-default": base + (par.pt === "/" ? "" : par.pt),
       });
     }
     for (const entrada of entradas) {

@@ -5,12 +5,30 @@
   "rotas": {
     "schema_version": 1,
     "literais": [
+      { "pt": "/", "conteudo": "parcialmente_traduzido" },
       { "pt": "/imprensa", "conteudo": "portugues_marcado" },
       { "pt": "/observatorio-do-credito", "conteudo": "portugues_marcado" },
       { "pt": "/sobre", "conteudo": "portugues_marcado" },
       { "pt": "/sobre/erros", "conteudo": "portugues_marcado" },
       { "pt": "/sobre/governanca", "conteudo": "portugues_marcado" }
     ]
+  },
+  "uso_interface": {
+    "schema_version": 1,
+    "rotas": [{
+      "pt": "/",
+      "regioes": [
+        { "id": "home-titulo", "estado": "traduzido", "chaves": ["home.hero.titulo_inicio", "home.hero.titulo_destaque"] },
+        { "id": "home-acoes", "estado": "traduzido", "chaves": ["acesso.criar_conta", "home.hero.ja_cadastrado"] },
+        { "id": "home-cabecalho", "estado": "portugues_marcado" },
+        { "id": "home-rotulo", "estado": "portugues_marcado" },
+        { "id": "home-introducao", "estado": "portugues_marcado" },
+        { "id": "home-beneficios", "estado": "portugues_marcado" },
+        { "id": "home-indice", "estado": "portugues_marcado" },
+        { "id": "home-secoes", "estado": "portugues_marcado" },
+        { "id": "home-rodape", "estado": "portugues_marcado" }
+      ]
+    }]
   },
   "descricao": "Inventário de fontes e catálogo inicial de mensagens, sem comprovação de uso na interface. Prefixos incluem novos arquivos; omissões textuais conhecidas permanecem explícitas.",
   "ui": { "raizes": ["src/app", "src/components", "src/lib", "public/obs"] },

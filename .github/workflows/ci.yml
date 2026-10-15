@@ -49,6 +49,11 @@ jobs:
       - name: Dependências
         run: npm ci
 
+      - name: Chromium para verificar o DOM das páginas dinâmicas
+        # A home consulta sessão e usa Suspense: o HTML de transporte sozinho
+        # não comprova os textos que o leitor recebe. Versão fixada no lockfile.
+        run: npx --no-install playwright install --with-deps chromium
+
       - name: Gerar app.min.js
         # o minificado é gitignorado (artefato de build) e os testes de
         # exportação o comparam com o fonte — num clone limpo ele não existe.

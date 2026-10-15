@@ -11,4 +11,8 @@ export const en = {
   "idioma.ingles": { estado: "traduzido", texto: "English" },
   "idioma.seletor": { estado: "traduzido", texto: "Language" },
   "traducao.portugues_apenas": { estado: "traduzido", texto: "Portuguese only" },
+  "home.hero.titulo_inicio": { estado: "traduzido", texto: "From scattered information to " },
+  "home.hero.titulo_destaque": { estado: "traduzido", texto: "verifiable knowledge" },
+  "acesso.criar_conta": { estado: "traduzido", texto: "Create a free account" },
+  "home.hero.ja_cadastrado": { estado: "traduzido", texto: "I already have an account" },
 } as const satisfies DicionarioEn;
