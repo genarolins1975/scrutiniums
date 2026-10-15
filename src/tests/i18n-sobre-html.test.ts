@@ -288,7 +288,7 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
   it("comprova prerender, idioma documental e metadados recíprocos", (ctx) => {
     const { pt, en } = documentosDoPar(ctx, par);
     const base = "https://scrutiniums.com";
-    const alternates = [["pt-BR", base + par.pt], ["en", base + par.en], ["x-default", base + par.pt]];
+    const alternates: string[][] = [];
     expect(attr(tag(pt, "html"), "lang")).toBe("pt-BR");
     expect(attr(tag(en, "html"), "lang")).toBe("en");
     expect(attr(tag(pt, "html"), "class")).toBeTruthy();
@@ -303,6 +303,7 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
       expect(meta(doc, "og:url"), caminho).toEqual([base + caminho]);
     }
     expect(par.conteudo).toBe("portugues_marcado");
+    expect(meta(en, "robots").some((valor) => /\bnoindex\b/.test(valor))).toBe(true);
     expect(meta(en, "og:site_name")).toEqual(["Scrutiniums"]);
     expect(meta(en, "og:type")).toEqual(["website"]);
     expect(texto(tag(en, "title"))).toBe("Scrutiniums · Portuguese only");

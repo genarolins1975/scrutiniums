@@ -52,7 +52,6 @@ describe("composição dos metadados portugueses com irmãs declaradas", () => {
       ...origemAntes,
       alternates: {
         ...origemAntes.alternates,
-        languages: { "pt-BR": "/sobre", en: "/en/sobre", "x-default": "/sobre" },
       },
       openGraph: {
         ...anteriorAntes.openGraph,
