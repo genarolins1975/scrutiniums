@@ -41,6 +41,10 @@ node scripts/cobertura-i18n.mjs --gold > /tmp/cobertura-gold.json
 
 Esse diagnóstico não versionado conserva as validações de integridade das materializações. Campos ainda não catalogados são pendências, nunca inglês comprovado. Sem catálogo semântico de campos, as contagens de campos catalogados continuam zero; isso não significa ausência de pendências. O comando não modifica o relatório de código.
 
+No diagnóstico, `dominios` conserva as métricas dos arquivos JSON. O bloco separado `html_derivado` conta arquivos, candidatos textuais e pendências de scripts dos HTML declarados como conteúdo dinâmico ou sob uma raiz gold. A quantidade total de fontes e sua assinatura incluem JSON e esses HTML. Conteúdo institucional e HTML de interface permanecem fora desse bloco. Os scripts são analisados como pendências, sem execução ou comprovação de tradução.
+
+O relatório de código exclui esses conteúdos derivados também quando seus caminhos estão sob uma raiz de interface, como `public/obs/data/gold/report.html`. A exclusão se limita aos caminhos declarados de conteúdo: bibliotecas TypeScript que compartilham uma raiz com dados continuam sendo fontes de código. Alterar ou remover o HTML derivado não exige regenerar o schema 2; sua ausência continua sendo erro ao solicitar o diagnóstico `--gold`.
+
 Essa integração não conclui a fase 0: consumidores do catálogo e do glossário, rotas e verificações semânticas continuam nas entregas seguintes.
 
 ## O que cada contagem significa

@@ -77,8 +77,12 @@ export function descobrirFontes(raiz, manifesto, { apenasCodigo = false } = {}) 
   }
 
   const extras = new Map();
+  const extrasDerivados = new Set();
   for (const item of manifesto.conteudo ?? []) {
-    if (apenasCodigo && (item.dinamico || dominioDe(item.path, 'gold'))) continue;
+    if (apenasCodigo && (item.dinamico || dominioDe(item.path, 'gold'))) {
+      extrasDerivados.add(item.path);
+      continue;
+    }
     exigirDominio(item.dominio);
     if (!['markdown', 'html', 'json'].includes(item.formato) || extras.has(item.path)) throw Error(`Conteúdo inválido ou duplicado: ${item.path}`);
     caminho(item.path);
@@ -91,6 +95,8 @@ export function descobrirFontes(raiz, manifesto, { apenasCodigo = false } = {}) 
     else if (!statSync(localizar(path)).isDirectory()) throw Error(`Raiz de dados inválida: ${path}`);
   }
   for (const path of [...arquivos].sort()) {
+    // Um conteúdo derivado pode também estar sob uma raiz de UI, como public/obs.
+    if (extrasDerivados.has(path)) continue;
     const extra = extras.get(path);
     // O relatório versionado não enumera, abre nem assina dados publicados.
     // Templates são fontes de código mesmo antes de terem consumidores.

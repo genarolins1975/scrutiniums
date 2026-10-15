@@ -306,13 +306,21 @@ export function somenteCodigo(relatorio) {
 export function gerarCoberturaGold(raiz = RAIZ) {
   const manifesto = JSON.parse(readFileSync(join(raiz, INVENTARIO), "utf8"));
   const fontes = descobrirFontes(raiz, manifesto);
-  const relatorio = construirRelatorio(manifesto, { ...fontes, ui: [], conteudo: [] }, (path) => readFileSync(join(raiz, path)));
+  const raizesGold = manifesto.dominios.flatMap((dominio) => dominio.gold ?? []);
+  const conteudo = fontes.conteudo.filter((fonte) => fonte.formato === "html" && (
+    fonte.dinamico || raizesGold.some((prefixo) => fonte.path === prefixo || fonte.path.startsWith(prefixo + "/"))
+  ));
+  const relatorio = construirRelatorio(manifesto, { ...fontes, ui: [], conteudo }, (path) => readFileSync(join(raiz, path)));
   return {
     schema_version: 1,
     natureza: "diagnostico_gold_nao_versionado",
-    interpretacao: "Campos não catalogados são pendências, não traduções. A ausência de catálogo não comprova inglês nem fallback no consumidor.",
+    interpretacao: "Campos JSON e candidatos de HTML derivado são pendências, não traduções. Scripts embutidos não são executados e permanecem pendentes. A ausência de catálogo não comprova inglês nem fallback no consumidor.",
     escopo: relatorio.escopo,
     dominios: Object.fromEntries(Object.entries(relatorio.dominios).map(([id, dominio]) => [id, dominio.gold])),
+    html_derivado: Object.fromEntries(Object.entries(relatorio.dominios).map(([id, dominio]) => {
+      const { arquivos, candidatos_nao_catalogados, scripts_embutidos } = dominio.conteudo_adicional;
+      return [id, { arquivos, candidatos_nao_catalogados, scripts_embutidos }];
+    })),
   };
 }
 
