@@ -4,6 +4,7 @@ import { Abertura, Fonte, Ressalva, Secao } from "@/components/saneamento/Editor
 import { ComparadorMunicipios } from "@/components/saneamento/ComparadorMunicipios";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { municipios } from "@/lib/saneamento/gold";
+import { formatadorNumero } from "@/lib/format";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -39,7 +40,7 @@ export default function Pagina() {
               estimada e de volumes, e a NR 8 de domicílios. Linhas com fontes diferentes não se comparam entre si, só entre municípios.
             </p>
           }
-          recorte={<>{lista.length.toLocaleString("pt-BR")} municípios do IBGE; Censo 2022 e SINISA 2025 (ano de referência 2024).</>}
+          recorte={<>{formatadorNumero("pt", {}).format(lista.length)} municípios do IBGE; Censo 2022 e SINISA 2025 (ano de referência 2024).</>}
         />
         <Secao id="comparador" titulo="Municípios lado a lado">
           <ComparadorMunicipios sugestoes={sugestoes} />

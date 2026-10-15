@@ -8,6 +8,7 @@ import { inteiro } from "@/lib/saneamento/formato";
 import { ROTULO_SITUACAO_FONTE, VIABILIDADE } from "@/lib/saneamento/viabilidade";
 import { TARIFAS } from "@/lib/saneamento/tarifas";
 import { ESTUDOS } from "@/lib/saneamento/dados/estudos";
+import { formatadorNumero } from "@/lib/format";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -132,7 +133,7 @@ export default function Pagina() {
                   {Object.entries(c.valores).map(([k, v]) => (
                     <div key={k} className="flex justify-between gap-4 border-b border-linha py-1">
                       <dt className="text-carvao-muted">{k.replace(/_/g, " ")}</dt>
-                      <dd className="tabular-nums text-carvao">{v == null ? "sem dado" : v.toLocaleString("pt-BR", { maximumFractionDigits: 2 })}</dd>
+                      <dd className="tabular-nums text-carvao">{v == null ? "sem dado" : formatadorNumero("pt", { maximumFractionDigits: 2 }).format(v)}</dd>
                     </div>
                   ))}
                 </dl>

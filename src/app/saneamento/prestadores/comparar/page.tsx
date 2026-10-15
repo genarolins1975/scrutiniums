@@ -6,6 +6,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { prestadores } from "@/lib/saneamento/gold";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { TARIFAS } from "@/lib/saneamento/tarifas";
+import { formatadorNumero } from "@/lib/format";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -40,7 +41,7 @@ export default function Pagina() {
               os municípios em que atua. A tabela não tem nota composta nem ordem de mérito: perímetros, contratos e territórios são diferentes.
             </p>
           }
-          recorte={<>SINISA 2025, ano de referência 2024; {lista.length.toLocaleString("pt-BR")} prestadores no cadastro.</>}
+          recorte={<>SINISA 2025, ano de referência 2024; {formatadorNumero("pt", {}).format(lista.length)} prestadores no cadastro.</>}
           situacao={cap.situacao}
           pendencia={cap.pendencia}
         />

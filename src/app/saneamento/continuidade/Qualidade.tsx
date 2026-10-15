@@ -9,6 +9,7 @@ import { ANOS_SISAGUA, MEDIDAS_QUALIDADE, agregarMedida, medida } from "@/lib/sa
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { inteiro, numero } from "@/lib/saneamento/formato";
 import type { Municipio } from "@/lib/saneamento/tipos";
+import { formatadorDataHora } from "@/lib/format";
 
 const ANO = 2024;
 const ULTIMO = ANOS_SISAGUA[ANOS_SISAGUA.length - 1];
@@ -86,7 +87,7 @@ const TOXINA: Record<string, string> = { microcistina: "Microcistinas", saxitoxi
 function data(iso: string | null | undefined): string {
   if (!iso) return "sem data";
   const d = new Date(iso);
-  return Number.isNaN(d.getTime()) ? iso : d.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+  return Number.isNaN(d.getTime()) ? iso : formatadorDataHora("pt", { timeZone: "UTC" }).format(d);
 }
 
 export function Qualidade() {

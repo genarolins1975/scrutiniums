@@ -17,6 +17,11 @@ export function formatadorDataHora(idioma: Idioma, opcoes: Intl.DateTimeFormatOp
   return new Intl.DateTimeFormat(locales[idioma], opcoes);
 }
 
+/** Preserva o despacho nativo em fronteiras que já chamam toLocaleString sem opções. */
+export function formatarLocalNativo(valor: { toLocaleString(locales?: string): string }, idioma: Idioma = "pt"): string {
+  return valor.toLocaleString(locales[idioma]);
+}
+
 export function fmtNumber(value: number, decimals = 0, idioma: Idioma = "pt"): string {
   return value.toLocaleString(locales[idioma], {
     minimumFractionDigits: decimals,

@@ -12,6 +12,7 @@ import { capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { inteiro, numero } from "@/lib/saneamento/formato";
 import ESPECIFICACOES from "@/lib/saneamento/dados/desigualdades.json";
+import { formatadorDataHora } from "@/lib/format";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -28,7 +29,9 @@ export default function Pagina() {
   const auditoria = meta()?.desigualdades;
   const residuo = auditoria?.residuos_cor_raca;
   const divergencias = auditoria?.conferencias.filter((c) => c.diferenca !== 0 && c.diferenca != null) ?? [];
-  const captura = auditoria ? new Date(auditoria.proveniencia.capturado_em).toLocaleDateString("pt-BR", {timeZone:"UTC"}) : "sem data";
+  const instanteCaptura = auditoria ? new Date(auditoria.proveniencia.capturado_em) : null;
+  const captura = instanteCaptura === null ? "sem data" : Number.isNaN(instanteCaptura.getTime())
+    ? "Invalid Date" : formatadorDataHora("pt", { timeZone: "UTC" }).format(instanteCaptura);
   const ids = MEDIDAS_DESIGUALDADES.map((m) => m.id);
   const refs = referencias(ags, lista, ids);
   const proporcao = (id: string) => {
