@@ -37,14 +37,9 @@ jobs:
       - run: npm run build
       - name: Testes dos contratos de Mobilidade, Censo e Ipea
         run: npx vitest run src/tests/obee-mobilidade.test.ts src/tests/obee-mobilidade-censo.test.ts src/tests/obee-mobilidade-oportunidades.test.ts
-      - name: Instalar navegador em diretório de teste isolado
-        # Não re-resolver nem modificar o grafo de dependências da aplicação.
-        run: |
-          BROWSER_DIR="$RUNNER_TEMP/obee-browser"
-          mkdir -p "$BROWSER_DIR"
-          npm install --prefix "$BROWSER_DIR" --no-audit --no-fund playwright@1.56.0
-          ln -s "$BROWSER_DIR/node_modules/playwright" node_modules/playwright
-          "$BROWSER_DIR/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Instalar o navegador da versão fixada no lockfile
+        # O cliente já vem do npm ci; instalar seu Chromium, como no CI principal.
+        run: npx --no-install playwright install --with-deps chromium
       - name: Auditar nove páginas, controles e exportações
         env:
           # Os painéis exigem sessão; segredo efêmero, só deste servidor local de CI.
