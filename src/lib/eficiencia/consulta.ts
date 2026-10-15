@@ -6,6 +6,7 @@
  */
 import type { ComparabilidadeReferencia, EtapaId, FichaIndicador, GrupoNacionalCalculado, IndicadorId, InternacionalGrupo, OrigemReferencia, ReferenciaNacionalCalculada, StatusDado } from "./tipos";
 import { decimal, inteiro, percentual, reaisCompleto, reaisCurto, reaisExtenso, reaisInteiro } from "./formato";
+import type { Idioma } from "../idioma";
 
 /* ------------------------------------------------------------------ payload compacto */
 
@@ -243,44 +244,44 @@ export function unidade(m: MedidaId, moeda: Moeda): string {
 }
 
 /** Valor formatado com a unidade (curto: para eixo e rótulo de gráfico). */
-export function formata(m: MedidaId, v: number, curto = false): string {
+export function formata(m: MedidaId, v: number, curto = false, idioma: Idioma = "pt"): string {
   switch (m) {
     case "despesa":
-      return curto ? reaisCurto(v) : reaisExtenso(v);
+      return curto ? reaisCurto(v, idioma) : reaisExtenso(v, idioma);
     case "despesa_hab":
     case "despesa_mat":
-      return reaisInteiro(v);
+      return reaisInteiro(v, idioma);
     case "matriculas":
     case "conveniadas":
-      return inteiro(v);
+      return inteiro(v, idioma);
     case "atu":
-      return decimal(v, 1);
+      return decimal(v, 1, idioma);
     case "aprovacao":
-      return percentual(v, 1);
+      return percentual(v, 1, idioma);
     case "ideb":
-      return decimal(v, 1);
+      return decimal(v, 1, idioma);
     case "saeb":
-      return decimal(v, curto ? 1 : 2);
+      return decimal(v, curto ? 1 : 2, idioma);
   }
 }
 
 /** Rótulo de eixo: inteiro quando o tique é inteiro, uma casa decimal quando não é. */
-export function formataEixo(m: MedidaId, v: number): string {
-  if (m === "despesa") return reaisCurto(v);
-  if (m === "despesa_hab" || m === "despesa_mat") return reaisInteiro(v);
-  if (m === "matriculas" || m === "conveniadas") return inteiro(v);
-  const t = Number.isInteger(v) ? inteiro(v) : decimal(v, 1);
+export function formataEixo(m: MedidaId, v: number, idioma: Idioma = "pt"): string {
+  if (m === "despesa") return reaisCurto(v, idioma);
+  if (m === "despesa_hab" || m === "despesa_mat") return reaisInteiro(v, idioma);
+  if (m === "matriculas" || m === "conveniadas") return inteiro(v, idioma);
+  const t = Number.isInteger(v) ? inteiro(v, idioma) : decimal(v, 1, idioma);
   return m === "aprovacao" ? `${t}%` : t;
 }
 
 /** Valor completo, na precisão publicada, para tabela e exportação. */
-export function formataCompleto(ind: IndicadorId, v: number): string {
-  if (ind === "ctx.populacao.residente") return inteiro(v);
-  if (ind.startsWith("edu.despesa")) return reaisCompleto(v);
-  if (ind.startsWith("edu.matriculas")) return inteiro(v);
-  if (ind === "edu.saeb.rede_municipal") return decimal(v, 2);
-  if (ind === "edu.ideb.rede_municipal") return String(v).replace(".", ",");
-  return decimal(v, 1);
+export function formataCompleto(ind: IndicadorId, v: number, idioma: Idioma = "pt"): string {
+  if (ind === "ctx.populacao.residente") return inteiro(v, idioma);
+  if (ind.startsWith("edu.despesa")) return reaisCompleto(v, idioma);
+  if (ind.startsWith("edu.matriculas")) return inteiro(v, idioma);
+  if (ind === "edu.saeb.rede_municipal") return decimal(v, 2, idioma);
+  if (ind === "edu.ideb.rede_municipal") return idioma === "pt" ? String(v).replace(".", ",") : String(v);
+  return decimal(v, 1, idioma);
 }
 
 /* ------------------------------------------------------------------ períodos */

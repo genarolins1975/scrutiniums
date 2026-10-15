@@ -1,3 +1,6 @@
+import { fmtNumber } from "../../format";
+import type { Idioma } from "../../idioma";
+
 export const ROTA_JUSTICA = '/eficiencia-estatal/acesso-justica';
 export const PAGINAS_JUSTICA = [['','Panorama'],['cobertura','Cobertura territorial'],['tempo-resposta','Tempo e resposta'],['conciliacao','Soluções consensuais'],['recursos','Recursos'],['dados','Dados e métodos']] as const;
 export type Comarca = {codigo:string;nome:string;uf:string;estado:string;populacao:number;municipios:number;situacao:string;linha:number};
@@ -17,6 +20,6 @@ export function agruparCobertura(comarcas:Comarca[]):Cobertura[]{
 }
 export function razao(n:number|null,d:number|null){return n!==null&&d!==null&&Number.isFinite(n)&&Number.isFinite(d)&&d>0?n/d:null;}
 export function totalInformado(values:(number|null)[]){const validos=values.filter((v):v is number=>v!==null&&Number.isFinite(v));return {valor:validos.length?validos.reduce((a,b)=>a+b,0):null,informados:validos.length,total:values.length};}
-export function n(v:number|null,casas=0){return v===null?'Não informado':v.toLocaleString('pt-BR',{minimumFractionDigits:casas,maximumFractionDigits:casas});}
+export function n(v:number|null,casas=0,idioma:Idioma='pt'){return v===null?'Não informado':fmtNumber(v,casas,idioma);}
 export function duracao(m:number|null){if(m===null)return 'Não informado';const a=Math.floor(m/12),r=m%12;return [a?`${a} ${a===1?'ano':'anos'}`:'',r?`${r} ${r===1?'mês':'meses'}`:''].filter(Boolean).join(' e ')||'0 meses';}
 export function csv(headers:string[],rows:(string|number|null)[][]){const escape=(v:string|number|null)=>'"'+String(v??'').replace(/"/g,'""')+'"';return '\ufeff'+[headers,...rows].map(r=>r.map(escape).join(';')).join('\r\n');}

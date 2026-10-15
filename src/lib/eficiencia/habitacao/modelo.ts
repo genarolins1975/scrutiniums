@@ -1,3 +1,6 @@
+import { fmtNumber } from "../../format";
+import type { Idioma } from "../../idioma";
+
 export const ROTA='/eficiencia-estatal/habitacao';
 export const PAGINAS=[['','Panorama'],['deficit','Déficit habitacional'],['aluguel-renda','Aluguel e renda'],['inadequacao','Condições da moradia'],['dados','Dados e métodos']] as const;
 export type Territorio={id:string;nome:string;tipo:string;regiao:string;ano:number;deficit:number;relativoPublicado:number;domicilios:number;urbano:number;rural:number;precaria:number;improvisados:number;rusticos:number;coabitacao:number;comodos:number;conviventes:number;aluguel:number;renda1:number;renda2:number;renda3:number;rendaMais3:number;rendaTotal:number;inadequados:number;infraestrutura:number;agua:number;esgoto:number;lixo:number;energia:number;edilicia:number;armazenamento:number;dormitorios:number;cobertura:number;banheiro:number;piso:number;fundiaria:number;fundiariaExclusiva:number;urbanosDuraveis:number;origem:Record<string,string>};
@@ -11,6 +14,6 @@ export const MEDIDAS:Record<string,Medida[]>={
  inadequacao:[m('inadequados','Alguma inadequação','urbanosDuraveis','domicílios duráveis urbanos','Cada domicílio é contado uma única vez no total, mesmo quando tem mais de uma inadequação.'),...([['infraestrutura','Infraestrutura urbana'],['edilicia','Condições da edificação'],['fundiaria','Situação fundiária'],['agua','Abastecimento de água'],['esgoto','Esgotamento sanitário'],['lixo','Coleta de lixo'],['energia','Energia elétrica'],['armazenamento','Armazenamento de água'],['dormitorios','Cômodos usados como dormitório'],['cobertura','Cobertura inadequada'],['banheiro','Ausência de banheiro exclusivo'],['piso','Piso inadequado']] as [Campo,string][]).map(([id,nome])=>m(id,nome,'urbanosDuraveis','domicílios duráveis urbanos',id==='fundiaria'?'Total da tabela 30 do relatório, incluindo coexistência com outras inadequações. A aba Inadeq_Fundiária da planilha traz apenas os casos exclusivos.':'Critérios específicos da FJP. As categorias podem coexistir: não somar suas contagens ou percentuais.'))]
 };
 export function valor(r:Territorio,m:Medida,unidade:string){const v=r[m.id],den=r[m.denominador];return unidade==='relativo'?(den>0?100*v/den:null):v;}
-export function n(v:number|null,casas=0){return v===null?'Não informado':v.toLocaleString('pt-BR',{minimumFractionDigits:casas,maximumFractionDigits:casas});}
+export function n(v:number|null,casas=0,idioma:Idioma='pt'){return v===null?'Não informado':fmtNumber(v,casas,idioma);}
 export function pct(a:number,b:number){return b>0?100*a/b:null;}
 export function csv(headers:string[],rows:(string|number|null)[][]){const esc=(v:string|number|null)=>'"'+String(v??'').replace(/"/g,'""')+'"';return '\ufeff'+[headers,...rows].map(r=>r.map(esc).join(';')).join('\r\n');}

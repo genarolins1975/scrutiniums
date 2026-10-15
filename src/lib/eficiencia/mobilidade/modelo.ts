@@ -1,3 +1,6 @@
+import { formatadorNumero } from "../../format";
+import type { Idioma } from "../../idioma";
+
 export const ROTA_MOBILIDADE = '/eficiencia-estatal/mobilidade-transporte';
 export const PAGINAS_MOBILIDADE = [
   {slug:'', nome:'Panorama', pergunta:'Chegar aonde precisa', descricao:'Tempo, custo e condições de deslocamento. Conheça as evidências disponíveis e os limites de cada fonte.'},
@@ -22,7 +25,7 @@ export type Linha = Observacao & {local:Territorio};
 export const ESTADOS:Record<string,string> = {observado:'Informado',nao_informado:'Não informado',nao_aplicavel:'Não aplicável',nao_disponivel:'Não disponível',suprimido:'Suprimido na fonte',invalido:'Não elegível: valor inconsistente',sinal_convencional:'Sinal convencional da fonte'};
 export const primeiro=(v:string|string[]|undefined)=> (Array.isArray(v)?v[0]:v)?.slice(0,160) ?? '';
 export const normaliza=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();
-export const valor=(n:number|null,unidade='')=>n===null?'Não disponível':new Intl.NumberFormat('pt-BR',{maximumFractionDigits:unidade==='R$'?2:unidade==='%'?1:2,minimumFractionDigits:unidade==='R$'?2:0}).format(n)+(unidade==='%'?'%':unidade?' '+unidade:'');
+export const valor=(n:number|null,unidade='',idioma:Idioma='pt')=>n===null?'Não disponível':formatadorNumero(idioma,{maximumFractionDigits:unidade==='R$'?2:unidade==='%'?1:2,minimumFractionDigits:unidade==='R$'?2:0}).format(n)+(unidade==='%'?'%':unidade?' '+unidade:'');
 export function mediana(ns:number[]):number|null {if(!ns.length)return null;const a=[...ns].sort((x,y)=>x-y);const i=Math.floor(a.length/2);return a.length%2?a[i]:(a[i-1]+a[i])/2;}
 export function validarBase(g:BaseMobilidade):void {
   if(g.schemaVersion!==1||!Array.isArray(g.observations)||!g.metrics.length)throw new Error('Snapshot de mobilidade incompatível');

@@ -3,6 +3,8 @@
  * formatação e CSV. Pode ser importado por componentes cliente; os dados chegam
  * por prop, montados no servidor por `entrada.ts`.
  */
+import { fmtNumber } from "../format";
+import type { Idioma } from "../idioma";
 
 export type Contorno = {d: string; largura: number; altura: number; kmPorUnidade: number; partesDistantes: number; partesPequenas: number};
 export type CapitalRetrato = {id: string; nome: string; uf: string; regiao: string;
@@ -70,10 +72,10 @@ export function faixa(m: Medida, largura = 400, margem = 12, passo = 11) {
   return {pontos, trilhas: Math.max(1, trilhas.length), x, dominio: [lo, hi] as [number, number], mediana: ref, medianaX: ref === null ? null : x(ref)};
 }
 
-export function numero(v: number | null, unidade: string, casas?: number) {
+export function numero(v: number | null, unidade: string, casas?: number, idioma: Idioma = 'pt') {
   if (v === null || !Number.isFinite(v)) return 'Não disponível';
   const d = casas ?? (unidade === 'R$' ? 2 : 1);
-  const s = v.toLocaleString('pt-BR', {minimumFractionDigits: d, maximumFractionDigits: d});
+  const s = fmtNumber(v, d, idioma);
   if (unidade === 'R$') return `R$ ${s}`;
   if (unidade === '%') return `${s}%`;
   return `${s} ${unidade}`;
@@ -85,16 +87,16 @@ export const naCapital = (nome: string) => COM_ARTIGO.has(nome) ? `no ${nome}` :
 export const daCapital = (nome: string) => COM_ARTIGO.has(nome) ? `do ${nome}` : `de ${nome}`;
 export const aCapital = (nome: string) => COM_ARTIGO.has(nome) ? `ao ${nome}` : `a ${nome}`;
 
-export const inteiro = (v: number | null) => v === null ? 'Não disponível' : Math.round(v).toLocaleString('pt-BR');
+export const inteiro = (v: number | null, idioma: Idioma = 'pt') => v === null ? 'Não disponível' : fmtNumber(Math.round(v), 0, idioma);
 
 /** Diferença A − B na unidade da medida; percentuais viram pontos percentuais. */
-export function diferenca(a: number | null, b: number | null, unidade: string) {
+export function diferenca(a: number | null, b: number | null, unidade: string, idioma: Idioma = 'pt') {
   if (a === null || b === null) return 'Diferença indisponível';
   const d = a - b, sinal = Math.abs(d) < 1e-9 ? '' : d > 0 ? '+' : '−';
   const abs = Math.abs(d);
-  if (unidade === '%') return `${sinal}${abs.toLocaleString('pt-BR', {minimumFractionDigits: 1, maximumFractionDigits: 1})} p.p.`;
-  if (unidade === 'R$') return `${sinal}R$ ${abs.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-  return `${sinal}${abs.toLocaleString('pt-BR', {minimumFractionDigits: 1, maximumFractionDigits: 1})} ${unidade}`;
+  if (unidade === '%') return `${sinal}${fmtNumber(abs, 1, idioma)} p.p.`;
+  if (unidade === 'R$') return `${sinal}R$ ${fmtNumber(abs, 2, idioma)}`;
+  return `${sinal}${fmtNumber(abs, 1, idioma)} ${unidade}`;
 }
 
 /** Barra de escala com comprimento redondo em km, entre 18% e 45% da largura disponível. */
