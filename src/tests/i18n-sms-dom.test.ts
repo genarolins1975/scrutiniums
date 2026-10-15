@@ -39,7 +39,7 @@ function documento(cenario: ComparacaoSms, idioma: "pt" | "en" = "pt", ids = IDS
       + `<button type="submit">Entrar</button><div><button type="button" aria-live="polite"${cenario.contador === "30s" ? ' disabled=""' : ""}>${cenario.contador === "30s" ? "Reenviar código em 30s" : "Reenviar código"}</button><a href="/entrar/sms">Alterar telefone</a></div>`;
   }
   const header = '<header><a href="/" aria-label="Scrutiniums — página inicial">Scrutiniums</a><a href="/cadastro">Criar acesso</a>'
-    + `<div role="group" aria-label="Idioma"><span aria-hidden="true">Idioma</span><a href="${cenario.caminho}" hreflang="pt-BR">Português</a><a href="/en${cenario.caminho}" hreflang="en">Inglês</a></div></header>`;
+    + "</header>";
   const introducao = solicitar
     ? '<p>Enviamos um código por SMS para o telefone cadastrado.</p><p>Use também este caminho se esqueceu sua senha: depois de entrar, defina uma nova em Conta.</p>'
     : '<p>Enviamos um código de acesso por SMS ao telefone cadastrado.</p>';

@@ -42,7 +42,7 @@ describe.each(PAGINAS)("entrada pública de autenticação $pt", (par) => {
     const entradas = sitemap();
     const portuguesas = entradas.filter((entrada) => entrada.url === ORIGEM + par.pt);
     const inglesas = entradas.filter((entrada) => entrada.url === ORIGEM + par.en);
-    expect(portuguesas).toEqual([{
+    expect(portuguesas).toEqual(par.pt.startsWith("/entrar/sms") ? [] : [{
       url: ORIGEM + par.pt, lastModified: expect.any(Date), changeFrequency: "yearly", priority: par.prioridade,
     }]);
     expect(inglesas).toEqual([]);
@@ -111,7 +111,7 @@ describe("publicar as entradas não publica o restante da autenticação inglesa
   });
 });
 
-it("inclui as telas SMS públicas no sitemap e preserva seu bloqueio de rastreamento nos dois idiomas", () => {
+it("exclui as telas SMS públicas do sitemap e preserva seu bloqueio de rastreamento nos dois idiomas", () => {
   expect(robots()).toEqual({
     rules: [{
       userAgent: "*", allow: "/",
@@ -121,7 +121,7 @@ it("inclui as telas SMS públicas no sitemap e preserva seu bloqueio de rastream
   });
   const entradas = sitemap().map((entrada) => entrada.url);
   for (const caminho of ["/entrar/sms", "/en/entrar/sms", "/entrar/sms/verificar", "/en/entrar/sms/verificar"]) {
-    expect(entradas.filter((url) => url === ORIGEM + caminho)).toHaveLength(1);
+    expect(entradas.filter((url) => url === ORIGEM + caminho)).toHaveLength(0);
     expect(entradas.filter((url) => url.startsWith(ORIGEM + caminho + "?"))).toHaveLength(0);
   }
 });

@@ -188,7 +188,7 @@ describe.each(CAMINHOS_SMS)("%s: fallback PT integral no browser", (caminho) => 
     }
   });
 
-  it("alterna pelo teclado com query/fragmento e preserva o cookie de fluxo, sem redirecionamento por preferência", async (ctx) => {
+  it("preserva query, fragmento e cookie de fluxo sem oferecer inglês no fallback", async (ctx) => {
     const servidor = pronto(ctx);
     const contexto = await servidor.contexto(caminho === "/entrar/sms/verificar" ? { loginSms: "valido" } : undefined);
     const tentativas = await impedirEnvios(contexto);
@@ -203,41 +203,16 @@ describe.each(CAMINHOS_SMS)("%s: fallback PT integral no browser", (caminho) => 
       await aguardarPagina(page, caminho);
       expect(page.url()).toBe(servidor.origem + caminho + sufixo);
       await contexto.clearCookies({ name: "scrutiniums_idioma" });
-      let encontrou = false;
-      for (let i = 0; i < 16; i++) {
-        await page.keyboard.press("Tab");
-        encontrou = await page.evaluate(() => document.activeElement?.getAttribute("hreflang") === "en");
-        if (encontrou) break;
+      for (const prefixo of ["", "/en"]) {
+        await page.goto(servidor.origem + prefixo + caminho + sufixo, { waitUntil: "load" });
+        await aguardarPagina(page, prefixo + caminho);
+        expect(await page.getByRole("group", { name: "Idioma", exact: true }).count()).toBe(0);
+        expect(await page.locator('a[hreflang="en"]').count()).toBe(0);
+        expect(page.url()).toBe(servidor.origem + prefixo + caminho + sufixo);
+        verificarPaginaSms(parse(await page.content()), comparacao(caminho, "inicial"));
+        expect((await contexto.cookies()).find((cookie) => cookie.name === "login_phone")?.value === cookieFluxo?.value).toBe(true);
       }
-      expect(encontrou, "seletor alcançável sem submeter o formulário").toBe(true);
-      const seletor = page.getByRole("group", { name: "Idioma", exact: true });
-      expect(await seletor.locator('a[hreflang="en"]').getAttribute("href")).toBe("/en" + caminho + sufixo);
-      const foco = await page.evaluate(() => {
-        const e = document.activeElement as HTMLElement, r = e.getBoundingClientRect(), s = getComputedStyle(e);
-        return { largura: r.width, altura: r.height, estilo: s.outlineStyle, espessura: parseFloat(s.outlineWidth) };
-      });
-      expect(foco.largura).toBeGreaterThanOrEqual(44);
-      expect(foco.altura).toBeGreaterThanOrEqual(44);
-      expect(foco.estilo).not.toBe("none");
-      expect(foco.espessura).toBeGreaterThan(0);
       expect((await contexto.cookies()).some((cookie) => cookie.name === "scrutiniums_idioma")).toBe(false);
-      await page.keyboard.press("Enter");
-      await page.waitForURL(servidor.origem + "/en" + caminho + sufixo);
-      await aguardarPagina(page, "/en" + caminho);
-      expect((await contexto.cookies()).find((cookie) => cookie.name === "scrutiniums_idioma")).toMatchObject({ value: "en", path: "/", sameSite: "Lax" });
-      verificarPaginaSms(parse(await page.content()), comparacao(caminho, "inicial"));
-      expect((await contexto.cookies()).find((cookie) => cookie.name === "login_phone")?.value === cookieFluxo?.value,
-        "trocar idioma conserva o valor do cookie de fluxo, sem expô-lo na falha").toBe(true);
-      const pt = seletor.locator('a[hreflang="pt-BR"]');
-      await pt.focus();
-      expect(await pt.getAttribute("href")).toBe(caminho + sufixo);
-      await page.keyboard.press("Enter");
-      await page.waitForURL(servidor.origem + caminho + sufixo);
-      await aguardarPagina(page, caminho);
-      expect((await contexto.cookies()).find((cookie) => cookie.name === "scrutiniums_idioma")).toMatchObject({ value: "pt", path: "/", sameSite: "Lax" });
-      verificarPaginaSms(parse(await page.content()), comparacao(caminho, "inicial"));
-      expect((await contexto.cookies()).find((cookie) => cookie.name === "login_phone")?.value === cookieFluxo?.value,
-        "voltar ao português conserva o cookie de fluxo").toBe(true);
       expect(tentativas).toEqual([]);
       expect(falhas).toEqual([]);
     } finally { await contexto.close(); }

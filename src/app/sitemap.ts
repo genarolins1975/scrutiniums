@@ -77,8 +77,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...PAGINAS_GAS.map((p) => rota(p.href, 0.6, "monthly")),
     rota("/cadastro", 0.6, "yearly"),
     rota("/entrar", 0.3, "yearly"),
-    rota("/entrar/sms", 0.3, "yearly"),
-    rota("/entrar/sms/verificar", 0.3, "yearly"),
     rota("/privacidade", 0.2, "yearly"),
     rota("/termos", 0.2, "yearly"),
   ];
