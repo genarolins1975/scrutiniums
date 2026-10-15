@@ -80,3 +80,7 @@ Novos testes percorrem o HTML inglês no padrão de `html-gerado.test.ts`, exigi
 | 3 a 9 | Um observatório por fase, nesta ordem: Setor Elétrico, Gás Natural, Saneamento, Eficiência Estatal, Contas Públicas Federais, Contas Públicas Estaduais, SPA do Crédito. Cada série entrega interface, textos determinísticos, exportações e testes do próprio domínio. |
 
 Cada PR tem título e descrição em português, traduções realizadas, termos propostos com fontes, pendências do dono, trecho alterado da cobertura e comandos executados com resultados. Cada fase encerra com cobertura atualizada e CI verde; não iniciar a próxima com falha pendente. Se uma decisão não puder cumprir os contratos, registrar o impedimento e a alternativa no PR antes de continuar a implementação dependente.
+
+## Revisão do contrato de cobertura
+
+O relatório versionado e o `--check` dependem somente de fontes de código: interface, dicionários, glossário, inventário de rotas e modelos de frase. A situação da gold é calculada por `--gold`, em relatório não versionado. A publicação diária de dados não depende da cobertura i18n; os quatro workflows de dados permanecem iguais aos da main. Esta regra substitui o contrato anterior que incluía hashes e contagens da gold no arquivo versionado.

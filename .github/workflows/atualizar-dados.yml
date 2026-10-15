@@ -172,7 +172,6 @@ jobs:
           set +e
           npm ci || exit 1
           node scripts/minify-obs.mjs || exit 1
-          node scripts/i18n/publicacao.mjs preparar || exit 1
           npx vitest run --reporter=default --reporter=json --outputFile.json=vitest-resultado.json
           V=$?
           python3 -m unittest discover -s pipeline/tests -t .
@@ -189,7 +188,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          git checkout -- public/obs/data docs/i18n/cobertura.json
+          git checkout -- public/obs/data
           git clean -fdq public/obs/data
           echo "retida=1" >> "$GITHUB_OUTPUT"
           REPROVADOS=$(python3 scripts/testes_reprovados.py vitest-resultado.json)
@@ -216,7 +215,7 @@ jobs:
         run: |
           git config user.name "pipeline-observatorio[bot]"
           git config user.email "pipeline@scrutiniums.com"
-          git add public/obs/data docs/i18n/cobertura.json
+          git add public/obs/data
           if git diff --cached --quiet; then
             echo "Sem mudanças nos dados publicados."
           else
@@ -227,11 +226,7 @@ jobs:
             # rebase e push no MESMO ramo que disparou a execução (main no agendamento;
             # o ramo do PR no disparo manual de validação)
             for tentativa in 1 2 3 4; do
-              git fetch origin "$GITHUB_REF_NAME"
-              node scripts/i18n/publicacao.mjs rebase "origin/$GITHUB_REF_NAME"
-              npm ci
-              node scripts/i18n/publicacao.mjs registrar "origin/$GITHUB_REF_NAME"
-              git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+              git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
               echo "push falhou (tentativa $tentativa); nova tentativa em $((tentativa * 5))s"
               sleep $((tentativa * 5))
             done

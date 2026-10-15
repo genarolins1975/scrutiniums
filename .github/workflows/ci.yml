@@ -115,8 +115,8 @@ jobs:
         # ISO crua) retornava cedo por falta do diretório: passava sem verificar nada.
         run: npm run build
 
-      - name: Cobertura bilíngue confere com as fontes publicadas
-        # O prebuild já materializou os três recortes; a verificação só lê.
+      - name: Cobertura bilíngue confere com as fontes de código
+        # Não depende da gold nem de saídas dos materializadores.
         run: node scripts/cobertura-i18n.mjs --check
 
       - name: Testes (inclui a verificação obrigatória do HTML gerado)

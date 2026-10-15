@@ -1,6 +1,6 @@
 /** Inventário inicial: candidatos textuais não são traduções nem chaves catalogadas.
- * Uso: node scripts/cobertura-i18n.mjs [--check | --stdout]
- * --check só lê; saídas dos materializadores precisam existir previamente.
+ * Uso: node scripts/cobertura-i18n.mjs [--check | --stdout | --gold]
+ * --check só lê fontes de código; --gold inspeciona os dados atuais sem gravar o relatório versionado.
  */
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -141,8 +141,33 @@ export function gerarCobertura(raiz = RAIZ) {
     if (existsSync(join(raiz, path))) throw new Error(`A cobertura inicial precisa integrar o catálogo e as rotas antes de medir ${path}`);
   }
   const manifesto = JSON.parse(readFileSync(join(raiz, INVENTARIO), "utf8"));
+  const fontes = descobrirFontes(raiz, manifesto, { apenasCodigo: true });
+  return somenteCodigo(construirRelatorio(manifesto, fontes, (path) => readFileSync(join(raiz, path))));
+}
+
+/** Retira métricas de dados: zero seria uma declaração falsa de cobertura da gold. */
+export function somenteCodigo(relatorio) {
+  relatorio.schema_version = 2;
+  relatorio.escopo.tipo = "fontes_de_codigo";
+  delete relatorio.escopo.materializados;
+  delete relatorio.interpretacao.campos_gold;
+  relatorio.interpretacao.gold = "Dados não participam deste relatório nem do --check. Execute --gold para a situação atual, não versionada.";
+  for (const dominio of Object.values(relatorio.dominios)) delete dominio.gold;
+  return relatorio;
+}
+
+/** Diagnóstico pontual. Não é gravado em docs/i18n/cobertura.json e não bloqueia a publicação de dados. */
+export function gerarCoberturaGold(raiz = RAIZ) {
+  const manifesto = JSON.parse(readFileSync(join(raiz, INVENTARIO), "utf8"));
   const fontes = descobrirFontes(raiz, manifesto);
-  return construirRelatorio(manifesto, fontes, (path) => readFileSync(join(raiz, path)));
+  const relatorio = construirRelatorio(manifesto, { ...fontes, ui: [], conteudo: [] }, (path) => readFileSync(join(raiz, path)));
+  return {
+    schema_version: 1,
+    natureza: "diagnostico_gold_nao_versionado",
+    interpretacao: "Campos não catalogados são pendências, não traduções. A ausência de catálogo não comprova inglês nem fallback no consumidor.",
+    escopo: relatorio.escopo,
+    dominios: Object.fromEntries(Object.entries(relatorio.dominios).map(([id, dominio]) => [id, dominio.gold])),
+  };
 }
 
 export function serializarRelatorio(relatorio) {
@@ -150,9 +175,10 @@ export function serializarRelatorio(relatorio) {
 }
 
 export function executar(argumentos, raiz = RAIZ) {
-  if (argumentos.length > 1 || argumentos.some((a) => !["--check", "--stdout"].includes(a))) {
-    throw new Error("Uso: node scripts/cobertura-i18n.mjs [--check | --stdout]");
+  if (argumentos.length > 1 || argumentos.some((a) => !["--check", "--stdout", "--gold"].includes(a))) {
+    throw new Error("Uso: node scripts/cobertura-i18n.mjs [--check | --stdout | --gold]");
   }
+  if (argumentos.includes("--gold")) return serializarRelatorio(gerarCoberturaGold(raiz));
   const texto = serializarRelatorio(gerarCobertura(raiz));
   const destino = join(raiz, RELATORIO);
   if (argumentos.includes("--stdout")) return texto;

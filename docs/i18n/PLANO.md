@@ -76,3 +76,7 @@ Campos técnicos como IDs, códigos, datas de máquina e valores não são tradu
 - Acessibilidade: `npm run wcag` hoje inicia servidor estático e imprime um procedimento; não é evidência automática de aprovação das páginas Next. Acrescentar auditoria das páginas inglesas e registrar resultados, inclusive navegação por teclado e trechos com idioma próprio.
 - Antes de cada push: `node scripts/minify-obs.mjs`, `npm run lint`, `npx tsc --noEmit`, `npm test` e os `unittest` do domínio alterado. Acrescentar build e verificação de HTML quando afetados; CI continua exigindo build, `EXIGIR_BUILD_HTML=1` e árvore limpa.
 - Cada PR informa tradução entregue, termos/fontes propostos, pendências do dono, trecho de cobertura alterado e resultados reais dos comandos. Inviabilidade da especificação é documentada com alternativa no PR antes de prosseguir; teste existente não é relaxado.
+
+## Revisão do contrato de cobertura
+
+O relatório versionado e o `--check` dependem somente de fontes de código: interface, dicionários, glossário, inventário de rotas e modelos de frase. A situação da gold é calculada por `--gold`, em relatório não versionado. A publicação diária de dados não depende da cobertura i18n; os quatro workflows de dados permanecem iguais aos da main. Esta regra substitui o contrato anterior que incluía hashes e contagens da gold no arquivo versionado.

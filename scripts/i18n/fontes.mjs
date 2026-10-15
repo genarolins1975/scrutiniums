@@ -11,7 +11,7 @@ const ordenar = xs => xs.sort((a, b) => a.path < b.path ? -1 : a.path > b.path ?
 const TEXTO = /\.(?:[cm]?[jt]sx?|json|html|md|csv|xml|svg|css|gz|b64)$/;
 
 /** Descoberta somente leitura. Nenhum módulo da aplicação ou materializador é executado. */
-export function descobrirFontes(raiz, manifesto) {
+export function descobrirFontes(raiz, manifesto, { apenasCodigo = false } = {}) {
   if (manifesto.schema_version !== 1 || !Array.isArray(manifesto.dominios)) throw Error('Manifesto i18n inválido.');
   const base = realpathSync(raiz);
   const dominios = new Set(manifesto.dominios.map(d => d.id));
@@ -42,7 +42,7 @@ export function descobrirFontes(raiz, manifesto) {
     return opcoes[0]?.id;
   };
 
-  for (const item of manifesto.materializados ?? []) {
+  for (const item of apenasCodigo ? [] : manifesto.materializados ?? []) {
     exigirDominio(item.dominio);
     const fonte = ler(item.origem);
     let comprimido = fonte;
@@ -78,6 +78,7 @@ export function descobrirFontes(raiz, manifesto) {
 
   const extras = new Map();
   for (const item of manifesto.conteudo ?? []) {
+    if (apenasCodigo && (item.dinamico || dominioDe(item.path, 'gold'))) continue;
     exigirDominio(item.dominio);
     if (!['markdown', 'html', 'json'].includes(item.formato) || extras.has(item.path)) throw Error(`Conteúdo inválido ou duplicado: ${item.path}`);
     caminho(item.path);
@@ -85,13 +86,17 @@ export function descobrirFontes(raiz, manifesto) {
     arquivos.add(item.path);
   }
   // Arquivos explicitamente declarados são obrigatórios mesmo que removidos do Git.
-  for (const dominio of manifesto.dominios) for (const path of dominio.gold ?? []) {
+  for (const dominio of apenasCodigo ? [] : manifesto.dominios) for (const path of dominio.gold ?? []) {
     if (path.endsWith('.json')) { caminho(path); arquivos.add(path); }
     else if (!statSync(localizar(path)).isDirectory()) throw Error(`Raiz de dados inválida: ${path}`);
   }
   for (const path of [...arquivos].sort()) {
     const extra = extras.get(path);
-    const observado = extra || (manifesto.observar ?? []).some(p => sob(path, p)) || dominioDe(path, 'gold');
+    // O relatório versionado não enumera, abre nem assina dados publicados.
+    // Templates são fontes de código mesmo antes de terem consumidores.
+    const template = sob(path, 'pipeline/i18n/templates') && path.endsWith('.json');
+    if (apenasCodigo && !extra && !template && !(manifesto.ui.raizes.some(p => sob(path, p)) && /\.(?:[cm]?[jt]sx?|html|css|svg)$/.test(path))) continue;
+    const observado = template || extra || (manifesto.observar ?? []).some(p => sob(path, p)) || dominioDe(path, 'gold');
     if (!observado || !TEXTO.test(path)) continue;
     caminho(path);
     if (extra) { resultado.conteudo.push({ ...extra }); continue; }

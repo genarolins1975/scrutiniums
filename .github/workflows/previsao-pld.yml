@@ -162,19 +162,6 @@ jobs:
         continue-on-error: true
         run: python3 -m unittest pipeline.tests.test_energia_previsoes
 
-      - name: Node para registrar a cobertura, inclusive em rodada com falha
-        id: node_i18n
-        if: always() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1'
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: npm
-
-      - name: Dependências da cobertura bilíngue
-        id: dependencias_i18n
-        if: always() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1' && steps.node_i18n.outcome == 'success'
-        run: npm ci
-
       - name: Guardar estado (vintages coletadas antes do corte)
         if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1'
         uses: actions/cache/save@v4
@@ -183,8 +170,7 @@ jobs:
           key: energia-estado-previsao-${{ github.run_id }}
 
       - name: Commit do arquivo de emissões (e da gold, se os testes passaram)
-        id: publicar
-        if: always() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1' && steps.dependencias_i18n.outcome == 'success'
+        if: always() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1'
         run: |
           git config user.name "pipeline-observatorio[bot]"
           git config user.email "pipeline@scrutiniums.com"
@@ -196,33 +182,16 @@ jobs:
             git add -A -- public/energia/gold/previsoes.json public/energia/gold/modelos.json \
                     public/energia/gold/previsoes_desempenho.json 'public/energia/series/previsoes_*'
           else
-            # A cobertura deve representar a gold que vai ao commit, não a rejeitada.
-            node scripts/i18n/publicacao.mjs reter-previsoes
-            git restore --worktree -- docs/i18n/cobertura.json
             echo "::warning::gold das previsões não publicada (construção ou testes falharam); só o arquivo de emissões entra"
           fi
-          node scripts/i18n/publicacao.mjs preparar
-          git add docs/i18n/cobertura.json
           if git diff --cached --quiet; then
             echo "Nada a registrar."
             exit 0
           fi
           git commit -m "Previsão do PLD: rodada de $(TZ=America/Sao_Paulo date +%d/%m/%Y) ($MODO)"
           for tentativa in 1 2 3 4 5; do
-            git fetch origin main
-            node scripts/i18n/publicacao.mjs rebase origin/main
-            npm ci
-            node scripts/i18n/publicacao.mjs registrar origin/main
-            git push && exit 0
+            git pull --rebase origin main && git push && exit 0
             sleep $((tentativa * 5))
           done
           echo "::error::não foi possível registrar a rodada após 5 tentativas"
           exit 1
-
-      - name: Preservar emissões quando a publicação falhar
-        if: failure() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1' && steps.publicar.outcome != 'success'
-        uses: actions/upload-artifact@v4
-        with:
-          name: emissoes-pld-${{ github.run_id }}-${{ github.run_attempt }}
-          path: pipeline/energia/previsoes/emissoes
-          if-no-files-found: ignore
