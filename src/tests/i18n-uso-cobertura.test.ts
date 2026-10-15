@@ -119,12 +119,13 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
     expect(() => validarUsoInterface({ uso_interface: declaracao() }, irmas, en)).toThrow("sem tradução disponível");
   });
 
-  it("mantém a home parcial e os cinco pares integrais no registro único real", () => {
+  it("mantém a home parcial e os oito pares integrais no registro único real", () => {
     expect(parDeIdioma("/")).toEqual({ pt: "/", en: "/en", conteudo: "parcialmente_traduzido" });
     expect(parDeIdioma("/en")).toEqual(parDeIdioma("/"));
-    expect(PARES_DE_IDIOMA).toHaveLength(6);
+    expect(PARES_DE_IDIOMA).toHaveLength(9);
     expect(PARES_DE_IDIOMA.filter((par) => par.conteudo === "portugues_marcado").map((par) => par.pt)).toEqual([
-      "/imprensa", "/observatorio-do-credito", "/sobre", "/sobre/erros", "/sobre/governanca",
+      "/glossario", "/imprensa", "/observatorio-do-credito", "/privacidade",
+      "/sobre", "/sobre/erros", "/sobre/governanca", "/termos",
     ]);
     expect(inventario.uso_interface).toEqual(declaracao());
   });

@@ -170,6 +170,18 @@ const URLs = [
   { pt: "/sobre?", en: "/en/sobre?" },
   { pt: "/sobre#", en: "/en/sobre#" },
   { pt: "/sobre?#", en: "/en/sobre?#" },
+  {
+    pt: "/glossario?origem=a+b&origem=a%20b#inadimplencia-90-dias",
+    en: "/en/glossario?origem=a+b&origem=a%20b#inadimplencia-90-dias",
+  },
+  {
+    pt: "/termos/?origem=a+b&origem=a%20b#termos-10",
+    en: "/en/termos/?origem=a+b&origem=a%20b#termos-10",
+  },
+  {
+    pt: "/privacidade?origem=a+b&origem=a%20b#priv-resumo",
+    en: "/en/privacidade?origem=a+b&origem=a%20b#priv-resumo",
+  },
 ] as const;
 
 describe("destinos reais nas refs de uma montagem do seletor", () => {

@@ -1,15 +1,20 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import { PRIVACY_VERSION } from "@/lib/versoesPoliticas";
 import { PublicHeader } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { PageTitle } from "@/components/ui/SectionHeading";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 
-export const metadata: Metadata = {
+const metadadosOriginais: Metadata = {
   title: "Política de privacidade",
   description:
     "Quais dados a Scrutiniums coleta, por que coleta, por quanto tempo guarda e como você exerce seus direitos.",
 };
+
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/privacidade", metadadosOriginais, await parent);
+}
 
 /** A mesma versão que o cadastro grava no aceite (src/lib/versoesPoliticas.ts). */
 const VERSAO_POLITICA = PRIVACY_VERSION;

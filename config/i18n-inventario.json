@@ -6,11 +6,14 @@
     "schema_version": 1,
     "literais": [
       { "pt": "/", "conteudo": "parcialmente_traduzido" },
+      { "pt": "/glossario", "conteudo": "portugues_marcado" },
       { "pt": "/imprensa", "conteudo": "portugues_marcado" },
       { "pt": "/observatorio-do-credito", "conteudo": "portugues_marcado" },
+      { "pt": "/privacidade", "conteudo": "portugues_marcado" },
       { "pt": "/sobre", "conteudo": "portugues_marcado" },
       { "pt": "/sobre/erros", "conteudo": "portugues_marcado" },
-      { "pt": "/sobre/governanca", "conteudo": "portugues_marcado" }
+      { "pt": "/sobre/governanca", "conteudo": "portugues_marcado" },
+      { "pt": "/termos", "conteudo": "portugues_marcado" }
     ]
   },
   "uso_interface": {

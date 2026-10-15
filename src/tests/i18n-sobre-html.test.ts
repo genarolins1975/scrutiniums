@@ -8,6 +8,8 @@ import { attr, conteudo, elementos, filhos, links, meta, oculto, tag, texto, uni
 import { documentoEstatico, modoDaPagina } from "./suporte/i18n-build";
 import { criarNavegadorI18n, type NavegadorI18n } from "./suporte/i18n-browser";
 import { verificarHomeParcial, verificarHeadHome } from "./suporte/i18n-home";
+import { cenarioDinamico, verificarFallbackDinamico, type CapturaAnunciador } from "./suporte/i18n-dinamico";
+import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
 
 const APP = join(process.cwd(), ".next", "server", "app");
 const EXIGIR = process.env.EXIGIR_BUILD_HTML === "1";
@@ -146,7 +148,8 @@ describe(`Sobre: HTML estático PT/EN (${EXIGIR ? "build obrigatório" : "build 
 });
 
 let navegador: NavegadorI18n | undefined;
-const dinamicos = new Map<string, { pt: No; en: No }>();
+type DocumentosDinamicos = { modo: "dinamico"; pt: No; en: No; anunciadorPt: CapturaAnunciador; anunciadorEn: CapturaAnunciador };
+const dinamicos = new Map<string, DocumentosDinamicos>();
 afterAll(async () => { await navegador?.fechar(); });
 
 function exigirBuild(ctx?: TestContext) {
@@ -163,7 +166,7 @@ function documentosDoPar(ctx: TestContext, par: ParDeIdioma) {
   const modoPt = modoDaPagina(par.pt);
   const modoEn = modoDaPagina(par.en);
   expect(modoEn, `modo de geração PT/EN: ${par.pt}`).toBe(modoPt);
-  if (modoPt === "estatico") return { pt: documentoEstatico(par.pt), en: documentoEstatico(par.en) };
+  if (modoPt === "estatico") return { modo: "estatico" as const, pt: documentoEstatico(par.pt), en: documentoEstatico(par.en) };
   if (modoPt === "dinamico") {
     const documentos = dinamicos.get(par.pt);
     if (!documentos) throw new Error(`Prova de navegador ausente: ${par.pt}`);
@@ -180,14 +183,18 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
     const modoEn = modoDaPagina(par.en);
     expect(modoEn, `modo de geração PT/EN: ${par.pt}`).toBe(modoPt);
     if (modoPt === "dinamico") {
-      if (par.pt !== "/" || par.en !== "/en") throw new Error(`Par dinâmico sem adaptador de cenário: ${par.pt}`);
+      expect(cenarioDinamico(par.pt)).toEqual({ pt: par.pt, idioma: "pt-BR" });
+      expect(cenarioDinamico(par.en)).toEqual({ pt: par.pt, idioma: "en" });
       navegador ??= await criarNavegadorI18n();
-      dinamicos.set(par.pt, { pt: parse(await navegador.documento(par.pt)), en: parse(await navegador.documento(par.en)) });
+      const pt = await navegador.documento(par.pt);
+      const en = await navegador.documento(par.en);
+      dinamicos.set(par.pt, { modo: "dinamico", pt: parse(pt.html), en: parse(en.html), anunciadorPt: pt.anunciador, anunciadorEn: en.anunciador });
     }
   }, 90_000);
 
   it("comprova modo de geração, idioma documental e metadados recíprocos", (ctx) => {
-    const { pt, en } = documentosDoPar(ctx, par);
+    const documentos = documentosDoPar(ctx, par);
+    const { pt, en } = documentos;
     const base = "https://scrutiniums.com";
     const url = (caminho: string) => caminho === "/" ? base : base + caminho;
     const alternates = par.conteudo === "portugues_marcado" ? [] : [["pt-BR", url(par.pt)], ["en", url(par.en)], ["x-default", url(par.pt)]];
@@ -219,16 +226,43 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
     for (const nome of ["og:image", "og:image:alt", "twitter:image", "twitter:image:alt"]) expect(meta(en, nome), nome).toEqual([]);
     for (const nome of ["og:title", "twitter:title"]) expect(meta(en, nome), nome).toEqual(["Scrutiniums · Portuguese only"]);
     for (const nome of ["og:description", "twitter:description"]) expect(meta(en, nome), nome).toEqual(["Portuguese only"]);
+    if (documentos.modo === "dinamico") {
+      const originais: Record<string, { titulo: string; descricao: string }> = {
+        "/glossario": { titulo: "Glossário", descricao: "Definições, fórmulas, fontes e limitações de todos os indicadores da Scrutiniums. Fonte única de nomes e definições da plataforma." },
+        "/termos": { titulo: "Termos de uso", descricao: "Condições de uso da plataforma Scrutiniums: acesso gratuito mediante cadastro, caráter estritamente informativo, isenção de garantias e limitação de responsabilidade." },
+        "/privacidade": { titulo: "Política de privacidade", descricao: "Quais dados a Scrutiniums coleta, por que coleta, por quanto tempo guarda e como você exerce seus direitos." },
+      };
+      expect(originais[par.pt], "head PT original de cada cenário dinâmico").toBeDefined();
+      expect(texto(tag(pt, "title"))).toBe(`${originais[par.pt].titulo} · Scrutiniums`);
+      expect(meta(pt, "description")).toEqual([originais[par.pt].descricao]);
+      expect(meta(pt, "og:site_name")).toEqual(["Scrutiniums"]);
+      expect(meta(pt, "og:type")).toEqual(["website"]);
+      expect(meta(pt, "twitter:card")).toEqual(["summary_large_image"]);
+      for (const prefixo of ["og", "twitter"]) {
+        expect(meta(pt, `${prefixo}:title`)).toEqual([`Scrutiniums: ${listaObservatorios()}`]);
+        expect(meta(pt, `${prefixo}:description`)).toEqual([`${observatoriosPorExtenso(true)}, a mesma filosofia de evidência: dados oficiais, fonte e data em cada número, metodologia aberta. Gratuito. ${ACESSO.curto}`]);
+        expect(meta(pt, `${prefixo}:image`)).toEqual(["https://scrutiniums.com/opengraph-image?b5ad3ed804227d3b"]);
+        expect(meta(pt, `${prefixo}:image:alt`)).toEqual(["Scrutiniums: observatórios com dados oficiais, fonte e data em cada número"]);
+        expect(meta(pt, `${prefixo}:image:type`)).toEqual(["image/png"]);
+        expect(meta(pt, `${prefixo}:image:width`)).toEqual(["1200"]);
+        expect(meta(pt, `${prefixo}:image:height`)).toEqual(["630"]);
+      }
+    }
   });
 
   it("preserva todo o corpo PT e procura vazamentos nos dois documentos inteiros", (ctx) => {
-    const { pt, en } = documentosDoPar(ctx, par);
+    const documentos = documentosDoPar(ctx, par);
+    const { pt, en } = documentos;
     if (par.conteudo === "parcialmente_traduzido") {
       expect(par.pt).toBe("/");
       verificarHomeParcial(pt, en);
       return;
     }
     expect(par.conteudo).toBe("portugues_marcado");
+    if (documentos.modo === "dinamico") {
+      verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn);
+      return;
+    }
     const corpoPt = tag(pt, "body");
     const corpoEn = tag(en, "body");
     const ilha = unico(corpoEn, (e) => attr(e, "data-i18n-estado") === "portugues_marcado", `ilha portuguesa em ${par.en}`);

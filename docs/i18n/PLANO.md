@@ -49,6 +49,8 @@ O seletor público usa somente pares com tradução publicada: links presentes n
 
 A prova parcial da home acrescenta o sexto par, `/` e `/en`, mantendo a consulta de sessão e a renderização dinâmica. Quatro chaves traduzem o título e as duas ações do Hero. Sete regiões ainda portuguesas recebem marcador visível; dados e destinos existentes são preservados. O inventário registra os usos declarados separadamente do catálogo disponível, e um teste com Chromium verifica o DOM concluído. Os cinco pares estáticos conservam suas provas integrais. Esse recorte não conclui a tradução da home, a paridade de rotas, a migração dos formatadores ou a fase 0.
 
+Glossário, Termos e Privacidade acrescentam três pares dinâmicos com o corpo inteiro em português marcado. O registro passa a nove pares, oito com fallback integral e a home parcial. Os textos jurídicos, suas versões e os verbetes continuam portugueses; a tradução de cortesia permanece na fase 1. Cada origem passa a ter canonical próprio, em vez do canonical raiz herdado, e preserva a imagem social. A prova no navegador exige o conteúdo completo de cada página e confere o anunciador de navegação do Next, incluindo seu shadow root, antes da comparação integral da ilha portuguesa. Esse recorte amplia a existência das irmãs, sem aumentar o catálogo traduzido nem os quatro usos ingleses da home.
+
 ## Fases seguintes
 
 | Fase | Série de entregas, sempre com CI verde entre PRs |
