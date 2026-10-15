@@ -15,9 +15,10 @@ describe("acesso das irmãs declaradas", () => {
   });
 
   it("não abre descendentes ainda não publicados nem imagens e arquivos por recursão", () => {
-    const aindaSemIrma = ["/sobre/erros", "/sobre/governanca", "/entrar"]
-      .filter((caminho) => !parDeIdioma(caminho));
+    const aindaSemIrma = ["/entrar/sms", "/cadastro/telefone", "/cadastro/perfil"];
+    expect(aindaSemIrma.length).toBeGreaterThan(0);
     for (const caminho of aindaSemIrma) {
+      expect(parDeIdioma(caminho), caminho).toBeNull();
       expect(ehRotaPublica(caminho), caminho).toBe(true);
       expect(ehRotaPublica("/en" + caminho), caminho).toBe(false);
     }

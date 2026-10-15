@@ -11,14 +11,20 @@ const VITRINES = [
   { pt: "/observatorio-do-credito", en: "/en/observatorio-do-credito", frequencia: "daily" },
 ] as const;
 const FECHADAS = [
-  ...["", "/en"].flatMap((prefixo) => [
-    "/observatorio", "/observatorio/pix", "/obs/index.html", "/obs/embed.html",
-    "/obs/data/gold/meta.json", "/obs/app.min.js", "/obs/styles.css",
-    "/imprensa/descendente-sintetico-i18n", "/observatorio-do-credito/descendente-sintetico-i18n",
-    "/imprensax", "/observatorio-do-creditox",
-  ].map((caminho) => prefixo + caminho)),
-  "/en/imprensa/opengraph-image", "/en/imprensa/twitter-image",
-  "/en/observatorio-do-credito/opengraph-image", "/en/observatorio-do-credito/twitter-image",
+  ["/observatorio", "/entrar"], ["/observatorio/pix", "/entrar"],
+  ["/obs/index.html", "/entrar"], ["/obs/embed.html", "/entrar"],
+  ["/obs/data/gold/meta.json", "/entrar"], ["/obs/app.min.js", "/entrar"], ["/obs/styles.css", "/entrar"],
+  ["/imprensa/descendente-sintetico-i18n", "/entrar"],
+  ["/observatorio-do-credito/descendente-sintetico-i18n", "/entrar"],
+  ["/imprensax", "/entrar"], ["/observatorio-do-creditox", "/entrar"],
+  ["/en/observatorio", "/en/entrar"], ["/en/observatorio/pix", "/en/entrar"],
+  ["/en/obs/index.html", "/entrar"], ["/en/obs/embed.html", "/entrar"],
+  ["/en/obs/data/gold/meta.json", "/entrar"], ["/en/obs/app.min.js", "/entrar"], ["/en/obs/styles.css", "/entrar"],
+  ["/en/imprensa/descendente-sintetico-i18n", "/en/entrar"],
+  ["/en/observatorio-do-credito/descendente-sintetico-i18n", "/en/entrar"],
+  ["/en/imprensax", "/en/entrar"], ["/en/observatorio-do-creditox", "/en/entrar"],
+  ["/en/imprensa/opengraph-image", "/entrar"], ["/en/imprensa/twitter-image", "/entrar"],
+  ["/en/observatorio-do-credito/opengraph-image", "/entrar"], ["/en/observatorio-do-credito/twitter-image", "/entrar"],
 ] as const;
 
 function requisicao(caminho: string): NextRequest {
@@ -67,13 +73,13 @@ describe.each(VITRINES)("fronteira pública da vitrine $pt", (par) => {
 
 describe("vizinhos das vitrines continuam atrás da conta", () => {
   it("mantém painéis, arquivos, embeds e descendentes fechados nos dois idiomas", async () => {
-    for (const caminho of FECHADAS) {
+    for (const [caminho, entrada] of FECHADAS) {
       expect(parDeIdioma(caminho), caminho).toBeNull();
       expect(ehRotaPublica(caminho), caminho).toBe(false);
       expect(prefetchDoLink(caminho + "?origem=vitrine#recorte"), caminho).toBe(false);
       const destino = caminho + "?origem=vitrine&recorte=a%2Bb";
       const resposta = await middleware(requisicao(destino));
-      const login = new URL("/entrar", ORIGEM);
+      const login = new URL(entrada, ORIGEM);
       login.searchParams.set("de", destino);
       expect(resposta.status, caminho).toBe(307);
       expect(resposta.headers.get("location"), caminho).toBe(login.href);
@@ -87,6 +93,6 @@ describe("vizinhos das vitrines continuam atrás da conta", () => {
   it("não anuncia os vizinhos fechados nem duplica URLs no sitemap", () => {
     const urls = sitemap().map((entrada) => entrada.url);
     expect(new Set(urls).size).toBe(urls.length);
-    for (const caminho of FECHADAS) expect(urls, caminho).not.toContain(ORIGEM + caminho);
+    for (const [caminho] of FECHADAS) expect(urls, caminho).not.toContain(ORIGEM + caminho);
   });
 });

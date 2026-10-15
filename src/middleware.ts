@@ -44,6 +44,10 @@ export async function middleware(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.search = "";
     url.pathname = "/entrar";
+    if (analisarUrlPagina(pathname)?.idioma === "en") {
+      const entrada = parDeIdioma("/entrar");
+      if (entrada) url.pathname = entrada.en;
+    }
     url.searchParams.set("de", destino);
     const res = NextResponse.redirect(url);
     // guarda o destino também para quem ainda vai se cadastrar (só navegação de página)

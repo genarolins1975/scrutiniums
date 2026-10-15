@@ -3,6 +3,7 @@ import { GLOSSARIO } from "@/lib/data/glossario";
 import { LINKEDIN_URL } from "@/lib/contato";
 import { PRIVACY_VERSION } from "@/lib/versoesPoliticas";
 import { attr, conteudo, elementos, filhos, oculto, tag, texto, unico, vazamentos, type Elemento, type Forma, type No } from "./i18n-dom";
+import { projetarIlhaAuth, verificarPaginaAuth, type ComparacaoAuth } from "./i18n-auth";
 
 type NoAnunciador = { tipo: number; nome: string; atributos: [string, string][]; filhos: number; texto: string };
 export type CapturaAnunciador = {
@@ -20,7 +21,7 @@ const ESTILO_INTERNO = "position:absolute;border:0;height:1px;margin:-1px;paddin
 export function cenarioDinamico(caminho: string) {
   const idioma = caminho === "/en" || caminho.startsWith("/en/") ? "en" : "pt-BR";
   const pt = idioma === "en" ? caminho.slice(3) || "/" : caminho;
-  if (pt !== "/" && pt !== "/glossario" && pt !== "/termos" && pt !== "/privacidade") {
+  if (pt !== "/" && pt !== "/glossario" && pt !== "/termos" && pt !== "/privacidade" && pt !== "/entrar" && pt !== "/cadastro") {
     throw new Error(`Página dinâmica sem contrato de conclusão DOM: ${caminho}`);
   }
   if (caminho !== (idioma === "en" ? "/en" + (pt === "/" ? "" : pt) : pt)) {
@@ -46,6 +47,10 @@ export function verificarPaginaConcluida(doc: No, caminho: string): void {
   if (pt === "/") throw new Error("A home usa seu contrato próprio de Hero e regiões");
   verificarAusenciaDeTransporte(doc);
   expect(attr(tag(doc, "html"), "lang")).toBe(idioma);
+  if (pt === "/entrar" || pt === "/cadastro") {
+    verificarPaginaAuth(doc, pt);
+    return;
+  }
   const main = tag(doc, "main");
   const titulo = pt === "/glossario" ? "Glossário" : pt === "/termos" ? "Termos de uso" : "Política de privacidade";
   expect(texto(tag(main, "h1"))).toBe(titulo);
@@ -137,7 +142,7 @@ function corpoSemAnunciador(doc: No, captura: CapturaAnunciador): Forma[] {
   return conteudo({ ...body, childNodes: body.childNodes.filter((no) => no !== host) });
 }
 
-export function verificarFallbackDinamico(pt: No, en: No, anunciadorPt: CapturaAnunciador, anunciadorEn: CapturaAnunciador): void {
+export function verificarFallbackDinamico(pt: No, en: No, anunciadorPt: CapturaAnunciador, anunciadorEn: CapturaAnunciador, auth?: ComparacaoAuth): void {
   verificarAusenciaDeTransporte(pt);
   verificarAusenciaDeTransporte(en);
   expect(anunciadorPt.idioma).toBe("pt-BR");
@@ -154,7 +159,8 @@ export function verificarFallbackDinamico(pt: No, en: No, anunciadorPt: CapturaA
   expect(texto(aviso).trim()).toBe("Portuguese only");
   expect(oculto(aviso)).toBe(false);
   expect(oculto(ilha)).toBe(false);
-  expect(conteudo(ilha), "produto PT integral, sem retirar textos, números, atributos ou links").toEqual(corpoPt);
+  const produtoEn = auth ? projetarIlhaAuth(pt, en, auth) : conteudo(ilha);
+  expect(produtoEn, "produto PT integral; somente Fields auth explicitamente validados admitem bijeção de IDs").toEqual(corpoPt);
   expect(corpoEn).toHaveLength(2);
   expect(corpoEn).toEqual([forma(aviso), forma(ilha)]);
   expect(elementos(pt).some((e) => attr(e, "data-i18n-estado") !== undefined)).toBe(false);

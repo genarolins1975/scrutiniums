@@ -10,9 +10,9 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "b84ff8c18a220673c097ec1fc9ad5060f99712ec79e4225422a3623a5522f74a",
-    "arquivos_analisados": 1007,
-    "fontes_sha256": "e6903faf0e7a398a2c7e35971a4c30c4f935a54310e1ea2bf2dca3791ad85e7b",
+    "inventario_sha256": "a3b7f874f130330f1a47e0b55a67c4acc8b01f069153c5c0aa98efe5e10f26dd",
+    "arquivos_analisados": 1010,
+    "fontes_sha256": "3ef6f9d3c6a89da85843952456fb87c0a24c64d9db9764b59ecf7408d811233b",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -128,18 +128,18 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 194,
+        "arquivos": 197,
         "candidatos": {
           "jsx_text": 631,
           "atributos": 177,
           "props": 628,
-          "outros_literais": 3185,
+          "outros_literais": 3191,
           "templates": 378,
-          "expressoes_nao_resolvidas": 1970,
+          "expressoes_nao_resolvidas": 1972,
           "chaves_objetos": 2395
         },
         "exclusoes": {
-          "importacoes": 789,
+          "importacoes": 800,
           "atributos_tecnicos": 1167,
           "tipos": 175
         },
@@ -150,19 +150,19 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 9364,
+        "candidatos_nao_catalogados": 9372,
         "percentual_traduzido": null
       },
       "rotas": {
         "paginas_pt": 28,
-        "paginas_en": 8,
+        "paginas_en": 10,
         "handlers": 29,
         "templates_com_parametros": 1,
         "paginas_pt_literais": 24,
         "paginas_pt_fora_do_adaptador": 4,
-        "paginas_pt_literais_sem_irma": 16,
-        "pares_estruturais": 8,
-        "fallbacks_declarados": 7,
+        "paginas_pt_literais_sem_irma": 14,
+        "pares_estruturais": 10,
+        "fallbacks_declarados": 9,
         "paridade_verificada": false,
         "parciais_declarados": 1
       },
@@ -688,6 +688,28 @@
         "arquivos_presentes": true
       },
       {
+        "pt": "/cadastro",
+        "en": "/en/cadastro",
+        "dominio": "plataforma",
+        "conteudo_declarado": "portugues_marcado",
+        "fontes": {
+          "pt": "src/app/cadastro/page.tsx",
+          "en": "src/app/en/cadastro/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/entrar",
+        "en": "/en/entrar",
+        "dominio": "plataforma",
+        "conteudo_declarado": "portugues_marcado",
+        "fontes": {
+          "pt": "src/app/entrar/page.tsx",
+          "en": "src/app/en/entrar/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
         "pt": "/glossario",
         "en": "/en/glossario",
         "dominio": "plataforma",
@@ -776,8 +798,8 @@
         "arquivos_presentes": true
       }
     ],
-    "pares_estruturais": 9,
-    "fallbacks_declarados": 8,
+    "pares_estruturais": 11,
+    "fallbacks_declarados": 10,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false
   },

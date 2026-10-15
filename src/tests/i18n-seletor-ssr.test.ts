@@ -6,17 +6,21 @@ import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { PARES_DE_IDIOMA, traducaoPublicada } from "@/lib/i18n-rotas";
 import { pt } from "@/i18n/pt";
+import EntrarPage from "@/app/entrar/page";
+import CadastroLayout from "@/app/cadastro/layout";
 
 const rota = vi.hoisted(() => ({ pathname: "/sobre" as string | null }));
+const autenticacao = vi.hoisted(() => ({ sessao: vi.fn(), navegar: vi.fn() }));
 vi.mock("next/navigation", async () => ({
   ...await vi.importActual<typeof import("next/navigation")>("next/navigation"),
   usePathname: () => rota.pathname,
+  useRouter: () => ({ push: autenticacao.navegar }),
 }));
 vi.mock("next/headers", () => ({
   cookies: () => { throw new Error("O cabeçalho apresentacional não pode consultar cookies no SSR."); },
 }));
 vi.mock("@/lib/session", () => ({
-  getSessionUser: () => { throw new Error("O seletor estático não consulta a sessão."); },
+  getSessionUser: autenticacao.sessao,
 }));
 
 type No = DefaultTreeAdapterMap["node"];
@@ -54,7 +58,15 @@ function renderizar(pathname: string | null): string {
   return renderToStaticMarkup(createElement(SeletorIdiomaPublico));
 }
 
-beforeEach(() => { rota.pathname = "/sobre"; });
+beforeEach(() => {
+  rota.pathname = "/sobre";
+  autenticacao.sessao.mockReset().mockImplementation(() => {
+    throw new Error("O seletor estático não consulta a sessão.");
+  });
+  autenticacao.navegar.mockReset().mockImplementation(() => {
+    throw new Error("O primeiro HTML do formulário não pode navegar.");
+  });
+});
 afterEach(() => { vi.unstubAllGlobals(); });
 
 describe("seletor público no HTML inicial", () => {
@@ -81,7 +93,7 @@ describe("seletor público no HTML inicial", () => {
   });
 
   it.each([
-    null, "//", "/en//", "/entrar", "/en/entrar", "/observatorio", "/en/observatorio",
+    null, "//", "/en//", "/entrar/sms", "/en/entrar/sms", "/observatorio", "/en/observatorio",
     "/app/conta", "/en/app/conta", "/api/auth/eu", "/en/api/auth/eu",
     "/_next/static/a.js", "/home/credito.webp", "/en/home/credito.webp",
     "/pagina-ainda-sem-irma", "/sobrecarga", "/en/sobre/rota-inexistente",
@@ -124,10 +136,76 @@ describe("integração estática no cabeçalho público", () => {
     }
   });
 
-  it.each(["/pagina-sintetica-sem-irma", "/entrar", "/en/rota-ainda-nao-publicada"])("preserva o cabeçalho sem seletor em %s", (pathname) => {
+  it.each(["/pagina-sintetica-sem-irma", "/entrar/sms", "/en/rota-ainda-nao-publicada"])("preserva o cabeçalho sem seletor em %s", (pathname) => {
     rota.pathname = pathname;
     const todos = elementos(parseFragment(renderToStaticMarkup(createElement(PublicHeaderView))));
     expect(todos.filter((no) => no.tagName === "header")).toHaveLength(1);
     expect(todos.filter((no) => attr(no, "aria-label") === "Idioma")).toEqual([]);
   });
+});
+
+describe("seletor nos cabeçalhos próprios das entradas de autenticação", () => {
+  it("renderiza o formulário real de login anônimo com o mesmo seletor dentro do cabeçalho PT e EN", async () => {
+    autenticacao.sessao.mockResolvedValue(null);
+    const cabecalhos: string[] = [];
+    for (const pathname of ["/entrar", "/en/entrar"]) {
+      rota.pathname = pathname;
+      const todos = elementos(parseFragment(renderToStaticMarkup(await EntrarPage({}))));
+      const headers = todos.filter((no) => no.tagName === "header");
+      expect(headers, pathname).toHaveLength(1);
+      const htmlHeader = serialize(headers[0]);
+      cabecalhos.push(htmlHeader);
+      const { anchors } = seletor(htmlHeader);
+      expect(anchors.map((no) => attr(no, "href"))).toEqual(["/entrar", "/en/entrar"]);
+      expect(elementos(headers[0]).filter((no) => no.tagName === "a").map((no) => attr(no, "href")))
+        .toEqual(["/", "/cadastro", "/entrar", "/en/entrar"]);
+      expect(todos.filter((no) => attr(no, "aria-label") === "Idioma")).toHaveLength(1);
+      expect(todos.filter((no) => no.tagName === "main")).toHaveLength(1);
+      expect(todos.filter((no) => no.tagName === "form")).toHaveLength(1);
+      expect(todos.filter((no) => no.tagName === "input").map((no) => attr(no, "name")))
+        .toEqual(["email", "current-password"]);
+      expect(todos.filter((no) => no.tagName === "footer")).toHaveLength(1);
+    }
+    expect(cabecalhos[1]).toBe(cabecalhos[0]);
+    expect(autenticacao.sessao).toHaveBeenCalledTimes(2);
+    expect(autenticacao.navegar).not.toHaveBeenCalled();
+  });
+
+  it("integra o seletor ao shell real do cadastro e mantém children dentro do main", () => {
+    const cabecalhos: string[] = [];
+    for (const pathname of ["/cadastro", "/en/cadastro"]) {
+      rota.pathname = pathname;
+      const filho = createElement("section", { "data-filho-sintetico": "cadastro" }, "Etapa de teste");
+      const todos = elementos(parseFragment(renderToStaticMarkup(createElement(CadastroLayout, null, filho))));
+      const headers = todos.filter((no) => no.tagName === "header");
+      expect(headers, pathname).toHaveLength(1);
+      const htmlHeader = serialize(headers[0]);
+      cabecalhos.push(htmlHeader);
+      const { anchors } = seletor(htmlHeader);
+      expect(anchors.map((no) => attr(no, "href"))).toEqual(["/cadastro", "/en/cadastro"]);
+      expect(elementos(headers[0]).filter((no) => no.tagName === "a").map((no) => attr(no, "href")))
+        .toEqual(["/", "/entrar", "/cadastro", "/en/cadastro"]);
+      expect(todos.filter((no) => attr(no, "aria-label") === "Idioma")).toHaveLength(1);
+      const mains = todos.filter((no) => no.tagName === "main");
+      expect(mains).toHaveLength(1);
+      expect(elementos(mains[0]).filter((no) => attr(no, "data-filho-sintetico") === "cadastro")).toHaveLength(1);
+      expect(todos.filter((no) => no.tagName === "footer")).toHaveLength(1);
+    }
+    expect(cabecalhos[1]).toBe(cabecalhos[0]);
+    expect(autenticacao.sessao).not.toHaveBeenCalled();
+  });
+
+  it.each(["/cadastro/telefone", "/cadastro/perfil", "/en/cadastro/telefone", "/en/cadastro/perfil"])(
+    "preserva o shell de %s sem anunciar uma irmã ainda ausente", (pathname) => {
+      rota.pathname = pathname;
+      const todos = elementos(parseFragment(renderToStaticMarkup(createElement(CadastroLayout, null,
+        createElement("p", null, "Etapa ainda sem irmã"),
+      ))));
+      expect(todos.filter((no) => no.tagName === "header")).toHaveLength(1);
+      expect(todos.filter((no) => no.tagName === "main")).toHaveLength(1);
+      expect(todos.filter((no) => no.tagName === "footer")).toHaveLength(1);
+      expect(todos.filter((no) => attr(no, "aria-label") === "Idioma")).toHaveLength(0);
+      expect(autenticacao.sessao).not.toHaveBeenCalled();
+    },
+  );
 });

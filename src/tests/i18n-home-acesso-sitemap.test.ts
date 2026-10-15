@@ -37,18 +37,21 @@ describe("home parcialmente traduzida na fronteira de acesso", () => {
 
   it("mantém a conta e os painéis fechados e não publica imagens ou endpoints ingleses", async () => {
     const caminhos = [
-      "/app/observatorios", "/en/app/observatorios", "/app/conta", "/en/app/conta",
-      "/observatorio", "/en/observatorio", "/setor-eletrico/pld", "/en/setor-eletrico/pld",
-      "/en/opengraph-image", "/en/twitter-image", "/en/api/auth/eu", "/en/home/credito.webp",
-      "/en/rota-sintetica-sem-irma",
+      ["/app/observatorios", "/entrar"], ["/en/app/observatorios", "/en/entrar"],
+      ["/app/conta", "/entrar"], ["/en/app/conta", "/en/entrar"],
+      ["/observatorio", "/entrar"], ["/en/observatorio", "/en/entrar"],
+      ["/setor-eletrico/pld", "/entrar"], ["/en/setor-eletrico/pld", "/en/entrar"],
+      ["/en/opengraph-image", "/entrar"], ["/en/twitter-image", "/entrar"],
+      ["/en/api/auth/eu", "/entrar"], ["/en/home/credito.webp", "/entrar"],
+      ["/en/rota-sintetica-sem-irma", "/en/entrar"],
     ];
-    for (const caminho of caminhos) {
+    for (const [caminho, entrada] of caminhos) {
       expect(parDeIdioma(caminho), caminho).toBeNull();
       expect(ehRotaPublica(caminho), caminho).toBe(false);
       expect(prefetchDoLink(caminho), caminho).toBe(false);
       const destino = caminho + "?origem=home&recorte=a%2Bb";
       const resposta = await middleware(new NextRequest(ORIGEM + destino, { headers: { accept: "text/html" } }));
-      const login = new URL("/entrar", ORIGEM);
+      const login = new URL(entrada, ORIGEM);
       login.searchParams.set("de", destino);
       expect(resposta.status, caminho).toBe(307);
       expect(resposta.headers.get("location"), caminho).toBe(login.href);

@@ -231,6 +231,8 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
         "/glossario": { titulo: "Glossário", descricao: "Definições, fórmulas, fontes e limitações de todos os indicadores da Scrutiniums. Fonte única de nomes e definições da plataforma." },
         "/termos": { titulo: "Termos de uso", descricao: "Condições de uso da plataforma Scrutiniums: acesso gratuito mediante cadastro, caráter estritamente informativo, isenção de garantias e limitação de responsabilidade." },
         "/privacidade": { titulo: "Política de privacidade", descricao: "Quais dados a Scrutiniums coleta, por que coleta, por quanto tempo guarda e como você exerce seus direitos." },
+        "/entrar": { titulo: "Entrar", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
+        "/cadastro": { titulo: "Crie seu acesso", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
       };
       expect(originais[par.pt], "head PT original de cada cenário dinâmico").toBeDefined();
       expect(texto(tag(pt, "title"))).toBe(`${originais[par.pt].titulo} · Scrutiniums`);
@@ -260,7 +262,11 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
     }
     expect(par.conteudo).toBe("portugues_marcado");
     if (documentos.modo === "dinamico") {
-      verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn);
+      if (par.pt === "/entrar" || par.pt === "/cadastro") {
+        verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn, { caminho: par.pt, estado: "inicial" });
+      } else {
+        verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn);
+      }
       return;
     }
     const corpoPt = tag(pt, "body");

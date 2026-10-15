@@ -22,6 +22,19 @@ export async function aguardarHome(page: Page): Promise<void> {
 export async function aguardarPagina(page: Page, caminho: string): Promise<void> {
   const cenario = cenarioDinamico(caminho);
   if (cenario.pt === "/") await aguardarHome(page);
+  else if (cenario.pt === "/entrar" || cenario.pt === "/cadastro") {
+    await page.locator("main h1").waitFor({ state: "visible", timeout: PRAZO });
+    await page.locator('form input[name="email"]').waitFor({ state: "visible", timeout: PRAZO });
+    await page.locator('form button[type="submit"]').waitFor({ state: "visible", timeout: PRAZO });
+    await page.locator('header a[aria-label="Scrutiniums — página inicial"]').waitFor({ state: "visible", timeout: PRAZO });
+    await page.locator('header [role="group"][aria-label="Idioma"]').waitFor({ state: "visible", timeout: PRAZO });
+    await page.locator('footer a[href="/privacidade"]').waitFor({ state: "visible", timeout: PRAZO });
+    if (cenario.idioma === "en") {
+      await page.locator("[data-i18n-aviso]").waitFor({ state: "visible", timeout: PRAZO });
+      await page.locator('[data-i18n-estado="portugues_marcado"]').waitFor({ state: "visible", timeout: PRAZO });
+    }
+    await page.evaluate(() => document.fonts.ready.then(() => undefined));
+  }
   else {
     await page.locator("main h1").waitFor({ state: "visible", timeout: PRAZO });
     const ultimo = cenario.pt === "/glossario" ? GLOSSARIO[GLOSSARIO.length - 1].slug + "-titulo"

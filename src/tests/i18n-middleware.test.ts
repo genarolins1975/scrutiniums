@@ -65,7 +65,7 @@ describe("middleware: primeira irmã inglesa publicada", () => {
       expect(inglesa.headers.get("x-middleware-next")).toBe("1");
       expect(inglesa.headers.get("location")).toBeNull();
     } else {
-      const login = new URL("/entrar", ORIGEM);
+      const login = new URL("/en/entrar", ORIGEM);
       login.searchParams.set("de", en);
       expect(inglesa.status).toBe(307);
       expect(inglesa.headers.get("location")).toBe(login.href);
@@ -77,16 +77,20 @@ describe("middleware: primeira irmã inglesa publicada", () => {
   });
 
   it("não abre descendentes desconhecidos, imagens sociais, recursos ou aliases de API em inglês", async () => {
-    for (const caminho of [
-      "/en/sobre/descendente-sintetico-nao-publicado", "/en/sobrecarga",
-      "/en/sobre/opengraph-image", "/en/home/credito.webp", "/en/_next/static/app.js",
-      "/en/api/auth/eu", "/en/api/eficiencia-mobilidade/exportar",
-      "/en/rota-que-ainda-nao-existe",
+    for (const [caminho, entrada] of [
+      ["/en/sobre/descendente-sintetico-nao-publicado", "/en/entrar"],
+      ["/en/sobrecarga", "/en/entrar"],
+      ["/en/sobre/opengraph-image", "/entrar"],
+      ["/en/home/credito.webp", "/entrar"],
+      ["/en/_next/static/app.js", "/entrar"],
+      ["/en/api/auth/eu", "/entrar"],
+      ["/en/api/eficiencia-mobilidade/exportar", "/entrar"],
+      ["/en/rota-que-ainda-nao-existe", "/en/entrar"],
     ]) {
       const resposta = await middleware(requisicao(caminho));
       expect(resposta.status, caminho).toBe(307);
       const destino = new URL(resposta.headers.get("location")!);
-      expect(destino.pathname, caminho).toBe("/entrar");
+      expect(destino.pathname, caminho).toBe(entrada);
       expect(destino.searchParams.get("de"), caminho).toBe(caminho);
       expect(resposta.headers.get("x-middleware-next"), caminho).toBeNull();
       expect(resposta.headers.get("x-middleware-rewrite"), caminho).toBeNull();
@@ -135,7 +139,7 @@ describe("middleware: autenticação e administração em inglês", () => {
       expect(resposta.status).toBe(307);
       const destino = new URL(resposta.headers.get("location")!);
       expect(destino.origin).toBe(ORIGEM);
-      expect(destino.pathname).toBe("/entrar");
+      expect(destino.pathname).toBe("/en/entrar");
       expect([...destino.searchParams.keys()]).toEqual(["de"]);
       expect(destino.searchParams.get("de")).toBe(caminho);
       expect(resposta.cookies.get(COOKIE_DESTINO)).toMatchObject({
