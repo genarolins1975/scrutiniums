@@ -16,7 +16,7 @@ import { ACESSO } from "@/lib/acesso";
  * fechadas (mesmas allowlists validadas no servidor). O CPF é formatado
  * durante a digitação e validado pelos dígitos verificadores.
  */
-export function PerfilForm() {
+export function PerfilForm({ exigeCpf = true }: { exigeCpf?: boolean }) {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -34,7 +34,7 @@ export function PerfilForm() {
     setServerError(undefined);
     const pOk = password.length >= 8 && password.length <= 72;
     const confirmOk = pOk && confirm === password;
-    const cpfOk = isValidCpf(cpf);
+    const cpfOk = !exigeCpf || isValidCpf(cpf);
     const novos: Record<string, string | undefined> = {
       password: pOk ? undefined : "A senha deve ter entre 8 e 72 caracteres.",
       confirm: !pOk || confirmOk ? undefined : "As senhas não coincidem.",
@@ -52,7 +52,7 @@ export function PerfilForm() {
       const res = await fetch("/api/onboarding/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password, cpf: normalizeCpf(cpf), orgType, orgArea, orgRole, uf }),
+        body: JSON.stringify({ password, ...(exigeCpf ? { cpf: normalizeCpf(cpf) } : {}), orgType, orgArea, orgRole, uf }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.next) {
@@ -97,7 +97,7 @@ export function PerfilForm() {
         />
       </div>
 
-      <Field
+      {exigeCpf ? <Field
         label="CPF"
         name="cpf"
         inputMode="numeric"
@@ -109,7 +109,7 @@ export function PerfilForm() {
         onChange={(e) => setCpf(formatCpf(e.target.value))}
         error={erros.cpf}
         hint="Usado apenas para garantir uma conta por pessoa. Nunca é exibido nem compartilhado."
-      />
+      /> : <p className="text-sm text-mineral">Seu telefone confirmado é de fora do Brasil. O cadastro não exige CPF.</p>}
 
       <div className="grid gap-6 sm:grid-cols-2">
         <SelectField

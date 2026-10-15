@@ -1,5 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
+import { opcoesPaisSms } from "@/lib/politica-sms";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { nextStepPath } from "@/lib/onboarding";
@@ -53,7 +54,7 @@ export default async function EntrarSmsPage() {
               defina uma nova em Conta.
             </p>
             <div className="mt-8">
-              <EntrarForm />
+              <EntrarForm paises={opcoesPaisSms()} />
             </div>
           </section>
         </div>

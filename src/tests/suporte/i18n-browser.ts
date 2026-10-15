@@ -155,7 +155,7 @@ export async function criarNavegadorI18n(): Promise<NavegadorI18n> {
       "start", "--hostname", "127.0.0.1", "--port", "0", "--keepAliveTimeout", "1000"], {
       cwd: process.cwd(), stdio: ["ignore", "pipe", "pipe"],
       env: { ...ambiente, NODE_ENV: "production", NEXT_TELEMETRY_DISABLED: "1", PGSSL: "",
-        DATABASE_URL: `pglite://${join(temporario, "db")}`, COOKIE_SECRET: segredoCookie,
+        SMS_PAISES_PERMITIDOS: "", DATABASE_URL: `pglite://${join(temporario, "db")}`, COOKIE_SECRET: segredoCookie,
         TWILIO_ACCOUNT_SID: "", TWILIO_AUTH_TOKEN: "", TWILIO_VERIFY_SERVICE_SID: "",
         RESEND_API_KEY: "", MAIL_FROM: "", ADMIN_EMAILS: "" },
     });

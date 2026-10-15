@@ -3,7 +3,8 @@ import { z } from "zod";
 import { and, eq, isNotNull, ne } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
 import { createSession, getSessionUser } from "@/lib/session";
-import { findUserByEmail, updateUser } from "@/lib/onboarding";
+import { findUserByEmail, confirmOnboardingPhone } from "@/lib/onboarding";
+import { smsPermitido } from "@/lib/politica-sms";
 import { toE164 } from "@/lib/phone";
 import { checkPhoneVerification } from "@/lib/twilio";
 import { checkRateLimit, POLICIES } from "@/lib/ratelimit";
@@ -63,7 +64,7 @@ export async function POST(req: Request) {
   }
 
   const e164 = toE164(parsed.data.country.toUpperCase(), parsed.data.phone);
-  if (!e164) {
+  if (!e164 || !smsPermitido(e164)) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
@@ -96,11 +97,9 @@ export async function POST(req: Request) {
   }
 
   try {
-    await updateUser(user.id, {
-      phoneE164: e164,
-      phoneVerifiedAt: new Date(),
-      onboardingStatus: "PROFILE_PENDING",
-    });
+    if (!await confirmOnboardingPhone(user.id, e164)) {
+      return NextResponse.json({ error: GENERIC_ERROR }, { status: 409 });
+    }
   } catch {
     // Violação de unicidade (telefone reivindicado em paralelo): erro genérico.
     return NextResponse.json({ error: "Não foi possível usar este telefone." }, { status: 400 });

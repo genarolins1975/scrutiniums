@@ -99,7 +99,7 @@ describe.each(PAGINAS)("$caminho: decisões reais da página", (pagina) => {
       expect(formularios).toHaveLength(1);
       expect(formularios[0].type).toBe(pagina.formulario);
       // A máscara esperada é literal, não calculada pelo helper sob teste.
-      expect(formularios[0].props).toEqual(pagina.exigeCookie ? { maskedPhone: "+55 •• •••••-5678" } : {});
+      expect(formularios[0].props).toEqual(pagina.exigeCookie ? { maskedPhone: "+55 •• •••••-5678" } : { paises: [{ code: "BR", ddi: "+55", name: "Brasil" }] });
       expect(dependencias.sessao).toHaveBeenCalledExactlyOnceWith();
       expect(dependencias.redirect).not.toHaveBeenCalled();
       if (pagina.exigeCookie) {

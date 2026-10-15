@@ -8,6 +8,9 @@
  */
 import twilio from "twilio";
 import { maskPhone } from "./crypto";
+import { paisDoTelefone, smsPermitido } from "./politica-sms";
+import { checkRateLimit, POLICIES } from "./ratelimit";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
 const AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
@@ -33,6 +36,12 @@ export type VerifyStartResult = { ok: true } | { ok: false; reason: "rate_limite
 export type VerifyCheckResult = { status: "approved" | "pending" | "expired" | "failed" };
 
 export async function startPhoneVerification(phoneE164: string): Promise<VerifyStartResult> {
+  if (!smsPermitido(phoneE164)) return { ok: false, reason: "invalid" };
+  const numero = parsePhoneNumberFromString(phoneE164)!;
+  const pais = checkRateLimit(`sms:pais:${paisDoTelefone(phoneE164)}`, POLICIES.smsPorPais);
+  const prefixo = checkRateLimit(`sms:prefixo:${numero.countryCallingCode}:${numero.nationalNumber.slice(0, 3)}`, POLICIES.smsPorPrefixo);
+  if (!pais.allowed || !prefixo.allowed) return { ok: false, reason: "rate_limited" };
+  if (!isConfigured && process.env.NODE_ENV === "production") return { ok: false, reason: "error" };
   if (!isConfigured) {
     const { generateOtp } = await import("./crypto");
     const code = generateOtp();
@@ -59,6 +68,8 @@ export async function checkPhoneVerification(
   phoneE164: string,
   code: string,
 ): Promise<VerifyCheckResult> {
+  if (!smsPermitido(phoneE164)) return { status: "failed" };
+  if (!isConfigured && process.env.NODE_ENV === "production") return { status: "failed" };
   if (!isConfigured) {
     const pending = devPending.get(phoneE164);
     if (!pending) return { status: "expired" };

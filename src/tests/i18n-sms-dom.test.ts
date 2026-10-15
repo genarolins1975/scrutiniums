@@ -7,12 +7,7 @@ import { attr, elementos, filhos, texto, type Elemento, type No } from "./suport
 // IDs capturados no build real: a moldura EN muda o caminho React dos controles.
 const IDS = { pais: ":R2ijttsq:", telefone: ":R3ijttsq:", otp: ":R1ujtttsq:" };
 const IDS_EN = { pais: ":Raajtttsq:", telefone: ":Reajtttsq:", otp: ":R7qjttttsq:" };
-const PAISES = [
-  ["BR", "Brasil (+55)"], ["PT", "Portugal (+351)"], ["US", "Estados Unidos (+1)"],
-  ["AR", "Argentina (+54)"], ["CL", "Chile (+56)"], ["CO", "Colômbia (+57)"],
-  ["MX", "México (+52)"], ["GB", "Reino Unido (+44)"], ["ES", "Espanha (+34)"],
-  ["FR", "França (+33)"], ["DE", "Alemanha (+49)"], ["IT", "Itália (+39)"],
-] as const;
+const PAISES = [["BR", "Brasil (+55)"]] as const;
 const SOLICITACAO: ComparacaoSms = { caminho: "/entrar/sms", estado: "inicial" };
 const SOLICITACAO_VAZIA: ComparacaoSms = { caminho: "/entrar/sms", estado: "vazio" };
 const OTP_30: ComparacaoSms = { caminho: "/entrar/sms/verificar", estado: "inicial", contador: "30s" };
@@ -98,10 +93,9 @@ describe("contratos DOM das duas telas de login por SMS", () => {
 
   type Adulteracao = { nome: string; cenario: ComparacaoSms; alterar: (doc: No) => void };
   const adulteracoes: Adulteracao[] = [
-    { nome: "país removido", cenario: SOLICITACAO, alterar: (doc) => remover(encontrar(doc, (e) => e.tagName === "option" && attr(e, "value") === "IT")) },
-    { nome: "ordem dos países trocada", cenario: SOLICITACAO, alterar: (doc) => {
-      const controle = select(doc);
-      [controle.childNodes[1], controle.childNodes[2]] = [controle.childNodes[2], controle.childNodes[1]];
+    { nome: "país removido", cenario: SOLICITACAO, alterar: (doc) => remover(encontrar(doc, (e) => e.tagName === "option" && attr(e, "value") === "BR")) },
+    { nome: "país não habilitado oferecido", cenario: SOLICITACAO, alterar: (doc) => {
+      atributo(encontrar(doc, (e) => e.tagName === "option"), "value", "PT");
     } },
     { nome: "Brasil sem seleção inicial", cenario: SOLICITACAO, alterar: (doc) => atributo(encontrar(doc, (e) => e.tagName === "option" && attr(e, "value") === "BR"), "selected") },
     { nome: "select removido", cenario: SOLICITACAO, alterar: (doc) => remover(select(doc)) },

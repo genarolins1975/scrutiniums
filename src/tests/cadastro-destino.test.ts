@@ -11,11 +11,11 @@ vi.mock("next/headers", () => ({
     delete: (n: string) => jar.delete(n),
   }),
 }));
-vi.mock("@/lib/session", () => ({ getSessionUser: vi.fn(async () => ({ id: "u1", onboardingStatus: "PROFILE_PENDING" })) }));
+vi.mock("@/lib/session", () => ({ getSessionUser: vi.fn(async () => ({ id: "u1", onboardingStatus: "PROFILE_PENDING", phoneE164: "+5511987654321", phoneVerifiedAt: new Date("2026-01-01") })) }));
 vi.mock("@/lib/onboarding", async (orig) => ({
   ...(await orig<typeof import("@/lib/onboarding")>()),
   findUserByCpf: vi.fn(async () => null),
-  updateUser: vi.fn(async () => undefined),
+  completeProfile: vi.fn(async () => true),
 }));
 vi.mock("@/lib/password", async (orig) => ({ ...(await orig<typeof import("@/lib/password")>()), hashPassword: vi.fn(async () => "hash") }));
 vi.mock("@/lib/events", () => ({ trackEvent: vi.fn(async () => undefined) }));
@@ -42,12 +42,14 @@ describe("cadastro devolve ao painel pedido", () => {
 
   it("sem destino guardado, segue para a escolha de observatório", async () => {
     const r = await POST(corpo());
+    expect(r.status).toBe(200);
     expect((await r.json()).next).toBe("/app/observatorios");
   });
 
   it("com destino interno, volta a ele (com o recorte) e limpa o cookie", async () => {
     jar.set("scrutiniums_destino", "/observatorio/pix?seg=pf");
     const r = await POST(corpo());
+    expect(r.status).toBe(200);
     expect((await r.json()).next).toBe("/observatorio/pix?seg=pf");
     expect(jar.has("scrutiniums_destino")).toBe(false);
   });
@@ -55,6 +57,7 @@ describe("cadastro devolve ao painel pedido", () => {
   it("destino externo é ignorado", async () => {
     jar.set("scrutiniums_destino", "//malicioso.example/x");
     const r = await POST(corpo());
+    expect(r.status).toBe(200);
     expect((await r.json()).next).toBe("/app/observatorios");
   });
 });

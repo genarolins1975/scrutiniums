@@ -8,12 +8,7 @@ export type ComparacaoSms =
   | { caminho: "/entrar/sms"; estado: EstadoSms; contador?: never }
   | { caminho: "/entrar/sms/verificar"; estado: EstadoSms; contador: "30s" | "liberado" };
 
-const PAISES = [
-  ["BR", "Brasil (+55)"], ["PT", "Portugal (+351)"], ["US", "Estados Unidos (+1)"],
-  ["AR", "Argentina (+54)"], ["CL", "Chile (+56)"], ["CO", "Colômbia (+57)"],
-  ["MX", "México (+52)"], ["GB", "Reino Unido (+44)"], ["ES", "Espanha (+34)"],
-  ["FR", "França (+33)"], ["DE", "Alemanha (+49)"], ["IT", "Itália (+39)"],
-] as const;
+const PAISES = [["BR", "Brasil (+55)"]] as const;
 
 function dentro(no: No, ancestral: No): boolean {
   return no === ancestral || ("parentNode" in no && no.parentNode !== null && dentro(no.parentNode, ancestral));
@@ -130,7 +125,7 @@ export function verificarPaginaSms(doc: No, cenario: ComparacaoSms): void {
     const opcoes = todos.filter((e) => e.tagName === "option");
     expect(opcoes.every((e) => e.parentNode === pais && attr(e, "disabled") === undefined)).toBe(true);
     expect(opcoes.map((e) => [attr(e, "value"), texto(e)])).toEqual(PAISES);
-    expect(opcoes.map((e) => attr(e, "selected"))).toEqual(["", ...Array(11).fill(undefined)]);
+    expect(opcoes.map((e) => attr(e, "selected"))).toEqual([""]);
     expect(links).toEqual([["/entrar", "Entrar com e-mail e senha"], ["/cadastro", "Ainda não tenho cadastro"]]);
   }
 }

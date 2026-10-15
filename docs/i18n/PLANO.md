@@ -114,3 +114,11 @@ Campos técnicos como IDs, códigos, datas de máquina e valores não são tradu
 ## Revisão do contrato de cobertura
 
 O relatório versionado e o `--check` dependem somente de fontes de código: interface, dicionários, glossário, inventário de rotas e modelos de frase. A situação da gold é calculada por `--gold`, em relatório não versionado. A publicação diária de dados não depende da cobertura i18n; os quatro workflows de dados permanecem iguais aos da main. Esta regra substitui o contrato anterior que incluía hashes e contagens da gold no arquivo versionado.
+
+## Ordem após a revisão da pilha
+
+O cadastro sem CPF para telefone estrangeiro verificado é entregue antes de
+novos recortes do Setor Elétrico. O contrato, as provas e as ações externas estão
+em [CADASTRO-INTERNACIONAL.md](CADASTRO-INTERNACIONAL.md). Os PRs de energia já
+existentes recebem a propagação das correções da base; isso não encerra as demais
+entregas de conta, idioma e comunicações previstas na fase 2.
