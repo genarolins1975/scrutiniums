@@ -24,6 +24,7 @@
 import { diaSerial, diferencaDatas, precisaoData, textoDuracao } from "@/lib/energia/calendario";
 import { ordenarComNulos } from "@/lib/energia/escalas";
 import { dataBR } from "@/lib/energia/formato";
+import type { Idioma } from "@/lib/idioma";
 
 export type EventoDatado = {
   id: string;
@@ -134,11 +135,15 @@ export function ordenarEventos(eventos: readonly EventoDatado[], base: BaseData,
 }
 
 /** Defasagem entre publicação e vigência, em texto; null sem as duas datas. */
-export function textoDefasagem(publicacao: string | null | undefined, vigencia: string | null | undefined): string | null {
+export function textoDefasagem(
+  publicacao: string | null | undefined,
+  vigencia: string | null | undefined,
+  idioma: Idioma = "pt",
+): string | null {
   const d = diferencaDatas(publicacao, vigencia);
   if (!d) return null;
   if (d.valor === 0) return d.unidade === "dias" ? "vigência na data da publicação" : "vigência no mês da publicação";
-  return d.valor > 0 ? `vigência ${textoDuracao(d)} após a publicação` : `vigência retroativa: ${textoDuracao(d)} antes da publicação`;
+  return d.valor > 0 ? `vigência ${textoDuracao(d, idioma)} após a publicação` : `vigência retroativa: ${textoDuracao(d, idioma)} antes da publicação`;
 }
 
 /** URL segura para link externo (http ou https); null nos demais casos. */

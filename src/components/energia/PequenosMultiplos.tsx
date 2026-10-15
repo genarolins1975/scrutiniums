@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { useCursorSincronizado } from "@/components/energia/CursorSincronizado";
 import type { SerieLinha } from "@/components/energia/GraficoLinhas";
@@ -48,6 +50,7 @@ export type PainelMultiplo = {
 
 export type PequenosMultiplosProps = {
   titulo: string;
+  idioma?: Idioma;
   dados: PontoSerie[];
   chaveX: string;
   paineis: PainelMultiplo[];
@@ -79,6 +82,7 @@ const COLUNAS: Record<2 | 3 | 4, string> = {
 
 export function PequenosMultiplos({
   titulo,
+  idioma = "pt",
   dados,
   chaveX,
   paineis,
@@ -96,6 +100,7 @@ export function PequenosMultiplos({
   tabelaAbertaInicial = false,
 }: PequenosMultiplosProps) {
   const uid = useId();
+  const numero = formatadorNumero(idioma, {});
   const [iAtivo, setIAtivo] = useState<number | null>(null);
   const [painelFoco, setPainelFoco] = useState(0);
   const [anuncio, setAnuncio] = useState("");
@@ -143,7 +148,7 @@ export function PequenosMultiplos({
     const d = dados[i];
     if (!p || !d) return "";
     const ss = seriesDe(p);
-    const valores = ss.map((s) => `${ss.length > 1 ? `${s.rotulo} ` : ""}${formatarValor(d[s.id] as number | null, casas, unidade)}`).join("; ");
+    const valores = ss.map((s) => `${ss.length > 1 ? `${s.rotulo} ` : ""}${formatarValor(d[s.id] as number | null, casas, unidade, idioma)}`).join("; ");
     return `${p.titulo}, ${formatarX(xs[i], formatoX, true)}: ${valores}`;
   };
 
@@ -195,7 +200,7 @@ export function PequenosMultiplos({
       ) : (
         <p className="mb-2 text-xs text-carvao-muted" data-aviso="escala-compartilhada">
           Escala compartilhada: a mesma régua vertical em todos os painéis
-          {domCompartilhado ? `, de ${rotuloTick(domCompartilhado.min, domCompartilhado.passo)} a ${rotuloTick(domCompartilhado.max, domCompartilhado.passo)} ${unidade}` : ""}.
+          {domCompartilhado ? `, de ${rotuloTick(domCompartilhado.min, domCompartilhado.passo, idioma)} a ${rotuloTick(domCompartilhado.max, domCompartilhado.passo, idioma)} ${unidade}` : ""}.
         </p>
       )}
       <div className="flex flex-wrap items-baseline gap-x-4">
@@ -240,6 +245,7 @@ export function PequenosMultiplos({
               altura={alturaPainel}
               casas={casas}
               unidade={unidade}
+              idioma={idioma}
               formatoX={formatoX}
               nivelTitulo={nivelTitulo}
               iCruz={iCruz}
@@ -264,7 +270,7 @@ export function PequenosMultiplos({
       </p>
       <details className="mt-3 text-xs" open={tabelaAbertaInicial || undefined} onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Dados dos painéis em tabela ({n.toLocaleString("pt-BR")} {n === 1 ? "linha" : "linhas"}, {paineis.length} {paineis.length === 1 ? "painel" : "painéis"})
+          Dados dos painéis em tabela ({numero.format(n)} {n === 1 ? "linha" : "linhas"}, {paineis.length} {paineis.length === 1 ? "painel" : "painéis"})
         </summary>
         {tabelaAberta && (
           <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
@@ -295,7 +301,7 @@ export function PequenosMultiplos({
                         const v = d[s.id];
                         return (
                           <td key={`${p.id}-${s.id}`} className={`px-2 py-1 text-right ${valido(v) ? "text-carvao" : "italic text-mineral"}`}>
-                            {formatarValor(v as number | null, casas)}
+                            {formatarValor(v as number | null, casas, "", idioma)}
                           </td>
                         );
                       }),
@@ -320,6 +326,7 @@ type PainelProps = {
   altura: number;
   casas: number;
   unidade: string;
+  idioma: Idioma;
   formatoX: FormatoX;
   nivelTitulo: 3 | 4;
   iCruz: number | null;
@@ -341,6 +348,7 @@ function Painel({
   altura,
   casas,
   unidade,
+  idioma,
   formatoX,
   nivelTitulo,
   iCruz,
@@ -402,7 +410,7 @@ function Painel({
   const pCruz = iCruz !== null ? dados[iCruz] : null;
   const leituraCabecalho =
     pCruz && iCruz !== null
-      ? `${formatarX(xs[iCruz], formatoX, true)}: ${series.map((s) => `${series.length > 1 ? `${s.rotulo} ` : ""}${formatarValor(pCruz[s.id] as number | null, casas, unidade)}`).join(" · ")}`
+      ? `${formatarX(xs[iCruz], formatoX, true)}: ${series.map((s) => `${series.length > 1 ? `${s.rotulo} ` : ""}${formatarValor(pCruz[s.id] as number | null, casas, unidade, idioma)}`).join(" · ")}`
       : "";
 
   function indice(ev: React.PointerEvent<SVGRectElement>): number {
@@ -446,7 +454,7 @@ function Painel({
           <g key={t}>
             <line x1={L} x2={w - R} y1={y(t)} y2={y(t)} stroke="var(--cor-grade)" strokeWidth="1" />
             <text x={L - 6} y={y(t) + 4} textAnchor="end" fontSize="12" fill="var(--cor-mineral)" className="tabular-nums">
-              {rotuloTick(t, dom.passo)}
+              {rotuloTick(t, dom.passo, idioma)}
             </text>
           </g>
         ))}

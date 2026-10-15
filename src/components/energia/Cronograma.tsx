@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import { diaSerial, ticksTempo } from "@/lib/energia/calendario";
 import {
   alternarEstado,
@@ -45,6 +47,7 @@ import { dataBR } from "@/lib/energia/formato";
  */
 export type CronogramaProps = {
   titulo: string;
+  idioma?: Idioma;
   itens: ItemCronograma[];
   /** Régua do atraso (ex.: { data: "2022-06-30", rotulo: "cronograma da outorga" }); sem ela, atraso não é calculado. */
   dataBase?: DataBaseCronograma | null;
@@ -77,18 +80,19 @@ type Linha =
   | { tipo: "item"; item: ItemCronograma; y: number }
   | { tipo: "marco"; item: ItemCronograma; marco: MarcoCronograma; y: number; chave: string; atraso: Atraso };
 
-function leituraMarco(item: ItemCronograma, m: MarcoCronograma, a: Atraso, comAtraso: boolean): string {
+function leituraMarco(item: ItemCronograma, m: MarcoCronograma, a: Atraso, comAtraso: boolean, idioma: Idioma): string {
   const ps = previsoesOrdenadas(m.previsoes);
   const recente = ps.at(-1);
   const prev = recente
     ? `previsão mais recente ${dataBR(recente.data)}, informada em ${dataBR(recente.informadaEm)}; ${ps.length} ${ps.length === 1 ? "previsão registrada" : "previsões registradas"}`
     : "sem previsão registrada";
   const real = m.realizado ? `realizado em ${dataBR(m.realizado)}` : "sem data realizada";
-  return `${item.rotulo}, ${m.rotulo}: ${prev}; ${real}${comAtraso ? `; ${textoAtraso(a)}` : ""}`;
+  return `${item.rotulo}, ${m.rotulo}: ${prev}; ${real}${comAtraso ? `; ${textoAtraso(a, idioma)}` : ""}`;
 }
 
 export function Cronograma({
   titulo,
+  idioma = "pt",
   itens,
   dataBase = null,
   rotuloFiltro = "Estado",
@@ -98,6 +102,7 @@ export function Cronograma({
   alturaMaxima = 560,
 }: CronogramaProps) {
   const uid = useId().replace(/:/g, "");
+  const numero = formatadorNumero(idioma, {});
   const [largura, setLargura] = useState(LARGURA_SSR);
   const [estadosInternos, setEstadosInternos] = useState<string[] | null>(estadosIniciais);
   const [ativo, setAtivo] = useState<string | null>(null);
@@ -196,8 +201,8 @@ export function Cronograma({
     const sReal = diaSerial(marco.realizado);
     const base = atraso.estado === "realizado" || atraso.estado === "previsto" || atraso.estado === "sem-comparacao" ? atraso.base : null;
     const pontos = [...ps.map((p) => diaSerial(p.data) as number), ...(sReal !== null ? [sReal] : [])];
-    const leitura = leituraMarco(item, marco, atraso, comAtraso);
-    const rotulo = rotuloAtraso(atraso);
+    const leitura = leituraMarco(item, marco, atraso, comAtraso, idioma);
+    const rotulo = rotuloAtraso(atraso, idioma);
     return (
       <g
         key={chave}
@@ -334,7 +339,7 @@ export function Cronograma({
           <span className={marco.realizado ? "tabular-nums text-carvao" : "italic text-carvao-muted"}>{marco.realizado ? dataBR(marco.realizado) : "sem registro"}</span>
         </p>
         {marco.realizado && marco.fonteRealizado && <p className="text-carvao-muted">{marco.fonteRealizado}</p>}
-        {comAtraso && <p className="mt-1 text-carvao">{textoAtraso(atraso)}</p>}
+        {comAtraso && <p className="mt-1 text-carvao">{textoAtraso(atraso, idioma)}</p>}
       </div>
     );
   }
@@ -457,7 +462,7 @@ export function Cronograma({
       </p>
       <details className="mt-3 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Cronograma em tabela ({marcos.length.toLocaleString("pt-BR")} {marcos.length === 1 ? "marco" : "marcos"})
+          Cronograma em tabela ({numero.format(marcos.length)} {marcos.length === 1 ? "marco" : "marcos"})
         </summary>
         <div className="tabela-scroll mt-2 max-h-96 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
           <table className="w-full min-w-[40rem] border-collapse">
@@ -507,7 +512,7 @@ export function Cronograma({
                         {base ? `${dataBR(base.data)}, informada em ${dataBR(base.informadaEm)}` : <span className="italic text-mineral">sem previsão vigente</span>}
                       </td>
                     )}
-                    {comAtraso && <td className="px-2 py-1 text-carvao">{textoAtraso(atraso)}</td>}
+                    {comAtraso && <td className="px-2 py-1 text-carvao">{textoAtraso(atraso, idioma)}</td>}
                   </tr>
                 );
               })}

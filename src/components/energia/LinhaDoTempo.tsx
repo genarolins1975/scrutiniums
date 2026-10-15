@@ -1,6 +1,8 @@
 "use client";
 
 import { Fragment, useId, useState } from "react";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import { dataBR } from "@/lib/energia/formato";
 import {
   FILTRO_PADRAO,
@@ -40,6 +42,7 @@ export type CategoriaEvento = { id: string; rotulo: string };
 
 export type LinhaDoTempoProps = {
   titulo: string;
+  idioma?: Idioma;
   eventos: EventoDatado[];
   /** Categorias na ordem de exibição do filtro. */
   categorias: CategoriaEvento[];
@@ -53,8 +56,9 @@ export type LinhaDoTempoProps = {
   nivelTitulo?: 3 | 4;
 };
 
-export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroControlado, filtroInicial, onFiltro, ordem = "recentes", nivelTitulo = 3 }: LinhaDoTempoProps) {
+export function LinhaDoTempo({ titulo, idioma = "pt", eventos, categorias, filtro: filtroControlado, filtroInicial, onFiltro, ordem = "recentes", nivelTitulo = 3 }: LinhaDoTempoProps) {
   const uid = useId().replace(/:/g, "");
+  const numero = formatadorNumero(idioma, {});
   const [filtroInterno, setFiltroInterno] = useState<FiltroLinhaDoTempo>({ ...FILTRO_PADRAO, ...filtroInicial });
   const filtro = filtroControlado ?? filtroInterno;
   const Titulo = nivelTitulo === 4 ? "h4" : "h3";
@@ -82,11 +86,11 @@ export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroContro
   const contagem = (id: string) => eventos.filter((e) => e.categoria === id).length;
 
   const estado =
-    `Mostrando ${r.eventos.length.toLocaleString("pt-BR")} de ${r.total.toLocaleString("pt-BR")} ${r.total === 1 ? "evento" : "eventos"}` +
+    `Mostrando ${numero.format(r.eventos.length)} de ${numero.format(r.total)} ${r.total === 1 ? "evento" : "eventos"}` +
     (resumo ? `; ${resumo}` : "") +
     "." +
     (r.semDataNaBase
-      ? ` ${r.semDataNaBase.toLocaleString("pt-BR")} ${r.semDataNaBase === 1 ? "evento sem data" : "eventos sem data"} de ${ROTULO_BASE[filtro.base]} ${r.semDataNaBase === 1 ? "fica" : "ficam"} fora do recorte por período.`
+      ? ` ${numero.format(r.semDataNaBase)} ${r.semDataNaBase === 1 ? "evento sem data" : "eventos sem data"} de ${ROTULO_BASE[filtro.base]} ${r.semDataNaBase === 1 ? "fica" : "ficam"} fora do recorte por período.`
       : "");
 
   const campoData = "mt-0.5 block min-h-[44px] border border-linha bg-superficie px-2 text-sm text-carvao focus:border-energia";
@@ -153,7 +157,7 @@ export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroContro
             const anterior = k > 0 ? r.eventos[k - 1][filtro.base] : undefined;
             const anoAnterior = k === 0 ? null : anterior ? anterior.slice(0, 4) : `sem data de ${ROTULO_BASE[filtro.base]}`;
             const url = urlSegura(e.fonte?.url);
-            const defasagem = textoDefasagem(e.publicacao, e.vigencia);
+            const defasagem = textoDefasagem(e.publicacao, e.vigencia, idioma);
             const idTitulo = `${uid}-${k}`;
             return (
               <li key={e.id} data-id={e.id} className="relative pb-6 pl-6 last:pb-1">

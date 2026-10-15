@@ -7,6 +7,8 @@ import { useCursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { rotuloTick } from "@/lib/energia/escalas";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import {
   dominioLinhas,
   formatarX,
@@ -66,6 +68,7 @@ export type GraficoLinhasProps = {
   series: SerieLinha[];
   unidade: string;
   casas?: number;
+  idioma?: Idioma;
   formatoX?: FormatoX;
   zeroNoEixo?: boolean;
   banda?: { inferior: string; superior: string; rotulo: string; cor?: string };
@@ -109,10 +112,10 @@ export type GraficoLinhasProps = {
 
 const fmtX = formatarX;
 
-function fmtV(v: number | null | undefined, casas: number, unidade: string): string {
+function fmtV(v: number | null | undefined, casas: number, unidade: string, idioma: Idioma): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return "sem dado";
   // sinal de menos tipográfico, como no resto do portal
-  return `${v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "\u2212")} ${unidade}`.trim();
+  return `${formatadorNumero(idioma, { minimumFractionDigits: casas, maximumFractionDigits: casas }).format(v).replace(/^-/, "\u2212")} ${unidade}`.trim();
 }
 
 function ticks(min: number, max: number, n = 4): number[] {
@@ -164,6 +167,7 @@ export function GraficoLinhas({
   series,
   unidade,
   casas = 1,
+  idioma = "pt",
   formatoX = "data",
   zeroNoEixo = false,
   banda,
@@ -185,6 +189,7 @@ export function GraficoLinhas({
   semTitulo = false,
   chaveUrl,
 }: GraficoLinhasProps) {
+  const formatadorContagem = formatadorNumero(idioma, {});
   const uid = useId();
   const [largura, setLargura] = useState(760);
   const [ativo, setAtivo] = useState<number | null>(null);
@@ -278,7 +283,7 @@ export function GraficoLinhas({
   const passoY = yt.length > 1 ? yt[1] - yt[0] : 1;
   // margem esquerda: a de sempre, ampliada quando o maior rótulo do eixo (12 px, cerca de 6,8 px por caractere) não cabe nela; um rótulo
   // como "−5.000.000" não pode sair cortado pela borda do gráfico
-  const maiorRotuloY = yt.reduce((m, v) => Math.max(m, (rotuloTick(v, passoY) + unidadeNoEixo).length), 0);
+  const maiorRotuloY = yt.reduce((m, v) => Math.max(m, (rotuloTick(v, passoY, idioma) + unidadeNoEixo).length), 0);
   const L = Math.max(largura < ESTREITO ? 48 : 60, Math.ceil(maiorRotuloY * 6.8) + 12);
 
   const n = vis.length;
@@ -477,13 +482,13 @@ export function GraficoLinhas({
   const estado: string[] = [];
   if (ampliado) {
     estado.push(
-      `Intervalo exibido: ${rotuloX(i0)} a ${rotuloX(i1)}, ${n.toLocaleString("pt-BR")} de ${N.toLocaleString("pt-BR")} pontos` +
+      `Intervalo exibido: ${rotuloX(i0)} a ${rotuloX(i1)}, ${formatadorContagem.format(n)} de ${formatadorContagem.format(N)} pontos` +
         (escalaDoTrecho ? "; eixo vertical recalculado para o intervalo." : "."),
     );
   }
   if (escalaDasVisiveis) {
     estado.push(
-      `Escala ajustada às séries visíveis: eixo de ${fmtV(domVisiveis.yMin, casas, "")} a ${fmtV(domVisiveis.yMax, casas, unidade)}; com todas as séries, ${fmtV(domTodas.yMin, casas, "")} a ${fmtV(domTodas.yMax, casas, unidade)}.`,
+      `Escala ajustada às séries visíveis: eixo de ${fmtV(domVisiveis.yMin, casas, "", idioma)} a ${fmtV(domVisiveis.yMax, casas, unidade, idioma)}; com todas as séries, ${fmtV(domTodas.yMin, casas, "", idioma)} a ${fmtV(domTodas.yMax, casas, unidade, idioma)}.`,
     );
   } else if (temOcultas && modoEscala === "manter") {
     estado.push("Escala mantida com todas as séries, inclusive as ocultas.");
@@ -679,7 +684,7 @@ export function GraficoLinhas({
             <g key={v}>
               <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
               <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
-                {rotuloTick(v, passoY)}
+                {rotuloTick(v, passoY, idioma)}
                 {unidadeNoEixo}
               </text>
             </g>
@@ -791,14 +796,14 @@ export function GraficoLinhas({
                     <span aria-hidden="true" className="inline-block h-2 w-2" style={{ background: s.cor }} />
                     {s.rotulo}
                   </span>
-                  <span className="tabular-nums">{fmtV(pa[s.id] as number | null, casas, unidade)}</span>
+                  <span className="tabular-nums">{fmtV(pa[s.id] as number | null, casas, unidade, idioma)}</span>
                 </li>
               ))}
               {banda && typeof pa[banda.inferior] === "number" && (
                 <li className="flex justify-between gap-3 text-mineral">
                   <span>{banda.rotulo}</span>
                   <span className="tabular-nums">
-                    {fmtV(pa[banda.inferior] as number, casas, "")} a {fmtV(pa[banda.superior] as number, casas, unidade)}
+                    {fmtV(pa[banda.inferior] as number, casas, "", idioma)} a {fmtV(pa[banda.superior] as number, casas, unidade, idioma)}
                   </span>
                 </li>
               )}
@@ -809,14 +814,14 @@ export function GraficoLinhas({
       {/* leitura do ponto ativo para leitor de tela: região persistente, anunciada a cada mudança */}
       <p className="sr-only" aria-live="polite">
         {pa
-          ? `${fmtX(String(pa[chaveX]), formatoX, true)}: ${seriesVis.map((s) => `${s.rotulo} ${fmtV(pa[s.id] as number | null, casas, unidade)}`).join("; ")}`
+          ? `${fmtX(String(pa[chaveX]), formatoX, true)}: ${seriesVis.map((s) => `${s.rotulo} ${fmtV(pa[s.id] as number | null, casas, unidade, idioma)}`).join("; ")}`
           : ""}
       </p>
       <details className="mt-3 text-xs" open={tabelaAbertaInicial || undefined} onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
           {ampliado
-            ? `Dados do gráfico em tabela (${n.toLocaleString("pt-BR")} de ${N.toLocaleString("pt-BR")} linhas, intervalo exibido)`
-            : `Dados do gráfico em tabela (${n.toLocaleString("pt-BR")} ${n === 1 ? "linha" : "linhas"})`}
+            ? `Dados do gráfico em tabela (${formatadorContagem.format(n)} de ${formatadorContagem.format(N)} linhas, intervalo exibido)`
+            : `Dados do gráfico em tabela (${formatadorContagem.format(n)} ${n === 1 ? "linha" : "linhas"})`}
         </summary>
         {tabelaAberta && (
           <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
@@ -842,11 +847,11 @@ export function GraficoLinhas({
                   <tr key={i} className="border-b border-linha">
                     <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">{fmtX(String(p[chaveX] ?? ""), formatoX, true)}</th>
                     {seriesVis.map((s) => (
-                      <td key={s.id} className="px-2 py-1 text-carvao">{fmtV(p[s.id] as number | null, casas, "")}</td>
+                      <td key={s.id} className="px-2 py-1 text-carvao">{fmtV(p[s.id] as number | null, casas, "", idioma)}</td>
                     ))}
                     {banda && (
                       <td className="px-2 py-1 text-mineral">
-                        {typeof p[banda.inferior] === "number" ? `${fmtV(p[banda.inferior] as number, casas, "")} a ${fmtV(p[banda.superior] as number, casas, "")}` : "sem dado"}
+                        {typeof p[banda.inferior] === "number" ? `${fmtV(p[banda.inferior] as number, casas, "", idioma)} a ${fmtV(p[banda.superior] as number, casas, "", idioma)}` : "sem dado"}
                       </td>
                     )}
                   </tr>

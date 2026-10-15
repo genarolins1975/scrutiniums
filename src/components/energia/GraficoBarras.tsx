@@ -2,7 +2,9 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { BaixarImagem } from "@/components/energia/BaixarImagem";
-import { dominioComZero, empilhar, escalaLinear, formatarDiferenca, formatarValor, pxCaractere12, rotuloTick, ticksQueCabem, valido, type Pilha } from "@/lib/energia/escalas";
+import { dominioComZero, empilhar, escalaLinear, formatarDiferenca, formatarValor, pxCaractere12, rotuloTick as formatarRotuloTick, ticksQueCabem, valido, type Pilha } from "@/lib/energia/escalas";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Gráfico de barras SVG do Setor Elétrico, vertical ou horizontal, simples,
@@ -58,6 +60,7 @@ export type GraficoBarrasProps = {
   series: SerieBarra[];
   unidade: string;
   casas?: number;
+  idioma?: Idioma;
   orientacao?: "vertical" | "horizontal";
   /** Soma as séries numa pilha. Só para composição aditiva (partes de um mesmo total). */
   empilhado?: boolean;
@@ -131,6 +134,7 @@ export function GraficoBarras({
   series,
   unidade,
   casas = 1,
+  idioma = "pt",
   orientacao = "vertical",
   empilhado = false,
   rotulosValor = false,
@@ -207,6 +211,10 @@ export function GraficoBarras({
       </div>
     );
   }
+
+  const formatadorContagem = formatadorNumero(idioma, {});
+  // Medição e desenho usam o mesmo rótulo no idioma deste render.
+  const rotuloTick = (v: number, passo: number) => formatarRotuloTick(v, passo, idioma);
 
   // celular: coluna com rótulo longo (faixas de renda, "2013 (11 meses)") não cabe sob a barra e saía truncada; vira barra horizontal,
   // com o rótulo acima. Rótulos curtos (meses, anos) e séries longas seguem em colunas.
@@ -353,10 +361,10 @@ export function GraficoBarras({
     const partes = series.flatMap((s) => {
       const v = valor(i, s);
       if (naoSeAplica(v, s)) return [];
-      const t = formatarValor(v, casas, unidade);
+      const t = formatarValor(v, casas, unidade, idioma);
       return [series.length > 1 ? `${s.rotulo} ${t}` : t];
     });
-    const total = pilhas && series.length > 1 ? `; total ${pilhas[i].completo ? formatarValor(pilhas[i].total, casas, unidade) : "incompleto, há parte sem dado"}` : "";
+    const total = pilhas && series.length > 1 ? `; total ${pilhas[i].completo ? formatarValor(pilhas[i].total, casas, unidade, idioma) : "incompleto, há parte sem dado"}` : "";
     return `${nomes[i]}: ${partes.join("; ")}${total}`;
   };
 
@@ -434,7 +442,7 @@ export function GraficoBarras({
       const sentido: 1 | -1 = pontaPos ? 1 : -1;
       if (faltam) marcas.push(marcaSemDado(i, 0, apoio, sentido, "sd", faltam));
       if (rotulosValor) {
-        if (p.completo) textos.push(rotuloPonta(i, 0, formatarValor(p.total, casas), pontaPos, escala(apoio), "total"));
+        if (p.completo) textos.push(rotuloPonta(i, 0, formatarValor(p.total, casas, "", idioma), pontaPos, escala(apoio), "total"));
         else if (!vertical) textos.push(rotuloPonta(i, 0, "incompleto", pontaPos, depoisDaMarca(apoio, sentido), "total", true));
       }
     } else {
@@ -460,7 +468,7 @@ export function GraficoBarras({
           const r = ret(i, j, 0, v);
           marcas.push(<path key={s.id} data-serie={s.id} data-categoria={ids[i]} d={pathBarra(r.x, r.y, r.w, r.h, ladoDado(v))} fill={s.cor} />);
         }
-        if (rotulosValor) textos.push(rotuloPonta(i, j, formatarValor(v, casas), v >= 0, escala(v), s.id));
+        if (rotulosValor) textos.push(rotuloPonta(i, j, formatarValor(v, casas, "", idioma), v >= 0, escala(v), s.id));
       });
     }
 
@@ -638,7 +646,7 @@ export function GraficoBarras({
   const base = <path d={traco(r1(zero))} fill="none" stroke="var(--cor-carvao-muted)" strokeWidth="1" />;
   const linhasRef = referencias.map((r, k) => {
     const p = r1(escala(r.valor));
-    const texto = `${r.rotulo}: ${formatarValor(r.valor, casas, unidade)}`;
+    const texto = `${r.rotulo}: ${formatarValor(r.valor, casas, unidade, idioma)}`;
     return (
       <g key={`${k}-${r.rotulo}`} pointerEvents="none" data-referencia={r.rotulo}>
         {vertical ? (
@@ -695,7 +703,7 @@ export function GraficoBarras({
                 {s.rotulo}
               </span>
               <span className={`tabular-nums ${valor(ativo, s) === null ? "italic text-carvao-muted" : "font-medium text-carvao"}`}>
-                {formatarValor(valor(ativo, s), casas, unidade)}
+                {formatarValor(valor(ativo, s), casas, unidade, idioma)}
               </span>
             </li>
             ))}
@@ -703,7 +711,7 @@ export function GraficoBarras({
             <li className="flex justify-between gap-3 border-t border-linha pt-0.5">
               <span className="text-carvao-muted">Total</span>
               <span className="font-medium tabular-nums text-carvao">
-                {pilhas[ativo].completo ? formatarValor(pilhas[ativo].total, casas, unidade) : "incompleto"}
+                {pilhas[ativo].completo ? formatarValor(pilhas[ativo].total, casas, unidade, idioma) : "incompleto"}
               </span>
             </li>
           )}
@@ -712,7 +720,7 @@ export function GraficoBarras({
             return tot === null ? null : (
               <li key={`${k}-${r.rotulo}`} className="flex justify-between gap-3 text-carvao-muted">
                 <span>Diferença ({r.rotulo})</span>
-                <span className="tabular-nums">{formatarDiferenca(tot - r.valor, casas, unidade === "%" ? "p.p." : unidade)}</span>
+                <span className="tabular-nums">{formatarDiferenca(tot - r.valor, casas, unidade === "%" ? "p.p." : unidade, idioma)}</span>
               </li>
             );
           })}
@@ -791,7 +799,7 @@ export function GraficoBarras({
               <svg width="18" height="8" aria-hidden="true">
                 <line x1="0" y1="4" x2="18" y2="4" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" strokeDasharray="5 4" />
               </svg>
-              {r.rotulo}: {formatarValor(r.valor, casas, unidade)}
+              {r.rotulo}: {formatarValor(r.valor, casas, unidade, idioma)}
             </li>
           ))}
           {semDado && (
@@ -843,12 +851,12 @@ export function GraficoBarras({
             <p className="mt-1 flex flex-wrap items-center gap-x-3 text-xs text-mineral" data-aviso-rolagem="true">
               <span>
                 {selecaoForaDoLimite && !todas
-                  ? `Todas as ${nTotal.toLocaleString("pt-BR")} categorias, porque a escolhida está depois das primeiras ${(limiteInicial ?? 0).toLocaleString("pt-BR")}.`
+                  ? `Todas as ${formatadorContagem.format(nTotal)} categorias, porque a escolhida está depois das primeiras ${formatadorContagem.format(limiteInicial ?? 0)}.`
                   : todas
-                    ? `Todas as ${nTotal.toLocaleString("pt-BR")} categorias.`
+                    ? `Todas as ${formatadorContagem.format(nTotal)} categorias.`
                     : corta
-                      ? `O gráfico mostra as ${n.toLocaleString("pt-BR")} primeiras das ${nTotal.toLocaleString("pt-BR")} categorias, na ordem escolhida.`
-                      : `O gráfico mostra só parte das ${nTotal.toLocaleString("pt-BR")} categorias, na ordem escolhida.`}
+                      ? `O gráfico mostra as ${formatadorContagem.format(n)} primeiras das ${formatadorContagem.format(nTotal)} categorias, na ordem escolhida.`
+                      : `O gráfico mostra só parte das ${formatadorContagem.format(nTotal)} categorias, na ordem escolhida.`}
               </span>
               {!(selecaoForaDoLimite && !todas) && (
                 <button
@@ -857,7 +865,7 @@ export function GraficoBarras({
                   onClick={() => setTodas((t) => !t)}
                   className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao"
                 >
-                  {todas ? "Mostrar só o início" : `Mostrar todas as ${nTotal.toLocaleString("pt-BR")}`}
+                  {todas ? "Mostrar só o início" : `Mostrar todas as ${formatadorContagem.format(nTotal)}`}
                 </button>
               )}
             </p>
@@ -870,7 +878,7 @@ export function GraficoBarras({
       </p>
       <details className="mt-3 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Dados do gráfico em tabela ({nTotal.toLocaleString("pt-BR")} {nTotal === 1 ? "linha" : "linhas"})
+          Dados do gráfico em tabela ({formatadorContagem.format(nTotal)} {nTotal === 1 ? "linha" : "linhas"})
         </summary>
         <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
           <table className="w-full border-collapse tabular-nums">
@@ -906,13 +914,13 @@ export function GraficoBarras({
                       const v = valorDe(linha, s);
                       return (
                         <td key={s.id} className={`px-2 py-1 text-right ${v === null ? ausente : "text-carvao"}`}>
-                          {naoSeAplica(v, s) ? "não se aplica" : formatarValor(v, casas)}
+                          {naoSeAplica(v, s) ? "não se aplica" : formatarValor(v, casas, "", idioma)}
                         </td>
                       );
                     })}
                     {pilhasTodas && series.length > 1 && (
                       <td className={`px-2 py-1 text-right ${pilhasTodas[i].completo ? "text-carvao" : ausente}`}>
-                        {pilhasTodas[i].completo ? formatarValor(pilhasTodas[i].total, casas) : "incompleto"}
+                        {pilhasTodas[i].completo ? formatarValor(pilhasTodas[i].total, casas, "", idioma) : "incompleto"}
                       </td>
                     )}
                   </tr>

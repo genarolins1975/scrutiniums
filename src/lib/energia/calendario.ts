@@ -14,6 +14,8 @@
  * só o mês, a diferença sai em meses; dizer "atraso de 45 dias" entre "março"
  * e "15 de abril" inventaria uma precisão que a fonte não deu.
  */
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 export type Precisao = "dia" | "mes";
 
@@ -115,17 +117,17 @@ export function diferencaDatas(de: string | null | undefined, ate: string | null
 }
 
 /** Duração em português com singular e plural ("1 dia", "120 dias", "1 mês", "3 meses"); sem sinal. */
-export function textoDuracao(d: Diferenca): string {
+export function textoDuracao(d: Diferenca, idioma: Idioma = "pt"): string {
   const v = Math.abs(d.valor);
-  const n = v.toLocaleString("pt-BR");
+  const n = formatadorNumero(idioma, {}).format(v);
   if (d.unidade === "dias") return `${n} ${v === 1 ? "dia" : "dias"}`;
   return `${n} ${v === 1 ? "mês" : "meses"}`;
 }
 
 /** Diferença com sinal tipográfico ("+120 dias", "−3 meses", "0 dias"). */
-export function textoDiferencaComSinal(d: Diferenca): string {
+export function textoDiferencaComSinal(d: Diferenca, idioma: Idioma = "pt"): string {
   const s = d.valor > 0 ? "+" : d.valor < 0 ? "\u2212" : "";
-  return `${s}${textoDuracao(d)}`;
+  return `${s}${textoDuracao(d, idioma)}`;
 }
 
 export type TickTempo = { serial: number; iso: string; rotulo: string };
