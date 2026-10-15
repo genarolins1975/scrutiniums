@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import type { RegistroPrevisao } from "@/lib/energia/tipos";
+import { fmtDateTime, formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 const MOTIVOS: Record<string, string> = {
   SEM_PLD_CAPTURADO_ATE_O_CORTE: "nenhum PLD do período exigido capturado até o corte",
@@ -10,9 +12,8 @@ const ALERTAS: Record<string, string> = {
   ATRASADO_APOS_08H: "emitida depois do prazo das 08h00",
 };
 
-function dt(iso: string) {
-  const d = new Date(iso);
-  return d.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+function dt(iso: string, idioma: Idioma) {
+  return fmtDateTime(iso, idioma);
 }
 
 /** Data (AAAA-MM-DD) em que o registro entrou no arquivo da plataforma. */
@@ -28,10 +29,11 @@ function registradoEm(r: RegistroPrevisao): string {
  * Nada é recalculado nem reescrito. Número de rodada interna de modelo fora de
  * produção nunca é exibido como previsão.
  */
-export function ArquivoPrevisoes({ registros }: { registros: RegistroPrevisao[] }) {
+export function ArquivoPrevisoes({ registros, idioma = "pt" }: { registros: RegistroPrevisao[]; idioma?: Idioma }) {
   const datas = useMemo(() => Array.from(new Set(registros.map(registradoEm))).sort(), [registros]);
   const [dia, setDia] = useState(datas.at(-1) ?? "");
   const vistos = registros.filter((r) => !dia || registradoEm(r) <= dia);
+  const numero = formatadorNumero(idioma, {});
   return (
     <div>
       <label className="flex max-w-xs flex-col gap-1 text-xs text-mineral">
@@ -66,8 +68,8 @@ export function ArquivoPrevisoes({ registros }: { registros: RegistroPrevisao[] 
                 <tr key={r.forecast_id} className="border-b border-linha align-top">
                   <td className="px-2 py-1.5">{r.tipo === "PUBLICACAO" ? "publicação" : "rodada interna"}</td>
                   <td className="px-2 py-1.5">{registradoEm(r).split("-").reverse().join("/")}</td>
-                  <td className="px-2 py-1.5">{dt(r.emitido_em)}</td>
-                  <td className="px-2 py-1.5">{dt(r.cutoff)}</td>
+                  <td className="px-2 py-1.5">{dt(r.emitido_em, idioma)}</td>
+                  <td className="px-2 py-1.5">{dt(r.cutoff, idioma)}</td>
                   <td className="px-2 py-1.5">{r.versao_modelo} · {r.estado_modelo.toLowerCase()}</td>
                   <td className="px-2 py-1.5">{r.horizonte}</td>
                   <td className="px-2 py-1.5">{r.entrega.id}</td>
@@ -78,7 +80,7 @@ export function ArquivoPrevisoes({ registros }: { registros: RegistroPrevisao[] 
                     ) : r.tipo !== "PUBLICACAO" || r.estado_modelo !== "PRODUCAO" ? (
                       <span className="text-mineral">número retido: rodada interna de modelo fora de produção</span>
                     ) : (
-                      r.previsao.toLocaleString("pt-BR")
+                      numero.format(r.previsao)
                     )}
                   </td>
                   <td className="px-2 py-1.5">

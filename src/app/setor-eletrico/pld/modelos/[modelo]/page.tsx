@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import { notFound } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -80,10 +82,10 @@ export function generateMetadata({ params }: { params: { modelo: string } }): Me
 }
 
 /** Valor de configuração em texto legível (lista, objeto por frequência ou número). */
-function textoConfig(v: unknown): string {
-  if (Array.isArray(v)) return v.map((x) => (typeof x === "number" ? x.toLocaleString("pt-BR") : String(x))).join("; ");
-  if (v && typeof v === "object") return Object.entries(v as Record<string, unknown>).map(([k, x]) => `${k}: ${textoConfig(x)}`).join("; ");
-  if (typeof v === "number") return v.toLocaleString("pt-BR");
+function textoConfig(v: unknown, idioma: Idioma): string {
+  if (Array.isArray(v)) return v.map((x) => (typeof x === "number" ? formatadorNumero(idioma, {}).format(x) : String(x))).join("; ");
+  if (v && typeof v === "object") return Object.entries(v as Record<string, unknown>).map(([k, x]) => `${k}: ${textoConfig(x, idioma)}`).join("; ");
+  if (typeof v === "number") return formatadorNumero(idioma, {}).format(v);
   return String(v);
 }
 
@@ -350,7 +352,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                             .filter(([k]) => k !== "sha256")
                             .map(([k, x]) => (
                               <li key={k}>
-                                <span className="font-mono">{k}</span>: {textoConfig(x)}
+                                <span className="font-mono">{k}</span>: {textoConfig(x, "pt")}
                               </li>
                             ))}
                         </ul>

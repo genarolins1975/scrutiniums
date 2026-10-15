@@ -10,6 +10,8 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { LIMIAR_SEPARACAO, textoPicoFrenteAoLimite, textoPonteLimiar, type PonteSeparacao } from "@/lib/energia/pld";
 import { MIME_CSV, gerarCsv, nomeArquivo, type ColunaTabela } from "@/lib/energia/tabela";
 import type { RegimeLimites } from "@/lib/energia/tipos-pld";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 type StatSm = {
   media: number;
@@ -43,9 +45,9 @@ const SMS = [
   { id: "N", rotulo: "Norte", sigla: "N", cor: "var(--serie-sm-n)", tracejada: true },
 ] as const;
 
-const n = (v: number | null | undefined, c = 2) =>
-  v === null || v === undefined ? "sem dado" : v.toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c });
-const p = (v: number) => `${(v * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`;
+const n = (v: number | null | undefined, c: number, idioma: Idioma) =>
+  v === null || v === undefined ? "sem dado" : formatadorNumero(idioma, { minimumFractionDigits: c, maximumFractionDigits: c }).format(v);
+const p = (v: number, idioma: Idioma) => `${formatadorNumero(idioma, { maximumFractionDigits: 1 }).format(v * 100)}%`;
 /**
  * Submercados cujas linhas se sobrepõem no gráfico: em todos os pontos do período, a
  * distância entre eles fica abaixo de 0,5% da amplitude do eixo. Devolve cada grupo com a
@@ -119,6 +121,7 @@ export function PldPeriodos({
   regimes = [],
   versao,
   notaMenorValor,
+  idioma = "pt",
 }: {
   periodos: PeriodoPld[];
   limiar: number;
@@ -130,7 +133,9 @@ export function PldPeriodos({
   versao: string;
   /** Frase sobre o menor valor horário do ano e o piso do ato (conferida na gold de limites). */
   notaMenorValor?: string | null;
+  idioma?: Idioma;
 }) {
+  const numero = formatadorNumero(idioma, {});
   const ids = periodos.map((x) => x.id);
   const esquema = useMemo(
     () => ({ per: campo(tiposUrl.opcao(ids), ids[0] ?? "") }),
@@ -153,7 +158,7 @@ export function PldPeriodos({
     abas.current[j]?.focus();
   }
   const d = at.diferenca;
-  const pico = textoPicoFrenteAoLimite(at.stats.SE.max, at.stats.SE.quando_max, regimes);
+  const pico = textoPicoFrenteAoLimite(at.stats.SE.max, at.stats.SE.quando_max, regimes, idioma);
   // marca do dia (ou da hora) do máximo horário do SE/CO: nas abas de médias, o pico não aparece na curva e a marca diz onde ele ocorreu
   const xMax = at.formatoX === "hora" ? at.stats.SE.quando_max : at.formatoX === "data" ? at.stats.SE.quando_max.slice(0, 10) : at.stats.SE.quando_max.slice(0, 7);
   const mediasNoGrafico = at.formatoX !== "hora";
@@ -188,7 +193,7 @@ export function PldPeriodos({
       </div>
       <div id="pld-periodo-painel" role="tabpanel" aria-labelledby={`pld-aba-${at.id}`} className="pt-5">
         <p className="text-xs text-mineral">
-          {quando(at.inicio)} a {quando(at.fim)} · {at.nHoras.toLocaleString("pt-BR")} horas · {at.descricaoSerie}
+          {quando(at.inicio)} a {quando(at.fim)} · {numero.format(at.nHoras)} horas · {at.descricaoSerie}
         </p>
         <div className="mt-3">
           <GraficoLinhas
@@ -198,9 +203,10 @@ export function PldPeriodos({
             series={SMS.map((s) => ({ id: s.id, rotulo: s.rotulo, sigla: s.sigla, cor: s.cor, tracejada: s.tracejada }))}
             unidade="R$/MWh"
             casas={2}
+            idioma={idioma}
             formatoX={at.formatoX}
             altura={280}
-            marcos={[{ x: xMax, rotulo: `máximo horário do SE/CO${mediasNoGrafico ? "" : `: ${n(at.stats.SE.max)}`}` }]}
+            marcos={[{ x: xMax, rotulo: `máximo horário do SE/CO${mediasNoGrafico ? "" : `: ${n(at.stats.SE.max, 2, idioma)}`}` }]}
           />
         </div>
         {at.serie.length > 0 &&
@@ -210,7 +216,7 @@ export function PldPeriodos({
               <p key={g.ids.join("-")} className="mt-2 text-xs text-carvao-muted">
                 {g.maior === 0
                   ? `${nomes} tiveram o mesmo valor em todos os pontos deste período: as linhas se sobrepõem no gráfico.`
-                  : `${nomes} ficaram a no máximo R$ ${n(g.maior)}/MWh um do outro em todos os pontos deste período: no gráfico, as linhas se sobrepõem. Os valores de cada um estão na tabela.`}
+                  : `${nomes} ficaram a no máximo R$ ${n(g.maior, 2, idioma)}/MWh um do outro em todos os pontos deste período: no gráfico, as linhas se sobrepõem. Os valores de cada um estão na tabela.`}
               </p>
             );
           })}
@@ -230,10 +236,10 @@ export function PldPeriodos({
             <dt className="rotulo text-mineral">Há diferença entre submercados?</dt>
             <dd className="mt-1 text-sm text-carvao">
               {d.horas_acima_limiar === 0
-                ? `Não: nenhuma hora com diferença acima de R$ ${n(limiar, 2)}/MWh entre o maior e o menor preço da hora.`
-                : `Sim, em ${d.horas_acima_limiar.toLocaleString("pt-BR")} horas (${p(d.frac_horas_acima_limiar)}) a diferença entre o maior e o menor preço da hora passou de R$ ${n(limiar, 2)}/MWh. Maior diferença: R$ ${n(d.maior)}/MWh em ${quando(d.quando_maior)}.`}
+                ? `Não: nenhuma hora com diferença acima de R$ ${n(limiar, 2, idioma)}/MWh entre o maior e o menor preço da hora.`
+                : `Sim, em ${numero.format(d.horas_acima_limiar)} horas (${p(d.frac_horas_acima_limiar, idioma)}) a diferença entre o maior e o menor preço da hora passou de R$ ${n(limiar, 2, idioma)}/MWh. Maior diferença: R$ ${n(d.maior, 2, idioma)}/MWh em ${quando(d.quando_maior)}.`}
               <span className="mt-1 block text-xs text-mineral" data-texto="criterio-da-diferenca">
-                {textoPonteLimiar(limiar, ponte?.[at.id])}{" "}
+                {textoPonteLimiar(limiar, ponte?.[at.id], idioma)}{" "}
                 <Link href="/setor-eletrico/pld/diferencas-regionais" className="underline underline-offset-4">
                   Abrir Diferenças regionais
                 </Link>
@@ -244,7 +250,7 @@ export function PldPeriodos({
           <div className="bg-superficie p-4">
             <dt className="rotulo text-mineral">Quanto do período ficou no menor valor horário do ano?</dt>
             <dd className="mt-1 text-sm text-carvao">
-              {SMS.map((s) => `${s.id === "SE" ? "SE/CO" : s.id} ${p(at.stats[s.id].frac_menor_valor_ano)}`).join(" · ")} das {at.nHoras.toLocaleString("pt-BR")} horas do período.
+              {SMS.map((s) => `${s.id === "SE" ? "SE/CO" : s.id} ${p(at.stats[s.id].frac_menor_valor_ano, idioma)}`).join(" · ")} das {numero.format(at.nHoras)} horas do período.
               <span className="mt-1 block text-xs text-mineral">
                 {notaMenorValor ? `${notaMenorValor} ` : "O menor valor horário observado no ano não é o piso regulatório. "}O piso de cada ano está na{" "}
                 <Link href="/setor-eletrico/pld/limites" className="underline underline-offset-4">
@@ -257,7 +263,7 @@ export function PldPeriodos({
           <div className="bg-superficie p-4">
             <dt className="rotulo text-mineral">Houve picos?</dt>
             <dd className="mt-1 text-sm text-carvao">
-              Máximo no Sudeste/Centro-Oeste: R$&nbsp;{n(at.stats.SE.max)}/MWh em {quando(at.stats.SE.quando_max)}
+              Máximo no Sudeste/Centro-Oeste: R$&nbsp;{n(at.stats.SE.max, 2, idioma)}/MWh em {quando(at.stats.SE.quando_max)}
               {pico ? `, ${pico}` : ""}.
               {mediasNoGrafico && (
                 <span className="mt-1 block text-xs text-mineral" data-texto="picos-fora-do-grafico">
@@ -284,7 +290,7 @@ export function PldPeriodos({
             <tbody>
               {SMS.flatMap((s) => {
                 const st = at.stats[s.id];
-                const faixas = `${p(st.permanencia.baixa)} · ${p(st.permanencia.central)} · ${p(st.permanencia.alta)}`;
+                const faixas = `${p(st.permanencia.baixa, idioma)} · ${p(st.permanencia.central, idioma)} · ${p(st.permanencia.alta, idioma)}`;
                 return [
                   <tr key={s.id} className="border-b border-linha max-sm:border-b-0">
                     <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">
@@ -296,16 +302,16 @@ export function PldPeriodos({
                       </span>
                       <span className="hidden sm:inline">{s.rotulo}</span>
                     </th>
-                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.media)}</td>
-                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.min)}</td>
-                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.max)}</td>
-                    <td className="hidden px-2 py-2 text-carvao sm:table-cell">R$&nbsp;{n(st.desvio_padrao)}</td>
+                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.media, 2, idioma)}</td>
+                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.min, 2, idioma)}</td>
+                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.max, 2, idioma)}</td>
+                    <td className="hidden px-2 py-2 text-carvao sm:table-cell">R$&nbsp;{n(st.desvio_padrao, 2, idioma)}</td>
                     <td className="hidden px-2 py-2 text-carvao sm:table-cell">{faixas}</td>
                   </tr>,
                   // celular: volatilidade e faixas descem para uma segunda linha do mesmo submercado, em vez de empurrar colunas para fora da tela
                   <tr key={`${s.id}-mais`} className="border-b border-linha sm:hidden">
                     <td colSpan={4} className="px-2 pb-2 pt-0 text-xs text-carvao-muted">
-                      Volatilidade (desvio padrão): R$&nbsp;{n(st.desvio_padrao)}. Horas em faixa baixa · central · alta: {faixas}.
+                      Volatilidade (desvio padrão): R$&nbsp;{n(st.desvio_padrao, 2, idioma)}. Horas em faixa baixa · central · alta: {faixas}.
                     </td>
                   </tr>,
                 ];
@@ -315,7 +321,7 @@ export function PldPeriodos({
         </div>
         <p className="mt-2 text-xs text-mineral">
           Valores em R$/MWh nominais. Faixas: abaixo do 25º percentil, entre o 25º e o 75º e acima do 75º percentil da distribuição horária de cada submercado desde 01/01/2021.
-          Diferença entre submercados: critério de R$&nbsp;{n(limiar, 2)}/MWh nesta página e de R$&nbsp;{n(LIMIAR_SEPARACAO, 2)}/MWh em Diferenças regionais.
+          Diferença entre submercados: critério de R$&nbsp;{n(limiar, 2, idioma)}/MWh nesta página e de R$&nbsp;{n(LIMIAR_SEPARACAO, 2, idioma)}/MWh em Diferenças regionais.
         </p>
       </div>
     </div>

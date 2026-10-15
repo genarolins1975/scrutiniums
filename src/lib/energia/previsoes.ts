@@ -10,6 +10,8 @@
  * módulo também é importado por componentes cliente (a leitura do CSV no build
  * fica em previsoes-arquivos.ts).
  */
+import { fmtDateTime, formatadorDataHora, formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import { semCaminhosDeArquivo } from "./bastidor";
 import { diaBrasilia } from "./evidencia";
 import { CURTO_SM, NOME_SM, dataBR, num, plural, reais } from "./formato";
@@ -138,7 +140,7 @@ export const textoAlertas = (as: readonly string[]) => as.map((a) => ALERTAS[a] 
 
 /* ---------------------------------------------------------------- datas */
 
-const HORA_BR = new Intl.DateTimeFormat("pt-BR", {
+const HORA_BR = formatadorDataHora("pt", {
   timeZone: "America/Sao_Paulo",
   day: "2-digit",
   month: "2-digit",
@@ -149,10 +151,11 @@ const HORA_BR = new Intl.DateTimeFormat("pt-BR", {
 });
 
 /** Instante UTC → "30/09/2026 às 20h31" (Brasília). */
-export function instanteBR(iso: string | null | undefined): string {
+export function instanteBR(iso: string | null | undefined, idioma: Idioma = "pt"): string {
   if (!iso) return "sem registro";
   const t = Date.parse(iso);
   if (Number.isNaN(t)) return iso;
+  if (idioma === "en") return fmtDateTime(new Date(t), "en");
   const p = Object.fromEntries(HORA_BR.formatToParts(new Date(t)).map((x) => [x.type, x.value]));
   return `${p.day}/${p.month}/${p.year} às ${p.hour}h${p.minute}`;
 }
@@ -211,12 +214,12 @@ export function temRodada(at: PrevisoesDesempenhoGold["previsao_atual"]): at is 
 }
 
 /** Emissão da rodada em uma frase: modo, instante em Brasília e atraso sobre o prazo das 08h00. */
-export function textoEmissao(r: { emitido_em: string; atraso_min: number | null; modo: string; prazo: string | null }): string {
+export function textoEmissao(r: { emitido_em: string; atraso_min: number | null; modo: string; prazo: string | null }, idioma: Idioma = "pt"): string {
   const modo = r.modo === "agendada" ? "pelo agendamento" : r.modo === "manual" ? "manualmente" : `(${r.modo})`;
-  const base = `emitida ${modo} em ${instanteBR(r.emitido_em)}`;
+  const base = `emitida ${modo} em ${instanteBR(r.emitido_em, idioma)}`;
   if (r.prazo === null || r.atraso_min === null) return `${base}, sem prazo registrado`;
   if (r.atraso_min <= 0) return `${base}, dentro do prazo das 08h00`;
-  return `${base}, ${num(r.atraso_min, 0)} minutos depois do prazo das 08h00`;
+  return `${base}, ${num(r.atraso_min, 0, idioma)} minutos depois do prazo das 08h00`;
 }
 
 /** Emissão da rodada em palavras de leitor: o modo e se foi depois do prazo das 08h00, sem os minutos de atraso (que ficam em Analisar). */
@@ -519,7 +522,7 @@ export function numeroRetido(tipo: string, estadoModelo: string | null | undefin
  * emissão (Brasília): não é emissão original do observatório. `estados` traz o
  * estado de cada modelo (gold.modelos) para aplicar numeroRetido.
  */
-export function linhasArquivo(brutas: readonly Record<string, string>[], estados: Record<string, string> = {}): LinhaArquivo[] {
+export function linhasArquivo(brutas: readonly Record<string, string>[], estados: Record<string, string> = {}, idioma: Idioma = "pt"): LinhaArquivo[] {
   return brutas.map((r) => {
     const emitidoDia = diaBrasilia(r.emitido_em) ?? r.emitido_em.slice(0, 10);
     const reg = r.registrado_no_portal_em ?? "";
@@ -538,7 +541,7 @@ export function linhasArquivo(brutas: readonly Record<string, string>[], estados
       cutoff: r.cutoff,
       prazo: r.prazo || null,
       emitido_em: r.emitido_em,
-      emitido: instanteBR(r.emitido_em),
+      emitido: instanteBR(r.emitido_em, idioma),
       atraso_min: numeroCsv(r.atraso_min),
       atraso_origem: r.atraso_origem ?? "",
       modo: r.modo ?? "",
@@ -690,26 +693,26 @@ export function primeiraEntregaAMaturar(linhas: readonly { entrega: string; prev
   return melhor;
 }
 
-function fraseRodada(r: ResumoRodada): string {
-  const atraso = r.atraso_min !== null && r.atraso_min > 0 ? `, emitida ${num(r.atraso_min, 0)} minutos depois do prazo,` : r.atraso_min === 0 ? ", emitida no prazo," : "";
+function fraseRodada(r: ResumoRodada, idioma: Idioma): string {
+  const atraso = r.atraso_min !== null && r.atraso_min > 0 ? `, emitida ${num(r.atraso_min, 0, idioma)} minutos depois do prazo,` : r.atraso_min === 0 ? ", emitida no prazo," : "";
   const quem = `A rodada de ${dataBR(r.origem)} (${r.modelo}, ${r.tipo})${atraso}`;
   const numero =
     r.com_numero === 0
       ? `não tem número${r.motivos.length ? `: ${r.motivos.join("; ")}` : ""}`
       : r.sem_numero === 0
-        ? `tem ${plural(r.com_numero, "número", "números")}`
+        ? `tem ${plural(r.com_numero, "número", "números", idioma)}`
         : `tem ${r.com_numero} de ${r.celulas} células com número`;
   const transc = r.transcrito ? `; foi transcrita para o arquivo em ${dataBR(r.registrado)}, depois da emissão` : "";
   return `${quem} ${numero}${transc}.`;
 }
 
 /** Resposta curta do P015 sobre o recorte exibido (o mesmo da tabela e do gráfico). */
-export function respostaP015(linhas: readonly LinhaArquivo[], dia: string, total: number): string {
+export function respostaP015(linhas: readonly LinhaArquivo[], dia: string, total: number, idioma: Idioma = "pt"): string {
   if (!linhas.length) return dia ? `Nenhum registro estava no arquivo ao fim de ${dataBR(dia)}.` : "O arquivo de emissões não tem registro publicado.";
   const rs = resumoRodadas(linhas);
   const quando = dia ? `Ao fim de ${dataBR(dia)}, o arquivo tinha` : "O arquivo tem";
-  const parcial = dia && linhas.length < total ? ` (de ${total.toLocaleString("pt-BR")} no arquivo completo)` : "";
-  const abertura = `${quando} ${plural(linhas.length, "registro", "registros")}${parcial} de ${plural(rs.length, "rodada", "rodadas")}.`;
+  const parcial = dia && linhas.length < total ? ` (de ${formatadorNumero(idioma, {}).format(total)} no arquivo completo)` : "";
+  const abertura = `${quando} ${plural(linhas.length, "registro", "registros", idioma)}${parcial} de ${plural(rs.length, "rodada", "rodadas", idioma)}.`;
   const apurados = linhas.filter((l) => l.realizado !== null).length;
   const prox = primeiraEntregaAMaturar(linhas);
   const comNumero = linhas.filter((l) => l.previsao !== null).length;
@@ -719,7 +722,7 @@ export function respostaP015(linhas: readonly LinhaArquivo[], dia: string, total
       : apurados === 0
         ? ` Nenhuma entrega prevista terminou: ainda não há realizado${prox ? `; a primeira, ${prox.entrega}, termina em ${dataBR(prox.termina)}` : ""}.`
         : ` ${apurados} de ${comNumero} previsões com número já têm realizado${prox ? `; a próxima entrega a terminar, ${prox.entrega}, termina em ${dataBR(prox.termina)}` : ""}.`;
-  return `${abertura} ${rs.map(fraseRodada).join(" ")}${realizado}`;
+  return `${abertura} ${rs.map((r) => fraseRodada(r, idioma)).join(" ")}${realizado}`;
 }
 
 /** Linhas do gráfico de rodadas: células com e sem número, e atraso (minutos). */
@@ -1093,11 +1096,11 @@ export function vereditoP014(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previs
  * Veredito do P015 em palavras simples, sobre o mesmo recorte da tabela: quantos registros e rodadas, quais rodadas têm número e se
  * alguma entrega prevista já terminou. Lê as mesmas linhas que a resposta completa (respostaP015).
  */
-export function vereditoP015(linhas: readonly LinhaArquivo[], dia: string, total: number): string {
+export function vereditoP015(linhas: readonly LinhaArquivo[], dia: string, total: number, idioma: Idioma = "pt"): string {
   if (!linhas.length) return dia ? `Nenhum registro estava no arquivo ao fim de ${dataBR(dia)}.` : "O arquivo de emissões não tem registro publicado.";
   const rs = resumoRodadas(linhas);
   const quando = dia ? `Ao fim de ${dataBR(dia)}, o arquivo tinha` : "O arquivo tem";
-  const parcial = dia && linhas.length < total ? ` (de ${total.toLocaleString("pt-BR")} no arquivo completo)` : "";
+  const parcial = dia && linhas.length < total ? ` (de ${formatadorNumero(idioma, {}).format(total)} no arquivo completo)` : "";
   const comNumero = rs.filter((r) => r.com_numero > 0);
   const quais =
     comNumero.length === 0
@@ -1115,7 +1118,7 @@ export function vereditoP015(linhas: readonly LinhaArquivo[], dia: string, total
       : apurados === 0
         ? " Nenhuma entrega prevista terminou: ainda não há resultado para comparar."
         : ` ${apurados} de ${prevComNumero} previsões com número já têm resultado.`;
-  return `${quando} ${plural(linhas.length, "registro", "registros")}${parcial} de ${plural(rs.length, "rodada", "rodadas")}; ${quais}.${resultado}`;
+  return `${quando} ${plural(linhas.length, "registro", "registros", idioma)}${parcial} de ${plural(rs.length, "rodada", "rodadas", idioma)}; ${quais}.${resultado}`;
 }
 
 /**
@@ -1191,14 +1194,14 @@ export function segmentosCoeficientes(fichas: readonly Ficha[]): { id: string; r
   return out;
 }
 
-const lambdaTexto = (l: string | number | null) =>
-  l === null ? "sem ajuste" : typeof l === "number" ? l.toLocaleString("pt-BR", { maximumFractionDigits: 3 }) : l === "ZERO" ? "zero (correção desligada)" : l;
+const lambdaTexto = (l: string | number | null, idioma: Idioma) =>
+  l === null ? "sem ajuste" : typeof l === "number" ? formatadorNumero(idioma, { maximumFractionDigits: 3 }).format(l) : l === "ZERO" ? "zero (correção desligada)" : l;
 
 /** Primeira letra minúscula, para citar um texto da gold depois de dois-pontos. */
 export const minusculaInicial = (s: string) => (/^[A-ZÁÉÍÓÚÂÊÔÃÕÇ](?:[a-záéíóúâêôãõç]| )/.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s);
 
 /** Tabela de coeficientes: uma linha por modelo e segmento, uma coluna por variável. */
-export function linhasCoeficientes(fichas: readonly Ficha[]): LinhaCoeficiente[] {
+export function linhasCoeficientes(fichas: readonly Ficha[], idioma: Idioma = "pt"): LinhaCoeficiente[] {
   const vars = variaveisCoeficientes(fichas);
   const out: LinhaCoeficiente[] = [];
   for (const f of fichasOrdenadas(fichas)) {
@@ -1216,7 +1219,7 @@ export function linhasCoeficientes(fichas: readonly Ficha[]): LinhaCoeficiente[]
         sm: CURTO_SM[s.submercado] ?? s.submercado,
         origem_ajuste: s.origem_ajuste,
         ajustado: s.ok ? "sim" : `não: ${textoMotivo(s.motivo)}`,
-        lambda: lambdaTexto(s.lambda),
+        lambda: lambdaTexto(s.lambda, idioma),
         entregas_treino: s.entregas_treino,
       };
       // variável que o modelo não usa fica null (não se aplica) e não zero
@@ -1260,8 +1263,8 @@ export function d7AcimaDe1(fichas: readonly Ficha[]): { modelo: string; segmento
 }
 
 /** Leitura do segmento escolhido: maior peso de cada candidato, λ, treino e o achado G23-R1. */
-export function textoCoeficientes(fichas: readonly Ficha[], seg: string): string {
-  const linhas = linhasCoeficientes(fichas).filter((l) => l.segmento === seg);
+export function textoCoeficientes(fichas: readonly Ficha[], seg: string, idioma: Idioma = "pt"): string {
+  const linhas = linhasCoeficientes(fichas, idioma).filter((l) => l.segmento === seg);
   if (!linhas.length) return "Nenhum candidato tem ajuste registrado neste segmento.";
   const vars = variaveisCoeficientes(fichas);
   const [h, sm] = seg.split("-");
@@ -1271,12 +1274,12 @@ export function textoCoeficientes(fichas: readonly Ficha[], seg: string): string
       const x = l[v.id];
       if (typeof x === "number" && (!maior || Math.abs(x) > Math.abs(maior.valor))) maior = { rotulo: v.rotulo.replace(/\s*\([^)]*\)$/, ""), valor: x };
     }
-    const peso = maior ? `o maior peso é o da variável "${maior.rotulo}" (${num(maior.valor, 2)})` : "nenhum coeficiente registrado";
-    return `no ${l.modelo}, ${peso}, com λ ${l.lambda} e ${l.entregas_treino === null ? "treino sem contagem" : plural(l.entregas_treino, "entrega", "entregas")} de treino`;
+    const peso = maior ? `o maior peso é o da variável "${maior.rotulo}" (${num(maior.valor, 2, idioma)})` : "nenhum coeficiente registrado";
+    return `no ${l.modelo}, ${peso}, com λ ${l.lambda} e ${l.entregas_treino === null ? "treino sem contagem" : plural(l.entregas_treino, "entrega", "entregas", idioma)} de treino`;
   });
   const acima = d7AcimaDe1(fichas).filter((x) => x.segmento === seg);
   const g23 = acima.length
-    ? ` Coeficiente da média dos 7 dias menos B0 acima de 1 (${acima.map((x) => `${x.modelo}: ${num(x.valor, 2)}`).join("; ")}): a correção amplia o desvio recente em vez de reduzi-lo.`
+    ? ` Coeficiente da média dos 7 dias menos B0 acima de 1 (${acima.map((x) => `${x.modelo}: ${num(x.valor, 2, idioma)}`).join("; ")}): a correção amplia o desvio recente em vez de reduzi-lo.`
     : " Nenhum coeficiente da média dos 7 dias menos B0 passa de 1 neste segmento.";
   return `No ajuste de ${dataBR(linhas[0].origem_ajuste)} para ${h}, ${NOME_SM[sm] ?? sm}: ${frases.join("; ")}.${g23}`;
 }
@@ -1386,10 +1389,10 @@ export const COLUNAS_DECISOES: ColunaTabela[] = [
  * validado, por que não aparece, o que o prospectivo já permite dizer e a amostra
  * de calibração; com a publicação liberada, resume o ganho sobre o B0 no teste.
  */
-export function respostaP016(g: Pick<PrevisoesDesempenhoGold, "desempenho" | "publicacao_desempenho" | "validacoes" | "dados" | "prospectivo" | "definicoes">): string {
+export function respostaP016(g: Pick<PrevisoesDesempenhoGold, "desempenho" | "publicacao_desempenho" | "validacoes" | "dados" | "prospectivo" | "definicoes">, idioma: Idioma = "pt"): string {
   const aprovados = g.validacoes.filter((v) => v.resultado === "aprovado").length;
   const controles = `${aprovados} de ${g.validacoes.length} controles aprovados`;
-  const origens = `${g.dados.origens.n.toLocaleString("pt-BR")} origens diárias de ${dataBR(g.dados.origens.inicio)} a ${dataBR(g.dados.origens.fim)}`;
+  const origens = `${formatadorNumero(idioma, {}).format(g.dados.origens.n)} origens diárias de ${dataBR(g.dados.origens.inicio)} a ${dataBR(g.dados.origens.fim)}`;
   const ap = g.prospectivo.apuracoes;
   const apuradas = ap.filter((a) => a.realizado !== null).length;
   const prox = primeiraEntregaAMaturar(ap);
@@ -1735,6 +1738,7 @@ const ALERTAS_DA_RODADA = ["ATRASADO_APOS_08H", "EXECUCAO_MANUAL", "CODIGO_NAO_C
  */
 export function avisosDaRodada(
   r: Pick<Rodada, "modo" | "emitido_em" | "atraso_min" | "alertas" | "versao_codigo" | "celulas" | "com_numero" | "motivos" | "registrado_no_portal_em">,
+  idioma: Idioma = "pt",
 ): AvisoRodada[] {
   const out: AvisoRodada[] = [];
   const manual = r.modo.startsWith("manual");
@@ -1745,7 +1749,7 @@ export function avisosDaRodada(
     out.push({
       id: "emissao",
       rotulo: "Emissão",
-      texto: `Emitida ${manual ? "manualmente" : "pelo agendamento"} em ${instanteBR(r.emitido_em)}${tardia ? ", depois do prazo das 08h00" : ""}.`,
+      texto: `Emitida ${manual ? "manualmente" : "pelo agendamento"} em ${instanteBR(r.emitido_em, idioma)}${tardia ? ", depois do prazo das 08h00" : ""}.`,
     });
   }
   if (r.alertas.includes("CODIGO_NAO_COMMITADO")) {

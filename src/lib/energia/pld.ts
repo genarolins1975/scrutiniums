@@ -23,6 +23,7 @@ import type { EventoDatado } from "@/lib/energia/linha-do-tempo";
 import type { EscalaCores, ValorCelula } from "@/lib/energia/mapa-calor";
 import type { ColunaTabela, LinhaTabela } from "@/lib/energia/tabela";
 import type { GeracaoGold, PldCartao, Submercado } from "@/lib/energia/tipos";
+import type { Idioma } from "@/lib/idioma";
 import type {
   AchadoA02,
   AmplitudePeriodo,
@@ -1724,10 +1725,10 @@ export function pontesSeparacao(r: BlocoRegional): Record<string, PonteSeparacao
  * contam coisas diferentes (acima de R$ 1,00/MWh aqui, acima de R$ 0,01/MWh lá); quando a gold regional tem o mesmo período, a frase dá
  * a contagem do segundo critério.
  */
-export function textoPonteLimiar(limiar: number, ponte: PonteSeparacao | null | undefined): string {
-  const base = `Aqui conta só a hora em que o maior e o menor preço diferem em mais de ${reais(limiar)}/MWh. A página Diferenças regionais conta toda hora com diferença acima de ${reais(LIMIAR_SEPARACAO)}/MWh`;
+export function textoPonteLimiar(limiar: number, ponte: PonteSeparacao | null | undefined, idioma: Idioma = "pt"): string {
+  const base = `Aqui conta só a hora em que o maior e o menor preço diferem em mais de ${reais(limiar, 2, idioma)}/MWh. A página Diferenças regionais conta toda hora com diferença acima de ${reais(LIMIAR_SEPARACAO, 2, idioma)}/MWh`;
   if (!ponte || ponte.frac === null) return `${base}.`;
-  return `${base}: neste período, ${plural(ponte.horas_separadas, "hora", "horas")} de ${num(ponte.horas, 0)} (${fracPct(ponte.frac, 1)}).`;
+  return `${base}: neste período, ${plural(ponte.horas_separadas, "hora", "horas", idioma)} de ${num(ponte.horas, 0, idioma)} (${fracPct(ponte.frac, 1, idioma)}).`;
 }
 
 /**
@@ -1888,11 +1889,11 @@ export function limitesVigentesEm(regimes: readonly RegimeLimites[], dia: string
 }
 
 /** "igual ao teto horário vigente (R$ X/MWh)" quando o máximo mostrado coincide, nos centavos, com o teto horário do ato vigente na data do máximo. */
-export function textoPicoFrenteAoLimite(max: number | null, quando: string | null | undefined, regimes: readonly RegimeLimites[]): string | null {
+export function textoPicoFrenteAoLimite(max: number | null, quando: string | null | undefined, regimes: readonly RegimeLimites[], idioma: Idioma = "pt"): string | null {
   if (max === null || !quando) return null;
   const lim = limitesVigentesEm(regimes, quando.slice(0, 10));
   if (!lim || lim.teto_horario === null) return null;
-  return emCentavos(max) === emCentavos(lim.teto_horario) ? `igual ao teto horário vigente na data (${reais(lim.teto_horario)}/MWh)` : null;
+  return emCentavos(max) === emCentavos(lim.teto_horario) ? `igual ao teto horário vigente na data (${reais(lim.teto_horario, 2, idioma)}/MWh)` : null;
 }
 
 /**

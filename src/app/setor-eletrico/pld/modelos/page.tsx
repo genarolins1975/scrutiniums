@@ -1,5 +1,6 @@
 import { semCaminhosDeArquivo } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
+import { formatadorNumero } from "@/lib/format";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -261,7 +262,7 @@ export default function ModelosPage() {
           fonte="Observatório, registro de modelos de previsão do PLD"
           referencia={
             <>
-              {plural(fichas.length, "modelo registrado", "modelos registrados")}; teste fora da amostra com {g.dados.origens.n.toLocaleString("pt-BR")} origens diárias; processado em{" "}
+              {plural(fichas.length, "modelo registrado", "modelos registrados")}; teste fora da amostra com {formatadorNumero("pt", {}).format(g.dados.origens.n)} origens diárias; processado em{" "}
               {carimbo(g.gerado_em)}.<span data-nivel="analisar"> Configuração sha256 {g.dados.configuracao_sha256.slice(0, 12)}.</span>
             </>
           }
@@ -715,12 +716,12 @@ export default function ModelosPage() {
                       {!pubDes.publicado && <PrevisoesFichaLinha rotulo="Leitura do implementador">{pubDes.interpretacao_do_implementador}</PrevisoesFichaLinha>}
                       <PrevisoesFichaLinha rotulo="Onde estão os resultados">{g.desempenho.publicado ? "nesta página" : g.desempenho.calculado}</PrevisoesFichaLinha>
                       <PrevisoesFichaLinha rotulo="Linhas do teste">
-                        {g.dados.linhas_csv.semanal.toLocaleString("pt-BR")} semanais e {g.dados.linhas_csv.mensal.toLocaleString("pt-BR")} mensais; última entrega apurada no
+                        {formatadorNumero("pt", {}).format(g.dados.linhas_csv.semanal)} semanais e {formatadorNumero("pt", {}).format(g.dados.linhas_csv.mensal)} mensais; última entrega apurada no
                         teste: {g.dados.ultima_entrega_apurada_teste ? dataBR(g.dados.ultima_entrega_apurada_teste) : "nenhuma"}
                       </PrevisoesFichaLinha>
                       {Object.entries(g.dados.revisoes_hidrologia).map(([k, r]) => (
                         <PrevisoesFichaLinha key={k} rotulo={`Revisões em ${k.split(":")[1] ?? k}`}>
-                          {r.observacoes_revisadas} observações revisadas pelo ONS entre capturas; maior revisão {r.maior_revisao === null ? "sem registro" : `${r.maior_revisao.toLocaleString("pt-BR")} p.p.`}.
+                          {r.observacoes_revisadas} observações revisadas pelo ONS entre capturas; maior revisão {r.maior_revisao === null ? "sem registro" : `${formatadorNumero("pt", {}).format(r.maior_revisao)} p.p.`}.
                           O teste retrospectivo do modelo com hidrologia usa o valor revisado.
                         </PrevisoesFichaLinha>
                       ))}

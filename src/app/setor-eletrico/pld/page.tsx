@@ -2,6 +2,7 @@ import { linhasArquivo, resumoRodadas, rotuloTipo, textoMotivo } from "@/lib/ene
 import { lerCsvPrevisoes } from "@/lib/energia/previsoes-arquivos";
 import { fraseDeRecusa, semCaminhosDeArquivo } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
+import { formatadorNumero } from "@/lib/format";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -1021,7 +1022,7 @@ export default function PldPage() {
                   >
                     <p className="mt-5 flex flex-wrap gap-4 text-sm">
                       <Link href="/setor-eletrico/pld/modelos" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Registro de modelos</Link>
-                      <Link href="/setor-eletrico/pld/previsoes" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Histórico de previsões ({csvEmissoes ? `${linhasEmissoes.length.toLocaleString("pt-BR")} registros de ${rodadasEmissoes.length} ${rodadasEmissoes.length === 1 ? "rodada" : "rodadas"}` : "arquivo não lido nesta publicação"})</Link>
+                      <Link href="/setor-eletrico/pld/previsoes" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Histórico de previsões ({csvEmissoes ? `${formatadorNumero("pt", {}).format(linhasEmissoes.length)} registros de ${rodadasEmissoes.length} ${rodadasEmissoes.length === 1 ? "rodada" : "rodadas"}` : "arquivo não lido nesta publicação"})</Link>
                     </p>
                   </Indisponivel>
                 ) : prev && prev.atual.disponivel ? (
