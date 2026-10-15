@@ -93,7 +93,7 @@ describe("seletor público no HTML inicial", () => {
   });
 
   it.each([
-    null, "//", "/en//", "/entrar/sms", "/en/entrar/sms", "/observatorio", "/en/observatorio",
+    null, "//", "/en//", "/entrar/verificar", "/en/entrar/verificar", "/observatorio", "/en/observatorio",
     "/app/conta", "/en/app/conta", "/api/auth/eu", "/en/api/auth/eu",
     "/_next/static/a.js", "/home/credito.webp", "/en/home/credito.webp",
     "/pagina-ainda-sem-irma", "/sobrecarga", "/en/sobre/rota-inexistente",
@@ -136,7 +136,7 @@ describe("integração estática no cabeçalho público", () => {
     }
   });
 
-  it.each(["/pagina-sintetica-sem-irma", "/entrar/sms", "/en/rota-ainda-nao-publicada"])("preserva o cabeçalho sem seletor em %s", (pathname) => {
+  it.each(["/pagina-sintetica-sem-irma", "/entrar/verificar", "/en/rota-ainda-nao-publicada"])("preserva o cabeçalho sem seletor em %s", (pathname) => {
     rota.pathname = pathname;
     const todos = elementos(parseFragment(renderToStaticMarkup(createElement(PublicHeaderView))));
     expect(todos.filter((no) => no.tagName === "header")).toHaveLength(1);

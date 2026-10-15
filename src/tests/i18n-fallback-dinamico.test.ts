@@ -145,7 +145,12 @@ describe("contratos explícitos de conclusão das três páginas", () => {
     expect(cenarioDinamico("/en" + caminho)).toEqual({ pt: caminho, idioma: "en" });
   });
 
-  it.each(["/entrar/sms", "/en/entrar/sms", "/en/cadastro/telefone", "/en/cadastro/", "/cadastro?de=x"])("não generaliza auth para %s", (caminho) => {
+  it.each(["/entrar/sms", "/entrar/sms/verificar"])("admite as telas SMS canônicas declaradas: %s", (caminho) => {
+    expect(cenarioDinamico(caminho)).toEqual({ pt: caminho, idioma: "pt-BR" });
+    expect(cenarioDinamico("/en" + caminho)).toEqual({ pt: caminho, idioma: "en" });
+  });
+
+  it.each(["/entrar/verificar", "/en/entrar/verificar", "/en/cadastro/telefone", "/en/cadastro/", "/cadastro?de=x"])("não generaliza auth para %s", (caminho) => {
     expect(() => cenarioDinamico(caminho)).toThrow();
   });
 });

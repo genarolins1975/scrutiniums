@@ -120,12 +120,12 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
     expect(() => validarUsoInterface({ uso_interface: declaracao() }, irmas, en)).toThrow("sem tradução disponível");
   });
 
-  it("mantém a home parcial e os dez pares integrais no registro único real", () => {
+  it("mantém a home parcial e os doze pares integrais no registro único real", () => {
     expect(parDeIdioma("/")).toEqual({ pt: "/", en: "/en", conteudo: "parcialmente_traduzido" });
     expect(parDeIdioma("/en")).toEqual(parDeIdioma("/"));
-    expect(PARES_DE_IDIOMA).toHaveLength(11);
+    expect(PARES_DE_IDIOMA).toHaveLength(13);
     expect(PARES_DE_IDIOMA.filter((par) => par.conteudo === "portugues_marcado").map((par) => par.pt)).toEqual([
-      "/cadastro", "/entrar", "/glossario", "/imprensa", "/observatorio-do-credito", "/privacidade",
+      "/cadastro", "/entrar", "/entrar/sms", "/entrar/sms/verificar", "/glossario", "/imprensa", "/observatorio-do-credito", "/privacidade",
       "/sobre", "/sobre/erros", "/sobre/governanca", "/termos",
     ]);
     // O estado publicado evolui sem transformar a fixture sintética 4/7

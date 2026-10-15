@@ -4,6 +4,7 @@ import { LINKEDIN_URL } from "@/lib/contato";
 import { PRIVACY_VERSION } from "@/lib/versoesPoliticas";
 import { attr, conteudo, elementos, filhos, oculto, tag, texto, unico, vazamentos, type Elemento, type Forma, type No } from "./i18n-dom";
 import { projetarIlhaAuth, verificarPaginaAuth, type ComparacaoAuth } from "./i18n-auth";
+import { projetarIlhaSms, verificarPaginaSms, type ComparacaoSms } from "./i18n-sms";
 
 type NoAnunciador = { tipo: number; nome: string; atributos: [string, string][]; filhos: number; texto: string };
 export type CapturaAnunciador = {
@@ -21,7 +22,8 @@ const ESTILO_INTERNO = "position:absolute;border:0;height:1px;margin:-1px;paddin
 export function cenarioDinamico(caminho: string) {
   const idioma = caminho === "/en" || caminho.startsWith("/en/") ? "en" : "pt-BR";
   const pt = idioma === "en" ? caminho.slice(3) || "/" : caminho;
-  if (pt !== "/" && pt !== "/glossario" && pt !== "/termos" && pt !== "/privacidade" && pt !== "/entrar" && pt !== "/cadastro") {
+  if (pt !== "/" && pt !== "/glossario" && pt !== "/termos" && pt !== "/privacidade" && pt !== "/entrar" && pt !== "/cadastro"
+    && pt !== "/entrar/sms" && pt !== "/entrar/sms/verificar") {
     throw new Error(`Página dinâmica sem contrato de conclusão DOM: ${caminho}`);
   }
   if (caminho !== (idioma === "en" ? "/en" + (pt === "/" ? "" : pt) : pt)) {
@@ -49,6 +51,12 @@ export function verificarPaginaConcluida(doc: No, caminho: string): void {
   expect(attr(tag(doc, "html"), "lang")).toBe(idioma);
   if (pt === "/entrar" || pt === "/cadastro") {
     verificarPaginaAuth(doc, pt);
+    return;
+  }
+  if (pt === "/entrar/sms" || pt === "/entrar/sms/verificar") {
+    verificarPaginaSms(doc, pt === "/entrar/sms"
+      ? { caminho: pt, estado: "inicial" }
+      : { caminho: pt, estado: "inicial", contador: "liberado" });
     return;
   }
   const main = tag(doc, "main");
@@ -142,7 +150,7 @@ function corpoSemAnunciador(doc: No, captura: CapturaAnunciador): Forma[] {
   return conteudo({ ...body, childNodes: body.childNodes.filter((no) => no !== host) });
 }
 
-export function verificarFallbackDinamico(pt: No, en: No, anunciadorPt: CapturaAnunciador, anunciadorEn: CapturaAnunciador, auth?: ComparacaoAuth): void {
+export function verificarFallbackDinamico(pt: No, en: No, anunciadorPt: CapturaAnunciador, anunciadorEn: CapturaAnunciador, formulario?: ComparacaoAuth | ComparacaoSms): void {
   verificarAusenciaDeTransporte(pt);
   verificarAusenciaDeTransporte(en);
   expect(anunciadorPt.idioma).toBe("pt-BR");
@@ -159,8 +167,11 @@ export function verificarFallbackDinamico(pt: No, en: No, anunciadorPt: CapturaA
   expect(texto(aviso).trim()).toBe("Portuguese only");
   expect(oculto(aviso)).toBe(false);
   expect(oculto(ilha)).toBe(false);
-  const produtoEn = auth ? projetarIlhaAuth(pt, en, auth) : conteudo(ilha);
-  expect(produtoEn, "produto PT integral; somente Fields auth explicitamente validados admitem bijeção de IDs").toEqual(corpoPt);
+  let produtoEn = conteudo(ilha);
+  if (formulario?.caminho === "/entrar/sms" || formulario?.caminho === "/entrar/sms/verificar") {
+    produtoEn = projetarIlhaSms(pt, en, formulario);
+  } else if (formulario) produtoEn = projetarIlhaAuth(pt, en, formulario);
+  expect(produtoEn, "produto PT integral; somente controles de formulários explicitamente validados admitem bijeção de IDs").toEqual(corpoPt);
   expect(corpoEn).toHaveLength(2);
   expect(corpoEn).toEqual([forma(aviso), forma(ilha)]);
   expect(elementos(pt).some((e) => attr(e, "data-i18n-estado") !== undefined)).toBe(false);

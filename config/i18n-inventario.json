@@ -8,6 +8,8 @@
       { "pt": "/", "conteudo": "parcialmente_traduzido" },
       { "pt": "/cadastro", "conteudo": "portugues_marcado" },
       { "pt": "/entrar", "conteudo": "portugues_marcado" },
+      { "pt": "/entrar/sms", "conteudo": "portugues_marcado" },
+      { "pt": "/entrar/sms/verificar", "conteudo": "portugues_marcado" },
       { "pt": "/glossario", "conteudo": "portugues_marcado" },
       { "pt": "/imprensa", "conteudo": "portugues_marcado" },
       { "pt": "/observatorio-do-credito", "conteudo": "portugues_marcado" },

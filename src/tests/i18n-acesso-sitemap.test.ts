@@ -15,7 +15,7 @@ describe("acesso das irmãs declaradas", () => {
   });
 
   it("não abre descendentes ainda não publicados nem imagens e arquivos por recursão", () => {
-    const aindaSemIrma = ["/entrar/sms", "/cadastro/telefone", "/cadastro/perfil"];
+    const aindaSemIrma = ["/entrar/verificar", "/cadastro/telefone", "/cadastro/perfil"];
     expect(aindaSemIrma.length).toBeGreaterThan(0);
     for (const caminho of aindaSemIrma) {
       expect(parDeIdioma(caminho), caminho).toBeNull();

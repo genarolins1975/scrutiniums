@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { describe, expect, it } from "vitest";
 import sitemap from "@/app/sitemap";
+import robots from "@/app/robots";
 import { parDeIdioma } from "@/lib/i18n-rotas";
 import { COOKIE_DESTINO, ehRotaPublica, prefetchDoLink } from "@/lib/rotasPublicas";
 import { middleware } from "@/middleware";
@@ -9,6 +10,8 @@ const ORIGEM = "https://scrutiniums.com";
 const PAGINAS = [
   { pt: "/entrar", en: "/en/entrar", prioridade: 0.3 },
   { pt: "/cadastro", en: "/en/cadastro", prioridade: 0.6 },
+  { pt: "/entrar/sms", en: "/en/entrar/sms", prioridade: 0.3 },
+  { pt: "/entrar/sms/verificar", en: "/en/entrar/sms/verificar", prioridade: 0.3 },
 ] as const;
 
 describe.each(PAGINAS)("entrada pública de autenticação $pt", (par) => {
@@ -35,7 +38,7 @@ describe.each(PAGINAS)("entrada pública de autenticação $pt", (par) => {
     }
   });
 
-  it("mantém prioridade e frequência da entrada PT com uma única irmã indexável", () => {
+  it("publica prioridade e frequência explícitas da entrada PT com uma única irmã canônica", () => {
     const entradas = sitemap();
     const portuguesas = entradas.filter((entrada) => entrada.url === ORIGEM + par.pt);
     const inglesas = entradas.filter((entrada) => entrada.url === ORIGEM + par.en);
@@ -49,7 +52,7 @@ describe.each(PAGINAS)("entrada pública de autenticação $pt", (par) => {
 
 describe("publicar as entradas não publica o restante da autenticação inglesa", () => {
   it.each([
-    "/entrar/sms", "/entrar/sms/verificar", "/entrar/verificar", "/cadastro/telefone",
+    "/entrar/verificar", "/cadastro/telefone",
     "/cadastro/perfil", "/cadastro/verificar-email", "/cadastro/acesso",
   ])("mantém %s pública em PT e sua irmã ausente fechada em EN", async (pt) => {
     expect(parDeIdioma(pt)).toBeNull();
@@ -80,6 +83,13 @@ describe("publicar as entradas não publica o restante da autenticação inglesa
     ["/en/en/entrar", "/entrar"], ["/en/en/cadastro", "/entrar"],
     ["/en/entrar/opengraph-image", "/entrar"], ["/en/cadastro/twitter-image", "/entrar"],
     ["/en/api/auth/login", "/entrar"], ["/en/api/onboarding/email/start", "/entrar"],
+    ["/en/entrar/sms/descendente-sintetico-i18n", "/en/entrar"],
+    ["/en/entrar/sms/verificar/descendente-sintetico-i18n", "/en/entrar"],
+    ["/en/entrar/smsx", "/en/entrar"], ["/en/entrar/sms/verificarx", "/en/entrar"],
+    ["/en/entrar/%73ms", "/en/entrar"], ["/en/entrar/sms/%76erificar", "/en/entrar"],
+    ["/%65n/entrar/sms", "/entrar"], ["/en/en/entrar/sms", "/entrar"],
+    ["/en/entrar/sms/opengraph-image", "/entrar"], ["/en/entrar/sms/verificar/twitter-image", "/entrar"],
+    ["/en/api/auth/entrar/start", "/entrar"], ["/en/api/auth/entrar/check", "/entrar"],
   ])("%s conserva a guarda e usa %s como entrada", async (caminho, entrada) => {
     expect(parDeIdioma(caminho)).toBeNull();
     expect(ehRotaPublica(caminho)).toBe(false);
@@ -99,4 +109,19 @@ describe("publicar as entradas não publica o restante da autenticação inglesa
     expect(resposta.headers.get("x-middleware-rewrite")).toBeNull();
     expect(sitemap().map((item) => item.url)).not.toContain(ORIGEM + caminho);
   });
+});
+
+it("inclui as telas SMS públicas no sitemap e preserva seu bloqueio de rastreamento nos dois idiomas", () => {
+  expect(robots()).toEqual({
+    rules: [{
+      userAgent: "*", allow: "/",
+      disallow: ["/app", "/api/", "/entrar/sms", "/en/entrar/sms", "/cadastro/telefone", "/cadastro/perfil", "/cadastro/acesso"],
+    }],
+    sitemap: ORIGEM + "/sitemap.xml",
+  });
+  const entradas = sitemap().map((entrada) => entrada.url);
+  for (const caminho of ["/entrar/sms", "/en/entrar/sms", "/entrar/sms/verificar", "/en/entrar/sms/verificar"]) {
+    expect(entradas.filter((url) => url === ORIGEM + caminho)).toHaveLength(1);
+    expect(entradas.filter((url) => url.startsWith(ORIGEM + caminho + "?"))).toHaveLength(0);
+  }
 });

@@ -4,10 +4,16 @@ import { generateMetadata as entrarPt, dynamic as modoEntrarPt } from "@/app/ent
 import { generateMetadata as cadastroPt, dynamic as modoCadastroPt } from "@/app/cadastro/page";
 import { metadata as entrarEn, dynamic as modoEntrarEn } from "@/app/en/entrar/page";
 import { metadata as cadastroEn, dynamic as modoCadastroEn } from "@/app/en/cadastro/page";
+import { generateMetadata as smsPt, dynamic as modoSmsPt } from "@/app/entrar/sms/page";
+import { generateMetadata as smsVerificarPt, dynamic as modoSmsVerificarPt } from "@/app/entrar/sms/verificar/page";
+import { metadata as smsEn, dynamic as modoSmsEn } from "@/app/en/entrar/sms/page";
+import { metadata as smsVerificarEn, dynamic as modoSmsVerificarEn } from "@/app/en/entrar/sms/verificar/page";
 
 const PAGINAS = [
   { pt: "/entrar", en: "/en/entrar", titulo: "Entrar", gerarPt: entrarPt, metadataEn: entrarEn, modos: [modoEntrarPt, modoEntrarEn] },
   { pt: "/cadastro", en: "/en/cadastro", titulo: "Crie seu acesso", gerarPt: cadastroPt, metadataEn: cadastroEn, modos: [modoCadastroPt, modoCadastroEn] },
+  { pt: "/entrar/sms", en: "/en/entrar/sms", titulo: "Entrar com código por SMS", gerarPt: smsPt, metadataEn: smsEn, modos: [modoSmsPt, modoSmsEn] },
+  { pt: "/entrar/sms/verificar", en: "/en/entrar/sms/verificar", titulo: "Código de acesso", gerarPt: smsVerificarPt, metadataEn: smsVerificarEn, modos: [modoSmsVerificarPt, modoSmsVerificarEn] },
 ] as const;
 
 function ogDoPai(): NonNullable<Awaited<ResolvingMetadata>["openGraph"]> {

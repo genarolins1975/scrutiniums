@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
@@ -7,13 +7,19 @@ import type { OnboardingStatus } from "@/lib/schema";
 import { maskPhone } from "@/lib/crypto";
 import { LogoWordmark } from "@/components/ui/Logo";
 import { EntrarVerificarForm } from "@/components/onboarding/EntrarVerificarForm";
+import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 import {
   LOGIN_PHONE_COOKIE,
   readSignedPhoneCookie,
 } from "@/components/onboarding/signedEmailCookie";
 
-export const metadata: Metadata = { title: "Código de acesso" };
+const metadadosOriginais: Metadata = { title: "Código de acesso" };
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/entrar/sms/verificar", metadadosOriginais, await parent);
+}
 
 /** Segunda tela do login por SMS: código de 6 dígitos enviado por SMS. */
 export default async function EntrarSmsVerificarPage() {
@@ -30,13 +36,14 @@ export default async function EntrarSmsVerificarPage() {
   return (
     <div className="flex min-h-screen flex-col bg-marfim">
       <header className="border-b border-linha">
-        <div className="mx-auto flex max-w-page items-center justify-between px-6 py-5">
+        <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-x-6 px-6 py-5">
           <Link href="/" aria-label="Scrutiniums — página inicial">
             <LogoWordmark />
           </Link>
           <Link href="/cadastro" className="rotulo min-h-[44px] py-3 text-carvao-muted hover:text-bronze">
             Criar acesso
           </Link>
+          <SeletorIdiomaPublico />
         </div>
       </header>
 

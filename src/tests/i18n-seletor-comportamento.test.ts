@@ -190,6 +190,14 @@ const URLs = [
     pt: "/cadastro?origem=a+b&origem=a%20b#formulario",
     en: "/en/cadastro?origem=a+b&origem=a%20b#formulario",
   },
+  {
+    pt: "/entrar/sms?origem=a+b&origem=a%20b#formulario",
+    en: "/en/entrar/sms?origem=a+b&origem=a%20b#formulario",
+  },
+  {
+    pt: "/entrar/sms/verificar/?de=%2Fen%2Fapp%2Fconta%3Faba%3Da%252Bb%23perfil#codigo",
+    en: "/en/entrar/sms/verificar/?de=%2Fen%2Fapp%2Fconta%3Faba%3Da%252Bb%23perfil#codigo",
+  },
 ] as const;
 
 describe("destinos reais nas refs de uma montagem do seletor", () => {
@@ -253,7 +261,7 @@ describe("destinos reais nas refs de uma montagem do seletor", () => {
 
   it.each([
     "https://scrutiniums.com/pagina-sintetica-sem-irma", "https://scrutiniums.com//",
-    "https://scrutiniums.com/entrar/sms", "https://scrutiniums.com/en/observatorio",
+    "https://scrutiniums.com/entrar/verificar", "https://scrutiniums.com/en/observatorio",
     "https://scrutiniums.com/api/auth/eu", "https://scrutiniums.com/en/home/credito.webp",
     "https://scrutiniums.com/en/sobre/nao-publicada", "https://scrutiniums.com/en/en/sobre",
     "https://scrutiniums.com/%65n/sobre", "https://scrutiniums.com.evil.invalid/sobre",

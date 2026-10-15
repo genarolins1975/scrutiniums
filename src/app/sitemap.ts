@@ -13,9 +13,10 @@ import { ehRotaPublica } from "@/lib/rotasPublicas";
 import { parDeIdioma, traducaoPublicada } from "@/lib/i18n-rotas";
 
 /**
- * Superfície pública indexável. O inventário abaixo lista todas as páginas;
+ * Superfície pública. O inventário abaixo lista as páginas;
  * só entram no sitemap as que src/lib/rotasPublicas.ts declara abertas. Os
- * painéis exigem conta e ficam de fora, como a área logada (/app).
+ * painéis exigem conta e ficam de fora, como a área logada (/app). As etapas
+ * públicas de SMS constam com suas irmãs, mantendo o bloqueio em robots.txt.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://scrutiniums.com";
@@ -76,6 +77,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...PAGINAS_GAS.map((p) => rota(p.href, 0.6, "monthly")),
     rota("/cadastro", 0.6, "yearly"),
     rota("/entrar", 0.3, "yearly"),
+    rota("/entrar/sms", 0.3, "yearly"),
+    rota("/entrar/sms/verificar", 0.3, "yearly"),
     rota("/privacidade", 0.2, "yearly"),
     rota("/termos", 0.2, "yearly"),
   ];

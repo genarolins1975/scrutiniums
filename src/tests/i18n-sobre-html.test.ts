@@ -186,8 +186,9 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
       expect(cenarioDinamico(par.pt)).toEqual({ pt: par.pt, idioma: "pt-BR" });
       expect(cenarioDinamico(par.en)).toEqual({ pt: par.pt, idioma: "en" });
       navegador ??= await criarNavegadorI18n();
-      const pt = await navegador.documento(par.pt);
-      const en = await navegador.documento(par.en);
+      const fixture = par.pt === "/entrar/sms/verificar" ? { loginSms: "valido" as const } : undefined;
+      const pt = await navegador.documento(par.pt, fixture);
+      const en = await navegador.documento(par.en, fixture);
       dinamicos.set(par.pt, { modo: "dinamico", pt: parse(pt.html), en: parse(en.html), anunciadorPt: pt.anunciador, anunciadorEn: en.anunciador });
     }
   }, 90_000);
@@ -233,6 +234,8 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
         "/privacidade": { titulo: "Política de privacidade", descricao: "Quais dados a Scrutiniums coleta, por que coleta, por quanto tempo guarda e como você exerce seus direitos." },
         "/entrar": { titulo: "Entrar", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
         "/cadastro": { titulo: "Crie seu acesso", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
+        "/entrar/sms": { titulo: "Entrar com código por SMS", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
+        "/entrar/sms/verificar": { titulo: "Código de acesso", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
       };
       expect(originais[par.pt], "head PT original de cada cenário dinâmico").toBeDefined();
       expect(texto(tag(pt, "title"))).toBe(`${originais[par.pt].titulo} · Scrutiniums`);
@@ -262,8 +265,10 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
     }
     expect(par.conteudo).toBe("portugues_marcado");
     if (documentos.modo === "dinamico") {
-      if (par.pt === "/entrar" || par.pt === "/cadastro") {
+      if (par.pt === "/entrar" || par.pt === "/cadastro" || par.pt === "/entrar/sms") {
         verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn, { caminho: par.pt, estado: "inicial" });
+      } else if (par.pt === "/entrar/sms/verificar") {
+        verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn, { caminho: par.pt, estado: "inicial", contador: "liberado" });
       } else {
         verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn);
       }
