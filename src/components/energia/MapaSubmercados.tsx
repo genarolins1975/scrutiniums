@@ -1,4 +1,6 @@
 import type { Submercado } from "@/lib/energia/tipos";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Mapa esquemático dos quatro submercados e das quatro fronteiras monitoradas
@@ -15,9 +17,9 @@ const POS: Record<Submercado, { x: number; y: number; nome: string }> = {
 
 export type FluxoFronteira = { de: Submercado; para: Submercado; fluxo: number | null };
 
-function fmt(v: number | null, casas = 0) {
+function fmt(v: number | null, casas: number, idioma: Idioma) {
   if (v === null || !Number.isFinite(v)) return "sem dado";
-  return v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+  return formatadorNumero(idioma, { minimumFractionDigits: casas, maximumFractionDigits: casas }).format(v);
 }
 
 export function MapaSubmercados({
@@ -25,18 +27,20 @@ export function MapaSubmercados({
   precos,
   diaFluxo,
   diaPreco,
+  idioma = "pt",
 }: {
   fluxos: FluxoFronteira[];
   precos: Partial<Record<Submercado, number | null>>;
   diaFluxo: string;
   diaPreco: string;
+  idioma?: Idioma;
 }) {
   const maxF = Math.max(1, ...fluxos.map((f) => Math.abs(f.fluxo ?? 0)));
   const resumo = fluxos
     .map((f) => {
       if (f.fluxo === null) return `${POS[f.de].nome} e ${POS[f.para].nome}: sem dado`;
       const [o, d] = f.fluxo >= 0 ? [f.de, f.para] : [f.para, f.de];
-      return `${POS[o].nome} para ${POS[d].nome}: ${fmt(Math.abs(f.fluxo))} MWmed`;
+      return `${POS[o].nome} para ${POS[d].nome}: ${fmt(Math.abs(f.fluxo), 0, idioma)} MWmed`;
     })
     .join("; ");
   return (
@@ -47,7 +51,7 @@ export function MapaSubmercados({
           {(["N", "NE", "SE", "S"] as Submercado[]).map((sm) => (
             <li key={sm} className="border border-carvao/80 bg-superficie p-3">
               <p className="text-xs text-mineral">{POS[sm].nome}</p>
-              <p className="mt-1 whitespace-nowrap font-serif text-lg tabular-nums text-carvao">R$&nbsp;{fmt(precos[sm] ?? null, 2)}</p>
+              <p className="mt-1 whitespace-nowrap font-serif text-lg tabular-nums text-carvao">R$&nbsp;{fmt(precos[sm] ?? null, 2, idioma)}</p>
             </li>
           ))}
         </ul>
@@ -67,13 +71,13 @@ export function MapaSubmercados({
                   {POS[o].nome} <span aria-hidden="true">→</span>
                   <span className="sr-only">para</span> {POS[d].nome}
                 </span>
-                <span className="whitespace-nowrap tabular-nums">{fmt(Math.abs(f.fluxo))} MWmed</span>
+                <span className="whitespace-nowrap tabular-nums">{fmt(Math.abs(f.fluxo), 0, idioma)} MWmed</span>
               </li>
             );
           })}
         </ul>
       </div>
-      <svg viewBox="0 0 540 460" className="mx-auto hidden w-full max-w-xl sm:block" role="img" aria-label={`Fluxos médios de ${diaFluxo}: ${resumo}. PLD médio de ${diaPreco}: ${(Object.keys(POS) as Submercado[]).map((s) => `${POS[s].nome} R$ ${fmt(precos[s] ?? null, 2)}`).join(", ")}.`}>
+      <svg viewBox="0 0 540 460" className="mx-auto hidden w-full max-w-xl sm:block" role="img" aria-label={`Fluxos médios de ${diaFluxo}: ${resumo}. PLD médio de ${diaPreco}: ${(Object.keys(POS) as Submercado[]).map((s) => `${POS[s].nome} R$ ${fmt(precos[s] ?? null, 2, idioma)}`).join(", ")}.`}>
         <defs>
           <marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
             <path d="M0,0 L10,5 L0,10 z" fill="var(--cor-energia-dark)" />
@@ -103,7 +107,7 @@ export function MapaSubmercados({
               <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="var(--cor-energia-soft)" strokeWidth={larg} strokeLinecap="round" markerEnd={f.fluxo === null ? undefined : "url(#seta)"} opacity={f.fluxo === null ? 0.3 : 0.9} />
               <rect x={mx - 40} y={my - 10} width="80" height="19" fill="var(--cor-superficie)" stroke="var(--cor-linha)" rx="2" />
               <text x={mx} y={my + 3} textAnchor="middle" fontSize="10.5" fill="var(--cor-carvao)" className="tabular-nums">
-                {f.fluxo === null ? "sem dado" : `${fmt(Math.abs(v))} MWmed`}
+                {f.fluxo === null ? "sem dado" : `${fmt(Math.abs(v), 0, idioma)} MWmed`}
               </text>
             </g>
           );
@@ -117,7 +121,7 @@ export function MapaSubmercados({
                 {p.nome.length > 14 ? "Sudeste/C.-Oeste" : p.nome}
               </text>
               <text x={p.x} y={p.y + 12} textAnchor="middle" fontSize="15" fill="var(--cor-carvao)" fontWeight="600" className="tabular-nums">
-                R$ {fmt(precos[s] ?? null, 2)}
+                R$ {fmt(precos[s] ?? null, 2, idioma)}
               </text>
             </g>
           );

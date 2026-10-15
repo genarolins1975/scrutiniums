@@ -40,6 +40,8 @@ import {
 } from "@/lib/energia/rede";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { BalancoRede, ExteriorRede, PaisRede, SubsistemaOuSin } from "@/lib/energia/tipos-rede";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * P029, balanço e exterior. O recorte fica na URL: região (?sm=), regiões comparadas
@@ -71,6 +73,7 @@ export function RedeBalanco({
   versao,
   notas,
   aposPrincipal,
+  idioma = "pt",
 }: {
   balanco: Pick<BalancoRede, "identidades" | "mensal" | "quebras" | "tolerancia_mwmed" | "faixas_mwmed">;
   exterior: Pick<ExteriorRede, "meses" | "por_pais" | "resumo_12m" | "itaipu">;
@@ -81,6 +84,7 @@ export function RedeBalanco({
   notas?: ReactNode;
   /** Conteúdo depois das notas (os capítulos do módulo), antes das seções complementares. */
   aposPrincipal?: ReactNode;
+  idioma?: Idioma;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const sm = v.sm as SubsistemaOuSin;
@@ -111,6 +115,7 @@ export function RedeBalanco({
       </div>
 
       <GraficoBarras
+        idioma={idioma}
         titulo={`Horas em que cada conta fecha e horas com resíduo, ${sm === "SIN" ? "SIN" : NOME_SM[sm]}`}
         dados={paraTabela(ids)}
         chaveCategoria="id"
@@ -126,7 +131,7 @@ export function RedeBalanco({
       />
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
         Há duas contas por região: o balanço interno (geração menos carga menos intercâmbio) e o perímetro (intercâmbio menos as fronteiras e o exterior). Cada barra é uma
-        conta; só o SIN tem ainda a soma dos subsistemas. Resíduo é a diferença maior que {num(balanco.tolerancia_mwmed, 1)} MWmed numa hora, sem causa atribuída.
+        conta; só o SIN tem ainda a soma dos subsistemas. Resíduo é a diferença maior que {num(balanco.tolerancia_mwmed, 1, idioma)} MWmed numa hora, sem causa atribuída.
       </p>
       <TabelaInterativa
         titulo={`Tabela equivalente: contas conferidas ${sm === "SIN" ? "do SIN" : `do ${NOME_SM[sm]}`}`}
@@ -158,7 +163,7 @@ export function RedeBalanco({
         </div>
         <div className="min-w-0">
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">Horas (contagem por conta conferida, tolerância de {balanco.tolerancia_mwmed.toLocaleString("pt-BR")} MWmed por hora); MWh nas somas mensais</dd>
+          <dd className="mt-0.5">Horas (contagem por conta conferida, tolerância de {formatadorNumero(idioma, {}).format(balanco.tolerancia_mwmed)} MWmed por hora); MWh nas somas mensais</dd>
         </div>
       </dl>
 
@@ -172,6 +177,7 @@ export function RedeBalanco({
         lead="A soma mensal do resíduo das duas contas, em MWh, com o zero do eixo como referência: num mês em que a conta fecha em todas as horas, a soma só se afasta do zero pela tolerância de cada hora."
       >
         <GraficoLinhas
+          idioma={idioma}
           titulo={`Resíduo mensal do balanço interno e do perímetro, ${sm === "SIN" ? "SIN" : NOME_SM[sm]}`}
           dados={mensal}
           chaveX="m"
@@ -228,6 +234,7 @@ export function RedeBalanco({
         {escolhidas.length > 0 && (
           <>
             <GraficoLinhas
+              idioma={idioma}
               titulo="Horas com resíduo no balanço interno, por mês"
               dados={residuos}
               chaveX="m"
@@ -286,6 +293,7 @@ export function RedeBalanco({
           </p>
         ) : (
           <GraficoLinhas
+            idioma={idioma}
             titulo={`Exportação e importação mensais com ${pais === "ARGENTINA" ? "a" : "o"} ${NOME_PAIS[pais]}`}
             dados={ext}
             chaveX="m"
@@ -328,6 +336,7 @@ export function RedeBalanco({
           publicadas (total e destinada ao Brasil), não consumo do Paraguai medido.
         </p>
         <GraficoLinhas
+          idioma={idioma}
           titulo="Geração de Itaipu por mês"
           dados={itaipu}
           chaveX="m"

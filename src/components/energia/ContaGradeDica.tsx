@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode, type SyntheticEvent } from "react";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Dica de cada mês da grade de bandeiras. A grade (servidor) traz em cada célula a sigla da bandeira e, em texto para leitor de tela, o
@@ -11,14 +13,14 @@ import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode, type S
  * O texto sai da própria célula e dos cabeçalhos (mês, ano, bandeira e adicional em R$/MWh, mais o valor por kWh); nada é recalculado nem
  * enviado de novo pelo servidor.
  */
-const kwhDe = (sr: string): string | null => {
+const kwhDe = (sr: string, idioma: Idioma): string | null => {
   const m = /([\d.]+,\d+)\s*R\$\/MWh/.exec(sr);
   if (!m) return null;
   const mwh = Number(m[1].replace(/\./g, "").replace(",", "."));
-  return Number.isFinite(mwh) ? (mwh / 1000).toLocaleString("pt-BR", { minimumFractionDigits: 5, maximumFractionDigits: 5 }) : null;
+  return Number.isFinite(mwh) ? formatadorNumero(idioma, { minimumFractionDigits: 5, maximumFractionDigits: 5 }).format(mwh / 1000) : null;
 };
 
-export function ContaGradeDica({ children, instrucao }: { children: ReactNode; instrucao: string }) {
+export function ContaGradeDica({ children, instrucao, idioma = "pt" }: { children: ReactNode; instrucao: string; idioma?: Idioma }) {
   const raiz = useRef<HTMLDivElement>(null);
   const [texto, setTexto] = useState("");
 
@@ -35,7 +37,7 @@ export function ContaGradeDica({ children, instrucao }: { children: ReactNode; i
     const coluna = (td as HTMLTableCellElement).cellIndex;
     const mes = el?.querySelectorAll("thead th")[coluna]?.querySelector(".sr-only")?.textContent?.trim() ?? "";
     const sr = td.querySelector(".sr-only")?.textContent?.trim() ?? "";
-    const kwh = kwhDe(sr);
+    const kwh = kwhDe(sr, idioma);
     return `${mes} de ${ano}: ${sr}${kwh ? ` (${kwh} R$/kWh)` : ""}`;
   };
 

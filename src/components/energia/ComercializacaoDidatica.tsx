@@ -3,11 +3,13 @@
 import Link from "@/components/energia/LinkSemPrefetch";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { BLOCOS_COMERCIAIS, liquidacaoDidatica } from "@/lib/energia/leitura-integrada";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import { useEstadoUrl } from "./useEstadoUrl";
 import s from "./LeiturasIntegradas.module.css";
 
-const reais = (n: number) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
-const num = (n: number) => n.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+const reais = (n: number, idioma: Idioma) => formatadorNumero(idioma, { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(n);
+const num = (n: number, idioma: Idioma) => formatadorNumero(idioma, { maximumFractionDigits: 1 }).format(n);
 const esquema = {
   perfil: campo(tiposUrl.opcao(["uniforme", "casado"] as const), "uniforme"),
   preco: campo(tiposUrl.numero({ min: 0, max: 1000 }), 180, { historico: "replace" }),
@@ -37,7 +39,7 @@ export function DuasCamadasEnergia({ compacto = false }: { compacto?: boolean })
   </section>;
 }
 
-export function LaboratorioContratos() {
+export function LaboratorioContratos({ idioma = "pt" }: { idioma?: Idioma } = {}) {
   const [v, definir] = useEstadoUrl(esquema);
   const blocos = BLOCOS_COMERCIAIS.map((b, i) => ({ ...b, contrato: v.perfil === "casado" ? b.consumo : b.contrato, pld: i === 3 ? v.ponta : b.pld }));
   const r = liquidacaoDidatica(blocos, v.preco)!;
@@ -50,19 +52,19 @@ export function LaboratorioContratos() {
       <button type="button" className={s.button} aria-pressed={v.perfil === "casado"} onClick={() => definir({ perfil: "casado" })}>Contrato acompanha o consumo</button>
     </div>
     <div className={s.controls}>
-      <label>Preço do contrato: {reais(v.preco)}/MWh<input aria-label="Preço hipotético do contrato" type="range" min={0} max={1000} step={10} value={v.preco} onChange={e => definir({ preco: Number(e.target.value) })} /></label>
-      <label>PLD das 18–24h: {reais(v.ponta)}/MWh<input aria-label="PLD hipotético das 18 às 24 horas" type="range" min={0} max={1000} step={10} value={v.ponta} onChange={e => definir({ ponta: Number(e.target.value) })} /></label>
+      <label>Preço do contrato: {reais(v.preco, idioma)}/MWh<input aria-label="Preço hipotético do contrato" type="range" min={0} max={1000} step={10} value={v.preco} onChange={e => definir({ preco: Number(e.target.value) })} /></label>
+      <label>PLD das 18–24h: {reais(v.ponta, idioma)}/MWh<input aria-label="PLD hipotético das 18 às 24 horas" type="range" min={0} max={1000} step={10} value={v.ponta} onChange={e => definir({ ponta: Number(e.target.value) })} /></label>
       <button className={s.button} type="button" onClick={() => definir({ perfil: "uniforme", preco: 180, ponta: 400 })}>Restaurar exemplo</button>
     </div>
     <dl className={s.metrics}>
-      <div><dt>Saldo de energia do dia</dt><dd>{num(r.saldo)} MWh</dd><small>{num(r.contrato)} contratados − {num(r.consumo)} consumidos.</small></div>
-      <div><dt>{r.resultado < 0 ? "Débito" : r.resultado > 0 ? "Crédito" : "Resultado"} ilustrativo no curto prazo</dt><dd>{reais(Math.abs(r.resultado))}</dd><small>Soma das diferenças de cada bloco × seu PLD.</small></div>
-      <div><dt>Contrato + ajuste de energia</dt><dd>{reais(r.custoEnergia)}</dd><small>{reais(r.pagamentoContrato)} pelo contrato; {r.resultado < 0 ? "acrescenta" : "deduz"} {reais(Math.abs(r.resultado))} no ajuste.</small></div>
+      <div><dt>Saldo de energia do dia</dt><dd>{num(r.saldo, idioma)} MWh</dd><small>{num(r.contrato, idioma)} contratados − {num(r.consumo, idioma)} consumidos.</small></div>
+      <div><dt>{r.resultado < 0 ? "Débito" : r.resultado > 0 ? "Crédito" : "Resultado"} ilustrativo no curto prazo</dt><dd>{reais(Math.abs(r.resultado), idioma)}</dd><small>Soma das diferenças de cada bloco × seu PLD.</small></div>
+      <div><dt>Contrato + ajuste de energia</dt><dd>{reais(r.custoEnergia, idioma)}</dd><small>{reais(r.pagamentoContrato, idioma)} pelo contrato; {r.resultado < 0 ? "acrescenta" : "deduz"} {reais(Math.abs(r.resultado), idioma)} no ajuste.</small></div>
     </dl>
     <div className={s.tableWrap} tabIndex={0} role="region" aria-label="Cálculo por bloco, tabela com rolagem horizontal">
       <table className={s.table}><caption>Cada linha reúne seis horas com PLD constante dentro do bloco. MWh são volumes do bloco, não MW. Sinal positivo no resultado = crédito do comprador.</caption>
         <thead><tr><th scope="col">Horário</th><th scope="col">Consumo · MWh</th><th scope="col">Contrato · MWh</th><th scope="col">Saldo · MWh</th><th scope="col">PLD · R$/MWh</th><th scope="col">Resultado · R$</th></tr></thead>
-        <tbody>{r.linhas.map(b => <tr key={b.nome}><th scope="row">{b.nome}</th><td>{num(b.consumo)}</td><td>{num(b.contrato)}</td><td>{num(b.diferenca)}</td><td>{num(b.pld)}</td><td>{reais(b.resultado)}</td></tr>)}</tbody>
+        <tbody>{r.linhas.map(b => <tr key={b.nome}><th scope="row">{b.nome}</th><td>{num(b.consumo, idioma)}</td><td>{num(b.contrato, idioma)}</td><td>{num(b.diferenca, idioma)}</td><td>{num(b.pld, idioma)}</td><td>{reais(b.resultado, idioma)}</td></tr>)}</tbody>
       </table>
     </div>
     <div className={s.bridge}>{r.resultado === 0 ? <><strong>Neste cenário, o ajuste é zero.</strong> A coincidência dos perfis ou a combinação de preços explica o resultado. Isso não elimina os demais custos e riscos contratuais.</> : <><strong>O saldo diário é zero, mas o resultado financeiro é {r.resultado < 0 ? "devedor" : "credor"}.</strong> As sobras e os déficits ocorrem a preços diferentes. Compensar apenas os MWh do dia apagaria essa exposição.</>}</div>

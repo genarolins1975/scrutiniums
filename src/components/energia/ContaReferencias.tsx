@@ -5,6 +5,8 @@ import { ContaPontos, MarcaDaLegenda as Marcador, type PontoFaixa } from "@/comp
 import { ContaRolavel } from "@/components/energia/ContaRolavel";
 import { textoDestaquePerfil, textoReferenciasPerfil, type DestaquePerfil, type ReferenciasPerfil } from "@/lib/energia/conta";
 import { num, reais } from "@/lib/energia/formato";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * As distribuidoras do mesmo consumo numa figura só: cada uma é um ponto numa escala que parte do zero, com a mediana, a faixa do 1º ao
@@ -29,6 +31,7 @@ export function ContaReferencias({
   selecionadas,
   grupo,
   aoEscolher,
+  idioma = "pt",
 }: {
   referencias: ReferenciasPerfil;
   destaques: DestaquePerfil[];
@@ -46,6 +49,7 @@ export function ContaReferencias({
   grupo?: string | null;
   /** Clique num ponto (atalho do mouse e do toque; a lista, a busca e a tabela são as vias do teclado). */
   aoEscolher?: (id: string) => void;
+  idioma?: Idioma;
 }) {
   const titulo = `Custo de ${r.perfil} kWh/mês das ${r.n} distribuidoras, só pela tarifa B1 residencial (sem tributos e sem bandeira): menor, mediana e maior, com a faixa do 1º ao 3º quartil`;
 
@@ -81,7 +85,7 @@ export function ContaReferencias({
     <div data-grafico="referencias" className="w-full">
       <div className="mb-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
         <p className="text-sm font-medium text-carvao" data-titulo-grafico="true">
-          As {r.n} distribuidoras para {num(r.perfil, 0)} kWh/mês
+          As {r.n} distribuidoras para {num(r.perfil, 0, idioma)} kWh/mês
           <span className="font-normal text-mineral">, em R$/mês</span>
         </p>
         {controle}
@@ -91,10 +95,10 @@ export function ContaReferencias({
         <ContaPontos
           descricao={`${textoReferenciasPerfil(r)} Cada ponto é uma distribuidora.`}
           pontos={pontos}
-          faixa={temFaixa ? { de: r.p25 as number, ate: r.p75 as number, rotulo: `Do 1º ao 3º quartil: ${reais(r.p25)} a ${reais(r.p75)}` } : null}
-          marcas={[{ valor: mediana, rotulo: `Mediana ${reais(mediana)}`, tipo: "mediana" }]}
+          faixa={temFaixa ? { de: r.p25 as number, ate: r.p75 as number, rotulo: `Do 1º ao 3º quartil: ${reais(r.p25, undefined, idioma)} a ${reais(r.p75, undefined, idioma)}` } : null}
+          marcas={[{ valor: mediana, rotulo: `Mediana ${reais(mediana, undefined, idioma)}`, tipo: "mediana" }]}
           escolhidos={destaques.map((d) => d.cnpj)}
-          formatar={(v) => reais(v)}
+          formatar={(v) => reais(v, undefined, idioma)}
           zeroNoEixo
           aoEscolher={aoEscolher}
         />
@@ -115,7 +119,7 @@ export function ContaReferencias({
         {temFaixa && (
           <li className="flex items-center gap-1.5">
             <Marcador tipo="faixa" />
-            do 1º ao 3º quartil, a metade central ({reais(r.p25)} a {reais(r.p75)})
+            do 1º ao 3º quartil, a metade central ({reais(r.p25, undefined, idioma)} a {reais(r.p75, undefined, idioma)})
           </li>
         )}
         <li className="flex items-center gap-1.5">
@@ -154,7 +158,7 @@ export function ContaReferencias({
       </div>
       <details className="mt-2 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Dados do gráfico em tabela ({linhas.length.toLocaleString("pt-BR")} linhas)
+          Dados do gráfico em tabela ({formatadorNumero(idioma, {}).format(linhas.length)} linhas)
         </summary>
         <ContaRolavel rotulo={`${titulo}: dados em tabela (rolável)`} className="mt-2">
           <table className="w-full border-collapse tabular-nums">
@@ -165,7 +169,7 @@ export function ContaReferencias({
                   Referência
                 </th>
                 <th scope="col" className="border-b border-linha px-2 py-1.5 text-right font-medium">
-                  Custo de {num(r.perfil, 0)} kWh (R$/mês)
+                  Custo de {num(r.perfil, 0, idioma)} kWh (R$/mês)
                 </th>
                 <th scope="col" className="border-b border-linha px-2 py-1.5 text-right font-medium">
                   Tarifa TE + TUSD (R$/MWh)
@@ -178,15 +182,15 @@ export function ContaReferencias({
                   <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">
                     {l.rotulo}
                   </th>
-                  <td className="px-2 py-1 text-right text-carvao">{l.valor === null ? <span className="italic text-mineral">sem dado</span> : num(l.valor, 2)}</td>
-                  <td className="px-2 py-1 text-right text-carvao">{l.tarifa === null ? <span className="italic text-mineral">sem dado</span> : num(l.tarifa, 2)}</td>
+                  <td className="px-2 py-1 text-right text-carvao">{l.valor === null ? <span className="italic text-mineral">sem dado</span> : num(l.valor, 2, idioma)}</td>
+                  <td className="px-2 py-1 text-right text-carvao">{l.tarifa === null ? <span className="italic text-mineral">sem dado</span> : num(l.tarifa, 2, idioma)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </ContaRolavel>
         <p className="mt-1 text-carvao-muted">
-          Os {r.n} pontos da figura são as {r.n} linhas da tabela do ranking, logo abaixo, com o mesmo custo de {num(r.perfil, 0)} kWh.
+          Os {r.n} pontos da figura são as {r.n} linhas da tabela do ranking, logo abaixo, com o mesmo custo de {num(r.perfil, 0, idioma)} kWh.
         </p>
       </details>
     </div>

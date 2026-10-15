@@ -1,5 +1,7 @@
 import type { FonteGeracao, Mix } from "@/lib/energia/tipos";
 import { TabelaDados } from "@/components/energia/TabelaDados";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 export const COR_FONTE: Record<FonteGeracao, string> = {
   hidraulica: "var(--serie-hidraulica)",
@@ -35,11 +37,15 @@ const parte = (m: NonNullable<Mix>, f: FonteGeracao) => (m.total_mwmed > 0 ? (10
 export function BarrasMix({
   linhas,
   tabela = false,
+  idioma = "pt",
 }: {
   linhas: { rotulo: string; detalhe?: string; mix: Mix; destaque?: boolean }[];
   /** Inclui a tabela equivalente (participação e total), quando a página não tem outra. */
   tabela?: boolean;
+  idioma?: Idioma;
 }) {
+  const numero = formatadorNumero(idioma, {});
+  const percentual = formatadorNumero(idioma, { maximumFractionDigits: 0 });
   return (
     <div>
       <ul className="mb-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted" aria-label="Legenda">
@@ -58,19 +64,19 @@ export function BarrasMix({
               {l.detalhe && <span className="block text-xs text-mineral">{l.detalhe}</span>}
             </p>
             {l.mix ? (
-              <div className="flex h-8 w-full gap-[2px]" role="img" aria-label={`${l.rotulo}: ${ORDEM_FONTES.map((f) => `${NOME_FONTE[f]} ${l.mix!.participacao[f].toLocaleString("pt-BR")}%`).join(", ")}`}>
+              <div className="flex h-8 w-full gap-[2px]" role="img" aria-label={`${l.rotulo}: ${ORDEM_FONTES.map((f) => `${NOME_FONTE[f]} ${numero.format(l.mix!.participacao[f])}%`).join(", ")}`}>
                 {ORDEM_FONTES.map((f) => {
                   const p = l.mix!.participacao[f];
                   return (
                     <div
                       key={f}
-                      title={`${NOME_FONTE[f]}: ${p.toLocaleString("pt-BR")}% · ${l.mix!.mwmed[f].toLocaleString("pt-BR")} MWmed`}
+                      title={`${NOME_FONTE[f]}: ${numero.format(p)}% · ${numero.format(l.mix!.mwmed[f])} MWmed`}
                       className="flex h-full items-center overflow-hidden first:rounded-l-[3px] last:rounded-r-[3px]"
                       style={{ width: `${p}%`, background: COR_FONTE[f] }}
                     >
                       {p >= 6 && (
                         <span className={`px-1.5 text-[0.7rem] font-medium tabular-nums ${TEXTO_SOBRE[f]}`}>
-                          {parte(l.mix!, f).toLocaleString("pt-BR", { maximumFractionDigits: 0 })}%
+                          {percentual.format(parte(l.mix!, f))}%
                         </span>
                       )}
                     </div>
@@ -85,6 +91,7 @@ export function BarrasMix({
       </ul>
       {tabela && (
         <TabelaDados
+          idioma={idioma}
           titulo="Participação de cada fonte na geração verificada, por linha do gráfico"
           colunas={["Linha", ...ORDEM_FONTES.map((f) => `${NOME_FONTE[f]} (%)`), "Total (MWmed)"]}
           linhas={linhas.map((l) => [l.rotulo, ...ORDEM_FONTES.map((f) => l.mix?.participacao[f] ?? null), l.mix?.total_mwmed ?? null])}
