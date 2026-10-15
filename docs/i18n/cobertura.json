@@ -10,9 +10,9 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "5bfab6c7e3d8d76966870fc5365cbed8b076c56cb6fe41e97a5053b7aef15b6e",
-    "arquivos_analisados": 1020,
-    "fontes_sha256": "25ca1bcba5e7c94403f16c26ca404c1383a4e588d5c8390853f8b6a67ab9249b",
+    "inventario_sha256": "babd92c791425489e2dea65ecd86ed977a1283f433fbeedae6771a9f2a3d45e2",
+    "arquivos_analisados": 1021,
+    "fontes_sha256": "7a95d80998dfe496dfea88a41e75e7a713969a706795099fc85a03df2fb308dc",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -167,9 +167,9 @@
         "parciais_declarados": 1
       },
       "conteudo_adicional": {
-        "arquivos": 3,
-        "linhas_nao_vazias": 45,
-        "candidatos_nao_catalogados": 70,
+        "arquivos": 4,
+        "linhas_nao_vazias": 90,
+        "candidatos_nao_catalogados": 115,
         "scripts_embutidos": {}
       },
       "cobertura_completa": false
