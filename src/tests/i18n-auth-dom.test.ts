@@ -31,7 +31,7 @@ function consentimentos(estado: Estado): string {
 function documento(caminho: CaminhoAuth, idioma: Idioma = "pt", estado: Estado = "inicial", ids = { email: EMAIL_ID, senha: SENHA_ID }) {
   const entrar = caminho === "/entrar";
   const titulo = entrar ? "Entrar" : "Crie seu acesso";
-  const seletor = `<div role="group" aria-label="Idioma"><span aria-hidden="true">Idioma</span><a href="${caminho}" hreflang="pt-BR">Português</a><a href="/en${caminho}" hreflang="en">Inglês</a></div>`;
+  const seletor = "";
   const header = `<header><a href="/" aria-label="Scrutiniums — página inicial">Scrutiniums</a><a href="${entrar ? "/cadastro" : "/entrar"}">${entrar ? "Criar acesso" : "Entrar"}</a>${seletor}</header>`;
   const introducao = entrar
     ? "<p>Use o e-mail e a senha da sua conta.</p>"
@@ -101,7 +101,7 @@ describe.each(["/entrar", "/cadastro"] as const)("contrato DOM de %s", (caminho)
     ["autocomplete do e-mail alterado", (doc) => atributo(input(doc, "email"), "autocomplete", "off")],
     ["campo de e-mail removido", (doc) => remover(input(doc, "email"))],
     ["rodapé removido", (doc) => remover(encontrar(doc, (e) => e.tagName === "footer"))],
-    ["seletor removido", (doc) => remover(encontrar(doc, (e) => attr(e, "role") === "group" && attr(e, "aria-label") === "Idioma"))],
+    ["oferta indevida de inglês", (doc) => atributo(encontrar(doc, (e) => e.tagName === "header"), "aria-label", "Idioma")],
   ];
   it.each(adulteracoes)("reprova %s no PT e na ilha EN", (_nome, adulterar) => {
     for (const idioma of ["pt", "en"] as const) {

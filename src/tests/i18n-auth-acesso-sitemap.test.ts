@@ -41,9 +41,8 @@ describe.each(PAGINAS)("entrada pública de autenticação $pt", (par) => {
     const inglesas = entradas.filter((entrada) => entrada.url === ORIGEM + par.en);
     expect(portuguesas).toEqual([{
       url: ORIGEM + par.pt, lastModified: expect.any(Date), changeFrequency: "yearly", priority: par.prioridade,
-      alternates: { languages: { "pt-BR": ORIGEM + par.pt, en: ORIGEM + par.en, "x-default": ORIGEM + par.pt } },
     }]);
-    expect(inglesas).toEqual([{ ...portuguesas[0], url: ORIGEM + par.en }]);
+    expect(inglesas).toEqual([]);
     for (const caminho of [par.pt, par.en]) expect(entradas.map((entrada) => entrada.url)).not.toContain(ORIGEM + caminho + "/");
   });
 });

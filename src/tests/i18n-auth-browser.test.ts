@@ -150,7 +150,7 @@ describe.each(CAMINHOS_AUTH)("%s: formulário PT/EN no build", (caminho) => {
     } finally { await contexto.close(); }
   });
 
-  it("preserva query/fragmento e cookie ao trocar pelo teclado, sem redirecionar pela preferência", async (ctx) => {
+  it("preserva o destino sem oferecer inglês nem redirecionar pela preferência", async (ctx) => {
     const servidor = pronto(ctx), contexto = await servidor.contexto(), tentativas = await impedirEnvios(contexto);
     try {
       await contexto.addCookies([{ name: "scrutiniums_idioma", value: "en", url: servidor.origem, sameSite: "Lax" }]);
@@ -160,35 +160,14 @@ describe.each(CAMINHOS_AUTH)("%s: formulário PT/EN no build", (caminho) => {
       await aguardarPagina(page, caminho);
       expect(page.url()).toBe(servidor.origem + caminho + sufixo);
       await contexto.clearCookies();
-      let encontrou = false;
-      for (let i = 0; i < 16; i++) {
-        await page.keyboard.press("Tab");
-        encontrou = await page.evaluate(() => document.activeElement?.getAttribute("hreflang") === "en");
-        if (encontrou) break;
+      for (const prefixo of ["", "/en"]) {
+        await page.goto(servidor.origem + prefixo + caminho + sufixo, { waitUntil: "load" });
+        await aguardarPagina(page, prefixo + caminho);
+        expect(await page.getByRole("group", { name: "Idioma", exact: true }).count()).toBe(0);
+        expect(await page.locator('a[hreflang="en"]').count()).toBe(0);
+        expect(page.url()).toBe(servidor.origem + prefixo + caminho + sufixo);
       }
-      expect(encontrou, "seletor alcançável sem ativar o formulário").toBe(true);
-      const seletor = page.getByRole("group", { name: "Idioma", exact: true });
-      expect(await seletor.locator('a[hreflang="en"]').getAttribute("href")).toBe("/en" + caminho + sufixo);
-      const foco = await page.evaluate(() => {
-        const e = document.activeElement as HTMLElement, r = e.getBoundingClientRect(), s = getComputedStyle(e);
-        return { largura: r.width, altura: r.height, estilo: s.outlineStyle, espessura: parseFloat(s.outlineWidth) };
-      });
-      expect(foco.largura).toBeGreaterThanOrEqual(44);
-      expect(foco.altura).toBeGreaterThanOrEqual(44);
-      expect(foco.estilo).not.toBe("none");
-      expect(foco.espessura).toBeGreaterThan(0);
       expect(await contexto.cookies()).toEqual([]);
-      await page.keyboard.press("Enter");
-      await page.waitForURL(servidor.origem + "/en" + caminho + sufixo);
-      await aguardarPagina(page, "/en" + caminho);
-      expect((await contexto.cookies()).find((c) => c.name === "scrutiniums_idioma")).toMatchObject({ value: "en", path: "/", sameSite: "Lax" });
-      const pt = seletor.locator('a[hreflang="pt-BR"]');
-      await pt.focus();
-      expect(await pt.getAttribute("href")).toBe(caminho + sufixo);
-      await page.keyboard.press("Enter");
-      await page.waitForURL(servidor.origem + caminho + sufixo);
-      await aguardarPagina(page, caminho);
-      expect((await contexto.cookies()).find((c) => c.name === "scrutiniums_idioma")).toMatchObject({ value: "pt", path: "/", sameSite: "Lax" });
       expect(tentativas).toEqual([]);
       expect(falhas).toEqual([]);
     } finally { await contexto.close(); }

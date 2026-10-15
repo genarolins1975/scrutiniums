@@ -37,7 +37,6 @@ describe.each(PAGINAS)("metadados da entrada de autenticação $pt", (pagina) =>
       title: pagina.titulo,
       alternates: {
         canonical: pagina.pt,
-        languages: { "pt-BR": pagina.pt, en: pagina.en, "x-default": pagina.pt },
       },
       openGraph: {
         ...antes, title: { absolute: antes.title.absolute }, url: pagina.pt,
@@ -56,9 +55,9 @@ describe.each(PAGINAS)("metadados da entrada de autenticação $pt", (pagina) =>
     expect(pagina.metadataEn).toEqual({
       title: { absolute: "Scrutiniums · Portuguese only" },
       description: "Portuguese only",
+      robots: { index: false, follow: true },
       alternates: {
         canonical: pagina.en,
-        languages: { "pt-BR": pagina.pt, en: pagina.en, "x-default": pagina.pt },
       },
       openGraph: {
         title: "Scrutiniums · Portuguese only", description: "Portuguese only",
@@ -69,6 +68,6 @@ describe.each(PAGINAS)("metadados da entrada de autenticação $pt", (pagina) =>
         card: "summary", title: "Scrutiniums · Portuguese only", description: "Portuguese only", images: [],
       },
     });
-    expect(pagina.metadataEn).not.toHaveProperty("robots");
+    expect(pagina.metadataEn.robots).toEqual({ index: false, follow: true });
   });
 });

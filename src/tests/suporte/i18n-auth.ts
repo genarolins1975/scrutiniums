@@ -37,9 +37,7 @@ export function verificarPaginaAuth(doc: No, caminho: CaminhoAuth, estado: Estad
     && attr(e, "aria-label") === "Scrutiniums — página inicial", "marca do cabeçalho próprio");
   const troca = unico(header, (e) => e.tagName === "a" && attr(e, "href") === (caminho === "/entrar" ? "/cadastro" : "/entrar"), "troca de entrada existente");
   expect(texto(troca)).toBe(caminho === "/entrar" ? "Criar acesso" : "Entrar");
-  const seletor = unico(header, (e) => attr(e, "role") === "group" && attr(e, "aria-label") === "Idioma", "seletor no cabeçalho próprio");
-  expect(elementos(seletor).filter((e) => e.tagName === "a").map((e) => [attr(e, "hreflang"), attr(e, "href")?.split(/[?#]/)[0]]))
-    .toEqual([["pt-BR", caminho], ["en", "/en" + caminho]]);
+  expect(elementos(header).filter((e) => attr(e, "hreflang") === "en" || attr(e, "aria-label") === "Idioma")).toEqual([]);
   expect(elementos(footer).filter((e) => e.tagName === "a").map((e) => [attr(e, "href"), texto(e)]))
     .toEqual([["/termos", "Termos de uso"], ["/privacidade", "Privacidade"]]);
   expect(texto(footer)).toContain("scrutiniums.com");
