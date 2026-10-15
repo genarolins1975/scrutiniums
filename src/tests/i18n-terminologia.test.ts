@@ -481,7 +481,7 @@ describe("reserva de explicações e conflitos de intervalos", () => {
   });
 });
 
-describe("vínculos reais das 13 mensagens atuais", () => {
+describe("vínculos reais das 22 mensagens atuais", () => {
   it("confere a relação revisada independentemente da configuração e mantém o escopo do relatório", () => {
     const c = lerCatalogo(readFileSync(new URL("../i18n/pt.ts", import.meta.url), "utf8"), readFileSync(new URL("../i18n/en.ts", import.meta.url), "utf8"));
     const raiz = fileURLToPath(new URL("../../", import.meta.url));
@@ -492,6 +492,9 @@ describe("vínculos reais das 13 mensagens atuais", () => {
       "idioma.portugues", "idioma.ingles", "idioma.seletor", "traducao.portugues_apenas",
       "home.hero.titulo_inicio", "home.hero.titulo_destaque", "acesso.criar_conta", "home.hero.ja_cadastrado",
       "home.hero.rotulo", "home.hero.beneficio_conta", "home.hero.beneficio_gratuidade",
+      "home.indice.rotulo", "home.indice.ilustracoes", "home.indice.paginas_tematicas",
+      "home.indice.secoes_publicadas", "home.indice.temas_publicados", "home.indice.capitulos_com_dados",
+      "home.indice.paginas_por_pergunta", "home.indice.contagem_parcial",
     ];
     const esperadas = {
       "home.hero.introducao": [
@@ -501,6 +504,7 @@ describe("vínculos reais das 13 mensagens atuais", () => {
         ref("estatistica.fonte_dados", "home_curta"), ref("estatistica.periodo_referencia", "canonica"),
       ],
       "home.hero.beneficio_evidencia": [ref("estatistica.fonte_dados", "home_curta_inicial"), ref("estatistica.periodo_referencia", "home_curta")],
+      "home.indice.unidades_federacao": [ref("federativo.unidades_federacao", "canonica")],
     };
     expect(Object.keys(contrato.mensagens).sort()).toEqual([...gerais, ...Object.keys(esperadas)].sort());
     for (const chave of gerais) expect(contrato.mensagens[chave].classificacao, chave).toBe("sem_termos_tecnicos");
@@ -511,9 +515,9 @@ describe("vínculos reais das 13 mensagens atuais", () => {
       expect(mensagem.referencias, chave).toEqual(referencias);
     }
     expect(lerTerminologia(bytes, c, g)).toEqual({
-      schema_version: 1, mensagens: 13, mensagens_vinculadas: 2, mensagens_sem_termos_tecnicos: 11,
-      referencias: 13, ids_distintos: 11, formas_contextuais_usadas: 7,
-      referencias_pt_verificadas: 13, referencias_en_verificadas: 13, referencias_en_pendentes: 0,
+      schema_version: 1, mensagens: 22, mensagens_vinculadas: 3, mensagens_sem_termos_tecnicos: 19,
+      referencias: 14, ids_distintos: 12, formas_contextuais_usadas: 7,
+      referencias_pt_verificadas: 14, referencias_en_verificadas: 14, referencias_en_pendentes: 0,
       uso_na_interface_verificado: false,
     });
   });

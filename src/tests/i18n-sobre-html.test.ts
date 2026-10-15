@@ -7,7 +7,7 @@ import { PARES_DE_IDIOMA, type ParDeIdioma } from "@/lib/i18n-rotas";
 import { attr, conteudo, elementos, filhos, links, meta, oculto, tag, texto, unico, vazamentos, type Elemento, type No } from "./suporte/i18n-dom";
 import { documentoEstatico, modoDaPagina } from "./suporte/i18n-build";
 import { criarNavegadorI18n, type NavegadorI18n } from "./suporte/i18n-browser";
-import { verificarHomeParcial, verificarHeadHome } from "./suporte/i18n-home";
+import { INDICE_HOME, verificarHomeParcial, verificarHeadHome } from "./suporte/i18n-home";
 import { cenarioDinamico, verificarFallbackDinamico, type CapturaAnunciador } from "./suporte/i18n-dinamico";
 import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
 
@@ -411,6 +411,119 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
       }
       expect(serialize(en), "comparação e negativos não alteram o DOM inglês original").toBe(original);
       expect(serialize(pt), "reconstrução não altera o DOM português original").toBe(originalPt);
+    });
+
+    it("recusa números, nomes, destinos, imagens e estrutura adulterados no índice traduzido", (ctx) => {
+      const { pt, en } = documentosDoPar(ctx, par);
+      if (!("childNodes" in en) || !("childNodes" in pt)) throw new Error("Documentos da home sem árvore DOM");
+      verificarHomeParcial(pt, en);
+      const original = serialize(en), originalPt = serialize(pt);
+      const indice = (doc: No) => unico(doc, (e) => attr(e, "data-i18n-regiao") === "home-indice", "índice traduzido");
+      const cartao = (doc: No, id = "credito") => {
+        const anchor = unico(indice(doc), (e) => e.tagName === "a" && attr(e, "href") === `#obs-${id}`, `cartão ${id}`);
+        const trechos = filhos(anchor).filter((e): e is Elemento => "tagName" in e);
+        expect(trechos).toHaveLength(4);
+        const spans = filhos(trechos[3]).filter((e): e is Elemento => "tagName" in e);
+        expect(spans).toHaveLength(3);
+        const valor = unico(spans[2], (e) => e !== spans[2] && e.tagName === "span", "valor da contagem");
+        return { anchor, imagem: trechos[0], nome: spans[1], contagem: spans[2], valor };
+      };
+      const substituirTexto = (no: Elemento, transformar: (valor: string) => string) => {
+        const partes = filhos(no).filter((filho) => "value" in filho && filho.value.trim() !== "");
+        expect(partes, "um trecho direto antes da adulteração").toHaveLength(1);
+        const trecho = partes[0];
+        if (!("value" in trecho)) throw new Error("Índice sem texto direto para adulteração");
+        const antes = trecho.value;
+        trecho.value = transformar(antes);
+        expect(trecho.value, "mutante precisa alterar o trecho selecionado").not.toBe(antes);
+      };
+      const atributo = (no: Elemento, nome: string, valor: string) => {
+        const existente = no.attrs.find((a) => a.name === nome);
+        if (existente) existente.value = valor;
+        else no.attrs.push({ name: nome, value: valor });
+      };
+      const adulteracoes: [string, (doc: No) => void][] = [
+        ["quantidade simples do Crédito", (doc) => substituirTexto(cartao(doc).valor, (valor) => {
+          expect(valor).toBe(INDICE_HOME.find((d) => d.id === "credito")!.en.valor);
+          return `${valor}0`;
+        })],
+        ...["contas", "saneamento"].flatMap((id): [string, (doc: No) => void][] => [
+          [`numerador de ${id}`, (doc) => substituirTexto(cartao(doc, id).valor, (valor) => {
+            expect(valor).toBe(INDICE_HOME.find((d) => d.id === id)!.en.valor);
+            return valor.replace(/^[\d,]+/, (n) => `${n}0`);
+          })],
+          [`denominador de ${id}`, (doc) => substituirTexto(cartao(doc, id).valor, (valor) => {
+            expect(valor).toBe(INDICE_HOME.find((d) => d.id === id)!.en.valor);
+            return valor.replace(/[\d,]+$/, (n) => `${n}0`);
+          })],
+        ]),
+        ["unidade trocada", (doc) => substituirTexto(cartao(doc).contagem, () => " published sections")],
+        ["conectivo português", (doc) => substituirTexto(cartao(doc, "contas").valor, (v) => v.replace(" of ", " de "))],
+        ["token parcial residual", (doc) => substituirTexto(cartao(doc, "saneamento").valor, () => "{publicados} of {total}")],
+        ["nome de produto traduzido", (doc) => substituirTexto(cartao(doc).nome, () => "Credit")],
+        ["idioma do nome ausente", (doc) => {
+          const nome = cartao(doc).nome;
+          expect(attr(nome, "lang")).toBe("pt-BR");
+          nome.attrs = nome.attrs.filter((a) => a.name !== "lang");
+        }],
+        ["idioma aplicado à contagem", (doc) => atributo(cartao(doc).contagem, "lang", "pt-BR")],
+        ["destino alterado", (doc) => atributo(cartao(doc).anchor, "href", "/observatorio-do-credito")],
+        ["cartão removido", (doc) => {
+          const lista = tag(indice(doc), "ol");
+          const itens = filhos(lista).filter((e): e is Elemento => "tagName" in e);
+          expect(itens).toHaveLength(7);
+          lista.childNodes = lista.childNodes.filter((no) => no !== itens[0]);
+        }],
+        ["cartões reordenados", (doc) => {
+          const lista = tag(indice(doc), "ol");
+          const itens = filhos(lista).filter((e): e is Elemento => "tagName" in e);
+          const a = lista.childNodes.indexOf(itens[0]), b = lista.childNodes.indexOf(itens[1]);
+          expect(a).toBeGreaterThanOrEqual(0);
+          expect(b).toBeGreaterThanOrEqual(0);
+          [lista.childNodes[a], lista.childNodes[b]] = [itens[1], itens[0]];
+        }],
+        ["imagem trocada", (doc) => atributo(cartao(doc).imagem, "src", "/home/energia.webp")],
+        ["largura da imagem alterada", (doc) => atributo(cartao(doc).imagem, "width", "481")],
+        ["altura da imagem alterada", (doc) => atributo(cartao(doc).imagem, "height", "601")],
+        ["imagem decorativa com alt extra", (doc) => atributo(cartao(doc).imagem, "alt", "Additional illustration")],
+        ["foco do Gás alterado", (doc) => atributo(cartao(doc, "gas").imagem, "style", "object-position:50% 50%")],
+        ["classe do cartão alterada", (doc) => {
+          const anchor = cartao(doc).anchor;
+          atributo(anchor, "class", `${attr(anchor, "class")} classe-extra`);
+        }],
+        ["atributo extra no índice", (doc) => atributo(indice(doc), "data-extra", "indevido")],
+        ["nome com prosa adicional", (doc) => substituirTexto(cartao(doc).nome, (v) => `${v}: não são dados`)],
+        ["nome com elemento adicional", (doc) => cartao(doc).nome.childNodes.push(...parseFragment("<span>Additional text</span>").childNodes)],
+        ["texto extra no índice", (doc) => indice(doc).childNodes.push(...parseFragment("<p>Additional sentence.</p>").childNodes)],
+        ["ressalva omitida", (doc) => {
+          const nav = indice(doc), ressalva = tag(nav, "p");
+          nav.childNodes = nav.childNodes.filter((no) => no !== ressalva);
+        }],
+        ["ressalva alterada", (doc) => substituirTexto(tag(indice(doc), "p"), () => "The illustrations represent specific places.")],
+        ["nome acessível português", (doc) => atributo(indice(doc), "aria-label", "Índice dos observatórios")],
+        ["índice escondido", (doc) => atributo(indice(doc), "hidden", "")],
+        ["nome escondido", (doc) => atributo(cartao(doc).nome, "hidden", "")],
+        ["quantidade escondida", (doc) => atributo(cartao(doc).valor, "hidden", "")],
+        ["wrapper extra ao redor do nav", (doc) => {
+          const nav = indice(doc), pai = nav.parentNode;
+          if (!pai || !("childNodes" in pai)) throw new Error("Índice sem pai");
+          const wrapper = tag(parseFragment("<div></div>"), "div");
+          const posicao = pai.childNodes.indexOf(nav);
+          expect(posicao).toBeGreaterThanOrEqual(0);
+          pai.childNodes[posicao] = wrapper;
+          wrapper.parentNode = pai;
+          wrapper.childNodes.push(nav);
+          nav.parentNode = wrapper;
+        }],
+      ];
+      for (const [nome, adulterar] of adulteracoes) {
+        const copia = parse(original);
+        adulterar(copia);
+        expect(serialize(copia), nome).not.toBe(original);
+        expect(() => verificarHomeParcial(pt, copia), nome).toThrow();
+      }
+      expect(serialize(en), "negativos preservam o documento EN original").toBe(original);
+      expect(serialize(pt), "prova do índice preserva o documento PT original").toBe(originalPt);
     });
   }
 });

@@ -1,4 +1,5 @@
 export type IntroducaoHero = `{observatorios}${string}`;
+export type ContagemParcialIndice = `{publicados}${string}{total}`;
 
 export const pt = {
   "idioma.portugues": "Português",
@@ -14,4 +15,13 @@ export const pt = {
   "home.hero.beneficio_conta": "Todos os painéis com uma conta gratuita",
   "home.hero.beneficio_evidencia": "Fonte, período e limitações em cada número",
   "home.hero.beneficio_gratuidade": "Gratuito, sem assinatura",
+  "home.indice.rotulo": "Índice dos observatórios",
+  "home.indice.ilustracoes": "Ilustrações editoriais de cada observatório. Não representam dados nem lugares específicos.",
+  "home.indice.paginas_tematicas": "páginas temáticas",
+  "home.indice.secoes_publicadas": "seções publicadas",
+  "home.indice.temas_publicados": "temas publicados",
+  "home.indice.capitulos_com_dados": "capítulos com dados",
+  "home.indice.unidades_federacao": "unidades da Federação",
+  "home.indice.paginas_por_pergunta": "páginas por pergunta",
+  "home.indice.contagem_parcial": "{publicados} de {total}" satisfies ContagemParcialIndice,
 } as const;

@@ -74,7 +74,7 @@ As explicações delimitam assunto, sem traduzir títulos nem ampliar cobertura:
 
 ## Vínculo das mensagens ao glossário
 
-`config/i18n-terminologia.json` classifica todas as chaves dos dois catálogos literais. Onze mensagens atuais têm justificativa de prosa comum; a introdução e o benefício de evidência declaram treze vínculos com onze IDs. Essa classificação vale para os textos revisados, sem afirmar que toda ocorrência futura de uma palavra é comum ou técnica. O contrato não traduz nem substitui textos em tempo de execução.
+`config/i18n-terminologia.json` classifica todas as chaves dos dois catálogos literais. Dezenove mensagens atuais têm justificativa de prosa comum; a introdução, o benefício de evidência e a unidade territorial do índice declaram catorze vínculos com doze IDs. Essa classificação vale para os textos revisados, sem afirmar que toda ocorrência futura de uma palavra é comum ou técnica. O contrato não traduz nem substitui textos em tempo de execução.
 
 Cada mensagem guarda SHA-256 do UTF-8 de `JSON.stringify([pt, en.estado, textoOuMotivoEn])`, sem normalizar caixa, espaços ou acentos. Qualquer alteração exige revisão do contrato, inclusive nas mensagens sem termos técnicos. A geração de cobertura não renova essa assinatura. Ela detecta mudança do texto revisado; a adequação semântica dos vínculos continua dependendo da revisão.
 

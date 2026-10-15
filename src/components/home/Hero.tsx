@@ -1,12 +1,11 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { BotaoLink } from "@/components/home/BotaoLink";
 import { ACENTO } from "@/components/home/acentos";
-import { PortuguesApenas } from "@/components/i18n/PortuguesApenas";
 import { pt } from "@/i18n/pt";
 import { en } from "@/i18n/en";
 import { DOMINIOS, type DominioId } from "@/lib/dominios";
 import { ACESSO, observatoriosPorExtenso } from "@/lib/acesso";
+import { formatarContagemIndice } from "@/lib/i18n-home-indice";
 import type { Idioma } from "@/lib/idioma";
 import type { Vitrine } from "@/lib/vitrine";
 
@@ -27,9 +26,6 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
   const tituloInicio = idioma === "en" ? en["home.hero.titulo_inicio"].texto : pt["home.hero.titulo_inicio"];
   const tituloDestaque = idioma === "en" ? en["home.hero.titulo_destaque"].texto : pt["home.hero.titulo_destaque"];
   const introducao = partesIntroducaoHero(idioma);
-  const emPortugues = (regiao: string, children: ReactNode) => idioma === "en"
-    ? <PortuguesApenas regiao={regiao}>{children}</PortuguesApenas>
-    : children;
 
   return (
     <section aria-labelledby="hero-titulo" className="border-b border-linha bg-marfim">
@@ -77,10 +73,15 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
           </div>
         </div>
 
-        {emPortugues("home-indice", <nav aria-label="Índice dos observatórios" className="mt-12 md:mt-16">
+        <nav
+          data-i18n-regiao={idioma === "en" ? "home-indice" : undefined}
+          aria-label={idioma === "en" ? en["home.indice.rotulo"].texto : pt["home.indice.rotulo"]}
+          className="mt-12 md:mt-16"
+        >
           <ol className="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-7">
             {DOMINIOS.map((d, i) => {
               const v = vitrines[d.id];
+              const contagem = formatarContagemIndice(v, idioma);
               const a = ACENTO[d.acento];
               // em duas colunas, o último de uma contagem ímpar ocupa a linha inteira; de 640 px em diante a grade já acomoda todos
               const ultimo = i === DOMINIOS.length - 1 && DOMINIOS.length % 2 === 1;
@@ -108,10 +109,10 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
                     />
                     <span className="absolute inset-x-0 bottom-0 flex flex-col p-4 md:p-5 xl:p-4">
                       <span className="rotulo text-marfim/75">{String(i + 1).padStart(2, "0")}</span>
-                      <span className="mt-1.5 font-serif text-lg leading-snug text-marfim md:text-xl xl:text-lg [text-wrap:balance]">{d.nomeCurto}</span>
+                      <span lang={idioma === "en" ? "pt-BR" : undefined} className="mt-1.5 font-serif text-lg leading-snug text-marfim md:text-xl xl:text-lg [text-wrap:balance]">{d.nomeCurto}</span>
                       <span className="mt-2 text-xs leading-snug text-marfim/80">
-                        <span className="font-label text-sm tabular-nums text-marfim">{v.contagem.valor}</span>{" "}
-                        {v.contagem.unidade}
+                        <span className="font-label text-sm tabular-nums text-marfim">{contagem.valor}</span>{" "}
+                        {contagem.unidade}
                       </span>
                     </span>
                   </a>
@@ -120,9 +121,9 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
             })}
           </ol>
           <p className="mt-4 text-xs text-mineral">
-            Ilustrações editoriais de cada observatório. Não representam dados nem lugares específicos.
+            {idioma === "en" ? en["home.indice.ilustracoes"].texto : pt["home.indice.ilustracoes"]}
           </p>
-        </nav>)}
+        </nav>
       </div>
     </section>
   );

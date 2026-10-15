@@ -32,7 +32,11 @@
         { "id": "home-rotulo", "estado": "traduzido", "chaves": ["home.hero.rotulo"] },
         { "id": "home-introducao", "estado": "traduzido", "chaves": ["home.hero.introducao"] },
         { "id": "home-beneficios", "estado": "traduzido", "chaves": ["home.hero.beneficio_conta", "home.hero.beneficio_evidencia", "home.hero.beneficio_gratuidade"] },
-        { "id": "home-indice", "estado": "portugues_marcado" },
+        { "id": "home-indice", "estado": "traduzido", "chaves": [
+          "home.indice.rotulo", "home.indice.ilustracoes", "home.indice.paginas_tematicas",
+          "home.indice.secoes_publicadas", "home.indice.temas_publicados", "home.indice.capitulos_com_dados",
+          "home.indice.unidades_federacao", "home.indice.paginas_por_pergunta", "home.indice.contagem_parcial"
+        ] },
         { "id": "home-secoes", "estado": "portugues_marcado" },
         { "id": "home-rodape", "estado": "portugues_marcado" }
       ]

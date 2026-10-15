@@ -1,13 +1,14 @@
 import { existsSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
-import { parse } from "parse5";
+import { parse, serializeOuter } from "parse5";
 import { afterAll, beforeAll, describe, expect, it, type TestContext } from "vitest";
 import { pt } from "@/i18n/pt";
 import { en } from "@/i18n/en";
 import { modoDaPagina } from "./suporte/i18n-build";
 import { aguardarHome, criarNavegadorI18n, type NavegadorI18n } from "./suporte/i18n-browser";
-import { INTRODUCAO_HOME, verificarHomeParcial } from "./suporte/i18n-home";
+import { INDICE_HOME, INTRODUCAO_HOME, verificarHomeParcial } from "./suporte/i18n-home";
+import { attr, texto, unico, type No } from "./suporte/i18n-dom";
 
 const require = createRequire(import.meta.url);
 const APP = join(process.cwd(), ".next", "server", "app");
@@ -28,21 +29,39 @@ beforeAll(async () => {
 afterAll(async () => { await ambiente?.fechar(); });
 
 type Violacao = { id: string; nodes: { html: string }[] };
-function assinaturas(violacoes: Violacao[], ingles: boolean): string[] {
+function assinaturas(violacoes: Violacao[], ingles: boolean, nomesComprovados: readonly { pt: string; en: string }[] = []): string[] {
   return violacoes.flatMap((v) => v.nodes.map((node) => {
     let html = node.html.replace(/\sdata-i18n-regiao="[^"]*"/g, "");
     if (ingles) {
       for (const chave of [
         "home.hero.titulo_inicio", "home.hero.titulo_destaque", "acesso.criar_conta", "home.hero.ja_cadastrado",
         "home.hero.rotulo", "home.hero.beneficio_conta", "home.hero.beneficio_evidencia", "home.hero.beneficio_gratuidade",
+        "home.indice.rotulo", "home.indice.ilustracoes", "home.indice.paginas_tematicas", "home.indice.secoes_publicadas",
+        "home.indice.temas_publicados", "home.indice.capitulos_com_dados", "home.indice.unidades_federacao", "home.indice.paginas_por_pergunta",
       ] as const) {
         html = html.replaceAll(en[chave].texto, pt[chave]);
       }
       // O contrato integral já validou quantidade e frase resolvida antes desta equivalência.
       html = html.replaceAll(INTRODUCAO_HOME.en, INTRODUCAO_HOME.pt);
+      for (const cartao of INDICE_HOME) {
+        if (cartao.en.valor !== cartao.pt.valor) html = html.replaceAll(cartao.en.valor, cartao.pt.valor);
+      }
+      // Só spans completos de nomes já validados; não remover lang genericamente da região.
+      for (const nome of nomesComprovados) html = html.replaceAll(nome.en, nome.pt);
     }
     return `${v.id}: ${html}`;
   }));
+}
+
+function nomesDoIndice(ptDoc: No, enDoc: No): { pt: string; en: string }[] {
+  return INDICE_HOME.map((esperado) => {
+    const span = (doc: No) => {
+      const nav = unico(doc, (e) => e.tagName === "nav" && attr(e, "aria-label") === (doc === ptDoc ? pt["home.indice.rotulo"] : en["home.indice.rotulo"].texto), "índice comprovado");
+      const anchor = unico(nav, (e) => e.tagName === "a" && attr(e, "href") === esperado.href, `cartão ${esperado.id}`);
+      return unico(anchor, (e) => e.tagName === "span" && texto(e) === esperado.nome, `nome ${esperado.nome}`);
+    };
+    return { pt: serializeOuter(span(ptDoc)), en: serializeOuter(span(enDoc)) };
+  });
 }
 
 describe("home PT/EN: navegador do build de produção", () => {
@@ -65,7 +84,7 @@ describe("home PT/EN: navegador do build de produção", () => {
           expect(await page.locator("html").getAttribute("lang")).toBe(caminho === "/en" ? "en" : "pt-BR");
           if (caminho === "/en") {
             const avisos = page.locator("[data-i18n-aviso]");
-            expect(await avisos.count()).toBe(4);
+            expect(await avisos.count()).toBe(3);
             for (const aviso of await avisos.all()) {
               expect(await aviso.isVisible()).toBe(true);
               expect(await aviso.getAttribute("lang")).toBe("en");
@@ -85,11 +104,13 @@ describe("home PT/EN: navegador do build de produção", () => {
           expect(falhas, caminho).toEqual([]);
         } finally { await page.close(); }
       }
-      verificarHomeParcial(parse(resultados[0].html), parse(resultados[1].html));
+      const ptDoc = parse(resultados[0].html), enDoc = parse(resultados[1].html);
+      verificarHomeParcial(ptDoc, enDoc);
+      const nomesComprovados = nomesDoIndice(ptDoc, enDoc);
       expect(resultados[1].larguraDocumento, "sem regressão da largura horizontal").toBeLessThanOrEqual(Math.max(largura, resultados[0].larguraDocumento));
       const anteriores = assinaturas(resultados[0].violacoes, false);
       const novas: string[] = [];
-      for (const assinatura of assinaturas(resultados[1].violacoes, true)) {
+      for (const assinatura of assinaturas(resultados[1].violacoes, true, nomesComprovados)) {
         const indice = anteriores.indexOf(assinatura);
         if (indice < 0) novas.push(assinatura);
         else anteriores.splice(indice, 1);
@@ -137,12 +158,27 @@ describe("home PT/EN: navegador do build de produção", () => {
       const acoes = page.locator('[data-i18n-regiao="home-acoes"]');
       expect(await acoes.locator('a[href="/cadastro"]').textContent()).toBe(en["acesso.criar_conta"].texto);
       expect(await acoes.locator('a[href="/entrar"]').textContent()).toBe(en["home.hero.ja_cadastrado"].texto);
-      const indice = page.locator('[data-i18n-regiao="home-indice"] a[href^="#obs-"]');
+      const nav = page.getByRole("navigation", { name: "Observatory index", exact: true });
+      expect(await nav.count()).toBe(1);
+      expect(await nav.getAttribute("data-i18n-regiao")).toBe("home-indice");
+      expect(await nav.locator(":scope > p").textContent()).toBe(en["home.indice.ilustracoes"].texto);
+      const indice = nav.locator("ol > li > a");
       expect(await indice.count()).toBe(7);
+      for (const [i, esperado] of INDICE_HOME.entries()) {
+        const anchor = indice.nth(i);
+        expect(await anchor.getAttribute("href")).toBe(esperado.href);
+        expect(await anchor.locator('span[lang="pt-BR"]').textContent()).toBe(esperado.nome);
+        expect(await anchor.locator("span.tabular-nums").textContent()).toBe(esperado.en.valor);
+        expect(await anchor.locator("span.mt-2").textContent()).toBe(`${esperado.en.valor} ${esperado.en.unidade}`);
+        const escapar = (valor: string) => valor.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const nomeAcessivel = new RegExp(`^${[esperado.ordinal, esperado.nome, esperado.en.valor, esperado.en.unidade].map(escapar).join("\\s*")}$`);
+        expect(await nav.getByRole("link", { name: nomeAcessivel }).count(), `nome acessível de ${esperado.id}`).toBe(1);
+      }
       const destinos = await indice.evaluateAll((links) => links.map((a) => {
         const href = a.getAttribute("href")!;
         return { href, existe: document.getElementById(href.slice(1)) !== null };
       }));
+      expect(destinos.map((d) => d.href)).toEqual(INDICE_HOME.map((d) => d.href));
       expect(destinos.every((d) => d.existe)).toBe(true);
       await indice.last().click();
       expect(new URL(page.url()).pathname).toBe("/en");

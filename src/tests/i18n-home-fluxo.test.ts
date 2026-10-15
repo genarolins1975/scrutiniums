@@ -28,6 +28,7 @@ function vitrineSintetica(id: DominioId): Vitrine {
   return {
     id, imagem: `/home/${id}.webp`, focoImagem: "50% 50%",
     contagem: { valor: "1.234,50", unidade: "unidade sintética" },
+    contagemIndice: { tipo: "simples", quantidade: 1234, unidade: "paginas_tematicas" },
     paineis: [{ titulo: "Painel sintético", href: `/fixture/${id}`, descricao: "Descrição sintética" }],
     fontes: "Fonte sintética", situacao: "Dados exclusivos do teste",
     metodologia: { href: `/fixture/${id}/metodo`, rotulo: "Método sintético" },

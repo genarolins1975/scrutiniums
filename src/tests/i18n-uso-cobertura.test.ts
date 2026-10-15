@@ -139,7 +139,11 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
       { id: "home-beneficios", estado: "traduzido", chaves: [
         "home.hero.beneficio_conta", "home.hero.beneficio_evidencia", "home.hero.beneficio_gratuidade",
       ] },
-      { id: "home-indice", estado: "portugues_marcado" },
+      { id: "home-indice", estado: "traduzido", chaves: [
+        "home.indice.rotulo", "home.indice.ilustracoes", "home.indice.paginas_tematicas",
+        "home.indice.secoes_publicadas", "home.indice.temas_publicados", "home.indice.capitulos_com_dados",
+        "home.indice.unidades_federacao", "home.indice.paginas_por_pergunta", "home.indice.contagem_parcial",
+      ] },
       { id: "home-secoes", estado: "portugues_marcado" },
       { id: "home-rodape", estado: "portugues_marcado" },
     ] }] });
@@ -147,8 +151,8 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
       readFileSync(join(process.cwd(), inventario.catalogo.pt), "utf8"),
       readFileSync(join(process.cwd(), inventario.catalogo.en), "utf8"),
     );
-    expect(Object.keys(catalogo.pt)).toHaveLength(13);
-    expect(Object.keys(catalogo.en)).toHaveLength(13);
+    expect(Object.keys(catalogo.pt)).toHaveLength(22);
+    expect(Object.keys(catalogo.en)).toHaveLength(22);
     const registro = { pares: PARES_DE_IDIOMA.map((par) => ({
       pt: par.pt, en: par.en, conteudo_declarado: par.conteudo,
       dominio: par.pt === "/observatorio-do-credito" ? "credito" : "plataforma",
@@ -156,16 +160,16 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
     const usoReal = validarUsoInterface(inventario, registro, catalogo.en);
     expect(usoReal).toMatchObject({
       schema_version: 1, rotas_parciais_declaradas: 1,
-      chaves_en_declaradas_em_uso: 9, ocorrencias_en_declaradas: 9,
-      regioes_pt_nao_catalogadas: 4, html_verificado_pelo_inventario: false,
+      chaves_en_declaradas_em_uso: 18, ocorrencias_en_declaradas: 18,
+      regioes_pt_nao_catalogadas: 3, html_verificado_pelo_inventario: false,
     });
     expect(usoReal?.rotas).toHaveLength(1);
     expect(usoReal?.rotas[0]).toMatchObject({ pt: "/", en: "/en", dominio: "plataforma" });
     expect(usoReal?.rotas[0].regioes).toHaveLength(9);
     expect(usoReal?.rotas[0].regioes.filter((regiao) => regiao.estado === "traduzido").map((regiao) => regiao.id))
-      .toEqual(["home-acoes", "home-beneficios", "home-introducao", "home-rotulo", "home-titulo"]);
+      .toEqual(["home-acoes", "home-beneficios", "home-indice", "home-introducao", "home-rotulo", "home-titulo"]);
     expect(usoReal?.rotas[0].regioes.filter((regiao) => regiao.estado === "portugues_marcado").map((regiao) => regiao.id))
-      .toEqual(["home-cabecalho", "home-indice", "home-rodape", "home-secoes"]);
+      .toEqual(["home-cabecalho", "home-rodape", "home-secoes"]);
   });
 });
 
