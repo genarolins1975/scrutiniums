@@ -3,14 +3,22 @@ import inventario from "../../../config/i18n-inventario.json";
 import { pt as catalogoPt } from "@/i18n/pt";
 import { en as catalogoEn } from "@/i18n/en";
 import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
+import { DOMINIOS } from "@/lib/dominios";
 import { attr, conteudo, elementos, filhos, meta, oculto, tag, texto, unico, vazamentos, type Elemento, type Forma, type No } from "./i18n-dom";
 
-const REGIOES_PT = ["home-cabecalho", "home-introducao", "home-indice", "home-secoes", "home-rodape"];
-const REGIOES_EN = ["home-titulo", "home-acoes", "home-rotulo", "home-beneficios"];
+const REGIOES_PT = ["home-cabecalho", "home-indice", "home-secoes", "home-rodape"];
+const REGIOES_EN = ["home-titulo", "home-acoes", "home-rotulo", "home-introducao", "home-beneficios"];
+
+/** Esperados integrais independentes do formatador e do adaptador do Hero. */
+export const INTRODUCAO_HOME = {
+  pt: "Sete observatórios sobre crédito, setor elétrico, gás natural, saneamento, serviços públicos e contas da União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar.",
+  en: "Seven observatories on credit, the power sector, natural gas, basic sanitation, public services and the public accounts of the União (Brazil's federal government) and the states, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish.",
+} as const;
 const CHAVES = {
   titulo: ["home.hero.titulo_inicio", "home.hero.titulo_destaque"],
   acoes: ["acesso.criar_conta", "home.hero.ja_cadastrado"],
   rotulo: ["home.hero.rotulo"],
+  introducao: ["home.hero.introducao"],
   beneficios: ["home.hero.beneficio_conta", "home.hero.beneficio_evidencia", "home.hero.beneficio_gratuidade"],
 } as const;
 const atributo = (forma: Exclude<Forma, string>, nome: string) => forma.atributos.find(([n]) => n === nome)?.[1];
@@ -55,7 +63,7 @@ export function verificarHeadHome(pt: No, en: No): void {
   }
 }
 
-/** A reconstrução só admite as oito traduções comprovadas e cinco ilhas declaradas. */
+/** A reconstrução só admite as nove traduções comprovadas e quatro ilhas declaradas. */
 export function verificarHomeParcial(pt: No, en: No): void {
   const declaracao = inventario.uso_interface.rotas.find((rota) => rota.pt === "/");
   expect(declaracao, "declaração da home parcial").toBeDefined();
@@ -65,6 +73,7 @@ export function verificarHomeParcial(pt: No, en: No): void {
     { id: "home-titulo", estado: "traduzido", chaves: CHAVES.titulo },
     { id: "home-acoes", estado: "traduzido", chaves: CHAVES.acoes },
     { id: "home-rotulo", estado: "traduzido", chaves: CHAVES.rotulo },
+    { id: "home-introducao", estado: "traduzido", chaves: CHAVES.introducao },
     { id: "home-beneficios", estado: "traduzido", chaves: CHAVES.beneficios },
   ]);
   const preservadas = declaracao!.regioes.filter((regiao) => regiao.estado === "portugues_marcado");
@@ -78,6 +87,10 @@ export function verificarHomeParcial(pt: No, en: No): void {
   const irmaosTitulo = filhos(tituloPt.parentNode!).filter(elemento);
   const introducaoPt = irmaosTitulo[irmaosTitulo.indexOf(tituloPt) + 1];
   expect(introducaoPt.tagName).toBe("p");
+  expect(DOMINIOS, "a quantidade por extenso deve corresponder aos sete observatórios publicados").toHaveLength(7);
+  expect(conteudo(introducaoPt), "texto PT completo, com espaços e quantidade preservados").toEqual([INTRODUCAO_HOME.pt]);
+  expect(catalogoPt[CHAVES.introducao[0]].replace("{observatorios}", "Sete observatórios")).toBe(INTRODUCAO_HOME.pt);
+  expect(inglesa(CHAVES.introducao[0]).replace("{observatorios}", "Seven observatories")).toBe(INTRODUCAO_HOME.en);
   const acoesPt = unico(heroPt, (e) => e.tagName === "div" && filhos(e).filter(elemento).length === 2
     && filhos(e).filter(elemento).every((a) => a.tagName === "a")
     && filhos(e).filter(elemento).some((a) => attr(a, "href") === "/cadastro"), "ações PT");
@@ -87,7 +100,6 @@ export function verificarHomeParcial(pt: No, en: No): void {
   expect(secoesPt.map((e) => attr(e, "aria-labelledby"))).toEqual(["observatorios-titulo", "plataforma-titulo", "recursos-titulo", "acesso-titulo"]);
   const originais: Record<string, Forma[]> = {
     "home-cabecalho": [forma(tag(corpoPt, "header"))],
-    "home-introducao": [forma(introducaoPt)],
     "home-indice": [forma(tag(heroPt, "nav"))],
     "home-secoes": secoesPt.map(forma),
     "home-rodape": [forma(tag(corpoPt, "footer"))],
@@ -95,8 +107,8 @@ export function verificarHomeParcial(pt: No, en: No): void {
   const ids = elementos(corpoEn).filter((e) => attr(e, "data-i18n-regiao") !== undefined).map((e) => attr(e, "data-i18n-regiao"));
   expect(new Set(ids).size, "nove regiões únicas").toBe(9);
   expect(ids.sort()).toEqual([...REGIOES_PT, ...REGIOES_EN].sort());
-  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-aviso") !== undefined)).toHaveLength(5);
-  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-estado") !== undefined)).toHaveLength(5);
+  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-aviso") !== undefined)).toHaveLength(4);
+  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-estado") !== undefined)).toHaveLength(4);
   for (const regiao of preservadas) {
     const ilha = unico(corpoEn, (e) => attr(e, "data-i18n-regiao") === regiao.id, regiao.id);
     expect(attr(ilha, "data-i18n-estado")).toBe("portugues_marcado");
@@ -107,8 +119,12 @@ export function verificarHomeParcial(pt: No, en: No): void {
   const titulo = unico(corpoEn, (e) => attr(e, "data-i18n-regiao") === "home-titulo", "título traduzido");
   const acoes = unico(corpoEn, (e) => attr(e, "data-i18n-regiao") === "home-acoes", "ações traduzidas");
   const rotulo = unico(corpoEn, (e) => attr(e, "data-i18n-regiao") === "home-rotulo", "rótulo traduzido");
+  const introducao = unico(corpoEn, (e) => attr(e, "data-i18n-regiao") === "home-introducao", "introdução traduzida");
   const beneficios = unico(corpoEn, (e) => attr(e, "data-i18n-regiao") === "home-beneficios", "benefícios traduzidos");
-  for (const regiao of [titulo, acoes, rotulo, beneficios]) {
+  expect(introducao.parentNode).toBe(titulo.parentNode);
+  const irmaosTituloEn = filhos(titulo.parentNode!).filter(elemento);
+  expect(irmaosTituloEn[irmaosTituloEn.indexOf(titulo) + 1], "introdução imediatamente após o H1").toBe(introducao);
+  for (const regiao of [titulo, acoes, rotulo, introducao, beneficios]) {
     expect(oculto(regiao)).toBe(false);
     expect(attr(regiao, "data-i18n-estado")).toBeUndefined();
     expect(attr(regiao, "lang")).toBeUndefined();
@@ -135,6 +151,9 @@ export function verificarHomeParcial(pt: No, en: No): void {
   expect(rotuloEsperado.tag).toBe("p");
   expect(rotuloEsperado.filhos).toEqual([catalogoPt[CHAVES.rotulo[0]]]);
   rotuloEsperado.filhos = [inglesa(CHAVES.rotulo[0])];
+  const introducaoEsperada = forma(introducaoPt);
+  expect(conteudo(introducao), "frase EN resolvida integral, sem token residual ou quantidade arbitrária").toEqual([INTRODUCAO_HOME.en]);
+  introducaoEsperada.filhos = [INTRODUCAO_HOME.en];
   const beneficiosEsperados = forma(beneficiosPt);
   expect(beneficiosEsperados.tag).toBe("ul");
   expect(beneficiosEsperados.filhos).toHaveLength(3);
@@ -159,6 +178,7 @@ export function verificarHomeParcial(pt: No, en: No): void {
   expect(semId(titulo)).toEqual(tituloEsperado);
   expect(semId(acoes)).toEqual(acoesEsperadas);
   expect(semId(rotulo)).toEqual(rotuloEsperado);
+  expect(semId(introducao), "mesmo p e atributos PT, somente texto e região EN declarados").toEqual(introducaoEsperada);
   expect(semId(beneficios)).toEqual(beneficiosEsperados);
   const reconstruir = (formas: Forma[]): Forma[] => formas.flatMap((f): Forma[] => {
     if (typeof f === "string") return [f];
@@ -168,6 +188,7 @@ export function verificarHomeParcial(pt: No, en: No): void {
     if (id === "home-titulo") return [forma(tituloPt)];
     if (id === "home-acoes") return [forma(acoesPt)];
     if (id === "home-rotulo") return [forma(rotuloPt)];
+    if (id === "home-introducao") return [forma(introducaoPt)];
     if (id === "home-beneficios") return [forma(beneficiosPt)];
     return [{ ...f, filhos: reconstruir(f.filhos) }];
   });

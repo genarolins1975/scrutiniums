@@ -135,7 +135,7 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
       { id: "home-acoes", estado: "traduzido", chaves: ["acesso.criar_conta", "home.hero.ja_cadastrado"] },
       { id: "home-cabecalho", estado: "portugues_marcado" },
       { id: "home-rotulo", estado: "traduzido", chaves: ["home.hero.rotulo"] },
-      { id: "home-introducao", estado: "portugues_marcado" },
+      { id: "home-introducao", estado: "traduzido", chaves: ["home.hero.introducao"] },
       { id: "home-beneficios", estado: "traduzido", chaves: [
         "home.hero.beneficio_conta", "home.hero.beneficio_evidencia", "home.hero.beneficio_gratuidade",
       ] },
@@ -147,6 +147,8 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
       readFileSync(join(process.cwd(), inventario.catalogo.pt), "utf8"),
       readFileSync(join(process.cwd(), inventario.catalogo.en), "utf8"),
     );
+    expect(Object.keys(catalogo.pt)).toHaveLength(13);
+    expect(Object.keys(catalogo.en)).toHaveLength(13);
     const registro = { pares: PARES_DE_IDIOMA.map((par) => ({
       pt: par.pt, en: par.en, conteudo_declarado: par.conteudo,
       dominio: par.pt === "/observatorio-do-credito" ? "credito" : "plataforma",
@@ -154,16 +156,16 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
     const usoReal = validarUsoInterface(inventario, registro, catalogo.en);
     expect(usoReal).toMatchObject({
       schema_version: 1, rotas_parciais_declaradas: 1,
-      chaves_en_declaradas_em_uso: 8, ocorrencias_en_declaradas: 8,
-      regioes_pt_nao_catalogadas: 5, html_verificado_pelo_inventario: false,
+      chaves_en_declaradas_em_uso: 9, ocorrencias_en_declaradas: 9,
+      regioes_pt_nao_catalogadas: 4, html_verificado_pelo_inventario: false,
     });
     expect(usoReal?.rotas).toHaveLength(1);
     expect(usoReal?.rotas[0]).toMatchObject({ pt: "/", en: "/en", dominio: "plataforma" });
     expect(usoReal?.rotas[0].regioes).toHaveLength(9);
     expect(usoReal?.rotas[0].regioes.filter((regiao) => regiao.estado === "traduzido").map((regiao) => regiao.id))
-      .toEqual(["home-acoes", "home-beneficios", "home-rotulo", "home-titulo"]);
+      .toEqual(["home-acoes", "home-beneficios", "home-introducao", "home-rotulo", "home-titulo"]);
     expect(usoReal?.rotas[0].regioes.filter((regiao) => regiao.estado === "portugues_marcado").map((regiao) => regiao.id))
-      .toEqual(["home-cabecalho", "home-indice", "home-introducao", "home-rodape", "home-secoes"]);
+      .toEqual(["home-cabecalho", "home-indice", "home-rodape", "home-secoes"]);
   });
 });
 

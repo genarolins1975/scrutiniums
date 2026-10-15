@@ -10,6 +10,14 @@ import { ACESSO, observatoriosPorExtenso } from "@/lib/acesso";
 import type { Idioma } from "@/lib/idioma";
 import type { Vitrine } from "@/lib/vitrine";
 
+function partesIntroducaoHero(idioma: Idioma) {
+  const mensagem = idioma === "en" ? en["home.hero.introducao"].texto : pt["home.hero.introducao"];
+  return {
+    observatorios: observatoriosPorExtenso(true, idioma),
+    restante: mensagem.slice("{observatorios}".length),
+  };
+}
+
 /**
  * Abertura: promessa curta e, na mesma dobra, o índice dos observatórios.
  * Cada lâmina usa a gravura editorial do próprio observatório e traz a
@@ -18,6 +26,7 @@ import type { Vitrine } from "@/lib/vitrine";
 export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, Vitrine>; idioma?: Idioma }) {
   const tituloInicio = idioma === "en" ? en["home.hero.titulo_inicio"].texto : pt["home.hero.titulo_inicio"];
   const tituloDestaque = idioma === "en" ? en["home.hero.titulo_destaque"].texto : pt["home.hero.titulo_destaque"];
+  const introducao = partesIntroducaoHero(idioma);
   const emPortugues = (regiao: string, children: ReactNode) => idioma === "en"
     ? <PortuguesApenas regiao={regiao}>{children}</PortuguesApenas>
     : children;
@@ -37,11 +46,9 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
             >
               {tituloInicio}<span className="text-bronze">{tituloDestaque}</span>.
             </h1>
-            {emPortugues("home-introducao", <p className="mt-7 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">
-              {observatoriosPorExtenso(true)} sobre crédito, setor elétrico, gás natural, saneamento, serviços públicos e contas da
-              União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o
-              que o dado não permite afirmar.
-            </p>)}
+            <p data-i18n-regiao={idioma === "en" ? "home-introducao" : undefined} className="mt-7 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">
+              {introducao.observatorios}{introducao.restante}
+            </p>
           </div>
           <div className="lg:col-span-4 lg:border-l lg:border-linha lg:pl-8">
             <div data-i18n-regiao={idioma === "en" ? "home-acoes" : undefined} className="flex flex-wrap items-center gap-x-6 gap-y-3">

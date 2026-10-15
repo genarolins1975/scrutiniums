@@ -189,6 +189,20 @@
       ],
       "nota": "A IEA usa power sector nesta passagem; electricity systems e electricity markets descrevem outros recortes. A entrada não autoriza traduzir ou renomear Observatório Brasileiro do Setor Elétrico nem seu título curto de produto."
     },
+    "estatistica.base_dados": {
+      "tipo": "termo",
+      "pt": "base de dados",
+      "en": "database",
+      "contexto": "Base de dados como conjunto organizado de informações estatísticas, contábeis ou fiscais; na introdução da home, bases oficiais é a forma contextual curta de bases de dados oficiais.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "the exchange and sharing of accounting and tax information between the databases of these entities",
+          "localizacao": "About, edição 2024, primeiro parágrafo"
+        }
+      ],
+      "nota": "O par português/inglês do IBGE usa bases de dados / databases, no plural; database é o singular regular. Não estender a qualquer ocorrência de base, nem equiparar automaticamente a dataset, arquivo, fonte de dados ou nome próprio de sistema. A qualificação oficial pertence ao contexto da home e não altera os dados publicados."
+    },
     "estatistica.fonte_dados": {
       "tipo": "termo",
       "pt": "fonte de dados",
@@ -224,6 +238,20 @@
       ],
       "nota": "O trecho corresponde a período de referência do REF anterior na versão portuguesa, também na página 11. Não confundir com data de publicação, captura, acesso ou atualização; não altera a periodicidade, as datas ou os números da série."
     },
+    "federativo.estado": {
+      "tipo": "termo",
+      "pt": "estado",
+      "en": "state",
+      "contexto": "Estado como ente federado brasileiro; estados é sua forma plural na introdução da home.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "The information from the States, the Federal District and the Municipalities, in turn, comes from Finbra",
+          "localizacao": "About, edição 2024, segundo parágrafo"
+        }
+      ],
+      "nota": "A fonte usa Estados / States, no plural e com inicial maiúscula; state é o singular regular em prosa comum. Distingue expressamente estados, Distrito Federal e municípios. Não usar para Estado nacional, condição de um dado ou todos os entes subnacionais. Não inferir exclusão do Distrito Federal do observatório estadual, equiparar states a 27 unidades da Federação ou alterar o universo dos indicadores."
+    },
     "financeiro.taxa_juros": {
       "tipo": "termo",
       "pt": "taxa de juros",
@@ -238,6 +266,21 @@
         }
       ],
       "nota": "Usar somente para a taxa. Juros como valor monetário requer outra entrada. Fonte usa plural interest rates; singular flexionado para a chave."
+    },
+    "fiscal.contas_publicas": {
+      "tipo": "termo",
+      "pt": "contas públicas",
+      "en": "public accounts",
+      "contexto": "Contas públicas no contexto fiscal, sem estabelecer nome editorial de observatório ou perímetro institucional de uma série.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "Concerns \nabout the sustainability of public accounts and the \nimpact on the yield curve, the exchange rate, and the \nconduct of monetary policy stood out.",
+          "localizacao": "Seção 1.3, Financial Stability Survey, subseção Risks to financial stability, parágrafo sobre preocupações com riscos fiscais",
+          "pagina": 48
+        }
+      ],
+      "nota": "A versão portuguesa correspondente, página 49, usa sustentabilidade das contas públicas. O IBGE usa public finances para finanças públicas, conceito já registrado em entrada própria; manter public accounts para a expressão fiscal desta passagem. Não traduz por si só Contas Públicas Federais ou Contas Públicas Estaduais nem substitui governo federal por governo central."
     },
     "fiscal.financas_publicas": {
       "tipo": "termo",
@@ -464,6 +507,27 @@
         "Tesouro Nacional"
       ]
     },
+    "nome.uniao": {
+      "tipo": "nome_proprio",
+      "pt": "União",
+      "en": "União",
+      "explicacao_en": "Brazil's federal government",
+      "contexto": "Nome próprio do ente federal brasileiro, preservado na introdução da home e acompanhado de explicação funcional na primeira ocorrência.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "Instruments eligible for CET1 are restricted\nto federally owned public banks.",
+          "localizacao": "Seção 1.2.4, Solvency, trecho sobre instrumentos elegíveis para CET1 e bancos públicos de propriedade federal",
+          "pagina": 42
+        },
+        {
+          "fonte": "ibge_contas",
+          "trecho": "Federal Government's Financial Administration System - Siafi",
+          "localizacao": "About, edição 2024, segundo parágrafo, referência ao Siafi"
+        }
+      ],
+      "nota": "A explicação Brazil's federal government é uma síntese funcional contextual, não uma citação literal ou tradução jurídica formal de União. O BCB corresponde bancos públicos federais e de propriedade da União a federally owned public banks; o IBGE comprova Governo Federal / Federal Government na expansão do Siafi. Manter União na prosa. Não equiparar metodologicamente União a central government ou general government, não inferir o perímetro fiscal de uma série nem renomear um observatório."
+    },
     "saneamento.abastecimento_agua": {
       "tipo": "termo",
       "pt": "abastecimento de água",
@@ -547,6 +611,21 @@
         }
       ],
       "nota": "O uso oficial do IBGE é amplo e inclui água, esgotamento, resíduos e águas pluviais. Não restringir a apenas água e esgoto. O nome abreviado do observatório Saneamento ainda exige registrar essa acepção no glossário."
+    },
+    "servicos.servicos_publicos": {
+      "tipo": "termo",
+      "pt": "serviços públicos",
+      "en": "public services",
+      "contexto": "Serviços públicos em sentido comum de prestação à população, sem definir classificação jurídica, macrossetor ou nome de observatório.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "Provision of essential public services such as electricity, natural gas, water and wastewater services",
+          "localizacao": "Seção 2.2, Credit exposures at risk arising from physical climate risks, Table 2.2.2, coluna Description, linha Utilities",
+          "pagina": 66
+        }
+      ],
+      "nota": "A descrição inglesa do BCB contém public services. No quadro português correspondente, página 67, Serviços Públicos é o rótulo do macrossetor cuja linha inglesa se chama Utilities; não é um par literal de descrições genéricas. Utilities designa o recorte setorial específico da fonte e não substitui genericamente serviços públicos. Não acrescentar essential à home, nem usar a expressão como sinônimo de civil service, public administration, government efficiency ou Eficiência Estatal."
     }
   },
   "pendencias": [

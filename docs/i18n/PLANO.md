@@ -61,6 +61,8 @@ As duas telas de login por SMS acrescentam `/en/entrar/sms` e `/en/entrar/sms/ve
 
 As quatro URLs dessas telas ficam fora do sitemap. O robots.txt mantém o bloqueio de rastreamento de SMS nos dois idiomas; as irmãs inglesas com português marcado recebem também `noindex`, sem alternates ou oferta de inglês no seletor. A prova do OTP usa somente um cookie sintético no servidor isolado, sem criar usuário ou sessão e sem solicitar SMS. As comparações de DOM preservam os controles, a máscara e os números, com bijeção restrita dos IDs React e o contador de reenvio no mesmo estado temporal.
 
+A introdução completa da home ganha uma mensagem tipada com um único argumento de contagem. A quantidade continua vindo do registro de domínios; as chamadas portuguesas mantêm a saída anterior e a nova forma inglesa trata singular, palavras de um a nove e os demais valores pelo formatador. União permanece em português com explicação funcional em inglês. Quatro termos e esse nome próprio entram no glossário com fontes já versionadas de BCB e IBGE. São treze mensagens disponíveis, nove usadas no conteúdo da home, cinco regiões traduzidas e quatro portuguesas marcadas entre as nove regiões. As treze irmãs existentes, os dados e as vitrines portuguesas permanecem iguais. A prova do parágrafo completo, incluindo a quantidade, precede sua reconstrução portuguesa na comparação de DOM; os literais lexicais da contagem continuam visíveis no inventário, sem exclusão de cobertura.
+
 ## Fases seguintes
 
 | Fase | Série de entregas, sempre com CI verde entre PRs |

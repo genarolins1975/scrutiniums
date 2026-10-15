@@ -368,6 +368,50 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
       }
       expect(serialize(en)).toBe(original);
     });
+
+    it("recusa quantidade, token, texto e estrutura adulterados na introdução antes de reconstruir o português", (ctx) => {
+      const { pt, en } = documentosDoPar(ctx, par);
+      if (!("childNodes" in en) || !("childNodes" in pt)) throw new Error("Documentos da home sem árvore DOM");
+      verificarHomeParcial(pt, en);
+      const original = serialize(en), originalPt = serialize(pt);
+      const introducao = (doc: No) => unico(doc, (e) => attr(e, "data-i18n-regiao") === "home-introducao", "introdução traduzida");
+      const substituirTrecho = (doc: No, antes: string, depois: string) => {
+        const no = filhos(introducao(doc)).find((filho) => "value" in filho && filho.value.includes(antes));
+        if (!no || !("value" in no)) throw new Error(`Introdução sem trecho para adulteração: ${antes}`);
+        no.value = no.value.replace(antes, depois);
+      };
+      const adulteracoes: [string, (doc: No) => void][] = [
+        ["quantidade por extenso divergente do registro", (doc) => substituirTrecho(doc, "Seven observatories", "Eight observatories")],
+        ["quantidade numérica divergente do registro", (doc) => substituirTrecho(doc, "Seven observatories", "8 observatories")],
+        ["última frase omitida", (doc) => substituirTrecho(doc,
+          " Each dashboard identifies the data source, the reference period and what the data cannot establish.", "")],
+        ["placeholder não resolvido", (doc) => substituirTrecho(doc, "Seven observatories", "{observatorios}")],
+        ["classe da introdução alterada", (doc) => {
+          const classe = introducao(doc).attrs.find((a) => a.name === "class");
+          if (!classe) throw new Error("Introdução sem classes");
+          classe.value += " classe-extra";
+        }],
+        ["atributo não declarado", (doc) => introducao(doc).attrs.push({ name: "data-extra", value: "indevido" })],
+        ["introdução escondida", (doc) => introducao(doc).attrs.push({ name: "hidden", value: "" })],
+        ["introdução movida antes do título", (doc) => {
+          const paragrafo = introducao(doc), pai = paragrafo.parentNode;
+          if (!pai || !("childNodes" in pai)) throw new Error("Introdução sem pai");
+          const titulo = tag(pai, "h1");
+          pai.childNodes = pai.childNodes.filter((no) => no !== paragrafo);
+          const posicao = pai.childNodes.indexOf(titulo);
+          expect(posicao).toBeGreaterThanOrEqual(0);
+          pai.childNodes.splice(posicao, 0, paragrafo);
+        }],
+      ];
+      for (const [nome, adulterar] of adulteracoes) {
+        const copia = parse(original);
+        adulterar(copia);
+        expect(serialize(copia), nome).not.toBe(original);
+        expect(() => verificarHomeParcial(pt, copia), nome).toThrow();
+      }
+      expect(serialize(en), "comparação e negativos não alteram o DOM inglês original").toBe(original);
+      expect(serialize(pt), "reconstrução não altera o DOM português original").toBe(originalPt);
+    });
   }
 });
 

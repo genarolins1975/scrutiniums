@@ -10,9 +10,9 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "54fa4a59b33c6af0c82361d5b784bce6484948ddd368e91a94e5b13b566ea880",
+    "inventario_sha256": "619d74b50901ad03379ea0678236dd80ab3497c10d6e894dfe17e07a5f5657e5",
     "arquivos_analisados": 1012,
-    "fontes_sha256": "1d879c5189da9c8fc1d18c852356c090e73c542cf2b070eff926b0f17e846d15",
+    "fontes_sha256": "26490782af04717791a9f976e3bd77501e0c73362866f3adab2e250e37d4b587",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -130,16 +130,16 @@
       "interface": {
         "arquivos": 199,
         "candidatos": {
-          "jsx_text": 627,
-          "atributos": 181,
+          "jsx_text": 626,
+          "atributos": 183,
           "props": 628,
-          "outros_literais": 3208,
-          "templates": 378,
-          "expressoes_nao_resolvidas": 1976,
-          "chaves_objetos": 2395
+          "outros_literais": 3224,
+          "templates": 379,
+          "expressoes_nao_resolvidas": 1979,
+          "chaves_objetos": 2406
         },
         "exclusoes": {
-          "importacoes": 810,
+          "importacoes": 812,
           "atributos_tecnicos": 1167,
           "tipos": 175
         },
@@ -150,7 +150,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 9393,
+        "candidatos_nao_catalogados": 9425,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -520,10 +520,10 @@
   },
   "glossario": {
     "path": "config/glossario-en.json",
-    "sha256": "78d9ce05ea62346bc375ead05b359c579573222be0d0ca25f6e4ba81c298e8be",
+    "sha256": "f845711e4f5d10c9fd8f8dc640c12d836d116f6a1db24f62fd9ee45c506d04e3",
     "fontes": 8,
-    "termos": 23,
-    "nomes_preservados": 8,
+    "termos": 27,
+    "nomes_preservados": 9,
     "pendencias": [
       {
         "id": "editorial.contas_publicas_estaduais",
@@ -661,15 +661,15 @@
     "arquivos": {
       "pt": {
         "path": "src/i18n/pt.ts",
-        "sha256": "451f20b1c3f3fd05cd16ada8133dfadf9b00b3c7476326c5f4194fdaf50c476e"
+        "sha256": "d5503ceb937ac208c4c122282992ea20b11fb0c55489e896aaee9dcf105db16e"
       },
       "en": {
         "path": "src/i18n/en.ts",
-        "sha256": "dc6584c840e59d5d707f54ad47997b3f5b3037cae45ca82d63b0a317a8644dcc"
+        "sha256": "8a50ff525366db57145ec71c5d33618230daf6560f0011f59556eac3fc2fc09a"
       }
     },
-    "chaves": 12,
-    "traducoes_disponiveis": 12,
+    "chaves": 13,
+    "traducoes_disponiveis": 13,
     "portugues_marcado_declarado": 0,
     "uso_na_interface_verificado": false
   },
@@ -860,7 +860,10 @@
           },
           {
             "id": "home-introducao",
-            "estado": "portugues_marcado"
+            "estado": "traduzido",
+            "chaves": [
+              "home.hero.introducao"
+            ]
           },
           {
             "id": "home-rodape",
@@ -889,9 +892,9 @@
       }
     ],
     "rotas_parciais_declaradas": 1,
-    "chaves_en_declaradas_em_uso": 8,
-    "ocorrencias_en_declaradas": 8,
-    "regioes_pt_nao_catalogadas": 5,
+    "chaves_en_declaradas_em_uso": 9,
+    "ocorrencias_en_declaradas": 9,
+    "regioes_pt_nao_catalogadas": 4,
     "html_verificado_pelo_inventario": false
   }
 }

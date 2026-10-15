@@ -7,7 +7,7 @@ import { pt } from "@/i18n/pt";
 import { en } from "@/i18n/en";
 import { modoDaPagina } from "./suporte/i18n-build";
 import { aguardarHome, criarNavegadorI18n, type NavegadorI18n } from "./suporte/i18n-browser";
-import { verificarHomeParcial } from "./suporte/i18n-home";
+import { INTRODUCAO_HOME, verificarHomeParcial } from "./suporte/i18n-home";
 
 const require = createRequire(import.meta.url);
 const APP = join(process.cwd(), ".next", "server", "app");
@@ -38,6 +38,8 @@ function assinaturas(violacoes: Violacao[], ingles: boolean): string[] {
       ] as const) {
         html = html.replaceAll(en[chave].texto, pt[chave]);
       }
+      // O contrato integral já validou quantidade e frase resolvida antes desta equivalência.
+      html = html.replaceAll(INTRODUCAO_HOME.en, INTRODUCAO_HOME.pt);
     }
     return `${v.id}: ${html}`;
   }));
@@ -63,7 +65,7 @@ describe("home PT/EN: navegador do build de produção", () => {
           expect(await page.locator("html").getAttribute("lang")).toBe(caminho === "/en" ? "en" : "pt-BR");
           if (caminho === "/en") {
             const avisos = page.locator("[data-i18n-aviso]");
-            expect(await avisos.count()).toBe(5);
+            expect(await avisos.count()).toBe(4);
             for (const aviso of await avisos.all()) {
               expect(await aviso.isVisible()).toBe(true);
               expect(await aviso.getAttribute("lang")).toBe("en");

@@ -1,4 +1,4 @@
-import type { pt } from "./pt";
+import type { IntroducaoHero, pt } from "./pt";
 
 type EntradaEn =
   | { readonly estado: "traduzido"; readonly texto: string }
@@ -16,6 +16,7 @@ export const en = {
   "acesso.criar_conta": { estado: "traduzido", texto: "Create a free account" },
   "home.hero.ja_cadastrado": { estado: "traduzido", texto: "I already have an account" },
   "home.hero.rotulo": { estado: "traduzido", texto: "Public data observatories" },
+  "home.hero.introducao": { estado: "traduzido", texto: "{observatorios} on credit, the power sector, natural gas, basic sanitation, public services and the public accounts of the União (Brazil's federal government) and the states, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish." satisfies IntroducaoHero },
   "home.hero.beneficio_conta": { estado: "traduzido", texto: "All dashboards with a free account" },
   "home.hero.beneficio_evidencia": { estado: "traduzido", texto: "Data source, reference period and limitations for each number" },
   "home.hero.beneficio_gratuidade": { estado: "traduzido", texto: "Free, with no subscription" },
