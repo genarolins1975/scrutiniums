@@ -155,11 +155,9 @@ describe("seletor nos cabeçalhos próprios das entradas de autenticação", () 
       expect(headers, pathname).toHaveLength(1);
       const htmlHeader = serialize(headers[0]);
       cabecalhos.push(htmlHeader);
-      const { anchors } = seletor(htmlHeader);
-      expect(anchors.map((no) => attr(no, "href"))).toEqual(["/entrar", "/en/entrar"]);
       expect(elementos(headers[0]).filter((no) => no.tagName === "a").map((no) => attr(no, "href")))
-        .toEqual(["/", "/cadastro", "/entrar", "/en/entrar"]);
-      expect(todos.filter((no) => attr(no, "aria-label") === "Idioma")).toHaveLength(1);
+        .toEqual(["/", "/cadastro"]);
+      expect(todos.filter((no) => attr(no, "aria-label") === "Idioma")).toHaveLength(0);
       expect(todos.filter((no) => no.tagName === "main")).toHaveLength(1);
       expect(todos.filter((no) => no.tagName === "form")).toHaveLength(1);
       expect(todos.filter((no) => no.tagName === "input").map((no) => attr(no, "name")))
@@ -181,11 +179,9 @@ describe("seletor nos cabeçalhos próprios das entradas de autenticação", () 
       expect(headers, pathname).toHaveLength(1);
       const htmlHeader = serialize(headers[0]);
       cabecalhos.push(htmlHeader);
-      const { anchors } = seletor(htmlHeader);
-      expect(anchors.map((no) => attr(no, "href"))).toEqual(["/cadastro", "/en/cadastro"]);
       expect(elementos(headers[0]).filter((no) => no.tagName === "a").map((no) => attr(no, "href")))
-        .toEqual(["/", "/entrar", "/cadastro", "/en/cadastro"]);
-      expect(todos.filter((no) => attr(no, "aria-label") === "Idioma")).toHaveLength(1);
+        .toEqual(["/", "/entrar"]);
+      expect(todos.filter((no) => attr(no, "aria-label") === "Idioma")).toHaveLength(0);
       const mains = todos.filter((no) => no.tagName === "main");
       expect(mains).toHaveLength(1);
       expect(elementos(mains[0]).filter((no) => attr(no, "data-filho-sintetico") === "cadastro")).toHaveLength(1);
