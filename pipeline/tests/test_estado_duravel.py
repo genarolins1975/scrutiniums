@@ -22,7 +22,8 @@ D="$FAKE_REL/$tag"
 case "$sub" in
   view) [ -d "$D" ] || exit 1; if [ "${3:-}" = "--json" ]; then ls "$D"; fi ;;
   create) mkdir -p "$D" ;;
-  upload) cp "$1" "$D/" ;;
+  upload) if [ -n "${FAKE_FALHA:-}" ] && [[ "$1" == *"$FAKE_FALHA"* ]]; then exit 1; fi
+          [ -e "$D/$(basename "$1")" ] && exit 3; cp "$1" "$D/" ;;
   download) pat=""; dir=""; while [ $# -gt 0 ]; do case "$1" in --pattern) pat="$2"; shift 2;; --dir) dir="$2"; shift 2;; *) shift;; esac; done
             [ -f "$D/$pat" ] || exit 1; cp "$D/$pat" "$dir/" ;;
   delete-asset) rm "$D/$1" ;;
@@ -71,31 +72,73 @@ class EstadoDuravel(unittest.TestCase):
     def _ativos(self):
         return sorted(os.listdir(os.path.join(self.rel, "pipeline-estado")))
 
+    def _salvar(self, geracao, falha=None):
+        env = dict(self.env, ESTADO_GERACAO=geracao)
+        if falha:
+            env["FAKE_FALHA"] = falha
+        return subprocess.run(["bash", SCRIPT, "salvar"], cwd=self.w, env=env, capture_output=True, text=True)
+
     def test_salva_em_partes_e_restaura_identico(self):
         open(os.path.join(self.w, "data", "bronze", "fonte", "a.json"), "w").write("{}")
         sha = self._silver(2_500_000)
-        r = self._roda("salvar")
+        r = self._salvar("20261016000000")
         self.assertEqual(r.returncode, 0, r.stderr)
-        self.assertEqual(self._ativos(), ["pipeline-estado.manifesto", "pipeline-estado.tar.zst.00",
-                                          "pipeline-estado.tar.zst.01", "pipeline-estado.tar.zst.02"])
+        self.assertEqual(self._ativos(), ["pipeline-estado.20261016000000.manifesto",
+                                          "pipeline-estado.20261016000000.tar.zst.00",
+                                          "pipeline-estado.20261016000000.tar.zst.01",
+                                          "pipeline-estado.20261016000000.tar.zst.02"])
         shutil.rmtree(os.path.join(self.w, "data"))
         r = self._roda("restaurar")
         self.assertEqual(r.returncode, 0, r.stderr)
         self.assertEqual(_sha(os.path.join(self.w, "data", "silver", "observatorio.db")), sha)
         self.assertTrue(os.path.exists(os.path.join(self.w, "data", "bronze", "fonte", "a.json")))
 
-    def test_copia_menor_apaga_partes_que_sobraram(self):
+    def test_geracao_nova_inteira_apaga_a_anterior(self):
         self._silver(2_500_000)
-        self._roda("salvar")
-        self._silver(500_000)
-        r = self._roda("salvar")
+        self._salvar("20261016000000")
+        sha = self._silver(500_000)
+        r = self._salvar("20261017000000")
         self.assertEqual(r.returncode, 0, r.stderr)
-        self.assertEqual(self._ativos(), ["pipeline-estado.manifesto", "pipeline-estado.tar.zst.00"])
+        self.assertEqual(self._ativos(), ["pipeline-estado.20261017000000.manifesto",
+                                          "pipeline-estado.20261017000000.tar.zst.00"])
+        shutil.rmtree(os.path.join(self.w, "data"))
+        self._roda("restaurar")
+        self.assertEqual(_sha(os.path.join(self.w, "data", "silver", "observatorio.db")), sha)
 
-    def test_parte_corrompida_ou_release_ausente_falha_sem_extrair(self):
+    def test_envio_interrompido_preserva_a_copia_anterior(self):
+        sha = self._silver(1_500_000)
+        self._salvar("20261016000000")
+        self._silver(2_500_000)
+        r = self._salvar("20261017000000", falha="20261017000000.tar.zst.01")
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("pipeline-estado.20261016000000.manifesto", self._ativos())
+        self.assertNotIn("pipeline-estado.20261017000000.manifesto", self._ativos())
+        shutil.rmtree(os.path.join(self.w, "data"))
+        r = self._roda("restaurar")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(_sha(os.path.join(self.w, "data", "silver", "observatorio.db")), sha)
+
+    def test_geracao_corrompida_cai_para_a_anterior(self):
+        sha = self._silver(1_500_000)
+        self._salvar("20261016000000")
+        # a anterior só sai depois do manifesto novo; aqui ela é recolocada para simular
+        # duas gerações e a mais nova corrompida
+        guardados = {n: open(os.path.join(self.rel, "pipeline-estado", n), "rb").read() for n in self._ativos()}
+        self._silver(500_000)
+        self._salvar("20261017000000")
+        for n, corpo in guardados.items():
+            open(os.path.join(self.rel, "pipeline-estado", n), "wb").write(corpo)
+        with open(os.path.join(self.rel, "pipeline-estado", "pipeline-estado.20261017000000.tar.zst.00"), "ab") as f:
+            f.write(b"lixo")
+        shutil.rmtree(os.path.join(self.w, "data"))
+        r = self._roda("restaurar")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(_sha(os.path.join(self.w, "data", "silver", "observatorio.db")), sha)
+
+    def test_unica_copia_corrompida_ou_release_ausente_falha_sem_extrair(self):
         self._silver(1_500_000)
-        self._roda("salvar")
-        with open(os.path.join(self.rel, "pipeline-estado", "pipeline-estado.tar.zst.00"), "ab") as f:
+        self._salvar("20261016000000")
+        with open(os.path.join(self.rel, "pipeline-estado", "pipeline-estado.20261016000000.tar.zst.00"), "ab") as f:
             f.write(b"lixo")
         shutil.rmtree(os.path.join(self.w, "data"))
         self.assertNotEqual(self._roda("restaurar").returncode, 0)
@@ -116,7 +159,7 @@ class WorkflowUsaCopiaDuravel(unittest.TestCase):
         self.assertLess(i_rest, i_semear)
         self.assertLess(i_pipe, i_salvar)
         self.assertIn("if: steps.cache.outputs.cache-matched-key == ''", w[i_cache:i_semear])
-        self.assertIn("if: steps.pipeline.outcome == 'success'", w[i_pipe:i_salvar + 200])
+        self.assertIn("if: steps.pipeline.outcome == 'success' && github.ref == 'refs/heads/main'", w[i_pipe:i_salvar])
 
 
 if __name__ == "__main__":

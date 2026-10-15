@@ -110,8 +110,10 @@ jobs:
             data/bronze
           key: pipeline-estado-${{ github.run_id }}
 
+      # Só o main publica a cópia: a release não tem separação por ramo, e uma execução
+      # manual num ramo de PR não pode substituir o estado que o main restaura.
       - name: Cópia durável do estado (release pipeline-estado)
-        if: steps.pipeline.outcome == 'success'
+        if: steps.pipeline.outcome == 'success' && github.ref == 'refs/heads/main'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
