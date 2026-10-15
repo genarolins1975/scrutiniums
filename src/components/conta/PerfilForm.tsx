@@ -10,9 +10,9 @@ import { AREAS_ATUACAO, NIVEIS_CARGO, TIPOS_INSTITUICAO, UFS } from "@/lib/perfi
 
 /**
  * Edição do perfil ESTRUTURADO (listas fechadas, sem texto livre)
- * → POST /api/conta/perfil. Contas anteriores à estruturação podem
- * completar o CPF uma única vez; depois disso o campo some (alteração
- * de CPF só pelo canal de privacidade).
+ * → POST /api/conta/perfil. Contas sem CPF podem incluí-lo uma única vez;
+ * para telefone estrangeiro verificado, o preenchimento é opcional.
+ * Depois disso o campo some (alteração de CPF só pelo canal de privacidade).
  */
 export function PerfilForm({
   orgTypeInicial,
@@ -20,12 +20,14 @@ export function PerfilForm({
   orgRoleInicial,
   ufInicial,
   temCpf,
+  cpfObrigatorio = true,
 }: {
   orgTypeInicial: string;
   orgAreaInicial: string;
   orgRoleInicial: string;
   ufInicial: string;
   temCpf: boolean;
+  cpfObrigatorio?: boolean;
 }) {
   const [orgType, setOrgType] = useState(orgTypeInicial);
   const [orgArea, setOrgArea] = useState(orgAreaInicial);
@@ -45,7 +47,7 @@ export function PerfilForm({
       uf: uf ? undefined : "Selecione sua UF.",
       cpf: temCpf || !cpf || isValidCpf(cpf) ? undefined : "CPF inválido. Confira os dígitos.",
     };
-    if (!temCpf && !cpf) novos.cpf = "Informe seu CPF para completar o cadastro.";
+    if (!temCpf && cpfObrigatorio && !cpf) novos.cpf = "Informe seu CPF para completar o cadastro.";
     setErros(novos);
     if (Object.values(novos).some(Boolean)) return;
 
@@ -75,7 +77,7 @@ export function PerfilForm({
     <form onSubmit={onSubmit} noValidate className="space-y-5">
       {!temCpf && (
         <Field
-          label="CPF"
+          label={cpfObrigatorio ? "CPF" : "CPF (opcional)"}
           name="cpf"
           inputMode="numeric"
           autoComplete="off"
@@ -84,7 +86,9 @@ export function PerfilForm({
           value={cpf}
           onChange={(e) => setCpf(formatCpf(e.target.value))}
           error={erros.cpf}
-          hint="Sua conta é anterior à exigência de CPF. Usado apenas para garantir uma conta por pessoa; nunca é exibido nem compartilhado."
+          hint={cpfObrigatorio
+            ? "Sua conta é anterior à exigência de CPF. Usado apenas para garantir uma conta por pessoa; nunca é exibido nem compartilhado."
+            : "Para seu telefone estrangeiro, o CPF é opcional. Você precisará dele antes de trocar para um telefone brasileiro."}
         />
       )}
       <div className="grid gap-5 sm:grid-cols-2">

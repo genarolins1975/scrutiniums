@@ -31,6 +31,7 @@ export default async function ContaPage() {
   const user = await getSessionUser();
   // O layout de /app já protege a rota; isto é apenas defesa em profundidade.
   if (!user) redirect("/entrar");
+  const cpfObrigatorio = cpfObrigatorioParaTelefone(user) !== false;
 
   return (
     <div className="mx-auto w-full max-w-page px-6 py-12">
@@ -63,7 +64,7 @@ export default async function ContaPage() {
             <div>
               <dt className="rotulo mb-2 text-mineral">CPF</dt>
               <dd className="flex flex-wrap items-center gap-3">
-                <span className="text-carvao">{user.cpf ? maskCpf(user.cpf) : cpfObrigatorioParaTelefone(user) === false ? "Dispensado para telefone estrangeiro" : "Não informado"}</span>
+                <span className="text-carvao">{user.cpf ? maskCpf(user.cpf) : cpfObrigatorio ? "Não informado" : "Dispensado para telefone estrangeiro"}</span>
                 {user.cpf && <Selo>Registrado</Selo>}
               </dd>
             </div>
@@ -74,6 +75,7 @@ export default async function ContaPage() {
             orgRoleInicial={user.orgRole ?? ""}
             ufInicial={user.uf ?? ""}
             temCpf={Boolean(user.cpf)}
+            cpfObrigatorio={cpfObrigatorio}
           />
         </section>
 

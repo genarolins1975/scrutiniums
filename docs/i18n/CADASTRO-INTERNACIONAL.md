@@ -25,6 +25,13 @@ cadastrá-lo em Conta antes de solicitar o SMS. A conferência também ocorre no
 endpoint que valida o código. CPFs já registrados são preservados ao trocar de
 telefone; não há exclusão de dados automática.
 
+Na edição do perfil em Conta, quem tem telefone estrangeiro verificado pode
+salvar os campos estruturados sem CPF. O campo continua disponível como opcional
+para permitir sua inclusão antes de uma futura troca para +55. Um CPF informado
+continua sujeito à validação e à unicidade. O formulário mantém a exigência
+anterior para contas brasileiras sem CPF e registros sem confirmação válida do
+telefone; não permite alterar um CPF já registrado.
+
 ## Países e limites de envio
 
 `SMS_PAISES_PERMITIDOS` é uma lista de códigos ISO separados por vírgula, por
