@@ -4,13 +4,10 @@
 
 ## Gerar e conferir
 
-Usar Node 22 e as dependências existentes do projeto. Em clone limpo, preparar os mesmos recortes canônicos utilizados pelo build:
+Usar Node 22 e as dependências existentes do projeto. Em clone limpo, instalar as dependências e conferir as fontes de código:
 
 ```sh
 npm ci
-node scripts/materializar-assistencia.mjs
-node scripts/materializar-seguranca-alimentar.mjs
-node scripts/minify-obs.mjs
 node scripts/cobertura-i18n.mjs
 node scripts/cobertura-i18n.mjs --check
 ```
@@ -24,6 +21,9 @@ Os workflows `atualizar-dados`, `atualizar-energia`, `atualizar-gas` e `previsao
 Para inspecionar os dados atuais, materialize as saídas e execute:
 
 ```bash
+node scripts/materializar-assistencia.mjs
+node scripts/materializar-seguranca-alimentar.mjs
+node scripts/materializar-trabalho-renda.mjs
 node scripts/cobertura-i18n.mjs --gold > /tmp/cobertura-gold.json
 ```
 

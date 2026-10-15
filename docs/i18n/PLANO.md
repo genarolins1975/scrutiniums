@@ -55,7 +55,7 @@ Cada fase de observatório divide a interface por módulos, adiciona textos ingl
 
 ## Estados da cobertura
 
-O script deve agrupar plataforma e cada observatório, identificar as fontes e separar interface, rotas, exportações/comunicações e campos textuais da gold. A saída tem ordenação estável e não inclui horário corrente.
+O relatório versionado agrupa fontes de código da plataforma e de cada observatório. Campos textuais da gold são inspecionados separadamente pelo diagnóstico não versionado `--gold`. As saídas têm ordenação estável e não incluem horário corrente.
 
 - `traduzido`: chave ou campo catalogado, tradução disponível e validada; conta como inglês disponível.
 - `portugues_marcado`: fallback efetivamente apresentado com marcador e idioma; conta como pendência, nunca como tradução.
