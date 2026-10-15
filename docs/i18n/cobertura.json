@@ -520,10 +520,10 @@
   },
   "glossario": {
     "path": "config/glossario-en.json",
-    "sha256": "f845711e4f5d10c9fd8f8dc640c12d836d116f6a1db24f62fd9ee45c506d04e3",
+    "sha256": "6834e56863db9d44fac65e4dc347e1dd650457a9a3f94759f76964974e411e46",
     "fontes": 8,
-    "termos": 27,
-    "nomes_preservados": 9,
+    "termos": 28,
+    "nomes_preservados": 16,
     "pendencias": [
       {
         "id": "editorial.contas_publicas_estaduais",

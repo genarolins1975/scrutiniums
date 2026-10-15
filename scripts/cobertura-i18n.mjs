@@ -10,6 +10,7 @@ import { analisarCodigo, analisarHtml, analisarJson } from "./i18n/analise.mjs";
 import { descobrirFontes } from "./i18n/fontes.mjs";
 import { lerGlossario } from "./i18n/glossario.mjs";
 import { lerCatalogo } from "./i18n/catalogo.mjs";
+import { criarContextoProdutos, REGISTRO_PRODUTOS } from "./i18n/produtos.mjs";
 import { caminhoDaPaginaLiteral, validarRotasLiterais } from "./i18n/rotas.mjs";
 import { validarUsoInterface } from "./i18n/usos.mjs";
 
@@ -155,10 +156,14 @@ export function gerarCobertura(raiz = RAIZ) {
     if (existsSync(join(raiz, path))) throw new Error(`A cobertura inicial precisa integrar o catálogo e as rotas antes de medir ${path}`);
   }
   const manifesto = JSON.parse(readFileSync(join(raiz, INVENTARIO), "utf8"));
-  const glossario = resumirGlossario(raiz, manifesto);
+  const leituraGlossario = resumirGlossario(raiz, manifesto);
+  const glossario = leituraGlossario?.resumo;
   const leituraCatalogo = resumirCatalogo(raiz, manifesto);
   const catalogo = leituraCatalogo?.resumo;
   const fontes = descobrirFontes(raiz, manifesto, { apenasCodigo: true });
+  if (leituraGlossario?.exigeRegistroProdutos && !fontes.ui.some((fonte) => fonte.path === REGISTRO_PRODUTOS)) {
+    throw new Error(`A origem dos nomes de produtos deve estar classificada como interface: ${REGISTRO_PRODUTOS}.`);
+  }
   if (catalogo) {
     // O par validado tem hashes e métricas próprios, sem inflar candidatos de UI.
     for (const grupo of ["ui", "gold", "conteudo", "naoClassificadas", "excluidas"]) {
@@ -242,19 +247,20 @@ function resumirGlossario(raiz, manifesto) {
   const base = realpathSync(raiz);
   if (!realpathSync(path).startsWith(base + sep)) throw new Error("Glossário fora do repositório.");
   const bytes = readFileSync(path);
-  const g = lerGlossario(bytes.toString("utf8"));
+  const g = lerGlossario(bytes.toString("utf8"), criarContextoProdutos(raiz));
   const entradas = Object.values(g.entradas);
-  return {
+  const resumo = {
     path: GLOSSARIO,
     sha256: sha(bytes),
     fontes: Object.keys(g.fontes).length,
     termos: entradas.filter((e) => e.tipo === "termo").length,
-    nomes_preservados: entradas.filter((e) => e.tipo === "nome_proprio").length,
+    nomes_preservados: entradas.filter((e) => e.tipo === "nome_proprio" || e.tipo === "nome_proprio_produto").length,
     pendencias: g.pendencias.map(({ id, pt, depende_de }) => ({ id, pt, depende_de }))
       .sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
     uso_na_interface_verificado: false,
     uso_no_pipeline_verificado: false,
   };
+  return { resumo, exigeRegistroProdutos: entradas.some((e) => e.tipo === "nome_proprio_produto") };
 }
 
 /** Retira métricas de dados: zero seria uma declaração falsa de cobertura da gold. */

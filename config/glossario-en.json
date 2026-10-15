@@ -252,6 +252,20 @@
       ],
       "nota": "A fonte usa Estados / States, no plural e com inicial maiúscula; state é o singular regular em prosa comum. Distingue expressamente estados, Distrito Federal e municípios. Não usar para Estado nacional, condição de um dado ou todos os entes subnacionais. Não inferir exclusão do Distrito Federal do observatório estadual, equiparar states a 27 unidades da Federação ou alterar o universo dos indicadores."
     },
+    "federativo.unidades_federacao": {
+      "tipo": "termo",
+      "pt": "unidades da Federação",
+      "en": "Federation Units",
+      "contexto": "Unidades da Federação como recorte territorial brasileiro; no índice da home, a quantidade vem de primariosEstaduais.cobertura.ufs e mantém o universo publicado de 27 entes, incluindo o Distrito Federal.",
+      "evidencias": [
+        {
+          "fonte": "ibge_pnsb",
+          "trecho": "These results are available for the country, Major Regions and Federation Units",
+          "localizacao": "Description, terceiro parágrafo; a passagem se repete em About, edição 2008, terceiro parágrafo"
+        }
+      ],
+      "nota": "A PNSB usa Federation Units, com esta capitalização, em correspondência a Unidades da Federação na versão portuguesa. O recorte abrange os estados e o Distrito Federal; não substituir por states, municípios ou países. A evidência sustenta a expressão territorial, não fornece a quantidade do índice nem autoriza importar os números da pesquisa PNSB para o observatório."
+    },
     "financeiro.taxa_juros": {
       "tipo": "termo",
       "pt": "taxa de juros",
@@ -424,6 +438,171 @@
         }
       ],
       "nota": "Nome e sigla permanecem em português; explicação inglesa já usada pelo BCB."
+    },
+    "nome.observatorio_contas": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Contas Públicas Federais",
+      "en": "Contas Públicas Federais",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "contas",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on the public accounts of the União (Brazil's federal government).",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "Concerns \nabout the sustainability of public accounts and the \nimpact on the yield curve, the exchange rate, and the \nconduct of monetary policy stood out.",
+          "localizacao": "Seção 1.3, Financial Stability Survey, subseção Risks to financial stability, parágrafo sobre preocupações com riscos fiscais",
+          "pagina": 48
+        },
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "Instruments eligible for CET1 are restricted\nto federally owned public banks.",
+          "localizacao": "Seção 1.2.4, Solvency, trecho sobre instrumentos elegíveis para CET1 e bancos públicos de propriedade federal",
+          "pagina": 42
+        },
+        {
+          "fonte": "ibge_contas",
+          "trecho": "Federal Government's Financial Administration System - Siafi",
+          "localizacao": "About, edição 2024, segundo parágrafo, referência ao Siafi"
+        }
+      ],
+      "nota": "A origem da denominação é o registro do projeto. O BCB sustenta public accounts no contexto fiscal; a explicação funcional de União reutiliza as evidências de propriedade federal do BCB e de Federal Government na expansão do Siafi pelo IBGE. Nenhuma dessas fontes nomeia o produto Scrutiniums. Preservar União e o título português; não apresentar a explicação como tradução jurídica formal, equiparação a central government ou general government, ou definição do perímetro de uma série. A pendência editorial.contas_publicas_federais permanece."
+    },
+    "nome.observatorio_credito": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Crédito",
+      "en": "Crédito",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "credito",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on credit.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "1.2.2 Credit",
+          "localizacao": "Seção 1.2.2, Credit",
+          "pagina": 25
+        }
+      ],
+      "nota": "A origem da denominação é o registro do projeto. O BCB sustenta credit como conceito financeiro na explicação; não nomeia o produto Scrutiniums nem estabelece seu título inglês. Preservar Crédito, inclusive o acento, sem converter nomes oficiais de séries."
+    },
+    "nome.observatorio_eficiencia": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Eficiência Estatal",
+      "en": "Eficiência Estatal",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "eficiencia",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on public services, with scope and limitations stated on each page.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "Provision of essential public services such as electricity, natural gas, water and wastewater services",
+          "localizacao": "Seção 2.2, Credit exposures at risk arising from physical climate risks, Table 2.2.2, coluna Description, linha Utilities",
+          "pagina": 66
+        }
+      ],
+      "nota": "A origem da denominação e do escopo descrito é o registro do projeto e suas páginas. A descrição da tabela do BCB contém public services; a categoria setorial dessa tabela é Utilities. A fonte sustenta somente esse vocabulário, não nomeia o produto, não define seu universo e não equipara Eficiência Estatal a public services, government efficiency ou government effectiveness. A explicação não anuncia conclusão sobre gestão e não resolve a pendência editorial.eficiencia_estatal."
+    },
+    "nome.observatorio_energia": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Setor Elétrico",
+      "en": "Setor Elétrico",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "energia",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on the power sector.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "iea_electricity_summary_2026",
+          "trecho": "prompted higher coal use in the power sector.",
+          "localizacao": "Executive summary, seção sobre geração a carvão, parágrafo iniciado por Coal use declined in India and China"
+        }
+      ],
+      "nota": "A origem da denominação é o registro do projeto. A IEA sustenta power sector como conceito da explicação; não nomeia o produto Scrutiniums. Essa explicação não adota Power Sector como título de produto e não resolve a pendência editorial.setor_eletrico."
+    },
+    "nome.observatorio_estados": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Contas Públicas Estaduais",
+      "en": "Contas Públicas Estaduais",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "estados",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on public accounts of Brazil's Federation Units.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "Concerns \nabout the sustainability of public accounts and the \nimpact on the yield curve, the exchange rate, and the \nconduct of monetary policy stood out.",
+          "localizacao": "Seção 1.3, Financial Stability Survey, subseção Risks to financial stability, parágrafo sobre preocupações com riscos fiscais",
+          "pagina": 48
+        },
+        {
+          "fonte": "ibge_pnsb",
+          "trecho": "These results are available for the country, Major Regions and Federation Units",
+          "localizacao": "Description, terceiro parágrafo; a passagem se repete em About, edição 2008, terceiro parágrafo"
+        }
+      ],
+      "nota": "A origem da denominação e da cobertura do produto é o registro do projeto e o dado estadual consumido. O BCB sustenta public accounts; o IBGE sustenta Federation Units. Nenhuma dessas fontes nomeia o produto Scrutiniums. A explicação conserva o alcance das 27 unidades da Federação, incluindo o Distrito Federal, sem incluir municípios ou reduzir o universo a estados. Não confere eficiência à execução financeira e não resolve a pendência editorial.contas_publicas_estaduais."
+    },
+    "nome.observatorio_gas": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Gás Natural",
+      "en": "Gás Natural",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "gas",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on natural gas.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "iea_natural_gas",
+          "trecho": "Natural gas production, 2022-2025",
+          "localizacao": "Latest findings, título do gráfico Natural gas production, 2022-2025"
+        }
+      ],
+      "nota": "A origem da denominação é o registro do projeto. A IEA sustenta natural gas como conceito da explicação; não nomeia o produto Scrutiniums. O enunciado é breve, não enumera todos os painéis e não funde gás natural, GLP, GNL ou GNV; a página própria de gás de cozinha e suas ressalvas continuam como publicadas."
+    },
+    "nome.observatorio_saneamento": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Saneamento",
+      "en": "Saneamento",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "saneamento",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on water supply and sewage disposal.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "ibge_pnsb",
+          "trecho": "four components: water supply, sewage disposal, management of solid residue and rainwater management.",
+          "localizacao": "Description, segundo parágrafo"
+        },
+        {
+          "fonte": "ibge_pnsb",
+          "trecho": "Sewage Disposal",
+          "localizacao": "Main results, cabeçalho antes da Table 49"
+        }
+      ],
+      "nota": "A origem da denominação e do foco atual do produto é o registro do projeto. O IBGE sustenta water supply e sewage disposal como conceitos da explicação; não nomeia o produto Scrutiniums. A explicação identifica o foco atual em água e esgoto, não redefine basic sanitation, cujo conceito brasileiro inclui quatro componentes, nem promete que todos os componentes tenham dados publicados. Preservar Saneamento; a pendência editorial.saneamento permanece."
     },
     "nome.pix": {
       "tipo": "nome_proprio",
@@ -610,7 +789,7 @@
           "localizacao": "Description, segundo parágrafo"
         }
       ],
-      "nota": "O uso oficial do IBGE é amplo e inclui água, esgotamento, resíduos e águas pluviais. Não restringir a apenas água e esgoto. O nome abreviado do observatório Saneamento ainda exige registrar essa acepção no glossário."
+      "nota": "O uso oficial do IBGE é amplo e inclui água, esgotamento, resíduos e águas pluviais. Não restringir a apenas água e esgoto. O nome do produto Saneamento e seu foco atual estão registrados separadamente em nome.observatorio_saneamento, sem redefinir este conceito amplo."
     },
     "servicos.servicos_publicos": {
       "tipo": "termo",

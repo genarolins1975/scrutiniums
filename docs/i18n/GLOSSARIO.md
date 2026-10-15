@@ -1,6 +1,6 @@
 # Glossário técnico inglês
 
-[`config/glossario-en.json`](../../config/glossario-en.json) registra o vocabulário técnico compartilhado pela interface e pelos futuros modelos de frase do pipeline. Este núcleo contém **21 termos, 8 nomes próprios, 8 fontes e 25 pendências conhecidas**. Ele não traduz páginas nem campos da gold e não comprova cobertura da home.
+[`config/glossario-en.json`](../../config/glossario-en.json) registra o vocabulário técnico compartilhado pela interface e pelos futuros modelos de frase do pipeline. Este núcleo contém **28 termos, 16 nomes próprios, 8 fontes e 25 pendências conhecidas**. Disponibilidade no glossário não comprova tradução de páginas nem de campos da gold; o relatório de cobertura mede separadamente o uso declarado na home.
 
 As fontes foram consultadas em 14 de outubro de 2026. Cada entrada utilizável tem contexto, trecho da publicação e localização; PDFs também indicam a página. Os hashes identificam os arquivos efetivamente consultados. Uma página HTML pode mudar depois da consulta: o hash não é uma promessa de imutabilidade do site, nem uma verificação de rede feita pelo CI.
 
@@ -8,7 +8,7 @@ As fontes foram consultadas em 14 de outubro de 2026. Cada entrada utilizável t
 
 - `schema_version`: versão do formato, inicialmente `1`.
 - `fontes`: publicações identificadas por órgão, título, URL oficial, idioma, formato e SHA-256; `url_pt`, quando disponível, aponta para o correspondente português.
-- `entradas`: conceitos com ID estável, `tipo`, `pt`, `en`, `contexto`, `evidencias` e, quando necessário, `nota` sobre variantes e limites.
+- `entradas`: conceitos com ID estável, `tipo`, `pt`, `en`, `contexto` e, quando necessário, `nota` sobre variantes e limites. Termos e nomes institucionais exigem `evidencias`. Nomes de produtos exigem `origem_nome` no registro do projeto e `evidencias_explicacao` para os conceitos da explicação inglesa.
 - `pendencias`: casos sem tradução utilizável, com ID, texto português, contexto, motivo, arquivos de origem e dependência de pesquisa ou decisão do mantenedor. Não contêm campo inglês.
 
 Os IDs representam conceitos, como `credito.inadimplencia`, não frases nem caminhos de arquivos. Interface e modelos de frase devem referenciar esses IDs. A presença de uma palavra semelhante no texto não autoriza substituição automática: `credito.saldo_carteira_ativa_scr` não traduz qualquer ocorrência de “saldo”.
@@ -40,6 +40,13 @@ As citações mantêm a redação da fonte, inclusive quebras de linha extraída
 | Fiscal | finanças públicas | public finances | IBGE |
 | Fiscal | governo geral | general government | IBGE |
 | Fiscal | governo central | central government | IBGE |
+| Estatística | fonte de dados | data source | IBGE e BCB |
+| Estatística | período de referência | reference period | BCB |
+| Estatística | base de dados | database | IBGE |
+| Federação | estado | state | IBGE |
+| Federação | unidades da Federação | Federation Units | IBGE |
+| Fiscal | contas públicas | public accounts | BCB |
+| Serviços | serviços públicos | public services | BCB |
 
 O saldo documentado é o da carteira ativa dos clientes identificados no SCR. “Taxa de juros” não cobre juros como valor monetário. “Inadimplência” conserva o critério de atraso, universo e denominador da série; não se torna sinônimo automático de *default* ou *non-performing loans*. A fonte usa algumas formas no plural; a nota registra a adoção do singular no glossário, sem criar um mecanismo de flexão ou tradução em tempo de execução.
 
@@ -47,11 +54,23 @@ O conceito brasileiro de saneamento básico inclui água, esgotamento sanitário
 
 ## Nomes preservados
 
-BCB, IBGE, CVM, Secretaria do Tesouro Nacional, Pix, SGS, SCR e Siconfi têm `en` idêntico a `pt`, com explicação inglesa comprovada em `explicacao_en`. A explicação acompanha o nome; não o substitui.
+BCB, IBGE, CVM, Secretaria do Tesouro Nacional, Pix, SGS, SCR, Siconfi e União têm `en` idêntico a `pt`, com explicação inglesa em `explicacao_en` e evidências contextualizadas. A explicação acompanha o nome; não o substitui. A explicação funcional de União não é tradução jurídica formal nem equivalência a governo central ou geral.
 
 `formas_preservadas` registra formas portuguesas adicionais: Banco Central e Banco Central do Brasil para BCB; Tesouro e Tesouro Nacional para a Secretaria do Tesouro Nacional. Cada forma deve continuar literalmente como aparece no texto de origem. A associação ao órgão é explícita e contextual: “Tesouro” em outro sentido não herda a explicação institucional.
 
 As explicações do IBGE, CVM, Pix, SGS e SCR vêm dos relatórios de estabilidade financeira do BCB. As do Banco Central, Tesouro e Siconfi também usam a publicação de contas de governo do IBGE. Para Siconfi, a evidência é a descrição da edição de 2024; a descrição histórica da mesma página tem outra expansão inglesa, registrada como variante na nota.
+
+### Nomes dos produtos Scrutiniums
+
+A variante estrita `nome_proprio_produto` preserva os sete valores de `DOMINIOS.nomeCurto`: Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais, Contas Públicas Estaduais, Saneamento e Gás Natural. A denominação vem do projeto; BCB, IBGE e IEA sustentam apenas os conceitos usados nas explicações inglesas. Nenhuma publicação é apresentada como fonte do nome de um produto Scrutiniums.
+
+`origem_nome` admite somente `src/lib/dominios.ts`, um ID existente no registro e o campo `nomeCurto`. O validador exige `pt === en === nomeCurto`, chave `nome.observatorio_<id>` e origem única. Não aceita aliases livres, `formas_preservadas`, o campo antigo `evidencias` ou um nome inglês inventado. `evidencias_explicacao` mantém os mesmos requisitos de fontes oficiais, referência existente e página de PDF. Os dois tipos anteriores conservam sua evidência obrigatória.
+
+O adaptador lê a AST do registro, sem importar ou executar o módulo da aplicação. Exige declaração única `export const DOMINIOS`, array de objetos explícitos, IDs/nomes literais e ausência de duplicação, spreads, getters e propriedades computadas. Não contém uma segunda lista dos sete nomes/IDs. O carregamento só ocorre para glossários com produtos, uma vez por validação. A CLI usa a raiz do próprio script, mesmo com JSON externo ou outro diretório corrente; a cobertura usa a raiz que recebeu. Arquivos que escapem dessa raiz por symlink são recusados.
+
+A origem deve estar classificada como interface no inventário, incluída na assinatura de fontes e no índice Git antes da publicação do relatório. O detector recebe somente nomes de um glossário validado a partir do JSON original; explicações, evidências, termos e pendências não viram exceções. Mantém os limites de palavra existentes e a verificação da prosa vizinha. Isso não substitui a prova literal dos nomes no HTML consumidor.
+
+As explicações delimitam assunto, sem traduzir títulos nem ampliar cobertura: Saneamento descreve o foco atual em água/esgoto; Eficiência Estatal não anuncia conclusão sobre gestão; as contas estaduais abrangem as unidades da Federação, incluindo DF. A entrada `federativo.unidades_federacao` usa a expressão “Federation Units” da PNSB/IBGE e não importa números daquela pesquisa para a plataforma. As cinco pendências de títulos editoriais ingleses continuam registradas.
 
 ## Pendências e cobertura
 
@@ -61,7 +80,7 @@ As pendências de pesquisa registradas abrangem “saldo” sem contexto, juros 
 
 Uma pendência não pode ser consumida como tradução. Um texto sem tradução continua em português, com o marcador visível `Portuguese only` e `lang="pt-BR"`, quando as páginas inglesas forem implementadas. Preservar um nome próprio não autoriza excluir da verificação de idioma o restante da frase ou do parágrafo.
 
-O relatório de cobertura deve distinguir entradas do glossário de chaves de interface e campos da gold traduzidos. Neste PR, as traduções de interface e gold continuam em zero. O glossário não altera números, definições, arquivos portugueses nem critérios de publicação.
+O relatório de cobertura distingue entradas do glossário de chaves de interface e campos da gold traduzidos. A inclusão dos nomes de produtos não acrescenta mensagens traduzidas nem retira marcadores da home. O glossário não altera números, definições, arquivos portugueses nem critérios de publicação.
 
 ## Inclusão de entradas
 

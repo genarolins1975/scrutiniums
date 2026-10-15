@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import { z } from "zod";
+import { criarContextoProdutos, REGISTRO_PRODUTOS } from "./produtos.mjs";
 
 // Hosts institucionais explícitos. O portal gov.br exige também o órgão no caminho.
 const ORIGENS = {
@@ -55,16 +56,27 @@ const comum = {
   pt: texto,
   en: inglesPublicavel,
   contexto: texto,
-  evidencias: z.array(evidencia).min(1),
   nota: texto.optional(),
 };
+const documentada = { ...comum, evidencias: z.array(evidencia).min(1) };
 const entrada = z.discriminatedUnion("tipo", [
-  z.strictObject({ tipo: z.literal("termo"), ...comum }),
+  z.strictObject({ tipo: z.literal("termo"), ...documentada }),
   z.strictObject({
     tipo: z.literal("nome_proprio"),
-    ...comum,
+    ...documentada,
     explicacao_en: inglesPublicavel,
     formas_preservadas: z.array(texto).min(1).optional(),
+  }),
+  z.strictObject({
+    tipo: z.literal("nome_proprio_produto"),
+    ...comum,
+    origem_nome: z.strictObject({
+      arquivo: z.literal(REGISTRO_PRODUTOS),
+      id: z.string().regex(/^[a-z][a-z0-9_]*$/),
+      campo: z.literal("nomeCurto"),
+    }),
+    explicacao_en: inglesPublicavel,
+    evidencias_explicacao: z.array(evidencia).min(1),
   }),
 ]);
 const pendencia = z.strictObject({
@@ -84,11 +96,13 @@ const glossario = z.strictObject({
 }).superRefine((g, ctx) => {
   const erro = (path, message) => ctx.addIssue({ code: "custom", path, message });
   for (const [id, e] of Object.entries(g.entradas)) {
-    if (e.tipo === "nome_proprio" && e.en !== e.pt) {
+    if ((e.tipo === "nome_proprio" || e.tipo === "nome_proprio_produto") && e.en !== e.pt) {
       erro(["entradas", id, "en"], "Nome próprio deve ser preservado literalmente: en deve ser igual a pt.");
     }
-    e.evidencias.forEach((ev, i) => {
-      const path = ["entradas", id, "evidencias", i];
+    const campo = e.tipo === "nome_proprio_produto" ? "evidencias_explicacao" : "evidencias";
+    const evidencias = e.tipo === "nome_proprio_produto" ? e.evidencias_explicacao : e.evidencias;
+    evidencias.forEach((ev, i) => {
+      const path = ["entradas", id, campo, i];
       if (!Object.hasOwn(g.fontes, ev.fonte)) erro([...path, "fonte"], "Referência a fonte inexistente.");
       else if (g.fontes[ev.fonte].formato === "pdf" && ev.pagina === undefined) {
         erro([...path, "pagina"], "Evidência de PDF exige página.");
@@ -102,8 +116,11 @@ const glossario = z.strictObject({
   });
 });
 
-/** JSON.parse garante JSON estrito; a árvore conserva chaves que ele sobrescreveria. */
-export function lerGlossario(conteudo) {
+/** JSON.parse garante JSON estrito; a árvore conserva chaves que ele sobrescreveria.
+ * @param {string} conteudo
+ * @param {import("./produtos.mjs").ContextoProdutos} [contexto]
+ */
+export function lerGlossario(conteudo, contexto = undefined) {
   const dados = JSON.parse(conteudo);
   const arvore = ts.parseJsonText("glossario-en.json", conteudo);
   function visitar(no) {
@@ -121,14 +138,48 @@ export function lerGlossario(conteudo) {
     ts.forEachChild(no, visitar);
   }
   visitar(arvore);
-  return glossario.parse(dados);
+  const resultado = glossario.parse(dados);
+  const produtos = Object.entries(resultado.entradas).filter(([, e]) => e.tipo === "nome_proprio_produto");
+  if (produtos.length) {
+    if (!contexto || typeof contexto.carregarProdutos !== "function") {
+      throw new Error("Nome próprio de produto exige contexto do registro canônico.");
+    }
+    const registro = contexto.carregarProdutos();
+    if (registro.arquivo !== REGISTRO_PRODUTOS || !(registro.nomes instanceof Map)) {
+      throw new Error("Contexto de produtos incompatível com o registro canônico.");
+    }
+    const origens = new Set();
+    for (const [id, e] of produtos) {
+      if (e.tipo !== "nome_proprio_produto") continue;
+      if (origens.has(e.origem_nome.id)) throw new Error(`Origem de produto duplicada: ${e.origem_nome.id}.`);
+      origens.add(e.origem_nome.id);
+      if (id !== `nome.observatorio_${e.origem_nome.id}`) throw new Error(`Chave incompatível com a origem de produto: ${id}.`);
+      if (!registro.nomes.has(e.origem_nome.id) || registro.nomes.get(e.origem_nome.id) !== e.pt) {
+        throw new Error(`Nome de produto diverge do registro canônico: ${id}.`);
+      }
+    }
+  }
+  return resultado;
+}
+
+/** Só nomes validados podem ser isentados pelo detector; explicações continuam prosa.
+ * @param {string} conteudo
+ * @param {import("./produtos.mjs").ContextoProdutos} [contexto]
+ */
+export function lerNomesPreservados(conteudo, contexto = undefined) {
+  const g = lerGlossario(conteudo, contexto);
+  return Object.values(g.entradas).flatMap((e) => {
+    if (e.tipo === "nome_proprio") return [e.pt, ...(e.formas_preservadas ?? [])];
+    if (e.tipo === "nome_proprio_produto") return [e.pt];
+    return [];
+  });
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     if (process.argv.length > 3) throw new Error("Uso: node scripts/i18n/glossario.mjs [arquivo.json]");
     const arquivo = process.argv[2] ?? fileURLToPath(new URL("../../config/glossario-en.json", import.meta.url));
-    const g = lerGlossario(readFileSync(arquivo, "utf8"));
+    const g = lerGlossario(readFileSync(arquivo, "utf8"), criarContextoProdutos(fileURLToPath(new URL("../../", import.meta.url))));
     console.log(`Glossário válido: ${Object.keys(g.entradas).length} entradas, ${g.pendencias.length} pendências; validação offline.`);
   } catch (erro) { console.error(erro.message); process.exitCode = 1; }
 }

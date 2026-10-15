@@ -81,6 +81,8 @@ Cada fase de observatório divide a interface por módulos, adiciona textos ingl
 
 ## Estados da cobertura
 
+O recorte de proveniência registra os sete nomes curtos dos produtos a partir de `DOMINIOS.nomeCurto`, com explicações conceituais sustentadas por fontes oficiais e origem interna separada. A cobertura exige que esse registro esteja entre as fontes de interface assinadas; nomes preservados não contam como traduções de UI ou gold. O índice da home continua em português marcado até seu próprio recorte. O vínculo verificável entre mensagens técnicas dos catálogos e IDs/equivalentes do glossário permanece uma tarefa explícita da fase 0.
+
 O relatório versionado agrupa fontes de código da plataforma e de cada observatório. Campos textuais da gold são inspecionados separadamente pelo diagnóstico não versionado `--gold`. As saídas têm ordenação estável e não incluem horário corrente.
 
 - `traduzido`: chave ou campo catalogado, tradução disponível e validada; conta como inglês disponível.

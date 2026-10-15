@@ -1,6 +1,9 @@
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import type { DefaultTreeAdapterMap } from "parse5";
 import { expect } from "vitest";
-import glossario from "../../../config/glossario-en.json";
+import { lerNomesPreservados } from "../../../scripts/i18n/glossario.mjs";
+import { criarContextoProdutos } from "../../../scripts/i18n/produtos.mjs";
 
 export type No = DefaultTreeAdapterMap["node"];
 export type Elemento = DefaultTreeAdapterMap["element"];
@@ -49,9 +52,10 @@ export function conteudo(no: No): Forma[] {
   return saida;
 }
 
-const nomesProprios = Object.values(glossario.entradas)
-  .filter((entrada) => entrada.tipo === "nome_proprio")
-  .flatMap((entrada) => [entrada.pt, ...("formas_preservadas" in entrada ? entrada.formas_preservadas : [])]);
+const nomesProprios = lerNomesPreservados(
+  readFileSync(new URL("../../../config/glossario-en.json", import.meta.url), "utf8"),
+  criarContextoProdutos(fileURLToPath(new URL("../../../", import.meta.url))),
+);
 const escapar = (valor: string) => valor.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 function semNomes(textoOriginal: string, nomes: readonly string[]): string {
   return [...nomes].sort((a, b) => b.length - a.length).reduce((restante, nome) =>

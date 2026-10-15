@@ -68,7 +68,9 @@ describe("contrato offline do glossário inglês", () => {
     const resultado = ler(entrada);
     expect(resultado).toStrictEqual(entrada);
     expect(resultado.entradas["teste.termo"].en).toBe("  Synthetic term  ");
-    expect(resultado.entradas["teste.termo"].evidencias[0].trecho).toBe(evidencia().trecho);
+    const termo = resultado.entradas["teste.termo"];
+    if (termo.tipo !== "termo") throw new Error("A fixture deve continuar sendo um termo documentado.");
+    expect(termo.evidencias[0].trecho).toBe(evidencia().trecho);
   });
 
   it("aceita evidência HTML sem inventar página e pendência do mantenedor", () => {
