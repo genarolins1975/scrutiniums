@@ -3,7 +3,7 @@ import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { executar, gerarCobertura } from "../../scripts/cobertura-i18n.mjs";
+import { executar, gerarCobertura, gerarCoberturaGold } from "../../scripts/cobertura-i18n.mjs";
 
 const temporarios: string[] = [];
 afterEach(() => { for (const raiz of temporarios.splice(0)) rmSync(raiz, { recursive: true, force: true }); });
@@ -48,9 +48,11 @@ describe("glossário no relatório de cobertura", () => {
     const gold = readFileSync(join(raiz, "gold/base.json"));
     executar([], raiz);
     const original = readFileSync(join(raiz, RELATORIO));
+    expect(gerarCobertura(raiz).dominios.plataforma.gold).toBeUndefined();
+    expect(gerarCoberturaGold(raiz).dominios.plataforma.campos_catalogados.com_ingles).toBe(0);
     expect(gerarCobertura(raiz)).toMatchObject({
       glossario: { path: ARQUIVO, fontes: 1, termos: 1, nomes_preservados: 0, pendencias: [{ id: "editorial.pendente", pt: "Nome pendente", depende_de: "mantenedor" }], uso_na_interface_verificado: false, uso_no_pipeline_verificado: false },
-      dominios: { plataforma: { interface: { chaves_catalogadas: { traduzidas: 0 }, percentual_traduzido: null }, gold: { campos_catalogados: { com_ingles: 0 } }, cobertura_completa: false } },
+      dominios: { plataforma: { interface: { chaves_catalogadas: { traduzidas: 0 }, percentual_traduzido: null }, cobertura_completa: false } },
     });
     expect(executar(["--check"], raiz)).toContain("confere");
     escrever(raiz, ARQUIVO, { ...glossario, entradas: { "energia.eletricidade": { ...glossario.entradas["energia.eletricidade"], nota: "Contexto documental atualizado." } } });
