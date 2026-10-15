@@ -2,10 +2,13 @@
  * Tabela equivalente de um gráfico (acessibilidade e auditoria): recolhida por
  * padrão, com as últimas linhas e o link para a série completa.
  */
-function formata(v: number, casas: number | null | undefined): string {
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
+
+function formata(v: number, casas: number | null | undefined, idioma: Idioma): string {
   return typeof casas === "number"
-    ? v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "\u2212")
-    : v.toLocaleString("pt-BR", { maximumFractionDigits: 2 }).replace(/^-/, "\u2212");
+    ? formatadorNumero(idioma, { minimumFractionDigits: casas, maximumFractionDigits: casas }).format(v).replace(/^-/, "\u2212")
+    : formatadorNumero(idioma, { maximumFractionDigits: 2 }).format(v).replace(/^-/, "\u2212");
 }
 
 export function TabelaDados({
@@ -15,6 +18,7 @@ export function TabelaDados({
   csv,
   limite = 30,
   casas,
+  idioma = "pt",
 }: {
   titulo: string;
   colunas: string[];
@@ -23,6 +27,7 @@ export function TabelaDados({
   limite?: number;
   /** Casas decimais fixas por coluna numérica (null = até 2 casas); padroniza com o texto da página. */
   casas?: (number | null)[];
+  idioma?: Idioma;
 }) {
   const ult = linhas.slice(-limite);
   return (
@@ -47,7 +52,7 @@ export function TabelaDados({
               <tr key={i} className="odd:bg-papel">
                 {l.map((v, j) => (
                   <td key={j} className="px-2 py-1 text-carvao">
-                    {v === null || v === undefined ? <span className="text-mineral">sem dado</span> : typeof v === "number" ? formata(v, casas?.[j]) : v}
+                    {v === null || v === undefined ? <span className="text-mineral">sem dado</span> : typeof v === "number" ? formata(v, casas?.[j], idioma) : v}
                   </td>
                 ))}
               </tr>

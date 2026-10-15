@@ -19,6 +19,7 @@
  * (null ou undefined, "sem dado") e "não se aplica" (NAO_SE_APLICA).
  */
 import { num, pct, sinal, unidadeConcordante } from "@/lib/energia/formato";
+import type { Idioma } from "@/lib/idioma";
 
 /* ---------- números ---------- */
 
@@ -72,9 +73,9 @@ export function casasDoPasso(passo: number): number {
   return 8;
 }
 
-/** Rótulo de tick em pt-BR com as casas do passo e sinal de menos tipográfico. */
-export function rotuloTick(v: number, passo: number): string {
-  return num(limpa(v), casasDoPasso(passo));
+/** Rótulo de tick com as casas do passo e sinal de menos tipográfico; português por padrão. */
+export function rotuloTick(v: number, passo: number, idioma: Idioma = "pt"): string {
+  return num(limpa(v), casasDoPasso(passo), idioma);
 }
 
 /**
@@ -219,23 +220,23 @@ export function empilhar(valores: readonly (number | null | undefined)[]): Pilha
 export const SEM_DADO_TEXTO = "sem dado";
 
 /**
- * Valor com unidade em pt-BR. Ausência vira "sem dado"; o arredondamento
+ * Valor com unidade, português por padrão. Ausência vira "sem dado"; o arredondamento
  * acontece antes do sinal, para que −0,04 com uma casa apareça como "0,0" e
  * não como "−0,0". Percentual cola o símbolo ("12,3%"); demais unidades usam
  * espaço não separável.
  */
-export function formatarValor(v: number | null | undefined, casas = 1, unidade = ""): string {
+export function formatarValor(v: number | null | undefined, casas = 1, unidade = "", idioma: Idioma = "pt"): string {
   if (!valido(v)) return SEM_DADO_TEXTO;
   const r = arredonda(v, casas);
-  if (unidade === "%") return pct(r, casas);
-  return unidade ? `${num(r, casas)} ${unidadeConcordante(r, unidade)}` : num(r, casas);
+  if (unidade === "%") return pct(r, casas, idioma);
+  return unidade ? `${num(r, casas, idioma)} ${unidadeConcordante(r, unidade)}` : num(r, casas, idioma);
 }
 
 /** Diferença com sinal explícito (+ ou −, tipográfico) e unidade; zero após arredondar não leva sinal. */
-export function formatarDiferenca(v: number | null | undefined, casas = 1, unidade = ""): string {
+export function formatarDiferenca(v: number | null | undefined, casas = 1, unidade = "", idioma: Idioma = "pt"): string {
   if (!valido(v)) return SEM_DADO_TEXTO;
   const r = arredonda(v, casas);
-  return sinal(r, casas, unidade ? ` ${unidade}` : "");
+  return sinal(r, casas, unidade ? ` ${unidade}` : "", idioma);
 }
 
 /** Diferença entre valor e referência; null quando qualquer um dos dois falta. */

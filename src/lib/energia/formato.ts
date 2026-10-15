@@ -4,7 +4,9 @@
  * "AAAA-MM-DDTHH:MM", horário de Brasília) e são formatadas sem conversão de
  * fuso; carimbos de captura chegam em UTC ("...Z") e são exibidos em Brasília.
  */
-const L = "pt-BR";
+import { fmtCurrency, formatadorDataHora, formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
+
 export const AUSENTE = "–";
 
 /**
@@ -14,32 +16,33 @@ export const AUSENTE = "–";
  */
 export const FUSO_SEM_OFFSET_ENERGIA = "Brasília";
 
-export function num(v: number | null | undefined, casas = 1): string {
+export function num(v: number | null | undefined, casas = 1, idioma: Idioma = "pt"): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return AUSENTE;
   // sinal de menos tipográfico (U+2212), o mesmo de sinal(), em vez do hífen
-  return v.toLocaleString(L, { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "\u2212");
+  return formatadorNumero(idioma, { minimumFractionDigits: casas, maximumFractionDigits: casas }).format(v).replace(/^-/, "\u2212");
 }
 
-export function reais(v: number | null | undefined, casas = 2): string {
+export function reais(v: number | null | undefined, casas = 2, idioma: Idioma = "pt"): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return AUSENTE;
-  return `R$\u00a0${num(v, casas)}`; // espaço não separável: "R$" nunca fica sozinho no fim da linha
+  if (idioma === "en") return fmtCurrency(v, "BRL", casas, idioma).replace(/^-/, "\u2212");
+  return `R$\u00a0${num(v, casas, idioma)}`; // espaço não separável: "R$" nunca fica sozinho no fim da linha
 }
 
-export function pct(v: number | null | undefined, casas = 1): string {
+export function pct(v: number | null | undefined, casas = 1, idioma: Idioma = "pt"): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return AUSENTE;
-  return `${num(v, casas)}%`;
+  return `${num(v, casas, idioma)}%`;
 }
 
 /** Fração 0..1 como percentual. */
-export function fracPct(v: number | null | undefined, casas = 1): string {
+export function fracPct(v: number | null | undefined, casas = 1, idioma: Idioma = "pt"): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return AUSENTE;
-  return pct(v * 100, casas);
+  return pct(v * 100, casas, idioma);
 }
 
-export function sinal(v: number | null | undefined, casas = 1, sufixo = ""): string {
+export function sinal(v: number | null | undefined, casas = 1, sufixo = "", idioma: Idioma = "pt"): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return AUSENTE;
   const s = v > 0 ? "+" : v < 0 ? "−" : "";
-  return `${s}${num(Math.abs(v), casas)}${sufixo}`;
+  return `${s}${num(Math.abs(v), casas, idioma)}${sufixo}`;
 }
 
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
@@ -79,18 +82,18 @@ export function horaLocal(ref: string): string {
 }
 
 /** Carimbo UTC ("...Z") exibido no horário de Brasília. */
-export function carimbo(iso: string | null | undefined): string {
+export function carimbo(iso: string | null | undefined, idioma: Idioma = "pt"): string {
   if (!iso) return AUSENTE;
   const d = new Date(iso.endsWith("Z") || iso.includes("+") ? iso : `${iso}Z`);
   if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleString(L, {
+  return formatadorDataHora(idioma, {
     timeZone: "America/Sao_Paulo",
-    day: "2-digit",
-    month: "2-digit",
+    day: idioma === "en" ? "numeric" : "2-digit",
+    month: idioma === "en" ? "short" : "2-digit",
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-  }) + " (Brasília)";
+  }).format(d) + " (Brasília)";
 }
 
 /**
@@ -109,8 +112,8 @@ export function unidadeConcordante(v: number, unidade: string): string {
   return Math.abs(v) === 1 && SINGULAR[unidade] ? SINGULAR[unidade] : unidade;
 }
 
-export function plural(n: number, um: string, varios: string): string {
-  return `${n.toLocaleString(L)} ${n === 1 ? um : varios}`;
+export function plural(n: number, um: string, varios: string, idioma: Idioma = "pt"): string {
+  return `${formatadorNumero(idioma, {}).format(n)} ${n === 1 ? um : varios}`;
 }
 
 export const NOME_SM: Record<string, string> = {
@@ -169,7 +172,7 @@ export function rotuloRegra(chave: string): string {
 /** Identificador de lei do Senado ("LEI-10607-2002-12-19") como o leitor escreve: "Lei 10.607, de 19/12/2002". */
 export function normaLegivel(id: string): string {
   const m = /^LEI-(\d+)-(\d{4})-(\d{2})-(\d{2})$/.exec(id);
-  return m ? `Lei ${Number(m[1]).toLocaleString("pt-BR")}, de ${m[4]}/${m[3]}/${m[2]}` : id;
+  return m ? `Lei ${formatadorNumero("pt", {}).format(Number(m[1]))}, de ${m[4]}/${m[3]}/${m[2]}` : id;
 }
 
 /**

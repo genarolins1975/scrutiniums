@@ -4,6 +4,8 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import {
   diferencaPar,
   dominioBonito,
@@ -60,6 +62,7 @@ export type GraficoPontosProps = {
   itens: ParEntidade[];
   unidade: string;
   casas?: number;
+  idioma?: Idioma;
   /** Ex.: "Perda realizada", "DEC apurado". */
   rotuloValor: string;
   /** Ex.: "Referência regulatória", "Limite". */
@@ -118,6 +121,7 @@ export function GraficoPontos({
   itens,
   unidade,
   casas = 1,
+  idioma = "pt",
   rotuloValor,
   rotuloReferencia,
   unidadeDiferenca,
@@ -195,6 +199,7 @@ export function GraficoPontos({
     );
   }
 
+  const contagem = formatadorNumero(idioma, {}).format(n);
   const w = largura;
   const hc = alturaLinha;
   const h = n * hc;
@@ -210,7 +215,7 @@ export function GraficoPontos({
   // a trilha deixa 22 px nas pontas para o rótulo da primeira e da última marca ("74.000") não sair do gráfico
   const x = escalaLinear([dom.min, dom.max], rotuloEmCima ? [22, w - 22] : [colunaRotulo + 12, w - colunaDif - 12]);
   // marcas do eixo que cabem sem encostar na vizinha (a 390 px "500.000" e "1.000.000" saíam coladas)
-  const ticksEixo = ticksQueCabem(dom.ticks, x, (t) => rotuloTick(t, dom.passo).length * PX_CARACTERE, 10);
+  const ticksEixo = ticksQueCabem(dom.ticks, x, (t) => rotuloTick(t, dom.passo, idioma).length * PX_CARACTERE, 10);
   const temAusencia = lista.some((p) => !valido(p.valor) || !valido(p.referencia));
 
   const ids = lista.map((p) => p.id);
@@ -221,8 +226,8 @@ export function GraficoPontos({
     const dif = diferencaPar(p.valor, p.referencia);
     const sentido = sentidoDiferenca(dif, casas);
     return (
-      `${p.rotulo}: ${rotuloValor} ${formatarValor(p.valor, casas, unidade)}; ${rotuloReferencia} ${formatarValor(p.referencia, casas, unidade)}; ` +
-      (sentido ? `diferença ${formatarDiferenca(dif, casas, uDif)}, ${sentidos[sentido]}` : "diferença sem dado")
+      `${p.rotulo}: ${rotuloValor} ${formatarValor(p.valor, casas, unidade, idioma)}; ${rotuloReferencia} ${formatarValor(p.referencia, casas, unidade, idioma)}; ` +
+      (sentido ? `diferença ${formatarDiferenca(dif, casas, uDif, idioma)}, ${sentidos[sentido]}` : "diferença sem dado")
     );
   };
 
@@ -329,7 +334,7 @@ export function GraficoPontos({
           className="tabular-nums"
           data-diferenca={dif === null ? "sem-dado" : dif}
         >
-          {formatarDiferenca(dif, casas, uDif)}
+          {formatarDiferenca(dif, casas, uDif, idioma)}
         </text>
         {focoVisivel === p.id && (
           <rect data-nao-exportar="" x="1" y={y0 + 1} width={Math.max(0, w - 2)} height={Math.max(0, hc - 2)} fill="none" stroke="var(--cor-energia)" strokeWidth="2" rx="2" />
@@ -364,7 +369,7 @@ export function GraficoPontos({
               </svg>
               {rotuloValor}
             </span>
-            <span className={`tabular-nums ${valido(pa.valor) ? "font-medium text-carvao" : "italic text-carvao-muted"}`}>{formatarValor(pa.valor, casas, unidade)}</span>
+            <span className={`tabular-nums ${valido(pa.valor) ? "font-medium text-carvao" : "italic text-carvao-muted"}`}>{formatarValor(pa.valor, casas, unidade, idioma)}</span>
           </li>
           <li className="flex items-center justify-between gap-3">
             <span className="flex items-center gap-1.5 text-carvao-muted">
@@ -374,13 +379,13 @@ export function GraficoPontos({
               {rotuloReferencia}
             </span>
             <span className={`tabular-nums ${valido(pa.referencia) ? "font-medium text-carvao" : "italic text-carvao-muted"}`}>
-              {formatarValor(pa.referencia, casas, unidade)}
+              {formatarValor(pa.referencia, casas, unidade, idioma)}
             </span>
           </li>
           <li className="flex justify-between gap-3 border-t border-linha pt-0.5">
             <span className="text-carvao-muted">Diferença</span>
             <span className="text-right tabular-nums text-carvao">
-              {sentido ? `${formatarDiferenca(dif, casas, uDif)}, ${sentidos[sentido]}` : "sem dado: falta um dos valores"}
+              {sentido ? `${formatarDiferenca(dif, casas, uDif, idioma)}, ${sentidos[sentido]}` : "sem dado: falta um dos valores"}
             </span>
           </li>
         </ul>
@@ -463,7 +468,7 @@ export function GraficoPontos({
         <g transform={rotuloEmCima ? "translate(0 14)" : undefined}>
           {ticksEixo.map((t) => {
             const px = x(t);
-            const rotulo = rotuloTick(t, dom.passo);
+            const rotulo = rotuloTick(t, dom.passo, idioma);
             const meia = (rotulo.length * PX_CARACTERE) / 2;
             return (
               <g key={t}>
@@ -494,14 +499,14 @@ export function GraficoPontos({
       </div>
       {h > alturaMaxima && (
         <p className="mt-1 flex flex-wrap items-center gap-x-3 text-xs text-mineral" data-aviso-rolagem="true">
-          <span>{todas ? `Todas as ${n.toLocaleString("pt-BR")} entidades.` : `O gráfico mostra só parte das ${n.toLocaleString("pt-BR")} entidades, na ordem escolhida.`}</span>
+          <span>{todas ? `Todas as ${contagem} entidades.` : `O gráfico mostra só parte das ${contagem} entidades, na ordem escolhida.`}</span>
           <button
             type="button"
             aria-expanded={todas}
             onClick={() => setTodas((t) => !t)}
             className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao"
           >
-            {todas ? "Mostrar só o início" : `Mostrar todas as ${n.toLocaleString("pt-BR")}`}
+            {todas ? "Mostrar só o início" : `Mostrar todas as ${contagem}`}
           </button>
         </p>
       )}
@@ -510,7 +515,7 @@ export function GraficoPontos({
       </p>
       <details className="mt-3 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Dados do gráfico em tabela ({n.toLocaleString("pt-BR")} {n === 1 ? "linha" : "linhas"})
+          Dados do gráfico em tabela ({contagem} {n === 1 ? "linha" : "linhas"})
         </summary>
         <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
           <table className="w-full border-collapse tabular-nums">
@@ -542,9 +547,9 @@ export function GraficoPontos({
                       {p.rotulo}
                       {sel && <span className="sr-only"> (selecionada)</span>}
                     </th>
-                    <td className={`px-2 py-1 text-right ${valido(p.valor) ? "text-carvao" : ausente}`}>{formatarValor(p.valor, casas)}</td>
-                    <td className={`px-2 py-1 text-right ${valido(p.referencia) ? "text-carvao" : ausente}`}>{formatarValor(p.referencia, casas)}</td>
-                    <td className={`px-2 py-1 text-right ${dif === null ? ausente : "text-carvao"}`}>{formatarDiferenca(dif, casas)}</td>
+                    <td className={`px-2 py-1 text-right ${valido(p.valor) ? "text-carvao" : ausente}`}>{formatarValor(p.valor, casas, "", idioma)}</td>
+                    <td className={`px-2 py-1 text-right ${valido(p.referencia) ? "text-carvao" : ausente}`}>{formatarValor(p.referencia, casas, "", idioma)}</td>
+                    <td className={`px-2 py-1 text-right ${dif === null ? ausente : "text-carvao"}`}>{formatarDiferenca(dif, casas, "", idioma)}</td>
                   </tr>
                 );
               })}
