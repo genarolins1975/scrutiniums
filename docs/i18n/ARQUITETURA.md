@@ -24,7 +24,7 @@ Esta é a alternativa ao movimento integral para `[lang]` com rewrite português
 
 O contrato aceita caminhos internos absolutos de páginas. APIs, namespaces de assets, arquivos e handlers de imagens sociais ficam fora dele, antes e depois do prefixo. Recursos com extensão ou novos formatos especiais exigem integração explícita; não inferir uma página a partir de qualquer arquivo público. A query interna, inclusive `de`, não é interpretada. Esse helper não substitui `safeInternalPath` nem autoriza redirecionamentos após login. O middleware recebe pathname e query, mas não recebe fragmento; a preservação do hash ocorre nos links e no cliente.
 
-O seletor no cabeçalho público e em cada observatório leva à mesma página no outro idioma e grava a preferência em cookie; a URL continua sendo a autoridade para renderizar. Só oferecer irmãs já existentes durante a implantação incremental. Não haverá sugestão por `Accept-Language` nesta implementação inicial.
+O seletor no cabeçalho público e em cada observatório leva à mesma página no outro idioma e grava a preferência em cookie; a URL continua sendo a autoridade para renderizar. Só oferecer inglês quando a irmã tiver tradução publicada, inclusive tradução parcial com regiões portuguesas marcadas. Não haverá sugestão por `Accept-Language` nesta implementação inicial.
 
 `rotasPublicas.ts` aplica a mesma lista à rota portuguesa e à irmã inglesa. Um caminho normalizado somente para páginas alimenta a lista pública, a validação de Mobilidade e a guarda administrativa; o pathname original preserva o destino de retorno. APIs continuam nos endereços atuais, com a mesma proteção, sem aliases `/en/api`. Sessões, revogação e autorização administrativa permanecem obrigatórias, inclusive em `/en/app/admin`. Login inglês preserva o destino completo em `/en`, inclusive no cookie de destino. Rotas desconhecidas continuam fechadas por padrão; conhecer um idioma nunca concede acesso.
 
@@ -32,9 +32,9 @@ APIs, assets, arquivos gold e seus endereços atuais permanecem compartilhados. 
 
 Um helper servidor compõe metadados por rota e idioma: canonical próprio; hreflang recíproco `pt-BR`, `en` e `x-default` português; `og:locale` como `pt_BR` ou `en_US` e `og:locale:alternate`; `inLanguage` como `pt-BR` ou `en` no JSON-LD. Preservar `noindex` e demais condições editoriais existentes. Wrappers não herdam silenciosamente canonical ou descrição portugueses como se estivessem traduzidos. Quando faltar texto, os metadados declaram a indisponibilidade em inglês e não inventam uma descrição do indicador.
 
-O sitemap parte do inventário existente, filtra pela lista pública e emite as duas versões, com `alternates.languages`. Nunca inclui painéis fechados. As restrições de robots aplicáveis à conta e a fluxos sensíveis também abrangem as irmãs inglesas. Testes verificam metadados no HTML e no handler da SPA, além da configuração em código.
+O sitemap parte do inventário existente, filtra pela lista pública e emite as duas versões com `alternates.languages` somente quando há tradução publicada. Nunca inclui painéis fechados, etapas de SMS ou irmãs com conteúdo integralmente em português. As restrições de robots aplicáveis à conta e a fluxos sensíveis também abrangem as irmãs inglesas. Testes verificam metadados no HTML e no handler da SPA, além da configuração em código.
 
-**Primeiro par implementado:** `/sobre` e `/en/sobre`, declarado em `config/i18n-inventario.json`, compartilham o corpo português completo, incluindo cabeçalho e rodapé. A irmã inglesa usa `force-static`, documento inglês, aviso visível **Portuguese only** e região portuguesa identificada por `data-i18n-estado="portugues_marcado"`. Canonical, hreflang e locales são recíprocos; o head inglês informa a ausência de tradução e não herda imagens sociais portuguesas. Sobre não emite JSON-LD. O sitemap anuncia somente esse par; os links do conteúdo continuam apontando para páginas existentes em português. Não há seletor global nem publicação de `/en` nesta entrega.
+**Primeiro par implementado:** `/sobre` e `/en/sobre`, declarado em `config/i18n-inventario.json`, compartilham o corpo português completo, incluindo cabeçalho e rodapé. A irmã inglesa usa `force-static`, documento inglês, aviso visível **Portuguese only** e região portuguesa identificada por `data-i18n-estado="portugues_marcado"`. Cada idioma tem canonical próprio; o fallback não produz hreflang. O head inglês informa a ausência de tradução, recebe `noindex` e não herda imagens sociais portuguesas. Sobre não emite JSON-LD. O sitemap conserva somente a página portuguesa desse par; os links do conteúdo continuam apontando para páginas existentes em português. Não há seletor global nem publicação de `/en` nesta entrega.
 
 O registro puro `src/lib/i18n-rotas.ts` deriva pares do mesmo inventário, sem outra lista de abertura. A consulta é exata: declarar `/sobre` não publica `/en/sobre/erros` nem uma imagem social inglesa. A guarda administrativa trata também `/en/app/admin`, antes mesmo de haver um wrapper. Enquanto a página inglesa de entrada não existir, o login usa `/entrar` e conserva o destino inglês original.
 
@@ -100,3 +100,12 @@ Cada PR tem título e descrição em português, traduções realizadas, termos 
 ## Revisão do contrato de cobertura
 
 O relatório versionado e o `--check` dependem somente de fontes de código: interface, dicionários, glossário, inventário de rotas e modelos de frase. A situação da gold é calculada por `--gold`, em relatório não versionado. A publicação diária de dados não depende da cobertura i18n; os quatro workflows de dados permanecem iguais aos da main. Esta regra substitui o contrato anterior que incluía hashes e contagens da gold no arquivo versionado.
+
+### Indexação condicionada à tradução publicada
+
+A presença de uma irmã no registro não comprova tradução. Rotas inglesas com
+`conteudo: "portugues_marcado"` recebem `noindex`, não entram no sitemap e não
+produzem alternates de idioma. A página portuguesa continua indexável. O seletor
+só oferece inglês quando há tradução publicada, inclusive tradução parcial com
+os trechos portugueses explicitamente marcados. As etapas de autenticação
+`/entrar/sms` e `/entrar/sms/verificar`, em ambos os idiomas, ficam fora do sitemap.

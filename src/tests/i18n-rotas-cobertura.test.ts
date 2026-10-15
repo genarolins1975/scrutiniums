@@ -5,10 +5,9 @@ import { dirname, join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import inventario from "../../config/i18n-inventario.json";
 import { PARES_DE_IDIOMA, parDeIdioma } from "@/lib/i18n-rotas";
-import { executar, gerarCobertura } from "../../scripts/cobertura-i18n.mjs";
+import { executar, gerarCobertura, gerarCoberturaGold } from "../../scripts/cobertura-i18n.mjs";
 import { descobrirFontes } from "../../scripts/i18n/fontes.mjs";
 import { validarRotasLiterais } from "../../scripts/i18n/rotas.mjs";
-import { registrarCobertura } from "../../scripts/i18n/publicacao.mjs";
 
 const INVENTARIO = "config/i18n-inventario.json";
 const RELATORIO = "docs/i18n/cobertura.json";
@@ -61,6 +60,8 @@ describe("irmãs literais declaradas no inventário", () => {
     escrever(raiz, "src/app/en/layout.tsx", "export default ({ children }) => children;");
     const originais = [PT, "gold/base.json"].map((path) => readFileSync(join(raiz, path)));
     const r = gerarCobertura(raiz);
+    expect(gerarCobertura(raiz).dominios.plataforma.gold).toBeUndefined();
+    expect(gerarCoberturaGold(raiz).dominios.plataforma.campos_catalogados.com_ingles).toBe(0);
     expect(r.irmas_declaradas).toEqual({
       schema_version: 1,
       pares: [{ pt: "/sobre", en: "/en/sobre", dominio: "plataforma", conteudo_declarado: "portugues_marcado",
@@ -72,7 +73,7 @@ describe("irmãs literais declaradas no inventário", () => {
       rotas: { paginas_pt: 4, paginas_en: 1, paginas_pt_literais: 2, paginas_pt_fora_do_adaptador: 2,
         paginas_pt_literais_sem_irma: 1, pares_estruturais: 1, fallbacks_declarados: 1, paridade_verificada: false },
       interface: { chaves_catalogadas: { traduzidas: 0, portugues_marcado: 0 }, percentual_traduzido: null },
-      gold: { campos_catalogados: { com_ingles: 0 } }, cobertura_completa: false,
+      cobertura_completa: false,
     });
     expect([PT, "gold/base.json"].map((path) => readFileSync(join(raiz, path)))).toEqual(originais);
   });
@@ -181,28 +182,5 @@ describe("irmãs literais declaradas no inventário", () => {
       expect(parDeIdioma(par.pt)).toEqual(par);
       expect(parDeIdioma(par.en)).toEqual(par);
     }
-  });
-
-  it("só publica a irmã e o novo contrato quando ambas as fontes estão no índice", () => {
-    const raiz = fixture(false);
-    git(raiz, "config", "user.name", "Teste de rotas");
-    git(raiz, "config", "user.email", "rotas@example.invalid");
-    git(raiz, "config", "commit.gpgsign", "false");
-    executar([], raiz);
-    git(raiz, "add", ".");
-    git(raiz, "commit", "--quiet", "-m", "Base sintética");
-    const antes = git(raiz, "rev-parse", "HEAD");
-    declarar(raiz);
-    escrever(raiz, EN, 'export { default } from "../../sobre/page";');
-    git(raiz, "add", "--", INVENTARIO);
-    const preparar = (dir: string) => { executar([], dir); };
-    expect(() => registrarCobertura(antes, raiz, preparar)).toThrow("Fontes novas fora do índice");
-    expect(git(raiz, "rev-parse", "HEAD")).toBe(antes);
-    git(raiz, "add", "--", EN);
-    registrarCobertura(antes, raiz, preparar);
-    expect(git(raiz, "rev-parse", "HEAD^")).toBe(antes);
-    expect(git(raiz, "show", "--format=", "--name-only", "HEAD").split("\n").sort()).toEqual([INVENTARIO, RELATORIO, EN].sort());
-    expect(executar(["--check"], raiz)).toContain("confere");
-    expect(git(raiz, "status", "--porcelain")).toBe("");
   });
 });

@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { en } from "@/i18n/en";
 import type { Idioma } from "./idioma";
-import { parDeIdioma } from "./i18n-rotas";
+import { parDeIdioma, traducaoPublicada } from "./i18n-rotas";
 
-/** Só anuncia alternates quando as duas fontes da página estão declaradas. */
+/** Só anuncia alternates quando há tradução publicada. */
 export function alternativasDeIdioma(caminho: string, idioma: Idioma): Metadata["alternates"] {
   const par = parDeIdioma(caminho);
   if (!par) throw new Error(`Página sem irmã declarada: ${caminho}`);
   return {
     canonical: par[idioma],
-    languages: { "pt-BR": par.pt, en: par.en, "x-default": par.pt },
+    ...(traducaoPublicada(caminho) ? { languages: { "pt-BR": par.pt, en: par.en, "x-default": par.pt } } : {}),
   };
 }
 
@@ -22,6 +22,7 @@ export function metadadosPortuguesApenas(caminho: string): Metadata {
     title: { absolute: titulo },
     description: aviso,
     alternates,
+    robots: { index: false, follow: true },
     openGraph: {
       title: titulo,
       description: aviso,

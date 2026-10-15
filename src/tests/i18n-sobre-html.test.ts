@@ -188,18 +188,14 @@ describe(`Sobre: HTML estático PT/EN (${EXIGIR ? "build obrigatório" : "build 
     expect(meta(pt, "description")).toEqual(["Quem mantém a plataforma, como ela se financia, que regras editoriais seguem as notas, como erros são corrigidos e registrados, como citar, sob qual licença e como entrar em contato."]);
   });
 
-  it("publica canonical próprio e hreflangs recíprocos somente para o par existente", (ctx) => {
+  it("preserva canonical, omite hreflangs do fallback e impede indexação inglesa", (ctx) => {
     const { pt, en } = documentos(ctx);
-    const esperados = [
-      ["pt-BR", "https://scrutiniums.com/sobre"],
-      ["en", "https://scrutiniums.com/en/sobre"],
-      ["x-default", "https://scrutiniums.com/sobre"],
-    ];
     for (const [doc, canonical] of [[pt, "https://scrutiniums.com/sobre"], [en, "https://scrutiniums.com/en/sobre"]] as const) {
       expect(links(doc, "canonical").map((e) => attr(e, "href"))).toEqual([canonical]);
       expect(links(doc, "alternate").filter((e) => attr(e, "hreflang") !== undefined)
-        .map((e) => [attr(e, "hreflang"), attr(e, "href")]).sort()).toEqual([...esperados].sort());
+        .map((e) => [attr(e, "hreflang"), attr(e, "href")]).sort()).toEqual([]);
     }
+    expect(meta(en, "robots").some((valor) => /\bnoindex\b/.test(valor))).toBe(true);
   });
 
   it("preserva a imagem social PT e impede herança portuguesa no cartão EN", (ctx) => {

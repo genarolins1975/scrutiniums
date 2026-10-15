@@ -36,3 +36,9 @@ export function parDeIdioma(href: string): ParDeIdioma | null {
   const caminho = pagina.caminhoPt === "/" ? "/" : pagina.caminhoPt.replace(/\/$/, "");
   return porCaminhoPt.get(caminho) ?? null;
 }
+
+/** Uma irmã que apenas reproduz o português não é uma tradução publicada. */
+export function traducaoPublicada(href: string): boolean {
+  const par = parDeIdioma(href);
+  return !!par && par.conteudo !== "portugues_marcado";
+}

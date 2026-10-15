@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import sitemap from "@/app/sitemap";
-import { PARES_DE_IDIOMA, parDeIdioma } from "@/lib/i18n-rotas";
+import { PARES_DE_IDIOMA, parDeIdioma, traducaoPublicada } from "@/lib/i18n-rotas";
 import { ehApiDeDados, ehRotaPublica, prefetchDoLink } from "@/lib/rotasPublicas";
 
 describe("acesso das irmãs declaradas", () => {
@@ -43,15 +43,15 @@ describe("sitemap dos pares publicados", () => {
 
   it("publica somente irmãs declaradas e públicas, sem duplicar URLs", () => {
     const inglesas = entradas.filter((e) => new URL(e.url).pathname === "/en" || new URL(e.url).pathname.startsWith("/en/"));
-    const esperadas = PARES_DE_IDIOMA.filter((par) => ehRotaPublica(par.pt)).map((par) => base + par.en);
+    const esperadas = PARES_DE_IDIOMA.filter((par) => ehRotaPublica(par.pt) && traducaoPublicada(par.pt) && !par.pt.startsWith("/entrar/sms")).map((par) => base + par.en);
     expect(inglesas.map((e) => e.url).sort()).toEqual(esperadas.sort());
-    expect(inglesas.map((e) => e.url)).toContain(base + "/en/sobre");
+    expect(inglesas.map((e) => e.url)).not.toContain(base + "/en/sobre");
     expect(new Set(entradas.map((e) => e.url)).size).toBe(entradas.length);
     for (const entrada of entradas) expect(ehRotaPublica(new URL(entrada.url).pathname), entrada.url).toBe(true);
   });
 
   it("preserva os dados da entrada PT e produz alternates recíprocos absolutos", () => {
-    for (const par of PARES_DE_IDIOMA.filter((p) => ehRotaPublica(p.pt))) {
+    for (const par of PARES_DE_IDIOMA.filter((p) => ehRotaPublica(p.pt) && traducaoPublicada(p.pt) && !p.pt.startsWith("/entrar/sms"))) {
       const pt = entradas.find((e) => new URL(e.url).pathname === par.pt);
       const en = entradas.find((e) => new URL(e.url).pathname === par.en);
       expect(pt, par.pt).toBeDefined();
@@ -61,7 +61,7 @@ describe("sitemap dos pares publicados", () => {
       });
     }
     for (const entrada of entradas) {
-      if (!parDeIdioma(new URL(entrada.url).pathname)) expect(entrada.alternates?.languages?.en).toBeUndefined();
+      if (!traducaoPublicada(new URL(entrada.url).pathname)) expect(entrada.alternates?.languages?.en).toBeUndefined();
     }
   });
 });
