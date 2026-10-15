@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 import { CountrySelect } from "./CountrySelect";
 import { PhoneField } from "./PhoneField";
+import { digitosMinimosTelefone } from "@/lib/telefone-minimo";
 
 /**
  * Login alternativo sem senha: telefone → código SMS (rota /entrar/sms).
@@ -24,7 +25,7 @@ export function EntrarForm({ paises = COUNTRIES }: { paises?: readonly PaisTelef
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setServerError(undefined);
-    if (phone.replace(/\D/g, "").length < 8) {
+    if (phone.replace(/\D/g, "").length < digitosMinimosTelefone(country)) {
       setPhoneError("Informe um telefone válido com DDD.");
       return;
     }

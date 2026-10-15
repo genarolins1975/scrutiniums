@@ -9,6 +9,7 @@ import { CountrySelect } from "./CountrySelect";
 import { PhoneField } from "./PhoneField";
 import { OtpInput } from "./OtpInput";
 import { ResendCountdown } from "./ResendCountdown";
+import { digitosMinimosTelefone } from "@/lib/telefone-minimo";
 
 type Phase = "solicitar" | "verificar";
 
@@ -41,7 +42,7 @@ export function TelefoneForm({ paises = COUNTRIES }: { paises?: readonly PaisTel
   async function requestCode(): Promise<boolean> {
     setServerError(undefined);
     setInfo(undefined);
-    if (phone.replace(/\D/g, "").length < 8) {
+    if (phone.replace(/\D/g, "").length < digitosMinimosTelefone(country)) {
       setPhoneError("Informe um telefone válido com DDD.");
       return false;
     }
