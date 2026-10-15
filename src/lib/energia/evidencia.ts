@@ -1,5 +1,7 @@
 import type { Download, Periodo } from "@/lib/energia/tipos";
 import { num, pct, reais, sinal } from "@/lib/energia/formato";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Evidência "Comprove este número" (seção 11.5 da especificação): contrato do
@@ -327,10 +329,10 @@ export function resumoTestes(testes: { resultado: string }[]): { aprovado: numbe
 }
 
 /** Como as observações de origem estão identificadas (lista, lista truncada com manifesto ou consulta). */
-export function resumoChaves(ev: Pick<Evidencia, "chaves_origem" | "chaves_total" | "consulta" | "manifesto">): string {
+export function resumoChaves(ev: Pick<Evidencia, "chaves_origem" | "chaves_total" | "consulta" | "manifesto">, idioma: Idioma = "pt"): string {
   const n = ev.chaves_origem.length;
   const total = ev.chaves_total ?? n;
-  const milhar = (x: number) => x.toLocaleString("pt-BR");
+  const milhar = (x: number) => formatadorNumero(idioma, {}).format(x);
   if (n === 0 && ev.consulta) return "Observações selecionadas pela consulta abaixo; a lista não é publicada na interface.";
   if (n === 0) return "Nenhuma chave de origem registrada.";
   if (total > n) {

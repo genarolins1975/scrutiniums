@@ -29,6 +29,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
+import { formatadorNumero } from "@/lib/format";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_CONTRATOS_ANO,
@@ -475,7 +476,7 @@ export default function GeracaoTransmissaoPage() {
                   <ExpansaoTabelaSimples
                     titulo="Lotes com deságio publicado divergente do calculado pela RAP"
                     cabecalho={["Leilão e lote", "Deságio publicado (%)", "Deságio pela RAP (%)"]}
-                    linhas={l.desagio_inconsistente.map((d) => [d.lote, d.desagio_fonte_pct === null ? "sem dado" : d.desagio_fonte_pct.toLocaleString("pt-BR"), d.desagio_calculado_pct === null ? "sem dado" : d.desagio_calculado_pct.toLocaleString("pt-BR")])}
+                    linhas={l.desagio_inconsistente.map((d) => [d.lote, d.desagio_fonte_pct === null ? "sem dado" : formatadorNumero("pt", {}).format(d.desagio_fonte_pct), d.desagio_calculado_pct === null ? "sem dado" : formatadorNumero("pt", {}).format(d.desagio_calculado_pct)])}
                   />
                   <ExpansaoNota>
                     Lotes sem vencedor por motivo: {Object.entries(l.sem_vencedor_por_rotulo).map(([k, n]) => `${k.toLocaleLowerCase("pt-BR")} ${inteiro(n)}`).join("; ")}. Lotes contratados com km não informado:{" "}
@@ -484,7 +485,7 @@ export default function GeracaoTransmissaoPage() {
                   {rede && (
                     <ExpansaoNota>
                       Rede da EPE: contagem informada pelo serviço {inteiro(rede.existente.contagem_informada)} e {inteiro(rede.planejada.contagem_informada)} feições, recebidas {inteiro(rede.existente.linhas)} e{" "}
-                      {inteiro(rede.planejada.linhas)}; geometria generalizada a {rede.generalizacao_grau.toLocaleString("pt-BR")} grau; km fora de qualquer UF {kmTexto(rede.existente.km_fora_de_uf)} (existente) e{" "}
+                      {inteiro(rede.planejada.linhas)}; geometria generalizada a {formatadorNumero("pt", {}).format(rede.generalizacao_grau)} grau; km fora de qualquer UF {kmTexto(rede.existente.km_fora_de_uf)} (existente) e{" "}
                       {kmTexto(rede.planejada.km_fora_de_uf)} (planejada); campo de extensão da fonte fora de escala em {inteiro(rede.planejada.campo_extensao_fora_de_escala.linhas)} linhas planejadas. sha256 das camadas:{" "}
                       <span className="break-all">{rede.existente.sha256}</span> e <span className="break-all">{rede.planejada.sha256}</span>.
                     </ExpansaoNota>

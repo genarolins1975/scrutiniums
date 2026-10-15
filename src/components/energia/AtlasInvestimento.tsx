@@ -1,5 +1,7 @@
 "use client";
 import Link from "@/components/energia/LinkSemPrefetch";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import { MapaCoropletico } from "./MapaCoropletico";
 import { useEstadoUrl } from "./useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -17,9 +19,9 @@ const medidas = {
 type Medida = keyof typeof medidas;
 const esquema = { medida: campo(tiposUrl.opcao(Object.keys(medidas) as Medida[]), "whab" as Medida), uf: campo(tiposUrl.texto({max:2}), "") };
 const cores = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
-const n = (x: number | null) => x === null ? "Sem dado" : x.toLocaleString("pt-BR", {maximumFractionDigits:1});
 
-export function AtlasInvestimento({ linhas, geometria, dataSiga, dataMmgd, anoPop }: { linhas: LinhaAtlas[]; geometria: CamadaGeo; dataSiga: string; dataMmgd: string; anoPop: number | null }) {
+export function AtlasInvestimento({ linhas, geometria, dataSiga, dataMmgd, anoPop, idioma = "pt" }: { linhas: LinhaAtlas[]; geometria: CamadaGeo; dataSiga: string; dataMmgd: string; anoPop: number | null; idioma?: Idioma }) {
+  const n = (x: number | null) => x === null ? "Sem dado" : formatadorNumero(idioma, { maximumFractionDigits: 1 }).format(x);
   const [v, definir] = useEstadoUrl(esquema);
   const m = medidas[v.medida];
   const data = v.medida === "mmgd" || v.medida === "whab" ? dataMmgd : dataSiga;

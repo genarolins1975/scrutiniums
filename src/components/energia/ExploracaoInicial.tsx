@@ -1,6 +1,8 @@
 "use client";
 
 import { energiaConsumida } from "@/lib/energia/energia-consumida";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 import { Children, useEffect, useState, type ReactNode } from "react";
 import { observarAncoras, guardarAncora } from "./navegacao-ancoras";
@@ -34,9 +36,8 @@ export function PerguntasExploraveis({ resumos, children }: { resumos: ResumoIni
   </div>;
 }
 
-const num = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
-
-export function LaboratorioEnergia() {
+export function LaboratorioEnergia({ idioma = "pt" }: { idioma?: Idioma } = {}) {
+  const num = (v: number) => formatadorNumero(idioma, { maximumFractionDigits: 2 }).format(v);
   const [potencia, setPotencia] = useState(1500);
   const [horas, setHoras] = useState(3);
   const [dias, setDias] = useState(30);

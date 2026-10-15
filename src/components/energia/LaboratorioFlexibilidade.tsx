@@ -1,4 +1,6 @@
 "use client";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { bateriaDidatica, cargaDataCenter } from "@/lib/energia/leitura-integrada";
 import { useEstadoUrl } from "./useEstadoUrl";
@@ -15,8 +17,8 @@ const esquema = {
   uso: campo(tiposUrl.numero({ min: 10, max: 100 }), 80, { historico: "replace" }),
   pue: campo(tiposUrl.numero({ min: 1, max: 2.5 }), 1.3, { historico: "replace" }),
 };
-const n = (v: number, casas = 1) => v.toLocaleString("pt-BR", { maximumFractionDigits: casas });
-export function LaboratorioFlexibilidade() {
+export function LaboratorioFlexibilidade({ idioma = "pt" }: { idioma?: Idioma } = {}) {
+  const n = (v: number, casas = 1) => formatadorNumero(idioma, { maximumFractionDigits: casas }).format(v);
   const [v, definir] = useEstadoUrl(esquema);
   const b = bateriaDidatica(v.mw, v.mwh, v.eficiencia / 100, v.compra, v.venda)!;
   const d = cargaDataCenter(v.ti, v.uso / 100, v.pue)!;

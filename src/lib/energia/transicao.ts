@@ -48,6 +48,8 @@ import type { Leitor } from "./estadoUrl";
 import { campo, tiposUrl } from "./estadoUrl";
 import { carimbo, dataBR, mesAno, num, pct, plural } from "./formato";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "./tabela";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /* ================================================================ comum */
 
@@ -102,13 +104,13 @@ export function fator(v: number | null | undefined): string {
  * de 0,01% e diferente de zero, dois algarismos significativos ("0,005%",
  * "0,00097%"), para que uma categoria pequena nunca apareça como zero.
  */
-export function participacaoTexto(v: number | null | undefined): string {
+export function participacaoTexto(v: number | null | undefined, idioma: Idioma = "pt"): string {
   if (!temValor(v)) return SEM_DADO;
   if (v !== 0 && Math.abs(v) < 0.01) {
-    const s = Number(v.toPrecision(2)).toLocaleString("pt-BR", { maximumFractionDigits: 12 });
+    const s = formatadorNumero(idioma, { maximumFractionDigits: 12 }).format(Number(v.toPrecision(2)));
     return `${s}%`;
   }
-  return pct(v, 2);
+  return pct(v, 2, idioma);
 }
 
 /**

@@ -9,11 +9,12 @@ import { prepararEmpresas } from "@/lib/energia/empresas-leitura";
 import type { EmpresasGold, SeriesFinanceiras, CadeiaSocietaria } from "@/lib/energia/tipos-empresas";
 import copel from "../../../../../public/energia/estudos/copel-2025.json";
 import { dataBR } from "@/lib/energia/formato";
+import { formatadorNumero } from "@/lib/format";
 import s from "@/components/energia/LeiturasIntegradas.module.css";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = { title: "Empresas: controle, resultado, investimento e estratégia", alternates: { canonical: "/setor-eletrico/empresas/analise" } };
-const n = (x: number) => x.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const n = (x: number) => formatadorNumero("pt", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(x);
 
 export default function AnaliseEmpresas() {
   const g = lerGold<EmpresasGold>("empresas.json");

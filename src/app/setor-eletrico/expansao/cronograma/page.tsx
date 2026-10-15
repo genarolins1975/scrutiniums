@@ -25,6 +25,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
+import { formatadorNumero } from "@/lib/format";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_ATRASADAS,
@@ -410,7 +411,7 @@ export default function CronogramaPage() {
                     Histórico da fonte: {inteiro(c.historico_fonte.fotografias)} fotografias ({inteiro(c.historico_fonte.fotografias_mensais)} mensais) de {dataTexto(c.historico_fonte.primeira_fotografia)} a{" "}
                     {dataTexto(c.historico_fonte.ultima_fotografia)}. Liberações detalhadas contra o resumo anual oficial desde {g.conferencias.liberacoes_detalhado_x_resumo.desde}:{" "}
                     {inteiro(g.conferencias.liberacoes_detalhado_x_resumo.iguais)} de {inteiro(g.conferencias.liberacoes_detalhado_x_resumo.grupos_ano_tipo)} grupos (ano e tipo) iguais, tolerância de{" "}
-                    {g.conferencias.liberacoes_detalhado_x_resumo.tolerancia_kw.toLocaleString("pt-BR")} kW; resultado: {g.conferencias.liberacoes_detalhado_x_resumo.resultado}.
+                    {formatadorNumero("pt", {}).format(g.conferencias.liberacoes_detalhado_x_resumo.tolerancia_kw)} kW; resultado: {g.conferencias.liberacoes_detalhado_x_resumo.resultado}.
                   </ExpansaoNota>
                   <p className="rotulo text-mineral">Limitações declaradas na proveniência</p>
                   <ExpansaoLimitacoes itens={[...p.previsoes.limitacoes, ...p.confiabilidade.limitacoes, ...p.desvio_prazo_vigente.limitacoes]} />

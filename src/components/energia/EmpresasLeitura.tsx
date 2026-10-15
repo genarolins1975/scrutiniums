@@ -1,13 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { leituraEmpresa, type EmpresaLeitura, type ContaLeitura } from "@/lib/energia/empresas-leitura";
 import { useEstadoUrl } from "./useEstadoUrl";
 import s from "./LeiturasIntegradas.module.css";
 
-const n = (v: number | null, casas = 1) => v === null ? "Sem dado" : v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
 const CONTAS: { id: ContaLeitura; nome: string; tipo: string }[] = [
   { id: "receita", nome: "Receita líquida", tipo: "DRE · exercício" },
   { id: "ebit", nome: "Resultado antes do financeiro e tributos", tipo: "DRE · exercício; não é EBITDA" },
@@ -18,7 +19,8 @@ const CONTAS: { id: ContaLeitura; nome: string; tipo: string }[] = [
   { id: "caixa", nome: "Caixa e equivalentes", tipo: "Balanço · fim do exercício" },
 ];
 
-export function EmpresasLeitura({ empresas, periodoControle }: { empresas: EmpresaLeitura[]; periodoControle: string }) {
+export function EmpresasLeitura({ empresas, periodoControle, idioma = "pt" }: { empresas: EmpresaLeitura[]; periodoControle: string; idioma?: Idioma }) {
+  const n = (v: number | null, casas = 1) => v === null ? "Sem dado" : formatadorNumero(idioma, { minimumFractionDigits: casas, maximumFractionDigits: casas }).format(v);
   const esquema = useMemo(() => ({
     empresa: campo(tiposUrl.opcao(empresas.map(e => e.cnpj)), empresas.find(e => e.cnpj === "01083200000118")?.cnpj ?? empresas[0]?.cnpj ?? ""),
     escopo: campo(tiposUrl.opcao(["con", "ind"] as const), "con"),

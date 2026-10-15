@@ -8,6 +8,7 @@ import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, dataBR, plural } from "@/lib/energia/formato";
+import { formatadorNumero } from "@/lib/format";
 import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, catalogoDados, datasetPorSlug, urlDoConjunto } from "@/lib/energia/datasets";
 import { CSV_DADOS, DEFINICAO_ETAPA_LEITOR, ROTULO_ESTADO_DADOS, ROTULO_PAPEL, linhasIntegracao, refLegivel, rotuloTema, situacaoDoConjunto } from "@/lib/energia/dados";
 import {
@@ -370,7 +371,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                   {f?.ultima_tentativa && (
                     <div className="min-w-0 md:col-span-2">
                       <dt className="rotulo text-mineral">Última tentativa de coleta direta</dt>
-                      <dd className="mt-0.5 text-carvao-muted [overflow-wrap:anywhere]">{`${carimbo(f.ultima_tentativa.tentado_em)} · ${f.ultima_tentativa.ok ? "ok" : "falhou"} · ${f.ultima_tentativa.detalhe.replace(/\d{4,}/g, (n) => Number(n).toLocaleString("pt-BR"))}`}</dd>
+                      <dd className="mt-0.5 text-carvao-muted [overflow-wrap:anywhere]">{`${carimbo(f.ultima_tentativa.tentado_em)} · ${f.ultima_tentativa.ok ? "ok" : "falhou"} · ${f.ultima_tentativa.detalhe.replace(/\d{4,}/g, (n) => formatadorNumero("pt", {}).format(Number(n)))}`}</dd>
                     </div>
                   )}
                 </dl>
