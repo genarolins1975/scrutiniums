@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { LogoWordmark } from "@/components/ui/Logo";
 import { getSessionUser } from "@/lib/session";
 import { AbasCabecalho } from "@/components/layout/AbasCabecalho";
+import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
 
 // Abas do cabeçalho: os observatórios do registro e a imprensa (navCabecalho). Quem tem
 // conta vai ao painel; o visitante, à seção do observatório na página inicial.
@@ -70,6 +71,7 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
         >
           {authenticated ? "Minha conta" : "Entrar"}
         </Link>
+        <SeletorIdiomaPublico />
       </nav>
     </header>
   );

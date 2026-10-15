@@ -10,11 +10,13 @@ import { PAGINAS as PAINEIS_TRABALHO_RENDA } from "@/components/eficiencia/traba
 import { PAGINAS_MOBILIDADE, ROTA_MOBILIDADE } from "@/lib/eficiencia/mobilidade/modelo";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
+import { parDeIdioma, traducaoPublicada } from "@/lib/i18n-rotas";
 
 /**
- * Superfície pública indexável. O inventário abaixo lista todas as páginas;
+ * Superfície pública. O inventário abaixo lista as páginas;
  * só entram no sitemap as que src/lib/rotasPublicas.ts declara abertas. Os
- * painéis exigem conta e ficam de fora, como a área logada (/app).
+ * painéis exigem conta e ficam de fora, como a área logada (/app). As etapas
+ * públicas de SMS constam com suas irmãs, mantendo o bloqueio em robots.txt.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://scrutiniums.com";
@@ -80,6 +82,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const vistas = new Set<string>();
   return entradas
+    .filter((e) => ehRotaPublica(e.url.slice(base.length) || "/"))
+    .filter((e) => !/^\/(?:en\/)?entrar\/sms(?:\/|$)/.test(new URL(e.url).pathname))
+    .flatMap((e): MetadataRoute.Sitemap => {
+      const par = parDeIdioma(e.url.slice(base.length) || "/");
+      if (!par || !traducaoPublicada(par.pt)) return [e];
+      // A entrada raiz portuguesa já é publicada sem barra final.
+      const languages = { "pt-BR": e.url, en: base + par.en, "x-default": e.url };
+      const alternates = { ...e.alternates, languages };
+      return [{ ...e, alternates }, { ...e, url: base + par.en, alternates }];
+    })
     .filter((e) => ehRotaPublica(e.url.slice(base.length) || "/"))
     .filter((e) => (vistas.has(e.url) ? false : (vistas.add(e.url), true)));
 }

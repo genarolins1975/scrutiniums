@@ -3,6 +3,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { maskEmail, maskPhone } from "@/lib/crypto";
+import { opcoesPaisSms } from "@/lib/politica-sms";
+import { cpfObrigatorioParaTelefone } from "@/lib/cpf-telefone";
 import { maskCpf } from "@/lib/cpf";
 import { PageTitle, SectionHeading } from "@/components/ui/SectionHeading";
 import { PerfilForm } from "@/components/conta/PerfilForm";
@@ -29,6 +31,7 @@ export default async function ContaPage() {
   const user = await getSessionUser();
   // O layout de /app já protege a rota; isto é apenas defesa em profundidade.
   if (!user) redirect("/entrar");
+  const cpfObrigatorio = cpfObrigatorioParaTelefone(user) !== false;
 
   return (
     <div className="mx-auto w-full max-w-page px-6 py-12">
@@ -61,7 +64,7 @@ export default async function ContaPage() {
             <div>
               <dt className="rotulo mb-2 text-mineral">CPF</dt>
               <dd className="flex flex-wrap items-center gap-3">
-                <span className="text-carvao">{user.cpf ? maskCpf(user.cpf) : "Não informado"}</span>
+                <span className="text-carvao">{user.cpf ? maskCpf(user.cpf) : cpfObrigatorio ? "Não informado" : "Dispensado para telefone estrangeiro"}</span>
                 {user.cpf && <Selo>Registrado</Selo>}
               </dd>
             </div>
@@ -72,6 +75,7 @@ export default async function ContaPage() {
             orgRoleInicial={user.orgRole ?? ""}
             ufInicial={user.uf ?? ""}
             temCpf={Boolean(user.cpf)}
+            cpfObrigatorio={cpfObrigatorio}
           />
         </section>
 
@@ -82,7 +86,7 @@ export default async function ContaPage() {
 
         <section aria-label="Alterar telefone" className="border border-linha bg-papel p-8">
           <SectionHeading number="03" label="Segurança do acesso" title="Alterar telefone" />
-          <AlterarTelefone />
+          <AlterarTelefone paises={opcoesPaisSms()} />
         </section>
 
         <section aria-label="Sessões e segurança" className="border border-linha bg-papel p-8">

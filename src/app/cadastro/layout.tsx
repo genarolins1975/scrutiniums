@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogoWordmark } from "@/components/ui/Logo";
+import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
 
 /**
  * Concha do onboarding: uma etapa por vez, coluna estreita centrada
@@ -10,13 +11,14 @@ export default function CadastroLayout({ children }: { children: React.ReactNode
   return (
     <div className="flex min-h-screen flex-col bg-marfim">
       <header className="border-b border-linha">
-        <div className="mx-auto flex max-w-page items-center justify-between px-6 py-5">
+        <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-x-6 px-6 py-5">
           <Link href="/" aria-label="Scrutiniums — página inicial">
             <LogoWordmark />
           </Link>
           <Link href="/entrar" className="rotulo min-h-[44px] py-3 text-carvao-muted hover:text-bronze">
             Entrar
           </Link>
+          <SeletorIdiomaPublico />
         </div>
       </header>
 

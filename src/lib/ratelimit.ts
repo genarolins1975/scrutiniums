@@ -18,6 +18,9 @@ export type RateLimitPolicy = {
 };
 
 export const POLICIES = {
+  // Tetos agregados por processo, comuns a cadastro, login e troca de telefone.
+  smsPorPais: { windowMs: 60 * 60 * 1000, max: 100, backoffBaseMs: 60_000 },
+  smsPorPrefixo: { windowMs: 60 * 60 * 1000, max: 20, backoffBaseMs: 60_000 },
   otpStartPerPhone: { windowMs: 60 * 60 * 1000, max: 5, backoffBaseMs: 30_000 },
   otpStartPerIp: { windowMs: 60 * 60 * 1000, max: 15, backoffBaseMs: 30_000 },
   otpCheckPerPhone: { windowMs: 10 * 60 * 1000, max: 8, backoffBaseMs: 30_000 },

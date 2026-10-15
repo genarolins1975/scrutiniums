@@ -1,10 +1,22 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
+import { MolduraIdioma } from "@/components/i18n/DocumentoIdioma";
+
+// Uma URL inexistente não tem canonical nem irmã; o head comum não presume idioma.
+export const metadata: Metadata = {
+  title: { absolute: "404 · Scrutiniums" },
+  description: null,
+  alternates: null,
+  robots: { index: false },
+  openGraph: { title: "404 · Scrutiniums", description: undefined, images: [] },
+  twitter: { card: "summary", title: "404 · Scrutiniums", description: undefined, images: [] },
+};
 
 export default function NotFound() {
   return (
-    <>
+    <MolduraIdioma>
       {/* Variante estática: not-found é pré-renderizada e não pode ler cookies. */}
       <PublicHeaderView />
       <main>
@@ -42,6 +54,6 @@ export default function NotFound() {
         </section>
       </main>
       <Footer />
-    </>
+    </MolduraIdioma>
   );
 }

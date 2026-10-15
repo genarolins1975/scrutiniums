@@ -1,15 +1,20 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import { PublicHeader } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { PageTitle } from "@/components/ui/SectionHeading";
 import { GLOSSARIO } from "@/lib/data/glossario";
 import { fmtDate } from "@/lib/format";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 
-export const metadata: Metadata = {
+const metadadosOriginais: Metadata = {
   title: "Glossário",
   description:
     "Definições, fórmulas, fontes e limitações de todos os indicadores da Scrutiniums. Fonte única de nomes e definições da plataforma.",
 };
+
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/glossario", metadadosOriginais, await parent);
+}
 
 export default function GlossarioPage() {
   return (

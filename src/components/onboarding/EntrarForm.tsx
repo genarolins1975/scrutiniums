@@ -1,20 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import { COUNTRIES, type PaisTelefone } from "@/lib/phone";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 import { CountrySelect } from "./CountrySelect";
 import { PhoneField } from "./PhoneField";
+import { digitosMinimosTelefone } from "@/lib/telefone-minimo";
 
 /**
  * Login alternativo sem senha: telefone → código SMS (rota /entrar/sms).
  * Cobre entrada e recuperação de quem esqueceu a senha.
  */
-export function EntrarForm() {
+export function EntrarForm({ paises = COUNTRIES }: { paises?: readonly PaisTelefone[] }) {
   const router = useRouter();
-  const [country, setCountry] = useState("BR");
+  const [country, setCountry] = useState(paises[0]?.code ?? "");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState<string | undefined>();
   const [serverError, setServerError] = useState<string | undefined>();
@@ -23,7 +25,7 @@ export function EntrarForm() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setServerError(undefined);
-    if (phone.replace(/\D/g, "").length < 8) {
+    if (phone.replace(/\D/g, "").length < digitosMinimosTelefone(country)) {
       setPhoneError("Informe um telefone válido com DDD.");
       return;
     }
@@ -55,7 +57,7 @@ export function EntrarForm() {
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
       {serverError && <Alert kind="erro">{serverError}</Alert>}
 
-      <CountrySelect value={country} onChange={(c) => { setCountry(c); setPhone(""); }} disabled={submitting} />
+      <CountrySelect paises={paises} value={country} onChange={(c) => { setCountry(c); setPhone(""); }} disabled={submitting} />
       <PhoneField
         country={country}
         value={phone}

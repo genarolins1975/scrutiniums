@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { PageTitle } from "@/components/ui/SectionHeading";
 import { dataOuNaoApurado, registroErros } from "@/lib/sobre";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 
 /**
  * Registro público de erros, publicado a partir de pesquisa/registro_erros.json,
@@ -11,11 +12,15 @@ import { dataOuNaoApurado, registroErros } from "@/lib/sobre";
  */
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
+const metadadosOriginais: Metadata = {
   title: "Registro público de erros",
   description: "Todo erro publicado pela Scrutiniums, com superfície, gravidade, datas de detecção e correção e canal de detecção. Nada é apagado.",
   alternates: { canonical: "/sobre/erros" },
 };
+
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/sobre/erros", metadadosOriginais, await parent);
+}
 
 export default function ErrosPage() {
   const { descricao, erros } = registroErros();

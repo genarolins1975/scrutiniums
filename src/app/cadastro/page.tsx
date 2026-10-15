@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { nextStepPath } from "@/lib/onboarding";
@@ -9,9 +9,14 @@ import {
   ONBOARDING_EMAIL_COOKIE,
   readSignedEmailCookie,
 } from "@/components/onboarding/signedEmailCookie";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 
-export const metadata: Metadata = { title: "Crie seu acesso" };
+const metadadosOriginais: Metadata = { title: "Crie seu acesso" };
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/cadastro", metadadosOriginais, await parent);
+}
 
 /**
  * Etapa 1: e-mail de contato (sem código de verificação).

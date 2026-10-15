@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "glossario": "config/glossario-en.json",
+  "catalogo": { "schema_version": 1, "dominio": "plataforma", "pt": "src/i18n/pt.ts", "en": "src/i18n/en.ts" },
+  "terminologia_catalogo": "config/i18n-terminologia.json",
+  "rotas": {
+    "schema_version": 1,
+    "literais": [
+      { "pt": "/", "conteudo": "parcialmente_traduzido" },
+      { "pt": "/cadastro", "conteudo": "portugues_marcado" },
+      { "pt": "/entrar", "conteudo": "portugues_marcado" },
+      { "pt": "/entrar/sms", "conteudo": "portugues_marcado" },
+      { "pt": "/entrar/sms/verificar", "conteudo": "portugues_marcado" },
+      { "pt": "/glossario", "conteudo": "portugues_marcado" },
+      { "pt": "/imprensa", "conteudo": "portugues_marcado" },
+      { "pt": "/observatorio-do-credito", "conteudo": "portugues_marcado" },
+      { "pt": "/privacidade", "conteudo": "portugues_marcado" },
+      { "pt": "/sobre", "conteudo": "portugues_marcado" },
+      { "pt": "/sobre/erros", "conteudo": "portugues_marcado" },
+      { "pt": "/sobre/governanca", "conteudo": "portugues_marcado" },
+      { "pt": "/termos", "conteudo": "portugues_marcado" }
+    ]
+  },
+  "uso_interface": {
+    "schema_version": 1,
+    "rotas": [{
+      "pt": "/",
+      "regioes": [
+        { "id": "home-titulo", "estado": "traduzido", "chaves": ["home.hero.titulo_inicio", "home.hero.titulo_destaque"] },
+        { "id": "home-acoes", "estado": "traduzido", "chaves": ["acesso.criar_conta", "home.hero.ja_cadastrado"] },
+        { "id": "home-cabecalho", "estado": "portugues_marcado" },
+        { "id": "home-rotulo", "estado": "traduzido", "chaves": ["home.hero.rotulo"] },
+        { "id": "home-introducao", "estado": "traduzido", "chaves": ["home.hero.introducao"] },
+        { "id": "home-beneficios", "estado": "traduzido", "chaves": ["home.hero.beneficio_conta", "home.hero.beneficio_evidencia", "home.hero.beneficio_gratuidade"] },
+        { "id": "home-indice", "estado": "traduzido", "chaves": [
+          "home.indice.rotulo", "home.indice.ilustracoes", "home.indice.paginas_tematicas",
+          "home.indice.secoes_publicadas", "home.indice.temas_publicados", "home.indice.capitulos_com_dados",
+          "home.indice.unidades_federacao", "home.indice.paginas_por_pergunta", "home.indice.contagem_parcial"
+        ] },
+        { "id": "home-secoes", "estado": "portugues_marcado" },
+        { "id": "home-rodape", "estado": "portugues_marcado" }
+      ]
+    }]
+  },
+  "descricao": "Inventário de fontes e catálogo inicial de mensagens, sem comprovação de uso na interface. Prefixos incluem novos arquivos; omissões textuais conhecidas permanecem explícitas.",
+  "ui": { "raizes": ["src/app", "src/components", "src/lib", "public/obs"] },
+  "dominios": [
+    { "id": "plataforma", "nome": "Plataforma, conta e comunicações", "ui": ["src/app", "src/components", "src/lib"], "gold": [] },
+    { "id": "energia", "nome": "Setor Elétrico", "ui": ["src/app/setor-eletrico", "src/components/energia", "src/lib/energia"], "gold": ["public/energia/gold"] },
+    { "id": "gas", "nome": "Gás Natural", "ui": ["src/app/gas-natural", "src/components/gas", "src/lib/gas"], "gold": ["public/gas/gold"] },
+    { "id": "saneamento", "nome": "Saneamento", "ui": ["src/app/saneamento", "src/components/saneamento", "src/lib/saneamento"], "gold": ["public/saneamento/gold", "src/lib/saneamento/dados"] },
+    { "id": "eficiencia", "nome": "Eficiência Estatal", "ui": ["src/app/eficiencia-estatal", "src/components/eficiencia", "src/lib/eficiencia"], "gold": ["public/eficiencia", "src/lib/eficiencia", "data/eficiencia_mobilidade/gold.json", "data/eficiencia_mobilidade/aop/resumo.json", "data/eficiencia_mobilidade/resumo.json", "docs/obee/resultados/v4/indice-resultados-v4.json", "pipeline/eficiencia/catalogo_indicadores.json", "pipeline/eficiencia_escores/fichas.json"] },
+    { "id": "contas_federais", "nome": "Contas Públicas Federais", "ui": ["src/app/contas-publicas", "src/components/contas-publicas", "src/lib/contas-publicas"], "gold": ["src/lib/contas-publicas/snapshots"] },
+    { "id": "contas_estaduais", "nome": "Contas Públicas Estaduais", "ui": ["src/app/contas-publicas-estaduais", "src/components/contas-estaduais", "src/lib/contas-estaduais"], "gold": ["src/lib/contas-estaduais"] },
+    { "id": "credito", "nome": "Crédito", "ui": ["public/obs", "src/app/observatorio", "src/app/observatorio-do-credito", "src/lib/observatorioHead.ts", "src/lib/data/observatorioAbas.ts"], "gold": ["public/obs/data/gold"] }
+  ],
+  "conteudo": [
+    { "path": "config/institucional.json", "dominio": "plataforma", "formato": "json" },
+    { "path": "docs/CONSTITUICAO.md", "dominio": "plataforma", "formato": "markdown" },
+    { "path": "docs/obee/resultados/revisao-interativa-v3.html", "dinamico": true, "dominio": "eficiencia", "formato": "html" },
+    { "path": "docs/api/contrato-gold.json", "dominio": "plataforma", "formato": "json" },
+    { "path": "public/obs/data/gold/report.html", "dominio": "credito", "formato": "html" }
+  ],
+  "observar": ["src/app", "src/components", "src/lib", "src/i18n", "public/obs", "public/energia", "public/gas", "public/saneamento", "public/eficiencia", "public/contas-estaduais", "data/eficiencia_mobilidade"],
+  "exclusoes": [
+    { "sufixo": ".min.js", "motivo": "Bundle gerado a partir das fontes JavaScript já contadas." },
+    { "sufixo": ".d.ts", "motivo": "Declaração de tipos, sem implementação executável de interface." },
+    { "prefixo": "public/eficiencia/trabalho-renda/brutos", "motivo": "Evidência bruta preservada; contar as saídas publicadas e registrar estes arquivos separadamente." },
+    { "prefixo": "public/contas-estaduais/evidencias", "motivo": "Evidência primária preservada; os campos publicados estão nos snapshots de src/lib/contas-estaduais." },
+    { "prefixo": "public/eficiencia/series", "motivo": "Séries e manifestos de captura, fora do catálogo textual da gold; exclusão explícita nesta linha de base." }
+  ],
+  "materializados": [
+    {
+      "id": "assistencia", "dominio": "eficiencia", "origem": "pipeline/assistencia/seed/recorte.json.gz", "encoding": "gzip",
+      "hash": { "arquivo": "pipeline/assistencia/seed/manifesto.json", "campo": "seed_sha256", "bytes": "originais" },
+      "gerador": "scripts/materializar-assistencia.mjs", "diretorio": "public/eficiencia/assistencia-social",
+      "arquivos": ["panorama.json", "dicionario.json", "manifesto.json", "memoria-escore.json", "unidades.csv", "rma-cras.csv"], "por_uf": "uf-{uf}.json"
+    },
+    {
+      "id": "seguranca_alimentar", "dominio": "eficiencia", "origem": "pipeline/eficiencia_alimentar/seed/recorte_ibge.json.gz", "encoding": "gzip",
+      "hash": { "arquivo": "pipeline/eficiencia_alimentar/seed/manifesto.json", "campo": "seed_sha256", "bytes": "originais" },
+      "gerador": "scripts/materializar-seguranca-alimentar.mjs", "diretorio": "public/eficiencia/seguranca-alimentar",
+      "arquivos": ["municipios.csv", "pnad.csv"], "por_uf": "uf-{uf}.json"
+    },
+    {
+      "id": "trabalho_renda", "dominio": "eficiencia", "origem": "public/eficiencia/trabalho-renda/snapshot.payload.gz.b64", "encoding": "gzip-base64",
+      "hash": { "arquivo": "scripts/materializar-trabalho-renda.mjs", "constante": "SHA256_SNAPSHOT", "bytes": "descomprimidos" },
+      "gerador": "scripts/materializar-trabalho-renda.mjs", "diretorio": "public/eficiencia/trabalho-renda",
+      "arquivos": ["snapshot.json"], "saida_identica": "snapshot.json"
+    }
+  ]
+}

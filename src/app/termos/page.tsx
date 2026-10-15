@@ -1,15 +1,20 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import { PublicHeader } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { PageTitle } from "@/components/ui/SectionHeading";
 import { LINKEDIN_URL } from "@/lib/contato";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 
-export const metadata: Metadata = {
+const metadadosOriginais: Metadata = {
   title: "Termos de uso",
   description:
     "Condições de uso da plataforma Scrutiniums: acesso gratuito mediante cadastro, caráter estritamente informativo, isenção de garantias e limitação de responsabilidade.",
 };
+
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/termos", metadadosOriginais, await parent);
+}
 
 const TERMOS: { numero: string; titulo: string; paragrafos: string[] }[] = [
   {

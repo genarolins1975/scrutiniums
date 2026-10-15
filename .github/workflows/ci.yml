@@ -49,6 +49,11 @@ jobs:
       - name: Dependências
         run: npm ci
 
+      - name: Chromium para verificar o DOM das páginas dinâmicas
+        # A home consulta sessão e usa Suspense: o HTML de transporte sozinho
+        # não comprova os textos que o leitor recebe. Versão fixada no lockfile.
+        run: npx --no-install playwright install --with-deps chromium
+
       - name: Gerar app.min.js
         # o minificado é gitignorado (artefato de build) e os testes de
         # exportação o comparam com o fonte — num clone limpo ele não existe.
@@ -114,6 +119,10 @@ jobs:
         # workflow não gerava build, e o teste que inspeciona o HTML (undefined, NaN, data
         # ISO crua) retornava cedo por falta do diretório: passava sem verificar nada.
         run: npm run build
+
+      - name: Cobertura bilíngue confere com as fontes de código
+        # Não depende da gold nem de saídas dos materializadores.
+        run: node scripts/cobertura-i18n.mjs --check
 
       - name: Testes (inclui a verificação obrigatória do HTML gerado)
         # EXIGIR_BUILD_HTML=1 faz src/tests/html-gerado.test.ts reprovar se o build, uma rota

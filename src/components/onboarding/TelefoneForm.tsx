@@ -1,5 +1,6 @@
 "use client";
 
+import { COUNTRIES, type PaisTelefone } from "@/lib/phone";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -8,6 +9,7 @@ import { CountrySelect } from "./CountrySelect";
 import { PhoneField } from "./PhoneField";
 import { OtpInput } from "./OtpInput";
 import { ResendCountdown } from "./ResendCountdown";
+import { digitosMinimosTelefone } from "@/lib/telefone-minimo";
 
 type Phase = "solicitar" | "verificar";
 
@@ -16,10 +18,10 @@ type Phase = "solicitar" | "verificar";
  * Duas telas: solicitar código → digitar código. Uma etapa por vez.
  * O SMS comprova controle do número — nunca "identidade verificada".
  */
-export function TelefoneForm() {
+export function TelefoneForm({ paises = COUNTRIES }: { paises?: readonly PaisTelefone[] }) {
   const router = useRouter();
   const [phase, setPhase] = useState<Phase>("solicitar");
-  const [country, setCountry] = useState("BR");
+  const [country, setCountry] = useState(paises[0]?.code ?? "");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [masked, setMasked] = useState("");
@@ -40,7 +42,7 @@ export function TelefoneForm() {
   async function requestCode(): Promise<boolean> {
     setServerError(undefined);
     setInfo(undefined);
-    if (phone.replace(/\D/g, "").length < 8) {
+    if (phone.replace(/\D/g, "").length < digitosMinimosTelefone(country)) {
       setPhoneError("Informe um telefone válido com DDD.");
       return false;
     }
@@ -133,7 +135,7 @@ export function TelefoneForm() {
       <form onSubmit={onRequestSubmit} noValidate className="flex flex-col gap-6">
         {serverError && <Alert kind="erro">{serverError}</Alert>}
 
-        <CountrySelect value={country} onChange={(c) => { setCountry(c); setPhone(""); }} disabled={submitting} />
+        <CountrySelect paises={paises} value={country} onChange={(c) => { setCountry(c); setPhone(""); }} disabled={submitting} />
         <PhoneField
           country={country}
           value={phone}

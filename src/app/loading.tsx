@@ -1,8 +1,9 @@
 import { Skeleton } from "@/components/ui/States";
+import { MolduraIdioma } from "@/components/i18n/DocumentoIdioma";
 
 export default function Loading() {
   return (
-    <main className="bg-marfim" aria-busy="true">
+    <MolduraIdioma><main className="bg-marfim" aria-busy="true">
       <div className="mx-auto max-w-page px-6 py-16 md:py-24" role="status" aria-label="Carregando página">
         <Skeleton className="h-4 w-64" />
         <Skeleton className="mt-6 h-12 w-full max-w-2xl" />
@@ -24,6 +25,6 @@ export default function Loading() {
         </div>
         <span className="sr-only">Carregando…</span>
       </div>
-    </main>
+    </main></MolduraIdioma>
   );
 }

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -9,6 +9,7 @@ import { LinkEntrarComDestino } from "@/components/home/LinkEntrarComDestino";
 import { SeloFrescor } from "@/components/dados/SeloFrescor";
 import { ACESSO } from "@/lib/acesso";
 import { fmtRefMes, geradoEmPublicado, resumoDiario } from "@/lib/dadosPublicos";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 
 /**
  * Vitrine pública do Observatório Brasileiro de Crédito.
@@ -24,7 +25,7 @@ import { fmtRefMes, geradoEmPublicado, resumoDiario } from "@/lib/dadosPublicos"
  */
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
+const metadadosOriginais: Metadata = {
   title: "Observatório Brasileiro de Crédito",
   description:
     "Crédito, instituições financeiras, Pix, juros e litigiosidade em uma plataforma gratuita: dados oficiais do Banco Central, CVM, IBGE e CNJ com metodologia aberta, distinguindo dado observado de indicador calculado.",
@@ -36,6 +37,10 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/observatorio-do-credito", metadadosOriginais, await parent);
+}
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
 function lerGold(nome: string): any {

@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 
 /**
- * Só a vitrine pública é indexável (src/lib/rotasPublicas.ts): página inicial,
- * apresentação do Crédito, método, glossário e institucionais. Painéis e
- * arquivos de dados exigem conta e respondem com redirecionamento ao login
- * (noindex); a área logada (/app) e as APIs ficam fora do rastreamento.
+ * A abertura em src/lib/rotasPublicas.ts não elimina os bloqueios de
+ * rastreamento: as etapas SMS são públicas e constam no sitemap nos dois
+ * idiomas, mas conservam o bloqueio abaixo. Painéis e arquivos de dados
+ * exigem conta e redirecionam ao login (noindex); /app e APIs são bloqueados.
  */
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -12,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/app", "/api/", "/entrar/sms", "/cadastro/telefone", "/cadastro/perfil", "/cadastro/acesso"],
+        disallow: ["/app", "/api/", "/entrar/sms", "/en/entrar/sms", "/cadastro/telefone", "/cadastro/perfil", "/cadastro/acesso"],
       },
     ],
     sitemap: "https://scrutiniums.com/sitemap.xml",

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Field } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
-import { COUNTRIES } from "@/lib/phone";
+import { COUNTRIES, type PaisTelefone } from "@/lib/phone";
 
 type Etapa = "telefone" | "codigo" | "concluido";
 
@@ -14,12 +14,12 @@ type Etapa = "telefone" | "codigo" | "concluido";
  * país + número → /api/conta/telefone/start → código de 6 dígitos →
  * /api/conta/telefone/check.
  */
-export function AlterarTelefone() {
+export function AlterarTelefone({ paises = COUNTRIES }: { paises?: readonly PaisTelefone[] }) {
   const router = useRouter();
   const paisId = useId();
 
   const [etapa, setEtapa] = useState<Etapa>("telefone");
-  const [country, setCountry] = useState<string>("BR");
+  const [country, setCountry] = useState<string>(paises[0]?.code ?? "");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [erroTelefone, setErroTelefone] = useState<string | undefined>();
@@ -170,7 +170,7 @@ export function AlterarTelefone() {
             onChange={(e) => setCountry(e.target.value)}
             className="min-h-[44px] border border-linha bg-papel px-3 py-2 text-base text-carvao focus:border-bronze"
           >
-            {COUNTRIES.map((c) => (
+            {paises.map((c) => (
               <option key={c.code} value={c.code}>
                 {c.name} ({c.ddi})
               </option>

@@ -14,13 +14,23 @@
  * registro.
  */
 import { DOMINIOS } from "@/lib/dominios";
+import { pt } from "@/i18n/pt";
+import { fmtNumber } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 const EXTENSO: Record<number, string> = { 1: "um", 2: "dois", 3: "três", 4: "quatro", 5: "cinco", 6: "seis", 7: "sete", 8: "oito", 9: "nove" };
+// Representação lexical da quantidade; a mensagem completa pertence ao catálogo.
+const EXTENSO_EN: Record<number, string> = { 1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine" };
 
 export const N_OBSERVATORIOS = DOMINIOS.length;
 
 /** "cinco observatórios" (ou "Cinco observatórios" com `maiuscula`). */
-export function observatoriosPorExtenso(maiuscula = false): string {
+export function observatoriosPorExtenso(maiuscula = false, idioma: Idioma = "pt"): string {
+  if (idioma === "en") {
+    const n = EXTENSO_EN[N_OBSERVATORIOS] ?? fmtNumber(N_OBSERVATORIOS, 0, idioma);
+    const s = `${n} ${N_OBSERVATORIOS === 1 ? "observatory" : "observatories"}`;
+    return maiuscula ? s[0].toUpperCase() + s.slice(1) : s;
+  }
   const n = EXTENSO[N_OBSERVATORIOS] ?? String(N_OBSERVATORIOS);
   const s = `${n} observatórios`;
   return maiuscula ? s[0].toUpperCase() + s.slice(1) : s;
@@ -47,5 +57,5 @@ export const ACESSO = {
     "Com a conta, você acessa todos os painéis, downloads e arquivos de dados, pode se inscrever no boletim mensal " +
     "da central de alertas do crédito e administra senha, sessões e consentimentos.",
   /** Rótulo do botão de cadastro. */
-  ctaConta: "Criar conta gratuita",
+  ctaConta: pt["acesso.criar_conta"],
 } as const;

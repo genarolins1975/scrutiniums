@@ -2,6 +2,8 @@ import { and, desc, eq, gt, isNotNull, isNull } from "drizzle-orm";
 import { getDb, newId, schema } from "./db";
 import { generateOtp, hashToken } from "./crypto";
 import { sendEmailCode } from "./mailer";
+import { cpfObrigatorioParaTelefone } from "./cpf-telefone";
+import { isValidCpf } from "./cpf";
 import type { OnboardingStatus, User } from "./schema";
 
 export { PRIVACY_VERSION } from "./versoesPoliticas";
@@ -237,4 +239,32 @@ export async function updateUser(
     .update(schema.users)
     .set({ ...values, updatedAt: new Date() })
     .where(eq(schema.users.id, userId));
+}
+
+/** Gravação condicional: uma requisição antiga não conclui perfil de outro telefone. */
+export async function completeProfile(
+  user: User,
+  values: Pick<typeof schema.users.$inferInsert, "passwordHash" | "cpf" | "orgType" | "orgArea" | "orgRole" | "uf">,
+): Promise<boolean> {
+  const exigeCpf = cpfObrigatorioParaTelefone(user);
+  if (exigeCpf === null || !user.phoneE164 || !user.phoneVerifiedAt) return false;
+  if (exigeCpf && (!values.cpf || !isValidCpf(values.cpf))) return false;
+  const db = await getDb();
+  const rows = await db.update(schema.users)
+    .set({ ...values, onboardingStatus: "COMPLETE", updatedAt: new Date() })
+    .where(and(eq(schema.users.id, user.id), eq(schema.users.onboardingStatus, "PROFILE_PENDING"),
+      eq(schema.users.phoneE164, user.phoneE164), eq(schema.users.phoneVerifiedAt, user.phoneVerifiedAt)))
+    .returning({ id: schema.users.id });
+  return rows.length === 1;
+}
+
+/** Só a primeira confirmação pode avançar a etapa e vincular o número único. */
+export async function confirmOnboardingPhone(userId: string, phoneE164: string): Promise<boolean> {
+  const db = await getDb();
+  const now = new Date();
+  const rows = await db.update(schema.users)
+    .set({ phoneE164, phoneVerifiedAt: now, onboardingStatus: "PROFILE_PENDING", updatedAt: now })
+    .where(and(eq(schema.users.id, userId), eq(schema.users.onboardingStatus, "PHONE_PENDING")))
+    .returning({ id: schema.users.id });
+  return rows.length === 1;
 }

@@ -15,6 +15,8 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { DominioId } from "@/lib/dominios";
+import type { Idioma } from "@/lib/idioma";
+import { formatadorNumero } from "@/lib/format";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
@@ -30,6 +32,14 @@ import { goldGas } from "@/lib/gas/gold";
 
 export type PainelVitrine = { titulo: string; href: string; descricao: string };
 
+export type UnidadeSimplesIndice =
+  | "paginas_tematicas" | "secoes_publicadas" | "temas_publicados"
+  | "unidades_federacao" | "paginas_por_pergunta";
+
+export type ContagemIndice =
+  | { tipo: "simples"; quantidade: number; unidade: UnidadeSimplesIndice }
+  | { tipo: "parcial"; publicados: number; total: number; unidade: "capitulos_com_dados" };
+
 export type Vitrine = {
   id: DominioId;
   /** Recorte da gravura editorial do próprio observatório (public/home). */
@@ -38,6 +48,8 @@ export type Vitrine = {
   focoImagem?: string;
   /** Contagem principal, com a unidade própria de cada observatório. */
   contagem: { valor: string; unidade: string };
+  /** Os mesmos inteiros, para localizar somente o índice sem alterar a vitrine portuguesa. */
+  contagemIndice: ContagemIndice;
   paineis: PainelVitrine[];
   /** Fontes ao pé da lista; ausente quando a atualidade do observatório já as nomeia. */
   fontes?: string;
@@ -47,7 +59,7 @@ export type Vitrine = {
   metodologia?: { href: string; rotulo: string };
 };
 
-const fmt = (n: number) => n.toLocaleString("pt-BR");
+type FormatarNumero = (n: number) => string;
 
 function listaPt(itens: string[]): string {
   return itens.length > 1 ? `${itens.slice(0, -1).join(", ")} e ${itens.at(-1)}` : itens.join("");
@@ -72,13 +84,15 @@ function fontesCredito(): number | null {
   }
 }
 
-function vitrineCredito(): Vitrine {
+function vitrineCredito(fmt: FormatarNumero): Vitrine {
   const temas = ABAS_OBSERVATORIO.filter((a) => !a.caminho.endsWith("/") && !ABAS_INSTITUCIONAIS.has(a.caminho));
+  const quantidade = temas.length;
   const nFontes = fontesCredito();
   return {
     id: "credito",
     imagem: "/home/credito.webp",
-    contagem: { valor: fmt(temas.length), unidade: "páginas temáticas" },
+    contagem: { valor: fmt(quantidade), unidade: "páginas temáticas" },
+    contagemIndice: { tipo: "simples", quantidade, unidade: "paginas_tematicas" },
     paineis: [
       aba("/overview", "Diagnóstico do mês pelo IBCC, o que mudou e a inadimplência nas instituições."),
       aba("/credit", "Concessões, saldo, taxas e inadimplência por segmento, com marcos e exportação."),
@@ -100,8 +114,9 @@ function vitrineCredito(): Vitrine {
 
 const DESTAQUES_ENERGIA = ["visao-geral", "territorio", "agua-e-clima", "geracao", "pld", "conta-de-luz", "qualidade", "expansao"];
 
-function vitrineEnergia(): Vitrine {
+function vitrineEnergia(fmt: FormatarNumero): Vitrine {
   const publicados = DESTINOS_NAVEGACAO.filter((d) => d.publicado);
+  const quantidade = publicados.length;
   const paineis = DESTAQUES_ENERGIA.map((slug) => {
     const d = publicados.find((x) => x.slug === slug);
     if (!d) throw new Error(`destino do Setor Elétrico fora da navegação: ${slug}`);
@@ -114,7 +129,8 @@ function vitrineEnergia(): Vitrine {
   return {
     id: "energia",
     imagem: "/home/energia.webp",
-    contagem: { valor: fmt(publicados.length), unidade: "seções publicadas" },
+    contagem: { valor: fmt(quantidade), unidade: "seções publicadas" },
+    contagemIndice: { tipo: "simples", quantidade, unidade: "secoes_publicadas" },
     paineis,
     fontes: pub
       ? `${listaPt(principais)}${restantes > 0 ? ` e mais ${restantes} órgãos` : ""}, em ${fmt(pub.conjuntos.length)} conjuntos de dados integrados.`
@@ -127,13 +143,15 @@ function vitrineEnergia(): Vitrine {
 
 // ------------------------------------------------------ Eficiência Estatal
 
-function vitrineEficiencia(): Vitrine {
+function vitrineEficiencia(fmt: FormatarNumero): Vitrine {
   const publicadas = DIMENSOES.filter((d) => d.href);
+  const quantidade = publicadas.length;
   const semPainel = DIMENSOES.length - publicadas.length;
   return {
     id: "eficiencia",
     imagem: "/home/eficiencia.webp",
-    contagem: { valor: fmt(publicadas.length), unidade: "temas publicados" },
+    contagem: { valor: fmt(quantidade), unidade: "temas publicados" },
+    contagemIndice: { tipo: "simples", quantidade, unidade: "temas_publicados" },
     paineis: publicadas.map((d) => ({ titulo: d.titulo, href: d.href as string, descricao: d.descricao })),
     fontes:
       "Tesouro (Siconfi), INEP, IBGE, Ministério da Saúde, MDS, Ministério das Cidades, CNJ e Sinesp, declaradas tema a tema, com a página de métodos de cada tema.",
@@ -146,6 +164,8 @@ function vitrineEficiencia(): Vitrine {
 // ------------------------------------------------- Contas Públicas Federais
 
 function vitrineContas(): Vitrine {
+  const publicados = PAINEIS_COM_DADOS.length;
+  const total = CAPITULOS.length;
   const paineis = PAINEIS_COM_DADOS.map(([id, rotulo]) => {
     const c = CAPITULOS.find((x) => x.id === id);
     if (!c) throw new Error(`capítulo das Contas Federais fora do catálogo: ${id}`);
@@ -154,7 +174,8 @@ function vitrineContas(): Vitrine {
   return {
     id: "contas",
     imagem: "/home/contas.webp",
-    contagem: { valor: `${PAINEIS_COM_DADOS.length} de ${CAPITULOS.length}`, unidade: "capítulos com dados" },
+    contagem: { valor: `${publicados} de ${total}`, unidade: "capítulos com dados" },
+    contagemIndice: { tipo: "parcial", publicados, total, unidade: "capitulos_com_dados" },
     paineis,
     situacao: `Projeto metodológico: os outros ${CAPITULOS.length - PAINEIS_COM_DADOS.length} capítulos apresentam o método proposto, ainda sem série publicada.`,
     metodologia: { href: "/contas-publicas/metodologia", rotulo: "Metodologia" },
@@ -163,14 +184,16 @@ function vitrineContas(): Vitrine {
 
 // ------------------------------------------------ Contas Públicas Estaduais
 
-function vitrineEstados(): Vitrine {
+function vitrineEstados(fmt: FormatarNumero): Vitrine {
   const c = primariosEstaduais.cobertura;
+  const quantidade = c.ufs;
   const nIndicadores = (catalogoEstadual as { indicadores: unknown[] }).indicadores.length;
   const base = "/contas-publicas-estaduais";
   return {
     id: "estados",
     imagem: "/home/estados.webp",
-    contagem: { valor: fmt(c.ufs), unidade: "unidades da Federação" },
+    contagem: { valor: fmt(quantidade), unidade: "unidades da Federação" },
+    contagemIndice: { tipo: "simples", quantidade, unidade: "unidades_federacao" },
     paineis: [
       { titulo: "Estados lado a lado", href: `${base}#comparacao`, descricao: `${MEDIDAS.length} medidas de execução, receita e despesa, com filtro por região.` },
       { titulo: "Ficha estadual", href: `${base}#ficha`, descricao: "Execução, condição fiscal, dívida, financiamento e composição da despesa." },
@@ -188,10 +211,13 @@ function vitrineEstados(): Vitrine {
 
 function vitrineSaneamento(): Vitrine {
   const comPainel = CAPITULOS_SANEAMENTO.filter((c) => c.situacao !== "em_preparacao");
+  const publicados = comPainel.length;
+  const total = CAPITULOS_SANEAMENTO.length;
   return {
     id: "saneamento",
     imagem: "/home/saneamento.webp",
-    contagem: { valor: `${comPainel.length} de ${CAPITULOS_SANEAMENTO.length}`, unidade: "capítulos com dados" },
+    contagem: { valor: `${publicados} de ${total}`, unidade: "capítulos com dados" },
+    contagemIndice: { tipo: "parcial", publicados, total, unidade: "capitulos_com_dados" },
     paineis: [
       ...comPainel.map((c) => ({ titulo: c.pergunta, href: rotaCapitulo(c), descricao: c.resumo })),
       { titulo: "Meu município", href: `${ROTA_SANEAMENTO}/municipio`, descricao: "Carência, prestador, regulador, plano, investimento e comparação com a UF." },
@@ -204,28 +230,31 @@ function vitrineSaneamento(): Vitrine {
 
 // ------------------------------------------------------------ Gás Natural
 
-function vitrineGas(): Vitrine {
+function vitrineGas(fmt: FormatarNumero): Vitrine {
   const meta = goldGas.meta();
   const orgaos = Array.from(new Set(meta.fontes.map((f) => f.orgao)));
+  const quantidade = PAGINAS_GAS.length;
   return {
     id: "gas",
     imagem: "/home/gas.webp",
     focoImagem: "50% 22%",
-    contagem: { valor: fmt(PAGINAS_GAS.length), unidade: "páginas por pergunta" },
+    contagem: { valor: fmt(quantidade), unidade: "páginas por pergunta" },
+    contagemIndice: { tipo: "simples", quantidade, unidade: "paginas_por_pergunta" },
     paineis: PAGINAS_GAS.filter((p) => p.grupo !== "dados").map((p) => ({ titulo: p.rotulo, href: p.href, descricao: p.pergunta })),
     fontes: `${fmt(meta.fontes.length)} conjuntos de ${listaPt(orgaos)}.`,
     metodologia: { href: "/gas-natural/dados", rotulo: "Dados e método" },
   };
 }
 
-export function vitrines(): Record<DominioId, Vitrine> {
+export function vitrines(idioma: Idioma = "pt"): Record<DominioId, Vitrine> {
+  const fmt = formatadorNumero(idioma, {}).format;
   return {
-    credito: vitrineCredito(),
-    energia: vitrineEnergia(),
-    eficiencia: vitrineEficiencia(),
+    credito: vitrineCredito(fmt),
+    energia: vitrineEnergia(fmt),
+    eficiencia: vitrineEficiencia(fmt),
     contas: vitrineContas(),
-    estados: vitrineEstados(),
+    estados: vitrineEstados(fmt),
     saneamento: vitrineSaneamento(),
-    gas: vitrineGas(),
+    gas: vitrineGas(fmt),
   };
 }

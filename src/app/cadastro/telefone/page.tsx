@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { opcoesPaisSms } from "@/lib/politica-sms";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { nextStepPath } from "@/lib/onboarding";
@@ -35,7 +36,7 @@ export default async function TelefonePage() {
       <h1 className="mt-6 font-serif text-3xl text-carvao">Confirme seu telefone</h1>
       <p className="mt-3 text-sm text-carvao-muted">Enviaremos um código por SMS.</p>
       <div className="mt-8">
-        <TelefoneForm />
+        <TelefoneForm paises={opcoesPaisSms()} />
       </div>
     </section>
   );
