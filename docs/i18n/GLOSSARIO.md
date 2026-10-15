@@ -54,7 +54,7 @@ O conceito brasileiro de saneamento básico inclui água, esgotamento sanitário
 
 ## Nomes preservados
 
-BCB, IBGE, CVM, Secretaria do Tesouro Nacional, Pix, SGS, SCR, Siconfi e União têm `en` idêntico a `pt`, com explicação inglesa em `explicacao_en` e evidências contextualizadas. A explicação acompanha o nome; não o substitui. A explicação funcional de União não é tradução jurídica formal nem equivalência a governo central ou geral.
+BCB, IBGE, CVM, Secretaria do Tesouro Nacional, Pix, SGS, SCR, Siconfi e União têm `en` idêntico a `pt`, com explicação inglesa em `explicacao_en` e evidências contextualizadas. A explicação fica no glossário e pode também acompanhar a primeira ocorrência na página; não substitui o nome. A explicação funcional de União não é tradução jurídica formal nem equivalência a governo central ou geral.
 
 `formas_preservadas` registra formas portuguesas adicionais: Banco Central e Banco Central do Brasil para BCB; Tesouro e Tesouro Nacional para a Secretaria do Tesouro Nacional. Cada forma deve continuar literalmente como aparece no texto de origem. A associação ao órgão é explícita e contextual: “Tesouro” em outro sentido não herda a explicação institucional.
 
@@ -71,6 +71,22 @@ O adaptador lê a AST do registro, sem importar ou executar o módulo da aplica�
 A origem deve estar classificada como interface no inventário, incluída na assinatura de fontes e no índice Git antes da publicação do relatório. O detector recebe somente nomes de um glossário validado a partir do JSON original; explicações, evidências, termos e pendências não viram exceções. Mantém os limites de palavra existentes e a verificação da prosa vizinha. Isso não substitui a prova literal dos nomes no HTML consumidor.
 
 As explicações delimitam assunto, sem traduzir títulos nem ampliar cobertura: Saneamento descreve o foco atual em água/esgoto; Eficiência Estatal não anuncia conclusão sobre gestão; as contas estaduais abrangem as unidades da Federação, incluindo DF. A entrada `federativo.unidades_federacao` usa a expressão “Federation Units” da PNSB/IBGE e não importa números daquela pesquisa para a plataforma. As cinco pendências de títulos editoriais ingleses continuam registradas.
+
+## Vínculo das mensagens ao glossário
+
+`config/i18n-terminologia.json` classifica todas as chaves dos dois catálogos literais. Onze mensagens atuais têm justificativa de prosa comum; a introdução e o benefício de evidência declaram treze vínculos com onze IDs. Essa classificação vale para os textos revisados, sem afirmar que toda ocorrência futura de uma palavra é comum ou técnica. O contrato não traduz nem substitui textos em tempo de execução.
+
+Cada mensagem guarda SHA-256 do UTF-8 de `JSON.stringify([pt, en.estado, textoOuMotivoEn])`, sem normalizar caixa, espaços ou acentos. Qualquer alteração exige revisão do contrato, inclusive nas mensagens sem termos técnicos. A geração de cobertura não renova essa assinatura. Ela detecta mudança do texto revisado; a adequação semântica dos vínculos continua dependendo da revisão.
+
+Uma referência usa ID existente, forma explícita e quantidade inteira positiva de ocorrências. `canonica` seleciona os valores `pt`/`en` da entrada. Somente termos admitem `formas_contextuais`, um mapa não vazio de pares literais com contexto, cuja chave não pode ser `canonica`. As sete formas atuais documentam saneamento/contas na enumeração técnica, estados no plural, bases oficiais, fonte/Fonte e período. Herdam as evidências e os limites de seis entradas existentes; não criam novos conceitos, aliases de nomes próprios ou regras gerais de flexão. A qualificação “oficiais” vem da apresentação portuguesa, sem ser atribuída como citação ao IBGE.
+
+Nomes exigem `explicacao: "na_mensagem" | "no_glossario"`. O segundo modo usa a explicação documentada no glossário sem impor repetição inline. O primeiro exige, na primeira ocorrência inglesa da mensagem, o bloco literal `nome (explicacao_en)`; é a escolha explícita de União na introdução. A prova não infere a ordem de renderização de uma página. Ambos os modos preservam o nome português.
+
+O validador compara trechos literais com fronteiras Unicode, distinguindo caixa e acentos. Primeiro reserva nomes e explicações completas reconhecidas; depois confere os termos. Uma ocorrência inteiramente dentro de uma explicação não comprova outro vínculo técnico, mas ocorrências externas continuam sendo contadas. Intervalos parcialmente sobrepostos ou disputados por referências distintas são recusados, independentemente da ordem das referências. Não há regex livre, aproximação ou normalização de texto. A reserva não amplia as exceções do detector de vazamento.
+
+Para `portugues_marcado`, o contrato confere o lado português e registra os vínculos ingleses como pendentes. A seção `terminologia_catalogo` da cobertura assina o arquivo, conta mensagens, referências e formas distintas e mantém `uso_na_interface_verificado: false`. Vínculos contam registros, não a soma das ocorrências ou dos idiomas. Catálogo validado não prova consumo no HTML nem tradução da gold.
+
+O inventário declara o caminho canônico do contrato. A cobertura reutiliza os catálogos e o glossário já validados, exige arquivo regular dentro da raiz recebida e recusa arquivo presente sem declaração. O fluxo de publicação exige que essa fonte também esteja no índice Git. As fixtures anteriores sem contrato continuam válidas; a prova do catálogo real exige sua adoção.
 
 ## Pendências e cobertura
 

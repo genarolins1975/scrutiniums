@@ -59,8 +59,13 @@ const comum = {
   nota: texto.optional(),
 };
 const documentada = { ...comum, evidencias: z.array(evidencia).min(1) };
+// Formas literais documentam flexão/contexto sem criar tradução automática.
+const formasContextuais = z.record(
+  z.string().regex(/^[a-z][a-z0-9_]*$/).refine((v) => v !== "canonica", "Nome de forma reservado."),
+  z.strictObject({ pt: texto, en: inglesPublicavel, contexto: texto }),
+).refine((v) => Object.keys(v).length > 0, "Formas contextuais vazias.");
 const entrada = z.discriminatedUnion("tipo", [
-  z.strictObject({ tipo: z.literal("termo"), ...documentada }),
+  z.strictObject({ tipo: z.literal("termo"), ...documentada, formas_contextuais: formasContextuais.optional() }),
   z.strictObject({
     tipo: z.literal("nome_proprio"),
     ...documentada,

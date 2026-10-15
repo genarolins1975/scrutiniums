@@ -201,7 +201,14 @@
           "localizacao": "About, edição 2024, primeiro parágrafo"
         }
       ],
-      "nota": "O par português/inglês do IBGE usa bases de dados / databases, no plural; database é o singular regular. Não estender a qualquer ocorrência de base, nem equiparar automaticamente a dataset, arquivo, fonte de dados ou nome próprio de sistema. A qualificação oficial pertence ao contexto da home e não altera os dados publicados."
+      "nota": "O par português/inglês do IBGE usa bases de dados / databases, no plural; database é o singular regular. Não estender a qualquer ocorrência de base, nem equiparar automaticamente a dataset, arquivo, fonte de dados ou nome próprio de sistema. A qualificação oficial pertence ao contexto da home e não altera os dados publicados.",
+      "formas_contextuais": {
+        "home_oficiais_plural": {
+          "pt": "bases oficiais",
+          "en": "official databases",
+          "contexto": "Forma plural e contextual curta de bases de dados oficiais, usada em home.hero.introducao. A evidência da entrada documenta databases; a qualificação oficiais pertence à apresentação da plataforma. Não aplicar a qualquer base, arquivo, dataset ou nome de sistema."
+        }
+      }
     },
     "estatistica.fonte_dados": {
       "tipo": "termo",
@@ -221,7 +228,19 @@
           "pagina": 25
         }
       ],
-      "nota": "O par português/inglês do IBGE usa fontes de dados / data sources, no plural. Data source é o singular regular e também aparece no BCB; a nota portuguesa do BCB diz fonte utilizada, não fonte de dados. Não estender a fontes de energia, fontes tipográficas nem nomes próprios de bases ou séries."
+      "nota": "O par português/inglês do IBGE usa fontes de dados / data sources, no plural. Data source é o singular regular e também aparece no BCB; a nota portuguesa do BCB diz fonte utilizada, não fonte de dados. Não estender a fontes de energia, fontes tipográficas nem nomes próprios de bases ou séries.",
+      "formas_contextuais": {
+        "home_curta": {
+          "pt": "fonte",
+          "en": "data source",
+          "contexto": "Forma curta de fonte de dados na frase Cada painel informa a fonte de home.hero.introducao. Mantém o conceito documentado na entrada, sem estender a fontes de energia, fontes tipográficas ou nomes próprios de bases."
+        },
+        "home_curta_inicial": {
+          "pt": "Fonte",
+          "en": "Data source",
+          "contexto": "A mesma forma curta de fonte de dados, com inicial maiúscula por abrir home.hero.beneficio_evidencia. A capitalização é literal deste uso, não regra geral de normalização ou nova acepção."
+        }
+      }
     },
     "estatistica.periodo_referencia": {
       "tipo": "termo",
@@ -236,7 +255,14 @@
           "pagina": 11
         }
       ],
-      "nota": "O trecho corresponde a período de referência do REF anterior na versão portuguesa, também na página 11. Não confundir com data de publicação, captura, acesso ou atualização; não altera a periodicidade, as datas ou os números da série."
+      "nota": "O trecho corresponde a período de referência do REF anterior na versão portuguesa, também na página 11. Não confundir com data de publicação, captura, acesso ou atualização; não altera a periodicidade, as datas ou os números da série.",
+      "formas_contextuais": {
+        "home_curta": {
+          "pt": "período",
+          "en": "reference period",
+          "contexto": "Forma curta de período de referência em home.hero.beneficio_evidencia. Não aplicar a data de publicação, captura, acesso ou atualização; não altera periodicidade nem datas dos dados."
+        }
+      }
     },
     "federativo.estado": {
       "tipo": "termo",
@@ -250,7 +276,14 @@
           "localizacao": "About, edição 2024, segundo parágrafo"
         }
       ],
-      "nota": "A fonte usa Estados / States, no plural e com inicial maiúscula; state é o singular regular em prosa comum. Distingue expressamente estados, Distrito Federal e municípios. Não usar para Estado nacional, condição de um dado ou todos os entes subnacionais. Não inferir exclusão do Distrito Federal do observatório estadual, equiparar states a 27 unidades da Federação ou alterar o universo dos indicadores."
+      "nota": "A fonte usa Estados / States, no plural e com inicial maiúscula; state é o singular regular em prosa comum. Distingue expressamente estados, Distrito Federal e municípios. Não usar para Estado nacional, condição de um dado ou todos os entes subnacionais. Não inferir exclusão do Distrito Federal do observatório estadual, equiparar states a 27 unidades da Federação ou alterar o universo dos indicadores.",
+      "formas_contextuais": {
+        "plural": {
+          "pt": "estados",
+          "en": "states",
+          "contexto": "Plural em prosa comum de estado como ente federado brasileiro, usado em home.hero.introducao. A evidência da entrada usa States com inicial maiúscula. Não usar para Estado nacional ou condição de dado, nem equiparar a unidades da Federação, inferir exclusão do Distrito Federal do observatório ou alterar o universo dos indicadores."
+        }
+      }
     },
     "federativo.unidades_federacao": {
       "tipo": "termo",
@@ -294,7 +327,14 @@
           "pagina": 48
         }
       ],
-      "nota": "A versão portuguesa correspondente, página 49, usa sustentabilidade das contas públicas. O IBGE usa public finances para finanças públicas, conceito já registrado em entrada própria; manter public accounts para a expressão fiscal desta passagem. Não traduz por si só Contas Públicas Federais ou Contas Públicas Estaduais nem substitui governo federal por governo central."
+      "nota": "A versão portuguesa correspondente, página 49, usa sustentabilidade das contas públicas. O IBGE usa public finances para finanças públicas, conceito já registrado em entrada própria; manter public accounts para a expressão fiscal desta passagem. Não traduz por si só Contas Públicas Federais ou Contas Públicas Estaduais nem substitui governo federal por governo central.",
+      "formas_contextuais": {
+        "home_curta": {
+          "pt": "contas",
+          "en": "public accounts",
+          "contexto": "Forma curta de contas públicas na expressão contas da União e dos estados de home.hero.introducao. A fonte documenta public accounts; a abreviação pertence ao contexto fiscal desta mensagem, sem traduzir toda ocorrência de contas, como conta de usuário ou conta bancária. Não renomeia produtos nem define perímetro de série."
+        }
+      }
     },
     "fiscal.financas_publicas": {
       "tipo": "termo",
@@ -789,7 +829,14 @@
           "localizacao": "Description, segundo parágrafo"
         }
       ],
-      "nota": "O uso oficial do IBGE é amplo e inclui água, esgotamento, resíduos e águas pluviais. Não restringir a apenas água e esgoto. O nome do produto Saneamento e seu foco atual estão registrados separadamente em nome.observatorio_saneamento, sem redefinir este conceito amplo."
+      "nota": "O uso oficial do IBGE é amplo e inclui água, esgotamento, resíduos e águas pluviais. Não restringir a apenas água e esgoto. O nome do produto Saneamento e seu foco atual estão registrados separadamente em nome.observatorio_saneamento, sem redefinir este conceito amplo.",
+      "formas_contextuais": {
+        "home_curta": {
+          "pt": "saneamento",
+          "en": "basic sanitation",
+          "contexto": "Forma curta do conceito brasileiro de saneamento básico na enumeração técnica de home.hero.introducao, com os quatro componentes documentados pelo IBGE. Não renomeia o produto Saneamento, não decide sua pendência editorial e não amplia o conjunto de dados ou serviços cobertos pelo observatório."
+        }
+      }
     },
     "servicos.servicos_publicos": {
       "tipo": "termo",

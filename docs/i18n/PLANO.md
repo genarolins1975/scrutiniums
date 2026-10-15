@@ -81,7 +81,9 @@ Cada fase de observatório divide a interface por módulos, adiciona textos ingl
 
 ## Estados da cobertura
 
-O recorte de proveniência registra os sete nomes curtos dos produtos a partir de `DOMINIOS.nomeCurto`, com explicações conceituais sustentadas por fontes oficiais e origem interna separada. A cobertura exige que esse registro esteja entre as fontes de interface assinadas; nomes preservados não contam como traduções de UI ou gold. O índice da home continua em português marcado até seu próprio recorte. O vínculo verificável entre mensagens técnicas dos catálogos e IDs/equivalentes do glossário permanece uma tarefa explícita da fase 0.
+O recorte de proveniência registra os sete nomes curtos dos produtos a partir de `DOMINIOS.nomeCurto`, com explicações conceituais sustentadas por fontes oficiais e origem interna separada. A cobertura exige que esse registro esteja entre as fontes de interface assinadas; nomes preservados não contam como traduções de UI ou gold. O índice da home continua em português marcado até seu próprio recorte.
+
+O contrato terminológico classifica as treze mensagens atuais e vincula duas delas a onze IDs do glossário, com treze referências. Sete formas contextuais explícitas em seis termos permitem conferir o português publicado, sem alterá-lo nem flexibilizar caixa, acentos ou fronteiras de palavra. A assinatura revisada de cada mensagem detecta mudanças posteriores; sua atualização exige revisão, não é efeito da geração do relatório. Nomes podem ter explicação no glossário ou na própria mensagem, conforme declaração explícita. Essa conferência offline tem métricas próprias e não muda os nove usos ingleses, as cinco regiões traduzidas/quatro portuguesas da home, as treze irmãs ou a gold. Consumidores e campos futuros precisam de seus próprios vínculos e provas.
 
 O relatório versionado agrupa fontes de código da plataforma e de cada observatório. Campos textuais da gold são inspecionados separadamente pelo diagnóstico não versionado `--gold`. As saídas têm ordenação estável e não incluem horário corrente.
 

@@ -3,13 +3,14 @@
  * --check só lê fontes de código; --gold inspeciona os dados sem gravar o relatório versionado.
  */
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+import { existsSync, lstatSync, mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { analisarCodigo, analisarHtml, analisarJson } from "./i18n/analise.mjs";
 import { descobrirFontes } from "./i18n/fontes.mjs";
 import { lerGlossario } from "./i18n/glossario.mjs";
 import { lerCatalogo } from "./i18n/catalogo.mjs";
+import { lerTerminologia } from "./i18n/terminologia.mjs";
 import { criarContextoProdutos, REGISTRO_PRODUTOS } from "./i18n/produtos.mjs";
 import { caminhoDaPaginaLiteral, validarRotasLiterais } from "./i18n/rotas.mjs";
 import { validarUsoInterface } from "./i18n/usos.mjs";
@@ -18,6 +19,7 @@ const RAIZ = fileURLToPath(new URL("../", import.meta.url));
 const INVENTARIO = "config/i18n-inventario.json";
 const RELATORIO = "docs/i18n/cobertura.json";
 const GLOSSARIO = "config/glossario-en.json";
+const TERMINOLOGIA = "config/i18n-terminologia.json";
 const DICIONARIOS = { pt: "src/i18n/pt.ts", en: "src/i18n/en.ts" };
 const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const porCaminho = (fontes) => [...fontes].sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
@@ -160,6 +162,7 @@ export function gerarCobertura(raiz = RAIZ) {
   const glossario = leituraGlossario?.resumo;
   const leituraCatalogo = resumirCatalogo(raiz, manifesto);
   const catalogo = leituraCatalogo?.resumo;
+  const terminologia = resumirTerminologia(raiz, manifesto, leituraCatalogo, leituraGlossario);
   const fontes = descobrirFontes(raiz, manifesto, { apenasCodigo: true });
   if (leituraGlossario?.exigeRegistroProdutos && !fontes.ui.some((fonte) => fonte.path === REGISTRO_PRODUTOS)) {
     throw new Error(`A origem dos nomes de produtos deve estar classificada como interface: ${REGISTRO_PRODUTOS}.`);
@@ -202,6 +205,7 @@ export function gerarCobertura(raiz = RAIZ) {
     }
   }
   return { ...relatorio, ...(glossario ? { glossario } : {}), ...(catalogo ? { catalogo } : {}),
+    ...(terminologia ? { terminologia_catalogo: terminologia } : {}),
     ...(irmas ? { irmas_declaradas: irmas } : {}), ...(uso ? { uso_interface_declarado: uso } : {}) };
 }
 
@@ -236,7 +240,7 @@ function resumirCatalogo(raiz, manifesto) {
     portugues_marcado_declarado: entradas.filter((e) => e.estado === "portugues_marcado").length,
     uso_na_interface_verificado: false,
   };
-  return { resumo, en };
+  return { resumo, pt, en };
 }
 
 /** Termos documentados não equivalem a chaves traduzidas ou uso já comprovado. */
@@ -260,7 +264,31 @@ function resumirGlossario(raiz, manifesto) {
     uso_na_interface_verificado: false,
     uso_no_pipeline_verificado: false,
   };
-  return { resumo, exigeRegistroProdutos: entradas.some((e) => e.tipo === "nome_proprio_produto") };
+  return { resumo, g, exigeRegistroProdutos: entradas.some((e) => e.tipo === "nome_proprio_produto") };
+}
+
+/** Confere o contrato revisado sem reler ou executar os catálogos e o glossário. */
+function resumirTerminologia(raiz, manifesto, leituraCatalogo, leituraGlossario) {
+  const declaracao = manifesto.terminologia_catalogo;
+  const path = join(raiz, TERMINOLOGIA);
+  // lstat também detecta symlink quebrado: presença sem declaração não é ausência.
+  const presente = lstatSync(path, { throwIfNoEntry: false }) !== undefined;
+  if (declaracao === undefined && !presente) return null;
+  if (declaracao !== TERMINOLOGIA) {
+    throw new Error(`O inventário deve declarar a terminologia do catálogo em ${TERMINOLOGIA}.`);
+  }
+  if (!leituraCatalogo || !leituraGlossario) {
+    throw new Error("A terminologia do catálogo exige catálogo e glossário validados no inventário.");
+  }
+  const base = realpathSync(raiz);
+  const real = realpathSync(path);
+  if (!real.startsWith(base + sep) || !statSync(real).isFile()) {
+    throw new Error("Terminologia do catálogo deve ser arquivo dentro do repositório.");
+  }
+  const bytes = readFileSync(real);
+  const metricas = lerTerminologia(bytes.toString("utf8"),
+    { pt: leituraCatalogo.pt, en: leituraCatalogo.en }, leituraGlossario.g);
+  return { path: TERMINOLOGIA, sha256: sha(bytes), ...metricas };
 }
 
 /** Retira métricas de dados: zero seria uma declaração falsa de cobertura da gold. */

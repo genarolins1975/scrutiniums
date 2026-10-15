@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "mensagens": {
+    "idioma.portugues": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "549939394df67d2f7d4266f62dc90d39b9eceefbfa36ba19c8c3eec634c345a2",
+      "justificativa": "Nome de idioma no seletor; não define conceito técnico de domínio."
+    },
+    "idioma.ingles": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "5d953653a202f2119d1515f0afe352174c65654dd8bf2f130a38a599b417c13d",
+      "justificativa": "Nome de idioma no seletor; não define conceito técnico de domínio."
+    },
+    "idioma.seletor": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "507b125524d9a5eda6a851192c2ea505a28090e07b858061b4e27ea6e5ccbc3e",
+      "justificativa": "Rótulo do controle de idioma; vocabulário comum de interface."
+    },
+    "traducao.portugues_apenas": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "df4a5a07bac54ca506f5035328738144f537d6c3970c2432547d2c9c412c4fda",
+      "justificativa": "Aviso de disponibilidade de idioma; vocabulário comum de interface."
+    },
+    "home.hero.titulo_inicio": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "fdabee7cc38c6411abf30f5117435541cefa7cff9dee855783daa2d3fafabcca",
+      "justificativa": "Prosa de apresentação sobre informação e conhecimento, sem definição técnica ou indicador."
+    },
+    "home.hero.titulo_destaque": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "f1fc0de00d42154757e9f0a50df72615f7cb1775a351ed04c4a7842683586450",
+      "justificativa": "Qualificação comum do conhecimento apresentado, sem categoria técnica ou classificação de indicador."
+    },
+    "acesso.criar_conta": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "366af62e66f026c26f0c0d11cdd6ba8fee3db36a440c623899dfa1a186c16484",
+      "justificativa": "Ação de criação de conta gratuita; não trata de conta contábil, bancária ou fiscal."
+    },
+    "home.hero.ja_cadastrado": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "153ff59cb9e7cc34c95ae9b04a65b4f34595674bde479520d1d7548889b5f572",
+      "justificativa": "Ação de entrada de pessoa já cadastrada; não define conceito técnico de domínio."
+    },
+    "home.hero.rotulo": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "0b86934ecf4514211b4173d969d73f0b383125959639b6bc7f40848b1e593920",
+      "justificativa": "Descrição comum de observatórios de dados públicos; não afirma licença de dados abertos nem categoria estatística formal."
+    },
+    "home.hero.introducao": {
+      "classificacao": "vinculada",
+      "sha256_revisado": "b29532c2f0bc4a6f11a3d3b4b9cf3f81a90fdba4fc149d71e8a176e679ede539",
+      "referencias": [
+        {
+          "id": "credito.credito",
+          "forma": "canonica",
+          "ocorrencias": 1
+        },
+        {
+          "id": "energia.setor_eletrico",
+          "forma": "canonica",
+          "ocorrencias": 1
+        },
+        {
+          "id": "gas.gas_natural",
+          "forma": "canonica",
+          "ocorrencias": 1
+        },
+        {
+          "id": "saneamento.saneamento_basico",
+          "forma": "home_curta",
+          "ocorrencias": 1
+        },
+        {
+          "id": "servicos.servicos_publicos",
+          "forma": "canonica",
+          "ocorrencias": 1
+        },
+        {
+          "id": "fiscal.contas_publicas",
+          "forma": "home_curta",
+          "ocorrencias": 1
+        },
+        {
+          "id": "nome.uniao",
+          "forma": "canonica",
+          "ocorrencias": 1,
+          "explicacao": "na_mensagem"
+        },
+        {
+          "id": "federativo.estado",
+          "forma": "plural",
+          "ocorrencias": 1
+        },
+        {
+          "id": "estatistica.base_dados",
+          "forma": "home_oficiais_plural",
+          "ocorrencias": 1
+        },
+        {
+          "id": "estatistica.fonte_dados",
+          "forma": "home_curta",
+          "ocorrencias": 1
+        },
+        {
+          "id": "estatistica.periodo_referencia",
+          "forma": "canonica",
+          "ocorrencias": 1
+        }
+      ]
+    },
+    "home.hero.beneficio_conta": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "8faabd95471d04647eeeeb9340fa3fe8b60f55556829defab75cba8b3ec2a6dc",
+      "justificativa": "Promessa de acesso aos painéis por uma conta gratuita; não trata de conta contábil, bancária ou fiscal."
+    },
+    "home.hero.beneficio_evidencia": {
+      "classificacao": "vinculada",
+      "sha256_revisado": "1da5c77f2bfd098a0fb3becf67ad3500feafa54757550ac2e03397a0b10ca2b6",
+      "referencias": [
+        {
+          "id": "estatistica.fonte_dados",
+          "forma": "home_curta_inicial",
+          "ocorrencias": 1
+        },
+        {
+          "id": "estatistica.periodo_referencia",
+          "forma": "home_curta",
+          "ocorrencias": 1
+        }
+      ]
+    },
+    "home.hero.beneficio_gratuidade": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "75569a473da473a6ceae4030930778e8b8f16d65c118ae7d7a1ab058a2a68a67",
+      "justificativa": "Condição de gratuidade do acesso; assinatura significa contratação paga neste texto, não assinatura criptográfica."
+    }
+  }
+}

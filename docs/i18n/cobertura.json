@@ -10,7 +10,7 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "619d74b50901ad03379ea0678236dd80ab3497c10d6e894dfe17e07a5f5657e5",
+    "inventario_sha256": "a9f75207fcdbb18bbe6f427fe53f4cb5fdd4d9c6d932e07c773d15fd5e639c12",
     "arquivos_analisados": 1012,
     "fontes_sha256": "26490782af04717791a9f976e3bd77501e0c73362866f3adab2e250e37d4b587",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
@@ -520,7 +520,7 @@
   },
   "glossario": {
     "path": "config/glossario-en.json",
-    "sha256": "6834e56863db9d44fac65e4dc347e1dd650457a9a3f94759f76964974e411e46",
+    "sha256": "dafbad57c988602d2b3d055e15dcae2309dbf3f4af7c39ddc7638e9d548182a6",
     "fontes": 8,
     "termos": 28,
     "nomes_preservados": 16,
@@ -671,6 +671,21 @@
     "chaves": 13,
     "traducoes_disponiveis": 13,
     "portugues_marcado_declarado": 0,
+    "uso_na_interface_verificado": false
+  },
+  "terminologia_catalogo": {
+    "path": "config/i18n-terminologia.json",
+    "sha256": "597ef3d453974abd0085640dd5b170626009731bb66dce96625b97094f496c0a",
+    "schema_version": 1,
+    "mensagens": 13,
+    "mensagens_vinculadas": 2,
+    "mensagens_sem_termos_tecnicos": 11,
+    "referencias": 13,
+    "ids_distintos": 11,
+    "formas_contextuais_usadas": 7,
+    "referencias_pt_verificadas": 13,
+    "referencias_en_verificadas": 13,
+    "referencias_en_pendentes": 0,
     "uso_na_interface_verificado": false
   },
   "irmas_declaradas": {

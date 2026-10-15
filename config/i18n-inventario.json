@@ -2,6 +2,7 @@
   "schema_version": 1,
   "glossario": "config/glossario-en.json",
   "catalogo": { "schema_version": 1, "dominio": "plataforma", "pt": "src/i18n/pt.ts", "en": "src/i18n/en.ts" },
+  "terminologia_catalogo": "config/i18n-terminologia.json",
   "rotas": {
     "schema_version": 1,
     "literais": [
