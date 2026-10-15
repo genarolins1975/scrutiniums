@@ -12,7 +12,7 @@
   "escopo": {
     "inventario_sha256": "b389804ccf0409ca55ff3bfb417804379a744630d71ea631ee709303c1721273",
     "arquivos_analisados": 1015,
-    "fontes_sha256": "ace700c31bd4eebe7abe34131b6d0db0c33b62fb3fbb66b952da7df7e4b590bd",
+    "fontes_sha256": "ae97f9f55e22d40d376d57feb13a32a443df8919d039ad4a6d743c5daafa89cd",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -278,13 +278,13 @@
           "jsx_text": 795,
           "atributos": 172,
           "props": 1332,
-          "outros_literais": 2451,
+          "outros_literais": 2457,
           "templates": 268,
           "expressoes_nao_resolvidas": 1776,
-          "chaves_objetos": 3300
+          "chaves_objetos": 3294
         },
         "exclusoes": {
-          "importacoes": 360,
+          "importacoes": 367,
           "atributos_tecnicos": 1068,
           "tipos": 115
         },

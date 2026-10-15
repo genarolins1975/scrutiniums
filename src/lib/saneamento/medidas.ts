@@ -2,6 +2,7 @@ import DESIGUALDADES from "./dados/desigualdades.json";
 import type { Municipio } from "./tipos";
 import { razaoPct } from "./municipios";
 import { numero, sinal } from "./formato";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Catálogo das medidas municipais do Observatório do Saneamento: a única
@@ -653,11 +654,11 @@ export const MEDIDAS: Medida[] = [
 export const MEDIDAS_GERAIS: Medida[] = MEDIDAS.filter((m) => !MEDIDAS_DESIGUALDADES.includes(m) && !MEDIDAS_QUALIDADE.includes(m));
 
 /** Texto do valor principal da medida, com a unidade certa (percentual, pontos percentuais ou valor por habitante). */
-export function formatarValor(med: Medida, x: number | null | undefined): string {
+export function formatarValor(med: Medida, x: number | null | undefined, idioma: Idioma = "pt"): string {
   if (x == null || !Number.isFinite(x)) return "sem dado";
-  if (med.paleta === "divergente") return `${sinal(x, 1)} p.p.`;
-  if (med.unidadePct === "%") return `${numero(x, med.casas)}%`;
-  return `${numero(x, med.casas)} ${med.unidadePct}`;
+  if (med.paleta === "divergente") return `${sinal(x, 1, idioma)} p.p.`;
+  if (med.unidadePct === "%") return `${numero(x, med.casas, idioma)}%`;
+  return `${numero(x, med.casas, idioma)} ${med.unidadePct}`;
 }
 
 export function medida(id: string): Medida {

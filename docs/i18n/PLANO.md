@@ -77,6 +77,8 @@ O recorte de leituras e auditoria centraliza doze chamadas fixas em dez fontes. 
 
 O recorte de qualidade e inclusão centraliza oito chamadas fixas em seis fontes. Horas e minutos, contagens iniciais e conjuntos sem valor mantêm as regras de ausência, arredondamento e precisão; os componentes recebem idioma opcional, com PT por padrão, e a folha estática continua PT. O detalhe do município acompanha idioma no memo que produz texto, sem acrescentá-lo aos efeitos de dados. A prop chega aos pequenos múltiplos de DEC/FEC e aos três gráficos do orçamento familiar. Tabelas compartilhadas, mapa, frases de domínio, unidades, dados brutos, filtros, URLs e exportações conservam seus contratos atuais. A preparação de formatos não acrescenta página, chave, região ou campo da gold traduzido.
 
+O primeiro recorte de formatos de Saneamento centraliza quatro chamadas fixas em três módulos e encaminha idioma ao adaptador de medidas municipais, totalizando quatro fontes. Os helpers recebem idioma opcional, com português por padrão. Casas, sinais, zero negativo, guardas de ausência e limiares monetários mantêm os contratos distintos de cada função. A conta encaminha idioma aos rótulos de água e esgoto e aos dois cálculos de `leituras`; escala aritmética, centavos, volumes, preços, somas e adicionais permanecem iguais. O cálculo seguinte só expõe seu total à leitura marginal: o segundo repasse de idioma é conferido na revisão, sem alegar observação de seus rótulos descartados. Unidades, sufixos, textos livres, datas civis e consumidores atuais continuam portugueses. O recorte não acrescenta página, chave, região ou campo da gold traduzido.
+
 ## Fases seguintes
 
 | Fase | Série de entregas, sempre com CI verde entre PRs |

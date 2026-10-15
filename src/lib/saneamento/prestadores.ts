@@ -1,4 +1,6 @@
 import type { BalancoPrestador, Prestador } from "./tipos";
+import { fmtNumber } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Medidas de prestador calculadas sobre as somas que o próprio prestador
@@ -86,9 +88,9 @@ export const MEDIDAS_PRESTADOR: MedidaPrestador[] = [
   { id: "etes", rotulo: "Estações de tratamento de esgoto cadastradas", unidade: "estações", casas: 0, valor: (p) => p.etes, nota: "Cadastro de ETEs do SINISA 2024." },
 ];
 
-export function formatarMedidaPrestador(m: MedidaPrestador, v: number | null): string {
+export function formatarMedidaPrestador(m: MedidaPrestador, v: number | null, idioma: Idioma = "pt"): string {
   if (v == null || !Number.isFinite(v)) return "sem dado";
-  const n = v.toLocaleString("pt-BR", { minimumFractionDigits: m.casas, maximumFractionDigits: m.casas });
+  const n = fmtNumber(v, m.casas, idioma);
   switch (m.unidade) {
     case "%":
       return `${n}%`;
@@ -96,7 +98,7 @@ export function formatarMedidaPrestador(m: MedidaPrestador, v: number | null): s
       return `R$ ${n}/m³`;
     case "R$": {
       const a = Math.abs(v);
-      const f = (x: number, c: number) => x.toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c });
+      const f = (x: number, c: number) => fmtNumber(x, c, idioma);
       if (a >= 1e9) return `R$ ${f(v / 1e9, 2)} bi`;
       if (a >= 1e6) return `R$ ${f(v / 1e6, 1)} mi`;
       return `R$ ${n}`;

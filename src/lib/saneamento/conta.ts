@@ -1,4 +1,6 @@
 import type { Categoria, TabelaServico, TarifaVerificada } from "./tarifas";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Conta mensal simulada a partir de uma tabela verificada. Regra única, igual à
@@ -22,7 +24,7 @@ export type Conta = {
   esgotoNaoVerificado?: string;
 };
 
-function servico(t: TabelaServico, c: number, nome: "agua" | "esgoto"): { total: number; linhas: LinhaConta[] } {
+function servico(t: TabelaServico, c: number, nome: "agua" | "esgoto", idioma: Idioma): { total: number; linhas: LinhaConta[] } {
   const linhas: LinhaConta[] = [];
   let total = 0;
   if (t.fixo != null) {
@@ -31,7 +33,7 @@ function servico(t: TabelaServico, c: number, nome: "agua" | "esgoto"): { total:
   }
   if (t.minimo) {
     total += int(t.minimo.valor);
-    linhas.push({ servico: nome, rotulo: `Valor até ${fmt(t.minimo.m3)} m³ (cobrado mesmo com consumo menor)`, volume: Math.min(c, t.minimo.m3), preco: null, valor: t.minimo.valor });
+    linhas.push({ servico: nome, rotulo: `Valor até ${fmt(t.minimo.m3, idioma)} m³ (cobrado mesmo com consumo menor)`, volume: Math.min(c, t.minimo.m3), preco: null, valor: t.minimo.valor });
   }
   for (const f of t.faixas) {
     const vol = Math.max(0, (f.ate == null ? c : Math.min(c, f.ate)) - f.de);
@@ -40,7 +42,7 @@ function servico(t: TabelaServico, c: number, nome: "agua" | "esgoto"): { total:
     total += v;
     linhas.push({
       servico: nome,
-      rotulo: f.ate == null ? `Acima de ${fmt(f.de)} m³` : `De ${fmt(f.de)} a ${fmt(f.ate)} m³`,
+      rotulo: f.ate == null ? `Acima de ${fmt(f.de, idioma)} m³` : `De ${fmt(f.de, idioma)} a ${fmt(f.ate, idioma)} m³`,
       volume: vol,
       preco: f.preco,
       valor: reais(v),
@@ -49,20 +51,20 @@ function servico(t: TabelaServico, c: number, nome: "agua" | "esgoto"): { total:
   return { total, linhas };
 }
 
-function fmt(n: number) {
-  return n.toLocaleString("pt-BR", { maximumFractionDigits: 3 });
+function fmt(n: number, idioma: Idioma) {
+  return formatadorNumero(idioma, { maximumFractionDigits: 3 }).format(n);
 }
 
-export function calcularConta(cat: Categoria, consumo: number, adicionais: { rotulo: string; percentual: number }[] = []): Conta {
+export function calcularConta(cat: Categoria, consumo: number, adicionais: { rotulo: string; percentual: number }[] = [], idioma: Idioma = "pt"): Conta {
   const c = Math.max(0, consumo);
-  const a = servico(cat.agua, c, "agua");
+  const a = servico(cat.agua, c, "agua", idioma);
   let esgoto: { total: number; linhas: LinhaConta[] } | null = null;
   if (cat.esgoto) {
     if ("percentual" in cat.esgoto) {
       const v = Math.round((a.total * cat.esgoto.percentual) / 100);
-      esgoto = { total: v, linhas: [{ servico: "esgoto", rotulo: `Esgoto: ${fmt(cat.esgoto.percentual)}% da conta de água`, volume: null, preco: null, valor: reais(v) }] };
+      esgoto = { total: v, linhas: [{ servico: "esgoto", rotulo: `Esgoto: ${fmt(cat.esgoto.percentual, idioma)}% da conta de água`, volume: null, preco: null, valor: reais(v) }] };
     } else {
-      esgoto = servico(cat.esgoto, c, "esgoto");
+      esgoto = servico(cat.esgoto, c, "esgoto", idioma);
     }
   }
   const base = a.total + (esgoto?.total ?? 0);
@@ -85,10 +87,10 @@ export function calcularConta(cat: Categoria, consumo: number, adicionais: { rot
 }
 
 /** Preço médio efetivo (R$/m³) e custo do metro cúbico seguinte. */
-export function leituras(t: TarifaVerificada, categoria: string, consumo: number) {
+export function leituras(t: TarifaVerificada, categoria: string, consumo: number, idioma: Idioma = "pt") {
   const cat = t.categorias[categoria];
-  const atual = calcularConta(cat, consumo);
-  const proximo = calcularConta(cat, consumo + 1);
+  const atual = calcularConta(cat, consumo, [], idioma);
+  const proximo = calcularConta(cat, consumo + 1, [], idioma);
   return {
     conta: atual,
     precoMedio: consumo > 0 ? atual.total / consumo : null,
