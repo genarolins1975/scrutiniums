@@ -63,7 +63,6 @@ describe.each(PAGINAS)("acesso e sitemap da irmã pública $pt", (par) => {
 
   it("conserva a entrada PT e publica uma irmã com alternates recíprocos", () => {
     const entradas = sitemap();
-    const languages = { "pt-BR": ORIGEM + par.pt, en: ORIGEM + par.en, "x-default": ORIGEM + par.pt };
     const portuguesas = entradas.filter((entrada) => entrada.url === ORIGEM + par.pt);
     const inglesas = entradas.filter((entrada) => entrada.url === ORIGEM + par.en);
     expect(portuguesas).toEqual([{
@@ -71,9 +70,8 @@ describe.each(PAGINAS)("acesso e sitemap da irmã pública $pt", (par) => {
       lastModified: expect.any(Date),
       changeFrequency: par.frequencia,
       priority: par.prioridade,
-      alternates: { languages },
     }]);
-    expect(inglesas).toEqual([{ ...portuguesas[0], url: ORIGEM + par.en }]);
+    expect(inglesas).toEqual([]);
     for (const caminho of [par.pt, par.en]) expect(entradas.map((entrada) => entrada.url)).not.toContain(ORIGEM + caminho + "/");
   });
 });

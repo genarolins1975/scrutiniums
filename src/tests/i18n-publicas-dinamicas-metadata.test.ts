@@ -55,7 +55,6 @@ describe.each(PAGINAS)("metadados das irmãs públicas dinâmicas: $pt", (pagina
       description: pagina.descricao,
       alternates: {
         canonical: pagina.pt,
-        languages: { "pt-BR": pagina.pt, en: pagina.en, "x-default": pagina.pt },
       },
       openGraph: {
         ...antes,
@@ -73,9 +72,9 @@ describe.each(PAGINAS)("metadados das irmãs públicas dinâmicas: $pt", (pagina
     expect(pagina.metadataEn).toEqual({
       title: { absolute: "Scrutiniums · Portuguese only" },
       description: "Portuguese only",
+      robots: { index: false, follow: true },
       alternates: {
         canonical: pagina.en,
-        languages: { "pt-BR": pagina.pt, en: pagina.en, "x-default": pagina.pt },
       },
       openGraph: {
         title: "Scrutiniums · Portuguese only",

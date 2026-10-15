@@ -102,54 +102,25 @@ describe.each(CAMINHOS)("%s PT/EN: navegador do build de produção", (caminho) 
     } finally { await contexto.close(); }
   });
 
-  it("leva o seletor à mesma página, conserva query/fragmento e grava a preferência nos dois sentidos", async (ctx) => {
+  it("não oferece inglês enquanto o conteúdo inteiro permanece em português", async (ctx) => {
     const servidor = pronto(ctx);
     const contexto = await servidor.contexto();
     try {
       const page = await contexto.newPage();
       const falhas = observarFalhas(page);
-      const query = "?origem=a%2Fb&repetido=1&repetido=2";
-      const resposta = await page.goto(servidor.origem + caminho + query, { waitUntil: "load" });
-      expect(resposta?.status()).toBe(200);
-      await aguardarPagina(page, caminho);
-      const alvo = await page.locator("main h2[id]").first().getAttribute("id");
-      expect(alvo).toBeTruthy();
-      const sufixo = query + "#" + alvo;
-      // A alteração silenciosa deixa o foco no começo da página: o Tab precisa
-      // sincronizar o href real antes de o Enter ativar a navegação nativa.
-      await page.evaluate((destino) => window.history.replaceState(window.history.state, "", destino), caminho + sufixo);
-      let encontrou = false;
-      for (let tentativa = 0; tentativa < 30; tentativa++) {
-        await page.keyboard.press("Tab");
-        encontrou = await page.evaluate(() => document.activeElement?.getAttribute("hreflang") === "en");
-        if (encontrou) break;
+      const sufixo = "?origem=a%2Fb&repetido=1&repetido=2#conteudo";
+      for (const prefixo of ["", "/en"]) {
+        const destino = prefixo + caminho;
+        const resposta = await page.goto(servidor.origem + destino + sufixo, { waitUntil: "load" });
+        expect(resposta?.status()).toBe(200);
+        await aguardarPagina(page, destino);
+        expect(await page.getByRole("group", { name: "Idioma", exact: true }).count()).toBe(0);
+        expect(await page.locator('a[hreflang="en"]').count()).toBe(0);
+        expect(await page.locator('link[rel="alternate"][hreflang]').count()).toBe(0);
+        if (prefixo) expect(await page.locator('meta[name="robots"]').getAttribute("content")).toContain("noindex");
+        expect(page.url()).toBe(servidor.origem + destino + sufixo);
       }
-      expect(encontrou, "seletor inglês alcançável pelo teclado").toBe(true);
-      const seletor = page.getByRole("group", { name: "Idioma", exact: true });
-      expect(await seletor.locator('a[hreflang="en"]').getAttribute("href")).toBe("/en" + caminho + sufixo);
-      const foco = await page.evaluate(() => {
-        const elemento = document.activeElement as HTMLElement;
-        const estilo = getComputedStyle(elemento);
-        const caixa = elemento.getBoundingClientRect();
-        return { largura: caixa.width, altura: caixa.height, outline: estilo.outlineStyle, espessura: parseFloat(estilo.outlineWidth) };
-      });
-      expect(foco.largura).toBeGreaterThanOrEqual(44);
-      expect(foco.altura).toBeGreaterThanOrEqual(44);
-      expect(foco.outline).not.toBe("none");
-      expect(foco.espessura).toBeGreaterThan(0);
-      await page.keyboard.press("Enter");
-      await page.waitForURL(servidor.origem + "/en" + caminho + sufixo);
-      await aguardarPagina(page, "/en" + caminho);
-      expect(await page.locator("html").getAttribute("lang")).toBe("en");
-      expect((await contexto.cookies()).find((c) => c.name === "scrutiniums_idioma")).toMatchObject({ value: "en", path: "/", sameSite: "Lax", secure: false });
-      const portugues = seletor.locator('a[hreflang="pt-BR"]');
-      await portugues.focus();
-      expect(await portugues.getAttribute("href")).toBe(caminho + sufixo);
-      await portugues.click();
-      await page.waitForURL(servidor.origem + caminho + sufixo);
-      await aguardarPagina(page, caminho);
-      expect(await page.locator("html").getAttribute("lang")).toBe("pt-BR");
-      expect((await contexto.cookies()).find((c) => c.name === "scrutiniums_idioma")).toMatchObject({ value: "pt", path: "/", sameSite: "Lax", secure: false });
+      expect((await contexto.cookies()).some((c) => c.name === "scrutiniums_idioma")).toBe(false);
       expect(falhas).toEqual([]);
     } finally { await contexto.close(); }
   }, 60_000);
@@ -192,7 +163,7 @@ describe("glossário PT/EN: âncoras do índice", () => {
           const caixa = alvo.getBoundingClientRect();
           return caixa.top < innerHeight && caixa.bottom > 0;
         }, destino), { message: destino, timeout: 5_000 }).toBe(true);
-        await expect.poll(() => page.getByRole("group", { name: "Idioma", exact: true }).locator('a[hreflang="en"]').getAttribute("href"), { timeout: 5_000 }).toBe("/en/glossario" + query + destino);
+        expect(await page.locator('a[hreflang="en"]').count()).toBe(0);
       }
       expect(falhas).toEqual([]);
     } finally { await contexto.close(); }
