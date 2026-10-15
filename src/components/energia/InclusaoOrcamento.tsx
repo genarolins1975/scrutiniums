@@ -34,6 +34,8 @@ import {
   type OrcamentoBase,
 } from "@/lib/energia/inclusao";
 import type { MedidaPof } from "@/lib/energia/tipos-inclusao";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * P061, peso no orçamento (POF 2017-2018). O painel é repartido em figuras com pergunta própria, e todas leem o mesmo estado da
@@ -73,8 +75,10 @@ function InclusaoClassesPof({
   medidas: destaques,
   recorte,
   notas,
+  idioma,
 }: {
   orc: OrcamentoBase;
+  idioma: Idioma;
   resposta?: ReactNode;
   /** Medidas que o gráfico desenha na segunda série (média das participações), com a ficha de prova de cada uma. */
   medidas?: ReactNode;
@@ -96,6 +100,7 @@ function InclusaoClassesPof({
         <InclusaoOpcoes rotulo="Participação" nome="inclusao-pof-base" opcoes={OPCOES_BASE} valor={v.base} onMudar={(base) => definir({ base })} />
       </div>
       <GraficoBarras
+        idioma={idioma}
         titulo={`Energia elétrica ${v.base === "despesa" ? "na despesa total" : "na renda"} por classe de rendimento, ${nomeTerritorio(principal)} (${nomePof(orc)})`}
         dados={dados}
         chaveCategoria="id"
@@ -115,7 +120,7 @@ function InclusaoClassesPof({
   );
 }
 
-function InclusaoTerritoriosPof({ orc }: { orc: OrcamentoBase }) {
+function InclusaoTerritoriosPof({ orc, idioma }: { orc: OrcamentoBase; idioma: Idioma }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
   const medidas = MEDIDAS_BASE[v.base];
@@ -136,6 +141,7 @@ function InclusaoTerritoriosPof({ orc }: { orc: OrcamentoBase }) {
       </Comparador>
       {ters.length > 1 ? (
         <GraficoBarras
+          idioma={idioma}
           titulo={`${medidas[0].rotulo} ${v.base === "despesa" ? "na despesa total" : "na renda"} por classe: ${ters.map(nomeTerritorio).join(", ")}`}
           dados={comp}
           chaveCategoria="id"
@@ -156,7 +162,7 @@ function InclusaoTerritoriosPof({ orc }: { orc: OrcamentoBase }) {
   );
 }
 
-function InclusaoLimiaresPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
+function InclusaoLimiaresPof({ orc, fonte, idioma }: { orc: OrcamentoBase; fonte: string; idioma: Idioma }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
   const principal = ters[0];
@@ -164,11 +170,12 @@ function InclusaoLimiaresPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string
   return (
     <div className="space-y-4">
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-        Limiares de {orc.limiares_pct.map((x) => `${x.toLocaleString("pt-BR")}%`).join(", ")} da renda e da despesa total como análise de sensibilidade, não como definição de pobreza
+        Limiares de {orc.limiares_pct.map((x) => `${formatadorNumero(idioma, {}).format(x)}%`).join(", ")} da renda e da despesa total como análise de sensibilidade, não como definição de pobreza
         energética: a leitura muda com o limiar, e a tabela mostra quanto. {nomeTerritorio(principal)}, famílias de cada classe acima do limiar escolhido.
       </p>
       <InclusaoOpcoes rotulo="Limiar" nome="inclusao-pof-lim" opcoes={OPCOES_LIM} valor={v.lim} onMudar={(lim) => definir({ lim })} />
       <GraficoBarras
+        idioma={idioma}
         titulo={`Famílias com energia acima de ${v.lim}% da renda e da despesa total, ${nomeTerritorio(principal)}`}
         dados={limiares.map((l) => ({ id: l.id, rotulo: l.classe, renda: l.renda, despesa: l.despesa }))}
         chaveCategoria="id"
@@ -294,6 +301,7 @@ export function InclusaoOrcamentoPainel({
   medidas,
   recorte,
   notas,
+  idioma = "pt",
 }: {
   /** Brasil e grandes regiões por classe de rendimento. */
   classes: OrcamentoBase;
@@ -306,17 +314,18 @@ export function InclusaoOrcamentoPainel({
   medidas?: ReactNode;
   recorte?: ReactNode;
   notas?: ReactNode;
+  idioma?: Idioma;
 }) {
   return (
     <div className="space-y-6">
-      <InclusaoClassesPof orc={classes} resposta={resposta} medidas={medidas} recorte={recorte} notas={notas} />
+      <InclusaoClassesPof orc={classes} resposta={resposta} medidas={medidas} recorte={recorte} notas={notas} idioma={idioma} />
 
       <SecaoDoPainel id="territorios" titulo="Brasil e grandes regiões, na mesma escala">
-        <InclusaoTerritoriosPof orc={classes} />
+        <InclusaoTerritoriosPof orc={classes} idioma={idioma} />
       </SecaoDoPainel>
 
       <SecaoDoPainel id="limiares" titulo="Quantas famílias passam de um limiar de comprometimento?">
-        <InclusaoLimiaresPof orc={classes} fonte={fonte} />
+        <InclusaoLimiaresPof orc={classes} fonte={fonte} idioma={idioma} />
       </SecaoDoPainel>
 
       <SecaoDoPainel id="ufs" titulo="E por UF, no total das famílias?" lead="O peso da energia em cada UF, sem separar por faixa de renda: a amostra por classe nas UF é pequena demais.">

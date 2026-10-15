@@ -75,6 +75,8 @@ O recorte de composição da geração, balanço da rede, exercício de contrato
 
 O recorte de leituras e auditoria centraliza doze chamadas fixas em dez fontes. Quatro componentes recebem idioma opcional e preservam os 49 usos de seus helpers privados; participações muito pequenas e resumo de chaves também recebem idioma, com PT por padrão. Precisão fixa ou máxima, sinais distintos, teto de doze casas, percentuais já expressos em pontos e precedência de consulta/manifesto permanecem iguais. As quatro folhas estáticas usam PT explícito, conservando assinaturas Next, regex de detalhe, dados, contas e guardas de ausência. Mapas, prosa, unidades, datas civis, destinos e exportações mantêm seus contratos atuais. O ramo de demanda do laboratório tem prova SSR com entrada no hook real; isso não comprova interação ou mudança de URL no navegador. Nenhuma rota, chave, região ou campo da gold ganha tradução neste recorte.
 
+O recorte de qualidade e inclusão centraliza oito chamadas fixas em seis fontes. Horas e minutos, contagens iniciais e conjuntos sem valor mantêm as regras de ausência, arredondamento e precisão; os componentes recebem idioma opcional, com PT por padrão, e a folha estática continua PT. O detalhe do município acompanha idioma no memo que produz texto, sem acrescentá-lo aos efeitos de dados. A prop chega aos pequenos múltiplos de DEC/FEC e aos três gráficos do orçamento familiar. Tabelas compartilhadas, mapa, frases de domínio, unidades, dados brutos, filtros, URLs e exportações conservam seus contratos atuais. A preparação de formatos não acrescenta página, chave, região ou campo da gold traduzido.
+
 ## Fases seguintes
 
 | Fase | Série de entregas, sempre com CI verde entre PRs |

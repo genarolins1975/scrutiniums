@@ -17,6 +17,8 @@
  * únicas contas são de exibição: horas decimais em minutos (9,33 h são 9 h 20 min, nunca
  * 9 h 33 min), reais em milhões e classes de histograma de valores já publicados.
  */
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 import type { DistribuicaoHistograma } from "./distribuicao";
 import { campo, tiposUrl, type Leitor } from "./estadoUrl";
 import { dataBR, mesAno, num, pct } from "./formato";
@@ -43,14 +45,14 @@ import type { Proveniencia } from "./tipos";
  * hora, então 9,33 h são 9 h e 0,33 × 60 = 19,8 min, arredondados para 20 min.
  * Ler "9,33" como 9 h 33 min é o erro que o critério de aceite do P051 proíbe.
  */
-export function horasEMinutos(h: number | null | undefined): string {
+export function horasEMinutos(h: number | null | undefined, idioma: Idioma = "pt"): string {
   if (h === null || h === undefined || !Number.isFinite(h) || h < 0) return "sem dado";
   const total = Math.round(h * 60);
   const horas = Math.floor(total / 60);
   const minutos = total % 60;
   if (horas === 0) return `${minutos} min`;
-  if (minutos === 0) return `${horas.toLocaleString("pt-BR")} h`;
-  return `${horas.toLocaleString("pt-BR")} h ${minutos} min`;
+  if (minutos === 0) return `${formatadorNumero(idioma, {}).format(horas)} h`;
+  return `${formatadorNumero(idioma, {}).format(horas)} h ${minutos} min`;
 }
 
 /** Reais em milhões, com uma casa ("R$ 1.007,2 milhões"); ausência é "sem dado". */

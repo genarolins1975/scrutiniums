@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { carregarUmaVez, tabelaQualidade, type AvisosFec, type DefinicaoTabela, type IdTabela } from "@/lib/energia/qualidade";
 import type { QualidadeGold } from "@/lib/energia/tipos-qualidade";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Tabela de análise ou auditoria do módulo Qualidade aberta sob demanda: no HTML do
@@ -22,6 +24,7 @@ export function QualidadeTabela({
   onSelecionar,
   avisosFec,
   urlGold = "/energia/gold/qualidade.json",
+  idioma = "pt",
 }: {
   tabela: IdTabela;
   titulo: string;
@@ -33,6 +36,7 @@ export function QualidadeTabela({
   /** Distribuidoras de FEC com cobertura parcial (a página lê os meses do CSV mensal); sem isto, a marca vem só da gold. */
   avisosFec?: AvisosFec;
   urlGold?: string;
+  idioma?: Idioma;
 }) {
   const [aberta, setAberta] = useState(false);
   const [def, setDef] = useState<DefinicaoTabela | null>(null);
@@ -67,7 +71,7 @@ export function QualidadeTabela({
         <span aria-hidden="true" className="rotulo text-mineral">
           Tabela
         </span>
-        Abrir: {titulo} ({linhas.toLocaleString("pt-BR")} {linhas === 1 ? "linha" : "linhas"}, com busca, filtros e exportação)
+        Abrir: {titulo} ({formatadorNumero(idioma, {}).format(linhas)} {linhas === 1 ? "linha" : "linhas"}, com busca, filtros e exportação)
       </button>
     );
   }

@@ -39,6 +39,7 @@ import {
   vereditoTarifaSocial,
 } from "@/lib/energia/inclusao";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
+import { formatadorNumero } from "@/lib/format";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -202,7 +203,7 @@ export default function InclusaoEnergeticaPage() {
               />
               <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
               <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                Por região, por limiar de {o.limiares_pct.map((x) => `${x.toLocaleString("pt-BR")}%`).join(", ")} da renda e da despesa e por UF, no{" "}
+                Por região, por limiar de {o.limiares_pct.map((x) => `${formatadorNumero("pt", {}).format(x)}%`).join(", ")} da renda e da despesa e por UF, no{" "}
                 <Link href={rotaPainel("p061")} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
                   painel completo de orçamento
                 </Link>

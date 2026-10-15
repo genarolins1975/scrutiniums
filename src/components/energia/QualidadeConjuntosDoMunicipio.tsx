@@ -12,6 +12,8 @@ import {
   textoMesesIncompletos,
 } from "@/lib/energia/qualidade";
 import type { LinhaTabela } from "@/lib/energia/tabela";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Ficha do município (mapa): os conjuntos elétricos que atendem o município escolhido, cada um com DEC, FEC, o limite do próprio conjunto e a
@@ -26,6 +28,7 @@ export function QualidadeConjuntosDoMunicipio({
   codigos,
   fonte,
   tamanho,
+  idioma = "pt",
 }: {
   ano: number;
   /** Código IBGE do município (nome estável do arquivo exportado). */
@@ -36,6 +39,7 @@ export function QualidadeConjuntosDoMunicipio({
   fonte: string;
   /** Tamanho do arquivo anual (dito antes de baixar). */
   tamanho?: string;
+  idioma?: Idioma;
 }) {
   const arquivo = arquivoConjuntosDoAno(ano);
   const [linhasAno, setLinhasAno] = useState<LinhaTabela[] | null>(null);
@@ -63,7 +67,7 @@ export function QualidadeConjuntosDoMunicipio({
   return (
     <div className="space-y-3 border-t border-linha pt-4" data-conjuntos-do-municipio="">
       <h5 className="font-serif text-base text-carvao">
-        {n === 1 ? "O conjunto que atende" : `Os ${n.toLocaleString("pt-BR")} conjuntos que atendem`} {municipio}, com o limite de cada um
+        {n === 1 ? "O conjunto que atende" : `Os ${formatadorNumero(idioma, {}).format(n)} conjuntos que atendem`} {municipio}, com o limite de cada um
       </h5>
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
         {DEFINICAO_CONJUNTO} Para saber qual é o seu, procure o nome do conjunto na fatura de energia, junto dos indicadores de continuidade, ou pergunte à distribuidora.
@@ -114,7 +118,7 @@ export function QualidadeConjuntosDoMunicipio({
           )}
           {semValor.length > 0 && (
             <p className="text-sm leading-relaxed text-carvao-muted">
-              {semValor.length === 1 ? "Um conjunto citado não tem" : `${semValor.length.toLocaleString("pt-BR")} conjuntos citados não têm`} valor anual publicado em {ano} (menos de 12 meses ou sem limite): {semValor.join(", ")}.
+              {semValor.length === 1 ? "Um conjunto citado não tem" : `${formatadorNumero(idioma, {}).format(semValor.length)} conjuntos citados não têm`} valor anual publicado em {ano} (menos de 12 meses ou sem limite): {semValor.join(", ")}.
             </p>
           )}
           <p className="text-sm">

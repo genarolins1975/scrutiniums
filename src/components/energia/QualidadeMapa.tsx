@@ -36,6 +36,8 @@ import {
   type MunicipioQualidade,
 } from "@/lib/energia/qualidade";
 import type { QualidadeSeriesDistribuidorasGold } from "@/lib/energia/tipos-qualidade";
+import { formatadorNumero } from "@/lib/format";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * P051, mapa: cada município pintado pelo DEC (ou FEC) dos conjuntos elétricos que o
@@ -74,6 +76,7 @@ export function QualidadeMapa({
   versao,
   avisosFec = {},
   tamanhoConjuntos,
+  idioma = "pt",
 }: {
   ano: number;
   urlMunicipios: string;
@@ -90,6 +93,7 @@ export function QualidadeMapa({
   avisosFec?: AvisosFec;
   /** Tamanho do arquivo anual dos conjuntos, dito antes de baixar os valores da ficha do município. */
   tamanhoConjuntos?: string;
+  idioma?: Idioma;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const caixa = useRef<HTMLDivElement>(null);
@@ -172,9 +176,9 @@ export function QualidadeMapa({
       const n = porCodigo.get(id)?.conjuntos.length ?? 0;
       if (n === 0) return null;
       if (n === 1) return "valor do conjunto que atende o município";
-      return `${maior ? "maior" : "menor"} valor entre os ${num(n, 0)} conjuntos que atendem o município`;
+      return `${maior ? "maior" : "menor"} valor entre os ${num(n, 0, idioma)} conjuntos que atendem o município`;
     };
-  }, [municipios, v.med]);
+  }, [municipios, v.med, idioma]);
 
   // os pequenos múltiplos e a comparação aceitam no máximo LIMITE_COMPARACAO distribuidoras
   const cnpjsSel = selecionado ? selecionado.cnpjs.slice(0, LIMITE_COMPARACAO) : [];
@@ -229,7 +233,7 @@ export function QualidadeMapa({
         ) : (
           <div className="flex h-[380px] flex-col items-start justify-center gap-3 border border-dashed border-linha bg-papel p-5 text-sm text-carvao-muted sm:h-[520px]">
             <p className="max-w-prose2">
-              O mapa {totalMunicipios !== null ? `dos ${totalMunicipios.toLocaleString("pt-BR")} municípios do cadastro do IBGE ` : ""}usa a malha municipal do IBGE e o arquivo de
+              O mapa {totalMunicipios !== null ? `dos ${formatadorNumero(idioma, {}).format(totalMunicipios)} municípios do cadastro do IBGE ` : ""}usa a malha municipal do IBGE e o arquivo de
               municípios deste painel; os dois só são baixados quando o mapa aparece na tela.
             </p>
             {carga.estado === "carregando" ? (
@@ -309,6 +313,7 @@ export function QualidadeMapa({
               </p>
             )}
             <QualidadeConjuntosDoMunicipio
+              idioma={idioma}
               ano={ano}
               codigoMunicipio={selecionado.cod}
               municipio={`${selecionado.nome} (${selecionado.uf})`}
@@ -323,6 +328,7 @@ export function QualidadeMapa({
                   {(["dec", "fec"] as const).map((ind) => (
                     <PequenosMultiplos
                       key={ind}
+                      idioma={idioma}
                       titulo={`${ind === "dec" ? "DEC" : "FEC"} anual e limite das distribuidoras que atendem ${selecionado.nome}`}
                       dados={ind === "dec" ? dadosDec : dadosFec}
                       chaveX="ano"
