@@ -69,6 +69,18 @@ jobs:
           restore-keys: |
             pipeline-estado-
 
+      # O cache do repositório tem limite de 10 GB e o estado do Setor Elétrico ocupa
+      # ~7,2 GB por cópia (15/10/2026): quando a energia grava a cópia nova, o total passa
+      # do limite e o estado do crédito é despejado (03/10 e 15/10/2026). A release
+      # pipeline-estado não conta para o limite (scripts/estado_duravel.sh).
+      - name: Restaurar estado da cópia durável (cache ausente)
+        id: duravel
+        if: steps.cache.outputs.cache-matched-key == ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/estado_duravel.sh restaurar
+
       - name: Semear histórico na primeira execução
         run: |
           mkdir -p data/silver data/bronze data/gold
@@ -80,6 +92,7 @@ jobs:
           fi
 
       - name: Executar pipeline
+        id: pipeline
         run: |
           # -u: sem buffer, para o log mostrar onde a coleta está quando o job é cancelado
           if [ "${{ inputs.somente_gold }}" = "true" ]; then
@@ -97,10 +110,20 @@ jobs:
             data/bronze
           key: pipeline-estado-${{ github.run_id }}
 
-      # Em 03/10/2026 a restauração não achou nenhum cache (Cache not found) e o silver
-      # foi semeado de novo. Cada execução grava ~0,8 GB com chave nova, e o limite do
-      # repositório é de 10 GB somando energia e previsão: guardar só os três mais
-      # recentes DO MESMO RAMO tira o estado do pipeline da fila de despejo. A poda é
+      # Só o main publica a cópia: a release não tem separação por ramo, e uma execução
+      # manual num ramo de PR não pode substituir o estado que o main restaura.
+      - name: Cópia durável do estado (release pipeline-estado)
+        if: steps.pipeline.outcome == 'success' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/estado_duravel.sh salvar
+
+      # Em 03/10 e 15/10/2026 a restauração não achou nenhum cache (Cache not found) e o
+      # silver foi semeado de novo: o despejo vem do estado da energia (~7,2 GB por cópia)
+      # contra o limite de 10 GB, e a proteção é a cópia durável acima. Cada execução
+      # grava ~0,9 GB com chave nova: guardar só os três mais recentes DO MESMO RAMO
+      # evita que o próprio crédito encha o limite. A poda é
       # por ramo (--ref): o main não restaura cache de outro ramo, então uma execução
       # manual em ramo de PR nunca pode apagar os caches do main. Falha aqui não bloqueia.
       - name: Podar caches antigos do estado

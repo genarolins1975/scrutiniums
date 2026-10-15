@@ -231,6 +231,25 @@ recortes fecham ao centavo (2026-08: R$ 34.405.907.666,05 nos dois, 14/10/2026).
    fora: entra numa reconciliação com tolerância de 0,5%, e o realinhamento inicial
    dos 16 meses precisa caber no orçamento dos leves.
 
+**Terceira execução depois das correções (15/10/2026, run 38746240160).** O cache do
+estado não foi encontrado (`Cache not found for input keys: pipeline-estado-...`) e o
+silver foi semeado de novo; 20 testes reprovaram em rural, ampliado, BNDES, estados,
+linhagem, operacional e subnacional. A cópia salva na véspera (run 38578966646, 16:23
+UTC de 14/10) existia e não foi podada por este workflow. A causa provável, com
+evidência nos logs: o job de energia restaurou às 01:46 de 15/10 uma cópia de 7.152 MB
+(`energia-estado-37719964861`) e gravou outra às 04:16 (`energia-estado-38667375474`);
+as duas passam do limite de 10 GB do repositório, e o GitHub despeja primeiro o cache
+acessado há mais tempo, que era o do crédito. Às 13:43 a previsão do PLD também já não
+achou cache de energia e restaurou da sua cópia durável. A mesma causa explica, por
+inferência, a perda de 03/10, que não tinha explicação registrada.
+10. O estado do crédito (`data/silver` e `data/bronze`) ganhou cópia durável na release
+    `pipeline-estado`, fora do limite do cache, no mesmo padrão da energia
+    (`scripts/estado_duravel.sh`): salva depois de todo pipeline concluído, restaurada
+    quando o cache falta, em partes de até 1,9 GB com manifesto sha256; cópia
+    incompleta ou corrompida não é extraída e o pipeline semeia como antes.
+    Pendência do mantenedor: o estado da energia sozinho ocupa ~72% do limite; enquanto
+    duas cópias dele coexistirem, o despejo de outros caches continua.
+
 **Produção e main.** Em 13/10/2026 às 10:43 UTC a produção servia o mesmo
 `gerado_em` do main (2026-09-24T15:25), em `/resumo` e em
 `/obs/data/gold/meta.json`. A leitura "Processado em 2026-08-12" relatada nesse dia
