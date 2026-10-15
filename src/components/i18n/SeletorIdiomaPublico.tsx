@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { pt } from "@/i18n/pt";
 import type { Idioma } from "@/lib/idioma";
-import { parDeIdioma } from "@/lib/i18n-rotas";
+import { parDeIdioma, traducaoPublicada } from "@/lib/i18n-rotas";
 import { urlDaPagina } from "@/lib/i18n-url";
 
 type LeituraUrl = { pathname: string | null; href: string | null };
@@ -20,7 +20,7 @@ export function SeletorIdiomaPublico() {
     const { href, origin } = window.location;
     // search/hash separados perderiam os delimitadores vazios de ?, # e ?#.
     const relativo = href.startsWith(origin + "/") ? href.slice(origin.length) : null;
-    const par = relativo === null ? null : parDeIdioma(relativo);
+    const par = relativo === null || !traducaoPublicada(relativo) ? null : parDeIdioma(relativo);
     const destinos = {
       pt: par && relativo !== null ? urlDaPagina(relativo, "pt") : null,
       en: par && relativo !== null ? urlDaPagina(relativo, "en") : null,
@@ -57,7 +57,7 @@ export function SeletorIdiomaPublico() {
   // Uma leitura da página anterior nunca substitui o pathname da nova navegação.
   const atual = leitura?.pathname === pathname ? leitura : null;
   const origem = atual ? atual.href : pathname;
-  const par = origem ? parDeIdioma(origem) : null;
+  const par = origem && traducaoPublicada(origem) ? parDeIdioma(origem) : null;
   const destinos = par ? {
     pt: atual ? urlDaPagina(origem ?? "", "pt") : par.pt,
     en: atual ? urlDaPagina(origem ?? "", "en") : par.en,

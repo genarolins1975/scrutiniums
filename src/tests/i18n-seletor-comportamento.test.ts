@@ -17,6 +17,13 @@ vi.mock("react", async () => ({
   useEffect: (efeito: () => void | (() => void)) => { montagem.efeitos.push(efeito); },
 }));
 
+// Fixture de tradução publicada: estes testes exercitam eventos e preservação de URL.
+// O teste SSR usa o inventário real e exige ausência do seletor em fallbacks.
+vi.mock("@/lib/i18n-rotas", async () => {
+  const real = await vi.importActual<typeof import("@/lib/i18n-rotas")>("@/lib/i18n-rotas");
+  return { ...real, traducaoPublicada: (href: string) => real.parDeIdioma(href)?.pt === "/sobre" };
+});
+
 const limpezas: Array<() => void> = [];
 beforeEach(() => {
   montagem.pathname = "/sobre";

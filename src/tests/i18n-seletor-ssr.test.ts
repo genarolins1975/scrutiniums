@@ -4,7 +4,7 @@ import { parseFragment, serialize, type DefaultTreeAdapterMap } from "parse5";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
-import { PARES_DE_IDIOMA } from "@/lib/i18n-rotas";
+import { PARES_DE_IDIOMA, traducaoPublicada } from "@/lib/i18n-rotas";
 import { pt } from "@/i18n/pt";
 
 const rota = vi.hoisted(() => ({ pathname: "/sobre" as string | null }));
@@ -62,7 +62,7 @@ describe("seletor público no HTML inicial", () => {
     expect(pt["idioma.seletor"]).toBe("Idioma");
     expect(pt["idioma.portugues"]).toBe("Português");
     expect(pt["idioma.ingles"]).toBe("Inglês");
-    seletor(renderizar("/sobre"));
+    expect(renderizar("/sobre")).toBe("");
   });
 
   it.each(PARES_DE_IDIOMA)("publica anchors canônicos iguais em $pt e $en, sem esperar efeito", (par) => {
@@ -70,6 +70,10 @@ describe("seletor público no HTML inicial", () => {
     const htmlEn = renderizar(par.en);
     expect(htmlEn).toBe(htmlPt);
     for (const pathname of [par.pt, par.en, par.pt + "/", par.en + "/"]) {
+      if (!traducaoPublicada(pathname)) {
+        expect(renderizar(pathname)).toBe("");
+        continue;
+      }
       const { anchors } = seletor(renderizar(pathname));
       expect(anchors.map((no) => attr(no, "href")), pathname).toEqual([par.pt, par.en]);
     }
@@ -92,8 +96,7 @@ describe("seletor público no HTML inicial", () => {
     const lerCookie = vi.fn(() => "scrutiniums_idioma=en");
     vi.stubGlobal("window", Object.defineProperty({}, "location", { get: lerLocalizacao }));
     vi.stubGlobal("document", Object.defineProperty({}, "cookie", { get: lerCookie }));
-    const { anchors } = seletor(renderizar("/sobre"));
-    expect(anchors.map((no) => attr(no, "href"))).toEqual(["/sobre", "/en/sobre"]);
+    expect(renderizar("/sobre")).toBe("");
     expect(lerLocalizacao).not.toHaveBeenCalled();
     expect(lerCookie).not.toHaveBeenCalled();
   });
@@ -110,6 +113,10 @@ describe("integração estática no cabeçalho público", () => {
       const todos = elementos(parseFragment(htmlPt));
       const navegacoes = todos.filter((no) => no.tagName === "nav" && attr(no, "aria-label") === "Navegação principal");
       expect(navegacoes, par.pt).toHaveLength(1);
+      if (!traducaoPublicada(par.pt)) {
+        expect(todos.filter((no) => attr(no, "aria-label") === "Idioma")).toEqual([]);
+        continue;
+      }
       const { anchors } = seletor(serialize(navegacoes[0]));
       expect(anchors.map((no) => attr(no, "href"))).toEqual([par.pt, par.en]);
       expect(todos.filter((no) => attr(no, "aria-label") === "Idioma")).toHaveLength(1);
