@@ -5,6 +5,7 @@ import { dirname, join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import inventario from "../../config/i18n-inventario.json";
 import { executar, gerarCobertura, serializarRelatorio } from "../../scripts/cobertura-i18n.mjs";
+import { lerCatalogo } from "../../scripts/i18n/catalogo.mjs";
 import { validarUsoInterface } from "../../scripts/i18n/usos.mjs";
 import { PARES_DE_IDIOMA, parDeIdioma } from "@/lib/i18n-rotas";
 
@@ -127,7 +128,42 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
       "/cadastro", "/entrar", "/glossario", "/imprensa", "/observatorio-do-credito", "/privacidade",
       "/sobre", "/sobre/erros", "/sobre/governanca", "/termos",
     ]);
-    expect(inventario.uso_interface).toEqual(declaracao());
+    // O estado publicado evolui sem transformar a fixture sintética 4/7
+    // em uma cópia da implementação real.
+    expect(inventario.uso_interface).toEqual({ schema_version: 1, rotas: [{ pt: "/", regioes: [
+      { id: "home-titulo", estado: "traduzido", chaves: ["home.hero.titulo_inicio", "home.hero.titulo_destaque"] },
+      { id: "home-acoes", estado: "traduzido", chaves: ["acesso.criar_conta", "home.hero.ja_cadastrado"] },
+      { id: "home-cabecalho", estado: "portugues_marcado" },
+      { id: "home-rotulo", estado: "traduzido", chaves: ["home.hero.rotulo"] },
+      { id: "home-introducao", estado: "portugues_marcado" },
+      { id: "home-beneficios", estado: "traduzido", chaves: [
+        "home.hero.beneficio_conta", "home.hero.beneficio_evidencia", "home.hero.beneficio_gratuidade",
+      ] },
+      { id: "home-indice", estado: "portugues_marcado" },
+      { id: "home-secoes", estado: "portugues_marcado" },
+      { id: "home-rodape", estado: "portugues_marcado" },
+    ] }] });
+    const catalogo = lerCatalogo(
+      readFileSync(join(process.cwd(), inventario.catalogo.pt), "utf8"),
+      readFileSync(join(process.cwd(), inventario.catalogo.en), "utf8"),
+    );
+    const registro = { pares: PARES_DE_IDIOMA.map((par) => ({
+      pt: par.pt, en: par.en, conteudo_declarado: par.conteudo,
+      dominio: par.pt === "/observatorio-do-credito" ? "credito" : "plataforma",
+    })) };
+    const usoReal = validarUsoInterface(inventario, registro, catalogo.en);
+    expect(usoReal).toMatchObject({
+      schema_version: 1, rotas_parciais_declaradas: 1,
+      chaves_en_declaradas_em_uso: 8, ocorrencias_en_declaradas: 8,
+      regioes_pt_nao_catalogadas: 5, html_verificado_pelo_inventario: false,
+    });
+    expect(usoReal?.rotas).toHaveLength(1);
+    expect(usoReal?.rotas[0]).toMatchObject({ pt: "/", en: "/en", dominio: "plataforma" });
+    expect(usoReal?.rotas[0].regioes).toHaveLength(9);
+    expect(usoReal?.rotas[0].regioes.filter((regiao) => regiao.estado === "traduzido").map((regiao) => regiao.id))
+      .toEqual(["home-acoes", "home-beneficios", "home-rotulo", "home-titulo"]);
+    expect(usoReal?.rotas[0].regioes.filter((regiao) => regiao.estado === "portugues_marcado").map((regiao) => regiao.id))
+      .toEqual(["home-cabecalho", "home-indice", "home-introducao", "home-rodape", "home-secoes"]);
   });
 });
 

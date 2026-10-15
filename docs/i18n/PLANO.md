@@ -55,6 +55,8 @@ Entrar e Cadastro acrescentam dois pares dinâmicos com português marcado, sem 
 
 A árvore inglesa dessas duas entradas produz IDs de `useId()` diferentes dos portugueses. A comparação dos formulários exige uma bijeção dos IDs gerados e de suas referências de rótulo/erro, depois de verificar unicidade, campos e associações; todos os outros atributos, textos, números e destinos continuam sob igualdade estrita. Os IDs portugueses permanecem iguais ao baseline. Essa adaptação é restrita às duas páginas de autenticação e não altera as provas da home ou das páginas de leitura.
 
+Na home, o rótulo e os três benefícios do Hero ganham inglês, com os conceitos de fonte de dados e período de referência documentados no glossário por IBGE e BCB. O catálogo passa a doze mensagens, oito efetivamente usadas no conteúdo inglês da home. Rótulo e benefícios deixam o fallback; permanecem cinco regiões portuguesas marcadas entre as nove regiões declaradas. A página continua parcial. Texto, estrutura, números e destinos portugueses são preservados, assim como as demais vitrines e as onze irmãs existentes. A comparação de DOM admite somente essas quatro traduções adicionais antes de reconstruir o corpo português integral.
+
 ## Fases seguintes
 
 | Fase | Série de entregas, sempre com CI verde entre PRs |

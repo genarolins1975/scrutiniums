@@ -189,6 +189,41 @@
       ],
       "nota": "A IEA usa power sector nesta passagem; electricity systems e electricity markets descrevem outros recortes. A entrada não autoriza traduzir ou renomear Observatório Brasileiro do Setor Elétrico nem seu título curto de produto."
     },
+    "estatistica.fonte_dados": {
+      "tipo": "termo",
+      "pt": "fonte de dados",
+      "en": "data source",
+      "contexto": "Origem dos dados que alimentam uma estatística ou indicador; na apresentação da home, fonte é a forma curta desse conceito.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "harmonized and integrated production, maintenance and use of data sources",
+          "localizacao": "About, edição 2024, primeiro parágrafo"
+        },
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "because the data source is the credit outstanding \nbalance from identified clients in the Credit Information System (SCR).",
+          "localizacao": "Seção 1.2.2, Credit, nota 18",
+          "pagina": 25
+        }
+      ],
+      "nota": "O par português/inglês do IBGE usa fontes de dados / data sources, no plural. Data source é o singular regular e também aparece no BCB; a nota portuguesa do BCB diz fonte utilizada, não fonte de dados. Não estender a fontes de energia, fontes tipográficas nem nomes próprios de bases ou séries."
+    },
+    "estatistica.periodo_referencia": {
+      "tipo": "termo",
+      "pt": "período de referência",
+      "en": "reference period",
+      "contexto": "Período a que os dados ou resultados se referem; na apresentação da home, período identifica esse recorte temporal.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "Asset price volatility has increased to levels above \nthose observed during the reference period of the \nprevious FSR",
+          "localizacao": "Seção 1.1, International Financial System, parágrafo sobre volatilidade dos preços dos ativos financeiros",
+          "pagina": 11
+        }
+      ],
+      "nota": "O trecho corresponde a período de referência do REF anterior na versão portuguesa, também na página 11. Não confundir com data de publicação, captura, acesso ou atualização; não altera a periodicidade, as datas ou os números da série."
+    },
     "financeiro.taxa_juros": {
       "tipo": "termo",
       "pt": "taxa de juros",

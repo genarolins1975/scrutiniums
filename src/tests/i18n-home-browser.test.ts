@@ -32,7 +32,10 @@ function assinaturas(violacoes: Violacao[], ingles: boolean): string[] {
   return violacoes.flatMap((v) => v.nodes.map((node) => {
     let html = node.html.replace(/\sdata-i18n-regiao="[^"]*"/g, "");
     if (ingles) {
-      for (const chave of ["home.hero.titulo_inicio", "home.hero.titulo_destaque", "acesso.criar_conta", "home.hero.ja_cadastrado"] as const) {
+      for (const chave of [
+        "home.hero.titulo_inicio", "home.hero.titulo_destaque", "acesso.criar_conta", "home.hero.ja_cadastrado",
+        "home.hero.rotulo", "home.hero.beneficio_conta", "home.hero.beneficio_evidencia", "home.hero.beneficio_gratuidade",
+      ] as const) {
         html = html.replaceAll(en[chave].texto, pt[chave]);
       }
     }
@@ -60,7 +63,7 @@ describe("home PT/EN: navegador do build de produção", () => {
           expect(await page.locator("html").getAttribute("lang")).toBe(caminho === "/en" ? "en" : "pt-BR");
           if (caminho === "/en") {
             const avisos = page.locator("[data-i18n-aviso]");
-            expect(await avisos.count()).toBe(7);
+            expect(await avisos.count()).toBe(5);
             for (const aviso of await avisos.all()) {
               expect(await aviso.isVisible()).toBe(true);
               expect(await aviso.getAttribute("lang")).toBe("en");

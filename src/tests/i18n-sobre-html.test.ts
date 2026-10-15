@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 import { parse, parseFragment, serialize } from "parse5";
 import { afterAll, beforeAll, describe, expect, it, type TestContext } from "vitest";
 import { PARES_DE_IDIOMA, type ParDeIdioma } from "@/lib/i18n-rotas";
-import { attr, conteudo, elementos, filhos, links, meta, oculto, tag, texto, unico, vazamentos, type No } from "./suporte/i18n-dom";
+import { attr, conteudo, elementos, filhos, links, meta, oculto, tag, texto, unico, vazamentos, type Elemento, type No } from "./suporte/i18n-dom";
 import { documentoEstatico, modoDaPagina } from "./suporte/i18n-build";
 import { criarNavegadorI18n, type NavegadorI18n } from "./suporte/i18n-browser";
 import { verificarHomeParcial, verificarHeadHome } from "./suporte/i18n-home";
@@ -309,6 +309,59 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
       const comTextoExtra = parse(original);
       tag(comTextoExtra, "body").childNodes.push(...parseFragment("<p>Additional sentence.</p>").childNodes);
       expect(() => verificarHomeParcial(pt, comTextoExtra)).toThrow();
+    });
+
+    it("recusa adulterações de texto, estrutura e visibilidade do rótulo e dos benefícios traduzidos", (ctx) => {
+      const { pt, en } = documentosDoPar(ctx, par);
+      if (!("childNodes" in en)) throw new Error("Documento inglês sem árvore DOM");
+      verificarHomeParcial(pt, en);
+      const original = serialize(en);
+      const rotulo = (doc: No) => unico(doc, (e) => attr(e, "data-i18n-regiao") === "home-rotulo", "rótulo traduzido");
+      const beneficios = (doc: No) => unico(doc, (e) => attr(e, "data-i18n-regiao") === "home-beneficios", "benefícios traduzidos");
+      const itens = (doc: No) => {
+        const encontrados = elementos(beneficios(doc)).filter((e) => e.tagName === "li");
+        expect(encontrados).toHaveLength(3);
+        return encontrados;
+      };
+      const substituirTexto = (no: Elemento, valor: string) => {
+        const trecho = filhos(no).find((filho) => "value" in filho && filho.value.trim() !== "");
+        if (!trecho || !("value" in trecho)) throw new Error("Região sem texto direto para adulteração");
+        trecho.value = valor;
+      };
+      const adulteracoes: [string, (doc: No) => void][] = [
+        ["rótulo em português", (doc) => substituirTexto(rotulo(doc), "Observatórios de dados públicos")],
+        ["chave aparente no rótulo", (doc) => substituirTexto(rotulo(doc), "home.hero.rotulo")],
+        ["benefício trocado por outro", (doc) => substituirTexto(itens(doc)[0], "Free, with no subscription")],
+        ["texto de benefício omitido", (doc) => substituirTexto(itens(doc)[1], "")],
+        ["classe da lista alterada", (doc) => {
+          const classe = beneficios(doc).attrs.find((a) => a.name === "class");
+          if (!classe) throw new Error("Lista de benefícios sem classes");
+          classe.value += " classe-extra";
+        }],
+        ["ordem dos itens alterada", (doc) => {
+          const lista = beneficios(doc), [primeiro, segundo] = itens(doc);
+          const a = lista.childNodes.indexOf(primeiro), b = lista.childNodes.indexOf(segundo);
+          expect(a).toBeGreaterThanOrEqual(0);
+          expect(b).toBeGreaterThanOrEqual(0);
+          [lista.childNodes[a], lista.childNodes[b]] = [segundo, primeiro];
+        }],
+        ["item removido da lista", (doc) => {
+          const lista = beneficios(doc), ultimo = itens(doc)[2];
+          lista.childNodes = lista.childNodes.filter((no) => no !== ultimo);
+        }],
+        ["span decorativo removido", (doc) => {
+          const primeiro = itens(doc)[0], decoracao = tag(primeiro, "span");
+          primeiro.childNodes = primeiro.childNodes.filter((no) => no !== decoracao);
+        }],
+        ["benefícios escondidos", (doc) => beneficios(doc).attrs.push({ name: "hidden", value: "" })],
+      ];
+      for (const [nome, adulterar] of adulteracoes) {
+        const copia = parse(original);
+        adulterar(copia);
+        expect(serialize(copia), nome).not.toBe(original);
+        expect(() => verificarHomeParcial(pt, copia), nome).toThrow();
+      }
+      expect(serialize(en)).toBe(original);
     });
   }
 });

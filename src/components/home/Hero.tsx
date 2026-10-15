@@ -27,7 +27,9 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
       <div className="mx-auto max-w-page px-6 pb-14 pt-14 md:pb-20 md:pt-20">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
           <div className="lg:col-span-8">
-            {emPortugues("home-rotulo", <p className="rotulo text-mineral">Observatórios de dados públicos</p>)}
+            <p data-i18n-regiao={idioma === "en" ? "home-rotulo" : undefined} className="rotulo text-mineral">
+              {idioma === "en" ? en["home.hero.rotulo"].texto : pt["home.hero.rotulo"]}
+            </p>
             <h1
               id="hero-titulo"
               data-i18n-regiao={idioma === "en" ? "home-titulo" : undefined}
@@ -51,20 +53,20 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
                 {idioma === "en" ? en["home.hero.ja_cadastrado"].texto : pt["home.hero.ja_cadastrado"]}
               </Link>
             </div>
-            {emPortugues("home-beneficios", <ul className="mt-6 space-y-2 text-sm text-carvao-muted">
+            <ul data-i18n-regiao={idioma === "en" ? "home-beneficios" : undefined} className="mt-6 space-y-2 text-sm text-carvao-muted">
               <li className="flex gap-3">
                 <span aria-hidden="true" className="mt-[0.55rem] h-px w-4 shrink-0 bg-bronze" />
-                Todos os painéis com uma conta gratuita
+                {idioma === "en" ? en["home.hero.beneficio_conta"].texto : pt["home.hero.beneficio_conta"]}
               </li>
               <li className="flex gap-3">
                 <span aria-hidden="true" className="mt-[0.55rem] h-px w-4 shrink-0 bg-bronze" />
-                Fonte, período e limitações em cada número
+                {idioma === "en" ? en["home.hero.beneficio_evidencia"].texto : pt["home.hero.beneficio_evidencia"]}
               </li>
               <li className="flex gap-3">
                 <span aria-hidden="true" className="mt-[0.55rem] h-px w-4 shrink-0 bg-bronze" />
-                Gratuito, sem assinatura
+                {idioma === "en" ? en["home.hero.beneficio_gratuidade"].texto : pt["home.hero.beneficio_gratuidade"]}
               </li>
-            </ul>)}
+            </ul>
           </div>
         </div>
 
