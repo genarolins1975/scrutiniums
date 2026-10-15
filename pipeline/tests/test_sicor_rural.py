@@ -7,6 +7,7 @@
    o recuo é declarado no payload e nas cautelas.
 3. O HTTP 500 intermitente da Olinda é retentado com espera curta, e a mensagem
    de falha no log preserva a causa.
+4. O nacional (FonteRecursos) de um mês nunca é de fotografia anterior à do municipal.
 """
 import sqlite3
 import unittest
@@ -58,6 +59,59 @@ class OrdemDaColeta(unittest.TestCase):
         # a coleta de 13/10/2026 levou 131 min (26 de SICOR) contra o teto de 150 min
         # de run.py: o SICOR pode crescer no máximo 12,5 min sem pular os coletores seguintes
         self.assertLessEqual(sicor.ORCAMENTO_PESADOS_S + sicor.ORCAMENTO_S, 1500 + 750)
+
+
+class FotografiaAlinhada(unittest.TestCase):
+    """14/10/2026: municipal recoletado inteiro, nacional de coletas anteriores; as UFs
+    (municipal) ficaram R$ 731,8 mi acima do total (FonteRecursos) e a gold foi retida."""
+
+    def _silver(self, registros):
+        con = sqlite3.connect(":memory:")
+        sicor._ensure(con)
+        con.executemany("INSERT INTO sicor_coleta VALUES(?,?,?,?,1)",
+                        [(rec, mes, quando, 1) for rec, mes, quando in registros])
+        return con
+
+    def _coleta(self, con):
+        ordem = []
+
+        def fake(recurso):
+            def fn(_con, mes):
+                ordem.append((recurso, mes))
+                return 0, {}
+            return fn
+
+        alvos = {f"_coleta_{r}": fake(r) for r in ("uf", "fonte", "faixa", "genero", "if", "mun", "produto")}
+        alvos["_coleta_nomes"] = lambda _con, _mes: (0, {})
+        with mock.patch.multiple(sicor, **alvos), mock.patch.object(sicor, "CAP_LEVES", 40), \
+                mock.patch.object(sicor, "CAP_PESADOS", 0), mock.patch.object(sicor.common, "record_lineage"):
+            sicor.collect(con, {})
+        return [x for x in ordem if x[0] in ("uf", "fonte", "faixa", "genero")]
+
+    def test_nacional_anterior_ao_municipal_e_recoletado_primeiro(self):
+        m = _mes(4)
+        con = self._silver([("mun", m, "2026-10-14T15:00:00+00:00"),
+                            ("fonte", m, "2026-10-04T15:00:00+00:00"),
+                            ("faixa", m, "2026-10-04T15:00:00+00:00"),
+                            ("uf", m, "2026-10-04T15:00:00+00:00"),
+                            ("genero", m, "2026-10-04T15:00:00+00:00")])
+        self.assertEqual(sicor._desalinhados(con), [("fonte", m)])
+        leves = self._coleta(con)
+        self.assertEqual(leves[0], ("fonte", m), "o alinhamento vem antes de qualquer leve")
+        for outro in ("uf", "faixa", "genero"):
+            self.assertNotIn((outro, m), leves, "só o nacional que fecha ao centavo com o municipal é refeito")
+        self.assertEqual(sicor._desalinhados(con), [], "depois da coleta, os dois recortes são da mesma fotografia")
+
+    def test_nacional_posterior_ao_municipal_fica(self):
+        m = _mes(4)
+        con = self._silver([("mun", m, "2026-10-14T15:00:00+00:00"),
+                            ("fonte", m, "2026-10-14T15:20:00+00:00")])
+        self.assertEqual(sicor._desalinhados(con), [])
+        self.assertNotIn(("fonte", m), self._coleta(con))
+
+    def test_mes_sem_municipal_nao_forca_nada(self):
+        con = self._silver([("fonte", _mes(4), "2026-10-04T15:00:00+00:00")])
+        self.assertEqual(sicor._desalinhados(con), [])
 
 
 class OlindaIntermitente(unittest.TestCase):
