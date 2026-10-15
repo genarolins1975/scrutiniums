@@ -37,7 +37,7 @@ describe("vitrine pública do Observatório", () => {
   });
 
   it("está acessível a partir do rodapé público", () => {
-    expect(readFileSync(join(process.cwd(), "src/components/layout/Footer.tsx"), "utf-8")).toMatch(/href="\/observatorio-do-credito"/);
+    expect(readFileSync(join(process.cwd(), "src/components/layout/Footer.tsx"), "utf-8")).toMatch(/href=\{h\("\/observatorio-do-credito"\)\}/);
   });
 
   it("os números vêm do gold, não são literais no código", () => {

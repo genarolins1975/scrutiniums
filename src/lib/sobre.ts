@@ -5,27 +5,35 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { type Institucional, INSTITUCIONAL, preenchido } from "./institucional";
+import { type Institucional, INSTITUCIONAL, preenchido, textosInstitucionais } from "./institucional";
+import type { Idioma } from "./idioma";
 export { contato, type Contato } from "./contato";
 
 export type Secao = { id: string; titulo: string; paragrafos: string[]; itens?: string[] };
 
+const TITULOS: Record<Idioma, Record<"quem" | "financiamento" | "independencia" | "conselho", string>> = {
+  pt: { quem: "Quem mantém", financiamento: "Financiamento", independencia: "Independência e conflitos de interesse", conselho: "Conselho consultivo" },
+  en: { quem: "Who maintains it", financiamento: "Funding", independencia: "Independence and conflicts of interest", conselho: "Advisory board" },
+};
+
 /** Seções que dependem de decisão do mantenedor; vazias, somem. */
-export function secoesInstitucionais(inst: Institucional = INSTITUCIONAL): Secao[] {
+export function secoesInstitucionais(inst: Institucional = INSTITUCIONAL, idioma: Idioma = "pt"): Secao[] {
   const s: Secao[] = [];
   const m = inst.mantenedor;
+  const t = textosInstitucionais(inst, idioma);
+  const titulo = TITULOS[idioma];
   if (preenchido(m.nome)) {
-    s.push({ id: "quem-mantem", titulo: "Quem mantém", paragrafos: [preenchido(m.natureza_juridica) ? `${m.nome} (${m.natureza_juridica}).` : `${m.nome}.`] });
+    s.push({ id: "quem-mantem", titulo: titulo.quem, paragrafos: [preenchido(t.natureza_juridica) ? `${m.nome} (${t.natureza_juridica}).` : `${m.nome}.`] });
   }
-  if (preenchido(inst.financiamento)) s.push({ id: "financiamento", titulo: "Financiamento", paragrafos: [inst.financiamento] });
-  if (preenchido(inst.conflitos_de_interesse)) {
-    s.push({ id: "independencia", titulo: "Independência e conflitos de interesse", paragrafos: [inst.conflitos_de_interesse] });
+  if (preenchido(t.financiamento)) s.push({ id: "financiamento", titulo: titulo.financiamento, paragrafos: [t.financiamento] });
+  if (preenchido(t.conflitos_de_interesse)) {
+    s.push({ id: "independencia", titulo: titulo.independencia, paragrafos: [t.conflitos_de_interesse] });
   }
   const conselho = (inst.conselho_consultivo ?? []).filter((c) => preenchido(c.nome));
   if (conselho.length) {
     s.push({
       id: "conselho",
-      titulo: "Conselho consultivo",
+      titulo: titulo.conselho,
       paragrafos: [],
       itens: conselho.map((c) => (preenchido(c.afiliacao) ? `${c.nome}, ${c.afiliacao}` : c.nome)),
     });

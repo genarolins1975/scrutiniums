@@ -4,7 +4,7 @@ import { analisarUrlPagina, urlDaPagina } from "./i18n-url";
 export type ParDeIdioma = Readonly<{
   pt: string;
   en: string;
-  conteudo: "portugues_marcado" | "parcialmente_traduzido";
+  conteudo: "portugues_marcado" | "parcialmente_traduzido" | "traduzido";
 }>;
 
 const porCaminhoPt = new Map<string, ParDeIdioma>();
@@ -20,11 +20,11 @@ export const PARES_DE_IDIOMA: readonly ParDeIdioma[] = Object.freeze(
     const en = urlDaPagina(item.pt, "en");
     if (!pagina || pagina.idioma !== "pt" || pagina.sufixo || !en
       || (item.pt !== "/" && item.pt.endsWith("/"))
-      || (item.conteudo !== "portugues_marcado" && item.conteudo !== "parcialmente_traduzido")
+      || !["portugues_marcado", "parcialmente_traduzido", "traduzido"].includes(item.conteudo)
       || porCaminhoPt.has(item.pt)) {
       throw new Error(`Par de idiomas inválido ou duplicado: ${item.pt}`);
     }
-    const par: ParDeIdioma = Object.freeze({ pt: item.pt, en, conteudo: item.conteudo });
+    const par: ParDeIdioma = Object.freeze({ pt: item.pt, en, conteudo: item.conteudo as ParDeIdioma["conteudo"] });
     porCaminhoPt.set(item.pt, par);
     return par;
   }),

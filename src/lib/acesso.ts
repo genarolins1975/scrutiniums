@@ -37,9 +37,10 @@ export function observatoriosPorExtenso(maiuscula = false, idioma: Idioma = "pt"
 }
 
 /** "Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais e Contas Públicas Estaduais". */
-export function listaObservatorios(): string {
+export function listaObservatorios(idioma: Idioma = "pt"): string {
   const nomes = DOMINIOS.map((d) => d.nomeCurto);
-  return nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} e ${nomes.at(-1)}` : nomes.join("");
+  const e = idioma === "en" ? "and" : "e";
+  return nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} ${e} ${nomes.at(-1)}` : nomes.join("");
 }
 
 export const ACESSO = {

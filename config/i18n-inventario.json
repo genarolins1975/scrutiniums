@@ -15,9 +15,9 @@
       { "pt": "/imprensa", "conteudo": "portugues_marcado" },
       { "pt": "/observatorio-do-credito", "conteudo": "portugues_marcado" },
       { "pt": "/privacidade", "conteudo": "portugues_marcado" },
-      { "pt": "/sobre", "conteudo": "portugues_marcado" },
-      { "pt": "/sobre/erros", "conteudo": "portugues_marcado" },
-      { "pt": "/sobre/governanca", "conteudo": "portugues_marcado" },
+      { "pt": "/sobre", "conteudo": "traduzido" },
+      { "pt": "/sobre/erros", "conteudo": "traduzido" },
+      { "pt": "/sobre/governanca", "conteudo": "traduzido" },
       { "pt": "/termos", "conteudo": "portugues_marcado" }
     ]
   },

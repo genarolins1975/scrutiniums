@@ -72,7 +72,7 @@ describe("abas em páginas estáticas", () => {
     expect(c).toMatch(/^"use client";/);
     expect(c).toContain('fetch("/api/auth/eu"');
     expect(c).toContain("r.status === 204");
-    expect(c).toContain("navCabecalho(logado)");
+    expect(c).toContain("navCabecalho(logado, idioma)");
     // a rota consultada responde 204 com sessão e 401 sem, sem cache
     const rota = readFileSync(`${process.cwd()}/src/app/api/auth/eu/route.ts`, "utf-8");
     expect(rota).toContain("user ? 204 : 401");

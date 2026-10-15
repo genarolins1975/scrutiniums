@@ -42,7 +42,7 @@ export function validarRotasLiterais(raiz, manifesto, fontes) {
   };
   const pares = declaracao.literais.map((item) => {
     if (chaves(item) !== "conteudo,pt" || !caminhoLiteral(item.pt)
-      || !["portugues_marcado", "parcialmente_traduzido"].includes(item.conteudo)) {
+      || !["portugues_marcado", "parcialmente_traduzido", "traduzido"].includes(item.conteudo)) {
       throw new Error("Rota literal i18n ou estado de conteúdo não suportado.");
     }
     if (vistos.has(item.pt)) throw new Error(`Rota literal i18n duplicada: ${item.pt}`);
