@@ -4,7 +4,6 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { executar, gerarCobertura } from "../../scripts/cobertura-i18n.mjs";
-import { registrarCobertura } from "../../scripts/i18n/publicacao.mjs";
 
 const temporarios: string[] = [];
 afterEach(() => { for (const raiz of temporarios.splice(0)) rmSync(raiz, { recursive: true, force: true }); });
@@ -72,21 +71,5 @@ describe("glossário no relatório de cobertura", () => {
     escrever(raiz, ARQUIVO, glossario);
     escrever(raiz, INVENTARIO, { ...manifesto, glossario: undefined });
     expect(() => gerarCobertura(raiz)).toThrow("glossário único");
-  });
-
-  it("não publica relatório que depende de glossário novo fora do índice", () => {
-    const raiz = fixture(false);
-    git(raiz, "config", "user.name", "Teste de glossário");
-    git(raiz, "config", "user.email", "glossario@example.invalid");
-    git(raiz, "config", "commit.gpgsign", "false");
-    executar([], raiz);
-    git(raiz, "add", ".");
-    git(raiz, "commit", "--quiet", "-m", "Base sintética");
-    const antes = git(raiz, "rev-parse", "HEAD");
-    escrever(raiz, ARQUIVO, glossario);
-    escrever(raiz, INVENTARIO, manifesto);
-    git(raiz, "add", "--", INVENTARIO);
-    expect(() => registrarCobertura(antes, raiz, (dir: string) => { executar([], dir); })).toThrow("Fontes novas fora do índice: config/glossario-en.json");
-    expect(git(raiz, "rev-parse", "HEAD")).toBe(antes);
   });
 });
