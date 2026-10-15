@@ -51,9 +51,8 @@ describe.each(VITRINES)("fronteira pública da vitrine $pt", (par) => {
     expect(ehRotaPublica(par.en + "/opengraph-image")).toBe(false);
   });
 
-  it("conserva prioridade e frequência do sitemap com alternates recíprocos", () => {
+  it("conserva o sitemap português sem anunciar tradução inexistente", () => {
     const entradas = sitemap();
-    const languages = { "pt-BR": ORIGEM + par.pt, en: ORIGEM + par.en, "x-default": ORIGEM + par.pt };
     const portuguesas = entradas.filter((entrada) => entrada.url === ORIGEM + par.pt);
     const inglesas = entradas.filter((entrada) => entrada.url === ORIGEM + par.en);
     expect(portuguesas).toEqual([{
@@ -61,9 +60,8 @@ describe.each(VITRINES)("fronteira pública da vitrine $pt", (par) => {
       lastModified: expect.any(Date),
       changeFrequency: par.frequencia,
       priority: 0.9,
-      alternates: { languages },
     }]);
-    expect(inglesas).toEqual([{ ...portuguesas[0], url: ORIGEM + par.en }]);
+    expect(inglesas).toEqual([]);
   });
 });
 
