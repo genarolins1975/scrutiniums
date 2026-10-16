@@ -81,6 +81,17 @@ class TextoDaIssue(unittest.TestCase):
         self.assertIn("ERROR: test_x", texto)
         self.assertNotIn("vitest terminou", texto)
 
+    def test_muitas_falhas_python_contam_todas_as_omitidas(self):
+        # 100 falhas: aparece o cabeçalho da suíte e 29 nomes; as 71 restantes entram no "e mais"
+        log = self._arq("p.log", "".join(f"FAIL: test_{i} (modulo.Caso.test_{i})\n" for i in range(100)))
+        rel = self._arq("v.json", SEM_REPROVACAO)
+        cod = self._arq("c.txt", "vitest=0 pipeline=1 pesquisa=0\n")
+        linhas = self._roda(rel, cod, log).splitlines()
+        self.assertEqual(len(linhas), tr.LIMITE + 1)
+        self.assertEqual(linhas[-1], "- e mais 71 (ver o log)")
+        self.assertIn("test_28 ", linhas[-2])
+        self.assertNotIn("test_29 ", "\n".join(linhas))
+
     def test_tudo_zero_nao_atribui_causa(self):
         rel = self._arq("v.json", SEM_REPROVACAO)
         cod = self._arq("c.txt", "vitest=0 pipeline=0 pesquisa=0\n")

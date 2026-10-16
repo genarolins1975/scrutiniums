@@ -105,11 +105,10 @@ def main(caminho, arq_codigos=None, *logs):
         if c:
             python.append(f"- suíte Python `{rotulo}` reprovou (código {c})")
     if python:
-        reprovados_py = testes_python_reprovados("\n".join(_ler(p) for p in logs))
+        # o limite de linhas é aplicado uma só vez, no fim, para que "e mais N" conte
+        # todas as omitidas: truncar aqui e de novo na saída subconta as falhas
         itens.extend(python)
-        itens.extend(f"  - {t}" for t in reprovados_py[:LIMITE])
-        if len(reprovados_py) > LIMITE:
-            itens.append(f"  - e mais {len(reprovados_py) - LIMITE} (ver o log)")
+        itens.extend(f"  - {t}" for t in testes_python_reprovados("\n".join(_ler(p) for p in logs)))
 
     if not itens:
         if relatorio is None:
