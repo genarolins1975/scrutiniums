@@ -259,6 +259,37 @@ inferência, a perda de 03/10, que não tinha explicação registrada.
     estado passa de 8 GB: a 10 GB uma cópia sozinha não cabe mais no cache, e reduzir o
     bronze vira decisão do domínio.
 
+**Quarta execução depois das correções (16/10/2026, run 38909799073).** O cache foi
+encontrado, o Sicor e o resto da coleta rodaram, a primeira cópia durável do estado foi
+salva (23 s) e, nos testes de conteúdo, o vitest **não chegou a rodar nenhum teste**:
+o setup global falhou com `spawnSync git ENOBUFS` em `scripts/git-worktree-guard.mjs`
+(linha do `git diff --binary HEAD`), e o processo do vitest foi abortado com código 134
+(`FATAL ERROR: Reached heap limit`, 4,1 GB, na pilha do V8 em `Object.keys`).
+As duas suítes Python passaram (1.687 e 69 testes). A issue de retenção, porém,
+dizia "a reprovação veio das suítes Python", porque o texto presumia isso sempre que o
+vitest não listava teste reprovado: a causa certa só aparecia no resumo
+`vitest=134 pipeline=0 pesquisa=0` do log.
+
+Causa. O guarda de worktree (13/10) compara a árvore Git antes e depois da suíte e
+guardava o patch inteiro (`git diff --binary HEAD`) em memória, com teto de 64 MB. A
+gold regenerada pelo ciclo soma 96,6 MB em 3.894 arquivos de JSON indentado. Uma
+publicação diária típica muda 441.792 linhas (208.953 acréscimos e 232.839 remoções, no
+commit acc5c6e5f de 24/09/2026, fonte: estatísticas do commit no GitHub), o que dá
+cerca de 10 MB de patch a 22 bytes por linha (estimativa minha). Sem publicação havia 22
+dias, a diferença para a gold publicada passou de 64 MB: o ENOBUFS prova o limite, e o
+tamanho exato do patch não foi registrado. Nas execuções de 13, 14 e 15/10 o setup
+global rodou e o patch coube. Inferência: o patch tende a crescer a cada dia sem
+publicar, e a gold completa de 16/10 (cache restaurado) difere mais da publicada do que
+a de 15/10 (silver semeado do zero, mais pobre). O estouro de memória do vitest em
+seguida é provavelmente consequência do tratamento do erro, que carrega 64 MB de
+buffer; não foi isolado. Reproduzido localmente com um arquivo de 36 MB reescrito
+(patch de 72.000.113 bytes): mesma mensagem de erro do log.
+12. O guarda calcula o hash do patch em fluxo, por arquivo temporário, em blocos de 1
+    MB: o tamanho do patch deixou de ser limite (o mesmo patch de 72 MB passa em cerca
+    de 1 s, com 49 MB de memória). O texto da issue passa a receber os códigos de saída
+    das três suítes e a saída do unittest: aponta o processo abortado, lista os testes
+    Python reprovados e não atribui a causa quando não há como saber.
+
 **Produção e main.** Em 13/10/2026 às 10:43 UTC a produção servia o mesmo
 `gerado_em` do main (2026-09-24T15:25), em `/resumo` e em
 `/obs/data/gold/meta.json`. A leitura "Processado em 2026-08-12" relatada nesse dia
