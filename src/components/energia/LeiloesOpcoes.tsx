@@ -65,7 +65,7 @@ export function LeiloesMapaUf({
           <dl className="space-y-2">
             <dt className="rotulo text-mineral">{u.uf}</dt>
             <dd className="font-serif text-2xl text-carvao">{fmt(u.energia)} MWmédio</dd>
-            <dd className="text-carvao-muted">{u.empreendimentos} empreendimentos contratados</dd>
+            <dd className="text-carvao-muted">{u.empreendimentos} vendas</dd>
             <dd className="text-carvao-muted">Preço médio da época: {u.preco == null ? "sem dado" : `R$ ${fmt(u.preco, 2)}/MWh`}</dd>
             <dd className="text-carvao-muted">Por fonte: {u.fontes}</dd>
           </dl>

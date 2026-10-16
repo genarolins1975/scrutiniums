@@ -9,9 +9,14 @@ export type IdCategoria = "uhe" | "pch" | "eolica" | "solar" | "biomassa" | "gas
 export type IdSituacao = "operacao" | "construcao" | "nao_iniciada" | "encerrada" | "sem_registro" | "sem_ceg";
 export type IdEntrada = "antes_do_leilao" | "ate_ano_a" | "depois_ano_a" | "sem_data";
 
-/** Agregado de um conjunto de empreendimentos (mesma função `agrega` do pipeline). */
+/**
+ * Agregado de um conjunto de vendas (mesma função `agrega` do pipeline). `empreendimentos` conta linhas do arquivo da ANEEL: cada
+ * uma é uma venda, o empreendimento vencedor em um leilão; a mesma usina pode vender em vários leilões. `usinas_distintas` conta
+ * núcleos de CEG distintos (linhas sem CEG ficam fora dessa contagem).
+ */
 export type Agregado = {
   empreendimentos: number;
+  usinas_distintas?: number;
   energia_mwmed: number;
   mw: number;
   preco_medio: number | null;

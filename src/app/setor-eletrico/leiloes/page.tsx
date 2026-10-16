@@ -61,7 +61,7 @@ const COLUNAS_LEILOES: ColunaTabela[] = [
   { id: "data", rotulo: "Data", tipo: "data" },
   { id: "nome", rotulo: "Leilão", tipo: "texto" },
   { id: "tipo", rotulo: "Tipo", tipo: "texto", categorica: true },
-  { id: "empreendimentos", rotulo: "Empreendimentos", tipo: "numero", casas: 0 },
+  { id: "empreendimentos", rotulo: "Vendas (empreendimento vencedor no leilão)", tipo: "numero", casas: 0 },
   { id: "energia_mwmed", rotulo: "Energia", tipo: "numero", unidade: "MWmédio", casas: 1 },
   { id: "mw", rotulo: "Potência das usinas", tipo: "numero", unidade: "MW", casas: 1 },
   { id: "preco_medio", rotulo: "Preço médio da época", tipo: "numero", unidade: "R$/MWh", casas: 2 },
@@ -195,7 +195,7 @@ export default function LeiloesAcrPage() {
               quanto se contratou, a que preço, onde, de quem e o que já está operando.
             </>
           }
-          recorte={`${periodo} · ${num(g.cobertura.leiloes, 0)} leilões · ${num(t.empreendimentos, 0)} empreendimentos · MWmédio, MW e R$/MWh`}
+          recorte={`${periodo} · ${num(g.cobertura.leiloes, 0)} leilões · ${num(t.empreendimentos, 0)} vendas · MWmédio, MW e R$/MWh`}
           fonte={`${FONTE_LEILOES}; IBGE, IPCA; ANEEL, SIGA`}
           limite="A base aberta não traz leilões de energia existente, de ajuste, de reserva de capacidade e de sistemas isolados; situação da usina não é cumprimento do contrato."
           referencia={
@@ -208,7 +208,7 @@ export default function LeiloesAcrPage() {
           metricas={
             <FaixaMetricas colunas={4} rotulo="Leilões de geração do ACR na base da ANEEL" nota={`Período: ${periodo}. Situação das usinas no SIGA de ${siga}.`}>
               <Numero variante="faixa" rotulo="Energia contratada" natureza="CALCULADO" evidencia={ev.energia_total} valor={t.energia_mwmed} unidade="MWmédio" casas={1} endereco={`${ROTA_LEILOES}#quanto`} />
-              <Numero variante="faixa" rotulo="Leilões na base" natureza="OBSERVADO" valor={g.cobertura.leiloes} unidade={`com ${num(t.empreendimentos, 0)} empreendimentos`} casas={0} periodo={periodo} />
+              <Numero variante="faixa" rotulo="Leilões na base" natureza="OBSERVADO" valor={g.cobertura.leiloes} unidade={`com ${num(t.empreendimentos, 0)} vendas${t.usinas_distintas ? ` de ${num(t.usinas_distintas, 0)} usinas distintas` : ""}`} casas={0} periodo={periodo} />
               <Numero
                 variante="faixa"
                 rotulo={`Preço médio do último leilão (${u.nome ?? numeroAneel(u.leilao)})`}
@@ -365,9 +365,9 @@ export default function LeiloesAcrPage() {
                     rotuloX="Deságio sobre o preço teto"
                     unidade="%"
                     casas={1}
-                    contagem={{ singular: "empreendimento", plural: "empreendimentos" }}
+                    contagem={{ singular: "venda", plural: "vendas" }}
                     periodo={periodo}
-                    nota={`${num(g.desagio.zero, 0)} empreendimentos venderam no próprio teto (deságio zero). O deságio publicado confere com 100 × (1 − preço ÷ teto) em ${g.conferencias.desagio_publicado_confere}.`}
+                    nota={`${num(g.desagio.zero, 0)} vendas saíram no próprio teto (deságio zero). O deságio publicado confere com 100 × (1 − preço ÷ teto) em ${g.conferencias.desagio_publicado_confere}.`}
                   />
                   <GraficoBarras
                     titulo="Deságio agregado por ano do leilão (ponderado pela energia)"
@@ -516,7 +516,7 @@ export default function LeiloesAcrPage() {
                       {g.conferencias.zeros_tratados.garantia_fisica} e investimento em {g.conferencias.zeros_tratados.investimento}.
                     </li>
                     <li>
-                      {g.entrega.operacao_com_ato_encerramento} contratos de usinas em operação no SIGA têm ato de revogação ou extinção publicado
+                      {g.entrega.operacao_com_ato_encerramento} vendas de usinas em operação no SIGA têm ato de revogação ou extinção publicado
                       (conversão de regime ou nova outorga); a fase do SIGA prevalece.
                     </li>
                     {g.ressalvas.map((r) => (

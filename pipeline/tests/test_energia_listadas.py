@@ -27,6 +27,7 @@ from pipeline.energia import base  # noqa: E402
 from pipeline.energia.fontes import b3_listadas as b3  # noqa: E402
 from pipeline.energia.fontes import cvm_listadas as cl  # noqa: E402
 from pipeline.energia.modulos import listadas as mod  # noqa: E402
+from pipeline.energia import logos_listadas as logos  # noqa: E402
 
 DADOS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dados", "energia_listadas")
 AXIA, ENERGISA, TAESA = "00001180000126", "00864214000106", "07859971000130"
@@ -284,3 +285,28 @@ class TestGoldPublicada(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SvgSemConteudoAtivo(unittest.TestCase):
+    def test_recusa_script_evento_conteudo_embutido_e_referencia_externa(self):
+        ativos = [
+            b'<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>',
+            b'<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"/>',
+            b'<svg xmlns="http://www.w3.org/2000/svg"><foreignObject><div/></foreignObject></svg>',
+            b'<svg xmlns="http://www.w3.org/2000/svg"><a href="javascript:alert(1)"><path d="M0 0"/></a></svg>',
+            b'<svg xmlns="http://www.w3.org/2000/svg"><image href="https://exemplo.invalid/x.png"/></svg>',
+            b'<!DOCTYPE svg [<!ENTITY x "y">]><svg xmlns="http://www.w3.org/2000/svg"/>',
+            b'<svg xmlns="http://www.w3.org/2000/svg"><style>@import url(https://exemplo.invalid/a.css);</style></svg>',
+        ]
+        for corpo in ativos:
+            self.assertTrue(logos.svg_com_conteudo_ativo(corpo), corpo)
+        limpo = b'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10"><path fill="#09697A" d="M0 0h10v10z"/></svg>'
+        self.assertFalse(logos.svg_com_conteudo_ativo(limpo))
+
+    def test_svgs_publicados_nao_tem_conteudo_ativo(self):
+        pasta = os.path.join(base.RAIZ, "public", "energia", "logos")
+        svgs = [n for n in os.listdir(pasta) if n.endswith(".svg")]
+        self.assertTrue(svgs)
+        for n in svgs:
+            with open(os.path.join(pasta, n), "rb") as f:
+                self.assertFalse(logos.svg_com_conteudo_ativo(f.read()), n)

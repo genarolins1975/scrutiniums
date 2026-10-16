@@ -252,7 +252,9 @@ def agrega(rs):
     inv_real = sum(r["investimento_rs"] * r["fator_ipca"] for r in com_inv if r.get("fator_ipca") is not None)
     mw_inv = sum(r["mw"] for r in com_inv)
     return {
+        # uma linha do arquivo = uma venda (empreendimento vencedor em um leilão); a mesma usina pode vender em vários leilões
         "empreendimentos": len(rs),
+        "usinas_distintas": len({r["nucleo"] for r in rs if r.get("nucleo") is not None}),
         "energia_mwmed": c.r(e, 1),
         "mw": c.r(_soma(rs, "mw"), 1),
         "preco_medio": c.r(sum(r["preco"] * r["energia_mwmed"] for r in com_p) / e_p, 2) if e_p else None,

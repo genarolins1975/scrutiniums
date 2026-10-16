@@ -169,7 +169,7 @@ export function frasesCitaveis(g: LeiloesGold): FraseCitavel[] {
   const t = g.totais;
   out.push({
     id: "total",
-    texto: `Entre ${dataBR(ref.primeiro_leilao)} e ${dataBR(ref.ultimo_leilao)}, os ${num(g.cobertura.leiloes, 0)} leilões de geração do ACR na base aberta da ANEEL contrataram ${mwmed(t.energia_mwmed)} de ${num(t.empreendimentos, 0)} empreendimentos vencedores.`,
+    texto: `Entre ${dataBR(ref.primeiro_leilao)} e ${dataBR(ref.ultimo_leilao)}, os ${num(g.cobertura.leiloes, 0)} leilões de geração do ACR na base aberta da ANEEL contrataram ${mwmed(t.energia_mwmed)} em ${num(t.empreendimentos, 0)} vendas${t.usinas_distintas ? ` de ${num(t.usinas_distintas, 0)} usinas distintas (a mesma usina pode vender em mais de um leilão)` : ""}.`,
     referencia: `${base}. Não inclui leilões de energia existente, de ajuste, de reserva de capacidade e de sistemas isolados.`,
   });
   const op = participacao(g, "operacao");
@@ -204,7 +204,7 @@ export function frasesCitaveis(g: LeiloesGold): FraseCitavel[] {
   if (q.mediana != null) {
     out.push({
       id: "desagio",
-      texto: `Metade dos ${num(q.n, 0)} empreendimentos com preço teve deságio de até ${pct(q.mediana, 2)} sobre o preço teto; um quarto teve deságio acima de ${pct(q.p75, 2)}.`,
+      texto: `Metade das ${num(q.n, 0)} vendas com preço teve deságio de até ${pct(q.mediana, 2)} sobre o preço teto; um quarto teve deságio acima de ${pct(q.p75, 2)}.`,
       referencia: `${base}. Deságio mede a distância ao teto do edital; o número de proponentes não está no arquivo.`,
     });
   }
@@ -212,7 +212,7 @@ export function frasesCitaveis(g: LeiloesGold): FraseCitavel[] {
   if (gc && ref.siga) {
     out.push({
       id: "grupo",
-      texto: `Pelo controle das usinas em ${dataBR(ref.siga)}, o grupo ${gc.nome ?? "sem nome publicado"} reúne a maior parcela da energia contratada nesses leilões: ${mwmed(gc.energia_mwmed)} em ${num(gc.empreendimentos, 0)} contratos. Esse grupo não é necessariamente o vencedor na data do leilão.`,
+      texto: `Pelo controle das usinas em ${dataBR(ref.siga)}, o grupo ${gc.nome ?? "sem nome publicado"} reúne a maior parcela da energia contratada nesses leilões: ${mwmed(gc.energia_mwmed)} em ${num(gc.empreendimentos, 0)} vendas. Esse grupo não é necessariamente o vencedor na data do leilão.`,
       referencia: `${base}; ANEEL, SIGA e Composição Societária, como publicados no módulo Empresas.`,
     });
   }

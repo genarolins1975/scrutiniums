@@ -138,7 +138,7 @@ export function GruposControle({ g, logos, dataSiga }: { g: NonNullable<LeiloesG
                 Grupo que controla em {dataSiga}
               </th>
               <th scope="col" className="border-b border-linha px-2 py-1.5 text-right text-xs font-medium text-mineral">
-                Contratos
+                Vendas
               </th>
               <th scope="col" className="border-b border-linha px-2 py-1.5 text-left text-xs font-medium text-mineral">
                 Energia contratada (MWmédio)
@@ -204,7 +204,7 @@ export function GruposControle({ g, logos, dataSiga }: { g: NonNullable<LeiloesG
         <ul className="mt-1 space-y-1 text-sm text-carvao-muted">
           {g.sem_vinculo.filter((s) => s.empreendimentos > 0).map((s) => (
             <li key={s.id}>
-              {s.rotulo}: {num(s.empreendimentos, 0)} contratos, {mwmed(s.energia_mwmed)}
+              {s.rotulo}: {num(s.empreendimentos, 0)} vendas, {mwmed(s.energia_mwmed)}
               {total ? ` (${num((100 * s.energia_mwmed) / total, 1)}% da energia)` : ""}.
             </li>
           ))}

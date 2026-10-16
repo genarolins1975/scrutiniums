@@ -63,7 +63,7 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
     return (
       <div className="space-y-2 border-t border-linha pt-4">
         <p className="max-w-prose2 text-sm text-carvao-muted">
-          O preço de cada um dos empreendimentos contratados, ao longo do tempo, em reais da época ou de {ipcaAte}. O arquivo tem cerca de 250 KB
+          O preço de cada venda (empreendimento vencedor em um leilão), ao longo do tempo, em reais da época ou de {ipcaAte}. O arquivo tem cerca de 250 KB
           e só é baixado quando você pede.
         </p>
         <button type="button" onClick={carregar} disabled={estado === "carregando"} className="min-h-[44px] border border-energia bg-superficie px-4 text-sm text-energia-dark hover:bg-energia-fundo">
@@ -130,7 +130,7 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
         className="block max-w-full touch-none outline-none focus-visible:ring-2 focus-visible:ring-energia"
         tabIndex={0}
         role="img"
-        aria-label={`Dispersão do preço de ${daCat.length} empreendimentos de ${CURTO_CATEGORIA[cat]}; use as setas para percorrer em ordem de data.`}
+        aria-label={`Dispersão do preço de ${daCat.length} vendas de ${CURTO_CATEGORIA[cat]}; use as setas para percorrer em ordem de data.`}
         onKeyDown={teclado}
         onPointerMove={ponteiro}
         onPointerDown={ponteiro}
@@ -167,7 +167,7 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
           </p>
         ) : (
           <p className="text-carvao-muted">
-            {daCat.length} empreendimentos com preço{semPreco ? `; ${semPreco} sem preço publicado ficam fora` : ""}. Toque ou passe o ponteiro sobre um ponto, ou use as setas.
+            {daCat.length} vendas com preço{semPreco ? `; ${semPreco} sem preço publicado ficam fora` : ""}. Toque ou passe o ponteiro sobre um ponto, ou use as setas.
           </p>
         )}
       </div>

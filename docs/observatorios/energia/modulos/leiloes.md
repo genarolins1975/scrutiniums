@@ -89,9 +89,9 @@ Lotes contratados de `expansao_leiloes_transmissao.csv`. Deságio por lote = 100
 | Fator do IPCA dez/2005 a set/2026 | 3,0354 (índice do IBGE) | produto das 249 variações mensais da série 433 do Banco Central: 3,0354 | diferença menor que 0,05% |
 | RAP vencedora nominal por ano | soma por ano deste módulo | soma por ano calculada pelo módulo Expansão (outro código) | igual, tolerância de 0,11 R$ milhão |
 | Preço médio do 39º LEN (3 PCH do recorte) | ponderado pela energia | releitura do arquivo original com `csv` | igual |
-| Situações exaustivas | 1.552 contratos em 6 situações | total de linhas | igual |
+| Situações exaustivas | 1.552 vendas em 6 situações | total de linhas | igual |
 
-Números publicados (gold de 16/10/2026): 48 leilões, 1.552 contratos, 40.167,5 MWmédio; 82,6% da energia (33.194,4 MWmédio) de usinas em operação no SIGA de 30/09/2026, 7,1% (2.871,8) de outorgas encerradas desde 2015, 7,9% (3.192,5) sem situação identificada (térmicas a óleo de 2007 e 2008, como MC2 Macaíba, fora do SIGA e sem ato desde 2015); último leilão, 39º LEN (A-5, 22/08/2025): 384,5 MWmédio a R$ 392,84/MWh, deságio agregado de 3,16%; deságio mediano por empreendimento de 13,22%; transmissão: 421 lotes contratados, deságio mediano por lote de 32,85%.
+Números publicados (gold de 16/10/2026): 48 leilões, 1.552 vendas (linhas do arquivo: empreendimento vencedor em um leilão) de 1.469 usinas distintas pelo núcleo do CEG, 40.167,5 MWmédio; 82,6% da energia (33.194,4 MWmédio) de usinas em operação no SIGA de 30/09/2026, 7,1% (2.871,8) de outorgas encerradas desde 2015, 7,9% (3.192,5) sem situação identificada (térmicas a óleo de 2007 e 2008, como MC2 Macaíba, fora do SIGA e sem ato desde 2015); último leilão, 39º LEN (A-5, 22/08/2025): 384,5 MWmédio a R$ 392,84/MWh, deságio agregado de 3,16%; deságio mediano por empreendimento de 13,22%; transmissão: 421 lotes contratados, deságio mediano por lote de 32,85%.
 
 ## 5. Limitações
 

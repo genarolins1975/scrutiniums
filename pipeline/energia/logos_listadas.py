@@ -98,6 +98,21 @@ def _formato(corpo):
     return None
 
 
+# Marcas de conteúdo ativo ou externo num SVG. O arquivo é publicado sem alteração e servido na mesma origem do site; quem
+# o abre direto no navegador executaria script, manipulador de evento ou conteúdo embutido. SVG com qualquer uma delas é
+# recusado (não é "limpo"), e a interface mostra o nome em texto.
+SVG_ATIVO = re.compile(
+    rb"<\s*(script|foreignObject|iframe|embed|object|use\b[^>]*href\s*=\s*[\"']?\s*https?:)|<!ENTITY|<!DOCTYPE[^>]*\["
+    rb"|\son[a-z]+\s*=|javascript\s*:|(xlink:)?href\s*=\s*[\"']?\s*(https?:|//)|@import|url\(\s*[\"']?\s*(https?:|//)",
+    re.I,
+)
+
+
+def svg_com_conteudo_ativo(corpo):
+    """True quando o SVG traz script, manipulador de evento, conteúdo embutido, entidade ou referência externa."""
+    return bool(SVG_ATIVO.search(corpo))
+
+
 def main():
     os.makedirs(DESTINO, exist_ok=True)
     caminho_cadeia = os.path.join(base.SERIES, "empresas_cadeia.json")
@@ -133,6 +148,16 @@ def main():
         fmt = _formato(corpo)
         if fmt is None:
             item["ausencia"] = {"motivo": "o endereço oficial não devolveu PNG nem SVG"}
+            logos.append(item)
+            continue
+        if fmt == "svg" and svg_com_conteudo_ativo(corpo):
+            ant = anterior.get(papel)
+            if ant and ant.get("arquivo") and ant.get("formato") == "svg" and os.path.exists(os.path.join(DESTINO, os.path.basename(ant["arquivo"]))):
+                with open(os.path.join(DESTINO, os.path.basename(ant["arquivo"])), "rb") as f:
+                    if not svg_com_conteudo_ativo(f.read()):
+                        logos.append(ant)
+                        continue
+            item["ausencia"] = {"motivo": "o SVG oficial traz script, evento, conteúdo embutido ou referência externa e não é publicado"}
             logos.append(item)
             continue
         sha = hashlib.sha256(corpo).hexdigest()
