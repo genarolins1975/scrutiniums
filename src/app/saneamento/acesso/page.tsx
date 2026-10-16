@@ -217,7 +217,7 @@ export default function Pagina() {
         <Secao
           id="evolucao"
           titulo="Como a carência evoluiu entre os Censos?"
-          texto="Proporção de moradores com a rede geral como forma principal de abastecimento e com rede geral de esgoto ou pluvial, em 2010 e 2022, por UF. A categoria é a mesma nos dois questionários."
+          texto="Proporção de moradores com a rede geral como forma principal de abastecimento e com rede geral de esgoto ou pluvial, em 2010 e 2022, por UF. A categoria é aproximada entre os dois questionários, não idêntica."
         >
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
             <GraficoPontos

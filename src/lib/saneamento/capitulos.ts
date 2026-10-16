@@ -171,7 +171,8 @@ export const EIXOS: Eixo[] = [
         rotulo: "Metas e planos",
         pergunta: "O planejamento é suficiente para a universalização?",
         resumo: "Metas do art. 11-B, indicadores da NR ANA 8/2024, situação observada, ritmo aritmético e planos municipais declarados.",
-        situacao: "publicado",
+        situacao: "parcial",
+        pendencia: "Os indicadores da NR ANA 8/2024 são aproximações sem ICA, ICE e soluções alternativas; nenhum município é declarado em cumprimento de meta.",
       },
       {
         numero: 12,

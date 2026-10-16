@@ -38,6 +38,14 @@ export default function Pagina() {
   const comIae = lista.filter((x) => x.iae_rede != null);
   const iaaNaMeta = comIaa.filter((x) => (x.iaa_rede ?? 0) >= metaAgua).length;
   const iaeNaMeta = comIae.filter((x) => (x.iae_rede ?? 0) >= metaEsgoto).length;
+  const iaaAcima100 = comIaa.filter((x) => (x.iaa_rede ?? 0) > 100).length;
+  const iaeAcima100 = comIae.filter((x) => (x.iae_rede ?? 0) > 100).length;
+  // Razão de somas no Brasil, com e sem limitar cada município a 100% (as economias que excedem a estimativa de domicílios).
+  const comNr8 = comIaa.filter((x) => x.nr8_ag_num != null && x.dom_est24 != null && x.dom_est24 > 0);
+  const domNr8 = comNr8.reduce((t, x) => t + (x.dom_est24 ?? 0), 0);
+  const iaaBrasil = domNr8 > 0 ? (comNr8.reduce((t, x) => t + (x.nr8_ag_num ?? 0), 0) / domNr8) * 100 : null;
+  const iaaBrasilLimitado = domNr8 > 0 ? (comNr8.reduce((t, x) => t + Math.min(x.nr8_ag_num ?? 0, x.dom_est24 ?? 0), 0) / domNr8) * 100 : null;
+  const iag0004Brasil = br?.sinisa.agua.indicadores.IAG0004 ?? null;
 
   const linhasUf = [br!, ...ufs].map((u) => {
     const ag = u.sinisa.agua.indicadores.IAG0004 ?? null;
@@ -97,12 +105,22 @@ export default function Pagina() {
             {
               rotulo: `Municípios com IAA de rede pública de ${metaAgua}% ou mais`,
               valor: inteiro(iaaNaMeta),
-              contexto: <>De {inteiro(comIaa.length)} com valor calculável. Aproximação da NR 8 sem soluções alternativas e sem o ICA.</>,
+              contexto: (
+                <>
+                  De {inteiro(comIaa.length)} com valor calculável; {inteiro(iaaAcima100)} deles passam de 100%, quando as economias ativas excedem a
+                  estimativa de domicílios. Aproximação da NR 8 sem soluções alternativas e sem o ICA.
+                </>
+              ),
             },
             {
               rotulo: `Municípios com IAE de rede com tratamento de ${metaEsgoto}% ou mais`,
               valor: inteiro(iaeNaMeta),
-              contexto: <>De {inteiro(comIae.length)} com economias com tratamento informadas. Sem soluções individuais e sem o ICE.</>,
+              contexto: (
+                <>
+                  De {inteiro(comIae.length)} com economias com tratamento informadas; {inteiro(iaeAcima100)} deles passam de 100%. Sem soluções
+                  individuais e sem o ICE.
+                </>
+              ),
             },
             {
               rotulo: "Municípios que declaram ter plano municipal de saneamento",
@@ -116,6 +134,13 @@ export default function Pagina() {
             },
           ]}
         />
+        <Nota titulo="Por que o IAA do Brasil não é o IAG0004">
+          Somando as economias residenciais ativas e os domicílios ocupados estimados dos {inteiro(comNr8.length)} municípios com valor, o IAA do Brasil é{" "}
+          {numero(iaaBrasil, 1)}%. Limitando cada município a 100%, cai para {numero(iaaBrasilLimitado, 1)}%. O indicador oficial consolidado do SINISA
+          para domicílios com rede de água (IAG0004) é {numero(iag0004Brasil, 1)}%. Os dois primeiros usam as economias ativas e a estimativa de domicílios do IBGE; o primeiro deixa o excesso de uma cidade compensar a
+          falta de outra, o segundo não. O IAG0004 é o consolidado que o SINISA publica, segundo a sua própria ficha de indicador. Não são
+          intercambiáveis, e nenhum dos três mede cumprimento de meta.
+        </Nota>
         <Nota titulo="O que não é cumprimento de meta">
           A NR 8 mede a meta em domicílios e exige dois indicadores por serviço: o de atendimento (IAA, IAE) e o de cobertura (ICA, ICE), ambos acima
           da meta. O SINISA não traz a cobertura nem as soluções alternativas que o regulador pode aceitar. Por isso nenhum município é declarado aqui
