@@ -28,6 +28,12 @@ class RedeFalsa:
         for a in v._arquivos_sisagua(meta):
             self.tamanhos[a["url"]] = (206, a["bytes"], a["last_modified"])
         self.cadunico = cadunico
+        c = meta.get("cvm")
+        if c:
+            self.tamanhos[c["fonte"]] = (206, c["zip"]["bytes"], c["zip"]["last_modified"])
+        sim = (meta.get("saude") or {}).get("definicoes", {}).get("sim")
+        if sim:
+            self.textos[sim["url"]] = (200, "<html>Dados finais dispon\ufffdveis at\ufffd 2024 - data de extra\ufffd\ufffdo 02/12/2025.</html>")
 
     def tamanho(self, url):
         r = self.tamanhos.get(url, (404, None, None))
@@ -197,12 +203,59 @@ class VigiliaSaneamento(unittest.TestCase):
         rede.tamanho = lambda url: chamadas.append(url) or (206, 1, None)
         linhas = v.verificar(rede, HOJE, self.meta, set(self.links), orcamento=-1)
         self.assertEqual(chamadas, [])  # nenhuma consulta depois do teto
-        for fonte in ("SINISA", "SISAGUA", "CadÚnico"):
+        for fonte in ("SINISA", "SISAGUA", "CadÚnico", "CVM", "DATASUS"):
             self.assertTrue(any(fonte in l and "não verificado" in l and "orçamento" in l for l in linhas), fonte)
 
     def test_pior_caso_de_rede_cabe_no_job_de_10_minutos(self):
         # teto total + a última consulta (3 tentativas) tem de ficar abaixo dos 10 minutos do workflow
         self.assertLess(v.ORCAMENTO_SEGUNDOS + 3 * v.TIMEOUT_REQUISICAO, 10 * 60)
+
+    def test_cvm_so_acusa_arquivo_atualizado_depois_da_captura_quando_ela_ja_tem_90_dias(self):
+        cvm = self.meta["cvm"]
+        rede = self.novo()
+        rede.tamanhos[cvm["fonte"]] = (206, cvm["zip"]["bytes"] + 10, "Wed, 20 Jan 2027 10:00:00 GMT")
+        # 16 dias depois da captura: a CVM recebe versões o ano todo, sem acusar
+        self.assertEqual([l for l in self.rodar(rede, hoje=date(2026, 11, 1)) if "CVM" in l], [])
+        linhas = [l for l in self.rodar(rede, hoje=date(2027, 2, 1)) if "CVM" in l]
+        self.assertEqual(len(linhas), 1)
+        self.assertIn("20/01/2027", linhas[0])
+        self.assertIn("defasada", linhas[0])
+        # arquivo que não mudou depois da captura não acusa, por mais velha que ela esteja
+        parado = self.novo()
+        self.assertEqual([l for l in self.rodar(parado, hoje=date(2027, 2, 1)) if "CVM" in l], [])
+
+    def test_cvm_do_ano_seguinte_publicado_acusa_a_partir_de_junho(self):
+        cvm = self.meta["cvm"]
+        proximo = cvm["fonte"].replace(f"_{cvm['ano']}.zip", f"_{cvm['ano'] + 1}.zip")
+        rede = self.novo()
+        rede.tamanhos[proximo] = (206, 1000, "Mon, 08 Jun 2027 10:00:00 GMT")
+        self.assertEqual([l for l in self.rodar(rede, hoje=date(2027, 5, 31)) if "CVM" in l], [])
+        linhas = [l for l in self.rodar(rede, hoje=date(2027, 6, 8)) if "CVM" in l]
+        self.assertEqual(len(linhas), 1)
+        self.assertIn(str(cvm["ano"] + 1), linhas[0])
+
+    def test_cvm_fora_do_ar_ou_sem_last_modified_e_nao_verificado(self):
+        cvm = self.meta["cvm"]
+        rede = self.novo()
+        rede.tamanhos[cvm["fonte"]] = (503, None, None)
+        linhas = [l for l in self.rodar(rede) if "CVM" in l]
+        self.assertEqual(len(linhas), 1)
+        self.assertIn("não verificado", linhas[0])
+        rede.tamanhos[cvm["fonte"]] = (206, 10, None)
+        self.assertIn("sem Last-Modified", [l for l in self.rodar(rede) if "CVM" in l][0])
+
+    def test_datasus_acusa_dados_finais_alem_da_janela_e_vigia_cego_sem_a_nota(self):
+        sim = self.meta["saude"]["definicoes"]["sim"]["url"]
+        fim = max(self.meta["saude"]["periodo"])
+        rede = self.novo()
+        rede.textos[sim] = (200, f"<html>Dados finais dispon\ufffdveis at\ufffd {fim + 1} - data de extra\ufffd\ufffdo 01/12/2026.</html>")
+        linhas = [l for l in self.rodar(rede) if "DATASUS" in l]
+        self.assertEqual(len(linhas), 1)
+        self.assertIn(f"até {fim + 1}", linhas[0])
+        rede.textos[sim] = (200, "<html>sem nota</html>")
+        self.assertIn("cega", [l for l in self.rodar(rede) if "DATASUS" in l][0])
+        rede.textos[sim] = (503, "")
+        self.assertIn("não verificado", [l for l in self.rodar(rede) if "DATASUS" in l][0])
 
     def test_corpo_cita_edicao_e_o_que_fazer(self):
         c = v.corpo(["- x"], self.meta)

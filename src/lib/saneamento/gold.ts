@@ -2,6 +2,8 @@ import { readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import type {
   Agregado,
+  CompanhiaAberta,
+  ControleSocietario,
   EteCatalogo,
   FichaMunicipio,
   MetaSaneamento,
@@ -118,6 +120,14 @@ export function prestadores(): Prestador[] {
 
 export function prestador(id: string): Prestador | null {
   return prestadores().find((p) => p.id === id) ?? null;
+}
+
+export function controleSocietario(): CompanhiaAberta[] {
+  return ler<ControleSocietario>("controle_societario.json")?.companhias ?? [];
+}
+
+export function controleDoPrestador(id: string): CompanhiaAberta | null {
+  return controleSocietario().find((c) => c.prestador === id) ?? null;
 }
 
 export function reguladores(): ReguladorCatalogo[] {

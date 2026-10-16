@@ -10,7 +10,7 @@ A versão pública desta página está em `/saneamento/metodologia`. Este docume
 4. **Valores nominais.** Reais correntes do ano de referência; nenhuma série monetária mistura anos.
 5. **Validade temporal.** Censo 2022 e SINISA 2024 ficam lado a lado, nunca na mesma razão, com uma exceção declarada: o IAA e o IAE da NR 8, cuja ficha manda dividir a população estimada de 2024 pelos moradores por domicílio do Censo 2022 (tabela de medidas). Tabelas tarifárias valem pela vigência do ato.
 6. **Sem imputação.** Município fora de um módulo fica fora da soma e a cobertura é informada.
-7. **Sem dado pessoal.** Bases agregadas por município, prestador ou estação.
+7. **Sem dado pessoal, com uma exceção declarada.** Bases agregadas por município, prestador ou estação. Exceção, capítulo 7: o nome de pessoa física que a companhia aberta declara à CVM como controladora ou participante de acordo de acionistas aparece na posição acionária, como consta no FRE público; CPF não é coletado nem publicado, e as demais pessoas físicas entram somadas, sem nome.
 8. **Divergências explicadas.** Calculadas, publicadas em `meta.json` e na página de método; nunca redistribuídas.
 
 ## Medidas municipais (`src/lib/saneamento/medidas.ts`)
@@ -133,3 +133,19 @@ Não integrados: série das substâncias químicas antes de 2024; plano de amost
 
 **Cautelas.** O SIH cobre só internações pagas pelo SUS e depende do município de residência informado na AIH; poucos casos tornam instável a taxa de município pequeno (o ranking do atlas só inclui municípios de 10 mil moradores ou mais); sem ajuste por idade. O quadro por quinto de carência de esgoto é descritivo e compara grupos de municípios: renda, idade, clima, oferta de hospital e qualidade do registro variam junto e não são controlados.
 
+
+## Controle societário (CVM, Formulário de Referência)
+
+**Fonte.** CVM, dados abertos, Formulário de Referência (FRE): arquivo anual `fre_cia_aberta_AAAA.zip` com todas as companhias abertas (índice de documentos e arquivo `posicao_acionaria`). O ZIP inteiro (8 MB) não é versionado: o seed guarda as linhas das companhias do recorte em CSV comprimido (`seed/cvm/`), com o sha256 e o tamanho do ZIP e dos dois arquivos lidos, o Last-Modified do servidor e a data de captura (`seed/cvm/manifesto.json`, `meta.json`). A gold sai desse seed, sem rede (`pipeline/observatorio_saneamento/controle.py`).
+
+**Recorte e ligação com o SINISA.** Só entram as companhias cujo CNPJ foi declarado por algum município como prestador de água ou esgoto, com prestação existente, no módulo Gestão Municipal do SINISA 2024, e que têm FRE no ano. O CNPJ é ligado à ficha do prestador quando a ficha cobre pelo menos 80% dos municípios que declaram aquele CNPJ e não há empate; nenhum casamento é feito por nome. Resultado na captura de 16/10/2026: 17 companhias, 17 fichas ligadas, cobertura de 99,5% a 100% dos municípios declarados.
+
+**Documento.** A última versão de cada companhia no índice do arquivo. A data de referência do arquivo (DT_REFER, 31/12/2026) é posterior à data de recebimento (maio a outubro de 2026) e não é a data da posição; a página mostra a versão e a data de recebimento.
+
+**Leitura da árvore.** Cada linha de `posicao_acionaria` é um acionista; `ID_Acionista_Relacionado` aponta o acionista acima. No primeiro nível, os percentuais são do acionista na companhia; nos níveis seguintes, do acionista na empresa imediatamente acima. É a cadeia de controle que a companhia informou, não uma apuração feita aqui. Linhas sem ações e sem percentual (tesouraria e "Outros" de preenchimento) saem; posição com ações e percentual arredondado a zero fica e é exibida como "menos de 0,001%".
+
+**Conferências feitas na construção (interrompem se falharem).** As posições diretas somam 100% do total e das ordinárias (e das preferenciais quando há) com tolerância de 0,01 ponto percentual; os acionistas de cada acionista com cadeia declarada somam 100% com a mesma tolerância; todo acionista relacionado existe no mesmo documento e é alcançável a partir dos acionistas diretos (sem ciclo); o documento usado é o de maior versão do índice; um CNPJ do recorte sem posição é listado em `meta.json`, nunca descartado em silêncio. No recorte atual o maior desvio da cadeia é 0,004 ponto percentual.
+
+**Pessoas físicas.** O nome entra só quando a companhia declara a pessoa como controladora ou participante de acordo de acionistas; as demais pessoas físicas de cada nível entram somadas ("N pessoas físicas não controladoras"). CPF, representante legal e dados cadastrais de pessoa física não são publicados nem guardados: o seed leva só as colunas que a gold usa, sem CPF, e troca por "Pessoa física" o nome de quem não é controlador nem participante de acordo; o carregamento do seed recusa qualquer CPF. CNPJ de pessoa jurídica é publicado. A soma preserva o total do nível.
+
+**Cautelas.** "Nenhum controlador declarado" não é "sem controle": a companhia pode ter controle compartilhado ou disperso, e a declaração é dela. A posição vale na data de recebimento do documento; mudanças posteriores só entram na recoleta. Empresas fechadas, SPEs sem registro na CVM, autarquias e serviços municipais não publicam neste formato e ficam fora; a ausência de linha não é ausência de controle. O campo de percentual da fonte chama-se "em circulação"; o significado exato do denominador não foi verificado além do dicionário da CVM, e a conferência de que as posições fecham 100% é o que sustenta a leitura como participação no capital.

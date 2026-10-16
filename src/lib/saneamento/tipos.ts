@@ -402,6 +402,7 @@ export type MetaSaneamento = {
     por_ano: Record<string, AnoSisagua>;
   };
   saude?: MetaSaude;
+  cvm?: MetaCvm;
   desigualdades: {
     proveniencia: { capturado_em: string };
     residuos_cor_raca: { universo: number; agua: number; esgoto: number };
@@ -478,4 +479,54 @@ export type MetaSaude = {
   municipio_ignorado: Record<string, number>;
   conferencias: { id: string; municipios_gold: number; municipios_fora_do_cadastro: number; municipio_ignorado: number; total_tabnet: number; diferenca: number }[];
   municipios_sem_linha: string[];
+};
+
+/** Acionista de uma companhia aberta, como declarado no FRE da CVM. Percentuais do acionista na companhia (nível 1) ou no acionista acima. */
+export type Acionista = {
+  nome: string;
+  tipo: "PF" | "PJ" | null;
+  cnpj: string | null;
+  pct_on: number | null;
+  pct_pn: number | null;
+  pct_total: number | null;
+  acoes: number | null;
+  controlador: boolean;
+  acordo: boolean;
+  exterior: boolean;
+  atualizado_em: string | null;
+  /** Pessoas físicas não controladoras somadas: quantas entraram na soma. */
+  agregado?: number;
+  filhos: Acionista[];
+};
+
+export type CompanhiaAberta = {
+  cnpj: string;
+  nome: string;
+  cd_cvm: string;
+  /** Ficha do prestador no SINISA, ligada por CNPJ declarado pelos municípios. */
+  prestador: string | null;
+  cobertura_municipios_ficha: number | null;
+  municipios_declarados: number;
+  documento: { id: string; versao: number; categoria: string; referencia: string; recebido_em: string; link: string };
+  controlador_declarado: boolean;
+  acordo_acionistas: boolean;
+  pessoas_fisicas_somadas: number;
+  acionistas: Acionista[];
+};
+
+export type ControleSocietario = { companhias: CompanhiaAberta[] };
+
+export type MetaCvm = {
+  ano: number;
+  fonte: string;
+  capturado_em: string;
+  zip: { sha256: string; bytes: number; last_modified: string | null };
+  membros: Record<string, { sha256: string; bytes: number }>;
+  criterio: string;
+  companhias: number;
+  com_ficha: number;
+  sem_ficha: { cnpj: string; nome: string }[];
+  sem_posicao: { cnpj: string; nome: string }[];
+  conferencias: { cnpj: string; soma_topo_total: number; soma_topo_ordinarias: number; soma_topo_preferenciais: number; maior_desvio_cadeia: number }[];
+  regras: { limiar_ficha: number; tolerancia_pct: number; pessoa_fisica: string };
 };

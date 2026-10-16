@@ -17,11 +17,17 @@ O que é vigiado e quando acusa:
   anual); arquivo anual novo quando o ano completo já devia estar publicado (março do ano seguinte).
 - CadÚnico (MDS, API MI Social): mês mais recente publicado até o mês corrente com LIMITE_MESES_CADUNICO
   ou mais de distância do mês mais recente da gold.
+- CVM, Formulário de Referência (posição acionária do capítulo 7): arquivo do FRE atualizado depois da
+  captura quando a captura já tem LIMITE_DIAS_CVM dias (a CVM recebe versões novas o ano todo, então só a
+  idade da captura torna a mudança acionável); arquivo do ano seguinte publicado a partir de junho.
+- DATASUS, SIM (capítulo 13): a página da tabulação declara dados finais até um ano posterior ao fim da
+  janela da gold; nota ausente (formato mudou) é vigia cego.
 
 O que NÃO é vigiado, por não ter sinal confiável a custo baixo: Censo (decenal, só revisão), atos
 tarifários dos reguladores (coleta manual, curadoria em pipeline/observatorio_saneamento/curadoria), o
-módulo Gestão Municipal do SINISA além da presença do link (o meta.json guarda só o sha256) e fontes ainda
-não integradas (CVM, Transferegov, DATASUS, JMP).
+módulo Gestão Municipal do SINISA além da presença do link (o meta.json guarda só o sha256), o SIH (os
+últimos seis meses são revisados pela fonte, sem sinal de data) e fontes ainda não integradas
+(Transferegov, JMP).
 
 Fonte que não responde NÃO é silêncio: vira linha "não verificado" no corpo da issue. Vigia cego é pior que
 alerta falso.
@@ -48,6 +54,8 @@ ORCAMENTO_SEGUNDOS = 360
 TIMEOUT_REQUISICAO = 45
 TOLERANCIA_SISAGUA_DIAS = 60
 LIMITE_MESES_CADUNICO = 3
+LIMITE_DIAS_CVM = 90
+MES_FRE_COMPLETO_CVM = 6  # o FRE do ano é entregue até 31 de maio: em junho o arquivo do ano seguinte já é o do ciclo novo
 MES_DO_ANO_COMPLETO_SISAGUA = 3  # março do ano seguinte: o ano fechado já devia estar publicado
 UA = "ObservatorioBrasileiroDeCredito vigilancia saneamento"
 S3_SISAGUA = "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/"
@@ -222,6 +230,51 @@ def cadunico(meta, rede, hoje):
     return []
 
 
+def cvm(meta, rede, hoje):
+    c = meta.get("cvm")
+    if not c:
+        return ["- CVM: meta.json sem o bloco da posição acionária; **não verificado**."]
+    linhas = []
+    capturado = _iso(c["capturado_em"])
+    st, _, lm = _tenta(lambda: rede.tamanho(c["fonte"]))
+    novo = _data(lm) if lm else None
+    if st not in (200, 206):
+        linhas.append(f"- CVM: o arquivo do FRE {c['ano']} respondeu HTTP {st}; **não verificado** ({c['fonte']}).")
+    elif novo is None:
+        linhas.append(f"- CVM: o arquivo do FRE {c['ano']} respondeu sem Last-Modified; **não verificado** ({c['fonte']}).")
+    else:
+        dias = (hoje - capturado.date()).days
+        if novo > capturado and dias >= LIMITE_DIAS_CVM:
+            linhas.append(f"- CVM: o arquivo do FRE {c['ano']} foi atualizado em {novo:%d/%m/%Y}, depois da captura de {capturado:%d/%m/%Y} "
+                          f"({dias} dias; limite {LIMITE_DIAS_CVM}): a posição acionária publicada pode estar defasada.")
+    if (hoje.year, hoje.month) >= (c["ano"] + 1, MES_FRE_COMPLETO_CVM):
+        proximo = c["fonte"].replace(f"_{c['ano']}.zip", f"_{c['ano'] + 1}.zip")
+        st, _, _ = _tenta(lambda: rede.tamanho(proximo))
+        if st in (200, 206):
+            linhas.append(f"- CVM: o arquivo do FRE {c['ano'] + 1} está publicado e a gold usa {c['ano']} ({proximo}).")
+        elif st not in (403, 404):
+            linhas.append(f"- CVM: o arquivo do FRE {c['ano'] + 1} respondeu HTTP {st}; **não verificado** ({proximo}).")
+    return linhas
+
+
+def datasus(meta, rede, hoje):
+    s = meta.get("saude")
+    if not s:
+        return ["- DATASUS: meta.json sem o bloco de saúde; **não verificado**."]
+    url = s["definicoes"]["sim"]["url"]
+    status, pagina = _tenta(lambda: rede.texto(url))
+    if status != 200:
+        return [f"- DATASUS: a página do SIM respondeu HTTP {status}; **não verificado** ({url})."]
+    # o TabNet serve latin-1 e o texto chega decodificado com substituição: acento não entra no padrão
+    m = re.search(r"Dados finais dispon.{1,3}veis at.{1,3} (\d{4})", pagina)
+    if not m:
+        return [f"- DATASUS: a página do SIM não traz mais a nota de dados finais; o formato pode ter mudado e a vigília está cega ({url})."]
+    finais, fim = int(m.group(1)), max(s["periodo"])
+    if finais > fim:
+        return [f"- DATASUS: o SIM declara dados finais até {finais} e a janela da gold termina em {fim} (captura de {s['capturado_em'][:10]})."]
+    return []
+
+
 def verificar(rede=None, hoje=None, meta=None, snapshot=None, orcamento=ORCAMENTO_SEGUNDOS):
     global _PRAZO
     _PRAZO = time.monotonic() + orcamento
@@ -232,7 +285,8 @@ def verificar(rede=None, hoje=None, meta=None, snapshot=None, orcamento=ORCAMENT
         snapshot = {l.strip() for l in SNAPSHOT_LINKS.read_text(encoding="utf-8").splitlines() if l.strip()} if SNAPSHOT_LINKS.exists() else set()
     linhas = []
     for nome, f in (("SINISA", lambda: sinisa(meta, rede, snapshot)), ("SISAGUA", lambda: sisagua(meta, rede, hoje)),
-                    ("CadÚnico", lambda: cadunico(meta, rede, hoje))):
+                    ("CadÚnico", lambda: cadunico(meta, rede, hoje)), ("CVM", lambda: cvm(meta, rede, hoje)),
+                    ("DATASUS", lambda: datasus(meta, rede, hoje))):
         try:
             linhas.extend(f())
         except Exception as e:  # uma fonte fora do ar não cala as outras
