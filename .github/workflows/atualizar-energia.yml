@@ -142,6 +142,18 @@ jobs:
           path: data/energia
           key: energia-estado-${{ github.run_id }}
 
+
+      # A energia (cron das 23h40 UTC, às vezes horas atrasado, ou disparo manual) e a
+      # previsão do PLD têm filas próprias: a previsão não pode esperar a energia e perder
+      # o corte das 07h. Se as duas podarem e gravarem ao mesmo tempo, duas cópias
+      # coexistem; podar de novo logo depois de gravar, mantendo só a mais recente,
+      # limita essa sobreposição a minutos.
+      - name: Manter só a cópia mais recente do estado
+        if: always() && steps.restaurar.outputs.cache-matched-key != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/podar_cache.sh energia-estado- 1
       - name: Cópia durável do silver (release energia-estado)
         if: steps.pipeline.outcome == 'success'
         continue-on-error: true

@@ -97,6 +97,9 @@ class WorkflowsPodamAntesDeGravar(unittest.TestCase):
                       "só poda quando o estado completo foi restaurado")
         self.assertIn("scripts/podar_cache.sh energia-estado- 0", bloco)
         self.assertIn("actions: write", txt)
+        # energia e previsão têm filas próprias: depois de gravar, fica só a mais recente
+        self.assertEqual(nomes[i_poda + 2], "Manter só a cópia mais recente do estado")
+        self.assertIn("scripts/podar_cache.sh energia-estado- 1", passos[i_poda + 2][1])
 
     def test_energia(self):
         self._ordem("atualizar-energia.yml", "Guardar estado")

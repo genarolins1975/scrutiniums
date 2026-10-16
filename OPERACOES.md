@@ -249,7 +249,10 @@ inferência, a perda de 03/10, que não tinha explicação registrada.
     incompleta ou corrompida não é extraída e o pipeline semeia como antes.
 11. A energia e a previsão do PLD apagam a cópia anterior do estado (`energia-estado-*`,
     inclusive as da previsão) antes de gravar a nova, e só quando o estado completo foi
-    restaurado (`scripts/podar_cache.sh`); duas cópias de ~7,2 GB nunca mais coexistem.
+    restaurado (`scripts/podar_cache.sh`), e podam de novo logo depois de gravar,
+    mantendo só a mais recente: as duas têm filas próprias (a previsão não pode esperar
+    a energia e perder o corte das 07h), e numa execução simultânea a sobreposição de
+    duas cópias de ~7,2 GB fica limitada a minutos.
     Se a gravação falhar depois da poda, o silver da energia volta da release
     `energia-estado` e o bronze é recoletado. O crédito guarda só a cópia mais recente
     do cache (~0,9 GB), já que tem a cópia durável. A energia avisa no log quando o
