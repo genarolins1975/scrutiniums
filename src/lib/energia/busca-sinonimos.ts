@@ -84,6 +84,10 @@ export const SINONIMOS_BUSCA: readonly GrupoDeSinonimos[] = [
   { alvos: [`${S}/empresas/controle#p039`], termos: ["quem controla as empresas", "dono das distribuidoras"] },
   { alvos: [`${S}/empresas/distribuidoras#p037`], termos: ["minha distribuidora", "empresa que fornece a minha luz", "fornecedora de luz"] },
   { alvos: [`${S}/empresas/financas#p038`], termos: ["lucro das empresas", "balanço das empresas", "resultado financeiro"] },
+  {
+    alvos: [`${S}/empresas/listadas`],
+    termos: ["ações de energia", "empresas listadas", "empresas na bolsa", "bolsa de valores", "índice de energia elétrica", "IEE", "dividendos das elétricas", "retorno das ações", "acionista controlador"],
+  },
   // mercado e regulação
   { alvos: [`${S}/mercado`, `${S}/mercado#livre-regulado`, `${S}/mercado/agentes#agentes`], termos: ["migrar para o mercado livre", "mercado livre de energia", "escolher o fornecedor de energia"] },
   { alvos: [`${S}/regulacao/consultas-e-agenda#p046`], termos: ["audiência pública", "consulta da ANEEL"] },

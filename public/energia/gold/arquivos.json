@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-10-06T20:02:52Z",
+ "gerado_em": "2026-10-16T22:05:08Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "1f075868ed56+alterado",
+ "versao_codigo": "4301078fd03d+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -627,7 +627,7 @@
    "gold": "qualidade.json"
   },
   "/energia/series/qualidade_distribuidoras_mensal.csv": {
-   "colunas": "cnpj; sigla; mes (AAAA-MM); dec_h; fec_interrupcoes; ucs (UCs dos conjuntos com DEC no mês, denominador do DEC); ucs_fec (denominador do FEC); ucs_total; conjuntos; cobertura (ucs ÷ ucs_total); controle_numcon (motivo quando o NumCon publicado no mês não é plausível: o mês fica fora do Brasil e, com mais de um conjunto, o DEC e o FEC da distribuidora ficam vazios porque os pesos não valem). DEC em horas e centésimos de hora, não minutos.",
+   "colunas": "cnpj; sigla; mes (AAAA-MM); dec_h; fec_interrupcoes; ucs (UCs dos conjuntos com DEC no mês, denominador do DEC); ucs_fec (denominador do FEC); ucs_total; conjuntos; cobertura (ucs ÷ ucs_total); controle_numcon (motivo quando o NumCon publicado no mês não é plausível: o mês fica fora do Brasil e, com mais de um conjunto, o DEC e o FEC da distribuidora ficam vazios porque os pesos não valem); controle_fec (motivo quando os conjuntos com FEC cobrem menos de 95% das UCs do mês: o FEC do mês fica vazio, fora do FEC anual da distribuidora e do Brasil; ucs_fec mostra a cobertura que a fonte teve). DEC em horas e centésimos de hora, não minutos.",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
@@ -722,7 +722,7 @@
    "gold": "conta.json"
   },
   "/energia/series/conta_subsidios_anual.csv": {
-   "colunas": "ano; cnpj; sigla; categoria; montante (Total = previsão + ajuste); valor_rs; meses. Soma dos repasses mensais homologados por ano de competência (competências futuras excluídas).",
+   "colunas": "ano; cnpj; sigla; categoria; montante (Total = previsão + ajuste); valor_rs; meses; eh_total (sim na linha da categoria Total, que reúne as demais categorias da mesma distribuidora e ano: somar valor_rs sem filtrar eh_total conta cada real duas vezes). Soma dos repasses mensais homologados por ano de competência (competências futuras excluídas).",
    "modulo": "conta",
    "gold": "conta.json"
   },
@@ -857,7 +857,7 @@
    "gold": "empresas.json"
   },
   "/energia/series/empresas_distribuidoras.csv": {
-   "colunas": "cnpj; slug; sigla; nome; classificacao; grupo; ufs (separadas por |); ativa; fontes (samp, tarifas, continuidade presentes); perdas_ano; taxa_perdas_totais_pct; pnt_bt_pct; qualidade_ano; dec_h; fec; dec_limite_h; fec_limite; ucs; tarifa_b1_rs_mwh; tarifa_inicio; tarifa_fim; controlador_cnpj; controlador_nome; motivo_parada; cvm_cd. Valores copiados das golds perdas.json, qualidade.json e conta.json pelo CNPJ, sem recálculo. Vazio = a gold de origem não tem o dado.",
+   "colunas": "cnpj; slug; sigla; nome; classificacao; grupo; ufs (separadas por |); ativa; fontes (samp, tarifas, continuidade presentes); perdas_ano; taxa_perdas_totais_pct; pnt_bt_pct; qualidade_ano; dec_h; fec; dec_limite_h; fec_limite; ucs; tarifa_b1_rs_mwh; tarifa_inicio; tarifa_fim; controlador_cnpj; controlador_nome; motivo_parada; cvm_cd. Valores copiados das golds perdas.json, qualidade.json e conta.json pelo CNPJ, sem recálculo. Vazio = a base publicada de origem não tem o dado.",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
@@ -905,6 +905,51 @@
    "colunas": "Evidência 'Comprove este número' da receita do último exercício de cada companhia do universo CVM (CNPJ → objeto de pipeline/energia/evidencia.py), lida sob demanda.",
    "modulo": "empresas",
    "gold": "empresas.json"
+  },
+  "/energia/series/listadas_carteira_iee.csv": {
+   "colunas": "Carteira do dia do IEE, uma linha por papel e data de carteira: data_carteira (data do cabeçalho da B3); papel; nome_pregao; tipo (classe, marca e segmento como a B3 publica); peso_pct (participação no índice, %); qtd_teorica (quantidade teórica de ações no índice); capturado_em.",
+   "modulo": "listadas",
+   "gold": "listadas.json"
+  },
+  "/energia/series/listadas_companhias.csv": {
+   "colunas": "Uma companhia da carteira por linha: papel; cnpj (holding listada, 14 dígitos); codigo_cvm; nome (FCA); nome_anterior (FCA); especie_controle (FCA, autodeclarada); peso_iee_pct; atua_geracao, atua_transmissao, atua_distribuicao (1 = tem o ativo sob controle na data da fonte; 0 = não tem); comercializacao_declarada (1 = alguma empresa sob controle declara o ramo comercialização no cadastro de agentes da ANEEL); empresas_sob_controle (CNPJ na cadeia abaixo da companhia, inclusive ela); usinas_controle; mw_controle (Σ potência fiscalizada das usinas em operação cujo dono majoritário está sob controle da companhia); mw_proporcional (Σ potência × participação direta das empresas sob controle); mw_em_implantacao (Σ potência outorgada das usinas em construção ou com construção não iniciada cujo dono majoritário está sob controle); concessionarias_transmissao; km_circuito_operacao; mva_transformacao_operacao; distribuidoras; unidades_consumidoras (Σ das distribuidoras sob controle, ano de referência da continuidade); exercicio; receita_rs_mi; ebit_rs_mi; lucro_liquido_rs_mi; divida_bruta_rs_mi; patrimonio_liquido_rs_mi; margem_ebit_pct; divida_bruta_sobre_pl; ultimo_pregao; fechamento_rs; retorno_preco_12m_pct; retorno_total_12m_pct; retorno_preco_desde_2020_pct; retorno_total_desde_2020_pct; volume_medio_diario_3m_rs_mi; fatos_relevantes_24m. Vazio = sem dado; zero = medido e igual a zero.",
+   "modulo": "listadas",
+   "gold": "listadas.json"
+  },
+  "/energia/series/listadas_usinas.csv": {
+   "colunas": "Usinas sob controle de cada companhia (uma linha por companhia e usina): papel; holding_cnpj; nucleo_ceg; usina; tipo (SigTipoGeracao); fonte (SIGA, quando o módulo Expansão publica); fase; uf; mw (fiscalizada em operação; outorgada nas demais fases); dono_majoritario_cnpj; dono_majoritario_nome; pct_dono_majoritario; nivel (degraus de controle entre a holding e o dono direto; 0 = a própria holding). Usinas em que a companhia só tem participação minoritária ficam fora.",
+   "modulo": "listadas",
+   "gold": "listadas.json"
+  },
+  "/energia/series/listadas_transmissao.csv": {
+   "colunas": "Concessionárias de transmissão sob controle de cada companhia: papel; holding_cnpj; cnpj; nome; km_circuito_operacao; km_circuito_implantacao; subestacoes; mva_transformacao_operacao; ufs (|); nivel. Copiado de empresas_transmissao.csv pelo CNPJ, sem recálculo.",
+   "modulo": "listadas",
+   "gold": "listadas.json"
+  },
+  "/energia/series/listadas_acionistas.csv": {
+   "colunas": "Acionistas diretos declarados no FRE: papel; holding_cnpj; fre_data_referencia; fre_versao; acionista (pessoa jurídica, fundo ou rótulo coletivo; pessoas físicas aparecem somadas, sem nome); tipo (PJ, coletivo ou pessoas_fisicas); acionista_cnpj; pct_on; pct_pn; pct_total (% como publicados); controlador (1/0); acordo_acionistas (1/0); nacionalidade; ultima_alteracao.",
+   "modulo": "listadas",
+   "gold": "listadas.json"
+  },
+  "/energia/series/listadas_cotacoes.csv": {
+   "colunas": "Pregões de cada papel da carteira: papel; codigo_negociado (código do dia; difere do papel antes de troca de código); isin; data; fechamento_rs (último preço do dia, R$ por ação ou unit, já dividido pelo fator de cotação); volume_rs (volume financeiro do dia); indice_preco (base 1 no primeiro pregão da série; ajustado por desdobramentos, grupamentos e bonificações); indice_retorno_total (o mesmo, com os proventos em dinheiro reinvestidos no fechamento da data ex).",
+   "modulo": "listadas",
+   "gold": "listadas.json"
+  },
+  "/energia/series/listadas_eventos.csv": {
+   "colunas": "Eventos aplicados às séries de bolsa: papel; tipo (dinheiro ou acoes ou bonificacao_outra_classe); rotulo (como a B3 publica); data_com; data_ex (primeiro pregão depois da data com); valor_rs_por_acao (proventos; bonificação em outra classe = quantidade recebida × primeiro fechamento da classe recebida); multiplicador (eventos em ações); natureza (OBSERVADO ou ESTIMADO); nota.",
+   "modulo": "listadas",
+   "gold": "listadas.json"
+  },
+  "/energia/series/listadas_evidencias.json": {
+   "colunas": "Evidências 'Comprove este número' por papel (potência sob controle e retorno total em 12 meses), objeto de pipeline/energia/evidencia.py, lidas no build.",
+   "modulo": "listadas",
+   "gold": "listadas.json"
+  },
+  "/energia/series/listadas_fatos_relevantes.csv": {
+   "colunas": "Fatos relevantes entregues à CVM nos últimos 24 meses: papel; holding_cnpj; data_entrega; data_referencia; assunto (como escrito pela companhia); protocolo; versao; link (documento no sistema da CVM).",
+   "modulo": "listadas",
+   "gold": "listadas.json"
   },
   "/energia/series/previsoes_ajustes_c2.csv": {
    "colunas": "origem_ajuste (domingo); modelo (C2-P, C2-H); horizonte; submercado; ok (1 = ajustado; 0 = treino insuficiente); lambda (ZERO = correção desligada); entregas_treino; linhas_treino; coef_* = coeficiente de cada variável na unidade original (R$/MWh por R$/MWh, ou por ponto percentual); escala_* = escala RMS no treino; ultimo_fim_treino = fim da última entrega usada no treino (sempre até o domingo menos 1 dia).",
