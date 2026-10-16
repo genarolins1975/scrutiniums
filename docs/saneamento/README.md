@@ -50,6 +50,19 @@ python3 -m unittest pipeline.tests.test_observatorio_saneamento
 npx vitest run src/tests/saneamento-gold.test.ts src/tests/saneamento-conta.test.ts
 ```
 
+## Atualização e vigilância
+
+O saneamento não tem coleta diária: a gold sai do seed versionado, e a proveniência de cada original (tamanho, sha256, Last-Modified) fica em `public/saneamento/gold/meta.json`. A vigília semanal (`python3 scripts/vigilancia.py saneamento`, job `saneamento` de `.github/workflows/vigilancia.yml`, segunda 09:40 UTC) compara essa proveniência com o que as fontes servem e abre a issue "Vigília: fonte do saneamento mudou desde a coleta" com o mantenedor como responsável.
+
+| Fonte | O que acusa | Silêncio |
+|---|---|---|
+| SINISA, página de resultados | Link novo de arquivo; página sem link algum (vigia cego); página da edição seguinte publicada | Incluir o link em `pipeline/watch/saneamento_sinisa_links.txt` (`python3 scripts/vigilancia.py semear-saneamento` regrava o snapshot) |
+| SINISA, ZIPs integrados | Tamanho diferente do registrado (retificação de arquivo já integrado) | Recoletar e reconstruir a gold |
+| SISAGUA | Arquivo registrado reescrito 60 dias ou mais depois do Last-Modified registrado; arquivo anual novo a partir de março do ano seguinte | Recoletar e reconstruir a gold |
+| CadÚnico | Mês mais recente da API, até o mês corrente, 3 ou mais meses à frente do mês da gold | `coletar --so-cadunico` e `gold` |
+
+Fonte que não responde vira linha "não verificado" na issue, nunca silêncio. Fora do alcance da vigília, por não haver sinal barato e confiável: Censo (decenal), atos tarifários dos reguladores (curadoria manual), conteúdo do módulo Gestão Municipal do SINISA além da presença do link, e fontes ainda não integradas. A API do CadÚnico lista meses cheios posteriores ao mês corrente (consulta de 16/10/2026: até 202612), por isso o cheque limita a consulta ao mês corrente.
+
 ## Fontes e períodos
 
 | Fonte | Período | Uso |
