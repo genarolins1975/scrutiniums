@@ -65,7 +65,7 @@ export const SINONIMOS_BUSCA: readonly GrupoDeSinonimos[] = [
   // geração
   { alvos: [`${S}/geracao`], termos: ["fontes de energia", "matriz elétrica", "matriz energética", "energia solar", "energia eólica", "energia hidrelétrica", "usinas"] },
   { alvos: [`${S}/geracao/termica#p022`], termos: ["usina térmica", "térmicas ligadas", "por que ligaram as térmicas"] },
-  { alvos: [`${S}/geracao/restricoes#p023`, `${S}/aprenda/constrained-off`], termos: ["curtailment", "geração cortada", "corte de energia solar", "corte de energia eólica"] },
+  { alvos: [`${S}/geracao/curtailment`, `${S}/geracao/restricoes#p023`, `${S}/aprenda/constrained-off`], termos: ["curtailment", "geração cortada", "corte de energia solar", "corte de energia eólica"] },
   // transição
   {
     alvos: [`${S}/transicao`, `${S}/transicao/mmgd#p063`, `${S}/aprenda/geracao-distribuida`],

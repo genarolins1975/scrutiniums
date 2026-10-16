@@ -486,6 +486,7 @@ export const CARTOES: Record<string, CartaoDestino> = {
       { texto: "Matriz efetiva por fonte, com e sem a micro e minigeração estimada", href: "/setor-eletrico/geracao" },
       { texto: "Despacho térmico pelos motivos declarados pelo ONS", href: "/setor-eletrico/geracao/termica#p022" },
       { texto: "Cortes de geração eólica e solar pelas razões oficiais, com o mapa das usinas", href: "/setor-eletrico/geracao/restricoes#p023" },
+      { texto: "Curtailment: por que eólicas e solares são cortadas e quem perde, com laboratórios interativos", href: "/setor-eletrico/geracao/curtailment" },
       { texto: "Potência instalada e fator de capacidade por fonte e por usina", href: "/setor-eletrico/geracao/capacidade#p024" },
     ],
     recorte: "Sistema interligado e subsistemas; usina para térmicas e cortes; horário, diário e mensal.",

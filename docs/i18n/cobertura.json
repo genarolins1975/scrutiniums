@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "b389804ccf0409ca55ff3bfb417804379a744630d71ea631ee709303c1721273",
-    "arquivos_analisados": 1018,
-    "fontes_sha256": "3f83f234ee84b76253a35da9d9feb8fe8201e83b68338a9ef56d4b8af9f32d7f",
+    "arquivos_analisados": 1022,
+    "fontes_sha256": "bc425f74807db4d54ba3ea036f9fa199ccb6f1f98210f41dccdb097d0870e018",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -177,20 +177,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 441,
+        "arquivos": 445,
         "candidatos": {
-          "jsx_text": 6427,
-          "atributos": 2455,
-          "props": 11926,
-          "outros_literais": 29043,
-          "templates": 6476,
-          "expressoes_nao_resolvidas": 32888,
-          "chaves_objetos": 31179
+          "jsx_text": 6526,
+          "atributos": 2463,
+          "props": 12177,
+          "outros_literais": 29260,
+          "templates": 6541,
+          "expressoes_nao_resolvidas": 33300,
+          "chaves_objetos": 31452
         },
         "exclusoes": {
-          "importacoes": 3439,
-          "atributos_tecnicos": 7683,
-          "tipos": 3518
+          "importacoes": 3474,
+          "atributos_tecnicos": 7814,
+          "tipos": 3522
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -199,17 +199,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 120394,
+        "candidatos_nao_catalogados": 121719,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 74,
+        "paginas_pt": 75,
         "paginas_en": 0,
         "handlers": 1,
         "templates_com_parametros": 5,
-        "paginas_pt_literais": 69,
+        "paginas_pt_literais": 70,
         "paginas_pt_fora_do_adaptador": 5,
-        "paginas_pt_literais_sem_irma": 69,
+        "paginas_pt_literais_sem_irma": 70,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false

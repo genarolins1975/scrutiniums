@@ -198,7 +198,12 @@ export default function GeracaoRestricoesPage() {
         >
           O ONS limita a geração de usinas eólicas e fotovoltaicas (o que ele chama de <Termo slug="constrained-off">constrained-off</Termo>) e registra a razão de cada limitação em quatro códigos oficiais: elétrica (indisponibilidade externa),
           confiabilidade, energética e parecer de acesso. Este painel estima quanto deixou de ser gerado nessas limitações e separa duas grandezas que costumam ser confundidas:
-          a energia não gerada ao longo do tempo (GWh) e o maior corte simultâneo num instante (MW). Restrição não é indisponibilidade da usina nem falta de vento ou de sol.
+          a energia não gerada ao longo do tempo (GWh) e o maior corte simultâneo num instante (MW). Restrição não é indisponibilidade da usina nem falta de vento ou de sol.{" "}
+          Para entender o fenômeno com laboratórios interativos e o efeito para o setor, veja{" "}
+          <Link href="/setor-eletrico/geracao/curtailment" className="text-energia-dark underline underline-offset-4">
+            Curtailment
+          </Link>
+          .
         </CabecalhoModulo>
         <ModoProfundidade>
           <Bloco id="restricoes">
