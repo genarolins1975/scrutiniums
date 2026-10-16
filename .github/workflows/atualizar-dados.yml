@@ -192,11 +192,14 @@ jobs:
           node scripts/minify-obs.mjs || exit 1
           npx vitest run --reporter=default --reporter=json --outputFile.json=vitest-resultado.json
           V=$?
-          python3 -m unittest discover -s pipeline/tests -t .
-          P=$?
-          python3 -m unittest discover -s pesquisa/tests -t .
-          Q=$?
-          echo "vitest=$V pipeline=$P pesquisa=$Q"
+          # a saída do unittest também vai para arquivo: a issue de retenção lista os testes
+          # Python reprovados, e os códigos de saída dizem qual das três suítes falhou. Em
+          # 16/10/2026 a issue culpou as suítes Python (que passaram) por um vitest abortado
+          python3 -m unittest discover -s pipeline/tests -t . 2>&1 | tee pipeline-testes.log
+          P=${PIPESTATUS[0]}
+          python3 -m unittest discover -s pesquisa/tests -t . 2>&1 | tee pesquisa-testes.log
+          Q=${PIPESTATUS[0]}
+          echo "vitest=$V pipeline=$P pesquisa=$Q" | tee testes-codigos.txt
           [ "$V$P$Q" = "000" ]
 
       - name: Reter publicação reprovada
@@ -209,7 +212,7 @@ jobs:
           git checkout -- public/obs/data
           git clean -fdq public/obs/data
           echo "retida=1" >> "$GITHUB_OUTPUT"
-          REPROVADOS=$(python3 scripts/testes_reprovados.py vitest-resultado.json)
+          REPROVADOS=$(python3 scripts/testes_reprovados.py vitest-resultado.json testes-codigos.txt pipeline-testes.log pesquisa-testes.log)
           ULTIMA=$(python3 -c "import json;print(json.load(open('public/obs/data/gold/meta.json'))['gerado_em'][:16])")
           TITULO="Testes de conteúdo reprovaram a gold do dia: publicação retida"
           CORPO="Execução de $(date -u +%d/%m/%Y\ %H:%M) UTC: ${RUN_URL}
