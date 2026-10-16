@@ -16,6 +16,8 @@ export type Municipio = {
   [campo: `des_${string}`]: number | null;
   /** SISAGUA (arquivo qualidade_municipios.json): registro por ano e numerador/denominador de cada medida. */
   [campo: `qa_${string}`]: number | null;
+  /** SIH e SIM (arquivo saude_municipios.json): contagens da janela por grupo, sistema e medida. */
+  [campo: `sd_${string}`]: number | null;
   id: string;
   nome: string;
   uf: string;
@@ -399,6 +401,7 @@ export type MetaSaneamento = {
     quimicos: QuimicosSisagua;
     por_ano: Record<string, AnoSisagua>;
   };
+  saude?: MetaSaude;
   desigualdades: {
     proveniencia: { capturado_em: string };
     residuos_cor_raca: { universo: number; agua: number; esgoto: number };
@@ -447,4 +450,32 @@ export type MetaSaneamento = {
     reguladores_cnpj: number;
   };
   conferencias: Conferencia[];
+};
+
+/** Proveniência e conferências do capítulo 13 (saude_municipios.json), de pipeline/observatorio_saneamento/saude.py. */
+export type MetaSaude = {
+  periodo: number[];
+  grupos: { id: string; rotulo: string; cid: string }[];
+  consultas: {
+    id: string;
+    sistema: "sim" | "sih";
+    grupo: string;
+    medida: string;
+    rotulo: string;
+    def: string;
+    incremento: string;
+    coluna: string;
+    selecao: string;
+    itens: { valor: string; rotulo: string }[];
+    arquivo: string;
+    sha256: string;
+    bytes: number;
+    notas: string;
+  }[];
+  definicoes: Record<string, { url: string; sha256: string }>;
+  capturado_em: string;
+  totais_tabnet: Record<string, number>;
+  municipio_ignorado: Record<string, number>;
+  conferencias: { id: string; municipios_gold: number; municipios_fora_do_cadastro: number; municipio_ignorado: number; total_tabnet: number; diferenca: number }[];
+  municipios_sem_linha: string[];
 };

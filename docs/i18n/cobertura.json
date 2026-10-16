@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "b389804ccf0409ca55ff3bfb417804379a744630d71ea631ee709303c1721273",
-    "arquivos_analisados": 1022,
-    "fontes_sha256": "fd2640345c9919cbe5c8a683ef2c76d84900dae8925a99279e2b86fb19df2263",
+    "arquivos_analisados": 1023,
+    "fontes_sha256": "84066f995bcb65ccaab2966cc8911299d4214b72f01ddd480f7e26773e1a9157",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -134,8 +134,8 @@
           "atributos": 187,
           "props": 630,
           "outros_literais": 3251,
-          "templates": 381,
-          "expressoes_nao_resolvidas": 1995,
+          "templates": 382,
+          "expressoes_nao_resolvidas": 1998,
           "chaves_objetos": 2447
         },
         "exclusoes": {
@@ -150,7 +150,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 9517,
+        "candidatos_nao_catalogados": 9521,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -273,20 +273,20 @@
     "saneamento": {
       "nome": "Saneamento",
       "interface": {
-        "arquivos": 52,
+        "arquivos": 53,
         "candidatos": {
-          "jsx_text": 817,
-          "atributos": 172,
-          "props": 1335,
-          "outros_literais": 2458,
-          "templates": 269,
-          "expressoes_nao_resolvidas": 1806,
-          "chaves_objetos": 3307
+          "jsx_text": 867,
+          "atributos": 189,
+          "props": 1377,
+          "outros_literais": 2552,
+          "templates": 285,
+          "expressoes_nao_resolvidas": 1892,
+          "chaves_objetos": 3452
         },
         "exclusoes": {
-          "importacoes": 361,
-          "atributos_tecnicos": 1071,
-          "tipos": 117
+          "importacoes": 374,
+          "atributos_tecnicos": 1122,
+          "tipos": 125
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -295,17 +295,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 10164,
+        "candidatos_nao_catalogados": 10614,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 24,
+        "paginas_pt": 25,
         "paginas_en": 0,
         "handlers": 0,
         "templates_com_parametros": 2,
-        "paginas_pt_literais": 22,
+        "paginas_pt_literais": 23,
         "paginas_pt_fora_do_adaptador": 2,
-        "paginas_pt_literais_sem_irma": 22,
+        "paginas_pt_literais_sem_irma": 23,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false

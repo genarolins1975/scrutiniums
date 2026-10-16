@@ -196,10 +196,10 @@ export const EIXOS: Eixo[] = [
         slug: "saude-ambiente",
         rotulo: "Saúde e ambiente",
         pergunta: "Como saneamento, saúde e ambiente se relacionam?",
-        resumo: "Internações e óbitos por doenças relacionadas ao saneamento e qualidade de corpos d'água monitorados.",
-        situacao: "em_preparacao",
+        resumo: "Internações e óbitos por infecções intestinais, leptospirose e esquistossomose, por município de residência, ao lado da carência de esgoto.",
+        situacao: "parcial",
         pendencia:
-          "DATASUS (SIH e SIM por residência, com grupos diagnósticos documentados) e redes de monitoramento de qualidade da água bruta ainda não integrados.",
+          "Só três grupos de doenças, na janela de 2022 a 2024, sem taxa ajustada por idade e sem o recorte por faixa etária. Qualidade da água bruta (ANA e órgãos estaduais), dengue e demais doenças de vetor e hepatite A não integradas.",
       },
       {
         numero: 14,

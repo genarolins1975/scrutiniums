@@ -38,6 +38,7 @@ const ARQUIVOS: [string, string][] = [
   ["etes.csv", "Estações de tratamento de esgoto declaradas"],
   ["desigualdades_municipios.csv", "Censo 2022 por grupo (cor ou raça, quilombolas, indígenas, favelas): carência e universo por município"],
   ["qualidade_municipios.csv", "SISAGUA 2024 e 2025: registro de controle e vigilância e numerador e denominador de cada medida de qualidade da água, por município"],
+  ["saude_municipios.csv", "SIH e SIM, 2022 a 2024: internações e óbitos por infecções intestinais, leptospirose e esquistossomose, soma dos três anos por município de residência"],
   ["meta.json", "Proveniência: arquivos de origem, sha256, datas, cobertura e conferências"],
 ];
 
@@ -46,6 +47,7 @@ export default function Pagina() {
   const zips = Object.values(m?.sinisa.zips ?? {});
   const planilhas = Object.entries(m?.sinisa.planilhas ?? {});
   const censo = Object.entries(m?.censo.tabelas ?? {});
+  const consultasSaude = m?.saude?.consultas ?? [];
 
   const linhasViab = VIABILIDADE.map((v) => ({
     pergunta: v.pergunta,
@@ -233,6 +235,39 @@ export default function Pagina() {
               )}
             </ul>
           </details>
+
+          {consultasSaude.length > 0 && (
+            <details className="mt-6">
+              <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm font-medium text-obee-dark underline underline-offset-4">
+                Consultas ao DATASUS, capítulo 13 ({consultasSaude.length})
+              </summary>
+              <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                Tabulações públicas do TabNet (Morbidade Hospitalar do SUS por residência e Mortalidade por residência), uma por doença e medida, gravadas
+                como a fonte as devolveu. Município de residência; janela de {m?.saude?.periodo[0]} a {m?.saude?.periodo[m.saude.periodo.length - 1]}.
+              </p>
+              <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Consultas ao DATASUS (rolável)">
+                <table className="w-full min-w-[48rem] border-collapse text-xs">
+                  <caption className="sr-only">Consultas ao TabNet com sha256 da resposta</caption>
+                  <thead>
+                    <tr className="border-b border-carvao text-left">
+                      <th scope="col" className="py-2 pr-4 font-medium">Consulta</th>
+                      <th scope="col" className="py-2 pr-4 text-right font-medium">Bytes</th>
+                      <th scope="col" className="py-2 font-medium">sha256</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {consultasSaude.map((c) => (
+                      <tr key={c.id} className="border-b border-linha align-top">
+                        <th scope="row" className="py-1 pr-4 text-left font-normal">{c.rotulo}</th>
+                        <td className="py-1 pr-4 text-right tabular-nums">{inteiro(c.bytes)}</td>
+                        <td className="py-1 font-mono [overflow-wrap:anywhere]">{c.sha256}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          )}
 
           <h3 className="mt-10 font-serif text-xl text-carvao">Atos e tabelas tarifárias</h3>
           <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">

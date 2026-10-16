@@ -24,7 +24,7 @@ Documentos desta pasta:
 | | 10 De onde vem o dinheiro? | `/saneamento/financiamento` | Parcial (sem BNDES, CAIXA, Transferegov) |
 | | 11 O planejamento é suficiente para a universalização? | `/saneamento/planejamento` | Parcial (IAA e IAE da NR 8 sem ICA, ICE e soluções alternativas; não declara cumprimento de meta) |
 | | 12 Quem responde pelas metas, fiscaliza e atende? | `/saneamento/responsaveis` | Parcial (sem fiscalizações e sanções) |
-| E Saúde, ambiente e resiliência | 13 Como saneamento, saúde e ambiente se relacionam? | sem rota | Em preparação (DATASUS e monitoramento de água bruta) |
+| E Saúde, ambiente e resiliência | 13 Como saneamento, saúde e ambiente se relacionam? | `/saneamento/saude-ambiente` | Parcial (infecções intestinais, leptospirose e esquistossomose, 2022 a 2024, SIH e SIM; sem ajuste por idade, dengue, hepatite A e qualidade da água bruta) |
 | | 14 O serviço está preparado para secas e eventos extremos? | `/saneamento/resiliencia` | Parcial (sem mananciais e Defesa Civil) |
 
 Ferramentas: `/saneamento/municipio` e `/saneamento/municipio/[id]` (Meu município), `/saneamento/comparar?m=` (até quatro municípios), `/saneamento/prestadores/comparar?p=` (até quatro prestadores), `/saneamento/preco-regulado/simulador` (simulador da conta), atlas municipal em cada capítulo com estado na URL e CSV, `/saneamento/metodologia` (pública). Comparação internacional (JMP) e explorador de prioridades não foram construídos.
@@ -44,10 +44,12 @@ Ferramentas: `/saneamento/municipio` e `/saneamento/municipio/[id]` (Meu municí
 python3 -m pipeline.observatorio_saneamento.coletar --zips <pasta com os ZIPs do SINISA>   # com rede
 python3 -m pipeline.observatorio_saneamento.coletar --so-cadunico                         # com rede
 python3 -m pipeline.observatorio_saneamento.gold
+python3 -m pipeline.observatorio_saneamento.saude --coletar                               # com rede (TabNet do DATASUS)
 python3 -m pipeline.observatorio_saneamento.tarifas
 python3 -m pipeline.observatorio_saneamento.atos
 python3 -m unittest pipeline.tests.test_observatorio_saneamento
-npx vitest run src/tests/saneamento-gold.test.ts src/tests/saneamento-conta.test.ts
+python3 -m unittest pipeline.tests.test_saude
+npx vitest run src/tests/saneamento-gold.test.ts src/tests/saneamento-conta.test.ts src/tests/saneamento-saude.test.ts
 ```
 
 ## Atualização e vigilância
@@ -74,6 +76,7 @@ Fonte que não responde vira linha "não verificado" na issue, nunca silêncio. 
 | Atos de ARSESP, ARSAE-MG, AGEPAR, ARPE e ADASA | 2023 a 2026 | Tabelas tarifárias, estudos de caso e catálogo de reajustes |
 | MDS, CadÚnico (SAGI, API MI Social) | Dez/2024 e set/2026 | Famílias elegíveis à tarifa social pelo critério de renda |
 | Ministério da Saúde, SISAGUA (dados abertos) | 2014 a 2025 (plano desde 2023); arquivos atualizados em out/2026, extraídos em 14/10/2026 | Controle mensal, plano de amostragem, vigilância e cadastro de população abastecida; Portaria GM/MS 888/2021 para os limites |
+| Ministério da Saúde, DATASUS: SIH/SUS e SIM (TabNet), por local de residência | 2022 a 2024; extração de 16/10/2026 (SIM com dados finais até 2024) | Internações no SUS e óbitos por infecções intestinais, leptospirose e esquistossomose, por município, ao lado da carência de esgoto |
 | Lei 11.445/2007, Lei 14.898/2024, NR ANA 8/2024, Decreto 12.797/2025 | Vigentes | Metas, tarifa social, medição das metas, salário-mínimo de 2026 |
 
 ## Relação com a Eficiência Estatal
