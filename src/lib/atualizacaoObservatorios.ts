@@ -24,7 +24,8 @@ export function atualizacaoObservatorio(id: DominioId): { rotulo: string; linhas
         `SINISA ${m.sinisa.ano_referencia + 1} (ano de referência ${m.sinisa.ano_referencia}): ${m.cobertura.agua_participantes.toLocaleString("pt-BR")} municípios em água e ${m.cobertura.esgoto_participantes.toLocaleString("pt-BR")} com indicadores de esgoto.`,
         `IBGE, Censo 2022 e 2010: ${m.cobertura.municipios_censo_2022.toLocaleString("pt-BR")} municípios.`,
         `Captura em ${dataBR(m.sinisa.capturado_em.slice(0, 10))}. Base municipal de água retificada em ${dataBR(m.sinisa.retificacao_agua_municipal)}.`,
-        "Preço regulado em amostra de atos verificados; capítulos de saúde e desigualdades em preparação.",
+        `Saúde e ambiente: internações (SIH) e óbitos (SIM) de ${m.saude.periodo[0]} a ${m.saude.periodo[m.saude.periodo.length - 1]}, tabulações do DATASUS capturadas em ${dataBR(m.saude.capturado_em.slice(0, 10))}.`,
+        "Preço regulado em amostra de atos verificados; qualidade da água bruta em preparação.",
       ] };
     } catch {
       return { rotulo: "Fontes e cobertura", linhas: ["Dados indisponíveis no momento."] };
