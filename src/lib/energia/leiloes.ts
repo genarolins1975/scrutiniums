@@ -87,6 +87,15 @@ export const mwmed = (v: number | null | undefined, casas = 1) => (v == null ? "
 export const rsMwh = (v: number | null | undefined, casas = 2) => (v == null ? "sem dado" : `${reais(v, casas)}/MWh`);
 
 /** Anos do primeiro ao último leilão, inclusive os anos sem leilão na base (que viram ausência, nunca zero). */
+/**
+ * Número do leilão na forma em que a ANEEL o designa nos editais ("Leilão nº 10/2013"). O conjunto aberto grava "AAAA/N"
+ * (NumLeilao = "2013/10"), que na prosa se confunde com ano e mês; a página exibe "10/2013" e os downloads mantêm o campo da fonte.
+ */
+export function numeroAneel(bruto: string | null | undefined): string {
+  const m = /^(\d{4})\/(\d{1,3})$/.exec(String(bruto ?? "").trim());
+  return m ? `${Number(m[2])}/${m[1]}` : String(bruto ?? "");
+}
+
 export function anosContinuos(g: Pick<LeiloesGold, "cobertura">): string[] {
   if (!g.cobertura.anos) return [];
   const [a, b] = g.cobertura.anos;
@@ -144,7 +153,7 @@ export function participacao(g: Pick<LeiloesGold, "entrega" | "totais">, s: IdSi
 
 /** Nome de exibição de um leilão: "39º LEN (A-5)". */
 export function nomeLeilao(l: { nome: string | null; tipo: string; leilao: string }): string {
-  return `${l.nome ?? `Leilão ${l.leilao}`} (${l.tipo})`;
+  return `${l.nome ?? `Leilão ${numeroAneel(l.leilao)}`} (${l.tipo})`;
 }
 
 export type FraseCitavel = { id: string; texto: string; referencia: string };
@@ -328,8 +337,10 @@ export function leilaoDescendente(p: ParametrosLeilao): ResultadoLeilao {
 
 /* ===================================================================== logos */
 
-export type LogoGrupo = { src: string; nome: string; cnpj: string; origem: string | null; data: string | null; noTopo: boolean };
-export type EntradaLogo = { arquivo: string; nome: string; cnpjs: string[]; origem: string | null; data: string | null; papel: string | null };
+/** Tom do fundo para o qual a companhia desenhou o arquivo (manifesto): a placa do logo segue esse tom. */
+export type FundoLogo = "claro" | "escuro" | null;
+export type LogoGrupo = { src: string; nome: string; cnpj: string; origem: string | null; data: string | null; noTopo: boolean; papel: string | null; fundo: FundoLogo; largura: number | null; altura: number | null };
+export type EntradaLogo = { arquivo: string; nome: string; cnpjs: string[]; origem: string | null; data: string | null; papel: string | null; fundo: FundoLogo; largura: number | null; altura: number | null };
 
 const so14 = (v: unknown) => {
   const d = String(v ?? "").replace(/\D/g, "");
@@ -361,11 +372,14 @@ export function normalizaManifestoLogos(bruto: unknown): EntradaLogo[] {
     if (!cnpjs.length) continue;
     out.push({
       arquivo: src,
-      nome: String(x.nome ?? x.empresa ?? x.rotulo ?? "").trim() || "logotipo",
+      nome: String(x.nome_exibicao ?? x.nome ?? x.empresa ?? x.rotulo ?? "").trim() || "logotipo",
       cnpjs: Array.from(new Set(cnpjs)),
-      origem: x.origem != null ? String(x.origem) : x.fonte != null ? String(x.fonte) : null,
+      origem: x.url_origem != null ? String(x.url_origem) : x.origem != null ? String(x.origem) : x.fonte != null ? String(x.fonte) : null,
       data: x.data != null ? String(x.data) : x.capturado_em != null ? String(x.capturado_em) : null,
       papel: x.papel != null ? String(x.papel) : null,
+      fundo: x.fundo === "escuro" ? "escuro" : x.fundo === "claro" ? "claro" : null,
+      largura: typeof x.largura === "number" ? x.largura : null,
+      altura: typeof x.altura === "number" ? x.altura : null,
     });
   }
   return out;
@@ -382,7 +396,7 @@ export function logoDoGrupo(manifesto: readonly EntradaLogo[], grupo: { cnpj: st
   const candidatos = [grupo.cnpj, ...grupo.cadeia_cnpjs];
   for (const c of candidatos) {
     const e = por.get(c);
-    if (e) return { src: e.arquivo, nome: e.nome, cnpj: c, origem: e.origem, data: e.data, noTopo: c === grupo.cnpj };
+    if (e) return { src: e.arquivo, nome: e.nome, cnpj: c, origem: e.origem, data: e.data, noTopo: c === grupo.cnpj, papel: e.papel, fundo: e.fundo, largura: e.largura, altura: e.altura };
   }
   return null;
 }

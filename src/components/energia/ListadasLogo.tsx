@@ -4,7 +4,8 @@ import type { LogoListada } from "@/lib/energia/tipos-listadas";
  * Símbolo de uma companhia listada: o arquivo oficial baixado do site da própria companhia, sem alteração, num tamanho fixo e
  * discreto. A placa tem o tom do fundo para o qual a companhia desenhou o arquivo (`fundo` no manifesto): papel para os logos de
  * fundo claro, carvão para os que a companhia publica só em branco. Sem logo oficial obtido, mostra o nome em texto; o motivo
- * fica no manifesto e na nota da página. A imagem é decorativa quando o nome já aparece ao lado (`decorativo`).
+ * fica no manifesto e na nota da página. A imagem é decorativa quando o nome já aparece ao lado (`decorativo`). Também serve à
+ * página de Leilões, que liga o grupo controlador ao logo pelo CNPJ.
  */
 export function ListadasLogo({
   logo,
@@ -12,7 +13,7 @@ export function ListadasLogo({
   tamanho = "md",
   decorativo = false,
 }: {
-  logo: LogoListada | null | undefined;
+  logo: Pick<LogoListada, "arquivo" | "fundo" | "largura" | "altura" | "papel"> | null | undefined;
   nome: string;
   tamanho?: "sm" | "md" | "lg";
   decorativo?: boolean;

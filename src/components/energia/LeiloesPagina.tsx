@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
+import { ListadasLogo } from "@/components/energia/ListadasLogo";
 import { COR_CATEGORIA_LEILAO, CURTO_CATEGORIA, logoDoGrupo, mwmed, type EntradaLogo, type FraseCitavel } from "@/lib/energia/leiloes";
 import { num } from "@/lib/energia/formato";
 import type { LeiloesGold } from "@/lib/energia/tipos-leiloes";
@@ -155,18 +156,13 @@ export function GruposControle({ g, logos, dataSiga }: { g: NonNullable<LeiloesG
                   <th scope="row" className="px-2 py-2 text-left font-normal text-carvao">
                     <span className="flex items-center gap-2">
                       {logo ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={logo.src}
-                          alt={logo.nome}
-                          width={56}
-                          height={20}
-                          loading="lazy"
-                          className="h-5 w-14 shrink-0 object-contain object-left"
-                          title={`${logo.noTopo ? "Logotipo do grupo" : "Logotipo de holding na cadeia de controle"}: ${logo.nome}${logo.origem ? `; origem: ${logo.origem}` : ""}${logo.data ? `, ${logo.data}` : ""}`}
+                        <ListadasLogo
+                          logo={{ arquivo: logo.src, fundo: logo.fundo, largura: logo.largura, altura: logo.altura, papel: logo.papel ?? "" }}
+                          nome={logo.nome}
+                          tamanho="sm"
                         />
                       ) : algumLogo ? (
-                        <span aria-hidden="true" className="inline-block h-5 w-14 shrink-0" />
+                        <ListadasLogo logo={null} nome="" tamanho="sm" decorativo />
                       ) : null}
                       <span>
                         {x.nome ?? "nome não publicado"}

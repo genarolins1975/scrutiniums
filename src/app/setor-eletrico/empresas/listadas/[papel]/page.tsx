@@ -146,22 +146,34 @@ export default function FichaListada({ params }: { params: { papel: string } }) 
                 variante="faixa"
                 rotulo="Transmissão em operação"
                 natureza="CALCULADO"
-                valor={tr ? tr.km_circuito_operacao : null}
+                valor={tr ? tr.km_circuito_operacao : c.atuacao.transmissao ? null : 0}
                 casas={0}
                 unidade="km de circuito"
-                periodo={`SIGET de ${dataBR(g.datas.siget)}`}
-                motivoAusencia="Sem concessionária de transmissão sob controle."
+                periodo={tr ? `SIGET de ${dataBR(g.datas.siget)}` : `nenhuma concessionária sob controle no SIGET de ${dataBR(g.datas.siget)}`}
+                motivoAusencia="Concessionária sob controle sem km de circuito publicado."
               />
-              <Numero
-                variante="faixa"
-                rotulo="Unidades consumidoras das distribuidoras"
-                natureza="OBSERVADO"
-                valor={dist?.unidades_consumidoras ?? null}
-                casas={0}
-                unidade="unidades"
-                periodo={dist?.anos.length ? `ano ${dist.anos.join(", ")}` : undefined}
-                motivoAusencia="Sem distribuidora sob controle."
-              />
+              {dist?.distribuidoras.length ? (
+                <Numero
+                  variante="faixa"
+                  rotulo="Unidades consumidoras das distribuidoras"
+                  natureza="OBSERVADO"
+                  valor={dist.unidades_consumidoras ?? null}
+                  casas={0}
+                  unidade="unidades"
+                  periodo={dist.anos.length ? `ano ${dist.anos.join(", ")}` : undefined}
+                  motivoAusencia="Unidades consumidoras não publicadas para as distribuidoras sob controle."
+                />
+              ) : (
+                <Numero
+                  variante="faixa"
+                  rotulo="Distribuidoras sob controle"
+                  natureza="CALCULADO"
+                  valor={0}
+                  casas={0}
+                  unidade="distribuidoras"
+                  periodo="índice de distribuidoras do módulo Empresas"
+                />
+              )}
               {ev.retorno_total_12m ? (
                 <Numero variante="faixa" rotulo={`Retorno total de ${c.papel} em 12 meses`} natureza="CALCULADO" evidencia={ev.retorno_total_12m} casas={1} unidade="%" endereco={`${rotaFicha(c)}#bolsa`} />
               ) : (

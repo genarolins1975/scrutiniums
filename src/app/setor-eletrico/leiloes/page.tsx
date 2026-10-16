@@ -39,6 +39,7 @@ import {
   linhasEntregaPorAno,
   mwmed,
   nomeLeilao,
+  numeroAneel,
   participacao,
   rsMwh,
 } from "@/lib/energia/leiloes";
@@ -68,7 +69,7 @@ const COLUNAS_LEILOES: ColunaTabela[] = [
   { id: "teto_medio", rotulo: "Teto médio", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "desagio_agregado_pct", rotulo: "Deságio agregado", tipo: "percentual", casas: 2 },
   { id: "operacao_pct", rotulo: "Energia de usinas em operação no SIGA", tipo: "percentual", casas: 1 },
-  { id: "leilao", rotulo: "Número ANEEL", tipo: "texto", nivel: "auditar" },
+  { id: "leilao", rotulo: "Número ANEEL (nº/ano)", tipo: "texto", nivel: "auditar" },
 ];
 
 export default function LeiloesAcrPage() {
@@ -136,7 +137,7 @@ export default function LeiloesAcrPage() {
   });
 
   const linhasLeiloes = g.leiloes.map((l) => ({
-    leilao: l.leilao,
+    leilao: numeroAneel(l.leilao),
     data: l.data,
     nome: nomeLeilao(l),
     tipo: l.tipo,
@@ -210,7 +211,7 @@ export default function LeiloesAcrPage() {
               <Numero variante="faixa" rotulo="Leilões na base" natureza="OBSERVADO" valor={g.cobertura.leiloes} unidade={`com ${num(t.empreendimentos, 0)} empreendimentos`} casas={0} periodo={periodo} />
               <Numero
                 variante="faixa"
-                rotulo={`Preço médio do último leilão (${u.nome ?? u.leilao})`}
+                rotulo={`Preço médio do último leilão (${u.nome ?? numeroAneel(u.leilao)})`}
                 natureza="CALCULADO"
                 evidencia={ev.ultimo_preco}
                 valor={u.preco_medio}
@@ -498,17 +499,17 @@ export default function LeiloesAcrPage() {
                   <TabelaDados
                     titulo="Conferência das unidades nos leilões estruturantes"
                     colunas={["Empreendimento", "Leilão", "Energia vendida (MWmédio)", "Garantia física (MWmédio)"]}
-                    linhas={g.conferencias.estruturantes_mwmed.map((x) => [x.empreendimento, x.leilao, x.energia_mwmed, x.garantia_fisica_mwmed])}
+                    linhas={g.conferencias.estruturantes_mwmed.map((x) => [x.empreendimento, numeroAneel(x.leilao), x.energia_mwmed, x.garantia_fisica_mwmed])}
                     casas={[null, null, 1, 1]}
                   />
                   <ul className="list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
                     <li>
                       CEG repetido no mesmo leilão em {g.entrega.ceg_repetido.length} casos:{" "}
-                      {g.entrega.ceg_repetido.map((x) => `${x.leilao} (${x.empreendimentos.join(" e ")})`).join("; ")}. A situação e o grupo vêm da usina do CEG.
+                      {g.entrega.ceg_repetido.map((x) => `${numeroAneel(x.leilao)} (${x.empreendimentos.join(" e ")})`).join("; ")}. A situação e o grupo vêm da usina do CEG.
                     </li>
                     <li>
                       Energia vendida acima da garantia física publicada em {g.conferencias.energia_acima_da_garantia_fisica.length} linhas (mantidas como
-                      publicadas): {g.conferencias.energia_acima_da_garantia_fisica.map((x) => `${x.empreendimento} (${x.leilao})`).join("; ")}.
+                      publicadas): {g.conferencias.energia_acima_da_garantia_fisica.map((x) => `${x.empreendimento} (${numeroAneel(x.leilao)})`).join("; ")}.
                     </li>
                     <li>
                       Zeros tratados como ausência: preço em {g.conferencias.zeros_tratados.preco} linha, garantia física em{" "}

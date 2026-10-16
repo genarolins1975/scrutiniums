@@ -19,6 +19,7 @@ import {
   linhasEntregaPorAno,
   linhasPrecoPorAno,
   logoDoGrupo,
+  numeroAneel,
   normalizaManifestoLogos,
   participacao,
 } from "@/lib/energia/leiloes";
@@ -175,6 +176,23 @@ describe("leilões: logotipos", () => {
     expect(logoDoGrupo([], { cnpj: "00001180000126", cadeia_cnpjs: [] })).toBeNull();
   });
 
+  it("lê o manifesto publicado pelo painel de listadas: nome de exibição, origem, tom da placa e ausência sem arquivo", () => {
+    const real = normalizaManifestoLogos({
+      logos: [
+        { papel: "AXIA3", nome_exibicao: "AXIA Energia", cnpj_holding: "00001180000126", grupo_cnpj: "00001180000126", arquivo: "/energia/logos/axia3.svg", fundo: "escuro", largura: 300, altura: 80, url_origem: "https://exemplo.invalid/logo.svg", capturado_em: "2026-10-16T22:04:49Z" },
+        { papel: "EGIE3", nome_exibicao: "Engie Brasil", cnpj_holding: "02474103000119", grupo_cnpj: "02474103000119", arquivo: null, fundo: null, ausencia: { motivo: "site indisponível" } },
+      ],
+    });
+    expect(real).toHaveLength(1);
+    expect(real[0]).toMatchObject({ nome: "AXIA Energia", papel: "AXIA3", fundo: "escuro", largura: 300, origem: "https://exemplo.invalid/logo.svg" });
+  });
+
+  it("o número do leilão aparece como a ANEEL designa (nº/ano), sem parecer ano e mês", () => {
+    expect(numeroAneel("2013/10")).toBe("10/2013");
+    expect(numeroAneel("2005/2")).toBe("2/2005");
+    expect(numeroAneel("sem padrão")).toBe("sem padrão");
+  });
+
   it("a leitura do manifesto funciona sem ele e descarta item cujo arquivo não foi publicado", () => {
     const d = mkdtempSync(join(tmpdir(), "logos-"));
     expect(lerManifestoLogos(d)).toEqual([]);
@@ -187,10 +205,12 @@ describe("leilões: logotipos", () => {
   it("a tabela de grupos mostra o logotipo com alt, o aviso de que o grupo não é a vencedora e o sem vínculo à parte", () => {
     if (!G.grupos_controle) return;
     const grupo = G.grupos_controle.maiores[0];
-    const fixture = [{ arquivo: "/energia/logos/x.svg", nome: "Marca do topo", cnpjs: [grupo.cnpj], origem: null, data: null, papel: null }];
+    const fixture = [{ arquivo: "/energia/logos/x.svg", nome: "Marca do topo", cnpjs: [grupo.cnpj], origem: null, data: null, papel: "XPTO3", fundo: "escuro" as const, largura: null, altura: null }];
     const h = renderToStaticMarkup(createElement(GruposControle, { g: G.grupos_controle, logos: fixture, dataSiga: "30/09/2026" }));
-    expect(h).toContain('alt="Marca do topo"');
-    expect(h).toContain('width="56"');
+    expect(h).toContain('alt="Símbolo de Marca do topo"');
+    // logo publicado só em branco ganha a placa escura, como no painel de listadas
+    expect(h).toMatch(/data-logo="XPTO3"[^>]*bg-carvao/);
+    expect(h).not.toMatch(/20\d\d-\d\d-\d\dT/);
     expect(texto(h)).toContain("não a vencedora na data do leilão");
     expect(texto(h)).toContain("Sem vínculo provado com um grupo");
     const sem = renderToStaticMarkup(createElement(GruposControle, { g: G.grupos_controle, logos: [], dataSiga: "30/09/2026" }));

@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { TransicaoOpcoes } from "@/components/energia/TransicaoOpcoes";
-import { COR_CATEGORIA_LEILAO, CURTO_CATEGORIA, CURTO_SITUACAO } from "@/lib/energia/leiloes";
+import { COR_CATEGORIA_LEILAO, CURTO_CATEGORIA, CURTO_SITUACAO, numeroAneel } from "@/lib/energia/leiloes";
 import type { IdCategoria, PontosLeiloes } from "@/lib/energia/tipos-leiloes";
 
 /**
@@ -162,7 +162,7 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
       <div aria-live="polite" className="min-h-[3rem] text-sm text-carvao">
         {sel ? (
           <p>
-            <span className="font-medium">{sel.nome}</span> ({sel.uf ?? "UF sem dado"}), leilão {sel.leilao} de {dataBR(sel.data)}: R$ {n(sel.p)}/MWh da época,
+            <span className="font-medium">{sel.nome}</span> ({sel.uf ?? "UF sem dado"}), leilão nº {numeroAneel(sel.leilao)} de {dataBR(sel.data)}: R$ {n(sel.p)}/MWh da época,
             R$ {n(sel.pr)}/MWh de {ipcaAte}; teto R$ {n(sel.teto)}/MWh, deságio {n(sel.des)}%; {n(sel.e, 1)} MWmédio; no SIGA: {CURTO_SITUACAO[sel.sit as keyof typeof CURTO_SITUACAO] ?? sel.sit}. Vencedora publicada: {sel.venc ?? "sem nome"}.
           </p>
         ) : (
@@ -188,7 +188,7 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
               {daCat.map((x) => (
                 <tr key={x.i} className="border-b border-linha">
                   <td className="px-2 py-1">{dataBR(x.data)}</td>
-                  <td className="px-2 py-1">{x.leilao}</td>
+                  <td className="px-2 py-1">{numeroAneel(x.leilao)}</td>
                   <td className="px-2 py-1">{x.nome}</td>
                   <td className="px-2 py-1">{x.uf ?? "sem dado"}</td>
                   <td className="px-2 py-1 text-right">{n(x.e, 1)}</td>
