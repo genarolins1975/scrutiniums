@@ -323,7 +323,7 @@ export default function MercadoPage() {
                     janela={lr.epe_ultimo_mes_uf ? mesAno(lr.epe_ultimo_mes_uf) : "o último mês publicado"}
                     participacao={uf}
                     volume={ufVolume}
-                    referencias={kEpe ? [{ valor: kEpe.valor_pct, rotulo: "Brasil, 12 meses" }] : []}
+                    referencias={kEpe ? [{ valor: kEpe.valor_pct, rotulo: `Brasil, 12 meses até ${mesAno(kEpe.periodo.fim)}` }] : []}
                   />
                   {(contrasteUf || ufSemJanela) && (
                     <div className="max-w-prose2 space-y-1 text-xs leading-relaxed text-carvao-muted" data-nota-uf="">

@@ -5,7 +5,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import MercadoPage from "@/app/setor-eletrico/mercado/page";
 import { GraficoLivreUf } from "@/components/energia/GraficoLivreUf";
-import { num, pct } from "@/lib/energia/formato";
+import { mesAno, num, pct } from "@/lib/energia/formato";
 import { barrasUf } from "@/lib/energia/mercado";
 import { barrasUfVolume, contrasteUf, textoContrasteUf, textoUfsSemJanela, ufsSemJanela } from "@/lib/energia/mercado-uf";
 import type { MercadoGold } from "@/lib/energia/tipos-mercado";
@@ -206,7 +206,11 @@ describe("mercado por UF: na página", () => {
   it("a seção abre na participação de sempre, com a opção de volume, a linha do Brasil, o contraste e a ausência de Roraima", () => {
     expect(secao).toContain('data-livre-uf="participacao"');
     expect(secao).toContain("Participação do livre por UF, 12 meses até jul/2026");
-    expect(secao).toContain('data-referencia="Brasil, 12 meses"');
+    // a linha do Brasil é a janela nacional da EPE, que pode terminar um mês depois da janela por UF (o CSV por UF atrasa): o rótulo diz até
+    // quando vai, e a comparação com as barras não esconde a diferença de janelas
+    const kEpe = G.livre_regulado.kpis.participacao_livre_12m!;
+    expect(secao).toContain(`data-referencia="Brasil, 12 meses até ${mesAno(kEpe.periodo.fim)}"`);
+    expect(secao).toContain(`Brasil, 12 meses até ${mesAno(kEpe.periodo.fim)}: ${pct(kEpe.valor_pct, 1)}`);
     expect(texto).toContain("com a opção de ver o volume de energia");
     expect(texto).toContain(textoContrasteUf(G)!);
     expect(texto).toContain(textoUfsSemJanela(G)!);
@@ -216,7 +220,7 @@ describe("mercado por UF: na página", () => {
 
   it("nenhum número nem nome de UF do contraste fica digitado no código da página", () => {
     const fonte = readFileSync(join(raiz, "src/app/setor-eletrico/mercado/page.tsx"), "utf-8");
-    expect(fonte).not.toMatch(/63,8|73\.460|17\.053|49,1/);
+    expect(fonte).not.toMatch(/63,8|73\.460|17\.053|49,1|até ago\/2026/);
     expect(fonte).not.toMatch(/Roraima fica|Maior participação do livre/);
   });
 });
