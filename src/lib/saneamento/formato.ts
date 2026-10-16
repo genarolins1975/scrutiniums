@@ -40,3 +40,10 @@ export function data(v: string | null | undefined): string {
   const iso = /^(\d{4})-(\d{2})-(\d{2})/.exec(v);
   return iso ? `${iso[3]}/${iso[2]}/${iso[1]}` : v;
 }
+
+/** "202412" → "dez/2024". */
+export function mesAno(m: string | undefined): string {
+  if (!m) return SEM_DADO;
+  const nomes = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+  return `${nomes[Number(m.slice(4)) - 1]}/${m.slice(0, 4)}`;
+}

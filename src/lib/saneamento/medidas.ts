@@ -321,6 +321,14 @@ const ESPEC_QUALIDADE: EspecQualidade[] = [
 ];
 
 /** Medidas do SISAGUA (capítulo 3): exigem a tabela própria qualidade_municipios.json. */
+/** Acima disto, economias com tarifa social excedem o universo de famílias elegíveis: o valor declarado fica sinalizado e fora das classes do mapa. */
+export const LIMITE_RAZAO_TARIFA_SOCIAL = 100;
+
+/** Economias com tarifa social por 100 famílias elegíveis, sem o corte de plausibilidade (a ficha mostra o valor declarado). */
+export function razaoTarifaSocial(m: Pick<Municipio, "ts_economias" | "cad_fam_ms">): number | null {
+  return m.ts_economias == null || m.cad_fam_ms == null || !(m.cad_fam_ms > 0) ? null : (m.ts_economias / m.cad_fam_ms) * 100;
+}
+
 export const MEDIDAS_QUALIDADE: Medida[] = ANOS_SISAGUA.flatMap((ano) =>
   ESPEC_QUALIDADE.map((e) => {
     const num = (m: Municipio) => m[`qa_${e.campo}_${ano}_num`] ?? null;
@@ -633,15 +641,19 @@ export const MEDIDAS: Medida[] = [
       "Famílias do CadÚnico com renda per capita até meio salário-mínimo em dez/2024, nos municípios cujo prestador respondeu sobre tarifa social",
     unidadePct: "por 100 famílias",
     casas: 1,
-    pct: (m) => (m.ts_economias == null || m.cad_fam_ms == null || !(m.cad_fam_ms > 0) ? null : (m.ts_economias / m.cad_fam_ms) * 100),
+    pct: (m) => {
+      const r = razaoTarifaSocial(m);
+      return r == null || r > LIMITE_RAZAO_TARIFA_SOCIAL ? null : r;
+    },
     contagem: (m) => (m.ts_economias == null || m.cad_fam_ms == null ? null : m.cad_fam_ms),
     unidadeContagem: "famílias elegíveis",
     numerador: (m) => (m.ts_economias == null || m.cad_fam_ms == null ? null : m.ts_economias),
     denominador: (m) => (m.ts_economias == null || m.cad_fam_ms == null ? null : m.cad_fam_ms),
     permite: "Ver onde a tarifa social declarada pelo prestador alcança mais e menos economias em relação ao número de famílias elegíveis.",
     naoPermite:
-      "Ler como percentual de famílias atendidas: economia não é família (uma ligação pode abrigar mais de uma família), parte das elegíveis não tem ligação à rede ou não é titular da conta, e critérios locais podem incluir quem não está no CadÚnico. Valores acima de 100 são possíveis.",
-    ausencia: "Prestador sem resposta sobre tarifa social ou município sem dado do CadÚnico. Prestador que declara não oferecer conta como zero.",
+      "Ler como percentual de famílias atendidas: economia não é família (uma ligação pode abrigar mais de uma família), parte das elegíveis não tem ligação à rede ou não é titular da conta, e critérios locais podem incluir quem não está no CadÚnico. Razão acima de 100 é tratada como declaração a verificar e fica fora das classes do mapa: o prestador declara mais economias com tarifa social do que o universo de famílias elegíveis, o que o texto acima não explica por si só.",
+    ausencia:
+      "Prestador sem resposta sobre tarifa social, município sem dado do CadÚnico ou razão acima de 100 por 100 famílias (declaração a verificar, fora das classes; o valor declarado continua na ficha do município). Prestador que declara não oferecer conta como zero.",
     cortesPct: [5, 15, 30, 60],
     limitesHistograma: [0, 5, 10, 15, 20, 30, 40, 60, 80, 100],
   },

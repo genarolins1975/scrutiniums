@@ -1,13 +1,14 @@
 # Validação da primeira entrega
 
-Data: 14/10/2026. Todas as notas abaixo são **autoavaliação do autor da entrega, não revisão independente**. "Não verificado" significa que o teste não foi feito.
+Data: 14/10/2026. Todas as notas abaixo são **autoavaliação do autor da entrega, não revisão independente**, com uma exceção: a revisão em contexto limpo de 16/10/2026, feita por agente sem participação na construção, está registrada no fim deste documento e em [REVISAO_2026-10-16.md](./REVISAO_2026-10-16.md). Ela não substitui revisão por pessoa. "Não verificado" significa que o teste não foi feito.
 
 ## Evidências automatizadas
 
 | Verificação | Comando | Resultado |
 |---|---|---|
-| Gold reproduzível byte a byte a partir do seed; conferências zeradas; ausência não vira zero | `python3 -m unittest pipeline.tests.test_observatorio_saneamento` | 4 testes, todos passam |
-| Somas municipais reproduzem IBGE e consolidado SINISA; 429 valores iguais aos da Eficiência Estatal; agregação por soma; zero e ausência; capítulos sem promessa; sem travessão | `npx vitest run src/tests/saneamento-gold.test.ts` | 13 testes, todos passam |
+| Gold reproduzível byte a byte a partir do seed; conferências zeradas; ausência não vira zero; SISAGUA | `python3 -m unittest pipeline.tests.test_observatorio_saneamento` | 26 testes em 16/10/2026, todos passam |
+| Somas municipais reproduzem IBGE e consolidado SINISA; 429 valores iguais aos da Eficiência Estatal; agregação por soma; zero e ausência; capítulos sem promessa; sem travessão | `npx vitest run src/tests/saneamento-gold.test.ts` | 25 testes em 16/10/2026, todos passam |
+| Correções da revisão de 16/10/2026: GFI1037 fora da ficha, tarifa por prestador e soma, razão acima de 100 sinalizada e fora das classes do mapa, N efetivo dos pares, ressalva dos índices da NR 8 | `npx vitest run src/tests/saneamento-revisao-out26.test.ts` | 10 testes, todos passam |
 | Simulador: exemplos dos reguladores ao centavo, limites de faixa, municípios associados | `npx vitest run src/tests/saneamento-conta.test.ts` | 11 testes, todos passam |
 | Registro de domínios (seis observatórios), rotas públicas, sitemap | `npx vitest run src/tests/dois-observatorios.test.ts src/tests/rotas-publicas.test.ts` | passam |
 | Suíte completa da plataforma | `npx vitest run` | 4.932 passam; 1 falha por tempo limite em `trabalho-renda-dados.test.ts` sob carga, que passa isolado (6 de 6) e não toca o saneamento |
@@ -36,10 +37,10 @@ Critérios: dado real com fonte e período (D), método e ressalvas visíveis (M
 | `/saneamento/prestadores/comparar` | sim | sim | sim | parcial | 8 | Sem seleção automática de pares |
 | `/saneamento/investimento` | sim | sim | sim | parcial | 8 | Sem ligação a obras |
 | `/saneamento/financiamento` | sim | sim | sim | parcial | 7 | Sem BNDES, CAIXA e Transferegov |
-| `/saneamento/planejamento` | sim | sim | sim | sim | 9 | Não declara cumprimento de meta, por falta de ICA, ICE e soluções alternativas |
+| `/saneamento/planejamento` | sim | sim | sim | parcial | 8 | Aproximação da NR 8 sem ICA, ICE e soluções alternativas; não declara cumprimento de meta; índices acima de 100% contados e explicados |
 | `/saneamento/responsaveis` | sim | sim | sim | parcial | 7 | Sem fiscalizações e sanções |
 | `/saneamento/resiliencia` | sim | sim | sim | parcial | 7 | Sem mananciais e eventos extremos |
-| `/saneamento/municipio` e fichas | sim | sim | sim | sim | 9 | Busca, comparação com UF, Brasil e pares |
+| `/saneamento/municipio` e fichas | sim | sim | sim | parcial | 8 | Busca, comparação com UF, Brasil e pares com N efetivo; razão de tarifa social sinalizada; categoria Água Solidária da SANEPAR não registrada |
 | `/saneamento/comparar` | sim | sim | sim | sim | 8 | Até quatro municípios, link e CSV |
 | `/saneamento/metodologia` (pública) | sim | sim | sim | sim | 9 | Fontes com sha256, matriz, conferências, downloads |
 
@@ -127,3 +128,12 @@ Ainda não integram o capítulo: ligação à rede de água para quilombolas e i
 - Números de 2024 (água tratada, Brasil): controle semestral em 1.858 municípios; agrotóxicos acima do VMP em 135 de 428.279 análises (0,03%); inorgânicas em 531 de 160.567 (0,33%); subprodutos da desinfecção em 1.975 de 76.525 (2,58%, contagem pontual; a norma usa média de 12 meses); organoléptico em 3.099 de 247.161 (1,25%). Vigilância química em 830 municípios. Cianotoxinas na água tratada pela vigilância: 21 municípios com análise, 1 com resultado acima do VMP.
 - Conferências: nenhum código fora do universo; VMP do arquivo diferente do da Portaria 888 contado por grupo (norma anterior); unidades divergentes e resultados abaixo de limite maior que o VMP contados e excluídos.
 - Verificação: 25 testes Python em 3.11 e 3.13 (inclui casamento com a Portaria, sinônimos, classificação, água tratada e arquivo sintético); testes da gold no Vitest reproduzem os totais por grupo de `meta.json`.
+
+## Revisão em contexto limpo (16/10/2026)
+
+Revisão somente leitura por agente sem participação na construção, com acesso às fontes originais; o relatório completo, com evidência, inferência, recomendação e o que não foi verificado, está em [REVISAO_2026-10-16.md](./REVISAO_2026-10-16.md). Não é revisão por pessoa, e acessibilidade com leitor de tela continua sem verificação.
+
+- **Fidelidade dos dados:** gold reconstruída idêntica byte a byte; 5.571 municípios reproduzem o seed e os indicadores oficiais do SINISA; 21 planilhas do seed iguais célula a célula aos XLSX originais; amostra de 28 municípios, somas de 33 territórios e 62 contas tarifárias recalculadas em Decimal sem diferença.
+- **Defeitos de apresentação encontrados e corrigidos na PR de 16/10/2026:** valor médio da tarifa social (GFI1037) impresso na ficha apesar de documentado como não publicado; bloco de tarifa mostrando só o primeiro prestador ao lado de razão calculada sobre a soma; razão de tarifa social sem checagem de plausibilidade; IAA e IAE acima de 100% sem ressalva na ficha e no KPI do capítulo 11; N dos pares superdimensionado; universo de UF e Brasil não rotulado na ficha; frase de comparabilidade dos Censos mais forte que a ressalva; investimento por residente com denominador diferente do mapa e da METODOLOGIA.
+- **Rebaixamentos:** capítulo 11 passa de Publicado a Parcial; fichas de município e planejamento passam de nota 9 a 8, com R parcial.
+- **Abertos:** categoria Água Solidária da SANEPAR (decisão editorial e elegibilidade não verificada); ajustes menores de texto listados no relatório (item 1.11).

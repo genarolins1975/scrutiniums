@@ -22,7 +22,7 @@ Documentos desta pasta:
 | | 8 Como os prestadores se comparam? | `/saneamento/prestadores/comparar` | Parcial (sem seleção de pares) |
 | D Investimento e planejamento | 9 Onde o investimento está chegando? | `/saneamento/investimento` | Parcial (sem obras) |
 | | 10 De onde vem o dinheiro? | `/saneamento/financiamento` | Parcial (sem BNDES, CAIXA, Transferegov) |
-| | 11 O planejamento é suficiente para a universalização? | `/saneamento/planejamento` | Publicado |
+| | 11 O planejamento é suficiente para a universalização? | `/saneamento/planejamento` | Parcial (IAA e IAE da NR 8 sem ICA, ICE e soluções alternativas; não declara cumprimento de meta) |
 | | 12 Quem responde pelas metas, fiscaliza e atende? | `/saneamento/responsaveis` | Parcial (sem fiscalizações e sanções) |
 | E Saúde, ambiente e resiliência | 13 Como saneamento, saúde e ambiente se relacionam? | sem rota | Em preparação (DATASUS e monitoramento de água bruta) |
 | | 14 O serviço está preparado para secas e eventos extremos? | `/saneamento/resiliencia` | Parcial (sem mananciais e Defesa Civil) |
