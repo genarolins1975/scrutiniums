@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "b389804ccf0409ca55ff3bfb417804379a744630d71ea631ee709303c1721273",
-    "arquivos_analisados": 1022,
-    "fontes_sha256": "934bcd3fe2c37682b3b7926b3473ccc5f37f1d5a689100bdf3984cd5c14a4b79",
+    "arquivos_analisados": 1031,
+    "fontes_sha256": "055cb6b60f7e0671ee995f48596cd1465647c7b561741e64a4890d42f7e8ed74",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -133,10 +133,10 @@
           "jsx_text": 626,
           "atributos": 187,
           "props": 630,
-          "outros_literais": 3251,
+          "outros_literais": 3253,
           "templates": 381,
           "expressoes_nao_resolvidas": 1995,
-          "chaves_objetos": 2447
+          "chaves_objetos": 2448
         },
         "exclusoes": {
           "importacoes": 837,
@@ -150,7 +150,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 9517,
+        "candidatos_nao_catalogados": 9520,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -177,20 +177,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 445,
+        "arquivos": 454,
         "candidatos": {
-          "jsx_text": 6526,
-          "atributos": 2463,
-          "props": 12177,
-          "outros_literais": 29260,
-          "templates": 6541,
-          "expressoes_nao_resolvidas": 33300,
-          "chaves_objetos": 31452
+          "jsx_text": 6688,
+          "atributos": 2533,
+          "props": 12503,
+          "outros_literais": 29672,
+          "templates": 6654,
+          "expressoes_nao_resolvidas": 34083,
+          "chaves_objetos": 31869
         },
         "exclusoes": {
-          "importacoes": 3474,
-          "atributos_tecnicos": 7814,
-          "tipos": 3522
+          "importacoes": 3553,
+          "atributos_tecnicos": 8046,
+          "tipos": 3577
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -199,17 +199,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 121719,
+        "candidatos_nao_catalogados": 124002,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 75,
+        "paginas_pt": 77,
         "paginas_en": 0,
         "handlers": 1,
         "templates_com_parametros": 5,
-        "paginas_pt_literais": 70,
+        "paginas_pt_literais": 72,
         "paginas_pt_fora_do_adaptador": 5,
-        "paginas_pt_literais_sem_irma": 70,
+        "paginas_pt_literais_sem_irma": 72,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false

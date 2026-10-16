@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-10-16T21:30:57Z",
+ "gerado_em": "2026-10-16T21:50:19Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "4301078fd03d+alterado",
+ "versao_codigo": "7d0b308e7712+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {

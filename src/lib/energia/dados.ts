@@ -895,6 +895,7 @@ const MODULO_DA_GOLD: Record<string, string> = {
   "expansao.json": "Expansão",
   "geracao_detalhe.json": "Geração",
   "inclusao.json": "Inclusão energética",
+  "leiloes.json": "Leilões",
   "mercado.json": "Mercado",
   "perdas.json": "Perdas",
   "pld_detalhe.json": "PLD",

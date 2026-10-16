@@ -344,11 +344,12 @@ def _bloco_grupos(rs, limite=25):
             por[r["grupo_cnpj"]].append(r)
     grupos = []
     for g, xs in por.items():
-        cad = []
+        # cadeia do topo para baixo: menor distância ao topo entre as usinas do grupo, empate pelo CNPJ
+        dist = {}
         for x in xs:
-            for k in x["cadeia"]:
-                if k not in cad:
-                    cad.append(k)
+            for i, k in enumerate(reversed(x["cadeia"])):
+                dist[k] = min(i, dist.get(k, i))
+        cad = sorted(dist, key=lambda k: (dist[k], k))
         grupos.append({"cnpj": g, "nome": xs[0]["grupo_nome"], "empreendimentos": len(xs),
                        "usinas": len({x["nucleo"] for x in xs}), "energia_mwmed": c.r(_soma(xs, "energia_mwmed"), 1),
                        "leiloes": len({x["leilao"] for x in xs}),
@@ -362,7 +363,7 @@ def _bloco_grupos(rs, limite=25):
                     "energia_mwmed": c.r(_soma(xs, "energia_mwmed"), 1)})
     demais = grupos[limite:]
     return {
-        "regra": ("Grupo que controla a usina hoje: proprietário com mais de 50% da usina no SIGA (vínculo pelo CNPJ publicado no "
+        "regra": ("Grupo que controla a usina no cadastro mais recente: proprietário com mais de 50% da usina no SIGA (vínculo pelo CNPJ publicado no "
                   "mesmo registro) e o topo da sua cadeia de controladores únicos declarada à ANEEL (Composição Societária), como no "
                   "módulo Empresas. Não é a vencedora na data do leilão: a usina pode ter mudado de dono, e a vencedora publicada pode "
                   "ser um cotista do consórcio."),
@@ -695,8 +696,8 @@ def construir(con, ctx):
         {"rotulo": "Empreendimentos contratados, com situação atual e grupo de controle (CSV)", "url": DOWNLOADS["empreendimentos"]},
         {"rotulo": "Resumo por leilão (CSV)", "url": DOWNLOADS["leiloes"]},
         {"rotulo": "Preço médio por fonte e ano, nominal e real (CSV)", "url": DOWNLOADS["preco"]},
-        {"rotulo": "Energia contratada por grupo que controla a usina hoje (CSV)", "url": DOWNLOADS["grupos"]},
-        {"rotulo": "Leilões de transmissão por ano em reais de hoje (CSV)", "url": DOWNLOADS["transmissao"]},
+        {"rotulo": "Energia contratada por grupo que controla a usina no cadastro mais recente (CSV)", "url": DOWNLOADS["grupos"]},
+        {"rotulo": "Leilões de transmissão por ano, corrigidos pelo IPCA (CSV)", "url": DOWNLOADS["transmissao"]},
     ]
     g["proveniencia"] = _proveniencias(con, g, ins)
     g["evidencias"] = _evidencias(g, rs, v, ins)
@@ -750,7 +751,7 @@ def _proveniencias(con, g, ins):
                         "A entrada em operação do SIGA é da usina inteira, não da parcela vendida no leilão."],
             download=DOWNLOADS["empreendimentos"]),
         "controle": c.proveniencia(
-            indicador="Grupo que controla hoje as usinas contratadas", natureza="CALCULADO", unidade="MWmédio e empreendimentos",
+            indicador="Grupo que controla as usinas contratadas no cadastro mais recente", natureza="CALCULADO", unidade="MWmédio e empreendimentos",
             fonte={"orgao": "ANEEL", "dataset": "SIGA (proprietários) e Composição Societária, como publicados pelo módulo Empresas",
                    "recurso": "empresas_ativos.csv, empresas_cadeia.json, empresas_grupos.csv",
                    "url_dataset": "https://dadosabertos.aneel.gov.br/dataset/composicao-societaria-polimero",
@@ -760,11 +761,11 @@ def _proveniencias(con, g, ins):
             publicacao_informada=False, revisoes=None,
             transformacoes=["proprietário com mais de 50% da usina no SIGA", "topo da cadeia de controladores únicos"],
             formula="grupo(usina) = topo da cadeia do proprietário com controle majoritário",
-            limitacoes=["O grupo de hoje não é a vencedora na data do leilão.",
+            limitacoes=["O grupo do cadastro mais recente não é a vencedora na data do leilão.",
                         "Usina sem proprietário com mais de 50% fica sem grupo; nenhuma participação minoritária é somada a um grupo."],
             download=DOWNLOADS["grupos"]),
         "transmissao": c.proveniencia(
-            indicador="Leilões de transmissão em reais de hoje", natureza="CALCULADO", unidade=f"R$ milhões de {c.mes_br(ref['ipca_ate'])} e %",
+            indicador="Leilões de transmissão corrigidos pelo IPCA", natureza="CALCULADO", unidade=f"R$ milhões de {c.mes_br(ref['ipca_ate'])} e %",
             fonte={"orgao": "ANEEL", "dataset": "Resultado de leilões de transmissão, como publicado pelo módulo Expansão",
                    "recurso": "expansao_leiloes_transmissao.csv", "url_dataset": URL_LEILOES,
                    "url_primaria": "/setor-eletrico/expansao/geracao-e-transmissao", "licenca": LICENCA_ANEEL},
@@ -816,7 +817,7 @@ def _evidencias(g, rs, v, ins):
     pct = 100 * op / t["energia_mwmed"] if t["energia_mwmed"] else None
     exp_sha = ins["siga"]["sha256"] if ins.get("siga") else None
     out["pct_operacao"] = ev.construir(
-        indicador="Energia contratada de usinas hoje em operação no SIGA", valor_exibido=f"{pct:.1f}%".replace(".", ",") if pct is not None else None,
+        indicador="Energia contratada de usinas em operação no SIGA mais recente", valor_exibido=f"{pct:.1f}%".replace(".", ",") if pct is not None else None,
         valor_calculo=pct, unidade="% da energia contratada", periodo=per,
         entidade="empreendimentos vencedores dos leilões de geração na base aberta da ANEEL",
         universo=f"{t['empreendimentos']} linhas", fonte=fonte,

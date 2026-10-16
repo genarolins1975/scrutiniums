@@ -58,7 +58,7 @@ const QUADRO_6_2_C: Record<string, string> = {
 const SECAO_5_1: [string, string[]][] = [
   ["Comece aqui", ["mapa", "visao-geral", "territorio"]],
   ["Operação do sistema", ["agua-e-clima", "geracao", "carga", "rede"]],
-  ["Preços e mercado", ["pld", "pld-modelos", "mercado"]],
+  ["Preços e mercado", ["pld", "pld-modelos", "mercado", "leiloes"]],
   ["Consumidor e território", ["conta-de-luz", "perdas", "qualidade", "inclusao-energetica"]],
   ["Empresas e futuro", ["empresas", "expansao", "transicao"]],
   ["Conhecimento e evidência", ["regulacao", "aprenda", "dados", "metodologia"]],
@@ -213,9 +213,9 @@ describe("cabeçalho renderizado no servidor", () => {
     }
   });
 
-  it("nas páginas do PLD a faixa mostra previsões e o mercado, já integrado (sem a marca de módulo em integração)", () => {
+  it("nas páginas do PLD a faixa mostra previsões, o mercado e os leilões, já integrados (sem a marca de módulo em integração)", () => {
     const f = faixa(html("pld"));
-    expect(ancoras(f).map(hrefDe)).toEqual(["/setor-eletrico/pld", "/setor-eletrico/pld/modelos", "/setor-eletrico/mercado"]);
+    expect(ancoras(f).map(hrefDe)).toEqual(["/setor-eletrico/pld", "/setor-eletrico/pld/modelos", "/setor-eletrico/mercado", "/setor-eletrico/leiloes"]);
     expect(f).not.toContain("(em integração)");
   });
 

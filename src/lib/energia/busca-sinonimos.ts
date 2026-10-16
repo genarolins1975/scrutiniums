@@ -66,6 +66,12 @@ export const SINONIMOS_BUSCA: readonly GrupoDeSinonimos[] = [
   { alvos: [`${S}/geracao`], termos: ["fontes de energia", "matriz elétrica", "matriz energética", "energia solar", "energia eólica", "energia hidrelétrica", "usinas"] },
   { alvos: [`${S}/geracao/termica#p022`], termos: ["usina térmica", "térmicas ligadas", "por que ligaram as térmicas"] },
   { alvos: [`${S}/geracao/curtailment`, `${S}/geracao/restricoes#p023`, `${S}/aprenda/constrained-off`], termos: ["curtailment", "geração cortada", "corte de energia solar", "corte de energia eólica"] },
+  // leilões
+  {
+    alvos: [`${S}/leiloes`, `${S}/leiloes#preco`],
+    termos: ["leilão de energia", "leilão de energia nova", "leilão A-5", "leilão A-6", "leilão de reserva", "preço do leilão", "deságio do leilão", "mercado regulado"],
+  },
+  { alvos: [`${S}/leiloes/transmissao`], termos: ["leilão de transmissão", "leilão de linhas de transmissão", "deságio da transmissão"] },
   // transição
   {
     alvos: [`${S}/transicao`, `${S}/transicao/mmgd#p063`, `${S}/aprenda/geracao-distribuida`],

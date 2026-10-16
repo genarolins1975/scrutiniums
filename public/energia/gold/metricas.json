@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "metricas.json",
- "gerado_em": "2026-10-16T21:30:57Z",
+ "gerado_em": "2026-10-16T21:50:19Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "4301078fd03d+alterado",
+ "versao_codigo": "7d0b308e7712+alterado",
  "disponivel": true,
  "metricas": [
   {
@@ -5316,8 +5316,8 @@
   },
   {
    "id": "leiloes_grupo_controle_atual",
-   "titulo": "Energia contratada por grupo que controla a usina hoje",
-   "pergunta": "Quais grupos controlam hoje as usinas que venderam energia nos leilões?",
+   "titulo": "Energia contratada por grupo que controla a usina no cadastro mais recente",
+   "pergunta": "Quais grupos controlam, no cadastro mais recente, as usinas que venderam energia nos leilões?",
    "definicao": "Soma da energia vendida das linhas cuja usina tem proprietário com mais de 50% no SIGA, atribuída ao topo da cadeia de controle declarada à ANEEL desse proprietário.",
    "unidade": "MWmédio",
    "grao_geografico": "Brasil",
@@ -5325,7 +5325,7 @@
    "fontes": [
     "aneel_leiloes_geracao",
     "aneel_siga",
-    "aneel_composicao_societaria"
+    "aneel_polimero"
    ],
    "formula": "energia(grupo) = Σ energia das linhas cuja usina tem controle majoritário dentro do grupo",
    "regra_agregacao": "Soma; usina sem controlador majoritário fica sem grupo.",
@@ -5335,7 +5335,7 @@
    "dimensoes": [
     "grupo de controle"
    ],
-   "regras_comparabilidade": "O grupo é o de hoje, não o vencedor na data do leilão.",
+   "regras_comparabilidade": "O grupo é o do cadastro mais recente, não o vencedor na data do leilão.",
    "regra_cobertura": "Usinas no cadastro aberto do SIGA com proprietário vinculado por CNPJ.",
    "politica_ausencia": "Linhas sem vínculo provado saem à parte, por motivo.",
    "validacoes": [
@@ -5396,7 +5396,7 @@
   {
    "id": "leiloes_situacao_atual",
    "titulo": "Situação atual dos empreendimentos contratados",
-   "pergunta": "O que foi contratado em leilão está operando hoje?",
+   "pergunta": "O que foi contratado em leilão está em operação no cadastro mais recente?",
    "definicao": "Fase do SIGA pelo núcleo do CEG (operação, construção, construção não iniciada); fora do SIGA, outorga encerrada quando há ato de revogação ou extinção desde 2015; senão, sem situação identificada.",
    "unidade": "MWmédio e empreendimentos",
    "grao_geografico": "Brasil",
@@ -5436,8 +5436,8 @@
   },
   {
    "id": "leiloes_transmissao_rap_real",
-   "titulo": "RAP e deságio dos leilões de transmissão em reais de hoje",
-   "pergunta": "Quanto os leilões de transmissão contrataram de receita anual, em reais de hoje, e com que deságio?",
+   "titulo": "RAP e deságio dos leilões de transmissão corrigidos pelo IPCA",
+   "pergunta": "Quanto os leilões de transmissão contrataram de receita anual, corrigida pelo IPCA, e com que deságio?",
    "definicao": "RAP vencedora dos lotes contratados corrigida pelo IPCA do mês do leilão ao último mês publicado; deságio por lote = 100 × (1 − RAP vencedora ÷ RAP do edital).",
    "unidade": "R$ milhões e %",
    "grao_geografico": "Brasil",

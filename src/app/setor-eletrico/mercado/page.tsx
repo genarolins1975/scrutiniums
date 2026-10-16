@@ -1,5 +1,6 @@
 import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -225,6 +226,11 @@ export default function MercadoPage() {
           Parte do consumo compra energia da distribuidora a tarifa regulada (<Termo slug="acr">ACR</Termo>); a outra parte contrata no mercado livre (<Termo slug="acl">ACL</Termo>). As diferenças entre o contratado e o
           medido são liquidadas na CCEE ao <Termo slug="pld">PLD</Termo>, as hidrelétricas dividem o risco hidrológico no <Termo slug="mre">MRE</Termo> e os custos de operar o sistema entram como encargos (
           <Termo slug="ess">ESS</Termo>). Esta página mostra quanto do consumo está no mercado livre; as outras três tratam dos agentes e da migração, do ajuste das hidrelétricas (MRE e GSF) e dos encargos.
+          O que as distribuidoras compraram nos leilões do ACR, a que preço e de quem está em{" "}
+          <Link href="/setor-eletrico/leiloes" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+            Leilões
+          </Link>
+          .
         </CabecalhoModulo>
 
         <AtalhoLeitura href="/setor-eletrico/mercado/comercializacao" titulo="Como a operação física se conecta aos contratos?" texto="Entenda a comercialização e experimente o efeito dos horários na liquidação." />
