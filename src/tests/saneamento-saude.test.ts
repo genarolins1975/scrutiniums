@@ -85,6 +85,17 @@ describe("Saúde e ambiente: medidas", () => {
     }
   });
 
+  it("o SIH é descrito como contagem de internações, nunca como contagem de pessoas internadas", () => {
+    for (const med of MEDIDAS_SAUDE.filter((m) => m.id.includes("-sih-"))) {
+      expect(med.pergunta, med.id).toMatch(/^Quantas internações/);
+      expect(`${med.pergunta} ${med.permite}`, med.id).not.toMatch(/moradores (do município )?(foram|que foram) internados/);
+      expect(med.naoPermite, med.id).toMatch(/Contar pessoas internadas: a fonte conta internações/);
+    }
+    const h = texto(renderToStaticMarkup(createElement(PaginaSaude)));
+    expect(h).toContain("A taxa do SIH é de internações, não de pessoas");
+    expect(readFileSync(join(raiz, "docs", "saneamento", "METODOLOGIA.md"), "utf-8")).toContain("é contagem de internações, não de pessoas");
+  });
+
   it("a taxa é casos ÷ (três anos × moradores do Censo 2022) × 100 mil; zero continua zero; sem moradores fica sem valor", () => {
     const med = medida("sd-intestinais-sih-int");
     let conferidos = 0;

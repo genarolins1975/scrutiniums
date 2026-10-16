@@ -205,7 +205,7 @@ export default function Pagina() {
             complemento={URL_SAUDE_MUNICIPIOS}
           />
           <Ressalva
-            permite="Ver onde moradores foram internados pelo SUS ou morreram com cada doença, em taxa por 100 mil habitantes ao ano, e comparar com a UF e o Brasil."
+            permite="Ver onde há mais internações pelo SUS de moradores e onde mais moradores morreram com cada doença, em taxa por 100 mil habitantes ao ano, e comparar com a UF e o Brasil."
             naoPermite="Ler a taxa de um município pequeno como tendência: poucos casos a mudam muito, e o ranking só inclui municípios de porte maior. Zero significa nenhum caso registrado na janela, não falta de dado."
           />
         </Secao>
@@ -297,7 +297,8 @@ export default function Pagina() {
           </ul>
           <Nota titulo="Zero, ausência e denominador">
             Zero é nenhum caso registrado na janela. Município sem moradores no Censo 2022 fica sem taxa. O denominador é fixo (moradores do Censo 2022
-            multiplicados por três anos), não a população estimada de cada ano.
+            multiplicados por três anos), não a população estimada de cada ano. A taxa do SIH é de internações, não de pessoas: quem foi internado mais
+            de uma vez na janela entra mais de uma vez. Nos óbitos, cada declaração conta uma vez.
           </Nota>
           <Indisponivel titulo="O que este capítulo ainda não mostra">
             <p>

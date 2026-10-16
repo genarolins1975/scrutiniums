@@ -398,7 +398,7 @@ export const MEDIDAS_SAUDE: Medida[] = ESPEC_SAUDE.map((e) => {
     id: `sd-${e.grupo}-${e.sistema}-${e.medida}`,
     titulo: `${e.rotuloGrupo}: ${evento} (${internacao ? "SIH" : "SIM"})`,
     pergunta: internacao
-      ? `Quantos moradores do município foram internados pelo SUS por ${e.rotuloGrupo.toLowerCase()} (CID-10 ${e.cid}), por 100 mil habitantes ao ano?`
+      ? `Quantas internações pelo SUS de moradores do município por ${e.rotuloGrupo.toLowerCase()} (CID-10 ${e.cid}) houve, por 100 mil habitantes ao ano?`
       : `Quantos moradores do município morreram de ${e.rotuloGrupo.toLowerCase()} (CID-10 ${e.cid}) como causa básica, por 100 mil habitantes ao ano?`,
     fonte: "sih_sim" as const,
     periodo: `${ANOS_SAUDE[0]} a ${ANOS_SAUDE[ANOS_SAUDE.length - 1]}`,
@@ -416,10 +416,10 @@ export const MEDIDAS_SAUDE: Medida[] = ESPEC_SAUDE.map((e) => {
     denominador: exposicao,
     fator: POR_100_MIL,
     permite: internacao
-      ? "Ver onde moradores do município foram internados pelo SUS com a doença, em taxa por 100 mil habitantes ao ano, e comparar com a UF e o Brasil na mesma janela."
+      ? "Ver onde há mais internações pelo SUS de moradores do município com a doença, em taxa de internações por 100 mil habitantes ao ano, e comparar com a UF e o Brasil na mesma janela."
       : "Ver onde moradores do município morreram com a doença como causa básica, em taxa por 100 mil habitantes ao ano, com dados finais do SIM.",
     naoPermite: internacao
-      ? "Atribuir a internação ao saneamento: a fonte traz o diagnóstico, não a causa do contágio. Só entram internações pagas pelo SUS, pelo município de residência informado na AIH, e poucos casos mudam muito a taxa de um município pequeno."
+      ? "Contar pessoas internadas: a fonte conta internações, e quem foi internado mais de uma vez na janela entra mais de uma vez. Atribuir a internação ao saneamento: a fonte traz o diagnóstico, não a causa do contágio. Só entram internações pagas pelo SUS, pelo município de residência informado na AIH, e poucos casos mudam muito a taxa de um município pequeno."
       : "Atribuir o óbito ao saneamento: a fonte traz a causa básica da declaração de óbito, não a origem do contágio. Poucos óbitos mudam muito a taxa de um município pequeno, e as doenças raras têm zero na maior parte dos municípios.",
     ausencia: "Município sem moradores no Censo 2022 (instalado depois) ou sem linha na fonte. Zero é zero: nenhum caso registrado na janela.",
     cortesPct: e.cortesPct,
