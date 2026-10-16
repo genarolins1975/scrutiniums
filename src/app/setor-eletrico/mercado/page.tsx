@@ -5,6 +5,7 @@ import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { GraficoLivreUf } from "@/components/energia/GraficoLivreUf";
 import { MercadoTabelasSobDemanda } from "@/components/energia/MercadoTabelasSobDemanda";
 import {
   MercadoAusencias,
@@ -59,6 +60,7 @@ import {
   textoVariacaoVerbo,
   vereditoLivreRegulado,
 } from "@/lib/energia/mercado";
+import { barrasUfVolume, textoContrasteUf, textoUfsSemJanela } from "@/lib/energia/mercado-uf";
 import type { MercadoGold } from "@/lib/energia/tipos-mercado";
 import { datasLegiveis } from "@/lib/energia/visao";
 
@@ -86,6 +88,9 @@ export default function MercadoPage() {
   const versao = `EPE até ${mesAno(lr.epe_ultimo_mes)}, CCEE até ${g.referencias.ccee_ultimo_mes_consumo ? mesAno(g.referencias.ccee_ultimo_mes_consumo) : "sem mês"}, publicado em ${dataBR(g.gerado_em)}`;
   const anoClasse = anoClasseCompleto(g);
   const uf = barrasUf(g);
+  const ufVolume = barrasUfVolume(g);
+  const contrasteUf = textoContrasteUf(g);
+  const ufSemJanela = textoUfsSemJanela(g);
   const preliminares = lr.epe_anos_preliminares;
   const ultimoCcee = lr.ccee_mensal.at(-1);
   const consol = lr.reconciliacao.mme_consolidacao_anual.at(-1);
@@ -312,20 +317,20 @@ export default function MercadoPage() {
                 <SecaoDoPainel
                   id="uf-classe"
                   titulo="Onde o mercado livre pesa mais?"
-                  lead="Participação do mercado livre no consumo na rede (EPE) por estado, nos últimos 12 meses, e por classe de consumo, no último ano completo."
+                  lead="Participação do mercado livre no consumo na rede (EPE) por estado, nos últimos 12 meses, com a opção de ver o volume de energia, e por classe de consumo, no último ano completo."
                 >
-                  <GraficoBarras
-                    titulo={`Participação do livre por UF, 12 meses até ${lr.epe_ultimo_mes_uf ? mesAno(lr.epe_ultimo_mes_uf) : "o último mês publicado"}`}
-                    dados={uf}
-                    chaveCategoria="uf"
-                    series={[{ id: "livre", rotulo: "Livre no consumo na rede", cor: "var(--cor-energia)" }]}
-                    unidade="%"
-                    casas={1}
-                    orientacao="horizontal"
-                    alturaCategoria={28}
-                    alturaMaxima={760}
-                    referencias={kEpe ? [{ valor: kEpe.valor_pct, rotulo: "Brasil, 12 meses" }] : []}
+                  <GraficoLivreUf
+                    janela={lr.epe_ultimo_mes_uf ? mesAno(lr.epe_ultimo_mes_uf) : "o último mês publicado"}
+                    participacao={uf}
+                    volume={ufVolume}
+                    referencias={kEpe ? [{ valor: kEpe.valor_pct, rotulo: `Brasil, 12 meses até ${mesAno(kEpe.periodo.fim)}` }] : []}
                   />
+                  {(contrasteUf || ufSemJanela) && (
+                    <div className="max-w-prose2 space-y-1 text-xs leading-relaxed text-carvao-muted" data-nota-uf="">
+                      {contrasteUf && <p>{contrasteUf}</p>}
+                      {ufSemJanela && <p>{ufSemJanela}</p>}
+                    </div>
+                  )}
                   {anoClasse && (
                     <GraficoBarras
                       titulo={`Participação do livre por classe de consumo, ${anoClasse}`}
