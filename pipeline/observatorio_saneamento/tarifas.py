@@ -199,7 +199,10 @@ sabesp = {
 SN = [5, 10, 15, 20, 30]
 SANEPAR_FONTES = [
     {"rotulo": "Diário Oficial do Paraná nº 12127, de 16/04/2026 (Resolução AGEPAR 23/2026)", "url": "https://www.legislacao.pr.gov.br/legislacao/pesquisarAto.do?action=downloadDioe&idEdicao=16749&numero=12127", "sha256": "94f6eb75662dfe8df84a6a2ee7bd90361f61abfddc0bc867dee209a7d8c3151c", "localizador": "p.132-134, Anexo Único"},
-    {"rotulo": "Resolução AGEPAR 36/2025 (tarifa social)", "url": "https://www.legislacao.pr.gov.br/legislacao/listarAtosAno.do?action=exibir&codAto=368129", "sha256": "13e26b3c9bbcdeebbc033ff3c156f72398271fb2799d5ac7bc3631da2aefac9e", "localizador": "art. 1º, § 1º"},
+    {"rotulo": "Resolução AGEPAR 36/2025 (tarifa social)", "url": "https://www.legislacao.pr.gov.br/legislacao/listarAtosAno.do?action=exibir&codAto=368129", "sha256": "13e26b3c9bbcdeebbc033ff3c156f72398271fb2799d5ac7bc3631da2aefac9e", "localizador": "art. 1º, § 1º; art. 8º, parágrafo único; art. 10; art. 11, parágrafo único"},
+    {"rotulo": "Sanepar, tabela de tarifas publicada (acessada em 16/10/2026)", "url": "https://www.sanepar.com.br/tarifas", "sha256": "6d69e9e513fb0efd682e0719843ea357e02f715fef08cb3b8d1dc8dedff43f23", "localizador": "tabela Água Solidária (R$/m³), idêntica ao Anexo Único da Resolução 23/2026; Diferenciadas > Água Solidária: critérios de enquadramento (Decreto Estadual 9.606/2021)"},
+    {"rotulo": "Sanepar, comunicado de 12/12/2025 (Água Solidária e Tarifa Social)", "url": "https://www.sanepar.com.br/noticias/com-agua-solidaria-e-nova-tarifa-social-sanepar-vai-beneficiar-608-mil-familias", "sha256": "4d4c73a197e32f9e20e6db0e61b2c358444ead4e463df5f521a20644772dd0ea", "localizador": "seção Água Solidária: desconto de cerca de 80% com consumo de até 10 m³ por mês"},
+    {"rotulo": "Sanepar, página Tarifa Social de Água e Esgoto (acessada em 16/10/2026)", "url": "https://www.sanepar.com.br/tarifa-social-de-agua-e-esgoto", "sha256": "558192b74c102adaa2df4310a5c9b6149e1bf5ca313095b79763ce935dd7d662", "localizador": "Apenas matrículas residenciais; um benefício social ativo por CPF"},
 ]
 
 
@@ -228,14 +231,26 @@ def sanepar(pct, sufixo, area):
                 "agua": tab(minimo=(5, 27.54), faixas=progressivo([5.51, 5.51, 9.54, 9.62, 16.28], SN)),
                 "esgoto": {"percentual": pct},
             },
+            # Programa estadual mantido ao lado da tarifa social federal: tabela própria, esgoto a 50% da água
+            "agua_solidaria": {
+                "rotulo": "Água Solidária (programa estadual)",
+                "agua": tab(minimo=(5, 14.74), faixas=progressivo([0.45, 1.70], [5, 10])),
+                "esgoto": {"percentual": 50},
+            },
         },
         "observacoes": [
             f"Esgoto a {pct}% da fatura de água (art. 3º); os valores de esgoto da tabela são referenciais e podem diferir na segunda casa decimal (Nota 01).",
             "Pontal do Paraná, Matinhos e Guaratuba têm ajuste sazonal de 20% acima de 5 m³ (art. 6º); ficam fora do simulador.",
             "Na tarifa social, o valor da primeira faixa tem 50% de desconto e o preço por m³ correspondente (R$ 5,51) se estende até 15 m³ (Resolução AGEPAR 36/2025); entre 6 e 10 m³ ele é maior que o da categoria residencial (R$ 1,70). O Observatório registra a regra sem avaliar sua conformidade com a Lei 14.898/2024.",
+            "Água Solidária: programa estadual da Sanepar, mantido ao lado da tarifa social federal (comunicado de 12/12/2025). Tabela própria no Anexo Único da Resolução AGEPAR 23/2026; esgoto a 50% da tarifa de água (art. 3º, parágrafo único), não a 85% ou 80%; fora do ajuste sazonal litorâneo (art. 6º). Quem está no Água Solidária não recebe a tarifa social federal, e cada CPF tem um benefício social ativo (página da Sanepar).",
+            "Água Solidária, critérios de enquadramento publicados pela Sanepar (Decreto Estadual 9.606/2021): imóvel residencial com até 70 m² de área construída; consumo de até 10 m³ por mês e, para famílias com mais de 4 pessoas e consumo acima de 10 m³, até 2,5 m³ por residente; renda de até meio salário mínimo por pessoa ou de até 2 salários mínimos para imóveis com até 4 ocupantes; um cadastro por CPF; validade de 24 meses. O texto do decreto não foi lido. O Observatório registra a tabela do ato e os critérios da Sanepar e não verifica o enquadramento: a conta mostrada vale para quem se enquadra.",
             "Unidade de cobrança (economia ou ligação) e regra de arredondamento não verificadas.",
         ],
-        "exemplos": {"residencial": {"10": 117.64 if pct == 85 else 114.46, "20": 293.67 if pct == 85 else 285.73}},
+        "acessado": "2026-10-16",
+        "exemplos": {
+            "residencial": {"10": 117.64 if pct == 85 else 114.46, "20": 293.67 if pct == 85 else 285.73},
+            "agua_solidaria": {"10": 25.49, "20": 50.99},
+        },
     }
 
 
@@ -321,8 +336,8 @@ def main():
         regs = json.load(fh)
     arsae = {m for r in regs if (r.get("sigla") or "").startswith("ARSAE") for m in r["municipios_agua"]}
 
-    sp_curitiba = sanepar(85, "curitiba", "Curitiba (esgoto a 85% da fatura de água)")
-    sp_demais = sanepar(80, "demais", "Demais localidades operadas pela SANEPAR (esgoto a 80% da fatura de água), exceto Pontal do Paraná, Matinhos e Guaratuba")
+    sp_curitiba = sanepar(85, "curitiba", "Curitiba (esgoto a 85% da fatura de água; 50% no Água Solidária)")
+    sp_demais = sanepar(80, "demais", "Demais localidades operadas pela SANEPAR (esgoto a 80% da fatura de água; 50% no Água Solidária), exceto Pontal do Paraná, Matinhos e Guaratuba")
     lista = [compesa, copasa, sabesp, sp_curitiba, sp_demais, caesb]
 
     def mun(pid):
@@ -342,7 +357,7 @@ def main():
 
     erros = []
     for t in lista:
-        t["acessado"] = ACESSO
+        t.setdefault("acessado", ACESSO)
         for cat, ex in t.get("exemplos", {}).items():
             for c, esperado in ex.items():
                 obtido = conta(t["categorias"][cat], int(c))

@@ -1,9 +1,10 @@
-"""Vigília do arcabouço operacional — dois cheques, ambos viram issue quando acusam.
+"""Vigília do arcabouço operacional — quatro cheques, todos viram issue quando acusam.
 
 Uso:
     python3 scripts/vigilancia.py frescor   # o gold publicado envelheceu?
     python3 scripts/vigilancia.py fontes    # saiu documento novo nas fontes manuais?
     python3 scripts/vigilancia.py pane      # fonte essencial parada com o gold íntegro?
+    python3 scripts/vigilancia.py saneamento  # as fontes do saneamento mudaram desde a coleta?
 
 Contrato com o workflow: saída 0 = nada a fazer (silêncio); saída 3 = o texto
 impresso em stdout é o corpo da issue a abrir. Qualquer outra saída é erro do
@@ -22,6 +23,11 @@ da maior atualização manual do painel de bets. O snapshot versionado em
 pipeline/watch/ é a memória do que já foi visto: href novo acusa; incorporado o
 documento, o curador atualiza o snapshot no mesmo commit da curadoria, e a
 vigília volta ao silêncio.
+
+**saneamento** compara SINISA, SISAGUA e CadÚnico com o que public/saneamento/gold/meta.json
+registra (scripts/vigilancia_saneamento.py descreve o que é e o que não é vigiado). É semanal:
+o saneamento não tem coleta diária, e sem este cheque uma retificação ou edição nova passa
+em silêncio.
 """
 import json
 import re
@@ -190,6 +196,16 @@ def fontes():
     return ACUSA
 
 
+def saneamento():
+    sys.path.insert(0, str(RAIZ / "scripts"))
+    import vigilancia_saneamento as v
+    linhas = v.verificar()
+    if not linhas:
+        return 0
+    print(v.corpo(linhas))
+    return ACUSA
+
+
 def main():
     modo = sys.argv[1] if len(sys.argv) > 1 else ""
     if modo == "frescor":
@@ -198,6 +214,13 @@ def main():
         return fontes()
     if modo == "pane":
         return pane()
+    if modo == "saneamento":
+        return saneamento()
+    if modo == "semear-saneamento":
+        sys.path.insert(0, str(RAIZ / "scripts"))
+        import vigilancia_saneamento as v
+        v.semear()
+        return 0
     if modo == "semear":
         # uso local: grava o snapshot inicial com o estado corrente da página
         html = _baixa(PAGINA_SPA).decode("utf-8", errors="replace")
@@ -206,7 +229,7 @@ def main():
         SNAPSHOT_SPA.write_text("\n".join(hrefs) + "\n")
         print(f"snapshot com {len(hrefs)} hrefs gravado em {SNAPSHOT_SPA}")
         return 0
-    print("uso: vigilancia.py [frescor|fontes|pane|semear]", file=sys.stderr)
+    print("uso: vigilancia.py [frescor|fontes|pane|saneamento|semear|semear-saneamento]", file=sys.stderr)
     return 2
 
 

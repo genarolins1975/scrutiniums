@@ -185,8 +185,9 @@ describe("2.1 — fonte em pane: vigília e faixa na aba", () => {
     expect(vig).toContain("COLETORES_ESSENCIAIS");
     expect(vig).toContain("PRAZO_VINTAGE_DIAS");
     const wf = readFileSync(join(raiz, ".github/workflows/vigilancia.yml"), "utf-8");
-    expect(wf).toContain("cheque: [frescor, fontes, pane]");
+    expect(wf).toContain("cheque: [frescor, fontes, pane, saneamento]");
     expect(wf).toMatch(/pane\)\s+TITULO=/);
+    expect(wf).toMatch(/saneamento\)\s+TITULO=/);
   });
 });
 
