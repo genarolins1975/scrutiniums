@@ -28,7 +28,7 @@ import {
   logoDe,
   matrizAtuacao,
   participacoesCruzadas,
-  semPontoFinal,
+  comPonto,
   textoCruzada,
   nomeCurto,
   porEspecieControle,
@@ -292,7 +292,7 @@ export default function ListadasPage() {
                       </p>
                       <p className="text-sm leading-relaxed text-carvao-muted">
                         {ctrl.length || c.controle.fre?.pessoas_fisicas?.controladores
-                          ? `Controle declarado: ${semPontoFinal([...ctrl.map((a) => a.nome), ...(c.controle.fre?.pessoas_fisicas?.controladores ? ["pessoas físicas"] : [])].join(", "))}.`
+                          ? comPonto(`Controle declarado: ${[...ctrl.map((a) => a.nome), ...(c.controle.fre?.pessoas_fisicas?.controladores ? ["pessoas físicas"] : [])].join(", ")}`)
                           : "Sem acionista controlador declarado no Formulário de Referência."}
                       </p>
                       <p className="text-xs text-mineral">

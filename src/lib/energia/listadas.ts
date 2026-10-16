@@ -126,7 +126,7 @@ export function textoControle(c: CompanhiaListada): string {
   if (!fre) return "Sem Formulário de Referência lido para a companhia.";
   const ctrl = controladoresFre(c);
   const pf = fre.pessoas_fisicas;
-  const partes = ctrl.map((a) => `${semPontoFinal(a.nome)} (${pct(a.pct_on, 1)} das ordinárias)`);
+  const partes = ctrl.map((a) => `${a.nome} (${pct(a.pct_on, 1)} das ordinárias)`);
   if (pf && pf.controladores > 0) partes.push(`${pf.controladores} ${pf.controladores === 1 ? "pessoa física" : "pessoas físicas"} (${pct(pf.pct_on, 1)} das ordinárias, somadas)`);
   if (!partes.length) return "Nenhum acionista marcado como controlador no Formulário de Referência.";
   const acordo = ctrl.some((a) => a.acordo) ? " Há acordo de acionistas entre os controladores." : "";
@@ -179,9 +179,9 @@ export function participacoesCruzadas(g: ListadasGold): ParticipacaoCruzada[] {
   return out;
 }
 
-/** Sem o ponto final do nome (S.A.), para a frase não terminar em dois pontos. */
-export function semPontoFinal(t: string): string {
-  return t.replace(/\.+$/, "");
+/** Fecha a frase com ponto sem duplicar o ponto de abreviação do nome ("S.A." não vira "S.A.."). */
+export function comPonto(t: string): string {
+  return /\.$/.test(t) ? t : `${t}.`;
 }
 
 /**
@@ -195,7 +195,7 @@ export function textoCruzada(x: ParticipacaoCruzada, nome: (c: CompanhiaListada)
   if (x.em.controle.motivo_parada === "compartilhado" && x.em.controle.topo_cnpj === x.em.cnpj)
     return `${base} O controle da ${nome(x.em)} é compartilhado, sem controlador único na cadeia declarada à ANEEL: os ativos dela não entram nas medidas da ${nome(x.de)} e aparecem só na ficha da ${nome(x.em)}.`;
   const outro = controladoresFre(x.em).filter((a) => (a.cnpj ?? "").slice(0, 8) !== (x.de.cnpj ?? "").slice(0, 8));
-  return `${base} A ${nome(x.em)} tem outro controlador${outro.length ? ` (${semPontoFinal(outro.map((a) => a.nome).join(", "))})` : ""}: os ativos dela não entram nas medidas da ${nome(x.de)}.`;
+  return `${base} A ${nome(x.em)} tem outro controlador${outro.length ? ` (${outro.map((a) => a.nome).join(", ")})` : ""}: os ativos dela não entram nas medidas da ${nome(x.de)}.`;
 }
 
 /* ================================================================ bolsa */
