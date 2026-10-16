@@ -94,6 +94,17 @@ export default function Pagina() {
 
   const cenarios = FAMILIAS.map((n) => ({ n, renda: n * LIMITE_PER_CAPITA }));
 
+  // Água Solidária (programa estadual da SANEPAR): conta de água e esgoto de Curitiba no menor consumo, ao lado da tarifa social federal e da residencial.
+  const sanepar = TARIFAS.find((t) => t.id === "sanepar-2026-curitiba");
+  const aguaSolidaria = sanepar?.categorias.agua_solidaria && sanepar.categorias.social && sanepar.categorias.residencial
+    ? {
+        consumo: CONSUMOS[0],
+        solidaria: calcularConta(sanepar.categorias.agua_solidaria, CONSUMOS[0]).total,
+        social: calcularConta(sanepar.categorias.social, CONSUMOS[0]).total,
+        residencial: calcularConta(sanepar.categorias.residencial, CONSUMOS[0]).total,
+      }
+    : null;
+
   // Alcance: economias com tarifa social (SINISA 2024) sobre famílias elegíveis do CadÚnico (dez/2024).
   const m = meta();
   const ags = agregados();
@@ -278,6 +289,18 @@ export default function Pagina() {
             permite="Comparar o desconto efetivo na conta, no mesmo consumo, entre categorias e prestadores da amostra."
             naoPermite="Verificar a conformidade com a lei: a regra legal incide sobre a primeira faixa, e cada estrutura tarifária define faixas diferentes; categorias de vulnerabilidade podem ter critérios distintos da tarifa social da lei."
           />
+          {aguaSolidaria && (
+            <Nota titulo="Água Solidária, o programa estadual da SANEPAR">
+              O Paraná manteve o Água Solidária ao lado da tarifa social federal. A Resolução AGEPAR 23/2026 traz tabela própria, com esgoto a 50% da
+              tarifa de água. Em {aguaSolidaria.consumo} m³ em Curitiba, a conta de água e esgoto é {reais(aguaSolidaria.solidaria)} no Água Solidária,{" "}
+              {reais(aguaSolidaria.social)} na tarifa social federal e {reais(aguaSolidaria.residencial)} na residencial. Quem está no Água Solidária
+              não recebe a tarifa social federal, e cada CPF tem um benefício social ativo. O enquadramento segue critérios do programa que as fontes da
+              SANEPAR descrevem de forma diferente (consumo de até 10 m³ por mês, no comunicado de 12/12/2025; imóvel de até 70 m², consumo de até 2,5 m³
+              por residente e renda de até meio salário mínimo por pessoa, no de 14/03/2022). O decreto estadual do programa não foi lido e o
+              enquadramento não foi verificado: a conta vale para quem se enquadra. O cenário de peso na renda, mais abaixo, usa a mesma conta de{" "}
+              {aguaSolidaria.consumo} m³ para o Água Solidária e não checa se uma família desse tamanho caberia no limite de consumo do programa.
+            </Nota>
+          )}
           <Fonte>Tabelas tarifárias verificadas nos atos dos reguladores; mesma regra de cálculo do simulador (capítulo 5.1).</Fonte>
         </Secao>
 

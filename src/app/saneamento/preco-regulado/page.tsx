@@ -41,7 +41,7 @@ const REGULADORES = [
     prestador: "SANEPAR",
     modelo: "Discricionário: revisão periódica por fluxo de caixa descontado (preço-teto) e reajustes anuais",
     estrutura: "Valor da primeira faixa até 5 m³; esgoto a 85% (Curitiba) ou 80% da fatura de água",
-    social: "50% sobre a primeira faixa e preço por m³ estendido até 15 m³ (Resolução 36/2025)",
+    social: "50% sobre a primeira faixa e preço por m³ estendido até 15 m³ (Resolução 36/2025); programa estadual Água Solidária mantido, com tabela própria e esgoto a 50% da água (Resolução 23/2026)",
     documentos: "Resoluções no portal oficial; nota técnica acessada em cópia assinada publicada pela Sanepar",
   },
   {
