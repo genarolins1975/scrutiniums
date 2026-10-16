@@ -66,6 +66,12 @@ export const SINONIMOS_BUSCA: readonly GrupoDeSinonimos[] = [
   { alvos: [`${S}/geracao`], termos: ["fontes de energia", "matriz elétrica", "matriz energética", "energia solar", "energia eólica", "energia hidrelétrica", "usinas"] },
   { alvos: [`${S}/geracao/termica#p022`], termos: ["usina térmica", "térmicas ligadas", "por que ligaram as térmicas"] },
   { alvos: [`${S}/geracao/curtailment`, `${S}/geracao/restricoes#p023`, `${S}/aprenda/constrained-off`], termos: ["curtailment", "geração cortada", "corte de energia solar", "corte de energia eólica"] },
+  // leilões
+  {
+    alvos: [`${S}/leiloes`, `${S}/leiloes#preco`],
+    termos: ["leilão de energia", "leilão de energia nova", "leilão A-5", "leilão A-6", "leilão de reserva", "preço do leilão", "deságio do leilão", "mercado regulado"],
+  },
+  { alvos: [`${S}/leiloes/transmissao`], termos: ["leilão de transmissão", "leilão de linhas de transmissão", "deságio da transmissão"] },
   // transição
   {
     alvos: [`${S}/transicao`, `${S}/transicao/mmgd#p063`, `${S}/aprenda/geracao-distribuida`],
@@ -84,6 +90,10 @@ export const SINONIMOS_BUSCA: readonly GrupoDeSinonimos[] = [
   { alvos: [`${S}/empresas/controle#p039`], termos: ["quem controla as empresas", "dono das distribuidoras"] },
   { alvos: [`${S}/empresas/distribuidoras#p037`], termos: ["minha distribuidora", "empresa que fornece a minha luz", "fornecedora de luz"] },
   { alvos: [`${S}/empresas/financas#p038`], termos: ["lucro das empresas", "balanço das empresas", "resultado financeiro"] },
+  {
+    alvos: [`${S}/empresas/listadas`],
+    termos: ["ações de energia", "empresas listadas", "empresas na bolsa", "bolsa de valores", "índice de energia elétrica", "IEE", "dividendos das elétricas", "retorno das ações", "acionista controlador"],
+  },
   // mercado e regulação
   { alvos: [`${S}/mercado`, `${S}/mercado#livre-regulado`, `${S}/mercado/agentes#agentes`], termos: ["migrar para o mercado livre", "mercado livre de energia", "escolher o fornecedor de energia"] },
   { alvos: [`${S}/regulacao/consultas-e-agenda#p046`], termos: ["audiência pública", "consulta da ANEEL"] },

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { ExpansaoMapaRede } from "@/components/energia/ExpansaoMapas";
@@ -193,7 +194,12 @@ export default function GeracaoTransmissaoPage() {
             </FaixaMetricas>
           }
         >
-          A geração vem do RALIE, em MW. A rede vem do SIGET (obras, em km de circuito e MVA), dos leilões de transmissão (km e R$ nominais) e da rede da EPE (km de traçado).
+          A geração vem do RALIE, em MW. A rede vem do SIGET (obras, em km de circuito e MVA), dos leilões de transmissão (km e R$ nominais) e da rede da EPE (km de traçado). A RAP
+          dos leilões corrigida pelo IPCA e o deságio de cada lote estão em{" "}
+          <Link href="/setor-eletrico/leiloes/transmissao" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+            Leilões, transmissão
+          </Link>
+          .
         </CabecalhoModulo>
         <ModoProfundidade>
           <Bloco id="geracao-e-transmissao">

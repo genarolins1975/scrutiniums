@@ -1,0 +1,1780 @@
+{
+ "gerado_em": "2026-10-16T22:05:08Z",
+ "evidencias": {
+  "EQTL3": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: EQUATORIAL S.A.",
+    "valor_exibido": "1.799,5 MW",
+    "valor_calculo": 1799.5,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "EQUATORIAL S.A. (CNPJ 03220438000173) e empresas sob seu controle",
+    "universo": "13161 usinas em operação no SIGA cujo dono majoritário está entre as 82 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 03220438000173 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 1.799,5 MW"
+     },
+     {
+      "nome": "Mesma potência do grupo no módulo Empresas",
+      "resultado": "aprovado",
+      "detalhe": "companhia no topo da cadeia: 1.799,524 MW no grupo do módulo Empresas, diferença -0,000 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: EQUATORIAL S.A.: 1.799,5 MW, EQUATORIAL S.A. (CNPJ 03220438000173) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: EQTL3",
+    "valor_exibido": "40,6%",
+    "valor_calculo": 40.6,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "EQTL3 (EQUATORIAL S.A.)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código EQTL3 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1692 pregões de 2020-01-02 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: EQTL3: 40,6%, EQTL3 (EQUATORIAL S.A.), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  },
+  "ENEV3": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: ENEVA S.A",
+    "valor_exibido": "6.141,9 MW",
+    "valor_calculo": 6141.9,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "ENEVA S.A (CNPJ 04423567000121) e empresas sob seu controle",
+    "universo": "37 usinas em operação no SIGA cujo dono majoritário está entre as 21 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 04423567000121 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 6.141,9 MW"
+     },
+     {
+      "nome": "Mesma potência do grupo no módulo Empresas",
+      "resultado": "aprovado",
+      "detalhe": "companhia no topo da cadeia: 6.141,921 MW no grupo do módulo Empresas, diferença 0,000 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: ENEVA S.A: 6.141,9 MW, ENEVA S.A (CNPJ 04423567000121) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: ENEV3",
+    "valor_exibido": "90,2%",
+    "valor_calculo": 90.19,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "ENEV3 (ENEVA S.A)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código ENEV3 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1692 pregões de 2020-01-02 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: ENEV3: 90,2%, ENEV3 (ENEVA S.A), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  },
+  "CPLE3": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: CIA PARANAENSE DE ENERGIA - COPEL",
+    "valor_exibido": "6.071,6 MW",
+    "valor_calculo": 6071.6,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "CIA PARANAENSE DE ENERGIA - COPEL (CNPJ 76483817000120) e empresas sob seu controle",
+    "universo": "53 usinas em operação no SIGA cujo dono majoritário está entre as 65 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 76483817000120 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 6.071,6 MW"
+     },
+     {
+      "nome": "Mesma potência do grupo no módulo Empresas",
+      "resultado": "aprovado",
+      "detalhe": "companhia no topo da cadeia: 6.071,608 MW no grupo do módulo Empresas, diferença 0,000 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: CIA PARANAENSE DE ENERGIA - COPEL: 6.071,6 MW, CIA PARANAENSE DE ENERGIA - COPEL (CNPJ 76483817000120) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: CPLE3",
+    "valor_exibido": "60,6%",
+    "valor_calculo": 60.64,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "CPLE3 (CIA PARANAENSE DE ENERGIA - COPEL)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código CPLE3 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1692 pregões de 2020-01-02 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: CPLE3: 60,6%, CPLE3 (CIA PARANAENSE DE ENERGIA - COPEL), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  },
+  "AXIA3": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: AXIA Energia S.A.",
+    "valor_exibido": "35.316,1 MW",
+    "valor_calculo": 35316.1,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "AXIA Energia S.A. (CNPJ 00001180000126) e empresas sob seu controle",
+    "universo": "69 usinas em operação no SIGA cujo dono majoritário está entre as 30 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 00001180000126 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 35.316,1 MW"
+     },
+     {
+      "nome": "Mesma potência do grupo no módulo Empresas",
+      "resultado": "aprovado",
+      "detalhe": "companhia no topo da cadeia: 35.316,145 MW no grupo do módulo Empresas, diferença 0,000 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: AXIA Energia S.A.: 35.316,1 MW, AXIA Energia S.A. (CNPJ 00001180000126) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: AXIA3",
+    "valor_exibido": "44,9%",
+    "valor_calculo": 44.86,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "AXIA3 (AXIA Energia S.A.)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código AXIA3 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1692 pregões de 2020-01-02 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: AXIA3: 44,9%, AXIA3 (AXIA Energia S.A.), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  },
+  "ENGI11": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: ENERGISA S.A.",
+    "valor_exibido": "125,7 MW",
+    "valor_calculo": 125.7,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "ENERGISA S.A. (CNPJ 00864214000106) e empresas sob seu controle",
+    "universo": "16 usinas em operação no SIGA cujo dono majoritário está entre as 34 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 00864214000106 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 125,7 MW"
+     },
+     {
+      "nome": "Mesma potência do grupo no módulo Empresas",
+      "resultado": "aprovado",
+      "detalhe": "companhia no topo da cadeia: 125,673 MW no grupo do módulo Empresas, diferença 0,000 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: ENERGISA S.A.: 125,7 MW, ENERGISA S.A. (CNPJ 00864214000106) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: ENGI11",
+    "valor_exibido": "49,9%",
+    "valor_calculo": 49.9,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "ENGI11 (ENERGISA S.A.)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código ENGI11 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1692 pregões de 2020-01-02 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: ENGI11: 49,9%, ENGI11 (ENERGISA S.A.), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  },
+  "CMIG4": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: CIA ENERGETICA DE MINAS GERAIS - CEMIG",
+    "valor_exibido": "3.155,0 MW",
+    "valor_calculo": 3155.0,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "CIA ENERGETICA DE MINAS GERAIS - CEMIG (CNPJ 17155730000164) e empresas sob seu controle",
+    "universo": "27 usinas em operação no SIGA cujo dono majoritário está entre as 20 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 17155730000164 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 3.155,0 MW"
+     },
+     {
+      "nome": "Mesma potência do grupo no módulo Empresas",
+      "resultado": "aprovado",
+      "detalhe": "companhia no topo da cadeia: 3.154,976 MW no grupo do módulo Empresas, diferença 0,000 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: CIA ENERGETICA DE MINAS GERAIS - CEMIG: 3.155,0 MW, CIA ENERGETICA DE MINAS GERAIS - CEMIG (CNPJ 17155730000164) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: CMIG4",
+    "valor_exibido": "21,0%",
+    "valor_calculo": 21.03,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "CMIG4 (CIA ENERGETICA DE MINAS GERAIS - CEMIG)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código CMIG4 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1115 pregões de 2022-05-02 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: CMIG4: 21,0%, CMIG4 (CIA ENERGETICA DE MINAS GERAIS - CEMIG), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  },
+  "EGIE3": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: ENGIE BRASIL ENERGIA S.A.",
+    "valor_exibido": "10.353,0 MW",
+    "valor_calculo": 10353.0,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "ENGIE BRASIL ENERGIA S.A. (CNPJ 02474103000119) e empresas sob seu controle",
+    "universo": "134 usinas em operação no SIGA cujo dono majoritário está entre as 162 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 02474103000119 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 10.353,0 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: ENGIE BRASIL ENERGIA S.A.: 10.353,0 MW, ENGIE BRASIL ENERGIA S.A. (CNPJ 02474103000119) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: EGIE3",
+    "valor_exibido": "14,4%",
+    "valor_calculo": 14.36,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "EGIE3 (ENGIE BRASIL ENERGIA S.A.)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código EGIE3 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1692 pregões de 2020-01-02 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: EGIE3: 14,4%, EGIE3 (ENGIE BRASIL ENERGIA S.A.), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  },
+  "ISAE4": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: ISA ENERGIA BRASIL",
+    "valor_exibido": "0,0 MW",
+    "valor_calculo": 0.0,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "ISA ENERGIA BRASIL (CNPJ 02998611000104) e empresas sob seu controle",
+    "universo": "0 usinas em operação no SIGA cujo dono majoritário está entre as 18 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 02998611000104 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 0,0 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: ISA ENERGIA BRASIL: 0,0 MW, ISA ENERGIA BRASIL (CNPJ 02998611000104) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: ISAE4",
+    "valor_exibido": "27,6%",
+    "valor_calculo": 27.6,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "ISAE4 (ISA ENERGIA BRASIL)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código ISAE4 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1692 pregões de 2020-01-02 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: ISAE4: 27,6%, ISAE4 (ISA ENERGIA BRASIL), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  },
+  "TAEE11": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: TRANSMISSORA ALIANÇA DE ENERGIA ELÉTRICA S.A.",
+    "valor_exibido": "0,0 MW",
+    "valor_calculo": 0.0,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "TRANSMISSORA ALIANÇA DE ENERGIA ELÉTRICA S.A. (CNPJ 07859971000130) e empresas sob seu controle",
+    "universo": "0 usinas em operação no SIGA cujo dono majoritário está entre as 12 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 07859971000130 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 0,0 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: TRANSMISSORA ALIANÇA DE ENERGIA ELÉTRICA S.A.: 0,0 MW, TRANSMISSORA ALIANÇA DE ENERGIA ELÉTRICA S.A. (CNPJ 07859971000130) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: TAEE11",
+    "valor_exibido": "32,0%",
+    "valor_calculo": 32.04,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "TAEE11 (TRANSMISSORA ALIANÇA DE ENERGIA ELÉTRICA S.A.)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código TAEE11 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1692 pregões de 2020-01-02 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: TAEE11: 32,0%, TAEE11 (TRANSMISSORA ALIANÇA DE ENERGIA ELÉTRICA S.A.), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  },
+  "CPFE3": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: CPFL ENERGIA S.A.",
+    "valor_exibido": "3.318,6 MW",
+    "valor_calculo": 3318.6,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "CPFL ENERGIA S.A. (CNPJ 02429144000193) e empresas sob seu controle",
+    "universo": "105 usinas em operação no SIGA cujo dono majoritário está entre as 99 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 02429144000193 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 3.318,6 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: CPFL ENERGIA S.A.: 3.318,6 MW, CPFL ENERGIA S.A. (CNPJ 02429144000193) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: CPFE3",
+    "valor_exibido": "37,2%",
+    "valor_calculo": 37.21,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "CPFE3 (CPFL ENERGIA S.A.)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código CPFE3 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1692 pregões de 2020-01-02 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: CPFE3: 37,2%, CPFE3 (CPFL ENERGIA S.A.), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  },
+  "ALUP11": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: ALUPAR INVESTIMENTO S/A",
+    "valor_exibido": "556,4 MW",
+    "valor_calculo": 556.4,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "ALUPAR INVESTIMENTO S/A (CNPJ 08364948000138) e empresas sob seu controle",
+    "universo": "11 usinas em operação no SIGA cujo dono majoritário está entre as 51 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 08364948000138 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 556,4 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: ALUPAR INVESTIMENTO S/A: 556,4 MW, ALUPAR INVESTIMENTO S/A (CNPJ 08364948000138) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: ALUP11",
+    "valor_exibido": "27,8%",
+    "valor_calculo": 27.79,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "ALUP11 (ALUPAR INVESTIMENTO S/A)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código ALUP11 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "622 pregões de 2024-04-22 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: ALUP11: 27,8%, ALUP11 (ALUPAR INVESTIMENTO S/A), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  },
+  "AURE3": {
+   "mw_controle": {
+    "indicador": "Potência em operação sob controle: Auren Energia S.A.",
+    "valor_exibido": "6.675,7 MW",
+    "valor_calculo": 6675.7,
+    "unidade": "MW (potência fiscalizada)",
+    "periodo": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "entidade": "Auren Energia S.A. (CNPJ 28594234000123) e empresas sob seu controle",
+    "universo": "90 usinas em operação no SIGA cujo dono majoritário está entre as 135 empresas sob controle",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "Composição Societária (Polímero)",
+     "recurso": "composicao-societaria-polimero.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/cb79864b-0cfd-475a-8b7a-f8f23d86cf31/resource/958af64f-863b-4557-a404-5729c4a06a09/download/composicao-societaria-polimero.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+     "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+     "capturado_em": "2026-10-16T21:50:02Z",
+     "publicado_em": "2026-07-14T00:57:03Z",
+     "arquivos": [
+      {
+       "recurso": "composicao-societaria-polimero.parquet",
+       "arquivo": "data/energia/bronze/aneel/aneel_polimero/composicao-societaria-polimero.parquet/20261016T215002Z.22441e9ef963.parquet.gz",
+       "sha256": "22441e9ef9639ea34677631bd33b8784a7f9defccf089a29a02aa7eb6fa5ee8f",
+       "capturado_em": "2026-10-16T21:50:02Z",
+       "publicado_em": "2026-07-14T00:57:03Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "Cadeias de controladores únicos do Polímero (trimestre 2026T2) que passam pelo CNPJ 28594234000123 × usinas do SIGA publicadas pelo módulo Empresas (empresas_ativos.csv, SIGA de 2026-09-30)",
+    "manifesto": null,
+    "formula": "Σ potência fiscalizada das usinas em operação de participações válidas cujo CNPJ com mais de 50% está sob controle da companhia",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "Usinas em operação no SIGA com participações publicadas somando 100%; micro e minigeração distribuída fora",
+    "tratamento_ausencia": "Usina sem dono majoritário (nenhum CNPJ acima de 50%) ou de participações inválidas fica fora; controle compartilhado interrompe a cadeia.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Lista de usinas fecha com o total",
+      "resultado": "aprovado",
+      "detalhe": "Σ das usinas em operação no CSV de usinas sob controle = 6.675,7 MW"
+     },
+     {
+      "nome": "Mesma potência do grupo no módulo Empresas",
+      "resultado": "aprovado",
+      "detalhe": "companhia no topo da cadeia: 6.675,658 MW no grupo do módulo Empresas, diferença -0,000 MW"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Usinas sob controle (CSV)",
+      "url": "/energia/series/listadas_usinas.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Potência em operação sob controle: Auren Energia S.A.: 6.675,7 MW, Auren Energia S.A. (CNPJ 28594234000123) e empresas sob seu controle, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Composição Societária (Polímero) (recurso composicao-societaria-polimero.parquet, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   },
+   "retorno_total_12m": {
+    "indicador": "Retorno total em 12 meses: AURE3",
+    "valor_exibido": "40,8%",
+    "valor_calculo": 40.76,
+    "unidade": "% no período",
+    "periodo": {
+     "inicio": "2025-10-15",
+     "fim": "2026-10-15"
+    },
+    "entidade": "AURE3 (Auren Energia S.A.)",
+    "universo": "Pregões do papel no mercado à vista, lote padrão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "B3",
+     "conjunto": "Séries históricas de cotações (COTAHIST)",
+     "recurso": "COTAHIST_A2026.ZIP",
+     "url": "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2026.ZIP",
+     "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+     "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+     "capturado_em": "2026-10-16T21:49:51Z",
+     "publicado_em": null,
+     "arquivos": [
+      {
+       "recurso": "COTAHIST_A2025.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2025.ZIP/20261016T214801Z.6cc0ad851c8f.zip.gz",
+       "sha256": "6cc0ad851c8f605ca30418acac48be81f1767f6ed05b4f563772d06ae448047d",
+       "capturado_em": "2026-10-16T21:48:01Z",
+       "publicado_em": null
+      },
+      {
+       "recurso": "COTAHIST_A2026.ZIP",
+       "arquivo": "data/energia/bronze/b3/b3_cotahist/COTAHIST_A2026.ZIP/20261016T214951Z.e1c616111959.zip.gz",
+       "sha256": "e1c616111959ce36a63428bdbbd7f694888a94ac5b8ef9b3bc814a42ed1167db",
+       "capturado_em": "2026-10-16T21:49:51Z",
+       "publicado_em": null
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [],
+    "chaves_total": null,
+    "consulta": "COTAHIST, TPMERC 010, CODBDI 02, código AURE3 (e códigos anteriores emendados pelo ISIN e pelo FCA); proventos da B3 (GetListedCashDividends) da classe; eventos em ações (GetListedSupplementCompany)",
+    "manifesto": null,
+    "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1 entre o último pregão até a data inicial e o último pregão; m = multiplicador de ações, D = provento bruto por ação com data ex em t",
+    "numerador": null,
+    "denominador": null,
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1138 pregões de 2022-03-28 a 2026-10-15",
+    "tratamento_ausencia": "Dia sem pregão do papel não entra; provento sem valor publicado não entra (ver notas).",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "4301078fd03d+alterado",
+     "publicacao": "2026-10-16T22:05:07Z"
+    },
+    "revisoes": "Detecção de revisões não disponível para este número.",
+    "testes": [
+     {
+      "nome": "Sem salto diário ajustado acima de 20%",
+      "resultado": "aprovado",
+      "detalhe": "nenhum salto"
+     }
+    ],
+    "reconciliacao": null,
+    "download": [
+     {
+      "rotulo": "Cotações e índices diários (CSV)",
+      "url": "/energia/series/listadas_cotacoes.csv"
+     },
+     {
+      "rotulo": "Eventos aplicados (CSV)",
+      "url": "/energia/series/listadas_eventos.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py listadas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Retorno total em 12 meses: AURE3: 40,8%, AURE3 (Auren Energia S.A.), 15/10/2025 a 15/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: B3, Séries históricas de cotações (COTAHIST) (recurso COTAHIST_A2026.ZIP, capturado em 16/10/2026). Versão energia-0.1.0, código 4301078fd03d+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  }
+ }
+}

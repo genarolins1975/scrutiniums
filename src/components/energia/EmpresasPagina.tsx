@@ -26,13 +26,14 @@ import type { Natureza } from "@/lib/energia/tipos";
 const ITENS_EMPRESAS = [
   { id: "sintese", href: ROTA_EMPRESAS, rotulo: "Síntese", descricao: "Quem atua no setor elétrico?" },
   ...PAINEIS_EMPRESAS.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta })),
+  { id: "listadas", href: `${ROTA_EMPRESAS}/listadas`, rotulo: "Listadas na bolsa", descricao: "Quem são as companhias listadas de energia elétrica?" },
 ];
 
 /**
  * Faixa de páginas irmãs nas páginas filhas, com a atual marcada (na ficha de uma distribuidora, nenhuma). A abertura não leva a faixa:
  * mostra os mesmos destinos como capítulos logo depois da busca (EmpresasCapitulos), e o mesmo rótulo não aparece duas vezes.
  */
-export function EmpresasNavegacao({ atual }: { atual: PainelEmpresas | "sintese" | "ficha" }) {
+export function EmpresasNavegacao({ atual }: { atual: PainelEmpresas | "sintese" | "ficha" | "listadas" }) {
   if (atual === "sintese") return null;
   return <NavegacaoLocal rotulo="Páginas do módulo Empresas" itens={ITENS_EMPRESAS} atual={atual} />;
 }

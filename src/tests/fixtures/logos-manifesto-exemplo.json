@@ -1,0 +1,26 @@
+{
+  "_fixture": "FIXTURE DE TESTE: manifesto de exemplo para src/tests/energia-leiloes.test.ts. Não é o manifesto publicado em public/energia/logos/; os arquivos e as origens abaixo são fictícios.",
+  "gerado_em": "2026-10-16T00:00:00Z",
+  "logos": [
+    {
+      "papel": "holding listada",
+      "nome": "Holding Exemplo A",
+      "cnpj_holding": "02.474.103/0001-19",
+      "cnpj_grupo": "06132057000120",
+      "arquivo": "exemplo-a.svg",
+      "origem": "https://exemplo.invalid/marca-a.svg",
+      "data": "2026-10-16"
+    },
+    {
+      "papel": "grupo",
+      "nome": "Grupo Exemplo B",
+      "cnpj_grupo": "00001180000126",
+      "arquivo": "/energia/logos/exemplo-b.svg",
+      "origem": "https://exemplo.invalid/marca-b.svg",
+      "data": "2026-10-16"
+    },
+    { "papel": "grupo", "nome": "Sem CNPJ válido", "cnpj_grupo": "123", "arquivo": "invalido.svg" },
+    { "papel": "grupo", "nome": "Caminho fora da pasta", "cnpj_grupo": "33453598000123", "arquivo": "../../segredo.svg" },
+    { "papel": "grupo", "nome": "Endereço externo", "cnpj_grupo": "33453598000123", "arquivo": "https://exemplo.invalid/x.svg" }
+  ]
+}
