@@ -247,8 +247,17 @@ inferência, a perda de 03/10, que não tinha explicação registrada.
     (`scripts/estado_duravel.sh`): salva depois de todo pipeline concluído, restaurada
     quando o cache falta, em partes de até 1,9 GB com manifesto sha256; cópia
     incompleta ou corrompida não é extraída e o pipeline semeia como antes.
-    Pendência do mantenedor: o estado da energia sozinho ocupa ~72% do limite; enquanto
-    duas cópias dele coexistirem, o despejo de outros caches continua.
+11. A energia e a previsão do PLD apagam a cópia anterior do estado (`energia-estado-*`,
+    inclusive as da previsão) antes de gravar a nova, e só quando o estado completo foi
+    restaurado (`scripts/podar_cache.sh`), e podam de novo logo depois de gravar,
+    mantendo só a mais recente: as duas têm filas próprias (a previsão não pode esperar
+    a energia e perder o corte das 07h), e numa execução simultânea a sobreposição de
+    duas cópias de ~7,2 GB fica limitada a minutos.
+    Se a gravação falhar depois da poda, o silver da energia volta da release
+    `energia-estado` e o bronze é recoletado. O crédito guarda só a cópia mais recente
+    do cache (~0,9 GB), já que tem a cópia durável. A energia avisa no log quando o
+    estado passa de 8 GB: a 10 GB uma cópia sozinha não cabe mais no cache, e reduzir o
+    bronze vira decisão do domínio.
 
 **Produção e main.** Em 13/10/2026 às 10:43 UTC a produção servia o mesmo
 `gerado_em` do main (2026-09-24T15:25), em `/resumo` e em
