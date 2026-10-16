@@ -120,20 +120,15 @@ jobs:
         run: scripts/estado_duravel.sh salvar
 
       # Em 03/10 e 15/10/2026 a restauração não achou nenhum cache (Cache not found) e o
-      # silver foi semeado de novo: o despejo vem do estado da energia (~7,2 GB por cópia)
-      # contra o limite de 10 GB, e a proteção é a cópia durável acima. Cada execução
-      # grava ~0,9 GB com chave nova: guardar só os três mais recentes DO MESMO RAMO
-      # evita que o próprio crédito encha o limite. A poda é
-      # por ramo (--ref): o main não restaura cache de outro ramo, então uma execução
-      # manual em ramo de PR nunca pode apagar os caches do main. Falha aqui não bloqueia.
+      # silver foi semeado de novo: o despejo veio do estado da energia (~7,2 GB por cópia)
+      # contra o limite de 10 GB do repositório. A proteção é a cópia durável acima, e a
+      # energia passou a apagar a cópia anterior antes de gravar a nova. Com a cópia
+      # durável, basta guardar a mais recente do ramo (~0,9 GB). Falha aqui não bloqueia.
       - name: Podar caches antigos do estado
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          gh cache list --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF" --key pipeline-estado- \
-            --sort created_at --order desc --limit 100 --json id --jq '.[3:][].id' \
-            | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
+        run: scripts/podar_cache.sh pipeline-estado- 1
 
       # A lição de 08/08: build quebrado publica stub de erro e o workflow
       # termina VERDE — painel fora do ar sem nenhum vigia acusar. O sentinela

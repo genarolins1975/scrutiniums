@@ -43,6 +43,7 @@ on:
 
 permissions:
   contents: write
+  actions: write # apagar a cópia anterior do estado antes de gravar a nova
 
 concurrency:
   group: previsao-pld
@@ -161,6 +162,25 @@ jobs:
         if: always() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1' && steps.gold.outcome == 'success'
         continue-on-error: true
         run: python3 -m unittest pipeline.tests.test_energia_previsoes
+
+      # Uma cópia do estado da energia tem ~7,2 GB (15/10/2026) e o limite de cache do
+      # repositório é 10 GB: gravar a nova com a anterior ainda lá passa do limite, e o
+      # GitHub despeja o que foi acessado há mais tempo, o estado do crédito, em 03/10 e
+      # 15/10/2026. A anterior sai ANTES de gravar, e só quando o estado completo foi
+      # restaurado: o que será gravado contém tudo o que ela tinha. Se a gravação falhar,
+      # o silver volta da release energia-estado.
+      - name: Liberar a cópia anterior do estado antes de gravar
+        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1' && steps.restaurar.outputs.cache-matched-key != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAM=$(du -sb data/energia | cut -f1)
+          echo "Estado da energia: $((TAM / 1048576)) MB"
+          if [ "$TAM" -gt 8589934592 ]; then
+            echo "::warning::estado da energia com $((TAM / 1073741824)) GB, perto do limite de 10 GB do cache do repositório"
+          fi
+          scripts/podar_cache.sh energia-estado- 0
 
       - name: Guardar estado (vintages coletadas antes do corte)
         if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1'
