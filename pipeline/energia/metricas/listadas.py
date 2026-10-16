@@ -1,0 +1,97 @@
+"""Métricas do módulo Listadas (companhias do IEE da B3). As fórmulas rodam em
+pipeline/energia/modulos/listadas.py, com as leituras de pipeline/energia/fontes/b3_listadas.py e
+cvm_listadas.py; a interface lê o valor calculado e esta definição, nunca refaz a conta."""
+
+_GOLD = "listadas.json"
+_PAG = ["/setor-eletrico/empresas/listadas", "/setor-eletrico/empresas/listadas/[papel]"]
+_CONTROLE = ("Empresa sob controle = a cadeia de controladores únicos declarada à ANEEL (Polímero) que sobe a partir dela passa "
+             "pela companhia listada; controle compartilhado interrompe a cadeia.")
+_UNIVERSO = "Companhias da carteira do dia do Índice de Energia Elétrica (IEE) da B3; nada é somado entre companhias."
+
+METRICAS = [
+    {
+        "id": "listadas_mw_controle", "titulo": "Potência em operação sob controle da companhia listada",
+        "pergunta": "Quanta capacidade instalada a companhia comanda?",
+        "definicao": "Potência fiscalizada das usinas em operação no SIGA cujo dono majoritário (mais de 50%) está sob controle da companhia.",
+        "unidade": "MW", "grao_geografico": "companhia (Brasil) e UF", "grao_temporal": "data do SIGA",
+        "fontes": ["aneel_siga", "aneel_polimero", "b3_iee"],
+        "formula": "Σ kW fiscalizados ÷ 1.000 das usinas em operação de participações válidas cujo CNPJ majoritário está sob controle",
+        "regra_agregacao": "soma por companhia; nunca entre companhias (uma pode controlar parte da outra)",
+        "versao_formula": "1", "natureza_fonte": "OBSERVADO", "natureza_transformacao": "CALCULADO",
+        "dimensoes": ["tipo de usina", "UF"], "regras_comparabilidade": [_CONTROLE, _UNIVERSO],
+        "regra_cobertura": "Usinas do SIGA com participações publicadas somando 100%.",
+        "politica_ausencia": "Usina sem dono majoritário fica fora; controle compartilhado não é atribuído a nenhuma companhia.",
+        "validacoes": ["companhia no topo da cadeia: igual à potência sob controle do grupo no módulo Empresas (diferença até 0,01 MW)"],
+        "limitacoes": ["Mede comando sobre a usina inteira, não propriedade.", "Micro e minigeração distribuída fora."],
+        "gold": _GOLD, "paginas": _PAG,
+    },
+    {
+        "id": "listadas_mw_proporcional", "titulo": "Potência proporcional às participações diretas das empresas sob controle",
+        "pergunta": "Quanta capacidade pertence às empresas da companhia?",
+        "definicao": "Soma de potência fiscalizada × participação direta das empresas sob controle, nas usinas em operação de participações válidas.",
+        "unidade": "MW", "grao_geografico": "companhia (Brasil)", "grao_temporal": "data do SIGA",
+        "fontes": ["aneel_siga", "aneel_polimero"],
+        "formula": "Σ kW fiscalizados × participação ÷ soma das participações ÷ 1.000",
+        "regra_agregacao": "soma por companhia", "versao_formula": "1", "natureza_fonte": "OBSERVADO",
+        "natureza_transformacao": "CALCULADO", "dimensoes": ["tipo de usina"], "regras_comparabilidade": [_CONTROLE],
+        "regra_cobertura": "Usinas do SIGA com participações publicadas somando 100%.",
+        "politica_ausencia": "Participação de coligada ou de SPE de controle compartilhado não entra (sem look-through).",
+        "validacoes": ["companhia no topo da cadeia: igual à potência proporcional do grupo no módulo Empresas"],
+        "limitacoes": ["Não é a participação econômica indireta; subestima quem investe por coligadas."],
+        "gold": _GOLD, "paginas": _PAG,
+    },
+    {
+        "id": "listadas_retorno_total", "titulo": "Retorno total do papel",
+        "pergunta": "Quanto rendeu o papel com os proventos reinvestidos?",
+        "definicao": "Variação do índice que reinveste os proventos em dinheiro brutos no fechamento da data ex e incorpora desdobramentos, grupamentos e bonificações.",
+        "unidade": "% no período", "grao_geografico": "papel", "grao_temporal": "pregão",
+        "fontes": ["b3_cotahist", "b3_proventos", "b3_emissores"],
+        "formula": "Π (P_t × m_t + D_t) ÷ P_{t−1} − 1",
+        "regra_agregacao": "produto dos retornos diários", "versao_formula": "1", "natureza_fonte": "OBSERVADO",
+        "natureza_transformacao": "CALCULADO", "dimensoes": ["janela (12 meses, ano, desde 2020)"],
+        "regras_comparabilidade": ["Mesma janela para todos os papéis; papel com estreia posterior parte do primeiro pregão e é marcado."],
+        "regra_cobertura": "Pregões do mercado à vista, lote padrão, desde 2020.",
+        "politica_ausencia": "Provento sem valor publicado pela B3 não entra e é declarado nas notas do papel.",
+        "validacoes": ["nenhuma variação diária ajustada acima de 20% sem evento explicado", "CSV diário reproduz o retorno publicado"],
+        "limitacoes": ["Bruto de impostos e custos.", "Bonificação em outra classe valorizada pelo primeiro fechamento da classe recebida (ESTIMADO)."],
+        "gold": _GOLD, "paginas": _PAG,
+    },
+    {
+        "id": "listadas_retorno_preco", "titulo": "Retorno de preço ajustado do papel",
+        "pergunta": "Quanto variou o preço, sem contar proventos?",
+        "definicao": "Variação do fechamento ajustado por desdobramentos, grupamentos e bonificações, sem proventos em dinheiro.",
+        "unidade": "% no período", "grao_geografico": "papel", "grao_temporal": "pregão",
+        "fontes": ["b3_cotahist", "b3_emissores"], "formula": "Π P_t × m_t ÷ P_{t−1} − 1",
+        "regra_agregacao": "produto dos retornos diários", "versao_formula": "1", "natureza_fonte": "OBSERVADO",
+        "natureza_transformacao": "CALCULADO", "dimensoes": ["janela"], "regras_comparabilidade": ["Mesma janela para todos os papéis."],
+        "regra_cobertura": "Pregões do mercado à vista, lote padrão, desde 2020.",
+        "politica_ausencia": "Dia sem pregão não entra.", "validacoes": ["mesma série do retorno total"],
+        "limitacoes": ["Não mede o ganho do acionista que recebe proventos."], "gold": _GOLD, "paginas": _PAG,
+    },
+    {
+        "id": "listadas_margem_ebit", "titulo": "Margem do resultado antes do financeiro e dos tributos",
+        "pergunta": "Que parte da receita vira resultado operacional?",
+        "definicao": "Conta 3.05 ÷ conta 3.01 da DRE consolidada, × 100.",
+        "unidade": "%", "grao_geografico": "companhia", "grao_temporal": "exercício",
+        "fontes": ["cvm_dfp"], "numerador": "conta 3.05 (consolidado)", "denominador": "conta 3.01 (consolidado)",
+        "regra_agregacao": "não se agrega entre companhias", "versao_formula": "1", "natureza_fonte": "OBSERVADO",
+        "natureza_transformacao": "CALCULADO", "dimensoes": ["exercício"],
+        "regras_comparabilidade": ["Distribuidoras incluem receita de construção (ICPC 01) na 3.01, o que reduz a margem sem mudar o resultado."],
+        "regra_cobertura": "Exercícios com DFP consolidada.", "politica_ausencia": "Receita ausente ou não positiva: sem dado.",
+        "validacoes": ["valores lidos da série publicada pelo módulo Empresas"], "limitacoes": ["Não é margem EBITDA."],
+        "gold": _GOLD, "paginas": _PAG,
+    },
+    {
+        "id": "listadas_divida_bruta_pl", "titulo": "Dívida bruta sobre patrimônio líquido",
+        "pergunta": "Quanto a companhia deve para cada real de patrimônio?",
+        "definicao": "(2.01.04 + 2.02.01) ÷ 2.03, consolidado, no fim do exercício.",
+        "unidade": "vezes", "grao_geografico": "companhia", "grao_temporal": "exercício",
+        "fontes": ["cvm_dfp"], "numerador": "contas 2.01.04 + 2.02.01", "denominador": "conta 2.03",
+        "regra_agregacao": "não se agrega", "versao_formula": "1", "natureza_fonte": "OBSERVADO",
+        "natureza_transformacao": "CALCULADO", "dimensoes": ["exercício"],
+        "regras_comparabilidade": ["Patrimônio inclui não controladores."], "regra_cobertura": "Exercícios com DFP consolidada.",
+        "politica_ausencia": "Patrimônio não positivo: sem dado.", "validacoes": ["valores da série do módulo Empresas"],
+        "limitacoes": ["Dívida bruta, sem descontar caixa; arrendamentos podem estar fora conforme a classificação da companhia."],
+        "gold": _GOLD, "paginas": _PAG,
+    },
+]

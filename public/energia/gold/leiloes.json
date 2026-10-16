@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "leiloes.json",
- "gerado_em": "2026-10-16T22:01:19Z",
+ "gerado_em": "2026-10-16T22:22:46Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "ac67aadedb1a+alterado",
+ "versao_codigo": "3964a81e5539+alterado",
  "disponivel": true,
  "referencias": {
   "arquivo_gerado_em": "2026-10-01",
@@ -11971,7 +11971,7 @@
    },
    "publicado_pela_fonte_em": "2026-10-01T05:00:46Z",
    "capturado_em": "2026-10-16T21:30:54Z",
-   "validado_em": "2026-10-16T22:01:19Z",
+   "validado_em": "2026-10-16T22:22:47Z",
    "cobertura_historica": {
     "inicio": "2005-12-16",
     "fim": "2025-08-22"
@@ -11988,9 +11988,9 @@
     "sha256": "164430b6f0676de4e28e21a78420672e5ae05747d25ec4dd60185a6bb266452b"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac67aadedb1a+alterado",
+   "versao_codigo": "3964a81e5539+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-16T22:01:19Z",
+    "detectado_em": "2026-10-16T22:22:47Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -12026,7 +12026,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-16T21:30:56Z",
-   "validado_em": "2026-10-16T22:01:19Z",
+   "validado_em": "2026-10-16T22:22:47Z",
    "cobertura_historica": {
     "inicio": "1979-12",
     "fim": "2026-09"
@@ -12040,9 +12040,9 @@
     "sha256": "6a6afac0699e9448b1f5a277581e5447fba84ea605cdf894dff3db310d28cf1f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac67aadedb1a+alterado",
+   "versao_codigo": "3964a81e5539+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-16T22:01:19Z",
+    "detectado_em": "2026-10-16T22:22:47Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -12076,7 +12076,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-16T21:30:54Z",
-   "validado_em": "2026-10-16T22:01:19Z",
+   "validado_em": "2026-10-16T22:22:47Z",
    "cobertura_historica": {
     "inicio": "2005-12-16",
     "fim": "2026-09-30"
@@ -12091,7 +12091,7 @@
     "sha256": "ba60e11378be0d1f106f4e1b420189d029fdb73711bfda6753e2cb2ab6386dec"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac67aadedb1a+alterado",
+   "versao_codigo": "3964a81e5539+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "Não é cumprimento de contrato: alterações de cronograma, rescisões e substituições não estão nos arquivos.",
@@ -12121,7 +12121,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-16T21:30:54Z",
-   "validado_em": "2026-10-16T22:01:19Z",
+   "validado_em": "2026-10-16T22:22:47Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -12136,7 +12136,7 @@
     "sha256": "4749b0d3b0b830ef8d48b3a287e6104f189e5e429028ac81e610feb4148cefec"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac67aadedb1a+alterado",
+   "versao_codigo": "3964a81e5539+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "O grupo do cadastro mais recente não é a vencedora na data do leilão.",
@@ -12164,7 +12164,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-16T21:30:54Z",
-   "validado_em": "2026-10-16T22:01:19Z",
+   "validado_em": "2026-10-16T22:22:47Z",
    "cobertura_historica": {
     "inicio": "1999-12-03",
     "fim": "2024-09-27"
@@ -12180,7 +12180,7 @@
     "sha256": "d4c7ca6a9f137f8f7ad1a56c0bd920605ba50fa546d15c3a252acbc9390ad6a1"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac67aadedb1a+alterado",
+   "versao_codigo": "3964a81e5539+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "O arquivo de leilões de transmissão termina em 27/09/2024.",
@@ -12282,8 +12282,8 @@
    "tratamento_ausencia": "nenhuma linha sem energia vendida (validado)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "ac67aadedb1a+alterado",
-    "publicacao": "2026-10-16T22:01:19Z"
+    "codigo": "3964a81e5539+alterado",
+    "publicacao": "2026-10-16T22:22:47Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-16.",
    "testes": [
@@ -12306,7 +12306,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py leiloes --sem-coleta refaz a gold a partir do silver da família aneel_leiloes e dos CSV publicados pelos módulos Expansão e Empresas em public/energia/series",
-   "citacao": "SCRUTINIUMS. Energia contratada nos leilões de geração do ACR: 40.168 MWmédio, empreendimentos vencedores dos leilões de geração na base aberta da ANEEL, 16/12/2005 a 22/08/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Resultado de leilões de geração e transmissão de energia elétrica (recurso resultado-leiloes-geracao.csv, capturado em 16/10/2026). Versão energia-0.1.0, código ac67aadedb1a+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Energia contratada nos leilões de geração do ACR: 40.168 MWmédio, empreendimentos vencedores dos leilões de geração na base aberta da ANEEL, 16/12/2005 a 22/08/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Resultado de leilões de geração e transmissão de energia elétrica (recurso resultado-leiloes-geracao.csv, capturado em 16/10/2026). Versão energia-0.1.0, código 3964a81e5539+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "ultimo_preco": {
    "indicador": "Preço médio do último leilão da base (39º LEN)",
@@ -12404,8 +12404,8 @@
    "tratamento_ausencia": "linha com preço 0 na fonte fica fora",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "ac67aadedb1a+alterado",
-    "publicacao": "2026-10-16T22:01:19Z"
+    "codigo": "3964a81e5539+alterado",
+    "publicacao": "2026-10-16T22:22:47Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-16.",
    "testes": [
@@ -12428,7 +12428,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py leiloes --sem-coleta refaz a gold a partir do silver da família aneel_leiloes e dos CSV publicados pelos módulos Expansão e Empresas em public/energia/series",
-   "citacao": "SCRUTINIUMS. Preço médio do último leilão da base (39º LEN): R$ 392,84/MWh, leilão 2025/3 (A-5), 22/08/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Resultado de leilões de geração e transmissão de energia elétrica (recurso resultado-leiloes-geracao.csv, capturado em 16/10/2026). Versão energia-0.1.0, código ac67aadedb1a+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Preço médio do último leilão da base (39º LEN): R$ 392,84/MWh, leilão 2025/3 (A-5), 22/08/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Resultado de leilões de geração e transmissão de energia elétrica (recurso resultado-leiloes-geracao.csv, capturado em 16/10/2026). Versão energia-0.1.0, código 3964a81e5539+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pct_operacao": {
    "indicador": "Energia contratada de usinas em operação no SIGA mais recente",
@@ -12526,8 +12526,8 @@
    "tratamento_ausencia": "linha sem CEG e usina fora do SIGA ficam no denominador e fora do numerador",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "ac67aadedb1a+alterado",
-    "publicacao": "2026-10-16T22:01:19Z"
+    "codigo": "3964a81e5539+alterado",
+    "publicacao": "2026-10-16T22:22:47Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-16.",
    "testes": [
@@ -12555,7 +12555,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py leiloes --sem-coleta refaz a gold a partir do silver da família aneel_leiloes e dos CSV publicados pelos módulos Expansão e Empresas em public/energia/series",
-   "citacao": "SCRUTINIUMS. Energia contratada de usinas em operação no SIGA mais recente: 82,6%, empreendimentos vencedores dos leilões de geração na base aberta da ANEEL, 16/12/2005 a 22/08/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Resultado de leilões de geração e transmissão de energia elétrica (recurso resultado-leiloes-geracao.csv, capturado em 16/10/2026). Versão energia-0.1.0, código ac67aadedb1a+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Energia contratada de usinas em operação no SIGA mais recente: 82,6%, empreendimentos vencedores dos leilões de geração na base aberta da ANEEL, 16/12/2005 a 22/08/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Resultado de leilões de geração e transmissão de energia elétrica (recurso resultado-leiloes-geracao.csv, capturado em 16/10/2026). Versão energia-0.1.0, código 3964a81e5539+alterado, publicada em 16/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  }
 }

@@ -611,6 +611,7 @@ export const CARTOES: Record<string, CartaoDestino> = {
       { texto: "Ficha de cada distribuidora pelo CNPJ", href: "/setor-eletrico/empresas/distribuidoras#p037" },
       { texto: "Demonstrações das companhias abertas", href: "/setor-eletrico/empresas/financas#p038" },
       { texto: "Controle e concentração", href: "/setor-eletrico/empresas/controle#p039" },
+      { texto: "Companhias listadas do índice de energia elétrica da B3: ativos, controle, finanças e ações", href: "/setor-eletrico/empresas/listadas" },
     ],
     recorte: "CNPJ, grupo de controle e distribuidora; mensal e trimestral.",
   },

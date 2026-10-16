@@ -892,6 +892,7 @@ const MODULO_DA_GOLD: Record<string, string> = {
   "carga_detalhe.json": "Carga",
   "conta.json": "Conta de luz",
   "empresas.json": "Empresas",
+  "listadas.json": "Empresas",
   "expansao.json": "Expansão",
   "geracao_detalhe.json": "Geração",
   "inclusao.json": "Inclusão energética",
