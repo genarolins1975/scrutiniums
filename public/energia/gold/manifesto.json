@@ -1,21 +1,21 @@
 {
  "dominio": "energia",
  "gold": "manifesto.json",
- "gerado_em": "2026-10-09T03:07:54Z",
+ "gerado_em": "2026-10-16T21:30:58Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "c41b9e6f1b95+alterado",
+ "versao_codigo": "4301078fd03d+alterado",
  "disponivel": true,
- "id_publicacao": "de3ba2c533a9aa2aed2617bddbb5021d52ac28f27c870fa3f824f353efe4485d",
+ "id_publicacao": "121df11c2de095219c6d5cc7563f2817253d0f17b03548002339e817c0719496",
  "regra_id": "sha256 da lista JSON [caminho, bytes, sha256] de todos os arquivos listados, em ordem de caminho (separadores sem espaço, UTF-8): o mesmo conjunto de bytes tem o mesmo id.",
  "completo": true,
  "fora_do_manifesto": [],
  "repositorio": "https://github.com/genarolins1975/scrutiniums",
  "totais": {
-  "arquivos": 270,
-  "bytes": 208227111,
+  "arquivos": 277,
+  "bytes": 209300556,
   "geometrias": 2,
-  "golds": 31,
-  "series": 212,
+  "golds": 32,
+  "series": 218,
   "parquets": 25
  },
  "arquivos": [
@@ -42,9 +42,9 @@
   {
    "caminho": "/energia/gold/arquivos.json",
    "tipo": "gold",
-   "bytes": 125458,
-   "sha256": "bb145dd8c4d0445bcd0cd70cc24a24fa9e45f030e5fd450b0da4b3cd39d8edc3",
-   "gerado_em": "2026-10-06T20:02:52Z",
+   "bytes": 129565,
+   "sha256": "9774944547e75a4e2be371275fb35f316f0ab60b15daf28cb87540a9b916bcbd",
+   "gerado_em": "2026-10-16T21:30:57Z",
    "disponivel": true
   },
   {
@@ -144,6 +144,14 @@
    "disponivel": true
   },
   {
+   "caminho": "/energia/gold/leiloes.json",
+   "tipo": "gold",
+   "bytes": 249856,
+   "sha256": "ed5db5555db7eafb75b7a81ca0eb9adcfb32acb13a52cc9d088fc39a58e79ebb",
+   "gerado_em": "2026-10-16T21:30:56Z",
+   "disponivel": true
+  },
+  {
    "caminho": "/energia/gold/mercado.json",
    "tipo": "gold",
    "bytes": 433503,
@@ -162,9 +170,9 @@
   {
    "caminho": "/energia/gold/metricas.json",
    "tipo": "gold",
-   "bytes": 619717,
-   "sha256": "a4d97343947a96a636a3caa8214fb6de0bcb2b23551f9e88152c6c2c7d657d29",
-   "gerado_em": "2026-10-06T20:02:52Z",
+   "bytes": 630919,
+   "sha256": "56fb3eb801f0968c8a1da702b3f490dac11f3a9260cd1dae69eb36d868268742",
+   "gerado_em": "2026-10-16T21:30:57Z",
    "disponivel": true
   },
   {
@@ -2729,6 +2737,148 @@
     "programado_S_SE"
    ],
    "linhas": 2096,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/leiloes_empreendimentos.csv",
+   "tipo": "serie",
+   "bytes": 484123,
+   "sha256": "ebe18774ffa2897704fb8289e58739f4a21f26c21afcfdc8a9c04444484afc50",
+   "colunas": [
+    "linha",
+    "data_leilao",
+    "leilao",
+    "nome_leilao",
+    "tipo",
+    "ano_a",
+    "empreendimento",
+    "ceg",
+    "nucleo_ceg",
+    "tipo_geracao",
+    "fonte",
+    "detalhe_fonte",
+    "categoria",
+    "uf",
+    "mw",
+    "garantia_fisica_mwmed",
+    "energia_mwmed",
+    "preco_teto_rs_mwh",
+    "preco_rs_mwh",
+    "desagio_pct",
+    "fator_ipca",
+    "preco_real_rs_mwh",
+    "investimento_rs",
+    "duracao_anos",
+    "vencedora",
+    "situacao",
+    "fase_siga",
+    "entrada_operacao_siga",
+    "entrada_vs_ano_a",
+    "ato_encerramento",
+    "situacao_obra_ralie",
+    "controle_atual",
+    "proprietario_majoritario_cnpj",
+    "grupo_controle_cnpj",
+    "grupo_controle_nome",
+    "ceg_repetido_no_leilao"
+   ],
+   "linhas": 1552,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/leiloes_empreendimentos.json",
+   "tipo": "serie",
+   "bytes": 260621,
+   "sha256": "a853eaef656d7d87e8ec3406edb481c1b2899d0ab9533c4aa08ecacaf53336d7"
+  },
+  {
+   "caminho": "/energia/series/leiloes_grupos_controle.csv",
+   "tipo": "serie",
+   "bytes": 52045,
+   "sha256": "84f377929738f71cdc8357bb9eb5f54fd794643685b18336208852d79639c321",
+   "colunas": [
+    "grupo_controle_cnpj",
+    "grupo_controle_nome",
+    "empreendimentos",
+    "usinas",
+    "energia_mwmed",
+    "cadeia_cnpjs"
+   ],
+   "linhas": 535,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/leiloes_por_leilao.csv",
+   "tipo": "serie",
+   "bytes": 5648,
+   "sha256": "5225230d383f4c44fdab72f8d59396bcc2431e6db613f3a575225521997f3140",
+   "colunas": [
+    "leilao",
+    "data",
+    "nome_leilao",
+    "tipo",
+    "ano_a",
+    "empreendimentos",
+    "mw",
+    "energia_mwmed",
+    "preco_medio_rs_mwh",
+    "preco_medio_real_rs_mwh",
+    "teto_medio_rs_mwh",
+    "desagio_agregado_pct",
+    "investimento_rs_mi",
+    "energia_operacao_mwmed",
+    "energia_construcao_mwmed",
+    "energia_nao_iniciada_mwmed",
+    "energia_encerrada_mwmed",
+    "energia_sem_registro_mwmed",
+    "energia_sem_ceg_mwmed"
+   ],
+   "linhas": 48,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/leiloes_preco_fonte_ano.csv",
+   "tipo": "serie",
+   "bytes": 3983,
+   "sha256": "a2e68c173e9842eccdfc7ec964c26a80378b13a6e0653f8762d2c2a07f39d549",
+   "colunas": [
+    "ano",
+    "categoria",
+    "leiloes",
+    "empreendimentos",
+    "energia_mwmed",
+    "preco_medio_rs_mwh",
+    "preco_medio_real_rs_mwh",
+    "teto_medio_rs_mwh",
+    "desagio_agregado_pct"
+   ],
+   "linhas": 83,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/leiloes_transmissao_real.csv",
+   "tipo": "serie",
+   "bytes": 1860,
+   "sha256": "594548013fd4edc0ce515b4de9c23c4089294a9fd08e06a764a497a752ca7041",
+   "colunas": [
+    "ano",
+    "lotes_contratados",
+    "rap_vencedora_rs_mi",
+    "rap_vencedora_real_rs_mi",
+    "rap_edital_rs_mi",
+    "investimento_rs_mi",
+    "investimento_real_rs_mi",
+    "desagio_agregado_pct",
+    "desagio_mediano_lote_pct",
+    "desagio_p25_pct",
+    "desagio_p75_pct"
+   ],
+   "linhas": 26,
    "dicionario": true,
    "parquet": null
   },

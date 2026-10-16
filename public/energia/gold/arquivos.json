@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-10-06T20:02:52Z",
+ "gerado_em": "2026-10-16T21:30:57Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "1f075868ed56+alterado",
+ "versao_codigo": "4301078fd03d+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -627,7 +627,7 @@
    "gold": "qualidade.json"
   },
   "/energia/series/qualidade_distribuidoras_mensal.csv": {
-   "colunas": "cnpj; sigla; mes (AAAA-MM); dec_h; fec_interrupcoes; ucs (UCs dos conjuntos com DEC no mês, denominador do DEC); ucs_fec (denominador do FEC); ucs_total; conjuntos; cobertura (ucs ÷ ucs_total); controle_numcon (motivo quando o NumCon publicado no mês não é plausível: o mês fica fora do Brasil e, com mais de um conjunto, o DEC e o FEC da distribuidora ficam vazios porque os pesos não valem). DEC em horas e centésimos de hora, não minutos.",
+   "colunas": "cnpj; sigla; mes (AAAA-MM); dec_h; fec_interrupcoes; ucs (UCs dos conjuntos com DEC no mês, denominador do DEC); ucs_fec (denominador do FEC); ucs_total; conjuntos; cobertura (ucs ÷ ucs_total); controle_numcon (motivo quando o NumCon publicado no mês não é plausível: o mês fica fora do Brasil e, com mais de um conjunto, o DEC e o FEC da distribuidora ficam vazios porque os pesos não valem); controle_fec (motivo quando os conjuntos com FEC cobrem menos de 95% das UCs do mês: o FEC do mês fica vazio, fora do FEC anual da distribuidora e do Brasil; ucs_fec mostra a cobertura que a fonte teve). DEC em horas e centésimos de hora, não minutos.",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
@@ -722,7 +722,7 @@
    "gold": "conta.json"
   },
   "/energia/series/conta_subsidios_anual.csv": {
-   "colunas": "ano; cnpj; sigla; categoria; montante (Total = previsão + ajuste); valor_rs; meses. Soma dos repasses mensais homologados por ano de competência (competências futuras excluídas).",
+   "colunas": "ano; cnpj; sigla; categoria; montante (Total = previsão + ajuste); valor_rs; meses; eh_total (sim na linha da categoria Total, que reúne as demais categorias da mesma distribuidora e ano: somar valor_rs sem filtrar eh_total conta cada real duas vezes). Soma dos repasses mensais homologados por ano de competência (competências futuras excluídas).",
    "modulo": "conta",
    "gold": "conta.json"
   },
@@ -857,7 +857,7 @@
    "gold": "empresas.json"
   },
   "/energia/series/empresas_distribuidoras.csv": {
-   "colunas": "cnpj; slug; sigla; nome; classificacao; grupo; ufs (separadas por |); ativa; fontes (samp, tarifas, continuidade presentes); perdas_ano; taxa_perdas_totais_pct; pnt_bt_pct; qualidade_ano; dec_h; fec; dec_limite_h; fec_limite; ucs; tarifa_b1_rs_mwh; tarifa_inicio; tarifa_fim; controlador_cnpj; controlador_nome; motivo_parada; cvm_cd. Valores copiados das golds perdas.json, qualidade.json e conta.json pelo CNPJ, sem recálculo. Vazio = a gold de origem não tem o dado.",
+   "colunas": "cnpj; slug; sigla; nome; classificacao; grupo; ufs (separadas por |); ativa; fontes (samp, tarifas, continuidade presentes); perdas_ano; taxa_perdas_totais_pct; pnt_bt_pct; qualidade_ano; dec_h; fec; dec_limite_h; fec_limite; ucs; tarifa_b1_rs_mwh; tarifa_inicio; tarifa_fim; controlador_cnpj; controlador_nome; motivo_parada; cvm_cd. Valores copiados das golds perdas.json, qualidade.json e conta.json pelo CNPJ, sem recálculo. Vazio = a base publicada de origem não tem o dado.",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
@@ -905,6 +905,36 @@
    "colunas": "Evidência 'Comprove este número' da receita do último exercício de cada companhia do universo CVM (CNPJ → objeto de pipeline/energia/evidencia.py), lida sob demanda.",
    "modulo": "empresas",
    "gold": "empresas.json"
+  },
+  "/energia/series/leiloes_empreendimentos.csv": {
+   "colunas": "linha (posição no arquivo da ANEEL); data_leilao; leilao (NumLeilao); nome_leilao (DscNumeroLeilaoCCEE com a grafia normalizada); tipo (DscTipoLeilao); ano_a (ano do leilão + x nos produtos A-x; vazio nos demais); empreendimento; ceg; nucleo_ceg; tipo_geracao; fonte (DscFonteEnergia); detalhe_fonte; categoria (categoria do observatório); uf (UF principal); mw (potência instalada, MW); garantia_fisica_mwmed (vazio = 0 na fonte (não preenchido)); energia_mwmed (energia vendida, MWmédio); preco_teto_rs_mwh; preco_rs_mwh (preço de venda ou ICB, R$/MWh nominais; vazio = 0 na fonte); desagio_pct (como publicado; vazio sem preço); fator_ipca (I(último mês) ÷ I(mês do leilão)); preco_real_rs_mwh (preço × fator_ipca); investimento_rs (R$ nominais; vazio = 0 na fonte); duracao_anos; vencedora (DscEmpresaVencedora como publicada (empresa ou cotista do consórcio)); situacao (operacao, construcao, nao_iniciada, encerrada, sem_registro ou sem_ceg); fase_siga; entrada_operacao_siga (vazio = sem data no SIGA); entrada_vs_ano_a (antes_do_leilao, ate_ano_a, depois_ano_a, sem_data; vazio sem ano A ou fora de operação); ato_encerramento (1 = há ato de revogação ou extinção desde 2015 para o núcleo); situacao_obra_ralie (só para usinas no RALIE); controle_atual (controlada, sem_majoritario, sem_proprietario ou fora_do_cadastro); proprietario_majoritario_cnpj; grupo_controle_cnpj (topo da cadeia de controle declarada à ANEEL); grupo_controle_nome; ceg_repetido_no_leilao (1 = o núcleo aparece em mais de uma linha do mesmo leilão)",
+   "modulo": "leiloes",
+   "gold": "leiloes.json"
+  },
+  "/energia/series/leiloes_por_leilao.csv": {
+   "colunas": "leilao; data; nome_leilao; tipo; ano_a; empreendimentos; mw (soma da potência das linhas); energia_mwmed; preco_medio_rs_mwh (ponderado pela energia, linhas com preço); preco_medio_real_rs_mwh (idem, corrigido pelo IPCA); teto_medio_rs_mwh (ponderado pela energia); desagio_agregado_pct (100 × (1 − Σ preço × energia ÷ Σ teto × energia)); investimento_rs_mi (linhas com investimento informado); energia_operacao_mwmed; energia_construcao_mwmed; energia_nao_iniciada_mwmed; energia_encerrada_mwmed; energia_sem_registro_mwmed; energia_sem_ceg_mwmed",
+   "modulo": "leiloes",
+   "gold": "leiloes.json"
+  },
+  "/energia/series/leiloes_preco_fonte_ano.csv": {
+   "colunas": "ano; categoria; leiloes; empreendimentos; energia_mwmed; preco_medio_rs_mwh (nominal, ponderado pela energia); preco_medio_real_rs_mwh (IPCA até o último mês publicado); teto_medio_rs_mwh; desagio_agregado_pct",
+   "modulo": "leiloes",
+   "gold": "leiloes.json"
+  },
+  "/energia/series/leiloes_grupos_controle.csv": {
+   "colunas": "grupo_controle_cnpj; grupo_controle_nome; empreendimentos (linhas de leilão); usinas (núcleos do CEG distintos); energia_mwmed; cadeia_cnpjs (CNPJs da cadeia de controle, separados por |)",
+   "modulo": "leiloes",
+   "gold": "leiloes.json"
+  },
+  "/energia/series/leiloes_transmissao_real.csv": {
+   "colunas": "ano; lotes_contratados; rap_vencedora_rs_mi (nominal); rap_vencedora_real_rs_mi (IPCA até o último mês publicado); rap_edital_rs_mi (nominal); investimento_rs_mi (nominal, lotes com investimento); investimento_real_rs_mi; desagio_agregado_pct (pela RAP); desagio_mediano_lote_pct (mediana dos lotes); desagio_p25_pct; desagio_p75_pct",
+   "modulo": "leiloes",
+   "gold": "leiloes.json"
+  },
+  "/energia/series/leiloes_empreendimentos.json": {
+   "colunas": "JSON compacto para a dispersão de preço por empreendimento: colunas e linhas na ordem de 'colunas'; carregado sob demanda.",
+   "modulo": "leiloes",
+   "gold": "leiloes.json"
   },
   "/energia/series/previsoes_ajustes_c2.csv": {
    "colunas": "origem_ajuste (domingo); modelo (C2-P, C2-H); horizonte; submercado; ok (1 = ajustado; 0 = treino insuficiente); lambda (ZERO = correção desligada); entregas_treino; linhas_treino; coef_* = coeficiente de cada variável na unidade original (R$/MWh por R$/MWh, ou por ponto percentual); escala_* = escala RMS no treino; ultimo_fim_treino = fim da última entrega usada no treino (sempre até o domingo menos 1 dia).",
