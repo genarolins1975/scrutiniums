@@ -10,7 +10,7 @@ import { reais } from "@/lib/saneamento/formato";
 /**
  * Água Solidária, programa estadual da SANEPAR mantido ao lado da tarifa social federal (revisão de 16/10/2026, achado 1.8).
  * Tabela do Anexo Único da Resolução AGEPAR 23/2026; esgoto a 50% da água pelo art. 3º, parágrafo único.
- * A elegibilidade não é verificada, e a divergência entre as fontes da Sanepar fica registrada nas observações.
+ * A elegibilidade não é verificada: os critérios publicados pela Sanepar (Decreto Estadual 9.606/2021) ficam registrados nas observações.
  */
 const IDS = ["sanepar-2026-curitiba", "sanepar-2026-demais"];
 const cat = (id: string) => tarifa(id)!.categorias.agua_solidaria;
@@ -58,16 +58,17 @@ describe("Água Solidária: fontes e ressalvas registradas", () => {
       const urls = t.fontes.map((f) => f.url);
       expect(urls.some((u) => u.includes("legislacao.pr.gov.br") && u.includes("12127"))).toBe(true);
       expect(urls.some((u) => u === "https://www.sanepar.com.br/tarifas")).toBe(true);
-      expect(urls.filter((u) => u.includes("sanepar.com.br")).length).toBeGreaterThanOrEqual(4);
+      expect(urls.filter((u) => u.includes("sanepar.com.br")).length).toBeGreaterThanOrEqual(3);
       for (const f of t.fontes) expect(f.sha256).toMatch(/^[a-f0-9]{64}$/);
       expect(t.acessado).toBe("2026-10-16");
     }
   });
 
-  it("as observações declaram a divergência de critérios e que o enquadramento não é verificado", () => {
+  it("as observações trazem os critérios publicados pela Sanepar e declaram que o enquadramento não é verificado", () => {
     for (const id of IDS) {
       const obs = tarifa(id)!.observacoes.join(" ");
-      expect(obs).toContain("as fontes da Sanepar divergem");
+      for (const trecho of ["Decreto Estadual 9.606/2021", "até 70 m²", "até 10 m³ por mês", "até 2,5 m³ por residente", "mais de 4 pessoas", "até 2 salários mínimos", "um cadastro por CPF", "24 meses"]) expect(obs, trecho).toContain(trecho);
+      expect(obs).toContain("O texto do decreto não foi lido");
       expect(obs).toContain("não verifica o enquadramento");
       expect(obs).toContain("não recebe a tarifa social federal");
     }
@@ -80,7 +81,9 @@ describe("Água Solidária nas páginas", () => {
     const h = texto(renderToStaticMarkup(createElement(TarifaSocialPage)));
     expect(h).toContain("Água Solidária, o programa estadual da SANEPAR");
     for (const c of ["agua_solidaria", "social", "residencial"]) expect(h).toContain(reais(calcularConta(t.categorias[c], 10).total));
-    expect(h).toContain("não foi lido e o enquadramento não foi verificado");
+    expect(h).toContain("Decreto Estadual 9.606/2021");
+    expect(h).toContain("O texto do decreto não foi lido e o enquadramento não é verificado");
+    expect(h).toContain("dentro do limite de consumo");
     expect(h).toContain("Água Solidária (programa estadual)");
   });
 

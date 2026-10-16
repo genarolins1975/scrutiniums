@@ -294,11 +294,12 @@ export default function Pagina() {
               O Paraná manteve o Água Solidária ao lado da tarifa social federal. A Resolução AGEPAR 23/2026 traz tabela própria, com esgoto a 50% da
               tarifa de água. Em {aguaSolidaria.consumo} m³ em Curitiba, a conta de água e esgoto é {reais(aguaSolidaria.solidaria)} no Água Solidária,{" "}
               {reais(aguaSolidaria.social)} na tarifa social federal e {reais(aguaSolidaria.residencial)} na residencial. Quem está no Água Solidária
-              não recebe a tarifa social federal, e cada CPF tem um benefício social ativo. O enquadramento segue critérios do programa que as fontes da
-              SANEPAR descrevem de forma diferente (consumo de até 10 m³ por mês, no comunicado de 12/12/2025; imóvel de até 70 m², consumo de até 2,5 m³
-              por residente e renda de até meio salário mínimo por pessoa, no de 14/03/2022). O decreto estadual do programa não foi lido e o
-              enquadramento não foi verificado: a conta vale para quem se enquadra. O cenário de peso na renda, mais abaixo, usa a mesma conta de{" "}
-              {aguaSolidaria.consumo} m³ para o Água Solidária e não checa se uma família desse tamanho caberia no limite de consumo do programa.
+              não recebe a tarifa social federal, e cada CPF tem um benefício social ativo. Pelos critérios que a Sanepar publica, com base no Decreto
+              Estadual 9.606/2021, o programa vale para imóvel residencial de até 70 m², consumo de até 10 m³ por mês (famílias com mais de 4 pessoas e
+              consumo acima disso são medidas por até 2,5 m³ por residente), renda de até meio salário mínimo por pessoa ou de até 2 salários mínimos
+              em imóvel com até 4 ocupantes, um cadastro por CPF e validade de 24 meses. O texto do decreto não foi lido e o enquadramento não é
+              verificado: a conta vale para quem se enquadra. O cenário de peso na renda, mais abaixo, usa {aguaSolidaria.consumo} m³ para o Água
+              Solidária, dentro do limite de consumo, e não verifica o tamanho do imóvel.
             </Nota>
           )}
           <Fonte>Tabelas tarifárias verificadas nos atos dos reguladores; mesma regra de cálculo do simulador (capítulo 5.1).</Fonte>
