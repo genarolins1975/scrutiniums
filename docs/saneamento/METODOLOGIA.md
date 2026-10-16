@@ -40,7 +40,7 @@ Fórmulas oficiais aplicadas às somas do prestador em todos os municípios: per
 
 ## Simulador da conta
 
-Tabela por categoria com parte fixa, valor mínimo que cobre os primeiros m³ e faixas cobradas por m³ acima do início da faixa; esgoto por tabela própria ou percentual da água. Aritmética inteira em escala 10⁷, arredondamento ao centavo no fim. Os exemplos de cada tabela são conferidos em Decimal no gerador e em teste automatizado. Na tarifa social, quando o esgoto da categoria não foi verificado, a comparação usa só a água dos dois lados.
+Tabela por categoria com parte fixa, valor mínimo que cobre os primeiros m³ e faixas cobradas por m³ acima do início da faixa; esgoto por tabela própria ou percentual da água. Aritmética inteira em escala 10⁷, arredondamento ao centavo no fim. Os exemplos de cada tabela são conferidos em Decimal no gerador e em teste automatizado. Na tarifa social, quando o esgoto da categoria não foi verificado, a comparação usa só a água dos dois lados. A SANEPAR tem também a categoria Água Solidária, programa estadual mantido ao lado da tarifa social federal: tabela própria no Anexo Único da Resolução AGEPAR 23/2026, esgoto a 50% da água (art. 3º, parágrafo único). A elegibilidade não é verificada. O Observatório registra os critérios que a Sanepar publica em sua página oficial de tarifas, com base no Decreto Estadual 9.606/2021 (imóvel residencial de até 70 m²; consumo de até 10 m³ por mês e, para famílias com mais de 4 pessoas e consumo acima disso, até 2,5 m³ por residente; renda de até meio salário mínimo por pessoa ou até 2 salários mínimos em imóvel com até 4 ocupantes; um cadastro por CPF; validade de 24 meses), e o texto do decreto não foi lido. A conta mostrada vale para quem se enquadra.
 
 ## Planejamento
 
