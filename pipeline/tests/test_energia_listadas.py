@@ -157,6 +157,33 @@ class TestRetorno(unittest.TestCase):
         self.assertTrue(any("resgate total" in n.lower() for n in bolsa["notas"]))
 
 
+class TestMarcaEvento(unittest.TestCase):
+    def test_marcas_de_ex_bonificacao_na_especificacao(self):
+        # especificações reais da COTAHIST: Cemig em 02/05/2022 ("PN EDB N1"), AXIA em 22/12/2025 ("ON EB N1")
+        self.assertTrue(mod._marca_evento_acoes("PN EDB N1"))
+        self.assertTrue(mod._marca_evento_acoes("ON EB N1"))
+        self.assertFalse(mod._marca_evento_acoes("ON EJ N1"))
+        self.assertFalse(mod._marca_evento_acoes("ON EDS NM"))
+        self.assertFalse(mod._marca_evento_acoes("ON N1"))
+        self.assertFalse(mod._marca_evento_acoes("UNT N2"))  # N2 não começa com E
+
+    def test_serie_recomeca_em_evento_sem_fator(self):
+        fech = {"fech:X3:BRX": [("2024-01-02", 10.0), ("2024-01-03", 10.0), ("2024-01-04", 7.7), ("2024-01-05", 7.8)]}
+        vol = {"vol:X3:BRX": [(d, 1.0) for d, _ in fech["fech:X3:BRX"]]}
+        evb = {"evb:X3:BRX": [("2024-01-04", 1.0), ("2024-01-05", 1.0)]}
+        cods = {"X3": {"classe": "ON", "segmento": None, "anos": [2024]}}
+        b, cot, _ = mod._bolsa("X3", "ON", "1", cods, fech, vol, {"eventos_acoes": []}, [], evb)
+        self.assertEqual(b["serie_reiniciada_em"], "2024-01-04")
+        self.assertEqual(b["primeiro_pregao"], "2024-01-04")
+        self.assertEqual(len(cot), 2)
+        # com o fator publicado (bonificação de 30% com data com em 03/01), a série não recomeça
+        sup = {"eventos_acoes": [{"isin": "BRX", "isin_emitido": "BRX", "rotulo": "BONIFICACAO", "fator_fonte": 30.0,
+                                  "multiplicador": 1.3, "data_com": "2024-01-03"}]}
+        b, cot, _ = mod._bolsa("X3", "ON", "1", cods, fech, vol, sup, [], evb)
+        self.assertIsNone(b["serie_reiniciada_em"])
+        self.assertAlmostEqual(cot[2][6] / cot[1][6], 7.7 * 1.3 / 10.0, places=4)
+
+
 class TestCvm(unittest.TestCase):
     def test_posicao_acionaria_sem_pessoa_fisica_nominal(self):
         pos = cl.le_posicao_acionaria(_linhas_csv("fre_posicao_acionaria_2026_recorte.csv"), {ENERGISA, TAESA})
@@ -172,7 +199,22 @@ class TestCvm(unittest.TestCase):
         cemig = next(a for a in t["acionistas"] if a["cnpj"] == "17155730000164")
         self.assertTrue(cemig["controlador"] and cemig["acordo"])
         black = next(a for a in t["acionistas"] if a["nome"].lower().startswith("blackrock"))
+        self.assertTrue(all(len({x["cnpj"][:8] for x in [a]}) == 1 for a in t["acionistas"] if a["cnpj"]))
         self.assertIsNone(black["cnpj"])  # "00.000.000/0000-00" na fonte: estrangeiro sem CNPJ
+
+    def test_matriz_e_filial_somadas(self):
+        # AXIA na ISA Energia (FRE 2026): matriz 00.001.180/0001-26 e filial 00.001.180/0002-07 em linhas separadas
+        base_ = {"tipo": "PJ", "controlador": False, "acordo": False, "acoes_total": None, "nacionalidade": "Brasil", "rotulo_coletivo": None}
+        r = cl._junta_matriz_filial([
+            {**base_, "nome": "AXIA ENERGIA S.A.", "cnpj": "00001180000126", "pct_on": 0.013, "pct_pn": 2.841, "pct_total": 1.883, "ultima_alteracao": "2026-04-07"},
+            {**base_, "nome": "AXIA ENERGIA S.A.", "cnpj": "00001180000207", "pct_on": 2.229, "pct_pn": 25.308, "pct_total": 17.493, "ultima_alteracao": "2026-04-07"},
+            {**base_, "nome": "Isa Capital do Brasil S.A.", "cnpj": "08075006000130", "pct_on": 96.929, "pct_pn": 1.106, "pct_total": 33.555, "controlador": True, "ultima_alteracao": "2017-10-06"},
+        ])
+        self.assertEqual(len(r), 2)
+        axia = r[0]
+        self.assertEqual(axia["cnpj"], "00001180000126")
+        self.assertAlmostEqual(axia["pct_total"], 19.376)
+        self.assertEqual(axia["cnpjs_declarados"], ["00001180000126", "00001180000207"])
 
     def test_mudancas_acionarias(self):
         ant = {"acionistas": [{"nome": "A", "cnpj": "1", "tipo": "PJ", "pct_total": 10.0},
