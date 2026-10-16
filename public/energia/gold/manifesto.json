@@ -1,18 +1,18 @@
 {
  "dominio": "energia",
  "gold": "manifesto.json",
- "gerado_em": "2026-10-16T21:50:20Z",
+ "gerado_em": "2026-10-16T22:01:20Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "7d0b308e7712+alterado",
+ "versao_codigo": "ac67aadedb1a+alterado",
  "disponivel": true,
- "id_publicacao": "383684bde5b60cff97eedda7fc4a416fa8509fa93e7ce0c313ebc5cf83e94776",
+ "id_publicacao": "66a6f1f4f5231d6455587bbde6f9ec0dd1a13015703387c4eea036b26181f7e3",
  "regra_id": "sha256 da lista JSON [caminho, bytes, sha256] de todos os arquivos listados, em ordem de caminho (separadores sem espaço, UTF-8): o mesmo conjunto de bytes tem o mesmo id.",
  "completo": true,
  "fora_do_manifesto": [],
  "repositorio": "https://github.com/genarolins1975/scrutiniums",
  "totais": {
   "arquivos": 277,
-  "bytes": 209300736,
+  "bytes": 209294406,
   "geometrias": 2,
   "golds": 32,
   "series": 218,
@@ -43,8 +43,8 @@
    "caminho": "/energia/gold/arquivos.json",
    "tipo": "gold",
    "bytes": 129565,
-   "sha256": "1e7582eb90fc3d3632ff57340ec73beb176918593f4803808b465fa8ba15fc44",
-   "gerado_em": "2026-10-16T21:50:19Z",
+   "sha256": "fe7f2a75ad328d2831bf045f9635b76ecbc903cc2691cd6ac6872ec80a3d0552",
+   "gerado_em": "2026-10-16T22:01:19Z",
    "disponivel": true
   },
   {
@@ -146,9 +146,9 @@
   {
    "caminho": "/energia/gold/leiloes.json",
    "tipo": "gold",
-   "bytes": 249958,
-   "sha256": "fa9adf137bc9843d1eed3bac264b1a8f72b6815ff897a0b6b8fe6bdfec1ae7cd",
-   "gerado_em": "2026-10-16T21:50:18Z",
+   "bytes": 243628,
+   "sha256": "474786812d3fd7736daa20721bb219acebd42d1a0d42053273d450c12544c50b",
+   "gerado_em": "2026-10-16T22:01:19Z",
    "disponivel": true
   },
   {
@@ -171,8 +171,8 @@
    "caminho": "/energia/gold/metricas.json",
    "tipo": "gold",
    "bytes": 630997,
-   "sha256": "bcf5cf59efb840846c748d634120c93e20518895c327924bdbe286f770768f98",
-   "gerado_em": "2026-10-16T21:50:19Z",
+   "sha256": "e121b3f9cdf6e8a948ca1a192815b845e84ac3e972118518db290db3e628d343",
+   "gerado_em": "2026-10-16T22:01:19Z",
    "disponivel": true
   },
   {
@@ -2791,7 +2791,7 @@
    "caminho": "/energia/series/leiloes_empreendimentos.json",
    "tipo": "serie",
    "bytes": 260621,
-   "sha256": "7b4e19733d6e1e48c94ebfb95b26bc342597e002ac61e4666649f09bbb5f465d"
+   "sha256": "0478b3ebecda6b5ae1e991f8ce4ae3220d9a416d2115529d888a99bc0a2efbd1"
   },
   {
    "caminho": "/energia/series/leiloes_grupos_controle.csv",

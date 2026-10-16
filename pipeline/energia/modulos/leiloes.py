@@ -781,6 +781,11 @@ def _proveniencias(con, g, ins):
     }
 
 
+def _chave_ev(r):
+    """Chave curta de uma linha na evidência: a posição no arquivo da ANEEL (coluna linha do CSV de empreendimentos)."""
+    return f"linha {r['linha']} ({r['leilao']})"
+
+
 def _evidencias(g, rs, v, ins):
     fonte = ev.fonte_de_vintage("ANEEL", FONTE_LEILOES["dataset"], URL_LEILOES, v)
     t = g["totais"]
@@ -796,7 +801,7 @@ def _evidencias(g, rs, v, ins):
         valor_calculo=t["energia_mwmed"], unidade="MWmédio", periodo=per,
         entidade="empreendimentos vencedores dos leilões de geração na base aberta da ANEEL",
         universo=f"{t['empreendimentos']} linhas de {g['cobertura']['leiloes']} leilões", fonte=fonte,
-        chaves_origem=[r["chave"] for r in rs], manifesto={"rotulo": "Empreendimentos (CSV)", "url": DOWNLOADS["empreendimentos"]},
+        chaves_origem=[_chave_ev(r) for r in rs], manifesto={"rotulo": "Empreendimentos (CSV)", "url": DOWNLOADS["empreendimentos"]},
         formula="Σ VlrEnergiaVendida de todas as linhas", cobertura=g["cobertura"]["ausentes"], revisoes=rev,
         tratamento_ausencia="nenhuma linha sem energia vendida (validado)",
         testes=testes_base, download=[{"rotulo": "Empreendimentos (CSV)", "url": DOWNLOADS["empreendimentos"]}], reproducao=REPRODUCAO)
@@ -807,7 +812,7 @@ def _evidencias(g, rs, v, ins):
             indicador=f"Preço médio do último leilão da base ({u['nome']})", valor_exibido=f"R$ {u['preco_medio']:.2f}/MWh".replace(".", ","),
             valor_calculo=u["preco_medio"], unidade="R$/MWh", periodo={"inicio": u["data"], "fim": u["data"]},
             entidade=f"leilão {u['leilao']} ({u['tipo']})", universo=f"{u['empreendimentos']} empreendimentos", fonte=fonte,
-            chaves_origem=[r["chave"] for r in us], manifesto={"rotulo": "Empreendimentos (CSV)", "url": DOWNLOADS["empreendimentos"]},
+            chaves_origem=[_chave_ev(r) for r in us], manifesto={"rotulo": "Empreendimentos (CSV)", "url": DOWNLOADS["empreendimentos"]},
             formula="Σ preço × energia ÷ Σ energia", revisoes=rev,
             numerador={"descricao": "Σ preço × energia vendida (R$/MWh × MWmédio)", "valor": c.r(sum(r["preco"] * r["energia_mwmed"] for r in us if r["preco"] is not None), 2)},
             denominador={"descricao": "Σ energia vendida das linhas com preço (MWmédio)", "valor": c.r(sum(r["energia_mwmed"] for r in us if r["preco"] is not None), 2)},
@@ -821,7 +826,7 @@ def _evidencias(g, rs, v, ins):
         valor_calculo=pct, unidade="% da energia contratada", periodo=per,
         entidade="empreendimentos vencedores dos leilões de geração na base aberta da ANEEL",
         universo=f"{t['empreendimentos']} linhas", fonte=fonte,
-        chaves_origem=[r["chave"] for r in rs if r["situacao"] == "operacao"],
+        chaves_origem=[_chave_ev(r) for r in rs if r["situacao"] == "operacao"],
         manifesto={"rotulo": "Empreendimentos com situação (CSV)", "url": DOWNLOADS["empreendimentos"]},
         formula="100 × Σ energia das linhas com fase Operação no SIGA ÷ Σ energia de todas as linhas", revisoes=rev,
         numerador={"descricao": "energia das linhas em operação (MWmédio)", "valor": op},

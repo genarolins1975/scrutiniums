@@ -119,6 +119,8 @@ export function DiagramaAcr() {
 export function GruposControle({ g, logos, dataSiga }: { g: NonNullable<LeiloesGold["grupos_controle"]>; logos: readonly EntradaLogo[]; dataSiga: string }) {
   const total = g.energia_vinculada_mwmed + g.sem_vinculo.reduce((s, x) => s + x.energia_mwmed, 0);
   const maior = Math.max(...g.maiores.map((x) => x.energia_mwmed), 1);
+  const comLogo = g.maiores.map((x) => logoDoGrupo(logos, x));
+  const algumLogo = comLogo.some(Boolean);
   return (
     <div className="space-y-4">
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao">
@@ -146,8 +148,8 @@ export function GruposControle({ g, logos, dataSiga }: { g: NonNullable<LeiloesG
             </tr>
           </thead>
           <tbody>
-            {g.maiores.map((x) => {
-              const logo = logoDoGrupo(logos, x);
+            {g.maiores.map((x, i) => {
+              const logo = comLogo[i];
               return (
                 <tr key={x.cnpj} className="border-b border-linha align-top">
                   <th scope="row" className="px-2 py-2 text-left font-normal text-carvao">
@@ -163,9 +165,9 @@ export function GruposControle({ g, logos, dataSiga }: { g: NonNullable<LeiloesG
                           className="h-5 w-14 shrink-0 object-contain object-left"
                           title={`${logo.noTopo ? "Logotipo do grupo" : "Logotipo de holding na cadeia de controle"}: ${logo.nome}${logo.origem ? `; origem: ${logo.origem}` : ""}${logo.data ? `, ${logo.data}` : ""}`}
                         />
-                      ) : (
+                      ) : algumLogo ? (
                         <span aria-hidden="true" className="inline-block h-5 w-14 shrink-0" />
-                      )}
+                      ) : null}
                       <span>
                         {x.nome ?? "nome não publicado"}
                         {logo && !logo.noTopo && <span className="block text-xs text-carvao-muted">logotipo: {logo.nome}, na cadeia de controle</span>}
@@ -204,7 +206,7 @@ export function GruposControle({ g, logos, dataSiga }: { g: NonNullable<LeiloesG
       <div>
         <p className="text-sm font-medium text-carvao">Sem vínculo provado com um grupo, contado à parte</p>
         <ul className="mt-1 space-y-1 text-sm text-carvao-muted">
-          {g.sem_vinculo.map((s) => (
+          {g.sem_vinculo.filter((s) => s.empreendimentos > 0).map((s) => (
             <li key={s.id}>
               {s.rotulo}: {num(s.empreendimentos, 0)} contratos, {mwmed(s.energia_mwmed)}
               {total ? ` (${num((100 * s.energia_mwmed) / total, 1)}% da energia)` : ""}.
@@ -213,6 +215,57 @@ export function GruposControle({ g, logos, dataSiga }: { g: NonNullable<LeiloesG
         </ul>
       </div>
     </div>
+  );
+}
+
+/* ------------------------------------------------------------------ situação por fonte */
+
+/**
+ * Barras de 100% por fonte com a parcela da energia contratada em cada situação: leve (HTML puro, sem cliente) e com o valor
+ * escrito em cada linha. A cor não é o único portador: a legenda e o texto da linha dizem a situação e o percentual.
+ */
+export function BarrasSituacao({
+  linhas,
+  ordem,
+  cores,
+  rotulos,
+  titulo,
+}: {
+  linhas: { id: string; rotulo: string; total: number; valores: Record<string, number> }[];
+  ordem: readonly string[];
+  cores: Record<string, string>;
+  rotulos: Record<string, string>;
+  titulo: string;
+}) {
+  const p = (v: number, t: number) => (t ? (100 * v) / t : 0);
+  return (
+    <figure className="space-y-3">
+      <figcaption className="text-sm font-medium text-carvao">{titulo}</figcaption>
+      <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-carvao-muted" aria-label="Legenda">
+        {ordem.map((k) => (
+          <li key={k} className="inline-flex items-center gap-1.5">
+            <span aria-hidden="true" className="inline-block h-2.5 w-2.5" style={{ background: cores[k] }} />
+            {rotulos[k]}
+          </li>
+        ))}
+      </ul>
+      <ul className="space-y-2">
+        {linhas.map((l) => (
+          <li key={l.id} className="grid gap-1 sm:grid-cols-[11rem_minmax(0,1fr)] sm:items-center sm:gap-3">
+            <span className="text-sm text-carvao">
+              {l.rotulo} <span className="tabular-nums text-carvao-muted">({num(l.total, 0)} MWmédio)</span>
+            </span>
+            <span
+              className="flex h-4 w-full overflow-hidden bg-superficie"
+              role="img"
+              aria-label={`${l.rotulo}: ${ordem.filter((k) => l.valores[k] > 0).map((k) => `${rotulos[k]} ${num(p(l.valores[k], l.total), 1)}%`).join("; ")}`}
+            >
+              {ordem.map((k) => (l.valores[k] > 0 ? <span key={k} style={{ width: `${p(l.valores[k], l.total)}%`, background: cores[k] }} /> : null))}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </figure>
   );
 }
 

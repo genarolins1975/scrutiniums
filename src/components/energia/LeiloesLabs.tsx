@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { TransicaoOpcoes } from "@/components/energia/TransicaoOpcoes";
 import {
   COR_ENTRADA,
@@ -149,7 +149,7 @@ export function LinhaDosProdutos({ produtos, dataSiga }: { produtos: ProdutoNaBa
             )}
           </div>
           <ul className="grid gap-1 text-xs text-carvao-muted sm:grid-cols-2">
-            {ORDEM_ENTRADA.map((k) => (
+            {ORDEM_ENTRADA.filter((k) => p.entrada![k] > 0).map((k) => (
               <li key={k} className="flex items-start gap-2">
                 <span aria-hidden="true" className="mt-[0.3em] inline-block h-2.5 w-2.5 shrink-0" style={{ background: COR_ENTRADA[k] }} />
                 <span>
@@ -181,6 +181,16 @@ export function LabLeilao() {
   const [p, setP] = useState<ParametrosLeilao>(PARAMETROS_LEILAO_INICIAIS);
   const [cenario, setCenario] = useState("base");
   const r = useMemo(() => leilaoDescendente(p), [p]);
+  // a figura é desenhada na largura real (texto de 11 px legível no celular), medida depois da primeira pintura
+  const [largura, setLargura] = useState(640);
+  const refFig = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = refFig.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver((e) => setLargura(Math.max(280, Math.round(e[0].contentRect.width))));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
   const muda = (k: keyof ParametrosLeilao) => (v: number) => {
     setCenario("");
     setP((x) => ({ ...x, [k]: v, ...(k === "custoMin" && v > x.custoMax ? { custoMax: v } : {}), ...(k === "custoMax" && v < x.custoMin ? { custoMin: v } : {}) }));
@@ -190,7 +200,7 @@ export function LabLeilao() {
     setP({ ...PARAMETROS_LEILAO_INICIAIS, ...(CENARIOS.find((c) => c.id === id)?.p ?? {}) });
   };
   // figura: custos dos proponentes (barras) com o teto e o preço de fechamento
-  const W = 640;
+  const W = largura;
   const H = 220;
   const M = { e: 44, d: 12, t: 12, b: 28 };
   const max = Math.max(p.teto, p.custoMax) * 1.05;
@@ -214,14 +224,14 @@ export function LabLeilao() {
           <Controle rotulo="Menor custo entre eles" valor={p.custoMin} min={50} max={500} passo={10} unidade="R$/MWh" onMudar={muda("custoMin")} />
           <Controle rotulo="Maior custo entre eles" valor={p.custoMax} min={50} max={600} passo={10} unidade="R$/MWh" onMudar={muda("custoMax")} />
         </div>
-        <div className="min-w-0 space-y-3">
+        <div ref={refFig} className="min-w-0 space-y-3">
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4" aria-live="polite">
             <Cartao destaque rotulo="Preço de fechamento" valor={r.preco == null ? "sem venda" : `R$ ${n(r.preco)}/MWh`} />
             <Cartao rotulo="Deságio sobre o teto" valor={r.desagioPct == null ? "sem venda" : `${n(r.desagioPct, 1)}%`} />
             <Cartao rotulo="Energia contratada" valor={`${n(r.contratada)} MWmédio`} nota={r.faltou > 0 ? `faltaram ${n(r.faltou)} MWmédio` : "demanda atendida"} />
             <Cartao rotulo="Rodadas" valor={n(r.rodadas.length)} nota={r.margemMedia == null ? undefined : `margem média dos vencedores: R$ ${n(r.margemMedia)}/MWh`} />
           </div>
-          <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="img" aria-label={`Custos de ${r.custos.length} proponentes, teto de R$ ${n(p.teto)}/MWh e preço de fechamento ${r.preco == null ? "inexistente" : `de R$ ${n(r.preco)}/MWh`}.`}>
+          <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="block max-w-full" role="img" aria-label={`Custos de ${r.custos.length} proponentes, teto de R$ ${n(p.teto)}/MWh e preço de fechamento ${r.preco == null ? "inexistente" : `de R$ ${n(r.preco)}/MWh`}.`}>
             {marcas.map((v) => (
               <g key={v}>
                 <line x1={M.e} x2={W - M.d} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" />
@@ -253,7 +263,7 @@ export function LabLeilao() {
               </>
             )}
             <text x={M.e} y={H - 8} fontSize="11" fill="var(--cor-carvao-muted)">
-              Proponentes, do menor ao maior custo (R$/MWh)
+              {W < 420 ? "Proponentes, do menor ao maior custo" : "Proponentes, do menor ao maior custo (R$/MWh)"}
             </text>
           </svg>
           <p className="text-xs text-carvao-muted">

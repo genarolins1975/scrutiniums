@@ -99,6 +99,7 @@ export function LeiloesPrecoAno({
 }) {
   const [ativas, setAtivas] = useState<string[]>(iniciais);
   const [real, setReal] = useState<"real" | "nominal">("real");
+  const [tabelaAberta, setTabelaAberta] = useState(false);
   const [largura, setLargura] = useState(760);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -118,6 +119,22 @@ export function LeiloesPrecoAno({
   const sy = (x: number) => M.t + (1 - x / ymax) * (H - M.t - M.b);
   const passo = W < 520 ? 4 : 2;
   const fmt = (x: number | null, c = 2) => (x == null ? "sem dado" : x.toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c }));
+  // rótulos diretos no fim de cada série, afastados quando ficariam sobrepostos (mínimo de 13 px entre eles)
+  const finais = categorias
+    .filter((c) => ativas.includes(c.id))
+    .map((c) => {
+      const ps = vis.filter((p) => p.categoria === c.id).sort((a, b) => (a.ano < b.ano ? -1 : 1));
+      const u = ps[ps.length - 1];
+      return u ? { id: c.id, rotulo: c.rotulo, x: sx(u.ano), y: sy(v(u)!) } : null;
+    })
+    .filter((x): x is { id: string; rotulo: string; x: number; y: number } => !!x)
+    .sort((a, b) => a.y - b.y);
+  for (let i = 1; i < finais.length; i++) {
+    const a = finais[i - 1];
+    const b = finais[i];
+    if (Math.abs(a.x - b.x) < 70 && b.y - a.y < 13) b.y = a.y + 13;
+  }
+  const yRotulo = Object.fromEntries(finais.map((f) => [f.id, f.y]));
   const alterna = (id: string) => setAtivas((a) => (a.includes(id) ? a.filter((x) => x !== id) : [...a, id]));
   const unidade = real === "real" ? `R$/MWh de ${ipcaAte}` : "R$/MWh da data de cada leilão";
   return (
@@ -171,7 +188,7 @@ export function LeiloesPrecoAno({
                   </circle>
                 ))}
                 {largura >= 520 && (
-                  <text x={sx(u.ano) + 8} y={sy(v(u)!) + 4} fontSize="11" fill="var(--cor-carvao)">
+                  <text x={sx(u.ano) + 8} y={(yRotulo[c.id] ?? sy(v(u)!)) + 4} fontSize="11" fill="var(--cor-carvao)">
                     {c.rotulo}
                   </text>
                 )}
@@ -180,9 +197,10 @@ export function LeiloesPrecoAno({
           })}
       </svg>
       <p className="text-xs text-carvao-muted">Cada ponto é um ano com venda da fonte; o pontilhado só liga esses anos e não indica valor nos anos sem venda.</p>
-      <details>
+      <details onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
         <summary className="min-h-[44px] cursor-pointer text-sm text-carvao-muted underline underline-offset-4">Tabela equivalente</summary>
-        <div className="tabela-scroll mt-2 max-h-[28rem] overflow-y-auto" tabIndex={0} role="region" aria-label="Preço médio por fonte e ano (tabela rolável)">
+        {/* montada só ao abrir: as linhas já estão na tabela de download e não pesam no HTML inicial */}
+        {tabelaAberta && <div className="tabela-scroll mt-2 max-h-[28rem] overflow-y-auto" tabIndex={0} role="region" aria-label="Preço médio por fonte e ano (tabela rolável)">
           <table className="w-full min-w-[36rem] border-collapse text-xs tabular-nums">
             <thead>
               <tr>
@@ -209,7 +227,7 @@ export function LeiloesPrecoAno({
                 ))}
             </tbody>
           </table>
-        </div>
+        </div>}
       </details>
     </div>
   );

@@ -8,7 +8,7 @@ import { Histograma } from "@/components/energia/Histograma";
 import { LeiloesDispersao } from "@/components/energia/LeiloesDispersao";
 import { LabLeilao, LinhaDosProdutos, type ProdutoNaBase } from "@/components/energia/LeiloesLabs";
 import { LeiloesAlternar, LeiloesMapaUf, LeiloesPrecoAno } from "@/components/energia/LeiloesOpcoes";
-import { DiagramaAcr, FrasesCitaveis, GruposControle, LeiloesIndisponivel, ListaRegras } from "@/components/energia/LeiloesPagina";
+import { BarrasSituacao, DiagramaAcr, FrasesCitaveis, GruposControle, LeiloesIndisponivel, ListaRegras } from "@/components/energia/LeiloesPagina";
 import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
 import { Numero } from "@/components/energia/Numero";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
@@ -130,11 +130,10 @@ export default function LeiloesAcrPage() {
 
   // entrega
   const seriesSit = ORDEM_SITUACOES.map((k) => ({ id: k, rotulo: CURTO_SITUACAO[k], cor: COR_SITUACAO[k] }));
-  const entregaCat = g.entrega.por_categoria.map((x) => ({
-    id: x.id,
-    rotulo: nomeCat[x.id],
-    ...Object.fromEntries(ORDEM_SITUACOES.map((k) => [k, x.situacao[k].energia_mwmed])),
-  }));
+  const entregaCat = g.entrega.por_categoria.map((x) => {
+    const valores = Object.fromEntries(ORDEM_SITUACOES.map((k) => [k, x.situacao[k].energia_mwmed])) as Record<string, number>;
+    return { id: x.id, rotulo: nomeCat[x.id], valores, total: Object.values(valores).reduce((s, v) => s + v, 0) };
+  });
 
   const linhasLeiloes = g.leiloes.map((l) => ({
     leilao: l.leilao,
@@ -414,16 +413,18 @@ export default function LeiloesAcrPage() {
                     empilhado
                     altura={320}
                   />
-                  <GraficoBarras
-                    titulo={`Energia contratada por fonte e situação atual da usina (SIGA de ${siga})`}
-                    dados={entregaCat}
-                    chaveCategoria="id"
-                    chaveRotulo="rotulo"
-                    series={seriesSit}
-                    unidade="MWmédio"
-                    casas={0}
-                    empilhado
-                    orientacao="horizontal"
+                  <BarrasSituacao
+                    titulo={`Parcela da energia contratada de cada fonte por situação da usina (SIGA de ${siga})`}
+                    linhas={entregaCat}
+                    ordem={ORDEM_SITUACOES}
+                    cores={COR_SITUACAO}
+                    rotulos={CURTO_SITUACAO}
+                  />
+                  <TabelaDados
+                    titulo={`Energia contratada por fonte e situação da usina, MWmédio (SIGA de ${siga})`}
+                    colunas={["Fonte", ...ORDEM_SITUACOES.map((k) => CURTO_SITUACAO[k])]}
+                    linhas={entregaCat.map((x) => [x.rotulo, ...ORDEM_SITUACOES.map((k) => x.valores[k])])}
+                    casas={[null, ...ORDEM_SITUACOES.map(() => 1)]}
                   />
                   <dl className="grid gap-4 text-sm md:grid-cols-3">
                     {ORDEM_SITUACOES.map((k) => (
