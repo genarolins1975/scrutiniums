@@ -174,6 +174,36 @@ class VigiliaSaneamento(unittest.TestCase):
         self.assertTrue(any("SINISA" in l and "não verificado" in l for l in linhas))
         self.assertTrue(any("CadÚnico" in l and "mês" in l for l in linhas))
 
+    def test_zip_sem_tamanho_na_resposta_e_nao_verificado(self):
+        rede = self.novo()
+        z = rede.meta["sinisa"]["zips"]["agua"]
+        rede.tamanhos[z["url"]] = (200, None, None)  # servidor ignorou o Range e não informou Content-Length
+        linhas = self.rodar(rede)
+        self.assertEqual(len(linhas), 1)
+        self.assertIn("sem tamanho", linhas[0])
+        self.assertIn("não verificado", linhas[0])
+
+    def test_sisagua_sem_tamanho_nem_data_e_nao_verificado(self):
+        rede = self.novo()
+        a = next(iter(v._arquivos_sisagua(rede.meta)))
+        rede.tamanhos[a["url"]] = (200, None, None)
+        linhas = self.rodar(rede)
+        self.assertEqual(len(linhas), 1)
+        self.assertIn("não verificado", linhas[0])
+
+    def test_orcamento_de_tempo_esgotado_reporta_todas_as_fontes(self):
+        chamadas = []
+        rede = self.novo()
+        rede.tamanho = lambda url: chamadas.append(url) or (206, 1, None)
+        linhas = v.verificar(rede, HOJE, self.meta, set(self.links), orcamento=-1)
+        self.assertEqual(chamadas, [])  # nenhuma consulta depois do teto
+        for fonte in ("SINISA", "SISAGUA", "CadÚnico"):
+            self.assertTrue(any(fonte in l and "não verificado" in l and "orçamento" in l for l in linhas), fonte)
+
+    def test_pior_caso_de_rede_cabe_no_job_de_10_minutos(self):
+        # teto total + a última consulta (3 tentativas) tem de ficar abaixo dos 10 minutos do workflow
+        self.assertLess(v.ORCAMENTO_SEGUNDOS + 3 * v.TIMEOUT_REQUISICAO, 10 * 60)
+
     def test_corpo_cita_edicao_e_o_que_fazer(self):
         c = v.corpo(["- x"], self.meta)
         self.assertIn(self.meta["sinisa"]["edicao"], c)

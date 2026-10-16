@@ -30,6 +30,7 @@ Contrato: `verificar(...)` devolve uma lista de linhas de acusação; vazia = si
 """
 import json
 import re
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -41,6 +42,10 @@ RAIZ = Path(__file__).resolve().parent.parent
 META = RAIZ / "public" / "saneamento" / "gold" / "meta.json"
 SNAPSHOT_LINKS = RAIZ / "pipeline" / "watch" / "saneamento_sinisa_links.txt"
 
+# O job do workflow tem 10 minutos. Sem teto de tempo total, três fontes fora do ar esgotariam o job antes
+# da issue ser aberta (cada consulta pode gastar 3 tentativas de TIMEOUT_REQUISICAO): vigia que morre calado.
+ORCAMENTO_SEGUNDOS = 360
+TIMEOUT_REQUISICAO = 45
 TOLERANCIA_SISAGUA_DIAS = 60
 LIMITE_MESES_CADUNICO = 3
 MES_DO_ANO_COMPLETO_SISAGUA = 3  # março do ano seguinte: o ano fechado já devia estar publicado
@@ -60,7 +65,7 @@ class Rede:
         """(status, bytes totais ou None, Last-Modified ou None) por um GET de 1 byte (HEAD é recusado pelo gov.br)."""
         req = urllib.request.Request(url, headers={"User-Agent": UA, "Range": "bytes=0-0"})
         try:
-            with urllib.request.urlopen(req, timeout=90) as r:
+            with urllib.request.urlopen(req, timeout=TIMEOUT_REQUISICAO) as r:
                 intervalo = r.headers.get("Content-Range") or ""
                 total = int(intervalo.rsplit("/", 1)[1]) if "/" in intervalo else int(r.headers.get("Content-Length") or 0)
                 return r.status, total or None, r.headers.get("Last-Modified")
@@ -70,7 +75,7 @@ class Rede:
     def texto(self, url):
         req = urllib.request.Request(url, headers={"User-Agent": UA})
         try:
-            with urllib.request.urlopen(req, timeout=90) as r:
+            with urllib.request.urlopen(req, timeout=TIMEOUT_REQUISICAO) as r:
                 return r.status, r.read().decode("utf-8", errors="replace")
         except urllib.error.HTTPError as e:
             return e.code, ""
@@ -79,9 +84,14 @@ class Rede:
         return json.loads(self.texto(url + "?" + urllib.parse.urlencode(params))[1])
 
 
+_PRAZO = None
+
+
 def _tenta(f, vezes=3):
     ultimo = None
     for _ in range(vezes):
+        if _PRAZO is not None and time.monotonic() > _PRAZO:
+            raise TimeoutError("orçamento de tempo da vigília esgotado")
         try:
             return f()
         except (urllib.error.URLError, TimeoutError, ConnectionError, OSError, ValueError) as e:
@@ -134,7 +144,9 @@ def sinisa(meta, rede, snapshot):
         st, total, _ = _tenta(lambda: rede.tamanho(z["url"]))
         if st not in (200, 206):
             linhas.append(f"- SINISA: ZIP de {chave} respondeu HTTP {st}; **não verificado** ({z['url']}).")
-        elif total is not None and total != z["bytes"]:
+        elif total is None:
+            linhas.append(f"- SINISA: ZIP de {chave} respondeu sem tamanho (Content-Range e Content-Length ausentes); **não verificado** ({z['url']}).")
+        elif total != z["bytes"]:
             linhas.append(f"- SINISA: o ZIP de {chave} ({z['arquivo']}) mudou de {z['bytes']:,} para {total:,} bytes desde a coleta "
                           f"de {s['capturado_em'][:10]}: retificação de arquivo já integrado.".replace(",", "."))
     return linhas
@@ -160,6 +172,9 @@ def sisagua(meta, rede, hoje):
             continue
         novo = _data(lm) if lm else None
         antigo = _data(a.get("last_modified") or "")
+        if total is None and novo is None:
+            falhas.append(f"{nome} (sem tamanho nem Last-Modified)")
+            continue
         if not (total is not None and total != a["bytes"]) and not (novo and antigo and novo > antigo):
             continue
         # defasagem da gold em relação à fonte: Last-Modified atual contra o registrado (ou contra a captura)
@@ -207,7 +222,9 @@ def cadunico(meta, rede, hoje):
     return []
 
 
-def verificar(rede=None, hoje=None, meta=None, snapshot=None):
+def verificar(rede=None, hoje=None, meta=None, snapshot=None, orcamento=ORCAMENTO_SEGUNDOS):
+    global _PRAZO
+    _PRAZO = time.monotonic() + orcamento
     rede = rede or Rede()
     hoje = hoje or date.today()
     meta = meta if meta is not None else json.loads(META.read_text(encoding="utf-8"))
