@@ -47,7 +47,7 @@ function Controle({
   ajuda?: string;
 }) {
   const id = useId();
-  const casas = passo < 1 ? 1 : 0;
+  const casas = passo < 0.1 ? 2 : passo < 1 ? 1 : 0;
   return (
     <div className="space-y-1">
       <label htmlFor={id} className="flex items-baseline justify-between gap-3 text-sm text-carvao">
@@ -377,10 +377,11 @@ export function LabReceita({ padroes, pld, pldNota }: { padroes: PadraoReceita[]
   const valoresDe = (pd: PadraoReceita | undefined): ParametrosReceita => ({
     potenciaMw: 100,
     fatorCapacidadePct: pd?.fonte === "solar" ? 25 : 45,
-    taxaCortePct: Math.round(pd?.taxaPct ?? 10),
-    parcelaEletricaPct: Math.round(pd?.parcelaEletricaPct ?? 0),
+    // os valores publicados entram como publicados: arredondar mudaria a premissa que o texto diz ser a da fonte
+    taxaCortePct: pd?.taxaPct ?? 10,
+    parcelaEletricaPct: pd?.parcelaEletricaPct ?? 0,
     precoContrato: 200,
-    pldNasHorasDeCorte: Math.round(pld ?? 60),
+    pldNasHorasDeCorte: pld ?? 60,
   });
   const [fonte, setFonte] = useState<string>(inicial?.fonte ?? "eolica");
   const [p, setP] = useState<ParametrosReceita>(valoresDe(inicial));
@@ -416,6 +417,7 @@ export function LabReceita({ padroes, pld, pldNota }: { padroes: PadraoReceita[]
             valor={p.taxaCortePct}
             min={0}
             max={60}
+            passo={0.1}
             unidade="%"
             onMudar={def("taxaCortePct")}
             ajuda={pd?.taxaPct != null ? `Publicado para as ${pd.rotulo.toLowerCase()} em ${pd.periodo}: ${n(pd.taxaPct, 1)}%.` : undefined}
@@ -425,17 +427,18 @@ export function LabReceita({ padroes, pld, pldNota }: { padroes: PadraoReceita[]
             valor={p.parcelaEletricaPct}
             min={0}
             max={100}
+            passo={0.1}
             unidade="%"
             onMudar={def("parcelaEletricaPct")}
             ajuda={pd?.parcelaEletricaPct != null ? `Publicado: ${n(pd.parcelaEletricaPct, 1)}% da energia não gerada.` : undefined}
           />
           <Controle rotulo="Preço do contrato (exemplo)" valor={p.precoContrato} min={0} max={600} passo={10} unidade="R$/MWh" onMudar={def("precoContrato")} />
-          <Controle rotulo="PLD nas horas de corte" valor={p.pldNasHorasDeCorte} min={0} max={800} unidade="R$/MWh" onMudar={def("pldNasHorasDeCorte")} ajuda={pldNota} />
+          <Controle rotulo="PLD nas horas de corte" valor={p.pldNasHorasDeCorte} min={0} max={800} passo={0.01} unidade="R$/MWh" onMudar={def("pldNasHorasDeCorte")} ajuda={pldNota} />
         </fieldset>
         <div className="min-w-0 space-y-3" aria-live="polite">
           <div className="grid grid-cols-2 gap-2">
             <Cartao rotulo="Energia possível no ano" valor={`${n(r.possivelMwh / 1e3, 1)} GWh`} nota="potência × fator de capacidade × 8.760 h" />
-            <Cartao destaque rotulo="Energia cortada no ano" valor={`${n(r.cortadaMwh / 1e3, 1)} GWh`} nota={`${n(p.taxaCortePct)}% da possível`} />
+            <Cartao destaque rotulo="Energia cortada no ano" valor={`${n(r.cortadaMwh / 1e3, 1)} GWh`} nota={`${n(p.taxaCortePct, 1)}% da possível`} />
             <Cartao rotulo="Valor a preço de contrato" valor={reais(r.valorContrato)} nota="o que a energia cortada valeria na venda" />
             <Cartao rotulo="Valor ao PLD informado" valor={reais(r.valorPld)} nota="custo de repor no curto prazo, ou o que deixa de receber quem vende nele" />
             <Cartao rotulo="Cortada com razão elétrica" valor={`${n(r.eletricaMwh / 1e3, 1)} GWh`} nota="a razão que a norma lida associa a ressarcimento" />

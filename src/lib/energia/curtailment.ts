@@ -363,18 +363,21 @@ export function escalaNacional(
   restricoes: Partial<Record<"eolica" | "solar", Restricao | null>>,
   consumo: { total_mwh: number; periodo: { inicio: string; fim: string } } | null | undefined,
 ) {
-  const partes = (["eolica", "solar"] as const).map((f) => restricoes[f]?.ultimos_12m).filter((u): u is NonNullable<typeof u> => !!u);
-  if (!partes.length || partes.some((u) => u.energia_nao_gerada_mwh === null)) return null;
-  const inicio = partes[0].inicio;
-  const fim = partes[0].fim;
-  if (partes.some((u) => u.inicio !== inicio || u.fim !== fim)) return null;
-  const cortadaMwh = partes.reduce((s, u) => s + (u.energia_nao_gerada_mwh as number), 0);
+  // o total é das duas fontes: com uma delas ausente, não há total (um valor parcial com rótulo de soma subestimaria o corte)
+  const partes = (["eolica", "solar"] as const).map((f) => restricoes[f]?.ultimos_12m);
+  if (partes.some((u) => !u || u.energia_nao_gerada_mwh === null)) return null;
+  const doze = partes as NonNullable<(typeof partes)[number]>[];
+  const inicio = doze[0].inicio;
+  const fim = doze[0].fim;
+  if (doze.some((u) => u.inicio !== inicio || u.fim !== fim)) return null;
+  const cortadaMwh = doze.reduce((s, u) => s + (u.energia_nao_gerada_mwh as number), 0);
   const mesmaJanela = !!consumo && consumo.periodo.inicio === inicio && consumo.periodo.fim === fim;
   return {
     inicio,
     fim,
     cortadaTwh: cortadaMwh / 1e6,
-    consumoTwh: consumo ? consumo.total_mwh / 1e6 : null,
+    // consumo de outra janela não aparece: a página o rotula como "mesmo período"
+    consumoTwh: mesmaJanela && consumo ? consumo.total_mwh / 1e6 : null,
     proporcaoPct: mesmaJanela && consumo && consumo.total_mwh > 0 ? (100 * cortadaMwh) / consumo.total_mwh : null,
     mesmaJanela,
   };

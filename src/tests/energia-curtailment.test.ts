@@ -78,6 +78,11 @@ describe("curtailment: dados publicados", () => {
     if (e.mesmaJanela) expect(e.proporcaoPct).toBeCloseTo((100 * soma) / (consumo.total_mwh / 1e6), 9);
     const outra = escalaNacional(D.restricoes, { ...consumo, periodo: { inicio: "2020-01", fim: "2020-12" } })!;
     expect(outra.proporcaoPct).toBeNull();
+    // consumo de outra janela não aparece rotulado como "mesmo período"
+    expect(outra.consumoTwh).toBeNull();
+    // sem uma das fontes não há total: o valor parcial não sai com rótulo de soma
+    expect(escalaNacional({ eolica: D.restricoes.eolica }, consumo)).toBeNull();
+    expect(escalaNacional({ eolica: D.restricoes.eolica, solar: { ...D.restricoes.solar!, ultimos_12m: null } }, consumo)).toBeNull();
   });
 
   it("UFs contra a energia não gerada: consumo = cativo + livre, UF sem janela fora", () => {
@@ -165,6 +170,10 @@ describe("curtailment: modelos didáticos", () => {
       renderToStaticMarkup(createElement(LabValorPerdido, { cortadaTwh: 41.3, periodo: "set/2025 a ago/2026", pldMenor: 57.31, pldNota: "nota" })),
     ].join("");
     expect(h.match(/Modelo didático/g)?.length).toBe(3);
+    // os valores publicados entram sem arredondar
+    expect(h).toContain('aria-valuetext="21,3 %"');
+    expect(h).toContain('aria-valuetext="8,6 %"');
+    expect(h).toContain('aria-valuetext="57,31 R$/MWh"');
     expect(h).toContain("Fica de fora deste laboratório");
     expect(h.match(/type="range"/g)!.length).toBeGreaterThan(15);
     expect(h).not.toMatch(/NaN|undefined|\[object Object\]/);
