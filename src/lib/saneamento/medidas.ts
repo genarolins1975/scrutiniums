@@ -13,7 +13,7 @@ import { numero, sinal } from "./formato";
  * 2024 (população estimada) no mesmo numerador e denominador.
  */
 
-export type Fonte = "censo2022" | "censo2010_2022" | "sinisa2024" | "nr8_sinisa2024" | "sinisa_cadunico2024" | "sisagua";
+export type Fonte = "censo2022" | "censo2010_2022" | "sinisa2024" | "nr8_sinisa2024" | "sinisa_cadunico2024" | "sisagua" | "sih_sim";
 export type Variante = "pct" | "pessoas";
 
 export type Medida = {
@@ -67,6 +67,7 @@ export const FONTE_ROTULO: Record<Fonte, string> = {
   nr8_sinisa2024: "SINISA 2025 (2024) e IBGE, pela ficha da NR ANA 8/2024",
   sinisa_cadunico2024: "SINISA 2025 (2024) e MDS, CadÚnico de dezembro de 2024",
   sisagua: "Ministério da Saúde, SISAGUA (dados abertos)",
+  sih_sim: "Ministério da Saúde, DATASUS: SIH/SUS e SIM, por local de residência, 2022 a 2024 (TabNet), e IBGE, Censo 2022",
 };
 
 /** Rótulo curto da fonte no seletor de medidas. */
@@ -77,6 +78,7 @@ export const FONTE_CURTA: Record<Fonte, string> = {
   nr8_sinisa2024: "NR 8 / SINISA 2024",
   sinisa_cadunico2024: "SINISA e CadÚnico 2024",
   sisagua: "SISAGUA",
+  sih_sim: "SIH, SIM e Censo 2022",
 };
 
 /** Anos do SISAGUA publicados: 2024 casa com o SINISA; 2025 é o ano completo mais recente. */
@@ -356,6 +358,74 @@ export const MEDIDAS_QUALIDADE: Medida[] = ANOS_SISAGUA.flatMap((ano) =>
     };
   }),
 );
+
+/** Janela do capítulo 13 (SIH e SIM): os três últimos anos com dados finais do SIM na extração. */
+export const ANOS_SAUDE = [2022, 2023, 2024] as const;
+
+type EspecSaude = {
+  grupo: string;
+  rotuloGrupo: string;
+  cid: string;
+  sistema: "sih" | "sim";
+  medida: "int" | "obt";
+  casas: number;
+  cortesPct: number[];
+  limitesHistograma: number[];
+};
+
+const ESPEC_SAUDE: EspecSaude[] = [
+  { grupo: "intestinais", rotuloGrupo: "Infecções intestinais", cid: "A00 a A09", sistema: "sih", medida: "int", casas: 1, cortesPct: [25, 75, 150, 300], limitesHistograma: [0, 25, 50, 100, 200, 400, 800, 1600] },
+  { grupo: "intestinais", rotuloGrupo: "Infecções intestinais", cid: "A00 a A09", sistema: "sim", medida: "obt", casas: 1, cortesPct: [0.1, 2, 4, 8], limitesHistograma: [0, 0.1, 1, 2, 4, 8, 16, 32, 64] },
+  { grupo: "leptospirose", rotuloGrupo: "Leptospirose", cid: "A27", sistema: "sih", medida: "int", casas: 2, cortesPct: [0.1, 1, 3, 10], limitesHistograma: [0, 0.1, 1, 2, 5, 10, 20, 40, 80] },
+  { grupo: "leptospirose", rotuloGrupo: "Leptospirose", cid: "A27", sistema: "sim", medida: "obt", casas: 2, cortesPct: [0.1, 0.5, 1, 2.5], limitesHistograma: [0, 0.1, 0.5, 1, 2.5, 5, 10, 20] },
+  { grupo: "esquistossomose", rotuloGrupo: "Esquistossomose", cid: "B65", sistema: "sih", medida: "int", casas: 2, cortesPct: [0.1, 0.5, 1, 2.5], limitesHistograma: [0, 0.1, 0.5, 1, 2.5, 5, 10, 20] },
+  { grupo: "esquistossomose", rotuloGrupo: "Esquistossomose", cid: "B65", sistema: "sim", medida: "obt", casas: 2, cortesPct: [0.1, 0.5, 1, 3], limitesHistograma: [0, 0.1, 0.5, 1, 3, 6, 12] },
+];
+
+const POR_100_MIL = 100_000;
+
+/**
+ * Doenças com ligação documentada ao saneamento, por município de residência: taxa anual por 100 mil moradores
+ * (soma de 2022 a 2024 ÷ três vezes os moradores do Censo 2022). Denominador fixo, não população do ano.
+ */
+export const MEDIDAS_SAUDE: Medida[] = ESPEC_SAUDE.map((e) => {
+  const campo = `sd_${e.grupo}_${e.sistema}_${e.medida}` as const;
+  const casos = (m: Municipio) => m[campo] ?? null;
+  const exposicao = (m: Municipio) => (m.pop22 == null || !(m.pop22 > 0) ? null : ANOS_SAUDE.length * m.pop22);
+  const internacao = e.sistema === "sih";
+  const evento = internacao ? "internações" : "óbitos";
+  return {
+    id: `sd-${e.grupo}-${e.sistema}-${e.medida}`,
+    titulo: `${e.rotuloGrupo}: ${evento} (${internacao ? "SIH" : "SIM"})`,
+    pergunta: internacao
+      ? `Quantas internações pelo SUS de moradores do município por ${e.rotuloGrupo.toLowerCase()} (CID-10 ${e.cid}) houve, por 100 mil habitantes ao ano?`
+      : `Quantos moradores do município morreram de ${e.rotuloGrupo.toLowerCase()} (CID-10 ${e.cid}) como causa básica, por 100 mil habitantes ao ano?`,
+    fonte: "sih_sim" as const,
+    periodo: `${ANOS_SAUDE[0]} a ${ANOS_SAUDE[ANOS_SAUDE.length - 1]}`,
+    universo: "Moradores do Censo 2022 do município de residência, três anos de exposição (denominador fixo)",
+    unidadePct: "por 100 mil hab. ao ano",
+    unidadeContagem: `${evento} em ${ANOS_SAUDE[0]} a ${ANOS_SAUDE[ANOS_SAUDE.length - 1]}`,
+    casas: e.casas,
+    pct: (m: Municipio) => {
+      const n = casos(m);
+      const d = exposicao(m);
+      return n == null || d == null ? null : (n / d) * POR_100_MIL;
+    },
+    contagem: casos,
+    numerador: (m: Municipio) => (exposicao(m) == null ? null : casos(m)),
+    denominador: exposicao,
+    fator: POR_100_MIL,
+    permite: internacao
+      ? "Ver onde há mais internações pelo SUS de moradores do município com a doença, em taxa de internações por 100 mil habitantes ao ano, e comparar com a UF e o Brasil na mesma janela."
+      : "Ver onde moradores do município morreram com a doença como causa básica, em taxa por 100 mil habitantes ao ano, com dados finais do SIM.",
+    naoPermite: internacao
+      ? "Contar pessoas internadas: a fonte conta internações, e quem foi internado mais de uma vez na janela entra mais de uma vez. Atribuir a internação ao saneamento: a fonte traz o diagnóstico, não a causa do contágio. Só entram internações pagas pelo SUS, pelo município de residência informado na AIH, e poucos casos mudam muito a taxa de um município pequeno."
+      : "Atribuir o óbito ao saneamento: a fonte traz a causa básica da declaração de óbito, não a origem do contágio. Poucos óbitos mudam muito a taxa de um município pequeno, e as doenças raras têm zero na maior parte dos municípios.",
+    ausencia: "Município sem moradores no Censo 2022 (instalado depois) ou sem linha na fonte. Zero é zero: nenhum caso registrado na janela.",
+    cortesPct: e.cortesPct,
+    limitesHistograma: e.limitesHistograma,
+  };
+});
 
 export const MEDIDAS_DESIGUALDADES: Medida[] = DESIGUALDADES.map((s) => {
   const num = (m: Municipio) => m[`des_${s.id}_num`] ?? null;
@@ -659,10 +729,11 @@ export const MEDIDAS: Medida[] = [
   },
   ...MEDIDAS_DESIGUALDADES,
   ...MEDIDAS_QUALIDADE,
+  ...MEDIDAS_SAUDE,
 ];
 
 /** Medidas que dependem só de municipios.json, sem os recortes do capítulo 2 e do SISAGUA (que exigem tabela própria). */
-export const MEDIDAS_GERAIS: Medida[] = MEDIDAS.filter((m) => !MEDIDAS_DESIGUALDADES.includes(m) && !MEDIDAS_QUALIDADE.includes(m));
+export const MEDIDAS_GERAIS: Medida[] = MEDIDAS.filter((m) => !MEDIDAS_DESIGUALDADES.includes(m) && !MEDIDAS_QUALIDADE.includes(m) && !MEDIDAS_SAUDE.includes(m));
 
 /** Texto do valor principal da medida, com a unidade certa (percentual, pontos percentuais ou valor por habitante). */
 export function formatarValor(med: Medida, x: number | null | undefined): string {

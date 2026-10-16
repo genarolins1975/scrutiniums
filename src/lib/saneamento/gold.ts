@@ -88,6 +88,19 @@ export function municipiosComQualidade(): Municipio[] {
   return lista;
 }
 
+/** Tabela do capítulo 13 (SIH e SIM, saúde e ambiente), em arquivo próprio. */
+export const URL_SAUDE_MUNICIPIOS = `${URL_GOLD}/saude_municipios.json`;
+
+let saudeCache: { fonte: TabelaMunicipios; lista: Municipio[] } | null = null;
+export function municipiosComSaude(): Municipio[] {
+  const extra = ler<TabelaMunicipios>("saude_municipios.json");
+  if (!extra) return municipios();
+  if (saudeCache?.fonte === extra) return saudeCache.lista;
+  const lista = juntarComplemento(municipios(), extra);
+  saudeCache = { fonte: extra, lista };
+  return lista;
+}
+
 export function municipio(id: string): Municipio | null {
   return municipios().find((m) => m.id === id) ?? null;
 }

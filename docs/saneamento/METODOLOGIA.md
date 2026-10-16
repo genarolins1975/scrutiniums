@@ -121,3 +121,15 @@ Cianotoxinas. Vigilância de cianobactérias e cianotoxinas, rotina, água trata
 
 Não integrados: série das substâncias químicas antes de 2024; plano de amostragem de 2014 a 2021 (só JSON) e de 2022 (cálculo não comparável).
 
+## Saúde e ambiente (SIH e SIM)
+
+**Fonte.** Ministério da Saúde, DATASUS, TabNet: Morbidade Hospitalar do SUS por local de residência (`sih/cnv/nrbr.def`) e Mortalidade por residência (`sim/cnv/obt10br.def`). Cada consulta é uma tabulação por município, gravada como veio (gzip) com o sha256 do original; parâmetros, itens resolvidos contra a definição do TabNet e notas da própria fonte ficam em `seed/saude/manifesto.json` e em `meta.json`. A gold sai desses originais, sem rede (`pipeline/observatorio_saneamento/saude.py`).
+
+**Recorte.** Três grupos, escolhidos porque o diagnóstico é separável nas duas fontes e a transmissão passa por água, esgoto ou lixo: infecções intestinais (CID-10 A00 a A09; na Lista de Morbidade do SIH: cólera, febres tifoide e paratifoide, shiguelose, amebíase, diarreia e gastroenterite de origem infecciosa presumível e outras infecciosas intestinais), leptospirose (A27, as três formas da lista) e esquistossomose (B65). Ficam de fora dengue, malária e demais doenças de vetor, a hepatite A (dentro de "outras hepatites virais" no SIH) e doenças de pele.
+
+**Janela.** 2022 a 2024, os três últimos anos com dados finais do SIM na extração (nota da fonte: finais até 2024, extração de 02/12/2025). No SIH, ano de atendimento, com arquivos de processamento até dezembro de 2025 para captar internações de 2024 processadas depois; o TabNet avisa que os dados dos últimos seis meses estão sujeitos a atualização.
+
+**Medidas.** Contagens por município de residência (SIH: internações e óbitos hospitalares; SIM: óbitos por causa básica). A consulta ao SIH usa o incremento "Internações": é contagem de internações, não de pessoas, e quem foi internado mais de uma vez na janela entra mais de uma vez. Taxa = casos de 2022 a 2024 ÷ (3 × moradores do Censo 2022) × 100 mil, denominador fixo e declarado. Território (UF, região, Brasil) = Σ casos ÷ Σ denominadores municipais, nunca média de taxas. Zero é nenhum caso na janela; município sem moradores no Censo 2022 fica sem taxa. Casos sem município de residência identificado (4 no total das consultas) entram no total da fonte e em nenhum município; a conferência registra a diferença, que é zero, em cada consulta.
+
+**Cautelas.** O SIH cobre só internações pagas pelo SUS e depende do município de residência informado na AIH; poucos casos tornam instável a taxa de município pequeno (o ranking do atlas só inclui municípios de 10 mil moradores ou mais); sem ajuste por idade. O quadro por quinto de carência de esgoto é descritivo e compara grupos de municípios: renda, idade, clima, oferta de hospital e qualidade do registro variam junto e não são controlados.
+

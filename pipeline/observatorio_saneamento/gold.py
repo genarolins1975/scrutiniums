@@ -27,6 +27,7 @@ import re
 import unicodedata
 from collections import Counter, defaultdict
 
+from . import saude
 from .desigualdades import SPECS as SPECS_DESIGUALDADES
 from .desigualdades import construir as construir_desigualdades
 from . import sisagua
@@ -1098,6 +1099,10 @@ def construir():
     for r in regs:
         r.update(qualidade[r["id"][:6]])
         detalhes_uf[r["uf"]][r["id"]]["qualidade"] = qualidade[r["id"][:6]]
+    # Saúde e ambiente (SIH e SIM): contagens municipais da janela, em arquivo próprio.
+    saude_campos, meta["saude"] = saude.construir(ids6, uf6)
+    for r in regs:
+        r.update(saude_campos[r["id"][:6]])
     return {
         "reguladores": lista_reg,
         "meta": meta,
@@ -1217,6 +1222,17 @@ def _rotulo_qualidade(c):
 CAMPOS_QUALIDADE = [("id", "Código IBGE do município")] + [(c, _rotulo_qualidade(c)) for c in sisagua.campos() + sisagua_quimicos.campos()]
 
 
+# Capítulo 13 (saúde e ambiente): arquivo próprio, carregado só pelo atlas do capítulo.
+def _rotulo_saude(c):
+    _, grupo, sistema, medida = c.split("_")
+    nome = "total dos três grupos" if grupo == "total" else next(g["rotulo"] + " (CID-10 " + g["cid"] + ")" for g in saude.GRUPOS if g["id"] == grupo)
+    rotulo = next(m[5] for m in saude.MEDIDAS if m[0] == sistema and m[1] == medida)
+    return f"Saúde {saude.ANOS[0]} a {saude.ANOS[-1]}, {nome}: {rotulo}, soma dos anos"
+
+
+CAMPOS_SAUDE = [("id", "Código IBGE do município")] + [(c, _rotulo_saude(c)) for c in saude.campos()]
+
+
 def json_bytes(obj):
     return (json.dumps(obj, ensure_ascii=False, sort_keys=False, separators=(",", ":")) + "\n").encode()
 
@@ -1273,6 +1289,13 @@ def arquivos(g):
         "linhas": [[r[c] for c in campos_qa] for r in g["municipios"]],
     })
     out["qualidade_municipios.csv"] = csv_bytes([r for _, r in CAMPOS_QUALIDADE], [[r[c] for c in campos_qa] for r in g["municipios"]])
+    campos_sd = [c for c, _ in CAMPOS_SAUDE]
+    out["saude_municipios.json"] = json_bytes({
+        "campos": campos_sd,
+        "rotulos": dict(CAMPOS_SAUDE),
+        "linhas": [[r[c] for c in campos_sd] for r in g["municipios"]],
+    })
+    out["saude_municipios.csv"] = csv_bytes([r for _, r in CAMPOS_SAUDE], [[r[c] for c in campos_sd] for r in g["municipios"]])
     cab_p = ["id", "nome", "sigla", "natureza", "abrangencia", "ufs", "municipios_agua", "municipios_esgoto",
              "populacao_atendida_agua", "populacao_atendida_esgoto", "perdas_distribuicao_pct",
              "investimento_agua", "investimento_esgoto"]

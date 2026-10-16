@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { agregado, agregados, fichaMunicipio, meta, municipios, municipiosComDesigualdades, municipiosComQualidade, prestadores, reguladores } from "@/lib/saneamento/gold";
-import { MEDIDAS_DESIGUALDADES, MEDIDAS, MEDIDAS_GERAIS, MEDIDAS_QUALIDADE, agregarMedida, formatarValor, medida } from "@/lib/saneamento/medidas";
+import { agregado, agregados, fichaMunicipio, meta, municipios, municipiosComDesigualdades, municipiosComQualidade, municipiosComSaude, prestadores, reguladores } from "@/lib/saneamento/gold";
+import { MEDIDAS_DESIGUALDADES, MEDIDAS, MEDIDAS_GERAIS, MEDIDAS_QUALIDADE, MEDIDAS_SAUDE, agregarMedida, formatarValor, medida } from "@/lib/saneamento/medidas";
 import { referencias } from "@/lib/saneamento/referencias";
 import { CAPITULOS, ROTA } from "@/lib/saneamento/capitulos";
 import { VIABILIDADE } from "@/lib/saneamento/viabilidade";
@@ -51,7 +51,7 @@ describe("Saneamento: gold e conferências", () => {
     expect(Object.keys(listaDes[0]).filter((k) => k.startsWith("des_"))).toHaveLength(28);
     expect(listaDes).toHaveLength(lista.length);
     expect(MEDIDAS_GERAIS.some((m) => m.id.startsWith("des-"))).toBe(false);
-    expect(MEDIDAS_GERAIS.length + MEDIDAS_DESIGUALDADES.length + MEDIDAS_QUALIDADE.length).toBe(MEDIDAS.length);
+    expect(MEDIDAS_GERAIS.length + MEDIDAS_DESIGUALDADES.length + MEDIDAS_QUALIDADE.length + MEDIDAS_SAUDE.length).toBe(MEDIDAS.length);
   });
 
   const listaQa = municipiosComQualidade();
@@ -220,7 +220,7 @@ describe("Saneamento: gold e conferências", () => {
   it("a contagem agregada de cada medida soma a própria contagem municipal", () => {
     for (const med of MEDIDAS) {
       if (!med.contagem || !med.numerador || !med.denominador) continue;
-      const base = med.id.startsWith("qa-") ? listaQa : listaDes;
+      const base = med.id.startsWith("qa-") ? listaQa : med.id.startsWith("sd-") ? municipiosComSaude() : listaDes;
       const r = agregarMedida(med, base);
       const incluidos = base.filter((m) => med.numerador!(m) != null && med.denominador!(m) != null && med.denominador!(m)! > 0);
       expect(r.contagem, med.id).toBe(incluidos.reduce((s, m) => s + (med.contagem!(m) ?? 0), 0));
