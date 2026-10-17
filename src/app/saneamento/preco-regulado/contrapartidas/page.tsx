@@ -40,7 +40,7 @@ export default function Pagina() {
               serviço lado a lado, sem somá-los numa nota.
             </p>
           }
-          recorte={<>Os dois estudos de caso (ARSESP e AGEPAR) e os cinco prestadores com tabela verificada; indicadores de serviço do SINISA 2024.</>}
+          recorte={<>Os dois estudos de caso (ARSESP e AGEPAR) e os {porPrestador.length} prestadores com tabela verificada; indicadores de serviço do SINISA 2024.</>}
           situacao="parcial"
           pendencia="Aferições anuais das metas contratuais pelos reguladores não foram localizadas para 2026; o resultado observado usa o SINISA 2024, anterior aos ciclos em análise."
         />

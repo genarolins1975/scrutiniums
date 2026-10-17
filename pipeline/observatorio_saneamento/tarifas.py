@@ -13,6 +13,8 @@ Formato de uma tabela de serviço:
   minimo {m3, valor}: valor que cobre os primeiros m3 (consumo mínimo faturável);
   faixas [{de, ate, preco}]: R$/m³ do volume acima de `de` até `ate` (ate null = sem limite).
 Esgoto: tabela própria ou {"percentual": p} da conta de água.
+Categoria: consumoMaximo (m³/mês) quando o ato só define preço até um teto; acima dele o simulador não calcula.
+Tabela: metodoNaoVerificado quando o ato não diz por extenso uma regra de cobrança que a simulação assume.
 
 Uso:
     python3 -m pipeline.observatorio_saneamento.tarifas
@@ -293,6 +295,123 @@ caesb = {
     "exemplos": {"residencial": {"10": 114.34, "20": 288.18}, "social": {"10": 57.20, "20": 144.22}},
 }
 
+# ---------------------------------------------------------------- SANEAGO (AGR, AR, AMAE, ARM)
+SG = [0, 10, 15, 20, 25, 30, 40, 50]
+# Anexo Único da Resolução Conjunta 1/2026 (R$/m³): água, esgoto coleta e afastamento, esgoto tratamento.
+SG_NORMAL = {
+    "agua": [5.77, 6.51, 7.45, 8.45, 9.54, 10.89, 12.33, 14.06],
+    "coleta": [4.61, 5.21, 5.96, 6.76, 7.63, 8.71, 9.86, 11.25],
+    "tratamento": [1.15, 1.30, 1.49, 1.69, 1.91, 2.18, 2.47, 2.81],
+}
+SG_SOCIAL = {
+    "agua": [2.73, 3.07, 3.52],
+    "coleta": [2.18, 2.46, 2.82],
+    "tratamento": [0.55, 0.61, 0.70],
+}
+# Anexo Único da Resolução Normativa AGR 283/2025, vigente de 01/04/2025 a 31/03/2026: base do reajuste linear de 4,845% de 2026.
+SG_2025_NORMAL = {
+    "agua": [5.50, 6.21, 7.11, 8.06, 9.10, 10.39, 11.76, 13.41],
+    "coleta": [4.40, 4.97, 5.69, 6.45, 7.28, 8.31, 9.41, 10.72],
+    "tratamento": [1.10, 1.24, 1.42, 1.61, 1.82, 2.08, 2.35, 2.68],
+}
+SG_2025_SOCIAL = {
+    "agua": [2.60, 2.93, 3.36],
+    "coleta": [2.08, 2.35, 2.69],
+    "tratamento": [0.52, 0.59, 0.67],
+}
+SG_BASICA_2025 = {"normal": 16.65, "social": 8.32}
+SG_BASICA_2026 = {"normal": 17.46, "social": 8.73}
+SG_REAJUSTE_2026 = "1.04845"
+
+
+def soma(a, b):
+    """Soma de duas colunas de preço em Decimal: o esgoto cobra coleta e afastamento mais tratamento."""
+    return [float(Decimal(str(x)) + Decimal(str(y))) for x, y in zip(a, b)]
+
+
+def saneago_faixas(precos, cortes, ate_ultima=None):
+    out = progressivo(precos, cortes)
+    if ate_ultima is not None:
+        out[-1]["ate"] = ate_ultima
+    return out
+
+
+saneago = {
+    "id": "saneago-2026",
+    "prestador": "Saneamento de Goiás S.A. (SANEAGO)",
+    "prestadorSinisa": "saneago-saneamento-de-goias-s-a",
+    "uf": "GO",
+    "regulador": "AGR, AR, AMAE e ARM",
+    "modelo": "Tarifa básica (custo mínimo fixo) por economia somada à conta; água e esgoto por faixas de consumo; esgoto soma coleta e afastamento e tratamento",
+    "ato": "Resolução Conjunta nº 1/2026: AGR/AMAE (24/02/2026), AGR/AR (25/02/2026) e AGR/ARM (assinada em 27/02/2026), Anexo Único",
+    "vigencia": "Desde 01/04/2026 (art. 3º)",
+    "ultimoReajuste": "4,845% linear para as tarifas e para o custo mínimo fixo (art. 2º); em 2025 foram 4,196% (Resolução Normativa AGR 283/2025)",
+    "area": "Municípios atendidos pela Saneago e por sua subdelegatária BRK Ambiental Goiás, em tabela única",
+    "fontes": [
+        {"rotulo": "Resolução Conjunta 1/2026 AGR/AMAE", "url": "https://www.saneago.com.br/2025/arquivos/Resolucao_Normativa_Conjunta_1-2026_AGR-AMAE_Reajuste_Tarifario_2026.pdf", "sha256": "ca21000ef84f0d6942351acffb0b8b781beb9dbeffb8f8801f9b703891479c3e", "localizador": "Anexo Único, PDF p.3-4 (tabela em texto)"},
+        {"rotulo": "Resolução Conjunta 1/2026 AGR/AR", "url": "https://www.saneago.com.br/2025/arquivos/Resolucao_Normativa_Conjunta_1-2026_AGR-AR_Reajuste_Tarifario_2026.pdf", "sha256": "137daf61b4fcd6368f6c42eabfbc5e3e8592d50e8732a16525ec44873e383c8e", "localizador": "Anexo Único, PDF p.3-4 (tabela em imagem; valores idênticos aos da AGR/AMAE)"},
+        {"rotulo": "Resolução Conjunta 1/2026 AGR/ARM", "url": "https://www.saneago.com.br/2025/arquivos/Resolucao_Normativa_Conjunta_1-2026_AGR-ARM_Reajuste_Tarifario_2026.pdf", "sha256": "d96ba4c448e31613b62e5e08cc28589432ab5d1d51fcf2576561065b89f38d39", "localizador": "Anexo Único, PDF p.3-4 (tabela em imagem; valores idênticos aos da AGR/AMAE)"},
+        {"rotulo": "Resolução Normativa AGR 283/2025 (tabela anterior)", "url": "https://www.saneago.com.br/2025/arquivos/Res_Normativa_AGR_283_2025.pdf", "sha256": "ef2113d335dbb1eb2574c79b3278ba672ab196a1c38cba60050086417d49f852", "localizador": "art. 1º, II (fonte alternativa) e Anexo Único, PDF p.2-4: base do reajuste de 2026"},
+        {"rotulo": "Resolução AGR 42/2005 CG (esgoto)", "url": "https://www.saneago.com.br/2016/arquivos/AGR_42_2005.pdf", "sha256": "770004ad152d9daf70752ab2ef36f482a2450b334c169ad518f3346a8486226e", "localizador": "arts. 2º e 3º, PDF p.2 (PDF em imagem): coleta e afastamento a 80% e tratamento a 20% da tarifa de água; tratamento só onde o esgoto é efetivamente tratado"},
+        {"rotulo": "Resolução Normativa AGR 009/2014, texto consolidado de 11/10/2022", "url": "https://goias.gov.br/agr/wp-content/uploads/sites/43/2014/06/Resolucao-Normativa-n-0009.2014-CR-att-126.pdf", "sha256": "76c36904d4d1a134449e2ea4ff9e8a566feb9699286c9c8b3d0ce0c25d8f5573", "localizador": "arts. 82 e 83 (p.22/37) e art. 103, parágrafo único (p.26/37)"},
+        {"rotulo": "AGR, Perguntas frequentes de saneamento (acessada em 17/10/2026)", "url": "https://goias.gov.br/agr/perguntas-frequentes-saneamento/", "sha256": "a36af0e50a21fe8c25ebfa1300f2f65a49585e222851b60931287434120e6505", "localizador": "perguntas 9 (tarifa básica independe do consumo), 10 (TRCF), 19, 20 (fonte alternativa) e 23 (tratamento sem tratamento efetivo)"},
+    ],
+    "unidade": "por economia",
+    "categorias": {
+        "residencial": {
+            "rotulo": "Residencial normal",
+            "agua": tab(fixo=SG_BASICA_2026["normal"], faixas=saneago_faixas(SG_NORMAL["agua"], SG)),
+            "esgoto": tab(faixas=saneago_faixas(soma(SG_NORMAL["coleta"], SG_NORMAL["tratamento"]), SG)),
+        },
+        "social": {
+            "rotulo": "Residencial social",
+            "consumoMaximo": 20,
+            "agua": tab(fixo=SG_BASICA_2026["social"], faixas=saneago_faixas(SG_SOCIAL["agua"], SG[:3], 20)),
+            "esgoto": tab(faixas=saneago_faixas(soma(SG_SOCIAL["coleta"], SG_SOCIAL["tratamento"]), SG[:3], 20)),
+        },
+    },
+    "metodoNaoVerificado": "Cobrança por faixa não verificada em conta ou exemplo oficial: o anexo não diz por extenso se cada faixa incide só sobre o volume dentro dela. A simulação usa blocos progressivos, por inferência do art. 103, parágrafo único, da Resolução Normativa AGR 009/2014 (as diferenças de faturamento levam em conta \"a tarifa relativa a cada faixa complementar\"). Se cada faixa valesse para todo o volume, a água de 20 m³ da residencial normal iria de R$ 127,50 para R$ 149,00 (conta minha a partir do anexo). Até 10 m³ as duas leituras dão o mesmo valor.",
+    "observacoes": [
+        "Tarifa básica (custo mínimo fixo): R$ 17,46 na residencial normal e R$ 8,73 na social, por economia de água faturada (ou de esgoto, na ausência da água). A AGR a descreve como \"valor cobrado independentemente do consumo\" (Perguntas frequentes, nº 9); a simulação a soma à conta de água.",
+        "Esgoto: o anexo traz coleta e afastamento e tratamento em colunas separadas, e a simulação soma as duas por faixa. Na faixa de 1 a 10 m³ da residencial normal a soma é R$ 5,76, um centavo abaixo da água (R$ 5,77); nas demais faixas as duas colunas somam o preço da água.",
+        "Tratamento só pode ser cobrado onde o esgoto é efetivamente tratado (Resolução AGR 42/2005, art. 2º; Perguntas frequentes, nº 23). Onde há só coleta e afastamento, a conta de esgoto é a parcela de 80% da água; esse caso não é simulado, e a situação de cada município não foi verificada.",
+        "Residencial social: o anexo define preço só até 20 m³ por mês, e acima disso o simulador não calcula. As faixas sociais ficam cerca de 53% abaixo das da residencial normal (conta minha a partir do anexo). Critérios de enquadramento não foram lidos em ato nesta etapa; a Lei 14.898/2024 fixa desconto de 50% até 15 m³ (Perguntas frequentes, nº 29).",
+        "Fonte alternativa de água: cobrança equivalente a 10 m³ por economia e esgoto por estimativa (Resolução Normativa AGR 283/2025, art. 1º, II; Perguntas frequentes, nº 19 e 20); não simulado.",
+        "Categorias comercial I e II, industrial e pública constam do anexo e não foram simuladas. A TRCF integra a estrutura tarifária (Perguntas frequentes, nº 10) e não é linha adicional no anexo.",
+        "Verificação cruzada feita pelo gerador: todos os valores de água, coleta e tratamento da residencial normal e da social e a tarifa básica reproduzem a tabela de 2025 reajustada em 4,845% (água ao centavo; coleta e tratamento como 80% e 20% do preço de água reajustado, antes do arredondamento; básica social igual à metade da normal).",
+        "Esgoto e tarifa básica da subdelegatária BRK Ambiental Goiás seguem a mesma estrutura (art. 2º e 3º); a BRK não aparece como prestador distinto do SINISA 2024 nesta base.",
+        "A mesma tabela foi homologada em três resoluções conjuntas, com a AR (Goiânia), a AMAE (Rio Verde) e a ARM (Anápolis). Não localizei resolução da AGR só para os demais municípios em 2026; a associação aos municípios vem do vínculo da Saneago no SINISA 2024.",
+        "Não achei exemplo oficial de conta nem simulador do regulador; os exemplos de 10 e 20 m³ são cálculo manual a partir do anexo.",
+    ],
+    "exemplos": {"residencial": {"10": 132.76, "20": 272.36}, "social": {"10": 63.33, "15": 94.03, "20": 129.23}},
+    "acessado": "2026-10-17",
+}
+
+
+def confere_reajuste_2026():
+    """Reproduz a tabela de 2026 a partir da de 2025: preço de água × 1,04845 ao centavo; coleta e tratamento
+    como 80% e 20% desse preço antes do arredondamento (Resolução AGR 42/2005, art. 2º); tarifa básica normal × 1,04845
+    e social como metade da normal."""
+    fator = d(SG_REAJUSTE_2026)
+    centavo = Decimal("0.01")
+    erros = []
+
+    def q(x):
+        return d(x).quantize(centavo, rounding=ROUND_HALF_UP)
+
+    for nome, atual, anterior in (("normal", SG_NORMAL, SG_2025_NORMAL), ("social", SG_SOCIAL, SG_2025_SOCIAL)):
+        for i, velho in enumerate(anterior["agua"]):
+            bruto = d(velho) * fator
+            esperado = {"agua": q(bruto), "coleta": q(bruto * d("0.8")), "tratamento": q(bruto * d("0.2"))}
+            for col, v in esperado.items():
+                if v != d(atual[col][i]):
+                    erros.append(f"{nome} {col} faixa {i + 1}: esperado {v} a partir de {velho} de 2025, o ato de 2026 traz {atual[col][i]}")
+    if q(d(SG_BASICA_2025["normal"]) * fator) != d(SG_BASICA_2026["normal"]):
+        erros.append(f"tarifa básica normal: {SG_BASICA_2025['normal']} × {fator} = {q(d(SG_BASICA_2025['normal']) * fator)}, o ato traz {SG_BASICA_2026['normal']}")
+    if q(d(SG_BASICA_2026["normal"]) / 2) != d(SG_BASICA_2026["social"]):
+        erros.append(f"tarifa básica social: metade da normal é {q(d(SG_BASICA_2026['normal']) / 2)}, o ato traz {SG_BASICA_2026['social']}")
+    return erros
+
 
 
 def d(x):
@@ -338,7 +457,7 @@ def main():
 
     sp_curitiba = sanepar(85, "curitiba", "Curitiba (esgoto a 85% da fatura de água; 50% no Água Solidária)")
     sp_demais = sanepar(80, "demais", "Demais localidades operadas pela SANEPAR (esgoto a 80% da fatura de água; 50% no Água Solidária), exceto Pontal do Paraná, Matinhos e Guaratuba")
-    lista = [compesa, copasa, sabesp, sp_curitiba, sp_demais, caesb]
+    lista = [compesa, copasa, sabesp, sp_curitiba, sp_demais, caesb, saneago]
 
     def mun(pid):
         p = ps.get(pid)
@@ -354,8 +473,9 @@ def main():
     sp_curitiba["municipios"] = ["4106902"]
     sp_demais["municipios"] = sorted(m for m in sanepar_mun if m not in ("4106902", "4119954", "4115705", "4109609"))
     caesb["municipios"] = ["5300108"]
+    saneago["municipios"] = mun(saneago["prestadorSinisa"])
 
-    erros = []
+    erros = confere_reajuste_2026()
     for t in lista:
         t.setdefault("acessado", ACESSO)
         for cat, ex in t.get("exemplos", {}).items():

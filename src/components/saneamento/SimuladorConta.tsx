@@ -6,7 +6,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { TARIFAS, type TarifaVerificada } from "@/lib/saneamento/tarifas";
-import { calcularConta, leituras } from "@/lib/saneamento/conta";
+import { CABECALHO_EXPORTACAO, acimaDoLimite, calcularConta, leituras, linhasExportacao } from "@/lib/saneamento/conta";
 import { baixarCsv } from "@/lib/saneamento/csv";
 import { numero, reais } from "@/lib/saneamento/formato";
 
@@ -44,14 +44,15 @@ export function SimuladorConta() {
   const cat = t.categorias[catId];
   const consumo = Math.round(s.m3 * 10) / 10;
   const adicionais = s.ad && t.adicionais ? t.adicionais : [];
-  const conta = calcularConta(cat, consumo, adicionais);
-  const l = leituras(t, catId, consumo);
+  const fora = acimaDoLimite(cat, consumo);
+  const conta = fora ? null : calcularConta(cat, consumo, adicionais);
+  const l = fora ? null : leituras(t, catId, consumo);
 
   const comparacao = useMemo(
     () =>
       TARIFAS.map((x) => {
         const k = categoriaComparavel(x, s.comp);
-        const c = k ? calcularConta(x.categorias[k], consumo) : null;
+        const c = k && !acimaDoLimite(x.categorias[k], consumo) ? calcularConta(x.categorias[k], consumo) : null;
         return {
           id: x.id,
           rotulo: `${curto(x)}${k && k !== "residencial" ? `: ${x.categorias[k].rotulo}` : ""}`,
@@ -70,19 +71,9 @@ export function SimuladorConta() {
     }
     return pts;
   }, []);
-  const cores = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)", "var(--escala-seq-3)", "var(--san-div-neg-2)"];
+  const cores = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)", "var(--escala-seq-3)", "var(--san-div-neg-2)", "var(--escala-seq-5)"];
 
-  const exportar = () => {
-    const cab = ["tabela", "prestador", "uf", "regulador", "ato", "vigencia", "categoria", "consumo_m3", "agua_R$", "esgoto_R$", "total_R$"];
-    const linhas: (string | number | null)[][] = [];
-    for (const x of TARIFAS)
-      for (const c of Object.values(x.categorias))
-        for (const m3 of [5, 10, 15, 20, 30]) {
-          const r = calcularConta(c, m3);
-          linhas.push([x.id, x.prestador, x.uf, x.regulador, x.ato, x.vigencia, c.rotulo, m3, r.agua, r.esgoto, r.total]);
-        }
-    baixarCsv("saneamento-contas-simuladas.csv", cab, linhas);
-  };
+  const exportar = () => baixarCsv("saneamento-contas-simuladas.csv", CABECALHO_EXPORTACAO, linhasExportacao(TARIFAS));
 
   return (
     <div>
@@ -151,6 +142,12 @@ export function SimuladorConta() {
           <p className="mt-1 text-sm text-carvao-muted">
             {t.prestador} · {t.ato} · {t.vigencia}
           </p>
+          {!conta ? (
+            <p className="mt-4 border-l-2 border-aviso pl-3 text-sm text-carvao-muted">
+              O ato só define preço para esta categoria até {numero(cat.consumoMaximo ?? 0, 0)} m³ por mês. Para {numero(consumo, consumo % 1 ? 1 : 0)} m³ o simulador não calcula a
+              conta, porque não há regra publicada para o volume acima do teto.
+            </p>
+          ) : (
           <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Decomposição da conta (rolável)">
             <table className="w-full min-w-[34rem] border-collapse text-sm">
               <caption className="sr-only">Decomposição da conta simulada por serviço e faixa de consumo</caption>
@@ -189,7 +186,9 @@ export function SimuladorConta() {
               </tbody>
             </table>
           </div>
-          {conta.esgotoNaoVerificado && <p className="mt-3 border-l-2 border-aviso pl-3 text-sm text-carvao-muted">{conta.esgotoNaoVerificado}</p>}
+          )}
+          {cat.esgotoNaoVerificado && <p className="mt-3 border-l-2 border-aviso pl-3 text-sm text-carvao-muted">{cat.esgotoNaoVerificado}</p>}
+          {t.metodoNaoVerificado && <p className="mt-3 border-l-2 border-aviso pl-3 text-sm text-carvao-muted">{t.metodoNaoVerificado}</p>}
           <p className="mt-3 text-xs leading-relaxed text-carvao-muted">
             Inclui só o que a tabela verificada define. Ficam fora: tributos destacados à parte quando houver, multas, juros, serviços avulsos,
             taxas municipais (como a de lixo) e regras de quem tem mais de uma economia por medidor. A conta real depende do perfil completo do
@@ -197,6 +196,9 @@ export function SimuladorConta() {
           </p>
         </section>
         <aside aria-label="Leituras da conta" className="border-t border-linha pt-4 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+          {!conta || !l ? (
+            <p className="text-sm text-carvao-muted">Conta não calculada: consumo acima do teto que o ato define para esta categoria.</p>
+          ) : (
           <dl className="space-y-5 text-sm">
             <div>
               <dt className="text-carvao-muted">Conta total</dt>
@@ -214,10 +216,11 @@ export function SimuladorConta() {
             </div>
             <div className="border-t border-linha pt-4">
               <dt className="text-carvao-muted">Custo de mais 1 m³</dt>
-              <dd className="font-serif text-2xl tabular-nums text-carvao">{reais(l.m3Adicional)}</dd>
+              <dd className="font-serif text-2xl tabular-nums text-carvao">{l.m3Adicional == null ? "não definido no ato" : reais(l.m3Adicional)}</dd>
               <dd className="text-xs text-carvao-muted">Quanto a conta sobe ao passar de {numero(consumo, consumo % 1 ? 1 : 0)} para {numero(consumo + 1, consumo % 1 ? 1 : 0)} m³ (água e esgoto).</dd>
             </div>
           </dl>
+          )}
         </aside>
       </div>
 
@@ -253,7 +256,7 @@ export function SimuladorConta() {
         />
         <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
           Consumo, número de economias e tipo de esgoto (convencional) são os mesmos em todas as barras. Mudam o ato e a data de vigência de cada
-          tabela, que estão na ficha abaixo. Esgoto sem barra: cobrança não verificada para a categoria. A diferença de conta não mede qualidade
+          tabela, que estão na ficha abaixo. Barra ausente: a categoria não tem preço definido no ato para o consumo escolhido (a social da Saneago acima de 20 m³) ou, no esgoto, a cobrança não foi verificada. A diferença de conta não mede qualidade
           nem eficiência do prestador.
         </p>
       </section>
