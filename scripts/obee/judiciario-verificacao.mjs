@@ -15,6 +15,7 @@ import {chromium} from 'playwright';
 
 const ROOT=fileURLToPath(new URL('../../',import.meta.url)),require=createRequire(import.meta.url);
 const PREFIX='/eficiencia-estatal/judiciario';
+const arquivosInternacionais=['internacional.json','internacional-historico.json','internacional.csv','internacional-manifesto.json'];
 const out=resolve(process.env.JUDICIARIO_QA_DIR||'/tmp/judiciario-qa');
 const temporary=await mkdtemp(join(tmpdir(),'scrutiniums-judiciario-'));
 const bundleDir=await mkdtemp(join(ROOT,'node_modules/.judiciario-qa-'));
@@ -56,7 +57,7 @@ try{
   const response=await anonymous.request.get(origin+path,{maxRedirects:0});
   check('Observatório exige sessão: '+path,response.status()===307&&response.headers().location.includes('/entrar'));
  }
- for(const path of [PREFIX,PREFIX+'/comparar',PREFIX+'/tribunais/tjsp','/eficiencia/judiciario/snapshot.json']){
+ for(const path of [PREFIX,PREFIX+'/comparar',PREFIX+'/internacional',PREFIX+'/tribunais/tjsp','/eficiencia/judiciario/snapshot.json',...arquivosInternacionais.map(f=>'/eficiencia/judiciario/'+f)]){
   const response=await anonymous.request.get(origin+path,{maxRedirects:0});
   check('Protegido sem sessão: '+path,response.status()===307&&response.headers().location.includes('/entrar'));
  }
@@ -103,7 +104,7 @@ try{
  check('Cookie guarda o Judiciário',(await context.cookies()).some(c=>c.name==='scrutiniums_observatorio'&&c.value==='judiciario'&&c.httpOnly));
  await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
  check('Último acesso identifica o cartão do Judiciário',await page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true}).getByText('Último acesso',{exact:true}).isVisible());
- const slugs=['','panorama','recursos','tempo','filas','entrega','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
+ const slugs=['','panorama','internacional','recursos','tempo','filas','entrega','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
  for(const width of [320,390,768,1440]){
   await page.setViewportSize({width,height:width===390?844:1000});
   for(const slug of slugs){
@@ -193,7 +194,60 @@ try{
  await page.goto(origin+PREFIX+'/tribunais/tjpe',{waitUntil:'networkidle'});
  check('Ficha reutilizável TJPE',(await page.locator('h1').innerText()).includes('Pernambuco'));
  check('Tribunal desconhecido 404',(await context.request.get(origin+PREFIX+'/tribunais/inexistente')).status()===404);
- for(const file of ['snapshot.json','ramos.csv','tribunais.csv','despesas-historico.csv','manifesto.json']){
+ for(const width of [390,1440]){
+  await page.setViewportSize({width,height:width===390?844:1000});
+  await page.goto(origin+PREFIX+'/internacional',{waitUntil:'networkidle'});
+  check('Fonte internacional correta '+width+'px',(await page.locator('main').innerText()).includes('WJP · Rule of Law Index · edição 2025'));
+  check('Brasil e três países, sem confundir escore com meses '+width+'px',await page.locator('[data-brasil]').count()===4&&(await page.locator('[data-brasil=true]').innerText()).includes('0,268'));
+  await page.getByLabel('Referência internacional',{exact:true}).selectOption('renda');
+  check('Referência de renda exclui o Brasil '+width+'px',await page.getByText(/Mediana calculada entre 43 outros países/).isVisible());
+  await page.getByRole('button',{name:'Portugal, Espanha e Alemanha',exact:true}).click();
+  check('Atalho internacional preenche países '+width+'px',await page.getByLabel('País internacional 1',{exact:true}).inputValue()==='PRT'&&await page.getByLabel('País internacional 3',{exact:true}).inputValue()==='DEU');
+  await page.getByLabel('Referência internacional',{exact:true}).selectOption('mundo');
+  check('Referência mundial exclui o Brasil '+width+'px',await page.getByText(/Mediana calculada entre 142 outros países/).isVisible());
+  await page.getByText('Consultar os 143 países da edição',{exact:true}).click();
+  check('Tabela mundial preserva todos os países '+width+'px',await page.getByRole('region',{name:'Tabela internacional completa',exact:true}).getByRole('row').count()===144);
+  await page.getByText('Consultar os 143 países da edição',{exact:true}).click();
+  await page.getByLabel('Indicador internacional',{exact:true}).selectOption('f_8_7');
+  const allDownload=page.waitForEvent('download');await page.getByRole('button',{name:'Baixar os 143 países CSV',exact:true}).click();
+  const all=await allDownload;await all.saveAs(join(out,'internacional-todos-'+width+'.csv'));
+  const allCsv=await readFile(join(out,'internacional-todos-'+width+'.csv'),'utf8');
+  check('CSV internacional tem todos os 143 países e unidade correta '+width+'px',allCsv.split('\r\n').length===144&&allCsv.includes('"f_8_7"')&&allCsv.includes('"escore de 0 a 1"'));
+  await page.reload({waitUntil:'networkidle'});
+  check('URL internacional sobrevive ao reload '+width+'px',await page.getByLabel('Indicador internacional',{exact:true}).inputValue()==='f_8_7'&&await page.getByLabel('País internacional 3',{exact:true}).inputValue()==='DEU');
+  await page.getByLabel('Indicador internacional',{exact:true}).selectOption('f_7_6');
+  await page.goBack();await page.waitForFunction(()=>document.querySelector('select[aria-label="Indicador internacional"]').value==='f_8_7');
+  check('Voltar restaura indicador internacional '+width+'px',await page.getByLabel('Indicador internacional',{exact:true}).inputValue()==='f_8_7');
+  await page.goForward();await page.waitForFunction(()=>document.querySelector('select[aria-label="Indicador internacional"]').value==='f_7_6');
+  check('Avançar restaura indicador internacional '+width+'px',await page.getByLabel('Indicador internacional',{exact:true}).inputValue()==='f_7_6');
+  await page.getByRole('button',{name:'Restaurar comparação inicial',exact:true}).click();
+  await page.getByRole('button',{name:'Explorar evolução histórica',exact:true}).click();
+  await page.getByRole('img',{name:/evolução dos escores de/}).waitFor({state:'visible'});
+  await page.waitForFunction(()=>document.activeElement?.getAttribute('aria-label')==='Histórico internacional carregado');
+  check('Foco é preservado ao carregar a trajetória '+width+'px',await page.getByRole('figure',{name:'Histórico internacional carregado',exact:true}).evaluate(e=>e===document.activeElement));
+  await page.getByText('Ver valores por país e edição',{exact:true}).click();
+  check('Histórico mantém quatro países e dez edições '+width+'px',await page.getByRole('region',{name:'Tabela histórica dos países selecionados',exact:true}).getByRole('row').count()===41);
+  const seriesDownload=page.waitForEvent('download');await page.getByRole('button',{name:'Baixar histórico dos países selecionados CSV',exact:true}).click();
+  const series=await seriesDownload;await series.saveAs(join(out,'internacional-historico-'+width+'.csv'));
+  const seriesCsv=await readFile(join(out,'internacional-historico-'+width+'.csv'),'utf8');
+  check('CSV histórico não duplica 2017–2018 nem promove 2026 '+width+'px',seriesCsv.split('\r\n').length===41&&(seriesCsv.match(/"2017-2018"/g)||[]).length===4&&!seriesCsv.includes('"2026"'));
+  const social=page.getByRole('button',{name:/Ver a decisão cumprida/});await social.focus();await page.keyboard.press('Enter');
+  check('Pergunta social muda o indicador por teclado '+width+'px',await page.getByLabel('Indicador internacional',{exact:true}).inputValue()==='f_7_6'&&await social.getAttribute('aria-pressed')==='true');
+  await page.addScriptTag({content:axe});
+  const issues=await page.evaluate(async()=>{const r=await axe.run(document.querySelector('main'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}});return r.violations.map(v=>v.id);});
+  check('Histórico e controles internacionais acessíveis '+width+'px',issues.length===0&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+  await page.screenshot({path:join(out,'internacional-historico-'+width+'.png'),fullPage:true});
+  await page.goto(origin+PREFIX+'/internacional?referencia=selecionados&p1=&p2=&p3=',{waitUntil:'networkidle'});
+  check('Referência vazia permanece ausência, sem overflow '+width+'px',await page.getByText('Selecione ao menos um país estrangeiro para formar esta referência.',{exact:true}).isVisible()&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+  await page.goto(origin+PREFIX+'/internacional?referencia=selecionados&p1=PRT&p2=PRT&p3=',{waitUntil:'networkidle'});
+  check('Duplicata internacional não altera peso da referência '+width+'px',await page.locator('[data-brasil]').count()===2&&await page.getByRole('status').filter({hasText:'repetia um país'}).isVisible());
+  await page.goto(origin+PREFIX+'/internacional?foco=invalido&p1=ZZZ',{waitUntil:'networkidle'});
+  check('Consulta internacional inválida usa padrões válidos '+width+'px',await page.getByLabel('Indicador internacional',{exact:true}).inputValue()==='f_7_5'&&await page.getByLabel('País internacional 1',{exact:true}).inputValue()==='PRT');
+ }
+ await page.goto(origin+PREFIX,{waitUntil:'networkidle'});
+ await page.getByRole('link',{name:'Explorar a comparação internacional',exact:true}).click();await page.waitForURL('**/internacional');
+ check('Comparação internacional a um clique da entrada',new URL(page.url()).pathname===PREFIX+'/internacional');
+ for(const file of ['snapshot.json','ramos.csv','tribunais.csv','despesas-historico.csv','manifesto.json',...arquivosInternacionais]){
   const response=await context.request.get(origin+'/eficiencia/judiciario/'+file);
   check('Download autenticado '+file,response.status()===200);
   check('Cache privado '+file,/private/.test(response.headers()['cache-control']||''));
