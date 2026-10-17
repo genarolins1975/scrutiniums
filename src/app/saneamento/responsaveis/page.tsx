@@ -35,6 +35,9 @@ export default function Pagina() {
   const lista = municipios();
   const respondentes = lista.filter((m) => m.gm_respondeu === "Sim");
   const semRegAgua = respondentes.filter((m) => m.reg_ag == null).length;
+  // A tabela por UF conta quem respondeu Sim à pergunta de regulação; o número ao lado conta quem informou a entidade. Quem respondeu
+  // Sim sem informar a entidade está nos dois.
+  const simSemEntidade = Math.max(0, (g?.regulacao_agua_sim ?? 0) - (respondentes.length - semRegAgua));
   const porAbr = (a: string) => regs.filter((r) => r.abrangencia === a).length;
 
   const linhasReg = regs.map((r) => ({
@@ -96,7 +99,18 @@ export default function Pagina() {
             {
               rotulo: "Respondentes sem entidade reguladora declarada para água",
               valor: inteiro(semRegAgua),
-              contexto: <>{numero(razaoPct(semRegAgua, respondentes.length), 1)}% dos {inteiro(respondentes.length)} municípios que responderam.</>,
+              contexto: (
+                <>
+                  {numero(razaoPct(semRegAgua, respondentes.length), 1)}% dos {inteiro(respondentes.length)} municípios que responderam.
+                  {simSemEntidade > 0 && (
+                    <>
+                      {" "}
+                      Inclui {inteiro(simSemEntidade)} {simSemEntidade === 1 ? "município que respondeu" : "municípios que responderam"} Sim à pergunta
+                      de regulação sem informar a entidade; a tabela por UF conta pela resposta.
+                    </>
+                  )}
+                </>
+              ),
             },
             {
               rotulo: "Com conselho específico de saneamento",

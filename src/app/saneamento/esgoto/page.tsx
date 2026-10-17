@@ -6,7 +6,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Histograma } from "@/components/energia/Histograma";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { montaHistograma } from "@/lib/energia/distribuicao";
-import { agregado, agregados, etes, meta, municipios } from "@/lib/saneamento/gold";
+import { acimaDaCapacidade, agregado, agregados, etes, meta, municipios } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
@@ -77,7 +77,7 @@ export default function Pagina() {
   const utilGrafico = util.filter((v) => v <= 200);
   const foraGrafico = util.length - utilGrafico.length;
   const histUtil = utilGrafico.length >= 5 ? montaHistograma(utilGrafico, { limites: [0, 25, 50, 75, 100, 125, 150, 175, 200] }) : null;
-  const acima100 = util.filter((v) => v > 100).length;
+  const acima100 = operando.filter((e) => acimaDaCapacidade(e) === true).length;
   const etesUf = ufs
     .map((u) => ({ id: u.id, rotulo: u.nome, v: operando.filter((e) => e.uf === u.id).length }))
     .sort((a, b) => b.v - a.v);

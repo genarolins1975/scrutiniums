@@ -27,6 +27,10 @@ export default function Pagina() {
   const todas = fichas();
 
   const motivos = Object.entries(c?.motivos_interrupcoes ?? {}).map(([k, v]) => ({ id: k, rotulo: k === "Outro (especificar)" ? "Outro" : k, v }));
+  // A gold só soma o motivo de quem declarou interrupção e informou o motivo; quem declarou sem informar fica numa barra própria,
+  // para que as barras fechem com os municípios com interrupção sistemática.
+  const semMotivo = (c?.municipios_com_interrupcoes ?? 0) - motivos.reduce((s, m) => s + m.v, 0);
+  if (semMotivo > 0) motivos.push({ id: "sem-motivo", rotulo: "Sem motivo informado", v: semMotivo });
   const manancialUf = ufs
     .map((u) => ({ id: u.id, rotulo: u.nome, v: u.continuidade.motivos_interrupcoes[MANANCIAL] ?? 0 }))
     .filter((u) => u.v > 0)
@@ -95,7 +99,7 @@ export default function Pagina() {
         <Secao
           id="motivos"
           titulo="Por que houve racionamento?"
-          texto="Motivo principal declarado pelo prestador para as interrupções sistemáticas, em número de municípios. Um município, um motivo."
+          texto={`Motivo principal declarado pelo prestador para as interrupções sistemáticas, em número de municípios. Um município, um motivo.${semMotivo > 0 ? " A última barra reúne quem declarou interrupção sem informar o motivo." : ""}`}
         >
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
             <GraficoBarras

@@ -6,10 +6,10 @@ Data: 14/10/2026. Todas as notas abaixo são **autoavaliação do autor da entre
 
 | Verificação | Comando | Resultado |
 |---|---|---|
-| Gold reproduzível byte a byte a partir do seed; conferências zeradas; ausência não vira zero; SISAGUA | `python3 -m unittest pipeline.tests.test_observatorio_saneamento` | 26 testes em 16/10/2026, todos passam |
-| Somas municipais reproduzem IBGE e consolidado SINISA; 429 valores iguais aos da Eficiência Estatal; agregação por soma; zero e ausência; capítulos sem promessa; sem travessão | `npx vitest run src/tests/saneamento-gold.test.ts` | 25 testes em 16/10/2026, todos passam |
-| Correções da revisão de 16/10/2026: GFI1037 fora da ficha, tarifa por prestador e soma, razão acima de 100 sinalizada e fora das classes do mapa, N efetivo dos pares, ressalva dos índices da NR 8 | `npx vitest run src/tests/saneamento-revisao-out26.test.ts` | 10 testes, todos passam |
-| Simulador: exemplos dos reguladores ao centavo, limites de faixa, municípios associados | `npx vitest run src/tests/saneamento-conta.test.ts` | 11 testes, todos passam |
+| Gold reproduzível byte a byte a partir do seed; conferências zeradas; ausência não vira zero; SISAGUA | `python3 -m unittest pipeline.tests.test_observatorio_saneamento` | 27 testes em 17/10/2026, todos passam |
+| Somas municipais reproduzem IBGE e consolidado SINISA; 429 valores iguais aos da Eficiência Estatal; agregação por soma; zero e ausência; capítulos sem promessa; sem travessão | `npx vitest run src/tests/saneamento-gold.test.ts` | 25 testes em 17/10/2026, todos passam |
+| Correções da revisão de 16/10/2026: GFI1037 fora da ficha, tarifa por prestador e soma, razão acima de 100 sinalizada e fora das classes do mapa, N efetivo dos pares, ressalva dos índices da NR 8; itens 1.11 c, d, e, f e h (duração média com divisão por zero, retificação da água por UF, contagens que fecham, estações acima da capacidade sem arredondar, data da Deliberação ARSESP 1.699) | `npx vitest run src/tests/saneamento-revisao-out26.test.ts` | 21 testes em 17/10/2026, todos passam |
+| Simulador: exemplos dos reguladores ao centavo, limites de faixa, municípios associados, diferença de arredondamento entre parcelas e total (item 1.11 i) | `npx vitest run src/tests/saneamento-conta.test.ts` | 15 testes em 17/10/2026, todos passam |
 | Registro de domínios (seis observatórios), rotas públicas, sitemap | `npx vitest run src/tests/dois-observatorios.test.ts src/tests/rotas-publicas.test.ts` | passam |
 | Suíte completa da plataforma | `npx vitest run` | 4.932 passam; 1 falha por tempo limite em `trabalho-renda-dados.test.ts` sob carga, que passa isolado (6 de 6) e não toca o saneamento |
 | Tipos e lint | `npx tsc --noEmit`, `npx next lint` | sem erros |
@@ -29,7 +29,7 @@ Critérios: dado real com fonte e período (D), método e ressalvas visíveis (M
 |---|---|---|---|---|---|---|
 | `/saneamento` | sim | sim | sim | sim | 9 | Índice dos eixos com situação de cada capítulo |
 | `/saneamento/acesso` | sim | sim | sim | sim | 9 | Atlas, pessoas e proporção, composição das fontes, evolução |
-| `/saneamento/continuidade` | sim | sim | sim | parcial | 8 | SISAGUA integrado para quatro parâmetros e o plano de coliformes de SAA; demais parâmetros pendentes |
+| `/saneamento/continuidade` | sim | sim | sim | parcial | 8 | SISAGUA de 2014 a 2025 integrado: seis parâmetros do controle, vigilância, plano de SAA e SAC desde 2023 e população cadastrada; substâncias químicas, radioatividade e cianotoxinas só em 2024 e 2025; paralisações e racionamento são declaração do prestador, sem auditoria |
 | `/saneamento/esgoto` | sim | sim | sim | sim | 9 | Mapa de estações não publicado por coordenadas inconsistentes |
 | `/saneamento/preco-regulado` e 5.1 a 5.5 | sim | sim | sim | parcial | 8 | Amostra de oito prestadores; série da conta contra inflação ausente; Saneago com cobrança por faixa inferida; Corsan só a Residencial B |
 | `/saneamento/tarifa-social` | sim | sim | sim | parcial | 8 | Economias com tarifa social por 100 famílias elegíveis do CadÚnico; famílias beneficiadas não publicadas |

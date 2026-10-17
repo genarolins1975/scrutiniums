@@ -44,7 +44,7 @@ export default function Pagina() {
         />
         <Secao id="tabelas" titulo="As tabelas usadas, ato por ato" texto="Cada tabela foi lida no ato do regulador ou na publicação oficial do ato; quando o ato traz a tabela em imagem, foi conferida com uma segunda fonte em texto.">
           <FichasTabelas />
-          <Fonte>Atos e originais listados em cada ficha, com sha256. Nenhum ato consultado traz regra de arredondamento: a conta é arredondada ao centavo só no fim.</Fonte>
+          <Fonte>Atos e originais listados em cada ficha, com sha256. Nenhum ato consultado traz regra de arredondamento: cada valor é arredondado ao centavo e o total é arredondado uma só vez, sobre a soma sem arredondar, então a soma das parcelas pode diferir do total em R$ 0,01 (o aviso aparece junto da conta quando isso ocorre).</Fonte>
         </Secao>
       </main>
     </>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { TARIFAS, tarifa, prestadorComTarifa } from "@/lib/saneamento/tarifas";
-import { calcularConta, leituras } from "@/lib/saneamento/conta";
+import { acimaDoLimite, arredondamentoDifere, calcularConta, leituras, somasExibidas } from "@/lib/saneamento/conta";
 
 const conta = (id: string, cat: string, c: number) => calcularConta(tarifa(id)!.categorias[cat], c).total;
 
@@ -92,5 +92,57 @@ describe("Saneamento: simulador de conta com tabelas verificadas", () => {
     expect(prestadorComTarifa("3550308")).toBe("sabesp-2026-t1");
     expect(prestadorComTarifa("4119954")).toBeNull(); // Pontal do Paraná: ajuste sazonal, fora
     expect(prestadorComTarifa("3155801")).toBeNull(); // Rio Pomba: tabela própria
+  });
+});
+
+describe("Saneamento: arredondamento do simulador (revisão 1.11, item i)", () => {
+  const todas = () =>
+    TARIFAS.flatMap((t) =>
+      Object.entries(t.categorias).flatMap(([cid, cat]) =>
+        Array.from({ length: 201 }, (_, i) => i / 2)
+          .filter((c) => !acimaDoLimite(cat, c))
+          .map((c) => ({ t, cid, c, r: calcularConta(cat, c) })),
+      ),
+    );
+
+  it("o total difere das somas exibidas só pelo arredondamento de cada valor, e a diferença existe em consumo inteiro e fracionado", () => {
+    const linhas = todas();
+    for (const x of linhas) {
+      const s = somasExibidas(x.r);
+      // cada valor exibido erra até meio centavo, e o total também: n linhas somam até (n + 1) meios centavos de diferença
+      expect(Math.abs(s.linhas - x.r.total), `${x.t.id} ${x.cid} ${x.c} (linhas)`).toBeLessThanOrEqual(0.005 * (x.r.linhas.length + 1) + 1e-9);
+      expect(Math.abs(s.servicos - x.r.total), `${x.t.id} ${x.cid} ${x.c} (serviços)`).toBeLessThanOrEqual(0.005 * 4 + 1e-9);
+    }
+    expect(linhas.some((x) => arredondamentoDifere(x.r) && Number.isInteger(x.c))).toBe(true);
+    expect(linhas.some((x) => arredondamentoDifere(x.r) && !Number.isInteger(x.c))).toBe(true);
+  });
+
+  it("COPASA residencial a 7,5 m³: as linhas somam R$ 91,39, os subtotais R$ 91,40 e o total R$ 91,40, e o aviso vale pelas linhas", () => {
+    const r = calcularConta(tarifa("copasa-2026")!.categorias.residencial, 7.5);
+    const s = somasExibidas(r);
+    expect(s.linhas).toBe(91.39);
+    expect(s.servicos).toBe(91.4);
+    expect(r.total).toBe(91.4);
+    expect(arredondamentoDifere(r)).toBe(true);
+  });
+
+  it("sem diferença, as linhas e os subtotais somam exatamente o total", () => {
+    for (const x of todas()) {
+      if (!arredondamentoDifere(x.r)) {
+        const s = somasExibidas(x.r);
+        expect(Math.round(s.linhas * 100)).toBe(Math.round(x.r.total * 100));
+        expect(Math.round(s.servicos * 100)).toBe(Math.round(x.r.total * 100));
+      }
+    }
+  });
+
+  it("os exemplos conferidos continuam iguais: o aviso não muda nenhum total", () => {
+    for (const t of TARIFAS) {
+      for (const exemplos of [t.exemplos, t.exemplosOficiais ?? {}]) {
+        for (const [cat, ex] of Object.entries(exemplos)) {
+          for (const [c, esperado] of Object.entries(ex)) expect(calcularConta(t.categorias[cat], Number(c)).total).toBe(esperado);
+        }
+      }
+    }
   });
 });
