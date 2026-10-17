@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Legenda de recorte de uma figura de Água e clima: período, universo e unidade em três colunas, logo abaixo da figura que descrevem
@@ -12,15 +13,15 @@ export function AguaLegenda({ periodo, universo, unidade }: { periodo: ReactNode
   return (
     <dl data-recorte-painel="" className="grid gap-x-6 gap-y-2 border-t border-linha pt-3 text-sm text-carvao-muted sm:grid-cols-3">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Scope")}</dt>
         <dd className="mt-0.5">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5">{unidade}</dd>
       </div>
     </dl>

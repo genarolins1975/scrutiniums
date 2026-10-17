@@ -2,7 +2,9 @@
 
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import type { Classificacao, ValorClassificavel } from "@/lib/energia/escalas";
-import { carimbo, num, plural } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 import { URL_GEO, caixaDoCaminho, comFolga, lerViewBox, pontoRotulo, textoViewBox, validaCamada, type CamadaGeo, type Ponto } from "@/lib/energia/geo";
 import { vizinhaNoMapa, type DirecaoMapa } from "@/lib/energia/agua";
 import { descreveRegiao, preenchimento, validaCores } from "@/lib/energia/mapa-coropletico";
@@ -90,6 +92,9 @@ export function AguaMapaBacias({
   nota,
   notaSemContorno,
 }: AguaMapaBaciasProps) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { carimbo, num, plural } = formatos(idioma);
   const uid = useId().replace(/:/g, "");
   const [carga, setCarga] = useState<Carga>({ estado: "carregando", bacias: null, uf: null, erro: "" });
   const [tentativa, setTentativa] = useState(0);
@@ -129,7 +134,7 @@ export function AguaMapaBacias({
   const errosCor = validaCores(cores, classificacao.classes.length);
   if (errosCor.length) throw new Error(`AguaMapaBacias: ${errosCor.join("; ")}`);
 
-  const hachura = `${uid}-sem-dado`;
+  const hachura = `${uid}-sem-dado`; // i18n: dado
   const geo = carga.bacias;
   const vb = useMemo(() => {
     const base = lerViewBox((carga.uf ?? geo)?.viewBox ?? "");
@@ -209,18 +214,23 @@ export function AguaMapaBacias({
       >
         {carga.estado === "carregando" && (
           <div role="status" className="flex h-full items-center justify-center px-6 text-center text-sm text-carvao-muted">
-            Carregando os contornos das bacias do ONS. Os valores já estão na tabela abaixo.
+            {tx("Carregando os contornos das bacias do ONS. Os valores já estão na tabela abaixo.", "Loading the outlines of the ONS basins. The values are already in the table below.")}
           </div>
         )}
         {carga.estado === "erro" && (
           <div role="alert" className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center text-sm text-carvao">
-            <p>Não foi possível carregar os contornos das bacias ({carga.erro}). Os valores continuam na tabela abaixo.</p>
+            <p>
+              {tx(
+                `Não foi possível carregar os contornos das bacias (${carga.erro}). Os valores continuam na tabela abaixo.`,
+                `The basin outlines could not be loaded (${carga.erro}). The values remain in the table below.`,
+              )}
+            </p>
             <button
               type="button"
               className="rotulo inline-flex min-h-[44px] items-center border border-linha bg-superficie px-4 text-energia-dark hover:border-carvao"
               onClick={() => setTentativa((t) => t + 1)}
             >
-              Tentar de novo
+              {tx("Tentar de novo", "Try again")}
             </button>
           </div>
         )}
@@ -231,7 +241,10 @@ export function AguaMapaBacias({
             viewBox={textoViewBox(vb)}
             preserveAspectRatio="xMidYMid meet"
             role="group"
-            aria-label={`${titulo}: ${plural(geo.features.length, "bacia", "bacias")}. Cada bacia é um botão; use Tab para entrar, as setas para trocar de bacia e Enter para selecionar. A tabela abaixo traz os mesmos valores.`}
+            aria-label={tx(
+              `${titulo}: ${plural(geo.features.length, "bacia", "bacias")}. Cada bacia é um botão; use Tab para entrar, as setas para trocar de bacia e Enter para selecionar. A tabela abaixo traz os mesmos valores.`,
+              `${titulo}: ${plural(geo.features.length, "basin", "basins")}. Each basin is a button; use Tab to enter, the arrow keys to move between basins and Enter to select. The table below has the same values.`,
+            )}
             className="block h-full w-full select-none"
             onPointerLeave={() => setAtivo(null)}
           >
@@ -265,7 +278,7 @@ export function AguaMapaBacias({
                     role="button"
                     tabIndex={f.id === entrada ? 0 : -1}
                     aria-pressed={f.id === selecionado}
-                    aria-label={`${nomes[f.id] ?? f.nome}: ${d.valor}${d.classe ? `, classe ${d.classe}` : ""}`}
+                    aria-label={`${nomes[f.id] ?? f.nome}: ${d.valor}${d.classe ? tx(`, classe ${d.classe}`, `, class ${d.classe}`) : ""}`}
                     className="cursor-pointer outline-none focus:outline-none"
                     onClick={() => {
                       setCursor(f.id);
@@ -346,18 +359,21 @@ export function AguaMapaBacias({
         <p className="min-h-[44px] border-b border-linha pb-2 text-sm text-carvao" aria-live="polite" data-selecao={selecionado ?? ""}>
           {foco && focoDesc ? (
             <>
-              <span className="rotulo mr-2 text-mineral">{foco === selecionado && !ativoFeature ? "Seleção" : "Em foco"}</span>
+              <span className="rotulo mr-2 text-mineral">{foco === selecionado && !ativoFeature ? tx("Seleção", "Selection") : tx("Em foco", "In focus")}</span>
               <strong className="font-medium">{nomes[foco] ?? foco}</strong>: <span className="tabular-nums">{focoDesc.valor}</span>
-              {focoDesc.classe && <span className="text-carvao-muted">, classe {focoDesc.classe}</span>}
+              {focoDesc.classe && <span className="text-carvao-muted">{tx(`, classe ${focoDesc.classe}`, `, class ${focoDesc.classe}`)}</span>}
             </>
           ) : (
             <span className="text-carvao-muted">
-              Sem seleção. Clique ou toque numa bacia; com o teclado, Tab entra no mapa, as setas trocam de bacia e Enter seleciona. Também dá para escolher na lista.
+              {tx(
+                "Sem seleção. Clique ou toque numa bacia; com o teclado, Tab entra no mapa, as setas trocam de bacia e Enter seleciona. Também dá para escolher na lista.",
+                "No selection. Click or tap a basin; with the keyboard, Tab enters the map, the arrow keys move between basins and Enter selects. You can also choose from the list.",
+              )}
             </span>
           )}
         </p>
 
-        <div role="group" className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-carvao" aria-label={`Legenda: ${unidade}`}>
+        <div role="group" className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-carvao" aria-label={tx(`Legenda: ${unidade}`, `Legend: ${unidade}`)}>
           <span className="rotulo text-mineral">{unidade}</span>
           {classificacao.classes.map((c, i) => (
             <span key={c.indice} className="inline-flex items-center gap-1.5">
@@ -371,28 +387,47 @@ export function AguaMapaBacias({
               className="inline-block h-3.5 w-5 border border-linha"
               style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, var(--cor-superficie) 1px 5px)" }}
             />
-            sem dado ({classificacao.semDado})
+            {tx(`sem dado (${classificacao.semDado})`, `no data (${classificacao.semDado})`)}
           </span>
         </div>
 
         <div className="space-y-2 text-sm leading-relaxed text-carvao-muted">
           <p className="tabular-nums">
-            {plural(Object.keys(valores).length, "bacia", "bacias")} com estimativa: {num(comValor, 0)} com valor e {num(Object.keys(valores).length - comValor, 0)} sem dado (hachura).
-            As classes são fixas: a cor de um período compara com a de outro.
+            {tx(
+              <>
+                {plural(Object.keys(valores).length, "bacia", "bacias")} com estimativa: {num(comValor, 0)} com valor e {num(Object.keys(valores).length - comValor, 0)} sem dado (hachura).
+                As classes são fixas: a cor de um período compara com a de outro.
+              </>,
+              <>
+                {plural(Object.keys(valores).length, "basin", "basins")} with an estimate: {num(comValor, 0)} with a value and {num(Object.keys(valores).length - comValor, 0)} with no data
+                (hatched). The classes are fixed: the color of one period compares with that of another.
+              </>,
+            )}
           </p>
           {nota && <p>{nota}</p>}
           {notaSemContorno && <p data-nota-sem-contorno="">{notaSemContorno}</p>}
-          {geo && semPoligono.length > 0 && <p>Sem polígono nesta camada: {semPoligono.map((id) => nomes[id] ?? id).join(", ")}.</p>}
+          {geo && semPoligono.length > 0 && (
+            <p>{tx(`Sem polígono nesta camada: ${semPoligono.map((id) => nomes[id] ?? id).join(", ")}.`, `No polygon in this layer: ${semPoligono.map((id) => nomes[id] ?? id).join(", ")}.`)}</p>
+          )}
           {geo && (
             <details data-fonte-do-mapa="">
-              <summary className="min-h-[44px] cursor-pointer py-2 text-energia-dark underline underline-offset-4">Fonte e projeção do mapa</summary>
-              <p className="pb-2">
-                {fonteSemArquivo(geo.fonte)}
-                {arquivoDaFonte(geo.fonte) && <span data-nivel="analisar"> (arquivo {arquivoDaFonte(geo.fonte)})</span>}, capturado em {carimbo(geo.capturado_em)}; projeção{" "}
-                {geo.projecao.nome}, simplificação de {num(geo.simplificacao.tolerancia_m / 1000, 0)} km. Divisas de UF
-                {carga.uf ? ` da malha do IBGE (${carga.uf.malha.revisao ? `revisão de ${carga.uf.malha.revisao}` : "revisão sem registro"})` : " indisponíveis nesta carga"}, só
-                para orientação.
-              </p>
+              <summary className="min-h-[44px] cursor-pointer py-2 text-energia-dark underline underline-offset-4">{tx("Fonte e projeção do mapa", "Map source and projection")}</summary>
+              {tx(
+                <p className="pb-2">
+                  {fonteSemArquivo(geo.fonte)}
+                  {arquivoDaFonte(geo.fonte) && <span data-nivel="analisar"> (arquivo {arquivoDaFonte(geo.fonte)})</span>}, capturado em {carimbo(geo.capturado_em)}; projeção{" "}
+                  {geo.projecao.nome}, simplificação de {num(geo.simplificacao.tolerancia_m / 1000, 0)} km. Divisas de UF
+                  {carga.uf ? ` da malha do IBGE (${carga.uf.malha.revisao ? `revisão de ${carga.uf.malha.revisao}` : "revisão sem registro"})` : " indisponíveis nesta carga"}, só
+                  para orientação.
+                </p>,
+                <p className="pb-2">
+                  <Nome>{fonteSemArquivo(geo.fonte)}</Nome>
+                  {arquivoDaFonte(geo.fonte) && <span data-nivel="analisar"> (file {arquivoDaFonte(geo.fonte)})</span>}, captured on {carimbo(geo.capturado_em)}; projection{" "}
+                  {geo.projecao.nome}, simplification of {num(geo.simplificacao.tolerancia_m / 1000, 0)} km. State boundaries
+                  {carga.uf ? ` from the IBGE grid (${carga.uf.malha.revisao ? `revision of ${carga.uf.malha.revisao}` : "unrecorded revision"})` : " unavailable in this load"}, for
+                  orientation only.
+                </p>,
+              )}
             </details>
           )}
         </div>

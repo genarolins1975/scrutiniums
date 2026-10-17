@@ -17,6 +17,13 @@ export function temTraducao(tabela: Readonly<Record<string, string>>, valor: str
   return Object.prototype.hasOwnProperty.call(tabela, valor);
 }
 
+/** Forma inglesa das mensagens de cópia de MENSAGEM_COPIA (evidencia.ts), usada pelos links de painel destes módulos. */
+export const MENSAGEM_COPIA_EN: Readonly<Record<"copiado" | "selecionado" | "falhou", string>> = {
+  copiado: "Copied to the clipboard.",
+  selecionado: "Text selected: use Ctrl+C (or Copy, in the menu) to copy.",
+  falhou: "Could not copy: select the text in the block and copy it.",
+};
+
 /* ---------- Água e clima ---------- */
 
 /** Abrangência de uma revisão da MLT (agua_detalhe.armazenamento.mlt.revisoes_no_mes[].abrangencia). */
