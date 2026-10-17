@@ -80,6 +80,9 @@ export function ComproveNumero({ evidencia, sobDemanda, variante = "link", rotul
   // tradução exata, o indicador fica em português (no título do diálogo, marcado)
   const indicadorGold = ev?.indicador ? (rotuloFicha(ev.indicador, idioma) ?? ev.indicador) : "";
   const indicador = sobDemanda?.indicador ?? indicadorGold;
+  // indicador da gold sem forma inglesa conferida: em inglês, fica marcado como nome em português (lang) no texto para leitor de tela
+  const semTraducao = idioma === "en" && !sobDemanda?.indicador && !!ev?.indicador && rotuloFicha(ev.indicador, idioma) === null;
+  const indicadorLido = semTraducao ? <span lang="pt-BR" data-i18n-nome="">{indicador}</span> : indicador;
   const valorExibido = ev?.valor_exibido ? valorGoldNoIdioma(ev.valor_exibido, idioma).texto : (sobDemanda?.valorExibido ?? "");
   // o diálogo vai para o fim do <body> e só existe no cliente: o botão pode ficar dentro de um
   // parágrafo (variante "valor") sem que o <dialog> feche o <p> e quebre a hidratação
@@ -120,13 +123,13 @@ export function ComproveNumero({ evidencia, sobDemanda, variante = "link", rotul
             {ev?.valor_exibido ? <ValorGold valor={ev.valor_exibido} /> : valorExibido}
             <span className="sr-only">
               {tx(": comprove este número (", ": check this number (")}
-              {indicador})
+              {indicadorLido})
             </span>
           </>
         ) : (
           <>
             {rotulo}
-            <span className="sr-only">: {indicador}, {valorExibido}</span>
+            <span className="sr-only">: {indicadorLido}, {valorExibido}</span>
           </>
         )}
       </button>

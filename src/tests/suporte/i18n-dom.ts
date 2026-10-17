@@ -106,6 +106,8 @@ export function vazamentos(doc: No, idioma: "pt" | "en", nomes: readonly string[
       if (tecnicos.has(no.tagName)) return;
       // nome próprio marcado (<Nome>: lang="pt-BR" e data-i18n-nome) fica em português por definição
       dentro = dentro || ilhasValidas.has(no) || (attr(no, "data-i18n-nome") !== undefined && attr(no, "lang") === "pt-BR");
+      // código, comando e identificador técnico (<code>, <kbd>, <samp>) não são prosa
+      if (["code", "kbd", "samp"].includes(no.tagName)) return;
       lang = attr(no, "lang") ?? lang;
       for (const nome of atributosHumanos) verifica(attr(no, nome) ?? "", dentro, lang);
       if (no.tagName === "meta" && /^(?:description|og:(?:title|description|image:alt)|twitter:(?:title|description|image:alt))$/.test(attr(no, "name") ?? attr(no, "property") ?? "")) {

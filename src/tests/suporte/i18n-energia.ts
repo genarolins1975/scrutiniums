@@ -48,7 +48,7 @@ export function portuguesSemMarca(doc: No): string[] {
       return;
     }
     if (!ehElemento(no)) return;
-    if (tecnicos.has(no.tagName) || isento(no)) return;
+    if (tecnicos.has(no.tagName) || isento(no) || ["code", "kbd", "samp"].includes(no.tagName)) return;
     for (const a of ATRIBUTOS) {
       const v = attr(no, a);
       if (v && PT_ATRIBUTO.test(semNomesLivres(v))) erros.push(`[${a}] ${v.slice(0, 120)}`);

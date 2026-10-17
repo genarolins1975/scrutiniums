@@ -291,7 +291,9 @@ function numeroDoTexto(s: string): { valor: number; casas: number; resto: string
  * texto é reescrito, mas só se o novo for o arredondamento de `valor_calculo` e trouxer a mesma unidade
  * escrita: nunca inventa dígito. Qualquer dúvida devolve a ficha como veio.
  */
-export function comValorExibido(ev: Evidencia, texto: string): Evidencia {
+export function comValorExibido(ev: Evidencia, textoNaPagina: string, idioma: Idioma = idiomaEnergia()): Evidencia {
+  // a ficha guarda o valor escrito em português (a tela o converte ao exibir): texto da página inglesa volta à grafia da gold
+  const texto = idioma === "en" ? textoNaPagina.replace(/\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+\.\d+/g, (m) => m.replace(/,/g, "\u0000").replace(/\./g, ",").replace(/\u0000/g, ".")) : textoNaPagina;
   const novo = numeroDoTexto(texto);
   const velho = numeroDoTexto(ev.valor_exibido);
   if (!novo || !velho || ev.valor_calculo === null || !Number.isFinite(ev.valor_calculo)) return ev;
