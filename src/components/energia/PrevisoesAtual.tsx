@@ -10,16 +10,19 @@ import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { dominioBonito, escalaLinear, rotuloTick, type Dominio } from "@/lib/energia/escalas";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
-import { CURTO_SM, NOME_SM, dataBR, num, reais } from "@/lib/energia/formato";
+import { dataBR as dataBRBase, dataCurta, nomeSubmercado, num as numBase, reais as reaisBase } from "@/lib/energia/formato";
+import { tx as txBase } from "@/lib/energia/idioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import type { Idioma } from "@/lib/idioma";
 import {
-  COLUNAS_GRADE,
+  colunasGrade,
   COR_SM,
   HORIZONTES,
   SUBMERCADOS,
   descreverHorizonte,
   matrizGrade,
   resumoB0,
-  reaisMWh,
+  reaisMWh as reaisMWhBase,
   textoPublicadoNoCorte,
   type LinhaGrade,
 } from "@/lib/energia/previsoes";
@@ -48,6 +51,21 @@ const ESQUEMA = {
 };
 
 export type PublicadoResumo = Pick<PublicadoNoCorte, "origem" | "submercados">;
+
+/** Formatadores no idioma da página, para as peças deste painel. */
+function formatos(idioma: Idioma) {
+  return {
+    dataBR: (iso: string | null | undefined) => dataBRBase(iso, idioma),
+    /** "03/10" no português, "Oct 3" no inglês. */
+    diaMes: (iso: string) => (idioma === "en" ? dataCurta(iso, "en") : dataBRBase(iso, "pt").slice(0, 5)),
+    num: (v: number | null | undefined, casas = 1) => numBase(v, casas, idioma),
+    reais: (v: number | null | undefined) => reaisBase(v, 2, idioma),
+    reaisMWh: (v: number | null | undefined) => reaisMWhBase(v, 2, idioma),
+    nome: (sm: string) => nomeSubmercado(sm, idioma),
+    curto: (sm: string) => nomeSubmercado(sm, idioma, true),
+    tx: <T,>(pt: T, en: T) => txBase(pt, en, idioma),
+  };
+}
 
 export function PrevisoesAtual({
   linhas,
@@ -89,9 +107,12 @@ export function PrevisoesAtual({
   avaliacao?: ReactNode;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { dataBR, num, reais, reaisMWh, nome, curto } = formatos(idioma);
   const sel = linhas.find((l) => l.submercado === v.sm && l.horizonte === v.h) ?? null;
-  const semanal = resumoB0(linhas, v.sm, "W");
-  const mensal = resumoB0(linhas, v.sm, "M");
+  const semanal = resumoB0(linhas, v.sm, "W", idioma);
+  const mensal = resumoB0(linhas, v.sm, "M", idioma);
   const pubSm = publicado?.submercados[v.sm] ?? null;
   const evPub = pubSm?.evidencia ? evidencias[pubSm.evidencia] : undefined;
   const matriz = matrizGrade(linhas);
@@ -99,11 +120,11 @@ export function PrevisoesAtual({
     () =>
       SUBMERCADOS.filter((sm) => linhas.some((l) => l.submercado === sm)).map((sm) => ({
         id: sm,
-        rotulo: NOME_SM[sm],
-        detalhe: CURTO_SM[sm],
-        sinonimos: [sm, CURTO_SM[sm]],
+        rotulo: nomeSubmercado(sm, idioma),
+        detalhe: nomeSubmercado(sm, idioma, true),
+        sinonimos: [sm, nomeSubmercado(sm, idioma, true), nomeSubmercado(sm, "pt")],
       })),
-    [linhas],
+    [linhas, idioma],
   );
   const selecionar = (sm: Submercado, h?: Horizonte) => definir(h ? { sm, h } : { sm });
   const escolhidos = useMemo(() => v.sms.filter((sm) => entidades.some((e) => e.id === sm)), [v.sms, entidades]);
@@ -118,7 +139,7 @@ export function PrevisoesAtual({
     <div className="space-y-6">
       <section aria-labelledby="rodada-figura-titulo" className="space-y-3" data-figura-rodada="">
         <h3 id="rodada-figura-titulo" className="ed-h3 font-serif text-carvao">
-          Referência B0 por entrega, nos submercados escolhidos
+          {tx("Referência B0 por entrega, nos submercados escolhidos", "B0 benchmark by delivery, in the chosen submarkets")}
         </h3>
         {escolhidos.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-2">
@@ -132,23 +153,38 @@ export function PrevisoesAtual({
                 selecionado={v.sm === sm}
                 horizonte={v.h}
                 onSelecionar={(h) => selecionar(sm, h)}
+                idioma={idioma}
               />
             ))}
           </div>
         ) : (
           <p role="status" className="border border-dashed border-linha bg-superficie px-5 py-4 text-sm text-carvao-muted">
-            Nenhum submercado escolhido. Escolha até quatro, mais abaixo, para ver a referência de cada um na mesma escala.
+            {tx(
+              "Nenhum submercado escolhido. Escolha até quatro, mais abaixo, para ver a referência de cada um na mesma escala.",
+              "No submarket chosen. Choose up to four, further down, to see the benchmark of each on the same scale.",
+            )}
           </p>
         )}
         <p className="text-xs text-carvao-muted" data-escala="">
-          Mesma escala de preço em todos os painéis: {num(dom.min, 0)} a {num(dom.max, 0)} R$/MWh. Semanas e meses têm eixos de tempo próprios.
+          {tx(
+            `Mesma escala de preço em todos os painéis: ${num(dom.min, 0)} a ${num(dom.max, 0)} R$/MWh. Semanas e meses têm eixos de tempo próprios.`,
+            `Same price scale in all panels: ${num(dom.min, 0)} to ${num(dom.max, 0)} R$/MWh. Weeks and months have their own time axes.`,
+          )}
         </p>
         <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-          Em cada painel, um traço horizontal por entrega, do primeiro ao último dia, na altura do número previsto: contínuo para as semanas, tracejado para os meses. À esquerda
-          do corte, em cinza, o período que o B0 repete (dado observado). A linha pontilhada é o piso médio do PLD na entrega.{" "}
+          {tx(
+            "Em cada painel, um traço horizontal por entrega, do primeiro ao último dia, na altura do número previsto: contínuo para as semanas, tracejado para os meses. À esquerda do corte, em cinza, o período que o B0 repete (dado observado). A linha pontilhada é o piso médio do PLD na entrega.",
+            "In each panel, one horizontal stroke per delivery, from the first to the last day, at the height of the forecast number: solid for weeks, dashed for months. To the left of the cutoff, in gray, the period that B0 repeats (observed data). The dotted line is the average PLD floor in the delivery.",
+          )}{" "}
           {algumRealizado
-            ? "O losango é o realizado da entrega, o PLD médio de todas as horas, que só existe depois que ela termina."
-            : "Nenhuma entrega prevista terminou: o realizado aparece nestes painéis, como um losango, quando a entrega fecha."}
+            ? tx(
+                "O losango é o realizado da entrega, o PLD médio de todas as horas, que só existe depois que ela termina.",
+                "The diamond is the actual value of the delivery, the average PLD of all its hours, which only exists after it ends.",
+              )
+            : tx(
+                "Nenhuma entrega prevista terminou: o realizado aparece nestes painéis, como um losango, quando a entrega fecha.",
+                "No forecast delivery has ended: the actual value appears in these panels, as a diamond, when the delivery closes.",
+              )}
         </p>
       </section>
 
@@ -157,15 +193,18 @@ export function PrevisoesAtual({
       <div className="space-y-2" data-grade-bloco="">
         {/* a legenda fica fora da região que rola: dentro da tabela ela ficaria mais larga que a janela e o texto sairia cortado no celular */}
         <p id="grade-4x7-legenda" className="text-xs text-carvao-muted">
-          Grade 4 × 7: referência B0 por submercado e horizonte, em R$/MWh. Os mesmos números da tabela completa e dos painéis acima. Escolha uma célula para ver o detalhe.
+          {tx(
+            "Grade 4 × 7: referência B0 por submercado e horizonte, em R$/MWh. Os mesmos números da tabela completa e dos painéis acima. Escolha uma célula para ver o detalhe.",
+            "4 × 7 grid: B0 benchmark by submarket and horizon, in R$/MWh. The same numbers as the full table and the panels above. Choose a cell to see the detail.",
+          )}
         </p>
-        <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Grade 4 × 7 da referência B0 (rolável)">
+        <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx("Grade 4 × 7 da referência B0 (rolável)", "4 × 7 grid of the B0 benchmark (scrollable)")}>
           <table className="w-full min-w-[34rem] border-collapse text-sm tabular-nums" data-grade="4x7" aria-describedby="grade-4x7-legenda">
-            <caption className="sr-only">Grade 4 × 7 da referência B0 por submercado e horizonte, em R$/MWh</caption>
+            <caption className="sr-only">{tx("Grade 4 × 7 da referência B0 por submercado e horizonte, em R$/MWh", "4 × 7 grid of the B0 benchmark by submarket and horizon, in R$/MWh")}</caption>
             <thead>
               <tr className="text-left text-xs text-mineral">
                 <th scope="col" className="border-b border-linha px-2 py-2 font-medium">
-                  Submercado
+                  {tx("Submercado", "Submarket")}
                 </th>
                 {HORIZONTES.map((h) => (
                   <th key={h} scope="col" className="border-b border-linha px-2 py-2 text-right font-medium">
@@ -178,7 +217,7 @@ export function PrevisoesAtual({
               {matriz.map((r) => (
                 <tr key={r.submercado}>
                   <th scope="row" className="border-b border-linha px-2 py-1 text-left font-normal text-carvao">
-                    {CURTO_SM[r.submercado]}
+                    {curto(r.submercado)}
                   </th>
                   {r.valores.map((x, i) => {
                     const h = HORIZONTES[i];
@@ -189,10 +228,10 @@ export function PrevisoesAtual({
                           type="button"
                           onClick={() => selecionar(r.submercado, h)}
                           aria-pressed={ativo}
-                          aria-label={`${h}, ${NOME_SM[r.submercado]}: ${x === null ? "sem número" : reaisMWh(x)}`}
+                          aria-label={`${h}, ${nome(r.submercado)}: ${x === null ? tx("sem número", "no number") : reaisMWh(x)}`}
                           className={`min-h-[44px] w-full px-2 text-right ${ativo ? "bg-energia-fundo font-medium text-carvao" : "text-carvao hover:bg-papel"}`}
                         >
-                          {x === null ? "sem número" : num(x, 2)}
+                          {x === null ? tx("sem número", "no number") : num(x, 2)}
                         </button>
                       </td>
                     );
@@ -208,23 +247,26 @@ export function PrevisoesAtual({
       {notas}
       {aposPrincipal}
 
-      <SecaoDoPainel id="comparar" titulo="Quais submercados aparecem nos painéis?" nivel="analisar">
+      <SecaoDoPainel id="comparar" titulo={tx("Quais submercados aparecem nos painéis?", "Which submarkets appear in the panels?")} nivel="analisar">
         <Comparador
-          rotulo={`Submercados para comparar (até ${LIMITE_COMPARACAO})`}
+          rotulo={tx(`Submercados para comparar (até ${LIMITE_COMPARACAO})`, `Submarkets to compare (up to ${LIMITE_COMPARACAO})`)}
           entidades={entidades}
           selecionadas={escolhidos}
           onMudar={(ids) => definir({ sms: ids as Submercado[] })}
-          dicaBusca="SE/CO, Sul, Nordeste ou Norte"
-          vazio="Nenhum submercado escolhido. Escolha até quatro para ver a referência de cada um na mesma escala."
+          dicaBusca={tx("SE/CO, Sul, Nordeste ou Norte", "SE/CW, South, Northeast or North")}
+          vazio={tx(
+            "Nenhum submercado escolhido. Escolha até quatro para ver a referência de cada um na mesma escala.",
+            "No submarket chosen. Choose up to four to see the benchmark of each on the same scale.",
+          )}
         >
           {() => null}
         </Comparador>
       </SecaoDoPainel>
 
-      <SecaoDoPainel id="celula" titulo="Uma célula da rodada: submercado e horizonte escolhidos">
+      <SecaoDoPainel id="celula" titulo={tx("Uma célula da rodada: submercado e horizonte escolhidos", "One cell of the run: chosen submarket and horizon")}>
         <div className="flex flex-wrap items-end gap-4">
           <label className="flex flex-col gap-1 text-sm text-carvao">
-            <span className="rotulo text-mineral">Submercado</span>
+            <span className="rotulo text-mineral">{tx("Submercado", "Submarket")}</span>
             <select
               value={v.sm}
               onChange={(e) => selecionar(e.currentTarget.value as Submercado)}
@@ -238,7 +280,7 @@ export function PrevisoesAtual({
             </select>
           </label>
           <label className="flex flex-col gap-1 text-sm text-carvao">
-            <span className="rotulo text-mineral">Horizonte</span>
+            <span className="rotulo text-mineral">{tx("Horizonte", "Horizon")}</span>
             <select
               value={v.h}
               onChange={(e) => definir({ h: e.currentTarget.value as Horizonte })}
@@ -246,20 +288,20 @@ export function PrevisoesAtual({
             >
               {HORIZONTES.map((h) => (
                 <option key={h} value={h}>
-                  {h}: {descreverHorizonte(h)}
+                  {h}: {descreverHorizonte(h, idioma)}
                 </option>
               ))}
             </select>
           </label>
         </div>
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao" aria-live="polite" data-celula={sel?.id ?? ""}>
-          {sel ? textoCelula(sel) : "Esta combinação de submercado e horizonte não está na rodada."}
+          {sel ? textoCelula(sel, idioma) : tx("Esta combinação de submercado e horizonte não está na rodada.", "This combination of submarket and horizon is not in the run.")}
         </p>
         <div data-kpis={v.sm}>
-          <FaixaMetricas colunas={2} rotulo={`Números da rodada para ${NOME_SM[v.sm]}`}>
+          <FaixaMetricas colunas={2} rotulo={tx(`Números da rodada para ${nome(v.sm)}`, `Run numbers for ${nome(v.sm)}`)}>
             <Numero
               variante="faixa"
-              rotulo={`B0 semanal, ${CURTO_SM[v.sm]}`}
+              rotulo={tx(`B0 semanal, ${curto(v.sm)}`, `Weekly B0, ${curto(v.sm)}`)}
               natureza="PREVISTO"
               valor={semanal.valor}
               evidencia={semanal.evidencia ? evidencias[semanal.evidencia] : undefined}
@@ -268,13 +310,13 @@ export function PrevisoesAtual({
               unidade="R$/MWh"
               periodo={semanal.periodo}
               nota={semanal.usado}
-              motivoAusencia="A rodada não tem número semanal para este submercado; o motivo está na tabela."
+              motivoAusencia={tx("A rodada não tem número semanal para este submercado; o motivo está na tabela.", "The run has no weekly number for this submarket; the reason is in the table.")}
               cor={COR_SM[v.sm]}
               endereco={endereco}
             />
             <Numero
               variante="faixa"
-              rotulo={`B0 mensal, ${CURTO_SM[v.sm]}`}
+              rotulo={tx(`B0 mensal, ${curto(v.sm)}`, `Monthly B0, ${curto(v.sm)}`)}
               natureza="PREVISTO"
               valor={mensal.valor}
               evidencia={mensal.evidencia ? evidencias[mensal.evidencia] : undefined}
@@ -283,7 +325,7 @@ export function PrevisoesAtual({
               unidade="R$/MWh"
               periodo={mensal.periodo}
               nota={mensal.usado}
-              motivoAusencia="A rodada não tem número mensal para este submercado; o motivo está na tabela."
+              motivoAusencia={tx("A rodada não tem número mensal para este submercado; o motivo está na tabela.", "The run has no monthly number for this submarket; the reason is in the table.")}
               cor={COR_SM[v.sm]}
               endereco={endereco}
             />
@@ -294,36 +336,55 @@ export function PrevisoesAtual({
       {publicado && (
         <SecaoDoPainel
           id="publicado-no-corte"
-          titulo={`O PLD já publicado para ${dataBR(publicado.origem)}, no corte, é dado e não previsão`}
-          lead="A CCEE publica o PLD de cada dia na véspera. No corte das 07h00, as horas restantes do dia de origem já eram conhecidas: aparecem aqui como dado observado, e nenhuma entrega prevista as inclui."
+          titulo={tx(
+            `O PLD já publicado para ${dataBR(publicado.origem)}, no corte, é dado e não previsão`,
+            `The PLD already published for ${dataBR(publicado.origem)}, at the cutoff, is data and not a forecast`,
+          )}
+          lead={tx(
+            "A CCEE publica o PLD de cada dia na véspera. No corte das 07h00, as horas restantes do dia de origem já eram conhecidas: aparecem aqui como dado observado, e nenhuma entrega prevista as inclui.",
+            "CCEE publishes each day's PLD on the previous day. At the 07:00 cutoff, the remaining hours of the origin day were already known: they appear here as observed data, and no forecast delivery includes them.",
+          )}
         >
-          <FaixaMetricas colunas={2} rotulo={`PLD já publicado no corte, ${NOME_SM[v.sm]}`}>
+          <FaixaMetricas colunas={2} rotulo={tx(`PLD já publicado no corte, ${nome(v.sm)}`, `PLD already published at the cutoff, ${nome(v.sm)}`)}>
             <Numero
               variante="faixa"
-              rotulo={`PLD já publicado no corte, ${CURTO_SM[v.sm]}`}
+              rotulo={tx(`PLD já publicado no corte, ${curto(v.sm)}`, `PLD already published at the cutoff, ${curto(v.sm)}`)}
               natureza="OBSERVADO"
               valor={pubSm?.media ?? null}
               evidencia={evPub}
               formato="reais"
               casas={2}
               unidade="R$/MWh"
-              periodo={pubSm?.primeira && pubSm.ultima ? `${dataBR(publicado.origem)}, ${pubSm.primeira.slice(11, 13)}h a ${pubSm.ultima.slice(11, 13)}h` : undefined}
+              periodo={
+                pubSm?.primeira && pubSm.ultima
+                  ? tx(
+                      `${dataBR(publicado.origem)}, ${pubSm.primeira.slice(11, 13)}h a ${pubSm.ultima.slice(11, 13)}h`,
+                      `${dataBR(publicado.origem)}, ${pubSm.primeira.slice(11, 13)}h to ${pubSm.ultima.slice(11, 13)}h`,
+                    )
+                  : undefined
+              }
               nota={
                 <>
-                  Média simples das horas do dia de origem depois do corte, já publicadas pela CCEE. É dado, não previsão.
+                  {tx(
+                    "Média simples das horas do dia de origem depois do corte, já publicadas pela CCEE. É dado, não previsão.",
+                    "Simple average of the hours of the origin day after the cutoff, already published by CCEE. It is data, not a forecast.",
+                  )}
                   {typeof mediaDiaPaginaPld?.[v.sm] === "number" && pubSm?.horas ? (
                     <>
                       {" "}
-                      A página PLD mostra a média das 24 horas do dia, {reais(mediaDiaPaginaPld[v.sm] as number)}/MWh; aqui entram só as {pubSm.horas} horas depois do corte.
+                      {tx(
+                        `A página PLD mostra a média das 24 horas do dia, ${reais(mediaDiaPaginaPld[v.sm] as number)}/MWh; aqui entram só as ${pubSm.horas} horas depois do corte.`,
+                        `The PLD page shows the average of the 24 hours of the day, ${reais(mediaDiaPaginaPld[v.sm] as number)}/MWh; here only the ${pubSm.horas} hours after the cutoff are included.`,
+                      )}
                     </>
                   ) : null}
                 </>
               }
-              motivoAusencia="Nenhuma hora do dia de origem depois do corte estava capturada."
+              motivoAusencia={tx("Nenhuma hora do dia de origem depois do corte estava capturada.", "No hour of the origin day after the cutoff had been captured.")}
               endereco={endereco}
             />
           </FaixaMetricas>
-          <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{textoPublicadoNoCorte(publicado, v.sm)}</p>
+          <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{textoPublicadoNoCorte(publicado, v.sm, idioma)}</p>
           {noCorteGrafico && (
             <div data-nivel="analisar" className="space-y-2" data-grafico-no-corte="">
               {noCorteGrafico}
@@ -335,8 +396,8 @@ export function PrevisoesAtual({
       {avaliacao}
 
       <TabelaInterativa
-        titulo="Células da rodada: referência B0, faixa, limites e período usado"
-        colunas={COLUNAS_GRADE}
+        titulo={tx("Células da rodada: referência B0, faixa, limites e período usado", "Cells of the run: B0 benchmark, band, limits and period used")}
+        colunas={colunasGrade(idioma)}
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="sm"
@@ -349,28 +410,48 @@ export function PrevisoesAtual({
           const l = linhas.find((x) => x.id === id);
           if (l) selecionar(l.submercado, l.horizonte);
         }}
-        dicaBusca="Submercado, horizonte ou entrega"
-        nota="P10 e P90 vazios: nenhuma faixa publicada; nenhum segmento está calibrado. Último dia e fim do período usado são os últimos dias inteiros (o fim da entrega, às 00h do dia seguinte, fica excluído). Realizado e erro ficam sem dado até a entrega terminar."
+        dicaBusca={tx("Submercado, horizonte ou entrega", "Submarket, horizon or delivery")}
+        nota={tx(
+          "P10 e P90 vazios: nenhuma faixa publicada; nenhum segmento está calibrado. Último dia e fim do período usado são os últimos dias inteiros (o fim da entrega, às 00h do dia seguinte, fica excluído). Realizado e erro ficam sem dado até a entrega terminar.",
+          "Empty P10 and P90: no band published; no segment is calibrated. Last day and end of the period used are the last whole days (the end of the delivery, at 00h of the next day, is excluded). Actual and error stay without data until the delivery ends.",
+        )}
       />
     </div>
   );
 }
 
 /** Frase do detalhe da célula escolhida, só com campos da linha. */
-function textoCelula(l: LinhaGrade): string {
-  const entrega = `${l.horizonte} (${descreverHorizonte(l.horizonte)}), ${NOME_SM[l.submercado]}: entrega ${l.entrega}, de ${dataBR(l.inicio)} a ${dataBR(l.fim)}.`;
-  if (l.previsao === null) return `${entrega} Sem número: ${l.motivo || "motivo não registrado"}.`;
-  const usado = l.periodo_inicio && l.periodo_fim ? `, média do PLD de ${dataBR(l.periodo_inicio)} a ${dataBR(l.periodo_fim)}` : "";
-  const faixa = l.p10 !== null && l.p90 !== null ? `Faixa P10 a P90: ${reaisMWh(l.p10)} a ${reaisMWh(l.p90)}.` : `Sem faixa (calibração: ${l.calibracao}).`;
-  const lim = l.piso !== null && l.teto !== null ? ` Limites médios da entrega: piso ${reaisMWh(l.piso)} e teto estrutural ${reaisMWh(l.teto)} (${l.limites}).` : "";
-  const aj = l.ajustada === "sim" ? " O valor foi ajustado ao limite de preço." : "";
+function textoCelula(l: LinhaGrade, idioma: Idioma): string {
+  const { dataBR, reaisMWh, nome, tx } = formatos(idioma);
+  const entrega = tx(
+    `${l.horizonte} (${descreverHorizonte(l.horizonte, "pt")}), ${nome(l.submercado)}: entrega ${l.entrega}, de ${dataBR(l.inicio)} a ${dataBR(l.fim)}.`,
+    `${l.horizonte} (${descreverHorizonte(l.horizonte, idioma)}), ${nome(l.submercado)}: delivery ${l.entrega}, from ${dataBR(l.inicio)} to ${dataBR(l.fim)}.`,
+  );
+  if (l.previsao === null) return tx(`${entrega} Sem número: ${l.motivo || "motivo não registrado"}.`, `${entrega} No number: ${l.motivo || "reason not recorded"}.`);
+  const usado = l.periodo_inicio && l.periodo_fim ? tx(`, média do PLD de ${dataBR(l.periodo_inicio)} a ${dataBR(l.periodo_fim)}`, `, average PLD from ${dataBR(l.periodo_inicio)} to ${dataBR(l.periodo_fim)}`) : "";
+  const faixa =
+    l.p10 !== null && l.p90 !== null
+      ? tx(`Faixa P10 a P90: ${reaisMWh(l.p10)} a ${reaisMWh(l.p90)}.`, `P10 to P90 band: ${reaisMWh(l.p10)} to ${reaisMWh(l.p90)}.`)
+      : tx(`Sem faixa (calibração: ${l.calibracao}).`, `No band (calibration: ${l.calibracao}).`);
+  const lim =
+    l.piso !== null && l.teto !== null
+      ? tx(
+          ` Limites médios da entrega: piso ${reaisMWh(l.piso)} e teto estrutural ${reaisMWh(l.teto)} (${l.limites}).`,
+          ` Average limits of the delivery: floor ${reaisMWh(l.piso)} and structural cap ${reaisMWh(l.teto)} (${l.limites}).`,
+        )
+      : "";
+  // "sim" no português e "yes" no inglês (linhasGrade escreve no idioma da página)
+  const aj = l.ajustada === "sim" || l.ajustada === "yes" ? tx(" O valor foi ajustado ao limite de preço.", " The value was adjusted to the price limit.") : "";
   const real =
     l.realizado !== null
-      ? ` Realizado: ${reaisMWh(l.realizado)}${l.erro !== null ? `; erro (previsão menos realizado): ${reaisMWh(l.erro)}` : ""}.`
+      ? tx(
+          ` Realizado: ${reaisMWh(l.realizado)}${l.erro !== null ? `; erro (previsão menos realizado): ${reaisMWh(l.erro)}` : ""}.`,
+          ` Actual: ${reaisMWh(l.realizado)}${l.erro !== null ? `; error (forecast minus actual): ${reaisMWh(l.erro)}` : ""}.`,
+        )
       : l.termina
-        ? ` Sem realizado: a entrega termina em ${dataBR(l.termina)}.`
+        ? tx(` Sem realizado: a entrega termina em ${dataBR(l.termina)}.`, ` No actual value: the delivery ends on ${dataBR(l.termina)}.`)
         : "";
-  return `${entrega} Referência B0: ${reaisMWh(l.previsao)}${usado}. ${faixa}${lim}${aj}${real}`;
+  return tx(`${entrega} Referência B0: ${reaisMWh(l.previsao)}${usado}. ${faixa}${lim}${aj}${real}`, `${entrega} B0 benchmark: ${reaisMWh(l.previsao)}${usado}. ${faixa}${lim}${aj}${real}`);
 }
 
 /* ---------------------------------------------------------------- pequeno múltiplo */
@@ -378,13 +459,16 @@ function textoCelula(l: LinhaGrade): string {
 const L = 360;
 const A = 156;
 const M = { e: 52, d: 10, t: 18, b: 26 };
-const MESES_CURTOS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+const MESES_CURTOS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]; // i18n: dado
+const MESES_CURTOS_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 /** Meia-noite do dia (AAAA-MM-DD) em dias desde 1970. */
 const dia = (s: string) => Date.parse(`${s}T00:00:00Z`) / 86_400_000;
-const FREQUENCIAS: { freq: Frequencia; titulo: string }[] = [
-  { freq: "W", titulo: "Semanas (W1 a W4)" },
-  { freq: "M", titulo: "Meses (M1 a M3)" },
-];
+function frequencias(idioma: Idioma): { freq: Frequencia; titulo: string }[] {
+  return [
+    { freq: "W", titulo: txBase("Semanas (W1 a W4)", "Weeks (W1 to W4)", idioma) },
+    { freq: "M", titulo: txBase("Meses (M1 a M3)", "Months (M1 to M3)", idioma) },
+  ];
+}
 
 /**
  * Um submercado em dois painéis, semanas e meses, cada um com o seu eixo de tempo e a mesma escala de preço. Uma entrega é um
@@ -400,6 +484,7 @@ function GradeSubmercado({
   selecionado,
   horizonte,
   onSelecionar,
+  idioma,
 }: {
   sm: Submercado;
   origem: string;
@@ -408,42 +493,56 @@ function GradeSubmercado({
   selecionado: boolean;
   horizonte: Horizonte;
   onSelecionar: (h?: Horizonte) => void;
+  idioma: Idioma;
 }) {
+  const { nome, curto, tx } = formatos(idioma);
   const cor = COR_SM[sm];
   const temRealizado = linhas.some((l) => l.realizado !== null);
   return (
     <figure className={`min-w-0 border bg-superficie p-3 ${selecionado ? "border-energia" : "border-linha"}`} data-grade-sm={sm}>
       <figcaption className="flex flex-wrap items-center justify-between gap-2">
-        <span className="font-serif text-base text-carvao">{NOME_SM[sm]}</span>
+        <span className="font-serif text-base text-carvao">{nome(sm)}</span>
         <button
           type="button"
           onClick={() => onSelecionar()}
           aria-pressed={selecionado}
           className={`rotulo inline-flex min-h-[44px] items-center px-2 ${selecionado ? "text-carvao" : "text-carvao-muted underline underline-offset-4 hover:text-carvao"}`}
         >
-          {selecionado ? "Submercado escolhido" : `Escolher ${CURTO_SM[sm]}`}
+          {selecionado ? tx("Submercado escolhido", "Chosen submarket") : tx(`Escolher ${curto(sm)}`, `Choose ${curto(sm)}`)}
         </button>
       </figcaption>
-      {FREQUENCIAS.map(({ freq, titulo }) => (
-        <PainelFrequencia key={freq} sm={sm} freq={freq} titulo={titulo} origem={origem} linhas={linhas} dom={dom} cor={cor} horizonte={horizonte} ativo={selecionado} />
+      {frequencias(idioma).map(({ freq, titulo }) => (
+        <PainelFrequencia
+          key={freq}
+          sm={sm}
+          freq={freq}
+          titulo={titulo}
+          origem={origem}
+          linhas={linhas}
+          dom={dom}
+          cor={cor}
+          horizonte={horizonte}
+          ativo={selecionado}
+          idioma={idioma}
+        />
       ))}
       <p className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-carvao-muted">
         <span>
           <span aria-hidden="true" className="mr-1 inline-block h-[3px] w-5 align-middle" style={{ background: cor }} />
-          B0 por entrega (R$/MWh)
+          {tx("B0 por entrega (R$/MWh)", "B0 by delivery (R$/MWh)")}
         </span>
         <span>
           <span aria-hidden="true" className="mr-1 inline-block h-[3px] w-5 bg-mineral align-middle" />
-          período que o B0 repete
+          {tx("período que o B0 repete", "period that B0 repeats")}
         </span>
         {temRealizado && (
           <span>
             <span aria-hidden="true" className="mr-1 inline-block h-2 w-2 rotate-45 bg-carvao align-middle" />
-            realizado
+            {tx("realizado", "actual")}
           </span>
         )}
       </p>
-      <div className="mt-1 flex flex-wrap gap-1" role="group" aria-label={`Horizontes de ${NOME_SM[sm]}`}>
+      <div className="mt-1 flex flex-wrap gap-1" role="group" aria-label={tx(`Horizontes de ${nome(sm)}`, `Horizons of ${nome(sm)}`)}>
         {linhas.map((l) => (
           <button
             key={l.id}
@@ -472,6 +571,7 @@ function PainelFrequencia({
   cor,
   horizonte,
   ativo,
+  idioma,
 }: {
   sm: Submercado;
   freq: Frequencia;
@@ -482,7 +582,9 @@ function PainelFrequencia({
   cor: string;
   horizonte: Horizonte;
   ativo: boolean;
+  idioma: Idioma;
 }) {
+  const { dataBR, diaMes, num, reaisMWh, nome, tx } = formatos(idioma);
   const grupo = linhas.filter((l) => l.horizonte.startsWith(freq));
   if (!grupo.length) return null;
   const mensal = freq === "M";
@@ -501,17 +603,26 @@ function PainelFrequencia({
     d.setUTCDate(1);
     if (d.getTime() / 86_400_000 < x0 - 1e-6) d.setUTCMonth(d.getUTCMonth() + 1);
     while (d.getTime() / 86_400_000 < x1 - 1) {
-      marcas.push({ x: x(d.getTime() / 86_400_000), rotulo: `${MESES_CURTOS[d.getUTCMonth()]}${d.getUTCMonth() === 0 ? `/${String(d.getUTCFullYear()).slice(2)}` : ""}` });
+      marcas.push({
+        x: x(d.getTime() / 86_400_000),
+        rotulo: tx(
+          `${MESES_CURTOS[d.getUTCMonth()]}${d.getUTCMonth() === 0 ? `/${String(d.getUTCFullYear()).slice(2)}` : ""}`,
+          `${MESES_CURTOS_EN[d.getUTCMonth()]}${d.getUTCMonth() === 0 ? ` \u2019${String(d.getUTCFullYear()).slice(2)}` : ""}`,
+        ),
+      });
       d.setUTCMonth(d.getUTCMonth() + 1);
     }
   } else {
     // semanas: o primeiro dia de cada entrega (sábado), no formato dd/mm
-    for (const l of grupo) marcas.push({ x: x(dia(l.inicio)), rotulo: dataBR(l.inicio).slice(0, 5) });
+    for (const l of grupo) marcas.push({ x: x(dia(l.inicio)), rotulo: diaMes(l.inicio) });
   }
   const usados = new Map<string, { inicio: string; fim: string; valor: number }>();
   for (const l of grupo) if (l.periodo_inicio && l.periodo_fim && l.previsao !== null && !usados.has(`${l.periodo_inicio}:${l.periodo_fim}`)) usados.set(`${l.periodo_inicio}:${l.periodo_fim}`, { inicio: l.periodo_inicio, fim: l.periodo_fim, valor: l.previsao });
-  const vals = Array.from(new Set(grupo.map((l) => (l.previsao === null ? "sem número" : reaisMWh(l.previsao)))));
-  const descricao = `${mensal ? "meses" : "semanas"} de ${dataBR(grupo[0].inicio)} a ${dataBR(grupo[grupo.length - 1].fim)}: ${vals.join(", ")}${piso !== null ? `; piso médio ${reaisMWh(piso)}` : ""}.`;
+  const vals = Array.from(new Set(grupo.map((l) => (l.previsao === null ? tx("sem número", "no number") : reaisMWh(l.previsao)))));
+  const descricao = tx(
+    `${mensal ? "meses" : "semanas"} de ${dataBR(grupo[0].inicio)} a ${dataBR(grupo[grupo.length - 1].fim)}: ${vals.join(", ")}${piso !== null ? `; piso médio ${reaisMWh(piso)}` : ""}.`,
+    `${mensal ? "months" : "weeks"} from ${dataBR(grupo[0].inicio)} to ${dataBR(grupo[grupo.length - 1].fim)}: ${vals.join(", ")}${piso !== null ? `; average floor ${reaisMWh(piso)}` : ""}.`,
+  );
   const idTitulo = `grade-${sm}-${freq}-titulo`;
   const idDesc = `grade-${sm}-${freq}-desc`;
   const comNumero = grupo.filter((l) => l.previsao !== null);
@@ -521,7 +632,7 @@ function PainelFrequencia({
     <div className="mt-2" data-painel-frequencia={freq}>
       <p className="text-xs font-medium text-carvao-muted">{titulo}</p>
       <svg viewBox={`0 0 ${L} ${A}`} width="100%" role="img" aria-labelledby={`${idTitulo} ${idDesc}`} className="mt-0.5 block h-auto max-w-full overflow-visible">
-        <title id={idTitulo}>{`Referência B0 por entrega, ${NOME_SM[sm]}: ${titulo.toLowerCase()}`}</title>
+        <title id={idTitulo}>{tx(`Referência B0 por entrega, ${nome(sm)}: ${titulo.toLowerCase()}`, `B0 benchmark by delivery, ${nome(sm)}: ${titulo.toLowerCase()}`)}</title>
         <desc id={idDesc}>{descricao}</desc>
         {dom.ticks.map((t) => (
           <g key={t}>
@@ -540,7 +651,7 @@ function PainelFrequencia({
           <g>
             <line x1={M.e} x2={L - M.d} y1={y(piso)} y2={y(piso)} stroke="var(--serie-referencia)" strokeWidth={1.5} strokeDasharray="2 3" />
             <text x={L - M.d} y={y(piso) - 4} textAnchor="end" fontSize={12} fill="var(--cor-carvao-muted)">
-              piso médio {num(piso, 2)}
+              {tx(`piso médio ${num(piso, 2)}`, `average floor ${num(piso, 2)}`)}
             </text>
           </g>
         )}
@@ -548,14 +659,19 @@ function PainelFrequencia({
           <g>
             <line x1={x(corte)} x2={x(corte)} y1={M.t - 6} y2={A - M.b} stroke="var(--cor-carvao-muted)" strokeWidth={1} strokeDasharray="4 3" />
             <text x={x(corte) - 3} y={M.t - 6} textAnchor="end" fontSize={12} fill="var(--cor-carvao-muted)">
-              {`corte ${dataBR(origem).slice(0, 5)}`}
+              {tx(`corte ${diaMes(origem)}`, `cutoff ${diaMes(origem)}`)}
             </text>
           </g>
         )}
         {Array.from(usados.values()).map((u) => (
           <g key={`${u.inicio}:${u.fim}`}>
             <line x1={x(dia(u.inicio))} x2={x(dia(u.fim) + 1)} y1={y(u.valor)} y2={y(u.valor)} stroke="var(--cor-mineral)" strokeWidth={3} />
-            <title>{`Período usado pelo B0 ${mensal ? "mensal" : "semanal"}: ${dataBR(u.inicio)} a ${dataBR(u.fim)}, média ${reaisMWh(u.valor)} (observado)`}</title>
+            <title>
+              {tx(
+                `Período usado pelo B0 ${mensal ? "mensal" : "semanal"}: ${dataBR(u.inicio)} a ${dataBR(u.fim)}, média ${reaisMWh(u.valor)} (observado)`,
+                `Period used by the ${mensal ? "monthly" : "weekly"} B0: ${dataBR(u.inicio)} to ${dataBR(u.fim)}, average ${reaisMWh(u.valor)} (observed)`,
+              )}
+            </title>
           </g>
         ))}
         {grupo.map((l) => {
@@ -566,7 +682,7 @@ function PainelFrequencia({
             return (
               <g key={l.id}>
                 <rect x={xa} y={A - M.b - 8} width={Math.max(6, xb - xa - 1)} height={8} fill="none" stroke="var(--cor-mineral)" strokeDasharray="2 2" />
-                <title>{`${l.horizonte}: sem número (${l.motivo || "motivo não registrado"})`}</title>
+                <title>{tx(`${l.horizonte}: sem número (${l.motivo || "motivo não registrado"})`, `${l.horizonte}: no number (${l.motivo || "reason not recorded"})`)}</title>
               </g>
             );
           return (
@@ -580,7 +696,7 @@ function PainelFrequencia({
                 strokeWidth={ativoH ? 5 : 3}
                 strokeDasharray={mensal ? "6 3" : undefined}
               />
-              <title>{`${l.horizonte}, ${dataBR(l.inicio)} a ${dataBR(l.fim)}: ${reaisMWh(l.previsao)}`}</title>
+              <title>{tx(`${l.horizonte}, ${dataBR(l.inicio)} a ${dataBR(l.fim)}: ${reaisMWh(l.previsao)}`, `${l.horizonte}, ${dataBR(l.inicio)} to ${dataBR(l.fim)}: ${reaisMWh(l.previsao)}`)}</title>
               {l.realizado !== null && (
                 <g>
                   <path
@@ -589,7 +705,7 @@ function PainelFrequencia({
                     stroke="var(--cor-superficie)"
                     strokeWidth={1}
                   />
-                  <title>{`${l.horizonte}: realizado ${reaisMWh(l.realizado)}, previsão ${reaisMWh(l.previsao)}`}</title>
+                  <title>{tx(`${l.horizonte}: realizado ${reaisMWh(l.realizado)}, previsão ${reaisMWh(l.previsao)}`, `${l.horizonte}: actual ${reaisMWh(l.realizado)}, forecast ${reaisMWh(l.previsao)}`)}</title>
                 </g>
               )}
             </g>
@@ -604,7 +720,10 @@ function PainelFrequencia({
               fontSize={11.5}
               fill="var(--cor-carvao)"
             >
-              {`${comNumero[0].horizonte} a ${comNumero[comNumero.length - 1].horizonte}: ${num(comNumero[0].previsao as number, 2)}`}
+              {tx(
+                `${comNumero[0].horizonte} a ${comNumero[comNumero.length - 1].horizonte}: ${num(comNumero[0].previsao as number, 2)}`,
+                `${comNumero[0].horizonte} to ${comNumero[comNumero.length - 1].horizonte}: ${num(comNumero[0].previsao as number, 2)}`,
+              )}
             </text>
           ) : (
             comNumero.map((l) => (

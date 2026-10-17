@@ -1,4 +1,7 @@
-import { mesAno, mesAnoCurto, num, pct } from "./formato";
+import type { Idioma } from "@/lib/idioma";
+import { mesAno, mesAnoCurto, nomeSubmercado, num, pct } from "./formato";
+import { idiomaEnergia, tx } from "./idioma";
+import { EFEITOS_MERCADO_EN, traducaoExata } from "./i18n/mercado-preco";
 import { datasLegiveis } from "./visao";
 import type { Proveniencia } from "./tipos";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
@@ -26,10 +29,10 @@ import type {
 /* ---------------------------------------------------------------- páginas */
 
 export const PAGINAS_MERCADO = [
-  { id: "livre-regulado", href: "/setor-eletrico/mercado", rotulo: "Livre e regulado", painel: "P032" },
-  { id: "agentes", href: "/setor-eletrico/mercado/agentes", rotulo: "Agentes e migração", painel: "P033" },
-  { id: "mre-gsf", href: "/setor-eletrico/mercado/mre-e-gsf", rotulo: "MRE e GSF", painel: "P034" },
-  { id: "encargos", href: "/setor-eletrico/mercado/encargos", rotulo: "Encargos e liquidação", painel: "P035" },
+  { id: "livre-regulado", href: "/setor-eletrico/mercado", get rotulo() { return tx("Livre e regulado", "Free and regulated"); }, painel: "P032" },
+  { id: "agentes", href: "/setor-eletrico/mercado/agentes", get rotulo() { return tx("Agentes e migração", "Agents and migration"); }, painel: "P033" },
+  { id: "mre-gsf", href: "/setor-eletrico/mercado/mre-e-gsf", get rotulo() { return tx("MRE e GSF", "MRE and GSF"); }, painel: "P034" },
+  { id: "encargos", href: "/setor-eletrico/mercado/encargos", get rotulo() { return tx("Encargos e liquidação", "Charges and settlement"); }, painel: "P035" },
 ] as const;
 
 export type IdPaginaMercado = (typeof PAGINAS_MERCADO)[number]["id"];
@@ -40,26 +43,26 @@ export type IdPainelMercado = PainelMercado["id"];
  * ou uma sobre a primeira figura), nunca a mesma do título.
  */
 export const TITULO_PAGINA_MERCADO: Record<IdPaginaMercado, string> = {
-  "livre-regulado": "Como a energia é contratada, alocada e liquidada?",
-  agentes: "Quem participa do mercado e como a composição mudou?",
-  "mre-gsf": "Como foi o ajuste da garantia física do MRE?",
-  encargos: "Quais custos públicos aparecem na liquidação do mercado?",
+  get "livre-regulado"() { return tx("Como a energia é contratada, alocada e liquidada?", "How is energy contracted, allocated and settled?"); },
+  get agentes() { return tx("Quem participa do mercado e como a composição mudou?", "Who takes part in the market and how has its makeup changed?"); },
+  get "mre-gsf"() { return tx("Como foi o ajuste da garantia física do MRE?", "How was the MRE physical guarantee adjusted?"); },
+  get encargos() { return tx("Quais custos públicos aparecem na liquidação do mercado?", "Which public costs appear in market settlement?"); },
 };
 
 export const URL_GOLD_MERCADO = "/energia/gold/mercado.json";
 export const URL_DETALHE_MERCADO = "/energia/series/mercado_detalhe.json";
 
 export const CSV_MERCADO = {
-  nacional: { rotulo: "EPE e SAMP, Brasil por mês (CSV)", url: "/energia/series/mercado_nacional_mensal.csv" },
-  consumo: { rotulo: "EPE por região, subsistema e classe (CSV)", url: "/energia/series/mercado_consumo_mensal.csv" },
-  uf: { rotulo: "EPE por UF (CSV)", url: "/energia/series/mercado_consumo_uf.csv" },
-  ccee: { rotulo: "Séries da CCEE por conjunto (CSV)", url: "/energia/series/mercado_ccee_mensal.csv" },
-  distribuidorasAno: { rotulo: "Distribuidoras no ano, SAMP (CSV)", url: "/energia/series/mercado_distribuidoras_ano.csv" },
-  distribuidorasMes: { rotulo: "Distribuidoras por mês, SAMP (CSV)", url: "/energia/series/mercado_distribuidoras_mensal.csv" },
-  desligamentos: { rotulo: "Desligamentos da CCEE (CSV)", url: "/energia/series/mercado_ccee_desligamentos.csv" },
-  agentesAneel: { rotulo: "Agentes cadastrados na ANEEL (CSV)", url: "/energia/series/mercado_agentes_aneel.csv" },
-  contaBandeira: { rotulo: "Conta Bandeira por distribuidora (CSV)", url: "/energia/series/mercado_conta_bandeira.csv" },
-  encargosMme: { rotulo: "Encargos no boletim do MME (CSV)", url: "/energia/series/mercado_encargos_mme.csv" },
+  nacional: { get rotulo() { return tx("EPE e SAMP, Brasil por mês (CSV)", "EPE and SAMP, Brazil by month (CSV)"); }, url: "/energia/series/mercado_nacional_mensal.csv" },
+  consumo: { get rotulo() { return tx("EPE por região, subsistema e classe (CSV)", "EPE by region, subsystem and class (CSV)"); }, url: "/energia/series/mercado_consumo_mensal.csv" },
+  uf: { get rotulo() { return tx("EPE por UF (CSV)", "EPE by state (CSV)"); }, url: "/energia/series/mercado_consumo_uf.csv" },
+  ccee: { get rotulo() { return tx("Séries da CCEE por conjunto (CSV)", "CCEE series by dataset (CSV)"); }, url: "/energia/series/mercado_ccee_mensal.csv" },
+  distribuidorasAno: { get rotulo() { return tx("Distribuidoras no ano, SAMP (CSV)", "Distribution utilities by year, SAMP (CSV)"); }, url: "/energia/series/mercado_distribuidoras_ano.csv" },
+  distribuidorasMes: { get rotulo() { return tx("Distribuidoras por mês, SAMP (CSV)", "Distribution utilities by month, SAMP (CSV)"); }, url: "/energia/series/mercado_distribuidoras_mensal.csv" },
+  desligamentos: { get rotulo() { return tx("Desligamentos da CCEE (CSV)", "CCEE disconnections (CSV)"); }, url: "/energia/series/mercado_ccee_desligamentos.csv" },
+  agentesAneel: { get rotulo() { return tx("Agentes cadastrados na ANEEL (CSV)", "Agents registered with ANEEL (CSV)"); }, url: "/energia/series/mercado_agentes_aneel.csv" },
+  contaBandeira: { get rotulo() { return tx("Conta Bandeira por distribuidora (CSV)", "Conta Bandeira (tariff flag account) by distribution utility (CSV)"); }, url: "/energia/series/mercado_conta_bandeira.csv" },
+  encargosMme: { get rotulo() { return tx("Encargos no boletim do MME (CSV)", "Charges in the MME bulletin (CSV)"); }, url: "/energia/series/mercado_encargos_mme.csv" },
 } as const;
 
 /**
@@ -81,10 +84,10 @@ export function provenienciaLegivel(p: Proveniencia): Proveniencia {
  * no endereço do conjunto, em Analisar e Auditar ("Sobre este dado").
  */
 export const NOME_CONJUNTO_CCEE: Record<string, string> = {
-  agente_qtd_contabilizacao: "quantidade de agentes participantes por classe de comercialização",
-  consumo_classe_agente: "consumo usado na contabilização do mercado de curto prazo, por classe de agente",
-  mre_mensal: "dados do MRE usados na contabilização do mercado de curto prazo",
-  encargo_ess_ancilar: "encargos gerados no mercado de curto prazo",
+  get agente_qtd_contabilizacao() { return tx("quantidade de agentes participantes por classe de comercialização", "number of participating agents by trading class"); },
+  get consumo_classe_agente() { return tx("consumo usado na contabilização do mercado de curto prazo, por classe de agente", "consumption used in short-term market accounting, by agent class"); },
+  get mre_mensal() { return tx("dados do MRE usados na contabilização do mercado de curto prazo", "MRE data used in short-term market accounting"); },
+  get encargo_ess_ancilar() { return tx("encargos gerados no mercado de curto prazo", "charges generated in the short-term market"); },
 };
 
 export function provenienciasLegiveis(g: MercadoGold): ProvenienciaMercado {
@@ -101,28 +104,51 @@ export function painelMercado(g: MercadoGold, id: IdPainelMercado): PainelMercad
   return g.paineis.find((p) => p.id === id) ?? null;
 }
 
-export const ROTULO_ESTADO: Record<EstadoPainel, string> = {
-  concluido_com_limitacao: "concluído com limitação",
-  parcial: "parcial",
-  bloqueado: "bloqueado",
-  pendente_decisao_acesso: "pendente de decisão sobre o acesso à CCEE",
+export function rotuloEstado(e: EstadoPainel, idioma: Idioma = idiomaEnergia()): string {
+  switch (e) {
+    case "concluido_com_limitacao":
+      return tx("concluído com limitação", "completed with limitation", idioma);
+    case "parcial":
+      return tx("parcial", "partial", idioma);
+    case "bloqueado":
+      return tx("bloqueado", "blocked", idioma);
+    case "pendente_decisao_acesso":
+      return tx("pendente de decisão sobre o acesso à CCEE", "pending a decision on access to CCEE", idioma);
+  }
+}
+
+/** Resultado de uma verificação no idioma pedido (componente de cliente passa o de useIdioma()). */
+export function rotuloResultado(r: ResultadoTeste, idioma: Idioma = idiomaEnergia()): string {
+  switch (r) {
+    case "aprovado":
+      return tx("aprovado", "passed", idioma);
+    case "ressalva":
+      return tx("com ressalva", "with caveat", idioma);
+    case "reprovado":
+      return tx("reprovado", "failed", idioma);
+  }
+}
+
+/** Mesmos rótulos, como mapa lido na hora do render (página de servidor). */
+export const ROTULO_RESULTADO: Record<ResultadoTeste, string> = {
+  get aprovado() { return rotuloResultado("aprovado"); },
+  get ressalva() { return rotuloResultado("ressalva"); },
+  get reprovado() { return rotuloResultado("reprovado"); },
 };
 
-export const ROTULO_RESULTADO: Record<ResultadoTeste, string> = { aprovado: "aprovado", ressalva: "com ressalva", reprovado: "reprovado" };
-
 /** "AAAA-MM" de um período como texto da página: "set/2025 a ago/2026" ou um só mês. */
-export function textoPeriodoMes(p: { inicio: string; fim: string } | null | undefined): string {
-  if (!p) return "período não publicado";
-  return p.inicio === p.fim ? mesAno(p.inicio) : `${mesAno(p.inicio)} a ${mesAno(p.fim)}`;
+export function textoPeriodoMes(p: { inicio: string; fim: string } | null | undefined, idioma: Idioma = idiomaEnergia()): string {
+  if (!p) return tx("período não publicado", "period not published", idioma);
+  return p.inicio === p.fim ? mesAno(p.inicio, idioma) : tx(`${mesAno(p.inicio, idioma)} a ${mesAno(p.fim, idioma)}`, `${mesAno(p.inicio, idioma)} to ${mesAno(p.fim, idioma)}`, idioma);
 }
 
 /** Valor em reais como texto curto: "R$ 1,60 bilhão", "R$ 958,1 milhões" (o mesmo critério das evidências). */
-export function reaisCurto(v: number | null | undefined): string {
-  if (v === null || v === undefined || !Number.isFinite(v)) return "sem dado";
+export function reaisCurto(v: number | null | undefined, idioma: Idioma = idiomaEnergia()): string {
+  if (v === null || v === undefined || !Number.isFinite(v)) return tx("sem dado", "no data", idioma);
   const a = Math.abs(v);
-  if (a >= 1e9) return `R$ ${num(v / 1e9, 2)} ${Math.abs(v / 1e9) < 2 ? "bilhão" : "bilhões"}`;
-  if (a >= 1e6) return `R$ ${num(v / 1e6, 1)} ${Math.abs(v / 1e6) < 2 ? "milhão" : "milhões"}`;
-  return `R$ ${num(v, 0)}`;
+  if (a >= 1e9) return `R$ ${num(v / 1e9, 2, idioma)} ${tx(Math.abs(v / 1e9) < 2 ? "bilhão" : "bilhões", "billion", idioma)}`;
+  if (a >= 1e6) return `R$ ${num(v / 1e6, 1, idioma)} ${tx(Math.abs(v / 1e6) < 2 ? "milhão" : "milhões", "million", idioma)}`;
+  return `R$ ${num(v, 0, idioma)}`;
 }
 
 /** Mês curto para o eixo das barras ("mai/23"): o rótulo longo não cabe em 40 categorias. */
@@ -175,20 +201,24 @@ export function barrasClasse(g: MercadoGold, ano: string) {
 }
 
 /** Abertura dos últimos 12 meses por subsistema da EPE (os quatro submercados e os sistemas isolados). */
-export const NOME_SUBSISTEMA: Record<string, string> = { SE: "Sudeste/Centro-Oeste", S: "Sul", NE: "Nordeste", N: "Norte", ISOL: "Sistemas isolados" };
+export function nomeSubsistema(id: string, idioma: Idioma = idiomaEnergia()): string {
+  return id === "ISOL" ? tx("Sistemas isolados", "Isolated systems", idioma) : nomeSubmercado(id, idioma);
+}
 
-export const COLUNAS_DISTRIBUIDORAS: ColunaTabela[] = [
-  { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
-  { id: "livre_gwh", rotulo: "Livre faturado", tipo: "numero", unidade: "GWh", casas: 0 },
-  { id: "cativo_gwh", rotulo: "Cativo faturado", tipo: "numero", unidade: "GWh", casas: 0 },
-  { id: "livre_pct", rotulo: "Livre na energia faturada", tipo: "percentual", casas: 1 },
-  { id: "livre_uc", rotulo: "Unidades livres em dezembro", tipo: "numero", casas: 0 },
-  { id: "variacao_uc", rotulo: "Variação no ano", tipo: "numero", casas: 0 },
-  { id: "incentivada", rotulo: "Livres incentivadas", tipo: "numero", casas: 0 },
-  { id: "observacao", rotulo: "Observação", tipo: "texto" },
-];
+export function colunasDistribuidoras(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", idiomaTexto: "nome" },
+    { id: "livre_gwh", rotulo: tx("Livre faturado", "Free market billed", idioma), tipo: "numero", unidade: "GWh", casas: 0 },
+    { id: "cativo_gwh", rotulo: tx("Cativo faturado", "Captive billed", idioma), tipo: "numero", unidade: "GWh", casas: 0 },
+    { id: "livre_pct", rotulo: tx("Livre na energia faturada", "Free market share of billed energy", idioma), tipo: "percentual", casas: 1 },
+    { id: "livre_uc", rotulo: tx("Unidades livres em dezembro", "Free consumer units in December", idioma), tipo: "numero", casas: 0 },
+    { id: "variacao_uc", rotulo: tx("Variação no ano", "Change in the year", idioma), tipo: "numero", casas: 0 },
+    { id: "incentivada", rotulo: tx("Livres incentivadas", "Incentivized free consumers", idioma), tipo: "numero", casas: 0 },
+    { id: "observacao", rotulo: tx("Observação", "Note", idioma), tipo: "texto" },
+  ];
+}
 
-export function linhasDistribuidoras(g: MercadoGold): LinhaTabela[] {
+export function linhasDistribuidoras(g: MercadoGold, idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return g.livre_regulado.distribuidoras.linhas.map((d) => ({
     id: d.cnpj,
     sigla: d.sigla ?? d.cnpj,
@@ -198,67 +228,80 @@ export function linhasDistribuidoras(g: MercadoGold): LinhaTabela[] {
     livre_uc: d.livre_uc_dez,
     variacao_uc: d.variacao_livre_uc,
     incentivada: d.livre_uc_incentivada_dez,
-    observacao: [!d.completo ? `${d.meses} meses no ano: sem participação anual` : "", d.meses_repetidos.length ? `meses repetidos na fonte: ${d.meses_repetidos.map((m) => mesAno(m.slice(0, 7)) + m.slice(7)).join(", ")}` : ""].filter(Boolean).join("; ") || null,
+    observacao: [!d.completo ? tx(`${d.meses} meses no ano: sem participação anual`, `${d.meses} ${d.meses === 1 ? "month" : "months"} in the year: no annual share`, idioma) : "", d.meses_repetidos.length ? tx(`meses repetidos na fonte: ${d.meses_repetidos.map((m) => mesAno(m.slice(0, 7), idioma) + m.slice(7)).join(", ")}`, `months repeated in the source: ${d.meses_repetidos.map((m) => mesAno(m.slice(0, 7), idioma) + m.slice(7)).join(", ")}`, idioma) : ""].filter(Boolean).join("; ") || null,
   }));
 }
 
-export const COLUNAS_SAMP: ColunaTabela[] = [
-  { id: "mes", rotulo: "Mês", tipo: "data" },
-  { id: "distribuidoras", rotulo: "Distribuidoras", tipo: "numero", casas: 0 },
-  { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
-  { id: "livre_uc", rotulo: "Unidades livres (SAMP)", tipo: "numero", casas: 0 },
-  { id: "epe_livre_uc", rotulo: "Unidades livres (EPE)", tipo: "numero", casas: 0 },
-  { id: "razao", rotulo: "SAMP ÷ EPE", tipo: "percentual", casas: 1 },
-  { id: "ocorrencias", rotulo: "Ocorrências", tipo: "texto" },
-];
+export function colunasSamp(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "mes", rotulo: tx("Mês", "Month", idioma), tipo: "data" },
+    { id: "distribuidoras", rotulo: tx("Distribuidoras", "Distribution utilities", idioma), tipo: "numero", casas: 0 },
+    { id: "situacao", rotulo: tx("Situação", "Status", idioma), tipo: "texto", categorica: true },
+    { id: "livre_uc", rotulo: tx("Unidades livres (SAMP)", "Free consumer units (SAMP)", idioma), tipo: "numero", casas: 0 },
+    { id: "epe_livre_uc", rotulo: tx("Unidades livres (EPE)", "Free consumer units (EPE)", idioma), tipo: "numero", casas: 0 },
+    { id: "razao", rotulo: "SAMP ÷ EPE", tipo: "percentual", casas: 1 },
+    { id: "ocorrencias", rotulo: tx("Ocorrências", "Occurrences", idioma), tipo: "texto", idiomaTexto: "portugues" },
+  ];
+}
 
-export function linhasSamp(g: MercadoGold): LinhaTabela[] {
+export function linhasSamp(g: MercadoGold, idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return g.livre_regulado.samp_nacional_mensal.map((s) => ({
     id: s.mes,
     mes: s.mes,
     distribuidoras: s.distribuidoras,
-    situacao: s.comparavel ? "comparável" : s.completo ? "completo, fora da comparação" : "incompleto",
+    situacao: s.comparavel ? tx("comparável", "comparable", idioma) : s.completo ? tx("completo, fora da comparação", "complete, outside the comparison", idioma) : tx("incompleto", "incomplete", idioma),
     // mês incompleto não entra na razão: o valor não é comparável com a EPE
     livre_uc: s.livre_uc,
     epe_livre_uc: s.epe_livre_uc,
     razao: s.comparavel ? s.samp_sobre_epe_uc_pct : null,
+    // motivo e ocorrências são texto livre da gold (só em português): a tabela de cliente os marca como trecho em português
     ocorrencias: [s.motivo_incompleto, ...s.ocorrencias].filter(Boolean).join("; ") || null,
   }));
 }
 
 /* ---------------------------------------------------------------- conferências */
 
-export const COLUNAS_INFOMERCADO: ColunaTabela[] = [
-  { id: "edicao", rotulo: "InfoMercado", tipo: "texto" },
-  { id: "mes", rotulo: "Mês", tipo: "data" },
-  { id: "medida", rotulo: "Medida", tipo: "texto" },
-  { id: "publicado", rotulo: "Publicado", tipo: "numero", casas: 2 },
-  { id: "calculado", rotulo: "Calculado", tipo: "numero", casas: 2 },
-  { id: "diferenca", rotulo: "Diferença", tipo: "numero", casas: 2 },
-  { id: "tolerancia", rotulo: "Tolerância", tipo: "texto" },
-  { id: "resultado", rotulo: "Resultado", tipo: "texto", categorica: true },
-  { id: "pagina", rotulo: "Página do PDF", tipo: "texto" },
-];
+export function colunasInfoMercado(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "edicao", rotulo: "InfoMercado", tipo: "texto" },
+    { id: "mes", rotulo: tx("Mês", "Month", idioma), tipo: "data" },
+    { id: "medida", rotulo: tx("Medida", "Measure", idioma), tipo: "texto" },
+    { id: "publicado", rotulo: tx("Publicado", "Published", idioma), tipo: "numero", casas: 2 },
+    { id: "calculado", rotulo: tx("Calculado", "Calculated", idioma), tipo: "numero", casas: 2 },
+    { id: "diferenca", rotulo: tx("Diferença", "Difference", idioma), tipo: "numero", casas: 2 },
+    { id: "tolerancia", rotulo: tx("Tolerância", "Tolerance", idioma), tipo: "texto" },
+    { id: "resultado", rotulo: tx("Resultado", "Result", idioma), tipo: "texto", categorica: true },
+    { id: "pagina", rotulo: tx("Página do PDF", "PDF page", idioma), tipo: "texto" },
+  ];
+}
 
-const MEDIDA_INFOMERCADO: Record<string, string> = {
-  consumo_contabilizado_mwmed: "Consumo contabilizado (MW médios)",
-  exportacao_mwmed: "Exportação (MW médios)",
-  acl_variacao_sem_exportacao_pct: "Variação do ACL sem exportação (%)",
-  gsf_pct: "GSF do mês (%)",
-  gsf_12m_pct: "GSF de 12 meses (%)",
-};
+function medidaInfoMercado(m: string, idioma: Idioma): string {
+  switch (m) {
+    case "consumo_contabilizado_mwmed":
+      return tx("Consumo contabilizado (MW médios)", "Accounted consumption (MWavg)", idioma);
+    case "exportacao_mwmed":
+      return tx("Exportação (MW médios)", "Exports (MWavg)", idioma);
+    case "acl_variacao_sem_exportacao_pct":
+      return tx("Variação do ACL sem exportação (%)", "ACL change excluding exports (%)", idioma);
+    case "gsf_pct":
+      return tx("GSF do mês (%)", "GSF for the month (%)", idioma);
+    case "gsf_12m_pct":
+      return tx("GSF de 12 meses (%)", "12-month GSF (%)", idioma);
+  }
+  return m.replace(/_/g, " ");
+}
 
-export function linhasInfoMercado(c: ConferenciaInfoMercado[]): LinhaTabela[] {
+export function linhasInfoMercado(c: ConferenciaInfoMercado[], idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return c.map((x, i) => ({
     id: `${x.numero}-${x.medida}-${i}`,
-    edicao: `Nº ${x.numero}`,
+    edicao: tx(`Nº ${x.numero}`, `No. ${x.numero}`, idioma),
     mes: x.mes,
-    medida: MEDIDA_INFOMERCADO[x.medida] ?? x.medida.replace(/_/g, " "),
+    medida: medidaInfoMercado(x.medida, idioma),
     publicado: x.publicado,
     calculado: x.calculado,
     diferenca: x.diferenca,
     tolerancia: x.tolerancia,
-    resultado: ROTULO_RESULTADO[x.resultado],
+    resultado: rotuloResultado(x.resultado, idioma),
     pagina: x.pagina,
   }));
 }
@@ -302,21 +345,23 @@ export function serieFluxosAssociados(g: MercadoGold) {
 export function barrasDesligamentos(g: MercadoGold) {
   const anos = new Map<string, { ano: string; rotulo: string; voluntario: number | null; compulsorio: number | null }>();
   for (const d of g.agentes_migracao.desligamentos_por_ano) {
-    const r = anos.get(d.ano) ?? { ano: d.ano, rotulo: d.completo ? d.ano : `${d.ano} (até ${mesAno(d.ultima_data.slice(0, 7))})`, voluntario: null, compulsorio: null };
-    if (d.tipo.startsWith("volunt")) r.voluntario = d.desligamentos;
+    const r = anos.get(d.ano) ?? { ano: d.ano, rotulo: d.completo ? d.ano : tx(`${d.ano} (até ${mesAno(d.ultima_data.slice(0, 7))})`, `${d.ano} (to ${mesAno(d.ultima_data.slice(0, 7))})`), voluntario: null, compulsorio: null };
+    if (d.tipo.startsWith("volunt")) r.voluntario = d.desligamentos; // i18n: dado
     else r.compulsorio = d.desligamentos;
     anos.set(d.ano, r);
   }
   return Array.from(anos.values()).sort((a, b) => a.ano.localeCompare(b.ano));
 }
 
-export const COLUNAS_PERFIS: ColunaTabela[] = [
-  { id: "classe", rotulo: "Classe", tipo: "texto" },
-  { id: "perfis_ativo", rotulo: "Perfis ativos", tipo: "numero", casas: 0 },
-  { id: "perfis_encerrado", rotulo: "Perfis encerrados", tipo: "numero", casas: 0 },
-  { id: "agentes_ativo", rotulo: "Agentes com perfil ativo", tipo: "numero", casas: 0 },
-  { id: "agentes_encerrado", rotulo: "Agentes com perfil encerrado", tipo: "numero", casas: 0 },
-];
+export function colunasPerfis(): ColunaTabela[] {
+  return [
+    { id: "classe", rotulo: tx("Classe", "Class"), tipo: "texto" },
+    { id: "perfis_ativo", rotulo: tx("Perfis ativos", "Active profiles"), tipo: "numero", casas: 0 },
+    { id: "perfis_encerrado", rotulo: tx("Perfis encerrados", "Closed profiles"), tipo: "numero", casas: 0 },
+    { id: "agentes_ativo", rotulo: tx("Agentes com perfil ativo", "Agents with an active profile"), tipo: "numero", casas: 0 },
+    { id: "agentes_encerrado", rotulo: tx("Agentes com perfil encerrado", "Agents with a closed profile"), tipo: "numero", casas: 0 },
+  ];
+}
 
 export function linhasPerfis(g: MercadoGold): LinhaTabela[] {
   return g.agentes_migracao.perfis.por_classe.map((p) => ({
@@ -329,16 +374,18 @@ export function linhasPerfis(g: MercadoGold): LinhaTabela[] {
   }));
 }
 
-export const COLUNAS_PARCELAS: ColunaTabela[] = [
-  { id: "mes", rotulo: "Mês", tipo: "data" },
-  { id: "parcelas", rotulo: "Parcelas do ACL", tipo: "numero", casas: 0 },
-  { id: "migracoes", rotulo: "Migrações no mês", tipo: "numero", casas: 0 },
-  { id: "perfis", rotulo: "Perfis com parcela", tipo: "numero", casas: 0 },
-  { id: "cnpj", rotulo: "CNPJ de carga", tipo: "numero", casas: 0 },
-  { id: "consumo_gwh", rotulo: "Consumo das parcelas do ACL e exportação, sem a classe varejista", tipo: "numero", unidade: "GWh", casas: 0 },
-  { id: "distribuidoras", rotulo: "Parcelas das distribuidoras (ACR, à parte)", tipo: "numero", casas: 0 },
-  { id: "conferencia", rotulo: "Conferência com o consumo por classe", tipo: "texto", categorica: true },
-];
+export function colunasParcelas(): ColunaTabela[] {
+  return [
+    { id: "mes", rotulo: tx("Mês", "Month"), tipo: "data" },
+    { id: "parcelas", rotulo: tx("Parcelas do ACL", "ACL load parcels"), tipo: "numero", casas: 0 },
+    { id: "migracoes", rotulo: tx("Migrações no mês", "Migrations in the month"), tipo: "numero", casas: 0 },
+    { id: "perfis", rotulo: tx("Perfis com parcela", "Profiles with a parcel"), tipo: "numero", casas: 0 },
+    { id: "cnpj", rotulo: tx("CNPJ de carga", "Load CNPJs (company IDs)"), tipo: "numero", casas: 0 },
+    { id: "consumo_gwh", rotulo: tx("Consumo das parcelas do ACL e exportação, sem a classe varejista", "Consumption of ACL parcels and exports, excluding the retail class"), tipo: "numero", unidade: "GWh", casas: 0 },
+    { id: "distribuidoras", rotulo: tx("Parcelas das distribuidoras (ACR, à parte)", "Distribution utility parcels (ACR, separate)"), tipo: "numero", casas: 0 },
+    { id: "conferencia", rotulo: tx("Conferência com o consumo por classe", "Check against consumption by class"), tipo: "texto", categorica: true },
+  ];
+}
 
 export function linhasParcelas(g: MercadoGold): LinhaTabela[] {
   return g.agentes_migracao.parcelas_mensal.map((p) => ({
@@ -350,7 +397,7 @@ export function linhasParcelas(g: MercadoGold): LinhaTabela[] {
     cnpj: p.cnpj_carga,
     consumo_gwh: p.consumo_acl_mwh === null ? null : p.consumo_acl_mwh / 1e3,
     distribuidoras: p.parcelas_distribuidoras,
-    conferencia: p.conferencia_ok === null ? "sem conferência" : p.conferencia_ok ? "fecha" : "fora da tolerância (ressalva)",
+    conferencia: p.conferencia_ok === null ? tx("sem conferência", "not checked") : p.conferencia_ok ? tx("fecha", "matches") : tx("fora da tolerância (ressalva)", "outside tolerance (caveat)"),
   }));
 }
 
@@ -367,30 +414,32 @@ export function serieGeracaoGarantia(g: MercadoGold) {
 }
 
 export function barrasSubmercadosGsf(g: MercadoGold) {
-  const nome: Record<string, string> = { SE: "Sudeste/Centro-Oeste", S: "Sul", NE: "Nordeste", N: "Norte" };
-  return g.mre_gsf.submercados_ultimo_mes.linhas.map((l) => ({ id: l.submercado, rotulo: nome[l.submercado] ?? l.submercado, geracao: l.geracao_mre_mwmed, garantia: l.gf_sazonalizada_mwmed }));
+  return g.mre_gsf.submercados_ultimo_mes.linhas.map((l) => ({ id: l.submercado, rotulo: nomeSubmercado(l.submercado), geracao: l.geracao_mre_mwmed, garantia: l.gf_sazonalizada_mwmed }));
 }
 
 /** Risco hidrológico do ACR por ano (soma nacional da Conta Bandeira), em R$ bilhões. */
 export function barrasRiscoHidrologico(g: MercadoGold) {
   return g.mre_gsf.risco_hidrologico_acr.anual.map((a) => ({
     ano: a.ano,
-    rotulo: a.meses < 12 ? `${a.ano} (${a.meses} meses)` : a.ano,
+    rotulo: a.meses < 12 ? tx(`${a.ano} (${a.meses} meses)`, `${a.ano} (${a.meses} ${a.meses === 1 ? "month" : "months"})`) : a.ano,
     itaipu: bilhoes(a.rh_itaipu),
     repactuadas: bilhoes(a.rh_repactuadas),
     ccgf: bilhoes(a.rh_ccgf),
   }));
 }
 
-export const COLUNAS_GSF: ColunaTabela[] = [
-  { id: "mes", rotulo: "Mês", tipo: "data" },
-  { id: "gsf", rotulo: "GSF", tipo: "percentual", casas: 2 },
-  { id: "geracao", rotulo: "Geração do MRE", tipo: "numero", unidade: "MWmed", casas: 0 },
-  { id: "garantia", rotulo: "Garantia física ajustada", tipo: "numero", unidade: "MWmed", casas: 0 },
-  { id: "cotas", rotulo: "Geração das usinas em cotas", tipo: "numero", unidade: "MWmed", casas: 0 },
-  { id: "disponibilidade", rotulo: "Fator de disponibilidade", tipo: "percentual", casas: 2 },
-  { id: "teo", rotulo: "TEO", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-];
+export function colunasGsf(): ColunaTabela[] {
+  const mw = tx("MWmed", "MWavg");
+  return [
+    { id: "mes", rotulo: tx("Mês", "Month"), tipo: "data" },
+    { id: "gsf", rotulo: "GSF", tipo: "percentual", casas: 2 },
+    { id: "geracao", rotulo: tx("Geração do MRE", "MRE generation"), tipo: "numero", unidade: mw, casas: 0 },
+    { id: "garantia", rotulo: tx("Garantia física ajustada", "Adjusted physical guarantee"), tipo: "numero", unidade: mw, casas: 0 },
+    { id: "cotas", rotulo: tx("Geração das usinas em cotas", "Generation of quota plants"), tipo: "numero", unidade: mw, casas: 0 },
+    { id: "disponibilidade", rotulo: tx("Fator de disponibilidade", "Availability factor"), tipo: "percentual", casas: 2 },
+    { id: "teo", rotulo: "TEO", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  ];
+}
 
 export function linhasGsf(g: MercadoGold): LinhaTabela[] {
   return g.mre_gsf.mensal.map((m) => ({
@@ -427,19 +476,26 @@ export function serieEer(g: MercadoGold) {
   return g.encargos.eer_mensal.map((e) => ({ mes: e.mes, rotulo: mesCurto(e.mes), eer: milhoes(e.encargo_energia_reserva) }));
 }
 
-export const ROTULO_LIQUIDACAO: Record<SituacaoLiquidacao, string> = {
-  liquidada: "liquidada",
-  liquidacao_nao_informada: "liquidação não informada (zero publicado não confirmado)",
-  identidade_nao_fecha: "a liquidar ≠ liquidado + inadimplência",
-  sem_valor: "sem valor publicado",
-  mes_ausente_na_fonte: "mês ausente do conjunto da CCEE",
-};
+export function rotuloLiquidacao(s: SituacaoLiquidacao, idioma: Idioma = idiomaEnergia()): string {
+  switch (s) {
+    case "liquidada":
+      return tx("liquidada", "settled", idioma);
+    case "liquidacao_nao_informada":
+      return tx("liquidação não informada (zero publicado não confirmado)", "settlement not reported (published zero not confirmed)", idioma);
+    case "identidade_nao_fecha":
+      return tx("a liquidar ≠ liquidado + inadimplência", "to be settled ≠ settled + default", idioma);
+    case "sem_valor":
+      return tx("sem valor publicado", "no published value", idioma);
+    case "mes_ausente_na_fonte":
+      return tx("mês ausente do conjunto da CCEE", "month missing from the CCEE dataset", idioma);
+  }
+}
 
 /** Liquidação: liquidado e inadimplência empilhados (somam o valor a liquidar), em R$ milhões; meses sem liquidação ficam vazios. */
 export function serieLiquidacao(g: MercadoGold) {
   return g.encargos.liquidacao_mensal.map((l) => ({
     mes: l.mes,
-    rotulo: l.situacao === "liquidada" ? mesCurto(l.mes) : `${mesCurto(l.mes)} (sem dado)`,
+    rotulo: l.situacao === "liquidada" ? mesCurto(l.mes) : tx(`${mesCurto(l.mes)} (sem dado)`, `${mesCurto(l.mes)} (no data)`),
     liquidado: l.situacao === "liquidada" ? milhoes(l.liquidado) : null,
     inadimplencia: l.situacao === "liquidada" ? milhoes(l.inadimplencia) : null,
   }));
@@ -451,19 +507,23 @@ export function serieInadimplencia(g: MercadoGold) {
 
 /** Meses da liquidação sem valor, com o motivo, para a nota abaixo do gráfico. */
 export function lacunasLiquidacao(g: MercadoGold) {
-  return g.encargos.liquidacao_mensal.filter((l) => l.situacao !== "liquidada").map((l) => ({ mes: l.mes, motivo: ROTULO_LIQUIDACAO[l.situacao] }));
+  return g.encargos.liquidacao_mensal.filter((l) => l.situacao !== "liquidada").map((l) => ({ mes: l.mes, motivo: rotuloLiquidacao(l.situacao) }));
 }
 
-export const COLUNAS_LIQUIDACAO: ColunaTabela[] = [
-  { id: "mes", rotulo: "Mês", tipo: "data" },
-  { id: "a_liquidar", rotulo: "A liquidar", tipo: "numero", unidade: "R$ milhões", casas: 1 },
-  { id: "liquidado", rotulo: "Liquidado", tipo: "numero", unidade: "R$ milhões", casas: 1 },
-  { id: "inadimplencia", rotulo: "Inadimplência", tipo: "numero", unidade: "R$ milhões", casas: 1 },
-  { id: "inadimplencia_pct", rotulo: "Inadimplência sobre o valor a liquidar", tipo: "percentual", casas: 1 },
-  { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
-];
+const rsMilhoes = (idioma: Idioma) => tx("R$ milhões", "R$ million", idioma);
 
-export function linhasLiquidacao(g: MercadoGold): LinhaTabela[] {
+export function colunasLiquidacao(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "mes", rotulo: tx("Mês", "Month", idioma), tipo: "data" },
+    { id: "a_liquidar", rotulo: tx("A liquidar", "To be settled", idioma), tipo: "numero", unidade: rsMilhoes(idioma), casas: 1 },
+    { id: "liquidado", rotulo: tx("Liquidado", "Settled", idioma), tipo: "numero", unidade: rsMilhoes(idioma), casas: 1 },
+    { id: "inadimplencia", rotulo: tx("Inadimplência", "Default", idioma), tipo: "numero", unidade: rsMilhoes(idioma), casas: 1 },
+    { id: "inadimplencia_pct", rotulo: tx("Inadimplência sobre o valor a liquidar", "Default as a share of the amount to be settled", idioma), tipo: "percentual", casas: 1 },
+    { id: "situacao", rotulo: tx("Situação", "Status", idioma), tipo: "texto", categorica: true },
+  ];
+}
+
+export function linhasLiquidacao(g: MercadoGold, idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return g.encargos.liquidacao_mensal.map((l) => ({
     id: l.mes,
     mes: l.mes,
@@ -471,52 +531,63 @@ export function linhasLiquidacao(g: MercadoGold): LinhaTabela[] {
     liquidado: milhoes(l.liquidado),
     inadimplencia: milhoes(l.inadimplencia),
     inadimplencia_pct: l.inadimplencia_pct,
-    situacao: ROTULO_LIQUIDACAO[l.situacao],
+    situacao: rotuloLiquidacao(l.situacao, idioma),
   }));
 }
 
-const ROTULO_PAGAMENTO: Record<PagamentoMensal["situacao_pagamento_ess"], string> = {
-  publicado: "publicado",
-  zero_nao_confirmado: "zero publicado em sequência, não confirmado: exibido como nulo",
-  sem_valor: "sem valor publicado",
-  mes_ausente_na_fonte: "mês ausente do conjunto da CCEE",
-};
+function rotuloPagamento(s: PagamentoMensal["situacao_pagamento_ess"], idioma: Idioma): string {
+  switch (s) {
+    case "publicado":
+      return tx("publicado", "published", idioma);
+    case "zero_nao_confirmado":
+      return tx("zero publicado em sequência, não confirmado: exibido como nulo", "zero published in sequence, not confirmed: shown as null", idioma);
+    case "sem_valor":
+      return tx("sem valor publicado", "no published value", idioma);
+    case "mes_ausente_na_fonte":
+      return tx("mês ausente do conjunto da CCEE", "month missing from the CCEE dataset", idioma);
+  }
+}
 
-export const COLUNAS_PAGAMENTO: ColunaTabela[] = [
-  { id: "mes", rotulo: "Mês", tipo: "data" },
-  { id: "pagamento_ess", rotulo: "Pagamento de ESS", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "situacao", rotulo: "Situação do pagamento de ESS", tipo: "texto", categorica: true },
-  { id: "seguranca", rotulo: "Pagamento de segurança energética", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "alivio", rotulo: "Recursos para alívio do ESS", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "excedente", rotulo: "Sobra do excedente financeiro", tipo: "numero", unidade: "R$ milhões", casas: 1 },
-];
+export function colunasPagamento(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "mes", rotulo: tx("Mês", "Month", idioma), tipo: "data" },
+    { id: "pagamento_ess", rotulo: tx("Pagamento de ESS", "ESS payment", idioma), tipo: "numero", unidade: rsMilhoes(idioma), casas: 2 },
+    { id: "situacao", rotulo: tx("Situação do pagamento de ESS", "ESS payment status", idioma), tipo: "texto", categorica: true },
+    { id: "seguranca", rotulo: tx("Pagamento de segurança energética", "Energy security payment", idioma), tipo: "numero", unidade: rsMilhoes(idioma), casas: 2 },
+    { id: "alivio", rotulo: tx("Recursos para alívio do ESS", "Funds to relieve ESS", idioma), tipo: "numero", unidade: rsMilhoes(idioma), casas: 2 },
+    { id: "excedente", rotulo: tx("Sobra do excedente financeiro", "Remaining financial surplus", idioma), tipo: "numero", unidade: rsMilhoes(idioma), casas: 1 },
+  ];
+}
 
-export function linhasPagamento(g: MercadoGold): LinhaTabela[] {
+export function linhasPagamento(g: MercadoGold, idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return g.encargos.pagamento_mensal.map((p) => ({
     id: p.mes,
     mes: p.mes,
     pagamento_ess: milhoes(p.pagamento_ess),
-    situacao: ROTULO_PAGAMENTO[p.situacao_pagamento_ess],
+    situacao: rotuloPagamento(p.situacao_pagamento_ess, idioma),
     seguranca: milhoes(p.pagamento_seguranca_energetica),
     alivio: milhoes(p.recursos_alivio_ess),
     excedente: milhoes(p.sobra_excedente_financeiro),
   }));
 }
 
-export const COLUNAS_ESS: ColunaTabela[] = [
-  { id: "mes", rotulo: "Mês", tipo: "data" },
-  { id: "total", rotulo: "ESS (nove tipos)", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "on", rotulo: "Constrained-on", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "off", rotulo: "Constrained-off", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "uc", rotulo: "Unit commitment", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "reativo", rotulo: "Suporte de reativos", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "outros_anc", rotulo: "Outros ancilares", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "seguranca", rotulo: "Segurança energética", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "deslocamento", rotulo: "Deslocamento hidráulico", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "importacao", rotulo: "Importação", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "reserva", rotulo: "Reserva operativa", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-  { id: "rd", rotulo: "Resposta da demanda (conjunto próprio)", tipo: "numero", unidade: "R$ milhões", casas: 2 },
-];
+export function colunasEss(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const u = rsMilhoes(idioma);
+  return [
+    { id: "mes", rotulo: tx("Mês", "Month", idioma), tipo: "data" },
+    { id: "total", rotulo: tx("ESS (nove tipos)", "ESS (nine types)", idioma), tipo: "numero", unidade: u, casas: 2 }, // i18n: dado
+    { id: "on", rotulo: "Constrained-on", tipo: "numero", unidade: u, casas: 2 },
+    { id: "off", rotulo: "Constrained-off", tipo: "numero", unidade: u, casas: 2 },
+    { id: "uc", rotulo: "Unit commitment", tipo: "numero", unidade: u, casas: 2 }, // i18n: dado
+    { id: "reativo", rotulo: tx("Suporte de reativos", "Reactive power support", idioma), tipo: "numero", unidade: u, casas: 2 },
+    { id: "outros_anc", rotulo: tx("Outros ancilares", "Other ancillary services", idioma), tipo: "numero", unidade: u, casas: 2 },
+    { id: "seguranca", rotulo: tx("Segurança energética", "Energy security", idioma), tipo: "numero", unidade: u, casas: 2 },
+    { id: "deslocamento", rotulo: tx("Deslocamento hidráulico", "Hydro displacement", idioma), tipo: "numero", unidade: u, casas: 2 },
+    { id: "importacao", rotulo: tx("Importação", "Imports", idioma), tipo: "numero", unidade: u, casas: 2 },
+    { id: "reserva", rotulo: tx("Reserva operativa", "Operating reserve", idioma), tipo: "numero", unidade: u, casas: 2 },
+    { id: "rd", rotulo: tx("Resposta da demanda (conjunto próprio)", "Demand response (separate dataset)", idioma), tipo: "numero", unidade: u, casas: 2 },
+  ];
+}
 
 export function linhasEss(g: MercadoGold): LinhaTabela[] {
   return g.encargos.ess_mensal.map((e) => ({
@@ -542,9 +613,9 @@ export function linhasEss(g: MercadoGold): LinhaTabela[] {
 export function textoEstado(p: PainelMercado): string {
   const ressalvas = p.verificacoes.filter((v) => v.resultado !== "aprovado");
   const essenciais = ressalvas.filter((v) => v.essencial).length;
-  const partes = [`Estado dos dados: ${ROTULO_ESTADO[p.estado_dados]}`];
-  partes.push(`${p.verificacoes.length} ${p.verificacoes.length === 1 ? "verificação" : "verificações"}`);
-  if (ressalvas.length) partes.push(`${ressalvas.length} com ressalva (${essenciais} no critério de aceite)`);
+  const partes = [tx(`Estado dos dados: ${rotuloEstado(p.estado_dados)}`, `Data status: ${rotuloEstado(p.estado_dados)}`)];
+  partes.push(tx(`${p.verificacoes.length} ${p.verificacoes.length === 1 ? "verificação" : "verificações"}`, `${p.verificacoes.length} ${p.verificacoes.length === 1 ? "check" : "checks"}`));
+  if (ressalvas.length) partes.push(tx(`${ressalvas.length} com ressalva (${essenciais} no critério de aceite)`, `${ressalvas.length} with caveat (${essenciais} in the acceptance criterion)`));
   return `${partes.join("; ")}.`;
 }
 
@@ -552,15 +623,15 @@ export function textoEstado(p: PainelMercado): string {
 export function textoVariacaoPp(atual: number | null | undefined, anterior: number | null | undefined): string | null {
   if (atual === null || atual === undefined || anterior === null || anterior === undefined) return null;
   const d = atual - anterior;
-  return `${d >= 0 ? "+" : "−"}${num(Math.abs(d), 1)} p.p.`;
+  return tx(`${d >= 0 ? "+" : "−"}${num(Math.abs(d), 1)} p.p.`, `${d >= 0 ? "+" : "−"}${num(Math.abs(d), 1)} pp`);
 }
 
 
 /** "subiu 4,3%", "caiu 1,2%" ou "não variou": o sentido da variação dito por extenso (a decisão é na precisão exibida). */
 export function textoVariacaoVerbo(v: number, casas = 1): string {
   const arred = Number(Math.abs(v).toFixed(casas));
-  if (arred === 0) return "não variou";
-  return `${v > 0 ? "subiu" : "caiu"} ${num(arred, casas)}%`;
+  if (arred === 0) return tx("não variou", "did not change");
+  return tx(`${v > 0 ? "subiu" : "caiu"} ${num(arred, casas)}%`, `${v > 0 ? "rose" : "fell"} ${num(arred, casas)}%`);
 }
 
 /* ---------------------------------------------------------------- vereditos (r8): resposta curta em duas camadas */
@@ -596,18 +667,27 @@ export function vereditoLivreRegulado(g: Pick<MercadoGold, "livre_regulado">): s
   if (epe && ccee) {
     const igual = epe.periodo.inicio === ccee.periodo.inicio && epe.periodo.fim === ccee.periodo.fim;
     return igual
-      ? `Nos 12 meses até ${mesAno(epe.periodo.fim)}, o mercado livre foi ${pct(epe.valor_pct, 1)} do consumo na rede (EPE) e ${pct(ccee.valor_pct, 1)} do consumo contabilizado pela CCEE: os dois percentuais medem universos diferentes e não se comparam.`
-      : `O mercado livre foi ${pct(epe.valor_pct, 1)} do consumo na rede (EPE, 12 meses até ${mesAno(epe.periodo.fim)}) e ${pct(ccee.valor_pct, 1)} do consumo contabilizado pela CCEE (12 meses até ${mesAno(ccee.periodo.fim)}): os dois percentuais medem universos diferentes e não se comparam.`;
+      ? tx(
+          `Nos 12 meses até ${mesAno(epe.periodo.fim)}, o mercado livre foi ${pct(epe.valor_pct, 1)} do consumo na rede (EPE) e ${pct(ccee.valor_pct, 1)} do consumo contabilizado pela CCEE: os dois percentuais medem universos diferentes e não se comparam.`,
+          `In the 12 months to ${mesAno(epe.periodo.fim)}, the free market accounted for ${pct(epe.valor_pct, 1)} of grid consumption (EPE) and ${pct(ccee.valor_pct, 1)} of the consumption accounted by CCEE: the two percentages measure different universes and cannot be compared.`,
+        )
+      : tx(
+          `O mercado livre foi ${pct(epe.valor_pct, 1)} do consumo na rede (EPE, 12 meses até ${mesAno(epe.periodo.fim)}) e ${pct(ccee.valor_pct, 1)} do consumo contabilizado pela CCEE (12 meses até ${mesAno(ccee.periodo.fim)}): os dois percentuais medem universos diferentes e não se comparam.`,
+          `The free market accounted for ${pct(epe.valor_pct, 1)} of grid consumption (EPE, 12 months to ${mesAno(epe.periodo.fim)}) and ${pct(ccee.valor_pct, 1)} of the consumption accounted by CCEE (12 months to ${mesAno(ccee.periodo.fim)}): the two percentages measure different universes and cannot be compared.`,
+        );
   }
-  if (epe) return `Nos 12 meses até ${mesAno(epe.periodo.fim)}, o mercado livre foi ${pct(epe.valor_pct, 1)} do consumo na rede (EPE). A CCEE não publicou os 12 meses para a segunda medida.`;
-  return `Nos 12 meses até ${mesAno(ccee!.periodo.fim)}, o mercado livre foi ${pct(ccee!.valor_pct, 1)} do consumo contabilizado pela CCEE. A EPE não publicou os 12 meses para a segunda medida.`;
+  if (epe) return tx(`Nos 12 meses até ${mesAno(epe.periodo.fim)}, o mercado livre foi ${pct(epe.valor_pct, 1)} do consumo na rede (EPE). A CCEE não publicou os 12 meses para a segunda medida.`, `In the 12 months to ${mesAno(epe.periodo.fim)}, the free market accounted for ${pct(epe.valor_pct, 1)} of grid consumption (EPE). CCEE did not publish the 12 months for the second measure.`);
+  return tx(`Nos 12 meses até ${mesAno(ccee!.periodo.fim)}, o mercado livre foi ${pct(ccee!.valor_pct, 1)} do consumo contabilizado pela CCEE. A EPE não publicou os 12 meses para a segunda medida.`, `In the 12 months to ${mesAno(ccee!.periodo.fim)}, the free market accounted for ${pct(ccee!.valor_pct, 1)} of the consumption accounted by CCEE. EPE did not publish the 12 months for the second measure.`);
 }
 
 /** Nota ao lado dos dois percentuais do livre: por que um é da EPE e o outro da CCEE (texto das limitações publicadas). */
 export function notaDoisUniversos(g: Pick<MercadoGold, "livre_regulado">): string {
   const k = g.livre_regulado.kpis;
   if (!k.participacao_livre_12m || !k.participacao_acl_ccee_12m) return "";
-  return `Os dois percentuais do mercado livre (${pct(k.participacao_livre_12m.valor_pct, 1)} e ${pct(k.participacao_acl_ccee_12m.valor_pct, 1)}) vêm de universos diferentes: a EPE soma o consumo na rede informado pelos agentes; a CCEE contabiliza o consumo referido ao centro de gravidade do submercado, com as perdas da rede básica rateadas, o que o torna maior que o medido no ponto de conexão. A diferença entre as duas não foi decomposta.`;
+  return tx(
+    `Os dois percentuais do mercado livre (${pct(k.participacao_livre_12m.valor_pct, 1)} e ${pct(k.participacao_acl_ccee_12m.valor_pct, 1)}) vêm de universos diferentes: a EPE soma o consumo na rede informado pelos agentes; a CCEE contabiliza o consumo referido ao centro de gravidade do submercado, com as perdas da rede básica rateadas, o que o torna maior que o medido no ponto de conexão. A diferença entre as duas não foi decomposta.`,
+    `The two free-market percentages (${pct(k.participacao_livre_12m.valor_pct, 1)} and ${pct(k.participacao_acl_ccee_12m.valor_pct, 1)}) come from different universes: EPE adds up the grid consumption reported by agents; CCEE accounts consumption referred to the submarket's center of gravity, with basic network losses allocated, which makes it larger than what is measured at the connection point. The difference between the two has not been broken down.`,
+  );
 }
 
 /** P033: o que mudou na composição (unidades livres da EPE) e que as contagens não se somam. */
@@ -615,11 +695,26 @@ export function vereditoAgentes(g: Pick<MercadoGold, "agentes_migracao">): strin
   const k = g.agentes_migracao.kpis;
   const u = k.ucs_livres;
   if (!u) {
-    return k.agentes_contabilizados ? `Em ${mesAno(k.agentes_contabilizados.mes)}, ${num(k.agentes_contabilizados.valor, 0)} agentes participaram da contabilização da CCEE. Agente, perfil e unidade consumidora são contagens diferentes e não se somam.` : "";
+    return k.agentes_contabilizados
+      ? tx(
+          `Em ${mesAno(k.agentes_contabilizados.mes)}, ${num(k.agentes_contabilizados.valor, 0)} agentes participaram da contabilização da CCEE. Agente, perfil e unidade consumidora são contagens diferentes e não se somam.`,
+          `In ${mesAno(k.agentes_contabilizados.mes)}, ${num(k.agentes_contabilizados.valor, 0)} agents took part in CCEE accounting. Agent, profile and consumer unit are different counts and cannot be added up.`,
+        )
+      : "";
   }
   const v = u.variacao_12m;
-  const dif = v === null || v === undefined ? "" : v > 0 ? `, ${num(v, 0)} a mais que 12 meses antes` : v < 0 ? `, ${num(Math.abs(v), 0)} a menos que 12 meses antes` : ", o mesmo número de 12 meses antes";
-  return `O mercado livre tinha ${num(u.valor, 0)} unidades consumidoras em ${mesAno(u.mes)}${dif}. A EPE conta unidades, não empresas; os agentes da CCEE são outra contagem e não se somam a ela.`;
+  const dif =
+    v === null || v === undefined
+      ? ""
+      : v > 0
+        ? tx(`, ${num(v, 0)} a mais que 12 meses antes`, `, ${num(v, 0)} more than 12 months earlier`)
+        : v < 0
+          ? tx(`, ${num(Math.abs(v), 0)} a menos que 12 meses antes`, `, ${num(Math.abs(v), 0)} fewer than 12 months earlier`)
+          : tx(", o mesmo número de 12 meses antes", ", the same number as 12 months earlier");
+  return tx(
+    `O mercado livre tinha ${num(u.valor, 0)} unidades consumidoras em ${mesAno(u.mes)}${dif}. A EPE conta unidades, não empresas; os agentes da CCEE são outra contagem e não se somam a ela.`,
+    `The free market had ${num(u.valor, 0)} consumer units in ${mesAno(u.mes)}${dif}. EPE counts units, not companies; CCEE agents are a different count and are not added to it.`,
+  );
 }
 
 /** P034: o GSF do mês e o de 12 meses contra os 100% do gráfico, e que o boletim da CCEE traz outro valor para 12 meses. */
@@ -629,13 +724,16 @@ export function vereditoGsf(g: Pick<MercadoGold, "mre_gsf">): string {
   const doze = k.gsf_12m;
   if (!mes && !doze) return "";
   const divergente = g.mre_gsf.reconciliacao_infomercado.some((x) => x.medida === "gsf_12m_pct" && x.resultado !== "aprovado");
-  const resto = divergente ? " O boletim da CCEE traz outro valor para os 12 meses, que o observatório não reproduz." : "";
+  const resto = divergente ? tx(" O boletim da CCEE traz outro valor para os 12 meses, que o observatório não reproduz.", " The CCEE bulletin gives a different value for the 12 months, which the observatory does not reproduce.") : "";
   if (mes && doze) {
-    const abaixo = mes.valor_pct < 100 && doze.valor_pct < 100 ? ": menos que a garantia" : "";
-    return `Em ${mesAno(mes.mes)}, as hidrelétricas do MRE geraram ${pct(mes.valor_pct, 1)} da garantia física ajustada, e ${pct(doze.valor_pct, 1)} nos 12 meses até ${mesAno(doze.periodo.fim)}${abaixo}.${resto}`;
+    const abaixo = mes.valor_pct < 100 && doze.valor_pct < 100 ? tx(": menos que a garantia", ": less than the guarantee") : "";
+    return tx(
+      `Em ${mesAno(mes.mes)}, as hidrelétricas do MRE geraram ${pct(mes.valor_pct, 1)} da garantia física ajustada, e ${pct(doze.valor_pct, 1)} nos 12 meses até ${mesAno(doze.periodo.fim)}${abaixo}.${resto}`,
+      `In ${mesAno(mes.mes)}, the MRE hydropower plants generated ${pct(mes.valor_pct, 1)} of the adjusted physical guarantee, and ${pct(doze.valor_pct, 1)} in the 12 months to ${mesAno(doze.periodo.fim)}${abaixo}.${resto}`,
+    );
   }
-  if (mes) return `Em ${mesAno(mes.mes)}, as hidrelétricas do MRE geraram ${pct(mes.valor_pct, 1)} da garantia física ajustada. Os 12 meses não estão publicados.`;
-  return `Nos 12 meses até ${mesAno(doze!.periodo.fim)}, as hidrelétricas do MRE geraram ${pct(doze!.valor_pct, 1)} da garantia física ajustada.${resto}`;
+  if (mes) return tx(`Em ${mesAno(mes.mes)}, as hidrelétricas do MRE geraram ${pct(mes.valor_pct, 1)} da garantia física ajustada. Os 12 meses não estão publicados.`, `In ${mesAno(mes.mes)}, the MRE hydropower plants generated ${pct(mes.valor_pct, 1)} of the adjusted physical guarantee. The 12 months are not published.`);
+  return tx(`Nos 12 meses até ${mesAno(doze!.periodo.fim)}, as hidrelétricas do MRE geraram ${pct(doze!.valor_pct, 1)} da garantia física ajustada.${resto}`, `In the 12 months to ${mesAno(doze!.periodo.fim)}, the MRE hydropower plants generated ${pct(doze!.valor_pct, 1)} of the adjusted physical guarantee.${resto}`);
 }
 
 /** P035: os dois encargos dos 12 meses, ditos como valores de competência (o mês da contabilização), não de pagamento. */
@@ -645,10 +743,16 @@ export function vereditoEncargos(g: Pick<MercadoGold, "encargos">): string {
   const eer = k.eer_12m;
   if (!ess && !eer) return "";
   if (ess && eer) {
-    return `Nos 12 meses até ${mesAno(ess.periodo.fim)}, os encargos de serviços do sistema somaram ${reaisCurto(ess.valor_rs)} e o encargo de energia de reserva, ${reaisCurto(eer.valor_rs)}. São valores do mês de contabilização, não do pagamento.`;
+    return tx(
+      `Nos 12 meses até ${mesAno(ess.periodo.fim)}, os encargos de serviços do sistema somaram ${reaisCurto(ess.valor_rs)} e o encargo de energia de reserva, ${reaisCurto(eer.valor_rs)}. São valores do mês de contabilização, não do pagamento.`,
+      `In the 12 months to ${mesAno(ess.periodo.fim)}, system service charges (ESS) totaled ${reaisCurto(ess.valor_rs)} and the reserve energy charge (EER), ${reaisCurto(eer.valor_rs)}. These are values for the accounting month, not the payment month.`,
+    );
   }
   const um = ess ?? eer!;
-  return `Nos 12 meses até ${mesAno(um.periodo.fim)}, ${ess ? "os encargos de serviços do sistema somaram" : "o encargo de energia de reserva somou"} ${reaisCurto(um.valor_rs)}. São valores do mês de contabilização, não do pagamento.`;
+  return tx(
+    `Nos 12 meses até ${mesAno(um.periodo.fim)}, ${ess ? "os encargos de serviços do sistema somaram" : "o encargo de energia de reserva somou"} ${reaisCurto(um.valor_rs)}. São valores do mês de contabilização, não do pagamento.`,
+    `In the 12 months to ${mesAno(um.periodo.fim)}, ${ess ? "system service charges (ESS) totaled" : "the reserve energy charge (EER) totaled"} ${reaisCurto(um.valor_rs)}. These are values for the accounting month, not the payment month.`,
+  );
 }
 
 /** Veredito do painel pelo id; vazio quando o dado falta. */
@@ -702,8 +806,11 @@ export function conciliacaoEssMme(g: Pick<MercadoGold, "encargos">): {
 export function notaEssMme(g: Pick<MercadoGold, "encargos">): string {
   const c = conciliacaoEssMme(g);
   if (!c) return "";
-  const rd = c.respostaDemandaMilRs === null ? "inclui a resposta da demanda" : `inclui ${reaisCurto(c.respostaDemandaMilRs * 1e3)} de resposta da demanda`;
-  return `O cartão do boletim do MME (${reaisCurto(c.mmeMilRs * 1e3)}) soma ${c.meses} meses, ${mesAno(c.periodo.inicio)} a ${mesAno(c.periodo.fim)}, e ${rd}; nesses meses, o ESS da CCEE é ${reaisCurto(c.cceeRs)}. Por isso ele não se compara com os ${reaisCurto(c.ess12mRs)} de 12 meses (${mesAno(c.periodo12m.inicio)} a ${mesAno(c.periodo12m.fim)}), que não incluem a resposta da demanda.`;
+  const rd = c.respostaDemandaMilRs === null ? tx("inclui a resposta da demanda", "includes demand response") : tx(`inclui ${reaisCurto(c.respostaDemandaMilRs * 1e3)} de resposta da demanda`, `includes ${reaisCurto(c.respostaDemandaMilRs * 1e3)} of demand response`);
+  return tx(
+    `O cartão do boletim do MME (${reaisCurto(c.mmeMilRs * 1e3)}) soma ${c.meses} meses, ${mesAno(c.periodo.inicio)} a ${mesAno(c.periodo.fim)}, e ${rd}; nesses meses, o ESS da CCEE é ${reaisCurto(c.cceeRs)}. Por isso ele não se compara com os ${reaisCurto(c.ess12mRs)} de 12 meses (${mesAno(c.periodo12m.inicio)} a ${mesAno(c.periodo12m.fim)}), que não incluem a resposta da demanda.`,
+    `The MME bulletin card (${reaisCurto(c.mmeMilRs * 1e3)}) adds up ${c.meses} months, ${mesAno(c.periodo.inicio)} to ${mesAno(c.periodo.fim)}, and ${rd}; in those months, the CCEE ESS is ${reaisCurto(c.cceeRs)}. That is why it cannot be compared with the 12-month ${reaisCurto(c.ess12mRs)} (${mesAno(c.periodo12m.inicio)} to ${mesAno(c.periodo12m.fim)}), which does not include demand response.`,
+  );
 }
 
 /**
@@ -713,15 +820,18 @@ export function notaEssMme(g: Pick<MercadoGold, "encargos">): string {
 export function notaGsfDozeMeses(g: Pick<MercadoGold, "mre_gsf">): string {
   const k = g.mre_gsf.kpis;
   const div = g.mre_gsf.reconciliacao_infomercado.find((x) => x.medida === "gsf_12m_pct" && x.resultado !== "aprovado");
-  const base = "soma da geração dos 12 meses sobre a soma da garantia física ajustada";
+  const base = tx("soma da geração dos 12 meses sobre a soma da garantia física ajustada", "sum of 12-month generation over the sum of the adjusted physical guarantee");
   if (!div || div.publicado === null || div.calculado === null || div.diferenca === null) return base;
   const inicio = mesAno(mesesAntes(div.mes, 11));
-  const janela = `${inicio} a ${mesAno(div.mes)}`;
-  const cartao = k.gsf_12m ? `${pct(k.gsf_12m.valor_pct, 1)}, de ${textoPeriodoMes(k.gsf_12m.periodo)}` : "";
-  return (
+  const janela = tx(`${inicio} a ${mesAno(div.mes)}`, `${inicio} to ${mesAno(div.mes)}`);
+  const cartao = k.gsf_12m ? tx(`${pct(k.gsf_12m.valor_pct, 1)}, de ${textoPeriodoMes(k.gsf_12m.periodo)}`, `${pct(k.gsf_12m.valor_pct, 1)}, for ${textoPeriodoMes(k.gsf_12m.periodo)}`) : "";
+  return tx(
     `${base}. Três valores, três recortes: o InfoMercado Nº ${div.numero}, boletim mensal da CCEE, publica ${num(div.publicado, 2)}% para o ajuste médio de 12 meses até ${mesAno(div.mes)}; ` +
-    `na mesma janela (${janela}) a razão de energias do observatório dá ${num(div.calculado, 2)}%, ${num(Math.abs(div.diferenca), 2)} pontos percentuais abaixo, diferença que a fonte não explica` +
-    (cartao ? `; o cartão mostra ${cartao}. O valor do cartão é o da janela mais recente` : "")
+      `na mesma janela (${janela}) a razão de energias do observatório dá ${num(div.calculado, 2)}%, ${num(Math.abs(div.diferenca), 2)} pontos percentuais abaixo, diferença que a fonte não explica` +
+      (cartao ? `; o cartão mostra ${cartao}. O valor do cartão é o da janela mais recente` : ""),
+    `${base}. Three values, three cuts: InfoMercado No. ${div.numero}, CCEE's monthly bulletin, publishes ${num(div.publicado, 2)}% for the average 12-month adjustment to ${mesAno(div.mes)}; ` +
+      `in the same window (${janela}) the observatory's energy ratio gives ${num(div.calculado, 2)}%, ${num(Math.abs(div.diferenca), 2)} percentage points lower, a difference the source does not explain` +
+      (cartao ? `; the card shows ${cartao}. The card value is for the most recent window` : ""),
   );
 }
 
@@ -740,16 +850,37 @@ export function textoAnos(anos: readonly string[]): string {
   if (a.length <= 1) return a[0] ?? "";
   const n = a.map(Number);
   const seguidos = n.every((v, i) => i === 0 || v === n[i - 1] + 1);
-  if (a.length > 2 && seguidos) return `${a[0]} a ${a[a.length - 1]}`;
-  return `${a.slice(0, -1).join(", ")} e ${a[a.length - 1]}`;
+  if (a.length > 2 && seguidos) return tx(`${a[0]} a ${a[a.length - 1]}`, `${a[0]} to ${a[a.length - 1]}`);
+  return tx(`${a.slice(0, -1).join(", ")} e ${a[a.length - 1]}`, `${a.slice(0, -1).join(", ")} and ${a[a.length - 1]}`);
 }
 
-export type ItemAusenteMercado = { id: string; titulo: string; texto: string; paineis: string[] };
-
-const TITULO_PENDENCIA: Record<string, string> = {
-  infomercado_dados_gerais: "Séries da CCEE antes de 2023",
-  historico_perfis: "Fluxo mensal de perfis de agentes",
+export type ItemAusenteMercado = {
+  id: string;
+  titulo: string;
+  texto: string;
+  paineis: string[];
+  /** Trecho do texto que veio da gold (o efeito declarado) e o que vem antes dele; emPortugues quando não há forma inglesa. */
+  prefixo?: string;
+  efeito?: string;
+  emPortugues?: boolean;
 };
+
+/** Efeito declarado pela gold, no idioma da página quando a tabela exata tem a frase. */
+function efeitoNoIdioma(efeito: string): { efeito: string; emPortugues: boolean } {
+  const idioma = idiomaEnergia();
+  const en = traducaoExata(EFEITOS_MERCADO_EN, efeito, idioma);
+  return { efeito: en ?? efeito, emPortugues: idioma === "en" && en === null };
+}
+
+function tituloPendencia(id: string): string {
+  switch (id) {
+    case "infomercado_dados_gerais":
+      return tx("Séries da CCEE antes de 2023", "CCEE series before 2023");
+    case "historico_perfis":
+      return tx("Fluxo mensal de perfis de agentes", "Monthly flow of agent profiles");
+  }
+  return tx("Dado ainda não integrado", "Data not yet integrated");
+}
 
 /**
  * O que a gold declara como não integrado (pendências) ou como inacessível (bloqueios), em frases de Entender: o título e o texto
@@ -757,12 +888,24 @@ const TITULO_PENDENCIA: Record<string, string> = {
  * conjunto nem identificador interno entra no texto; a descrição completa e a evidência ficam em Analisar.
  */
 export function itensAusentesMercado(g: Pick<MercadoGold, "pendencias" | "bloqueios">): ItemAusenteMercado[] {
-  const pend = g.pendencias.map((p) => ({ id: p.id, titulo: TITULO_PENDENCIA[p.id] ?? "Dado ainda não integrado", texto: p.efeito, paineis: p.paineis }));
+  const pend = g.pendencias.map((p) => {
+    const e = efeitoNoIdioma(p.efeito);
+    return { id: p.id, titulo: tituloPendencia(p.id), texto: e.efeito, paineis: p.paineis, prefixo: "", efeito: e.efeito, emPortugues: e.emPortugues };
+  });
   const bloq = g.bloqueios.map((b) => {
     const pastas = (b.evidencia.pastas ?? []).filter((x) => x.redireciona_login);
     const anos = textoAnos(pastas.map((x) => String(x.ano)));
-    const acesso = pastas.length ? `As pastas de ${anos} do Boletim de Monitoramento do MME pedem login, e o observatório não tentou outro caminho de acesso. ` : "";
-    return { id: b.id, titulo: pastas.length ? `Boletim de Monitoramento do MME, ${anos}` : "Fonte com acesso bloqueado", texto: `${acesso}${b.efeito}`, paineis: b.paineis };
+    const acesso = pastas.length ? tx(`As pastas de ${anos} do Boletim de Monitoramento do MME pedem login, e o observatório não tentou outro caminho de acesso. `, `The ${anos} folders of the MME Monitoring Bulletin (Boletim de Monitoramento) require a login, and the observatory did not try any other means of access. `) : "";
+    const e = efeitoNoIdioma(b.efeito);
+    return {
+      id: b.id,
+      titulo: pastas.length ? tx(`Boletim de Monitoramento do MME, ${anos}`, `MME Monitoring Bulletin, ${anos}`) : tx("Fonte com acesso bloqueado", "Source with blocked access"),
+      texto: `${acesso}${e.efeito}`,
+      paineis: b.paineis,
+      prefixo: acesso,
+      efeito: e.efeito,
+      emPortugues: e.emPortugues,
+    };
   });
   return [...pend, ...bloq];
 }
@@ -788,29 +931,46 @@ export function resumoCatalogoMercado(entradas: readonly EntradaCatalogoMercado[
   };
 }
 
-const DO_ORGAO: Record<string, string> = { CCEE: "da", ANEEL: "da", EPE: "da", MME: "do", ONS: "do" };
+const DO_ORGAO: Record<string, string> = { CCEE: "da", ANEEL: "da", EPE: "da", MME: "do", ONS: "do" }; // i18n: dado
 
 /** "24 fontes publicadas nestas páginas: 18 da CCEE, 3 da ANEEL, 2 da EPE e 1 do MME." */
 export function textoFontesPublicadas(r: Pick<ReturnType<typeof resumoCatalogoMercado>, "publicadas" | "porOrgao">): string {
   if (!r.publicadas) return "";
-  const partes = r.porOrgao.map((o) => `${num(o.n, 0)} ${DO_ORGAO[o.orgao] ?? "de"} ${o.orgao}`);
-  const lista = partes.length > 1 ? `${partes.slice(0, -1).join(", ")} e ${partes[partes.length - 1]}` : partes[0];
-  return `${num(r.publicadas, 0)} ${r.publicadas === 1 ? "fonte publicada" : "fontes publicadas"} nestas páginas: ${lista}.`;
+  const partes = r.porOrgao.map((o) => tx(`${num(o.n, 0)} ${DO_ORGAO[o.orgao] ?? "de"} ${o.orgao}`, `${num(o.n, 0)} from ${o.orgao}`));
+  const lista = partes.length > 1 ? tx(`${partes.slice(0, -1).join(", ")} e ${partes[partes.length - 1]}`, `${partes.slice(0, -1).join(", ")} and ${partes[partes.length - 1]}`) : partes[0];
+  return tx(
+    `${num(r.publicadas, 0)} ${r.publicadas === 1 ? "fonte publicada" : "fontes publicadas"} nestas páginas: ${lista}.`,
+    `${num(r.publicadas, 0)} ${r.publicadas === 1 ? "source published" : "sources published"} on these pages: ${lista}.`,
+  );
 }
 
 /** Frase do que falta em contratos de energia; null quando nenhum conjunto de montantes de contrato está só verificado ou catalogado. */
 export function textoContratosAusentes(r: Pick<ReturnType<typeof resumoCatalogoMercado>, "contratos" | "contratosSoVerificados">): string | null {
   if (!r.contratos) return null;
-  const conjuntos = `${num(r.contratos, 0)} ${r.contratos === 1 ? "conjunto de dados aberto" : "conjuntos de dados abertos"} com montantes de contratos de energia`;
-  const estado = r.contratosSoVerificados ? "O observatório confirmou que os arquivos existem, mas ainda não os integrou" : "O observatório ainda não os integrou";
-  return `A CCEE publica ${conjuntos}. ${estado}: por isso nenhum montante contratado aparece nestas páginas. O observatório também não publica preço de contrato.`;
+  const conjuntos = tx(
+    `${num(r.contratos, 0)} ${r.contratos === 1 ? "conjunto de dados aberto" : "conjuntos de dados abertos"} com montantes de contratos de energia`,
+    `${num(r.contratos, 0)} open ${r.contratos === 1 ? "dataset" : "datasets"} with energy contract volumes`,
+  );
+  const estado = r.contratosSoVerificados
+    ? tx("O observatório confirmou que os arquivos existem, mas ainda não os integrou", "The observatory has confirmed that the files exist, but has not yet integrated them")
+    : tx("O observatório ainda não os integrou", "The observatory has not yet integrated them");
+  return tx(
+    `A CCEE publica ${conjuntos}. ${estado}: por isso nenhum montante contratado aparece nestas páginas. O observatório também não publica preço de contrato.`,
+    `CCEE publishes ${conjuntos}. ${estado}: that is why no contracted volume appears on these pages. The observatory also does not publish contract prices.`,
+  );
 }
 
-const ROTULO_ESTADO_CATALOGO: Record<string, string> = {
-  PUBLICADO: "publicado",
-  "RECURSO VERIFICADO": "recurso verificado (acessível), não integrado",
-  CATALOGADO: "catalogado, recurso não verificado",
-};
+function rotuloEstadoCatalogo(estado: string): string {
+  switch (estado) {
+    case "PUBLICADO":
+      return tx("publicado", "published");
+    case "RECURSO VERIFICADO":
+      return tx("recurso verificado (acessível), não integrado", "resource verified (accessible), not integrated");
+    case "CATALOGADO":
+      return tx("catalogado, recurso não verificado", "cataloged, resource not verified");
+  }
+  return estado.toLowerCase();
+}
 
 /** Linhas da tabela de Auditar com as fontes do módulo no catálogo: as publicadas nas páginas de mercado e os conjuntos de contratos sem integração. */
 export function linhasCatalogoMercado(entradas: readonly EntradaCatalogoMercado[]): (string | number | null)[][] {
@@ -823,8 +983,8 @@ export function linhasCatalogoMercado(entradas: readonly EntradaCatalogoMercado[
     .map((e) => [
       e.orgao,
       e.titulo,
-      ROTULO_ESTADO_CATALOGO[e.estado] ?? e.estado.toLowerCase(),
-      (e.paginas ?? []).filter((p) => p.href.startsWith("/setor-eletrico/mercado")).map((p) => p.rotulo).join("; ") || "nenhuma página",
+      rotuloEstadoCatalogo(e.estado),
+      (e.paginas ?? []).filter((p) => p.href.startsWith("/setor-eletrico/mercado")).map((p) => p.rotulo).join("; ") || tx("nenhuma página", "no page"),
     ]);
 }
 
@@ -849,9 +1009,17 @@ export function razoesCceeSobEpe(g: Pick<MercadoGold, "livre_regulado">): { mes:
 export function textoRazaoUniversos(g: Pick<MercadoGold, "livre_regulado">): string {
   const r = razoesCceeSobEpe(g);
   if (!r) return "";
-  const vez = (v: number) => `${num(v, 2)} ${v < 2 ? "vez" : "vezes"}`;
+  const vez = (v: number) => tx(`${num(v, 2)} ${v < 2 ? "vez" : "vezes"}`, `${num(v, 2)} times`);
   const dif = r.regulado - r.livre;
-  const origem = Math.abs(dif) < 0.03 ? "aparece nos dois ambientes" : dif > 0 ? "vem sobretudo do regulado" : "vem sobretudo do livre";
-  return `em ${mesAno(r.mes)} a CCEE mede ${vez(r.regulado)} o consumo cativo da EPE no ambiente regulado e ${vez(r.livre)} o livre, ou seja, a diferença ${origem}`;
+  const origem =
+    Math.abs(dif) < 0.03
+      ? tx("aparece nos dois ambientes", "appears in both environments")
+      : dif > 0
+        ? tx("vem sobretudo do regulado", "comes mainly from the regulated environment")
+        : tx("vem sobretudo do livre", "comes mainly from the free market");
+  return tx(
+    `em ${mesAno(r.mes)} a CCEE mede ${vez(r.regulado)} o consumo cativo da EPE no ambiente regulado e ${vez(r.livre)} o livre, ou seja, a diferença ${origem}`,
+    `in ${mesAno(r.mes)} CCEE measures ${vez(r.regulado)} EPE's captive consumption in the regulated environment and ${vez(r.livre)} the free consumption, meaning the difference ${origem}`,
+  );
 }
 

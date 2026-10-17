@@ -1,5 +1,8 @@
+"use client";
+
 import { dominioBonito, escalaLinear } from "@/lib/energia/escalas";
-import { num } from "@/lib/energia/formato";
+import { num as numBase } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { FaixaRegime } from "@/lib/energia/pld";
 
 /**
@@ -20,11 +23,19 @@ import type { FaixaRegime } from "@/lib/energia/pld";
 const ok = (v: number | null): v is number => typeof v === "number" && Number.isFinite(v);
 
 export function PldFaixas({ faixas, titulo }: { faixas: FaixaRegime[]; titulo: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const num = (v: number | null | undefined, casas = 1) => numBase(v, casas, idioma);
   const valores = faixas.flatMap((f) => [f.p10, f.p90, f.media, f.piso, f.teto_e]);
   const dom = dominioBonito(valores, { zero: true, n: 5 });
   const x = escalaLinear([dom.min, dom.max], [0, 100]);
   const resumo = faixas
-    .map((f) => `${f.rotulo}: mediana ${num(f.p50, 2)}, de ${num(f.p10, 2)} (percentil 10) a ${num(f.p90, 2)} (percentil 90), piso ${num(f.piso, 2)}`)
+    .map((f) =>
+      tx(
+        `${f.rotulo}: mediana ${num(f.p50, 2)}, de ${num(f.p10, 2)} (percentil 10) a ${num(f.p90, 2)} (percentil 90), piso ${num(f.piso, 2)}`,
+        `${f.rotulo}: median ${num(f.p50, 2)}, from ${num(f.p10, 2)} (percentile 10) to ${num(f.p90, 2)} (percentile 90), floor ${num(f.piso, 2)}`,
+      ),
+    )
     .join("; ");
   return (
     <figure className="min-w-0">
@@ -77,22 +88,22 @@ export function PldFaixas({ faixas, titulo }: { faixas: FaixaRegime[]; titulo: s
       </div>
       <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted">
         <li>
-          <span aria-hidden="true">─</span> percentil 10 a 90
+          <span aria-hidden="true">─</span> {tx("percentil 10 a 90", "percentile 10 to 90")}
         </li>
         <li>
-          <span aria-hidden="true">▭</span> percentil 25 a 75
+          <span aria-hidden="true">▭</span> {tx("percentil 25 a 75", "percentile 25 to 75")}
         </li>
         <li>
-          <span aria-hidden="true">┃</span> mediana
+          <span aria-hidden="true">┃</span> {tx("mediana", "median")}
         </li>
         <li>
-          <span aria-hidden="true">◇</span> média
+          <span aria-hidden="true">◇</span> {tx("média", "average")}
         </li>
         <li>
-          <span aria-hidden="true">┆</span> piso do ano (tracejado)
+          <span aria-hidden="true">┆</span> {tx("piso do ano (tracejado)", "floor for the year (dashed)")}
         </li>
         <li>
-          <span aria-hidden="true">┊</span> teto estrutural do ano (pontilhado)
+          <span aria-hidden="true">┊</span> {tx("teto estrutural do ano (pontilhado)", "structural cap for the year (dotted)")}
         </li>
       </ul>
     </figure>

@@ -6,7 +6,9 @@ import { PldMapaHoras } from "@/components/energia/PldMapaHoras";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR } from "@/lib/energia/formato";
-import { ESCALA_PLD, HORAS_DO_DIA, JANELAS_HORA_DIA, NOME_SM, horaDiaRecorte, notaSemNomeDeArquivo, type JanelaHoraDia } from "@/lib/energia/pld";
+import { ESCALA_PLD, JANELAS_HORA_DIA, horaDiaRecorte, horasDoDia, nomeSm, notaSemNomeDeArquivo, type JanelaHoraDia } from "@/lib/energia/pld";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { NOTAS_PLD_EN, traducaoExata } from "@/lib/energia/i18n/mercado-preco";
 import type { Submercado } from "@/lib/energia/tipos";
 import type { PldHoraDiaArquivo } from "@/lib/energia/tipos-pld";
 
@@ -39,6 +41,8 @@ export function PldHoraDia({ url, sm, nota }: { url: string; sm: Submercado; not
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const raiz = useRef<HTMLDivElement>(null);
   const janela = Number(v.hd) as JanelaHoraDia;
+  const idioma = useIdioma();
+  const tx = useTx();
 
   useEffect(() => {
     const el = raiz.current;
@@ -47,7 +51,7 @@ export function PldHoraDia({ url, sm, nota }: { url: string; sm: Submercado; not
       setEstado({ tipo: "carregando" });
       carregar(url)
         .then((arq) => setEstado({ tipo: "ok", arq }))
-        .catch((e: unknown) => setEstado({ tipo: "erro", motivo: e instanceof Error ? e.message : "falha na leitura" }));
+        .catch((e: unknown) => setEstado({ tipo: "erro", motivo: e instanceof Error ? e.message : "falha na leitura" })); // i18n: dado
     };
     if (typeof IntersectionObserver === "undefined") {
       abrir();
@@ -63,45 +67,51 @@ export function PldHoraDia({ url, sm, nota }: { url: string; sm: Submercado; not
     return () => obs.disconnect();
   }, [estado.tipo, url]);
 
-  const recorte = estado.tipo === "ok" ? horaDiaRecorte(estado.arq, sm, janela) : null;
+  const recorte = estado.tipo === "ok" ? horaDiaRecorte(estado.arq, sm, janela, idioma) : null;
   return (
     <div ref={raiz} className="space-y-3">
       <PldEscolha
-        legenda="Janela do mapa"
-        opcoes={JANELAS_HORA_DIA.map((n) => ({ id: String(n) as "30" | "60" | "90", rotulo: `${n} dias` }))}
+        legenda={tx("Janela do mapa", "Map window")}
+        opcoes={JANELAS_HORA_DIA.map((n) => ({ id: String(n) as "30" | "60" | "90", rotulo: tx(`${n} dias`, `${n} days`) }))}
         valor={v.hd}
         onEscolher={(x) => definir({ hd: x })}
       />
       {estado.tipo === "ok" && recorte ? (
         <PldMapaHoras
-          titulo={`PLD por hora e dia, ${NOME_SM[sm]}, últimos ${janela} dias`}
+          titulo={tx(`PLD por hora e dia, ${nomeSm(sm, idioma)}, últimos ${janela} dias`, `PLD by hour and day, ${nomeSm(sm, idioma)}, last ${janela} days`)}
           linhas={recorte.linhas}
-          colunas={HORAS_DO_DIA}
-          nomeLinhas="Dia"
-          nomeColunas="Hora"
+          colunas={horasDoDia(idioma)}
+          nomeLinhas={tx("Dia", "Day")}
+          nomeColunas={tx("Hora", "Hour")}
           valores={recorte.valores}
           escala={ESCALA_PLD}
           unidade="R$/MWh"
           casas={2}
           passoRotuloColunas={3}
-          periodo={recorte.linhas.length ? `${dataBR(recorte.linhas[0].id)} a ${dataBR(recorte.linhas[recorte.linhas.length - 1].id)}` : undefined}
-          nota={notaSemNomeDeArquivo(nota)}
+          periodo={
+            recorte.linhas.length
+              ? tx(`${dataBR(recorte.linhas[0].id, idioma)} a ${dataBR(recorte.linhas[recorte.linhas.length - 1].id, idioma)}`, `${dataBR(recorte.linhas[0].id, idioma)} to ${dataBR(recorte.linhas[recorte.linhas.length - 1].id, idioma)}`)
+              : undefined
+          }
+          nota={traducaoExata(NOTAS_PLD_EN, nota, idioma) ?? notaSemNomeDeArquivo(nota)}
         />
       ) : estado.tipo === "erro" ? (
         <p role="alert" className="border-l-2 border-aviso pl-3 text-sm text-carvao">
-          Não foi possível ler o mapa hora × dia ({estado.motivo}).{" "}
+          {tx(`Não foi possível ler o mapa hora × dia (${estado.motivo}).`, `Could not read the hour × day map (${estado.motivo}).`)}{" "}
           <button type="button" onClick={() => setEstado({ tipo: "espera" })} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-            Tentar de novo
+            {tx("Tentar de novo", "Try again")}
           </button>{" "}
-          ou{" "}
+          {tx("ou", "or")}{" "}
           <a href={url} download className="text-energia-dark underline underline-offset-4">
-            baixar o arquivo
+            {tx("baixar o arquivo", "download the file")}
           </a>
           .
         </p>
       ) : (
         <p className="text-sm text-carvao-muted" aria-live="polite">
-          {estado.tipo === "carregando" ? "Carregando o mapa hora × dia dos últimos 90 dias…" : "O mapa hora × dia é carregado quando este bloco aparece na tela."}
+          {estado.tipo === "carregando"
+            ? tx("Carregando o mapa hora × dia dos últimos 90 dias…", "Loading the hour × day map for the last 90 days…")
+            : tx("O mapa hora × dia é carregado quando este bloco aparece na tela.", "The hour × day map loads when this block comes into view.")}
         </p>
       )}
     </div>

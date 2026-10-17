@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { MapaCalor, type MapaCalorProps } from "@/components/energia/MapaCalor";
-import { FAIXAS_DE_HORAS, agruparEmFaixasDeHoras } from "@/lib/energia/pld";
+import { agruparEmFaixasDeHoras, faixasDeHoras } from "@/lib/energia/pld";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Mapa de calor com 24 colunas de hora, em duas formas conforme a largura da tela. Com 1024 px ou mais, a grade das 24 horas, como
@@ -17,6 +18,8 @@ export function PldMapaHoras(props: Omit<MapaCalorProps, "passoRotuloColunas"> &
   const { titulo, valores, nota } = props;
   const faixas = useMemo(() => agruparEmFaixasDeHoras(valores), [valores]);
   const [aberta, setAberta] = useState(false);
+  const idioma = useIdioma();
+  const tx = useTx();
   return (
     <>
       <div className="hidden min-w-0 lg:block" data-mapa-horas="largo">
@@ -25,15 +28,18 @@ export function PldMapaHoras(props: Omit<MapaCalorProps, "passoRotuloColunas"> &
       <div className="min-w-0 space-y-3 lg:hidden" data-mapa-horas="estreito">
         <MapaCalor
           {...props}
-          titulo={`${titulo}, por faixa de quatro horas`}
-          colunas={FAIXAS_DE_HORAS}
+          titulo={tx(`${titulo}, por faixa de quatro horas`, `${titulo}, by four-hour band`)}
+          colunas={faixasDeHoras(idioma)}
           valores={faixas}
           passoRotuloColunas={1}
-          nota={`Cada coluna é uma faixa de quatro horas que começa na hora indicada (0h vai até as 4h); o valor é a média simples dos quatro valores horários da faixa, sem pesos. ${nota ?? ""}`.trim()}
+          nota={tx(
+            `Cada coluna é uma faixa de quatro horas que começa na hora indicada (0h vai até as 4h); o valor é a média simples dos quatro valores horários da faixa, sem pesos. ${nota ?? ""}`,
+            `Each column is a four-hour band starting at the hour shown (0h runs to 4h); the value is the simple average of the band's four hourly values, unweighted. ${nota ?? ""}`,
+          ).trim()}
         />
         <details className="text-xs" onToggle={(e) => setAberta((e.currentTarget as HTMLDetailsElement).open)}>
           <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-            Ver as 24 horas (a grade rola para o lado)
+            {tx("Ver as 24 horas (a grade rola para o lado)", "See all 24 hours (the grid scrolls sideways)")}
           </summary>
           {aberta && (
             <div className="mt-2">

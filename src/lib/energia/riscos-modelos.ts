@@ -1,4 +1,6 @@
 /** Modelos didáticos próprios. Valores de entrada são hipóteses, nunca séries observadas. */
+import type { Idioma } from "@/lib/idioma";
+import { tx } from "./idioma";
 const finitos = (xs: number[]) => xs.every(Number.isFinite);
 const fracao = (x: number) => x >= 0 && x <= 1;
 
@@ -12,10 +14,22 @@ export const GERADOR_BASE: GeradorRisco = {
   hedge: .7, contrato: 230, estrutura: "fixo", opexMilhoes: 20, outrosMilhoes: 5, dividaMilhoes: 30,
 };
 export const CHOQUES_GERADOR = [
-  { id: "base", nome: "Referência hipotética", recurso: 1, corte: .05, preco: 200, captura: .8, explicacao: "Produção disponível de referência, com 5% de corte e preço capturado abaixo da média de mercado." },
-  { id: "excedente", nome: "Excedente e congestionamento", recurso: 1.1, corte: .25, preco: 100, captura: .55, explicacao: "Mais recurso natural coincide com rede limitada, cortes maiores e menor preço nas horas de geração." },
-  { id: "escassez", nome: "Escassez com baixa produção", recurso: .55, corte: .02, preco: 500, captura: .95, explicacao: "Menos produção coincide com preços altos. A obrigação de volume fixo pode superar a energia disponível." },
+  { id: "base", recurso: 1, corte: .05, preco: 200, captura: .8 },
+  { id: "excedente", recurso: 1.1, corte: .25, preco: 100, captura: .55 },
+  { id: "escassez", recurso: .55, corte: .02, preco: 500, captura: .95 },
 ] as const;
+
+/** Nome e explicação de cada cenário conjunto, no idioma da página. */
+export function textoChoqueGerador(id: (typeof CHOQUES_GERADOR)[number]["id"], idioma: Idioma): { nome: string; explicacao: string } {
+  switch (id) {
+    case "base":
+      return { nome: tx("Referência hipotética", "Hypothetical reference", idioma), explicacao: tx("Produção disponível de referência, com 5% de corte e preço capturado abaixo da média de mercado.", "Reference available production, with 5% curtailment and a captured price below the market average.", idioma) };
+    case "excedente":
+      return { nome: tx("Excedente e congestionamento", "Surplus and congestion", idioma), explicacao: tx("Mais recurso natural coincide com rede limitada, cortes maiores e menor preço nas horas de geração.", "More natural resource coincides with a constrained grid, larger curtailment and lower prices in generating hours.", idioma) };
+    case "escassez":
+      return { nome: tx("Escassez com baixa produção", "Scarcity with low production", idioma), explicacao: tx("Menos produção coincide com preços altos. A obrigação de volume fixo pode superar a energia disponível.", "Lower production coincides with high prices. A fixed-volume obligation can exceed the energy available.", idioma) };
+  }
+}
 
 /** Hedge plano anual: Q0*h*(K-P). Pay-as-produced: h*G*(K-Pcapt).
  * A representação financeira é uma identidade agregada, não a contabilização CCEE. */
