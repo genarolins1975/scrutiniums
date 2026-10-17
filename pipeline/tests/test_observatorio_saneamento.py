@@ -27,6 +27,30 @@ class ObservatorioSaneamento(unittest.TestCase):
             if "diferenca" in c["valores"]:
                 self.assertEqual(c["valores"]["diferenca"], 0, c["id"])
 
+    def test_retificacao_da_agua_confere_cada_coluna_de_contagem_por_uf(self):
+        conf = {c["id"]: c for c in self.g["meta"]["conferencias"]}
+        c = conf["agua_retificacao_contagens"]
+        v = c["valores"]
+        self.assertEqual(v["comparacoes_com_diferenca"], len(c["detalhe"]))
+        self.assertEqual(v["ufs_com_diferenca"], len({d["uf"] for d in c["detalhe"]}))
+        self.assertGreater(v["comparacoes_uf_coluna"], v["colunas_comparadas"])
+        self.assertEqual(c["datas"], {"municipal_publicacao": "2025-12-18", "municipal_retificacao": "2026-05-25",
+                                      "consolidado_uf_publicacao": "2025-12-18", "consolidado_uf_retificacao": None})
+        # cada divergência publicada reproduz-se da soma dos municípios e do consolidado do seed
+        _, mun = gold.planilha("agua_tecnica_municipio")
+        _, cons = gold.planilha("agua_tecnica_uf")
+        uf_por_nome = {n: u for u, n in gold.UF_NOME.items()}
+        consolidado = {uf_por_nome[(l.get("UF/Macrorregião") or "").strip()]: l for l in cons if (l.get("UF/Macrorregião") or "").strip() in uf_por_nome}
+        for d in c["detalhe"]:
+            soma = gold.somar([gold.num(l.get(d["codigo"])) for l in mun
+                               if gold.UF_COD.get(str(l["cod_IBGE"])[:2]) == d["uf"] and gold.num(l.get(d["codigo"])) is not None])
+            self.assertEqual(d["soma_municipal"], soma, (d["uf"], d["codigo"]))
+            self.assertEqual(d["consolidado_uf"], gold.num(consolidado[d["uf"]].get(d["codigo"])), (d["uf"], d["codigo"]))
+            self.assertGreaterEqual(abs(d["soma_municipal"] - d["consolidado_uf"]), 1)
+        # a população atendida (GTA0001 + GTA0002) fecha em Brasil, e a conclusão não alega diferença que não existe
+        self.assertEqual(conf["agua_retificacao"]["valores"]["diferenca"], 0)
+        self.assertNotIn("A diferença é publicada", conf["agua_retificacao"]["conclusao"])
+
     def test_investimento_dos_prestadores_reproduz_o_consolidado(self):
         br = next(a for a in self.g["agregados"] if a["id"] == "BR")
         for campo, servico in (("investimento_agua", "agua"), ("investimento_esgoto", "esgoto")):

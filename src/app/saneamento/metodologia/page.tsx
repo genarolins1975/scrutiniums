@@ -143,6 +143,33 @@ export default function Pagina() {
                   ))}
                 </dl>
                 <p className="mt-2 text-sm leading-relaxed text-carvao">{c.conclusao}</p>
+                {c.detalhe && c.detalhe.length > 0 && (
+                  <div className="tabela-scroll mt-3" tabIndex={0} role="region" aria-label="Colunas que não fecham (rolável)">
+                    <table className="w-full min-w-[40rem] border-collapse text-sm">
+                      <caption className="sr-only">Colunas de contagem em que a soma dos municípios difere do consolidado da UF</caption>
+                      <thead>
+                        <tr className="border-b border-carvao text-left">
+                          <th scope="col" className="py-2 pr-4 font-medium">UF e coluna</th>
+                          <th scope="col" className="py-2 pr-4 text-right font-medium">Soma dos municípios</th>
+                          <th scope="col" className="py-2 pr-4 text-right font-medium">Consolidado da UF</th>
+                          <th scope="col" className="py-2 text-right font-medium">Diferença</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {c.detalhe.map((d) => (
+                          <tr key={`${d.uf}-${d.codigo}`} className="border-b border-linha align-top">
+                            <th scope="row" className="py-2 pr-4 text-left font-normal">
+                              {d.uf}, {d.codigo}: {d.nome}
+                            </th>
+                            <td className="py-2 pr-4 text-right tabular-nums">{inteiro(d.soma_municipal)}</td>
+                            <td className="py-2 pr-4 text-right tabular-nums">{inteiro(d.consolidado_uf)}</td>
+                            <td className="py-2 text-right tabular-nums">{d.diferenca_pct == null ? "sem dado" : `${numero(d.diferenca_pct, 2)}%`}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </article>
             ))}
           </div>

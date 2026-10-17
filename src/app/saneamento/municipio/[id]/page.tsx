@@ -94,6 +94,9 @@ export default function Pagina({ params }: { params: { id: string } }) {
   const catalogo = prestadores();
   const vinculos = ficha.sinisa.prestadores ?? [];
   const pop24 = m.pop24;
+  const confRetificacao = meta()?.conferencias.find((c) => c.id === "agua_retificacao_contagens");
+  const retificacao = (confRetificacao?.detalhe ?? []).filter((d) => d.uf === m.uf);
+  const retificacaoDatas = confRetificacao?.datas;
 
   const linhas: Linha[] = [
     {
@@ -222,6 +225,15 @@ export default function Pagina({ params }: { params: { id: string } }) {
             Censo: no esgoto, o consolidado inclui na população os municípios com delegação sem atendimento, que não têm indicador municipal e ficam
             fora da mediana dos pares; na água, cobre a população dos municípios que participaram do módulo. Use os pares como referência de município
             e a UF e o Brasil como referência de território.
+            {retificacao.length > 0 && retificacaoDatas && (
+              <>
+                {" "}
+                Em {uf?.nome ?? m.uf}, o consolidado da UF (publicação de {data(retificacaoDatas.consolidado_uf_publicacao)}, sem data de retificação) não
+                fecha com a base municipal de água, retificada em {data(retificacaoDatas.municipal_retificacao)}: em {inteiro(retificacao.length)} colunas
+                de ligações e economias, a soma dos municípios difere do consolidado em até{" "}
+                {numero(Math.max(...retificacao.map((r) => Math.abs(r.diferenca_pct ?? 0))), 1)}%. O efeito sobre os indicadores da UF não foi medido.
+              </>
+            )}
           </Nota>
         </Secao>
 
@@ -420,7 +432,15 @@ export default function Pagina({ params }: { params: { id: string } }) {
               <div className="border-t border-linha pt-3">
                 <dt className="text-carvao-muted">Paralisações com falta de água</dt>
                 <dd className="font-serif text-2xl tabular-nums text-carvao">{inteiro(ag.tecnica.GTA3001)}</dd>
-                <dd className="text-xs text-carvao-muted">Duração média: {ag.indicadores?.IAG3004 != null ? `${numero(ag.indicadores.IAG3004, 1)} horas` : "sem dado"}.</dd>
+                <dd className="text-xs text-carvao-muted">
+                  Duração média:{" "}
+                  {ag.indicadores?.IAG3004 != null
+                    ? `${numero(ag.indicadores.IAG3004, 1)} horas`
+                    : ag.motivos?.IAG3004 === "nao_calculado_divisao_zero"
+                      ? "não se calcula, porque o município declarou 0 paralisações (horas divididas por zero eventos)"
+                      : "sem dado"}
+                  .
+                </dd>
               </div>
               <div className="border-t border-linha pt-3">
                 <dt className="text-carvao-muted">Interrupções sistemáticas (racionamento ou rodízio)</dt>
