@@ -403,7 +403,7 @@ export function linhasUfs(ufs: readonly MmgdUf[]): LinhaUf[] {
 export function colunasUfs(anoReferencia: number, anoPopulacao: number | null, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
     { id: "uf", rotulo: tx("UF", "State", idioma), tipo: "texto" },
-    { id: "nome", rotulo: tx("Nome", "Name", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Nome", "Name", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "unidades", rotulo: tx("Unidades", "Units", idioma), tipo: "numero", casas: 0 },
     { id: "potencia_mw", rotulo: tx("Potência instalada", "Installed capacity", idioma), tipo: "numero", unidade: "MW", casas: 1 },
     { id: "unidades_sem_potencia", rotulo: tx("Unidades sem potência informada", "Units without reported capacity", idioma), tipo: "numero", casas: 0 },
@@ -762,8 +762,8 @@ function avisoDistribuidora(aviso: string, idioma: Idioma): string {
 
 export function colunasDistribuidoras(anoReferencia: number, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto" },
-    { id: "nome", rotulo: tx("Razão social publicada", "Published corporate name", idioma), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", idiomaTexto: "nome" },
+    { id: "nome", rotulo: tx("Razão social publicada", "Published corporate name", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "cnpj", rotulo: "CNPJ", tipo: "texto" },
     { id: "uf_principal", rotulo: tx("UF principal", "Main state", idioma), tipo: "texto", categorica: true },
     { id: "unidades", rotulo: tx("Unidades", "Units", idioma), tipo: "numero", casas: 0 },
@@ -880,7 +880,7 @@ export function municipiosDoJson(arq: Pick<MunicipiosMmgdArquivo, "campos" | "li
 
 export function colunasMunicipios(anoReferencia: number, anoPopulacao: number | null, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "municipio", rotulo: tx("Município", "Municipality", idioma), tipo: "texto" },
+    { id: "municipio", rotulo: tx("Município", "Municipality", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "uf", rotulo: tx("UF", "State", idioma), tipo: "texto", categorica: true },
     { id: "id", rotulo: tx("Código IBGE", "IBGE code", idioma), tipo: "texto" },
     { id: "unidades", rotulo: tx("Unidades", "Units", idioma), tipo: "numero", casas: 0 },

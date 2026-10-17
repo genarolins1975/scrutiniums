@@ -198,6 +198,7 @@ export function TransicaoMmgdUf({
         dados={barras}
         chaveCategoria="id"
         chaveRotulo="nome"
+        rotulosSaoNomes
         series={[{ id: "valor", rotulo: rotuloMed, cor: "var(--serie-solar)" }]} // i18n: dado
         unidade={medida.unidade}
         casas={medida.casas}

@@ -647,7 +647,7 @@ export function linhasCarteiraUf(g: Pick<ExpansaoGold, "estagios" | "transmissao
 }
 export function colunasCarteiraUf(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "nome", rotulo: tx("UF", "State", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("UF", "State", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "id", rotulo: tx("Sigla", "Code", idioma), tipo: "texto" },
     { id: "nao_iniciada_mw", rotulo: tx("Outorgado sem obra", "Granted, no construction", idioma), tipo: "numero", unidade: tx("MW outorgado", "granted MW", idioma), casas: 1 },
     { id: "nao_iniciada_usinas", rotulo: tx("Outorgado sem obra, usinas", "Granted, no construction, plants", idioma), tipo: "numero", casas: 0 },
@@ -971,7 +971,7 @@ export function rotuloEstagio(e: Estagio, idioma: Idioma = idiomaEnergia()): str
 }
 export function colunasPontos(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "nome", rotulo: tx("Usina", "Plant", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Usina", "Plant", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "nucleo", rotulo: tx("Núcleo do CEG", "CEG core", idioma), tipo: "numero", casas: 0, buscavel: true },
     { id: "tipo", rotulo: tx("Tipo", "Type", idioma), tipo: "texto", categorica: true },
     { id: "estagio", rotulo: tx("Estágio", "Stage", idioma), tipo: "texto", categorica: true },
@@ -1348,7 +1348,7 @@ export function linhasAtrasadas(g: Pick<ExpansaoGold, "cronograma">, idioma: Idi
 }
 export function colunasAtrasadas(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "nome", rotulo: tx("Usina", "Plant", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Usina", "Plant", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "tipo", rotulo: tx("Tipo", "Type", idioma), tipo: "texto", categorica: true },
     { id: "uf", rotulo: tx("UF", "State", idioma), tipo: "texto", categorica: true },
     { id: "mw_outorgado", rotulo: tx("Potência outorgada", "Granted capacity", idioma), tipo: "numero", unidade: "MW", casas: 1 },
@@ -1520,7 +1520,7 @@ export function linhasGeracaoRedeUf(g: Pick<ExpansaoGold, "transmissao">) {
 export type LinhaGeracaoRedeUf = ReturnType<typeof linhasGeracaoRedeUf>[number];
 export function colunasGeracaoRedeUf(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "nome", rotulo: tx("UF", "State", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("UF", "State", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "id", rotulo: tx("Sigla", "Code", idioma), tipo: "texto" },
     { id: "mw_impl", rotulo: tx("Geração em implantação", "Generation under implementation", idioma), tipo: "numero", unidade: "MW", casas: 1 },
     { id: "mw_24m", rotulo: tx("Geração prevista em 24 meses", "Generation forecast in 24 months", idioma), tipo: "numero", unidade: "MW", casas: 1 },
@@ -1644,7 +1644,7 @@ export function linhasPrazosVencidos(g: Pick<ExpansaoGold, "transmissao">) {
 }
 export function colunasPrazosVencidos(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "nome", rotulo: tx("Empreendimento", "Project", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Empreendimento", "Project", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "ons", rotulo: tx("Código ONS", "ONS code", idioma), tipo: "texto" },
     { id: "oper_ato_legal", rotulo: tx("Prazo vigente do ato legal", "Current deadline in the legal act", idioma), tipo: "data" },
     { id: "dias", rotulo: tx("Dias desde o prazo", "Days since the deadline", idioma), tipo: "numero", unidade: tx("dias", "days", idioma), casas: 0 }, // i18n: dado
@@ -1723,7 +1723,7 @@ export function colunasContratosRecentes(idioma: Idioma = idiomaEnergia()): Colu
   return [
     { id: "numero", rotulo: tx("Contrato", "Contract", idioma), tipo: "texto" },
     { id: "assinatura", rotulo: tx("Assinatura", "Signature", idioma), tipo: "data" },
-    { id: "agente", rotulo: tx("Concessionária", "Concession holder", idioma), tipo: "texto" },
+    { id: "agente", rotulo: tx("Concessionária", "Concession holder", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "empreendimentos", rotulo: tx("Empreendimentos no SIGET", "Projects in SIGET", idioma), tipo: "numero", casas: 0 },
     { id: "km", rotulo: tx("Linhas novas", "New lines", idioma), tipo: "numero", unidade: tx("km de circuito", "circuit km", idioma), casas: 1 },
     { id: "mva", rotulo: tx("Transformação nova", "New transformation", idioma), tipo: "numero", unidade: "MVA", casas: 0 },

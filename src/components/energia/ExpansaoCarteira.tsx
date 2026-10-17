@@ -134,6 +134,7 @@ export function ExpansaoCarteiraUf({ linhas, data, dataRalie, fonte, multiestadu
             dados={comparadas}
             chaveCategoria="id"
             chaveRotulo="rotulo"
+            rotulosSaoNomes
             series={SERIES_COMPARACAO}
             unidade="MW"
             casas={1}

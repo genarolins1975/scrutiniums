@@ -142,6 +142,7 @@ export function ExpansaoGeracaoRedeUf({ linhas, datas, fonte }: { linhas: LinhaG
               dados={comparadas}
               chaveCategoria="id"
               chaveRotulo="rotulo"
+              rotulosSaoNomes
               series={[
                 { id: "mw_impl", rotulo: tx("Em implantação", "Under implementation"), cor: "var(--cor-energia)" }, // i18n: dado
                 { id: "mw_24m", rotulo: tx("Prevista em 24 meses", "Forecast in 24 months"), cor: "var(--escala-seq-2)" },
@@ -158,6 +159,7 @@ export function ExpansaoGeracaoRedeUf({ linhas, datas, fonte }: { linhas: LinhaG
               dados={comparadas}
               chaveCategoria="id"
               chaveRotulo="rotulo"
+              rotulosSaoNomes
               series={[{ id: "km_obra", rotulo: tx("Em obra", "Under construction"), cor: "var(--serie-comp-3)" }]}
               unidade="km" // i18n: dado
               casas={1}
@@ -171,6 +173,7 @@ export function ExpansaoGeracaoRedeUf({ linhas, datas, fonte }: { linhas: LinhaG
               dados={comparadas}
               chaveCategoria="id"
               chaveRotulo="rotulo"
+              rotulosSaoNomes
               series={[{ id: "mva_obra", rotulo: tx("Em obra", "Under construction"), cor: "var(--serie-comp-2)" }]}
               unidade="MVA"
               casas={0}
@@ -184,6 +187,7 @@ export function ExpansaoGeracaoRedeUf({ linhas, datas, fonte }: { linhas: LinhaG
               dados={comparadas}
               chaveCategoria="id"
               chaveRotulo="rotulo"
+              rotulosSaoNomes
               series={[
                 { id: "km_epe", rotulo: tx("Existente", "Existing"), cor: "var(--cor-mineral)" },
                 { id: "km_epe_plan", rotulo: tx("Planejada", "Planned"), cor: "var(--escala-seq-3)" },
