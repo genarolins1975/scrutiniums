@@ -4,6 +4,7 @@ import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
 import { agregados, meta, municipiosComSaude, URL_SAUDE_MUNICIPIOS } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
@@ -276,6 +277,17 @@ export default function Pagina() {
               ...MEDIDAS_SAUDE.map((med) => ({ id: med.id, rotulo: med.titulo, tipo: "numero" as const, casas: med.casas })),
             ]}
           />
+        </Secao>
+
+        <Secao
+          id="mundo"
+          titulo="E no mundo?"
+          texto="A OMS estima, para cada país, as mortes atribuíveis a água, esgoto e higiene inseguros, e cada país relata à ONU a qualidade ambiental dos corpos d'água que monitora. As duas réguas dão contexto internacional; nenhuma mede o mesmo que as contagens do SUS deste capítulo."
+        >
+          <MundoNoCapitulo>
+            <FiguraOds codigo="SH_STA_WASHARI" />
+            <FiguraOds codigo="EN_H2O_WBAMBQ" />
+          </MundoNoCapitulo>
         </Secao>
 
         <Secao id="dados" titulo="Conferir os números e a cobertura" texto="O que a fonte devolveu, o que foi conferido e o que ela própria avisa sobre os dados.">

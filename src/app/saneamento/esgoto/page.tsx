@@ -5,6 +5,7 @@ import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Histograma } from "@/components/energia/Histograma";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FiguraJmp, FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
 import { montaHistograma } from "@/lib/energia/distribuicao";
 import { acimaDaCapacidade, agregado, agregados, etes, meta, municipios } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
@@ -188,6 +189,21 @@ export default function Pagina() {
             naoPermite="Converter volumes em pessoas, nem medir a carga poluidora removida: o indicador ignora a eficiência da estação e a água que não vira esgoto."
           />
           <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), consolidado por UF, indicadores IES2002 e IES2003.</Fonte>
+        </Secao>
+
+        <Secao
+          id="mundo"
+          titulo="Quanto do esgoto é tratado em outros países?"
+          texto="A ONU acompanha o esgoto doméstico tratado com segurança em cada país, e o JMP, a população ligada à rede com tratamento. São medidas próprias, com definição internacional; ficam ao lado das brasileiras, não no lugar delas."
+        >
+          <MundoNoCapitulo>
+            <FiguraOds
+              codigo="EN_WWT_WWDS"
+              titulo="Esgoto doméstico tratado com segurança"
+              extra={<>No SINISA 2024, o esgoto tratado sobre a água consumida (IES2003) do Brasil é {numero(ind.IES2003, 1)}%.</>}
+            />
+            <FiguraJmp campo="rede_tratada" />
+          </MundoNoCapitulo>
         </Secao>
 
         <Secao

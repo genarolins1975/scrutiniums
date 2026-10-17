@@ -4,6 +4,7 @@ import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/sa
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FiguraJmp, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
 import { agregado, agregados, fichas, meta, municipios } from "@/lib/saneamento/gold";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
@@ -202,6 +203,17 @@ export default function Pagina() {
             permite="Localizar os municípios com racionamento declarado e o motivo informado."
             naoPermite="Ordenar municípios por desempenho: o número de eventos depende de como cada prestador registra, e municípios grandes tendem a ter mais setores e mais eventos."
           />
+        </Secao>
+
+        <Secao
+          id="mundo"
+          titulo="Água disponível e sem contaminação: como fica o Brasil no mundo?"
+          texto="Dois dos componentes que o JMP exige para chamar a água de gerenciada com segurança: estar disponível quando necessária e livre de contaminação. São estimativas por país, com fontes próprias, e não substituem as declarações ao SINISA nem as análises do SISAGUA desta página."
+        >
+          <MundoNoCapitulo>
+            <FiguraJmp campo="disponivel" />
+            <FiguraJmp campo="sem_contaminacao" />
+          </MundoNoCapitulo>
         </Secao>
 
         <Qualidade />
