@@ -2,11 +2,11 @@
 
 import { useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
 import { createPortal } from "react-dom";
-import { carimbo, datasLegiveis, valorExibidoNoIdioma } from "@/lib/energia/formato";
+import { carimbo, datasLegiveis } from "@/lib/energia/formato";
 import { rotuloFicha } from "@/lib/energia/i18n/aprenda";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
-import { MENSAGEM_COPIA_EN, unidadeNoIdioma } from "@/lib/energia/i18n/nucleo";
+import { MENSAGEM_COPIA_EN, unidadeNoIdioma, valorGoldNoIdioma } from "@/lib/energia/i18n/nucleo";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { Idioma } from "@/lib/idioma";
 import { carregaJson, lerCaminho } from "@/lib/energia/carregaJson";
@@ -80,7 +80,7 @@ export function ComproveNumero({ evidencia, sobDemanda, variante = "link", rotul
   // tradução exata, o indicador fica em português (no título do diálogo, marcado)
   const indicadorGold = ev?.indicador ? (rotuloFicha(ev.indicador, idioma) ?? ev.indicador) : "";
   const indicador = sobDemanda?.indicador ?? indicadorGold;
-  const valorExibido = ev?.valor_exibido ? valorExibidoNoIdioma(ev.valor_exibido, idioma) : (sobDemanda?.valorExibido ?? "");
+  const valorExibido = ev?.valor_exibido ? valorGoldNoIdioma(ev.valor_exibido, idioma).texto : (sobDemanda?.valorExibido ?? "");
   // o diálogo vai para o fim do <body> e só existe no cliente: o botão pode ficar dentro de um
   // parágrafo (variante "valor") sem que o <dialog> feche o <p> e quebre a hidratação
   const [alvo, setAlvo] = useState<HTMLElement | null>(null);
@@ -117,7 +117,7 @@ export function ComproveNumero({ evidencia, sobDemanda, variante = "link", rotul
       >
         {variante === "valor" ? (
           <>
-            {valorExibido}
+            {ev?.valor_exibido ? <ValorGold valor={ev.valor_exibido} /> : valorExibido}
             <span className="sr-only">
               {tx(": comprove este número (", ": check this number (")}
               {indicador})
@@ -185,7 +185,7 @@ export function DialogoEvidencia({
               {titulo ?? (ev ? (indicadorEn ?? <TrechoPortugues regiao="comprove-indicador">{ev.indicador}</TrechoPortugues>) : null)}
             </h2>
             <p className="mt-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
-              <span className="font-medium tabular-nums text-carvao">{ev?.valor_exibido ? valorExibidoNoIdioma(ev.valor_exibido, idioma) : valor}</span>
+              <span className="font-medium tabular-nums text-carvao">{ev?.valor_exibido ? <ValorGold valor={ev.valor_exibido} /> : valor}</span>
               {ev && (
                 <>
                   {` · ${textoPeriodo(ev.periodo)} · `}
@@ -268,7 +268,7 @@ export function ConteudoEvidencia({ evidencia: ev, acesso, endereco }: { evidenc
       <Secao n={1} titulo={tx("Valor exibido e valor de cálculo", "Displayed value and calculation value")}>
         <dl>
           <Linha rotulo={tx("Valor exibido", "Displayed value")}>
-            <span className="font-serif text-2xl tabular-nums text-carvao">{valorExibidoNoIdioma(ev.valor_exibido, idioma)}</span>
+            <span className="font-serif text-2xl tabular-nums text-carvao"><ValorGold valor={ev.valor_exibido} /></span>
           </Linha>
           <Linha rotulo={tx("Valor de cálculo", "Calculation value")}>
             {ev.valor_calculo === null ? (
@@ -670,4 +670,14 @@ function BlocoCopiavel({ rotulo, texto, rotuloBotao }: { rotulo: string; texto: 
       </div>
     </div>
   );
+}
+
+/**
+ * valor_exibido da gold no idioma da página: número na grafia inglesa e unidade pela tabela; se sobrar palavra portuguesa sem
+ * tradução, o valor original sai marcado como trecho só em português.
+ */
+function ValorGold({ valor }: { valor: string }) {
+  const idioma = useIdioma();
+  const r = valorGoldNoIdioma(valor, idioma);
+  return r.portugues ? <TrechoPortugues regiao="comprove-valor">{valor}</TrechoPortugues> : <>{r.texto}</>;
 }
