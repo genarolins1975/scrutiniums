@@ -29,7 +29,7 @@ export function AcessoConta({ destino }: { destino: string }) {
       .then((j: { logado?: boolean }) => setLogado(j.logado === true))
       .catch(() => setLogado(false));
   }, [caminho]);
-  const classe = "rotulo inline-flex min-h-[44px] items-center text-carvao-muted hover:text-energia-dark";
+  const classe = "rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-energia-dark";
   if (logado === null) return <span aria-hidden="true" className="inline-block min-h-[44px] w-20" />;
   const atualiza = () => setVolta(`${window.location.pathname}${window.location.search}${window.location.hash}`);
   return logado ? (

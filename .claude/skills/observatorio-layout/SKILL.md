@@ -133,6 +133,7 @@ Dar prioridade à busca, classificação e reprodução. Evitar hero alto, indic
 
 - **Todos os painéis exigem conta.** As únicas rotas abertas são as de `src/lib/rotasPublicas.ts`; nenhuma mudança de layout pode abrir painel sem login nem apontar a barra superior para o login quando há sessão.
 - Ao mexer em abas, barra superior, cards ou rotas, conferir **logado e deslogado, em todos os observatórios**, e corrigir README ou documentação que diga outra coisa.
+- **Cabeçalho no celular (abaixo de 640 px):** a lista dos observatórios sai (`public/observatorios.css`) e os mesmos destinos ficam no seletor de observatório da linha da marca (`SwitcherObservatorio`; na SPA do Crédito, `.obs-trocar`; no cabeçalho público, "Observatórios ▾"), com a conta na mesma linha quando cabe. Cabeçalho novo que mostra `NavegacaoObservatorios` traz o seletor (teste `cabecalho-movel`). Decisão do dono de 17/10/2026, etapa 4 da arquitetura do Saneamento.
 - Destinos novos entram na navegação do módulo (ordem pela procura: o mais procurado logo depois da visão geral), na busca e no mapa do observatório. O sitemap só lista rotas públicas (`ehRotaPublica`): painel protegido fica fora dele, e nunca se abre um painel só para aparecer no sitemap.
 
 ## 5. Contrato dos componentes

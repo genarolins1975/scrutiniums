@@ -138,9 +138,9 @@ Três tipos, sempre identificados na própria figura: **figura com dado** (valor
 | 1 | Referências mundiais: coletor da base dos ODS com seed versionado e sha256, gold própria, componente "No mundo" e régua em cada capítulo da seção 5, com a nota de comparabilidade; faixa na entrada | Só o saneamento |
 | 2 | Figuras e artefatos da seção 6, com `<figure>` e `<figcaption>` em todos os gráficos novos | Só o saneamento |
 | 3 | Entrada pelo checklist: capítulos com resposta curta e número com prova; navegação "nesta página" nas páginas longas | Só o saneamento |
-| 4 | Cabeçalho móvel da plataforma | Todos os observatórios: depende de autorização do dono |
+| 4 | Cabeçalho móvel da plataforma | Todos os observatórios: autorizado pelo dono em 17/10/2026 |
 
 **Decisões do dono que esta análise não toma**
 
-1. Cabeçalho móvel compartilhado (achado 4): mexe em todos os observatórios.
+1. Cabeçalho móvel compartilhado (achado 4): mexe em todos os observatórios. Autorizado em 17/10/2026. Abaixo de 640 px, a lista dos oito observatórios sai do topo e os mesmos destinos ficam no seletor de observatório da linha da marca. Medido em 390 px, com o dev local, logado e deslogado: o cabeçalho da entrada do Saneamento passou de 266 para 90 px e o título, de 340 para 164 px do topo; a página inicial da plataforma passou de 374 para 170 px.
 2. Versão em inglês (achado 9): depende da liberação da etapa 6 de tradução.
