@@ -8,17 +8,20 @@ import { MapaCoropletico } from "@/components/energia/MapaCoropletico";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { URL_GEO } from "@/lib/energia/geo";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import type { Idioma } from "@/lib/idioma";
+import { txEm } from "@/lib/energia/i18n/conta-inclusao";
 import {
-  COLUNAS_UFS_TSEE,
   ESQUEMA_TSEE,
-  MEDIDA_MAPA_TSEE,
-  MEDIDA_TSEE,
   classificacaoMapaTsee,
   codigoUf,
+  colunasUfsTsee,
   dadosHistoricoUf,
   dadosSerieTsee,
   linhasUfsTsee,
-  mes,
+  medidaMapaTsee,
+  medidaTsee,
+  mes as mesEm,
   siglaDoCodigo,
   textoDescontoNegativoHistorico,
   textoDescontoNegativoMapa,
@@ -48,11 +51,14 @@ import type { PontoSerieTsee, SerieCdeUf, UfTsee } from "@/lib/energia/tipos-inc
  * só seleciona e converte unidade (UC para milhões de UC, R$ para R$ milhões).
  */
 
-const OPCOES_MEDIDA: readonly (readonly [MedidaTsee, string])[] = [
-  ["uc", "UC com Tarifa Social"],
-  ["part", "% das UC residenciais"],
-  ["dmr", "DMR (R$ milhões)"],
-];
+function opcoesMedida(idioma: Idioma): readonly (readonly [MedidaTsee, string])[] {
+  const tx = txEm(idioma);
+  return [
+    ["uc", tx("UC com Tarifa Social", "Consumer units with Tarifa Social")],
+    ["part", tx("% das UC residenciais", "% of residential consumer units")],
+    ["dmr", tx("DMR (R$ milhões)", "DMR (R$ million)")],
+  ];
+}
 
 export function InclusaoSerieTsee({
   serie,
@@ -67,23 +73,36 @@ export function InclusaoSerieTsee({
   recorte?: ReactNode;
   notas?: ReactNode;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const mes = (x: string | null | undefined) => mesEm(x, idioma);
   const [v, definir] = useEstadoUrl(ESQUEMA_TSEE);
-  const m = MEDIDA_TSEE[v.medida];
+  const m = medidaTsee(idioma)[v.medida];
   const dados = useMemo(() => dadosSerieTsee(serie, v.medida), [serie, v.medida]);
   const temIncompleto = dados.some((d) => d.incompleto !== null);
   const intervalo = v.de && v.ate && v.de <= v.ate ? { inicio: v.de, fim: v.ate } : null;
   const series = [
-    { id: "completo", rotulo: `${m.rotulo}, meses completos`, sigla: "Completo", cor: "var(--cor-energia)" },
-    ...(temIncompleto ? [{ id: "incompleto", rotulo: "Mês incompleto (fora da comparação)", sigla: "Incompleto", cor: "var(--serie-referencia)", tracejada: true }] : []),
+    { id: "completo", rotulo: tx(`${m.rotulo}, meses completos`, `${m.rotulo}, complete months`), sigla: tx("Completo", "Complete"), cor: "var(--cor-energia)" }, // i18n: dado
+    ...(temIncompleto
+      ? [
+          {
+            id: "incompleto",
+            rotulo: tx("Mês incompleto (fora da comparação)", "Incomplete month (outside the comparison)"),
+            sigla: tx("Incompleto", "Incomplete"),
+            cor: "var(--serie-referencia)",
+            tracejada: true,
+          },
+        ]
+      : []),
   ];
   return (
     <div className="space-y-4">
       <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
         {resposta}
-        <InclusaoOpcoes rotulo="Medida" nome="inclusao-ts-medida" opcoes={OPCOES_MEDIDA} valor={v.medida} onMudar={(medida) => definir({ medida })} />
+        <InclusaoOpcoes rotulo={tx("Medida", "Measure")} nome="inclusao-ts-medida" opcoes={opcoesMedida(idioma)} valor={v.medida} onMudar={(medida) => definir({ medida })} />
       </div>
       <GraficoLinhas
-        titulo={`${m.titulo} (SCS, ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)})`}
+        titulo={tx(`${m.titulo} (SCS, ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)})`, `${m.titulo} (SCS, ${mes(serie[0]?.m)} to ${mes(serie.at(-1)?.m)})`)}
         dados={dados}
         chaveX="m"
         formatoX="mes"
@@ -97,22 +116,28 @@ export function InclusaoSerieTsee({
         onIntervalo={(i) => definir({ de: i?.inicio ?? "", ate: i?.fim ?? "" })}
         altura={320}
       />
-      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{textoMesesIncompletosScs(serie)}</p>
+      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{textoMesesIncompletosScs(serie, idioma)}</p>
       {recorte}
       {notas}
     </div>
   );
 }
 
-const OPCOES_MAPA: readonly (readonly [MedidaMapaTsee, string])[] = [
-  ["faturas", "Faturas com desconto"],
-  ["medio", "Desconto médio por fatura"],
-  ["desconto", "Desconto das faturas"],
-];
-const OPCOES_HIST: readonly (readonly [MedidaHistUf, string])[] = [
-  ["faturas", "Faturas com desconto"],
-  ["desconto", "Desconto das faturas (R$ milhões)"],
-];
+function opcoesMapa(idioma: Idioma): readonly (readonly [MedidaMapaTsee, string])[] {
+  const tx = txEm(idioma);
+  return [
+    ["faturas", tx("Faturas com desconto", "Bills with a discount")],
+    ["medio", tx("Desconto médio por fatura", "Average discount per bill")],
+    ["desconto", tx("Desconto das faturas", "Discount on the bills")],
+  ];
+}
+function opcoesHist(idioma: Idioma): readonly (readonly [MedidaHistUf, string])[] {
+  const tx = txEm(idioma);
+  return [
+    ["faturas", tx("Faturas com desconto", "Bills with a discount")],
+    ["desconto", tx("Desconto das faturas (R$ milhões)", "Discount on the bills (R$ million)")],
+  ];
+}
 const CORES_MAPA = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
 /** Classe própria do valor negativo na fonte: cor fora da escala do desconto positivo. */
 const COR_NEGATIVA = "var(--escala-div-neg-1)";
@@ -141,15 +166,18 @@ export type InclusaoMapaTseeProps = {
 
 /** Mapa e tabela das faturas com desconto por UF no mês do mapa; as UF escolhidas (até quatro) vão para a URL e alimentam o histórico. */
 export function InclusaoMapaTsee({ ufs, mesMapa, fonte }: InclusaoMapaTseeProps) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const mes = (x: string | null | undefined) => mesEm(x, idioma);
   const [v, definir] = useEstadoUrl(ESQUEMA_TSEE);
   const [aviso, setAviso] = useState("");
-  const med = MEDIDA_MAPA_TSEE[v.mapa];
+  const med = medidaMapaTsee(idioma)[v.mapa];
   const valores = useMemo(() => valoresMapaTsee(ufs, v.mapa), [ufs, v.mapa]);
   const classes = useMemo(() => classificacaoMapaTsee(valores, med.casas), [valores, med.casas]);
   const temNegativo = useMemo(() => valoresTemNegativo(valores), [valores]);
-  const notaMapa = textoDescontoNegativoMapa(ufs, v.mapa);
-  const notaTabela = textoDescontoNegativoUf(ufs);
-  const linhas = useMemo(() => linhasUfsTsee(ufs), [ufs]);
+  const notaMapa = textoDescontoNegativoMapa(ufs, v.mapa, idioma);
+  const notaTabela = textoDescontoNegativoUf(ufs, idioma);
+  const linhas = useMemo(() => linhasUfsTsee(ufs, idioma), [ufs, idioma]);
   const escolhidas = v.ufs.filter((u) => ufs.some((x) => x.uf === u));
   const ultima = escolhidas.at(-1) ?? null;
 
@@ -160,7 +188,7 @@ export function InclusaoMapaTsee({ ufs, mesMapa, fonte }: InclusaoMapaTseeProps)
     }
     const r = alternarSelecao(escolhidas, uf, LIMITE_COMPARACAO);
     if (r.motivo === "limite") {
-      setAviso(`Limite de ${LIMITE_COMPARACAO} UF na comparação: remova uma para incluir ${uf}.`);
+      setAviso(tx(`Limite de ${LIMITE_COMPARACAO} UF na comparação: remova uma para incluir ${uf}.`, `Limit of ${LIMITE_COMPARACAO} states in the comparison: remove one to include ${uf}.`));
       return;
     }
     setAviso("");
@@ -169,21 +197,24 @@ export function InclusaoMapaTsee({ ufs, mesMapa, fonte }: InclusaoMapaTseeProps)
 
   return (
     <div className="space-y-6">
-      <InclusaoOpcoes rotulo="Mapa" nome="inclusao-ts-mapa" opcoes={OPCOES_MAPA} valor={v.mapa} onMudar={(mapa) => definir({ mapa })} />
+      <InclusaoOpcoes rotulo={tx("Mapa", "Map")} nome="inclusao-ts-mapa" opcoes={opcoesMapa(idioma)} valor={v.mapa} onMudar={(mapa) => definir({ mapa })} />
       <MapaCoropletico
-        titulo={`${med.rotulo} por UF, ${mes(mesMapa)} (Beneficiários da CDE)`}
+        titulo={tx(`${med.rotulo} por UF, ${mes(mesMapa)} (Beneficiários da CDE)`, `${med.rotulo} by state, ${mes(mesMapa)} (CDE Beneficiaries)`)}
         fonteGeometria={URL_GEO.uf}
         valores={valores}
         cores={temNegativo ? [COR_NEGATIVA, ...CORES_MAPA] : CORES_MAPA}
         classificacao={classes}
         unidade={med.unidade}
         casas={med.casas}
-        rotuloRegiao={{ singular: "UF", plural: "UF" }}
+        rotuloRegiao={tx({ singular: "UF", plural: "UF" }, { singular: "state", plural: "states" })}
         selecionado={ultima ? codigoUf(ultima) : null}
         onSelecionar={(id) => alternar(siglaDoCodigo(id))}
         rotulos
         periodo={mes(mesMapa)}
-        nota={`Faturas, não UC nem famílias. Clique numa UF para incluí-la no histórico (até quatro); clique de novo para retirar.${notaMapa ? ` ${notaMapa}` : ""}`}
+        nota={tx(
+          `Faturas, não UC nem famílias. Clique numa UF para incluí-la no histórico (até quatro); clique de novo para retirar.${notaMapa ? ` ${notaMapa}` : ""}`,
+          `Bills, not consumer units or families. Click a state to include it in the history (up to four); click again to remove it.${notaMapa ? ` ${notaMapa}` : ""}`,
+        )}
       />
       {aviso && (
         <p role="status" className="text-sm text-carvao">
@@ -191,8 +222,8 @@ export function InclusaoMapaTsee({ ufs, mesMapa, fonte }: InclusaoMapaTseeProps)
         </p>
       )}
       <TabelaInterativa
-        titulo={`Tarifa Social por UF, ${mes(mesMapa)}: faturas e desconto`}
-        colunas={COLUNAS_UFS_TSEE}
+        titulo={tx(`Tarifa Social por UF, ${mes(mesMapa)}: faturas e desconto`, `Tarifa Social by state, ${mes(mesMapa)}: bills and discount`)}
+        colunas={colunasUfsTsee(idioma)}
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="nome"
@@ -203,10 +234,13 @@ export function InclusaoMapaTsee({ ufs, mesMapa, fonte }: InclusaoMapaTseeProps)
         ordemInicial={{ coluna: "faturas", direcao: "desc" }}
         selecionado={ultima}
         onSelecionar={(id) => alternar(id)}
-        dicaBusca="Nome ou sigla da UF"
+        dicaBusca={tx("Nome ou sigla da UF", "State name or abbreviation")}
         nota={
           <>
-            Faturas de faturamento com desconto da Tarifa Social (subclasses 3.2 a 3.6). A soma das UF mais as faturas sem município válido é o total nacional.
+            {tx(
+              "Faturas de faturamento com desconto da Tarifa Social (subclasses 3.2 a 3.6). A soma das UF mais as faturas sem município válido é o total nacional.",
+              "Billing invoices with the Tarifa Social discount (subclasses 3.2 to 3.6). The sum of the states plus the bills without a valid municipality is the national total.",
+            )}
             {notaTabela && <span data-nota-desconto-negativo=""> {notaTabela}</span>}
           </>
         }
@@ -226,6 +260,8 @@ export type InclusaoHistoricoUfTseeProps = {
 
 /** Histórico mensal das UF escolhidas (até quatro): o JSON só é baixado quando alguma UF é escolhida, aqui, no mapa ou na tabela. */
 export function InclusaoHistoricoUfTsee({ ufs, serieUfUrl, atingidas, marcos }: InclusaoHistoricoUfTseeProps) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_TSEE);
   const [serieUf, setSerieUf] = useState<SerieCdeUf | null>(null);
   const [erro, setErro] = useState<string | null>(null);
@@ -252,34 +288,34 @@ export function InclusaoHistoricoUfTsee({ ufs, serieUfUrl, atingidas, marcos }: 
   );
   const nomeUf = (uf: string) => ufs.find((x) => x.uf === uf)?.nome ?? uf;
   const notaNegativa = useMemo(
-    () => (serieUf ? textoDescontoNegativoHistorico(serieUf, escolhidas, nomeUf, atingidas) : null),
+    () => (serieUf ? textoDescontoNegativoHistorico(serieUf, escolhidas, nomeUf, atingidas, idioma) : null),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- a lista escolhida resume a dependência
-    [serieUf, escolhidas.join(","), atingidas, ufs],
+    [serieUf, escolhidas.join(","), atingidas, ufs, idioma],
   );
 
   return (
     <div className="space-y-4">
       <Comparador
-        rotulo="UF no histórico (até 4)"
+        rotulo={tx("UF no histórico (até 4)", "States in the history (up to 4)")}
         entidades={entidades}
         selecionadas={escolhidas}
         onMudar={(ids) => definir({ ufs: ids })}
-        dicaBusca="Nome ou sigla da UF"
-        vazio="Nenhuma UF escolhida. Escolha aqui, no mapa ou na tabela acima."
+        dicaBusca={tx("Nome ou sigla da UF", "State name or abbreviation")}
+        vazio={tx("Nenhuma UF escolhida. Escolha aqui, no mapa ou na tabela acima.", "No state chosen. Choose here, on the map or in the table above.")}
       >
         {() => null}
       </Comparador>
-      <InclusaoOpcoes rotulo="Histórico" nome="inclusao-ts-hist" opcoes={OPCOES_HIST} valor={v.hist} onMudar={(hist) => definir({ hist })} />
+      <InclusaoOpcoes rotulo={tx("Histórico", "History")} nome="inclusao-ts-hist" opcoes={opcoesHist(idioma)} valor={v.hist} onMudar={(hist) => definir({ hist })} />
       {precisa && !serieUf && !erro && (
         <p role="status" className="text-sm text-carvao-muted">
-          Carregando a série mensal por UF…
+          {tx("Carregando a série mensal por UF…", "Loading the monthly series by state…")}
         </p>
       )}
       {erro && (
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-          Não foi possível carregar a série por UF ({erro}). O mesmo dado está em{" "}
+          {tx(`Não foi possível carregar a série por UF (${erro}). O mesmo dado está em`, `The series by state could not be loaded (${erro}). The same data is in`)}{" "}
           <a href="/energia/series/inclusao_cde_mensal_uf.csv" download className="text-energia-dark underline underline-offset-4">
-            faturas com desconto por UF e mês (CSV)
+            {tx("faturas com desconto por UF e mês (CSV)", "bills with a discount by state and month (CSV)")}
           </a>
           .
         </p>
@@ -287,12 +323,16 @@ export function InclusaoHistoricoUfTsee({ ufs, serieUfUrl, atingidas, marcos }: 
       {serieUf && escolhidas.length > 0 && (
         <>
           <GraficoLinhas
-            titulo={`${v.hist === "faturas" ? "Faturas com desconto" : "Desconto das faturas"} por mês nas UF escolhidas`}
+            titulo={
+              v.hist === "faturas"
+                ? tx("Faturas com desconto por mês nas UF escolhidas", "Bills with a discount by month in the chosen states")
+                : tx("Desconto das faturas por mês nas UF escolhidas", "Discount on the bills by month in the chosen states")
+            }
             dados={historico}
             chaveX="m"
             formatoX="mes"
             series={escolhidas.map((uf, i) => ({ id: uf, rotulo: nomeUf(uf), sigla: uf, cor: CORES_COMP[i % CORES_COMP.length] }))}
-            unidade={v.hist === "faturas" ? "faturas" : "R$ milhões"}
+            unidade={v.hist === "faturas" ? tx("faturas", "bills") : tx("R$ milhões", "R$ million")}
             casas={v.hist === "faturas" ? 0 : 1}
             zeroNoEixo
             marcos={marcos}
@@ -303,7 +343,7 @@ export function InclusaoHistoricoUfTsee({ ufs, serieUfUrl, atingidas, marcos }: 
               {notaNegativa}
             </p>
           )}
-          <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{textoLacunasHistorico(escolhidas, atingidas, serieUf.meses)}</p>
+          <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{textoLacunasHistorico(escolhidas, atingidas, serieUf.meses, idioma)}</p>
         </>
       )}
     </div>

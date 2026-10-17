@@ -393,6 +393,12 @@ const PROSA_INCLUSAO: Record<string, string> = {
   "Luz para Todos: domicílios atendidos por município e ano": "Luz para Todos: households served by municipality and year",
   "Luz para Todos: recursos por contrato": "Luz para Todos: funds by contract",
   "Sistemas isolados: localidades (PASI)": "Isolated systems: localities (PASI)",
+  // formato dos microdados da POF (nota da tabela de todas as medidas)
+  "cada medida é [valor, coeficiente de variação em %, estado]; estado: publicado, cautela (CV de 15% a 30%), suprimido (CV acima de 30%, valor nulo), sem_erro_padrao (mediana), zero_na_amostra (nenhuma família da amostra; não prova zero na população), ausente. As UF trazem só as medidas de medidas_uf; todas as medidas e os erros-padrão estão em inclusao_pof.csv":
+    "each measure is [value, coefficient of variation in %, status]; status: publicado (published), cautela (caution, CV from 15% to 30%), suprimido (suppressed, CV above 30%, null value), sem_erro_padrao (no standard error, median), zero_na_amostra (no family in the sample; does not prove zero in the population), ausente (absent). The states carry only the measures in medidas_uf; all measures and standard errors are in inclusao_pof.csv",
+  // o que a Lei nº 15.235/2025 faz, como a linha do tempo da Regulação o resume (com CadÚnico já escrito por extenso)
+  "mantém o desconto de 100% até 80 kWh por mês na Tarifa Social e, a partir de 1º de janeiro de 2026, isenta das quotas da CDE, até 120 kWh por mês e numa única unidade, as famílias do Cadastro Único com renda por pessoa acima de meio e até um salário mínimo.":
+    "keeps the 100% discount up to 80 kWh per month in the Tarifa Social and, from January 1, 2026, exempts from the CDE quotas, up to 120 kWh per month and in a single consumer unit, Cadastro Único families with income per person above half and up to one minimum wage.",
 };
 
 const TABELAS: Record<string, Record<string, string>> = {
