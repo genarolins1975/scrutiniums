@@ -24,9 +24,9 @@ function montarTiposRelacao(tx: TxIdioma): Record<TipoRelacao, { rotulo: string;
     informacao_modelos: { rotulo: tx("Informação usada pelos modelos oficiais", "Information used by the official models"), definicao: tx("Dado de entrada dos modelos de operação e de formação de preço.", "Input data of the operation and price formation models.") },
     resultado_modelos: { rotulo: tx("Resultado dos modelos oficiais", "Result of the official models"), definicao: tx("Grandeza produzida pelos modelos NEWAVE, DECOMP e DESSEM.", "Quantity produced by the NEWAVE, DECOMP and DESSEM models.") },
     regra_regulatoria: { rotulo: tx("Regra regulatória", "Regulatory rule"), definicao: tx("Regra aplicada por norma, como os limites do PLD.", "Rule applied by a norm, such as the PLD limits.") },
-    associacao_estatistica: { rotulo: tx("Associação estatística", "Statistical association"), definicao: tx("Correlação medida pela Scrutiniums, com janela e método declarados. Não é causalidade.", "Correlation measured by Scrutiniums, with declared window and method. It is not causality.") },
+    associacao_estatistica: { rotulo: tx("Associação estatística", "Statistical association"), definicao: tx("Correlação medida pela Scrutiniums, com janela e método declarados. Não é causalidade.", "Correlation measured by Scrutiniums, with declared window and method. It does not establish that one quantity drives the other.") },
     interpretacao_analitica: { rotulo: tx("Interpretação analítica", "Analytical interpretation"), definicao: tx("Leitura da Scrutiniums, marcada como tal.", "Scrutiniums' reading, marked as such.") },
-    contribuicao_modelo: { rotulo: tx("Contribuição de modelo proprietário", "Contribution of a proprietary model"), definicao: tx("Peso de uma variável em modelo da Scrutiniums. Nunca é chamada de causa.", "Weight of a variable in a Scrutiniums model. It is never called a cause.") },
+    contribuicao_modelo: { rotulo: tx("Contribuição de modelo proprietário", "Contribution of a proprietary model"), definicao: tx("Peso de uma variável em modelo da Scrutiniums. Nunca é chamada de causa.", "Weight of a variable in a Scrutiniums model. It is never presented as the reason for an outcome.") },
   };
 }
 export const TIPOS_RELACAO_IDIOMAS = montarNosDoisIdiomas(montarTiposRelacao);
