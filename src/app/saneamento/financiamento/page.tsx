@@ -3,6 +3,7 @@ import { Cabecalho } from "@/components/saneamento/Cabecalho";
 import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
 import { agregado, agregados, fichas, prestadores } from "@/lib/saneamento/gold";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
@@ -166,6 +167,16 @@ export default function Pagina() {
             naoPermite="Tratar um ano como padrão: a composição muda com a liberação de financiamentos e programas federais."
           />
           <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), consolidado por UF e base prestador × município, campos GFI2021 a GFI2023, GFI2033 a GFI2035, GFI2121 a GFI2123 e GFI2133 a GFI2135.</Fonte>
+        </Secao>
+
+        <Secao
+          id="mundo"
+          titulo="Quanto vem de ajuda internacional?"
+          texto="A OCDE registra o que doadores desembolsam para água e saneamento em cada país que recebe ajuda oficial ao desenvolvimento. O valor dá a ordem de grandeza do dinheiro externo não reembolsável ou concessional; não entra na soma do investimento declarado."
+        >
+          <MundoNoCapitulo>
+            <FiguraOds codigo="DC_TOF_WASHL" semRegua />
+          </MundoNoCapitulo>
         </Secao>
 
         <Secao id="contratacoes" titulo="E os financiamentos contratados?">

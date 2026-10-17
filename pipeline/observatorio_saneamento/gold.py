@@ -29,6 +29,7 @@ from collections import Counter, defaultdict
 
 from . import controle
 from . import jmp
+from . import ods
 from . import saude
 from .desigualdades import SPECS as SPECS_DESIGUALDADES
 from .desigualdades import construir as construir_desigualdades
@@ -1278,6 +1279,8 @@ def construir():
     controle_gold, meta["cvm"] = controle.construir(controle.declarados(aba("Detalhamento Prestadores Serv")), lista_prest)
     # Comparação internacional (JMP, OMS e UNICEF): estimativas por país, arquivo próprio.
     jmp_gold, meta["jmp"] = jmp.construir()
+    # Referências mundiais por capítulo (base global dos ODS da ONU): arquivo próprio.
+    ods_gold, meta["ods"] = ods.construir()
     return {
         "reguladores": lista_reg,
         "meta": meta,
@@ -1288,6 +1291,7 @@ def construir():
         "etes": lista_etes,
         "controle": controle_gold,
         "jmp": jmp_gold,
+        "ods": ods_gold,
     }
 
 
@@ -1479,6 +1483,9 @@ def arquivos(g):
     out["jmp_paises.json"] = json_bytes(g["jmp"])
     cab_j, linhas_j = jmp.linhas_csv(g["jmp"])
     out["jmp_paises.csv"] = csv_bytes(cab_j, linhas_j)
+    out["ods.json"] = json_bytes(g["ods"])
+    cab_o, linhas_o = ods.linhas_csv(g["ods"])
+    out["ods_paises.csv"] = csv_bytes(cab_o, linhas_o)
     cab_p = ["id", "nome", "sigla", "natureza", "abrangencia", "ufs", "municipios_agua", "municipios_esgoto",
              "populacao_atendida_agua", "populacao_atendida_esgoto", "perdas_distribuicao_pct",
              "investimento_agua", "investimento_esgoto"]

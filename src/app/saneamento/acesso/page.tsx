@@ -5,6 +5,7 @@ import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
 import { agregado, agregados, meta, municipios } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
@@ -247,6 +248,17 @@ export default function Pagina() {
             permite="Comparar a mesma categoria nos dois Censos, em pontos percentuais, por UF; no atlas, por município."
             naoPermite="Atribuir a mudança a uma política. Em esgoto, 2022 separa a fossa ligada à rede, que fica fora desta comparação; 2010 usa domicílios particulares permanentes e 2022, os ocupados."
           />
+        </Secao>
+
+        <Secao
+          id="mundo"
+          titulo="Como o Brasil se compara no mundo?"
+          texto="O JMP, da OMS e do UNICEF, estima para cada país a população com água e esgotamento gerenciados com segurança, com a mesma definição. É outra pergunta que a do Censo e a do SINISA, por isso aparece ao lado, nunca somada."
+        >
+          <MundoNoCapitulo>
+            <FiguraOds codigo="SH_H2O_SAFE" titulo="Água gerenciada com segurança" />
+            <FiguraOds codigo="SH_SAN_SAFE" titulo="Esgotamento gerenciado com segurança" />
+          </MundoNoCapitulo>
         </Secao>
 
         <Secao

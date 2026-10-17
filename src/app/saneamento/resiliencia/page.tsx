@@ -4,6 +4,7 @@ import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
 import { agregado, agregados, fichas, municipios } from "@/lib/saneamento/gold";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { inteiro } from "@/lib/saneamento/formato";
@@ -180,6 +181,16 @@ export default function Pagina() {
             naoPermite="Comparar a resiliência entre municípios: cada prestador aplica o conceito de colapso ao próprio sistema, e quem não registra aparece com zero ou sem dado."
           />
           <Nota>Zero declarado entra como zero; município que não informou o campo fica fora da contagem.</Nota>
+        </Secao>
+
+        <Secao
+          id="mundo"
+          titulo="O Brasil tem estresse hídrico?"
+          texto="A FAO mede, para cada país, quanto da água doce disponível é retirada por todos os usos. É a régua internacional de pressão sobre a água; a média nacional não mostra a bacia nem o município, onde o racionamento acontece."
+        >
+          <MundoNoCapitulo>
+            <FiguraOds codigo="ER_H2O_STRESS" />
+          </MundoNoCapitulo>
         </Secao>
 
         <Secao id="lacunas" titulo="O que ainda não está aqui">

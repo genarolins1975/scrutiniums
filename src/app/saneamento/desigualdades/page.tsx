@@ -5,6 +5,7 @@ import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { MundoNoCapitulo, TabelaUrbanoRural } from "@/components/saneamento/ReferenciaMundial";
 import { agregado, agregados, meta, municipiosComDesigualdades, URL_DESIGUALDADES_MUNICIPIOS } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { MEDIDAS_DESIGUALDADES } from "@/lib/saneamento/medidas";
@@ -86,6 +87,11 @@ export default function Pagina() {
         <AtlasMunicipal ids={ids} referencias={refs} nomesUf={Object.fromEntries(ags.filter((a) => a.tipo === "UF").map((a) => [a.id,a.nome]))} titulo="Atlas municipal das desigualdades" complemento={URL_DESIGUALDADES_MUNICIPIOS} />
         <Ressalva permite="Explorar contagens e proporções do mesmo grupo, compartilhar o recorte e exportar a tabela municipal." naoPermite="Ler ausência como zero. Sem população do grupo, sem tabulação ou sob supressão estatística, a proporção fica sem dado." />
         <Fonte>IBGE, Censo 2022. A tabela SIDRA e o universo de cada medida constam no catálogo. Referência: 2022.</Fonte>
+      </Secao>
+      <Secao id="mundo" titulo="A distância entre cidade e campo também existe no mundo?" texto="O JMP estima, para cada país, o serviço gerenciado com segurança nas áreas urbanas e rurais, com a classificação de cada país. Dá a ordem de grandeza da diferença no Brasil, no mundo e na América Latina e Caribe.">
+        <MundoNoCapitulo>
+          <TabelaUrbanoRural codigos={["SH_H2O_SAFE", "SH_SAN_SAFE"]} />
+        </MundoNoCapitulo>
       </Secao>
       <Secao id="dados" titulo="Conferir os números e a cobertura" texto="As referências abaixo são tabulações oficiais para Brasil e UFs. A exportação preserva grupo, unidade, numerador, denominador, tabela e ano.">
         <TabelaDados titulo="Brasil e UFs por grupo, Censo 2022" arquivo="saneamento-desigualdades-brasil-ufs-2022.csv" linhas={linhas} colunas={[
