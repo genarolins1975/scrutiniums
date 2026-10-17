@@ -66,7 +66,7 @@
 .figureNote{font-size:12px!important;line-height:1.6!important;color:var(--cor-carvao-muted);margin-top:20px}.scopeLine{font-size:13px;line-height:1.7;color:var(--cor-carvao-muted);max-width:900px;margin:0 0 72px}.scopeLine a{text-decoration:underline}
 .journey{background:transparent;color:var(--cor-obee-tinta);padding:48px 0;margin:0;border-top:1px solid var(--cor-linha);scroll-margin-top:24px}
 .journey .sectionIntro{max-width:640px}.journeyGrid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:stretch;margin-top:32px}.journeyButtons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0}
-.journeyButtons button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;min-height:128px;padding:12px;background:var(--cor-superficie);border:1px solid var(--cor-linha);color:var(--cor-obee-dark);font-size:13px;transition:background .18s ease,border-color .18s ease}
+.journeyButtons button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;min-height:128px;padding:12px;background:var(--cor-superficie);border:1px solid var(--cor-linha);color:var(--cor-obee-dark);font-size:13px;transition:border-color .18s ease}
 .journeyButtons button>svg{width:86px;height:72px}.journeyButtons button[aria-pressed=true]{background:var(--cor-obee-tinta);color:var(--cor-papel);border-color:var(--cor-obee-tinta)}
 .journeyText{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:16px;background:var(--cor-obee-fundo);padding:32px;border:0;min-height:0;line-height:1.7}
 .journeyText>svg{width:116px;height:96px;color:var(--cor-obee)}.journeyText h3{font-family:var(--font-serif),Georgia,serif;font-size:30px;line-height:1.16;margin:10px 0 16px}.journeyText p:not(.eyebrow){font-size:15px;line-height:1.7}
@@ -107,3 +107,6 @@
 @media(max-width:767px){.platformInner{padding:8px 20px;min-height:64px}.platformBrand{gap:14px}.platformTitle{padding-left:14px;font-size:22px}.contextLinks{font-size:11px;gap:14px}.chart svg text{font-size:18px}}
 @media(max-width:600px){.platformLogo>span,.platformMenuDesktop{display:none}.platformMenuMobile{display:inline}.platformLogo{justify-content:center}.platformDropdown{width:320px}.heroLead{max-width:380px}}
 @media(max-width:430px){.platformInner{padding-inline:16px}.heroActions{flex-direction:row;align-items:center;gap:8px 12px}.heroActions .primaryButton{padding-inline:16px;font-size:13px}.heroActions .textLink{font-size:13px;gap:8px}.contextLinks a:last-child{max-width:180px;text-align:right}}
+
+/* A seleção troca fundo e texto juntos; hover preserva o contraste ativo. */
+.button[aria-pressed]{transition:none}.button[aria-pressed=true]:hover{background:var(--cor-obee);color:var(--cor-superficie)}
