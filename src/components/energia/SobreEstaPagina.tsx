@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Abertura do cabeçalho de um módulo, recolhida em Entender e aberta em Analisar e Auditar. As fontes e datas de referência ficam sempre à vista, fora deste bloco.
@@ -14,6 +15,7 @@ import { useEffect, useRef, type ReactNode } from "react";
  * A legenda de siglas fica fora deste bloco e conta só o texto à vista: abrir o bloco acrescenta à legenda as siglas dele.
  */
 export function SobreEstaPagina({ children }: { children: ReactNode }) {
+  const tx = useTx();
   const ref = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     const raiz = document.querySelector(".modo-profundidade");
@@ -32,7 +34,7 @@ export function SobreEstaPagina({ children }: { children: ReactNode }) {
   return (
     <details ref={ref} className="cab-sobre mt-3 max-w-prose2" data-sobre-pagina="true">
       <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4">
-        Ler a abertura da página
+        {tx("Ler a abertura da página", "Read the page introduction")}
       </summary>
       {children}
     </details>

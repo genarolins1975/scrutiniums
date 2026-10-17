@@ -20,7 +20,8 @@ export async function metadadosEnergia(caminho: string, origem: Metadata, anteri
   const absoluto = t && typeof t === "object" && "absolute" in t ? String(t.absolute) : null;
   const titulo = typeof t === "string" ? t : null;
   const descricao = typeof origem.description === "string" ? origem.description : undefined;
-  const tituloSocial = absoluto ?? (titulo ? `${titulo} · Setor Elétrico · Scrutiniums` : "Setor Elétrico · Scrutiniums");
+  // "Setor Elétrico" é o nome do observatório e não se traduz (tabela de terminologia)
+  const tituloSocial = absoluto ?? (titulo ? `${titulo} · Setor Elétrico · Scrutiniums` : "Setor Elétrico · Scrutiniums"); // i18n: dado
   const resto: Metadata = { ...origem };
   delete resto.openGraph;
   delete resto.twitter;

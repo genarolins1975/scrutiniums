@@ -7,9 +7,10 @@ import { VisaoRegraDetalhe } from "@/components/energia/VisaoRegras";
 import { carregaJson } from "@/lib/energia/carregaJson";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
 import type { EstadoRegra, RegraObservar, SinteseVisaoGold } from "@/lib/energia/tipos-visao";
-import { FILTROS_P007, ROTULO_FILTRO_P007, URL_GOLD_VISAO, filtraRegras, type FiltroP007, type TrechoEstado } from "@/lib/energia/visao";
+import { FILTROS_P007, URL_GOLD_VISAO, filtraRegras, rotulosFiltroP007, type FiltroP007, type TrechoEstado } from "@/lib/energia/visao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Lista do "O que observar" (P007) com filtro e comparação: o conteúdo de cada regra vem
@@ -39,8 +40,12 @@ export type ItemObservar = {
 
 export type LinhaComparavel = { id: string; rotulo: string; trechos: TrechoEstado[]; texto: string };
 
+/** O filtro sem recorte, como a URL o grava. */
+const TODAS: FiltroP007 = "todas"; // i18n: dado
+
 const ESQUEMA = {
-  filtro: campo(tiposUrl.opcao(FILTROS_P007), "todas" as FiltroP007, { param: "p007.filtro" }),
+  filtro: campo(tiposUrl.opcao(FILTROS_P007), TODAS, { param: "p007.filtro" }),
+
   regra: campo(tiposUrl.texto({ max: 40 }), "", { param: "p007.regra" }),
 };
 
@@ -62,6 +67,10 @@ export function VisaoObservar({
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const nome = useId();
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { dataBR } = formatos(idioma);
+  const ROTULO_FILTRO_P007 = rotulosFiltroP007(idioma);
   const visiveis = filtraRegras(itens, v.filtro);
   // as regras que pedem atenção (alerta, observação) e os eventos do calendário ficam abertas; as normais e sem dado ficam num grupo recolhido
   const abertasNaLista = visiveis.filter((o) => ESTADOS_ABERTOS.has(o.estado));
@@ -104,7 +113,7 @@ export function VisaoObservar({
             <span>
               {o.rotuloEstado}
               <span className="block font-sans text-xs normal-case tracking-normal text-mineral">
-                {o.assunto === "dados" ? "sobre os dados" : o.tipo === "evento" ? "calendário" : "sobre o sistema"} · {dataBR(o.referencia)}
+                {o.assunto === "dados" ? tx("sobre os dados", "about the data") : o.tipo === "evento" ? tx("calendário", "calendar") : tx("sobre o sistema", "about the system")} · {dataBR(o.referencia)}
               </span>
             </span>
           </p>
@@ -112,7 +121,7 @@ export function VisaoObservar({
             <h3 className={`font-medium ${destaque ? "text-carvao" : "text-carvao-muted"}`}>
               {o.titulo}
               <span data-nivel="analisar" className="ml-2 font-mono text-xs font-normal text-mineral">
-                código {o.id}
+                {tx("código", "code")} {o.id}
               </span>
             </h3>
             <div className="mt-1">{o.resumo}</div>
@@ -126,16 +135,22 @@ export function VisaoObservar({
                 if (!aberto && v.regra === o.id) definir({ regra: "" });
               }}
             >
-              <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm text-energia-dark underline underline-offset-4">Regra, limiares e histórico</summary>
+              <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm text-energia-dark underline underline-offset-4">
+                {tx("Regra, limiares e histórico", "Rule, thresholds and history")}
+              </summary>
               <div className="mt-2">
                 {o.detalhe ??
                   (abertas.has(o.id) ? (
                     (() => {
                       const r = regraDaGold(o.id);
-                      if (r) return <VisaoRegraDetalhe o={r} />;
+                      if (r) return <VisaoRegraDetalhe o={r} idioma={idioma} />;
                       return (
                         <p role="status" aria-live="polite" className={`text-sm ${erroGold ? "text-aviso" : "text-carvao-muted"}`}>
-                          {erroGold ? `O detalhe da regra não pôde ser lido da base publicada: ${erroGold}` : gold ? "Regra ausente da base publicada." : "Lendo o detalhe da regra na base publicada…"}
+                          {erroGold
+                            ? tx(`O detalhe da regra não pôde ser lido da base publicada: ${erroGold}`, `The rule detail could not be read from the published base: ${erroGold}`)
+                            : gold
+                              ? tx("Regra ausente da base publicada.", "Rule missing from the published base.")
+                              : tx("Lendo o detalhe da regra na base publicada…", "Reading the rule detail from the published base…")}
                         </p>
                       );
                     })()
@@ -151,7 +166,7 @@ export function VisaoObservar({
   return (
     <div className="space-y-5">
       <fieldset className="min-w-0">
-        <legend className="rotulo text-mineral">Mostrar</legend>
+        <legend className="rotulo text-mineral">{tx("Mostrar", "Show")}</legend>
         <div className="mt-1 flex flex-wrap gap-1.5">
           {FILTROS_P007.map((f) => {
             const ativo = f === v.filtro;
@@ -171,24 +186,37 @@ export function VisaoObservar({
         </div>
       </fieldset>
       <p className="text-xs text-carvao-muted" aria-live="polite">
-        {visiveis.length} de {itens.length} itens{v.filtro !== "todas" ? ` (${ROTULO_FILTRO_P007[v.filtro].toLowerCase()})` : ""}.
-        {v.filtro !== "todas" && (
-          <button type="button" onClick={() => definir({ filtro: "todas" })} className="ml-2 inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-            Remover filtro
+        {tx(
+          <>
+            {visiveis.length} de {itens.length} itens{v.filtro !== "todas" ? ` (${ROTULO_FILTRO_P007[v.filtro].toLowerCase()})` : ""}.
+          </>,
+          <>
+            {visiveis.length} of {itens.length} items{v.filtro !== "todas" ? ` (${ROTULO_FILTRO_P007[v.filtro].toLowerCase()})` : ""}.
+          </>,
+        )}
+
+        {v.filtro !== TODAS && (
+          <button type="button" onClick={() => definir({ filtro: TODAS })} className="ml-2 inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+            {tx("Remover filtro", "Remove filter")}
           </button>
         )}
       </p>
 
       {visiveis.length === 0 ? (
-        <p className="text-sm text-carvao-muted">Nenhuma regra neste recorte nesta publicação.</p>
+        <p className="text-sm text-carvao-muted">{tx("Nenhuma regra neste recorte nesta publicação.", "No rule in this selection in this publication.")}</p>
       ) : (
         <div className="space-y-4">
           {abertasNaLista.length > 0 && <ul className="divide-y divide-linha border-y border-linha">{abertasNaLista.map(item)}</ul>}
-          {abertasNaLista.length === 0 && v.filtro !== "todas" && <p className="text-sm text-carvao-muted">Nenhuma regra em alerta, em observação ou de calendário neste recorte.</p>}
+          {abertasNaLista.length === 0 && v.filtro !== TODAS && (
+            <p className="text-sm text-carvao-muted">{tx("Nenhuma regra em alerta, em observação ou de calendário neste recorte.", "No rule in alert, under observation or on the calendar in this selection.")}</p>
+          )}
           {quietas.length > 0 && (
             <details open={grupoAberto} onToggle={(e) => setGrupoAberto((e.currentTarget as HTMLDetailsElement).open)} data-regras-normais="">
               <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm text-energia-dark underline underline-offset-4">
-                {quietas.length === 1 ? "1 regra em estado normal ou sem dado" : `${quietas.length} regras em estado normal ou sem dado`}: ver a lista e o histórico
+                {tx(
+                  <>{quietas.length === 1 ? "1 regra em estado normal ou sem dado" : `${quietas.length} regras em estado normal ou sem dado`}: ver a lista e o histórico</>,
+                  <>{quietas.length === 1 ? "1 rule in normal state or with no data" : `${quietas.length} rules in normal state or with no data`}: see the list and the history</>,
+                )}
               </summary>
               <ul className="mt-2 divide-y divide-linha border-y border-linha">{quietas.map(item)}</ul>
             </details>
@@ -198,15 +226,18 @@ export function VisaoObservar({
 
       {dominio && comparaveis.length > 0 && (
         <div data-nivel="analisar" className="space-y-3 border-t border-linha pt-4">
-          <h3 className="font-serif text-lg text-carvao">Quando cada regra esteve em alerta nos últimos 365 dias</h3>
-          <VisaoLegendaEstados />
+          <h3 className="font-serif text-lg text-carvao">{tx("Quando cada regra esteve em alerta nos últimos 365 dias", "When each rule was in alert in the last 365 days")}</h3>
+          <VisaoLegendaEstados idioma={idioma} />
           <Comparador
-            rotulo="Regras para comparar (até 4)"
+            rotulo={tx("Regras para comparar (até 4)", "Rules to compare (up to 4)")}
             entidades={comparaveis.map((c) => ({ id: c.id, rotulo: c.rotulo }))}
             padrao={padraoComparacao}
             chaveUrl="p007.cmp"
-            dicaBusca="Armazenamento, carga, piso"
-            vazio="Nenhuma regra escolhida. Escolha até quatro para ver as linhas de estado sobre o mesmo eixo de datas."
+            dicaBusca={tx("Armazenamento, carga, piso", "Storage, load, floor")}
+            vazio={tx(
+              "Nenhuma regra escolhida. Escolha até quatro para ver as linhas de estado sobre o mesmo eixo de datas.",
+              "No rule chosen. Choose up to four to see the state lines on the same date axis.",
+            )}
             renderizarItem={(e) => {
               const c = porId.get(e.id);
               if (!c) return null;
@@ -223,7 +254,16 @@ export function VisaoObservar({
               );
             }}
           />
-          <p className="text-xs text-carvao-muted">Mesmo eixo de datas para todas as regras escolhidas, de {dataBR(dominio.inicio)} a {dataBR(dominio.fim)}; cada regra começa no seu primeiro dia publicado.</p>
+          <p className="text-xs text-carvao-muted">
+            {tx(
+              <>
+                Mesmo eixo de datas para todas as regras escolhidas, de {dataBR(dominio.inicio)} a {dataBR(dominio.fim)}; cada regra começa no seu primeiro dia publicado.
+              </>,
+              <>
+                Same date axis for all the rules chosen, from {dataBR(dominio.inicio)} to {dataBR(dominio.fim)}; each rule starts on its first published day.
+              </>,
+            )}
+          </p>
         </div>
       )}
     </div>
