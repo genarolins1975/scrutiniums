@@ -440,6 +440,7 @@ export function AguaReservatorios({
             dados={barrasDec.map((b) => ({ id: b.id, rotulo: b.rotulo, delta: b.parte === "restante" ? null : b.delta, demais: b.parte === "restante" ? b.delta : null }))}
             chaveCategoria="id"
             chaveRotulo="rotulo"
+            rotulosSaoNomes
             series={traduzSeries(
               [
                 { id: "delta", rotulo: tx("Variação da EAR no reservatório", "Change in EAR in the reservoir"), cor: COR_REGIAO[dec.sm], opcional: true },

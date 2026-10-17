@@ -46,20 +46,20 @@ const colunasCoef = (): ColunaTabela[] => [
 ];
 const colunasLeis = (): ColunaTabela[] => [
   { id: "norma", rotulo: tx("Norma", "Law"), tipo: "texto" },
-  { id: "estabelece", rotulo: tx("Estabelece", "Establishes"), tipo: "texto" },
+  { id: "estabelece", rotulo: tx("Estabelece", "Establishes"), tipo: "texto", idiomaTexto: "portugues" },
   { id: "ementa", rotulo: tx("Ementa conferida no Senado", "Summary checked at the Senate"), tipo: "texto", categorica: true },
   { id: "texto", rotulo: tx("Texto relido", "Text reread"), tipo: "texto", categorica: true },
-  { id: "situacao", rotulo: tx("Situação do texto", "Text status"), tipo: "texto" },
+  { id: "situacao", rotulo: tx("Situação do texto", "Text status"), tipo: "texto", idiomaTexto: "portugues" },
 ];
 const colunasEventos = (): ColunaTabela[] => [
   { id: "data", rotulo: tx("Data", "Date"), tipo: "data" },
-  { id: "nome", rotulo: tx("Evento", "Event"), tipo: "texto" },
+  { id: "nome", rotulo: tx("Evento", "Event"), tipo: "texto", idiomaTexto: "nome" },
   { id: "categoria", rotulo: tx("Categoria", "Category"), tipo: "texto", categorica: true },
 ];
 const colunasPesos = (): ColunaTabela[] => [
   { id: "regiao", rotulo: tx("Região", "Region"), tipo: "texto", categorica: true },
   { id: "uf", rotulo: tx("UF", "State"), tipo: "texto" },
-  { id: "capital", rotulo: tx("Capital (centroide do município)", "Capital (municipality centroid)"), tipo: "texto" },
+  { id: "capital", rotulo: tx("Capital (centroide do município)", "Capital (municipality centroid)"), tipo: "texto", idiomaTexto: "nome" },
   { id: "peso", rotulo: tx("Peso na região", "Weight in the region"), tipo: "percentual", casas: 2 },
 ];
 
@@ -300,7 +300,6 @@ export default function ClimaCalendarioPage() {
                     versao={g.dia_referencia}
                     nomeArquivo="carga-calendario-12-meses"
                     chaveUrl="cal"
-                    nota={tx<string | undefined>(undefined, "Holiday names are Brazilian proper nouns and stay in Portuguese.")}
                   />
                 </SecaoDoPainel>
 
@@ -401,7 +400,6 @@ export default function ClimaCalendarioPage() {
                     versao={g.dia_referencia}
                     nomeArquivo="carga-leis-feriados"
                     chaveUrl="leis"
-                    nota={tx<string | undefined>(undefined, "The Establishes and Text status columns are published by the pipeline in Portuguese.")}
                   />
                   <CargaFontes fontes={g.fontes.filter((f) => ["temperatura", "populacao", "centroides", "leis"].includes(f.id))} />
                 </SecaoDoPainel>

@@ -11,7 +11,7 @@ import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
-import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
+import { SeloNatureza, textoNatureza } from "@/components/evidencia/SeloNatureza";
 import { Termo } from "@/components/evidencia/Termo";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -34,6 +34,7 @@ import { gold, integra, lerGold } from "@/lib/energia/gold";
 import { COMPONENTE_API_CARGA_EN, SERIE_API_CARGA_EN, rotuloDaGold } from "@/lib/energia/i18n/agua-carga-rede";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import type { ColunaTabela } from "@/lib/energia/tabela";
+import type { Natureza } from "@/lib/energia/tipos";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
 
 export const dynamic = "force-static";
@@ -81,9 +82,8 @@ const colunasA11 = (): ColunaTabela[] => [
   { id: "solar_balanco", rotulo: tx("Geração solar do balanço", "Solar generation in the balance"), tipo: "numero", unidade: tx("MWmed", "MWavg"), casas: 0 },
 ];
 
-/** Natureza do componente em minúsculas, no idioma (o selo de natureza é de outro componente). */
-const naturezaMinuscula = (n: string) =>
-  tx(n.toLowerCase(), ({ OBSERVADO: "observed", ESTIMADO: "estimated", CALCULADO: "calculated" } as Record<string, string>)[n] ?? n.toLowerCase());
+/** Natureza do componente em minúsculas, no idioma (o rótulo é o do selo de natureza). */
+const naturezaMinuscula = (n: string) => tx(n.toLowerCase(), textoNatureza(n as Natureza, "en").rotulo.toLowerCase());
 
 export default function PerfilHorarioPage() {
   const g = lerGold<CargaDetalheGold>("carga_detalhe.json");

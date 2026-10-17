@@ -54,7 +54,7 @@ import {
 } from "@/lib/energia/carga";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
-import { formatos } from "@/lib/energia/formato";
+import { formatos, valorExibidoNoIdioma } from "@/lib/energia/formato";
 import { porIdioma } from "@/lib/energia/idioma";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { Idioma } from "@/lib/idioma";
@@ -174,7 +174,7 @@ export function CargaMetricas({
         periodo={baseCurta(tipo, idioma)}
         evidencia={ficha}
         // a ficha de prova mostra o valor com uma casa; o cartão, com duas: dito aqui para os dois não parecerem divergir
-        nota={ficha ? tx(`Na ficha de prova: ${ficha.valor_exibido}, com uma casa.`, `In the evidence card: ${ficha.valor_exibido}, with one decimal place.`) : undefined}
+        nota={ficha ? tx(`Na ficha de prova: ${ficha.valor_exibido}, com uma casa.`, `In the evidence card: ${valorExibidoNoIdioma(ficha.valor_exibido, "en")}, with one decimal place.`) : undefined}
 
         endereco={ficha ? (tipo === "equivalente" ? "/setor-eletrico/carga#p025" : "/setor-eletrico/carga#a07") : undefined}
         motivoAusencia={
@@ -262,7 +262,6 @@ export function CargaNivel({
   const escolhidas = (v.sms as Regiao[]).length ? (v.sms as Regiao[]) : [];
   const janelasIguais = textoJanelasIguais(p.comparacoes.janelas, idioma);
   const refChave = tipo === "equivalente" ? "ref364" : "refDatas";
-  const de = doRegiao(sm, idioma);
 
   return (
     <div className="space-y-6">

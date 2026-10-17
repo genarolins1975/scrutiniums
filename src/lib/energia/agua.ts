@@ -662,7 +662,7 @@ export function colunasArmazenamentoTodas(idioma: Idioma = idiomaEnergia()): Col
     { id: "ear_max_base_min_mwmes", rotulo: tx("Menor EAR máxima na base", "Lowest maximum EAR in the baseline", idioma), tipo: "numero", unidade: u, casas: 1 },
     { id: "ear_max_base_max_mwmes", rotulo: tx("Maior EAR máxima na base", "Highest maximum EAR in the baseline", idioma), tipo: "numero", unidade: u, casas: 1 },
     { id: "capacidade_mudou_na_base", rotulo: tx("Capacidade mudou na base", "Capacity changed in the baseline", idioma), tipo: "texto", categorica: true },
-    { id: "nome", rotulo: tx("Nome no ONS", "Name at ONS", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Nome no ONS", "Name at ONS", idioma), tipo: "texto", idiomaTexto: "nome" },
   ];
 }
 export const COLUNAS_ARMAZENAMENTO: ColunaTabela[] = colunasArmazenamentoTodas("pt");
@@ -859,7 +859,7 @@ export function colunasEventos(idioma: Idioma = idiomaEnergia()): ColunaTabela[]
     { id: "data", rotulo: tx("Dia", "Day", idioma), tipo: "data" },
     { id: "sm", rotulo: tx("Subsistema", "Subsystem", idioma), tipo: "texto", categorica: true },
     { id: "variacao_mwmes", rotulo: tx("Variação da EAR máxima", "Change in maximum EAR", idioma), tipo: "numero", unidade: u, casas: 3 },
-    { id: "reservatorios", rotulo: tx("Reservatórios (até três maiores)", "Reservoirs (up to the three largest)", idioma), tipo: "texto" },
+    { id: "reservatorios", rotulo: tx("Reservatórios (até três maiores)", "Reservoirs (up to the three largest)", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "n_reservatorios", rotulo: tx("Reservatórios no evento", "Reservoirs in the event", idioma), tipo: "numero", casas: 0 },
     { id: "residuo_mwmes", rotulo: tx("Resíduo", "Residual", idioma), tipo: "numero", unidade: u, casas: 3 },
     { id: "fechado", rotulo: tx("Dentro da tolerância", "Within tolerance", idioma), tipo: "texto", categorica: true },
@@ -1257,7 +1257,7 @@ export function colunasAfluencia(idioma: Idioma = idiomaEnergia()): ColunaTabela
     { id: "anos_na_base_30d", rotulo: tx("Anos na base", "Years in the baseline", idioma), tipo: "numero", casas: 0, nivel: "analisar" },
     { id: "periodo_base", rotulo: tx("Período da base", "Baseline period", idioma), tipo: "texto", nivel: "analisar" },
     { id: "pct_mlt_dia", rotulo: tx("ENA do dia", "ENA on the day", idioma), tipo: "numero", unidade: pm, casas: 1, nivel: "analisar" },
-    { id: "nome", rotulo: tx("Nome no ONS", "Name at ONS", idioma), tipo: "texto", nivel: "analisar" },
+    { id: "nome", rotulo: tx("Nome no ONS", "Name at ONS", idioma), tipo: "texto", nivel: "analisar", idiomaTexto: "nome" },
   ];
 }
 export const COLUNAS_AFLUENCIA: ColunaTabela[] = colunasAfluencia("pt");
@@ -1792,7 +1792,7 @@ export function classificacaoChuva(valores: Record<string, number | null>, idiom
 /** Em Entender ficam a bacia, os milímetros e a anomalia (cabem em 360 px, com o número junto do nome); o resto vai para Analisar. O arquivo exportado leva todas. */
 export function colunasChuva(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "rotulo", rotulo: tx("Bacia", "Basin", idioma), tipo: "texto" },
+    { id: "rotulo", rotulo: tx("Bacia", "Basin", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "mm", rotulo: tx("Chuva", "Rainfall", idioma), tipo: "numero", unidade: "mm", casas: 1 }, // i18n: dado
     { id: "media", rotulo: tx("Média da base", "Baseline average", idioma), tipo: "numero", unidade: "mm", casas: 1, nivel: "analisar" }, // i18n: dado
     { id: "p10", rotulo: tx("10º percentil", "10th percentile", idioma), tipo: "numero", unidade: "mm", casas: 1, nivel: "analisar" }, // i18n: dado
@@ -1803,7 +1803,7 @@ export function colunasChuva(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
     { id: "cobertura", rotulo: tx("Cobertura média", "Average coverage", idioma), tipo: "percentual", casas: 1, nivel: "analisar" },
     { id: "r_mesmo_mes", rotulo: tx("Correlação com a ENA no mesmo mês", "Correlation with ENA in the same month", idioma), tipo: "numero", casas: 2, nivel: "analisar" },
     { id: "r_mes_seguinte", rotulo: tx("Correlação com a ENA do mês seguinte", "Correlation with the following month's ENA", idioma), tipo: "numero", casas: 2, nivel: "analisar" },
-    { id: "bacia", rotulo: tx("Nome no ONS", "Name at ONS", idioma), tipo: "texto", nivel: "analisar" },
+    { id: "bacia", rotulo: tx("Nome no ONS", "Name at ONS", idioma), tipo: "texto", nivel: "analisar", idiomaTexto: "nome" },
   ];
 }
 export const COLUNAS_CHUVA: ColunaTabela[] = colunasChuva("pt");
@@ -1930,12 +1930,12 @@ export function respostaPrevisao(pv: AguaPrevisao, bacia: string, idioma: Idioma
 
 export function colunasPrevisaoChuva(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "rotulo", rotulo: tx("Bacia", "Basin", idioma), tipo: "texto" },
+    { id: "rotulo", rotulo: tx("Bacia", "Basin", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "mm_7d", rotulo: tx("Prevista, 7 dias", "Forecast, 7 days", idioma), tipo: "numero", unidade: "mm", casas: 1 }, // i18n: dado
     { id: "imerg_7d", rotulo: tx("Média IMERG, 7 dias", "IMERG average, 7 days", idioma), tipo: "numero", unidade: "mm", casas: 1 }, // i18n: dado
     { id: "mm_total", rotulo: tx("Prevista, todos os dias", "Forecast, all days", idioma), tipo: "numero", unidade: "mm", casas: 1, nivel: "analisar" }, // i18n: dado
     { id: "imerg_total", rotulo: tx("Média IMERG, todos os dias", "IMERG average, all days", idioma), tipo: "numero", unidade: "mm", casas: 1, nivel: "analisar" }, // i18n: dado
-    { id: "bacia", rotulo: tx("Nome no ONS", "Name at ONS", idioma), tipo: "texto", nivel: "analisar" },
+    { id: "bacia", rotulo: tx("Nome no ONS", "Name at ONS", idioma), tipo: "texto", nivel: "analisar", idiomaTexto: "nome" },
   ];
 }
 export const COLUNAS_PREVISAO_CHUVA: ColunaTabela[] = colunasPrevisaoChuva("pt");
@@ -1992,7 +1992,7 @@ export function seriePrevisao(pv: AguaPrevisao, bacia: string): ({ d: string; mm
 
 export function colunasValidacao(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "rotulo", rotulo: tx("Bacia", "Basin", idioma), tipo: "texto" },
+    { id: "rotulo", rotulo: tx("Bacia", "Basin", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "meses", rotulo: tx("Meses comparados", "Months compared", idioma), tipo: "numero", casas: 0 },
     { id: "estacoes_mediana", rotulo: tx("Estações por mês (mediana)", "Stations per month (median)", idioma), tipo: "numero", casas: 0 },
     { id: "imerg_mm", rotulo: "IMERG", tipo: "numero", unidade: "mm", casas: 1 }, // i18n: dado
@@ -2009,7 +2009,7 @@ export function linhasValidacao(v: AguaClima["validacao_estacoes"], idioma: Idio
 
 export function colunasCoberturaChuva(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "rotulo", rotulo: tx("Bacia", "Basin", idioma), tipo: "texto" },
+    { id: "rotulo", rotulo: tx("Bacia", "Basin", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "pontos", rotulo: tx("Pontos de grade", "Grid points", idioma), tipo: "numero", casas: 0 },
     { id: "passos", rotulo: tx("Passo da grade", "Grid spacing", idioma), tipo: "texto" },
     { id: "poligonos", rotulo: tx("Polígonos do ONS", "ONS polygons", idioma), tipo: "texto" },
@@ -2029,7 +2029,7 @@ export function linhasCoberturaChuva(c: AguaClima["cobertura_precipitacao"], idi
 
 export function colunasCoberturaTemperatura(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "uf", rotulo: tx("UF", "State", idioma), tipo: "texto" },
+    { id: "uf", rotulo: tx("UF", "State", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "subsistema", rotulo: tx("Subsistema", "Subsystem", idioma), tipo: "texto", categorica: true },
     { id: "celulas", rotulo: tx("Células MERRA-2", "MERRA-2 cells", idioma), tipo: "numero", casas: 0 },
     { id: "populacao_uf", rotulo: tx("População da UF", "State population", idioma), tipo: "numero", casas: 0 },
@@ -2218,7 +2218,7 @@ export function textoParcelasFaltantes(d: AguaDecomposicaoEar, idioma: Idioma = 
 /** Em Entender: o reservatório, a variação da EAR (junto do nome) e a parte; o código da usina vai para Analisar. */
 export function colunasDecomposicao(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "rotulo", rotulo: tx("Reservatório", "Reservoir", idioma), tipo: "texto" },
+    { id: "rotulo", rotulo: tx("Reservatório", "Reservoir", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "delta", rotulo: tx("Variação da EAR", "Change in EAR", idioma), tipo: "numero", unidade: uMwmes(idioma), casas: 1 },
     { id: "parte", rotulo: tx("Parte", "Part", idioma), tipo: "texto", categorica: true },
     { id: "cod", rotulo: tx("Código da usina", "Plant code", idioma), tipo: "texto", nivel: "analisar" },
@@ -2496,11 +2496,11 @@ export function notaVazoesCoincidem(serie: readonly Pick<PontoReservatorio, "def
  */
 export function colunasReservatorios(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "rotulo", rotulo: tx("Reservatório", "Reservoir", idioma), tipo: "texto" },
+    { id: "rotulo", rotulo: tx("Reservatório", "Reservoir", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "dv_obs_hm3", rotulo: tx("Variação observada", "Observed change", idioma), tipo: "numero", unidade: "hm³", casas: 2 },
     { id: "residuo_hm3", rotulo: tx("Resíduo", "Residual", idioma), tipo: "numero", unidade: "hm³", casas: 2 },
     { id: "subsistema", rotulo: tx("Subsistema", "Subsystem", idioma), tipo: "texto", categorica: true, nivel: "analisar" },
-    { id: "bacia", rotulo: tx("Bacia", "Basin", idioma), tipo: "texto", categorica: true, nivel: "analisar" },
+    { id: "bacia", rotulo: tx("Bacia", "Basin", idioma), tipo: "texto", categorica: true, nivel: "analisar", idiomaTexto: "nome" },
     { id: "ear_max_mwmes", rotulo: tx("EAR máxima", "Maximum EAR", idioma), tipo: "numero", unidade: uMwmes(idioma), casas: 1, nivel: "analisar" },
     { id: "vol_util_total_hm3", rotulo: tx("Volume útil", "Useful volume", idioma), tipo: "numero", unidade: "hm³", casas: 1, nivel: "analisar" },
     { id: "vol_util_pct_fim", rotulo: tx("Volume no fim", "Volume at the end", idioma), tipo: "percentual", casas: 2, nivel: "analisar" },

@@ -33,7 +33,7 @@ import {
   textoRegimesCarga,
   textoRevisoes,
 } from "@/lib/energia/carga";
-import { carimbo, dataBR, mesAno, num, plural, sinal } from "@/lib/energia/formato";
+import { carimbo, dataBR, mesAno, num, plural, sinal, valorExibidoNoIdioma } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
 import { TIPO_REGRA_CARGA_EN, rotuloDaGold } from "@/lib/energia/i18n/agua-carga-rede";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
@@ -103,7 +103,7 @@ const colunasOcorrencias = (): ColunaTabela[] => [
   { id: "valor", rotulo: tx("Valor da fonte", "Source value"), tipo: "numero", unidade: tx("MWmed", "MWavg"), casas: 3 }, // i18n: dado
   { id: "regras", rotulo: tx("Regras violadas", "Rules violated"), tipo: "texto" },
   { id: "situacao", rotulo: tx("Situação", "Status"), tipo: "texto", categorica: true },
-  { id: "conferencia", rotulo: tx("Conferência", "Cross-check"), tipo: "texto" },
+  { id: "conferencia", rotulo: tx("Conferência", "Cross-check"), tipo: "texto", idiomaTexto: "portugues" },
 ];
 const colunasEsperados = (): ColunaTabela[] => [
   { id: "sm", rotulo: tx("Subsistema", "Subsystem"), tipo: "texto" },
@@ -315,7 +315,7 @@ export default function CargaPage() {
                       cor="var(--serie-referencia)"
                       nota={tx(
                         `Variação maior que zero não indica, sozinha, mais atividade econômica.${ev.a07_reproducao ? ` Na ficha de prova: ${ev.a07_reproducao.valor_exibido}, com uma casa.` : ""}`,
-                        `A change above zero does not, on its own, indicate more economic activity.${ev.a07_reproducao ? ` In the evidence card: ${ev.a07_reproducao.valor_exibido}, with one decimal place.` : ""}`,
+                        `A change above zero does not, on its own, indicate more economic activity.${ev.a07_reproducao ? ` In the evidence card: ${valorExibidoNoIdioma(ev.a07_reproducao.valor_exibido, "en")}, with one decimal place.` : ""}`,
                       )}
                       endereco={`${rotaPainel("p025")}#a07`}
                     />
@@ -527,7 +527,6 @@ export default function CargaPage() {
                     versao={versao}
                     nomeArquivo="carga-validacao-ocorrencias"
                     chaveUrl="oc"
-                    nota={tx<string | undefined>(undefined, "The cross-check column is published by the pipeline in Portuguese.")}
                   />
                   <TabelaInterativa
                     titulo={tx("Registros esperados por subsistema", "Expected records by subsystem")}
