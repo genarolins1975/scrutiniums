@@ -2974,6 +2974,570 @@
     "4219606",
     "4219705"
    ]
+  },
+  {
+   "id": "corsan-2026",
+   "prestador": "Companhia Riograndense de Saneamento (CORSAN)",
+   "prestadorSinisa": "corsan-companhia-riograndense-de-saneamento",
+   "uf": "RS",
+   "regulador": "AGERGS e outras agências",
+   "modelo": "Serviço básico por economia mais água medida pelo preço-base vezes o consumo elevado a um expoente por faixa, sem consumo mínimo na ligação com hidrômetro; esgoto a 70% do preço-base por m³ de água (tratado)",
+   "ato": "Tabela I do Anexo 5 da Corsan (estrutura tarifária em vigor desde 01/07/2026); revisão de 5,76% pela Resolução Decisória AGERGS RED nº 892/2026, de 09/06/2026",
+   "vigencia": "Desde 01/07/2026 (Anexo 5 e comunicado da Corsan de 12/06/2026); a RED 892/2026 não foi lida",
+   "ultimoReajuste": "5,76% sobre a tabela de janeiro de 2026, que já trazia 4,68% sobre a de janeiro de 2025 (valores reproduzidos nas três tabelas)",
+   "area": "298 municípios do Apêndice 1 do Anexo 5; Erechim, Santa Cruz do Sul, Canoas, Esteio e 15 municípios da AGESAN têm tabela própria e ficam de fora",
+   "fontes": [
+    {
+     "rotulo": "Corsan, Anexo 5: Tabela Tarifária de julho de 2026 (PDF)",
+     "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/ANEXO-5-TABELA-TARIFARIA_AGOSTO-2026.pdf",
+     "sha256": "031db370dd42c1817ac3347926b449059de812500830ba12cbecf01dd43547e3",
+     "localizador": "Tabela I e observações, PDF p.1-2; Apêndice 1 (298 municípios)"
+    },
+    {
+     "rotulo": "Corsan, Tabela de Exponenciais (PDF)",
+     "url": "https://corsan.com.br/wp-content/uploads/2025/11/16095743-tabela-exponenciais.pdf",
+     "sha256": "17a7825765898491fdb6c46e767746326bab78cb89f9b8f349dd63c4e1022b03",
+     "localizador": "coluna BASICA (Residencial B); conferida na imagem"
+    },
+    {
+     "rotulo": "Corsan, Tabela Tarifária de janeiro de 2026 (298 municípios)",
+     "url": "https://www.corsan.com.br/wp-content/uploads/2025/11/Tabela-Tarifaria-298-municipios_2026-x.pdf",
+     "sha256": "ce501a76014007379a05853c9536947b8a2225d425c574daab2248ea21a94b61",
+     "localizador": "Tabela I; base do reajuste de julho"
+    },
+    {
+     "rotulo": "Corsan, Tabela Tarifária de janeiro de 2025 (298 municípios)",
+     "url": "https://corsan.com.br/upload/arquivos/202501/09174612-5-2025-tabela-tarifaria-298-municipios.pdf",
+     "sha256": "7ddfa02868f80fca6177ecab7ee54a391df411bba2abb7e80492730ad3cac3ed",
+     "localizador": "Tabela I; base do reajuste de janeiro de 2026"
+    },
+    {
+     "rotulo": "Corsan, comunicado de criação da categoria Residencial Social e revisão tarifária (12/06/2026)",
+     "url": "https://corsan.com.br/comunicado-de-criacao-de-categoria-residencial-social-e-revisao-tarifaria/",
+     "sha256": "312e37e943d3b00580ba534cea4f90116a13e6564bf6b4604c9f5adea3bb2425",
+     "localizador": "texto: RED 892/2026 e revisão de 5,76%; lista de municípios do Anexo 2"
+    },
+    {
+     "rotulo": "Corsan, tabela dos 249 municípios do comunicado (PDF)",
+     "url": "https://corsan.com.br/wp-content/uploads/2026/06/AGERGS_2026_TABELA-TARIFARIA-249-MUNICIPIOS_TABELA-I.pdf",
+     "sha256": "9a274a17a7382f9ca86d9fcefcfd6a892bade4316eb9a27456287514e74d2951",
+     "localizador": "Tabela I, valores idênticos aos do Anexo 5"
+    },
+    {
+     "rotulo": "Corsan, página Sistema Tarifário",
+     "url": "https://www.corsan.com.br/sistematarifario/",
+     "sha256": "dd7e69fd5683a37e4d26a10e3e1d7765eddd3e55f3f9b52b810d47098e7294de",
+     "localizador": "forma de cobrança: serviço básico mais consumo medido com o exponencial de cada faixa"
+    },
+    {
+     "rotulo": "AGERGS, Regulamento dos Serviços de Água e Esgoto da Corsan (RSAE 2008)",
+     "url": "https://agergs.rs.gov.br/upload/arquivo1974.pdf",
+     "sha256": "517289235820d3db0ffb65bc7e92765c416aaeeee1b0a2fcdc76e9815e879309",
+     "localizador": "itens 3.31 e 3.32, arts. 67 (frações de m³ desprezadas), 92 e 93"
+    }
+   ],
+   "unidade": "por economia",
+   "categorias": {
+    "residencial": {
+     "rotulo": "Residencial (categoria básica)",
+     "consumoInteiro": true,
+     "agua": {
+      "fixo": 43.39,
+      "faixas": [],
+      "exponencial": {
+       "preco": 9.15,
+       "minimoM3": 0,
+       "degraus": [
+        {
+         "de": 1,
+         "n": 1.0
+        },
+        {
+         "de": 10,
+         "n": 1.0
+        },
+        {
+         "de": 11,
+         "n": 1.0
+        },
+        {
+         "de": 12,
+         "n": 1.0
+        },
+        {
+         "de": 13,
+         "n": 1.0
+        },
+        {
+         "de": 14,
+         "n": 1.0
+        },
+        {
+         "de": 15,
+         "n": 1.0
+        },
+        {
+         "de": 16,
+         "n": 1.0
+        },
+        {
+         "de": 17,
+         "n": 1.0
+        },
+        {
+         "de": 18,
+         "n": 1.0
+        },
+        {
+         "de": 19,
+         "n": 1.0
+        },
+        {
+         "de": 20,
+         "n": 1.0
+        },
+        {
+         "de": 21,
+         "n": 1.01
+        },
+        {
+         "de": 22,
+         "n": 1.02
+        },
+        {
+         "de": 23,
+         "n": 1.03
+        },
+        {
+         "de": 24,
+         "n": 1.04
+        },
+        {
+         "de": 25,
+         "n": 1.05
+        },
+        {
+         "de": 26,
+         "n": 1.06
+        },
+        {
+         "de": 27,
+         "n": 1.07
+        },
+        {
+         "de": 28,
+         "n": 1.08
+        },
+        {
+         "de": 29,
+         "n": 1.08
+        },
+        {
+         "de": 30,
+         "n": 1.09
+        },
+        {
+         "de": 31,
+         "n": 1.09
+        },
+        {
+         "de": 36,
+         "n": 1.1
+        },
+        {
+         "de": 41,
+         "n": 1.1
+        },
+        {
+         "de": 46,
+         "n": 1.11
+        },
+        {
+         "de": 51,
+         "n": 1.11
+        },
+        {
+         "de": 101,
+         "n": 1.13
+        },
+        {
+         "de": 151,
+         "n": 1.1287
+        },
+        {
+         "de": 201,
+         "n": 1.1275
+        },
+        {
+         "de": 301,
+         "n": 1.125
+        },
+        {
+         "de": 501,
+         "n": 1.12
+        },
+        {
+         "de": 1001,
+         "n": 1.11
+        },
+        {
+         "de": 2001,
+         "n": 1.1
+        },
+        {
+         "de": 9001,
+         "n": 1.0858
+        }
+       ]
+      }
+     },
+     "esgoto": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": null,
+        "preco": 6.4
+       }
+      ]
+     }
+    }
+   },
+   "metodoNaoVerificado": "A fórmula da água (serviço básico mais preço-base vezes o consumo elevado ao expoente) foi conferida nas tarifas mínimas oficiais, mas duas leituras não foram verificadas em conta ou exemplo oficial: o expoente de um consumo que não coincide com uma linha da tabela (de 32 a 35 m³ usa-se a linha de 31; usar a de 36 somaria R$ 15,96 à água de 35 m³) e o esgoto cobrado pelo preço impresso de R$ 6,40 por m³ de água medida. Até 31 m³ a primeira leitura não pesa.",
+   "observacoes": [
+    "Água: serviço básico mais o preço-base do m³ vezes o consumo elevado ao expoente da faixa (PB × C^n). A tabela publica a tarifa mínima de R$ 134,89 para a Residencial B (R$ 43,39 mais 10 m³ a R$ 9,15), que é a da ligação sem hidrômetro e coincide com a conta medida de exatamente 10 m³. A fórmula foi conferida em números oficiais: a tarifa mínima de cada categoria nas tabelas de janeiro de 2025, janeiro de 2026 e julho de 2026 é reproduzida ao centavo, inclusive a industrial, que só fecha com o expoente 1,03 da coluna IND no consumo de 30 m³ (R$ 547,66 em julho de 2026; com 1,02 seriam R$ 534,52).",
+    "Ligação com hidrômetro: o Regulamento da AGERGS manda cobrar o serviço básico mais o consumo medido (art. 92, alínea a) e reserva a demanda mínima de consumo às economias não hidrometradas (art. 69), por isso a simulação não aplica mínimo de 10 m³: com consumo zero a conta é só o serviço básico, e a 5 m³ são R$ 121,14. A coluna \"tarifa mínima sem HD\" vale para a ligação sem hidrômetro, não simulada.",
+    "Faixa do expoente: a tabela lista o primeiro consumo de cada faixa (1, 10, 11 a 31, 36, 41, 46, 51, 101, 151...); a simulação usa o expoente da última linha que não passa do consumo (32 a 35 m³ usam a linha de 31). A tabela não diz o limite superior de cada faixa, e essa leitura vem do texto \"exponencial definido para cada faixa de consumo\" na página Sistema Tarifário.",
+    "Esgoto: \"à razão de 70% para ESGOTO TRATADO e 50% para ESGOTO COLETADO do valor do m³ de consumo na primeira faixa\" (Anexo 5), ou seja, R$ 6,40 por m³ de água faturada (R$ 4,57 quando só há coleta), sem expoente e sem serviço básico próprio; o Anexo 5 diz que é cobrado \"de acordo com o consumo ou volume mínimo da categoria\", e a simulação lê o consumo para a ligação medida (o volume mínimo vale para a não hidrometrada). A simulação usa o esgoto coletado e tratado; onde só há coleta, a conta de esgoto é a de R$ 4,57 por m³, não simulada. A cobrança pela disponibilidade do esgoto (imóvel sem ligação) segue as Resoluções Normativa AGERGS 74/2026 e CSR AGESAN 05/2026, não lidas, e não é simulada.",
+    "Consumo em metros cúbicos inteiros: o Regulamento da AGERGS manda desprezar as frações de metro cúbico na leitura (art. 67), e a simulação trunca o consumo informado.",
+    "Arredondamento não verificado: os preços impressos têm duas casas, mas o preço-base de julho parece vir de 8,65 vezes 1,0576 (9,148...) e o esgoto, de 70% desse valor (6,404...); a simulação usa os valores impressos. Com o valor sem arredondar, a água cairia até R$ 0,29 e o esgoto subiria até R$ 0,38 a 100 m³, com efeito líquido de poucos centavos (R$ 0,08 a 100 m³ e R$ 0,06 a 200 m³; conta minha).",
+    "A tabela oficial faz o valor da água cair ao passar de 200 para 201 m³ (de R$ 3.662,43 para R$ 3.659,77) e nos degraus seguintes (300, 500, 1.000, 2.000 e 9.000 m³), porque o expoente diminui em consumos altos; a simulação reproduz a tabela como está (conta minha).",
+    "Cobertura: a Tabela I vale, segundo o Anexo 5, para os 298 municípios do Apêndice 1, todos casados com o IBGE e com o prestador no SINISA 2024. O comunicado de 12/06/2026 cita a RED 892/2026 da AGERGS e lista 247 municípios (o arquivo se chama 249); os outros 51 do Apêndice 1 não estão nessa lista, o Anexo 5 cita resoluções da AGESAN, e o ato do regulador deles não foi localizado.",
+    "Outras categorias da Tabela I (bica pública, residencial social, social da Lei 14.898/2024, comercial, pública e industrial) não foram simuladas. Na social da Lei 14.898/2024, a tarifa mínima publicada (R$ 67,44) não fecha com o serviço básico mais 10 m³ ao preço-base impresso (R$ 67,50), e não há regra publicada de como o preço-base da Residencial B, cobrado acima de 15 m³, se combina com o expoente.",
+    "A revisão de 5,76% de julho de 2026 e o reajuste de 4,68% de janeiro de 2026 são reproduzidos nos valores (preço-base, serviço básico e esgoto em todas as categorias, com diferença de até R$ 0,01 em esgoto tratado); os atos da AGERGS não foram lidos, e a RED 892/2026 consta só como citada pela Corsan."
+   ],
+   "exemplos": {
+    "residencial": {
+     "0": 43.39,
+     "5": 121.14,
+     "10": 198.89,
+     "11": 214.44,
+     "20": 354.39,
+     "21": 375.88,
+     "25": 472.08,
+     "30": 608.2,
+     "31": 628.16,
+     "35": 708.41,
+     "36": 745.15,
+     "50": 1066.91,
+     "51": 1088.95,
+     "100": 2201.91,
+     "101": 2373.64,
+     "150": 3636.11,
+     "151": 3645.1,
+     "200": 4942.43
+    }
+   },
+   "acessado": "2026-10-17",
+   "municipios": [
+    "4300034",
+    "4300059",
+    "4300109",
+    "4300208",
+    "4300307",
+    "4300406",
+    "4300505",
+    "4300554",
+    "4300604",
+    "4300638",
+    "4300646",
+    "4300802",
+    "4300851",
+    "4300901",
+    "4301008",
+    "4301057",
+    "4301107",
+    "4301206",
+    "4301305",
+    "4301404",
+    "4301552",
+    "4301636",
+    "4301651",
+    "4301701",
+    "4301750",
+    "4301800",
+    "4301859",
+    "4301875",
+    "4301909",
+    "4302006",
+    "4302105",
+    "4302204",
+    "4302303",
+    "4302378",
+    "4302402",
+    "4302451",
+    "4302501",
+    "4302600",
+    "4302709",
+    "4302808",
+    "4302907",
+    "4303004",
+    "4303103",
+    "4303202",
+    "4303301",
+    "4303400",
+    "4303509",
+    "4303608",
+    "4303673",
+    "4303707",
+    "4303806",
+    "4304002",
+    "4304101",
+    "4304200",
+    "4304309",
+    "4304507",
+    "4304630",
+    "4304663",
+    "4304671",
+    "4304705",
+    "4304804",
+    "4304903",
+    "4304952",
+    "4305009",
+    "4305124",
+    "4305173",
+    "4305207",
+    "4305306",
+    "4305355",
+    "4305405",
+    "4305439",
+    "4305447",
+    "4305454",
+    "4305504",
+    "4305603",
+    "4305702",
+    "4305801",
+    "4305900",
+    "4305959",
+    "4306007",
+    "4306056",
+    "4306106",
+    "4306205",
+    "4306304",
+    "4306320",
+    "4306379",
+    "4306403",
+    "4306502",
+    "4306601",
+    "4306700",
+    "4306734",
+    "4306767",
+    "4306809",
+    "4306908",
+    "4306932",
+    "4306957",
+    "4306973",
+    "4307104",
+    "4307203",
+    "4307302",
+    "4307401",
+    "4307500",
+    "4307559",
+    "4307807",
+    "4307864",
+    "4307906",
+    "4308003",
+    "4308052",
+    "4308102",
+    "4308201",
+    "4308300",
+    "4308409",
+    "4308458",
+    "4308508",
+    "4308607",
+    "4308706",
+    "4308805",
+    "4308904",
+    "4309001",
+    "4309050",
+    "4309100",
+    "4309209",
+    "4309308",
+    "4309407",
+    "4309506",
+    "4309605",
+    "4309704",
+    "4309803",
+    "4309902",
+    "4310009",
+    "4310207",
+    "4310306",
+    "4310330",
+    "4310405",
+    "4310413",
+    "4310439",
+    "4310504",
+    "4310538",
+    "4310579",
+    "4310603",
+    "4310702",
+    "4310751",
+    "4310850",
+    "4310900",
+    "4311007",
+    "4311106",
+    "4311122",
+    "4311205",
+    "4311239",
+    "4311254",
+    "4311304",
+    "4311403",
+    "4311502",
+    "4311601",
+    "4311700",
+    "4311718",
+    "4311759",
+    "4311809",
+    "4311908",
+    "4311981",
+    "4312005",
+    "4312054",
+    "4312104",
+    "4312203",
+    "4312252",
+    "4312302",
+    "4312401",
+    "4312450",
+    "4312476",
+    "4312500",
+    "4312617",
+    "4312658",
+    "4312708",
+    "4312807",
+    "4312906",
+    "4313003",
+    "4313037",
+    "4313102",
+    "4313201",
+    "4313300",
+    "4313359",
+    "4313508",
+    "4313607",
+    "4313656",
+    "4313706",
+    "4313805",
+    "4313904",
+    "4313953",
+    "4314001",
+    "4314068",
+    "4314100",
+    "4314159",
+    "4314175",
+    "4314209",
+    "4314308",
+    "4314498",
+    "4314506",
+    "4314548",
+    "4314605",
+    "4314704",
+    "4315008",
+    "4315107",
+    "4315206",
+    "4315305",
+    "4315404",
+    "4315503",
+    "4315552",
+    "4315602",
+    "4315701",
+    "4315800",
+    "4315909",
+    "4316105",
+    "4316204",
+    "4316402",
+    "4316451",
+    "4316501",
+    "4316600",
+    "4316709",
+    "4316907",
+    "4316956",
+    "4316972",
+    "4317004",
+    "4317202",
+    "4317301",
+    "4317400",
+    "4317509",
+    "4317608",
+    "4317707",
+    "4317806",
+    "4317905",
+    "4317954",
+    "4318002",
+    "4318101",
+    "4318200",
+    "4318408",
+    "4318424",
+    "4318440",
+    "4318465",
+    "4318499",
+    "4318507",
+    "4318606",
+    "4318622",
+    "4318804",
+    "4318903",
+    "4319000",
+    "4319109",
+    "4319158",
+    "4319208",
+    "4319356",
+    "4319406",
+    "4319505",
+    "4319604",
+    "4319703",
+    "4319802",
+    "4320107",
+    "4320206",
+    "4320230",
+    "4320305",
+    "4320354",
+    "4320404",
+    "4320503",
+    "4320552",
+    "4320602",
+    "4320651",
+    "4320701",
+    "4320800",
+    "4320909",
+    "4321006",
+    "4321105",
+    "4321204",
+    "4321303",
+    "4321329",
+    "4321352",
+    "4321402",
+    "4321436",
+    "4321477",
+    "4321501",
+    "4321667",
+    "4321808",
+    "4321907",
+    "4321956",
+    "4322004",
+    "4322103",
+    "4322202",
+    "4322301",
+    "4322376",
+    "4322509",
+    "4322608",
+    "4322806",
+    "4322905",
+    "4323002",
+    "4323101",
+    "4323200",
+    "4323309",
+    "4323457",
+    "4323507",
+    "4323705",
+    "4323804"
+   ]
   }
  ]
 }
