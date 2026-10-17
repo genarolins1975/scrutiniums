@@ -38,6 +38,12 @@ def preparar(destino: Path, preservado_em: str):
             (candidate / source['arquivo']).write_bytes(compressed)
             source.update(commitRepositorio=commit, sha256Original=hashlib.sha256(raw).hexdigest(), sha256Arquivo=hashlib.sha256(compressed).hexdigest())
         (candidate / 'fontes.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+        # As coletas oficiais da economia seguem com o candidato, com os hashes já registrados.
+        coletas = SEED / 'coletas.json'
+        if coletas.exists():
+            (candidate / 'coletas.json').write_bytes(coletas.read_bytes())
+            for fonte in json.loads(coletas.read_text())['fontes']:
+                (candidate / fonte['arquivo']).write_bytes((SEED / fonte['arquivo']).read_bytes())
         metadata, sources = carregar_fontes(candidate)
         outputs = serializar(normalizar(metadata, sources))
         if len(outputs) != 5:

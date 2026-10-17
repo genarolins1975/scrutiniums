@@ -1,4 +1,4 @@
-import { CAPITULOS_AGRO } from '@/lib/agro/modelo';
+import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from '@/lib/agro/modelo';
 /**
  * Vitrine da página inicial: o que cada observatório já publica.
  *
@@ -260,18 +260,18 @@ export function vitrines(idioma: Idioma = "pt"): Record<DominioId, Vitrine> {
     agro: {
       id: "agro",
       imagem: "/home/agro.svg",
-      contagem: { valor: fmt(CAPITULOS_AGRO.length), unidade: "páginas por pergunta" },
-      contagemIndice: { tipo: "simples", quantidade: CAPITULOS_AGRO.length, unidade: "paginas_por_pergunta" },
+      contagem: { valor: fmt(CAPITULOS_AGRO.length + PERGUNTAS_AGRO.length), unidade: "páginas por pergunta" },
+      contagemIndice: { tipo: "simples", quantidade: CAPITULOS_AGRO.length + PERGUNTAS_AGRO.length, unidade: "paginas_por_pergunta" },
       paineis: [
-        { titulo: "Panorama Brasil", href: "/agronegocio/panorama", descricao: "Crédito rural, trabalho e segurança alimentar nos recortes próprios de cada fonte." },
-        { titulo: "Atlas e comparação", href: "/agronegocio/atlas", descricao: "UFs lado a lado com valores, denominadores e períodos identificados." },
-        { titulo: "Margem e caixa", href: "/agronegocio/custos-renda", descricao: "Cenários com parâmetros do usuário; sem lucro observado ou recomendação de investimento." },
+        { titulo: "Tamanho na economia", href: "/agronegocio/tamanho", descricao: "Parcela da agropecuária no valor adicionado, crescimento em volume e peso nas exportações." },
+        { titulo: "Conjuntura do ano", href: "/agronegocio/conjuntura", descricao: "Safra estimada pelo IBGE, ritmo trimestral, exportações do ano e crédito rural." },
+        { titulo: "Custo dos insumos", href: "/agronegocio/insumos", descricao: "Fertilizantes e defensivos importados, valor por tonelada e relação com a soja exportada." },
+        { titulo: "Mercados e dependência", href: "/agronegocio/mercados", descricao: "O que o agro exporta, para quais países, e de onde vêm os fertilizantes." },
         { titulo: "Sete cadeias", href: "/agronegocio/cadeias", descricao: "Mecanismos de soja, milho, arroz, feijão, café, carne bovina e leite; cobertura dos dados por cadeia." },
-        { titulo: "Alimentos e orçamento", href: "/agronegocio/alimentos-consumo", descricao: "Segurança alimentar observada e cenários de orçamento familiar, sem transmitir entradas pessoais." },
-        { titulo: "Aprenda e experimente", href: "/agronegocio/aprenda", descricao: "Percursos, glossário, laboratórios e catálogo com categorias e limites." },
+        { titulo: "Aprenda e experimente", href: "/agronegocio/aprenda", descricao: "Percursos, glossário, laboratórios de margem e orçamento e catálogo com categorias e limites." },
       ],
-      fontes: "BCB/MDCR e SGS, MTE/Novo Caged e IBGE, por reuso de snapshots preservados na plataforma.",
-      situacao: "Cobertura parcial: produção física, comércio exterior, custos de referência e camadas ambientais ainda sem coleta validada. Explicações e cenários não substituem essas medições.",
+      fontes: "IBGE (Contas Nacionais Trimestrais e LSPA) e MDIC (Comex Stat) por coleta oficial automática; BCB/MDCR, MTE/Novo Caged e IBGE por snapshots preservados na plataforma.",
+      situacao: "Cobertura parcial: produção por estado e cadeia, custos de referência da Conab e camadas ambientais ainda sem coleta validada. Explicações e cenários não substituem essas medições.",
       metodologia: { href: "/agronegocio/metodologia", rotulo: "Cobertura, fontes e método" },
     },
   };

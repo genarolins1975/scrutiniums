@@ -43,7 +43,7 @@ const contagensIndice: Record<DominioId, { numeros: readonly number[]; chave: (t
   contas: { numeros: [PAINEIS_COM_DADOS.length, CAPITULOS.length], chave: "home.indice.capitulos_com_dados", pt: "capítulos com dados", en: "chapters with data" },
   estados: { numeros: [primariosEstaduais.cobertura.ufs], chave: "home.indice.unidades_federacao", pt: "unidades da Federação", en: "Federation Units" },
   saneamento: { numeros: [CAPITULOS_SANEAMENTO.filter((c) => c.situacao !== "em_preparacao").length, CAPITULOS_SANEAMENTO.length], chave: "home.indice.capitulos_com_dados", pt: "capítulos com dados", en: "chapters with data" },
-  agro: { numeros: [8], chave: "home.indice.paginas_por_pergunta", pt: "páginas por pergunta", en: "pages by question" },
+  agro: { numeros: [12], chave: "home.indice.paginas_por_pergunta", pt: "páginas por pergunta", en: "pages by question" },
   gas: { numeros: [PAGINAS_GAS.length], chave: "home.indice.paginas_por_pergunta", pt: "páginas por pergunta", en: "pages by question" },
 };
 export const INDICE_HOME = DOMINIOS.map((dominio, i) => {

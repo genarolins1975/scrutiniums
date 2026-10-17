@@ -45,6 +45,11 @@ def carregar_fontes(seed=SEED):
         original=gzip.decompress(raw)
         if hashlib.sha256(original).hexdigest()!=source['sha256Original']: raise ValueError('Original divergente: '+source['id'])
         result[source['id']]=json.loads(original)
+    # Coletas oficiais da economia (Contas Nacionais, LSPA, Comex Stat), com hashes próprios.
+    from .economia import carregar as carregar_coletas
+    coletas,conteudo=carregar_coletas(seed)
+    manifest['coletas']=coletas['fontes'] if coletas else []
+    if conteudo: result['coletas']=conteudo
     return manifest,result
 
 
@@ -107,7 +112,11 @@ def normalizar(manifest, fontes):
     ipca=fontes['inflacao']; indices=ipca[0]['resultados'][0]['series'][0]['serie']
     inflacao={'indices':[{'mes':k[:4]+'-'+k[4:],'indice':numero(v)} for k,v in sorted(indices.items())],'baseOriginal':'dezembro de 1993 = 100','fonte':'inflacao','limite':'IPCA geral nacional, não inflação de alimentos nem deflator específico de insumos agrícolas.'}
     if any(r['indice'] is None or r['indice']<=0 for r in inflacao['indices']): raise ValueError('Índice de preços inválido')
-    return {'versao':'agro-1','geradoEm':manifest['preservadoEm'],'fontes':manifest['fontes'],'credito':credito,'trabalho':{'formal':formal,'ocupacoes':ocupacoes,'perfisOcupacao':perfis,'grupoOcupacional':'Trabalhadores qualificados da agropecuária, florestais, da caça e da pesca','universoOcupacao':'Censo Demográfico 2022, pessoas de 14 anos ou mais ocupadas com rendimento. Grupo de ocupação não é CNAE, não cobre toda ocupação agro e não distingue formalidade.','fonteOcupacoes':'ocupacoes'},'alimentos':alimentos,'inflacao':inflacao,'producao':[],'bloqueios':[{'id':id,'estado':'BLOQUEADO_REDE','motivo':motivo} for id,motivo in [('producao','IBGE PAM/PPM/Abate: CONNECT 403; sem área, produção, rendimento, leite, rebanho ou abate integrados.'),('custos','Conab: CONNECT 403; sem referência observada validada de custo/preço de uma lavoura.'),('alimentos-precos','IBGE/Conab: sem subitens de alimentos e preços por produto integrados. IPCA geral não os substitui.'),('seguro','MAPA/BCB: sem base de seguro subvencionado/Proagro validada.'),('comercio','Comex Stat: CONNECT 403; NCM, destinos, quantidades e FOB ainda não capturados.'),('ambiente','INPE e fontes meteorológicas: sem camadas produção/clima/uso do solo compatíveis integradas.'),('familiar','Censo Agro e programas: sem identificação observada válida de agricultura familiar por cadeia/território.'),('internacional','Sem base FAOSTAT harmonizada validada nesta sessão.')]]}
+    from .economia import normalizar as normalizar_economia
+    economia=normalizar_economia(fontes['coletas']) if fontes.get('coletas') else None
+    campos=['id','arquivo','arquivoRepositorio','commitRepositorio','sha256Original','sha256Arquivo','url','nome','licenca','estadoAcesso','limite','capturadoEm']
+    coletadas=[{k:f[k] for k in campos} for f in manifest.get('coletas',[])]
+    return {'versao':'agro-2','geradoEm':manifest['preservadoEm'],'fontes':manifest['fontes']+coletadas,'economia':economia,'credito':credito,'trabalho':{'formal':formal,'ocupacoes':ocupacoes,'perfisOcupacao':perfis,'grupoOcupacional':'Trabalhadores qualificados da agropecuária, florestais, da caça e da pesca','universoOcupacao':'Censo Demográfico 2022, pessoas de 14 anos ou mais ocupadas com rendimento. Grupo de ocupação não é CNAE, não cobre toda ocupação agro e não distingue formalidade.','fonteOcupacoes':'ocupacoes'},'alimentos':alimentos,'inflacao':inflacao,'producao':[],'bloqueios':[{'id':id,'estado':'BLOQUEADO_REDE','motivo':motivo} for id,motivo in [('producao','IBGE PAM/PPM/Abate por cadeia e UF ainda não integrados: sem área, produção, rendimento, leite, rebanho ou abate territoriais. A safra nacional estimada pelo LSPA está em economia.safra.'),('custos','Conab: sem custo de produção de referência por lavoura integrado (o portal não respondeu na coleta de 17/10/2026). Fertilizantes e defensivos importados estão em economia.comercio.insumos, sem preço pago na fazenda.'),('alimentos-precos','IBGE/Conab: sem subitens de alimentos e preços por produto integrados. IPCA geral não os substitui.'),('seguro','MAPA/BCB: sem base de seguro subvencionado/Proagro validada.'),('logistica','Sem corredores, portos e armazenagem documentados. Exportações e importações por capítulo, NCM e país estão em economia.comercio; não descrevem rotas.'),('ambiente','INPE e fontes meteorológicas: sem camadas produção/clima/uso do solo compatíveis integradas.'),('familiar','Censo Agro e programas: sem identificação observada válida de agricultura familiar por cadeia/território.'),('internacional','Sem base FAOSTAT harmonizada validada nesta sessão.')]]}
 
 
 def serializar(snapshot):
