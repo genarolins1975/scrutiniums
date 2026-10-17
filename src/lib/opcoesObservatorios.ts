@@ -14,7 +14,7 @@ const judiciario: OpcaoObservatorio = {
   nomeCurto: "Judiciário",
   pergunta: "Quanto custa o Judiciário, quanto tempo leva e como os tribunais se comparam?",
   descricao: "Recursos, tempos, filas e indicadores oficiais da Justiça Estadual, Federal e do Trabalho. Módulo conectado ao Observatório Brasileiro de Eficiência Estatal.",
-  descricaoCurta: "CNJ, Justiça em Números: três ramos, 57 tribunais, despesas, tempos, congestionamento e IPC-Jus oficial. Baixa processual não comprova cumprimento do direito.",
+  descricaoCurta: "CNJ: três ramos, 57 tribunais, recursos e tempos. Compare também acesso, demora e cumprimento em outros países com o WJP. Baixa processual não comprova cumprimento do direito.",
   chips: ["Recursos", "Tempos", "Filas", "Tribunais"],
   rotaRaiz: "/eficiencia-estatal/judiciario",
   rotaApresentacao: "/eficiencia-estatal/judiciario",

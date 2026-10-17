@@ -1,6 +1,7 @@
 export const BASE_JUDICIARIO = '/eficiencia-estatal/judiciario';
 export const CAPITULOS = [
   ['panorama', 'Panorama', 'O que entra, o que sai e o que permanece?'],
+  ['internacional', 'Brasil e outros países', 'Como a Justiça funciona para as pessoas?'],
   ['recursos', 'Recursos e custos', 'Quanto custa a Justiça e o que esse valor mede?'],
   ['tempo', 'Tempo de resposta', 'Onde se acumula a espera?'],
   ['filas', 'Filas e capacidade', 'As saídas acompanham as entradas?'],

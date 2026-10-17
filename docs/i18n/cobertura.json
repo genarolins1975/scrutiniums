@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "babd92c791425489e2dea65ecd86ed977a1283f433fbeedae6771a9f2a3d45e2",
-    "arquivos_analisados": 1073,
-    "fontes_sha256": "c297eb2b8efb5e80f1604b7a142760200df6fdc49cf78dcfbebb572ed7f006bc",
-    "pendencias_sha256": "2ff4104e36c6f1a74e5b3ec4409d41f39b56f1608e5d8667a23aac40ff64c0ac",
+    "arquivos_analisados": 1078,
+    "fontes_sha256": "683a2035309e6e10ff17e1ca3ca4bb36fc3b1bb9f64160629b863c55be4a3f75",
+    "pendencias_sha256": "6aec7fb6213b86ab065379f940f3ba6abc04684d423da747daf4e84cbff94363",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -82,6 +82,11 @@
       },
       {
         "path": "src/components/eficiencia/entrada/Entrada.module.css",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/eficiencia/judiciario/Internacional.module.css",
         "dominio": "eficiencia",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
@@ -326,20 +331,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 217,
+        "arquivos": 222,
         "candidatos": {
-          "jsx_text": 2659,
-          "atributos": 894,
-          "props": 1191,
-          "outros_literais": 6940,
-          "templates": 654,
-          "expressoes_nao_resolvidas": 6800,
-          "chaves_objetos": 4186
+          "jsx_text": 2812,
+          "atributos": 969,
+          "props": 1207,
+          "outros_literais": 7183,
+          "templates": 665,
+          "expressoes_nao_resolvidas": 7092,
+          "chaves_objetos": 4334
         },
         "exclusoes": {
-          "importacoes": 809,
-          "atributos_tecnicos": 3109,
-          "tipos": 409
+          "importacoes": 839,
+          "atributos_tecnicos": 3136,
+          "tipos": 420
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -348,7 +353,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 23324,
+        "candidatos_nao_catalogados": 24262,
         "percentual_traduzido": null
       },
       "rotas": {
