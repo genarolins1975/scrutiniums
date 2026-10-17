@@ -38,7 +38,7 @@ function numero(idioma: Idioma) {
 function emMilhoes(idioma: Idioma) {
   const n = numero(idioma);
   const tx = txEm(idioma);
-  return (v: number) => tx(`R$ ${n(v / 1e6, 1)} milhões`, `R$ ${n(v / 1e6, 1)} million`);
+  return (v: number) => tx(`R$ ${n(v / 1e6, 1)} milhões`, `R$ ${n(v / 1e6, 1)} million`);
 }
 
 function Controle({
@@ -663,12 +663,12 @@ export function LabValorPerdido({ cortadaTwh, periodo, pldMenor, pldNota }: { co
           <Cartao
             destaque
             rotulo={tx("Valor da energia não gerada", "Value of the energy not generated")}
-            valor={tx(`R$ ${n(valorBi, 1)} bilhões`, `R$ ${n(valorBi, 1)} billion`)}
+            valor={tx(`R$ ${n(valorBi, 1)} bilhões`, `R$ ${n(valorBi, 1)} billion`)}
             nota={`${n(cortadaTwh, 1)} TWh × R$ ${n(preco, 2)}/MWh`}
           />
           <Cartao
             rotulo={tx("Por MWh de diferença no preço", "Per MWh of difference in the price")}
-            valor={tx(`R$ ${n((cortadaTwh * 1e6) / 1e6, 1)} milhões`, `R$ ${n((cortadaTwh * 1e6) / 1e6, 1)} million`)}
+            valor={tx(`R$ ${n((cortadaTwh * 1e6) / 1e6, 1)} milhões`, `R$ ${n((cortadaTwh * 1e6) / 1e6, 1)} million`)}
             nota={tx("cada R$ 1/MWh a mais na régua soma isto ao valor", "each extra R$ 1/MWh on the yardstick adds this to the value")}
           />
         </div>
