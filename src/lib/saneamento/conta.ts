@@ -42,7 +42,7 @@ function servico(t: TabelaServico, c: number, nome: "agua" | "esgoto"): { total:
     total += v;
     linhas.push({
       servico: nome,
-      rotulo: c <= e.minimoM3 ? `Mínimo de ${fmt(e.minimoM3)} m³ (cobrado mesmo com consumo menor)` : `Consumo: volume elevado a ${fmtExpoente(n)}`,
+      rotulo: e.minimoM3 > 0 && c <= e.minimoM3 ? `Mínimo de ${fmt(e.minimoM3)} m³ (cobrado mesmo com consumo menor)` : `Consumo: volume elevado a ${fmtExpoente(n)}`,
       volume: base,
       preco: e.preco,
       valor: reais(v),
@@ -55,7 +55,7 @@ function servico(t: TabelaServico, c: number, nome: "agua" | "esgoto"): { total:
     total += v;
     linhas.push({
       servico: nome,
-      rotulo: f.ate == null ? `Acima de ${fmt(f.de)} m³` : `De ${fmt(f.de)} a ${fmt(f.ate)} m³`,
+      rotulo: f.ate == null ? (f.de === 0 ? "Todo o volume" : `Acima de ${fmt(f.de)} m³`) : `De ${fmt(f.de)} a ${fmt(f.ate)} m³`,
       volume: vol,
       preco: f.preco,
       valor: reais(v),
@@ -142,10 +142,11 @@ export function linhasExportacao(tabelas: TarifaVerificada[], consumos: number[]
 export function leituras(t: TarifaVerificada, categoria: string, consumo: number) {
   const cat = t.categorias[categoria];
   const atual = calcularConta(cat, consumo);
-  const proximo = acimaDoLimite(cat, consumo + 1) ? null : calcularConta(cat, consumo + 1);
+  // `atual.consumo` é o volume faturado (inteiro quando o prestador despreza a fração); preço médio e mais 1 m³ partem dele
+  const proximo = acimaDoLimite(cat, atual.consumo + 1) ? null : calcularConta(cat, atual.consumo + 1);
   return {
     conta: atual,
-    precoMedio: consumo > 0 ? atual.total / consumo : null,
+    precoMedio: atual.consumo > 0 ? atual.total / atual.consumo : null,
     m3Adicional: proximo ? Math.round((proximo.total - atual.total) * 100) / 100 : null,
   };
 }

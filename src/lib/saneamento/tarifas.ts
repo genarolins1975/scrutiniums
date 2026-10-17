@@ -7,7 +7,8 @@ import dados from "./dados/tarifas.json";
  */
 export type Faixa = { de: number; ate: number | null; preco: number };
 /**
- * Preço-base elevado a um expoente que depende da faixa de consumo (Corsan: PB × C^n). Abaixo de `minimoM3` fatura-se o mínimo.
+ * Preço-base elevado a um expoente que depende da faixa de consumo (Corsan: PB × C^n). Abaixo de `minimoM3` fatura-se o mínimo
+ * (0 quando a ligação medida não tem consumo mínimo).
  * `degraus` traz o primeiro consumo de cada faixa e o expoente dela; vale o último degrau cujo início não passa do consumo.
  */
 export type Exponencial = { preco: number; minimoM3: number; degraus: { de: number; n: number }[] };

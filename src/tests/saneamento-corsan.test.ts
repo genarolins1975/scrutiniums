@@ -8,8 +8,9 @@ import { TARIFAS, prestadorComTarifa, tarifa } from "@/lib/saneamento/tarifas";
 import { calcularConta, expoente, leituras, linhasExportacao } from "@/lib/saneamento/conta";
 
 /**
- * Corsan (RS), Tabela I em vigor desde 01/07/2026, categoria Residencial B: serviço básico mais preço-base vezes o consumo
- * elevado ao expoente da faixa, mínimo de 10 m³, esgoto a 70% do preço-base por m³ de água.
+ * Corsan (RS), Tabela I em vigor desde 01/07/2026, categoria Residencial B, ligação com hidrômetro: serviço básico mais
+ * preço-base vezes o consumo elevado ao expoente da faixa, sem consumo mínimo (RSAE, arts. 69 e 92), esgoto a 70% do
+ * preço-base por m³ de água.
  * Os valores esperados foram calculados fora do gerador (aritmética decimal e, separadamente, em ponto flutuante) e conferidos
  * contra a tarifa mínima oficial de R$ 134,89 para 10 m³.
  */
@@ -19,12 +20,19 @@ const conta = (c: number) => calcularConta(res(), c);
 const texto = (h: string) => h.replace(/<!-- -->/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 
 describe("Corsan: conta da Residencial B", () => {
-  it("até 10 m³ a água é a tarifa mínima publicada e o esgoto é o volume mínimo a R$ 6,40", () => {
-    for (const c of [0, 5, 10]) {
-      expect(conta(c).agua, `${c} m³`).toBe(134.89); // 43,39 + 10 × 9,15
-      expect(conta(c).esgoto).toBe(64);
-      expect(conta(c).total).toBe(198.89);
-    }
+  it("ligação medida não tem mínimo: com consumo zero a conta é só o serviço básico", () => {
+    expect(conta(0).agua).toBe(43.39);
+    expect(conta(0).esgoto).toBe(0);
+    expect(conta(0).total).toBe(43.39);
+    expect(conta(5).agua).toBe(89.14); // 43,39 + 5 × 9,15
+    expect(conta(5).esgoto).toBe(32); // 5 × 6,40
+    expect(conta(5).total).toBe(121.14);
+  });
+
+  it("a 10 m³ a água medida coincide com a tarifa mínima publicada (ligação sem hidrômetro)", () => {
+    expect(conta(10).agua).toBe(134.89); // 43,39 + 10 × 9,15
+    expect(conta(10).esgoto).toBe(64);
+    expect(conta(10).total).toBe(198.89);
   });
 
   it("até 20 m³ o expoente é 1 e a conta é linear", () => {
@@ -54,10 +62,14 @@ describe("Corsan: conta da Residencial B", () => {
     expect(conta(100).esgoto).toBe(640);
   });
 
-  it("a fração de metro cúbico é desprezada", () => {
+  it("a fração de metro cúbico é desprezada e as leituras partem do volume faturado", () => {
     expect(conta(35.99).total).toBe(conta(35).total);
     expect(conta(10.9).total).toBe(conta(10).total);
+    expect(conta(10.9).consumo).toBe(10);
     expect(res().consumoInteiro).toBe(true);
+    const l = leituras(tarifa(ID)!, "residencial", 10.9);
+    expect(l.precoMedio).toBeCloseTo(198.89 / 10, 9); // não 198,89 ÷ 10,9
+    expect(l.m3Adicional).toBe(15.55); // de 10 para 11 m³: 214,44 − 198,89
   });
 
   it("a tabela oficial faz a água cair ao passar de 200 para 201 m³; a simulação mostra a tabela como está", () => {
@@ -67,8 +79,16 @@ describe("Corsan: conta da Residencial B", () => {
     expect(leituras(tarifa(ID)!, "residencial", 200).m3Adicional).toBeCloseTo(3.74, 2); // água −2,66 e esgoto +6,40
   });
 
-  it("a linha de água do detalhe mostra o expoente e o mínimo", () => {
-    expect(conta(10).linhas.find((l) => l.servico === "agua" && l.rotulo.startsWith("Mínimo"))).toBeTruthy();
+  it("o esgoto tem uma única linha, de todo o volume, sem mínimo", () => {
+    const linhas = conta(30).linhas.filter((l) => l.servico === "esgoto");
+    expect(linhas).toHaveLength(1);
+    expect(linhas[0].rotulo).toBe("Todo o volume");
+    expect(linhas[0].volume).toBe(30);
+    expect(linhas[0].valor).toBe(192);
+  });
+
+  it("a linha de água do detalhe mostra o expoente e nunca um mínimo", () => {
+    for (const c of [0, 5, 10, 30]) expect(conta(c).linhas.some((l) => l.rotulo.startsWith("Mínimo")), `${c} m³`).toBe(false);
     const l = conta(30).linhas.find((x) => x.servico === "agua" && x.rotulo.startsWith("Consumo"))!;
     expect(l.rotulo).toContain("1,09");
     expect(l.volume).toBe(30);
@@ -94,7 +114,8 @@ describe("Corsan: registro da tabela", () => {
     expect(t.metodoNaoVerificado).toContain("R$ 15,96");
     expect(t.metodoNaoVerificado).toContain("tarifas mínimas oficiais");
     const obs = t.observacoes.join(" ");
-    for (const trecho of ["547,66", "534,52", "247 municípios", "RED 892/2026", "não lidas", "Arredondamento não verificado", "67,44", "não foram simuladas", "ESGOTO TRATADO"]) expect(obs, trecho).toContain(trecho);
+    for (const trecho of ["547,66", "534,52", "247 municípios", "RED 892/2026", "não lidas", "Arredondamento não verificado", "67,44", "não foram simuladas", "ESGOTO TRATADO", "art. 69", "R$ 121,14"]) expect(obs, trecho).toContain(trecho);
+    expect(obs).toContain("não aplica mínimo de 10 m³");
     expect(t.ato).toContain("RED nº 892/2026");
     expect(Object.keys(t.categorias)).toEqual(["residencial"]);
   });
@@ -124,7 +145,7 @@ describe("Corsan: registro da tabela", () => {
     const linhas = linhasExportacao([t]);
     expect(linhas.map((l) => l[7])).toEqual([5, 10, 15, 20, 30]);
     expect(linhas.every((l) => l[11] === "calculada")).toBe(true);
-    expect(linhas.map((l) => l[10])).toEqual([198.89, 198.89, 276.64, 354.39, 608.2]);
+    expect(linhas.map((l) => l[10])).toEqual([121.14, 198.89, 276.64, 354.39, 608.2]);
   });
 });
 

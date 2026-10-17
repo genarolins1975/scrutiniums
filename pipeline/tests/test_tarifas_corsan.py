@@ -40,9 +40,13 @@ class ResidencialB(unittest.TestCase):
         for m3, esperado in tarifas.corsan["exemplos"]["residencial"].items():
             self.assertEqual(self.conta(int(m3)), Decimal(str(esperado)), f"{m3} m³")
 
-    def test_ate_10_m3_cobra_o_minimo_de_agua_e_de_esgoto(self):
-        self.assertEqual(self.conta(0), Decimal("198.89"))  # 134,89 + 64,00
-        self.assertEqual(self.conta(7), Decimal("198.89"))
+    def test_ligacao_medida_nao_tem_minimo(self):
+        # RSAE art. 69: a demanda mínima vale só para economia não hidrometrada; art. 92: serviço básico mais consumo medido
+        self.assertEqual(self.conta(0), Decimal("43.39"))
+        self.assertEqual(self.conta(5), Decimal("121.14"))  # 43,39 + 5 × 9,15 e 5 × 6,40
+        self.assertEqual(self.conta(7), Decimal("152.24"))  # 43,39 + 7 × 9,15 e 7 × 6,40
+        agua = tarifas.corsan["categorias"]["residencial"]["agua"]
+        self.assertEqual(tarifas.conta_servico(agua, 10), Decimal("134.89"))  # coincide com a tarifa mínima publicada
 
     def test_fracao_de_metro_cubico_e_desprezada(self):
         self.assertEqual(self.conta(Decimal("35.99")), self.conta(35))
@@ -51,7 +55,8 @@ class ResidencialB(unittest.TestCase):
     def test_esgoto_e_70_por_cento_do_preco_base_por_m3_sem_expoente(self):
         esgoto = tarifas.corsan["categorias"]["residencial"]["esgoto"]
         self.assertEqual(tarifas.conta_servico(esgoto, 30), Decimal("192.00"))  # 6,40 × 30, sem 30^1,09
-        self.assertEqual(tarifas.conta_servico(esgoto, 5), Decimal("64.00"))
+        self.assertEqual(tarifas.conta_servico(esgoto, 5), Decimal("32.00"))
+        self.assertEqual(tarifas.conta_servico(esgoto, 0), Decimal("0"))
 
     def test_municipios_sao_os_298_do_apendice_1_dentro_do_vinculo_sinisa(self):
         with open(tarifas.CORSAN_APENDICE, encoding="utf-8") as fh:
