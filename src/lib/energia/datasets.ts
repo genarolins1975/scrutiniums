@@ -123,8 +123,15 @@ type ArquivosGold = { arquivos: Record<string, { colunas: string; modulo: string
  * Colunas de cada arquivo: as dos arquivos fixos acima (lidas na hora, no idioma da página) e as do dicionário publicado pelo
  * pipeline (texto da gold, em português), que prevalece quando descreve o mesmo arquivo.
  */
+const COLUNAS_DO_PIPELINE: Record<string, string> = Object.fromEntries(Object.entries(lerGold<ArquivosGold>("arquivos.json")?.arquivos ?? {}).map(([url, a]) => [url, a.colunas]));
+
+/** O dicionário do arquivo vem da gold (texto do pipeline, em português)? Os demais são os fixos acima, no idioma da página. */
+export function colunasSaoDaGold(url: string): boolean {
+  return url in COLUNAS_DO_PIPELINE;
+}
+
 export const COLUNAS_ARQUIVO: Record<string, string> = (() => {
-  const doPipeline = Object.fromEntries(Object.entries(lerGold<ArquivosGold>("arquivos.json")?.arquivos ?? {}).map(([url, a]) => [url, a.colunas]));
+  const doPipeline = COLUNAS_DO_PIPELINE;
   const out: Record<string, string> = {};
   for (const url of Object.keys(colunasEstaticas())) {
     if (url in doPipeline) continue;

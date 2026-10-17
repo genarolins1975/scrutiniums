@@ -250,7 +250,7 @@ export function textoMudancaRegras(afirmacoes: readonly Pick<Afirmacao, "tema" |
  */
 export function ressalvaParaLeitor(t: string): string {
   // i18n: dado (trocas de vocabulário dentro de texto português da gold)
-  return leitor(t)
+  return leitor(t, "pt")
     .replace(/Capturado com sha256/g, "O arquivo foi baixado e guardado com impressão digital") // i18n: dado
     .replace(/\bsha256\b/g, "impressão digital") // i18n: dado
     .replace(/\bo snapshot\b/g, "a cópia do arquivo") // i18n: dado
@@ -345,7 +345,7 @@ export function limitacaoInicioDoRegistro(primeiraCaptura: string | null, primei
 /** Limitação escrita pelo pipeline em palavras do leitor: vocabulário de engenharia trocado e "SLA" dito como prazo de atualização. */
 export function limitacaoParaLeitor(t: string): string {
   // i18n: dado (troca dentro de texto português da gold)
-  return leitor(t).replace(/\bo SLA\b/g, "o prazo de atualização").replace(/\bSLA\b/g, "prazo de atualização");
+  return leitor(t, "pt").replace(/\bo SLA\b/g, "o prazo de atualização").replace(/\bSLA\b/g, "prazo de atualização");
 }
 
 /** A regra de prazo da publicação (tolerância por frequência), escrita a partir de regras.sla. */

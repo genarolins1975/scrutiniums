@@ -3,6 +3,7 @@ import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { num } from "@/lib/energia/formato";
 import { tx } from "@/lib/energia/idioma";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
+import { colunasSaoDaGold } from "@/lib/energia/datasets";
 import { formatoDoArquivo, nomeDoArquivo } from "@/lib/energia/dados-ficha";
 import { textoEstadoDoArquivo } from "@/lib/energia/dados-leitor";
 import { estadoDoArquivo, type EstadoDoArquivo } from "@/lib/energia/dados-servidor";
@@ -21,6 +22,8 @@ export type ItemArquivo = {
   estado: EstadoDoArquivo;
   /** Dicionário publicado do arquivo (arquivos.json): as colunas e o que cada código quer dizer. */
   colunas?: string | null;
+  /** O dicionário é o da gold (texto do pipeline, em português): na página inglesa sai marcado como trecho em português. */
+  colunasDaGold?: boolean;
   linhas?: number | null;
   /** Aviso próprio do arquivo (reúne dados de outros conjuntos). */
   aviso?: ReactNode;
@@ -41,6 +44,7 @@ export function itensDeArquivos(
       rotulo: a.rotulo.replace(/\s*\((?:CSV|JSON|Parquet)\)$/i, ""),
       estado: estadoDoArquivo(a.url, pub, manifesto),
       colunas: dicionario[a.url] ?? null,
+      colunasDaGold: colunasSaoDaGold(a.url),
       linhas: manifesto?.arquivos.find((x) => x.caminho === a.url)?.linhas ?? null,
     }));
 }
@@ -75,10 +79,14 @@ export function DadosArquivos({ itens }: { itens: readonly ItemArquivo[] }) {
             {a.colunas && (
               <div className="max-w-prose2 pb-1 text-xs leading-relaxed text-carvao-muted [overflow-wrap:anywhere]" data-nivel="analisar" data-legenda-arquivo="">
                 <span className="rotulo mr-2 text-mineral">{tx("Colunas e códigos", "Columns and codes")}</span>
-                {/* o dicionário de colunas é texto do pipeline, em português */}
-                <TrechoPortugues regiao="dados-arquivo-colunas">
+                {/* o dicionário da gold é texto do pipeline, em português; o dos arquivos fixos já vem no idioma da página */}
+                {a.colunasDaGold === false ? (
                   <TextoEnergia texto={a.colunas} origem={a.origemDosLiterais} literais={["marcador-ausencia-siga"]} />
-                </TrechoPortugues>
+                ) : (
+                  <TrechoPortugues regiao="dados-arquivo-colunas">
+                    <TextoEnergia texto={a.colunas} origem={a.origemDosLiterais} literais={["marcador-ausencia-siga"]} />
+                  </TrechoPortugues>
+                )}
               </div>
             )}
           </li>

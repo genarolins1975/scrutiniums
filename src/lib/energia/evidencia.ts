@@ -2,6 +2,7 @@ import type { Download, Periodo } from "@/lib/energia/tipos";
 import { dataBR, nomeMes, num, pct, reais, sinal } from "@/lib/energia/formato";
 import { idiomaEnergia, tx, tx as traduz } from "@/lib/energia/idioma";
 import type { Idioma } from "@/lib/idioma";
+import { MENSAGEM_COPIA_EN } from "@/lib/energia/i18n/nucleo";
 
 /**
  * Evidência "Comprove este número" (seção 11.5 da especificação): contrato do
@@ -172,9 +173,9 @@ const CODIGO_NO_TEXTO = /(?<![\w])(?:[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+|[a-z][a-z0-9]
  * ambos, do próprio código com espaços no lugar do sublinhado. Vale para o código em qualquer posição do texto
  * ("GERACAO_SUBMERCADO e MRE_MENSAL", "PLD_HORARIO; Balanço de Energia nos Subsistemas").
  */
-export function conjuntoLegivel(conjunto: string): { texto: string; codigos: string[] } {
+export function conjuntoLegivel(conjunto: string, idioma: Idioma = idiomaEnergia()): { texto: string; codigos: string[] } {
   const codigos: string[] = [];
-  const nomes = tx(NOME_DO_CONJUNTO, NOME_DO_CONJUNTO_EN);
+  const nomes = tx(NOME_DO_CONJUNTO, NOME_DO_CONJUNTO_EN, idioma);
   const legivel = (cod: string) => nomes[cod.toLowerCase()] ?? cod.replace(/_/g, " ").toLowerCase();
   const comParenteses = conjunto.replace(new RegExp(`(${CODIGO_NO_TEXTO.source})\\s*\\(([^()]+)\\)`, "g"), (_t, cod: string, nome: string) => {
     codigos.push(cod);
@@ -553,16 +554,16 @@ export function problemasEvidencia(ev: Evidencia, idioma: Idioma = idiomaEnergia
 export type FormatoNumero = "num" | "reais" | "pct" | "variacao" | "variacao_pct";
 
 /** Valor grande do KPI; ausência vira "sem dado", nunca zero nem traço. */
-export function valorDestaque(v: number | null | undefined, formato: FormatoNumero = "num", casas = 1): string {
-  if (v === null || v === undefined || !Number.isFinite(v)) return semDado();
-  if (formato === "reais") return reais(v, casas);
-  if (formato === "pct") return pct(v, casas);
+export function valorDestaque(v: number | null | undefined, formato: FormatoNumero = "num", casas = 1, idioma: Idioma = idiomaEnergia()): string {
+  if (v === null || v === undefined || !Number.isFinite(v)) return semDado(idioma);
+  if (formato === "reais") return reais(v, casas, idioma);
+  if (formato === "pct") return pct(v, casas, idioma);
   if (formato === "variacao" || formato === "variacao_pct") {
     const arred = Number(v.toFixed(casas));
     const suf = formato === "variacao_pct" ? "%" : "";
-    return arred === 0 ? `${num(0, casas)}${suf}` : sinal(arred, casas, suf);
+    return arred === 0 ? `${num(0, casas, idioma)}${suf}` : sinal(arred, casas, suf, idioma);
   }
-  return num(v, casas);
+  return num(v, casas, idioma);
 }
 
 /** Unidade ao lado do número grande sem repetir o que o formato já escreve:
@@ -655,9 +656,14 @@ export async function copiarComFallback(textoCopiar: string, meios: MeiosCopia):
   return "falhou";
 }
 
-/* mensagens lidas na hora (getter), no idioma da página */
+/* mensagens lidas na hora (getter), no idioma da página; a forma inglesa é a do núcleo (MENSAGEM_COPIA_EN), fonte única */
 export const MENSAGEM_COPIA: Record<ResultadoCopia, string> = {
-  get copiado() { return tx("Copiado para a área de transferência.", "Copied to the clipboard."); },
-  get selecionado() { return tx("Texto selecionado: use Ctrl+C (ou Copiar, no menu) para copiar.", "Text selected: use Ctrl+C (or Copy, in the menu) to copy."); },
-  get falhou() { return tx("Não foi possível copiar: selecione o texto do bloco e copie.", "Could not copy: select the text of the block and copy it."); },
+  get copiado() { return tx("Copiado para a área de transferência.", MENSAGEM_COPIA_EN.copiado); },
+  get selecionado() { return tx("Texto selecionado: use Ctrl+C (ou Copiar, no menu) para copiar.", MENSAGEM_COPIA_EN.selecionado); },
+  get falhou() { return tx("Não foi possível copiar: selecione o texto do bloco e copie.", MENSAGEM_COPIA_EN.falhou); },
 };
+
+/** Mensagem de cópia num idioma explícito (componente cliente que já leu o idioma da página). */
+export function mensagemCopia(r: ResultadoCopia, idioma: Idioma = idiomaEnergia()): string {
+  return idioma === "en" ? MENSAGEM_COPIA_EN[r] : MENSAGEM_COPIA[r];
+}

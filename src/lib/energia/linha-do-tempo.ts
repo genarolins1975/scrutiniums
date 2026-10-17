@@ -24,7 +24,8 @@
 import { diaSerial, diferencaDatas, precisaoData, textoDuracao } from "@/lib/energia/calendario";
 import { ordenarComNulos } from "@/lib/energia/escalas";
 import { dataBR, num } from "@/lib/energia/formato";
-import { tx } from "@/lib/energia/idioma";
+import { idiomaEnergia, tx, tx as traduz } from "@/lib/energia/idioma";
+import type { Idioma } from "@/lib/idioma";
 
 export type EventoDatado = {
   id: string;
@@ -65,6 +66,12 @@ export const ROTULO_BASE: Record<BaseData, string> = {
   get publicacao() { return tx("publicação", "publication"); },
   get vigencia() { return tx("vigência", "validity"); },
 };
+
+/** Rótulo da data-base num idioma explícito. */
+export function rotuloBase(b: BaseData, idioma: Idioma = idiomaEnergia()): string {
+  const tx = <T,>(pt: T, en: T): T => traduz(pt, en, idioma);
+  return b === "publicacao" ? tx("publicação", "publication") : tx("vigência", "validity");
+}
 
 /** Duração em inglês ("1 day", "3 months"), o mesmo valor absoluto de textoDuracao. */
 function duracaoEn(d: { valor: number; unidade: "dias" | "meses" }): string {
@@ -145,7 +152,9 @@ export function ordenarEventos(eventos: readonly EventoDatado[], base: BaseData,
 }
 
 /** Defasagem entre publicação e vigência, em texto; null sem as duas datas. */
-export function textoDefasagem(publicacao: string | null | undefined, vigencia: string | null | undefined): string | null {
+export function textoDefasagem(publicacao: string | null | undefined, vigencia: string | null | undefined, idioma: Idioma = idiomaEnergia()): string | null {
+  // tx local com o idioma pedido (a função serve a servidor e cliente)
+  const tx = <T,>(pt: T, en: T): T => traduz(pt, en, idioma);
   const d = diferencaDatas(publicacao, vigencia);
   if (!d) return null;
   if (d.valor === 0)
@@ -169,7 +178,9 @@ export function urlSegura(url: string | null | undefined): string | null {
 }
 
 /** Resumo legível do filtro ("categorias: Tarifa, PLD; vigência de 01/01/2023 a 31/12/2024"). */
-export function resumoFiltro(f: FiltroLinhaDoTempo, categorias: readonly { id: string; rotulo: string }[]): string {
+export function resumoFiltro(f: FiltroLinhaDoTempo, categorias: readonly { id: string; rotulo: string }[], idioma: Idioma = idiomaEnergia()): string {
+  // tx local com o idioma pedido (a função serve a servidor e cliente)
+  const tx = <T,>(pt: T, en: T): T => traduz(pt, en, idioma);
   const partes: string[] = [];
   if (f.categorias !== null) {
     const nomes = f.categorias.map((c) => categorias.find((k) => k.id === c)?.rotulo ?? c);
@@ -180,9 +191,11 @@ export function resumoFiltro(f: FiltroLinhaDoTempo, categorias: readonly { id: s
     );
   }
   const { inicio, fim } = normalizarPeriodo(f.inicio, f.fim);
-  const b = ROTULO_BASE[f.base];
-  if (inicio && fim) partes.push(tx(`${b} de ${dataBR(inicio)} a ${dataBR(fim)}`, `${b} from ${dataBR(inicio)} to ${dataBR(fim)}`));
-  else if (inicio) partes.push(tx(`${b} a partir de ${dataBR(inicio)}`, `${b} from ${dataBR(inicio)}`));
-  else if (fim) partes.push(tx(`${b} até ${dataBR(fim)}`, `${b} until ${dataBR(fim)}`));
+  const b = rotuloBase(f.base, idioma);
+  const ini = inicio ? dataBR(inicio, idioma) : null;
+  const fi = fim ? dataBR(fim, idioma) : null;
+  if (ini && fi) partes.push(tx(`${b} de ${ini} a ${fi}`, `${b} from ${ini} to ${fi}`));
+  else if (ini) partes.push(tx(`${b} a partir de ${ini}`, `${b} from ${ini}`));
+  else if (fi) partes.push(tx(`${b} até ${fi}`, `${b} until ${fi}`));
   return partes.join("; ");
 }
