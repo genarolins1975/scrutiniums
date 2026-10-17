@@ -10,7 +10,7 @@ import io
 import json
 import time
 import urllib.request
-from datetime import date
+from datetime import date, timedelta
 
 from .run import numero
 
@@ -60,7 +60,7 @@ def _coletar_sicor(hoje=None):
     hoje = hoje or date.today()
     fontes_raw = _bytes(SICOR + 'FonteRecursos.csv')
     fontes = {l[0]: l[1] for l in _csv(fontes_raw)[1:] if len(l) >= 2}
-    agregado, originais = {}, {}
+    agregado, originais, ultima_data = {}, {}, ''
     for ano in (hoje.year - 1, hoje.year):
         nome = f'DadosBrutos/SICOR_OPERACAO_BASICA_ESTADO_{ano}.gz'
         raw = _bytes(SICOR + nome)
@@ -71,6 +71,7 @@ def _coletar_sicor(hoje=None):
         for l in leitor:
             dt = l[ix['DT_EMISSAO']]
             mes = dt[6:10] + '-' + dt[3:5]
+            ultima_data = max(ultima_data, dt[6:10] + '-' + dt[3:5] + '-' + dt[0:2])
             valor = float(l[ix['VL_PARC_CREDITO']] or 0)
             programa = PROGRAMAS.get(l[ix['CD_PROGRAMA']], 'demais')
             fonte = _grupo_fonte(fontes.get(l[ix['CD_FONTE_RECURSO']], ''))
@@ -84,7 +85,7 @@ def _coletar_sicor(hoje=None):
                 a['somaTaxa'] += valor * float(juros)
                 a['contratosTaxa'] += 1
     selic = json.loads(_bytes(SELIC.format(ano=hoje.year - 1)))
-    return {'originais': originais, 'fontesRecursos': {k: fontes[k] for k in sorted(fontes)}, 'agregado': {k: agregado[k] for k in sorted(agregado)}, 'selic': selic}
+    return {'originais': originais, 'ultimaEmissao': ultima_data, 'fontesRecursos': {k: fontes[k] for k in sorted(fontes)}, 'agregado': {k: agregado[k] for k in sorted(agregado)}, 'selic': selic}
 
 
 def _coletar_tesouro():
@@ -127,12 +128,15 @@ def normalizar_sicor(bundle):
             raise ValueError('Recorte da taxa maior que o total em ' + chave)
         linhas.append({'mes': mes, 'programa': programa, 'fonte': fonte, **a})
     meses = sorted({l['mes'] for l in linhas})
-    # Descarta o mês corrente da coleta quando ainda tem pouco registro; fica o último mês com
-    # pelo menos metade do valor médio dos três meses anteriores.
-    def total(m):
-        return sum(l['valorTotal'] for l in linhas if l['mes'] == m)
-    while len(meses) > 4 and total(meses[-1]) < 0.5 * sum(total(m) for m in meses[-4:-1]) / 3:
+    # Completude pelo calendário da fonte: o mês da emissão mais recente só entra se essa data
+    # for o último dia do mês. Volume contratado não decide, porque varia com a safra.
+    ultima = bundle['ultimaEmissao']
+    ano_u, mes_u, dia_u = int(ultima[:4]), int(ultima[5:7]), int(ultima[8:10])
+    fim_mes = (date(ano_u + (mes_u == 12), mes_u % 12 + 1, 1) - timedelta(days=1)).day
+    if meses and meses[-1] == ultima[:7] and dia_u < fim_mes:
         meses.pop()
+    if meses and meses[-1] > ultima[:7]:
+        raise ValueError('Mês de emissão posterior à última data da fonte')
     serie = []
     for m in meses:
         sel = [l for l in linhas if l['mes'] == m]

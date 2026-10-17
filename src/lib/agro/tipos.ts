@@ -235,7 +235,7 @@ export type EconomiaAgro = {
         fonte: string;
     };
     trabalho: {
-        trimestres: { periodo: string; ocupadosTotal: number; ocupadosAgro: number; rendimentoTotal: number; rendimentoAgro: number; participacao: number; razaoRendimento: number }[];
+        trimestres: { periodo: string; ocupadosTotal: number | null; ocupadosAgro: number | null; rendimentoTotal: number | null; rendimentoAgro: number | null; participacao: number | null; razaoRendimento: number | null }[];
         fonte: string;
     };
     prato: {

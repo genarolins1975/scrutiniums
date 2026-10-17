@@ -30,9 +30,9 @@ export function faixasAgro(e: EconomiaAgro) {
 }
 
 export function respostasSociedade(e: EconomiaAgro) {
-    const t = e.produtores.tipologia, tri = e.trabalho.trimestres.at(-1)!, ultimo = e.prato.meses.at(-1)!;
+    const t = e.produtores.tipologia, tri = e.trabalho.trimestres.filter(r => r.razaoRendimento !== null).at(-1)!, ultimo = e.prato.meses.at(-1)!;
     return {
-        produtores: `A agricultura familiar reúne ${pct(100 * t.familiar.estabelecimentos / t.total.estabelecimentos, 0)} dos estabelecimentos e ${pct(100 * t.familiar.area / t.total.area, 0)} da área (Censo 2017). No campo, a renda média do trabalho é ${pct(100 * tri.razaoRendimento, 0)} da média do país (${trimestreAgro(tri.periodo)}).`,
+        produtores: `A agricultura familiar reúne ${pct(100 * t.familiar.estabelecimentos / t.total.estabelecimentos, 0)} dos estabelecimentos e ${pct(100 * t.familiar.area / t.total.area, 0)} da área (Censo 2017). No campo, a renda média do trabalho é ${pct(100 * tri.razaoRendimento!, 0)} da média do país (${trimestreAgro(tri.periodo)}).`,
         prato: `Em 12 meses até ${mesCurtoAgro(e.prato.ultimoMes)}, a alimentação no domicílio variou ${sinal(ultimo.domicilio)}, contra ${sinal(ultimo.geral)} do IPCA geral.`,
     };
 }
@@ -40,19 +40,19 @@ export function respostasSociedade(e: EconomiaAgro) {
 // ---------------------------------------------------------------- 5. Produtores e trabalho
 
 export function ProdutoresAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaAgro }) {
-    const t = e.produtores.tipologia, part = (k: keyof typeof t.total) => 100 * t.familiar[k] / t.total[k], tri = e.trabalho.trimestres, ult = tri.at(-1)!, ano = tri.find(r => r.periodo === `${Number(ult.periodo.slice(0, 4)) - 1}${ult.periodo.slice(4)}`) ?? null;
+    const t = e.produtores.tipologia, part = (k: keyof typeof t.total) => 100 * t.familiar[k] / t.total[k], tri = e.trabalho.trimestres, completos = tri.filter(r => r.ocupadosAgro !== null && r.ocupadosTotal !== null && r.rendimentoAgro !== null && r.rendimentoTotal !== null), ult = completos.at(-1)!, pri = completos[0], ano = completos.find(r => r.periodo === `${Number(ult.periodo.slice(0, 4)) - 1}${ult.periodo.slice(4)}`) ?? null;
     const { linhas: faixas, semArea } = faixasAgro(e), grande = faixas.at(-1)!, pequena = faixas[0];
     const colsTip = ['Medida', 'Agricultura familiar', 'Não familiar', 'Total', 'Parcela familiar, %'];
     const medidas: [keyof typeof t.total, string][] = [['estabelecimentos', 'Estabelecimentos'], ['area', 'Área, hectares'], ['pessoal', 'Pessoal ocupado, pessoas'], ['valorProducao', 'Valor da produção, R$ de 2017']];
     const linhasTip = medidas.map(([k, n]) => [n, t.familiar[k], t.naoFamiliar[k], t.total[k], part(k)]);
     const colsTri = ['Trimestre', 'Ocupados no agro', 'Ocupados no país', 'Parcela agro, %', 'Rendimento médio real no agro, R$', 'Rendimento médio real no país, R$', 'Agro em relação ao país, %'];
-    const linhasTri = tri.map(r => [trimestreAgro(r.periodo), r.ocupadosAgro, r.ocupadosTotal, r.participacao, r.rendimentoAgro, r.rendimentoTotal, 100 * r.razaoRendimento]);
+    const linhasTri = tri.map(r => [trimestreAgro(r.periodo), r.ocupadosAgro, r.ocupadosTotal, r.participacao, r.rendimentoAgro, r.rendimentoTotal, r.razaoRendimento === null ? null : 100 * r.razaoRendimento]);
     return <>
         <dl className={`${s.metrics} ${s.metrics4}`}>
             <Metrica rotulo="Estabelecimentos agropecuários" valor={`${mi(t.total.estabelecimentos, 2)} mi`} nota={`IBGE, Censo Agropecuário ${e.produtores.ano} · ${pct(part('estabelecimentos'), 0)} de agricultura familiar`}/>
             <Metrica rotulo="Área da agricultura familiar" valor={pct(part('area'), 0)} nota={`Da área dos estabelecimentos · ${pct(part('valorProducao'), 0)} do valor da produção · ${e.produtores.ano}`}/>
             <Metrica rotulo={`Ocupados no campo, ${trimestreAgro(ult.periodo)}`} valor={`${mi(ult.ocupadosAgro)} mi`} nota={`IBGE, PNAD Contínua · ${pct(ult.participacao)} dos ocupados do país${ano ? ` · ${sinal(variacaoPctAgro(ult.ocupadosAgro, ano.ocupadosAgro))} em um ano` : ''}`}/>
-            <Metrica rotulo="Renda média do trabalho no campo" valor={`R$ ${numeroAgro(ult.rendimentoAgro, 0)}`} nota={`Habitual, real, por mês · ${pct(100 * ult.razaoRendimento, 0)} da média do país (R$ ${numeroAgro(ult.rendimentoTotal, 0)}) · ${trimestreAgro(ult.periodo)}`}/>
+            <Metrica rotulo="Renda média do trabalho no campo" valor={`R$ ${numeroAgro(ult.rendimentoAgro, 0)}`} nota={`Habitual, real, por mês · ${pct(100 * ult.razaoRendimento!, 0)} da média do país (R$ ${numeroAgro(ult.rendimentoTotal, 0)}) · ${trimestreAgro(ult.periodo)}`}/>
         </dl>
         <SecaoAgro id="f4" rotulo="Dado observado · F4" titulo="Muitos estabelecimentos pequenos, pouca terra." texto={`Em ${e.produtores.ano}, os estabelecimentos com menos de 10 hectares eram ${pct(100 * pequena.estabelecimentos / t.total.estabelecimentos, 0)} do total e ocupavam ${pct(100 * pequena.area / t.total.area, 1)} da área. Os de 1.000 hectares ou mais eram ${pct(100 * grande.estabelecimentos / t.total.estabelecimentos, 1)} e ocupavam ${pct(100 * grande.area / t.total.area, 0)}.`}>
                         <BarrasAgro titulo="Parcela no número de estabelecimentos" unidade="% dos estabelecimentos" periodo={String(e.produtores.ano)} maximo={100} linhas={faixas.map(f => ({ nome: f.nome, valor: 100 * f.estabelecimentos / t.total.estabelecimentos }))} nota={`Grupos de área total do Censo reunidos em quatro faixas. ${semArea ? `Produtores sem área (${numeroAgro(semArea)} estabelecimentos) entram no total, mas não em nenhuma faixa.` : ''}`}/>
@@ -62,9 +62,9 @@ export function ProdutoresAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaA
             <div className={s.actions}><ExportarAgro nome="agro-censo-tipologia.csv" colunas={[...colsTip, 'Ano', 'Fonte']} linhas={linhasTip.map(r => [...r, e.produtores.ano, url(dados, 'censoagro')])}/></div>
             <FonteAgro dados={dados} id="censoagro" periodo={String(e.produtores.ano)} nota={capturado(dados, 'censoagro')}/>
         </SecaoAgro>
-        <SecaoAgro titulo={`${ult.ocupadosAgro < tri[0].ocupadosAgro ? 'Menos' : 'Mais'} gente no campo, renda ${ult.razaoRendimento < 1 ? 'abaixo' : 'acima'} da média do país.`} texto={`O campo ocupava ${pct(tri[0].participacao)} dos trabalhadores do país em ${trimestreAgro(tri[0].periodo)} e ${pct(ult.participacao)} em ${trimestreAgro(ult.periodo)}. A renda média passou de ${pct(100 * tri[0].razaoRendimento, 0)} para ${pct(100 * ult.razaoRendimento, 0)} da média nacional.`}>
+        <SecaoAgro titulo={`${ult.ocupadosAgro! < pri.ocupadosAgro! ? 'Menos' : 'Mais'} gente no campo, renda ${ult.razaoRendimento! < 1 ? 'abaixo' : 'acima'} da média do país.`} texto={`O campo ocupava ${pct(pri.participacao)} dos trabalhadores do país em ${trimestreAgro(pri.periodo)} e ${pct(ult.participacao)} em ${trimestreAgro(ult.periodo)}. A renda média passou de ${pct(100 * pri.razaoRendimento!, 0)} para ${pct(100 * ult.razaoRendimento!, 0)} da média nacional.`}>
             <span className={s.status}>Dado observado · PNAD Contínua</span>
-            <LinhasAgro titulo="Ocupados na agropecuária" unidade="milhões de pessoas" rotulos={tri.map(r => trimestreAgro(r.periodo))} series={[{ nome: 'Agropecuária', valores: tri.map(r => r.ocupadosAgro / 1e6) }]} nota="Pessoas de 14 anos ou mais cujo trabalho principal é agricultura, pecuária, produção florestal, pesca ou aquicultura, formais ou informais. Não inclui agroindústria, comércio e transporte ligados ao campo."/>
+            <LinhasAgro titulo="Ocupados na agropecuária" unidade="milhões de pessoas" rotulos={tri.map(r => trimestreAgro(r.periodo))} series={[{ nome: 'Agropecuária', valores: tri.map(r => r.ocupadosAgro === null ? null : r.ocupadosAgro / 1e6) }]} nota="Pessoas de 14 anos ou mais cujo trabalho principal é agricultura, pecuária, produção florestal, pesca ou aquicultura, formais ou informais. Não inclui agroindústria, comércio e transporte ligados ao campo."/>
             <LinhasAgro titulo="Renda média mensal do trabalho" unidade="R$ do último trimestre, habitual" casas={0} rotulos={tri.map(r => trimestreAgro(r.periodo))} series={[{ nome: 'Agropecuária', valores: tri.map(r => r.rendimentoAgro) }, { nome: 'Todos os ocupados', valores: tri.map(r => r.rendimentoTotal), referencia: true }]} nota="Rendimento habitual do trabalho principal, deflacionado pelo IBGE. Média por pessoa ocupada com rendimento; não inclui renda de propriedade nem lucro do estabelecimento."/>
             <details className={s.sourceDetails}><summary>Ver todos os trimestres</summary><div><TabelaAgro titulo="Ocupação e renda · PNAD Contínua" colunas={colsTri} linhas={linhasTri}/></div></details>
             <div className={s.actions}><ExportarAgro nome="agro-pnadc-ocupacao-renda.csv" colunas={[...colsTri, 'Fonte']} linhas={linhasTri.map(r => [...r, url(dados, 'pnadc')])}/></div>

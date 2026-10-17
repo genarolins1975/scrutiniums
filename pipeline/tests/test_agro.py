@@ -201,6 +201,19 @@ class AgroApoioAmbienteTest(unittest.TestCase):
         self.assertTrue(all(r['estimada']==(r['fim']>=self.m['prodes']['anoPreliminar']) for r in t))
         for b in self.m['prodes']['biomas']:
             self.assertTrue(all(p['anual']==(p['fim']-p['inicio']==1) for p in b['periodos']))
+    def test_lacunas_nao_viram_zero_nem_somem(self):
+        cab=['ID','class_level_0','class_level_1','class_level_2','y2024','y2025']
+        ok=ambiente._somar_classes([cab,['1','Antropic','3. Farming','3.1. Pasture','10','12'],[''],['']])
+        self.assertEqual(ok[('Antropic','3. Farming','3.1. Pasture')],{2024:10.0,2025:12.0})
+        with self.assertRaisesRegex(ValueError,'célula vazia'):ambiente._somar_classes([cab,['1','Antropic','3. Farming','3.1. Pasture','10','']])
+        b=copy.deepcopy(self.coletas['sicor']);b['ultimaEmissao']=b['ultimaEmissao'][:8]+'15'
+        self.assertLess(apoio.normalizar_sicor(b)['ultimoMes'],self.coletas['sicor']['ultimaEmissao'][:7])
+        p=copy.deepcopy(self.coletas['pnadc']);serie=p['consultas']['ocupados']['resposta'][0]['resultados'][1]['series'][0]['serie'];alvo=sorted(serie)[10];serie[alvo]='...'
+        t=sociedade.normalizar_pnadc(p)['trimestres'];r=next(x for x in t if x['periodo']==sociedade._trimestre(alvo))
+        self.assertIsNone(r['ocupadosAgro'] if r['ocupadosAgro'] is None else r['ocupadosTotal']);self.assertIsNone(r['participacao'])
+        for v in p['consultas']['ocupados']['resposta'][0]['resultados']:v['series'][0]['serie'].pop(alvo)
+        for v in p['consultas']['rendimento']['resposta'][0]['resultados']:v['series'][0]['serie'].pop(alvo)
+        with self.assertRaisesRegex(ValueError,'trimestre ausente'):sociedade.normalizar_pnadc(p)
     def test_seeg_anos_consecutivos_e_mapbiomas_dentro_do_territorio(self):
         anos=[r['ano'] for r in self.m['emissoes']['anos']];self.assertEqual(anos,list(range(anos[0],anos[-1]+1)))
         for r in self.m['usoTerra']['anos']:

@@ -133,12 +133,19 @@ def normalizar_pnadc(bundle):
             serie.setdefault(periodo, {})[f'{campo}{g.capitalize()}'] = None if v is None else v * fator
     linhas = []
     for p in sorted(serie):
-        r = serie[p]
-        if any(r.get(k) is None for k in ['ocupadosAgro', 'ocupadosTotal', 'rendimentoAgro', 'rendimentoTotal']):
-            continue
-        if r['ocupadosAgro'] > r['ocupadosTotal']:
+        # Medida ausente fica nula no trimestre: o eixo do tempo não perde o período.
+        r = {k: serie[p].get(k) for k in ['ocupadosTotal', 'ocupadosAgro', 'rendimentoTotal', 'rendimentoAgro']}
+        if r['ocupadosAgro'] is not None and r['ocupadosTotal'] is not None and r['ocupadosAgro'] > r['ocupadosTotal']:
             raise ValueError('Ocupados no agro acima do total em ' + p)
-        linhas.append({'periodo': _trimestre(p), **r, 'participacao': 100 * r['ocupadosAgro'] / r['ocupadosTotal'], 'razaoRendimento': r['rendimentoAgro'] / r['rendimentoTotal']})
+        part = 100 * r['ocupadosAgro'] / r['ocupadosTotal'] if r['ocupadosAgro'] is not None and r['ocupadosTotal'] else None
+        razao = r['rendimentoAgro'] / r['rendimentoTotal'] if r['rendimentoAgro'] is not None and r['rendimentoTotal'] else None
+        linhas.append({'periodo': _trimestre(p), **r, 'participacao': part, 'razaoRendimento': razao})
+    for a, b in zip(linhas, linhas[1:]):
+        ya, qa = int(a['periodo'][:4]), int(a['periodo'][-1])
+        if (int(b['periodo'][:4]), int(b['periodo'][-1])) != ((ya, qa + 1) if qa < 4 else (ya + 1, 1)):
+            raise ValueError('Série da PNAD Contínua com trimestre ausente: ' + b['periodo'])
+    if linhas and any(linhas[-1][k] is None for k in ['ocupadosAgro', 'ocupadosTotal', 'rendimentoAgro', 'rendimentoTotal']):
+        raise ValueError('Último trimestre da PNAD Contínua incompleto: ' + linhas[-1]['periodo'])
     if len(linhas) < 40:
         raise ValueError('Série da PNAD Contínua curta demais')
     return {'trimestres': linhas, 'fonte': 'pnadc'}

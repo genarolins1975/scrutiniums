@@ -81,10 +81,10 @@
       "limite": "Taxa contratada informada pela instituição, em % ao ano, média ponderada pelo valor de cada contrato. Só contratos sem indexador; os indexados (CDI, TLP, IPCA) ficam fora da média. O mês mais recente pode ser completado em revisões.",
       "arquivoRepositorio": "pipeline/agro/seed/sicor.json.gz",
       "commitRepositorio": "",
-      "sha256Original": "3ad834a09d7eea25df9e2b77e66f322d87ae3a5a5651a890a885b763f8eda87e",
-      "sha256Arquivo": "7ea2c2f24d58dabb1a8adca8f340e7e3456f3818ce60be22eb0942922c2eca63",
+      "sha256Original": "30217c50cb3dbdd9a71d0e15d902996c5b374992d079092aac5f4a9fd0d15699",
+      "sha256Arquivo": "8f3fe496f0dd24e49af2eb71571f473d10f63460b6a4bfda1cf1c19cf1d10e69",
       "estadoAcesso": "COLETA_OFICIAL",
-      "capturadoEm": "2026-10-17T19:21:27+00:00"
+      "capturadoEm": "2026-10-17T19:53:19+00:00"
     },
     {
       "id": "tesouro",

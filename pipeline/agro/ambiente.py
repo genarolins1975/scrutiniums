@@ -84,6 +84,30 @@ def _coletar_seeg():
     return out
 
 
+def _somar_classes(linhas):
+    """Soma nacional por classe e ano a partir das linhas da aba de cobertura."""
+    linhas = iter(linhas)
+    cab = next(linhas)
+    i0, i1, i2 = cab.index('class_level_0'), cab.index('class_level_1'), cab.index('class_level_2')
+    anos = [(i, int(c[1:])) for i, c in enumerate(cab) if re.fullmatch(r'y\d{4}', c)]
+    soma = {}
+    for linha in linhas:
+        # Linhas inteiramente em branco no fim da aba não são dado; já uma linha com
+        # classe e uma célula anual vazia é lacuna, e lacuna não vira zero.
+        if not any(c not in ('', None) for c in linha):
+            continue
+        if len(linha) <= i2:
+            raise ValueError('Linha do MapBiomas sem classe')
+        chave = (linha[i0], linha[i1], linha[i2])
+        alvo = soma.setdefault(chave, {})
+        for i, ano in anos:
+            v = linha[i] if i < len(linha) else ''
+            if v in ('', None):
+                raise ValueError(f'MapBiomas com célula vazia: {chave[2]}, {ano}')
+            alvo[ano] = alvo.get(ano, 0.0) + float(v)
+    return soma
+
+
 def _coletar_mapbiomas():
     from pipeline.gas import xlsx
     pagina = _bytes(MAPBIOMAS_PAGINA).decode('utf-8', 'ignore')
@@ -97,18 +121,7 @@ def _coletar_mapbiomas():
         t.flush()
         aba = next(a for a in xlsx.abas(t.name) if a.startswith('COVERAGE_'))
         linhas = xlsx.linhas(t.name, aba)
-        cab = next(linhas)
-        i0, i1, i2 = cab.index('class_level_0'), cab.index('class_level_1'), cab.index('class_level_2')
-        anos = [(i, int(c[1:])) for i, c in enumerate(cab) if re.fullmatch(r'y\d{4}', c)]
-        soma = {}
-        for linha in linhas:
-            if len(linha) <= i2:
-                continue
-            chave = (linha[i0], linha[i1], linha[i2])
-            alvo = soma.setdefault(chave, {})
-            for i, ano in anos:
-                v = linha[i] if i < len(linha) else ''
-                alvo[ano] = alvo.get(ano, 0.0) + (float(v) if v not in ('', None) else 0.0)
+        soma = _somar_classes(linhas)
     return {'url': url, 'aba': aba, 'sha256Original': hashlib.sha256(raw).hexdigest(), 'bytesOriginal': len(raw), 'classes': [{'nivel0': k[0], 'nivel1': k[1], 'nivel2': k[2], 'anos': {str(a): v for a, v in sorted(anos_v.items())}} for k, anos_v in sorted(soma.items())]}
 
 
@@ -169,6 +182,9 @@ def normalizar_seeg(bundle):
 def normalizar_mapbiomas(bundle):
     classes = bundle['classes']
     anos = sorted({int(a) for c in classes for a in c['anos']})
+    for c in classes:
+        if sorted(int(a) for a in c['anos']) != anos or any(v is None for v in c['anos'].values()):
+            raise ValueError('MapBiomas com ano ausente na classe ' + c['nivel2'])
     def soma(filtro, ano):
         return sum(c['anos'].get(str(ano), 0.0) for c in classes if filtro(c))
     linhas = []
