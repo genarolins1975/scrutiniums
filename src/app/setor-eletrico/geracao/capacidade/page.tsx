@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -56,12 +57,14 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Geração: quanto está instalado e quanto produz",
-  description:
-    "Potência das usinas despachadas pelo ONS por fonte, fator de capacidade com a potência em operação de cada mês, distribuição por usina, a capacidade da ANEEL e a micro e minigeração distribuída lado a lado nas mesmas datas, sem somar universos diferentes.",
-  alternates: { canonical: "/setor-eletrico/geracao/capacidade" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/geracao/capacidade", {
+    title: "Geração: quanto está instalado e quanto produz",
+    description:
+      "Potência das usinas despachadas pelo ONS por fonte, fator de capacidade com a potência em operação de cada mês, distribuição por usina, a capacidade da ANEEL e a micro e minigeração distribuída lado a lado nas mesmas datas, sem somar universos diferentes.",
+    alternates: { canonical: "/setor-eletrico/geracao/capacidade" },
+  }, anterior);
+}
 
 const FONTE = "ONS, Capacidade Instalada de Geração e Geração por Usina";
 const FONTE_ANEEL = "ANEEL, série histórica da capacidade instalada por tipo de geração";

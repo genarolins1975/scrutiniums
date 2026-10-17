@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { notFound, permanentRedirect } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -70,7 +71,7 @@ export function generateStaticParams() {
   return integra(g) ? slugsEstaticos(g.distribuidoras.indice).map((entidade) => ({ entidade })) : [];
 }
 
-export function generateMetadata({ params }: { params: { entidade: string } }): Metadata {
+function metadadosDaPagina({ params }: { params: { entidade: string } }): Metadata {
   const g = lerGold<EmpresasGold>("empresas.json");
   const r = integra(g) ? resolverEntidade(g.distribuidoras.indice, params.entidade) : null;
   if (!r) return {};
@@ -80,6 +81,10 @@ export function generateMetadata({ params }: { params: { entidade: string } }): 
     description: `Perfil da ${d.sigla} (${d.nome ?? "razão social sem registro"}, CNPJ ${cnpjFormatado(d.cnpj)}): perdas, DEC e FEC diante do limite, tarifa residencial, evolução própria, pares, cadeia de controle e demonstrações na CVM quando é companhia aberta.`,
     alternates: { canonical: rotaEntidade(d.slug) },
   };
+}
+
+export async function generateMetadata(props: { params: { entidade: string } }, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia(caminhoComParametros("/setor-eletrico/empresas/[entidade]", props.params), metadadosDaPagina(props), anterior);
 }
 
 const COLUNAS_FIN: ColunaTabela[] = [

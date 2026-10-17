@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -62,12 +63,14 @@ import type { GoldTransicao } from "@/lib/energia/tipos-transicao";
 import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Emissões: como varia a intensidade de CO2 da geração no SIN",
-  description:
-    "Fator médio de emissão de CO2 do SIN publicado pelo MCTI, mensal e anual, com a quebra de base declarada pela fonte, comparação de anos mês a mês, os fatores do MDL em séries separadas e as revisões e divergências registradas na leitura das planilhas.",
-  alternates: { canonical: "/setor-eletrico/transicao/emissoes" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/transicao/emissoes", {
+    title: "Emissões: como varia a intensidade de CO2 da geração no SIN",
+    description:
+      "Fator médio de emissão de CO2 do SIN publicado pelo MCTI, mensal e anual, com a quebra de base declarada pela fonte, comparação de anos mês a mês, os fatores do MDL em séries separadas e as revisões e divergências registradas na leitura das planilhas.",
+    alternates: { canonical: "/setor-eletrico/transicao/emissoes" },
+  }, anterior);
+}
 
 /**
  * P064, emissões: o fator médio oficial do MCTI (inventários), mensal e anual, sem

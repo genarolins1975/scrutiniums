@@ -1,7 +1,7 @@
 import { statSync } from "node:fs";
 import { join } from "node:path";
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";

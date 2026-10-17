@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { TextoEnergia } from "@/components/energia/TextoEnergia";
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";

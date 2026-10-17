@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { PldAviso, PldControles, PldIndisponivel, PldNavegacao, PldPassagem, PldSeguir } from "@/components/energia/PldPagina";
@@ -16,12 +17,14 @@ import { fichasPld, horarioRecentePld } from "@/lib/energia/pld-arquivos";
 import type { Par, PldDetalheGold } from "@/lib/energia/tipos-pld";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "PLD: diferenças regionais",
-  description:
-    "Quando e quanto os preços dos quatro submercados se separam na mesma hora: amplitude, frequência por par, matriz de diferenças, perfil horário e o sentido do fluxo verificado nas fronteiras na mesma hora, sem diagnóstico causal.",
-  alternates: { canonical: "/setor-eletrico/pld/diferencas-regionais" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/pld/diferencas-regionais", {
+    title: "PLD: diferenças regionais",
+    description:
+      "Quando e quanto os preços dos quatro submercados se separam na mesma hora: amplitude, frequência por par, matriz de diferenças, perfil horário e o sentido do fluxo verificado nas fronteiras na mesma hora, sem diagnóstico causal.",
+    alternates: { canonical: "/setor-eletrico/pld/diferencas-regionais" },
+  }, anterior);
+}
 
 const FONTE = "CCEE, PLD horário por submercado";
 

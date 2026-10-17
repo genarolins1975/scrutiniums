@@ -729,7 +729,7 @@ export function textoQuebraRee(q: AguaQuebraPerimetroRee): string {
       `Mudaram de perímetro: ${listaTexto(mudaram.map((c) => `${nomeProprio(c.nome)} (${mwmes(c.ear_max_antes_mwmes)} para ${mwmes(c.ear_max_depois_mwmes)} MWmês)`))}; ${listaTexto(iguais.map((c) => nomeProprio(c.nome)))} não mudaram.`,
     );
   }
-  if (q.transicao.length) partes.push(`${listaTexto(q.transicao.map(dataBR))} ${q.transicao.length === 1 ? "é dia" : "são dias"} de transição (perímetro já mudado e REE novos ausentes).`);
+  if (q.transicao.length) partes.push(`${listaTexto(q.transicao.map((x) => dataBR(x)))} ${q.transicao.length === 1 ? "é dia" : "são dias"} de transição (perímetro já mudado e REE novos ausentes).`);
   partes.push(`A faixa sazonal dos REE afetados usa só anos do perímetro atual.`);
   return partes.join(" ");
 }
@@ -1021,7 +1021,7 @@ export function textosMlt(mlt: AguaMlt, anoCorrente: string): string[] {
   if (pmo.comparacao.length) {
     const dc = pmo.dias_coincidentes.map((d) => `${dataBR(d.inicio)} a ${dataBR(d.fim)}`);
     t.push(
-      `O Relatório Executivo do PMO publica a MLT mensal por subsistema. Comparada com a MLT implícita do conjunto aberto (tolerância de ${num(pmo.tolerancia_pct, 2)}%, porque o PMO publica MWmed inteiros), ${pmo.meses_coincidentes.length ? `coincide nos meses ${listaTexto(pmo.meses_coincidentes.map(mesAno))}` : "não coincide em nenhum mês inteiro"}${dc.length ? `${pmo.meses_coincidentes.length ? " e" : ","} coincide nos dias de ${listaTexto(dc)}` : ""}; diverge em ${listaTexto(pmo.meses_divergentes.map(mesAno))}, com diferença de até ${num(pmo.maior_diferenca_pct, 2)}%.`,
+      `O Relatório Executivo do PMO publica a MLT mensal por subsistema. Comparada com a MLT implícita do conjunto aberto (tolerância de ${num(pmo.tolerancia_pct, 2)}%, porque o PMO publica MWmed inteiros), ${pmo.meses_coincidentes.length ? `coincide nos meses ${listaTexto(pmo.meses_coincidentes.map((x) => mesAno(x)))}` : "não coincide em nenhum mês inteiro"}${dc.length ? `${pmo.meses_coincidentes.length ? " e" : ","} coincide nos dias de ${listaTexto(dc)}` : ""}; diverge em ${listaTexto(pmo.meses_divergentes.map((x) => mesAno(x)))}, com diferença de até ${num(pmo.maior_diferenca_pct, 2)}%.`,
     );
     const sem = mesesSemPmo(mlt);
     if (sem.length) {
@@ -2496,7 +2496,7 @@ export function textoBaseDaFaixa(e: Pick<EntidadeEar, "periodo_base" | "semanal"
 export function textoJanelasDaVariacao(dia: string | null, ds: readonly AguaDecomposicaoEar[]): string {
   const fins = Array.from(new Set(ds.filter((d) => d.delta_ear_mwmes !== null).map((d) => d.fim)));
   if (!dia || !fins.length || fins.every((f) => f === dia)) return "";
-  return `A página de reservatórios mede a variação por reservatório numa janela que termina em ${listaTexto(fins.map(dataBR))}, o último dia com EAR por reservatório, e esta página termina em ${dataBR(dia)}: o valor de um mesmo subsistema difere entre as duas.`;
+  return `A página de reservatórios mede a variação por reservatório numa janela que termina em ${listaTexto(fins.map((x) => dataBR(x)))}, o último dia com EAR por reservatório, e esta página termina em ${dataBR(dia)}: o valor de um mesmo subsistema difere entre as duas.`;
 }
 
 /** A EAR não é medição direta: o ONS a deriva (nota junto da etiqueta "Observado"). */
@@ -2563,7 +2563,7 @@ export function textoToleranciaEventos(eventos: readonly AguaEventoCapacidade[])
   if (!so.length) return `${regra} ${csv}`;
   const datas = Array.from(new Set(so.map((e) => e.data))).sort();
   const lista = so.map((e) => `${NOME_REGIAO[e.sm as Regiao] ?? e.sm} ${sinal(e.residuo_mwmes, 3)}`);
-  return `${regra} Como o evento compara a EAR máxima do dia com a do dia anterior, o primeiro dia de valores com casas decimais ainda usa os 10 MWmês: em ${listaTexto(datas.map(dataBR))}, ${plural(so.length, "evento fecha", "eventos fecham")} só por essa regra, com resíduos de ${listaTexto(lista)} MWmês, acima dos 0,05. ${csv}`;
+  return `${regra} Como o evento compara a EAR máxima do dia com a do dia anterior, o primeiro dia de valores com casas decimais ainda usa os 10 MWmês: em ${listaTexto(datas.map((x) => dataBR(x)))}, ${plural(so.length, "evento fecha", "eventos fecham")} só por essa regra, com resíduos de ${listaTexto(lista)} MWmês, acima dos 0,05. ${csv}`;
 }
 
 /** O que a comparação com o PMO impede de concluir, com a contagem de meses conferidos. */

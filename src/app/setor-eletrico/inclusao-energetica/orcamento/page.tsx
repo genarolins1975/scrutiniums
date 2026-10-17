@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -31,12 +32,14 @@ import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Peso da energia no orçamento das famílias (POF 2017-2018)",
-  description:
-    "Participação da energia elétrica na despesa total e na renda das famílias por classe de rendimento, Brasil e grandes regiões, e por UF no total, a partir dos microdados da POF 2017-2018 com pesos, estratos e coeficiente de variação.",
-  alternates: { canonical: "/setor-eletrico/inclusao-energetica/orcamento" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/inclusao-energetica/orcamento", {
+    title: "Peso da energia no orçamento das famílias (POF 2017-2018)",
+    description:
+      "Participação da energia elétrica na despesa total e na renda das famílias por classe de rendimento, Brasil e grandes regiões, e por UF no total, a partir dos microdados da POF 2017-2018 com pesos, estratos e coeficiente de variação.",
+    alternates: { canonical: "/setor-eletrico/inclusao-energetica/orcamento" },
+  }, anterior);
+}
 
 const COLUNAS_CONF_POF: ColunaTabela[] = [
   { id: "classe", rotulo: "Classe de rendimento", tipo: "texto" },

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
@@ -45,7 +46,7 @@ import type { GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
 
 export const dynamic = "force-static";
 /** Descrição com o início do histórico lido da gold (nenhuma data escrita à mão). */
-export function generateMetadata(): Metadata {
+function metadadosDaPagina(): Metadata {
   const g = lerGold<GoldRedeDetalhe>("rede_detalhe.json");
   const desde = integra(g) && g.circulacao.mensal.meses.length ? ` desde ${mesAno(g.circulacao.mensal.meses[0])}` : "";
   return {
@@ -53,6 +54,10 @@ export function generateMetadata(): Metadata {
     description: `Energia em cada sentido e saldo de cada fronteira entre subsistemas (ONS), por dia e por hora, com o programa e o PLD da mesma hora (CCEE), exportação e importação brutas por subsistema e histórico mensal${desde}.`,
     alternates: { canonical: "/setor-eletrico/rede" },
   };
+}
+
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/rede", metadadosDaPagina(), anterior);
 }
 
 const FONTE = "ONS, Intercâmbios Entre Subsistemas (releitura do módulo Rede)";

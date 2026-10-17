@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -34,12 +35,14 @@ import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Regulação: linha do tempo das mudanças de regra no setor elétrico",
-  description:
-    "Atos, leis e mudanças das bandeiras tarifárias com a data de publicação separada do início de vigência, o dispositivo de origem, o efeito declarado pelo próprio ato e os painéis ligados, sem estimar impacto nem sugerir causa.",
-  alternates: { canonical: rotaPainel("p045") },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/regulacao/linha-do-tempo", {
+    title: "Regulação: linha do tempo das mudanças de regra no setor elétrico",
+    description:
+      "Atos, leis e mudanças das bandeiras tarifárias com a data de publicação separada do início de vigência, o dispositivo de origem, o efeito declarado pelo próprio ato e os painéis ligados, sem estimar impacto nem sugerir causa.",
+    alternates: { canonical: rotaPainel("p045") },
+  }, anterior);
+}
 
 const COLUNAS_PUBLICACAO: ColunaTabela[] = [
   { id: "ato", rotulo: "Ato", tipo: "texto" },

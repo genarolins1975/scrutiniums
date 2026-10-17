@@ -1,6 +1,7 @@
 import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { AoAparecer } from "@/components/energia/AoAparecer";
@@ -24,12 +25,14 @@ import { provenienciaDados, publicacaoDados } from "@/lib/energia/dados-servidor
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Dados do setor elétrico: encontre a fonte e reproduza o número",
-  description:
-    "Catálogo pesquisável dos dados abertos do setor elétrico (ONS, ANEEL, CCEE e outros), com o estado mais avançado de cada conjunto, o histórico de estados, o período dos dados, o uso declarado, os descontinuados e o estado de cada arquivo da CCEE.",
-  alternates: { canonical: "/setor-eletrico/dados" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/dados", {
+    title: "Dados do setor elétrico: encontre a fonte e reproduza o número",
+    description:
+      "Catálogo pesquisável dos dados abertos do setor elétrico (ONS, ANEEL, CCEE e outros), com o estado mais avançado de cada conjunto, o histórico de estados, o período dos dados, o uso declarado, os descontinuados e o estado de cada arquivo da CCEE.",
+    alternates: { canonical: "/setor-eletrico/dados" },
+  }, anterior);
+}
 
 /** Campos de cada linha do catálogo, na ordem em que viajam para o navegador (as chaves vão uma vez, não uma por linha). */
 const CHAVES_DO_CATALOGO = [

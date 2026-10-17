@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { gold } from "@/lib/energia/gold";
 import { carimbo } from "@/lib/energia/formato";
 import { listaEmPortugues, orgaosDasFontes } from "@/lib/energia/dados";

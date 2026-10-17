@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { notFound } from "next/navigation";
 import { AprendaCabecalho, AprendaNavegacao, ROTA_APRENDA, ROTA_TRILHAS } from "@/components/energia/AprendaPagina";
 import { AprendaProva } from "@/components/energia/AprendaProva";
@@ -29,7 +30,7 @@ export function generateStaticParams() {
   return TRILHAS_APRENDA.map((t) => ({ trilha: t.id }));
 }
 
-export function generateMetadata({ params }: { params: { trilha: string } }): Metadata {
+function metadadosDaPagina({ params }: { params: { trilha: string } }): Metadata {
   const t = acharTrilha(params.trilha);
   if (!t) return {};
   return {
@@ -37,6 +38,10 @@ export function generateMetadata({ params }: { params: { trilha: string } }): Me
     description: `${t.pergunta} ${t.resumo}`,
     alternates: { canonical: `/setor-eletrico/aprenda/trilhas/${t.id}` },
   };
+}
+
+export async function generateMetadata(props: { params: { trilha: string } }, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia(caminhoComParametros("/setor-eletrico/aprenda/trilhas/[trilha]", props.params), metadadosDaPagina(props), anterior);
 }
 
 function Traco({ tipo }: { tipo: TipoLigacao }) {

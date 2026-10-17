@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasControle } from "@/components/energia/EmpresasControle";
@@ -57,12 +58,14 @@ import { SIGLAS } from "@/lib/energia/siglas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Quem controla e qual a concentração? Grupos e HHI da capacidade",
-  description:
-    "Grupos de controle declarados à ANEEL (Composição Societária), capacidade proporcional e capacidade sob controle por grupo, árvore societária de cada CNPJ e HHI, CR4 e CR10 da potência em operação sobre fronteira explícita.",
-  alternates: { canonical: "/setor-eletrico/empresas/controle" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/empresas/controle", {
+    title: "Quem controla e qual a concentração? Grupos e HHI da capacidade",
+    description:
+      "Grupos de controle declarados à ANEEL (Composição Societária), capacidade proporcional e capacidade sob controle por grupo, árvore societária de cada CNPJ e HHI, CR4 e CR10 da potência em operação sobre fronteira explícita.",
+    alternates: { canonical: "/setor-eletrico/empresas/controle" },
+  }, anterior);
+}
 
 export default function PaginaP039() {
   const g = lerGold<EmpresasGold>("empresas.json");

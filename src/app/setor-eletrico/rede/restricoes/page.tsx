@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -17,12 +18,14 @@ import { COLUNAS_BUSCA, ROTULO_REGRA, linhasBuscaLimites, medidasRestricoes, mes
 import type { GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Rede: evidência publicada de limitação",
-  description:
-    "Horas em que fluxos sistêmicos ficaram acima do limite estabelecido (indicador ATLS do ONS), cortes de carga e energia não suprida por ano e por perturbação, e a busca documentada pelos limites operativos de intercâmbio, que não são públicos.",
-  alternates: { canonical: "/setor-eletrico/rede/restricoes" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/rede/restricoes", {
+    title: "Rede: evidência publicada de limitação",
+    description:
+      "Horas em que fluxos sistêmicos ficaram acima do limite estabelecido (indicador ATLS do ONS), cortes de carga e energia não suprida por ano e por perturbação, e a busca documentada pelos limites operativos de intercâmbio, que não são públicos.",
+    alternates: { canonical: "/setor-eletrico/rede/restricoes" },
+  }, anterior);
+}
 
 export default function RedeRestricoesPage() {
   const g = lerGold<GoldRedeDetalhe>("rede_detalhe.json");

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -72,12 +73,14 @@ import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 import { snapshotLegivel } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Regulação: limites do PLD e regras de preço por período",
-  description:
-    "Piso, teto estrutural e teto horário do PLD de cada ano com o ato da ANEEL que os fixou, a publicação no Diário Oficial separada da vigência, as conferências no texto do ato e pelo IPCA, os adicionais das bandeiras tarifárias e as versões vigentes do PRODIST e do PRORET.",
-  alternates: { canonical: ROTA_REGULACAO },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/regulacao", {
+    title: "Regulação: limites do PLD e regras de preço por período",
+    description:
+      "Piso, teto estrutural e teto horário do PLD de cada ano com o ato da ANEEL que os fixou, a publicação no Diário Oficial separada da vigência, as conferências no texto do ato e pelo IPCA, os adicionais das bandeiras tarifárias e as versões vigentes do PRODIST e do PRORET.",
+    alternates: { canonical: ROTA_REGULACAO },
+  }, anterior);
+}
 
 const FONTE_LIMITES = "ANEEL, atos de limites do PLD (texto do ato ou documento oficial do processo)";
 /** Painel do PLD que cruza estes limites com o preço observado (horas no piso e nos tetos). */

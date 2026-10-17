@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
 import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
 import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";

@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -53,12 +54,14 @@ import { gold, integra, lerGold } from "@/lib/energia/gold";
 import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Geração: quanto as térmicas geraram e por que foram acionadas",
-  description:
-    "Geração térmica verificada do SIN por motivo de despacho do ONS (inflexibilidade, ordem de mérito, unit commitment, exportação, razão elétrica e outros) e por combustível, as usinas com mais geração e suas parcelas, o CVU da semana operativa vigente e a participação térmica da semana em contexto.",
-  alternates: { canonical: "/setor-eletrico/geracao/termica" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/geracao/termica", {
+    title: "Geração: quanto as térmicas geraram e por que foram acionadas",
+    description:
+      "Geração térmica verificada do SIN por motivo de despacho do ONS (inflexibilidade, ordem de mérito, unit commitment, exportação, razão elétrica e outros) e por combustível, as usinas com mais geração e suas parcelas, o CVU da semana operativa vigente e a participação térmica da semana em contexto.",
+    alternates: { canonical: "/setor-eletrico/geracao/termica" },
+  }, anterior);
+}
 
 const FONTE = "ONS, Geração Térmica por Motivo de Despacho";
 const FONTE_CVU = "ONS, CVU das Usinas Térmicas";

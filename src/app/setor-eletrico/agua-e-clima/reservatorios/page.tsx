@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { AguaAviso, AguaDatas, AguaFontes, AguaIndisponivel, AguaNavegacao, AguaParteAusente, AguaRegras, AguaSeguir } from "@/components/energia/AguaPagina";
 import { AguaPontes } from "@/components/energia/AguaPontes";
 import { AguaReservatorios } from "@/components/energia/AguaReservatorios";
@@ -32,12 +33,14 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import type { AguaDetalheGold } from "@/lib/energia/tipos-agua";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Água e clima: por que o armazenamento mudou",
-  description:
-    "Variação da energia armazenada de cada subsistema decomposta por reservatório e balanço hídrico de 30 dias de cada reservatório do ONS, com afluência, defluência, turbinamento, vertimento, transferência e resíduo explícito.",
-  alternates: { canonical: "/setor-eletrico/agua-e-clima/reservatorios" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/agua-e-clima/reservatorios", {
+    title: "Água e clima: por que o armazenamento mudou",
+    description:
+      "Variação da energia armazenada de cada subsistema decomposta por reservatório e balanço hídrico de 30 dias de cada reservatório do ONS, com afluência, defluência, turbinamento, vertimento, transferência e resíduo explícito.",
+    alternates: { canonical: "/setor-eletrico/agua-e-clima/reservatorios" },
+  }, anterior);
+}
 
 const FONTE = "ONS, Dados Hidráulicos por Reservatório (base diária) e Reservatórios (cadastro)";
 

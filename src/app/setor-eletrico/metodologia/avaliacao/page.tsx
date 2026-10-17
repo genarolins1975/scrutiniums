@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { AvaliacaoPaginas } from "@/components/energia/AvaliacaoPaginas";
 import { AvaliacaoEvolucao, AvaliacaoJornadas, AvaliacaoMatriz, AvaliacaoMetodo, AvaliacaoRevisao, AvaliacaoRubrica } from "@/components/energia/AvaliacaoPartes";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -21,12 +22,14 @@ export const dynamic = "force-static";
 
 const ENDERECO = "https://scrutiniums.com/setor-eletrico/metodologia/avaliacao#avaliacao";
 
-export const metadata: Metadata = {
-  title: "Avaliação dos painéis: como demonstrar que a qualidade evoluiu",
-  description:
-    "Nota de cada página do observatório em dez dimensões, com a evidência de cada nota, as jornadas de usuário executadas, os defeitos abertos e a evolução entre rodadas. Nota só existe com medição, teste ou revisão registrada.",
-  alternates: { canonical: "/setor-eletrico/metodologia/avaliacao" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/metodologia/avaliacao", {
+    title: "Avaliação dos painéis: como demonstrar que a qualidade evoluiu",
+    description:
+      "Nota de cada página do observatório em dez dimensões, com a evidência de cada nota, as jornadas de usuário executadas, os defeitos abertos e a evolução entre rodadas. Nota só existe com medição, teste ou revisão registrada.",
+    alternates: { canonical: "/setor-eletrico/metodologia/avaliacao" },
+  }, anterior);
+}
 
 export default function AvaliacaoPage() {
   const a = avaliacaoPublicada();

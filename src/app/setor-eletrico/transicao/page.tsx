@@ -1,6 +1,7 @@
 import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -44,12 +45,14 @@ import {
 import type { GoldTransicao } from "@/lib/energia/tipos-transicao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Transição e ambiente: geração distribuída e emissões",
-  description:
-    "Como a matriz está mudando: capacidade de micro e minigeração distribuída adicionada por ano (cadastro da ANEEL) e intensidade das emissões da geração no SIN (fator médio do MCTI) em séries separadas, a energia que a MMGD entrega ao SIN (estimativa do ONS) e um painel completo para cada pergunta.",
-  alternates: { canonical: "/setor-eletrico/transicao" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/transicao", {
+    title: "Transição e ambiente: geração distribuída e emissões",
+    description:
+      "Como a matriz está mudando: capacidade de micro e minigeração distribuída adicionada por ano (cadastro da ANEEL) e intensidade das emissões da geração no SIN (fator médio do MCTI) em séries separadas, a energia que a MMGD entrega ao SIN (estimativa do ONS) e um painel completo para cada pergunta.",
+    alternates: { canonical: "/setor-eletrico/transicao" },
+  }, anterior);
+}
 
 /** Painéis de outros módulos que continuam a mesma narrativa, com a pergunta de cada um. */
 const LIGACOES = [

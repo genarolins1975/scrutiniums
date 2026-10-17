@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { NavegacaoObservatorios } from "@/components/observatorios/NavegacaoObservatorios";
 import { LogoMark } from "@/components/ui/Logo";
 import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
@@ -8,6 +8,8 @@ import { AtivoVisivel } from "@/components/energia/AtivoVisivel";
 import { RetornoContexto } from "@/components/energia/RetornoContexto";
 import { rotulosRetorno } from "@/lib/energia/conteudo/rotulos-retorno";
 import { listaPorExtenso, menuNavegacao, type DestinoNavegacao, type ItemMenu } from "@/lib/energia/navegacao";
+import { tx } from "@/lib/energia/idioma";
+import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
 
 /**
  * Cabeçalho do Observatório Brasileiro do Setor Elétrico: marca Scrutiniums, seletor de observatório, atalhos de dados e método e a
@@ -51,7 +53,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
             aria-current={atual === "dados" ? "page" : undefined}
             className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-energia-dark md:inline-flex"
           >
-            Dados e fontes
+            {tx("Dados e fontes", "Data and sources")}
           </Link>
           <Link
             href="/setor-eletrico/metodologia"
@@ -60,6 +62,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
           >
             Metodologia
           </Link>
+          <SeletorIdiomaPublico idioma={tx("pt", "en")} />
           <AcessoConta destino="/setor-eletrico" />
         </div>
       </div>

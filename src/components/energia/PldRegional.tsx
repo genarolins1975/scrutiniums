@@ -52,7 +52,7 @@ import {
   type MedidaMatriz,
   type QuatroNoPiso,
 } from "@/lib/energia/pld";
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { BlocoRegional, Par, PldHorarioRecenteArquivo } from "@/lib/energia/tipos-pld";
 

@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { notFound } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -38,7 +39,7 @@ export function generateStaticParams() {
   return DATASETS_INTEGRADOS.filter((d, i, todas) => todas.findIndex((x) => x.slug === d.slug) === i).map((d) => ({ dataset: d.slug }));
 }
 
-export function generateMetadata({ params }: { params: { dataset: string } }): Metadata {
+function metadadosDaPagina({ params }: { params: { dataset: string } }): Metadata {
   const d = datasetPorSlug(params.dataset);
   const e = catalogoDados()?.entradas.find((x) => x.id === d?.catalogoId);
   if (!d || !e) return {};
@@ -49,6 +50,10 @@ export function generateMetadata({ params }: { params: { dataset: string } }): M
     description: `Origem, atualidade, licença, arquivos para baixar e forma de citação do conjunto ${nome} (${e.orgao}) usado pelo Observatório do Setor Elétrico.`,
     alternates: { canonical: `/setor-eletrico/dados/${d.slug}` },
   };
+}
+
+export async function generateMetadata(props: { params: { dataset: string } }, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia(caminhoComParametros("/setor-eletrico/dados/[dataset]", props.params), metadadosDaPagina(props), anterior);
 }
 
 /** Data do metadado da fonte (ISO em UTC, às vezes sem o "Z") no horário de Brasília. */

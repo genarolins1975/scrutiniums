@@ -1143,7 +1143,7 @@ export function textoAtualidade(g: Pick<GoldTerritorio, "referencias">): string 
     r.tsee_mes_cde && `Tarifa Social de ${textoReferencia(r.tsee_mes_cde)}`,
     r.populacao_ano !== null && `população estimada de ${r.populacao_ano}`,
   ].filter((x): x is string => typeof x === "string");
-  const dias = r.areas_carga_dias.map(dataBR);
+  const dias = r.areas_carga_dias.map((x) => dataBR(x));
   return `Sem comparação com a publicação anterior.${partes.length ? ` Datas que o Período não traz: ${lista(partes)}.` : ""}${dias.length ? ` A pertença das áreas de carga ao submercado foi conferida em ${lista(dias)}.` : ""}`;
 }
 

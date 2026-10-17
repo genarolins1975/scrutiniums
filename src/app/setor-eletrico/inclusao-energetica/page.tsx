@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -41,12 +42,14 @@ import {
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Inclusão energética: Tarifa Social, cobertura, orçamento e acesso",
-  description:
-    "Síntese da inclusão energética: peso da energia no orçamento das famílias por faixa de renda (POF 2017-2018), Tarifa Social (ANEEL, SCS e Beneficiários da CDE), cobertura potencial contra o Cadastro Único (proxy declarada) e acesso à energia, sistemas isolados e Luz para Todos, cada medida com a sua unidade e a sua data.",
-  alternates: { canonical: "/setor-eletrico/inclusao-energetica" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/inclusao-energetica", {
+    title: "Inclusão energética: Tarifa Social, cobertura, orçamento e acesso",
+    description:
+      "Síntese da inclusão energética: peso da energia no orçamento das famílias por faixa de renda (POF 2017-2018), Tarifa Social (ANEEL, SCS e Beneficiários da CDE), cobertura potencial contra o Cadastro Único (proxy declarada) e acesso à energia, sistemas isolados e Luz para Todos, cada medida com a sua unidade e a sua data.",
+    alternates: { canonical: "/setor-eletrico/inclusao-energetica" },
+  }, anterior);
+}
 
 /**
  * Síntese da Inclusão energética. A pergunta é social: para quem a energia pesa mais. A figura principal é a despesa com energia por

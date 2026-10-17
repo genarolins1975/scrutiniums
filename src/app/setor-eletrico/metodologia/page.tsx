@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -28,12 +29,14 @@ import { carimbo, dataBR, num, rotuloRegra } from "@/lib/energia/formato";
 import type { Natureza } from "@/lib/energia/tipos";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Do arquivo ao número: metodologia do Observatório do Setor Elétrico",
-  description:
-    "O caminho de cada número, da fonte à tela, e a regra de cada indicador publicado: definição, unidade, recortes, fórmula, fontes com ficha e limitações. Natureza do dado, regra editorial, regras de classificação, governança de previsão e limitações do Observatório Brasileiro do Setor Elétrico.",
-  alternates: { canonical: "/setor-eletrico/metodologia" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/metodologia", {
+    title: "Do arquivo ao número: metodologia do Observatório do Setor Elétrico",
+    description:
+      "O caminho de cada número, da fonte à tela, e a regra de cada indicador publicado: definição, unidade, recortes, fórmula, fontes com ficha e limitações. Natureza do dado, regra editorial, regras de classificação, governança de previsão e limitações do Observatório Brasileiro do Setor Elétrico.",
+    alternates: { canonical: "/setor-eletrico/metodologia" },
+  }, anterior);
+}
 
 /** Seção de página (fora do painel): título de nível 2 e texto em coluna de leitura; `larga` deixa a figura ocupar a largura da página e prende só os parágrafos à coluna. */
 function Secao({ id, titulo, children, larga = false }: { id: string; titulo: string; children: ReactNode; larga?: boolean }) {

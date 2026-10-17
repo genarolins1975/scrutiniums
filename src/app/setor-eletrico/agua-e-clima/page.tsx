@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { AguaArmazenamento } from "@/components/energia/AguaArmazenamento";
 import { AguaPontes } from "@/components/energia/AguaPontes";
 import {
@@ -69,12 +70,14 @@ import { gold, integra, lerGold } from "@/lib/energia/gold";
 import type { AguaDetalheGold } from "@/lib/energia/tipos-agua";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Água e clima: energia armazenada nos reservatórios",
-  description:
-    "Energia armazenada (EAR) do SIN, dos subsistemas, dos REE e das bacias do ONS, em MWmês e em % da capacidade, contra a faixa do mesmo dia nos anos anteriores, com as mudanças de capacidade e a reconciliação entre os recortes.",
-  alternates: { canonical: "/setor-eletrico/agua-e-clima" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/agua-e-clima", {
+    title: "Água e clima: energia armazenada nos reservatórios",
+    description:
+      "Energia armazenada (EAR) do SIN, dos subsistemas, dos REE e das bacias do ONS, em MWmês e em % da capacidade, contra a faixa do mesmo dia nos anos anteriores, com as mudanças de capacidade e a reconciliação entre os recortes.",
+    alternates: { canonical: "/setor-eletrico/agua-e-clima" },
+  }, anterior);
+}
 
 const FONTE = "ONS, EAR Diário por Subsistema, por REE e por Bacia (captura mais recente de cada ano)";
 const URLS_P017 = ["agua_subsistemas_diario", "agua_ear_recortes_diario", "agua_ear_recortes_mensal", "agua_capacidade_eventos"];

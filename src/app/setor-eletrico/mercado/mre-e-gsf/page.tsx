@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -52,12 +53,14 @@ import type { MercadoGold } from "@/lib/energia/tipos-mercado";
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Mercado de energia: MRE e GSF",
-  description:
-    "Como foi o ajuste da garantia física das hidrelétricas do MRE: GSF mês a mês, geração e garantia física em colunas separadas, risco hidrológico alocado às distribuidoras na Conta Bandeira e a conferência com o InfoMercado da CCEE.",
-  alternates: { canonical: "/setor-eletrico/mercado/mre-e-gsf" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/mercado/mre-e-gsf", {
+    title: "Mercado de energia: MRE e GSF",
+    description:
+      "Como foi o ajuste da garantia física das hidrelétricas do MRE: GSF mês a mês, geração e garantia física em colunas separadas, risco hidrológico alocado às distribuidoras na Conta Bandeira e a conferência com o InfoMercado da CCEE.",
+    alternates: { canonical: "/setor-eletrico/mercado/mre-e-gsf" },
+  }, anterior);
+}
 
 export default function MercadoMreGsfPage() {
   const g = lerGold<MercadoGold>("mercado.json");

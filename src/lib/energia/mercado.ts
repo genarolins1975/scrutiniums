@@ -70,8 +70,8 @@ export function provenienciaLegivel(p: Proveniencia): Proveniencia {
   return {
     ...p,
     notas_fonte: p.notas_fonte === null ? null : datasLegiveis(p.notas_fonte),
-    limitacoes: p.limitacoes.map(datasLegiveis),
-    transformacoes: p.transformacoes.map(datasLegiveis),
+    limitacoes: p.limitacoes.map((x) => datasLegiveis(x)),
+    transformacoes: p.transformacoes.map((x) => datasLegiveis(x)),
   };
 }
 

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -45,12 +46,14 @@ import {
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Perdas de energia na distribuição",
-  description:
-    "Onde a energia se perde: taxa e energia perdida das concessionárias somadas e de cada distribuidora, cada uma com o denominador explícito, mapa das áreas de atuação, comparação de até quatro distribuidoras e a série anual do SAMP, com a fonte da ANEEL.",
-  alternates: { canonical: "/setor-eletrico/perdas" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/perdas", {
+    title: "Perdas de energia na distribuição",
+    description:
+      "Onde a energia se perde: taxa e energia perdida das concessionárias somadas e de cada distribuidora, cada uma com o denominador explícito, mapa das áreas de atuação, comparação de até quatro distribuidoras e a série anual do SAMP, com a fonte da ANEEL.",
+    alternates: { canonical: "/setor-eletrico/perdas" },
+  }, anterior);
+}
 
 export default function PerdasPage() {
   const g = lerGold<PerdasGold>("perdas.json");

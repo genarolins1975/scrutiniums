@@ -1,5 +1,6 @@
 import { semCodigosDePergunta } from "@/lib/energia/bastidor";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -18,12 +19,14 @@ import { linhasRegulatorio, perimetroRegulatorio, respostaRegulatorio, rotuloDis
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Perdas: percentual técnico regulatório por distribuidora",
-  description:
-    "Percentual técnico regulatório implícito no SAMP por distribuidora, trecho a trecho, com a resolução homologatória associada, e o bloqueio da comparação com a referência de perdas não técnicas, com evidência.",
-  alternates: { canonical: "/setor-eletrico/perdas/regulatorio" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/perdas/regulatorio", {
+    title: "Perdas: percentual técnico regulatório por distribuidora",
+    description:
+      "Percentual técnico regulatório implícito no SAMP por distribuidora, trecho a trecho, com a resolução homologatória associada, e o bloqueio da comparação com a referência de perdas não técnicas, com evidência.",
+    alternates: { canonical: "/setor-eletrico/perdas/regulatorio" },
+  }, anterior);
+}
 
 export default function PerdasRegulatorioPage() {
   const g = lerGold<PerdasGold>("perdas.json");

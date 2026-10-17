@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -63,12 +64,14 @@ import {
 import type { GoldTransicao, MunicipiosMmgdArquivo } from "@/lib/energia/tipos-transicao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "MMGD no território: onde a geração distribuída cresce",
-  description:
-    "Micro e minigeração distribuída no cadastro da ANEEL por UF, município, distribuidora, fonte e perfil, com potência por habitante (IBGE), histórico de conexões, perfis e controles do cadastro. Capacidade instalada, não energia gerada.",
-  alternates: { canonical: "/setor-eletrico/transicao/mmgd" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/transicao/mmgd", {
+    title: "MMGD no território: onde a geração distribuída cresce",
+    description:
+      "Micro e minigeração distribuída no cadastro da ANEEL por UF, município, distribuidora, fonte e perfil, com potência por habitante (IBGE), histórico de conexões, perfis e controles do cadastro. Capacidade instalada, não energia gerada.",
+    alternates: { canonical: "/setor-eletrico/transicao/mmgd" },
+  }, anterior);
+}
 
 /**
  * Nomes dos municípios das listas do modo Auditar que a gold publica só com o código

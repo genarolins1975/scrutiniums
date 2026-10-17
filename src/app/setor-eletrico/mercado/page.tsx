@@ -1,6 +1,7 @@
 import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -67,12 +68,14 @@ import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Mercado de energia: livre e regulado",
-  description:
-    "Quanto do consumo de energia elétrica está no mercado livre e quanto no regulado, em três universos com perímetros diferentes (EPE, CCEE e SAMP), com a fonte e as conferências de cada número e o que o observatório ainda não mostra sobre contratos.",
-  alternates: { canonical: "/setor-eletrico/mercado" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/mercado", {
+    title: "Mercado de energia: livre e regulado",
+    description:
+      "Quanto do consumo de energia elétrica está no mercado livre e quanto no regulado, em três universos com perímetros diferentes (EPE, CCEE e SAMP), com a fonte e as conferências de cada número e o que o observatório ainda não mostra sobre contratos.",
+    alternates: { canonical: "/setor-eletrico/mercado" },
+  }, anterior);
+}
 
 export default function MercadoPage() {
   const g = lerGold<MercadoGold>("mercado.json");

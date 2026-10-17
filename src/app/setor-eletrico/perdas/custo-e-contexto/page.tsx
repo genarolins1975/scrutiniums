@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -19,12 +20,14 @@ import { linhasContexto, linhasCusto, pontosAssociacao, respostaAssociacao, resp
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Perdas: custo na tarifa e contexto territorial",
-  description:
-    "Componentes de perdas técnicas, não técnicas e na Rede Básica na tarifa residencial B1 de cada distribuidora, com a vigência conferida, e a associação descritiva entre renda da área e perdas, com a fonte da ANEEL e do IBGE.",
-  alternates: { canonical: "/setor-eletrico/perdas/custo-e-contexto" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/perdas/custo-e-contexto", {
+    title: "Perdas: custo na tarifa e contexto territorial",
+    description:
+      "Componentes de perdas técnicas, não técnicas e na Rede Básica na tarifa residencial B1 de cada distribuidora, com a vigência conferida, e a associação descritiva entre renda da área e perdas, com a fonte da ANEEL e do IBGE.",
+    alternates: { canonical: "/setor-eletrico/perdas/custo-e-contexto" },
+  }, anterior);
+}
 
 export default function PerdasCustoContextoPage() {
   const g = lerGold<PerdasGold>("perdas.json");

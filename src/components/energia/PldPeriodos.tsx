@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { useMemo, useRef } from "react";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { LinkDoPainel } from "@/components/energia/LinkDoPainel";

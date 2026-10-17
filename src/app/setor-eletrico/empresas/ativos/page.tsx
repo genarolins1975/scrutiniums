@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasMapaAtivos } from "@/components/energia/EmpresasMapaAtivos";
@@ -58,12 +59,14 @@ import type { RalieResumo } from "@/lib/energia/empresas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Quem são os donos dos ativos? Usinas e linhas por CNPJ",
-  description:
-    "Usinas do SIGA e ativos de transmissão do SIGET ligados ao CNPJ do proprietário publicado pela ANEEL, com a cobertura dos vínculos, o mapa das usinas, os maiores proprietários e as usinas sem vínculo completo.",
-  alternates: { canonical: "/setor-eletrico/empresas/ativos" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/empresas/ativos", {
+    title: "Quem são os donos dos ativos? Usinas e linhas por CNPJ",
+    description:
+      "Usinas do SIGA e ativos de transmissão do SIGET ligados ao CNPJ do proprietário publicado pela ANEEL, com a cobertura dos vínculos, o mapa das usinas, os maiores proprietários e as usinas sem vínculo completo.",
+    alternates: { canonical: "/setor-eletrico/empresas/ativos" },
+  }, anterior);
+}
 
 const COLUNAS_RAMOS: ColunaTabela[] = [
   { id: "ramo", rotulo: "Ramo declarado", tipo: "texto" },

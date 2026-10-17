@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
@@ -29,12 +30,14 @@ import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { PldDetalheGold } from "@/lib/energia/tipos-pld";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "PLD: CMO e formação de preço",
-  description:
-    "CMO semanal do DECOMP, CMO semi-horário do DESSEM e PLD horário como três produtos separados, alinhados na mesma semana operativa e na mesma hora, com o momento do cálculo de cada um, a relação por ano e a sequência de CMO zero conferida no arquivo original.",
-  alternates: { canonical: "/setor-eletrico/pld/cmo-e-formacao" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/pld/cmo-e-formacao", {
+    title: "PLD: CMO e formação de preço",
+    description:
+      "CMO semanal do DECOMP, CMO semi-horário do DESSEM e PLD horário como três produtos separados, alinhados na mesma semana operativa e na mesma hora, com o momento do cálculo de cada um, a relação por ano e a sequência de CMO zero conferida no arquivo original.",
+    alternates: { canonical: "/setor-eletrico/pld/cmo-e-formacao" },
+  }, anterior);
+}
 
 const FONTE = "ONS, CMO Semanal (DECOMP) e CMO Semi-Horário (DESSEM); CCEE, PLD horário por submercado";
 

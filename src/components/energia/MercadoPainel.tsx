@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
@@ -185,7 +185,7 @@ export function MercadoPendenciasAuditoria({ g }: { g: Pick<MercadoGold, "penden
           </a>
           {i.evidencia.capturado_em ? `, capturado em ${carimbo(i.evidencia.capturado_em)}` : ""}
           {i.evidencia.sha256 ? `, sha256 ${i.evidencia.sha256}` : ""}.
-          {i.alternativas.length > 0 && <> Alternativas integradas: {i.alternativas.map(datasLegiveis).join("; ")}.</>}
+          {i.alternativas.length > 0 && <> Alternativas integradas: {i.alternativas.map((x) => datasLegiveis(x)).join("; ")}.</>}
         </li>
       ))}
     </ul>

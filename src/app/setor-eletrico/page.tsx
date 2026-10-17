@@ -6,7 +6,8 @@ import { PercursoVisualEnergia } from "@/components/energia/PercursoVisualEnergi
 import { ETAPAS_ENERGIA } from "@/lib/energia/percurso-visual";
 import { PerguntasExploraveis, LaboratorioEnergia } from "@/components/energia/ExploracaoInicial";
 import "./atlas-inicial.css";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
 import type { ReactNode } from "react";
 import { BuscaObservatorio } from "@/components/energia/BuscaObservatorio";
@@ -83,12 +84,14 @@ import { publicacaoDados } from "@/lib/energia/dados-servidor";
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: { absolute: "Observatório Brasileiro do Setor Elétrico · Scrutiniums" },
-  description:
-    "Entenda a energia que move o Brasil: como água, geração, rede, consumo, preço, contratos e tarifa se ligam, a pergunta que cada página responde, trilhas por interesse, como conferir cada número e a data de cada fonte.",
-  alternates: { canonical: "/setor-eletrico" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico", {
+    title: { absolute: "Observatório Brasileiro do Setor Elétrico · Scrutiniums" },
+    description:
+      "Entenda a energia que move o Brasil: como água, geração, rede, consumo, preço, contratos e tarifa se ligam, a pergunta que cada página responde, trilhas por interesse, como conferir cada número e a data de cada fonte.",
+    alternates: { canonical: "/setor-eletrico" },
+  }, anterior);
+}
 
 const ORDEM_NATUREZAS: Natureza[] = ["OBSERVADO", "CALCULADO", "ESTIMADO", "PREVISTO", "CENARIO"];
 

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { ListadasLogo } from "@/components/energia/ListadasLogo";
 import { ROTULO_SEGMENTO, type CartaoListada, type EloCadeia } from "@/lib/energia/empresas-entrada";
 import { num } from "@/lib/energia/formato";

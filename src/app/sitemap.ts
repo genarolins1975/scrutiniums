@@ -6,6 +6,7 @@ import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
 import { DESTINOS_NAVEGACAO, MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
+import { TRILHAS_APRENDA } from "@/lib/energia/conteudo/trilhas";
 import { PAGINAS as PAINEIS_TRABALHO_RENDA } from "@/components/eficiencia/trabalho-renda/modelo";
 import { PAGINAS_MOBILIDADE, ROTA_MOBILIDADE } from "@/lib/eficiencia/mobilidade/modelo";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
@@ -48,6 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...MODULOS_ENERGIA.map((m) => rota(m.href, m.integrado ? 0.9 : 0.5, m.integrado ? "daily" : "monthly")),
     ...DESTINOS_NAVEGACAO.filter((d) => d.publicado && !MODULOS_ENERGIA.some((m) => m.href === d.href) && !d.href.includes("#")).map((d) => rota(d.href, 0.8, "weekly")),
     rota("/setor-eletrico/metodologia", 0.7, "monthly"),
+    rota("/setor-eletrico/metodologia/avaliacao", 0.5, "monthly"),
     ...["mercado/comercializacao", "empresas/analise", "empresas/listadas", "territorio/atlas", "transicao/riscos"].map(p => rota(`/setor-eletrico/${p}`, 0.7, "monthly")),
     rota("/eficiencia-estatal", 0.7, "monthly"),
     ...["", "deficit", "aluguel-renda", "inadequacao", "dados"].map(s => rota(`/eficiencia-estatal/habitacao${s ? "/"+s : ""}`, 0.6, "yearly")),
@@ -70,6 +72,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/sobre/erros", 0.4, "monthly"),
     rota("/sobre/governanca", 0.4, "yearly"),
     rota("/setor-eletrico/aprenda", 0.6, "monthly"),
+    rota("/setor-eletrico/aprenda/trilhas", 0.5, "monthly"),
+    ...TRILHAS_APRENDA.map((t) => rota(`/setor-eletrico/aprenda/trilhas/${t.id}`, 0.5, "monthly")),
     rota("/contas-publicas/metodologia", 0.5, "monthly"),
     rota("/contas-publicas/glossario", 0.5, "monthly"),
     rota("/saneamento/metodologia", 0.6, "monthly"),

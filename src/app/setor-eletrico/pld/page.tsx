@@ -1,8 +1,9 @@
 import { linhasArquivo, resumoRodadas, rotuloTipo, textoMotivo } from "@/lib/energia/previsoes";
 import { lerCsvPrevisoes } from "@/lib/energia/previsoes-arquivos";
 import { fraseDeRecusa, semCaminhosDeArquivo } from "@/lib/energia/bastidor";
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -76,12 +77,14 @@ import { snapshotLegivel, datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "PLD: o preço horário da energia por submercado, explicado",
-  description:
-    "O que é o PLD, o que ele não é, de onde vem o preço, o que aconteceu no último dia publicado nos quatro submercados e o estado real da previsão, com fonte, regra e limitação em cada número.",
-  alternates: { canonical: "/setor-eletrico/pld" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/pld", {
+    title: "PLD: o preço horário da energia por submercado, explicado",
+    description:
+      "O que é o PLD, o que ele não é, de onde vem o preço, o que aconteceu no último dia publicado nos quatro submercados e o estado real da previsão, com fonte, regra e limitação em cada número.",
+    alternates: { canonical: "/setor-eletrico/pld" },
+  }, anterior);
+}
 
 /** Capítulo da abertura que não é painel de evidência: linha fina, rótulo, título em serifa e o conteúdo; a âncora fica no bloco. */
 function Capitulo({ id, rotulo, titulo, children }: { id: string; rotulo: string; titulo: string; children: ReactNode }) {

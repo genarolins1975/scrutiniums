@@ -123,8 +123,13 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
   it("mantém a home parcial, as três institucionais traduzidas e os nove pares integrais no registro único real", () => {
     expect(parDeIdioma("/")).toEqual({ pt: "/", en: "/en", conteudo: "parcialmente_traduzido" });
     expect(parDeIdioma("/en")).toEqual(parDeIdioma("/"));
-    expect(PARES_DE_IDIOMA).toHaveLength(13);
-    expect(PARES_DE_IDIOMA.filter((par) => par.conteudo === "traduzido").map((par) => par.pt)).toEqual([
+    // O Setor Elétrico (fase 3) declara todas as páginas literais como traduzidas; a prova delas é energia-i18n-html.test.ts.
+    const plataforma = PARES_DE_IDIOMA.filter((par) => !par.pt.startsWith("/setor-eletrico"));
+    const setor = PARES_DE_IDIOMA.filter((par) => par.pt.startsWith("/setor-eletrico"));
+    expect(plataforma).toHaveLength(13);
+    expect(setor.length).toBeGreaterThanOrEqual(73);
+    expect(setor.every((par) => par.conteudo === "traduzido")).toBe(true);
+    expect(plataforma.filter((par) => par.conteudo === "traduzido").map((par) => par.pt)).toEqual([
       "/sobre", "/sobre/erros", "/sobre/governanca",
     ]);
     expect(PARES_DE_IDIOMA.filter((par) => par.conteudo === "portugues_marcado").map((par) => par.pt)).toEqual([

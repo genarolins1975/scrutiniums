@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { num } from "@/lib/energia/formato";
 import { datasLegiveis } from "@/lib/energia/visao";
 import { ESCALA_AVALIACAO, ORDEM_DIMENSOES, ROTULO_CURTO, ROTULO_RESULTADO_JORNADA, evolucao, textoCitado as citado } from "@/lib/energia/avaliacao";

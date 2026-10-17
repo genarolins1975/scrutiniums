@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
@@ -9,12 +10,14 @@ import { estadosDoAcervo, gruposDoIndice, recorteDoAcervo, resumoDoAcervo } from
 import { PAGINAS_MAPA } from "@/lib/energia/mapa";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Aprenda: base de conhecimento do setor elétrico",
-  description:
-    "PLD, CMO, EAR, ENA, tarifa, perdas, DEC e FEC, Tarifa Social, fator de emissão e outros conceitos, cada um com fonte oficial e data de conferência, unidade, exemplo real com a ficha Comprove, o que não confundir e trilhas que ligam os conceitos aos números.",
-  alternates: { canonical: "/setor-eletrico/aprenda" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/aprenda", {
+    title: "Aprenda: base de conhecimento do setor elétrico",
+    description:
+      "PLD, CMO, EAR, ENA, tarifa, perdas, DEC e FEC, Tarifa Social, fator de emissão e outros conceitos, cada um com fonte oficial e data de conferência, unidade, exemplo real com a ficha Comprove, o que não confundir e trilhas que ligam os conceitos aos números.",
+    alternates: { canonical: "/setor-eletrico/aprenda" },
+  }, anterior);
+}
 
 /**
  * Índice do Aprenda, a abertura do módulo: a pergunta da página (a mesma do mapa e do menu), o escopo dos verbetes em uma frase, a busca,

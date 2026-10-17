@@ -1996,7 +1996,7 @@ export function textoProgramaRepetido(p: Pick<ProgramadoRede, "programa_repetido
 /** Conferência do programa do exterior com o PDO das conversoras, em uma frase. */
 export function textoConferenciaPdo(p: Pick<ProgramadoRede, "versao_programa">): string {
   const c = p.versao_programa.conferencia_pdo;
-  const sem = c.dias_sem_programado_no_conjunto.length ? `; ${listaTexto(c.dias_sem_programado_no_conjunto.map(dataBR))} ainda sem programado no conjunto internacional` : "";
+  const sem = c.dias_sem_programado_no_conjunto.length ? `; ${listaTexto(c.dias_sem_programado_no_conjunto.map((x) => dataBR(x)))} ainda sem programado no conjunto internacional` : "";
   return `Programa do exterior conferido com o PDO das conversoras em ${num(c.dias_comparados, 0)} de ${num(c.dias, 0)} dias da amostra (${c.amostra}${sem}): ${num(c.horas_conferem, 0)} de ${num(c.horas, 0)} horas conferem dentro de ${num(c.tolerancia_mwmed, 1)} MWmed, ${num(c.horas_com_programa_ou_pdo_conferem, 0)} de ${num(c.horas_com_programa_ou_pdo, 0)} entre as horas com programa ou PDO diferente de zero.`;
 }
 

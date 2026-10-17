@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { AprendaNavegacao, ROTA_TRILHAS } from "@/components/energia/AprendaPagina";
@@ -9,12 +10,14 @@ import { TRILHAS_APRENDA } from "@/lib/energia/conteudo/trilhas";
 import { plural } from "@/lib/energia/formato";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Trilhas do Aprenda: dos conceitos aos números",
-  description:
-    "Dois percursos que ligam conceitos a números publicados: água, operação e preço; custo, tarifa e orçamento. Cada passo traz o verbete, um número do observatório com o link ao painel (e a ficha Comprove, quando o painel a publica) e o tipo de ligação com o passo seguinte.",
-  alternates: { canonical: "/setor-eletrico/aprenda/trilhas" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/aprenda/trilhas", {
+    title: "Trilhas do Aprenda: dos conceitos aos números",
+    description:
+      "Dois percursos que ligam conceitos a números publicados: água, operação e preço; custo, tarifa e orçamento. Cada passo traz o verbete, um número do observatório com o link ao painel (e a ficha Comprove, quando o painel a publica) e o tipo de ligação com o passo seguinte.",
+    alternates: { canonical: "/setor-eletrico/aprenda/trilhas" },
+  }, anterior);
+}
 
 /**
  * Índice das trilhas: o que é uma trilha, o que cada uma traz por passo e a lista das trilhas, cada uma com a pergunta que responde e os

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { PldHistorico } from "@/components/energia/PldHistorico";
@@ -29,12 +30,14 @@ import { fichasPld } from "@/lib/energia/pld-arquivos";
 import type { PldDetalheGold } from "@/lib/energia/tipos-pld";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "PLD: histórico e distribuição",
-  description:
-    "O PLD do dia comparado com o mesmo mês e a mesma semana de anos anteriores, médias mensais temporal e ponderadas pela carga com o perímetro do peso declarado, moeda constante, distribuição por regime anual de limites, perfil hora × mês e mapa hora × dia.",
-  alternates: { canonical: "/setor-eletrico/pld/historico" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/pld/historico", {
+    title: "PLD: histórico e distribuição",
+    description:
+      "O PLD do dia comparado com o mesmo mês e a mesma semana de anos anteriores, médias mensais temporal e ponderadas pela carga com o perímetro do peso declarado, moeda constante, distribuição por regime anual de limites, perfil hora × mês e mapa hora × dia.",
+    alternates: { canonical: "/setor-eletrico/pld/historico" },
+  }, anterior);
+}
 
 const FONTE = "CCEE, PLD horário por submercado; ONS, Balanço de Energia e Carga Verificada; IBGE, IPCA";
 

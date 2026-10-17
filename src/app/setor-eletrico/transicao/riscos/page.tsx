@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { RiscosMatriz } from "@/components/energia/RiscosMatriz";
@@ -12,11 +13,13 @@ import s from "@/components/energia/LeiturasIntegradas.module.css";
 import r from "@/components/energia/Riscos.module.css";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Riscos do setor elétrico: cenários, contratos, baterias e resiliência",
-  description: "Entenda como riscos físicos, de mercado e financeiros se combinam. Explore contratos, cobertura da dívida, economia de baterias, interrupções e conexão de data centers com premissas explícitas.",
-  alternates: { canonical: "/setor-eletrico/transicao/riscos" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/transicao/riscos", {
+    title: "Riscos do setor elétrico: cenários, contratos, baterias e resiliência",
+    description: "Entenda como riscos físicos, de mercado e financeiros se combinam. Explore contratos, cobertura da dívida, economia de baterias, interrupções e conexão de data centers com premissas explícitas.",
+    alternates: { canonical: "/setor-eletrico/transicao/riscos" },
+  }, anterior);
+}
 const conceitos=[
   {termo:"Preço capturado e fator de captura",texto:"O preço capturado pondera os preços pela energia produzida em cada intervalo. O fator divide esse valor pelo preço médio de referência, na mesma janela e no mesmo mercado. Se a referência for zero ou negativa, a razão deixa de ser uma régua simples. Fator de captura baixo não prova sozinho causalidade ou prejuízo."},
   {termo:"Cenário, sensibilidade e previsão",texto:"Cenário combina hipóteses coerentes sobre acontecimentos. Sensibilidade altera parâmetros para mostrar dependência do resultado. Previsão requer método estimativo, validação e avaliação de erro. Os quatro laboratórios desta página são cenários e sensibilidades, sem probabilidades calibradas."},

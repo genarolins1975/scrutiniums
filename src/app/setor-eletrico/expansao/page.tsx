@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import {
@@ -54,12 +55,14 @@ import {
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Expansão da oferta e da rede: carteira, cronograma, transmissão e cenários",
-  description:
-    "O que está sendo construído: usinas em operação (potência fiscalizada), em construção e com obra não iniciada (potência outorgada) no SIGA e no RALIE da ANEEL, cronograma com data-base e o que atrasou, obras e leilões de transmissão ao lado da geração, e o PDE 2035 como cenário, com um painel completo para cada pergunta.",
-  alternates: { canonical: "/setor-eletrico/expansao" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/expansao", {
+    title: "Expansão da oferta e da rede: carteira, cronograma, transmissão e cenários",
+    description:
+      "O que está sendo construído: usinas em operação (potência fiscalizada), em construção e com obra não iniciada (potência outorgada) no SIGA e no RALIE da ANEEL, cronograma com data-base e o que atrasou, obras e leilões de transmissão ao lado da geração, e o PDE 2035 como cenário, com um painel completo para cada pergunta.",
+    alternates: { canonical: "/setor-eletrico/expansao" },
+  }, anterior);
+}
 
 /** Cor de identificação de cada etapa na faixa de métricas (a mesma dos gráficos da carteira); nunca é cor de texto. */
 const COR_ETAPA: Record<string, string> = {

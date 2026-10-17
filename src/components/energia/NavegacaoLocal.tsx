@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 
 /**
  * Navegação local única de um módulo, em duas formas que nunca aparecem juntas na mesma página.

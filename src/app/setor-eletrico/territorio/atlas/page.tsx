@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import Link from "@/components/energia/LinkSemPrefetch";
@@ -11,7 +12,9 @@ import type { CamadaGeo } from "@/lib/energia/geo";
 import s from "@/components/energia/LeiturasIntegradas.module.css";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = { title: "Atlas da geração e dos projetos por estado", alternates: { canonical: "/setor-eletrico/territorio/atlas" } };
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/territorio/atlas", { title: "Atlas da geração e dos projetos por estado", alternates: { canonical: "/setor-eletrico/territorio/atlas" } }, anterior);
+}
 export default function Atlas() {
   const g = lerGold<ExpansaoGold>("expansao.json");
   const t = lerGold<{ disponivel: boolean; mmgd: BlocoMmgd }>("transicao.json");

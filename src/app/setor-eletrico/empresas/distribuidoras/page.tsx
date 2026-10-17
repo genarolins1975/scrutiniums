@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasComparador, EmpresasIndiceDistribuidoras } from "@/components/energia/EmpresasDistribuidoras";
@@ -45,12 +46,14 @@ import { SIGLAS } from "@/lib/energia/siglas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Como a distribuidora atende sua área? Índice e comparador",
-  description:
-    "Índice das distribuidoras pelo CNPJ, com perdas (SAMP), continuidade (DEC e FEC diante do limite) e tarifa residencial B1 copiadas dos módulos de origem, comparador de até quatro e link para a ficha de cada uma.",
-  alternates: { canonical: "/setor-eletrico/empresas/distribuidoras" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/empresas/distribuidoras", {
+    title: "Como a distribuidora atende sua área? Índice e comparador",
+    description:
+      "Índice das distribuidoras pelo CNPJ, com perdas (SAMP), continuidade (DEC e FEC diante do limite) e tarifa residencial B1 copiadas dos módulos de origem, comparador de até quatro e link para a ficha de cada uma.",
+    alternates: { canonical: "/setor-eletrico/empresas/distribuidoras" },
+  }, anterior);
+}
 
 export default function PaginaP037() {
   const g = lerGold<EmpresasGold>("empresas.json");

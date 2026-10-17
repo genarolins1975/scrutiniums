@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import {
@@ -65,12 +66,14 @@ import type {
 import type { MercadoGold } from "@/lib/energia/tipos-mercado";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Curtailment: por que eólicas e solares são cortadas e quem perde",
-  description:
-    "O corte de geração eólica e solar (constrained-off) explicado com laboratórios interativos e os dados do ONS: como o corte é medido, as três razões oficiais, o meio-dia do sistema, a escala diante do consumo do país, o encargo pago pelos consumidores e as respostas possíveis.",
-  alternates: { canonical: "/setor-eletrico/geracao/curtailment" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/geracao/curtailment", {
+    title: "Curtailment: por que eólicas e solares são cortadas e quem perde",
+    description:
+      "O corte de geração eólica e solar (constrained-off) explicado com laboratórios interativos e os dados do ONS: como o corte é medido, as três razões oficiais, o meio-dia do sistema, a escala diante do consumo do país, o encargo pago pelos consumidores e as respostas possíveis.",
+    alternates: { canonical: "/setor-eletrico/geracao/curtailment" },
+  }, anterior);
+}
 
 const ROTA = "/setor-eletrico/geracao/curtailment";
 const FONTE =

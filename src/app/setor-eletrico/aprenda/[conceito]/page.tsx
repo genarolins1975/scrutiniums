@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { notFound } from "next/navigation";
 import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
 import { AprendaVerbete } from "@/components/energia/AprendaVerbete";
@@ -13,7 +14,7 @@ export function generateStaticParams() {
   return CONCEITOS.map((c) => ({ conceito: c.slug }));
 }
 
-export function generateMetadata({ params }: { params: { conceito: string } }): Metadata {
+function metadadosDaPagina({ params }: { params: { conceito: string } }): Metadata {
   const c = conceito(params.conceito);
   if (!c) return {};
   const nome = c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() ? `${c.sigla}: ${c.nome}` : c.nome;
@@ -24,6 +25,10 @@ export function generateMetadata({ params }: { params: { conceito: string } }): 
     // verbete em preparação não tem definição publicada: não deve ser indexado
     ...(c.estado === "PENDENTE" ? { robots: { index: false, follow: true } } : {}),
   };
+}
+
+export async function generateMetadata(props: { params: { conceito: string } }, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia(caminhoComParametros("/setor-eletrico/aprenda/[conceito]", props.params), metadadosDaPagina(props), anterior);
 }
 
 /**

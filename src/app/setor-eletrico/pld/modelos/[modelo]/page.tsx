@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { notFound } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -68,7 +69,7 @@ export function generateStaticParams() {
   return integra(g) ? g.fichas.map((f) => ({ modelo: slugModelo(f.codigo) })) : [];
 }
 
-export function generateMetadata({ params }: { params: { modelo: string } }): Metadata {
+function metadadosDaPagina({ params }: { params: { modelo: string } }): Metadata {
   const g = gold();
   const f = integra(g) ? g.fichas.find((x) => slugModelo(x.codigo) === params.modelo) : undefined;
   if (!f) return {};
@@ -77,6 +78,10 @@ export function generateMetadata({ params }: { params: { modelo: string } }): Me
     description: `Situação (${rotuloEstadoModelo(f.estado)}), entradas, fórmula, transformações, configuração, corte, hipóteses, aprovação, limitações e reexecução do modelo ${f.codigo} de previsão do PLD.`,
     alternates: { canonical: rotaModelo(f.codigo) },
   };
+}
+
+export async function generateMetadata(props: { params: { modelo: string } }, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia(caminhoComParametros("/setor-eletrico/pld/modelos/[modelo]", props.params), metadadosDaPagina(props), anterior);
 }
 
 /** Valor de configuração em texto legível (lista, objeto por frequência ou número). */

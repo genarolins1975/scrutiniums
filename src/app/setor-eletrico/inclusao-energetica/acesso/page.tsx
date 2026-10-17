@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -32,12 +33,14 @@ import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Acesso à energia, sistemas isolados e Luz para Todos",
-  description:
-    "Domicílios sem energia elétrica e com fornecimento em tempo integral (PNAD Contínua), localidades e população dos sistemas isolados (PASI, EPE) e domicílios atendidos pelo Luz para Todos (MME), por UF e ano.",
-  alternates: { canonical: "/setor-eletrico/inclusao-energetica/acesso" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/inclusao-energetica/acesso", {
+    title: "Acesso à energia, sistemas isolados e Luz para Todos",
+    description:
+      "Domicílios sem energia elétrica e com fornecimento em tempo integral (PNAD Contínua), localidades e população dos sistemas isolados (PASI, EPE) e domicílios atendidos pelo Luz para Todos (MME), por UF e ano.",
+    alternates: { canonical: "/setor-eletrico/inclusao-energetica/acesso" },
+  }, anterior);
+}
 
 const COLUNAS_CICLOS: ColunaTabela[] = [
   { id: "ciclo", rotulo: "Ciclo do PASI", tipo: "texto" },

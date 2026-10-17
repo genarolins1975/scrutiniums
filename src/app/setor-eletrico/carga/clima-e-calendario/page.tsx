@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { CargaClima, CargaClimaMetricas } from "@/components/energia/CargaClima";
@@ -15,12 +16,14 @@ import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Carga: clima e calendário",
-  description:
-    "Decomposição estatística da carga diária do SIN e dos subsistemas em calendário, temperatura, sazonalidade e tendência, estimada só com o passado e avaliada fora da amostra, com intervalos, resíduos, referência ingênua e sensibilidade. Associação, não causa.",
-  alternates: { canonical: "/setor-eletrico/carga/clima-e-calendario" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/carga/clima-e-calendario", {
+    title: "Carga: clima e calendário",
+    description:
+      "Decomposição estatística da carga diária do SIN e dos subsistemas em calendário, temperatura, sazonalidade e tendência, estimada só com o passado e avaliada fora da amostra, com intervalos, resíduos, referência ingênua e sensibilidade. Associação, não causa.",
+    alternates: { canonical: "/setor-eletrico/carga/clima-e-calendario" },
+  }, anterior);
+}
 
 const FONTE = "Decomposição estatística do observatório sobre ONS (carga diária), NASA POWER (temperatura) e IBGE (população)";
 

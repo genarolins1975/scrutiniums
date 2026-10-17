@@ -1,6 +1,7 @@
 import { fraseDeRecusa } from "@/lib/energia/bastidor";
 import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasEvolucaoFinancas, EmpresasTabelaCompanhias } from "@/components/energia/EmpresasFinancas";
@@ -48,12 +49,14 @@ import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Como evoluem os fundamentos reportados? Companhias abertas do setor",
-  description:
-    "Demonstrações societárias das companhias abertas do setor elétrico na CVM (DFP e ITR), consolidado e individual separados, com reapresentações, conversões de escala e o bloqueio das demonstrações regulatórias documentado.",
-  alternates: { canonical: "/setor-eletrico/empresas/financas" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/empresas/financas", {
+    title: "Como evoluem os fundamentos reportados? Companhias abertas do setor",
+    description:
+      "Demonstrações societárias das companhias abertas do setor elétrico na CVM (DFP e ITR), consolidado e individual separados, com reapresentações, conversões de escala e o bloqueio das demonstrações regulatórias documentado.",
+    alternates: { canonical: "/setor-eletrico/empresas/financas" },
+  }, anterior);
+}
 
 export default function PaginaP038() {
   const g = lerGold<EmpresasGold>("empresas.json");

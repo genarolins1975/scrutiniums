@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ContaBandeiras } from "@/components/energia/ContaBandeiras";
@@ -64,12 +65,14 @@ import { Auditoria, Datas, FONTE_TARIFAS, Navegacao, ROTA_CONTA, ROTA_REAJUSTES,
  */
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Conta de luz: reajustes, bandeiras e subsídios",
-  description:
-    "Variação da tarifa B1 residencial de cada distribuidora contra o IPCA no mesmo período, bandeiras tarifárias acionadas mês a mês, subsídios tarifários por categoria e orçamento anual da CDE.",
-  alternates: { canonical: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/conta-de-luz/reajustes-e-subsidios", {
+    title: "Conta de luz: reajustes, bandeiras e subsídios",
+    description:
+      "Variação da tarifa B1 residencial de cada distribuidora contra o IPCA no mesmo período, bandeiras tarifárias acionadas mês a mês, subsídios tarifários por categoria e orçamento anual da CDE.",
+    alternates: { canonical: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios" },
+  }, anterior);
+}
 
 const COLUNAS_BANDEIRAS: ColunaTabela[] = [
   { id: "m", rotulo: "Mês", tipo: "data" },

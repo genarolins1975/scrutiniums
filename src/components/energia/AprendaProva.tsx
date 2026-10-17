@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import type { Natureza } from "@/lib/energia/tipos";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -57,12 +58,14 @@ import {
 import type { GoldTransicao } from "@/lib/energia/tipos-transicao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Energia da MMGD estimada pelo ONS e a entrada no Balanço de Energia",
-  description:
-    "Quanta energia a micro e minigeração distribuída entrega ao SIN segundo a estimativa do ONS (MWmed e participação na carga global, por submercado e mês), a razão rotulada com a capacidade cadastrada e a conferência da incorporação da MMGD ao Balanço de Energia (achado A11).",
-  alternates: { canonical: "/setor-eletrico/transicao/energia-estimada" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/transicao/energia-estimada", {
+    title: "Energia da MMGD estimada pelo ONS e a entrada no Balanço de Energia",
+    description:
+      "Quanta energia a micro e minigeração distribuída entrega ao SIN segundo a estimativa do ONS (MWmed e participação na carga global, por submercado e mês), a razão rotulada com a capacidade cadastrada e a conferência da incorporação da MMGD ao Balanço de Energia (achado A11).",
+    alternates: { canonical: "/setor-eletrico/transicao/energia-estimada" },
+  }, anterior);
+}
 
 /**
  * P063, segunda parte: a energia de MMGD estimada pelo ONS (MWmed, só SIN), em

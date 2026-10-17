@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { ExpansaoCamadas, ExpansaoFiguras } from "@/components/energia/ExpansaoCenarios";
@@ -43,12 +44,14 @@ import {
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Cenários oficiais: como o PDE 2035 enxerga a matriz elétrica",
-  description:
-    "Plano Decenal de Expansão de Energia 2035 (EPE e MME) com selo de cenário, data-base, hipóteses e universo declarados, ao lado do realizado do SIGA e da carteira do RALIE em camadas separadas, sem diferença calculada.",
-  alternates: { canonical: "/setor-eletrico/expansao/cenarios" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/expansao/cenarios", {
+    title: "Cenários oficiais: como o PDE 2035 enxerga a matriz elétrica",
+    description:
+      "Plano Decenal de Expansão de Energia 2035 (EPE e MME) com selo de cenário, data-base, hipóteses e universo declarados, ao lado do realizado do SIGA e da carteira do RALIE em camadas separadas, sem diferença calculada.",
+    alternates: { canonical: "/setor-eletrico/expansao/cenarios" },
+  }, anterior);
+}
 
 export default function CenariosPage() {
   const g = lerGold<ExpansaoGold>("expansao.json");

@@ -1,6 +1,7 @@
 import { semCaminhosDeArquivo } from "@/lib/energia/bastidor";
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { SituacaoDoModelo } from "@/components/energia/EstadoModelo";
@@ -85,12 +86,14 @@ import type { PrevisoesDesempenhoGold } from "@/lib/energia/tipos-previsoes";
 import { snapshotLegivel } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "O que os modelos de previsão do PLD conseguem prever",
-  description:
-    "Estado de pesquisa, papel, número publicado e protocolo de cada modelo de previsão do PLD (B0, S0, C1, C2-P e C2-H), com entradas, fórmula, pesos do último ajuste, reexecução das previsões arquivadas e a situação do teste fora da amostra e da calibração das faixas.",
-  alternates: { canonical: ROTA_MODELOS },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/pld/modelos", {
+    title: "O que os modelos de previsão do PLD conseguem prever",
+    description:
+      "Estado de pesquisa, papel, número publicado e protocolo de cada modelo de previsão do PLD (B0, S0, C1, C2-P e C2-H), com entradas, fórmula, pesos do último ajuste, reexecução das previsões arquivadas e a situação do teste fora da amostra e da calibração das faixas.",
+    alternates: { canonical: ROTA_MODELOS },
+  }, anterior);
+}
 
 const LINK_MODELO =
   "inline-flex min-h-[44px] items-center font-serif text-lg text-energia-dark underline underline-offset-4 hover:text-carvao [@media(pointer:fine)]:md:min-h-0";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 

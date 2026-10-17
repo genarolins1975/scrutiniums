@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -41,12 +42,14 @@ import {
 import { hojeBrasilia, type FormaResultado, type GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Regulação: consultas públicas abertas e Agenda Regulatória da ANEEL",
-  description:
-    "Consultas e audiências públicas da ANEEL com o período de contribuições lido nas atas da Diretoria, a situação recalculada na data de leitura (nenhuma consulta vencida aparece como aberta), o resultado e o ato, e as atividades da Agenda Regulatória vigente da ANEEL.",
-  alternates: { canonical: rotaPainel("p046") },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/regulacao/consultas-e-agenda", {
+    title: "Regulação: consultas públicas abertas e Agenda Regulatória da ANEEL",
+    description:
+      "Consultas e audiências públicas da ANEEL com o período de contribuições lido nas atas da Diretoria, a situação recalculada na data de leitura (nenhuma consulta vencida aparece como aberta), o resultado e o ato, e as atividades da Agenda Regulatória vigente da ANEEL.",
+    alternates: { canonical: rotaPainel("p046") },
+  }, anterior);
+}
 
 const SERIE_ANO = ["var(--cor-energia)", "var(--serie-referencia)", "var(--cor-energia-dark)"];
 

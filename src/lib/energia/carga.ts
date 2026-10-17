@@ -315,7 +315,7 @@ export function respostaAcumulado(a: AcumuladoAno, sm: Regiao): string {
   const ant = `${num(s.media_ant, 0)} MWmed de ${dataBR(a.inicio_ant)} a ${dataBR(a.fim_ant)}, mesmos dias da semana`;
   if (s.variacao_pct === null) return `${base}; a janela de comparação (${ant}) está em outro regime do ONS, sem variação publicada.`;
   if (a.calendario_equivalente) return `${base}, variação de ${sinal(s.variacao_pct, 2)}% sobre ${ant}, com a mesma composição de calendário (${textoClasses(a.classes)}).`;
-  const feriados = (xs: string[]) => (xs.length ? listaTexto(xs.map(dataBR)) : "nenhum");
+  const feriados = (xs: string[]) => (xs.length ? listaTexto(xs.map((x) => dataBR(x))) : "nenhum");
   return (
     `${base}, variação de ${sinal(s.variacao_pct, 2)}% sobre ${ant}, mas o calendário não é equivalente: ` +
     `${plural(a.classes.util, "dia útil", "dias úteis")} contra ${a.classes_ant.util}; feriados em dia útil: ${feriados(a.feriados_dia_util)} nesta janela e ${feriados(a.feriados_dia_util_ant)} na de comparação.`

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -50,7 +51,7 @@ function achar(papel: string): { g: ListadasGold; c: CompanhiaListada } | null {
   return c ? { g, c } : null;
 }
 
-export function generateMetadata({ params }: { params: { papel: string } }): Metadata {
+function metadadosDaPagina({ params }: { params: { papel: string } }): Metadata {
   const r = achar(params.papel);
   if (!r) return {};
   const nome = nomeCurto(r.c, lerManifestoLogos());
@@ -59,6 +60,10 @@ export function generateMetadata({ params }: { params: { papel: string } }): Met
     description: `Ficha da ${nome} na carteira do Índice de Energia Elétrica da B3: usinas, linhas e distribuidoras sob controle, acionistas e cadeia de controle, demonstrações consolidadas, retorno da ação com proventos e fatos relevantes.`,
     alternates: { canonical: rotaFicha(r.c) },
   };
+}
+
+export async function generateMetadata(props: { params: { papel: string } }, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia(caminhoComParametros("/setor-eletrico/empresas/listadas/[papel]", props.params), metadadosDaPagina(props), anterior);
 }
 
 const link = "text-energia-dark underline underline-offset-4 hover:text-carvao";

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -30,12 +31,14 @@ import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
 import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Cobertura potencial da Tarifa Social (proxy)",
-  description:
-    "Faturas com Tarifa Social por 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo, por UF e município, com a faixa de sensibilidade ao denominador e a regra de elegibilidade vigente. Proxy declarada, não taxa de cobertura.",
-  alternates: { canonical: "/setor-eletrico/inclusao-energetica/cobertura" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/inclusao-energetica/cobertura", {
+    title: "Cobertura potencial da Tarifa Social (proxy)",
+    description:
+      "Faturas com Tarifa Social por 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo, por UF e município, com a faixa de sensibilidade ao denominador e a regra de elegibilidade vigente. Proxy declarada, não taxa de cobertura.",
+    alternates: { canonical: "/setor-eletrico/inclusao-energetica/cobertura" },
+  }, anterior);
+}
 
 export default function CoberturaPage() {
   const g = lerGold<InclusaoGold>("inclusao.json");

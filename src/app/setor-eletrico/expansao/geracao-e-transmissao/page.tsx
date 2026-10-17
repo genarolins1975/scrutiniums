@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { ExpansaoMapaRede } from "@/components/energia/ExpansaoMapas";
@@ -72,12 +73,14 @@ import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Geração e transmissão: a expansão vem acompanhada de rede?",
-  description:
-    "Geração em implantação (RALIE) e obras de transmissão (SIGET) por UF lado a lado, linhas existentes e planejadas da EPE no mapa, leilões de transmissão, contratos de concessão e a série anual de MW liberados, km e MVA energizados, sem somar unidades diferentes.",
-  alternates: { canonical: "/setor-eletrico/expansao/geracao-e-transmissao" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/expansao/geracao-e-transmissao", {
+    title: "Geração e transmissão: a expansão vem acompanhada de rede?",
+    description:
+      "Geração em implantação (RALIE) e obras de transmissão (SIGET) por UF lado a lado, linhas existentes e planejadas da EPE no mapa, leilões de transmissão, contratos de concessão e a série anual de MW liberados, km e MVA energizados, sem somar unidades diferentes.",
+    alternates: { canonical: "/setor-eletrico/expansao/geracao-e-transmissao" },
+  }, anterior);
+}
 
 const URL_REDE = "/energia/series/expansao_rede_epe.json";
 

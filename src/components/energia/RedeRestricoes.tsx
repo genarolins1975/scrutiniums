@@ -194,7 +194,7 @@ export function RedeRestricoes({
                 No arquivo de {escolhido.inicio ? mesAno(escolhido.inicio) : "sem início"} a {escolhido.fim ? mesAno(escolhido.fim) : "sem fim"}: {escolhido.meses_com_violacao} de{" "}
                 {escolhido.meses} meses com alguma hora acima do limite.
                 {escolhido.conferencias.meses_denominador_diferente_do_calendario.length
-                  ? ` Em ${plural(escolhido.conferencias.meses_denominador_diferente_do_calendario.length, "mês", "meses")} (${listaTexto(escolhido.conferencias.meses_denominador_diferente_do_calendario.map(mesAno))}) o período de observação implícito no ATLS publicado difere das horas do calendário (registrado, sem causa atribuída).`
+                  ? ` Em ${plural(escolhido.conferencias.meses_denominador_diferente_do_calendario.length, "mês", "meses")} (${listaTexto(escolhido.conferencias.meses_denominador_diferente_do_calendario.map((x) => mesAno(x)))}) o período de observação implícito no ATLS publicado difere das horas do calendário (registrado, sem causa atribuída).`
                   : ""}
               </p>
             </div>

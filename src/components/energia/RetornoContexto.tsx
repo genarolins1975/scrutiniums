@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CHAVE_RETORNO as CHAVE, destinoDaVolta, type DestinoRetorno as Destino, type RotulosRetorno } from "@/lib/energia/retorno";

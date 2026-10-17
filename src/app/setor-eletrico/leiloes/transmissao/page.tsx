@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -23,12 +24,14 @@ import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 import type { LeiloesGold } from "@/lib/energia/tipos-leiloes";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Leilões de transmissão: receita contratada corrigida pelo IPCA e deságio por lote",
-  description:
-    "Os leilões de linhas e subestações da ANEEL desde 1999: receita anual permitida (RAP) contratada por ano em reais da época e corrigida pelo IPCA, deságio de cada lote, lotes sem vencedor, extensão de linhas e quem venceu.",
-  alternates: { canonical: ROTA_LEILOES_TRANSMISSAO },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/leiloes/transmissao", {
+    title: "Leilões de transmissão: receita contratada corrigida pelo IPCA e deságio por lote",
+    description:
+      "Os leilões de linhas e subestações da ANEEL desde 1999: receita anual permitida (RAP) contratada por ano em reais da época e corrigida pelo IPCA, deságio de cada lote, lotes sem vencedor, extensão de linhas e quem venceu.",
+    alternates: { canonical: ROTA_LEILOES_TRANSMISSAO },
+  }, anterior);
+}
 
 const link = "text-energia-dark underline underline-offset-4 hover:text-carvao";
 

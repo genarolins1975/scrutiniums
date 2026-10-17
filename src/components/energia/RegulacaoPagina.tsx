@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";

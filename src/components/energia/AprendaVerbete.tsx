@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
 import { AprendaCabecalho, AprendaNavegacao, ROTA_APRENDA } from "@/components/energia/AprendaPagina";
 import { AprendaProva } from "@/components/energia/AprendaProva";

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { useMemo, useState } from "react";
 
 /** Busca sem distinção de acento nem de caixa ("geracao" encontra "Geração"). */

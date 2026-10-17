@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -36,7 +37,7 @@ import type { ConferenciaDegrauMmgd, GoldRedeDetalhe } from "@/lib/energia/tipos
 
 export const dynamic = "force-static";
 /** Descrição com a data da quebra lida da gold (nenhuma data escrita à mão). */
-export function generateMetadata(): Metadata {
+function metadadosDaPagina(): Metadata {
   const g = lerGold<GoldRedeDetalhe>("rede_detalhe.json");
   const q = integra(g) ? g.balanco.quebras.find((x) => x.id === "mmgd_2023") : undefined;
   return {
@@ -44,6 +45,10 @@ export function generateMetadata(): Metadata {
     description: `Identidades do balanço de energia do ONS conferidas hora a hora (geração, carga, intercâmbio, fronteiras e exterior), resíduos sinalizados sem causa atribuída,${q ? ` quebra da MMGD estimada em ${dataBR(q.dia)},` : ""} exportação e importação com Argentina, Uruguai e Paraguai e geração de Itaipu.`,
     alternates: { canonical: "/setor-eletrico/rede/balanco-e-exterior" },
   };
+}
+
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/rede/balanco-e-exterior", metadadosDaPagina(), anterior);
 }
 
 const FONTE = "ONS, Balanço de Energia nos Subsistemas e intercâmbios (releitura do módulo Rede)";

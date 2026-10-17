@@ -1,6 +1,7 @@
 import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasBusca } from "@/components/energia/EmpresasBusca";
@@ -58,12 +59,14 @@ import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 import type { ListadasGold } from "@/lib/energia/tipos-listadas";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Empresas do setor elétrico: ativos, distribuidoras, finanças e controle",
-  description:
-    "Quem opera as usinas e as linhas de transmissão (SIGA e SIGET, pelo CNPJ publicado), o perfil de cada distribuidora (perdas, continuidade e tarifa pelo mesmo CNPJ dos módulos de origem), as demonstrações das companhias abertas na CVM e quem controla quanto da capacidade instalada, com HHI sobre fronteira explícita.",
-  alternates: { canonical: "/setor-eletrico/empresas" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/empresas", {
+    title: "Empresas do setor elétrico: ativos, distribuidoras, finanças e controle",
+    description:
+      "Quem opera as usinas e as linhas de transmissão (SIGA e SIGET, pelo CNPJ publicado), o perfil de cada distribuidora (perdas, continuidade e tarifa pelo mesmo CNPJ dos módulos de origem), as demonstrações das companhias abertas na CVM e quem controla quanto da capacidade instalada, com HHI sobre fronteira explícita.",
+    alternates: { canonical: "/setor-eletrico/empresas" },
+  }, anterior);
+}
 
 /** As medidas que parecem somáveis e não são: definições que acompanham os números, depois da informação, em Entender. */
 const MEDIDAS = [

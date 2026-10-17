@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ContaComposicao } from "@/components/energia/ContaComposicao";
@@ -56,12 +57,14 @@ import { infoDasDistribuidoras, lerHistoricoB1 } from "./dados";
 import { Auditoria, Datas, FONTE_TARIFAS, Navegacao, ROTA_REAJUSTES, Recorte, Seguir, downloadsDoPainel } from "./partes";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Conta de luz: tarifas, composição, simulador e reajustes",
-  description:
-    "Tarifa B1 residencial de aplicação de cada distribuidora (ANEEL), custo de perfis de consumo comparáveis, composição da tarifa, simulador sem tributos, variação contra o IPCA, bandeiras, subsídios tarifários e orçamento da CDE.",
-  alternates: { canonical: "/setor-eletrico/conta-de-luz" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/conta-de-luz", {
+    title: "Conta de luz: tarifas, composição, simulador e reajustes",
+    description:
+      "Tarifa B1 residencial de aplicação de cada distribuidora (ANEEL), custo de perfis de consumo comparáveis, composição da tarifa, simulador sem tributos, variação contra o IPCA, bandeiras, subsídios tarifários e orçamento da CDE.",
+    alternates: { canonical: "/setor-eletrico/conta-de-luz" },
+  }, anterior);
+}
 
 const COLUNAS_SEM_VIGENTE: ColunaTabela[] = [
   { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },

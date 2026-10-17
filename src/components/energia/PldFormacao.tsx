@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import type { NoComEstado } from "@/components/energia/DiagramaFormacao";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { NATUREZAS } from "@/components/evidencia/SeloNatureza";

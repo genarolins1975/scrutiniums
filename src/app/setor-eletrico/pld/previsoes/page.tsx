@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import type { ReactNode } from "react";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -72,12 +73,14 @@ import type { Submercado } from "@/lib/energia/tipos";
 import type { PrevisoesDesempenhoGold, Rodada } from "@/lib/energia/tipos-previsoes";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "O que foi publicado antes do resultado: previsão do PLD e arquivo de emissões",
-  description:
-    "Referência experimental B0 para as próximas quatro semanas e três meses nos quatro submercados, com origem, corte, entrega e a prova de cada número, o PLD já publicado no corte, as condições da rodada, a avaliação depois do resultado e o arquivo imutável de todas as emissões.",
-  alternates: { canonical: ROTA_PREVISOES },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/pld/previsoes", {
+    title: "O que foi publicado antes do resultado: previsão do PLD e arquivo de emissões",
+    description:
+      "Referência experimental B0 para as próximas quatro semanas e três meses nos quatro submercados, com origem, corte, entrega e a prova de cada número, o PLD já publicado no corte, as condições da rodada, a avaliação depois do resultado e o arquivo imutável de todas as emissões.",
+    alternates: { canonical: ROTA_PREVISOES },
+  }, anterior);
+}
 
 const CSV_EMISSOES = "/energia/series/previsoes_emissoes.csv";
 /** Rodadas levadas ao HTML (o CSV completo é o download): cerca de 28 linhas por rodada. */

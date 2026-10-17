@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -42,12 +43,14 @@ import { SIGLAS } from "@/lib/energia/siglas";
 import type { CompanhiaListada, ListadasGold } from "@/lib/energia/tipos-listadas";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Companhias listadas de energia elétrica: ativos, controle, finanças e bolsa",
-  description:
-    "As companhias da carteira do Índice de Energia Elétrica (IEE) da B3: usinas, linhas e distribuidoras sob controle de cada uma, quem as controla (CVM e ANEEL), indicadores financeiros da CVM, retorno das ações com proventos e fatos relevantes dos últimos 24 meses.",
-  alternates: { canonical: ROTA_LISTADAS },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/empresas/listadas", {
+    title: "Companhias listadas de energia elétrica: ativos, controle, finanças e bolsa",
+    description:
+      "As companhias da carteira do Índice de Energia Elétrica (IEE) da B3: usinas, linhas e distribuidoras sob controle de cada uma, quem as controla (CVM e ANEEL), indicadores financeiros da CVM, retorno das ações com proventos e fatos relevantes dos últimos 24 meses.",
+    alternates: { canonical: ROTA_LISTADAS },
+  }, anterior);
+}
 
 const link = "text-energia-dark underline underline-offset-4 hover:text-carvao";
 

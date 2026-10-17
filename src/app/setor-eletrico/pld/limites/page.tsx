@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { LinhaDoTempo } from "@/components/energia/LinhaDoTempo";
@@ -35,12 +36,14 @@ import { fichasPld } from "@/lib/energia/pld-arquivos";
 import type { PldDetalheGold } from "@/lib/energia/tipos-pld";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "PLD: limites, piso e tetos",
-  description:
-    "Piso, teto horário e teto estrutural do PLD em cada ano, com o ato da ANEEL, a vigência e o nível de conferência de cada valor; calendário dos dias no limite, permanência por ano e empates no piso, com a tolerância monetária documentada.",
-  alternates: { canonical: "/setor-eletrico/pld/limites" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/pld/limites", {
+    title: "PLD: limites, piso e tetos",
+    description:
+      "Piso, teto horário e teto estrutural do PLD em cada ano, com o ato da ANEEL, a vigência e o nível de conferência de cada valor; calendário dos dias no limite, permanência por ano e empates no piso, com a tolerância monetária documentada.",
+    alternates: { canonical: "/setor-eletrico/pld/limites" },
+  }, anterior);
+}
 
 const FONTE = "CCEE, PLD horário por submercado; ANEEL, atos anuais de limites do PLD";
 

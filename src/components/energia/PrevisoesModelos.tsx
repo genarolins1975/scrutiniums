@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { useMemo } from "react";
 import { Comparador } from "@/components/energia/Comparador";
 import { EstadoModelo } from "@/components/energia/EstadoModelo";

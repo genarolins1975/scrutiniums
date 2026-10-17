@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { EmpresasLeitura } from "@/components/energia/EmpresasLeitura";
@@ -12,7 +13,9 @@ import { dataBR } from "@/lib/energia/formato";
 import s from "@/components/energia/LeiturasIntegradas.module.css";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = { title: "Empresas: controle, resultado, investimento e estratégia", alternates: { canonical: "/setor-eletrico/empresas/analise" } };
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/empresas/analise", { title: "Empresas: controle, resultado, investimento e estratégia", alternates: { canonical: "/setor-eletrico/empresas/analise" } }, anterior);
+}
 const n = (x: number) => x.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
 export default function AnaliseEmpresas() {

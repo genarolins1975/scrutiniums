@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { DadosArquivos, itensDeArquivos } from "@/components/energia/DadosArquivos";
@@ -19,12 +20,14 @@ import { lerGold } from "@/lib/energia/gold";
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Download e reprodução: refazer os números do observatório do setor elétrico",
-  description:
-    "Manifesto com sha256 de cada arquivo publicado, Parquet equivalente conferido célula a célula, dicionário de cada arquivo, versão do código de cada base, versão exata no GitHub e conferência de um arquivo baixado no próprio navegador.",
-  alternates: { canonical: "/setor-eletrico/dados/reproducao" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/dados/reproducao", {
+    title: "Download e reprodução: refazer os números do observatório do setor elétrico",
+    description:
+      "Manifesto com sha256 de cada arquivo publicado, Parquet equivalente conferido célula a célula, dicionário de cada arquivo, versão do código de cada base, versão exata no GitHub e conferência de um arquivo baixado no próprio navegador.",
+    alternates: { canonical: "/setor-eletrico/dados/reproducao" },
+  }, anterior);
+}
 
 type ArquivosGold = { arquivos: Record<string, { colunas: string; modulo: string; gold: string }> };
 

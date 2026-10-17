@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -50,12 +51,14 @@ import type { MercadoGold } from "@/lib/energia/tipos-mercado";
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Mercado de energia: encargos e liquidação",
-  description:
-    "Quais custos públicos aparecem na liquidação do mercado de curto prazo: encargos de serviços do sistema por tipo, encargo de energia de reserva, liquidação e inadimplência, com os meses sem dado rotulados e a conferência com o MME e o InfoMercado.",
-  alternates: { canonical: "/setor-eletrico/mercado/encargos" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/mercado/encargos", {
+    title: "Mercado de energia: encargos e liquidação",
+    description:
+      "Quais custos públicos aparecem na liquidação do mercado de curto prazo: encargos de serviços do sistema por tipo, encargo de energia de reserva, liquidação e inadimplência, com os meses sem dado rotulados e a conferência com o MME e o InfoMercado.",
+    alternates: { canonical: "/setor-eletrico/mercado/encargos" },
+  }, anterior);
+}
 
 export default function MercadoEncargosPage() {
   const g = lerGold<MercadoGold>("mercado.json");

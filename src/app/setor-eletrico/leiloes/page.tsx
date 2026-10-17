@@ -1,5 +1,7 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import { tx } from "@/lib/energia/idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -48,12 +50,14 @@ import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { IdEntrada, LeiloesGold } from "@/lib/energia/tipos-leiloes";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Leilões do ACR: o que o mercado regulado comprou, a que preço e de quem",
-  description:
-    "Os leilões de geração do Ambiente de Contratação Regulada desde 2005, com dados da ANEEL: energia contratada por ano, fonte e tipo de leilão, preço médio em reais da época e corrigido pelo IPCA, deságio, onde estão as usinas, vencedoras e grupos que as controlam no cadastro mais recente, e o que já está em operação. Com laboratório do leilão e números para citar.",
-  alternates: { canonical: ROTA_LEILOES },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/leiloes", {
+    title: tx("Leilões do ACR: o que o mercado regulado comprou, a que preço e de quem", "ACR auctions: what the regulated market bought, at what price and from whom"),
+    description:
+      "Os leilões de geração do Ambiente de Contratação Regulada desde 2005, com dados da ANEEL: energia contratada por ano, fonte e tipo de leilão, preço médio em reais da época e corrigido pelo IPCA, deságio, onde estão as usinas, vencedoras e grupos que as controlam no cadastro mais recente, e o que já está em operação. Com laboratório do leilão e números para citar.",
+    alternates: { canonical: ROTA_LEILOES },
+  }, anterior);
+}
 
 const link = "text-energia-dark underline underline-offset-4 hover:text-carvao";
 

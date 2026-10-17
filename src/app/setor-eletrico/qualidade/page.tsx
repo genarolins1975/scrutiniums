@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -108,12 +109,14 @@ import type { QualidadeGold } from "@/lib/energia/tipos-qualidade";
 import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Qualidade do serviço de distribuição: interrupções, limites, compensações e atendimento",
-  description:
-    "DEC e FEC por conjunto, distribuidora e Brasil (ANEEL), realizado diante dos limites regulatórios, compensações pagas por violação de limites individuais, reclamações por unidade consumidora, IASC com amostra, atendimento emergencial e eventos de emergência.",
-  alternates: { canonical: "/setor-eletrico/qualidade" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/qualidade", {
+    title: "Qualidade do serviço de distribuição: interrupções, limites, compensações e atendimento",
+    description:
+      "DEC e FEC por conjunto, distribuidora e Brasil (ANEEL), realizado diante dos limites regulatórios, compensações pagas por violação de limites individuais, reclamações por unidade consumidora, IASC com amostra, atendimento emergencial e eventos de emergência.",
+    alternates: { canonical: "/setor-eletrico/qualidade" },
+  }, anterior);
+}
 
 const URL_SERIE = "/energia/series/qualidade_distribuidoras_serie.json";
 const URL_MUNICIPIOS = "/energia/series/qualidade_municipios.csv";

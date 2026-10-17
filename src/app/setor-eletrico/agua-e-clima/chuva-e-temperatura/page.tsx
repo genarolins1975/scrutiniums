@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { AguaClima } from "@/components/energia/AguaClima";
 import { AguaPontes } from "@/components/energia/AguaPontes";
 import { AguaAviso, AguaDatas, AguaFontes, AguaIndisponivel, AguaNavegacao, AguaParteAusente, AguaRegras, AguaSeguir } from "@/components/energia/AguaPagina";
@@ -35,12 +36,14 @@ import type { Natureza } from "@/lib/energia/tipos";
 import type { AguaDetalheGold } from "@/lib/energia/tipos-agua";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Água e clima: chuva, temperatura e previsão",
-  description:
-    "Chuva estimada por satélite em cada bacia do ONS e temperatura de reanálise por subsistema, contra a média climatológica dos mesmos dias, com mapa por bacia, cobertura da grade, conferência com estações e a previsão de uma rodada do ECMWF separada da estimativa.",
-  alternates: { canonical: "/setor-eletrico/agua-e-clima/chuva-e-temperatura" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/agua-e-clima/chuva-e-temperatura", {
+    title: "Água e clima: chuva, temperatura e previsão",
+    description:
+      "Chuva estimada por satélite em cada bacia do ONS e temperatura de reanálise por subsistema, contra a média climatológica dos mesmos dias, com mapa por bacia, cobertura da grade, conferência com estações e a previsão de uma rodada do ECMWF separada da estimativa.",
+    alternates: { canonical: "/setor-eletrico/agua-e-clima/chuva-e-temperatura" },
+  }, anterior);
+}
 
 const URL_GEO_BACIAS = "/energia/series/agua_bacias_geo.json";
 

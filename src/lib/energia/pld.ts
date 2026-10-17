@@ -487,7 +487,7 @@ export function linhasCobertura(cob: CoberturaDessemAno[]): LinhaTabela[] {
     presentes: c.meias_horas_presentes,
     ausentes: c.dias_ausentes.length,
     incompletos: c.dias_incompletos.length,
-    lista: c.dias_ausentes.map(dataBR).join(", "),
+    lista: c.dias_ausentes.map((x) => dataBR(x)).join(", "),
   }));
 }
 
@@ -1545,7 +1545,7 @@ export function textoComparabilidade(h: BlocoHistorico): string {
   const per = h.ponderacao.perimetros
     .filter((p) => p.primeiro_mes && p.ultimo_mes)
     .map((p) => `${p.id} de ${mesAno(p.primeiro_mes!)} a ${mesAno(p.ultimo_mes!)}${p.inclui_mmgd ? " (com MMGD estimada)" : ""}`);
-  const meio = h.mensal.meses.filter((_, i) => h.mensal.perimetro_carga[i].includes("_")).map(mesAno);
+  const meio = h.mensal.meses.filter((_, i) => h.mensal.perimetro_carga[i].includes("_")).map((x) => mesAno(x));
   const partes = [`A média ponderada pela carga do balanço só se compara entre meses do mesmo perímetro: ${listaTexto(per)}.`];
   if (meio.length) partes.push(`${listaTexto(meio)} ${meio.length === 1 ? "tem" : "têm"} a mudança declarada dentro do mês.`);
   partes.push(

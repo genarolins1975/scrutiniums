@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { DadosArquivos, itensDeArquivos } from "@/components/energia/DadosArquivos";
@@ -34,12 +35,14 @@ import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Saúde das fontes e revisões: o que atrasou ou mudou nos dados do setor elétrico",
-  description:
-    "Atualidade de cada conjunto integrado pelo prazo da frequência declarada pela fonte, calendário de capturas, falhas e revisões, completude, último período e magnitude das revisões entre capturas.",
-  alternates: { canonical: "/setor-eletrico/dados/saude" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/dados/saude", {
+    title: "Saúde das fontes e revisões: o que atrasou ou mudou nos dados do setor elétrico",
+    description:
+      "Atualidade de cada conjunto integrado pelo prazo da frequência declarada pela fonte, calendário de capturas, falhas e revisões, completude, último período e magnitude das revisões entre capturas.",
+    alternates: { canonical: "/setor-eletrico/dados/saude" },
+  }, anterior);
+}
 
 export default function DadosSaudePage() {
   const pub = publicacaoDados();

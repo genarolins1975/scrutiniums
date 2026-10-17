@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
@@ -35,12 +36,14 @@ import {
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Perdas técnicas e não técnicas por distribuidora",
-  description:
-    "Composição das perdas de energia de cada distribuidora sobre a mesma energia injetada, a não técnica sobre o mercado de baixa tensão, a cobertura de cada ano e a série de universo fixo, com a fonte da ANEEL.",
-  alternates: { canonical: "/setor-eletrico/perdas/composicao" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/perdas/composicao", {
+    title: "Perdas técnicas e não técnicas por distribuidora",
+    description:
+      "Composição das perdas de energia de cada distribuidora sobre a mesma energia injetada, a não técnica sobre o mercado de baixa tensão, a cobertura de cada ano e a série de universo fixo, com a fonte da ANEEL.",
+    alternates: { canonical: "/setor-eletrico/perdas/composicao" },
+  }, anterior);
+}
 
 export default function PerdasComposicaoPage() {
   const g = lerGold<PerdasGold>("perdas.json");

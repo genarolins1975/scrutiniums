@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { CargaDatas, CargaFontes, CargaIndisponivel, CargaNavegacao, CargaSeguir } from "@/components/energia/CargaPagina";
@@ -33,12 +34,14 @@ import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Carga: MMGD e perfil horário",
-  description:
-    "Curva de carga horária do ONS, hora do pico por ano, perfil típico por mês e tipo de dia e a decomposição da carga verificada em carga global, MMGD estimada e carga líquida de MMGD, sem misturar os dois produtos do ONS.",
-  alternates: { canonical: "/setor-eletrico/carga/perfil-horario" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/carga/perfil-horario", {
+    title: "Carga: MMGD e perfil horário",
+    description:
+      "Curva de carga horária do ONS, hora do pico por ano, perfil típico por mês e tipo de dia e a decomposição da carga verificada em carga global, MMGD estimada e carga líquida de MMGD, sem misturar os dois produtos do ONS.",
+    alternates: { canonical: "/setor-eletrico/carga/perfil-horario" },
+  }, anterior);
+}
 
 const FONTE_CURVA = "ONS, Curva de Carga Horária";
 const FONTE_API = "ONS, Carga de Energia Verificada (API)";

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { ExpansaoPrevisoes, ExpansaoRevisoes } from "@/components/energia/ExpansaoCronograma";
@@ -64,12 +65,14 @@ import {
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Cronograma da expansão: previsões com data-base, revisões e o que atrasou",
-  description:
-    "Previsões de operação comercial da fiscalização da ANEEL (RALIE) com a data da fotografia, separadas das datas convencionais em bloco, confiabilidade das previsões contra a liberação comercial real desde a primeira fotografia publicada, revisões em 12 meses e desvio em relação ao prazo outorgado vigente.",
-  alternates: { canonical: "/setor-eletrico/expansao/cronograma" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/expansao/cronograma", {
+    title: "Cronograma da expansão: previsões com data-base, revisões e o que atrasou",
+    description:
+      "Previsões de operação comercial da fiscalização da ANEEL (RALIE) com a data da fotografia, separadas das datas convencionais em bloco, confiabilidade das previsões contra a liberação comercial real desde a primeira fotografia publicada, revisões em 12 meses e desvio em relação ao prazo outorgado vigente.",
+    alternates: { canonical: "/setor-eletrico/expansao/cronograma" },
+  }, anterior);
+}
 
 export default function CronogramaPage() {
   const g = lerGold<ExpansaoGold>("expansao.json");

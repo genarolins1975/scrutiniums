@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { RedeAviso, RedeCapitulos, RedeDatas, RedeDicionarios, RedeIndisponivel, RedeNavegacao, RedeSeguir } from "@/components/energia/RedePagina";
@@ -15,7 +16,7 @@ import type { GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
 
 export const dynamic = "force-static";
 /** Descrição com o início do programado lido da gold (nenhuma data escrita à mão). */
-export function generateMetadata(): Metadata {
+function metadadosDaPagina(): Metadata {
   const g = lerGold<GoldRedeDetalhe>("rede_detalhe.json");
   const desde = integra(g) && g.programado.inicio ? `, desde ${dataBR(g.programado.inicio)}` : "";
   return {
@@ -23,6 +24,10 @@ export function generateMetadata(): Metadata {
     description: `Intercâmbio verificado contra o programado (ONS) nas quatro fronteiras entre subsistemas e com Argentina e Uruguai${desde}: distribuição dos desvios, horas materiais, sentido oposto ao programa, maiores desvios e dias de programa repetido, com o programa do exterior conferido no PDO das conversoras.`,
     alternates: { canonical: "/setor-eletrico/rede/programado" },
   };
+}
+
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/rede/programado", metadadosDaPagina(), anterior);
 }
 
 const FONTE = "ONS, intercâmbios entre subsistemas e com outros países, verificado e programado (releitura do módulo Rede)";

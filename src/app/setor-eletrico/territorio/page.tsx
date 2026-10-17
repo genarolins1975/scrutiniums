@@ -1,5 +1,6 @@
 import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { Numero } from "@/components/energia/Numero";
@@ -41,12 +42,14 @@ import { lerPerdasDaFonte, lerUsinasDoServidor, situacaoDosInsumos } from "@/lib
 import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Minha região: submercado, distribuidora, município e usinas no mapa",
-  description:
-    "Mapa geográfico do setor elétrico: submercado de cada UF (EPE e ONS), área de cada distribuidora (relação oficial da ANEEL), indicadores por município e usinas do SIGA, cada número na área da sua fonte e com a fonte.",
-  alternates: { canonical: "/setor-eletrico/territorio" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/territorio", {
+    title: "Minha região: submercado, distribuidora, município e usinas no mapa",
+    description:
+      "Mapa geográfico do setor elétrico: submercado de cada UF (EPE e ONS), área de cada distribuidora (relação oficial da ANEEL), indicadores por município e usinas do SIGA, cada número na área da sua fonte e com a fonte.",
+    alternates: { canonical: "/setor-eletrico/territorio" },
+  }, anterior);
+}
 
 const ROTULO_COMPLEMENTAR: Record<string, string> = {
   subsistema_uf: "UF e subsistema (EPE)",

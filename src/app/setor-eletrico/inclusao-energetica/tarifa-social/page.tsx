@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -45,12 +46,14 @@ import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
 import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Tarifa Social: quantas UC recebem, onde e quanto",
-  description:
-    "Unidades consumidoras com Tarifa Social por distribuidora e mês (ANEEL, SCS), participação nas UC residenciais, DMR e faturas com desconto por UF e mês nos arquivos de Beneficiários da CDE, com a conferência entre as duas bases.",
-  alternates: { canonical: "/setor-eletrico/inclusao-energetica/tarifa-social" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/inclusao-energetica/tarifa-social", {
+    title: "Tarifa Social: quantas UC recebem, onde e quanto",
+    description:
+      "Unidades consumidoras com Tarifa Social por distribuidora e mês (ANEEL, SCS), participação nas UC residenciais, DMR e faturas com desconto por UF e mês nos arquivos de Beneficiários da CDE, com a conferência entre as duas bases.",
+    alternates: { canonical: "/setor-eletrico/inclusao-energetica/tarifa-social" },
+  }, anterior);
+}
 
 const ROTULO_REGRA: Record<string, string> = {
   mes_completo: "Mês completo do SCS",

@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -42,12 +43,14 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import type { GoldGeracaoDetalhe, Restricao } from "@/lib/energia/tipos-geracao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Geração: quanta geração eólica e solar foi restringida",
-  description:
-    "Energia eólica e fotovoltaica não gerada por limitação do ONS, estimada sobre a geração de referência, por razão oficial (energética, confiabilidade, elétrica, parecer de acesso), por usina com mapa e por mês, com a taxa sobre a geração possível e o maior corte simultâneo em MW.",
-  alternates: { canonical: "/setor-eletrico/geracao/restricoes" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/geracao/restricoes", {
+    title: "Geração: quanta geração eólica e solar foi restringida",
+    description:
+      "Energia eólica e fotovoltaica não gerada por limitação do ONS, estimada sobre a geração de referência, por razão oficial (energética, confiabilidade, elétrica, parecer de acesso), por usina com mapa e por mês, com a taxa sobre a geração possível e o maior corte simultâneo em MW.",
+    alternates: { canonical: "/setor-eletrico/geracao/restricoes" },
+  }, anterior);
+}
 
 const FONTE = "ONS, Restrição de Operação por Constrained-off de Usinas Eólicas e Fotovoltaicas";
 /** Cor de identificação de cada fonte na faixa de métricas (o marcador antes do rótulo, nunca a cor do texto). */

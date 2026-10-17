@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { useState } from "react";
 import type { NoFormacao } from "@/lib/energia/conteudo/pld";
 import { TIPOS_RELACAO } from "@/lib/energia/conteudo/pld";

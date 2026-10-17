@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -86,12 +87,14 @@ import { contextoVisao } from "@/lib/energia/visao-servidor";
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Visão geral: o que está acontecendo no sistema elétrico",
-  description:
-    "O sistema elétrico brasileiro em poucos minutos: preço, água, geração, carga e rede alinhados pelo calendário, cada um com a data da sua fonte e uma referência ao lado do número; seis fatos com evidência; custo e qualidade para o consumidor com o período de cada número; e as regras que dizem o que observar, com limiar, duração e histórico.",
-  alternates: { canonical: "/setor-eletrico/visao-geral" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/visao-geral", {
+    title: "Visão geral: o que está acontecendo no sistema elétrico",
+    description:
+      "O sistema elétrico brasileiro em poucos minutos: preço, água, geração, carga e rede alinhados pelo calendário, cada um com a data da sua fonte e uma referência ao lado do número; seis fatos com evidência; custo e qualidade para o consumidor com o período de cada número; e as regras que dizem o que observar, com limiar, duração e histórico.",
+    alternates: { canonical: "/setor-eletrico/visao-geral" },
+  }, anterior);
+}
 
 const P = Object.fromEntries(PAINEIS_VISAO.map((p) => [p.id, p])) as Record<(typeof PAINEIS_VISAO)[number]["id"], (typeof PAINEIS_VISAO)[number]>;
 

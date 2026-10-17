@@ -1,11 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { DuasCamadasEnergia, LaboratorioContratos } from "@/components/energia/ComercializacaoDidatica";
 import s from "@/components/energia/LeiturasIntegradas.module.css";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = { title: "Comercialização: da energia física ao resultado financeiro", alternates: { canonical: "/setor-eletrico/mercado/comercializacao" } };
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/mercado/comercializacao", { title: "Comercialização: da energia física ao resultado financeiro", alternates: { canonical: "/setor-eletrico/mercado/comercializacao" } }, anterior);
+}
 export default function Comercializacao() {
   return <><CabecalhoEnergia atual="mercado" /><main id="conteudo" tabIndex={-1} className="ed-pagina">
     <header className={s.section}><Link className={s.link} href="/setor-eletrico/mercado">← Mercado de energia</Link><p className={s.eyebrow}>Entender → experimentar → conferir</p><h1 className={s.title}>Quem entrega energia, quem vende e quem assume o risco?</h1><p className={s.intro}>A operação física e os compromissos comerciais se encontram na medição e na contabilização. Entenda essa ligação antes de comparar preços ou resultados das empresas.</p></header>

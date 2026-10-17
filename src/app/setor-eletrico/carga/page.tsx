@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { CargaHistorico } from "@/components/energia/CargaHistorico";
@@ -36,12 +37,14 @@ import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Carga: nível e crescimento do consumo do sistema elétrico",
-  description:
-    "Carga de energia diária do SIN e dos subsistemas (ONS) com comparações de calendário equivalente, médias mensais e anuais dentro do mesmo regime metodológico, revisões entre capturas, validação física e a reprodução da variação de sete dias publicada antes, com o que ela não permite concluir.",
-  alternates: { canonical: "/setor-eletrico/carga" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/carga", {
+    title: "Carga: nível e crescimento do consumo do sistema elétrico",
+    description:
+      "Carga de energia diária do SIN e dos subsistemas (ONS) com comparações de calendário equivalente, médias mensais e anuais dentro do mesmo regime metodológico, revisões entre capturas, validação física e a reprodução da variação de sete dias publicada antes, com o que ela não permite concluir.",
+    alternates: { canonical: "/setor-eletrico/carga" },
+  }, anterior);
+}
 
 const FONTE = "ONS, Carga de Energia Diária (validada pelo observatório)";
 

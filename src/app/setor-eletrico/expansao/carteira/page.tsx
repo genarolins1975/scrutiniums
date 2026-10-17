@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { ExpansaoCarteiraUf } from "@/components/energia/ExpansaoCarteira";
@@ -75,12 +76,14 @@ import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Carteira de projetos de geração: outorgado, em construção, em operação e encerrado",
-  description:
-    "Usinas do SIGA por estágio (outorgado sem obra, em construção, em operação), carteira do RALIE por situação da obra e viabilidade, desfecho das usinas acompanhadas desde a primeira fotografia do RALIE e outorgas revogadas ou extintas, por tipo e UF, com mapa e tabelas.",
-  alternates: { canonical: "/setor-eletrico/expansao/carteira" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/expansao/carteira", {
+    title: "Carteira de projetos de geração: outorgado, em construção, em operação e encerrado",
+    description:
+      "Usinas do SIGA por estágio (outorgado sem obra, em construção, em operação), carteira do RALIE por situação da obra e viabilidade, desfecho das usinas acompanhadas desde a primeira fotografia do RALIE e outorgas revogadas ou extintas, por tipo e UF, com mapa e tabelas.",
+    alternates: { canonical: "/setor-eletrico/expansao/carteira" },
+  }, anterior);
+}
 
 const URL_PONTOS = "/energia/series/expansao_usinas_pontos.json";
 

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
@@ -59,12 +60,14 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Geração: de onde vem a eletricidade",
-  description:
-    "Matriz efetiva do SIN e dos subsistemas pela Geração por Usina do ONS: hidráulica, eólica, solar centralizada, MMGD estimada, nuclear, gás, carvão, óleo, biomassa e demais térmicas, em energia e participação, com e sem a MMGD, a quebra de 29/04/2023 conferida na fonte, ressalvas de universo e a reconciliação com o Balanço de Energia.",
-  alternates: { canonical: "/setor-eletrico/geracao" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/geracao", {
+    title: "Geração: de onde vem a eletricidade",
+    description:
+      "Matriz efetiva do SIN e dos subsistemas pela Geração por Usina do ONS: hidráulica, eólica, solar centralizada, MMGD estimada, nuclear, gás, carvão, óleo, biomassa e demais térmicas, em energia e participação, com e sem a MMGD, a quebra de 29/04/2023 conferida na fonte, ressalvas de universo e a reconciliação com o Balanço de Energia.",
+    alternates: { canonical: "/setor-eletrico/geracao" },
+  }, anterior);
+}
 
 const FONTE = "ONS, Geração por Usina em Base Horária";
 /** Título da abertura: a pergunta do módulo na galeria, a mesma do registro dos painéis (o texto do menu fica em navegacao.ts). */

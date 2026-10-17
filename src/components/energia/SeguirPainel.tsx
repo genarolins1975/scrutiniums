@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
 import { LinkDoPainel } from "@/components/energia/LinkDoPainel";

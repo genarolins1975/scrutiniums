@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { AguaAfluencia } from "@/components/energia/AguaAfluencia";
 import { AguaPontes } from "@/components/energia/AguaPontes";
 import { AguaAviso, AguaDatas, AguaFontes, AguaIndisponivel, AguaNavegacao, AguaRegras, AguaSeguir } from "@/components/energia/AguaPagina";
@@ -59,12 +60,14 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import type { AguaDetalheGold } from "@/lib/energia/tipos-agua";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Água e clima: a água que chega aos reservatórios",
-  description:
-    "Energia natural afluente (ENA) de 30 dias em % da MLT por subsistema, REE e bacia do ONS, como razão de somas, contra a faixa da mesma janela nos anos anteriores, e a versão da MLT do conjunto aberto comparada com a do PMO.",
-  alternates: { canonical: "/setor-eletrico/agua-e-clima/afluencia" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/agua-e-clima/afluencia", {
+    title: "Água e clima: a água que chega aos reservatórios",
+    description:
+      "Energia natural afluente (ENA) de 30 dias em % da MLT por subsistema, REE e bacia do ONS, como razão de somas, contra a faixa da mesma janela nos anos anteriores, e a versão da MLT do conjunto aberto comparada com a do PMO.",
+    alternates: { canonical: "/setor-eletrico/agua-e-clima/afluencia" },
+  }, anterior);
+}
 
 const FONTE = "ONS, ENA Diário por Subsistema, por REE e por Bacia (captura mais recente de cada ano)";
 

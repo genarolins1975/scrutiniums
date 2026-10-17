@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -50,12 +51,14 @@ import type { MercadoGold } from "@/lib/energia/tipos-mercado";
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Mercado de energia: agentes e migração",
-  description:
-    "Quem participa do mercado de energia e como a composição mudou: agentes contabilizados pela CCEE por classe, perfis, parcelas de carga, migrações, desligamentos e unidades consumidoras livres, cada contagem com a sua definição.",
-  alternates: { canonical: "/setor-eletrico/mercado/agentes" },
-};
+export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia("/setor-eletrico/mercado/agentes", {
+    title: "Mercado de energia: agentes e migração",
+    description:
+      "Quem participa do mercado de energia e como a composição mudou: agentes contabilizados pela CCEE por classe, perfis, parcelas de carga, migrações, desligamentos e unidades consumidoras livres, cada contagem com a sua definição.",
+    alternates: { canonical: "/setor-eletrico/mercado/agentes" },
+  }, anterior);
+}
 
 export default function MercadoAgentesPage() {
   const g = lerGold<MercadoGold>("mercado.json");
