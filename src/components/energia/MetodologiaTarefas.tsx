@@ -33,7 +33,9 @@ export function MetodologiaTarefas({ total, comFormula }: { total: number; comFo
   const tx = useTx();
   const idioma = useIdioma();
   const { num } = formatos(idioma);
-  const soFormula = estado.formula.length === 1 && estado.formula[0] === "sim";
+  // o valor do filtro é o da coluna Fórmula da lista, que chega no idioma da página ("sim" em português, "yes" em inglês)
+  const sim = tx("sim", "yes");
+  const soFormula = estado.formula.length === 1 && estado.formula[0] === sim;
 
   const buscar = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,7 +45,7 @@ export function MetodologiaTarefas({ total, comFormula }: { total: number; comFo
   };
   const comFormulaPublicada = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    definir({ formula: ["sim"], busca: "", pagina: 1, aberto: "" }, { historico: "push" });
+    definir({ formula: [sim], busca: "", pagina: 1, aberto: "" }, { historico: "push" });
     rolarParaALista();
   };
 
@@ -87,6 +89,7 @@ export function MetodologiaTarefas({ total, comFormula }: { total: number; comFo
             )}
           </p>
           <p className="mt-2">
+            {/* o destino é o mesmo nos dois idiomas (só o prefixo /en muda); com JavaScript, o clique aplica o valor do idioma da lista */}
             <a href={hrefNoIdioma("/setor-eletrico/metodologia?reg.f.formula=sim#regras", idioma)} onClick={comFormulaPublicada} className={acao}>
               {soFormula
                 ? tx("Lista já limitada aos indicadores com fórmula", "List already limited to the indicators with a formula")

@@ -186,7 +186,7 @@ type FatiaIntegracao = Pick<ConjuntoIntegrado, "atualidade" | "capturas" | "freq
 type RegrasPrazo = Record<Cadencia, { tolerancia_dias: number }>;
 
 /** Data (dd/mm/aaaa) no horário de Brasília de um instante em UTC. */
-const diaEmBrasilia = (iso: string): string => dataBR(carimbo(iso, "pt").slice(0, 10).split("/").reverse().join("-"));
+export const diaEmBrasilia = (iso: string): string => dataBR(carimbo(iso, "pt").slice(0, 10).split("/").reverse().join("-"));
 
 /** Referência registrada para os dados quando o conjunto não tem último período (ano ou intervalo de uma pesquisa). */
 function referenciaRegistrada(c: FatiaIntegracao): string | null {
