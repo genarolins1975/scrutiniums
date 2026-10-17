@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
 import { Abertura, Fonte, Nota, Secao } from "@/components/saneamento/Editorial";
 import { AmostraTarifas, SubnavPreco } from "@/components/saneamento/PrecoRegulado";
+import { LabReceitaTarifa } from "@/components/saneamento/Laboratorios";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { ROTA, capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { TARIFAS, periodoConsultaTarifas } from "@/lib/saneamento/tarifas";
@@ -137,6 +138,9 @@ export default function Pagina() {
               </li>
             ))}
           </ol>
+          <div className="mt-8">
+            <LabReceitaTarifa />
+          </div>
         </Secao>
 
         <Secao id="subpaineis" titulo="Cinco perguntas sobre o preço">
