@@ -64,6 +64,7 @@ import { LIMITE_COMPARACAO, type ColunaTabela, type EntidadeBuscavel, type Linha
 import {
   CONTA_CVM_EN,
   DEFINICAO_CONTA_EN,
+  DOWNLOAD_EMPRESAS_EN,
   ESTADO_VINCULO_GOLD_EN,
   FASE_SIGA_EN,
   MOTIVO_PARADA_GOLD_EN,
@@ -232,9 +233,12 @@ export function posicaoTexto(posicao: number, total: number, idioma: Idioma = id
   return tx(`${num(posicao, 0, idioma)} de ${num(total, 0, idioma)}`, `${num(posicao, 0, idioma)} of ${num(total, 0, idioma)}`, idioma);
 }
 
-/** Downloads da gold filtrados pelos endereços pedidos, na ordem pedida. */
-export function downloadsDe(todos: readonly Download[], urls: readonly string[]): Download[] {
-  return urls.map((u) => todos.find((d) => d.url === u)).filter((d): d is Download => !!d);
+/** Downloads da gold filtrados pelos endereços pedidos, na ordem pedida, com o rótulo no idioma da página. */
+export function downloadsDe(todos: readonly Download[], urls: readonly string[], idioma: Idioma = idiomaEnergia()): Download[] {
+  return urls
+    .map((u) => todos.find((d) => d.url === u))
+    .filter((d): d is Download => !!d)
+    .map((d) => (idioma === "pt" ? d : { ...d, rotulo: traduzir(DOWNLOAD_EMPRESAS_EN, d.rotulo, idioma) }));
 }
 
 /** Leitor de CNPJ de 14 dígitos para a URL (identidade canônica do módulo). */

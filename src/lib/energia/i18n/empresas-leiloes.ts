@@ -111,6 +111,10 @@ export const DEFINICAO_EMPRESAS_EN: Tabela = {
   "Soma das participações diretas detidas pelas empresas do grupo (potência × participação); cada parcela pertence a um só grupo, por isso as parcelas somam a fronteira sem dupla contagem.":
     "Sum of the direct stakes held by the group's companies (capacity × stake); each part belongs to a single group, so the parts add up to the boundary without double counting.",
   "Índice Herfindahl-Hirschman: soma dos quadrados das cotas em % (0 a 10.000).": "Herfindahl-Hirschman Index: sum of the squares of the shares in % (0 to 10,000).",
+  "Potência fiscalizada das usinas em fase Operação no SIGA cujas participações publicadas somam 100%, Brasil, na data do SIGA. Exclui micro e minigeração distribuída.":
+    "Inspected capacity of the plants in the Operation phase in SIGA whose published stakes add up to 100%, Brazil, as of the SIGA date. Excludes distributed micro and mini generation.",
+  "Não é o mercado relevante de uma análise concorrencial (energia vendida, submercado, contratos). Faixas descritivas do Guia para Análise de Atos de Concentração Horizontal do CADE (2016): abaixo de 1.500 não concentrado, de 1.500 a 2.500 moderadamente concentrado, acima de 2.500 altamente concentrado. As diretrizes americanas de 2010, com os mesmos limiares, foram substituídas em 2023 por outras com limiares diferentes.":
+    "It is not the relevant market of a competition analysis (energy sold, submarket, contracts). Descriptive bands from CADE's Guide for the Analysis of Horizontal Concentration Acts (2016): below 1,500 unconcentrated, from 1,500 to 2,500 moderately concentrated, above 2,500 highly concentrated. The 2010 US guidelines, with the same thresholds, were replaced in 2023 by others with different thresholds.",
   "Soma da extensão (NumEtnLinTms) dos módulos de linha ativos cujo módulo tem obra em operação ou concluída. Cada módulo de linha é um circuito: linha de circuito duplo conta duas vezes (km de circuito, não km de traçado).":
     "Sum of the length (NumEtnLinTms) of the active line modules whose module has works in operation or completed. Each line module is a circuit: a double-circuit line counts twice (circuit km, not route km).",
   "Subestações distintas em que o CNPJ tem módulo de equipamento em operação. O SIGET aberto liga à subestação só os módulos de equipamento; a mesma subestação pode ter módulos de mais de um CNPJ.":
@@ -119,6 +123,21 @@ export const DEFINICAO_EMPRESAS_EN: Tabela = {
   "Módulo → contrato proprietário (IdeCcdProprietario) → CNPJ publicado no recurso 'SIGET - Contrato Agente'; nenhum vínculo por nome.":
     "Module → owner contract (IdeCcdProprietario) → CNPJ published in the 'SIGET - Contrato Agente' resource; no link by name.",
   "agentes ativos (situação A no cadastro) por ramo declarado": "active agents (status A in the registry) by declared line of business",
+  "CNPJ presente em ao menos uma base regulada de distribuição já integrada: SAMP Balanço (módulo Perdas), indicadores de continuidade (módulo Qualidade) ou tarifas de aplicação (módulo Conta de luz). O indicador de ramo 'distribuição' do cadastro de agentes não define o universo (é autodeclarado e inclui parques solares).":
+    // i18n: dado (inglês com o nome próprio da base e o valor literal do cadastro)
+    "CNPJ present in at least one integrated regulated distribution database: SAMP Balanço (Losses module), continuity indicators (Quality of supply module) or applied tariffs (Electricity bill module). The 'distribuição' line-of-business flag in the agent registry does not define the universe (it is self-declared and includes solar parks).",
+  "Comparar com distribuidoras do mesmo grupo (concessionária ou permissionária) e, na continuidade, do mesmo porte do ranking da ANEEL (campo qualidade.porte); anos de referência diferentes entre módulos não se comparam.":
+    "Compare with distribution utilities of the same group (concession holder or permit holder) and, for continuity, of the same size in ANEEL's ranking (qualidade.porte); reference years that differ between modules are not compared.",
+};
+
+/** Descrição das séries de evolução das distribuidoras (distribuidoras.series_evolucao.*.chave e .unidade). */
+export const SERIE_EVOLUCAO_EN: Tabela = {
+  "distribuidoras[cnpj]: linhas [ano, meses, completo, ...] na ordem de 'campos'": "distribuidoras[cnpj]: rows [ano, meses, completo, ...] in the order of 'campos'", // i18n: dado (nomes de campo do arquivo)
+  "distribuidoras[cnpj]: listas anos, dec, fec, dec_limite, fec_limite alinhadas": "distribuidoras[cnpj]: aligned lists anos, dec, fec, dec_limite, fec_limite", // i18n: dado (nomes de campo do arquivo)
+  "distribuidoras[cnpj].vigencias: [início, fim, ato, TE, TUSD, total]": "distribuidoras[cnpj].vigencias: [start, end, act, TE, TUSD, total]",
+  "MWh e %": "MWh and %",
+  "DEC em horas; FEC em interrupções": "DEC in hours; FEC in interruptions",
+  "R$/MWh e %": "R$/MWh and %",
 };
 
 /** Universo da taxa nacional de perdas (gold de Perdas, "51 concessionárias com os 12 meses de 2025 e sem alerta"), no idioma da página. */
