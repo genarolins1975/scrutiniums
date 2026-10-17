@@ -216,6 +216,53 @@ export const TEXTOS_PLD_ABERTURA_EN: Readonly<Record<string, string>> = {
   "CCEE, PLD horário por submercado": "CCEE, hourly PLD by submarket",
 };
 
+/* ---------------------------------------------------------------- Previsões (gold previsoes_desempenho.json, fichas) */
+
+/**
+ * Textos fixos do registro de modelos de previsão (nome descritivo, papel, entradas, variáveis, fórmula, leitura da aprovação), no
+ * texto exato publicado e também na forma já limpa pelas funções de leitura (semCodigosInternos, papelCurto). O identificador do
+ * modelo (B0, S0, C1, C2-P, C2-H) é nome próprio e não se traduz; o nome descritivo, sim.
+ */
+export const REGISTRO_MODELOS_EN: Readonly<Record<string, string>> = {
+  "Persistência": "Persistence",
+  "Mistura fixa": "Fixed blend",
+  "Correção por preços": "Price correction",
+  "Correção com hidrologia": "Correction with hydrology",
+  "Sazonal": "Seasonal",
+  "Referência simples (benchmark) e método do piloto operacional interno": "Simple benchmark and method of the internal operational pilot",
+  "Referência simples": "Simple benchmark",
+  "Candidato": "Candidate",
+  "Referência sazonal (benchmark exigido pela seção 12.3); não é candidato": "Seasonal benchmark; not a candidate",
+  "Referência sazonal (benchmark); não é candidato": "Seasonal benchmark; not a candidate",
+  "Referência sazonal": "Seasonal benchmark",
+  "PLD horário do submercado (CCEE)": "Hourly PLD of the submarket (CCEE)",
+  "Média móvel recente − B0": "Recent moving average − B0",
+  "Mesmo período do ano anterior − B0": "Same period of the previous year − B0",
+  "Média dos 7 últimos dias − B0": "Average of the last 7 days − B0",
+  "Variação da EAR em 28 dias (p.p.)": "Change in EAR over 28 days (pp)",
+  "ENA média de 7 dias (% da MLT) − 100": "7-day average ENA (% of MLT) − 100",
+  "Média móvel recente − B0 (R$/MWh)": "Recent moving average − B0 (R$/MWh)",
+  "Mesmo período do ano anterior − B0 (R$/MWh)": "Same period of the previous year − B0 (R$/MWh)",
+  "Média dos 7 últimos dias − B0 (R$/MWh)": "Average of the last 7 days − B0 (R$/MWh)",
+  "ENA bruta média de 7 dias (% da MLT) − 100": "7-day average gross ENA (% of MLT) − 100",
+  "B0 = média do PLD horário do último período completo elegível no corte": "B0 = average of the hourly PLD of the latest complete period eligible at the cutoff",
+  "S0 = média do PLD horário do mesmo período um ano antes da entrega": "S0 = average of the hourly PLD of the same period one year before the delivery",
+  "C2 = B0 + Σ_j (x_j / escala_rms_j) · beta_escalado_j; sem intercepto; coeficiente de B0 fixo em 1; λ = ZERO ⇒ todos os beta = 0 ⇒ C2 = B0":
+    "C2 = B0 + Σ_j (x_j / rms_scale_j) · scaled_beta_j; no intercept; B0 coefficient fixed at 1; λ = ZERO ⇒ all beta = 0 ⇒ C2 = B0",
+  "Em pesquisa: não alimenta a previsão principal. Autorizado como referência experimental identificada, sem aprovação.":
+    "In research: does not feed the main forecast. Authorized as an identified experimental benchmark, without approval.",
+  "Em pesquisa: não alimenta a previsão principal.": "In research: does not feed the main forecast.",
+  "A composição do C1 (referências e pesos) está no arquivo de configuração da pesquisa, que não está no repositório nem foi publicado. Sem configuração publicável não há como reimplementar nem auditar o C1; ele segue só como registro da pesquisa.":
+    "The composition of C1 (benchmarks and weights) is in the research configuration file, which is not in the repository and was not published. Without a publishable configuration there is no way to reimplement or audit C1; it remains only as a research record.",
+  "A composição do C1 (referências e pesos) está no arquivo de configuração da pesquisa, que não foi publicado. Sem configuração publicável não há como refazer nem auditar o C1; ele segue só como registro da pesquisa.":
+    "The composition of C1 (benchmarks and weights) is in the research configuration file, which was not published. Without a publishable configuration there is no way to redo or audit C1; it remains only as a research record.",
+};
+
+/** Forma inglesa de um texto do registro de modelos; sem entrada na tabela, o texto volta como veio (a página marca o trecho). */
+export function textoRegistroModelos(texto: string, idioma: Idioma): string {
+  return traducaoExata(REGISTRO_MODELOS_EN, texto, idioma) ?? texto;
+}
+
 /** Critério da tabela de distribuidoras (gold mercado.json, livre_regulado.distribuidoras.criterio). */
 export const CRITERIOS_MERCADO_EN: Readonly<Record<string, string>> = {
   "as 30 maiores em energia livre faturada no ano; a tabela completa está no CSV": "the 30 largest by free-market energy billed in the year; the full table is in the CSV",

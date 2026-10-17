@@ -12,7 +12,10 @@
  */
 import { semCaminhosDeArquivo } from "./bastidor";
 import { diaBrasilia } from "./evidencia";
-import { CURTO_SM, NOME_SM, dataBR, num, plural, reais } from "./formato";
+import { dataBR, dataCurta, nomeSubmercado, num, plural, reais } from "./formato";
+import { idiomaEnergia, tx, tx as txIdioma } from "./idioma";
+import { textoRegistroModelos as reg } from "./i18n/mercado-preco";
+import type { Idioma } from "@/lib/idioma";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
 import type { ModelosGold, Proveniencia, Submercado } from "./tipos";
 import type {
@@ -44,24 +47,54 @@ export type PainelPrevisoes = { id: IdPainelPrevisoes; codigo: string; rotulo: s
  * modelos e o desempenho em /modelos (como cada número é calculado e se ele supera
  * as referências simples). A ordem da lista é a da navegação.
  */
+/** Rótulo e pergunta de cada painel no idioma da página. */
+export function textosPainelPrevisoes(id: IdPainelPrevisoes, idioma: Idioma = idiomaEnergia()): { rotulo: string; pergunta: string } {
+  switch (id) {
+    case "p013":
+      return { rotulo: tx("Rodada mais recente", "Latest run", idioma), pergunta: tx("Quais os preços possíveis nos próximos períodos?", "What are the possible prices in the coming periods?", idioma) };
+    case "p015":
+      return { rotulo: tx("Arquivo de emissões", "Forecast archive", idioma), pergunta: tx("O que foi previsto antes do resultado?", "What was forecast before the outcome?", idioma) };
+    case "p014":
+      return { rotulo: tx("Registro de modelos", "Model registry", idioma), pergunta: tx("Como cada previsão foi calculada?", "How was each forecast calculated?", idioma) };
+    case "p016":
+      return { rotulo: tx("Desempenho e calibração", "Performance and calibration", idioma), pergunta: tx("O modelo supera referências simples?", "Does the model beat simple benchmarks?", idioma) };
+  }
+}
+
+function painelComTextos(id: IdPainelPrevisoes, codigo: string, rota: string): PainelPrevisoes {
+  return {
+    id,
+    codigo,
+    rota,
+    get rotulo() {
+      return textosPainelPrevisoes(id).rotulo;
+    },
+    get pergunta() {
+      return textosPainelPrevisoes(id).pergunta;
+    },
+  };
+}
+
 export const PAINEIS_PREVISOES: PainelPrevisoes[] = [
-  { id: "p013", codigo: "P013", rotulo: "Rodada mais recente", rota: ROTA_PREVISOES, pergunta: "Quais os preços possíveis nos próximos períodos?" },
-  { id: "p015", codigo: "P015", rotulo: "Arquivo de emissões", rota: ROTA_PREVISOES, pergunta: "O que foi previsto antes do resultado?" },
-  { id: "p014", codigo: "P014", rotulo: "Registro de modelos", rota: ROTA_MODELOS, pergunta: "Como cada previsão foi calculada?" },
-  { id: "p016", codigo: "P016", rotulo: "Desempenho e calibração", rota: ROTA_MODELOS, pergunta: "O modelo supera referências simples?" },
+  painelComTextos("p013", "P013", ROTA_PREVISOES),
+  painelComTextos("p015", "P015", ROTA_PREVISOES),
+  painelComTextos("p014", "P014", ROTA_MODELOS),
+  painelComTextos("p016", "P016", ROTA_MODELOS),
 ];
 
 export function painelPrevisoes(id: IdPainelPrevisoes): PainelPrevisoes {
   return PAINEIS_PREVISOES.find((p) => p.id === id) as PainelPrevisoes;
 }
-export const perguntaPainel = (id: IdPainelPrevisoes) => painelPrevisoes(id).pergunta;
+export const perguntaPainel = (id: IdPainelPrevisoes, idioma: Idioma = idiomaEnergia()) => textosPainelPrevisoes(id, idioma).pergunta;
 /** Endereço do painel com a âncora (o link compartilhável acrescenta o recorte da URL). */
 export const enderecoPainel = (id: IdPainelPrevisoes) => `${painelPrevisoes(id).rota}#${id}`;
 
 /** Próxima pergunta (seção 7.2, item 10): o que se prevê → como foi calculado → se supera as referências → o que já foi previsto → o que se prevê. */
 const PROXIMO: Record<IdPainelPrevisoes, IdPainelPrevisoes> = { p013: "p014", p014: "p016", p016: "p015", p015: "p013" };
-export function proximoPainel(id: IdPainelPrevisoes): PainelPrevisoes {
-  return painelPrevisoes(PROXIMO[id]);
+export function proximoPainel(id: IdPainelPrevisoes, idioma: Idioma = idiomaEnergia()): PainelPrevisoes {
+  const p = painelPrevisoes(PROXIMO[id]);
+  // objeto simples (sem getters), seguro para passar a componente de cliente
+  return { id: p.id, codigo: p.codigo, rota: p.rota, ...textosPainelPrevisoes(p.id, idioma) };
 }
 
 /** Rota da ficha de um modelo ("C2-P" → /setor-eletrico/pld/modelos/c2-p). */
@@ -81,20 +114,30 @@ export const COR_SM: Record<Submercado, string> = {
 
 const ORDINAL = ["primeira", "segunda", "terceira", "quarta"];
 const ORDINAL_M = ["primeiro", "segundo", "terceiro"];
+const ORDINAL_EN = ["first", "second", "third", "fourth"];
 /** "W2" → "segunda semana completa depois da origem"; "M1" → "primeiro mês civil depois da origem". */
-export function descreverHorizonte(h: Horizonte): string {
+export function descreverHorizonte(h: Horizonte, idioma: Idioma = idiomaEnergia()): string {
   const n = Number(h.slice(1)) - 1;
-  return h.startsWith("W") ? `${ORDINAL[n]} semana completa depois da origem` : `${ORDINAL_M[n]} mês civil depois da origem`;
+  if (h.startsWith("W")) return tx(`${ORDINAL[n]} semana completa depois da origem`, `${ORDINAL_EN[n]} full week after the origin`, idioma);
+  return tx(`${ORDINAL_M[n]} mês civil depois da origem`, `${ORDINAL_EN[n]} calendar month after the origin`, idioma);
 }
 
 const ESTADOS_CALIBRACAO: Record<string, string> = {
   CALIBRADO: "calibrado",
   DESCALIBRADO: "descalibrado",
   AMOSTRA_INSUFICIENTE: "amostra insuficiente",
-  SEM_AVALIACAO: "sem avaliação",
-  NAO_CALIBRADO_NO_PILOTO: "não calibrado no piloto",
+  SEM_AVALIACAO: "sem avaliação", // i18n: dado
+  NAO_CALIBRADO_NO_PILOTO: "não calibrado no piloto", // i18n: dado
 };
-export const rotuloCalibracao = (s: string | null | undefined) => (s ? ESTADOS_CALIBRACAO[s] ?? s : "sem estado registrado");
+const ESTADOS_CALIBRACAO_EN: Record<string, string> = {
+  CALIBRADO: "calibrated",
+  DESCALIBRADO: "miscalibrated",
+  AMOSTRA_INSUFICIENTE: "insufficient sample",
+  SEM_AVALIACAO: "not evaluated",
+  NAO_CALIBRADO_NO_PILOTO: "not calibrated in the pilot",
+};
+export const rotuloCalibracao = (s: string | null | undefined, idioma: Idioma = idiomaEnergia()) =>
+  s ? ((idioma === "en" ? ESTADOS_CALIBRACAO_EN : ESTADOS_CALIBRACAO)[s] ?? s) : tx("sem estado registrado", "no state recorded", idioma);
 
 /**
  * Frases escritas pelo registro às vezes trazem o código do estado de calibração em maiúsculas ("está CALIBRADO"). No texto de leitura
@@ -104,37 +147,61 @@ export function semCodigoDeEstado(texto: string): string {
   return texto.replace(/\b(NAO_CALIBRADO_NO_PILOTO|AMOSTRA_INSUFICIENTE|DESCALIBRADO|CALIBRADO|SEM_AVALIACAO)\b/g, (c) => ESTADOS_CALIBRACAO[c] ?? c);
 }
 
-const ESTADOS_MODELO: Record<string, string> = { PESQUISA: "pesquisa", VALIDACAO: "validação", PRODUCAO: "produção", APOSENTADO: "aposentado" };
-export const rotuloEstadoModelo = (s: string) => ESTADOS_MODELO[s] ?? s;
+const ESTADOS_MODELO: Record<string, string> = { PESQUISA: "pesquisa", VALIDACAO: "validação", PRODUCAO: "produção", APOSENTADO: "aposentado" }; // i18n: dado
+const ESTADOS_MODELO_EN: Record<string, string> = { PESQUISA: "research", VALIDACAO: "validation", PRODUCAO: "production", APOSENTADO: "retired" };
+export const rotuloEstadoModelo = (s: string, idioma: Idioma = idiomaEnergia()) => (idioma === "en" ? ESTADOS_MODELO_EN : ESTADOS_MODELO)[s] ?? s;
 
 const TIPOS: Record<string, string> = {
-  PUBLICACAO: "publicação",
+  PUBLICACAO: "publicação", // i18n: dado
   RODADA_INTERNA: "rodada interna",
-  REFERENCIA_EXPERIMENTAL: "referência experimental",
+  REFERENCIA_EXPERIMENTAL: "referência experimental", // i18n: dado
 };
-export const rotuloTipo = (s: string) => TIPOS[s] ?? s;
+const TIPOS_EN: Record<string, string> = {
+  PUBLICACAO: "publication",
+  RODADA_INTERNA: "internal run",
+  REFERENCIA_EXPERIMENTAL: "experimental benchmark",
+};
+export const rotuloTipo = (s: string, idioma: Idioma = idiomaEnergia()) => (idioma === "en" ? TIPOS_EN : TIPOS)[s] ?? s;
 
 /** Motivos de célula sem número gravados pela rodada de previsão (emissao.py, no módulo de previsões). */
 export const MOTIVOS: Record<string, string> = {
-  SEM_PLD_CAPTURADO_ATE_O_CORTE: "nenhum PLD do período exigido havia sido capturado até o corte",
-  SEM_PERIODO_ELEGIVEL_CAPTURADO_ATE_O_CORTE: "nenhum período elegível do PLD estava capturado até o corte",
-  PERIODO_ELEGIVEL_INCOMPLETO_NO_CORTE: "o período elegível estava incompleto no corte",
-  FALHA_NA_EXECUCAO: "a execução da rodada falhou",
-  CONFERENCIA_B0_DIVERGENTE: "o recálculo independente do B0 divergiu do valor emitido",
-  ENTREGA_PARCIALMENTE_PUBLICADA_SEM_DIAS_INTEIROS: "a entrega já tinha horas publicadas sem dias inteiros",
-  TREINO_INSUFICIENTE: "o treino tinha menos entregas que o mínimo",
+  SEM_PLD_CAPTURADO_ATE_O_CORTE: "nenhum PLD do período exigido havia sido capturado até o corte", // i18n: dado
+  SEM_PERIODO_ELEGIVEL_CAPTURADO_ATE_O_CORTE: "nenhum período elegível do PLD estava capturado até o corte", // i18n: dado
+  PERIODO_ELEGIVEL_INCOMPLETO_NO_CORTE: "o período elegível estava incompleto no corte", // i18n: dado
+  FALHA_NA_EXECUCAO: "a execução da rodada falhou", // i18n: dado
+  CONFERENCIA_B0_DIVERGENTE: "o recálculo independente do B0 divergiu do valor emitido", // i18n: dado
+  ENTREGA_PARCIALMENTE_PUBLICADA_SEM_DIAS_INTEIROS: "a entrega já tinha horas publicadas sem dias inteiros", // i18n: dado
+  TREINO_INSUFICIENTE: "o treino tinha menos entregas que o mínimo", // i18n: dado
 };
-export const textoMotivo = (m: string | null | undefined) => (m ? MOTIVOS[m] ?? `motivo registrado ${m}` : "");
+const MOTIVOS_EN: Record<string, string> = {
+  SEM_PLD_CAPTURADO_ATE_O_CORTE: "no PLD for the required period had been captured by the cutoff",
+  SEM_PERIODO_ELEGIVEL_CAPTURADO_ATE_O_CORTE: "no eligible PLD period had been captured by the cutoff",
+  PERIODO_ELEGIVEL_INCOMPLETO_NO_CORTE: "the eligible period was incomplete at the cutoff",
+  FALHA_NA_EXECUCAO: "the run failed",
+  CONFERENCIA_B0_DIVERGENTE: "the independent recalculation of B0 diverged from the issued value",
+  ENTREGA_PARCIALMENTE_PUBLICADA_SEM_DIAS_INTEIROS: "the delivery already had hours published without whole days",
+  TREINO_INSUFICIENTE: "training had fewer deliveries than the minimum",
+};
+export const textoMotivo = (m: string | null | undefined, idioma: Idioma = idiomaEnergia()) =>
+  m ? ((idioma === "en" ? MOTIVOS_EN : MOTIVOS)[m] ?? tx(`motivo registrado ${m}`, `recorded reason ${m}`, idioma)) : "";
 
 export const ALERTAS: Record<string, string> = {
-  ATRASADO_APOS_08H: "emitida depois do prazo das 08h00",
-  EXECUCAO_MANUAL: "rodada manual, fora do horário agendado",
-  CODIGO_NAO_COMMITADO: "emitida com uma versão do código ainda não registrada",
-  LIMITE_PROVISORIO: "faixa de preço provisória (sem ato do ano da entrega)",
-  AJUSTADA_AO_LIMITE: "previsão ajustada ao limite de preço",
-  ENTREGA_COM_HORAS_JA_PUBLICADAS: "entrega com horas já publicadas no corte",
+  ATRASADO_APOS_08H: "emitida depois do prazo das 08h00", // i18n: dado
+  EXECUCAO_MANUAL: "rodada manual, fora do horário agendado", // i18n: dado
+  CODIGO_NAO_COMMITADO: "emitida com uma versão do código ainda não registrada", // i18n: dado
+  LIMITE_PROVISORIO: "faixa de preço provisória (sem ato do ano da entrega)", // i18n: dado
+  AJUSTADA_AO_LIMITE: "previsão ajustada ao limite de preço", // i18n: dado
+  ENTREGA_COM_HORAS_JA_PUBLICADAS: "entrega com horas já publicadas no corte", // i18n: dado
 };
-export const textoAlertas = (as: readonly string[]) => as.map((a) => ALERTAS[a] ?? a).join("; ");
+const ALERTAS_EN: Record<string, string> = {
+  ATRASADO_APOS_08H: "issued after the 08:00 deadline",
+  EXECUCAO_MANUAL: "manual run, outside the scheduled time",
+  CODIGO_NAO_COMMITADO: "issued with a code version not yet recorded",
+  LIMITE_PROVISORIO: "provisional price range (no act for the delivery year)",
+  AJUSTADA_AO_LIMITE: "forecast adjusted to the price limit",
+  ENTREGA_COM_HORAS_JA_PUBLICADAS: "delivery with hours already published at the cutoff",
+};
+export const textoAlertas = (as: readonly string[], idioma: Idioma = idiomaEnergia()) => as.map((a) => (idioma === "en" ? ALERTAS_EN : ALERTAS)[a] ?? a).join("; ");
 
 /* ---------------------------------------------------------------- datas */
 
@@ -148,13 +215,13 @@ const HORA_BR = new Intl.DateTimeFormat("pt-BR", {
   hourCycle: "h23",
 });
 
-/** Instante UTC → "30/09/2026 às 20h31" (Brasília). */
-export function instanteBR(iso: string | null | undefined): string {
-  if (!iso) return "sem registro";
+/** Instante UTC → "30/09/2026 às 20h31" (Brasília); em inglês, "Sep 30, 2026 at 20:31". */
+export function instanteBR(iso: string | null | undefined, idioma: Idioma = idiomaEnergia()): string {
+  if (!iso) return tx("sem registro", "no record", idioma);
   const t = Date.parse(iso);
   if (Number.isNaN(t)) return iso;
   const p = Object.fromEntries(HORA_BR.formatToParts(new Date(t)).map((x) => [x.type, x.value]));
-  return `${p.day}/${p.month}/${p.year} às ${p.hour}h${p.minute}`;
+  return tx(`${p.day}/${p.month}/${p.year} às ${p.hour}h${p.minute}`, `${dataBR(`${p.year}-${p.month}-${p.day}`, "en")} at ${p.hour}:${p.minute}`, idioma);
 }
 
 /** Dia anterior (AAAA-MM-DD), para escrever o último dia de um período com fim excluído. */
@@ -201,7 +268,12 @@ export function fimDaEntrega(id: string): string | null {
 }
 
 /** "R$ 124,09/MWh"; ausência é "sem número". */
-export const reaisMWh = (v: number | null | undefined, casas = 2) => (v === null || v === undefined || !Number.isFinite(v) ? "sem número" : `${reais(v, casas)}/MWh`);
+export const reaisMWh = (v: number | null | undefined, casas = 2, idioma: Idioma = idiomaEnergia()) =>
+  v === null || v === undefined || !Number.isFinite(v) ? tx("sem número", "no number", idioma) : `${reais(v, casas, idioma)}/MWh`;
+
+/** Sigla curta do submercado no idioma (SE/CO, S, NE, N; em inglês, SE/CW, South...). */
+const curto = (sm: string, idioma: Idioma) => nomeSubmercado(sm, idioma, true);
+const nome = (sm: string, idioma: Idioma) => nomeSubmercado(sm, idioma);
 
 /* ---------------------------------------------------------------- rodada e defasagem */
 
@@ -211,19 +283,27 @@ export function temRodada(at: PrevisoesDesempenhoGold["previsao_atual"]): at is 
 }
 
 /** Emissão da rodada em uma frase: modo, instante em Brasília e atraso sobre o prazo das 08h00. */
-export function textoEmissao(r: { emitido_em: string; atraso_min: number | null; modo: string; prazo: string | null }): string {
-  const modo = r.modo === "agendada" ? "pelo agendamento" : r.modo === "manual" ? "manualmente" : `(${r.modo})`;
-  const base = `emitida ${modo} em ${instanteBR(r.emitido_em)}`;
-  if (r.prazo === null || r.atraso_min === null) return `${base}, sem prazo registrado`;
-  if (r.atraso_min <= 0) return `${base}, dentro do prazo das 08h00`;
-  return `${base}, ${num(r.atraso_min, 0)} minutos depois do prazo das 08h00`;
+function modoEmissao(modo: string, idioma: Idioma): string {
+  if (modo === "agendada") return tx("pelo agendamento", "by the schedule", idioma);
+  if (modo === "manual") return tx("manualmente", "manually", idioma);
+  return `(${modo})`;
+}
+
+export function textoEmissao(r: { emitido_em: string; atraso_min: number | null; modo: string; prazo: string | null }, idioma: Idioma = idiomaEnergia()): string {
+  const modo = modoEmissao(r.modo, idioma);
+  const base = tx(`emitida ${modo} em ${instanteBR(r.emitido_em, idioma)}`, `issued ${modo} on ${instanteBR(r.emitido_em, idioma)}`, idioma);
+  if (r.prazo === null || r.atraso_min === null) return tx(`${base}, sem prazo registrado`, `${base}, no deadline recorded`, idioma);
+  if (r.atraso_min <= 0) return tx(`${base}, dentro do prazo das 08h00`, `${base}, within the 08:00 deadline`, idioma);
+  return tx(`${base}, ${num(r.atraso_min, 0)} minutos depois do prazo das 08h00`, `${base}, ${num(r.atraso_min, 0, idioma)} minutes after the 08:00 deadline`, idioma);
 }
 
 /** Emissão da rodada em palavras de leitor: o modo e se foi depois do prazo das 08h00, sem os minutos de atraso (que ficam em Analisar). */
-export function textoEmissaoLeitor(r: { atraso_min: number | null; modo: string; prazo: string | null }): string {
-  const modo = r.modo === "agendada" ? "pelo agendamento" : r.modo === "manual" ? "manualmente" : `(${r.modo})`;
-  if (r.prazo === null || r.atraso_min === null) return `emitida ${modo}, sem prazo registrado`;
-  return r.atraso_min <= 0 ? `emitida ${modo}, dentro do prazo das 08h00` : `emitida ${modo}, depois do prazo das 08h00`;
+export function textoEmissaoLeitor(r: { atraso_min: number | null; modo: string; prazo: string | null }, idioma: Idioma = idiomaEnergia()): string {
+  const modo = modoEmissao(r.modo, idioma);
+  if (r.prazo === null || r.atraso_min === null) return tx(`emitida ${modo}, sem prazo registrado`, `issued ${modo}, no deadline recorded`, idioma);
+  return r.atraso_min <= 0
+    ? tx(`emitida ${modo}, dentro do prazo das 08h00`, `issued ${modo}, within the 08:00 deadline`, idioma)
+    : tx(`emitida ${modo}, depois do prazo das 08h00`, `issued ${modo}, after the 08:00 deadline`, idioma);
 }
 
 /**
@@ -274,7 +354,11 @@ export type LinhaGrade = {
  * acompanhamento (`prospectivo.apuracoes`), cada linha leva também o realizado e o erro da própria célula, ligados pelo
  * identificador; sem elas, os dois ficam null (a entrega ainda não terminou).
  */
-export function linhasGrade(celulas: readonly CelulaAtual[], apuracoes: readonly Pick<Apuracao, "forecast_id" | "realizado" | "erro">[] = []): LinhaGrade[] {
+export function linhasGrade(
+  celulas: readonly CelulaAtual[],
+  apuracoes: readonly Pick<Apuracao, "forecast_id" | "realizado" | "erro">[] = [],
+  idioma: Idioma = idiomaEnergia(),
+): LinhaGrade[] {
   const ordem = (c: CelulaAtual) => SUBMERCADOS.indexOf(c.submercado) * 10 + HORIZONTES.indexOf(c.horizonte);
   const apurada = new Map(apuracoes.map((a) => [a.forecast_id, a]));
   return [...celulas]
@@ -287,7 +371,7 @@ export function linhasGrade(celulas: readonly CelulaAtual[], apuracoes: readonly
         erro: apurada.get(c.forecast_id)?.erro ?? null,
         id: `${c.horizonte}:${c.submercado}`,
         submercado: c.submercado,
-        sm: CURTO_SM[c.submercado] ?? c.submercado,
+        sm: curto(c.submercado, idioma),
         horizonte: c.horizonte,
         entrega: c.entrega.id,
         inicio: d.inicio,
@@ -295,16 +379,24 @@ export function linhasGrade(celulas: readonly CelulaAtual[], apuracoes: readonly
         previsao: c.previsao,
         p10: c.quantis?.p10 ?? null,
         p90: c.quantis?.p90 ?? null,
-        calibracao: rotuloCalibracao(c.calibracao_recalculada ?? c.calibracao),
+        calibracao: rotuloCalibracao(c.calibracao_recalculada ?? c.calibracao, idioma),
         piso: c.limites?.piso_medio ?? null,
         teto: c.limites?.teto_estrutural_medio ?? null,
-        limites: c.limites === null ? "sem limites registrados" : c.limites.provisoria ? "provisórios" : "dos atos publicados",
-        ajustada: c.ajustada_ao_limite === null ? "não se aplica" : c.ajustada_ao_limite ? "sim" : "não",
+        limites:
+          c.limites === null
+            ? tx("sem limites registrados", "no limits recorded", idioma)
+            : c.limites.provisoria
+              ? tx("provisórios", "provisional", idioma)
+              : tx("dos atos publicados", "from the published acts", idioma),
+        ajustada: c.ajustada_ao_limite === null ? tx("não se aplica", "not applicable", idioma) : c.ajustada_ao_limite ? tx("sim", "yes", idioma) : tx("não", "no", idioma),
         periodo_inicio: c.periodo_usado?.inicio ?? null,
         periodo_fim: c.periodo_usado ? diaAnterior(c.periodo_usado.fim) : null,
         capturado_em: c.periodo_usado?.capturado_em ?? null,
         fracao_conhecida: c.fracao_conhecida === null ? null : c.fracao_conhecida * 100,
-        motivo: c.previsao === null ? textoMotivo(c.motivo) || "motivo não registrado" : "não se aplica (célula com número)",
+        motivo:
+          c.previsao === null
+            ? textoMotivo(c.motivo, idioma) || tx("motivo não registrado", "reason not recorded", idioma)
+            : tx("não se aplica (célula com número)", "not applicable (cell with a number)", idioma),
         forecast_id: c.forecast_id,
         evidencia: c.evidencia,
       };
@@ -312,28 +404,32 @@ export function linhasGrade(celulas: readonly CelulaAtual[], apuracoes: readonly
 }
 
 /** O identificador técnico de cada célula (forecast_id) fica no CSV do arquivo de emissões e no detalhe em Auditar, não na tabela de Entender. */
-export const COLUNAS_GRADE: ColunaTabela[] = [
-  { id: "sm", rotulo: "Submercado", tipo: "texto", categorica: true },
-  { id: "horizonte", rotulo: "Horizonte", tipo: "texto", categorica: true },
-  { id: "entrega", rotulo: "Entrega", tipo: "texto" },
-  { id: "inicio", rotulo: "Primeiro dia", tipo: "data" },
-  { id: "fim", rotulo: "Último dia", tipo: "data" },
-  { id: "previsao", rotulo: "Referência B0", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "p10", rotulo: "P10", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "p90", rotulo: "P90", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "calibracao", rotulo: "Calibração da faixa", tipo: "texto", categorica: true },
-  { id: "piso", rotulo: "Piso médio da entrega", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "teto", rotulo: "Teto estrutural médio", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "limites", rotulo: "Limites", tipo: "texto", categorica: true },
-  { id: "ajustada", rotulo: "Ajustada ao limite", tipo: "texto", categorica: true },
-  { id: "periodo_inicio", rotulo: "Período usado: início", tipo: "data" },
-  { id: "periodo_fim", rotulo: "Período usado: fim", tipo: "data" },
-  { id: "fracao_conhecida", rotulo: "Fração já publicada no corte", tipo: "percentual", casas: 0 },
-  { id: "motivo", rotulo: "Motivo sem número", tipo: "texto" },
-  { id: "realizado", rotulo: "Realizado", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "erro", rotulo: "Erro (previsão menos realizado)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "termina", rotulo: "Entrega termina em", tipo: "data", nivel: "analisar" },
-];
+export function colunasGrade(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  return [
+    { id: "sm", rotulo: tx("Submercado", "Submarket"), tipo: "texto", categorica: true },
+    { id: "horizonte", rotulo: tx("Horizonte", "Horizon"), tipo: "texto", categorica: true },
+    { id: "entrega", rotulo: tx("Entrega", "Delivery"), tipo: "texto" },
+    { id: "inicio", rotulo: tx("Primeiro dia", "First day"), tipo: "data" },
+    { id: "fim", rotulo: tx("Último dia", "Last day"), tipo: "data" },
+    { id: "previsao", rotulo: tx("Referência B0", "B0 benchmark"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "p10", rotulo: "P10", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "p90", rotulo: "P90", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "calibracao", rotulo: tx("Calibração da faixa", "Band calibration"), tipo: "texto", categorica: true },
+    { id: "piso", rotulo: tx("Piso médio da entrega", "Average floor of the delivery"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "teto", rotulo: tx("Teto estrutural médio", "Average structural cap"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "limites", rotulo: tx("Limites", "Limits"), tipo: "texto", categorica: true },
+    { id: "ajustada", rotulo: tx("Ajustada ao limite", "Adjusted to the limit"), tipo: "texto", categorica: true },
+    { id: "periodo_inicio", rotulo: tx("Período usado: início", "Period used: start"), tipo: "data" },
+    { id: "periodo_fim", rotulo: tx("Período usado: fim", "Period used: end"), tipo: "data" },
+    { id: "fracao_conhecida", rotulo: tx("Fração já publicada no corte", "Share already published at the cutoff"), tipo: "percentual", casas: 0 },
+    { id: "motivo", rotulo: tx("Motivo sem número", "Reason for no number"), tipo: "texto" },
+    { id: "realizado", rotulo: tx("Realizado", "Actual"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "erro", rotulo: tx("Erro (previsão menos realizado)", "Error (forecast minus actual)"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "termina", rotulo: tx("Entrega termina em", "Delivery ends on"), tipo: "data", nivel: "analisar" },
+  ];
+}
+export const COLUNAS_GRADE: ColunaTabela[] = colunasGrade("pt");
 
 /** Grade compacta 4 × 7 (submercado × horizonte) com os mesmos números da tabela longa. */
 export function matrizGrade(linhas: readonly LinhaGrade[]): { submercado: Submercado; valores: (number | null)[] }[] {
@@ -360,66 +456,92 @@ function extremos(linhas: readonly LinhaGrade[], freq: "W" | "M"): { min: Extrem
   return { min, max, horizontes: hs, inicio, fim };
 }
 
-function faixaDeValores(e: NonNullable<ReturnType<typeof extremos>>): string {
-  if (Math.abs(e.max.valor - e.min.valor) < 0.005) return `${reaisMWh(e.min.valor)} em todos os submercados`;
-  return `de ${reaisMWh(e.min.valor)} (${CURTO_SM[e.min.sm]}) a ${reaisMWh(e.max.valor)} (${CURTO_SM[e.max.sm]}), conforme o submercado`;
+function faixaDeValores(e: NonNullable<ReturnType<typeof extremos>>, idioma: Idioma): string {
+  const R = (v: number) => reaisMWh(v, 2, idioma);
+  if (Math.abs(e.max.valor - e.min.valor) < 0.005) return tx(`${R(e.min.valor)} em todos os submercados`, `${R(e.min.valor)} in all submarkets`, idioma);
+  return tx(
+    `de ${R(e.min.valor)} (${curto(e.min.sm, idioma)}) a ${R(e.max.valor)} (${curto(e.max.sm, idioma)}), conforme o submercado`,
+    `from ${R(e.min.valor)} (${curto(e.min.sm, idioma)}) to ${R(e.max.valor)} (${curto(e.max.sm, idioma)}), depending on the submarket`,
+    idioma,
+  );
 }
 
-const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-const nomeMes = (dia: string) => `${MESES[Number(dia.slice(5, 7)) - 1]} de ${dia.slice(0, 4)}`;
+const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]; // i18n: dado
+const MESES_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const nomeMes = (dia: string, idioma: Idioma) =>
+  tx(`${MESES[Number(dia.slice(5, 7)) - 1]} de ${dia.slice(0, 4)}`, `${MESES_EN[Number(dia.slice(5, 7)) - 1]} ${dia.slice(0, 4)}`, idioma);
 /** "outubro a dezembro de 2026"; anos diferentes: "novembro de 2026 a janeiro de 2027". */
-function intervaloMeses(a: string, b: string): string {
-  if (a.slice(0, 7) === b.slice(0, 7)) return nomeMes(a);
-  return a.slice(0, 4) === b.slice(0, 4) ? `${MESES[Number(a.slice(5, 7)) - 1]} a ${nomeMes(b)}` : `${nomeMes(a)} a ${nomeMes(b)}`;
+function intervaloMeses(a: string, b: string, idioma: Idioma): string {
+  if (a.slice(0, 7) === b.slice(0, 7)) return nomeMes(a, idioma);
+  if (idioma === "en")
+    return a.slice(0, 4) === b.slice(0, 4) ? `${MESES_EN[Number(a.slice(5, 7)) - 1]} to ${nomeMes(b, idioma)}` : `${nomeMes(a, idioma)} to ${nomeMes(b, idioma)}`;
+  return a.slice(0, 4) === b.slice(0, 4) ? `${MESES[Number(a.slice(5, 7)) - 1]} a ${nomeMes(b, idioma)}` : `${nomeMes(a, idioma)} a ${nomeMes(b, idioma)}`;
 }
 /** "03/10 a 30/10/2026"; anos diferentes: datas completas. */
-function intervaloDias(a: string, b: string): string {
-  return a.slice(0, 4) === b.slice(0, 4) ? `${dataBR(a).slice(0, 5)} a ${dataBR(b)}` : `${dataBR(a)} a ${dataBR(b)}`;
+function intervaloDias(a: string, b: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma === "en") return a.slice(0, 4) === b.slice(0, 4) ? `${dataCurta(a, idioma)} to ${dataBR(b, idioma)}` : `${dataBR(a, idioma)} to ${dataBR(b, idioma)}`;
+  return a.slice(0, 4) === b.slice(0, 4) ? `${dataBR(a, "pt").slice(0, 5)} a ${dataBR(b, "pt")}` : `${dataBR(a, "pt")} a ${dataBR(b, "pt")}`;
 }
 
 /**
  * Resposta curta do P013. Diz primeiro se há previsão oficial (modelo em produção),
  * depois o intervalo dos números publicados por frequência e a situação da faixa.
  */
-export function respostaP013(g: Pick<PrevisoesDesempenhoGold, "previsao_atual" | "modelos">): string {
+export function respostaP013(g: Pick<PrevisoesDesempenhoGold, "previsao_atual" | "modelos">, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const D = (d: string) => dataBR(d, idioma);
   const at = g.previsao_atual;
   const producao = g.modelos.filter((m) => m.estado === "PRODUCAO").map((m) => m.codigo);
   const oficial = producao.length
-    ? `Modelo em produção: ${producao.join(", ")}.`
-    : "Não há previsão oficial do PLD: nenhum modelo está aprovado para produção.";
-  if (!temRodada(at)) return `${oficial} Nenhuma rodada com números está publicada: ${at.motivo}`;
-  const linhas = linhasGrade(at.celulas);
+    ? tx(`Modelo em produção: ${producao.join(", ")}.`, `Model in production: ${producao.join(", ")}.`)
+    : tx("Não há previsão oficial do PLD: nenhum modelo está aprovado para produção.", "There is no official PLD forecast: no model is approved for production.");
+  if (!temRodada(at)) return tx(`${oficial} Nenhuma rodada com números está publicada: ${at.motivo}`, `${oficial} No run with numbers is published: ${at.motivo}`);
+  const linhas = linhasGrade(at.celulas, [], idioma);
   const com = linhas.filter((l) => l.previsao !== null).length;
   if (com === 0) {
     const motivos = Array.from(new Set(linhas.map((l) => l.motivo).filter(Boolean)));
-    return `${oficial} A rodada de ${dataBR(at.origem)} não tem número em nenhuma das ${linhas.length} células${motivos.length ? `: ${motivos.join("; ")}` : ""}.`;
+    return tx(
+      `${oficial} A rodada de ${D(at.origem)} não tem número em nenhuma das ${linhas.length} células${motivos.length ? `: ${motivos.join("; ")}` : ""}.`,
+      `${oficial} The run of ${D(at.origem)} has no number in any of the ${linhas.length} cells${motivos.length ? `: ${motivos.join("; ")}` : ""}.`,
+    );
   }
   const w = extremos(linhas, "W");
   const m = extremos(linhas, "M");
   const partes: string[] = [];
-  const hs = (e: NonNullable<typeof w>) => (e.horizontes.length > 1 ? `${e.horizontes[0]} a ${e.horizontes[e.horizontes.length - 1]}` : e.horizontes[0]);
-  if (w) partes.push(`para cada semana de ${intervaloDias(w.inicio, w.fim)} (${hs(w)}), ${faixaDeValores(w)}`);
-  if (m) partes.push(`para cada mês de ${intervaloMeses(m.inicio, m.fim)} (${hs(m)}), ${faixaDeValores(m)}`);
+  const hs = (e: NonNullable<typeof w>) => (e.horizontes.length > 1 ? tx(`${e.horizontes[0]} a ${e.horizontes[e.horizontes.length - 1]}`, `${e.horizontes[0]} to ${e.horizontes[e.horizontes.length - 1]}`) : e.horizontes[0]);
+  if (w) partes.push(tx(`para cada semana de ${intervaloDias(w.inicio, w.fim, idioma)} (${hs(w)}), ${faixaDeValores(w, idioma)}`, `for each week from ${intervaloDias(w.inicio, w.fim, idioma)} (${hs(w)}), ${faixaDeValores(w, idioma)}`));
+  if (m) partes.push(tx(`para cada mês de ${intervaloMeses(m.inicio, m.fim, idioma)} (${hs(m)}), ${faixaDeValores(m, idioma)}`, `for each month from ${intervaloMeses(m.inicio, m.fim, idioma)} (${hs(m)}), ${faixaDeValores(m, idioma)}`));
   const ref = /refer[eê]ncia experimental/i.test(at.rotulo)
-    ? `A referência experimental B0 (persistência) da rodada de ${dataBR(at.origem)} repete o PLD médio do último período completo: `
-    : `A rodada de ${dataBR(at.origem)} publica `;
+    ? tx(
+        `A referência experimental B0 (persistência) da rodada de ${D(at.origem)} repete o PLD médio do último período completo: `,
+        `The experimental benchmark B0 (persistence) of the run of ${D(at.origem)} repeats the average PLD of the latest complete period: `,
+      )
+    : tx(`A rodada de ${D(at.origem)} publica `, `The run of ${D(at.origem)} publishes `);
   const semNumero = linhas.length - com;
-  const lacuna = semNumero ? ` ${plural(semNumero, "célula fica", "células ficam")} sem número, com o motivo.` : "";
+  const lacuna = semNumero
+    ? tx(` ${plural(semNumero, "célula fica", "células ficam", idioma)} sem número, com o motivo.`, ` ${plural(semNumero, "cell is", "cells are", idioma)} left without a number, with the reason.`)
+    : "";
   const comFaixa = linhas.filter((l) => l.p10 !== null && l.p90 !== null).length;
   const faixa = comFaixa
-    ? ` Faixa P10 a P90 publicada em ${comFaixa} de ${linhas.length} células.`
-    : " Sem faixa de incerteza: nenhum segmento está calibrado.";
+    ? tx(` Faixa P10 a P90 publicada em ${comFaixa} de ${linhas.length} células.`, ` P10 to P90 band published in ${comFaixa} of ${linhas.length} cells.`)
+    : tx(" Sem faixa de incerteza: nenhum segmento está calibrado.", " No uncertainty band: no segment is calibrated.");
   return `${oficial} ${ref}${partes.join("; ")}.${lacuna}${faixa}`;
 }
 
 /** KPI do PLD já publicado no corte, por submercado (dado observado, não previsão). */
-export function textoPublicadoNoCorte(pub: Pick<PublicadoNoCorte, "origem" | "submercados"> | null, sm: Submercado): string {
-  if (!pub) return "A rodada não registrou o PLD já publicado no corte.";
+export function textoPublicadoNoCorte(pub: Pick<PublicadoNoCorte, "origem" | "submercados"> | null, sm: Submercado, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const R = (v: number | null | undefined) => reaisMWh(v, 2, idioma);
+  if (!pub) return tx("A rodada não registrou o PLD já publicado no corte.", "The run did not record the PLD already published at the cutoff.");
   const x = pub.submercados[sm];
-  if (!x || !x.horas || x.media === null) return `Nenhuma hora de ${dataBR(pub.origem)} depois do corte estava capturada para o ${CURTO_SM[sm]}.`;
-  return (
-    `Para o resto de ${dataBR(pub.origem)} (${plural(x.horas, "hora", "horas")}, das ${x.primeira?.slice(11, 13)}h às ${x.ultima?.slice(11, 13)}h), o PLD do ${CURTO_SM[sm]} ` +
-    `já estava publicado no corte: média de ${reaisMWh(x.media)}, de ${reaisMWh(x.minimo)} a ${reaisMWh(x.maximo)}. É dado observado, e nenhuma entrega prevista inclui essas horas.`
+  const c = curto(sm, idioma);
+  if (!x || !x.horas || x.media === null)
+    return tx(`Nenhuma hora de ${dataBR(pub.origem)} depois do corte estava capturada para o ${c}.`, `No hour of ${dataBR(pub.origem, idioma)} after the cutoff had been captured for ${c}.`);
+  return tx(
+    `Para o resto de ${dataBR(pub.origem)} (${plural(x.horas, "hora", "horas")}, das ${x.primeira?.slice(11, 13)}h às ${x.ultima?.slice(11, 13)}h), o PLD do ${c} ` +
+      `já estava publicado no corte: média de ${R(x.media)}, de ${R(x.minimo)} a ${R(x.maximo)}. É dado observado, e nenhuma entrega prevista inclui essas horas.`,
+    `For the rest of ${dataBR(pub.origem, idioma)} (${plural(x.horas, "hour", "hours", idioma)}, from ${x.primeira?.slice(11, 13)}h to ${x.ultima?.slice(11, 13)}h), the PLD of ${c} ` +
+      `was already published at the cutoff: average of ${R(x.media)}, from ${R(x.minimo)} to ${R(x.maximo)}. This is observed data, and no forecast delivery includes these hours.`,
   );
 }
 
@@ -438,19 +560,30 @@ export function linhasPublicadoNoCorte(pub: Pick<PublicadoNoCorte, "submercados"
  * "O que mudou" no P013: a rodada mais recente comparada com a anterior (números
  * emitidos) e a revisão entre rodadas para as mesmas entregas.
  */
-export function oQueMudouRodada(g: Pick<PrevisoesDesempenhoGold, "prospectivo">): string {
+export function oQueMudouRodada(g: Pick<PrevisoesDesempenhoGold, "prospectivo">, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   const rs = [...g.prospectivo.rodadas].sort((a, b) => (a.origem === b.origem ? a.emitido_em.localeCompare(b.emitido_em) : a.origem.localeCompare(b.origem)));
-  if (!rs.length) return "Nenhuma rodada registrada.";
+  if (!rs.length) return tx("Nenhuma rodada registrada.", "No run recorded.");
   const ult = rs[rs.length - 1];
   const ant = rs.length > 1 ? rs[rs.length - 2] : null;
-  const atual = `Rodada de ${dataBR(ult.origem)}: ${ult.com_numero} de ${ult.celulas} células com número.`;
+  const atual = tx(`Rodada de ${dataBR(ult.origem)}: ${ult.com_numero} de ${ult.celulas} células com número.`, `Run of ${dataBR(ult.origem, idioma)}: ${ult.com_numero} of ${ult.celulas} cells with a number.`);
+  const motivos = ant && ant.motivos.length ? ` (${ant.motivos.map((m) => textoMotivo(m, idioma)).join("; ")})` : "";
   const anterior = ant
-    ? ` A anterior, de ${dataBR(ant.origem)}, ${ant.com_numero === 0 ? "não tinha nenhuma" : `tinha ${ant.com_numero}`}${ant.motivos.length ? ` (${ant.motivos.map(textoMotivo).join("; ")})` : ""}.`
-    : " É a primeira rodada registrada.";
+    ? tx(
+        ` A anterior, de ${dataBR(ant.origem)}, ${ant.com_numero === 0 ? "não tinha nenhuma" : `tinha ${ant.com_numero}`}${motivos}.`,
+        ` The previous one, of ${dataBR(ant.origem, idioma)}, ${ant.com_numero === 0 ? "had none" : `had ${ant.com_numero}`}${motivos}.`,
+      )
+    : tx(" É a primeira rodada registrada.", " It is the first run recorded.");
   const revistas = g.prospectivo.revisoes_entre_rodadas.filter((r) => r.sequencia.length > 1);
   const revisao = revistas.length
-    ? ` ${plural(revistas.length, "entrega teve", "entregas tiveram")} previsão revista entre rodadas (detalhe no arquivo de emissões).`
-    : " Nenhuma entrega tem duas previsões com número: ainda não há revisão entre rodadas a comparar.";
+    ? tx(
+        ` ${plural(revistas.length, "entrega teve", "entregas tiveram")} previsão revista entre rodadas (detalhe no arquivo de emissões).`,
+        ` ${plural(revistas.length, "delivery had", "deliveries had", idioma)} a forecast revised between runs (detail in the forecast archive).`,
+      )
+    : tx(
+        " Nenhuma entrega tem duas previsões com número: ainda não há revisão entre rodadas a comparar.",
+        " No delivery has two forecasts with a number: there is no revision between runs to compare yet.",
+      );
   return `${atual}${anterior}${revisao}`;
 }
 
@@ -519,7 +652,8 @@ export function numeroRetido(tipo: string, estadoModelo: string | null | undefin
  * emissão (Brasília): não é emissão original do observatório. `estados` traz o
  * estado de cada modelo (gold.modelos) para aplicar numeroRetido.
  */
-export function linhasArquivo(brutas: readonly Record<string, string>[], estados: Record<string, string> = {}): LinhaArquivo[] {
+export function linhasArquivo(brutas: readonly Record<string, string>[], estados: Record<string, string> = {}, idioma: Idioma = idiomaEnergia()): LinhaArquivo[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   return brutas.map((r) => {
     const emitidoDia = diaBrasilia(r.emitido_em) ?? r.emitido_em.slice(0, 10);
     const reg = r.registrado_no_portal_em ?? "";
@@ -528,38 +662,41 @@ export function linhasArquivo(brutas: readonly Record<string, string>[], estados
     const previsao = retido ? null : gravada;
     return {
       id: r.forecast_id,
-      linha: `${r.modelo} ${r.horizonte} ${CURTO_SM[r.submercado] ?? r.submercado}, rodada de ${dataBR(r.origem)}`,
+      linha: tx(
+        `${r.modelo} ${r.horizonte} ${curto(r.submercado, "pt")}, rodada de ${dataBR(r.origem, "pt")}`,
+        `${r.modelo} ${r.horizonte} ${curto(r.submercado, idioma)}, run of ${dataBR(r.origem, idioma)}`,
+      ),
       forecast_id: r.forecast_id,
       run_id: r.run_id,
-      tipo: rotuloTipo(r.tipo),
+      tipo: rotuloTipo(r.tipo, idioma),
       modelo: r.modelo,
       versao_modelo: r.versao_modelo ?? "",
       origem: r.origem,
       cutoff: r.cutoff,
       prazo: r.prazo || null,
       emitido_em: r.emitido_em,
-      emitido: instanteBR(r.emitido_em),
+      emitido: instanteBR(r.emitido_em, idioma),
       atraso_min: numeroCsv(r.atraso_min),
       atraso_origem: r.atraso_origem ?? "",
       modo: r.modo ?? "",
       horizonte: r.horizonte,
       entrega: r.entrega,
       submercado: r.submercado,
-      sm: CURTO_SM[r.submercado] ?? r.submercado,
+      sm: curto(r.submercado, idioma),
       status: r.status,
-      com_numero: retido ? "número retido (rodada interna)" : previsao === null ? "sem número" : "com número",
+      com_numero: retido ? tx("número retido (rodada interna)", "number withheld (internal run)") : previsao === null ? tx("sem número", "no number") : tx("com número", "with a number"),
       previsao,
       p10: retido ? null : numeroCsv(r.p10),
       p90: retido ? null : numeroCsv(r.p90),
       mudanca: retido ? null : numeroCsv(r.mudanca),
-      motivo: retido ? "número de rodada interna retido: modelo fora de produção" : textoMotivo(r.motivo),
+      motivo: retido ? tx("número de rodada interna retido: modelo fora de produção", "internal run number withheld: model not in production") : textoMotivo(r.motivo, idioma),
       realizado: numeroCsv(r.realizado),
       erro: retido ? null : numeroCsv(r.erro),
       sha256: r.sha256,
       versao_codigo: r.versao_codigo ?? "",
       registrado_no_portal_em: reg,
-      transcrito: reg && reg > emitidoDia ? "sim, incluído depois da emissão" : "não",
-      alertas: textoAlertas((r.alertas ?? "").split(",").filter(Boolean)),
+      transcrito: reg && reg > emitidoDia ? tx("sim, incluído depois da emissão", "yes, included after issue") : tx("não", "no"),
+      alertas: textoAlertas((r.alertas ?? "").split(",").filter(Boolean), idioma),
       substitui: r.substitui ?? "",
       anterior: r.anterior ?? "",
     };
@@ -571,42 +708,50 @@ export function linhasArquivo(brutas: readonly Record<string, string>[], estados
  * encadeamento ficam no detalhe do registro escolhido e no CSV completo (download), para
  * a página não levar 27 colunas por linha (contrato, seção 5.1).
  */
-export const COLUNAS_ARQUIVO: ColunaTabela[] = [
-  { id: "origem", rotulo: "Origem", tipo: "data" },
-  { id: "tipo", rotulo: "Tipo", tipo: "texto", categorica: true },
-  { id: "modelo", rotulo: "Modelo", tipo: "texto", categorica: true },
-  { id: "horizonte", rotulo: "Horizonte", tipo: "texto", categorica: true },
-  { id: "entrega", rotulo: "Entrega", tipo: "texto" },
-  { id: "sm", rotulo: "Submercado", tipo: "texto", categorica: true },
-  { id: "com_numero", rotulo: "Número", tipo: "texto", categorica: true },
-  { id: "previsao", rotulo: "Previsão arquivada", tipo: "numero", unidade: "R$/MWh", casas: 4 },
-  { id: "p10", rotulo: "P10", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "p90", rotulo: "P90", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "mudanca", rotulo: "Mudança sobre a rodada anterior", tipo: "numero", unidade: "R$/MWh", casas: 4 },
-  { id: "motivo", rotulo: "Motivo sem número", tipo: "texto" },
-  { id: "realizado", rotulo: "Realizado", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "erro", rotulo: "Erro (previsão menos realizado)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "emitido", rotulo: "Emitida em (Brasília)", tipo: "texto" },
-  { id: "atraso_min", rotulo: "Atraso sobre o prazo", tipo: "numero", unidade: "min", casas: 1 },
-  { id: "modo", rotulo: "Modo", tipo: "texto", categorica: true },
-  { id: "registrado_no_portal_em", rotulo: "Incluída no arquivo em", tipo: "data" },
-  { id: "transcrito", rotulo: "Transcrita depois da emissão", tipo: "texto", categorica: true },
-  { id: "versao_codigo", rotulo: "Versão do código", tipo: "texto" },
-  { id: "sha256", rotulo: "sha256 do registro", tipo: "texto" },
-  { id: "forecast_id", rotulo: "Identificador", tipo: "texto" },
-];
+export function colunasArquivo(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  return [
+    { id: "origem", rotulo: tx("Origem", "Origin"), tipo: "data" },
+    { id: "tipo", rotulo: tx("Tipo", "Type"), tipo: "texto", categorica: true },
+    { id: "modelo", rotulo: tx("Modelo", "Model"), tipo: "texto", categorica: true },
+    { id: "horizonte", rotulo: tx("Horizonte", "Horizon"), tipo: "texto", categorica: true },
+    { id: "entrega", rotulo: tx("Entrega", "Delivery"), tipo: "texto" },
+    { id: "sm", rotulo: tx("Submercado", "Submarket"), tipo: "texto", categorica: true },
+    { id: "com_numero", rotulo: tx("Número", "Number"), tipo: "texto", categorica: true },
+    { id: "previsao", rotulo: tx("Previsão arquivada", "Archived forecast"), tipo: "numero", unidade: "R$/MWh", casas: 4 },
+    { id: "p10", rotulo: "P10", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "p90", rotulo: "P90", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "mudanca", rotulo: tx("Mudança sobre a rodada anterior", "Change from the previous run"), tipo: "numero", unidade: "R$/MWh", casas: 4 },
+    { id: "motivo", rotulo: tx("Motivo sem número", "Reason for no number"), tipo: "texto" },
+    { id: "realizado", rotulo: tx("Realizado", "Actual"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "erro", rotulo: tx("Erro (previsão menos realizado)", "Error (forecast minus actual)"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "emitido", rotulo: tx("Emitida em (Brasília)", "Issued on (Brasília time)"), tipo: "texto" },
+    { id: "atraso_min", rotulo: tx("Atraso sobre o prazo", "Delay over the deadline"), tipo: "numero", unidade: "min", casas: 1 }, // i18n: dado
+    { id: "modo", rotulo: tx("Modo", "Mode"), tipo: "texto", categorica: true },
+    { id: "registrado_no_portal_em", rotulo: tx("Incluída no arquivo em", "Included in the archive on"), tipo: "data" },
+    { id: "transcrito", rotulo: tx("Transcrita depois da emissão", "Transcribed after issue"), tipo: "texto", categorica: true },
+    { id: "versao_codigo", rotulo: tx("Versão do código", "Code version"), tipo: "texto" },
+    { id: "sha256", rotulo: tx("sha256 do registro", "Record sha256"), tipo: "texto" },
+    { id: "forecast_id", rotulo: tx("Identificador", "Identifier"), tipo: "texto" },
+  ];
+}
+export const COLUNAS_ARQUIVO: ColunaTabela[] = colunasArquivo("pt");
 
 /**
  * Colunas da tabela do arquivo: o nome legível do registro à frente, sem a versão do código; o sha256 e o identificador técnico ficam
  * no fim da tabela e só aparecem em Auditar (conferência contra o CSV), além do detalhe do registro em Analisar e Auditar e do CSV
  * completo do download.
  */
-export const COLUNAS_ARQUIVO_TABELA: ColunaTabela[] = [
-  { id: "linha", rotulo: "Registro", tipo: "texto" },
-  ...COLUNAS_ARQUIVO.filter((c) => !["forecast_id", "sha256", "versao_codigo"].includes(c.id)),
-  // a conferência registro a registro contra o CSV precisa do hash e do identificador: só em Auditar
-  ...COLUNAS_ARQUIVO.filter((c) => ["sha256", "forecast_id"].includes(c.id)).map((c) => ({ ...c, nivel: "auditar" as const })),
-];
+export function colunasArquivoTabela(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const cols = colunasArquivo(idioma);
+  return [
+    { id: "linha", rotulo: tx("Registro", "Record", idioma), tipo: "texto" },
+    ...cols.filter((c) => !["forecast_id", "sha256", "versao_codigo"].includes(c.id)),
+    // a conferência registro a registro contra o CSV precisa do hash e do identificador: só em Auditar
+    ...cols.filter((c) => ["sha256", "forecast_id"].includes(c.id)).map((c) => ({ ...c, nivel: "auditar" as const })),
+  ];
+}
+export const COLUNAS_ARQUIVO_TABELA: ColunaTabela[] = colunasArquivoTabela("pt");
 
 /** Dias (Brasília) em que registros entraram no arquivo, em ordem. */
 export function datasInclusao(linhas: readonly LinhaArquivo[]): string[] {
@@ -638,7 +783,7 @@ export type ResumoRodada = {
 };
 
 /** Uma linha por rodada, contada a partir das MESMAS linhas da tabela (gráfico e tabela não divergem). */
-export function resumoRodadas(linhas: readonly LinhaArquivo[]): ResumoRodada[] {
+export function resumoRodadas(linhas: readonly LinhaArquivo[], idioma: Idioma = idiomaEnergia()): ResumoRodada[] {
   const grupos = new Map<string, LinhaArquivo[]>();
   for (const l of linhas) grupos.set(l.run_id, [...(grupos.get(l.run_id) ?? []), l]);
   return Array.from(grupos.entries())
@@ -647,7 +792,7 @@ export function resumoRodadas(linhas: readonly LinhaArquivo[]): ResumoRodada[] {
       const l0 = ls[0];
       return {
         id: run,
-        rotulo: `Rodada de ${dataBR(l0.origem)}`,
+        rotulo: tx(`Rodada de ${dataBR(l0.origem)}`, `Run of ${dataBR(l0.origem, idioma)}`, idioma),
         run_id: run,
         origem: l0.origem,
         emitido_em: l0.emitido_em,
@@ -660,7 +805,8 @@ export function resumoRodadas(linhas: readonly LinhaArquivo[]): ResumoRodada[] {
         atraso_min: l0.atraso_min,
         atraso_origem: l0.atraso_origem,
         modo: l0.modo,
-        transcrito: ls.some((l) => l.transcrito !== "não"),
+        // "não" no português e "no" no inglês (linhasArquivo escreve no idioma da página)
+        transcrito: ls.some((l) => l.transcrito !== "não" && l.transcrito !== "no"),
         motivos: Array.from(new Set(ls.map((l) => l.motivo).filter(Boolean))),
       };
     })
@@ -673,7 +819,7 @@ export function resumoRodadas(linhas: readonly LinhaArquivo[]): ResumoRodada[] {
  * diárias (contrato, seção 5.1).
  */
 export function rodadasRecentes(linhas: readonly LinhaArquivo[], max: number): { linhas: LinhaArquivo[]; omitidas: number } {
-  const rs = resumoRodadas(linhas);
+  const rs = resumoRodadas(linhas, "pt");
   if (rs.length <= max) return { linhas: [...linhas], omitidas: 0 };
   const manter = new Set(rs.slice(-max).map((r) => r.run_id));
   return { linhas: linhas.filter((l) => manter.has(l.run_id)), omitidas: rs.length - max };
@@ -690,26 +836,42 @@ export function primeiraEntregaAMaturar(linhas: readonly { entrega: string; prev
   return melhor;
 }
 
-function fraseRodada(r: ResumoRodada): string {
-  const atraso = r.atraso_min !== null && r.atraso_min > 0 ? `, emitida ${num(r.atraso_min, 0)} minutos depois do prazo,` : r.atraso_min === 0 ? ", emitida no prazo," : "";
-  const quem = `A rodada de ${dataBR(r.origem)} (${r.modelo}, ${r.tipo})${atraso}`;
+function fraseRodada(r: ResumoRodada, idioma: Idioma): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const atraso =
+    r.atraso_min !== null && r.atraso_min > 0
+      ? tx(`, emitida ${num(r.atraso_min, 0)} minutos depois do prazo,`, `, issued ${num(r.atraso_min, 0, idioma)} minutes after the deadline,`)
+      : r.atraso_min === 0
+        ? tx(", emitida no prazo,", ", issued on time,")
+        : "";
+  const quem = tx(`A rodada de ${dataBR(r.origem)} (${r.modelo}, ${r.tipo})${atraso}`, `The run of ${dataBR(r.origem, idioma)} (${r.modelo}, ${r.tipo})${atraso}`);
   const numero =
     r.com_numero === 0
-      ? `não tem número${r.motivos.length ? `: ${r.motivos.join("; ")}` : ""}`
+      ? tx(`não tem número${r.motivos.length ? `: ${r.motivos.join("; ")}` : ""}`, `has no number${r.motivos.length ? `: ${r.motivos.join("; ")}` : ""}`)
       : r.sem_numero === 0
-        ? `tem ${plural(r.com_numero, "número", "números")}`
-        : `tem ${r.com_numero} de ${r.celulas} células com número`;
-  const transc = r.transcrito ? `; foi transcrita para o arquivo em ${dataBR(r.registrado)}, depois da emissão` : "";
+        ? tx(`tem ${plural(r.com_numero, "número", "números")}`, `has ${plural(r.com_numero, "number", "numbers", idioma)}`)
+        : tx(`tem ${r.com_numero} de ${r.celulas} células com número`, `has ${r.com_numero} of ${r.celulas} cells with a number`);
+  const transc = r.transcrito
+    ? tx(`; foi transcrita para o arquivo em ${dataBR(r.registrado)}, depois da emissão`, `; it was transcribed into the archive on ${dataBR(r.registrado, idioma)}, after issue`)
+    : "";
   return `${quem} ${numero}${transc}.`;
 }
 
 /** Resposta curta do P015 sobre o recorte exibido (o mesmo da tabela e do gráfico). */
-export function respostaP015(linhas: readonly LinhaArquivo[], dia: string, total: number): string {
-  if (!linhas.length) return dia ? `Nenhum registro estava no arquivo ao fim de ${dataBR(dia)}.` : "O arquivo de emissões não tem registro publicado.";
-  const rs = resumoRodadas(linhas);
-  const quando = dia ? `Ao fim de ${dataBR(dia)}, o arquivo tinha` : "O arquivo tem";
-  const parcial = dia && linhas.length < total ? ` (de ${total.toLocaleString("pt-BR")} no arquivo completo)` : "";
-  const abertura = `${quando} ${plural(linhas.length, "registro", "registros")}${parcial} de ${plural(rs.length, "rodada", "rodadas")}.`;
+export function respostaP015(linhas: readonly LinhaArquivo[], dia: string, total: number, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const D = (d: string) => dataBR(d, idioma);
+  if (!linhas.length)
+    return dia
+      ? tx(`Nenhum registro estava no arquivo ao fim de ${dataBR(dia)}.`, `No record was in the archive at the end of ${D(dia)}.`)
+      : tx("O arquivo de emissões não tem registro publicado.", "The forecast archive has no published record.");
+  const rs = resumoRodadas(linhas, idioma);
+  const quando = dia ? tx(`Ao fim de ${dataBR(dia)}, o arquivo tinha`, `At the end of ${D(dia)}, the archive had`) : tx("O arquivo tem", "The archive has");
+  const parcial = dia && linhas.length < total ? tx(` (de ${total.toLocaleString("pt-BR")} no arquivo completo)`, ` (of ${num(total, 0, idioma)} in the full archive)`) : "";
+  const abertura = tx(
+    `${quando} ${plural(linhas.length, "registro", "registros")}${parcial} de ${plural(rs.length, "rodada", "rodadas")}.`,
+    `${quando} ${plural(linhas.length, "record", "records", idioma)}${parcial} from ${plural(rs.length, "run", "runs", idioma)}.`,
+  );
   const apurados = linhas.filter((l) => l.realizado !== null).length;
   const prox = primeiraEntregaAMaturar(linhas);
   const comNumero = linhas.filter((l) => l.previsao !== null).length;
@@ -717,9 +879,15 @@ export function respostaP015(linhas: readonly LinhaArquivo[], dia: string, total
     comNumero === 0
       ? ""
       : apurados === 0
-        ? ` Nenhuma entrega prevista terminou: ainda não há realizado${prox ? `; a primeira, ${prox.entrega}, termina em ${dataBR(prox.termina)}` : ""}.`
-        : ` ${apurados} de ${comNumero} previsões com número já têm realizado${prox ? `; a próxima entrega a terminar, ${prox.entrega}, termina em ${dataBR(prox.termina)}` : ""}.`;
-  return `${abertura} ${rs.map(fraseRodada).join(" ")}${realizado}`;
+        ? tx(
+            ` Nenhuma entrega prevista terminou: ainda não há realizado${prox ? `; a primeira, ${prox.entrega}, termina em ${dataBR(prox.termina)}` : ""}.`,
+            ` No forecast delivery has ended: there is no actual value yet${prox ? `; the first, ${prox.entrega}, ends on ${D(prox.termina)}` : ""}.`,
+          )
+        : tx(
+            ` ${apurados} de ${comNumero} previsões com número já têm realizado${prox ? `; a próxima entrega a terminar, ${prox.entrega}, termina em ${dataBR(prox.termina)}` : ""}.`,
+            ` ${apurados} of ${comNumero} forecasts with a number already have an actual value${prox ? `; the next delivery to end, ${prox.entrega}, ends on ${D(prox.termina)}` : ""}.`,
+          );
+  return `${abertura} ${rs.map((r) => fraseRodada(r, idioma)).join(" ")}${realizado}`;
 }
 
 /** Linhas do gráfico de rodadas: células com e sem número, e atraso (minutos). */
@@ -735,21 +903,29 @@ export function fichasOrdenadas(fichas: readonly Ficha[]): Ficha[] {
 }
 
 /** "0.005 R$/MWh (previsão ...)" → "R$ 0,005/MWh"; texto sem número fica como veio. */
-export function textoTolerancia(t: string | null | undefined): string {
-  if (!t) return "sem tolerância registrada";
+export function textoTolerancia(t: string | null | undefined, idioma: Idioma = idiomaEnergia()): string {
+  if (!t) return tx("sem tolerância registrada", "no tolerance recorded", idioma);
   const m = /^(\d+(?:\.\d+)?)\s*R\$\/MWh/.exec(t.trim());
   if (!m) return t;
   const casas = (m[1].split(".")[1] ?? "").length;
-  return `R$ ${num(Number(m[1]), casas)}/MWh`;
+  return `R$ ${num(Number(m[1]), casas, idioma)}/MWh`;
 }
 
 /** Estado da reexecução das previsões arquivadas de um modelo, em palavras. */
-export function textoReexecucao(f: Ficha): string {
+export function textoReexecucao(f: Ficha, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   const r = f.reproducao?.reexecucao_do_arquivo;
-  if (!f.implementado_no_repositorio) return "sem reexecução: o modelo não pode ser refeito; a configuração da pesquisa não foi publicada";
-  if (!r) return "sem previsão arquivada com número para refazer";
+  if (!f.implementado_no_repositorio)
+    return tx(
+      "sem reexecução: o modelo não pode ser refeito; a configuração da pesquisa não foi publicada",
+      "no rerun: the model cannot be redone; the research configuration was not published",
+    );
+  if (!r) return tx("sem previsão arquivada com número para refazer", "no archived forecast with a number to redo");
   const div = r.divergentes.length;
-  return `${r.conferidas} ${r.conferidas === 1 ? "previsão arquivada refeita" : "previsões arquivadas refeitas"} com o dado do corte, ${div === 0 ? "sem divergência" : `${div} com divergência`} (tolerância ${textoTolerancia(r.tolerancia)})`;
+  return tx(
+    `${r.conferidas} ${r.conferidas === 1 ? "previsão arquivada refeita" : "previsões arquivadas refeitas"} com o dado do corte, ${div === 0 ? "sem divergência" : `${div} com divergência`} (tolerância ${textoTolerancia(r.tolerancia, "pt")})`,
+    `${r.conferidas} ${r.conferidas === 1 ? "archived forecast redone" : "archived forecasts redone"} with the data as of the cutoff, ${div === 0 ? "with no divergence" : `${div} with divergence`} (tolerance ${textoTolerancia(r.tolerancia, idioma)})`,
+  );
 }
 
 /**
@@ -757,10 +933,14 @@ export function textoReexecucao(f: Ficha): string {
  * campo) vira a descrição do que ela faz, lida da própria fórmula do registro: parte do B0, soma uma correção por variável (a variável
  * multiplicada pelo coeficiente) e, com penalização zero, todos os coeficientes são zero e o resultado é o B0. A fórmula exata fica em Analisar.
  */
-export function formulaEmPalavras(f: Pick<Ficha, "formula">): string | null {
+export function formulaEmPalavras(f: Pick<Ficha, "formula">, idioma: Idioma = idiomaEnergia()): string | null {
   if (!f.formula) return null;
   if (!/[Σλ⇒]|_j\b|beta/.test(f.formula)) return f.formula;
-  return "B0 mais uma correção para cada variável de entrada: cada variável é multiplicada pelo seu coeficiente e as correções são somadas ao B0. Com a penalização em zero, todos os coeficientes são zero e o resultado é igual ao B0.";
+  return tx(
+    "B0 mais uma correção para cada variável de entrada: cada variável é multiplicada pelo seu coeficiente e as correções são somadas ao B0. Com a penalização em zero, todos os coeficientes são zero e o resultado é igual ao B0.",
+    "B0 plus a correction for each input variable: each variable is multiplied by its coefficient and the corrections are added to B0. With the penalty at zero, all coefficients are zero and the result equals B0.",
+    idioma,
+  );
 }
 
 export type LinhaModelo = {
@@ -783,77 +963,120 @@ export type LinhaModelo = {
 };
 
 /** Número que o modelo emite no arquivo, na rodada mais recente: referência experimental, só registro, ou nenhum. */
-export function emissaoDoModelo(f: Ficha, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">): string {
-  if (f.aprovacao.estado === "PRODUCAO") return "previsão principal";
-  if (f.aprovacao.referencia_experimental) return "referência experimental publicada";
-  if (!f.implementado_no_repositorio) return "não emite: sem implementação";
+/** O que o modelo emite, como código: a frase vem de emissaoDoModelo no idioma da página. */
+export type EmissaoModelo = "principal" | "experimental" | "sem_implementacao" | "retido" | "nenhum";
+export function codigoEmissaoDoModelo(f: Ficha, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">): EmissaoModelo {
+  if (f.aprovacao.estado === "PRODUCAO") return "principal";
+  if (f.aprovacao.referencia_experimental) return "experimental";
+  if (!f.implementado_no_repositorio) return "sem_implementacao";
   const at = g.previsao_atual;
-  if ((f.codigo === "C2-P" || f.codigo === "C2-H") && temRodada(at) && !at.candidatos.emitidos) return "não emite: número retido pela governança";
-  return "não emite número";
+  if ((f.codigo === "C2-P" || f.codigo === "C2-H") && temRodada(at) && !at.candidatos.emitidos) return "retido";
+  return "nenhum"; // i18n: dado
 }
 
-export function linhasModelos(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual">): LinhaModelo[] {
+export function emissaoDoModelo(f: Ficha, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">, idioma: Idioma = idiomaEnergia()): string {
+  switch (codigoEmissaoDoModelo(f, g)) {
+    case "principal":
+      return tx("previsão principal", "main forecast", idioma);
+    case "experimental":
+      return tx("referência experimental publicada", "published experimental benchmark", idioma);
+    case "sem_implementacao":
+      return tx("não emite: sem implementação", "issues nothing: no implementation", idioma);
+    case "retido":
+      return tx("não emite: número retido pela governança", "issues nothing: number withheld by governance", idioma);
+    case "nenhum":
+      return tx("não emite número", "issues no number", idioma);
+  }
+}
+
+export function linhasModelos(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual">, idioma: Idioma = idiomaEnergia()): LinhaModelo[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   return fichasOrdenadas(g.fichas).map((f) => ({
     id: slugModelo(f.codigo),
     codigo: f.codigo,
-    nome: f.nome,
+    nome: reg(f.nome, idioma),
     versao: f.versao,
-    estado: rotuloEstadoModelo(f.estado),
-    papel: semCodigosInternos(f.papel ?? "sem papel registrado"),
-    implementado: f.implementado_no_repositorio ? "sim" : "não",
-    emite: emissaoDoModelo(f, g),
-    entradas: f.entradas ? f.entradas.join("; ") : "não publicadas",
+    estado: rotuloEstadoModelo(f.estado, idioma),
+    papel: f.papel ? reg(semCodigosInternos(f.papel), idioma) : tx("sem papel registrado", "no role recorded"),
+    implementado: f.implementado_no_repositorio ? tx("sim", "yes") : tx("não", "no"),
+    emite: emissaoDoModelo(f, g, idioma),
+    entradas: f.entradas ? f.entradas.map((e) => reg(e, idioma)).join("; ") : tx("não publicadas", "not published"),
     n_entradas: f.entradas ? f.entradas.length : null,
-    formula: formulaEmPalavras(f) ?? "não publicada",
-    faixa: "sem faixa publicada",
-    reexecucao: textoReexecucao(f),
+    formula: (() => {
+      const fp = formulaEmPalavras(f, idioma);
+      return fp ? reg(fp, idioma) : tx("não publicada", "not published");
+    })(),
+    faixa: tx("sem faixa publicada", "no band published"),
+    reexecucao: textoReexecucao(f, idioma),
     limitacoes: f.limitacoes ? f.limitacoes.length : null,
     falhas: f.falhas_conhecidas ? f.falhas_conhecidas.length : null,
-    aprovacao: semCodigosInternos(f.aprovacao.leitura.trim()),
+    aprovacao: reg(semCodigosInternos(f.aprovacao.leitura.trim()), idioma),
   }));
 }
 
-export const COLUNAS_MODELOS: ColunaTabela[] = [
-  { id: "codigo", rotulo: "Modelo", tipo: "texto" },
-  { id: "nome", rotulo: "Nome", tipo: "texto" },
-  { id: "versao", rotulo: "Versão", tipo: "texto" },
-  { id: "estado", rotulo: "Estado", tipo: "texto", categorica: true },
-  { id: "papel", rotulo: "Papel", tipo: "texto" },
-  { id: "implementado", rotulo: "Implementado pelo observatório", tipo: "texto", categorica: true },
-  { id: "emite", rotulo: "Número no arquivo", tipo: "texto", categorica: true },
-  { id: "n_entradas", rotulo: "Entradas", tipo: "numero", unidade: "variáveis", casas: 0 },
-  { id: "entradas", rotulo: "Quais entradas", tipo: "texto" },
-  { id: "formula", rotulo: "Fórmula", tipo: "texto" },
-  { id: "faixa", rotulo: "Faixa de incerteza", tipo: "texto", categorica: true },
-  { id: "reexecucao", rotulo: "Reexecução do arquivo", tipo: "texto" },
-  { id: "limitacoes", rotulo: "Limitações registradas", tipo: "numero", casas: 0 },
-  { id: "falhas", rotulo: "Falhas conhecidas", tipo: "numero", casas: 0 },
-  { id: "aprovacao", rotulo: "Aprovação", tipo: "texto" },
-];
+export function colunasModelos(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  return [
+    { id: "codigo", rotulo: tx("Modelo", "Model"), tipo: "texto" },
+    { id: "nome", rotulo: tx("Nome", "Name"), tipo: "texto" },
+    { id: "versao", rotulo: tx("Versão", "Version"), tipo: "texto" },
+    { id: "estado", rotulo: tx("Estado", "State"), tipo: "texto", categorica: true },
+    { id: "papel", rotulo: tx("Papel", "Role"), tipo: "texto" },
+    { id: "implementado", rotulo: tx("Implementado pelo observatório", "Implemented by the observatory"), tipo: "texto", categorica: true },
+    { id: "emite", rotulo: tx("Número no arquivo", "Number in the archive"), tipo: "texto", categorica: true },
+    { id: "n_entradas", rotulo: tx("Entradas", "Inputs"), tipo: "numero", unidade: tx("variáveis", "variables"), casas: 0 },
+    { id: "entradas", rotulo: tx("Quais entradas", "Which inputs"), tipo: "texto" },
+    { id: "formula", rotulo: tx("Fórmula", "Formula"), tipo: "texto" },
+    { id: "faixa", rotulo: tx("Faixa de incerteza", "Uncertainty band"), tipo: "texto", categorica: true },
+    { id: "reexecucao", rotulo: tx("Reexecução do arquivo", "Archive rerun"), tipo: "texto" },
+    { id: "limitacoes", rotulo: tx("Limitações registradas", "Recorded limitations"), tipo: "numero", casas: 0 },
+    { id: "falhas", rotulo: tx("Falhas conhecidas", "Known failures"), tipo: "numero", casas: 0 },
+    { id: "aprovacao", rotulo: tx("Aprovação", "Approval"), tipo: "texto" },
+  ];
+}
+export const COLUNAS_MODELOS: ColunaTabela[] = colunasModelos("pt");
 
 /** Resposta curta do P014: estado de todos os modelos, papel de cada um e a reexecução do arquivo. */
-export function respostaP014(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual">): string {
+export function respostaP014(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual">, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const E = (e: string) => rotuloEstadoModelo(e, idioma);
   const fs = fichasOrdenadas(g.fichas);
-  if (!fs.length) return "Nenhum modelo está registrado nesta publicação.";
+  if (!fs.length) return tx("Nenhum modelo está registrado nesta publicação.", "No model is registered in this publication.");
   const porEstado = new Map<string, string[]>();
   for (const f of fs) porEstado.set(f.estado, [...(porEstado.get(f.estado) ?? []), f.codigo]);
   const estados =
     porEstado.size === 1
-      ? `${fs.length === 1 ? "O único modelo registrado está" : `Os ${fs.length} modelos registrados estão todos`} em ${rotuloEstadoModelo(fs[0].estado)}`
-      : `Dos ${fs.length} modelos registrados, ${Array.from(porEstado.entries())
-          .map(([e, cs]) => `${cs.join(", ")} em ${rotuloEstadoModelo(e)}`)
-          .join("; ")}`;
+      ? tx(
+          `${fs.length === 1 ? "O único modelo registrado está" : `Os ${fs.length} modelos registrados estão todos`} em ${E(fs[0].estado)}`,
+          `${fs.length === 1 ? "The only registered model is" : `All ${fs.length} registered models are`} in ${E(fs[0].estado)}`,
+        )
+      : tx(
+          `Dos ${fs.length} modelos registrados, ${Array.from(porEstado.entries())
+            .map(([e, cs]) => `${cs.join(", ")} em ${E(e)}`) // i18n: dado
+            .join("; ")}`,
+          `Of the ${fs.length} registered models, ${Array.from(porEstado.entries())
+            .map(([e, cs]) => `${cs.join(", ")} in ${E(e)}`)
+            .join("; ")}`,
+        );
   const producao = porEstado.get("PRODUCAO") ?? [];
-  const oficial = producao.length ? `: ${producao.join(", ")} alimenta a previsão principal.` : ": nenhum alimenta previsão oficial.";
+  const oficial = producao.length
+    ? tx(`: ${producao.join(", ")} alimenta a previsão principal.`, `: ${producao.join(", ")} feeds the main forecast.`)
+    : tx(": nenhum alimenta previsão oficial.", ": none feeds an official forecast.");
   const ref = fs.filter((f) => f.aprovacao.referencia_experimental).map((f) => f.codigo);
   const semImpl = fs.filter((f) => !f.implementado_no_repositorio).map((f) => f.codigo);
-  const retidos = fs.filter((f) => emissaoDoModelo(f, g) === "não emite: número retido pela governança").map((f) => f.codigo);
+  const retidos = fs.filter((f) => codigoEmissaoDoModelo(f, g) === "retido").map((f) => f.codigo);
   const partes: string[] = [];
-  if (ref.length) partes.push(`${ref.join(", ")} é publicado só como referência experimental`);
-  if (retidos.length) partes.push(`${retidos.join(" e ")}, reimplementados no observatório, não têm número emitido`);
-  if (semImpl.length) partes.push(`${semImpl.join(", ")} não pode ser reimplementado; a configuração da pesquisa não está no repositório`);
+  if (ref.length) partes.push(tx(`${ref.join(", ")} é publicado só como referência experimental`, `${ref.join(", ")} is published only as an experimental benchmark`));
+  if (retidos.length) partes.push(tx(`${retidos.join(" e ")}, reimplementados no observatório, não têm número emitido`, `${retidos.join(" and ")}, reimplemented by the observatory, have no number issued`));
+  if (semImpl.length)
+    partes.push(
+      tx(
+        `${semImpl.join(", ")} não pode ser reimplementado; a configuração da pesquisa não está no repositório`,
+        `${semImpl.join(", ")} cannot be reimplemented; the research configuration is not in the repository`,
+      ),
+    );
   const reex = fs.find((f) => f.reproducao?.reexecucao_do_arquivo);
-  const reexecucao = reex ? ` Reexecução do ${reex.codigo}: ${textoReexecucao(reex)}.` : "";
+  const reexecucao = reex ? tx(` Reexecução do ${reex.codigo}: ${textoReexecucao(reex, "pt")}.`, ` Rerun of ${reex.codigo}: ${textoReexecucao(reex, idioma)}.`) : "";
   return `${estados}${oficial}${partes.length ? ` ${partes.join("; ")}.` : ""}${reexecucao}`.replace(/^./, (c) => c.toUpperCase());
 }
 
@@ -871,7 +1094,7 @@ export type LinhaReexecucao = {
  * evidência publicada (frequência × submercado), com o resultado do teste de
  * reexecução gravado na própria evidência. A chave (`id`) abre a prova do número.
  */
-export function linhasReexecucao(g: Pick<PrevisoesDesempenhoGold, "evidencias">): LinhaReexecucao[] {
+export function linhasReexecucao(g: Pick<PrevisoesDesempenhoGold, "evidencias">, idioma: Idioma = idiomaEnergia()): LinhaReexecucao[] {
   const out: LinhaReexecucao[] = [];
   for (const freq of ["semanal", "mensal"] as const)
     for (const sm of SUBMERCADOS) {
@@ -881,10 +1104,10 @@ export function linhasReexecucao(g: Pick<PrevisoesDesempenhoGold, "evidencias">)
       const t = e.testes.find((x) => /^Reexecu/i.test(x.nome));
       out.push({
         id,
-        sm: CURTO_SM[sm],
-        frequencia: freq === "semanal" ? "semanal (W1 a W4)" : "mensal (M1 a M3)",
+        sm: curto(sm, idioma),
+        frequencia: freq === "semanal" ? tx("semanal (W1 a W4)", "weekly (W1 to W4)", idioma) : tx("mensal (M1 a M3)", "monthly (M1 to M3)", idioma),
         valor: e.valor_calculo,
-        resultado: t ? t.resultado : "sem teste de reexecução",
+        resultado: t ? t.resultado : tx("sem teste de reexecução", "no rerun test", idioma),
         detalhe: t ? t.detalhe : "",
       });
     }
@@ -892,13 +1115,22 @@ export function linhasReexecucao(g: Pick<PrevisoesDesempenhoGold, "evidencias">)
 }
 
 /** Resposta curta da ficha de um modelo: estado, o que emite, entradas, fórmula e reexecução. */
-export function respostaFicha(f: Ficha, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">): string {
-  const estado = `${f.codigo} (${f.nome}, versão ${f.versao}) está em ${rotuloEstadoModelo(f.estado)}`;
-  const emite = emissaoDoModelo(f, g);
+export function respostaFicha(f: Ficha, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const estado = tx(
+    `${f.codigo} (${f.nome}, versão ${f.versao}) está em ${rotuloEstadoModelo(f.estado, "pt")}`,
+    `${f.codigo} (${reg(f.nome, idioma)}, version ${f.versao}) is in ${rotuloEstadoModelo(f.estado, idioma)}`,
+  );
+  const emite = emissaoDoModelo(f, g, idioma);
   if (!f.implementado_no_repositorio)
-    return `${estado} e não emite número: ${minusculaInicial(semCaminhosDeArquivo(f.motivo_sem_implementacao ?? "a implementação não está no repositório"))}`.replace(/\.?$/, ".");
-  const entradas = f.entradas?.length ? ` Usa ${plural(f.entradas.length, "entrada", "entradas")}: ${f.entradas.join("; ")}.` : "";
-  return `${estado}; ${emite}.${entradas} Reexecução: ${textoReexecucao(f)}.`;
+    return tx(
+      `${estado} e não emite número: ${minusculaInicial(semCaminhosDeArquivo(f.motivo_sem_implementacao ?? "a implementação não está no repositório"))}`.replace(/\.?$/, "."),
+      `${estado} and issues no number: ${minusculaInicial(reg(semCaminhosDeArquivo(f.motivo_sem_implementacao ?? "a implementação não está no repositório"), idioma))}`.replace(/\.?$/, "."),
+    );
+  const entradas = f.entradas?.length
+    ? tx(` Usa ${plural(f.entradas.length, "entrada", "entradas")}: ${f.entradas.join("; ")}.`, ` It uses ${plural(f.entradas.length, "input", "inputs", idioma)}: ${f.entradas.map((e) => reg(e, idioma)).join("; ")}.`)
+    : "";
+  return tx(`${estado}; ${emite}.${entradas} Reexecução: ${textoReexecucao(f, "pt")}.`, `${estado}; ${emite}.${entradas} Rerun: ${textoReexecucao(f, idioma)}.`);
 }
 
 /* ---------- vereditos (resposta curta, r8): palavras simples, derivados dos mesmos campos das respostas completas */
@@ -976,33 +1208,69 @@ export function partirInterno(texto: string): { leitor: string; interno: string 
  * publicação marcada como liberada. É a tradução dos campos que o registro cita (estado, decidido_por, decidido_em, escopo decidido e publicar);
  * o texto original fica em Analisar.
  */
-export function liberacaoEmPalavras(paraLiberar: string): string {
+export function liberacaoEmPalavras(paraLiberar: string, idioma: Idioma = idiomaEnergia()): string {
   const campos = /decidido_por/.test(paraLiberar) && /decidido_em/.test(paraLiberar) && /LIBERADA/.test(paraLiberar);
   if (!campos) return partirInterno(paraLiberar).leitor || paraLiberar;
-  const proxima = /A próxima execução publica os números\./.test(paraLiberar) ? " A próxima execução publica os números." : "";
-  return `O responsável pela plataforma registra a decisão de liberar, com o seu nome, a data e o escopo decidido, e marca a publicação como liberada.${proxima}`;
+  const proxima = /A próxima execução publica os números\./.test(paraLiberar) ? tx(" A próxima execução publica os números.", " The next run publishes the numbers.", idioma) : "";
+  return tx(
+    `O responsável pela plataforma registra a decisão de liberar, com o seu nome, a data e o escopo decidido, e marca a publicação como liberada.${proxima}`,
+    `The platform owner records the decision to release, with their name, the date and the scope decided, and marks the publication as released.${proxima}`,
+    idioma,
+  );
 }
 
 /** Corte e origem em palavras do próprio registro: texto de definicoes.corte_operacional sem o fuso e sem "vintages". */
-export function explicacaoCorteOrigem(def: Pick<PrevisoesDesempenhoGold["definicoes"], "corte_operacional">): string {
+export function explicacaoCorteOrigem(def: Pick<PrevisoesDesempenhoGold["definicoes"], "corte_operacional">, idioma: Idioma = idiomaEnergia()): string {
   const base = def.corte_operacional.replace(/\s*\([^)]*\)/g, (m) => (/vintages/.test(m) ? ` (${m.replace(/vintages/g, "versões").replace(/[()]/g, "").trim()})` : ""));
-  return `${base.trim()} O dia de origem é o dia da rodada.`;
+  const pt = `${base.trim()} O dia de origem é o dia da rodada.`; // i18n: dado
+  if (idioma !== "en") return pt;
+  // forma inglesa só para o texto publicado conhecido; outro texto da fonte segue em português
+  return pt ===
+    "Corte às 07h00 de Brasília do dia de origem; prazo de emissão às 08h00. A emissão usa o dado como estava no corte (versões capturadas até ali); coleta posterior ao corte não entra. O dia de origem é o dia da rodada."
+    ? "Cutoff at 07:00 Brasília time on the origin day; issue deadline at 08:00. The issue uses the data as it was at the cutoff (versions captured up to then); data collected after the cutoff is not included. The origin day is the day of the run." // i18n: dado
+    : pt;
 }
 
 /**
  * Termos da página (corte, origem, rodada, faixa P10 a P90) com o texto do próprio registro de modelos: definicoes.corte_operacional,
  * definicoes.entregas e definicoes.quantis. Cada item só sai quando a definição publicada contém a frase de que ele depende.
  */
-export function termosPrevisoes(def: Pick<PrevisoesDesempenhoGold["definicoes"], "corte_operacional" | "entregas" | "quantis">): { termo: string; texto: string }[] {
+export function termosPrevisoes(
+  def: Pick<PrevisoesDesempenhoGold["definicoes"], "corte_operacional" | "entregas" | "quantis">,
+  idioma: Idioma = idiomaEnergia(),
+): { termo: string; texto: string }[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   const itens: { termo: string; texto: string }[] = [];
-  if (def.corte_operacional?.trim()) itens.push({ termo: "Corte e origem", texto: explicacaoCorteOrigem(def) });
+  if (def.corte_operacional?.trim()) itens.push({ termo: tx("Corte e origem", "Cutoff and origin"), texto: explicacaoCorteOrigem(def, idioma) });
   if (/W1 é a primeira semana que começa depois do dia de origem/.test(def.entregas ?? "") && /M1 é o primeiro mês que começa depois do dia de origem/.test(def.entregas ?? ""))
-    itens.push({ termo: "W1 a W4 e M1 a M3", texto: "W1 a W4 são as quatro semanas que começam depois do dia de origem, cada uma de um sábado, 0h, até o sábado seguinte, 0h; M1 a M3 são os três meses civis que começam depois dele." });
+    itens.push({
+      termo: tx("W1 a W4 e M1 a M3", "W1 to W4 and M1 to M3"),
+      texto: tx(
+        "W1 a W4 são as quatro semanas que começam depois do dia de origem, cada uma de um sábado, 0h, até o sábado seguinte, 0h; M1 a M3 são os três meses civis que começam depois dele.",
+        "W1 to W4 are the four weeks that start after the origin day, each from a Saturday, 0h, to the following Saturday, 0h; M1 to M3 are the three calendar months that start after it.",
+      ),
+    });
   const celulas = /(\d+) células por modelo e rodada/.exec(def.entregas ?? "")?.[1];
-  if (celulas) itens.push({ termo: "Rodada", texto: `cada emissão de previsões de um dia de origem; tem ${celulas} células por modelo, uma por horizonte e submercado.` });
+  if (celulas)
+    itens.push({
+      termo: tx("Rodada", "Run"),
+      texto: tx(
+        `cada emissão de previsões de um dia de origem; tem ${celulas} células por modelo, uma por horizonte e submercado.`,
+        `each issue of forecasts for an origin day; it has ${celulas} cells per model, one per horizon and submarket.`,
+      ),
+    });
   const p10 = /o quantil de 10% \(P10\) é o valor que o preço tem 10% de chance de não superar/.test(def.quantis ?? "");
   const faixa = /A faixa entre P10 e P90[^.]*\./.exec(def.quantis ?? "")?.[0];
-  if (p10 && faixa) itens.push({ termo: "P10 e P90", texto: `P10 é o valor que o preço tem 10% de chance de não superar. ${faixa.replace(/\s*\(cobertura nominal\)/, "")}` });
+  if (p10 && faixa) {
+    const faixaLimpa = faixa.replace(/\s*\(cobertura nominal\)/, "");
+    const faixaEn = faixaLimpa === "A faixa entre P10 e P90 pretende conter o preço em 80% dos casos;" || faixaLimpa === "A faixa entre P10 e P90 pretende conter o preço em 80% dos casos."
+      ? "The band between P10 and P90 is meant to contain the price in 80% of cases."
+      : faixaLimpa;
+    itens.push({
+      termo: tx("P10 e P90", "P10 and P90"),
+      texto: tx(`P10 é o valor que o preço tem 10% de chance de não superar. ${faixaLimpa}`, `P10 is the value that the price has a 10% chance of not exceeding. ${faixaEn}`),
+    });
+  }
   return itens;
 }
 
@@ -1011,27 +1279,47 @@ export function termosPrevisoes(def: Pick<PrevisoesDesempenhoGold["definicoes"],
  * repetido e número); do S0, que não emite número, só diz que período do ano anterior ele usaria, pela regra do registro de modelos (a semana que
  * começa 364 dias antes da entrega). Outros modelos não têm exemplo.
  */
-export function exemploDoModelo(f: Pick<Ficha, "codigo">, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">, metodologia?: string | null): string | null {
+export function exemploDoModelo(
+  f: Pick<Ficha, "codigo">,
+  g: Pick<PrevisoesDesempenhoGold, "previsao_atual">,
+  metodologia?: string | null,
+  idioma: Idioma = idiomaEnergia(),
+): string | null {
   const at = g.previsao_atual;
   if (!temRodada(at)) return null;
-  const l = linhasGrade(at.celulas).find((x) => x.horizonte === "W1" && x.submercado === "SE");
+  const l = linhasGrade(at.celulas, [], idioma).find((x) => x.horizonte === "W1" && x.submercado === "SE");
   if (!l) return null;
-  const semana = `${dataBR(l.inicio)} a ${dataBR(l.fim)}`;
+  const D = (d: string) => dataBR(d, idioma);
+  const semana = tx(`${dataBR(l.inicio)} a ${dataBR(l.fim)}`, `${D(l.inicio)} to ${D(l.fim)}`, idioma);
   if (f.codigo === "B0" && l.previsao !== null && l.periodo_inicio && l.periodo_fim)
-    return `Exemplo da rodada de ${dataBR(at.origem)}: para a semana de ${semana}, no ${l.sm}, o B0 repete a média de ${dataBR(l.periodo_inicio)} a ${dataBR(l.periodo_fim)}, ${reaisMWh(l.previsao)}.`;
+    return tx(
+      `Exemplo da rodada de ${dataBR(at.origem)}: para a semana de ${semana}, no ${l.sm}, o B0 repete a média de ${dataBR(l.periodo_inicio)} a ${dataBR(l.periodo_fim)}, ${reaisMWh(l.previsao)}.`,
+      `Example from the run of ${D(at.origem)}: for the week from ${semana}, in ${l.sm}, B0 repeats the average from ${D(l.periodo_inicio)} to ${D(l.periodo_fim)}, ${reaisMWh(l.previsao, 2, idioma)}.`,
+      idioma,
+    );
   if (f.codigo === "S0" && metodologia && /364 dias antes da entrega/.test(metodologia))
-    return `Exemplo da rodada de ${dataBR(at.origem)}: para a semana de ${semana}, no ${l.sm}, o S0 usaria a média do PLD de ${dataBR(somaDias(l.inicio, -364))} a ${dataBR(somaDias(l.fim, -364))}, a semana que começa 364 dias antes. O observatório não publica número do S0.`;
+    return tx(
+      `Exemplo da rodada de ${dataBR(at.origem)}: para a semana de ${semana}, no ${l.sm}, o S0 usaria a média do PLD de ${dataBR(somaDias(l.inicio, -364))} a ${dataBR(somaDias(l.fim, -364))}, a semana que começa 364 dias antes. O observatório não publica número do S0.`,
+      `Example from the run of ${D(at.origem)}: for the week from ${semana}, in ${l.sm}, S0 would use the average PLD from ${D(somaDias(l.inicio, -364))} to ${D(somaDias(l.fim, -364))}, the week that starts 364 days earlier. The observatory does not publish an S0 number.`,
+      idioma,
+    );
   return null;
 }
 
 /** Explicação curta das entradas dos candidatos C2, lida dos próprios rótulos das entradas e do verbete da MLT (100% é o valor da média de longo termo). */
-export function notaEntradas(f: Pick<Ficha, "entradas">): string | null {
+export function notaEntradas(f: Pick<Ficha, "entradas">, idioma: Idioma = idiomaEnergia()): string | null {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   const e = f.entradas ?? [];
   const partes: string[] = [];
-  if (e.some((x) => /− B0$/.test(x))) partes.push("Em “X − B0”, o modelo usa a diferença entre X e o B0.");
+  if (e.some((x) => /− B0$/.test(x))) partes.push(tx("Em “X − B0”, o modelo usa a diferença entre X e o B0.", "In “X − B0”, the model uses the difference between X and B0."));
   if (e.some((x) => /\(% da MLT\) − 100$/.test(x)))
-    partes.push("Na ENA em % da MLT, 100 é o valor da média de longo termo: “− 100” é quanto a ENA média dos 7 últimos dias fica acima ou abaixo dessa média.");
-  if (e.some((x) => /\(p\.p\.\)/.test(x))) partes.push("p.p. quer dizer ponto percentual.");
+    partes.push(
+      tx(
+        "Na ENA em % da MLT, 100 é o valor da média de longo termo: “− 100” é quanto a ENA média dos 7 últimos dias fica acima ou abaixo dessa média.",
+        "In ENA as % of MLT, 100 is the value of the long-term average: “− 100” is how far the average ENA of the last 7 days sits above or below that average.",
+      ),
+    );
+  if (e.some((x) => /\(p\.p\.\)/.test(x))) partes.push(tx("p.p. quer dizer ponto percentual.", "pp means percentage point."));
   return partes.length ? partes.join(" ") : null;
 }
 
@@ -1043,22 +1331,24 @@ const ehReferenciaExperimental = (rotulo: string) => /refer[eê]ncia experimenta
  * PLD médio do último período completo), a faixa de valores publicada e se há faixa de incerteza. Lê as mesmas células que a
  * resposta completa (respostaP013).
  */
-export function vereditoP013(g: Pick<PrevisoesDesempenhoGold, "previsao_atual" | "modelos">): string {
+export function vereditoP013(g: Pick<PrevisoesDesempenhoGold, "previsao_atual" | "modelos">, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   const at = g.previsao_atual;
   const producao = g.modelos.filter((m) => m.estado === "PRODUCAO").map((m) => m.codigo);
-  const oficial = producao.length ? `Modelo em produção: ${producao.join(", ")}.` : "Nenhum modelo está aprovado.";
-  if (!temRodada(at)) return `${oficial} Nenhuma rodada com números está publicada.`;
-  const linhas = linhasGrade(at.celulas);
+  const oficial = producao.length ? tx(`Modelo em produção: ${producao.join(", ")}.`, `Model in production: ${producao.join(", ")}.`) : tx("Nenhum modelo está aprovado.", "No model is approved.");
+  if (!temRodada(at)) return tx(`${oficial} Nenhuma rodada com números está publicada.`, `${oficial} No run with numbers is published.`);
+  const linhas = linhasGrade(at.celulas, [], idioma);
   const valores = linhas.map((l) => l.previsao).filter((v): v is number => v !== null);
-  if (!valores.length) return `${oficial} A rodada de ${dataBR(at.origem)} não tem número em nenhuma das ${linhas.length} células.`;
+  if (!valores.length)
+    return tx(`${oficial} A rodada de ${dataBR(at.origem)} não tem número em nenhuma das ${linhas.length} células.`, `${oficial} The run of ${dataBR(at.origem, idioma)} has no number in any of the ${linhas.length} cells.`);
   const menor = Math.min(...valores);
   const maior = Math.max(...valores);
-  const intervalo = menor === maior ? reaisMWh(menor) : `de ${reais(menor)} a ${reaisMWh(maior)}`;
+  const intervalo = menor === maior ? reaisMWh(menor, 2, idioma) : tx(`de ${reais(menor)} a ${reaisMWh(maior)}`, `from ${reais(menor, 2, idioma)} to ${reaisMWh(maior, 2, idioma)}`);
   const comFaixa = linhas.filter((l) => l.p10 !== null && l.p90 !== null).length;
-  const faixa = comFaixa ? `Há faixa de incerteza em ${comFaixa} de ${linhas.length} células.` : "Sem faixa de incerteza.";
+  const faixa = comFaixa ? tx(`Há faixa de incerteza em ${comFaixa} de ${linhas.length} células.`, `There is an uncertainty band in ${comFaixa} of ${linhas.length} cells.`) : tx("Sem faixa de incerteza.", "No uncertainty band.");
   const o_que = ehReferenciaExperimental(at.rotulo)
-    ? `A referência simples B0 repete o PLD médio do último período completo, ${intervalo}.`
-    : `A rodada de ${dataBR(at.origem)} publica ${intervalo} conforme submercado e prazo.`;
+    ? tx(`A referência simples B0 repete o PLD médio do último período completo, ${intervalo}.`, `The simple benchmark B0 repeats the average PLD of the latest complete period, ${intervalo}.`)
+    : tx(`A rodada de ${dataBR(at.origem)} publica ${intervalo} conforme submercado e prazo.`, `The run of ${dataBR(at.origem, idioma)} publishes ${intervalo} depending on submarket and horizon.`);
   return `${oficial} ${o_que} ${faixa}`;
 }
 
@@ -1066,26 +1356,50 @@ export function vereditoP013(g: Pick<PrevisoesDesempenhoGold, "previsao_atual" |
  * Veredito do P014 em palavras simples: estado dos modelos, quais publicam número e por que os outros não. Lê as mesmas fichas
  * que a resposta completa (respostaP014), sem "repositório" nem "reimplementado".
  */
-export function vereditoP014(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual">): string {
+export function vereditoP014(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual">, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const E = (e: string) => rotuloEstadoModelo(e, idioma);
   const fs = fichasOrdenadas(g.fichas);
-  if (!fs.length) return "Nenhum modelo está registrado nesta publicação.";
+  if (!fs.length) return tx("Nenhum modelo está registrado nesta publicação.", "No model is registered in this publication.");
   const porEstado = new Map<string, string[]>();
   for (const f of fs) porEstado.set(f.estado, [...(porEstado.get(f.estado) ?? []), f.codigo]);
   const estados =
     porEstado.size === 1
-      ? `${fs.length === 1 ? "O único modelo está" : `Os ${fs.length} modelos estão todos`} em ${rotuloEstadoModelo(fs[0].estado)}`
-      : `Dos ${fs.length} modelos, ${Array.from(porEstado.entries())
-          .map(([e, cs]) => `${cs.join(", ")} em ${rotuloEstadoModelo(e)}`)
-          .join("; ")}`;
+      ? tx(
+          `${fs.length === 1 ? "O único modelo está" : `Os ${fs.length} modelos estão todos`} em ${E(fs[0].estado)}`,
+          `${fs.length === 1 ? "The only model is" : `All ${fs.length} models are`} in ${E(fs[0].estado)}`,
+        )
+      : tx(
+          `Dos ${fs.length} modelos, ${Array.from(porEstado.entries())
+            .map(([e, cs]) => `${cs.join(", ")} em ${E(e)}`) // i18n: dado
+            .join("; ")}`,
+          `Of the ${fs.length} models, ${Array.from(porEstado.entries())
+            .map(([e, cs]) => `${cs.join(", ")} in ${E(e)}`)
+            .join("; ")}`,
+        );
   const producao = porEstado.get("PRODUCAO") ?? [];
-  const oficial = producao.length ? `: ${producao.join(", ")} alimenta a previsão principal.` : ": nenhum alimenta previsão oficial.";
+  const oficial = producao.length
+    ? tx(`: ${producao.join(", ")} alimenta a previsão principal.`, `: ${producao.join(", ")} feeds the main forecast.`)
+    : tx(": nenhum alimenta previsão oficial.", ": none feeds an official forecast.");
   const ref = fs.filter((f) => f.aprovacao.referencia_experimental).map((f) => f.codigo);
   const semImpl = fs.filter((f) => !f.implementado_no_repositorio).map((f) => f.codigo);
-  const retidos = fs.filter((f) => emissaoDoModelo(f, g) === "não emite: número retido pela governança").map((f) => f.codigo);
+  const retidos = fs.filter((f) => codigoEmissaoDoModelo(f, g) === "retido").map((f) => f.codigo);
   const partes: string[] = [];
-  if (ref.length) partes.push(`${ref.join(" e ")} ${ref.length > 1 ? "publicam número" : "publica número"} só como referência experimental`);
-  if (retidos.length) partes.push(`${retidos.join(" e ")} ${retidos.length > 1 ? "têm" : "tem"} número retido até a liberação formal`);
-  if (semImpl.length) partes.push(`${semImpl.join(", ")} não pode ser refeito: a configuração da pesquisa não foi publicada`);
+  if (ref.length)
+    partes.push(
+      tx(
+        `${ref.join(" e ")} ${ref.length > 1 ? "publicam número" : "publica número"} só como referência experimental`,
+        `${ref.join(" and ")} ${ref.length > 1 ? "publish a number" : "publishes a number"} only as an experimental benchmark`,
+      ),
+    );
+  if (retidos.length)
+    partes.push(
+      tx(
+        `${retidos.join(" e ")} ${retidos.length > 1 ? "têm" : "tem"} número retido até a liberação formal`,
+        `${retidos.join(" and ")} ${retidos.length > 1 ? "have their number" : "has its number"} withheld until formal release`,
+      ),
+    );
+  if (semImpl.length) partes.push(tx(`${semImpl.join(", ")} não pode ser refeito: a configuração da pesquisa não foi publicada`, `${semImpl.join(", ")} cannot be redone: the research configuration was not published`));
   return `${estados}${oficial}${partes.length ? ` ${maiuscula(partes.join("; "))}.` : ""}`.replace(/^./, (c) => c.toUpperCase());
 }
 
@@ -1093,51 +1407,66 @@ export function vereditoP014(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previs
  * Veredito do P015 em palavras simples, sobre o mesmo recorte da tabela: quantos registros e rodadas, quais rodadas têm número e se
  * alguma entrega prevista já terminou. Lê as mesmas linhas que a resposta completa (respostaP015).
  */
-export function vereditoP015(linhas: readonly LinhaArquivo[], dia: string, total: number): string {
-  if (!linhas.length) return dia ? `Nenhum registro estava no arquivo ao fim de ${dataBR(dia)}.` : "O arquivo de emissões não tem registro publicado.";
-  const rs = resumoRodadas(linhas);
-  const quando = dia ? `Ao fim de ${dataBR(dia)}, o arquivo tinha` : "O arquivo tem";
-  const parcial = dia && linhas.length < total ? ` (de ${total.toLocaleString("pt-BR")} no arquivo completo)` : "";
+export function vereditoP015(linhas: readonly LinhaArquivo[], dia: string, total: number, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const D = (d: string) => dataBR(d, idioma);
+  if (!linhas.length)
+    return dia
+      ? tx(`Nenhum registro estava no arquivo ao fim de ${dataBR(dia)}.`, `No record was in the archive at the end of ${D(dia)}.`)
+      : tx("O arquivo de emissões não tem registro publicado.", "The forecast archive has no published record.");
+  const rs = resumoRodadas(linhas, idioma);
+  const quando = dia ? tx(`Ao fim de ${dataBR(dia)}, o arquivo tinha`, `At the end of ${D(dia)}, the archive had`) : tx("O arquivo tem", "The archive has");
+  const parcial = dia && linhas.length < total ? tx(` (de ${total.toLocaleString("pt-BR")} no arquivo completo)`, ` (of ${num(total, 0, idioma)} in the full archive)`) : "";
   const comNumero = rs.filter((r) => r.com_numero > 0);
   const quais =
     comNumero.length === 0
-      ? "nenhuma tem número"
+      ? tx("nenhuma tem número", "none has a number")
       : comNumero.length === rs.length
-        ? "todas têm número"
+        ? tx("todas têm número", "all have a number")
         : comNumero.length === 1
-          ? `só a de ${dataBR(comNumero[0].origem)} tem número`
-          : `${comNumero.length} têm número`;
+          ? tx(`só a de ${dataBR(comNumero[0].origem)} tem número`, `only the one of ${D(comNumero[0].origem)} has a number`)
+          : tx(`${comNumero.length} têm número`, `${comNumero.length} have a number`);
   const prevComNumero = linhas.filter((l) => l.previsao !== null).length;
   const apurados = linhas.filter((l) => l.realizado !== null).length;
   const resultado =
     prevComNumero === 0
       ? ""
       : apurados === 0
-        ? " Nenhuma entrega prevista terminou: ainda não há resultado para comparar."
-        : ` ${apurados} de ${prevComNumero} previsões com número já têm resultado.`;
-  return `${quando} ${plural(linhas.length, "registro", "registros")}${parcial} de ${plural(rs.length, "rodada", "rodadas")}; ${quais}.${resultado}`;
+        ? tx(" Nenhuma entrega prevista terminou: ainda não há resultado para comparar.", " No forecast delivery has ended: there is no outcome to compare yet.")
+        : tx(` ${apurados} de ${prevComNumero} previsões com número já têm resultado.`, ` ${apurados} of ${prevComNumero} forecasts with a number already have an outcome.`);
+  return tx(
+    `${quando} ${plural(linhas.length, "registro", "registros")}${parcial} de ${plural(rs.length, "rodada", "rodadas")}; ${quais}.${resultado}`,
+    `${quando} ${plural(linhas.length, "record", "records", idioma)}${parcial} from ${plural(rs.length, "run", "runs", idioma)}; ${quais}.${resultado}`,
+  );
 }
 
 /**
  * Veredito do P016 em palavras simples: se já dá para dizer que algum modelo supera as referências simples, por que os números
  * do teste não aparecem e o que o acompanhamento depois da emissão já mostra. Lê os mesmos campos que a resposta completa (respostaP016).
  */
-export function vereditoP016(g: Pick<PrevisoesDesempenhoGold, "desempenho" | "publicacao_desempenho" | "prospectivo">): string {
+export function vereditoP016(g: Pick<PrevisoesDesempenhoGold, "desempenho" | "publicacao_desempenho" | "prospectivo">, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   const ap = g.prospectivo.apuracoes;
   const apuradas = ap.filter((a) => a.realizado !== null).length;
   const acompanhamento =
     ap.length === 0
-      ? "O acompanhamento depois da emissão ainda não tem previsão com número."
+      ? tx("O acompanhamento depois da emissão ainda não tem previsão com número.", "The follow-up after issue does not yet have a forecast with a number.")
       : apuradas === 0
-        ? `Nenhuma das ${ap.length} previsões em acompanhamento tem resultado.`
-        : `${apuradas} de ${ap.length} previsões em acompanhamento já têm resultado.`;
+        ? tx(`Nenhuma das ${ap.length} previsões em acompanhamento tem resultado.`, `None of the ${ap.length} forecasts being followed has an outcome.`)
+        : tx(`${apuradas} de ${ap.length} previsões em acompanhamento já têm resultado.`, `${apuradas} of ${ap.length} forecasts being followed already have an outcome.`);
   if (!g.desempenho.publicado)
-    return `Ainda não dá para dizer se algum modelo supera as referências simples: os números do teste com dados do passado estão calculados, mas ficam retidos até a liberação formal. ${acompanhamento}`;
+    return tx(
+      `Ainda não dá para dizer se algum modelo supera as referências simples: os números do teste com dados do passado estão calculados, mas ficam retidos até a liberação formal. ${acompanhamento}`,
+      `It is not yet possible to say whether any model beats the simple benchmarks: the numbers from the test with past data are calculated but withheld until formal release. ${acompanhamento}`,
+    );
   const ganhos = linhasDesempenho(g.desempenho.por_horizonte).filter((l) => l.periodo === "teste" && l.modelo !== "B0" && l.ganho_vs_b0 !== null);
   const positivos = ganhos.filter((l) => l.ic_inf !== null && l.ic_inf > 0);
   const teste = ganhos.length
-    ? `No teste final, ${positivos.length} de ${ganhos.length} combinações de candidato e horizonte têm ganho sobre o B0 com intervalo de 90% inteiro acima de zero.`
-    : "O teste final não tem comparação pareada com o B0 publicada.";
+    ? tx(
+        `No teste final, ${positivos.length} de ${ganhos.length} combinações de candidato e horizonte têm ganho sobre o B0 com intervalo de 90% inteiro acima de zero.`,
+        `In the final test, ${positivos.length} of ${ganhos.length} combinations of candidate and horizon have a gain over B0 with the whole 90% interval above zero.`,
+      )
+    : tx("O teste final não tem comparação pareada com o B0 publicada.", "The final test has no published paired comparison with B0.");
   return `${teste} ${acompanhamento}`;
 }
 
@@ -1145,17 +1474,21 @@ export function vereditoP016(g: Pick<PrevisoesDesempenhoGold, "desempenho" | "pu
  * Veredito da ficha de um modelo: a primeira frase do resumo do registro de modelos (escrita em palavras simples) e o estado, o que o
  * modelo emite e, quando não pode ser refeito, o motivo. Sem resumo, só o nome do modelo.
  */
-export function vereditoFicha(f: Ficha, resumo: string | null | undefined, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">): string {
-  const inicio = resumo?.trim() ? primeiraFrase(resumo) : `${f.codigo} é o modelo ${f.nome}.`;
-  const estado = rotuloEstadoModelo(f.estado);
-  const emite = emissaoDoModelo(f, g);
+export function vereditoFicha(f: Ficha, resumo: string | null | undefined, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const inicio = resumo?.trim() ? primeiraFrase(resumo) : tx(`${f.codigo} é o modelo ${f.nome}.`, `${f.codigo} is the ${reg(f.nome, idioma)} model.`);
+  const estado = rotuloEstadoModelo(f.estado, idioma);
+  const emite = codigoEmissaoDoModelo(f, g);
   const fim = !f.implementado_no_repositorio
-    ? `Está em ${estado} e não emite número: a configuração da pesquisa não foi publicada; o modelo não pode ser refeito.`
+    ? tx(
+        `Está em ${estado} e não emite número: a configuração da pesquisa não foi publicada; o modelo não pode ser refeito.`,
+        `It is in ${estado} and issues no number: the research configuration was not published; the model cannot be redone.`,
+      )
     : f.aprovacao.referencia_experimental
-      ? `Está em ${estado}; é publicado só como referência experimental.`
-      : emite === "não emite: número retido pela governança"
-        ? `Está em ${estado}; o número fica retido até a liberação formal.`
-        : `Está em ${estado} e não emite número.`;
+      ? tx(`Está em ${estado}; é publicado só como referência experimental.`, `It is in ${estado}; it is published only as an experimental benchmark.`)
+      : emite === "retido"
+        ? tx(`Está em ${estado}; o número fica retido até a liberação formal.`, `It is in ${estado}; the number is withheld until formal release.`)
+        : tx(`Está em ${estado} e não emite número.`, `It is in ${estado} and issues no number.`);
   return `${inicio} ${fim}`;
 }
 
@@ -1174,32 +1507,38 @@ export type LinhaCoeficiente = LinhaTabela & {
 };
 
 /** Variáveis dos candidatos, na ordem do C2-H (o C2-P usa as três primeiras). */
-export function variaveisCoeficientes(fichas: readonly Ficha[]): { id: string; rotulo: string }[] {
+export function variaveisCoeficientes(fichas: readonly Ficha[], idioma: Idioma = idiomaEnergia()): { id: string; rotulo: string }[] {
   const out: { id: string; rotulo: string }[] = [];
-  for (const f of fichasOrdenadas(fichas)) for (const v of f.coeficientes_ultimo_ajuste?.variaveis ?? []) if (!out.some((x) => x.id === v.id)) out.push(v);
+  for (const f of fichasOrdenadas(fichas)) for (const v of f.coeficientes_ultimo_ajuste?.variaveis ?? []) if (!out.some((x) => x.id === v.id)) out.push({ id: v.id, rotulo: reg(v.rotulo, idioma) });
   return out;
 }
 
 export const segmentoId = (h: string, sm: string) => `${h}-${sm}`;
 
 /** Segmentos (horizonte × submercado) presentes no último ajuste, na ordem W1 a M3 e SE, S, NE, N. */
-export function segmentosCoeficientes(fichas: readonly Ficha[]): { id: string; rotulo: string }[] {
+export function segmentosCoeficientes(fichas: readonly Ficha[], idioma: Idioma = idiomaEnergia()): { id: string; rotulo: string }[] {
   const ids = new Set<string>();
   for (const f of fichas) for (const s of f.coeficientes_ultimo_ajuste?.segmentos ?? []) ids.add(segmentoId(s.horizonte, s.submercado));
   const out: { id: string; rotulo: string }[] = [];
-  for (const h of HORIZONTES) for (const sm of SUBMERCADOS) if (ids.has(segmentoId(h, sm))) out.push({ id: segmentoId(h, sm), rotulo: `${h}, ${NOME_SM[sm]}` });
+  for (const h of HORIZONTES) for (const sm of SUBMERCADOS) if (ids.has(segmentoId(h, sm))) out.push({ id: segmentoId(h, sm), rotulo: `${h}, ${nome(sm, idioma)}` });
   return out;
 }
 
-const lambdaTexto = (l: string | number | null) =>
-  l === null ? "sem ajuste" : typeof l === "number" ? l.toLocaleString("pt-BR", { maximumFractionDigits: 3 }) : l === "ZERO" ? "zero (correção desligada)" : l;
+const lambdaTexto = (l: string | number | null, idioma: Idioma = idiomaEnergia()) =>
+  l === null
+    ? tx("sem ajuste", "no fit", idioma)
+    : typeof l === "number"
+      ? l.toLocaleString(idioma === "en" ? "en-US" : "pt-BR", { maximumFractionDigits: 3 })
+      : l === "ZERO"
+        ? tx("zero (correção desligada)", "zero (correction switched off)", idioma)
+        : l;
 
 /** Primeira letra minúscula, para citar um texto da gold depois de dois-pontos. */
 export const minusculaInicial = (s: string) => (/^[A-ZÁÉÍÓÚÂÊÔÃÕÇ](?:[a-záéíóúâêôãõç]| )/.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s);
 
 /** Tabela de coeficientes: uma linha por modelo e segmento, uma coluna por variável. */
-export function linhasCoeficientes(fichas: readonly Ficha[]): LinhaCoeficiente[] {
-  const vars = variaveisCoeficientes(fichas);
+export function linhasCoeficientes(fichas: readonly Ficha[], idioma: Idioma = idiomaEnergia()): LinhaCoeficiente[] {
+  const vars = variaveisCoeficientes(fichas, idioma);
   const out: LinhaCoeficiente[] = [];
   for (const f of fichasOrdenadas(fichas)) {
     const c = f.coeficientes_ultimo_ajuste;
@@ -1213,10 +1552,10 @@ export function linhasCoeficientes(fichas: readonly Ficha[]): LinhaCoeficiente[]
         modelo: f.codigo,
         segmento: segmentoId(s.horizonte, s.submercado),
         horizonte: s.horizonte,
-        sm: CURTO_SM[s.submercado] ?? s.submercado,
+        sm: curto(s.submercado, idioma),
         origem_ajuste: s.origem_ajuste,
-        ajustado: s.ok ? "sim" : `não: ${textoMotivo(s.motivo)}`,
-        lambda: lambdaTexto(s.lambda),
+        ajustado: s.ok ? tx("sim", "yes", idioma) : tx(`não: ${textoMotivo(s.motivo, "pt")}`, `no: ${textoMotivo(s.motivo, idioma)}`, idioma),
+        lambda: lambdaTexto(s.lambda, idioma),
         entregas_treino: s.entregas_treino,
       };
       // variável que o modelo não usa fica null (não se aplica) e não zero
@@ -1227,23 +1566,24 @@ export function linhasCoeficientes(fichas: readonly Ficha[]): LinhaCoeficiente[]
   return out;
 }
 
-export function colunasCoeficientes(fichas: readonly Ficha[]): ColunaTabela[] {
+export function colunasCoeficientes(fichas: readonly Ficha[], idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   return [
-    { id: "modelo", rotulo: "Modelo", tipo: "texto", categorica: true },
-    { id: "horizonte", rotulo: "Horizonte", tipo: "texto", categorica: true },
-    { id: "sm", rotulo: "Submercado", tipo: "texto", categorica: true },
-    ...variaveisCoeficientes(fichas).map((v): ColunaTabela => ({ id: v.id, rotulo: v.rotulo, tipo: "numero", casas: 4 })),
-    { id: "lambda", rotulo: "Penalização λ", tipo: "texto", categorica: true },
-    { id: "entregas_treino", rotulo: "Entregas de treino", tipo: "numero", casas: 0 },
-    { id: "origem_ajuste", rotulo: "Ajuste de", tipo: "data" },
-    { id: "ajustado", rotulo: "Ajustado", tipo: "texto", categorica: true },
+    { id: "modelo", rotulo: tx("Modelo", "Model"), tipo: "texto", categorica: true },
+    { id: "horizonte", rotulo: tx("Horizonte", "Horizon"), tipo: "texto", categorica: true },
+    { id: "sm", rotulo: tx("Submercado", "Submarket"), tipo: "texto", categorica: true },
+    ...variaveisCoeficientes(fichas, idioma).map((v): ColunaTabela => ({ id: v.id, rotulo: v.rotulo, tipo: "numero", casas: 4 })),
+    { id: "lambda", rotulo: tx("Penalização λ", "Penalty λ"), tipo: "texto", categorica: true },
+    { id: "entregas_treino", rotulo: tx("Entregas de treino", "Training deliveries"), tipo: "numero", casas: 0 },
+    { id: "origem_ajuste", rotulo: tx("Ajuste de", "Fit of"), tipo: "data" },
+    { id: "ajustado", rotulo: tx("Ajustado", "Fitted"), tipo: "texto", categorica: true },
   ];
 }
 
 /** Barras do segmento escolhido: uma categoria por variável, uma série por candidato. */
-export function coeficientesDoSegmento(fichas: readonly Ficha[], seg: string): Record<string, string | number | null>[] {
-  const linhas = linhasCoeficientes(fichas).filter((l) => l.segmento === seg);
-  return variaveisCoeficientes(fichas).map((v) => {
+export function coeficientesDoSegmento(fichas: readonly Ficha[], seg: string, idioma: Idioma = idiomaEnergia()): Record<string, string | number | null>[] {
+  const linhas = linhasCoeficientes(fichas, idioma).filter((l) => l.segmento === seg);
+  return variaveisCoeficientes(fichas, idioma).map((v) => {
     const out: Record<string, string | number | null> = { id: v.id, rotulo: v.rotulo };
     for (const l of linhas) out[l.modelo] = (l[v.id] as number | null) ?? null;
     return out;
@@ -1260,10 +1600,11 @@ export function d7AcimaDe1(fichas: readonly Ficha[]): { modelo: string; segmento
 }
 
 /** Leitura do segmento escolhido: maior peso de cada candidato, λ, treino e o achado G23-R1. */
-export function textoCoeficientes(fichas: readonly Ficha[], seg: string): string {
-  const linhas = linhasCoeficientes(fichas).filter((l) => l.segmento === seg);
-  if (!linhas.length) return "Nenhum candidato tem ajuste registrado neste segmento.";
-  const vars = variaveisCoeficientes(fichas);
+export function textoCoeficientes(fichas: readonly Ficha[], seg: string, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const linhas = linhasCoeficientes(fichas, idioma).filter((l) => l.segmento === seg);
+  if (!linhas.length) return tx("Nenhum candidato tem ajuste registrado neste segmento.", "No candidate has a fit recorded in this segment.");
+  const vars = variaveisCoeficientes(fichas, idioma);
   const [h, sm] = seg.split("-");
   const frases = linhas.map((l) => {
     let maior: { rotulo: string; valor: number } | null = null;
@@ -1271,14 +1612,25 @@ export function textoCoeficientes(fichas: readonly Ficha[], seg: string): string
       const x = l[v.id];
       if (typeof x === "number" && (!maior || Math.abs(x) > Math.abs(maior.valor))) maior = { rotulo: v.rotulo.replace(/\s*\([^)]*\)$/, ""), valor: x };
     }
-    const peso = maior ? `o maior peso é o da variável "${maior.rotulo}" (${num(maior.valor, 2)})` : "nenhum coeficiente registrado";
-    return `no ${l.modelo}, ${peso}, com λ ${l.lambda} e ${l.entregas_treino === null ? "treino sem contagem" : plural(l.entregas_treino, "entrega", "entregas")} de treino`;
+    const peso = maior
+      ? tx(`o maior peso é o da variável "${maior.rotulo}" (${num(maior.valor, 2)})`, `the largest weight is that of the variable "${maior.rotulo}" (${num(maior.valor, 2, idioma)})`)
+      : tx("nenhum coeficiente registrado", "no coefficient recorded");
+    return tx(
+      `no ${l.modelo}, ${peso}, com λ ${l.lambda} e ${l.entregas_treino === null ? "treino sem contagem" : plural(l.entregas_treino, "entrega", "entregas")} de treino`,
+      `in ${l.modelo}, ${peso}, with λ ${l.lambda} and ${l.entregas_treino === null ? "training without a count" : plural(l.entregas_treino, "training delivery", "training deliveries", idioma)}`,
+    );
   });
   const acima = d7AcimaDe1(fichas).filter((x) => x.segmento === seg);
   const g23 = acima.length
-    ? ` Coeficiente da média dos 7 dias menos B0 acima de 1 (${acima.map((x) => `${x.modelo}: ${num(x.valor, 2)}`).join("; ")}): a correção amplia o desvio recente em vez de reduzi-lo.`
-    : " Nenhum coeficiente da média dos 7 dias menos B0 passa de 1 neste segmento.";
-  return `No ajuste de ${dataBR(linhas[0].origem_ajuste)} para ${h}, ${NOME_SM[sm] ?? sm}: ${frases.join("; ")}.${g23}`;
+    ? tx(
+        ` Coeficiente da média dos 7 dias menos B0 acima de 1 (${acima.map((x) => `${x.modelo}: ${num(x.valor, 2)}`).join("; ")}): a correção amplia o desvio recente em vez de reduzi-lo.`,
+        ` Coefficient of the 7-day average minus B0 above 1 (${acima.map((x) => `${x.modelo}: ${num(x.valor, 2, idioma)}`).join("; ")}): the correction widens the recent deviation instead of reducing it.`,
+      )
+    : tx(" Nenhum coeficiente da média dos 7 dias menos B0 passa de 1 neste segmento.", " No coefficient of the 7-day average minus B0 exceeds 1 in this segment.");
+  return tx(
+    `No ajuste de ${dataBR(linhas[0].origem_ajuste)} para ${h}, ${nome(sm, "pt") ?? sm}: ${frases.join("; ")}.${g23}`,
+    `In the fit of ${dataBR(linhas[0].origem_ajuste, idioma)} for ${h}, ${nome(sm, idioma)}: ${frases.join("; ")}.${g23}`,
+  );
 }
 
 /* ---------------------------------------------------------------- P016: desempenho e calibração */
@@ -1309,14 +1661,14 @@ export type LinhaAmostra = {
  * submercados; se diferirem, vale a menor, dita na tabela). É contagem, não
  * desempenho: não está retida.
  */
-export function linhasAmostra(g: Pick<PrevisoesDesempenhoGold, "prospectivo" | "definicoes">): LinhaAmostra[] {
+export function linhasAmostra(g: Pick<PrevisoesDesempenhoGold, "prospectivo" | "definicoes">, idioma: Idioma = idiomaEnergia()): LinhaAmostra[] {
   const min = minimoCalibracao(g.definicoes.calibracao);
   const regs = g.prospectivo.calibracao_regra_antiga.por_registro;
   return HORIZONTES.filter((h) => regs.some((r) => r.horizonte === h)).map((h) => {
     const rs = regs.filter((r) => r.horizonte === h);
     const ns = rs.map((r) => r.entregas).filter((n): n is number => typeof n === "number");
     const n = ns.length ? Math.min(...ns) : null;
-    const estados = Array.from(new Set(rs.map((r) => rotuloCalibracao(r.status_recalculado))));
+    const estados = Array.from(new Set(rs.map((r) => rotuloCalibracao(r.status_recalculado, idioma))));
     return {
       id: h,
       horizonte: h,
@@ -1329,14 +1681,18 @@ export function linhasAmostra(g: Pick<PrevisoesDesempenhoGold, "prospectivo" | "
   });
 }
 
-export const COLUNAS_AMOSTRA: ColunaTabela[] = [
-  { id: "horizonte", rotulo: "Horizonte", tipo: "texto" },
-  { id: "entregas", rotulo: "Entregas distintas no teste", tipo: "numero", casas: 0 },
-  { id: "minimo", rotulo: "Mínimo para calibrar", tipo: "numero", casas: 0 },
-  { id: "faltam", rotulo: "Faltam", tipo: "numero", casas: 0 },
-  { id: "estado", rotulo: "Estado da calibração", tipo: "texto", categorica: true },
-  { id: "registros", rotulo: "Células da rodada", tipo: "numero", casas: 0 },
-];
+export function colunasAmostra(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  return [
+    { id: "horizonte", rotulo: tx("Horizonte", "Horizon"), tipo: "texto" },
+    { id: "entregas", rotulo: tx("Entregas distintas no teste", "Distinct deliveries in the test"), tipo: "numero", casas: 0 },
+    { id: "minimo", rotulo: tx("Mínimo para calibrar", "Minimum to calibrate"), tipo: "numero", casas: 0 },
+    { id: "faltam", rotulo: tx("Faltam", "Missing"), tipo: "numero", casas: 0 },
+    { id: "estado", rotulo: tx("Estado da calibração", "Calibration state"), tipo: "texto", categorica: true },
+    { id: "registros", rotulo: tx("Células da rodada", "Cells in the run"), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_AMOSTRA: ColunaTabela[] = colunasAmostra("pt");
 
 export type LinhaProspectivo = {
   id: string;
@@ -1359,67 +1715,105 @@ export function linhasProspectivo(g: Pick<PrevisoesDesempenhoGold, "prospectivo"
   });
 }
 
-export const COLUNAS_PROSPECTIVO: ColunaTabela[] = [
-  { id: "horizonte", rotulo: "Horizonte", tipo: "texto" },
-  { id: "registradas", rotulo: "Previsões com número", tipo: "numero", casas: 0 },
-  { id: "apuradas", rotulo: "Com realizado", tipo: "numero", casas: 0 },
-  { id: "aguardando", rotulo: "Aguardando o fim da entrega", tipo: "numero", casas: 0 },
-  { id: "proxima_entrega", rotulo: "Próxima entrega a terminar", tipo: "texto" },
-  { id: "termina", rotulo: "Termina em", tipo: "data" },
-];
+export function colunasProspectivo(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  return [
+    { id: "horizonte", rotulo: tx("Horizonte", "Horizon"), tipo: "texto" },
+    { id: "registradas", rotulo: tx("Previsões com número", "Forecasts with a number"), tipo: "numero", casas: 0 },
+    { id: "apuradas", rotulo: tx("Com realizado", "With actual"), tipo: "numero", casas: 0 },
+    { id: "aguardando", rotulo: tx("Aguardando o fim da entrega", "Waiting for the delivery to end"), tipo: "numero", casas: 0 },
+    { id: "proxima_entrega", rotulo: tx("Próxima entrega a terminar", "Next delivery to end"), tipo: "texto" },
+    { id: "termina", rotulo: tx("Termina em", "Ends on"), tipo: "data" },
+  ];
+}
+export const COLUNAS_PROSPECTIVO: ColunaTabela[] = colunasProspectivo("pt");
 
-export const COLUNAS_VALIDACOES: ColunaTabela[] = [
-  { id: "nome", rotulo: "Controle", tipo: "texto" },
-  { id: "resultado", rotulo: "Resultado", tipo: "texto", categorica: true },
-  { id: "detalhe", rotulo: "Detalhe", tipo: "texto" },
-];
+/** Controles e decisões vêm do registro em português: as células de texto saem marcadas como trecho em português. */
+export function colunasValidacoes(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  return [
+    { id: "nome", rotulo: tx("Controle", "Check"), tipo: "texto", idiomaTexto: "portugues" },
+    { id: "resultado", rotulo: tx("Resultado", "Result"), tipo: "texto", categorica: true },
+    { id: "detalhe", rotulo: tx("Detalhe", "Detail"), tipo: "texto", idiomaTexto: "portugues" },
+  ];
+}
+export const COLUNAS_VALIDACOES: ColunaTabela[] = colunasValidacoes("pt");
 
-export const COLUNAS_DECISOES: ColunaTabela[] = [
-  { id: "item", rotulo: "Item", tipo: "texto" },
-  { id: "estado", rotulo: "Estado", tipo: "texto", categorica: true },
-  { id: "responsavel", rotulo: "Quem decide ou comprova", tipo: "texto", categorica: true },
-  { id: "evidencia", rotulo: "Evidência", tipo: "texto" },
-];
+export function colunasDecisoes(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  return [
+    { id: "item", rotulo: tx("Item", "Item"), tipo: "texto", idiomaTexto: "portugues" },
+    { id: "estado", rotulo: tx("Estado", "State"), tipo: "texto", categorica: true, idiomaTexto: "portugues" },
+    { id: "responsavel", rotulo: tx("Quem decide ou comprova", "Who decides or proves"), tipo: "texto", categorica: true, idiomaTexto: "portugues" },
+    { id: "evidencia", rotulo: tx("Evidência", "Evidence"), tipo: "texto", idiomaTexto: "portugues" },
+  ];
+}
+export const COLUNAS_DECISOES: ColunaTabela[] = colunasDecisoes("pt");
 
 /**
  * Resposta curta do P016. Com os números retidos, diz o que está calculado e
  * validado, por que não aparece, o que o prospectivo já permite dizer e a amostra
  * de calibração; com a publicação liberada, resume o ganho sobre o B0 no teste.
  */
-export function respostaP016(g: Pick<PrevisoesDesempenhoGold, "desempenho" | "publicacao_desempenho" | "validacoes" | "dados" | "prospectivo" | "definicoes">): string {
+export function respostaP016(
+  g: Pick<PrevisoesDesempenhoGold, "desempenho" | "publicacao_desempenho" | "validacoes" | "dados" | "prospectivo" | "definicoes">,
+  idioma: Idioma = idiomaEnergia(),
+): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const D = (d: string) => dataBR(d, idioma);
   const aprovados = g.validacoes.filter((v) => v.resultado === "aprovado").length;
-  const controles = `${aprovados} de ${g.validacoes.length} controles aprovados`;
-  const origens = `${g.dados.origens.n.toLocaleString("pt-BR")} origens diárias de ${dataBR(g.dados.origens.inicio)} a ${dataBR(g.dados.origens.fim)}`;
+  const controles = tx(`${aprovados} de ${g.validacoes.length} controles aprovados`, `${aprovados} of ${g.validacoes.length} checks passed`);
+  const origens = tx(
+    `${g.dados.origens.n.toLocaleString("pt-BR")} origens diárias de ${dataBR(g.dados.origens.inicio)} a ${dataBR(g.dados.origens.fim)}`,
+    `${num(g.dados.origens.n, 0, idioma)} daily origins from ${D(g.dados.origens.inicio)} to ${D(g.dados.origens.fim)}`,
+  );
   const ap = g.prospectivo.apuracoes;
   const apuradas = ap.filter((a) => a.realizado !== null).length;
   const prox = primeiraEntregaAMaturar(ap);
   const prospectivo =
     ap.length === 0
-      ? " O acompanhamento prospectivo ainda não tem previsão com número."
+      ? tx(" O acompanhamento prospectivo ainda não tem previsão com número.", " The prospective follow-up does not yet have a forecast with a number.")
       : apuradas === 0
-        ? ` No acompanhamento prospectivo, nenhuma das ${ap.length} previsões com número tem realizado${prox ? `: a primeira entrega termina em ${dataBR(prox.termina)}` : ""}.`
-        : ` No acompanhamento prospectivo, ${apuradas} de ${ap.length} previsões com número já têm realizado.`;
-  const amostra = linhasAmostra(g);
+        ? tx(
+            ` No acompanhamento prospectivo, nenhuma das ${ap.length} previsões com número tem realizado${prox ? `: a primeira entrega termina em ${dataBR(prox.termina)}` : ""}.`,
+            ` In the prospective follow-up, none of the ${ap.length} forecasts with a number has an actual value${prox ? `: the first delivery ends on ${D(prox.termina)}` : ""}.`,
+          )
+        : tx(
+            ` No acompanhamento prospectivo, ${apuradas} de ${ap.length} previsões com número já têm realizado.`,
+            ` In the prospective follow-up, ${apuradas} of ${ap.length} forecasts with a number already have an actual value.`,
+          );
+  const amostra = linhasAmostra(g, idioma);
   const semanal = amostra.find((a) => a.horizonte.startsWith("W"))?.entregas ?? null;
   const mensal = amostra.find((a) => a.horizonte.startsWith("M"))?.entregas ?? null;
   const min = minimoCalibracao(g.definicoes.calibracao);
   const calib =
     semanal !== null && mensal !== null && min !== null && Math.max(semanal, mensal) < min
-      ? ` Nenhum segmento tem amostra para calibrar faixas: o teste tem ${semanal} entregas semanais e ${mensal} mensais distintas, abaixo do mínimo de ${min}.`
+      ? tx(
+          ` Nenhum segmento tem amostra para calibrar faixas: o teste tem ${semanal} entregas semanais e ${mensal} mensais distintas, abaixo do mínimo de ${min}.`,
+          ` No segment has a sample to calibrate bands: the test has ${semanal} distinct weekly and ${mensal} distinct monthly deliveries, below the minimum of ${min}.`,
+        )
       : "";
   if (!g.desempenho.publicado) {
-    const decisao = g.publicacao_desempenho.decisao?.estado === "PENDENTE" || !g.publicacao_desempenho.decisao ? ", ainda não registrada" : "";
-    return (
+    const pendente = g.publicacao_desempenho.decisao?.estado === "PENDENTE" || !g.publicacao_desempenho.decisao;
+    return tx(
       `Ainda não é possível responder no portal. O teste retrospectivo fora da amostra está calculado (${origens}; ${controles}), ` +
-      `mas os números de desempenho ficam retidos até a liberação formal pelo responsável pela plataforma${decisao}.${prospectivo}${calib}`
+        `mas os números de desempenho ficam retidos até a liberação formal pelo responsável pela plataforma${pendente ? ", ainda não registrada" : ""}.${prospectivo}${calib}`,
+      `It is not yet possible to answer on the portal. The out-of-sample retrospective test is calculated (${origens}; ${controles}), ` +
+        `but the performance numbers are withheld until formal release by the platform owner${pendente ? ", not yet recorded" : ""}.${prospectivo}${calib}`,
     );
   }
   const ganhos = linhasDesempenho(g.desempenho.por_horizonte).filter((l) => l.periodo === "teste" && l.modelo !== "B0" && l.ganho_vs_b0 !== null);
   const positivos = ganhos.filter((l) => l.ic_inf !== null && l.ic_inf > 0);
   const resumo = ganhos.length
-    ? ` No teste final, ${positivos.length} de ${ganhos.length} combinações de candidato e horizonte têm ganho sobre o B0 com intervalo de 90% inteiro acima de zero.`
-    : " O teste final não tem comparação pareada com o B0 publicada.";
-  return `Teste retrospectivo fora da amostra (${origens}; ${controles}).${resumo}${prospectivo}${calib}`;
+    ? tx(
+        ` No teste final, ${positivos.length} de ${ganhos.length} combinações de candidato e horizonte têm ganho sobre o B0 com intervalo de 90% inteiro acima de zero.`,
+        ` In the final test, ${positivos.length} of ${ganhos.length} combinations of candidate and horizon have a gain over B0 with the whole 90% interval above zero.`,
+      )
+    : tx(" O teste final não tem comparação pareada com o B0 publicada.", " The final test has no published paired comparison with B0.");
+  return tx(
+    `Teste retrospectivo fora da amostra (${origens}; ${controles}).${resumo}${prospectivo}${calib}`,
+    `Out-of-sample retrospective test (${origens}; ${controles}).${resumo}${prospectivo}${calib}`,
+  );
 }
 
 export type LinhaDesempenho = {
@@ -1459,21 +1853,25 @@ export function linhasDesempenho(ls: readonly LinhaMetrica[]): LinhaDesempenho[]
   }));
 }
 
-export const COLUNAS_DESEMPENHO: ColunaTabela[] = [
-  { id: "modelo", rotulo: "Modelo", tipo: "texto", categorica: true },
-  { id: "horizonte", rotulo: "Horizonte", tipo: "texto", categorica: true },
-  { id: "periodo", rotulo: "Período", tipo: "texto", categorica: true },
-  { id: "entregas", rotulo: "Entregas distintas", tipo: "numero", casas: 0 },
-  { id: "mae", rotulo: "MAE", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "mae_b0", rotulo: "MAE do B0 nas mesmas células", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "vies", rotulo: "Viés", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "ganho_vs_b0", rotulo: "Ganho sobre o B0", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "ic_inf", rotulo: "IC 90%: limite inferior", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "ic_sup", rotulo: "IC 90%: limite superior", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "perda_quantilica", rotulo: "Perda quantílica", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "cobertura", rotulo: "Cobertura P10 a P90", tipo: "percentual", casas: 1 },
-  { id: "largura", rotulo: "Largura P10 a P90", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-];
+export function colunasDesempenho(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  return [
+    { id: "modelo", rotulo: tx("Modelo", "Model"), tipo: "texto", categorica: true },
+    { id: "horizonte", rotulo: tx("Horizonte", "Horizon"), tipo: "texto", categorica: true },
+    { id: "periodo", rotulo: tx("Período", "Period"), tipo: "texto", categorica: true },
+    { id: "entregas", rotulo: tx("Entregas distintas", "Distinct deliveries"), tipo: "numero", casas: 0 },
+    { id: "mae", rotulo: "MAE", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "mae_b0", rotulo: tx("MAE do B0 nas mesmas células", "B0 MAE in the same cells"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "vies", rotulo: tx("Viés", "Bias"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "ganho_vs_b0", rotulo: tx("Ganho sobre o B0", "Gain over B0"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "ic_inf", rotulo: tx("IC 90%: limite inferior", "90% CI: lower bound"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "ic_sup", rotulo: tx("IC 90%: limite superior", "90% CI: upper bound"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "perda_quantilica", rotulo: tx("Perda quantílica", "Quantile loss"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "cobertura", rotulo: tx("Cobertura P10 a P90", "P10 to P90 coverage"), tipo: "percentual", casas: 1 },
+    { id: "largura", rotulo: tx("Largura P10 a P90", "P10 to P90 width"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  ];
+}
+export const COLUNAS_DESEMPENHO: ColunaTabela[] = colunasDesempenho("pt");
 
 /* ---------------------------------------------------------------- downloads */
 
@@ -1500,26 +1898,30 @@ export function particoesCitadas(g: Pick<PrevisoesDesempenhoGold, "evidencias">)
 export type LinhaRevisao = { id: string; entrega: string; sm: string; modelo: string; rodadas: number; previsoes: string; ultima_mudanca: number | null };
 
 /** Revisão entre rodadas para a mesma entrega (P015): sequência de previsões com número. */
-export function linhasRevisoes(g: Pick<PrevisoesDesempenhoGold, "prospectivo">): LinhaRevisao[] {
+export function linhasRevisoes(g: Pick<PrevisoesDesempenhoGold, "prospectivo">, idioma: Idioma = idiomaEnergia()): LinhaRevisao[] {
   return g.prospectivo.revisoes_entre_rodadas.map((r) => ({
     id: `${r.modelo}:${r.entrega}:${r.submercado}`,
     entrega: r.entrega,
-    sm: CURTO_SM[r.submercado] ?? r.submercado,
+    sm: curto(r.submercado, idioma),
     modelo: r.modelo,
     rodadas: r.rodadas,
-    previsoes: r.sequencia.map((s) => `${dataBR(s.origem)} (${s.horizonte}): ${num(s.previsao, 4)}`).join("; "),
+    previsoes: r.sequencia.map((s) => `${dataBR(s.origem, idioma)} (${s.horizonte}): ${num(s.previsao, 4, idioma)}`).join("; "),
     ultima_mudanca: r.sequencia.length > 1 ? r.sequencia[r.sequencia.length - 1].mudanca : null,
   }));
 }
 
-export const COLUNAS_REVISOES: ColunaTabela[] = [
-  { id: "entrega", rotulo: "Entrega", tipo: "texto" },
-  { id: "sm", rotulo: "Submercado", tipo: "texto", categorica: true },
-  { id: "modelo", rotulo: "Modelo", tipo: "texto", categorica: true },
-  { id: "rodadas", rotulo: "Rodadas com número", tipo: "numero", casas: 0 },
-  { id: "previsoes", rotulo: "Previsões por origem (R$/MWh)", tipo: "texto" },
-  { id: "ultima_mudanca", rotulo: "Última mudança", tipo: "numero", unidade: "R$/MWh", casas: 4 },
-];
+export function colunasRevisoes(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  return [
+    { id: "entrega", rotulo: tx("Entrega", "Delivery"), tipo: "texto" },
+    { id: "sm", rotulo: tx("Submercado", "Submarket"), tipo: "texto", categorica: true },
+    { id: "modelo", rotulo: tx("Modelo", "Model"), tipo: "texto", categorica: true },
+    { id: "rodadas", rotulo: tx("Rodadas com número", "Runs with a number"), tipo: "numero", casas: 0 },
+    { id: "previsoes", rotulo: tx("Previsões por origem (R$/MWh)", "Forecasts by origin (R$/MWh)"), tipo: "texto" },
+    { id: "ultima_mudanca", rotulo: tx("Última mudança", "Latest change"), tipo: "numero", unidade: "R$/MWh", casas: 4 },
+  ];
+}
+export const COLUNAS_REVISOES: ColunaTabela[] = colunasRevisoes("pt");
 
 /** Rodada da gold correspondente a um run_id (para o detalhe da linha do arquivo). */
 export const rodadaDe = (rodadas: readonly Rodada[], run: string) => rodadas.find((r) => r.run_id === run) ?? null;
@@ -1527,7 +1929,8 @@ export const rodadaDe = (rodadas: readonly Rodada[], run: string) => rodadas.fin
 /* ---------------------------------------------------------------- redesenho: situação, papel, protocolo e avisos da rodada */
 
 /** "A, B e C": lista em português com "e" antes do último item. */
-export const listaE = (itens: readonly string[]) => (itens.length <= 1 ? (itens[0] ?? "") : `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`);
+export const listaE = (itens: readonly string[], idioma: Idioma = idiomaEnergia()) =>
+  itens.length <= 1 ? (itens[0] ?? "") : `${itens.slice(0, -1).join(", ")} ${tx("e", "and", idioma)} ${itens[itens.length - 1]}`;
 
 export type SituacaoModelo = {
   id: "pesquisa" | "experimental" | "validacao" | "producao" | "aposentado";
@@ -1540,53 +1943,73 @@ export type SituacaoModelo = {
  * principal (só PRODUÇÃO); a referência experimental é um modelo em pesquisa cujo número é publicado, identificado como tal e sem
  * aprovação. Os textos usam as palavras do próprio registro de modelos.
  */
-export function situacaoDoModelo(f: Pick<Ficha, "estado" | "aprovacao">): SituacaoModelo {
+export function situacaoDoModelo(f: Pick<Ficha, "estado" | "aprovacao">, idioma: Idioma = idiomaEnergia()): SituacaoModelo {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   switch (f.estado as EstadoModelo) {
     case "PRODUCAO":
-      return { id: "producao", rotulo: "Produção", definicao: "Aprovado; alimenta a previsão principal." };
+      return { id: "producao", rotulo: tx("Produção", "Production"), definicao: tx("Aprovado; alimenta a previsão principal.", "Approved; feeds the main forecast.") };
     case "APOSENTADO":
-      return { id: "aposentado", rotulo: "Aposentado", definicao: "Fora de uso; as previsões antigas ficam no arquivo." };
+      return { id: "aposentado", rotulo: tx("Aposentado", "Retired"), definicao: tx("Fora de uso; as previsões antigas ficam no arquivo.", "No longer in use; past forecasts remain in the archive.") };
     case "VALIDACAO":
-      return { id: "validacao", rotulo: "Validação", definicao: "Avaliado em área técnica; não alimenta a previsão principal." };
+      return { id: "validacao", rotulo: tx("Validação", "Validation"), definicao: tx("Avaliado em área técnica; não alimenta a previsão principal.", "Evaluated in a technical area; does not feed the main forecast.") };
     default:
       return f.aprovacao.referencia_experimental
-        ? { id: "experimental", rotulo: "Referência experimental", definicao: "Em pesquisa, com número publicado e identificado como experimental, sem aprovação." }
-        : { id: "pesquisa", rotulo: "Pesquisa", definicao: "Em estudo; não alimenta a previsão." };
+        ? {
+            id: "experimental",
+            rotulo: tx("Referência experimental", "Experimental benchmark"),
+            definicao: tx("Em pesquisa, com número publicado e identificado como experimental, sem aprovação.", "In research, with a published number identified as experimental, without approval."),
+          }
+        : { id: "pesquisa", rotulo: tx("Pesquisa", "Research"), definicao: tx("Em estudo; não alimenta a previsão.", "Under study; does not feed the forecast.") };
   }
 }
 
 /** Papel do modelo em poucas palavras ("Referência simples", "Referência sazonal", "Candidato"), sem o comentário entre parênteses do registro. */
-export function papelCurto(papel: string | null | undefined): string {
-  if (!papel) return "sem papel registrado";
-  return semCodigosInternos(papel).split(/\s*[(;]/)[0].trim() || "sem papel registrado";
+export function papelCurto(papel: string | null | undefined, idioma: Idioma = idiomaEnergia()): string {
+  const sem = tx("sem papel registrado", "no role recorded", idioma);
+  if (!papel) return sem;
+  const curtoPapel = semCodigosInternos(papel).split(/\s*[(;]/)[0].trim();
+  return curtoPapel ? reg(curtoPapel, idioma) : sem;
 }
 
 /** Com o que o modelo é comparado: as referências registradas para ele, ou a indicação de que ele próprio é uma referência. */
-function comparadoCom(f: Pick<Ficha, "codigo" | "papel">, registro: Pick<ModelosGold, "modelos"> | null | undefined): string {
+function comparadoCom(f: Pick<Ficha, "codigo" | "papel">, registro: Pick<ModelosGold, "modelos"> | null | undefined, idioma: Idioma): string {
   const m = registro?.modelos.find((x) => x.codigo === f.codigo);
-  if (!m) return "não registrado";
-  if (m.benchmarks.length) return listaE(m.benchmarks);
-  return /^Refer[eê]ncia/.test(f.papel ?? "") ? "é uma referência de comparação" : "não registrado";
+  if (!m) return tx("não registrado", "not recorded", idioma);
+  if (m.benchmarks.length) return listaE(m.benchmarks, idioma);
+  return /^Refer[eê]ncia/.test(f.papel ?? "") ? tx("é uma referência de comparação", "is a comparison benchmark", idioma) : tx("não registrado", "not recorded", idioma);
 }
 
 /** Protocolo do teste fora da amostra para o modelo: avaliado ou não, e se os números foram liberados. */
-function protocoloDoModelo(f: Pick<Ficha, "codigo" | "implementado_no_repositorio">, g: Pick<PrevisoesDesempenhoGold, "modelos" | "desempenho">): string {
+function protocoloDoModelo(f: Pick<Ficha, "codigo" | "implementado_no_repositorio">, g: Pick<PrevisoesDesempenhoGold, "modelos" | "desempenho">, idioma: Idioma): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   const m = g.modelos.find((x) => x.codigo === f.codigo);
-  if (!m?.avaliado) return f.implementado_no_repositorio ? "sem teste fora da amostra" : "sem teste fora da amostra: o modelo não pode ser refeito";
-  return g.desempenho.publicado ? "teste fora da amostra publicado" : "teste fora da amostra calculado, com os números retidos";
+  if (!m?.avaliado)
+    return f.implementado_no_repositorio
+      ? tx("sem teste fora da amostra", "no out-of-sample test")
+      : tx("sem teste fora da amostra: o modelo não pode ser refeito", "no out-of-sample test: the model cannot be redone");
+  return g.desempenho.publicado
+    ? tx("teste fora da amostra publicado", "out-of-sample test published")
+    : tx("teste fora da amostra calculado, com os números retidos", "out-of-sample test calculated, with the numbers withheld");
 }
 
 /** Reexecução do arquivo em poucas palavras, para a matriz de modelos. */
-export function reexecucaoCurta(f: Pick<Ficha, "implementado_no_repositorio" | "reproducao">): string {
+export function reexecucaoCurta(f: Pick<Ficha, "implementado_no_repositorio" | "reproducao">, idioma: Idioma = idiomaEnergia()): string {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   const r = f.reproducao?.reexecucao_do_arquivo;
-  if (!f.implementado_no_repositorio) return "não pode ser refeito";
-  if (!r) return "nenhuma previsão arquivada com número para refazer";
+  if (!f.implementado_no_repositorio) return tx("não pode ser refeito", "cannot be redone");
+  if (!r) return tx("nenhuma previsão arquivada com número para refazer", "no archived forecast with a number to redo");
   const div = r.divergentes.length;
-  return `${plural(r.conferidas, "previsão arquivada refeita", "previsões arquivadas refeitas")}, ${div === 0 ? "sem divergência" : `${div} com divergência`}`;
+  return tx(
+    `${plural(r.conferidas, "previsão arquivada refeita", "previsões arquivadas refeitas")}, ${div === 0 ? "sem divergência" : `${div} com divergência`}`,
+    `${plural(r.conferidas, "archived forecast redone", "archived forecasts redone", idioma)}, ${div === 0 ? "with no divergence" : `${div} with divergence`}`,
+  );
 }
 
 /** Resultado de uma conferência de cálculo em palavras que não sugerem aprovação do método: o observatório refaz a conta, não a valida por fora. */
-export const ROTULO_CONFERENCIA: Record<string, string> = { aprovado: "confere", ressalva: "confere com ressalva", reprovado: "não confere" };
+export const ROTULO_CONFERENCIA: Record<string, string> = { aprovado: "confere", ressalva: "confere com ressalva", reprovado: "não confere" }; // i18n: dado
+const ROTULO_CONFERENCIA_EN: Record<string, string> = { aprovado: "matches", ressalva: "matches with a caveat", reprovado: "does not match" };
+/** Resultado da conferência no idioma da página; código desconhecido volta como veio. */
+export const rotuloConferencia = (r: string, idioma: Idioma = idiomaEnergia()) => (idioma === "en" ? ROTULO_CONFERENCIA_EN : ROTULO_CONFERENCIA)[r] ?? r;
 
 /** Uma linha da matriz compacta de modelos (papel, situação, referência, emissão e protocolo). */
 export type LinhaMatrizModelo = {
@@ -1608,18 +2031,19 @@ export type LinhaMatrizModelo = {
 export function matrizModelos(
   g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual" | "modelos" | "desempenho">,
   registro: Pick<ModelosGold, "modelos"> | null | undefined,
+  idioma: Idioma = idiomaEnergia(),
 ): LinhaMatrizModelo[] {
   return fichasOrdenadas(g.fichas).map((f) => ({
     id: slugModelo(f.codigo),
     codigo: f.codigo,
-    nome: f.nome,
+    nome: reg(f.nome, idioma),
     versao: f.versao,
-    papel: papelCurto(f.papel),
-    situacao: situacaoDoModelo(f),
-    comparado: comparadoCom(f, registro),
-    emissao: emissaoDoModelo(f, g),
-    protocolo: protocoloDoModelo(f, g),
-    reexecucao: reexecucaoCurta(f),
+    papel: papelCurto(f.papel, idioma),
+    situacao: situacaoDoModelo(f, idioma),
+    comparado: comparadoCom(f, registro, idioma),
+    emissao: emissaoDoModelo(f, g, idioma),
+    protocolo: protocoloDoModelo(f, g, idioma),
+    reexecucao: reexecucaoCurta(f, idioma),
     revisao: registro?.modelos.find((x) => x.codigo === f.codigo)?.auditoria ?? null,
     href: rotaModelo(f.codigo),
   }));
@@ -1643,19 +2067,26 @@ export type CartaoModelo = {
   href: string;
 };
 
-export function cartoesModelos(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual">, registro: Pick<ModelosGold, "modelos"> | null | undefined): CartaoModelo[] {
+export function cartoesModelos(
+  g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual">,
+  registro: Pick<ModelosGold, "modelos"> | null | undefined,
+  idioma: Idioma = idiomaEnergia(),
+): CartaoModelo[] {
   return fichasOrdenadas(g.fichas).map((f) => ({
     id: slugModelo(f.codigo),
     codigo: f.codigo,
-    nome: f.nome,
+    nome: reg(f.nome, idioma),
     versao: f.versao,
     estado: f.estado,
-    papel: semCodigosInternos(f.papel ?? "sem papel registrado"),
-    emite: emissaoDoModelo(f, g),
-    entradas: f.entradas,
-    formula: formulaEmPalavras(f),
-    formulaRegistro: f.formula,
-    reexecucao: textoReexecucao(f),
+    papel: f.papel ? reg(semCodigosInternos(f.papel), idioma) : tx("sem papel registrado", "no role recorded", idioma),
+    emite: emissaoDoModelo(f, g, idioma),
+    entradas: f.entradas ? f.entradas.map((e) => reg(e, idioma)) : f.entradas,
+    formula: (() => {
+      const fp = formulaEmPalavras(f, idioma);
+      return fp ? reg(fp, idioma) : fp;
+    })(),
+    formulaRegistro: f.formula ? reg(f.formula, idioma) : f.formula,
+    reexecucao: textoReexecucao(f, idioma),
     limitacao:
       registro?.modelos.find((x) => x.codigo === f.codigo)?.limitacao_principal ??
       paraLeitorPrevisoes(f.limitacoes?.[0] ?? (f.motivo_sem_implementacao ? semCaminhosDeArquivo(f.motivo_sem_implementacao) : (f.motivo_sem_implementacao ?? ""))) ??
@@ -1667,21 +2098,26 @@ export function cartoesModelos(g: Pick<PrevisoesDesempenhoGold, "fichas" | "prev
 /** O que cada modelo recebe e como calcula: entradas, fórmula em palavras e pesos do último ajuste. */
 export type LinhaEntradas = { id: string; codigo: string; nome: string; entradas: string[] | null; formula: string; pesos: string; href: string };
 
-export function linhasEntradasFormula(fichas: readonly Ficha[]): LinhaEntradas[] {
+export function linhasEntradasFormula(fichas: readonly Ficha[], idioma: Idioma = idiomaEnergia()): LinhaEntradas[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   return fichasOrdenadas(fichas).map((f) => {
     const segs = f.coeficientes_ultimo_ajuste?.segmentos ?? [];
     const origem = segs.reduce((a, s) => (s.origem_ajuste > a ? s.origem_ajuste : a), "");
     const pesos = segs.length
-      ? `${plural(segs.length, "segmento ajustado", "segmentos ajustados")}; último ajuste em ${dataBR(origem)}`
+      ? tx(
+          `${plural(segs.length, "segmento ajustado", "segmentos ajustados")}; último ajuste em ${dataBR(origem)}`,
+          `${plural(segs.length, "fitted segment", "fitted segments", idioma)}; latest fit on ${dataBR(origem, idioma)}`,
+        )
       : !f.implementado_no_repositorio
-        ? "não publicados: a configuração da pesquisa não foi publicada"
-        : "sem pesos: não tem parâmetros ajustados";
+        ? tx("não publicados: a configuração da pesquisa não foi publicada", "not published: the research configuration was not published")
+        : tx("sem pesos: não tem parâmetros ajustados", "no weights: it has no fitted parameters");
+    const fp = formulaEmPalavras(f, idioma);
     return {
       id: slugModelo(f.codigo),
       codigo: f.codigo,
-      nome: f.nome,
-      entradas: f.entradas,
-      formula: formulaEmPalavras(f) ?? "não publicada: a configuração da pesquisa não foi publicada",
+      nome: reg(f.nome, idioma),
+      entradas: f.entradas ? f.entradas.map((e) => reg(e, idioma)) : f.entradas,
+      formula: fp ? reg(fp, idioma) : tx("não publicada: a configuração da pesquisa não foi publicada", "not published: the research configuration was not published"),
       pesos,
       href: rotaModelo(f.codigo),
     };
@@ -1695,7 +2131,7 @@ export function linhasEntradasFormula(fichas: readonly Ficha[]): LinhaEntradas[]
  */
 export function metricasModelos(g: Pick<PrevisoesDesempenhoGold, "fichas" | "modelos" | "desempenho" | "previsao_atual">) {
   const fs = fichasOrdenadas(g.fichas);
-  const comNumero = fs.filter((f) => ["previsão principal", "referência experimental publicada"].includes(emissaoDoModelo(f, g)));
+  const comNumero = fs.filter((f) => ["principal", "experimental"].includes(codigoEmissaoDoModelo(f, g)));
   const avaliados = g.modelos.filter((m) => m.avaliado).map((m) => m.codigo);
   const publicados = g.desempenho.publicado ? Array.from(new Set(g.desempenho.por_horizonte.filter((l) => l.periodo === "teste").map((l) => l.modelo))) : [];
   return {
@@ -1718,8 +2154,10 @@ export function revisaoIndependentePendente(g: Pick<PrevisoesDesempenhoGold, "go
 }
 
 /** Decisões de governança ainda sem decisão (estado "decisão pendente"), contadas do próprio registro. */
-export function decisoesPendentes(g: Pick<PrevisoesDesempenhoGold, "governanca">): { item: string; responsavel: string }[] {
-  return g.governanca.decisao_revisavel.filter((d) => /decis[aã]o pendente/i.test(d.estado ?? "")).map((d) => ({ item: d.item, responsavel: d.responsavel ?? "não indicado" }));
+export function decisoesPendentes(g: Pick<PrevisoesDesempenhoGold, "governanca">, idioma: Idioma = idiomaEnergia()): { item: string; responsavel: string }[] {
+  return g.governanca.decisao_revisavel
+    .filter((d) => /decis[aã]o pendente/i.test(d.estado ?? ""))
+    .map((d) => ({ item: d.item, responsavel: d.responsavel ?? tx("não indicado", "not stated", idioma) }));
 }
 
 /* ---------- avisos materiais da rodada, junto da emissão ---------- */
@@ -1735,7 +2173,9 @@ const ALERTAS_DA_RODADA = ["ATRASADO_APOS_08H", "EXECUCAO_MANUAL", "CODIGO_NAO_C
  */
 export function avisosDaRodada(
   r: Pick<Rodada, "modo" | "emitido_em" | "atraso_min" | "alertas" | "versao_codigo" | "celulas" | "com_numero" | "motivos" | "registrado_no_portal_em">,
+  idioma: Idioma = idiomaEnergia(),
 ): AvisoRodada[] {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   const out: AvisoRodada[] = [];
   const manual = r.modo.startsWith("manual");
   const tardia = r.alertas.includes("ATRASADO_APOS_08H") || (r.atraso_min ?? 0) > 0;
@@ -1744,48 +2184,62 @@ export function avisosDaRodada(
   if (manual || tardia) {
     out.push({
       id: "emissao",
-      rotulo: "Emissão",
-      texto: `Emitida ${manual ? "manualmente" : "pelo agendamento"} em ${instanteBR(r.emitido_em)}${tardia ? ", depois do prazo das 08h00" : ""}.`,
+      rotulo: tx("Emissão", "Issue"),
+      texto: tx(
+        `Emitida ${manual ? "manualmente" : "pelo agendamento"} em ${instanteBR(r.emitido_em, "pt")}${tardia ? ", depois do prazo das 08h00" : ""}.`,
+        `Issued ${manual ? "manually" : "by the schedule"} on ${instanteBR(r.emitido_em, idioma)}${tardia ? ", after the 08:00 deadline" : ""}.`,
+      ),
     });
   }
   if (r.alertas.includes("CODIGO_NAO_COMMITADO")) {
     out.push({
       id: "codigo",
-      rotulo: "Reprodutibilidade",
-      texto: "O código executado tinha alterações ainda não registradas em versão (sufixo +alterado).",
+      rotulo: tx("Reprodutibilidade", "Reproducibility"),
+      texto: tx(
+        "O código executado tinha alterações ainda não registradas em versão (sufixo +alterado).",
+        "The code that ran had changes not yet recorded in a version (suffix +alterado).",
+      ),
     });
   } else if (!r.versao_codigo) {
-    out.push({ id: "codigo", rotulo: "Reprodutibilidade", texto: "O registro não traz a versão do código que emitiu a rodada." });
+    out.push({ id: "codigo", rotulo: tx("Reprodutibilidade", "Reproducibility"), texto: tx("O registro não traz a versão do código que emitiu a rodada.", "The record does not carry the code version that issued the run.") });
   }
   if (transcrita) {
     out.push({
       id: "transcricao",
-      rotulo: "Registro",
-      texto: `Transcrito de outra fonte e incluído no arquivo em ${dataBR(r.registrado_no_portal_em)}, depois da emissão: não é emissão original do observatório.`,
+      rotulo: tx("Registro", "Record"),
+      texto: tx(
+        `Transcrito de outra fonte e incluído no arquivo em ${dataBR(r.registrado_no_portal_em)}, depois da emissão: não é emissão original do observatório.`,
+        `Transcribed from another source and included in the archive on ${dataBR(r.registrado_no_portal_em, idioma)}, after issue: it is not an original issue by the observatory.`,
+      ),
     });
   }
   if (r.com_numero === 0) {
+    const motivos = r.motivos.length ? `: ${r.motivos.map((m) => textoMotivo(m, idioma)).join("; ")}` : "";
     out.push({
       id: "sem-numero",
-      rotulo: "Números",
-      texto: `Nenhuma das ${r.celulas} células tem número${r.motivos.length ? `: ${r.motivos.map(textoMotivo).join("; ")}` : ""}.`,
+      rotulo: tx("Números", "Numbers"),
+      texto: tx(`Nenhuma das ${r.celulas} células tem número${motivos}.`, `None of the ${r.celulas} cells has a number${motivos}.`),
     });
   }
   const outros = r.alertas.filter((a) => !ALERTAS_DA_RODADA.includes(a));
-  if (outros.length) out.push({ id: "alertas", rotulo: "Alertas", texto: `Alertas registrados: ${textoAlertas(outros)}.` });
+  if (outros.length) out.push({ id: "alertas", rotulo: tx("Alertas", "Alerts"), texto: tx(`Alertas registrados: ${textoAlertas(outros, "pt")}.`, `Recorded alerts: ${textoAlertas(outros, idioma)}.`) });
   return out;
 }
 
 /** Governança da rotina de emissão: aviso enquanto a rotina diária não estiver comprovada pelo critério publicado. */
-export function avisoDaRotina(r: Pick<PrevisoesDesempenhoGold["rotina"], "comprovada" | "execucoes_agendadas" | "no_prazo">): AvisoRodada | null {
+export function avisoDaRotina(r: Pick<PrevisoesDesempenhoGold["rotina"], "comprovada" | "execucoes_agendadas" | "no_prazo">, idioma: Idioma = idiomaEnergia()): AvisoRodada | null {
   if (r.comprovada) return null;
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
   return {
     id: "rotina",
-    rotulo: "Governança",
+    rotulo: tx("Governança", "Governance"),
     texto:
       r.execucoes_agendadas === 0
-        ? "A rotina diária de emissão não foi comprovada: nenhuma execução agendada está registrada."
-        : `A rotina diária de emissão não foi comprovada: ${r.no_prazo} de ${r.execucoes_agendadas} execuções agendadas saíram no prazo, abaixo do critério publicado.`,
+        ? tx("A rotina diária de emissão não foi comprovada: nenhuma execução agendada está registrada.", "The daily issue routine has not been demonstrated: no scheduled run is recorded.")
+        : tx(
+            `A rotina diária de emissão não foi comprovada: ${r.no_prazo} de ${r.execucoes_agendadas} execuções agendadas saíram no prazo, abaixo do critério publicado.`,
+            `The daily issue routine has not been demonstrated: ${r.no_prazo} of ${r.execucoes_agendadas} scheduled runs came out on time, below the published criterion.`,
+          ),
   };
 }
 
@@ -1810,8 +2264,8 @@ export type AvaliacaoFrequencia = {
  * entrega a terminar e o tamanho da amostra do teste fora da amostra contra o mínimo para calibrar a faixa. Lê as apurações do
  * acompanhamento e a amostra de calibração, os mesmos números dos gráficos de desempenho.
  */
-export function avaliacaoPorFrequencia(g: Pick<PrevisoesDesempenhoGold, "prospectivo" | "definicoes">): AvaliacaoFrequencia[] {
-  const amostra = linhasAmostra(g);
+export function avaliacaoPorFrequencia(g: Pick<PrevisoesDesempenhoGold, "prospectivo" | "definicoes">, idioma: Idioma = idiomaEnergia()): AvaliacaoFrequencia[] {
+  const amostra = linhasAmostra(g, idioma);
   return (["W", "M"] as const).map((freq) => {
     const ap = g.prospectivo.apuracoes.filter((a) => a.horizonte.startsWith(freq));
     const apuradas = ap.filter((a) => a.realizado !== null).length;
@@ -1819,7 +2273,7 @@ export function avaliacaoPorFrequencia(g: Pick<PrevisoesDesempenhoGold, "prospec
     const ns = da.map((a) => a.entregas).filter((n): n is number => typeof n === "number");
     return {
       frequencia: freq,
-      rotulo: freq === "W" ? "Semanas" : "Meses",
+      rotulo: freq === "W" ? tx("Semanas", "Weeks", idioma) : tx("Meses", "Months", idioma),
       horizontes: HORIZONTES.filter((h) => h.startsWith(freq)),
       registradas: ap.length,
       apuradas,
@@ -1833,19 +2287,32 @@ export function avaliacaoPorFrequencia(g: Pick<PrevisoesDesempenhoGold, "prospec
 }
 
 /** Resumo do B0 de um submercado e uma frequência: o número da rodada, os horizontes e o período que ele repete. A faixa de métricas e o painel leem esta função. */
-export function resumoB0(linhas: readonly LinhaGrade[], sm: Submercado, freq: Frequencia) {
+export function resumoB0(linhas: readonly LinhaGrade[], sm: Submercado, freq: Frequencia, idioma: Idioma = idiomaEnergia()) {
+  const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
+  const D = (d: string) => dataBR(d, idioma);
   const doSm = linhas.filter((l) => l.submercado === sm && l.horizonte.startsWith(freq));
   const com = doSm.find((l) => l.evidencia);
   return {
     valor: com?.previsao ?? null,
     evidencia: com?.evidencia ?? null,
     horizontes: doSm.map((l) => l.horizonte),
-    periodo: doSm.length ? `${doSm[0].horizonte} a ${doSm[doSm.length - 1].horizonte}: ${dataBR(doSm[0].inicio)} a ${dataBR(doSm[doSm.length - 1].fim)}` : "",
+    periodo: doSm.length
+      ? tx(
+          `${doSm[0].horizonte} a ${doSm[doSm.length - 1].horizonte}: ${dataBR(doSm[0].inicio)} a ${dataBR(doSm[doSm.length - 1].fim)}`,
+          `${doSm[0].horizonte} to ${doSm[doSm.length - 1].horizonte}: ${D(doSm[0].inicio)} to ${D(doSm[doSm.length - 1].fim)}`,
+        )
+      : "",
     usado:
       com?.periodo_inicio && com.periodo_fim
-        ? `Repete a média de ${dataBR(com.periodo_inicio)} a ${dataBR(com.periodo_fim)}, o último período completo elegível no corte.`
+        ? tx(
+            `Repete a média de ${dataBR(com.periodo_inicio)} a ${dataBR(com.periodo_fim)}, o último período completo elegível no corte.`,
+            `It repeats the average from ${D(com.periodo_inicio)} to ${D(com.periodo_fim)}, the latest complete period eligible at the cutoff.`,
+          )
         : undefined,
     /** O mesmo aviso em uma linha, para a faixa de métricas da abertura. */
-    usadoCurto: com?.periodo_inicio && com.periodo_fim ? `Repete a média de ${intervaloDias(com.periodo_inicio, com.periodo_fim)}.` : undefined,
+    usadoCurto:
+      com?.periodo_inicio && com.periodo_fim
+        ? tx(`Repete a média de ${intervaloDias(com.periodo_inicio, com.periodo_fim, "pt")}.`, `It repeats the average from ${intervaloDias(com.periodo_inicio, com.periodo_fim, idioma)}.`)
+        : undefined,
   };
 }
