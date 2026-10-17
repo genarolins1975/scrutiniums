@@ -6,8 +6,10 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { TransicaoOpcoes } from "@/components/energia/TransicaoOpcoes";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { COLUNAS_ONS_MENSAL, ESQUEMA_ONS, SERIES_ONS, dadosOnsMensal, linhasOnsMensal, type MedidaOns, type SerieOns } from "@/lib/energia/transicao";
+import { ESQUEMA_ONS, SERIES_ONS, colunasOnsMensal, dadosOnsMensal, linhasOnsMensal, type MedidaOns, type SerieOns } from "@/lib/energia/transicao";
 import type { OnsMmgdMes } from "@/lib/energia/tipos-transicao";
+import { nomeSubmercado } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Estimativa de MMGD do ONS (energia, MWmed, só SIN): a série mensal com a medida
@@ -21,41 +23,47 @@ import type { OnsMmgdMes } from "@/lib/energia/tipos-transicao";
  * só na tabela, em coluna própria, ao lado da razão rotulada; nunca somada.
  */
 
-const OPCOES: readonly (readonly [MedidaOns, string])[] = [
-  ["mwmed", "Energia estimada (MWmed)"],
-  ["part", "Participação na carga global (%)"],
-];
-
 export function TransicaoOnsMensal({ mensal, fonte, versao }: { mensal: OnsMmgdMes[]; fonte: string; versao: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const OPCOES: readonly (readonly [MedidaOns, string])[] = [
+    ["mwmed", tx("Energia estimada (MWmed)", "Estimated energy (MWavg)")],
+    ["part", tx("Participação na carga global (%)", "Share of the gross load (%)")],
+  ];
   const [v, definir] = useEstadoUrl(ESQUEMA_ONS);
   const dados = useMemo(() => dadosOnsMensal(mensal, v.med), [mensal, v.med]);
-  const linhas = useMemo(() => linhasOnsMensal(mensal), [mensal]);
+  const linhas = useMemo(() => linhasOnsMensal(mensal, idioma), [mensal, idioma]);
   const intervalo = v.de && v.ate && v.de <= v.ate ? { inicio: v.de, fim: v.ate } : null;
   const temIncompleto = mensal.some((m) => !m.completo);
+  const sinCompleto = { id: "sin", rotulo: tx("SIN, mês completo", "SIN, full month"), sigla: "SIN", cor: "var(--cor-carvao)", espessura: 3 };
+  const sinIncompleto = temIncompleto
+    ? [{ id: "sin_incompleto", rotulo: tx("SIN, mês incompleto", "SIN, incomplete month"), sigla: tx("Incompleto", "Incomplete"), cor: "var(--serie-referencia)", tracejada: true }]
+    : [];
   const series =
     v.med === "mwmed"
       ? [
-          { id: "sin", rotulo: "SIN, mês completo", sigla: "SIN", cor: "var(--cor-carvao)", espessura: 3 },
-          ...(temIncompleto ? [{ id: "sin_incompleto", rotulo: "SIN, mês incompleto", sigla: "Incompleto", cor: "var(--serie-referencia)", tracejada: true }] : []),
-          { id: "SE", rotulo: "Sudeste/Centro-Oeste", sigla: "SE/CO", cor: "var(--serie-sm-se)" },
-          { id: "S", rotulo: "Sul", sigla: "S", cor: "var(--serie-sm-s)" },
-          { id: "NE", rotulo: "Nordeste", sigla: "NE", cor: "var(--serie-sm-ne)" },
-          { id: "N", rotulo: "Norte", sigla: "N", cor: "var(--serie-sm-n)" },
+          sinCompleto,
+          ...sinIncompleto,
+          { id: "SE", rotulo: nomeSubmercado("SE", idioma), sigla: nomeSubmercado("SE", idioma, true), cor: "var(--serie-sm-se)" },
+          { id: "S", rotulo: nomeSubmercado("S", idioma), sigla: "S", cor: "var(--serie-sm-s)" },
+          { id: "NE", rotulo: nomeSubmercado("NE", idioma), sigla: "NE", cor: "var(--serie-sm-ne)" },
+          { id: "N", rotulo: nomeSubmercado("N", idioma), sigla: "N", cor: "var(--serie-sm-n)" },
         ]
-      : [
-          { id: "sin", rotulo: "SIN, mês completo", sigla: "SIN", cor: "var(--cor-carvao)", espessura: 3 },
-          ...(temIncompleto ? [{ id: "sin_incompleto", rotulo: "SIN, mês incompleto", sigla: "Incompleto", cor: "var(--serie-referencia)", tracejada: true }] : []),
-        ];
+      : [sinCompleto, ...sinIncompleto];
   return (
     <div className="space-y-5">
-      <TransicaoOpcoes rotulo="Medida" nome="transicao-ons-med" opcoes={OPCOES} valor={v.med} onMudar={(med) => definir({ med })} />
+      <TransicaoOpcoes rotulo={tx("Medida", "Measure")} nome="transicao-ons-med" opcoes={OPCOES} valor={v.med} onMudar={(med) => definir({ med })} />
       <GraficoLinhas
-        titulo={v.med === "mwmed" ? "MMGD estimada pelo ONS por mês, SIN e submercados" : "MMGD estimada na carga global do SIN, por mês"}
+        titulo={
+          v.med === "mwmed"
+            ? tx("MMGD estimada pelo ONS por mês, SIN e submercados", "MMGD estimated by the ONS by month, SIN and submarkets")
+            : tx("MMGD estimada na carga global do SIN, por mês", "Estimated MMGD in the SIN gross load, by month")
+        }
         dados={dados}
         chaveX="m"
         formatoX="mes"
         series={series}
-        unidade={v.med === "mwmed" ? "MWmed" : "%"}
+        unidade={v.med === "mwmed" ? tx("MWmed", "MWavg") : "%"}
         casas={v.med === "mwmed" ? 0 : 2}
         zeroNoEixo
         zoom
@@ -67,8 +75,8 @@ export function TransicaoOnsMensal({ mensal, fonte, versao }: { mensal: OnsMmgdM
         altura={300}
       />
       <TabelaInterativa
-        titulo="MMGD estimada pelo ONS e capacidade cadastrada, por mês"
-        colunas={COLUNAS_ONS_MENSAL}
+        titulo={tx("MMGD estimada pelo ONS e capacidade cadastrada, por mês", "MMGD estimated by the ONS and registered capacity, by month")}
+        colunas={colunasOnsMensal(idioma)}
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="m"
@@ -77,8 +85,11 @@ export function TransicaoOnsMensal({ mensal, fonte, versao }: { mensal: OnsMmgdM
         nomeArquivo="transicao-ons-mmgd-mensal"
         chaveUrl="ons.tab"
         ordemInicial={{ coluna: "m", direcao: "desc" }}
-        dicaBusca="Mês (08/2025)"
-        nota="MWmed do mês = energia do mês ÷ horas cobertas. SIN só nos dias com as 24 horas dos quatro submercados. A razão com a capacidade compara perímetros diferentes (SIN e Brasil) e fica vazia em mês incompleto ou com cadastro provisório."
+        dicaBusca={tx("Mês (08/2025)", "Month (08/2025)")}
+        nota={tx(
+          "MWmed do mês = energia do mês ÷ horas cobertas. SIN só nos dias com as 24 horas dos quatro submercados. A razão com a capacidade compara perímetros diferentes (SIN e Brasil) e fica vazia em mês incompleto ou com cadastro provisório.",
+          "Monthly MWavg = energy of the month ÷ hours covered. SIN only on days with all 24 hours of the four submarkets. The ratio with capacity compares different perimeters (SIN and Brazil) and is empty in an incomplete month or with a provisional register.",
+        )}
       />
     </div>
   );
@@ -99,32 +110,39 @@ export function TransicaoConferencia2023({
   /** Data e hora da captura da carga verificada, já formatadas (horário de Brasília). */
   captura: string;
 }) {
+  const tx = useTx();
   const marcos = marco ? [marco] : [];
   return (
     <CursorSincronizado>
       <div className="space-y-5">
         <GraficoLinhas
-          titulo="Solar no Balanço de Energia do SIN e MMGD estimada pelo ONS, por dia"
+          titulo={tx("Solar no Balanço de Energia do SIN e MMGD estimada pelo ONS, por dia", "Solar in the SIN Energy Balance and MMGD estimated by the ONS, by day")}
           dados={dias}
           chaveX="d"
           formatoX="data"
           series={[
-            { id: "solar", rotulo: "Solar no balanço do SIN", sigla: "Solar", cor: "var(--serie-solar)" },
-            { id: "mmgd", rotulo: `MMGD estimada (carga verificada, captura de ${captura})`, sigla: "MMGD", cor: "var(--cor-carvao)", tracejada: true },
+            { id: "solar", rotulo: tx("Solar no balanço do SIN", "Solar in the SIN balance"), sigla: "Solar", cor: "var(--serie-solar)" },
+            {
+              id: "mmgd",
+              rotulo: tx(`MMGD estimada (carga verificada, captura de ${captura})`, `Estimated MMGD (verified load, capture of ${captura})`),
+              sigla: "MMGD",
+              cor: "var(--cor-carvao)",
+              tracejada: true,
+            },
           ]}
-          unidade="MWmed"
+          unidade={tx("MWmed", "MWavg")}
           casas={0}
           zeroNoEixo
           marcos={marcos}
           altura={260}
         />
         <GraficoLinhas
-          titulo="Carga no Balanço de Energia do SIN, por dia"
+          titulo={tx("Carga no Balanço de Energia do SIN, por dia", "Load in the SIN Energy Balance, by day")}
           dados={dias}
           chaveX="d"
           formatoX="data"
-          series={[{ id: "carga", rotulo: "Carga no balanço do SIN", sigla: "Carga", cor: "var(--cor-energia)" }]}
-          unidade="MWmed"
+          series={[{ id: "carga", rotulo: tx("Carga no balanço do SIN", "Load in the SIN balance"), sigla: tx("Carga", "Load"), cor: "var(--cor-energia)" }]} // i18n: dado
+          unidade={tx("MWmed", "MWavg")}
           casas={0}
           marcos={marcos}
           altura={220}

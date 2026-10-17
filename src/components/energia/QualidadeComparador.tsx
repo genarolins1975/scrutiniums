@@ -7,7 +7,8 @@ import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
 import { QualidadeEscala } from "@/components/energia/QualidadeEscala";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl, type Leitor } from "@/lib/energia/estadoUrl";
-import { carregarUmaVez, linhasSerieDistribuidoras, respostaHistoricoDistribuidora, type AvisosFec } from "@/lib/energia/qualidade";
+import { carregarUmaVez, linhasSerieDistribuidoras, respostaHistoricoDistribuidora, unidadeIndicador, type AvisosFec } from "@/lib/energia/qualidade";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { EscalaPaineis } from "@/lib/energia/series-temporais";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { QualidadeSeriesDistribuidorasGold } from "@/lib/energia/tipos-qualidade";
@@ -44,6 +45,8 @@ export function QualidadeComparador({
   // o padrão depende da gold, então o esquema é montado uma vez por instância (estável)
   const esquema = useMemo(() => ({ dist: campo(tiposUrl.lista(leitorCnpj, { max: LIMITE_COMPARACAO }), padrao, { param: "dist" }) }), [padrao.join(",")]); // eslint-disable-line react-hooks/exhaustive-deps
   const [v, definir] = useEstadoUrl(esquema);
+  const idioma = useIdioma();
+  const tx = useTx();
   const [serie, setSerie] = useState<QualidadeSeriesDistribuidorasGold | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [escala, setEscala] = useState<EscalaPaineis>("compartilhada");
@@ -69,13 +72,15 @@ export function QualidadeComparador({
       // o título do painel diz o indicador: a mesma distribuidora aparece uma vez no bloco do DEC e outra no do FEC
       titulo: `${nomes.get(c) ?? `CNPJ ${c}`}, ${ind === "dec" ? "DEC" : "FEC"}`,
       series: [
-        { id: `${ind}_${c}`, rotulo: ind === "dec" ? "DEC apurado" : "FEC apurado", cor: "var(--cor-energia)" },
-        { id: `lim_${c}`, rotulo: "Limite", cor: "var(--serie-referencia)", tracejada: true },
+        { id: `${ind}_${c}`, rotulo: ind === "dec" ? tx("DEC apurado", "Assessed DEC") : tx("FEC apurado", "Assessed FEC"), cor: "var(--cor-energia)" }, // i18n: dado
+        { id: `lim_${c}`, rotulo: tx("Limite", "Limit"), cor: "var(--serie-referencia)", tracejada: true },
       ],
       nota:
         [
-          serie?.distribuidoras[c]?.quebras.length ? `perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}` : null,
-          ind === "fec" && avisosFec[c] ? `${avisosFec[c].ano}: FEC de cobertura parcial` : null,
+          serie?.distribuidoras[c]?.quebras.length
+            ? tx(`perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}`, `perimeter changed in ${serie.distribuidoras[c].quebras.join(", ")}`)
+            : null,
+          ind === "fec" && avisosFec[c] ? tx(`${avisosFec[c].ano}: FEC de cobertura parcial`, `${avisosFec[c].ano}: FEC with partial coverage`) : null,
         ]
           .filter(Boolean)
           .join("; ") || undefined,
@@ -83,7 +88,7 @@ export function QualidadeComparador({
 
   const bloco = (ind: "dec" | "fec", dados: ReturnType<typeof linhasSerieDistribuidoras>) => {
     const nome = ind === "dec" ? "DEC" : "FEC";
-    const unidade = ind === "dec" ? "h" : "interrupções";
+    const unidade = unidadeIndicador(ind, idioma);
     const unica = escolhidas.length === 1 ? escolhidas[0] : null;
     return (
       <div className="space-y-3" data-comparador-indicador={ind}>
@@ -91,7 +96,7 @@ export function QualidadeComparador({
         <ul className="space-y-1 text-sm text-carvao" aria-live={ind === "dec" ? "polite" : undefined}>
           {escolhidas.map((c) => (
             <li key={c}>
-              {respostaHistoricoDistribuidora(nomes.get(c) ?? `CNPJ ${c}`, serie?.distribuidoras[c], ind)}
+              {respostaHistoricoDistribuidora(nomes.get(c) ?? `CNPJ ${c}`, serie?.distribuidoras[c], ind, idioma)}
               {ind === "fec" && avisosFec[c] && ` ${avisosFec[c].frase}`}
             </li>
           ))}
@@ -99,27 +104,29 @@ export function QualidadeComparador({
         {unica ? (
           // uma distribuidora só (o link vindo de outra página): um gráfico com a largura da coluna, em vez de um painel com a célula vizinha vazia
           <GraficoLinhas
-            titulo={`${nome} anual e limite de ${nomes.get(unica) ?? `CNPJ ${unica}`}`}
+            titulo={tx(`${nome} anual e limite de ${nomes.get(unica) ?? `CNPJ ${unica}`}`, `Annual ${nome} and limit of ${nomes.get(unica) ?? `CNPJ ${unica}`}`)}
             dados={dados}
-            chaveX="ano"
+            chaveX="ano" // i18n: dado
             formatoX="texto"
             series={[
-              { id: `${ind}_${unica}`, rotulo: `${nome} apurado`, cor: "var(--cor-energia)" },
-              { id: `lim_${unica}`, rotulo: "Limite do ano", cor: "var(--serie-referencia)", tracejada: true },
+              { id: `${ind}_${unica}`, rotulo: tx(`${nome} apurado`, `Assessed ${nome}`), cor: "var(--cor-energia)" }, // i18n: dado
+              { id: `lim_${unica}`, rotulo: tx("Limite do ano", "Limit of the year"), cor: "var(--serie-referencia)", tracejada: true },
             ]}
             unidade={unidade}
             casas={2}
             altura={240}
             marcos={[
-              ...(serie?.distribuidoras[unica]?.quebras ?? []).map((q) => ({ x: String(q), rotulo: `${q}: perímetro mudou` })),
-              ...(ind === "fec" && avisosFec[unica] ? [{ x: String(avisosFec[unica].ano), rotulo: `${avisosFec[unica].ano}: FEC de cobertura parcial` }] : []),
+              ...(serie?.distribuidoras[unica]?.quebras ?? []).map((q) => ({ x: String(q), rotulo: tx(`${q}: perímetro mudou`, `${q}: perimeter changed`) })),
+              ...(ind === "fec" && avisosFec[unica]
+                ? [{ x: String(avisosFec[unica].ano), rotulo: tx(`${avisosFec[unica].ano}: FEC de cobertura parcial`, `${avisosFec[unica].ano}: FEC with partial coverage`) }]
+                : []),
             ]}
           />
         ) : (
           <PequenosMultiplos
-            titulo={`${nome} anual diante do limite de cada distribuidora`}
+            titulo={tx(`${nome} anual diante do limite de cada distribuidora`, `Annual ${nome} against the limit of each distribution utility`)}
             dados={dados}
-            chaveX="ano"
+            chaveX="ano" // i18n: dado
             formatoX="texto"
             unidade={unidade}
             casas={2}
@@ -136,23 +143,29 @@ export function QualidadeComparador({
   return (
     <div className="space-y-5">
       <Comparador
-        rotulo="Distribuidoras nos pequenos múltiplos (até 4)"
+        rotulo={tx("Distribuidoras nos pequenos múltiplos (até 4)", "Distribution utilities in the small multiples (up to 4)")}
         entidades={entidades}
         selecionadas={escolhidas}
         onMudar={(ids) => definir({ dist: ids })}
-        dicaBusca="Sigla, nome ou CNPJ"
-        vazio="Nenhuma distribuidora escolhida. Escolha aqui, no gráfico de limites ou pelo município no mapa."
+        dicaBusca={tx("Sigla, nome ou CNPJ", "Acronym, name or CNPJ")}
+        vazio={tx(
+          "Nenhuma distribuidora escolhida. Escolha aqui, no gráfico de limites ou pelo município no mapa.",
+          "No distribution utility selected. Choose here, in the limits chart or through the municipality on the map.",
+        )}
       >
         {() => null}
       </Comparador>
       {erro && (
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-          Não foi possível carregar as séries por distribuidora ({erro}). Os mesmos valores estão no CSV anual por distribuidora, na lista de downloads do painel.
+          {tx(
+            <>Não foi possível carregar as séries por distribuidora ({erro}). Os mesmos valores estão no CSV anual por distribuidora, na lista de downloads do painel.</>,
+            <>The series by distribution utility could not be loaded ({erro}). The same values are in the annual CSV by distribution utility, in the panel&apos;s download list.</>,
+          )}
         </p>
       )}
       {!serie && !erro && (
         <p role="status" className="text-sm text-carvao-muted">
-          Carregando as séries anuais por distribuidora…
+          {tx("Carregando as séries anuais por distribuidora…", "Loading the annual series by distribution utility…")}
         </p>
       )}
       {serie && escolhidas.length > 1 && <QualidadeEscala valor={escala} onMudar={setEscala} />}

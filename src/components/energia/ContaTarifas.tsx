@@ -13,14 +13,16 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import {
   CAMPO_DIST,
   CAMPO_GRUPO,
   CAMPO_PERFIL,
   CAMPO_UF,
-  COLUNAS_RANKING,
+  colunasRanking,
   LIMITE_DIFERENCA_BASE,
   ROTULO_TIPO,
+  ROTULO_TIPO_EN,
   destacar,
   destaquesDoPerfil,
   dicaDaRegua,
@@ -84,11 +86,6 @@ const ESQUEMA = {
   uf: CAMPO_UF,
 };
 
-const OPCOES_PERFIL: OpcaoConta<"100" | "200" | "300">[] = (["100", "200", "300"] as const).map((p) => ({ id: p, rotulo: `${p} kWh/mês` }));
-const OPCOES_LEITURA: OpcaoConta<"perfil" | "tarifa">[] = [
-  { id: "perfil", rotulo: "Custo do perfil (R$/mês)" },
-  { id: "tarifa", rotulo: "Tarifa TE + TUSD (R$/MWh)" },
-];
 
 export type ContaTarifasProps = {
   /** As distribuidoras do ranking em tuplas (`compactarVigentes`). */
@@ -108,11 +105,18 @@ export type ContaTarifasProps = {
 
 export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, fonte, info: infoCompacta, fora: foraCompacto, recorte, notas }: ContaTarifasProps) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
+  const idioma = useIdioma();
+  const tx = useTx();
+  const OPCOES_PERFIL: OpcaoConta<"100" | "200" | "300">[] = (["100", "200", "300"] as const).map((p) => ({ id: p, rotulo: tx(`${p} kWh/mês`, `${p} kWh/month`) }));
+  const OPCOES_LEITURA: OpcaoConta<"perfil" | "tarifa">[] = [
+    { id: "perfil", rotulo: tx("Custo do perfil (R$/mês)", "Profile cost (R$/month)") },
+    { id: "tarifa", rotulo: tx("Tarifa TE + TUSD (R$/MWh)", "TE + TUSD tariff (R$/MWh)") },
+  ];
   const info = useMemo(() => expandirInfo(infoCompacta), [infoCompacta]);
   const vigentes = useMemo(() => expandirVigentes(compactos), [compactos]);
   const fora = useMemo(() => expandirFora(foraCompacto), [foraCompacto]);
   const perfil = Number(v.perfil) as Perfil;
-  const todas = useMemo(() => linhasRanking(vigentes, perfil, info), [vigentes, perfil, info]);
+  const todas = useMemo(() => linhasRanking(vigentes, perfil, info, idioma), [vigentes, perfil, info, idioma]);
   const ufs = useMemo(() => ufsDoRanking(todas), [todas]);
   const uf = ufs.some((x) => x.uf === v.uf) ? v.uf : "";
   const grupo = v.grupo as GrupoRanking;
@@ -120,7 +124,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
   const filtrado = linhas.length !== todas.length;
   const resumoGrupo = useMemo(() => resumoDoRanking(linhas), [linhas]);
   const regua = useMemo(() => reguaDoRanking(todas), [todas]);
-  const linhaFora = useMemo(() => textoForaDoRankingLinha(resumoForaDoRanking(fora)), [fora]);
+  const linhaFora = useMemo(() => textoForaDoRankingLinha(resumoForaDoRanking(fora), idioma), [fora, idioma]);
   const referencias = useMemo(() => referenciasDoPerfil(vigentes, resumo, perfil), [vigentes, resumo, perfil]);
   const destaque = v.dist[0] ?? null;
   const naRanking = destaque !== null && todas.some((l) => l.id === destaque);
@@ -137,7 +141,14 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
     if (id) {
       // o limite de quatro descarta a escolha mais antiga: o aviso diz qual saiu
       const descartada = !v.dist.includes(id) && v.dist.length >= LIMITE_COMPARACAO ? v.dist[LIMITE_COMPARACAO - 1] : null;
-      setAviso(descartada ? `O limite é de ${LIMITE_COMPARACAO} distribuidoras: ${rotulo(descartada)} saiu da seleção para entrar ${rotulo(id)}.` : null);
+      setAviso(
+        descartada
+          ? tx(
+              `O limite é de ${LIMITE_COMPARACAO} distribuidoras: ${rotulo(descartada)} saiu da seleção para entrar ${rotulo(id)}.`,
+              `The limit is ${LIMITE_COMPARACAO} distribution utilities: ${rotulo(descartada)} left the selection so that ${rotulo(id)} could enter.`,
+            )
+          : null,
+      );
       definir({ dist: destacar(v.dist, id) });
     } else if (destaque) {
       setAviso(null);
@@ -148,32 +159,44 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
     const validos = m.vinculos.filter((x) => x.estado !== 0);
     const usados = (validos.length ? validos : m.vinculos).map((x) => x.cnpj).filter((c) => nomes.has(c));
     setAviso(null);
-    setMunicipio(textoMunicipioEncontrado(m, todas, perfil, dataReferencia));
+    setMunicipio(textoMunicipioEncontrado(m, todas, perfil, dataReferencia, idioma));
     if (usados.length) definir({ dist: usados.slice(0, LIMITE_COMPARACAO) });
   };
-  const resposta = respostaTarifa(dataReferencia, resumo, vigentes, perfil);
+  const resposta = respostaTarifa(dataReferencia, resumo, vigentes, perfil, idioma);
   const chavePerfil = String(perfil) as "100" | "200" | "300";
   // distribuidoras por ordem alfabética, com a UF: quem procura a sua pelo nome não precisa percorrer o ranking de 81 barras; as que ficaram
   // fora do ranking vêm num grupo à parte, para que quem mora numa delas ache a sua e leia o motivo
   const opcoesDistribuidora = useMemo<OpcaoConta<string>[]>(
     () => [
-      { id: "", rotulo: "Nenhuma" },
+      { id: "", rotulo: tx("Nenhuma", "None") },
       ...todas
         .map((l) => ({ id: l.id, rotulo: l.uf ? `${l.sigla} (${l.uf})` : l.sigla }))
         .sort((a, b) => a.rotulo.localeCompare(b.rotulo, "pt-BR")),
       ...fora
         .filter((f) => f.situacao !== "incorporada")
-        .map((f) => ({ id: f.id, rotulo: f.sigla, grupo: `Sem tarifa vigente na data (${fora.filter((x) => x.situacao !== "incorporada").length})` }))
+        .map((f) => {
+          const n = fora.filter((x) => x.situacao !== "incorporada").length;
+          return { id: f.id, rotulo: f.sigla, grupo: tx(`Sem tarifa vigente na data (${n})`, `No tariff in force on the date (${n})`) };
+        })
         .sort((a, b) => a.rotulo.localeCompare(b.rotulo, "pt-BR")),
     ],
-    [todas, fora],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [todas, fora, idioma],
   );
   const opcoesGrupo = useMemo<OpcaoConta<GrupoRanking>[]>(() => {
     const n = (g: GrupoRanking) => filtrarRanking(todas, g, "").length;
     const tipos = (["concessionaria", "permissionaria"] as const).filter((g) => n(g) > 0);
-    return [{ id: "todas", rotulo: `Todas (${todas.length})` }, ...tipos.map((g) => ({ id: g, rotulo: `${ROTULO_TIPO[g]}s (${n(g)})` }))];
-  }, [todas]);
-  const opcoesUf = useMemo<OpcaoConta<string>[]>(() => [{ id: "", rotulo: "Todas as UFs" }, ...ufs.map((x) => ({ id: x.uf, rotulo: `${x.uf} (${x.n})` }))], [ufs]);
+    return [
+      { id: "todas", rotulo: tx(`Todas (${todas.length})`, `All (${todas.length})`) }, // i18n: dado
+      ...tipos.map((g) => ({ id: g, rotulo: tx(`${ROTULO_TIPO[g]}s (${n(g)})`, `${ROTULO_TIPO_EN[g]}s (${n(g)})`) })),
+    ];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [todas, idioma]);
+  const opcoesUf = useMemo<OpcaoConta<string>[]>(
+    () => [{ id: "", rotulo: tx("Todas as UFs", "All states") }, ...ufs.map((x) => ({ id: x.uf, rotulo: `${x.uf} (${x.n})` }))],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [ufs, idioma],
+  );
 
   // a lista do ranking mostra só parte das barras (rola dentro da caixa): ao escolher a distribuidora pelo seletor, a barra dela entra
   // na parte visível da lista, sem mover a página
@@ -195,12 +218,14 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
     () =>
       todas
         .filter((l) => l.custo !== null)
-        .map((l) => ({ id: l.id, valor: l.custo as number, rotulo: l.uf ? `${l.sigla} (${l.uf})` : l.sigla, apagado: filtrado && !idsDoGrupo.has(l.id), dica: dicaDaRegua(l) })),
-    [todas, filtrado, idsDoGrupo],
+        .map((l) => ({ id: l.id, valor: l.custo as number, rotulo: l.uf ? `${l.sigla} (${l.uf})` : l.sigla, apagado: filtrado && !idsDoGrupo.has(l.id), dica: dicaDaRegua(l, idioma) })),
+    [todas, filtrado, idsDoGrupo, idioma],
   );
-  const nomeGrupo = `${linhas.length} ${rotuloGrupo(grupo, uf)}`;
+  const nomeGrupo = `${linhas.length} ${rotuloGrupo(grupo, uf, idioma)}`;
   // a linha de referência é a mediana das N do ranking, com o filtro ou sem ele; o texto da frase diz "do grupo" quando é a do grupo
+  // i18n: dado (forma portuguesa; a tela usa rotuloMedianaTela, no idioma da página)
   const rotuloMediana = `Mediana das ${resumo.n}${filtrado ? ", todas" : ""}`;
+  const rotuloMedianaTela = tx(rotuloMediana, `Median of the ${resumo.n}${filtrado ? ", all" : ""}`);
 
   return (
     <div className="space-y-5">
@@ -210,20 +235,23 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
         pontos={pontos}
         grupo={filtrado ? nomeGrupo : null}
         aoEscolher={selecionar}
-        controle={<ContaEscolha emLinha legenda="Perfil de consumo" opcoes={OPCOES_PERFIL} valor={v.perfil} onEscolher={(p) => definir({ perfil: p })} />}
+        controle={<ContaEscolha emLinha legenda={tx("Perfil de consumo", "Consumption profile")} opcoes={OPCOES_PERFIL} valor={v.perfil} onEscolher={(p) => definir({ perfil: p })} />}
         resposta={
-          <RespostaCurta id="p047" vivo veredito={vereditoTarifa(dataReferencia, resumo, vigentes, perfil)}>
+          <RespostaCurta id="p047" vivo veredito={vereditoTarifa(dataReferencia, resumo, vigentes, perfil, idioma)}>
             {resposta}
           </RespostaCurta>
         }
         seletor={
           <div className="min-w-0 space-y-3">
             <p className="max-w-prose2 text-sm text-carvao-muted" data-dica="distribuidora">
-              Não sabe qual é a sua distribuidora? O nome dela está no alto da fatura de luz. Se preferir, busque pelo município.
+              {tx(
+                "Não sabe qual é a sua distribuidora? O nome dela está no alto da fatura de luz. Se preferir, busque pelo município.",
+                "Don't know your distribution utility? Its name is at the top of your electricity bill. If you prefer, search by municipality.",
+              )}
             </p>
             <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
               <ContaBuscaMunicipio aoEscolher={escolherMunicipio} />
-              <ContaLista rotulo="Distribuidora em destaque" opcoes={opcoesDistribuidora} valor={destaque && (naRanking || foraDoDestaque) ? destaque : ""} onEscolher={(id) => selecionar(id || null)} />
+              <ContaLista rotulo={tx("Distribuidora em destaque", "Highlighted distribution utility")} opcoes={opcoesDistribuidora} opcoesSaoNomes valor={destaque && (naRanking || foraDoDestaque) ? destaque : ""} onEscolher={(id) => selecionar(id || null)} />
             </div>
             {municipio && (
               <p role="status" className="max-w-prose2 text-sm text-carvao" data-municipio="">
@@ -232,7 +260,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
             )}
             {foraDoDestaque && (
               <p role="status" className="max-w-prose2 text-sm text-carvao" data-fora-do-ranking="escolhida">
-                {textoForaDoRanking(foraDoDestaque, perfil, dataReferencia)}
+                {textoForaDoRanking(foraDoDestaque, perfil, dataReferencia, idioma)}
               </p>
             )}
           </div>
@@ -257,50 +285,74 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
       />
 
       <div ref={ranking}>
-        <SecaoDoPainel id="ranking" titulo="Todas as distribuidoras, da mais barata à mais cara">
+        <SecaoDoPainel id="ranking" titulo={tx("Todas as distribuidoras, da mais barata à mais cara", "All distribution utilities, from the cheapest to the most expensive")}>
           <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-            <ContaEscolha legenda="Leitura do ranking" opcoes={OPCOES_LEITURA} valor={v.leitura} onEscolher={(l) => definir({ leitura: l })} />
-            <ContaEscolha legenda="Tipo de distribuidora" opcoes={opcoesGrupo} valor={opcoesGrupo.some((o) => o.id === grupo) ? grupo : "todas"} onEscolher={(g) => definir({ grupo: g })} />
-            <ContaLista rotulo="Estado (UF)" opcoes={opcoesUf} valor={uf} onEscolher={(u) => definir({ uf: u })} />
+            <ContaEscolha legenda={tx("Leitura do ranking", "Ranking view")} opcoes={OPCOES_LEITURA} valor={v.leitura} onEscolher={(l) => definir({ leitura: l })} />
+            <ContaEscolha
+              legenda={tx("Tipo de distribuidora", "Type of distribution utility")}
+              opcoes={opcoesGrupo}
+              valor={
+                // i18n: dado
+                opcoesGrupo.some((o) => o.id === grupo) ? grupo : "todas"
+              }
+              onEscolher={(g) => definir({ grupo: g })}
+            />
+            <ContaLista rotulo={tx("Estado (UF)", "State")} opcoes={opcoesUf} valor={uf} onEscolher={(u) => definir({ uf: u })} />
           </div>
           <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-nota="grupos">
-            Concessionária e permissionária são os dois tipos de distribuidora da ANEEL; a UF é a da área de atuação e as UCs são os consumidores atendidos (média de {anoUcs ?? "ano não informado"}). Os
-            filtros valem para a lista e a tabela; a faixa de pontos mostra todas e apaga as que ficam de fora.
+            {tx(
+              <>
+                Concessionária e permissionária são os dois tipos de distribuidora da ANEEL; a UF é a da área de atuação e as UCs são os consumidores atendidos (média de {anoUcs ?? "ano não informado"}). Os
+                filtros valem para a lista e a tabela; a faixa de pontos mostra todas e apaga as que ficam de fora.
+              </>,
+              <>
+                Concession holder and permit holder are ANEEL&apos;s two types of distribution utility; the state is that of the service area, and consumer units are the consumers served (average for{" "}
+                {anoUcs ?? "year not reported"}). The filters apply to the list and the table; the dot strip shows all of them and dims those left out.
+              </>,
+            )}
           </p>
           {filtrado && (
             <p className="max-w-prose2 text-sm text-carvao" role="status" data-resumo-grupo="">
-              {textoResumoDoRanking(resumoGrupo, perfil, grupo, uf)}
+              {textoResumoDoRanking(resumoGrupo, perfil, grupo, uf, idioma)}
             </p>
           )}
 
           <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-nota="ordem-ranking">
-            A lista começa pela distribuidora mais barata e segue até a mais cara ({linhas.length} no total): use &quot;Mostrar todas&quot; para ver as outras. {textoReguaDoRanking(regua)}
+            {tx(
+              <>A lista começa pela distribuidora mais barata e segue até a mais cara ({linhas.length} no total): use &quot;Mostrar todas&quot; para ver as outras.</>,
+              <>The list starts with the cheapest distribution utility and runs to the most expensive ({linhas.length} in total): use &quot;Show all&quot; to see the others.</>,
+            )}{" "}
+            {textoReguaDoRanking(regua, idioma)}
           </p>
 
           {!linhas.length ? (
             <p className="border border-dashed border-linha bg-superficie px-5 py-4 text-sm text-carvao-muted" role="status">
-              Nenhuma distribuidora com tarifa B1 vigente neste grupo.
+              {tx("Nenhuma distribuidora com tarifa B1 vigente neste grupo.", "No distribution utility with a B1 tariff in force in this group.")}
             </p>
           ) : v.leitura === "perfil" ? (
             <GraficoBarras
-              titulo={`Custo de ${perfil} kWh/mês pela tarifa B1 residencial, por distribuidora (sem tributos e sem bandeira)`}
+              titulo={tx(
+                `Custo de ${perfil} kWh/mês pela tarifa B1 residencial, por distribuidora (sem tributos e sem bandeira)`,
+                `Cost of ${perfil} kWh/month on the residential B1 tariff, by distribution utility (without taxes and without the tariff flag)`,
+              )}
               dados={dadosGrafico}
+              rotulosSaoNomes
               chaveCategoria="id"
               chaveRotulo="rotulo"
               series={[
                 {
                   id: "custo",
-                  rotulo: `Custo de ${perfil} kWh`,
-                  cor: "var(--cor-energia)",
+                  rotulo: tx(`Custo de ${perfil} kWh`, `Cost of ${perfil} kWh`),
+                  cor: "var(--cor-energia)", // i18n: dado
                 },
               ]}
-              unidade="R$/mês"
+              unidade={tx("R$/mês", "R$/month")}
               casas={2}
               orientacao="horizontal"
               referencias={[
                 {
                   valor: resumo.perfis_mediana[chavePerfil] ?? NaN,
-                  rotulo: rotuloMediana,
+                  rotulo: rotuloMedianaTela,
                 },
               ].filter((r) => Number.isFinite(r.valor))}
               selecionado={naLista ? destaque : null}
@@ -311,15 +363,19 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
             />
           ) : (
             <GraficoBarras
-              titulo="Tarifa B1 residencial de aplicação por distribuidora: TE e TUSD empilhadas (somam o total)"
+              titulo={tx(
+                "Tarifa B1 residencial de aplicação por distribuidora: TE e TUSD empilhadas (somam o total)",
+                "Applied residential B1 tariff by distribution utility: TE and TUSD stacked (they add up to the total)",
+              )}
               dados={dadosGrafico}
+              rotulosSaoNomes
               chaveCategoria="id"
               chaveRotulo="rotulo"
               series={[
-                { id: "te", rotulo: "TE (energia)", cor: "var(--serie-comp-1)" },
+                { id: "te", rotulo: tx("TE (energia)", "TE (energy)"), cor: "var(--serie-comp-1)" },
                 {
                   id: "tusd",
-                  rotulo: "TUSD (uso da rede)",
+                  rotulo: tx("TUSD (uso da rede)", "TUSD (grid use)"),
                   cor: "var(--serie-solar)",
                 },
               ]}
@@ -328,7 +384,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
               casas={2}
               orientacao="horizontal"
               // uma linha só: três tracejados iguais (1º quartil, mediana, 3º quartil) só se distinguem pela ordem da legenda; os quartis estão na faixa de pontos e na tabela
-              referencias={[{ valor: resumo.mediana ?? NaN, rotulo: rotuloMediana }].filter((r) => Number.isFinite(r.valor))}
+              referencias={[{ valor: resumo.mediana ?? NaN, rotulo: rotuloMedianaTela }].filter((r) => Number.isFinite(r.valor))}
               selecionado={naLista ? destaque : null}
               onSelecionar={selecionar}
               alturaCategoria={44}
@@ -339,22 +395,38 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
 
           {linhaFora && (
             <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-fora-do-ranking="linha">
-              {linhaFora} A lista, com o motivo de cada uma, está em{" "}
+              {linhaFora} {tx("A lista, com o motivo de cada uma, está em", "The list, with the reason for each, is in")}{" "}
               <a href="#fora-do-ranking" className="text-energia-dark underline underline-offset-4">
-                Auditar
+                {tx("Auditar", "Audit")}
               </a>
-              ; o seletor de distribuidora acima traz as que têm tarifa anterior.
+              {tx("; o seletor de distribuidora acima traz as que têm tarifa anterior.", "; the distribution utility selector above includes those with an earlier tariff.")}
             </p>
           )}
           {destaque && !naRanking && !foraDoDestaque && (
             <p className="text-sm text-carvao-muted" role="status">
-              A distribuidora escolhida não tem tarifa B1 vigente em {dataBR(dataReferencia)} e não entra no ranking; o histórico dela aparece no modo Analisar e o motivo, na lista de
-              distribuidoras sem tarifa vigente do modo Auditar.
+              {tx(
+                <>
+                  A distribuidora escolhida não tem tarifa B1 vigente em {dataBR(dataReferencia, idioma)} e não entra no ranking; o histórico dela aparece no modo Analisar e o motivo, na lista de
+                  distribuidoras sem tarifa vigente do modo Auditar.
+                </>,
+                <>
+                  The chosen distribution utility has no B1 tariff in force on {dataBR(dataReferencia, idioma)} and is not in the ranking; its history appears in Analyze mode and the reason, in the
+                  list of distribution utilities without a tariff in force in Audit mode.
+                </>,
+              )}
             </p>
           )}
           {destaque && naRanking && !naLista && (
             <p className="text-sm text-carvao-muted" role="status">
-              {rotulo(destaque)} está fora do grupo escolhido ({rotuloGrupo(grupo, uf)}) e não aparece na lista; ela segue em destaque na faixa de pontos. Escolha &quot;Todas&quot; para vê-la na lista.
+              {tx(
+                <>
+                  {rotulo(destaque)} está fora do grupo escolhido ({rotuloGrupo(grupo, uf, idioma)}) e não aparece na lista; ela segue em destaque na faixa de pontos. Escolha &quot;Todas&quot; para vê-la na lista.
+                </>,
+                <>
+                  {rotulo(destaque)} is outside the chosen group ({rotuloGrupo(grupo, uf, idioma)}) and does not appear in the list; it stays highlighted in the dot strip. Choose &quot;All&quot; to see it in
+                  the list.
+                </>,
+              )}
             </p>
           )}
         </SecaoDoPainel>
@@ -363,10 +435,13 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
       {recorte}
       {notas}
 
-      <ContaSobDemanda chaveUrl="tar" abreEm="analisar" rotulo="a tabela das distribuidoras" detalhe={`${linhas.length} linhas, ordenável e exportável`}>
+      <ContaSobDemanda chaveUrl="tar" abreEm="analisar"
+        rotulo={tx("a tabela das distribuidoras", "the distribution utility table")}
+        detalhe={tx(`${linhas.length} linhas, ordenável e exportável`, `${linhas.length} rows, sortable and exportable`)}
+      >
         <TabelaInterativa
-          titulo="Tarifas B1 residenciais vigentes e custo por perfil"
-          colunas={COLUNAS_RANKING}
+          titulo={tx("Tarifas B1 residenciais vigentes e custo por perfil", "Residential B1 tariffs in force and cost by profile")}
+          colunas={colunasRanking(idioma)}
           linhas={linhas}
           chaveLinha="id"
           colunaRotulo="sigla"
@@ -377,9 +452,12 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
           ordemInicial={{ coluna: "posicao", direcao: "asc" }}
           selecionado={naLista ? destaque : null}
           onSelecionar={selecionar}
-          dicaBusca="Sigla, razão social, CNPJ ou UF"
+          dicaBusca={tx("Sigla, razão social, CNPJ ou UF", "Acronym, legal name, CNPJ or state")}
           iniciarAberta
-          nota={`Tarifa de aplicação homologada sem ICMS, PIS/Pasep, Cofins, iluminação pública e bandeira; a lista segue a posição pela tarifa de aplicação. Base econômica é a tarifa usada no cálculo tarifário, sem os componentes financeiros do processo; as duas colunas ao lado dela dizem a posição pela base e quanto a aplicação fica acima ou abaixo (diferenças acima de ${LIMITE_DIFERENCA_BASE}% marcam o † do ranking). UCs: consumidores de cada distribuidora (média de ${anoUcs ?? "ano não informado"}); UF: estados da área de atuação.`}
+          nota={tx(
+            `Tarifa de aplicação homologada sem ICMS, PIS/Pasep, Cofins, iluminação pública e bandeira; a lista segue a posição pela tarifa de aplicação. Base econômica é a tarifa usada no cálculo tarifário, sem os componentes financeiros do processo; as duas colunas ao lado dela dizem a posição pela base e quanto a aplicação fica acima ou abaixo (diferenças acima de ${LIMITE_DIFERENCA_BASE}% marcam o † do ranking). UCs: consumidores de cada distribuidora (média de ${anoUcs ?? "ano não informado"}); UF: estados da área de atuação.`,
+            `Ratified applied tariff without ICMS, PIS/Pasep, Cofins, public lighting and the tariff flag; the list follows the position by applied tariff. The economic base is the tariff used in the tariff calculation, without the financial components of the process; the two columns next to it give the position by base and how far the applied tariff is above or below it (differences above ${LIMITE_DIFERENCA_BASE}% mark the † in the ranking). Consumer units: consumers of each distribution utility (average for ${anoUcs ?? "year not reported"}); State: states of the service area.`,
+          )}
         />
       </ContaSobDemanda>
     </div>

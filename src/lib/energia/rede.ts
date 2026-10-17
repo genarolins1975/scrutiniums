@@ -10,11 +10,19 @@
  * regra determinística: mudar o número muda o texto, e nenhuma frase traz número
  * fixo. Ausência continua ausência (null), nunca zero.
  *
+ * Idioma: toda função que escreve texto para o leitor recebe o idioma no último
+ * argumento (padrão: o da página, idiomaEnergia()); as constantes exportadas em
+ * maiúsculas são a forma portuguesa, e a função de mesmo nome em minúsculas dá a forma
+ * de cada idioma.
+ *
  * Sinais (iguais aos da gold): fronteira na orientação N→NE, N→SE/CO, NE→SE/CO e
  * S→SE/CO, positivo da primeira para a segunda região; exterior positivo é exportação
  * do Brasil; desvio = verificado − programado na mesma orientação.
  */
-import { dataBR, horaLocal, mesAno, num, plural, reais } from "./formato";
+import type { Idioma } from "@/lib/idioma";
+import { formatos, mesAno } from "./formato";
+import { idiomaEnergia, porIdioma, tx } from "./idioma";
+import { DEFINICAO_FLUXO_EN, amostraPdo, rotuloDaGold } from "./i18n/agua-carga-rede";
 import type { ColunaTabela, LinhaTabela, ValorCelula } from "./tabela";
 import type { Submercado } from "./tipos";
 import type {
@@ -50,7 +58,7 @@ export const ROTA_REDE = "/setor-eletrico/rede";
 export type PainelRede = "p028" | "p029" | "p030" | "p031";
 
 /** Pergunta do destino Rede no menu (navegacao.ts) e título da página principal. */
-export const PERGUNTA_MODULO_REDE = "Como a energia circula entre regiões?";
+export const PERGUNTA_MODULO_REDE = "Como a energia circula entre regiões?"; // i18n: dado
 
 /**
  * Um painel por página: cada um tem séries, várias tabelas equivalentes e fichas de
@@ -58,19 +66,42 @@ export const PERGUNTA_MODULO_REDE = "Como a energia circula entre regiões?";
  * seção 5.1). As perguntas são as do Anexo A; a do P030 é a pergunta própria que os
  * dados públicos sustentam (os limites operativos não são públicos, achado A06).
  */
-export const PAINEIS_REDE: { id: PainelRede; rotulo: string; caminho: string; pergunta: string }[] = [
-  { id: "p028", rotulo: "Circulação de energia", caminho: "", pergunta: "Como a energia circula entre regiões?" },
-  { id: "p029", rotulo: "Balanço e exterior", caminho: "/balanco-e-exterior", pergunta: "As contas do balanço de energia fecham?" },
-  { id: "p030", rotulo: "Restrições publicadas", caminho: "/restricoes", pergunta: "Quando há evidência publicada de limitação da rede?" },
-  { id: "p031", rotulo: "Programado e verificado", caminho: "/programado", pergunta: "Quanto o fluxo divergiu do programa?" },
-];
+export function paineisRede(idioma: Idioma = idiomaEnergia()): { id: PainelRede; rotulo: string; caminho: string; pergunta: string }[] {
+  return [
+    {
+      id: "p028",
+      rotulo: tx("Circulação de energia", "Energy flows", idioma),
+      caminho: "",
+      pergunta: tx("Como a energia circula entre regiões?", "How does energy flow between regions?", idioma),
+    },
+    {
+      id: "p029",
+      rotulo: tx("Balanço e exterior", "Balance and exterior", idioma),
+      caminho: "/balanco-e-exterior",
+      pergunta: tx("As contas do balanço de energia fecham?", "Do the energy balance accounts add up?", idioma),
+    },
+    {
+      id: "p030",
+      rotulo: tx("Restrições publicadas", "Published restrictions", idioma),
+      caminho: "/restricoes",
+      pergunta: tx("Quando há evidência publicada de limitação da rede?", "When is there published evidence of grid limitation?", idioma),
+    },
+    {
+      id: "p031",
+      rotulo: tx("Programado e verificado", "Scheduled and verified", idioma),
+      caminho: "/programado",
+      pergunta: tx("Quanto o fluxo divergiu do programa?", "How far did the flow diverge from the schedule?", idioma),
+    },
+  ];
+}
+export const PAINEIS_REDE = paineisRede("pt");
 
 export function rotaPainel(id: PainelRede): string {
   return `${ROTA_REDE}${PAINEIS_REDE.find((p) => p.id === id)?.caminho ?? ""}`;
 }
 
-export function perguntaPainel(id: PainelRede): string {
-  return PAINEIS_REDE.find((p) => p.id === id)?.pergunta ?? "";
+export function perguntaPainel(id: PainelRede, idioma: Idioma = idiomaEnergia()): string {
+  return paineisRede(idioma).find((p) => p.id === id)?.pergunta ?? "";
 }
 
 /* ---------- entidades, nomes e cores ---------- */
@@ -86,15 +117,48 @@ export const NOME_SM: Record<SubsistemaOuSin, string> = { SE: "Sudeste/Centro-Oe
 export const CURTO_SM: Record<SubsistemaOuSin, string> = { SE: "SE/CO", S: "S", NE: "NE", N: "N", SIN: "SIN" };
 /** "do Norte", "para o Nordeste": contração com o artigo de cada nome. */
 export const DO_SM: Record<SubsistemaOuSin, string> = { SE: "do Sudeste/Centro-Oeste", S: "do Sul", NE: "do Nordeste", N: "do Norte", SIN: "do SIN" };
-const PARA_O: Record<SubsistemaOuSin, string> = { SE: "para o Sudeste/Centro-Oeste", S: "para o Sul", NE: "para o Nordeste", N: "para o Norte", SIN: "para o SIN" };
+const PARA_O: Record<SubsistemaOuSin, string> = { SE: "para o Sudeste/Centro-Oeste", S: "para o Sul", NE: "para o Nordeste", N: "para o Norte", SIN: "para o SIN" }; // i18n: dado
 const NO: Record<SubsistemaOuSin, string> = { SE: "no Sudeste/Centro-Oeste", S: "no Sul", NE: "no Nordeste", N: "no Norte", SIN: "no SIN" };
 export const NOME_PAIS: Record<PaisRede, string> = { ARGENTINA: "Argentina", URUGUAI: "Uruguai", PARAGUAI: "Paraguai" };
+
+const NOME_SM_EN: Record<SubsistemaOuSin, string> = { SE: "Southeast/Center-West", S: "South", NE: "Northeast", N: "North", SIN: "SIN" };
+const CURTO_SM_EN: Record<SubsistemaOuSin, string> = { SE: "SE/CW", S: "S", NE: "NE", N: "N", SIN: "SIN" };
+const NOME_PAIS_EN: Record<PaisRede, string> = { ARGENTINA: "Argentina", URUGUAI: "Uruguay", PARAGUAI: "Paraguay" };
+
+/** Nome do subsistema no idioma ("Norte", "North"). */
+export function nomeSm(sm: SubsistemaOuSin, idioma: Idioma = idiomaEnergia()): string {
+  return porIdioma(idioma, { pt: NOME_SM, en: NOME_SM_EN })[sm];
+}
+/** Sigla do subsistema no idioma ("SE/CO", "SE/CW"). */
+export function curtoSm(sm: SubsistemaOuSin, idioma: Idioma = idiomaEnergia()): string {
+  return porIdioma(idioma, { pt: CURTO_SM, en: CURTO_SM_EN })[sm];
+}
+/** "do Norte", "from the North". */
+export function doSm(sm: SubsistemaOuSin, idioma: Idioma = idiomaEnergia()): string {
+  return tx(DO_SM[sm], `from the ${NOME_SM_EN[sm]}`, idioma);
+}
+/** "para o Norte", "to the North". */
+function paraO(sm: SubsistemaOuSin, idioma: Idioma): string {
+  return tx(PARA_O[sm], `to the ${NOME_SM_EN[sm]}`, idioma);
+}
+/** "no Norte", "in the North". */
+export function noSm(sm: SubsistemaOuSin, idioma: Idioma = idiomaEnergia()): string {
+  return tx(NO[sm], `in the ${NOME_SM_EN[sm]}`, idioma);
+}
+/** Nome do país no idioma. */
+export function nomePais(p: PaisRede, idioma: Idioma = idiomaEnergia()): string {
+  return porIdioma(idioma, { pt: NOME_PAIS, en: NOME_PAIS_EN })[p];
+}
+/** "a Argentina", "o Uruguai"; em inglês, só o nome. */
+function oPais(p: PaisRede, idioma: Idioma): string {
+  return tx(`${p === "ARGENTINA" ? "a" : "o"} ${NOME_PAIS[p]}`, NOME_PAIS_EN[p], idioma);
+}
 
 /** As duas pontas de cada fronteira, na orientação da gold. */
 export const PONTAS: Record<FronteiraRede, [Submercado, Submercado]> = { N_NE: ["N", "NE"], N_SE: ["N", "SE"], NE_SE: ["NE", "SE"], S_SE: ["S", "SE"] };
 
 export const COR_SM: Record<SubsistemaOuSin, string> = {
-  SIN: "var(--cor-energia)",
+  SIN: "var(--cor-energia)", // i18n: dado
   SE: "var(--serie-sm-se)",
   S: "var(--serie-sm-s)",
   NE: "var(--serie-sm-ne)",
@@ -111,21 +175,21 @@ export const COR_PAR: Record<ParProgramado, string> = {
 export const COR_COMPARACAO = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)"] as const;
 
 /** "Norte → Nordeste": a orientação da fronteira (positivo da primeira para a segunda). */
-export function nomeFronteira(par: FronteiraRede): string {
+export function nomeFronteira(par: FronteiraRede, idioma: Idioma = idiomaEnergia()): string {
   const [a, b] = PONTAS[par];
-  return `${NOME_SM[a]} → ${NOME_SM[b]}`;
+  return `${nomeSm(a, idioma)} → ${nomeSm(b, idioma)}`;
 }
 
 /** "N→SE/CO". */
-export function curtoFronteira(par: FronteiraRede): string {
+export function curtoFronteira(par: FronteiraRede, idioma: Idioma = idiomaEnergia()): string {
   const [a, b] = PONTAS[par];
-  return `${CURTO_SM[a]}→${CURTO_SM[b]}`;
+  return `${curtoSm(a, idioma)}→${curtoSm(b, idioma)}`;
 }
 
 /** "entre Norte e Sudeste/Centro-Oeste": a fronteira sem sentido. */
-export function entreFronteira(par: FronteiraRede): string {
+export function entreFronteira(par: FronteiraRede, idioma: Idioma = idiomaEnergia()): string {
   const [a, b] = PONTAS[par];
-  return `entre ${NOME_SM[a]} e ${NOME_SM[b]}`;
+  return tx(`entre ${NOME_SM[a]} e ${NOME_SM[b]}`, `between ${NOME_SM_EN[a]} and ${NOME_SM_EN[b]}`, idioma);
 }
 
 export function ehFronteira(par: string): par is FronteiraRede {
@@ -133,30 +197,30 @@ export function ehFronteira(par: string): par is FronteiraRede {
 }
 
 /** Fronteira pelo nome da orientação; país pelo nome (positivo = exportação do Brasil). */
-export function nomePar(par: ParProgramado): string {
-  return ehFronteira(par) ? nomeFronteira(par) : NOME_PAIS[par];
+export function nomePar(par: ParProgramado, idioma: Idioma = idiomaEnergia()): string {
+  return ehFronteira(par) ? nomeFronteira(par, idioma) : nomePais(par, idioma);
 }
 
-export function curtoPar(par: ParProgramado): string {
-  return ehFronteira(par) ? curtoFronteira(par) : NOME_PAIS[par];
+export function curtoPar(par: ParProgramado, idioma: Idioma = idiomaEnergia()): string {
+  return ehFronteira(par) ? curtoFronteira(par, idioma) : nomePais(par, idioma);
 }
 
 /** Sentido positivo do par, em palavras ("do Norte para o Nordeste", "do Brasil para a Argentina"). */
-export function sentidoPositivo(par: ParProgramado): string {
+export function sentidoPositivo(par: ParProgramado, idioma: Idioma = idiomaEnergia()): string {
   if (ehFronteira(par)) {
     const [a, b] = PONTAS[par];
-    return `${DO_SM[a]} ${PARA_O[b]}`;
+    return `${doSm(a, idioma)} ${paraO(b, idioma)}`;
   }
-  return `do Brasil para ${par === "ARGENTINA" ? "a Argentina" : "o Uruguai"}`;
+  return tx(`do Brasil para ${par === "ARGENTINA" ? "a Argentina" : "o Uruguai"}`, `from Brazil to ${NOME_PAIS_EN[par]}`, idioma);
 }
 
 /** Sentido negativo do par, em palavras. */
-export function sentidoNegativo(par: ParProgramado): string {
+export function sentidoNegativo(par: ParProgramado, idioma: Idioma = idiomaEnergia()): string {
   if (ehFronteira(par)) {
     const [a, b] = PONTAS[par];
-    return `${DO_SM[b]} ${PARA_O[a]}`;
+    return `${doSm(b, idioma)} ${paraO(a, idioma)}`;
   }
-  return `${par === "ARGENTINA" ? "da Argentina" : "do Uruguai"} para o Brasil`;
+  return tx(`${par === "ARGENTINA" ? "da Argentina" : "do Uruguai"} para o Brasil`, `from ${NOME_PAIS_EN[par]} to Brazil`, idioma);
 }
 
 /* ---------- utilidades de texto ---------- */
@@ -164,25 +228,35 @@ export function sentidoNegativo(par: ParProgramado): string {
 const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
 /** "a, b e c". */
-export function listaTexto(itens: readonly string[]): string {
+export function listaTexto(itens: readonly string[], idioma: Idioma = idiomaEnergia()): string {
   if (itens.length <= 1) return itens[0] ?? "";
-  return `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
+  return `${itens.slice(0, -1).join(", ")} ${tx("e", "and", idioma)} ${itens[itens.length - 1]}`;
 }
 
 /** "a; b; e c": para itens que já têm vírgula dentro. */
-export function listaLonga(itens: readonly string[]): string {
+export function listaLonga(itens: readonly string[], idioma: Idioma = idiomaEnergia()): string {
   if (itens.length <= 1) return itens[0] ?? "";
-  return `${itens.slice(0, -1).join("; ")}; e ${itens[itens.length - 1]}`;
+  return `${itens.slice(0, -1).join("; ")}; ${tx("e", "and", idioma)} ${itens[itens.length - 1]}`;
 }
 
 /** "entre 01/01/2026 e 14/05/2026" ou "em 14/09/2022" quando é o mesmo dia. */
-function entreDatas(a: string, b: string): string {
-  return a.slice(0, 10) === b.slice(0, 10) ? `em ${dataBR(a)}` : `entre ${dataBR(a)} e ${dataBR(b)}`;
+function entreDatas(a: string, b: string, idioma: Idioma): string {
+  const f = formatos(idioma);
+  return a.slice(0, 10) === b.slice(0, 10)
+    ? tx(`em ${f.dataBR(a)}`, `on ${f.dataBR(a)}`, idioma)
+    : tx(`entre ${f.dataBR(a)} e ${f.dataBR(b)}`, `between ${f.dataBR(a)} and ${f.dataBR(b)}`, idioma);
 }
 
-const mwh = (v: number | null | undefined) => `${num(v, 0)} MWh`;
-const mwmed = (v: number | null | undefined, casas = 0) => `${num(v, casas)} MWmed`;
-const horas = (v: number | null | undefined, casas = 0) => (v === null || v === undefined ? "sem dado" : casas === 0 ? plural(v, "hora", "horas") : `${num(v, casas)} ${v === 1 ? "hora" : "horas"}`);
+const mwh = (v: number | null | undefined, idioma: Idioma = idiomaEnergia()) => `${formatos(idioma).num(v, 0)} MWh`;
+const mwmed = (v: number | null | undefined, casas = 0, idioma: Idioma = idiomaEnergia()) => `${formatos(idioma).num(v, casas)} ${tx("MWmed", "MWavg", idioma)}`;
+const horas = (v: number | null | undefined, casas = 0, idioma: Idioma = idiomaEnergia()) => {
+  const f = formatos(idioma);
+  return v === null || v === undefined
+    ? tx("sem dado", "no data", idioma)
+    : casas === 0
+      ? f.plural(v, tx("hora", "hour", idioma), tx("horas", "hours", idioma))
+      : `${f.num(v, casas)} ${v === 1 ? tx("hora", "hour", idioma) : tx("horas", "hours", idioma)}`;
+};
 
 /**
  * Datas ISO que o pipeline escreve dentro de frases (achado A05) em formato brasileiro:
@@ -191,8 +265,8 @@ const horas = (v: number | null | undefined, casas = 0) => (v === null || v === 
  */
 export function datasLegiveis(texto: string): string {
   return texto
-    .replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):00/g, (_, a, m, d, h) => `${d}/${m}/${a} às ${h}h`)
-    .replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/g, (_, a, m, d, h, mi) => `${d}/${m}/${a} às ${h}h${mi}`)
+    .replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):00/g, (_, a, m, d, h) => `${d}/${m}/${a} às ${h}h`) // i18n: dado
+    .replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/g, (_, a, m, d, h, mi) => `${d}/${m}/${a} às ${h}h${mi}`) // i18n: dado
     .replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g, (_, a, m, d) => `${d}/${m}/${a}`);
 }
 
@@ -222,25 +296,33 @@ export function provenienciaLegivel<T extends { limitacoes: string[] }>(p: T): T
 }
 
 /** Rótulos das regras publicadas na gold (chaves de RegrasRede). */
-export const ROTULO_REGRA: Record<string, string> = {
-  orientacao: "Orientação e sinal",
-  energia: "Energia",
-  bruto_liquido: "Bruto e líquido",
-  nulo: "Fluxo nulo",
-  pld: "PLD na mesma hora",
-  balanco: "Identidades do balanço",
-  tolerancia_balanco: "Tolerância do balanço",
-  limites: "Limites de intercâmbio",
-  materialidade: "Materialidade do desvio",
-};
+export function rotulosRegra(idioma: Idioma = idiomaEnergia()): Record<string, string> {
+  return {
+    orientacao: tx("Orientação e sinal", "Orientation and sign", idioma),
+    energia: tx("Energia", "Energy", idioma),
+    bruto_liquido: tx("Bruto e líquido", "Gross and net", idioma),
+    nulo: tx("Fluxo nulo", "Zero flow", idioma),
+    pld: tx("PLD na mesma hora", "PLD in the same hour", idioma),
+    balanco: tx("Identidades do balanço", "Balance identities", idioma),
+    tolerancia_balanco: tx("Tolerância do balanço", "Balance tolerance", idioma),
+    limites: tx("Limites de intercâmbio", "Interchange limits", idioma),
+    materialidade: tx("Materialidade do desvio", "Deviation materiality", idioma),
+  };
+}
+export const ROTULO_REGRA: Record<string, string> = rotulosRegra("pt");
+
+/** "sim" e "não" no idioma. */
+function simNao(v: boolean, idioma: Idioma): string {
+  return v ? tx("sim", "yes", idioma) : tx("não", "no", idioma);
+}
 
 /** Booleanos e listas viram texto para a tabela (sim/não; itens separados por vírgula). */
-export function paraTabela<T extends object>(linhas: readonly T[]): LinhaTabela[] {
+export function paraTabela<T extends object>(linhas: readonly T[], idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return linhas.map((l) =>
     Object.fromEntries(
       Object.entries(l)
         .filter(([, v]) => v === null || typeof v !== "object" || Array.isArray(v))
-        .map(([k, v]) => [k, typeof v === "boolean" ? (v ? "sim" : "não") : Array.isArray(v) ? v.join(", ") : (v as ValorCelula)]),
+        .map(([k, v]) => [k, typeof v === "boolean" ? simNao(v, idioma) : Array.isArray(v) ? v.join(", ") : (v as ValorCelula)]),
     ),
   );
 }
@@ -259,17 +341,31 @@ export function diaDeBrasilia(iso: string): string {
  * um a dois dias de atraso; acima da folga, a página avisa que a fonte está defasada
  * e que os números são os da última publicação válida.
  */
-export function situacaoAtualidade(diaReferencia: string, geradoEm: string, folgaDias = 3): { defasada: boolean; dias: number; texto: string } {
+export function situacaoAtualidade(diaReferencia: string, geradoEm: string, folgaDias = 3, idioma: Idioma = idiomaEnergia()): { defasada: boolean; dias: number; texto: string } {
+  const f = formatos(idioma);
   const proc = diaDeBrasilia(geradoEm);
   const dias = Math.round((Date.parse(`${proc}T00:00:00Z`) - Date.parse(`${diaReferencia.slice(0, 10)}T00:00:00Z`)) / 86_400_000);
+  const nDias = f.plural(dias, tx("dia", "day", idioma), tx("dias", "days", idioma));
   if (dias > folgaDias) {
     return {
       defasada: true,
       dias,
-      texto: `Fonte defasada: o dia mais recente é ${dataBR(diaReferencia)}, ${plural(dias, "dia", "dias")} antes do processamento (${dataBR(proc)}), mais que o atraso habitual de publicação do ONS. Os números são os da última publicação válida.`,
+      texto: tx(
+        `Fonte defasada: o dia mais recente é ${f.dataBR(diaReferencia)}, ${nDias} antes do processamento (${f.dataBR(proc)}), mais que o atraso habitual de publicação do ONS. Os números são os da última publicação válida.`,
+        `Source behind schedule: the most recent day is ${f.dataBR(diaReferencia)}, ${nDias} before processing (${f.dataBR(proc)}), more than the usual ONS publication delay. The numbers are those of the last valid release.`,
+        idioma,
+      ),
     };
   }
-  return { defasada: false, dias, texto: `Dado até ${dataBR(diaReferencia)}, processado em ${dataBR(proc)} (${plural(dias, "dia", "dias")} depois).` };
+  return {
+    defasada: false,
+    dias,
+    texto: tx(
+      `Dado até ${f.dataBR(diaReferencia)}, processado em ${f.dataBR(proc)} (${nDias} depois).`,
+      `Data through ${f.dataBR(diaReferencia)}, processed on ${f.dataBR(proc)} (${nDias} later).`,
+      idioma,
+    ),
+  };
 }
 
 /** Meses entre dois AAAA-MM (fim − início), para a defasagem de séries mensais. */
@@ -302,10 +398,10 @@ export function sentidoDoSaldo(par: FronteiraRede, liquido: number | null | unde
 }
 
 /** "N→SE/CO" no sentido do saldo; "sem saldo" ou "sem dado". */
-export function rotuloSentidoSaldo(par: FronteiraRede, liquido: number | null | undefined): string {
-  if (liquido === null || liquido === undefined) return "sem dado";
+export function rotuloSentidoSaldo(par: FronteiraRede, liquido: number | null | undefined, idioma: Idioma = idiomaEnergia()): string {
+  if (liquido === null || liquido === undefined) return tx("sem dado", "no data", idioma);
   const s = sentidoDoSaldo(par, liquido);
-  return s ? `${CURTO_SM[s.origem]}→${CURTO_SM[s.destino]}` : "sem saldo";
+  return s ? `${curtoSm(s.origem, idioma)}→${curtoSm(s.destino, idioma)}` : tx("sem saldo", "no net flow", idioma);
 }
 
 /** Horas no sentido contrário ao saldo (as que o saldo esconde), pela contagem com |fluxo| > 1 MWmed. */
@@ -319,54 +415,107 @@ function horasContraSaldo(r: Pick<ResumoFronteira30d, "liquido_mwh" | "horas_can
  * 1 MWmed no sentido contrário é dita "num só sentido"; as demais citam a energia e as
  * horas no sentido contrário.
  */
-export function respostaCirculacao(resumo: readonly ResumoFronteira30d[]): string {
-  if (!resumo.length) return "Sem fluxo publicado na janela de 30 dias.";
+export function respostaCirculacao(resumo: readonly ResumoFronteira30d[], idioma: Idioma = idiomaEnergia()): string {
+  if (!resumo.length) return tx("Sem fluxo publicado na janela de 30 dias.", "No flow published in the 30-day window.", idioma);
+  const f = formatos(idioma);
   const inicio = resumo.map((r) => r.inicio).sort()[0];
   const fim = resumo.map((r) => r.fim).sort().at(-1)!;
   const saldos: string[] = [];
   const sem: string[] = [];
   for (const r of resumo) {
     if (r.horas === 0) {
-      sem.push(entreFronteira(r.par));
+      sem.push(entreFronteira(r.par, idioma));
       continue;
     }
     const s = sentidoDoSaldo(r.par, r.liquido_mwh);
-    saldos.push(s ? `${DO_SM[s.origem]} ${PARA_O[s.destino]} (${mwh(Math.abs(r.liquido_mwh))})` : `${entreFronteira(r.par)}, saldo nulo`);
+    saldos.push(
+      s
+        ? `${doSm(s.origem, idioma)} ${paraO(s.destino, idioma)} (${mwh(Math.abs(r.liquido_mwh), idioma)})`
+        : tx(`${entreFronteira(r.par, "pt")}, saldo nulo`, `${entreFronteira(r.par, "en")}, zero net flow`, idioma),
+    );
   }
-  const frases = [`De ${dataBR(inicio)} a ${dataBR(fim)}, o saldo de energia foi ${listaTexto(saldos)}.`];
+  const frases = [
+    tx(
+      `De ${f.dataBR(inicio)} a ${f.dataBR(fim)}, o saldo de energia foi ${listaTexto(saldos, idioma)}.`,
+      `From ${f.dataBR(inicio)} to ${f.dataBR(fim)}, the net energy flow was ${listaTexto(saldos, idioma)}.`,
+      idioma,
+    ),
+  ];
   const comDado = resumo.filter((r) => r.horas > 0);
   const umSentido = comDado.filter((r) => horasContraSaldo(r) === 0);
   const doisSentidos = comDado.filter((r) => horasContraSaldo(r) > 0);
   if (umSentido.length === comDado.length) {
-    frases.push(`Em nenhuma das fronteiras o fluxo passou de ${mwmed(LIMIAR_NULO_MWMED)} no sentido contrário ao saldo, então o saldo não esconde energia.`);
+    frases.push(
+      tx(
+        `Em nenhuma das fronteiras o fluxo passou de ${mwmed(LIMIAR_NULO_MWMED, 0, idioma)} no sentido contrário ao saldo, então o saldo não esconde energia.`,
+        `At none of the boundaries did the flow exceed ${mwmed(LIMIAR_NULO_MWMED, 0, idioma)} against the net flow, so the net flow hides no energy.`,
+        idioma,
+      ),
+    );
   } else {
-    const partes = doisSentidos.map((r) => `${mwh(r.contra_saldo_mwh)} ${entreFronteira(r.par)} (${num(horasContraSaldo(r), 0)} de ${num(r.horas, 0)} horas)`);
+    const partes = doisSentidos.map((r) =>
+      tx(
+        `${mwh(r.contra_saldo_mwh, idioma)} ${entreFronteira(r.par, idioma)} (${f.num(horasContraSaldo(r), 0)} de ${f.num(r.horas, 0)} horas)`,
+        `${mwh(r.contra_saldo_mwh, idioma)} ${entreFronteira(r.par, idioma)} (${f.num(horasContraSaldo(r), 0)} of ${f.num(r.horas, 0)} hours)`,
+        idioma,
+      ),
+    );
+    const listaUm = listaTexto(
+      umSentido.map((r) => entreFronteira(r.par, idioma)),
+      idioma,
+    );
     const um = umSentido.length
-      ? `${umSentido.length === 1 ? "Uma fronteira" : `${cap(numeroPorExtenso(umSentido.length))} fronteiras`} ${umSentido.length === 1 ? "teve" : "tiveram"} fluxo num só sentido (${listaTexto(umSentido.map((r) => entreFronteira(r.par)))}); `
+      ? tx(
+          `${umSentido.length === 1 ? "Uma fronteira" : `${cap(numeroPorExtenso(umSentido.length, "pt"))} fronteiras`} ${umSentido.length === 1 ? "teve" : "tiveram"} fluxo num só sentido (${listaUm}); `,
+          `${umSentido.length === 1 ? "One boundary" : `${cap(numeroPorExtenso(umSentido.length, "en"))} boundaries`} had flow in one direction only (${listaUm}); `,
+          idioma,
+        )
       : "";
-    frases.push(`${um}${um ? "nas outras" : "Em todas"}, o saldo esconde energia que passou no sentido contrário: ${listaTexto(partes)}.`);
+    frases.push(
+      tx(
+        `${um}${um ? "nas outras" : "Em todas"}, o saldo esconde energia que passou no sentido contrário: ${listaTexto(partes, idioma)}.`,
+        `${um}${um ? "at the others" : "At all of them"}, the net flow hides energy that went the opposite way: ${listaTexto(partes, idioma)}.`,
+        idioma,
+      ),
+    );
   }
   const incompletos = comDado.filter((r) => r.dias_completos < r.dias);
-  if (incompletos.length) frases.push(`Janela com dias incompletos em ${listaTexto(incompletos.map((r) => `${entreFronteira(r.par)} (${r.dias_completos} de ${r.dias} dias com as 24 horas)`))}.`);
-  if (sem.length) frases.push(`Sem fluxo publicado ${listaTexto(sem)}.`);
+  if (incompletos.length) {
+    const lista = listaTexto(
+      incompletos.map((r) =>
+        tx(
+          `${entreFronteira(r.par, "pt")} (${r.dias_completos} de ${r.dias} dias com as 24 horas)`,
+          `${entreFronteira(r.par, "en")} (${r.dias_completos} of ${r.dias} days with all 24 hours)`,
+          idioma,
+        ),
+      ),
+      idioma,
+    );
+    frases.push(tx(`Janela com dias incompletos em ${lista}.`, `Window with incomplete days ${lista}.`, idioma));
+  }
+  if (sem.length) frases.push(tx(`Sem fluxo publicado ${listaTexto(sem, "pt")}.`, `No flow published ${listaTexto(sem, "en")}.`, idioma));
   return frases.join(" ");
 }
 
-function numeroPorExtenso(n: number): string {
-  return ["zero", "uma", "duas", "três", "quatro"][n] ?? String(n);
+function numeroPorExtenso(n: number, idioma: Idioma = idiomaEnergia()): string {
+  return porIdioma(idioma, { pt: ["zero", "uma", "duas", "três", "quatro"], en: ["zero", "one", "two", "three", "four"] })[n] ?? String(n);
 }
 
 /** "o Sudeste/Centro-Oeste", "o Norte": a região com o artigo, para frases com sujeito. */
 const O_SM: Record<SubsistemaOuSin, string> = { SE: "o Sudeste/Centro-Oeste", S: "o Sul", NE: "o Nordeste", N: "o Norte", SIN: "o SIN" };
+function oSm(sm: SubsistemaOuSin, idioma: Idioma): string {
+  return tx(O_SM[sm], `the ${NOME_SM_EN[sm]}`, idioma);
+}
 
 /**
  * Veredito do P028 em palavras simples: para onde a energia foi no saldo dos últimos 30 dias e se o saldo esconde energia
  * que passou no sentido contrário. As quantidades de cada fronteira ficam em respostaCirculacao; aqui só o maior valor
  * escondido, lido dos mesmos campos (contra_saldo_mwh).
  */
-export function vereditoCirculacao(resumo: readonly ResumoFronteira30d[]): string {
+export function vereditoCirculacao(resumo: readonly ResumoFronteira30d[], idioma: Idioma = idiomaEnergia()): string {
   const comDado = resumo.filter((r) => r.horas > 0);
-  if (!comDado.length) return "Sem fluxo publicado na janela de 30 dias.";
+  if (!comDado.length) return tx("Sem fluxo publicado na janela de 30 dias.", "No flow published in the 30-day window.", idioma);
+  const f = formatos(idioma);
   const fim = resumo.map((r) => r.fim).sort().at(-1)!;
   const dias = Math.max(...resumo.map((r) => r.dias));
   // quem recebeu energia de quem, no saldo da janela, na ordem em que as fronteiras aparecem
@@ -377,36 +526,70 @@ export function vereditoCirculacao(resumo: readonly ResumoFronteira30d[]): strin
   }
   const recebimentos = Array.from(porDestino.entries())
     .sort((a, b) => b[1].length - a[1].length)
-    .map(([destino, origens], i) => `${O_SM[destino]} recebeu ${i === 0 ? "energia " : ""}${listaTexto(origens.map((o) => DO_SM[o]))}`);
-  const frases = [`Nos ${dias} dias até ${dataBR(fim)}, ${recebimentos.length ? recebimentos.join("; ") : "o saldo foi nulo em todas as fronteiras com fluxo publicado"}.`];
+    .map(([destino, origens], i) => {
+      const de = listaTexto(
+        origens.map((o) => doSm(o, idioma)),
+        idioma,
+      );
+      return tx(`${O_SM[destino]} recebeu ${i === 0 ? "energia " : ""}${de}`, `${oSm(destino, "en")} received ${i === 0 ? "energy " : ""}${de}`, idioma);
+    });
+  const frases = [
+    tx(
+      `Nos ${dias} dias até ${f.dataBR(fim)}, ${recebimentos.length ? recebimentos.join("; ") : "o saldo foi nulo em todas as fronteiras com fluxo publicado"}.`,
+      `In the ${dias} days through ${f.dataBR(fim)}, ${recebimentos.length ? recebimentos.join("; ") : "the net flow was zero at every boundary with published flow"}.`,
+      idioma,
+    ),
+  ];
   const escondem = comDado.filter((r) => horasContraSaldo(r) > 0);
   if (!escondem.length) {
-    frases.push("Em nenhuma fronteira o saldo esconde energia que passou no sentido contrário.");
+    frases.push(tx("Em nenhuma fronteira o saldo esconde energia que passou no sentido contrário.", "At no boundary does the net flow hide energy that went the opposite way.", idioma));
   } else {
     const maior = Math.max(...escondem.map((r) => r.contra_saldo_mwh));
-    const onde = escondem.length === 1 ? "Em uma fronteira" : `Em ${numeroPorExtenso(escondem.length)} fronteiras`;
-    frases.push(`${onde}, o saldo esconde energia que passou no sentido contrário: ${escondem.length === 1 ? "" : "até "}${mwh(maior)}.`);
+    const onde =
+      escondem.length === 1
+        ? tx("Em uma fronteira", "At one boundary", idioma)
+        : tx(`Em ${numeroPorExtenso(escondem.length, "pt")} fronteiras`, `At ${numeroPorExtenso(escondem.length, "en")} boundaries`, idioma);
+    frases.push(
+      tx(
+        `${onde}, o saldo esconde energia que passou no sentido contrário: ${escondem.length === 1 ? "" : "até "}${mwh(maior, idioma)}.`,
+        `${onde}, the net flow hides energy that went the opposite way: ${escondem.length === 1 ? "" : "up to "}${mwh(maior, idioma)}.`,
+        idioma,
+      ),
+    );
   }
   return frases.join(" ");
 }
 
 /** Preço nas pontas, nas horas da janela de 30 dias: separação descrita, sem diagnóstico. */
-export function textoPrecos30d(resumo: readonly ResumoFronteira30d[]): string {
+export function textoPrecos30d(resumo: readonly ResumoFronteira30d[], idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
   const partes = resumo
     .filter((r) => r.horas_pld > 0)
     .map((r) => {
-      const base = `${entreFronteira(r.par)}, ${num(r.horas_precos_separados, 0)} de ${num(r.horas_pld, 0)} horas com PLD`;
+      const base = tx(
+        `${entreFronteira(r.par, "pt")}, ${f.num(r.horas_precos_separados, 0)} de ${f.num(r.horas_pld, 0)} horas com PLD`,
+        `${entreFronteira(r.par, "en")}, ${f.num(r.horas_precos_separados, 0)} of ${f.num(r.horas_pld, 0)} hours with PLD`,
+        idioma,
+      );
       if (!r.horas_precos_separados) return base;
-      return `${base} (fluxo do mais barato para o mais caro em ${num(r.horas_separados_fluxo_para_mais_caro, 0)}, do mais caro para o mais barato em ${num(r.horas_separados_fluxo_para_mais_barato, 0)})`;
+      return tx(
+        `${base} (fluxo do mais barato para o mais caro em ${f.num(r.horas_separados_fluxo_para_mais_caro, 0)}, do mais caro para o mais barato em ${f.num(r.horas_separados_fluxo_para_mais_barato, 0)})`,
+        `${base} (flow from the cheaper to the more expensive side in ${f.num(r.horas_separados_fluxo_para_mais_caro, 0)}, from the more expensive to the cheaper side in ${f.num(r.horas_separados_fluxo_para_mais_barato, 0)})`,
+        idioma,
+      );
     });
-  if (!partes.length) return "Sem PLD publicado nas horas da janela.";
-  return `Horas em que os PLDs das duas pontas diferiram mais de ${reais(LIMIAR_PRECOS_RS_MWH)}/MWh na mesma hora do fluxo: ${listaLonga(partes)}. É descrição da coincidência entre preço e fluxo, não diagnóstico de fronteira no limite.`;
+  if (!partes.length) return tx("Sem PLD publicado nas horas da janela.", "No PLD published in the hours of the window.", idioma);
+  return tx(
+    `Horas em que os PLDs das duas pontas diferiram mais de ${f.reais(LIMIAR_PRECOS_RS_MWH)}/MWh na mesma hora do fluxo: ${listaLonga(partes, idioma)}. É descrição da coincidência entre preço e fluxo, não diagnóstico de fronteira no limite.`,
+    `Hours in which the PLDs at the two ends differed by more than ${f.reais(LIMIAR_PRECOS_RS_MWH)}/MWh in the same hour as the flow: ${listaLonga(partes, idioma)}. This describes the coincidence of price and flow; it is not a diagnosis of a boundary at its limit.`,
+    idioma,
+  );
 }
 
 /** Sentido do saldo em palavras ("do Nordeste para o Norte"); null quando o saldo é ausente ou nulo. */
-export function textoSentidoSaldo(par: FronteiraRede, liquido: number | null | undefined): string | null {
+export function textoSentidoSaldo(par: FronteiraRede, liquido: number | null | undefined, idioma: Idioma = idiomaEnergia()): string | null {
   const s = sentidoDoSaldo(par, liquido);
-  return s ? `${DO_SM[s.origem]} ${PARA_O[s.destino]}` : null;
+  return s ? `${doSm(s.origem, idioma)} ${paraO(s.destino, idioma)}` : null;
 }
 
 export type MedidaFronteira30d = {
@@ -424,26 +607,41 @@ export type MedidaFronteira30d = {
  * Medidas da abertura da Rede: o saldo de cada fronteira na janela de 30 dias, em módulo e com o sentido no rótulo, e o que passou no sentido
  * contrário. São os mesmos campos do resumo de 30 dias que alimenta o gráfico dos dois sentidos, a tabela e a exportação.
  */
-export function medidasFronteiras30d(resumo: readonly ResumoFronteira30d[]): MedidaFronteira30d[] {
+export function medidasFronteiras30d(resumo: readonly ResumoFronteira30d[], idioma: Idioma = idiomaEnergia()): MedidaFronteira30d[] {
+  const f = formatos(idioma);
   return FRONTEIRAS.map((par) => {
     const r = resumo.find((x) => x.par === par);
     if (!r || r.horas === 0) {
       return {
         par,
-        rotulo: `Saldo em 30 dias, ${entreFronteira(par)}`,
+        rotulo: tx(`Saldo em 30 dias, ${entreFronteira(par, "pt")}`, `Net flow over 30 days, ${entreFronteira(par, "en")}`, idioma),
         valor: null,
-        periodo: r ? `${dataBR(r.inicio)} a ${dataBR(r.fim)}` : "",
-        nota: "Sem fluxo publicado na janela.",
+        periodo: r ? tx(`${f.dataBR(r.inicio)} a ${f.dataBR(r.fim)}`, `${f.dataBR(r.inicio)} to ${f.dataBR(r.fim)}`, idioma) : "",
+        nota: tx("Sem fluxo publicado na janela.", "No flow published in the window.", idioma),
       };
     }
-    const sentido = textoSentidoSaldo(par, r.liquido_mwh);
-    const contra = horasContraSaldo(r) === 0 ? `Fluxo num só sentido nas ${num(r.horas, 0)} horas.` : `No sentido contrário: ${mwh(r.contra_saldo_mwh)}.`;
-    const trocas = r.dias_com_reversao > 0 ? ` Troca de sentido em ${num(r.dias_com_reversao, 0)} de ${num(r.dias, 0)} dias.` : "";
+    const sentido = textoSentidoSaldo(par, r.liquido_mwh, idioma);
+    const contra =
+      horasContraSaldo(r) === 0
+        ? tx(`Fluxo num só sentido nas ${f.num(r.horas, 0)} horas.`, `Flow in one direction only over the ${f.num(r.horas, 0)} hours.`, idioma)
+        : tx(`No sentido contrário: ${mwh(r.contra_saldo_mwh, idioma)}.`, `Opposite direction: ${mwh(r.contra_saldo_mwh, idioma)}.`, idioma);
+    const trocas =
+      r.dias_com_reversao > 0
+        ? tx(
+            ` Troca de sentido em ${f.num(r.dias_com_reversao, 0)} de ${f.num(r.dias, 0)} dias.`,
+            ` Change of direction on ${f.num(r.dias_com_reversao, 0)} of ${f.num(r.dias, 0)} days.`,
+            idioma,
+          )
+        : "";
     return {
       par,
-      rotulo: `Saldo em ${plural(r.dias, "dia", "dias")}, ${sentido ?? entreFronteira(par)}`,
+      rotulo: tx(
+        `Saldo em ${f.plural(r.dias, "dia", "dias")}, ${sentido ?? entreFronteira(par, "pt")}`,
+        `Net flow over ${f.plural(r.dias, "day", "days")}, ${sentido ?? entreFronteira(par, "en")}`,
+        idioma,
+      ),
       valor: Math.abs(r.liquido_mwh),
-      periodo: `${dataBR(r.inicio)} a ${dataBR(r.fim)}`,
+      periodo: tx(`${f.dataBR(r.inicio)} a ${f.dataBR(r.fim)}`, `${f.dataBR(r.inicio)} to ${f.dataBR(r.fim)}`, idioma),
       nota: `${contra}${trocas}`,
     };
   });
@@ -479,15 +677,15 @@ export type LinhaResumo30d = {
 };
 
 /** O resumo de 30 dias por fronteira (os números de destaque e a resposta saem destas linhas). */
-export function linhasResumo30d(resumo: readonly ResumoFronteira30d[]): LinhaResumo30d[] {
+export function linhasResumo30d(resumo: readonly ResumoFronteira30d[], idioma: Idioma = idiomaEnergia()): LinhaResumo30d[] {
   return resumo.map((r) => ({
     id: r.par,
-    fronteira: nomeFronteira(r.par),
+    fronteira: nomeFronteira(r.par, idioma),
     inicio: r.inicio,
     fim: r.fim,
     dias_completos: r.dias_completos,
     horas: r.horas,
-    sentido_saldo: rotuloSentidoSaldo(r.par, r.liquido_mwh),
+    sentido_saldo: rotuloSentidoSaldo(r.par, r.liquido_mwh, idioma),
     liquido_mwh: r.liquido_mwh,
     canonico_mwh: r.canonico_mwh,
     inverso_mwh: r.inverso_mwh,
@@ -503,24 +701,27 @@ export function linhasResumo30d(resumo: readonly ResumoFronteira30d[]): LinhaRes
   }));
 }
 
-export const COLUNAS_RESUMO_30D: ColunaTabela[] = [
-  { id: "fronteira", rotulo: "Fronteira (sentido positivo)", tipo: "texto" },
-  { id: "sentido_saldo", rotulo: "Sentido do saldo", tipo: "texto" },
-  { id: "liquido_mwh", rotulo: "Saldo em 30 dias", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "canonico_mwh", rotulo: "No sentido da fronteira", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "inverso_mwh", rotulo: "No sentido contrário", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "contra_saldo_mwh", rotulo: "Escondida pelo saldo de 30 dias", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "contra_saldo_dias_mwh", rotulo: "Escondida pelos saldos diários", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas_canonico", rotulo: "Horas no sentido da fronteira", tipo: "numero", casas: 0 },
-  { id: "horas_inverso", rotulo: "Horas no sentido contrário", tipo: "numero", casas: 0 },
-  { id: "dias_com_reversao", rotulo: "Dias com troca de sentido", tipo: "numero", casas: 0 },
-  { id: "horas", rotulo: "Horas com fluxo", tipo: "numero", casas: 0 },
-  { id: "dias_completos", rotulo: "Dias com as 24 horas", tipo: "numero", casas: 0 },
-  { id: "horas_pld", rotulo: "Horas com PLD nas duas pontas", tipo: "numero", casas: 0 },
-  { id: "horas_precos_separados", rotulo: "Horas com PLDs diferentes", tipo: "numero", casas: 0 },
-  { id: "horas_fluxo_para_mais_caro", rotulo: "Dessas, fluxo para o mais caro", tipo: "numero", casas: 0 },
-  { id: "horas_fluxo_para_mais_barato", rotulo: "Dessas, fluxo para o mais barato", tipo: "numero", casas: 0 },
-];
+export function colunasResumo30d(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "fronteira", rotulo: tx("Fronteira (sentido positivo)", "Boundary (positive direction)", idioma), tipo: "texto" },
+    { id: "sentido_saldo", rotulo: tx("Sentido do saldo", "Direction of the net flow", idioma), tipo: "texto" },
+    { id: "liquido_mwh", rotulo: tx("Saldo em 30 dias", "Net flow over 30 days", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "canonico_mwh", rotulo: tx("No sentido da fronteira", "In the boundary direction", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "inverso_mwh", rotulo: tx("No sentido contrário", "In the opposite direction", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "contra_saldo_mwh", rotulo: tx("Escondida pelo saldo de 30 dias", "Hidden by the 30-day net flow", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "contra_saldo_dias_mwh", rotulo: tx("Escondida pelos saldos diários", "Hidden by the daily net flows", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas_canonico", rotulo: tx("Horas no sentido da fronteira", "Hours in the boundary direction", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_inverso", rotulo: tx("Horas no sentido contrário", "Hours in the opposite direction", idioma), tipo: "numero", casas: 0 },
+    { id: "dias_com_reversao", rotulo: tx("Dias com troca de sentido", "Days with a change of direction", idioma), tipo: "numero", casas: 0 },
+    { id: "horas", rotulo: tx("Horas com fluxo", "Hours with flow", idioma), tipo: "numero", casas: 0 },
+    { id: "dias_completos", rotulo: tx("Dias com as 24 horas", "Days with all 24 hours", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_pld", rotulo: tx("Horas com PLD nas duas pontas", "Hours with PLD at both ends", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_precos_separados", rotulo: tx("Horas com PLDs diferentes", "Hours with different PLDs", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_fluxo_para_mais_caro", rotulo: tx("Dessas, fluxo para o mais caro", "Of these, flow toward the more expensive side", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_fluxo_para_mais_barato", rotulo: tx("Dessas, fluxo para o mais barato", "Of these, flow toward the cheaper side", idioma), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_RESUMO_30D: ColunaTabela[] = colunasResumo30d("pt");
 
 export type LinhaFronteiraDia = {
   id: FronteiraRede;
@@ -540,16 +741,16 @@ export type LinhaFronteiraDia = {
 };
 
 /** Uma linha por fronteira no dia escolhido (mapa, tabela e exportação usam as mesmas linhas). */
-export function linhasFronteirasDia(c: Pick<CirculacaoRede, "diario">, dia: string): LinhaFronteiraDia[] {
+export function linhasFronteirasDia(c: Pick<CirculacaoRede, "diario">, dia: string, idioma: Idioma = idiomaEnergia()): LinhaFronteiraDia[] {
   const i = c.diario.dias.indexOf(dia);
   return FRONTEIRAS.map((par) => {
     const s = c.diario.por_par[par];
     const v = (k: keyof typeof s) => (i >= 0 ? (s[k][i] ?? null) : null);
     return {
       id: par,
-      fronteira: nomeFronteira(par),
+      fronteira: nomeFronteira(par, idioma),
       dia,
-      sentido_saldo: rotuloSentidoSaldo(par, v("liquido_mwh")),
+      sentido_saldo: rotuloSentidoSaldo(par, v("liquido_mwh"), idioma),
       liquido_mwh: v("liquido_mwh"),
       canonico_mwh: v("canonico_mwh"),
       inverso_mwh: v("inverso_mwh"),
@@ -564,35 +765,51 @@ export function linhasFronteirasDia(c: Pick<CirculacaoRede, "diario">, dia: stri
   });
 }
 
-export const COLUNAS_FRONTEIRAS_DIA: ColunaTabela[] = [
-  { id: "fronteira", rotulo: "Fronteira (sentido positivo)", tipo: "texto" },
-  { id: "sentido_saldo", rotulo: "Sentido do saldo", tipo: "texto" },
-  { id: "liquido_mwh", rotulo: "Saldo", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "canonico_mwh", rotulo: "No sentido da fronteira", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "inverso_mwh", rotulo: "No sentido contrário", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "contra_saldo_mwh", rotulo: "Escondida pelo saldo", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas", rotulo: "Horas com fluxo publicado", tipo: "numero", casas: 0 },
-  { id: "horas_inverso", rotulo: "Horas no sentido contrário", tipo: "numero", casas: 0 },
-  { id: "reversoes", rotulo: "Trocas de sentido", tipo: "numero", casas: 0 },
-  { id: "horas_precos_separados", rotulo: "Horas com PLDs diferentes nas pontas", tipo: "numero", casas: 0 },
-  { id: "horas_fluxo_para_mais_caro", rotulo: "Dessas, fluxo para o mais caro", tipo: "numero", casas: 0 },
-  { id: "horas_fluxo_para_mais_barato", rotulo: "Dessas, fluxo para o mais barato", tipo: "numero", casas: 0 },
-];
+export function colunasFronteirasDia(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "fronteira", rotulo: tx("Fronteira (sentido positivo)", "Boundary (positive direction)", idioma), tipo: "texto" },
+    { id: "sentido_saldo", rotulo: tx("Sentido do saldo", "Direction of the net flow", idioma), tipo: "texto" },
+    { id: "liquido_mwh", rotulo: tx("Saldo", "Net flow", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "canonico_mwh", rotulo: tx("No sentido da fronteira", "In the boundary direction", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "inverso_mwh", rotulo: tx("No sentido contrário", "In the opposite direction", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "contra_saldo_mwh", rotulo: tx("Escondida pelo saldo", "Hidden by the net flow", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas", rotulo: tx("Horas com fluxo publicado", "Hours with published flow", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_inverso", rotulo: tx("Horas no sentido contrário", "Hours in the opposite direction", idioma), tipo: "numero", casas: 0 },
+    { id: "reversoes", rotulo: tx("Trocas de sentido", "Changes of direction", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_precos_separados", rotulo: tx("Horas com PLDs diferentes nas pontas", "Hours with different PLDs at the ends", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_fluxo_para_mais_caro", rotulo: tx("Dessas, fluxo para o mais caro", "Of these, flow toward the more expensive side", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_fluxo_para_mais_barato", rotulo: tx("Dessas, fluxo para o mais barato", "Of these, flow toward the cheaper side", idioma), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_FRONTEIRAS_DIA: ColunaTabela[] = colunasFronteirasDia("pt");
 
 /** Resposta do dia escolhido: uma fronteira (selecionada) ou as quatro. */
-export function respostaDia(linhas: readonly LinhaFronteiraDia[], par: FronteiraRede | null): string {
+export function respostaDia(linhas: readonly LinhaFronteiraDia[], par: FronteiraRede | null, idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
   const dia = linhas[0]?.dia ?? "";
   const alvo = par ? linhas.filter((l) => l.id === par) : linhas;
   const partes = alvo.map((l) => {
-    if (l.liquido_mwh === null || l.horas === null || l.horas === 0) return `${entreFronteira(l.id)}, sem fluxo publicado`;
+    if (l.liquido_mwh === null || l.horas === null || l.horas === 0)
+      return tx(`${entreFronteira(l.id, "pt")}, sem fluxo publicado`, `${entreFronteira(l.id, "en")}, no flow published`, idioma);
     const s = sentidoDoSaldo(l.id, l.liquido_mwh);
-    const saldo = s ? `${mwh(Math.abs(l.liquido_mwh))} ${DO_SM[s.origem]} ${PARA_O[s.destino]}` : `saldo nulo ${entreFronteira(l.id)}`;
-    const escondida = l.contra_saldo_mwh ? `, com ${mwh(l.contra_saldo_mwh)} no sentido contrário` : "";
-    const trocas = par && l.reversoes ? ` e ${plural(l.reversoes, "troca", "trocas")} de sentido entre horas seguidas` : "";
-    const incompleto = l.horas < 24 ? ` (${l.horas} de 24 horas publicadas)` : "";
+    const saldo = s
+      ? `${mwh(Math.abs(l.liquido_mwh), idioma)} ${doSm(s.origem, idioma)} ${paraO(s.destino, idioma)}`
+      : tx(`saldo nulo ${entreFronteira(l.id, "pt")}`, `zero net flow ${entreFronteira(l.id, "en")}`, idioma);
+    const escondida = l.contra_saldo_mwh
+      ? tx(`, com ${mwh(l.contra_saldo_mwh, idioma)} no sentido contrário`, `, with ${mwh(l.contra_saldo_mwh, idioma)} in the opposite direction`, idioma)
+      : "";
+    const trocas =
+      par && l.reversoes
+        ? tx(
+            ` e ${f.plural(l.reversoes, "troca", "trocas")} de sentido entre horas seguidas`,
+            ` and ${f.plural(l.reversoes, "change", "changes")} of direction between consecutive hours`,
+            idioma,
+          )
+        : "";
+    const incompleto = l.horas < 24 ? tx(` (${l.horas} de 24 horas publicadas)`, ` (${l.horas} of 24 hours published)`, idioma) : "";
     return `${saldo}${escondida}${trocas}${incompleto}`;
   });
-  return `Em ${dataBR(dia)}: ${listaLonga(partes)}.`;
+  return tx(`Em ${f.dataBR(dia)}: ${listaLonga(partes, idioma)}.`, `On ${f.dataBR(dia)}: ${listaLonga(partes, idioma)}.`, idioma);
 }
 
 export type LinhaDiaFronteira = {
@@ -625,17 +842,20 @@ export function linhasDiarioFronteira(c: Pick<CirculacaoRede, "diario">, par: Fr
   }));
 }
 
-export const COLUNAS_DIARIO_FRONTEIRA: ColunaTabela[] = [
-  { id: "d", rotulo: "Dia", tipo: "data" },
-  { id: "canonico_mwh", rotulo: "No sentido da fronteira", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "inverso_mwh", rotulo: "No sentido contrário", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "liquido_mwh", rotulo: "Saldo", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "contra_saldo_mwh", rotulo: "Escondida pelo saldo", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas", rotulo: "Horas com fluxo", tipo: "numero", casas: 0 },
-  { id: "horas_inverso", rotulo: "Horas no sentido contrário", tipo: "numero", casas: 0 },
-  { id: "reversoes", rotulo: "Trocas de sentido", tipo: "numero", casas: 0 },
-  { id: "horas_precos_separados", rotulo: "Horas com PLDs diferentes", tipo: "numero", casas: 0 },
-];
+export function colunasDiarioFronteira(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "d", rotulo: tx("Dia", "Day", idioma), tipo: "data" },
+    { id: "canonico_mwh", rotulo: tx("No sentido da fronteira", "In the boundary direction", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "inverso_mwh", rotulo: tx("No sentido contrário", "In the opposite direction", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "liquido_mwh", rotulo: tx("Saldo", "Net flow", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "contra_saldo_mwh", rotulo: tx("Escondida pelo saldo", "Hidden by the net flow", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas", rotulo: tx("Horas com fluxo", "Hours with flow", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_inverso", rotulo: tx("Horas no sentido contrário", "Hours in the opposite direction", idioma), tipo: "numero", casas: 0 },
+    { id: "reversoes", rotulo: tx("Trocas de sentido", "Changes of direction", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_precos_separados", rotulo: tx("Horas com PLDs diferentes", "Hours with different PLDs", idioma), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_DIARIO_FRONTEIRA: ColunaTabela[] = colunasDiarioFronteira("pt");
 
 /** Saldo diário das fronteiras escolhidas (até quatro), uma coluna por fronteira. */
 export function linhasSaldoDiario(c: Pick<CirculacaoRede, "diario">, pares: readonly FronteiraRede[]): ({ id: string; d: string } & Partial<Record<FronteiraRede, number | null>>)[] {
@@ -657,7 +877,8 @@ export type LinhaMesFronteira = {
 };
 
 /** Meses desde 2021 de uma fronteira; mês com menos horas que o calendário é marcado. */
-export function linhasMensalFronteira(c: Pick<CirculacaoRede, "mensal">, par: FronteiraRede): LinhaMesFronteira[] {
+export function linhasMensalFronteira(c: Pick<CirculacaoRede, "mensal">, par: FronteiraRede, idioma: Idioma = idiomaEnergia()): LinhaMesFronteira[] {
+  const f = formatos(idioma);
   const s = c.mensal.por_par[par];
   return c.mensal.meses.map((m, i) => {
     const h = s.horas[i] ?? null;
@@ -671,31 +892,45 @@ export function linhasMensalFronteira(c: Pick<CirculacaoRede, "mensal">, par: Fr
       contra_saldo_dias_mwh: s.contra_saldo_dias_mwh[i] ?? null,
       horas: h,
       horas_calendario: cal,
-      mes_completo: h !== null && cal !== null && h === cal ? "sim" : `não (${num(h, 0)} de ${num(cal, 0)} horas)`,
+      mes_completo:
+        h !== null && cal !== null && h === cal
+          ? tx("sim", "yes", idioma)
+          : tx(`não (${f.num(h, 0)} de ${f.num(cal, 0)} horas)`, `no (${f.num(h, 0)} of ${f.num(cal, 0)} hours)`, idioma),
       horas_inverso: s.horas_inverso[i] ?? null,
       horas_precos_separados: s.horas_precos_separados[i] ?? null,
     };
   });
 }
 
-export const COLUNAS_MENSAL_FRONTEIRA: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "data" },
-  { id: "canonico_mwh", rotulo: "No sentido da fronteira", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "inverso_mwh", rotulo: "No sentido contrário", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "liquido_mwh", rotulo: "Saldo", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "contra_saldo_dias_mwh", rotulo: "Escondida pelos saldos diários", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas", rotulo: "Horas com fluxo", tipo: "numero", casas: 0 },
-  { id: "horas_calendario", rotulo: "Horas do mês", tipo: "numero", casas: 0 },
-  { id: "mes_completo", rotulo: "Mês completo", tipo: "texto", categorica: true },
-  { id: "horas_inverso", rotulo: "Horas no sentido contrário", tipo: "numero", casas: 0 },
-  { id: "horas_precos_separados", rotulo: "Horas com PLDs diferentes", tipo: "numero", casas: 0 },
-];
+export function colunasMensalFronteira(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "m", rotulo: tx("Mês", "Month", idioma), tipo: "data" },
+    { id: "canonico_mwh", rotulo: tx("No sentido da fronteira", "In the boundary direction", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "inverso_mwh", rotulo: tx("No sentido contrário", "In the opposite direction", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "liquido_mwh", rotulo: tx("Saldo", "Net flow", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "contra_saldo_dias_mwh", rotulo: tx("Escondida pelos saldos diários", "Hidden by the daily net flows", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas", rotulo: tx("Horas com fluxo", "Hours with flow", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_calendario", rotulo: tx("Horas do mês", "Hours in the month", idioma), tipo: "numero", casas: 0 },
+    { id: "mes_completo", rotulo: tx("Mês completo", "Complete month", idioma), tipo: "texto", categorica: true },
+    { id: "horas_inverso", rotulo: tx("Horas no sentido contrário", "Hours in the opposite direction", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_precos_separados", rotulo: tx("Horas com PLDs diferentes", "Hours with different PLDs", idioma), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_MENSAL_FRONTEIRA: ColunaTabela[] = colunasMensalFronteira("pt");
 
 /** Colunas da tabela equivalente aos saldos das fronteiras escolhidas (dia ou mês e uma coluna por fronteira). */
-export function colunasSaldoFronteiras(chave: "d" | "m", pares: readonly FronteiraRede[]): ColunaTabela[] {
+export function colunasSaldoFronteiras(chave: "d" | "m", pares: readonly FronteiraRede[], idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: chave, rotulo: chave === "d" ? "Dia" : "Mês", tipo: "data" },
-    ...pares.map((p): ColunaTabela => ({ id: p, rotulo: `Saldo ${curtoFronteira(p)} (positivo no sentido do nome)`, tipo: "numero", unidade: "MWh", casas: 0 })),
+    { id: chave, rotulo: chave === "d" ? tx("Dia", "Day", idioma) : tx("Mês", "Month", idioma), tipo: "data" },
+    ...pares.map(
+      (p): ColunaTabela => ({
+        id: p,
+        rotulo: tx(`Saldo ${curtoFronteira(p, "pt")} (positivo no sentido do nome)`, `Net flow ${curtoFronteira(p, "en")} (positive in the direction of the name)`, idioma),
+        tipo: "numero",
+        unidade: "MWh",
+        casas: 0,
+      }),
+    ),
   ];
 }
 
@@ -714,14 +949,14 @@ export type LinhaSubsistemaDia = {
 };
 
 /** Exportação e importação brutas de cada subsistema no dia (o Sul inclui Argentina e Uruguai). */
-export function linhasSubsistemasDia(c: Pick<CirculacaoRede, "subsistemas_diario">, dia: string): LinhaSubsistemaDia[] {
+export function linhasSubsistemasDia(c: Pick<CirculacaoRede, "subsistemas_diario">, dia: string, idioma: Idioma = idiomaEnergia()): LinhaSubsistemaDia[] {
   const i = c.subsistemas_diario.dias.indexOf(dia);
   return SUBSISTEMAS.map((sm) => {
     const s = c.subsistemas_diario.por_sm[sm];
     const v = (k: keyof typeof s) => (i >= 0 ? (s[k][i] ?? null) : null);
     return {
       id: sm,
-      subsistema: NOME_SM[sm],
+      subsistema: nomeSm(sm, idioma),
       exportacao_bruta_mwh: v("exportacao_bruta_mwh"),
       importacao_bruta_mwh: v("importacao_bruta_mwh"),
       liquido_mwh: v("liquido_mwh"),
@@ -730,27 +965,61 @@ export function linhasSubsistemasDia(c: Pick<CirculacaoRede, "subsistemas_diario
   });
 }
 
-export const COLUNAS_SUBSISTEMAS_DIA: ColunaTabela[] = [
-  { id: "subsistema", rotulo: "Subsistema", tipo: "texto" },
-  { id: "exportacao_bruta_mwh", rotulo: "Exportação bruta", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "importacao_bruta_mwh", rotulo: "Importação bruta", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "liquido_mwh", rotulo: "Saldo (positivo = exporta)", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas_transito", rotulo: "Horas de trânsito", tipo: "numero", casas: 0 },
-];
+export function colunasSubsistemasDia(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "subsistema", rotulo: tx("Subsistema", "Subsystem", idioma), tipo: "texto" },
+    { id: "exportacao_bruta_mwh", rotulo: tx("Exportação bruta", "Gross export", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "importacao_bruta_mwh", rotulo: tx("Importação bruta", "Gross import", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "liquido_mwh", rotulo: tx("Saldo (positivo = exporta)", "Net (positive = exports)", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas_transito", rotulo: tx("Horas de trânsito", "Transit hours", idioma), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_SUBSISTEMAS_DIA: ColunaTabela[] = colunasSubsistemasDia("pt");
 
 /** Quem exportou e quem importou no dia, pelo saldo das fronteiras (e do exterior, no Sul). */
-export function respostaSubsistemasDia(linhas: readonly LinhaSubsistemaDia[], dia: string): string {
+export function respostaSubsistemasDia(linhas: readonly LinhaSubsistemaDia[], dia: string, idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
   const exp = linhas.filter((l) => (l.liquido_mwh ?? 0) > 0);
   const imp = linhas.filter((l) => (l.liquido_mwh ?? 0) < 0);
   const sem = linhas.filter((l) => l.liquido_mwh === null);
   const transito = linhas.filter((l) => (l.horas_transito ?? 0) > 0);
+  const listaExp = listaTexto(
+    exp.map((l) => `${nomeSm(l.id, idioma)} (${mwh(l.liquido_mwh, idioma)})`),
+    idioma,
+  );
+  const listaImp = listaTexto(
+    imp.map((l) => `${nomeSm(l.id, idioma)} (${mwh(Math.abs(l.liquido_mwh!), idioma)})`),
+    idioma,
+  );
   const partes = [
-    exp.length ? `exportaram ${listaTexto(exp.map((l) => `${NOME_SM[l.id]} (${mwh(l.liquido_mwh)})`))}` : "nenhum subsistema exportou",
-    imp.length ? `importaram ${listaTexto(imp.map((l) => `${NOME_SM[l.id]} (${mwh(Math.abs(l.liquido_mwh!))})`))}` : "nenhum importou",
+    exp.length ? tx(`exportaram ${listaExp}`, `exporters: ${listaExp}`, idioma) : tx("nenhum subsistema exportou", "no subsystem exported", idioma),
+    imp.length ? tx(`importaram ${listaImp}`, `importers: ${listaImp}`, idioma) : tx("nenhum importou", "none imported", idioma),
   ];
-  let t = `Em ${dataBR(dia)}, ${partes.join("; ")}.`;
-  if (transito.length) t += ` Houve trânsito (exportar por uma fronteira e importar por outra na mesma hora) ${listaTexto(transito.map((l) => `${NO[l.id]} em ${plural(l.horas_transito!, "hora", "horas")}`))}.`;
-  if (sem.length) t += ` Sem dado para ${listaTexto(sem.map((l) => NOME_SM[l.id]))}.`;
+  let t = tx(`Em ${f.dataBR(dia)}, ${partes.join("; ")}.`, `On ${f.dataBR(dia)}, ${partes.join("; ")}.`, idioma);
+  if (transito.length) {
+    const lista = listaTexto(
+      transito.map((l) =>
+        tx(
+          `${NO[l.id]} em ${f.plural(l.horas_transito!, "hora", "horas")}`,
+          `${noSm(l.id, "en")} in ${f.plural(l.horas_transito!, "hour", "hours")}`,
+          idioma,
+        ),
+      ),
+      idioma,
+    );
+    t += tx(
+      ` Houve trânsito (exportar por uma fronteira e importar por outra na mesma hora) ${lista}.`,
+      ` There was transit (exporting through one boundary and importing through another in the same hour) ${lista}.`,
+      idioma,
+    );
+  }
+  if (sem.length) {
+    const lista = listaTexto(
+      sem.map((l) => nomeSm(l.id, idioma)),
+      idioma,
+    );
+    t += tx(` Sem dado para ${lista}.`, ` No data for ${lista}.`, idioma);
+  }
   return t;
 }
 
@@ -780,7 +1049,7 @@ export type LinhaHoraFronteira = {
 };
 
 /** Uma linha por fronteira na hora escolhida: fluxo, programa e PLD das duas pontas na mesma hora. */
-export function linhasHora(j: JanelaHorariaRede, i: number): LinhaHoraFronteira[] {
+export function linhasHora(j: JanelaHorariaRede, i: number, idioma: Idioma = idiomaEnergia()): LinhaHoraFronteira[] {
   const hora = j.horas[i] ?? "";
   return FRONTEIRAS.map((par) => {
     const [a, b] = PONTAS[par];
@@ -788,56 +1057,83 @@ export function linhasHora(j: JanelaHorariaRede, i: number): LinhaHoraFronteira[
     const p = j.programado[par]?.[i] ?? null;
     return {
       id: par,
-      fronteira: nomeFronteira(par),
+      fronteira: nomeFronteira(par, idioma),
       hora,
       fluxo_mwmed: f,
-      sentido_fluxo: rotuloSentidoSaldo(par, f),
+      sentido_fluxo: rotuloSentidoSaldo(par, f, idioma),
       programado_mwmed: p,
-      sentido_programado: rotuloSentidoSaldo(par, p),
+      sentido_programado: rotuloSentidoSaldo(par, p, idioma),
       pld_de: j.pld[a]?.[i] ?? null,
       pld_para: j.pld[b]?.[i] ?? null,
     };
   });
 }
 
-export const COLUNAS_HORA: ColunaTabela[] = [
-  { id: "fronteira", rotulo: "Fronteira (sentido positivo)", tipo: "texto" },
-  { id: "fluxo_mwmed", rotulo: "Fluxo verificado", tipo: "numero", unidade: "MWmed", casas: 1 },
-  { id: "sentido_fluxo", rotulo: "Sentido do fluxo", tipo: "texto" },
-  { id: "programado_mwmed", rotulo: "Programado", tipo: "numero", unidade: "MWmed", casas: 1 },
-  { id: "sentido_programado", rotulo: "Sentido programado", tipo: "texto" },
-  { id: "pld_de", rotulo: "PLD na primeira região", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "pld_para", rotulo: "PLD na segunda região", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-];
+export function colunasHora(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const mw = tx("MWmed", "MWavg", idioma);
+  return [
+    { id: "fronteira", rotulo: tx("Fronteira (sentido positivo)", "Boundary (positive direction)", idioma), tipo: "texto" },
+    { id: "fluxo_mwmed", rotulo: tx("Fluxo verificado", "Verified flow", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "sentido_fluxo", rotulo: tx("Sentido do fluxo", "Flow direction", idioma), tipo: "texto" },
+    { id: "programado_mwmed", rotulo: tx("Programado", "Scheduled", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "sentido_programado", rotulo: tx("Sentido programado", "Scheduled direction", idioma), tipo: "texto" },
+    { id: "pld_de", rotulo: tx("PLD na primeira região", "PLD in the first region", idioma), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "pld_para", rotulo: tx("PLD na segunda região", "PLD in the second region", idioma), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  ];
+}
+export const COLUNAS_HORA: ColunaTabela[] = colunasHora("pt");
 
 /** Resposta da hora escolhida para uma fronteira (fluxo, programa e PLD na mesma hora). */
-export function respostaHora(linhas: readonly LinhaHoraFronteira[], par: FronteiraRede, exterior?: Partial<Record<PaisSul, number | null>>): string {
+export function respostaHora(linhas: readonly LinhaHoraFronteira[], par: FronteiraRede, exterior?: Partial<Record<PaisSul, number | null>>, idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
   const l = linhas.find((x) => x.id === par);
   if (!l) return "";
   const [a, b] = PONTAS[par];
-  const quando = l.hora ? horaLocal(l.hora) : "sem hora";
+  const quando = l.hora ? f.horaLocal(l.hora) : tx("sem hora", "no hour", idioma);
+  const sentido = (v: number) => (v > 0 ? sentidoPositivo(par, idioma) : sentidoNegativo(par, idioma));
   const fluxo =
     l.fluxo_mwmed === null
-      ? `${entreFronteira(par)}, sem fluxo publicado`
+      ? tx(`${entreFronteira(par, "pt")}, sem fluxo publicado`, `${entreFronteira(par, "en")}, no flow published`, idioma)
       : l.fluxo_mwmed === 0
-        ? `${entreFronteira(par)}, fluxo nulo`
-        : `passavam ${mwmed(Math.abs(l.fluxo_mwmed))} ${l.fluxo_mwmed > 0 ? sentidoPositivo(par) : sentidoNegativo(par)}`;
+        ? tx(`${entreFronteira(par, "pt")}, fluxo nulo`, `${entreFronteira(par, "en")}, zero flow`, idioma)
+        : tx(`passavam ${mwmed(Math.abs(l.fluxo_mwmed), 0, idioma)} ${sentido(l.fluxo_mwmed)}`, `${mwmed(Math.abs(l.fluxo_mwmed), 0, idioma)} were flowing ${sentido(l.fluxo_mwmed)}`, idioma);
   let prog: string;
-  if (l.programado_mwmed === null) prog = "sem programa publicado para a hora";
+  if (l.programado_mwmed === null) prog = tx("sem programa publicado para a hora", "no schedule published for the hour", idioma);
   else if (l.fluxo_mwmed !== null && l.fluxo_mwmed !== 0 && l.programado_mwmed !== 0 && Math.sign(l.programado_mwmed) !== Math.sign(l.fluxo_mwmed))
-    prog = `o programa previa ${mwmed(Math.abs(l.programado_mwmed))} no sentido contrário`;
-  else if (l.programado_mwmed === 0) prog = "o programa previa fluxo nulo";
-  else prog = `o programa previa ${mwmed(Math.abs(l.programado_mwmed))} ${l.programado_mwmed > 0 ? sentidoPositivo(par) : sentidoNegativo(par)}`;
-  const pld = `PLD na mesma hora: ${reais(l.pld_de)}/MWh ${NO[a]} e ${reais(l.pld_para)}/MWh ${NO[b]}`;
+    prog = tx(
+      `o programa previa ${mwmed(Math.abs(l.programado_mwmed), 0, idioma)} no sentido contrário`,
+      `the schedule expected ${mwmed(Math.abs(l.programado_mwmed), 0, idioma)} in the opposite direction`,
+      idioma,
+    );
+  else if (l.programado_mwmed === 0) prog = tx("o programa previa fluxo nulo", "the schedule expected zero flow", idioma);
+  else
+    prog = tx(
+      `o programa previa ${mwmed(Math.abs(l.programado_mwmed), 0, idioma)} ${sentido(l.programado_mwmed)}`,
+      `the schedule expected ${mwmed(Math.abs(l.programado_mwmed), 0, idioma)} ${sentido(l.programado_mwmed)}`,
+      idioma,
+    );
+  const pld = tx(
+    `PLD na mesma hora: ${f.reais(l.pld_de)}/MWh ${NO[a]} e ${f.reais(l.pld_para)}/MWh ${NO[b]}`,
+    `PLD in the same hour: ${f.reais(l.pld_de)}/MWh ${noSm(a, "en")} and ${f.reais(l.pld_para)}/MWh ${noSm(b, "en")}`,
+    idioma,
+  );
   let ext = "";
   if (par === "S_SE" && exterior) {
     const partes = PAISES_SUL.map((p) => {
       const v = exterior[p];
-      return v === null || v === undefined ? `${NOME_PAIS[p]} sem dado` : v === 0 ? `${NOME_PAIS[p]} sem fluxo` : `${NOME_PAIS[p]} ${mwmed(Math.abs(v))} (${v > 0 ? "exportação" : "importação"})`;
+      return v === null || v === undefined
+        ? tx(`${NOME_PAIS[p]} sem dado`, `${NOME_PAIS_EN[p]} no data`, idioma)
+        : v === 0
+          ? tx(`${NOME_PAIS[p]} sem fluxo`, `${NOME_PAIS_EN[p]} no flow`, idioma)
+          : tx(
+              `${NOME_PAIS[p]} ${mwmed(Math.abs(v), 0, idioma)} (${v > 0 ? "exportação" : "importação"})`,
+              `${NOME_PAIS_EN[p]} ${mwmed(Math.abs(v), 0, idioma)} (${v > 0 ? "export" : "import"})`,
+              idioma,
+            );
     });
-    ext = ` Exterior do Sul na hora: ${listaTexto(partes)}.`;
+    ext = tx(` Exterior do Sul na hora: ${listaTexto(partes, "pt")}.`, ` South exterior in the hour: ${listaTexto(partes, "en")}.`, idioma);
   }
-  return `Em ${quando}, ${fluxo}; ${prog}. ${pld}.${ext}`;
+  return tx(`Em ${quando}, ${fluxo}; ${prog}. ${pld}.${ext}`, `At ${quando}, ${fluxo}; ${prog}. ${pld}.${ext}`, idioma);
 }
 
 export type LinhaJanela = { id: string; h: string; fluxo: number | null; programado: number | null; pld_de: number | null; pld_para: number | null };
@@ -855,14 +1151,15 @@ export function serieJanela(j: JanelaHorariaRede, par: FronteiraRede): LinhaJane
   }));
 }
 
-export function colunasJanela(par: FronteiraRede): ColunaTabela[] {
+export function colunasJanela(par: FronteiraRede, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const [a, b] = PONTAS[par];
+  const mw = tx("MWmed", "MWavg", idioma);
   return [
-    { id: "h", rotulo: "Hora (início, Brasília)", tipo: "data" },
-    { id: "fluxo", rotulo: `Fluxo verificado, positivo ${sentidoPositivo(par)}`, tipo: "numero", unidade: "MWmed", casas: 1 },
-    { id: "programado", rotulo: "Programado, mesmo sinal", tipo: "numero", unidade: "MWmed", casas: 1 },
-    { id: "pld_de", rotulo: `PLD ${NO[a]}`, tipo: "numero", unidade: "R$/MWh", casas: 2 },
-    { id: "pld_para", rotulo: `PLD ${NO[b]}`, tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "h", rotulo: tx("Hora (início, Brasília)", "Hour (start, Brasília)", idioma), tipo: "data" },
+    { id: "fluxo", rotulo: tx(`Fluxo verificado, positivo ${sentidoPositivo(par, "pt")}`, `Verified flow, positive ${sentidoPositivo(par, "en")}`, idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "programado", rotulo: tx("Programado, mesmo sinal", "Scheduled, same sign", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "pld_de", rotulo: `PLD ${noSm(a, idioma)}`, tipo: "numero", unidade: "R$/MWh", casas: 2 },
+    { id: "pld_para", rotulo: `PLD ${noSm(b, idioma)}`, tipo: "numero", unidade: "R$/MWh", casas: 2 },
   ];
 }
 
@@ -883,16 +1180,17 @@ export type LinhaEsquemaNacional = {
 };
 
 /** Como cada arquivo anual publicou as fronteiras (orientação fixa com sinal ou pelo sentido da hora). */
-export function linhasEsquemaNacional(e: Pick<EsquemaFonteRede, "intercambio_nacional">): LinhaEsquemaNacional[] {
+export function linhasEsquemaNacional(e: Pick<EsquemaFonteRede, "intercambio_nacional">, idioma: Idioma = idiomaEnergia()): LinhaEsquemaNacional[] {
+  const f = formatos(idioma);
   return e.intercambio_nacional.map((x) => ({
     id: x.recurso,
     recurso: x.recurso,
     linhas: x.linhas,
-    orientacao: x.orientacao_fixa ? "fixa, valor com sinal" : "pelo sentido do fluxo da hora",
+    orientacao: x.orientacao_fixa ? tx("fixa, valor com sinal", "fixed, signed value", idioma) : tx("pelo sentido do fluxo da hora", "by the direction of the hour's flow", idioma),
     orientacoes: Object.entries(x.orientacoes)
-      .map(([o, n]) => `${o.replace("->", "→")}: ${num(n, 0)}`)
+      .map(([o, n]) => `${o.replace("->", "→")}: ${f.num(n, 0)}`)
       .join("; "),
-    tem_programado: x.tem_programado ? "sim" : "não",
+    tem_programado: simNao(x.tem_programado, idioma),
     verificado_negativo: x.verificado_negativo,
     verificado_zero: x.verificado_zero,
     primeira: x.primeira,
@@ -902,63 +1200,107 @@ export function linhasEsquemaNacional(e: Pick<EsquemaFonteRede, "intercambio_nac
 }
 
 /** Quais arquivos anuais usam orientação fixa com sinal e quais orientam a linha pelo sentido da hora, lido do esquema publicado. */
-export function textoOrientacaoArquivos(e: Pick<EsquemaFonteRede, "intercambio_nacional">): string {
+export function textoOrientacaoArquivos(e: Pick<EsquemaFonteRede, "intercambio_nacional">, idioma: Idioma = idiomaEnergia()): string {
   const ano = (r: string) => r.replace(/\D/g, "");
   const fixa = e.intercambio_nacional.filter((x) => x.orientacao_fixa).map((x) => ano(x.recurso));
   const hora = e.intercambio_nacional.filter((x) => !x.orientacao_fixa).map((x) => ano(x.recurso));
   const partes: string[] = [];
-  if (fixa.length) partes.push(`${fixa.length === 1 ? "o arquivo de" : "os arquivos de"} ${listaTexto(fixa)} ${fixa.length === 1 ? "usa" : "usam"} orientação fixa com valor com sinal`);
-  if (hora.length) partes.push(`${hora.length === 1 ? "o de" : "os de"} ${listaTexto(hora)} ${hora.length === 1 ? "orienta" : "orientam"} cada linha pelo sentido do fluxo da hora`);
-  return partes.length ? `${cap(partes.join("; "))}.` : "Nenhum arquivo do conjunto foi lido nesta publicação.";
+  if (fixa.length)
+    partes.push(
+      tx(
+        `${fixa.length === 1 ? "o arquivo de" : "os arquivos de"} ${listaTexto(fixa, "pt")} ${fixa.length === 1 ? "usa" : "usam"} orientação fixa com valor com sinal`,
+        `${fixa.length === 1 ? "the file for" : "the files for"} ${listaTexto(fixa, "en")} ${fixa.length === 1 ? "uses" : "use"} a fixed orientation with a signed value`,
+        idioma,
+      ),
+    );
+  if (hora.length)
+    partes.push(
+      tx(
+        `${hora.length === 1 ? "o de" : "os de"} ${listaTexto(hora, "pt")} ${hora.length === 1 ? "orienta" : "orientam"} cada linha pelo sentido do fluxo da hora`,
+        `${hora.length === 1 ? "the one for" : "those for"} ${listaTexto(hora, "en")} ${hora.length === 1 ? "orients" : "orient"} each row by the direction of the hour's flow`,
+        idioma,
+      ),
+    );
+  return partes.length ? `${cap(partes.join("; "))}.` : tx("Nenhum arquivo do conjunto foi lido nesta publicação.", "No file of the dataset was read in this release.", idioma);
 }
 
-export const COLUNAS_ESQUEMA_NACIONAL: ColunaTabela[] = [
-  { id: "recurso", rotulo: "Arquivo do ONS", tipo: "texto" },
-  { id: "linhas", rotulo: "Linhas", tipo: "numero", casas: 0 },
-  { id: "orientacao", rotulo: "Orientação das linhas", tipo: "texto", categorica: true },
-  { id: "orientacoes", rotulo: "Linhas por orientação publicada", tipo: "texto" },
-  { id: "tem_programado", rotulo: "Traz programado", tipo: "texto", categorica: true },
-  { id: "verificado_negativo", rotulo: "Verificado negativo", tipo: "numero", casas: 0 },
-  { id: "verificado_zero", rotulo: "Verificado zero", tipo: "numero", casas: 0 },
-  { id: "primeira", rotulo: "Primeira hora", tipo: "data" },
-  { id: "ultima", rotulo: "Última hora", tipo: "data" },
-  { id: "conflitos", rotulo: "Horas com duas linhas da mesma fronteira", tipo: "numero", casas: 0 },
-];
+export function colunasEsquemaNacional(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "recurso", rotulo: tx("Arquivo do ONS", "ONS file", idioma), tipo: "texto" },
+    { id: "linhas", rotulo: tx("Linhas", "Rows", idioma), tipo: "numero", casas: 0 },
+    { id: "orientacao", rotulo: tx("Orientação das linhas", "Row orientation", idioma), tipo: "texto", categorica: true },
+    { id: "orientacoes", rotulo: tx("Linhas por orientação publicada", "Rows by published orientation", idioma), tipo: "texto" },
+    { id: "tem_programado", rotulo: tx("Traz programado", "Includes scheduled", idioma), tipo: "texto", categorica: true },
+    { id: "verificado_negativo", rotulo: tx("Verificado negativo", "Negative verified", idioma), tipo: "numero", casas: 0 },
+    { id: "verificado_zero", rotulo: tx("Verificado zero", "Zero verified", idioma), tipo: "numero", casas: 0 },
+    { id: "primeira", rotulo: tx("Primeira hora", "First hour", idioma), tipo: "data" },
+    { id: "ultima", rotulo: tx("Última hora", "Last hour", idioma), tipo: "data" },
+    { id: "conflitos", rotulo: tx("Horas com duas linhas da mesma fronteira", "Hours with two rows for the same boundary", idioma), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_ESQUEMA_NACIONAL: ColunaTabela[] = colunasEsquemaNacional("pt");
 
 export type LinhaCobertura = { id: string; dia: string; horas_min: number; horas_max: number; por_serie: string };
 
 /** Dias sem as 24 horas em alguma série: mínimo e máximo de horas e as horas de cada série. */
-export function linhasCobertura(c: CoberturaFonte): LinhaCobertura[] {
+export function linhasCobertura(c: CoberturaFonte, idioma: Idioma = idiomaEnergia()): LinhaCobertura[] {
   return c.lista.map((d) => ({
     id: d.dia,
     dia: d.dia,
     horas_min: d.horas,
     horas_max: d.horas_max,
     por_serie: Object.entries(d.por_serie)
-      .map(([k, n]) => `${NOME_PAIS[k as PaisRede] ?? (ehFronteira(k) ? curtoFronteira(k) : (CURTO_SM[k as SubsistemaOuSin] ?? k))}: ${n}`)
+      .map(([k, n]) => {
+        const nome = k in NOME_PAIS ? nomePais(k as PaisRede, idioma) : ehFronteira(k) ? curtoFronteira(k, idioma) : k in CURTO_SM ? curtoSm(k as SubsistemaOuSin, idioma) : k;
+        return `${nome}: ${n}`;
+      })
       .join("; "),
   }));
 }
 
-export const COLUNAS_COBERTURA: ColunaTabela[] = [
-  { id: "dia", rotulo: "Dia", tipo: "data" },
-  { id: "horas_min", rotulo: "Menor número de horas entre as séries", tipo: "numero", casas: 0 },
-  { id: "horas_max", rotulo: "Maior número de horas entre as séries", tipo: "numero", casas: 0 },
-  { id: "por_serie", rotulo: "Horas por série", tipo: "texto" },
-];
+export function colunasCobertura(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "dia", rotulo: tx("Dia", "Day", idioma), tipo: "data" }, // i18n: dado
+    { id: "horas_min", rotulo: tx("Menor número de horas entre as séries", "Smallest number of hours among the series", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_max", rotulo: tx("Maior número de horas entre as séries", "Largest number of hours among the series", idioma), tipo: "numero", casas: 0 },
+    { id: "por_serie", rotulo: tx("Horas por série", "Hours by series", idioma), tipo: "texto" },
+  ];
+}
+export const COLUNAS_COBERTURA: ColunaTabela[] = colunasCobertura("pt");
 
 /** Resumo da cobertura de uma fonte (dias incompletos, sem nenhum dado e parciais). */
-export function textoCobertura(nome: string, c: CoberturaFonte, periodo: { inicio: string; fim: string }): string {
-  if (!c.dias_incompletos) return `${nome}: todos os dias de ${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)} têm as 24 horas em todas as séries.`;
-  return `${nome}: ${plural(c.dias_incompletos, "dia", "dias")} sem as 24 horas em alguma série de ${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)} (${plural(c.dias_sem_nenhum_dado, "dia sem nenhum dado", "dias sem nenhum dado")} e ${plural(c.dias_parciais, "dia parcial", "dias parciais")}). Hora ausente fica fora das somas; nenhuma é preenchida.`;
+export function textoCobertura(nome: string, c: CoberturaFonte, periodo: { inicio: string; fim: string }, idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
+  if (!c.dias_incompletos)
+    return tx(
+      `${nome}: todos os dias de ${f.dataBR(periodo.inicio)} a ${f.dataBR(periodo.fim)} têm as 24 horas em todas as séries.`,
+      `${nome}: every day from ${f.dataBR(periodo.inicio)} to ${f.dataBR(periodo.fim)} has all 24 hours in every series.`,
+      idioma,
+    );
+  return tx(
+    `${nome}: ${f.plural(c.dias_incompletos, "dia", "dias")} sem as 24 horas em alguma série de ${f.dataBR(periodo.inicio)} a ${f.dataBR(periodo.fim)} (${f.plural(c.dias_sem_nenhum_dado, "dia sem nenhum dado", "dias sem nenhum dado")} e ${f.plural(c.dias_parciais, "dia parcial", "dias parciais")}). Hora ausente fica fora das somas; nenhuma é preenchida.`,
+    `${nome}: ${f.plural(c.dias_incompletos, "day", "days")} without all 24 hours in some series from ${f.dataBR(periodo.inicio)} to ${f.dataBR(periodo.fim)} (${f.plural(c.dias_sem_nenhum_dado, "day with no data", "days with no data")} and ${f.plural(c.dias_parciais, "partial day", "partial days")}). A missing hour is left out of the sums; none is filled in.`,
+    idioma,
+  );
 }
 
 /** Releitura contra o silver principal (outro coletor e outro parser), em uma frase. */
-export function textoConferenciaSilver(nome: string, c: ConferenciaSilver | null | undefined): string {
-  if (!c) return `${nome}: conferência com o silver principal não executada nesta publicação.`;
+export function textoConferenciaSilver(nome: string, c: ConferenciaSilver | null | undefined, idioma: Idioma = idiomaEnergia()): string {
+  if (!c) return tx(`${nome}: conferência com o silver principal não executada nesta publicação.`, `${nome}: check against the main silver not run in this release.`, idioma);
+  const f = formatos(idioma);
   const dif = c.diferentes_no_mesmo_arquivo + c.diferentes_por_revisao;
-  const ex = c.exemplo_divergencia ? ` Primeira divergência: ${c.exemplo_divergencia[0]}, ${num(c.exemplo_divergencia[1], 3)} contra ${num(c.exemplo_divergencia[2], 3)}.` : "";
-  return `${nome}: ${num(c.horas_comparadas, 0)} valores horários comparados com o silver principal (outro coletor e outro parser), ${num(c.iguais, 0)} iguais e ${num(dif, 0)} diferentes (${num(c.diferentes_no_mesmo_arquivo, 0)} no mesmo arquivo, ${num(c.diferentes_por_revisao, 0)} por revisão entre capturas).${ex}`;
+  const ex = c.exemplo_divergencia
+    ? tx(
+        ` Primeira divergência: ${c.exemplo_divergencia[0]}, ${f.num(c.exemplo_divergencia[1], 3)} contra ${f.num(c.exemplo_divergencia[2], 3)}.`,
+        ` First divergence: ${c.exemplo_divergencia[0]}, ${f.num(c.exemplo_divergencia[1], 3)} against ${f.num(c.exemplo_divergencia[2], 3)}.`,
+        idioma,
+      )
+    : "";
+  return tx(
+    `${nome}: ${f.num(c.horas_comparadas, 0)} valores horários comparados com o silver principal (outro coletor e outro parser), ${f.num(c.iguais, 0)} iguais e ${f.num(dif, 0)} diferentes (${f.num(c.diferentes_no_mesmo_arquivo, 0)} no mesmo arquivo, ${f.num(c.diferentes_por_revisao, 0)} por revisão entre capturas).${ex}`,
+    `${nome}: ${f.num(c.horas_comparadas, 0)} hourly values compared with the main silver (another collector and another parser), ${f.num(c.iguais, 0)} equal and ${f.num(dif, 0)} different (${f.num(c.diferentes_no_mesmo_arquivo, 0)} in the same file, ${f.num(c.diferentes_por_revisao, 0)} by revision between captures).${ex}`,
+    idioma,
+  );
 }
 
 /* ---------- último ano, da gold de operação (rede.json) ---------- */
@@ -988,28 +1330,45 @@ export function linhasUltimoAno(
   });
 }
 
-export const COLUNAS_ULTIMO_ANO: ColunaTabela[] = [
-  { id: "d", rotulo: "Dia", tipo: "data" },
-  ...FRONTEIRAS.map((p): ColunaTabela => ({ id: p, rotulo: `Fluxo médio ${curtoFronteira(p)}`, tipo: "numero", unidade: "MWmed", casas: 0 })),
-  { id: "amplitude", rotulo: "Maior menos menor PLD médio diário", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-];
+export function colunasUltimoAno(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "d", rotulo: tx("Dia", "Day", idioma), tipo: "data" },
+    ...FRONTEIRAS.map(
+      (p): ColunaTabela => ({
+        id: p,
+        rotulo: tx(`Fluxo médio ${curtoFronteira(p, "pt")}`, `Average flow ${curtoFronteira(p, "en")}`, idioma),
+        tipo: "numero",
+        unidade: tx("MWmed", "MWavg", idioma),
+        casas: 0,
+      }),
+    ),
+    { id: "amplitude", rotulo: tx("Maior menos menor PLD médio diário", "Highest minus lowest daily average PLD", idioma), tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  ];
+}
+export const COLUNAS_ULTIMO_ANO: ColunaTabela[] = colunasUltimoAno("pt");
 
 /* ====================================================================== */
 /* P029: balanço e exterior                                                */
 /* ====================================================================== */
 
-export const ROTULO_IDENTIDADE: Record<IdentidadeBalanco["identidade"], string> = {
-  balanco: "Balanço interno: geração − carga − intercâmbio",
-  perimetro: "Perímetro: intercâmbio do balanço − fronteiras e exterior",
-  soma_sin: "Soma: intercâmbio do SIN − soma dos quatro subsistemas",
-};
+export function rotulosIdentidade(idioma: Idioma = idiomaEnergia()): Record<IdentidadeBalanco["identidade"], string> {
+  return {
+    balanco: tx("Balanço interno: geração − carga − intercâmbio", "Internal balance: generation − load − interchange", idioma),
+    perimetro: tx("Perímetro: intercâmbio do balanço − fronteiras e exterior", "Perimeter: balance interchange − boundaries and exterior", idioma),
+    soma_sin: tx("Soma: intercâmbio do SIN − soma dos quatro subsistemas", "Sum: SIN interchange − sum of the four subsystems", idioma),
+  };
+}
+export const ROTULO_IDENTIDADE: Record<IdentidadeBalanco["identidade"], string> = rotulosIdentidade("pt");
 
 /** Nome curto de cada conta, para o eixo das barras (o rótulo longo, com a conta escrita, fica na tabela e na legenda sob o gráfico). */
-export const ROTULO_CURTO_IDENTIDADE: Record<IdentidadeBalanco["identidade"], string> = {
-  balanco: "Balanço interno",
-  perimetro: "Perímetro",
-  soma_sin: "Soma dos subsistemas",
-};
+export function rotulosCurtosIdentidade(idioma: Idioma = idiomaEnergia()): Record<IdentidadeBalanco["identidade"], string> {
+  return {
+    balanco: tx("Balanço interno", "Internal balance", idioma),
+    perimetro: tx("Perímetro", "Perimeter", idioma),
+    soma_sin: tx("Soma dos subsistemas", "Sum of the subsystems", idioma),
+  };
+}
+export const ROTULO_CURTO_IDENTIDADE: Record<IdentidadeBalanco["identidade"], string> = rotulosCurtosIdentidade("pt");
 
 /** As identidades de uma região, na ordem balanço interno, perímetro, soma. */
 export function identidadesDa(b: Pick<BalancoRede, "identidades">, sm: SubsistemaOuSin): IdentidadeBalanco[] {
@@ -1040,12 +1399,15 @@ export type LinhaIdentidade = {
 };
 
 /** Uma linha por identidade (as barras de horas que fecham e com resíduo usam as mesmas linhas). */
-export function linhasIdentidades(ids: readonly IdentidadeBalanco[]): LinhaIdentidade[] {
+export function linhasIdentidades(ids: readonly IdentidadeBalanco[], idioma: Idioma = idiomaEnergia()): LinhaIdentidade[] {
+  const f = formatos(idioma);
+  const longos = rotulosIdentidade(idioma);
+  const curtos = rotulosCurtosIdentidade(idioma);
   return ids.map((x) => ({
     id: x.id,
-    identidade: ROTULO_IDENTIDADE[x.identidade],
-    identidade_curta: ROTULO_CURTO_IDENTIDADE[x.identidade],
-    regiao: NOME_SM[x.sm],
+    identidade: longos[x.identidade],
+    identidade_curta: curtos[x.identidade],
+    regiao: nomeSm(x.sm, idioma),
     horas: x.horas,
     horas_fecham: x.horas_fecham,
     horas_residuo: x.horas_residuo,
@@ -1061,50 +1423,71 @@ export function linhasIdentidades(ids: readonly IdentidadeBalanco[]): LinhaIdent
     sequencias: x.n_periodos,
     por_ano: Object.entries(x.horas_residuo_por_ano)
       .sort(([a], [b]) => a.localeCompare(b))
-      .map(([a, n]) => `${a}: ${num(n, 0)}`)
+      .map(([a, n]) => `${a}: ${f.num(n, 0)}`)
       .join("; "),
   }));
 }
 
 /** Colunas das identidades; tolerância e faixas vêm da gold (balanco.tolerancia_mwmed e faixas_mwmed). */
-export function colunasIdentidades(b: Pick<BalancoRede, "tolerancia_mwmed" | "faixas_mwmed">): ColunaTabela[] {
-  const tol = num(b.tolerancia_mwmed, 1);
-  const [f1, f10, f100] = b.faixas_mwmed.map((f) => num(f, 0));
+export function colunasIdentidades(b: Pick<BalancoRede, "tolerancia_mwmed" | "faixas_mwmed">, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const f = formatos(idioma);
+  const tol = f.num(b.tolerancia_mwmed, 1);
+  const [f1, f10, f100] = b.faixas_mwmed.map((x) => f.num(x, 0));
+  const mw = tx("MWmed", "MWavg", idioma);
   return [
-    { id: "identidade", rotulo: "Conta conferida", tipo: "texto", categorica: true },
-    { id: "regiao", rotulo: "Região", tipo: "texto", categorica: true },
-    { id: "horas", rotulo: "Horas com todas as parcelas", tipo: "numero", casas: 0 },
-    { id: "horas_fecham", rotulo: `Horas que fecham (até ${tol} MWmed)`, tipo: "numero", casas: 0 },
-    { id: "horas_residuo", rotulo: "Horas com resíduo", tipo: "numero", casas: 0 },
-    { id: "horas_entre_0_01_e_tolerancia", rotulo: `Fecham com diferença entre 0,01 e ${tol} MWmed`, tipo: "numero", casas: 0 },
-    { id: "acima_1", rotulo: `Resíduo acima de ${f1} MWmed`, tipo: "numero", casas: 0 },
-    { id: "acima_10", rotulo: `Acima de ${f10} MWmed`, tipo: "numero", casas: 0 },
-    { id: "acima_100", rotulo: `Acima de ${f100} MWmed`, tipo: "numero", casas: 0 },
-    { id: "igual_menos_exterior", rotulo: "Resíduo igual a menos o exterior da hora", tipo: "numero", casas: 0 },
-    { id: "maior_residuo_mwmed", rotulo: "Maior resíduo", tipo: "numero", unidade: "MWmed", casas: 1 },
-    { id: "maior_residuo_em", rotulo: "Hora do maior resíduo", tipo: "data" },
-    { id: "primeira_hora_residuo", rotulo: "Primeira hora com resíduo", tipo: "data" },
-    { id: "ultima_hora_residuo", rotulo: "Última hora com resíduo", tipo: "data" },
-    { id: "sequencias", rotulo: "Sequências de horas com resíduo", tipo: "numero", casas: 0 },
-    { id: "por_ano", rotulo: "Horas com resíduo por ano", tipo: "texto" },
+    { id: "identidade", rotulo: tx("Conta conferida", "Account checked", idioma), tipo: "texto", categorica: true },
+    { id: "regiao", rotulo: tx("Região", "Region", idioma), tipo: "texto", categorica: true },
+    { id: "horas", rotulo: tx("Horas com todas as parcelas", "Hours with every component", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_fecham", rotulo: tx(`Horas que fecham (até ${tol} MWmed)`, `Hours that close (up to ${tol} MWavg)`, idioma), tipo: "numero", casas: 0 },
+    { id: "horas_residuo", rotulo: tx("Horas com resíduo", "Hours with a residual", idioma), tipo: "numero", casas: 0 },
+    {
+      id: "horas_entre_0_01_e_tolerancia",
+      rotulo: tx(`Fecham com diferença entre 0,01 e ${tol} MWmed`, `Close with a difference between ${f.num(0.01, 2)} and ${tol} MWavg`, idioma),
+      tipo: "numero",
+      casas: 0,
+    },
+    { id: "acima_1", rotulo: tx(`Resíduo acima de ${f1} MWmed`, `Residual above ${f1} MWavg`, idioma), tipo: "numero", casas: 0 },
+    { id: "acima_10", rotulo: tx(`Acima de ${f10} MWmed`, `Above ${f10} MWavg`, idioma), tipo: "numero", casas: 0 },
+    { id: "acima_100", rotulo: tx(`Acima de ${f100} MWmed`, `Above ${f100} MWavg`, idioma), tipo: "numero", casas: 0 },
+    { id: "igual_menos_exterior", rotulo: tx("Resíduo igual a menos o exterior da hora", "Residual equal to minus the hour's exterior", idioma), tipo: "numero", casas: 0 },
+    { id: "maior_residuo_mwmed", rotulo: tx("Maior resíduo", "Largest residual", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "maior_residuo_em", rotulo: tx("Hora do maior resíduo", "Hour of the largest residual", idioma), tipo: "data" },
+    { id: "primeira_hora_residuo", rotulo: tx("Primeira hora com resíduo", "First hour with a residual", idioma), tipo: "data" },
+    { id: "ultima_hora_residuo", rotulo: tx("Última hora com resíduo", "Last hour with a residual", idioma), tipo: "data" },
+    { id: "sequencias", rotulo: tx("Sequências de horas com resíduo", "Runs of hours with a residual", idioma), tipo: "numero", casas: 0 },
+    { id: "por_ano", rotulo: tx("Horas com resíduo por ano", "Hours with a residual by year", idioma), tipo: "texto" },
   ];
 }
 
 /** "fecha em todas as N horas" ou "fecha em X de N horas". */
-function fecha(x: IdentidadeBalanco): string {
-  return x.horas_residuo === 0 ? `fecha em todas as ${num(x.horas, 0)} horas` : `fecha em ${num(x.horas_fecham, 0)} de ${num(x.horas, 0)} horas`;
+function fecha(x: IdentidadeBalanco, idioma: Idioma): string {
+  const f = formatos(idioma);
+  return x.horas_residuo === 0
+    ? tx(`fecha em todas as ${f.num(x.horas, 0)} horas`, `closes in all ${f.num(x.horas, 0)} hours`, idioma)
+    : tx(`fecha em ${f.num(x.horas_fecham, 0)} de ${f.num(x.horas, 0)} horas`, `closes in ${f.num(x.horas_fecham, 0)} of ${f.num(x.horas, 0)} hours`, idioma);
+}
+
+/** "No SIN", "No Norte"; "In the SIN", "In the North". */
+function ondeSm(sm: SubsistemaOuSin, idioma: Idioma): string {
+  return sm === "SIN" ? tx("No SIN", "In the SIN", idioma) : cap(noSm(sm, idioma));
 }
 
 /**
  * Resposta do P029 para a região escolhida: em quantas horas cada identidade fecha e,
  * quando há resíduo, onde ele está (período e maior valor), sem atribuir causa.
  */
-export function respostaBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia_mwmed">, sm: SubsistemaOuSin, periodo: { inicio: string; fim: string }): string {
+export function respostaBalanco(
+  b: Pick<BalancoRede, "identidades" | "tolerancia_mwmed">,
+  sm: SubsistemaOuSin,
+  periodo: { inicio: string; fim: string },
+  idioma: Idioma = idiomaEnergia(),
+): string {
+  const f = formatos(idioma);
   const ids = identidadesDa(b, sm);
   const bal = ids.find((x) => x.identidade === "balanco");
   const per = ids.find((x) => x.identidade === "perimetro");
   const soma = ids.find((x) => x.identidade === "soma_sin");
-  const onde = sm === "SIN" ? "No SIN" : cap(NO[sm]);
+  const onde = ondeSm(sm, idioma);
   const frases: string[] = [];
   // frase de leitor antes da contagem: a menor parcela de horas que fecha entre as identidades conferidas
   const conferidas = [bal, per, soma].filter((x): x is IdentidadeBalanco => !!x && x.horas > 0);
@@ -1112,24 +1495,68 @@ export function respostaBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia
     const menor = Math.min(...conferidas.map((x) => x.horas_fecham / x.horas));
     frases.push(
       menor === 1
-        ? `${sm === "SIN" ? "No SIN" : cap(NO[sm])}, os números do balanço de energia fecham entre si em todas as horas conferidas.`
-        : `${sm === "SIN" ? "No SIN" : cap(NO[sm])}, os números do balanço de energia fecham entre si em pelo menos ${num(Math.floor(menor * 100), 0)}% das horas conferidas; as horas em que não fecham estão listadas abaixo.`,
+        ? tx(
+            `${onde}, os números do balanço de energia fecham entre si em todas as horas conferidas.`,
+            `${onde}, the energy balance figures agree with each other in every hour checked.`,
+            idioma,
+          )
+        : tx(
+            `${onde}, os números do balanço de energia fecham entre si em pelo menos ${f.num(Math.floor(menor * 100), 0)}% das horas conferidas; as horas em que não fecham estão listadas abaixo.`,
+            `${onde}, the energy balance figures agree with each other in at least ${f.num(Math.floor(menor * 100), 0)}% of the hours checked; the hours in which they do not are listed below.`,
+            idioma,
+          ),
     );
   }
-  const quem = sm === "SIN" ? "o intercâmbio internacional" : sm === "S" ? "a fronteira com o Sudeste/Centro-Oeste mais Argentina e Uruguai" : "a soma das fronteiras";
+  const quem =
+    sm === "SIN"
+      ? tx("o intercâmbio internacional", "the international interchange", idioma)
+      : sm === "S"
+        ? tx("a fronteira com o Sudeste/Centro-Oeste mais Argentina e Uruguai", "the boundary with the Southeast/Center-West plus Argentina and Uruguay", idioma)
+        : tx("a soma das fronteiras", "the sum of the boundaries", idioma);
+  const sem = (x: IdentidadeBalanco) => fecha(x, idioma).replace(/^(fecha|closes) /, "");
   const partes: string[] = [];
-  if (per) partes.push(`o intercâmbio publicado no balanço fecha com ${quem} ${fecha(per).replace(/^fecha /, "")}`);
-  if (bal) partes.push(`geração menos carga fecha com o intercâmbio ${fecha(bal).replace(/^fecha /, "")}`);
-  if (soma) partes.push(`o intercâmbio do SIN fecha com a soma dos quatro subsistemas ${fecha(soma).replace(/^fecha /, "")}`);
-  frases.push(`${onde}, de ${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)} (tolerância de ${num(b.tolerancia_mwmed, 1)} MWmed por hora): ${listaLonga(partes)}.`);
+  if (per) partes.push(tx(`o intercâmbio publicado no balanço fecha com ${quem} ${sem(per)}`, `the interchange published in the balance closes with ${quem} ${sem(per)}`, idioma));
+  if (bal) partes.push(tx(`geração menos carga fecha com o intercâmbio ${sem(bal)}`, `generation minus load closes with the interchange ${sem(bal)}`, idioma));
+  if (soma) partes.push(tx(`o intercâmbio do SIN fecha com a soma dos quatro subsistemas ${sem(soma)}`, `the SIN interchange closes with the sum of the four subsystems ${sem(soma)}`, idioma));
+  frases.push(
+    tx(
+      `${onde}, de ${f.dataBR(periodo.inicio)} a ${f.dataBR(periodo.fim)} (tolerância de ${f.num(b.tolerancia_mwmed, 1)} MWmed por hora): ${listaLonga(partes, idioma)}.`,
+      `${onde}, from ${f.dataBR(periodo.inicio)} to ${f.dataBR(periodo.fim)} (tolerance of ${f.num(b.tolerancia_mwmed, 1)} MWavg per hour): ${listaLonga(partes, idioma)}.`,
+      idioma,
+    ),
+  );
   for (const x of ids.filter((y) => y.horas_residuo > 0)) {
-    const nome = x.identidade === "balanco" ? "No balanço interno" : x.identidade === "perimetro" ? "No perímetro" : "Na soma dos subsistemas";
-    const quando = x.primeira_hora_residuo && x.ultima_hora_residuo ? ` ${entreDatas(x.primeira_hora_residuo, x.ultima_hora_residuo)}` : "";
-    const maior = x.maior_residuo_mwmed !== null && x.maior_residuo_em ? `; o maior foi ${mwmed(x.maior_residuo_mwmed, 1)} em ${horaLocal(x.maior_residuo_em)}` : "";
-    const ext = x.horas_residuo_igual_menos_exterior ? `; em ${num(x.horas_residuo_igual_menos_exterior, 0)} delas o resíduo é igual a menos o intercâmbio internacional da mesma hora` : "";
-    frases.push(`${nome}, ${x.horas_residuo === 1 ? "a hora com resíduo fica" : `as ${num(x.horas_residuo, 0)} horas com resíduo ficam`}${quando}${maior}${ext}.`);
+    const nome =
+      x.identidade === "balanco"
+        ? tx("No balanço interno", "In the internal balance", idioma)
+        : x.identidade === "perimetro"
+          ? tx("No perímetro", "In the perimeter", idioma)
+          : tx("Na soma dos subsistemas", "In the sum of the subsystems", idioma);
+    const quando = x.primeira_hora_residuo && x.ultima_hora_residuo ? ` ${entreDatas(x.primeira_hora_residuo, x.ultima_hora_residuo, idioma)}` : "";
+    const maior =
+      x.maior_residuo_mwmed !== null && x.maior_residuo_em
+        ? tx(
+            `; o maior foi ${mwmed(x.maior_residuo_mwmed, 1, idioma)} em ${f.horaLocal(x.maior_residuo_em)}`,
+            `; the largest was ${mwmed(x.maior_residuo_mwmed, 1, idioma)} at ${f.horaLocal(x.maior_residuo_em)}`,
+            idioma,
+          )
+        : "";
+    const ext = x.horas_residuo_igual_menos_exterior
+      ? tx(
+          `; em ${f.num(x.horas_residuo_igual_menos_exterior, 0)} delas o resíduo é igual a menos o intercâmbio internacional da mesma hora`,
+          `; in ${f.num(x.horas_residuo_igual_menos_exterior, 0)} of them the residual equals minus the international interchange of the same hour`,
+          idioma,
+        )
+      : "";
+    frases.push(
+      tx(
+        `${nome}, ${x.horas_residuo === 1 ? "a hora com resíduo fica" : `as ${f.num(x.horas_residuo, 0)} horas com resíduo ficam`}${quando}${maior}${ext}.`,
+        `${nome}, ${x.horas_residuo === 1 ? "the hour with a residual falls" : `the ${f.num(x.horas_residuo, 0)} hours with a residual fall`}${quando}${maior}${ext}.`,
+        idioma,
+      ),
+    );
   }
-  if (ids.some((y) => y.horas_residuo > 0)) frases.push("A fonte não informa a causa dos resíduos, e nenhuma é atribuída aqui.");
+  if (ids.some((y) => y.horas_residuo > 0)) frases.push(tx("A fonte não informa a causa dos resíduos, e nenhuma é atribuída aqui.", "The source does not state the cause of the residuals, and none is attributed here.", idioma));
   return frases.join(" ");
 }
 
@@ -1137,41 +1564,80 @@ export function respostaBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia
  * Veredito do P029 em palavras simples: em quantas horas os números do balanço conferem entre si na região escolhida e o
  * que a fonte não diz. A contagem por identidade, o período de cada resíduo e o maior valor ficam em respostaBalanco.
  */
-export function vereditoBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia_mwmed">, sm: SubsistemaOuSin, periodo: { inicio: string; fim: string }): string {
+export function vereditoBalanco(
+  b: Pick<BalancoRede, "identidades" | "tolerancia_mwmed">,
+  sm: SubsistemaOuSin,
+  periodo: { inicio: string; fim: string },
+  idioma: Idioma = idiomaEnergia(),
+): string {
+  const f = formatos(idioma);
   const ids = identidadesDa(b, sm);
   const conferidas = ids.filter((x) => x.horas > 0);
   if (!conferidas.length) return "";
   const menor = Math.min(...conferidas.map((x) => x.horas_fecham / x.horas));
-  const onde = sm === "SIN" ? "No SIN" : cap(NO[sm]);
+  const onde = ondeSm(sm, idioma);
   const confere =
     menor === 1
-      ? "todas as horas conferidas"
-      : `pelo menos ${num(Math.floor(menor * 100), 0)}% das horas conferidas`;
+      ? tx("todas as horas conferidas", "every hour checked", idioma)
+      : tx(`pelo menos ${f.num(Math.floor(menor * 100), 0)}% das horas conferidas`, `at least ${f.num(Math.floor(menor * 100), 0)}% of the hours checked`, idioma);
   // quando todas as horas com resíduo da região caem num só ano, a frase diz qual: a média de 95% ou mais sozinha esconderia onde elas estão
   const anosComResiduo = Array.from(new Set(ids.flatMap((y) => Object.entries(y.horas_residuo_por_ano).filter(([, n]) => n > 0).map(([a]) => a))));
-  const quando = anosComResiduo.length === 1 ? ` As horas com resíduo estão todas em ${anosComResiduo[0]}.` : "";
-  const resto = ids.some((y) => y.horas_residuo > 0) ? ` Nas horas em que não conferem, a fonte não informa o motivo e o observatório não atribui causa.${quando}` : "";
-  return `${onde}, geração, carga e intercâmbio conferem entre si em ${confere}, de ${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)}.${resto}`;
+  const quando = anosComResiduo.length === 1 ? tx(` As horas com resíduo estão todas em ${anosComResiduo[0]}.`, ` The hours with a residual are all in ${anosComResiduo[0]}.`, idioma) : "";
+  const resto = ids.some((y) => y.horas_residuo > 0)
+    ? tx(
+        ` Nas horas em que não conferem, a fonte não informa o motivo e o observatório não atribui causa.${quando}`,
+        ` In the hours in which they do not agree, the source does not state the reason and the observatory does not attribute a cause.${quando}`,
+        idioma,
+      )
+    : "";
+  return tx(
+    `${onde}, geração, carga e intercâmbio conferem entre si em ${confere}, de ${f.dataBR(periodo.inicio)} a ${f.dataBR(periodo.fim)}.${resto}`,
+    `${onde}, generation, load and interchange agree with each other in ${confere}, from ${f.dataBR(periodo.inicio)} to ${f.dataBR(periodo.fim)}.${resto}`,
+    idioma,
+  );
 }
 
 /**
  * Onde estão as horas com resíduo do balanço interno do SIN, lido da contagem por ano e das horas extremas da gold: os anos com
  * resíduo, o período, o maior valor e os anos cobertos em que o balanço fecha em todas as horas. Sem causa atribuída.
  */
-export function textoMudancaBalanco(b: Pick<BalancoRede, "identidades" | "mensal">): string {
+export function textoMudancaBalanco(b: Pick<BalancoRede, "identidades" | "mensal">, idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
   const x = identidadesDa(b, "SIN").find((y) => y.identidade === "balanco");
   if (!x || x.horas === 0) return "";
-  if (x.horas_residuo === 0) return `No balanço interno do SIN, nenhuma das ${num(x.horas, 0)} horas conferidas tem resíduo.`;
+  if (x.horas_residuo === 0)
+    return tx(
+      `No balanço interno do SIN, nenhuma das ${f.num(x.horas, 0)} horas conferidas tem resíduo.`,
+      `In the SIN internal balance, none of the ${f.num(x.horas, 0)} hours checked has a residual.`,
+      idioma,
+    );
   const comResiduo = Object.entries(x.horas_residuo_por_ano)
     .filter(([, n]) => n > 0)
     .map(([a]) => a)
     .sort();
   const cobertos = Array.from(new Set(b.mensal.meses.map((m) => m.slice(0, 4)))).sort();
   const outros = cobertos.filter((a) => !comResiduo.includes(a));
-  const quando = x.primeira_hora_residuo && x.ultima_hora_residuo ? ` (${entreDatas(x.primeira_hora_residuo, x.ultima_hora_residuo)})` : "";
-  const maior = x.maior_residuo_mwmed !== null && x.maior_residuo_em ? `; o maior foi de ${mwmed(x.maior_residuo_mwmed, 1)}, em ${horaLocal(x.maior_residuo_em)}` : "";
-  const fecha = outros.length ? ` Em ${listaTexto(outros)}, o balanço interno fecha em todas as horas conferidas.` : "";
-  return `No balanço interno do SIN, as ${num(x.horas_residuo, 0)} horas com resíduo estão em ${listaTexto(comResiduo)}${quando}${maior}.${fecha}`;
+  const quando = x.primeira_hora_residuo && x.ultima_hora_residuo ? ` (${entreDatas(x.primeira_hora_residuo, x.ultima_hora_residuo, idioma)})` : "";
+  const maior =
+    x.maior_residuo_mwmed !== null && x.maior_residuo_em
+      ? tx(
+          `; o maior foi de ${mwmed(x.maior_residuo_mwmed, 1, idioma)}, em ${f.horaLocal(x.maior_residuo_em)}`,
+          `; the largest was ${mwmed(x.maior_residuo_mwmed, 1, idioma)}, at ${f.horaLocal(x.maior_residuo_em)}`,
+          idioma,
+        )
+      : "";
+  const fechaTodas = outros.length
+    ? tx(
+        ` Em ${listaTexto(outros, "pt")}, o balanço interno fecha em todas as horas conferidas.`,
+        ` In ${listaTexto(outros, "en")}, the internal balance closes in every hour checked.`,
+        idioma,
+      )
+    : "";
+  return tx(
+    `No balanço interno do SIN, as ${f.num(x.horas_residuo, 0)} horas com resíduo estão em ${listaTexto(comResiduo, "pt")}${quando}${maior}.${fechaTodas}`,
+    `In the SIN internal balance, the ${f.num(x.horas_residuo, 0)} hours with a residual are in ${listaTexto(comResiduo, "en")}${quando}${maior}.${fechaTodas}`,
+    idioma,
+  );
 }
 
 export type LinhaMesBalanco = {
@@ -1192,19 +1658,23 @@ export type LinhaMesBalanco = {
   horas_residuo_perimetro: number | null;
 };
 
-export const ROTULO_MMGD: Record<RegimeMmgd, string> = {
-  sem: "sem MMGD estimada",
-  parcial: "MMGD estimada em parte do mês",
-  com: "com MMGD estimada",
-};
+export function rotulosMmgd(idioma: Idioma = idiomaEnergia()): Record<RegimeMmgd, string> {
+  return {
+    sem: tx("sem MMGD estimada", "without estimated MMGD", idioma),
+    parcial: tx("MMGD estimada em parte do mês", "estimated MMGD in part of the month", idioma),
+    com: tx("com MMGD estimada", "with estimated MMGD", idioma),
+  };
+}
+export const ROTULO_MMGD: Record<RegimeMmgd, string> = rotulosMmgd("pt");
 
 /** O balanço mensal da região (duas somas por mês, cada uma sobre as suas horas). */
-export function linhasBalancoMensal(b: Pick<BalancoRede, "mensal">, sm: SubsistemaOuSin): LinhaMesBalanco[] {
+export function linhasBalancoMensal(b: Pick<BalancoRede, "mensal">, sm: SubsistemaOuSin, idioma: Idioma = idiomaEnergia()): LinhaMesBalanco[] {
   const s = b.mensal.por_sm[sm];
+  const rotulos = rotulosMmgd(idioma);
   return b.mensal.meses.map((m, i) => ({
     id: m,
     m,
-    mmgd: ROTULO_MMGD[b.mensal.mmgd_estimada[i]] ?? "sem dado",
+    mmgd: rotulos[b.mensal.mmgd_estimada[i]] ?? tx("sem dado", "no data", idioma),
     geracao_mwh: s.geracao_mwh[i] ?? null,
     carga_mwh: s.carga_mwh[i] ?? null,
     intercambio_mwh: s.intercambio_mwh[i] ?? null,
@@ -1220,22 +1690,25 @@ export function linhasBalancoMensal(b: Pick<BalancoRede, "mensal">, sm: Subsiste
   }));
 }
 
-export const COLUNAS_BALANCO_MENSAL: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "data" },
-  { id: "mmgd", rotulo: "Geração solar e carga", tipo: "texto", categorica: true },
-  { id: "geracao_mwh", rotulo: "Geração", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "carga_mwh", rotulo: "Carga", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "intercambio_mwh", rotulo: "Intercâmbio no balanço", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "residuo_balanco_mwh", rotulo: "Resíduo do balanço interno", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas_completas", rotulo: "Horas com as três parcelas", tipo: "numero", casas: 0 },
-  { id: "horas_residuo_balanco", rotulo: "Horas com resíduo (balanço)", tipo: "numero", casas: 0 },
-  { id: "intercambio_perimetro_mwh", rotulo: "Intercâmbio nas horas do perímetro", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "fronteiras_exterior_mwh", rotulo: "Fronteiras e exterior", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "residuo_perimetro_mwh", rotulo: "Resíduo do perímetro", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas_perimetro", rotulo: "Horas do perímetro", tipo: "numero", casas: 0 },
-  { id: "horas_residuo_perimetro", rotulo: "Horas com resíduo (perímetro)", tipo: "numero", casas: 0 },
-  { id: "horas", rotulo: "Horas no balanço", tipo: "numero", casas: 0 },
-];
+export function colunasBalancoMensal(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "m", rotulo: tx("Mês", "Month", idioma), tipo: "data" },
+    { id: "mmgd", rotulo: tx("Geração solar e carga", "Solar generation and load", idioma), tipo: "texto", categorica: true },
+    { id: "geracao_mwh", rotulo: tx("Geração", "Generation", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "carga_mwh", rotulo: tx("Carga", "Load", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "intercambio_mwh", rotulo: tx("Intercâmbio no balanço", "Interchange in the balance", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "residuo_balanco_mwh", rotulo: tx("Resíduo do balanço interno", "Internal balance residual", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas_completas", rotulo: tx("Horas com as três parcelas", "Hours with all three components", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_residuo_balanco", rotulo: tx("Horas com resíduo (balanço)", "Hours with a residual (balance)", idioma), tipo: "numero", casas: 0 },
+    { id: "intercambio_perimetro_mwh", rotulo: tx("Intercâmbio nas horas do perímetro", "Interchange in the perimeter hours", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "fronteiras_exterior_mwh", rotulo: tx("Fronteiras e exterior", "Boundaries and exterior", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "residuo_perimetro_mwh", rotulo: tx("Resíduo do perímetro", "Perimeter residual", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas_perimetro", rotulo: tx("Horas do perímetro", "Perimeter hours", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_residuo_perimetro", rotulo: tx("Horas com resíduo (perímetro)", "Hours with a residual (perimeter)", idioma), tipo: "numero", casas: 0 },
+    { id: "horas", rotulo: tx("Horas no balanço", "Hours in the balance", idioma), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_BALANCO_MENSAL: ColunaTabela[] = colunasBalancoMensal("pt");
 
 /** Horas com resíduo no balanço interno, por mês, das regiões escolhidas (até quatro). */
 export function linhasResiduoMensal(b: Pick<BalancoRede, "mensal">, sms: readonly SubsistemaOuSin[]): ({ id: string; m: string } & Partial<Record<SubsistemaOuSin, number | null>>)[] {
@@ -1243,8 +1716,9 @@ export function linhasResiduoMensal(b: Pick<BalancoRede, "mensal">, sms: readonl
 }
 
 /** Marcos das quebras metodológicas do balanço no eixo mensal. */
-export function marcosQuebras(b: Pick<BalancoRede, "quebras">): { x: string; rotulo: string }[] {
-  return b.quebras.map((q) => ({ x: q.dia.slice(0, 7), rotulo: `${dataBR(q.dia)}: ${q.id === "mmgd_2023" ? "MMGD" : "quebra"}` }));
+export function marcosQuebras(b: Pick<BalancoRede, "quebras">, idioma: Idioma = idiomaEnergia()): { x: string; rotulo: string }[] {
+  const f = formatos(idioma);
+  return b.quebras.map((q) => ({ x: q.dia.slice(0, 7), rotulo: `${f.dataBR(q.dia)}: ${q.id === "mmgd_2023" ? "MMGD" : tx("quebra", "break", idioma)}` }));
 }
 
 /** Frases do achado A05 (geradas no pipeline pelos contadores), com datas no formato brasileiro. */
@@ -1275,14 +1749,29 @@ export function linhasExteriorMensal(e: Pick<ExteriorRede, "meses" | "por_pais">
   }));
 }
 
-export const COLUNAS_EXTERIOR_MENSAL: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "data" },
-  { id: "exportacao_mwh", rotulo: "Exportação do Brasil", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "importacao_mwh", rotulo: "Importação do Brasil", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas", rotulo: "Horas publicadas", tipo: "numero", casas: 0 },
-  { id: "horas_com_fluxo", rotulo: `Horas com fluxo acima de ${num(LIMIAR_NULO_MWMED, 0)} MWmed`, tipo: "numero", casas: 0 },
-  { id: "programado_liquido_mwh", rotulo: "Saldo programado (vazio antes do programa publicado)", tipo: "numero", unidade: "MWh", casas: 0 },
-];
+export function colunasExteriorMensal(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const f = formatos(idioma);
+  return [
+    { id: "m", rotulo: tx("Mês", "Month", idioma), tipo: "data" },
+    { id: "exportacao_mwh", rotulo: tx("Exportação do Brasil", "Exports from Brazil", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "importacao_mwh", rotulo: tx("Importação do Brasil", "Imports into Brazil", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas", rotulo: tx("Horas publicadas", "Hours published", idioma), tipo: "numero", casas: 0 },
+    {
+      id: "horas_com_fluxo",
+      rotulo: tx(`Horas com fluxo acima de ${f.num(LIMIAR_NULO_MWMED, 0)} MWmed`, `Hours with flow above ${f.num(LIMIAR_NULO_MWMED, 0)} MWavg`, idioma),
+      tipo: "numero",
+      casas: 0,
+    },
+    {
+      id: "programado_liquido_mwh",
+      rotulo: tx("Saldo programado (vazio antes do programa publicado)", "Scheduled net flow (empty before the published schedule)", idioma),
+      tipo: "numero",
+      unidade: "MWh",
+      casas: 0,
+    },
+  ];
+}
+export const COLUNAS_EXTERIOR_MENSAL: ColunaTabela[] = colunasExteriorMensal("pt");
 
 export type LinhaExterior12m = {
   id: PaisRede;
@@ -1296,12 +1785,12 @@ export type LinhaExterior12m = {
   ultima_hora: string | null;
 };
 
-export function linhasExterior12m(e: Pick<ExteriorRede, "resumo_12m" | "por_pais">): LinhaExterior12m[] {
+export function linhasExterior12m(e: Pick<ExteriorRede, "resumo_12m" | "por_pais">, idioma: Idioma = idiomaEnergia()): LinhaExterior12m[] {
   return PAISES.map((p) => {
     const r = e.resumo_12m[p];
     return {
       id: p,
-      pais: NOME_PAIS[p],
+      pais: nomePais(p, idioma),
       inicio: r.meses?.[0] ?? null,
       fim: r.meses?.[1] ?? null,
       horas: r.horas,
@@ -1313,26 +1802,57 @@ export function linhasExterior12m(e: Pick<ExteriorRede, "resumo_12m" | "por_pais
   });
 }
 
-export const COLUNAS_EXTERIOR_12M: ColunaTabela[] = [
-  { id: "pais", rotulo: "País", tipo: "texto" },
-  { id: "inicio", rotulo: "Primeiro mês", tipo: "data" },
-  { id: "fim", rotulo: "Último mês", tipo: "data" },
-  { id: "horas", rotulo: "Horas publicadas", tipo: "numero", casas: 0 },
-  { id: "exportacao_mwh", rotulo: "Exportação do Brasil", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "importacao_mwh", rotulo: "Importação do Brasil", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas_com_fluxo", rotulo: "Horas com fluxo", tipo: "numero", casas: 0 },
-  { id: "ultima_hora", rotulo: "Última hora publicada", tipo: "data" },
-];
+export function colunasExterior12m(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "pais", rotulo: tx("País", "Country", idioma), tipo: "texto" },
+    { id: "inicio", rotulo: tx("Primeiro mês", "First month", idioma), tipo: "data" },
+    { id: "fim", rotulo: tx("Último mês", "Last month", idioma), tipo: "data" },
+    { id: "horas", rotulo: tx("Horas publicadas", "Hours published", idioma), tipo: "numero", casas: 0 },
+    { id: "exportacao_mwh", rotulo: tx("Exportação do Brasil", "Exports from Brazil", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "importacao_mwh", rotulo: tx("Importação do Brasil", "Imports into Brazil", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas_com_fluxo", rotulo: tx("Horas com fluxo", "Hours with flow", idioma), tipo: "numero", casas: 0 },
+    { id: "ultima_hora", rotulo: tx("Última hora publicada", "Last hour published", idioma), tipo: "data" },
+  ];
+}
+export const COLUNAS_EXTERIOR_12M: ColunaTabela[] = colunasExterior12m("pt");
+
+/** "A Argentina", "O Uruguai"; em inglês, só o nome. */
+function oPaisMaiusculo(p: PaisRede, idioma: Idioma): string {
+  return tx(`${p === "ARGENTINA" ? "A" : "O"} ${NOME_PAIS[p]}`, NOME_PAIS_EN[p], idioma);
+}
 
 /** Exportação e importação de 12 meses por país; país sem hora na janela é dito ausente, nunca zero. */
-export function respostaExterior(e: Pick<ExteriorRede, "resumo_12m" | "por_pais">): string {
-  const linhas = linhasExterior12m(e);
+export function respostaExterior(e: Pick<ExteriorRede, "resumo_12m" | "por_pais">, idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
+  const linhas = linhasExterior12m(e, idioma);
   const com = linhas.filter((l) => l.horas > 0);
   const sem = linhas.filter((l) => l.horas === 0);
-  const per = com[0]?.inicio && com[0]?.fim ? `De ${mesAno(com[0].inicio)} a ${mesAno(com[0].fim)}` : "Nos 12 meses completos mais recentes";
-  const partes = com.map((l) => `com ${l.id === "ARGENTINA" ? "a" : "o"} ${l.pais}, ${mwh(l.exportacao_mwh)} exportados e ${mwh(l.importacao_mwh)} importados (fluxo acima de ${mwmed(LIMIAR_NULO_MWMED)} em ${num(l.horas_com_fluxo, 0)} de ${num(l.horas, 0)} horas)`);
-  let t = `${per}, o Brasil trocou energia ${listaTexto(partes)}.`;
-  if (sem.length) t += ` ${listaTexto(sem.map((l) => `${l.id === "ARGENTINA" ? "A" : "O"} ${l.pais}`))} não ${sem.length === 1 ? "tem" : "têm"} nenhuma hora publicada no período${sem.map((l) => (l.ultima_hora ? ` (último registro em ${dataBR(l.ultima_hora)})` : "")).join("")}: ausência, não zero.`;
+  const per =
+    com[0]?.inicio && com[0]?.fim
+      ? tx(`De ${f.mesAno(com[0].inicio)} a ${f.mesAno(com[0].fim)}`, `From ${f.mesAno(com[0].inicio)} to ${f.mesAno(com[0].fim)}`, idioma)
+      : tx("Nos 12 meses completos mais recentes", "In the most recent 12 complete months", idioma);
+  const partes = com.map((l) =>
+    tx(
+      `com ${oPais(l.id, "pt")}, ${mwh(l.exportacao_mwh, idioma)} exportados e ${mwh(l.importacao_mwh, idioma)} importados (fluxo acima de ${mwmed(LIMIAR_NULO_MWMED, 0, idioma)} em ${f.num(l.horas_com_fluxo, 0)} de ${f.num(l.horas, 0)} horas)`,
+      `with ${oPais(l.id, "en")}, ${mwh(l.exportacao_mwh, idioma)} exported and ${mwh(l.importacao_mwh, idioma)} imported (flow above ${mwmed(LIMIAR_NULO_MWMED, 0, idioma)} in ${f.num(l.horas_com_fluxo, 0)} of ${f.num(l.horas, 0)} hours)`,
+      idioma,
+    ),
+  );
+  let t = tx(`${per}, o Brasil trocou energia ${listaTexto(partes, "pt")}.`, `${per}, Brazil exchanged energy ${listaTexto(partes, "en")}.`, idioma);
+  if (sem.length) {
+    const nomes = listaTexto(
+      sem.map((l) => oPaisMaiusculo(l.id, idioma)),
+      idioma,
+    );
+    const ultimos = sem
+      .map((l) => (l.ultima_hora ? tx(` (último registro em ${f.dataBR(l.ultima_hora)})`, ` (last record on ${f.dataBR(l.ultima_hora)})`, idioma) : ""))
+      .join("");
+    t += tx(
+      ` ${nomes} não ${sem.length === 1 ? "tem" : "têm"} nenhuma hora publicada no período${ultimos}: ausência, não zero.`,
+      ` ${nomes} ${sem.length === 1 ? "has" : "have"} no hour published in the period${ultimos}: missing, not zero.`,
+      idioma,
+    );
+  }
   return t;
 }
 
@@ -1341,18 +1861,43 @@ export function respostaExterior(e: Pick<ExteriorRede, "resumo_12m" | "por_pais"
  * publicada e o país sem hora, dito ausente. É a soma dos mesmos campos da resposta completa e do número em destaque do
  * painel; as quantidades de cada país ficam em respostaExterior.
  */
-export function vereditoExterior(e: Pick<ExteriorRede, "resumo_12m" | "por_pais">): string {
-  const linhas = linhasExterior12m(e);
+export function vereditoExterior(e: Pick<ExteriorRede, "resumo_12m" | "por_pais">, idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
+  const linhas = linhasExterior12m(e, idioma);
   const com = linhas.filter((l) => l.horas > 0);
   const sem = linhas.filter((l) => l.horas === 0);
-  if (!com.length) return "Nenhum país tem hora publicada de intercâmbio nos 12 meses completos mais recentes: é ausência de dado, não zero.";
+  if (!com.length)
+    return tx(
+      "Nenhum país tem hora publicada de intercâmbio nos 12 meses completos mais recentes: é ausência de dado, não zero.",
+      "No country has a published interchange hour in the most recent 12 complete months: the data is missing, not zero.",
+      idioma,
+    );
   const saldo = com.reduce((s, l) => s + (l.exportacao_mwh ?? 0) - (l.importacao_mwh ?? 0), 0);
-  const per = com[0].inicio && com[0].fim ? `De ${mesAno(com[0].inicio)} a ${mesAno(com[0].fim)}` : "Nos 12 meses completos mais recentes";
-  const paises = listaTexto(com.map((l) => `${l.id === "ARGENTINA" ? "a" : "o"} ${l.pais}`));
-  const rumo = saldo > 0 ? `exportou ${mwh(saldo)} a mais do que importou` : saldo < 0 ? `importou ${mwh(-saldo)} a mais do que exportou` : "exportou e importou a mesma energia";
-  let t = `${per}, o Brasil ${rumo} na troca com ${paises}.`;
+  const per =
+    com[0].inicio && com[0].fim
+      ? tx(`De ${f.mesAno(com[0].inicio)} a ${f.mesAno(com[0].fim)}`, `From ${f.mesAno(com[0].inicio)} to ${f.mesAno(com[0].fim)}`, idioma)
+      : tx("Nos 12 meses completos mais recentes", "In the most recent 12 complete months", idioma);
+  const paises = listaTexto(
+    com.map((l) => oPais(l.id, idioma)),
+    idioma,
+  );
+  const rumo =
+    saldo > 0
+      ? tx(`exportou ${mwh(saldo, idioma)} a mais do que importou`, `exported ${mwh(saldo, idioma)} more than it imported`, idioma)
+      : saldo < 0
+        ? tx(`importou ${mwh(-saldo, idioma)} a mais do que exportou`, `imported ${mwh(-saldo, idioma)} more than it exported`, idioma)
+        : tx("exportou e importou a mesma energia", "exported and imported the same energy", idioma);
+  let t = tx(`${per}, o Brasil ${rumo} na troca com ${paises}.`, `${per}, Brazil ${rumo} in the exchange with ${paises}.`, idioma);
   if (sem.length) {
-    t += ` ${listaTexto(sem.map((l) => `${l.id === "ARGENTINA" ? "A" : "O"} ${l.pais}`))} ${sem.length === 1 ? "não tem" : "não têm"} hora publicada no período: ausência de dado, não zero.`;
+    const nomes = listaTexto(
+      sem.map((l) => oPaisMaiusculo(l.id, idioma)),
+      idioma,
+    );
+    t += tx(
+      ` ${nomes} ${sem.length === 1 ? "não tem" : "não têm"} hora publicada no período: ausência de dado, não zero.`,
+      ` ${nomes} ${sem.length === 1 ? "has" : "have"} no hour published in the period: missing data, not zero.`,
+      idioma,
+    );
   }
   return t;
 }
@@ -1375,20 +1920,30 @@ export function linhasItaipu(e: Pick<ExteriorRede, "meses" | "itaipu">): LinhaIt
  * frequências destinadas ao Brasil). Contagem ausente é dita não conferida, nunca
  * vira zero diferença.
  */
-export function textoIdentidadesItaipu(x: Pick<ExteriorRede, "itaipu_identidades">["itaipu_identidades"]): string {
+export function textoIdentidadesItaipu(x: Pick<ExteriorRede, "itaipu_identidades">["itaipu_identidades"], idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
   const n = x.linhas;
-  if (n === null || n === undefined) return "Itaipu: identidades das parcelas não conferidas nesta publicação.";
-  const parte = (dif: number | null, texto: string) => (dif === null || dif === undefined ? `${texto}: não conferido` : `${texto} em ${num(n - dif, 0)} de ${num(n, 0)} horas`);
-  return `Itaipu: ${parte(x.total_diferente_de_60_mais_50, "total igual a 60 Hz mais 50 Hz")}; ${parte(x.brasil_diferente_de_60_mais_50_brasil, "parcela do Brasil igual às duas frequências destinadas ao Brasil")}.`;
+  if (n === null || n === undefined) return tx("Itaipu: identidades das parcelas não conferidas nesta publicação.", "Itaipu: component identities not checked in this release.", idioma);
+  const parte = (dif: number | null, texto: string) =>
+    dif === null || dif === undefined
+      ? tx(`${texto}: não conferido`, `${texto}: not checked`, idioma)
+      : tx(`${texto} em ${f.num(n - dif, 0)} de ${f.num(n, 0)} horas`, `${texto} in ${f.num(n - dif, 0)} of ${f.num(n, 0)} hours`, idioma);
+  return `Itaipu: ${parte(x.total_diferente_de_60_mais_50, tx("total igual a 60 Hz mais 50 Hz", "total equal to 60 Hz plus 50 Hz", idioma))}; ${parte(
+    x.brasil_diferente_de_60_mais_50_brasil,
+    tx("parcela do Brasil igual às duas frequências destinadas ao Brasil", "Brazil's share equal to the two frequencies allocated to Brazil", idioma),
+  )}.`;
 }
 
-export const COLUNAS_ITAIPU: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "data" },
-  { id: "total_mwh", rotulo: "Geração total", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "brasil_mwh", rotulo: "Destinada ao Brasil", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "nao_brasil_mwh", rotulo: "Não destinada ao Brasil (diferença)", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas", rotulo: "Horas", tipo: "numero", casas: 0 },
-];
+export function colunasItaipu(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "m", rotulo: tx("Mês", "Month", idioma), tipo: "data" },
+    { id: "total_mwh", rotulo: tx("Geração total", "Total generation", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "brasil_mwh", rotulo: tx("Destinada ao Brasil", "Allocated to Brazil", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "nao_brasil_mwh", rotulo: tx("Não destinada ao Brasil (diferença)", "Not allocated to Brazil (difference)", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas", rotulo: tx("Horas", "Hours", idioma), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_ITAIPU: ColunaTabela[] = colunasItaipu("pt");
 
 /* ====================================================================== */
 /* P030: restrições publicadas                                             */
@@ -1407,9 +1962,12 @@ export function fluxoEscolhido(atls: Pick<RestricoesRede["atls"], "fluxos">, ped
   return atls.fluxos.find((f) => f.fluxo === pedido) ?? fluxosAtivos(atls)[0] ?? atls.fluxos[0] ?? null;
 }
 
-/** Nome do fluxo como o leitor o entende: a definição conferida em documento público do ONS; sem ela, a sigla do ONS. */
-export function nomeFluxo(f: Pick<FluxoAtls, "fluxo" | "definicao">): string {
-  return f.definicao ?? f.fluxo;
+/**
+ * Nome do fluxo como o leitor o entende: a definição conferida em documento público do ONS; sem ela, a sigla do ONS. Em
+ * inglês, a definição passa pela tabela DEFINICAO_FLUXO_EN; sem entrada, sai como a gold publicou.
+ */
+export function nomeFluxo(f: Pick<FluxoAtls, "fluxo" | "definicao">, idioma: Idioma = idiomaEnergia()): string {
+  return f.definicao ? rotuloDaGold(DEFINICAO_FLUXO_EN, f.definicao, idioma) : f.fluxo;
 }
 
 export type MedidasRestricoes = {
@@ -1423,15 +1981,16 @@ export type MedidasRestricoes = {
  * Medidas da abertura do P030: quantos dos fluxos acompanhados passaram algum tempo acima do limite estabelecido nos 12 meses e qual teve
  * mais horas. São os mesmos campos do arquivo do ATLS que alimentam o gráfico de barras, a tabela e a exportação (fluxosAtivos).
  */
-export function medidasRestricoes(r: Pick<RestricoesRede, "atls">): MedidasRestricoes {
+export function medidasRestricoes(r: Pick<RestricoesRede, "atls">, idioma: Idioma = idiomaEnergia()): MedidasRestricoes {
+  const f = formatos(idioma);
   const ativos = fluxosAtivos(r.atls);
   const janela = ativos[0]?.ultimos_12_meses ?? null;
   if (!ativos.length || !janela) return { fluxosAcima: null, maisHoras: null };
-  const periodo = `${mesAno(janela.inicio)} a ${mesAno(janela.fim)}`;
-  const com = ativos.filter((f) => (f.ultimos_12_meses?.horas_violacao ?? 0) > 0);
+  const periodo = tx(`${f.mesAno(janela.inicio)} a ${f.mesAno(janela.fim)}`, `${f.mesAno(janela.inicio)} to ${f.mesAno(janela.fim)}`, idioma);
+  const com = ativos.filter((x) => (x.ultimos_12_meses?.horas_violacao ?? 0) > 0);
   return {
     fluxosAcima: { valor: com.length, de: ativos.length, periodo },
-    maisHoras: { fluxo: ativos[0].fluxo, nome: nomeFluxo(ativos[0]), horas: janela.horas_violacao, periodo },
+    maisHoras: { fluxo: ativos[0].fluxo, nome: nomeFluxo(ativos[0], idioma), horas: janela.horas_violacao, periodo },
   };
 }
 
@@ -1453,13 +2012,13 @@ export type LinhaAtls = {
   horas_violacao_total: number;
 };
 
-export function linhasAtls(fluxos: readonly FluxoAtls[]): LinhaAtls[] {
+export function linhasAtls(fluxos: readonly FluxoAtls[], idioma: Idioma = idiomaEnergia()): LinhaAtls[] {
   return fluxos.map((f) => ({
     id: f.fluxo,
-    nome: nomeFluxo(f),
+    nome: nomeFluxo(f, idioma),
     fluxo: f.fluxo,
-    definicao: f.definicao ?? "sem definição em documento público conferido",
-    publicado_no_ultimo_mes: f.ativo ? "sim" : "não",
+    definicao: f.definicao ? rotuloDaGold(DEFINICAO_FLUXO_EN, f.definicao, idioma) : tx("sem definição em documento público conferido", "no definition in a checked public document", idioma),
+    publicado_no_ultimo_mes: simNao(f.ativo, idioma),
     inicio_12m: f.ultimos_12_meses?.inicio ?? null,
     fim_12m: f.ultimos_12_meses?.fim ?? null,
     horas_12m: f.ultimos_12_meses?.horas_violacao ?? null,
@@ -1472,21 +2031,24 @@ export function linhasAtls(fluxos: readonly FluxoAtls[]): LinhaAtls[] {
   }));
 }
 
-export const COLUNAS_ATLS: ColunaTabela[] = [
-  { id: "nome", rotulo: "Fluxo", tipo: "texto" },
-  { id: "fluxo", rotulo: "Sigla do ONS", tipo: "texto", nivel: "analisar" },
-  { id: "definicao", rotulo: "Definição conferida", tipo: "texto" },
-  { id: "publicado_no_ultimo_mes", rotulo: "Publicado no último mês", tipo: "texto", categorica: true },
-  { id: "inicio_12m", rotulo: "Início dos 12 meses", tipo: "data" },
-  { id: "fim_12m", rotulo: "Fim dos 12 meses", tipo: "data" },
-  { id: "horas_12m", rotulo: "Horas acima do limite em 12 meses", tipo: "numero", unidade: "h", casas: 1 },
-  { id: "meses_12m", rotulo: "Meses com violação em 12 meses", tipo: "numero", casas: 0 },
-  { id: "inicio", rotulo: "Primeiro mês no arquivo", tipo: "data" },
-  { id: "fim", rotulo: "Último mês no arquivo", tipo: "data" },
-  { id: "meses", rotulo: "Meses publicados", tipo: "numero", casas: 0 },
-  { id: "meses_com_violacao", rotulo: "Meses com violação", tipo: "numero", casas: 0 },
-  { id: "horas_violacao_total", rotulo: "Horas acima do limite no histórico", tipo: "numero", unidade: "h", casas: 1 },
-];
+export function colunasAtls(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "nome", rotulo: tx("Fluxo", "Flow", idioma), tipo: "texto" },
+    { id: "fluxo", rotulo: tx("Sigla do ONS", "ONS code", idioma), tipo: "texto", nivel: "analisar" },
+    { id: "definicao", rotulo: tx("Definição conferida", "Checked definition", idioma), tipo: "texto" },
+    { id: "publicado_no_ultimo_mes", rotulo: tx("Publicado no último mês", "Published in the last month", idioma), tipo: "texto", categorica: true },
+    { id: "inicio_12m", rotulo: tx("Início dos 12 meses", "Start of the 12 months", idioma), tipo: "data" },
+    { id: "fim_12m", rotulo: tx("Fim dos 12 meses", "End of the 12 months", idioma), tipo: "data" },
+    { id: "horas_12m", rotulo: tx("Horas acima do limite em 12 meses", "Hours above the limit in 12 months", idioma), tipo: "numero", unidade: "h", casas: 1 },
+    { id: "meses_12m", rotulo: tx("Meses com violação em 12 meses", "Months with a violation in 12 months", idioma), tipo: "numero", casas: 0 },
+    { id: "inicio", rotulo: tx("Primeiro mês no arquivo", "First month in the file", idioma), tipo: "data" },
+    { id: "fim", rotulo: tx("Último mês no arquivo", "Last month in the file", idioma), tipo: "data" },
+    { id: "meses", rotulo: tx("Meses publicados", "Months published", idioma), tipo: "numero", casas: 0 },
+    { id: "meses_com_violacao", rotulo: tx("Meses com violação", "Months with a violation", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_violacao_total", rotulo: tx("Horas acima do limite no histórico", "Hours above the limit in the history", idioma), tipo: "numero", unidade: "h", casas: 1 },
+  ];
+}
+export const COLUNAS_ATLS: ColunaTabela[] = colunasAtls("pt");
 
 /**
  * Série mensal das horas acima do limite dos fluxos escolhidos (até quatro). Mês em que
@@ -1507,27 +2069,46 @@ export function inicioArquivoAtls(atls: Pick<RestricoesRede["atls"], "fluxos">):
 }
 
 /** Resposta do P030: horas acima do limite nos fluxos publicados e cortes de carga em 12 meses. */
-export function respostaRestricoes(r: Pick<RestricoesRede, "atls" | "interrupcoes">): string {
+export function respostaRestricoes(r: Pick<RestricoesRede, "atls" | "interrupcoes">, idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
   const ativos = fluxosAtivos(r.atls);
-  const com = ativos.filter((f) => (f.ultimos_12_meses?.horas_violacao ?? 0) > 0);
-  const sem = ativos.filter((f) => f.ultimos_12_meses && f.ultimos_12_meses.horas_violacao === 0);
+  const com = ativos.filter((x) => (x.ultimos_12_meses?.horas_violacao ?? 0) > 0);
+  const sem = ativos.filter((x) => x.ultimos_12_meses && x.ultimos_12_meses.horas_violacao === 0);
   const janela = ativos[0]?.ultimos_12_meses;
   const frases: string[] = [];
   if (janela && ativos.length) {
-    const lista = com.map((f) => `${f.fluxo} ${num(f.ultimos_12_meses!.horas_violacao, 1)} h`);
+    const lista = com.map((x) => `${x.fluxo} ${f.num(x.ultimos_12_meses!.horas_violacao, 1)} h`);
+    const listaSem = listaTexto(
+      sem.map((x) => x.fluxo),
+      idioma,
+    );
     frases.push(
-      `De ${mesAno(janela.inicio)} a ${mesAno(janela.fim)}, ${num(com.length, 0)} dos ${num(ativos.length, 0)} fluxos que o ONS acompanha no indicador ATLS ficaram acima do limite estabelecido por algum tempo${lista.length ? `: ${listaTexto(lista)}` : ""}${sem.length ? `; ${listaTexto(sem.map((f) => f.fluxo))} não ${sem.length === 1 ? "ficou" : "ficaram"}` : ""}.`,
+      tx(
+        `De ${f.mesAno(janela.inicio)} a ${f.mesAno(janela.fim)}, ${f.num(com.length, 0)} dos ${f.num(ativos.length, 0)} fluxos que o ONS acompanha no indicador ATLS ficaram acima do limite estabelecido por algum tempo${lista.length ? `: ${listaTexto(lista, "pt")}` : ""}${sem.length ? `; ${listaSem} não ${sem.length === 1 ? "ficou" : "ficaram"}` : ""}.`,
+        `From ${f.mesAno(janela.inicio)} to ${f.mesAno(janela.fim)}, ${f.num(com.length, 0)} of the ${f.num(ativos.length, 0)} flows that ONS tracks in the ATLS indicator were above the established limit for some time${lista.length ? `: ${listaTexto(lista, "en")}` : ""}${sem.length ? `; ${listaSem} ${sem.length === 1 ? "was" : "were"} not` : ""}.`,
+        idioma,
+      ),
     );
   } else {
-    frases.push("O indicador ATLS não tem fluxo publicado no último mês do arquivo.");
+    frases.push(tx("O indicador ATLS não tem fluxo publicado no último mês do arquivo.", "The ATLS indicator has no flow published in the last month of the file.", idioma));
   }
   const u = r.interrupcoes.ultimos_12_meses;
   if (u.inicio && u.fim) {
     frases.push(
-      `De ${dataBR(u.inicio)} a ${dataBR(u.fim)}, o ONS registrou ${plural(u.registros, "corte de carga", "cortes de carga")} em ${plural(u.perturbacoes, "perturbação", "perturbações")}, com ${num(u.ens_mwh, 1)} MWh de energia não suprida (${num(u.registros_rede_basica, 0)} dos registros na rede básica).`,
+      tx(
+        `De ${f.dataBR(u.inicio)} a ${f.dataBR(u.fim)}, o ONS registrou ${f.plural(u.registros, "corte de carga", "cortes de carga")} em ${f.plural(u.perturbacoes, "perturbação", "perturbações")}, com ${f.num(u.ens_mwh, 1)} MWh de energia não suprida (${f.num(u.registros_rede_basica, 0)} dos registros na rede básica).`,
+        `From ${f.dataBR(u.inicio)} to ${f.dataBR(u.fim)}, ONS recorded ${f.plural(u.registros, "load cut", "load cuts")} in ${f.plural(u.perturbacoes, "disturbance", "disturbances")}, with ${f.num(u.ens_mwh, 1)} MWh of energy not supplied (${f.num(u.registros_rede_basica, 0)} of the records in the basic grid).`,
+        idioma,
+      ),
     );
   }
-  frases.push("Os limites operativos e as suas vigências não são públicos: nenhuma utilização da rede é calculada.");
+  frases.push(
+    tx(
+      "Os limites operativos e as suas vigências não são públicos: nenhuma utilização da rede é calculada.",
+      "The operating limits and their validity periods are not public: no grid utilization is calculated.",
+      idioma,
+    ),
+  );
   return frases.join(" ");
 }
 
@@ -1536,19 +2117,37 @@ export function respostaRestricoes(r: Pick<RestricoesRede, "atls" | "interrupcoe
  * quantos cortes de carga o ONS registrou, com o limite de leitura (os limites de cada fronteira não são públicos). O tempo de
  * cada fluxo, os períodos exatos e a energia não suprida ficam em respostaRestricoes.
  */
-export function vereditoRestricoes(r: Pick<RestricoesRede, "atls" | "interrupcoes">): string {
+export function vereditoRestricoes(r: Pick<RestricoesRede, "atls" | "interrupcoes">, idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
   const ativos = fluxosAtivos(r.atls);
-  const com = ativos.filter((f) => (f.ultimos_12_meses?.horas_violacao ?? 0) > 0);
+  const com = ativos.filter((x) => (x.ultimos_12_meses?.horas_violacao ?? 0) > 0);
   const u = r.interrupcoes.ultimos_12_meses;
   const frases: string[] = [];
+  const cortes = tx(
+    f.plural(u.registros, "corte de carga", "cortes de carga"),
+    f.plural(u.registros, "load cut", "load cuts"),
+    idioma,
+  );
   if (ativos.length && ativos[0].ultimos_12_meses) {
-    frases.push(`Em 12 meses, ${num(com.length, 0)} dos ${num(ativos.length, 0)} fluxos acompanhados pelo ONS passaram algum tempo acima do limite estabelecido${u.inicio && u.fim ? `, e houve ${plural(u.registros, "corte de carga", "cortes de carga")}` : ""}.`);
+    frases.push(
+      tx(
+        `Em 12 meses, ${f.num(com.length, 0)} dos ${f.num(ativos.length, 0)} fluxos acompanhados pelo ONS passaram algum tempo acima do limite estabelecido${u.inicio && u.fim ? `, e houve ${cortes}` : ""}.`,
+        `In 12 months, ${f.num(com.length, 0)} of the ${f.num(ativos.length, 0)} flows tracked by ONS spent some time above the established limit${u.inicio && u.fim ? `, and there were ${cortes}` : ""}.`,
+        idioma,
+      ),
+    );
   } else if (u.inicio && u.fim) {
-    frases.push(`Em 12 meses, o ONS registrou ${plural(u.registros, "corte de carga", "cortes de carga")}; o indicador de tempo acima do limite não tem fluxo publicado no último mês.`);
+    frases.push(
+      tx(
+        `Em 12 meses, o ONS registrou ${cortes}; o indicador de tempo acima do limite não tem fluxo publicado no último mês.`,
+        `In 12 months, ONS recorded ${cortes}; the time-above-limit indicator has no flow published in the last month.`,
+        idioma,
+      ),
+    );
   } else {
-    frases.push("Não há evidência publicada de limitação na janela de 12 meses desta publicação.");
+    frases.push(tx("Não há evidência publicada de limitação na janela de 12 meses desta publicação.", "There is no published evidence of limitation in the 12-month window of this release.", idioma));
   }
-  frases.push("Os limites de cada fronteira não são públicos: isso não mostra se a rede estava no limite.");
+  frases.push(tx("Os limites de cada fronteira não são públicos: isso não mostra se a rede estava no limite.", "The limits of each boundary are not public: this does not show whether the grid was at its limit.", idioma));
   return frases.join(" ");
 }
 
@@ -1564,12 +2163,12 @@ export type LinhaInterrupcaoAno = {
   registros_100mw: number | null;
 };
 
-export function linhasInterrupcoesAno(i: Pick<RestricoesRede["interrupcoes"], "anual">, sm: SubsistemaOuSin): LinhaInterrupcaoAno[] {
+export function linhasInterrupcoesAno(i: Pick<RestricoesRede["interrupcoes"], "anual">, sm: SubsistemaOuSin, idioma: Idioma = idiomaEnergia()): LinhaInterrupcaoAno[] {
   const s = i.anual.por_sm[sm];
   return i.anual.anos.map((ano, k) => ({
     id: ano,
-    ano: i.anual.parcial[k] ? `${ano} (parcial)` : ano,
-    parcial: i.anual.parcial[k] ? "sim" : "não",
+    ano: i.anual.parcial[k] ? tx(`${ano} (parcial)`, `${ano} (partial)`, idioma) : ano,
+    parcial: simNao(!!i.anual.parcial[k], idioma),
     registros: s.registros[k] ?? null,
     perturbacoes: s.perturbacoes[k] ?? null,
     ens_mwh: s.ens_mwh[k] ?? null,
@@ -1579,16 +2178,19 @@ export function linhasInterrupcoesAno(i: Pick<RestricoesRede["interrupcoes"], "a
   }));
 }
 
-export const COLUNAS_INTERRUPCOES_ANO: ColunaTabela[] = [
-  { id: "ano", rotulo: "Ano", tipo: "texto" },
-  { id: "parcial", rotulo: "Ano parcial", tipo: "texto", categorica: true },
-  { id: "registros", rotulo: "Registros de corte", tipo: "numero", casas: 0 },
-  { id: "perturbacoes", rotulo: "Perturbações", tipo: "numero", casas: 0 },
-  { id: "ens_mwh", rotulo: "Energia não suprida", tipo: "numero", unidade: "MWh", casas: 1 },
-  { id: "registros_rede_basica", rotulo: "Registros na rede básica", tipo: "numero", casas: 0 },
-  { id: "ens_rede_basica_mwh", rotulo: "Energia não suprida, rede básica", tipo: "numero", unidade: "MWh", casas: 1 },
-  { id: "registros_100mw", rotulo: "Registros com 100 MW ou mais", tipo: "numero", casas: 0 },
-];
+export function colunasInterrupcoesAno(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "ano", rotulo: tx("Ano", "Year", idioma), tipo: "texto" }, // i18n: dado
+    { id: "parcial", rotulo: tx("Ano parcial", "Partial year", idioma), tipo: "texto", categorica: true },
+    { id: "registros", rotulo: tx("Registros de corte", "Load cut records", idioma), tipo: "numero", casas: 0 },
+    { id: "perturbacoes", rotulo: tx("Perturbações", "Disturbances", idioma), tipo: "numero", casas: 0 },
+    { id: "ens_mwh", rotulo: tx("Energia não suprida", "Energy not supplied", idioma), tipo: "numero", unidade: "MWh", casas: 1 },
+    { id: "registros_rede_basica", rotulo: tx("Registros na rede básica", "Records in the basic grid", idioma), tipo: "numero", casas: 0 },
+    { id: "ens_rede_basica_mwh", rotulo: tx("Energia não suprida, rede básica", "Energy not supplied, basic grid", idioma), tipo: "numero", unidade: "MWh", casas: 1 },
+    { id: "registros_100mw", rotulo: tx("Registros com 100 MW ou mais", "Records with 100 MW or more", idioma), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_INTERRUPCOES_ANO: ColunaTabela[] = colunasInterrupcoesAno("pt");
 
 export type LinhaPerturbacao = {
   id: string;
@@ -1602,7 +2204,7 @@ export type LinhaPerturbacao = {
   rede_basica: string;
 };
 
-export function linhasPerturbacoes(lista: readonly Perturbacao[]): LinhaPerturbacao[] {
+export function linhasPerturbacoes(lista: readonly Perturbacao[], idioma: Idioma = idiomaEnergia()): LinhaPerturbacao[] {
   return lista.map((p) => ({
     id: `${p.cod_perturbacao}|${p.inicio}`,
     cod_perturbacao: p.cod_perturbacao,
@@ -1612,31 +2214,37 @@ export function linhasPerturbacoes(lista: readonly Perturbacao[]): LinhaPerturba
     ens_mwh: p.ens_mwh,
     carga_interrompida_mw_soma: p.carga_interrompida_mw_soma,
     ufs: p.ufs.join(", "),
-    subsistemas: p.subsistemas.map((s) => CURTO_SM[s as SubsistemaOuSin] ?? s).join(", "),
-    rede_basica: p.rede_basica ? "sim" : "não",
+    subsistemas: p.subsistemas.map((s) => (s in CURTO_SM ? curtoSm(s as SubsistemaOuSin, idioma) : s)).join(", "),
+    rede_basica: simNao(p.rede_basica, idioma),
   }));
 }
 
-export const COLUNAS_PERTURBACOES: ColunaTabela[] = [
-  { id: "cod_perturbacao", rotulo: "Perturbação (código do ONS)", tipo: "texto" },
-  { id: "inicio", rotulo: "Início", tipo: "data" },
-  { id: "registros", rotulo: "Registros", tipo: "numero", casas: 0 },
-  { id: "ens_mwh", rotulo: "Energia não suprida", tipo: "numero", unidade: "MWh", casas: 1 },
-  { id: "carga_interrompida_mw_soma", rotulo: "Carga interrompida (soma dos registros)", tipo: "numero", unidade: "MW", casas: 1 },
-  { id: "ufs", rotulo: "UF", tipo: "texto" },
-  { id: "subsistemas", rotulo: "Subsistemas", tipo: "texto" },
-  { id: "rede_basica", rotulo: "Rede básica", tipo: "texto", categorica: true },
-];
+export function colunasPerturbacoes(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "cod_perturbacao", rotulo: tx("Perturbação (código do ONS)", "Disturbance (ONS code)", idioma), tipo: "texto" },
+    { id: "inicio", rotulo: tx("Início", "Start", idioma), tipo: "data" },
+    { id: "registros", rotulo: tx("Registros", "Records", idioma), tipo: "numero", casas: 0 },
+    { id: "ens_mwh", rotulo: tx("Energia não suprida", "Energy not supplied", idioma), tipo: "numero", unidade: "MWh", casas: 1 },
+    { id: "carga_interrompida_mw_soma", rotulo: tx("Carga interrompida (soma dos registros)", "Interrupted load (sum of the records)", idioma), tipo: "numero", unidade: "MW", casas: 1 },
+    { id: "ufs", rotulo: tx("UF", "State", idioma), tipo: "texto", idiomaTexto: "nome" },
+    { id: "subsistemas", rotulo: tx("Subsistemas", "Subsystems", idioma), tipo: "texto" },
+    { id: "rede_basica", rotulo: tx("Rede básica", "Basic grid", idioma), tipo: "texto", categorica: true },
+  ];
+}
+export const COLUNAS_PERTURBACOES: ColunaTabela[] = colunasPerturbacoes("pt");
 
 export function linhasBuscaLimites(busca: readonly BuscaLimite[]): { id: string; onde: string; resultado: string; url: string }[] {
   return busca.map((b, i) => ({ id: `busca-${i + 1}`, onde: b.onde, resultado: b.resultado, url: b.url }));
 }
 
-export const COLUNAS_BUSCA: ColunaTabela[] = [
-  { id: "onde", rotulo: "Onde se procurou", tipo: "texto" },
-  { id: "resultado", rotulo: "Resultado", tipo: "texto" },
-  { id: "url", rotulo: "Endereço consultado", tipo: "texto" },
-];
+export function colunasBusca(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "onde", rotulo: tx("Onde se procurou", "Where it was searched", idioma), tipo: "texto", idiomaTexto: "portugues" },
+    { id: "resultado", rotulo: tx("Resultado", "Result", idioma), tipo: "texto", idiomaTexto: "portugues" },
+    { id: "url", rotulo: tx("Endereço consultado", "Address consulted", idioma), tipo: "texto" },
+  ];
+}
+export const COLUNAS_BUSCA: ColunaTabela[] = colunasBusca("pt");
 
 /* ====================================================================== */
 /* P031: programado e verificado                                           */
@@ -1645,7 +2253,10 @@ export const COLUNAS_BUSCA: ColunaTabela[] = [
 export type BaseDesvio = "com" | "sem";
 
 /** Estado distinto de "não" e de ausência: a regra não vale para a entidade (seção 11.6). */
-export const NAO_SE_APLICA = "não se aplica";
+export const NAO_SE_APLICA = "não se aplica"; // i18n: dado
+export function naoSeAplica(idioma: Idioma = idiomaEnergia()): string {
+  return tx(NAO_SE_APLICA, "not applicable", idioma);
+}
 
 /** A distribuição pedida: com todos os dias ou sem os dias rotulados por programa repetido. */
 export function distribuicaoDe(p: Pick<ProgramadoRede, "distribuicao">, par: ParProgramado, base: BaseDesvio): DistribuicaoBase | null {
@@ -1673,13 +2284,13 @@ export type LinhaDistribuicao = {
 };
 
 /** Uma linha por par (faixa de desvios, tabela e exportação usam as mesmas linhas). */
-export function linhasDistribuicao(p: Pick<ProgramadoRede, "distribuicao">, base: BaseDesvio): LinhaDistribuicao[] {
+export function linhasDistribuicao(p: Pick<ProgramadoRede, "distribuicao">, base: BaseDesvio, idioma: Idioma = idiomaEnergia()): LinhaDistribuicao[] {
   return PARES_PROGRAMADO.map((par) => {
     const d = distribuicaoDe(p, par, base);
     const completa = p.distribuicao[par];
     return {
       id: par,
-      par: nomePar(par),
+      par: nomePar(par, idioma),
       horas: d?.horas ?? null,
       vies_mwmed: d?.vies_mwmed ?? null,
       desvio_abs_medio_mwmed: d?.desvio_abs_medio_mwmed ?? null,
@@ -1724,13 +2335,14 @@ export function medidasProgramado(
   p: Pick<ProgramadoRede, "distribuicao" | "limiar_material_mwmed">,
   par: ParProgramado,
   base: BaseDesvio,
+  idioma: Idioma = idiomaEnergia(),
 ): MedidasProgramado | null {
   const d = distribuicaoDe(p, par, base);
   if (!d) return null;
   const completa = p.distribuicao[par];
   return {
     par,
-    nome: nomePar(par),
+    nome: nomePar(par, idioma),
     inicio: d.inicio,
     fim: d.fim,
     horas: d.horas,
@@ -1744,25 +2356,39 @@ export function medidasProgramado(
 }
 
 /** Colunas da distribuição; os rótulos das contagens usam os limiares publicados na gold. */
-export function colunasDistribuicao(p: Pick<ProgramadoRede, "limiar_material_mwmed">): ColunaTabela[] {
-  const rotulo = (l: number) => `Horas com desvio de ${num(l, 0)} MWmed ou mais${l === p.limiar_material_mwmed ? " (materiais)" : ""}`;
+export function colunasDistribuicao(p: Pick<ProgramadoRede, "limiar_material_mwmed">, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const f = formatos(idioma);
+  const mw = tx("MWmed", "MWavg", idioma);
+  const rotulo = (l: number) =>
+    tx(
+      `Horas com desvio de ${f.num(l, 0)} MWmed ou mais${l === p.limiar_material_mwmed ? " (materiais)" : ""}`,
+      `Hours with a deviation of ${f.num(l, 0)} MWavg or more${l === p.limiar_material_mwmed ? " (material)" : ""}`,
+      idioma,
+    );
   return [
-    { id: "par", rotulo: "Fronteira ou país", tipo: "texto" },
-    { id: "horas", rotulo: "Horas comparadas", tipo: "numero", casas: 0 },
-    { id: "desvio_abs_medio_mwmed", rotulo: "Desvio absoluto médio", tipo: "numero", unidade: "MWmed", casas: 1 },
-    { id: "p50_abs_mwmed", rotulo: "Mediana do desvio absoluto", tipo: "numero", unidade: "MWmed", casas: 1 },
-    { id: "p90_abs_mwmed", rotulo: "Percentil 90", tipo: "numero", unidade: "MWmed", casas: 1 },
-    { id: "p99_abs_mwmed", rotulo: "Percentil 99", tipo: "numero", unidade: "MWmed", casas: 1 },
-    { id: "max_abs_mwmed", rotulo: "Maior desvio absoluto", tipo: "numero", unidade: "MWmed", casas: 1 },
-    { id: "vies_mwmed", rotulo: "Viés (verificado − programado)", tipo: "numero", unidade: "MWmed", casas: 1 },
+    { id: "par", rotulo: tx("Fronteira ou país", "Boundary or country", idioma), tipo: "texto" },
+    { id: "horas", rotulo: tx("Horas comparadas", "Hours compared", idioma), tipo: "numero", casas: 0 },
+    { id: "desvio_abs_medio_mwmed", rotulo: tx("Desvio absoluto médio", "Mean absolute deviation", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "p50_abs_mwmed", rotulo: tx("Mediana do desvio absoluto", "Median absolute deviation", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "p90_abs_mwmed", rotulo: tx("Percentil 90", "90th percentile", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "p99_abs_mwmed", rotulo: tx("Percentil 99", "99th percentile", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "max_abs_mwmed", rotulo: tx("Maior desvio absoluto", "Largest absolute deviation", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "vies_mwmed", rotulo: tx("Viés (verificado − programado)", "Bias (verified − scheduled)", idioma), tipo: "numero", unidade: mw, casas: 1 },
     ...LIMIARES.map((l): ColunaTabela => ({ id: `horas_${l}`, rotulo: rotulo(Number(l)), tipo: "numero", casas: 0 })),
-    { id: "horas_inversao", rotulo: "Horas com sentido oposto ao programado", tipo: "numero", casas: 0 },
-    { id: "programado_abs_mediano_mwmed", rotulo: "Programa mediano (módulo)", tipo: "numero", unidade: "MWmed", casas: 1 },
-    { id: "dias_rotulados_excluidos", rotulo: "Dias rotulados excluídos", tipo: "numero", casas: 0 },
+    { id: "horas_inversao", rotulo: tx("Horas com sentido oposto ao programado", "Hours in the direction opposite to the schedule", idioma), tipo: "numero", casas: 0 },
+    { id: "programado_abs_mediano_mwmed", rotulo: tx("Programa mediano (módulo)", "Median schedule (absolute value)", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "dias_rotulados_excluidos", rotulo: tx("Dias rotulados excluídos", "Flagged days excluded", idioma), tipo: "numero", casas: 0 },
   ];
 }
 
 const LIMIARES: readonly LimiarSensibilidade[] = ["500", "1000", "2000"];
+
+/** "na fronteira Norte → Nordeste", "no intercâmbio com a Argentina". */
+function nomeNoPar(par: ParProgramado, idioma: Idioma): string {
+  return ehFronteira(par)
+    ? tx(`na fronteira ${nomeFronteira(par, "pt")}`, `at the ${nomeFronteira(par, "en")} boundary`, idioma)
+    : tx(`no intercâmbio com ${par === "ARGENTINA" ? "a Argentina" : "o Uruguai"}`, `in the interchange with ${NOME_PAIS_EN[par]}`, idioma);
+}
 
 /**
  * Resposta do P031 para o par escolhido: quanto o verificado se afastou do programa,
@@ -1770,24 +2396,57 @@ const LIMIARES: readonly LimiarSensibilidade[] = ["500", "1000", "2000"];
  * sentido oposto ao programado; com a base sem os dias rotulados quando pedida.
  * Desvio não é chamado de falha.
  */
-export function respostaProgramado(p: Pick<ProgramadoRede, "distribuicao" | "limiar_material_mwmed" | "programa_repetido">, par: ParProgramado, base: BaseDesvio): string {
+export function respostaProgramado(
+  p: Pick<ProgramadoRede, "distribuicao" | "limiar_material_mwmed" | "programa_repetido">,
+  par: ParProgramado,
+  base: BaseDesvio,
+  idioma: Idioma = idiomaEnergia(),
+): string {
+  const f = formatos(idioma);
   const d = distribuicaoDe(p, par, base);
-  if (!d) return `Sem programado e verificado comparáveis para ${nomePar(par)}.`;
+  if (!d) return tx(`Sem programado e verificado comparáveis para ${nomePar(par, "pt")}.`, `No comparable scheduled and verified values for ${nomePar(par, "en")}.`, idioma);
   const completa = p.distribuicao[par]!;
   const lim = p.limiar_material_mwmed;
-  const nome = ehFronteira(par) ? `na fronteira ${nomeFronteira(par)}` : `no intercâmbio com ${par === "ARGENTINA" ? "a Argentina" : "o Uruguai"}`;
+  const nome = nomeNoPar(par, idioma);
+  const sentido = d.vies_mwmed > 0 ? sentidoPositivo(par, idioma) : sentidoNegativo(par, idioma);
   const vies =
     d.vies_mwmed === 0
-      ? "sem viés médio"
-      : `em média, o verificado ficou ${mwmed(Math.abs(d.vies_mwmed), 1)} deslocado em relação ao programa no sentido ${d.vies_mwmed > 0 ? sentidoPositivo(par) : sentidoNegativo(par)}`;
+      ? tx("sem viés médio", "no average bias", idioma)
+      : tx(
+          `em média, o verificado ficou ${mwmed(Math.abs(d.vies_mwmed), 1, idioma)} deslocado em relação ao programa no sentido ${sentido}`,
+          `on average, the verified flow was shifted ${mwmed(Math.abs(d.vies_mwmed), 1, idioma)} from the schedule in the direction ${sentido}`,
+          idioma,
+        );
+  const materiais = f.num(d.horas_materiais[String(lim) as "1000"] ?? null, 0);
   const frases = [
-    `De ${dataBR(d.inicio)} a ${dataBR(d.fim)}, ${nome}, o fluxo verificado se afastou do programado em ${mwmed(d.desvio_abs_medio_mwmed, 1)} por hora, em média (mediana de ${mwmed(d.p50_abs_mwmed, 1)}); em ${num(d.horas_materiais[String(lim) as "1000"] ?? null, 0)} das ${num(d.horas, 0)} horas a diferença chegou a ${num(lim, 0)} MWmed ou mais, e em ${num(d.horas_inversao, 0)} o fluxo correu no sentido oposto ao programado; ${vies}.`,
+    tx(
+      `De ${f.dataBR(d.inicio)} a ${f.dataBR(d.fim)}, ${nome}, o fluxo verificado se afastou do programado em ${mwmed(d.desvio_abs_medio_mwmed, 1, idioma)} por hora, em média (mediana de ${mwmed(d.p50_abs_mwmed, 1, idioma)}); em ${materiais} das ${f.num(d.horas, 0)} horas a diferença chegou a ${f.num(lim, 0)} MWmed ou mais, e em ${f.num(d.horas_inversao, 0)} o fluxo correu no sentido oposto ao programado; ${vies}.`,
+      `From ${f.dataBR(d.inicio)} to ${f.dataBR(d.fim)}, ${nome}, the verified flow deviated from the scheduled flow by ${mwmed(d.desvio_abs_medio_mwmed, 1, idioma)} per hour on average (median of ${mwmed(d.p50_abs_mwmed, 1, idioma)}); in ${materiais} of the ${f.num(d.horas, 0)} hours the difference reached ${f.num(lim, 0)} MWavg or more, and in ${f.num(d.horas_inversao, 0)} the flow ran opposite to the schedule; ${vies}.`,
+      idioma,
+    ),
   ];
   const rot = completa.dias_rotulados;
-  const dias = p.programa_repetido.dias.map((x) => dataBR(x.dia));
+  const dias = listaTexto(
+    p.programa_repetido.dias.map((x) => f.dataBR(x.dia)),
+    idioma,
+  );
   if (rot > 0 && ehFronteira(par)) {
-    if (base === "sem") frases.push(`Esta base exclui ${plural(rot, "dia rotulado", "dias rotulados")} por programa repetido (${listaTexto(dias)}); com ${rot === 1 ? "ele" : "eles"}, a média seria ${mwmed(completa.desvio_abs_medio_mwmed, 1)}.`);
-    else if (completa.sem_dias_rotulados) frases.push(`Sem ${rot === 1 ? "o dia rotulado" : "os dias rotulados"} por programa repetido (${listaTexto(dias)}), a média cai para ${mwmed(completa.sem_dias_rotulados.desvio_abs_medio_mwmed, 1)}.`);
+    if (base === "sem")
+      frases.push(
+        tx(
+          `Esta base exclui ${f.plural(rot, "dia rotulado", "dias rotulados")} por programa repetido (${dias}); com ${rot === 1 ? "ele" : "eles"}, a média seria ${mwmed(completa.desvio_abs_medio_mwmed, 1, idioma)}.`,
+          `This basis excludes ${f.plural(rot, "day flagged", "days flagged")} for a repeated schedule (${dias}); with ${rot === 1 ? "it" : "them"}, the average would be ${mwmed(completa.desvio_abs_medio_mwmed, 1, idioma)}.`,
+          idioma,
+        ),
+      );
+    else if (completa.sem_dias_rotulados)
+      frases.push(
+        tx(
+          `Sem ${rot === 1 ? "o dia rotulado" : "os dias rotulados"} por programa repetido (${dias}), a média cai para ${mwmed(completa.sem_dias_rotulados.desvio_abs_medio_mwmed, 1, idioma)}.`,
+          `Without the ${rot === 1 ? "day" : "days"} flagged for a repeated schedule (${dias}), the average drops to ${mwmed(completa.sem_dias_rotulados.desvio_abs_medio_mwmed, 1, idioma)}.`,
+          idioma,
+        ),
+      );
   }
   return frases.join(" ");
 }
@@ -1797,13 +2456,33 @@ export function respostaProgramado(p: Pick<ProgramadoRede, "distribuicao" | "lim
  * escolhidos, ao lado do tamanho do programa (a mediana do programado em módulo) quando ele existe. Mediana, percentis,
  * horas acima do limiar e horas no sentido oposto ficam em respostaProgramado. Desvio não é falha.
  */
-export function vereditoProgramado(p: Pick<ProgramadoRede, "distribuicao" | "limiar_material_mwmed" | "programa_repetido">, par: ParProgramado, base: BaseDesvio): string {
+export function vereditoProgramado(
+  p: Pick<ProgramadoRede, "distribuicao" | "limiar_material_mwmed" | "programa_repetido">,
+  par: ParProgramado,
+  base: BaseDesvio,
+  idioma: Idioma = idiomaEnergia(),
+): string {
+  const f = formatos(idioma);
   const d = distribuicaoDe(p, par, base);
-  if (!d) return `Sem programado e verificado comparáveis para ${nomePar(par)}.`;
-  const nome = ehFronteira(par) ? `na fronteira ${nomeFronteira(par)}` : `no intercâmbio com ${par === "ARGENTINA" ? "a Argentina" : "o Uruguai"}`;
-  const tamanho = d.programado_abs_mediano_mwmed > 0 ? `O programa, em módulo, tem mediana de ${mwmed(d.programado_abs_mediano_mwmed, 0)}.` : "A mediana do programa, em módulo, é zero.";
-  const semRotulados = base === "sem" && ehFronteira(par) && p.distribuicao[par] && p.distribuicao[par]!.dias_rotulados > 0 ? ", sem os dias rotulados por programa repetido" : "";
-  return `Desde ${dataBR(d.inicio)}, ${nome}, o fluxo medido se afastou do programado em ${mwmed(d.desvio_abs_medio_mwmed, 1)} por hora, em média${semRotulados}. ${tamanho} Desvio não é falha; a fonte não informa o motivo.`;
+  if (!d) return tx(`Sem programado e verificado comparáveis para ${nomePar(par, "pt")}.`, `No comparable scheduled and verified values for ${nomePar(par, "en")}.`, idioma);
+  const nome = nomeNoPar(par, idioma);
+  const tamanho =
+    d.programado_abs_mediano_mwmed > 0
+      ? tx(
+          `O programa, em módulo, tem mediana de ${mwmed(d.programado_abs_mediano_mwmed, 0, idioma)}.`,
+          `The schedule, in absolute value, has a median of ${mwmed(d.programado_abs_mediano_mwmed, 0, idioma)}.`,
+          idioma,
+        )
+      : tx("A mediana do programa, em módulo, é zero.", "The median of the schedule, in absolute value, is zero.", idioma);
+  const semRotulados =
+    base === "sem" && ehFronteira(par) && p.distribuicao[par] && p.distribuicao[par]!.dias_rotulados > 0
+      ? tx(", sem os dias rotulados por programa repetido", ", without the days flagged for a repeated schedule", idioma)
+      : "";
+  return tx(
+    `Desde ${f.dataBR(d.inicio)}, ${nome}, o fluxo medido se afastou do programado em ${mwmed(d.desvio_abs_medio_mwmed, 1, idioma)} por hora, em média${semRotulados}. ${tamanho} Desvio não é falha; a fonte não informa o motivo.`,
+    `Since ${f.dataBR(d.inicio)}, ${nome}, the measured flow deviated from the scheduled flow by ${mwmed(d.desvio_abs_medio_mwmed, 1, idioma)} per hour on average${semRotulados}. ${tamanho} A deviation is not a failure; the source does not state the reason.`,
+    idioma,
+  );
 }
 
 export type LinhaDiaProgramado = {
@@ -1817,7 +2496,7 @@ export type LinhaDiaProgramado = {
   dia_rotulado: string;
 };
 
-export function linhasProgramadoDiario(p: Pick<ProgramadoRede, "diario" | "programa_repetido">, par: ParProgramado): LinhaDiaProgramado[] {
+export function linhasProgramadoDiario(p: Pick<ProgramadoRede, "diario" | "programa_repetido">, par: ParProgramado, idioma: Idioma = idiomaEnergia()): LinhaDiaProgramado[] {
   const s = p.diario.por_par[par];
   const rotulados = new Set(p.programa_repetido.dias.map((x) => x.dia));
   return p.diario.dias.map((d, i) => ({
@@ -1829,19 +2508,22 @@ export function linhasProgramadoDiario(p: Pick<ProgramadoRede, "diario" | "progr
     horas_materiais: s.horas_materiais[i] ?? null,
     horas_inversao: s.horas_inversao[i] ?? null,
     // a regra do programa repetido só rotula dias das fronteiras; nos países ela não se aplica (regra publicada na gold)
-    dia_rotulado: ehFronteira(par) ? (rotulados.has(d) ? "sim" : "não") : NAO_SE_APLICA,
+    dia_rotulado: ehFronteira(par) ? simNao(rotulados.has(d), idioma) : naoSeAplica(idioma),
   }));
 }
 
-export const COLUNAS_PROGRAMADO_DIARIO: ColunaTabela[] = [
-  { id: "d", rotulo: "Dia", tipo: "data" },
-  { id: "programado_mwh", rotulo: "Programado (saldo do dia)", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "verificado_mwh", rotulo: "Verificado (saldo do dia)", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "desvio_abs_mwh", rotulo: "Soma dos desvios absolutos", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas_materiais", rotulo: "Horas materiais", tipo: "numero", casas: 0 },
-  { id: "horas_inversao", rotulo: "Horas com sentido oposto", tipo: "numero", casas: 0 },
-  { id: "dia_rotulado", rotulo: "Dia rotulado (programa repetido)", tipo: "texto", categorica: true },
-];
+export function colunasProgramadoDiario(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "d", rotulo: tx("Dia", "Day", idioma), tipo: "data" },
+    { id: "programado_mwh", rotulo: tx("Programado (saldo do dia)", "Scheduled (net for the day)", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "verificado_mwh", rotulo: tx("Verificado (saldo do dia)", "Verified (net for the day)", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "desvio_abs_mwh", rotulo: tx("Soma dos desvios absolutos", "Sum of absolute deviations", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas_materiais", rotulo: tx("Horas materiais", "Material hours", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_inversao", rotulo: tx("Horas com sentido oposto", "Hours in the opposite direction", idioma), tipo: "numero", casas: 0 },
+    { id: "dia_rotulado", rotulo: tx("Dia rotulado (programa repetido)", "Flagged day (repeated schedule)", idioma), tipo: "texto", categorica: true },
+  ];
+}
+export const COLUNAS_PROGRAMADO_DIARIO: ColunaTabela[] = colunasProgramadoDiario("pt");
 
 export type LinhaMesProgramado = {
   id: string;
@@ -1871,20 +2553,24 @@ export function linhasProgramadoMensal(p: Pick<ProgramadoRede, "mensal">, par: P
   }));
 }
 
-export const COLUNAS_PROGRAMADO_MENSAL: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "data" },
-  { id: "horas", rotulo: "Horas comparadas", tipo: "numero", casas: 0 },
-  { id: "programado_mwh", rotulo: "Programado (saldo do mês)", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "verificado_mwh", rotulo: "Verificado (saldo do mês)", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "desvio_abs_mwh", rotulo: "Soma dos desvios absolutos", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas_materiais", rotulo: "Horas materiais", tipo: "numero", casas: 0 },
-  { id: "horas_inversao", rotulo: "Horas com sentido oposto", tipo: "numero", casas: 0 },
-  { id: "dias_rotulados", rotulo: "Dias rotulados no mês", tipo: "numero", casas: 0 },
-];
+function colunasProgramadoMensalTodas(idioma: Idioma): ColunaTabela[] {
+  return [
+    { id: "m", rotulo: tx("Mês", "Month", idioma), tipo: "data" },
+    { id: "horas", rotulo: tx("Horas comparadas", "Hours compared", idioma), tipo: "numero", casas: 0 },
+    { id: "programado_mwh", rotulo: tx("Programado (saldo do mês)", "Scheduled (net for the month)", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "verificado_mwh", rotulo: tx("Verificado (saldo do mês)", "Verified (net for the month)", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "desvio_abs_mwh", rotulo: tx("Soma dos desvios absolutos", "Sum of absolute deviations", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas_materiais", rotulo: tx("Horas materiais", "Material hours", idioma), tipo: "numero", casas: 0 },
+    { id: "horas_inversao", rotulo: tx("Horas com sentido oposto", "Hours in the opposite direction", idioma), tipo: "numero", casas: 0 },
+    { id: "dias_rotulados", rotulo: tx("Dias rotulados no mês", "Flagged days in the month", idioma), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_PROGRAMADO_MENSAL: ColunaTabela[] = colunasProgramadoMensalTodas("pt");
 
 /** Nos países a coluna de dias rotulados não se aplica (a regra só rotula dias das fronteiras) e sai da tabela. */
-export function colunasProgramadoMensal(par: ParProgramado): ColunaTabela[] {
-  return ehFronteira(par) ? COLUNAS_PROGRAMADO_MENSAL : COLUNAS_PROGRAMADO_MENSAL.filter((c) => c.id !== "dias_rotulados");
+export function colunasProgramadoMensal(par: ParProgramado, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const todas = colunasProgramadoMensalTodas(idioma);
+  return ehFronteira(par) ? todas : todas.filter((c) => c.id !== "dias_rotulados");
 }
 
 /** Horas do mês no calendário (AAAA-MM), sem horário de verão: o Brasil não o adota desde 2019. */
@@ -1898,11 +2584,16 @@ export function horasDoMes(m: string): number {
  * do último mês ficam abaixo das horas do calendário (o texto nunca afirma parcial sem
  * conferir). Sem horas, não há aviso.
  */
-export function avisoMesIncompleto(m: string | undefined, horasComparadas: number | null | undefined): string | null {
+export function avisoMesIncompleto(m: string | undefined, horasComparadas: number | null | undefined, idioma: Idioma = idiomaEnergia()): string | null {
   if (!m || horasComparadas === null || horasComparadas === undefined) return null;
+  const f = formatos(idioma);
   const cal = horasDoMes(m);
   if (horasComparadas >= cal) return null;
-  return `${mesAno(m)} tem ${num(horasComparadas, 0)} de ${num(cal, 0)} horas comparadas: as contagens desse mês não se comparam diretamente com as dos meses completos.`;
+  return tx(
+    `${f.mesAno(m)} tem ${f.num(horasComparadas, 0)} de ${f.num(cal, 0)} horas comparadas: as contagens desse mês não se comparam diretamente com as dos meses completos.`,
+    `${f.mesAno(m)} has ${f.num(horasComparadas, 0)} of ${f.num(cal, 0)} hours compared: the counts for that month are not directly comparable with those of complete months.`,
+    idioma,
+  );
 }
 
 /** Horas materiais por mês dos pares escolhidos (até quatro). */
@@ -1921,28 +2612,32 @@ export type LinhaMaiorDesvio = {
   dia_rotulado: string;
 };
 
-export function linhasMaioresDesvios(lista: readonly MaiorDesvio[]): LinhaMaiorDesvio[] {
+export function linhasMaioresDesvios(lista: readonly MaiorDesvio[], idioma: Idioma = idiomaEnergia()): LinhaMaiorDesvio[] {
   return lista.map((x) => ({
     id: `${x.hora}|${x.par}`,
     hora: x.hora,
-    par: nomePar(x.par),
+    par: nomePar(x.par, idioma),
     programado_mwmed: x.programado_mwmed,
     verificado_mwmed: x.verificado_mwmed,
     desvio_mwmed: x.desvio_mwmed,
-    inversao: x.inversao ? "sim" : "não",
-    dia_rotulado: ehFronteira(x.par) ? (x.dia_rotulado ? "sim" : "não") : NAO_SE_APLICA,
+    inversao: simNao(x.inversao, idioma),
+    dia_rotulado: ehFronteira(x.par) ? simNao(x.dia_rotulado, idioma) : naoSeAplica(idioma),
   }));
 }
 
-export const COLUNAS_MAIORES_DESVIOS: ColunaTabela[] = [
-  { id: "hora", rotulo: "Hora (início, Brasília)", tipo: "data" },
-  { id: "par", rotulo: "Fronteira ou país", tipo: "texto", categorica: true },
-  { id: "programado_mwmed", rotulo: "Programado", tipo: "numero", unidade: "MWmed", casas: 1 },
-  { id: "verificado_mwmed", rotulo: "Verificado", tipo: "numero", unidade: "MWmed", casas: 1 },
-  { id: "desvio_mwmed", rotulo: "Desvio (verificado − programado)", tipo: "numero", unidade: "MWmed", casas: 1 },
-  { id: "inversao", rotulo: "Sentido oposto ao programa", tipo: "texto", categorica: true },
-  { id: "dia_rotulado", rotulo: "Dia rotulado", tipo: "texto", categorica: true },
-];
+export function colunasMaioresDesvios(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const mw = tx("MWmed", "MWavg", idioma);
+  return [
+    { id: "hora", rotulo: tx("Hora (início, Brasília)", "Hour (start, Brasília)", idioma), tipo: "data" },
+    { id: "par", rotulo: tx("Fronteira ou país", "Boundary or country", idioma), tipo: "texto", categorica: true },
+    { id: "programado_mwmed", rotulo: tx("Programado", "Scheduled", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "verificado_mwmed", rotulo: tx("Verificado", "Verified", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "desvio_mwmed", rotulo: tx("Desvio (verificado − programado)", "Deviation (verified − scheduled)", idioma), tipo: "numero", unidade: mw, casas: 1 },
+    { id: "inversao", rotulo: tx("Sentido oposto ao programa", "Opposite to the schedule", idioma), tipo: "texto", categorica: true },
+    { id: "dia_rotulado", rotulo: tx("Dia rotulado", "Flagged day", idioma), tipo: "texto", categorica: true },
+  ];
+}
+export const COLUNAS_MAIORES_DESVIOS: ColunaTabela[] = colunasMaioresDesvios("pt");
 
 export type LinhaProgramaRepetido = {
   id: string;
@@ -1956,7 +2651,8 @@ export type LinhaProgramaRepetido = {
 };
 
 /** Os dias rotulados por programa repetido, uma linha por fronteira. */
-export function linhasProgramaRepetido(p: Pick<ProgramadoRede, "programa_repetido">): LinhaProgramaRepetido[] {
+export function linhasProgramaRepetido(p: Pick<ProgramadoRede, "programa_repetido">, idioma: Idioma = idiomaEnergia()): LinhaProgramaRepetido[] {
+  const f = formatos(idioma);
   return p.programa_repetido.dias.flatMap((d) =>
     FRONTEIRAS.map((par) => {
       const x = d.por_par[par];
@@ -1964,47 +2660,93 @@ export function linhasProgramaRepetido(p: Pick<ProgramadoRede, "programa_repetid
       return {
         id: `${d.dia}|${par}`,
         dia: d.dia,
-        fronteira: nomeFronteira(par),
+        fronteira: nomeFronteira(par, idioma),
         programado_mwh: x?.programado_mwh ?? null,
         verificado_mwh: x?.verificado_mwh ?? null,
         desvio_abs_mwh: x?.desvio_abs_mwh ?? null,
         horas_materiais: x?.horas_materiais ?? null,
-        sequencia: seq.length ? seq.map((s) => `${plural(s.horas, "hora", "horas")} seguidas com ${mwmed(s.valor_mwmed, 3)}`).join("; ") : "nenhuma",
+        sequencia: seq.length
+          ? seq
+              .map((s) =>
+                tx(
+                  `${f.plural(s.horas, "hora", "horas")} seguidas com ${mwmed(s.valor_mwmed, 3, idioma)}`,
+                  `${f.plural(s.horas, "consecutive hour", "consecutive hours")} at ${mwmed(s.valor_mwmed, 3, idioma)}`,
+                  idioma,
+                ),
+              )
+              .join("; ")
+          : tx("nenhuma", "none", idioma),
       };
     }),
   );
 }
 
-export const COLUNAS_PROGRAMA_REPETIDO: ColunaTabela[] = [
-  { id: "dia", rotulo: "Dia", tipo: "data" },
-  { id: "fronteira", rotulo: "Fronteira", tipo: "texto" },
-  { id: "programado_mwh", rotulo: "Programado (saldo do dia)", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "verificado_mwh", rotulo: "Verificado (saldo do dia)", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "desvio_abs_mwh", rotulo: "Soma dos desvios absolutos", tipo: "numero", unidade: "MWh", casas: 0 },
-  { id: "horas_materiais", rotulo: "Horas materiais", tipo: "numero", casas: 0 },
-  { id: "sequencia", rotulo: "Programa repetido", tipo: "texto" },
-];
+export function colunasProgramaRepetido(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "dia", rotulo: tx("Dia", "Day", idioma), tipo: "data" }, // i18n: dado
+    { id: "fronteira", rotulo: tx("Fronteira", "Boundary", idioma), tipo: "texto" },
+    { id: "programado_mwh", rotulo: tx("Programado (saldo do dia)", "Scheduled (net for the day)", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "verificado_mwh", rotulo: tx("Verificado (saldo do dia)", "Verified (net for the day)", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "desvio_abs_mwh", rotulo: tx("Soma dos desvios absolutos", "Sum of absolute deviations", idioma), tipo: "numero", unidade: "MWh", casas: 0 },
+    { id: "horas_materiais", rotulo: tx("Horas materiais", "Material hours", idioma), tipo: "numero", casas: 0 },
+    { id: "sequencia", rotulo: tx("Programa repetido", "Repeated schedule", idioma), tipo: "texto" },
+  ];
+}
+export const COLUNAS_PROGRAMA_REPETIDO: ColunaTabela[] = colunasProgramaRepetido("pt");
 
 /** Frase sobre os dias rotulados (sem afirmar se o programa é real ou defeito do arquivo). */
-export function textoProgramaRepetido(p: Pick<ProgramadoRede, "programa_repetido">): string {
+export function textoProgramaRepetido(p: Pick<ProgramadoRede, "programa_repetido">, idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
   const dias = p.programa_repetido.dias;
-  if (!dias.length) return `Nenhum dia com programa repetido por ${p.programa_repetido.minimo_horas} horas seguidas ou mais numa fronteira.`;
-  const partes = dias.map((d) => `${dataBR(d.dia)} (${listaTexto(d.sequencias.map((s) => `${nomeFronteira(s.par)} com ${mwmed(s.valor_mwmed, 3)} em ${plural(s.horas, "hora seguida", "horas seguidas")}`))})`);
-  return `${dias.length === 1 ? "Dia rotulado" : "Dias rotulados"} por programa repetido: ${listaTexto(partes)}. ${dias.length === 1 ? "O dia não é descartado" : "Os dias não são descartados"}: a distribuição sai com e sem ${dias.length === 1 ? "ele" : "eles"}, e nada aqui afirma se o programa é real ou defeito do arquivo.`;
+  if (!dias.length)
+    return tx(
+      `Nenhum dia com programa repetido por ${p.programa_repetido.minimo_horas} horas seguidas ou mais numa fronteira.`,
+      `No day with a schedule repeated for ${p.programa_repetido.minimo_horas} consecutive hours or more at a boundary.`,
+      idioma,
+    );
+  const partes = dias.map((d) => {
+    const seqs = listaTexto(
+      d.sequencias.map((s) =>
+        tx(
+          `${nomeFronteira(s.par, "pt")} com ${mwmed(s.valor_mwmed, 3, idioma)} em ${f.plural(s.horas, "hora seguida", "horas seguidas")}`,
+          `${nomeFronteira(s.par, "en")} at ${mwmed(s.valor_mwmed, 3, idioma)} for ${f.plural(s.horas, "consecutive hour", "consecutive hours")}`,
+          idioma,
+        ),
+      ),
+      idioma,
+    );
+    return `${f.dataBR(d.dia)} (${seqs})`;
+  });
+  return tx(
+    `${dias.length === 1 ? "Dia rotulado" : "Dias rotulados"} por programa repetido: ${listaTexto(partes, "pt")}. ${dias.length === 1 ? "O dia não é descartado" : "Os dias não são descartados"}: a distribuição sai com e sem ${dias.length === 1 ? "ele" : "eles"}, e nada aqui afirma se o programa é real ou defeito do arquivo.`,
+    `${dias.length === 1 ? "Day flagged" : "Days flagged"} for a repeated schedule: ${listaTexto(partes, "en")}. ${dias.length === 1 ? "The day is not discarded" : "The days are not discarded"}: the distribution is shown with and without ${dias.length === 1 ? "it" : "them"}, and nothing here states whether the schedule is real or a file defect.`,
+    idioma,
+  );
 }
 
 /** Conferência do programa do exterior com o PDO das conversoras, em uma frase. */
-export function textoConferenciaPdo(p: Pick<ProgramadoRede, "versao_programa">): string {
+export function textoConferenciaPdo(p: Pick<ProgramadoRede, "versao_programa">, idioma: Idioma = idiomaEnergia()): string {
+  const f = formatos(idioma);
   const c = p.versao_programa.conferencia_pdo;
-  const sem = c.dias_sem_programado_no_conjunto.length ? `; ${listaTexto(c.dias_sem_programado_no_conjunto.map(dataBR))} ainda sem programado no conjunto internacional` : "";
-  return `Programa do exterior conferido com o PDO das conversoras em ${num(c.dias_comparados, 0)} de ${num(c.dias, 0)} dias da amostra (${c.amostra}${sem}): ${num(c.horas_conferem, 0)} de ${num(c.horas, 0)} horas conferem dentro de ${num(c.tolerancia_mwmed, 1)} MWmed, ${num(c.horas_com_programa_ou_pdo_conferem, 0)} de ${num(c.horas_com_programa_ou_pdo, 0)} entre as horas com programa ou PDO diferente de zero.`;
+  const diasSem = listaTexto(
+    c.dias_sem_programado_no_conjunto.map((x) => f.dataBR(x)),
+    idioma,
+  );
+  const sem = c.dias_sem_programado_no_conjunto.length
+    ? tx(`; ${diasSem} ainda sem programado no conjunto internacional`, `; ${diasSem} still without scheduled values in the international dataset`, idioma)
+    : "";
+  return tx(
+    `Programa do exterior conferido com o PDO das conversoras em ${f.num(c.dias_comparados, 0)} de ${f.num(c.dias, 0)} dias da amostra (${c.amostra}${sem}): ${f.num(c.horas_conferem, 0)} de ${f.num(c.horas, 0)} horas conferem dentro de ${f.num(c.tolerancia_mwmed, 1)} MWmed, ${f.num(c.horas_com_programa_ou_pdo_conferem, 0)} de ${f.num(c.horas_com_programa_ou_pdo, 0)} entre as horas com programa ou PDO diferente de zero.`,
+    `Exterior schedule checked against the converter stations' PDO on ${f.num(c.dias_comparados, 0)} of ${f.num(c.dias, 0)} sample days (${amostraPdo(c.amostra, "en")}${sem}): ${f.num(c.horas_conferem, 0)} of ${f.num(c.horas, 0)} hours agree within ${f.num(c.tolerancia_mwmed, 1)} MWavg, ${f.num(c.horas_com_programa_ou_pdo_conferem, 0)} of ${f.num(c.horas_com_programa_ou_pdo, 0)} among the hours with a nonzero schedule or PDO.`,
+    idioma,
+  );
 }
 
 /* ---------- utilidades comuns às tabelas ---------- */
 
 /** Mês "2026-09" como "set/2026" na coluna de texto (o arquivo exportado mantém o mês ISO na chave). */
-export function rotuloMes(m: string): string {
-  return mesAno(m);
+export function rotuloMes(m: string, idioma: Idioma = idiomaEnergia()): string {
+  return mesAno(m, idioma);
 }
 
 export { mwh as textoMwh, mwmed as textoMwmed, horas as textoHoras };

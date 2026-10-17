@@ -1,4 +1,6 @@
 import { dataBR, num, plural } from "./formato";
+import { tx } from "./idioma";
+import { PAINEIS_EN, rotuloDado } from "./i18n/regulacao-dados-metodo";
 import { datasLegiveis } from "./visao";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
 import type {
@@ -25,7 +27,7 @@ import type {
  */
 
 /** Texto observado da interface citado numa observação: data legível, e o traço usado como célula vazia vira a palavra. */
-export const textoCitado = (t: string): string => datasLegiveis(t).replace(/[\u2013\u2014]/g, "traço");
+export const textoCitado = (t: string): string => datasLegiveis(t).replace(/[\u2013\u2014]/g, "traço"); // i18n: dado (citação da interface portuguesa)
 
 export const URL_AVALIACAO = "/energia/gold/avaliacao.json";
 
@@ -42,37 +44,49 @@ export const ORDEM_DIMENSOES: IdDimensao[] = [
   "desempenho",
 ];
 
+/* rótulos lidos na hora (getter), no idioma da página */
 export const ROTULO_CURTO: Record<IdDimensao, string> = {
-  didatismo: "Didatismo",
-  visual: "Visual",
-  navegacao: "Navegação",
-  interatividade: "Interatividade",
-  acessibilidade: "Acessibilidade",
-  completude: "Completude",
-  correcao: "Correção",
-  rastreabilidade: "Rastreabilidade",
-  atualidade: "Atualidade",
-  desempenho: "Desempenho",
+  get didatismo() { return tx("Didatismo", "Didactic quality"); },
+  get visual() { return tx("Visual", "Visual"); },
+  get navegacao() { return tx("Navegação", "Navigation"); },
+  get interatividade() { return tx("Interatividade", "Interactivity"); },
+  get acessibilidade() { return tx("Acessibilidade", "Accessibility"); },
+  get completude() { return tx("Completude", "Completeness"); },
+  get correcao() { return tx("Correção", "Correctness"); },
+  get rastreabilidade() { return tx("Rastreabilidade", "Traceability"); },
+  get atualidade() { return tx("Atualidade", "Timeliness"); },
+  get desempenho() { return tx("Desempenho", "Performance"); },
 };
 
 export const ROTULO_TIPO: Record<TipoPagina, string> = {
-  home: "Página inicial",
-  painel: "Painel numérico",
-  verbete: "Verbete (amostra)",
-  ficha: "Ficha (amostra)",
-  editorial: "Editorial",
+  get home() { return tx("Página inicial", "Home page"); },
+  get painel() { return tx("Painel numérico", "Numeric panel"); },
+  get verbete() { return tx("Verbete (amostra)", "Entry (sample)"); },
+  get ficha() { return tx("Ficha (amostra)", "Record (sample)"); },
+  get editorial() { return tx("Editorial", "Editorial"); },
 };
 
-export const ROTULO_SEVERIDADE: Record<Severidade, string> = { critico: "Crítico", alto: "Alto", medio: "Médio", baixo: "Baixo" };
+export const ROTULO_SEVERIDADE: Record<Severidade, string> = {
+  get critico() { return tx("Crítico", "Critical"); },
+  get alto() { return tx("Alto", "High"); },
+  get medio() { return tx("Médio", "Medium"); },
+  get baixo() { return tx("Baixo", "Low"); },
+};
 export const ORDEM_SEVERIDADE: Severidade[] = ["critico", "alto", "medio", "baixo"];
 
-export const ROTULO_RESULTADO_JORNADA = { cumprida: "Cumprida", interrompida: "Interrompida", falhou: "Falhou" } as const;
+export const ROTULO_RESULTADO_JORNADA = {
+  get cumprida() { return tx("Cumprida", "Completed"); },
+  get interrompida() { return tx("Interrompida", "Interrupted"); },
+  get falhou() { return tx("Falhou", "Failed"); },
+} as const;
 
 /** Faixas da matriz de aceite: acima de 9,0 cumpre a meta de produto; abaixo de 6,0 é defeito material. */
 export const ESCALA_AVALIACAO = {
   limites: [6, 7.5, 9],
   cores: ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-5)"],
-  rotulos: ["abaixo de 6,0", "de 6,0 a 7,4", "de 7,5 a 8,9", "9,0 ou mais"],
+  get rotulos() {
+    return tx(["abaixo de 6,0", "de 6,0 a 7,4", "de 7,5 a 8,9", "9,0 ou mais"], ["below 6.0", "6.0 to 7.4", "7.5 to 8.9", "9.0 or more"]);
+  },
 } as const;
 
 export const metaDaDimensao = (a: AvaliacaoGold, id: IdDimensao): number => (id === "didatismo" ? a.rubrica.metas.didatismo : id === "visual" ? a.rubrica.metas.visual : a.rubrica.metas.geral);
@@ -80,7 +94,7 @@ export const metaDaDimensao = (a: AvaliacaoGold, id: IdDimensao): number => (id 
 /** "9,3", "não avaliada" ou "não se aplica": o estado nunca vira zero. */
 export function textoNota(x: NotaDimensao): string {
   if (x.estado === "avaliada") return num(x.nota, 1);
-  return x.estado === "nao_avaliada" ? "não avaliada" : "não se aplica";
+  return x.estado === "nao_avaliada" ? tx("não avaliada", "not assessed") : tx("não se aplica", "not applicable");
 }
 
 export const dimensaoPorId = (a: AvaliacaoGold, id: IdDimensao): DimensaoRubrica => a.rubrica.dimensoes.find((d) => d.id === id)!;
@@ -95,22 +109,34 @@ export function respostaAvaliacao(a: AvaliacaoGold): string {
   const r = a.resumo;
   const rod = a.rodada;
   const partes = [
-    `Na rodada ${rod.id}, de ${dataBR(rod.data_inspecao)}, ${plural(r.paginas, "página foi medida", "páginas foram medidas")} em ${rod.larguras.length} larguras de tela e nos modos Entender e Auditar, e ${plural(r.jornadas.total, "jornada de usuário foi executada", "jornadas de usuário foram executadas")} por roteiro.`,
-    `A nota ponderada média das páginas é ${num(r.nota_ponderada_media, 1)} em 10; ${plural(r.atendem_meta, "página atende", "páginas atendem")} à meta de produto (todas as dimensões a partir de 9,0, didatismo e qualidade visual a partir de 9,5, nenhuma dimensão aplicável sem avaliação e nenhum defeito crítico).`,
+    tx(
+      `Na rodada ${rod.id}, de ${dataBR(rod.data_inspecao)}, ${plural(r.paginas, "página foi medida", "páginas foram medidas")} em ${rod.larguras.length} larguras de tela e nos modos Entender e Auditar, e ${plural(r.jornadas.total, "jornada de usuário foi executada", "jornadas de usuário foram executadas")} por roteiro.`,
+      `In round ${rod.id}, of ${dataBR(rod.data_inspecao)}, ${plural(r.paginas, "page was measured", "pages were measured")} at ${rod.larguras.length} screen widths and in the Understand and Audit modes, and ${plural(r.jornadas.total, "user journey was run", "user journeys were run")} by script.`,
+    ),
+    tx(
+      `A nota ponderada média das páginas é ${num(r.nota_ponderada_media, 1)} em 10; ${plural(r.atendem_meta, "página atende", "páginas atendem")} à meta de produto (todas as dimensões a partir de 9,0, didatismo e qualidade visual a partir de 9,5, nenhuma dimensão aplicável sem avaliação e nenhum defeito crítico).`,
+      `The average weighted score of the pages is ${num(r.nota_ponderada_media, 1)} out of 10; ${plural(r.atendem_meta, "page meets", "pages meet")} the product target (every dimension from 9.0, didactic and visual quality from 9.5, no applicable dimension without assessment and no critical defect).`,
+    ),
   ];
   const d = r.defeitos;
   partes.push(
-    `${plural(d.abertos, "defeito está aberto", "defeitos estão abertos")} (${d.por_severidade.critico} crítico${d.por_severidade.critico === 1 ? "" : "s"}, ${d.por_severidade.alto} alto${d.por_severidade.alto === 1 ? "" : "s"}, ${d.por_severidade.medio} médio${d.por_severidade.medio === 1 ? "" : "s"}, ${d.por_severidade.baixo} baixo${d.por_severidade.baixo === 1 ? "" : "s"}).`,
+    tx(
+      `${plural(d.abertos, "defeito está aberto", "defeitos estão abertos")} (${d.por_severidade.critico} crítico${d.por_severidade.critico === 1 ? "" : "s"}, ${d.por_severidade.alto} alto${d.por_severidade.alto === 1 ? "" : "s"}, ${d.por_severidade.medio} médio${d.por_severidade.medio === 1 ? "" : "s"}, ${d.por_severidade.baixo} baixo${d.por_severidade.baixo === 1 ? "" : "s"}).`,
+      `${plural(d.abertos, "defect is open", "defects are open")} (${d.por_severidade.critico} critical, ${d.por_severidade.alto} high, ${d.por_severidade.medio} medium, ${d.por_severidade.baixo} low).`,
+    ),
   );
   const cmp = compararRodadas(a);
   if (cmp) {
     const dif = Math.round((cmp.mediaAtual - cmp.mediaAnterior) * 10) / 10;
     const naoComuns = ORDEM_DIMENSOES.length - cmp.comuns.length;
     partes.push(
-      `Em relação à rodada ${cmp.anterior.id}, nas ${cmp.comuns.length} dimensões avaliadas nas duas rodadas a média ponderada das médias ${dif === 0 ? `não mudou (${num(cmp.mediaAtual, 1)})` : `${dif > 0 ? "subiu" : "caiu"} de ${num(cmp.mediaAnterior, 1)} para ${num(cmp.mediaAtual, 1)}`} e ${plural(d.corrigidos_desde_a_rodada_anterior, "defeito foi corrigido", "defeitos foram corrigidos")}.${naoComuns > 0 ? ` ${plural(naoComuns, "dimensão não foi avaliada", "dimensões não foram avaliadas")} em uma das rodadas e fica fora da comparação.` : ""}`,
+      tx(
+        `Em relação à rodada ${cmp.anterior.id}, nas ${cmp.comuns.length} dimensões avaliadas nas duas rodadas a média ponderada das médias ${dif === 0 ? `não mudou (${num(cmp.mediaAtual, 1)})` : `${dif > 0 ? "subiu" : "caiu"} de ${num(cmp.mediaAnterior, 1)} para ${num(cmp.mediaAtual, 1)}`} e ${plural(d.corrigidos_desde_a_rodada_anterior, "defeito foi corrigido", "defeitos foram corrigidos")}.${naoComuns > 0 ? ` ${plural(naoComuns, "dimensão não foi avaliada", "dimensões não foram avaliadas")} em uma das rodadas e fica fora da comparação.` : ""}`,
+        `Compared with round ${cmp.anterior.id}, in the ${cmp.comuns.length} dimensions assessed in both rounds the weighted average of the averages ${dif === 0 ? `did not change (${num(cmp.mediaAtual, 1)})` : `${dif > 0 ? "rose" : "fell"} from ${num(cmp.mediaAnterior, 1)} to ${num(cmp.mediaAtual, 1)}`} and ${plural(d.corrigidos_desde_a_rodada_anterior, "defect was fixed", "defects were fixed")}.${naoComuns > 0 ? ` ${plural(naoComuns, "dimension was", "dimensions were")} not assessed in one of the rounds and ${naoComuns === 1 ? "is" : "are"} left out of the comparison.` : ""}`,
+      ),
     );
   } else {
-    partes.push("Esta é a primeira rodada registrada: ainda não há rodada anterior para mostrar evolução.");
+    partes.push(tx("Esta é a primeira rodada registrada: ainda não há rodada anterior para mostrar evolução.", "This is the first round recorded: there is no earlier round yet to show progress."));
   }
   return partes.join(" ");
 }
@@ -143,7 +169,7 @@ export function compararRodadas(a: AvaliacaoGold): ComparacaoRodadas | null {
 export function matrizModulos(a: AvaliacaoGold): { linhas: string[]; colunas: string[]; valores: (number | null)[][]; ids: IdDimensao[] } {
   const ids = ORDEM_DIMENSOES.filter((i) => a.rubrica.dimensoes.some((d) => d.id === i));
   return {
-    linhas: a.modulos.map((m) => `${m.rotulo} (${m.paginas})`),
+    linhas: a.modulos.map((m) => `${rotuloDado(PAINEIS_EN, m.rotulo)} (${m.paginas})`),
     colunas: ids.map((i) => ROTULO_CURTO[i]),
     valores: a.modulos.map((m) => ids.map((i) => m.dimensoes[i].media)),
     ids,
@@ -160,19 +186,20 @@ export function dadosPorDimensao(a: AvaliacaoGold): { id: IdDimensao; rotulo: st
 /* ------------------------------------------------------------------ tabelas */
 
 export const COLUNAS_PAGINAS: ColunaTabela[] = [
-  { id: "titulo", rotulo: "Página", tipo: "texto" },
-  { id: "rota", rotulo: "Rota", tipo: "texto" },
-  { id: "entrega", rotulo: "Entrega", tipo: "texto", categorica: true },
-  { id: "tipo", rotulo: "Tipo", tipo: "texto", categorica: true },
-  ...ORDEM_DIMENSOES.map((i): ColunaTabela => ({ id: i, rotulo: ROTULO_CURTO[i], tipo: "numero", casas: 1 })),
-  { id: "ponderada", rotulo: "Nota ponderada", tipo: "numero", casas: 1 },
-  { id: "meta", rotulo: "Atende a meta", tipo: "texto", categorica: true },
-  { id: "completa", rotulo: "Dimensões todas avaliadas", tipo: "texto", categorica: true },
-  { id: "defeitos", rotulo: "Defeitos", tipo: "numero", casas: 0 },
+  // título da página como a gold o registra (português) e rota (identificador): na página inglesa, marcados
+  { id: "titulo", get rotulo() { return tx("Página", "Page"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "rota", get rotulo() { return tx("Rota", "Route"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "entrega", get rotulo() { return tx("Entrega", "Delivery"); }, tipo: "texto", categorica: true },
+  { id: "tipo", get rotulo() { return tx("Tipo", "Type"); }, tipo: "texto", categorica: true },
+  ...ORDEM_DIMENSOES.map((i): ColunaTabela => ({ id: i, get rotulo() { return ROTULO_CURTO[i]; }, tipo: "numero", casas: 1 })),
+  { id: "ponderada", get rotulo() { return tx("Nota ponderada", "Weighted score"); }, tipo: "numero", casas: 1 },
+  { id: "meta", get rotulo() { return tx("Atende a meta", "Meets the target"); }, tipo: "texto", categorica: true },
+  { id: "completa", get rotulo() { return tx("Dimensões todas avaliadas", "All dimensions assessed"); }, tipo: "texto", categorica: true },
+  { id: "defeitos", get rotulo() { return tx("Defeitos", "Defects"); }, tipo: "numero", casas: 0 },
 ];
 
 export function linhasPaginas(a: AvaliacaoGold): LinhaTabela[] {
-  const rotulo = new Map(a.modulos.map((m) => [m.id, m.rotulo]));
+  const rotulo = new Map(a.modulos.map((m) => [m.id, rotuloDado(PAINEIS_EN, m.rotulo)]));
   return a.paginas.map((p) => ({
     titulo: p.titulo ?? p.rota,
     rota: p.rota,
@@ -180,22 +207,23 @@ export function linhasPaginas(a: AvaliacaoGold): LinhaTabela[] {
     tipo: ROTULO_TIPO[p.tipo],
     ...Object.fromEntries(ORDEM_DIMENSOES.map((i) => [i, p.dimensoes[i].estado === "avaliada" ? p.dimensoes[i].nota : null])),
     ponderada: p.nota_ponderada,
-    meta: p.atende_meta ? "sim" : "não",
-    completa: p.completa ? "sim" : "não",
+    meta: p.atende_meta ? tx("sim", "yes") : tx("não", "no"),
+    completa: p.completa ? tx("sim", "yes") : tx("não", "no"),
     defeitos: p.defeitos.length,
   }));
 }
 
 export const COLUNAS_DEFEITOS: ColunaTabela[] = [
-  { id: "id", rotulo: "Defeito", tipo: "texto" },
-  { id: "severidade", rotulo: "Severidade", tipo: "texto", categorica: true },
-  { id: "dimensao", rotulo: "Dimensão", tipo: "texto", categorica: true },
-  { id: "descricao", rotulo: "Descrição", tipo: "texto" },
-  { id: "n_paginas", rotulo: "Páginas afetadas", tipo: "numero", casas: 0 },
-  { id: "exemplo", rotulo: "Primeira página", tipo: "texto" },
+  { id: "id", get rotulo() { return tx("Defeito", "Defect"); }, tipo: "texto" },
+  { id: "severidade", get rotulo() { return tx("Severidade", "Severity"); }, tipo: "texto", categorica: true },
+  { id: "dimensao", get rotulo() { return tx("Dimensão", "Dimension"); }, tipo: "texto", categorica: true },
+  { id: "descricao", get rotulo() { return tx("Descrição", "Description"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "n_paginas", get rotulo() { return tx("Páginas afetadas", "Pages affected"); }, tipo: "numero", casas: 0 },
+  { id: "exemplo", get rotulo() { return tx("Primeira página", "First page"); }, tipo: "texto", idiomaTexto: "nome" },
 ];
 
-const ROTULO_DIMENSAO_DEFEITO: Record<string, string> = { ...ROTULO_CURTO };
+/* lido na hora (ROTULO_CURTO tem getters): o spread de módulo congelaria o idioma da primeira leitura */
+const ROTULO_DIMENSAO_DEFEITO: Record<string, string> = ROTULO_CURTO;
 
 export function linhasDefeitos(defeitos: DefeitoAvaliacao[]): LinhaTabela[] {
   return defeitos.map((d) => ({
@@ -213,12 +241,19 @@ export function linhasDefeitos(defeitos: DefeitoAvaliacao[]): LinhaTabela[] {
 export type ResumoFicha = { rota: string; titulo: string; notaPonderada: string; atendeMeta: boolean; faltas: string[] };
 
 export function resumoFicha(p: PaginaAvaliada): ResumoFicha {
-  return { rota: p.rota, titulo: p.titulo ?? p.rota, notaPonderada: p.nota_ponderada === null ? "não avaliada" : num(p.nota_ponderada, 1), atendeMeta: p.atende_meta, faltas: p.abaixo_da_meta };
+  return {
+    rota: p.rota,
+    titulo: p.titulo ?? p.rota,
+    notaPonderada: p.nota_ponderada === null ? tx("não avaliada", "not assessed") : num(p.nota_ponderada, 1),
+    atendeMeta: p.atende_meta,
+    faltas: p.abaixo_da_meta,
+  };
 }
 
-/** Texto da dedução ou do teto, para a ficha: pontos com vírgula decimal. */
-export const textoDeducao = (d: { pontos: number; motivo: string }) => `menos ${num(d.pontos, d.pontos % 1 === 0 ? 0 : 2)}: ${d.motivo}`;
-export const textoTeto = (t: { valor: number; motivo: string }) => `teto ${num(t.valor, 1)}: ${t.motivo}`;
+/** Texto da dedução ou do teto, para a ficha: pontos com vírgula decimal. O motivo é texto da gold (português). */
+export const textoDeducao = (d: { pontos: number; motivo: string }) =>
+  tx(`menos ${num(d.pontos, d.pontos % 1 === 0 ? 0 : 2)}: ${d.motivo}`, `minus ${num(d.pontos, d.pontos % 1 === 0 ? 0 : 2)}: ${d.motivo}`);
+export const textoTeto = (t: { valor: number; motivo: string }) => tx(`teto ${num(t.valor, 1)}: ${t.motivo}`, `cap ${num(t.valor, 1)}: ${t.motivo}`);
 
 /** Módulo da página, para o rótulo da ficha. */
 export const moduloDaPagina = (a: AvaliacaoGold, p: PaginaAvaliada): ModuloAvaliado | undefined => a.modulos.find((m) => m.id === p.modulo);

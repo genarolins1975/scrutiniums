@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { carregaJson } from "@/lib/energia/carregaJson";
 import { mesAno } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import {
-  COLUNAS_ESS,
-  COLUNAS_INFOMERCADO,
-  COLUNAS_LIQUIDACAO,
-  COLUNAS_PAGAMENTO,
-  COLUNAS_SAMP,
+  colunasEss,
+  colunasInfoMercado,
+  colunasLiquidacao,
+  colunasPagamento,
+  colunasSamp,
   URL_GOLD_MERCADO,
   linhasEss,
   linhasInfoMercado,
@@ -32,6 +33,8 @@ export function MercadoTabelasSobDemanda({ conjunto, versao, downloads }: { conj
   const [pedido, setPedido] = useState(false);
   const [g, setG] = useState<MercadoGold | null>(null);
   const [erro, setErro] = useState<string | null>(null);
+  const idioma = useIdioma();
+  const tx = useTx();
 
   // o bloco pede a gold quando chega perto da janela; sem IntersectionObserver, só pelo botão
   useEffect(() => {
@@ -72,19 +75,19 @@ export function MercadoTabelasSobDemanda({ conjunto, versao, downloads }: { conj
         <div className="space-y-2 text-sm text-carvao-muted" role="status" aria-live="polite">
           <p>
             {erro
-              ? `As tabelas não puderam ser lidas da base publicada: ${erro}`
+              ? tx(`As tabelas não puderam ser lidas da base publicada: ${erro}`, `The tables could not be read from the published database: ${erro}`)
               : pedido
-                ? "Lendo as tabelas na base publicada…"
-                : "As tabelas desta seção são lidas da base publicada quando a seção aparece na tela."}
+                ? tx("Lendo as tabelas na base publicada…", "Reading the tables from the published database…")
+                : tx("As tabelas desta seção são lidas da base publicada quando a seção aparece na tela.", "The tables in this section are read from the published database when the section comes into view.")}
           </p>
           {!pedido && (
             <button type="button" onClick={() => setPedido(true)} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
-              Carregar as tabelas
+              {tx("Carregar as tabelas", "Load the tables")}
             </button>
           )}
           {erro && (
             <button type="button" onClick={() => setErro(null)} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
-              Tentar de novo
+              {tx("Tentar de novo", "Try again")}
             </button>
           )}
           {downloads.length > 0 && (
@@ -103,46 +106,46 @@ export function MercadoTabelasSobDemanda({ conjunto, versao, downloads }: { conj
         <>
           <TabelaInterativa
             {...comum}
-            titulo="Consumo contabilizado, exportação e variação do ACL × InfoMercado da CCEE"
-            colunas={COLUNAS_INFOMERCADO}
-            linhas={linhasInfoMercado(g.livre_regulado.reconciliacao.infomercado)}
+            titulo={tx("Consumo contabilizado, exportação e variação do ACL × InfoMercado da CCEE", "Accounted consumption, exports and ACL change × CCEE InfoMercado")}
+            colunas={colunasInfoMercado(idioma)}
+            linhas={linhasInfoMercado(g.livre_regulado.reconciliacao.infomercado, idioma)}
             colunaRotulo="medida"
-            fonte="CCEE, InfoMercado mensal (PDF) e conjuntos abertos"
+            fonte={tx("CCEE, InfoMercado mensal (PDF) e conjuntos abertos", "CCEE, monthly InfoMercado (PDF) and open datasets")}
             nomeArquivo="mercado-infomercado-consumo"
             chaveUrl="im"
           />
           <TabelaInterativa
             {...comum}
-            titulo="Completude do SAMP por mês e unidades livres × EPE"
-            colunas={COLUNAS_SAMP}
-            linhas={linhasSamp(g)}
+            titulo={tx("Completude do SAMP por mês e unidades livres × EPE", "SAMP completeness by month and free consumer units × EPE")}
+            colunas={colunasSamp(idioma)}
+            linhas={linhasSamp(g, idioma)}
             colunaRotulo="mes"
-            fonte="ANEEL, SAMP; EPE, consumo mensal"
+            fonte={tx("ANEEL, SAMP; EPE, consumo mensal", "ANEEL, SAMP; EPE, monthly consumption")}
             nomeArquivo="mercado-samp-completude"
             chaveUrl="samp"
             ordemInicial={{ coluna: "mes", direcao: "desc" }}
-            nota={`Mês incompleto ou com linhas repetidas fica fora da comparação com a EPE. Série desde ${mesAno(g.livre_regulado.samp_nacional_mensal_desde)}; desde 2019 no CSV nacional.`}
+            nota={tx(`Mês incompleto ou com linhas repetidas fica fora da comparação com a EPE. Série desde ${mesAno(g.livre_regulado.samp_nacional_mensal_desde, idioma)}; desde 2019 no CSV nacional.`, `An incomplete month or one with repeated rows is excluded from the comparison with EPE. Series since ${mesAno(g.livre_regulado.samp_nacional_mensal_desde, idioma)}; since 2019 in the national CSV.`)}
           />
         </>
       ) : conjunto === "encargos-analise" ? (
         <>
           <TabelaInterativa
             {...comum}
-            titulo="Liquidação mês a mês, com a situação de cada mês"
-            colunas={COLUNAS_LIQUIDACAO}
-            linhas={linhasLiquidacao(g)}
+            titulo={tx("Liquidação mês a mês, com a situação de cada mês", "Settlement month by month, with the status of each month")}
+            colunas={colunasLiquidacao(idioma)}
+            linhas={linhasLiquidacao(g, idioma)}
             colunaRotulo="mes"
             fonte="CCEE, SUMARIO_MENSAL_LIQUIDACAO"
             nomeArquivo="mercado-liquidacao"
             chaveUrl="liq"
             ordemInicial={{ coluna: "mes", direcao: "desc" }}
-            nota="A grade tem todos os meses: o mês ausente do arquivo e os meses com zero publicado no lugar da liquidação aparecem sem valor, com a situação escrita."
+            nota={tx("A grade tem todos os meses: o mês ausente do arquivo e os meses com zero publicado no lugar da liquidação aparecem sem valor, com a situação escrita.", "The grid has every month: the month missing from the file and the months with a zero published in place of settlement appear without a value, with the status stated.")}
           />
           <TabelaInterativa
             {...comum}
-            titulo="Pagamento e alívio do ESS por mês"
-            colunas={COLUNAS_PAGAMENTO}
-            linhas={linhasPagamento(g)}
+            titulo={tx("Pagamento e alívio do ESS por mês", "ESS payment and relief by month")}
+            colunas={colunasPagamento(idioma)}
+            linhas={linhasPagamento(g, idioma)}
             colunaRotulo="mes"
             fonte="CCEE, ENCARGO_PGTO_MENSAL"
             nomeArquivo="mercado-pagamento-ess"
@@ -151,11 +154,11 @@ export function MercadoTabelasSobDemanda({ conjunto, versao, downloads }: { conj
           />
           <TabelaInterativa
             {...comum}
-            titulo="ESS por tipo e mês de competência"
-            colunas={COLUNAS_ESS}
+            titulo={tx("ESS por tipo e mês de competência", "ESS by type and accounting month")}
+            colunas={colunasEss(idioma)}
             linhas={linhasEss(g)}
             colunaRotulo="mes"
-            fonte="CCEE, ENCARGO_ESS_ANCILAR e RD_ENCARGOS_CONTAB_MENSAL"
+            fonte={tx("CCEE, ENCARGO_ESS_ANCILAR e RD_ENCARGOS_CONTAB_MENSAL", "CCEE, ENCARGO_ESS_ANCILAR and RD_ENCARGOS_CONTAB_MENSAL")}
             nomeArquivo="mercado-ess-tipos"
             chaveUrl="ess"
             ordemInicial={{ coluna: "mes", direcao: "desc" }}
@@ -164,11 +167,11 @@ export function MercadoTabelasSobDemanda({ conjunto, versao, downloads }: { conj
       ) : (
         <TabelaInterativa
           {...comum}
-          titulo="Encargos e pagamento × InfoMercado da CCEE"
-          colunas={COLUNAS_INFOMERCADO}
-          linhas={linhasInfoMercado(g.encargos.reconciliacao_infomercado)}
+          titulo={tx("Encargos e pagamento × InfoMercado da CCEE", "Charges and payment × CCEE InfoMercado")}
+          colunas={colunasInfoMercado(idioma)}
+          linhas={linhasInfoMercado(g.encargos.reconciliacao_infomercado, idioma)}
           colunaRotulo="medida"
-          fonte="CCEE, InfoMercado mensal (PDF) e conjuntos abertos"
+          fonte={tx("CCEE, InfoMercado mensal (PDF) e conjuntos abertos", "CCEE, monthly InfoMercado (PDF) and open datasets")}
           nomeArquivo="mercado-infomercado-encargos"
           chaveUrl="im"
         />

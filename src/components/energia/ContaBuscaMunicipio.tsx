@@ -1,7 +1,9 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
+import { Nome } from "@/components/i18n/Nome";
 import { buscarMunicipios, prepararBuscaMunicipios, type IndiceMunicipios, type MunicipioEncontrado } from "@/lib/energia/conta";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Busca da distribuidora pelo município: quem não sabe a sigla da sua distribuidora digita o município e escolhe na lista. O índice
@@ -33,6 +35,7 @@ type Situacao = "ocioso" | "carregando" | "pronto" | "erro";
 
 export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioEncontrado) => void }) {
   const uid = useId();
+  const tx = useTx();
   const [termo, setTermo] = useState("");
   const [indice, setIndice] = useState<IndiceMunicipios | null>(null);
   const [situacao, setSituacao] = useState<Situacao>("ocioso");
@@ -65,17 +68,17 @@ export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioE
 
   const aviso =
     situacao === "carregando"
-      ? "Carregando a lista de municípios."
+      ? tx("Carregando a lista de municípios.", "Loading the list of municipalities.")
       : situacao === "erro"
-        ? "A lista de municípios não carregou. Escolha a distribuidora na lista ao lado."
+        ? tx("A lista de municípios não carregou. Escolha a distribuidora na lista ao lado.", "The list of municipalities did not load. Choose the distribution utility from the list alongside.")
         : situacao === "pronto" && termo.trim().length >= 2 && !resultados.length && termo !== escolhido
-          ? "Nenhum município com esse nome."
+          ? tx("Nenhum município com esse nome.", "No municipality with that name.")
           : "";
 
   return (
     <div className="relative w-full min-w-0 sm:w-72" data-busca-municipio="">
       <label htmlFor={`${uid}-campo`} className="rotulo block text-mineral">
-        Buscar pelo município
+        {tx("Buscar pelo município", "Search by municipality")}
       </label>
       <input
         id={`${uid}-campo`}
@@ -87,7 +90,7 @@ export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioE
         aria-activedescendant={mostrando ? `${uid}-op-${ativo}` : undefined}
         autoComplete="off"
         spellCheck={false}
-        placeholder="Digite o nome do município"
+        placeholder={tx("Digite o nome do município", "Type the municipality name")}
         value={termo}
         onFocus={iniciar}
         onChange={(e) => {
@@ -116,7 +119,7 @@ export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioE
         className="mt-1 min-h-[44px] w-full border border-linha bg-superficie px-2 text-sm text-carvao placeholder:text-mineral focus:outline focus:outline-2 focus:outline-energia"
       />
       {mostrando && (
-        <ul id={`${uid}-lista`} role="listbox" aria-label="Municípios encontrados" className="absolute left-0 z-20 mt-0.5 w-full border border-linha bg-superficie shadow-sm">
+        <ul id={`${uid}-lista`} role="listbox" aria-label={tx("Municípios encontrados", "Municipalities found")} className="absolute left-0 z-20 mt-0.5 w-full border border-linha bg-superficie shadow-sm">
           {resultados.map((m, i) => (
             <li
               key={`${m.nome}|${m.uf}`}
@@ -130,7 +133,9 @@ export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioE
               onMouseEnter={() => setAtivo(i)}
               className={`flex min-h-[44px] cursor-pointer items-center justify-between gap-3 px-3 py-1 text-sm text-carvao ${i === ativo ? "bg-energia-fundo" : ""}`}
             >
-              <span>{m.nome}</span>
+              <span>
+                <Nome>{m.nome}</Nome>
+              </span>
               <span className="text-carvao-muted">{m.uf}</span>
             </li>
           ))}

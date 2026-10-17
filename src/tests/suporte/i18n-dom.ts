@@ -52,7 +52,7 @@ export function conteudo(no: No): Forma[] {
   return saida;
 }
 
-const nomesProprios = lerNomesPreservados(
+export const nomesProprios = lerNomesPreservados(
   readFileSync(new URL("../../../config/glossario-en.json", import.meta.url), "utf8"),
   criarContextoProdutos(fileURLToPath(new URL("../../../", import.meta.url))),
 );
@@ -92,18 +92,23 @@ export function vazamentos(doc: No, idioma: "pt" | "en", nomes: readonly string[
   }
   const verifica = (valor: string, dentro: boolean, lang: string) => {
     if (!valor.trim() || (idioma === "en" && dentro && lang === "pt-BR")) return;
-    const restante = semNomes(valor, nomes);
+    // endereço e nome de arquivo são identificadores, não prosa ("/setor-eletrico/dados/", "dados_catalogo.csv")
+    const restante = semNomes(valor, nomes).replace(/https?:\/\/\S+|(?:^|\s)\/[\w./#?=&-]+|\b[\w.-]+\.(?:json|csv|xlsx|zip|png|svg|parquet|pdf)\b/gi, " ");
     if (new RegExp("\\b(?:idioma|traducao)\\.[a-z_]+\\b", "u").test(restante)) erros.push(`chave-na-interface: ${valor}`);
     const portugues = new RegExp("(?:^|[^\\p{L}])(?:não|são|dados)(?=$|[^\\p{L}])|[\\p{L}]+(?:ção|ções)\\b", "iu");
     const ingles = new RegExp("\\b(?:the|are|with|only|your|Portuguese|English|Language)\\b", "iu");
     if (idioma === "en" && portugues.test(restante)) erros.push(`portugues-sem-marca: ${valor}`);
-    if (idioma === "pt" && ingles.test(restante)) erros.push(`ingles-na-pagina-portuguesa: ${valor}`);
+    // citação original em inglês marcada com lang="en" é legítima na página portuguesa
+    if (idioma === "pt" && lang !== "en" && ingles.test(restante)) erros.push(`ingles-na-pagina-portuguesa: ${valor}`);
   };
   const visita = (no: No, dentro: boolean, lang: string) => {
     if ("value" in no) { verifica(no.value, dentro, lang); return; }
     if ("tagName" in no) {
       if (tecnicos.has(no.tagName)) return;
-      dentro = dentro || ilhasValidas.has(no);
+      // nome próprio marcado (<Nome>: lang="pt-BR" e data-i18n-nome) fica em português por definição
+      dentro = dentro || ilhasValidas.has(no) || (attr(no, "data-i18n-nome") !== undefined && attr(no, "lang") === "pt-BR");
+      // código, comando e identificador técnico (<code>, <kbd>, <samp>) não são prosa
+      if (["code", "kbd", "samp"].includes(no.tagName)) return;
       lang = attr(no, "lang") ?? lang;
       for (const nome of atributosHumanos) verifica(attr(no, nome) ?? "", dentro, lang);
       if (no.tagName === "meta" && /^(?:description|og:(?:title|description|image:alt)|twitter:(?:title|description|image:alt))$/.test(attr(no, "name") ?? attr(no, "property") ?? "")) {

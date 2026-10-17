@@ -5,6 +5,7 @@ import { MapaCoropletico } from "@/components/energia/MapaCoropletico";
 import { NAO_SE_APLICA, quebrasQuantis } from "@/lib/energia/escalas";
 import { codigoUf } from "@/lib/energia/expansao";
 import { URL_GEO } from "@/lib/energia/geo";
+import { useTx } from "@/lib/energia/useIdioma";
 
 const CORES = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
 
@@ -14,6 +15,7 @@ const CORES = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3
  * assimétrica (uma usina grande domina).
  */
 export function ListadasMapaUf({ porUf, titulo, periodo, nota }: { porUf: { uf: string; mw_controle: number }[]; titulo: string; periodo: string; nota: string }) {
+  const tx = useTx();
   const valores = useMemo(() => {
     const v: Record<string, number | typeof NAO_SE_APLICA> = {};
     for (const s of ["AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"]) {
@@ -36,7 +38,7 @@ export function ListadasMapaUf({ porUf, titulo, periodo, nota }: { porUf: { uf: 
       classificacao={classes}
       unidade="MW"
       casas={0}
-      rotuloRegiao={{ singular: "UF", plural: "UF" }}
+      rotuloRegiao={tx({ singular: "UF", plural: "UF" }, { singular: "state", plural: "states" })}
       corNaoSeAplica="var(--cor-linha)"
       rotulos
       periodo={periodo}

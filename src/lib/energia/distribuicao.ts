@@ -12,7 +12,9 @@
  * Também ficam aqui as marcas de eixo legíveis (passos 1, 2, 2,5 e 5 vezes
  * potência de 10), usadas pelo histograma e pela dispersão.
  */
+import type { Idioma } from "@/lib/idioma";
 import { num, unidadeConcordante } from "@/lib/energia/formato";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 
 export type Valor = number | null | undefined;
 
@@ -38,7 +40,7 @@ function quantilOrdenado(v: readonly number[], q: number): number | null {
 }
 
 function confereQ(q: number): void {
-  if (!(q >= 0 && q <= 1)) throw new RangeError(`quantil fora de [0, 1]: ${q}`);
+  if (!(q >= 0 && q <= 1)) throw new RangeError(`quantil fora de [0, 1]: ${q}`); // i18n: dado
 }
 
 /** Quantil tipo 7 (igual a `quantil` de comum.py). Sem valores válidos, null. */
@@ -341,10 +343,10 @@ export function alturaClasse(c: Classe, larguraReferencia: number): number {
  * casa é "0,0", não "−0,0" (a mesma regra de formatarValor em escalas.ts).
  * "%" cola no número; demais unidades vêm após espaço não separável.
  */
-export function textoValor(v: Valor, casas: number, unidade: string): string {
-  if (typeof v !== "number" || !Number.isFinite(v)) return "sem dado";
+export function textoValor(v: Valor, casas: number, unidade: string, idioma: Idioma = idiomaEnergia()): string {
+  if (typeof v !== "number" || !Number.isFinite(v)) return tx("sem dado", "no data", idioma);
   const r = Number(v.toFixed(Math.max(0, Math.min(20, casas))));
-  const n = num(r === 0 ? 0 : r, casas);
+  const n = num(r === 0 ? 0 : r, casas, idioma);
   if (!unidade) return n;
   if (unidade === "%") return `${n}%`;
   if (unidade === "R$") return `R$ ${n}`;
@@ -352,8 +354,8 @@ export function textoValor(v: Valor, casas: number, unidade: string): string {
 }
 
 /** Percentual de uma fração 0 a 1, com casas adaptadas (0,4% não vira 0%). */
-export function textoFracao(f: number): string {
+export function textoFracao(f: number, idioma: Idioma = idiomaEnergia()): string {
   const p = f * 100;
-  if (p > 0 && p < 1) return `${num(p, 2)}%`;
-  return `${num(p, 1)}%`;
+  if (p > 0 && p < 1) return `${num(p, 2, idioma)}%`;
+  return `${num(p, 1, idioma)}%`;
 }

@@ -1,4 +1,7 @@
-import { mesAnoCurto } from "./formato";
+import type { Idioma } from "@/lib/idioma";
+import { dataCurta, mesAnoCurto } from "./formato";
+import { txEm } from "./i18n/geracao";
+import { idiomaEnergia } from "./idioma";
 import type { FonteBalanco, RazaoRestricao, Restricao } from "./tipos-geracao";
 
 /**
@@ -15,17 +18,18 @@ import type { FonteBalanco, RazaoRestricao, Restricao } from "./tipos-geracao";
 
 /* ------------------------------------------------------------------ dados publicados */
 
-export const RAZOES_GRAFICO: readonly RazaoRestricao[] = ["ENE", "CNF", "REL", "PAR", "SEM"];
+export const RAZOES_GRAFICO: readonly RazaoRestricao[] = ["ENE", "CNF", "REL", "PAR", "SEM"]; // i18n: dado
 
 /** Linha mensal do SIN em GWh por razão, com a taxa publicada e a marca de mês parcial. */
 /** `parcial` é 1 no mês ainda aberto e 0 nos completos (número, para a linha caber no gráfico). */
 export type LinhaMensalCorte = { mes: string; rotulo: string; parcial: 0 | 1; taxa: number | null } & Record<RazaoRestricao, number | null>;
 
-export function serieMensalPorRazao(r: Restricao): LinhaMensalCorte[] {
+export function serieMensalPorRazao(r: Restricao, idioma: Idioma = idiomaEnergia()): LinhaMensalCorte[] {
+  const tx = txEm(idioma);
   const m = r.mensal_sin;
   return m.meses.map((mes, i) => {
     const parcial = !!m.parcial[i];
-    const linha = { mes, rotulo: `${mesAnoCurto(mes)}${parcial ? " (parcial)" : ""}`, parcial: parcial ? 1 : 0, taxa: m.taxa_pct[i] ?? null } as LinhaMensalCorte;
+    const linha = { mes, rotulo: `${mesAnoCurto(mes, idioma)}${parcial ? tx(" (parcial)", " (partial)") : ""}`, parcial: parcial ? 1 : 0, taxa: m.taxa_pct[i] ?? null } as LinhaMensalCorte;
     for (const z of RAZOES_GRAFICO) {
       const v = m.energia_nao_gerada_mwh[z]?.[i];
       linha[z] = v === null || v === undefined ? null : v / 1e3;
@@ -37,11 +41,11 @@ export function serieMensalPorRazao(r: Restricao): LinhaMensalCorte[] {
 /** Linha diária em GWh por razão, com o maior corte simultâneo do dia em GW. */
 export type LinhaDiariaCorte = { dia: string; rotulo: string; potenciaGw: number | null } & Record<RazaoRestricao, number | null>;
 
-export function serieDiariaPorRazao(r: Restricao): LinhaDiariaCorte[] {
+export function serieDiariaPorRazao(r: Restricao, idioma: Idioma = idiomaEnergia()): LinhaDiariaCorte[] {
   const d = r.diario_recente;
   return d.dias.map((dia, i) => {
     const pot = d.potencia_max_cortada_mw[i];
-    const linha = { dia, rotulo: `${dia.slice(8, 10)}/${dia.slice(5, 7)}`, potenciaGw: pot === null || pot === undefined ? null : pot / 1e3 } as LinhaDiariaCorte;
+    const linha = { dia, rotulo: idioma === "en" ? dataCurta(dia, "en") : `${dia.slice(8, 10)}/${dia.slice(5, 7)}`, potenciaGw: pot === null || pot === undefined ? null : pot / 1e3 } as LinhaDiariaCorte;
     for (const z of RAZOES_GRAFICO) {
       const v = d.energia_nao_gerada_mwh[z]?.[i];
       linha[z] = v === null || v === undefined ? null : v / 1e3;
@@ -259,40 +263,71 @@ export const PARAMETROS_INICIAIS: ParametrosDia = {
 export type Cenario = { id: string; rotulo: string; explicacao: string; mudanca: Partial<ParametrosDia> };
 
 /** Cenários prontos: cada um muda uma alavanca a partir do ponto de partida, para isolar o efeito dela. */
-export const CENARIOS_DIA: Cenario[] = [
-  { id: "partida", rotulo: "Ponto de partida", explicacao: "Os valores iniciais: no meio do dia há corte pelas três razões.", mudanca: {} },
-  {
-    id: "transmissao",
-    rotulo: "Mais escoamento do Nordeste",
-    explicacao: "O escoamento cresce 10 GW e o corte elétrico some, mas o total não cai: nessas horas o país inteiro já tinha sobra, e o corte passa a ser energético.",
-    mudanca: { escoamentoGw: 40 },
-  },
-  {
-    id: "bateria",
-    rotulo: "Bateria de 10 GW por 4 horas",
-    explicacao: "40 GWh de armazenamento guardam parte da sobra do meio do dia e a devolvem à noite, no lugar de hidráulicas e térmicas. O corte cai, e 15% do que entra se perde no ciclo.",
-    mudanca: { bateriaGw: 10, bateriaGwh: 40 },
-  },
-  { id: "domingo", rotulo: "Domingo de demanda baixa", explicacao: "A demanda cai 15%: o mesmo recurso sobra em mais horas e o corte energético cresce.", mudanca: { demandaPicoGw: 81 } },
-  {
-    id: "seguranca",
-    rotulo: "Mais máquinas síncronas exigidas",
-    explicacao: "A exigência de máquinas síncronas sobe de 40% para 55% da demanda: a renovável cede o espaço e cresce o corte por confiabilidade.",
-    mudanca: { exigenciaSincronaPct: 55 },
-  },
-  {
-    id: "flexivel",
-    rotulo: "Hidráulicas e térmicas mais flexíveis",
-    explicacao: "O mínimo técnico cai de 30 para 20 GW, mas a segurança ainda exige 40% da demanda em máquinas síncronas: o corte total não cai, só muda de razão.",
-    mudanca: { minimoSincronoGw: 20 },
-  },
-  {
-    id: "solar",
-    rotulo: "Mais 20 GW de solar",
-    explicacao: "A solar cresce 20 GW no pico sem outra mudança: quase toda a energia nova chega nas horas em que já sobrava e vira corte.",
-    mudanca: { solarPicoGw: 80 },
-  },
-];
+export function cenariosDia(idioma: Idioma = idiomaEnergia()): Cenario[] {
+  const tx = txEm(idioma);
+  return [
+    {
+      id: "partida",
+      rotulo: tx("Ponto de partida", "Starting point"),
+      explicacao: tx("Os valores iniciais: no meio do dia há corte pelas três razões.", "The initial values: in the middle of the day there are cuts for all three reasons."),
+      mudanca: {},
+    },
+    {
+      id: "transmissao",
+      rotulo: tx("Mais escoamento do Nordeste", "More transmission capacity out of the Northeast"),
+      explicacao: tx(
+        "O escoamento cresce 10 GW e o corte elétrico some, mas o total não cai: nessas horas o país inteiro já tinha sobra, e o corte passa a ser energético.",
+        "Transmission capacity grows by 10 GW and the electrical cut disappears, but the total does not fall: in those hours the whole country already had a surplus, and the cut becomes an energy cut.",
+      ),
+      mudanca: { escoamentoGw: 40 },
+    },
+    {
+      id: "bateria",
+      rotulo: tx("Bateria de 10 GW por 4 horas", "A 10 GW, 4-hour battery"),
+      explicacao: tx(
+        "40 GWh de armazenamento guardam parte da sobra do meio do dia e a devolvem à noite, no lugar de hidráulicas e térmicas. O corte cai, e 15% do que entra se perde no ciclo.",
+        "40 GWh of storage keep part of the midday surplus and return it at night, in place of hydropower and thermal plants. The cut falls, and 15% of what goes in is lost in the cycle.",
+      ),
+      mudanca: { bateriaGw: 10, bateriaGwh: 40 },
+    },
+    {
+      id: "domingo",
+      rotulo: tx("Domingo de demanda baixa", "Low-demand Sunday"),
+      explicacao: tx("A demanda cai 15%: o mesmo recurso sobra em mais horas e o corte energético cresce.", "Demand falls by 15%: the same resource is in surplus for more hours and the energy cut grows."),
+      mudanca: { demandaPicoGw: 81 },
+    },
+    {
+      id: "seguranca",
+      rotulo: tx("Mais máquinas síncronas exigidas", "More synchronous machines required"),
+      explicacao: tx(
+        "A exigência de máquinas síncronas sobe de 40% para 55% da demanda: a renovável cede o espaço e cresce o corte por confiabilidade.",
+        "The requirement for synchronous machines rises from 40% to 55% of demand: renewables give up the space and the reliability cut grows.",
+      ),
+      mudanca: { exigenciaSincronaPct: 55 },
+    },
+    {
+      id: "flexivel",
+      rotulo: tx("Hidráulicas e térmicas mais flexíveis", "More flexible hydropower and thermal plants"),
+      explicacao: tx(
+        "O mínimo técnico cai de 30 para 20 GW, mas a segurança ainda exige 40% da demanda em máquinas síncronas: o corte total não cai, só muda de razão.",
+        "The technical minimum falls from 30 to 20 GW, but security still requires 40% of demand from synchronous machines: the total cut does not fall, it only changes reason.",
+      ),
+      mudanca: { minimoSincronoGw: 20 },
+    },
+    {
+      id: "solar",
+      rotulo: tx("Mais 20 GW de solar", "20 GW more solar"),
+      explicacao: tx(
+        "A solar cresce 20 GW no pico sem outra mudança: quase toda a energia nova chega nas horas em que já sobrava e vira corte.",
+        "Solar grows by 20 GW at the peak with no other change: almost all the new energy arrives in the hours that already had a surplus and becomes curtailment.",
+      ),
+      mudanca: { solarPicoGw: 80 },
+    },
+  ];
+}
+
+/** Os cenários em português (o mesmo de cenariosDia("pt")); a mudança de cada um não depende do idioma. */
+export const CENARIOS_DIA: Cenario[] = cenariosDia("pt");
 
 /* ------------------------------------------------------------------ modelo didático: quem gera */
 
@@ -393,10 +428,10 @@ export function ufsContraEnergia(ufs: { chave: string; cativo_mwh: number | null
 }
 
 /** Encargo de serviços do sistema por restrição de operação constrained-off (CCEE), por mês, em R$ milhões, como publicado. */
-export function serieEssConstrainedOff(ess: { mes: string; ro_constrained_off?: number | null }[]) {
+export function serieEssConstrainedOff(ess: { mes: string; ro_constrained_off?: number | null }[], idioma: Idioma = idiomaEnergia()) {
   return ess.map((x) => ({
     mes: x.mes,
-    rotulo: mesAnoCurto(x.mes),
+    rotulo: mesAnoCurto(x.mes, idioma),
     valor: x.ro_constrained_off === null || x.ro_constrained_off === undefined ? null : x.ro_constrained_off / 1e6,
   }));
 }

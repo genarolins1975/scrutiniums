@@ -15,6 +15,8 @@
  */
 import { diaSerial, diferencaDatas, somarMeses, textoDuracao } from "@/lib/energia/calendario";
 import { dataBR, num, reais } from "@/lib/energia/formato";
+import { tx } from "@/lib/energia/idioma";
+import { DOWNLOADS_REGULACAO_EN, FASE_EN, MODALIDADE_EN, ORGAO_EN, PAINEIS_EN, PATAMAR_EN, TIPO_ATO_EN, rotuloDado } from "@/lib/energia/i18n/regulacao-dados-metodo";
 import { normalizarPeriodo, ordenarEventos, type BaseData, type EventoDatado } from "@/lib/energia/linha-do-tempo";
 import type { ColunaTabela, LinhaTabela } from "@/lib/energia/tabela";
 import {
@@ -56,10 +58,29 @@ export const ROTA_REGULACAO = "/setor-eletrico/regulacao";
 export type PainelRegulacao = { id: IdPainelRegulacao; codigo: string; rotulo: string; rota: string; pergunta: string };
 
 /** Um painel por página: juntos, os três passariam da meta de cerca de 600 KB de HTML (contrato, seção 5.1). */
+/* rótulo e pergunta são lidos na hora (getter), no idioma da página que os usa */
 export const PAINEIS_REGULACAO: PainelRegulacao[] = [
-  { id: "p044", codigo: "P044", rotulo: "Limites e regras de preço", rota: ROTA_REGULACAO, pergunta: "Que regra vale em cada período?" },
-  { id: "p045", codigo: "P045", rotulo: "Linha do tempo", rota: `${ROTA_REGULACAO}/linha-do-tempo`, pergunta: "Que regras mudaram e quando passaram a valer?" },
-  { id: "p046", codigo: "P046", rotulo: "Consultas e agenda", rota: `${ROTA_REGULACAO}/consultas-e-agenda`, pergunta: "Quais decisões da ANEEL estão abertas ou próximas?" },
+  {
+    id: "p044",
+    codigo: "P044",
+    get rotulo() { return tx("Limites e regras de preço", "Price limits and rules"); },
+    rota: ROTA_REGULACAO,
+    get pergunta() { return tx("Que regra vale em cada período?", "Which rule applies in each period?"); },
+  },
+  {
+    id: "p045",
+    codigo: "P045",
+    get rotulo() { return tx("Linha do tempo", "Timeline"); },
+    rota: `${ROTA_REGULACAO}/linha-do-tempo`,
+    get pergunta() { return tx("Que regras mudaram e quando passaram a valer?", "Which rules changed, and when did they take effect?"); },
+  },
+  {
+    id: "p046",
+    codigo: "P046",
+    get rotulo() { return tx("Consultas e agenda", "Consultations and agenda"); },
+    rota: `${ROTA_REGULACAO}/consultas-e-agenda`,
+    get pergunta() { return tx("Quais decisões da ANEEL estão abertas ou próximas?", "Which ANEEL decisions are open or coming up?"); },
+  },
 ];
 
 export function painel(id: IdPainelRegulacao): PainelRegulacao {
@@ -100,24 +121,25 @@ export function downloadsDoPainel(g: Pick<GoldRegulacao, "downloads">, id: IdPai
 
 export const CAMPOS_LIMITE: CampoLimite[] = ["pld_min", "pld_max_estrutural", "pld_max_horario"];
 
+/* nomes lidos na hora (getter), no idioma da página */
 export const NOME_LIMITE: Record<CampoLimite, string> = {
-  pld_min: "Piso (PLD mínimo)",
-  pld_max_estrutural: "Teto estrutural",
-  pld_max_horario: "Teto horário",
+  get pld_min() { return tx("Piso (PLD mínimo)", "Floor (minimum PLD)"); },
+  get pld_max_estrutural() { return tx("Teto estrutural", "Structural ceiling"); },
+  get pld_max_horario() { return tx("Teto horário", "Hourly ceiling"); },
 };
 
 /** O que cada limite limita (REN nº 1.032/2022, arts. 22 a 24, lidos pelo pipeline). */
 export const ALCANCE_LIMITE: Record<CampoLimite, string> = {
-  pld_min: "menor valor do PLD em qualquer hora",
-  pld_max_estrutural: "maior valor da média diária dos preços horários",
-  pld_max_horario: "maior valor do PLD numa hora",
+  get pld_min() { return tx("menor valor do PLD em qualquer hora", "lowest value of the PLD in any hour"); },
+  get pld_max_estrutural() { return tx("maior valor da média diária dos preços horários", "highest value of the daily average of hourly prices"); },
+  get pld_max_horario() { return tx("maior valor do PLD numa hora", "highest value of the PLD in one hour"); },
 };
 
 /** Nome com artigo, para frases ("o piso foi fixado ..."). */
 export const ARTIGO_LIMITE: Record<CampoLimite, string> = {
-  pld_min: "o piso",
-  pld_max_estrutural: "o teto estrutural",
-  pld_max_horario: "o teto horário",
+  get pld_min() { return tx("o piso", "the floor"); },
+  get pld_max_estrutural() { return tx("o teto estrutural", "the structural ceiling"); },
+  get pld_max_horario() { return tx("o teto horário", "the hourly ceiling"); },
 };
 
 /** Artigo que concorda com o tipo do ato: "a" (Resolução, Portaria, Lei...) ou "o" (Despacho, Decreto...). */
@@ -125,9 +147,9 @@ export function artigoAto(ato: string): "a" | "o" {
   return /^(Resolução|Retificação|Portaria|Lei|Medida|Nota|REH|REN|REA|RES)\b/i.test(ato) ? "a" : "o";
 }
 
-/** "pela Resolução ..." ou "pelo Despacho ...": concordância com o tipo do ato. */
+/** "pela Resolução ..." ou "pelo Despacho ...": concordância com o tipo do ato ("by ..." em inglês). */
 export function porAto(ato: string): string {
-  return artigoAto(ato) === "a" ? `pela ${ato}` : `pelo ${ato}`;
+  return tx(artigoAto(ato) === "a" ? `pela ${ato}` : `pelo ${ato}`, `by ${ato}`);
 }
 
 /**
@@ -135,14 +157,14 @@ export function porAto(ato: string): string {
  * separação ("41/2025 (RPO)"): o identificador não muda, só a pontuação em volta da sigla.
  */
 export function textoReuniao(r: string | null | undefined): string {
-  if (!r) return "sem identificação na ata";
+  if (!r) return tx("sem identificação na ata", "no identification in the minutes");
   return r.trim().replace(/^(\S+)\s+[-–—]\s+(\S+)$/, "$1 ($2)");
 }
 
 /** Uma cor por limite em toda a página (gráfico, comparação e faixa de métricas). Os dois tetos têm tons de famílias diferentes porque são objetos distintos. */
 export const COR_LIMITE: Record<CampoLimite, string> = {
   pld_min: "var(--serie-referencia)",
-  pld_max_estrutural: "var(--cor-energia)",
+  pld_max_estrutural: "var(--cor-energia)", // i18n: dado
   pld_max_horario: "var(--serie-3)",
 };
 
@@ -176,7 +198,9 @@ function atoPorNome(g: Pick<GoldRegulacao, "limites_pld">, nome: string | null):
 
 /** "com publicação no DOU em 23/12/2025" ou a ausência declarada; nunca a data de captura. */
 export function textoPublicacao(data: string | null): string {
-  return data ? `com publicação no DOU em ${dataBR(data)}` : "sem data de publicação no DOU conferida";
+  return data
+    ? tx(`com publicação no DOU em ${dataBR(data)}`, `published in the Official Gazette (DOU) on ${dataBR(data)}`)
+    : tx("sem data de publicação no DOU conferida", "with no checked publication date in the Official Gazette (DOU)");
 }
 
 /** O limite de um campo na data de referência: valor, ato que o fixou, publicação e vigência, cada um no seu campo. */
@@ -212,7 +236,9 @@ export function limitesVigentes(g: Pick<GoldRegulacao, "limites_pld" | "data_ref
  */
 export function textoVigenciaCurta(inicio: string, fim: string): string {
   const anoCheio = inicio.slice(5) === "01-01" && fim.slice(5) === "12-31" && inicio.slice(0, 4) === fim.slice(0, 4);
-  return anoCheio ? `vigência em ${inicio.slice(0, 4)}` : `vigência de ${dataBR(inicio)} a ${dataBR(fim)}`;
+  return anoCheio
+    ? tx(`vigência em ${inicio.slice(0, 4)}`, `in force in ${inicio.slice(0, 4)}`)
+    : tx(`vigência de ${dataBR(inicio)} a ${dataBR(fim)}`, `in force from ${dataBR(inicio)} to ${dataBR(fim)}`);
 }
 
 export type MarcoDoAto = { chave: "publicacao" | "inicio" | "fim"; rotulo: string; data: string | null; ausencia?: string };
@@ -224,15 +250,19 @@ export type MarcoDoAto = { chave: "publicacao" | "inicio" | "fim"; rotulo: strin
  */
 export function marcosDoAto(a: Pick<AtoLimite, "data_publicacao" | "vigencia_inicio" | "vigencia_fim">): MarcoDoAto[] {
   const datados: MarcoDoAto[] = [
-    { chave: "inicio", rotulo: "Início da vigência", data: a.vigencia_inicio },
-    { chave: "fim", rotulo: "Fim do intervalo registrado", data: a.vigencia_fim },
+    { chave: "inicio", rotulo: tx("Início da vigência", "Start of validity"), data: a.vigencia_inicio },
+    { chave: "fim", rotulo: tx("Fim do intervalo registrado", "End of the recorded interval"), data: a.vigencia_fim },
   ];
+  const rotuloPublicacao = tx("Publicação no Diário Oficial", "Publication in the Official Gazette");
   if (a.data_publicacao) {
-    datados.push({ chave: "publicacao", rotulo: "Publicação no Diário Oficial", data: a.data_publicacao });
+    datados.push({ chave: "publicacao", rotulo: rotuloPublicacao, data: a.data_publicacao });
     const peso = { publicacao: 0, inicio: 1, fim: 2 } as const;
     return datados.sort((x, y) => (x.data as string).localeCompare(y.data as string) || peso[x.chave] - peso[y.chave]);
   }
-  return [{ chave: "publicacao", rotulo: "Publicação no Diário Oficial", data: null, ausencia: "não conferida: o extrato do ato não está acessível" }, ...datados];
+  return [
+    { chave: "publicacao", rotulo: rotuloPublicacao, data: null, ausencia: tx("não conferida: o extrato do ato não está acessível", "not checked: the summary of the act is not accessible") },
+    ...datados,
+  ];
 }
 
 export type LinhaLimites = {
@@ -266,7 +296,7 @@ export function linhasLimites(g: Pick<GoldRegulacao, "limites_pld">): LinhaLimit
       return {
         id: doAno > 1 ? `${v.ano}:${v.inicio}` : String(v.ano),
         ano: v.ano,
-        rotulo: doAno > 1 ? `${v.ano} (desde ${dataBR(v.inicio)})` : String(v.ano),
+        rotulo: doAno > 1 ? tx(`${v.ano} (desde ${dataBR(v.inicio)})`, `${v.ano} (from ${dataBR(v.inicio)})`) : String(v.ano),
         inicio: v.inicio,
         fim: v.fim,
         pld_min: v.pld_min,
@@ -274,26 +304,27 @@ export function linhasLimites(g: Pick<GoldRegulacao, "limites_pld">): LinhaLimit
         pld_max_horario: v.pld_max_horario,
         ato_pld_min: v.ato_pld_min,
         publicacao_pld_min: atoPorNome(g, v.ato_pld_min)?.data_publicacao ?? null,
-        ato_tetos: atoTetos.length ? atoTetos.join(" e ") : null,
+        ato_tetos: atoTetos.length ? atoTetos.join(tx(" e ", " and ")) : null,
         publicacao_tetos: pubTetos.length === 1 ? pubTetos[0] : null,
       };
     });
 }
 
+/* rótulos de coluna lidos na hora (getter), no idioma da página */
 export const COLUNAS_LIMITES: ColunaTabela[] = [
-  { id: "rotulo", rotulo: "Ano", tipo: "texto" },
-  { id: "pld_min", rotulo: "Piso", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "pld_max_estrutural", rotulo: "Teto estrutural (média diária)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "pld_max_horario", rotulo: "Teto horário", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "inicio", rotulo: "Vigência: início", tipo: "data" },
-  { id: "fim", rotulo: "Vigência: fim", tipo: "data" },
-  { id: "ato_pld_min", rotulo: "Ato do piso", tipo: "texto" },
-  { id: "publicacao_pld_min", rotulo: "Publicação no DOU (piso)", tipo: "data" },
-  { id: "ato_tetos", rotulo: "Ato dos tetos", tipo: "texto" },
-  { id: "publicacao_tetos", rotulo: "Publicação no DOU (tetos)", tipo: "data" },
+  { id: "rotulo", get rotulo() { return tx("Ano", "Year"); }, tipo: "texto" },
+  { id: "pld_min", get rotulo() { return tx("Piso", "Floor"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "pld_max_estrutural", get rotulo() { return tx("Teto estrutural (média diária)", "Structural ceiling (daily average)"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "pld_max_horario", get rotulo() { return tx("Teto horário", "Hourly ceiling"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "inicio", get rotulo() { return tx("Vigência: início", "In force: start"); }, tipo: "data" },
+  { id: "fim", get rotulo() { return tx("Vigência: fim", "In force: end"); }, tipo: "data" },
+  { id: "ato_pld_min", get rotulo() { return tx("Ato do piso", "Act setting the floor"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "publicacao_pld_min", get rotulo() { return tx("Publicação no DOU (piso)", "Publication in the DOU (floor)"); }, tipo: "data" },
+  { id: "ato_tetos", get rotulo() { return tx("Ato dos tetos", "Act setting the ceilings"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "publicacao_tetos", get rotulo() { return tx("Publicação no DOU (tetos)", "Publication in the DOU (ceilings)"); }, tipo: "data" },
 ];
 
-export const SERIES_LIMITES = CAMPOS_LIMITE.map((c) => ({ id: c, rotulo: NOME_LIMITE[c], cor: COR_LIMITE[c] }));
+export const SERIES_LIMITES = CAMPOS_LIMITE.map((c) => ({ id: c, get rotulo() { return NOME_LIMITE[c]; }, cor: COR_LIMITE[c] }));
 
 /**
  * Resposta curta do P044 para um ano: os três limites, o ato de cada um, a publicação
@@ -301,12 +332,15 @@ export const SERIES_LIMITES = CAMPOS_LIMITE.map((c) => ({ id: c, rotulo: NOME_LI
  */
 export function respostaLimites(g: Pick<GoldRegulacao, "limites_pld">, ano: number): string {
   const vs = vigenciasDoAno(g, ano);
-  if (!vs.length) return `Não há ato de limites do PLD integrado para ${ano}: os limites desse ano ficam sem valor.`;
+  if (!vs.length) return tx(`Não há ato de limites do PLD integrado para ${ano}: os limites desse ano ficam sem valor.`, `No act setting PLD limits is integrated for ${ano}: the limits for that year have no value.`);
   const v = vs[vs.length - 1];
-  const val = (c: CampoLimite) => (v[c] === null ? "sem valor (nenhum ato em vigor fixa este limite)" : `${reais(v[c], 2)}/MWh`);
-  const frase1 =
+  const val = (c: CampoLimite) => (v[c] === null ? tx("sem valor (nenhum ato em vigor fixa este limite)", "no value (no act in force sets this limit)") : `${reais(v[c], 2)}/MWh`);
+  const frase1 = tx(
     `Em ${ano}, o PLD não pode ficar abaixo de ${val("pld_min")} em nenhuma hora (piso) nem passar de ${val("pld_max_horario")} numa hora (teto horário); ` +
-    `a média diária dos preços horários fica limitada a ${val("pld_max_estrutural")} (teto estrutural).`;
+      `a média diária dos preços horários fica limitada a ${val("pld_max_estrutural")} (teto estrutural).`,
+    `In ${ano}, the PLD cannot fall below ${val("pld_min")} in any hour (floor) or exceed ${val("pld_max_horario")} in one hour (hourly ceiling); ` +
+      `the daily average of hourly prices is capped at ${val("pld_max_estrutural")} (structural ceiling).`,
+  );
   const frase2 = textoAtosDoAno(g, ano);
   return frase2 ? `${frase1} ${frase2}` : frase1;
 }
@@ -327,12 +361,13 @@ export function textoAtosDoAno(g: Pick<GoldRegulacao, "limites_pld">, ano: numbe
   }
   const atos = Array.from(campoPorAto.entries()).map(([nome, campos], i) => {
     const a = atoPorNome(g, nome);
-    const quais = campos.length === 3 ? "os três limites" : campos.map((c) => ARTIGO_LIMITE[c]).join(" e ");
-    const texto = `${quais} ${campos.length > 1 ? "foram fixados" : "foi fixado"} ${porAto(nome)}, ${textoPublicacao(a?.data_publicacao ?? null)}`;
+    const quais = campos.length === 3 ? tx("os três limites", "all three limits") : campos.map((c) => ARTIGO_LIMITE[c]).join(tx(" e ", " and "));
+    const texto = `${quais} ${campos.length > 1 ? tx("foram fixados", "were set") : tx("foi fixado", "was set")} ${porAto(nome)}, ${textoPublicacao(a?.data_publicacao ?? null)}`;
     return i === 0 ? texto.charAt(0).toUpperCase() + texto.slice(1) : texto;
   });
-  const vig = vs.length > 1 ? vs.map((x) => `de ${dataBR(x.inicio)} a ${dataBR(x.fim)}`).join(" e ") : `de ${dataBR(v.inicio)} a ${dataBR(v.fim)}`;
-  return atos.length ? `${atos.join("; ")}; vigência ${vig}.` : "";
+  const deA = (x: { inicio: string; fim: string }) => tx(`de ${dataBR(x.inicio)} a ${dataBR(x.fim)}`, `from ${dataBR(x.inicio)} to ${dataBR(x.fim)}`);
+  const vig = vs.length > 1 ? vs.map(deA).join(tx(" e ", " and ")) : deA(v);
+  return atos.length ? tx(`${atos.join("; ")}; vigência ${vig}.`, `${atos.join("; ")}; in force ${vig}.`) : "";
 }
 
 /**
@@ -343,12 +378,30 @@ export function textoAtosDoAno(g: Pick<GoldRegulacao, "limites_pld">, ano: numbe
 export function respostaP044(g: Pick<GoldRegulacao, "limites_pld" | "data_referencia" | "limites_em_revisao">): string {
   const v = vigenteEm(g.limites_pld.vigencias, g.data_referencia);
   const anos = anosLimites(g);
-  const cobertura = anos.length ? ` A série integrada cobre ${anos[0]} a ${anos[anos.length - 1]}, com ${g.limites_pld.atos.length} atos lidos.` : "";
-  const rev = g.limites_em_revisao.length
-    ? ` ${g.limites_em_revisao.length} ${pl(g.limites_em_revisao.length, "atividade", "atividades")} da Agenda Regulatória ${pl(g.limites_em_revisao.length, "revisa", "revisam")} a metodologia dos limites (${g.limites_em_revisao.map((a) => `${a.codigo}, prevista para ${a.ano_previsto}`).join("; ")}).`
+  const nAtos = g.limites_pld.atos.length;
+  const cobertura = anos.length
+    ? tx(
+        ` A série integrada cobre ${anos[0]} a ${anos[anos.length - 1]}, com ${nAtos} atos lidos.`,
+        ` The integrated series covers ${anos[0]} to ${anos[anos.length - 1]}, with ${nAtos} ${nAtos === 1 ? "act" : "acts"} read.`,
+      )
     : "";
-  if (!v) return `Em ${dataBR(g.data_referencia)} não há ato de limites do PLD integrado em vigor: os limites ficam sem valor nesta data.${cobertura}${rev}`;
-  return `Em ${dataBR(g.data_referencia)}, ${respostaLimites(g, v.ano).replace(/^Em \d{4}, /, "")}${cobertura}${rev}`;
+  const nRev = g.limites_em_revisao.length;
+  const listaRev = g.limites_em_revisao.map((a) => tx(`${a.codigo}, prevista para ${a.ano_previsto}`, `${a.codigo}, planned for ${a.ano_previsto}`)).join("; ");
+  const rev = nRev
+    ? tx(
+        ` ${nRev} ${pl(nRev, "atividade", "atividades")} da Agenda Regulatória ${pl(nRev, "revisa", "revisam")} a metodologia dos limites (${listaRev}).`,
+        ` ${nRev} ${pl(nRev, "activity", "activities")} on the regulatory agenda ${pl(nRev, "reviews", "review")} the methodology of the limits (${listaRev}).`,
+      )
+    : "";
+  if (!v)
+    return tx(
+      `Em ${dataBR(g.data_referencia)} não há ato de limites do PLD integrado em vigor: os limites ficam sem valor nesta data.${cobertura}${rev}`,
+      `On ${dataBR(g.data_referencia)} no integrated act setting PLD limits is in force: the limits have no value on this date.${cobertura}${rev}`,
+    );
+  return tx(
+    `Em ${dataBR(g.data_referencia)}, ${respostaLimites(g, v.ano).replace(/^Em \d{4}, /, "")}${cobertura}${rev}`,
+    `On ${dataBR(g.data_referencia)}, ${respostaLimites(g, v.ano).replace(/^In \d{4}, /, "")}${cobertura}${rev}`,
+  );
 }
 
 /** "O que mudou": o ato mais recente e os valores do ano anterior ao lado dos atuais, sem conta. */
@@ -358,12 +411,18 @@ export function oQueMudouLimites(g: Pick<GoldRegulacao, "limites_pld">): string 
   const ls = linhasLimites(g);
   const atual = ls[ls.length - 1];
   const anterior = ls[ls.length - 2];
-  if (!ultimo || !atual) return "Nenhum ato de limites integrado.";
-  const fmt = (x: number | null) => (x === null ? "sem valor" : reais(x, 2));
+  if (!ultimo || !atual) return tx("Nenhum ato de limites integrado.", "No act setting limits is integrated.");
+  const fmt = (x: number | null) => (x === null ? tx("sem valor", "no value") : reais(x, 2));
   const comp = anterior
-    ? ` Em ${anterior.rotulo}, piso, teto estrutural e teto horário eram ${fmt(anterior.pld_min)}, ${fmt(anterior.pld_max_estrutural)} e ${fmt(anterior.pld_max_horario)}/MWh; em ${atual.rotulo}, ${fmt(atual.pld_min)}, ${fmt(atual.pld_max_estrutural)} e ${fmt(atual.pld_max_horario)}/MWh (nominais).`
+    ? tx(
+        ` Em ${anterior.rotulo}, piso, teto estrutural e teto horário eram ${fmt(anterior.pld_min)}, ${fmt(anterior.pld_max_estrutural)} e ${fmt(anterior.pld_max_horario)}/MWh; em ${atual.rotulo}, ${fmt(atual.pld_min)}, ${fmt(atual.pld_max_estrutural)} e ${fmt(atual.pld_max_horario)}/MWh (nominais).`,
+        ` In ${anterior.rotulo}, the floor, structural ceiling and hourly ceiling were ${fmt(anterior.pld_min)}, ${fmt(anterior.pld_max_estrutural)} and ${fmt(anterior.pld_max_horario)}/MWh; in ${atual.rotulo}, ${fmt(atual.pld_min)}, ${fmt(atual.pld_max_estrutural)} and ${fmt(atual.pld_max_horario)}/MWh (nominal).`,
+      )
     : "";
-  return `O ato mais recente é ${artigoAto(ultimo.ato)} ${ultimo.ato}, ${textoPublicacao(ultimo.data_publicacao)}, para a vigência de ${dataBR(ultimo.vigencia_inicio)} a ${dataBR(ultimo.vigencia_fim)}.${comp}`;
+  return tx(
+    `O ato mais recente é ${artigoAto(ultimo.ato)} ${ultimo.ato}, ${textoPublicacao(ultimo.data_publicacao)}, para a vigência de ${dataBR(ultimo.vigencia_inicio)} a ${dataBR(ultimo.vigencia_fim)}.${comp}`,
+    `The most recent act is ${ultimo.ato}, ${textoPublicacao(ultimo.data_publicacao)}, in force from ${dataBR(ultimo.vigencia_inicio)} to ${dataBR(ultimo.vigencia_fim)}.${comp}`,
+  );
 }
 
 /**
@@ -376,10 +435,19 @@ export function avisoToleranciaIpca(g: Pick<GoldRegulacao, "limites_pld" | "regr
   const tol = Array.from(new Set(det.filter((c) => c.conferencia === "regra_ipca" && c.tolerancia).map((c) => c.tolerancia)));
   const literal = det.some((c) => c.conferencia === "art23_literal");
   const partes: string[] = [];
-  if (tol.length) partes.push(`A conferência pelo IPCA aceita diferença de até ${tol.join(" ou ")} entre o teto publicado e o teto refeito.`);
+  if (tol.length)
+    partes.push(
+      tx(
+        `A conferência pelo IPCA aceita diferença de até ${tol.join(" ou ")} entre o teto publicado e o teto refeito.`,
+        `The IPCA check accepts a difference of up to ${tol.join(" or ")} between the published ceiling and the recomputed ceiling.`,
+      ),
+    );
   if (literal)
     partes.push(
-      `A aplicação literal do art. 23, § 1º${g.regras_limites ? `, da ${abreviarAto(g.regras_limites.ato)}` : ""}, aparece só como conferência informativa, porque não reproduz os valores publicados.`,
+      tx(
+        `A aplicação literal do art. 23, § 1º${g.regras_limites ? `, da ${abreviarAto(g.regras_limites.ato)}` : ""}, aparece só como conferência informativa, porque não reproduz os valores publicados.`,
+        `The literal application of art. 23, § 1º${g.regras_limites ? `, of ${abreviarAto(g.regras_limites.ato)}` : ""}, appears only as an informative check, as it does not reproduce the published values.`,
+      ),
     );
   return partes.length ? partes.join(" ") : null;
 }
@@ -398,47 +466,53 @@ export function linhasAtos(g: Pick<GoldRegulacao, "limites_pld">): LinhaTabela[]
     pld_max_estrutural: a.pld_max_estrutural,
     pld_max_horario: a.pld_max_horario,
     dispositivo: a.dispositivo,
-    nivel: a.nivel_conferencia === "texto_do_ato" ? "texto do ato" : a.nivel_conferencia === "documento_oficial_do_processo" ? "documento oficial do processo" : null,
+    nivel:
+      a.nivel_conferencia === "texto_do_ato"
+        ? tx("texto do ato", "text of the act")
+        : a.nivel_conferencia === "documento_oficial_do_processo"
+          ? tx("documento oficial do processo", "official document of the proceeding")
+          : null,
     documento: a.documento_titulo ?? a.documento,
     pagina: a.pagina,
-    trecho_confere: a.trecho_confere === null ? null : a.trecho_confere ? "sim" : "não",
+    trecho_confere: a.trecho_confere === null ? null : a.trecho_confere ? tx("sim", "yes") : tx("não", "no"),
     sha256: a.sha256,
   }));
 }
 
+/* rótulos lidos na hora (getter), no idioma da página */
 export const COLUNAS_ATOS: ColunaTabela[] = [
-  { id: "ano", rotulo: "Ano", tipo: "texto", categorica: true },
-  { id: "ato", rotulo: "Ato", tipo: "texto" },
-  { id: "data_do_ato", rotulo: "Data do ato", tipo: "data" },
-  { id: "data_publicacao", rotulo: "Publicação no DOU", tipo: "data" },
-  { id: "vigencia_inicio", rotulo: "Vigência: início", tipo: "data" },
-  { id: "vigencia_fim", rotulo: "Vigência: fim", tipo: "data" },
-  { id: "pld_min", rotulo: "Piso", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "pld_max_estrutural", rotulo: "Teto estrutural", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "pld_max_horario", rotulo: "Teto horário", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "dispositivo", rotulo: "Dispositivo", tipo: "texto" },
-  { id: "nivel", rotulo: "Onde o valor foi lido", tipo: "texto", categorica: true },
-  { id: "documento", rotulo: "Documento", tipo: "texto" },
-  { id: "pagina", rotulo: "Página do PDF", tipo: "numero", casas: 0 },
-  { id: "trecho_confere", rotulo: "Trecho encontrado no PDF", tipo: "texto", categorica: true },
-  { id: "sha256", rotulo: "sha256 do PDF", tipo: "texto" },
+  { id: "ano", get rotulo() { return tx("Ano", "Year"); }, tipo: "texto", categorica: true }, // i18n: dado
+  { id: "ato", get rotulo() { return tx("Ato", "Act"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "data_do_ato", get rotulo() { return tx("Data do ato", "Date of the act"); }, tipo: "data" },
+  { id: "data_publicacao", get rotulo() { return tx("Publicação no DOU", "Publication in the DOU"); }, tipo: "data" },
+  { id: "vigencia_inicio", get rotulo() { return tx("Vigência: início", "In force: start"); }, tipo: "data" },
+  { id: "vigencia_fim", get rotulo() { return tx("Vigência: fim", "In force: end"); }, tipo: "data" },
+  { id: "pld_min", get rotulo() { return tx("Piso", "Floor"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "pld_max_estrutural", get rotulo() { return tx("Teto estrutural", "Structural ceiling"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "pld_max_horario", get rotulo() { return tx("Teto horário", "Hourly ceiling"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "dispositivo", get rotulo() { return tx("Dispositivo", "Provision"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "nivel", get rotulo() { return tx("Onde o valor foi lido", "Where the value was read"); }, tipo: "texto", categorica: true },
+  { id: "documento", get rotulo() { return tx("Documento", "Document"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "pagina", get rotulo() { return tx("Página do PDF", "PDF page"); }, tipo: "numero", casas: 0 },
+  { id: "trecho_confere", get rotulo() { return tx("Trecho encontrado no PDF", "Passage found in the PDF"); }, tipo: "texto", categorica: true },
+  { id: "sha256", get rotulo() { return tx("sha256 do PDF", "PDF sha256"); }, tipo: "texto", idiomaTexto: "nome" },
 ];
 
 export const ROTULO_CONFERENCIA: Record<string, string> = {
-  trecho_no_pdf: "Trecho literal no PDF",
-  publicacao_no_extrato: "Data do DOU no extrato",
-  deliberacao_na_ata: "Deliberação na ata da Diretoria",
-  valor_na_ata: "Valor escrito na ata",
-  piso_teo: "Piso igual ao maior entre TEO e TEO de Itaipu",
-  regra_ipca: "Teto do ano anterior encadeado pelo IPCA de novembro",
-  art23_literal: "Aplicação literal do art. 23, § 1º (informativa)",
+  get trecho_no_pdf() { return tx("Trecho literal no PDF", "Literal passage in the PDF"); },
+  get publicacao_no_extrato() { return tx("Data do DOU no extrato", "DOU date in the summary"); },
+  get deliberacao_na_ata() { return tx("Deliberação na ata da Diretoria", "Decision in the Board minutes"); },
+  get valor_na_ata() { return tx("Valor escrito na ata", "Value written in the minutes"); },
+  get piso_teo() { return tx("Piso igual ao maior entre TEO e TEO de Itaipu", "Floor equal to the higher of the TEO and the Itaipu TEO"); },
+  get regra_ipca() { return tx("Teto do ano anterior encadeado pelo IPCA de novembro", "Previous year's ceiling chained by November IPCA"); },
+  get art23_literal() { return tx("Aplicação literal do art. 23, § 1º (informativa)", "Literal application of art. 23, § 1º (informative)"); },
 };
 
 export const ROTULO_RESULTADO_CONFERENCIA: Record<string, string> = {
-  aprovado: "aprovado",
-  ressalva: "ressalva",
-  reprovado: "reprovado",
-  nao_executada: "não executada",
+  get aprovado() { return tx("aprovado", "passed"); },
+  get ressalva() { return tx("ressalva", "caveat"); },
+  get reprovado() { return tx("reprovado", "failed"); },
+  get nao_executada() { return tx("não executada", "not run"); },
 };
 
 /** Contagem das conferências por tipo, na ordem de ROTULO_CONFERENCIA (linhas da tabela do modo Auditar). */
@@ -452,11 +526,11 @@ export function linhasContagemConferencias(g: Pick<GoldRegulacao, "limites_pld">
 }
 
 export const COLUNAS_CONTAGEM_CONFERENCIAS: ColunaTabela[] = [
-  { id: "conferencia", rotulo: "Conferência", tipo: "texto" },
-  { id: "aprovado", rotulo: "Aprovadas", tipo: "numero", casas: 0 },
-  { id: "ressalva", rotulo: "Com ressalva", tipo: "numero", casas: 0 },
-  { id: "reprovado", rotulo: "Reprovadas", tipo: "numero", casas: 0 },
-  { id: "nao_executada", rotulo: "Não executadas", tipo: "numero", casas: 0 },
+  { id: "conferencia", get rotulo() { return tx("Conferência", "Check"); }, tipo: "texto" },
+  { id: "aprovado", get rotulo() { return tx("Aprovadas", "Passed"); }, tipo: "numero", casas: 0 },
+  { id: "ressalva", get rotulo() { return tx("Com ressalva", "With caveat"); }, tipo: "numero", casas: 0 },
+  { id: "reprovado", get rotulo() { return tx("Reprovadas", "Failed"); }, tipo: "numero", casas: 0 },
+  { id: "nao_executada", get rotulo() { return tx("Não executadas", "Not run"); }, tipo: "numero", casas: 0 },
 ];
 
 export function linhasConferenciasDetalhe(g: Pick<GoldRegulacao, "limites_pld">): LinhaTabela[] {
@@ -476,16 +550,16 @@ export function linhasConferenciasDetalhe(g: Pick<GoldRegulacao, "limites_pld">)
 }
 
 export const COLUNAS_CONFERENCIAS_DETALHE: ColunaTabela[] = [
-  { id: "conferencia", rotulo: "Conferência", tipo: "texto", categorica: true },
-  { id: "ano", rotulo: "Ano", tipo: "texto", categorica: true },
-  { id: "ato", rotulo: "Ato", tipo: "texto" },
-  { id: "campo", rotulo: "Campo", tipo: "texto", categorica: true },
-  { id: "valor_ato", rotulo: "Valor no ato", tipo: "numero", unidade: "R$/MWh", casas: 4 },
-  { id: "valor_esperado", rotulo: "Valor esperado", tipo: "numero", unidade: "R$/MWh", casas: 4 },
-  { id: "diferenca", rotulo: "Diferença (ato menos esperado)", tipo: "numero", unidade: "R$/MWh", casas: 4 },
-  { id: "tolerancia", rotulo: "Tolerância", tipo: "texto" },
-  { id: "resultado", rotulo: "Resultado", tipo: "texto", categorica: true },
-  { id: "detalhe", rotulo: "Detalhe", tipo: "texto" },
+  { id: "conferencia", get rotulo() { return tx("Conferência", "Check"); }, tipo: "texto", categorica: true },
+  { id: "ano", get rotulo() { return tx("Ano", "Year"); }, tipo: "texto", categorica: true }, // i18n: dado
+  { id: "ato", get rotulo() { return tx("Ato", "Act"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "campo", get rotulo() { return tx("Campo", "Field"); }, tipo: "texto", categorica: true },
+  { id: "valor_ato", get rotulo() { return tx("Valor no ato", "Value in the act"); }, tipo: "numero", unidade: "R$/MWh", casas: 4 },
+  { id: "valor_esperado", get rotulo() { return tx("Valor esperado", "Expected value"); }, tipo: "numero", unidade: "R$/MWh", casas: 4 },
+  { id: "diferenca", get rotulo() { return tx("Diferença (ato menos esperado)", "Difference (act minus expected)"); }, tipo: "numero", unidade: "R$/MWh", casas: 4 },
+  { id: "tolerancia", get rotulo() { return tx("Tolerância", "Tolerance"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "resultado", get rotulo() { return tx("Resultado", "Result"); }, tipo: "texto", categorica: true },
+  { id: "detalhe", get rotulo() { return tx("Detalhe", "Detail"); }, tipo: "texto", idiomaTexto: "portugues" },
 ];
 
 /**
@@ -500,14 +574,20 @@ export function paresRegraIpca(g: Pick<GoldRegulacao, "limites_pld">): { id: str
   return conferencias.map((c) => {
     const chave = `${c.ano}:${c.campo}`;
     const repetido = (vezes.get(chave) ?? 0) > 1;
-    const ato = c.ato ? abreviarAto(c.ato) : "ato não identificado";
-    const nome = `${c.ano}, ${ARTIGO_LIMITE[c.campo as CampoLimite]?.replace(/^o /, "") ?? c.campo}`;
+    const semAto = tx("ato não identificado", "act not identified");
+    const ato = c.ato ? abreviarAto(c.ato) : semAto;
+    const limite = ARTIGO_LIMITE[c.campo as CampoLimite]?.replace(/^(?:o|the) /, "") ?? c.campo;
+    // em inglês sem vírgula ("2023 hourly ceiling"): o rótulo cortado no gráfico mostra o mesmo trecho do ato que o português
+    const nome = tx(`${c.ano}, ${limite}`, `${c.ano} ${limite}`);
     return {
       id: repetido ? `${chave}:${c.ato ?? "sem-ato"}` : chave,
       rotulo: repetido ? `${nome} (${ato})` : nome,
       valor: c.valor_ato,
       referencia: c.valor_esperado,
-      detalhe: `${c.ato ?? "ato não identificado"}; tolerância ${c.tolerancia}; ${ROTULO_RESULTADO_CONFERENCIA[c.resultado] ?? c.resultado}`,
+      detalhe: tx(
+        `${c.ato ?? semAto}; tolerância ${c.tolerancia}; ${ROTULO_RESULTADO_CONFERENCIA[c.resultado] ?? c.resultado}`,
+        `${c.ato ?? semAto}; tolerance ${c.tolerancia}; ${ROTULO_RESULTADO_CONFERENCIA[c.resultado] ?? c.resultado}`,
+      ),
     };
   });
 }
@@ -515,30 +595,33 @@ export function paresRegraIpca(g: Pick<GoldRegulacao, "limites_pld">): { id: str
 /* ---------------------------------------------------------------- P044: bandeiras */
 
 export const ROTULO_ORIGEM_FIM: Record<string, string> = {
-  valor_seguinte: "véspera do valor seguinte do mesmo patamar",
-  ultimo_acionamento: "último mês com acionamento (patamar extinto)",
-  acionamento_diverge: "último mês coerente antes de valor diferente no recurso Acionamento",
+  get valor_seguinte() { return tx("véspera do valor seguinte do mesmo patamar", "day before the next value of the same level"); },
+  get ultimo_acionamento() { return tx("último mês com acionamento (patamar extinto)", "last month with activation (level discontinued)"); },
+  get acionamento_diverge() { return tx("último mês coerente antes de valor diferente no recurso Acionamento", "last consistent month before a different value in the Acionamento resource"); },
 };
 
 /** Fim da vigência de um adicional em texto, na precisão da fonte (dia, mês ou sem fim). */
 export function textoFimBandeira(v: Pick<VigenciaBandeira, "vigencia_fim" | "vigencia_fim_mes" | "vigencia_fim_grao">): string {
   if (v.vigencia_fim_grao === "dia" && v.vigencia_fim) return dataBR(v.vigencia_fim);
-  if (v.vigencia_fim_grao === "mes" && v.vigencia_fim_mes) return `${dataBR(v.vigencia_fim_mes)} (só o mês é conhecido)`;
-  return "sem fim (vigente ou sem valor posterior na fonte)";
+  if (v.vigencia_fim_grao === "mes" && v.vigencia_fim_mes) return tx(`${dataBR(v.vigencia_fim_mes)} (só o mês é conhecido)`, `${dataBR(v.vigencia_fim_mes)} (only the month is known)`);
+  return tx("sem fim (vigente ou sem valor posterior na fonte)", "no end (in force or no later value in the source)");
 }
 
 /** Contagem da conferência mês a mês dos adicionais com o recurso Acionamento, com a concordância de cada parte. */
 export function textoConferenciaAcionamento(c: GoldRegulacao["bandeiras"]["conferencia_acionamento"]): string {
-  return (
+  return tx(
     `${c.meses_conferidos} ${pl(c.meses_conferidos, "mês acionado conferido", "meses acionados conferidos")}: ` +
-    `${c.meses_coerentes} ${pl(c.meses_coerentes, "coerente", "coerentes")}, ${c.meses_divergentes} com outro valor, ` +
-    `${c.meses_parciais} ${pl(c.meses_parciais, "parcial", "parciais")} e ${c.meses_sem_vigencia} sem resolução no recurso de adicionais.`
+      `${c.meses_coerentes} ${pl(c.meses_coerentes, "coerente", "coerentes")}, ${c.meses_divergentes} com outro valor, ` +
+      `${c.meses_parciais} ${pl(c.meses_parciais, "parcial", "parciais")} e ${c.meses_sem_vigencia} sem resolução no recurso de adicionais.`,
+    `${c.meses_conferidos} ${pl(c.meses_conferidos, "activated month checked", "activated months checked")}: ` +
+      `${c.meses_coerentes} consistent, ${c.meses_divergentes} with another value, ` +
+      `${c.meses_parciais} partial and ${c.meses_sem_vigencia} with no resolution in the surcharge resource.`,
   );
 }
 
 /** Uma linha por (ato, patamar), ordenada por patamar e início: gráfico de barras, tabela e exportação. */
 export function linhasBandeiras(g: Pick<GoldRegulacao, "bandeiras">): LinhaTabela[] {
-  const ordem = ["Amarela", "Vermelha P1", "Vermelha P2", "Escassez Hídrica"];
+  const ordem = ["Amarela", "Vermelha P1", "Vermelha P2", "Escassez Hídrica"]; // i18n: dado
   const pos = (p: string) => (ordem.includes(p) ? ordem.indexOf(p) : ordem.length);
   return g.bandeiras.vigencias
     .slice()
@@ -546,43 +629,45 @@ export function linhasBandeiras(g: Pick<GoldRegulacao, "bandeiras">): LinhaTabel
     .map((v) => ({
       id: `${v.patamar}:${v.vigencia_inicio}`,
       // rótulo curto para a coluna do gráfico (o ato e a vigência completa estão nas colunas da tabela)
-      rotulo: `${v.patamar}, desde ${dataBR(v.vigencia_inicio)}`,
-      patamar: v.patamar,
+      rotulo: tx(`${v.patamar}, desde ${dataBR(v.vigencia_inicio)}`, `${rotuloDado(PATAMAR_EN, v.patamar)}, from ${dataBR(v.vigencia_inicio)}`),
+      patamar: rotuloDado(PATAMAR_EN, v.patamar),
       ato: v.ato,
       rs_mwh: v.rs_mwh,
       vigencia_inicio: v.vigencia_inicio,
       vigencia_fim: textoFimBandeira(v),
-      origem_fim: v.vigencia_fim_origem ? (ROTULO_ORIGEM_FIM[v.vigencia_fim_origem] ?? v.vigencia_fim_origem) : "sem fim (nenhum valor posterior na fonte)",
+      origem_fim: v.vigencia_fim_origem ? (ROTULO_ORIGEM_FIM[v.vigencia_fim_origem] ?? v.vigencia_fim_origem) : tx("sem fim (nenhum valor posterior na fonte)", "no end (no later value in the source)"),
       fim_pelo_adicional: v.fim_pelo_recurso_adicional && v.vigencia_fim_origem === "acionamento_diverge" ? v.fim_pelo_recurso_adicional : null,
       meses_conferidos: v.conferencia_acionamento?.meses_conferidos ?? null,
-      meses_divergentes: v.conferencia_acionamento?.meses_divergentes.length ? v.conferencia_acionamento.meses_divergentes.map((m) => `${dataBR(m.competencia)}: ${m.rs_mwh === null ? "sem valor" : `${reais(m.rs_mwh)}/MWh`}`).join("; ") : null,
+      meses_divergentes: v.conferencia_acionamento?.meses_divergentes.length
+        ? v.conferencia_acionamento.meses_divergentes.map((m) => `${dataBR(m.competencia)}: ${m.rs_mwh === null ? tx("sem valor", "no value") : `${reais(m.rs_mwh)}/MWh`}`).join("; ")
+        : null,
     }));
 }
 
 export const COLUNAS_BANDEIRAS: ColunaTabela[] = [
-  { id: "patamar", rotulo: "Patamar", tipo: "texto", categorica: true },
-  { id: "ato", rotulo: "Resolução", tipo: "texto" },
-  { id: "rs_mwh", rotulo: "Adicional", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "vigencia_inicio", rotulo: "Vigência: início", tipo: "data" },
-  { id: "vigencia_fim", rotulo: "Vigência: fim", tipo: "texto" },
-  { id: "origem_fim", rotulo: "Como o fim foi determinado", tipo: "texto", categorica: true },
-  { id: "fim_pelo_adicional", rotulo: "Fim que o recurso Adicional sozinho daria", tipo: "data" },
-  { id: "meses_conferidos", rotulo: "Meses acionados conferidos", tipo: "numero", casas: 0 },
-  { id: "meses_divergentes", rotulo: "Meses com outro valor no Acionamento", tipo: "texto" },
+  { id: "patamar", get rotulo() { return tx("Patamar", "Level"); }, tipo: "texto", categorica: true },
+  { id: "ato", get rotulo() { return tx("Resolução", "Resolution"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "rs_mwh", get rotulo() { return tx("Adicional", "Surcharge"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "vigencia_inicio", get rotulo() { return tx("Vigência: início", "In force: start"); }, tipo: "data" },
+  { id: "vigencia_fim", get rotulo() { return tx("Vigência: fim", "In force: end"); }, tipo: "texto" },
+  { id: "origem_fim", get rotulo() { return tx("Como o fim foi determinado", "How the end was determined"); }, tipo: "texto", categorica: true },
+  { id: "fim_pelo_adicional", get rotulo() { return tx("Fim que o recurso Adicional sozinho daria", "End the Adicional resource alone would give"); }, tipo: "data" },
+  { id: "meses_conferidos", get rotulo() { return tx("Meses acionados conferidos", "Activated months checked"); }, tipo: "numero", casas: 0 },
+  { id: "meses_divergentes", get rotulo() { return tx("Meses com outro valor no Acionamento", "Months with another value in Acionamento"); }, tipo: "texto" },
 ];
 
 /* ---------------------------------------------------------------- P044: procedimentos */
 
 export const ROTULO_CONF_PROCEDIMENTO: Record<string, string> = {
-  confirmada_por_ato_integrado: "Confirmada por ato integrado",
-  sem_conferencia_externa: "Sem conferência externa",
-  pagina_possivelmente_desatualizada: "Página possivelmente desatualizada",
+  get confirmada_por_ato_integrado() { return tx("Confirmada por ato integrado", "Confirmed by an integrated act"); },
+  get sem_conferencia_externa() { return tx("Sem conferência externa", "No external check"); },
+  get pagina_possivelmente_desatualizada() { return tx("Página possivelmente desatualizada", "Page possibly out of date"); },
 };
 
 export const ROTULO_CONF_VERSAO: Record<string, string> = {
-  confere: "versão confere com o ato",
-  diverge: "versão da página diverge do ato",
-  ato_lido_nao_cita_o_item: "ato lido não cita o item",
+  get confere() { return tx("versão confere com o ato", "version matches the act"); },
+  get diverge() { return tx("versão da página diverge do ato", "page version differs from the act"); },
+  get ato_lido_nao_cita_o_item() { return tx("ato lido não cita o item", "act read does not cite the item"); },
 };
 
 export function linhasProcedimentos(itens: readonly Procedimento[]): LinhaTabela[] {
@@ -596,10 +681,21 @@ export function linhasProcedimentos(itens: readonly Procedimento[]): LinhaTabela
     data_ato_na_pagina: p.data_ato_na_pagina,
     conferencia: ROTULO_CONF_PROCEDIMENTO[p.conferencia] ?? p.conferencia,
     ato_vigente: p.ato_vigente,
-    conferencia_versao: p.conferencia_versao ? (ROTULO_CONF_VERSAO[p.conferencia_versao] ?? p.conferencia_versao) : "ato não escreve a versão ou não foi lido",
+    conferencia_versao: p.conferencia_versao
+      ? (ROTULO_CONF_VERSAO[p.conferencia_versao] ?? p.conferencia_versao)
+      : tx("ato não escreve a versão ou não foi lido", "act does not write the version or was not read"),
     versao_no_ato: p.versao_no_ato,
     atos_posteriores: p.atos_posteriores.length
-      ? Array.from(new Set(p.atos_posteriores.map((a) => `${a.ato ?? `${a.ato_na_fonte ?? "ato"} (número suspeito, não exibido como ato)`} em ${dataBR(a.data)}`))).join("; ")
+      ? Array.from(
+          new Set(
+            p.atos_posteriores.map((a) =>
+              tx(
+                `${a.ato ?? `${a.ato_na_fonte ?? "ato"} (número suspeito, não exibido como ato)`} em ${dataBR(a.data)}`,
+                `${a.ato ?? `${a.ato_na_fonte ?? "act"} (suspect number, not shown as an act)`} on ${dataBR(a.data)}`,
+              ),
+            ),
+          ),
+        ).join("; ")
       : null,
     ressalvas: p.ressalvas.length ? p.ressalvas.join(" ") : null,
     observacao: p.observacao,
@@ -607,19 +703,19 @@ export function linhasProcedimentos(itens: readonly Procedimento[]): LinhaTabela
 }
 
 export const COLUNAS_PROCEDIMENTOS: ColunaTabela[] = [
-  { id: "conjunto", rotulo: "Conjunto", tipo: "texto", categorica: true },
-  { id: "modulo", rotulo: "Módulo", tipo: "texto" },
-  { id: "titulo", rotulo: "Título", tipo: "texto" },
-  { id: "versao_na_pagina", rotulo: "Versão na página oficial", tipo: "texto" },
-  { id: "ato_na_pagina", rotulo: "Ato na página oficial", tipo: "texto" },
-  { id: "data_ato_na_pagina", rotulo: "Data do ato da página", tipo: "data" },
-  { id: "conferencia", rotulo: "Conferência", tipo: "texto", categorica: true },
-  { id: "ato_vigente", rotulo: "Ato vigente confirmado", tipo: "texto" },
-  { id: "conferencia_versao", rotulo: "Versão contra o ato", tipo: "texto", categorica: true },
-  { id: "versao_no_ato", rotulo: "Versão escrita no ato", tipo: "texto" },
-  { id: "atos_posteriores", rotulo: "Atos posteriores sobre o módulo", tipo: "texto" },
-  { id: "ressalvas", rotulo: "Ressalvas", tipo: "texto" },
-  { id: "observacao", rotulo: "Observação da página", tipo: "texto" },
+  { id: "conjunto", get rotulo() { return tx("Conjunto", "Set"); }, tipo: "texto", categorica: true },
+  { id: "modulo", get rotulo() { return tx("Módulo", "Module"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "titulo", get rotulo() { return tx("Título", "Title"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "versao_na_pagina", get rotulo() { return tx("Versão na página oficial", "Version on the official page"); }, tipo: "texto" },
+  { id: "ato_na_pagina", get rotulo() { return tx("Ato na página oficial", "Act on the official page"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "data_ato_na_pagina", get rotulo() { return tx("Data do ato da página", "Date of the page's act"); }, tipo: "data" },
+  { id: "conferencia", get rotulo() { return tx("Conferência", "Check"); }, tipo: "texto", categorica: true },
+  { id: "ato_vigente", get rotulo() { return tx("Ato vigente confirmado", "Confirmed act in force"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "conferencia_versao", get rotulo() { return tx("Versão contra o ato", "Version against the act"); }, tipo: "texto", categorica: true },
+  { id: "versao_no_ato", get rotulo() { return tx("Versão escrita no ato", "Version written in the act"); }, tipo: "texto" },
+  { id: "atos_posteriores", get rotulo() { return tx("Atos posteriores sobre o módulo", "Later acts on the module"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "ressalvas", get rotulo() { return tx("Ressalvas", "Caveats"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "observacao", get rotulo() { return tx("Observação da página", "Note on the page"); }, tipo: "texto", idiomaTexto: "portugues" },
 ];
 
 /** Contagem por conjunto e conferência (barras empilhadas: as três partes somam o total do conjunto). */
@@ -640,9 +736,9 @@ export function contagemProcedimentos(itens: readonly Procedimento[]): LinhaTabe
 }
 
 export const SERIES_PROCEDIMENTOS = [
-  { id: "confirmada_por_ato_integrado", rotulo: ROTULO_CONF_PROCEDIMENTO.confirmada_por_ato_integrado, cor: "var(--cor-energia)" },
-  { id: "sem_conferencia_externa", rotulo: ROTULO_CONF_PROCEDIMENTO.sem_conferencia_externa, cor: "var(--serie-referencia)" },
-  { id: "pagina_possivelmente_desatualizada", rotulo: ROTULO_CONF_PROCEDIMENTO.pagina_possivelmente_desatualizada, cor: "var(--cor-erro)" },
+  { id: "confirmada_por_ato_integrado", get rotulo() { return ROTULO_CONF_PROCEDIMENTO.confirmada_por_ato_integrado; }, cor: "var(--cor-energia)" }, // i18n: dado
+  { id: "sem_conferencia_externa", get rotulo() { return ROTULO_CONF_PROCEDIMENTO.sem_conferencia_externa; }, cor: "var(--serie-referencia)" },
+  { id: "pagina_possivelmente_desatualizada", get rotulo() { return ROTULO_CONF_PROCEDIMENTO.pagina_possivelmente_desatualizada; }, cor: "var(--cor-erro)" },
 ];
 
 export function respostaProcedimentos(p: GoldRegulacao["procedimentos"]): string {
@@ -650,11 +746,15 @@ export function respostaProcedimentos(p: GoldRegulacao["procedimentos"]): string
   const v = p.contagem_versao;
   const total = p.itens.length;
   const desat = p.itens.filter((i) => i.conferencia === "pagina_possivelmente_desatualizada").map((i) => `${i.conjunto} ${i.modulo}`);
-  return (
+  return tx(
     `Das ${total} versões que as páginas oficiais do PRODIST e do PRORET publicam como vigentes, ${c.confirmada_por_ato_integrado} foram confirmadas por ato lido ou deliberado, ` +
-    `${c.sem_conferencia_externa} não têm ato integrado que permita conferir e ${c.pagina_possivelmente_desatualizada} têm ato posterior que aprova nova versão` +
-    (desat.length ? ` (${desat.join(", ")}): nesses, a versão vigente não é conhecida` : "") +
-    `. Onde o próprio ato escreve a versão, ${v.confere} conferem e ${v.diverge} divergem da página.`
+      `${c.sem_conferencia_externa} não têm ato integrado que permita conferir e ${c.pagina_possivelmente_desatualizada} têm ato posterior que aprova nova versão` +
+      (desat.length ? ` (${desat.join(", ")}): nesses, a versão vigente não é conhecida` : "") +
+      `. Onde o próprio ato escreve a versão, ${v.confere} conferem e ${v.diverge} divergem da página.`,
+    `Of the ${total} versions that the official PRODIST and PRORET pages publish as in force, ${c.confirmada_por_ato_integrado} were confirmed by an act read or decided, ` +
+      `${c.sem_conferencia_externa} have no integrated act that allows a check and ${c.pagina_possivelmente_desatualizada} have a later act approving a new version` +
+      (desat.length ? ` (${desat.join(", ")}): for these, the version in force is not known` : "") +
+      `. Where the act itself writes the version, ${v.confere} match and ${v.diverge} differ from the page.`,
   );
 }
 
@@ -663,17 +763,26 @@ export function respostaProcedimentos(p: GoldRegulacao["procedimentos"]): string
 export type OrigemEvento = "ato" | "registro";
 
 export const ROTULO_ORIGEM_EVENTO: Record<OrigemEvento, string> = {
-  ato: "Atos e leis lidos no texto",
-  registro: "Registros do conjunto de dados de bandeiras",
+  get ato() { return tx("Atos e leis lidos no texto", "Acts and laws read in full text"); },
+  get registro() { return tx("Registros do conjunto de dados de bandeiras", "Records from the tariff flag dataset"); },
 };
 
 export const ROTULO_NIVEL_EVENTO: Record<string, string> = {
-  texto_do_ato: "lido no texto do ato",
-  documento_oficial_do_processo: "lido em documento oficial do processo",
-  documento_oficial_que_cita_o_ato: "citado por documento oficial (texto do ato não lido)",
-  ata_da_diretoria: "lido na ata da Diretoria",
-  registro_em_conjunto_de_dados_oficial: "registro em conjunto de dados oficial (ato não lido)",
+  get texto_do_ato() { return tx("lido no texto do ato", "read in the text of the act"); },
+  get documento_oficial_do_processo() { return tx("lido em documento oficial do processo", "read in an official document of the proceeding"); },
+  get documento_oficial_que_cita_o_ato() { return tx("citado por documento oficial (texto do ato não lido)", "cited by an official document (text of the act not read)"); },
+  get ata_da_diretoria() { return tx("lido na ata da Diretoria", "read in the Board minutes"); },
+  get registro_em_conjunto_de_dados_oficial() { return tx("registro em conjunto de dados oficial (ato não lido)", "record in an official dataset (act not read)"); },
 };
+
+/** Rótulo de painel citado pela gold no idioma da página (tabela exata; sem entrada, o rótulo da gold). */
+export function rotuloPainelGold(rotulo: string): string {
+  return rotuloDado(PAINEIS_EN, rotulo);
+}
+
+/** Tipo de ato e órgão da gold no idioma da página (tabela exata; sem entrada, o valor da gold). */
+export const tipoAtoNoIdioma = (tipo: string) => rotuloDado(TIPO_ATO_EN, tipo);
+export const orgaoNoIdioma = (orgao: string) => rotuloDado(ORGAO_EN, orgao);
 
 export const origemEvento = (e: Pick<EventoRegulatorio, "origem">): OrigemEvento => (e.origem === "curadoria" ? "ato" : "registro");
 
@@ -737,13 +846,17 @@ export function defasagemDias(e: Pick<EventoRegulatorio, "data_publicacao" | "vi
 }
 
 export function textoDefasagemEvento(e: Pick<EventoRegulatorio, "data_publicacao" | "vigencia_inicio" | "vigencia_grao" | "vigencia_calculada">): string {
-  if (!e.data_publicacao) return "publicação no DOU não informada pela fonte";
-  if (e.vigencia_grao === "mes") return "vigência conhecida só pelo mês";
+  if (!e.data_publicacao) return tx("publicação no DOU não informada pela fonte", "publication in the DOU not reported by the source");
+  if (e.vigencia_grao === "mes") return tx("vigência conhecida só pelo mês", "validity known only by month");
   const d = defasagemDias(e);
-  if (d === null) return "defasagem não calculável";
-  const calc = e.vigencia_calculada ? " (vigência calculada pela LC nº 95/1998)" : "";
-  if (d === 0) return `vigência na data da publicação${calc}`;
-  return d > 0 ? `vigência ${textoDuracao({ valor: d, unidade: "dias" })} após a publicação${calc}` : `vigência retroativa: ${textoDuracao({ valor: d, unidade: "dias" })} antes da publicação${calc}`;
+  if (d === null) return tx("defasagem não calculável", "lag cannot be computed");
+  const calc = e.vigencia_calculada ? tx(" (vigência calculada pela LC nº 95/1998)", " (validity computed under LC nº 95/1998)") : "";
+  if (d === 0) return tx(`vigência na data da publicação${calc}`, `in force on the publication date${calc}`);
+  const dias = Math.abs(d);
+  const duracaoEn = `${num(dias, 0)} ${dias === 1 ? "day" : "days"}`;
+  return d > 0
+    ? tx(`vigência ${textoDuracao({ valor: d, unidade: "dias" })} após a publicação${calc}`, `in force ${duracaoEn} after publication${calc}`)
+    : tx(`vigência retroativa: ${textoDuracao({ valor: d, unidade: "dias" })} antes da publicação${calc}`, `retroactive validity: ${duracaoEn} before publication${calc}`);
 }
 
 /** Painéis afetados, do mais citado ao menos citado, no recorte. */
@@ -751,7 +864,7 @@ export function contagemPaineisAfetados(eventos: readonly EventoRegulatorio[]): 
   const m = new Map<string, { href: string; rotulo: string; n: number }>();
   for (const e of eventos) for (const p of e.paineis) {
     const k = slugPainel(p.href);
-    const x = m.get(k) ?? { href: p.href, rotulo: p.rotulo, n: 0 };
+    const x = m.get(k) ?? { href: p.href, rotulo: rotuloPainelGold(p.rotulo), n: 0 };
     x.n++;
     m.set(k, x);
   }
@@ -779,7 +892,8 @@ export function contagemPorOrigem(eventos: readonly Pick<EventoRegulatorio, "ori
  * quem é mais afetado. Nada de efeito: a linha do tempo não estima impacto.
  */
 export function respostaLinhaTempo(eventos: readonly EventoRegulatorio[], total: number, base: BaseData = "vigencia"): string {
-  if (!eventos.length) return `Nenhum dos ${total} eventos da linha do tempo está no recorte escolhido.`;
+  if (!eventos.length)
+    return tx(`Nenhum dos ${total} eventos da linha do tempo está no recorte escolhido.`, `None of the ${total} timeline events is in the chosen selection.`);
   const atos = eventos.filter((e) => origemEvento(e) === "ato").length;
   const reg = eventos.length - atos;
   const datas = eventos.map((e) => e.vigencia_inicio).sort();
@@ -788,29 +902,40 @@ export function respostaLinhaTempo(eventos: readonly EventoRegulatorio[], total:
   const semPub = eventos.filter((e) => !e.data_publicacao).length;
   const quem = contagemPaineisAfetados(eventos).slice(0, 3);
   const partes = [
-    `${eventos.length === total ? `Os ${total} eventos` : `${eventos.length} de ${total} eventos`} da linha do tempo começam a valer entre ${dataBR(datas[0])} e ${dataBR(datas[datas.length - 1])}: ` +
-      `${atos} ${pl(atos, "ato ou lei lido", "atos e leis lidos")} no texto e ${reg} ${pl(reg, "registro", "registros")} do conjunto de dados de bandeiras.`,
-    `O evento ${base === "publicacao" ? "de publicação mais recente" : "de vigência mais recente"} é "${recente.titulo}" (${recente.ato ?? recente.tipo_ato}; ${textoPublicacao(recente.data_publicacao)}, vigência a partir de ${dataBR(recente.vigencia_inicio)}).`,
-    `${depois} ${pl(depois, "evento começou", "eventos começaram")} a valer depois da data de publicação, e ${semPub} ${pl(semPub, "não tem", "não têm")} data de publicação na fonte.`,
+    tx(
+      `${eventos.length === total ? `Os ${total} eventos` : `${eventos.length} de ${total} eventos`} da linha do tempo começam a valer entre ${dataBR(datas[0])} e ${dataBR(datas[datas.length - 1])}: ` +
+        `${atos} ${pl(atos, "ato ou lei lido", "atos e leis lidos")} no texto e ${reg} ${pl(reg, "registro", "registros")} do conjunto de dados de bandeiras.`,
+      `${eventos.length === total ? `The ${total} timeline events` : `${eventos.length} of ${total} timeline events`} take effect between ${dataBR(datas[0])} and ${dataBR(datas[datas.length - 1])}: ` +
+        `${atos} ${pl(atos, "act or law read", "acts and laws read")} in full text and ${reg} ${pl(reg, "record", "records")} from the tariff flag dataset.`,
+    ),
+    tx(
+      `O evento ${base === "publicacao" ? "de publicação mais recente" : "de vigência mais recente"} é "${recente.titulo}" (${recente.ato ?? recente.tipo_ato}; ${textoPublicacao(recente.data_publicacao)}, vigência a partir de ${dataBR(recente.vigencia_inicio)}).`,
+      `The ${base === "publicacao" ? "most recently published" : "most recently in force"} event is "${recente.titulo}" (${recente.ato ?? tipoAtoNoIdioma(recente.tipo_ato)}; ${textoPublicacao(recente.data_publicacao)}, in force from ${dataBR(recente.vigencia_inicio)}).`,
+    ),
+    tx(
+      `${depois} ${pl(depois, "evento começou", "eventos começaram")} a valer depois da data de publicação, e ${semPub} ${pl(semPub, "não tem", "não têm")} data de publicação na fonte.`,
+      `${depois} ${pl(depois, "event took", "events took")} effect after the publication date, and ${semPub} ${pl(semPub, "has", "have")} no publication date in the source.`,
+    ),
   ];
   // contagem de eventos que a curadoria liga a cada painel, não tamanho de efeito
-  if (quem.length) partes.push(`Painéis indicados em mais eventos: ${quem.map((q) => `${q.rotulo} (${q.n})`).join(", ")}.`);
+  if (quem.length)
+    partes.push(tx(`Painéis indicados em mais eventos: ${quem.map((q) => `${q.rotulo} (${q.n})`).join(", ")}.`, `Panels cited in the most events: ${quem.map((q) => `${q.rotulo} (${q.n})`).join(", ")}.`));
   return partes.join(" ");
 }
 
 export const COLUNAS_LINHA_TEMPO: ColunaTabela[] = [
-  { id: "titulo", rotulo: "Evento", tipo: "texto" },
-  { id: "ato", rotulo: "Ato", tipo: "texto" },
-  { id: "orgao", rotulo: "Órgão", tipo: "texto", categorica: true },
-  { id: "origem", rotulo: "Origem", tipo: "texto", categorica: true },
-  { id: "data_publicacao", rotulo: "Publicação", tipo: "data" },
-  { id: "vigencia_inicio", rotulo: "Vigência: início", tipo: "data" },
-  { id: "defasagem", rotulo: "Publicação até a vigência", tipo: "numero", unidade: "dias", casas: 0 },
-  { id: "dispositivo", rotulo: "Dispositivo", tipo: "texto" },
-  { id: "paineis", rotulo: "Painéis afetados", tipo: "texto" },
-  { id: "efeito_declarado", rotulo: "Efeito declarado pelo ato (literal)", tipo: "texto" },
-  { id: "impacto_estimado", rotulo: "Impacto estimado pelo observatório", tipo: "texto" },
-  { id: "nivel", rotulo: "Conferência", tipo: "texto", categorica: true },
+  { id: "titulo", get rotulo() { return tx("Evento", "Event"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "ato", get rotulo() { return tx("Ato", "Act"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "orgao", get rotulo() { return tx("Órgão", "Body"); }, tipo: "texto", categorica: true },
+  { id: "origem", get rotulo() { return tx("Origem", "Origin"); }, tipo: "texto", categorica: true },
+  { id: "data_publicacao", get rotulo() { return tx("Publicação", "Publication"); }, tipo: "data" },
+  { id: "vigencia_inicio", get rotulo() { return tx("Vigência: início", "In force: start"); }, tipo: "data" },
+  { id: "defasagem", get rotulo() { return tx("Publicação até a vigência", "Publication to validity"); }, tipo: "numero", get unidade() { return tx("dias", "days"); }, casas: 0 },
+  { id: "dispositivo", get rotulo() { return tx("Dispositivo", "Provision"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "paineis", get rotulo() { return tx("Painéis afetados", "Panels affected"); }, tipo: "texto" },
+  { id: "efeito_declarado", get rotulo() { return tx("Efeito declarado pelo ato (literal)", "Effect declared by the act (literal)"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "impacto_estimado", get rotulo() { return tx("Impacto estimado pelo observatório", "Impact estimated by the observatory"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "nivel", get rotulo() { return tx("Conferência", "Check"); }, tipo: "texto", categorica: true },
 ];
 
 /** Linhas da tabela equivalente da linha do tempo (as mesmas, na mesma ordem, do gráfico e da lista). */
@@ -818,14 +943,14 @@ export function linhasLinhaTempo(eventos: readonly EventoRegulatorio[]): LinhaTa
   return eventos.map((e) => ({
     id: e.id,
     titulo: e.titulo,
-    ato: e.ato ?? e.tipo_ato,
-    orgao: e.orgao,
+    ato: e.ato ?? tipoAtoNoIdioma(e.tipo_ato),
+    orgao: orgaoNoIdioma(e.orgao),
     origem: ROTULO_ORIGEM_EVENTO[origemEvento(e)],
     data_publicacao: e.data_publicacao,
     vigencia_inicio: e.vigencia_grao === "mes" ? e.vigencia_inicio.slice(0, 7) : e.vigencia_inicio,
     defasagem: defasagemDias(e),
     dispositivo: e.dispositivo,
-    paineis: e.paineis.map((p) => p.rotulo).join(", "),
+    paineis: e.paineis.map((p) => rotuloPainelGold(p.rotulo)).join(", "),
     efeito_declarado: e.efeito_declarado,
     impacto_estimado: e.impacto_estimado,
     nivel: ROTULO_NIVEL_EVENTO[e.nivel_conferencia] ?? e.nivel_conferencia,
@@ -885,17 +1010,25 @@ export function dominioFaixas(faixas: readonly FaixaTempo[], referencias: readon
 /** Faixas da linha do tempo: publicação (vazada) até a vigência (cheia). */
 export function faixasLinhaTempo(eventos: readonly EventoRegulatorio[]): FaixaTempo[] {
   return eventos.map((e) => {
-    const pub = e.data_publicacao ? { data: e.data_publicacao, forma: "vazado" as const, rotulo: `publicação ${dataBR(e.data_publicacao)}` } : null;
+    const pub = e.data_publicacao ? { data: e.data_publicacao, forma: "vazado" as const, rotulo: tx(`publicação ${dataBR(e.data_publicacao)}`, `publication ${dataBR(e.data_publicacao)}`) } : null;
     const mes = e.vigencia_grao === "mes";
-    const vig = { data: e.vigencia_inicio, forma: "cheio" as const, rotulo: mes ? `vigência a partir de ${dataBR(e.vigencia_inicio.slice(0, 7))} (só o mês)` : `vigência a partir de ${dataBR(e.vigencia_inicio)}`, mes };
+    const vig = {
+      data: e.vigencia_inicio,
+      forma: "cheio" as const,
+      rotulo: mes
+        ? tx(`vigência a partir de ${dataBR(e.vigencia_inicio.slice(0, 7))} (só o mês)`, `in force from ${dataBR(e.vigencia_inicio.slice(0, 7))} (month only)`)
+        : tx(`vigência a partir de ${dataBR(e.vigencia_inicio)}`, `in force from ${dataBR(e.vigencia_inicio)}`),
+      mes,
+    };
     return {
       id: e.id,
       rotulo: rotuloCurtoEvento(e),
       inicio: pub,
       fim: vig,
-      traco: pub ? "cheio" : "nenhum",
-      cor: origemEvento(e) === "ato" ? "var(--cor-energia)" : "var(--serie-referencia)",
-      leitura: `${e.titulo}. ${e.ato ?? e.tipo_ato}. ${pub ? pub.rotulo : "publicação não informada"}; ${vig.rotulo}; ${textoDefasagemEvento(e)}.`,
+      traco: pub ? "cheio" : "nenhum", // i18n: dado
+      cor: origemEvento(e) === "ato" ? "var(--cor-energia)" : "var(--serie-referencia)", // i18n: dado
+      // em inglês, o atributo não leva o título nem o nome do ato (português, sem marca possível num atributo): o ato abreviado e o tipo
+      leitura: `${tx(`${e.titulo}. ${e.ato ?? tipoAtoNoIdioma(e.tipo_ato)}`, e.ato ? `${abreviarAto(e.ato)} (${tipoAtoNoIdioma(e.tipo_ato)})` : tipoAtoNoIdioma(e.tipo_ato))}. ${pub ? pub.rotulo : tx("publicação não informada", "publication not reported")}; ${vig.rotulo}; ${textoDefasagemEvento(e)}.`,
     };
   });
 }
@@ -903,7 +1036,7 @@ export function faixasLinhaTempo(eventos: readonly EventoRegulatorio[]): FaixaTe
 /** Rótulo da coluna estreita do gráfico: o ato abreviado ou, no valor visto só no recurso Acionamento, o mês. */
 export function rotuloCurtoEvento(e: Pick<EventoRegulatorio, "ato" | "titulo" | "tipo_ato" | "vigencia_inicio">): string {
   if (e.ato) return abreviarAto(e.ato);
-  if (/acionamento/i.test(e.tipo_ato)) return `Acionamento ${dataBR(e.vigencia_inicio.slice(0, 7))}`;
+  if (/acionamento/i.test(e.tipo_ato)) return tx(`Acionamento ${dataBR(e.vigencia_inicio.slice(0, 7))}`, `Activation ${dataBR(e.vigencia_inicio.slice(0, 7))}`);
   return e.titulo;
 }
 
@@ -946,26 +1079,26 @@ export const ORDEM_SITUACAO: SituacaoConsulta[] = [
 ];
 
 export const ROTULO_CURTO_SITUACAO: Record<SituacaoConsulta, string> = {
-  aberta: "Recebendo contribuições",
-  a_abrir: "A abrir",
-  encerrada_aguardando: "Encerrada, sem resultado",
-  resultado_em_pauta: "Resultado em pauta",
-  decidida: "Decidida",
-  prazo_nao_datado: "Prazo sem datas na ata",
-  sessao_sem_periodo: "Só a sessão na ata",
-  sem_periodo_na_ata: "Sem período na ata",
+  get aberta() { return tx("Recebendo contribuições", "Receiving contributions"); },
+  get a_abrir() { return tx("A abrir", "About to open"); },
+  get encerrada_aguardando() { return tx("Encerrada, sem resultado", "Closed, no result"); },
+  get resultado_em_pauta() { return tx("Resultado em pauta", "Result on the agenda"); },
+  get decidida() { return tx("Decidida", "Decided"); },
+  get prazo_nao_datado() { return tx("Prazo sem datas na ata", "Deadline without dates in the minutes"); },
+  get sessao_sem_periodo() { return tx("Só a sessão na ata", "Only the session in the minutes"); },
+  get sem_periodo_na_ata() { return tx("Sem período na ata", "No period in the minutes"); },
 };
 
 /** Situações que o filtro mostra por padrão: tudo o que ainda não foi decidido. */
 export const SITUACOES_PADRAO: SituacaoConsulta[] = ORDEM_SITUACAO.filter((s) => s !== "decidida");
 
 export const ROTULO_FORMA_RESULTADO: Record<FormaResultado, string> = {
-  resultado: "\"Resultado da ...\" deliberado",
-  encerramento: "encerramento",
-  apos_contribuicoes: "decisão após a análise das contribuições",
-  consolidacao: "consolidação do documento submetido à consulta",
-  resultado_sem_numero: "resultado de revisão tarifária ligado pelo processo",
-  objeto_aprovado_no_processo: "módulo de procedimento aprovado no mesmo processo",
+  get resultado() { return tx("\"Resultado da ...\" deliberado", "item headed \"Resultado ...\" (result) decided"); },
+  get encerramento() { return tx("encerramento", "closure"); },
+  get apos_contribuicoes() { return tx("decisão após a análise das contribuições", "decision after analysis of the contributions"); },
+  get consolidacao() { return tx("consolidação do documento submetido à consulta", "consolidation of the document submitted to consultation"); },
+  get resultado_sem_numero() { return tx("resultado de revisão tarifária ligado pelo processo", "tariff review result linked through the proceeding"); },
+  get objeto_aprovado_no_processo() { return tx("módulo de procedimento aprovado no mesmo processo", "procedure module approved in the same proceeding"); },
 };
 
 export type ConsultaNaData = Consulta & { situacao_na_data: SituacaoConsulta };
@@ -1045,7 +1178,9 @@ export function situacaoSeConfirmada(d: Pick<DecisaoSemResultadoFormal, "inicio"
  * janela na gold, a ausência é dita: nenhum número de reserva entra no lugar.
  */
 export function textoJanela(dias: number | null | undefined): string {
-  return typeof dias === "number" ? `com atividade nos últimos ${dias} ${pl(dias, "dia", "dias")}` : "com atividade recente (a publicação não informa a janela)";
+  return typeof dias === "number"
+    ? tx(`com atividade nos últimos ${dias} ${pl(dias, "dia", "dias")}`, `with activity in the last ${dias} ${pl(dias, "day", "days")}`)
+    : tx("com atividade recente (a publicação não informa a janela)", "with recent activity (the publication does not report the window)");
 }
 
 /** Ano de início do histórico de consultas, lido da proveniência da gold; null sem a data. */
@@ -1059,14 +1194,14 @@ export function anoInicioHistorico(g: Pick<GoldRegulacao, "proveniencia">): stri
  */
 export function nomeAgenda(a: Pick<GoldRegulacao["agenda"], "por_ano" | "itens">): string {
   const anos = textoAnosAgenda(a);
-  return anos ? `Agenda Regulatória de ${anos}` : "Agenda Regulatória da ANEEL";
+  return anos ? tx(`Agenda Regulatória de ${anos}`, `regulatory agenda for ${anos}`) : tx("Agenda Regulatória da ANEEL", "ANEEL regulatory agenda");
 }
 
 /** Anos previstos na agenda, em ordem e em texto ("2026 e 2027"); null quando a portaria não traz ano. */
 export function textoAnosAgenda(a: Pick<GoldRegulacao["agenda"], "por_ano" | "itens">): string | null {
   const anos = Array.from(new Set([...Object.keys(a.por_ano ?? {}), ...a.itens.map((i) => String(i.ano_previsto))])).sort();
   if (!anos.length) return null;
-  return anos.length === 1 ? anos[0] : `${anos.slice(0, -1).join(", ")} e ${anos[anos.length - 1]}`;
+  return anos.length === 1 ? anos[0] : `${anos.slice(0, -1).join(", ")}${tx(" e ", " and ")}${anos[anos.length - 1]}`;
 }
 
 /**
@@ -1077,15 +1212,19 @@ export function textoAnosAgenda(a: Pick<GoldRegulacao["agenda"], "por_ano" | "it
 export function avisoRevisaoAgenda(a: Pick<GoldRegulacao["agenda"], "revisao" | "disponivel">): string | null {
   const r = a.revisao;
   if (!a.disponivel || !r.atualizada_por || r.texto_lido) return null;
-  return `A página oficial da agenda diz que ela foi ${r.trecho ?? `atualizada pela ${r.atualizada_por}`}. O texto dessa atualização não pôde ser lido, então os anos previstos são os da versão original e podem ter mudado.`;
+  return tx(
+    `A página oficial da agenda diz que ela foi ${r.trecho ?? `atualizada pela ${r.atualizada_por}`}. O texto dessa atualização não pôde ser lido, então os anos previstos são os da versão original e podem ter mudado.`,
+    `The official agenda page says it was ${r.trecho && r.aprovada_por ? `approved by ${r.aprovada_por} and updated by ${r.atualizada_por}` : `updated by ${r.atualizada_por}`}. The text of that update could not be read, so the planned years are those of the original version and may have changed.`,
+  );
 }
 
 /**
  * Nome de arquivo para baixar, em frase: "(histórico)" vira ", histórico", o intervalo de anos ganha "a" no lugar do hífen e o
- * formato fecha o rótulo.
+ * formato fecha o rótulo. Em inglês, o rótulo da gold passa pela tabela exata antes.
  */
 export function rotuloDownload(rotulo: string, formato = "CSV"): string {
-  const sem = rotulo.replace(/\s*\(([^)]*)\)\s*$/, ", $1").replace(/(\d{4})-(\d{4})/, "$1 a $2");
+  const base = rotuloDado(DOWNLOADS_REGULACAO_EN, rotulo);
+  const sem = base.replace(/\s*\(([^)]*)\)\s*$/, ", $1").replace(/(\d{4})-(\d{4})/, tx("$1 a $2", "$1 to $2"));
   return `${sem} (${formato})`;
 }
 
@@ -1114,29 +1253,57 @@ export function respostaConsultas(c: Pick<Consultas, "itens" | "janela_dias" | "
   if (abertas.length) {
     const p = abertas[0];
     partes.push(
-      `Em ${dataBR(data)}, ${abertas.length} ${pl(abertas.length, "consulta ou audiência pública da ANEEL recebe", "consultas e audiências públicas da ANEEL recebem")} contribuições; ` +
-        `a primeira a fechar é a ${p.rotulo}, até ${dataBR(p.fim)}${p.fim_calculado ? " (fim calculado do início e da duração)" : ""}.`,
+      tx(
+        `Em ${dataBR(data)}, ${abertas.length} ${pl(abertas.length, "consulta ou audiência pública da ANEEL recebe", "consultas e audiências públicas da ANEEL recebem")} contribuições; ` +
+          `a primeira a fechar é a ${p.rotulo}, até ${dataBR(p.fim)}${p.fim_calculado ? " (fim calculado do início e da duração)" : ""}.`,
+        `On ${dataBR(data)}, ${abertas.length} ANEEL ${pl(abertas.length, "public consultation or hearing is", "public consultations and hearings are")} receiving contributions; ` +
+          `the first to close is ${p.rotulo}, until ${dataBR(p.fim)}${p.fim_calculado ? " (end computed from the start and the duration)" : ""}.`,
+      ),
     );
   } else {
-    partes.push(`Em ${dataBR(data)}, nenhuma consulta ou audiência pública com janela escrita nas atas recebe contribuições.`);
+    partes.push(
+      tx(
+        `Em ${dataBR(data)}, nenhuma consulta ou audiência pública com janela escrita nas atas recebe contribuições.`,
+        `On ${dataBR(data)}, no public consultation or hearing with a window written in the minutes is receiving contributions.`,
+      ),
+    );
   }
-  if (aAbrir.length) partes.push(`${aAbrir.length} ${pl(aAbrir.length, "tem", "têm")} abertura deliberada e período ainda por começar; a primeira começa em ${dataBR(aAbrir[0].inicio)}.`);
+  if (aAbrir.length)
+    partes.push(
+      tx(
+        `${aAbrir.length} ${pl(aAbrir.length, "tem", "têm")} abertura deliberada e período ainda por começar; a primeira começa em ${dataBR(aAbrir[0].inicio)}.`,
+        `${aAbrir.length} ${pl(aAbrir.length, "has", "have")} an opening decided and a period yet to start; the first starts on ${dataBR(aAbrir[0].inicio)}.`,
+      ),
+    );
   partes.push(
-    `${n.encerrada_aguardando} ${pl(n.encerrada_aguardando, "teve", "tiveram")} as contribuições encerradas sem resultado deliberado em reunião registrada até ${dataBR(c.atas_deliberadas_ate ?? null)}` +
-      (n.resultado_em_pauta ? `, ${n.resultado_em_pauta} ${pl(n.resultado_em_pauta, "tem", "têm")} resultado levado à reunião sem decisão` : "") +
-      (semData ? ` e ${semData} ${pl(semData, "não tem", "não têm")} datas na ata, por isso a situação não é derivável` : "") +
-      `, entre as ${itens.length} consultas ${textoJanela(c.janela_dias)}.`,
+    tx(
+      `${n.encerrada_aguardando} ${pl(n.encerrada_aguardando, "teve", "tiveram")} as contribuições encerradas sem resultado deliberado em reunião registrada até ${dataBR(c.atas_deliberadas_ate ?? null)}` +
+        (n.resultado_em_pauta ? `, ${n.resultado_em_pauta} ${pl(n.resultado_em_pauta, "tem", "têm")} resultado levado à reunião sem decisão` : "") +
+        (semData ? ` e ${semData} ${pl(semData, "não tem", "não têm")} datas na ata, por isso a situação não é derivável` : "") +
+        `, entre as ${itens.length} consultas ${textoJanela(c.janela_dias)}.`,
+      `${n.encerrada_aguardando} had contributions closed with no result decided in a meeting recorded up to ${dataBR(c.atas_deliberadas_ate ?? null)}` +
+        (n.resultado_em_pauta ? `, ${n.resultado_em_pauta} ${pl(n.resultado_em_pauta, "has", "have")} a result taken to a meeting without a decision` : "") +
+        (semData ? ` and ${semData} ${pl(semData, "has", "have")} no dates in the minutes, so the status cannot be derived` : "") +
+        `, among the ${itens.length} consultations ${textoJanela(c.janela_dias)}.`,
+    ),
   );
   const pend = (c.decisoes_sem_resultado_formal ?? []).map((d) => situacaoSeConfirmada(d, data));
   const ab = pend.filter((s) => s === "aberta").length;
   const aa = pend.filter((s) => s === "a_abrir").length;
   if (ab || aa) {
     partes.push(
-      (pend.length === 1
-        ? "Outra decisão de abertura da última pauta ainda não tem resultado formal na ata e fica fora da contagem: se confirmada, "
-        : `Outras ${pend.length} decisões de abertura da última pauta ainda não têm resultado formal na ata e ficam fora da contagem: se confirmadas, `) +
-        [ab ? `${ab} ${pl(ab, "estaria aberta", "estariam abertas")}` : "", aa ? `${aa} ${pl(aa, "estaria", "estariam")} a abrir` : ""].filter(Boolean).join(" e ") +
-        ".",
+      tx(
+        (pend.length === 1
+          ? "Outra decisão de abertura da última pauta ainda não tem resultado formal na ata e fica fora da contagem: se confirmada, "
+          : `Outras ${pend.length} decisões de abertura da última pauta ainda não têm resultado formal na ata e ficam fora da contagem: se confirmadas, `) +
+          [ab ? `${ab} ${pl(ab, "estaria aberta", "estariam abertas")}` : "", aa ? `${aa} ${pl(aa, "estaria", "estariam")} a abrir` : ""].filter(Boolean).join(" e ") +
+          ".",
+        (pend.length === 1
+          ? "Another opening decision on the latest agenda has no formal result in the minutes yet and is left out of the count: if confirmed, "
+          : `Another ${pend.length} opening decisions on the latest agenda have no formal result in the minutes yet and are left out of the count: if confirmed, `) +
+          [ab ? `${ab} would be open` : "", aa ? `${aa} would be about to open` : ""].filter(Boolean).join(" and ") +
+          ".",
+      ),
     );
   }
   return partes.join(" ");
@@ -1146,19 +1313,28 @@ export function linhasConsultas(itens: readonly ConsultaNaData[]): LinhaTabela[]
   return itens.map((c) => ({
     id: c.id,
     rotulo: c.rotulo,
-    modalidade: c.modalidade,
+    modalidade: rotuloDado(MODALIDADE_EN, c.modalidade),
     situacao: ROTULO_CURTO_SITUACAO[c.situacao_na_data],
     tema: temaCurto(c.tema),
-    fase: c.fase_atual,
+    fase: c.fase_atual === null ? null : rotuloDado(FASE_EN, c.fase_atual),
     inicio: c.inicio,
     fim: c.fim,
-    fim_calculado: c.fim ? (c.fim_calculado ? "calculado (início e duração)" : "escrito na ata") : "a ata não escreve o fim",
+    fim_calculado: c.fim
+      ? c.fim_calculado
+        ? tx("calculado (início e duração)", "computed (start and duration)")
+        : tx("escrito na ata", "written in the minutes")
+      : tx("a ata não escreve o fim", "the minutes do not write the end"),
     duracao_dias: c.duracao_dias,
     sessao: c.sessao,
     deliberacao: faseAtual(c)?.data_deliberacao ?? c.deliberacao_abertura.data,
     resultado_data: c.resultado?.data ?? null,
-    resultado_ato: c.resultado ? (c.resultado.ato ?? (c.resultado.ato_suspeito ? `número suspeito na ata (${c.resultado.ato_na_ata ?? "sem registro"})` : null)) : null,
-    resultado_forma: c.resultado ? ROTULO_FORMA_RESULTADO[c.resultado.forma] : "sem resultado nas atas",
+    resultado_ato: c.resultado
+      ? (c.resultado.ato ??
+        (c.resultado.ato_suspeito
+          ? tx(`número suspeito na ata (${c.resultado.ato_na_ata ?? "sem registro"})`, `suspect number in the minutes (${c.resultado.ato_na_ata ?? "no record"})`)
+          : null))
+      : null,
+    resultado_forma: c.resultado ? ROTULO_FORMA_RESULTADO[c.resultado.forma] : tx("sem resultado nas atas", "no result in the minutes"),
     processo: c.processos.join(", "),
     relator: c.relator,
     agenda: c.agenda_codigos.length ? c.agenda_codigos.join(", ") : null,
@@ -1166,37 +1342,41 @@ export function linhasConsultas(itens: readonly ConsultaNaData[]): LinhaTabela[]
 }
 
 export const COLUNAS_CONSULTAS: ColunaTabela[] = [
-  { id: "rotulo", rotulo: "Consulta", tipo: "texto" },
-  { id: "situacao", rotulo: "Situação na data", tipo: "texto", categorica: true },
-  { id: "modalidade", rotulo: "Modalidade", tipo: "texto", categorica: true },
-  { id: "tema", rotulo: "Assunto", tipo: "texto" },
-  { id: "fase", rotulo: "Fase atual", tipo: "texto", categorica: true },
-  { id: "inicio", rotulo: "Contribuições: início", tipo: "data" },
-  { id: "fim", rotulo: "Contribuições: fim", tipo: "data" },
-  { id: "fim_calculado", rotulo: "Origem do fim", tipo: "texto", categorica: true },
-  { id: "duracao_dias", rotulo: "Duração declarada", tipo: "numero", unidade: "dias", casas: 0 },
-  { id: "sessao", rotulo: "Sessão da audiência", tipo: "data" },
-  { id: "deliberacao", rotulo: "Deliberação da fase atual", tipo: "data" },
-  { id: "resultado_data", rotulo: "Resultado: reunião", tipo: "data" },
-  { id: "resultado_ato", rotulo: "Resultado: ato", tipo: "texto" },
-  { id: "resultado_forma", rotulo: "Resultado: forma", tipo: "texto", categorica: true },
-  { id: "processo", rotulo: "Processo", tipo: "texto" },
-  { id: "relator", rotulo: "Relator", tipo: "texto", categorica: true },
-  { id: "agenda", rotulo: "Atividade da Agenda citada", tipo: "texto" },
+  { id: "rotulo", get rotulo() { return tx("Consulta", "Consultation"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "situacao", get rotulo() { return tx("Situação na data", "Status on the date"); }, tipo: "texto", categorica: true },
+  { id: "modalidade", get rotulo() { return tx("Modalidade", "Type"); }, tipo: "texto", categorica: true },
+  { id: "tema", get rotulo() { return tx("Assunto", "Subject"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "fase", get rotulo() { return tx("Fase atual", "Current phase"); }, tipo: "texto", categorica: true },
+  { id: "inicio", get rotulo() { return tx("Contribuições: início", "Contributions: start"); }, tipo: "data" },
+  { id: "fim", get rotulo() { return tx("Contribuições: fim", "Contributions: end"); }, tipo: "data" },
+  { id: "fim_calculado", get rotulo() { return tx("Origem do fim", "Source of the end date"); }, tipo: "texto", categorica: true },
+  { id: "duracao_dias", get rotulo() { return tx("Duração declarada", "Declared duration"); }, tipo: "numero", get unidade() { return tx("dias", "days"); }, casas: 0 },
+  { id: "sessao", get rotulo() { return tx("Sessão da audiência", "Hearing session"); }, tipo: "data" },
+  { id: "deliberacao", get rotulo() { return tx("Deliberação da fase atual", "Decision on the current phase"); }, tipo: "data" },
+  { id: "resultado_data", get rotulo() { return tx("Resultado: reunião", "Result: meeting"); }, tipo: "data" },
+  { id: "resultado_ato", get rotulo() { return tx("Resultado: ato", "Result: act"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "resultado_forma", get rotulo() { return tx("Resultado: forma", "Result: form"); }, tipo: "texto", categorica: true },
+  { id: "processo", get rotulo() { return tx("Processo", "Proceeding"); }, tipo: "texto" },
+  { id: "relator", get rotulo() { return tx("Relator", "Rapporteur"); }, tipo: "texto", categorica: true, idiomaTexto: "nome" },
+  { id: "agenda", get rotulo() { return tx("Atividade da Agenda citada", "Agenda activity cited"); }, tipo: "texto", idiomaTexto: "portugues" },
 ];
 
 const ESTILO_SITUACAO: Record<SituacaoConsulta, { cor: string; traco: FaixaTempo["traco"] }> = {
-  aberta: { cor: "var(--cor-energia)", traco: "cheio" },
-  a_abrir: { cor: "var(--cor-energia)", traco: "tracejado" },
+  aberta: { cor: "var(--cor-energia)", traco: "cheio" }, // i18n: dado
+  a_abrir: { cor: "var(--cor-energia)", traco: "tracejado" }, // i18n: dado
   encerrada_aguardando: { cor: "var(--serie-termica)", traco: "cheio" },
   resultado_em_pauta: { cor: "var(--serie-termica)", traco: "tracejado" },
   decidida: { cor: "var(--serie-referencia)", traco: "fino" },
-  prazo_nao_datado: { cor: "var(--serie-referencia)", traco: "nenhum" },
-  sessao_sem_periodo: { cor: "var(--serie-referencia)", traco: "nenhum" },
-  sem_periodo_na_ata: { cor: "var(--serie-referencia)", traco: "nenhum" },
+  prazo_nao_datado: { cor: "var(--serie-referencia)", traco: "nenhum" }, // i18n: dado
+  sessao_sem_periodo: { cor: "var(--serie-referencia)", traco: "nenhum" }, // i18n: dado
+  sem_periodo_na_ata: { cor: "var(--serie-referencia)", traco: "nenhum" }, // i18n: dado
 };
 
-export const LEGENDA_SITUACAO = ORDEM_SITUACAO.filter((s) => ESTILO_SITUACAO[s].traco !== "nenhum").map((s) => ({ situacao: s, rotulo: ROTULO_CURTO_SITUACAO[s], ...ESTILO_SITUACAO[s] }));
+export const LEGENDA_SITUACAO = ORDEM_SITUACAO.filter((s) => ESTILO_SITUACAO[s].traco !== "nenhum").map((s) => ({
+  situacao: s,
+  get rotulo() { return ROTULO_CURTO_SITUACAO[s]; },
+  ...ESTILO_SITUACAO[s],
+}));
 
 /** Faixas das janelas de contribuição (início cheio, fim cheio ou vazado quando calculado). */
 export function faixasConsultas(itens: readonly ConsultaNaData[]): FaixaTempo[] {
@@ -1204,27 +1384,45 @@ export function faixasConsultas(itens: readonly ConsultaNaData[]): FaixaTempo[] 
     const est = ESTILO_SITUACAO[c.situacao_na_data];
     const f = faseAtual(c);
     const semJanela = !c.inicio || !c.fim;
+    const dur = c.duracao_dias ?? f?.duracao_dias;
     const ausencia = semJanela
       ? c.situacao_na_data === "prazo_nao_datado"
-        ? (c.duracao_dias ?? f?.duracao_dias) != null
-          ? `a ata informa só a duração (${c.duracao_dias ?? f?.duracao_dias} dias), sem datas`
-          : "a ata informa só que há prazo, sem datas nem duração"
+        ? dur != null
+          ? tx(`a ata informa só a duração (${dur} dias), sem datas`, `the minutes report only the duration (${dur} ${dur === 1 ? "day" : "days"}), without dates`)
+          : tx("a ata informa só que há prazo, sem datas nem duração", "the minutes report only that there is a deadline, without dates or duration")
         : c.sessao
-          ? `só a sessão de ${dataBR(c.sessao)} na ata, sem período de contribuições`
-          : "a ata não informa período, duração nem sessão"
+          ? tx(`só a sessão de ${dataBR(c.sessao)} na ata, sem período de contribuições`, `only the session of ${dataBR(c.sessao)} in the minutes, with no contribution period`)
+          : tx("a ata não informa período, duração nem sessão", "the minutes report no period, duration or session")
       : undefined;
-    const res = c.resultado ? `; resultado ${c.resultado.decidido ? "deliberado" : "levado à reunião sem decisão"} em ${dataBR(c.resultado.data)}${c.resultado.ato ? ` (${c.resultado.ato})` : ""}` : "";
+    const res = c.resultado
+      ? tx(
+          `; resultado ${c.resultado.decidido ? "deliberado" : "levado à reunião sem decisão"} em ${dataBR(c.resultado.data)}${c.resultado.ato ? ` (${c.resultado.ato})` : ""}`,
+          `; result ${c.resultado.decidido ? "decided" : "taken to a meeting without a decision"} on ${dataBR(c.resultado.data)}${c.resultado.ato ? ` (${abreviarAto(c.resultado.ato)})` : ""}`,
+        )
+      : "";
     return {
       id: c.id,
       rotulo: rotuloCurtoConsulta(c),
-      inicio: c.inicio ? { data: c.inicio, forma: "cheio", rotulo: `início ${dataBR(c.inicio)}` } : null,
-      fim: c.fim ? { data: c.fim, forma: c.fim_calculado ? "vazado" : "cheio", rotulo: `fim ${dataBR(c.fim)}${c.fim_calculado ? " (calculado do início e da duração)" : ""}` } : null,
-      traco: semJanela ? "nenhum" : est.traco,
+      inicio: c.inicio ? { data: c.inicio, forma: "cheio", rotulo: tx(`início ${dataBR(c.inicio)}`, `start ${dataBR(c.inicio)}`) } : null,
+      fim: c.fim
+        ? {
+            data: c.fim,
+            forma: c.fim_calculado ? "vazado" : "cheio",
+            rotulo: tx(`fim ${dataBR(c.fim)}${c.fim_calculado ? " (calculado do início e da duração)" : ""}`, `end ${dataBR(c.fim)}${c.fim_calculado ? " (computed from the start and the duration)" : ""}`),
+          }
+        : null,
+      traco: semJanela ? "nenhum" : est.traco, // i18n: dado
       cor: est.cor,
       leitura:
         `${c.rotulo}: ${ROTULO_CURTO_SITUACAO[c.situacao_na_data].toLowerCase()}. ` +
-        (semJanela ? `Sem janela de contribuições: ${ausencia}` : `Contribuições de ${dataBR(c.inicio)} a ${dataBR(c.fim)}${c.fim_calculado ? " (fim calculado)" : ""}`) +
-        `${res}. ${temaCurto(c.tema)}`,
+        (semJanela
+          ? tx(`Sem janela de contribuições: ${ausencia}`, `No contribution window: ${ausencia}`)
+          : tx(
+              `Contribuições de ${dataBR(c.inicio)} a ${dataBR(c.fim)}${c.fim_calculado ? " (fim calculado)" : ""}`,
+              `Contributions from ${dataBR(c.inicio)} to ${dataBR(c.fim)}${c.fim_calculado ? " (end computed)" : ""}`,
+            )) +
+        // o assunto é texto da ata, em português: fica fora do atributo na página inglesa (a lista e a tabela o mostram marcado)
+        `${res}.${tx(` ${temaCurto(c.tema)}`, "")}`,
       ausencia,
     };
   });
@@ -1241,7 +1439,7 @@ export function contagemAgendaPorPainel(itens: readonly AtividadeAgenda[]): { li
     if (!i.paineis.length) semPainel++;
     for (const p of i.paineis) {
       const k = slugPainel(p.href);
-      const l = m.get(k) ?? { id: k, rotulo: p.rotulo, ...Object.fromEntries(anos.map((a) => [a, 0])) };
+      const l = m.get(k) ?? { id: k, rotulo: rotuloPainelGold(p.rotulo), ...Object.fromEntries(anos.map((a) => [a, 0])) };
       l[String(i.ano_previsto)] = ((l[String(i.ano_previsto)] as number) ?? 0) + 1;
       m.set(k, l);
     }
@@ -1258,33 +1456,42 @@ export function linhasAgenda(itens: readonly AtividadeAgenda[], limites: readonl
     codigo: i.codigo,
     atividade: i.atividade,
     ano_previsto: String(i.ano_previsto),
-    paineis: i.paineis.length ? i.paineis.map((p) => p.rotulo).join(", ") : "nenhum (sem palavra-chave da regra)",
-    limites_pld: lim.has(i.codigo) ? "sim" : "não",
+    paineis: i.paineis.length ? i.paineis.map((p) => rotuloPainelGold(p.rotulo)).join(", ") : tx("nenhum (sem palavra-chave da regra)", "none (no keyword from the rule)"),
+    limites_pld: lim.has(i.codigo) ? tx("sim", "yes") : tx("não", "no"),
     consultas: i.consultas.length ? i.consultas.join(", ") : null,
   }));
 }
 
 export const COLUNAS_AGENDA: ColunaTabela[] = [
-  { id: "codigo", rotulo: "Código", tipo: "texto" },
-  { id: "atividade", rotulo: "Atividade", tipo: "texto" },
-  { id: "ano_previsto", rotulo: "Ano previsto", tipo: "texto", categorica: true },
-  { id: "paineis", rotulo: "Painéis relacionados (palavra-chave)", tipo: "texto", categorica: true },
-  { id: "limites_pld", rotulo: "Trata dos limites do PLD", tipo: "texto", categorica: true },
-  { id: "consultas", rotulo: "Consultas que citam o código", tipo: "texto" },
+  { id: "codigo", get rotulo() { return tx("Código", "Code"); }, tipo: "texto" },
+  { id: "atividade", get rotulo() { return tx("Atividade", "Activity"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "ano_previsto", get rotulo() { return tx("Ano previsto", "Planned year"); }, tipo: "texto", categorica: true },
+  { id: "paineis", get rotulo() { return tx("Painéis relacionados (palavra-chave)", "Related panels (keyword)"); }, tipo: "texto", categorica: true },
+  { id: "limites_pld", get rotulo() { return tx("Trata dos limites do PLD", "Deals with PLD limits"); }, tipo: "texto", categorica: true },
+  { id: "consultas", get rotulo() { return tx("Consultas que citam o código", "Consultations citing the code"); }, tipo: "texto", idiomaTexto: "nome" },
 ];
 
 export function respostaAgenda(a: GoldRegulacao["agenda"], limites: GoldRegulacao["limites_em_revisao"]): string {
-  if (!a.disponivel) return `A Agenda Regulatória não está disponível nesta publicação: ${a.motivo ?? "motivo não informado"}.`;
+  if (!a.disponivel)
+    return tx(
+      `A Agenda Regulatória não está disponível nesta publicação: ${a.motivo ?? "motivo não informado"}.`,
+      `The regulatory agenda is not available in this publication: ${a.motivo ?? "reason not reported"}.`,
+    );
   const anos = Object.entries(a.por_ano ?? {}).sort(([x], [y]) => x.localeCompare(y));
   const comConsulta = a.itens.filter((i) => i.consultas.length).length;
-  const portaria = a.portaria ?? "portaria da Agenda Regulatória";
+  const portaria = a.portaria ?? tx("portaria da Agenda Regulatória", "regulatory agenda ordinance");
   // a vírgula fecha o aposto da data ("Portaria ..., de 2 de dezembro de 2025, prevê"); sem aposto, não há vírgula
-  return (
+  return tx(
     `A ${portaria}${portaria.includes(",") ? "," : ""} prevê ${a.itens.length} atividades para o biênio` +
-    (anos.length ? ` (${anos.map(([ano, n]) => `${n} em ${ano}`).join(" e ")})` : "") +
-    `; ${limites.length} ${pl(limites.length, "trata", "tratam")} dos limites do PLD (${limites.map((l) => `${l.codigo}, prevista para ${l.ano_previsto}`).join("; ")}) e ` +
-    `${comConsulta} ${pl(comConsulta, "tem", "têm")} consulta que cita o código. O ano é previsão da própria ANEEL, reprogramável` +
-    (a.revisao.atualizada_por && !a.revisao.texto_lido ? `, e a revisão (${a.revisao.atualizada_por}) não pôde ser lida: os anos podem ter mudado.` : ".")
+      (anos.length ? ` (${anos.map(([ano, n]) => tx(`${n} em ${ano}`, "")).join(" e ")})` : "") +
+      `; ${limites.length} ${pl(limites.length, "trata", "tratam")} dos limites do PLD (${limites.map((l) => tx(`${l.codigo}, prevista para ${l.ano_previsto}`, "")).join("; ")}) e ` +
+      `${comConsulta} ${pl(comConsulta, "tem", "têm")} consulta que cita o código. O ano é previsão da própria ANEEL, reprogramável` +
+      (a.revisao.atualizada_por && !a.revisao.texto_lido ? `, e a revisão (${a.revisao.atualizada_por}) não pôde ser lida: os anos podem ter mudado.` : "."),
+    `${portaria}${portaria.includes(",") ? "," : ""} plans ${a.itens.length} activities for the two-year period` +
+      (anos.length ? ` (${anos.map(([ano, n]) => `${n} in ${ano}`).join(" and ")})` : "") +
+      `; ${limites.length} ${pl(limites.length, "deals", "deal")} with the PLD limits (${limites.map((l) => `${l.codigo}, planned for ${l.ano_previsto}`).join("; ")}) and ` +
+      `${comConsulta} ${pl(comConsulta, "has", "have")} a consultation citing the code. The year is ANEEL's own forecast and can be rescheduled` +
+      (a.revisao.atualizada_por && !a.revisao.texto_lido ? `, and the revision (${a.revisao.atualizada_por}) could not be read: the years may have changed.` : "."),
   );
 }
 
@@ -1298,19 +1505,29 @@ export function linhasHistoricoSituacao(c: Pick<Consultas, "contagem_por_situaca
 export function paresCobertura(c: Pick<Consultas, "cobertura">, modalidade: "consultas" | "audiencias"): { id: string; rotulo: string; valor: number | null; referencia: number | null; detalhe?: string }[] {
   return c.cobertura.map((x) => ({
     id: String(x.ano),
-    rotulo: `${x.ano}${x.parcial ? " (ano parcial)" : ""}`,
+    rotulo: `${x.ano}${x.parcial ? tx(" (ano parcial)", " (partial year)") : ""}`,
     valor: modalidade === "consultas" ? x.nas_atas : x.audiencias_nas_atas,
     referencia: modalidade === "consultas" ? x.total_anual_aneel : x.audiencias_total_anual_aneel,
-    detalhe: x.parcial ? `contagem anual da ANEEL gerada em ${dataBR(x.gerado_em)}, antes do fim do ano` : undefined,
+    detalhe: x.parcial
+      ? tx(`contagem anual da ANEEL gerada em ${dataBR(x.gerado_em)}, antes do fim do ano`, `ANEEL annual count generated on ${dataBR(x.gerado_em)}, before the end of the year`)
+      : undefined,
   }));
 }
 
 /** Texto da faixa de cobertura publicada pela gold (sem recalcular percentuais na interface). */
 export function textoCoberturaFaixa(c: Pick<Consultas, "cobertura_faixa">): string {
   const f = c.cobertura_faixa;
-  if (!f?.consultas) return "Cobertura anual não publicada nesta gold.";
-  const aud = f.audiencias ? ` e de ${num(f.audiencias.min_pct, 1)}% a ${num(f.audiencias.max_pct, 1)}% das audiências públicas` : "";
-  return `Entre ${f.consultas.de} e ${f.consultas.ate}, as atas registram de ${num(f.consultas.min_pct, 1)}% a ${num(f.consultas.max_pct, 1)}% das consultas públicas que a ANEEL conta em cada ano${aud}.`;
+  if (!f?.consultas) return tx("Cobertura anual não publicada nesta gold.", "Annual coverage not published in this gold file.");
+  const aud = f.audiencias
+    ? tx(
+        ` e de ${num(f.audiencias.min_pct, 1)}% a ${num(f.audiencias.max_pct, 1)}% das audiências públicas`,
+        ` and ${num(f.audiencias.min_pct, 1)}% to ${num(f.audiencias.max_pct, 1)}% of public hearings`,
+      )
+    : "";
+  return tx(
+    `Entre ${f.consultas.de} e ${f.consultas.ate}, as atas registram de ${num(f.consultas.min_pct, 1)}% a ${num(f.consultas.max_pct, 1)}% das consultas públicas que a ANEEL conta em cada ano${aud}.`,
+    `Between ${f.consultas.de} and ${f.consultas.ate}, the minutes record ${num(f.consultas.min_pct, 1)}% to ${num(f.consultas.max_pct, 1)}% of the public consultations ANEEL counts each year${aud}.`,
+  );
 }
 
 /** Painéis relacionados a um conjunto de links, sem repetir. */
@@ -1331,7 +1548,7 @@ export function unicosPaineis(links: readonly PainelLink[]): PainelLink[] {
 /** "A", "A e B", "A, B e C". */
 export function listaComE(itens: readonly string[]): string {
   if (itens.length <= 1) return itens[0] ?? "";
-  return `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
+  return `${itens.slice(0, -1).join(", ")}${tx(" e ", " and ")}${itens[itens.length - 1]}`;
 }
 
 /**
@@ -1340,26 +1557,38 @@ export function listaComE(itens: readonly string[]): string {
  */
 export function vereditoLimites(g: Pick<GoldRegulacao, "limites_pld">, ano: number): string {
   const vs = vigenciasDoAno(g, ano);
-  if (!vs.length) return `Não há ato de limites do PLD integrado para ${ano}: os limites desse ano ficam sem valor.`;
+  if (!vs.length) return tx(`Não há ato de limites do PLD integrado para ${ano}: os limites desse ano ficam sem valor.`, `No act setting PLD limits is integrated for ${ano}: the limits for that year have no value.`);
   const v = vs[vs.length - 1];
   const piso = v.pld_min === null ? null : `${reais(v.pld_min, 2)}/MWh`;
   const teto = v.pld_max_horario === null ? null : `${reais(v.pld_max_horario, 2)}/MWh`;
   let frase: string;
-  if (piso && teto) frase = `Em ${ano}, o PLD não pode ficar abaixo de ${piso} nem passar de ${teto} numa hora.`;
-  else if (piso) frase = `Em ${ano}, o PLD não pode ficar abaixo de ${piso}; o teto de uma hora fica sem valor (nenhum ato em vigor o fixa).`;
-  else if (teto) frase = `Em ${ano}, o PLD não pode passar de ${teto} numa hora; o piso fica sem valor (nenhum ato em vigor o fixa).`;
-  else frase = `Em ${ano}, nenhum ato em vigor fixa o piso nem o teto de uma hora do PLD.`;
+  if (piso && teto) frase = tx(`Em ${ano}, o PLD não pode ficar abaixo de ${piso} nem passar de ${teto} numa hora.`, `In ${ano}, the PLD cannot fall below ${piso} or exceed ${teto} in one hour.`);
+  else if (piso)
+    frase = tx(
+      `Em ${ano}, o PLD não pode ficar abaixo de ${piso}; o teto de uma hora fica sem valor (nenhum ato em vigor o fixa).`,
+      `In ${ano}, the PLD cannot fall below ${piso}; the one-hour ceiling has no value (no act in force sets it).`,
+    );
+  else if (teto)
+    frase = tx(
+      `Em ${ano}, o PLD não pode passar de ${teto} numa hora; o piso fica sem valor (nenhum ato em vigor o fixa).`,
+      `In ${ano}, the PLD cannot exceed ${teto} in one hour; the floor has no value (no act in force sets it).`,
+    );
+  else frase = tx(`Em ${ano}, nenhum ato em vigor fixa o piso nem o teto de uma hora do PLD.`, `In ${ano}, no act in force sets the floor or the one-hour ceiling of the PLD.`);
   const atos = Array.from(new Set(CAMPOS_LIMITE.map((c) => v[ATO_CAMPO[c]]).filter((a): a is string => !!a)));
   if (!atos.length) return frase;
   return atos.length === 1
-    ? `${frase} Os limites foram fixados ${porAto(atos[0])}.`
-    : `${frase} Os limites foram fixados por ${atos.length} atos: ${listaComE(atos)}.`;
+    ? tx(`${frase} Os limites foram fixados ${porAto(atos[0])}.`, `${frase} The limits were set ${porAto(atos[0])}.`)
+    : tx(`${frase} Os limites foram fixados por ${atos.length} atos: ${listaComE(atos)}.`, `${frase} The limits were set by ${atos.length} acts: ${listaComE(atos)}.`);
 }
 
 /** Veredito do P044 na data de referência da gold: o ano em vigor nessa data. */
 export function vereditoP044(g: Pick<GoldRegulacao, "limites_pld" | "data_referencia">): string {
   const v = vigenteEm(g.limites_pld.vigencias, g.data_referencia);
-  if (!v) return `Em ${dataBR(g.data_referencia)} não há ato de limites do PLD integrado em vigor: os limites ficam sem valor nesta data.`;
+  if (!v)
+    return tx(
+      `Em ${dataBR(g.data_referencia)} não há ato de limites do PLD integrado em vigor: os limites ficam sem valor nesta data.`,
+      `On ${dataBR(g.data_referencia)} no integrated act setting PLD limits is in force: the limits have no value on this date.`,
+    );
   return vereditoLimites(g, v.ano);
 }
 
@@ -1370,7 +1599,7 @@ export function vereditoP044(g: Pick<GoldRegulacao, "limites_pld" | "data_refere
  */
 function textoAfeta(e: Pick<EventoRegulatorio, "paineis">): string {
   if (!e.paineis.length) return "";
-  return `, ligada a ${listaComE(e.paineis.map((p) => p.rotulo))}`;
+  return tx(`, ligada a ${listaComE(e.paineis.map((p) => p.rotulo))}`, `, linked to ${listaComE(e.paineis.map((p) => rotuloPainelGold(p.rotulo)))}`);
 }
 
 /**
@@ -1379,19 +1608,26 @@ function textoAfeta(e: Pick<EventoRegulatorio, "paineis">): string {
  * vêm na ordem de filtrarLinhaTempo, o mais recente primeiro na data escolhida.
  */
 export function vereditoLinhaTempo(eventos: readonly EventoRegulatorio[], total: number, base: BaseData = "vigencia", conferidoEm?: string | null): string {
-  if (!eventos.length) return `Nenhum dos ${total} eventos da linha do tempo está no recorte escolhido.`;
+  if (!eventos.length)
+    return tx(`Nenhum dos ${total} eventos da linha do tempo está no recorte escolhido.`, `None of the ${total} timeline events is in the chosen selection.`);
   const r = eventos[0];
-  const recorte = eventos.length !== total ? " deste recorte" : "";
+  const recorte = eventos.length !== total ? tx(" deste recorte", " in this selection") : "";
+  const dataVig = dataBR(r.vigencia_grao === "mes" ? r.vigencia_inicio.slice(0, 7) : r.vigencia_inicio);
   const quando =
     base === "publicacao"
       ? r.data_publicacao
-        ? `saiu no Diário Oficial em ${dataBR(r.data_publicacao)}`
-        : "não tem data de publicação na fonte"
-      : `vale desde ${dataBR(r.vigencia_grao === "mes" ? r.vigencia_inicio.slice(0, 7) : r.vigencia_inicio)}`;
-  const abre = base === "publicacao" ? `A regra publicada por último${recorte}` : `A regra mais recente${recorte}`;
+        ? tx(`saiu no Diário Oficial em ${dataBR(r.data_publicacao)}`, `was published in the Official Gazette on ${dataBR(r.data_publicacao)}`)
+        : tx("não tem data de publicação na fonte", "has no publication date in the source")
+      : tx(`vale desde ${dataVig}`, `has applied since ${dataVig}`);
+  const abre = base === "publicacao" ? tx(`A regra publicada por último${recorte}`, `The last rule published${recorte}`) : tx(`A regra mais recente${recorte}`, `The most recent rule${recorte}`);
   const comImpacto = eventos.filter((e) => e.impacto_estimado).length;
-  const limite = comImpacto === 0 ? "sem impacto estimado nesta fonte" : `${comImpacto} de ${eventos.length} eventos trazem impacto estimado`;
-  const lista = conferidoEm ? `É uma seleção de marcos conferida em ${dataBR(conferidoEm)}, ${limite}.` : `É uma seleção de marcos, ${limite}.`;
+  const limite =
+    comImpacto === 0
+      ? tx("sem impacto estimado nesta fonte", "with no impact estimated in this source")
+      : tx(`${comImpacto} de ${eventos.length} eventos trazem impacto estimado`, `${comImpacto} of ${eventos.length} events carry an estimated impact`);
+  const lista = conferidoEm
+    ? tx(`É uma seleção de marcos conferida em ${dataBR(conferidoEm)}, ${limite}.`, `It is a selection of milestones checked on ${dataBR(conferidoEm)}, ${limite}.`)
+    : tx(`É uma seleção de marcos, ${limite}.`, `It is a selection of milestones, ${limite}.`);
   return `${abre} ${quando}: “${r.titulo}”${textoAfeta(r)}. ${lista}`;
 }
 
@@ -1447,8 +1683,15 @@ export function textoVaziosRegistros(regs: readonly EventoRegulatorio[]): string
   const semPub = regs.filter((e) => !e.data_publicacao).length;
   const semEfeito = regs.filter((e) => !e.efeito_declarado).length;
   const naoLido = regs.filter((e) => e.nivel_conferencia === "registro_em_conjunto_de_dados_oficial").length;
-  if (semPub === n && semEfeito === n && naoLido === n) return `Nos ${num(n, 0)} registros, a fonte é um conjunto de dados: não informa a data de publicação nem o efeito declarado, e o texto do ato não foi lido.`;
-  return `${num(semPub, 0)} dos ${num(n, 0)} registros não têm data de publicação, ${num(semEfeito, 0)} não têm efeito declarado e em ${num(naoLido, 0)} o texto do ato não foi lido.`;
+  if (semPub === n && semEfeito === n && naoLido === n)
+    return tx(
+      `Nos ${num(n, 0)} registros, a fonte é um conjunto de dados: não informa a data de publicação nem o efeito declarado, e o texto do ato não foi lido.`,
+      `In the ${num(n, 0)} ${n === 1 ? "record" : "records"}, the source is a dataset: it reports neither the publication date nor the declared effect, and the text of the act was not read.`,
+    );
+  return tx(
+    `${num(semPub, 0)} dos ${num(n, 0)} registros não têm data de publicação, ${num(semEfeito, 0)} não têm efeito declarado e em ${num(naoLido, 0)} o texto do ato não foi lido.`,
+    `${num(semPub, 0)} of the ${num(n, 0)} records have no publication date, ${num(semEfeito, 0)} have no declared effect and in ${num(naoLido, 0)} the text of the act was not read.`,
+  );
 }
 
 /**
@@ -1463,13 +1706,21 @@ export function vereditoConsultas(c: Pick<Consultas, "itens">, data: string): st
   if (abertas.length) {
     const n = abertas.length;
     partes.push(
-      `Em ${dataBR(data)}, ${n} ${pl(n, "consulta ou audiência pública da ANEEL recebe", "consultas e audiências públicas da ANEEL recebem")} contribuições; a primeira a fechar encerra em ${dataBR(abertas[0].fim)}.`,
+      tx(
+        `Em ${dataBR(data)}, ${n} ${pl(n, "consulta ou audiência pública da ANEEL recebe", "consultas e audiências públicas da ANEEL recebem")} contribuições; a primeira a fechar encerra em ${dataBR(abertas[0].fim)}.`,
+        `On ${dataBR(data)}, ${n} ANEEL ${pl(n, "public consultation or hearing is", "public consultations and hearings are")} receiving contributions; the first to close ends on ${dataBR(abertas[0].fim)}.`,
+      ),
     );
   } else {
-    partes.push(`Em ${dataBR(data)}, nenhuma consulta ou audiência pública da ANEEL com janela escrita nas atas recebe contribuições.`);
+    partes.push(
+      tx(
+        `Em ${dataBR(data)}, nenhuma consulta ou audiência pública da ANEEL com janela escrita nas atas recebe contribuições.`,
+        `On ${dataBR(data)}, no ANEEL public consultation or hearing with a window written in the minutes is receiving contributions.`,
+      ),
+    );
   }
-  if (aAbrir) partes.push(`${num(aAbrir, 0)} ${pl(aAbrir, "ainda não começou", "ainda não começaram")}.`);
-  partes.push("Só entram as consultas abertas em reunião pública registrada em ata.");
+  if (aAbrir) partes.push(tx(`${num(aAbrir, 0)} ${pl(aAbrir, "ainda não começou", "ainda não começaram")}.`, `${num(aAbrir, 0)} ${pl(aAbrir, "has", "have")} not started yet.`));
+  partes.push(tx("Só entram as consultas abertas em reunião pública registrada em ata.", "Only consultations opened in a public meeting recorded in minutes are included."));
   return partes.join(" ");
 }
 
@@ -1494,10 +1745,22 @@ export function mudancasDeAbertas(itens: readonly Consulta[], referencia: string
 export function textoMudancaDeAbertas(itens: readonly Consulta[], referencia: string, data: string): string {
   if (data <= referencia) return "";
   const m = mudancasDeAbertas(itens, referencia, data);
-  const fim = (x: ConsultaNaData) => `${x.rotulo}, prazo até ${dataBR(x.fim)}`;
-  const partes = [`Em ${dataBR(referencia)} eram ${num(m.antes, 0)} abertas; em ${dataBR(data)}, ${pl(m.depois, "é", "são")} ${num(m.depois, 0)}.`];
-  if (m.fecharam.length) partes.push(`${pl(m.fecharam.length, "Encerrou o prazo", "Encerraram o prazo")} no intervalo: ${listaComE(m.fecharam.map(fim))}.`);
-  if (m.abriram.length) partes.push(`${pl(m.abriram.length, "Passou a receber contribuições", "Passaram a receber contribuições")} no intervalo: ${listaComE(m.abriram.map((x) => `${x.rotulo}, desde ${dataBR(x.inicio)}`))}.`);
+  const fim = (x: ConsultaNaData) => tx(`${x.rotulo}, prazo até ${dataBR(x.fim)}`, `${x.rotulo}, deadline ${dataBR(x.fim)}`);
+  const partes = [
+    tx(
+      `Em ${dataBR(referencia)} eram ${num(m.antes, 0)} abertas; em ${dataBR(data)}, ${pl(m.depois, "é", "são")} ${num(m.depois, 0)}.`,
+      `On ${dataBR(referencia)} there ${pl(m.antes, "was", "were")} ${num(m.antes, 0)} open; on ${dataBR(data)}, there ${pl(m.depois, "is", "are")} ${num(m.depois, 0)}.`,
+    ),
+  ];
+  if (m.fecharam.length)
+    partes.push(tx(`${pl(m.fecharam.length, "Encerrou o prazo", "Encerraram o prazo")} no intervalo: ${listaComE(m.fecharam.map(fim))}.`, `Deadline closed in the interval: ${listaComE(m.fecharam.map(fim))}.`));
+  if (m.abriram.length)
+    partes.push(
+      tx(
+        `${pl(m.abriram.length, "Passou a receber contribuições", "Passaram a receber contribuições")} no intervalo: ${listaComE(m.abriram.map((x) => tx(`${x.rotulo}, desde ${dataBR(x.inicio)}`, "")))}.`,
+        `Started receiving contributions in the interval: ${listaComE(m.abriram.map((x) => `${x.rotulo}, from ${dataBR(x.inicio)}`))}.`,
+      ),
+    );
   return partes.join(" ");
 }
 
@@ -1506,8 +1769,15 @@ export function textoMudancaDeAbertas(itens: readonly Consulta[], referencia: st
  * de leitura (o ano é previsão).
  */
 export function vereditoAgenda(a: GoldRegulacao["agenda"], limites: GoldRegulacao["limites_em_revisao"]): string {
-  if (!a.disponivel) return `A Agenda Regulatória não está disponível nesta publicação: ${a.motivo ?? "motivo não informado"}.`;
+  if (!a.disponivel)
+    return tx(
+      `A Agenda Regulatória não está disponível nesta publicação: ${a.motivo ?? "motivo não informado"}.`,
+      `The regulatory agenda is not available in this publication: ${a.motivo ?? "reason not reported"}.`,
+    );
   const n = a.itens.length;
   const k = limites.length;
-  return `A ${nomeAgenda(a)} prevê ${num(n, 0)} ${pl(n, "atividade", "atividades")}; ${num(k, 0)} ${pl(k, "trata", "tratam")} dos limites do PLD. O ano de cada uma é uma previsão da ANEEL, que pode mudar.`;
+  return tx(
+    `A ${nomeAgenda(a)} prevê ${num(n, 0)} ${pl(n, "atividade", "atividades")}; ${num(k, 0)} ${pl(k, "trata", "tratam")} dos limites do PLD. O ano de cada uma é uma previsão da ANEEL, que pode mudar.`,
+    `The ${nomeAgenda(a)} plans ${num(n, 0)} ${pl(n, "activity", "activities")}; ${num(k, 0)} ${pl(k, "deals", "deal")} with the PLD limits. The year of each one is an ANEEL forecast, which may change.`,
+  );
 }

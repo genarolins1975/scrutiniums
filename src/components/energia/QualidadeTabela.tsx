@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { carregarUmaVez, tabelaQualidade, type AvisosFec, type DefinicaoTabela, type IdTabela } from "@/lib/energia/qualidade";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { QualidadeGold } from "@/lib/energia/tipos-qualidade";
 
 /**
@@ -34,6 +35,8 @@ export function QualidadeTabela({
   avisosFec?: AvisosFec;
   urlGold?: string;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [aberta, setAberta] = useState(false);
   const [def, setDef] = useState<DefinicaoTabela | null>(null);
   const [erro, setErro] = useState<string | null>(null);
@@ -49,13 +52,13 @@ export function QualidadeTabela({
     if (!aberta || def) return;
     let vivo = true;
     carregarUmaVez(urlGold, (r) => r.json() as Promise<QualidadeGold>).then(
-      (g) => vivo && setDef(tabelaQualidade(tabela, g, avisosFec)),
+      (g) => vivo && setDef(tabelaQualidade(tabela, g, avisosFec, idioma)),
       (e: unknown) => vivo && setErro(e instanceof Error ? e.message : String(e)),
     );
     return () => {
       vivo = false;
     };
-  }, [aberta, def, tabela, urlGold, avisosFec]);
+  }, [aberta, def, tabela, urlGold, avisosFec, idioma]);
 
   if (!aberta) {
     return (
@@ -65,23 +68,33 @@ export function QualidadeTabela({
         className="inline-flex min-h-[44px] max-w-full items-center gap-2 border border-linha bg-superficie px-3 py-2 text-left text-sm text-carvao hover:border-energia focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
       >
         <span aria-hidden="true" className="rotulo text-mineral">
-          Tabela
+          {tx("Tabela", "Table")}
         </span>
-        Abrir: {titulo} ({linhas.toLocaleString("pt-BR")} {linhas === 1 ? "linha" : "linhas"}, com busca, filtros e exportação)
+        {tx(
+          <>
+            Abrir: {titulo} ({linhas.toLocaleString("pt-BR")} {linhas === 1 ? "linha" : "linhas"}, com busca, filtros e exportação)
+          </>,
+          <>
+            Open: {titulo} ({linhas.toLocaleString("en-US")} {linhas === 1 ? "row" : "rows"}, with search, filters and export)
+          </>,
+        )}
       </button>
     );
   }
   if (erro) {
     return (
       <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-        Não foi possível montar a tabela ({erro}). Os mesmos dados estão nos arquivos de download do painel.
+        {tx(
+          <>Não foi possível montar a tabela ({erro}). Os mesmos dados estão nos arquivos de download do painel.</>,
+          <>The table could not be built ({erro}). The same data are in the panel&apos;s download files.</>,
+        )}
       </p>
     );
   }
   if (!def) {
     return (
       <p role="status" className="text-sm text-carvao-muted">
-        Montando a tabela: {titulo}…
+        {tx(<>Montando a tabela: {titulo}…</>, <>Building the table: {titulo}…</>)}
       </p>
     );
   }

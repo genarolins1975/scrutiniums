@@ -1,4 +1,6 @@
 import { diasEntre, type TrechoEstado } from "@/lib/energia/visao";
+import type { Idioma } from "@/lib/idioma";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 
 /**
  * Linha de estado de uma regra (P007): um trecho por sequência de dias no mesmo estado,
@@ -9,12 +11,16 @@ import { diasEntre, type TrechoEstado } from "@/lib/energia/visao";
  * e ao cliente. A leitura em palavras (contagem por estado) acompanha sempre o desenho.
  */
 
-export const LEGENDA_ESTADOS: readonly { estado: string; rotulo: string }[] = [
-  { estado: "A", rotulo: "alerta exibido (faixa cheia)" },
-  { estado: "o", rotulo: "condição sem a duração mínima (meia faixa)" },
-  { estado: ".", rotulo: "normal (traço fino)" },
-  { estado: "-", rotulo: "sem dado (tracejado)" },
-];
+export function legendaEstados(idioma: Idioma = idiomaEnergia()): readonly { estado: string; rotulo: string }[] {
+  return [
+    { estado: "A", rotulo: tx("alerta exibido (faixa cheia)", "alert displayed (full band)", idioma) },
+    { estado: "o", rotulo: tx("condição sem a duração mínima (meia faixa)", "condition without the minimum duration (half band)", idioma) },
+    { estado: ".", rotulo: tx("normal (traço fino)", "normal (thin line)", idioma) },
+    { estado: "-", rotulo: tx("sem dado (tracejado)", "no data (dashed)", idioma) },
+  ];
+}
+
+export const LEGENDA_ESTADOS = legendaEstados("pt");
 
 const ALTURA = 16;
 
@@ -37,10 +43,10 @@ export function VisaoFaixaEstados({ trechos, inicio, fim, rotulo }: { trechos: r
 }
 
 /** Legenda dos estados, com a mesma forma do desenho. */
-export function VisaoLegendaEstados() {
+export function VisaoLegendaEstados({ idioma = idiomaEnergia() }: { idioma?: Idioma }) {
   return (
-    <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-carvao-muted" aria-label="Legenda da linha de estado">
-      {LEGENDA_ESTADOS.map((l) => (
+    <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-carvao-muted" aria-label={tx("Legenda da linha de estado", "State line legend", idioma)}>
+      {legendaEstados(idioma).map((l) => (
         <li key={l.estado} className="inline-flex items-center gap-1.5">
           <svg width="18" height={ALTURA} aria-hidden="true">
             {l.estado === "A" && <rect x={0} y={0} width={18} height={ALTURA} fill="var(--cor-energia-dark)" />}

@@ -8,17 +8,22 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
-  COLUNAS_CONFIABILIDADE,
-  COLUNAS_DESLIZAMENTO,
-  COLUNAS_PREVISOES_ANO,
   COR_VIABILIDADE,
   ESQUEMA_CRONOGRAMA,
   IDS_VIABILIDADE,
   VIABILIDADE_DO_ID,
+  colunasConfiabilidade,
+  colunasDeslizamento,
+  colunasPrevisoesAno,
   dataTexto,
+  listaTexto,
+  rotuloViabilidade,
   type IdViabilidade,
 } from "@/lib/energia/expansao";
 import type { LinhaTabela } from "@/lib/energia/tabela";
+import type { Idioma } from "@/lib/idioma";
+import { tx } from "@/lib/energia/idioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * P041, cronograma e revisões.
@@ -40,11 +45,16 @@ import type { LinhaTabela } from "@/lib/energia/tabela";
  */
 
 const AMOSTRA = (cor: string) => <span aria-hidden="true" className="inline-block h-3 w-3 shrink-0 border border-carvao" style={{ background: cor }} />;
-const OPCOES_VIA = IDS_VIABILIDADE.map((id) => ({ id, rotulo: `Viabilidade ${VIABILIDADE_DO_ID[id].toLocaleLowerCase("pt-BR")}`, marcador: AMOSTRA(COR_VIABILIDADE[id]) }));
-const OPCOES_BLOCO = [
-  ["com", "Todas as unidades"],
-  ["sem", "Sem as datas em bloco"],
-] as const;
+/** "Viabilidade alta" ("High feasibility" em inglês), a partir do rótulo da fonte. */
+function rotuloVia(id: IdViabilidade, idioma: Idioma): string {
+  return tx(`Viabilidade ${VIABILIDADE_DO_ID[id].toLocaleLowerCase("pt-BR")}`, `${rotuloViabilidade(VIABILIDADE_DO_ID[id], idioma)} feasibility`, idioma);
+}
+function opcoesBloco(idioma: Idioma) {
+  return [
+    ["com", tx("Todas as unidades", "All units", idioma)], // i18n: dado
+    ["sem", tx("Sem as datas em bloco", "Without the bulk-assigned dates", idioma)], // i18n: dado
+  ] as const;
+}
 
 type LinhaPrev = LinhaTabela & { id: string };
 
@@ -68,19 +78,27 @@ export function ExpansaoPrevisoes({
   /** Frase que diz o que ficou fora do gráfico por ano e onde está. */
   avisoBloco?: ReactNode;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const OPCOES_VIA = IDS_VIABILIDADE.map((id) => ({ id, rotulo: rotuloVia(id, idioma), marcador: AMOSTRA(COR_VIABILIDADE[id]) }));
   const [v, definir] = useEstadoUrl(ESQUEMA_CRONOGRAMA);
   const series = useMemo(
-    () => IDS_VIABILIDADE.filter((id) => (v.via as readonly string[]).includes(id)).map((id) => ({ id, rotulo: `Viabilidade ${VIABILIDADE_DO_ID[id].toLocaleLowerCase("pt-BR")}`, cor: COR_VIABILIDADE[id] })),
-    [v.via],
+    () => IDS_VIABILIDADE.filter((id) => (v.via as readonly string[]).includes(id)).map((id) => ({ id, rotulo: rotuloVia(id, idioma), cor: COR_VIABILIDADE[id] })),
+    [v.via, idioma],
   );
   const todas = series.length === IDS_VIABILIDADE.length;
-  const sufixo = todas ? "" : ` (só ${series.map((s) => s.rotulo.toLocaleLowerCase("pt-BR")).join(" e ")})`;
-  const semBloco = anosEmBloco.length ? `, sem ${anosEmBloco.join(" e ")}, que ${anosEmBloco.length === 1 ? "contém" : "contêm"} as datas em bloco` : "";
+  const sufixo = todas
+    ? ""
+    : tx(` (só ${series.map((s) => s.rotulo.toLocaleLowerCase("pt-BR")).join(" e ")})`, ` (${series.map((s) => s.rotulo.toLowerCase()).join(" and ")} only)`);
+  const um = anosEmBloco.length === 1;
+  const semBloco = anosEmBloco.length
+    ? tx(`, sem ${anosEmBloco.join(" e ")}, que ${um ? "contém" : "contêm"} as datas em bloco`, `, without ${listaTexto(anosEmBloco, idioma)}, which ${um ? "contains" : "contain"} the bulk-assigned dates`)
+    : "";
   return (
     <div className="space-y-6">
-      <ExpansaoMarcas rotulo="Viabilidade (fiscalização)" opcoes={OPCOES_VIA} valor={v.via as IdViabilidade[]} onMudar={(via) => definir({ via })} />
+      <ExpansaoMarcas rotulo={tx("Viabilidade (fiscalização)", "Feasibility (inspection)")} opcoes={OPCOES_VIA} valor={v.via as IdViabilidade[]} onMudar={(via) => definir({ via })} />
       <GraficoBarras
-        titulo={`Previsões dos próximos 24 meses, fotografia do RALIE de ${dataRalie}${sufixo} (MW)`}
+        titulo={tx(`Previsões dos próximos 24 meses, fotografia do RALIE de ${dataRalie}${sufixo} (MW)`, `Forecasts for the next 24 months, RALIE snapshot of ${dataRalie}${sufixo} (MW)`)}
         dados={proximos}
         chaveCategoria="id"
         chaveRotulo="mes"
@@ -91,10 +109,13 @@ export function ExpansaoPrevisoes({
         altura={300}
       />
       <GraficoBarras
-        titulo={`Potência com previsão de operação comercial por ano, fotografia do RALIE de ${dataRalie}${sufixo}${semBloco} (MW)`}
+        titulo={tx(
+          `Potência com previsão de operação comercial por ano, fotografia do RALIE de ${dataRalie}${sufixo}${semBloco} (MW)`,
+          `Capacity forecast to enter commercial operation by year, RALIE snapshot of ${dataRalie}${sufixo}${semBloco} (MW)`,
+        )}
         dados={porAnoSemBloco}
         chaveCategoria="id"
-        chaveRotulo="ano"
+        chaveRotulo="ano" // i18n: dado
         series={series}
         unidade="MW"
         casas={1}
@@ -104,16 +125,19 @@ export function ExpansaoPrevisoes({
       />
       {avisoBloco}
       <TabelaInterativa
-        titulo={`Previsões por ano, fotografia de ${dataRalie}`}
-        colunas={COLUNAS_PREVISOES_ANO}
+        titulo={tx(`Previsões por ano, fotografia de ${dataRalie}`, `Forecasts by year, snapshot of ${dataRalie}`)}
+        colunas={colunasPrevisoesAno(idioma)}
         linhas={porAno}
         chaveLinha="id"
-        colunaRotulo="ano"
+        colunaRotulo="ano" // i18n: dado
         fonte={fonte}
         versao={dataRalie}
         nomeArquivo="expansao-previsoes-ano"
         chaveUrl="cro.tab"
-        nota="Data-base de todas as linhas: a fotografia indicada. As colunas de viabilidade somam a potência prevista do ano. A coluna de data em bloco marca o ano que contém datas convencionais, que o gráfico por ano deixa de fora."
+        nota={tx(
+          "Data-base de todas as linhas: a fotografia indicada. As colunas de viabilidade somam a potência prevista do ano. A coluna de data em bloco marca o ano que contém datas convencionais, que o gráfico por ano deixa de fora.",
+          "Base date of every row: the snapshot shown. The feasibility columns add up to the year's forecast capacity. The bulk-assigned date column marks the year that contains conventional dates, which the chart by year leaves out.",
+        )}
       />
     </div>
   );
@@ -132,6 +156,8 @@ export function ExpansaoRevisoes({
   dataLiberacoes: string;
   fonte: string;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_CRONOGRAMA);
   const intervalo = v.de && v.ate ? { inicio: v.de, fim: v.ate } : null;
   const aoIntervalo = (i: { inicio: string | number; fim: string | number } | null) => definir({ de: i ? String(i.inicio) : "", ate: i ? String(i.fim) : "" });
@@ -142,14 +168,17 @@ export function ExpansaoRevisoes({
     <div className="space-y-6">
       <CursorSincronizado>
         <GraficoLinhas
-          titulo={`Do que cada fotografia previa para os 12 meses seguintes, quanto foi liberado para operação comercial, ${dataTexto(primeira)} a ${dataTexto(ultima)} (% da potência prevista)`}
+          titulo={tx(
+            `Do que cada fotografia previa para os 12 meses seguintes, quanto foi liberado para operação comercial, ${dataTexto(primeira, idioma)} a ${dataTexto(ultima, idioma)} (% da potência prevista)`,
+            `Of what each snapshot forecast for the following 12 months, how much was released for commercial operation, ${dataTexto(primeira, idioma)} to ${dataTexto(ultima, idioma)} (% of forecast capacity)`,
+          )}
           dados={confiabilidade}
           chaveX="ralie"
           formatoX="data"
           series={[
-            { id: "pct_no_prazo", rotulo: "Liberado no prazo (até 12 meses)", sigla: "No prazo", cor: "var(--cor-energia)" },
-            { id: "pct_depois", rotulo: "Liberado depois", sigla: "Depois", cor: "var(--serie-comp-3)", tracejada: true },
-            { id: "pct_nao_liberado", rotulo: `Não liberado até ${dataLiberacoes}`, sigla: "Não liberado", cor: "var(--escala-div-neg-1)" },
+            { id: "pct_no_prazo", rotulo: tx("Liberado no prazo (até 12 meses)", "Released on time (within 12 months)"), sigla: tx("No prazo", "On time"), cor: "var(--cor-energia)" }, // i18n: dado
+            { id: "pct_depois", rotulo: tx("Liberado depois", "Released later"), sigla: tx("Depois", "Later"), cor: "var(--serie-comp-3)", tracejada: true },
+            { id: "pct_nao_liberado", rotulo: tx(`Não liberado até ${dataLiberacoes}`, `Not released by ${dataLiberacoes}`), sigla: tx("Não liberado", "Not released"), cor: "var(--escala-div-neg-1)" },
           ]}
           unidade="%"
           casas={1}
@@ -160,16 +189,19 @@ export function ExpansaoRevisoes({
           legendaInterativa
           altura={300}
         />
-        <ExpansaoOpcoes rotulo="Revisão das previsões" nome="expansao-cro-bloco" opcoes={OPCOES_BLOCO} valor={v.bloco} onMudar={(bloco) => definir({ bloco })} />
+        <ExpansaoOpcoes rotulo={tx("Revisão das previsões", "Revision of the forecasts")} nome="expansao-cro-bloco" opcoes={opcoesBloco(idioma)} valor={v.bloco} onMudar={(bloco) => definir({ bloco })} />
         <GraficoLinhas
-          titulo={`Como a previsão da mesma unidade mudou em 12 meses, por fotografia de partida${v.bloco === "sem" ? ", sem as unidades em data em bloco" : ""} (% da potência)`}
+          titulo={tx(
+            `Como a previsão da mesma unidade mudou em 12 meses, por fotografia de partida${v.bloco === "sem" ? ", sem as unidades em data em bloco" : ""} (% da potência)`,
+            `How the forecast for the same unit changed in 12 months, by starting snapshot${v.bloco === "sem" ? ", without the units on bulk-assigned dates" : ""} (% of capacity)`,
+          )}
           dados={desl}
           chaveX="ralie"
           formatoX="data"
           series={[
-            { id: "pct_adiada", rotulo: "Previsão adiada", sigla: "Adiada", cor: "var(--escala-div-neg-1)" },
-            { id: "pct_mantida", rotulo: "Previsão mantida", sigla: "Mantida", cor: "var(--cor-mineral)", tracejada: true },
-            { id: "pct_antecipada", rotulo: "Previsão antecipada", sigla: "Antecipada", cor: "var(--cor-energia)" },
+            { id: "pct_adiada", rotulo: tx("Previsão adiada", "Forecast postponed"), sigla: tx("Adiada", "Postponed"), cor: "var(--escala-div-neg-1)" },
+            { id: "pct_mantida", rotulo: tx("Previsão mantida", "Forecast kept"), sigla: tx("Mantida", "Kept"), cor: "var(--cor-mineral)", tracejada: true },
+            { id: "pct_antecipada", rotulo: tx("Previsão antecipada", "Forecast brought forward"), sigla: tx("Antecipada", "Brought forward"), cor: "var(--cor-energia)" }, // i18n: dado
           ]}
           unidade="%"
           casas={1}
@@ -182,8 +214,8 @@ export function ExpansaoRevisoes({
         />
       </CursorSincronizado>
       <TabelaInterativa
-        titulo="Confiabilidade das previsões por fotografia mensal"
-        colunas={COLUNAS_CONFIABILIDADE}
+        titulo={tx("Confiabilidade das previsões por fotografia mensal", "Reliability of the forecasts by monthly snapshot")}
+        colunas={colunasConfiabilidade(idioma)}
         linhas={confiabilidade}
         chaveLinha="id"
         colunaRotulo="ralie"
@@ -192,11 +224,17 @@ export function ExpansaoRevisoes({
         nomeArquivo="expansao-confiabilidade-previsoes"
         chaveUrl="cro.conf"
         ordemInicial={{ coluna: "ralie", direcao: "desc" }}
-        nota="Cada linha é uma previsão com data-base: a fotografia. Unidade já liberada antes da fotografia sai do denominador. Só janelas encerradas pelo menos 15 dias antes da data do arquivo de liberações."
+        nota={tx(
+          "Cada linha é uma previsão com data-base: a fotografia. Unidade já liberada antes da fotografia sai do denominador. Só janelas encerradas pelo menos 15 dias antes da data do arquivo de liberações.",
+          "Each row is a forecast with a base date: the snapshot. A unit already released before the snapshot leaves the denominator. Only windows closed at least 15 days before the date of the releases file.",
+        )}
       />
       <TabelaInterativa
-        titulo={`Revisão das previsões entre fotografias com 12 meses de distância${v.bloco === "sem" ? " (sem as datas em bloco)" : ""}`}
-        colunas={COLUNAS_DESLIZAMENTO}
+        titulo={tx(
+          `Revisão das previsões entre fotografias com 12 meses de distância${v.bloco === "sem" ? " (sem as datas em bloco)" : ""}`,
+          `Revision of the forecasts between snapshots 12 months apart${v.bloco === "sem" ? " (without the bulk-assigned dates)" : ""}`,
+        )}
+        colunas={colunasDeslizamento(idioma)}
         linhas={desl}
         chaveLinha="id"
         colunaRotulo="ralie"
@@ -205,7 +243,10 @@ export function ExpansaoRevisoes({
         nomeArquivo={v.bloco === "sem" ? "expansao-revisao-previsoes-sem-bloco" : "expansao-revisao-previsoes"}
         chaveUrl="cro.desl"
         ordemInicial={{ coluna: "ralie", direcao: "desc" }}
-        nota="Só unidades que seguem em implantação nas duas fotografias e têm previsão nas duas (viés de sobrevivência). Mediana ponderada pela potência; positivo é adiamento."
+        nota={tx(
+          "Só unidades que seguem em implantação nas duas fotografias e têm previsão nas duas (viés de sobrevivência). Mediana ponderada pela potência; positivo é adiamento.",
+          "Only units still under implementation in both snapshots and with a forecast in both (survivorship bias). Capacity-weighted median; positive is postponement.",
+        )}
       />
     </div>
   );

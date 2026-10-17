@@ -1,17 +1,20 @@
 import { statSync } from "node:fs";
 import { join } from "node:path";
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
-import { PAINEIS_EXPANSAO, PERGUNTA_EXPANSAO, ROTA_EXPANSAO, painel, proximoPainel, rotaPainel, type PainelExpansao } from "@/lib/energia/expansao";
+import { ROTA_EXPANSAO, painel, paineisExpansao, perguntaExpansao, proximoPainel, rotaPainel, type PainelExpansao } from "@/lib/energia/expansao";
 import { datasLegiveis, num } from "@/lib/energia/formato";
 import type { Download, Natureza } from "@/lib/energia/tipos";
 import { TextoEnergia } from "@/components/energia/TextoEnergia";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { DOWNLOAD_EXPANSAO_TRANSICAO_EN, downloadsNoIdioma } from "@/lib/energia/i18n/expansao-transicao-territorio";
 
 /**
  * Peças de servidor das páginas da Expansão da oferta e da rede (a abertura em
@@ -41,10 +44,12 @@ export function tamanhoPublicado(url: string): string | null {
 }
 
 /** A abertura e as quatro páginas de painel como itens da navegação local; a descrição de cada uma é a pergunta que ela responde. */
-const ITENS_EXPANSAO = [
-  { id: "sintese", href: ROTA_EXPANSAO, rotulo: "Síntese", descricao: PERGUNTA_EXPANSAO },
-  ...PAINEIS_EXPANSAO.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta })),
-];
+function itensExpansao() {
+  return [
+    { id: "sintese", href: ROTA_EXPANSAO, rotulo: tx("Síntese", "Summary"), descricao: perguntaExpansao() },
+    ...paineisExpansao().map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta })),
+  ];
+}
 
 /**
  * Faixa de páginas irmãs nas páginas filhas, com a atual marcada. A abertura não leva a faixa: mostra os mesmos destinos como
@@ -52,7 +57,7 @@ const ITENS_EXPANSAO = [
  */
 export function ExpansaoNavegacao({ atual }: { atual: PainelExpansao | "sintese" }) {
   if (atual === "sintese") return null;
-  return <NavegacaoLocal rotulo="Páginas da expansão" itens={ITENS_EXPANSAO} atual={atual} />;
+  return <NavegacaoLocal rotulo={tx("Páginas da expansão", "Expansion pages")} itens={itensExpansao()} atual={atual} />;
 }
 
 export type CapituloExpansao = {
@@ -74,8 +79,8 @@ export type CapituloExpansao = {
  */
 export function ExpansaoCapitulos({ itens }: { itens: CapituloExpansao[] }) {
   return (
-    <nav aria-label="Capítulos da expansão" data-navegacao-local="capitulos" className="border-t border-linha pt-6">
-      <h3 className="ed-h3 font-serif text-carvao">Uma página para cada pergunta</h3>
+    <nav aria-label={tx("Capítulos da expansão", "Expansion chapters")} data-navegacao-local="capitulos" className="border-t border-linha pt-6">
+      <h3 className="ed-h3 font-serif text-carvao">{tx("Uma página para cada pergunta", "One page for each question")}</h3>
       <ol className="mt-4 grid gap-x-10 gap-y-9 md:grid-cols-2">
         {itens.map((c) => {
           const p = painel(c.id);
@@ -87,14 +92,14 @@ export function ExpansaoCapitulos({ itens }: { itens: CapituloExpansao[] }) {
               {c.numero}
               <p className="text-xs leading-relaxed text-carvao-muted">{c.contexto}</p>
               <p className="text-sm leading-relaxed text-carvao-muted">
-                <span className="rotulo mr-2 text-mineral">Não permite concluir</span>
+                <span className="rotulo mr-2 text-mineral">{tx("Não permite concluir", "Does not allow concluding")}</span>
                 {c.limite}
               </p>
               <Link
                 href={rotaPainel(c.id)}
                 className="inline-flex min-h-[44px] items-center self-start text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"
               >
-                Abrir {p.rotulo}
+                {tx(`Abrir ${p.rotulo}`, `Open ${p.rotulo}`)}
                 <span aria-hidden="true" className="ml-1.5">
                   →
                 </span>
@@ -114,10 +119,13 @@ export function ExpansaoIndisponivel({ motivo }: { motivo?: string | null }) {
       <CabecalhoEnergia atual="expansao" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
-          titulo="Expansão indisponível nesta publicação"
+          titulo={tx("Expansão indisponível nesta publicação", "Expansion unavailable in this release")}
           motivo={
             motivo ??
-            "A gold do módulo Expansão (public/energia/gold/expansao.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."
+            tx(
+              "A gold do módulo Expansão (public/energia/gold/expansao.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe.",
+              "The gold file of the Expansion module (public/energia/gold/expansao.json) was not generated or did not pass validation; the last valid release is kept when there is one.",
+            )
           }
         />
       </main>
@@ -130,15 +138,15 @@ export function ExpansaoRecorte({ periodo, universo, unidade }: { periodo: React
   return (
     <dl data-recorte-painel="" className="grid gap-x-6 gap-y-2 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
         <dd className="mt-0.5">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5">{unidade}</dd>
       </div>
     </dl>
@@ -148,7 +156,7 @@ export function ExpansaoRecorte({ periodo, universo, unidade }: { periodo: React
 /** Datas de referência de cada parte da gold: cada número diz o seu dia, sem sugerir simultaneidade (bloco "Fontes, datas e siglas"). */
 export function ExpansaoDatas({ itens }: { itens: { rotulo: string; texto: string; natureza: Natureza }[] }) {
   return (
-    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx("Datas de referência de cada parte", "Reference dates of each part")}>
       {itens.map((x) => (
         <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
           <span>
@@ -164,7 +172,13 @@ export function ExpansaoDatas({ itens }: { itens: { rotulo: string; texto: strin
 /** Rodapé do painel: downloads, link compartilhável e a próxima pergunta, numa linha (SeguirPainel). */
 export function ExpansaoSeguir({ id, downloads }: { id: PainelExpansao; downloads: Download[] }) {
   const prox = painel(proximoPainel(id));
-  return <SeguirPainel ancora={id} proximo={{ href: rotaPainel(prox.id), pergunta: prox.pergunta }} downloads={downloads} />;
+  return (
+    <SeguirPainel
+      ancora={id}
+      proximo={{ href: rotaPainel(prox.id), pergunta: prox.pergunta }}
+      downloads={downloadsNoIdioma(downloads, DOWNLOAD_EXPANSAO_TRANSICAO_EN, idiomaEnergia())}
+    />
+  );
 }
 
 /** Seção de Analisar: tabelas completas, séries detalhadas e comparações; continua no HTML do servidor. */
@@ -216,7 +230,9 @@ export function ExpansaoLimitacoes({ itens }: { itens: readonly string[] }) {
   return (
     <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
       {unicos.map((x) => (
-        <li key={x}>{datasLegiveis(x)}</li>
+        <li key={x}>
+          <TrechoPortugues regiao="expansao-limitacao">{datasLegiveis(x, "pt")}</TrechoPortugues>
+        </li>
       ))}
     </ul>
   );
@@ -225,7 +241,7 @@ export function ExpansaoLimitacoes({ itens }: { itens: readonly string[] }) {
 /** Tabela simples de servidor (poucas linhas, sem interação), com cabeçalhos e unidade. */
 export function ExpansaoTabelaSimples({ titulo, cabecalho, linhas }: { titulo: string; cabecalho: string[]; linhas: ReactNode[][] }) {
   return (
-    <div className="tabela-scroll" tabIndex={0} role="region" aria-label={`${titulo} (tabela rolável)`}>
+    <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx(`${titulo} (tabela rolável)`, `${titulo} (scrollable table)`)}>
       <table className="w-full border-collapse text-sm tabular-nums">
         <caption className="pb-2 text-left text-sm font-medium text-carvao">{titulo}</caption>
         <thead>

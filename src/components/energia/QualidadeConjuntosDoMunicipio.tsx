@@ -3,15 +3,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import {
-  COLUNAS_CONJUNTOS_MUNICIPIO,
-  DEFINICAO_CONJUNTO,
   arquivoConjuntosDoAno,
+  colunasConjuntosMunicipio,
+  definicaoConjunto,
   carregarUmaVez,
   conjuntosDoCsv,
   conjuntosDoMunicipio,
   textoMesesIncompletos,
 } from "@/lib/energia/qualidade";
 import type { LinhaTabela } from "@/lib/energia/tabela";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 
 /**
  * Ficha do município (mapa): os conjuntos elétricos que atendem o município escolhido, cada um com DEC, FEC, o limite do próprio conjunto e a
@@ -38,6 +40,8 @@ export function QualidadeConjuntosDoMunicipio({
   tamanho?: string;
 }) {
   const arquivo = arquivoConjuntosDoAno(ano);
+  const idioma = useIdioma();
+  const tx = useTx();
   const [linhasAno, setLinhasAno] = useState<LinhaTabela[] | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [tentativa, setTentativa] = useState(0);
@@ -46,13 +50,13 @@ export function QualidadeConjuntosDoMunicipio({
     let vivo = true;
     setErro(null);
     carregarUmaVez(arquivo, (r) => r.text()).then(
-      (t) => vivo && setLinhasAno(conjuntosDoCsv(t, ano)),
+      (t) => vivo && setLinhasAno(conjuntosDoCsv(t, ano, idioma)),
       (e: unknown) => vivo && setErro(e instanceof Error ? e.message : String(e)),
     );
     return () => {
       vivo = false;
     };
-  }, [arquivo, ano, tentativa]);
+  }, [arquivo, ano, tentativa, idioma]);
 
   const chave = codigos.join(",");
   const { linhas, semValor } = useMemo(() => (linhasAno ? conjuntosDoMunicipio(linhasAno, codigos) : { linhas: [], semValor: [] as string[] }), [linhasAno, chave]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -63,16 +67,27 @@ export function QualidadeConjuntosDoMunicipio({
   return (
     <div className="space-y-3 border-t border-linha pt-4" data-conjuntos-do-municipio="">
       <h5 className="font-serif text-base text-carvao">
-        {n === 1 ? "O conjunto que atende" : `Os ${n.toLocaleString("pt-BR")} conjuntos que atendem`} {municipio}, com o limite de cada um
+        {tx(
+          <>
+            {n === 1 ? "O conjunto que atende" : `Os ${n.toLocaleString("pt-BR")} conjuntos que atendem`} {municipio}, com o limite de cada um
+          </>,
+          <>
+            {n === 1 ? "The consumer set that serves" : `The ${n.toLocaleString("en-US")} consumer sets that serve`} <Nome>{municipio}</Nome>, with the limit of each one
+          </>,
+        )}
       </h5>
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-        {DEFINICAO_CONJUNTO} Para saber qual é o seu, procure o nome do conjunto na fatura de energia, junto dos indicadores de continuidade, ou pergunte à distribuidora.
+        {definicaoConjunto(idioma)}{" "}
+        {tx(
+          "Para saber qual é o seu, procure o nome do conjunto na fatura de energia, junto dos indicadores de continuidade, ou pergunte à distribuidora.",
+          "To learn which one is yours, look for the consumer set name on your electricity bill, next to the continuity indicators, or ask the distribution utility.",
+        )}
       </p>
       {erro ? (
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-          Não foi possível carregar os valores dos conjuntos ({erro}).{" "}
+          {tx(<>Não foi possível carregar os valores dos conjuntos ({erro}).</>, <>The values of the consumer sets could not be loaded ({erro}).</>)}{" "}
           <a href={arquivo} download className="text-energia-dark underline underline-offset-4">
-            Baixar o arquivo do período
+            {tx("Baixar o arquivo do período", "Download the file for the period")}
           </a>
           .{" "}
           <button
@@ -80,19 +95,26 @@ export function QualidadeConjuntosDoMunicipio({
             onClick={() => setTentativa((t) => t + 1)}
             className="inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-sm text-carvao hover:border-energia focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
           >
-            Tentar de novo
+            {tx("Tentar de novo", "Try again")}
           </button>
         </p>
       ) : !linhasAno ? (
         <p role="status" className="text-sm text-carvao-muted">
-          Carregando os valores dos {n === 1 ? "conjunto" : "conjuntos"} ({tamanho ?? "arquivo anual por década"}, o mesmo do explorador de Analisar)…
+          {tx(
+            <>
+              Carregando os valores dos {n === 1 ? "conjunto" : "conjuntos"} ({tamanho ?? "arquivo anual por década"}, o mesmo do explorador de Analisar)…
+            </>,
+            <>
+              Loading the values of the {n === 1 ? "consumer set" : "consumer sets"} ({tamanho ?? "annual file by decade"}, the same as the Analyse explorer)…
+            </>,
+          )}
         </p>
       ) : (
         <>
           {linhas.length > 0 ? (
             <TabelaInterativa
-              titulo={`Conjuntos que atendem ${municipio}, ${ano}`}
-              colunas={COLUNAS_CONJUNTOS_MUNICIPIO}
+              titulo={tx(`Conjuntos que atendem ${municipio}, ${ano}`, `Consumer sets serving ${municipio}, ${ano}`)}
+              colunas={colunasConjuntosMunicipio(idioma)}
               linhas={linhas}
               chaveLinha="id"
               colunaRotulo="nome"
@@ -100,26 +122,45 @@ export function QualidadeConjuntosDoMunicipio({
               versao={String(ano)}
               nomeArquivo={`qualidade-conjuntos-${codigoMunicipio}-${ano}`}
               ordemInicial={{ coluna: "razao_dec", direcao: "desc" }}
-              dicaBusca="Nome ou código do conjunto, distribuidora"
+              dicaBusca={tx("Nome ou código do conjunto, distribuidora", "Name or code of the consumer set, distribution utility")}
               recolher={false}
-              nota="Valor e limite do conjunto inteiro, não do município. Comparação com o limite em centésimos, como a ANEEL publica: igual ao limite não é transgressão. Conjunto com menos de 12 meses publicados mostra a soma dos meses que existem, sem razão nem comparação com o limite."
+              nota={tx(
+                "Valor e limite do conjunto inteiro, não do município. Comparação com o limite em centésimos, como a ANEEL publica: igual ao limite não é transgressão. Conjunto com menos de 12 meses publicados mostra a soma dos meses que existem, sem razão nem comparação com o limite.",
+                "Value and limit of the whole consumer set, not of the municipality. Comparison with the limit in hundredths, as ANEEL publishes it: equal to the limit is not a violation. A cluster with fewer than 12 months published shows the sum of the existing months, with no ratio and no comparison with the limit.",
+              )}
             />
           ) : (
-            <p className="text-sm text-carvao-muted">Nenhum dos conjuntos citados para {municipio} tem valor anual publicado em {ano}.</p>
+            <p className="text-sm text-carvao-muted">
+              {tx(
+                <>
+                  Nenhum dos conjuntos citados para {municipio} tem valor anual publicado em {ano}.
+                </>,
+                <>
+                  None of the consumer sets listed for <Nome>{municipio}</Nome> has an annual value published in {ano}.
+                </>,
+              )}
+            </p>
           )}
-          {textoMesesIncompletos(linhas) && (
+          {textoMesesIncompletos(linhas, idioma) && (
             <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-texto="meses-incompletos">
-              {textoMesesIncompletos(linhas)}
+              {textoMesesIncompletos(linhas, idioma)}
             </p>
           )}
           {semValor.length > 0 && (
             <p className="text-sm leading-relaxed text-carvao-muted">
-              {semValor.length === 1 ? "Um conjunto citado não tem" : `${semValor.length.toLocaleString("pt-BR")} conjuntos citados não têm`} valor anual publicado em {ano} (menos de 12 meses ou sem limite): {semValor.join(", ")}.
+              {tx(
+                <>
+                  {semValor.length === 1 ? "Um conjunto citado não tem" : `${semValor.length.toLocaleString("pt-BR")} conjuntos citados não têm`} valor anual publicado em {ano} (menos de 12 meses ou sem limite): {semValor.join(", ")}.
+                </>,
+                <>
+                  {semValor.length === 1 ? "One listed consumer set has" : `${semValor.length.toLocaleString("en-US")} listed consumer sets have`} no annual value published in {ano} (fewer than 12 months or no limit): {semValor.join(", ")}.
+                </>,
+              )}
             </p>
           )}
           <p className="text-sm">
             <a href="#conjuntos-do-ano" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-              Ver os conjuntos de todo o país em {ano}, com busca e exportação (Analisar)
+              {tx(<>Ver os conjuntos de todo o país em {ano}, com busca e exportação (Analisar)</>, <>See the consumer sets of the whole country in {ano}, with search and export (Analyse)</>)}
             </a>
           </p>
         </>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { GraficoBarras, type ReferenciaBarra } from "@/components/energia/GraficoBarras";
 import { TransicaoOpcoes } from "@/components/energia/TransicaoOpcoes";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Mercado livre por UF em duas medidas, no mesmo lugar: participação e volume de energia. A participação é uma razão e esconde a escala (um
@@ -21,10 +22,13 @@ export type MedidaUf = "participacao" | "volume";
 export type LinhaParticipacaoUf = { uf: string; livre: number | null };
 export type LinhaVolumeUf = { uf: string; livre: number; cativo: number };
 
-const OPCOES = [
-  ["participacao", "Participação do livre (%)"],
-  ["volume", "Volume de energia (GWh)"],
-] as const;
+/** As duas medidas, com o rótulo no idioma da página. */
+function opcoes(tx: <T>(pt: T, en: T) => T) {
+  return [
+    ["participacao", tx("Participação do livre (%)", "Free market share (%)")],
+    ["volume", tx("Volume de energia (GWh)", "Energy volume (GWh)")],
+  ] as const;
+}
 
 export function GraficoLivreUf({
   janela,
@@ -41,22 +45,24 @@ export function GraficoLivreUf({
   referencias?: ReferenciaBarra[];
   medidaInicial?: MedidaUf;
 }) {
+  const tx = useTx();
+  const OPCOES = opcoes(tx);
   const temVolume = volume.length > 0;
   const [escolhida, setMedida] = useState<MedidaUf>(medidaInicial);
   const medida: MedidaUf = temVolume ? escolhida : "participacao";
-  const tituloParticipacao = `Participação do livre por UF, 12 meses até ${janela}`;
-  const tituloVolume = `Consumo na rede por UF, livre e cativo, 12 meses até ${janela}`;
+  const tituloParticipacao = tx(`Participação do livre por UF, 12 meses até ${janela}`, `Free market share by state, 12 months to ${janela}`);
+  const tituloVolume = tx(`Consumo na rede por UF, livre e cativo, 12 meses até ${janela}`, `Grid consumption by state, free and captive, 12 months to ${janela}`);
 
   return (
     <div className="space-y-3" data-livre-uf={medida}>
-      {temVolume && <TransicaoOpcoes rotulo="Ver por" nome="livre-uf-medida" opcoes={OPCOES} valor={medida} onMudar={setMedida} />}
+      {temVolume && <TransicaoOpcoes rotulo={tx("Ver por", "View by")} nome="livre-uf-medida" opcoes={OPCOES} valor={medida} onMudar={setMedida} />}
       {medida === "participacao" ? (
         <GraficoBarras
           key="participacao"
           titulo={tituloParticipacao}
           dados={participacao}
           chaveCategoria="uf"
-          series={[{ id: "livre", rotulo: "Livre no consumo na rede", cor: "var(--cor-energia)" }]}
+          series={[{ id: "livre", rotulo: tx("Livre no consumo na rede", "Free market in grid consumption"), cor: "var(--cor-energia)" }]} // i18n: dado
           unidade="%"
           casas={1}
           orientacao="horizontal"
@@ -71,8 +77,8 @@ export function GraficoLivreUf({
           dados={volume}
           chaveCategoria="uf"
           series={[
-            { id: "livre", rotulo: "Livre", cor: "var(--cor-energia)" },
-            { id: "cativo", rotulo: "Cativo", cor: "var(--serie-referencia)" },
+            { id: "livre", rotulo: tx("Livre", "Free"), cor: "var(--cor-energia)" }, // i18n: dado
+            { id: "cativo", rotulo: tx("Cativo", "Captive"), cor: "var(--serie-referencia)" },
           ]}
           unidade="GWh"
           casas={0}
@@ -84,7 +90,7 @@ export function GraficoLivreUf({
       )}
       {/* a troca de visão muda o gráfico abaixo do rádio: leitor de tela ouve qual passou a valer */}
       <p className="sr-only" aria-live="polite">
-        {medida === "volume" ? `Mostrando: ${tituloVolume}, em GWh.` : `Mostrando: ${tituloParticipacao}.`}
+        {medida === "volume" ? tx(`Mostrando: ${tituloVolume}, em GWh.`, `Showing: ${tituloVolume}, in GWh.`) : tx(`Mostrando: ${tituloParticipacao}.`, `Showing: ${tituloParticipacao}.`)}
       </p>
     </div>
   );

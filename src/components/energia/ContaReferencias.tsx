@@ -4,7 +4,8 @@ import type { ReactNode } from "react";
 import { ContaPontos, MarcaDaLegenda as Marcador, type PontoFaixa } from "@/components/energia/ContaPontos";
 import { ContaRolavel } from "@/components/energia/ContaRolavel";
 import { textoDestaquePerfil, textoReferenciasPerfil, type DestaquePerfil, type ReferenciasPerfil } from "@/lib/energia/conta";
-import { num, reais } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * As distribuidoras do mesmo consumo numa figura só: cada uma é um ponto numa escala que parte do zero, com a mediana, a faixa do 1º ao
@@ -47,7 +48,13 @@ export function ContaReferencias({
   /** Clique num ponto (atalho do mouse e do toque; a lista, a busca e a tabela são as vias do teclado). */
   aoEscolher?: (id: string) => void;
 }) {
-  const titulo = `Custo de ${r.perfil} kWh/mês das ${r.n} distribuidoras, só pela tarifa B1 residencial (sem tributos e sem bandeira): menor, mediana e maior, com a faixa do 1º ao 3º quartil`;
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { num, reais } = formatos(idioma);
+  const titulo = tx(
+    `Custo de ${r.perfil} kWh/mês das ${r.n} distribuidoras, só pela tarifa B1 residencial (sem tributos e sem bandeira): menor, mediana e maior, com a faixa do 1º ao 3º quartil`,
+    `Cost of ${r.perfil} kWh/month at the ${r.n} distribution utilities, on the residential B1 tariff alone (without taxes and without the tariff flag): lowest, median and highest, with the 1st to 3rd quartile band`,
+  );
 
   if (!r.menor || !r.maior || r.mediana === null) {
     return (
@@ -57,7 +64,10 @@ export function ContaReferencias({
           {controle}
         </div>
         <p role="status" className="border border-dashed border-linha bg-superficie px-5 py-4 text-sm text-carvao-muted">
-          Sem referências do custo de {r.perfil} kWh por mês nesta publicação: nenhuma distribuidora tem tarifa B1 residencial vigente na data.
+          {tx(
+            <>Sem referências do custo de {r.perfil} kWh por mês nesta publicação: nenhuma distribuidora tem tarifa B1 residencial vigente na data.</>,
+            <>No references for the cost of {r.perfil} kWh a month in this publication: no distribution utility has a residential B1 tariff in force on the date.</>,
+          )}
         </p>
         {resposta && <div className="mt-4">{resposta}</div>}
       </div>
@@ -69,106 +79,135 @@ export function ContaReferencias({
   const mediana = r.mediana;
   const temFaixa = r.p25 !== null && r.p75 !== null;
   const linhas: { id: string; rotulo: string; valor: number | null; tarifa: number | null }[] = [
-    { id: "menor", rotulo: `Menor (${menor.sigla})`, valor: menor.valor, tarifa: r.tarifa.menor },
-    { id: "p25", rotulo: "1º quartil", valor: r.p25, tarifa: r.tarifa.p25 },
-    { id: "mediana", rotulo: `Mediana de ${r.n} distribuidoras`, valor: mediana, tarifa: r.tarifa.mediana },
-    { id: "p75", rotulo: "3º quartil", valor: r.p75, tarifa: r.tarifa.p75 },
-    { id: "maior", rotulo: `Maior (${maior.sigla})`, valor: maior.valor, tarifa: r.tarifa.maior },
-    ...destaques.map((d) => ({ id: `d-${d.cnpj}`, rotulo: `Em destaque: ${d.sigla}`, valor: d.valor, tarifa: d.tarifa })),
+    { id: "menor", rotulo: tx(`Menor (${menor.sigla})`, `Lowest (${menor.sigla})`), valor: menor.valor, tarifa: r.tarifa.menor }, // i18n: dado
+    { id: "p25", rotulo: tx("1º quartil", "1st quartile"), valor: r.p25, tarifa: r.tarifa.p25 },
+    { id: "mediana", rotulo: tx(`Mediana de ${r.n} distribuidoras`, `Median of ${r.n} distribution utilities`), valor: mediana, tarifa: r.tarifa.mediana },
+    { id: "p75", rotulo: tx("3º quartil", "3rd quartile"), valor: r.p75, tarifa: r.tarifa.p75 },
+    { id: "maior", rotulo: tx(`Maior (${maior.sigla})`, `Highest (${maior.sigla})`), valor: maior.valor, tarifa: r.tarifa.maior }, // i18n: dado
+    ...destaques.map((d) => ({ id: `d-${d.cnpj}`, rotulo: tx(`Em destaque: ${d.sigla}`, `Highlighted: ${d.sigla}`), valor: d.valor, tarifa: d.tarifa })),
   ];
 
   return (
     <div data-grafico="referencias" className="w-full">
       <div className="mb-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
         <p className="text-sm font-medium text-carvao" data-titulo-grafico="true">
-          As {r.n} distribuidoras para {num(r.perfil, 0)} kWh/mês
-          <span className="font-normal text-mineral">, em R$/mês</span>
+          {tx(
+            <>
+              As {r.n} distribuidoras para {num(r.perfil, 0)} kWh/mês
+              <span className="font-normal text-mineral">, em R$/mês</span>
+            </>,
+            <>
+              The {r.n} distribution utilities for {num(r.perfil, 0)} kWh/month
+              <span className="font-normal text-mineral">, in R$/month</span>
+            </>,
+          )}
         </p>
         {controle}
       </div>
       {resposta && <div className="mb-3">{resposta}</div>}
       <div>
         <ContaPontos
-          descricao={`${textoReferenciasPerfil(r)} Cada ponto é uma distribuidora.`}
+          descricao={tx(`${textoReferenciasPerfil(r, idioma)} Cada ponto é uma distribuidora.`, `${textoReferenciasPerfil(r, idioma)} Each dot is a distribution utility.`)}
           pontos={pontos}
-          faixa={temFaixa ? { de: r.p25 as number, ate: r.p75 as number, rotulo: `Do 1º ao 3º quartil: ${reais(r.p25)} a ${reais(r.p75)}` } : null}
-          marcas={[{ valor: mediana, rotulo: `Mediana ${reais(mediana)}`, tipo: "mediana" }]}
+          faixa={
+            temFaixa
+              ? { de: r.p25 as number, ate: r.p75 as number, rotulo: tx(`Do 1º ao 3º quartil: ${reais(r.p25)} a ${reais(r.p75)}`, `1st to 3rd quartile: ${reais(r.p25)} to ${reais(r.p75)}`) }
+              : null
+          }
+          marcas={[{ valor: mediana, rotulo: tx(`Mediana ${reais(mediana)}`, `Median ${reais(mediana)}`), tipo: "mediana" }]}
           escolhidos={destaques.map((d) => d.cnpj)}
           formatar={(v) => reais(v)}
           zeroNoEixo
           aoEscolher={aoEscolher}
         />
       </div>
-      <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted" aria-label="Legenda">
+      <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted" aria-label={tx("Legenda", "Legend")}>
         <li className="flex items-center gap-1.5">
           <Marcador tipo="ponto" />
-          uma distribuidora
+          {tx("uma distribuidora", "one distribution utility")}
         </li>
         <li className="flex items-center gap-1.5">
           <Marcador tipo="extremo" />
-          menor e maior
+          {tx("menor e maior", "lowest and highest")}
         </li>
         <li className="flex items-center gap-1.5">
           <Marcador tipo="mediana" />
-          mediana
+          {tx("mediana", "median")}
         </li>
         {temFaixa && (
           <li className="flex items-center gap-1.5">
             <Marcador tipo="faixa" />
-            do 1º ao 3º quartil, a metade central ({reais(r.p25)} a {reais(r.p75)})
+            {tx(
+              <>
+                do 1º ao 3º quartil, a metade central ({reais(r.p25)} a {reais(r.p75)})
+              </>,
+              <>
+                1st to 3rd quartile, the middle half ({reais(r.p25)} to {reais(r.p75)})
+              </>,
+            )}
           </li>
         )}
         <li className="flex items-center gap-1.5">
           <Marcador tipo="destaque" />
-          distribuidora em destaque
+          {tx("distribuidora em destaque", "highlighted distribution utility")}
         </li>
         {grupo && (
           <li className="flex items-center gap-1.5">
             <Marcador tipo="vazado" />
-            fora do grupo escolhido ({grupo})
+            {tx(<>fora do grupo escolhido ({grupo})</>, <>outside the chosen group ({grupo})</>)}
           </li>
         )}
-        <li className="text-mineral">{r.n} distribuidoras com tarifa B1 residencial vigente, sem tributos e sem bandeira</li>
+        <li className="text-mineral">
+          {tx(
+            <>{r.n} distribuidoras com tarifa B1 residencial vigente, sem tributos e sem bandeira</>,
+            <>{r.n} distribution utilities with a residential B1 tariff in force, without taxes and without the tariff flag</>,
+          )}
+        </li>
       </ul>
       <div className="mt-3 space-y-3">
         {seletor}
         <div className="min-w-0 space-y-2">
           {selecionadas}
           {destaques.length > 0 ? (
-            <ul className="space-y-1 text-sm text-carvao" aria-label="Distribuidoras em destaque" aria-live="polite" data-destaques-perfil="">
+            <ul className="space-y-1 text-sm text-carvao" aria-label={tx("Distribuidoras em destaque", "Highlighted distribution utilities")} aria-live="polite" data-destaques-perfil="">
               {destaques.map((d, i) => (
                 <li key={d.cnpj} className="flex items-start gap-2">
                   <span className="mt-1">
                     <Marcador tipo="destaque" />
                   </span>
-                  <span className={i === 0 ? "font-medium" : ""}>{textoDestaquePerfil(d)}</span>
+                  <span className={i === 0 ? "font-medium" : ""}>{textoDestaquePerfil(d, idioma)}</span>
                 </li>
               ))}
             </ul>
           ) : (
             <p className="text-sm text-carvao-muted" data-destaques-perfil="">
-              Escolha uma distribuidora para ver onde ela fica entre o menor e o maior custo. Vale também clicar num ponto, numa barra do ranking ou numa linha da tabela.
+              {tx(
+                "Escolha uma distribuidora para ver onde ela fica entre o menor e o maior custo. Vale também clicar num ponto, numa barra do ranking ou numa linha da tabela.",
+                "Choose a distribution utility to see where it falls between the lowest and highest cost. You can also click a dot, a bar in the ranking or a row in the table.",
+              )}
             </p>
           )}
         </div>
       </div>
       <details className="mt-2 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Dados do gráfico em tabela ({linhas.length.toLocaleString("pt-BR")} linhas)
+          {tx(`Dados do gráfico em tabela (${num(linhas.length, 0)} linhas)`, `Chart data as a table (${num(linhas.length, 0)} rows)`)}
         </summary>
-        <ContaRolavel rotulo={`${titulo}: dados em tabela (rolável)`} className="mt-2">
+        <ContaRolavel rotulo={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)} className="mt-2">
           <table className="w-full border-collapse tabular-nums">
-            <caption className="sr-only">{`${titulo}, em R$/mês e em R$/MWh. Os ${r.n} pontos são as linhas da tabela do ranking.`}</caption>
+            <caption className="sr-only">
+              {tx(`${titulo}, em R$/mês e em R$/MWh. Os ${r.n} pontos são as linhas da tabela do ranking.`, `${titulo}, in R$/month and in R$/MWh. The ${r.n} dots are the rows of the ranking table.`)}
+            </caption>
             <thead>
               <tr className="text-left text-mineral">
                 <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">
-                  Referência
+                  {tx("Referência", "Reference")}
                 </th>
                 <th scope="col" className="border-b border-linha px-2 py-1.5 text-right font-medium">
-                  Custo de {num(r.perfil, 0)} kWh (R$/mês)
+                  {tx(`Custo de ${num(r.perfil, 0)} kWh (R$/mês)`, `Cost of ${num(r.perfil, 0)} kWh (R$/month)`)}
                 </th>
                 <th scope="col" className="border-b border-linha px-2 py-1.5 text-right font-medium">
-                  Tarifa TE + TUSD (R$/MWh)
+                  {tx("Tarifa TE + TUSD (R$/MWh)", "TE + TUSD tariff (R$/MWh)")}
                 </th>
               </tr>
             </thead>
@@ -178,15 +217,18 @@ export function ContaReferencias({
                   <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">
                     {l.rotulo}
                   </th>
-                  <td className="px-2 py-1 text-right text-carvao">{l.valor === null ? <span className="italic text-mineral">sem dado</span> : num(l.valor, 2)}</td>
-                  <td className="px-2 py-1 text-right text-carvao">{l.tarifa === null ? <span className="italic text-mineral">sem dado</span> : num(l.tarifa, 2)}</td>
+                  <td className="px-2 py-1 text-right text-carvao">{l.valor === null ? <span className="italic text-mineral">{tx("sem dado", "no data")}</span> : num(l.valor, 2)}</td>
+                  <td className="px-2 py-1 text-right text-carvao">{l.tarifa === null ? <span className="italic text-mineral">{tx("sem dado", "no data")}</span> : num(l.tarifa, 2)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </ContaRolavel>
         <p className="mt-1 text-carvao-muted">
-          Os {r.n} pontos da figura são as {r.n} linhas da tabela do ranking, logo abaixo, com o mesmo custo de {num(r.perfil, 0)} kWh.
+          {tx(
+            <>Os {r.n} pontos da figura são as {r.n} linhas da tabela do ranking, logo abaixo, com o mesmo custo de {num(r.perfil, 0)} kWh.</>,
+            <>The {r.n} dots in the figure are the {r.n} rows of the ranking table, just below, with the same cost of {num(r.perfil, 0)} kWh.</>,
+          )}
         </p>
       </details>
     </div>

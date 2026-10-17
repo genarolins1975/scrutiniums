@@ -12,6 +12,14 @@ function caminhoLiteral(caminho) {
     && (caminho === "/" || /^\/[\p{L}\p{N}][\p{L}\p{N}\p{M}_-]*(?:\/[\p{L}\p{N}][\p{L}\p{N}\p{M}_-]*)*$/u.test(caminho));
 }
 
+/** Padrão com parâmetros simples: segmentos literais ou "[nome]", sem grupo, catch-all ou opcional. */
+function caminhoPadrao(caminho) {
+  if (typeof caminho !== "string" || caminho.startsWith("/en/") || !caminho.includes("[")) return false;
+  const segmentos = caminho.slice(1).split("/");
+  return caminho.startsWith("/") && segmentos.every((s) => /^\[[a-z][a-zA-Z0-9_]*\]$/.test(s)
+    || /^[\p{L}\p{N}][\p{L}\p{N}\p{M}_-]*$/u.test(s)) && segmentos.some((s) => s.startsWith("["));
+}
+
 /** Adaptador inicial: somente page.tsx em diretórios literais, sem grupos ou parâmetros. */
 export function caminhoDaPaginaLiteral(path) {
   if (!path.startsWith("src/app/") || !path.endsWith("/page.tsx")) return null;
@@ -26,8 +34,10 @@ export function validarRotasLiterais(raiz, manifesto, fontes) {
     if (existsSync(join(raiz, PREFIXO_EN))) throw new Error("A cobertura precisa integrar o catálogo e as rotas antes de medir src/app/en.");
     return null;
   }
-  if (chaves(declaracao) !== "literais,schema_version" || declaracao.schema_version !== 1
-    || !Array.isArray(declaracao.literais) || !declaracao.literais.length) {
+  const forma = chaves(declaracao);
+  if ((forma !== "literais,schema_version" && forma !== "literais,padroes,schema_version") || declaracao.schema_version !== 1
+    || !Array.isArray(declaracao.literais) || !declaracao.literais.length
+    || (forma.includes("padroes") && (!Array.isArray(declaracao.padroes) || !declaracao.padroes.length))) {
     throw new Error("Declaração de rotas literais i18n inválida.");
   }
   if (!manifesto.catalogo) throw new Error("A cobertura precisa integrar o catálogo antes de declarar rotas inglesas.");
@@ -40,8 +50,12 @@ export function validarRotasLiterais(raiz, manifesto, fontes) {
     if (!statSync(real).isFile()) throw new Error(`Fonte de rota não é arquivo: ${path}`);
     return real;
   };
-  const pares = declaracao.literais.map((item) => {
-    if (chaves(item) !== "conteudo,pt" || !caminhoLiteral(item.pt)
+  const declarados = [
+    ...declaracao.literais.map((item) => ({ item, valido: caminhoLiteral(item?.pt) })),
+    ...(declaracao.padroes ?? []).map((item) => ({ item, valido: caminhoPadrao(item?.pt), padrao: true })),
+  ];
+  const pares = declarados.map(({ item, valido, padrao }) => {
+    if (chaves(item) !== "conteudo,pt" || !valido
       || !["portugues_marcado", "parcialmente_traduzido", "traduzido"].includes(item.conteudo)) {
       throw new Error("Rota literal i18n ou estado de conteúdo não suportado.");
     }
@@ -54,7 +68,7 @@ export function validarRotasLiterais(raiz, manifesto, fontes) {
       if (!ui.has(path)) throw new Error(`Fonte da irmã literal ausente do inventário de interface: ${path}`);
     }
     return { pt: item.pt, en, dominio: ui.get(caminhos.pt).dominio, conteudo_declarado: item.conteudo,
-      fontes: caminhos, arquivos_presentes: true };
+      ...(padrao ? { padrao: true } : {}), fontes: caminhos, arquivos_presentes: true };
   }).sort(ordenar);
 
   // Ler também fontes excluídas e arquivos binários: metadata routes não podem
@@ -67,7 +81,12 @@ export function validarRotasLiterais(raiz, manifesto, fontes) {
     arquivo(path);
     const segmentos = path.slice(PREFIXO_EN.length + 1).split("/");
     const nome = segmentos[segmentos.length - 1];
-    if (segmentos.some((segmento) => /[\[\]()@]/.test(segmento)) || /^route\.[cm]?[jt]sx?$/.test(nome)) {
+    // Parâmetro simples só dentro de um padrão declarado; grupo, slot, catch-all e handler ficam fora.
+    const diretorios = segmentos.slice(0, -1).join("/");
+    const dentroDePadrao = pares.some((par) => par.padrao && (`/${diretorios}` === par.pt || `/${diretorios}`.startsWith(`${par.pt}/`)));
+    if (segmentos.some((segmento) => /[()@]|\[\[|\[\.\.\./.test(segmento))
+      || (segmentos.some((segmento) => /[\[\]]/.test(segmento)) && !dentroDePadrao)
+      || /^route\.[cm]?[jt]sx?$/.test(nome)) {
       throw new Error(`Rota inglesa fora do adaptador literal: ${path}`);
     }
     if (/^(opengraph-image|twitter-image|icon|apple-icon)\d*(?:[-.]|$)|^(robots|sitemap|manifest|favicon)\./.test(nome)) {

@@ -1,11 +1,16 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import type { NoComEstado } from "@/components/energia/DiagramaFormacao";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { NATUREZAS } from "@/components/evidencia/SeloNatureza";
-import { TIPOS_RELACAO } from "@/lib/energia/conteudo/pld";
+import { NATUREZAS, textoNatureza } from "@/components/evidencia/SeloNatureza";
+import { Nome } from "@/components/i18n/Nome";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
+import { TIPOS_RELACAO_IDIOMAS } from "@/lib/energia/conteudo/pld";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { tx } from "@/lib/energia/idioma";
+import { useIdioma } from "@/lib/energia/useIdioma";
+import type { Idioma } from "@/lib/idioma";
 import type { LigacaoFormacao } from "@/lib/energia/pld";
 
 /**
@@ -24,18 +29,24 @@ const ETAPAS = ["afluencias", "reservatorios", "carga", "renovaveis", "termicas"
 type Etapa = (typeof ETAPAS)[number];
 const ESQUEMA = { etapa: campo(tiposUrl.opcao(ETAPAS), "reservatorios" as Etapa) };
 
-const DESTINO_EXTRA: Record<string, string> = { liquidacao: "Contabilização e liquidação no Mercado de Curto Prazo" };
+/** Destino de ligação que não é etapa do diagrama. */
+function destinoExtra(id: string, idioma: Idioma): string | undefined {
+  if (id === "liquidacao") return tx("Contabilização e liquidação no Mercado de Curto Prazo", "Accounting and settlement in the Short-Term Market", idioma);
+  return undefined;
+}
 
-function Estado({ estado }: { estado: "CONFERIDO" | "PENDENTE" }) {
+function Estado({ estado, idioma }: { estado: "CONFERIDO" | "PENDENTE"; idioma: Idioma }) {
   return estado === "CONFERIDO" ? (
-    <span className="rotulo !text-xs text-sucesso">● conferida no documento</span>
+    <span className="rotulo !text-xs text-sucesso">{tx("● conferida no documento", "● verified in the document", idioma)}</span>
   ) : (
-    <span className="rotulo !text-xs text-aviso">○ conferência documental pendente</span>
+    <span className="rotulo !text-xs text-aviso">{tx("○ conferência documental pendente", "○ document verification pending", idioma)}</span>
   );
 }
 
 export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: Record<string, LigacaoFormacao[]> }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
+  const idioma = useIdioma();
+  const TIPOS_RELACAO = TIPOS_RELACAO_IDIOMAS[idioma];
   const por = Object.fromEntries(nos.map((n) => [n.id, n]));
   const atual = por[v.etapa] ?? nos[0];
   const ligs = ligacoes[atual?.id ?? ""] ?? [];
@@ -65,7 +76,7 @@ export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: R
         <span className="text-sm font-medium leading-snug text-carvao">{n.titulo}</span>
         <span className={`rotulo !text-xs ${ativo ? "text-carvao-muted" : "text-mineral"}`}>
           {n.sigla ? `${n.sigla} · ` : ""}
-          {pend ? "ligação pendente" : "ligações conferidas"}
+          {pend ? tx("ligação pendente", "link pending", idioma) : tx("ligações conferidas", "links verified", idioma)}
         </span>
       </button>
     );
@@ -81,13 +92,15 @@ export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: R
   if (!atual) return null;
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-      <div role="group" aria-label="Etapas da formação do PLD" className="min-w-0">
+      <div role="group" aria-label={tx("Etapas da formação do PLD", "Stages of PLD formation", idioma)} className="min-w-0">
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
           {botao("afluencias")}
           <span aria-hidden="true" className="text-mineral">→</span>
           {botao("reservatorios")}
         </div>
-        <p className="rotulo mt-3 text-center !text-xs text-mineral" aria-hidden="true">+ junto com</p>
+        <p className="rotulo mt-3 text-center !text-xs text-mineral" aria-hidden="true">
+          {tx("+ junto com", "+ together with", idioma)}
+        </p>
         <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-4">
           {botao("carga")}
           {botao("renovaveis")}
@@ -110,38 +123,45 @@ export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: R
         aria-labelledby="formacao-painel-titulo"
         className="min-w-0 scroll-mt-28 border border-linha bg-superficie p-5 md:p-6 lg:sticky lg:top-24 lg:self-start"
       >
-        <p className="rotulo text-mineral">Etapa selecionada</p>
+        <p className="rotulo text-mineral">{tx("Etapa selecionada", "Selected stage", idioma)}</p>
         <h3 id="formacao-painel-titulo" className="mt-1 font-serif text-xl text-carvao">
           {atual.titulo}
           {atual.sigla ? <span className="ml-2 text-base text-mineral">({atual.sigla})</span> : null}
         </h3>
 
-        <p className="rotulo mt-4 text-mineral">O que é</p>
+        <p className="rotulo mt-4 text-mineral">{tx("O que é", "What it is", idioma)}</p>
         <p className="mt-1 text-sm leading-relaxed text-carvao">{atual.oQueE}</p>
         <p className="mt-1 text-xs text-mineral">
-          Fonte: {atual.fonteOQueE}. {atual.conferenciaOQueE === "CONFERIDO" ? "Definição conferida na fonte." : "Definição com conferência pendente."}
+          {tx("Fonte:", "Source:", idioma)} {atual.fonteOQueE}.{" "}
+          {atual.conferenciaOQueE === "CONFERIDO"
+            ? tx("Definição conferida na fonte.", "Definition verified at the source.", idioma)
+            : tx("Definição com conferência pendente.", "Definition with verification pending.", idioma)}
         </p>
 
         {atual.mecanismo && (
           <>
-            <p className="rotulo mt-4 text-mineral">Leitura usual do setor</p>
+            <p className="rotulo mt-4 text-mineral">{tx("Leitura usual do setor", "Usual reading in the sector", idioma)}</p>
             <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{atual.mecanismo}</p>
             <p className="mt-1 text-xs text-aviso">
               {atual.conferenciaMecanismo === "CONFERIDO"
-                ? "Mecanismo conferido na fonte."
-                : "Conferência pendente: o manual do DESSEM cita a função de custo futuro, mas os manuais do DECOMP e do NEWAVE não estão entre os arquivos públicos do CEPEL."}
+                ? tx("Mecanismo conferido na fonte.", "Mechanism verified at the source.", idioma)
+                : tx(
+                    "Conferência pendente: o manual do DESSEM cita a função de custo futuro, mas os manuais do DECOMP e do NEWAVE não estão entre os arquivos públicos do CEPEL.",
+                    "Verification pending: the DESSEM manual cites the future cost function, but the DECOMP and NEWAVE manuals are not among CEPEL's public files.",
+                    idioma,
+                  )}
             </p>
           </>
         )}
 
-        <p className="rotulo mt-4 text-mineral">Último dado publicado</p>
+        <p className="rotulo mt-4 text-mineral">{tx("Último dado publicado", "Latest published data", idioma)}</p>
         {atual.estado ? (
           <div className="mt-1 text-sm leading-relaxed text-carvao">
             <p>{atual.estado.texto}</p>
             <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-mineral">
               {atual.estado.natureza && (
                 <span>
-                  {NATUREZAS[atual.estado.natureza].glifo} {NATUREZAS[atual.estado.natureza].rotulo}
+                  {NATUREZAS[atual.estado.natureza].glifo} {textoNatureza(atual.estado.natureza, idioma).rotulo}
                 </span>
               )}
               {atual.estado.historico && (
@@ -152,44 +172,63 @@ export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: R
             </p>
           </div>
         ) : (
-          <p className="mt-1 text-sm text-carvao-muted">Esta etapa não tem uma grandeza única publicada; a ligação abaixo diz como ela entra na formação do preço.</p>
+          <p className="mt-1 text-sm text-carvao-muted">
+            {tx(
+              "Esta etapa não tem uma grandeza única publicada; a ligação abaixo diz como ela entra na formação do preço.",
+              "This stage has no single published quantity; the link below explains how it enters price formation.",
+              idioma,
+            )}
+          </p>
         )}
 
         <div className="mt-4 space-y-4 border-t border-linha pt-3">
-          <p className="rotulo text-mineral">{ligs.length === 1 ? "Ligação com a etapa seguinte" : "Ligações com as etapas seguintes"}</p>
-          {ligs.length === 0 && <p className="text-sm text-carvao-muted">Última etapa do diagrama.</p>}
+          <p className="rotulo text-mineral">
+            {ligs.length === 1 ? tx("Ligação com a etapa seguinte", "Link to the next stage", idioma) : tx("Ligações com as etapas seguintes", "Links to the next stages", idioma)}
+          </p>
+          {ligs.length === 0 && <p className="text-sm text-carvao-muted">{tx("Última etapa do diagrama.", "Last stage of the diagram.", idioma)}</p>}
           {ligs.map((l) => (
             <div key={`${l.de}-${l.para}`} className="space-y-1.5">
               <p className="text-sm text-carvao">
                 <strong className="font-medium">
                   {TIPOS_RELACAO[l.tipo].rotulo} <span aria-hidden="true">→</span>
-                  <span className="sr-only">para</span> {por[l.para]?.titulo ?? DESTINO_EXTRA[l.para] ?? l.para}.
+                  <span className="sr-only">{tx("para", "to", idioma)}</span> {por[l.para]?.titulo ?? destinoExtra(l.para, idioma) ?? l.para}.
                 </strong>{" "}
                 {l.texto}
               </p>
               <p className="flex flex-wrap items-center gap-2 text-xs text-mineral">
-                <Estado estado={l.estado} />
-                {l.baseTexto ? <span>Base editorial: {l.baseTexto}</span> : null}
-                {l.estado !== "CONFERIDO" && l.origem === "conteudo" ? (
+                <Estado estado={l.estado} idioma={idioma} />
+                {l.baseTexto ? (
                   <span>
-                    Nenhuma passagem dos documentos integrados (Decreto nº 5.163/2004, REN ANEEL nº 957/2021, Procedimentos de Rede do ONS e manual do DESSEM) sustenta esta
-                    ligação como está escrita.
+                    {tx("Base editorial:", "Editorial basis:", idioma)} {l.baseTexto}
                   </span>
                 ) : null}
-                {l.faltantes.length ? <span>Passagens não encontradas na publicação: {l.faltantes.join(", ")}</span> : null}
+                {l.estado !== "CONFERIDO" && l.origem === "conteudo" ? (
+                  <span>
+                    {tx(
+                      "Nenhuma passagem dos documentos integrados (Decreto nº 5.163/2004, REN ANEEL nº 957/2021, Procedimentos de Rede do ONS e manual do DESSEM) sustenta esta ligação como está escrita.",
+                      "No passage of the integrated documents (Decree No. 5.163/2004, ANEEL Normative Resolution No. 957/2021, ONS Grid Procedures and the DESSEM manual) supports this link as written.",
+                      idioma,
+                    )}
+                  </span>
+                ) : null}
+                {l.faltantes.length ? (
+                  <span>
+                    {tx("Passagens não encontradas na publicação:", "Passages not found in the publication:", idioma)} {l.faltantes.join(", ")}
+                  </span>
+                ) : null}
               </p>
               {l.bases.length > 0 && (
                 <ul className="space-y-1.5">
                   {l.bases.map((b) => (
                     <li key={b.id} className="border-l-2 border-energia pl-3 text-xs leading-relaxed text-carvao-muted [overflow-wrap:anywhere]">
-                      “{b.texto}”{" "}
+                      <TrechoPortugues regiao="pld-passagem-normativa">“{b.texto}”</TrechoPortugues>{" "}
                       <span className="text-mineral">
-                        ({b.origem}
+                        (<Nome>{b.origem}</Nome>
                         {b.url ? (
                           <>
                             ,{" "}
                             <a href={b.url} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
-                              documento
+                              {tx("documento", "document", idioma)}
                             </a>
                           </>
                         ) : null}
@@ -211,7 +250,7 @@ export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: R
           )}
           {atual.conceito && (
             <Link href={`/setor-eletrico/aprenda/${atual.conceito}`} className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-              Verbete
+              {tx("Verbete", "Glossary entry", idioma)}
             </Link>
           )}
         </div>

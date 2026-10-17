@@ -2,6 +2,7 @@
 
 import { memo, useCallback, useEffect, useId, useMemo, useRef, useState, type PointerEvent as PE, type ReactNode } from "react";
 import { num } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { aplicarZoom, caixaDoZoom, comFolga, lerViewBox, limitarZoom, textoViewBox, zoomInicial, type CamadaGeo, type Caixa, type ContornoGeo, type FeatureGeo, type Ponto, type Zoom } from "@/lib/energia/geo";
 
 /**
@@ -146,8 +147,10 @@ export function TerritorioMapa({
   alturaCelular?: number;
   ajuda?: ReactNode;
 }) {
+  const tx = useTx();
+  const idioma = useIdioma();
   const uid = useId().replace(/:/g, "");
-  const hachura = `${uid}-sem-dado`;
+  const hachura = `${uid}-sem-dado`; // i18n: dado (id de padrão SVG)
   const base = useMemo<Caixa>(() => comFolga(lerViewBox(geo.viewBox) ?? { x: 0, y: 0, largura: 1, altura: 1 }, 0.015), [geo.viewBox]);
   const [zoom, setZoom] = useState<Zoom>(() => zoomInicial(base));
   useEffect(() => setZoom(zoomInicial(base)), [base]);
@@ -248,17 +251,21 @@ export function TerritorioMapa({
   return (
     <figure className="min-w-0 space-y-2">
       <figcaption className="text-sm font-medium text-carvao">{titulo}</figcaption>
-      <div role="group" aria-label="Zoom do mapa" className="flex flex-wrap items-center gap-2 text-sm">
-        <button type="button" className={BOTAO} onClick={() => mudar(2)} disabled={z.escala >= ESCALA_MAXIMA} aria-label="Aproximar o mapa">
+      <div role="group" aria-label={tx("Zoom do mapa", "Map zoom")} className="flex flex-wrap items-center gap-2 text-sm">
+        <button type="button" className={BOTAO} onClick={() => mudar(2)} disabled={z.escala >= ESCALA_MAXIMA} aria-label={tx("Aproximar o mapa", "Zoom in on the map")}>
           +
         </button>
-        <button type="button" className={BOTAO} onClick={() => mudar(0.5)} disabled={!noZoom} aria-label="Afastar o mapa">
+        <button type="button" className={BOTAO} onClick={() => mudar(0.5)} disabled={!noZoom} aria-label={tx("Afastar o mapa", "Zoom out of the map")}>
           −
         </button>
         <button type="button" className={`${BOTAO} rotulo`} onClick={() => setZoom(zoomInicial(base))} disabled={!noZoom}>
-          Restaurar
+          {tx("Restaurar", "Reset")}
         </button>
-        <span className="text-xs text-carvao-muted">{noZoom ? `Aproximação de ${num(z.escala, 0)} vezes; arraste para mover.` : "Clique ou toque para escolher; o + aproxima na seleção."}</span>
+        <span className="text-xs text-carvao-muted">
+          {noZoom
+            ? tx(`Aproximação de ${num(z.escala, 0)} vezes; arraste para mover.`, `Zoomed ${num(z.escala, 0, idioma)} times; drag to move.`)
+            : tx("Clique ou toque para escolher; o + aproxima na seleção.", "Click or tap to choose; + zooms in on the selection.")}
+        </span>
       </div>
       <div
         ref={caixa}

@@ -13,18 +13,21 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR, plural, reais } from "@/lib/energia/formato";
+import { dataBR as dataBRBase, plural as pluralBase, reais as reaisBase } from "@/lib/energia/formato";
+import { tx } from "@/lib/energia/idioma";
+import type { Idioma } from "@/lib/idioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import {
-  COLUNAS_CALENDARIO,
-  COLUNAS_EMPATES,
-  COLUNAS_PERMANENCIA,
+  colunasCalendario,
+  colunasEmpates,
+  colunasPermanencia,
   COR_SM,
-  CURTO_SM,
-  DO_SM,
-  ESCALA_HORAS_DIA,
+  curtoSm,
+  doSm,
+  escalaHorasDia,
   JANELAS_CALENDARIO,
   LIMITES_HORA,
-  NOME_SM,
+  nomeSm,
   SUBMERCADOS,
   calendarioLimite,
   diasNoLimite,
@@ -58,11 +61,14 @@ import type { BlocoLimitesDisponivel } from "@/lib/energia/tipos-pld";
  * de cada um; vem depois da figura para que ela apareça na primeira tela), recorte, tabela, notas do painel e as três visões
  * complementares (calendário dos dias, horas no piso por submercado e empates), visíveis em Entender.
  */
-const ROTULO_LIMITE: Record<LimiteHora, string> = { piso: "Horas no piso", teto_horario: "Horas no teto horário" };
+function rotuloLimite(l: LimiteHora, idioma: Idioma): string {
+  if (l === "piso") return tx("Horas no piso", "Hours at the floor", idioma);
+  return tx("Horas no teto horário", "Hours at the hourly cap", idioma);
+}
 
 export type LimitesP010 = Pick<BlocoLimitesDisponivel, "permanencia_anual" | "regimes" | "empates_piso" | "calendario" | "tolerancia">;
 
-const valorLimite = (v: number | null) => (v === null ? "sem valor integrado" : `${reais(v)}/MWh`);
+const valorLimite = (v: number | null, idioma: Idioma) => (v === null ? tx("sem valor integrado", "no integrated value", idioma) : `${reaisBase(v, 2, idioma)}/MWh`);
 
 export function PldLimites({
   l,
@@ -99,46 +105,56 @@ export function PldLimites({
     [anos.join(",")],
   );
   const [v, definir] = useEstadoUrl(esquema);
+  const idioma = useIdioma();
+  const tx = useTx();
+  const dataBR = (iso: string | null | undefined) => dataBRBase(iso, idioma);
+  const plural = (n: number, um: string, varios: string) => pluralBase(n, um, varios, idioma);
   const sm = v.sm as Submercado;
+  const nome = nomeSm(sm, idioma);
   const ano = v.ano;
   const lim = v.lim as LimiteHora;
   const bloco = l as BlocoLimitesDisponivel;
   const p = permanencia(bloco, ano, sm);
   const regs = regimesDoAno(bloco, ano);
   const reg = regs.length === 1 ? regs[0] : null;
-  const perm = useMemo(() => linhasPermanencia(bloco, sm), [bloco, sm]);
+  const perm = useMemo(() => linhasPermanencia(bloco, sm, idioma), [bloco, sm, idioma]);
   const nDias = JANELAS_CALENDARIO[v.cal as JanelaCalendario];
-  const cal = useMemo(() => calendarioLimite(bloco.calendario, sm, lim, nDias), [bloco, sm, lim, nDias]);
-  const calLinhas = useMemo(() => linhasCalendario(bloco.calendario, sm, nDias), [bloco, sm, nDias]);
-  const empates = useMemo(() => linhasEmpates(bloco), [bloco]);
+  const cal = useMemo(() => calendarioLimite(bloco.calendario, sm, lim, nDias, idioma), [bloco, sm, lim, nDias, idioma]);
+  const calLinhas = useMemo(() => linhasCalendario(bloco.calendario, sm, nDias, idioma), [bloco, sm, nDias, idioma]);
+  const empates = useMemo(() => linhasEmpates(bloco, idioma), [bloco, idioma]);
   const escolhidos = v.sms as Submercado[];
   // piso por ano para os submercados escolhidos: as mesmas linhas de linhasPermanencia, uma coluna por submercado
   const comparacao = useMemo(() => {
-    const porSm = Object.fromEntries(escolhidos.map((s) => [s, linhasPermanencia(bloco, s)]));
+    const porSm = Object.fromEntries(escolhidos.map((s) => [s, linhasPermanencia(bloco, s, idioma)]));
     return anos.map((a) => ({
       id: String(a),
-      rotulo: permanencia(bloco, a, "SE")?.parcial ? `${a} (parcial)` : String(a),
+      rotulo: permanencia(bloco, a, "SE")?.parcial ? tx(`${a} (parcial)`, `${a} (partial)`) : String(a),
       ...Object.fromEntries(escolhidos.map((s) => [s, porSm[s].find((l) => l.id === String(a))?.piso_pct ?? null])),
     }));
-  }, [bloco, anos, escolhidos]);
+  }, [bloco, anos, escolhidos, idioma, tx]);
   const dias = bloco.calendario.dias.slice(-nDias);
   // os dias com hora no limite, ditos por data quando são poucos, em todo o calendário publicado (a grade de uma janela sem eventos é uniforme)
-  const textoDias = textoDiasNoLimite(diasNoLimite(bloco.calendario, sm, lim), lim, bloco.calendario.dias.length);
+  const textoDias = textoDiasNoLimite(diasNoLimite(bloco.calendario, sm, lim), lim, bloco.calendario.dias.length, 10, idioma);
   const endereco = `${rotaPainel("p010")}#p010`;
   const ficha = fichas[`piso_${ano}_${sm}`] ?? null;
-  const periodoAno = p?.parcial ? `${ano} até ${dataBR(diaReferencia)}` : String(ano);
+  const periodoAno = p?.parcial ? tx(`${ano} até ${dataBR(diaReferencia)}`, `${ano} through ${dataBR(diaReferencia)}`) : String(ano);
 
   return (
     <div className="space-y-6">
       <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
-        <RespostaCurta id="p010" vivo veredito={vereditoP010(bloco, ano, sm, diaReferencia)}>
-          {respostaP010(bloco, ano, sm, diaReferencia)}
+        <RespostaCurta id="p010" vivo veredito={vereditoP010(bloco, ano, sm, diaReferencia, idioma)}>
+          {respostaP010(bloco, ano, sm, diaReferencia, idioma)}
         </RespostaCurta>
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-          <PldEscolha legenda="Submercado" opcoes={SUBMERCADOS.map((s) => ({ id: s, rotulo: CURTO_SM[s], detalhe: NOME_SM[s] }))} valor={sm} onEscolher={(s) => definir({ sm: s })} />
+          <PldEscolha
+            legenda={tx("Submercado", "Submarket")}
+            opcoes={SUBMERCADOS.map((s) => ({ id: s, rotulo: curtoSm(s, idioma), detalhe: nomeSm(s, idioma) }))}
+            valor={sm}
+            onEscolher={(s) => definir({ sm: s })}
+          />
           <PldLista
-            rotulo="Ano"
-            opcoes={anos.map((a) => ({ id: String(a), rotulo: permanencia(bloco, a, sm)?.parcial ? `${a} (parcial)` : String(a) }))}
+            rotulo={tx("Ano", "Year")}
+            opcoes={anos.map((a) => ({ id: String(a), rotulo: permanencia(bloco, a, sm)?.parcial ? tx(`${a} (parcial)`, `${a} (partial)`) : String(a) }))}
             valor={String(ano)}
             onEscolher={(a) => definir({ ano: Number(a) })}
           />
@@ -147,13 +163,16 @@ export function PldLimites({
 
       <div className="space-y-3">
         <GraficoBarras
-          titulo={`Horas no piso e no teto horário por ano, ${NOME_SM[sm]} (% das horas com limite vigente)`}
+          titulo={tx(
+            `Horas no piso e no teto horário por ano, ${nome} (% das horas com limite vigente)`,
+            `Hours at the floor and at the hourly cap by year, ${nome} (% of hours with a limit in force)`,
+          )}
           dados={perm}
           chaveCategoria="id"
           chaveRotulo="rotulo"
           series={[
-            { id: "piso_pct", rotulo: "no piso", cor: "var(--escala-seq-3)" },
-            { id: "teto_pct", rotulo: "no teto horário", cor: "var(--escala-div-neg-2)" },
+            { id: "piso_pct", rotulo: tx("no piso", "at the floor"), cor: "var(--escala-seq-3)" },
+            { id: "teto_pct", rotulo: tx("no teto horário", "at the hourly cap"), cor: "var(--escala-div-neg-2)" },
           ]}
           unidade="%"
           casas={2}
@@ -161,84 +180,100 @@ export function PldLimites({
           onSelecionar={(id) => id && definir({ ano: Number(id) })}
         />
         <p className="text-sm leading-relaxed text-carvao-muted">
-          Cada ano tem o próprio piso e os próprios tetos: a barra mede quanto tempo o preço passou no limite daquele ano, não o nível do preço. O ano parcial ainda não
-          terminou e não se compara a anos completos sem essa ressalva.
+          {tx(
+            "Cada ano tem o próprio piso e os próprios tetos: a barra mede quanto tempo o preço passou no limite daquele ano, não o nível do preço. O ano parcial ainda não terminou e não se compara a anos completos sem essa ressalva.",
+            "Each year has its own floor and its own caps: the bar measures how long the price stayed at that year's limit, not the price level. The partial year has not ended yet and is not comparable to complete years without this caveat.",
+          )}
         </p>
         {notaPermanencia ? <p className="text-sm leading-relaxed text-carvao-muted">{notaPermanencia}</p> : null}
       </div>
 
-      <FaixaMetricas colunas={4} rotulo={`Medidas de ${periodoAno}, ${NOME_SM[sm]}`}>
+      <FaixaMetricas colunas={4} rotulo={tx(`Medidas de ${periodoAno}, ${nome}`, `Measures for ${periodoAno}, ${nome}`)}>
         <Numero
           variante="faixa"
-          rotulo="Horas no piso"
+          rotulo={tx("Horas no piso", "Hours at the floor")}
           natureza="CALCULADO"
           valor={emPct(p?.frac_piso)}
           evidencia={ficha}
           formato="pct"
           casas={2}
-          unidade="das horas com limite"
+          unidade={tx("das horas com limite", "of hours with a limit")}
           periodo={periodoAno}
-          motivoAusencia="Sem permanência publicada para o ano e o submercado."
+          motivoAusencia={tx("Sem permanência publicada para o ano e o submercado.", "No duration published for the year and submarket.")}
           cor={COR_SM[sm]}
           endereco={endereco}
-          nota={ficha ? undefined : "A ficha Comprove é publicada para o ano de referência; os demais anos estão na tabela e no CSV diário."}
+          nota={
+            ficha
+              ? undefined
+              : tx(
+                  "A ficha Comprove é publicada para o ano de referência; os demais anos estão na tabela e no CSV diário.",
+                  "The proof sheet is published for the reference year; the other years are in the table and in the daily CSV.",
+                )
+          }
         />
         <Numero
           variante="faixa"
-          rotulo="Horas no teto horário"
+          rotulo={tx("Horas no teto horário", "Hours at the hourly cap")}
           natureza="CALCULADO"
           valor={p?.horas_teto_horario ?? null}
           formato="num"
           casas={0}
-          unidade="horas"
+          unidade={tx("horas", "hours")}
           periodo={periodoAno}
-          motivoAusencia="Sem permanência publicada."
+          motivoAusencia={tx("Sem permanência publicada.", "No duration published.")}
           cor={COR_SM[sm]}
         />
         <Numero
           variante="faixa"
-          rotulo="Dias com média no teto estrutural"
+          rotulo={tx("Dias com média no teto estrutural", "Days with the average at the structural cap")}
           natureza="CALCULADO"
           valor={p?.dias_teto_estrutural ?? null}
           formato="num"
           casas={0}
-          unidade="dias"
+          unidade={tx("dias", "days")}
           periodo={periodoAno}
-          motivoAusencia="Sem permanência publicada."
+          motivoAusencia={tx("Sem permanência publicada.", "No duration published.")}
           cor={COR_SM[sm]}
-          nota="Conferido sobre a média das 24 horas do dia."
+          nota={tx("Conferido sobre a média das 24 horas do dia.", "Checked against the average of the 24 hours of the day.")}
         />
-        <div role="group" aria-label={`Limites vigentes em ${ano}`} data-metrica="" className="min-w-0">
-          <p className="mb-1.5 text-[0.8125rem] leading-snug text-carvao-muted">Limites de {ano} (atos da ANEEL)</p>
+        <div role="group" aria-label={tx(`Limites vigentes em ${ano}`, `Limits in force in ${ano}`)} data-metrica="" className="min-w-0">
+          <p className="mb-1.5 text-[0.8125rem] leading-snug text-carvao-muted">{tx(`Limites de ${ano} (atos da ANEEL)`, `Limits for ${ano} (ANEEL acts)`)}</p>
           {reg ? (
             <dl className="space-y-1.5 text-sm tabular-nums text-carvao">
               <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
                 <dt className="text-carvao-muted">
-                  Piso <span className="text-xs">(cada hora)</span>
+                  {tx("Piso", "Floor")} <span className="text-xs">{tx("(cada hora)", "(each hour)")}</span>
                 </dt>
-                <dd>{valorLimite(reg.pld_min)}</dd>
+                <dd>{valorLimite(reg.pld_min, idioma)}</dd>
               </div>
               <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
                 <dt className="text-carvao-muted">
-                  Teto horário <span className="text-xs">(cada hora)</span>
+                  {tx("Teto horário", "Hourly cap")} <span className="text-xs">{tx("(cada hora)", "(each hour)")}</span>
                 </dt>
-                <dd>{valorLimite(reg.pld_max_horario)}</dd>
+                <dd>{valorLimite(reg.pld_max_horario, idioma)}</dd>
               </div>
               <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
                 <dt className="text-carvao-muted">
-                  Teto estrutural <span className="text-xs">(média do dia)</span>
+                  {tx("Teto estrutural", "Structural cap")} <span className="text-xs">{tx("(média do dia)", "(daily average)")}</span>
                 </dt>
-                <dd>{valorLimite(reg.pld_max_estrutural)}</dd>
+                <dd>{valorLimite(reg.pld_max_estrutural, idioma)}</dd>
               </div>
             </dl>
           ) : (
-            <p className="text-sm text-carvao-muted">{regs.length ? "Mais de um trecho de vigência no ano: veja a tabela de limites." : "Sem ato vigente integrado para o ano."}</p>
+            <p className="text-sm text-carvao-muted">
+              {regs.length
+                ? tx("Mais de um trecho de vigência no ano: veja a tabela de limites.", "More than one period in force during the year: see the limits table.")
+                : tx("Sem ato vigente integrado para o ano.", "No act in force integrated for the year.")}
+            </p>
           )}
           {reg && (
             <p className="mt-1.5 text-xs leading-snug text-carvao-muted">
               {reg.ato_pld_min === reg.ato_pld_max_horario && reg.ato_pld_min === reg.ato_pld_max_estrutural
-                ? `Piso e tetos: ${reg.ato_pld_min ?? "ato não identificado"}.`
-                : `Piso: ${reg.ato_pld_min ?? "ato não identificado"}; teto horário: ${reg.ato_pld_max_horario ?? "ato não identificado"}; teto estrutural: ${reg.ato_pld_max_estrutural ?? "ato não identificado"}.`}
+                ? tx(`Piso e tetos: ${reg.ato_pld_min ?? "ato não identificado"}.`, `Floor and caps: ${reg.ato_pld_min ?? "act not identified"}.`)
+                : tx(
+                    `Piso: ${reg.ato_pld_min ?? "ato não identificado"}; teto horário: ${reg.ato_pld_max_horario ?? "ato não identificado"}; teto estrutural: ${reg.ato_pld_max_estrutural ?? "ato não identificado"}.`,
+                    `Floor: ${reg.ato_pld_min ?? "act not identified"}; hourly cap: ${reg.ato_pld_max_horario ?? "act not identified"}; structural cap: ${reg.ato_pld_max_estrutural ?? "act not identified"}.`,
+                  )}
             </p>
           )}
         </div>
@@ -246,27 +281,41 @@ export function PldLimites({
 
       <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
-          <dt className="rotulo text-mineral">Período</dt>
+          <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
           <dd className="mt-0.5">
-            Ano {periodoAno}; calendário dos últimos {plural(dias.length, "dia", "dias")} ({dias.length ? `${dataBR(dias[0])} a ${dataBR(dias[dias.length - 1])}` : "sem dias"})
+            {tx(
+              `Ano ${periodoAno}; calendário dos últimos ${plural(dias.length, "dia", "dias")} (${dias.length ? `${dataBR(dias[0])} a ${dataBR(dias[dias.length - 1])}` : "sem dias"})`,
+              `Year ${periodoAno}; calendar of the last ${plural(dias.length, "day", "days")} (${dias.length ? `${dataBR(dias[0])} to ${dataBR(dias[dias.length - 1])}` : "no days"})`,
+            )}
           </dd>
         </div>
         <div>
-          <dt className="rotulo text-mineral">Universo</dt>
-          <dd className="mt-0.5">Horas com PLD publicado {DO_SM[sm]} e limite vigente do ato da ANEEL</dd>
+          <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
+          <dd className="mt-0.5">
+            {tx(`Horas com PLD publicado ${doSm(sm, "pt")} e limite vigente do ato da ANEEL`, `Hours with a published PLD ${doSm(sm, idioma)} and a limit in force under the ANEEL act`)}
+          </dd>
         </div>
         <div>
-          <dt className="rotulo text-mineral">Unidade</dt>
+          <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
           <dd className="mt-0.5">
-            horas e % das horas; limites em R$/MWh nominais; hora no limite = preço igual ao limite, ao centavo
-            <span data-nivel="analisar"> (|PLD − limite| ≤ R$ {String(bloco.tolerancia.hora).replace(".", ",")}/MWh)</span>
+            {tx(
+              "horas e % das horas; limites em R$/MWh nominais; hora no limite = preço igual ao limite, ao centavo",
+              "hours and % of hours; limits in nominal R$/MWh; hour at the limit = price equal to the limit, to the cent",
+            )}
+            <span data-nivel="analisar">
+              {" "}
+              {tx(
+                `(|PLD − limite| ≤ R$ ${String(bloco.tolerancia.hora).replace(".", ",")}/MWh)`,
+                `(|PLD − limit| ≤ R$ ${String(bloco.tolerancia.hora)}/MWh)`,
+              )}
+            </span>
           </dd>
         </div>
       </dl>
 
       <TabelaInterativa
-        titulo={`Tabela equivalente: permanência nos limites por ano, ${NOME_SM[sm]}`}
-        colunas={COLUNAS_PERMANENCIA}
+        titulo={tx(`Tabela equivalente: permanência nos limites por ano, ${nome}`, `Equivalent table: duration at the limits by year, ${nome}`)}
+        colunas={colunasPermanencia(idioma)}
         linhas={perm}
         chaveLinha="id"
         colunaRotulo="rotulo"
@@ -282,23 +331,28 @@ export function PldLimites({
 
       <SecaoDoPainel
         id="calendario"
-        titulo="Em quais dos últimos dias o preço ficou no limite?"
-        lead={`Cada célula é um dia e cada linha é uma semana; o valor é o número de horas do dia no limite escolhido. O calendário usa os dias mais recentes da publicação (${
-          bloco.calendario.dias.length ? `${dataBR(bloco.calendario.dias[0])} a ${dataBR(bloco.calendario.dias[bloco.calendario.dias.length - 1])}` : "sem dias"
-        }), e a janela abaixo escolhe o último semestre ou todos eles, qualquer que seja o Ano escolhido acima: o histórico de cada ano está nas barras e no arquivo diário de limites.`}
+        titulo={tx("Em quais dos últimos dias o preço ficou no limite?", "On which of the recent days was the price at the limit?")}
+        lead={tx(
+          `Cada célula é um dia e cada linha é uma semana; o valor é o número de horas do dia no limite escolhido. O calendário usa os dias mais recentes da publicação (${
+            bloco.calendario.dias.length ? `${dataBR(bloco.calendario.dias[0])} a ${dataBR(bloco.calendario.dias[bloco.calendario.dias.length - 1])}` : "sem dias"
+          }), e a janela abaixo escolhe o último semestre ou todos eles, qualquer que seja o Ano escolhido acima: o histórico de cada ano está nas barras e no arquivo diário de limites.`,
+          `Each cell is a day and each row is a week; the value is the number of hours of the day at the chosen limit. The calendar uses the most recent days of the publication (${
+            bloco.calendario.dias.length ? `${dataBR(bloco.calendario.dias[0])} to ${dataBR(bloco.calendario.dias[bloco.calendario.dias.length - 1])}` : "no days"
+          }), and the window below chooses the last semester or all of them, whatever Year is chosen above: the history of each year is in the bars and in the daily limits file.`,
+        )}
       >
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
           <PldEscolha
-            legenda="Calendário"
-            opcoes={LIMITES_HORA.map((x) => ({ id: x, rotulo: ROTULO_LIMITE[x] }))}
+            legenda={tx("Calendário", "Calendar")}
+            opcoes={LIMITES_HORA.map((x) => ({ id: x, rotulo: rotuloLimite(x, idioma) }))}
             valor={lim}
             onEscolher={(x) => definir({ lim: x })}
           />
           <PldEscolha
-            legenda="Janela do calendário"
+            legenda={tx("Janela do calendário", "Calendar window")}
             opcoes={[
-              { id: "6m" as JanelaCalendario, rotulo: "Último semestre" },
-              { id: "12m" as JanelaCalendario, rotulo: `Últimos ${bloco.calendario.dias.length} dias` },
+              { id: "6m" as JanelaCalendario, rotulo: tx("Último semestre", "Last semester") },
+              { id: "12m" as JanelaCalendario, rotulo: tx(`Últimos ${bloco.calendario.dias.length} dias`, `Last ${bloco.calendario.dias.length} days`) },
             ]}
             valor={v.cal as JanelaCalendario}
             onEscolher={(x) => definir({ cal: x })}
@@ -310,51 +364,63 @@ export function PldLimites({
           </p>
         )}
         <MapaCalor
-          titulo={`${ROTULO_LIMITE[lim]} por dia, ${NOME_SM[sm]}, últimos ${plural(dias.length, "dia", "dias")}`}
+          titulo={tx(
+            `${rotuloLimite(lim, "pt")} por dia, ${nome}, últimos ${plural(dias.length, "dia", "dias")}`,
+            `${rotuloLimite(lim, idioma)} per day, ${nome}, last ${plural(dias.length, "day", "days")}`,
+          )}
           linhas={cal.linhas}
           colunas={cal.colunas}
-          nomeLinhas="Semana"
-          nomeColunas="Dia da semana"
+          nomeLinhas={tx("Semana", "Week")}
+          nomeColunas={tx("Dia da semana", "Day of the week")}
           valores={cal.valores}
-          escala={ESCALA_HORAS_DIA}
-          unidade="horas"
+          escala={escalaHorasDia(idioma)}
+          unidade={tx("horas", "hours")}
           casas={0}
-          periodo={dias.length ? `${dataBR(dias[0])} a ${dataBR(dias[dias.length - 1])}` : undefined}
-          nota="Célula com borda tracejada: dia fora da janela escolhida. Zero é valor: dia sem nenhuma hora no limite."
+          periodo={dias.length ? tx(`${dataBR(dias[0])} a ${dataBR(dias[dias.length - 1])}`, `${dataBR(dias[0])} to ${dataBR(dias[dias.length - 1])}`) : undefined}
+          nota={tx(
+            "Célula com borda tracejada: dia fora da janela escolhida. Zero é valor: dia sem nenhuma hora no limite.",
+            "Cell with a dashed border: day outside the chosen window. Zero is a value: a day with no hour at the limit.",
+          )}
         />
         <TabelaInterativa
-          titulo={`Tabela equivalente do calendário: horas no limite por dia, ${NOME_SM[sm]}`}
-          colunas={COLUNAS_CALENDARIO}
+          titulo={tx(`Tabela equivalente do calendário: horas no limite por dia, ${nome}`, `Equivalent table for the calendar: hours at the limit per day, ${nome}`)}
+          colunas={colunasCalendario(idioma)}
           linhas={calLinhas}
           chaveLinha="id"
-          colunaRotulo="dia"
+          colunaRotulo="dia" // i18n: dado
           fonte={fonte}
           versao={versao}
           nomeArquivo={`pld-limites-calendario-${sm}`}
           chaveUrl="cal.t"
-          ordemInicial={{ coluna: "dia", direcao: "desc" }}
-          nota="O histórico diário desde 2021, com os limites vigentes de cada dia, está no CSV de limites (download no rodapé do painel)."
+          ordemInicial={{ coluna: "dia", direcao: "desc" }} // i18n: dado
+          nota={tx(
+            "O histórico diário desde 2021, com os limites vigentes de cada dia, está no CSV de limites (download no rodapé do painel).",
+            "The daily history since 2021, with the limits in force on each day, is in the limits CSV (download at the foot of the panel).",
+          )}
         />
       </SecaoDoPainel>
 
-      <SecaoDoPainel id="piso-por-submercado" titulo="Quantas horas no piso, por ano e por submercado?">
+      <SecaoDoPainel id="piso-por-submercado" titulo={tx("Quantas horas no piso, por ano e por submercado?", "How many hours at the floor, by year and by submarket?")}>
         <Comparador
-          rotulo={`Submercados no gráfico (até ${LIMITE_COMPARACAO})`}
-          entidades={SUBMERCADOS.map((s) => ({ id: s, rotulo: NOME_SM[s], sinonimos: [CURTO_SM[s]] }))}
+          rotulo={tx(`Submercados no gráfico (até ${LIMITE_COMPARACAO})`, `Submarkets in the chart (up to ${LIMITE_COMPARACAO})`)}
+          entidades={SUBMERCADOS.map((s) => ({ id: s, rotulo: nomeSm(s, idioma), sinonimos: [curtoSm(s, idioma), nomeSm(s, "pt")] }))}
           selecionadas={escolhidos}
           onMudar={(ids) => definir({ sms: ids as Submercado[] })}
-          dicaBusca="Sul, Nordeste, Norte"
-          vazio="Nenhum submercado escolhido. Escolha até quatro para comparar as horas no piso na mesma escala."
+          dicaBusca={tx("Sul, Nordeste, Norte", "South, Northeast, North")}
+          vazio={tx(
+            "Nenhum submercado escolhido. Escolha até quatro para comparar as horas no piso na mesma escala.",
+            "No submarket chosen. Choose up to four to compare hours at the floor on the same scale.",
+          )}
         >
           {() => null}
         </Comparador>
         {escolhidos.length > 0 && (
           <GraficoBarras
-            titulo="Horas no piso por ano e submercado (% das horas com limite vigente)"
+            titulo={tx("Horas no piso por ano e submercado (% das horas com limite vigente)", "Hours at the floor by year and submarket (% of hours with a limit in force)")}
             dados={comparacao}
             chaveCategoria="id"
             chaveRotulo="rotulo"
-            series={escolhidos.map((s) => ({ id: s, rotulo: NOME_SM[s], cor: COR_SM[s] }))}
+            series={escolhidos.map((s) => ({ id: s, rotulo: nomeSm(s, idioma), cor: COR_SM[s] }))}
             unidade="%"
             casas={2}
             selecionado={String(ano)}
@@ -362,35 +428,39 @@ export function PldLimites({
           />
         )}
         <p className="text-sm leading-relaxed text-carvao-muted">
-          Os quatro submercados têm o mesmo piso em cada ano; diferenças entre as barras de um ano vêm das horas em que os preços se separaram (painel de diferenças
-          regionais), não de pisos diferentes.
+          {tx(
+            "Os quatro submercados têm o mesmo piso em cada ano; diferenças entre as barras de um ano vêm das horas em que os preços se separaram (painel de diferenças regionais), não de pisos diferentes.",
+            "The four submarkets have the same floor in each year; differences between the bars of a year come from the hours in which prices diverged (regional differences panel), not from different floors.",
+          )}
         </p>
       </SecaoDoPainel>
 
-      <SecaoDoPainel id="empates-piso" titulo="Em quantas horas vários submercados ficaram no piso ao mesmo tempo?">
+      <SecaoDoPainel id="empates-piso" titulo={tx("Em quantas horas vários submercados ficaram no piso ao mesmo tempo?", "In how many hours were several submarkets at the floor at the same time?")}>
         <GraficoBarras
-          titulo="Horas de cada ano pelo número de submercados no piso na mesma hora"
+          titulo={tx("Horas de cada ano pelo número de submercados no piso na mesma hora", "Hours of each year by the number of submarkets at the floor in the same hour")}
           dados={empates}
           chaveCategoria="id"
           chaveRotulo="rotulo"
           series={[
-            { id: "q0", rotulo: "nenhum", cor: "var(--escala-seq-1)" },
-            { id: "q1", rotulo: "um", cor: "var(--escala-seq-2)" },
-            { id: "q2", rotulo: "dois", cor: "var(--escala-seq-3)" },
-            { id: "q3", rotulo: "três", cor: "var(--escala-seq-4)" },
-            { id: "q4", rotulo: "os quatro", cor: "var(--escala-seq-5)" },
+            { id: "q0", rotulo: tx("nenhum", "none"), cor: "var(--escala-seq-1)" },
+            { id: "q1", rotulo: tx("um", "one"), cor: "var(--escala-seq-2)" },
+            { id: "q2", rotulo: tx("dois", "two"), cor: "var(--escala-seq-3)" },
+            { id: "q3", rotulo: tx("três", "three"), cor: "var(--escala-seq-4)" },
+            { id: "q4", rotulo: tx("os quatro", "all four"), cor: "var(--escala-seq-5)" },
           ]}
-          unidade="horas"
+          unidade={tx("horas", "hours")}
           casas={0}
           empilhado
         />
         <p className="text-sm leading-relaxed text-carvao-muted">
-          Com os quatro no piso, os preços são iguais por regra, e a hora não diz nada sobre diferenças entre regiões nem sobre o custo de cada uma. As médias e os percentis
-          de anos com muitas horas no piso têm uma massa de valores iguais; o painel de histórico mostra essa massa.
+          {tx(
+            "Com os quatro no piso, os preços são iguais por regra, e a hora não diz nada sobre diferenças entre regiões nem sobre o custo de cada uma. As médias e os percentis de anos com muitas horas no piso têm uma massa de valores iguais; o painel de histórico mostra essa massa.",
+            "With all four at the floor, prices are equal by rule, and the hour says nothing about differences between regions or about the cost of each one. The averages and percentiles of years with many hours at the floor contain a mass of equal values; the history panel shows this mass.",
+          )}
         </p>
         <TabelaInterativa
-          titulo="Tabela equivalente: horas por número de submercados no piso"
-          colunas={COLUNAS_EMPATES}
+          titulo={tx("Tabela equivalente: horas por número de submercados no piso", "Equivalent table: hours by number of submarkets at the floor")}
+          colunas={colunasEmpates(idioma)}
           linhas={empates}
           chaveLinha="id"
           colunaRotulo="rotulo"

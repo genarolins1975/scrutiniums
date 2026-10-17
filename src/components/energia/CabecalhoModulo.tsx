@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
 import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
 import { SobreEstaPagina } from "@/components/energia/SobreEstaPagina";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Abertura editorial das páginas do observatório: rótulo, título curto (cinco a nove palavras), uma ou duas frases, o recorte
@@ -32,7 +33,8 @@ export function CabecalhoModulo({
 }: {
   /** Rótulo acima do título (módulo ou seção). Omitido na abertura de módulo, onde repetiria a navegação; útil em página filha, como migalha. */
   rotulo?: string;
-  titulo: string;
+  /** Texto, ou nó com nome próprio marcado (<Nome>) na página inglesa. */
+  titulo: ReactNode;
   /** Texto longo de apresentação. Com `lead`, vai para o bloco recolhível; sem `lead`, é a abertura recolhida. */
   children?: ReactNode;
   /** Fontes e datas de referência por extenso. Com `lead`, vai para o bloco recolhível; sem `lead`, fica à vista. */
@@ -66,7 +68,7 @@ export function CabecalhoModulo({
         <h1 className="ed-h1 mt-2 max-w-4xl font-serif text-carvao">{titulo}</h1>
         {referencia && (
           <p className="cab-ref mt-3 text-xs text-mineral">
-            <span className="font-medium text-carvao-muted">Fontes e datas de referência: </span>
+            <span className="font-medium text-carvao-muted">{tx("Fontes e datas de referência: ", "Sources and reference dates: ")}</span>
             {referencia}
           </p>
         )}
@@ -85,13 +87,13 @@ export function CabecalhoModulo({
         {(recorte || fonte || haBloco) && (
           <div className="ed-meta mt-1 items-center text-xs text-carvao-muted" data-recorte="">
             {recorte && <span>{recorte}</span>}
-            {fonte && <span>Fonte: {fonte}</span>}
+            {fonte && <span>{tx("Fonte: ", "Source: ")}{fonte}</span>}
             {haBloco && (
-              <DetalheDoNivel resumo="Fontes, datas e siglas" abreEm="auditar" className="[&[open]]:basis-full" dados={{ "data-sobre-pagina": "true" }}>
+              <DetalheDoNivel resumo={tx("Fontes, datas e siglas", "Sources, dates and acronyms")} abreEm="auditar" className="[&[open]]:basis-full" dados={{ "data-sobre-pagina": "true" }}>
                 <div className="max-w-prose2 space-y-3 pb-2 pt-1 text-sm leading-relaxed text-carvao-muted">
                   {referencia && (
                     <p className="text-xs text-mineral">
-                      <span className="font-medium text-carvao-muted">Fontes e datas de referência: </span>
+                      <span className="font-medium text-carvao-muted">{tx("Fontes e datas de referência: ", "Sources and reference dates: ")}</span>
                       {referencia}
                     </p>
                   )}
@@ -105,7 +107,7 @@ export function CabecalhoModulo({
         )}
         {limite && (
           <p className="mt-2 max-w-3xl text-sm leading-snug text-carvao" data-limite="">
-            <span className="rotulo mr-2 text-mineral">Não permite concluir</span>
+            <span className="rotulo mr-2 text-mineral">{tx("Não permite concluir", "What you cannot conclude")}</span>
             {limite}
           </p>
         )}

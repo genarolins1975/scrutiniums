@@ -2,7 +2,9 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { BaixarImagem } from "@/components/energia/BaixarImagem";
-import { num, plural } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import type { Idioma } from "@/lib/idioma";
 import {
   CHAVES_QUANTIS,
   ROTULO_QUANTIL,
@@ -60,13 +62,20 @@ export type HistogramaProps = {
 
 type Item = { tipo: "classe"; c: Classe; k: number } | { tipo: "massa"; m: MassaPontual; k: number };
 
-const TEXTO_MASSA_PADRAO =
-  "Valores idênticos neste ponto são contados à parte, fora das classes, para que o acúmulo num único valor não se confunda com a classe vizinha.";
+const TEXTO_MASSA_PADRAO = {
+  pt: "Valores idênticos neste ponto são contados à parte, fora das classes, para que o acúmulo num único valor não se confunda com a classe vizinha.", // i18n: dado
+  en: "Identical values at this point are counted separately, outside the classes, so that the pile-up at a single value is not confused with the neighboring class.",
+}; // i18n: dado (escolhido por idioma)
 
-function faixa(c: Classe, casas: number, unidade: string): string {
+function faixa(c: Classe, casas: number, unidade: string, idioma: Idioma): string {
+  const { num } = formatos(idioma);
+  if (idioma === "en")
+    return c.fechadaDireita
+      ? `${num(c.inicio, casas)} to ${textoValor(c.fim, casas, unidade)}, inclusive`
+      : `${num(c.inicio, casas)} to less than ${textoValor(c.fim, casas, unidade)}`;
   return c.fechadaDireita
-    ? `${num(c.inicio, casas)} a ${textoValor(c.fim, casas, unidade)}, inclusive`
-    : `${num(c.inicio, casas)} a menos de ${textoValor(c.fim, casas, unidade)}`;
+    ? `${num(c.inicio, casas)} a ${textoValor(c.fim, casas, unidade)}, inclusive` // i18n: dado (ramo português)
+    : `${num(c.inicio, casas)} a menos de ${textoValor(c.fim, casas, unidade)}`; // i18n: dado (ramo português)
 }
 
 export function Histograma({
@@ -75,16 +84,21 @@ export function Histograma({
   rotuloX,
   unidade,
   casas = 1,
-  contagem = { singular: "observação", plural: "observações" },
+  contagem: contagemDada,
   periodo,
   marcadores = [...CHAVES_QUANTIS],
   valorAtual,
   altura = 280,
-  cor = "var(--cor-energia-soft)",
-  corMassa = "var(--cor-energia-dark)",
+  cor = "var(--cor-energia-soft)", // i18n: dado
+  corMassa = "var(--cor-energia-dark)", // i18n: dado
   nota,
   tetoEixo,
 }: HistogramaProps) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { num, plural } = formatos(idioma);
+  const contagem = contagemDada ?? tx({ singular: "observação", plural: "observações" }, { singular: "observation", plural: "observations" });
+  const rotuloQuantil = (k: ChaveQuantil) => (k === "mediana" ? tx(ROTULO_QUANTIL[k], "Median") : ROTULO_QUANTIL[k]);
   const uid = useId().replace(/:/g, "");
   const [largura, setLargura] = useState(760);
   const [ativo, setAtivo] = useState<number | null>(null);
@@ -143,7 +157,7 @@ export function Histograma({
   }
   const marcas = [
     ...(atual !== null && valorAtual ? [{ id: "atual", x: sx(atual), texto: `${valorAtual.rotulo}: ${textoValor(atual, casas, unidade)}`, atual: true }] : []),
-    ...quantisIguais.map((q) => ({ id: q.chaves.join("-"), x: sx(q.v), texto: q.chaves.map((k) => ROTULO_QUANTIL[k]).join(", "), atual: false })),
+    ...quantisIguais.map((q) => ({ id: q.chaves.join("-"), x: sx(q.v), texto: q.chaves.map((k) => rotuloQuantil(k)).join(", "), atual: false })),
   ];
   // rótulo à direita da linha; perto da borda direita, à esquerda
   const esquerda = marcas.map((m) => m.x + 4 + larguraTexto(m.texto) > w - 2);
@@ -227,21 +241,26 @@ export function Histograma({
   }
 
   const contar = (k: number) => plural(k, contagem.singular, contagem.plural);
-  const doTotal = (k: number) => (n ? `${textoFracao(k / n)} do total` : "");
+  const doTotal = (k: number) => (n ? tx(`${textoFracao(k / n)} do total`, `${textoFracao(k / n)} of the total`) : "");
   function descreve(it: Item): { titulo: string; linhas: string[] } {
     if (it.tipo === "massa") {
       return {
-        titulo: `Exatamente ${textoValor(it.m.valor, casas, unidade)} (${it.m.rotulo})`,
-        linhas: [contar(it.m.contagem), doTotal(it.m.contagem), "Barra própria, fora das classes"],
+        titulo: tx(`Exatamente ${textoValor(it.m.valor, casas, unidade)} (${it.m.rotulo})`, `Exactly ${textoValor(it.m.valor, casas, unidade)} (${it.m.rotulo})`),
+        linhas: [contar(it.m.contagem), doTotal(it.m.contagem), tx("Barra própria, fora das classes", "Separate bar, outside the classes")],
       };
     }
     const dentro = massas.filter((m) => m.valor >= it.c.inicio && (m.valor < it.c.fim || (it.c.fechadaDireita && m.valor === it.c.fim)));
     return {
-      titulo: faixa(it.c, casas, unidade),
+      titulo: faixa(it.c, casas, unidade, idioma),
       linhas: [
         contar(it.c.contagem),
         doTotal(it.c.contagem),
-        ...dentro.map((m) => `Sem as ${num(m.contagem, 0)} exatamente em ${textoValor(m.valor, casas, unidade)}, contadas à parte`),
+        ...dentro.map((m) =>
+          tx(
+            `Sem as ${num(m.contagem, 0)} exatamente em ${textoValor(m.valor, casas, unidade)}, contadas à parte`,
+            `Excluding the ${num(m.contagem, 0)} at exactly ${textoValor(m.valor, casas, unidade)}, counted separately`,
+          ),
+        ),
       ],
     };
   }
@@ -252,8 +271,11 @@ export function Histograma({
   const leitura = desc ? `${desc.titulo}: ${desc.linhas.filter(Boolean).join("; ")}.` : "";
   const nomeX = `${rotuloX} (${unidade})`;
   const legendaBarras = larguraUniforme
-    ? `${contagem.plural} em cada classe de ${textoValor(lref, casasMarcas([lref]), unidade)}`
-    : `${contagem.plural} por ${textoValor(lref, casasMarcas([lref]), unidade)} (classes de larguras diferentes: altura é densidade)`;
+    ? tx(`${contagem.plural} em cada classe de ${textoValor(lref, casasMarcas([lref]), unidade)}`, `${contagem.plural} in each class of ${textoValor(lref, casasMarcas([lref]), unidade)}`)
+    : tx(
+        `${contagem.plural} por ${textoValor(lref, casasMarcas([lref]), unidade)} (classes de larguras diferentes: altura é densidade)`,
+        `${contagem.plural} per ${textoValor(lref, casasMarcas([lref]), unidade)} (classes of different widths: height is density)`,
+      );
 
   return (
     <div ref={ref} className="relative w-full">
@@ -266,7 +288,7 @@ export function Histograma({
         </defs>
       </svg>
       <div className="flex flex-wrap items-baseline gap-x-4">
-        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
+        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label={tx("Legenda", "Legend")}>
           <li className="flex items-center gap-1.5">
             <span aria-hidden="true" className="inline-block h-2.5 w-3" style={{ background: cor }} />
             {legendaBarras.charAt(0).toUpperCase() + legendaBarras.slice(1)}
@@ -276,7 +298,8 @@ export function Histograma({
               <svg width="12" height="12" aria-hidden="true">
                 <rect x="1" y="1" width="10" height="10" fill={`url(#${uid}-hachura)`} stroke={corMassa} strokeWidth="1.5" />
               </svg>
-              Barra própria: {m.rotulo} ({textoValor(m.valor, casas, unidade)})
+              {tx("Barra própria: ", "Separate bar: ")}
+              {m.rotulo} ({textoValor(m.valor, casas, unidade)})
             </li>
           ))}
           {marcadores.length > 0 && (
@@ -284,7 +307,7 @@ export function Histograma({
               <svg width="16" height="10" aria-hidden="true">
                 <line x1="8" y1="0" x2="8" y2="10" stroke="var(--cor-carvao-muted)" strokeWidth="1" strokeDasharray="2 2" />
               </svg>
-              Quantis ({marcadores.map((k) => ROTULO_QUANTIL[k]).join(", ")})
+              {tx("Quantis", "Quantiles")} ({marcadores.map((k) => rotuloQuantil(k)).join(", ")})
             </li>
           )}
           {atual !== null && valorAtual && (
@@ -314,7 +337,10 @@ export function Histograma({
           data-svg-grafico=""
         >
           <title id={`${uid}-t`}>
-            {`${titulo}. Histograma de ${contar(n)} com valor: ${nomeX}. Use as setas para percorrer as barras da esquerda para a direita.`}
+            {tx(
+              `${titulo}. Histograma de ${contar(n)} com valor: ${nomeX}. Use as setas para percorrer as barras da esquerda para a direita.`,
+              `${titulo}. Histogram of ${contar(n)} with a value: ${nomeX}. Use the arrow keys to move through the bars from left to right.`,
+            )}
           </title>
           {dy.marcas.map((v) => (
             <g key={`y${v}`}>
@@ -335,7 +361,7 @@ export function Histograma({
 
           {n === 0 && (
             <text x={L + (w - L - R) / 2} y={T + (base - T) / 2} textAnchor="middle" fontSize="12" fill="var(--cor-mineral)">
-              Sem observações com valor no período
+              {tx("Sem observações com valor no período", "No observations with a value in the period")}
             </text>
           )}
 
@@ -403,7 +429,7 @@ export function Histograma({
                   paintOrder="stroke"
                 >
                   {texto}
-                  {g.cortada ? " (barra cortada)" : ""}
+                  {g.cortada ? tx(" (barra cortada)", " (bar cut off)") : ""}
                 </text>
               </g>
             );
@@ -460,28 +486,33 @@ export function Histograma({
 
       <div id={`${uid}-r`} className="mt-3 space-y-1.5 border-t border-linha pt-2 text-xs leading-relaxed text-carvao-muted">
         <p data-nota-imagem="">
-          <span className="rotulo mr-2 text-mineral">Amostra</span>
-          <span className="tabular-nums">n = {num(n, 0)}</span> {n === 1 ? contagem.singular : contagem.plural} com valor
+          <span className="rotulo mr-2 text-mineral">{tx("Amostra", "Sample")}</span>
+          <span className="tabular-nums">n = {num(n, 0)}</span> {n === 1 ? contagem.singular : contagem.plural} {tx("com valor", "with a value")}
           {res.semDado > 0 && (
-            <span data-sem-dado={res.semDado}>; {contar(res.semDado)} sem dado, fora da distribuição (ausência não é zero)</span>
+            <span data-sem-dado={res.semDado}>
+              {tx(
+                `; ${contar(res.semDado)} sem dado, fora da distribuição (ausência não é zero)`,
+                `; ${contar(res.semDado)} with no data, outside the distribution (missing is not zero)`,
+              )}
+            </span>
           )}
           .
         </p>
         <p data-nota-imagem="">
-          <span className="rotulo mr-2 text-mineral">Período</span>
+          <span className="rotulo mr-2 text-mineral">{tx("Período", "Period")}</span>
           {periodo}
         </p>
         {n > 0 && (
           <dl className="flex flex-wrap gap-x-4 gap-y-1 tabular-nums">
             {(
               [
-                ["Mínimo", res.min],
+                [tx("Mínimo", "Minimum"), res.min],
                 ["P10", res.p10],
                 ["P25", res.p25],
-                ["Mediana", res.mediana],
+                [tx("Mediana", "Median"), res.mediana],
                 ["P75", res.p75],
                 ["P90", res.p90],
-                ["Máximo", res.max],
+                [tx("Máximo", "Maximum"), res.max],
               ] as const
             ).map(([r, v]) => (
               <div key={r} className="flex gap-1">
@@ -495,23 +526,36 @@ export function Histograma({
           <p>
             <span className="rotulo mr-2 text-mineral">{valorAtual.rotulo}</span>
             {textoValor(valorAtual.valor, casas, unidade)}
-            {atual !== null && typeof valorAtual.percentil === "number" && ` (percentil ${num(valorAtual.percentil, 0)} da distribuição)`}
-            {atual === null && " (sem marcador no gráfico)"}.
+            {atual !== null &&
+              typeof valorAtual.percentil === "number" &&
+              tx(` (percentil ${num(valorAtual.percentil, 0)} da distribuição)`, ` (percentile ${num(valorAtual.percentil, 0)} of the distribution)`)}
+            {atual === null && tx(" (sem marcador no gráfico)", " (no marker on the chart)")}.
           </p>
         )}
         {massas.map((m) => (
           <p key={`e${m.valor}`} data-explica-massa={m.valor} data-nota-imagem="">
-            <span className="rotulo mr-2 text-mineral">Barra própria</span>
-            {m.rotulo}: {contar(m.contagem)} ({doTotal(m.contagem)}) exatamente em {textoValor(m.valor, casas, unidade)}. {m.explicacao ?? TEXTO_MASSA_PADRAO}
-            {cortar && m.contagem > dy.max && " A barra foi cortada no topo para não achatar as demais; a contagem exata está no rótulo."}
+            <span className="rotulo mr-2 text-mineral">{tx("Barra própria", "Separate bar")}</span>
+            {m.rotulo}: {contar(m.contagem)} ({doTotal(m.contagem)}) {tx("exatamente em", "at exactly")} {textoValor(m.valor, casas, unidade)}.{" "}
+            {m.explicacao ?? tx(TEXTO_MASSA_PADRAO.pt, TEXTO_MASSA_PADRAO.en)}
+            {cortar &&
+              m.contagem > dy.max &&
+              tx(
+                " A barra foi cortada no topo para não achatar as demais; a contagem exata está no rótulo.",
+                " The bar was cut off at the top so as not to flatten the others; the exact count is in the label.",
+              )}
           </p>
         ))}
         {fora.abaixo + fora.acima > 0 && classes.length > 0 && (
           <p>
-            Fora das classes definidas (entram no n e nos quantis, não nas barras):{" "}
+            {tx("Fora das classes definidas (entram no n e nos quantis, não nas barras):", "Outside the defined classes (they count in n and in the quantiles, not in the bars):")}{" "}
             {[
-              fora.abaixo ? `${contar(fora.abaixo)} abaixo de ${textoValor(classes[0].inicio, casas, unidade)}` : "",
-              fora.acima ? `${contar(fora.acima)} acima de ${textoValor(classes[classes.length - 1].fim, casas, unidade)}` : "",
+              fora.abaixo ? tx(`${contar(fora.abaixo)} abaixo de ${textoValor(classes[0].inicio, casas, unidade)}`, `${contar(fora.abaixo)} below ${textoValor(classes[0].inicio, casas, unidade)}`) : "",
+              fora.acima
+                ? tx(
+                    `${contar(fora.acima)} acima de ${textoValor(classes[classes.length - 1].fim, casas, unidade)}`,
+                    `${contar(fora.acima)} above ${textoValor(classes[classes.length - 1].fim, casas, unidade)}`,
+                  )
+                : "",
             ]
               .filter(Boolean)
               .join("; ")}
@@ -523,16 +567,18 @@ export function Histograma({
 
       <details className="mt-3 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Dados do gráfico em tabela ({plural(itens.length, "linha", "linhas")})
+          {tx(`Dados do gráfico em tabela (${plural(itens.length, "linha", "linhas")})`, `Chart data as a table (${plural(itens.length, "row", "rows")})`)}
         </summary>
-        <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
+        <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
           <table className="w-full border-collapse tabular-nums">
-            <caption className="sr-only">{`${titulo}: ${contagem.plural} por faixa de ${nomeX}`}</caption>
+            <caption className="sr-only">{tx(`${titulo}: ${contagem.plural} por faixa de ${nomeX}`, `${titulo}: ${contagem.plural} by range of ${nomeX}`)}</caption>
             <thead className="sticky top-0 bg-superficie">
               <tr className="text-left text-mineral">
-                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">Faixa ({unidade})</th>
+                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">
+                  {tx("Faixa", "Range")} ({unidade})
+                </th>
                 <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{contagem.plural.charAt(0).toUpperCase() + contagem.plural.slice(1)}</th>
-                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">% do total</th>
+                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{tx("% do total", "% of total")}</th>
               </tr>
             </thead>
             <tbody>
@@ -541,10 +587,12 @@ export function Histograma({
                 return (
                   <tr key={`${it.tipo}${it.k}`} className="border-b border-linha">
                     <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">
-                      {it.tipo === "classe" ? faixa(it.c, casas, "") : `Exatamente ${num(it.m.valor, casas)} (${it.m.rotulo}; barra própria)`}
+                      {it.tipo === "classe"
+                        ? faixa(it.c, casas, "", idioma)
+                        : tx(`Exatamente ${num(it.m.valor, casas)} (${it.m.rotulo}; barra própria)`, `Exactly ${num(it.m.valor, casas)} (${it.m.rotulo}; separate bar)`)}
                     </th>
                     <td className="px-2 py-1 text-carvao">{num(k, 0)}</td>
-                    <td className="px-2 py-1 text-carvao">{n ? textoFracao(k / n) : "sem dado"}</td>
+                    <td className="px-2 py-1 text-carvao">{n ? textoFracao(k / n) : tx("sem dado", "no data")}</td>
                   </tr>
                 );
               })}

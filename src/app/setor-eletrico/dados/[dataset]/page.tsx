@@ -1,5 +1,9 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import type { ReactNode } from "react";
+import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
+import { Nome } from "@/components/i18n/Nome";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { notFound } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -8,10 +12,14 @@ import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, dataBR, plural } from "@/lib/energia/formato";
+import { tx } from "@/lib/energia/idioma";
+import { LICENCA_EN, PAINEIS_EN, codigo, identificadorDaFicha, marcado, rotuloDado, traduzido } from "@/lib/energia/i18n/regulacao-dados-metodo";
 import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, catalogoDados, datasetPorSlug, urlDoConjunto } from "@/lib/energia/datasets";
 import { CSV_DADOS, DEFINICAO_ETAPA_LEITOR, ROTULO_ESTADO_DADOS, ROTULO_PAPEL, linhasIntegracao, refLegivel, rotuloTema, situacaoDoConjunto } from "@/lib/energia/dados";
 import {
   criterioDaSituacao,
+  descricaoDoArquivo,
+  diaEmBrasilia,
   eApenasPaginaInicial,
   escolheDescricao,
   fraseAbertura,
@@ -22,6 +30,7 @@ import {
   nomeDoConjunto,
   nomesLegiveisDosTitulos,
   notasDeQuebraPosterior,
+  quebrasPosteriores,
   rotuloDoLinkOficial,
   rotuloDoArquivo,
   trocaIdentificadores,
@@ -38,22 +47,30 @@ export function generateStaticParams() {
   return DATASETS_INTEGRADOS.filter((d, i, todas) => todas.findIndex((x) => x.slug === d.slug) === i).map((d) => ({ dataset: d.slug }));
 }
 
-export function generateMetadata({ params }: { params: { dataset: string } }): Metadata {
+function metadadosDaPagina({ params }: { params: { dataset: string } }): Metadata {
   const d = datasetPorSlug(params.dataset);
   const e = catalogoDados()?.entradas.find((x) => x.id === d?.catalogoId);
   if (!d || !e) return {};
   const pub = publicacaoDados();
   const { nome } = nomeDoConjunto(e, (pub?.conjuntos ?? []).filter((c) => c.id.endsWith(`/${d.interno}`)));
+  // o head não aceita a marca de nome: em inglês, o conjunto é identificado pelo endereço da ficha, não pelo nome português
   return {
-    title: `${nome} (${e.orgao}) · dados`,
-    description: `Origem, atualidade, licença, arquivos para baixar e forma de citação do conjunto ${nome} (${e.orgao}) usado pelo Observatório do Setor Elétrico.`,
+    title: tx(`${nome} (${e.orgao}) · dados`, `${e.orgao} dataset ${identificadorDaFicha(d.slug)} · data`),
+    description: tx(
+      `Origem, atualidade, licença, arquivos para baixar e forma de citação do conjunto ${nome} (${e.orgao}) usado pelo Observatório do Setor Elétrico.`,
+      `Origin, timeliness, license, files to download and citation form of an open dataset published by ${e.orgao} and used by the Power Sector Observatory; dataset record /en/setor-eletrico/dados/${d.slug}.`,
+    ),
     alternates: { canonical: `/setor-eletrico/dados/${d.slug}` },
   };
 }
 
+export async function generateMetadata(props: { params: { dataset: string } }, anterior: ResolvingMetadata): Promise<Metadata> {
+  return metadadosEnergia(caminhoComParametros("/setor-eletrico/dados/[dataset]", props.params), metadadosDaPagina(props), anterior);
+}
+
 /** Data do metadado da fonte (ISO em UTC, às vezes sem o "Z") no horário de Brasília. */
 function dataFonte(iso: string | null | undefined): string {
-  if (!iso) return "não informada";
+  if (!iso) return tx("não informada", "not reported");
   // o catálogo guarda a data de modificação sem hora: sem hora, a data fica como está (sem inventar horário nem trocar o dia)
   if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) return dataBR(iso);
   const comFuso = /Z$|[+-]\d\d:\d\d$/.test(iso) ? iso : `${iso}Z`;
@@ -76,13 +93,18 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
   const criterio = integr.length && pub ? criterioDaSituacao(integr[0], pub.regras.sla, pub.referencia.hoje) : "";
   const nome = nomeDoConjunto(e, integr);
   const descricao = escolheDescricao(e.descricao, descricoesCompletas().get(e.id));
-  const licencaBruta = e.licenca ?? cat.portais[e.orgao]?.licenca ?? "não informada";
+  const licencaInformada = e.licenca ?? cat.portais[e.orgao]?.licenca ?? null;
+  const licencaBruta = licencaInformada ?? "não informada"; // i18n: dado (valor interno; a tela diz "não informada" no idioma da página)
   const licenca = licencaDoLeitor(licencaBruta);
+  // nome da licença na tela: forma inglesa da tabela exata; sem entrada, o texto da fonte marcado como trecho em português
+  const nomeDaLicenca = (t: string) =>
+    licencaInformada === null ? tx("não informada", "not reported") : traduzido(LICENCA_EN, t) ? rotuloDado(LICENCA_EN, t) : <TrechoPortugues regiao="ficha-licenca">{t}</TrechoPortugues>;
   const oficial = urlDoConjunto(e);
   const paginaInicial = eApenasPaginaInicial(oficial);
   const cadencias = integr.flatMap((c) => c.frequencia?.cadencias ?? []).filter((c, i, a) => a.indexOf(c) === i);
   const capturas = f?.historico?.length ? f.historico : (f?.capturas ?? []).map((x) => ({ ...x, vigente: true }));
   const notasDeQuebra = integr.length ? notasDeQuebraPosterior(e.quebras, integr[0]) : [];
+  const quebrasEn = integr.length ? quebrasPosteriores(e.quebras, integr[0]) : [];
   // indicadores publicados que listam este conjunto entre as fontes (metricas.json)
   const indicadores = metricasPublicadas()
     .filter((m) => m.fontes.includes(d.interno))
@@ -98,7 +120,10 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
   const nomesDosTitulos = nomesLegiveisDosTitulos(cat.entradas, pub?.conjuntos ?? []);
   // o catálogo dá o mesmo endereço a conjuntos que um módulo integra juntos: a ficha vale para todos eles
   const companheiros = cat.entradas.filter((x) => x.slug === d.slug && x.id !== e.id);
-  const periodo = integr[0]?.atualidade.ultimo_periodo ? `dados até ${refLegivel(integr[0].atualidade.ultimo_periodo)}` : "período dos dados não medido";
+  const periodo = integr[0]?.atualidade.ultimo_periodo
+    ? tx(`dados até ${refLegivel(integr[0].atualidade.ultimo_periodo)}`, `data up to ${refLegivel(integr[0].atualidade.ultimo_periodo)}`)
+    : tx("período dos dados não medido", "data period not measured");
+  const paginasNoIdioma = d.paginas.map((p) => ({ ...p, rotulo: rotuloDado(PAINEIS_EN, p.rotulo) }));
   const arquivos = itensDeArquivos(
     d.downloads.map((u) => ({ rotulo: rotuloDoArquivo(u, COLUNAS_ARQUIVO[u]), url: u })),
     { pub, manifesto, dicionario: COLUNAS_ARQUIVO },
@@ -106,11 +131,22 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
     const outras = outrasFichas(a.url);
     return {
       ...a,
+      descricaoPt: tx(null, descricaoDoArquivo(a.url, COLUNAS_ARQUIVO[a.url])),
       origemDosLiterais: urlDoConjunto(e) ?? undefined,
       aviso:
         outras.length > 0 ? (
           <span className="block text-xs text-carvao-muted" data-arquivo-compartilhado="true">
-            Reúne dados também de {plural(outras.length, "outro conjunto", "outros conjuntos")}.<span data-nivel="analisar"> {outras.join("; ")}.</span>
+            {tx(`Reúne dados também de ${plural(outras.length, "outro conjunto", "outros conjuntos")}.`, `Also brings together data from ${plural(outras.length, "other dataset", "other datasets")}.`)}
+            <span data-nivel="analisar">
+              {" "}
+              {outras.map((o, i) => (
+                <span key={o}>
+                  {i > 0 ? "; " : ""}
+                  <Nome>{o}</Nome>
+                </span>
+              ))}
+              .
+            </span>
           </span>
         ) : undefined,
     };
@@ -121,33 +157,37 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16">
-        <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
+        <nav aria-label={tx("Trilha", "Breadcrumb")} className="pt-8 text-sm text-mineral">
           <Link href="/setor-eletrico/dados" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">
-            Dados
+            {tx("Dados", "Data")}
           </Link>{" "}
           · {e.orgao}
         </nav>
         <CabecalhoModulo
           rotulo={`${e.orgao}${e.tema === "outros" ? "" : ` · ${rotuloTema(e.tema)}`}`}
-          titulo={nome.nome}
-          lead={fraseAbertura({ orgao: e.orgao, cadencias, paginas: d.paginas })}
-          recorte={`${periodo} · última captura ${ultimaCaptura ? carimbo(ultimaCaptura) : "sem registro"} · etapa no catálogo: ${ROTULO_ESTADO_DADOS[e.estado].toLowerCase()}`}
-          fonte={`${e.orgao}, dados abertos`}
+          // o título é o nome oficial do conjunto: em inglês, marcado como nome e precedido do que ele é
+          titulo={tx<ReactNode>(nome.nome, <>Dataset: <Nome>{nome.nome}</Nome></>)}
+          lead={marcado(fraseAbertura({ orgao: e.orgao, cadencias, paginas: paginasNoIdioma }))}
+          recorte={tx(
+            `${periodo} · última captura ${ultimaCaptura ? carimbo(ultimaCaptura) : "sem registro"} · etapa no catálogo: ${ROTULO_ESTADO_DADOS[e.estado].toLowerCase()}`,
+            `${periodo} · latest capture ${ultimaCaptura ? carimbo(ultimaCaptura) : "no record"} · stage in the catalog: ${ROTULO_ESTADO_DADOS[e.estado].toLowerCase()}`,
+          )}
+          fonte={tx(`${e.orgao}, dados abertos`, `${e.orgao}, open data`)}
         />
 
         <ModoProfundidade>
           <Bloco id="ficha">
-            <h2 className="sr-only">Ficha do conjunto</h2>
+            <h2 className="sr-only">{tx("Ficha do conjunto", "Dataset record")}</h2>
             <div className="space-y-8">
               {situacao && (
                 <aside
-                  aria-label="Situação dos dados"
+                  aria-label={tx("Situação dos dados", "Status of the data")}
                   data-alerta={situacao.alerta ? "true" : undefined}
                   className={`border-l-2 pl-4 ${situacao.alerta ? "border-aviso" : "border-energia-soft"}`}
                 >
-                  <p className={`rotulo ${situacao.alerta ? "text-aviso" : "text-mineral"}`}>Situação dos dados</p>
+                  <p className={`rotulo ${situacao.alerta ? "text-aviso" : "text-mineral"}`}>{tx("Situação dos dados", "Status of the data")}</p>
                   <p className="mt-1 font-serif text-lg text-carvao">{situacao.titulo}</p>
-                  {situacao.texto && <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{situacao.texto}</p>}
+                  {situacao.texto && <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{marcado(situacao.texto)}</p>}
                   {criterio && (
                     <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-criterio="true">
                       {criterio}
@@ -160,7 +200,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                 <dl className="grid gap-x-8 gap-y-4 md:grid-cols-2">
                   {[
                     [
-                      "Página oficial do conjunto",
+                      tx("Página oficial do conjunto", "Official page of the dataset"),
                       <span key="u">
                         {oficial ? (
                           <>
@@ -172,26 +212,34 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                             </span>
                           </>
                         ) : (
-                          "não informada"
+                          tx("não informada", "not reported")
                         )}
                         {paginaInicial && (
                           <span className="mt-1 block" data-pagina-inicial="true">
-                            Este endereço é a página inicial do portal: o catálogo não guarda um link direto para o conjunto.
+                            {tx(
+                              "Este endereço é a página inicial do portal: o catálogo não guarda um link direto para o conjunto.",
+                              "This address is the home page of the portal: the catalog does not store a direct link to the dataset.",
+                            )}
                           </span>
                         )}
                       </span>,
                     ],
                     [
-                      "Licença",
+                      tx("Licença", "License"),
                       <span key="l">
-                        {licenca.nome}
-                        {licenca.baseLegal && <span data-nivel="analisar"> (base legal: {licenca.baseLegal})</span>}
+                        {nomeDaLicenca(licenca.nome)}
+                        {licenca.baseLegal && (
+                          <span data-nivel="analisar">
+                            {" "}
+                            ({tx("base legal:", "legal basis:")} <Nome>{licenca.baseLegal}</Nome>)
+                          </span>
+                        )}
                       </span>,
                     ],
-                    ["Formatos publicados", fraseFormatos(e.formatos, oficial)],
-                    ["Data de referência", fraseReferencia(integr[0], integr.length > 0)],
-                    ["Última captura", ultimaCaptura ? carimbo(ultimaCaptura) : "sem captura"],
-                    ["Última modificação de metadados na fonte", dataFonte(e.modificado_na_fonte)],
+                    [tx("Formatos publicados", "Published formats"), fraseFormatos(e.formatos, oficial)],
+                    [tx("Data de referência", "Reference date"), fraseReferencia(integr[0], integr.length > 0)],
+                    [tx("Última captura", "Latest capture"), ultimaCaptura ? carimbo(ultimaCaptura) : tx("sem captura", "no capture")],
+                    [tx("Última modificação de metadados na fonte", "Latest metadata modification at the source"), dataFonte(e.modificado_na_fonte)],
                   ].map(([k, v]) => (
                     <div key={String(k)} className="min-w-0 border-t border-linha pt-3">
                       <dt className="rotulo text-mineral">{k}</dt>
@@ -199,31 +247,39 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                     </div>
                   ))}
                 </dl>
-                {licenca.nota && <p className="mt-3 text-xs leading-relaxed text-mineral">Observação sobre a licença: {licenca.nota}</p>}
+                {licenca.nota && (
+                  <p className="mt-3 text-xs leading-relaxed text-mineral">
+                    {tx("Observação sobre a licença:", "Note on the license:")} <TrechoPortugues regiao="ficha-licenca">{licenca.nota}</TrechoPortugues>
+                  </p>
+                )}
               </div>
 
-              <SecaoDoPainel id="arquivos" titulo="Quais arquivos posso baixar?">
+              <SecaoDoPainel id="arquivos" titulo={tx("Quais arquivos posso baixar?", "Which files can I download?")}>
                 {arquivos.length > 0 ? (
                   <>
                     <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-tabelas-derivadas="true">
-                      São tabelas derivadas: o observatório as monta e publica a partir dos dados deste conjunto, e algumas reúnem também dados de outros conjuntos. Por isso o nome do arquivo não repete o título do conjunto. Os formatos publicados, acima, são os da fonte; aqui o
-                      observatório oferece só as suas tabelas.
+                      {tx(
+                        "São tabelas derivadas: o observatório as monta e publica a partir dos dados deste conjunto, e algumas reúnem também dados de outros conjuntos. Por isso o nome do arquivo não repete o título do conjunto. Os formatos publicados, acima, são os da fonte; aqui o observatório oferece só as suas tabelas.",
+                        "These are derived tables: the observatory builds and publishes them from the data of this dataset, and some also bring together data from other datasets. That is why the file name does not repeat the dataset title. The published formats, above, are those of the source; here the observatory offers only its own tables.",
+                      )}
                     </p>
                     <DadosArquivos itens={arquivos} />
-                    <p className="text-xs text-mineral">CSV com separador ponto e vírgula e ponto decimal; campo vazio significa ausência, nunca zero.</p>
+                    <p className="text-xs text-mineral">
+                      {tx("CSV com separador ponto e vírgula e ponto decimal; campo vazio significa ausência, nunca zero.", "CSV with semicolon separator and decimal point; an empty field means absence, never zero.")}
+                    </p>
                   </>
                 ) : (
                   <p className="text-sm text-carvao-muted" data-sem-arquivos="true">
-                    O observatório não publica tabela derivada deste conjunto: os dados originais estão na página oficial.
+                    {tx("O observatório não publica tabela derivada deste conjunto: os dados originais estão na página oficial.", "The observatory does not publish a derived table of this dataset: the original data are on the official page.")}
                   </p>
                 )}
                 <div>
-                  <h4 className="text-sm font-medium text-carvao">Páginas do observatório que usam este conjunto</h4>
+                  <h4 className="text-sm font-medium text-carvao">{tx("Páginas do observatório que usam este conjunto", "Observatory pages that use this dataset")}</h4>
                   <ul className="mt-1 flex flex-wrap gap-x-6 text-sm">
-                    {d.paginas.map((p) => (
+                    {paginasNoIdioma.map((p) => (
                       <li key={p.href}>
                         <Link href={p.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                          {p.rotulo}
+                          {marcado(p.rotulo)}
                         </Link>
                       </li>
                     ))}
@@ -232,45 +288,68 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
               </SecaoDoPainel>
 
               {e.quebras.length > 0 && (
-                <SecaoDoPainel id="mudancas-metodologicas" titulo="Mudanças metodológicas">
+                <SecaoDoPainel id="mudancas-metodologicas" titulo={tx("Mudanças metodológicas", "Methodological changes")}>
                   <p className="max-w-prose2 text-sm text-carvao-muted">
-                    Cada item diz a origem: declarada na descrição do conjunto pela fonte, ou identificada pela Scrutiniums no próprio dado, sem documento da fonte que a confirme.
+                    {tx(
+                      "Cada item diz a origem: declarada na descrição do conjunto pela fonte, ou identificada pela Scrutiniums no próprio dado, sem documento da fonte que a confirme.",
+                      "Each item states its origin: declared by the source in the dataset description, or identified by Scrutiniums in the data itself, without a source document confirming it.",
+                    )}
                   </p>
                   <ul className="space-y-2 text-sm text-carvao">
-                    {e.quebras.map((q) => (
-                      <li key={`${q.data}-${q.origem ?? "FONTE"}`}>
-                        <strong className="font-medium">{dataBR(q.data)}</strong>
-                        <span className="rotulo ml-2 text-mineral">{q.origem === "PLATAFORMA" ? "identificada pela Scrutiniums no dado" : "declarada pela fonte"}</span>
-                        <span className="block">
-                          {separaIdentificadores(trocaIdentificadores(q.descricao, nomesDosTitulos)).texto}
-                          {separaIdentificadores(trocaIdentificadores(q.descricao, nomesDosTitulos)).tecnico && (
-                            <span data-nivel="analisar"> {separaIdentificadores(trocaIdentificadores(q.descricao, nomesDosTitulos)).tecnico}</span>
-                          )}
-                        </span>
-                      </li>
-                    ))}
+                    {e.quebras.map((q) => {
+                      const partes = separaIdentificadores(trocaIdentificadores(q.descricao, nomesDosTitulos));
+                      return (
+                        <li key={`${q.data}-${q.origem ?? "FONTE"}`}>
+                          <strong className="font-medium">{dataBR(q.data)}</strong>
+                          <span className="rotulo ml-2 text-mineral">
+                            {q.origem === "PLATAFORMA" ? tx("identificada pela Scrutiniums no dado", "identified by Scrutiniums in the data") : tx("declarada pela fonte", "declared by the source")}
+                          </span>
+                          <span className="block">
+                            <TrechoPortugues regiao="ficha-quebra">{partes.texto}</TrechoPortugues>
+                            {partes.tecnico && <span data-nivel="analisar"> {partes.tecnico}</span>}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
-                  {notasDeQuebra.map((n) => (
+                  {notasDeQuebra.map((n, i) => (
                     <p key={n} className="border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao" data-quebra-posterior="true">
-                      {n}
+                      {tx<ReactNode>(
+                        n,
+                        // a descrição da mudança é texto da fonte ou do catálogo, em português: fica marcada dentro da frase inglesa
+                        quebrasEn[i] ? (
+                          <>
+                            The change of {dataBR(quebrasEn[i].data)} (<TrechoPortugues regiao="ficha-quebra">{quebrasEn[i].descricao}</TrechoPortugues>) is later than the latest
+                            period available, {quebrasEn[i].ultimo}: the data available do not yet reflect this change.
+                          </>
+                        ) : (
+                          n
+                        ),
+                      )}
                     </p>
                   ))}
                 </SecaoDoPainel>
               )}
 
               {companheiros.length > 0 && (
-                <SecaoDoPainel id="outros-conjuntos-da-ficha" titulo="Outros conjuntos desta ficha">
+                <SecaoDoPainel id="outros-conjuntos-da-ficha" titulo={tx("Outros conjuntos desta ficha", "Other datasets in this record")}>
                   <div data-companheiros="true" className="space-y-2">
                     <p className="max-w-prose2 text-sm text-carvao-muted">
-                      O catálogo registra {plural(companheiros.length, "outro conjunto", "outros conjuntos")} com o mesmo endereço de ficha, porque um mesmo módulo do observatório os integra juntos. O que esta ficha diz da coleta vale para o grupo.
+                      {tx(
+                        `O catálogo registra ${plural(companheiros.length, "outro conjunto", "outros conjuntos")} com o mesmo endereço de ficha, porque um mesmo módulo do observatório os integra juntos. O que esta ficha diz da coleta vale para o grupo.`,
+                        `The catalog records ${plural(companheiros.length, "other dataset", "other datasets")} with the same record address, as a single module of the observatory integrates them together. What this record says about the collection applies to the group.`,
+                      )}
                     </p>
                     <ul className="space-y-1 text-sm text-carvao">
                       {companheiros.map((x) => (
                         <li key={x.id}>
-                          <strong className="font-medium">{nomeDoConjunto(x, (pub?.conjuntos ?? []).filter((c) => (x.integracoes ?? []).some((i) => i.id === c.id))).nome}</strong> ({x.orgao}){" "}
+                          <strong className="font-medium">
+                            <Nome>{nomeDoConjunto(x, (pub?.conjuntos ?? []).filter((c) => (x.integracoes ?? []).some((i) => i.id === c.id))).nome}</Nome>
+                          </strong>{" "}
+                          ({x.orgao}){" "}
                           {urlDoConjunto(x) && (
                             <a href={urlDoConjunto(x) ?? undefined} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
-                              página oficial ↗
+                              {tx("página oficial ↗", "official page ↗")}
                             </a>
                           )}
                         </li>
@@ -280,136 +359,189 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                 </SecaoDoPainel>
               )}
 
-              <SecaoDoPainel id="como-citar" titulo="Como citar">
+              <SecaoDoPainel id="como-citar" titulo={tx("Como citar", "How to cite")}>
                 <p className="max-w-prose2 text-sm leading-relaxed text-carvao [overflow-wrap:anywhere]">
-                  {e.orgao}. <em>{nome.nome}</em>. Dados abertos, {/^licen/i.test(paraCitar) ? "" : "licença "}
-                  {paraCitar === "não informada" ? "informada na fonte" : paraCitar.replace(/\.$/, "")}. Integrado e processado por Scrutiniums, Observatório Brasileiro do Setor Elétrico, captura de {ultimaCaptura ? carimbo(ultimaCaptura).slice(0, 10) : "data não informada"}
-                  {f?.snapshot ? <span data-nivel="analisar">, snapshot {f.snapshot}</span> : null}. Disponível em: https://scrutiniums.com/setor-eletrico/dados/{d.slug}. Acesso em: [data do seu acesso].
+                  {e.orgao}.{" "}
+                  <em>
+                    <Nome>{nome.nome}</Nome>
+                  </em>
+                  .{" "}
+                  {tx(
+                    <>
+                      Dados abertos, {/^licen/i.test(paraCitar) ? "" : "licença "}
+                      {paraCitar === "não informada" ? "informada na fonte" : paraCitar.replace(/\.$/, "")}. Integrado e processado por Scrutiniums, Observatório Brasileiro do Setor Elétrico, captura de {ultimaCaptura ? diaEmBrasilia(ultimaCaptura) : "data não informada"}
+                    </>,
+                    <>
+                      Open data, {/^licen/i.test(paraCitar) ? "" : "license "}
+                      {paraCitar === "não informada" ? "stated at the source" : nomeDaLicenca(paraCitar.replace(/\.$/, ""))}. Integrated and processed by Scrutiniums, Brazilian Power Sector Observatory, capture of {ultimaCaptura ? diaEmBrasilia(ultimaCaptura) : "date not reported"}
+                    </>,
+                  )}
+                  {f?.snapshot ? <span data-nivel="analisar">, snapshot {codigo(f.snapshot)}</span> : null}.{" "}
+                  {tx(
+                    <>Disponível em: https://scrutiniums.com/setor-eletrico/dados/{d.slug}. Acesso em: [data do seu acesso].</>,
+                    // o endereço vai inteiro num só texto (o slug sozinho não é prosa) e aponta a ficha inglesa
+                    <>{`Available at: https://scrutiniums.com/en/setor-eletrico/dados/${d.slug}. Accessed on: [date of your access].`}</>,
+                  )}
                 </p>
                 {nome.tituloNaFonte && (
                   <p className="text-xs leading-relaxed text-mineral" data-nivel="analisar">
-                    Título na fonte: {nome.tituloNaFonte}.
+                    {tx("Título na fonte:", "Title at the source:")} <Nome>{nome.tituloNaFonte}</Nome>.
                   </p>
                 )}
               </SecaoDoPainel>
 
-              <SecaoDoPainel id="conjunto-na-fonte" nivel="analisar" titulo="O conjunto na fonte e na coleta">
+              <SecaoDoPainel id="conjunto-na-fonte" nivel="analisar" titulo={tx("O conjunto na fonte e na coleta", "The dataset at the source and in the collection")}>
                 <dl className="grid gap-x-8 gap-y-3 text-sm md:grid-cols-2">
                   {nome.tituloNaFonte && (
                     <div className="min-w-0 md:col-span-2" data-titulo-na-fonte="true">
-                      <dt className="rotulo text-mineral">Título na fonte</dt>
+                      <dt className="rotulo text-mineral">{tx("Título na fonte", "Title at the source")}</dt>
                       <dd className="mt-0.5 text-carvao-muted [overflow-wrap:anywhere]">
-                        {nome.tituloNaFonte}
+                        <Nome>{nome.tituloNaFonte}</Nome>
                         {nome.motivo === "grafia"
-                          ? ". A fonte grafa esse título sem acento; o observatório mostra a grafia corrigida no título da página e na citação."
+                          ? tx(
+                              ". A fonte grafa esse título sem acento; o observatório mostra a grafia corrigida no título da página e na citação.",
+                              ". The source spells this title without accents; the observatory shows the corrected spelling in the page title and in the citation.",
+                            )
                           : nome.motivo === "identificador"
-                            ? ". O título publicado pela fonte é um identificador técnico; a página usa o nome que o módulo do observatório dá ao conjunto."
+                            ? tx(
+                                ". O título publicado pela fonte é um identificador técnico; a página usa o nome que o módulo do observatório dá ao conjunto.",
+                                ". The title published by the source is a technical identifier; the page uses the name the observatory module gives the dataset.",
+                              )
                             : nome.motivo === "separador"
-                              ? ". O observatório troca o travessão do título por dois-pontos."
-                              : ". O observatório omite do título o nome técnico da consulta."}
+                              ? tx(". O observatório troca o travessão do título por dois-pontos.", ". The observatory replaces the dash in the title with a colon.")
+                              : tx(". O observatório omite do título o nome técnico da consulta.", ". The observatory omits the technical name of the query from the title.")}
                       </dd>
                     </div>
                   )}
                   <div className="min-w-0 md:col-span-2" data-descricao={descricao.origem}>
-                    <dt className="rotulo text-mineral">Descrição publicada pela fonte</dt>
+                    <dt className="rotulo text-mineral">{tx("Descrição publicada pela fonte", "Description published by the source")}</dt>
                     <dd className="mt-0.5 leading-relaxed text-carvao-muted">
-                      <span className="whitespace-pre-line">{descricao.texto ?? "O catálogo não guarda descrição para este conjunto."}</span>
+                      <span className="whitespace-pre-line">
+                        {descricao.texto !== null ? (
+                          <TrechoPortugues regiao="ficha-descricao">{descricao.texto}</TrechoPortugues>
+                        ) : (
+                          tx("O catálogo não guarda descrição para este conjunto.", "The catalog does not store a description for this dataset.")
+                        )}
+                      </span>
                       {descricao.origem === "csv" && (
                         <p className="mt-1 text-xs text-mineral" data-descricao-completa="true">
-                          Texto completo, de{" "}
+                          {tx("Texto completo, de", "Full text, from")}{" "}
                           <a href={CSV_DADOS.catalogo.url} download className="underline underline-offset-4">
                             dados_catalogo.csv
                           </a>
-                          ; o catálogo da página guarda só o começo.
+                          {tx("; o catálogo da página guarda só o começo.", "; the page catalog stores only the beginning.")}
                         </p>
                       )}
                       {descricao.cortada && (
                         <p className="mt-1 text-xs text-mineral" data-descricao-cortada="true">
-                          O catálogo guarda só o começo da descrição da fonte; o texto completo está na página oficial do conjunto.
+                          {tx(
+                            "O catálogo guarda só o começo da descrição da fonte; o texto completo está na página oficial do conjunto.",
+                            "The catalog stores only the beginning of the source description; the full text is on the official page of the dataset.",
+                          )}
                         </p>
                       )}
                     </dd>
                   </div>
                   <div>
-                    <dt className="rotulo text-mineral">Etapa no catálogo</dt>
+                    <dt className="rotulo text-mineral">{tx("Etapa no catálogo", "Stage in the catalog")}</dt>
                     <dd className="mt-0.5 text-carvao-muted">
                       {ROTULO_ESTADO_DADOS[e.estado]}. {DEFINICAO_ETAPA_LEITOR[e.estado]}
                     </dd>
                   </div>
                   <div>
-                    <dt className="rotulo text-mineral">Uso declarado</dt>
+                    <dt className="rotulo text-mineral">{tx("Uso declarado", "Declared use")}</dt>
                     <dd className="mt-0.5 text-carvao-muted">
-                      {(e.papeis ?? []).map((p) => ROTULO_PAPEL[p] ?? p).join(", ") || "indicador"}
-                      {(e.modelos ?? []).length ? ` · modelos ${(e.modelos ?? []).join(", ")}` : ""}
+                      {(e.papeis ?? []).map((p) => ROTULO_PAPEL[p] ?? p).join(", ") || ROTULO_PAPEL.indicador}
+                      {(e.modelos ?? []).length ? tx(` · modelos ${(e.modelos ?? []).join(", ")}`, ` · models ${(e.modelos ?? []).join(", ")}`) : ""}
                     </dd>
                   </div>
                   <div>
-                    <dt className="rotulo text-mineral">Frequência declarada pela fonte (texto original)</dt>
-                    <dd className="mt-0.5 text-carvao-muted">{e.frequencia_declarada ?? "não declarada"}</dd>
+                    <dt className="rotulo text-mineral">{tx("Frequência declarada pela fonte (texto original)", "Frequency declared by the source (original text)")}</dt>
+                    <dd className="mt-0.5 text-carvao-muted">
+                      {e.frequencia_declarada ? <TrechoPortugues regiao="ficha-frequencia">{e.frequencia_declarada}</TrechoPortugues> : tx("não declarada", "not declared")}
+                    </dd>
                   </div>
                   <div>
-                    <dt className="rotulo text-mineral">Indicadores publicados que usam este conjunto</dt>
+                    <dt className="rotulo text-mineral">{tx("Indicadores publicados que usam este conjunto", "Published indicators that use this dataset")}</dt>
                     <dd className="mt-0.5 text-carvao-muted" data-indicadores="true">
                       {indicadores.length ? (
                         <ul className="list-disc pl-5">
                           {indicadores.map((t) => (
-                            <li key={t}>{t}</li>
+                            <li key={t}>
+                              <TrechoPortugues regiao="ficha-indicador">{t}</TrechoPortugues>
+                            </li>
                           ))}
                         </ul>
                       ) : (
-                        "nenhum: o conjunto não entra no cálculo de indicador publicado"
+                        tx("nenhum: o conjunto não entra no cálculo de indicador publicado", "none: the dataset does not enter the calculation of any published indicator")
                       )}
                     </dd>
                   </div>
                   {integr.length > 0 && pub && (
                     <div className="min-w-0 md:col-span-2">
-                      <dt className="rotulo text-mineral">Atualidade e coleta (publicação de {dataBR(pub.referencia.hoje)})</dt>
-                      <dd className="mt-0.5 text-carvao-muted [overflow-wrap:anywhere]">{integr.map((c) => linhasIntegracao(c).join(" ")).join(" ")}</dd>
+                      <dt className="rotulo text-mineral">{tx(`Atualidade e coleta (publicação de ${dataBR(pub.referencia.hoje)})`, `Timeliness and collection (publication of ${dataBR(pub.referencia.hoje)})`)}</dt>
+                      <dd className="mt-0.5 text-carvao-muted [overflow-wrap:anywhere]">{marcado(integr.map((c) => linhasIntegracao(c).join(" ")).join(" "))}</dd>
                     </div>
                   )}
                   {f?.ultima_tentativa && (
                     <div className="min-w-0 md:col-span-2">
-                      <dt className="rotulo text-mineral">Última tentativa de coleta direta</dt>
-                      <dd className="mt-0.5 text-carvao-muted [overflow-wrap:anywhere]">{`${carimbo(f.ultima_tentativa.tentado_em)} · ${f.ultima_tentativa.ok ? "ok" : "falhou"} · ${f.ultima_tentativa.detalhe.replace(/\d{4,}/g, (n) => Number(n).toLocaleString("pt-BR"))}`}</dd>
+                      <dt className="rotulo text-mineral">{tx("Última tentativa de coleta direta", "Latest direct collection attempt")}</dt>
+                      <dd className="mt-0.5 text-carvao-muted [overflow-wrap:anywhere]">
+                        {`${carimbo(f.ultima_tentativa.tentado_em)} · ${f.ultima_tentativa.ok ? "ok" : tx("falhou", "failed")} · `}
+                        {/* o detalhe é texto do pipeline, em português: os números grandes levam o ponto de milhar brasileiro do próprio trecho */}
+                        <TrechoPortugues regiao="ficha-tentativa">{f.ultima_tentativa.detalhe.replace(/\d{4,}/g, (n) => Number(n).toLocaleString("pt-BR"))}</TrechoPortugues>
+                      </dd>
                     </div>
                   )}
                 </dl>
               </SecaoDoPainel>
 
-              <SecaoDoPainel id="capturas-guardadas" nivel="auditar" titulo="Capturas guardadas e impressão digital">
+              <SecaoDoPainel id="capturas-guardadas" nivel="auditar" titulo={tx("Capturas guardadas e impressão digital", "Stored captures and fingerprint")}>
                 <div data-detalhes-tecnicos="true" className="space-y-3">
                   {(f?.snapshot || f?.snapshot_sha256) && (
                     <dl className="grid gap-x-8 gap-y-3 md:grid-cols-2">
                       {f?.snapshot && (
                         <div className="min-w-0 md:col-span-2">
-                          <dt className="rotulo text-mineral">Snapshot</dt>
-                          <dd className="mt-1 text-sm text-carvao [overflow-wrap:anywhere]">{f.snapshot}</dd>
+                          <dt className="rotulo text-mineral">{tx("Snapshot", "Snapshot")}</dt>
+                          <dd className="mt-1 text-sm text-carvao [overflow-wrap:anywhere]">{codigo(f.snapshot)}</dd>
                         </div>
                       )}
                       {f?.snapshot_sha256 && (
                         <div className="min-w-0 md:col-span-2">
-                          <dt className="rotulo text-mineral">sha256 do snapshot</dt>
-                          <dd className="mt-1 break-all font-mono text-xs text-carvao">{f.snapshot_sha256}</dd>
+                          <dt className="rotulo text-mineral">{tx("sha256 do snapshot", "sha256 of the snapshot")}</dt>
+                          <dd className="mt-1 break-all font-mono text-xs text-carvao">{codigo(f.snapshot_sha256)}</dd>
                         </div>
                       )}
                     </dl>
                   )}
                   <p className="max-w-prose2 text-sm text-carvao-muted">
-                    Cada arquivo baixado com conteúdo novo é guardado sem alteração; um download idêntico a um já guardado não cria registro novo. A tabela lista todas as capturas, inclusive as que uma captura posterior do mesmo arquivo substituiu.
+                    {tx(
+                      "Cada arquivo baixado com conteúdo novo é guardado sem alteração; um download idêntico a um já guardado não cria registro novo. A tabela lista todas as capturas, inclusive as que uma captura posterior do mesmo arquivo substituiu.",
+                      "Each file downloaded with new content is stored unchanged; a download identical to one already stored does not create a new record. The table lists all the captures, including those that a later capture of the same file replaced.",
+                    )}
                   </p>
                   {capturas.length === 0 ? (
                     <p className="border border-linha bg-papel p-3 text-sm text-carvao" data-sem-capturas="true">
                       {ultimaCaptura
-                        ? `A lista de capturas arquivo a arquivo deste conjunto não é publicada nesta página. O catálogo registra a última captura em ${carimbo(ultimaCaptura)}.`
-                        : "Este conjunto ainda não tem captura registrada: o arquivo não foi baixado com conteúdo, ou o conjunto é consultado no portal da fonte sem cópia local."}
+                        ? tx(
+                            `A lista de capturas arquivo a arquivo deste conjunto não é publicada nesta página. O catálogo registra a última captura em ${carimbo(ultimaCaptura)}.`,
+                            `The file-by-file list of captures of this dataset is not published on this page. The catalog records the latest capture on ${carimbo(ultimaCaptura)}.`,
+                          )
+                        : tx(
+                            "Este conjunto ainda não tem captura registrada: o arquivo não foi baixado com conteúdo, ou o conjunto é consultado no portal da fonte sem cópia local.",
+                            "This dataset has no capture recorded yet: the file was not downloaded with content, or the dataset is consulted on the source portal without a local copy.",
+                          )}
                     </p>
                   ) : (
-                    <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Capturas do conjunto (tabela rolável)">
+                    <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx("Capturas do conjunto (tabela rolável)", "Captures of the dataset (scrollable table)")}>
                       <table className="w-full min-w-[50rem] border-collapse text-xs">
-                        <caption className="sr-only">Todas as capturas integradas, por recurso</caption>
+                        <caption className="sr-only">{tx("Todas as capturas integradas, por recurso", "All integrated captures, by resource")}</caption>
                         <thead>
                           <tr className="text-left text-mineral">
-                            {["Recurso", "Capturado em", "Publicado pela fonte (metadado)", "Origem", "Situação", "sha256"].map((c) => (
+                            {tx(
+                              ["Recurso", "Capturado em", "Publicado pela fonte (metadado)", "Origem", "Situação", "sha256"],
+                              ["Resource", "Captured on", "Published by the source (metadata)", "Origin", "Status", "sha256"],
+                            ).map((c) => (
                               <th key={c} scope="col" className="border-b border-linha px-2 py-2 font-medium">
                                 {c}
                               </th>
@@ -419,12 +551,12 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                         <tbody>
                           {capturas.map((cpt) => (
                             <tr key={`${cpt.recurso}:${cpt.sha256}`} className="border-b border-linha">
-                              <td className="px-2 py-1.5 text-carvao">{cpt.recurso}</td>
+                              <td className="px-2 py-1.5 text-carvao">{codigo(cpt.recurso)}</td>
                               <td className="px-2 py-1.5 text-carvao">{carimbo(cpt.capturado_em)}</td>
                               <td className="px-2 py-1.5 text-carvao-muted">{dataFonte(cpt.publicado_em)}</td>
-                              <td className="px-2 py-1.5 text-carvao-muted">{cpt.origem === "seed" ? "captura primária versionada" : "coleta direta"}</td>
-                              <td className="px-2 py-1.5 text-carvao-muted">{cpt.vigente ? "vigente" : "substituída"}</td>
-                              <td className="break-all px-2 py-1.5 font-mono text-xs text-mineral">{cpt.sha256}</td>
+                              <td className="px-2 py-1.5 text-carvao-muted">{cpt.origem === "seed" ? tx("captura primária versionada", "versioned primary capture") : tx("coleta direta", "direct collection")}</td>
+                              <td className="px-2 py-1.5 text-carvao-muted">{cpt.vigente ? tx("vigente", "current") : tx("substituída", "replaced")}</td>
+                              <td className="break-all px-2 py-1.5 font-mono text-xs text-mineral">{codigo(cpt.sha256)}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -435,8 +567,11 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                   {typeof f?.recapturas_sem_mudanca === "number" && (
                     <p className="text-xs text-carvao-muted">
                       {f.recapturas_sem_mudanca === 0
-                        ? "Nenhum download posterior de arquivo já integrado foi registrado no log de coletas."
-                        : `${f.recapturas_sem_mudanca} ${f.recapturas_sem_mudanca === 1 ? "download posterior veio idêntico" : "downloads posteriores vieram idênticos"} a vintages já integradas (log de coletas); por isso não aparecem como linhas novas.`}
+                        ? tx("Nenhum download posterior de arquivo já integrado foi registrado no log de coletas.", "No later download of an already integrated file was recorded in the collection log.")
+                        : tx(
+                            `${f.recapturas_sem_mudanca} ${f.recapturas_sem_mudanca === 1 ? "download posterior veio idêntico" : "downloads posteriores vieram idênticos"} a vintages já integradas (log de coletas); por isso não aparecem como linhas novas.`,
+                            `${f.recapturas_sem_mudanca} ${f.recapturas_sem_mudanca === 1 ? "later download came back identical" : "later downloads came back identical"} to vintages already integrated (collection log); so they do not appear as new rows.`,
+                          )}
                     </p>
                   )}
                 </div>

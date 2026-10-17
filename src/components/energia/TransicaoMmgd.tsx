@@ -19,10 +19,11 @@ import {
   LISTAS_DESTAQUE,
   MEDIDAS_MUN,
   MEDIDAS_UF,
-  MEDIDA_MUN,
   MEDIDA_UF,
-  ROTULO_DESTAQUE,
-  ROTULO_DIMENSAO,
+  medidasMun,
+  medidasUf,
+  rotulosDestaque,
+  rotulosDimensao,
   codigoUf,
   colunasMunicipios,
   colunasUfs,
@@ -53,6 +54,10 @@ import {
   type UfAnoCompacto,
 } from "@/lib/energia/transicao";
 import type { BlocoMmgd, MunicipiosMmgdArquivo } from "@/lib/energia/tipos-transicao";
+import type { Idioma } from "@/lib/idioma";
+import { tx } from "@/lib/energia/idioma";
+import { Nome } from "@/components/i18n/Nome";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * P063, MMGD no território: o mapa por UF, as barras com a referência nacional, a
@@ -68,8 +73,19 @@ import type { BlocoMmgd, MunicipiosMmgdArquivo } from "@/lib/energia/tipos-trans
 
 const CORES_MAPA = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
 const CORES_COMP = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)"];
-const NOME_MEDIDA_UF: Record<MedidaUf, string> = { whab: "W por habitante", mw: "MW instalados", umil: "Unidades por mil hab.", cresc: "Crescimento no ano", mwref: "MW conectados no ano" };
-const OPCOES_MUN: readonly (readonly [MedidaMun, string])[] = MEDIDAS_MUN.map((m) => [m, m === "fora" ? "Distribuidora sem conjunto na UF" : MEDIDA_MUN[m].rotulo] as const);
+function nomesMedidaUf(idioma: Idioma): Record<MedidaUf, string> {
+  return {
+    whab: tx("W por habitante", "W per inhabitant", idioma),
+    mw: tx("MW instalados", "MW installed", idioma),
+    umil: tx("Unidades por mil hab.", "Units per thousand inhab.", idioma),
+    cresc: tx("Crescimento no ano", "Growth in the year", idioma),
+    mwref: tx("MW conectados no ano", "MW connected in the year", idioma),
+  };
+}
+function opcoesMun(idioma: Idioma): readonly (readonly [MedidaMun, string])[] {
+  const m = medidasMun(idioma);
+  return MEDIDAS_MUN.map((k) => [k, k === "fora" ? tx("Distribuidora sem conjunto na UF", "Utility with no consumer set in the state", idioma) : m[k].rotulo] as const);
+}
 
 // requisições sob demanda, compartilhadas pelas instâncias; falha não fica em cache
 const cache = new Map<string, Promise<unknown>>();
@@ -87,9 +103,10 @@ function carregar<T>(url: string, tipo: "json" | "texto"): Promise<T> {
 }
 
 function Falha({ erro, url, nome }: { erro: string; url: string; nome: string }) {
+  const tx = useTx();
   return (
     <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-      Não foi possível carregar {nome} ({erro}). Os mesmos números estão em{" "}
+      {tx(`Não foi possível carregar ${nome} (${erro}). Os mesmos números estão em`, `Could not load ${nome} (${erro}). The same figures are in`)}{" "}
       <a href={url} download className="text-energia-dark underline underline-offset-4">
         {url.split("/").at(-1)}
       </a>
@@ -119,20 +136,23 @@ export function TransicaoMmgdUf({
   dataCadastro: string;
   fonte: string;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_MMGD);
   const [aviso, setAviso] = useState("");
-  const medida = MEDIDA_UF[v.med];
-  const rotuloMed = rotuloMedidaUf(v.med, anoReferencia);
+  const medida = medidasUf(idioma)[v.med];
+  const rotuloMed = rotuloMedidaUf(v.med, anoReferencia, idioma);
   const escolhidas = useMemo(() => v.ufs.filter((u) => linhas.some((l) => l.uf === u)), [v.ufs, linhas]);
   const ultima = escolhidas.at(-1) ?? null;
   const valores = useMemo(() => valoresMapaUf(linhas, v.med), [linhas, v.med]);
   const classes = useMemo(() => quebrasQuantis(Object.values(valores), 5, { casas: medida.casas }), [valores, medida.casas]);
   const barras = useMemo(() => dadosBarrasUf(linhas, v.med), [linhas, v.med]);
-  const referencias = referenciaUf(wPorHabitanteBrasil, v.med);
+  const referencias = referenciaUf(wPorHabitanteBrasil, v.med, idioma);
   const historico = useMemo(() => dadosHistoricoUfs(ufAnual, escolhidas, primeiroCoberto), [ufAnual, escolhidas, primeiroCoberto]);
   const entidades = useMemo(() => linhas.map((l) => ({ id: l.uf, rotulo: `${l.nome} (${l.uf})`, sinonimos: [l.uf] })), [linhas]);
-  const colunas = useMemo(() => colunasUfs(anoReferencia, anoPopulacao), [anoReferencia, anoPopulacao]);
-  const opcoes = MEDIDAS_UF.map((m) => [m, NOME_MEDIDA_UF[m]] as const);
+  const colunas = useMemo(() => colunasUfs(anoReferencia, anoPopulacao, idioma), [anoReferencia, anoPopulacao, idioma]);
+  const nomesMedida = nomesMedidaUf(idioma);
+  const opcoes = MEDIDAS_UF.map((m) => [m, nomesMedida[m]] as const);
 
   const alternar = (uf: string | null) => {
     if (!uf) {
@@ -141,7 +161,7 @@ export function TransicaoMmgdUf({
     }
     const r = alternarSelecao(escolhidas, uf, LIMITE_COMPARACAO);
     if (r.motivo === "limite") {
-      setAviso(`Limite de ${LIMITE_COMPARACAO} UF na comparação: remova uma para incluir ${uf}.`);
+      setAviso(tx(`Limite de ${LIMITE_COMPARACAO} UF na comparação: remova uma para incluir ${uf}.`, `Limit of ${LIMITE_COMPARACAO} states in the comparison: remove one to include ${uf}.`));
       return;
     }
     setAviso("");
@@ -150,20 +170,23 @@ export function TransicaoMmgdUf({
 
   return (
     <div className="space-y-6">
-      <TransicaoOpcoes rotulo="Medida do mapa e das barras" nome="transicao-mmgd-med" opcoes={opcoes} valor={v.med} onMudar={(med) => definir({ med })} />
+      <TransicaoOpcoes rotulo={tx("Medida do mapa e das barras", "Measure of the map and bars")} nome="transicao-mmgd-med" opcoes={opcoes} valor={v.med} onMudar={(med) => definir({ med })} />
       <MapaCoropletico
-        titulo={`${rotuloMed} por UF, cadastro de ${dataBR(dataCadastro)}`}
+        titulo={tx(`${rotuloMed} por UF, cadastro de ${dataBR(dataCadastro, idioma)}`, `${rotuloMed} by state, register of ${dataBR(dataCadastro, idioma)}`)}
         fonteGeometria={URL_GEO.uf}
         valores={valores}
         cores={CORES_MAPA}
         classificacao={classes}
         unidade={medida.unidade}
         casas={medida.casas}
-        rotuloRegiao={{ singular: "UF", plural: "UF" }}
+        rotuloRegiao={tx({ singular: "UF", plural: "UF" }, { singular: "state", plural: "states" })}
         selecionado={ultima ? codigoUf(ultima) : null}
         onSelecionar={(id) => alternar(siglaDoCodigo(id))}
         rotulos
-        nota="Classes por quantis (cinco grupos com o mesmo número de UF). Capacidade cadastrada, não energia gerada. Clique numa UF para incluí-la na comparação (até quatro); clicar de novo a retira."
+        nota={tx(
+          "Classes por quantis (cinco grupos com o mesmo número de UF). Capacidade cadastrada, não energia gerada. Clique numa UF para incluí-la na comparação (até quatro); clicar de novo a retira.",
+          "Classes by quantiles (five groups with the same number of states). Registered capacity, not energy generated. Click a state to include it in the comparison (up to four); clicking again removes it.",
+        )}
       />
       {aviso && (
         <p role="status" className="text-sm text-carvao">
@@ -171,11 +194,12 @@ export function TransicaoMmgdUf({
         </p>
       )}
       <GraficoBarras
-        titulo={`${rotuloMed} por UF, em ordem decrescente`}
+        titulo={tx(`${rotuloMed} por UF, em ordem decrescente`, `${rotuloMed} by state, in descending order`)}
         dados={barras}
         chaveCategoria="id"
         chaveRotulo="nome"
-        series={[{ id: "valor", rotulo: rotuloMed, cor: "var(--serie-solar)" }]}
+        rotulosSaoNomes
+        series={[{ id: "valor", rotulo: rotuloMed, cor: "var(--serie-solar)" }]} // i18n: dado
         unidade={medida.unidade}
         casas={medida.casas}
         orientacao="horizontal"
@@ -186,11 +210,14 @@ export function TransicaoMmgdUf({
       />
       {referencias.length === 0 && (
         <p className="max-w-prose2 text-sm text-carvao-muted">
-          Referência nacional só na potência por habitante, a única medida desta lista com valor do Brasil publicado pelo pipeline; nas demais, compare as UF entre si.
+          {tx(
+            "Referência nacional só na potência por habitante, a única medida desta lista com valor do Brasil publicado pelo pipeline; nas demais, compare as UF entre si.",
+            "National reference only for capacity per inhabitant, the only measure in this list with a value for Brazil published by the pipeline; for the others, compare the states with each other.",
+          )}
         </p>
       )}
       <TabelaInterativa
-        titulo={`MMGD por UF, cadastro de ${dataBR(dataCadastro)}`}
+        titulo={tx(`MMGD por UF, cadastro de ${dataBR(dataCadastro, idioma)}`, `MMGD by state, register of ${dataBR(dataCadastro, idioma)}`)}
         colunas={colunas}
         linhas={linhas}
         chaveLinha="id"
@@ -202,26 +229,32 @@ export function TransicaoMmgdUf({
         ordemInicial={{ coluna: MEDIDA_UF[v.med].campo, direcao: "desc" }}
         selecionado={ultima}
         onSelecionar={(id) => alternar(id)}
-        dicaBusca="Nome ou sigla da UF"
-        nota={`Por habitante: população estimada pelo IBGE${anoPopulacao ? ` para ${anoPopulacao}` : ""}. Crescimento do estoque: potência conectada em ${anoReferencia} sobre o estoque do fim de ${anoReferencia - 1}.`}
+        dicaBusca={tx("Nome ou sigla da UF", "State name or code")}
+        nota={tx(
+          `Por habitante: população estimada pelo IBGE${anoPopulacao ? ` para ${anoPopulacao}` : ""}. Crescimento do estoque: potência conectada em ${anoReferencia} sobre o estoque do fim de ${anoReferencia - 1}.`,
+          `Per inhabitant: population estimated by the IBGE${anoPopulacao ? ` for ${anoPopulacao}` : ""}. Growth of the stock: capacity connected in ${anoReferencia} over the stock at the end of ${anoReferencia - 1}.`,
+        )}
       />
       <div className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Como as UF escolhidas acrescentaram potência ano a ano?</h3>
+        <h3 className="font-serif text-lg text-carvao">{tx("Como as UF escolhidas acrescentaram potência ano a ano?", "How did the chosen states add capacity year by year?")}</h3>
         <Comparador
-          rotulo="UF no histórico (até 4)"
+          rotulo={tx("UF no histórico (até 4)", "States in the history (up to 4)")}
           entidades={entidades}
           selecionadas={escolhidas}
           onMudar={(ids) => definir({ ufs: ids })}
-          dicaBusca="Nome ou sigla da UF"
-          vazio="Nenhuma UF escolhida. Escolha aqui, no mapa, nas barras ou na tabela para ver as conexões por ano na mesma escala."
+          dicaBusca={tx("Nome ou sigla da UF", "State name or code")}
+          vazio={tx(
+            "Nenhuma UF escolhida. Escolha aqui, no mapa, nas barras ou na tabela para ver as conexões por ano na mesma escala.",
+            "No state chosen. Choose here, on the map, in the bars or in the table to see the connections by year on the same scale.",
+          )}
         >
           {() => null}
         </Comparador>
         {historico.length > 0 && (
           <GraficoLinhas
-            titulo={`Potência conectada por ano: ${escolhidas.join(", ")} (o último ano é parcial)`}
+            titulo={tx(`Potência conectada por ano: ${escolhidas.join(", ")} (o último ano é parcial)`, `Capacity connected by year: ${escolhidas.join(", ")} (the last year is partial)`)}
             dados={historico}
-            chaveX="ano"
+            chaveX="ano" // i18n: dado
             formatoX="texto"
             series={escolhidas.map((uf, i) => ({ id: uf, rotulo: uf, sigla: uf, cor: CORES_COMP[i % CORES_COMP.length] }))}
             unidade="MW"
@@ -232,8 +265,10 @@ export function TransicaoMmgdUf({
         )}
         {historico.length > 0 && (
           <p className="max-w-prose2 text-sm text-carvao-muted">
-            Ano anterior à primeira conexão da UF, dentro da cobertura declarada pela ANEEL (a partir de {primeiroCoberto}), vale zero: o cadastro é completo e não tem conexão ali.
-            Antes dessa data, sem registro é lacuna. O último ano vai só até a data do cadastro e não compete com os anos completos.
+            {tx(
+              `Ano anterior à primeira conexão da UF, dentro da cobertura declarada pela ANEEL (a partir de ${primeiroCoberto}), vale zero: o cadastro é completo e não tem conexão ali. Antes dessa data, sem registro é lacuna. O último ano vai só até a data do cadastro e não compete com os anos completos.`,
+              `A year before the state's first connection, within the coverage declared by ANEEL (from ${primeiroCoberto}), is zero: the register is complete and has no connection there. Before that date, no record is a gap. The last year only runs through the register date and does not compete with the full years.`,
+            )}
           </p>
         )}
       </div>
@@ -244,6 +279,8 @@ export function TransicaoMmgdUf({
 /* ================================================================ série mensal */
 
 export function TransicaoMmgdMensal({ dados, corte }: { dados: LinhaMensal[]; corte: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_MMGD);
   const intervalo = v.de && v.ate && v.de <= v.ate ? { inicio: v.de, fim: v.ate } : null;
   const onIntervalo = (i: { inicio: string; fim: string } | null) => definir({ de: i?.inicio ?? "", ate: i?.fim ?? "" });
@@ -251,13 +288,19 @@ export function TransicaoMmgdMensal({ dados, corte }: { dados: LinhaMensal[]; co
     <CursorSincronizado>
       <div className="space-y-5">
         <GraficoLinhas
-          titulo="Potência conectada por mês de conexão, Brasil"
+          titulo={tx("Potência conectada por mês de conexão, Brasil", "Capacity connected by month of connection, Brazil")}
           dados={dados}
           chaveX="m"
           formatoX="mes"
           series={[
-            { id: "consolidado", rotulo: "Conectada no mês", sigla: "Consolidado", cor: "var(--serie-solar)" },
-            { id: "provisorio", rotulo: `Provisório (depois de ${mes(corte)})`, sigla: "Provisório", cor: "var(--serie-referencia)", tracejada: true },
+            { id: "consolidado", rotulo: tx("Conectada no mês", "Connected in the month"), sigla: tx("Consolidado", "Consolidated"), cor: "var(--serie-solar)" },
+            {
+              id: "provisorio",
+              rotulo: tx(`Provisório (depois de ${mes(corte, idioma)})`, `Provisional (after ${mes(corte, idioma)})`),
+              sigla: tx("Provisório", "Provisional"),
+              cor: "var(--serie-referencia)",
+              tracejada: true,
+            },
           ]}
           unidade="MW"
           casas={1}
@@ -268,11 +311,11 @@ export function TransicaoMmgdMensal({ dados, corte }: { dados: LinhaMensal[]; co
           altura={280}
         />
         <GraficoLinhas
-          titulo="Estoque cadastrado ao fim de cada mês, Brasil"
+          titulo={tx("Estoque cadastrado ao fim de cada mês, Brasil", "Registered stock at the end of each month, Brazil")}
           dados={dados}
           chaveX="m"
           formatoX="mes"
-          series={[{ id: "acumulado_mw", rotulo: "Estoque de potência instalada", sigla: "Estoque", cor: "var(--cor-energia)" }]}
+          series={[{ id: "acumulado_mw", rotulo: tx("Estoque de potência instalada", "Stock of installed capacity"), sigla: tx("Estoque", "Stock"), cor: "var(--cor-energia)" }]} // i18n: dado
           unidade="MW"
           casas={0}
           zeroNoEixo
@@ -289,30 +332,38 @@ export function TransicaoMmgdMensal({ dados, corte }: { dados: LinhaMensal[]; co
 /* ================================================================ perfil */
 
 export function TransicaoMmgdPerfil({ perfis, anoReferencia }: { perfis: BlocoMmgd["perfis"]; anoReferencia: number }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const ROTULO_DIMENSAO = rotulosDimensao(idioma);
   const [v, definir] = useEstadoUrl(ESQUEMA_MMGD);
-  const linhas = useMemo(() => linhasPerfil(perfis, v.perfil), [perfis, v.perfil]);
+  const linhas = useMemo(() => linhasPerfil(perfis, v.perfil, idioma), [perfis, v.perfil, idioma]);
   const opcoes = DIMENSOES_PERFIL.map((d) => [d, ROTULO_DIMENSAO[d]] as const) as readonly (readonly [DimensaoPerfil, string])[];
-  const titulo = `${ROTULO_DIMENSAO[v.perfil]}: potência instalada cadastrada`;
+  const titulo = tx(`${ROTULO_DIMENSAO[v.perfil]}: potência instalada cadastrada`, `${ROTULO_DIMENSAO[v.perfil]}: registered installed capacity`);
   return (
     <div className="space-y-4">
-      <TransicaoOpcoes rotulo="Dimensão" nome="transicao-mmgd-perfil" opcoes={opcoes} valor={v.perfil} onMudar={(perfil) => definir({ perfil })} />
+      <TransicaoOpcoes rotulo={tx("Dimensão", "Dimension")} nome="transicao-mmgd-perfil" opcoes={opcoes} valor={v.perfil} onMudar={(perfil) => definir({ perfil })} />
       <GraficoBarras
         titulo={titulo}
         dados={linhas}
         chaveCategoria="id"
         chaveRotulo="rotulo"
-        series={[{ id: "potencia_mw", rotulo: "Potência instalada", cor: "var(--serie-solar)" }]}
+        series={[{ id: "potencia_mw", rotulo: tx("Potência instalada", "Installed capacity"), cor: "var(--serie-solar)" }]}
         unidade="MW"
         casas={1}
         orientacao="horizontal"
         rotulosValor
       />
-      <div className="tabela-scroll" tabIndex={0} role="region" aria-label={`${ROTULO_DIMENSAO[v.perfil]} (tabela rolável)`}>
+      <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx(`${ROTULO_DIMENSAO[v.perfil]} (tabela rolável)`, `${ROTULO_DIMENSAO[v.perfil]} (scrollable table)`)}>
         <table className="w-full min-w-[34rem] border-collapse text-xs tabular-nums">
-          <caption className="pb-2 text-left text-sm font-medium text-carvao">{ROTULO_DIMENSAO[v.perfil]}: unidades, potência e participação</caption>
+          <caption className="pb-2 text-left text-sm font-medium text-carvao">
+            {tx(`${ROTULO_DIMENSAO[v.perfil]}: unidades, potência e participação`, `${ROTULO_DIMENSAO[v.perfil]}: units, capacity and share`)}
+          </caption>
           <thead>
             <tr>
-              {["Categoria", "Unidades", "Participação nas unidades", "Potência (MW)", `Unidades em ${anoReferencia}`, `Potência em ${anoReferencia} (MW)`].map((c, i) => (
+              {tx(
+                ["Categoria", "Unidades", "Participação nas unidades", "Potência (MW)", `Unidades em ${anoReferencia}`, `Potência em ${anoReferencia} (MW)`],
+                ["Category", "Units", "Share of units", "Capacity (MW)", `Units in ${anoReferencia}`, `Capacity in ${anoReferencia} (MW)`],
+              ).map((c, i) => (
                 <th key={c} scope="col" className={`border-b border-linha px-2 py-1.5 font-medium text-mineral ${i ? "text-right" : "text-left"}`}>
                   {c}
                 </th>
@@ -326,26 +377,32 @@ export function TransicaoMmgdPerfil({ perfis, anoReferencia }: { perfis: BlocoMm
                   {l.rotulo}
                   {l.rotulo !== l.id && (
                     <span data-nivel="analisar" className="ml-1 text-carvao-muted">
-                      ({l.id})
+                      (<Nome>{l.id}</Nome>)
                     </span>
                   )}
                 </th>
-                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(l.unidades)}</td>
-                <td className="px-2 py-1.5 text-right text-carvao">{participacaoTexto(l.participacao_unidades_pct)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(l.unidades, idioma)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{participacaoTexto(l.participacao_unidades_pct, idioma)}</td>
                 <td className="px-2 py-1.5 text-right text-carvao">
-                  {numTexto(l.potencia_mw, 1)}
-                  {l.unidades_sem_potencia > 0 && <span className="ml-1 text-carvao-muted">(parcial: {inteiro(l.unidades_sem_potencia)} sem potência)</span>}
+                  {numTexto(l.potencia_mw, 1, idioma)}
+                  {l.unidades_sem_potencia > 0 && (
+                    <span className="ml-1 text-carvao-muted">
+                      {tx(`(parcial: ${inteiro(l.unidades_sem_potencia, idioma)} sem potência)`, `(partial: ${inteiro(l.unidades_sem_potencia, idioma)} without capacity)`)}
+                    </span>
+                  )}
                 </td>
-                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(l.unidades_ano_referencia)}</td>
-                <td className="px-2 py-1.5 text-right text-carvao">{numTexto(l.potencia_mw_ano_referencia, 1)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(l.unidades_ano_referencia, idioma)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{numTexto(l.potencia_mw_ano_referencia, 1, idioma)}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
       <p className="max-w-prose2 text-sm text-carvao-muted">
-        Categorias como a ANEEL publica (o código original fica entre parênteses no modo Analisar, quando o rótulo foi acentuado). Participação abaixo de 0,01% com dois algarismos
-        significativos, para que uma categoria pequena não apareça como zero.
+        {tx(
+          "Categorias como a ANEEL publica (o código original fica entre parênteses no modo Analisar, quando o rótulo foi acentuado). Participação abaixo de 0,01% com dois algarismos significativos, para que uma categoria pequena não apareça como zero.",
+          "Categories as ANEEL publishes them (the original code is in parentheses in Analyze mode, when the label was translated). Shares below 0.01% with two significant digits, so that a small category does not appear as zero.",
+        )}
       </p>
     </div>
   );
@@ -358,21 +415,28 @@ export function TransicaoMmgdPerfil({ perfis, anoReferencia }: { perfis: BlocoMm
  * gold e potência completa), um por vez, com a lista escolhida na URL (mmgd.rank).
  */
 export function TransicaoDestaques({ listas, anoReferencia, populacaoMinima }: { listas: Record<ListaDestaque, LinhaDestaque[]>; anoReferencia: number; populacaoMinima: number }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const ROTULO_DESTAQUE = rotulosDestaque(idioma);
   const [v, definir] = useEstadoUrl(ESQUEMA_MMGD);
   const linhas = listas[v.rank] ?? [];
   const opcoes = LISTAS_DESTAQUE.map((k) => [k, ROTULO_DESTAQUE[k]] as const) as readonly (readonly [ListaDestaque, string])[];
   return (
     <div className="space-y-3">
-      <TransicaoOpcoes rotulo="Ranking" nome="transicao-mmgd-rank" opcoes={opcoes} valor={v.rank} onMudar={(rank) => definir({ rank })} />
-      <div className="tabela-scroll" tabIndex={0} role="region" aria-label={`${ROTULO_DESTAQUE[v.rank]} (tabela rolável)`}>
+      <TransicaoOpcoes rotulo={tx("Ranking", "Ranking")} nome="transicao-mmgd-rank" opcoes={opcoes} valor={v.rank} onMudar={(rank) => definir({ rank })} />
+      <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx(`${ROTULO_DESTAQUE[v.rank]} (tabela rolável)`, `${ROTULO_DESTAQUE[v.rank]} (scrollable table)`)}>
         <table className="w-full min-w-[36rem] border-collapse text-xs tabular-nums">
           <caption className="pb-2 text-left text-sm font-medium text-carvao">
             {ROTULO_DESTAQUE[v.rank]}
-            {v.rank === "maior_crescimento_estoque" ? ` (${anoReferencia})` : ""}: municípios com pelo menos {inteiro(populacaoMinima)} habitantes
+            {v.rank === "maior_crescimento_estoque" ? ` (${anoReferencia})` : ""}
+            {tx(`: municípios com pelo menos ${inteiro(populacaoMinima, idioma)} habitantes`, `: municipalities with at least ${inteiro(populacaoMinima, idioma)} inhabitants`)}
           </caption>
           <thead>
             <tr>
-              {["Município", "Unidades", "Potência (kW)", "População", "W/hab", `Crescimento do estoque em ${anoReferencia}`, "Distribuidora sem conjunto na UF"].map((c, i) => (
+              {tx(
+                ["Município", "Unidades", "Potência (kW)", "População", "W/hab", `Crescimento do estoque em ${anoReferencia}`, "Distribuidora sem conjunto na UF"],
+                ["Municipality", "Units", "Capacity (kW)", "Population", "W/inhab.", `Growth of the stock in ${anoReferencia}`, "Utility with no consumer set in the state"],
+              ).map((c, i) => (
                 <th key={c} scope="col" className={`border-b border-linha px-2 py-1.5 font-medium text-mineral ${i ? "text-right" : "text-left"}`}>
                   {c}
                 </th>
@@ -383,14 +447,14 @@ export function TransicaoDestaques({ listas, anoReferencia, populacaoMinima }: {
             {linhas.map((x) => (
               <tr key={x.id} className="border-b border-linha last:border-b-0">
                 <th scope="row" className="px-2 py-1.5 text-left font-normal text-carvao">
-                  {x.posicao}. {x.municipio} ({x.uf})
+                  {x.posicao}. <Nome>{x.municipio}</Nome> ({x.uf})
                 </th>
-                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(x.unidades)}</td>
-                <td className="px-2 py-1.5 text-right text-carvao">{numTexto(x.potencia_kw, 0)}</td>
-                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(x.populacao)}</td>
-                <td className="px-2 py-1.5 text-right text-carvao">{numTexto(x.w_por_habitante, 1)}</td>
-                <td className="px-2 py-1.5 text-right text-carvao">{pctTexto(x.crescimento_estoque_pct, 1)}</td>
-                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(x.unidades_distribuidora_fora_da_uf)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(x.unidades, idioma)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{numTexto(x.potencia_kw, 0, idioma)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(x.populacao, idioma)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{numTexto(x.w_por_habitante, 1, idioma)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{pctTexto(x.crescimento_estoque_pct, 1, idioma)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(x.unidades_distribuidora_fora_da_uf, idioma)}</td>
               </tr>
             ))}
           </tbody>
@@ -426,6 +490,8 @@ export function TransicaoMunicipios({
   fonte: string;
   versao: string;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_MMGD);
   const [dados, setDados] = useState<{ geo: CamadaGeo; mun: MunicipioMmgd[] } | null>(null);
   const [erro, setErro] = useState<string | null>(null);
@@ -443,13 +509,13 @@ export function TransicaoMunicipios({
     let vivo = true;
     setErro(null);
     Promise.all([carregar<CamadaGeo>(URL_GEO.municipios, "json"), carregar<MunicipiosMmgdArquivo>(jsonUrl, "json")]).then(
-      ([geo, arq]) => vivo && setDados({ geo, mun: municipiosDoJson(arq) }),
+      ([geo, arq]) => vivo && setDados({ geo, mun: municipiosDoJson(arq, idioma) }),
       (e: unknown) => vivo && setErro(e instanceof Error ? e.message : String(e)),
     );
     return () => {
       vivo = false;
     };
-  }, [ativo, dados, jsonUrl]);
+  }, [ativo, dados, jsonUrl, idioma]);
 
   useEffect(() => {
     if (!pediuMapa || !dados) return;
@@ -479,11 +545,11 @@ export function TransicaoMunicipios({
     const valores: Record<string, ValorClassificavel> = {};
     for (const m of dados.mun) valores[m.id] = valorMunicipio(m, v.mmed);
     const nums = Object.values(valores);
-    const classes = v.mmed === "fora" ? quebrasFixas([1, 10, 50, 100], nums, { casas: 0 }) : quebrasQuantis(nums, 5, { casas: MEDIDA_MUN[v.mmed].casas });
+    const classes = v.mmed === "fora" ? quebrasFixas([1, 10, 50, 100], nums, { casas: 0 }) : quebrasQuantis(nums, 5, { casas: medidasMun(idioma)[v.mmed].casas });
     const comPoligono = new Set(dados.geo.features.map((f) => f.id));
     const semGeometria = dados.mun.filter((m) => !comPoligono.has(m.id)).length;
     return { valores, classes, semGeometria, entidades: entidadesMunicipios(dados.mun) };
-  }, [dados, v.mmed]);
+  }, [dados, v.mmed, idioma]);
 
   const historico = useMemo(
     () => (csv && escolhidos.length ? historicoMunicipiosCsv(csv, escolhidos, anoFinal, primeiroCoberto) : null),
@@ -499,7 +565,7 @@ export function TransicaoMunicipios({
     }
     const r = alternarSelecao(escolhidos, id, LIMITE_COMPARACAO);
     if (r.motivo === "limite") {
-      setAviso(`Limite de ${LIMITE_COMPARACAO} municípios na comparação: remova um para incluir outro.`);
+      setAviso(tx(`Limite de ${LIMITE_COMPARACAO} municípios na comparação: remova um para incluir outro.`, `Limit of ${LIMITE_COMPARACAO} municipalities in the comparison: remove one to include another.`));
       return;
     }
     setAviso("");
@@ -510,7 +576,10 @@ export function TransicaoMunicipios({
     return (
       <div className="flex flex-wrap items-center gap-3 border border-dashed border-linha px-4 py-3">
         <p className="max-w-prose2 text-sm text-carvao-muted">
-          O mapa municipal usa a malha de municípios do IBGE e o JSON de municípios do módulo, os dois arquivos mais pesados da página; eles só são baixados quando pedidos.
+          {tx(
+            "O mapa municipal usa a malha de municípios do IBGE e o JSON de municípios do módulo, os dois arquivos mais pesados da página; eles só são baixados quando pedidos.",
+            "The municipal map uses the IBGE municipal boundaries and the module's municipalities JSON, the two heaviest files on the page; they are only downloaded when requested.",
+          )}
         </p>
         <button
           type="button"
@@ -520,36 +589,39 @@ export function TransicaoMunicipios({
           }}
           className="rotulo inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-carvao hover:bg-energia-fundo"
         >
-          Carregar o mapa por município
+          {tx("Carregar o mapa por município", "Load the map by municipality")}
         </button>
       </div>
     );
   }
-  if (erro) return <Falha erro={erro} url={jsonUrl} nome="o mapa municipal" />;
+  if (erro) return <Falha erro={erro} url={jsonUrl} nome={tx("o mapa municipal", "the municipal map")} />;
   if (!dados || !montado) {
     return (
       <p role="status" className="text-sm text-carvao-muted">
-        Carregando a malha municipal e o JSON de municípios…
+        {tx("Carregando a malha municipal e o JSON de municípios…", "Loading the municipal boundaries and the municipalities JSON…")}
       </p>
     );
   }
-  const med = MEDIDA_MUN[v.mmed];
+  const med = medidasMun(idioma)[v.mmed];
   return (
-    <div ref={blocoMapa} tabIndex={-1} aria-label="Mapa, tabela e histórico por município" className="space-y-5">
-      <TransicaoOpcoes rotulo="Medida do mapa municipal" nome="transicao-mmgd-mmed" opcoes={OPCOES_MUN} valor={v.mmed} onMudar={(mmed) => definir({ mmed })} />
+    <div ref={blocoMapa} tabIndex={-1} aria-label={tx("Mapa, tabela e histórico por município", "Map, table and history by municipality")} className="space-y-5">
+      <TransicaoOpcoes rotulo={tx("Medida do mapa municipal", "Measure of the municipal map")} nome="transicao-mmgd-mmed" opcoes={opcoesMun(idioma)} valor={v.mmed} onMudar={(mmed) => definir({ mmed })} />
       <MapaCoropletico
-        titulo={`${med.rotulo} por município${v.mmed === "cresc" ? ` (${anoReferencia})` : ""}`}
+        titulo={tx(`${med.rotulo} por município${v.mmed === "cresc" ? ` (${anoReferencia})` : ""}`, `${med.rotulo} by municipality${v.mmed === "cresc" ? ` (${anoReferencia})` : ""}`)}
         geometria={dados.geo}
         valores={montado.valores}
         cores={CORES_MAPA}
         classificacao={montado.classes}
         unidade={med.unidade}
         casas={med.casas}
-        rotuloRegiao={{ singular: "município", plural: "municípios" }}
+        rotuloRegiao={tx({ singular: "município", plural: "municípios" }, { singular: "municipality", plural: "municipalities" })}
         selecionado={ultimo}
         onSelecionar={alternar}
         contornos
-        nota={`${v.mmed === "fora" ? "Cortes fixos em 1, 10, 50 e 100 unidades; zero fica na primeira classe. Unidades cuja distribuidora (CNPJ) não tem conjunto elétrico na UF: algum campo está errado na origem, e nada é corrigido." : "Classes por quantis. O município é o da unidade geradora; no autoconsumo remoto e na geração compartilhada o crédito pode ser usado em outro município."}${montado.semGeometria ? ` ${contagem(montado.semGeometria, "município sem polígono na malha fica", "municípios sem polígono na malha ficam")} só na tabela.` : ""} Clique para incluir o município na comparação (até quatro).`}
+        nota={tx(
+          `${v.mmed === "fora" ? "Cortes fixos em 1, 10, 50 e 100 unidades; zero fica na primeira classe. Unidades cuja distribuidora (CNPJ) não tem conjunto elétrico na UF: algum campo está errado na origem, e nada é corrigido." : "Classes por quantis. O município é o da unidade geradora; no autoconsumo remoto e na geração compartilhada o crédito pode ser usado em outro município."}${montado.semGeometria ? ` ${contagem(montado.semGeometria, "município sem polígono na malha fica", "municípios sem polígono na malha ficam", idioma)} só na tabela.` : ""} Clique para incluir o município na comparação (até quatro).`,
+          `${v.mmed === "fora" ? "Fixed cuts at 1, 10, 50 and 100 units; zero is in the first class. Units whose distribution utility (CNPJ) has no consumer set in the state: some field is wrong at the source, and nothing is corrected." : "Classes by quantiles. The municipality is the generating unit's; in remote self-consumption and shared generation the credit may be used in another municipality."}${montado.semGeometria ? ` ${contagem(montado.semGeometria, "municipality without a polygon in the boundaries stays", "municipalities without a polygon in the boundaries stay", idioma)} only in the table.` : ""} Click to include the municipality in the comparison (up to four).`,
+        )}
       />
       {aviso && (
         <p role="status" className="text-sm text-carvao">
@@ -557,8 +629,8 @@ export function TransicaoMunicipios({
         </p>
       )}
       <TabelaInterativa
-        titulo="MMGD por município"
-        colunas={colunasMunicipios(anoReferencia, anoPopulacao)}
+        titulo={tx("MMGD por município", "MMGD by municipality")}
+        colunas={colunasMunicipios(anoReferencia, anoPopulacao, idioma)}
         linhas={dados.mun}
         chaveLinha="id"
         colunaRotulo="municipio"
@@ -569,33 +641,39 @@ export function TransicaoMunicipios({
         ordemInicial={{ coluna: "potencia_kw", direcao: "desc" }}
         selecionado={ultimo}
         onSelecionar={alternar}
-        dicaBusca="Nome do município ou código IBGE"
-        nota="Município sem população estimada fica sem razão por habitante (nunca zero). A classe de provável município errado é a única que pode inflar a potência por habitante do município publicado."
+        dicaBusca={tx("Nome do município ou código IBGE", "Municipality name or IBGE code")}
+        nota={tx(
+          "Município sem população estimada fica sem razão por habitante (nunca zero). A classe de provável município errado é a única que pode inflar a potência por habitante do município publicado.",
+          "A municipality without an estimated population has no per-inhabitant ratio (never zero). The likely-wrong-municipality class is the only one that can inflate the published municipality's capacity per inhabitant.",
+        )}
       />
       <div className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Como os municípios escolhidos acrescentaram potência ano a ano?</h3>
+        <h3 className="font-serif text-lg text-carvao">{tx("Como os municípios escolhidos acrescentaram potência ano a ano?", "How did the chosen municipalities add capacity year by year?")}</h3>
         <Comparador
-          rotulo="Municípios no histórico (até 4)"
+          rotulo={tx("Municípios no histórico (até 4)", "Municipalities in the history (up to 4)")}
           entidades={montado.entidades}
           selecionadas={escolhidos}
           onMudar={(ids) => definir({ muns: ids })}
-          dicaBusca="Nome do município ou código IBGE"
-          vazio="Nenhum município escolhido. Escolha aqui, no mapa ou na tabela."
+          dicaBusca={tx("Nome do município ou código IBGE", "Municipality name or IBGE code")}
+          vazio={tx("Nenhum município escolhido. Escolha aqui, no mapa ou na tabela.", "No municipality chosen. Choose here, on the map or in the table.")}
         >
           {() => null}
         </Comparador>
         {precisaCsv && !csv && !erroCsv && (
           <p role="status" className="text-sm text-carvao-muted">
-            Carregando o histórico por município (CSV publicado, cerca de 2 MB)…
+            {tx("Carregando o histórico por município (CSV publicado, cerca de 2 MB)…", "Loading the history by municipality (published CSV, about 2 MB)…")}
           </p>
         )}
-        {erroCsv && <Falha erro={erroCsv} url={csvUrl} nome="o histórico por município" />}
+        {erroCsv && <Falha erro={erroCsv} url={csvUrl} nome={tx("o histórico por município", "the history by municipality")} />}
         {historico && historico.linhas.length > 0 && (
           <>
             <GraficoLinhas
-              titulo={`Potência conectada por ano, soma das fontes: ${escolhidos.map(nomeDe).join(", ")} (o último ano é parcial)`}
+              titulo={tx(
+                `Potência conectada por ano, soma das fontes: ${escolhidos.map(nomeDe).join(", ")} (o último ano é parcial)`,
+                `Capacity connected by year, sum of sources: ${escolhidos.map(nomeDe).join(", ")} (the last year is partial)`,
+              )}
               dados={historico.linhas}
-              chaveX="ano"
+              chaveX="ano" // i18n: dado
               formatoX="texto"
               series={escolhidos.map((id, i) => ({ id, rotulo: nomeDe(id), cor: CORES_COMP[i % CORES_COMP.length] }))}
               unidade="kW"
@@ -604,10 +682,22 @@ export function TransicaoMunicipios({
               altura={280}
             />
             <p className="max-w-prose2 text-sm text-carvao-muted">
-              Soma das fontes de cada município e ano, lida do CSV municipal por ano e fonte. Dentro da cobertura declarada pela ANEEL (a partir de {primeiroCoberto}), ano sem
-              conexão vale zero; antes dela, é lacuna.
-              {historico.parciais > 0 ? ` ${inteiro(historico.parciais)} unidades sem potência informada deixam o ano correspondente sem valor.` : ""}
-              {historico.semData > 0 ? ` ${inteiro(historico.semData)} unidades com data de conexão inválida no cadastro estão no total do município, mas fora dos anos.` : ""}
+              {tx(
+                `Soma das fontes de cada município e ano, lida do CSV municipal por ano e fonte. Dentro da cobertura declarada pela ANEEL (a partir de ${primeiroCoberto}), ano sem conexão vale zero; antes dela, é lacuna.`,
+                `Sum of the sources of each municipality and year, read from the municipal CSV by year and source. Within the coverage declared by ANEEL (from ${primeiroCoberto}), a year without connection is zero; before it, it is a gap.`,
+              )}
+              {historico.parciais > 0
+                ? tx(
+                    ` ${inteiro(historico.parciais, idioma)} unidades sem potência informada deixam o ano correspondente sem valor.`,
+                    ` ${inteiro(historico.parciais, idioma)} units without reported capacity leave the corresponding year without a value.`,
+                  )
+                : ""}
+              {historico.semData > 0
+                ? tx(
+                    ` ${inteiro(historico.semData, idioma)} unidades com data de conexão inválida no cadastro estão no total do município, mas fora dos anos.`,
+                    ` ${inteiro(historico.semData, idioma)} units with an invalid connection date in the register are in the municipality's total, but outside the years.`,
+                  )
+                : ""}
             </p>
           </>
         )}
