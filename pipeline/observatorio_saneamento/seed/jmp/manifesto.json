@@ -1,0 +1,54 @@
+{
+  "capturado_em": "2026-10-17T00:30:47+00:00",
+  "url": "https://washdata.org/data/country/WLD/household/download",
+  "url_final": "https://washdata.org/media/4671/download",
+  "edicao": "August 2025",
+  "periodo": [
+    2000,
+    2024
+  ],
+  "xlsx": {
+    "sha256": "5b26a1fb97c5a8f91916ddb1a59664072455cb44223e88eec536a841c5bbeed7",
+    "bytes": 25098506,
+    "last_modified": "Tue, 26 Aug 2025 06:29:05 GMT"
+  },
+  "brasil_xlsx": {
+    "url": "https://washdata.org/data/country/BRA/household/download",
+    "sha256": "95fa3da94840b4442a60db69edd57ca8cef352f6142366d00a826e03386b465d",
+    "bytes": 6674122,
+    "last_modified": "Mon, 22 Sep 2025 11:09:12 GMT",
+    "fontes": 83
+  },
+  "paises_ibge": {
+    "url": "https://servicodados.ibge.gov.br/api/v1/paises/all",
+    "sha256": "3234b381ca7bbe7f80763cacc672d5151a92dd5ebf3fd132f5a7d804314defed",
+    "bytes": 115190,
+    "paises": 193
+  },
+  "arquivos": {
+    "agua": {
+      "arquivo": "agua.csv.gz",
+      "sha256": "ce7c527364f6aa4d5331ec2fd6d86c593cdbf80c1b4dc3380664be02bc951d4b",
+      "bytes": 1952764,
+      "linhas": 5661
+    },
+    "esgoto": {
+      "arquivo": "esgoto.csv.gz",
+      "sha256": "2567c16283ec34d8f152c9ea18bbb4ab95ef8be6fb7e0ab064307051f15c7792",
+      "bytes": 2156052,
+      "linhas": 5651
+    },
+    "brasil_fontes": {
+      "arquivo": "brasil_fontes.json.gz",
+      "sha256": "c119843cff8d5173f521c5e60972350a8e570f1509733038b6df8af924e317de",
+      "bytes": 7092,
+      "linhas": 83
+    },
+    "paises_ibge": {
+      "arquivo": "paises_ibge.json.gz",
+      "sha256": "f4a1891ddc8d4c5c6c4346304a95ab32dd3af5461ffb8ef2037bb57e0315d4fb",
+      "bytes": 7431,
+      "linhas": 193
+    }
+  }
+}

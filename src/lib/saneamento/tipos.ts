@@ -403,6 +403,7 @@ export type MetaSaneamento = {
   };
   saude?: MetaSaude;
   cvm?: MetaCvm;
+  jmp?: MetaJmp;
   desigualdades: {
     proveniencia: { capturado_em: string };
     residuos_cor_raca: { universo: number; agua: number; esgoto: number };
@@ -529,4 +530,63 @@ export type MetaCvm = {
   sem_posicao: { cnpj: string; nome: string }[];
   conferencias: { cnpj: string; soma_topo_total: number; soma_topo_ordinarias: number; soma_topo_preferenciais: number; maior_desvio_cadeia: number }[];
   regras: { limiar_ficha: number; tolerancia_pct: number; pessoa_fisica: string };
+};
+
+/** Estimativa do JMP (OMS e UNICEF) para uma área de residência. Percentual da população; ausência é null, nunca zero. */
+export type NivelServicoJmp = {
+  /** Pelo menos básico: inclui quem tem serviço gerenciado com segurança. */
+  basica: number | null;
+  limitada: number | null;
+  nao_melhorada: number | null;
+  /** Água superficial (água) ou defecação a céu aberto (esgotamento). */
+  ruim: number | null;
+  gerenciada: number | null;
+};
+export type AguaJmp = NivelServicoJmp & { encanada?: number | null; no_domicilio?: number | null; disponivel?: number | null; sem_contaminacao?: number | null };
+export type EsgotoJmp = NivelServicoJmp & {
+  rede?: number | null;
+  fossa_septica?: number | null;
+  rede_tratada?: number | null;
+  fossa_esvaziada_tratada?: number | null;
+  fossa_sem_esvaziamento?: number | null;
+  outras_melhoradas?: number | null;
+};
+export type ServicoJmp<T> = { t: T; u: T; r: T };
+
+export type EstimativaJmp = {
+  ano: number;
+  populacao_mil: number | null;
+  urbana_pct: number | null;
+  agua: ServicoJmp<AguaJmp> | null;
+  esgoto: ServicoJmp<EsgotoJmp> | null;
+};
+export type PaisJmp = EstimativaJmp & {
+  iso3: string;
+  nome: string;
+  nome_origem: "IBGE" | "JMP";
+  nome_jmp: string;
+  regiao_ods: string | null;
+  regiao_unicef: string | null;
+  regiao_oms: string | null;
+  renda: string | null;
+};
+export type JmpPaises = { paises: PaisJmp[]; brasil: EstimativaJmp[] };
+
+export type MetaJmp = {
+  fonte: string;
+  edicao: string;
+  edicao_mes: string;
+  periodo: [number, number];
+  ano_comparado: number;
+  capturado_em: string;
+  xlsx: { sha256: string; bytes: number; last_modified: string | null };
+  brasil_xlsx: { url: string; sha256: string; bytes: number; last_modified: string | null; fontes: number };
+  paises_ibge: { url: string; sha256: string; bytes: number; paises: number };
+  brasil_fontes: { codigo: string; ano: number; sigla: string; tipo: string }[];
+  areas: number;
+  com_agua_gerenciada: number;
+  com_esgoto_gerenciado: number;
+  sem_nome_ibge: { iso3: string; nome: string }[];
+  conferencias: { agua: { estimativas: number; maior_desvio_da_soma: number }; esgoto: { estimativas: number; maior_desvio_da_soma: number } };
+  regras: { tolerancia_escada_pct: number };
 };

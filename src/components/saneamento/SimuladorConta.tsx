@@ -6,7 +6,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { TARIFAS, type TarifaVerificada } from "@/lib/saneamento/tarifas";
-import { acimaDoLimite, calcularConta, leituras } from "@/lib/saneamento/conta";
+import { CABECALHO_EXPORTACAO, acimaDoLimite, calcularConta, leituras, linhasExportacao } from "@/lib/saneamento/conta";
 import { baixarCsv } from "@/lib/saneamento/csv";
 import { numero, reais } from "@/lib/saneamento/formato";
 
@@ -73,18 +73,7 @@ export function SimuladorConta() {
   }, []);
   const cores = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)", "var(--escala-seq-3)", "var(--san-div-neg-2)", "var(--escala-seq-5)", "var(--san-div-neg-1)"];
 
-  const exportar = () => {
-    const cab = ["tabela", "prestador", "uf", "regulador", "ato", "vigencia", "categoria", "consumo_m3", "agua_R$", "esgoto_R$", "total_R$"];
-    const linhas: (string | number | null)[][] = [];
-    for (const x of TARIFAS)
-      for (const c of Object.values(x.categorias))
-        for (const m3 of [5, 10, 15, 20, 30]) {
-          if (acimaDoLimite(c, m3)) continue;
-          const r = calcularConta(c, m3);
-          linhas.push([x.id, x.prestador, x.uf, x.regulador, x.ato, x.vigencia, c.rotulo, m3, r.agua, r.esgoto, r.total]);
-        }
-    baixarCsv("saneamento-contas-simuladas.csv", cab, linhas);
-  };
+  const exportar = () => baixarCsv("saneamento-contas-simuladas.csv", CABECALHO_EXPORTACAO, linhasExportacao(TARIFAS));
 
   return (
     <div>
