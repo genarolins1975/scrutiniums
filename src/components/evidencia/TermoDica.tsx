@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 
 /**
@@ -13,7 +13,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
  */
 const MARGEM = 16;
 /** `alvo`: fora de texto corrido (listas de termos), o termo ganha altura de toque de 44 px. */
-export function TermoDica({ href, rotulo, dica, children, alvo = false }: { href: string; rotulo: string; dica: string; children: ReactNode; alvo?: boolean }) {
+export function TermoDica({ href, rotulo, dica, children, alvo = false }: { href: string; rotulo: ReactNode; dica: ReactNode; children: ReactNode; alvo?: boolean }) {
   const id = useId();
   const [fechada, setFechada] = useState(false);
   const [sobre, setSobre] = useState(false);

@@ -82,7 +82,7 @@ export const UNIDADE_EN: Record<string, string> = {
   "MWh, MWmed e % da geração": "MWh, MWavg and % of generation",
   "MWh e MWmed": "MWh and MWavg",
   "MWh, MWmed e %": "MWh, MWavg and %",
-  "R$/MWh e % do total": "R$/MWh and % of total",
+  "R$/MWh e % do total": "R$/MWh and % of total", // i18n: dado
   "R$/mês": "R$/month",
   "número-índice (dez/1993 = 100) e %": "index number (Dec 1993 = 100) and %",
   "versão": "version",
@@ -142,12 +142,16 @@ export function traducaoDoDado(tabela: Record<string, string>, valor: string, id
   return Object.prototype.hasOwnProperty.call(tabela, valor) ? tabela[valor] : null;
 }
 
+/** Sinal de palavra portuguesa numa unidade: acento ou palavra comum das unidades da gold. */
+const PALAVRA_PT =
+  /[ãõçáéíóúâêô]|(?:^|[^a-z])(?:de|da|do|das|dos|e|por|mil|dias?|horas?|meses|semanas?|anos?|usinas?|unidades?|consumidoras?|nominais|correntes|pessoas|localidades|empreendimentos|agentes|perfis|parcelas|carga|evento|consulta|atividade|indice)(?=$|[^a-z])/i;
+
 /**
- * Unidade no idioma: a da tabela, ou a própria unidade quando ela não tem palavra (R$/MWh, MWh, %, °C, tCO2/MWh); null quando
- * tem palavra portuguesa sem entrada na tabela.
+ * Unidade no idioma: a da tabela, ou a própria unidade quando ela não tem palavra portuguesa (R$/MWh, MWh, %, °C, tCO2/MWh, ou já
+ * em inglês, como MWavg, vinda da página); null quando tem palavra portuguesa sem entrada na tabela.
  */
 export function unidadeNoIdioma(unidade: string, idioma: Idioma): string | null {
   if (idioma !== "en") return unidade;
   if (Object.prototype.hasOwnProperty.call(UNIDADE_EN, unidade)) return UNIDADE_EN[unidade];
-  return /[a-zà-ú]{3,}/.test(unidade) ? null : unidade;
+  return PALAVRA_PT.test(unidade) ? null : unidade;
 }
