@@ -15,6 +15,9 @@
  * e "15 de abril" inventaria uma precisão que a fonte não deu.
  */
 
+import type { Idioma } from "@/lib/idioma";
+import { idiomaEnergia, tx } from "./idioma";
+
 export type Precisao = "dia" | "mes";
 
 const RE_DIA = /^(\d{4})-(\d{2})-(\d{2})(?:$|T)/;
@@ -22,7 +25,8 @@ const RE_MES = /^(\d{4})-(\d{2})$/;
 const RE_HORA = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
 const DIA_MS = 86_400_000;
 
-const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]; // i18n: dado (rótulo de eixo em português)
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const dois = (v: number) => String(v).padStart(2, "0");
 
@@ -37,7 +41,7 @@ function diaValido(a: number, m: number, d: number): boolean {
 export function precisaoData(iso: string | null | undefined): Precisao | null {
   if (!iso) return null;
   const d = RE_DIA.exec(iso);
-  if (d) return diaValido(Number(d[1]), Number(d[2]), Number(d[3])) ? "dia" : null;
+  if (d) return diaValido(Number(d[1]), Number(d[2]), Number(d[3])) ? "dia" : null; // i18n: dado
   const m = RE_MES.exec(iso);
   if (m) return Number(m[2]) >= 1 && Number(m[2]) <= 12 ? "mes" : null;
   return null;
@@ -110,22 +114,22 @@ export function diferencaDatas(de: string | null | undefined, ate: string | null
   const pa = precisaoData(de);
   const pb = precisaoData(ate);
   if (!pa || !pb) return null;
-  if (pa === "dia" && pb === "dia") return { valor: (diaSerial(ate) as number) - (diaSerial(de) as number), unidade: "dias" };
-  return { valor: (mesSerial(ate) as number) - (mesSerial(de) as number), unidade: "meses" };
+  if (pa === "dia" && pb === "dia") return { valor: (diaSerial(ate) as number) - (diaSerial(de) as number), unidade: "dias" }; // i18n: dado
+  return { valor: (mesSerial(ate) as number) - (mesSerial(de) as number), unidade: "meses" }; // i18n: dado
 }
 
-/** Duração em português com singular e plural ("1 dia", "120 dias", "1 mês", "3 meses"); sem sinal. */
-export function textoDuracao(d: Diferenca): string {
+/** Duração com singular e plural ("1 dia", "120 dias", "1 mês", "3 meses"; "1 day", "3 months" em inglês); sem sinal. */
+export function textoDuracao(d: Diferenca, idioma: Idioma = idiomaEnergia()): string {
   const v = Math.abs(d.valor);
-  const n = v.toLocaleString("pt-BR");
-  if (d.unidade === "dias") return `${n} ${v === 1 ? "dia" : "dias"}`;
-  return `${n} ${v === 1 ? "mês" : "meses"}`;
+  const n = v.toLocaleString(idioma === "en" ? "en-US" : "pt-BR");
+  if (d.unidade === "dias") return tx(`${n} ${v === 1 ? "dia" : "dias"}`, `${n} ${v === 1 ? "day" : "days"}`, idioma);
+  return tx(`${n} ${v === 1 ? "mês" : "meses"}`, `${n} ${v === 1 ? "month" : "months"}`, idioma);
 }
 
 /** Diferença com sinal tipográfico ("+120 dias", "−3 meses", "0 dias"). */
-export function textoDiferencaComSinal(d: Diferenca): string {
+export function textoDiferencaComSinal(d: Diferenca, idioma: Idioma = idiomaEnergia()): string {
   const s = d.valor > 0 ? "+" : d.valor < 0 ? "\u2212" : "";
-  return `${s}${textoDuracao(d)}`;
+  return `${s}${textoDuracao(d, idioma)}`;
 }
 
 export type TickTempo = { serial: number; iso: string; rotulo: string };
@@ -136,7 +140,7 @@ export type TickTempo = { serial: number; iso: string; rotulo: string };
  * marcas. Com passo anual ou maior o rótulo é o ano ("2027"); abaixo disso,
  * mês abreviado ("abr/27"). Trimestres caem em jan, abr, jul e out.
  */
-export function ticksTempo(minSerial: number, maxSerial: number, maximo = 6): TickTempo[] {
+export function ticksTempo(minSerial: number, maxSerial: number, maximo = 6, idioma: Idioma = idiomaEnergia()): TickTempo[] {
   if (!Number.isFinite(minSerial) || !Number.isFinite(maxSerial)) return [];
   const [lo, hi] = minSerial <= maxSerial ? [minSerial, maxSerial] : [maxSerial, minSerial];
   const mLo = mesSerial(isoDoDia(lo)) as number;
@@ -151,7 +155,7 @@ export function ticksTempo(minSerial: number, maxSerial: number, maximo = 6): Ti
       const iso = `${a}-${dois(mes + 1)}-01`;
       const s = diaSerial(iso) as number;
       if (s < lo || s > hi) continue;
-      out.push({ serial: s, iso, rotulo: passo >= 12 ? String(a) : `${MESES[mes]}/${String(a).slice(2)}` });
+      out.push({ serial: s, iso, rotulo: passo >= 12 ? String(a) : idioma === "en" ? `${MONTHS[mes]} \u2019${String(a).slice(2)}` : `${MESES[mes]}/${String(a).slice(2)}` });
     }
     return out;
   };

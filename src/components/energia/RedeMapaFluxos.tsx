@@ -3,8 +3,9 @@
 import { useState, type KeyboardEvent } from "react";
 import type { Submercado } from "@/lib/energia/tipos";
 import type { FronteiraRede, PaisSul } from "@/lib/energia/tipos-rede";
-import { NOME_PAIS, NOME_SM, PONTAS, curtoFronteira, nomeFronteira } from "@/lib/energia/rede";
-import { reais } from "@/lib/energia/formato";
+import { PONTAS, curtoFronteira, nomeFronteira, nomePais, nomeSm } from "@/lib/energia/rede";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Esquema de fluxos da Rede (P028): os quatro subsistemas, as quatro fronteiras que o
@@ -66,6 +67,9 @@ export function RedeMapaFluxos({
   selecionado: FronteiraRede | null;
   onSelecionar: (par: FronteiraRede | null) => void;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const fmt = formatos(idioma);
   const [foco, setFoco] = useState<FronteiraRede | null>(null);
   const max = Math.max(1, ...fluxos.map((f) => Math.abs(f.valor ?? 0)), ...(exterior ?? []).map((e) => Math.abs(e.valor ?? 0)));
   const largura = (v: number | null) => (v === null || v === 0 ? 1.5 : 2.5 + 13 * (Math.abs(v) / max));
@@ -81,25 +85,29 @@ export function RedeMapaFluxos({
   };
   const descricao = fluxos
     .map((f) => {
-      if (f.valor === null) return `${nomeFronteira(f.par)}: sem dado`;
+      if (f.valor === null) return `${nomeFronteira(f.par, idioma)}: ${tx("sem dado", "no data")}`;
       const [a, b] = PONTAS[f.par];
       const [o, d] = f.valor >= 0 ? [a, b] : [b, a];
-      return `${NOME_SM[o]} para ${NOME_SM[d]}: ${f.rotuloValor}`;
+      return `${nomeSm(o, idioma)} ${tx("para", "to")} ${nomeSm(d, idioma)}: ${f.rotuloValor}`;
     })
     .join("; ");
   // o exterior entra na descrição para leitor de tela: no SVG as conversoras ficam só no desenho
   const textoExterior = (exterior ?? [])
-    .map((e) => `Sul e ${NOME_PAIS[e.pais]}: ${e.rotuloValor}${e.valor !== null && e.valor !== 0 ? ` (${e.valor > 0 ? "exportação" : "importação"})` : ""}`)
+    .map((e) => `${tx("Sul e", "South and")} ${nomePais(e.pais, idioma)}: ${e.rotuloValor}${e.valor !== null && e.valor !== 0 ? ` (${e.valor > 0 ? tx("exportação", "export") : tx("importação", "import")})` : ""}`)
     .join("; ");
-  const textoPrecos = precos ? (["N", "NE", "SE", "S"] as Submercado[]).map((s) => `${NOME_SM[s]} ${reais(precos[s] ?? null)}`).join(", ") : "";
+  const textoPrecos = precos ? (["N", "NE", "SE", "S"] as Submercado[]).map((s) => `${nomeSm(s, idioma)} ${fmt.reais(precos[s] ?? null)}`).join(", ") : "";
 
   return (
     <figure className="space-y-3">
       <figcaption className="text-sm text-carvao">
         <span className="font-medium">{titulo}</span>
         <span className="block text-xs text-carvao-muted">
-          {periodo} · {unidade}. Esquema sem escala geográfica; a espessura acompanha o valor e não indica proximidade de limite (os limites operativos não são públicos).
-          {precos ? ` ${rotuloPrecos ?? "PLD"} em R$/MWh dentro de cada região.` : ""}
+          {periodo} · {unidade}.{" "}
+          {tx(
+            "Esquema sem escala geográfica; a espessura acompanha o valor e não indica proximidade de limite (os limites operativos não são públicos).",
+            "Schematic without geographic scale; the thickness follows the value and does not indicate closeness to a limit (the operating limits are not public).",
+          )}
+          {precos ? tx(` ${rotuloPrecos ?? "PLD"} em R$/MWh dentro de cada região.`, ` ${rotuloPrecos ?? "PLD"} in R$/MWh within each region.`) : ""}
         </span>
       </figcaption>
 
@@ -109,8 +117,8 @@ export function RedeMapaFluxos({
           <ul className="grid grid-cols-2 gap-2" aria-label={`${rotuloPrecos ?? "PLD"}, R$/MWh`}>
             {(["N", "NE", "SE", "S"] as Submercado[]).map((sm) => (
               <li key={sm} className="border border-linha bg-superficie p-3">
-                <p className="text-xs text-mineral">{NOME_SM[sm]}</p>
-                <p className="mt-1 whitespace-nowrap font-serif text-lg tabular-nums text-carvao">{reais(precos[sm] ?? null)}</p>
+                <p className="text-xs text-mineral">{nomeSm(sm, idioma)}</p>
+                <p className="mt-1 whitespace-nowrap font-serif text-lg tabular-nums text-carvao">{fmt.reais(precos[sm] ?? null)}</p>
               </li>
             ))}
           </ul>
@@ -132,11 +140,11 @@ export function RedeMapaFluxos({
                 >
                   <span>
                     {f.valor === null || f.valor === 0 ? (
-                      nomeFronteira(f.par)
+                      nomeFronteira(f.par, idioma)
                     ) : (
                       <>
-                        {NOME_SM[o]} <span aria-hidden="true">→</span>
-                        <span className="sr-only">para</span> {NOME_SM[d]}
+                        {nomeSm(o, idioma)} <span aria-hidden="true">→</span>
+                        <span className="sr-only">{tx("para", "to")}</span> {nomeSm(d, idioma)}
                       </>
                     )}
                     {f.detalhe && <span className="block text-xs text-carvao-muted">{f.detalhe}</span>}
@@ -149,8 +157,8 @@ export function RedeMapaFluxos({
           {(exterior ?? []).map((e) => (
             <li key={e.pais} className="flex min-h-[44px] items-baseline justify-between gap-3 border-b border-linha px-3 py-2 text-sm text-carvao">
               <span>
-                Sul e {NOME_PAIS[e.pais]}
-                {e.valor !== null && e.valor !== 0 ? ` (${e.valor > 0 ? "exportação" : "importação"})` : ""}
+                {tx("Sul e", "South and")} {nomePais(e.pais, idioma)}
+                {e.valor !== null && e.valor !== 0 ? ` (${e.valor > 0 ? tx("exportação", "export") : tx("importação", "import")})` : ""}
               </span>
               <span className="whitespace-nowrap tabular-nums">{e.rotuloValor}</span>
             </li>
@@ -191,7 +199,7 @@ export function RedeMapaFluxos({
               />
               <rect x={POS[e.pais].x - 52} y={POS[e.pais].y - 16} width={104} height={32} fill="var(--cor-superficie)" stroke="var(--cor-linha)" />
               <text x={POS[e.pais].x} y={POS[e.pais].y - 2} textAnchor="middle" fontSize="12" fill="var(--cor-carvao)">
-                {NOME_PAIS[e.pais]}
+                {nomePais(e.pais, idioma)}
               </text>
               <text x={POS[e.pais].x} y={POS[e.pais].y + 11} textAnchor="middle" fontSize="11" fill="var(--cor-carvao-muted)">
                 {e.rotuloValor}
@@ -212,10 +220,10 @@ export function RedeMapaFluxos({
           const [o, d] = positivo ? [a, b] : [b, a];
           const rotuloAria =
             f.valor === null
-              ? `${nomeFronteira(f.par)}: sem dado`
+              ? `${nomeFronteira(f.par, idioma)}: ${tx("sem dado", "no data")}`
               : f.valor === 0
-                ? `${nomeFronteira(f.par)}: ${f.rotuloValor}`
-                : `${NOME_SM[o]} para ${NOME_SM[d]}: ${f.rotuloValor}${f.detalhe ? `; ${f.detalhe}` : ""}`;
+                ? `${nomeFronteira(f.par, idioma)}: ${f.rotuloValor}`
+                : `${nomeSm(o, idioma)} ${tx("para", "to")} ${nomeSm(d, idioma)}: ${f.rotuloValor}${f.detalhe ? `; ${f.detalhe}` : ""}`;
           return (
             <g
               key={f.par}
@@ -255,7 +263,7 @@ export function RedeMapaFluxos({
               <text x={mx} y={my + 4} textAnchor="middle" fontSize="12" fontWeight={ativo ? 700 : 400} fill="var(--cor-carvao)" className="tabular-nums">
                 {f.rotuloValor}
               </text>
-              <title>{`${curtoFronteira(f.par)}: ${rotuloAria}`}</title>
+              <title>{`${curtoFronteira(f.par, idioma)}: ${rotuloAria}`}</title>
             </g>
           );
         })}
@@ -264,11 +272,11 @@ export function RedeMapaFluxos({
           <g key={sm} aria-hidden="true">
             <rect x={POS[sm].x - LARG_NO / 2} y={POS[sm].y - ALT_NO / 2} width={LARG_NO} height={ALT_NO} fill="var(--cor-superficie)" stroke="var(--cor-carvao)" />
             <text x={POS[sm].x} y={POS[sm].y - (precos ? 5 : -4)} textAnchor="middle" fontSize="13" fill="var(--cor-carvao)">
-              {NOME_SM[sm]}
+              {nomeSm(sm, idioma)}
             </text>
             {precos && (
               <text x={POS[sm].x} y={POS[sm].y + 14} textAnchor="middle" fontSize="12" fill="var(--cor-carvao-muted)" className="tabular-nums">
-                {reais(precos[sm] ?? null)}
+                {fmt.reais(precos[sm] ?? null)}
               </text>
             )}
           </g>

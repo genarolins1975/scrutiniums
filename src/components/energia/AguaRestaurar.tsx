@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * "Restaurar padrão": volta a página de Água e clima ao estado de abertura. Recorte, entidade, unidade, ordem, comparação, intervalos e
@@ -32,6 +33,7 @@ function restaurar() {
 }
 
 export function AguaRestaurar() {
+  const tx = useTx();
   const [ha, setHa] = useState(false);
   useEffect(() => {
     const ler = () => setHa(haEscolhaNaUrl());
@@ -51,7 +53,7 @@ export function AguaRestaurar() {
       data-restaurar=""
       className="inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-sm text-carvao hover:border-energia hover:text-carvao focus-visible:outline focus-visible:outline-2 focus-visible:outline-energia"
     >
-      Restaurar padrão
+      {tx("Restaurar padrão", "Restore default")}
     </button>
   );
 }

@@ -1,5 +1,6 @@
 import { corDoRecorte, mwmes, type EntidadeEar, type UnidadeEar } from "@/lib/energia/agua";
 import { pct, plural } from "@/lib/energia/formato";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Faixa usual da data do recorte escolhido, na mesma unidade da figura principal da abertura (% da EAR máxima ou MWmês): a área
@@ -19,14 +20,17 @@ export function AguaFaixaDaData({ e, unidade }: { e: EntidadeEar; unidade: Unida
   const p90 = emMw ? e.p90_mwmes : e.p90;
   const teto = emMw ? Math.max(e.ear_max_mwmes ?? 0, p90 ?? 0, ear ?? 0) : 100;
   if (ear === null || !(teto > 0)) return null;
-  const formatar = (v: number | null) => (emMw ? `${mwmes(v)} MWmês` : pct(v, 1));
+  const uMw = tx("MWmês", "MWmonth");
+  const formatar = (v: number | null) => (emMw ? `${mwmes(v)} ${uMw}` : pct(v, 1));
   const x = (v: number) => `${Math.max(0, Math.min(100, (v / teto) * 100))}%`;
   const temFaixa = p10 !== null && p90 !== null;
   const cor = corDoRecorte(e);
   const descricao = [
-    `EAR do dia ${formatar(ear)}`,
-    p50 !== null ? `mediana da data ${formatar(p50)}` : null,
-    temFaixa ? `faixa usual da data de ${formatar(p10)} a ${formatar(p90)} (10º a 90º percentil)` : "sem faixa usual da data",
+    tx(`EAR do dia ${formatar(ear)}`, `EAR on the day ${formatar(ear)}`),
+    p50 !== null ? tx(`mediana da data ${formatar(p50)}`, `median for the date ${formatar(p50)}`) : null,
+    temFaixa
+      ? tx(`faixa usual da data de ${formatar(p10)} a ${formatar(p90)} (10º a 90º percentil)`, `usual range for the date from ${formatar(p10)} to ${formatar(p90)} (10th to 90th percentile)`)
+      : tx("sem faixa usual da data", "no usual range for the date"),
   ]
     .filter(Boolean)
     .join("; ");
@@ -34,9 +38,12 @@ export function AguaFaixaDaData({ e, unidade }: { e: EntidadeEar; unidade: Unida
   return (
     <figure data-faixa-da-data={e.id} className="space-y-2">
       <figcaption className="text-sm text-carvao">
-        <span className="font-medium">Faixa usual da data, {e.rotulo}</span>
+        <span className="font-medium">{tx(`Faixa usual da data, ${e.rotulo}`, `Usual range for the date, ${e.rotulo}`)}</span>
         <span className="text-carvao-muted">
-          , em {emMw ? "MWmês" : "% da EAR máxima"}: do 10º ao 90º percentil do mesmo dia nos anos da base.
+          {tx(
+            `, em ${emMw ? "MWmês" : "% da EAR máxima"}: do 10º ao 90º percentil do mesmo dia nos anos da base.`,
+            `, in ${emMw ? "MWmonth" : "% of maximum EAR"}: from the 10th to the 90th percentile of the same day in the baseline years.`,
+          )}
         </span>
       </figcaption>
       <div className="px-2">
@@ -63,18 +70,20 @@ export function AguaFaixaDaData({ e, unidade }: { e: EntidadeEar; unidade: Unida
         </div>
         <div aria-hidden="true" className="mt-0.5 flex justify-between text-sm tabular-nums text-carvao-muted">
           <span>0</span>
-          <span>{emMw ? `${mwmes(teto)} MWmês` : "100%"}</span>
+          <span>{emMw ? `${mwmes(teto)} ${uMw}` : "100%"}</span>
         </div>
       </div>
       <ul className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-carvao-muted tabular-nums">
         <li className="inline-flex items-center gap-1.5">
           <span aria-hidden="true" className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: cor, boxShadow: "0 0 0 1px var(--cor-carvao)" }} />
-          EAR do dia: {formatar(ear)}
+          {tx("EAR do dia: ", "EAR on the day: ")}
+          {formatar(ear)}
         </li>
         {p50 !== null && (
           <li className="inline-flex items-center gap-1.5">
             <span aria-hidden="true" className="inline-block h-3.5 w-0.5 bg-carvao-muted" />
-            Mediana da data: {formatar(p50)}
+            {tx("Mediana da data: ", "Median for the date: ")}
+            {formatar(p50)}
           </li>
         )}
         {temFaixa ? (
@@ -84,10 +93,15 @@ export function AguaFaixaDaData({ e, unidade }: { e: EntidadeEar; unidade: Unida
               className="inline-block h-2.5 w-4 border"
               style={{ background: "color-mix(in srgb, var(--serie-referencia) 22%, transparent)", borderColor: "var(--serie-referencia)" }}
             />
-            Faixa usual: {formatar(p10)} a {formatar(p90)}
+            {tx(`Faixa usual: ${formatar(p10)} a ${formatar(p90)}`, `Usual range: ${formatar(p10)} to ${formatar(p90)}`)}
           </li>
         ) : (
-          <li>Sem faixa usual: {plural(e.anos_na_base, "ano", "anos")} na base, menos que os 5 exigidos</li>
+          <li>
+            {tx(
+              `Sem faixa usual: ${plural(e.anos_na_base, "ano", "anos")} na base, menos que os 5 exigidos`,
+              `No usual range: ${plural(e.anos_na_base, "year", "years")} in the baseline, fewer than the 5 required`,
+            )}
+          </li>
         )}
       </ul>
     </figure>

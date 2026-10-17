@@ -3,6 +3,7 @@
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Histórico mensal do SIN desde o início da série, com as mudanças de regime do ONS
@@ -27,6 +28,7 @@ export function CargaHistorico({
   cor: string;
   marcos: { x: string; rotulo: string }[];
 }) {
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const intervalo = v.hde && v.hate ? { inicio: v.hde, fim: v.hate } : null;
   return (
@@ -36,7 +38,7 @@ export function CargaHistorico({
       chaveX="m"
       formatoX="mes"
       series={[{ id: "SIN", rotulo: "SIN", cor }]}
-      unidade="MWmed"
+      unidade={tx("MWmed", "MWavg")}
       casas={0}
       marcos={marcos}
       zoom

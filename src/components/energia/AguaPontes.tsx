@@ -1,6 +1,7 @@
 import Link from "@/components/i18n/LinkIdioma";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Ligações de assunto com outros painéis do observatório (geração, carga, preço de curto prazo, conta de luz, conferência da ENA), no fim
@@ -28,8 +29,11 @@ export function AguaPontes({ itens, id = "pontes" }: { itens: readonly PonteAgua
   return (
     <SecaoDoPainel
       id={id}
-      titulo="Onde o mesmo assunto aparece em outros painéis?"
-      lead="Ligações de assunto: os números são de painéis diferentes, e esta página não diz que um explica o outro."
+      titulo={tx("Onde o mesmo assunto aparece em outros painéis?", "Where does the same subject appear in other panels?")}
+      lead={tx(
+        "Ligações de assunto: os números são de painéis diferentes, e esta página não diz que um explica o outro.",
+        "Subject links: the figures come from different panels, and this page does not say that one explains the other.",
+      )}
     >
       <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2" data-pontes="">
         {lista.map((i) => (
