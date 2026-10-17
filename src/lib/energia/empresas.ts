@@ -321,7 +321,7 @@ export function respostaCadastro(c: Cadastro, idioma: Idioma = idiomaEnergia()):
     partes.push(
       tx(
         `Os ativos de transmissão não estão nesta publicação: os dados do SIGET (${SIGLAS.SIGET}) não foram integrados.`,
-        "Transmission assets are not in this release: SIGET data (ANEEL's transmission management system) have not been integrated.",
+        "Transmission assets are not in this release: SIGET (Transmission Management System) data have not been integrated.",
         idioma,
       ),
     );
@@ -3177,7 +3177,7 @@ export function passosVinculo(g: Pick<EmpresasGold, "cadastro" | "controle" | "d
       titulo: tx("Ativo", "Asset", idioma),
       liga: tx(
         `pelo CEG (${SIGLAS.CEG}) da usina e pelo módulo de transmissão do SIGET (${SIGLAS.SIGET}), com o CNPJ do contrato`,
-        "by the plant's CEG (unique code of generation projects) and by the SIGET transmission module (ANEEL's transmission management system), with the contract's CNPJ",
+        "by the plant's CEG (Unique Code of Generation Projects) and by the SIGET (Transmission Management System) transmission module, with the contract's CNPJ",
         idioma,
       ),
       contagem: tx(

@@ -70,6 +70,26 @@ export const MOTIVO_PARADA_GOLD_EN: Tabela = {
   "a cadeia de controladores volta a um nó já visitado": "the chain of controlling shareholders returns to a node already visited",
 };
 
+/** Nomes genéricos que o arquivo da cadeia põe no lugar de sócio sem identificação publicável (arestas.nome). */
+export const SOCIO_GENERICO_EN: Tabela = {
+  "pessoa física": "individual",
+  "sócio sem documento": "shareholder without a document",
+};
+
+/** Estudo documental da Copel (public/energia/estudos/copel-2025.json): segmentos e limites. */
+export const ESTUDO_COPEL_EN: Tabela = {
+  "Geração e transmissão": "Generation and transmission",
+  Geração: "Generation",
+  Transmissão: "Transmission",
+  Distribuição: "Distribution",
+  Comercialização: "Trading",
+  Serviços: "Services",
+  Holding: "Holding",
+  "Holding e serviços": "Holding and services",
+  "EBITDA reportado não ajustado, medida não contábil conciliada pela companhia. Investimentos reportados têm definição própria e não são o fluxo líquido de investimento da DFC. Dados de 2025 não descrevem resultados correntes de 2026.":
+    "Unadjusted reported EBITDA, a non-accounting measure reconciled by the company. Reported investments have their own definition and are not the net investing cash flow of the cash flow statement (DFC). 2025 data do not describe current 2026 results.",
+};
+
 /* ---------------------------------------------------------------- Empresas: finanças (CVM) */
 
 /** Contas padronizadas da CVM (financas.contas[].rotulo). */

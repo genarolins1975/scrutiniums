@@ -10,6 +10,10 @@ import { COLUNAS_GRUPOS, COR_MEDIDA, ESQUEMA_CONTROLE, ROTULO_MOTIVO, arvoreDe, 
 import { SIGLAS } from "@/lib/energia/siglas";
 import { buscarEntidades, type EntidadeBuscavel, type LinhaTabela } from "@/lib/energia/tabela";
 import type { CadeiaSocietaria } from "@/lib/energia/tipos-empresas";
+import { MOTIVO_PARADA_GOLD_EN, temTraducao, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 
 /**
  * P039: os maiores grupos de controle, com a capacidade proporcional e a capacidade sob controle
@@ -42,6 +46,9 @@ export type EmpresasControleProps = {
 };
 
 export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvoreInicial, urlCadeia, motivos, totalGrupos, csv, aposFigura, fonte, versao }: EmpresasControleProps) {
+  const tx = useTx();
+  const idioma = useIdioma();
+  const I = (x: number) => inteiro(x, idioma);
   const [v, definir] = useEstadoUrl(ESQUEMA_CONTROLE);
   const alvo = v.e || padrao;
   const [cadeia, setCadeia] = useState<CadeiaSocietaria | null>(null);
@@ -61,19 +68,19 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
   }, [precisaArquivo, cadeia, urlCadeia]);
 
   const arvore = useMemo(() => (alvo === padrao && arvoreInicial ? arvoreInicial : cadeia ? arvoreDe(cadeia, alvo) : null), [alvo, padrao, arvoreInicial, cadeia]);
-  const opcoes = useMemo(() => (cadeia ? entidadesCadeia(cadeia) : entidades), [cadeia, entidades]);
+  const opcoes = useMemo(() => (cadeia ? entidadesCadeia(cadeia, idioma) : entidades), [cadeia, entidades, idioma]);
   const ir = (cnpj: string | null) => cnpj && definir({ e: cnpj === padrao ? "" : cnpj });
 
   return (
     <div className="space-y-6">
       <GraficoBarras
-        titulo="Os maiores grupos: capacidade proporcional e capacidade sob controle"
+        titulo={tx("Os maiores grupos: capacidade proporcional e capacidade sob controle", "The largest groups: proportional capacity and capacity under control")}
         dados={barras}
         chaveCategoria="id"
         chaveRotulo="rotulo"
         series={[
-          { id: "mw_proporcional", rotulo: "Capacidade proporcional", cor: COR_MEDIDA.proporcional },
-          { id: "mw_controle", rotulo: "Capacidade sob controle", cor: COR_MEDIDA.controle },
+          { id: "mw_proporcional", rotulo: tx("Capacidade proporcional", "Proportional capacity"), cor: COR_MEDIDA.proporcional },
+          { id: "mw_controle", rotulo: tx("Capacidade sob controle", "Capacity under control"), cor: COR_MEDIDA.controle },
         ]}
         unidade="MW"
         casas={1}
@@ -84,19 +91,30 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
         onSelecionar={ir}
       />
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-universo-parcial="grupos">
-        O gráfico mostra {inteiro(barras.length)} dos {inteiro(linhasGrupos.length)} maiores grupos de controle{totalGrupos ? `, de ${inteiro(totalGrupos)} grupos na base` : ""}; cada grupo é identificado pelo CNPJ ({SIGLAS.CNPJ}) de quem está no topo da cadeia declarada. A tabela abaixo traz os{" "}
-        {inteiro(linhasGrupos.length)}, e a lista inteira está no{" "}
+        {tx(
+          <>
+            O gráfico mostra {I(barras.length)} dos {I(linhasGrupos.length)} maiores grupos de controle{totalGrupos ? `, de ${I(totalGrupos)} grupos na base` : ""}; cada grupo é identificado pelo CNPJ ({SIGLAS.CNPJ}) de quem está no topo da cadeia declarada. A tabela abaixo traz os{" "}
+            {I(linhasGrupos.length)}, e a lista inteira está no{" "}
+          </>,
+          <>
+            The chart shows {I(barras.length)} of the {I(linhasGrupos.length)} largest controlling groups{totalGrupos ? `, out of ${I(totalGrupos)} groups in the database` : ""}; each group is identified by the CNPJ (national registry of legal entities) of whoever is at the top of the declared chain. The table below lists the{" "}
+            {I(linhasGrupos.length)}, and the full list is in the{" "}
+          </>,
+        )}
         {csv ? (
           <a href={csv.url} download className="text-energia-dark underline underline-offset-4 hover:text-carvao">
             {csv.rotulo}
           </a>
         ) : (
-          "CSV de grupos"
+          tx("CSV de grupos", "groups CSV")
         )}
-        . Capacidade proporcional soma as participações diretas das empresas do grupo; capacidade sob controle conta a usina inteira quando o dono majoritário está no grupo. As duas não se somam.
+        {tx(
+          ". Capacidade proporcional soma as participações diretas das empresas do grupo; capacidade sob controle conta a usina inteira quando o dono majoritário está no grupo. As duas não se somam.",
+          ". Proportional capacity adds up the direct stakes of the group's companies; capacity under control counts the whole plant when the majority owner is in the group. The two are not added together.",
+        )}
       </p>
       <TabelaInterativa
-        titulo={`Os ${linhasGrupos.length} maiores grupos de controle por capacidade proporcional`}
+        titulo={tx(`Os ${linhasGrupos.length} maiores grupos de controle por capacidade proporcional`, `The ${linhasGrupos.length} largest controlling groups by proportional capacity`)}
         colunas={COLUNAS_GRUPOS}
         linhas={linhasGrupos}
         chaveLinha="id"
@@ -108,16 +126,20 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
         ordemInicial={{ coluna: "mw_proporcional", direcao: "desc" }}
         selecionado={alvo}
         onSelecionar={ir}
-        dicaBusca="Nome ou CNPJ"
-        nota="Escolher uma linha abre a árvore societária do grupo abaixo. A lista inteira está no CSV de grupos."
+        dicaBusca={tx("Nome ou CNPJ", "Name or CNPJ")}
+        nota={tx("Escolher uma linha abre a árvore societária do grupo abaixo. A lista inteira está no CSV de grupos.", "Choosing a row opens the group's shareholding tree below. The full list is in the groups CSV.")}
       />
       <details className="text-sm" data-legenda-motivos="">
-        <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">O que significa cada motivo em &ldquo;Por que a cadeia para aqui&rdquo;</summary>
+        <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">
+          {tx(<>O que significa cada motivo em &ldquo;Por que a cadeia para aqui&rdquo;</>, <>What each reason in &ldquo;Why the chain stops here&rdquo; means</>)}
+        </summary>
         <dl className="mt-1 space-y-1 border-l-2 border-linha pl-3 text-carvao-muted">
           {motivos.map((m) => (
             <div key={m.motivo}>
               <dt className="inline font-medium text-carvao">{ROTULO_MOTIVO[m.motivo as keyof typeof ROTULO_MOTIVO] ?? m.motivo}: </dt>
-              <dd className="inline">{m.rotulo}.</dd>
+              <dd className="inline">
+                {temTraducao(MOTIVO_PARADA_GOLD_EN, m.rotulo) ? traduzir(MOTIVO_PARADA_GOLD_EN, m.rotulo, idioma) : <TrechoPortugues regiao="controle-motivo">{m.rotulo}</TrechoPortugues>}.
+              </dd>
             </div>
           ))}
         </dl>
@@ -125,20 +147,35 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
 
       {aposFigura}
 
-      <SecaoDoPainel id="arvore" titulo="Qual é a árvore societária declarada à ANEEL?">
+      <SecaoDoPainel id="arvore" titulo={tx("Qual é a árvore societária declarada à ANEEL?", "What is the shareholding tree declared to ANEEL?")}>
         <BuscaEntidade
           opcoes={opcoes}
           aoEscolher={ir}
-          dica={cadeia ? "Nome ou CNPJ de qualquer empresa do arquivo da cadeia" : "Nome ou CNPJ de grupos, proprietários e distribuidoras (as demais empresas entram quando o arquivo da cadeia chega)"}
+          dica={
+            cadeia
+              ? tx("Nome ou CNPJ de qualquer empresa do arquivo da cadeia", "Name or CNPJ of any company in the chain file")
+              : tx(
+                  "Nome ou CNPJ de grupos, proprietários e distribuidoras (as demais empresas entram quando o arquivo da cadeia chega)",
+                  "Name or CNPJ of groups, owners and distribution utilities (the other companies are added when the chain file arrives)",
+                )
+          }
         />
         {erro && (
           <p role="alert" className="text-sm text-carvao">
-            Não foi possível carregar o arquivo da cadeia ({erro}). A cadeia vigente está no CSV da cadeia societária.
+            {tx(
+              <>Não foi possível carregar o arquivo da cadeia ({erro}). A cadeia vigente está no CSV da cadeia societária.</>,
+              <>The chain file could not be loaded ({erro}). The current chain is in the shareholding chain CSV.</>,
+            )}
           </p>
         )}
         {!arvore && !erro && (
           <p role="status" className="text-sm text-carvao-muted">
-            {cadeia ? `O CNPJ ${cnpjFormatado(alvo)} não aparece na composição societária declarada na janela vigente.` : "Carregando o arquivo da cadeia societária…"}
+            {cadeia
+              ? tx(
+                  `O CNPJ ${cnpjFormatado(alvo, idioma)} não aparece na composição societária declarada na janela vigente.`,
+                  `CNPJ ${cnpjFormatado(alvo, idioma)} does not appear in the shareholding structure declared in the current window.`,
+                )
+              : tx("Carregando o arquivo da cadeia societária…", "Loading the shareholding chain file…")}
           </p>
         )}
         {arvore && <EmpresasArvore a={arvore} ir={ir} motivos={motivos} />}
@@ -154,12 +191,13 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
  */
 function BuscaEntidade({ opcoes, aoEscolher, dica }: { opcoes: EntidadeBuscavel[]; aoEscolher: (cnpj: string) => void; dica: string }) {
   const id = useId();
+  const tx = useTx();
   const [texto, setTexto] = useState("");
   const r = useMemo(() => (texto.trim().length >= 2 ? buscarEntidades(opcoes, texto, 8) : null), [opcoes, texto]);
   return (
     <div role="search" className="space-y-2 text-sm">
       <label htmlFor={id} className="block text-carvao-muted">
-        Abrir a árvore de outra empresa
+        {tx("Abrir a árvore de outra empresa", "Open another company's tree")}
       </label>
       <input
         id={id}
@@ -171,7 +209,14 @@ function BuscaEntidade({ opcoes, aoEscolher, dica }: { opcoes: EntidadeBuscavel[
         autoComplete="off"
       />
       <p role="status" aria-live="polite" className="text-xs text-carvao-muted">
-        {r ? (r.total ? `${r.total} ${r.total === 1 ? "empresa encontrada" : "empresas encontradas"}${r.total > r.itens.length ? `; mostrando ${r.itens.length}, refine a busca` : ""}.` : "Nenhuma empresa com esse nome ou CNPJ.") : ""}
+        {r
+          ? r.total
+            ? tx(
+                `${r.total} ${r.total === 1 ? "empresa encontrada" : "empresas encontradas"}${r.total > r.itens.length ? `; mostrando ${r.itens.length}, refine a busca` : ""}.`,
+                `${r.total} ${r.total === 1 ? "company found" : "companies found"}${r.total > r.itens.length ? `; showing ${r.itens.length}, refine the search` : ""}.`,
+              )
+            : tx("Nenhuma empresa com esse nome ou CNPJ.", "No company with that name or CNPJ.")
+          : ""}
       </p>
       {r && r.itens.length > 0 && (
         <ul className="flex flex-wrap gap-2">
@@ -185,7 +230,7 @@ function BuscaEntidade({ opcoes, aoEscolher, dica }: { opcoes: EntidadeBuscavel[
                 }}
                 className="inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-left text-carvao hover:border-energia"
               >
-                {e.rotulo}
+                <Nome>{e.rotulo}</Nome>
                 {e.detalhe ? <span className="ml-2 text-xs text-carvao-muted">{e.detalhe}</span> : null}
               </button>
             </li>

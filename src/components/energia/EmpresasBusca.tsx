@@ -3,8 +3,10 @@
 import Link from "@/components/energia/LinkSemPrefetch";
 import { useId, useMemo, useState } from "react";
 import type { EntidadeEmpresa } from "@/lib/energia/empresas";
-import { num } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
 import { buscarEntidades } from "@/lib/energia/tabela";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 
 /**
  * Busca de uma empresa pela abertura de Empresas: nome, sigla, CNPJ (com ou sem pontuação) ou código da CVM. Cada resultado leva
@@ -29,6 +31,8 @@ export function EmpresasBusca({
   total: number;
 }) {
   const id = useId();
+  const tx = useTx();
+  const f = formatos(useIdioma());
   const [texto, setTexto] = useState("");
   const consulta = texto.trim();
   const r = useMemo(() => (consulta.length >= 2 ? buscarEntidades(entidades, consulta, MAXIMO) : null), [entidades, consulta]);
@@ -36,14 +40,14 @@ export function EmpresasBusca({
   return (
     <div role="search" data-busca-empresa="" className="space-y-2">
       <label htmlFor={id} className="block text-sm text-carvao-muted">
-        Nome, sigla ou CNPJ
+        {tx("Nome, sigla ou CNPJ", "Name, acronym or CNPJ")}
       </label>
       <input
         id={id}
         type="search"
         value={texto}
         onChange={(e) => setTexto(e.target.value)}
-        placeholder="Por exemplo: CEMIG, 17.155.730/0001-64 ou Itaipu"
+        placeholder={tx("Por exemplo: CEMIG, 17.155.730/0001-64 ou Itaipu", "For example: CEMIG, 17.155.730/0001-64 or Itaipu")}
         className="min-h-[44px] w-full max-w-xl border border-linha bg-superficie px-3 text-carvao"
         autoComplete="off"
         aria-describedby={`${id}-ajuda`}
@@ -51,24 +55,35 @@ export function EmpresasBusca({
       <p id={`${id}-ajuda`} role="status" aria-live="polite" className="text-xs leading-relaxed text-carvao-muted">
         {r
           ? r.total
-            ? `${r.total} ${r.total === 1 ? "empresa encontrada" : "empresas encontradas"}${r.total > r.itens.length ? `; mostrando ${r.itens.length}, refine a busca` : ""}.`
-            : "Nenhuma empresa com esse nome, sigla ou CNPJ entre as listadas. Para outras empresas do grafo societário, use a busca da árvore de controle."
+            ? tx(
+                `${r.total} ${r.total === 1 ? "empresa encontrada" : "empresas encontradas"}${r.total > r.itens.length ? `; mostrando ${r.itens.length}, refine a busca` : ""}.`,
+                `${r.total} ${r.total === 1 ? "company found" : "companies found"}${r.total > r.itens.length ? `; showing ${r.itens.length}, refine the search` : ""}.`,
+              )
+            : tx(
+                "Nenhuma empresa com esse nome, sigla ou CNPJ entre as listadas. Para outras empresas do grafo societário, use a busca da árvore de controle.",
+                "No company with that name, acronym or CNPJ among those listed. For other companies in the shareholding graph, use the control tree search.",
+              )
           : consulta.length === 1
-            ? "Digite ao menos duas letras ou dois números."
-            : `Entre ${num(total, 0)} empresas: distribuidoras, companhias abertas, maiores donos de usinas e grupos de controle. O resultado abre a ficha da distribuidora, as demonstrações da companhia na CVM ou a árvore de controle do grupo.`}
+            ? tx("Digite ao menos duas letras ou dois números.", "Type at least two letters or two digits.")
+            : tx(
+                `Entre ${f.num(total, 0)} empresas: distribuidoras, companhias abertas, maiores donos de usinas e grupos de controle. O resultado abre a ficha da distribuidora, as demonstrações da companhia na CVM ou a árvore de controle do grupo.`,
+                `Among ${f.num(total, 0)} companies: distribution utilities, publicly held companies, largest plant owners and controlling groups. The result opens the distribution utility's profile, the company's financial statements at CVM or the group's control tree.`,
+              )}
       </p>
       {r && r.itens.length > 0 && (
         <ul className="divide-y divide-linha border-y border-linha">
           {r.itens.map((e) => (
             <li key={e.id} className="py-2">
-              <p className="text-base leading-snug text-carvao">{e.rotulo}</p>
+              <p className="text-base leading-snug text-carvao">
+                <Nome>{e.rotulo}</Nome>
+              </p>
               <p className="text-xs leading-relaxed text-carvao-muted">{e.detalhe}</p>
               <ul className="mt-0.5 flex flex-wrap gap-x-5">
                 {e.destinos.map((d) => (
                   <li key={d.href}>
                     <Link href={d.href} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
                       {d.rotulo}
-                      <span className="sr-only"> de {e.rotulo}</span>
+                      <span className="sr-only">{tx(` de ${e.rotulo}`, ` of ${e.rotulo}`)}</span>
                       <span aria-hidden="true" className="ml-1.5">
                         →
                       </span>
@@ -83,7 +98,7 @@ export function EmpresasBusca({
       {r && (
         <p className="text-sm">
           <Link href={hrefArvore} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            Buscar outra empresa na árvore de controle, que cobre todo o grafo societário
+            {tx("Buscar outra empresa na árvore de controle, que cobre todo o grafo societário", "Search for another company in the control tree, which covers the whole shareholding graph")}
           </Link>
         </p>
       )}

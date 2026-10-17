@@ -1,3 +1,5 @@
+import { Nome } from "@/components/i18n/Nome";
+import { tx } from "@/lib/energia/idioma";
 import type { LogoListada } from "@/lib/energia/tipos-listadas";
 
 /**
@@ -5,7 +7,8 @@ import type { LogoListada } from "@/lib/energia/tipos-listadas";
  * discreto. A placa tem o tom do fundo para o qual a companhia desenhou o arquivo (`fundo` no manifesto): papel para os logos de
  * fundo claro, carvão para os que a companhia publica só em branco. Sem logo oficial obtido, mostra o nome em texto; o motivo
  * fica no manifesto e na nota da página. A imagem é decorativa quando o nome já aparece ao lado (`decorativo`). Também serve à
- * página de Leilões, que liga o grupo controlador ao logo pelo CNPJ.
+ * página de Leilões, que liga o grupo controlador ao logo pelo CNPJ. Em inglês, o alt é "<nome> logo" e o nome em texto leva a
+ * marca de nome próprio; o comportamento é o mesmo nos dois idiomas.
  */
 export function ListadasLogo({
   logo,
@@ -23,7 +26,7 @@ export function ListadasLogo({
     if (decorativo) return <span aria-hidden="true" className={`inline-block shrink-0 ${alt}`} />;
     return (
       <span className={`inline-flex shrink-0 items-center justify-center border border-linha px-2 text-center text-xs font-medium leading-tight text-carvao ${alt}`}>
-        {nome}
+        <Nome>{nome}</Nome>
       </span>
     );
   }
@@ -36,7 +39,7 @@ export function ListadasLogo({
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={logo.arquivo}
-        alt={decorativo ? "" : `Símbolo de ${nome}`}
+        alt={decorativo ? "" : tx(`Símbolo de ${nome}`, `${nome} logo`)}
         className="max-h-full max-w-full object-contain"
         decoding="async"
         width={logo.largura ?? undefined}
