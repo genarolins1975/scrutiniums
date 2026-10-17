@@ -256,6 +256,8 @@ export const REGISTRO_MODELOS_EN: Readonly<Record<string, string>> = {
     "The composition of C1 (benchmarks and weights) is in the research configuration file, which is not in the repository and was not published. Without a publishable configuration there is no way to reimplement or audit C1; it remains only as a research record.",
   "A composição do C1 (referências e pesos) está no arquivo de configuração da pesquisa, que não foi publicado. Sem configuração publicável não há como refazer nem auditar o C1; ele segue só como registro da pesquisa.":
     "The composition of C1 (benchmarks and weights) is in the research configuration file, which was not published. Without a publishable configuration there is no way to redo or audit C1; it remains only as a research record.",
+  "a composição do C1 (referências e pesos) está no arquivo de configuração da pesquisa, que não foi publicado. Sem configuração publicável não há como refazer nem auditar o C1; ele segue só como registro da pesquisa.":
+    "the composition of C1 (benchmarks and weights) is in the research configuration file, which was not published. Without a publishable configuration there is no way to redo or audit C1; it remains only as a research record.",
 };
 
 /** Forma inglesa de um texto do registro de modelos; sem entrada na tabela, o texto volta como veio (a página marca o trecho). */
@@ -292,6 +294,20 @@ export const TEXTOS_PREVISOES_EN: Readonly<Record<string, string>> = {
   "As faixas de incerteza não estão calibradas, e o período usado nos testes já tinha sido examinado antes da definição do modelo (resultado exploratório).":
     "The uncertainty bands are not calibrated, and the period used in the tests had already been examined before the model was defined (exploratory result).",
   "Não acompanha mudança de regime de preço entre um ano e outro.": "It does not follow a change in price regime from one year to the next.",
+  "Repete o último valor completo: a previsão de cada período é a média do período mais recente já encerrado no corte. Serve de régua: um candidato só vale a pena se errar menos que isso.":
+    "It repeats the latest complete value: the forecast for each period is the average of the most recent period already closed at the cutoff. It serves as a yardstick: a candidate is only worthwhile if it errs less than this.",
+  "Repete o último valor completo: a previsão de cada período é a média do período mais recente já encerrado no corte.":
+    "It repeats the latest complete value: the forecast for each period is the average of the most recent period already closed at the cutoff.",
+  "Combina referências simples com pesos fixos. Quais referências e quais pesos estão no arquivo de configuração da pesquisa, ainda não publicado.":
+    "It combines simple benchmarks with fixed weights. Which benchmarks and which weights are in the research configuration file, not yet published.",
+  "Combina referências simples com pesos fixos.": "It combines simple benchmarks with fixed weights.",
+  "Parte da persistência (B0) e a corrige com informações recentes de preço.": "It starts from persistence (B0) and corrects it with recent price information.",
+  "Parte da persistência (B0) e a corrige com informações de preço e de hidrologia.": "It starts from persistence (B0) and corrects it with price and hydrology information.",
+  "Repete o mesmo período do ano anterior. Serve de segunda régua, ao lado da persistência.": "It repeats the same period of the previous year. It serves as a second yardstick, alongside persistence.",
+  "Repete o mesmo período do ano anterior.": "It repeats the same period of the previous year.",
+  "07h00 de Brasília do dia de origem; dado como estava no corte": "07:00 Brasília time on the origin day; data as it was at the cutoff", // i18n: dado
+  "Coeficiente na unidade original: R$/MWh de correção por R$/MWh (ou por ponto percentual) da variável.":
+    "Coefficient in the original unit: R$/MWh of correction per R$/MWh (or per percentage point) of the variable.",
 };
 
 /** Forma inglesa de uma frase fixa da gold de previsões ou do registro de modelos; null sem entrada (a página marca o trecho em português). */

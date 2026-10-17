@@ -1476,7 +1476,7 @@ export function vereditoP016(g: Pick<PrevisoesDesempenhoGold, "desempenho" | "pu
  */
 export function vereditoFicha(f: Ficha, resumo: string | null | undefined, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">, idioma: Idioma = idiomaEnergia()): string {
   const tx = (pt: string, en: string, _i?: Idioma) => txIdioma(pt, en, _i ?? idioma);
-  const inicio = resumo?.trim() ? primeiraFrase(resumo) : tx(`${f.codigo} é o modelo ${f.nome}.`, `${f.codigo} is the ${reg(f.nome, idioma)} model.`);
+  const inicio = resumo?.trim() ? (traducaoPrevisoes(primeiraFrase(resumo), idioma) ?? primeiraFrase(resumo)) : tx(`${f.codigo} é o modelo ${f.nome}.`, `${f.codigo} is the ${reg(f.nome, idioma)} model.`);
   const estado = rotuloEstadoModelo(f.estado, idioma);
   const emite = codigoEmissaoDoModelo(f, g);
   const fim = !f.implementado_no_repositorio
