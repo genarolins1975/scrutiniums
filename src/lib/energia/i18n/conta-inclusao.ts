@@ -1,4 +1,5 @@
-import { createElement, type ComponentType, type ReactNode } from "react";
+import { createElement, Fragment, type ComponentType, type ReactNode } from "react";
+import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import type { Idioma } from "@/lib/idioma";
 
@@ -183,7 +184,7 @@ const PROSA_CONTA: Record<string, string> = {
     "Change in the applied residential B1 tariff between validity periods; it is not the average effect of the tariff process.",
   "Desconto tarifário da classe rural.": "Tariff discount for the rural class.",
   "Desconto ao consumo de irrigação e aquicultura em horário especial (8h30 diárias, Lei nº 10.438/2002, art. 25).":
-    "Discount on irrigation and aquaculture consumption during special hours (8.5 hours a day, Law 10,438/2002, art. 25).",
+    "Discount on irrigation and aquaculture consumption during special hours (8 hours 30 minutes a day, Law 10,438/2002, art. 25).",
   "Desconto ao serviço público de água, esgoto e saneamento.": "Discount for the public water, sewage and sanitation service.",
   "Desconto na tarifa de uso de consumidores que compram energia de fonte incentivada.":
     "Discount on the use-of-system tariff for consumers who buy energy from incentivized sources.",
@@ -204,7 +205,7 @@ const PROSA_CONTA: Record<string, string> = {
   "Desconto de 100% até 80 kWh/mês e de 0% acima, sobre a tarifa da classe residencial": "100% discount up to 80 kWh/month and 0% above, on the residential class tariff",
   "Tarifa própria da subclasse (faixas 01 e 02), porque beneficiários não pagam CDE nem Proinfa": "Tariff specific to the subclass (bands 01 and 02), because beneficiaries do not pay the CDE or Proinfa",
   "Desconto Social (Lei nº 10.438/2002, art. 13, § 3º-I, incluído pela Lei nº 15.235/2025): desde 1º/1/2026, famílias do CadÚnico com renda per capita acima de meio e até um salário mínimo têm isenção das quotas da CDE para consumo mensal de até 120 kWh, em uma unidade consumidora.":
-    "Desconto Social (Law 10,438/2002, art. 13, § 3-I, added by Law 15,235/2025): since Jan 1, 2026, CadÚnico families with per capita income above half and up to one minimum wage are exempt from CDE quotas for monthly consumption of up to 120 kWh, in one consumer unit.",
+    "Desconto Social (Law 10,438/2002, art. 13, § 3-I, added by Law 15,235/2025): since Jan 1, 2026, Cadastro Único families with per capita income above half and up to one minimum wage are exempt from CDE quotas for monthly consumption of up to 120 kWh, in one consumer unit.",
   "Leitura por parcela, seguindo as faixas homologadas pela ANEEL (Residencial Desconto Social, faixas 01 e 02): até 120 kWh com a tarifa da faixa 01 e o excedente com a da faixa 02.":
     "Band-by-band reading, following the bands ratified by ANEEL (Residential Desconto Social, bands 01 and 02): up to 120 kWh at the band 01 tariff and the excess at the band 02 tariff.",
   "O texto da REN que regulamenta a aplicação não pôde ser lido (bloqueio de acesso ao acervo da ANEEL); por isso a leitura é declarada.":
@@ -385,7 +386,7 @@ const PROSA_INCLUSAO: Record<string, string> = {
   "Série antiga da ANEEL por região (descontinuada)": "ANEEL's old series by region (discontinued)",
   "CDE: custeio anual por rubrica": "CDE: annual funding by budget line",
   "POF 2017-2018: energia no orçamento das famílias": "POF 2017-2018: energy in family budgets",
-  "PNAD Contínua: acesso à energia elétrica": "PNAD Contínua: access to electricity",
+  "PNAD Contínua: acesso à energia elétrica": "Continuous PNAD: access to electricity",
   "Tarifa Social: faturas e desconto por mês e UF (JSON do gráfico)": "Tarifa Social: bills and discount by month and state (chart JSON)",
   "Cobertura potencial nacional por mês (JSON do gráfico, proxy)": "National potential coverage by month (chart JSON, proxy)",
   "Sistemas isolados: localidades do ciclo mais recente (JSON do mapa)": "Isolated systems: localities of the latest cycle (map JSON)",
@@ -492,10 +493,76 @@ export function dadoNo(texto: string | null | undefined, regiao: string, idioma:
   if (texto === null || texto === undefined || texto === "") return texto ?? null;
   if (idioma !== "en") return texto;
   const en = dadoEn(texto);
-  if (en !== null) return en;
+  if (en !== null) return comNomes(en, idioma);
   // o filho vai como terceiro argumento de createElement; o tipo do componente o declara opcional só para isso
   const Trecho = TrechoPortugues as ComponentType<{ regiao: string; como?: "span" | "div"; children?: ReactNode }>;
   return createElement(Trecho, { regiao, como }, texto);
+}
+
+/**
+ * Nomes próprios em português que a prosa inglesa dos dois módulos cita pelo nome oficial: pesquisas, cadastros, sistemas e conjuntos de
+ * dados das fontes e as rubricas do orçamento da CDE como a ANEEL as publica. Na página inglesa, `comNomes` os marca com <Nome>.
+ */
+const NOMES_PROPRIOS = [
+  "Pesquisa Nacional por Amostra de Domicílios (PNAD) Contínua", // i18n: dado
+  "Pesquisa Nacional por Amostra de Domicílios", // i18n: dado
+  "Pesquisa de Orçamentos Familiares", // i18n: dado
+  "PNAD Contínua", // i18n: dado
+  "Benefício de Prestação Continuada", // i18n: dado
+  "Sistema de Controle de Subvenções e Programas Sociais", // i18n: dado
+  "Portal de Acompanhamento e Informações dos Sistemas Isolados", // i18n: dado
+  "Planejamento do Atendimento aos Sistemas Isolados", // i18n: dado
+  "Beneficiários da Conta de Desenvolvimento Energético", // i18n: dado
+  "Beneficiários da CDE", // i18n: dado
+  "Tarifa Social de Energia Elétrica: Beneficiários", // i18n: dado
+  "Gestão de Recursos Tarifários", // i18n: dado
+  "Subsídio Baixa Renda", // i18n: dado
+  "Subsídio ...", // i18n: dado
+  "Programa Luz para Todos - PLPT", // i18n: dado
+  "Quotas CDE Uso", // i18n: dado
+  "Quotas CDE Energia", // i18n: dado
+  "Quotas CDE - GD", // i18n: dado
+  "CadÚnico", // i18n: dado
+  "LPT - Regiões Remotas da Amazônia Legal", // i18n: dado
+  // termo de busca digitado no portal da fonte, citado entre aspas
+  "universalização", // i18n: dado
+  // UF por extenso com acento ou palavra portuguesa (nome da unidade da federação, como a gold o publica)
+  ...["Amapá", "Ceará", "Espírito Santo", "Goiás", "Maranhão", "Mato Grosso do Sul", "Pará", "Paraíba", "Paraná", "Piauí", "Rio de Janeiro", "Rio Grande do Norte"], // i18n: dado
+  ...["Rio Grande do Sul", "Rondônia", "São Paulo"], // i18n: dado
+].sort((a, b) => b.length - a.length);
+
+/** Identificador de dado em caixa de cobra ("sem_erro_padrao", "OUTROS_RENDIMENTOS", "medidas_uf"): código, não prosa. */
+const IDENTIFICADOR = /\b[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+\b/g;
+
+/**
+ * Frase inglesa (string) com os nomes oficiais em português marcados: em inglês, cada nome da lista vira <Nome> e cada identificador de
+ * dado em caixa de cobra vira <code>; em português, o texto volta como está. Nó que não é string passa sem mudança.
+ */
+export function comNomes(texto: ReactNode, idioma: Idioma): ReactNode {
+  if (idioma !== "en" || typeof texto !== "string") return texto;
+  const partes: ReactNode[] = [];
+  let resto = texto;
+  for (;;) {
+    let melhor: { pos: number; trecho: string; codigo: boolean } | null = null;
+    for (const n of NOMES_PROPRIOS) {
+      const pos = resto.indexOf(n);
+      if (pos >= 0 && (!melhor || pos < melhor.pos)) melhor = { pos, trecho: n, codigo: false };
+    }
+    IDENTIFICADOR.lastIndex = 0;
+    const id = IDENTIFICADOR.exec(resto);
+    if (id && (!melhor || id.index < melhor.pos)) melhor = { pos: id.index, trecho: id[0], codigo: true };
+    if (!melhor) break;
+    if (melhor.pos > 0) partes.push(resto.slice(0, melhor.pos));
+    partes.push(
+      melhor.codigo
+        ? createElement("code", { key: partes.length, className: "font-sans" }, melhor.trecho)
+        : createElement(Nome as ComponentType<{ children?: ReactNode }>, { key: partes.length }, melhor.trecho),
+    );
+    resto = resto.slice(melhor.pos + melhor.trecho.length);
+  }
+  if (!partes.length) return texto;
+  if (resto) partes.push(resto);
+  return createElement(Fragment, null, ...partes);
 }
 
 /** Bandeira no idioma (string). */

@@ -17,7 +17,8 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { dadoNo, dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
+import { comNomes, dadoNo, dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
+import { Nome } from "@/components/i18n/Nome";
 import {
   datasMedidas,
   fontesInclusao,
@@ -79,7 +80,7 @@ export default function CoberturaPage() {
     </>,
     <>
       It is not the proportion of eligible families served and does not say how many families are left out: a bill is not a family, the family may not hold the account, the numerator
-      includes those who receive the Benefício de Prestação Continuada (BPC, continuous cash benefit) or use medical equipment (which lets the ratio exceed 100 without a calculation
+      includes those who receive the <Nome>Benefício de Prestação Continuada</Nome> (BPC, continuous cash benefit) or use medical equipment (which lets the ratio exceed 100 without a calculation
       error) and families without a grid connection count only in the denominator. The question &ldquo;{dadoTexto(c.pergunta, idioma)}&rdquo; has no answer in this ratio.
     </>,
   );
@@ -102,9 +103,12 @@ export default function CoberturaPage() {
             `${mes(mesCob)} · ${c.ufs.length} UF e municípios · faturas por 100 famílias`,
             `${mes(mesCob)} · ${c.ufs.length} states and municipalities · bills per 100 families`,
           )}
-          fonte={tx(
-            "ANEEL, Beneficiários da Conta de Desenvolvimento Energético (CDE); Ministério do Desenvolvimento e Assistência Social (MDS), Cadastro Único no serviço MI Social",
-            "ANEEL, Beneficiários da Conta de Desenvolvimento Energético (beneficiaries of the Energy Development Account, CDE); Ministry of Development and Social Assistance (MDS), Cadastro Único in the MI Social service",
+          fonte={comNomes(
+            tx(
+              "ANEEL, Beneficiários da Conta de Desenvolvimento Energético (CDE); Ministério do Desenvolvimento e Assistência Social (MDS), Cadastro Único no serviço MI Social",
+              "ANEEL, Beneficiários da Conta de Desenvolvimento Energético (beneficiaries of the Energy Development Account, CDE); Ministry of Development and Social Assistance (MDS), Cadastro Único in the MI Social service",
+            ),
+            idioma,
           )}
           referencia={tx(
             <>
@@ -218,7 +222,7 @@ export default function CoberturaPage() {
                   fonte={FONTE_COB}
                   resposta={
                     <RespostaCurta id="p060" veredito={vereditoCobertura(c, idioma)}>
-                      {respostaCobertura(c, idioma)}
+                      {comNomes(respostaCobertura(c, idioma), idioma)}
                     </RespostaCurta>
                   }
                   recorte={

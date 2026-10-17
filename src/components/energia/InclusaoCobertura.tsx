@@ -112,6 +112,7 @@ export function InclusaoCoberturaUf({
       <GraficoPontos
         titulo={tx(`Faixa de sensibilidade ao denominador por UF, ${mes(mesRef)}`, `Sensitivity band to the denominator by state, ${mes(mesRef)}`)}
         itens={itens}
+        rotulosSaoNomes
         unidade={porCem}
         unidadeDiferenca={tx("pontos", "points")}
         casas={1}

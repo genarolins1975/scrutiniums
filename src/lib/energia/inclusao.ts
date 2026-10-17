@@ -223,11 +223,11 @@ export function rotaPainel(id: PainelInclusao): string {
 export function fontesInclusao(idioma: Idioma = idiomaEnergia()) {
   const tx = txEm(idioma);
   return {
-    scs: tx("ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais", "ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais (subsidy and social program control system)"),
-    cde: tx("ANEEL, Beneficiários da CDE", "ANEEL, Beneficiários da CDE (CDE beneficiaries)"),
-    cob: tx("ANEEL, Beneficiários da CDE; MDS, Cadastro Único (MI Social)", "ANEEL, Beneficiários da CDE (CDE beneficiaries); MDS, Cadastro Único (MI Social)"),
+    scs: tx("ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais", "ANEEL, SCS (subsidy and social program control system)"),
+    cde: tx("ANEEL, Beneficiários da CDE", "ANEEL, CDE Beneficiaries (bills with the Tarifa Social discount)"),
+    cob: tx("ANEEL, Beneficiários da CDE; MDS, Cadastro Único (MI Social)", "ANEEL, CDE Beneficiaries (bills with the Tarifa Social discount); MDS, Cadastro Único (MI Social)"),
     pof: tx("IBGE, POF 2017-2018 (microdados e tabela 6715)", "IBGE, POF 2017-2018 (microdata and table 6715)"),
-    pnad: tx("IBGE, PNAD Contínua anual (tabelas 6731, 6737 e 6738)", "IBGE, annual PNAD Contínua (tables 6731, 6737 and 6738)"),
+    pnad: tx("IBGE, PNAD Contínua anual (tabelas 6731, 6737 e 6738)", "IBGE, annual Continuous PNAD (tables 6731, 6737 and 6738)"),
     pasi: tx("EPE, PASI (Localização Geográfica por ciclo)", "EPE, PASI (geographic location by cycle)"),
     lpt: tx("MME, Luz para Todos (dados abertos)", "MME, Luz para Todos (open data)"),
   };
@@ -409,7 +409,7 @@ export function colunasMesesCde(idioma: Idioma = idiomaEnergia()): ColunaTabela[
     { id: "mes", rotulo: tx("Mês do arquivo", "File month"), tipo: "texto" },
     { id: "situacao", rotulo: tx("Situação", "Status"), tipo: "texto", categorica: true },
     { id: "cobertura", rotulo: tx("Cobertura pelas UC do SCS", "Coverage by SCS consumer units"), tipo: "percentual", casas: 2 },
-    { id: "ausentes", rotulo: tx("Distribuidoras do SCS ausentes", "SCS distribution utilities missing"), tipo: "texto" },
+    { id: "ausentes", rotulo: tx("Distribuidoras do SCS ausentes", "SCS distribution utilities missing"), tipo: "texto", idiomaTexto: "nome" },
     { id: "faturas", rotulo: tx("Faturas com desconto", "Bills with a discount"), tipo: "numero", unidade: tx("faturas", "bills"), casas: 0 },
     { id: "desconto", rotulo: tx("Desconto das faturas", "Discount on the bills"), tipo: "numero", unidade: "R$", casas: 2 },
     { id: "medio", rotulo: tx("Desconto médio por fatura", "Average discount per bill"), tipo: "numero", unidade: "R$", casas: 2 },
@@ -452,7 +452,7 @@ export function linhasUfsTsee(ufs: readonly UfTsee[], idioma: Idioma = idiomaEne
 export function colunasUfsTsee(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const tx = txEm(idioma);
   return [
-    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto" },
+    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
     { id: "uf", rotulo: tx("Sigla", "Abbreviation"), tipo: "texto" },
     { id: "regiao", rotulo: tx("Região", "Region"), tipo: "texto", categorica: true },
     { id: "faturas", rotulo: tx("Faturas com desconto", "Bills with a discount"), tipo: "numero", unidade: tx("faturas", "bills"), casas: 0 },
@@ -570,7 +570,7 @@ export function colunasDistribuidoras(idioma: Idioma = idiomaEnergia()): ColunaT
   const tx = txEm(idioma);
   const uc = tx("UC", "consumer units");
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
     { id: "cnpj", rotulo: "CNPJ", tipo: "texto" },
     { id: "ufs", rotulo: tx("UF das faturas", "States of the bills"), tipo: "texto" },
     { id: "uc_tsee", rotulo: tx("UC com Tarifa Social", "Consumer units with Tarifa Social"), tipo: "numero", unidade: uc, casas: 0 },
@@ -583,7 +583,7 @@ export function colunasDistribuidoras(idioma: Idioma = idiomaEnergia()): ColunaT
     { id: "variacao_12m_pct", rotulo: tx("UC em 12 meses", "Consumer units over 12 months"), tipo: "percentual", casas: 2 },
     { id: "faturas_cde", rotulo: tx("Faturas na CDE (conferência)", "Bills in the CDE (check)"), tipo: "numero", casas: 0 },
     { id: "diferenca_cde_pct", rotulo: tx("Faturas contra UC", "Bills against consumer units"), tipo: "percentual", casas: 2 },
-    { id: "despacho", rotulo: tx("Despacho vigente", "Order in force"), tipo: "texto" },
+    { id: "despacho", rotulo: tx("Despacho vigente", "Order in force"), tipo: "texto", idiomaTexto: "nome" },
   ];
 }
 export const COLUNAS_DISTRIBUIDORAS: ColunaTabela[] = colunasDistribuidoras("pt");
@@ -761,7 +761,7 @@ export function colunasCoberturaUf(idioma: Idioma = idiomaEnergia()): ColunaTabe
   const tx = txEm(idioma);
   const familias = tx("famílias", "families");
   return [
-    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto" },
+    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
     { id: "uf", rotulo: tx("Sigla", "Abbreviation"), tipo: "texto" },
     { id: "regiao", rotulo: tx("Região", "Region"), tipo: "texto", categorica: true },
     { id: "faturas", rotulo: tx("Faturas com desconto", "Bills with a discount"), tipo: "numero", unidade: tx("faturas", "bills"), casas: 0 },
@@ -807,7 +807,12 @@ export function linhasHistogramaMunicipios(dist: NonNullable<Cobertura["distribu
   const { tx, num } = em(idioma);
   return dist.histograma.map((h) => ({
     id: `${h.de}`,
-    faixa: h.ate === null ? tx(`${num(h.de, 0)} ou mais`, `${num(h.de, 0)} or more`) : tx(`${num(h.de, 0)} a menos de ${num(h.ate, 0)}`, `${num(h.de, 0)} to less than ${num(h.ate, 0)}`),
+    // o rótulo inglês tem o mesmo número de caracteres do português (" a menos de " e " and under " + U+2060, invisível): o gráfico encurta
+    // o rótulo que não cabe no mesmo ponto nos dois idiomas, e a página inglesa mostra os mesmos números
+    faixa:
+      h.ate === null
+        ? tx(`${num(h.de, 0)} ou mais`, `${num(h.de, 0)} or more`)
+        : tx(`${num(h.de, 0)} a menos de ${num(h.ate, 0)}`, `${num(h.de, 0)} and under \u2060${num(h.ate, 0)}`),
     municipios: h.municipios,
   }));
 }
@@ -942,7 +947,7 @@ export function municipiosDoCsv(texto: string): MunicipioCobertura[] {
 export function colunasMunicipios(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const tx = txEm(idioma);
   return [
-    { id: "municipio", rotulo: tx("Município", "Municipality"), tipo: "texto" },
+    { id: "municipio", rotulo: tx("Município", "Municipality"), tipo: "texto", idiomaTexto: "nome" },
     { id: "uf", rotulo: tx("UF", "State"), tipo: "texto", categorica: true },
     { id: "faturas", rotulo: tx("Faturas com desconto", "Bills with a discount"), tipo: "numero", casas: 0 },
     { id: "atualizadas", rotulo: tx("Famílias até ½ SM, atualizadas", "Families up to ½ minimum wage, updated"), tipo: "numero", casas: 0 },
@@ -1170,7 +1175,7 @@ export function colunasUfsPof(orc: OrcamentoBase, idioma: Idioma = idiomaEnergia
   const tx = txEm(idioma);
   const rot = new Map(orc.medidas.map((m) => [m.id, dadoTexto(m.rotulo, idioma)]));
   const cols: ColunaTabela[] = [
-    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto" },
+    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
     { id: "uf", rotulo: tx("Sigla", "Abbreviation"), tipo: "texto" },
     { id: "n_amostra", rotulo: tx("Famílias na amostra", "Families in the sample"), tipo: "numero", casas: 0 },
   ];
@@ -1389,7 +1394,12 @@ export function linhasUfsPnad(acesso: AcessoPnad, situacao: SituacaoPnad, idioma
       cv_integral: l.cv_pct_integral,
       domicilios_mil: l.domicilios_mil,
       sem_mil: l.domicilios_sem_energia_mil,
-      sem_estado: l.domicilios_sem_energia_estado === "menos_de_1_mil" ? tx("menos de 1 mil", "less than 1 thousand") : l.domicilios_sem_energia_estado,
+      sem_estado:
+        l.domicilios_sem_energia_estado === "menos_de_1_mil"
+          ? tx("menos de 1 mil", "less than 1 thousand")
+          : l.domicilios_sem_energia_estado === "calculado" // i18n: dado
+            ? tx("calculado", "calculated")
+            : l.domicilios_sem_energia_estado,
     }));
 }
 
@@ -1397,7 +1407,7 @@ export function colunasUfsPnad(idioma: Idioma = idiomaEnergia()): ColunaTabela[]
   const tx = txEm(idioma);
   const mil = tx("mil", "thousand");
   return [
-    { id: "uf", rotulo: tx("UF", "State"), tipo: "texto" },
+    { id: "uf", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
     { id: "pct_sem", rotulo: tx("Sem energia de nenhuma fonte", "Without energy from any source"), tipo: "percentual", casas: 1 },
     { id: "sem_mil", rotulo: tx("Domicílios sem energia", "Households without energy"), tipo: "numero", unidade: mil, casas: 0 },
     { id: "sem_estado", rotulo: tx("Contagem sem energia", "Count without energy"), tipo: "texto", categorica: true },
@@ -1484,7 +1494,7 @@ export function linhasIsoladosUf(si: Pick<SistemasIsolados, "por_uf">) {
 export function colunasIsoladosUf(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const tx = txEm(idioma);
   return [
-    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto" },
+    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
     { id: "localidades", rotulo: tx("Localidades", "Localities"), tipo: "numero", casas: 0 },
     { id: "populacao", rotulo: tx("População informada", "Reported population"), tipo: "numero", unidade: tx("pessoas", "people"), casas: 0 },
     { id: "sem_populacao", rotulo: tx("Localidades sem população informada", "Localities without reported population"), tipo: "numero", casas: 0 },
@@ -1538,14 +1548,14 @@ export function localidadesDoJson(j: { campos: string[]; localidades: (string | 
 export function colunasLocalidades(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const tx = txEm(idioma);
   return [
-    { id: "nome", rotulo: tx("Localidade", "Locality"), tipo: "texto" },
+    { id: "nome", rotulo: tx("Localidade", "Locality"), tipo: "texto", idiomaTexto: "nome" },
     { id: "sigla", rotulo: tx("Código PASI", "PASI code"), tipo: "texto" },
     { id: "uf", rotulo: tx("UF", "State"), tipo: "texto", categorica: true },
-    { id: "municipio", rotulo: tx("Município", "Municipality"), tipo: "texto" },
-    { id: "distribuidora", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", categorica: true },
+    { id: "municipio", rotulo: tx("Município", "Municipality"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "distribuidora", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome", categorica: true },
     { id: "populacao", rotulo: tx("População informada", "Reported population"), tipo: "numero", unidade: tx("pessoas", "people"), casas: 0 },
     { id: "previsao", rotulo: tx("Previsão de interligação", "Expected interconnection"), tipo: "data" },
-    { id: "programa", rotulo: tx("Programa", "Program"), tipo: "texto", categorica: true },
+    { id: "programa", rotulo: tx("Programa", "Program"), tipo: "texto", idiomaTexto: "nome", categorica: true },
   ];
 }
 export const COLUNAS_LOCALIDADES: ColunaTabela[] = colunasLocalidades("pt");
@@ -1572,7 +1582,7 @@ export function respostaAcesso(a: Acesso, idioma: Idioma = idiomaEnergia()): str
     partes.push(
       tx(
         `Em ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) não tinham energia elétrica de nenhuma fonte, segundo a PNAD Contínua${naRural}.`,
-        `In ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) had no electricity from any source, according to the PNAD Contínua${naRural}.`,
+        `In ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) had no electricity from any source, according to the Continuous PNAD${naRural}.`,
       ),
     );
     partes.push(
@@ -1617,7 +1627,7 @@ export function vereditoAcesso(a: Acesso, idioma: Idioma = idiomaEnergia()): str
   const sem = domiciliosSemEnergia(br, idioma);
   return tx(
     `Em ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) não tinham energia elétrica de nenhuma fonte, segundo a PNAD Contínua. Sistemas isolados e Luz para Todos têm outra fonte e outra unidade e não se somam a esse número.`,
-    `In ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) had no electricity from any source, according to the PNAD Contínua. Isolated systems and Luz para Todos have another source and another unit and do not add to this number.`,
+    `In ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) had no electricity from any source, according to the Continuous PNAD. Isolated systems and Luz para Todos have another source and another unit and do not add to this number.`,
   );
 }
 
@@ -1814,7 +1824,7 @@ export function datasMedidas(g: Pick<InclusaoGold, "referencias" | "tarifa_socia
       natureza: "CALCULADO",
     },
     { id: "cadunico", rotulo: tx("Cadastro Único (MI Social)", "Cadastro Único (federal social registry, MI Social)"), periodo: mes(g.cobertura.brasil?.mes), unidade: familias, natureza: "CALCULADO" },
-    { id: "pnad", rotulo: tx("Acesso (PNAD Contínua)", "Access (PNAD Contínua)"), periodo: g.acesso.ano_referencia, unidade: domicilios, natureza: "ESTIMADO" },
+    { id: "pnad", rotulo: tx("Acesso (PNAD Contínua)", "Access (Continuous PNAD)"), periodo: g.acesso.ano_referencia, unidade: domicilios, natureza: "ESTIMADO" },
     { id: "pasi", rotulo: tx("Sistemas isolados (PASI)", "Isolated systems (PASI)"), periodo: si ? tx(`ciclo ${si.ciclo}`, `cycle ${si.ciclo}`) : semDado, unidade: tx("pessoas", "people"), natureza: "OBSERVADO" },
     {
       id: "lpt",
@@ -2075,12 +2085,12 @@ export function vereditoAcessoIndicador(a: Acesso, ind: IndicadorPnad, idioma: I
   if (ind === "rede") {
     return tx(
       `Em ${a.ano_referencia}, ${pctTexto(br.pct_rede_geral, 1)} dos domicílios estavam ligados à rede geral, segundo a PNAD Contínua. ${limite}`,
-      `In ${a.ano_referencia}, ${pctTexto(br.pct_rede_geral, 1)} of households were connected to the general grid, according to the PNAD Contínua. ${limite}`,
+      `In ${a.ano_referencia}, ${pctTexto(br.pct_rede_geral, 1)} of households were connected to the general grid, according to the Continuous PNAD. ${limite}`,
     );
   }
   return tx(
     `Em ${a.ano_referencia}, entre os domicílios ligados à rede geral, ${pctTexto(br.pct_integral_entre_rede, 1)} tinham fornecimento em tempo integral, segundo a PNAD Contínua. ${limite}`,
-    `In ${a.ano_referencia}, among households connected to the general grid, ${pctTexto(br.pct_integral_entre_rede, 1)} had full-time supply, according to the PNAD Contínua. ${limite}`,
+    `In ${a.ano_referencia}, among households connected to the general grid, ${pctTexto(br.pct_integral_entre_rede, 1)} had full-time supply, according to the Continuous PNAD. ${limite}`,
   );
 }
 

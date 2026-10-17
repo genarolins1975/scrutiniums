@@ -10,7 +10,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { quebrasQuantis } from "@/lib/energia/escalas";
 import { URL_GEO } from "@/lib/energia/geo";
-import { dadoNo, txEm } from "@/lib/energia/i18n/conta-inclusao";
+import { dadoNo, dadoTexto, txEm } from "@/lib/energia/i18n/conta-inclusao";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { Idioma } from "@/lib/idioma";
 import {
@@ -244,7 +244,7 @@ function InclusaoLimiaresPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string
         chaveLinha="id"
         colunaRotulo="classe"
         fonte={fonte}
-        versao={orc.referencia}
+        versao={dadoTexto(orc.referencia, idioma)}
         nomeArquivo={`inclusao-pof-limiar-${v.lim}-${principal}`}
         chaveUrl="pof.limt"
         nota={tx(
@@ -276,7 +276,7 @@ function InclusaoTabelaPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }
       chaveLinha="id"
       colunaRotulo="classe"
       fonte={fonte}
-      versao={orc.referencia}
+      versao={dadoTexto(orc.referencia, idioma)}
       nomeArquivo={`inclusao-pof-${principal}`}
       chaveUrl="pof.med"
       nota={dadoNo(orc.formato_microdados, "formato-microdados-pof", idioma)}
@@ -346,7 +346,7 @@ function InclusaoTabelaUfsPof({ orc, fonte }: { orc: OrcamentoBase; fonte: strin
       chaveLinha="id"
       colunaRotulo="nome"
       fonte={fonte}
-      versao={orc.referencia}
+      versao={dadoTexto(orc.referencia, idioma)}
       nomeArquivo="inclusao-pof-uf"
       chaveUrl="pof.tab"
       ordemInicial={{ coluna: "razao_medias_pct", direcao: "desc" }}

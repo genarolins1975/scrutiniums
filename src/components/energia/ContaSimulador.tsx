@@ -223,7 +223,8 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
           <span className="rotulo text-mineral">{tx("Distribuidora", "Distribution utility")}</span>
           <select value={cnpj} onChange={(e) => escolher(e.target.value)} className={CLASSE_SELECT}>
             {s.distribuidoras.map((d) => (
-              <option key={d.cnpj} value={d.cnpj}>
+              // <option> não aceita o <span> de <Nome>: na página inglesa, a própria opção leva a marca de nome próprio
+              <option key={d.cnpj} value={d.cnpj} {...(idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {})}>
                 {rotuloDistribuidora(d.sigla, d.cnpj)}
                 {info[d.cnpj]?.uf ? ` (${info[d.cnpj].uf})` : ""}
                 {d.cnpj === s.referencia.cnpj ? tx(" · referência", " · reference") : ""}

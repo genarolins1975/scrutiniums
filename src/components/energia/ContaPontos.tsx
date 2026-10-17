@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { empilharPontos } from "@/lib/energia/conta";
-import { useTx } from "@/lib/energia/useIdioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { dominioBonito, escalaLinear, rotuloTick, ticksQueCabem } from "@/lib/energia/escalas";
 
 /**
@@ -90,6 +90,9 @@ export function ContaPontos({
 }) {
   const raiz = useRef<HTMLDivElement>(null);
   const tx = useTx();
+  // na página inglesa, o nome da distribuidora (título do ponto e rótulo escrito) leva a marca de nome próprio; SVG não aceita <span>
+  const ingles = useIdioma() === "en";
+  const marcaNome = ingles ? { lang: "pt-BR", "data-i18n-nome": "" } : {};
   const [largura, setLargura] = useState(LARGURA_SSR);
   useEffect(() => {
     const el = raiz.current;
@@ -125,12 +128,14 @@ export function ContaPontos({
   const doPonto = new Map(pontos.map((p) => [p.id, p]));
   const menor = extremos && pontos.length ? pontos.reduce((a, b) => (b.valor < a.valor ? b : a)) : null;
   const maior = extremos && pontos.length ? pontos.reduce((a, b) => (b.valor > a.valor ? b : a)) : null;
-  const nomeados: { id: string; texto: string; tipo: "menor" | "maior" | "escolhido" }[] = [];
-  if (menor) nomeados.push({ id: menor.id, texto: tx(`Menor: ${menor.rotulo}`, `Lowest: ${menor.rotulo}`), tipo: "menor" }); // i18n: dado
-  if (maior && maior.id !== menor?.id) nomeados.push({ id: maior.id, texto: tx(`Maior: ${maior.rotulo}`, `Highest: ${maior.rotulo}`), tipo: "maior" }); // i18n: dado
+  const nomeados: { id: string; prefixo: string; nome: string; texto: string; tipo: "menor" | "maior" | "escolhido" }[] = [];
+  const nomeado = (id: string, prefixo: string, nome: string, tipo: "menor" | "maior" | "escolhido") =>
+    nomeados.push({ id, prefixo, nome, texto: prefixo + nome, tipo });
+  if (menor) nomeado(menor.id, tx("Menor: ", "Lowest: "), menor.rotulo, "menor"); // i18n: dado (tipo do rótulo)
+  if (maior && maior.id !== menor?.id) nomeado(maior.id, tx("Maior: ", "Highest: "), maior.rotulo, "maior"); // i18n: dado (tipo do rótulo)
   for (const id of escolhidos) {
     const p = doPonto.get(id);
-    if (p && id !== menor?.id && id !== maior?.id) nomeados.push({ id, texto: p.rotulo, tipo: "escolhido" });
+    if (p && id !== menor?.id && id !== maior?.id) nomeado(id, "", p.rotulo, "escolhido");
   }
   const nomeadosX = nomeados.map((n) => ({ x: r1(x(doPonto.get(n.id)?.valor ?? 0)), w: n.texto.length * PX }));
   const nivelNome = niveis(nomeadosX, 3);
@@ -178,7 +183,7 @@ export function ContaPontos({
           const tipo = ehEscolhido ? "losango" : ehExtremo ? "extremo" : "ponto";
           return (
             <g key={pt.id} data-id={pt.id} data-ponto={tipo} onClick={aoEscolher ? () => aoEscolher(pt.id) : undefined} style={aoEscolher ? { cursor: "pointer" } : undefined}>
-              <title>{`${pt.rotulo}: ${formatar(pt.valor)}${pt.dica ? `. ${pt.dica}` : ""}`}</title>
+              <title {...marcaNome}>{`${pt.rotulo}: ${formatar(pt.valor)}${pt.dica ? `. ${pt.dica}` : ""}`}</title>
               {ehEscolhido ? (
                 <path d={`M${cx},${cy - 8}L${cx + 8},${cy}L${cx},${cy + 8}L${cx - 8},${cy}Z`} fill="var(--cor-superficie)" stroke="var(--cor-energia-dark)" strokeWidth="2.5" />
               ) : ehExtremo ? (
@@ -203,7 +208,14 @@ export function ContaPontos({
             <g key={`nome-${n.id}`} aria-hidden="true">
               <line x1={cx} x2={cx} y1={py + (n.tipo === "escolhido" ? 9 : R + 3)} y2={yTexto - 11} stroke="var(--cor-mineral-soft)" strokeWidth="1" />
               <text x={lx} y={yTexto} textAnchor="middle" fontSize="12" fill="var(--cor-carvao)" fontWeight={n.tipo === "escolhido" ? 600 : 400}>
-                {n.texto}
+                {ingles ? (
+                  <>
+                    {n.prefixo}
+                    <tspan {...marcaNome}>{n.nome}</tspan>
+                  </>
+                ) : (
+                  n.texto
+                )}
               </text>
             </g>
           );

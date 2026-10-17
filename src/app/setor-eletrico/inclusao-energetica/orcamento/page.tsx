@@ -16,7 +16,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { dadoNo, dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
+import { comNomes, dadoNo, dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
 import {
   classesRenda,
   codigoUf,
@@ -101,7 +101,7 @@ export default function OrcamentoPage() {
           titulo={tx("Peso da energia no orçamento das famílias", "Weight of energy in family budgets")}
           lead={tx(
             "Quanto da despesa e da renda das famílias vai para a energia elétrica, por faixa de renda, na Pesquisa de Orçamentos Familiares (POF) 2017-2018. Cada estimativa traz a sua precisão.",
-            "How much of families' expense and income goes to electricity, by income bracket, in the Pesquisa de Orçamentos Familiares (POF, IBGE's household budget survey) 2017-2018. Each estimate comes with its precision.",
+            "How much of families' expense and income goes to electricity, by income bracket, in IBGE's Household Budget Survey (POF) 2017-2018. Each estimate comes with its precision.",
           )}
           recorte={tx(
             `${periodo} · Brasil, grandes regiões e UF · famílias, % da despesa total e da renda`,
@@ -114,7 +114,7 @@ export default function OrcamentoPage() {
               modelada. Processado em {carimbo(g.gerado_em)}.
             </>,
             <>
-              IBGE, Pesquisa de Orçamentos Familiares ({nomePof(o)}): microdata<span data-nivel="analisar"> ({o.proveniencia.microdados.fonte.recurso})</span> and SIDRA table 6715. Historical statistic,
+              IBGE, Household Budget Survey ({nomePof(o)}): microdata<span data-nivel="analisar"> ({o.proveniencia.microdados.fonte.recurso})</span> and SIDRA table 6715. Historical statistic,
               without a modeled update. Processed on {carimbo(g.gerado_em)}.
             </>,
           )}
@@ -247,7 +247,7 @@ export default function OrcamentoPage() {
                     chaveLinha="id"
                     colunaRotulo="classe"
                     fonte={FONTE_POF}
-                    versao={o.referencia}
+                    versao={dadoTexto(o.referencia, idioma)}
                     nomeArquivo="inclusao-pof-conferencia-6715"
                     chaveUrl="pof.conf"
                   />
@@ -272,21 +272,25 @@ export default function OrcamentoPage() {
                     chaveLinha="id"
                     colunaRotulo="classe"
                     fonte={FONTE_POF}
-                    versao={o.referencia}
+                    versao={dadoTexto(o.referencia, idioma)}
                     nomeArquivo="inclusao-pof-sensibilidade-renda"
                     chaveUrl="pof.sens"
                   />
                   {o.diagnostico_microdados && (
                     <p className="text-sm text-carvao-muted">
                       {tx(`Microdados: ${inteiro(o.diagnostico_microdados.familias)} famílias;`, `Microdata: ${inteiro(o.diagnostico_microdados.familias)} families;`)}{" "}
-                      {Object.entries(o.diagnostico_microdados.registros)
-                        .map(([r, d]) =>
-                          tx(
-                            `${r}: ${inteiro(d.linhas_usadas)} linhas usadas, ${inteiro(d.codigos_fora_do_tradutor)} códigos fora do tradutor`,
-                            `${r}: ${inteiro(d.linhas_usadas)} rows used, ${inteiro(d.codigos_fora_do_tradutor)} codes outside the translator`,
-                          ),
-                        )
-                        .join("; ")}
+                      {/* o nome do registro da POF (DESPESA_COLETIVA, OUTROS_RENDIMENTOS) é identificador do arquivo do IBGE: comNomes o põe em <code> */}
+                      {comNomes(
+                        Object.entries(o.diagnostico_microdados.registros)
+                          .map(([r, d]) =>
+                            tx(
+                              `${r}: ${inteiro(d.linhas_usadas)} linhas usadas, ${inteiro(d.codigos_fora_do_tradutor)} códigos fora do tradutor`,
+                              `${r}: ${inteiro(d.linhas_usadas)} rows used, ${inteiro(d.codigos_fora_do_tradutor)} codes outside the translator`,
+                            ),
+                          )
+                          .join("; "),
+                        idioma,
+                      )}
                       .
                     </p>
                   )}

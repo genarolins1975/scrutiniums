@@ -4,6 +4,7 @@ import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { Nome } from "@/components/i18n/Nome";
 import { dataBR } from "@/lib/energia/formato";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { hrefNoIdioma } from "@/lib/i18n-href";
 import { dadoNo, dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
 import {
   ancoraEventoRegulacao,
@@ -346,7 +347,7 @@ export function InclusaoBaseLegal({ reg, className = "" }: { reg: GoldRegulacao 
           ANEEL regulated it in <Nome>{ren.ato}</Nome>.
         </>
       ) : null}{" "}
-      <a href={ancoraEventoRegulacao(lei.id)} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+      <a href={hrefNoIdioma(ancoraEventoRegulacao(lei.id), "en")} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
         See it on the Regulation timeline
       </a>
       .

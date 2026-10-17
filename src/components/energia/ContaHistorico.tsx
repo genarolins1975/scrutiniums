@@ -43,6 +43,7 @@ function colunasEventos(idioma: Idioma): ColunaTabela[] {
       id: "ato",
       rotulo: tx("Ato da ANEEL", "ANEEL act"),
       tipo: "texto",
+      idiomaTexto: "nome",
       literal: { classe: "ato-retificacao-sem-numero", origem: "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica" },
     },
     {

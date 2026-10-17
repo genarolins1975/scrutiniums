@@ -80,6 +80,8 @@ const semEscolhaNoServidor = (): Escolha | null => null;
 export function SuaDistribuidora({ opcoes, descricao }: { opcoes: OpcaoDistribuidora[]; descricao: string }) {
   const id = useId();
   const tx = useTx();
+  // <option> não aceita o <span> de <Nome>: na página inglesa, a própria opção leva a marca de nome próprio
+  const marcaNome = useIdioma() === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {};
   const escolha = useSyncExternalStore(assinar, escolhaAtual, semEscolhaNoServidor);
   // uma escolha guardada de uma distribuidora que a lista não tem mais não vale
   const valida = escolha && opcoes.some((o) => o.cnpj === escolha.cnpj) ? escolha : null;
@@ -102,7 +104,7 @@ export function SuaDistribuidora({ opcoes, descricao }: { opcoes: OpcaoDistribui
           <option value="">{tx("Escolha a distribuidora", "Choose the distribution utility")}</option>
           {opcoes.map((o) => (
             // sigla e estados: o nome oficial da fonte vem em caixa alta e sem acento, e fica no title
-            <option key={o.cnpj} value={o.cnpj} title={o.nome ?? undefined}>
+            <option key={o.cnpj} value={o.cnpj} title={o.nome ?? undefined} {...marcaNome}>
               {o.sigla}
               {o.ufs && o.ufs.length ? ` (${o.ufs.join(", ")})` : ""}
             </option>

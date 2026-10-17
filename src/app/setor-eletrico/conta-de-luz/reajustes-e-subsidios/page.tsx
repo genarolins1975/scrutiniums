@@ -97,8 +97,8 @@ function colunasBandeiras(): ColunaTabela[] {
 
 function colunasSubDist(): ColunaTabela[] {
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
-    { id: "nome", rotulo: tx("Razão social", "Legal name"), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "nome", rotulo: tx("Razão social", "Legal name"), tipo: "texto", idiomaTexto: "nome" },
     { id: "cnpj", rotulo: "CNPJ", tipo: "texto" },
     {
       id: "total", // i18n: dado
@@ -576,8 +576,12 @@ export default function ContaReajustesPage() {
                             {dataBR(i.tarifa_unificada_desde)}; situação nos dados: {i.situacao}. Origem do número do ato: {i.identificacao}.
                           </>,
                           <>
-                            <span className="font-medium text-carvao">{rotuloDistribuidora(i.sigla_incorporadora, i.incorporadora)}</span> absorbed{" "}
-                            {i.siglas_incorporadas.map((s, k) => rotuloDistribuidora(s, i.incorporadas[k])).join(", ")}; {i.ato} of {dataBR(i.data_ato)}; unified tariff since{" "}
+                            <span className="font-medium text-carvao">
+                              <Nome>{rotuloDistribuidora(i.sigla_incorporadora, i.incorporadora)}</Nome>
+                            </span>{" "}
+                            absorbed <Nome>{i.siglas_incorporadas.map((s, k) => rotuloDistribuidora(s, i.incorporadas[k])).join(", ")}</Nome>;{" "}
+                            <Nome>{i.ato.replace(/ \(provável\)$/, "")}</Nome>
+                            {/\(provável\)$/.test(i.ato) ? " (probable)" : ""} of {dataBR(i.data_ato)}; unified tariff since{" "}
                             {dataBR(i.tarifa_unificada_desde)}; status in the data: {dadoTexto(i.situacao, idioma)}. Source of the act number:{" "}
                             {dadoNo(i.identificacao, "conta-incorporacao-identificacao", idioma)}.
                           </>,

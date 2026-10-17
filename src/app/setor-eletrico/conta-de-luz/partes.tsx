@@ -4,7 +4,8 @@ import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import type { Natureza } from "@/lib/energia/tipos";
-import { tx } from "@/lib/energia/idioma";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
 
 /**
  * Peças de servidor comuns às duas páginas da Conta de luz (tarifas, composição e
@@ -104,9 +105,10 @@ export function Datas({ itens }: { itens: { rotulo: string; texto: string; natur
   );
 }
 
-/** Arquivos do painel entre os downloads da gold: os que a página escolhe pelo endereço (nome do CSV). */
+/** Arquivos do painel entre os downloads da gold: os que a página escolhe pelo endereço (nome do CSV), com o rótulo no idioma da página. */
 export function downloadsDoPainel(downloads: readonly { rotulo: string; url: string }[], arquivos: readonly string[]): { rotulo: string; url: string }[] {
-  return downloads.filter((d) => arquivos.some((a) => d.url.endsWith(a)));
+  const idioma = idiomaEnergia();
+  return downloads.filter((d) => arquivos.some((a) => d.url.endsWith(a))).map((d) => ({ ...d, rotulo: dadoTexto(d.rotulo, idioma) }));
 }
 
 /** Rodapé de cada painel numa linha: baixar os dados, copiar o link com o recorte e a próxima pergunta (SeguirPainel). */

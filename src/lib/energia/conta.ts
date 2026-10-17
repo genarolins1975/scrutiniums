@@ -48,7 +48,7 @@ import type {
 } from "./tipos-conta";
 import type { Evidencia } from "./evidencia";
 import { campo, tiposUrl, type Leitor } from "./estadoUrl";
-import { AUSENTE, formatos } from "./formato";
+import { AUSENTE, formatos, valorExibidoNoIdioma } from "./formato";
 import { idiomaEnergia } from "./idioma";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "./tabela";
 import { bandeiraNoIdioma, dadoTexto, txEm } from "./i18n/conta-inclusao";
@@ -242,11 +242,11 @@ export function colunasRanking(idioma: Idioma = idiomaEnergia()): ColunaTabela[]
   const tx = txEm(idioma);
   return [
   { id: "posicao", rotulo: tx("Posição (1 = menor)", "Position (1 = lowest)"), tipo: "numero", casas: 0 },
-  { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
+  { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
   { id: "uf", rotulo: tx("UF", "State"), tipo: "texto" },
   { id: "tipo", rotulo: tx("Tipo", "Type"), tipo: "texto" },
   { id: "ucs", rotulo: tx("Consumidores (UCs)", "Consumers (consumer units)"), tipo: "numero", casas: 0 },
-  { id: "nome", rotulo: tx("Razão social", "Legal name"), tipo: "texto" },
+  { id: "nome", rotulo: tx("Razão social", "Legal name"), tipo: "texto", idiomaTexto: "nome" },
   { id: "id", rotulo: "CNPJ", tipo: "texto" },
   { id: "te", rotulo: "TE", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "tusd", rotulo: "TUSD", tipo: "numero", unidade: "R$/MWh", casas: 2 },
@@ -289,7 +289,7 @@ export function colunasRanking(idioma: Idioma = idiomaEnergia()): ColunaTabela[]
   { id: "dif_base_pct", rotulo: tx("Aplicação contra a base", "Applied tariff vs. base"), tipo: "percentual", casas: 1 },
   { id: "inicio", rotulo: tx("Início da vigência", "Validity start"), tipo: "data" },
   { id: "fim", rotulo: tx("Fim da vigência", "Validity end"), tipo: "data" },
-  { id: "ato", rotulo: tx("Ato da ANEEL", "ANEEL act"), tipo: "texto" },
+  { id: "ato", rotulo: tx("Ato da ANEEL", "ANEEL act"), tipo: "texto", idiomaTexto: "nome" },
   ];
 }
 export const COLUNAS_RANKING: ColunaTabela[] = colunasRanking("pt");
@@ -513,7 +513,7 @@ export function colunasComposicao(rotulo: ReadonlyMap<string, string>, emPct: bo
   const casas = 2;
   return [
     { id: "posicao", rotulo: tx("Posição no ranking", "Position in the ranking"), tipo: "numero", casas: 0 },
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
     { id: "id", rotulo: "CNPJ", tipo: "texto" },
     {
       id: "total", // i18n: dado
@@ -758,7 +758,7 @@ export function curvaSimulacao(
 export function colunasJanela(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const tx = txEm(idioma);
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
     { id: "id", rotulo: "CNPJ", tipo: "texto" },
     {
       id: "variacao",
@@ -2773,7 +2773,7 @@ export function comProcedimentoExterno(ev: Evidencia | null, idioma: Idioma = id
     ),
     ev.filtros.length ? tx(`Mantenha só as linhas que cumprem: ${filtros}.`, `Keep only the rows that meet: ${filtros}.`) : "",
     tx(`Aplique a fórmula: ${ev.formula}.`, `Apply the formula: ${ev.formula}.`),
-    tx(`Confira o resultado com o valor exibido (${ev.valor_exibido}).`, `Check the result against the displayed value (${ev.valor_exibido}).`),
+    tx(`Confira o resultado com o valor exibido (${ev.valor_exibido}).`, `Check the result against the displayed value (${valorExibidoNoIdioma(ev.valor_exibido, idioma)}).`),
     corte
       ? tx(
           `Data de corte: arquivo capturado em ${corte}. A fonte é atualizada depois dessa data; linhas novas mudam o resultado, e a cópia capturada fica identificada pelo sha256.`,

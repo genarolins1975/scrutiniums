@@ -17,7 +17,9 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { dadoNo, dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
+import { comNomes, dadoNo, dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
+import { Nome } from "@/components/i18n/Nome";
+import type { ReactNode } from "react";
 import {
   colunasLpt,
   datasMedidas,
@@ -38,7 +40,7 @@ export async function generateMetadata(_props: unknown, anterior: ResolvingMetad
     title: tx("Acesso à energia, sistemas isolados e Luz para Todos", "Access to energy, isolated systems and Luz para Todos"),
     description: tx(
       "Domicílios sem energia elétrica e com fornecimento em tempo integral (PNAD Contínua), localidades e população dos sistemas isolados (PASI, EPE) e domicílios atendidos pelo Luz para Todos (MME), por UF e ano.",
-      "Households without electricity and with full-time supply (PNAD Contínua), localities and population of isolated systems (PASI, EPE) and households served by Luz para Todos (the federal rural electrification program, MME), by state and year.",
+      "Households without electricity and with full-time supply (Continuous PNAD), localities and population of isolated systems (PASI, EPE) and households served by Luz para Todos (the federal rural electrification program, MME), by state and year.",
     ),
     alternates: { canonical: "/setor-eletrico/inclusao-energetica/acesso" },
   }, anterior);
@@ -57,7 +59,7 @@ function colunasCiclos(): ColunaTabela[] {
 
 function colunasMunLpt(): ColunaTabela[] {
   return [
-    { id: "municipio", rotulo: tx("Município", "Municipality"), tipo: "texto" },
+    { id: "municipio", rotulo: tx("Município", "Municipality"), tipo: "texto", idiomaTexto: "nome" },
     { id: "uf", rotulo: tx("UF", "State"), tipo: "texto", categorica: true },
     { id: "cod", rotulo: tx("Código IBGE (6 dígitos)", "IBGE code (6 digits)"), tipo: "texto" },
     { id: "domicilios", rotulo: tx("Domicílios atendidos desde jan/2023", "Households served since Jan 2023"), tipo: "numero", casas: 0 },
@@ -90,7 +92,7 @@ export default function AcessoPage() {
   const primeiroAno = a.pnad_serie[0]?.ano ?? "";
   const recursosCols: ColunaTabela[] = lpt
     ? [
-        { id: "nome", rotulo: tx("UF", "State"), tipo: "texto" },
+        { id: "nome", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
         { id: "contratos", rotulo: tx("Contratos", "Contracts"), tipo: "numero", casas: 0 },
         ...Array.from(new Set(lpt.recursos_por_uf.flatMap((r) => Object.keys(r).filter((x) => x.endsWith("_reais")))))
           .sort()
@@ -114,7 +116,7 @@ export default function AcessoPage() {
       ligados por ano do atendimento. Elas não se somam. O percentual em tempo integral é sobre os ligados à rede, não sobre todos os domicílios.
     </>,
     <>
-      Three dimensions, three sources: the PNAD Contínua estimates households without energy from any source and full-time supply among those connected to the general grid; EPE&rsquo;s
+      Three dimensions, three sources: IBGE&rsquo;s Continuous PNAD estimates households without energy from any source and full-time supply among those connected to the general grid; EPE&rsquo;s
       PASI lists the localities served by isolated systems; Luz para Todos counts households connected by year of service. They do not add up. The full-time percentage is over those
       connected to the grid, not over all households.
     </>,
@@ -148,9 +150,12 @@ export default function AcessoPage() {
             `Domicílios ${primeiroAno} a ${a.ano_referencia} · pessoas, ciclo ${si?.ciclo ?? semDado} · ligações até ${mes(lpt?.ultimo_mes)}`,
             `Households ${primeiroAno} to ${a.ano_referencia} · people, cycle ${si?.ciclo ?? semDado} · connections up to ${mes(lpt?.ultimo_mes)}`,
           )}
-          fonte={tx(
-            "IBGE, Pesquisa Nacional por Amostra de Domicílios (PNAD) Contínua; EPE, Portal de Acompanhamento e Informações dos Sistemas Isolados (PASI); MME, Luz para Todos",
-            "IBGE, Pesquisa Nacional por Amostra de Domicílios (PNAD) Contínua (continuous national household sample survey); EPE, Portal de Acompanhamento e Informações dos Sistemas Isolados (PASI, isolated systems portal); MME, Luz para Todos (rural electrification program)",
+          fonte={comNomes(
+            tx(
+              "IBGE, Pesquisa Nacional por Amostra de Domicílios (PNAD) Contínua; EPE, Portal de Acompanhamento e Informações dos Sistemas Isolados (PASI); MME, Luz para Todos",
+              "IBGE, Continuous National Household Sample Survey (Continuous PNAD); EPE, Portal de Acompanhamento e Informações dos Sistemas Isolados (PASI, isolated systems portal); MME, Luz para Todos (rural electrification program)",
+            ),
+            idioma,
           )}
           referencia={tx(
             <>
@@ -158,7 +163,7 @@ export default function AcessoPage() {
               {mes(lpt?.ultimo_mes)} (MME); custeio da CDE até {custeio?.linhas.at(-1)?.ano ?? "sem dado"}. Processado em {carimbo(g.gerado_em)}.
             </>,
             <>
-              IBGE, annual PNAD Contínua up to {a.ano_referencia}; PASI, cycle {si?.ciclo ?? semDado} (EPE); Luz para Todos up to {mes(lpt?.ultimo_mes)} (MME); CDE funding up to{" "}
+              IBGE, annual Continuous PNAD up to {a.ano_referencia}; PASI, cycle {si?.ciclo ?? semDado} (EPE); Luz para Todos up to {mes(lpt?.ultimo_mes)} (MME); CDE funding up to{" "}
               {custeio?.linhas.at(-1)?.ano ?? semDado}. Processed on {carimbo(g.gerado_em)}.
             </>,
           )}
@@ -431,10 +436,18 @@ export default function AcessoPage() {
                           without a code:{" "}
                         </>,
                       )}
-                      {lpt.municipios.maiores_sem_codigo
-                        .slice(0, 5)
-                        .map((m) => `${m.municipio} (${m.uf})`)
-                        .join(", ")}
+                      {tx<ReactNode>(
+                        lpt.municipios.maiores_sem_codigo
+                          .slice(0, 5)
+                          .map((m) => `${m.municipio} (${m.uf})`)
+                          .join(", "),
+                        <Nome>
+                          {lpt.municipios.maiores_sem_codigo
+                            .slice(0, 5)
+                            .map((m) => `${m.municipio} (${m.uf})`)
+                            .join(", ")}
+                        </Nome>,
+                      )}
                       .
                     </p>
                   )}

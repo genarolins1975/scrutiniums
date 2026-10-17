@@ -60,12 +60,13 @@ const ESQUEMA = {
 function colunasUltimos(idioma: Idioma): ColunaTabela[] {
   const tx = txEm(idioma);
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
     { id: "data", rotulo: tx("Data da última mudança", "Date of the latest change"), tipo: "data" },
     {
       id: "ato",
       rotulo: tx("Ato da ANEEL", "ANEEL act"),
       tipo: "texto",
+      idiomaTexto: "nome",
       literal: { classe: "ato-retificacao-sem-numero", origem: "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica" },
     },
     {
@@ -354,6 +355,7 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
             `Change in the residential B1 tariff from ${dataBR(janela.de)} to ${dataBR(janela.ate)}, by distribution utility, with the IPCA for the period`,
           )}
           dados={dadosGrafico}
+          rotulosSaoNomes
           chaveCategoria="id"
           chaveRotulo="rotulo"
           series={[

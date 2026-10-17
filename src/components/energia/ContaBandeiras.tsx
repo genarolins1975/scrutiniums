@@ -65,13 +65,28 @@ export function ContaBandeiras({ acionamento }: { acionamento: Bandeiras["aciona
               {MESES.map((m) => (
                 <th key={m} scope="col" className="px-0 py-1 text-center font-normal text-mineral sm:px-0.5">
                   {/* celular: a inicial do mês cabe nas doze colunas sem rolar de lado; o nome inteiro fica para quem lê por voz */}
-                  <span aria-hidden="true" className="sm:hidden">
-                    {nomeMes(m, idioma)[0].toUpperCase()}
-                  </span>
-                  <span aria-hidden="true" className="hidden sm:inline">
-                    {nomeMes(m, idioma)}
-                  </span>
-                  <span className="sr-only">{nomeMes(m, idioma, true)}</span>
+                  {idioma === "en" ? (
+                    // em inglês a inicial vem por último: "December" seguido do ano da primeira linha ("December 2015") não vira data
+                    <>
+                      <span className="sr-only">{nomeMes(m, idioma, true)}</span>
+                      <span aria-hidden="true" className="hidden sm:inline">
+                        {nomeMes(m, idioma)}
+                      </span>
+                      <span aria-hidden="true" className="sm:hidden">
+                        {nomeMes(m, idioma)[0].toUpperCase()}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span aria-hidden="true" className="sm:hidden">
+                        {nomeMes(m, idioma)[0].toUpperCase()}
+                      </span>
+                      <span aria-hidden="true" className="hidden sm:inline">
+                        {nomeMes(m, idioma)}
+                      </span>
+                      <span className="sr-only">{nomeMes(m, idioma, true)}</span>
+                    </>
+                  )}
                 </th>
               ))}
             </tr>

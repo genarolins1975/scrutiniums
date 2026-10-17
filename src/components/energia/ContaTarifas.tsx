@@ -251,7 +251,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
             </p>
             <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
               <ContaBuscaMunicipio aoEscolher={escolherMunicipio} />
-              <ContaLista rotulo={tx("Distribuidora em destaque", "Highlighted distribution utility")} opcoes={opcoesDistribuidora} valor={destaque && (naRanking || foraDoDestaque) ? destaque : ""} onEscolher={(id) => selecionar(id || null)} />
+              <ContaLista rotulo={tx("Distribuidora em destaque", "Highlighted distribution utility")} opcoes={opcoesDistribuidora} opcoesSaoNomes valor={destaque && (naRanking || foraDoDestaque) ? destaque : ""} onEscolher={(id) => selecionar(id || null)} />
             </div>
             {municipio && (
               <p role="status" className="max-w-prose2 text-sm text-carvao" data-municipio="">
@@ -336,6 +336,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
                 `Cost of ${perfil} kWh/month on the residential B1 tariff, by distribution utility (without taxes and without the tariff flag)`,
               )}
               dados={dadosGrafico}
+              rotulosSaoNomes
               chaveCategoria="id"
               chaveRotulo="rotulo"
               series={[
@@ -367,6 +368,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
                 "Applied residential B1 tariff by distribution utility: TE and TUSD stacked (they add up to the total)",
               )}
               dados={dadosGrafico}
+              rotulosSaoNomes
               chaveCategoria="id"
               chaveRotulo="rotulo"
               series={[

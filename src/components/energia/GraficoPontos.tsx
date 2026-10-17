@@ -302,6 +302,7 @@ export function GraficoPontos({
         }}
         role={onSelecionar ? "button" : "img"}
         aria-label={leitura(p)}
+        {...attrNome}
         aria-pressed={onSelecionar ? sel : undefined}
         tabIndex={p.id === idCursor ? 0 : -1}
         data-id={p.id}

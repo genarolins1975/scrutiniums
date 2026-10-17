@@ -23,7 +23,7 @@ export function ContaSerieReal({ evolucao, ultimoIpca }: { evolucao: LinhaEvoluc
       formatoX="mes"
       series={[
         { id: "mediana", rotulo: tx("Valores da época", "Values of the time"), sigla: tx("Época", "Nominal"), cor: "var(--serie-1)", espessura: 2.5 },
-        ...(base ? [{ id: "real", rotulo: tx(`Em reais de ${base}`, `In ${base} reais`), sigla: "Real", cor: "var(--cor-energia)", tracejada: true, espessura: 2.5 }] : []), // i18n: dado
+        ...(base ? [{ id: "real", rotulo: tx(`Em reais de ${base}`, `In reais of ${base}`), sigla: "Real", cor: "var(--cor-energia)", tracejada: true, espessura: 2.5 }] : []), // i18n: dado
       ]}
       unidade="R$/MWh"
       casas={2}

@@ -120,7 +120,7 @@ export function InclusaoRegioesPnad({
         <InclusaoOpcoes rotulo={tx("Indicador", "Indicator")} nome="inclusao-ac-ind" opcoes={opcoesInd(idioma)} valor={v.ind} onMudar={(i) => definir({ ind: i })} />
       </div>
       <GraficoLinhas
-        titulo={tx(`${ind.rotulo}: Brasil e grandes regiões, ${anos} (PNAD Contínua)`, `${ind.rotulo}: Brazil and major regions, ${anos} (PNAD Contínua)`)}
+        titulo={tx(`${ind.rotulo}: Brasil e grandes regiões, ${anos} (PNAD Contínua)`, `${ind.rotulo}: Brazil and major regions, ${anos} (Continuous PNAD)`)}
         dados={dados}
         chaveX="ano" // i18n: dado
         formatoX="texto"
@@ -171,7 +171,7 @@ export function InclusaoMapaPnad({ acesso, fonte }: { acesso: AcessoPnad; fonte:
         <InclusaoOpcoes rotulo={tx("Situação", "Area")} nome="inclusao-ac-sit" opcoes={opcoesSit(idioma)} valor={v.sit} onMudar={(sit) => definir({ sit })} />
       </div>
       <MapaCoropletico
-        titulo={tx(`${ind.rotulo} por UF, ${acesso.ano_referencia}${rural} (PNAD Contínua)`, `${ind.rotulo} by state, ${acesso.ano_referencia}${rural} (PNAD Contínua)`)}
+        titulo={tx(`${ind.rotulo} por UF, ${acesso.ano_referencia}${rural} (PNAD Contínua)`, `${ind.rotulo} by state, ${acesso.ano_referencia}${rural} (Continuous PNAD)`)}
         fonteGeometria={URL_GEO.uf}
         valores={valores}
         cores={CORES_MAPA}
@@ -315,7 +315,7 @@ function opcoesProg(idioma: Idioma): readonly (readonly [ProgramaLptUrl, string]
 function colunasLptUf(idioma: Idioma): ColunaTabela[] {
   const tx = txEm(idioma);
   return [
-    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto" },
+    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
     { id: "regiao", rotulo: tx("Região", "Region"), tipo: "texto", categorica: true },
     { id: "total", rotulo: tx("Domicílios atendidos (total)", "Households served (total)"), tipo: "numero", casas: 0 }, // i18n: dado
     { id: "desde_2023", rotulo: tx("Desde jan/2023", "Since Jan 2023"), tipo: "numero", casas: 0 },
@@ -431,6 +431,7 @@ export function InclusaoIsolados({
         dados={porUf}
         chaveCategoria="id"
         chaveRotulo="nome"
+        rotulosSaoNomes
         series={[{ id: "populacao", rotulo: tx("População informada", "Reported population"), cor: "var(--serie-termica)" }]}
         unidade={tx("pessoas", "people")}
         casas={0}

@@ -19,7 +19,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, pct } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { dadoNo, dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
+import { comNomes, dadoNo, dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
 import { Nome } from "@/components/i18n/Nome";
 import {
   colunasDistribuidoras,
@@ -77,8 +77,8 @@ function rotuloRegra(id: string): string {
 function colunasIncorporacoes(): ColunaTabela[] {
   return [
     { id: "mes", rotulo: tx("Mês da ruptura", "Month of the break"), tipo: "texto" },
-    { id: "sucessora", rotulo: tx("Sucessora", "Successor"), tipo: "texto" },
-    { id: "incorporadas", rotulo: tx("Incorporadas", "Merged"), tipo: "texto" },
+    { id: "sucessora", rotulo: tx("Sucessora", "Successor"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "incorporadas", rotulo: tx("Incorporadas", "Merged"), tipo: "texto", idiomaTexto: "nome" },
     { id: "total", rotulo: tx("UC residenciais das incorporadas", "Residential consumer units of the merged"), tipo: "numero", casas: 0 }, // i18n: dado
     { id: "salto", rotulo: tx("Salto da sucessora", "Successor's jump"), tipo: "numero", casas: 0 },
   ];
@@ -86,7 +86,7 @@ function colunasIncorporacoes(): ColunaTabela[] {
 
 function colunasConferencia(): ColunaTabela[] {
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
     { id: "grupo", rotulo: tx("Grupo", "Group"), tipo: "texto", categorica: true },
     { id: "uc_scs", rotulo: tx("UC no SCS", "Consumer units in the SCS"), tipo: "numero", casas: 0 },
     { id: "faturas_cde", rotulo: tx("Faturas na CDE", "Bills in the CDE"), tipo: "numero", casas: 0 },
@@ -205,17 +205,23 @@ export default function TarifaSocialPage() {
           siglas={["ANEEL", "UF", "MPV", "IBGE", "CCC"]}
           rotulo={tx("Inclusão energética", "Energy inclusion")}
           titulo={tx("Tarifa Social de Energia Elétrica", "Tarifa Social (social electricity tariff)")}
-          lead={tx(
-            "A Tarifa Social é um desconto na conta de luz de famílias de baixa renda e de quem recebe o Benefício de Prestação Continuada (BPC). Quantas unidades consumidoras (UC) o recebem, onde estão e quanto vale; UC e faturas vêm de fontes e meses diferentes e não se somam.",
-            "The Tarifa Social is a discount on the electricity bill of low-income families and of those who receive the Benefício de Prestação Continuada (BPC, continuous cash benefit). How many consumer units receive it, where they are and how much it is worth; consumer units and bills come from different sources and months and do not add up.",
+          lead={comNomes(
+            tx(
+              "A Tarifa Social é um desconto na conta de luz de famílias de baixa renda e de quem recebe o Benefício de Prestação Continuada (BPC). Quantas unidades consumidoras (UC) o recebem, onde estão e quanto vale; UC e faturas vêm de fontes e meses diferentes e não se somam.",
+              "The Tarifa Social is a discount on the electricity bill of low-income families and of those who receive the Benefício de Prestação Continuada (BPC, continuous cash benefit). How many consumer units receive it, where they are and how much it is worth; consumer units and bills come from different sources and months and do not add up.",
+            ),
+            idioma,
           )}
           recorte={tx(
             `UC de ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)} · faturas de ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} · R$ correntes`,
             `Consumer units from ${mes(serie[0]?.m)} to ${mes(serie.at(-1)?.m)} · bills from ${mes(cdeComValor[0]?.mes)} to ${mes(cdeComValor.at(-1)?.mes)} · current R$`,
           )}
-          fonte={tx(
-            "ANEEL, Sistema de Controle de Subvenções e Programas Sociais (SCS) e Beneficiários da Conta de Desenvolvimento Energético (CDE)",
-            "ANEEL, Sistema de Controle de Subvenções e Programas Sociais (SCS, subsidy and social program control system) and Beneficiários da Conta de Desenvolvimento Energético (beneficiaries of the Energy Development Account, CDE)",
+          fonte={comNomes(
+            tx(
+              "ANEEL, Sistema de Controle de Subvenções e Programas Sociais (SCS) e Beneficiários da Conta de Desenvolvimento Energético (CDE)",
+              "ANEEL, Sistema de Controle de Subvenções e Programas Sociais (SCS, subsidy and social program control system) and Beneficiários da Conta de Desenvolvimento Energético (beneficiaries of the Energy Development Account, CDE)",
+            ),
+            idioma,
           )}
           limite={limiteTarifaSocial(t.ufs)}
           referencia={tx(
@@ -483,7 +489,7 @@ export default function TarifaSocialPage() {
                             {modalidades().map(([id, rot]) => (
                               <tr key={id} className="border-b border-linha">
                                 <th scope="row" className="py-2 pr-4 text-left font-normal text-carvao">
-                                  {rot}
+                                  {comNomes(rot, idioma)}
                                 </th>
                                 <td className="py-2 text-right tabular-nums text-carvao">
                                   {t.modalidades_referencia[id] === null ? tx("sem dado", "no data") : inteiro(t.modalidades_referencia[id])}
@@ -704,7 +710,7 @@ export default function TarifaSocialPage() {
                         colunaRotulo="m"
                         fonte={tx(
                           "ANEEL, Tarifa Social de Energia Elétrica: Beneficiários (descontinuado)",
-                          "ANEEL, Tarifa Social de Energia Elétrica: Beneficiários (beneficiaries, discontinued)",
+                          "ANEEL, Tarifa Social de Energia Elétrica beneficiaries dataset (discontinued)",
                         )}
                         versao={antiga.comparacao_scs.at(-1)?.m ?? ""}
                         nomeArquivo="inclusao-serie-antiga-contra-scs"
