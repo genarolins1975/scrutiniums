@@ -50,6 +50,22 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     for (const f of usam) expect(readFileSync(f, "utf-8"), f).toContain("<SwitcherObservatorio");
   });
 
+  it("quando o nome Scrutiniums some no celular, o link da marca mantém o alvo de toque de 44 px", () => {
+    const usam = fontes(join(raiz, "src")).filter((f) => !f.includes("/tests/") && readFileSync(f, "utf-8").includes("<NavegacaoObservatorios"));
+    let conferidos = 0;
+    for (const f of usam) {
+      const c = readFileSync(f, "utf-8");
+      // abertura do link da marca (o que leva à página inicial) e o conteúdo até o fechamento
+      for (const m of c.matchAll(/<(Link|a)\b([^>]*página inicial[^>]*)>([\s\S]*?)<\/\1>/g)) {
+        if (!/className="hidden[^"]*sm:inline[^"]*"[^>]*>\s*Scrutiniums/.test(m[3])) continue;
+        conferidos++;
+        expect(m[2], f).toContain("min-w-[44px]");
+      }
+    }
+    // Saneamento, Setor Elétrico, Gás Natural, Eficiência Estatal, Contas Federais e Contas Estaduais
+    expect(conferidos).toBeGreaterThanOrEqual(6);
+  });
+
   it("o seletor de observatório lista os oito observatórios do registro", () => {
     expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("DOMINIOS.map");
     expect(DOMINIOS).toHaveLength(8);
