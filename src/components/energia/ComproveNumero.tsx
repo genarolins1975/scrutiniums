@@ -6,7 +6,7 @@ import { carimbo, datasLegiveis, valorExibidoNoIdioma } from "@/lib/energia/form
 import { rotuloFicha } from "@/lib/energia/i18n/aprenda";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
-import { unidadeNoIdioma } from "@/lib/energia/i18n/nucleo";
+import { MENSAGEM_COPIA_EN, unidadeNoIdioma } from "@/lib/energia/i18n/nucleo";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { Idioma } from "@/lib/idioma";
 import { carregaJson, lerCaminho } from "@/lib/energia/carregaJson";
@@ -620,6 +620,7 @@ function baixavel(url: string): boolean {
 }
 
 function BlocoCopiavel({ rotulo, texto, rotuloBotao }: { rotulo: string; texto: string; rotuloBotao: string }) {
+  const tx = useTx();
   const pre = useRef<HTMLPreElement>(null);
   const rotuloId = useId();
   const [estado, setEstado] = useState<ResultadoCopia | null>(null);
@@ -664,7 +665,7 @@ function BlocoCopiavel({ rotulo, texto, rotuloBotao }: { rotulo: string; texto: 
           {rotuloBotao}
         </button>
         <span role="status" className="text-xs text-carvao-muted">
-          {estado ? MENSAGEM_COPIA[estado] : ""}
+          {estado ? tx(MENSAGEM_COPIA[estado], MENSAGEM_COPIA_EN[estado]) : ""}
         </span>
       </div>
     </div>

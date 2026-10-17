@@ -142,6 +142,13 @@ export function traducaoDoDado(tabela: Record<string, string>, valor: string, id
   return Object.prototype.hasOwnProperty.call(tabela, valor) ? tabela[valor] : null;
 }
 
+/** Mensagens de cópia (MENSAGEM_COPIA de evidencia.ts) em inglês, pela mesma chave de resultado. */
+export const MENSAGEM_COPIA_EN: Record<"copiado" | "selecionado" | "falhou", string> = {
+  copiado: "Copied to the clipboard.",
+  selecionado: "Text selected: use Ctrl+C (or Copy, in the menu) to copy.",
+  falhou: "Could not copy: select the text of the block and copy it.",
+};
+
 /** Nome da projeção das malhas territoriais (geo/*.json, campo projecao.nome). */
 export const PROJECAO_EN: Record<string, string> = {
   "Albers cônica equivalente": "Albers equal-area conic",

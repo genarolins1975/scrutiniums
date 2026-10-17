@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { MENSAGEM_COPIA, copiarComFallback, type ResultadoCopia } from "@/lib/energia/evidencia";
 import { useTx } from "@/lib/energia/useIdioma";
+import { MENSAGEM_COPIA_EN } from "@/lib/energia/i18n/nucleo";
 
 /**
  * Link compartilhável de um painel do observatório: copia o endereço atual com o
@@ -52,7 +53,7 @@ export function LinkDoPainel({ ancora, rotulo: rotuloDado }: { ancora: string; r
         tabIndex={manual ? 0 : -1}
       />
       <span role="status" aria-live="polite" className="text-xs text-carvao-muted">
-        {estado ? MENSAGEM_COPIA[estado] : ""}
+        {estado ? tx(MENSAGEM_COPIA[estado], MENSAGEM_COPIA_EN[estado]) : ""}
       </span>
     </span>
   );
