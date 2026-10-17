@@ -1,3 +1,4 @@
+import { dataBR } from "@/lib/energia/formato";
 import type { Idioma } from "@/lib/idioma";
 
 /**
@@ -71,4 +72,31 @@ export const MOTIVO_SEM_BALANCO_EN: Readonly<Record<string, string>> = {
 export const CRITERIO_FECHAMENTO_EN: Readonly<Record<string, string>> = {
   "ao menos 95% dos dias da série diária disponível com |resíduo| dentro do arredondamento":
     "at least 95% of the days of the available daily series with |residual| within rounding",
+};
+
+/** Variantes do modelo de clima e calendário (carga_detalhe.p027.sensibilidade[].rotulo). */
+export const VARIANTE_MODELO_EN: Readonly<Record<string, string>> = {
+  "Principal: temperatura média com dobras e defasagem, calendário completo": "Main: average temperature with breakpoints and lag, full calendar",
+  "Só feriados por lei (sem Carnaval, Cinzas, Corpus Christi, pontes e fim de ano)":
+    "Statutory holidays only (without Carnival, Ash Wednesday, Corpus Christi, bridge days and year-end)",
+  "Sem temperatura (só calendário, sazonalidade e tendência)": "No temperature (calendar, seasonality and trend only)",
+  "Temperatura média só linear (sem dobras nem defasagem)": "Average temperature, linear only (no breakpoints or lag)",
+  "Temperatura máxima em vez da média": "Maximum temperature instead of the average",
+};
+
+/**
+ * Rótulo da variante no idioma. A variante de janela longa traz as datas da gold no texto ("Treino desde dd/mm/aaaa com
+ * degrau no regime de dd/mm/aaaa"): as datas são lidas do próprio rótulo, nunca do código.
+ */
+export function rotuloVarianteModelo(rotulo: string, idioma: Idioma): string {
+  if (idioma !== "en") return rotulo;
+  const m = /^Treino desde (\d{2})\/(\d{2})\/(\d{4}) com degrau no regime de (\d{2})\/(\d{2})\/(\d{4})$/.exec(rotulo);
+  if (m) return `Training since ${dataBR(`${m[3]}-${m[2]}-${m[1]}`, "en")} with a regime step on ${dataBR(`${m[6]}-${m[5]}-${m[4]}`, "en")}`;
+  return VARIANTE_MODELO_EN[rotulo] ?? rotulo;
+}
+
+/** Base do intervalo de previsão por origem (carga_detalhe.p027.por_origem_sin[].fonte_intervalo). */
+export const FONTE_INTERVALO_EN: Readonly<Record<string, string>> = {
+  "erros fora da amostra de origens anteriores": "out-of-sample errors from earlier origins",
+  "resíduos do treino": "training residuals",
 };
