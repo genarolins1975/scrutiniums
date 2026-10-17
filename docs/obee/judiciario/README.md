@@ -4,6 +4,8 @@ Rota canônica: `/eficiencia-estatal/judiciario`. Entrada, panorama, seis capít
 
 A escolha pós-login em `/app/observatorios` tem cartão próprio **Judiciário**, ao lado de Eficiência Estatal, com acesso direto ao módulo, fontes e cobertura e indicação de último acesso. A opção continua vinculada ao domínio analítico do OBEE. O POST aceita apenas opções cadastradas; o cookie registra a opção escolhida, sem dados pessoais.
 
+A apresentação tem abertura ilustrada, busca direta de tribunais, exemplo de comparação com três TJs de grande porte, exploração dos ramos e jornada conceitual interativa. Recursos e Tempo acrescentam figuras analíticas com os mesmos dados e tabelas equivalentes. O menu compacto mantém os oito destinos da tela de escolha e a conta compartilhada. Ilustrações são identificadas como conceituais; não representam tribunais reais, mapas ou quantidades. A comparação com a versão anterior e a validação visual estão em [REDESENHO.md](REDESENHO.md).
+
 ## Cobertura implementada
 
 - Justiça Estadual, Federal e do Trabalho: casos novos, baixados, pendentes, idade média dos pendentes por fase, centros de solução de conflitos, despesa e IAD/congestionamento oficiais em 2025.
