@@ -1,4 +1,5 @@
 import Link from "@/components/i18n/LinkIdioma";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Navegação local única de um módulo, em duas formas que nunca aparecem juntas na mesma página.
@@ -59,7 +60,7 @@ export function NavegacaoLocal({
                 <span className="ed-h3 block font-serif text-carvao group-hover:text-energia-dark">{i.rotulo}</span>
                 {i.descricao && <span className="mt-1 block text-sm leading-snug text-carvao-muted">{i.descricao}</span>}
                 <span className="mt-2 inline-flex min-h-[32px] items-center text-sm text-energia-dark underline underline-offset-4 group-hover:text-carvao">
-                  Abrir <span className="sr-only">{i.rotulo}</span>
+                  {tx("Abrir", "Open")} <span className="sr-only">{i.rotulo}</span>
                   <span aria-hidden="true" className="ml-1.5">
                     →
                   </span>

@@ -17,11 +17,19 @@
  * moldura usa só os tokens de superfície, texto e linha da página.
  */
 
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import type { Idioma } from "@/lib/idioma";
+
 /** Pilha de fontes do sistema da imagem. Um svg usado como imagem não carrega as fontes da página. */
 export const FONTE_SISTEMA = "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif";
 
-/** Identificação impressa no rodapé de toda imagem. */
-export const IDENTIFICACAO = "Scrutiniums, Observatório Brasileiro do Setor Elétrico";
+/** Identificação impressa no rodapé de toda imagem (forma portuguesa; identificacao() escolhe o idioma). */
+export const IDENTIFICACAO = "Scrutiniums, Observatório Brasileiro do Setor Elétrico"; // i18n: dado
+
+/** Identificação no idioma da imagem. */
+export function identificacao(idioma: Idioma = idiomaEnergia()): string {
+  return tx(IDENTIFICACAO, "Scrutiniums, Brazilian power sector observatory", idioma);
+}
 
 /** Largura do svg final: de 720 a 800 px. Com o canvas em 2x, o PNG sai com 1440 a 1600 px (dentro de 720 a 1600 px lido como svg ou como arquivo). */
 export const LARGURA_MINIMA = 720;
@@ -64,9 +72,10 @@ export function nomeArquivoImagem(titulo: string): string {
 
 /* ---------- data ---------- */
 
-/** Data do clique em dd/mm/aaaa, no fuso de quem clica. */
-export function dataDoClique(d: Date): string {
+/** Data do clique em dd/mm/aaaa ("Oct 17, 2026" em inglês), no fuso de quem clica. */
+export function dataDoClique(d: Date, idioma: Idioma = "pt"): string {
   const dois = (n: number) => String(n).padStart(2, "0");
+  if (idioma === "en") return `${["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
   return `${dois(d.getDate())}/${dois(d.getMonth() + 1)}/${d.getFullYear()}`;
 }
 
@@ -209,7 +218,8 @@ export function escaparXml(texto: string): string {
  * quando o parágrafo a traz (rodapé das tabelas) e, nos painéis, das datas de "(referência até X)". O texto da fonte é o do próprio
  * painel; nada é inventado: sem parágrafo, os dois voltam nulos.
  */
-export function extrairFonteEVersao(paragrafo: string | null | undefined): { fonte: string | null; versao: string | null } {
+export function extrairFonteEVersao(paragrafo: string | null | undefined, idioma: Idioma = "pt"): { fonte: string | null; versao: string | null } {
+  if (idioma === "en") return extrairFonteEVersaoEn(paragrafo);
   const limpo = (paragrafo || "").replace(/\s+/g, " ").trim();
   if (!limpo) return { fonte: null, versao: null };
   const m = limpo.match(/Vers[ãa]o dos dados:\s*(.+?)\.(?=\s|$)/i);
@@ -223,10 +233,35 @@ export function extrairFonteEVersao(paragrafo: string | null | undefined): { fon
     for (const r of Array.from(limpo.matchAll(/referência até ([0-9/]+(?: [0-9:]+)?)/gi))) if (!datas.includes(r[1])) datas.push(r[1]);
     // "A", "A e B", "A, B e C"
     const lista = datas.length < 2 ? datas.join("") : `${datas.slice(0, -1).join(", ")} e ${datas[datas.length - 1]}`;
-    if (datas.length) versao = `referência até ${lista}`;
+    if (datas.length) versao = `referência até ${lista}`; // i18n: dado (ramo português; o inglês está em extrairFonteEVersaoEn)
   }
   if (!corpo) return { fonte: null, versao };
-  const fonte = /^Fontes?:/i.test(corpo) ? corpo : `Fonte: ${corpo}`;
+  const fonte = /^Fontes?:/i.test(corpo) ? corpo : `Fonte: ${corpo}`; // i18n: dado (ramo português)
+  return { fonte, versao };
+}
+
+/**
+ * A mesma leitura no rodapé inglês ("Source: ...", "Data version: X.", "(reference up to Sep 29, 2026)"), escrito pelos componentes
+ * do núcleo (TabelaInterativa, PainelEvidencia). Nada é inventado: sem parágrafo, os dois voltam nulos.
+ */
+function extrairFonteEVersaoEn(paragrafo: string | null | undefined): { fonte: string | null; versao: string | null } {
+  const limpo = (paragrafo || "").replace(/\s+/g, " ").trim();
+  if (!limpo) return { fonte: null, versao: null };
+  // a versão termina no ponto final seguido de espaço: "Sep 29, 2026." não corta na vírgula da data
+  const m = limpo.match(/Data version:\s*(.+?)\.(?=\s|$)/i);
+  let corpo = limpo;
+  let versao: string | null = null;
+  if (m && m.index !== undefined) {
+    versao = m[1].trim();
+    corpo = limpo.slice(0, m.index).trim();
+  } else {
+    const datas: string[] = [];
+    for (const r of Array.from(limpo.matchAll(/reference up to ((?:[A-Z][a-z]{2} \d{1,2}, \d{4}|[A-Z][a-z]{2} \d{4}|\d{4})(?:, \d{2}:\d{2})?)/g))) if (!datas.includes(r[1])) datas.push(r[1]);
+    const lista = datas.length < 2 ? datas.join("") : `${datas.slice(0, -1).join("; ")} and ${datas[datas.length - 1]}`;
+    if (datas.length) versao = `reference up to ${lista}`;
+  }
+  if (!corpo) return { fonte: null, versao };
+  const fonte = /^Sources?:/i.test(corpo) ? corpo : `Source: ${corpo}`;
   return { fonte, versao };
 }
 
@@ -270,8 +305,10 @@ export type EntradaImagem = {
   fonte?: string | null;
   versao?: string | null;
   endereco: string;
-  /** dd/mm/aaaa */
+  /** dd/mm/aaaa ("Oct 17, 2026" em inglês) */
   geradoEm: string;
+  /** Idioma dos rótulos da moldura; sem ele, o da página. */
+  idioma?: Idioma;
 };
 
 export type OpcoesMontagem = {
@@ -315,6 +352,8 @@ const limitar = (n: number, a: number, b: number) => Math.max(a, Math.min(b, n))
  * desktop é reduzido, sempre com texto e desenho na mesma proporção. Nenhum `var(` sobra no resultado.
  */
 export function montarSvgImagem(entrada: EntradaImagem, opcoes: OpcoesMontagem = {}): ImagemMontada {
+  const idioma = entrada.idioma ?? idiomaEnergia();
+  const IDENTIFICACAO = identificacao(idioma);
   const medir = opcoes.medir ?? larguraTexto;
   const g = entrada.grafico;
   const gl = Math.max(1, g.largura);
@@ -342,7 +381,7 @@ export function montarSvgImagem(entrada: EntradaImagem, opcoes: OpcoesMontagem =
   y += linhasTitulo.length * T.titulo.ent;
   const unidade = (entrada.unidade || "").trim();
   if (unidade) {
-    const linhasUnidade = quebra(`Valores em ${unidade}`, T.unidade.tam, util);
+    const linhasUnidade = quebra(tx(`Valores em ${unidade}`, `Values in ${unidade}`, idioma), T.unidade.tam, util);
     y += 2;
     partes.push(bloco(linhasUnidade, PAD, y, T.unidade, "var(--cor-carvao-muted)"));
     y += linhasUnidade.length * T.unidade.ent;
@@ -415,11 +454,13 @@ export function montarSvgImagem(entrada: EntradaImagem, opcoes: OpcoesMontagem =
     y += Math.max(1, linhas.length) * T.rodape.ent;
   };
   if (entrada.fonte) rodape(entrada.fonte);
-  if (entrada.versao) rodape(`Versão dos dados: ${entrada.versao}`);
-  rodape(`Endereço da página: ${entrada.endereco}`);
+  const rotuloVersao = tx("Versão dos dados: ", "Data version: ", idioma);
+  const rotuloEndereco = tx("Endereço da página: ", "Page address: ", idioma);
+  if (entrada.versao) rodape(`${rotuloVersao}${entrada.versao}`);
+  rodape(`${rotuloEndereco}${entrada.endereco}`);
   y += 6;
   // identificação à esquerda e data à direita; se as duas não cabem lado a lado (celular), a data vai na linha de baixo
-  const dataTexto = `Gerado em ${entrada.geradoEm}`;
+  const dataTexto = tx(`Gerado em ${entrada.geradoEm}`, `Generated on ${entrada.geradoEm}`, idioma);
   const linhasMarca = quebra(IDENTIFICACAO, T.rodape.tam, util, true);
   const lado = linhasMarca.length === 1 && medir(IDENTIFICACAO, T.rodape.tam, true) + medir(dataTexto, T.rodape.tam, false) + 16 <= util;
   partes.push(bloco(linhasMarca, PAD, y, T.rodape, "var(--cor-carvao)", { peso: 700 }));
@@ -435,7 +476,7 @@ export function montarSvgImagem(entrada: EntradaImagem, opcoes: OpcoesMontagem =
   // altura final em px inteiros; o viewBox cobre exatamente esse retângulo, na mesma razão z da largura
   const H = Math.ceil((y + PAD) * z);
   const Hd = H / z;
-  const descricao = [entrada.fonte, entrada.versao ? `Versão dos dados: ${entrada.versao}` : null, `Endereço da página: ${entrada.endereco}`, dataTexto, IDENTIFICACAO]
+  const descricao = [entrada.fonte, entrada.versao ? `${rotuloVersao}${entrada.versao}` : null, `${rotuloEndereco}${entrada.endereco}`, dataTexto, IDENTIFICACAO]
     .filter(Boolean)
     .join(". ");
   const corpo = [

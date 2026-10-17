@@ -14,7 +14,13 @@
  *    o texto diz que o fuso não foi informado;
  *  - identificadores, URLs e nomes de arquivo ficam intactos: a ocorrência não pode estar
  *    colada a letras, dígitos, "_", "@", "/", ".", "%", "#", "=", "&", "?", "~", "+" nem "-".
+ *
+ * Idioma: `idioma` nas opções escolhe a forma ("June 2026", "Jun 3, 2026, 14:05 UTC" em inglês); sem ele vale o idioma da página
+ * (idiomaEnergia(), português fora do /en). O português não muda. Texto da fonte que fica em português dentro de uma página inglesa
+ * (TrechoPortugues) passa idioma "pt", para a data seguir a língua da frase.
  */
+import type { Idioma } from "@/lib/idioma";
+import { idiomaEnergia } from "@/lib/energia/idioma";
 
 export type TipoData = "competencia" | "data" | "instante";
 export type FusoData = "utc" | "offset" | "ausente";
@@ -43,6 +49,8 @@ export type OpcoesData = {
   competencia?: "longa" | "curta";
   /** Convenção documentada para horário sem fuso (ex.: "Brasília"). Sem ela, o texto declara o fuso como não informado. */
   fusoSemOffset?: string;
+  /** Idioma da forma legível; sem ele, o da página. */
+  idioma?: Idioma;
 };
 
 export type Segmento =
@@ -50,8 +58,10 @@ export type Segmento =
   | { tipo: "data"; iso: string; texto: string; ocorrencia: OcorrenciaData }
   | { tipo: "invalida"; bruto: string; motivo: string; ocorrencia: OcorrenciaData };
 
-const MESES_LONGOS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+const MESES_LONGOS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]; // i18n: dado (ramo português; o inglês é MONTHS_LONG)
 const MESES_CURTOS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+const MONTHS_LONG = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 // AAAA-MM[-DD[(T| )HH:MM[:SS[.fff]][Z|±HH[:]MM]]]; os limites impedem casar dentro de identificador, URL ou arquivo
 const PADRAO =
@@ -77,9 +87,10 @@ export function encontraDatas(texto: string): OcorrenciaData[] {
     const segundo = ss === undefined ? null : Number(ss);
     const tipo: TipoData = hora !== null ? "instante" : dia !== null ? "data" : "competencia";
     let motivo: string | null = null;
-    if (mes < 1 || mes > 12) motivo = `mês ${me} fora de 01 a 12`;
-    else if (dia !== null && (dia < 1 || dia > diasNoMes(ano, mes))) motivo = `dia ${d} inexistente em ${me}/${a}`;
-    else if (hora !== null && (hora > 23 || (minuto ?? 0) > 59 || (segundo ?? 0) > 59)) motivo = "horário inválido";
+    // motivo técnico da invalidez, lido pela verificação do HTML; não chega à tela
+    if (mes < 1 || mes > 12) motivo = `mês ${me} fora de 01 a 12`; // i18n: dado
+    else if (dia !== null && (dia < 1 || dia > diasNoMes(ano, mes))) motivo = `dia ${d} inexistente em ${me}/${a}`; // i18n: dado
+    else if (hora !== null && (hora > 23 || (minuto ?? 0) > 59 || (segundo ?? 0) > 59)) motivo = "horário inválido"; // i18n: dado
     let fuso: FusoData | null = null;
     let offset: string | null = null;
     if (hora !== null) {
@@ -89,7 +100,7 @@ export function encontraDatas(texto: string): OcorrenciaData[] {
         offset = z;
         const oh = Number(z.slice(1, 3));
         const om = Number(z.replace(":", "").slice(3, 5));
-        if (oh > 23 || om > 59) motivo = motivo ?? "deslocamento de fuso inválido";
+        if (oh > 23 || om > 59) motivo = motivo ?? "deslocamento de fuso inválido"; // i18n: dado
       } else fuso = "ausente";
     }
     out.push({ inicio: m.index, fim: m.index + bruto.length, bruto, tipo, valida: motivo === null, motivo, ano, mes, dia, hora, minuto, segundo, fuso, offset });
@@ -99,16 +110,32 @@ export function encontraDatas(texto: string): OcorrenciaData[] {
 
 /** Texto legível de uma ocorrência válida. */
 export function formataOcorrencia(o: OcorrenciaData, op: OpcoesData = {}): string {
-  if (o.tipo === "competencia") return op.competencia === "curta" ? `${MESES_CURTOS[o.mes - 1]}/${o.ano}` : `${MESES_LONGOS[o.mes - 1]} de ${o.ano}`;
+  if ((op.idioma ?? idiomaEnergia()) === "en") return formataOcorrenciaEn(o, op);
+  if (o.tipo === "competencia") return op.competencia === "curta" ? `${MESES_CURTOS[o.mes - 1]}/${o.ano}` : `${MESES_LONGOS[o.mes - 1]} de ${o.ano}`; // i18n: dado (ramo português; o inglês está em formataOcorrenciaEn)
   const dia = `${dois(o.dia as number)}/${dois(o.mes)}/${o.ano}`;
   if (o.tipo === "data") return dia;
   const hora = `${dois(o.hora as number)}h${dois(o.minuto as number)}${o.segundo === null ? "" : `min${dois(o.segundo)}s`}`;
-  if (o.fuso === "utc") return `${dia} às ${hora} UTC`;
+  if (o.fuso === "utc") return `${dia} às ${hora} UTC`; // i18n: dado (ramo português)
   if (o.fuso === "offset") {
     const off = (o.offset as string).replace(/^([+-])(\d{2}):?(\d{2})$/, (_, s, h, m) => `UTC${s === "-" ? "−" : "+"}${h}:${m}`);
-    return `${dia} às ${hora} (${off})`;
+    return `${dia} às ${hora} (${off})`; // i18n: dado (ramo português)
   }
-  return `${dia} às ${hora} (${op.fusoSemOffset ?? "fuso não informado"})`;
+  return `${dia} às ${hora} (${op.fusoSemOffset ?? "fuso não informado"})`; // i18n: dado (ramo português)
+}
+
+/** Forma inglesa: "June 2026" ("Jun 2026" curta), "Jun 3, 2026", "Jun 3, 2026, 14:05 UTC"; o valor e a precisão são os mesmos. */
+function formataOcorrenciaEn(o: OcorrenciaData, op: OpcoesData): string {
+  if (o.tipo === "competencia") return `${(op.competencia === "curta" ? MONTHS : MONTHS_LONG)[o.mes - 1]} ${o.ano}`;
+  const dia = `${MONTHS[o.mes - 1]} ${o.dia as number}, ${o.ano}`;
+  if (o.tipo === "data") return dia;
+  const hora = `${dois(o.hora as number)}:${dois(o.minuto as number)}${o.segundo === null ? "" : `:${dois(o.segundo)}`}`;
+  if (o.fuso === "utc") return `${dia}, ${hora} UTC`;
+  if (o.fuso === "offset") {
+    const off = (o.offset as string).replace(/^([+-])(\d{2}):?(\d{2})$/, (_, s, h, m) => `UTC${s === "-" ? "−" : "+"}${h}:${m}`);
+    return `${dia}, ${hora} (${off})`;
+  }
+  const fuso = op.fusoSemOffset === undefined ? "time zone not reported" : op.fusoSemOffset === "Brasília" ? "Brasília time" : op.fusoSemOffset; // i18n: dado (convenção do domínio, nome próprio)
+  return `${dia}, ${hora} (${fuso})`;
 }
 
 /** Texto dividido em trechos simples, datas formatadas e ocorrências inválidas preservadas. */

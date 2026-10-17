@@ -359,11 +359,12 @@ const eTexto = (v: unknown): v is string => typeof v === "string" && v.length > 
  */
 export function validaCamada(x: unknown): string[] {
   const erros: string[] = [];
-  if (!x || typeof x !== "object") return ["camada não é um objeto"];
+  // mensagens técnicas de diagnóstico (testes e console); a interface mostra a falha em texto próprio
+  if (!x || typeof x !== "object") return ["camada não é um objeto"]; // i18n: dado
   const c = x as Partial<CamadaGeo>;
-  for (const k of ["fonte", "url", "capturado_em", "sha256", "viewBox"] as const) if (!eTexto(c[k])) erros.push(`campo "${k}" ausente`);
-  if (eTexto(c.viewBox) && !lerViewBox(c.viewBox)) erros.push(`viewBox inválido: ${c.viewBox}`);
-  if (!Array.isArray(c.features) || !c.features.length) return [...erros, "camada sem features"];
+  for (const k of ["fonte", "url", "capturado_em", "sha256", "viewBox"] as const) if (!eTexto(c[k])) erros.push(`campo "${k}" ausente`); // i18n: dado
+  if (eTexto(c.viewBox) && !lerViewBox(c.viewBox)) erros.push(`viewBox inválido: ${c.viewBox}`); // i18n: dado
+  if (!Array.isArray(c.features) || !c.features.length) return [...erros, "camada sem features"]; // i18n: dado
   const ids = new Set<string>();
   let ruins = 0;
   for (const f of c.features as Partial<FeatureGeo>[]) {
@@ -371,7 +372,7 @@ export function validaCamada(x: unknown): string[] {
     else if (ids.has(f.id)) erros.push(`id repetido: ${f.id}`);
     else ids.add(f.id);
   }
-  if (ruins) erros.push(`${ruins} feature(s) sem id, nome, uf ou caminho`);
+  if (ruins) erros.push(`${ruins} feature(s) sem id, nome, uf ou caminho`); // i18n: dado
   return erros;
 }
 
