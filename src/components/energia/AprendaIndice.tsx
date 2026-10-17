@@ -6,17 +6,13 @@ import { LinkDoPainel } from "@/components/energia/LinkDoPainel";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { buscarVerbetes } from "@/lib/energia/aprenda-busca";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-// só tipos: o acervo de verbetes fica no servidor, e o cliente recebe a lista pronta
+// só tipos: o acervo de verbetes fica no servidor, e o cliente recebe a lista pronta (já no idioma da página)
 import type { GrupoDoIndice, ItemDoIndice } from "@/lib/energia/conteudo/aprenda-indice";
+import { rotuloGrupoConceito } from "@/lib/energia/i18n/aprenda";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 const ESQUEMA = { q: campo(tiposUrl.texto({ max: 80 }), "", { param: "q", historico: "replace" }) };
 
-/** Marca de estado ao lado do verbete: só o que foge do padrão (conferido sem ressalva não leva marca; a legenda da lista diz isso). */
-const SELO: Record<ItemDoIndice["estado"], string | null> = {
-  conferido: null,
-  ressalva: "◐ com ressalva",
-  preparacao: "○ em preparação, sem definição publicada",
-};
 
 /**
  * Linha de um verbete no índice: a pergunta prática primeiro, depois a sigla e o nome, e à direita o link direto para o painel onde o
@@ -24,7 +20,16 @@ const SELO: Record<ItemDoIndice["estado"], string | null> = {
  * com a marca visível. Duas ações por linha, cada uma com alvo de 44 px.
  */
 function Linha({ i, comTema = false }: { i: ItemDoIndice; comTema?: boolean }) {
-  const selo = SELO[i.estado];
+  const idioma = useIdioma();
+  const tx = useTx();
+  // marca de estado ao lado do verbete: só o que foge do padrão (conferido sem ressalva não leva marca; a legenda da lista diz isso)
+  const selo =
+    i.estado === "ressalva"
+      ? tx("◐ com ressalva", "◐ with caveat")
+      : i.estado === "preparacao"
+        ? tx("○ em preparação, sem definição publicada", "○ in preparation, no published definition")
+        : null;
+  const tema = rotuloGrupoConceito(i.grupo, idioma);
   const nome = i.subtitulo ? `${i.titulo} · ${i.subtitulo}` : i.titulo;
   return (
     <li className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 border-t border-linha" data-verbete={i.slug} data-estado={i.estado}>
@@ -37,13 +42,13 @@ function Linha({ i, comTema = false }: { i: ItemDoIndice; comTema?: boolean }) {
             <span className="mt-1 block text-sm leading-snug text-carvao-muted" data-nome="">
               <span className="font-medium text-carvao">{i.titulo}</span>
               {i.subtitulo && ` · ${i.subtitulo}`}
-              {comTema && <span className="text-mineral">{` · ${i.grupo}`}</span>}
+              {comTema && <span className="text-mineral">{` · ${tema}`}</span>}
             </span>
           </>
         ) : (
           <span className="block font-serif text-[1.0625rem] leading-snug text-carvao group-hover:text-energia-dark" data-nome="">
             {nome}
-            {comTema && <span className="font-sans text-sm text-mineral">{` · ${i.grupo}`}</span>}
+            {comTema && <span className="font-sans text-sm text-mineral">{` · ${tema}`}</span>}
           </span>
         )}
         {selo && (
@@ -59,7 +64,8 @@ function Linha({ i, comTema = false }: { i: ItemDoIndice; comTema?: boolean }) {
           data-painel=""
         >
           <span className="underline underline-offset-4">
-            Ver no painel<span aria-hidden="true"> →</span>
+            {tx("Ver no painel", "See in the panel")}
+            <span aria-hidden="true"> →</span>
           </span>
           {/* o nome do painel fica à vista a partir de 768 px e, abaixo disso, só para leitor de tela: o nome acessível do link o inclui sempre */}
           <span className="mt-0.5 max-w-[14rem] text-xs leading-snug text-mineral max-md:sr-only">{i.painel.rotulo}</span>
@@ -69,7 +75,7 @@ function Linha({ i, comTema = false }: { i: ItemDoIndice; comTema?: boolean }) {
   );
 }
 
-const plural = (n: number) => `${n} ${n === 1 ? "verbete" : "verbetes"}`;
+const plural = (n: number, tx: <T>(pt: T, en: T) => T) => tx(`${n} ${n === 1 ? "verbete" : "verbetes"}`, `${n} ${n === 1 ? "entry" : "entries"}`);
 
 /**
  * A lista por tema, em duas apresentações do mesmo conteúdo, escolhidas por CSS (sem salto na hidratação):
@@ -79,6 +85,7 @@ const plural = (n: number) => `${n} ${n === 1 ? "verbete" : "verbetes"}`;
  * Só a apresentação à vista conta para leitor de tela e para a busca do navegador; o link #g-<tema> leva ao tema nas duas.
  */
 function ListaPorTema({ grupos }: { grupos: GrupoDoIndice[] }) {
+  const tx = useTx();
   return (
     <>
       <div className="md:hidden" data-lista="recolhida">
@@ -86,13 +93,13 @@ function ListaPorTema({ grupos }: { grupos: GrupoDoIndice[] }) {
           <details key={g.id} id={g.id} className="group scroll-mt-28 border-t border-linha last:border-b">
             <summary className="flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-4 py-2 [&::-webkit-details-marker]:hidden">
               <span className="min-w-0">
-                <h3 className="ed-h3 font-serif text-carvao">{g.nome}</h3>
+                <h3 className="ed-h3 font-serif text-carvao">{g.rotulo}</h3>
                 <span className="mt-0.5 block text-sm leading-snug text-carvao-muted" data-previa="true">
                   {g.itens.map((i) => i.titulo).join(", ")}
                 </span>
               </span>
               <span className="shrink-0 whitespace-nowrap text-sm text-carvao-muted">
-                {plural(g.itens.length)} <span aria-hidden="true" className="inline-block motion-safe:transition-transform group-open:rotate-180">▾</span>
+                {plural(g.itens.length, tx)} <span aria-hidden="true" className="inline-block motion-safe:transition-transform group-open:rotate-180">▾</span>
               </span>
             </summary>
             <ul className="pb-2">
@@ -107,8 +114,8 @@ function ListaPorTema({ grupos }: { grupos: GrupoDoIndice[] }) {
         {grupos.map((g) => (
           <section key={g.id} id={`${g.id}-lista`} aria-labelledby={`${g.id}-titulo`} className="scroll-mt-28">
             <h3 id={`${g.id}-titulo`} className="ed-h3 flex flex-wrap items-baseline gap-x-3 font-serif text-carvao">
-              {g.nome}
-              <span className="font-sans text-xs font-normal text-carvao-muted">{plural(g.itens.length)}</span>
+              {g.rotulo}
+              <span className="font-sans text-xs font-normal text-carvao-muted">{plural(g.itens.length, tx)}</span>
             </h3>
             <ul className="mt-2 border-b border-linha">
               {g.itens.map((i) => (
@@ -142,6 +149,7 @@ export function AprendaIndice({
   /** Frase do acervo: quantos verbetes estão conferidos e o que cada marca quer dizer (lida do acervo, nunca escrita aqui). */
   estados: string;
 }) {
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const campoBusca = useRef<HTMLInputElement>(null);
   const todos = useMemo(() => grupos.flatMap((g) => g.itens), [grupos]);
@@ -178,9 +186,9 @@ export function AprendaIndice({
   return (
     <div data-aprenda-indice="" className={achados ? "" : "lg:grid lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-x-12"}>
       <div className="lg:col-start-1 lg:row-start-1">
-        <div id="busca" role="search" aria-label="Busca de verbetes" className="scroll-mt-28 border-t border-linha py-6 [@media(scripting:none)]:hidden">
+        <div id="busca" role="search" aria-label={tx("Busca de verbetes", "Entry search")} className="scroll-mt-28 border-t border-linha py-6 [@media(scripting:none)]:hidden">
           <label htmlFor="aprenda-busca" className="ed-h3 block font-serif text-carvao">
-            O que você quer entender?
+            {tx("O que você quer entender?", "What do you want to understand?")}
           </label>
           <input
             ref={campoBusca}
@@ -188,7 +196,7 @@ export function AprendaIndice({
             type="search"
             value={v.q}
             onChange={(e) => definir({ q: e.target.value })}
-            placeholder="Pergunta, sigla ou palavra: PLD, garantia física, perdas"
+            placeholder={tx("Pergunta, sigla ou palavra: PLD, garantia física, perdas", "Question, acronym or word: PLD, physical guarantee, losses")}
             autoComplete="off"
             spellCheck={false}
             aria-describedby="aprenda-busca-contagem"
@@ -197,12 +205,17 @@ export function AprendaIndice({
           <p id="aprenda-busca-contagem" role="status" className="mt-2 text-sm text-carvao-muted">
             {achados
               ? achados.length === 0
-                ? "Nenhum verbete publicado tem esse termo."
-                : `${achados.length} ${achados.length === 1 ? "verbete" : "verbetes"} com esse termo.`
-              : `${todos.length} verbetes em ${grupos.length} temas. Procure um termo ou veja a lista por tema.`}
+                ? tx("Nenhum verbete publicado tem esse termo.", "No published entry has this term.")
+                : tx(`${achados.length} ${achados.length === 1 ? "verbete" : "verbetes"} com esse termo.`, `${achados.length} ${achados.length === 1 ? "entry" : "entries"} with this term.`)
+              : tx(`${todos.length} verbetes em ${grupos.length} temas. Procure um termo ou veja a lista por tema.`, `${todos.length} entries in ${grupos.length} topics. Search for a term or see the list by topic.`)}
           </p>
           {achados && achados.length > 1 && (
-            <p className="text-xs text-carvao-muted">Primeiro os que têm o termo na sigla ou no nome, depois os que o têm na pergunta ou no texto.</p>
+            <p className="text-xs text-carvao-muted">
+              {tx(
+                "Primeiro os que têm o termo na sigla ou no nome, depois os que o têm na pergunta ou no texto.",
+                "First those with the term in the acronym or the name, then those with it in the question or the text.",
+              )}
+            </p>
           )}
           {achados && (
             <div className="mt-1 flex flex-wrap items-center gap-x-5">
@@ -211,26 +224,33 @@ export function AprendaIndice({
                 onClick={limpar}
                 className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"
               >
-                Limpar a busca
+                {tx("Limpar a busca", "Clear the search")}
               </button>
-              <LinkDoPainel ancora="busca" rotulo="Copiar link desta busca" />
+              <LinkDoPainel ancora="busca" rotulo={tx("Copiar link desta busca", "Copy link to this search")} />
             </div>
           )}
         </div>
         <noscript>
-          <p className="border-t border-linha py-4 text-sm text-carvao-muted">A busca precisa de JavaScript. Os {todos.length} verbetes estão todos na lista por tema, mais abaixo.</p>
+          <p className="border-t border-linha py-4 text-sm text-carvao-muted">
+            {tx(
+              `A busca precisa de JavaScript. Os ${todos.length} verbetes estão todos na lista por tema, mais abaixo.`,
+              `The search needs JavaScript. All ${todos.length} entries are in the list by topic, further below.`,
+            )}
+          </p>
         </noscript>
       </div>
 
       {achados ? (
         <section aria-labelledby="aprenda-resultados" className="border-t border-linha pt-4">
           <h2 id="aprenda-resultados" className="sr-only">
-            Resultados da busca
+            {tx("Resultados da busca", "Search results")}
           </h2>
           {achados.length === 0 ? (
             <p className="max-w-prose2 pb-6 text-base leading-relaxed text-carvao" data-sem-resultado="">
-              Nenhum verbete publicado tem esse termo na pergunta, no nome, na sigla ou no texto. Isso não quer dizer que o conceito não exista: os verbetes cobrem os conceitos
-              que aparecem nos painéis deste observatório, não todo o vocabulário do setor.
+              {tx(
+                "Nenhum verbete publicado tem esse termo na pergunta, no nome, na sigla ou no texto. Isso não quer dizer que o conceito não exista: os verbetes cobrem os conceitos que aparecem nos painéis deste observatório, não todo o vocabulário do setor.",
+                "No published entry has this term in the question, the name, the acronym or the text. This does not mean the concept does not exist: the entries cover the concepts that appear in this observatory's panels, not the whole vocabulary of the sector.",
+              )}
             </p>
           ) : (
             <ul className="grid gap-x-12 border-b border-linha lg:grid-cols-2">
@@ -245,7 +265,7 @@ export function AprendaIndice({
           <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start lg:sticky lg:top-4">{trilhas}</div>
           <section aria-labelledby="aprenda-todos" className="mt-6 border-t border-linha pt-6 lg:col-start-1 lg:row-start-2 lg:mt-0">
             <h2 id="aprenda-todos" className="ed-h2 font-serif text-carvao">
-              Todos os verbetes, por tema
+              {tx("Todos os verbetes, por tema", "All entries, by topic")}
             </h2>
             <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-estados-do-acervo="">
               {estados}

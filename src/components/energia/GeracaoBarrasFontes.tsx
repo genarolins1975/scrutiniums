@@ -5,6 +5,7 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { dominioComZero, rotuloTick } from "@/lib/energia/escalas";
 import { COR_NATUREZA, type NaturezaDaFonte } from "@/lib/energia/geracao";
 import type { NaturezaGeracao } from "@/lib/energia/tipos-geracao";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Barras horizontais por fonte, para comparar fontes (a pergunta é "quanto cada uma representa", não "como se divide ao longo do
@@ -31,11 +32,7 @@ export type ItemBarraFonte = {
   cobertura?: boolean;
 };
 
-/** O selo diz "Estimado" ou "Previsto"; o texto ao lado diz por quem e que não é medição. */
-const TEXTO_NATUREZA: Record<Exclude<NaturezaDaFonte, "medicao">, string> = {
-  estimativa: "pelo ONS, não medição",
-  previsao: "pelo ONS, não medição",
-};
+/* O selo diz "Estimado" ou "Previsto"; o texto ao lado diz por quem e que não é medição (o mesmo nas duas naturezas). */
 
 /**
  * Mesma grade nas linhas e no eixo: nome, barra e valor. No celular o nome e o valor ficam numa linha e a barra vai abaixo. As
@@ -43,7 +40,7 @@ const TEXTO_NATUREZA: Record<Exclude<NaturezaDaFonte, "medicao">, string> = {
  * classes (a página tem de caber em cerca de 600 KB de HTML).
  */
 const GRADE = "grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)_6.5rem]";
-const LISTA =
+const LISTA = // i18n: dado
   "mt-2 text-sm leading-snug text-carvao [&>li>*]:grid [&>li>*]:min-h-[44px] [&>li>*]:w-full [&>li>*]:grid-cols-[minmax(0,1fr)_auto] [&>li>*]:items-center [&>li>*]:gap-x-4 [&>li>*]:px-2 [&>li>*]:py-1.5 [&>li>*]:text-left sm:[&>li>*]:grid-cols-[minmax(0,12rem)_minmax(0,1fr)_6.5rem] [&>li>button:hover]:bg-energia-fundo [&>li>button:focus-visible]:outline [&>li>button:focus-visible]:outline-2 [&>li>button:focus-visible]:-outline-offset-2 [&>li>button:focus-visible]:outline-energia";
 
 /** Medição é barra cheia com contorno; estimativa e previsão do ONS, barra vazada com contorno tracejado (o contorno também aparece em alto contraste). */
@@ -71,6 +68,7 @@ export function BarrasPorFonte({
   /** Texto sob o eixo que pertence ao gráfico (o total e o fechamento da composição). */
   rodape?: ReactNode;
 }) {
+  const tx = useTx();
   const [cursor, setCursor] = useState(0);
   const alvos = useRef<(HTMLButtonElement | null)[]>([]);
   const dom = dominioComZero(itens.map((i) => i.valor));
@@ -98,7 +96,7 @@ export function BarrasPorFonte({
     return (
       <div data-grafico="barras" data-orientacao="horizontal" className="border border-dashed border-linha px-4 py-6 text-sm text-carvao-muted">
         <p data-titulo-grafico="true">{titulo}</p>
-        <p className="mt-1">Nenhuma categoria com dado nesta janela.</p>
+        <p className="mt-1">{tx("Nenhuma categoria com dado nesta janela.", "No category with data in this window.")}</p>
       </div>
     );
   }
@@ -107,7 +105,7 @@ export function BarrasPorFonte({
     <div data-grafico="barras" data-orientacao="horizontal" className="w-full">
       <p data-titulo-grafico="true" className="text-sm font-medium text-carvao">
         {titulo}
-        <span className="font-normal text-mineral">, em {unidade}</span>
+        <span className="font-normal text-mineral">{tx(", em ", ", in ")}{unidade}</span>
       </p>
       {subtitulo && <p className="mt-0.5 text-xs leading-relaxed text-carvao-muted">{subtitulo}</p>}
       <ol className={LISTA} aria-label={titulo}>
@@ -120,10 +118,10 @@ export function BarrasPorFonte({
                 {it.natureza !== "medicao" && (
                   <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-xs text-carvao-muted">
                     <SeloNatureza natureza={it.natureza === "estimativa" ? "ESTIMADO" : "PREVISTO"} texto />
-                    <span>{TEXTO_NATUREZA[it.natureza]}</span>
+                    <span>{tx("pelo ONS, não medição", "by the ONS, not a measurement")}</span>
                   </span>
                 )}
-                {it.cobertura && <span className="mt-0.5 block text-xs text-carvao-muted">cobertura da fonte alterada</span>}
+                {it.cobertura && <span className="mt-0.5 block text-xs text-carvao-muted">{tx("cobertura da fonte alterada", "source coverage changed")}</span>}
               </span>
               <span className="text-right tabular-nums sm:order-3">
                 <span className="block font-medium">{it.texto}</span>
@@ -188,20 +186,21 @@ export function BarraNatureza({
   titulo: string;
   partes: { id: NaturezaGeracao; rotulo: string; pct: number; texto: string }[];
 }) {
+  const tx = useTx();
   const GLIFO: Record<NaturezaGeracao, string> = { verificada: "●", grupo_tipo3: "◌", grupo_mmgd: "◐" };
   const leitura = partes.map((p) => `${p.rotulo} ${p.texto}`).join("; ");
   return (
     <div data-grafico="barras" data-orientacao="horizontal" className="w-full">
       <p data-titulo-grafico="true" className="text-sm font-medium text-carvao">
         {titulo}
-        <span className="font-normal text-mineral">, em %</span>
+        <span className="font-normal text-mineral">{tx(", em %", ", in %")}</span>
       </p>
       <div role="img" aria-label={`${titulo}: ${leitura}`} className="mt-3 flex h-9 w-full gap-0.5" style={{ forcedColorAdjust: "none" }}>
         {partes.map((p) => (
           <span key={p.id} className="block h-full" style={{ width: `${p.pct}%`, minWidth: p.pct > 0 ? 3 : 0, background: COR_NATUREZA[p.id] }} />
         ))}
       </div>
-      <ul className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-3" aria-label="Legenda">
+      <ul className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-3" aria-label={tx("Legenda", "Legend")}>
         {partes.map((p) => (
           <li key={p.id} className="flex items-start gap-2 text-sm leading-snug text-carvao">
             <span aria-hidden="true" className="mt-[0.3em] inline-block h-2.5 w-2.5 shrink-0" style={{ background: COR_NATUREZA[p.id] }} />

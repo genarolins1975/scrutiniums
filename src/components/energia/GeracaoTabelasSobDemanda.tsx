@@ -5,6 +5,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { carregaJson } from "@/lib/energia/carregaJson";
 import { REGISTRO_TABELAS_GERACAO, URL_GOLD_GERACAO_DETALHE, type DefinicaoTabelaGeracao, type TabelaGeracao } from "@/lib/energia/geracao-tabelas";
 import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Tabelas dos níveis Analisar e Auditar de Geração (P021) e da Térmica (P022) lidas sob demanda (seção 5.1 do
@@ -62,6 +63,8 @@ export function useGoldGeracaoSobDemanda() {
 export function GeracaoTabelaSobDemanda({ tabela, versao }: { tabela: TabelaGeracao; versao: string }) {
   const { caixa, pedido, pedir, g, erro, tentarDeNovo } = useGoldGeracaoSobDemanda();
   const def: DefinicaoTabelaGeracao = REGISTRO_TABELAS_GERACAO[tabela];
+  const idioma = useIdioma();
+  const tx = useTx();
 
   // o estado da tabela na URL (busca, filtro, ordem ou página de um link compartilhado) pede a leitura de imediato
   useEffect(() => {
@@ -72,7 +75,7 @@ export function GeracaoTabelaSobDemanda({ tabela, versao }: { tabela: TabelaGera
     // eslint-disable-next-line react-hooks/exhaustive-deps -- pedir só liga o pedido; a URL é lida uma vez por tabela
   }, [def.chaveUrl]);
 
-  const p = useMemo(() => (g ? def.monta(g) : null), [g, def]);
+  const p = useMemo(() => (g ? def.monta(g, idioma) : null), [g, def, idioma]);
   if (g) {
     if (!p) return null;
     return (
@@ -85,19 +88,19 @@ export function GeracaoTabelaSobDemanda({ tabela, versao }: { tabela: TabelaGera
     <div ref={caixa} className="space-y-2 border border-dashed border-linha p-4 text-sm text-carvao-muted" role="status" aria-live="polite" data-tabela-geracao={tabela}>
       <p>
         {erro
-          ? `A tabela não pôde ser lida da base publicada: ${erro}`
+          ? tx(`A tabela não pôde ser lida da base publicada: ${erro}`, `The table could not be read from the published dataset: ${erro}`)
           : pedido
-            ? "Lendo a tabela na base publicada…"
-            : "A tabela é lida da base publicada quando aparece na tela. Os arquivos CSV do painel estão no fim da página."}
+            ? tx("Lendo a tabela na base publicada…", "Reading the table from the published dataset…")
+            : tx("A tabela é lida da base publicada quando aparece na tela. Os arquivos CSV do painel estão no fim da página.", "The table is read from the published dataset when it appears on screen. The panel CSV files are at the end of the page.")}
       </p>
       {!pedido && (
         <button type="button" onClick={pedir} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
-          Carregar a tabela
+          {tx("Carregar a tabela", "Load the table")}
         </button>
       )}
       {erro && (
         <button type="button" onClick={tentarDeNovo} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
-          Tentar de novo
+          {tx("Tentar de novo", "Try again")}
         </button>
       )}
     </div>

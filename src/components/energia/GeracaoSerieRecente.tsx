@@ -3,8 +3,9 @@
 import { useEffect } from "react";
 import { useGoldGeracaoSobDemanda } from "@/components/energia/GeracaoTabelasSobDemanda";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
-import { dataBR } from "@/lib/energia/formato";
-import { COR_CATEGORIA, CURTO_CATEGORIA, linhasRecentes } from "@/lib/energia/geracao";
+import { formatos } from "@/lib/energia/formato";
+import { COR_CATEGORIA, curtoCategoria, linhasRecentes, mwmed } from "@/lib/energia/geracao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Séries diária (últimos 60 dias) e horária (últimas 72 horas) do SIN por categoria, do nível Analisar do P021, lidas sob demanda
@@ -16,7 +17,10 @@ import { COR_CATEGORIA, CURTO_CATEGORIA, linhasRecentes } from "@/lib/energia/ge
  */
 export function GeracaoSerieRecente({ tipo }: { tipo: "diaria" | "horaria" }) {
   const { caixa, pedido, pedir, g, erro, tentarDeNovo } = useGoldGeracaoSobDemanda();
-  const chaveUrl = tipo === "diaria" ? "dia" : "hor";
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { dataBR } = formatos(idioma);
+  const chaveUrl = tipo === "diaria" ? "dia" : "hor"; // i18n: dado
 
   // o estado do gráfico na URL (intervalo ou séries ocultas de um link compartilhado) pede a leitura de imediato
   useEffect(() => {
@@ -36,14 +40,14 @@ export function GeracaoSerieRecente({ tipo }: { tipo: "diaria" | "horaria" }) {
         chaveUrl={chaveUrl}
         titulo={
           tipo === "diaria"
-            ? `Geração diária do SIN por categoria, ${dataBR(eixo[0])} a ${dataBR(eixo[eixo.length - 1])}`
-            : `Geração horária do SIN por categoria, de ${dataBR(eixo[0])} a ${dataBR(eixo[eixo.length - 1])}`
+            ? tx(`Geração diária do SIN por categoria, ${dataBR(eixo[0])} a ${dataBR(eixo[eixo.length - 1])}`, `Daily SIN generation by category, ${dataBR(eixo[0])} to ${dataBR(eixo[eixo.length - 1])}`)
+            : tx(`Geração horária do SIN por categoria, de ${dataBR(eixo[0])} a ${dataBR(eixo[eixo.length - 1])}`, `Hourly SIN generation by category, from ${dataBR(eixo[0])} to ${dataBR(eixo[eixo.length - 1])}`)
         }
         dados={linhasRecentes(eixo, serie)}
         chaveX="x"
         formatoX={tipo === "diaria" ? "data" : "hora"}
-        series={serie.categorias.map((c) => ({ id: c, rotulo: CURTO_CATEGORIA[c], cor: COR_CATEGORIA[c] }))}
-        unidade="MWmed"
+        series={serie.categorias.map((c) => ({ id: c, rotulo: curtoCategoria(idioma)[c], cor: COR_CATEGORIA[c] }))}
+        unidade={mwmed(idioma)}
         casas={0}
         zeroNoEixo
         legendaInterativa
@@ -60,19 +64,21 @@ export function GeracaoSerieRecente({ tipo }: { tipo: "diaria" | "horaria" }) {
     >
       <p>
         {erro
-          ? `A série não pôde ser lida da base publicada: ${erro}`
+          ? tx(`A série não pôde ser lida da base publicada: ${erro}`, `The series could not be read from the published dataset: ${erro}`)
           : pedido
-            ? "Lendo a série na base publicada…"
-            : `A série ${tipo === "diaria" ? "diária" : "horária"} é lida da base publicada quando aparece na tela. Os arquivos CSV do painel estão no fim da página.`}
+            ? tx("Lendo a série na base publicada…", "Reading the series from the published dataset…")
+            : tipo === "diaria"
+              ? tx("A série diária é lida da base publicada quando aparece na tela. Os arquivos CSV do painel estão no fim da página.", "The daily series is read from the published dataset when it appears on screen. The panel CSV files are at the end of the page.")
+              : tx("A série horária é lida da base publicada quando aparece na tela. Os arquivos CSV do painel estão no fim da página.", "The hourly series is read from the published dataset when it appears on screen. The panel CSV files are at the end of the page.")}
       </p>
       {!pedido && (
         <button type="button" onClick={pedir} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
-          Carregar a série
+          {tx("Carregar a série", "Load the series")}
         </button>
       )}
       {erro && (
         <button type="button" onClick={tentarDeNovo} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
-          Tentar de novo
+          {tx("Tentar de novo", "Try again")}
         </button>
       )}
     </div>
