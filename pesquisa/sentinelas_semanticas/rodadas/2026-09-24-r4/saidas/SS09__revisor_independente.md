@@ -1,0 +1,5 @@
+ITEM [moderada]: "A taxa média de juros das operações de crédito ficou em 32,08% a.a., com queda de 1,25 p.p. no mês e alta de 0,33 p.p. em doze meses." | Para saldo, concessões e inadimplência a nota dá nível e/ou variação em doze meses por segmento (pessoas físicas e jurídicas); para taxa e spread só aparecem o nível total e a variação no mês por segmento, embora o pacote tenha nível e variação em doze meses de taxa_pf, taxa_pj, spread_pf e spread_pj. | Acrescentar nível e variação em doze meses de taxa e spread por segmento, ou justificar por que ficam de fora.
+
+ITEM [leve]: tabela "Fontes dos números", linhas "Saldo da carteira de crédito, pessoas físicas: variação no mês" e "...pessoas jurídicas: variação no mês" | Essas duas linhas citam fatos do pacote (+0,8% e −0,7%) que não aparecem em nenhum parágrafo de evidência da nota, então o leitor vê o número na tabela sem o texto que o explique. | Citar os dois fatos no corpo do texto, junto da variação em doze meses do saldo por segmento, ou remover as linhas da tabela.
+
+DECISÃO: aprovar

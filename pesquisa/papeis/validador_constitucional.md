@@ -13,13 +13,13 @@ Confira cada afirmação contra a constituição:
 
 Responda com uma linha por critério e uma decisão final. Este formato substitui o formato ITEM das regras comuns:
 
-    C1: ok | falha: <trecho e motivo>
-    C2: ok | falha: <trecho e motivo>
-    C3: ok | falha: <trecho e motivo>
-    C4: ok | falha: <trecho e motivo>
-    C5: ok | falha: <trecho e motivo>
+    C1: ok | falha grave: <trecho e motivo> | observação: <trecho e motivo>
+    C2: ok | falha grave: <trecho e motivo> | observação: <trecho e motivo>
+    C3: ok | falha grave: <trecho e motivo> | observação: <trecho e motivo>
+    C4: ok | falha grave: <trecho e motivo> | observação: <trecho e motivo>
+    C5: ok | falha grave: <trecho e motivo> | observação: <trecho e motivo>
     DECISÃO: aprovar | devolver
 
-Cada falha é violação da constituição e devolve a nota; a decisão é derivada das linhas C1 a C5 por código (qualquer falha devolve, todas ok aprovam). Aponte falha quando o leitor sairia com crença falsa ou a constituição for violada; sugestão de melhoria sem violação é ok. Na dúvida sobre se há violação, marque falha e diga por quê.
+Falha grave é violação da constituição ou frase que deixa o leitor com crença falsa sobre um fato; ela devolve a nota. Observação é melhoria sem violação (contexto a mais, simetria de redação, ordem); fica registrada e não devolve. A decisão é derivada das linhas C1 a C5 por código: qualquer falha grave devolve; só ok e observações aprovam. Na dúvida entre falha grave e observação, marque falha grave e diga por quê.
 
 Você não pode bloquear nem reverter bloqueio do validador mecânico.

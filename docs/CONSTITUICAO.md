@@ -44,7 +44,7 @@ O motivo é de governança: o dono do projeto é conselheiro do FGC e diretor da
 2. Os revisores não veem os rascunhos, o raciocínio dos autores, as objeções do crítico nem o parecer um do outro.
 3. As três revisões diferem em pelo menos três destas características: modelo, fornecedor, evidência recebida, mandato e forma de apresentação dos dados. As características de cada uma ficam registradas no manifesto da nota.
 4. Nenhum revisor aprova número; a checagem de números é mecânica.
-5. A nota só é aprovada por unanimidade. Revisor devolve se e só se apontar item grave (o leitor sairia com crença falsa sobre um fato, ou há violação desta constituição); a decisão é derivada dos itens por código. Itens moderados e leves são sugestões registradas e não bloqueiam. Qualquer devolução volta à revisão; esgotado o limite de rodadas, a nota é rejeitada e não é publicada.
+5. A nota só é aprovada por unanimidade. Revisor devolve se e só se apontar item grave (o leitor sairia com crença falsa sobre um fato, ou há violação desta constituição); a decisão é derivada dos itens por código. Itens moderados e leves (no validador constitucional, observações) são sugestões registradas e não bloqueiam. Qualquer devolução volta à revisão. Os limites são contados em separado: até três rodadas lidas pelos revisores e até três bloqueios do validador mecânico; esgotado qualquer um, a nota é rejeitada e não é publicada. Bloqueio por formato não consome rodada dos revisores.
 6. Bloqueio do validador mecânico não é revertido por ninguém.
 
 ## Art. 7. Linguagem
