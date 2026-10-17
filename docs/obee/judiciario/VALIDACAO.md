@@ -72,3 +72,8 @@ Limites das notas: convenção fina do ajuste IPCA não explicitada na fonte; au
 ## Publicação
 
 O estado de PR, CI, merge, commit integrado e deploy deve ser consultado nas evidências remotas e na resposta final. Nenhuma credencial de produção foi usada para os testes logados; o banco e os cookies da fixture são exclusivamente locais, removidos ao terminar. Em produção, métodos/vitrine/deploy e redirecionamentos podem ser conferidos sem sessão; navegação efetivamente autenticada exige uma conta válida e não é simulada com a fixture local.
+
+
+### Gate remoto de Mobilidade
+
+A auditoria de Mobilidade também foi acionada pela integração no mapa do OBEE. No primeiro run, instalação/build/contratos passaram; a auditoria encerrou antes de produzir arquivos. O workflow instalava Chromium de Playwright 1.56, mas o projeto e os imports dos scripts usam 1.64.1. O symlink criado dentro de um diretório existente não alterava a resolução. A instalação foi alinhada ao lockfile com `npx --no-install playwright install --with-deps chromium`, mantendo integralmente as auditorias e sem alterar dependências. Os resultados finais desse novo SHA constam no CI remoto do PR.
