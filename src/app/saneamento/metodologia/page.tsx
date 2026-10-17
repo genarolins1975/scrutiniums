@@ -40,6 +40,7 @@ const ARQUIVOS: [string, string][] = [
   ["qualidade_municipios.csv", "SISAGUA 2024 e 2025: registro de controle e vigilância e numerador e denominador de cada medida de qualidade da água, por município"],
   ["saude_municipios.csv", "SIH e SIM, 2022 a 2024: internações e óbitos por infecções intestinais, leptospirose e esquistossomose, soma dos três anos por município de residência"],
   ["controle_societario.csv", "CVM, Formulário de Referência: acionistas, controlador e cadeia de controle das companhias abertas prestadoras de água e esgoto, uma linha por acionista"],
+  ["jmp_paises.csv", "JMP (OMS e UNICEF), 2024: água e esgotamento por degrau de serviço em cada país ou área, em percentual da população, com região e faixa de renda"],
   ["meta.json", "Proveniência: arquivos de origem, sha256, datas, cobertura e conferências"],
 ];
 
@@ -50,6 +51,7 @@ export default function Pagina() {
   const censo = Object.entries(m?.censo.tabelas ?? {});
   const consultasSaude = m?.saude?.consultas ?? [];
   const cvm = m?.cvm;
+  const jmp = m?.jmp;
 
   const linhasViab = VIABILIDADE.map((v) => ({
     pergunta: v.pergunta,
@@ -303,6 +305,44 @@ export default function Pagina() {
                         <th scope="row" className="py-1 pr-4 text-left font-normal">{nome}</th>
                         <td className="py-1 pr-4 text-right tabular-nums">{inteiro(v.bytes)}</td>
                         <td className="py-1 font-mono [overflow-wrap:anywhere]">{v.sha256}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          )}
+
+          {jmp && (
+            <details className="mt-6">
+              <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm font-medium text-obee-dark underline underline-offset-4">
+                Arquivos do JMP e do IBGE, comparação internacional ({jmp.areas} países e áreas)
+              </summary>
+              <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                JMP, base de domicílios, atualização de {jmp.edicao_mes.slice(5)}/{jmp.edicao_mes.slice(0, 4)}, estimativas de {jmp.periodo[0]} a {jmp.periodo[1]}, capturada em{" "}
+                {data(jmp.capturado_em)}. Só as abas de dados sem arredondamento (wat e san) são lidas. Nomes de países em português da API de países do IBGE.
+                As {jmp.brasil_fontes.length} fontes que o JMP lista para o Brasil vêm do arquivo do país.
+              </p>
+              <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Arquivos do JMP e do IBGE (rolável)">
+                <table className="w-full min-w-[40rem] border-collapse text-xs">
+                  <caption className="sr-only">Arquivos do JMP e do IBGE com sha256</caption>
+                  <thead>
+                    <tr className="border-b border-carvao text-left">
+                      <th scope="col" className="py-2 pr-4 font-medium">Arquivo</th>
+                      <th scope="col" className="py-2 pr-4 text-right font-medium">Bytes</th>
+                      <th scope="col" className="py-2 font-medium">sha256</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ["JMP, arquivo mundial de domicílios", jmp.xlsx.bytes, jmp.xlsx.sha256],
+                      ["JMP, arquivo do Brasil (aba Data Summary)", jmp.brasil_xlsx.bytes, jmp.brasil_xlsx.sha256],
+                      ["IBGE, API de países", jmp.paises_ibge.bytes, jmp.paises_ibge.sha256],
+                    ].map(([nome, bytes, sha]) => (
+                      <tr key={String(nome)} className="border-b border-linha align-top">
+                        <th scope="row" className="py-1 pr-4 text-left font-normal">{nome}</th>
+                        <td className="py-1 pr-4 text-right tabular-nums">{inteiro(bytes as number)}</td>
+                        <td className="py-1 font-mono [overflow-wrap:anywhere]">{sha}</td>
                       </tr>
                     ))}
                   </tbody>

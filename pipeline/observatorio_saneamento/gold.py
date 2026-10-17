@@ -28,6 +28,7 @@ import unicodedata
 from collections import Counter, defaultdict
 
 from . import controle
+from . import jmp
 from . import saude
 from .desigualdades import SPECS as SPECS_DESIGUALDADES
 from .desigualdades import construir as construir_desigualdades
@@ -1106,6 +1107,8 @@ def construir():
         r.update(saude_campos[r["id"][:6]])
     # Controle societário das companhias abertas (CVM, FRE), ligado aos prestadores por CNPJ: arquivo próprio.
     controle_gold, meta["cvm"] = controle.construir(controle.declarados(aba("Detalhamento Prestadores Serv")), lista_prest)
+    # Comparação internacional (JMP, OMS e UNICEF): estimativas por país, arquivo próprio.
+    jmp_gold, meta["jmp"] = jmp.construir()
     return {
         "reguladores": lista_reg,
         "meta": meta,
@@ -1115,6 +1118,7 @@ def construir():
         "prestadores": lista_prest,
         "etes": lista_etes,
         "controle": controle_gold,
+        "jmp": jmp_gold,
     }
 
 
@@ -1303,6 +1307,9 @@ def arquivos(g):
     out["controle_societario.json"] = json_bytes(g["controle"])
     cab_cs, linhas_cs = controle.linhas_csv(g["controle"])
     out["controle_societario.csv"] = csv_bytes(cab_cs, linhas_cs)
+    out["jmp_paises.json"] = json_bytes(g["jmp"])
+    cab_j, linhas_j = jmp.linhas_csv(g["jmp"])
+    out["jmp_paises.csv"] = csv_bytes(cab_j, linhas_j)
     cab_p = ["id", "nome", "sigla", "natureza", "abrangencia", "ufs", "municipios_agua", "municipios_esgoto",
              "populacao_atendida_agua", "populacao_atendida_esgoto", "perdas_distribuicao_pct",
              "investimento_agua", "investimento_esgoto"]

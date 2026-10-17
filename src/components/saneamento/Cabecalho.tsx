@@ -37,6 +37,13 @@ export function Cabecalho({ atual }: { atual: string }) {
             Meu município
           </Link>
           <Link
+            href={`${ROTA}/internacional`}
+            aria-current={atual === "internacional" ? "page" : undefined}
+            className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-obee-dark md:inline-flex"
+          >
+            Brasil no mundo
+          </Link>
+          <Link
             href={`${ROTA}/metodologia`}
             aria-current={atual === "metodologia" ? "page" : undefined}
             className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-obee-dark md:inline-flex"
@@ -112,6 +119,7 @@ export function Cabecalho({ atual }: { atual: string }) {
                   <li><Link href={ROTA} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Início</Link></li>
                   <li><Link href={`${ROTA}/municipio`} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Meu município</Link></li>
                   <li><Link href={`${ROTA}/comparar`} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Comparar municípios</Link></li>
+                  <li><Link href={`${ROTA}/internacional`} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Brasil no mundo</Link></li>
                   <li><Link href={`${ROTA}/metodologia`} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Método e fontes</Link></li>
                 </ul>
                 <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2">

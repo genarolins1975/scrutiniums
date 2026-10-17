@@ -31,6 +31,9 @@ class RedeFalsa:
         c = meta.get("cvm")
         if c:
             self.tamanhos[c["fonte"]] = (206, c["zip"]["bytes"], c["zip"]["last_modified"])
+        jmp = meta.get("jmp")
+        if jmp:
+            self.tamanhos[jmp["fonte"]] = (206, jmp["xlsx"]["bytes"], jmp["xlsx"]["last_modified"])
         sim = (meta.get("saude") or {}).get("definicoes", {}).get("sim")
         if sim:
             self.textos[sim["url"]] = (200, "<html>Dados finais dispon\ufffdveis at\ufffd 2024 - data de extra\ufffd\ufffdo 02/12/2025.</html>")
@@ -203,7 +206,7 @@ class VigiliaSaneamento(unittest.TestCase):
         rede.tamanho = lambda url: chamadas.append(url) or (206, 1, None)
         linhas = v.verificar(rede, HOJE, self.meta, set(self.links), orcamento=-1)
         self.assertEqual(chamadas, [])  # nenhuma consulta depois do teto
-        for fonte in ("SINISA", "SISAGUA", "CadÚnico", "CVM", "DATASUS"):
+        for fonte in ("SINISA", "SISAGUA", "CadÚnico", "CVM", "DATASUS", "JMP"):
             self.assertTrue(any(fonte in l and "não verificado" in l and "orçamento" in l for l in linhas), fonte)
 
     def test_pior_caso_de_rede_cabe_no_job_de_10_minutos(self):
@@ -256,6 +259,25 @@ class VigiliaSaneamento(unittest.TestCase):
         self.assertIn("cega", [l for l in self.rodar(rede) if "DATASUS" in l][0])
         rede.textos[sim] = (503, "")
         self.assertIn("não verificado", [l for l in self.rodar(rede) if "DATASUS" in l][0])
+
+    def test_jmp_acusa_arquivo_mundial_com_tamanho_ou_data_novos_e_silencia_quando_igual(self):
+        j = self.meta["jmp"]
+        self.assertEqual([l for l in self.rodar(self.novo()) if "JMP" in l], [])
+        rede = self.novo()
+        rede.tamanhos[j["fonte"]] = (206, j["xlsx"]["bytes"] + 1000, j["xlsx"]["last_modified"])
+        linhas = [l for l in self.rodar(rede) if "JMP" in l]
+        self.assertEqual(len(linhas), 1)
+        self.assertIn("nova atualização do JMP", linhas[0])
+        rede.tamanhos[j["fonte"]] = (206, j["xlsx"]["bytes"], "Tue, 25 Aug 2026 06:00:00 GMT")
+        self.assertEqual(len([l for l in self.rodar(rede) if "JMP" in l]), 1)
+
+    def test_jmp_fora_do_ar_ou_sem_tamanho_e_data_e_nao_verificado(self):
+        j = self.meta["jmp"]
+        rede = self.novo()
+        rede.tamanhos[j["fonte"]] = (503, None, None)
+        self.assertIn("não verificado", [l for l in self.rodar(rede) if "JMP" in l][0])
+        rede.tamanhos[j["fonte"]] = (200, None, None)
+        self.assertIn("sem tamanho nem Last-Modified", [l for l in self.rodar(rede) if "JMP" in l][0])
 
     def test_corpo_cita_edicao_e_o_que_fazer(self):
         c = v.corpo(["- x"], self.meta)
