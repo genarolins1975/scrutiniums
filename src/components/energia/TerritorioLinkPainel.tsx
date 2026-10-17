@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 import { MENSAGEM_COPIA, copiarComFallback, type ResultadoCopia } from "@/lib/energia/evidencia";
+import { useTx } from "@/lib/energia/useIdioma";
+import { MENSAGEM_COPIA_EN } from "@/lib/energia/i18n/expansao-transicao-territorio";
 
 /**
  * Link compartilhável do painel Minha região: copia o endereço atual com a camada, a
@@ -10,7 +12,8 @@ import { MENSAGEM_COPIA, copiarComFallback, type ResultadoCopia } from "@/lib/en
  * consulta (seção 7.3, "URLs reproduzíveis"). Sem área de transferência, o endereço
  * aparece num campo já selecionado para cópia manual. No servidor sai só o botão.
  */
-export function TerritorioLinkPainel({ ancora, rotulo = "Copiar link deste painel" }: { ancora: string; rotulo?: string }) {
+export function TerritorioLinkPainel({ ancora, rotulo }: { ancora: string; rotulo?: string }) {
+  const tx = useTx();
   const [estado, setEstado] = useState<ResultadoCopia | null>(null);
   const [url, setUrl] = useState("");
   const campo = useRef<HTMLInputElement>(null);
@@ -37,18 +40,18 @@ export function TerritorioLinkPainel({ ancora, rotulo = "Copiar link deste paine
   return (
     <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
       <button type="button" onClick={copiar} className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-        {rotulo}
+        {rotulo ?? tx("Copiar link deste painel", "Copy link to this panel")}
       </button>
       <input
         ref={campo}
         readOnly
-        aria-label="Endereço deste painel com a escolha e os filtros atuais"
+        aria-label={tx("Endereço deste painel com a escolha e os filtros atuais", "Address of this panel with the current selection and filters")}
         value={url}
         className={manual ? "min-h-[44px] w-full max-w-md border border-linha bg-superficie px-2 text-xs text-carvao" : "sr-only"}
         tabIndex={manual ? 0 : -1}
       />
       <span role="status" aria-live="polite" className="text-xs text-carvao-muted">
-        {estado ? MENSAGEM_COPIA[estado] : ""}
+        {estado ? tx(MENSAGEM_COPIA[estado], MENSAGEM_COPIA_EN[estado]) : ""}
       </span>
     </span>
   );

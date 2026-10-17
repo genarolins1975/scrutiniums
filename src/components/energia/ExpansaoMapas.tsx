@@ -7,21 +7,22 @@ import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
   CAMADAS_REDE,
   CLASSES_PONTO,
-  COLUNAS_PONTOS,
   ESQUEMA_CARTEIRA,
   ESQUEMA_TRANSMISSAO,
   ESTAGIOS_PONTOS,
-  NOME_TIPO,
   NOME_UF,
-  ROTULO_ESTAGIO,
   TENSOES_MINIMAS,
   classePonto,
+  colunasPontos,
   filtraRede,
   inteiro,
   kmTexto,
   linhasPontos,
   mwTexto,
+  nomeTipo,
   pontosDoJson,
+  rotuloClassePonto,
+  rotuloEstagio,
   type CamadaRede,
   type EstagioPonto,
   type UsinaPonto,
@@ -29,6 +30,10 @@ import {
 import { aplicarZoom, caixaDoZoom, comFolga, lerCaminho, lerViewBox, limitarZoom, pontoNaRegiao, textoViewBox, URL_GEO, zoomInicial, type CamadaGeo, type Caixa, type Ponto, type Zoom } from "@/lib/energia/geo";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { LinhasRedeEpe, PontosUsinas } from "@/lib/energia/tipos-expansao";
+import type { Idioma } from "@/lib/idioma";
+import { tx } from "@/lib/energia/idioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 
 /**
  * Mapas sob demanda da Expansão sobre a malha oficial de UF do IBGE
@@ -126,6 +131,8 @@ function MapaBase({
     return [q.x, q.y];
   }, []);
 
+  const idioma = useIdioma();
+  const tx = useTx();
   const mudar = (fator: number) => setZoom((z) => aplicarZoom(base, z, fator, ESCALA_MAXIMA, fator > 1 ? foco : null));
 
   function aoPressionar(e: PE<SVGSVGElement>) {
@@ -152,16 +159,18 @@ function MapaBase({
     <figure className="space-y-2">
       <figcaption className="text-sm font-medium text-carvao">{titulo}</figcaption>
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        <button type="button" onClick={() => mudar(2)} className="min-h-[44px] min-w-[44px] border border-linha bg-superficie px-3 text-carvao hover:border-energia" aria-label="Aproximar o mapa">
+        <button type="button" onClick={() => mudar(2)} className="min-h-[44px] min-w-[44px] border border-linha bg-superficie px-3 text-carvao hover:border-energia" aria-label={tx("Aproximar o mapa", "Zoom in on the map")}>
           +
         </button>
-        <button type="button" onClick={() => mudar(0.5)} disabled={zoom.escala <= 1} className="min-h-[44px] min-w-[44px] border border-linha bg-superficie px-3 text-carvao hover:border-energia disabled:text-mineral" aria-label="Afastar o mapa">
+        <button type="button" onClick={() => mudar(0.5)} disabled={zoom.escala <= 1} className="min-h-[44px] min-w-[44px] border border-linha bg-superficie px-3 text-carvao hover:border-energia disabled:text-mineral" aria-label={tx("Afastar o mapa", "Zoom out of the map")}>
           −
         </button>
         <button type="button" onClick={() => setZoom(zoomInicial(base))} disabled={zoom.escala <= 1} className="min-h-[44px] border border-linha bg-superficie px-3 text-carvao hover:border-energia disabled:text-mineral">
-          Restaurar
+          {tx("Restaurar", "Reset")}
         </button>
-        <span className="text-xs text-carvao-muted">{zoom.escala > 1 ? `Aproximação de ${inteiro(zoom.escala)} vezes; arraste para mover. ${dica}` : dica}</span>
+        <span className="text-xs text-carvao-muted">
+          {zoom.escala > 1 ? tx(`Aproximação de ${inteiro(zoom.escala, idioma)} vezes; arraste para mover. ${dica}`, `Zoomed in ${inteiro(zoom.escala, idioma)} times; drag to move. ${dica}`) : dica}
+        </span>
       </div>
       <div className="relative border border-linha bg-papel">
         <svg
@@ -207,9 +216,10 @@ function Carregando({ texto }: { texto: string }) {
 }
 
 function Erro({ erro, arquivo }: { erro: string; arquivo: string }) {
+  const tx = useTx();
   return (
     <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-      Não foi possível carregar o mapa ({erro}). Os mesmos dados estão em{" "}
+      {tx(`Não foi possível carregar o mapa (${erro}). Os mesmos dados estão em`, `The map could not be loaded (${erro}). The same data are in`)}{" "}
       <a href={arquivo} download className="text-energia-dark underline underline-offset-4">
         {arquivo.split("/").at(-1)}
       </a>
@@ -222,7 +232,7 @@ function Erro({ erro, arquivo }: { erro: string; arquivo: string }) {
 
 const COR_ESTAGIO: Record<EstagioPonto, string> = {
   construcao_nao_iniciada: "var(--serie-comp-3)",
-  construcao: "var(--cor-energia)",
+  construcao: "var(--cor-energia)", // i18n: dado
   operacao: "var(--cor-mineral-soft)",
 };
 const PONTA_ESTAGIO: Record<EstagioPonto, "square" | "round"> = { construcao_nao_iniciada: "square", construcao: "round", operacao: "round" };
@@ -238,6 +248,8 @@ function Amostra({ estagio, classe = 1 }: { estagio: EstagioPonto; classe?: numb
 }
 
 export function ExpansaoMapaUsinas({ url, tamanho, dataSiga, fonte }: { url: string; tamanho: string | null; dataSiga: string; fonte: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_CARTEIRA);
   const [pedido, setPedido] = useState(false);
   const [dados, setDados] = useState<{ geo: CamadaGeo; pts: UsinaPonto[] } | null>(null);
@@ -276,22 +288,27 @@ export function ExpansaoMapaUsinas({ url, tamanho, dataSiga, fonte }: { url: str
   }, [visiveis]);
   const contagem = useMemo(() => Object.fromEntries(ESTAGIOS_PONTOS.map((e) => [e, visiveis.filter((p) => p.estagio === e).length])), [visiveis]);
   const sel = dados && v.usina > 0 ? (dados.pts.find((p) => p.nucleo === v.usina) ?? null) : null;
-  const linhas = useMemo(() => linhasPontos(visiveis), [visiveis]);
+  const linhas = useMemo(() => linhasPontos(visiveis, idioma), [visiveis, idioma]);
+  const estagioMin = (e: EstagioPonto | UsinaPonto["estagio"]) => tx(rotuloEstagio(e, idioma).toLocaleLowerCase("pt-BR"), rotuloEstagio(e, idioma).toLowerCase());
 
   if (!ativo) {
     return (
       <div className="space-y-2 border border-linha bg-superficie p-4">
         <p className="text-sm text-carvao">
-          Mapa das usinas com a localização oficial do SIGA (centróide aproximado informado à ANEEL), por estágio e classe de potência, com tabela equivalente.
+          {tx(
+            "Mapa das usinas com a localização oficial do SIGA (centróide aproximado informado à ANEEL), por estágio e classe de potência, com tabela equivalente.",
+            "Map of the plants with the official SIGA location (approximate centroid reported to ANEEL), by stage and capacity class, with an equivalent table.",
+          )}
         </p>
         <button type="button" onClick={() => setPedido(true)} className="min-h-[44px] border border-energia bg-energia-fundo px-4 text-sm text-carvao hover:bg-superficie">
-          Carregar o mapa das usinas{tamanho ? ` (arquivo de ${tamanho})` : ""}
+          {tx(`Carregar o mapa das usinas${tamanho ? ` (arquivo de ${tamanho})` : ""}`, `Load the map of the plants${tamanho ? ` (${tamanho} file)` : ""}`)}
         </button>
       </div>
     );
   }
   if (erro) return <Erro erro={erro} arquivo={url} />;
-  if (!dados) return <Carregando texto={`Carregando os pontos das usinas${tamanho ? ` (${tamanho})` : ""} e a malha de UF do IBGE…`} />;
+  if (!dados)
+    return <Carregando texto={tx(`Carregando os pontos das usinas${tamanho ? ` (${tamanho})` : ""} e a malha de UF do IBGE…`, `Loading the plant points${tamanho ? ` (${tamanho})` : ""} and the IBGE state boundaries…`)} />;
 
   const clique = (p: Ponto, tol: number) => {
     let melhor: UsinaPonto | null = null;
@@ -309,26 +326,30 @@ export function ExpansaoMapaUsinas({ url, tamanho, dataSiga, fonte }: { url: str
       definir({ uf: uf ?? "", usina: 0 });
     }
   };
-  const descricao = `Mapa do Brasil por UF com ${inteiro(visiveis.length)} usinas: ${ESTAGIOS_PONTOS.filter((e) => (v.pts as readonly string[]).includes(e))
-    .map((e) => `${inteiro(contagem[e])} ${ROTULO_ESTAGIO[e].toLocaleLowerCase("pt-BR")}`)
-    .join(", ")}. A tabela abaixo traz as mesmas usinas.`;
+  const porEstagio = ESTAGIOS_PONTOS.filter((e) => (v.pts as readonly string[]).includes(e))
+    .map((e) => `${inteiro(contagem[e], idioma)} ${estagioMin(e)}`)
+    .join(", ");
+  const descricao = tx(
+    `Mapa do Brasil por UF com ${inteiro(visiveis.length, idioma)} usinas: ${porEstagio}. A tabela abaixo traz as mesmas usinas.`,
+    `Map of Brazil by state with ${inteiro(visiveis.length, idioma)} plants: ${porEstagio}. The table below lists the same plants.`,
+  );
 
   return (
     <div className="space-y-4">
       <ExpansaoMarcas
-        rotulo="Estágios no mapa"
-        opcoes={ESTAGIOS_PONTOS.map((e) => ({ id: e, rotulo: `${ROTULO_ESTAGIO[e]} (${inteiro(dados.pts.filter((p) => p.estagio === e).length)})`, marcador: <Amostra estagio={e} /> }))}
+        rotulo={tx("Estágios no mapa", "Stages on the map")}
+        opcoes={ESTAGIOS_PONTOS.map((e) => ({ id: e, rotulo: `${rotuloEstagio(e, idioma)} (${inteiro(dados.pts.filter((p) => p.estagio === e).length, idioma)})`, marcador: <Amostra estagio={e} /> }))}
         valor={v.pts as EstagioPonto[]}
         onMudar={(pts) => definir({ pts })}
       />
       <MapaBase
         geo={dados.geo}
-        titulo={`Usinas do SIGA por estágio, ${dataSiga}`}
+        titulo={tx(`Usinas do SIGA por estágio, ${dataSiga}`, `SIGA plants by stage, ${dataSiga}`)}
         descricao={descricao}
         ufSelecionada={v.uf || null}
         foco={sel ? [sel.x, sel.y] : null}
         onClique={clique}
-        dica="Clique ou toque numa marca para ver a usina; fora das marcas, a UF fica destacada."
+        dica={tx("Clique ou toque numa marca para ver a usina; fora das marcas, a UF fica destacada.", "Click or tap a mark to see the plant; outside the marks, the state is highlighted.")}
       >
         {() => (
           <g pointerEvents="none">
@@ -354,34 +375,48 @@ export function ExpansaoMapaUsinas({ url, tamanho, dataSiga, fonte }: { url: str
         )}
       </MapaBase>
       <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted">
-        <span className="rotulo text-mineral">Tamanho da marca</span>
+        <span className="rotulo text-mineral">{tx("Tamanho da marca", "Mark size")}</span>
         {CLASSES_PONTO.map((c, i) => (
           <span key={c.rotulo} className="inline-flex items-center gap-1.5">
             <Amostra estagio="construcao" classe={i} />
-            {c.rotulo} outorgados
+            {tx(`${c.rotulo} outorgados`, `${rotuloClassePonto(i, idioma)} granted`)}
           </span>
         ))}
       </div>
       <p aria-live="polite" className="min-h-[1.5rem] text-sm text-carvao">
         {sel ? (
           <>
-            <strong className="font-medium">{sel.nome ?? `Usina ${sel.nucleo}`}</strong> (núcleo do CEG {sel.nucleo}): {sel.tipo ? (NOME_TIPO[sel.tipo] ?? sel.tipo) : "tipo sem dado"}, {sel.uf ? (NOME_UF[sel.uf] ?? sel.uf) : "UF sem dado"},{" "}
-            {ROTULO_ESTAGIO[sel.estagio].toLocaleLowerCase("pt-BR")}; {mwTexto(sel.mw_outorgado, 3)} outorgados e {mwTexto(sel.mw_fiscalizado, 3)} fiscalizados.{" "}
+            <strong className="font-medium">{sel.nome ? <Nome>{sel.nome}</Nome> : tx(`Usina ${sel.nucleo}`, `Plant ${sel.nucleo}`)}</strong>
+            {tx(` (núcleo do CEG ${sel.nucleo}): `, ` (CEG core ${sel.nucleo}): `)}
+            {sel.tipo ? nomeTipo(sel.tipo, idioma) : tx("tipo sem dado", "type: no data")}, {sel.uf ? <Nome>{NOME_UF[sel.uf] ?? sel.uf}</Nome> : tx("UF sem dado", "state: no data")},{" "}
+            {estagioMin(sel.estagio)};{" "}
+            {tx(
+              `${mwTexto(sel.mw_outorgado, 3, idioma)} outorgados e ${mwTexto(sel.mw_fiscalizado, 3, idioma)} fiscalizados.`,
+              `${mwTexto(sel.mw_outorgado, 3, idioma)} granted and ${mwTexto(sel.mw_fiscalizado, 3, idioma)} inspected.`,
+            )}{" "}
             <button type="button" onClick={() => definir({ usina: 0 })} className="min-h-[44px] text-energia-dark underline underline-offset-4">
-              Limpar a seleção
+              {tx("Limpar a seleção", "Clear the selection")}
             </button>
           </>
         ) : v.uf ? (
-          `UF destacada: ${NOME_UF[v.uf] ?? v.uf}.`
+          <>
+            {tx("UF destacada: ", "Highlighted state: ")}
+            <Nome>{NOME_UF[v.uf] ?? v.uf}</Nome>.
+          </>
         ) : (
           ""
         )}
       </p>
       <TabelaInterativa
-        titulo={`Usinas no mapa (${ESTAGIOS_PONTOS.filter((e) => (v.pts as readonly string[]).includes(e))
-          .map((e) => ROTULO_ESTAGIO[e].toLocaleLowerCase("pt-BR"))
-          .join(", ")})`}
-        colunas={COLUNAS_PONTOS}
+        titulo={tx(
+          `Usinas no mapa (${ESTAGIOS_PONTOS.filter((e) => (v.pts as readonly string[]).includes(e))
+            .map((e) => estagioMin(e))
+            .join(", ")})`,
+          `Plants on the map (${ESTAGIOS_PONTOS.filter((e) => (v.pts as readonly string[]).includes(e))
+            .map((e) => estagioMin(e))
+            .join(", ")})`,
+        )}
+        colunas={colunasPontos(idioma)}
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="nome"
@@ -392,8 +427,11 @@ export function ExpansaoMapaUsinas({ url, tamanho, dataSiga, fonte }: { url: str
         ordemInicial={{ coluna: "mw_outorgado", direcao: "desc" }}
         selecionado={v.usina > 0 ? String(v.usina) : null}
         onSelecionar={(id) => definir({ usina: id ? Number(id) : 0 })}
-        dicaBusca="Nome da usina, núcleo do CEG, tipo ou UF"
-        nota="Usinas sem coordenada no SIGA (latitude e longitude zero na fonte) não aparecem no mapa nem nesta tabela; estão no CSV completo do SIGA."
+        dicaBusca={tx("Nome da usina, núcleo do CEG, tipo ou UF", "Plant name, CEG core, type or state")}
+        nota={tx(
+          "Usinas sem coordenada no SIGA (latitude e longitude zero na fonte) não aparecem no mapa nem nesta tabela; estão no CSV completo do SIGA.",
+          "Plants without coordinates in the SIGA (latitude and longitude zero in the source) do not appear on the map or in this table; they are in the full SIGA CSV.",
+        )}
       />
     </div>
   );
@@ -401,14 +439,18 @@ export function ExpansaoMapaUsinas({ url, tamanho, dataSiga, fonte }: { url: str
 
 /* ---------------------------------------------------------------- rede da EPE (P042) */
 
-const ROTULO_CAMADA: Record<CamadaRede, string> = { existente: "Existente", planejada: "Planejada" };
-const COLUNAS_LINHAS: ColunaTabela[] = [
-  { id: "nome", rotulo: "Linha", tipo: "texto" },
-  { id: "camada", rotulo: "Camada", tipo: "texto", categorica: true },
-  { id: "tensao", rotulo: "Tensão", tipo: "numero", unidade: "kV", casas: 0, buscavel: true },
-  { id: "ano", rotulo: "Ano de operação", tipo: "numero", casas: 0, buscavel: true },
-  { id: "km", rotulo: "Comprimento da geometria", tipo: "numero", unidade: "km de traçado", casas: 1 },
-];
+function rotuloCamada(c: CamadaRede, idioma: Idioma): string {
+  return c === "existente" ? tx("Existente", "Existing", idioma) : tx("Planejada", "Planned", idioma);
+}
+function colunasLinhas(idioma: Idioma): ColunaTabela[] {
+  return [
+    { id: "nome", rotulo: tx("Linha", "Line", idioma), tipo: "texto" },
+    { id: "camada", rotulo: tx("Camada", "Layer", idioma), tipo: "texto", categorica: true },
+    { id: "tensao", rotulo: tx("Tensão", "Voltage", idioma), tipo: "numero", unidade: "kV", casas: 0, buscavel: true },
+    { id: "ano", rotulo: tx("Ano de operação", "Year of operation", idioma), tipo: "numero", casas: 0, buscavel: true }, // i18n: dado
+    { id: "km", rotulo: tx("Comprimento da geometria", "Length of the geometry", idioma), tipo: "numero", unidade: tx("km de traçado", "route km", idioma), casas: 1 },
+  ];
+}
 
 function TracoCamada({ camada }: { camada: CamadaRede }) {
   return (
@@ -419,6 +461,8 @@ function TracoCamada({ camada }: { camada: CamadaRede }) {
 }
 
 export function ExpansaoMapaRede({ url, tamanho, captura, fonte }: { url: string; tamanho: string | null; captura: string; fonte: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_TRANSMISSAO);
   const [pedido, setPedido] = useState(false);
   const [dados, setDados] = useState<{ geo: CamadaGeo; rede: LinhasRedeEpe } | null>(null);
@@ -441,23 +485,29 @@ export function ExpansaoMapaRede({ url, tamanho, captura, fonte }: { url: string
 
   const visiveis = useMemo(() => (dados ? filtraRede(dados.rede.linhas, v.cam, Number(v.kv)) : []), [dados, v.cam, v.kv]);
   const linhas = useMemo(
-    () => visiveis.map((l, i) => ({ id: `${l[0]}:${i}:${l[1] ?? ""}`, nome: l[1], camada: ROTULO_CAMADA[l[0]], tensao: l[2], ano: l[3], km: l[4] })),
-    [visiveis],
+    () => visiveis.map((l, i) => ({ id: `${l[0]}:${i}:${l[1] ?? ""}`, nome: l[1], camada: rotuloCamada(l[0] as CamadaRede, idioma), tensao: l[2], ano: l[3], km: l[4] })),
+    [visiveis, idioma],
   );
   const selecionada = linhaSel ? (visiveis.find((l, i) => `${l[0]}:${i}:${l[1] ?? ""}` === linhaSel) ?? null) : null;
 
   if (!pedido) {
     return (
       <div className="space-y-2 border border-linha bg-superficie p-4">
-        <p className="text-sm text-carvao">Mapa das linhas de transmissão existentes e planejadas publicadas pela EPE no WebMap, sobre a malha de UF do IBGE, com tabela equivalente.</p>
+        <p className="text-sm text-carvao">
+          {tx(
+            "Mapa das linhas de transmissão existentes e planejadas publicadas pela EPE no WebMap, sobre a malha de UF do IBGE, com tabela equivalente.",
+            "Map of the existing and planned transmission lines published by EPE in the WebMap, over the IBGE state boundaries, with an equivalent table.",
+          )}
+        </p>
         <button type="button" onClick={() => setPedido(true)} className="min-h-[44px] border border-energia bg-energia-fundo px-4 text-sm text-carvao hover:bg-superficie">
-          Carregar o mapa da rede{tamanho ? ` (arquivo de ${tamanho})` : ""}
+          {tx(`Carregar o mapa da rede${tamanho ? ` (arquivo de ${tamanho})` : ""}`, `Load the grid map${tamanho ? ` (${tamanho} file)` : ""}`)}
         </button>
       </div>
     );
   }
   if (erro) return <Erro erro={erro} arquivo={url} />;
-  if (!dados) return <Carregando texto={`Carregando as linhas da EPE${tamanho ? ` (${tamanho})` : ""} e a malha de UF do IBGE…`} />;
+  if (!dados)
+    return <Carregando texto={tx(`Carregando as linhas da EPE${tamanho ? ` (${tamanho})` : ""} e a malha de UF do IBGE…`, `Loading the EPE lines${tamanho ? ` (${tamanho})` : ""} and the IBGE state boundaries…`)} />;
 
   const clique = (p: Ponto) => {
     const uf = ufNoPonto(p);
@@ -469,17 +519,21 @@ export function ExpansaoMapaRede({ url, tamanho, captura, fonte }: { url: string
     <div className="space-y-4">
       <div className="flex flex-wrap items-start gap-x-6 gap-y-2">
         <ExpansaoMarcas
-          rotulo="Camadas"
-          opcoes={CAMADAS_REDE.map((c) => ({ id: c, rotulo: `${ROTULO_CAMADA[c]} (${inteiro(nLinhas(c))} linhas)`, marcador: <TracoCamada camada={c} /> }))}
+          rotulo={tx("Camadas", "Layers")}
+          opcoes={CAMADAS_REDE.map((c) => ({
+            id: c,
+            rotulo: tx(`${rotuloCamada(c, idioma)} (${inteiro(nLinhas(c), idioma)} linhas)`, `${rotuloCamada(c, idioma)} (${inteiro(nLinhas(c), idioma)} ${nLinhas(c) === 1 ? "line" : "lines"})`),
+            marcador: <TracoCamada camada={c} />,
+          }))}
           valor={v.cam as CamadaRede[]}
           onMudar={(cam) => definir({ cam })}
         />
         <label className="inline-flex min-h-[44px] items-center gap-2 text-sm text-carvao">
-          <span className="rotulo text-mineral">Tensão mínima</span>
+          <span className="rotulo text-mineral">{tx("Tensão mínima", "Minimum voltage")}</span>
           <select value={v.kv} onChange={(e) => definir({ kv: e.target.value as (typeof TENSOES_MINIMAS)[number] })} className="min-h-[44px] border border-linha bg-superficie px-2">
             {TENSOES_MINIMAS.map((k) => (
               <option key={k} value={k}>
-                {k === "0" ? "todas (inclusive sem tensão informada)" : `${k} kV ou mais`}
+                {k === "0" ? tx("todas (inclusive sem tensão informada)", "all (including voltage not reported)") : tx(`${k} kV ou mais`, `${k} kV or more`)}
               </option>
             ))}
           </select>
@@ -487,12 +541,15 @@ export function ExpansaoMapaRede({ url, tamanho, captura, fonte }: { url: string
       </div>
       <MapaBase
         geo={dados.geo}
-        titulo={`Linhas de transmissão da EPE, capturadas em ${captura}`}
-        descricao={`Mapa do Brasil por UF com ${inteiro(visiveis.length)} linhas de transmissão da EPE (${v.cam.map((c) => ROTULO_CAMADA[c as CamadaRede].toLocaleLowerCase("pt-BR")).join(" e ")}). A tabela abaixo traz as mesmas linhas.`}
+        titulo={tx(`Linhas de transmissão da EPE, capturadas em ${captura}`, `EPE transmission lines, captured on ${captura}`)}
+        descricao={tx(
+          `Mapa do Brasil por UF com ${inteiro(visiveis.length, idioma)} linhas de transmissão da EPE (${v.cam.map((c) => rotuloCamada(c as CamadaRede, idioma).toLocaleLowerCase("pt-BR")).join(" e ")}). A tabela abaixo traz as mesmas linhas.`,
+          `Map of Brazil by state with ${inteiro(visiveis.length, idioma)} EPE transmission lines (${v.cam.map((c) => rotuloCamada(c as CamadaRede, idioma).toLowerCase()).join(" and ")}). The table below lists the same lines.`,
+        )}
         ufSelecionada={v.uf || null}
         foco={null}
         onClique={clique}
-        dica="Clique ou toque numa UF para destacá-la; escolha uma linha na tabela para destacá-la no mapa."
+        dica={tx("Clique ou toque numa UF para destacá-la; escolha uma linha na tabela para destacá-la no mapa.", "Click or tap a state to highlight it; choose a line in the table to highlight it on the map.")}
       >
         {() => (
           <g fill="none" pointerEvents="none">
@@ -511,15 +568,27 @@ export function ExpansaoMapaRede({ url, tamanho, captura, fonte }: { url: string
         )}
       </MapaBase>
       <p aria-live="polite" className="min-h-[1.5rem] text-sm text-carvao">
-        {selecionada
-          ? `${selecionada[1] ?? "Linha sem nome"}: ${ROTULO_CAMADA[selecionada[0]].toLocaleLowerCase("pt-BR")}, ${selecionada[2] ? `${inteiro(selecionada[2])} kV` : "tensão não informada"}, ${selecionada[3] ? `ano ${selecionada[3]}` : "ano não informado"}, ${kmTexto(selecionada[4])} de traçado.`
-          : v.uf
-            ? `UF destacada: ${NOME_UF[v.uf] ?? v.uf}. Os totais por UF estão na tabela de geração e rede acima.`
-            : ""}
+        {selecionada ? (
+          <>
+            {selecionada[1] ? <Nome>{selecionada[1]}</Nome> : tx("Linha sem nome", "Unnamed line")}
+            {tx(
+              `: ${rotuloCamada(selecionada[0] as CamadaRede, idioma).toLocaleLowerCase("pt-BR")}, ${selecionada[2] ? `${inteiro(selecionada[2], idioma)} kV` : "tensão não informada"}, ${selecionada[3] ? `ano ${selecionada[3]}` : "ano não informado"}, ${kmTexto(selecionada[4], 1, idioma)} de traçado.`,
+              `: ${rotuloCamada(selecionada[0] as CamadaRede, idioma).toLowerCase()}, ${selecionada[2] ? `${inteiro(selecionada[2], idioma)} kV` : "voltage not reported"}, ${selecionada[3] ? `year ${selecionada[3]}` : "year not reported"}, ${kmTexto(selecionada[4], 1, idioma)} of route length.`,
+            )}
+          </>
+        ) : v.uf ? (
+          <>
+            {tx("UF destacada: ", "Highlighted state: ")}
+            <Nome>{NOME_UF[v.uf] ?? v.uf}</Nome>
+            {tx(". Os totais por UF estão na tabela de geração e rede acima.", ". The totals by state are in the generation and grid table above.")}
+          </>
+        ) : (
+          ""
+        )}
       </p>
       <TabelaInterativa
-        titulo="Linhas de transmissão no mapa"
-        colunas={COLUNAS_LINHAS}
+        titulo={tx("Linhas de transmissão no mapa", "Transmission lines on the map")}
+        colunas={colunasLinhas(idioma)}
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="nome"
@@ -530,8 +599,11 @@ export function ExpansaoMapaRede({ url, tamanho, captura, fonte }: { url: string
         ordemInicial={{ coluna: "km", direcao: "desc" }}
         selecionado={linhaSel}
         onSelecionar={setLinhaSel}
-        dicaBusca="Nome da linha, tensão ou ano"
-        nota="Ano e tensão zero na fonte são ausência. km de traçado da geometria publicada pela EPE (generalizada pelo servidor), não km de circuito do SIGET: as duas medidas não se somam."
+        dicaBusca={tx("Nome da linha, tensão ou ano", "Line name, voltage or year")}
+        nota={tx(
+          "Ano e tensão zero na fonte são ausência. km de traçado da geometria publicada pela EPE (generalizada pelo servidor), não km de circuito do SIGET: as duas medidas não se somam.",
+          "Year and voltage zero in the source are missing data. Route km of the geometry published by EPE (generalized by the server), not SIGET circuit km: the two measures are not added.",
+        )}
       />
     </div>
   );

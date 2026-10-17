@@ -18,7 +18,10 @@ import {
   type MarcoCronograma,
 } from "@/lib/energia/cronograma";
 import { escalaLinear } from "@/lib/energia/escalas";
-import { dataBR } from "@/lib/energia/formato";
+import { dataBR, nomeMes } from "@/lib/energia/formato";
+import type { Idioma } from "@/lib/idioma";
+import { tx } from "@/lib/energia/idioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Cronograma de expansão: uma linha do tempo por marco de cada item (usina,
@@ -77,26 +80,44 @@ type Linha =
   | { tipo: "item"; item: ItemCronograma; y: number }
   | { tipo: "marco"; item: ItemCronograma; marco: MarcoCronograma; y: number; chave: string; atraso: Atraso };
 
-function leituraMarco(item: ItemCronograma, m: MarcoCronograma, a: Atraso, comAtraso: boolean): string {
+const MESES_PT = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]; // i18n: dado
+
+/** Rótulo de marca do eixo (calendario.ts escreve "abr/27" ou "2027") no idioma: "Apr ’27" em inglês. */
+function rotuloMarcaTempo(rotulo: string, idioma: Idioma): string {
+  if (idioma !== "en") return rotulo;
+  const m = /^([a-zç]{3})\/(\d{2})$/.exec(rotulo);
+  const i = m ? MESES_PT.indexOf(m[1]) : -1;
+  return m && i >= 0 ? `${nomeMes(i + 1, idioma)} \u2019${m[2]}` : rotulo;
+}
+
+function leituraMarco(item: ItemCronograma, m: MarcoCronograma, a: Atraso, comAtraso: boolean, idioma: Idioma): string {
   const ps = previsoesOrdenadas(m.previsoes);
   const recente = ps.at(-1);
+  const d = (iso: string) => dataBR(iso, idioma);
   const prev = recente
-    ? `previsão mais recente ${dataBR(recente.data)}, informada em ${dataBR(recente.informadaEm)}; ${ps.length} ${ps.length === 1 ? "previsão registrada" : "previsões registradas"}`
-    : "sem previsão registrada";
-  const real = m.realizado ? `realizado em ${dataBR(m.realizado)}` : "sem data realizada";
-  return `${item.rotulo}, ${m.rotulo}: ${prev}; ${real}${comAtraso ? `; ${textoAtraso(a)}` : ""}`;
+    ? tx(
+        `previsão mais recente ${d(recente.data)}, informada em ${d(recente.informadaEm)}; ${ps.length} ${ps.length === 1 ? "previsão registrada" : "previsões registradas"}`,
+        `latest forecast ${d(recente.data)}, reported on ${d(recente.informadaEm)}; ${ps.length} ${ps.length === 1 ? "forecast recorded" : "forecasts recorded"}`,
+        idioma,
+      )
+    : tx("sem previsão registrada", "no forecast recorded", idioma);
+  const real = m.realizado ? tx(`realizado em ${d(m.realizado)}`, `completed on ${d(m.realizado)}`, idioma) : tx("sem data realizada", "no actual date", idioma);
+  return `${item.rotulo}, ${m.rotulo}: ${prev}; ${real}${comAtraso ? `; ${textoAtraso(a, idioma)}` : ""}`;
 }
 
 export function Cronograma({
   titulo,
   itens,
   dataBase = null,
-  rotuloFiltro = "Estado",
+  rotuloFiltro: rotuloFiltroProp,
   estados: estadosControlados,
   estadosIniciais = null,
   onEstados,
   alturaMaxima = 560,
 }: CronogramaProps) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const rotuloFiltro = rotuloFiltroProp ?? tx("Estado", "Status");
   const uid = useId().replace(/:/g, "");
   const [largura, setLargura] = useState(LARGURA_SSR);
   const [estadosInternos, setEstadosInternos] = useState<string[] | null>(estadosIniciais);
@@ -134,7 +155,7 @@ export function Cronograma({
     if (estadosControlados === undefined) setEstadosInternos(novo);
     onEstados?.(novo);
     const vis = filtrarPorEstado(itens, novo);
-    setAnuncio(`Mostrando ${vis.length} de ${itens.length} itens.`);
+    setAnuncio(tx(`Mostrando ${vis.length} de ${itens.length} itens.`, `Showing ${vis.length} of ${itens.length} items.`));
   }
 
   // eixo de tempo de todos os itens (não só dos filtrados): filtrar não muda a escala
@@ -196,8 +217,8 @@ export function Cronograma({
     const sReal = diaSerial(marco.realizado);
     const base = atraso.estado === "realizado" || atraso.estado === "previsto" || atraso.estado === "sem-comparacao" ? atraso.base : null;
     const pontos = [...ps.map((p) => diaSerial(p.data) as number), ...(sReal !== null ? [sReal] : [])];
-    const leitura = leituraMarco(item, marco, atraso, comAtraso);
-    const rotulo = rotuloAtraso(atraso);
+    const leitura = leituraMarco(item, marco, atraso, comAtraso, idioma);
+    const rotulo = rotuloAtraso(atraso, idioma);
     return (
       <g
         key={chave}
@@ -268,7 +289,7 @@ export function Cronograma({
         {sReal !== null && <circle data-forma="realizado" cx={r1(x(sReal))} cy={r1(cy)} r="5.5" fill="var(--cor-carvao)" stroke="var(--cor-superficie)" strokeWidth="1.5" />}
         {!ps.length && sReal === null && (
           <text data-estado="sem-dado" x={colRotulo + 12} y={r1(cy + 4)} fontSize="12" fontStyle="italic" fill="var(--cor-carvao-muted)">
-            sem dado
+            {tx("sem dado", "no data")}
           </text>
         )}
         {comAtraso && (
@@ -311,42 +332,47 @@ export function Cronograma({
       >
         <p className="font-medium text-carvao">{item.rotulo}</p>
         <p className="text-carvao-muted">{marco.rotulo}</p>
-        <p className="rotulo mt-1.5 text-mineral">Previsões ({ps.length})</p>
+        <p className="rotulo mt-1.5 text-mineral">{tx(`Previsões (${ps.length})`, `Forecasts (${ps.length})`)}</p>
         {mostradas.length ? (
           <ul className="space-y-0.5">
             {mostradas.map((p, k) => (
               <li key={`${p.informadaEm}-${k}`} className="flex justify-between gap-3 text-carvao">
-                <span className="tabular-nums">{dataBR(p.data)}</span>
+                <span className="tabular-nums">{dataBR(p.data, idioma)}</span>
                 <span className="text-carvao-muted">
-                  informada em {dataBR(p.informadaEm)}
-                  {p === recente ? " (mais recente)" : ""}
-                  {p === base ? " (data-base)" : ""}
+                  {tx(`informada em ${dataBR(p.informadaEm, idioma)}`, `reported on ${dataBR(p.informadaEm, idioma)}`)}
+                  {p === recente ? tx(" (mais recente)", " (latest)") : ""}
+                  {p === base ? tx(" (data-base)", " (baseline)") : ""}
                 </span>
               </li>
             ))}
-            {ps.length > mostradas.length && <li className="text-carvao-muted">e mais {ps.length - mostradas.length} anteriores na tabela</li>}
+            {ps.length > mostradas.length && (
+              <li className="text-carvao-muted">{tx(`e mais ${ps.length - mostradas.length} anteriores na tabela`, `and ${ps.length - mostradas.length} earlier ones in the table`)}</li>
+            )}
           </ul>
         ) : (
-          <p className="italic text-carvao-muted">sem previsão registrada</p>
+          <p className="italic text-carvao-muted">{tx("sem previsão registrada", "no forecast recorded")}</p>
         )}
         <p className="mt-1.5 flex justify-between gap-3 border-t border-linha pt-1">
-          <span className="text-carvao-muted">Realizado</span>
-          <span className={marco.realizado ? "tabular-nums text-carvao" : "italic text-carvao-muted"}>{marco.realizado ? dataBR(marco.realizado) : "sem registro"}</span>
+          <span className="text-carvao-muted">{tx("Realizado", "Actual")}</span>
+          <span className={marco.realizado ? "tabular-nums text-carvao" : "italic text-carvao-muted"}>{marco.realizado ? dataBR(marco.realizado, idioma) : tx("sem registro", "no record")}</span>
         </p>
         {marco.realizado && marco.fonteRealizado && <p className="text-carvao-muted">{marco.fonteRealizado}</p>}
-        {comAtraso && <p className="mt-1 text-carvao">{textoAtraso(atraso)}</p>}
+        {comAtraso && <p className="mt-1 text-carvao">{textoAtraso(atraso, idioma)}</p>}
       </div>
     );
   }
 
   const temFiltro = todos.length > 1;
-  const instrucoes = `${marcos.length} ${marcos.length === 1 ? "marco" : "marcos"} de ${visiveis.length} ${visiveis.length === 1 ? "item" : "itens"}. Previsões são círculos vazados, uma por previsão informada, e o realizado é círculo cheio. Use Tab para entrar, as setas para percorrer os marcos e Home e End para ir ao início e ao fim. A tabela com os mesmos dados está logo abaixo.`;
+  const instrucoes = tx(
+    `${marcos.length} ${marcos.length === 1 ? "marco" : "marcos"} de ${visiveis.length} ${visiveis.length === 1 ? "item" : "itens"}. Previsões são círculos vazados, uma por previsão informada, e o realizado é círculo cheio. Use Tab para entrar, as setas para percorrer os marcos e Home e End para ir ao início e ao fim. A tabela com os mesmos dados está logo abaixo.`,
+    `${marcos.length} ${marcos.length === 1 ? "milestone" : "milestones"} of ${visiveis.length} ${visiveis.length === 1 ? "item" : "items"}. Forecasts are hollow circles, one per reported forecast, and the actual date is a filled circle. Use Tab to enter, the arrow keys to move through the milestones and Home and End to go to the start and the end. The table with the same data is just below.`,
+  );
 
   return (
     <div ref={raiz} className="relative w-full" data-grafico="cronograma">
       {temFiltro && (
         <fieldset className="mb-2 flex flex-wrap items-center gap-x-4">
-          <legend className="rotulo float-left mr-3 text-mineral">Filtrar por {rotuloFiltro.toLowerCase()}</legend>
+          <legend className="rotulo float-left mr-3 text-mineral">{tx(`Filtrar por ${rotuloFiltro.toLowerCase()}`, `Filter by ${rotuloFiltro.toLowerCase()}`)}</legend>
           {disponiveis.map((e) => (
             <label key={e.estado} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
               <input
@@ -364,44 +390,52 @@ export function Cronograma({
             onClick={() => selecionados !== null && mudarEstados(null)}
             className={`rotulo inline-flex min-h-[44px] items-center border px-3 ${selecionados === null ? "cursor-default border-linha text-mineral" : "border-carvao-muted text-carvao hover:border-carvao"}`}
           >
-            Mostrar todos
+            {tx("Mostrar todos", "Show all")}
           </button>
         </fieldset>
       )}
-      <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
+      <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label={tx("Legenda", "Legend")}>
         <li className="flex items-center gap-1.5">
           <svg width="30" height="14" aria-hidden="true">
             <circle cx="6" cy="7" r="3.5" fill="var(--cor-superficie)" stroke="var(--cor-previsto)" strokeWidth="1.5" strokeOpacity="0.6" />
             <circle cx="21" cy="7" r="5.5" fill="var(--cor-superficie)" stroke="var(--cor-previsto)" strokeWidth="2.25" />
           </svg>
-          Previsto (vazado; uma marca por previsão informada, a mais recente em traço grosso)
+          {tx("Previsto (vazado; uma marca por previsão informada, a mais recente em traço grosso)", "Forecast (hollow; one mark per reported forecast, the latest with a thick outline)")}
         </li>
         <li className="flex items-center gap-1.5">
           <svg width="14" height="14" aria-hidden="true">
             <circle cx="7" cy="7" r="5.5" fill="var(--cor-carvao)" />
           </svg>
-          Realizado (cheio)
+          {tx("Realizado (cheio)", "Actual (filled)")}
         </li>
         {comAtraso && dataBase && (
           <li className="flex items-center gap-1.5">
             <svg width="18" height="18" aria-hidden="true">
               <polygon points={losango(9, 9, 7)} fill="none" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" />
             </svg>
-            Previsão vigente na data-base ({dataBR(dataBase.data)}, {dataBase.rotulo})
+            {tx("Previsão vigente na data-base", "Forecast in force on the baseline date")} ({dataBR(dataBase.data, idioma)}, {dataBase.rotulo})
           </li>
         )}
       </ul>
       <p className="mb-2 px-1 text-xs text-carvao-muted" data-nota="atraso">
         {comAtraso && dataBase
-          ? `Atraso: data realizada menos a previsão vigente em ${dataBR(dataBase.data)}. Marco ainda não realizado usa a previsão mais recente e leva "(prev.)". O sinal "+" indica atraso e "−", antecipação.`
-          : "Atraso não calculado: nenhuma data-base foi declarada para este cronograma. As previsões aparecem com a data em que foram informadas."}
+          ? tx(
+              `Atraso: data realizada menos a previsão vigente em ${dataBR(dataBase.data, idioma)}. Marco ainda não realizado usa a previsão mais recente e leva "(prev.)". O sinal "+" indica atraso e "−", antecipação.`,
+              `Delay: actual date minus the forecast in force on ${dataBR(dataBase.data, idioma)}. A milestone not yet completed uses the latest forecast and carries "(fcst.)". The "+" sign means delay and "−", an earlier date.`,
+            )
+          : tx(
+              "Atraso não calculado: nenhuma data-base foi declarada para este cronograma. As previsões aparecem com a data em que foram informadas.",
+              "Delay not calculated: no baseline date was declared for this schedule. The forecasts appear with the date on which they were reported.",
+            )}
       </p>
       <p id={`${uid}-i`} className="sr-only">
         {instrucoes}
       </p>
       {marcos.length === 0 ? (
         <div className="flex h-[88px] items-center border border-dashed border-linha px-4 text-sm text-carvao-muted">
-          {itens.length ? `Nenhum item no filtro de ${rotuloFiltro.toLowerCase()} selecionado.` : "Nenhum item com cronograma para exibir."}
+          {itens.length
+            ? tx(`Nenhum item no filtro de ${rotuloFiltro.toLowerCase()} selecionado.`, `No item in the selected ${rotuloFiltro.toLowerCase()} filter.`)
+            : tx("Nenhum item com cronograma para exibir.", "No item with a schedule to show.")}
         </div>
       ) : (
         <>
@@ -410,14 +444,14 @@ export function Cronograma({
             {marcasTempo.map((t) => (
               <g key={t.serial}>
                 <text x={r1(x(t.serial))} y="12" textAnchor="middle" fontSize="12" fill="var(--cor-mineral)" className="tabular-nums">
-                  {t.rotulo}
+                  {rotuloMarcaTempo(t.rotulo, idioma)}
                 </text>
                 <line x1={r1(x(t.serial))} x2={r1(x(t.serial))} y1="16" y2="22" stroke="var(--cor-grade)" strokeWidth="1" />
               </g>
             ))}
             {comAtraso && (
               <text x={w - 4} y="12" textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
-                Atraso
+                {tx("Atraso", "Delay")}
               </text>
             )}
           </svg>
@@ -457,22 +491,28 @@ export function Cronograma({
       </p>
       <details className="mt-3 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Cronograma em tabela ({marcos.length.toLocaleString("pt-BR")} {marcos.length === 1 ? "marco" : "marcos"})
+          {tx(
+            `Cronograma em tabela (${marcos.length.toLocaleString("pt-BR")} ${marcos.length === 1 ? "marco" : "marcos"})`,
+            `Schedule as a table (${marcos.length.toLocaleString("en-US")} ${marcos.length === 1 ? "milestone" : "milestones"})`,
+          )}
         </summary>
-        <div className="tabela-scroll mt-2 max-h-96 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
+        <div className="tabela-scroll mt-2 max-h-96 overflow-y-auto" tabIndex={0} role="region" aria-label={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
           <table className="w-full min-w-[40rem] border-collapse">
             <caption className="sr-only">
-              {`${titulo}.` + (comAtraso && dataBase ? ` Atraso contra a previsão vigente em ${dataBR(dataBase.data)} (${dataBase.rotulo}).` : " Atraso não calculado: sem data-base declarada.")}
+              {`${titulo}.` +
+                (comAtraso && dataBase
+                  ? tx(` Atraso contra a previsão vigente em ${dataBR(dataBase.data, idioma)} (${dataBase.rotulo}).`, ` Delay against the forecast in force on ${dataBR(dataBase.data, idioma)} (${dataBase.rotulo}).`)
+                  : tx(" Atraso não calculado: sem data-base declarada.", " Delay not calculated: no baseline date declared."))}
             </caption>
             <thead className="sticky top-0 bg-superficie">
               <tr className="text-left text-mineral">
-                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">Item</th>
+                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{tx("Item", "Item")}</th>
                 <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{rotuloFiltro}</th>
-                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">Marco</th>
-                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">Previsões (data prevista, informada em)</th>
-                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">Realizado</th>
-                {comAtraso && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">Previsão na data-base</th>}
-                {comAtraso && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">Atraso</th>}
+                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{tx("Marco", "Milestone")}</th>
+                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{tx("Previsões (data prevista, informada em)", "Forecasts (forecast date, reported on)")}</th>
+                <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{tx("Realizado", "Actual")}</th>
+                {comAtraso && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{tx("Previsão na data-base", "Forecast on the baseline date")}</th>}
+                {comAtraso && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{tx("Atraso", "Delay")}</th>}
               </tr>
             </thead>
             <tbody>
@@ -489,25 +529,29 @@ export function Cronograma({
                         <ol className="space-y-0.5">
                           {ps.map((p, k) => (
                             <li key={`${p.informadaEm}-${k}`} className="tabular-nums">
-                              {dataBR(p.data)}, informada em {dataBR(p.informadaEm)}
+                              {tx(`${dataBR(p.data, idioma)}, informada em ${dataBR(p.informadaEm, idioma)}`, `${dataBR(p.data, idioma)}, reported on ${dataBR(p.informadaEm, idioma)}`)}
                               {p.snapshot ? ` (${p.snapshot})` : ""}
                             </li>
                           ))}
                         </ol>
                       ) : (
-                        <span className="italic text-mineral">sem previsão registrada</span>
+                        <span className="italic text-mineral">{tx("sem previsão registrada", "no forecast recorded")}</span>
                       )}
                     </td>
                     <td className="px-2 py-1 tabular-nums text-carvao">
-                      {marco.realizado ? dataBR(marco.realizado) : <span className="italic text-mineral">sem registro</span>}
+                      {marco.realizado ? dataBR(marco.realizado, idioma) : <span className="italic text-mineral">{tx("sem registro", "no record")}</span>}
                       {marco.realizado && marco.fonteRealizado ? <span className="block text-carvao-muted">{marco.fonteRealizado}</span> : null}
                     </td>
                     {comAtraso && (
                       <td className="px-2 py-1 tabular-nums text-carvao">
-                        {base ? `${dataBR(base.data)}, informada em ${dataBR(base.informadaEm)}` : <span className="italic text-mineral">sem previsão vigente</span>}
+                        {base ? (
+                          tx(`${dataBR(base.data, idioma)}, informada em ${dataBR(base.informadaEm, idioma)}`, `${dataBR(base.data, idioma)}, reported on ${dataBR(base.informadaEm, idioma)}`)
+                        ) : (
+                          <span className="italic text-mineral">{tx("sem previsão vigente", "no forecast in force")}</span>
+                        )}
                       </td>
                     )}
-                    {comAtraso && <td className="px-2 py-1 text-carvao">{textoAtraso(atraso)}</td>}
+                    {comAtraso && <td className="px-2 py-1 text-carvao">{textoAtraso(atraso, idioma)}</td>}
                   </tr>
                 );
               })}
