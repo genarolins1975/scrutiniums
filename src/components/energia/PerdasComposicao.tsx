@@ -189,7 +189,7 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
         colunaRotulo="rotulo"
         fonte={tx(
           "ANEEL, SAMP Balanço (linhas de valor medido; a técnica é a perda técnica informada no balanço de energia, estimativa da fonte, e a não técnica herda essa estimativa)",
-          "ANEEL, SAMP Balanço (measured-value lines; the technical figure is the technical loss reported in the energy balance, an estimate by the source, and the non-technical figure inherits that estimate)",
+          "ANEEL, SAMP balance (measured-value lines; the technical figure is the technical loss reported in the energy balance, an estimate by the source, and the non-technical figure inherits that estimate)",
         )}
         versao={versao}
         nomeArquivo={`perdas-composicao-${anoRef}`}

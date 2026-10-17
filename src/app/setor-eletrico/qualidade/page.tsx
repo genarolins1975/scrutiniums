@@ -838,7 +838,7 @@ export default function QualidadePage() {
                     {["/energia/series/qualidade_brasil.csv", "/energia/series/qualidade_distribuidoras_anual.csv", "/energia/series/qualidade_distribuidoras_mensal.csv", "/energia/series/qualidade_conjuntos_mensal.csv", URL_MUNICIPIOS, ...conjuntosDownloads].map((u) => (
                       <li key={u}>
                         <a href={u} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-                          {u.split("/").at(-1)} ({tamanho(u)})
+                          {tx(<>{u.split("/").at(-1)}</>, <Nome>{u.split("/").at(-1)}</Nome>)} ({tamanho(u)})
                         </a>
                       </li>
                     ))}
@@ -1656,7 +1656,7 @@ export default function QualidadePage() {
                 {g.downloads.map((d) => (
                   <li key={d.url}>
                     <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-                      {d.rotulo} ({tamanho(d.url)})
+                      {tx(<>{d.rotulo}</>, <Nome>{d.rotulo}</Nome>)} ({tamanho(d.url)})
                     </a>
                   </li>
                 ))}
@@ -1670,7 +1670,7 @@ export default function QualidadePage() {
                   {tx("metodologia", "methodology")}
                 </Link>
                 {tx("; fórmulas, fontes verificadas e conferências deste módulo no documento", "; formulas, verified sources and checks of this module in the document")}{" "}
-                <code className="break-all text-xs">docs/observatorios/energia/modulos/qualidade.md</code> {tx("do", "in the")}{" "}
+                <code className="break-all text-xs">{tx(<>docs/observatorios/energia/modulos/qualidade.md</>, <Nome>docs/observatorios/energia/modulos/qualidade.md</Nome>)}</code> {tx("do", "in the")}{" "}
                 <a href="https://github.com/genarolins1975/scrutiniums/tree/main/docs/observatorios" target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
                   {tx("repositório público do projeto ↗", "project's public repository ↗")}
                 </a>

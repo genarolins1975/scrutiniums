@@ -9,6 +9,7 @@ import { anosSerieNacional, coberturaSeparacao, linhaNacional, nPublicaramTecnic
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 import { idiomaEnergia, porIdioma, tx } from "@/lib/energia/idioma";
 import type { Idioma } from "@/lib/idioma";
+import { Nome } from "@/components/i18n/Nome";
 
 /**
  * Peças comuns às páginas do módulo Perdas (componentes de servidor): a navegação local entre as quatro páginas (faixa nas filhas,
@@ -112,7 +113,7 @@ export function ReferenciaPerdas({ g }: { g: PerdasGold }) {
       {aberto}; componentes tarifárias com vigência conferida em {dataBR(r.tarifa_consultada_em)}; Censo {censo} do IBGE. Processado em {carimbo(g.gerado_em)}.
     </>,
     <>
-      ANEEL, SAMP Balanço: {serie}
+      ANEEL, <Nome>SAMP Balanço</Nome>: {serie}
       {aberto}; tariff components with validity checked on {dataBR(r.tarifa_consultada_em)}; IBGE {censo} Census. Processed on {carimbo(g.gerado_em)}.
     </>,
   );

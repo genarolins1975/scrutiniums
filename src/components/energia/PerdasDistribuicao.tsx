@@ -8,6 +8,7 @@ import { Nome } from "@/components/i18n/Nome";
 import type { Idioma } from "@/lib/idioma";
 import { porIdioma } from "@/lib/energia/idioma";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { marcarNomes } from "@/lib/energia/i18n/qualidade-perdas";
 import { textoFaixa, textoForaDaFaixa, textoNumero, textoPontaFaixa, textoUniversoFaixa, textoValorMapa, type FaixaComparacao, type Medida, type ValorMapa } from "@/lib/energia/perdas";
 
 /**
@@ -47,6 +48,8 @@ export function PerdasDistribuicao({ titulo, medida, classes, faixa, periodo, es
   const maior = Math.max(1, ...classes.classes.map((c) => c.contagem));
   const universo = textoUniversoFaixa(faixa, idioma);
   const foraTexto = textoForaDaFaixa(faixa, idioma);
+  // nomes das pontas da faixa (empates incluídos), marcados como nome próprio na rota inglesa
+  const nomesPontas = [...(faixa.minimo?.rotulos ?? []), ...(faixa.maximo?.rotulos ?? [])];
   return (
     <figure data-grafico="distribuicao" data-orientacao="horizontal" aria-labelledby={`${uid}-t`} className="space-y-3">
       <figcaption>
@@ -143,7 +146,7 @@ export function PerdasDistribuicao({ titulo, medida, classes, faixa, periodo, es
         <dl className="flex flex-wrap gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs tabular-nums text-carvao-muted" data-faixa-observada="">
           <div>
             <dt className="rotulo text-mineral">{tx("Menor valor observado", "Lowest observed value")}</dt>
-            <dd className="mt-0.5 text-carvao">{textoPontaFaixa(faixa.minimo, medida, idioma)}</dd>
+            <dd className="mt-0.5 text-carvao">{marcarNomes(textoPontaFaixa(faixa.minimo, medida, idioma), nomesPontas, idioma)}</dd>
           </div>
           <div>
             <dt className="rotulo text-mineral">{tx("Mediana simples", "Simple median")}</dt>
@@ -151,7 +154,7 @@ export function PerdasDistribuicao({ titulo, medida, classes, faixa, periodo, es
           </div>
           <div>
             <dt className="rotulo text-mineral">{tx("Maior valor observado", "Highest observed value")}</dt>
-            <dd className="mt-0.5 text-carvao">{textoPontaFaixa(faixa.maximo, medida, idioma)}</dd>
+            <dd className="mt-0.5 text-carvao">{marcarNomes(textoPontaFaixa(faixa.maximo, medida, idioma), nomesPontas, idioma)}</dd>
           </div>
           <div>
             <dt className="rotulo text-mineral">{tx("Universo da faixa", "Universe of the range")}</dt>
@@ -175,7 +178,7 @@ export function PerdasDistribuicao({ titulo, medida, classes, faixa, periodo, es
         </summary>
         <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
           <table className="w-full min-w-[22rem] border-collapse text-xs tabular-nums">
-            <caption className="mb-2 text-left text-carvao">{`${textoFaixa(faixa, medida, idioma)} ${foraTexto}`.trim()}</caption>
+            <caption className="mb-2 text-left text-carvao">{marcarNomes(`${textoFaixa(faixa, medida, idioma)} ${foraTexto}`.trim(), nomesPontas, idioma)}</caption>
             <thead>
               <tr className="text-left text-mineral">
                 <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">

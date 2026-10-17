@@ -39,7 +39,7 @@ function colunas(tx: <T>(pt: T, en: T) => T): ColunaTabela[] {
     { id: "pct", rotulo: tx("Percentual técnico do trecho", "Technical percentage of the segment"), tipo: "numero", unidade, casas: 3 },
     { id: "pct_anterior", rotulo: tx("Percentual do trecho anterior de referência", "Percentage of the previous reference segment"), tipo: "numero", unidade, casas: 3 },
     { id: "diferenca", rotulo: tx("Diferença contra o trecho anterior de referência", "Difference against the previous reference segment"), tipo: "numero", unidade: "p.p.", casas: 3 },
-    { id: "resolucao", rotulo: tx("Resolução homologatória associada", "Associated ratification resolution"), tipo: "texto" },
+    { id: "resolucao", rotulo: tx("Resolução homologatória associada", "Associated ratification resolution"), tipo: "texto", idiomaTexto: "nome" },
     { id: "inicio_vigencia", rotulo: tx("Início de vigência da resolução", "Resolution effective from"), tipo: "data" },
   ];
 }
@@ -185,7 +185,7 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
         colunaRotulo="rotulo"
         fonte={tx(
           "ANEEL, SAMP Balanço (perdas técnicas e energia injetada publicada); ANEEL, Componentes Tarifárias (início de vigência das resoluções)",
-          "ANEEL, SAMP Balanço (technical losses and published injected energy); ANEEL, Componentes Tarifárias (effective start of the resolutions)",
+          "ANEEL, SAMP balance (technical losses and published injected energy); ANEEL, tariff components dataset (effective start of the resolutions)",
         )}
         versao={versao}
         nomeArquivo="perdas-percentual-tecnico-trechos"

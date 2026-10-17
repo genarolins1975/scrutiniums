@@ -548,7 +548,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
             colunaRotulo="distribuidora"
             fonte={tx(
               "ANEEL, SAMP Balanço (perdas totais, técnicas e não técnicas, energia injetada e mercado de baixa tensão)",
-              "ANEEL, SAMP Balanço (total, technical and non-technical losses, injected energy and low-voltage market)",
+              "ANEEL, SAMP balance (total, technical and non-technical losses, injected energy and low-voltage market)",
             )}
             versao={versao}
             nomeArquivo={`perdas-distribuidoras-${periodo.id}-${medida.id}`}

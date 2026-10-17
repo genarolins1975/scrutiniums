@@ -13,6 +13,7 @@ import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
 import { PerdasLevaEscolha } from "@/components/energia/PerdasLevaEscolha";
 import { PerdasNavegacao, PerdasSeguir, Recorte, ReferenciaPerdas, Resposta, perguntaPerdas } from "@/components/energia/PerdasPainel";
 import LinkSemPrefetch from "@/components/energia/LinkSemPrefetch";
+import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { TEXTOS_PERDAS_EN, marcarNomes, traducaoExata, traduzOuMarca } from "@/lib/energia/i18n/qualidade-perdas";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
@@ -173,7 +174,12 @@ export default function PerdasCustoContextoPage() {
               B1 tariff in force on {dataBR(g.referencia.tarifa_consultada_em)} · {num(nVigentes, 0)} distribution utilities · R$/MWh before taxes · income from the {censo} Census
             </>,
           )}
-          fonte={tx("ANEEL, Componentes Tarifárias; IBGE, Censo", "ANEEL, Componentes Tarifárias; IBGE, Census")}
+          fonte={tx(
+            <>ANEEL, Componentes Tarifárias; IBGE, Censo</>,
+            <>
+              ANEEL, <Nome>Componentes Tarifárias</Nome>; IBGE, Census
+            </>,
+          )}
           limite={tx(
             "Os valores de tarifa são os da base econômica do arquivo de componentes tarifárias, uma base de cálculo tarifário: não são a tarifa que aparece na conta.",
             "The tariff values are those of the economic base of the tariff component file, a tariff calculation base: they are not the tariff that appears on the bill.",

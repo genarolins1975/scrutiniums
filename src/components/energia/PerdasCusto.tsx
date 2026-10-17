@@ -25,7 +25,7 @@ function colunas(tx: <T>(pt: T, en: T) => T): ColunaTabela[] {
   return [
     { id: "rotulo", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
     { id: "situacao", rotulo: tx("Situação na data da consulta", "Status on the query date"), tipo: "texto", categorica: true },
-    { id: "reh", rotulo: tx("Resolução", "Resolution"), tipo: "texto" },
+    { id: "reh", rotulo: tx("Resolução", "Resolution"), tipo: "texto", idiomaTexto: "nome" },
     { id: "inicio", rotulo: tx("Início da vigência", "Effective from"), tipo: "data" },
     { id: "fim", rotulo: tx("Fim da vigência", "Effective until"), tipo: "data" },
     { id: "pt", rotulo: tx("Perdas técnicas", "Technical losses"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
@@ -176,7 +176,7 @@ export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm,
         colunaRotulo="rotulo"
         fonte={tx(
           "ANEEL, Componentes Tarifárias (TUSD_PT, TUSD_PNT, TUSD_Per_RB_D e TE_Per_RB da subclasse residencial B1 convencional)",
-          "ANEEL, Componentes Tarifárias (TUSD_PT, TUSD_PNT, TUSD_Per_RB_D and TE_Per_RB of the conventional B1 residential subclass)",
+          "ANEEL, tariff components dataset (TUSD_PT, TUSD_PNT, TUSD_Per_RB_D and TE_Per_RB of the conventional B1 residential subclass)",
         )}
         versao={versao}
         nomeArquivo="perdas-custo-tarifa-b1"

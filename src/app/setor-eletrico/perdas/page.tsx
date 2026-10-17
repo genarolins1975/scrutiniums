@@ -17,6 +17,7 @@ import { PerdasExplorador } from "@/components/energia/PerdasExplorador";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
 import { PerdasLevaEscolha } from "@/components/energia/PerdasLevaEscolha";
 import { PerdasCapitulos, PerdasSeguir, Recorte, ReferenciaPerdas, Resposta, SeparacaoMetricas, perguntaPerdas } from "@/components/energia/PerdasPainel";
+import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { TEXTOS_PERDAS_EN, marcarNomes, traducaoExata, traduzOuMarca } from "@/lib/energia/i18n/qualidade-perdas";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
@@ -228,7 +229,12 @@ export default function PerdasPage() {
               {faixaRef ? ` and ${num(faixaRef.n, 0)} distribution utilities compared` : ""} · % of reference injected energy and TWh
             </>,
           )}
-          fonte="ANEEL, SAMP Balanço" // i18n: dado
+          fonte={tx(
+            <>ANEEL, SAMP Balanço</>,
+            <>
+              ANEEL, <Nome>SAMP Balanço</Nome>
+            </>,
+          )}
           referencia={<ReferenciaPerdas g={g} />}
           metricas={
             <div id="resumo" className="scroll-mt-28">

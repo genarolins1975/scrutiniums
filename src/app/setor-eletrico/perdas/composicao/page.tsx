@@ -14,6 +14,7 @@ import { PerdasComposicao } from "@/components/energia/PerdasComposicao";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
 import { PerdasLevaEscolha } from "@/components/energia/PerdasLevaEscolha";
 import { PerdasNavegacao, PerdasSeguir, Recorte, ReferenciaPerdas, Resposta, SeparacaoMetricas, perguntaPerdas } from "@/components/energia/PerdasPainel";
+import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { TEXTOS_PERDAS_EN, marcarNomes, traduzOuMarca } from "@/lib/energia/i18n/qualidade-perdas";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
@@ -160,7 +161,12 @@ export default function PerdasComposicaoPage() {
               the low-voltage market
             </>,
           )}
-          fonte="ANEEL, SAMP Balanço" // i18n: dado
+          fonte={tx(
+            <>ANEEL, SAMP Balanço</>,
+            <>
+              ANEEL, <Nome>SAMP Balanço</Nome>
+            </>,
+          )}
           referencia={<ReferenciaPerdas g={g} />}
           metricas={<SeparacaoMetricas g={g} endereco="https://scrutiniums.com/setor-eletrico/perdas/composicao#composicao" />}
         >

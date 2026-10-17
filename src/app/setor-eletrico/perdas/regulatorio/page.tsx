@@ -11,6 +11,7 @@ import { PerdasRegulatorio } from "@/components/energia/PerdasRegulatorio";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
 import { PerdasLevaEscolha } from "@/components/energia/PerdasLevaEscolha";
 import { EstadoDaComparacao, PerdasNavegacao, PerdasSeguir, Recorte, ReferenciaPerdas, Resposta, perguntaPerdas, type ItemEstadoComparacao } from "@/components/energia/PerdasPainel";
+import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { TEXTOS_PERDAS_EN, marcarNomes, traducaoExata, traduzOuMarca } from "@/lib/energia/i18n/qualidade-perdas";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
@@ -146,11 +147,14 @@ export default function PerdasRegulatorioPage() {
                   <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">
                     {tx(<>Endereços tentados ({bloqueioRegulatorio.tentativas.length})</>, <>Addresses tried ({bloqueioRegulatorio.tentativas.length})</>)}
                   </summary>
-                  <ul className="mt-1 list-disc space-y-1 pl-5 text-xs break-all text-carvao-muted">
-                    {bloqueioRegulatorio.tentativas.map((t) => (
-                      <li key={t}>{t}</li>
-                    ))}
-                  </ul>
+                  {/* endereços e notas da coleta, como a gold registrou (só em português) */}
+                  <TrechoPortugues regiao="bloqueio-tentativas" como="div">
+                    <ul className="mt-1 list-disc space-y-1 pl-5 text-xs break-all text-carvao-muted">
+                      {bloqueioRegulatorio.tentativas.map((t) => (
+                        <li key={t}>{t}</li>
+                      ))}
+                    </ul>
+                  </TrechoPortugues>
                 </details>
               </>
             ),
@@ -219,7 +223,12 @@ export default function PerdasRegulatorioPage() {
               Segments from {mesAno(refTecnica.inicio)} to {mesAno(refTecnica.fim)} · {num(perimetro.comTrecho, 0)} distribution utilities · % of published injected energy
             </>,
           )}
-          fonte={tx("ANEEL, SAMP Balanço e Componentes Tarifárias", "ANEEL, SAMP Balanço and Componentes Tarifárias")}
+          fonte={tx(
+            <>ANEEL, SAMP Balanço e Componentes Tarifárias</>,
+            <>
+              ANEEL, <Nome>SAMP Balanço</Nome> and <Nome>Componentes Tarifárias</Nome>
+            </>,
+          )}
           referencia={<ReferenciaPerdas g={g} />}
         >
           {tx(
