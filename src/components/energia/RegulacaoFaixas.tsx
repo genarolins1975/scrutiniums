@@ -3,7 +3,8 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { diaSerial, isoDoDia, somarMeses, ticksTempo } from "@/lib/energia/calendario";
 import { escalaLinear, pxCaractere12 } from "@/lib/energia/escalas";
-import { dataBR } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { dominioFaixas, type FaixaTempo, type MarcaTempo, type ReferenciaTempo } from "@/lib/energia/regulacao";
 
 /**
@@ -69,8 +70,12 @@ export function RegulacaoFaixas({
   alturaLinha = 44,
   alturaMaxima = 528,
   legenda,
-  vazio = "Nenhum item no recorte atual.",
+  vazio,
 }: RegulacaoFaixasProps) {
+  const tx = useTx();
+  const idioma = useIdioma();
+  const { dataBR, mesAnoCurto } = formatos(idioma);
+  const textoVazio = vazio ?? tx("Nenhum item no recorte atual.", "No item in the current selection.");
   const uid = useId().replace(/:/g, "");
   const [largura, setLargura] = useState(LARGURA_SSR);
   const [cursor, setCursor] = useState<string | null>(null);
@@ -127,7 +132,7 @@ export function RegulacaoFaixas({
     }
     const novo = selecionado === f.id ? null : f.id;
     onSelecionar(novo);
-    setAnuncio(novo ? `Selecionado: ${f.leitura}` : `Seleção removida: ${f.rotulo}.`);
+    setAnuncio(novo ? tx(`Selecionado: ${f.leitura}`, `Selected: ${f.leitura}`) : tx(`Seleção removida: ${f.rotulo}.`, `Selection removed: ${f.rotulo}.`));
   }
 
   function teclado(ev: KeyboardEvent<SVGGElement>, i: number, f: FaixaTempo) {
@@ -164,11 +169,14 @@ export function RegulacaoFaixas({
   return (
     <div ref={raiz} className="relative w-full" data-grafico="faixas-tempo" data-rotulos={emCima ? "acima" : "lateral"}>
       <p id={`${uid}-instr`} className="sr-only">
-        {`${faixas.length} ${faixas.length === 1 ? "linha" : "linhas"}. Use Tab para entrar no gráfico, as setas para percorrer, Home e End para ir ao início e ao fim${onSelecionar ? " e Enter ou Espaço para selecionar" : ""}. A tabela com os mesmos dados está logo abaixo.`}
+        {tx(
+          `${faixas.length} ${faixas.length === 1 ? "linha" : "linhas"}. Use Tab para entrar no gráfico, as setas para percorrer, Home e End para ir ao início e ao fim${onSelecionar ? " e Enter ou Espaço para selecionar" : ""}. A tabela com os mesmos dados está logo abaixo.`,
+          `${faixas.length} ${faixas.length === 1 ? "row" : "rows"}. Use Tab to enter the chart, the arrow keys to move, Home and End to go to the start and the end${onSelecionar ? " and Enter or Space to select" : ""}. The table with the same data is just below.`,
+        )}
       </p>
       {legenda && <div className="mb-2 text-xs text-carvao-muted">{legenda}</div>}
       {!faixas.length || !dom ? (
-        <p className="border border-dashed border-linha px-4 py-6 text-sm text-carvao-muted">{vazio}</p>
+        <p className="border border-dashed border-linha px-4 py-6 text-sm text-carvao-muted">{textoVazio}</p>
       ) : (
         <>
           <svg width={w} height={ALTURA_EIXO} role="presentation" aria-hidden="true" className="block max-w-full">
@@ -176,7 +184,7 @@ export function RegulacaoFaixas({
               <g key={t.iso}>
                 <line x1={r1(x(t.serial))} x2={r1(x(t.serial))} y1={ALTURA_EIXO - 6} y2={ALTURA_EIXO} stroke="var(--cor-mineral-soft)" />
                 <text x={r1(x(t.serial))} y={ALTURA_EIXO - 10} textAnchor="middle" fontSize="12" fill="var(--cor-mineral)" className="tabular-nums">
-                  {t.rotulo}
+                  {idioma === "en" && !/^\d{4}$/.test(t.rotulo) ? mesAnoCurto(t.iso.slice(0, 7)) : t.rotulo}
                 </text>
               </g>
             ))}
@@ -259,7 +267,7 @@ export function RegulacaoFaixas({
                     {f.fim && marca(f.fim, cy, f.cor, "b")}
                     {!f.inicio && !f.fim && (
                       <text data-estado="sem-data" x={x0} y={r1(cy + 4)} fontSize="12" fontStyle="italic" fill="var(--cor-carvao-muted)">
-                        {cabe(`sem datas: ${f.ausencia ?? "não informadas"}`, x1 - x0, 5.8)}
+                        {cabe(tx(`sem datas: ${f.ausencia ?? "não informadas"}`, `no dates: ${f.ausencia ?? "not reported"}`), x1 - x0, 5.8)}
                       </text>
                     )}
                     {focoVisivel === f.id && <rect x="1" y={y0 + 1} width={Math.max(0, w - 2)} height={alturaLinha - 2} fill="none" stroke="var(--cor-energia)" strokeWidth="2" rx="2" />}
@@ -287,16 +295,30 @@ export function RegulacaoFaixas({
           </div>
           {h > alturaMaxima && (
             <p className="mt-1 text-xs text-carvao-muted" data-aviso-rolagem="true">
-              O gráfico mostra {Math.floor(alturaMaxima / alturaLinha)} das {faixas.length} linhas por vez; role dentro dele para ver as demais.
+              {tx(
+                <>
+                  O gráfico mostra {Math.floor(alturaMaxima / alturaLinha)} das {faixas.length} linhas por vez; role dentro dele para ver as demais.
+                </>,
+                <>
+                  The chart shows {Math.floor(alturaMaxima / alturaLinha)} of the {faixas.length} rows at a time; scroll inside it to see the others.
+                </>,
+              )}
             </p>
           )}
           {refs.length > 0 && (
             <p className="mt-1 text-xs text-carvao-muted">
-              Linha tracejada vertical: {refs.map((r) => `${r.rotulo} (${dataBR(r.data)})`).join("; ")}.
+              {tx("Linha tracejada vertical", "Dashed vertical line")}: {refs.map((r) => `${r.rotulo} (${dataBR(r.data)})`).join("; ")}.
             </p>
           )}
           <p className="mt-0.5 text-xs text-mineral">
-            Eixo de {dataBR(isoDoDia(dom.min))} a {dataBR(isoDoDia(dom.max))}, ajustado às linhas mostradas.
+            {tx(
+              <>
+                Eixo de {dataBR(isoDoDia(dom.min))} a {dataBR(isoDoDia(dom.max))}, ajustado às linhas mostradas.
+              </>,
+              <>
+                Axis from {dataBR(isoDoDia(dom.min))} to {dataBR(isoDoDia(dom.max))}, fitted to the rows shown.
+              </>,
+            )}
           </p>
         </>
       )}

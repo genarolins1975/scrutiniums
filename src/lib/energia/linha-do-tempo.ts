@@ -23,7 +23,8 @@
  */
 import { diaSerial, diferencaDatas, precisaoData, textoDuracao } from "@/lib/energia/calendario";
 import { ordenarComNulos } from "@/lib/energia/escalas";
-import { dataBR } from "@/lib/energia/formato";
+import { dataBR, num } from "@/lib/energia/formato";
+import { tx } from "@/lib/energia/idioma";
 
 export type EventoDatado = {
   id: string;
@@ -59,7 +60,17 @@ export type FiltroLinhaDoTempo = {
 
 export const FILTRO_PADRAO: FiltroLinhaDoTempo = { categorias: null, inicio: null, fim: null, base: "publicacao" };
 
-export const ROTULO_BASE: Record<BaseData, string> = { publicacao: "publicação", vigencia: "vigência" };
+/* rótulos lidos na hora (getter), no idioma da página */
+export const ROTULO_BASE: Record<BaseData, string> = {
+  get publicacao() { return tx("publicação", "publication"); },
+  get vigencia() { return tx("vigência", "validity"); },
+};
+
+/** Duração em inglês ("1 day", "3 months"), o mesmo valor absoluto de textoDuracao. */
+function duracaoEn(d: { valor: number; unidade: "dias" | "meses" }): string {
+  const v = Math.abs(d.valor);
+  return `${num(v, 0, "en")} ${d.unidade === "dias" ? (v === 1 ? "day" : "days") : v === 1 ? "month" : "months"}`;
+}
 
 /** Data comparável no recorte ("AAAA-MM" vira "AAAA-MM-01"); null quando inválida. */
 function comparavel(iso: string | null | undefined): string | null {
@@ -137,8 +148,13 @@ export function ordenarEventos(eventos: readonly EventoDatado[], base: BaseData,
 export function textoDefasagem(publicacao: string | null | undefined, vigencia: string | null | undefined): string | null {
   const d = diferencaDatas(publicacao, vigencia);
   if (!d) return null;
-  if (d.valor === 0) return d.unidade === "dias" ? "vigência na data da publicação" : "vigência no mês da publicação";
-  return d.valor > 0 ? `vigência ${textoDuracao(d)} após a publicação` : `vigência retroativa: ${textoDuracao(d)} antes da publicação`;
+  if (d.valor === 0)
+    return d.unidade === "dias"
+      ? tx("vigência na data da publicação", "in force on the publication date")
+      : tx("vigência no mês da publicação", "in force in the month of publication");
+  return d.valor > 0
+    ? tx(`vigência ${textoDuracao(d)} após a publicação`, `in force ${duracaoEn(d)} after publication`)
+    : tx(`vigência retroativa: ${textoDuracao(d)} antes da publicação`, `retroactive validity: ${duracaoEn(d)} before publication`);
 }
 
 /** URL segura para link externo (http ou https); null nos demais casos. */
@@ -157,12 +173,16 @@ export function resumoFiltro(f: FiltroLinhaDoTempo, categorias: readonly { id: s
   const partes: string[] = [];
   if (f.categorias !== null) {
     const nomes = f.categorias.map((c) => categorias.find((k) => k.id === c)?.rotulo ?? c);
-    partes.push(nomes.length ? `${nomes.length === 1 ? "categoria" : "categorias"}: ${nomes.join(", ")}` : "nenhuma categoria");
+    partes.push(
+      nomes.length
+        ? tx(`${nomes.length === 1 ? "categoria" : "categorias"}: ${nomes.join(", ")}`, `${nomes.length === 1 ? "category" : "categories"}: ${nomes.join(", ")}`)
+        : tx("nenhuma categoria", "no category"),
+    );
   }
   const { inicio, fim } = normalizarPeriodo(f.inicio, f.fim);
   const b = ROTULO_BASE[f.base];
-  if (inicio && fim) partes.push(`${b} de ${dataBR(inicio)} a ${dataBR(fim)}`);
-  else if (inicio) partes.push(`${b} a partir de ${dataBR(inicio)}`);
-  else if (fim) partes.push(`${b} até ${dataBR(fim)}`);
+  if (inicio && fim) partes.push(tx(`${b} de ${dataBR(inicio)} a ${dataBR(fim)}`, `${b} from ${dataBR(inicio)} to ${dataBR(fim)}`));
+  else if (inicio) partes.push(tx(`${b} a partir de ${dataBR(inicio)}`, `${b} from ${dataBR(inicio)}`));
+  else if (fim) partes.push(tx(`${b} até ${dataBR(fim)}`, `${b} until ${dataBR(fim)}`));
   return partes.join("; ");
 }
