@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.112.0";
+const APP_VERSION = "0.113.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -12718,16 +12718,19 @@ function applyTheme(t) {
     })
     .catch(() => {});
 })();
-/* Seletor de observatório (details): fecha com Esc (foco volta ao resumo),
-   com clique fora e quando o foco sai do menu. */
+/* Seletores de observatório (details): o da barra lateral e o da barra da marca
+   no celular. Fecham com Esc (foco volta ao resumo), com clique fora e quando o
+   foco sai do menu. */
 (function initObsSwitcher() {
-  const el = document.getElementById("obsSwitcher");
-  if (!el) return;
-  document.addEventListener("pointerdown", e => { if (el.open && !el.contains(e.target)) el.open = false; });
-  el.addEventListener("keydown", e => {
-    if (e.key === "Escape" && el.open) { el.open = false; const s = el.querySelector("summary"); if (s) s.focus(); }
+  ["obsSwitcher", "obsTrocar"].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    document.addEventListener("pointerdown", e => { if (el.open && !el.contains(e.target)) el.open = false; });
+    el.addEventListener("keydown", e => {
+      if (e.key === "Escape" && el.open) { el.open = false; const s = el.querySelector("summary"); if (s) s.focus(); }
+    });
+    el.addEventListener("focusout", e => { if (el.open && !el.contains(e.relatedTarget)) el.open = false; });
   });
-  el.addEventListener("focusout", e => { if (el.open && !el.contains(e.relatedTarget)) el.open = false; });
 })();
 const _themeBtn = document.getElementById("themeToggle"); // ausente na página de embed
 if (_themeBtn) _themeBtn.addEventListener("click", () => {

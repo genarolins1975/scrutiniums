@@ -17,7 +17,9 @@
 .obs-metrics dd:first-child { font:400 30px/1.2 var(--serif, var(--font-serif, Georgia)); }
 .obs-metrics dt { font-size:13px; font-weight:600; margin-top:6px; }
 .obs-metrics dd:last-child:not(:first-child) { font-size:12px; margin-top:4px; line-height:1.5; color:#3D4147; }
-@media(max-width:639px) { .obs-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .obs-metrics>div { padding:16px; } .obs-metrics>div:nth-child(3) { border-left:0; } .obs-metrics>div:nth-child(n+3) { border-top:1px solid var(--obs-regra); } .obs-dominios { gap:0 12px; } }
+@media(max-width:639px) { .obs-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .obs-metrics>div { padding:16px; } .obs-metrics>div:nth-child(3) { border-left:0; } .obs-metrics>div:nth-child(n+3) { border-top:1px solid var(--obs-regra); } }
+/* No celular a lista dos observatórios ocupava três linhas no topo. Abaixo de 640 px ela sai, e os mesmos destinos ficam no seletor de observatório da linha da marca (SwitcherObservatorio; na SPA do Crédito, .obs-trocar). */
+@media(max-width:639px) { .obs-dominios { display:none; } }
 /* Energia: abertura, catálogo e módulos usam a mesma tinta e ritmo do OBEE. */
 .dominio-energia { color:var(--obs-tinta); }
 .dominio-energia .obs-identidade { border-bottom:1px solid var(--obs-regra); }
@@ -91,6 +93,17 @@ html:not([data-theme="dark"]) .observatorio-credito { --bg:var(--obs-papel); --s
 @media(max-width:1100px) { .obs-credit-hero { grid-template-columns:1fr; } .obs-credit-hero nav { border-left:0; padding-left:0; border-top:1px solid #ffffff40; padding-top:20px; } .obs-credit-hero nav>a { font-size:18px; } }
 @media(max-width:960px) { .observatorio-credito .obs-brandbar { padding:8px 16px; } .observatorio-credito .mobilebar { background:var(--surface); backdrop-filter:none; min-height:56px; } .observatorio-credito .mobilebar button { min-width:44px; min-height:44px; } .observatorio-credito .mobile-obs { display:none; } .observatorio-credito .mapa-fluxo { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:639px) { .observatorio-credito .obs-brandbar { gap:0; } .observatorio-credito .obs-brand { font-size:15px; } .observatorio-credito .obs-dominios { width:100%; } .observatorio-credito .pagehead, .observatorio-credito .card, .observatorio-credito .mapa-no { padding:20px 16px; } .observatorio-credito .obs-map-meta { padding:16px 0 0; } .observatorio-credito .mapa-fluxo { grid-template-columns:1fr; } .observatorio-credito .sechead h3 { font-size:24px; } }
+/* Seletor de observatório da barra da marca na SPA do Crédito: só no celular, onde substitui a lista de observatórios. A barra sobe
+   acima da barra fixa do menu (z 50) para o painel aberto não ficar por baixo dela, e fica abaixo do véu da barra lateral (z 55). */
+.observatorio-credito .obs-trocar { display:none; position:relative; }
+.observatorio-credito .obs-trocar summary { list-style:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; min-height:44px; font:600 12px/1.3 var(--sans); letter-spacing:.08em; text-transform:uppercase; color:var(--text); }
+.observatorio-credito .obs-trocar summary::-webkit-details-marker { display:none; }
+.observatorio-credito .obs-trocar-menu { position:fixed; left:16px; right:16px; z-index:52; margin-top:4px; padding:8px; display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--border); box-shadow:0 8px 24px rgba(26,29,33,.12); }
+.observatorio-credito .obs-trocar-menu p { margin:0; padding:8px 12px 4px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
+.observatorio-credito .obs-trocar-menu a { display:flex; align-items:center; min-height:44px; padding:8px 12px; font-size:14px; line-height:1.35; color:var(--text); text-decoration:none; }
+.observatorio-credito .obs-trocar-menu a[aria-current] { font-weight:600; }
+.observatorio-credito .obs-trocar-menu .obs-trocar-conta { border-top:1px solid var(--border); margin-top:4px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
+@media(max-width:639px) { .observatorio-credito .obs-brandbar { z-index:52; flex-wrap:nowrap; } .observatorio-credito .obs-trocar { display:block; } }
 @media print { .obs-brandbar, .obs-index-search, .obs-dominios, .obs-primary { display:none!important; } .obs-hero { background:white; color:black; padding:0; } .obs-hero a, .obs-hero p, .obs-credit-hero>div>p:not(.obs-eyebrow) { color:black; } }
 .obs-hero h1 { font-family:var(--serif, var(--font-serif, Georgia)); }
 .observatorio-credito .sidefoot { flex-wrap:wrap; gap:8px; }

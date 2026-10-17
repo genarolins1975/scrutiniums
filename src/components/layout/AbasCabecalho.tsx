@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { navCabecalho } from "@/components/layout/navCabecalho";
+import { ABAS_OBSERVATORIOS } from "@/components/observatorios/NavegacaoObservatorios";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import type { Idioma } from "@/lib/idioma";
 
@@ -20,8 +21,10 @@ function temSessao(): Promise<boolean> {
  * (`logadoNoServidor`). Em páginas estáticas ele não sabe: a aba começa com o
  * destino do visitante (funciona sem JavaScript) e, se o navegador tiver sessão,
  * passa a apontar para o painel, como para quem entrou pela página inicial.
+ * `soObservatorios` deixa de fora as abas que não são observatório (Imprensa),
+ * para o seletor de observatórios do celular.
  */
-export function AbasCabecalho({ logadoNoServidor, className, idioma = "pt" }: { logadoNoServidor: boolean; className: string; idioma?: Idioma }) {
+export function AbasCabecalho({ logadoNoServidor, className, idioma = "pt", soObservatorios = false }: { logadoNoServidor: boolean; className: string; idioma?: Idioma; soObservatorios?: boolean }) {
   const [logado, setLogado] = useState(logadoNoServidor);
   useEffect(() => {
     if (logadoNoServidor) return;
@@ -35,7 +38,7 @@ export function AbasCabecalho({ logadoNoServidor, className, idioma = "pt" }: { 
   }, [logadoNoServidor]);
   return (
     <>
-      {navCabecalho(logado, idioma).map((item) => (
+      {navCabecalho(logado, idioma).slice(0, soObservatorios ? ABAS_OBSERVATORIOS.length : undefined).map((item) => (
         <Link key={item.label} href={item.href} prefetch={prefetchDoLink(item.href)} className={className}>
           {item.label}
         </Link>
