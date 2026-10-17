@@ -21,8 +21,13 @@
  * Três estados nunca confundidos: número (inclusive zero), ausência (null,
  * undefined, NaN, texto vazio) e texto. Coluna numérica só aceita número:
  * texto numa coluna numérica é tratado como ausência, não convertido às cegas.
+ *
+ * Idioma: as funções que escrevem texto para o leitor (célula, recorte, aba "Sobre") recebem o idioma por último; sem ele vale
+ * o da página (idiomaEnergia()). O componente de cliente passa o de useIdioma(). Os valores e o recorte são os mesmos.
  */
 import { datasLegiveis, dataBR, num } from "@/lib/energia/formato";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import type { Idioma } from "@/lib/idioma";
 import type { ClasseLiteral } from "@/lib/literais-fonte";
 import { encontraDatas } from "@/lib/texto-datas";
 import { ordenarComNulos, valido, type Direcao } from "@/lib/energia/escalas";
@@ -58,8 +63,13 @@ export type Ordem = { coluna: string; direcao: Direcao } | null;
 export type Consulta = { busca: string; filtros: Record<string, readonly string[]>; ordem: Ordem };
 
 /** Valor de filtro que seleciona as linhas sem dado na coluna ("~" é legível e não precisa de escape na URL). */
-export const CHAVE_SEM_DADO = "~sem-dado";
-export const TEXTO_SEM_DADO = "sem dado";
+export const CHAVE_SEM_DADO = "~sem-dado"; // i18n: dado
+export const TEXTO_SEM_DADO = "sem dado"; // i18n: dado (forma portuguesa; textoSemDado() escolhe o idioma)
+
+/** "sem dado" no idioma ("no data" em inglês). */
+export function textoSemDado(idioma: Idioma = idiomaEnergia()): string {
+  return tx(TEXTO_SEM_DADO, "no data", idioma);
+}
 
 const COLLATOR = new Intl.Collator("pt-BR", { sensitivity: "base", numeric: true });
 
@@ -79,12 +89,12 @@ export function valorColuna(l: LinhaTabela, c: ColunaTabela): string | number | 
 }
 
 /** Data de referência como texto local: "2026-09-27" → 27/09/2026; "2026-09" → 09/2026; com hora, "27/09/2026 16:00". */
-export function textoData(v: string): string {
+export function textoData(v: string, idioma: Idioma = idiomaEnergia()): string {
   // data que o calendário não admite (2021-02-29, mês 13) não é "corrigida" nem repassada como se fosse válida: sai como veio
   const achadas = encontraDatas(v);
   if (achadas.length === 1 && achadas[0].inicio === 0 && !achadas[0].valida) return v;
-  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(v)) return `${dataBR(v)} ${v.slice(11, 16)}`;
-  if (/^\d{4}(-\d{2}){0,2}$/.test(v)) return dataBR(v);
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(v)) return `${dataBR(v, idioma)}${idioma === "en" ? "," : ""} ${v.slice(11, 16)}`;
+  if (/^\d{4}(-\d{2}){0,2}$/.test(v)) return dataBR(v, idioma);
   return v;
 }
 
@@ -94,14 +104,14 @@ export function ehColunaDeAno(c: ColunaTabela): boolean {
   return c.tipo === "numero" && (c.casas ?? 1) === 0 && /^ano(\s|$)/i.test(c.rotulo);
 }
 
-export function textoCelula(v: string | number | null, c: ColunaTabela): string {
-  if (v === null) return TEXTO_SEM_DADO;
-  if (typeof v === "number") return ehColunaDeAno(c) && Number.isInteger(v) ? String(v) : num(v, c.casas ?? 1);
-  if (c.tipo === "data") return textoData(v);
+export function textoCelula(v: string | number | null, c: ColunaTabela, idioma: Idioma = idiomaEnergia()): string {
+  if (v === null) return textoSemDado(idioma);
+  if (typeof v === "number") return ehColunaDeAno(c) && Number.isInteger(v) ? String(v) : num(v, c.casas ?? 1, idioma);
+  if (c.tipo === "data") return textoData(v, idioma);
   // célula de texto que é só uma data ISO (mês, dia ou instante) sai no formato do site; o arquivo baixado segue ISO
-  if (c.tipo === "texto" && /^\d{4}-\d{2}(-\d{2}(T\d{2}:\d{2}(:\d{2})?Z?)?)?$/.test(v)) return textoData(v);
+  if (c.tipo === "texto" && /^\d{4}-\d{2}(-\d{2}(T\d{2}:\d{2}(:\d{2})?Z?)?)?$/.test(v)) return textoData(v, idioma);
   // data ISO dentro de um texto (um ato "DSP-RET 2016-11-24", uma nota) também sai no formato do site
-  if (c.tipo === "texto") return datasLegiveis(v);
+  if (c.tipo === "texto") return datasLegiveis(v, idioma);
   return v;
 }
 
@@ -213,7 +223,12 @@ export type OpcaoFiltro = { valor: string; rotulo: string; n: number };
  * nunca some), contados em `base` (as linhas do recorte, para mostrar quantas
  * sobram). Ordem pt-BR com números em ordem numérica; "sem dado" por último.
  */
-export function opcoesFiltro(linhas: readonly LinhaTabela[], c: ColunaTabela, base: readonly LinhaTabela[] = linhas): OpcaoFiltro[] {
+export function opcoesFiltro(
+  linhas: readonly LinhaTabela[],
+  c: ColunaTabela,
+  base: readonly LinhaTabela[] = linhas,
+  idioma: Idioma = idiomaEnergia(),
+): OpcaoFiltro[] {
   const contagem = new Map<string, number>();
   const exemplo = new Map<string, string | number | null>();
   for (const l of linhas) {
@@ -227,7 +242,7 @@ export function opcoesFiltro(linhas: readonly LinhaTabela[], c: ColunaTabela, ba
     const k = chaveFiltro(l, c);
     if (contagem.has(k)) contagem.set(k, (contagem.get(k) ?? 0) + 1);
   }
-  const opcoes = Array.from(contagem, ([valor, n]) => ({ valor, rotulo: textoCelula(exemplo.get(valor) ?? null, c), n }));
+  const opcoes = Array.from(contagem, ([valor, n]) => ({ valor, rotulo: textoCelula(exemplo.get(valor) ?? null, c, idioma), n }));
   return opcoes.sort((a, b) => {
     if ((a.valor === CHAVE_SEM_DADO) !== (b.valor === CHAVE_SEM_DADO)) return a.valor === CHAVE_SEM_DADO ? 1 : -1;
     const va = exemplo.get(a.valor);
@@ -294,13 +309,14 @@ export function slug(s: string, max = 40): string {
 }
 
 /** Recorte legível (chips de filtros ativos, aba "Sobre") e em slug (nome do arquivo). */
-export function descreverRecorte(colunas: readonly ColunaTabela[], consulta: Consulta): ItemRecorte[] {
+export function descreverRecorte(colunas: readonly ColunaTabela[], consulta: Consulta, idioma: Idioma = idiomaEnergia()): ItemRecorte[] {
   const itens: ItemRecorte[] = [];
   const b = consulta.busca.trim();
-  if (b) itens.push({ tipo: "busca", rotulo: "Busca", valor: `“${b}”`, slug: `busca-${slug(b, 30)}` });
+  // o slug (nome do arquivo) fica igual nos dois idiomas: o mesmo recorte gera o mesmo nome
+  if (b) itens.push({ tipo: "busca", rotulo: tx("Busca", "Search", idioma), valor: `“${b}”`, slug: `busca-${slug(b, 30)}` });
   for (const { c, aceitos } of filtrosAtivos(colunas, consulta.filtros)) {
     const valores = Array.from(aceitos);
-    const legiveis = valores.map((v) => (v === CHAVE_SEM_DADO ? TEXTO_SEM_DADO : c.tipo === "data" ? textoData(v) : v));
+    const legiveis = valores.map((v) => (v === CHAVE_SEM_DADO ? textoSemDado(idioma) : c.tipo === "data" ? textoData(v, idioma) : v));
     itens.push({
       tipo: "filtro",
       coluna: c.id,
@@ -315,8 +331,8 @@ export function descreverRecorte(colunas: readonly ColunaTabela[], consulta: Con
     itens.push({
       tipo: "ordem",
       coluna: co.id,
-      rotulo: "Ordem",
-      valor: `${co.rotulo}, ${o.direcao === "asc" ? "crescente" : "decrescente"}`,
+      rotulo: tx("Ordem", "Sort", idioma),
+      valor: tx(`${co.rotulo}, ${o.direcao === "asc" ? "crescente" : "decrescente"}`, `${co.rotulo}, ${o.direcao === "asc" ? "ascending" : "descending"}`, idioma),
       slug: `ordem-${slug(co.id, 20)}-${o.direcao}`,
     });
   }
@@ -594,14 +610,22 @@ export type MetadadosExportacao = {
   recorte?: string;
   /** Carimbo de geração (fica fora do padrão para o arquivo ser reproduzível). */
   geradoEm?: string;
+  /** Idioma da aba "Sobre" e dos nomes das abas; sem ele, o da página. Os dados são os mesmos. */
+  idioma?: Idioma;
 };
 
-const TIPO_LEGIVEL: Record<TipoColuna, string> = {
-  texto: "texto",
-  numero: "número",
-  percentual: "percentual (0 a 100)",
-  data: "data (AAAA-MM-DD)",
-};
+function tipoLegivel(t: TipoColuna, idioma: Idioma): string {
+  switch (t) {
+    case "texto":
+      return tx("texto", "text", idioma);
+    case "numero":
+      return tx("número", "number", idioma);
+    case "percentual":
+      return tx("percentual (0 a 100)", "percentage (0 to 100)", idioma);
+    case "data":
+      return tx("data (AAAA-MM-DD)", "date (YYYY-MM-DD)", idioma);
+  }
+}
 
 /**
  * XLSX com a aba "Dados" (a mesma matriz do CSV: cabeçalho em negrito e
@@ -623,21 +647,27 @@ export function gerarXlsx(colunas: readonly ColunaTabela[], linhas: readonly Lin
     return Math.min(60, Math.max(8, w + 2));
   });
 
+  const idioma = meta.idioma ?? idiomaEnergia();
+  const t = (pt: string, en: string) => tx(pt, en, idioma);
+  const dicionario = tx("Dicionário de colunas", "Column dictionary", idioma);
+  const cabecalhoDicionario = tx("Coluna", "Column", idioma);
   const sobre: CelulaExportada[][] = [
-    ["Sobre este arquivo"],
-    ["Título", meta.titulo ?? null],
-    ["Fonte", meta.fonte ?? null],
-    ["Versão dos dados", meta.versao ?? null],
-    ["Recorte", meta.recorte || "sem filtros (todas as linhas)"],
-    ["Linhas exportadas", m.linhas.length],
-    ...(meta.geradoEm ? [["Gerado em", meta.geradoEm] as CelulaExportada[]] : []),
-    ["Ausência", "Célula vazia significa sem dado na fonte; nunca é zero."],
+    [tx("Sobre este arquivo", "About this file", idioma)],
+    [tx("Título", "Title", idioma), meta.titulo ?? null],
+    [tx("Fonte", "Source", idioma), meta.fonte ?? null],
+    [tx("Versão dos dados", "Data version", idioma), meta.versao ?? null],
+    [t("Recorte", "Selection"), meta.recorte || tx("sem filtros (todas as linhas)", "no filters (all rows)", idioma)],
+    [t("Linhas exportadas", "Exported rows"), m.linhas.length],
+    ...(meta.geradoEm ? [[tx("Gerado em", "Generated on", idioma), meta.geradoEm] as CelulaExportada[]] : []),
+    [tx("Ausência", "Missing values", idioma), tx("Célula vazia significa sem dado na fonte; nunca é zero.", "An empty cell means no data in the source; it is never zero.", idioma)],
     [],
-    ["Dicionário de colunas"],
-    ["Coluna", "Tipo", "Unidade", "Casas decimais exibidas no portal"],
-    ...colunas.map((c) => [rotuloCabecalho(c), TIPO_LEGIVEL[c.tipo], c.tipo === "percentual" ? "%" : (c.unidade ?? null), ehNumerica(c) ? (c.casas ?? 1) : null]),
+    [dicionario],
+    [cabecalhoDicionario, t("Tipo", "Type"), t("Unidade", "Unit"), t("Casas decimais exibidas no portal", "Decimal places shown on the portal")],
+    ...colunas.map((c) => [rotuloCabecalho(c), tipoLegivel(c.tipo, idioma), c.tipo === "percentual" ? "%" : (c.unidade ?? null), ehNumerica(c) ? (c.casas ?? 1) : null]),
   ];
-  const negritoSobre = new Set([0, sobre.findIndex((l) => l[0] === "Dicionário de colunas"), sobre.findIndex((l) => l[0] === "Coluna")]);
+  const negritoSobre = new Set([0, sobre.findIndex((l) => l[0] === dicionario), sobre.findIndex((l) => l[0] === cabecalhoDicionario)]);
+  const abaDados = tx("Dados", "Data", idioma);
+  const abaSobre = tx("Sobre", "About", idioma);
 
   const enc = new TextEncoder();
   const arquivo = (nome: string, conteudo: string) => ({ nome, dados: enc.encode(conteudo) });
@@ -662,7 +692,7 @@ export function gerarXlsx(colunas: readonly ColunaTabela[], linhas: readonly Lin
     arquivo(
       "xl/workbook.xml",
       `${CABECALHO_XML}<workbook xmlns="${NS_MAIN}" xmlns:r="${NS_REL}">` +
-        '<sheets><sheet name="Dados" sheetId="1" r:id="rId1"/><sheet name="Sobre" sheetId="2" r:id="rId2"/></sheets>' +
+        `<sheets><sheet name="${abaDados}" sheetId="1" r:id="rId1"/><sheet name="${abaSobre}" sheetId="2" r:id="rId2"/></sheets>` +
         "</workbook>",
     ),
     arquivo(
