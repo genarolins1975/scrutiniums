@@ -65,7 +65,6 @@ import {
   TITULO_FIGURA_EN,
   VIABILIDADE_EN,
   atoNormativoEn,
-  colunasNoIdioma,
   mesPorExtensoEn,
   rotuloDado,
 } from "./i18n/expansao-transicao-territorio";
@@ -591,14 +590,6 @@ export function colunasEstagiosTipo(idioma: Idioma = idiomaEnergia()): ColunaTab
   ];
 }
 export const COLUNAS_ESTAGIOS_TIPO: ColunaTabela[] = colunasEstagiosTipo("pt");
-const ROTULOS_FASES_EN: Record<string, string> = {
-  nao_iniciada_usinas: "Granted, no construction, plants",
-  nao_iniciada_mw: "Granted, no construction",
-  construcao_usinas: "Under construction, plants",
-  construcao_mw: "Under construction",
-  operacao_usinas: "In operation, plants",
-  operacao_mw: "In operation",
-};
 
 /** Medidas do mapa por UF do P040: as três fases do SIGA e a carteira do RALIE. */
 export const MEDIDAS_CARTEIRA = ["nao_iniciada", "construcao", "operacao", "ralie"] as const;

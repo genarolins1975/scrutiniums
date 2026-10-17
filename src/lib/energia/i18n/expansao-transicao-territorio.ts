@@ -169,6 +169,8 @@ export const JUSTIFICATIVA_EN: Readonly<Record<string, string>> = {
   "Sem Licença de Operação - LO": "No operating license (LO)",
   "Documentos de Segurança de Barragens": "Dam safety documents",
 };
+/** Forma da outorga no SIGA. */
+export const OUTORGA_SIGA_EN: Readonly<Record<string, string>> = { Registro: "Registration", "Autorização": "Authorization", "Concessão": "Concession" };
 /** Situação do empreendimento de transmissão no SIGET. */
 export const SITUACAO_SIGET_EN: Readonly<Record<string, string>> = {
   "Em Operação": "In operation",
@@ -177,6 +179,17 @@ export const SITUACAO_SIGET_EN: Readonly<Record<string, string>> = {
   "Concluído": "Completed",
   Planejado: "Planned",
   "(vazio)": "(blank)",
+};
+/** Motivo de lote de transmissão sem vencedor (rótulo da ANEEL). */
+export const SEM_VENCEDOR_EN: Readonly<Record<string, string>> = {
+  "NÃO LEILOADO": "not auctioned",
+  "SEM INSCRITO APTO": "no eligible bidder",
+  "SEM LANCE": "no bid",
+};
+/** Origem da série anual de MW liberados (texto da gold). */
+export const FONTE_MW_LIBERADA_EN: Readonly<Record<string, string>> = {
+  "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado": "official annual summary (field in kW), equal to the sum of the detailed file",
+  "resumo anual oficial (campo em MW)": "official annual summary (field in MW)",
 };
 /** Correspondência entre a categoria do PDE e o cadastro da ANEEL. */
 export const CORRESPONDENCIA_EN: Readonly<Record<string, string>> = {
@@ -256,6 +269,33 @@ export const COLUNA_FIGURA_EN: Readonly<Record<string, string>> = {
   "Geração centralizada - Nuclear (TWh)": "Centralized generation - Nuclear (TWh)",
   "Geração centralizada - Outros (TWh)": "Centralized generation - Other (TWh)",
   "Geração centralizada - Solar (centralizada) (TWh)": "Centralized generation - Solar (utility-scale) (TWh)",
+};
+
+/** Linhas do Anexo I-3 do PDE 2035 citadas na conferência com as figuras. */
+export const LINHA_ANEXO_EN: Readonly<Record<string, string>> = {
+  "Biomassa + Biogás + RSU": "Biomass + Biogas + MSW",
+  "PCH E CGH": "PCH AND CGH",
+  "Hidrelétrica": "Hydropower",
+  "Itaipu 50 Hz": "Itaipu 50 Hz",
+  "Eólica": "Wind",
+  "Biocombustível": "Biofuel",
+  "Fotovoltaica centralizada": "Utility-scale photovoltaic",
+};
+/** Resultado e escopo das conferências do PDE publicadas pela gold. */
+export const CONFERENCIA_PDE_EN: Readonly<Record<string, string>> = {
+  aprovada: "approved",
+  reprovada: "failed",
+  "valor e universo": "value and universe",
+  "valor (não de universo)": "value (not universe)",
+};
+/** Descrição do cenário e do universo do PDE 2035 (texto da gold). */
+export const CENARIO_PDE_EN: Readonly<Record<string, string>> = {
+  "Cenário de Referência (expansão indicativa) e Caso Base (existente e contratado)": "Reference Scenario (indicative expansion) and Base Case (existing and contracted)",
+  "Figura 3-25: matriz elétrica nacional, incluindo MMGD, baterias e resposta da demanda; Figura 3-6: SIN, existente e contratado; Figuras 4-19, 4-24 e 4-27: expansão da Rede Básica.":
+    "Figure 3-25: national power mix, including MMGD, batteries and demand response; Figure 3-6: SIN, existing and contracted; Figures 4-19, 4-24 and 4-27: expansion of the Basic Grid.",
+  "CENÁRIO": "SCENARIO",
+  "Anexo I-3 - Geração Centralizada: Evolução da Capacidade Instalada por Fonte de Geração para a Expansão de Referência":
+    "Annex I-3 - Centralized generation: evolution of installed capacity by generation source for the reference expansion",
 };
 
 /** Órgãos por extenso que a gold publica (autoria do PDE). */
