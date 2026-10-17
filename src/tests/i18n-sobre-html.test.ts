@@ -16,6 +16,9 @@ const TITULOS_TRADUZIDOS: Record<string, { pt: string; en: string }> = {
   "/sobre": { pt: "Sobre a Scrutiniums", en: "About Scrutiniums" },
   "/sobre/erros": { pt: "Registro público de erros", en: "Public error log" },
   "/sobre/governanca": { pt: "Governança editorial", en: "Editorial governance" },
+  "/entrar": { pt: "Entrar", en: "Sign in" },
+  "/entrar/sms": { pt: "Entrar com código por SMS", en: "Sign in with an SMS code" },
+  "/entrar/sms/verificar": { pt: "Código de acesso", en: "Access code" },
 };
 import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
 
@@ -218,10 +221,7 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         "/glossario": { titulo: "Glossário", descricao: "Definições, fórmulas, fontes e limitações de todos os indicadores da Scrutiniums. Fonte única de nomes e definições da plataforma." },
         "/termos": { titulo: "Termos de uso", descricao: "Condições de uso da plataforma Scrutiniums: acesso gratuito mediante cadastro, caráter estritamente informativo, isenção de garantias e limitação de responsabilidade." },
         "/privacidade": { titulo: "Política de privacidade", descricao: "Quais dados a Scrutiniums coleta, por que coleta, por quanto tempo guarda e como você exerce seus direitos." },
-        "/entrar": { titulo: "Entrar", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
         "/cadastro": { titulo: "Crie seu acesso", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
-        "/entrar/sms": { titulo: "Entrar com código por SMS", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
-        "/entrar/sms/verificar": { titulo: "Código de acesso", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
       };
       expect(originais[par.pt], "head PT original de cada cenário dinâmico").toBeDefined();
       expect(texto(tag(pt, "title"))).toBe(`${originais[par.pt].titulo} · Scrutiniums`);
@@ -255,10 +255,8 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
     }
     expect(par.conteudo).toBe("portugues_marcado");
     if (documentos.modo === "dinamico") {
-      if (par.pt === "/entrar" || par.pt === "/cadastro" || par.pt === "/entrar/sms") {
+      if (par.pt === "/cadastro") {
         verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn, { caminho: par.pt, estado: "inicial" });
-      } else if (par.pt === "/entrar/sms/verificar") {
-        verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn, { caminho: par.pt, estado: "inicial", contador: "liberado" });
       } else {
         verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn);
       }

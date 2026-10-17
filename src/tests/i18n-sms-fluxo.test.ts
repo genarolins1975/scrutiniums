@@ -62,17 +62,9 @@ function elementos(children: ReactNode): ReactElement<Record<string, unknown>>[]
   return encontrados;
 }
 
+// Decisões com sessão mockada não constituem autenticação HTTP completa.
 async function abrir(pagina: Pagina, idioma: "pt" | "en") {
-  if (idioma === "pt") return pagina.pt();
-  const moldura = pagina.en();
-  expect(moldura.type).toBe(PortuguesApenas);
-  const filha = moldura.props.children as ReactElement;
-  expect(filha.type).toBe(pagina.pt);
-  expect(filha.props).toEqual({});
-  expect(elementos(moldura).filter((e) => e.type === PortuguesApenas)).toHaveLength(1);
-  // Executa apenas a página conhecida, depois de provar sua composição real.
-  // Decisões com sessão mockada não constituem autenticação HTTP completa.
-  return pagina.pt();
+  return idioma === "pt" ? pagina.pt() : pagina.en();
 }
 
 beforeEach(() => {
@@ -99,7 +91,9 @@ describe.each(PAGINAS)("$caminho: decisões reais da página", (pagina) => {
       expect(formularios).toHaveLength(1);
       expect(formularios[0].type).toBe(pagina.formulario);
       // A máscara esperada é literal, não calculada pelo helper sob teste.
-      expect(formularios[0].props).toEqual(pagina.exigeCookie ? { maskedPhone: "+55 •• •••••-5678" } : { paises: [{ code: "BR", ddi: "+55", name: "Brasil" }] });
+      expect(formularios[0].props).toEqual(pagina.exigeCookie
+        ? { maskedPhone: "+55 •• •••••-5678", idioma }
+        : { paises: [{ code: "BR", ddi: "+55", name: idioma === "pt" ? "Brasil" : "Brazil" }], idioma });
       expect(dependencias.sessao).toHaveBeenCalledExactlyOnceWith();
       expect(dependencias.redirect).not.toHaveBeenCalled();
       if (pagina.exigeCookie) {
@@ -144,14 +138,14 @@ describe.each(PAGINAS)("$caminho: decisões reais da página", (pagina) => {
 });
 
 describe.each(["pt", "en"] as const)("verificação SMS %s: decisão após leitura do cookie", (idioma) => {
-  it("retorna à solicitação portuguesa quando o leitor não fornece um telefone válido", async () => {
+  it("retorna à solicitação no mesmo idioma quando o leitor não fornece um telefone válido", async () => {
     // O leitor retorna null para ausência ou assinatura rejeitada. A validade
     // criptográfica e o redirect por streaming pertencem à prova HTTP/browser.
     dependencias.telefonePendente.mockReturnValue(null);
     await expect(abrir(PAGINAS[1], idioma)).rejects.toBe(REDIRECT);
     expect(dependencias.sessao).toHaveBeenCalledExactlyOnceWith();
     expect(dependencias.telefonePendente).toHaveBeenCalledExactlyOnceWith(LOGIN_PHONE_COOKIE);
-    expect(dependencias.redirect).toHaveBeenCalledExactlyOnceWith("/entrar/sms");
+    expect(dependencias.redirect).toHaveBeenCalledExactlyOnceWith(idioma === "pt" ? "/entrar/sms" : "/en/entrar/sms");
     expect(dependencias.sessao.mock.invocationCallOrder[0]).toBeLessThan(dependencias.telefonePendente.mock.invocationCallOrder[0]);
     expect(dependencias.telefonePendente.mock.invocationCallOrder[0]).toBeLessThan(dependencias.redirect.mock.invocationCallOrder[0]);
   });

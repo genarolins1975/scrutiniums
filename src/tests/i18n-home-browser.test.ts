@@ -157,7 +157,8 @@ describe("home PT/EN: navegador do build de produção", () => {
       expect((await contexto.cookies()).find((c) => c.name === "scrutiniums_idioma")).toMatchObject({ value: "en", path: "/", sameSite: "Lax", secure: false });
       const acoes = page.locator('[data-i18n-regiao="home-acoes"]');
       expect(await acoes.locator('a[href="/cadastro"]').textContent()).toBe(en["acesso.criar_conta"].texto);
-      expect(await acoes.locator('a[href="/entrar"]').textContent()).toBe(en["home.hero.ja_cadastrado"].texto);
+      // a entrada tem tradução publicada: o atalho inglês leva à irmã /en
+      expect(await acoes.locator('a[href="/en/entrar"]').textContent()).toBe(en["home.hero.ja_cadastrado"].texto);
       const nav = page.getByRole("navigation", { name: "Observatory index", exact: true });
       expect(await nav.count()).toBe(1);
       expect(await nav.getAttribute("data-i18n-regiao")).toBe("home-indice");

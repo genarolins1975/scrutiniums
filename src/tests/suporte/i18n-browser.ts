@@ -35,9 +35,12 @@ export async function aguardarPagina(page: Page, caminho: string): Promise<void>
     await page.locator(campo).waitFor({ state: "visible", timeout: PRAZO });
     if (cenario.pt === "/entrar/sms") await page.locator("form select").waitFor({ state: "visible", timeout: PRAZO });
     await page.locator('form button[type="submit"]').waitFor({ state: "visible", timeout: PRAZO });
-    await page.locator('header a[aria-label="Scrutiniums — página inicial"]').waitFor({ state: "visible", timeout: PRAZO });
+    // a entrada e o SMS têm tradução publicada; o cadastro inglês continua na ilha portuguesa
+    const traduzida = cenario.idioma === "en" && cenario.pt !== "/cadastro";
+    const marca = traduzida ? "Scrutiniums home page" : "Scrutiniums — página inicial";
+    await page.locator(`header a[aria-label="${marca}"]`).waitFor({ state: "visible", timeout: PRAZO });
     await page.locator('footer a[href="/privacidade"]').waitFor({ state: "visible", timeout: PRAZO });
-    if (cenario.idioma === "en") {
+    if (cenario.idioma === "en" && !traduzida) {
       await page.locator("[data-i18n-aviso]").waitFor({ state: "visible", timeout: PRAZO });
       await page.locator('[data-i18n-estado="portugues_marcado"]').waitFor({ state: "visible", timeout: PRAZO });
     }
@@ -65,10 +68,10 @@ export async function aguardarPagina(page: Page, caminho: string): Promise<void>
     // O foco vem do useEffect do formulário, não de autofocus no HTML bruto.
     await page.waitForFunction(() => document.activeElement === document.querySelector('form input[autocomplete="one-time-code"]'), undefined, { timeout: PRAZO });
     await page.clock.runFor(30_000);
-    await page.waitForFunction(() => {
+    await page.waitForFunction((liberado) => {
       const botao = document.querySelector<HTMLButtonElement>('form button[type="button"][aria-live="polite"]');
-      return botao?.textContent === "Reenviar código" && !botao.disabled;
-    }, undefined, { timeout: PRAZO });
+      return botao?.textContent === liberado && !botao.disabled;
+    }, cenario.idioma === "en" ? "Resend code" : "Reenviar código", { timeout: PRAZO });
   }
   // A espera de streaming não substitui a prova de todas as seções e do fecho.
   if (cenario.pt !== "/") verificarPaginaConcluida(parse(await page.content()), caminho);

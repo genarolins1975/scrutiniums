@@ -1,5 +1,6 @@
 import { parsePhoneNumberFromString, isSupportedCountry, type CountryCode } from "libphonenumber-js";
-import { COUNTRIES } from "./phone";
+import { COUNTRIES, COUNTRIES_EN } from "./phone";
+import type { Idioma } from "./idioma";
 
 /** Configuração exclusivamente do servidor. Vazio mantém somente o Brasil. */
 export function paisesSmsPermitidos(configuracao = process.env.SMS_PAISES_PERMITIDOS): CountryCode[] {
@@ -21,7 +22,7 @@ export function smsPermitido(e164: string): boolean {
   return pais !== null && paisesSmsPermitidos().includes(pais);
 }
 
-export function opcoesPaisSms() {
+export function opcoesPaisSms(idioma: Idioma = "pt") {
   const permitidos = new Set<string>(paisesSmsPermitidos());
-  return COUNTRIES.filter((pais) => permitidos.has(pais.code));
+  return (idioma === "en" ? COUNTRIES_EN : COUNTRIES).filter((pais) => permitidos.has(pais.code));
 }
