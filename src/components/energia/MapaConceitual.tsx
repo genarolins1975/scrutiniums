@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import type { IdNo, PontaLigacao, TipoLigacao } from "@/lib/energia/mapa";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Mapa conceitual da página inicial (seção 6.2 B): sete elos em cartões e as
@@ -101,8 +102,10 @@ export function MapaConceitual({
   rotulo: string;
   faixas?: RotuloFaixa[];
 }) {
+  const tx = useTx();
   const [atual, setAtual] = useState<IdNo>(inicial);
-  const [lente, setLente] = useState<TipoLigacao | "todas">("todas");
+  const TODAS = "todas" as const; // i18n: dado
+  const [lente, setLente] = useState<TipoLigacao | typeof TODAS>(TODAS);
   const porId = new Map(nos.map((n) => [n.id, n]));
   const formas = new Map(tipos.map((t) => [t.id, t]));
   const ligadas = (l: LigacaoDiagrama) => l.de === atual || l.para === atual;
@@ -110,11 +113,11 @@ export function MapaConceitual({
 
   return (
     <div className="energia-mapa-atlas">
-      <div className="energia-mapa-lentes" role="group" aria-label="Tipos de ligação visíveis">
-        <button type="button" aria-pressed={lente === "todas"} onClick={() => setLente("todas")}>Todas as relações</button>
+      <div className="energia-mapa-lentes" role="group" aria-label={tx("Tipos de ligação visíveis", "Visible connection types")}>
+        <button type="button" aria-pressed={lente === TODAS} onClick={() => setLente(TODAS)}>{tx("Todas as relações", "All relationships")}</button>
         {tipos.map(t => <button type="button" key={t.id} aria-pressed={lente === t.id} onClick={() => setLente(t.id)}>{t.rotulo}</button>)}
       </div>
-      <p className="energia-mapa-instrucao">{lente === "todas" ? "Explore a rede completa ou isole um tipo de relação." : tipos.find(t => t.id === lente)?.definicao} O painel do elo conserva todas as suas ligações.</p>
+      <p className="energia-mapa-instrucao">{lente === "todas" ? tx("Explore a rede completa ou isole um tipo de relação.", "Explore the full network or isolate one type of relationship.") : tipos.find(t => t.id === lente)?.definicao} {tx("O painel do elo conserva todas as suas ligações.", "The node panel keeps all of its connections.")}</p>
       <div className="energia-mapa-grade grid gap-6 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
       <div
         role="group"
@@ -198,7 +201,7 @@ export function MapaConceitual({
             );
           })}
         </div>
-        <ul aria-label="Tipos de ligação" className="mt-4 grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-2">
+        <ul aria-label={tx("Tipos de ligação", "Connection types")} className="mt-4 grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-2">
           {tipos.map((t) => (
             <li key={t.id} className="flex items-start gap-2">
               <Amostra t={t} />
@@ -211,7 +214,7 @@ export function MapaConceitual({
       </div>
       <div id="mapa-conceitual-detalhe" aria-live="polite" className="border border-linha bg-superficie p-5">
         <p className="rotulo text-mineral">
-          Elo escolhido <span aria-hidden="true">·</span> <span className="sr-only">na faixa </span>
+          {tx("Elo escolhido", "Selected node")} <span aria-hidden="true">·</span> <span className="sr-only">{tx("na faixa ", "in the band ")}</span>
           {escolhido.faixa}
         </p>
         <h3 className="mt-1 font-serif text-xl leading-snug text-carvao">{escolhido.titulo}</h3>
