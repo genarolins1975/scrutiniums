@@ -13,7 +13,8 @@ import type { DocumentoFonte } from "@/lib/energia/tipos-transicao";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { dataBR } from "@/lib/energia/formato";
-import { tx } from "@/lib/energia/idioma";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { NOTA_TRANSICAO_EN, daTabela } from "@/lib/energia/i18n/expansao-transicao-territorio";
 
 /**
  * Peças de servidor das páginas Transição e ambiente (a abertura em
@@ -184,6 +185,16 @@ export function TransicaoAuditoria({ titulo, children, id }: { titulo: ReactNode
 }
 
 /** Aviso que muda a leitura (grandeza, estimativa, fonte defasada): borda tracejada, rótulo em texto, nunca só cor. */
+/**
+ * Texto livre publicado pela gold (regra, tratamento, motivo). Na página inglesa vale a entrada exata da tabela de
+ * tradução; sem entrada, o texto sai como veio, marcado como trecho só em português. Em português, o texto puro.
+ */
+export function NotaGold({ texto, regiao, tabela = NOTA_TRANSICAO_EN }: { texto: string; regiao: string; tabela?: Readonly<Record<string, string>> }) {
+  const traduzido = daTabela(texto, tabela, idiomaEnergia());
+  if (traduzido !== null) return <>{traduzido}</>;
+  return <TrechoPortugues regiao={regiao}>{texto}</TrechoPortugues>;
+}
+
 export function TransicaoAviso({ rotulo, children, alerta = false }: { rotulo: string; children: ReactNode; alerta?: boolean }) {
   return (
     <div role={alerta ? "status" : undefined} className="flex flex-wrap items-start gap-x-3 gap-y-1 border border-dashed border-mineral bg-papel px-4 py-3 text-sm leading-relaxed text-carvao">

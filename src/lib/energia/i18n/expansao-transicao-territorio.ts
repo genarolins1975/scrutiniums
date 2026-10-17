@@ -113,6 +113,102 @@ export const NOTA_TRANSICAO_EN: Readonly<Record<string, string>> = {
   "Uma única captura do cadastro integrada até aqui: as revisões por registro tardio serão medidas a partir da próxima captura.":
     "A single capture of the register integrated so far: revisions due to late registration will be measured from the next capture on.",
   "Ainda não há duas capturas do cadastro para medir revisões.": "There are not yet two captures of the register to measure revisions.",
+  // Regras publicadas em transicao.json (regras.*)
+  "Potência instalada cadastrada (kW, MW) é capacidade; energia gerada (MWh, MWmed) só aparece na estimativa do ONS, em bloco separado.":
+    "Registered installed capacity (kW, MW) is capacity; energy generated (MWh, MWavg) only appears in the ONS estimate, in a separate block.",
+  "Cadastro regulatório da ANEEL e estimativa operacional do ONS são grandezas diferentes: nunca somadas, só comparadas por razão rotulada.":
+    "ANEEL's regulatory register and the ONS operational estimate are different quantities: never added, only compared through a labeled ratio.",
+  "Ano e mês vêm da data de conexão publicada (DthAtualizaCadastralEmpreend, conferida com DatConexao do recurso técnico).":
+    "Year and month come from the published connection date (DthAtualizaCadastralEmpreend, checked against DatConexao in the technical resource).",
+  "Os 6 meses anteriores à data do cadastro são provisórios: conexões desses meses ainda podem entrar em capturas seguintes; a queda nesses meses não tem causa atribuída.":
+    "The 6 months before the register date are provisional: connections in those months may still enter later captures; the drop in those months has no attributed cause.",
+  "Comparações de crescimento usam o último ano completo antes da data do cadastro; o ano corrente é parcial e não entra em ranking.":
+    "Growth comparisons use the last full year before the register date; the current year is partial and does not enter rankings.",
+  "Por habitante usa a população estimada pelo IBGE; rankings só com população de pelo menos 100.000.":
+    "Per inhabitant uses the population estimated by the IBGE; rankings only with a population of at least 100,000.",
+  "Participações em % com duas casas; abaixo de 0,01% (e diferente de zero), com dois algarismos significativos.":
+    "Shares in % with two decimal places; below 0.01% (and other than zero), with two significant digits.",
+  "Séries anual e mensal do cadastro trazem todos os anos e meses entre a primeira conexão e a data do cadastro. Dentro da cobertura declarada pela ANEEL (a partir de dez/2008), sem conexão = zero explícito; antes dela, período sem registro fica nulo e registro existente é publicado, os dois rotulados como fora da cobertura (ou em parte, no ano de 2008).":
+    "The annual and monthly register series carry every year and month between the first connection and the register date. Within the coverage declared by ANEEL (from Dec/2008), no connection = explicit zero; before it, a period without records stays null and an existing record is published, both labeled as outside coverage (or partly, in the year 2008).",
+  "Unidades em UF onde a distribuidora (CNPJ) não tem conjunto elétrico ficam no município publicado, sinalizadas e contadas, sem correção, em duas classes pelo CEP publicado: provável município errado (CEP na área da distribuidora) e provável distribuidora errada (CEP, código e UF na UF do município), além das indeterminadas.":
+    "Units in a state where the distribution utility (CNPJ) has no consumer set stay in the published municipality, flagged and counted, without correction, in two classes by the published postal code (CEP): probable wrong municipality (CEP in the utility's area) and probable wrong utility (CEP, code and state in the municipality's state), plus the undetermined ones.",
+  "Potência ausente não vira zero: a unidade conta, a soma de kW é das potências informadas, unidades_sem_potencia marca a soma parcial e potência nula marca agregado sem nenhuma potência.":
+    "Missing capacity does not become zero: the unit counts, the kW sum is of the reported capacities, unidades_sem_potencia marks the partial sum and null capacity marks an aggregate with no capacity at all.", // i18n: dado
+  "Fator médio (inventários) e fatores de margem (MDL) são séries separadas e não se substituem.":
+    "The average factor (inventories) and the margin factors (CDM) are separate series and do not replace each other.",
+  "Os fatores do MCTI são de CO2, em tCO2/MWh; não são CO2 equivalente.": "The MCTI factors are for CO2, in tCO2/MWh; they are not CO2 equivalent.",
+  "Não há intensidade de emissão municipal nem horária: o fator oficial é nacional (SIN) e mensal.":
+    "There is no municipal or hourly emissions intensity: the official factor is national (SIN) and monthly.",
+  // Controles do cadastro de MMGD (mmgd.controles)
+  "A ANEEL declara a cobertura da relação a partir de dezembro de 2008. Dentro dela, período sem conexão no cadastro é zero explícito; antes dela (e no ano de 2008, coberto só em dezembro), período sem registro fica nulo, e registro existente é publicado como está, com o rótulo de cobertura.":
+    "ANEEL declares the coverage of the register from December 2008. Within it, a period without connections in the register is an explicit zero; before it (and in the year 2008, covered only in December), a period without records stays null, and an existing record is published as is, with the coverage label.",
+  "medida e publicada, não removida: CPF e CEP de pessoa física vêm tarjados e unidades iguais do mesmo titular podem ser legítimas":
+    "measured and published, not removed: the CPF and postal code of individuals come redacted, and identical units of the same holder may be legitimate",
+  "sinalizadas e separadas em classes pelo CEP, não corrigidas nem removidas: o código de município e o CNPJ são os publicados pela ANEEL":
+    "flagged and split into classes by postal code (CEP), neither corrected nor removed: the municipality code and the CNPJ are the ones published by ANEEL",
+  "UF atendida = UF de algum município de algum conjunto elétrico do CNPJ, em qualquer ano da base (1990 a 2032); comparação só por CNPJ e código IBGE, sem nome":
+    "state served = state of any municipality of any consumer set of the CNPJ, in any year of the database (1990 to 2032); comparison only by CNPJ and IBGE code, without names",
+  "Provável código de município errado: o CEP publicado fica numa UF da área da distribuidora":
+    "Probable wrong municipality code: the published postal code is in a state within the utility's area",
+  "Provável distribuidora (CNPJ) errada: CEP, código do empreendimento e UF publicada ficam na UF do município":
+    "Probable wrong distribution utility (CNPJ): postal code, project code and published state are in the municipality's state",
+  "Indeterminada: CEP ausente, de preenchimento, sem referência, numa terceira UF ou sinais divergentes":
+    "Undetermined: postal code missing, placeholder, without reference, in a third state or divergent signals",
+  "Para refazer a potência por habitante de um município sem as unidades que provavelmente estão em outro município, desconte só a classe de provável município errado (colunas do CSV municipal). A classe de provável distribuidora errada fica no município publicado e infla o total da distribuidora informada.":
+    "To recompute a municipality's capacity per inhabitant without the units that are probably in another municipality, discount only the probable wrong municipality class (columns of the municipal CSV). The probable wrong utility class stays in the published municipality and inflates the total of the reported utility.", // i18n: dado
+  "UF do CEP = UF (pelo código IBGE do município) que reúne pelo menos 90% das unidades não sinalizadas do cadastro com o mesmo prefixo de 5 dígitos; prefixo sem unidade não sinalizada, ou sem UF que chegue a 90%, usa o de 3 dígitos pela mesma regra; prefixo com os cinco dígitos iguais (ex.: 77777) é preenchimento. A tabela oficial de faixas de CEP por UF dos Correios só é consultável com verificação humana, que não é contornada.":
+    "State of the postal code = the state (by the municipality's IBGE code) that gathers at least 90% of the unflagged units of the register with the same 5-digit prefix; a prefix without unflagged units, or with no state reaching 90%, uses the 3-digit one by the same rule; a prefix with five identical digits (e.g. 77777) is a placeholder. The official table of postal code ranges by state from Correios can only be consulted with human verification, which is not circumvented.",
+  // Validações e conferência da estimativa do ONS (ons_mmgd)
+  "0 ≤ participação ≤ 100% em cada mês (submercado e SIN) e em cada ano (SIN); violação derruba a publicação":
+    "0 ≤ share ≤ 100% in each month (submarket and SIN) and in each year (SIN); a violation blocks the release",
+  "dia por submercado com MMGD estimada negativa ou maior que a carga global do dia": "day per submarket with estimated MMGD negative or greater than the day's gross load",
+  "ressalva na proveniência; os dias ficam na série como o ONS publica": "caveat in the provenance; the days stay in the series as the ONS publishes them",
+  "cada dia de 29/04 a 06/05/2023 menos o mesmo dia da semana 14 dias antes (médias de 24 horas); pares com feriado nacional (21/04 e 01/05) ficam fora da mediana":
+    "each day from Apr 29 to May 6, 2023 minus the same weekday 14 days earlier (24-hour averages); pairs with a national holiday (Apr 21 and May 1) stay out of the median",
+  "O ONS declara, na página do Balanço de Energia, que a estimativa de MMGD passou a compor os dados de geração e carga a partir de 29/04/2023. No dado, a solar do SIN no balanço sobe 2.386 MWmed de 28/04 para 29/04/2023; a MMGD estimada pela API de carga verificada, como publicada na data de processamento, é 3.528 MWmed em 29/04/2023, 1.142 MWmed acima do degrau. A fonte não publica explicação para essa diferença. Comparando cada dia de 29/04 a 06/05 com o mesmo dia da semana 14 dias antes (6 pares, sem feriados), a mediana das diferenças é 2.840 MWmed na solar e 559 MWmed na carga, para 3.478 MWmed de MMGD estimada nos mesmos dias: na carga do balanço não aparece degrau do tamanho da MMGD estimada.":
+    "The ONS states, on the Energy Balance page, that the MMGD estimate began to make up the generation and load data from Apr 29, 2023. In the data, SIN solar in the balance rises 2,386 MWavg from Apr 28 to Apr 29, 2023; the MMGD estimated by the verified load API, as published on the processing date, is 3,528 MWavg on Apr 29, 2023, 1,142 MWavg above the step. The source publishes no explanation for this difference. Comparing each day from Apr 29 to May 6 with the same weekday 14 days earlier (6 pairs, without holidays), the median of the differences is 2,840 MWavg in solar and 559 MWavg in load, against 3,478 MWavg of estimated MMGD on the same days: the balance load shows no step the size of the estimated MMGD.",
+  // Fatores de emissão do MCTI (emissoes)
+  "Base de usinas do ONS ampliada (termelétricas a biomassa e conjuntos de usinas solares e eólicas, de emissão nula); metodologia mantida. Valores a partir de jan/2025 podem ser menores por causa da base, não só da operação.":
+    "ONS plant database expanded (biomass thermal plants and clusters of solar and wind plants, with zero emissions); methodology kept. Values from Jan/2025 on may be lower because of the database, not only because of operation.",
+  "energia despachada no SIN usada pelo MCTI no método simples ajustado (MWh), antes e depois da ampliação da base":
+    "energy dispatched in the SIN used by the MCTI in the simple adjusted method (MWh), before and after the database expansion",
+  "Uma estimativa própria de intensidade (por exemplo, geração térmica do ONS por combustível multiplicada por fatores de combustível) exigiria consumo específico de cada usina, que não é publicado de forma estruturada; o resultado teria incerteza maior que a diferença entre anos e não substitui o fator oficial. Nada foi estimado.":
+    "An in-house intensity estimate (for example, ONS thermal generation by fuel multiplied by fuel factors) would require each plant's specific consumption, which is not published in a structured way; the result would have an uncertainty larger than the difference between years and would not replace the official factor. Nothing was estimated.",
+  "site institucional anterior do MCTI (antigo.mctic.gov.br), planilhas oficiais de 2006 a 2021: usadas só onde a página vigente não tem valor, e sempre comparadas com ela":
+    "previous institutional MCTI website (antigo.mctic.gov.br), official spreadsheets from 2006 to 2021: used only where the current page has no value, and always compared with it",
+  "média simples dos fatores diários da margem de operação comparada ao fator mensal publicado":
+    "simple average of the daily operating margin factors compared with the published monthly factor",
+  "data inexistente no calendário": "date that does not exist in the calendar",
+  "data inexistente no calendário (valor da publicação anterior)": "date that does not exist in the calendar (value from the previous release)",
+  "CO2 (não CO2e)": "CO2 (not CO2e)",
+  atual: "current",
+};
+/** Série dos fatores do MCTI como a gold a nomeia (código com espaço no lugar do sublinhado, ou rótulo). */
+export const SERIE_MCTI_EN: Readonly<Record<string, string>> = {
+  "margem operacao diaria": "operating margin, daily",
+  "margem operacao mensal": "operating margin, monthly",
+  "margem construcao": "build margin",
+  "fator médio mensal": "average factor, monthly",
+  "fator médio anual": "average factor, annual",
+  "margem de operação (despacho) diária": "operating margin (dispatch), daily",
+  "margem de operação (despacho) mensal": "operating margin (dispatch), monthly",
+  "margem de operação (simples ajustado) anual": "operating margin (simple adjusted), annual",
+  "margem de construção anual": "build margin, annual",
+};
+/** Resultado de controle publicado na gold. */
+export const RESULTADO_CONTROLE_EN: Readonly<Record<string, string>> = {
+  aprovada: "passed",
+  aprovado: "passed",
+  reprovada: "failed",
+  reprovado: "failed",
+};
+/** Motivo das unidades indeterminadas pelo CEP (código da gold, com espaço no lugar do sublinhado). */
+export const MOTIVO_CEP_EN: Readonly<Record<string, string>> = {
+  "sem cep": "no postal code",
+  "cep de preenchimento": "placeholder postal code",
+  "cep sem referencia": "postal code without reference",
+  "cep em terceira uf": "postal code in a third state",
+  "sinais divergentes": "divergent signals",
 };
 /** Modelo do aviso sobre o total de uma distribuidora na MMGD (texto gerado pelo pipeline). */
 export const AVISO_DISTRIBUIDORA =
@@ -255,7 +351,7 @@ export const TITULO_FIGURA_EN: Readonly<Record<string, string>> = {
   "Cenários de expansão do sistema de transmissão": "Transmission system expansion scenarios",
   "Cenários de referência: Expansão física de LTs": "Reference scenarios: physical expansion of transmission lines",
   "Cenários de referência: expansão física de SEs": "Reference scenarios: physical expansion of substations",
-  "Geração total de eletricidade por fonte no horizonte decenal": "Total electricity generation by source over the ten-year horizon",
+  "Geração total de eletricidade por fonte no horizonte decenal": "Total electricity generation by source over the ten-year horizon", // i18n: dado
 };
 /** Colunas das figuras do PDE 2035 (rótulos da planilha da EPE). */
 export const COLUNA_FIGURA_EN: Readonly<Record<string, string>> = {
@@ -278,7 +374,7 @@ export const COLUNA_FIGURA_EN: Readonly<Record<string, string>> = {
   "Nuclear (MW)": "Nuclear (MW)",
   "Armazenamento (MW)": "Storage (MW)",
   "RD (MW)": "Demand response (MW)",
-  "Total (MW)": "Total (MW)",
+  "Total (MW)": "Total (MW)", // i18n: dado
   "UHE (GW)": "UHE (GW)",
   "PCH (GW)": "PCH (GW)",
   "Biomassa (GW)": "Biomass (GW)",
@@ -339,7 +435,7 @@ export const ORGAO_EN: Readonly<Record<string, string>> = {
   "EPE e Ministério de Minas e Energia": "EPE and the Ministry of Mines and Energy (MME)",
 };
 
-const MESES_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+const MESES_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]; // i18n: dado
 const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 /** "janeiro de 2025" → "January 2025"; outro texto volta como veio. */
@@ -377,5 +473,5 @@ export const HIPOTESE_PDE_EN: Readonly<Record<string, string>> = {
     "Legislation in force on the base date (January 2025). After that date, according to the report itself, Provisional Measure No. 1.304/2025 came into force and, from it, Law No. 15.269/2025 was enacted, which amended these articles (note 17).",
   "Angra 3 com início de operação comercial em 2033, adotado após consulta ao MME.": "Angra 3 starting commercial operation in 2033, adopted after consulting the MME.",
   "Expansão indicativa escolhida pelo menor custo total que atende aos critérios de suprimento de energia e potência.":
-    "Indicative expansion chosen by the lowest total cost that meets the energy and capacity supply criteria.",
+    "Indicative expansion chosen by the lowest total cost that meets the energy and capacity supply criteria.", // i18n: dado
 };
