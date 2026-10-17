@@ -24,7 +24,8 @@ import type { Natureza } from "@/lib/energia/tipos";
 
 /** A abertura e as quatro páginas de painel como itens da navegação local; a descrição de cada uma é a pergunta que ela responde. */
 const ITENS_EMPRESAS = [
-  { id: "sintese", href: ROTA_EMPRESAS, rotulo: "Síntese", descricao: "Quem atua no setor elétrico?" },
+  { id: "sintese", href: ROTA_EMPRESAS, rotulo: "Visão geral", descricao: "Quem atua no setor elétrico?" },
+  { id: "listadas", href: `${ROTA_EMPRESAS}/listadas`, rotulo: "Listadas na bolsa", descricao: "Quem são as companhias listadas de energia elétrica?" },
   ...PAINEIS_EMPRESAS.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta })),
 ];
 
@@ -32,7 +33,7 @@ const ITENS_EMPRESAS = [
  * Faixa de páginas irmãs nas páginas filhas, com a atual marcada (na ficha de uma distribuidora, nenhuma). A abertura não leva a faixa:
  * mostra os mesmos destinos como capítulos logo depois da busca (EmpresasCapitulos), e o mesmo rótulo não aparece duas vezes.
  */
-export function EmpresasNavegacao({ atual }: { atual: PainelEmpresas | "sintese" | "ficha" }) {
+export function EmpresasNavegacao({ atual }: { atual: PainelEmpresas | "sintese" | "ficha" | "listadas" }) {
   if (atual === "sintese") return null;
   return <NavegacaoLocal rotulo="Páginas do módulo Empresas" itens={ITENS_EMPRESAS} atual={atual} />;
 }
@@ -62,12 +63,17 @@ export function EmpresasCapitulos({ itens, nivelTitulo = 2 }: { itens: CapituloE
   const TituloItem = nivelTitulo === 2 ? "h3" : "h4";
   return (
     <nav aria-label="Capítulos de Empresas" data-navegacao-local="capitulos" className="scroll-mt-28 pb-6" id="caminhos">
-      <Titulo className={`${nivelTitulo === 2 ? "ed-h2" : "ed-h3"} font-serif text-carvao`}>Quatro caminhos, uma página para cada pergunta</Titulo>
-      <ol className="mt-4 grid gap-x-10 gap-y-10 md:grid-cols-2">
+      <Titulo className={`${nivelTitulo === 2 ? "ed-h2" : "ed-h3"} font-serif text-carvao`}>Quatro painéis para aprofundar</Titulo>
+      <ol className="mt-4 grid gap-4 md:grid-cols-2">
         {itens.map((c) => {
           const p = painel(c.id);
           return (
-            <li key={c.id} id={`sintese-${c.id}`} aria-labelledby={`sintese-${c.id}-titulo`} className="flex min-w-0 scroll-mt-28 flex-col gap-2.5">
+            <li
+              key={c.id}
+              id={`sintese-${c.id}`}
+              aria-labelledby={`sintese-${c.id}-titulo`}
+              className="flex min-w-0 scroll-mt-28 flex-col gap-2.5 border-t-[3px] border-energia bg-superficie p-5 shadow-[inset_0_0_0_1px_theme(colors.linha)]"
+            >
               <p className="rotulo text-mineral">{p.rotulo}</p>
               <TituloItem id={`sintese-${c.id}-titulo`} className="ed-h3 font-serif text-carvao">
                 {p.pergunta}

@@ -136,8 +136,9 @@ MODULOS = {
     "qualidade": {"rotulo": "Qualidade", "vitest": ["energia-qualidade"], "pytest": ["test_energia_qualidade"], "doc": "qualidade"},
     "inclusao-energetica": {"rotulo": "Inclusão energética", "vitest": ["energia-inclusao"], "pytest": ["test_energia_inclusao"], "doc": "inclusao"},
     "transicao": {"rotulo": "Transição e ambiente", "vitest": ["energia-transicao"], "pytest": ["test_energia_transicao"], "doc": "transicao"},
-    "empresas": {"rotulo": "Empresas", "vitest": ["energia-empresas"], "pytest": ["test_energia_empresas"], "doc": "empresas"},
+    "empresas": {"rotulo": "Empresas", "vitest": ["energia-empresas", "energia-listadas"], "pytest": ["test_energia_empresas", "test_energia_listadas"], "doc": "empresas"},
     "expansao": {"rotulo": "Expansão", "vitest": ["energia-expansao"], "pytest": ["test_energia_expansao"], "doc": "expansao"},
+    "leiloes": {"rotulo": "Leilões", "vitest": ["energia-leiloes"], "pytest": ["test_energia_leiloes"], "doc": "leiloes"},
     "regulacao": {"rotulo": "Regulação", "vitest": ["energia-regulacao"], "pytest": ["test_energia_regulacao"], "doc": "regulacao"},
     "territorio": {"rotulo": "Território", "vitest": ["energia-territorio"], "pytest": ["test_energia_territorio", "test_energia_geo"], "doc": "territorio"},
     "aprenda": {"rotulo": "Aprenda", "vitest": ["energia-aprenda", "energia-conteudo-conferido"], "pytest": [], "doc": "aprenda"},
@@ -163,6 +164,8 @@ GOLDS_POR_PREFIXO = [
     (f"{PREFIXO}/expansao", ["expansao.json"]),
     (f"{PREFIXO}/regulacao", ["regulacao.json"]),
     (f"{PREFIXO}/territorio", ["territorio.json"]),
+    (f"{PREFIXO}/leiloes", ["leiloes.json", "expansao.json"]),
+    (f"{PREFIXO}/empresas/listadas", ["listadas.json"]),
     (f"{PREFIXO}/empresas/distribuidoras", ["empresas.json", "perdas.json", "qualidade.json", "conta.json"]),
     (f"{PREFIXO}/empresas", ["empresas.json"]),
 ]
@@ -212,7 +215,9 @@ def tipo_da_rota(rota):
         return "verbete"
     if resto[0] == "dados" and len(resto) == 2 and resto[1] not in ("saude", "reproducao"):
         return "ficha"
-    if resto[0] == "empresas" and len(resto) == 2 and resto[1] not in ("ativos", "controle", "distribuidoras", "financas"):
+    if resto[0] == "empresas" and len(resto) == 2 and resto[1] not in ("ativos", "controle", "distribuidoras", "financas", "listadas"):
+        return "ficha"
+    if resto[0] == "empresas" and len(resto) == 3 and resto[1] == "listadas":
         return "ficha"
     return "painel"
 
@@ -222,6 +227,8 @@ def golds_da_rota(rota):
     topo = resto.split("/")[0] if resto else ""
     if topo in GOLDS_DE_CONTROLE:
         return GOLDS_DE_CONTROLE[topo]
+    if rota == f"{PREFIXO}/empresas/listadas" or rota.startswith(f"{PREFIXO}/empresas/listadas/"):
+        return ["listadas.json"]
     if tipo_da_rota(rota) == "ficha" and topo == "empresas":
         return ["empresas.json", "perdas.json", "qualidade.json", "conta.json"]
     if tipo_da_rota(rota) == "ficha" and topo == "dados":

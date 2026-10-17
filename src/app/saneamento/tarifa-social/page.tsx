@@ -9,10 +9,11 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { agregado, agregados, fichas, meta, municipios } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
-import { calcularConta } from "@/lib/saneamento/conta";
+import { acimaDoLimite, calcularConta } from "@/lib/saneamento/conta";
 import { TARIFAS } from "@/lib/saneamento/tarifas";
 import { razaoPct } from "@/lib/saneamento/municipios";
-import { inteiro, numero, reais } from "@/lib/saneamento/formato";
+import { LIMITE_RAZAO_TARIFA_SOCIAL, razaoTarifaSocial } from "@/lib/saneamento/medidas";
+import { inteiro, mesAno, numero, reais } from "@/lib/saneamento/formato";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -28,13 +29,6 @@ const LIMITE_PER_CAPITA = SALARIO_MINIMO_2026 / 2;
 const CONSUMOS = [10, 15];
 const FAMILIAS = [3, 4];
 const ATLAS = ["tarifa-social-por-familia-elegivel"];
-
-/** "202412" → "dez/2024". */
-function mesAno(m: string | undefined): string {
-  if (!m) return "sem dado";
-  const nomes = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-  return `${nomes[Number(m.slice(4)) - 1]}/${m.slice(0, 4)}`;
-}
 
 export default function Pagina() {
   const cap = capituloPorSlug("tarifa-social")!;
@@ -75,7 +69,7 @@ export default function Pagina() {
     const res = t.categorias.residencial;
     if (!res) return [];
     return Object.entries(t.categorias)
-      .filter(([k]) => k !== "residencial")
+      .filter(([k, cat]) => k !== "residencial" && CONSUMOS.every((c) => !acimaDoLimite(cat, c)))
       .map(([k, cat]) => {
         // Sem esgoto verificado na categoria, compara só a água dos dois lados: nunca conta completa contra conta parcial.
         const soAgua = !cat.esgoto || !!cat.esgotoNaoVerificado || !res.esgoto || !!res.esgotoNaoVerificado;
@@ -99,6 +93,17 @@ export default function Pagina() {
   });
 
   const cenarios = FAMILIAS.map((n) => ({ n, renda: n * LIMITE_PER_CAPITA }));
+
+  // Água Solidária (programa estadual da SANEPAR): conta de água e esgoto de Curitiba no menor consumo, ao lado da tarifa social federal e da residencial.
+  const sanepar = TARIFAS.find((t) => t.id === "sanepar-2026-curitiba");
+  const aguaSolidaria = sanepar?.categorias.agua_solidaria && sanepar.categorias.social && sanepar.categorias.residencial
+    ? {
+        consumo: CONSUMOS[0],
+        solidaria: calcularConta(sanepar.categorias.agua_solidaria, CONSUMOS[0]).total,
+        social: calcularConta(sanepar.categorias.social, CONSUMOS[0]).total,
+        residencial: calcularConta(sanepar.categorias.residencial, CONSUMOS[0]).total,
+      }
+    : null;
 
   // Alcance: economias com tarifa social (SINISA 2024) sobre famílias elegíveis do CadÚnico (dez/2024).
   const m = meta();
@@ -126,11 +131,21 @@ export default function Pagina() {
       municipio: x.nome,
       href: `${ROTA}/municipio/${x.id}`,
       uf: x.uf,
-      estado: x.ts_estado ? ROTULO_ESTADO[x.ts_estado] : "Sem resposta",
+      estado:
+        (x.ts_estado ? ROTULO_ESTADO[x.ts_estado] : "Sem resposta") +
+        ((razaoTarifaSocial(x) ?? 0) > LIMITE_RAZAO_TARIFA_SOCIAL ? `; razão acima de ${LIMITE_RAZAO_TARIFA_SOCIAL}, declaração a verificar` : ""),
       familias: x.cad_fam_ms,
       economias: x.ts_economias,
-      razao: x.ts_economias != null && x.cad_fam_ms ? (x.ts_economias / x.cad_fam_ms) * 100 : null,
+      razao: razaoTarifaSocial(x),
     }));
+  // Declarações acima do universo elegível: somam à razão publicada, mas ficam fora das classes do mapa.
+  const acima = lista.filter((x) => (razaoTarifaSocial(x) ?? 0) > LIMITE_RAZAO_TARIFA_SOCIAL);
+  const economiasAcima = acima.reduce((t, x) => t + (x.ts_economias ?? 0), 0);
+  const familiasAcima = acima.reduce((t, x) => t + (x.cad_fam_ms ?? 0), 0);
+  const razaoSemAcima =
+    ts?.economias != null && ts.familias_mesmo_universo && ts.familias_mesmo_universo > familiasAcima
+      ? ((ts.economias - economiasAcima) / (ts.familias_mesmo_universo - familiasAcima)) * 100
+      : null;
 
   return (
     <>
@@ -148,7 +163,7 @@ export default function Pagina() {
               limite da elegibilidade.
             </p>
           }
-          recorte={<>SINISA 2024: {inteiro(vinculos)} vínculos prestador × município de água; tabelas verificadas de cinco prestadores, vigentes em 2026.</>}
+          recorte={<>SINISA 2024: {inteiro(vinculos)} vínculos prestador × município de água; tabelas verificadas de {new Set(TARIFAS.map((t) => t.prestadorSinisa)).size} prestadores, vigentes em 2026.</>}
           situacao={cap.situacao}
           pendencia={cap.pendencia}
         />
@@ -214,7 +229,7 @@ export default function Pagina() {
           />
           <Nota>
             {inteiro(semResposta)} vínculos não responderam se há tarifa social. O valor médio declarado da tarifa social (GFI1037) tem registros
-            incompatíveis com uma conta mensal, alguns acima de R$ 100 mil, e não é publicado aqui. A ficha de cada município mostra a declaração local.
+            incompatíveis com uma conta mensal, alguns acima de R$ 100 mil, e não é publicado, nem aqui nem na ficha de cada município.
           </Nota>
           <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), informações financeiras por prestador e município, campos GFI1019 a GFI1037.</Fonte>
         </Secao>
@@ -274,6 +289,19 @@ export default function Pagina() {
             permite="Comparar o desconto efetivo na conta, no mesmo consumo, entre categorias e prestadores da amostra."
             naoPermite="Verificar a conformidade com a lei: a regra legal incide sobre a primeira faixa, e cada estrutura tarifária define faixas diferentes; categorias de vulnerabilidade podem ter critérios distintos da tarifa social da lei."
           />
+          {aguaSolidaria && (
+            <Nota titulo="Água Solidária, o programa estadual da SANEPAR">
+              O Paraná manteve o Água Solidária ao lado da tarifa social federal. A Resolução AGEPAR 23/2026 traz tabela própria, com esgoto a 50% da
+              tarifa de água. Em {aguaSolidaria.consumo} m³ em Curitiba, a conta de água e esgoto é {reais(aguaSolidaria.solidaria)} no Água Solidária,{" "}
+              {reais(aguaSolidaria.social)} na tarifa social federal e {reais(aguaSolidaria.residencial)} na residencial. Quem está no Água Solidária
+              não recebe a tarifa social federal, e cada CPF tem um benefício social ativo. Pelos critérios que a Sanepar publica, com base no Decreto
+              Estadual 9.606/2021, o programa vale para imóvel residencial de até 70 m², consumo de até 10 m³ por mês (famílias com mais de 4 pessoas e
+              consumo acima disso são medidas por até 2,5 m³ por residente), renda de até meio salário mínimo por pessoa ou de até 2 salários mínimos
+              em imóvel com até 4 ocupantes, um cadastro por CPF e validade de 24 meses. O texto do decreto não foi lido e o enquadramento não é
+              verificado: a conta vale para quem se enquadra. O cenário de peso na renda, mais abaixo, usa {aguaSolidaria.consumo} m³ para o Água
+              Solidária, dentro do limite de consumo, e não verifica o tamanho do imóvel.
+            </Nota>
+          )}
           <Fonte>Tabelas tarifárias verificadas nos atos dos reguladores; mesma regra de cálculo do simulador (capítulo 5.1).</Fonte>
         </Secao>
 
@@ -361,6 +389,12 @@ export default function Pagina() {
               },
             ]}
           />
+          <Nota titulo="Declarações acima do universo elegível">
+            {inteiro(acima.length)} municípios declaram mais economias com tarifa social do que famílias elegíveis (razão acima de {LIMITE_RAZAO_TARIFA_SOCIAL}):{" "}
+            {inteiro(economiasAcima)} economias para {inteiro(familiasAcima)} famílias. Sem eles, a razão do Brasil seria {numero(razaoSemAcima, 1)} em vez de{" "}
+            {numero(razaoBr, 1)}. O SINISA é declaratório e o Observatório não corrige o dado: a soma publicada os mantém, a tabela os sinaliza e o
+            atlas os deixa fora das classes, para que um erro de declaração não defina a escala.
+          </Nota>
           <div className="mt-10">
             <AtlasMunicipal ids={ATLAS} referencias={refs} nomesUf={nomesUf} titulo="Atlas municipal do alcance da tarifa social" />
           </div>
@@ -397,7 +431,7 @@ export default function Pagina() {
           </div>
           <Ressalva
             permite="Ver onde a tarifa social declarada alcança mais ou menos economias em relação ao público que a lei torna elegível, e onde o prestador declara não oferecê-la."
-            naoPermite="Dizer quantas famílias elegíveis recebem o desconto: uma economia pode abrigar mais de uma família, parte das famílias não tem ligação à rede ou não é titular da conta, e critérios locais anteriores à lei podem incluir quem não está no CadÚnico. A razão pode passar de 100."
+            naoPermite="Dizer quantas famílias elegíveis recebem o desconto: uma economia pode abrigar mais de uma família, parte das famílias não tem ligação à rede ou não é titular da conta, e critérios locais anteriores à lei podem incluir quem não está no CadÚnico. Razão acima de 100 fica sinalizada como declaração a verificar."
           />
           <Nota titulo="Por que o BPC não entra somado">
             Desde o Decreto 8.805/2016, a inscrição no CadÚnico é requisito para conceder e manter o BPC (MDS, Guia do BPC, 2018). As famílias com BPC

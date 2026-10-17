@@ -36,6 +36,7 @@ export const MODULOS_ENERGIA: ModuloEnergia[] = [
   { slug: "carga", href: "/setor-eletrico/carga", rotulo: "Carga", resumo: "Quanto o sistema está consumindo e como isso se compara.", integrado: true, secao: "energia:carga" },
   { slug: "rede", href: "/setor-eletrico/rede", rotulo: "Rede", resumo: "Fluxos entre regiões e diferenças de preço.", integrado: true, secao: "energia:rede" },
   { slug: "mercado", href: "/setor-eletrico/mercado", rotulo: "Mercado", resumo: "Livre e regulado, agentes e migração, MRE e GSF, encargos e liquidação, com a CCEE, a EPE e a ANEEL.", integrado: true, secao: "energia:mercado" },
+  { slug: "leiloes", href: "/setor-eletrico/leiloes", rotulo: "Leilões", resumo: "Leilões de geração do ACR e de transmissão: energia contratada, preço, deságio, vencedores e o que já opera.", integrado: true, secao: "energia:leiloes" },
   { slug: "empresas", href: "/setor-eletrico/empresas", rotulo: "Empresas", resumo: "Grupos econômicos, companhias, usinas, linhas e concessões.", integrado: true, secao: "energia:empresas" },
   { slug: "expansao", href: "/setor-eletrico/expansao", rotulo: "Expansão", resumo: "Leilões, projetos, capacidade futura e planejamento.", integrado: true, secao: "energia:expansao" },
   { slug: "regulacao", href: "/setor-eletrico/regulacao", rotulo: "Regulação", resumo: "ANEEL, MME, Congresso e Presidência, com linha do tempo e documentos primários.", integrado: true, secao: "energia:regulacao" },
@@ -125,6 +126,7 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
     integrado: true,
   },
   { ...doModulo("mercado"), rotulo: "Mercado", grupo: "precos-e-mercado", publicado: true, pergunta: "Como a energia é contratada, alocada e liquidada?" },
+  { ...doModulo("leiloes"), rotulo: "Leilões", grupo: "precos-e-mercado", publicado: true, pergunta: "O que os leilões contrataram, a que preço e de quem?" },
 
   // 4. Consumidor e território
   {
@@ -201,7 +203,7 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
 const DEFINICAO_GRUPOS: Omit<GrupoNavegacao, "destinos">[] = [
   { id: "comece-aqui", n: 1, rotulo: "Comece aqui", resumo: "Por onde começar e o que os dados mostram nos últimos dias." },
   { id: "operacao", n: 2, rotulo: "Operação do sistema", resumo: "A água, a geração, o consumo e a rede que liga as regiões." },
-  { id: "precos-e-mercado", n: 3, rotulo: "Preços e mercado", resumo: "O preço de curto prazo, as previsões e como a energia é contratada." },
+  { id: "precos-e-mercado", n: 3, rotulo: "Preços e mercado", resumo: "O preço de curto prazo, as previsões, como a energia é contratada e o que os leilões compraram." },
   { id: "consumidor-e-territorio", n: 4, rotulo: "Consumidor e território", resumo: "O que chega a quem usa a energia: a conta, as perdas, a qualidade do serviço e o acesso." },
   { id: "empresas-e-futuro", n: 5, rotulo: "Empresas e futuro", resumo: "Quem atua no setor, o que está sendo construído e a transição." },
   { id: "conhecimento-e-evidencia", n: 6, rotulo: "Conhecimento e evidência", resumo: "As regras, os conceitos, os dados e os métodos por trás de cada número." },

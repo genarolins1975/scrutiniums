@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "babd92c791425489e2dea65ecd86ed977a1283f433fbeedae6771a9f2a3d45e2",
-    "arquivos_analisados": 1021,
-    "fontes_sha256": "7a95d80998dfe496dfea88a41e75e7a713969a706795099fc85a03df2fb308dc",
+    "arquivos_analisados": 1055,
+    "fontes_sha256": "9a2b6c2d98d20cf71414b395ceff7f42c4b4a5ea032bb20f835c627e32ceadc9",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -133,10 +133,10 @@
           "jsx_text": 569,
           "atributos": 182,
           "props": 634,
-          "outros_literais": 3272,
-          "templates": 384,
-          "expressoes_nao_resolvidas": 2131,
-          "chaves_objetos": 2492
+          "outros_literais": 3277,
+          "templates": 385,
+          "expressoes_nao_resolvidas": 2134,
+          "chaves_objetos": 2494
         },
         "exclusoes": {
           "importacoes": 870,
@@ -150,7 +150,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 9664,
+        "candidatos_nao_catalogados": 9675,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -177,20 +177,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 439,
+        "arquivos": 468,
         "candidatos": {
-          "jsx_text": 6427,
-          "atributos": 2454,
-          "props": 11914,
-          "outros_literais": 29029,
-          "templates": 6467,
-          "expressoes_nao_resolvidas": 32847,
-          "chaves_objetos": 31159
+          "jsx_text": 6926,
+          "atributos": 2574,
+          "props": 12786,
+          "outros_literais": 30079,
+          "templates": 6791,
+          "expressoes_nao_resolvidas": 34927,
+          "chaves_objetos": 32287
         },
         "exclusoes": {
-          "importacoes": 3431,
-          "atributos_tecnicos": 7679,
-          "tipos": 3516
+          "importacoes": 3644,
+          "atributos_tecnicos": 8409,
+          "tipos": 3617
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -199,17 +199,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 120297,
+        "candidatos_nao_catalogados": 126370,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 74,
+        "paginas_pt": 79,
         "paginas_en": 0,
         "handlers": 1,
-        "templates_com_parametros": 5,
-        "paginas_pt_literais": 69,
-        "paginas_pt_fora_do_adaptador": 5,
-        "paginas_pt_literais_sem_irma": 69,
+        "templates_com_parametros": 6,
+        "paginas_pt_literais": 73,
+        "paginas_pt_fora_do_adaptador": 6,
+        "paginas_pt_literais_sem_irma": 73,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
@@ -273,20 +273,20 @@
     "saneamento": {
       "nome": "Saneamento",
       "interface": {
-        "arquivos": 52,
+        "arquivos": 57,
         "candidatos": {
-          "jsx_text": 795,
-          "atributos": 172,
-          "props": 1332,
-          "outros_literais": 2451,
-          "templates": 268,
-          "expressoes_nao_resolvidas": 1776,
-          "chaves_objetos": 3300
+          "jsx_text": 1001,
+          "atributos": 231,
+          "props": 1483,
+          "outros_literais": 2765,
+          "templates": 317,
+          "expressoes_nao_resolvidas": 2113,
+          "chaves_objetos": 3705
         },
         "exclusoes": {
-          "importacoes": 360,
-          "atributos_tecnicos": 1068,
-          "tipos": 115
+          "importacoes": 395,
+          "atributos_tecnicos": 1269,
+          "tipos": 141
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -295,17 +295,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 10094,
+        "candidatos_nao_catalogados": 11615,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 24,
+        "paginas_pt": 26,
         "paginas_en": 0,
         "handlers": 0,
         "templates_com_parametros": 2,
-        "paginas_pt_literais": 22,
+        "paginas_pt_literais": 24,
         "paginas_pt_fora_do_adaptador": 2,
-        "paginas_pt_literais_sem_irma": 22,
+        "paginas_pt_literais_sem_irma": 24,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false

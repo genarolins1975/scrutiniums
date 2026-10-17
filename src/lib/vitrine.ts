@@ -223,7 +223,7 @@ function vitrineSaneamento(): Vitrine {
       { titulo: "Meu município", href: `${ROTA_SANEAMENTO}/municipio`, descricao: "Carência, prestador, regulador, plano, investimento e comparação com a UF." },
     ],
     situacao:
-      "Primeira entrega. Capítulos com cobertura parcial declaram o que falta; preço regulado em amostra de atos verificados; saúde, ambiente e desigualdades em preparação.",
+      "Primeira entrega. Capítulos com cobertura parcial declaram o que falta; preço regulado em amostra de atos verificados; saúde e ambiente com três grupos de doenças e qualidade da água bruta em preparação.",
     metodologia: { href: `${ROTA_SANEAMENTO}/metodologia`, rotulo: "Método e fontes" },
   };
 }

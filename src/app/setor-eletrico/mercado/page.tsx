@@ -1,10 +1,12 @@
 import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { GraficoLivreUf } from "@/components/energia/GraficoLivreUf";
 import { MercadoTabelasSobDemanda } from "@/components/energia/MercadoTabelasSobDemanda";
 import {
   MercadoAusencias,
@@ -59,6 +61,7 @@ import {
   textoVariacaoVerbo,
   vereditoLivreRegulado,
 } from "@/lib/energia/mercado";
+import { barrasUfVolume, textoContrasteUf, textoUfsSemJanela } from "@/lib/energia/mercado-uf";
 import type { MercadoGold } from "@/lib/energia/tipos-mercado";
 import { datasLegiveis } from "@/lib/energia/visao";
 
@@ -86,6 +89,9 @@ export default function MercadoPage() {
   const versao = `EPE até ${mesAno(lr.epe_ultimo_mes)}, CCEE até ${g.referencias.ccee_ultimo_mes_consumo ? mesAno(g.referencias.ccee_ultimo_mes_consumo) : "sem mês"}, publicado em ${dataBR(g.gerado_em)}`;
   const anoClasse = anoClasseCompleto(g);
   const uf = barrasUf(g);
+  const ufVolume = barrasUfVolume(g);
+  const contrasteUf = textoContrasteUf(g);
+  const ufSemJanela = textoUfsSemJanela(g);
   const preliminares = lr.epe_anos_preliminares;
   const ultimoCcee = lr.ccee_mensal.at(-1);
   const consol = lr.reconciliacao.mme_consolidacao_anual.at(-1);
@@ -220,6 +226,11 @@ export default function MercadoPage() {
           Parte do consumo compra energia da distribuidora a tarifa regulada (<Termo slug="acr">ACR</Termo>); a outra parte contrata no mercado livre (<Termo slug="acl">ACL</Termo>). As diferenças entre o contratado e o
           medido são liquidadas na CCEE ao <Termo slug="pld">PLD</Termo>, as hidrelétricas dividem o risco hidrológico no <Termo slug="mre">MRE</Termo> e os custos de operar o sistema entram como encargos (
           <Termo slug="ess">ESS</Termo>). Esta página mostra quanto do consumo está no mercado livre; as outras três tratam dos agentes e da migração, do ajuste das hidrelétricas (MRE e GSF) e dos encargos.
+          O que as distribuidoras compraram nos leilões do ACR, a que preço e de quem está em{" "}
+          <Link href="/setor-eletrico/leiloes" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+            Leilões
+          </Link>
+          .
         </CabecalhoModulo>
 
         <AtalhoLeitura href="/setor-eletrico/mercado/comercializacao" titulo="Como a operação física se conecta aos contratos?" texto="Entenda a comercialização e experimente o efeito dos horários na liquidação." />
@@ -312,20 +323,20 @@ export default function MercadoPage() {
                 <SecaoDoPainel
                   id="uf-classe"
                   titulo="Onde o mercado livre pesa mais?"
-                  lead="Participação do mercado livre no consumo na rede (EPE) por estado, nos últimos 12 meses, e por classe de consumo, no último ano completo."
+                  lead="Participação do mercado livre no consumo na rede (EPE) por estado, nos últimos 12 meses, com a opção de ver o volume de energia, e por classe de consumo, no último ano completo."
                 >
-                  <GraficoBarras
-                    titulo={`Participação do livre por UF, 12 meses até ${lr.epe_ultimo_mes_uf ? mesAno(lr.epe_ultimo_mes_uf) : "o último mês publicado"}`}
-                    dados={uf}
-                    chaveCategoria="uf"
-                    series={[{ id: "livre", rotulo: "Livre no consumo na rede", cor: "var(--cor-energia)" }]}
-                    unidade="%"
-                    casas={1}
-                    orientacao="horizontal"
-                    alturaCategoria={28}
-                    alturaMaxima={760}
-                    referencias={kEpe ? [{ valor: kEpe.valor_pct, rotulo: "Brasil, 12 meses" }] : []}
+                  <GraficoLivreUf
+                    janela={lr.epe_ultimo_mes_uf ? mesAno(lr.epe_ultimo_mes_uf) : "o último mês publicado"}
+                    participacao={uf}
+                    volume={ufVolume}
+                    referencias={kEpe ? [{ valor: kEpe.valor_pct, rotulo: `Brasil, 12 meses até ${mesAno(kEpe.periodo.fim)}` }] : []}
                   />
+                  {(contrasteUf || ufSemJanela) && (
+                    <div className="max-w-prose2 space-y-1 text-xs leading-relaxed text-carvao-muted" data-nota-uf="">
+                      {contrasteUf && <p>{contrasteUf}</p>}
+                      {ufSemJanela && <p>{ufSemJanela}</p>}
+                    </div>
+                  )}
                   {anoClasse && (
                     <GraficoBarras
                       titulo={`Participação do livre por classe de consumo, ${anoClasse}`}

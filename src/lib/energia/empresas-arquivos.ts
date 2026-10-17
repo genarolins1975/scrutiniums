@@ -22,7 +22,7 @@ import type { CadeiaSocietaria, Distribuidoras, EvidenciasEmpresas, SeriesFinanc
  */
 const DIR = join(process.cwd(), "public");
 // só os arquivos de séries do próprio módulo e as séries por distribuidora das golds de origem
-const PERMITIDOS = /^\/energia\/series\/(empresas_[a-z_]+|perdas_anual|perdas_evidencias|qualidade_distribuidoras_serie|conta_historico_b1)\.json$/;
+const PERMITIDOS = /^\/energia\/series\/(empresas_[a-z_]+|listadas_[a-z_]+|perdas_anual|perdas_evidencias|qualidade_distribuidoras_serie|conta_historico_b1)\.json$/;
 
 const cache = new Map<string, { mtime: number; dado: unknown }>();
 

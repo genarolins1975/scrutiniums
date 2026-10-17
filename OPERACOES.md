@@ -231,6 +231,65 @@ recortes fecham ao centavo (2026-08: R$ 34.405.907.666,05 nos dois, 14/10/2026).
    fora: entra numa reconciliação com tolerância de 0,5%, e o realinhamento inicial
    dos 16 meses precisa caber no orçamento dos leves.
 
+**Terceira execução depois das correções (15/10/2026, run 38746240160).** O cache do
+estado não foi encontrado (`Cache not found for input keys: pipeline-estado-...`) e o
+silver foi semeado de novo; 20 testes reprovaram em rural, ampliado, BNDES, estados,
+linhagem, operacional e subnacional. A cópia salva na véspera (run 38578966646, 16:23
+UTC de 14/10) existia e não foi podada por este workflow. A causa provável, com
+evidência nos logs: o job de energia restaurou às 01:46 de 15/10 uma cópia de 7.152 MB
+(`energia-estado-37719964861`) e gravou outra às 04:16 (`energia-estado-38667375474`);
+as duas passam do limite de 10 GB do repositório, e o GitHub despeja primeiro o cache
+acessado há mais tempo, que era o do crédito. Às 13:43 a previsão do PLD também já não
+achou cache de energia e restaurou da sua cópia durável. A mesma causa explica, por
+inferência, a perda de 03/10, que não tinha explicação registrada.
+10. O estado do crédito (`data/silver` e `data/bronze`) ganhou cópia durável na release
+    `pipeline-estado`, fora do limite do cache, no mesmo padrão da energia
+    (`scripts/estado_duravel.sh`): salva depois de todo pipeline concluído, restaurada
+    quando o cache falta, em partes de até 1,9 GB com manifesto sha256; cópia
+    incompleta ou corrompida não é extraída e o pipeline semeia como antes.
+11. A energia e a previsão do PLD apagam a cópia anterior do estado (`energia-estado-*`,
+    inclusive as da previsão) antes de gravar a nova, e só quando o estado completo foi
+    restaurado (`scripts/podar_cache.sh`), e podam de novo logo depois de gravar,
+    mantendo só a mais recente: as duas têm filas próprias (a previsão não pode esperar
+    a energia e perder o corte das 07h), e numa execução simultânea a sobreposição de
+    duas cópias de ~7,2 GB fica limitada a minutos.
+    Se a gravação falhar depois da poda, o silver da energia volta da release
+    `energia-estado` e o bronze é recoletado. O crédito guarda só a cópia mais recente
+    do cache (~0,9 GB), já que tem a cópia durável. A energia avisa no log quando o
+    estado passa de 8 GB: a 10 GB uma cópia sozinha não cabe mais no cache, e reduzir o
+    bronze vira decisão do domínio.
+
+**Quarta execução depois das correções (16/10/2026, run 38909799073).** O cache foi
+encontrado, o Sicor e o resto da coleta rodaram, a primeira cópia durável do estado foi
+salva (23 s) e, nos testes de conteúdo, o vitest **não chegou a rodar nenhum teste**:
+o setup global falhou com `spawnSync git ENOBUFS` em `scripts/git-worktree-guard.mjs`
+(linha do `git diff --binary HEAD`), e o processo do vitest foi abortado com código 134
+(`FATAL ERROR: Reached heap limit`, 4,1 GB, na pilha do V8 em `Object.keys`).
+As duas suítes Python passaram (1.687 e 69 testes). A issue de retenção, porém,
+dizia "a reprovação veio das suítes Python", porque o texto presumia isso sempre que o
+vitest não listava teste reprovado: a causa certa só aparecia no resumo
+`vitest=134 pipeline=0 pesquisa=0` do log.
+
+Causa. O guarda de worktree (13/10) compara a árvore Git antes e depois da suíte e
+guardava o patch inteiro (`git diff --binary HEAD`) em memória, com teto de 64 MB. A
+gold regenerada pelo ciclo soma 96,6 MB em 3.894 arquivos de JSON indentado. Uma
+publicação diária típica muda 441.792 linhas (208.953 acréscimos e 232.839 remoções, no
+commit acc5c6e5f de 24/09/2026, fonte: estatísticas do commit no GitHub), o que dá
+cerca de 10 MB de patch a 22 bytes por linha (estimativa minha). Sem publicação havia 22
+dias, a diferença para a gold publicada passou de 64 MB: o ENOBUFS prova o limite, e o
+tamanho exato do patch não foi registrado. Nas execuções de 13, 14 e 15/10 o setup
+global rodou e o patch coube. Inferência: o patch tende a crescer a cada dia sem
+publicar, e a gold completa de 16/10 (cache restaurado) difere mais da publicada do que
+a de 15/10 (silver semeado do zero, mais pobre). O estouro de memória do vitest em
+seguida é provavelmente consequência do tratamento do erro, que carrega 64 MB de
+buffer; não foi isolado. Reproduzido localmente com um arquivo de 36 MB reescrito
+(patch de 72.000.113 bytes): mesma mensagem de erro do log.
+12. O guarda calcula o hash do patch em fluxo, por arquivo temporário, em blocos de 1
+    MB: o tamanho do patch deixou de ser limite (o mesmo patch de 72 MB passa em cerca
+    de 1 s, com 49 MB de memória). O texto da issue passa a receber os códigos de saída
+    das três suítes e a saída do unittest: aponta o processo abortado, lista os testes
+    Python reprovados e não atribui a causa quando não há como saber.
+
 **Produção e main.** Em 13/10/2026 às 10:43 UTC a produção servia o mesmo
 `gerado_em` do main (2026-09-24T15:25), em `/resumo` e em
 `/obs/data/gold/meta.json`. A leitura "Processado em 2026-08-12" relatada nesse dia

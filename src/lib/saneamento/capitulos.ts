@@ -124,10 +124,10 @@ export const EIXOS: Eixo[] = [
         slug: "prestadores",
         rotulo: "Quem presta",
         pergunta: "Quem presta o serviço e quem controla as empresas?",
-        resumo: "Cadastro de prestadores declarados ao SINISA, com natureza jurídica, abrangência, municípios, instrumento de delegação e vigência.",
+        resumo: "Cadastro de prestadores declarados ao SINISA, com natureza jurídica, abrangência, municípios, instrumento de delegação e vigência, e a posição acionária das companhias abertas.",
         situacao: "parcial",
         pendencia:
-          "Controle societário e grupos econômicos: dependem de formulários da CVM e de documentos societários; não integrados. O painel mostra a natureza jurídica declarada em 2024.",
+          "Controle societário só das 17 companhias abertas com Formulário de Referência na CVM. Empresas fechadas, SPEs sem registro, autarquias e serviços municipais não têm esse dado; para eles o painel mostra a natureza jurídica declarada em 2024.",
       },
       {
         numero: 8,
@@ -171,7 +171,8 @@ export const EIXOS: Eixo[] = [
         rotulo: "Metas e planos",
         pergunta: "O planejamento é suficiente para a universalização?",
         resumo: "Metas do art. 11-B, indicadores da NR ANA 8/2024, situação observada, ritmo aritmético e planos municipais declarados.",
-        situacao: "publicado",
+        situacao: "parcial",
+        pendencia: "Os indicadores da NR ANA 8/2024 são aproximações sem ICA, ICE e soluções alternativas; nenhum município é declarado em cumprimento de meta.",
       },
       {
         numero: 12,
@@ -195,10 +196,10 @@ export const EIXOS: Eixo[] = [
         slug: "saude-ambiente",
         rotulo: "Saúde e ambiente",
         pergunta: "Como saneamento, saúde e ambiente se relacionam?",
-        resumo: "Internações e óbitos por doenças relacionadas ao saneamento e qualidade de corpos d'água monitorados.",
-        situacao: "em_preparacao",
+        resumo: "Internações e óbitos por infecções intestinais, leptospirose e esquistossomose, por município de residência, ao lado da carência de esgoto.",
+        situacao: "parcial",
         pendencia:
-          "DATASUS (SIH e SIM por residência, com grupos diagnósticos documentados) e redes de monitoramento de qualidade da água bruta ainda não integrados.",
+          "Só três grupos de doenças, na janela de 2022 a 2024, sem taxa ajustada por idade e sem o recorte por faixa etária. Qualidade da água bruta (ANA e órgãos estaduais), dengue e demais doenças de vetor e hepatite A não integradas.",
       },
       {
         numero: 14,
@@ -219,6 +220,7 @@ export const CAPITULOS: Capitulo[] = EIXOS.flatMap((e) => e.capitulos);
 export const FERRAMENTAS = [
   { slug: "municipio", rotulo: "Meu município", descricao: "Busca por nome: carência, prestador, regulador, plano, investimento e comparação com o estado." },
   { slug: "comparar", rotulo: "Comparar municípios", descricao: "Até quatro municípios lado a lado, com período comum e link compartilhável." },
+  { slug: "internacional", rotulo: "Brasil no mundo", descricao: "Água e esgotamento no Brasil e em outros países pelo JMP da OMS e do UNICEF, e por que os números diferem do Censo e do SINISA." },
   { slug: "metodologia", rotulo: "Método e fontes", descricao: "Fontes, matriz de viabilidade, conferências entre bases e downloads." },
 ] as const;
 

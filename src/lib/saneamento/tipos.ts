@@ -16,6 +16,8 @@ export type Municipio = {
   [campo: `des_${string}`]: number | null;
   /** SISAGUA (arquivo qualidade_municipios.json): registro por ano e numerador/denominador de cada medida. */
   [campo: `qa_${string}`]: number | null;
+  /** SIH e SIM (arquivo saude_municipios.json): contagens da janela por grupo, sistema e medida. */
+  [campo: `sd_${string}`]: number | null;
   id: string;
   nome: string;
   uf: string;
@@ -399,6 +401,9 @@ export type MetaSaneamento = {
     quimicos: QuimicosSisagua;
     por_ano: Record<string, AnoSisagua>;
   };
+  saude?: MetaSaude;
+  cvm?: MetaCvm;
+  jmp?: MetaJmp;
   desigualdades: {
     proveniencia: { capturado_em: string };
     residuos_cor_raca: { universo: number; agua: number; esgoto: number };
@@ -447,4 +452,141 @@ export type MetaSaneamento = {
     reguladores_cnpj: number;
   };
   conferencias: Conferencia[];
+};
+
+/** Proveniência e conferências do capítulo 13 (saude_municipios.json), de pipeline/observatorio_saneamento/saude.py. */
+export type MetaSaude = {
+  periodo: number[];
+  grupos: { id: string; rotulo: string; cid: string }[];
+  consultas: {
+    id: string;
+    sistema: "sim" | "sih";
+    grupo: string;
+    medida: string;
+    rotulo: string;
+    def: string;
+    incremento: string;
+    coluna: string;
+    selecao: string;
+    itens: { valor: string; rotulo: string }[];
+    arquivo: string;
+    sha256: string;
+    bytes: number;
+    notas: string;
+  }[];
+  definicoes: Record<string, { url: string; sha256: string }>;
+  capturado_em: string;
+  totais_tabnet: Record<string, number>;
+  municipio_ignorado: Record<string, number>;
+  conferencias: { id: string; municipios_gold: number; municipios_fora_do_cadastro: number; municipio_ignorado: number; total_tabnet: number; diferenca: number }[];
+  municipios_sem_linha: string[];
+};
+
+/** Acionista de uma companhia aberta, como declarado no FRE da CVM. Percentuais do acionista na companhia (nível 1) ou no acionista acima. */
+export type Acionista = {
+  nome: string;
+  tipo: "PF" | "PJ" | null;
+  cnpj: string | null;
+  pct_on: number | null;
+  pct_pn: number | null;
+  pct_total: number | null;
+  acoes: number | null;
+  controlador: boolean;
+  acordo: boolean;
+  exterior: boolean;
+  atualizado_em: string | null;
+  /** Pessoas físicas não controladoras somadas: quantas entraram na soma. */
+  agregado?: number;
+  filhos: Acionista[];
+};
+
+export type CompanhiaAberta = {
+  cnpj: string;
+  nome: string;
+  cd_cvm: string;
+  /** Ficha do prestador no SINISA, ligada por CNPJ declarado pelos municípios. */
+  prestador: string | null;
+  cobertura_municipios_ficha: number | null;
+  municipios_declarados: number;
+  documento: { id: string; versao: number; categoria: string; referencia: string; recebido_em: string; link: string };
+  controlador_declarado: boolean;
+  acordo_acionistas: boolean;
+  pessoas_fisicas_somadas: number;
+  acionistas: Acionista[];
+};
+
+export type ControleSocietario = { companhias: CompanhiaAberta[] };
+
+export type MetaCvm = {
+  ano: number;
+  fonte: string;
+  capturado_em: string;
+  zip: { sha256: string; bytes: number; last_modified: string | null };
+  membros: Record<string, { sha256: string; bytes: number }>;
+  criterio: string;
+  companhias: number;
+  com_ficha: number;
+  sem_ficha: { cnpj: string; nome: string }[];
+  sem_posicao: { cnpj: string; nome: string }[];
+  conferencias: { cnpj: string; soma_topo_total: number; soma_topo_ordinarias: number; soma_topo_preferenciais: number; maior_desvio_cadeia: number }[];
+  regras: { limiar_ficha: number; tolerancia_pct: number; pessoa_fisica: string };
+};
+
+/** Estimativa do JMP (OMS e UNICEF) para uma área de residência. Percentual da população; ausência é null, nunca zero. */
+export type NivelServicoJmp = {
+  /** Pelo menos básico: inclui quem tem serviço gerenciado com segurança. */
+  basica: number | null;
+  limitada: number | null;
+  nao_melhorada: number | null;
+  /** Água superficial (água) ou defecação a céu aberto (esgotamento). */
+  ruim: number | null;
+  gerenciada: number | null;
+};
+export type AguaJmp = NivelServicoJmp & { encanada?: number | null; no_domicilio?: number | null; disponivel?: number | null; sem_contaminacao?: number | null };
+export type EsgotoJmp = NivelServicoJmp & {
+  rede?: number | null;
+  fossa_septica?: number | null;
+  rede_tratada?: number | null;
+  fossa_esvaziada_tratada?: number | null;
+  fossa_sem_esvaziamento?: number | null;
+  outras_melhoradas?: number | null;
+};
+export type ServicoJmp<T> = { t: T; u: T; r: T };
+
+export type EstimativaJmp = {
+  ano: number;
+  populacao_mil: number | null;
+  urbana_pct: number | null;
+  agua: ServicoJmp<AguaJmp> | null;
+  esgoto: ServicoJmp<EsgotoJmp> | null;
+};
+export type PaisJmp = EstimativaJmp & {
+  iso3: string;
+  nome: string;
+  nome_origem: "IBGE" | "JMP";
+  nome_jmp: string;
+  regiao_ods: string | null;
+  regiao_unicef: string | null;
+  regiao_oms: string | null;
+  renda: string | null;
+};
+export type JmpPaises = { paises: PaisJmp[]; brasil: EstimativaJmp[] };
+
+export type MetaJmp = {
+  fonte: string;
+  edicao: string;
+  edicao_mes: string;
+  periodo: [number, number];
+  ano_comparado: number;
+  capturado_em: string;
+  xlsx: { sha256: string; bytes: number; last_modified: string | null };
+  brasil_xlsx: { url: string; sha256: string; bytes: number; last_modified: string | null; fontes: number };
+  paises_ibge: { url: string; sha256: string; bytes: number; paises: number };
+  brasil_fontes: { codigo: string; ano: number; sigla: string; tipo: string }[];
+  areas: number;
+  com_agua_gerenciada: number;
+  com_esgoto_gerenciado: number;
+  sem_nome_ibge: { iso3: string; nome: string }[];
+  conferencias: { agua: { estimativas: number; maior_desvio_da_soma: number }; esgoto: { estimativas: number; maior_desvio_da_soma: number } };
+  regras: { tolerancia_escada_pct: number };
 };

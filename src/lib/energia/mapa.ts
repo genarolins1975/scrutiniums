@@ -160,6 +160,7 @@ export const PAGINAS_MAPA = {
   rede: { rotulo: "Rede", href: "/setor-eletrico/rede", pergunta: "Como a energia circula entre regiões?", estado: "integrado" },
   pld: { rotulo: "PLD", href: "/setor-eletrico/pld", pergunta: "Quanto custa a energia no curto prazo?", estado: "integrado" },
   mercado: { rotulo: "Mercado", href: "/setor-eletrico/mercado", pergunta: "Como a energia é contratada, alocada e liquidada?", estado: "integrado" },
+  leiloes: { rotulo: "Leilões", href: "/setor-eletrico/leiloes", pergunta: "O que os leilões contrataram, a que preço e de quem?", estado: "integrado" },
   empresas: { rotulo: "Empresas", href: "/setor-eletrico/empresas", pergunta: "Quem atua no setor elétrico?", estado: "integrado" },
   expansao: { rotulo: "Expansão", href: "/setor-eletrico/expansao", pergunta: "O que está sendo construído?", estado: "integrado" },
   regulacao: { rotulo: "Regulação", href: "/setor-eletrico/regulacao", pergunta: "Que regra vale em cada período?", estado: "integrado" },
@@ -322,8 +323,8 @@ export const NOS_MAPA: NoMapa[] = [
     titulo: "Contratos, mercado e tarifa",
     curto: "Como a energia é contratada, liquidada e transformada em tarifa.",
     explicacao:
-      "Grandes consumidores contratam energia no mercado livre; as distribuidoras compram para os seus clientes no mercado regulado. As diferenças entre o contratado e o verificado são liquidadas na CCEE ao PLD. A tarifa do consumidor atendido pela distribuidora é homologada pela ANEEL e soma energia, transmissão, distribuição, perdas e encargos.",
-    destinos: ["mercado", "conta-de-luz"],
+      "Grandes consumidores contratam energia no mercado livre; as distribuidoras compram para os seus clientes no mercado regulado, em leilões. As diferenças entre o contratado e o verificado são liquidadas na CCEE ao PLD. A tarifa do consumidor atendido pela distribuidora é homologada pela ANEEL e soma energia, transmissão, distribuição, perdas e encargos.",
+    destinos: ["mercado", "leiloes", "conta-de-luz"],
     conceitos: [
       { slug: "mcp", rotulo: "MCP" },
       { slug: "tarifa-te-tusd", rotulo: "TE e TUSD" },
@@ -486,6 +487,7 @@ export const CARTOES: Record<string, CartaoDestino> = {
       { texto: "Matriz efetiva por fonte, com e sem a micro e minigeração estimada", href: "/setor-eletrico/geracao" },
       { texto: "Despacho térmico pelos motivos declarados pelo ONS", href: "/setor-eletrico/geracao/termica#p022" },
       { texto: "Cortes de geração eólica e solar pelas razões oficiais, com o mapa das usinas", href: "/setor-eletrico/geracao/restricoes#p023" },
+      { texto: "Curtailment: por que eólicas e solares são cortadas e quem perde, com laboratórios interativos", href: "/setor-eletrico/geracao/curtailment" },
       { texto: "Potência instalada e fator de capacidade por fonte e por usina", href: "/setor-eletrico/geracao/capacidade#p024" },
     ],
     recorte: "Sistema interligado e subsistemas; usina para térmicas e cortes; horário, diário e mensal.",
@@ -545,6 +547,18 @@ export const CARTOES: Record<string, CartaoDestino> = {
     recorte: "Brasil, região, subsistema, UF e distribuidora, conforme a fonte; mensal.",
     conceito: { slug: "mcp", rotulo: "o que é o mercado de curto prazo" },
   },
+  leiloes: {
+    utilidade: "Saber quanta energia o mercado regulado comprou em leilão, a que preço corrigido pelo IPCA, de quem, e quanto das usinas contratadas já opera.",
+    encontra: [
+      { texto: "Energia contratada por ano, fonte e tipo de leilão", href: "/setor-eletrico/leiloes#quanto" },
+      { texto: "Preço por fonte em reais da época e corrigido pelo IPCA, e deságio", href: "/setor-eletrico/leiloes#preco" },
+      { texto: "Situação atual das usinas contratadas", href: "/setor-eletrico/leiloes#entrega" },
+      { texto: "Laboratório do leilão de preço descendente", href: "/setor-eletrico/leiloes#laboratorio" },
+      { texto: "Leilões de transmissão corrigidos pelo IPCA, com o deságio de cada lote", href: "/setor-eletrico/leiloes/transmissao" },
+    ],
+    recorte: "Leilão, ano, fonte e UF; leilões de geração desde 2005 e de transmissão desde 1999.",
+    conceito: { slug: "acr", rotulo: "o que é o ACR" },
+  },
   "conta-de-luz": {
     utilidade: "Comparar a tarifa residencial entre distribuidoras, ver o que compõe a conta e estimar o valor para um consumo mensal.",
     encontra: [
@@ -597,6 +611,7 @@ export const CARTOES: Record<string, CartaoDestino> = {
       { texto: "Ficha de cada distribuidora pelo CNPJ", href: "/setor-eletrico/empresas/distribuidoras#p037" },
       { texto: "Demonstrações das companhias abertas", href: "/setor-eletrico/empresas/financas#p038" },
       { texto: "Controle e concentração", href: "/setor-eletrico/empresas/controle#p039" },
+      { texto: "Companhias listadas do índice de energia elétrica da B3: ativos, controle, finanças e ações", href: "/setor-eletrico/empresas/listadas" },
     ],
     recorte: "CNPJ, grupo de controle e distribuidora; mensal e trimestral.",
   },

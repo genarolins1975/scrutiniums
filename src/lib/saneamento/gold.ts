@@ -2,8 +2,11 @@ import { readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import type {
   Agregado,
+  CompanhiaAberta,
+  ControleSocietario,
   EteCatalogo,
   FichaMunicipio,
+  JmpPaises,
   MetaSaneamento,
   Municipio,
   Prestador,
@@ -88,6 +91,19 @@ export function municipiosComQualidade(): Municipio[] {
   return lista;
 }
 
+/** Tabela do capítulo 13 (SIH e SIM, saúde e ambiente), em arquivo próprio. */
+export const URL_SAUDE_MUNICIPIOS = `${URL_GOLD}/saude_municipios.json`;
+
+let saudeCache: { fonte: TabelaMunicipios; lista: Municipio[] } | null = null;
+export function municipiosComSaude(): Municipio[] {
+  const extra = ler<TabelaMunicipios>("saude_municipios.json");
+  if (!extra) return municipios();
+  if (saudeCache?.fonte === extra) return saudeCache.lista;
+  const lista = juntarComplemento(municipios(), extra);
+  saudeCache = { fonte: extra, lista };
+  return lista;
+}
+
 export function municipio(id: string): Municipio | null {
   return municipios().find((m) => m.id === id) ?? null;
 }
@@ -105,6 +121,18 @@ export function prestadores(): Prestador[] {
 
 export function prestador(id: string): Prestador | null {
   return prestadores().find((p) => p.id === id) ?? null;
+}
+
+export function jmpPaises(): JmpPaises {
+  return ler<JmpPaises>("jmp_paises.json") ?? { paises: [], brasil: [] };
+}
+
+export function controleSocietario(): CompanhiaAberta[] {
+  return ler<ControleSocietario>("controle_societario.json")?.companhias ?? [];
+}
+
+export function controleDoPrestador(id: string): CompanhiaAberta | null {
+  return controleSocietario().find((c) => c.prestador === id) ?? null;
 }
 
 export function reguladores(): ReguladorCatalogo[] {

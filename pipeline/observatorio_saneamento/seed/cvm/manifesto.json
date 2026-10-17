@@ -1,0 +1,56 @@
+{
+  "capturado_em": "2026-10-16T23:40:09+00:00",
+  "ano": 2026,
+  "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/FRE/DADOS/fre_cia_aberta_2026.zip",
+  "zip": {
+    "sha256": "1df53606c41851e73ca6653aa1f780d8a132c26e32c137b3cb77c9cfb6a9080a",
+    "bytes": 8144189,
+    "last_modified": "Sun, 11 Oct 2026 10:04:41 GMT"
+  },
+  "membros": {
+    "fre_cia_aberta_2026.csv": {
+      "sha256": "e137ce75b060b038692edcc770d735f00382421c971bee700c1ac2f8a212ce31",
+      "bytes": 440382
+    },
+    "fre_cia_aberta_posicao_acionaria_2026.csv": {
+      "sha256": "c679ddcceb1323832a940610463886ca93d35e21307405e6ba5842525a104a2a",
+      "bytes": 7179000
+    }
+  },
+  "filtro": {
+    "criterio": "CNPJ declarado por algum município como prestador de água ou esgoto (Gestão Municipal do SINISA 2024) e presente no índice do FRE",
+    "cnpjs": [
+      "01616929000102",
+      "02382073000110",
+      "04089570000150",
+      "07040108000157",
+      "17281106000103",
+      "27157474000106",
+      "33352394000104",
+      "39580673000101",
+      "42292007000174",
+      "42310775000103",
+      "42353180000135",
+      "42644220000106",
+      "43776517000180",
+      "46119855000137",
+      "76484013000145",
+      "82508433000117",
+      "92802784000190"
+    ]
+  },
+  "arquivos": {
+    "documentos": {
+      "arquivo": "documentos.csv.gz",
+      "sha256": "aa56cdc12514e22ed030625bae209961db019eb2a57f4c54aa8a8678cbea01fa",
+      "bytes": 15034,
+      "linhas": 68
+    },
+    "posicao_acionaria": {
+      "arquivo": "posicao_acionaria.csv.gz",
+      "sha256": "8f939839cb0256d35f0c724ff086727564f1e05f660ce6a0f3f8cf06adcc0b19",
+      "bytes": 68364,
+      "linhas": 585
+    }
+  }
+}

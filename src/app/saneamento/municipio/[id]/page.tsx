@@ -4,14 +4,14 @@ import { notFound } from "next/navigation";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
 import { Fonte, Nota, Secao } from "@/components/saneamento/Editorial";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { agregado, fichaMunicipio, municipio, municipios, prestadores } from "@/lib/saneamento/gold";
+import { agregado, fichaMunicipio, meta, municipio, municipios, prestadores } from "@/lib/saneamento/gold";
 import { ROTA } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { classePorte, mediana, ROTULO_PORTE } from "@/lib/saneamento/pares";
-import { data, inteiro, numero, reais, reaisCompacto } from "@/lib/saneamento/formato";
+import { data, inteiro, mesAno, numero, reais, reaisCompacto } from "@/lib/saneamento/formato";
 import { MOTIVO_TEXTO, NATUREZA_CURTA, SITUACAO_AGUA, SITUACAO_ESGOTO } from "@/lib/saneamento/rotulos";
 import { prestadorComTarifa } from "@/lib/saneamento/tarifas";
-import { ANOS_SISAGUA } from "@/lib/saneamento/medidas";
+import { ANOS_SISAGUA, LIMITE_RAZAO_TARIFA_SOCIAL, razaoTarifaSocial } from "@/lib/saneamento/medidas";
 import type { Agregado, FichaMunicipio, Municipio } from "@/lib/saneamento/tipos";
 
 export const dynamicParams = true;
@@ -27,9 +27,10 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
   };
 }
 
-type Linha = { rotulo: string; fonte: string; m: number | null; uf: number | null; br: number | null; pares: number | null; unidade: string; casas: number; motivo?: string };
+type Pares = { v: number | null; n: number };
+type Linha = { rotulo: string; fonte: string; m: number | null; uf: number | null; br: number | null; pares: Pares; unidade: string; casas: number; motivo?: string };
 
-function Comparacao({ linhas, uf, pares }: { linhas: Linha[]; uf: string; pares: string }) {
+function Comparacao({ linhas, uf, grupo }: { linhas: Linha[]; uf: string; grupo: number }) {
   const f = (v: number | null, l: Linha) => (v == null ? "sem dado" : `${numero(v, l.casas)}${l.unidade === "%" ? "%" : ` ${l.unidade}`}`);
   return (
     <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Comparação do município com UF, Brasil e pares (rolável)">
@@ -41,7 +42,7 @@ function Comparacao({ linhas, uf, pares }: { linhas: Linha[]; uf: string; pares:
             <th scope="col" className="py-2 pr-4 text-right font-medium text-carvao">Município</th>
             <th scope="col" className="py-2 pr-4 text-right font-medium text-carvao-muted">{uf}</th>
             <th scope="col" className="py-2 pr-4 text-right font-medium text-carvao-muted">Brasil</th>
-            <th scope="col" className="py-2 text-right font-medium text-carvao-muted">Pares ({pares})</th>
+            <th scope="col" className="py-2 text-right font-medium text-carvao-muted">Pares (mediana)</th>
           </tr>
         </thead>
         <tbody>
@@ -57,7 +58,10 @@ function Comparacao({ linhas, uf, pares }: { linhas: Linha[]; uf: string; pares:
               </td>
               <td className="py-2 pr-4 text-right tabular-nums text-carvao-muted">{f(l.uf, l)}</td>
               <td className="py-2 pr-4 text-right tabular-nums text-carvao-muted">{f(l.br, l)}</td>
-              <td className="py-2 text-right tabular-nums text-carvao-muted">{f(l.pares, l)}</td>
+              <td className="py-2 text-right tabular-nums text-carvao-muted">
+                {f(l.pares.v, l)}
+                <span className="block text-xs">{inteiro(l.pares.n)} de {inteiro(grupo)} municípios com valor</span>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -79,7 +83,10 @@ export default function Pagina({ params }: { params: { id: string } }) {
   const todos = municipios();
   const porte = classePorte(m.pop22);
   const grupo = porte == null ? [] : todos.filter((x) => x.regiao === m.regiao && classePorte(x.pop22) === porte && x.id !== m.id);
-  const med = (f: (x: Municipio) => number | null) => mediana(grupo.map(f).filter((v): v is number => v != null));
+  const med = (f: (x: Municipio) => number | null): Pares => {
+    const vs = grupo.map(f).filter((v): v is number => v != null);
+    return { v: mediana(vs), n: vs.length };
+  };
   const mor = ficha.censo2022?.moradores;
   const ag = ficha.sinisa.agua;
   const es = ficha.sinisa.esgoto;
@@ -157,8 +164,11 @@ export default function Pagina({ params }: { params: { id: string } }) {
 
   const invAg = ag.investimento;
   const invEs = es.investimento;
-  const tarifa = vinculos.find((v) => v.servico === "agua" && v.tarifa)?.tarifa;
+  const tarifasAgua = vinculos.filter((v) => v.servico === "agua" && v.tarifa);
   const comTarifa = prestadorComTarifa(m.id);
+  const cad = meta()?.cadunico;
+  const razaoTs = razaoTarifaSocial(m);
+  const razaoTsSuspeita = razaoTs != null && razaoTs > LIMITE_RAZAO_TARIFA_SOCIAL;
 
   return (
     <>
@@ -206,7 +216,13 @@ export default function Pagina({ params }: { params: { id: string } }) {
         <Secao id="comparacao" titulo="Como o município se compara?" texto={
           <>Cada linha tem sua fonte e seu ano. Pares: mediana dos municípios da mesma região com {porte != null ? ROTULO_PORTE[porte] : "porte semelhante"} ({inteiro(grupo.length)} municípios). A mediana dos pares não é meta nem referência de eficiência.</>
         }>
-          <Comparacao linhas={linhas} uf={m.uf} pares={`${inteiro(grupo.length)} mun.`} />
+          <Comparacao linhas={linhas} uf={m.uf} grupo={grupo.length} />
+          <Nota>
+            As colunas não têm o mesmo universo. Município e pares comparam só municípios com indicador. UF e Brasil são os consolidados do SINISA e do
+            Censo: no esgoto, o consolidado inclui na população os municípios com delegação sem atendimento, que não têm indicador municipal e ficam
+            fora da mediana dos pares; na água, cobre a população dos municípios que participaram do módulo. Use os pares como referência de município
+            e a UF e o Brasil como referência de território.
+          </Nota>
         </Secao>
 
         <Secao id="agua-esgoto" titulo="Como os moradores recebem água e destinam o esgoto?" texto="Censo 2022, moradores em domicílios particulares permanentes ocupados.">
@@ -247,7 +263,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
                         {v.inicio ? data(v.inicio) : "início sem dado"} a {v.termino ? data(v.termino) : "término sem dado"}
                       </dd>
                       <dt className="text-carvao-muted">Atendidos</dt>
-                      <dd className="tabular-nums text-carvao">{inteiro(v.populacao_atendida)} pessoas, declarado</dd>
+                      <dd className="tabular-nums text-carvao">{v.populacao_atendida == null ? "sem dado" : `${inteiro(v.populacao_atendida)} pessoas, declarado`}</dd>
                     </dl>
                   </li>
                 );
@@ -257,7 +273,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
           <Reguladores f={ficha} />
           <Nota>
             Natureza jurídica e instrumento são os declarados ao SINISA para 2024. Controle societário e grupo econômico não são publicados
-            pelo SINISA e não aparecem aqui.
+            pelo SINISA e não aparecem aqui; para companhias abertas, a posição acionária está na ficha do prestador.
           </Nota>
         </Secao>
 
@@ -271,41 +287,62 @@ export default function Pagina({ params }: { params: { id: string } }) {
           ) : (
             <Nota>A tarifa do prestador deste município ainda não está na amostra verificada do simulador.</Nota>
           )}
-          {tarifa ? (
-            <dl className="grid max-w-3xl grid-cols-[1fr_auto] gap-x-6 gap-y-2 border-t border-linha pt-4 text-sm">
-              <dt className="text-carvao-muted">Cobra tarifa mínima de água?</dt>
-              <dd className="text-carvao">{String(tarifa.GFI1008 ?? "sem dado")}</dd>
-              <dt className="text-carvao-muted">Valor declarado da tarifa mínima residencial</dt>
-              <dd className="tabular-nums text-carvao">{typeof tarifa.GFI1018 === "number" ? reais(tarifa.GFI1018) : "sem dado"}</dd>
-              <dt className="text-carvao-muted">Tem tarifa social de água?</dt>
-              <dd className="text-carvao">{String(tarifa.GFI1019 ?? "sem dado")}</dd>
-              <dt className="text-carvao-muted">Norma que a regulamenta</dt>
-              <dd className="text-carvao">{String(tarifa.GFI1021 ?? "sem dado")}</dd>
-              <dt className="text-carvao-muted">Economias residenciais com tarifa social</dt>
-              <dd className="tabular-nums text-carvao">{typeof tarifa.GFI1036 === "number" ? inteiro(tarifa.GFI1036) : "sem dado"}</dd>
-              <dt className="text-carvao-muted">Valor médio declarado da tarifa social</dt>
-              <dd className="tabular-nums text-carvao">{typeof tarifa.GFI1037 === "number" ? `${reais(tarifa.GFI1037)} por mês` : "sem dado"}</dd>
-            </dl>
+          {tarifasAgua.length > 0 ? (
+            tarifasAgua.map((v) => {
+              const t = v.tarifa!;
+              const p = catalogo.find((x) => x.id === v.prestador);
+              return (
+                <dl key={v.prestador} className="grid max-w-3xl grid-cols-[1fr_auto] gap-x-6 gap-y-2 border-t border-linha pt-4 text-sm [&:not(:first-of-type)]:mt-4">
+                  {tarifasAgua.length > 1 && (
+                    <>
+                      <dt className="col-span-2 font-medium text-carvao">{p?.nome ?? v.prestador}</dt>
+                    </>
+                  )}
+                  <dt className="text-carvao-muted">Cobra tarifa mínima de água?</dt>
+                  <dd className="text-carvao">{String(t.GFI1008 ?? "sem dado")}</dd>
+                  <dt className="text-carvao-muted">Valor declarado da tarifa mínima residencial</dt>
+                  <dd className="tabular-nums text-carvao">{typeof t.GFI1018 === "number" ? reais(t.GFI1018) : "sem dado"}</dd>
+                  <dt className="text-carvao-muted">Tem tarifa social de água?</dt>
+                  <dd className="text-carvao">{String(t.GFI1019 ?? "sem dado")}</dd>
+                  <dt className="text-carvao-muted">Norma que a regulamenta</dt>
+                  <dd className="text-carvao">{String(t.GFI1021 ?? "sem dado")}</dd>
+                  <dt className="text-carvao-muted">Economias residenciais com tarifa social</dt>
+                  <dd className="tabular-nums text-carvao">{typeof t.GFI1036 === "number" ? inteiro(t.GFI1036) : "sem dado"}</dd>
+                </dl>
+              );
+            })
           ) : (
             <Nota>Sem declaração de tarifa no SINISA 2024 para este município.</Nota>
           )}
           <dl className="mt-6 grid max-w-3xl grid-cols-[1fr_auto] gap-x-6 gap-y-2 border-t border-linha pt-4 text-sm">
-            <dt className="text-carvao-muted">Famílias no CadÚnico com renda per capita até meio salário-mínimo, dez/2024</dt>
+            <dt className="text-carvao-muted">Famílias no CadÚnico com renda per capita até meio salário-mínimo, {mesAno(cad?.mes_referencia)}</dt>
             <dd className="tabular-nums text-carvao">{inteiro(m.cad_fam_ms)}</dd>
-            <dt className="text-carvao-muted">Mesmo critério, mês mais recente publicado</dt>
+            <dt className="text-carvao-muted">Mesmo critério, {mesAno(cad?.mes_mais_recente)}</dt>
             <dd className="tabular-nums text-carvao">{inteiro(m.cad_fam_ms_atual)}</dd>
+            {tarifasAgua.length > 1 && (
+              <>
+                <dt className="text-carvao-muted">Economias com tarifa social, soma dos prestadores de água (2024)</dt>
+                <dd className="tabular-nums text-carvao">{inteiro(m.ts_economias)}</dd>
+              </>
+            )}
             <dt className="text-carvao-muted">Economias com tarifa social por 100 famílias elegíveis (2024)</dt>
             <dd className="tabular-nums text-carvao">
-              {m.ts_economias != null && m.cad_fam_ms ? numero((m.ts_economias / m.cad_fam_ms) * 100, 1) : "sem dado"}
+              {razaoTs == null ? "sem dado" : numero(razaoTs, 1)}
+              {razaoTsSuspeita && (
+                <span className="block text-xs text-carvao-muted">
+                  Acima de {LIMITE_RAZAO_TARIFA_SOCIAL}: mais economias declaradas do que famílias elegíveis. Declaração do prestador a verificar.
+                </span>
+              )}
             </dd>
           </dl>
           <Nota>
-            Valores declarados pelo prestador, sem verificação do Observatório. Economia não é família: a razão compara contagens diferentes e não diz
-            quantas famílias elegíveis recebem o desconto.{" "}
+            Valores declarados pelo prestador, sem verificação do Observatório. A razão usa a soma das economias de todos os prestadores de água do
+            município. Economia não é família: a razão compara contagens diferentes e não diz quantas famílias elegíveis recebem o desconto.{" "}
             <Link href={`${ROTA}/tarifa-social#cobertura`} className="text-obee-dark underline underline-offset-2">
               Como ler a razão
             </Link>
-            . Fonte do CadÚnico: MDS, SAGI, API MI Social.
+            . O valor médio declarado da tarifa social (GFI1037) tem registros incompatíveis com uma conta mensal e não é publicado. Fonte do
+            CadÚnico: MDS, SAGI, API MI Social.
           </Nota>
         </Secao>
 
@@ -314,12 +351,18 @@ export default function Pagina({ params }: { params: { id: string } }) {
             <div className="border-t border-linha pt-3">
               <dt className="text-carvao-muted">IAA da NR 8, parcela de rede pública</dt>
               <dd className="font-serif text-2xl tabular-nums text-carvao">{m.iaa_rede == null ? "sem dado" : `${numero(m.iaa_rede, 1)}%`}</dd>
-              <dd className="text-xs text-carvao-muted">Meta: 99%. Economias residenciais ativas ÷ domicílios ocupados estimados ({inteiro(m.dom_est24)}).</dd>
+              <dd className="text-xs text-carvao-muted">
+                Meta: 99%. Economias residenciais ativas ÷ domicílios ocupados estimados ({inteiro(m.dom_est24)}).
+                {m.iaa_rede != null && m.iaa_rede > 100 && " Acima de 100%: as economias ativas excedem a estimativa de domicílios ocupados; não é atendimento acima do total."}
+              </dd>
             </div>
             <div className="border-t border-linha pt-3">
               <dt className="text-carvao-muted">IAE da NR 8, parcela de rede com tratamento</dt>
               <dd className="font-serif text-2xl tabular-nums text-carvao">{m.iae_rede == null ? "sem dado" : `${numero(m.iae_rede, 1)}%`}</dd>
-              <dd className="text-xs text-carvao-muted">Meta: 90%. Sem soluções individuais aceitas pelo regulador, que o SINISA não traz.</dd>
+              <dd className="text-xs text-carvao-muted">
+                Meta: 90%. Sem soluções individuais aceitas pelo regulador, que o SINISA não traz.
+                {m.iae_rede != null && m.iae_rede > 100 && " Acima de 100%: as economias com tratamento excedem a estimativa de domicílios ocupados."}
+              </dd>
             </div>
             <div className="border-t border-linha pt-3">
               <dt className="text-carvao-muted">Plano de saneamento básico</dt>
@@ -343,7 +386,9 @@ export default function Pagina({ params }: { params: { id: string } }) {
           </dl>
           <Nota>
             Os índices da NR 8 exigem também os indicadores de cobertura (ICA e ICE) para declarar meta cumprida. Aqui eles servem como
-            referência; não atestam cumprimento. Plano declarado não equivale a plano atualizado, financiado ou executado.
+            referência; não atestam cumprimento. O denominador é uma estimativa (população de 2024 ÷ moradores por domicílio do Censo 2022), e
+            valores acima de 100% mostram que o numerador a excede, não cobertura maior que a total. Plano declarado não equivale a plano
+            atualizado, financiado ou executado.
           </Nota>
         </Secao>
 
@@ -356,7 +401,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
                   <dt className="text-carvao-muted">{rot as string}</dt>
                   <dd className="font-serif text-2xl tabular-nums text-carvao">{i?.total != null ? reaisCompacto(i.total) : "sem dado"}</dd>
                   <dd className="text-xs text-carvao-muted">
-                    {i?.total != null && pop24 ? `${reais(i.total / pop24)} por residente estimado. ` : ""}
+                    {i?.total != null && m.dfe0001 ? `${reais(i.total / m.dfe0001)} por residente estimado. ` : ""}
                     Prestador: {reaisCompacto(i?.prestador)}; Estado: {i?.estado_informado ? reaisCompacto(i?.estado) : "não informado"}.
                   </dd>
                 </div>
@@ -452,9 +497,12 @@ function QualidadeMunicipio({ q }: { q?: Record<string, number> }) {
       const reg = q?.[`qa_reg_${campo.startsWith("vig") ? "vig" : "ctrl"}_${ano}`];
       return <span className="text-carvao-muted">{reg === 1 ? "sem análise" : "sem registro"}</span>;
     }
+    const p = (num / den) * 100;
+    const piso = 10 ** -casas;
     return (
       <>
-        {numero((num / den) * 100, casas)}%<span className="block text-xs text-carvao-muted">{inteiro(num)} de {inteiro(den)}</span>
+        {num > 0 && p < piso / 2 ? `menos de ${numero(piso, casas)}` : numero(p, casas)}%
+        <span className="block text-xs text-carvao-muted">{inteiro(num)} de {inteiro(den)}</span>
       </>
     );
   };

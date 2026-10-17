@@ -29,11 +29,15 @@ type Ato = {
   obs: string;
 };
 
-const ORDEM = ["SABESP", "SANEPAR", "COPASA", "COMPESA", "CAESB"];
+/** Ordem de apresentação; prestador fora da lista entra depois, em ordem alfabética, e nunca some da página. */
+const ORDEM = ["SABESP", "SANEPAR", "COPASA", "COMPESA", "CAESB", "SANEAGO", "CASAN"];
+
+const dataBr = (iso: string) => iso.split("-").reverse().join("/");
 
 export default function Pagina() {
-  const atos = (dados as { atos: Ato[]; levantado_em: string }).atos;
-  const grupos = ORDEM.map((p) => ({ p, lista: atos.filter((a) => a.prestador === p).sort((x, y) => (x.data ?? "").localeCompare(y.data ?? "")) })).filter((g) => g.lista.length);
+  const { atos, levantado_em, levantado_por_prestador } = dados as { atos: Ato[]; levantado_em: string; levantado_por_prestador: Record<string, string> };
+  const prestadores = [...ORDEM.filter((p) => atos.some((a) => a.prestador === p)), ...[...new Set(atos.map((a) => a.prestador))].filter((p) => !ORDEM.includes(p)).sort()];
+  const grupos = prestadores.map((p) => ({ p, lista: atos.filter((a) => a.prestador === p).sort((x, y) => (x.data ?? "").localeCompare(y.data ?? "")) })).filter((g) => g.lista.length);
   return (
     <>
       <Cabecalho atual="preco-regulado/reajustes" />
@@ -49,7 +53,12 @@ export default function Pagina() {
               mudança de estrutura. O catálogo separa o pedido, a decisão, a data do ato e o início da vigência, que podem distar semanas.
             </p>
           }
-          recorte={<>{atos.length} atos de 2023 a 2026 de cinco prestadores; {atos.filter((a) => a.verificado).length} lidos no texto oficial. Levantamento em 14/10/2026.</>}
+          recorte={
+            <>
+              {atos.length} atos de 2023 a 2026 de {prestadores.length} prestadores; {atos.filter((a) => a.verificado).length} lidos no texto oficial. Levantamento em {dataBr(levantado_em)}
+              {Object.entries(levantado_por_prestador).map(([p, d]) => `; ${p} em ${dataBr(d)}`).join("")}.
+            </>
+          }
           situacao="parcial"
           pendencia="A evolução da conta padronizada exige as tabelas anteriores a cada ato, ainda não coletadas; por isso não há, nesta entrega, série de conta comparada à inflação e à renda."
         />
@@ -102,7 +111,7 @@ export default function Pagina() {
             Águas do Rio (AGENERSA) ficou fora: o site do regulador respondeu com erro a todas as consultas, e nenhum ato foi verificado. Atos marcados
             como não verificados vêm de fonte secundária (página de relações com investidores do prestador) e permanecem sinalizados.
           </Nota>
-          <Fonte>Sites dos reguladores e diários oficiais, consulta em 14/10/2026; curadoria em pipeline/observatorio_saneamento/curadoria.</Fonte>
+          <Fonte>Sites dos reguladores e diários oficiais, consulta em {dataBr(levantado_em)}{Object.entries(levantado_por_prestador).map(([p, d]) => `; ${p} em ${dataBr(d)}`).join("")}; curadoria em pipeline/observatorio_saneamento/curadoria.</Fonte>
         </Secao>
       </main>
     </>

@@ -69,6 +69,18 @@ jobs:
           restore-keys: |
             pipeline-estado-
 
+      # O cache do repositório tem limite de 10 GB e o estado do Setor Elétrico ocupa
+      # ~7,2 GB por cópia (15/10/2026): quando a energia grava a cópia nova, o total passa
+      # do limite e o estado do crédito é despejado (03/10 e 15/10/2026). A release
+      # pipeline-estado não conta para o limite (scripts/estado_duravel.sh).
+      - name: Restaurar estado da cópia durável (cache ausente)
+        id: duravel
+        if: steps.cache.outputs.cache-matched-key == ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/estado_duravel.sh restaurar
+
       - name: Semear histórico na primeira execução
         run: |
           mkdir -p data/silver data/bronze data/gold
@@ -80,6 +92,7 @@ jobs:
           fi
 
       - name: Executar pipeline
+        id: pipeline
         run: |
           # -u: sem buffer, para o log mostrar onde a coleta está quando o job é cancelado
           if [ "${{ inputs.somente_gold }}" = "true" ]; then
@@ -97,20 +110,25 @@ jobs:
             data/bronze
           key: pipeline-estado-${{ github.run_id }}
 
-      # Em 03/10/2026 a restauração não achou nenhum cache (Cache not found) e o silver
-      # foi semeado de novo. Cada execução grava ~0,8 GB com chave nova, e o limite do
-      # repositório é de 10 GB somando energia e previsão: guardar só os três mais
-      # recentes DO MESMO RAMO tira o estado do pipeline da fila de despejo. A poda é
-      # por ramo (--ref): o main não restaura cache de outro ramo, então uma execução
-      # manual em ramo de PR nunca pode apagar os caches do main. Falha aqui não bloqueia.
+      # Só o main publica a cópia: a release não tem separação por ramo, e uma execução
+      # manual num ramo de PR não pode substituir o estado que o main restaura.
+      - name: Cópia durável do estado (release pipeline-estado)
+        if: steps.pipeline.outcome == 'success' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/estado_duravel.sh salvar
+
+      # Em 03/10 e 15/10/2026 a restauração não achou nenhum cache (Cache not found) e o
+      # silver foi semeado de novo: o despejo veio do estado da energia (~7,2 GB por cópia)
+      # contra o limite de 10 GB do repositório. A proteção é a cópia durável acima, e a
+      # energia passou a apagar a cópia anterior antes de gravar a nova. Com a cópia
+      # durável, basta guardar a mais recente do ramo (~0,9 GB). Falha aqui não bloqueia.
       - name: Podar caches antigos do estado
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          gh cache list --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF" --key pipeline-estado- \
-            --sort created_at --order desc --limit 100 --json id --jq '.[3:][].id' \
-            | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
+        run: scripts/podar_cache.sh pipeline-estado- 1
 
       # A lição de 08/08: build quebrado publica stub de erro e o workflow
       # termina VERDE — painel fora do ar sem nenhum vigia acusar. O sentinela
@@ -174,11 +192,14 @@ jobs:
           node scripts/minify-obs.mjs || exit 1
           npx vitest run --reporter=default --reporter=json --outputFile.json=vitest-resultado.json
           V=$?
-          python3 -m unittest discover -s pipeline/tests -t .
-          P=$?
-          python3 -m unittest discover -s pesquisa/tests -t .
-          Q=$?
-          echo "vitest=$V pipeline=$P pesquisa=$Q"
+          # a saída do unittest também vai para arquivo: a issue de retenção lista os testes
+          # Python reprovados, e os códigos de saída dizem qual das três suítes falhou. Em
+          # 16/10/2026 a issue culpou as suítes Python (que passaram) por um vitest abortado
+          python3 -m unittest discover -s pipeline/tests -t . 2>&1 | tee pipeline-testes.log
+          P=${PIPESTATUS[0]}
+          python3 -m unittest discover -s pesquisa/tests -t . 2>&1 | tee pesquisa-testes.log
+          Q=${PIPESTATUS[0]}
+          echo "vitest=$V pipeline=$P pesquisa=$Q" | tee testes-codigos.txt
           [ "$V$P$Q" = "000" ]
 
       - name: Reter publicação reprovada
@@ -191,7 +212,7 @@ jobs:
           git checkout -- public/obs/data
           git clean -fdq public/obs/data
           echo "retida=1" >> "$GITHUB_OUTPUT"
-          REPROVADOS=$(python3 scripts/testes_reprovados.py vitest-resultado.json)
+          REPROVADOS=$(python3 scripts/testes_reprovados.py vitest-resultado.json testes-codigos.txt pipeline-testes.log pesquisa-testes.log)
           ULTIMA=$(python3 -c "import json;print(json.load(open('public/obs/data/gold/meta.json'))['gerado_em'][:16])")
           TITULO="Testes de conteúdo reprovaram a gold do dia: publicação retida"
           CORPO="Execução de $(date -u +%d/%m/%Y\ %H:%M) UTC: ${RUN_URL}

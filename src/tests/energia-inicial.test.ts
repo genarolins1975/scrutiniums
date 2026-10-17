@@ -711,10 +711,10 @@ describe("a página renderizada", () => {
     expect(cod).toContain("useSyncExternalStore");
   });
 
-  it("o índice lista os 20 destinos, agrupados nos seis grupos, cada um com a pergunta curta e o estado vindo de navegacao.ts", () => {
+  it("o índice lista os 21 destinos, agrupados nos seis grupos, cada um com a pergunta curta e o estado vindo de navegacao.ts", () => {
     const indice = secao("destinos").html;
     const destinos = DESTINOS_NAVEGACAO.filter((d) => d.slug !== "mapa");
-    expect(destinos).toHaveLength(20);
+    expect(destinos).toHaveLength(21);
     for (const d of destinos) {
       expect(indice, d.slug).toContain(`href="${d.href}"`);
       expect(texto(indice), d.slug).toContain(d.pergunta);
@@ -723,7 +723,7 @@ describe("a página renderizada", () => {
     // sem módulo em integração nesta publicação, a página não escreve "Em integração" no índice (só no cartão condicional, que não aparece)
     const emIntegracao = destinos.filter((d) => d.publicado && !d.integrado).length;
     expect(texto(indice.replace(/<details[\s\S]*?<\/details>/g, " ")).includes("Em integração")).toBe(emIntegracao > 0);
-    expect(texto(indice)).toContain(emIntegracao === 0 ? "As 20 páginas publicam números." : "em integração");
+    expect(texto(indice)).toContain(emIntegracao === 0 ? "As 21 páginas publicam números." : "em integração");
     // o resumo de cada grupo, que antes ficava no bloco "Detalhe de cada página", abre o grupo
     for (const g of GRUPOS_NAVEGACAO) expect(texto(indice), g.id).toContain(g.resumo);
   });

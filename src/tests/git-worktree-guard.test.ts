@@ -35,6 +35,28 @@ describe('verificação da árvore Git após a suíte', () => {
     expect(() => assertWorktreeUnchanged(root, before)).toThrow();
   });
 
+  it('captura um patch maior que 64 MB sem estourar buffer ou memória e ainda detecta nova edição', () => {
+    // 16/10/2026: o ciclo diário do crédito regenera a gold (96,6 MB) e, sem publicação
+    // havia 22 dias, o git diff passou de 64 MB: o execFileSync lançou ENOBUFS e o vitest
+    // abortou com código 134. Aqui o patch de 72 MB vem de um arquivo de uma linha só,
+    // que o git compara sem custo; o que importa é o tamanho da saída.
+    const linha = (c: string) => c.repeat(36_000_000) + '\n';
+    writeFileSync(join(root, 'gold.json'), linha('a'));
+    git('add', '.');
+    git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', '-c', 'commit.gpgsign=false', 'commit', '-m', 'gold grande');
+    writeFileSync(join(root, 'gold.json'), linha('b'));
+    // o teste só vale se o patch passa de fato do limite antigo de 64 MB
+    const patch = execFileSync('git', ['diff', '--no-ext-diff', '--binary', 'HEAD'], { cwd: root, maxBuffer: 512 * 1024 * 1024 });
+    expect(patch.length).toBeGreaterThan(64 * 1024 * 1024);
+    const before = captureWorktree(root);
+    expect(before.trackedDiff).toMatch(/^[0-9a-f]{64}$/);
+    expect(before.status).toContain('gold.json');
+    expect(() => assertWorktreeUnchanged(root, before)).not.toThrow();
+    writeFileSync(join(root, 'gold.json'), linha('c'));
+    expect(captureWorktree(root).status).toBe(before.status);
+    expect(() => assertWorktreeUnchanged(root, before)).toThrow('A suíte alterou a árvore Git');
+  }, 60_000);
+
   it('detecta arquivo novo, exclusão e mudança do índice', () => {
     const before = captureWorktree(root);
     writeFileSync(join(root, 'new.txt'), 'novo');
