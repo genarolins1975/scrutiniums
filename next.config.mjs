@@ -9,6 +9,19 @@ const nextConfig = {
       "/eficiencia-estatal/laboratorio-cesta": [
         "./docs/obee/resultados/revisao-interativa-v3.html",
       ],
+      // a home é dinâmica (sessão) e lê, a cada requisição, as golds das portas de src/lib/perguntas/portas.ts
+      "/": [
+        "./public/obs/data/gold/pulse.json",
+        "./public/gas/gold/gas-de-cozinha.json",
+        "./public/agro/gold/snapshot.json",
+        "./public/saneamento/gold/agregados.json",
+        "./public/eficiencia/judiciario/snapshot.json",
+        "./public/eficiencia/gold/educacao_capitais.json",
+        "./public/eficiencia/saneamento/snapshot.json",
+        "./public/energia/gold/agua_detalhe.json",
+        "./public/energia/gold/conta.json",
+        "./public/energia/gold/geracao.json",
+      ],
       "/saneamento/municipio/[id]": ["./public/saneamento/gold/**/*.json"],
       "/saneamento/prestadores/[id]": ["./public/saneamento/gold/*.json"],
       "/observatorio/[[...rota]]": [

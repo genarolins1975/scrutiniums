@@ -14,7 +14,7 @@ import { CAPITULOS as CAPITULOS_SANEAMENTO } from "@/lib/saneamento/capitulos";
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { attr, conteudo, elementos, filhos, meta, oculto, tag, texto, unico, vazamentos, type Elemento, type Forma, type No } from "./i18n-dom";
 
-const REGIOES_PT = ["home-cabecalho", "home-secoes", "home-rodape"];
+const REGIOES_PT = ["home-cabecalho", "home-perguntas", "home-secoes", "home-rodape"];
 const REGIOES_EN = ["home-titulo", "home-acoes", "home-rotulo", "home-introducao", "home-beneficios", "home-indice"];
 
 /** Esperados integrais independentes do formatador e do adaptador do Hero. */
@@ -186,7 +186,7 @@ export function verificarHeadHome(pt: No, en: No): void {
 export function verificarHomeParcial(pt: No, en: No): void {
   const declaracao = inventario.uso_interface.rotas.find((rota) => rota.pt === "/");
   expect(declaracao, "declaração da home parcial").toBeDefined();
-  expect(declaracao!.regioes).toHaveLength(9);
+  expect(declaracao!.regioes).toHaveLength(10);
   const traduzidas = declaracao!.regioes.filter((regiao) => regiao.estado === "traduzido");
   expect(traduzidas).toEqual([
     { id: "home-titulo", estado: "traduzido", chaves: CHAVES.titulo },
@@ -201,7 +201,8 @@ export function verificarHomeParcial(pt: No, en: No): void {
   const corpoPt = tag(pt, "body");
   const corpoEn = tag(en, "body");
   const heroPt = unico(corpoPt, (e) => attr(e, "aria-labelledby") === "hero-titulo", "Hero PT");
-  const tituloPt = tag(heroPt, "h1");
+  // O H1 da página é a pergunta da abertura (HeroPerguntas); o índice dos observatórios leva H2.
+  const tituloPt = tag(heroPt, "h2");
   const rotuloPt = unico(heroPt, (e) => e.tagName === "p" && texto(e) === "Observatórios de dados públicos", "rótulo PT");
   const beneficiosPt = tag(heroPt, "ul");
   const indicePt = tag(heroPt, "nav");
@@ -216,19 +217,23 @@ export function verificarHomeParcial(pt: No, en: No): void {
     && filhos(e).filter(elemento).every((a) => a.tagName === "a")
     && filhos(e).filter(elemento).some((a) => attr(a, "href") === "/cadastro"), "ações PT");
   const mainPt = tag(corpoPt, "main");
-  const secoesPt = filhos(mainPt).filter(elemento).filter((e) => e !== heroPt);
+  const perguntasPt = unico(corpoPt, (e) => attr(e, "aria-labelledby") === "perguntas-titulo", "Perguntas PT");
+  expect(filhos(mainPt).filter(elemento)[0], "a abertura por perguntas vem antes do índice").toBe(perguntasPt);
+  expect(tag(perguntasPt, "h1")).toBeDefined();
+  const secoesPt = filhos(mainPt).filter(elemento).filter((e) => e !== heroPt && e !== perguntasPt);
   expect(secoesPt).toHaveLength(4);
   expect(secoesPt.map((e) => attr(e, "aria-labelledby"))).toEqual(["observatorios-titulo", "plataforma-titulo", "recursos-titulo", "acesso-titulo"]);
   const originais: Record<string, Forma[]> = {
     "home-cabecalho": [forma(tag(corpoPt, "header"))],
+    "home-perguntas": [forma(perguntasPt)],
     "home-secoes": secoesPt.map(forma),
     "home-rodape": [forma(tag(corpoPt, "footer"))],
   };
   const ids = elementos(corpoEn).filter((e) => attr(e, "data-i18n-regiao") !== undefined).map((e) => attr(e, "data-i18n-regiao"));
-  expect(new Set(ids).size, "nove regiões únicas").toBe(9);
+  expect(new Set(ids).size, "dez regiões únicas").toBe(10);
   expect(ids.sort()).toEqual([...REGIOES_PT, ...REGIOES_EN].sort());
-  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-aviso") !== undefined)).toHaveLength(3);
-  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-estado") !== undefined)).toHaveLength(3);
+  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-aviso") !== undefined)).toHaveLength(4);
+  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-estado") !== undefined)).toHaveLength(4);
   for (const regiao of preservadas) {
     const ilha = unico(corpoEn, (e) => attr(e, "data-i18n-regiao") === regiao.id, regiao.id);
     expect(attr(ilha, "data-i18n-estado")).toBe("portugues_marcado");
@@ -244,7 +249,7 @@ export function verificarHomeParcial(pt: No, en: No): void {
   const indice = unico(corpoEn, (e) => attr(e, "data-i18n-regiao") === "home-indice", "índice traduzido");
   expect(introducao.parentNode).toBe(titulo.parentNode);
   const irmaosTituloEn = filhos(titulo.parentNode!).filter(elemento);
-  expect(irmaosTituloEn[irmaosTituloEn.indexOf(titulo) + 1], "introdução imediatamente após o H1").toBe(introducao);
+  expect(irmaosTituloEn[irmaosTituloEn.indexOf(titulo) + 1], "introdução imediatamente após o título").toBe(introducao);
   for (const regiao of [titulo, acoes, rotulo, introducao, beneficios, indice]) {
     expect(oculto(regiao)).toBe(false);
     expect(attr(regiao, "data-i18n-estado")).toBeUndefined();

@@ -12,6 +12,7 @@ import { PAGINAS_MOBILIDADE, ROTA_MOBILIDADE } from "@/lib/eficiencia/mobilidade
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 import { parDeIdioma, traducaoPublicada } from "@/lib/i18n-rotas";
+import { IDS_PORTAS, rotaPorta } from "@/lib/perguntas/rotas";
 
 /**
  * Superfície pública. O inventário abaixo lista as páginas;
@@ -33,6 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   try {modelosEnergia = JSON.parse(readFileSync(join(process.cwd(), "public", "energia", "gold", "modelos.json"), "utf-8")).modelos.map((m: { id: string }) => m.id);} catch {modelosEnergia = [];}
   const entradas: MetadataRoute.Sitemap = [
     rota("", 1.0, "weekly"),
+    ...IDS_PORTAS.map((p) => rota(rotaPorta(p), 0.9, "weekly")),
     rota("/observatorio", 1.0, "daily"),
     ...ABAS_OBSERVATORIO.map((a) => rota(`/observatorio${a.caminho}`, 0.9, "daily")),
     rota("/observatorio-do-credito", 0.9, "daily"),

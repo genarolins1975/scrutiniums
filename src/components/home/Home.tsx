@@ -5,7 +5,9 @@ import { vitrines } from "@/lib/vitrine";
 import { PublicHeader } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { PortuguesApenas } from "@/components/i18n/PortuguesApenas";
+import { portas } from "@/lib/perguntas/portas";
 import { Hero } from "./Hero";
+import { HeroPerguntas } from "./HeroPerguntas";
 import { SecaoObservatorios } from "./SecaoObservatorios";
 import { SecaoPlataforma } from "./SecaoPlataforma";
 import { SecaoRecursos } from "./SecaoRecursos";
@@ -20,6 +22,8 @@ export async function Home({ idioma }: Readonly<{ idioma: Idioma }>) {
 
   // As vitrines ainda são blocos portugueses, inclusive na home parcial inglesa.
   const v = vitrines();
+  // A primeira tela responde ao leitor: seis perguntas abertas, com números lidos das golds.
+  const perguntas = <HeroPerguntas portas={portas()} />;
   const secoes = (
     <>
       <SecaoObservatorios vitrines={v} />
@@ -34,6 +38,7 @@ export async function Home({ idioma }: Readonly<{ idioma: Idioma }>) {
         ? <PortuguesApenas regiao="home-cabecalho"><PublicHeader /></PortuguesApenas>
         : <PublicHeader />}
       <main>
+        {idioma === "en" ? <PortuguesApenas regiao="home-perguntas">{perguntas}</PortuguesApenas> : perguntas}
         <Hero vitrines={v} idioma={idioma} />
         {idioma === "en" ? <PortuguesApenas regiao="home-secoes">{secoes}</PortuguesApenas> : secoes}
       </main>

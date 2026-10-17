@@ -110,6 +110,7 @@
         { "id": "home-titulo", "estado": "traduzido", "chaves": ["home.hero.titulo_inicio", "home.hero.titulo_destaque"] },
         { "id": "home-acoes", "estado": "traduzido", "chaves": ["acesso.criar_conta", "home.hero.ja_cadastrado"] },
         { "id": "home-cabecalho", "estado": "portugues_marcado" },
+        { "id": "home-perguntas", "estado": "portugues_marcado" },
         { "id": "home-rotulo", "estado": "traduzido", "chaves": ["home.hero.rotulo"] },
         { "id": "home-introducao", "estado": "traduzido", "chaves": ["home.hero.introducao"] },
         { "id": "home-beneficios", "estado": "traduzido", "chaves": ["home.hero.beneficio_conta", "home.hero.beneficio_evidencia", "home.hero.beneficio_gratuidade"] },
