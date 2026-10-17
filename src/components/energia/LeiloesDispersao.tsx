@@ -2,23 +2,28 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { TransicaoOpcoes } from "@/components/energia/TransicaoOpcoes";
+import { Nome } from "@/components/i18n/Nome";
+import { formatos } from "@/lib/energia/formato";
 import { COR_CATEGORIA_LEILAO, CURTO_CATEGORIA, CURTO_SITUACAO, numeroAneel } from "@/lib/energia/leiloes";
 import type { IdCategoria, PontosLeiloes } from "@/lib/energia/tipos-leiloes";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Preço de cada empreendimento contratado ao longo do tempo, carregado sob demanda (leiloes_empreendimentos.json, cerca de 250 KB):
  * a página leva só o botão. A categoria escolhida fica em cor; as demais ficam ao fundo, em cinza, como contexto. Teclado: setas
  * percorrem os pontos da categoria em ordem de data; Esc limpa. Tabela equivalente com os pontos da categoria.
+ * Idioma: o da página (useIdioma); números e datas pelo formatador do idioma, com o mesmo valor.
  */
 
-const n = (v: number | null | undefined, casas = 2) =>
-  v == null ? "sem dado" : v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "−");
-const dataBR = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
 const frac = (iso: string) => Number(iso.slice(0, 4)) + (Number(iso.slice(5, 7)) - 1) / 12 + (Number(iso.slice(8, 10)) - 1) / 365;
 
 type Ponto = { i: number; data: string; leilao: string; nome: string; cat: IdCategoria | null; uf: string | null; e: number; p: number | null; pr: number | null; teto: number | null; des: number | null; sit: string; venc: string | null };
 
 export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; categorias: { id: IdCategoria; rotulo: string }[]; ipcaAte: string }) {
+  const tx = useTx();
+  const f = formatos(useIdioma());
+  const n = (v: number | null | undefined, casas = 2) => (v == null ? tx("sem dado", "no data") : f.num(v, casas));
+  const dataBR = (iso: string) => f.dataBR(iso);
   const uid = useId().replace(/:/g, "");
   const [estado, setEstado] = useState<"inicial" | "carregando" | "pronto" | "erro">("inicial");
   const [dados, setDados] = useState<Ponto[]>([]);
@@ -58,16 +63,29 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
   const todos = useMemo(() => dados.filter((x) => valor(x) != null), [dados, real]); // eslint-disable-line react-hooks/exhaustive-deps
   const daCat = useMemo(() => todos.filter((x) => x.cat === cat).sort((a, b) => (a.data < b.data ? -1 : a.data > b.data ? 1 : a.i - b.i)), [todos, cat]);
   const semPreco = dados.filter((x) => x.cat === cat && valor(x) == null).length;
+  const mwmedio = tx("MWmédio", "MWavg");
 
   if (estado !== "pronto") {
     return (
       <div className="space-y-2 border-t border-linha pt-4">
         <p className="max-w-prose2 text-sm text-carvao-muted">
-          O preço de cada venda (empreendimento vencedor em um leilão), ao longo do tempo, em reais da época ou de {ipcaAte}. O arquivo tem cerca de 250 KB
-          e só é baixado quando você pede.
+          {tx(
+            <>
+              O preço de cada venda (empreendimento vencedor em um leilão), ao longo do tempo, em reais da época ou de {ipcaAte}. O arquivo tem cerca de 250 KB
+              e só é baixado quando você pede.
+            </>,
+            <>
+              The price of each sale (a winning project in an auction), over time, in reais of the time or of {ipcaAte}. The file is about 250 KB and is only
+              downloaded when you ask for it.
+            </>,
+          )}
         </p>
         <button type="button" onClick={carregar} disabled={estado === "carregando"} className="min-h-[44px] border border-energia bg-superficie px-4 text-sm text-energia-dark hover:bg-energia-fundo">
-          {estado === "carregando" ? "Carregando…" : estado === "erro" ? "Falhou; tentar de novo" : "Ver o preço de cada empreendimento"}
+          {estado === "carregando"
+            ? tx("Carregando…", "Loading…")
+            : estado === "erro"
+              ? tx("Falhou; tentar de novo", "Failed; try again")
+              : tx("Ver o preço de cada empreendimento", "See the price of each project")}
         </button>
       </div>
     );
@@ -113,15 +131,40 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
     });
     setAtivo(melhor >= 0 ? melhor : null);
   };
+  const destaque = tx(CURTO_CATEGORIA[cat].toLowerCase(), CURTO_CATEGORIA[cat].toLocaleLowerCase("en-US"));
+  const situacao = sel ? (CURTO_SITUACAO[sel.sit as keyof typeof CURTO_SITUACAO] ?? sel.sit) : "";
 
   return (
     <div ref={ref} className="space-y-3 border-t border-linha pt-4">
       <div className="flex flex-wrap gap-x-6 gap-y-2">
-        <TransicaoOpcoes rotulo="Fonte em destaque" nome={`${uid}-cat`} opcoes={categorias.map((c) => [c.id, CURTO_CATEGORIA[c.id]] as const)} valor={cat} onMudar={(v) => { setCat(v); setAtivo(null); }} />
-        <TransicaoOpcoes rotulo="Reais" nome={`${uid}-real`} opcoes={[["real", `de ${ipcaAte}`], ["nominal", "da época"]] as const} valor={real} onMudar={setReal} />
+        <TransicaoOpcoes
+          rotulo={tx("Fonte em destaque", "Highlighted source")}
+          nome={`${uid}-cat`}
+          opcoes={categorias.map((c) => [c.id, CURTO_CATEGORIA[c.id]] as const)}
+          valor={cat}
+          onMudar={(v) => {
+            setCat(v);
+            setAtivo(null);
+          }}
+        />
+        <TransicaoOpcoes
+          rotulo={tx("Reais", "Reais")}
+          nome={`${uid}-real`}
+          opcoes={
+            [
+              ["real", tx(`de ${ipcaAte}`, `of ${ipcaAte}`)],
+              ["nominal", tx("da época", "of the time")],
+            ] as const
+          }
+          valor={real}
+          onMudar={setReal}
+        />
       </div>
       <p className="text-sm font-medium text-carvao">
-        Preço de venda por empreendimento, {CURTO_CATEGORIA[cat].toLowerCase()} em destaque, em R$/MWh {real === "real" ? `de ${ipcaAte}` : "da data de cada leilão"}
+        {tx(
+          `Preço de venda por empreendimento, ${destaque} em destaque, em R$/MWh ${real === "real" ? `de ${ipcaAte}` : "da data de cada leilão"}`,
+          `Sale price per project, ${destaque} highlighted, in R$/MWh ${real === "real" ? `of ${ipcaAte}` : "as of each auction date"}`,
+        )}
       </p>
       <svg
         viewBox={`0 0 ${W} ${H}`}
@@ -130,7 +173,10 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
         className="block max-w-full touch-none outline-none focus-visible:ring-2 focus-visible:ring-energia"
         tabIndex={0}
         role="img"
-        aria-label={`Dispersão do preço de ${daCat.length} vendas de ${CURTO_CATEGORIA[cat]}; use as setas para percorrer em ordem de data.`}
+        aria-label={tx(
+          `Dispersão do preço de ${daCat.length} vendas de ${CURTO_CATEGORIA[cat]}; use as setas para percorrer em ordem de data.`,
+          `Scatter of the price of ${daCat.length} ${CURTO_CATEGORIA[cat]} ${daCat.length === 1 ? "sale" : "sales"}; use the arrow keys to go through them in date order.`,
+        )}
         onKeyDown={teclado}
         onPointerMove={ponteiro}
         onPointerDown={ponteiro}
@@ -161,23 +207,46 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
       </svg>
       <div aria-live="polite" className="min-h-[3rem] text-sm text-carvao">
         {sel ? (
-          <p>
-            <span className="font-medium">{sel.nome}</span> ({sel.uf ?? "UF sem dado"}), leilão nº {numeroAneel(sel.leilao)} de {dataBR(sel.data)}: R$ {n(sel.p)}/MWh da época,
-            R$ {n(sel.pr)}/MWh de {ipcaAte}; teto R$ {n(sel.teto)}/MWh, deságio {n(sel.des)}%; {n(sel.e, 1)} MWmédio; no SIGA: {CURTO_SITUACAO[sel.sit as keyof typeof CURTO_SITUACAO] ?? sel.sit}. Vencedora publicada: {sel.venc ?? "sem nome"}.
-          </p>
+          tx(
+            <p>
+              <span className="font-medium">{sel.nome}</span> ({sel.uf ?? "UF sem dado"}), leilão nº {numeroAneel(sel.leilao)} de {dataBR(sel.data)}: R$ {n(sel.p)}/MWh da época,
+              R$ {n(sel.pr)}/MWh de {ipcaAte}; teto R$ {n(sel.teto)}/MWh, deságio {n(sel.des)}%; {n(sel.e, 1)} MWmédio; no SIGA: {situacao}. Vencedora publicada: {sel.venc ?? "sem nome"}.
+            </p>,
+            <p>
+              <span className="font-medium">
+                <Nome>{sel.nome}</Nome>
+              </span>{" "}
+              ({sel.uf ?? "state: no data"}), auction No. {numeroAneel(sel.leilao)} on {dataBR(sel.data)}: R$ {n(sel.p)}/MWh at the time, R$ {n(sel.pr)}/MWh of {ipcaAte};
+              ceiling R$ {n(sel.teto)}/MWh, discount {n(sel.des)}%; {n(sel.e, 1)} MWavg; in SIGA: {situacao}. Published winner: {sel.venc ? <Nome>{sel.venc}</Nome> : "unnamed"}.
+            </p>,
+          )
         ) : (
           <p className="text-carvao-muted">
-            {daCat.length} vendas com preço{semPreco ? `; ${semPreco} sem preço publicado ficam fora` : ""}. Toque ou passe o ponteiro sobre um ponto, ou use as setas.
+            {tx(
+              `${daCat.length} vendas com preço${semPreco ? `; ${semPreco} sem preço publicado ficam fora` : ""}. Toque ou passe o ponteiro sobre um ponto, ou use as setas.`,
+              `${daCat.length} ${daCat.length === 1 ? "sale" : "sales"} with a price${semPreco ? `; ${semPreco} without a published price are left out` : ""}. Tap or hover over a point, or use the arrow keys.`,
+            )}
           </p>
         )}
       </div>
       <details>
-        <summary className="min-h-[44px] cursor-pointer text-sm text-carvao-muted underline underline-offset-4">Tabela dos {daCat.length} pontos em destaque</summary>
-        <div className="tabela-scroll mt-2 max-h-[28rem] overflow-y-auto" tabIndex={0} role="region" aria-label="Pontos da dispersão (tabela rolável)">
+        <summary className="min-h-[44px] cursor-pointer text-sm text-carvao-muted underline underline-offset-4">
+          {tx(`Tabela dos ${daCat.length} pontos em destaque`, `Table of the ${daCat.length} highlighted points`)}
+        </summary>
+        <div className="tabela-scroll mt-2 max-h-[28rem] overflow-y-auto" tabIndex={0} role="region" aria-label={tx("Pontos da dispersão (tabela rolável)", "Scatter points (scrollable table)")}>
           <table className="w-full min-w-[40rem] border-collapse text-xs tabular-nums">
             <thead>
               <tr>
-                {["Data", "Leilão", "Empreendimento", "UF", "MWmédio", "R$/MWh da época", `R$/MWh de ${ipcaAte}`, "Deságio (%)"].map((c) => (
+                {[
+                  tx("Data", "Date"),
+                  tx("Leilão", "Auction"),
+                  tx("Empreendimento", "Project"),
+                  tx("UF", "State"),
+                  mwmedio,
+                  tx("R$/MWh da época", "R$/MWh at the time"),
+                  tx(`R$/MWh de ${ipcaAte}`, `R$/MWh of ${ipcaAte}`),
+                  tx("Deságio (%)", "Discount (%)"),
+                ].map((c) => (
                   <th key={c} scope="col" className="sticky top-0 border-b border-linha bg-papel px-2 py-1.5 text-left font-medium text-mineral">
                     {c}
                   </th>
@@ -189,8 +258,10 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
                 <tr key={x.i} className="border-b border-linha">
                   <td className="px-2 py-1">{dataBR(x.data)}</td>
                   <td className="px-2 py-1">{numeroAneel(x.leilao)}</td>
-                  <td className="px-2 py-1">{x.nome}</td>
-                  <td className="px-2 py-1">{x.uf ?? "sem dado"}</td>
+                  <td className="px-2 py-1">
+                    <Nome>{x.nome}</Nome>
+                  </td>
+                  <td className="px-2 py-1">{x.uf ?? tx("sem dado", "no data")}</td>
                   <td className="px-2 py-1 text-right">{n(x.e, 1)}</td>
                   <td className="px-2 py-1 text-right">{n(x.p)}</td>
                   <td className="px-2 py-1 text-right">{n(x.pr)}</td>

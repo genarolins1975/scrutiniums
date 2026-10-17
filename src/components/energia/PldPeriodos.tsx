@@ -1,12 +1,16 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { useMemo, useRef } from "react";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { LinkDoPainel } from "@/components/energia/LinkDoPainel";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { dataBR, nomeSubmercado } from "@/lib/energia/formato";
+import { tx } from "@/lib/energia/idioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import type { Idioma } from "@/lib/idioma";
 import { LIMIAR_SEPARACAO, textoPicoFrenteAoLimite, textoPonteLimiar, type PonteSeparacao } from "@/lib/energia/pld";
 import { MIME_CSV, gerarCsv, nomeArquivo, type ColunaTabela } from "@/lib/energia/tabela";
 import type { RegimeLimites } from "@/lib/energia/tipos-pld";
@@ -37,15 +41,21 @@ export type PeriodoPld = {
 
 // Sul e Norte levam traço, SE/CO e Nordeste linha cheia: as quatro séries deixam de depender só do matiz (roxo e azul, verde e laranja)
 const SMS = [
-  { id: "SE", rotulo: "Sudeste/Centro-Oeste", sigla: "SE/CO", cor: "var(--serie-sm-se)", tracejada: false },
-  { id: "S", rotulo: "Sul", sigla: "S", cor: "var(--serie-sm-s)", tracejada: true },
-  { id: "NE", rotulo: "Nordeste", sigla: "NE", cor: "var(--serie-sm-ne)", tracejada: false },
-  { id: "N", rotulo: "Norte", sigla: "N", cor: "var(--serie-sm-n)", tracejada: true },
+  { id: "SE", cor: "var(--serie-sm-se)", tracejada: false },
+  { id: "S", cor: "var(--serie-sm-s)", tracejada: true },
+  { id: "NE", cor: "var(--serie-sm-ne)", tracejada: false },
+  { id: "N", cor: "var(--serie-sm-n)", tracejada: true },
 ] as const;
 
-const n = (v: number | null | undefined, c = 2) =>
-  v === null || v === undefined ? "sem dado" : v.toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c });
-const p = (v: number) => `${(v * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`;
+/** Nome do submercado no idioma da página (Sudeste/Centro-Oeste, Sul, Nordeste, Norte). */
+const rotuloSm = (id: string, idioma: Idioma) => nomeSubmercado(id, idioma);
+/** Sigla curta da série: SE/CO no português, SE/CW no inglês; as demais são o próprio código. */
+const siglaSm = (id: string, idioma: Idioma) => (id === "SE" ? tx("SE/CO", "SE/CW", idioma) : id);
+const LOCALE_NUM: Record<Idioma, string> = { pt: "pt-BR", en: "en-US" }; // i18n: dado
+
+const n = (v: number | null | undefined, c = 2, idioma: Idioma = "pt") =>
+  v === null || v === undefined ? tx("sem dado", "no data", idioma) : v.toLocaleString(LOCALE_NUM[idioma], { minimumFractionDigits: c, maximumFractionDigits: c });
+const p = (v: number, idioma: Idioma = "pt") => `${(v * 100).toLocaleString(LOCALE_NUM[idioma], { maximumFractionDigits: 1 })}%`;
 /**
  * Submercados cujas linhas se sobrepõem no gráfico: em todos os pontos do período, a
  * distância entre eles fica abaixo de 0,5% da amplitude do eixo. Devolve cada grupo com a
@@ -79,16 +89,16 @@ function sobrepostos(serie: Record<string, string | number | null>[]): { ids: st
   return grupos.filter((g) => g.ids.length > 1);
 }
 
-const quando = (s: string) => `${s.slice(8, 10)}/${s.slice(5, 7)}/${s.slice(0, 4)} ${s.slice(11, 13)}h`;
+const quando = (s: string, idioma: Idioma = "pt") =>
+  tx(`${s.slice(8, 10)}/${s.slice(5, 7)}/${s.slice(0, 4)} ${s.slice(11, 13)}h`, `${dataBR(s, "en")} at ${s.slice(11, 13)}h`, idioma);
 
 /** Colunas do arquivo do período escolhido: o momento (hora, dia ou mês, em ISO) e o PLD dos quatro submercados. */
-const COLUNAS_RECORTE: ColunaTabela[] = [
-  { id: "x", rotulo: "Momento", tipo: "texto" },
-  { id: "SE", rotulo: "PLD Sudeste/Centro-Oeste", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "S", rotulo: "PLD Sul", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "NE", rotulo: "PLD Nordeste", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "N", rotulo: "PLD Norte", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-];
+function colunasRecorte(idioma: Idioma): ColunaTabela[] {
+  return [
+    { id: "x", rotulo: tx("Momento", "Time", idioma), tipo: "texto" },
+    ...SMS.map((s) => ({ id: s.id, rotulo: `PLD ${rotuloSm(s.id, idioma)}`, tipo: "numero" as const, unidade: "R$/MWh", casas: 2 })),
+  ];
+}
 
 function baixar(nome: string, conteudo: string, tipo: string) {
   const url = URL.createObjectURL(new Blob([conteudo], { type: tipo }));
@@ -139,6 +149,9 @@ export function PldPeriodos({
     [ids.join(",")],
   );
   const [v, definir] = useEstadoUrl(esquema);
+  const idioma = useIdioma();
+  const tx = useTx();
+  const inteiro = (x: number) => x.toLocaleString(LOCALE_NUM[idioma]);
   const sel = v.per as string;
   const abas = useRef<(HTMLButtonElement | null)[]>([]);
   const at = periodos.find((x) => x.id === sel) ?? periodos[0];
@@ -153,19 +166,19 @@ export function PldPeriodos({
     abas.current[j]?.focus();
   }
   const d = at.diferenca;
-  const pico = textoPicoFrenteAoLimite(at.stats.SE.max, at.stats.SE.quando_max, regimes);
+  const pico = textoPicoFrenteAoLimite(at.stats.SE.max, at.stats.SE.quando_max, regimes, idioma);
   // marca do dia (ou da hora) do máximo horário do SE/CO: nas abas de médias, o pico não aparece na curva e a marca diz onde ele ocorreu
   const xMax = at.formatoX === "hora" ? at.stats.SE.quando_max : at.formatoX === "data" ? at.stats.SE.quando_max.slice(0, 10) : at.stats.SE.quando_max.slice(0, 7);
   const mediasNoGrafico = at.formatoX !== "hora";
 
   function baixarRecorte() {
     const linhas = at.serie.map((r) => ({ x: String(r.x), SE: r.SE, S: r.S, NE: r.NE, N: r.N }));
-    baixar(nomeArquivo(`pld-periodo-${at.id}`, [], "csv", versao), gerarCsv(COLUNAS_RECORTE, linhas), MIME_CSV);
+    baixar(nomeArquivo(`pld-periodo-${at.id}`, [], "csv", versao), gerarCsv(colunasRecorte(idioma), linhas), MIME_CSV);
   }
 
   return (
     <div>
-      <div role="tablist" aria-label="Período" className="flex flex-wrap gap-1 border-b border-linha">
+      <div role="tablist" aria-label={tx("Período", "Period")} className="flex flex-wrap gap-1 border-b border-linha">
         {periodos.map((x, i) => (
           <button
             key={x.id}
@@ -188,124 +201,190 @@ export function PldPeriodos({
       </div>
       <div id="pld-periodo-painel" role="tabpanel" aria-labelledby={`pld-aba-${at.id}`} className="pt-5">
         <p className="text-xs text-mineral">
-          {quando(at.inicio)} a {quando(at.fim)} · {at.nHoras.toLocaleString("pt-BR")} horas · {at.descricaoSerie}
+          {tx(
+            `${quando(at.inicio)} a ${quando(at.fim)} · ${at.nHoras.toLocaleString("pt-BR")} horas · `,
+            `${quando(at.inicio, idioma)} to ${quando(at.fim, idioma)} · ${inteiro(at.nHoras)} hours · `,
+          )}
+          {at.descricaoSerie}
         </p>
         <div className="mt-3">
           <GraficoLinhas
-            titulo={`PLD dos quatro submercados, ${at.rotulo.toLowerCase()}`}
+            titulo={tx(`PLD dos quatro submercados, ${at.rotulo.toLowerCase()}`, `PLD of the four submarkets, ${at.rotulo.charAt(0).toLowerCase()}${at.rotulo.slice(1)}`)}
             dados={at.serie}
             chaveX="x"
-            series={SMS.map((s) => ({ id: s.id, rotulo: s.rotulo, sigla: s.sigla, cor: s.cor, tracejada: s.tracejada }))}
+            series={SMS.map((s) => ({ id: s.id, rotulo: rotuloSm(s.id, idioma), sigla: siglaSm(s.id, idioma), cor: s.cor, tracejada: s.tracejada }))}
             unidade="R$/MWh"
             casas={2}
             formatoX={at.formatoX}
             altura={280}
-            marcos={[{ x: xMax, rotulo: `máximo horário do SE/CO${mediasNoGrafico ? "" : `: ${n(at.stats.SE.max)}`}` }]}
+            marcos={[
+              {
+                x: xMax,
+                rotulo: tx(
+                  `máximo horário do SE/CO${mediasNoGrafico ? "" : `: ${n(at.stats.SE.max)}`}`,
+                  `hourly maximum in SE/CW${mediasNoGrafico ? "" : `: ${n(at.stats.SE.max, 2, idioma)}`}`,
+                ),
+              },
+            ]}
           />
         </div>
         {at.serie.length > 0 &&
           sobrepostos(at.serie).map((g) => {
-            const nomes = g.ids.map((id) => SMS.find((s) => s.id === id)!.rotulo).join(", ").replace(/, ([^,]*)$/, " e $1");
+            const nomes = g.ids
+              .map((id) => rotuloSm(id, idioma))
+              .join(", ")
+              .replace(/, ([^,]*)$/, tx(" e $1", " and $1"));
             return (
               <p key={g.ids.join("-")} className="mt-2 text-xs text-carvao-muted">
                 {g.maior === 0
-                  ? `${nomes} tiveram o mesmo valor em todos os pontos deste período: as linhas se sobrepõem no gráfico.`
-                  : `${nomes} ficaram a no máximo R$ ${n(g.maior)}/MWh um do outro em todos os pontos deste período: no gráfico, as linhas se sobrepõem. Os valores de cada um estão na tabela.`}
+                  ? tx(
+                      `${nomes} tiveram o mesmo valor em todos os pontos deste período: as linhas se sobrepõem no gráfico.`,
+                      `${nomes} had the same value at every point in this period: the lines overlap in the chart.`,
+                    )
+                  : tx(
+                      `${nomes} ficaram a no máximo R$ ${n(g.maior)}/MWh um do outro em todos os pontos deste período: no gráfico, as linhas se sobrepõem. Os valores de cada um estão na tabela.`,
+                      `${nomes} stayed within R$ ${n(g.maior, 2, idioma)}/MWh of each other at every point in this period: in the chart, the lines overlap. The values for each one are in the table.`,
+                    )}
               </p>
             );
           })}
         <div className="mt-1 flex flex-wrap items-center gap-x-6 gap-y-0">
           <button type="button" onClick={baixarRecorte} className={COR_LINK}>
-            Baixar este período (CSV)
+            {tx("Baixar este período (CSV)", "Download this period (CSV)")}
           </button>
-          <LinkDoPainel ancora="periodos" rotulo="Copiar link deste período" />
+          <LinkDoPainel ancora="periodos" rotulo={tx("Copiar link deste período", "Copy link to this period")} />
         </div>
 
         <p className="mt-4 flex flex-wrap items-center gap-2 text-xs text-mineral">
-          Respostas e estatísticas abaixo: calculadas pela Scrutiniums a partir dos valores horários publicados pela CCEE
+          {tx(
+            "Respostas e estatísticas abaixo: calculadas pela Scrutiniums a partir dos valores horários publicados pela CCEE",
+            "Answers and statistics below: calculated by Scrutiniums from the hourly values published by CCEE",
+          )}
           <SeloNatureza natureza="CALCULADO" />
         </p>
         <dl className="mt-2 grid gap-px border border-linha bg-linha md:grid-cols-3">
           <div className="bg-superficie p-4">
-            <dt className="rotulo text-mineral">Há diferença entre submercados?</dt>
+            <dt className="rotulo text-mineral">{tx("Há diferença entre submercados?", "Is there a difference between submarkets?")}</dt>
             <dd className="mt-1 text-sm text-carvao">
               {d.horas_acima_limiar === 0
-                ? `Não: nenhuma hora com diferença acima de R$ ${n(limiar, 2)}/MWh entre o maior e o menor preço da hora.`
-                : `Sim, em ${d.horas_acima_limiar.toLocaleString("pt-BR")} horas (${p(d.frac_horas_acima_limiar)}) a diferença entre o maior e o menor preço da hora passou de R$ ${n(limiar, 2)}/MWh. Maior diferença: R$ ${n(d.maior)}/MWh em ${quando(d.quando_maior)}.`}
+                ? tx(
+                    `Não: nenhuma hora com diferença acima de R$ ${n(limiar, 2)}/MWh entre o maior e o menor preço da hora.`,
+                    `No: no hour with a difference above R$ ${n(limiar, 2, idioma)}/MWh between the highest and the lowest price of the hour.`,
+                  )
+                : tx(
+                    `Sim, em ${d.horas_acima_limiar.toLocaleString("pt-BR")} horas (${p(d.frac_horas_acima_limiar)}) a diferença entre o maior e o menor preço da hora passou de R$ ${n(limiar, 2)}/MWh. Maior diferença: R$ ${n(d.maior)}/MWh em ${quando(d.quando_maior)}.`,
+                    `Yes, in ${inteiro(d.horas_acima_limiar)} hours (${p(d.frac_horas_acima_limiar, idioma)}) the difference between the highest and the lowest price of the hour exceeded R$ ${n(limiar, 2, idioma)}/MWh. Largest difference: R$ ${n(d.maior, 2, idioma)}/MWh on ${quando(d.quando_maior, idioma)}.`,
+                  )}
               <span className="mt-1 block text-xs text-mineral" data-texto="criterio-da-diferenca">
-                {textoPonteLimiar(limiar, ponte?.[at.id])}{" "}
+                {textoPonteLimiar(limiar, ponte?.[at.id], idioma)}{" "}
                 <Link href="/setor-eletrico/pld/diferencas-regionais" className="underline underline-offset-4">
-                  Abrir Diferenças regionais
+                  {tx("Abrir Diferenças regionais", "Open Regional differences")}
                 </Link>
                 .
               </span>
             </dd>
           </div>
           <div className="bg-superficie p-4">
-            <dt className="rotulo text-mineral">Quanto do período ficou no menor valor horário do ano?</dt>
+            <dt className="rotulo text-mineral">{tx("Quanto do período ficou no menor valor horário do ano?", "How much of the period was at the lowest hourly value of the year?")}</dt>
             <dd className="mt-1 text-sm text-carvao">
-              {SMS.map((s) => `${s.id === "SE" ? "SE/CO" : s.id} ${p(at.stats[s.id].frac_menor_valor_ano)}`).join(" · ")} das {at.nHoras.toLocaleString("pt-BR")} horas do período.
+              {SMS.map((s) => `${siglaSm(s.id, idioma)} ${p(at.stats[s.id].frac_menor_valor_ano, idioma)}`).join(" · ")}
+              {tx(` das ${at.nHoras.toLocaleString("pt-BR")} horas do período.`, ` of the ${inteiro(at.nHoras)} hours in the period.`)}
               <span className="mt-1 block text-xs text-mineral">
-                {notaMenorValor ? `${notaMenorValor} ` : "O menor valor horário observado no ano não é o piso regulatório. "}O piso de cada ano está na{" "}
+                {notaMenorValor
+                  ? `${notaMenorValor} `
+                  : tx("O menor valor horário observado no ano não é o piso regulatório. ", "The lowest hourly value observed in the year is not the regulatory floor. ")}
+                {tx("O piso de cada ano está na", "The floor for each year is on the")}{" "}
                 <Link href="/setor-eletrico/pld/limites" className="underline underline-offset-4">
-                  página de limites
+                  {tx("página de limites", "limits page")}
                 </Link>
                 .
               </span>
             </dd>
           </div>
           <div className="bg-superficie p-4">
-            <dt className="rotulo text-mineral">Houve picos?</dt>
+            <dt className="rotulo text-mineral">{tx("Houve picos?", "Were there spikes?")}</dt>
             <dd className="mt-1 text-sm text-carvao">
-              Máximo no Sudeste/Centro-Oeste: R$&nbsp;{n(at.stats.SE.max)}/MWh em {quando(at.stats.SE.quando_max)}
+              {tx(
+                `Máximo no Sudeste/Centro-Oeste: R$ ${n(at.stats.SE.max)}/MWh em ${quando(at.stats.SE.quando_max)}`,
+                `Maximum in ${rotuloSm("SE", idioma)}: R$ ${n(at.stats.SE.max, 2, idioma)}/MWh on ${quando(at.stats.SE.quando_max, idioma)}`,
+              )}
               {pico ? `, ${pico}` : ""}.
               {mediasNoGrafico && (
                 <span className="mt-1 block text-xs text-mineral" data-texto="picos-fora-do-grafico">
-                  O gráfico desta aba mostra médias {at.formatoX === "data" ? "diárias" : "mensais"}, e o máximo é um valor horário: a marca vertical indica o {at.formatoX === "data" ? "dia" : "mês"} em que ele ocorreu.
+                  {at.formatoX === "data"
+                    ? tx(
+                        "O gráfico desta aba mostra médias diárias, e o máximo é um valor horário: a marca vertical indica o dia em que ele ocorreu.",
+                        "The chart in this tab shows daily averages, and the maximum is an hourly value: the vertical mark shows the day on which it occurred.",
+                      )
+                    : tx(
+                        "O gráfico desta aba mostra médias mensais, e o máximo é um valor horário: a marca vertical indica o mês em que ele ocorreu.",
+                        "The chart in this tab shows monthly averages, and the maximum is an hourly value: the vertical mark shows the month in which it occurred.",
+                      )}
                 </span>
               )}
             </dd>
           </div>
         </dl>
 
-        <div className="tabela-scroll mt-5" tabIndex={0} role="region" aria-label="Estatísticas do período por submercado (rolável)">
+        <div
+          className="tabela-scroll mt-5"
+          tabIndex={0}
+          role="region"
+          aria-label={tx("Estatísticas do período por submercado (rolável)", "Statistics for the period by submarket (scrollable)")}
+        >
           <table className="w-full border-collapse text-sm tabular-nums sm:min-w-[40rem]">
-            <caption className="sr-only">Estatísticas do PLD no período por submercado</caption>
+            <caption className="sr-only">{tx("Estatísticas do PLD no período por submercado", "PLD statistics for the period by submarket")}</caption>
             <thead>
               <tr className="text-left text-xs text-mineral">
-                <th scope="col" className="border-b border-linha py-2 pr-3 font-medium">Submercado</th>
-                <th scope="col" className="border-b border-linha px-2 py-2 font-medium">Média</th>
-                <th scope="col" className="border-b border-linha px-2 py-2 font-medium">Mínimo</th>
-                <th scope="col" className="border-b border-linha px-2 py-2 font-medium">Máximo</th>
-                <th scope="col" className="hidden border-b border-linha px-2 py-2 font-medium sm:table-cell">Volatilidade (desvio padrão)</th>
-                <th scope="col" className="hidden border-b border-linha px-2 py-2 font-medium sm:table-cell">Horas em faixa baixa · central · alta</th>
+                <th scope="col" className="border-b border-linha py-2 pr-3 font-medium">
+                  {tx("Submercado", "Submarket")}
+                </th>
+                <th scope="col" className="border-b border-linha px-2 py-2 font-medium">
+                  {tx("Média", "Average")}
+                </th>
+                <th scope="col" className="border-b border-linha px-2 py-2 font-medium">
+                  {tx("Mínimo", "Minimum")}
+                </th>
+                <th scope="col" className="border-b border-linha px-2 py-2 font-medium">
+                  {tx("Máximo", "Maximum")}
+                </th>
+                <th scope="col" className="hidden border-b border-linha px-2 py-2 font-medium sm:table-cell">
+                  {tx("Volatilidade (desvio padrão)", "Volatility (standard deviation)")}
+                </th>
+                <th scope="col" className="hidden border-b border-linha px-2 py-2 font-medium sm:table-cell">
+                  {tx("Horas em faixa baixa · central · alta", "Hours in low · central · high band")}
+                </th>
               </tr>
             </thead>
             <tbody>
               {SMS.flatMap((s) => {
                 const st = at.stats[s.id];
-                const faixas = `${p(st.permanencia.baixa)} · ${p(st.permanencia.central)} · ${p(st.permanencia.alta)}`;
+                const faixas = `${p(st.permanencia.baixa, idioma)} · ${p(st.permanencia.central, idioma)} · ${p(st.permanencia.alta, idioma)}`;
+                const rotulo = rotuloSm(s.id, idioma);
                 return [
                   <tr key={s.id} className="border-b border-linha max-sm:border-b-0">
                     <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">
                       <span aria-hidden="true" className="mr-2 inline-block h-2 w-2" style={{ background: s.cor }} />
                       <span className="sm:hidden">
-                        <abbr title={s.rotulo} className="no-underline">
-                          {s.sigla}
+                        <abbr title={rotulo} className="no-underline">
+                          {siglaSm(s.id, idioma)}
                         </abbr>
                       </span>
-                      <span className="hidden sm:inline">{s.rotulo}</span>
+                      <span className="hidden sm:inline">{rotulo}</span>
                     </th>
-                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.media)}</td>
-                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.min)}</td>
-                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.max)}</td>
-                    <td className="hidden px-2 py-2 text-carvao sm:table-cell">R$&nbsp;{n(st.desvio_padrao)}</td>
+                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.media, 2, idioma)}</td>
+                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.min, 2, idioma)}</td>
+                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.max, 2, idioma)}</td>
+                    <td className="hidden px-2 py-2 text-carvao sm:table-cell">R$&nbsp;{n(st.desvio_padrao, 2, idioma)}</td>
                     <td className="hidden px-2 py-2 text-carvao sm:table-cell">{faixas}</td>
                   </tr>,
                   // celular: volatilidade e faixas descem para uma segunda linha do mesmo submercado, em vez de empurrar colunas para fora da tela
                   <tr key={`${s.id}-mais`} className="border-b border-linha sm:hidden">
                     <td colSpan={4} className="px-2 pb-2 pt-0 text-xs text-carvao-muted">
-                      Volatilidade (desvio padrão): R$&nbsp;{n(st.desvio_padrao)}. Horas em faixa baixa · central · alta: {faixas}.
+                      {tx(
+                        `Volatilidade (desvio padrão): R$ ${n(st.desvio_padrao)}. Horas em faixa baixa · central · alta: ${faixas}.`,
+                        `Volatility (standard deviation): R$ ${n(st.desvio_padrao, 2, idioma)}. Hours in low · central · high band: ${faixas}.`,
+                      )}
                     </td>
                   </tr>,
                 ];
@@ -314,8 +393,10 @@ export function PldPeriodos({
           </table>
         </div>
         <p className="mt-2 text-xs text-mineral">
-          Valores em R$/MWh nominais. Faixas: abaixo do 25º percentil, entre o 25º e o 75º e acima do 75º percentil da distribuição horária de cada submercado desde 01/01/2021.
-          Diferença entre submercados: critério de R$&nbsp;{n(limiar, 2)}/MWh nesta página e de R$&nbsp;{n(LIMIAR_SEPARACAO, 2)}/MWh em Diferenças regionais.
+          {tx(
+            `Valores em R$/MWh nominais. Faixas: abaixo do 25º percentil, entre o 25º e o 75º e acima do 75º percentil da distribuição horária de cada submercado desde 01/01/2021. Diferença entre submercados: critério de R$ ${n(limiar, 2)}/MWh nesta página e de R$ ${n(LIMIAR_SEPARACAO, 2)}/MWh em Diferenças regionais.`,
+            `Values in nominal R$/MWh. Bands: below the 25th percentile, between the 25th and the 75th, and above the 75th percentile of the hourly distribution of each submarket since ${dataBR("2021-01-01", "en")}. Difference between submarkets: criterion of R$ ${n(limiar, 2, idioma)}/MWh on this page and of R$ ${n(LIMIAR_SEPARACAO, 2, idioma)}/MWh in Regional differences.`,
+          )}
         </p>
       </div>
     </div>

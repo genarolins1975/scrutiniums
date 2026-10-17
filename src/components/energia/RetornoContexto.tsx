@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CHAVE_RETORNO as CHAVE, destinoDaVolta, type DestinoRetorno as Destino, type RotulosRetorno } from "@/lib/energia/retorno";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Caminho de volta do painel ao Aprenda (P066: "o usuário chega do conceito à evidência e
@@ -15,6 +16,8 @@ import { CHAVE_RETORNO as CHAVE, destinoDaVolta, type DestinoRetorno as Destino,
  * parâmetro. No servidor não renderiza nada.
  */
 export function RetornoContexto({ rotulos }: { rotulos: RotulosRetorno }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [destino, setDestino] = useState<Destino | null>(null);
   // a cada troca de rota (inclusive navegação interna, em que o cabeçalho não remonta) o destino é refeito
   const caminho = usePathname();
@@ -24,7 +27,7 @@ export function RetornoContexto({ rotulos }: { rotulos: RotulosRetorno }) {
     const volta = url.searchParams.get("volta");
     let d: Destino | null = null;
     if (volta) {
-      d = destinoDaVolta(volta, rotulos);
+      d = destinoDaVolta(volta, rotulos, idioma);
       url.searchParams.delete("volta");
       window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
       try {
@@ -35,13 +38,13 @@ export function RetornoContexto({ rotulos }: { rotulos: RotulosRetorno }) {
     } else {
       try {
         const salvo = JSON.parse(sessionStorage.getItem(CHAVE) ?? "null") as { caminho?: string; volta?: string } | null;
-        if (salvo?.volta && salvo.caminho === url.pathname) d = destinoDaVolta(salvo.volta, rotulos);
+        if (salvo?.volta && salvo.caminho === url.pathname) d = destinoDaVolta(salvo.volta, rotulos, idioma);
       } catch {
         // sessão indisponível ou corrompida: sem botão
       }
     }
     setDestino(d);
-  }, [rotulos, caminho]);
+  }, [rotulos, caminho, idioma]);
 
   if (!destino) return null;
   const fechar = () => {
@@ -53,12 +56,12 @@ export function RetornoContexto({ rotulos }: { rotulos: RotulosRetorno }) {
     setDestino(null);
   };
   return (
-    <nav aria-label="Voltar ao Aprenda" data-retorno="true" className="fixed bottom-4 left-4 right-4 z-40 flex items-stretch border border-energia bg-superficie shadow-lg print:hidden sm:right-auto">
+    <nav aria-label={tx("Voltar ao Aprenda", "Back to Learn")} data-retorno="true" className="fixed bottom-4 left-4 right-4 z-40 flex items-stretch border border-energia bg-superficie shadow-lg print:hidden sm:right-auto">
       <Link href={destino.href} className="flex min-h-[44px] flex-1 items-center gap-2 px-4 text-sm text-energia-dark underline-offset-4 hover:underline" onClick={fechar}>
         <span aria-hidden="true">←</span>
         {destino.texto}
       </Link>
-      <button type="button" onClick={fechar} aria-label="Fechar o caminho de volta" className="min-h-[44px] min-w-[44px] border-l border-linha text-carvao-muted hover:text-carvao">
+      <button type="button" onClick={fechar} aria-label={tx("Fechar o caminho de volta", "Close the way back")} className="min-h-[44px] min-w-[44px] border-l border-linha text-carvao-muted hover:text-carvao">
         ×
       </button>
     </nav>

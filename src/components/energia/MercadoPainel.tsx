@@ -1,11 +1,15 @@
-import type { ReactNode } from "react";
-import Link from "next/link";
+import { Fragment, type ReactNode } from "react";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { carimbo, mesAno } from "@/lib/energia/formato";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { DEFINICOES_MERCADO_EN, PAGINAS_CATALOGO_EN, TITULOS_CATALOGO_MERCADO_EN, identificador, marcadoMercado, traducaoExata } from "@/lib/energia/i18n/mercado-preco";
+import { Nome } from "@/components/i18n/Nome";
 import { datasLegiveis } from "@/lib/energia/visao";
 import {
   PAGINAS_MERCADO,
@@ -30,13 +34,21 @@ import type { MercadoGold, PainelMercado } from "@/lib/energia/tipos-mercado";
 
 const LINK = "inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao";
 
-/** Páginas do módulo como itens da navegação local; a descrição de cada uma é a pergunta que ela responde. */
-const ITENS_MERCADO: ItemLocal[] = PAGINAS_MERCADO.map((p) => ({ id: p.id, href: p.href, rotulo: p.rotulo, descricao: TITULO_PAGINA_MERCADO[p.id] }));
+/** Páginas do módulo como itens da navegação local; a descrição de cada uma é a pergunta que ela responde (lidas no render, no idioma da página). */
+function itensMercado(): ItemLocal[] {
+  return PAGINAS_MERCADO.map((p) => ({ id: p.id, href: p.href, rotulo: p.rotulo, descricao: TITULO_PAGINA_MERCADO[p.id] }));
+}
+
+/** Texto em prosa da gold (só em português): na página inglesa sai marcado como trecho em português. */
+export function TextoGold({ children, regiao }: { children: ReactNode; regiao: string }) {
+  if (children === null || children === undefined || children === "") return null;
+  return <TrechoPortugues regiao={regiao}>{children}</TrechoPortugues>;
+}
 
 /** Faixa de páginas irmãs nas filhas. A abertura mostra os mesmos destinos como capítulos (MercadoCapitulos) e não leva a faixa. */
 export function MercadoNavegacao({ atual }: { atual: IdPaginaMercado }) {
   if (atual === "livre-regulado") return null;
-  return <NavegacaoLocal rotulo="Painéis do módulo Mercado" itens={ITENS_MERCADO} atual={atual} />;
+  return <NavegacaoLocal rotulo={tx("Painéis do módulo Mercado", "Market module panels")} itens={itensMercado()} atual={atual} />;
 }
 
 /** Linha de referência do cabeçalho, a mesma nas quatro páginas, lida da gold. */
@@ -44,8 +56,16 @@ export function ReferenciaMercado({ g }: { g: MercadoGold }) {
   const r = g.referencias;
   return (
     <>
-      EPE até {mesAno(r.epe_ultimo_mes)}; CCEE até {r.ccee_ultimo_mes_consumo ? mesAno(r.ccee_ultimo_mes_consumo) : "mês não publicado"} (consumo, agentes e encargos) e{" "}
-      {r.ccee_ultimo_mes_gsf ? mesAno(r.ccee_ultimo_mes_gsf) : "mês não publicado"} (GSF); SAMP da ANEEL com ano completo de {r.samp_ano_referencia ?? "ano não publicado"}. Processado em {carimbo(g.gerado_em)}.
+      {tx(
+        <>
+          EPE até {mesAno(r.epe_ultimo_mes)}; CCEE até {r.ccee_ultimo_mes_consumo ? mesAno(r.ccee_ultimo_mes_consumo) : "mês não publicado"} (consumo, agentes e encargos) e{" "}
+          {r.ccee_ultimo_mes_gsf ? mesAno(r.ccee_ultimo_mes_gsf) : "mês não publicado"} (GSF); SAMP da ANEEL com ano completo de {r.samp_ano_referencia ?? "ano não publicado"}. Processado em {carimbo(g.gerado_em)}.
+        </>,
+        <>
+          EPE to {mesAno(r.epe_ultimo_mes)}; CCEE to {r.ccee_ultimo_mes_consumo ? mesAno(r.ccee_ultimo_mes_consumo) : "month not published"} (consumption, agents and charges) and{" "}
+          {r.ccee_ultimo_mes_gsf ? mesAno(r.ccee_ultimo_mes_gsf) : "month not published"} (GSF); ANEEL SAMP with a complete year for {r.samp_ano_referencia ?? "year not published"}. Processed on {carimbo(g.gerado_em)}.
+        </>,
+      )}
     </>
   );
 }
@@ -55,15 +75,15 @@ export function MercadoRecorte({ periodo, universo, unidade }: { periodo: ReactN
   return (
     <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5 leading-relaxed">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
         <dd className="mt-0.5 leading-relaxed">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5 leading-relaxed">{unidade}</dd>
       </div>
     </dl>
@@ -80,13 +100,13 @@ export function MercadoVerificacoes({ painel }: { painel: PainelMercado }) {
   return (
     <div className="space-y-3 text-sm" data-estado={painel.estado_dados}>
       <p className="leading-relaxed text-carvao">
-        {textoEstado(painel)} Critério de aceite da especificação: {painel.criterio_aceite}
+        {textoEstado(painel)} {tx("Critério de aceite da especificação:", "Specification acceptance criterion:")} <TextoGold regiao="mercado-criterio">{painel.criterio_aceite}</TextoGold>
       </p>
       <ul className="space-y-1.5 text-carvao-muted">
         {painel.verificacoes.map((v) => (
           <li key={v.nome} className="leading-relaxed [overflow-wrap:anywhere]">
             <span className={v.resultado === "aprovado" ? "text-carvao" : "text-aviso"}>{ROTULO_RESULTADO[v.resultado]}</span>
-            {v.essencial ? "" : " (divergência documentada, fora do critério)"}: {datasLegiveis(v.nome)}. {datasLegiveis(v.detalhe)}
+            {v.essencial ? "" : tx(" (divergência documentada, fora do critério)", " (documented divergence, outside the criterion)")}: <TextoGold regiao="mercado-verificacao">{datasLegiveis(v.nome)}. {datasLegiveis(v.detalhe)}</TextoGold>
           </li>
         ))}
       </ul>
@@ -98,10 +118,12 @@ export function MercadoLimitacoes({ painel }: { painel: PainelMercado }) {
   if (!painel.limitacoes.length) return null;
   return (
     <div className="border-t border-linha pt-4" data-limitacoes="">
-      <p className="rotulo text-mineral">Limitações declaradas</p>
+      <p className="rotulo text-mineral">{tx("Limitações declaradas", "Declared limitations")}</p>
       <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
         {painel.limitacoes.map((l) => (
-          <li key={l}>{datasLegiveis(l).replace(/\bp\.p\./g, "pontos percentuais")}</li>
+          <li key={l}>
+            <TextoGold regiao="mercado-limitacao">{datasLegiveis(l).replace(/\bp\.p\./g, "pontos percentuais")}</TextoGold>
+          </li>
         ))}
       </ul>
     </div>
@@ -113,29 +135,36 @@ export function MercadoDefinicoes({ g, chaves }: { g: MercadoGold; chaves: (keyo
   const nome: Record<string, string> = {
     acl: "ACL",
     acr: "ACR",
-    exportacao: "Exportação",
-    agente: "Agente",
-    perfil: "Perfil",
-    parcela_de_carga: "Parcela de carga",
-    unidade_consumidora: "Unidade consumidora",
-    migracao: "Migração",
-    entrada_saida_agente: "Entrada e saída de agente",
-    desligamento: "Desligamento",
-    variacao_liquida: "Variação líquida",
+    exportacao: tx("Exportação", "Exports"),
+    agente: tx("Agente", "Agent"),
+    perfil: tx("Perfil", "Profile"),
+    parcela_de_carga: tx("Parcela de carga", "Load parcel"),
+    unidade_consumidora: tx("Unidade consumidora", "Consumer unit"),
+    migracao: tx("Migração", "Migration"),
+    entrada_saida_agente: tx("Entrada e saída de agente", "Agent entry and exit"),
+    desligamento: tx("Desligamento", "Disconnection"),
+    variacao_liquida: tx("Variação líquida", "Net change"),
     mre: "MRE",
     gsf: "GSF",
-    risco_hidrologico_acr: "Risco hidrológico do ACR",
+    risco_hidrologico_acr: tx("Risco hidrológico do ACR", "ACR hydrological risk"),
     ess: "ESS",
     eer: "EER",
-    competencia_pagamento_reprocessamento: "Competência, pagamento e reprocessamento",
+    competencia_pagamento_reprocessamento: tx("Competência, pagamento e reprocessamento", "Accounting month, payment and reprocessing"),
     pld: "PLD",
   };
+  const idioma = idiomaEnergia();
   return (
     <dl className="grid gap-x-8 gap-y-3 text-sm md:grid-cols-2">
       {chaves.map((k) => (
         <div key={k}>
           <dt className="font-medium text-carvao">{nome[k] ?? k}</dt>
-          <dd className="mt-0.5 leading-relaxed text-carvao-muted">{g.definicoes[k]}</dd>
+          <dd className="mt-0.5 leading-relaxed text-carvao-muted">
+            {traducaoExata(DEFINICOES_MERCADO_EN, g.definicoes[k], idioma) !== null ? (
+              marcadoMercado(traducaoExata(DEFINICOES_MERCADO_EN, g.definicoes[k], idioma), idioma)
+            ) : (
+              <TextoGold regiao="mercado-definicao">{g.definicoes[k]}</TextoGold>
+            )}
+          </dd>
         </div>
       ))}
     </dl>
@@ -151,13 +180,15 @@ export function MercadoResposta({ painel, veredito, children, depois = true }: {
   if (veredito) {
     return (
       <RespostaCurta id={painel} depois={depois} veredito={veredito}>
-        {children}
+        <TextoGold regiao="mercado-resposta">{children}</TextoGold>
       </RespostaCurta>
     );
   }
   return (
     <div data-resposta={painel} {...(depois ? { "data-resposta-depois": "" } : {})}>
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao md:text-lg">{children}</p>
+      <p className="max-w-prose2 text-base leading-relaxed text-carvao md:text-lg">
+        <TextoGold regiao="mercado-resposta">{children}</TextoGold>
+      </p>
     </div>
   );
 }
@@ -168,24 +199,32 @@ export function MercadoResposta({ painel, veredito, children, depois = true }: {
  */
 export function MercadoPendenciasAuditoria({ g }: { g: Pick<MercadoGold, "pendencias" | "bloqueios"> }) {
   const itens = [
-    ...g.pendencias.map((p) => ({ tipo: "Pendência", id: p.id, descricao: p.descricao, efeito: p.efeito, evidencia: p.evidencia as { url: string; capturado_em?: string | null; sha256?: string | null; observacao: string }, alternativas: [] as string[] })),
-    ...g.bloqueios.map((b) => ({ tipo: "Bloqueio", id: b.id, descricao: b.descricao, efeito: b.efeito, evidencia: b.evidencia as { url: string; capturado_em?: string | null; sha256?: string | null; observacao: string }, alternativas: b.alternativas })),
+    ...g.pendencias.map((p) => ({ tipo: tx("Pendência", "Pending item"), id: p.id, descricao: p.descricao, efeito: p.efeito, evidencia: p.evidencia as { url: string; capturado_em?: string | null; sha256?: string | null; observacao: string }, alternativas: [] as string[] })),
+    ...g.bloqueios.map((b) => ({ tipo: tx("Bloqueio", "Blocked item"), id: b.id, descricao: b.descricao, efeito: b.efeito, evidencia: b.evidencia as { url: string; capturado_em?: string | null; sha256?: string | null; observacao: string }, alternativas: b.alternativas })),
   ];
   if (!itens.length) return null;
+  const idioma = idiomaEnergia();
   return (
     <ul className="space-y-3 text-sm leading-relaxed text-carvao-muted [overflow-wrap:anywhere]" data-pendencias="">
       {itens.map((i) => (
         <li key={`${i.tipo}:${i.id}`}>
           <span className="text-carvao">
-            {i.tipo} ({i.id})
+            {i.tipo} ({identificador(i.id, idioma)})
           </span>
-          : {datasLegiveis(i.descricao)} Efeito: {datasLegiveis(i.efeito)} Evidência: {datasLegiveis(i.evidencia.observacao)}{" "}
+          : <TextoGold regiao="mercado-pendencia">{datasLegiveis(i.descricao)}</TextoGold> {tx("Efeito:", "Effect:")} <TextoGold regiao="mercado-pendencia">{datasLegiveis(i.efeito)}</TextoGold> {tx("Evidência:", "Evidence:")}{" "}
+          <TextoGold regiao="mercado-pendencia">{datasLegiveis(i.evidencia.observacao)}</TextoGold>{" "}
           <a href={i.evidencia.url} className="text-energia-dark underline underline-offset-4" target="_blank" rel="noopener noreferrer">
-            endereço consultado<span className="sr-only"> (abre em nova aba)</span>
+            {tx("endereço consultado", "address consulted")}
+            <span className="sr-only">{tx(" (abre em nova aba)", " (opens in a new tab)")}</span>
           </a>
-          {i.evidencia.capturado_em ? `, capturado em ${carimbo(i.evidencia.capturado_em)}` : ""}
-          {i.evidencia.sha256 ? `, sha256 ${i.evidencia.sha256}` : ""}.
-          {i.alternativas.length > 0 && <> Alternativas integradas: {i.alternativas.map(datasLegiveis).join("; ")}.</>}
+          {i.evidencia.capturado_em ? tx(`, capturado em ${carimbo(i.evidencia.capturado_em)}`, `, captured on ${carimbo(i.evidencia.capturado_em)}`) : ""}
+          {i.evidencia.sha256 ? <>, sha256 {identificador(i.evidencia.sha256, idioma)}</> : ""}.
+          {i.alternativas.length > 0 && (
+            <>
+              {" "}
+              {tx("Alternativas integradas:", "Integrated alternatives:")} <TextoGold regiao="mercado-pendencia">{i.alternativas.map((x) => datasLegiveis(x)).join("; ")}</TextoGold>.
+            </>
+          )}
         </li>
       ))}
     </ul>
@@ -199,13 +238,23 @@ export function MercadoPendenciasAuditoria({ g }: { g: Pick<MercadoGold, "penden
  */
 export function MercadoAusencias({ id, titulo, lead, itens }: { id: string; titulo: string; lead?: ReactNode; itens: ItemAusenteMercado[] }) {
   if (!itens.length) return null;
+  const idioma = idiomaEnergia();
   return (
     <SecaoDoPainel id={id} titulo={titulo} lead={lead}>
       <ul className="grid gap-x-8 gap-y-4 md:grid-cols-2" data-ausencias="">
         {itens.map((i) => (
           <li key={i.id} className="min-w-0 border-l-2 border-linha pl-4 text-sm" data-ausente={i.id}>
             <p className="font-serif text-base text-carvao">{i.titulo}</p>
-            <p className="mt-1 leading-relaxed text-carvao-muted">{i.texto}</p>
+            <p className="mt-1 leading-relaxed text-carvao-muted">
+              {i.emPortugues && i.efeito ? (
+                <>
+                  {marcadoMercado(i.prefixo, idioma)}
+                  <TextoGold regiao="mercado-ausencia">{i.efeito}</TextoGold>
+                </>
+              ) : (
+                marcadoMercado(i.texto, idioma)
+              )}
+            </p>
           </li>
         ))}
       </ul>
@@ -223,7 +272,7 @@ export function MercadoCapitulos({ g, atual }: { g: MercadoGold; atual: IdPagina
   return (
     <nav aria-labelledby="mercado-outras" data-navegacao-local="capitulos" className="border-t border-linha pt-6">
       <h2 id="mercado-outras" className="ed-h2 font-serif text-carvao">
-        As outras perguntas sobre o mercado
+        {tx("As outras perguntas sobre o mercado", "The other questions about the market")}
       </h2>
       <ul className="mt-5 grid gap-x-8 gap-y-8 lg:grid-cols-3">
         {outras.map((o) => {
@@ -240,14 +289,14 @@ export function MercadoCapitulos({ g, atual }: { g: MercadoGold; atual: IdPagina
               <div className="mt-2 flex-1">
                 {veredito ? (
                   <RespostaCurta id={o.painel} atributo="data-resposta-resumo" tamanho="sm" veredito={veredito}>
-                    {p?.resposta}
+                    <TextoGold regiao="mercado-resposta">{p?.resposta}</TextoGold>
                   </RespostaCurta>
                 ) : (
-                  <p className="text-sm leading-relaxed text-carvao-muted">{p?.resposta ?? "Sem resposta publicada nesta atualização: falta dado na gold."}</p>
+                  <p className="text-sm leading-relaxed text-carvao-muted">{p?.resposta ? <TextoGold regiao="mercado-resposta">{p.resposta}</TextoGold> : tx("Sem resposta publicada nesta atualização: falta dado na gold.", "No answer published in this update: data is missing from the gold layer.")}</p>
                 )}
               </div>
               <Link href={o.href} className={`rotulo ${LINK}`}>
-                Abrir o painel {o.rotulo.toLowerCase()}
+                {tx(`Abrir o painel ${o.rotulo.toLowerCase()}`, `Open the panel: ${o.rotulo}`)}
               </Link>
             </li>
           );
@@ -264,15 +313,90 @@ export function MercadoIndisponivel({ motivo }: { motivo?: string | null }) {
       <CabecalhoEnergia atual="mercado" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
-          titulo="Mercado indisponível nesta publicação"
-          motivo={motivo ?? "A gold do módulo Mercado (public/energia/gold/mercado.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."}
+          titulo={tx("Mercado indisponível nesta publicação", "Market unavailable in this publication")}
+          motivo={motivo ?? tx("A gold do módulo Mercado (public/energia/gold/mercado.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe.", "The Market module gold file (public/energia/gold/mercado.json) was not generated or did not pass validation; the last valid publication is kept when there is one.")}
         />
         <p className="mt-6 text-sm">
           <Link href="/setor-eletrico" className="text-energia-dark underline underline-offset-4">
-            Voltar ao mapa do observatório
+            {tx("Voltar ao mapa do observatório", "Back to the observatory map")}
           </Link>
         </p>
       </main>
     </>
+  );
+}
+
+/** Título de conjunto do catálogo na página inglesa: código da fonte em <code>, título descritivo pela tabela exata, nome oficial em <Nome>. */
+function tituloCatalogo(titulo: string): ReactNode {
+  const idioma = idiomaEnergia();
+  if (idioma !== "en") return titulo;
+  if (/^[A-Z0-9_]+$/.test(titulo)) return identificador(titulo, idioma);
+  const en = traducaoExata(TITULOS_CATALOGO_MERCADO_EN, titulo, idioma);
+  return en ? marcadoMercado(en, idioma, ["Boletim de Monitoramento do Sistema Elétrico"]) : <Nome>{titulo}</Nome>; // i18n: dado
+}
+
+/** Páginas em que a fonte aparece, com o nome do módulo no idioma da página (sem entrada na tabela, o nome sai marcado). */
+function paginasCatalogo(rotulos: string): ReactNode {
+  const idioma = idiomaEnergia();
+  if (idioma !== "en") return rotulos;
+  const partes = rotulos.split("; ");
+  return partes.map((r, i) => (
+    <Fragment key={r}>
+      {i > 0 ? "; " : ""}
+      {traducaoExata(PAGINAS_CATALOGO_EN, r, idioma) ?? (r === "no page" ? r : <Nome>{r}</Nome>)}
+    </Fragment>
+  ));
+}
+
+/**
+ * Fontes do módulo no catálogo (linhas de linhasCatalogoMercado: órgão, conjunto, estado, onde aparece), na mesma forma do resumo em
+ * tabela (TabelaDados), com o conjunto e as páginas no idioma da página: código da fonte como código, nome oficial como nome.
+ */
+export function MercadoCatalogo({ titulo, colunas, linhas, limite = 60 }: { titulo: string; colunas: string[]; linhas: (string | number | null)[][]; limite?: number }) {
+  const en = idiomaEnergia() === "en";
+  const n = (x: number) => x.toLocaleString(en ? "en-US" : "pt-BR");
+  const ult = linhas.slice(-limite);
+  return (
+    <details className="mt-4 border-t border-linha pt-3">
+      <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
+        {tx(
+          `Resumo em tabela (${ult.length === linhas.length ? `${linhas.length} linhas` : `últimas ${ult.length} de ${linhas.length} linhas`})`,
+          `Table summary (${ult.length === linhas.length ? `${n(linhas.length)} ${linhas.length === 1 ? "row" : "rows"}` : `last ${n(ult.length)} of ${n(linhas.length)} rows`})`,
+        )}
+      </summary>
+      <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={tx(`${titulo} (tabela rolável)`, `${titulo} (scrollable table)`)}>
+        <table className="w-full min-w-[28rem] border-collapse text-xs tabular-nums">
+          <caption className="sr-only">{titulo}</caption>
+          <thead>
+            <tr>
+              {colunas.map((c) => (
+                <th key={c} scope="col" className="border-b border-linha px-2 py-1.5 text-left font-medium text-mineral">
+                  {c}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {ult.map((l, i) => (
+              <tr key={i} className="odd:bg-papel">
+                {l.map((v, j) => (
+                  <td key={j} className="px-2 py-1 text-carvao">
+                    {v === null || v === undefined ? (
+                      <span className="text-mineral">{tx("sem dado", "no data")}</span>
+                    ) : j === 1 ? (
+                      tituloCatalogo(String(v))
+                    ) : j === 3 ? (
+                      paginasCatalogo(String(v))
+                    ) : (
+                      v
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </details>
   );
 }

@@ -1,8 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { hrefNoIdioma } from "@/lib/i18n-href";
 
 /**
  * Link de conta sensível à sessão num cabeçalho estático: visitante vê
@@ -13,6 +15,10 @@ import { useEffect, useState } from "react";
  * lidos no momento do clique: a troca de modo no cliente não muda o pathname.
  */
 export function AcessoConta({ destino }: { destino: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  // em inglês, "Sign in" leva à irmã /en/entrar; o retorno (?de=) é o endereço da página, como em português
+  const entrar = (de: string) => hrefNoIdioma(`/entrar?de=${encodeURIComponent(de)}`, idioma);
   const [logado, setLogado] = useState<boolean | null>(null);
   const [volta, setVolta] = useState(destino);
   const caminho = usePathname() || destino;
@@ -28,21 +34,21 @@ export function AcessoConta({ destino }: { destino: string }) {
   const atualiza = () => setVolta(`${window.location.pathname}${window.location.search}${window.location.hash}`);
   return logado ? (
     <Link href="/app/conta" className={classe}>
-      Minha conta
+      {tx("Minha conta", "My account")}
     </Link>
   ) : (
     <a
-      href={`/entrar?de=${encodeURIComponent(volta)}`}
+      href={entrar(volta)}
       className={classe}
       onMouseEnter={atualiza}
       onFocus={atualiza}
       onClick={(e) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
         e.preventDefault();
-        window.location.assign(`/entrar?de=${encodeURIComponent(`${window.location.pathname}${window.location.search}${window.location.hash}`)}`);
+        window.location.assign(entrar(`${window.location.pathname}${window.location.search}${window.location.hash}`));
       }}
     >
-      Entrar
+      {tx("Entrar", "Sign in")}
     </a>
   );
 }

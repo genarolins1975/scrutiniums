@@ -5,6 +5,7 @@ import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { TabelaInterativa, type TabelaInterativaProps } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { CAMPO_VALORES, expandirLinhasTabela, linhasEmReais, tabelaTemReal, type LinhaCompactaTabela, type ReaisDaTabela } from "@/lib/energia/conta";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Tabela que só entra na página quando o leitor a pede (`ContaSobDemanda`), com as linhas em tuplas: a página entrega, no fluxo do
@@ -33,19 +34,28 @@ export function ContaTabelaSobDemanda({
   reais?: ReaisDaTabela;
 }) {
   const [v] = useEstadoUrl({ valores: CAMPO_VALORES });
+  const tx = useTx();
   const expandidas = useMemo(() => expandirLinhasTabela(tabela.colunas, linhas), [tabela.colunas, linhas]);
   const emReais = tabelaTemReal(reais) && v.valores === "real";
   const doModo = useMemo(() => (emReais && reais ? linhasEmReais(expandidas, reais) : expandidas), [emReais, reais, expandidas]);
   const base = reais?.base ?? null;
-  const titulo = reais ? (emReais ? `${tabela.titulo}, em reais de ${base} (corrigidos pelo IPCA)` : `${tabela.titulo}, em valores nominais (da época)`) : tabela.titulo;
-  const nomeArquivo = reais && emReais && base ? `${tabela.nomeArquivo}-reais-${base.replace("/", "-")}` : tabela.nomeArquivo;
+  const titulo = reais
+    ? emReais
+      ? tx(`${tabela.titulo}, em reais de ${base} (corrigidos pelo IPCA)`, `${tabela.titulo}, in ${base} reais (adjusted by the IPCA)`)
+      : tx(`${tabela.titulo}, em valores nominais (da época)`, `${tabela.titulo}, in nominal values (of the time)`)
+    : tabela.titulo;
+  // o mês-base vem no idioma da página ("ago/2026", "Aug 2026"): no nome do arquivo, sem barra nem espaço
+  const nomeArquivo = reais && emReais && base ? `${tabela.nomeArquivo}-reais-${base.replace("/", "-").replace(/\s+/g, "-")}` : tabela.nomeArquivo;
   const nota = reais ? (
     <>
       {tabela.nota}
       {tabela.nota ? " " : ""}
       {emReais
-        ? `Valores em reais de ${base}: cada valor nominal é multiplicado pelo índice do IPCA de ${base} dividido pela média dos índices mensais do ano.`
-        : "Valores nominais, na moeda da época; a escolha Em reais, acima dos gráficos, corrige pelo IPCA."}
+        ? tx(
+            `Valores em reais de ${base}: cada valor nominal é multiplicado pelo índice do IPCA de ${base} dividido pela média dos índices mensais do ano.`,
+            `Values in ${base} reais: each nominal value is multiplied by the IPCA index for ${base} divided by the average of the year's monthly indices.`,
+          )
+        : tx("Valores nominais, na moeda da época; a escolha Em reais, acima dos gráficos, corrige pelo IPCA.", "Nominal values, in the currency of the time; the In reais option, above the charts, adjusts by the IPCA.")}
     </>
   ) : (
     tabela.nota

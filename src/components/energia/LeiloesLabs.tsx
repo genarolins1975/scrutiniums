@@ -2,6 +2,8 @@
 
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { TransicaoOpcoes } from "@/components/energia/TransicaoOpcoes";
+import { Nome } from "@/components/i18n/Nome";
+import { formatos } from "@/lib/energia/formato";
 import {
   COR_ENTRADA,
   PARAMETROS_LEILAO_INICIAIS,
@@ -11,15 +13,21 @@ import {
   type ParametrosLeilao,
 } from "@/lib/energia/leiloes";
 import type { IdEntrada } from "@/lib/energia/tipos-leiloes";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Peças interativas da página de leilões do ACR. A linha do tempo dos produtos usa números da gold (passados pela página); o
  * laboratório do leilão é um modelo didático com grandezas escolhidas pela pessoa e diz o que deixa de fora.
  *
  * Controles nativos (rádios e deslizantes) com rótulo visível, valor escrito e alvo de 44 px; resultado anunciado por região viva.
+ * Idioma: o da página (useIdioma); números pelo formatador do idioma, com o mesmo valor e a mesma precisão.
  */
 
-const n = (v: number, casas = 0) => v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "−");
+/** Número no idioma da página, com o sinal de menos tipográfico. */
+function useN() {
+  const f = formatos(useIdioma());
+  return (v: number, casas = 0) => f.num(v, casas);
+}
 
 function Moldura({ id, titulo, rotuloModelo, children }: { id: string; titulo: string; rotuloModelo: string; children: ReactNode }) {
   return (
@@ -39,6 +47,7 @@ function Controle({ rotulo, valor, min, max, passo = 1, unidade, onMudar, ajuda 
   rotulo: string; valor: number; min: number; max: number; passo?: number; unidade: string; onMudar: (v: number) => void; ajuda?: string;
 }) {
   const id = useId();
+  const n = useN();
   return (
     <div className="space-y-1">
       <label htmlFor={id} className="flex items-baseline justify-between gap-3 text-sm text-carvao">
@@ -89,28 +98,50 @@ export type ProdutoNaBase = {
 const ORDEM_ENTRADA: IdEntrada[] = ["ate_ano_a", "depois_ano_a", "antes_do_leilao", "sem_data"];
 
 export function LinhaDosProdutos({ produtos, dataSiga }: { produtos: ProdutoNaBase[]; dataSiga: string }) {
+  const tx = useTx();
+  const n = useN();
   const [sel, setSel] = useState(produtos.find((p) => p.id === "A-5")?.id ?? produtos[0]?.id ?? "");
   const p = produtos.find((x) => x.id === sel);
   if (!p) return null;
   const ano = p.exemplo?.ano ?? 2020;
   const linha = linhaProduto(p.id, ano);
   const totalEntrada = p.entrada ? ORDEM_ENTRADA.reduce((s, k) => s + p.entrada![k], 0) : 0;
+  const mwmedio = tx("MWmédio", "MWavg");
   return (
-    <Moldura id="lab-produtos" titulo="Do leilão ao início do suprimento" rotuloModelo="Calendário do produto e dados da base">
-      <TransicaoOpcoes rotulo="Produto" nome="leiloes-produto" opcoes={produtos.map((x) => [x.id, x.id] as const)} valor={sel} onMudar={setSel} />
+    <Moldura id="lab-produtos" titulo={tx("Do leilão ao início do suprimento", "From the auction to the start of supply")} rotuloModelo={tx("Calendário do produto e dados da base", "Product calendar and database figures")}>
+      <TransicaoOpcoes rotulo={tx("Produto", "Product")} nome="leiloes-produto" opcoes={produtos.map((x) => [x.id, x.id] as const)} valor={sel} onMudar={setSel} />
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" aria-live="polite">
         <span className="font-medium text-carvao">{p.rotulo}.</span>{" "}
         {p.antecedencia != null
-          ? `No produto ${p.id}, o leilão acontece ${p.antecedencia} anos antes do ano A, em que começa a entrega da energia contratada. Nesse intervalo a usina é licenciada, financiada e construída.`
+          ? tx(
+              `No produto ${p.id}, o leilão acontece ${p.antecedencia} anos antes do ano A, em que começa a entrega da energia contratada. Nesse intervalo a usina é licenciada, financiada e construída.`,
+              `In the ${p.id} product, the auction takes place ${p.antecedencia} ${p.antecedencia === 1 ? "year" : "years"} before year A, when delivery of the contracted energy begins. In that interval the plant is licensed, financed and built.`,
+            )
           : p.id === "LER"
-            ? "Energia de reserva: contratada para aumentar a segurança do suprimento, com contrato celebrado com a CCEE e custo rateado entre os consumidores por encargo. O início do suprimento é fixado no edital e não está no arquivo."
+            ? tx(
+                "Energia de reserva: contratada para aumentar a segurança do suprimento, com contrato celebrado com a CCEE e custo rateado entre os consumidores por encargo. O início do suprimento é fixado no edital e não está no arquivo.",
+                "Reserve energy: contracted to increase security of supply, with the contract signed with the CCEE and the cost shared among consumers through a charge. The start of supply is set in the tender and is not in the file.",
+              )
             : p.id === "FA"
-              ? "Fontes alternativas (eólica, biomassa e pequenas hidrelétricas): leilão próprio, com início do suprimento fixado no edital, que não está no arquivo."
-              : "Projeto estruturante: hidrelétrica de grande porte licitada individualmente, com prazo de entrega fixado no edital, que não está no arquivo."}{" "}
-        Na base: {n(p.leiloes)} {p.leiloes === 1 ? "leilão" : "leilões"} e {n(p.energiaMwmed, 1)} MWmédio contratados.
+              ? tx(
+                  "Fontes alternativas (eólica, biomassa e pequenas hidrelétricas): leilão próprio, com início do suprimento fixado no edital, que não está no arquivo.",
+                  "Alternative sources (wind, biomass and small hydropower): a dedicated auction, with the start of supply set in the tender, which is not in the file.",
+                )
+              : tx(
+                  "Projeto estruturante: hidrelétrica de grande porte licitada individualmente, com prazo de entrega fixado no edital, que não está no arquivo.",
+                  "Structuring project: a large hydropower plant tendered individually, with a delivery deadline set in the tender, which is not in the file.",
+                )}{" "}
+        {tx(
+          <>
+            Na base: {n(p.leiloes)} {p.leiloes === 1 ? "leilão" : "leilões"} e {n(p.energiaMwmed, 1)} MWmédio contratados.
+          </>,
+          <>
+            In the database: {n(p.leiloes)} {p.leiloes === 1 ? "auction" : "auctions"} and {n(p.energiaMwmed, 1)} MWavg contracted.
+          </>,
+        )}
       </p>
-      <div className="tabela-scroll" tabIndex={0} role="region" aria-label={`Calendário do produto ${p.id}`}>
-        <ol className="flex min-w-[36rem] gap-1" aria-label="Anos, do leilão ao início do suprimento">
+      <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx(`Calendário do produto ${p.id}`, `Calendar of the ${p.id} product`)}>
+        <ol className="flex min-w-[36rem] gap-1" aria-label={tx("Anos, do leilão ao início do suprimento", "Years, from the auction to the start of supply")}>
           {linha.anos.map((a) => {
             const ehLeilao = a === linha.anoLeilao;
             const ehA = a === linha.anoA;
@@ -124,7 +155,7 @@ export function LinhaDosProdutos({ produtos, dataSiga }: { produtos: ProdutoNaBa
               >
                 <span className="tabular-nums text-carvao">{a}</span>
                 <span className="leading-tight text-carvao-muted">
-                  {ehLeilao ? "Leilão" : ehA ? "Ano A: começa a entrega" : obra ? "Implantação" : ""}
+                  {ehLeilao ? tx("Leilão", "Auction") : ehA ? tx("Ano A: começa a entrega", "Year A: delivery begins") : obra ? tx("Implantação", "Implementation") : ""}
                 </span>
               </li>
             );
@@ -133,15 +164,31 @@ export function LinhaDosProdutos({ produtos, dataSiga }: { produtos: ProdutoNaBa
       </div>
       {p.exemplo && (
         <p className="text-xs text-carvao-muted">
-          Exemplo: {p.exemplo.nome}, em {p.exemplo.data}
-          {linha.anoA != null ? `, com ano A em ${linha.anoA}` : ""}.
+          {tx(
+            <>
+              Exemplo: {p.exemplo.nome}, em {p.exemplo.data}
+              {linha.anoA != null ? `, com ano A em ${linha.anoA}` : ""}.
+            </>,
+            <>
+              Example: <Nome>{p.exemplo.nome}</Nome>, on {p.exemplo.data}
+              {linha.anoA != null ? `, with year A in ${linha.anoA}` : ""}.
+            </>,
+          )}
         </p>
       )}
       {p.entrada && totalEntrada > 0 && (
         <div className="space-y-2">
           <p className="text-sm text-carvao">
-            Usinas contratadas em {p.id} que estavam em operação no SIGA em {dataSiga}: quando entraram em operação, diante do ano A (energia
-            contratada, {n(totalEntrada, 1)} MWmédio).
+            {tx(
+              <>
+                Usinas contratadas em {p.id} que estavam em operação no SIGA em {dataSiga}: quando entraram em operação, diante do ano A (energia
+                contratada, {n(totalEntrada, 1)} MWmédio).
+              </>,
+              <>
+                Plants contracted in {p.id} that were in operation in SIGA on {dataSiga}: when they started operation, relative to year A (energy
+                contracted, {n(totalEntrada, 1)} MWavg).
+              </>,
+            )}
           </p>
           <div className="flex h-6 w-full overflow-hidden border border-linha" role="img" aria-label={ORDEM_ENTRADA.map((k) => `${ROTULO_ENTRADA[k]}: ${n((100 * p.entrada![k]) / totalEntrada, 1)}%`).join("; ")}>
             {ORDEM_ENTRADA.map((k) =>
@@ -153,14 +200,16 @@ export function LinhaDosProdutos({ produtos, dataSiga }: { produtos: ProdutoNaBa
               <li key={k} className="flex items-start gap-2">
                 <span aria-hidden="true" className="mt-[0.3em] inline-block h-2.5 w-2.5 shrink-0" style={{ background: COR_ENTRADA[k] }} />
                 <span>
-                  {ROTULO_ENTRADA[k]}: {n(p.entrada![k], 1)} MWmédio ({n((100 * p.entrada![k]) / totalEntrada, 1)}%)
+                  {ROTULO_ENTRADA[k]}: {n(p.entrada![k], 1)} {mwmedio} ({n((100 * p.entrada![k]) / totalEntrada, 1)}%)
                 </span>
               </li>
             ))}
           </ul>
           <p className="text-xs leading-relaxed text-carvao-muted">
-            A data do SIGA é a da usina inteira; prazos alterados por ato da ANEEL e excludentes de responsabilidade não estão no arquivo. Entrar
-            depois do ano A não prova descumprimento.
+            {tx(
+              "A data do SIGA é a da usina inteira; prazos alterados por ato da ANEEL e excludentes de responsabilidade não estão no arquivo. Entrar depois do ano A não prova descumprimento.",
+              "The SIGA date is that of the whole plant; deadlines changed by an ANEEL act and liability exclusions are not in the file. Starting after year A does not prove non-compliance.",
+            )}
           </p>
         </div>
       )}
@@ -170,14 +219,21 @@ export function LinhaDosProdutos({ produtos, dataSiga }: { produtos: ProdutoNaBa
 
 /* ------------------------------------------------------------------ laboratório do leilão */
 
-const CENARIOS: { id: string; rotulo: string; p: Partial<ParametrosLeilao> }[] = [
-  { id: "base", rotulo: "Ponto de partida", p: {} },
-  { id: "poucos", rotulo: "Poucos concorrentes", p: { proponentes: 6 } },
-  { id: "muitos", rotulo: "Muitos concorrentes", p: { proponentes: 25 } },
-  { id: "teto-baixo", rotulo: "Teto abaixo do custo de muitos", p: { teto: 260 } },
-];
+type Cenario = { id: string; rotulo: string; p: Partial<ParametrosLeilao> };
+
+function cenarios(tx: <T>(pt: T, en: T) => T): Cenario[] {
+  return [
+    { id: "base", rotulo: tx("Ponto de partida", "Starting point"), p: {} },
+    { id: "poucos", rotulo: tx("Poucos concorrentes", "Few competitors"), p: { proponentes: 6 } },
+    { id: "muitos", rotulo: tx("Muitos concorrentes", "Many competitors"), p: { proponentes: 25 } },
+    { id: "teto-baixo", rotulo: tx("Teto abaixo do custo de muitos", "Ceiling below many bidders' cost"), p: { teto: 260 } },
+  ];
+}
 
 export function LabLeilao() {
+  const tx = useTx();
+  const n = useN();
+  const CENARIOS = cenarios(tx);
   const [p, setP] = useState<ParametrosLeilao>(PARAMETROS_LEILAO_INICIAIS);
   const [cenario, setCenario] = useState("base");
   const r = useMemo(() => leilaoDescendente(p), [p]);
@@ -208,30 +264,59 @@ export function LabLeilao() {
   const bw = (W - M.e - M.d) / r.custos.length;
   const vence = new Set(r.custos.map((c, i) => ({ c, i })).filter(({ c }) => r.preco != null && c <= r.preco + 1e-9).slice(0, r.vencedores).map(({ i }) => i));
   const marcas = [0, 100, 200, 300, 400, 500, 600].filter((v) => v <= max);
+  const mwmedio = tx("MWmédio", "MWavg");
+  const semVenda = tx("sem venda", "no sale");
   return (
-    <Moldura id="lab-leilao" titulo="Como o preço cai num leilão de preço descendente" rotuloModelo="Modelo didático">
+    <Moldura id="lab-leilao" titulo={tx("Como o preço cai num leilão de preço descendente", "How the price falls in a descending-price auction")} rotuloModelo={tx("Modelo didático", "Teaching model")}>
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-        Cada barra é um proponente com um lote de energia e um custo próprio. O leilão começa no preço teto e baixa o preço a cada rodada; quem
-        não cobre o custo sai. Ele para quando a energia oferecida cabe na demanda das distribuidoras. Mexa na concorrência e no teto e veja o
-        deságio mudar.
+        {tx(
+          "Cada barra é um proponente com um lote de energia e um custo próprio. O leilão começa no preço teto e baixa o preço a cada rodada; quem não cobre o custo sai. Ele para quando a energia oferecida cabe na demanda das distribuidoras. Mexa na concorrência e no teto e veja o deságio mudar.",
+          "Each bar is a bidder with a lot of energy and a cost of its own. The auction starts at the ceiling price and lowers the price each round; whoever cannot cover its cost drops out. It stops when the energy offered fits the distribution utilities' demand. Change the competition and the ceiling and watch the discount change.",
+        )}
       </p>
-      <TransicaoOpcoes rotulo="Cenário" nome="lab-leilao-cenario" opcoes={CENARIOS.map((c) => [c.id, c.rotulo] as const)} valor={cenario} onMudar={escolhe} />
+      <TransicaoOpcoes rotulo={tx("Cenário", "Scenario")} nome="lab-leilao-cenario" opcoes={CENARIOS.map((c) => [c.id, c.rotulo] as const)} valor={cenario} onMudar={escolhe} />
       <div className="grid gap-5 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
         <div className="space-y-3">
-          <Controle rotulo="Preço teto" valor={p.teto} min={150} max={600} passo={10} unidade="R$/MWh" onMudar={muda("teto")} />
-          <Controle rotulo="Demanda das distribuidoras" valor={p.demanda} min={100} max={2000} passo={100} unidade="MWmédio" onMudar={muda("demanda")} />
-          <Controle rotulo="Proponentes" valor={p.proponentes} min={1} max={30} unidade="" onMudar={muda("proponentes")} ajuda="Cada um oferece um lote de 100 MWmédio." />
-          <Controle rotulo="Menor custo entre eles" valor={p.custoMin} min={50} max={500} passo={10} unidade="R$/MWh" onMudar={muda("custoMin")} />
-          <Controle rotulo="Maior custo entre eles" valor={p.custoMax} min={50} max={600} passo={10} unidade="R$/MWh" onMudar={muda("custoMax")} />
+          <Controle rotulo={tx("Preço teto", "Ceiling price")} valor={p.teto} min={150} max={600} passo={10} unidade="R$/MWh" onMudar={muda("teto")} />
+          <Controle rotulo={tx("Demanda das distribuidoras", "Distribution utilities' demand")} valor={p.demanda} min={100} max={2000} passo={100} unidade={mwmedio} onMudar={muda("demanda")} />
+          <Controle
+            rotulo={tx("Proponentes", "Bidders")}
+            valor={p.proponentes}
+            min={1}
+            max={30}
+            unidade=""
+            onMudar={muda("proponentes")}
+            ajuda={tx("Cada um oferece um lote de 100 MWmédio.", "Each one offers a lot of 100 MWavg.")}
+          />
+          <Controle rotulo={tx("Menor custo entre eles", "Lowest cost among them")} valor={p.custoMin} min={50} max={500} passo={10} unidade="R$/MWh" onMudar={muda("custoMin")} />
+          <Controle rotulo={tx("Maior custo entre eles", "Highest cost among them")} valor={p.custoMax} min={50} max={600} passo={10} unidade="R$/MWh" onMudar={muda("custoMax")} />
         </div>
         <div ref={refFig} className="min-w-0 space-y-3">
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4" aria-live="polite">
-            <Cartao destaque rotulo="Preço de fechamento" valor={r.preco == null ? "sem venda" : `R$ ${n(r.preco)}/MWh`} />
-            <Cartao rotulo="Deságio sobre o teto" valor={r.desagioPct == null ? "sem venda" : `${n(r.desagioPct, 1)}%`} />
-            <Cartao rotulo="Energia contratada" valor={`${n(r.contratada)} MWmédio`} nota={r.faltou > 0 ? `faltaram ${n(r.faltou)} MWmédio` : "demanda atendida"} />
-            <Cartao rotulo="Rodadas" valor={n(r.rodadas.length)} nota={r.margemMedia == null ? undefined : `margem média dos vencedores: R$ ${n(r.margemMedia)}/MWh`} />
+            <Cartao destaque rotulo={tx("Preço de fechamento", "Closing price")} valor={r.preco == null ? semVenda : `R$ ${n(r.preco)}/MWh`} />
+            <Cartao rotulo={tx("Deságio sobre o teto", "Discount below the ceiling")} valor={r.desagioPct == null ? semVenda : `${n(r.desagioPct, 1)}%`} />
+            <Cartao
+              rotulo={tx("Energia contratada", "Energy contracted")}
+              valor={`${n(r.contratada)} ${mwmedio}`}
+              nota={r.faltou > 0 ? tx(`faltaram ${n(r.faltou)} MWmédio`, `${n(r.faltou)} MWavg short`) : tx("demanda atendida", "demand met")}
+            />
+            <Cartao
+              rotulo={tx("Rodadas", "Rounds")}
+              valor={n(r.rodadas.length)}
+              nota={r.margemMedia == null ? undefined : tx(`margem média dos vencedores: R$ ${n(r.margemMedia)}/MWh`, `winners' average margin: R$ ${n(r.margemMedia)}/MWh`)}
+            />
           </div>
-          <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="block max-w-full" role="img" aria-label={`Custos de ${r.custos.length} proponentes, teto de R$ ${n(p.teto)}/MWh e preço de fechamento ${r.preco == null ? "inexistente" : `de R$ ${n(r.preco)}/MWh`}.`}>
+          <svg
+            viewBox={`0 0 ${W} ${H}`}
+            width={W}
+            height={H}
+            className="block max-w-full"
+            role="img"
+            aria-label={tx(
+              `Custos de ${r.custos.length} proponentes, teto de R$ ${n(p.teto)}/MWh e preço de fechamento ${r.preco == null ? "inexistente" : `de R$ ${n(r.preco)}/MWh`}.`,
+              `Costs of ${r.custos.length} ${r.custos.length === 1 ? "bidder" : "bidders"}, ceiling of R$ ${n(p.teto)}/MWh and closing price ${r.preco == null ? "nonexistent" : `of R$ ${n(r.preco)}/MWh`}.`,
+            )}
+          >
             {marcas.map((v) => (
               <g key={v}>
                 <line x1={M.e} x2={W - M.d} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" />
@@ -252,33 +337,35 @@ export function LabLeilao() {
             ))}
             <line x1={M.e} x2={W - M.d} y1={y(p.teto)} y2={y(p.teto)} stroke="var(--cor-carvao)" strokeDasharray="6 4" />
             <text x={W - M.d} y={y(p.teto) - 4} textAnchor="end" fontSize="11" fill="var(--cor-carvao)">
-              Teto
+              {tx("Teto", "Ceiling")}
             </text>
             {r.preco != null && (
               <>
                 <line x1={M.e} x2={W - M.d} y1={y(r.preco)} y2={y(r.preco)} stroke="var(--cor-energia-dark)" strokeWidth="2" />
                 <text x={M.e + 4} y={y(r.preco) - 4} fontSize="11" fill="var(--cor-energia-dark)">
-                  Preço de fechamento
+                  {tx("Preço de fechamento", "Closing price")}
                 </text>
               </>
             )}
             <text x={M.e} y={H - 8} fontSize="11" fill="var(--cor-carvao-muted)">
-              {W < 420 ? "Proponentes, do menor ao maior custo" : "Proponentes, do menor ao maior custo (R$/MWh)"}
+              {W < 420
+                ? tx("Proponentes, do menor ao maior custo", "Bidders, from lowest to highest cost")
+                : tx("Proponentes, do menor ao maior custo (R$/MWh)", "Bidders, from lowest to highest cost (R$/MWh)")}
             </text>
           </svg>
           <p className="text-xs text-carvao-muted">
             <span aria-hidden="true" className="mr-1 inline-block h-2.5 w-2.5 align-middle" style={{ background: "var(--cor-energia)" }} />
-            vence ·
+            {tx("vence ·", "wins ·")}
             <span aria-hidden="true" className="mx-1 inline-block h-2.5 w-2.5 align-middle" style={{ background: "var(--cor-mineral-soft)" }} />
-            fica de fora
+            {tx("fica de fora", "left out")}
           </p>
           <details className="text-sm">
-            <summary className="min-h-[44px] cursor-pointer text-carvao-muted underline underline-offset-4">Rodadas, uma a uma</summary>
-            <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label="Rodadas do leilão (tabela rolável)">
+            <summary className="min-h-[44px] cursor-pointer text-carvao-muted underline underline-offset-4">{tx("Rodadas, uma a uma", "Rounds, one by one")}</summary>
+            <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={tx("Rodadas do leilão (tabela rolável)", "Auction rounds (scrollable table)")}>
               <table className="w-full min-w-[24rem] border-collapse text-xs tabular-nums">
                 <thead>
                   <tr>
-                    {["Rodada", "Preço (R$/MWh)", "Proponentes", "Oferta (MWmédio)"].map((c) => (
+                    {[tx("Rodada", "Round"), tx("Preço (R$/MWh)", "Price (R$/MWh)"), tx("Proponentes", "Bidders"), tx("Oferta (MWmédio)", "Offer (MWavg)")].map((c) => (
                       <th key={c} scope="col" className="border-b border-linha px-2 py-1.5 text-left font-medium text-mineral">
                         {c}
                       </th>
@@ -301,9 +388,10 @@ export function LabLeilao() {
         </div>
       </div>
       <p className="text-xs leading-relaxed text-carvao-muted">
-        O que o modelo deixa de fora: os leilões reais têm produtos separados por fonte e prazo, fase discriminatória (cada vencedor recebe o
-        próprio lance), sobra de oferta, margem de escoamento na rede, garantias, custo de capital e lances que não seguem o custo. O deságio
-        real depende também do teto fixado em cada edital; aqui o modelo só mostra o mecanismo.
+        {tx(
+          "O que o modelo deixa de fora: os leilões reais têm produtos separados por fonte e prazo, fase discriminatória (cada vencedor recebe o próprio lance), sobra de oferta, margem de escoamento na rede, garantias, custo de capital e lances que não seguem o custo. O deságio real depende também do teto fixado em cada edital; aqui o modelo só mostra o mecanismo.",
+          "What the model leaves out: real auctions have products separated by source and term, a pay-as-bid phase (each winner receives its own bid), excess supply, grid connection margin, guarantees, cost of capital and bids that do not follow cost. The real discount also depends on the ceiling set in each tender; here the model only shows the mechanism.",
+        )}
       </p>
     </Moldura>
   );

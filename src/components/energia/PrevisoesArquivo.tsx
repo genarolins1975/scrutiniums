@@ -8,9 +8,13 @@ import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR, num } from "@/lib/energia/formato";
+import { dataBR as dataBRBase, num as numBase } from "@/lib/energia/formato";
+import { tx } from "@/lib/energia/idioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import type { Idioma } from "@/lib/idioma";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import {
-  COLUNAS_ARQUIVO_TABELA,
+  colunasArquivoTabela,
   arquivoAte,
   datasInclusao,
   instanteBR,
@@ -67,7 +71,7 @@ export function PrevisoesArquivo({
   const runs = useMemo(() => Array.from(new Set(linhas.map((l) => l.run_id))), [linhas]);
   const esquema = useMemo(
     () => ({
-      em: campo(tiposUrl.data({ min: datas[0], max: datas[datas.length - 1] }), "", { param: "em" }),
+      em: campo(tiposUrl.data({ min: datas[0], max: datas[datas.length - 1] }), "", { param: "em" }), // i18n: dado
       rod: campo(tiposUrl.opcao(runs), "" as string, { param: "rod" }),
       reg: campo(tiposUrl.texto({ max: 160 }), "", { param: "reg" }),
     }),
@@ -75,8 +79,13 @@ export function PrevisoesArquivo({
     [datas.join(","), runs.join(",")],
   );
   const [v, definir] = useEstadoUrl(esquema);
+  const idioma = useIdioma();
+  const tx = useTx();
+  const dataBR = (iso: string | null | undefined) => dataBRBase(iso, idioma);
+  const num = (x: number | null | undefined, casas = 1) => numBase(x, casas, idioma);
+  const R = (x: number | null | undefined, casas = 2) => reaisMWh(x, casas, idioma);
   const noDia = arquivoAte(linhas, v.em);
-  const rodadas = resumoRodadas(noDia);
+  const rodadas = resumoRodadas(noDia, idioma);
   const visiveis = v.rod ? noDia.filter((l) => l.run_id === v.rod) : noDia;
   const reg = visiveis.find((l) => l.forecast_id === v.reg) ?? null;
   const grafico = linhasGraficoRodadas(rodadas);
@@ -84,12 +93,12 @@ export function PrevisoesArquivo({
   return (
     <div className="space-y-6">
       {/* resposta curta do painel (seção 7.2, item 2), refeita para o recorte escolhido */}
-      <RespostaCurta id="p015" vivo veredito={vereditoP015(noDia, v.em, total)}>
-        <span data-recorte={v.em || "tudo"}>{respostaP015(noDia, v.em, total)}</span>
+      <RespostaCurta id="p015" vivo veredito={vereditoP015(noDia, v.em, total, idioma)}>
+        <span data-recorte={v.em || "tudo"}>{respostaP015(noDia, v.em, total, idioma)}</span>
       </RespostaCurta>
       <div className="flex flex-wrap items-end gap-4">
         <label className="flex min-w-0 max-w-full flex-col gap-1 text-sm text-carvao">
-          <span className="rotulo text-mineral">Ver o arquivo como estava ao fim de</span>
+          <span className="rotulo text-mineral">{tx("Ver o arquivo como estava ao fim de", "See the archive as it was at the end of")}</span>
           <input
             type="date"
             value={v.em}
@@ -105,14 +114,16 @@ export function PrevisoesArquivo({
             onClick={() => definir({ em: "", rod: "", reg: "" })}
             className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao"
           >
-            Ver o arquivo inteiro
+            {tx("Ver o arquivo inteiro", "See the whole archive")}
           </button>
         )}
       </div>
       {(v.em || v.rod) && (
         <p className="text-xs text-carvao-muted" data-recorte-arquivo="">
-          Recorte: {v.em ? `registros incluídos até ${dataBR(v.em)}` : "todos os dias"}
-          {v.rod ? `; só a ${rodadas.find((r) => r.run_id === v.rod)?.rotulo.toLowerCase() ?? "rodada escolhida"}` : ""}.
+          {tx(
+            `Recorte: ${v.em ? `registros incluídos até ${dataBR(v.em)}` : "todos os dias"}${v.rod ? `; só a ${rodadas.find((r) => r.run_id === v.rod)?.rotulo.toLowerCase() ?? "rodada escolhida"}` : ""}.`,
+            `Selection: ${v.em ? `records included up to ${dataBR(v.em)}` : "all days"}${v.rod ? `; only the ${rodadas.find((r) => r.run_id === v.rod)?.rotulo.replace(/^./, (c) => c.toLowerCase()) ?? "chosen run"}` : ""}.`,
+          )}
         </p>
       )}
 
@@ -120,27 +131,30 @@ export function PrevisoesArquivo({
       {rodadas.length > 0 && (
         <SecaoDoPainel
           id="rodadas"
-          titulo="Rodadas registradas e as condições de cada emissão"
-          lead="Cada rodada é uma emissão de previsões de um dia de origem. Os avisos de cada uma ficam junto da emissão, e não só em Auditar."
+          titulo={tx("Rodadas registradas e as condições de cada emissão", "Recorded runs and the conditions of each issue")}
+          lead={tx(
+            "Cada rodada é uma emissão de previsões de um dia de origem. Os avisos de cada uma ficam junto da emissão, e não só em Auditar.",
+            "Each run is an issue of forecasts for an origin day. The notices of each one stay next to the issue, and not only in Audit.",
+          )}
         >
           <TabelaAdaptativa
-            legenda="Rodadas registradas no arquivo de emissões: emissão, células com número e avisos"
+            legenda={tx("Rodadas registradas no arquivo de emissões: emissão, células com número e avisos", "Runs recorded in the forecast archive: issue, cells with a number and notices")}
             nome="rodadas-registradas"
-            colunas={colunasRodadas(v.rod, avisos, (id) => definir({ rod: id && id !== v.rod ? id : "", reg: "" }))}
+            colunas={colunasRodadas(v.rod, avisos, (id) => definir({ rod: id && id !== v.rod ? id : "", reg: "" }), idioma)}
             linhas={rodadas}
           />
           {grafico.length > 0 && (
             <div className="grid gap-6 lg:grid-cols-2">
               <GraficoBarras
-                titulo="Células por rodada, com e sem número"
+                titulo={tx("Células por rodada, com e sem número", "Cells per run, with and without a number")}
                 dados={grafico}
                 chaveCategoria="id"
                 chaveRotulo="rotulo"
                 series={[
-                  { id: "com_numero", rotulo: "com número", cor: "var(--cor-energia)" },
-                  { id: "sem_numero", rotulo: "sem número", cor: "var(--cor-mineral-soft)" },
+                  { id: "com_numero", rotulo: tx("com número", "with a number"), cor: "var(--cor-energia)" }, // i18n: dado
+                  { id: "sem_numero", rotulo: tx("sem número", "no number"), cor: "var(--cor-mineral-soft)" },
                 ]}
-                unidade="células"
+                unidade={tx("células", "cells")}
                 casas={0}
                 empilhado
                 rotulosValor
@@ -150,12 +164,12 @@ export function PrevisoesArquivo({
               />
               <div data-nivel="analisar">
                 <GraficoBarras
-                  titulo="Atraso da emissão sobre o prazo das 08h00"
+                  titulo={tx("Atraso da emissão sobre o prazo das 08h00", "Issue delay over the 08:00 deadline")}
                   dados={grafico}
                   chaveCategoria="id"
                   chaveRotulo="rotulo"
-                  series={[{ id: "atraso_min", rotulo: "atraso", cor: "var(--cor-carvao-muted)" }]}
-                  unidade="minutos"
+                  series={[{ id: "atraso_min", rotulo: tx("atraso", "delay"), cor: "var(--cor-carvao-muted)" }]}
+                  unidade={tx("minutos", "minutes")}
                   casas={0}
                   orientacao="horizontal"
                   rotulosValor
@@ -172,8 +186,8 @@ export function PrevisoesArquivo({
       {notas}
 
       <TabelaInterativa
-        titulo="Registros do arquivo de emissões"
-        colunas={COLUNAS_ARQUIVO_TABELA}
+        titulo={tx("Registros do arquivo de emissões", "Forecast archive records")}
+        colunas={colunasArquivoTabela(idioma)}
         linhas={visiveis}
         chaveLinha="id"
         colunaRotulo="linha"
@@ -183,14 +197,25 @@ export function PrevisoesArquivo({
         chaveUrl="arq"
         selecionado={reg?.id ?? null}
         onSelecionar={(id) => definir({ reg: id ?? "" })}
-        dicaBusca="Entrega, horizonte ou submercado"
-        semLinhas={v.em ? `Nenhum registro estava no arquivo ao fim de ${dataBR(v.em)}.` : "O arquivo não tem registro publicado."}
+        dicaBusca={tx("Entrega, horizonte ou submercado", "Delivery, horizon or submarket")}
+        semLinhas={
+          v.em
+            ? tx(`Nenhum registro estava no arquivo ao fim de ${dataBR(v.em)}.`, `No record was in the archive at the end of ${dataBR(v.em)}.`)
+            : tx("O arquivo não tem registro publicado.", "The archive has no published record.")
+        }
         nota={
           <>
-            Uma linha por célula emitida, como gravada. Cada registro guarda uma impressão digital do conteúdo e a do registro anterior, o que denuncia alteração, remoção
-            ou reordenação. Escolha uma linha para ver o registro inteiro; o CSV completo, no download, traz todas as colunas.
-            {omitidas > 0 ? ` As ${omitidas} rodadas mais antigas não estão nesta página: o CSV completo, no download, tem as ${total} linhas.` : ""}
-            <span data-nivel="analisar"> A impressão digital é o sha256 do registro.</span>
+            {tx(
+              "Uma linha por célula emitida, como gravada. Cada registro guarda uma impressão digital do conteúdo e a do registro anterior, o que denuncia alteração, remoção ou reordenação. Escolha uma linha para ver o registro inteiro; o CSV completo, no download, traz todas as colunas.",
+              "One row per issued cell, as recorded. Each record keeps a fingerprint of its content and that of the previous record, which exposes any change, removal or reordering. Choose a row to see the whole record; the full CSV, in the download, carries all the columns.",
+            )}
+            {omitidas > 0
+              ? tx(
+                  ` As ${omitidas} rodadas mais antigas não estão nesta página: o CSV completo, no download, tem as ${total} linhas.`,
+                  ` The ${omitidas} oldest runs are not on this page: the full CSV, in the download, has all ${total} rows.`,
+                )
+              : ""}
+            <span data-nivel="analisar">{tx(" A impressão digital é o sha256 do registro.", " The fingerprint is the record's sha256.")}</span>
           </>
         }
       />
@@ -198,35 +223,51 @@ export function PrevisoesArquivo({
       {reg && (
         <section aria-labelledby="registro-detalhe-titulo" className="space-y-2 border-t border-linha pt-4" data-registro={reg.forecast_id}>
           <h4 id="registro-detalhe-titulo" className="font-serif text-base text-carvao">
-            Registro {reg.horizonte} {reg.sm} da rodada de {dataBR(reg.origem)}
+            {tx(`Registro ${reg.horizonte} ${reg.sm} da rodada de ${dataBR(reg.origem)}`, `Record ${reg.horizonte} ${reg.sm} of the run of ${dataBR(reg.origem)}`)}
           </h4>
           <dl className="grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
-            <Item rotulo="Previsão">{reg.previsao === null ? `sem número: ${reg.motivo || "motivo não registrado"}` : reaisMWh(reg.previsao, 4)}</Item>
-            <Item rotulo="Faixa P10 a P90">{reg.p10 !== null && reg.p90 !== null ? `${reaisMWh(reg.p10)} a ${reaisMWh(reg.p90)}` : "sem faixa gravada"}</Item>
-            <Item rotulo="Entrega">{reg.entrega}</Item>
-            <Item rotulo="Realizado">{reg.realizado === null ? "ainda sem realizado (a entrega não terminou)" : reaisMWh(reg.realizado)}</Item>
-            <Item rotulo="Corte e emissão">
-              corte em {dataBR(reg.origem)} às 07h00; {reg.emitido}
-              {reg.atraso_min !== null && reg.atraso_min > 0 ? <span data-nivel="analisar">{` (${num(reg.atraso_min, 1)} minutos depois do prazo; ${reg.atraso_origem})`}</span> : null}
+            <Item rotulo={tx("Previsão", "Forecast")}>
+              {reg.previsao === null ? tx(`sem número: ${reg.motivo || "motivo não registrado"}`, `no number: ${reg.motivo || "reason not recorded"}`) : R(reg.previsao, 4)}
             </Item>
-            <Item rotulo="Inclusão no arquivo">
-              {dataBR(reg.registrado_no_portal_em)}; transcrito depois da emissão: {reg.transcrito}
+            <Item rotulo={tx("Faixa P10 a P90", "P10 to P90 band")}>
+              {reg.p10 !== null && reg.p90 !== null ? tx(`${R(reg.p10)} a ${R(reg.p90)}`, `${R(reg.p10)} to ${R(reg.p90)}`) : tx("sem faixa gravada", "no band recorded")}
             </Item>
-            <Item rotulo="Modelo">
+            <Item rotulo={tx("Entrega", "Delivery")}>{reg.entrega}</Item>
+            <Item rotulo={tx("Realizado", "Actual")}>
+              {reg.realizado === null ? tx("ainda sem realizado (a entrega não terminou)", "no actual value yet (the delivery has not ended)") : R(reg.realizado)}
+            </Item>
+            <Item rotulo={tx("Corte e emissão", "Cutoff and issue")}>
+              {tx(`corte em ${dataBR(reg.origem)} às 07h00; ${reg.emitido}`, `cutoff on ${dataBR(reg.origem)} at 07:00; ${reg.emitido}`)}
+              {reg.atraso_min !== null && reg.atraso_min > 0 ? (
+                <span data-nivel="analisar">
+                  {tx(` (${num(reg.atraso_min, 1)} minutos depois do prazo; `, ` (${num(reg.atraso_min, 1)} minutes after the deadline; `)}
+                  <TrechoPortugues regiao="previsoes-atraso">{reg.atraso_origem}</TrechoPortugues>)
+                </span>
+              ) : null}
+            </Item>
+            <Item rotulo={tx("Inclusão no arquivo", "Inclusion in the archive")}>
+              {tx(
+                `${dataBR(reg.registrado_no_portal_em)}; transcrito depois da emissão: ${reg.transcrito}`,
+                `${dataBR(reg.registrado_no_portal_em)}; transcribed after issue: ${reg.transcrito}`,
+              )}
+            </Item>
+            <Item rotulo={tx("Modelo", "Model")}>
               {reg.modelo} {reg.versao_modelo} ({reg.tipo})
             </Item>
-            <Item rotulo="Versão do código" nivel="analisar">
-              {reg.versao_codigo || "não registrada"}
+            <Item rotulo={tx("Versão do código", "Code version")} nivel="analisar">
+              {reg.versao_codigo || tx("não registrada", "not recorded")}
             </Item>
-            <Item rotulo="Alertas" nivel="analisar">
-              {reg.alertas || "nenhum"}
+            <Item rotulo={tx("Alertas", "Alerts")} nivel="analisar">
+              {reg.alertas || tx("nenhum", "none")}
             </Item>
-            <Item rotulo="Correção">{reg.substitui ? `substitui ${reg.substitui}` : "registro original (não substitui outro)"}</Item>
-            <Item rotulo="sha256 do registro" nivel="analisar">
-              <span className="font-mono text-xs">{reg.sha256}</span>
+            <Item rotulo={tx("Correção", "Correction")}>
+              {reg.substitui ? tx(`substitui ${reg.substitui}`, `replaces ${reg.substitui}`) : tx("registro original (não substitui outro)", "original record (does not replace another)")}
             </Item>
-            <Item rotulo="Registro anterior" nivel="analisar">
-              <span className="font-mono text-xs">{reg.anterior || "início do encadeamento particionado"}</span>
+            <Item rotulo={tx("sha256 do registro", "Record sha256")} nivel="analisar">
+              <code className="font-mono text-xs">{reg.sha256}</code>
+            </Item>
+            <Item rotulo={tx("Registro anterior", "Previous record")} nivel="analisar">
+              <code className="font-mono text-xs">{reg.anterior || tx("início do encadeamento particionado", "start of the partitioned chain")}</code>
             </Item>
           </dl>
         </section>
@@ -236,10 +277,11 @@ export function PrevisoesArquivo({
 }
 
 /** Emissão em uma palavra: agendada pela rotina ou manual. */
-function modoEmissao(modo: string): string {
-  if (modo === "agendada") return "pelo agendamento";
-  if (modo.startsWith("manual")) return "manualmente";
-  return modo || "modo não registrado";
+function modoEmissao(modo: string, idioma: Idioma): string {
+  // linhasArquivo escreve o modo no idioma da página: "agendada" ou "scheduled"
+  if (modo === "agendada" || modo === "scheduled") return tx("pelo agendamento", "by the schedule", idioma);
+  if (modo.startsWith("manual")) return tx("manualmente", "manually", idioma);
+  return modo || tx("modo não registrado", "mode not recorded", idioma);
 }
 
 /** Colunas da tabela de rodadas: a emissão, a contagem de células com número, os avisos e o botão que filtra a tabela de registros. */
@@ -247,11 +289,12 @@ function colunasRodadas(
   escolhida: string,
   avisos: Record<string, AvisoRodada[]>,
   alternar: (id: string) => void,
+  idioma: Idioma,
 ): ColunaAdaptativa<ResumoRodada>[] {
   return [
     {
       id: "rodada",
-      rotulo: "Rodada",
+      rotulo: tx("Rodada", "Run"),
       classe: "w-[11rem]",
       celula: (r) => (
         <>
@@ -264,22 +307,22 @@ function colunasRodadas(
     },
     {
       id: "emissao",
-      rotulo: "Emitida em (Brasília)",
+      rotulo: tx("Emitida em (Brasília)", "Issued on (Brasília time)"),
       classe: "w-[10rem]",
       celula: (r) => (
         <>
-          {instanteBR(r.emitido_em)}
-          <span className="block text-xs text-carvao-muted">{modoEmissao(r.modo)}</span>
+          {instanteBR(r.emitido_em, idioma)}
+          <span className="block text-xs text-carvao-muted">{modoEmissao(r.modo, idioma)}</span>
         </>
       ),
     },
-    { id: "numeros", rotulo: "Células com número", classe: "w-[8rem]", celula: (r) => `${r.com_numero} de ${r.celulas}` },
+    { id: "numeros", rotulo: tx("Células com número", "Cells with a number"), classe: "w-[8rem]", celula: (r) => tx(`${r.com_numero} de ${r.celulas}`, `${r.com_numero} of ${r.celulas}`) },
     {
       id: "avisos",
-      rotulo: "Avisos da rodada",
+      rotulo: tx("Avisos da rodada", "Run notices"),
       celula: (r) => {
         const lista = avisos[r.run_id];
-        if (!lista) return <span className="text-carvao-muted">avisos desta rodada indisponíveis nesta publicação</span>;
+        if (!lista) return <span className="text-carvao-muted">{tx("avisos desta rodada indisponíveis nesta publicação", "notices for this run unavailable in this publication")}</span>;
         return lista.length ? (
           <ul className="space-y-1.5" data-avisos-da-rodada={r.run_id}>
             {lista.map((a) => (
@@ -290,13 +333,13 @@ function colunasRodadas(
             ))}
           </ul>
         ) : (
-          <span className="text-carvao-muted">nenhum aviso registrado</span>
+          <span className="text-carvao-muted">{tx("nenhum aviso registrado", "no notice recorded")}</span>
         );
       },
     },
     {
       id: "registros",
-      rotulo: "Registros",
+      rotulo: tx("Registros", "Records"),
       classe: "w-[9rem]",
       celula: (r) => (
         <button
@@ -305,7 +348,7 @@ function colunasRodadas(
           aria-pressed={escolhida === r.run_id}
           className="inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-left text-sm text-carvao hover:border-energia aria-pressed:border-energia aria-pressed:bg-energia-fundo"
         >
-          {escolhida === r.run_id ? "Mostrar todas as rodadas" : "Ver só os registros desta rodada"}
+          {escolhida === r.run_id ? tx("Mostrar todas as rodadas", "Show all runs") : tx("Ver só os registros desta rodada", "See only the records of this run")}
         </button>
       ),
     },

@@ -2,6 +2,13 @@
 
 import { useRef, useState } from "react";
 import { MENSAGEM_COPIA, copiarComFallback, type ResultadoCopia } from "@/lib/energia/evidencia";
+import { useTx } from "@/lib/energia/useIdioma";
+
+const MENSAGEM_COPIA_EN: Record<ResultadoCopia, string> = {
+  copiado: "Copied to the clipboard.",
+  selecionado: "Text selected: use Ctrl+C (or Copy, in the menu) to copy.",
+  falhou: "Could not copy: select the text in the block and copy it.",
+};
 
 /**
  * Link compartilhável de um painel de previsões: copia o endereço atual com o
@@ -11,7 +18,9 @@ import { MENSAGEM_COPIA, copiarComFallback, type ResultadoCopia } from "@/lib/en
  * receber abra o mesmo recorte (seção 7.3). Sem área de transferência, o endereço
  * aparece num campo já selecionado para cópia manual. No servidor sai só o botão.
  */
-export function PrevisoesLinkPainel({ ancora, rotulo = "Copiar link deste painel" }: { ancora: string; rotulo?: string }) {
+export function PrevisoesLinkPainel({ ancora, rotulo: rotuloDado }: { ancora: string; rotulo?: string }) {
+  const tx = useTx();
+  const rotulo = rotuloDado ?? tx("Copiar link deste painel", "Copy link to this panel");
   const [estado, setEstado] = useState<ResultadoCopia | null>(null);
   const [url, setUrl] = useState("");
   const campo = useRef<HTMLInputElement>(null);
@@ -43,13 +52,13 @@ export function PrevisoesLinkPainel({ ancora, rotulo = "Copiar link deste painel
       <input
         ref={campo}
         readOnly
-        aria-label="Endereço deste painel com o recorte atual"
+        aria-label={tx("Endereço deste painel com o recorte atual", "Address of this panel with the current selection")}
         value={url}
         className={manual ? "min-h-[44px] w-full max-w-md border border-linha bg-superficie px-2 text-xs text-carvao" : "sr-only"}
         tabIndex={manual ? 0 : -1}
       />
       <span role="status" aria-live="polite" className="text-xs text-carvao-muted">
-        {estado ? MENSAGEM_COPIA[estado] : ""}
+        {estado ? tx(MENSAGEM_COPIA[estado], MENSAGEM_COPIA_EN[estado]) : ""}
       </span>
     </span>
   );

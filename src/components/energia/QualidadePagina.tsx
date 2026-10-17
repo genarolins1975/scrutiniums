@@ -3,7 +3,8 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
-import { PAINEIS_QUALIDADE } from "@/lib/energia/qualidade";
+import { tx } from "@/lib/energia/idioma";
+import { paineisQualidade } from "@/lib/energia/qualidade";
 import type { Natureza } from "@/lib/energia/tipos";
 
 /**
@@ -20,11 +21,11 @@ import type { Natureza } from "@/lib/energia/tipos";
  * texto, não título: os títulos de seção que vêm depois são do painel, e um título aqui os faria parecer filhos deste bloco.
  */
 export function QualidadeCapitulos({ atual = "duracao" }: { atual?: string }) {
-  const itens = PAINEIS_QUALIDADE.map((p) => ({ id: p.ancora, href: `#${p.ancora}`, rotulo: p.rotulo, descricao: p.descricao }));
+  const itens = paineisQualidade().map((p) => ({ id: p.ancora, href: `#${p.ancora}`, rotulo: p.rotulo, descricao: p.descricao }));
   return (
     <div data-capitulos-pagina="">
-      <p className="rotulo mb-2 text-mineral">Nesta página, as outras perguntas</p>
-      <NavegacaoLocal rotulo="Perguntas desta página" itens={itens} atual={atual} variante="capitulos" />
+      <p className="rotulo mb-2 text-mineral">{tx("Nesta página, as outras perguntas", "On this page, the other questions")}</p>
+      <NavegacaoLocal rotulo={tx("Perguntas desta página", "Questions on this page")} itens={itens} atual={atual} variante="capitulos" />
     </div>
   );
 }
@@ -36,10 +37,13 @@ export function QualidadeIndisponivel({ motivo }: { motivo?: string | null }) {
       <CabecalhoEnergia atual="qualidade" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
-          titulo="Qualidade do serviço indisponível nesta publicação"
+          titulo={tx("Qualidade do serviço indisponível nesta publicação", "Quality of supply unavailable in this release")}
           motivo={
             motivo ??
-            "A gold do módulo Qualidade (public/energia/gold/qualidade.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."
+            tx(
+              "A gold do módulo Qualidade (public/energia/gold/qualidade.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe.",
+              "The gold file of the Quality module (public/energia/gold/qualidade.json) was not generated or did not pass validation; the latest valid release is kept when it exists.",
+            )
           }
         />
       </main>
@@ -65,15 +69,15 @@ export function QualidadeRecorte({ periodo, universo, unidade }: { periodo: Reac
   return (
     <dl data-recorte-painel="" className="max-w-4xl space-y-1 border-t border-linha pt-3 text-sm leading-relaxed text-carvao-muted">
       <div>
-        <dt className="rotulo mr-2 inline text-mineral">Período</dt>
+        <dt className="rotulo mr-2 inline text-mineral">{tx("Período", "Period")}</dt>
         <dd className="inline">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo mr-2 inline text-mineral">Universo</dt>
+        <dt className="rotulo mr-2 inline text-mineral">{tx("Universo", "Universe")}</dt>
         <dd className="inline">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo mr-2 inline text-mineral">Unidade</dt>
+        <dt className="rotulo mr-2 inline text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="inline">{unidade}</dd>
       </div>
     </dl>
@@ -83,7 +87,7 @@ export function QualidadeRecorte({ periodo, universo, unidade }: { periodo: Reac
 /** Datas de referência de cada parte da página: cada número diz o seu período, sem sugerir que as partes são do mesmo dia. */
 export function QualidadeDatas({ itens }: { itens: { rotulo: string; texto: ReactNode; natureza: Natureza }[] }) {
   return (
-    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx("Datas de referência de cada parte", "Reference dates of each part")}>
       {itens.map((x) => (
         <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
           <span>

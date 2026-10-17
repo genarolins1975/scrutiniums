@@ -11,6 +11,8 @@
  * polígono na malha não some calado: entra no resumo como fora da malha.
  */
 import { NAO_SE_APLICA, classeDe, formatarValor, valido, type Classificacao, type ValorClassificavel } from "@/lib/energia/escalas";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import type { Idioma } from "@/lib/idioma";
 
 /* ---------- cores ---------- */
 
@@ -28,8 +30,9 @@ export const COR_NAO_SE_APLICA_PADRAO = "var(--cor-linha)";
 export function validaCores(cores: readonly string[], classes: number): string[] {
   const erros: string[] = [];
   const soltas = cores.filter((c) => !COR_TOKEN.test(c.trim()));
-  if (soltas.length) erros.push(`cor fora dos tokens (use var(--...)): ${soltas.join(", ")}`);
-  if (classes > cores.length) erros.push(`são ${classes} classes e só ${cores.length} cores`);
+  // diagnóstico para quem monta o mapa (console e testes), não texto do leitor
+  if (soltas.length) erros.push(`cor fora dos tokens (use var(--...)): ${soltas.join(", ")}`); // i18n: dado
+  if (classes > cores.length) erros.push(`são ${classes} classes e só ${cores.length} cores`); // i18n: dado
   return erros;
 }
 
@@ -49,11 +52,11 @@ export function coresParaClasses(cores: readonly string[], classes: number): str
 
 /* ---------- estados e texto ---------- */
 
-export type EstadoRegiao = "valor" | "sem-dado" | "nao-se-aplica";
+export type EstadoRegiao = "valor" | "sem-dado" | "nao-se-aplica"; // i18n: dado
 
 export function estadoRegiao(v: ValorClassificavel): EstadoRegiao {
   if (v === NAO_SE_APLICA) return "nao-se-aplica";
-  return valido(v) ? "valor" : "sem-dado";
+  return valido(v) ? "valor" : "sem-dado"; // i18n: dado
 }
 
 export type Fundos = { classes: readonly string[]; semDado: string; naoSeAplica: string };
@@ -72,18 +75,24 @@ export type Descricao = { estado: EstadoRegiao; valor: string; classe: string | 
  * Texto de uma região. "sem dado" e "não se aplica" nunca levam classe; zero
  * leva a classe que o contém, como qualquer número.
  */
-export function descreveRegiao(v: ValorClassificavel, c: Pick<Classificacao, "cortes" | "classes">, casas: number, unidade: string): Descricao {
+export function descreveRegiao(
+  v: ValorClassificavel,
+  c: Pick<Classificacao, "cortes" | "classes">,
+  casas: number,
+  unidade: string,
+  idioma: Idioma = idiomaEnergia(),
+): Descricao {
   const estado = estadoRegiao(v);
-  if (estado === "nao-se-aplica") return { estado, valor: "não se aplica", classe: null, indice: null };
+  if (estado === "nao-se-aplica") return { estado, valor: tx("não se aplica", "not applicable", idioma), classe: null, indice: null };
   const k = classeDe(v, c);
-  if (estado === "sem-dado" || typeof k !== "number") return { estado: "sem-dado", valor: "sem dado", classe: null, indice: null };
-  return { estado, valor: formatarValor(v as number, casas, unidade), classe: c.classes[k].rotulo, indice: k };
+  if (estado === "sem-dado" || typeof k !== "number") return { estado: "sem-dado", valor: tx("sem dado", "no data", idioma), classe: null, indice: null };
+  return { estado, valor: formatarValor(v as number, casas, unidade, idioma), classe: c.classes[k].rotulo, indice: k };
 }
 
 /** Frase completa para leitor de tela e dica: "Campinas (SP): 12,3% (classe 10,0 a menos de 15,0)". */
-export function fraseRegiao(r: { nome: string; uf: string }, d: Descricao): string {
+export function fraseRegiao(r: { nome: string; uf: string }, d: Descricao, idioma: Idioma = idiomaEnergia()): string {
   const onde = r.uf && r.uf !== r.nome ? `${r.nome} (${r.uf})` : r.nome;
-  return `${onde}: ${d.valor}${d.classe ? ` (classe ${d.classe})` : ""}`;
+  return `${onde}: ${d.valor}${d.classe ? tx(` (classe ${d.classe})`, ` (class ${d.classe})`, idioma) : ""}`;
 }
 
 /* ---------- resumo ---------- */

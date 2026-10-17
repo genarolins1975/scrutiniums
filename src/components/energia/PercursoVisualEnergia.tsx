@@ -3,12 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import { GravuraEnergia } from "./GravuraEnergia";
 import Link from "@/components/energia/LinkSemPrefetch";
-import { ETAPAS_ENERGIA } from "@/lib/energia/percurso-visual";
+import { ETAPAS_ENERGIA_IDIOMAS } from "@/lib/energia/percurso-visual";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { observarAncoras, guardarAncora } from "./navegacao-ancoras";
 import styles from "./PercursoVisualEnergia.module.css";
 
 /** Botões nativos: todos acessíveis por Tab; setas também percorrem as etapas. */
 export function PercursoVisualEnergia() {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const ETAPAS_ENERGIA = ETAPAS_ENERGIA_IDIOMAS[idioma];
   const [ativa, setAtiva] = useState(0);
   const botoes = useRef<(HTMLButtonElement | null)[]>([]);
   useEffect(() => observarAncoras(hash => {
@@ -21,7 +25,7 @@ export function PercursoVisualEnergia() {
     if (i < 0) return;
     setAtiva(i);
     requestAnimationFrame(() => document.getElementById("percurso-energia")?.scrollIntoView({ block: "start" }));
-  }), []);
+  }), [ETAPAS_ENERGIA]);
   const selecionar = (i: number) => {
     setAtiva(i);
     guardarAncora(`#etapa-${ETAPAS_ENERGIA[i].id}`);
@@ -29,11 +33,11 @@ export function PercursoVisualEnergia() {
   const etapa = ETAPAS_ENERGIA[ativa];
   return <section id="percurso-energia" className={styles.percurso} aria-labelledby="percurso-titulo">
     <div className={styles.cabecalho}>
-      <p className={styles.sobretitulo}>Explore o caminho da energia</p>
-      <h2 id="percurso-titulo">Do reservatório à sua tomada.</h2>
-      <p>Escolha uma etapa e descubra o que acontece nela.</p>
+      <p className={styles.sobretitulo}>{tx("Explore o caminho da energia", "Explore the path of energy")}</p>
+      <h2 id="percurso-titulo">{tx("Do reservatório à sua tomada.", "From the reservoir to your socket.")}</h2>
+      <p>{tx("Escolha uma etapa e descubra o que acontece nela.", "Choose a stage and discover what happens in it.")}</p>
     </div>
-    <div id="energia-etapas" className={styles.etapas} role="group" aria-label="Etapas do caminho da energia">
+    <div id="energia-etapas" className={styles.etapas} role="group" aria-label={tx("Etapas do caminho da energia", "Stages of the path of energy")}>
       {ETAPAS_ENERGIA.map((e, i) => <button key={e.id} id={`etapa-${e.id}`} type="button"
         ref={el => { botoes.current[i] = el; }} aria-pressed={ativa === i} aria-controls="percurso-detalhe"
         onClick={() => {
@@ -61,13 +65,19 @@ export function PercursoVisualEnergia() {
       <div className={styles.explicacao}>
         <p className={styles.sobretitulo}>{etapa.numero} · {etapa.nome}</p>
         <h3 id="percurso-etapa-titulo" tabIndex={-1}>{etapa.titulo}</h3>
-        <p>{etapa.texto}</p><p className={styles.recorte}><strong>Nos painéis:</strong> {etapa.encontra} {etapa.recorte}</p>
+        <p>{etapa.texto}</p><p className={styles.recorte}><strong>{tx("Nos painéis:", "In the panels:")}</strong> {etapa.encontra} {etapa.recorte}</p>
         <div className={styles.links}><Link href={etapa.href}>{etapa.link} ↗</Link><Link href={etapa.detalhe}>{etapa.detalheNome} ↗</Link></div>
       </div>
-      <aside className={styles.conceito}><span className={styles.sobretitulo}>Uma distinção importante</span><p>{etapa.conceito}</p></aside>
+      <aside className={styles.conceito}><span className={styles.sobretitulo}>{tx("Uma distinção importante", "An important distinction")}</span><p>{etapa.conceito}</p></aside>
     </div>
-    <a className={styles.voltar} href="#energia-etapas">Escolher outra etapa ↑</a>
-    <p className={styles.nota}>Ilustrações conceituais geradas por IA. Percurso didático simplificado: não representa a topologia ou o despacho do SIN. Geração distribuída e sistemas isolados têm outras configurações. <a href="#mapa-conceitual">Ver relações físicas, operacionais e de mercado ↓</a></p>
+    <a className={styles.voltar} href="#energia-etapas">{tx("Escolher outra etapa ↑", "Choose another stage ↑")}</a>
+    <p className={styles.nota}>
+      {tx(
+        "Ilustrações conceituais geradas por IA. Percurso didático simplificado: não representa a topologia ou o despacho do SIN. Geração distribuída e sistemas isolados têm outras configurações.",
+        "AI-generated conceptual illustrations. Simplified teaching path: it does not represent the topology or the dispatch of the SIN. Distributed generation and isolated systems have other configurations.",
+      )}{" "}
+      <a href="#mapa-conceitual">{tx("Ver relações físicas, operacionais e de mercado ↓", "See physical, operational and market relations ↓")}</a>
+    </p>
   </section>;
 }
 

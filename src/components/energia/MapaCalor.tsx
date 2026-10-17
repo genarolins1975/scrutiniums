@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { num, plural } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { textoValor } from "@/lib/energia/distribuicao";
 import {
   FUNDO_SEM_DADO,
@@ -86,6 +87,9 @@ export function MapaCalor({
   periodo,
   nota,
 }: MapaCalorProps) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { num, plural } = formatos(idioma);
   const uid = useId().replace(/:/g, "");
   const envoltorio = useRef<HTMLDivElement>(null);
   const grade = useRef<HTMLTableElement>(null);
@@ -137,7 +141,7 @@ export function MapaCalor({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [colunas.length]);
 
-  const rotulos = useMemo(() => rotulosClasses(escala, casas), [escala, casas]);
+  const rotulos = useMemo(() => rotulosClasses(escala, casas, idioma), [escala, casas, idioma]);
   const res = useMemo(() => resumoGrade(valores, escala.limites), [valores, escala.limites]);
 
   const erros = [...validaEscala(escala), ...validaMatriz(valores, nL, nC)];
@@ -146,9 +150,9 @@ export function MapaCalor({
 
   function descreve(v: ValorCelula): { valor: string; classe: string } {
     const e = estadoCelula(v);
-    if (e === "nao-se-aplica") return { valor: "não se aplica", classe: "combinação inexistente" };
-    if (e === "sem-dado") return { valor: "sem dado", classe: "valor ausente na fonte" };
-    return { valor: textoValor(v as number, casas, unidade), classe: `classe ${rotulos[classeDe(v, escala.limites) as number]}` };
+    if (e === "nao-se-aplica") return { valor: tx("não se aplica", "not applicable"), classe: tx("combinação inexistente", "combination does not exist") };
+    if (e === "sem-dado") return { valor: tx("sem dado", "no data"), classe: tx("valor ausente na fonte", "value missing in the source") };
+    return { valor: textoValor(v as number, casas, unidade), classe: tx(`classe ${rotulos[classeDe(v, escala.limites) as number]}`, `class ${rotulos[classeDe(v, escala.limites) as number]}`) };
   }
 
   function textoCelula(p: Posicao): string {
@@ -187,10 +191,13 @@ export function MapaCalor({
     <div ref={envoltorio} className="relative w-full min-w-0">
       <div className="mb-3">
         <p className="rotulo text-mineral">
-          Escala em {unidade}
-          {escala.tipo === "divergente" && typeof escala.centro === "number" ? `, centro em ${textoValor(escala.centro, casas, unidade)}` : ""}
+          {tx("Escala em ", "Scale in ")}
+          {unidade}
+          {escala.tipo === "divergente" && typeof escala.centro === "number"
+            ? tx(`, centro em ${textoValor(escala.centro, casas, unidade)}`, `, centered on ${textoValor(escala.centro, casas, unidade)}`)
+            : ""}
         </p>
-        <ul className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-carvao-muted" aria-label={`Legenda: classes em ${unidade}`}>
+        <ul className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx(`Legenda: classes em ${unidade}`, `Legend: classes in ${unidade}`)}>
           {rotulos.map((r, i) => (
             <li key={i} className="flex items-center gap-1.5">
               <span aria-hidden="true" className={`inline-block h-3 w-5 border ${claras.has(i) ? "border-mineral" : "border-linha"}`} style={{ background: escala.cores[i] }} />
@@ -199,12 +206,12 @@ export function MapaCalor({
           ))}
           <li className="flex items-center gap-1.5">
             <span aria-hidden="true" className="inline-block h-3 w-5 border border-linha" style={{ background: FUNDO_SEM_DADO }} />
-            sem dado
+            {tx("sem dado", "no data")}
           </li>
           {res.naoSeAplica > 0 && (
             <li className="flex items-center gap-1.5">
               <span aria-hidden="true" className="inline-block h-3 w-5 border border-dashed border-mineral bg-superficie" />
-              não se aplica
+              {tx("não se aplica", "not applicable")}
             </li>
           )}
         </ul>
@@ -229,13 +236,16 @@ export function MapaCalor({
           style={{ "--mc-colunas": nC } as React.CSSProperties}
         >
           <caption id={`${uid}-t`} className="sr-only">
-            {`${titulo}. ${nomeLinhas} nas linhas e ${nomeColunas.toLowerCase()} nas colunas, em ${unidade}. Use as setas para mover entre as células.`}
+            {tx(
+              `${titulo}. ${nomeLinhas} nas linhas e ${nomeColunas.toLowerCase()} nas colunas, em ${unidade}. Use as setas para mover entre as células.`,
+              `${titulo}. ${nomeLinhas} in the rows and ${nomeColunas.toLowerCase()} in the columns, in ${unidade}. Use the arrow keys to move between cells.`,
+            )}
           </caption>
           <thead>
             <tr>
               <th scope="col" className="sticky left-0 z-10 w-[4.5rem] bg-superficie pr-2 text-right align-bottom font-normal text-mineral">
                 <span aria-hidden="true">{nomeLinhas}</span>
-                <span className="sr-only">{`${nomeLinhas} por ${nomeColunas.toLowerCase()}`}</span>
+                <span className="sr-only">{tx(`${nomeLinhas} por ${nomeColunas.toLowerCase()}`, `${nomeLinhas} by ${nomeColunas.toLowerCase()}`)}</span>
               </th>
               {colunas.map((c, j) => (
                 <th key={c.id} scope="col" className="h-6 overflow-hidden whitespace-nowrap px-0 text-center align-bottom font-normal text-mineral">
@@ -316,31 +326,41 @@ export function MapaCalor({
 
       <div id={`${uid}-r`} className="mt-3 space-y-1 border-t border-linha pt-2 text-xs leading-relaxed text-carvao-muted">
         <p className="tabular-nums">
-          {plural(res.celulas, "célula", "células")}: {num(res.comValor, 0)} com valor
-          {res.semDado > 0 && <span data-sem-dado={res.semDado}>, {num(res.semDado, 0)} sem dado (hachuradas)</span>}
-          {res.naoSeAplica > 0 && `, ${num(res.naoSeAplica, 0)} não se aplica (borda tracejada)`}
-          {res.min !== null && res.max !== null && `. Valores de ${textoValor(res.min, casas, unidade)} a ${textoValor(res.max, casas, unidade)}`}.
+          {tx(plural(res.celulas, "célula", "células"), plural(res.celulas, "cell", "cells"))}: {num(res.comValor, 0)} {tx("com valor", "with a value")}
+          {res.semDado > 0 && (
+            <span data-sem-dado={res.semDado}>
+              {tx(`, ${num(res.semDado, 0)} sem dado (hachuradas)`, `, ${num(res.semDado, 0)} with no data (hatched)`)}
+            </span>
+          )}
+          {res.naoSeAplica > 0 && tx(`, ${num(res.naoSeAplica, 0)} não se aplica (borda tracejada)`, `, ${num(res.naoSeAplica, 0)} not applicable (dashed border)`)}
+          {res.min !== null &&
+            res.max !== null &&
+            tx(`. Valores de ${textoValor(res.min, casas, unidade)} a ${textoValor(res.max, casas, unidade)}`, `. Values from ${textoValor(res.min, casas, unidade)} to ${textoValor(res.max, casas, unidade)}`)}
+          .
         </p>
         {periodo && (
           <p>
-            <span className="rotulo mr-2 text-mineral">Período</span>
+            <span className="rotulo mr-2 text-mineral">{tx("Período", "Period")}</span>
             {periodo}
           </p>
         )}
         <p>
-          Cada classe inclui o limite inferior. Setas movem entre células; Home e End vão ao início e ao fim da linha; Ctrl+Home e Ctrl+End, aos cantos.
+          {tx(
+            "Cada classe inclui o limite inferior. Setas movem entre células; Home e End vão ao início e ao fim da linha; Ctrl+Home e Ctrl+End, aos cantos.",
+            "Each class includes its lower bound. Arrow keys move between cells; Home and End go to the start and end of the row; Ctrl+Home and Ctrl+End, to the corners.",
+          )}
         </p>
         {nota && <p>{nota}</p>}
       </div>
 
       <details className="mt-3 text-xs" onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Dados do gráfico em tabela ({plural(nL, "linha", "linhas")})
+          {tx(`Dados do gráfico em tabela (${plural(nL, "linha", "linhas")})`, `Chart data as a table (${plural(nL, "row", "rows")})`)}
         </summary>
         {montarTabela && (
-          <div className="tabela-scroll mt-2 max-h-96 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
+          <div className="tabela-scroll mt-2 max-h-96 overflow-y-auto" tabIndex={0} role="region" aria-label={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
             <table className="w-full border-collapse tabular-nums">
-              <caption className="sr-only">{`${titulo}, em ${unidade}`}</caption>
+              <caption className="sr-only">{tx(`${titulo}, em ${unidade}`, `${titulo}, in ${unidade}`)}</caption>
               <thead className="sticky top-0 bg-superficie">
                 <tr className="text-left text-mineral">
                   <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{nomeLinhas}</th>
@@ -360,7 +380,7 @@ export function MapaCalor({
                       const e = estadoCelula(v);
                       return (
                         <td key={c.id} className={`whitespace-nowrap px-2 py-1 ${e === "valor" ? "text-carvao" : "text-mineral"}`}>
-                          {e === "valor" ? num(v as number, casas) : e === "sem-dado" ? "sem dado" : "não se aplica"}
+                          {e === "valor" ? num(v as number, casas) : e === "sem-dado" ? tx("sem dado", "no data") : tx("não se aplica", "not applicable")}
                         </td>
                       );
                     })}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useId } from "react";
+import { useIdioma } from "@/lib/energia/useIdioma";
 
 /**
  * Controles da Conta de luz: grupo de opções (rádios nativos com aparência de botão, alvo de 44 px, setas do teclado do próprio
@@ -57,13 +58,21 @@ export function ContaLista({
   opcoes,
   valor,
   onEscolher,
+  opcoesSaoNomes = false,
 }: {
   rotulo: string;
   opcoes: readonly OpcaoConta<string>[];
   valor: string;
   onEscolher: (v: string) => void;
+  /**
+   * As opções (menos a vazia, "Nenhuma") são nomes próprios dos dados (distribuidoras): na página inglesa, cada <option> leva lang="pt-BR"
+   * e data-i18n-nome, já que <option> não aceita o <span> de <Nome>.
+   */
+  opcoesSaoNomes?: boolean;
 }) {
   const id = useId();
+  const ingles = useIdioma() === "en";
+  const marca = (o: OpcaoConta<string>) => (opcoesSaoNomes && ingles && o.id !== "" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {});
   return (
     <div className="w-full min-w-0 sm:w-72">
       <label htmlFor={id} className="rotulo block text-mineral">
@@ -77,7 +86,7 @@ export function ContaLista({
       >
         {opcoes.flatMap((o, i) => {
           const opcao = (
-            <option key={o.id} value={o.id}>
+            <option key={o.id} value={o.id} {...marca(o)}>
               {o.rotulo}
             </option>
           );
@@ -87,7 +96,7 @@ export function ContaLista({
           const doGrupo = [];
           for (let k = i; k < opcoes.length && opcoes[k].grupo === o.grupo; k++) {
             doGrupo.push(
-              <option key={opcoes[k].id} value={opcoes[k].id}>
+              <option key={opcoes[k].id} value={opcoes[k].id} {...marca(opcoes[k])}>
                 {opcoes[k].rotulo}
               </option>,
             );

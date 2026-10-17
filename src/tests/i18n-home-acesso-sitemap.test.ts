@@ -40,7 +40,7 @@ describe("home parcialmente traduzida na fronteira de acesso", () => {
       ["/app/observatorios", "/entrar"], ["/en/app/observatorios", "/en/entrar"],
       ["/app/conta", "/entrar"], ["/en/app/conta", "/en/entrar"],
       ["/observatorio", "/entrar"], ["/en/observatorio", "/en/entrar"],
-      ["/setor-eletrico/pld", "/entrar"], ["/en/setor-eletrico/pld", "/en/entrar"],
+      ["/gas-natural/mercado", "/entrar"], ["/en/gas-natural/mercado", "/en/entrar"],
       ["/en/opengraph-image", "/entrar"], ["/en/twitter-image", "/entrar"],
       ["/en/api/auth/eu", "/entrar"], ["/en/home/credito.webp", "/entrar"],
       ["/en/rota-sintetica-sem-irma", "/en/entrar"],

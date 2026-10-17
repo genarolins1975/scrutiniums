@@ -1,6 +1,8 @@
 "use client";
 
 import { useId } from "react";
+import { Nome } from "@/components/i18n/Nome";
+import { useIdioma } from "@/lib/energia/useIdioma";
 
 /**
  * Controles de recorte das páginas de Água e clima: grupo de opções (rádios nativos
@@ -15,6 +17,8 @@ export type OpcaoAgua<T extends string> = {
   detalhe?: string;
   /** Na lista de seleção, opções com o mesmo grupo ficam sob o mesmo título (optgroup), na ordem em que o grupo aparece. */
   grupo?: string;
+  /** O rótulo é um nome próprio em português (reservatório, bacia): na página inglesa sai marcado (lang="pt-BR", translate="no"). */
+  nome?: boolean;
 };
 
 export function AguaEscolha<T extends string>({
@@ -52,7 +56,7 @@ export function AguaEscolha<T extends string>({
               }`}
             >
               <input type="radio" name={nome} value={o.id} checked={ativo} onChange={() => onEscolher(o.id)} className="sr-only" />
-              {o.rotulo}
+              {o.nome ? <Nome>{o.rotulo}</Nome> : o.rotulo}
             </label>
           );
         })}
@@ -76,10 +80,13 @@ export function AguaLista<T extends string>({
   dica?: string;
 }) {
   const id = useId();
+  const idioma = useIdioma();
+  // <option> só aceita texto: o nome próprio é marcado no próprio elemento, só na página inglesa
+  const marcaNome = idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {};
   const grupos: string[] = [];
   for (const o of opcoes) if (o.grupo && !grupos.includes(o.grupo)) grupos.push(o.grupo);
   const opcao = (o: OpcaoAgua<T>) => (
-    <option key={o.id} value={o.id}>
+    <option key={o.id} value={o.id} {...(o.nome ? marcaNome : {})}>
       {o.rotulo}
     </option>
   );

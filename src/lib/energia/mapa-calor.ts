@@ -10,6 +10,8 @@
  * não se aplica (a combinação não existe, como 30 de fevereiro ou mês futuro).
  */
 import { num } from "@/lib/energia/formato";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import type { Idioma } from "@/lib/idioma";
 import { quantis, validos } from "@/lib/energia/distribuicao";
 import { NAO_SE_APLICA } from "@/lib/energia/escalas";
 
@@ -35,37 +37,37 @@ export type EscalaCores = {
 
 export function estadoCelula(v: ValorCelula): EstadoCelula {
   if (v === NAO_SE_APLICA) return "nao-se-aplica";
-  return typeof v === "number" && Number.isFinite(v) ? "valor" : "sem-dado";
+  return typeof v === "number" && Number.isFinite(v) ? "valor" : "sem-dado"; // i18n: dado
 }
 
 const COR_TOKEN = /^(var\(--[a-z0-9-]+\)|color-mix\(.*var\(--[a-z0-9-]+\).*\))$/i;
 
-/** Problemas da escala; lista vazia quando está consistente. */
+/** Problemas da escala; lista vazia quando está consistente. Diagnóstico para quem monta o gráfico (erro de build e testes), não texto do leitor. */
 export function validaEscala(e: EscalaCores): string[] {
   const erros: string[] = [];
   const { limites, cores } = e;
-  if (!limites.every((l) => Number.isFinite(l))) erros.push("limites precisam ser números finitos");
+  if (!limites.every((l) => Number.isFinite(l))) erros.push("limites precisam ser números finitos"); // i18n: dado
   for (let i = 1; i < limites.length; i++) {
     if (!(limites[i] > limites[i - 1])) {
-      erros.push("limites precisam ser estritamente crescentes");
+      erros.push("limites precisam ser estritamente crescentes"); // i18n: dado
       break;
     }
   }
-  if (cores.length !== limites.length + 1) erros.push(`são ${limites.length + 1} classes e ${cores.length} cores`);
-  if (cores.length < 2) erros.push("a escala precisa de ao menos duas classes");
+  if (cores.length !== limites.length + 1) erros.push(`são ${limites.length + 1} classes e ${cores.length} cores`); // i18n: dado
+  if (cores.length < 2) erros.push("a escala precisa de ao menos duas classes"); // i18n: dado
   const soltas = cores.filter((c) => !COR_TOKEN.test(c.trim()));
-  if (soltas.length) erros.push(`cor fora dos tokens (use var(--...)): ${soltas.join(", ")}`);
-  if (e.rotulos && e.rotulos.length !== cores.length) erros.push(`são ${cores.length} classes e ${e.rotulos.length} rótulos`);
+  if (soltas.length) erros.push(`cor fora dos tokens (use var(--...)): ${soltas.join(", ")}`); // i18n: dado
+  if (e.rotulos && e.rotulos.length !== cores.length) erros.push(`são ${cores.length} classes e ${e.rotulos.length} rótulos`); // i18n: dado
   if (e.tipo === "divergente") {
     const c = e.centro;
-    if (typeof c !== "number" || !Number.isFinite(c)) erros.push("escala divergente precisa de `centro`");
+    if (typeof c !== "number" || !Number.isFinite(c)) erros.push("escala divergente precisa de `centro`"); // i18n: dado
     else if (cores.length % 2 === 0) {
       // número par de classes: o centro é o limite do meio
-      if (limites[cores.length / 2 - 1] !== c) erros.push("com número par de classes, o centro precisa ser o limite do meio");
+      if (limites[cores.length / 2 - 1] !== c) erros.push("com número par de classes, o centro precisa ser o limite do meio"); // i18n: dado
     } else {
       // número ímpar: a classe do meio (neutra) contém o centro
       const m = (cores.length - 1) / 2;
-      if (!(limites[m - 1] <= c && c < limites[m])) erros.push("com número ímpar de classes, a classe do meio precisa conter o centro");
+      if (!(limites[m - 1] <= c && c < limites[m])) erros.push("com número ímpar de classes, a classe do meio precisa conter o centro"); // i18n: dado
     }
   }
   return erros;
@@ -85,22 +87,23 @@ export function classeDe(v: ValorCelula, limites: readonly number[]): number | n
  * das classes de escalas.ts ("menos de 10", "10 a menos de 20", "20 ou mais"),
  * que diz em que classe cai o valor exatamente no limite.
  */
-export function rotulosClasses(e: EscalaCores, casas: number): string[] {
+export function rotulosClasses(e: EscalaCores, casas: number, idioma: Idioma = idiomaEnergia()): string[] {
   if (e.rotulos) return e.rotulos;
   const l = e.limites;
+  const n = (v: number) => num(v, casas, idioma);
   return e.cores.map((_, i) => {
-    if (i === 0) return `menos de ${num(l[0], casas)}`;
-    if (i === l.length) return `${num(l[l.length - 1], casas)} ou mais`;
-    return `${num(l[i - 1], casas)} a menos de ${num(l[i], casas)}`;
+    if (i === 0) return tx(`menos de ${n(l[0])}`, `less than ${n(l[0])}`, idioma);
+    if (i === l.length) return tx(`${n(l[l.length - 1])} ou mais`, `${n(l[l.length - 1])} or more`, idioma);
+    return tx(`${n(l[i - 1])} a menos de ${n(l[i])}`, `${n(l[i - 1])} to less than ${n(l[i])}`, idioma);
   });
 }
 
 /** Confere que a matriz tem uma linha por rótulo de linha e uma coluna por rótulo de coluna. */
 export function validaMatriz(valores: readonly (readonly ValorCelula[])[], nLinhas: number, nColunas: number): string[] {
   const erros: string[] = [];
-  if (valores.length !== nLinhas) erros.push(`${valores.length} linhas de valores para ${nLinhas} rótulos de linha`);
+  if (valores.length !== nLinhas) erros.push(`${valores.length} linhas de valores para ${nLinhas} rótulos de linha`); // i18n: dado
   valores.forEach((l, i) => {
-    if (l.length !== nColunas) erros.push(`linha ${i + 1}: ${l.length} valores para ${nColunas} colunas`);
+    if (l.length !== nColunas) erros.push(`linha ${i + 1}: ${l.length} valores para ${nColunas} colunas`); // i18n: dado
   });
   return erros;
 }

@@ -1,17 +1,21 @@
 "use client";
 
+import { comNomes } from "@/components/i18n/comNomes";
 import { useDeferredValue, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { campo, tiposUrl, type Esquema } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { LiteralFonte } from "@/components/LiteralFonte";
 import { TextoComDatas } from "@/components/TextoComDatas";
 import { defLiteral } from "@/lib/literais-fonte";
-import { FUSO_SEM_OFFSET_ENERGIA, carimbo, dataBR, num, plural } from "@/lib/energia/formato";
+import { FUSO_SEM_OFFSET_ENERGIA, formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
+import type { Idioma } from "@/lib/idioma";
 import {
   CHAVE_SEM_DADO,
   MIME_CSV,
   MIME_XLSX,
-  TEXTO_SEM_DADO,
   criarIndiceBusca,
   descreverRecorte,
   ehNumerica,
@@ -24,6 +28,7 @@ import {
   paginar,
   rotuloCabecalho,
   textoCelula,
+  textoSemDado,
   valorColuna,
   type ColunaTabela,
   type ItemRecorte,
@@ -56,6 +61,8 @@ import {
 
 export type TabelaInterativaProps = {
   titulo: string;
+  /** Nomes próprios no título ("Ceraçá losses by year"): na legenda da tabela inglesa saem marcados. */
+  nomesNoTitulo?: readonly string[];
   colunas: ColunaTabela[];
   linhas: LinhaTabela[];
   /** Campo com o identificador estável de cada linha (seleção sincronizada e chave de renderização). */
@@ -129,24 +136,44 @@ function baixar(nome: string, conteudo: string | Uint8Array<ArrayBuffer>, tipo: 
   window.setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
+/**
+ * Conteúdo de célula (ou de opção de filtro) de uma coluna com `idiomaTexto`: na página inglesa, nome próprio em <Nome> e texto livre
+ * da fonte em <TrechoPortugues>; em português, o conteúdo como está. Exportado para a ListaConsultavel usar a mesma regra.
+ */
+export function TextoDaColuna({ coluna, children }: { coluna: Pick<ColunaTabela, "id" | "idiomaTexto">; children: ReactNode }) {
+  if (coluna.idiomaTexto === "nome") return <Nome>{children}</Nome>;
+  if (coluna.idiomaTexto === "portugues") return <TrechoPortugues regiao={`tabela-${coluna.id}`}>{children}</TrechoPortugues>;
+  if (coluna.idiomaTexto === "codigo") return <CodigoNoIngles>{children}</CodigoNoIngles>;
+  return <>{children}</>;
+}
+
+/** Identificador técnico: <code> na página inglesa (não é prosa de nenhum idioma); em português, como sempre foi. */
+function CodigoNoIngles({ children }: { children: ReactNode }) {
+  const idioma = useIdioma();
+  return idioma === "en" ? <code className="text-[0.95em]">{children}</code> : <>{children}</>;
+}
+
 function SemDado({ sobreFundoAtivo }: { sobreFundoAtivo: boolean }) {
+  const idioma = useIdioma();
   // mineral fica abaixo de AA sobre energia-fundo (linha selecionada): lá o texto passa a carvão-muted
   return (
     <span data-estado="sem-dado" className={`italic ${sobreFundoAtivo ? "text-carvao-muted" : "text-mineral"}`}>
-      {TEXTO_SEM_DADO}
+      {textoSemDado(idioma)}
     </span>
   );
 }
 
 /** Versão dos dados para leitura: data ISO vira dd/mm/aaaa (ou mm/aaaa); instante vira data e hora de Brasília; o resto fica como veio. */
-function versaoLegivel(v: string): string {
-  if (/^\d{4}-\d{2}(-\d{2})?$/.test(v)) return dataBR(v);
-  if (/^\d{4}-\d{2}-\d{2}T/.test(v)) return carimbo(v);
+function versaoLegivel(v: string, idioma: Idioma): string {
+  const f = formatos(idioma);
+  if (/^\d{4}-\d{2}(-\d{2})?$/.test(v)) return f.dataBR(v);
+  if (/^\d{4}-\d{2}-\d{2}T/.test(v)) return f.carimbo(v);
   return v;
 }
 
 export function TabelaInterativa({
   titulo,
+  nomesNoTitulo,
   colunas,
   linhas,
   chaveLinha,
@@ -166,6 +193,9 @@ export function TabelaInterativa({
   recolher,
   iniciarAberta = false,
 }: TabelaInterativaProps) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { num, plural, carimbo } = formatos(idioma);
   const uid = useId();
   const buscaRef = useRef<HTMLInputElement>(null);
   // a tabela só avisa da rolagem quando de fato é mais larga que a área visível
@@ -207,10 +237,10 @@ export function TabelaInterativa({
     const out: Record<string, OpcaoFiltro[]> = {};
     for (const c of categoricas) {
       // faceta: conta as linhas que sobram com a busca e os OUTROS filtros
-      out[c.id] = opcoesFiltro(linhas, c, filtrarLinhas(linhas, colunas, { busca: buscaAdiada, filtros }, indice, c.id));
+      out[c.id] = opcoesFiltro(linhas, c, filtrarLinhas(linhas, colunas, { busca: buscaAdiada, filtros }, indice, c.id), idioma);
     }
     return out;
-  }, [categoricas, linhas, colunas, buscaAdiada, filtros, indice]);
+  }, [categoricas, linhas, colunas, buscaAdiada, filtros, indice, idioma]);
 
   const [tamanho, setTamanho] = useState<number>(tamanhoPagina);
   const tamanhos = tamanhoPagina < TAMANHOS[0] ? [tamanhoPagina, ...TAMANHOS] : TAMANHOS;
@@ -220,7 +250,7 @@ export function TabelaInterativa({
   const selecionavel = typeof onSelecionar === "function";
   const idDe = (l: LinhaTabela) => String(l[chaveLinha] ?? "");
 
-  const recorte = descreverRecorte(colunas, { busca: buscaAdiada, filtros, ordem });
+  const recorte = descreverRecorte(colunas, { busca: buscaAdiada, filtros, ordem }, idioma);
   const itensFiltro = recorte.filter((r) => r.tipo !== "ordem");
   const [anuncio, setAnuncio] = useState("");
   const [filtroAberto, setFiltroAberto] = useState<string | null>(null);
@@ -290,8 +320,11 @@ export function TabelaInterativa({
     definir({ ordem: prox, pagina: 1 });
     setAnuncio(
       prox
-        ? `Ordenada por ${c.rotulo}, ${prox.direcao === "asc" ? "crescente" : "decrescente"}. Linhas sem dado ficam no fim.`
-        : "Ordenação removida: linhas na ordem original.",
+        ? tx(
+            `Ordenada por ${c.rotulo}, ${prox.direcao === "asc" ? "crescente" : "decrescente"}. Linhas sem dado ficam no fim.`,
+            `Sorted by ${c.rotulo}, ${prox.direcao === "asc" ? "ascending" : "descending"}. Rows with no data stay at the end.`,
+          )
+        : tx("Ordenação removida: linhas na ordem original.", "Sorting removed: rows in their original order."),
     );
   }
 
@@ -302,7 +335,7 @@ export function TabelaInterativa({
   function remover(item: ItemRecorte) {
     if (item.tipo === "busca") definir({ busca: "", pagina: 1 }, { historico: "push" });
     else if (item.coluna) definir({ [FILTRO + item.coluna]: [], pagina: 1 });
-    setAnuncio(`Filtro removido: ${item.rotulo}.`);
+    setAnuncio(tx(`Filtro removido: ${item.rotulo}.`, `Filter removed: ${item.rotulo}.`));
     buscaRef.current?.focus();
   }
 
@@ -311,28 +344,38 @@ export function TabelaInterativa({
     for (const c of categoricas) m[FILTRO + c.id] = [];
     definir(m, { historico: "push" });
     setFiltroAberto(null);
-    setAnuncio("Filtros removidos: todas as linhas.");
+    setAnuncio(tx("Filtros removidos: todas as linhas.", "Filters removed: all rows."));
   }
 
   function irPara(p: number) {
     const alvo = paginar(filtradas.length, p, tamanho);
     if (alvo.pagina === pag.pagina) return;
     definir({ pagina: alvo.pagina });
-    setAnuncio(`Página ${alvo.pagina} de ${alvo.paginas}: linhas ${num(alvo.inicio + 1, 0)} a ${num(alvo.fim, 0)} de ${num(filtradas.length, 0)}.`);
+    setAnuncio(
+      tx(
+        `Página ${alvo.pagina} de ${alvo.paginas}: linhas ${num(alvo.inicio + 1, 0)} a ${num(alvo.fim, 0)} de ${num(filtradas.length, 0)}.`,
+        `Page ${alvo.pagina} of ${alvo.paginas}: rows ${num(alvo.inicio + 1, 0)} to ${num(alvo.fim, 0)} of ${num(filtradas.length, 0)}.`,
+      ),
+    );
   }
 
   function exportar(formato: "csv" | "xlsx") {
     if (!filtradas.length) {
-      setAnuncio("Nenhuma linha para exportar: o recorte atual não tem resultado. Limpe a busca ou os filtros.");
+      setAnuncio(
+        tx(
+          "Nenhuma linha para exportar: o recorte atual não tem resultado. Limpe a busca ou os filtros.",
+          "No rows to export: the current selection has no results. Clear the search or the filters.",
+        ),
+      );
       return;
     }
     const nome = nomeArquivo(baseArquivo, recorte, formato, versao);
     if (formato === "csv") baixar(nome, gerarCsv(colunas, filtradas), MIME_CSV);
     else {
-      const meta = { titulo, fonte, versao, recorte: recorte.map((r) => `${r.rotulo}: ${r.valor}`).join("; "), geradoEm: carimbo(new Date().toISOString()) };
+      const meta = { titulo, fonte, versao, recorte: recorte.map((r) => `${r.rotulo}: ${r.valor}`).join("; "), geradoEm: carimbo(new Date().toISOString()), idioma };
       baixar(nome, gerarXlsx(colunas, filtradas, meta), MIME_XLSX);
     }
-    setAnuncio(`Arquivo ${nome} gerado com ${plural(filtradas.length, "linha", "linhas")}.`);
+    setAnuncio(tx(`Arquivo ${nome} gerado com ${plural(filtradas.length, "linha", "linhas")}.`, `File ${nome} generated with ${plural(filtradas.length, "row", "rows")}.`));
   }
 
   const selecionadaFora =
@@ -353,14 +396,16 @@ export function TabelaInterativa({
             onClick={() => setAberta((a) => !a)}
             className="tabela-recolher-btn"
           >
-            {aberta ? "Ocultar a tabela" : `Ver a tabela completa (${plural(linhas.length, "linha", "linhas")})`}
+            {aberta
+              ? tx("Ocultar a tabela", "Hide the table")
+              : tx(`Ver a tabela completa (${plural(linhas.length, "linha", "linhas")})`, `See the full table (${plural(linhas.length, "row", "rows")})`)}
           </button>
         </div>
       )}
       <div id={`${uid}-conteudo`} data-recolhivel={recolhivel ? (aberta ? "aberta" : "fechada") : undefined}>
       <div>
         <label htmlFor={`${uid}-busca`} className="rotulo block text-mineral">
-          Buscar na tabela
+          {tx("Buscar na tabela", "Search the table")}
         </label>
         <input
           ref={buscaRef}
@@ -379,7 +424,7 @@ export function TabelaInterativa({
 
       {categoricas.length > 0 && (
         <div ref={filtrosRef} className="relative mt-3 flex flex-wrap items-center gap-2">
-          <span className="rotulo mr-1 text-mineral">Filtrar</span>
+          <span className="rotulo mr-1 text-mineral">{tx("Filtrar", "Filter")}</span>
           {categoricas.map((c) => (
             <FiltroCategoria
               key={c.id}
@@ -397,7 +442,7 @@ export function TabelaInterativa({
       {itensFiltro.length > 0 && (
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <span id={`${uid}-ativos`} className="rotulo text-mineral">
-            Filtros ativos
+            {tx("Filtros ativos", "Active filters")}
           </span>
           <ul aria-labelledby={`${uid}-ativos`} className="flex flex-wrap gap-2">
             {itensFiltro.map((it) => (
@@ -405,11 +450,16 @@ export function TabelaInterativa({
                 <button
                   type="button"
                   onClick={() => remover(it)}
-                  aria-label={`Remover filtro ${it.rotulo}: ${it.valor}`}
+                  aria-label={tx(`Remover filtro ${it.rotulo}: ${it.valor}`, `Remove filter ${it.rotulo}: ${it.valor}`)}
                   className="inline-flex min-h-[44px] items-center gap-2 border border-energia bg-energia-fundo px-3 text-left text-sm text-carvao hover:border-energia-dark"
                 >
                   <span>
-                    <span className="text-carvao-muted">{it.rotulo}:</span> {it.valor}
+                    <span className="text-carvao-muted">{it.rotulo}:</span>{" "}
+                    {it.tipo === "filtro" && it.coluna ? (
+                      <TextoDaColuna coluna={colunas.find((c) => c.id === it.coluna) ?? { id: it.coluna }}>{it.valor}</TextoDaColuna>
+                    ) : (
+                      it.valor
+                    )}
                   </span>
                   <span aria-hidden="true">✕</span>
                 </button>
@@ -418,7 +468,7 @@ export function TabelaInterativa({
           </ul>
           {itensFiltro.length > 1 && (
             <button type="button" onClick={limparTudo} className="rotulo inline-flex min-h-[44px] items-center px-2 text-energia-dark underline underline-offset-4 hover:text-carvao">
-              Limpar todos
+              {tx("Limpar todos", "Clear all")}
             </button>
           )}
         </div>
@@ -426,11 +476,11 @@ export function TabelaInterativa({
 
       <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <p id={`${uid}-contagem`} role="status" className="text-sm text-carvao-muted">
-          <span className="font-medium tabular-nums text-carvao">{num(filtradas.length, 0)}</span> de {num(linhas.length, 0)}{" "}
-          {linhas.length === 1 ? "linha" : "linhas"}
+          <span className="font-medium tabular-nums text-carvao">{num(filtradas.length, 0)}</span> {tx("de", "of")} {num(linhas.length, 0)}{" "}
+          {tx(linhas.length === 1 ? "linha" : "linhas", linhas.length === 1 ? "row" : "rows")}
         </p>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-carvao-muted">Linhas mostradas:</span>
+          <span className="text-xs text-carvao-muted">{tx("Linhas mostradas:", "Rows shown:")}</span>
           {(["csv", "xlsx"] as const).map((f) => (
             <button
               key={f}
@@ -439,7 +489,7 @@ export function TabelaInterativa({
               aria-disabled={semResultado || undefined}
               className={botaoPagina}
             >
-              Baixar {f.toUpperCase()}
+              {tx("Baixar", "Download")} {f.toUpperCase()}
             </button>
           ))}
         </div>
@@ -447,25 +497,41 @@ export function TabelaInterativa({
 
       {selecionadaFora && (
         <p className="mt-2 text-sm text-carvao-muted">
-          A linha selecionada ({textoCelula(valorColuna(selecionadaFora, colRot), colRot)}) está fora dos filtros aplicados.{" "}
+          {tx(
+            <>A linha selecionada ({textoCelula(valorColuna(selecionadaFora, colRot), colRot, idioma)}) está fora dos filtros aplicados.</>,
+            <>
+              The selected row (<TextoDaColuna coluna={colRot}>{textoCelula(valorColuna(selecionadaFora, colRot), colRot, idioma)}</TextoDaColuna>) is outside the
+              applied filters.
+            </>,
+          )}{" "}
           <button type="button" onClick={limparTudo} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            Mostrar todas as linhas
+            {tx("Mostrar todas as linhas", "Show all rows")}
           </button>
         </p>
       )}
 
       {maisColunas && (
         <p className="mt-2 text-xs text-mineral" data-dica-rolagem="true">
-          A tabela é mais larga que a tela: role para o lado para ver todas as colunas.
+          {tx("A tabela é mais larga que a tela: role para o lado para ver todas as colunas.", "The table is wider than the screen: scroll sideways to see all columns.")}
         </p>
       )}
-      <div ref={rolagemRef} className="tabela-scroll mt-2 max-w-full overflow-x-auto border-t border-linha" role="region" tabIndex={0} aria-label={`${titulo} (tabela rolável)`}>
+      <div ref={rolagemRef} className="tabela-scroll mt-2 max-w-full overflow-x-auto border-t border-linha" role="region" tabIndex={0} aria-label={tx(`${titulo} (tabela rolável)`, `${titulo} (scrollable table)`)}>
         <table id={`${uid}-tabela`} className="w-full border-collapse text-sm tabular-nums">
           <caption className="sr-only">
-            {`${titulo}. ${num(filtradas.length, 0)} de ${plural(linhas.length, "linha", "linhas")}`}
-            {ordem ? `, ordenada por ${colunas.find((c) => c.id === ordem.coluna)?.rotulo ?? ordem.coluna}, ${ordem.direcao === "asc" ? "crescente" : "decrescente"}` : ""}
-            {pag.paginas > 1 ? `. Página ${pag.pagina} de ${pag.paginas}` : ""}
-            {selecionavel ? ". O botão na coluna de nome seleciona a linha" : ""}.
+            {tx<ReactNode>(
+              `${titulo}. ${num(filtradas.length, 0)} de ${plural(linhas.length, "linha", "linhas")}`,
+              <>
+                {comNomes(titulo, nomesNoTitulo, idioma)}. {num(filtradas.length, 0)} of {plural(linhas.length, "row", "rows")}
+              </>,
+            )}
+            {ordem
+              ? tx(
+                  `, ordenada por ${colunas.find((c) => c.id === ordem.coluna)?.rotulo ?? ordem.coluna}, ${ordem.direcao === "asc" ? "crescente" : "decrescente"}`,
+                  `, sorted by ${colunas.find((c) => c.id === ordem.coluna)?.rotulo ?? ordem.coluna}, ${ordem.direcao === "asc" ? "ascending" : "descending"}`,
+                )
+              : ""}
+            {pag.paginas > 1 ? tx(`. Página ${pag.pagina} de ${pag.paginas}`, `. Page ${pag.pagina} of ${pag.paginas}`) : ""}
+            {selecionavel ? tx(". O botão na coluna de nome seleciona a linha", ". The button in the name column selects the row") : ""}.
           </caption>
           <thead>
             <tr>
@@ -489,13 +555,13 @@ export function TabelaInterativa({
                         onClick={() => alternarOrdem(c)}
                         className={`inline-flex min-h-[44px] w-full items-center gap-1.5 py-1 ${numerica ? "justify-end text-right" : "text-left"} hover:text-carvao`}
                       >
-                        <span>{rotuloCabecalho(c)}</span>
+                        <span>{c.rotuloEhNome ? <Nome>{rotuloCabecalho(c)}</Nome> : rotuloCabecalho(c)}</span>
                         <span aria-hidden="true" className={`text-[0.7rem] ${ativa ? "text-energia-dark" : "text-mineral"}`}>
                           {ativa && ordem ? (ordem.direcao === "asc" ? "▲" : "▼") : "↕"}
                         </span>
                       </button>
                     ) : (
-                      <span className="inline-flex min-h-[44px] items-center py-1">{rotuloCabecalho(c)}</span>
+                      <span className="inline-flex min-h-[44px] items-center py-1">{c.rotuloEhNome ? <Nome>{rotuloCabecalho(c)}</Nome> : rotuloCabecalho(c)}</span>
                     )}
                   </th>
                 );
@@ -507,12 +573,12 @@ export function TabelaInterativa({
               <tr>
                 <td colSpan={Math.max(1, colunas.length)} className="px-3 py-8 text-center text-sm text-carvao-muted" data-estado="vazio">
                   {linhas.length === 0 ? (
-                    semLinhas ?? "Nenhuma linha publicada para esta tabela."
+                    semLinhas ?? tx("Nenhuma linha publicada para esta tabela.", "No rows published for this table.")
                   ) : (
                     <>
-                      Nenhuma linha com esses filtros.{" "}
+                      {tx("Nenhuma linha com esses filtros.", "No rows match these filters.")}{" "}
                       <button type="button" onClick={limparTudo} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                        Limpar filtros
+                        {tx("Limpar filtros", "Clear filters")}
                       </button>
                     </>
                   )}
@@ -542,10 +608,18 @@ export function TabelaInterativa({
                             {v}
                           </LiteralFonte>
                         ) : c.tipo === "texto" && typeof v === "string" ? (
-                          // texto do pipeline pode trazer competência ou data no meio da frase: legível, sem mudar o dia nem o fuso
-                          <TextoComDatas texto={textoCelula(v, c)} competencia="curta" fusoSemOffset={FUSO_SEM_OFFSET_ENERGIA} />
+                          // texto do pipeline pode trazer competência ou data no meio da frase: legível, sem mudar o dia nem o fuso; texto em
+                          // português marcado (idiomaTexto "portugues") mantém as datas na língua da frase
+                          <TextoDaColuna coluna={c}>
+                            <TextoComDatas
+                              texto={textoCelula(v, c, c.idiomaTexto === "portugues" ? "pt" : idioma)}
+                              competencia="curta"
+                              fusoSemOffset={FUSO_SEM_OFFSET_ENERGIA}
+                              idioma={c.idiomaTexto === "portugues" ? "pt" : idioma}
+                            />
+                          </TextoDaColuna>
                         ) : (
-                          textoCelula(v, c)
+                          textoCelula(v, c, idioma)
                         );
                       if (c.id === colRot?.id) {
                         return (
@@ -589,24 +663,31 @@ export function TabelaInterativa({
       </div>
 
       {filtradas.length > tamanhos[0] && (
-        <nav aria-label={`Paginação: ${titulo}`} className="mt-3 flex flex-wrap items-center gap-2">
+        <nav aria-label={tx(`Paginação: ${titulo}`, `Pagination: ${titulo}`)} className="mt-3 flex flex-wrap items-center gap-2">
           <button type="button" className={botaoPagina} aria-disabled={pag.pagina === 1 || undefined} onClick={() => irPara(1)}>
-            <span aria-hidden="true">«</span> Primeira
+            <span aria-hidden="true">«</span> {tx("Primeira", "First")}
           </button>
           <button type="button" className={botaoPagina} aria-disabled={pag.pagina === 1 || undefined} onClick={() => irPara(pag.pagina - 1)}>
-            <span aria-hidden="true">‹</span> Anterior
+            <span aria-hidden="true">‹</span> {tx("Anterior", "Previous")}
           </button>
           <p className="px-1 text-sm tabular-nums text-carvao-muted">
-            Página {pag.pagina} de {pag.paginas} · linhas {num(pag.inicio + 1, 0)} a {num(pag.fim, 0)}
+            {tx(
+              <>
+                Página {pag.pagina} de {pag.paginas} · linhas {num(pag.inicio + 1, 0)} a {num(pag.fim, 0)}
+              </>,
+              <>
+                Page {pag.pagina} of {pag.paginas} · rows {num(pag.inicio + 1, 0)} to {num(pag.fim, 0)}
+              </>,
+            )}
           </p>
           <button type="button" className={botaoPagina} aria-disabled={pag.pagina === pag.paginas || undefined} onClick={() => irPara(pag.pagina + 1)}>
-            Próxima <span aria-hidden="true">›</span>
+            {tx("Próxima", "Next")} <span aria-hidden="true">›</span>
           </button>
           <button type="button" className={botaoPagina} aria-disabled={pag.pagina === pag.paginas || undefined} onClick={() => irPara(pag.paginas)}>
-            Última <span aria-hidden="true">»</span>
+            {tx("Última", "Last")} <span aria-hidden="true">»</span>
           </button>
           <label className="ml-auto flex items-center gap-2 text-sm text-carvao-muted">
-            Linhas por página
+            {tx("Linhas por página", "Rows per page")}
             <select
               value={tamanho}
               onChange={(e) => {
@@ -614,7 +695,12 @@ export function TabelaInterativa({
                 setTamanho(novo);
                 definir({ pagina: 1 });
                 const alvo = paginar(filtradas.length, 1, novo);
-                setAnuncio(`${novo} linhas por página: ${plural(alvo.paginas, "página", "páginas")}. Página 1: linhas ${num(alvo.inicio + 1, 0)} a ${num(alvo.fim, 0)} de ${num(filtradas.length, 0)}.`);
+                setAnuncio(
+                  tx(
+                    `${novo} linhas por página: ${plural(alvo.paginas, "página", "páginas")}. Página 1: linhas ${num(alvo.inicio + 1, 0)} a ${num(alvo.fim, 0)} de ${num(filtradas.length, 0)}.`,
+                    `${novo} rows per page: ${plural(alvo.paginas, "page", "pages")}. Page 1: rows ${num(alvo.inicio + 1, 0)} to ${num(alvo.fim, 0)} of ${num(filtradas.length, 0)}.`,
+                  ),
+                );
               }}
               className="min-h-[44px] border border-linha bg-superficie px-2 text-carvao"
             >
@@ -630,7 +716,16 @@ export function TabelaInterativa({
 
       <footer className="mt-3 border-t border-linha pt-2 text-xs leading-relaxed text-mineral">
         <p>
-          Fonte: {fonte}. Versão dos dados: {versaoLegivel(versao)}. “{TEXTO_SEM_DADO}” indica ausência na fonte, nunca zero; nos arquivos baixados a ausência é célula vazia.
+          {tx(
+            <>
+              Fonte: {fonte}. Versão dos dados: {versaoLegivel(versao, idioma)}. “{textoSemDado(idioma)}” indica ausência na fonte, nunca zero; nos arquivos baixados a ausência
+              é célula vazia.
+            </>,
+            <>
+              Source: {fonte}. Data version: {versaoLegivel(versao, idioma)}. “{textoSemDado(idioma)}” means missing in the source, never zero; in downloaded files a missing
+              value is an empty cell.
+            </>,
+          )}
         </p>
         {nota && <div className="mt-1">{nota}</div>}
       </footer>
@@ -658,6 +753,8 @@ function FiltroCategoria({
   onAlternar: (abrir: boolean) => void;
   onMudar: (valores: string[]) => void;
 }) {
+  const tx = useTx();
+  const { num } = formatos(useIdioma());
   const resumo = useRef<HTMLElement>(null);
   const marcadosSet = new Set(marcados);
   // valores na ordem das opções: a URL tem uma forma só para o mesmo filtro, qualquer que seja a ordem dos cliques
@@ -698,15 +795,20 @@ function FiltroCategoria({
       {/* painel ancorado na largura da faixa de filtros: nunca passa da borda da tela */}
       <div className="absolute left-0 right-0 top-full z-30 mt-1 border border-linha bg-superficie p-3 shadow-[0_6px_20px_rgba(26,29,33,0.12)]">
         <fieldset>
-          <legend className="rotulo text-mineral">Filtrar por {coluna.rotulo}</legend>
+          <legend className="rotulo text-mineral">
+            {tx("Filtrar por ", "Filter by ")}
+            {coluna.rotulo}
+          </legend>
           <div className="mt-2 grid max-h-64 grid-cols-1 gap-x-4 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3">
             {opcoes.map((o) => (
               <label key={o.valor} className="flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
                 <input type="checkbox" className="h-4 w-4 shrink-0 accent-energia" checked={marcadosSet.has(o.valor)} onChange={() => alternar(o.valor)} />
-                <span className={`min-w-0 flex-1 ${o.valor === CHAVE_SEM_DADO ? "italic text-carvao-muted" : ""}`}>{o.rotulo}</span>
+                <span className={`min-w-0 flex-1 ${o.valor === CHAVE_SEM_DADO ? "italic text-carvao-muted" : ""}`}>
+                  {o.valor === CHAVE_SEM_DADO ? o.rotulo : <TextoDaColuna coluna={coluna}>{o.rotulo}</TextoDaColuna>}
+                </span>
                 <span className="text-xs tabular-nums text-mineral">
                   {num(o.n, 0)}
-                  <span className="sr-only"> {o.n === 1 ? "linha" : "linhas"}</span>
+                  <span className="sr-only"> {tx(o.n === 1 ? "linha" : "linhas", o.n === 1 ? "row" : "rows")}</span>
                 </span>
               </label>
             ))}
@@ -714,7 +816,8 @@ function FiltroCategoria({
         </fieldset>
         {ativo && (
           <button type="button" onClick={() => onMudar([])} className="rotulo mt-2 inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            Limpar {coluna.rotulo}
+            {tx("Limpar ", "Clear ")}
+            {coluna.rotulo}
           </button>
         )}
       </div>

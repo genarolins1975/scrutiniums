@@ -1,3 +1,4 @@
+import type { Idioma } from "@/lib/idioma";
 import type { Conceito } from "./conceitos";
 
 /**
@@ -6,3 +7,4 @@ import type { Conceito } from "./conceitos";
  * verbete com o slug de um verbete base o substitui.
  */
 export const CONCEITOS: Conceito[] = [];
+export const CONCEITOS_IDIOMAS: Record<Idioma, Conceito[]> = { pt: CONCEITOS, en: CONCEITOS };

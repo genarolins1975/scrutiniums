@@ -1,7 +1,11 @@
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { Nome } from "@/components/i18n/Nome";
 import { dataBR } from "@/lib/energia/formato";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { hrefNoIdioma } from "@/lib/i18n-href";
+import { dadoNo, dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
 import {
   ancoraEventoRegulacao,
   baseLegalTarifaSocial,
@@ -39,34 +43,49 @@ import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
  */
 
 export function OrcamentoPorQueImporta() {
-  return (
+  return tx(
     <>
       O mesmo valor de conta pesa diferente conforme a renda. A POF é a única pesquisa oficial que mede a despesa das famílias com energia elétrica junto com a despesa total e a renda,
       com plano amostral que permite estimar a precisão.
-    </>
+    </>,
+    <>
+      The same bill amount weighs differently depending on income. The POF (IBGE&rsquo;s household budget survey) is the only official survey that measures families&rsquo; electricity
+      expense together with total expense and income, with a sample design that allows precision to be estimated.
+    </>,
   );
 }
 
 export function OrcamentoComoInterpretar({ o }: { o: Orcamento }) {
   const base = dataBaseReaisPof(o);
-  return (
+  return tx(
     <>
       Razão de médias é a despesa média com energia dividida pela despesa média total (a &ldquo;distribuição&rdquo; que o IBGE publica). Média das participações calcula a participação em
       cada família e tira a média ponderada. As duas respondem a perguntas diferentes e aparecem lado a lado; a mediana mostra a família típica. Família é a unidade da POF e pode não ser
       a titular da conta de luz da casa em que mora.
       {base ? ` As faixas de renda são as classes de rendimento total mensal da família, em reais de ${base}, a data de referência dos valores da pesquisa.` : ""} A precisão de cada estimativa vem do plano
       amostral (estrato e unidade primária) e é medida pelo coeficiente de variação (CV): {textoPrecisaoPof(o.regra_precisao)}
-    </>
+    </>,
+    <>
+      The ratio of averages is the average electricity expense divided by the average total expense (the &ldquo;distribution&rdquo; IBGE publishes). The average of the shares calculates the
+      share in each family and takes the weighted average. The two answer different questions and appear side by side; the median shows the typical family. The family is the POF&rsquo;s
+      unit and may not be the holder of the electricity bill of the home where it lives.
+      {base ? ` The income brackets are the classes of the family's total monthly income, in reais of ${base}, the reference date of the survey's values.` : ""} The precision of each estimate
+      comes from the sample design (stratum and primary unit) and is measured by the coefficient of variation (CV): {textoPrecisaoPof(o.regra_precisao)}
+    </>,
   );
 }
 
 export function OrcamentoNaoConcluir({ o, anoPublicacao }: { o: Orcamento; anoPublicacao: string }) {
   const fim = o.proveniencia.microdados.periodo_referencia.fim.slice(0, 4);
-  return (
+  return tx(
     <>
       Não representa {anoPublicacao}: os preços e a Tarifa Social mudaram desde {fim}, e nenhuma atualização modelada é publicada. Não existe recorte municipal: a amostra não permite. Os
       limiares de {o.limiares_pct.map((x) => pctTexto(x, 0)).join(", ")} não definem pobreza energética; são sensibilidade.
-    </>
+    </>,
+    <>
+      It does not represent {anoPublicacao}: prices and the Tarifa Social have changed since {fim}, and no modeled update is published. There is no municipal breakdown: the sample does
+      not allow it. The thresholds of {o.limiares_pct.map((x) => pctTexto(x, 0)).join(", ")} do not define energy poverty; they are a sensitivity check.
+    </>,
   );
 }
 
@@ -93,8 +112,12 @@ export function OrcamentoResposta({ o, base }: { o: Orcamento; base: BasePof }) 
  * o conjunto e a maior faixa saem das mesmas linhas do gráfico). A nota diz que estimador o destaque usa.
  */
 export function OrcamentoFaixa({ o, base, anoPublicacao }: { o: Orcamento; base: BasePof; anoPublicacao: string }) {
+  const idioma = idiomaEnergia();
   const classes = orcamentoBase(o, (l) => !codigoUf(l.territorio));
   const periodoMedidas = `POF ${periodoPof(o)}`;
+  const daDespesa = tx("da despesa total", "of total expense");
+  const daRenda = tx("da renda", "of income");
+  const suprimida = tx("Estimativa suprimida pela precisão.", "Estimate suppressed due to precision.");
   const nota = (
     <>
       <p>{textoPofHistorica(o, anoPublicacao)}</p>
@@ -104,15 +127,15 @@ export function OrcamentoFaixa({ o, base, anoPublicacao }: { o: Orcamento; base:
   if (base === "despesa") {
     const d = destaquesRendaPof(classes);
     return (
-      <FaixaMetricas colunas={3} rotulo="Peso da energia no orçamento das famílias" nota={nota}>
+      <FaixaMetricas colunas={3} rotulo={tx("Peso da energia no orçamento das famílias", "Weight of energy in family budgets")} nota={nota}>
         <Numero
           variante="faixa"
-          rotulo="Razão de médias, todas as famílias"
+          rotulo={tx("Razão de médias, todas as famílias", "Ratio of averages, all families")}
           natureza="ESTIMADO"
           evidencia={o.evidencias.razao_medias_brasil}
           formato="pct"
           casas={1}
-          unidade="da despesa total"
+          unidade={daDespesa}
           periodo={periodoMedidas}
           cor="var(--cor-energia)"
           endereco={`${rotaPainel("p061")}#p061`}
@@ -120,29 +143,29 @@ export function OrcamentoFaixa({ o, base, anoPublicacao }: { o: Orcamento; base:
         {d.baixa && (
           <Numero
             variante="faixa"
-            rotulo="Razão de médias, menor faixa de renda"
+            rotulo={tx("Razão de médias, menor faixa de renda", "Ratio of averages, lowest income bracket")}
             natureza="ESTIMADO"
             valor={d.baixa.valor}
             formato="pct"
             casas={1}
-            unidade="da despesa total"
-            recorte={d.baixa.rotulo}
+            unidade={daDespesa}
+            recorte={dadoTexto(d.baixa.rotulo, idioma)}
             periodo={periodoMedidas}
-            motivoAusencia="Estimativa suprimida pela precisão."
+            motivoAusencia={suprimida}
           />
         )}
         {d.alta && (
           <Numero
             variante="faixa"
-            rotulo="Razão de médias, maior faixa de renda"
+            rotulo={tx("Razão de médias, maior faixa de renda", "Ratio of averages, highest income bracket")}
             natureza="ESTIMADO"
             valor={d.alta.valor}
             formato="pct"
             casas={1}
-            unidade="da despesa total"
-            recorte={d.alta.rotulo}
+            unidade={daDespesa}
+            recorte={dadoTexto(d.alta.rotulo, idioma)}
             periodo={periodoMedidas}
-            motivoAusencia="Estimativa suprimida pela precisão."
+            motivoAusencia={suprimida}
           />
         )}
       </FaixaMetricas>
@@ -150,29 +173,29 @@ export function OrcamentoFaixa({ o, base, anoPublicacao }: { o: Orcamento; base:
   }
   const d = destaquesParticipacaoRendaPof(classes);
   return (
-    <FaixaMetricas colunas={3} rotulo="Peso da energia na renda das famílias" nota={nota}>
+    <FaixaMetricas colunas={3} rotulo={tx("Peso da energia na renda das famílias", "Weight of energy in family income")} nota={nota}>
       <Numero
         variante="faixa"
-        rotulo="Média das participações na renda, todas as famílias"
+        rotulo={tx("Média das participações na renda, todas as famílias", "Average share of income, all families")}
         natureza="ESTIMADO"
         valor={d.total}
         formato="pct"
         casas={1}
-        unidade="da renda"
+        unidade={daRenda}
         periodo={periodoMedidas}
         cor="var(--cor-energia)"
-        motivoAusencia="Estimativa suprimida pela precisão."
+        motivoAusencia={suprimida}
       />
       {d.baixa && (
         <Numero
           variante="faixa"
-          rotulo="Média das participações na renda, menor faixa de renda"
+          rotulo={tx("Média das participações na renda, menor faixa de renda", "Average share of income, lowest income bracket")}
           natureza="ESTIMADO"
           evidencia={o.evidencias.media_razoes_renda_classe_baixa}
           formato="pct"
           casas={1}
-          unidade="da renda"
-          recorte={d.baixa.rotulo}
+          unidade={daRenda}
+          recorte={dadoTexto(d.baixa.rotulo, idioma)}
           periodo={periodoMedidas}
           endereco={`${rotaPainel("p061")}#p061`}
         />
@@ -180,15 +203,15 @@ export function OrcamentoFaixa({ o, base, anoPublicacao }: { o: Orcamento; base:
       {d.alta && (
         <Numero
           variante="faixa"
-          rotulo="Média das participações na renda, maior faixa de renda"
+          rotulo={tx("Média das participações na renda, maior faixa de renda", "Average share of income, highest income bracket")}
           natureza="ESTIMADO"
           valor={d.alta.valor}
           formato="pct"
           casas={1}
-          unidade="da renda"
-          recorte={d.alta.rotulo}
+          unidade={daRenda}
+          recorte={dadoTexto(d.alta.rotulo, idioma)}
           periodo={periodoMedidas}
-          motivoAusencia="Estimativa suprimida pela precisão."
+          motivoAusencia={suprimida}
         />
       )}
     </FaixaMetricas>
@@ -210,22 +233,24 @@ export function AcessoResposta({ a, ind }: { a: Acesso; ind: IndicadorPnad }) {
  * não publica ficha para eles, e o cartão diz o coeficiente de variação.
  */
 export function AcessoCartaoIndicador({ a, ind }: { a: Acesso; ind: IndicadorPnad }) {
-  const br = a.pnad_serie.find((l) => l.territorio === "BR" && l.ano === a.ano_referencia && l.situacao === "total");
+  const br = a.pnad_serie.find((l) => l.territorio === "BR" && l.ano === a.ano_referencia && l.situacao === "total"); // i18n: dado
   const endereco = `${rotaPainel("p062")}#p062`;
+  const semEstimativa = tx("Sem estimativa nesta publicação.", "No estimate in this publication.");
+  const domicilio = tx("Domicílio: a moradia, com ou sem ligação à rede.", "Household: the dwelling, with or without a grid connection.");
   if (ind === "rede") {
     return (
       <Numero
         variante="faixa"
-        rotulo={`Domicílios ligados à rede geral, ${a.ano_referencia}`}
+        rotulo={tx(`Domicílios ligados à rede geral, ${a.ano_referencia}`, `Households connected to the general grid, ${a.ano_referencia}`)}
         natureza="ESTIMADO"
         valor={br?.pct_rede_geral ?? null}
         formato="pct"
         casas={1}
-        unidade="dos domicílios"
+        unidade={tx("dos domicílios", "of households")}
         periodo={a.ano_referencia}
         cor="var(--cor-energia)"
-        motivoAusencia="Sem estimativa nesta publicação."
-        nota={br ? `Domicílio: a moradia, com ou sem ligação à rede. Coeficiente de variação de ${pctTexto(br.cv_pct_rede_geral, 1)}.` : undefined}
+        motivoAusencia={semEstimativa}
+        nota={br ? tx(`${domicilio} Coeficiente de variação de ${pctTexto(br.cv_pct_rede_geral, 1)}.`, `${domicilio} Coefficient of variation of ${pctTexto(br.cv_pct_rede_geral, 1)}.`) : undefined}
         endereco={endereco}
       />
     );
@@ -234,16 +259,23 @@ export function AcessoCartaoIndicador({ a, ind }: { a: Acesso; ind: IndicadorPna
     return (
       <Numero
         variante="faixa"
-        rotulo={`Rede em tempo integral, entre os ligados à rede geral, ${a.ano_referencia}`}
+        rotulo={tx(`Rede em tempo integral, entre os ligados à rede geral, ${a.ano_referencia}`, `Full-time grid, among those connected to the general grid, ${a.ano_referencia}`)}
         natureza="ESTIMADO"
         valor={br?.pct_integral_entre_rede ?? null}
         formato="pct"
         casas={1}
-        unidade="dos ligados à rede geral"
+        unidade={tx("dos ligados à rede geral", "of those connected to the general grid")}
         periodo={a.ano_referencia}
         cor="var(--cor-energia)"
-        motivoAusencia="Sem estimativa nesta publicação."
-        nota={br ? `O percentual é sobre os ligados à rede, não sobre todos os domicílios. Coeficiente de variação de ${pctTexto(br.cv_pct_integral, 1)}.` : undefined}
+        motivoAusencia={semEstimativa}
+        nota={
+          br
+            ? tx(
+                `O percentual é sobre os ligados à rede, não sobre todos os domicílios. Coeficiente de variação de ${pctTexto(br.cv_pct_integral, 1)}.`,
+                `The percentage is over those connected to the grid, not over all households. Coefficient of variation of ${pctTexto(br.cv_pct_integral, 1)}.`,
+              )
+            : undefined
+        }
         endereco={endereco}
       />
     );
@@ -251,16 +283,19 @@ export function AcessoCartaoIndicador({ a, ind }: { a: Acesso; ind: IndicadorPna
   return (
     <Numero
       variante="faixa"
-      rotulo={`Domicílios sem energia de nenhuma fonte, ${a.ano_referencia}`}
+      rotulo={tx(`Domicílios sem energia de nenhuma fonte, ${a.ano_referencia}`, `Households without energy from any source, ${a.ano_referencia}`)}
       natureza="ESTIMADO"
       evidencia={a.evidencia_sem_energia}
       casas={0}
-      unidade="mil domicílios"
+      unidade={tx("mil domicílios", "thousand households")}
       cor="var(--cor-energia)"
-      motivoAusencia="Sem estimativa nesta publicação."
+      motivoAusencia={semEstimativa}
       nota={
         br
-          ? `Domicílio: a moradia, com ou sem ligação à rede. ${pctTexto(br.pct_sem_energia, 1)} dos domicílios. Entre os ligados à rede geral, ${pctTexto(br.pct_integral_entre_rede, 1)} têm fornecimento em tempo integral (coeficiente de variação de ${pctTexto(br.cv_pct_integral, 1)}, tabela 6738 do IBGE).`
+          ? tx(
+              `${domicilio} ${pctTexto(br.pct_sem_energia, 1)} dos domicílios. Entre os ligados à rede geral, ${pctTexto(br.pct_integral_entre_rede, 1)} têm fornecimento em tempo integral (coeficiente de variação de ${pctTexto(br.cv_pct_integral, 1)}, tabela 6738 do IBGE).`,
+              `${domicilio} ${pctTexto(br.pct_sem_energia, 1)} of households. Among those connected to the general grid, ${pctTexto(br.pct_integral_entre_rede, 1)} have full-time supply (coefficient of variation of ${pctTexto(br.cv_pct_integral, 1)}, IBGE table 6738).`,
+            )
           : undefined
       }
       endereco={endereco}
@@ -285,16 +320,37 @@ export function TarifaSocialResposta({ t, medida }: { t: TarifaSocial; medida: M
 export function InclusaoBaseLegal({ reg, className = "" }: { reg: GoldRegulacao | null; className?: string }) {
   const { mpv, lei, ren } = baseLegalTarifaSocial(reg);
   if (!lei) return null;
-  const efeito = lei.resumo.includes(": ") ? lei.resumo.slice(lei.resumo.indexOf(": ") + 2) : lei.resumo;
-  return (
+  const efeito = (lei.resumo.includes(": ") ? lei.resumo.slice(lei.resumo.indexOf(": ") + 2) : lei.resumo).replace("CadÚnico", "Cadastro Único"); // i18n: dado
+  // em inglês o nome do ato fica como a fonte o publica (nome próprio); o que a lei faz sai da tabela exata ou marcado como português
+  return tx(
     <span data-base-legal="" className={`block ${className}`}>
       {mpv?.ato ? `A ${mpv.ato.replace("Medida Provisória", "Medida Provisória (MPV)")}, foi convertida na ${lei.ato}` : `A ${lei.ato}`}
-      {lei.data_publicacao ? `, publicada em ${dataBR(lei.data_publicacao)}` : ""}. Segundo a linha do tempo da Regulação, a lei {efeito.replace("CadÚnico", "Cadastro Único")}
+      {lei.data_publicacao ? `, publicada em ${dataBR(lei.data_publicacao)}` : ""}. Segundo a linha do tempo da Regulação, a lei {efeito}
       {ren?.ato ? ` A ANEEL a regulou na ${ren.ato}.` : ""}{" "}
       <a href={ancoraEventoRegulacao(lei.id)} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
         Ver na linha do tempo da Regulação
       </a>
       .
-    </span>
+    </span>,
+    <span data-base-legal="" className={`block ${className}`}>
+      {mpv?.ato ? (
+        <>
+          <Nome>{mpv.ato}</Nome> (Provisional Measure, MPV) was converted into <Nome>{lei.ato}</Nome>
+        </>
+      ) : (
+        <Nome>{lei.ato}</Nome>
+      )}
+      {lei.data_publicacao ? `, published on ${dataBR(lei.data_publicacao)}` : ""}. According to the Regulation timeline, the law {dadoNo(efeito, "base-legal-tarifa-social", "en")}
+      {ren?.ato ? (
+        <>
+          {" "}
+          ANEEL regulated it in <Nome>{ren.ato}</Nome>.
+        </>
+      ) : null}{" "}
+      <a href={hrefNoIdioma(ancoraEventoRegulacao(lei.id), "en")} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+        See it on the Regulation timeline
+      </a>
+      .
+    </span>,
   );
 }

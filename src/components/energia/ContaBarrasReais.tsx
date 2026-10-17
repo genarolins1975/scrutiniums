@@ -5,6 +5,7 @@ import { ContaEscolha, type OpcaoConta } from "@/components/energia/ContaControl
 import { GraficoBarras, type LinhaBarras, type SerieBarra } from "@/components/energia/GraficoBarras";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { num } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { CAMPO_VALORES, emReaisDoMesBase, type FatorReal } from "@/lib/energia/conta";
 
 /**
@@ -50,25 +51,32 @@ export function ContaBarrasReais({
   chaveRotulo?: string;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
+  const idioma = useIdioma();
+  const tx = useTx();
   const temReal = base !== null && Object.values(fatores).some((f) => f !== null);
   const real = temReal && v.valores === "real";
   const dados = useMemo(() => (real ? emReaisDoMesBase(linhas as Record<string, string | number | null>[], chaves, fatores, chaveCategoria) : linhas), [real, linhas, chaves, fatores, chaveCategoria]);
   const opcoes: OpcaoConta<"nominal" | "real">[] = [
-    { id: "nominal", rotulo: "Nominais (valores da época)" },
-    { id: "real", rotulo: `Em reais de ${base ?? "mês-base"}` },
+    { id: "nominal", rotulo: tx("Nominais (valores da época)", "Nominal (values of the time)") },
+    { id: "real", rotulo: tx(`Em reais de ${base ?? "mês-base"}`, `In ${base ?? "base-month"} reais`) },
   ];
   const parcial = Object.entries(fatores).filter(([, f]) => f !== null && f.meses < 12);
+  const partesParcial = parcial.map(([ano, f]) => tx(`${ano} o IPCA cobre ${num(f!.meses, 0, idioma)} meses`, `${ano} the IPCA covers ${num(f!.meses, 0, idioma)} months`));
   return (
     <div className="space-y-3" data-valores={real ? "real" : "nominal"}>
       {temReal ? (
-        <ContaEscolha emLinha legenda="Valores" opcoes={opcoes} valor={v.valores} onEscolher={(x) => definir({ valores: x })} />
+        <ContaEscolha emLinha legenda={tx("Valores", "Values")} opcoes={opcoes} valor={v.valores} onEscolher={(x) => definir({ valores: x })} />
       ) : (
         <p className="text-xs text-carvao-muted" data-nota="sem-ipca">
-          Sem IPCA publicado nesta publicação: só os valores nominais, na moeda da época.
+          {tx("Sem IPCA publicado nesta publicação: só os valores nominais, na moeda da época.", "No IPCA published in this publication: nominal values only, in the currency of the time.")}
         </p>
       )}
       <GraficoBarras
-        titulo={real ? `${titulo}, em reais de ${base} (corrigidos pelo IPCA)` : `${titulo}, em reais nominais (valores da época)`}
+        titulo={
+          real
+            ? tx(`${titulo}, em reais de ${base} (corrigidos pelo IPCA)`, `${titulo}, in ${base} reais (adjusted by the IPCA)`)
+            : tx(`${titulo}, em reais nominais (valores da época)`, `${titulo}, in nominal reais (values of the time)`)
+        }
         dados={dados}
         chaveCategoria={chaveCategoria}
         chaveRotulo={chaveRotulo}
@@ -80,8 +88,18 @@ export function ContaBarrasReais({
       />
       {real && (
         <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="deflator">
-          Em reais de {base}: cada ano é multiplicado pelo índice do IPCA de {base} dividido pela média dos índices mensais do ano (IPCA do IBGE). O IPCA mede preços ao consumidor em geral, não só a energia.
-          {parcial.length > 0 && ` Em ${parcial.map(([ano, f]) => `${ano} o IPCA cobre ${num(f!.meses, 0)} meses`).join(" e em ")}: a média é a desses meses.`}
+          {tx(
+            <>
+              Em reais de {base}: cada ano é multiplicado pelo índice do IPCA de {base} dividido pela média dos índices mensais do ano (IPCA do IBGE). O IPCA mede preços ao consumidor em geral, não só a
+              energia.
+            </>,
+            <>
+              In {base} reais: each year is multiplied by the IPCA index for {base} divided by the average of the year&apos;s monthly indices (IBGE&apos;s IPCA). The IPCA measures consumer prices in
+              general, not only energy.
+            </>,
+          )}
+          {parcial.length > 0 &&
+            tx(` Em ${partesParcial.join(" e em ")}: a média é a desses meses.`, ` In ${partesParcial.join(" and in ")}: the average is that of those months.`)}
         </p>
       )}
     </div>

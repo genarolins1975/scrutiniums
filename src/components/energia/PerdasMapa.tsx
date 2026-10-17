@@ -28,6 +28,14 @@ import { buscarRegioes, moverNaLista } from "@/lib/energia/mapa-coropletico";
 import { classeDe } from "@/lib/energia/escalas";
 import { FUNDO_SEM_DADO } from "@/lib/energia/mapa-calor";
 import { carimbo, num, plural } from "@/lib/energia/formato";
+import { Nome } from "@/components/i18n/Nome";
+import { traduzOuMarca } from "@/lib/energia/i18n/qualidade-perdas";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+
+/** Nome da projeção publicado na malha (public/energia/geo), do português para o inglês. */
+const PROJECAO_EN: Readonly<Record<string, string>> = {
+  "Albers cônica equivalente": "Albers equal-area conic", // i18n: dado
+};
 import { carregarJson, classificacaoMedida, classeDoValor, montarAreas, textoValorMapa, type Medida, type ValorMapa } from "@/lib/energia/perdas";
 import type { MunicipiosPerdas } from "@/lib/energia/tipos-perdas";
 
@@ -191,8 +199,10 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
   }, [areas]);
 
   /* classes e preenchimento: os mesmos cortes da legenda e da coluna "Classe no mapa" */
-  const classes = useMemo(() => classificacaoMedida(medida, valores), [medida, valores]);
-  const hach = `${uid}-sem-dado`;
+  const idioma = useIdioma();
+  const tx = useTx();
+  const classes = useMemo(() => classificacaoMedida(medida, valores, idioma), [medida, valores, idioma]);
+  const hach = `${uid}-sem-dado`; // i18n: dado
   const hachFora = `${uid}-fora`;
   const hachComp = `${uid}-comp`;
   const fills = useMemo(
@@ -247,29 +257,34 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
   const nomeDe = (id: string) => porEntidade.get(id)?.rotulo ?? id;
   const valorDe = (id: string) => {
     const v = valores[id];
-    return v ? textoValorMapa(v, medida) : "sem dado (sem balanço no SAMP)";
+    return v ? textoValorMapa(v, medida, idioma) : tx("sem dado (sem balanço no SAMP)", "no data (no balance in SAMP)");
   };
   const fraseArea = (id: string) => {
     const e = porEntidade.get(id);
     const v = valores[id];
-    const classe = v && v.estado === "valor" ? `, classe ${classeDoValor(v, classes)}` : "";
-    return `${e ? `${e.rotulo} (${e.ufs || "UF não informada"})` : id}: ${valorDe(id)}${classe}`;
+    const classe = v && v.estado === "valor" ? tx(`, classe ${classeDoValor(v, classes)}`, `, class ${classeDoValor(v, classes)}`) : "";
+    return `${e ? `${e.rotulo} (${e.ufs || tx("UF não informada", "state not reported")})` : id}: ${valorDe(id)}${classe}`;
   };
   const fraseMunicipio = (cod: string) => {
     const f = porMunicipio.get(cod);
     const nome = f ? `${f.nome} (${f.uf})` : cod;
     const vinc = vinculosMun.get(cod);
-    if (dono.has(cod)) return `${nome}: área de ${fraseArea(dono.get(cod)!)}${areas?.soMmgd.has(cod) ? " (vínculo só pelo cadastro de MMGD)" : ""}`;
-    if (!vinc) return `${nome}: nenhuma distribuidora ligada na relação oficial`;
+    if (dono.has(cod)) {
+      const mmgd = areas?.soMmgd.has(cod) ? tx(" (vínculo só pelo cadastro de MMGD)", " (link only through the MMGD register)") : "";
+      return tx(`${nome}: área de ${fraseArea(dono.get(cod)!)}${mmgd}`, `${nome}: area of ${fraseArea(dono.get(cod)!)}${mmgd}`);
+    }
+    if (!vinc) return tx(`${nome}: nenhuma distribuidora ligada na relação oficial`, `${nome}: no distribution utility linked in the official relation`);
     const lista = vinc.cnpjs.map((c) => `${nomeDe(c)} (${valorDe(c)})`).join("; ");
-    return vinc.confirmado ? `${nome}: atendido por mais de uma distribuidora: ${lista}` : `${nome}: só vínculo não confirmado com ${lista}`;
+    return vinc.confirmado
+      ? tx(`${nome}: atendido por mais de uma distribuidora: ${lista}`, `${nome}: served by more than one distribution utility: ${lista}`)
+      : tx(`${nome}: só vínculo não confirmado com ${lista}`, `${nome}: only an unconfirmed link with ${lista}`);
   };
 
   /* seleção e município em foco (compartilhado ou sem confirmação) */
   const [munFoco, setMunFoco] = useState<string | null>(null);
   function selecionar(id: string | null) {
     onSelecionar(id);
-    setLeitura(id ? `Selecionada: ${fraseArea(id)}.` : "Seleção removida.");
+    setLeitura(id ? tx(`Selecionada: ${fraseArea(id)}.`, `Selected: ${fraseArea(id)}.`) : tx("Seleção removida.", "Selection removed."));
   }
 
   /* dica */
@@ -359,7 +374,11 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
     const z = aplicarZoom(base, zAtual, fator, ESCALA_MAXIMA, fator > 1 && caixaSel ? centroDaCaixa(caixaSel) : null);
     setZoom(z);
     setDica(null);
-    setLeitura(z.escala > 1 ? `Mapa aproximado ${num(z.escala, 0)} vezes.` : "Mapa no enquadramento inicial.");
+    setLeitura(
+      z.escala > 1
+        ? tx(`Mapa aproximado ${num(z.escala, 0)} vezes.`, `Map zoomed in ${num(z.escala, 0, idioma)} times.`)
+        : tx("Mapa no enquadramento inicial.", "Map at the initial framing."),
+    );
   }
   function aproximarDaSelecao() {
     if (!base || !caixaSel || !selecionado) return;
@@ -367,12 +386,12 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
     const escala = Math.min(base.largura / c.largura, base.altura / c.altura);
     setZoom(limitarZoom(base, { escala, centro: centroDaCaixa(c) }, ESCALA_MAXIMA));
     setDica(null);
-    setLeitura(`Mapa aproximado na área de ${nomeDe(selecionado)}.`);
+    setLeitura(tx(`Mapa aproximado na área de ${nomeDe(selecionado)}.`, `Map zoomed in on the area of ${nomeDe(selecionado)}.`));
   }
   function restaurar() {
     setZoom(null);
     setDica(null);
-    setLeitura("Mapa no enquadramento inicial.");
+    setLeitura(tx("Mapa no enquadramento inicial.", "Map at the initial framing."));
   }
 
   /* busca: distribuidoras e municípios */
@@ -480,37 +499,40 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
         <p className="rotulo text-mineral">
           {medida.rotulo} · {medida.unidade} · {periodo}
         </p>
-        <ul className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-carvao-muted" aria-label={`Legenda: classes de ${medida.rotulo.toLowerCase()}, em ${medida.unidade}`}>
+        <ul className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx(`Legenda: classes de ${medida.rotulo.toLowerCase()}, em ${medida.unidade}`, `Legend: classes of ${medida.rotulo.toLowerCase()}, in ${medida.unidade}`)}>
           {classes.classes.map((c, i) => (
             <li key={i} className="flex items-center gap-1.5" data-classe={i}>
               <span aria-hidden="true" className="inline-block h-3 w-5 border border-linha" style={{ background: medida.cores[i] }} />
               {c.rotulo}
-              <span className="tabular-nums">({num(c.contagem, 0)})</span>
+              <span className="tabular-nums">({num(c.contagem, 0, idioma)})</span>
             </li>
           ))}
           <li className="flex items-center gap-1.5" data-estado="fora">
             <span aria-hidden="true" className="inline-block h-3 w-5 border border-linha" style={{ background: FUNDO_FORA }} />
-            fora da comparação <span className="tabular-nums">({num(contagem.fora, 0)})</span>
+            {tx("fora da comparação", "excluded from the comparison")} <span className="tabular-nums">({num(contagem.fora, 0, idioma)})</span>
           </li>
           <li className="flex items-center gap-1.5" data-estado="sem-dado">
             <span aria-hidden="true" className="inline-block h-3 w-5 border border-linha" style={{ background: FUNDO_SEM_DADO }} />
-            sem dado <span className="tabular-nums">({num(contagem.semDado, 0)})</span>
+            {tx("sem dado", "no data")} <span className="tabular-nums">({num(contagem.semDado, 0, idioma)})</span>
           </li>
           <li className="flex items-center gap-1.5" data-estado="compartilhado">
             <span aria-hidden="true" className="inline-block h-3 w-5 border border-linha" style={{ background: FUNDO_COMPARTILHADO }} />
-            município com mais de uma distribuidora
+            {tx("município com mais de uma distribuidora", "municipality with more than one distribution utility")}
           </li>
           <li className="flex items-center gap-1.5" data-estado="so-mmgd">
             <span aria-hidden="true" className="inline-block h-3 w-5 border border-dotted border-carvao" />
-            vínculo só pelo cadastro de MMGD (contorno pontilhado, cor da área)
+            {tx("vínculo só pelo cadastro de MMGD (contorno pontilhado, cor da área)", "link only through the MMGD register (dotted outline, area color)")}
           </li>
           <li className="flex items-center gap-1.5" data-estado="sem-vinculo">
             <span aria-hidden="true" className="inline-block h-3 w-5 border border-dashed border-carvao-muted bg-superficie" />
-            sem distribuidora confirmada
+            {tx("sem distribuidora confirmada", "no confirmed distribution utility")}
           </li>
         </ul>
         <p className="mt-1 text-xs text-carvao-muted">
-          Quebras fixas, as mesmas em todos os anos (cada classe inclui o limite inferior). Cada área tem a cor do valor da distribuidora inteira; nenhum número é dividido entre municípios.
+          {tx(
+            "Quebras fixas, as mesmas em todos os anos (cada classe inclui o limite inferior). Cada área tem a cor do valor da distribuidora inteira; nenhum número é dividido entre municípios.",
+            "Fixed breaks, the same in every year (each class includes its lower limit). Each area has the color of the value of the whole distribution utility; no number is split among municipalities.",
+          )}
         </p>
       </div>
 
@@ -518,7 +540,7 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
       <div className="mb-2 flex flex-wrap items-end gap-2">
         <div className="relative min-w-[13rem] flex-1">
           <label htmlFor={`${uid}-busca`} className="rotulo mb-1 block text-mineral">
-            Buscar distribuidora ou município
+            {tx("Buscar distribuidora ou município", "Search distribution utility or municipality")}
           </label>
           <input
             id={`${uid}-busca`}
@@ -532,7 +554,7 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
             autoComplete="off"
             spellCheck={false}
             value={consulta}
-            placeholder="Sigla, nome, UF ou município"
+            placeholder={tx("Sigla, nome, UF ou município", "Acronym, name, state or municipality")}
             onChange={(e) => {
               setConsulta(e.target.value);
               setAberta(true);
@@ -548,13 +570,16 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
             className="h-11 w-full border border-linha bg-superficie px-3 text-sm text-carvao placeholder:text-mineral focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
           />
           <p id={`${uid}-ajuda`} className="sr-only">
-            Digite a sigla ou o nome da distribuidora, ou o nome do município. Setas percorrem a lista; Enter seleciona; Esc fecha a lista.
+            {tx(
+              "Digite a sigla ou o nome da distribuidora, ou o nome do município. Setas percorrem a lista; Enter seleciona; Esc fecha a lista.",
+              "Type the acronym or name of the distribution utility, or the name of the municipality. Arrow keys move through the list; Enter selects; Esc closes the list.",
+            )}
           </p>
           <ul
             id={`${uid}-lista`}
             role="listbox"
             hidden={!aberta}
-            aria-label="Distribuidoras e municípios encontrados"
+            aria-label={tx("Distribuidoras e municípios encontrados", "Distribution utilities and municipalities found")}
             onPointerDown={(e) => e.preventDefault()}
             className="absolute left-0 right-0 top-full z-30 mt-1 max-h-72 overflow-y-auto border border-linha bg-superficie shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
           >
@@ -573,30 +598,42 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
                 <span>
                   {it.nome}
                   {it.uf && <span className="text-carvao-muted">, {it.uf}</span>}
-                  <span className="text-carvao-muted"> ({it.tipo === "dist" ? "distribuidora" : "município"})</span>
+                  <span className="text-carvao-muted">
+                    {" "}
+                    ({it.tipo === "dist" ? tx("distribuidora", "distribution utility") : tx("município", "municipality")})
+                  </span>
                 </span>
                 {it.tipo === "dist" && <span className="whitespace-nowrap tabular-nums text-carvao-muted">{valores[it.id]?.estado === "valor" ? valorDe(it.id) : ""}</span>}
               </li>
             ))}
             {aberta && resultados.itens.length === 0 && (
               <li role="presentation" className="px-3 py-2 text-xs text-carvao-muted">
-                {geo || !consulta ? "Nenhum resultado para essa busca." : "A lista de municípios chega com a malha; distribuidoras já podem ser buscadas."}
+                {geo || !consulta
+                  ? tx("Nenhum resultado para essa busca.", "No results for this search.")
+                  : tx("A lista de municípios chega com a malha; distribuidoras já podem ser buscadas.", "The list of municipalities arrives with the boundaries; distribution utilities can already be searched.")}
               </li>
             )}
           </ul>
         </div>
-        <div role="group" aria-label="Zoom do mapa" className="flex flex-wrap gap-1">
-          <button type="button" className={BOTAO} onClick={() => zoomPor(2)} disabled={!zAtual || zAtual.escala >= ESCALA_MAXIMA} aria-label="Aproximar" title="Aproximar">
+        <div role="group" aria-label={tx("Zoom do mapa", "Map zoom")} className="flex flex-wrap gap-1">
+          <button
+            type="button"
+            className={BOTAO}
+            onClick={() => zoomPor(2)}
+            disabled={!zAtual || zAtual.escala >= ESCALA_MAXIMA}
+            aria-label={tx("Aproximar", "Zoom in")}
+            title={tx("Aproximar", "Zoom in")}
+          >
             +
           </button>
-          <button type="button" className={BOTAO} onClick={() => zoomPor(0.5)} disabled={!noZoom} aria-label="Afastar" title="Afastar">
+          <button type="button" className={BOTAO} onClick={() => zoomPor(0.5)} disabled={!noZoom} aria-label={tx("Afastar", "Zoom out")} title={tx("Afastar", "Zoom out")}>
             −
           </button>
           <button type="button" className={`${BOTAO} rotulo px-3`} onClick={aproximarDaSelecao} disabled={!caixaSel}>
-            Aproximar da seleção
+            {tx("Aproximar da seleção", "Zoom to the selection")}
           </button>
           <button type="button" className={`${BOTAO} rotulo px-3`} onClick={restaurar} disabled={!noZoom}>
-            Restaurar
+            {tx("Restaurar", "Reset")}
           </button>
         </div>
       </div>
@@ -605,14 +642,22 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
       <div ref={caixaRef} className="relative h-[380px] overflow-hidden border border-linha bg-superficie sm:h-[540px]" data-estado={geo ? "pronto" : carga.estado}>
         {!geo && carga.estado !== "erro" && (
           <div role="status" className="flex h-full items-center justify-center px-6 text-center text-sm text-carvao-muted">
-            Carregando a malha municipal do IBGE e a relação entre municípios e distribuidoras. Os números já estão na tabela abaixo.
+            {tx(
+              "Carregando a malha municipal do IBGE e a relação entre municípios e distribuidoras. Os números já estão na tabela abaixo.",
+              "Loading the IBGE municipal boundaries and the relation between municipalities and distribution utilities. The numbers are already in the table below.",
+            )}
           </div>
         )}
         {carga.estado === "erro" && (
           <div role="alert" className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center text-sm text-carvao">
-            <p>Não foi possível carregar a malha ou a relação de municípios ({carga.erro}). Os valores continuam na tabela abaixo, por distribuidora.</p>
+            <p>
+              {tx(
+                <>Não foi possível carregar a malha ou a relação de municípios ({carga.erro}). Os valores continuam na tabela abaixo, por distribuidora.</>,
+                <>Could not load the boundaries or the municipality relation ({carga.erro}). The values remain in the table below, by distribution utility.</>,
+              )}
+            </p>
             <button type="button" className={`${BOTAO} rotulo px-4 text-energia-dark`} onClick={() => setTentativa((t) => t + 1)}>
-              Tentar de novo
+              {tx("Tentar de novo", "Try again")}
             </button>
           </div>
         )}
@@ -639,7 +684,12 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
             }}
             onClick={aoClicar}
           >
-            <title id={`${uid}-t`}>{`${titulo}: áreas de atuação das distribuidoras, ${medida.rotulo.toLowerCase()} em ${periodo}. A busca acima escolhe uma distribuidora ou um município pelo teclado.`}</title>
+            <title id={`${uid}-t`}>
+              {tx(
+                `${titulo}: áreas de atuação das distribuidoras, ${medida.rotulo.toLowerCase()} em ${periodo}. A busca acima escolhe uma distribuidora ou um município pelo teclado.`,
+                `${titulo}: service areas of the distribution utilities, ${medida.rotulo.toLowerCase()} in ${periodo}. The search above chooses a distribution utility or a municipality by keyboard.`,
+              )}
+            </title>
             <defs>
               <pattern id={hach} patternUnits="userSpaceOnUse" width={6 * (aj ? 1 / aj.s : 1)} height={6 * (aj ? 1 / aj.s : 1)} patternTransform="rotate(45)">
                 <rect width="100%" height="100%" fill="var(--cor-superficie)" />
@@ -712,14 +762,14 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
                       setMunFoco(null);
                     }}
                   >
-                    Ver {nomeDe(c)}
+                    {tx(<>Ver {nomeDe(c)}</>, <>View {nomeDe(c)}</>)}
                   </button>
                 </li>
               ))}
             </ul>
           )}
           <button type="button" className="rotulo mt-1 inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4" onClick={() => setMunFoco(null)}>
-            Fechar
+            {tx("Fechar", "Close")}
           </button>
         </div>
       )}
@@ -727,24 +777,68 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
       {/* resumo do desenho, malha e regra */}
       <div id={`${uid}-r`} className="mt-2 space-y-1 text-xs leading-relaxed text-carvao-muted">
         <p className="tabular-nums">
-          {plural(entidades.length, "distribuidora", "distribuidoras")}: {num(contagem.valor, 0)} na comparação, {num(contagem.fora, 0)} fora da comparação (hachura cruzada) e {num(contagem.semDado, 0)} sem dado (hachura simples).
+          {tx(
+            <>
+              {plural(entidades.length, "distribuidora", "distribuidoras")}: {num(contagem.valor, 0)} na comparação, {num(contagem.fora, 0)} fora da comparação (hachura cruzada) e {num(contagem.semDado, 0)} sem dado (hachura
+              simples).
+            </>,
+            <>
+              {plural(entidades.length, "distribution utility", "distribution utilities", idioma)}: {num(contagem.valor, 0, idioma)} in the comparison, {num(contagem.fora, 0, idioma)} excluded from the comparison (cross
+              hatching) and {num(contagem.semDado, 0, idioma)} with no data (simple hatching).
+            </>,
+          )}
           {areas &&
-            ` ${plural(areas.compartilhados.length, "município atendido", "municípios atendidos")} por mais de uma distribuidora (pontilhado), ${plural(areas.soNaoConfirmados.length, "município", "municípios")} só com vínculo não confirmado e ${plural(areas.semVinculo.length, "município", "municípios")} sem distribuidora (contorno tracejado).`}
-          {areas && areas.foraDaMalha.length > 0 && ` Código da relação ausente da malha do IBGE: ${areas.foraDaMalha.join(", ")}.`}
+            tx(
+              ` ${plural(areas.compartilhados.length, "município atendido", "municípios atendidos")} por mais de uma distribuidora (pontilhado), ${plural(areas.soNaoConfirmados.length, "município", "municípios")} só com vínculo não confirmado e ${plural(areas.semVinculo.length, "município", "municípios")} sem distribuidora (contorno tracejado).`,
+              ` ${plural(areas.compartilhados.length, "municipality", "municipalities", idioma)} served by more than one distribution utility (dotted), ${plural(areas.soNaoConfirmados.length, "municipality", "municipalities", idioma)} with only an unconfirmed link and ${plural(areas.semVinculo.length, "municipality", "municipalities", idioma)} with no distribution utility (dashed outline).`,
+            )}
+          {areas &&
+            areas.foraDaMalha.length > 0 &&
+            tx(` Código da relação ausente da malha do IBGE: ${areas.foraDaMalha.join(", ")}.`, ` Relation code missing from the IBGE boundaries: ${areas.foraDaMalha.join(", ")}.`)}
         </p>
         {avisoTerritorio && <p data-aviso="territorio">{avisoTerritorio}</p>}
         {semArea.length > 0 && (
           <p data-sem-area={semArea.length}>
-            {plural(semArea.length, "distribuidora com dado neste período não tem", "distribuidoras com dado neste período não têm")} município na relação de {mun?.ano_relacao ?? "ano não informado"} e{" "}
-            {semArea.length === 1 ? "não aparece" : "não aparecem"} no mapa (estão na tabela): {semArea.map((e) => e.rotulo).join(", ")}.
+            {tx(
+              <>
+                {plural(semArea.length, "distribuidora com dado neste período não tem", "distribuidoras com dado neste período não têm")} município na relação de {mun?.ano_relacao ?? "ano não informado"} e{" "}
+                {semArea.length === 1 ? "não aparece" : "não aparecem"} no mapa (estão na tabela): {semArea.map((e) => e.rotulo).join(", ")}.
+              </>,
+              <>
+                {plural(semArea.length, "distribution utility with data in this period has", "distribution utilities with data in this period have", idioma)} no municipality in the{" "}
+                {mun?.ano_relacao ?? "unreported year"} relation and {semArea.length === 1 ? "does not appear" : "do not appear"} on the map (they are in the table):{" "}
+                {semArea.map((e, i) => (
+                  <span key={e.id}>
+                    {i > 0 ? ", " : ""}
+                    <Nome>{e.rotulo}</Nome>
+                  </span>
+                ))}
+                .
+              </>,
+            )}
           </p>
         )}
         {geo && (
           <p>
-            Malha municipal do IBGE{geo.malha.revisao ? `, revisão de ${geo.malha.revisao}` : ""}, capturada em {carimbo(geo.capturado_em)}; projeção {geo.projecao.nome} (áreas proporcionais às reais). Relação município × distribuidora de {mun?.ano_relacao ?? "ano não informado"}.
+            {tx(
+              <>
+                Malha municipal do IBGE{geo.malha.revisao ? `, revisão de ${geo.malha.revisao}` : ""}, capturada em {carimbo(geo.capturado_em)}; projeção {geo.projecao.nome} (áreas proporcionais às reais). Relação
+                município × distribuidora de {mun?.ano_relacao ?? "ano não informado"}.
+              </>,
+              <>
+                IBGE municipal boundaries{geo.malha.revisao ? `, revision of ${geo.malha.revisao}` : ""}, captured on {carimbo(geo.capturado_em, idioma)}; projection{" "}
+                {traduzOuMarca(geo.projecao.nome, PROJECAO_EN, idioma, "perdas-mapa-projecao")} (areas proportional to the real ones). Municipality × distribution utility relation of{" "}
+                {mun?.ano_relacao ?? "unreported year"}.
+              </>,
+            )}
           </p>
         )}
-        <p>Clique ou toque numa área para escolher a distribuidora; num município pontilhado, para ver quem o atende. Pelo teclado, use a busca. Com zoom, arraste o mapa para movê-lo.</p>
+        <p>
+          {tx(
+            "Clique ou toque numa área para escolher a distribuidora; num município pontilhado, para ver quem o atende. Pelo teclado, use a busca. Com zoom, arraste o mapa para movê-lo.",
+            "Click or tap an area to choose the distribution utility; on a dotted municipality, to see who serves it. By keyboard, use the search. When zoomed in, drag the map to move it.",
+          )}
+        </p>
       </div>
     </div>
   );

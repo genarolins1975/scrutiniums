@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Resposta curta de um painel em duas camadas. O veredito, em palavras simples e com no máximo um ou dois números,
@@ -19,7 +20,7 @@ export function RespostaCurta({
   depois = false,
 }: {
   id: string;
-  veredito: string;
+  veredito: ReactNode;
   children?: ReactNode;
   vivo?: boolean;
   atributo?: string;
@@ -32,7 +33,7 @@ export function RespostaCurta({
     <div {...marca} aria-live={vivo ? "polite" : undefined} className="max-w-prose2">
       <p className={tamanho === "sm" ? "text-sm leading-relaxed text-carvao" : "text-base leading-relaxed text-carvao"}>{veredito}</p>
       <div data-nivel="analisar" className="mt-3 border-l-2 border-linha pl-3 text-sm leading-relaxed text-carvao-muted">
-        <p className="rotulo mb-1 text-mineral">Os números por trás da resposta</p>
+        <p className="rotulo mb-1 text-mineral">{tx("Os números por trás da resposta", "The numbers behind the answer")}</p>
         {children}
       </div>
     </div>

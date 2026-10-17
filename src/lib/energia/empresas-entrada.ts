@@ -1,4 +1,6 @@
+import type { Idioma } from "@/lib/idioma";
 import { num } from "./formato";
+import { idiomaEnergia, tx } from "./idioma";
 import { medidaSegmento, nomeCurto, rotaFicha, SEGMENTOS, type Segmento } from "./listadas";
 import type { EmpresasGold } from "./tipos-empresas";
 import type { ListadasGold, ManifestoLogos } from "./tipos-listadas";
@@ -6,6 +8,8 @@ import type { ListadasGold, ManifestoLogos } from "./tipos-listadas";
 /**
  * Lógica da abertura de Empresas (/setor-eletrico/empresas): a vitrine das companhias listadas, o mapa da cadeia do setor e os
  * números da faixa. Tudo derivado das golds de Empresas e de Listadas; nenhuma frase avalia empresa.
+ *
+ * Idioma: frases com as duas formas lado a lado (tx), com o idioma por último (padrão: o da página).
  */
 
 const temValor = (v: number | null | undefined): v is number => v !== null && v !== undefined && Number.isFinite(v);
@@ -24,14 +28,14 @@ export type CartaoListada = {
   medidas: { segmento: Segmento; texto: string }[];
 };
 
-function textoMedida(s: Segmento, v: number): string {
-  if (s === "geracao") return `${num(v, 0)} MW`;
-  if (s === "transmissao") return `${num(v, 0)} km`;
-  return `${num(v / 1e6, 2)} milhões de UCs`;
+function textoMedida(s: Segmento, v: number, idioma: Idioma): string {
+  if (s === "geracao") return `${num(v, 0, idioma)} MW`;
+  if (s === "transmissao") return `${num(v, 0, idioma)} km`;
+  return tx(`${num(v / 1e6, 2, idioma)} milhões de UCs`, `${num(v / 1e6, 2, idioma)} million consumer units`, idioma);
 }
 
 /** As companhias da carteira do IEE na ordem do peso no índice, com o que cada uma controla em cada segmento. */
-export function vitrineListadas(l: ListadasGold, logos?: ManifestoLogos | null): CartaoListada[] {
+export function vitrineListadas(l: ListadasGold, logos?: ManifestoLogos | null, idioma: Idioma = idiomaEnergia()): CartaoListada[] {
   return l.companhias
     .slice()
     .sort((a, b) => b.iee.peso_pct - a.iee.peso_pct || a.papel.localeCompare(b.papel))
@@ -40,7 +44,7 @@ export function vitrineListadas(l: ListadasGold, logos?: ManifestoLogos | null):
       const medidas = atuacao
         .map((s) => ({ segmento: s, v: medidaSegmento(c, s) }))
         .filter((x): x is { segmento: Segmento; v: number } => temValor(x.v) && x.v > 0)
-        .map((x) => ({ segmento: x.segmento, texto: textoMedida(x.segmento, x.v) }));
+        .map((x) => ({ segmento: x.segmento, texto: textoMedida(x.segmento, x.v, idioma) }));
       return {
         papel: c.papel,
         slug: c.slug,
@@ -54,7 +58,17 @@ export function vitrineListadas(l: ListadasGold, logos?: ManifestoLogos | null):
     });
 }
 
-export const ROTULO_SEGMENTO: Record<Segmento, string> = { geracao: "Geração", transmissao: "Transmissão", distribuicao: "Distribuição" };
+export const ROTULO_SEGMENTO: Record<Segmento, string> = {
+  get geracao() {
+    return tx("Geração", "Generation");
+  },
+  get transmissao() {
+    return tx("Transmissão", "Transmission");
+  },
+  get distribuicao() {
+    return tx("Distribuição", "Distribution");
+  },
+};
 
 /* ================================================================ cadeia do setor */
 
@@ -82,51 +96,86 @@ export type EloCadeia = {
  * Os elos da cadeia, na ordem do fluxo físico (geração, transmissão, distribuição) e a comercialização à parte, que negocia contratos
  * e não opera ativo físico. O que cada um faz e como é remunerado é descrição do arranjo regulatório, não avaliação.
  */
-export function cadeiaDoSetor(g: EmpresasGold): EloCadeia[] {
+export function cadeiaDoSetor(g: EmpresasGold, idioma: Idioma = idiomaEnergia()): EloCadeia[] {
   const r = g.cadastro.agentes.ramos;
   const op = g.cadastro.ativos.operacao;
   const t = g.cadastro.transmissao;
   const u = ucsDistribuidoras(g);
+  const N = (v: number | null | undefined, casas = 0) => num(v, casas, idioma);
   return [
     {
       id: "geracao",
-      titulo: "Geração",
-      faz: "Produz a energia em usinas hidrelétricas, eólicas, solares, térmicas e nucleares.",
-      remuneracao: "Vende a energia em leilões do mercado regulado ou em contratos no mercado livre.",
+      titulo: tx("Geração", "Generation", idioma),
+      faz: tx("Produz a energia em usinas hidrelétricas, eólicas, solares, térmicas e nucleares.", "Produces energy in hydropower, wind, solar, thermal and nuclear plants.", idioma),
+      remuneracao: tx(
+        "Vende a energia em leilões do mercado regulado ou em contratos no mercado livre.",
+        "Sells energy in regulated market auctions or in contracts on the free market.",
+        idioma,
+      ),
       agentes: r.geracao ?? null,
-      medida: temValor(op.mw_fiscalizado) ? `${num(op.mw_fiscalizado, 0)} MW em ${num(op.usinas, 0)} usinas em operação` : "potência sem dado",
+      medida: temValor(op.mw_fiscalizado)
+        ? tx(`${N(op.mw_fiscalizado)} MW em ${N(op.usinas)} usinas em operação`, `${N(op.mw_fiscalizado)} MW in ${N(op.usinas)} plants in operation`, idioma)
+        : tx("potência sem dado", "capacity: no data", idioma),
       href: "/setor-eletrico/empresas/ativos",
-      link: "Quem são os donos das usinas",
+      link: tx("Quem são os donos das usinas", "Who owns the plants", idioma),
     },
     {
       id: "transmissao",
-      titulo: "Transmissão",
-      faz: "Leva a energia em alta tensão das usinas até as distribuidoras e os grandes consumidores.",
-      remuneracao: "Recebe uma receita anual fixa, definida no leilão da concessão, que não depende da energia transportada.",
+      titulo: tx("Transmissão", "Transmission", idioma),
+      faz: tx(
+        "Leva a energia em alta tensão das usinas até as distribuidoras e os grandes consumidores.",
+        "Carries energy at high voltage from the plants to the distribution utilities and large consumers.",
+        idioma,
+      ),
+      remuneracao: tx(
+        "Recebe uma receita anual fixa, definida no leilão da concessão, que não depende da energia transportada.",
+        "Receives a fixed annual revenue, set in the concession auction, that does not depend on the energy carried.",
+        idioma,
+      ),
       agentes: r.transmissao ?? null,
-      medida: t ? `${num(t.resumo.km_circuito_operacao, 0)} km de circuito em ${num(t.resumo.cnpjs_com_modulos, 0)} concessionárias` : "extensão sem dado",
+      medida: t
+        ? tx(
+            `${N(t.resumo.km_circuito_operacao)} km de circuito em ${N(t.resumo.cnpjs_com_modulos)} concessionárias`,
+            `${N(t.resumo.km_circuito_operacao)} circuit km in ${N(t.resumo.cnpjs_com_modulos)} concession holders`,
+            idioma,
+          )
+        : tx("extensão sem dado", "length: no data", idioma),
       href: "/setor-eletrico/leiloes/transmissao",
-      link: "Os leilões de transmissão",
+      link: tx("Os leilões de transmissão", "Transmission auctions", idioma),
     },
     {
       id: "distribuicao",
-      titulo: "Distribuição",
-      faz: "Entrega a energia a residências, comércio e indústria, cada uma com exclusividade na sua área.",
-      remuneracao: "Cobra a tarifa definida pela ANEEL e compra em leilões a energia dos seus consumidores cativos.",
+      titulo: tx("Distribuição", "Distribution", idioma),
+      faz: tx(
+        "Entrega a energia a residências, comércio e indústria, cada uma com exclusividade na sua área.",
+        "Delivers energy to homes, businesses and industry, each one with exclusivity in its area.",
+        idioma,
+      ),
+      remuneracao: tx(
+        "Cobra a tarifa definida pela ANEEL e compra em leilões a energia dos seus consumidores cativos.",
+        "Charges the tariff set by ANEEL and buys in auctions the energy for its captive consumers.",
+        idioma,
+      ),
       agentes: r.distribuicao ?? null,
-      medida: temValor(u.ucs) ? `${num(u.ucs / 1e6, 1)} milhões de unidades consumidoras (${u.ano})` : "unidades consumidoras sem dado",
+      medida: temValor(u.ucs)
+        ? tx(`${N(u.ucs / 1e6, 1)} milhões de unidades consumidoras (${u.ano})`, `${N(u.ucs / 1e6, 1)} million consumer units (${u.ano})`, idioma)
+        : tx("unidades consumidoras sem dado", "consumer units: no data", idioma),
       href: "/setor-eletrico/empresas/distribuidoras",
-      link: "A ficha de cada distribuidora",
+      link: tx("A ficha de cada distribuidora", "Each distribution utility's profile", idioma),
     },
     {
       id: "comercializacao",
-      titulo: "Comercialização",
-      faz: "Compra e vende contratos de energia, sobretudo no mercado livre; não opera usina, linha nem rede.",
-      remuneracao: "Ganha na diferença entre os preços de compra e de venda dos contratos.",
+      titulo: tx("Comercialização", "Trading", idioma),
+      faz: tx(
+        "Compra e vende contratos de energia, sobretudo no mercado livre; não opera usina, linha nem rede.",
+        "Buys and sells energy contracts, mainly on the free market; it does not operate plants, lines or grids.",
+        idioma,
+      ),
+      remuneracao: tx("Ganha na diferença entre os preços de compra e de venda dos contratos.", "Earns on the difference between the purchase and sale prices of contracts.", idioma),
       agentes: r.comercializacao ?? null,
-      medida: "contratos registrados na CCEE",
+      medida: tx("contratos registrados na CCEE", "contracts registered with the CCEE", idioma),
       href: "/setor-eletrico/mercado/agentes",
-      link: "Agentes do mercado",
+      link: tx("Agentes do mercado", "Market agents", idioma),
     },
   ];
 }

@@ -2,6 +2,8 @@
 
 import { useId, useMemo, useState } from "react";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 export type PapelLab = {
   papel: string;
@@ -12,17 +14,7 @@ export type PapelLab = {
   eventos: { data_ex: string; texto: string }[];
 };
 
-const JANELAS = [
-  { id: "2020", rotulo: "Desde o fim de 2020" },
-  { id: "12m", rotulo: "Últimos 12 meses" },
-] as const;
-
-function n(v: number, casas = 1): string {
-  return v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "−");
-}
-function s(v: number, casas = 1): string {
-  return `${v > 0 ? "+" : v < 0 ? "−" : ""}${n(Math.abs(v), casas)}`;
-}
+const JANELAS = ["2020", "12m"] as const;
 
 /**
  * Laboratório "preço de tela, preço ajustado e retorno total" com as séries reais de um papel da carteira do IEE. Três linhas em base
@@ -31,8 +23,14 @@ function s(v: number, casas = 1): string {
  * últimas é o que os proventos acrescentaram; a distância entre as duas primeiras é efeito de evento em ações, não de mercado.
  */
 export function ListadasLabRetorno({ papeis, inicial }: { papeis: PapelLab[]; inicial: string }) {
+  const tx = useTx();
+  const idioma = useIdioma();
+  const f = formatos(idioma);
+  const n = (v: number, casas = 1) => f.num(v, casas);
+  const s = (v: number, casas = 1) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${n(Math.abs(v), casas)}`;
+  const rotuloJanela = (j: (typeof JANELAS)[number]) => (j === "2020" ? tx("Desde o fim de 2020", "Since the end of 2020") : tx("Últimos 12 meses", "Last 12 months"));
   const [papel, setPapel] = useState(inicial);
-  const [janela, setJanela] = useState<(typeof JANELAS)[number]["id"]>("2020");
+  const [janela, setJanela] = useState<(typeof JANELAS)[number]>("2020");
   const id = useId();
   const p = papeis.find((x) => x.papel === papel) ?? papeis[0];
   const recorte = useMemo(() => {
@@ -51,7 +49,7 @@ export function ListadasLabRetorno({ papeis, inicial }: { papeis: PapelLab[]; in
     <div className="space-y-4" data-lab="retorno">
       <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
         <label className="flex flex-col gap-1 text-sm text-carvao" htmlFor={`${id}-papel`}>
-          <span className="rotulo text-mineral">Papel</span>
+          <span className="rotulo text-mineral">{tx("Papel", "Stock")}</span>
           <select
             id={`${id}-papel`}
             value={p.papel}
@@ -59,18 +57,18 @@ export function ListadasLabRetorno({ papeis, inicial }: { papeis: PapelLab[]; in
             className="min-h-[44px] border border-linha bg-superficie px-3 text-sm text-carvao"
           >
             {papeis.map((x) => (
-              <option key={x.papel} value={x.papel}>
+              <option key={x.papel} value={x.papel} {...(idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {})}>
                 {x.papel} · {x.nome}
               </option>
             ))}
           </select>
         </label>
         <fieldset className="flex flex-wrap gap-x-4">
-          <legend className="rotulo mb-1 text-mineral">Janela</legend>
+          <legend className="rotulo mb-1 text-mineral">{tx("Janela", "Window")}</legend>
           {JANELAS.map((j) => (
-            <label key={j.id} className="inline-flex min-h-[44px] items-center gap-2 text-sm text-carvao">
-              <input type="radio" name={`${id}-janela`} value={j.id} checked={janela === j.id} onChange={() => setJanela(j.id)} />
-              {j.rotulo}
+            <label key={j} className="inline-flex min-h-[44px] items-center gap-2 text-sm text-carvao">
+              <input type="radio" name={`${id}-janela`} value={j} checked={janela === j} onChange={() => setJanela(j)} />
+              {rotuloJanela(j)}
             </label>
           ))}
         </fieldset>
@@ -78,16 +76,19 @@ export function ListadasLabRetorno({ papeis, inicial }: { papeis: PapelLab[]; in
       {recorte ? (
         <>
           <GraficoLinhas
-            titulo={`${p.papel}: fechamento de tela, preço ajustado e retorno total (base 100 no fim de ${recorte.m0.slice(5, 7)}/${recorte.m0.slice(0, 4)})`}
+            titulo={tx(
+              `${p.papel}: fechamento de tela, preço ajustado e retorno total (base 100 no fim de ${recorte.m0.slice(5, 7)}/${recorte.m0.slice(0, 4)})`,
+              `${p.papel}: screen closing price, adjusted price and total return (base 100 at the end of ${f.mesAno(recorte.m0)})`,
+            )}
             dados={recorte.dados}
             chaveX="m"
             formatoX="mes"
-            unidade="base 100"
+            unidade={tx("base 100", "base 100")}
             casas={1}
             series={[
-              { id: "tela", rotulo: "Fechamento de tela", cor: "var(--serie-referencia)", tracejada: true },
-              { id: "ajustado", rotulo: "Preço ajustado", cor: "var(--serie-comp-4)" },
-              { id: "total", rotulo: "Retorno total", cor: "var(--cor-energia)", espessura: 2.5 },
+              { id: "tela", rotulo: tx("Fechamento de tela", "Screen closing price"), cor: "var(--serie-referencia)", tracejada: true },
+              { id: "ajustado", rotulo: tx("Preço ajustado", "Adjusted price"), cor: "var(--serie-comp-4)" },
+              { id: "total", rotulo: tx("Retorno total", "Total return"), cor: "var(--cor-energia)", espessura: 2.5 }, // i18n: dado
             ]}
             legendaInterativa
             escalaAoOcultar="manter"
@@ -95,23 +96,32 @@ export function ListadasLabRetorno({ papeis, inicial }: { papeis: PapelLab[]; in
           />
           <dl className="grid gap-x-8 gap-y-3 text-sm sm:grid-cols-3" aria-live="polite">
             <div className="border-l-2 border-linha pl-3">
-              <dt className="rotulo text-mineral">Fechamento de tela</dt>
+              <dt className="rotulo text-mineral">{tx("Fechamento de tela", "Screen closing price")}</dt>
               <dd className="tabular-nums text-carvao">{s(recorte.fim.tela - 100)}%</dd>
             </div>
             <div className="border-l-2 border-linha pl-3">
-              <dt className="rotulo text-mineral">Preço ajustado</dt>
+              <dt className="rotulo text-mineral">{tx("Preço ajustado", "Adjusted price")}</dt>
               <dd className="tabular-nums text-carvao">{s(recorte.fim.ajustado - 100)}%</dd>
             </div>
             <div className="border-l-2 border-energia pl-3">
-              <dt className="rotulo text-mineral">Retorno total</dt>
+              <dt className="rotulo text-mineral">{tx("Retorno total", "Total return")}</dt>
               <dd className="tabular-nums text-carvao">{s(recorte.fim.total - 100)}%</dd>
             </div>
           </dl>
           <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-            Os proventos reinvestidos acrescentaram {n(recorte.fim.total - recorte.fim.ajustado)} pontos ao índice nesta janela.{" "}
+            {tx(
+              `Os proventos reinvestidos acrescentaram ${n(recorte.fim.total - recorte.fim.ajustado)} pontos ao índice nesta janela.`,
+              `Reinvested distributions added ${n(recorte.fim.total - recorte.fim.ajustado)} points to the index in this window.`,
+            )}{" "}
             {Math.abs(recorte.fim.tela - recorte.fim.ajustado) >= 0.5
-              ? `A diferença de ${n(Math.abs(recorte.fim.tela - recorte.fim.ajustado))} pontos entre o fechamento de tela e o preço ajustado vem de eventos em ações, não do mercado.`
-              : "Não houve evento em ações que separasse o fechamento de tela do preço ajustado nesta janela."}
+              ? tx(
+                  `A diferença de ${n(Math.abs(recorte.fim.tela - recorte.fim.ajustado))} pontos entre o fechamento de tela e o preço ajustado vem de eventos em ações, não do mercado.`,
+                  `The ${n(Math.abs(recorte.fim.tela - recorte.fim.ajustado))}-point difference between the screen closing price and the adjusted price comes from stock events, not from the market.`,
+                )
+              : tx(
+                  "Não houve evento em ações que separasse o fechamento de tela do preço ajustado nesta janela.",
+                  "There was no stock event separating the screen closing price from the adjusted price in this window.",
+                )}
           </p>
           {recorte.eventos.length > 0 && (
             <ul className="space-y-1 text-sm text-carvao-muted">
@@ -122,7 +132,7 @@ export function ListadasLabRetorno({ papeis, inicial }: { papeis: PapelLab[]; in
           )}
         </>
       ) : (
-        <p className="text-sm text-carvao-muted">Sem pregões do papel nesta janela.</p>
+        <p className="text-sm text-carvao-muted">{tx("Sem pregões do papel nesta janela.", "No trading sessions for the stock in this window.")}</p>
       )}
     </div>
   );

@@ -1,6 +1,9 @@
 "use client";
 
 import { useId, useSyncExternalStore } from "react";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import Link from "@/components/i18n/LinkIdioma";
+import { linkDistribuidoraNoIdioma } from "@/lib/energia/i18n/conta-inclusao";
 
 /**
  * "Sua distribuidora" da página inicial (seção 6.2 D): a pessoa escolhe a distribuidora uma vez, no alto das seis perguntas, e as três
@@ -76,6 +79,9 @@ const semEscolhaNoServidor = (): Escolha | null => null;
 /** O controle: a lista das distribuidoras, o botão de limpar e a frase que diz a quem a escolha vale e quantas há em cada página. */
 export function SuaDistribuidora({ opcoes, descricao }: { opcoes: OpcaoDistribuidora[]; descricao: string }) {
   const id = useId();
+  const tx = useTx();
+  // <option> não aceita o <span> de <Nome>: na página inglesa, a própria opção leva a marca de nome próprio
+  const marcaNome = useIdioma() === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {};
   const escolha = useSyncExternalStore(assinar, escolhaAtual, semEscolhaNoServidor);
   // uma escolha guardada de uma distribuidora que a lista não tem mais não vale
   const valida = escolha && opcoes.some((o) => o.cnpj === escolha.cnpj) ? escolha : null;
@@ -83,7 +89,7 @@ export function SuaDistribuidora({ opcoes, descricao }: { opcoes: OpcaoDistribui
     <div data-sua-distribuidora="" className="mb-6 flex flex-wrap items-end gap-x-6 gap-y-2 border border-linha bg-superficie p-4">
       <div className="min-w-0">
         <label htmlFor={`${id}-d`} className="block text-sm text-carvao">
-          Sua distribuidora
+          {tx("Sua distribuidora", "Your distribution utility")}
         </label>
         <select
           id={`${id}-d`}
@@ -95,10 +101,10 @@ export function SuaDistribuidora({ opcoes, descricao }: { opcoes: OpcaoDistribui
           aria-describedby={`${id}-ajuda`}
           className="mt-1 min-h-[44px] max-w-full border border-linha bg-superficie px-2 text-sm text-carvao"
         >
-          <option value="">Escolha a distribuidora</option>
+          <option value="">{tx("Escolha a distribuidora", "Choose the distribution utility")}</option>
           {opcoes.map((o) => (
             // sigla e estados: o nome oficial da fonte vem em caixa alta e sem acento, e fica no title
-            <option key={o.cnpj} value={o.cnpj} title={o.nome ?? undefined}>
+            <option key={o.cnpj} value={o.cnpj} title={o.nome ?? undefined} {...marcaNome}>
               {o.sigla}
               {o.ufs && o.ufs.length ? ` (${o.ufs.join(", ")})` : ""}
             </option>
@@ -107,14 +113,19 @@ export function SuaDistribuidora({ opcoes, descricao }: { opcoes: OpcaoDistribui
       </div>
       {valida && (
         <button type="button" onClick={() => guardar(null)} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
-          Limpar a escolha
+          {tx("Limpar a escolha", "Clear the choice")}
         </button>
       )}
       <p id={`${id}-ajuda`} className="basis-full text-xs leading-snug text-carvao-muted">
         {descricao}
       </p>
       <p aria-live="polite" className="sr-only">
-        {valida ? `Distribuidora escolhida: ${valida.sigla}. Os links de Conta de luz, Qualidade e Perdas abrem com ela selecionada.` : ""}
+        {valida
+          ? tx(
+              `Distribuidora escolhida: ${valida.sigla}. Os links de Conta de luz, Qualidade e Perdas abrem com ela selecionada.`,
+              `Chosen distribution utility: ${valida.sigla}. The Electricity bill, Quality of supply and Losses links open with it selected.`,
+            )
+          : ""}
       </p>
     </div>
   );
@@ -152,19 +163,23 @@ export function LinkPorDistribuidora({
   className: string;
 }) {
   const escolha = useSyncExternalStore(assinar, escolhaAtual, semEscolhaNoServidor);
+  const idioma = useIdioma();
   const tem = !!escolha && comDado.includes(escolha.cnpj);
   const parcial = !!escolha && emParte.includes(escolha.cnpj);
   const aberta = tem || parcial;
+  // LinkIdioma leva à irmã /en quando a página tem tradução publicada
   const href = `${destino}${aberta ? `?${parametro}=${escolha!.cnpj}` : ""}#${ancora}`;
-  const aviso = escolha && !aberta ? semDado : escolha && parcial ? emParteTexto : null;
+  // os textos chegam da página inicial em português; em inglês saem da tabela exata (o que já chega em inglês passa como veio)
+  const t = (s: string) => linkDistribuidoraNoIdioma(s, idioma);
+  const aviso = escolha && !aberta ? t(semDado) : escolha && parcial && emParteTexto ? t(emParteTexto) : null;
   return (
     <>
-      <a href={href} className={className} data-por-distribuidora={aberta ? escolha!.cnpj : undefined}>
-        {aberta ? rotuloEscolhida.replace("{sigla}", escolha!.sigla) : rotuloPadrao}
+      <Link href={href} className={className} data-por-distribuidora={aberta ? escolha!.cnpj : undefined}>
+        {aberta ? t(rotuloEscolhida).replace("{sigla}", escolha!.sigla) : t(rotuloPadrao)}
         <span aria-hidden="true" className="ml-1.5">
           →
         </span>
-      </a>
+      </Link>
       {aviso && escolha && <p className="text-xs leading-snug text-carvao-muted">{aviso.replace("{sigla}", escolha.sigla)}</p>}
     </>
   );

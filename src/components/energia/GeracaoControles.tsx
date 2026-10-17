@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, type ReactNode } from "react";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Controles e peças de marcação das páginas da Geração, usados tanto pela página do
@@ -94,18 +95,19 @@ export function GeracaoLista<T extends string>({
  * dela). O atributo `data-recorte-painel` é o mesmo que a abertura do módulo e a Água usam.
  */
 export function GeracaoRecorte({ periodo, universo, unidade }: { periodo: ReactNode; universo: ReactNode; unidade: ReactNode }) {
+  const tx = useTx();
   return (
     <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
       <div className="min-w-0">
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5">{periodo}</dd>
       </div>
       <div className="min-w-0">
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
         <dd className="mt-0.5">{universo}</dd>
       </div>
       <div className="min-w-0">
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5">{unidade}</dd>
       </div>
     </dl>

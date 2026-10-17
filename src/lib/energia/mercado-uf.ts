@@ -1,5 +1,7 @@
 import { NOME_UF } from "./expansao";
+import type { Idioma } from "@/lib/idioma";
 import { num, pct } from "./formato";
+import { idiomaEnergia, tx } from "./idioma";
 import type { EpeAbertura12m, MercadoGold } from "./tipos-mercado";
 
 /**
@@ -33,12 +35,43 @@ export function ufsSemJanela(g: MercadoGold): string[] {
   return g.livre_regulado.epe_uf_12m.filter((u) => !ufComJanela(u)).map((u) => u.chave);
 }
 
+/** Trecho de frase: texto corrido ou o nome de uma UF (a página inglesa marca o nome próprio com <Nome>). */
+export type ParteTexto = string | { uf: string };
+
+/** Junta as partes num texto só, com o nome por extenso de cada UF. */
+export function juntarPartes(partes: ParteTexto[]): string {
+  return partes.map((p) => (typeof p === "string" ? p : NOME_UF[p.uf] ?? p.uf)).join("");
+}
+
+function listaUfs(ufs: string[], idioma: Idioma): ParteTexto[] {
+  if (ufs.length === 1) return [{ uf: ufs[0] }];
+  const partes: ParteTexto[] = [];
+  ufs.forEach((uf, i) => {
+    if (i > 0) partes.push(i === ufs.length - 1 ? tx(" e ", " and ", idioma) : ", ");
+    partes.push({ uf });
+  });
+  return partes;
+}
+
+/** Frase da ausência em partes, no idioma pedido. Sem UF ausente, não há frase. */
+export function partesUfsSemJanela(g: MercadoGold, idioma: Idioma = idiomaEnergia()): ParteTexto[] | null {
+  const ufs = ufsSemJanela(g);
+  if (!ufs.length) return null;
+  const um = ufs.length === 1;
+  return [
+    ...listaUfs(ufs, idioma),
+    tx(
+      ` ${um ? "fica" : "ficam"} de fora: a série da EPE por UF não tem a janela completa de 12 meses ${um ? "do estado" : "dos estados"}, e ausência de dado não é zero.`,
+      ` ${um ? "is" : "are"} excluded: the EPE series by state does not have the complete 12-month window for ${um ? "that state" : "those states"}, and missing data is not zero.`,
+      idioma,
+    ),
+  ];
+}
+
 /** Frase da ausência: quem fica fora dos dois gráficos e que a ausência não é zero. Sem UF ausente, não há frase. */
 export function textoUfsSemJanela(g: MercadoGold): string | null {
-  const nomes = ufsSemJanela(g).map((u) => NOME_UF[u] ?? u);
-  if (!nomes.length) return null;
-  const lista = nomes.length === 1 ? nomes[0] : `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}`;
-  return `${lista} ${nomes.length === 1 ? "fica" : "ficam"} de fora: a série da EPE por UF não tem a janela completa de 12 meses ${nomes.length === 1 ? "do estado" : "dos estados"}, e ausência de dado não é zero.`;
+  const p = partesUfsSemJanela(g, "pt");
+  return p && juntarPartes(p);
 }
 
 export type ContrasteUf = {
@@ -69,16 +102,46 @@ export function contrasteUf(g: MercadoGold): ContrasteUf | null {
  * volume, e a UF de maior volume e onde ela fica em participação. Sem artigo antes do nome da UF (o Pará, a Bahia, Goiás), para a frase valer
  * para qualquer UF sem regra de gênero.
  */
-export function textoContrasteUf(g: MercadoGold): string | null {
+export function partesContrasteUf(g: MercadoGold, idioma: Idioma = idiomaEnergia()): ParteTexto[] | null {
   const c = contrasteUf(g);
   if (!c) return null;
   const { maiorParticipacao: a, maiorVolume: b } = c;
-  const nome = (uf: string) => NOME_UF[uf] ?? uf;
   if (a.uf === b.uf) {
-    return `Maior participação e maior volume livre: ${nome(a.uf)}, ${pct(a.pct, 1)} e ${num(a.livreGwh, 0)} GWh, entre as ${c.total} UFs com dado.`;
+    return [
+      tx("Maior participação e maior volume livre: ", "Largest share and largest free-market volume: ", idioma),
+      { uf: a.uf },
+      tx(
+        `, ${pct(a.pct, 1, idioma)} e ${num(a.livreGwh, 0, idioma)} GWh, entre as ${c.total} UFs com dado.`,
+        `, ${pct(a.pct, 1, idioma)} and ${num(a.livreGwh, 0, idioma)} GWh, among the ${c.total} states with data.`,
+        idioma,
+      ),
+    ];
   }
-  return (
-    `Maior participação do livre: ${nome(a.uf)}, ${pct(a.pct, 1)}, que é o ${a.posicaoVolume}º em volume livre (${num(a.livreGwh, 0)} GWh). ` +
-    `Maior volume livre: ${nome(b.uf)}, ${num(b.livreGwh, 0)} GWh, com participação de ${pct(b.pct, 1)}, a ${b.posicaoParticipacao}ª maior entre as ${c.total} UFs com dado.`
-  );
+  return [
+    tx("Maior participação do livre: ", "Largest free-market share: ", idioma),
+    { uf: a.uf },
+    tx(
+      `, ${pct(a.pct, 1, idioma)}, que é o ${a.posicaoVolume}º em volume livre (${num(a.livreGwh, 0, idioma)} GWh). Maior volume livre: `,
+      `, ${pct(a.pct, 1, idioma)}, which ranks ${ordinalEn(a.posicaoVolume)} in free-market volume (${num(a.livreGwh, 0, idioma)} GWh). Largest free-market volume: `,
+      idioma,
+    ),
+    { uf: b.uf },
+    tx(
+      `, ${num(b.livreGwh, 0, idioma)} GWh, com participação de ${pct(b.pct, 1, idioma)}, a ${b.posicaoParticipacao}ª maior entre as ${c.total} UFs com dado.`,
+      `, ${num(b.livreGwh, 0, idioma)} GWh, with a share of ${pct(b.pct, 1, idioma)}, the ${ordinalEn(b.posicaoParticipacao)} largest among the ${c.total} states with data.`,
+      idioma,
+    ),
+  ];
+}
+
+function ordinalEn(n: number): string {
+  const r100 = n % 100;
+  const r10 = n % 10;
+  const suf = r100 >= 11 && r100 <= 13 ? "th" : r10 === 1 ? "st" : r10 === 2 ? "nd" : r10 === 3 ? "rd" : "th";
+  return `${n}${suf}`;
+}
+
+export function textoContrasteUf(g: MercadoGold): string | null {
+  const p = partesContrasteUf(g, "pt");
+  return p && juntarPartes(p);
 }
