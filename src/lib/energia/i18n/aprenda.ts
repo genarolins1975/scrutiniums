@@ -98,6 +98,7 @@ const FICHA_EN: Record<string, string> = {
   "Unidades consumidoras com Tarifa Social": "Consumer units with the Tarifa Social",
   "Fator médio anual de emissão de CO2 do SIN (inventários)": "Annual average CO2 emission factor of the SIN (inventories)",
   "Teto horário do PLD vigente": "Hourly PLD ceiling in force",
+  "Sequência de CMO semanal igual a zero": "Run of weekly CMO equal to zero",
   "EAR do SIN": "SIN EAR",
   "Potência instalada de micro e minigeração distribuída no cadastro da ANEEL": "Installed capacity of distributed micro and mini generation in the ANEEL register",
   "Capacidade instalada nacional em 2035 no Cenário de Referência do PDE 2035 (CENÁRIO)": "National installed capacity in 2035 in the Reference Scenario of the PDE 2035 (SCENARIO)",
@@ -154,6 +155,64 @@ const FICHA_EN: Record<string, string> = {
   pessoas: "people",
   horas: "hours",
   MWmed: "MWavg",
+  // Água e clima, Carga e Rede (fichas de agua_detalhe, carga_detalhe e rede_detalhe)
+  "Energia armazenada no SIN": "Stored energy in the SIN",
+  "Mudanças da capacidade de armazenamento (EAR máxima) desde 2000": "Changes in storage capacity (maximum EAR) since 2000",
+  "ENA armazenável de 30 dias do SIN": "30-day storable ENA of the SIN",
+  "ENA armazenável de 30 dias do SIN, em % da MLT da ENA bruta": "30-day storable ENA of the SIN, in % of the MLT of gross ENA",
+  "Diferença entre a MLT do conjunto aberto e a MLT do PMO (Sudeste/Centro-Oeste)": "Difference between the open-dataset MLT and the PMO MLT (Southeast/Center-West)",
+  "Reservatórios que fecham o balanço por construção": "Reservoirs whose balance closes by construction",
+  "Variação da carga do SIN em 7 dias contra os mesmos dias do ano anterior (reprodução do diagnóstico)": "7-day change in SIN load against the same days of the previous year (reproduction of the diagnosis)",
+  "Variação da carga do SIN nos últimos 7 dias contra os mesmos dias da semana 52 semanas antes": "Change in SIN load over the last 7 days against the same weekdays 52 weeks earlier",
+  "Erro percentual absoluto médio da decomposição estatística, fora da amostra (SIN)": "Mean absolute percentage error of the statistical breakdown, out of sample (SIN)",
+  "Energia no sentido contrário ao saldo em 30 dias": "Energy flowing against the net direction over 30 days",
+  "Horas em que o intercâmbio do Sul no balanço não inclui o exterior": "Hours in which the South interchange in the balance does not include the exterior",
+  "Horas em que geração menos carga difere do intercâmbio no balanço do SIN": "Hours in which generation minus load differs from the interchange in the SIN balance",
+  "Energia não suprida em interrupções de carga, 12 meses": "Energy not supplied in load interruptions, 12 months",
+  "Desvio absoluto médio entre verificado e programado": "Mean absolute deviation between verified and scheduled",
+  "subsistemas do SIN": "SIN subsystems",
+  "reservatórios dos dados hidráulicos do ONS com balanço calculado": "reservoirs in the ONS hydraulic data with a calculated balance",
+  "SIN (soma de SE/CO, S, NE e N)": "SIN (sum of SE/CO, S, NE and N)",
+  "Fronteira Norte → Nordeste": "North → Northeast boundary",
+  "Fronteira Norte → Sudeste/Centro-Oeste": "North → Southeast/Center-West boundary",
+  "Fronteira Nordeste → Sudeste/Centro-Oeste": "Northeast → Southeast/Center-West boundary",
+  "Fronteira Sul → Sudeste/Centro-Oeste": "South → Southeast/Center-West boundary",
+  "Subsistema Sul": "South subsystem",
+  "Fluxo FBTA": "FBTA flow",
+  "Fluxo FJUSC": "FJUSC flow",
+  "Fluxo FNEN (Interligação Nordeste-Norte)": "FNEN flow (Northeast-North interconnection)",
+  "Fluxo FNS (Fluxo sentido Norte-Sul)": "FNS flow (North-to-South flow)",
+  "Fluxo FNS+NESE": "FNS+NESE flow",
+  "Fluxo RSE (Recebimento pelo Sudeste)": "RSE flow (intake by the Southeast)",
+  "Fluxo RSUL (Recebimento pela Região Sul)": "RSUL flow (intake by the South region)",
+  "Uruguai": "Uruguay",
+  "MWmês": "MWmonth",
+  "eventos": "events",
+  "reservatórios": "reservoirs",
+  "% da MLT armazenável": "% of the storable MLT",
+  "% da MLT da ENA bruta": "% of the MLT of gross ENA",
+  // Empresas, Listadas e Leilões (indicadores das fichas de prova)
+  "Taxa de perdas totais": "Total loss rate", // i18n: dado (tabela de tradução)
+  "Receita de venda de bens e serviços (individual)": "Revenue from sales of goods and services (individual)",
+  "Receita de venda de bens e serviços (consolidada)": "Revenue from sales of goods and services (consolidated)",
+  "Índice Herfindahl-Hirschman da potência em operação por grupo de controle": "Herfindahl-Hirschman index of capacity in operation by controlling group",
+  "Potência em operação com todos os proprietários identificados por CNPJ": "Capacity in operation with all owners identified by CNPJ",
+  "Módulos de transmissão do SIGET ligados ao CNPJ da concessionária": "SIGET transmission modules linked to the concession holder's CNPJ",
+  "Energia contratada nos leilões de geração do ACR": "Energy contracted in ACR generation auctions",
+  "Energia contratada de usinas em operação no SIGA mais recente": "Energy contracted from plants in operation in the latest SIGA",
+  "Preço médio do último leilão da base (39º LEN)": "Average price of the latest auction in the database (39th LEN)",
+  "Retorno total em 12 meses: TAEE11": "12-month total return: TAEE11", // i18n: dado (tabela de tradução)
+  "Retorno total em 12 meses: ISAE4": "12-month total return: ISAE4", // i18n: dado (tabela de tradução)
+  "Retorno total em 12 meses: EQTL3": "12-month total return: EQTL3", // i18n: dado (tabela de tradução)
+  "Retorno total em 12 meses: ENGI11": "12-month total return: ENGI11", // i18n: dado (tabela de tradução)
+  "Retorno total em 12 meses: ENEV3": "12-month total return: ENEV3", // i18n: dado (tabela de tradução)
+  "Retorno total em 12 meses: EGIE3": "12-month total return: EGIE3", // i18n: dado (tabela de tradução)
+  "Retorno total em 12 meses: CPLE3": "12-month total return: CPLE3", // i18n: dado (tabela de tradução)
+  "Retorno total em 12 meses: CPFE3": "12-month total return: CPFE3", // i18n: dado (tabela de tradução)
+  "Retorno total em 12 meses: CMIG4": "12-month total return: CMIG4", // i18n: dado (tabela de tradução)
+  "Retorno total em 12 meses: AXIA3": "12-month total return: AXIA3", // i18n: dado (tabela de tradução)
+  "Retorno total em 12 meses: AURE3": "12-month total return: AURE3", // i18n: dado (tabela de tradução)
+  "Retorno total em 12 meses: ALUP11": "12-month total return: ALUP11", // i18n: dado (tabela de tradução)
 };
 
 /**
@@ -194,6 +253,8 @@ const FICHA_EN_PADROES: [RegExp, (...g: string[]) => string][] = [
   [/^CMO médio do DESSEM na semana operativa de (\S+) a (\S+)$/, (a, b) => `Average DESSEM CMO in the operating week from ${a} to ${b}`],
   [/^Chuva de 30 dias na bacia (.+)$/, (b) => `30-day rainfall in the ${b} basin`],
   [/^bacia (.+) \(maior EAR máxima\)$/, (b) => `${b} basin (largest maximum EAR)`],
+  [/^Resíduo do balanço de 30 dias em (.+)$/, (r) => `30-day water balance residual at ${r}`],
+  [/^reservatório (.+) \(([A-Z0-9]{3,8})\)$/, (r, c) => `${r} reservoir (${c})`],
 ];
 
 /** Rótulo de ficha (indicador, entidade ou unidade) no idioma; null quando não há forma inglesa conferida. */
@@ -216,6 +277,7 @@ export function valorExibidoNoIdioma(v: string, idioma: Idioma): string {
   if (idioma === "pt") return v;
   return v
     .replace(/\d[\d.,]*\d|\d/g, (n) => n.replace(/[.,]/g, (c) => (c === "." ? "," : ".")))
+    .replace(/MWmédio(?![A-Za-zÀ-ÿ])/g, "MWavg") // i18n: dado (regra de tradução)
     .replace(/\bbilhões\b|\bbilhão\b/g, "billion")
     .replace(/\bmilhões\b|\bmilhão\b/g, "million")
     .replace(/\bMWmed\b/g, "MWavg")

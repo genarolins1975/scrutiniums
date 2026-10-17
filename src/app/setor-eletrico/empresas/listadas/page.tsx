@@ -31,6 +31,7 @@ import {
   ESPECIE_CONTROLE_EN,
   SEGMENTO_B3_EN,
   notaBolsa,
+  comNomes,
   traduzir,
 } from "@/lib/energia/i18n/empresas-leiloes";
 import {
@@ -96,7 +97,7 @@ function ultimaFin(c: CompanhiaListada) {
 }
 
 /** Definição ou regra publicada pela gold de Listadas, no idioma da página. */
-const def = (x: string) => traduzir(DEFINICAO_LISTADAS_EN, x);
+const def = (x: string) => comNomes(traduzir(DEFINICAO_LISTADAS_EN, x));
 
 export default function ListadasPage() {
   const g = lerGold<ListadasGold>("listadas.json");
@@ -160,6 +161,7 @@ export default function ListadasPage() {
       mwProporcional: c.geracao.mw_proporcional,
       porNivel: (c.geracao.por_nivel ?? []).map((x) => ({ nivel: x.nivel, mw: x.mw_controle, usinas: x.usinas })),
       cruzadas: textoCruzadas(c),
+      nomesCruzadas: cruzadas.filter((x) => x.de.papel === c.papel).flatMap((x) => [nome(x.de), nome(x.em)]),
     }));
   // começa por uma companhia que é controladora de outra da carteira em controle compartilhado (o caso que mais confunde)
   const inicialControle =
@@ -292,9 +294,11 @@ export default function ListadasPage() {
             `Carteira do IEE de ${dataCart} · ativos do SIGA de ${dataBR(g.datas.siga)} · cotações até ${ultimoPregao} · DFP até ${exercicio ?? "sem dado"}`,
             `IEE portfolio of ${dataCart} · SIGA assets as of ${dataBR(g.datas.siga)} · quotes up to ${ultimoPregao} · DFP up to ${exercicio ?? semDado}`,
           )}
-          fonte={tx(
-            "B3 (índice, cotações e proventos); CVM (FCA, FRE, DFP e IPE); ANEEL (SIGA, SIGET e Composição Societária)",
-            "B3 (index, quotes and distributions); CVM (FCA, FRE, DFP and IPE); ANEEL (SIGA, SIGET and Composição Societária)",
+          fonte={comNomes(
+            tx(
+              "B3 (índice, cotações e proventos); CVM (FCA, FRE, DFP e IPE); ANEEL (SIGA, SIGET e Composição Societária)",
+              "B3 (index, quotes and distributions); CVM (FCA, FRE, DFP and IPE); ANEEL (SIGA, SIGET and Composição Societária)",
+            ),
           )}
           limite={tx(
             "Não ordena companhias por mérito: a ordem padrão é o peso no índice, e cada medida tem a sua unidade e a sua data.",
@@ -434,7 +438,7 @@ export default function ListadasPage() {
                             <Nome>{nome(c)}</Nome>
                           </Link>
                           <p className="text-xs text-mineral">
-                            {c.papel} · {segmento} · {tx(`${pct(c.iee.peso_pct, 2)} do IEE`, `${pct(c.iee.peso_pct, 2)} of the IEE`)}
+                            {c.papel} · {comNomes(segmento)} · {tx(`${pct(c.iee.peso_pct, 2)} do IEE`, `${pct(c.iee.peso_pct, 2)} of the IEE`)}
                           </p>
                         </div>
                       </div>
@@ -588,7 +592,7 @@ export default function ListadasPage() {
                             <span className="block text-xs text-mineral">{c.papel}</span>
                           </th>
                           <td className="py-2 pr-3 text-carvao">{c.controle.especie_fca ? traduzir(ESPECIE_CONTROLE_EN, c.controle.especie_fca) : semDado}</td>
-                          <td className="py-2 pr-3 text-carvao-muted">{textoControle(c)}</td>
+                          <td className="py-2 pr-3 text-carvao-muted">{comNomes(textoControle(c), controladoresFre(c).map((a) => a.nome))}</td>
                           <td className="py-2 text-carvao-muted">
                             {c.controle.topo_cnpj === c.cnpj ? tx("A própria companhia", "The company itself") : c.controle.topo_nome ? <Nome>{c.controle.topo_nome}</Nome> : c.controle.topo_cnpj}
                             <span className="block text-xs text-mineral">{MOTIVO_TOPO[c.controle.motivo_parada] ?? c.controle.motivo_parada}</span>
@@ -720,6 +724,7 @@ export default function ListadasPage() {
                   paineis={cs.map((c) => ({
                     id: c.papel,
                     titulo: `${nome(c)} (${c.papel})`,
+                    tituloEhNome: true,
                     nota: estreias.some((e) => e.papel === c.papel)
                       ? tx(`série começa em ${dataBR(c.bolsa!.primeiro_pregao)}`, `series starts on ${dataBR(c.bolsa!.primeiro_pregao)}`)
                       : undefined,

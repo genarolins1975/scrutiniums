@@ -55,7 +55,7 @@ import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { comValorExibido, type Evidencia } from "@/lib/energia/evidencia";
 import { tx } from "@/lib/energia/idioma";
-import { DOWNLOAD_EMPRESAS_EN, LIMITACAO_EMPRESAS_EN, traduzir, universoPerdas } from "@/lib/energia/i18n/empresas-leiloes";
+import { DOWNLOAD_EMPRESAS_EN, LIMITACAO_EMPRESAS_EN, comNomes, traduzir, universoPerdas } from "@/lib/energia/i18n/empresas-leiloes";
 import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import { lerManifestoLogos } from "@/lib/energia/logos";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
@@ -312,7 +312,7 @@ export default function EmpresasPage() {
               />
               <Numero
                 variante="faixa"
-                rotulo={tx("Companhias no Índice de Energia Elétrica", "Companies in the B3 Electric Power Index (IEE)")}
+                rotulo={tx("Companhias no Índice de Energia Elétrica", "Companies in the Electric Power Index (IEE)")}
                 natureza="OBSERVADO"
                 valor={cartoes.length || null}
                 formato="num"
@@ -360,7 +360,7 @@ export default function EmpresasPage() {
                 {
                   id: "p036",
                   resposta: (
-                    <RespostaCurta id="p036" tamanho="sm" veredito={vereditoCadastro(c)}>
+                    <RespostaCurta id="p036" tamanho="sm" veredito={comNomes(vereditoCadastro(c), c.proprietarios.map((x) => x.nome))}>
                       {respostaCadastro(c)}
                     </RespostaCurta>
                   ),
@@ -476,6 +476,7 @@ export default function EmpresasPage() {
                         `Receita ${compPadrao.ultimo_exercicio ?? ""}: ${nomeOuCnpj(compPadrao.nome, compPadrao.cnpj)}`,
                         `Net revenue ${compPadrao.ultimo_exercicio ?? ""}: ${nomeOuCnpj(compPadrao.nome, compPadrao.cnpj)}`,
                       )}
+                      nomesNoRotulo={[nomeOuCnpj(compPadrao.nome, compPadrao.cnpj)]}
                       natureza={compPadrao.alertas.includes("escala_corrigida") ? "ESTIMADO" : "OBSERVADO"}
                       valor={emMilhoes(evReceita?.valor_calculo ?? null)}
                       casas={1}
@@ -515,8 +516,8 @@ export default function EmpresasPage() {
                 {
                   id: "p039",
                   resposta: (
-                    <RespostaCurta id="p039" tamanho="sm" veredito={vereditoControle(ct)}>
-                      {respostaControle(ct)}
+                    <RespostaCurta id="p039" tamanho="sm" veredito={comNomes(vereditoControle(ct), ct.concentracao.grupo_proporcional?.maiores.map((m) => m.nome) ?? [])}>
+                      {comNomes(respostaControle(ct), ct.concentracao.grupo_proporcional?.maiores.map((m) => m.nome) ?? [])}
                     </RespostaCurta>
                   ),
                   numero: (

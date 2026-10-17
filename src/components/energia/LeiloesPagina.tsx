@@ -7,7 +7,7 @@ import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { COR_CATEGORIA_LEILAO, CURTO_CATEGORIA, logoDoGrupo, mwmed, type EntradaLogo, type FraseCitavel } from "@/lib/energia/leiloes";
 import { num } from "@/lib/energia/formato";
 import { tx } from "@/lib/energia/idioma";
-import { SEM_VINCULO_LEILAO_EN, temTraducao, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
+import { SEM_VINCULO_LEILAO_EN, comNomes, temTraducao, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
 import type { LeiloesGold } from "@/lib/energia/tipos-leiloes";
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */
@@ -364,7 +364,7 @@ export function FrasesCitaveis({ frases, rotulo }: { frases: FraseCitavel[]; rot
         <li key={f.id} id={`citar-${f.id}`} className="border-l-2 border-energia pl-4">
           <p className="max-w-prose2 text-base leading-relaxed text-carvao">{f.texto}</p>
           <p className="mt-1 text-xs leading-relaxed text-carvao-muted">
-            {tx("Fonte", "Source")}: {f.referencia}
+            {tx("Fonte", "Source")}: {comNomes(f.referencia)}
           </p>
         </li>
       ))}

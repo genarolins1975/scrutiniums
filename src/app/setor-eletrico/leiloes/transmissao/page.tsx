@@ -21,7 +21,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { montaHistograma } from "@/lib/energia/distribuicao";
 import { carimbo, dataBR, mesAno, num, pct } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { regraLeilao, regraLeilaoTraduzida } from "@/lib/energia/i18n/empresas-leiloes";
+import { comNomes, regraLeilao, regraLeilaoTraduzida } from "@/lib/energia/i18n/empresas-leiloes";
 import { PAGINAS_LEILOES, ROTA_LEILOES, ROTA_LEILOES_TRANSMISSAO, fonteTransmissao, frasesTransmissao } from "@/lib/energia/leiloes";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 import type { LeiloesGold } from "@/lib/energia/tipos-leiloes";
@@ -42,7 +42,7 @@ const link = "text-energia-dark underline underline-offset-4 hover:text-carvao";
 
 /** Regra da gold no idioma da página; sem forma inglesa, o trecho sai marcado como só em português. */
 function Regra({ texto, regiao }: { texto: string; regiao: string }) {
-  return regraLeilaoTraduzida(texto) ? <>{regraLeilao(texto)}</> : <TrechoPortugues regiao={regiao}>{texto}</TrechoPortugues>;
+  return regraLeilaoTraduzida(texto) ? <>{comNomes(regraLeilao(texto))}</> : <TrechoPortugues regiao={regiao}>{texto}</TrechoPortugues>;
 }
 
 export default function LeiloesTransmissaoPage() {

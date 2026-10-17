@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
@@ -53,7 +54,7 @@ export default function AnaliseEmpresas() {
         `Bars start at zero; common scale from 0 to R$ 3,000 million. Total: R$ ${n(copel.total_investimentos["2025"])} million. Distribution: ${n(100 * 2959 / copel.total_investimentos["2025"])}% of the total.`,
       )}</p></div>
       <div className={s.tableWrap} tabIndex={0} role="region" aria-label={tx("EBITDA por segmento da Copel", "Copel EBITDA by segment")}><table className={s.table}><caption>{tx("EBITDA reportado de 2025 · R$ milhões", "Reported EBITDA for 2025 · R$ million")}</caption><thead><tr><th scope="col">{tx("Segmento", "Segment")}</th><th scope="col">EBITDA</th></tr></thead><tbody>{copel.ebitda_2025.map(x => <tr key={x.segmento}><th scope="row">{segmento(x.segmento)}</th><td>{n(x.valor)}</td></tr>)}<tr><th scope="row">{tx("Total", "Total")}</th><td>{n(copel.total_ebitda_2025)}</td></tr></tbody></table></div>
-    </div><p className={s.note}>{limites} {tx("Não se infere retorno do investimento dividindo EBITDA pelo desembolso do mesmo ano.", "Return on investment cannot be inferred by dividing EBITDA by the same year's spending.")}</p><div className={s.sources}><a href={copel.url}>{tx("Fonte: Formulário de Referência 2026, itens 2.1 e 2.5 →", "Source: 2026 Reference Form (Formulário de Referência), items 2.1 and 2.5 →")}</a><p>{tx(
+    </div><p className={s.note}>{limites} {tx("Não se infere retorno do investimento dividindo EBITDA pelo desembolso do mesmo ano.", "Return on investment cannot be inferred by dividing EBITDA by the same year's spending.")}</p><div className={s.sources}><a href={copel.url}>{tx<ReactNode>("Fonte: Formulário de Referência 2026, itens 2.1 e 2.5 →", <>Source: 2026 Reference Form (<Nome>Formulário de Referência</Nome>), items 2.1 and 2.5 →</>)}</a><p>{tx(
       `Consulta: ${dataBR(copel.consultado_em)}. Transcrição dos investimentos e conversão do EBITDA de R$ mil para milhões. Totais conciliados antes do arredondamento.`,
       `Consulted on: ${dataBR(copel.consultado_em)}. Transcription of the investments and conversion of EBITDA from R$ thousand to million. Totals reconciled before rounding.`,
     )}</p><a className={s.link} href="/energia/estudos/copel-2025.json" download>{tx("Baixar valores e referência em JSON", "Download values and reference as JSON")}</a></div></section>

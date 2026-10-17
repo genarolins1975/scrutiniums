@@ -43,8 +43,8 @@ import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { comValorExibido, type Evidencia } from "@/lib/energia/evidencia";
-import { tx } from "@/lib/energia/idioma";
-import { DEFINICAO_EMPRESAS_EN, SERIE_EVOLUCAO_EN, traduzir, universoPerdas } from "@/lib/energia/i18n/empresas-leiloes";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { CAMPOS_SERIE, DEFINICAO_EMPRESAS_EN, SERIE_EVOLUCAO_EN, comCodigos, comNomes, traduzir, universoPerdas } from "@/lib/energia/i18n/empresas-leiloes";
 import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 
@@ -374,7 +374,7 @@ export default function PaginaP037() {
                               <a href={s.url} className="underline underline-offset-4 hover:text-carvao">
                                 {s.url.split("/").pop()}
                               </a>{" "}
-                              ({serie(s.chave)}; {tx("unidade", "unit")} {typeof s.unidade === "string" ? serie(s.unidade) : Object.values(s.unidade).map(serie).join(", ")})
+                              ({comCodigos(serie(s.chave), idiomaEnergia(), CAMPOS_SERIE)}; {tx("unidade", "unit")} {typeof s.unidade === "string" ? serie(s.unidade) : Object.values(s.unidade).map(serie).join(", ")})
                             </>
                           ) : (
                             tx("a base publicada de origem não publica a série nesta publicação", "the source published database does not publish the series in this release")
@@ -386,7 +386,7 @@ export default function PaginaP037() {
                 </SecaoDoPainel>
 
                 <SecaoDoPainel id="regra-universo" titulo={tx("Regra do universo e identidade", "Universe rule and identity")} nivel="auditar">
-                  <p className="text-sm text-carvao-muted">{traduzir(DEFINICAO_EMPRESAS_EN, d.regra_universo)}</p>
+                  <p className="text-sm text-carvao-muted">{comNomes(traduzir(DEFINICAO_EMPRESAS_EN, d.regra_universo))}</p>
                   <p className="text-sm text-carvao-muted">
                     {tx(
                       <>

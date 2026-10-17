@@ -72,6 +72,7 @@ import {
   REGIME_EN,
   SETOR_CVM_EN,
   SITUACAO_CVM_EN,
+  atoNoIdioma,
   motivoTarifa,
   traduzir,
   universoPerdas,
@@ -1295,6 +1296,7 @@ export function entidadesDistribuidoras(ix: readonly Distribuidora[], idioma: Id
   return ix.map((d) => ({
     id: d.slug,
     rotulo: d.sigla,
+    nome: true,
     detalhe: `${d.nome ?? semDado(idioma)}${d.ufs.length ? ` · ${d.ufs.join(", ")}` : ""}${d.ativa ? "" : tx(" · inativa", " · inactive", idioma)}`,
     sinonimos: [d.cnpj, cnpjFormatado(d.cnpj, idioma), ...d.siglas.map((s) => s.sigla), ...d.slugs_alternativos],
   }));
@@ -1451,7 +1453,7 @@ export function respostaFicha(d: Distribuidora, idioma: Idioma = idiomaEnergia()
     partes.push(
       tx(
         `A tarifa residencial B1 vigente desde ${dataTexto(t.inicio, idioma)} é de ${valor}, sem tributos (${t.ato ?? "ato sem número publicado"}).`,
-        `The residential B1 tariff in force since ${dataTexto(t.inicio, idioma)} is ${valor}, excluding taxes (${t.ato ?? "act without a published number"}).`,
+        `The residential B1 tariff in force since ${dataTexto(t.inicio, idioma)} is ${valor}, excluding taxes (${atoNoIdioma(t.ato, idioma) ?? "act without a published number"}).`,
         idioma,
       ),
     );
@@ -1935,6 +1937,7 @@ export const COLUNAS_COMPANHIAS: ColunaTabela[] = [
   },
   {
     id: "controladora",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Controladora aberta (consolida esta)", "Publicly held parent (consolidates this one)");
     },
@@ -1978,6 +1981,7 @@ export function entidadesCompanhias(cs: readonly Companhia[], idioma: Idioma = i
   return cs.map((c) => ({
     id: c.cnpj,
     rotulo: nomeOuCnpj(c.nome, c.cnpj, idioma),
+    nome: true,
     detalhe: `${c.situacao != null ? rotuloSituacaoCvm(c.situacao, idioma) : semDado(idioma)}${c.ultimo_exercicio ? tx(` · DFP até ${c.ultimo_exercicio}`, ` · DFP up to ${c.ultimo_exercicio}`, idioma) : tx(" · sem DFP", " · no DFP", idioma)}`,
     sinonimos: [c.cnpj, cnpjFormatado(c.cnpj, idioma), ...(c.cd_cvm ? [c.cd_cvm] : []), ...(c.distribuidora_slug ? [c.distribuidora_slug] : [])],
   }));
@@ -2420,6 +2424,7 @@ export const COLUNAS_NIVEIS: ColunaTabela[] = [
   },
   {
     id: "maior", // i18n: dado
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Maior participante", "Largest participant");
     },
@@ -2507,6 +2512,7 @@ export const COLUNAS_TIPOS: ColunaTabela[] = [
   },
   {
     id: "maior", // i18n: dado
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Maior grupo", "Largest group");
     },
@@ -2807,17 +2813,17 @@ export const ESQUEMA_CONTROLE = { e: campo(leitorCnpj, "", { param: "ctl.e" }) }
 /** Entidades que a busca da árvore oferece antes do arquivo da cadeia chegar: grupos, proprietários e distribuidoras da gold. */
 export function entidadesControle(gs: readonly Grupo[], ps: readonly Proprietario[], ix: readonly Distribuidora[], idioma: Idioma = idiomaEnergia()): EntidadeBuscavel[] {
   const m = new Map<string, EntidadeBuscavel>();
-  for (const g of gs) m.set(g.cnpj, { id: g.cnpj, rotulo: nomeOuCnpj(g.nome, g.cnpj, idioma), detalhe: tx("grupo de controle", "controlling group", idioma), sinonimos: [cnpjFormatado(g.cnpj, idioma)] });
-  for (const p of ps) if (!m.has(p.cnpj)) m.set(p.cnpj, { id: p.cnpj, rotulo: nomeOuCnpj(p.nome, p.cnpj, idioma), detalhe: tx("proprietário de usinas", "plant owner", idioma), sinonimos: [cnpjFormatado(p.cnpj, idioma)] });
+  for (const g of gs) m.set(g.cnpj, { id: g.cnpj, rotulo: nomeOuCnpj(g.nome, g.cnpj, idioma), nome: true, detalhe: tx("grupo de controle", "controlling group", idioma), sinonimos: [cnpjFormatado(g.cnpj, idioma)] });
+  for (const p of ps) if (!m.has(p.cnpj)) m.set(p.cnpj, { id: p.cnpj, rotulo: nomeOuCnpj(p.nome, p.cnpj, idioma), nome: true, detalhe: tx("proprietário de usinas", "plant owner", idioma), sinonimos: [cnpjFormatado(p.cnpj, idioma)] });
   for (const d of ix)
     if (!m.has(d.cnpj))
-      m.set(d.cnpj, { id: d.cnpj, rotulo: d.sigla, detalhe: tx(`distribuidora · ${d.nome ?? semDado(idioma)}`, `distribution utility · ${d.nome ?? semDado(idioma)}`, idioma), sinonimos: [cnpjFormatado(d.cnpj, idioma), d.nome ?? ""] });
+      m.set(d.cnpj, { id: d.cnpj, rotulo: d.sigla, nome: true, detalhe: tx(`distribuidora · ${d.nome ?? semDado(idioma)}`, `distribution utility · ${d.nome ?? semDado(idioma)}`, idioma), sinonimos: [cnpjFormatado(d.cnpj, idioma), d.nome ?? ""] });
   return Array.from(m.values());
 }
 
 /** Todas as entidades do arquivo da cadeia (para a busca depois que ele chega). */
 export function entidadesCadeia(c: CadeiaSocietaria, idioma: Idioma = idiomaEnergia()): EntidadeBuscavel[] {
-  return Object.entries(c.nos).map(([cnpj, [nome]]) => ({ id: cnpj, rotulo: nomeOuCnpj(nome, cnpj, idioma), detalhe: cnpjFormatado(cnpj, idioma), sinonimos: [cnpj] }));
+  return Object.entries(c.nos).map(([cnpj, [nome]]) => ({ id: cnpj, rotulo: nomeOuCnpj(nome, cnpj, idioma), nome: true, detalhe: cnpjFormatado(cnpj, idioma), sinonimos: [cnpj] }));
 }
 
 /* ================================================================ vereditos (resposta em duas camadas) */

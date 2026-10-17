@@ -3,7 +3,7 @@ import { Nome } from "@/components/i18n/Nome";
 import { cnpjFormatado, nomeOuCnpj, textoArvore, textoSocios, type ArvoreSocietaria } from "@/lib/energia/empresas";
 import { num } from "@/lib/energia/formato";
 import { tx } from "@/lib/energia/idioma";
-import { SOCIO_GENERICO_EN, temTraducao, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
+import { SOCIO_GENERICO_EN, comNomes, temTraducao, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
 
 /**
  * Árvore societária de um CNPJ como listas semânticas (não desenho): a cadeia de controladores
@@ -72,7 +72,7 @@ export function EmpresasArvore({
   const indefinido = tx("percentual direto indefinido na fonte", "direct percentage undefined in the source");
   return (
     <div className="space-y-4 text-sm" aria-live={ir ? "polite" : undefined}>
-      {resumo && <p className="text-carvao">{textoArvore(a, motivos)}</p>}
+      {resumo && <p className="text-carvao">{comNomes(textoArvore(a, motivos), [a.raiz.nome, ...a.cadeia.map((c) => c.nome)])}</p>}
       <div className="grid gap-4 lg:grid-cols-3">
         <div>
           <p className="rotulo text-mineral">{tx("Cadeia de controle, de baixo para cima", "Control chain, from the bottom up")}</p>

@@ -23,10 +23,11 @@ import { rotaEntidade, rotuloFase } from "@/lib/energia/empresas";
 import { carimbo, dataBR, datasLegiveis, num, pct } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { tx } from "@/lib/energia/idioma";
-import { DEFINICAO_LISTADAS_EN, ESPECIE_CONTROLE_EN, FONTE_SIGA_EN, SEGMENTO_B3_EN, notaBolsa, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
+import { DEFINICAO_LISTADAS_EN, ESPECIE_CONTROLE_EN, FONTE_SIGA_EN, NOMES_FONTES, SEGMENTO_B3_EN, comNomes, notaBolsa, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
 import {
   ROTA_LISTADAS,
   logoDe,
+  controladoresFre,
   nomeCurto,
   participacoesCruzadas,
   rotaFicha,
@@ -97,7 +98,7 @@ function contasFin(): { id: "receita" | "ebit" | "lucro_liquido" | "divida_bruta
   ];
 }
 /** Definição publicada pela gold de Listadas, no idioma da página. */
-const def = (x: string) => traduzir(DEFINICAO_LISTADAS_EN, x);
+const def = (x: string) => comNomes(traduzir(DEFINICAO_LISTADAS_EN, x));
 /** Extensão em km, igual nas duas línguas. */
 const kmTexto = (v: number | null | undefined) => `${num(v, 0)} km`; // i18n: dado (unidade igual nas duas línguas)
 
@@ -162,13 +163,18 @@ export default function FichaListada({ params }: { params: { papel: string } }) 
           siglas={["IEE", "B3", "CVM", "FCA", "FRE", "SIGA", "SIGET", "ANEEL"]}
           titulo={tx(`${nome}: ativos, controle, números e ações`, `${nome}: assets, control, numbers and shares`)}
           lead={textoAtuacao(c)}
-          recorte={tx(
-            `${c.nome ?? nome} · CNPJ ${c.cnpj ?? "sem dado"} · ${c.iee.segmento_nome ?? c.iee.segmento ?? "segmento sem dado"} · ativos do SIGA de ${dataSiga}`,
-            `${c.nome ?? nome} · CNPJ ${c.cnpj ?? semDado} · ${segmento} · SIGA assets as of ${dataSiga}`,
+          recorte={comNomes(
+            tx(
+              `${c.nome ?? nome} · CNPJ ${c.cnpj ?? "sem dado"} · ${c.iee.segmento_nome ?? c.iee.segmento ?? "segmento sem dado"} · ativos do SIGA de ${dataSiga}`,
+              `${c.nome ?? nome} · CNPJ ${c.cnpj ?? semDado} · ${segmento} · SIGA assets as of ${dataSiga}`,
+            ),
+            [c.nome ?? nome, ...NOMES_FONTES],
           )}
-          fonte={tx(
-            "ANEEL (SIGA, SIGET, Composição Societária); CVM (FCA, FRE, DFP, IPE); B3 (cotações e proventos)",
-            "ANEEL (SIGA, SIGET, Composição Societária); CVM (FCA, FRE, DFP, IPE); B3 (quotes and distributions)",
+          fonte={comNomes(
+            tx(
+              "ANEEL (SIGA, SIGET, Composição Societária); CVM (FCA, FRE, DFP, IPE); B3 (cotações e proventos)",
+              "ANEEL (SIGA, SIGET, Composição Societária); CVM (FCA, FRE, DFP, IPE); B3 (quotes and distributions)",
+            ),
           )}
           limite={tx(
             "Ativos de coligadas e de sociedades com controle compartilhado não entram; retorno passado não indica retorno futuro.",
@@ -578,10 +584,10 @@ export default function FichaListada({ params }: { params: { papel: string } }) 
               }
               comoInterpretar={tx(
                 <>
-                  {textoControle(c)} Espécie de controle declarada no Formulário Cadastral: {c.controle.especie_fca ?? "sem dado"}.
+                  {comNomes(textoControle(c), controladoresFre(c).map((a) => a.nome))} Espécie de controle declarada no Formulário Cadastral: {c.controle.especie_fca ?? "sem dado"}.
                 </>,
                 <>
-                  {textoControle(c)} Type of control declared in the Registration Form: {c.controle.especie_fca ? traduzir(ESPECIE_CONTROLE_EN, c.controle.especie_fca) : semDado}.
+                  {comNomes(textoControle(c), controladoresFre(c).map((a) => a.nome))} Type of control declared in the Registration Form: {c.controle.especie_fca ? traduzir(ESPECIE_CONTROLE_EN, c.controle.especie_fca) : semDado}.
                 </>,
               )}
               naoConcluir={tx(
@@ -596,7 +602,7 @@ export default function FichaListada({ params }: { params: { papel: string } }) 
                 <SecaoDoPainel id="cruzadas" titulo={tx("Participações entre companhias da carteira", "Stakes between portfolio companies")}>
                   <ul className="space-y-1.5 text-sm leading-relaxed text-carvao-muted">
                     {cruzadas.map((x) => (
-                      <li key={`${x.de.papel}-${x.em.papel}`}>{textoCruzada(x, (y) => nomeCurto(y, logos))}</li>
+                      <li key={`${x.de.papel}-${x.em.papel}`}>{comNomes(textoCruzada(x, (y) => nomeCurto(y, logos)), [nomeCurto(x.de, logos), nomeCurto(x.em, logos)])}</li>
                     ))}
                   </ul>
                 </SecaoDoPainel>

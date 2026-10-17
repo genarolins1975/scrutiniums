@@ -36,6 +36,8 @@ function contas(tx: Tx): { id: ContaLeitura; nome: string; tipo: string }[] {
 export function EmpresasLeitura({ empresas, periodoControle }: { empresas: EmpresaLeitura[]; periodoControle: string }) {
   const tx = useTx();
   const idioma = useIdioma();
+  // <option> só aceita texto: na página inglesa, o nome da companhia é marcado no próprio elemento (como o <Nome> faz)
+  const marcaNome = idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {};
   const f = formatos(idioma);
   const n = (v: number | null, casas = 1) => (v === null ? tx("Sem dado", "No data") : f.num(v, casas));
   const CONTAS = contas(tx);
@@ -53,7 +55,7 @@ export function EmpresasLeitura({ empresas, periodoControle }: { empresas: Empre
   return <section id="leitura-empresa" className={s.section} aria-labelledby="leitura-empresa-titulo">
     <h2 id="leitura-empresa-titulo" className={s.title}>{tx("Leia a empresa em três dimensões.", "Read the company in three dimensions.")}</h2>
     <div className={s.controls}>
-      <label>{tx(`Companhia aberta · ${empresas.length} ativas na base`, `Publicly held company · ${empresas.length} active in the database`)}<select value={v.empresa} onChange={ev => definir({ empresa: ev.target.value })}>{empresas.map(x => <option key={x.cnpj} value={x.cnpj}>{x.nome}</option>)}</select></label>
+      <label>{tx(`Companhia aberta · ${empresas.length} ativas na base`, `Publicly held company · ${empresas.length} active in the database`)}<select value={v.empresa} onChange={ev => definir({ empresa: ev.target.value })}>{empresas.map(x => <option key={x.cnpj} value={x.cnpj} {...marcaNome}>{x.nome}</option>)}</select></label>
       <label>{tx("Perímetro contábil", "Accounting perimeter")}<select value={v.escopo} onChange={ev => definir({ escopo: ev.target.value as "con" | "ind" })}><option value="con">{tx("Consolidado: companhia e controladas", "Consolidated: company and subsidiaries")}</option><option value="ind">{tx("Individual: somente a companhia", "Individual: the company only")}</option></select></label>
     </div>
     <p className={s.note}>{tx(

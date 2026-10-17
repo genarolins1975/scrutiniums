@@ -22,7 +22,7 @@ export function VitrineListadas({ cartoes, logos, dataCarteira }: { cartoes: Car
         <div className="max-w-2xl">
           <p className="rotulo text-mineral">{tx("Companhias listadas na bolsa", "Companies listed on the stock exchange")}</p>
           <h2 id="listadas-titulo" className="ed-h2 mt-1 font-serif text-carvao">
-            {tx(`As ${cartoes.length} companhias do Índice de Energia Elétrica`, `The ${cartoes.length} companies in the B3 Electric Power Index (IEE)`)}
+            {tx(`As ${cartoes.length} companhias do Índice de Energia Elétrica`, `The ${cartoes.length} companies in the Electric Power Index (IEE)`)}
           </h2>
           <p className="mt-2 text-[0.95rem] leading-relaxed text-carvao-muted">
             {tx(

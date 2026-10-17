@@ -46,7 +46,7 @@ import { evidenciasReceita, seriesFinanceirasDe } from "@/lib/energia/empresas-a
 import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { tx } from "@/lib/energia/idioma";
-import { FINANCAS_REGRA_EN, LIMITACAO_EMPRESAS_EN, NOTA_EMPRESAS_EN, escalaPorCompanhia, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
+import { FINANCAS_REGRA_EN, LIMITACAO_EMPRESAS_EN, NOTA_EMPRESAS_EN, comCodigos, comNomes, escalaPorCompanhia, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
 import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 import { datasLegiveis } from "@/lib/energia/visao";
@@ -293,10 +293,10 @@ export default function PaginaP038() {
                 {bloqueioP038.map((b) => (
                   <EmpresasAviso key={b.id} rotulo={tx("Fonte indisponível", "Source unavailable")}>
                     <p>
-                      {lim(b.descricao)} {recusaAneel(b.evidencia)} <TextoDoLeitor texto={lim(b.evidencia)} />
+                      {comNomes(lim(b.descricao))} {recusaAneel(b.evidencia)} <TextoDoLeitor texto={lim(b.evidencia)} />
                     </p>
                     <p className="mt-1">
-                      {tx("O que se entrega no lugar:", "What is delivered instead:")} {lim(b.alternativa)}
+                      {tx("O que se entrega no lugar:", "What is delivered instead:")} {comNomes(lim(b.alternativa))}
                     </p>
                   </EmpresasAviso>
                 ))}
@@ -361,7 +361,7 @@ export default function PaginaP038() {
                       </>,
                       <>
                         Sector declared to the CVM: {Object.entries(f.universo.por_setor).map(([s, n]) => `${rotuloSetorCvm(s)}, ${inteiro(n)}`).join("; ")}. {inteiro(f.universo.com_dfp)} with DFP and{" "}
-                        {inteiro(f.universo.com_itr)} with ITR. {regra(f.revisoes.regra)}
+                        {inteiro(f.universo.com_itr)} with ITR. {comCodigos(regra(f.revisoes.regra))}
                       </>,
                     )}
                   </p>

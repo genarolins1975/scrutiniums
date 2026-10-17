@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { Nome } from "@/components/i18n/Nome";
@@ -55,7 +56,7 @@ import { arvoreDoArquivo } from "@/lib/energia/empresas-arquivos";
 import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { tx } from "@/lib/energia/idioma";
-import { DEFINICAO_EMPRESAS_EN, DOWNLOAD_EMPRESAS_EN, LIMITACAO_EMPRESAS_EN, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
+import { DEFINICAO_EMPRESAS_EN, DOWNLOAD_EMPRESAS_EN, LIMITACAO_EMPRESAS_EN, comNomes, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
 import { metrica } from "@/lib/energia/metricas";
 import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
@@ -66,15 +67,15 @@ export async function generateMetadata(_props: unknown, anterior: ResolvingMetad
     title: tx("Quem controla e qual a concentração? Grupos e HHI da capacidade", "Who controls and how concentrated is it? Groups and capacity HHI"),
     description: tx(
       "Grupos de controle declarados à ANEEL (Composição Societária), capacidade proporcional e capacidade sob controle por grupo, árvore societária de cada CNPJ e HHI, CR4 e CR10 da potência em operação sobre fronteira explícita.",
-      "Controlling groups declared to ANEEL (Composição Societária, the shareholding structure dataset), proportional capacity and capacity under control by group, shareholding tree of each CNPJ and HHI, CR4 and CR10 of the capacity in operation over an explicit boundary.",
+      "Controlling groups declared to ANEEL in its shareholding structure dataset, proportional capacity and capacity under control by group, shareholding tree of each CNPJ and HHI, CR4 and CR10 of the capacity in operation over an explicit boundary.",
     ),
     alternates: { canonical: "/setor-eletrico/empresas/controle" },
   }, anterior);
 }
 
 /** Definição ou regra publicada pela gold, no idioma da página (tabela exata; sem forma inglesa, o texto como veio). */
-const def = (x: string) => traduzir(DEFINICAO_EMPRESAS_EN, x);
-const lim = (x: string) => traduzir(LIMITACAO_EMPRESAS_EN, x);
+const def = (x: string) => comNomes(traduzir(DEFINICAO_EMPRESAS_EN, x));
+const lim = (x: string) => comNomes(traduzir(LIMITACAO_EMPRESAS_EN, x));
 
 export default function PaginaP039() {
   const g = lerGold<EmpresasGold>("empresas.json");
@@ -85,8 +86,9 @@ export default function PaginaP039() {
   const ct = g.controle;
   const datas = g.datas;
   const grupo = ct.concentracao.grupo_proporcional;
-  const fontePolimero = tx("ANEEL, SIGA e Composição Societária (Polímero)", "ANEEL, SIGA and Composição Societária (Polímero)");
-  const fonteMotivos = tx("ANEEL, Composição Societária (Polímero)", "ANEEL, Composição Societária (Polímero)"); // i18n: dado (nome próprio da base nas duas formas)
+  // fonte das tabelas (texto puro, que vai também para o arquivo baixado): em inglês, a base pela descrição; o nome próprio fica no cabeçalho
+  const fontePolimero = tx("ANEEL, SIGA e Composição Societária (Polímero)", "ANEEL, SIGA and shareholding structure declarations");
+  const fonteMotivos = tx("ANEEL, Composição Societária (Polímero)", "ANEEL, shareholding structure declarations");
   const janela = datas.polimero_janela.length
     ? tx(
         `${trimestreTexto(datas.polimero_janela[0])} a ${trimestreTexto(datas.polimero_janela.at(-1))}`,
@@ -162,7 +164,7 @@ export default function PaginaP039() {
             `Usinas em operação do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · declarações de ${janela} · MW, % e pontos do índice de concentração (HHI)`,
             `SIGA (${SIGLAS_IDIOMAS.en.SIGA}) plants in operation as of ${dataSiga} · declarations from ${janela} · MW, % and points of the concentration index (HHI)`,
           )}
-          fonte={tx("ANEEL, SIGA e Composição Societária", "ANEEL, SIGA and Composição Societária")}
+          fonte={tx<ReactNode>("ANEEL, SIGA e Composição Societária", <>ANEEL, SIGA and <Nome>Composição Societária</Nome> (shareholding structure)</>)}
           referencia={tx(
             <>
               SIGA de {dataTexto(datas.siga)} e composição societária declarada à ANEEL de {janela} (referência {trimestreTexto(datas.polimero_referencia)}). Processado em {carimbo(g.gerado_em)}.
@@ -308,8 +310,8 @@ export default function PaginaP039() {
                   aposFigura={
                     <div className="space-y-6">
                       {/* a faixa já traz o HHI; a resposta vem depois da figura, para o gráfico começar na primeira tela */}
-                      <RespostaCurta id="p039" veredito={vereditoControle(ct)} depois>
-                        {respostaControle(ct)}
+                      <RespostaCurta id="p039" veredito={comNomes(vereditoControle(ct), ct.concentracao.grupo_proporcional?.maiores.map((m) => m.nome) ?? [])} depois>
+                        {comNomes(respostaControle(ct), ct.concentracao.grupo_proporcional?.maiores.map((m) => m.nome) ?? [])}
                       </RespostaCurta>
                       <EmpresasRecorte
                         periodo={tx(

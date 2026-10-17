@@ -6,6 +6,8 @@
  *
  * Nenhuma tabela muda número, data ou nome próprio: só a forma inglesa do mesmo rótulo.
  */
+import { createElement, Fragment, type FunctionComponent, type ReactNode } from "react";
+import { Nome } from "@/components/i18n/Nome";
 import type { Idioma } from "@/lib/idioma";
 import { idiomaEnergia } from "../idioma";
 import { dataBR } from "../formato";
@@ -21,6 +23,96 @@ export function traduzir(tabela: Tabela, texto: string, idioma: Idioma = idiomaE
 /** Se a página inglesa tem a forma inglesa do rótulo (sem ela, o componente marca o trecho como só em português). */
 export function temTraducao(tabela: Tabela, texto: string | null | undefined): boolean {
   return !!texto && Object.prototype.hasOwnProperty.call(tabela, texto);
+}
+
+/* ---------------------------------------------------------------- Nomes próprios dentro de frase inglesa */
+
+/**
+ * Nomes de bases oficiais, de segmentos e de valores literais das fontes que as frases inglesas
+ * citam como estão: a base Composição Societária da ANEEL, o SAMP Balanço, o recurso Agentes de
+ * Geração, o Formulário de Referência da CVM, o segmento Novo Mercado da B3, o ramo 'distribuição'
+ * do cadastro e os vencedores literais dos lotes de transmissão.
+ */
+export const NOMES_FONTES: readonly string[] = [
+  "Composição Societária", // i18n: dado (nome próprio)
+  "Polímero", // i18n: dado (nome próprio)
+  "SAMP Balanço", // i18n: dado (nome próprio)
+  "Agentes de Geração", // i18n: dado (nome próprio)
+  "Formulário de Referência", // i18n: dado (nome próprio)
+  "Balancete Mensal Padronizado", // i18n: dado (nome próprio)
+  "Novo Mercado", // i18n: dado (nome próprio)
+  "'distribuição'", // i18n: dado (nome próprio)
+  "'SEM LANCE'", // i18n: dado (nome próprio)
+  "'SEM INSCRITO APTO'", // i18n: dado (nome próprio)
+  "'NÃO LEILOADO'", // i18n: dado (nome próprio)
+];
+
+/** <Nome> como componente de filho opcional, para createElement com o nome como argumento. */
+const NomeMarcado: FunctionComponent<{ children?: ReactNode }> = ({ children }) => createElement(Nome, null, children);
+
+const letraOuDigito = /[A-Za-z0-9\u00C0-\u024F]/;
+
+/**
+ * Frase da página inglesa com cada nome próprio marcado como nome (<Nome>), sem tocar no resto; em
+ * português, o texto como veio (a página portuguesa não muda). O nome só casa inteiro (não dentro de
+ * outra palavra) e, quando dois se sobrepõem, vale o que começa antes e, empatados, o mais longo.
+ */
+export function comNomes(texto: string, nomes: readonly (string | null | undefined)[] = NOMES_FONTES, idioma: Idioma = idiomaEnergia()): ReactNode {
+  if (idioma !== "en" || !texto) return texto;
+  const lista = Array.from(new Set(nomes.filter((n): n is string => !!n && n.trim().length > 1))).sort((a, b) => b.length - a.length);
+  const partes: ReactNode[] = [];
+  let resto = texto;
+  for (;;) {
+    let melhor: { pos: number; nome: string } | null = null;
+    for (const n of lista) {
+      let pos = resto.indexOf(n);
+      while (pos >= 0 && ((pos > 0 && letraOuDigito.test(resto[pos - 1]) && letraOuDigito.test(n[0])) || (letraOuDigito.test(resto[pos + n.length] ?? "") && letraOuDigito.test(n[n.length - 1]))))
+        pos = resto.indexOf(n, pos + 1);
+      if (pos >= 0 && (!melhor || pos < melhor.pos)) melhor = { pos, nome: n };
+    }
+    if (!melhor) break;
+    if (melhor.pos > 0) partes.push(resto.slice(0, melhor.pos));
+    partes.push(createElement(NomeMarcado, { key: partes.length }, melhor.nome));
+    resto = resto.slice(melhor.pos + melhor.nome.length);
+  }
+  if (!partes.length) return texto;
+  if (resto) partes.push(resto);
+  return createElement(Fragment, null, ...partes);
+}
+
+/**
+ * Frase da página inglesa com os nomes de campo dos arquivos (inversoes_de_escala_resolvidas, coluna_nao_preenchida) como código
+ * (<code>): são identificadores, não prosa portuguesa. Em português, o texto como veio.
+ */
+export function comCodigos(texto: string, idioma: Idioma = idiomaEnergia(), padrao: RegExp = /\b[a-z0-9]+(?:_[a-z0-9]+)+\b/g): ReactNode {
+  if (idioma !== "en" || !texto) return texto;
+  const partes: ReactNode[] = [];
+  let ultimo = 0;
+  const re = new RegExp(padrao.source, "g");
+  for (let m = re.exec(texto); m; m = re.exec(texto)) {
+    const i = m.index;
+    if (i > ultimo) partes.push(texto.slice(ultimo, i));
+    partes.push(createElement("code", { key: partes.length }, m[0]));
+    ultimo = i + m[0].length;
+  }
+  if (!partes.length) return texto;
+  if (ultimo < texto.length) partes.push(texto.slice(ultimo));
+  return createElement(Fragment, null, ...partes);
+}
+
+/** Ato tarifário publicado ou o marcador que o pipeline põe quando a fonte não traz ato ("sem ato informado"), no idioma da página. */
+export function atoNoIdioma(ato: string | null | undefined, idioma: Idioma = idiomaEnergia()): string | null | undefined {
+  return idioma === "en" && ato === "sem ato informado" ? "no act reported" : ato; // i18n: dado (marcador do pipeline)
+}
+
+/**
+ * Ficha de prova da gold com a unidade MWmédio (valor exibido "40.168 MWmédio"): na página inglesa, a unidade em
+ * inglês (MWavg); o número e o resto da ficha ficam como a gold os publica.
+ */
+export function evidenciaMwMedio<T extends { valor_exibido: string; unidade: string }>(ev: T | undefined, idioma: Idioma = idiomaEnergia()): T | undefined {
+  if (idioma !== "en" || !ev) return ev;
+  const troca = (x: string) => x.replace(/MWmédio(?![A-Za-z\u00C0-\u024F])/g, "MWavg");
+  return { ...ev, valor_exibido: troca(ev.valor_exibido), unidade: troca(ev.unidade) };
 }
 
 /* ---------------------------------------------------------------- Empresas: cadastro (SIGA) */
@@ -84,7 +176,7 @@ export const LIMITACAO_EMPRESAS_EN: Tabela = {
     "Regulatory financial statements of the distribution utilities (Balancete Mensal Padronizado and the economic and financial sustainability database) not integrated.",
   "Em 30/09/2026, git.aneel.gov.br respondeu HTTP 403 com cf-mitigated: challenge (desafio do Cloudflare) para os arquivos da base de sustentabilidade (2026_1T_base_dados_sustentabilidade.zip) e para a listagem da pasta; http://informacoesbmp.aneel.gov.br/ respondeu HTTP 503. Nenhum conjunto equivalente no portal de dados abertos da ANEEL (buscas: balancete, econômico-financeiro, demonstrações). O acesso não foi contornado.":
     // i18n: dado (inglês com termos de busca literais da fonte)
-    "On Sep 30, 2026, git.aneel.gov.br responded HTTP 403 with cf-mitigated: challenge (Cloudflare challenge) for the sustainability database files (2026_1T_base_dados_sustentabilidade.zip) and for the folder listing; http://informacoesbmp.aneel.gov.br/ responded HTTP 503. No equivalent dataset on ANEEL's open data portal (searches: balancete, econômico-financeiro, demonstrações). Access was not circumvented.",
+    "On Sep 30, 2026, git.aneel.gov.br responded HTTP 403 with cf-mitigated: challenge (Cloudflare challenge) for the sustainability database files (2026_1T_base_dados_sustentabilidade.zip) and for the folder listing; http://informacoesbmp.aneel.gov.br/ responded HTTP 503. No equivalent dataset on ANEEL's open data portal (searches, in Portuguese, for trial balance, economic and financial, and financial statements). Access was not circumvented.",
   "Demonstrações societárias da CVM (DFP e ITR), rotuladas como societárias; as regulatórias ficam como pendência.":
     "Corporate financial statements from CVM (DFP and ITR), labeled as corporate; the regulatory ones remain pending.",
   "Participação econômica indireta dos grupos (look-through) não calculada.": "Indirect economic interest of the groups (look-through) not calculated.",
@@ -146,6 +238,9 @@ export const SERIE_EVOLUCAO_EN: Tabela = {
   "DEC em horas; FEC em interrupções": "DEC in hours; FEC in interruptions",
   "R$/MWh e %": "R$/MWh and %",
 };
+
+/** Chaves e campos do arquivo de séries nas descrições acima ("distribuidoras[cnpj]", "[ano, meses, ...]", "'campos'", "anos, dec, fec"). */
+export const CAMPOS_SERIE = /distribuidoras\[cnpj\](?:\.\w+)?|\[[^\]]*\]|'[^']+'|\b(?:[a-z_]+, )+[a-z_]+\b/g;
 
 /** Universo da taxa nacional de perdas (gold de Perdas, "51 concessionárias com os 12 meses de 2025 e sem alerta"), no idioma da página. */
 export function universoPerdas(texto: string, idioma: Idioma = idiomaEnergia()): string {
@@ -281,7 +376,7 @@ export const FINANCAS_REGRA_EN: Tabela = {
   "Troca de escala: o mesmo número publicado em dois documentos da companhia (DFP do ano e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR seguinte; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) entre os valores convertidos, em ao menos duas contas e por maioria: a marca ESCALA_MOEDA de um dos documentos está errada. Os documentos ligados assim recebem níveis relativos; a DFP mais recente do componente define a escala e os demais valores são convertidos para ela (natureza ESTIMADO, nota em cada valor dos CSV; lista em empresas_financas_ajustes.csv).":
     "Scale swap: the same number published in two of the company's documents (the year's DFP and the comparative of the following DFP; the Dec 31 balance sheet and the comparative of the following ITR; a quarter and the comparative of the following year's ITR) with a ratio of 1,000 (±0.1%) between the converted values, in at least two accounts and by majority: the ESCALA_MOEDA flag of one of the documents is wrong. The documents linked this way receive relative levels; the most recent DFP of the component defines the scale and the other values are converted to it (estimated nature, a note on each value in the CSVs; list in empresas_financas_ajustes.csv).",
   "DT_INI_EXERC diferente de 1º de janeiro num exercício encerrado em 31/12 é aceito como exercício de 12 meses quando o comparativo do mesmo documento tem balanço positivo no fim do ano anterior (a companhia já existia); senão é exercício curto de fato e fica fora da série.":
-    "A DT_INI_EXERC other than January 1 in a fiscal year ending on Dec 31 is accepted as a 12-month fiscal year when the comparative of the same document has a positive balance sheet at the end of the previous year (the company already existed); otherwise it is in fact a short fiscal year and is left out of the series.",
+    "A DT_INI_EXERC other than the 1st of January in a fiscal year ending on Dec 31 is accepted as a 12-month fiscal year when the comparative of the same document has a positive balance sheet at the end of the previous year (the company already existed); otherwise it is in fact a short fiscal year and is left out of the series.",
   "Ativo total que muda 300 vezes ou mais entre exercícios consecutivos depois da correção de escala: publicado como a fonte entregou (sem comparativo exato que prove troca de escala), para conferência; inclui constituição de fato (ativo inicial de R$ 1 mil, por exemplo).":
     // i18n: dado (forma inglesa; "total" é palavra inglesa)
     "Total assets that change 300 times or more between consecutive fiscal years after the scale correction: published as the source delivered them (with no exact comparative proving a scale swap), for checking; includes actual incorporations (initial assets of R$ 1 thousand, for example).",
@@ -530,7 +625,7 @@ export function regraPrecoReal(texto: string, idioma: Idioma = idiomaEnergia()):
   const meses: Record<string, string> = { jan: "Jan", fev: "Feb", mar: "Mar", abr: "Apr", mai: "May", jun: "Jun", jul: "Jul", ago: "Aug", set: "Sep", out: "Oct", nov: "Nov", dez: "Dec" };
   const m = /^Preço real = preço × I\(([a-z]{3})\/(\d{4})\) ÷ I\(mês do leilão\), com o número-índice do IPCA do IBGE \(tabela 1737\)\. É uma régua de comparação entre anos, não o preço vigente de cada contrato, que segue o reajuste próprio do edital e do contrato\.$/.exec(texto);
   if (!m || !meses[m[1]]) return texto;
-  return `Real price = price × I(${meses[m[1]]}/${m[2]}) ÷ I(auction month), using the IBGE IPCA index number (table 1737). It is a yardstick for comparing years, not the current price of each contract, which follows the adjustment set in its own tender and contract.`;
+  return `Real price = price × I(${meses[m[1]]} ${m[2]}) ÷ I(auction month), using the IBGE IPCA index number (table 1737). It is a yardstick for comparing years, not the current price of each contract, which follows the adjustment set in its own tender and contract.`;
 }
 
 /** Regra da gold de Leilões no idioma da página: a tabela exata, e a do preço real pelo padrão. */

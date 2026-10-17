@@ -24,7 +24,8 @@ const JANELAS = ["2020", "12m"] as const;
  */
 export function ListadasLabRetorno({ papeis, inicial }: { papeis: PapelLab[]; inicial: string }) {
   const tx = useTx();
-  const f = formatos(useIdioma());
+  const idioma = useIdioma();
+  const f = formatos(idioma);
   const n = (v: number, casas = 1) => f.num(v, casas);
   const s = (v: number, casas = 1) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${n(Math.abs(v), casas)}`;
   const rotuloJanela = (j: (typeof JANELAS)[number]) => (j === "2020" ? tx("Desde o fim de 2020", "Since the end of 2020") : tx("Últimos 12 meses", "Last 12 months"));
@@ -56,7 +57,7 @@ export function ListadasLabRetorno({ papeis, inicial }: { papeis: PapelLab[]; in
             className="min-h-[44px] border border-linha bg-superficie px-3 text-sm text-carvao"
           >
             {papeis.map((x) => (
-              <option key={x.papel} value={x.papel}>
+              <option key={x.papel} value={x.papel} {...(idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {})}>
                 {x.papel} · {x.nome}
               </option>
             ))}

@@ -55,7 +55,7 @@ import { comValorExibido } from "@/lib/energia/evidencia";
 import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { tx } from "@/lib/energia/idioma";
-import { DEFINICAO_EMPRESAS_EN, DOWNLOAD_EMPRESAS_EN, REGIME_EN, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
+import { DEFINICAO_EMPRESAS_EN, DOWNLOAD_EMPRESAS_EN, REGIME_EN, comNomes, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
 import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { RalieResumo } from "@/lib/energia/empresas";
@@ -85,7 +85,7 @@ function colunasConferencia(): ColunaTabela[] {
     { id: "nucleo", rotulo: tx("Núcleo do CEG", "CEG core"), tipo: "texto" },
     { id: "motivo", rotulo: tx("Diferença", "Difference"), tipo: "texto", categorica: true },
     { id: "siga", rotulo: "SIGA", tipo: "texto" },
-    { id: "agentes", rotulo: tx("Agentes de Geração", "Agentes de Geração (generation agents)"), tipo: "texto" },
+    { id: "agentes", rotulo: tx("Agentes de Geração", "Generation agents dataset"), tipo: "texto" },
   ];
 }
 
@@ -132,7 +132,7 @@ export default function PaginaP036() {
     </>,
     <>
       Revisions detected in the data of this release: {inteiro(g.proveniencia.ativos.revisoes_conhecidas?.total)}. SIGA and SIGET are read every day; the agent registry and the{" "}
-      <Nome>Agentes de Geração</Nome> dataset, every month. <span data-nivel="analisar">{textoConferenciaAgentes(a.conferencia_agentes_geracao)}</span>
+      <Nome>Agentes de Geração</Nome> dataset, every month. <span data-nivel="analisar">{comNomes(textoConferenciaAgentes(a.conferencia_agentes_geracao))}</span>
     </>,
   );
   const comoInterpretar = tx(
@@ -306,7 +306,7 @@ export default function PaginaP036() {
               <div className="space-y-6">
                 <EmpresasProprietarios proprietarios={c.proprietarios} totalComCnpj={a.proprietarios_cnpj} csv={csvProprietarios} fonte={fonteCadastro} versao={a.data ?? ""} />
                 {/* a faixa já traz o número; a resposta vem depois da figura, para o gráfico começar na primeira tela */}
-                <RespostaCurta id="p036" veredito={vereditoCadastro(c)} depois>
+                <RespostaCurta id="p036" veredito={comNomes(vereditoCadastro(c), c.proprietarios.map((x) => x.nome))} depois>
                   {respostaCadastro(c)}
                 </RespostaCurta>
                 <EmpresasRecorte
@@ -425,7 +425,7 @@ export default function PaginaP036() {
                   >
                     {textoGruposNaTransmissao(t) && (
                       <p className="max-w-prose2 text-sm text-carvao-muted" data-grupos-transmissao="">
-                        {textoGruposNaTransmissao(t)}
+                        {comNomes(textoGruposNaTransmissao(t), t.maiores.flatMap((x) => [x.grupo_nome, x.nome]))}
                       </p>
                     )}
                     <GraficoBarras
@@ -476,7 +476,7 @@ export default function PaginaP036() {
                       linhas={linhasGruposTransmissao(t)}
                       chaveLinha="id"
                       colunaRotulo="nome"
-                      fonte={tx("ANEEL, SIGET e Composição Societária", "ANEEL, SIGET and Composição Societária (shareholding structure)")}
+                      fonte={tx("ANEEL, SIGET e Composição Societária", "ANEEL, SIGET and shareholding structure dataset")}
                       versao={t.data ?? ""}
                       nomeArquivo="empresas-transmissao-grupos"
                       ordemInicial={{ coluna: "km", direcao: "desc" }}
@@ -557,12 +557,12 @@ export default function PaginaP036() {
                       </div>
                     )}
                   </dl>
-                  <p className="text-sm text-carvao-muted">{textoConferenciaAgentes(a.conferencia_agentes_geracao)}</p>
+                  <p className="text-sm text-carvao-muted">{comNomes(textoConferenciaAgentes(a.conferencia_agentes_geracao))}</p>
                   {a.conferencia_agentes_geracao && a.conferencia_agentes_geracao.exemplos.length > 0 && (
                     <TabelaInterativa
                       titulo={tx(
                         "Exemplos de usinas com CNPJ ou percentual diferente entre o SIGA e o conjunto Agentes de Geração",
-                        "Examples of plants with a different CNPJ or percentage between SIGA and the Agentes de Geração dataset",
+                        "Examples of plants with a different CNPJ or percentage between SIGA and ANEEL's generation agents dataset",
                       )}
                       colunas={colunasConferencia()}
                       linhas={a.conferencia_agentes_geracao.exemplos.map((x) => ({
@@ -574,7 +574,7 @@ export default function PaginaP036() {
                       }))}
                       chaveLinha="id"
                       colunaRotulo="nucleo"
-                      fonte={tx("ANEEL, SIGA e Agentes de Geração", "ANEEL, SIGA and Agentes de Geração")}
+                      fonte={tx("ANEEL, SIGA e Agentes de Geração", "ANEEL, SIGA and generation agents dataset")}
                       versao={a.conferencia_agentes_geracao.data ?? ""}
                       nomeArquivo="empresas-conferencia-agentes-geracao"
                     />

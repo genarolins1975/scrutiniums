@@ -32,6 +32,8 @@ import {
   OBRA_RALIE_EN,
   SITUACAO_LEILAO_EN,
   TIPO_LEILAO_EN,
+  comNomes,
+  evidenciaMwMedio,
   regraLeilao,
   regraLeilaoTraduzida,
   temTraducao,
@@ -96,7 +98,7 @@ function colunasLeiloes(): ColunaTabela[] {
 
 /** Regra da gold no idioma da página; sem forma inglesa, o trecho sai marcado como só em português. */
 function Regra({ texto, regiao }: { texto: string; regiao: string }) {
-  return regraLeilaoTraduzida(texto) ? <>{regraLeilao(texto)}</> : <TrechoPortugues regiao={regiao}>{texto}</TrechoPortugues>;
+  return regraLeilaoTraduzida(texto) ? <>{comNomes(regraLeilao(texto))}</> : <TrechoPortugues regiao={regiao}>{texto}</TrechoPortugues>;
 }
 
 export default function LeiloesAcrPage() {
@@ -280,7 +282,7 @@ export default function LeiloesAcrPage() {
                 variante="faixa"
                 rotulo={tx("Energia contratada", "Energy contracted")}
                 natureza="CALCULADO"
-                evidencia={ev.energia_total}
+                evidencia={evidenciaMwMedio(ev.energia_total)}
                 valor={t.energia_mwmed}
                 unidade={mwmedio}
                 casas={1}

@@ -779,7 +779,7 @@ export function GraficoBarras({
       height={h}
       viewBox={`0 0 ${w} ${h}`}
       role="group"
-      aria-labelledby={marcaTitulo ? `${uid}-p` : `${uid}-t`}
+      aria-labelledby={`${uid}-t`}
       aria-describedby={`${uid}-i`}
       className="block overflow-visible"
       data-svg-grafico=""
@@ -814,7 +814,13 @@ export function GraficoBarras({
 
   return (
     <div ref={raiz} className="relative w-full" data-grafico="barras" data-orientacao={vertical ? "vertical" : "horizontal"} data-rotulos={vertical ? undefined : rotuloEmCima ? "acima" : "lateral"} data-parcial={corta ? "sim" : undefined}>
-      <p id={marcaTitulo ? `${uid}-p` : undefined} className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
+      {/* com nomes no título, o texto do <title> fica num span só para leitor de tela, com os nomes marcados */}
+      {marcaTitulo && (
+        <span id={`${uid}-t`} className="sr-only">
+          {comNomes(titulo, nomesNoTitulo, idioma)}
+        </span>
+      )}
+      <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
         {comNomes(titulo, nomesNoTitulo, idioma)}
         {unidade.length > 1 && (
           <span className="font-normal text-mineral">

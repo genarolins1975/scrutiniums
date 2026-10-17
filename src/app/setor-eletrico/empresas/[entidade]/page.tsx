@@ -1,4 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
+import type { ReactNode } from "react";
 import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/i18n/LinkIdioma";
 import { Nome } from "@/components/i18n/Nome";
@@ -62,7 +63,7 @@ import { comValorExibido } from "@/lib/energia/evidencia";
 import { carimbo, datasLegiveis, sinal } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { CLASSIFICACAO_DIST_EN, DEFINICAO_EMPRESAS_EN, motivoTarifa, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
+import { CLASSIFICACAO_DIST_EN, DEFINICAO_EMPRESAS_EN, NOMES_FONTES, atoNoIdioma, comNomes, motivoTarifa, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
 import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
@@ -423,7 +424,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   t && t.vigente
                     ? tx(
                         `Sem tributos nem bandeira; ${(t.ato ?? "ato sem número").replace(/^REH\b/, "Resolução Homologatória")}.`,
-                        `Before taxes and tariff flag; ${(t.ato ?? "act without number").replace(/^REH\b/, `${SIGLAS_IDIOMAS.en.REH} (REH)`)}.`,
+                        `Before taxes and tariff flag; ${(atoNoIdioma(t.ato) ?? "act without number").replace(/^REH\b/, `${SIGLAS_IDIOMAS.en.REH} (REH)`)}.`,
                       )
                     : undefined
                 }
@@ -432,10 +433,19 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
           }
         >
           {siglasDiferentes
-            ? tx(
+            ? tx<ReactNode>(
                 // i18n: dado (chave de dado ou forma portuguesa do tx)
                 `Siglas publicadas pelas fontes: ${d.siglas.map((s) => `${s.sigla} (${{ tarifas: "tarifas", continuidade: "continuidade", samp: "SAMP", cadastro_agentes: "cadastro de agentes" }[s.fonte]})`).join("; ")}.`,
-                `Acronyms published by the sources: ${d.siglas.map((s) => `${s.sigla} (${fonteSigla(s.fonte)})`).join("; ")}.`,
+                <>
+                  Acronyms published by the sources:{" "}
+                  {d.siglas.map((s, i) => (
+                    <span key={`${s.fonte}-${s.sigla}`}>
+                      {i ? "; " : ""}
+                      <Nome>{s.sigla}</Nome> ({fonteSigla(s.fonte)})
+                    </span>
+                  ))}
+                  .
+                </>,
               )
             : null}
         </CabecalhoModulo>
@@ -475,8 +485,8 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
               ]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="ficha" veredito={vereditoFicha(d, nacionalDoAno)}>
-                  {respostaFicha(d)}
+                <RespostaCurta id="ficha" veredito={comNomes(vereditoFicha(d, nacionalDoAno), [d.sigla])}>
+                  {comNomes(respostaFicha(d), [d.sigla, d.nome])}
                 </RespostaCurta>
                 {p && p.taxa_total_pct !== null && p.taxa_total_pct < 0 && (
                   <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-perda-negativa="">
@@ -501,15 +511,24 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                 )}
 
                 {evol.perdas.length > 0 && (
-                  <SecaoDoPainel id="perdas" titulo={tx(`Como as perdas da ${d.sigla} evoluíram?`, `How have ${d.sigla}'s losses evolved?`)}>
+                  <SecaoDoPainel
+                    id="perdas"
+                    titulo={tx<ReactNode>(
+                      `Como as perdas da ${d.sigla} evoluíram?`,
+                      <>
+                        How have <Nome>{d.sigla}</Nome>&apos;s losses evolved?
+                      </>,
+                    )}
+                  >
                     <GraficoLinhas
                       titulo={tx(`Perdas totais da ${d.sigla} por ano (% da energia injetada)`, `${d.sigla} total losses by year (% of injected energy)`)}
+                      nomesNoTitulo={[d.sigla]}
                       dados={perdasSerie}
                       // i18n: dado (chave de dado ou forma portuguesa do tx)
                       chaveX="ano"
                       formatoX="texto"
                       series={[
-                        { id: "taxa_completo", rotulo: tx(`${d.sigla}, ano completo`, `${d.sigla}, complete year`), sigla: d.sigla, cor: "var(--serie-comp-1)" },
+                        { id: "taxa_completo", rotulo: tx(`${d.sigla}, ano completo`, "Complete year"), sigla: tx(d.sigla, "Complete"), cor: "var(--serie-comp-1)" },
                         ...(perdasSerie.some((x) => x.taxa_parcial !== null)
                           ? [
                               {
@@ -569,6 +588,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                     <div className="grid gap-6 lg:grid-cols-2">
                       <GraficoLinhas
                         titulo={tx(`DEC da ${d.sigla} e o limite, por ano (horas)`, `${d.sigla} DEC and the limit, by year (hours)`)}
+                        nomesNoTitulo={[d.sigla]}
                         dados={evol.qualidade}
                         // i18n: dado (chave de dado ou forma portuguesa do tx)
                         chaveX="ano"
@@ -584,6 +604,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                       />
                       <GraficoLinhas
                         titulo={tx(`FEC da ${d.sigla} e o limite, por ano (interrupções)`, `${d.sigla} FEC and the limit, by year (interruptions)`)}
+                        nomesNoTitulo={[d.sigla]}
                         dados={evol.qualidade}
                         // i18n: dado (chave de dado ou forma portuguesa do tx)
                         chaveX="ano"
@@ -641,8 +662,8 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
 
                 <SecaoDoPainel id="pares" titulo={tx("Como ela se compara com as pares?", "How does it compare with its peers?")}>
                   <ul className="space-y-1 text-sm text-carvao">
-                    <li>{textoPares(d.sigla, tx("taxa de perdas", "loss rate"), pp, d.slug)}</li>
-                    <li>{textoPares(d.sigla, "DEC", pq, d.slug)}</li>
+                    <li>{comNomes(textoPares(d.sigla, tx("taxa de perdas", "loss rate"), pp, d.slug), [d.sigla])}</li>
+                    <li>{comNomes(textoPares(d.sigla, "DEC", pq, d.slug), [d.sigla])}</li>
                   </ul>
                   {d.grupo === "permissionaria" && (
                     <p className="max-w-prose2 text-sm text-carvao-muted" data-grupo-permissionaria="">
@@ -654,13 +675,21 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   )}
                   {textoNegativos(pp) && (
                     <p className="max-w-prose2 text-sm text-carvao-muted" data-pares-negativos="">
-                      {textoNegativos(pp)}
+                      {comNomes(textoNegativos(pp), pp?.itens.map((x) => x.rotulo) ?? [])}
                     </p>
                   )}
                   <EmpresasFichaPares slug={d.slug} sigla={d.sigla} perdas={pp} qualidade={pq} />
                 </SecaoDoPainel>
 
-                <SecaoDoPainel id="controle" titulo={tx(`Quem controla a ${d.sigla}?`, `Who controls ${d.sigla}?`)}>
+                <SecaoDoPainel
+                  id="controle"
+                  titulo={tx<ReactNode>(
+                    `Quem controla a ${d.sigla}?`,
+                    <>
+                      Who controls <Nome>{d.sigla}</Nome>?
+                    </>,
+                  )}
+                >
                   <p className="text-sm text-carvao">
                     {tx(
                       <>
@@ -707,7 +736,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                 <SecaoDoPainel id="cvm" titulo={tx("O que ela reporta à CVM?", "What does it report to the CVM?")}>
                   {companhia ? (
                     <>
-                      <p className="text-sm text-carvao">{textoCompanhia(companhia, g.financas.contas)}</p>
+                      <p className="text-sm text-carvao">{comNomes(textoCompanhia(companhia, g.financas.contas), [companhia.nome, companhia.controladora_aberta?.nome])}</p>
                       <p className="max-w-prose2 text-xs text-carvao-muted">
                         {tx(
                           <>
@@ -894,7 +923,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                     <TabelaInterativa
                       titulo={tx(`Vigências da tarifa B1 da ${d.sigla}`, `${d.sigla} B1 tariff validity periods`)}
                       colunas={COLUNAS_EVOLUCAO_TARIFA}
-                      linhas={evol.tarifa.map((x) => ({ ...x, id: `${x.inicio}|${x.ato}` }))}
+                      linhas={evol.tarifa.map((x) => ({ ...x, ato: atoNoIdioma(x.ato) ?? x.ato, id: `${x.inicio}|${x.ato}` }))}
                       chaveLinha="id"
                       colunaRotulo="inicio"
                       fonte={tx("ANEEL, tarifas de aplicação (base publicada de Conta de luz)", "ANEEL, applied tariffs (Electricity bill published database)")}
@@ -927,9 +956,24 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                         {d.conflito_classificacao ? ", com conflito entre o SAMP e a continuidade" : ""}. {g.distribuidoras.regra_universo}
                       </>,
                       <>
-                        Identity: CNPJ {cnpjFormatado(d.cnpj)}; stable slug {d.slug}
-                        {d.slugs_alternativos.length ? ` (also by ${d.slugs_alternativos.join(", ")})` : ""}. Classification {classificacao ?? "not recorded"}
-                        {d.conflito_classificacao ? ", with a conflict between SAMP and continuity" : ""}. {traduzir(DEFINICAO_EMPRESAS_EN, g.distribuidoras.regra_universo)}
+                        Identity: CNPJ {cnpjFormatado(d.cnpj)}; stable slug <code>{d.slug}</code>
+                        {d.slugs_alternativos.length ? (
+                          <>
+                            {" "}
+                            (also by{" "}
+                            {d.slugs_alternativos.map((x, i) => (
+                              <span key={x}>
+                                {i ? ", " : ""}
+                                <code>{x}</code>
+                              </span>
+                            ))}
+                            )
+                          </>
+                        ) : (
+                          ""
+                        )}
+                        . Classification {classificacao ?? "not recorded"}
+                        {d.conflito_classificacao ? ", with a conflict between SAMP and continuity" : ""}. {comNomes(traduzir(DEFINICAO_EMPRESAS_EN, g.distribuidoras.regra_universo), NOMES_FONTES)}
                       </>,
                     )}
                   </p>

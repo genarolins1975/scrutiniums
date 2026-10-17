@@ -220,6 +220,7 @@ export function EmpresasEvolucaoFinancas({ entidades, contas, padrao, seriesInic
                 key={c}
                 variante="faixa"
                 rotulo={tx(`Receita ${r?.exercicio ?? ""}: ${nome(c)}`, `Net revenue ${r?.exercicio ?? ""}: ${nome(c)}`)}
+                nomesNoRotulo={[nome(c)]}
                 natureza={r?.alertas.includes("escala_corrigida") ? "ESTIMADO" : "OBSERVADO"}
                 valor={ev && ev.valor_calculo !== null ? ev.valor_calculo / 1e6 : null}
                 casas={1}

@@ -517,11 +517,16 @@ export function GraficoLinhas({
 
   return (
     <div ref={ref} className="relative w-full">
-      <p id={marcaTitulo ? `${uid}-p` : undefined} className={semTitulo ? "sr-only" : "mb-1 text-sm font-medium text-carvao"} data-titulo-grafico="true">
+      <p className={semTitulo ? "sr-only" : "mb-1 text-sm font-medium text-carvao"} data-titulo-grafico="true">
         {comNomes(titulo, nomesNoTitulo, idioma)}
         {unidade.length > 1 && <span className={semTitulo ? undefined : "font-normal text-mineral"}>{tx(", em ", ", in ")}{unidade}</span>}
       </p>
-      {marcaTitulo && <span id={`${uid}-h`} className="sr-only">Use the arrow keys to move through the points.</span>}
+      {/* com nomes no título, o texto do <title> (título e instrução) fica num span só para leitor de tela, com os nomes marcados */}
+      {marcaTitulo && (
+        <span id={`${uid}-h`} className="sr-only">
+          {comNomes(titulo, nomesNoTitulo, idioma)}. Use the arrow keys to move through the points.
+        </span>
+      )}
       {zoom && N > 2 && (
         <div role="group" aria-label={marcaTitulo ? "Chart range" : tx(`Intervalo do gráfico: ${titulo}`, `Chart range: ${titulo}`)} className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1" data-controles="intervalo">
           {periodos.length > 0 && <span className="rotulo mr-1 text-mineral">{tx("Período", "Period")}</span>}
@@ -694,7 +699,7 @@ export function GraficoLinhas({
           height={h}
           viewBox={`0 0 ${w} ${h}`}
           role="img"
-          aria-labelledby={marcaTitulo ? `${uid}-p ${uid}-h` : `${uid}-t`}
+          aria-labelledby={marcaTitulo ? `${uid}-h` : `${uid}-t`}
           aria-describedby={zoom ? `${uid}-d` : undefined}
           tabIndex={0}
           onKeyDown={teclado}

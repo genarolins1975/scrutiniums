@@ -4,6 +4,7 @@ import { useId, useState } from "react";
 import { formatos } from "@/lib/energia/formato";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { Nome } from "@/components/i18n/Nome";
+import { comNomes } from "@/lib/energia/i18n/empresas-leiloes";
 
 export type CompanhiaLabControle = {
   papel: string;
@@ -13,6 +14,8 @@ export type CompanhiaLabControle = {
   porNivel: { nivel: number; mw: number; usinas: number }[];
   /** Participações declaradas no FRE de outras companhias da carteira nesta (ex.: Cemig na Taesa), em texto pronto. */
   cruzadas: string[];
+  /** Nomes das companhias citadas nessas frases, para a página inglesa marcá-los como nome próprio. */
+  nomesCruzadas?: string[];
 };
 
 
@@ -25,7 +28,8 @@ export type CompanhiaLabControle = {
  */
 export function ListadasLabControle({ companhias, inicial }: { companhias: CompanhiaLabControle[]; inicial: string }) {
   const tx = useTx();
-  const f = formatos(useIdioma());
+  const idioma = useIdioma();
+  const f = formatos(idioma);
   const n = (v: number, casas = 0) => f.num(v, casas);
   const [papel, setPapel] = useState(inicial);
   const c = companhias.find((x) => x.papel === papel) ?? companhias[0];
@@ -54,7 +58,7 @@ export function ListadasLabControle({ companhias, inicial }: { companhias: Compa
             className="min-h-[44px] border border-linha bg-superficie px-3 text-sm text-carvao"
           >
             {companhias.map((x) => (
-              <option key={x.papel} value={x.papel}>
+              <option key={x.papel} value={x.papel} {...(idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {})}>
                 {x.papel} · {x.nome}
               </option>
             ))}
@@ -143,7 +147,7 @@ export function ListadasLabControle({ companhias, inicial }: { companhias: Compa
       {c.cruzadas.length > 0 && (
         <ul className="space-y-1 border-l-2 border-linha pl-3 text-sm leading-relaxed text-carvao-muted">
           {c.cruzadas.map((t) => (
-            <li key={t}>{t}</li>
+            <li key={t}>{comNomes(t, c.nomesCruzadas ?? [], idioma)}</li>
           ))}
         </ul>
       )}

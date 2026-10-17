@@ -8,6 +8,7 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { PAINEIS_EMPRESAS, ROTA_EMPRESAS, painel, rotaPainel, type PainelEmpresas, type PassoVinculo } from "@/lib/energia/empresas";
 import { tx } from "@/lib/energia/idioma";
+import { comNomes } from "@/lib/energia/i18n/empresas-leiloes";
 import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import type { Natureza } from "@/lib/energia/tipos";
 
@@ -195,7 +196,7 @@ export function EmpresasDatas({ itens }: { itens: { rotulo: string; texto: strin
       {itens.map((x) => (
         <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
           <span>
-            {x.rotulo}: {x.texto}
+            {comNomes(x.rotulo)}: {x.texto}
           </span>
           <SeloNatureza natureza={x.natureza} compacto />
         </li>
