@@ -10,7 +10,6 @@ import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { colunasModelos, type CartaoModelo, type LinhaCoeficiente, type LinhaModelo } from "@/lib/energia/previsoes";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
-import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 
 export type { CartaoModelo };
@@ -104,9 +103,7 @@ export function PrevisoesFichas({
                 {c.limitacao && (
                   <div>
                     <dt className="rotulo text-mineral">{tx("Principal limitação", "Main limitation")}</dt>
-                    <dd className="text-carvao-muted">
-                      <TrechoPortugues regiao="previsoes-limitacao">{c.limitacao}</TrechoPortugues>
-                    </dd>
+                    <dd className="text-carvao-muted">{c.limitacao}</dd>
                   </div>
                 )}
               </dl>

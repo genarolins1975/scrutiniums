@@ -14,7 +14,7 @@ import { semCaminhosDeArquivo } from "./bastidor";
 import { diaBrasilia } from "./evidencia";
 import { dataBR, dataCurta, nomeSubmercado, num, plural, reais } from "./formato";
 import { idiomaEnergia, tx, tx as txIdioma } from "./idioma";
-import { textoRegistroModelos as reg } from "./i18n/mercado-preco";
+import { textoRegistroModelos as reg, traducaoPrevisoes } from "./i18n/mercado-preco";
 import type { Idioma } from "@/lib/idioma";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
 import type { ModelosGold, Proveniencia, Submercado } from "./tipos";
@@ -2087,10 +2087,13 @@ export function cartoesModelos(
     })(),
     formulaRegistro: f.formula ? reg(f.formula, idioma) : f.formula,
     reexecucao: textoReexecucao(f, idioma),
-    limitacao:
-      registro?.modelos.find((x) => x.codigo === f.codigo)?.limitacao_principal ??
-      paraLeitorPrevisoes(f.limitacoes?.[0] ?? (f.motivo_sem_implementacao ? semCaminhosDeArquivo(f.motivo_sem_implementacao) : (f.motivo_sem_implementacao ?? ""))) ??
-      null,
+    limitacao: (() => {
+      const l =
+        registro?.modelos.find((x) => x.codigo === f.codigo)?.limitacao_principal ??
+        paraLeitorPrevisoes(f.limitacoes?.[0] ?? (f.motivo_sem_implementacao ? semCaminhosDeArquivo(f.motivo_sem_implementacao) : (f.motivo_sem_implementacao ?? ""))) ??
+        null;
+      return l ? traducaoPrevisoes(l, idioma) ?? l : l;
+    })(),
     href: rotaModelo(f.codigo),
   }));
 }

@@ -277,6 +277,21 @@ export const TEXTOS_PREVISOES_EN: Readonly<Record<string, string>> = {
     "No scheduled run recorded so far: the routine is written in the code but has not yet been demonstrated by a real run.",
   "Média de todas as horas da entrega no PLD horário vigente; só existe quando as 168 horas da semana (ou 24 × dias do mês) estão publicadas. Entrega incompleta não tem realizado.":
     "Average of all hours of the delivery in the hourly PLD in force; it only exists when the 168 hours of the week (or 24 × days of the month) are published. An incomplete delivery has no actual value.",
+  "entregas que terminam até 01/01/2025 00h (seleção de modelos)": "deliveries that end by Jan 1, 2025 00h (model selection)",
+  "entregas que começam em 01/01/2025 ou depois (teste final)": "deliveries that start on Jan 1, 2025 or later (final test)",
+  "entregas que atravessam a virada ficam fora dos dois": "deliveries that straddle the turn of the year are left out of both",
+  "Regra de defasagem de 1 dia: um dado só entra como informação se o seu período terminou até 1 dia antes do horário de corte (hipótese fixada pela pesquisa antes dos testes).":
+    "1-day lag rule: a piece of data only enters as information if its period ended up to 1 day before the cutoff time (hypothesis fixed by the research before the tests).",
+  "Números de desempenho do teste retrospectivo retidos: a regra do registro de modelos só os admite no portal depois da liberação formal pelo responsável pela plataforma, e essa decisão ainda não foi registrada com nome e data. O cálculo está pronto e é reproduzível; os resultados ficam fora do portal até a decisão.":
+    "Performance numbers from the retrospective test withheld: the model registry rule only admits them on the portal after formal release by the platform owner, and that decision has not yet been recorded with a name and a date. The calculation is ready and reproducible; the results stay off the portal until the decision.",
+  "Não usa informação de chuva, reservatórios ou vazões: só o preço passado.": "It uses no information on rain, reservoirs or inflows: only the past price.",
+  "Nos testes da pesquisa, as faixas de incerteza cobriram menos do que prometiam, e no horizonte mensal há poucos casos para comparar modelos.":
+    "In the research tests, the uncertainty bands covered less than they promised, and in the monthly horizon there are few cases to compare models.",
+  "As faixas de incerteza não estão calibradas: a faixa do 10º ao 90º percentil não pode ser apresentada como uma faixa de 80%.":
+    "The uncertainty bands are not calibrated: the band from the 10th to the 90th percentile cannot be presented as an 80% band.",
+  "As faixas de incerteza não estão calibradas, e o período usado nos testes já tinha sido examinado antes da definição do modelo (resultado exploratório).":
+    "The uncertainty bands are not calibrated, and the period used in the tests had already been examined before the model was defined (exploratory result).",
+  "Não acompanha mudança de regime de preço entre um ano e outro.": "It does not follow a change in price regime from one year to the next.",
 };
 
 /** Forma inglesa de uma frase fixa da gold de previsões ou do registro de modelos; null sem entrada (a página marca o trecho em português). */
