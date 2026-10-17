@@ -91,7 +91,8 @@ describe.skipIf(!temBuild && !EXIGIR)("Setor Elétrico em inglês: HTML gerado",
       expect(diferencaMulticonjunto(numerosNormalizados(corpo(pt)), numerosNormalizados(corpo(en))), `${par.en}: números`).toEqual({ soEmA: [], soEmB: [] });
       expect(estruturaDeTitulos(corpo(en)), `${par.en}: títulos`).toEqual(estruturaDeTitulos(corpo(pt)));
       const h1Pt = tituloPrincipalVisivel(corpo(pt));
-      if (h1Pt) expect(tituloPrincipalVisivel(corpo(en)), `${par.en}: h1 não traduzido`).not.toBe(h1Pt);
+      // título de uma palavra (nome de modelo ou termo técnico: NEWAVE, DESSEM, Constrained-off) é igual nos dois idiomas
+      if (h1Pt && /\s/.test(h1Pt)) expect(tituloPrincipalVisivel(corpo(en)), `${par.en}: h1 não traduzido`).not.toBe(h1Pt);
       expect(elementos(corpo(pt)).some((e) => attr(e, "data-i18n-estado") !== undefined || attr(e, "data-i18n-nome") !== undefined), `${par.pt}: marca de idioma na página portuguesa`).toBe(false);
     });
   });
