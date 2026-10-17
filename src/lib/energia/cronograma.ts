@@ -21,6 +21,23 @@
  *   mais recente − base) são estados distintos, com textos distintos.
  */
 import { diferencaDatas, precisaoData, textoDiferencaComSinal, textoDuracao, type Diferenca } from "@/lib/energia/calendario";
+import type { Idioma } from "@/lib/idioma";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+
+/** Duração no idioma: em português a de calendario.ts ("120 dias", "3 meses"); em inglês "120 days", "3 months". */
+function duracao(d: Diferenca, idioma: Idioma): string {
+  if (idioma !== "en") return textoDuracao(d);
+  const v = Math.abs(d.valor);
+  const n = v.toLocaleString("en-US");
+  // i18n: dado (unidade da diferença)
+  if (d.unidade === "dias") return `${n} ${v === 1 ? "day" : "days"}`;
+  return `${n} ${v === 1 ? "month" : "months"}`;
+}
+function diferencaComSinal(d: Diferenca, idioma: Idioma): string {
+  if (idioma !== "en") return textoDiferencaComSinal(d);
+  const s = d.valor > 0 ? "+" : d.valor < 0 ? "\u2212" : "";
+  return `${s}${duracao(d, idioma)}`;
+}
 
 export type PrevisaoMarco = {
   /** Data prevista para o marco ("AAAA-MM-DD" ou "AAAA-MM"). */
@@ -106,41 +123,45 @@ export function atrasoDoMarco(marco: MarcoCronograma, dataBase: DataBaseCronogra
 }
 
 /** Texto curto da coluna de atraso ("+120 dias", "−3 meses (prev.)"); vazio sem data-base. */
-export function rotuloAtraso(a: Atraso): string {
+export function rotuloAtraso(a: Atraso, idioma: Idioma = idiomaEnergia()): string {
   switch (a.estado) {
     case "sem-data-base":
       return "";
     case "sem-previsao-na-base":
-      return "sem base";
+      return tx("sem base", "no baseline", idioma);
     case "sem-comparacao":
-      return "sem dado";
+      return tx("sem dado", "no data", idioma);
     case "realizado":
-      return textoDiferencaComSinal(a.diferenca);
+      return diferencaComSinal(a.diferenca, idioma);
     case "previsto":
-      return `${textoDiferencaComSinal(a.diferenca)} (prev.)`;
+      return `${diferencaComSinal(a.diferenca, idioma)} ${tx("(prev.)", "(fcst.)", idioma)}`;
   }
 }
 
 /** Frase completa do atraso, para dica, leitor de tela e tabela. */
-export function textoAtraso(a: Atraso): string {
+export function textoAtraso(a: Atraso, idioma: Idioma = idiomaEnergia()): string {
   switch (a.estado) {
     case "sem-data-base":
-      return "atraso não calculado: nenhuma data-base declarada";
+      return tx("atraso não calculado: nenhuma data-base declarada", "delay not calculated: no baseline date declared", idioma);
     case "sem-previsao-na-base":
-      return "atraso não calculado: não havia previsão vigente na data-base";
+      return tx("atraso não calculado: não havia previsão vigente na data-base", "delay not calculated: there was no forecast in force on the baseline date", idioma);
     case "sem-comparacao":
-      return "atraso não calculado: sem data realizada nem previsão atual";
+      return tx("atraso não calculado: sem data realizada nem previsão atual", "delay not calculated: no actual date and no current forecast", idioma);
     case "realizado": {
       const v = a.diferenca.valor;
-      if (v === 0) return "realizado na data prevista na data-base";
-      return v > 0 ? `realizado com atraso de ${textoDuracao(a.diferenca)} sobre a data-base` : `realizado ${textoDuracao(a.diferenca)} antes da data-base`;
+      if (v === 0) return tx("realizado na data prevista na data-base", "completed on the date forecast on the baseline date", idioma);
+      const t = duracao(a.diferenca, idioma);
+      return v > 0
+        ? tx(`realizado com atraso de ${t} sobre a data-base`, `completed ${t} later than the baseline date`, idioma)
+        : tx(`realizado ${t} antes da data-base`, `completed ${t} before the baseline date`, idioma);
     }
     case "previsto": {
       const v = a.diferenca.valor;
-      if (v === 0) return "ainda não realizado; previsão atual igual à da data-base";
+      if (v === 0) return tx("ainda não realizado; previsão atual igual à da data-base", "not yet completed; current forecast equal to the baseline date's", idioma);
+      const t = duracao(a.diferenca, idioma);
       return v > 0
-        ? `ainda não realizado; previsão atual ${textoDuracao(a.diferenca)} depois da data-base`
-        : `ainda não realizado; previsão atual ${textoDuracao(a.diferenca)} antes da data-base`;
+        ? tx(`ainda não realizado; previsão atual ${t} depois da data-base`, `not yet completed; current forecast ${t} after the baseline date`, idioma)
+        : tx(`ainda não realizado; previsão atual ${t} antes da data-base`, `not yet completed; current forecast ${t} before the baseline date`, idioma);
     }
   }
 }
