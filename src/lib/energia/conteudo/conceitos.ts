@@ -36,6 +36,8 @@ export type FonteOficial = {
   url: string;
   /** Trecho do documento que sustenta a definição, quando aplicável. */
   trecho?: string;
+  /** O trecho citado já está em inglês no original (fonte estrangeira): a página inglesa o mostra sem o aviso "Portuguese only". */
+  trechoEmIngles?: boolean;
   /** O mesmo trecho em linguagem direta, sem acrescentar nada que ele não diga. */
   parafrase?: string;
 };
@@ -145,7 +147,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "pld",
     sigla: "PLD",
     nome: "Preço de Liquidação das Diferenças",
-    grupo: "Preço",
+    grupo: "Preço", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     revisadoEm: "2026-10-07",
@@ -184,7 +186,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "mcp",
     sigla: "MCP",
     nome: "Mercado de Curto Prazo",
-    grupo: "Mercado",
+    grupo: "Mercado", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     revisadoEm: "2026-10-07",
@@ -208,7 +210,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "cmo",
     sigla: "CMO",
     nome: "Custo Marginal de Operação",
-    grupo: "Preço",
+    grupo: "Preço", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
@@ -229,7 +231,7 @@ const CONCEITOS_BASE: Conceito[] = [
   {
     slug: "submercado",
     nome: "Submercado",
-    grupo: "Preço",
+    grupo: "Preço", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
@@ -254,7 +256,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "sin",
     sigla: "SIN",
     nome: "Sistema Interligado Nacional",
-    grupo: "Operação",
+    grupo: "Operação", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
@@ -279,7 +281,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "cvu",
     sigla: "CVU",
     nome: "Custo Variável Unitário",
-    grupo: "Preço",
+    grupo: "Preço", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     revisadoEm: "2026-10-06",
@@ -304,7 +306,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "ear",
     sigla: "EAR",
     nome: "Energia Armazenada",
-    grupo: "Água",
+    grupo: "Água", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
@@ -326,7 +328,7 @@ const CONCEITOS_BASE: Conceito[] = [
   {
     slug: "armazenamento",
     nome: "Capacidade de armazenamento (EAR máxima)",
-    grupo: "Água",
+    grupo: "Água", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase: "Energia que os reservatórios guardariam se todos estivessem cheios.",
@@ -340,7 +342,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "ena",
     sigla: "ENA",
     nome: "Energia Natural Afluente",
-    grupo: "Água",
+    grupo: "Água", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
@@ -361,7 +363,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "mlt",
     sigla: "MLT",
     nome: "Média de longo termo",
-    grupo: "Água",
+    grupo: "Água", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase: "Média de longo termo: a referência em relação à qual o ONS publica a ENA em percentual.",
@@ -384,7 +386,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "ree",
     sigla: "REE",
     nome: "Reservatório Equivalente de Energia",
-    grupo: "Água",
+    grupo: "Água", // i18n: dado
     estado: "PENDENTE",
     relacoes: ["ear", "ena"],
     fontes: [ONS("ear-diario-por-ree-reservatorio-equivalente-de-energia", "EAR Diário por REE")],
@@ -395,7 +397,7 @@ const CONCEITOS_BASE: Conceito[] = [
   {
     slug: "carga",
     nome: "Carga de energia",
-    grupo: "Operação",
+    grupo: "Operação", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase: "Carga atendida no sistema interligado, publicada pelo ONS por subsistema em base diária, em MWmed; o que entra na conta mudou em março de 2021 e em abril de 2023.",
@@ -413,7 +415,7 @@ const CONCEITOS_BASE: Conceito[] = [
   {
     slug: "geracao-centralizada",
     nome: "Geração verificada",
-    grupo: "Operação",
+    grupo: "Operação", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
@@ -434,7 +436,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "geracao-distribuida",
     sigla: "MMGD",
     nome: "Micro e minigeração distribuída",
-    grupo: "Operação",
+    grupo: "Operação", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
@@ -460,7 +462,7 @@ const CONCEITOS_BASE: Conceito[] = [
   {
     slug: "intercambio",
     nome: "Intercâmbio entre subsistemas",
-    grupo: "Operação",
+    grupo: "Operação", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
@@ -478,7 +480,7 @@ const CONCEITOS_BASE: Conceito[] = [
   {
     slug: "constrained-off",
     nome: "Constrained-off",
-    grupo: "Operação",
+    grupo: "Operação", // i18n: dado
     estado: "PENDENTE",
     relacoes: ["geracao-centralizada"],
     fontes: [ONS("restricao_coff_eolica_usi", "Restrição de Operação por Constrained-off de Usinas Eólicas")],
@@ -490,7 +492,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "newave",
     sigla: "NEWAVE",
     nome: "NEWAVE",
-    grupo: "Modelos",
+    grupo: "Modelos", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-27",
     emUmaFrase: "Um dos três modelos computacionais citados pela CCEE no cálculo do PLD, ao lado do DECOMP e do DESSEM.",
@@ -509,7 +511,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "decomp",
     sigla: "DECOMP",
     nome: "DECOMP",
-    grupo: "Modelos",
+    grupo: "Modelos", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase: "Modelo que estima o CMO publicado pelo ONS para cada semana operativa, por subsistema e patamar de carga.",
@@ -523,7 +525,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "dessem",
     sigla: "DESSEM",
     nome: "DESSEM",
-    grupo: "Modelos",
+    grupo: "Modelos", // i18n: dado
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase: "Modelo que estima o CMO em base semi-horária para cada barra do sistema, segundo o ONS.",
@@ -543,7 +545,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "acl",
     sigla: "ACL",
     nome: "Ambiente de Contratação Livre",
-    grupo: "Mercado",
+    grupo: "Mercado", // i18n: dado
     estado: "PENDENTE",
     relacoes: ["acr", "pld"],
     fontes: [],
@@ -554,7 +556,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "acr",
     sigla: "ACR",
     nome: "Ambiente de Contratação Regulada",
-    grupo: "Mercado",
+    grupo: "Mercado", // i18n: dado
     estado: "PENDENTE",
     relacoes: ["acl"],
     fontes: [],
@@ -565,7 +567,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "mre",
     sigla: "MRE",
     nome: "Mecanismo de Realocação de Energia",
-    grupo: "Mercado",
+    grupo: "Mercado", // i18n: dado
     estado: "PENDENTE",
     relacoes: ["gsf", "garantia-fisica"],
     fontes: [],
@@ -576,7 +578,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "gsf",
     sigla: "GSF",
     nome: "Generation Scaling Factor",
-    grupo: "Mercado",
+    grupo: "Mercado", // i18n: dado
     estado: "PENDENTE",
     relacoes: ["mre", "garantia-fisica"],
     fontes: [],
@@ -588,7 +590,7 @@ const CONCEITOS_BASE: Conceito[] = [
     slug: "ess",
     sigla: "ESS",
     nome: "Encargos de Serviços do Sistema",
-    grupo: "Mercado",
+    grupo: "Mercado", // i18n: dado
     estado: "PENDENTE",
     relacoes: ["pld"],
     fontes: [],
@@ -598,7 +600,7 @@ const CONCEITOS_BASE: Conceito[] = [
   {
     slug: "garantia-fisica",
     nome: "Garantia física",
-    grupo: "Mercado",
+    grupo: "Mercado", // i18n: dado
     estado: "PENDENTE",
     relacoes: ["mre", "gsf"],
     fontes: [],
