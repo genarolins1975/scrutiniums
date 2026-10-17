@@ -61,6 +61,13 @@ try{
   check('Protegido sem sessão: '+path,response.status()===307&&response.headers().location.includes('/entrar'));
  }
  check('Método acessível sem sessão',(await anonymous.request.get(origin+PREFIX+'/metodos')).status()===200);
+ check('Ilustração conceitual pública sem abrir dados',(await anonymous.request.get(origin+'/home/judiciario-por-dentro.webp')).status()===200);
+ const anonPage=await anonymous.newPage();
+ await anonPage.goto(origin+PREFIX+'/metodos',{waitUntil:'networkidle'});
+ await anonPage.getByLabel('Trocar de observatório e acessar a conta').click();
+ check('Cabeçalho anônimo oferece entrada com retorno ao método',(await anonPage.getByRole('banner').getByRole('link',{name:'Entrar',exact:true}).getAttribute('href')).includes(encodeURIComponent(PREFIX+'/metodos')));
+ check('Cabeçalho anônimo mantém oito destinos',await anonPage.getByRole('navigation',{name:'Observatórios da plataforma'}).getByRole('link').count()===8);
+
  check('Seletor exige sessão',(await anonymous.request.get(origin+'/app/observatorios',{maxRedirects:0})).status()===307);
  check('Escolha do Judiciário exige sessão',(await anonymous.request.post(origin+'/app/observatorios/entrar',{form:{d:'judiciario'},headers:{origin},maxRedirects:0})).status()===307);
  await anonymous.close();
@@ -72,7 +79,7 @@ try{
  page.on('console',message=>{if(message.type()==='error')errors.push('Console: '+message.text());});
  const axe=await readFile(require.resolve('axe-core/axe.min.js'),'utf8');
  for(const width of [320,390,768,1440]){
-  await page.setViewportSize({width,height:1000});
+  await page.setViewportSize({width,height:width===390?844:1000});
   await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
   const card=page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true});
   check('Cartão próprio do Judiciário '+width+'px',await card.isVisible()&&await card.getByRole('button',{name:/Explorar Judiciário/}).isVisible());
@@ -98,10 +105,14 @@ try{
  check('Último acesso identifica o cartão do Judiciário',await page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true}).getByText('Último acesso',{exact:true}).isVisible());
  const slugs=['','panorama','recursos','tempo','filas','entrega','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
  for(const width of [320,390,768,1440]){
-  await page.setViewportSize({width,height:1000});
+  await page.setViewportSize({width,height:width===390?844:1000});
   for(const slug of slugs){
    const response=await page.goto(origin+PREFIX+(slug?'/'+slug:''),{waitUntil:'networkidle'});
    await page.evaluate(()=>document.fonts.ready);
+   if(slug===''){
+    check('Ilustração carregada '+width+'px',await page.locator('img[alt^="Ilustração conceitual de um tribunal"]').evaluate(img=>img.complete&&img.naturalWidth>0));
+    if([390,1440].includes(width))await page.screenshot({path:join(out,'entrada-primeira-tela-'+width+'.png')});
+   }
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
    await page.addScriptTag({content:axe});
    const violations=await page.evaluate(async()=>{const result=await axe.run(document.querySelector('main'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}});return result.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)}));});
@@ -110,6 +121,28 @@ try{
    if([390,1440].includes(width))await page.screenshot({path:join(out,`${(slug||'entrada').replaceAll('/','-')}-${width}.png`),fullPage:true});
   }
  }
+ await page.goto(origin+PREFIX,{waitUntil:'networkidle'});
+ const platformMenu=page.getByLabel('Trocar de observatório e acessar a conta');
+ await platformMenu.click();
+ const platformNav=page.getByRole('navigation',{name:'Observatórios da plataforma'});
+ check('Cabeçalho logado vai à conta, sem convite de login',await page.getByRole('banner').getByRole('link',{name:'Minha conta',exact:true}).isVisible()&&await page.getByRole('banner').getByRole('link',{name:'Entrar',exact:true}).count()===0);
+ for(const route of [...observatoryRoots,PREFIX])check('Menu mantém destino '+route,await platformNav.locator('a[href="'+route+'"]').count()===1);
+ await platformMenu.press('Escape');
+ check('Menu fecha por Escape',!(await platformNav.isVisible()));
+ const branchButtons=page.getByRole('group',{name:'Conhecer os ramos da Justiça'});
+ await branchButtons.getByRole('button',{name:/Federal/}).click();
+ check('Ramo Federal tem contexto e comparação próprios',(await page.locator('#ramo-em-foco').innerText()).includes('Justiça Federal')&&(await page.locator('#ramo-em-foco a').getAttribute('href')).includes('ramo=federal'));
+ await branchButtons.getByRole('button',{name:/Trabalho/}).click();
+ check('Ramo Trabalho tem contexto próprio',(await page.locator('#ramo-em-foco').innerText()).includes('Justiça do Trabalho'));
+ await page.getByLabel('Buscar tribunal pela sigla').fill('tribunal inexistente');
+ await page.getByRole('button',{name:'Abrir ficha',exact:true}).click();
+ check('Busca informa sigla inexistente',await page.getByRole('status').filter({hasText:'Escolha uma sigla'}).isVisible());
+ await page.getByLabel('Buscar tribunal pela sigla').fill('trf3');await page.getByLabel('Buscar tribunal pela sigla').press('Enter');
+ await page.waitForURL('**/tribunais/trf3');
+ check('Busca abre ficha regional por teclado',(await page.locator('h1').innerText()).includes('TRF3'));
+ await page.goto(origin+PREFIX,{waitUntil:'networkidle'});
+ await page.getByRole('link',{name:/Começar esta comparação/}).click();
+ check('Exemplo da entrada mantém três TJs de grande porte',await page.getByLabel('Porte oficial',{exact:true}).inputValue()==='Grande'&&await page.getByLabel('Tribunal 1',{exact:true}).inputValue()==='tjsp'&&await page.getByLabel('Tribunal 2',{exact:true}).inputValue()==='tjmg'&&await page.getByLabel('Tribunal 3',{exact:true}).inputValue()==='tjrs');
  await page.goto(origin+PREFIX+'/comparar',{waitUntil:'networkidle'});
  await page.getByLabel('Tribunal 1',{exact:true}).selectOption('tjsp');
  await page.getByLabel('Tribunal 2',{exact:true}).selectOption('tjpe');
