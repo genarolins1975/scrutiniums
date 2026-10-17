@@ -344,7 +344,8 @@ export function LabRitmoMeta({ territorios, metas }: { territorios: TerritorioRi
   const serie = t?.[servico] ?? null;
   const meta = metas[servico];
   const base = serie ? ritmoAteMeta({ ...serie, meta }, 0) : null;
-  const inicial = base ? Math.max(0, Number(base.observado.toFixed(2))) : 0;
+  // Ritmos exatos, sem arredondar: o botão do ritmo exigido tem de chegar à meta no prazo (o controle só exibe duas casas).
+  const inicial = base ? Math.max(0, base.observado) : 0;
   const [ritmo, setRitmo] = useState(inicial);
   const [chave, setChave] = useState(`${tid}:${servico}`);
   // Troca de território ou serviço volta o ritmo ao observado (estado derivado na renderização, sem efeito).
@@ -355,7 +356,6 @@ export function LabRitmoMeta({ territorios, metas }: { territorios: TerritorioRi
   if (!t || !serie || !base) return null;
   const r = ritmoAteMeta({ ...serie, meta }, ritmo);
   const max = Math.max(3, Math.ceil(base.exigido * 1.25));
-  const exigidoArred = Number(base.exigido.toFixed(2));
   const anoMeta = r.anoMeta == null ? null : anoCivil(r.anoMeta);
   // Se o ritmo escolhido chega a 100% antes do prazo, a linha para em 100% e segue reta.
   const fimProjecao = ritmo > 0 && serie.v2022 + ritmo * (ANO_PRAZO - ANO_CENSO_2022) > 100 ? ANO_CENSO_2022 + (100 - serie.v2022) / ritmo : ANO_PRAZO;
@@ -528,7 +528,7 @@ export function LabRitmoMeta({ territorios, metas }: { territorios: TerritorioRi
           />
           <div className="flex flex-wrap gap-2">
             <Botao onClick={() => setRitmo(inicial)}>Usar o ritmo observado</Botao>
-            {exigidoArred > 0 && <Botao onClick={() => setRitmo(exigidoArred)}>Usar o ritmo exigido</Botao>}
+            {base.exigido > 0 && <Botao onClick={() => setRitmo(base.exigido)}>Usar o ritmo exigido</Botao>}
           </div>
           <Cartao
             rotulo="Ritmo observado, 2010 a 2022"

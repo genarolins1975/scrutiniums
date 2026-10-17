@@ -128,7 +128,11 @@ export function ritmoAteMeta(t: Trajetoria, ritmo: number): ResultadoRitmo {
   return { observado, exigido, razao, em2033, anoMeta };
 }
 
-/** Ano civil de um instante em ano decimal: 2030,3 cai em 2030; 2034,0 é o fim de 2033. */
+/**
+ * Ano civil de um instante em ano decimal: 2030,3 cai em 2030; 2034,0 é o fim de 2033. A virada de ano tolera o erro
+ * de ponto flutuante (menos de um minuto), para o ritmo exigido exato cair em 2033 e não em 2034 por 1e-12.
+ */
 export function anoCivil(anoDecimal: number): number {
-  return Number.isInteger(anoDecimal) ? anoDecimal - 1 : Math.floor(anoDecimal);
+  const virada = Math.round(anoDecimal);
+  return Math.abs(anoDecimal - virada) < 1e-6 ? virada - 1 : Math.floor(anoDecimal);
 }

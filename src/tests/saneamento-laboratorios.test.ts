@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createElement, type FunctionComponent, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { agregado } from "@/lib/saneamento/gold";
+import { agregado, agregados } from "@/lib/saneamento/gold";
 import { ESTUDOS } from "@/lib/saneamento/dados/estudos";
 import {
   ANO_CENSO_2010,
@@ -106,6 +106,30 @@ describe("Ritmo até a meta (régua do Censo)", () => {
     expect(ritmoAteMeta({ v2010: 90, v2022: 95, meta: 99 }, 5).em2033).toBe(100);
   });
 
+  it("o ritmo exigido exato chega à meta em 2033 em todos os territórios e serviços (sem arredondar o preset)", () => {
+    for (const a of agregados()) {
+      const m = a.censo2022.moradores;
+      const c = a.censo2010;
+      if (!m || !c) continue;
+      const series = [
+        { meta: 99, v2010: (c.agua_rede! / c.moradores!) * 100, v2022: (m.agua.rede! / m.agua.total!) * 100 },
+        { meta: 90, v2010: (c.esgoto_rede_pluvial! / c.esgoto_moradores!) * 100, v2022: (m.esgoto.rede_pluvial! / m.esgoto.total!) * 100 },
+      ];
+      for (const t of series) {
+        const { exigido } = ritmoAteMeta(t, 0);
+        if (exigido === 0) continue;
+        const r = ritmoAteMeta(t, exigido);
+        expect(anoCivil(r.anoMeta!), `${a.id} ${t.meta}`).toBe(2033);
+        expect(r.em2033.toFixed(1), `${a.id} ${t.meta}`).toBe(t.meta.toFixed(1));
+      }
+    }
+    // O caso apontado na revisão: Brasil, água, 1,41087 p.p./ano; com 1,41 a projeção ficaria em 98,99%.
+    const br = agregado("BR")!;
+    const agua = { meta: 99, v2010: (br.censo2010!.agua_rede! / br.censo2010!.moradores!) * 100, v2022: (m22.agua.rede! / m22.agua.total!) * 100 };
+    expect(ritmoAteMeta(agua, 0).exigido.toFixed(5)).toBe("1.41087");
+    expect(ritmoAteMeta(agua, 1.41).em2033).toBeLessThan(99);
+  });
+
   it("território já na meta: exigido zero, sem razão, meta no próprio 2022", () => {
     const r = ritmoAteMeta({ v2010: 98, v2022: 99.5, meta: 99 }, 0.1);
     expect(r.exigido).toBe(0);
@@ -116,6 +140,8 @@ describe("Ritmo até a meta (régua do Censo)", () => {
   it("ano civil: 2030,3 cai em 2030 e 2034,0 é o fim de 2033", () => {
     expect(anoCivil(2030.3)).toBe(2030);
     expect(anoCivil(2034)).toBe(2033);
+    expect(anoCivil(2034 + 1e-12)).toBe(2033);
+    expect(anoCivil(2034 - 1e-12)).toBe(2033);
   });
 
   it("o laboratório abre no Brasil, esgoto, no ritmo observado, com a ressalva de régua", () => {
