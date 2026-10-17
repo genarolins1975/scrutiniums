@@ -119,6 +119,14 @@ Campos técnicos como IDs, códigos, datas de máquina e valores não são tradu
 
 O relatório versionado e o `--check` dependem somente de fontes de código: interface, dicionários, glossário, inventário de rotas e modelos de frase. A situação da gold é calculada por `--gold`, em relatório não versionado. A publicação diária de dados não depende da cobertura i18n; os quatro workflows de dados permanecem iguais aos da main. Esta regra substitui o contrato anterior que incluía hashes e contagens da gold no arquivo versionado.
 
+## Fase 3: Setor Elétrico
+
+As 79 páginas de `/setor-eletrico`, inclusive as de parâmetro (fichas de companhia listada, distribuidora, conjunto de dados, modelo de previsão, verbete e trilha do Aprenda), têm irmã inglesa traduzida em `/en/setor-eletrico`: 396 páginas geradas. As irmãs são geradas por `scripts/i18n/irmas-energia.mjs` e só reexportam a página portuguesa; o idioma vem da URL. O registro de rotas aceita padrões com parâmetro (`rotas.padroes` no inventário). Convenções, terminologia e verificação estão em [ENERGIA.md](ENERGIA.md).
+
+Prova: `src/tests/energia-i18n-html.test.ts` percorre o HTML do build e exige, em cada par, documento e head ingleses indexáveis com alternates, nenhum português sem marca (nome próprio com `<Nome>`, citação com "Portuguese only"), os mesmos destinos de link, os mesmos números e a mesma estrutura de títulos; a página portuguesa sem inglês. Os painéis continuam exigindo conta nos dois idiomas; Aprenda e Metodologia continuam públicos e entram no sitemap com as irmãs.
+
+Pendente na fase: termos do Setor Elétrico formalizados no glossário com trecho de fonte em inglês; textos livres da gold sem versão inglesa continuam em português marcado; exportações (CSV e imagem) seguem os rótulos da página, sem prova própria.
+
 ## Ordem após a revisão da pilha
 
 O cadastro sem CPF para telefone estrangeiro verificado é entregue antes de

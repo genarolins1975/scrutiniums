@@ -1,12 +1,16 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
 import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
-import { carimbo } from "@/lib/energia/formato";
-import { PAINEIS_REDE, ROTA_REDE, rotaPainel, semCaminhosInternos, type PainelRede } from "@/lib/energia/rede";
+import { Nome } from "@/components/i18n/Nome";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
+import { carimbo, dataBR } from "@/lib/energia/formato";
+import { traduzDownloads } from "@/lib/energia/i18n/agua-carga-rede";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { ROTA_REDE, paineisRede, rotaPainel, semCaminhosInternos, type PainelRede } from "@/lib/energia/rede";
 import type { Natureza } from "@/lib/energia/tipos";
 import type { DicionarioOns, DocumentoOns } from "@/lib/energia/tipos-rede";
 
@@ -24,7 +28,7 @@ import type { DicionarioOns, DocumentoOns } from "@/lib/energia/tipos-rede";
  */
 
 /** Páginas do módulo como itens da navegação local; a descrição de cada capítulo é a pergunta do painel. */
-const ITENS_REDE = PAINEIS_REDE.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
+const itensRede = () => paineisRede().map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
 
 /**
  * Navegação entre as quatro páginas: faixa de páginas irmãs nas filhas. A abertura (circulação de energia) não leva a faixa, porque mostra
@@ -32,12 +36,21 @@ const ITENS_REDE = PAINEIS_REDE.map((p) => ({ id: p.id, href: rotaPainel(p.id), 
  */
 export function RedeNavegacao({ atual }: { atual: PainelRede }) {
   if (atual === "p028") return null;
-  return <NavegacaoLocal rotulo="Páginas da rede" itens={ITENS_REDE} atual={atual} />;
+  return <NavegacaoLocal rotulo={tx("Páginas da rede", "Grid pages")} itens={itensRede()} atual={atual} />;
 }
 
 /** Capítulos da abertura: as outras três páginas do módulo, cada uma com a pergunta que responde. */
 export function RedeCapitulos({ atual = "p028" }: { atual?: PainelRede }) {
-  return <NavegacaoLocal rotulo="Capítulos da rede" itens={ITENS_REDE} atual={atual} variante="capitulos" titulo="Outras perguntas sobre a rede" nivelTitulo={3} />;
+  return (
+    <NavegacaoLocal
+      rotulo={tx("Capítulos da rede", "Grid chapters")}
+      itens={itensRede()}
+      atual={atual}
+      variante="capitulos"
+      titulo={tx("Outras perguntas sobre a rede", "Other questions about the grid")}
+      nivelTitulo={3}
+    />
+  );
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */
@@ -47,15 +60,18 @@ export function RedeIndisponivel({ motivo }: { motivo?: string | null }) {
       <CabecalhoEnergia atual="rede" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
-          titulo="Rede indisponível nesta publicação"
+          titulo={tx("Rede indisponível nesta publicação", "Grid unavailable in this release")}
           motivo={
             motivo ??
-            "Os dados de detalhe da rede não foram gerados ou não passaram na validação desta publicação; a última publicação válida é mantida quando existe."
+            tx(
+              "Os dados de detalhe da rede não foram gerados ou não passaram na validação desta publicação; a última publicação válida é mantida quando existe.",
+              "The grid detail data were not generated or did not pass validation in this release; the last valid release is kept when it exists.",
+            )
           }
         />
         <p className="mt-6 text-sm">
           <Link href={ROTA_REDE} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-            Voltar à rede
+            {tx("Voltar à rede", "Back to the grid")}
           </Link>
         </p>
       </main>
@@ -68,15 +84,15 @@ export function RedeRecorte({ periodo, universo, unidade }: { periodo: ReactNode
   return (
     <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
       <div className="min-w-0">
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5">{periodo}</dd>
       </div>
       <div className="min-w-0">
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Scope")}</dt>
         <dd className="mt-0.5">{universo}</dd>
       </div>
       <div className="min-w-0">
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5">{unidade}</dd>
       </div>
     </dl>
@@ -97,17 +113,17 @@ export function RedeAviso({ children, tipo = "nota" }: { children: ReactNode; ti
 
 /** Rodapé do painel: downloads, link compartilhável e a próxima pergunta, numa linha (SeguirPainel). */
 export function RedeSeguir({ ancora, proximo, downloads }: { ancora: string; proximo: { href: string; pergunta: string }; downloads: { rotulo: string; url: string }[] }) {
-  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads} />;
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={traduzDownloads(downloads, idiomaEnergia())} />;
 }
 
 /** Datas de referência de cada parte da página: cada número diz o seu dia ou a sua hora, sem sugerir simultaneidade. */
 export function RedeDatas({ itens }: { itens: { rotulo: string; texto: string | null; natureza: Natureza }[] }) {
   return (
-    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx("Datas de referência de cada parte", "Reference dates of each part")}>
       {itens.map((x) => (
         <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
           <span>
-            {x.rotulo}: {x.texto ?? "sem dado nesta publicação"}
+            {x.rotulo}: {x.texto ?? tx("sem dado nesta publicação", "no data in this release")}
           </span>
           <SeloNatureza natureza={x.natureza} compacto />
         </li>
@@ -123,7 +139,9 @@ export function RedeRegras({ regras }: { regras: { rotulo: string; texto: string
       {regras.map((r) => (
         <div key={r.rotulo} className="min-w-0">
           <dt className="rotulo text-mineral">{r.rotulo}</dt>
-          <dd className="mt-1 text-sm leading-relaxed text-carvao">{semCaminhosInternos(r.texto)}</dd>
+          <dd className="mt-1 text-sm leading-relaxed text-carvao">
+            <TrechoPortugues regiao="regra publicada da rede">{semCaminhosInternos(r.texto)}</TrechoPortugues>
+          </dd>
         </div>
       ))}
     </dl>
@@ -141,16 +159,26 @@ export function RedeDocumentos({ documentos }: { documentos: DocumentoOns[] }) {
         <li key={d.url} className="space-y-1 [overflow-wrap:anywhere]">
           <p>
             <a href={d.url} rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
-              {d.titulo}
+              <Nome>{d.titulo}</Nome>
             </a>
-            {d.capturado_em ? `, capturado em ${carimbo(d.capturado_em)}` : ", sem captura"}
-            {d.sha256 ? ` (sha256 ${d.sha256.slice(0, 12)}…)` : ""}. {d.licenca}
+            {d.capturado_em ? tx(`, capturado em ${carimbo(d.capturado_em)}`, `, captured on ${carimbo(d.capturado_em)}`) : tx(", sem captura", ", not captured")}
+            {d.sha256 ? ` (sha256 ${d.sha256.slice(0, 12)}…)` : ""}. <TrechoPortugues regiao="licença do documento do ONS">{d.licenca}</TrechoPortugues>
           </p>
           <ul className="space-y-1 pl-4">
             {d.trechos.map((t) => (
               <li key={t.id}>
-                <span className="text-carvao">&ldquo;{t.texto}&rdquo;</span>{" "}
-                <span className="text-xs">({t.confere === true ? "conferido no arquivo" : t.confere === false ? "não encontrado no arquivo" : "arquivo não capturado"})</span>
+                <span className="text-carvao">
+                  &ldquo;<TrechoPortugues regiao="trecho de documento do ONS">{t.texto}</TrechoPortugues>&rdquo;
+                </span>{" "}
+                <span className="text-xs">
+                  (
+                  {t.confere === true
+                    ? tx("conferido no arquivo", "checked in the file")
+                    : t.confere === false
+                      ? tx("não encontrado no arquivo", "not found in the file")
+                      : tx("arquivo não capturado", "file not captured")}
+                  )
+                </span>
               </li>
             ))}
           </ul>
@@ -167,13 +195,26 @@ export function RedeDicionarios({ dicionarios }: { dicionarios: DicionarioOns[] 
       {dicionarios.map((d) => (
         <li key={d.conjunto} className="space-y-1 [overflow-wrap:anywhere]">
           <p>
-            <span className="text-carvao">{d.conjunto}</span>: dicionário
-            {d.versoes.length ? ` versão ${d.versoes[d.versoes.length - 1].versao} (${d.versoes[d.versoes.length - 1].data.replaceAll("-", "/")})` : ""}
-            {d.capturado_em ? `, capturado em ${carimbo(d.capturado_em)}` : ""}
-            {d.menciona_sinal === true ? "; define o sinal do valor" : d.menciona_sinal === false ? "; não define o sinal do valor" : ""}.{" "}
+            <span className="text-carvao">
+              <Nome>{d.conjunto}</Nome>
+            </span>
+            {tx(": dicionário", ": data dictionary")}
+            {d.versoes.length
+              ? tx(
+                  ` versão ${d.versoes[d.versoes.length - 1].versao} (${d.versoes[d.versoes.length - 1].data.replaceAll("-", "/")})`,
+                  ` version ${d.versoes[d.versoes.length - 1].versao} (${dataBR(d.versoes[d.versoes.length - 1].data, "en")})`,
+                )
+              : ""}
+            {d.capturado_em ? tx(`, capturado em ${carimbo(d.capturado_em)}`, `, captured on ${carimbo(d.capturado_em)}`) : ""}
+            {d.menciona_sinal === true
+              ? tx("; define o sinal do valor", "; defines the sign of the value")
+              : d.menciona_sinal === false
+                ? tx("; não define o sinal do valor", "; does not define the sign of the value")
+                : ""}
+            .{" "}
             {d.url && (
               <a href={d.url} rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
-                Endereço do dicionário
+                {tx("Endereço do dicionário", "Dictionary address")}
               </a>
             )}
           </p>
@@ -181,8 +222,18 @@ export function RedeDicionarios({ dicionarios }: { dicionarios: DicionarioOns[] 
             <ul className="space-y-1 pl-4">
               {d.trechos.map((t) => (
                 <li key={t.id}>
-                  <span className="text-carvao">&ldquo;{t.texto}&rdquo;</span>{" "}
-                  <span className="text-xs">({t.confere === true ? "conferido" : t.confere === false ? "não encontrado" : "não capturado"})</span>
+                  <span className="text-carvao">
+                    &ldquo;<TrechoPortugues regiao="trecho de dicionário do ONS">{t.texto}</TrechoPortugues>&rdquo;
+                  </span>{" "}
+                  <span className="text-xs">
+                    (
+                    {t.confere === true
+                      ? tx("conferido", "checked")
+                      : t.confere === false
+                        ? tx("não encontrado", "not found")
+                        : tx("não capturado", "not captured")}
+                    )
+                  </span>
                 </li>
               ))}
             </ul>

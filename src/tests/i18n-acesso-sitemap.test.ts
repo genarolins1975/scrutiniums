@@ -44,7 +44,11 @@ describe("sitemap dos pares publicados", () => {
 
   it("publica somente irmãs declaradas e públicas, sem duplicar URLs", () => {
     const inglesas = entradas.filter((e) => new URL(e.url).pathname === "/en" || new URL(e.url).pathname.startsWith("/en/"));
-    const esperadas = PARES_DE_IDIOMA.filter((par) => ehRotaPublica(par.pt) && traducaoPublicada(par.pt) && !par.pt.startsWith("/entrar/sms")).map((par) => base + par.en);
+    // irmãs de páginas com parâmetro (verbetes do Aprenda) entram pela instância portuguesa publicada no sitemap
+    const instancias = entradas.map((e) => new URL(e.url).pathname)
+      .filter((c) => !c.startsWith("/en") && !PARES_DE_IDIOMA.some((par) => par.pt === c) && traducaoPublicada(c))
+      .map((c) => base + parDeIdioma(c)!.en);
+    const esperadas = [...PARES_DE_IDIOMA.filter((par) => ehRotaPublica(par.pt) && traducaoPublicada(par.pt) && !par.pt.startsWith("/entrar/sms")).map((par) => base + par.en), ...instancias];
     expect(inglesas.map((e) => e.url).sort()).toEqual(esperadas.sort());
     expect(inglesas.map((e) => e.url)).not.toContain(base + "/en/termos");
     expect(inglesas.map((e) => e.url)).toContain(base + "/en/sobre");

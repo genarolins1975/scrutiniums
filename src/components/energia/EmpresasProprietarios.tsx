@@ -6,6 +6,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { COLUNAS_PROPRIETARIOS, COR_MEDIDA, ESQUEMA_ATIVOS, grupoDoProprietario, inteiro, linhasProprietarios } from "@/lib/energia/empresas";
 import type { Proprietario } from "@/lib/energia/tipos-empresas";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * P036, os maiores proprietários diretos (capacidade proporcional e capacidade sob controle direto lado a lado, nunca somadas): as
@@ -28,8 +29,11 @@ export function EmpresasProprietarios({
   fonte: string;
   versao: string;
 }) {
+  const tx = useTx();
+  const idioma = useIdioma();
+  const I = (x: number) => inteiro(x, idioma);
   const [v, definir] = useEstadoUrl(ESQUEMA_ATIVOS);
-  const linhas = useMemo(() => linhasProprietarios(proprietarios), [proprietarios]);
+  const linhas = useMemo(() => linhasProprietarios(proprietarios, idioma), [proprietarios, idioma]);
   const barras = useMemo(() => linhas.slice(0, 10), [linhas]);
   // a linha acesa é o primeiro proprietário do grupo escolhido no mapa
   const selecionado = v.grupo ? (proprietarios.find((p) => grupoDoProprietario(p) === v.grupo)?.cnpj ?? null) : null;
@@ -40,13 +44,14 @@ export function EmpresasProprietarios({
   return (
     <div className="space-y-4">
       <GraficoBarras
-        titulo="Capacidade proporcional e capacidade sob controle direto dos 10 maiores proprietários diretos"
+        rotulosSaoNomes
+        titulo={tx("Capacidade proporcional e capacidade sob controle direto dos 10 maiores proprietários diretos", "Proportional capacity and capacity under direct control of the 10 largest direct owners")}
         dados={barras}
         chaveCategoria="id"
         chaveRotulo="nome"
         series={[
-          { id: "mw_proporcional", rotulo: "Capacidade proporcional", cor: COR_MEDIDA.proporcional },
-          { id: "mw_controle_direto", rotulo: "Capacidade sob controle direto", cor: COR_MEDIDA.controle },
+          { id: "mw_proporcional", rotulo: tx("Capacidade proporcional", "Proportional capacity"), cor: COR_MEDIDA.proporcional },
+          { id: "mw_controle_direto", rotulo: tx("Capacidade sob controle direto", "Capacity under direct control"), cor: COR_MEDIDA.controle },
         ]}
         unidade="MW"
         casas={1}
@@ -57,19 +62,30 @@ export function EmpresasProprietarios({
         onSelecionar={escolher}
       />
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-universo-parcial="proprietarios">
-        O gráfico mostra {inteiro(barras.length)} dos {inteiro(proprietarios.length)} maiores proprietários diretos, de {inteiro(totalComCnpj)} CNPJ com participação em usinas; a tabela abaixo traz os{" "}
-        {inteiro(proprietarios.length)}, e a lista inteira está no{" "}
+        {tx(
+          <>
+            O gráfico mostra {I(barras.length)} dos {I(proprietarios.length)} maiores proprietários diretos, de {I(totalComCnpj)} CNPJ com participação em usinas; a tabela abaixo traz os{" "}
+            {I(proprietarios.length)}, e a lista inteira está no{" "}
+          </>,
+          <>
+            The chart shows {I(barras.length)} of the {I(proprietarios.length)} largest direct owners, out of {I(totalComCnpj)} CNPJs with stakes in plants; the table below lists the{" "}
+            {I(proprietarios.length)}, and the full list is in the{" "}
+          </>,
+        )}
         {csv ? (
           <a href={csv.url} download className="text-energia-dark underline underline-offset-4 hover:text-carvao">
             {csv.rotulo}
           </a>
         ) : (
-          "CSV de proprietários"
+          tx("CSV de proprietários", "owners CSV")
         )}
-        . Capacidade proporcional reparte a usina entre os donos pela participação; capacidade sob controle direto conta a usina inteira para quem tem mais de 50% dela. Uma não é parte da outra.
+        {tx(
+          ". Capacidade proporcional reparte a usina entre os donos pela participação; capacidade sob controle direto conta a usina inteira para quem tem mais de 50% dela. Uma não é parte da outra.",
+          ". Proportional capacity splits the plant among the owners by stake; capacity under direct control counts the whole plant for whoever holds more than 50% of it. One is not part of the other.",
+        )}
       </p>
       <TabelaInterativa
-        titulo={`Os ${proprietarios.length} maiores proprietários diretos por capacidade proporcional`}
+        titulo={tx(`Os ${proprietarios.length} maiores proprietários diretos por capacidade proporcional`, `The ${proprietarios.length} largest direct owners by proportional capacity`)}
         colunas={COLUNAS_PROPRIETARIOS}
         linhas={linhas}
         chaveLinha="id"
@@ -81,8 +97,8 @@ export function EmpresasProprietarios({
         ordemInicial={{ coluna: "mw_proporcional", direcao: "desc" }}
         selecionado={selecionado}
         onSelecionar={escolher}
-        dicaBusca="Nome ou CNPJ"
-        nota="Escolher uma linha ou uma barra filtra o mapa das usinas pelo grupo do proprietário."
+        dicaBusca={tx("Nome ou CNPJ", "Name or CNPJ")}
+        nota={tx("Escolher uma linha ou uma barra filtra o mapa das usinas pelo grupo do proprietário.", "Choosing a row or a bar filters the plant map by the owner's group.")}
       />
     </div>
   );

@@ -154,7 +154,9 @@ function documentosDoPar(ctx: TestContext, par: ParDeIdioma) {
 }
 
 // Não filtrar por existência de HTML ou acesso público: toda declaração precisa de prova.
-describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par) => {
+// O Setor Elétrico tem prova própria, mais exigente e com as páginas de parâmetro: energia-i18n-html.test.ts.
+const PARES_FORA_DO_SETOR = PARES_DE_IDIOMA.filter((par) => !par.pt.startsWith("/setor-eletrico"));
+describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", (par) => {
   beforeAll(async () => {
     if (!exigirBuild()) return;
     const modoPt = modoDaPagina(par.pt);

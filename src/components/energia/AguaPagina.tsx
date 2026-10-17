@@ -1,13 +1,17 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
 import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
-import { PAINEIS_AGUA, ROTA_AGUA, rotaPainel, type PainelAgua } from "@/lib/energia/agua";
+import { ROTA_AGUA, paineisAgua, rotaPainel, type PainelAgua } from "@/lib/energia/agua";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import type { Natureza, Proveniencia } from "@/lib/energia/tipos";
+import { traduzDownloads } from "@/lib/energia/i18n/agua-carga-rede";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { Nome } from "@/components/i18n/Nome";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 
 /**
  * Peças de servidor das páginas de Água e clima (um painel por página:
@@ -23,14 +27,14 @@ import type { Natureza, Proveniencia } from "@/lib/energia/tipos";
  */
 
 /** Páginas do módulo como itens da navegação local; a descrição de cada capítulo é a pergunta do painel (a mesma do Anexo A). */
-const ITENS_AGUA = PAINEIS_AGUA.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
+const itensAgua = () => paineisAgua().map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
 
 /**
  * Navegação entre os quatro painéis: a faixa de páginas irmãs no alto de todas elas, a abertura inclusive (a atual vem marcada). A abertura
  * já mostrou os destinos como capítulos no meio da página, a mais de 2.600 px do alto; a faixa no alto os põe à vista antes do título.
  */
 export function AguaNavegacao({ atual }: { atual: PainelAgua }) {
-  return <NavegacaoLocal rotulo="Painéis de água e clima" itens={ITENS_AGUA} atual={atual} />;
+  return <NavegacaoLocal rotulo={tx("Painéis de água e clima", "Water and climate panels")} itens={itensAgua()} atual={atual} />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */
@@ -40,15 +44,18 @@ export function AguaIndisponivel({ motivo }: { motivo?: string | null }) {
       <CabecalhoEnergia atual="agua-e-clima" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
-          titulo="Água e clima indisponível nesta publicação"
+          titulo={tx("Água e clima indisponível nesta publicação", "Water and climate unavailable in this release")}
           motivo={
             motivo ??
-            "A gold de água e clima (public/energia/gold/agua_detalhe.json) não foi gerada ou não passou na validação física; a última publicação válida é mantida quando existe."
+            tx(
+              "A gold de água e clima (public/energia/gold/agua_detalhe.json) não foi gerada ou não passou na validação física; a última publicação válida é mantida quando existe.",
+              "The water and climate gold file (public/energia/gold/agua_detalhe.json) was not generated or did not pass physical validation; the last valid release is kept when one exists.",
+            )
           }
         />
         <p className="mt-6 text-sm">
           <Link href={ROTA_AGUA} className="text-energia-dark underline underline-offset-4">
-            Voltar a água e clima
+            {tx("Voltar a água e clima", "Back to water and climate")}
           </Link>
         </p>
       </main>
@@ -57,7 +64,7 @@ export function AguaIndisponivel({ motivo }: { motivo?: string | null }) {
 }
 
 /** Ausência legítima de uma parte (clima ou reservatórios) dentro de uma gold disponível. */
-export function AguaParteAusente({ titulo, motivo }: { titulo: string; motivo: string }) {
+export function AguaParteAusente({ titulo, motivo }: { titulo: string; motivo: ReactNode }) {
   return (
     <div role="status" className="border border-dashed border-linha bg-superficie px-5 py-4 text-sm leading-relaxed text-carvao">
       <p className="font-medium">{titulo}</p>
@@ -71,15 +78,15 @@ export function AguaRecorte({ periodo, universo, unidade }: { periodo: ReactNode
   return (
     <dl className="grid gap-x-6 gap-y-1 text-sm text-carvao-muted sm:grid-cols-3">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Scope")}</dt>
         <dd className="mt-0.5">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5">{unidade}</dd>
       </div>
     </dl>
@@ -110,7 +117,7 @@ export function AguaSeguir({
   downloads: { rotulo: string; url: string }[];
   extra?: ReactNode;
 }) {
-  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads} extra={extra} />;
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={traduzDownloads(downloads, idiomaEnergia())} extra={extra} />;
 }
 
 export function AguaAnalise({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
@@ -145,11 +152,23 @@ export function AguaFontes({ provs }: { provs: (Proveniencia | undefined)[] }) {
     <ul className="space-y-2 text-sm text-carvao-muted">
       {lista.map((p) => (
         <li key={`${p.fonte.orgao}|${p.fonte.dataset}|${p.indicador}`} className="leading-relaxed">
-          <span className="text-carvao">{p.indicador}</span>: {p.fonte.orgao}, {p.fonte.dataset} ({p.fonte.recurso}). Período de referência:{" "}
-          {dataBR(p.periodo_referencia.inicio)} a {dataBR(p.periodo_referencia.fim)}; cobertura histórica: {dataBR(p.cobertura_historica.inicio)} a{" "}
-          {dataBR(p.cobertura_historica.fim)}; última captura: {carimbo(p.capturado_em)}. Licença: {p.fonte.licenca.replace(/\.+$/, "")}.{" "}
+          {tx(
+            <>
+              <span className="text-carvao">{p.indicador}</span>: {p.fonte.orgao}, {p.fonte.dataset} ({p.fonte.recurso}). Período de referência:{" "}
+              {dataBR(p.periodo_referencia.inicio)} a {dataBR(p.periodo_referencia.fim)}; cobertura histórica: {dataBR(p.cobertura_historica.inicio)} a{" "}
+              {dataBR(p.cobertura_historica.fim)}; última captura: {carimbo(p.capturado_em)}. Licença: {p.fonte.licenca.replace(/\.+$/, "")}.{" "}
+            </>,
+            <>
+              <span className="text-carvao">
+                <TrechoPortugues regiao="agua-fonte-indicador">{p.indicador}</TrechoPortugues>
+              </span>
+              : {p.fonte.orgao}, <Nome>{p.fonte.dataset}</Nome> (<Nome>{p.fonte.recurso}</Nome>). Reference period: {dataBR(p.periodo_referencia.inicio)} to{" "}
+              {dataBR(p.periodo_referencia.fim)}; historical coverage: {dataBR(p.cobertura_historica.inicio)} to {dataBR(p.cobertura_historica.fim)}; last capture:{" "}
+              {carimbo(p.capturado_em)}. License: <TrechoPortugues regiao="agua-fonte-licenca">{p.fonte.licenca.replace(/\.+$/, "")}</TrechoPortugues>.{" "}
+            </>,
+          )}
           <a href={p.fonte.url_dataset || p.fonte.url_primaria} className="text-energia-dark underline underline-offset-4" rel="noopener noreferrer">
-            Endereço da fonte
+            {tx("Endereço da fonte", "Source address")}
           </a>
         </li>
       ))}
@@ -160,11 +179,11 @@ export function AguaFontes({ provs }: { provs: (Proveniencia | undefined)[] }) {
 /** Datas de referência de cada parte da gold: cada número diz o seu dia, sem sugerir simultaneidade. */
 export function AguaDatas({ itens }: { itens: { rotulo: string; dia: string | null; natureza: Natureza }[] }) {
   return (
-    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-carvao-muted" aria-label="Datas de referência de cada parte">
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-carvao-muted" aria-label={tx("Datas de referência de cada parte", "Reference dates of each part")}>
       {itens.map((x) => (
         <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
           <span>
-            {x.rotulo}: {x.dia ? `até ${dataBR(x.dia)}` : "sem dado nesta publicação"}
+            {x.rotulo}: {x.dia ? tx(`até ${dataBR(x.dia)}`, `through ${dataBR(x.dia)}`) : tx("sem dado nesta publicação", "no data in this release")}
           </span>
           <SeloNatureza natureza={x.natureza} compacto />
         </li>
@@ -173,23 +192,26 @@ export function AguaDatas({ itens }: { itens: { rotulo: string; dia: string | nu
   );
 }
 
-/** Regras publicadas na gold (chave e texto), para o modo Auditar. */
-export function AguaRegras({ regras, chaves }: { regras: Record<string, string>; chaves: string[] }) {
+/**
+ * Regras publicadas na gold (chave e texto), para o modo Auditar. O texto da gold só existe em português e sai marcado como tal; as
+ * regras que a página reescreve (`proprias`) já vêm no idioma da página.
+ */
+export function AguaRegras({ regras, chaves, proprias = [] }: { regras: Record<string, string>; chaves: string[]; proprias?: readonly string[] }) {
   const ROTULOS: Record<string, string> = {
-    ear_agregada: "EAR agregada",
-    ear_absoluta: "EAR em energia",
-    capacidade: "Mudanças de capacidade",
-    faixa_sazonal: "Faixa sazonal",
-    nao_se_aplica: "Não se aplica",
-    captura: "Captura usada",
-    ena_30d: "ENA de 30 dias",
-    mlt: "Versão da MLT",
-    precipitacao: "Precipitação",
-    temperatura: "Temperatura",
-    anomalia: "Anomalia",
-    balanco_reservatorio: "Balanço do reservatório",
-    previsao: "Previsão",
-    decomposicao_ear: "Decomposição da EAR",
+    ear_agregada: tx("EAR agregada", "Aggregated EAR"),
+    ear_absoluta: tx("EAR em energia", "EAR in energy"),
+    capacidade: tx("Mudanças de capacidade", "Capacity changes"),
+    faixa_sazonal: tx("Faixa sazonal", "Seasonal range"),
+    nao_se_aplica: tx("Não se aplica", "Not applicable"),
+    captura: tx("Captura usada", "Capture used"),
+    ena_30d: tx("ENA de 30 dias", "30-day ENA"),
+    mlt: tx("Versão da MLT", "MLT version"),
+    precipitacao: tx("Precipitação", "Precipitation"),
+    temperatura: tx("Temperatura", "Temperature"),
+    anomalia: tx("Anomalia", "Anomaly"),
+    balanco_reservatorio: tx("Balanço do reservatório", "Reservoir water balance"),
+    previsao: tx("Previsão", "Forecast"),
+    decomposicao_ear: tx("Decomposição da EAR", "EAR breakdown"),
   };
   return (
     <dl className="grid gap-4 md:grid-cols-2">
@@ -198,7 +220,9 @@ export function AguaRegras({ regras, chaves }: { regras: Record<string, string>;
         .map((k) => (
           <div key={k}>
             <dt className="rotulo text-mineral">{ROTULOS[k] ?? k}</dt>
-            <dd className="mt-1 text-sm leading-relaxed text-carvao">{regras[k]}</dd>
+            <dd className="mt-1 text-sm leading-relaxed text-carvao">
+              {proprias.includes(k) ? regras[k] : <TrechoPortugues regiao={`agua-regra-${k}`}>{regras[k]}</TrechoPortugues>}
+            </dd>
           </div>
         ))}
     </dl>

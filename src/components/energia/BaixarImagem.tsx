@@ -1,5 +1,8 @@
 "use client";
 
+import { idiomaDoCaminhoEnergia, porIdioma } from "@/lib/energia/idioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import type { Idioma } from "@/lib/idioma";
 import { useEffect, useRef, useState, type RefObject } from "react";
 import {
   FONTE_SISTEMA,
@@ -35,9 +38,9 @@ import {
  * próximo (`section[data-painel-evidencia]`); fora de painel, a imagem leva só o endereço e a data. Oculto na impressão.
  */
 
-const MENSAGEM_ERRO = "Não foi possível gerar a imagem neste navegador.";
+const MENSAGEM_ERRO = { pt: "Não foi possível gerar a imagem neste navegador.", en: "The image could not be generated in this browser." }; // i18n: dado (escolhido por porIdioma)
 const CLASSE_BOTAO =
-  "rotulo inline-flex min-h-[24px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao [@media(pointer:coarse)]:min-h-[44px]";
+  "rotulo inline-flex min-h-[24px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao [@media(pointer:coarse)]:min-h-[44px]"; // i18n: dado
 
 /** Elementos do svg que são do momento da interação (cruz do cursor, seleção por arrasto) e não entram na imagem. */
 const TRANSITORIOS = "title, desc, script, foreignObject, [data-cursor], [data-selecao], [data-nao-exportar]";
@@ -188,7 +191,7 @@ function lerPainel(raiz: HTMLElement): { fonte: string | null; versao: string | 
   const painel = raiz.closest("section[data-painel-evidencia]");
   if (!painel) return { fonte: null, versao: null, ancora: null };
   const rodape = Array.from(painel.children).find((c) => c.tagName === "FOOTER");
-  const { fonte, versao } = extrairFonteEVersao(rodape?.querySelector("p")?.textContent);
+  const { fonte, versao } = extrairFonteEVersao(rodape?.querySelector("p")?.textContent, idiomaDoCaminhoEnergia(window.location.pathname));
   return { fonte, versao, ancora: painel.id || null };
 }
 
@@ -253,7 +256,7 @@ function baixarArquivo(blob: Blob, nome: string) {
 }
 
 /** Lê o gráfico do DOM e devolve a entrada de `montarSvgImagem`, ou null quando não há gráfico desenhado. */
-function lerEntrada(raiz: HTMLElement, titulo: string, unidade: string): EntradaImagem | null {
+function lerEntrada(raiz: HTMLElement, titulo: string, unidade: string, idioma: Idioma): EntradaImagem | null {
   const grafico = lerGrafico(raiz);
   if (!grafico || !grafico.elementos.length) return null;
   const { fonte, versao, ancora } = lerPainel(raiz);
@@ -267,7 +270,8 @@ function lerEntrada(raiz: HTMLElement, titulo: string, unidade: string): Entrada
     fonte,
     versao,
     endereco: enderecoDaPagina(window.location, ancora),
-    geradoEm: dataDoClique(new Date()),
+    geradoEm: dataDoClique(new Date(), idioma),
+    idioma,
   };
 }
 
@@ -289,6 +293,8 @@ function lerTokens(entrada: EntradaImagem): Record<string, string> {
 type Aviso = { texto: string; erro: boolean };
 
 export function BaixarImagem({ raiz, titulo, unidade }: { raiz: RefObject<HTMLElement | null>; titulo: string; unidade: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [pronto, setPronto] = useState(false);
   const [aviso, setAviso] = useState<Aviso | null>(null);
   const gerando = useRef(false);
@@ -311,15 +317,15 @@ export function BaixarImagem({ raiz, titulo, unidade }: { raiz: RefObject<HTMLEl
     setAviso(null);
     try {
       const el = raiz.current;
-      const entrada = el ? lerEntrada(el, titulo, unidade) : null;
+      const entrada = el ? lerEntrada(el, titulo, unidade, idioma) : null;
       if (!entrada) throw new Error("sem gráfico desenhado");
       const { svg, largura, altura } = montarSvgImagem(entrada, { tokens: lerTokens(entrada), medir: criarMedidor() });
       const png = await rasterizar(svg, largura, altura);
       const nome = nomeArquivoImagem(titulo);
       baixarArquivo(png, nome);
-      setAviso({ texto: `Imagem baixada: ${nome}.`, erro: false });
+      setAviso({ texto: tx(`Imagem baixada: ${nome}.`, `Image downloaded: ${nome}.`), erro: false });
     } catch {
-      setAviso({ texto: MENSAGEM_ERRO, erro: true });
+      setAviso({ texto: porIdioma(idioma, MENSAGEM_ERRO), erro: true });
     } finally {
       gerando.current = false;
     }
@@ -327,8 +333,8 @@ export function BaixarImagem({ raiz, titulo, unidade }: { raiz: RefObject<HTMLEl
 
   return (
     <span className="ml-auto inline-flex flex-col items-end print:hidden" data-baixar-imagem="">
-      <button type="button" onClick={baixar} aria-label={`Baixar imagem do gráfico: ${titulo}`} className={CLASSE_BOTAO}>
-        Baixar imagem
+      <button type="button" onClick={baixar} aria-label={tx(`Baixar imagem do gráfico: ${titulo}`, `Download chart image: ${titulo}`)} className={CLASSE_BOTAO}>
+        {tx("Baixar imagem", "Download image")}
       </button>
       {/* região viva presente desde a hidratação; o aviso de sucesso é só para leitor de tela, o de erro também fica visível */}
       <span role="status" aria-live="polite" className={aviso?.erro ? "max-w-[16rem] text-right text-xs text-carvao-muted" : "sr-only"}>

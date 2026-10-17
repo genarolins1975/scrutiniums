@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import inventario from "../../config/i18n-inventario.json";
-import { PARES_DE_IDIOMA, parDeIdioma } from "@/lib/i18n-rotas";
+import { PADROES_DE_IDIOMA, PARES_DE_IDIOMA, parDeIdioma } from "@/lib/i18n-rotas";
 import { executar, gerarCobertura, gerarCoberturaGold } from "../../scripts/cobertura-i18n.mjs";
 import { descobrirFontes } from "../../scripts/i18n/fontes.mjs";
 import { validarRotasLiterais } from "../../scripts/i18n/rotas.mjs";
@@ -177,7 +177,11 @@ describe("irmãs literais declaradas no inventário", () => {
   it("mantém runtime e inventário com os mesmos pares e estados", () => {
     const raiz = process.cwd();
     const resumo = validarRotasLiterais(raiz, inventario, descobrirFontes(raiz, inventario));
-    expect(PARES_DE_IDIOMA).toEqual(resumo?.pares.map((par: { pt: string; en: string; conteudo_declarado: string }) => ({ pt: par.pt, en: par.en, conteudo: par.conteudo_declarado })));
+    type Resumo = { pt: string; en: string; conteudo_declarado: string; padrao?: boolean };
+    const pares = (resumo?.pares ?? []) as Resumo[];
+    expect(PARES_DE_IDIOMA).toEqual(pares.filter((par) => !par.padrao).map((par) => ({ pt: par.pt, en: par.en, conteudo: par.conteudo_declarado })));
+    // padrões com parâmetro: o runtime reconhece o mesmo conjunto declarado no inventário
+    expect(PADROES_DE_IDIOMA.map((p) => ({ pt: p.pt, conteudo: p.conteudo }))).toEqual(pares.filter((par) => par.padrao).map((par) => ({ pt: par.pt, conteudo: par.conteudo_declarado })));
     for (const par of PARES_DE_IDIOMA) {
       expect(parDeIdioma(par.pt)).toEqual(par);
       expect(parDeIdioma(par.en)).toEqual(par);

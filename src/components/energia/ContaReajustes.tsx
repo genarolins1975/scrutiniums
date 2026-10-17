@@ -13,10 +13,13 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR, mesAno, pct } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import type { Idioma } from "@/lib/idioma";
+import { txEm } from "@/lib/energia/i18n/conta-inclusao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import {
   CAMPO_DIST,
-  COLUNAS_JANELA,
+  colunasJanela,
   destacar,
   expandirInfo,
   janelasNoMesmoConjunto,
@@ -25,7 +28,7 @@ import {
   respostaReajustes,
   rotuloDistribuidora,
   textoJanelasNoMesmoConjunto,
-  textoUltimaMudanca,
+  textoUltimaMudanca as textoUltimaMudancaEm,
   textoMunicipioReajuste,
   vereditoReajustes,
   type InfoCompacta,
@@ -54,25 +57,34 @@ const ESQUEMA = {
   }),
 };
 
-const COLUNAS_ULTIMOS: ColunaTabela[] = [
-  { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
-  { id: "data", rotulo: "Data da última mudança", tipo: "data" },
-  { id: "ato", rotulo: "Ato da ANEEL", tipo: "texto", literal: { classe: "ato-retificacao-sem-numero", origem: "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica" } },
-  {
-    id: "variacao",
-    rotulo: "Variação da tarifa B1",
-    tipo: "percentual",
-    casas: 2,
-  },
-  {
-    id: "ipca",
-    rotulo: "IPCA desde a mudança anterior",
-    tipo: "percentual",
-    casas: 2,
-  },
-  { id: "meses", rotulo: "Meses do IPCA", tipo: "texto" },
-  { id: "perimetro", rotulo: "Mudança de perímetro (ato)", tipo: "texto" },
-];
+function colunasUltimos(idioma: Idioma): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "data", rotulo: tx("Data da última mudança", "Date of the latest change"), tipo: "data" },
+    {
+      id: "ato",
+      rotulo: tx("Ato da ANEEL", "ANEEL act"),
+      tipo: "texto",
+      idiomaTexto: "nome",
+      literal: { classe: "ato-retificacao-sem-numero", origem: "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica" },
+    },
+    {
+      id: "variacao",
+      rotulo: tx("Variação da tarifa B1", "Change in the B1 tariff"),
+      tipo: "percentual",
+      casas: 2,
+    },
+    {
+      id: "ipca",
+      rotulo: tx("IPCA desde a mudança anterior", "IPCA since the previous change"),
+      tipo: "percentual",
+      casas: 2,
+    },
+    { id: "meses", rotulo: tx("Meses do IPCA", "IPCA months"), tipo: "texto" },
+    { id: "perimetro", rotulo: tx("Mudança de perímetro (ato)", "Perimeter change (act)"), tipo: "texto" },
+  ];
+}
 
 export type ContaReajustesProps = {
   janelas: JanelaInflacao[];
@@ -91,6 +103,11 @@ export type ContaReajustesProps = {
 
 export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: infoCompacta, evidencia, endereco, aviso }: ContaReajustesProps) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { dataBR, mesAno, pct } = formatos(idioma);
+  // a frase da última mudança no idioma da página
+  const textoUltimaMudanca = (u: UltimoEvento) => textoUltimaMudancaEm(u, idioma);
   const info = useMemo(() => expandirInfo(infoCompacta), [infoCompacta]);
   const janela = janelas.find((j) => String(j.meses) === v.janela) ?? janelas[0];
   const linhas = useMemo(() => (janela ? linhasJanela(janela) : []), [janela]);
@@ -106,7 +123,14 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
     if (id) {
       // o limite de quatro descarta a escolha mais antiga: o aviso diz qual saiu
       const descartada = !v.dist.includes(id) && v.dist.length >= LIMITE_COMPARACAO ? v.dist[LIMITE_COMPARACAO - 1] : null;
-      setAviso1(descartada ? `O limite é de ${LIMITE_COMPARACAO} distribuidoras: ${rotulo(descartada)} saiu da seleção para entrar ${rotulo(id)}.` : null);
+      setAviso1(
+        descartada
+          ? tx(
+              `O limite é de ${LIMITE_COMPARACAO} distribuidoras: ${rotulo(descartada)} saiu da seleção para entrar ${rotulo(id)}.`,
+              `The limit is ${LIMITE_COMPARACAO} distribution utilities: ${rotulo(descartada)} left the selection so that ${rotulo(id)} could enter.`,
+            )
+          : null,
+      );
       definir({ dist: destacar(v.dist, id) });
     } else if (destaque) {
       setAviso1(null);
@@ -118,7 +142,7 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
     const validos = m.vinculos.filter((x) => x.estado !== 0);
     const usados = (validos.length ? validos : m.vinculos).map((x) => x.cnpj).filter((c) => linhas.some((l) => l.id === c));
     setAviso1(null);
-    setMunicipio(textoMunicipioReajuste(m, linhas, janela));
+    setMunicipio(textoMunicipioReajuste(m, linhas, janela, idioma));
     if (usados.length) definir({ dist: usados.slice(0, LIMITE_COMPARACAO) });
   };
   // a lista mostra só parte das barras (rola dentro da caixa): a distribuidora que veio do link ou da outra página entra na parte visível
@@ -141,24 +165,28 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
         ato: u[3],
         variacao: u[4],
         ipca: u[5],
-        meses: `${mesAno(`${u[6]}-01`)} a ${mesAno(`${u[7]}-01`)}`,
+        meses: tx(`${mesAno(`${u[6]}-01`)} a ${mesAno(`${u[7]}-01`)}`, `${mesAno(`${u[6]}-01`)} to ${mesAno(`${u[7]}-01`)}`),
         perimetro: u[8],
       })),
-    [ultimos],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [ultimos, idioma],
   );
   const dadosGrafico = useMemo(() => linhas.map((l) => ({ ...l, rotulo: info[l.id]?.uf ? `${l.sigla} · ${info[l.id].uf}` : l.sigla })), [linhas, info]);
   const pontos = useMemo(
     () => linhas.filter((l) => l.variacao !== null).map((l) => ({ id: l.id, valor: l.variacao as number, rotulo: info[l.id]?.uf ? `${l.sigla} (${info[l.id].uf})` : l.sigla })),
     [linhas, info],
   );
-  if (!janela) return <p className="text-sm text-carvao-muted">Sem janela de comparação com o IPCA publicada.</p>;
+  if (!janela) return <p className="text-sm text-carvao-muted">{tx("Sem janela de comparação com o IPCA publicada.", "No IPCA comparison window published.")}</p>;
 
   const refs = [
     ...(janela.ipca_pct !== null
       ? [
           {
             valor: janela.ipca_pct,
-            rotulo: `IPCA de ${mesAno(`${janela.ipca_meses[0]}-01`)} a ${mesAno(`${janela.ipca_meses[1]}-01`)}`,
+            rotulo: tx(
+              `IPCA de ${mesAno(`${janela.ipca_meses[0]}-01`)} a ${mesAno(`${janela.ipca_meses[1]}-01`)}`,
+              `IPCA from ${mesAno(`${janela.ipca_meses[0]}-01`)} to ${mesAno(`${janela.ipca_meses[1]}-01`)}`,
+            ),
           },
         ]
       : []),
@@ -166,25 +194,32 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
     // pontos acima, no cartão da janela e na tabela
   ];
   const marcas = [
-    ...(janela.mediana_pct !== null ? [{ valor: janela.mediana_pct, rotulo: `Mediana ${pct(janela.mediana_pct, 2)}`, tipo: "mediana" as const }] : []),
+    ...(janela.mediana_pct !== null ? [{ valor: janela.mediana_pct, rotulo: tx(`Mediana ${pct(janela.mediana_pct, 2)}`, `Median ${pct(janela.mediana_pct, 2)}`), tipo: "mediana" as const }] : []),
     ...(janela.ipca_pct !== null ? [{ valor: janela.ipca_pct, rotulo: `IPCA ${pct(janela.ipca_pct, 2)}`, tipo: "referencia" as const }] : []),
   ];
   const temFaixa = janela.p25_pct !== null && janela.p75_pct !== null;
-  const descricao =
+  const universos = comuns ? comuns.itens.map((i) => tx(`${i.nDaJanela} em ${i.meses} meses`, `${i.nDaJanela} over ${i.meses} months`)).join(", ") : "";
+  const medianaTxt = janela.mediana_pct !== null ? tx(`mediana ${pct(janela.mediana_pct, 2)}, `, `median ${pct(janela.mediana_pct, 2)}, `) : "";
+  const ipcaTxt = janela.ipca_pct !== null ? `IPCA ${pct(janela.ipca_pct, 2)}; ` : "";
+  const descricao = tx(
     `Variação da tarifa B1 em ${janela.meses} meses de ${janela.n} distribuidoras, de ${dataBR(janela.de)} a ${dataBR(janela.ate)}: ` +
-    `${janela.mediana_pct !== null ? `mediana ${pct(janela.mediana_pct, 2)}, ` : ""}${janela.ipca_pct !== null ? `IPCA ${pct(janela.ipca_pct, 2)}; ` : ""}` +
-    `${janela.acima_ipca} acima do IPCA e ${janela.abaixo_ou_igual_ipca} abaixo ou iguais. Cada ponto é uma distribuidora.`;
+      `${medianaTxt}${ipcaTxt}` +
+      `${janela.acima_ipca} acima do IPCA e ${janela.abaixo_ou_igual_ipca} abaixo ou iguais. Cada ponto é uma distribuidora.`,
+    `Change in the B1 tariff over ${janela.meses} months at ${janela.n} distribution utilities, from ${dataBR(janela.de)} to ${dataBR(janela.ate)}: ` +
+      `${medianaTxt}${ipcaTxt}` +
+      `${janela.acima_ipca} above the IPCA and ${janela.abaixo_ou_igual_ipca} below or equal. Each dot is a distribution utility.`,
+  );
 
   return (
     <div className="space-y-5">
       <div className="grid gap-x-10 gap-y-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-        <RespostaCurta id="p050-reajustes" vivo veredito={vereditoReajustes(janela)}>
-          {respostaReajustes(janela)}
+        <RespostaCurta id="p050-reajustes" vivo veredito={vereditoReajustes(janela, idioma)}>
+          {respostaReajustes(janela, idioma)}
         </RespostaCurta>
         <ContaEscolha
           emLinha
-          legenda="Janela de comparação"
-          opcoes={janelas.map((j) => ({ id: String(j.meses) as "12" | "60" | "120", rotulo: `${j.meses} meses` }))}
+          legenda={tx("Janela de comparação", "Comparison window")}
+          opcoes={janelas.map((j) => ({ id: String(j.meses) as "12" | "60" | "120", rotulo: tx(`${j.meses} meses`, `${j.meses} months`) }))}
           valor={v.janela}
           onEscolher={(id) => definir({ janela: id })}
         />
@@ -194,52 +229,72 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
 
       <div data-grafico-pontos="reajustes">
         <p className="mb-1 text-sm font-medium text-carvao">
-          As {janela.n} distribuidoras na janela de {janela.meses} meses<span className="font-normal text-mineral">, variação da tarifa B1 em %</span>
+          {tx(
+            <>
+              As {janela.n} distribuidoras na janela de {janela.meses} meses<span className="font-normal text-mineral">, variação da tarifa B1 em %</span>
+            </>,
+            <>
+              The {janela.n} distribution utilities in the {janela.meses}-month window<span className="font-normal text-mineral">, change in the B1 tariff in %</span>
+            </>,
+          )}
         </p>
         <ContaPontos
           descricao={descricao}
           pontos={pontos}
-          faixa={temFaixa ? { de: janela.p25_pct as number, ate: janela.p75_pct as number, rotulo: `Do 1º ao 3º quartil: ${pct(janela.p25_pct, 2)} a ${pct(janela.p75_pct, 2)}` } : null}
+          faixa={
+            temFaixa
+              ? {
+                  de: janela.p25_pct as number,
+                  ate: janela.p75_pct as number,
+                  rotulo: tx(`Do 1º ao 3º quartil: ${pct(janela.p25_pct, 2)} a ${pct(janela.p75_pct, 2)}`, `1st to 3rd quartile: ${pct(janela.p25_pct, 2)} to ${pct(janela.p75_pct, 2)}`),
+                }
+              : null
+          }
           marcas={marcas}
           escolhidos={v.dist.filter((id) => pontos.some((p) => p.id === id))}
           formatar={(x) => pct(x, 2)}
           zeroNoEixo
           aoEscolher={selecionar}
         />
-        <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted" aria-label="Legenda">
+        <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted" aria-label={tx("Legenda", "Legend")}>
           <li className="flex items-center gap-1.5">
             <Marcador tipo="ponto" />
-            uma distribuidora
+            {tx("uma distribuidora", "one distribution utility")}
           </li>
           <li className="flex items-center gap-1.5">
             <Marcador tipo="extremo" />
-            menor e maior variação
+            {tx("menor e maior variação", "lowest and highest change")}
           </li>
           <li className="flex items-center gap-1.5">
             <Marcador tipo="mediana" />
-            mediana
+            {tx("mediana", "median")}
           </li>
           {janela.ipca_pct !== null && (
             <li className="flex items-center gap-1.5">
               <Marcador tipo="referencia" />
-              IPCA do período: à direita da linha, a tarifa subiu mais que a inflação
+              {tx("IPCA do período: à direita da linha, a tarifa subiu mais que a inflação", "IPCA for the period: to the right of the line, the tariff rose more than inflation")}
             </li>
           )}
           {temFaixa && (
             <li className="flex items-center gap-1.5">
               <Marcador tipo="faixa" />
-              do 1º ao 3º quartil
+              {tx("do 1º ao 3º quartil", "1st to 3rd quartile")}
             </li>
           )}
           <li className="flex items-center gap-1.5">
             <Marcador tipo="destaque" />
-            distribuidora escolhida
+            {tx("distribuidora escolhida", "chosen distribution utility")}
           </li>
         </ul>
         <div className="mt-3 space-y-3">
           <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
             <ContaBuscaMunicipio aoEscolher={escolherMunicipio} />
-            <p className="max-w-prose2 text-sm text-carvao-muted">Não sabe a sua distribuidora? O nome dela está no alto da fatura de luz; a busca pelo município também a acha.</p>
+            <p className="max-w-prose2 text-sm text-carvao-muted">
+              {tx(
+                "Não sabe a sua distribuidora? O nome dela está no alto da fatura de luz; a busca pelo município também a acha.",
+                "Don't know your distribution utility? Its name is at the top of your electricity bill; the municipality search also finds it.",
+              )}
+            </p>
           </div>
           {municipio && (
             <p role="status" className="max-w-prose2 text-sm text-carvao" data-municipio="">
@@ -262,10 +317,18 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
             limite={LIMITE_COMPARACAO}
           />
           {v.dist.length > 0 && (
-            <ul className="max-w-prose2 space-y-1 text-sm leading-relaxed text-carvao" aria-label="Última mudança da tarifa das distribuidoras selecionadas" data-ultima-mudanca="">
+            <ul
+              className="max-w-prose2 space-y-1 text-sm leading-relaxed text-carvao"
+              aria-label={tx("Última mudança da tarifa das distribuidoras selecionadas", "Latest tariff change of the selected distribution utilities")}
+              data-ultima-mudanca=""
+            >
               {v.dist.map((id) => {
                 const u = ultimos.find((x) => x[0] === id);
-                return <li key={id}>{u ? textoUltimaMudanca(u) : `${rotulo(id)}: nenhuma mudança da tarifa B1 no arquivo.`}</li>;
+                return (
+                  <li key={id}>
+                    {u ? textoUltimaMudanca(u) : tx(`${rotulo(id)}: nenhuma mudança da tarifa B1 no arquivo.`, `${rotulo(id)}: no change in the B1 tariff in the file.`)}
+                  </li>
+                );
               })}
             </ul>
           )}
@@ -273,21 +336,33 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
       </div>
 
       <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="ordem-ranking">
-        A lista começa pelas menores variações e segue até a maior ({linhas.length} no total). As primeiras barras ficam à esquerda do IPCA e da mediana: {janela.abaixo_ou_igual_ipca} distribuidoras
-        ficaram abaixo da inflação ou iguais a ela, e {janela.acima_ipca} ficaram acima. Role a lista ou use &quot;Mostrar todas&quot; para ver as que ficaram acima.
+        {tx(
+          <>
+            A lista começa pelas menores variações e segue até a maior ({linhas.length} no total). As primeiras barras ficam à esquerda do IPCA e da mediana: {janela.abaixo_ou_igual_ipca} distribuidoras
+            ficaram abaixo da inflação ou iguais a ela, e {janela.acima_ipca} ficaram acima. Role a lista ou use &quot;Mostrar todas&quot; para ver as que ficaram acima.
+          </>,
+          <>
+            The list starts with the smallest changes and runs to the largest ({linhas.length} in total). The first bars are to the left of the IPCA and the median: {janela.abaixo_ou_igual_ipca}{" "}
+            distribution utilities were below or equal to inflation, and {janela.acima_ipca} were above. Scroll the list or use &quot;Show all&quot; to see those above.
+          </>,
+        )}
       </p>
 
       <div ref={lista}>
         <GraficoBarras
-          titulo={`Variação da tarifa B1 residencial de ${dataBR(janela.de)} a ${dataBR(janela.ate)}, por distribuidora, com o IPCA do período`}
+          titulo={tx(
+            `Variação da tarifa B1 residencial de ${dataBR(janela.de)} a ${dataBR(janela.ate)}, por distribuidora, com o IPCA do período`,
+            `Change in the residential B1 tariff from ${dataBR(janela.de)} to ${dataBR(janela.ate)}, by distribution utility, with the IPCA for the period`,
+          )}
           dados={dadosGrafico}
+          rotulosSaoNomes
           chaveCategoria="id"
           chaveRotulo="rotulo"
           series={[
             {
               id: "variacao",
-              rotulo: "Variação da tarifa B1",
-              cor: "var(--cor-energia)",
+              rotulo: tx("Variação da tarifa B1", "Change in the B1 tariff"),
+              cor: "var(--cor-energia)", // i18n: dado
             },
           ]}
           unidade="%"
@@ -305,30 +380,40 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
       <div className="grid gap-x-10 gap-y-4 border-t border-linha pt-4 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:items-start">
         <Numero
           variante="faixa"
-          rotulo={`Variação mediana da tarifa B1 em ${janela.meses} meses`}
+          rotulo={tx(`Variação mediana da tarifa B1 em ${janela.meses} meses`, `Median change in the B1 tariff over ${janela.meses} months`)}
           natureza="CALCULADO"
           valor={janela.mediana_pct}
           formato="pct"
           casas={2}
           evidencia={janela.meses === 12 ? evidencia : null}
-          motivoAusencia="Sem IPCA ou sem tarifa nas duas datas da janela."
-          nota={
+          motivoAusencia={tx("Sem IPCA ou sem tarifa nas duas datas da janela.", "No IPCA or no tariff on the two dates of the window.")}
+          nota={tx(
             <>
               {janela.n} distribuidoras. IPCA no mesmo período: {pct(janela.ipca_pct, 2)}.
               {janela.meses !== 12 && " A ficha de prova só está publicada para a janela de 12 meses; as variações de cada distribuidora desta janela estão na tabela abaixo."}
-            </>
-          }
+            </>,
+            <>
+              {janela.n} distribution utilities. IPCA in the same period: {pct(janela.ipca_pct, 2)}.
+              {janela.meses !== 12 && " The evidence sheet is published only for the 12-month window; the changes of each distribution utility in this window are in the table below."}
+            </>,
+          )}
           endereco={endereco}
         />
         {comuns && (
           <div className="min-w-0" data-bloco="janelas-mesmo-conjunto">
-            <p className="rotulo text-mineral">No mesmo conjunto de distribuidoras</p>
+            <p className="rotulo text-mineral">{tx("No mesmo conjunto de distribuidoras", "In the same set of distribution utilities")}</p>
             <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao" data-nota="janelas-mesmo-conjunto">
-              {textoJanelasNoMesmoConjunto(comuns)}
+              {textoJanelasNoMesmoConjunto(comuns, idioma)}
             </p>
             <p className="mt-1 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-              Cada janela, sozinha, tem um universo próprio ({comuns.itens.map((i) => `${i.nDaJanela} em ${i.meses} meses`).join(", ")}): as medianas publicadas de janelas diferentes não se comparam entre si, e no mesmo conjunto
-              se comparam.
+              {tx(
+                <>
+                  Cada janela, sozinha, tem um universo próprio ({universos}): as medianas publicadas de janelas diferentes não se comparam entre si, e no mesmo conjunto se comparam.
+                </>,
+                <>
+                  Each window, on its own, has its own universe ({universos}): the published medians of different windows are not comparable with each other, and in the same set they are.
+                </>,
+              )}
             </p>
           </div>
         )}
@@ -337,16 +422,33 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
       {(janela.excluidas_mudanca_perimetro.length > 0 || janela.excluidas_sem_tarifa_nas_duas_datas > 0) && (
         <div className="text-sm text-carvao-muted">
           <p>
-            Fora desta janela: {janela.excluidas_sem_tarifa_nas_duas_datas} {janela.excluidas_sem_tarifa_nas_duas_datas === 1 ? "distribuidora" : "distribuidoras"} sem tarifa B1
-            numa das duas datas
-            {janela.excluidas_mudanca_perimetro.length > 0 ? ` e ${janela.excluidas_mudanca_perimetro.length} com a área alterada por incorporação entre as datas:` : "."}
+            {tx(
+              <>
+                Fora desta janela: {janela.excluidas_sem_tarifa_nas_duas_datas} {janela.excluidas_sem_tarifa_nas_duas_datas === 1 ? "distribuidora" : "distribuidoras"} sem tarifa B1
+                numa das duas datas
+                {janela.excluidas_mudanca_perimetro.length > 0 ? ` e ${janela.excluidas_mudanca_perimetro.length} com a área alterada por incorporação entre as datas:` : "."}
+              </>,
+              <>
+                Outside this window: {janela.excluidas_sem_tarifa_nas_duas_datas} {janela.excluidas_sem_tarifa_nas_duas_datas === 1 ? "distribution utility" : "distribution utilities"} without a B1
+                tariff on one of the two dates
+                {janela.excluidas_mudanca_perimetro.length > 0 ? ` and ${janela.excluidas_mudanca_perimetro.length} with the area changed by a merger between the dates:` : "."}
+              </>,
+            )}
           </p>
           {janela.excluidas_mudanca_perimetro.length > 0 && (
             <ul className="mt-1 list-disc space-y-1 pl-5">
               {janela.excluidas_mudanca_perimetro.map((e) => (
                 <li key={e.cnpj}>
-                  {rotuloDistribuidora(e.sigla, e.cnpj)}: incorporação com tarifa unificada desde {dataBR(e.data)} ({e.ato}); a variação de {pct(e.variacao_pct_nao_comparavel, 2)}{" "}
-                  compara áreas diferentes e não entra na mediana.
+                  {tx(
+                    <>
+                      {rotuloDistribuidora(e.sigla, e.cnpj)}: incorporação com tarifa unificada desde {dataBR(e.data)} ({e.ato}); a variação de {pct(e.variacao_pct_nao_comparavel, 2)}{" "}
+                      compara áreas diferentes e não entra na mediana.
+                    </>,
+                    <>
+                      {rotuloDistribuidora(e.sigla, e.cnpj)}: merger with a unified tariff since {dataBR(e.data)} ({e.ato}); the change of {pct(e.variacao_pct_nao_comparavel, 2)} compares
+                      different areas and is not part of the median.
+                    </>,
+                  )}
                 </li>
               ))}
             </ul>
@@ -354,10 +456,14 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
         </div>
       )}
 
-      <ContaSobDemanda chaveUrl="reaj" rotulo="a tabela da janela com a variação real" detalhe={`${linhas.length} distribuidoras, ordenável e exportável`}>
+      <ContaSobDemanda
+        chaveUrl="reaj"
+        rotulo={tx("a tabela da janela com a variação real", "the window table with the real change")}
+        detalhe={tx(`${linhas.length} distribuidoras, ordenável e exportável`, `${linhas.length} distribution utilities, sortable and exportable`)}
+      >
         <TabelaInterativa
-          titulo={`Variação em ${janela.meses} meses e IPCA de ${pct(janela.ipca_pct, 2)}`}
-          colunas={COLUNAS_JANELA}
+          titulo={tx(`Variação em ${janela.meses} meses e IPCA de ${pct(janela.ipca_pct, 2)}`, `Change over ${janela.meses} months and IPCA of ${pct(janela.ipca_pct, 2)}`)}
+          colunas={colunasJanela(idioma)}
           linhas={linhas}
           chaveLinha="id"
           colunaRotulo="sigla"
@@ -368,17 +474,24 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
           ordemInicial={{ coluna: "variacao", direcao: "asc" }}
           selecionado={destaque}
           onSelecionar={selecionar}
-          dicaBusca="Sigla ou CNPJ"
+          dicaBusca={tx("Sigla ou CNPJ", "Acronym or CNPJ")}
           iniciarAberta
-          nota="Variação real = (1 + variação) ÷ (1 + IPCA) − 1, publicada pelo pipeline. Positiva: a tarifa subiu mais que o IPCA."
+          nota={tx(
+            "Variação real = (1 + variação) ÷ (1 + IPCA) − 1, publicada pelo pipeline. Positiva: a tarifa subiu mais que o IPCA.",
+            "Real change = (1 + change) ÷ (1 + IPCA) − 1, published by the pipeline. Positive: the tariff rose more than the IPCA.",
+          )}
         />
       </ContaSobDemanda>
 
       <div data-nivel="analisar">
-        <ContaSobDemanda chaveUrl="ult" rotulo="a última mudança de cada distribuidora" detalhe={`${ultimasLinhas.length} distribuidoras`}>
+        <ContaSobDemanda
+          chaveUrl="ult"
+          rotulo={tx("a última mudança de cada distribuidora", "the latest change of each distribution utility")}
+          detalhe={tx(`${ultimasLinhas.length} distribuidoras`, `${ultimasLinhas.length} distribution utilities`)}
+        >
           <TabelaInterativa
-            titulo="Última mudança da tarifa B1 de cada distribuidora do ranking"
-            colunas={COLUNAS_ULTIMOS}
+            titulo={tx("Última mudança da tarifa B1 de cada distribuidora do ranking", "Latest change in the B1 tariff of each distribution utility in the ranking")}
+            colunas={colunasUltimos(idioma)}
             linhas={ultimasLinhas}
             chaveLinha="id"
             colunaRotulo="sigla"
@@ -389,9 +502,12 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
             ordemInicial={{ coluna: "data", direcao: "desc" }}
             selecionado={v.dist[0] && ultimasLinhas.some((l) => l.id === v.dist[0]) ? v.dist[0] : null}
             onSelecionar={selecionar}
-            dicaBusca="Sigla ou ato"
+            dicaBusca={tx("Sigla ou ato", "Acronym or act")}
             iniciarAberta
-            nota="O conjunto não informa se o ato é reajuste, revisão periódica ou extraordinária; o histórico completo de cada distribuidora está no histórico da tarifa B1, na página principal da Conta de luz (modo Analisar)."
+            nota={tx(
+              "O conjunto não informa se o ato é reajuste, revisão periódica ou extraordinária; o histórico completo de cada distribuidora está no histórico da tarifa B1, na página principal da Conta de luz (modo Analisar).",
+              "The dataset does not say whether the act is an adjustment, a periodic review or an extraordinary review; the full history of each distribution utility is in the B1 tariff history, on the main Electricity bill page (Analyze mode).",
+            )}
           />
         </ContaSobDemanda>
       </div>

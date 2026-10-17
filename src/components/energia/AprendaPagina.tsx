@@ -1,9 +1,10 @@
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
 import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
 import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";
-import { TRILHAS_APRENDA, type TrilhaConceitual } from "@/lib/energia/conteudo/trilhas";
+import { trilhasAprenda, type TrilhaConceitual } from "@/lib/energia/conteudo/trilhas";
 import { AVISO_SINTETICO, ROTULO_SINTETICO } from "@/lib/energia/sintetico";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Peças de servidor das páginas do Aprenda. O Aprenda tem três tipos de página, e cada um se reconhece de relance:
@@ -20,23 +21,30 @@ import { AVISO_SINTETICO, ROTULO_SINTETICO } from "@/lib/energia/sintetico";
 export const ROTA_APRENDA = "/setor-eletrico/aprenda";
 export const ROTA_TRILHAS = `${ROTA_APRENDA}/trilhas`;
 
-/** Seções do módulo como itens da faixa de navegação local das páginas filhas. */
-const ITENS_APRENDA: ItemLocal[] = [
-  { id: "verbetes", href: ROTA_APRENDA, rotulo: "Verbetes", descricao: "Um conceito por página: a pergunta, a definição da fonte oficial, o exemplo e o painel onde aparece." },
-  { id: "trilhas", href: ROTA_TRILHAS, rotulo: "Trilhas", descricao: "Percursos em ordem que ligam conceitos a números publicados." },
-];
+/** Seções do módulo como itens da faixa de navegação local das páginas filhas (no idioma da página). */
+function itensAprenda(): ItemLocal[] {
+  return [
+    {
+      id: "verbetes",
+      href: ROTA_APRENDA,
+      rotulo: tx("Verbetes", "Entries"),
+      descricao: tx("Um conceito por página: a pergunta, a definição da fonte oficial, o exemplo e o painel onde aparece.", "One concept per page: the question, the definition from the official source, the example and the panel where it appears."),
+    },
+    { id: "trilhas", href: ROTA_TRILHAS, rotulo: tx("Trilhas", "Learning paths"), descricao: tx("Percursos em ordem que ligam conceitos a números publicados.", "Ordered routes that link concepts to published numbers.") },
+  ];
+}
 
 /**
  * Faixa das páginas filhas do índice (trilhas e verbetes): as duas seções do módulo, com a que contém a página marcada. A abertura
  * (o índice) não leva a faixa, porque mostra as trilhas como capítulos (AprendaTrilhas).
  */
 export function AprendaNavegacao({ atual, neta = false }: { atual: "verbetes" | "trilhas"; /** Verbete ou trilha: a página é filha da seção marcada. */ neta?: boolean }) {
-  return <NavegacaoLocal rotulo="Seções do Aprenda" itens={ITENS_APRENDA} atual={atual} atualEhSecao={neta} />;
+  return <NavegacaoLocal rotulo={tx("Seções do Aprenda", "Learn sections")} itens={itensAprenda()} atual={atual} atualEhSecao={neta} />;
 }
 
 /** Descrição de uma trilha como capítulo: a pergunta que ela responde e quantos passos tem. */
 export function descricaoDaTrilha(t: TrilhaConceitual): string {
-  return `${t.pergunta} ${t.passos.length} passos.`;
+  return tx(`${t.pergunta} ${t.passos.length} passos.`, `${t.pergunta} ${t.passos.length} steps.`);
 }
 
 /**
@@ -45,22 +53,28 @@ export function descricaoDaTrilha(t: TrilhaConceitual): string {
  * larga o bloco fica numa coluna ao lado da lista (os capítulos empilham); em tela estreita, entre a busca e a lista.
  */
 export function AprendaTrilhas() {
-  const itens: ItemLocal[] = TRILHAS_APRENDA.map((t) => ({ id: t.id, href: `${ROTA_TRILHAS}/${t.id}`, rotulo: t.titulo, descricao: descricaoDaTrilha(t) }));
+  const itens: ItemLocal[] = trilhasAprenda().map((t) => ({ id: t.id, href: `${ROTA_TRILHAS}/${t.id}`, rotulo: t.titulo, descricao: descricaoDaTrilha(t) }));
   return (
     <section aria-labelledby="aprenda-trilhas" data-trilhas-do-indice="" className="border-t border-linha pt-6">
       <h2 id="aprenda-trilhas" className="ed-h2 font-serif text-carvao">
-        Trilhas: dos conceitos aos números
+        {tx("Trilhas: dos conceitos aos números", "Learning paths: from concepts to numbers")}
       </h2>
       <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-        Uma trilha é um percurso em ordem pelos verbetes: cada passo traz um número publicado pelo observatório e diz como ele se liga ao passo seguinte.
+        {tx(
+          "Uma trilha é um percurso em ordem pelos verbetes: cada passo traz um número publicado pelo observatório e diz como ele se liga ao passo seguinte.",
+          "A learning path is an ordered route through the entries: each step brings a number published by the observatory and says how it links to the next step.",
+        )}
       </p>
       <div className="mt-4 lg:[&>nav>ol]:!grid-cols-1 [&>nav]:border-t-0 [&>nav]:pt-0">
-        <NavegacaoLocal rotulo="Trilhas do Aprenda" itens={itens} atual="" variante="capitulos" />
+        <NavegacaoLocal rotulo={tx("Trilhas do Aprenda", "Learning paths")} itens={itens} atual="" variante="capitulos" />
       </div>
       <p className="mt-4 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota-sintetico="">
-        No fim de cada trilha, há um {ROTULO_SINTETICO.toLowerCase()}. {AVISO_SINTETICO}{" "}
+        {tx(
+          `No fim de cada trilha, há um ${ROTULO_SINTETICO.toLowerCase()}. ${AVISO_SINTETICO}`,
+          "At the end of each learning path, there is a synthetic example. Hypothetical values, chosen for teaching. They are not observatory data and do not enter any indicator.",
+        )}{" "}
         <Link href={ROTA_TRILHAS} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
-          Como funciona uma trilha
+          {tx("Como funciona uma trilha", "How a learning path works")}
         </Link>
       </p>
     </section>

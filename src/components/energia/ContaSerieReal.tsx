@@ -1,5 +1,6 @@
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { mesAno } from "@/lib/energia/formato";
+import { tx } from "@/lib/energia/idioma";
 import type { LinhaEvolucao } from "@/lib/energia/conta";
 
 /**
@@ -13,13 +14,16 @@ export function ContaSerieReal({ evolucao, ultimoIpca }: { evolucao: LinhaEvoluc
   const base = ultimoIpca ? mesAno(`${ultimoIpca}-01`) : null;
   return (
     <GraficoLinhas
-      titulo={`Mediana da tarifa B1 residencial no dia 1º de cada mês, em valores da época${base ? ` e em reais de ${base} (corrigidos pelo IPCA)` : ""}`}
+      titulo={tx(
+        `Mediana da tarifa B1 residencial no dia 1º de cada mês, em valores da época${base ? ` e em reais de ${base} (corrigidos pelo IPCA)` : ""}`,
+        `Median residential B1 tariff on the 1st of each month, at the prices of the time${base ? ` and in ${base} reais (adjusted by the IPCA)` : ""}`,
+      )}
       dados={evolucao}
       chaveX="m"
       formatoX="mes"
       series={[
-        { id: "mediana", rotulo: "Valores da época", sigla: "Época", cor: "var(--serie-1)", espessura: 2.5 },
-        ...(base ? [{ id: "real", rotulo: `Em reais de ${base}`, sigla: "Real", cor: "var(--cor-energia)", tracejada: true, espessura: 2.5 }] : []),
+        { id: "mediana", rotulo: tx("Valores da época", "Values of the time"), sigla: tx("Época", "Nominal"), cor: "var(--serie-1)", espessura: 2.5 },
+        ...(base ? [{ id: "real", rotulo: tx(`Em reais de ${base}`, `In reais of ${base}`), sigla: "Real", cor: "var(--cor-energia)", tracejada: true, espessura: 2.5 }] : []), // i18n: dado
       ]}
       unidade="R$/MWh"
       casas={2}

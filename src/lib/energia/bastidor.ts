@@ -1,4 +1,7 @@
 import { conjuntoLegivel } from "@/lib/energia/evidencia";
+import { dataBR } from "@/lib/energia/formato";
+import { idiomaEnergia, tx as traduz } from "@/lib/energia/idioma";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Texto de coleta e de engenharia dentro de frases escritas para a gold: código HTTP, desafio de navegador,
@@ -27,10 +30,16 @@ export function partirBastidor(texto: string): { leitor: string; tecnico: string
  * Frase de leitor para uma recusa documentada de fonte: diz quem recusou e quando, sem o código da resposta.
  * Vazia quando a evidência não descreve recusa de acesso.
  */
-export function fraseDeRecusa(evidencia: string, quem: string): string {
+export function fraseDeRecusa(evidencia: string, quem: string, idioma: Idioma = idiomaEnergia()): string {
+  const tx = <T,>(pt: T, en: T): T => traduz(pt, en, idioma);
   if (!/HTTP [45]\d{2}|\bcurl\b|desafio (?:do Cloudflare|de navegador)|cf-mitigated|Acesso bloqueado/i.test(evidencia)) return "";
   const data = /(\d{2}\/\d{2}\/\d{4})/.exec(evidencia)?.[1];
-  return data ? `Em ${data}, os servidores ${quem} recusaram as consultas automáticas do observatório.` : `Os servidores ${quem} recusaram as consultas automáticas do observatório.`;
+  // em inglês, "da ANEEL" vira "the ANEEL servers"; a data da evidência (dd/mm/aaaa) vai para a forma inglesa
+  const orgao = quem.replace(/^d[oa]s?\s+/, "");
+  const dataEn = data ? dataBR(data.split("/").reverse().join("-"), "en") : null;
+  return data
+    ? tx(`Em ${data}, os servidores ${quem} recusaram as consultas automáticas do observatório.`, `On ${dataEn}, the ${orgao} servers refused the observatory's automated requests.`)
+    : tx(`Os servidores ${quem} recusaram as consultas automáticas do observatório.`, `The ${orgao} servers refused the observatory's automated requests.`);
 }
 
 /** Troca, dentro de uma frase, a descrição técnica da recusa pela forma que o leitor entende. */
@@ -45,27 +54,31 @@ export function semCaminhosDeArquivo(texto: string): string {
   return texto.replace(/\s*\((?:[\w.-]+\/)+[\w.-]+\.(?:json|jsonl|py|csv|parquet)\)/g, "");
 }
 
-/** Nome de fonte como o leitor o lê: sem "pipeline", "silver" e "gold" e sem caminho de arquivo. */
-export function fonteLegivel(nome: string): string {
-  return conjuntoLegivel(semCaminhosDeArquivo(nome)).texto
-    .replace(/\(pipeline do observatório\)/g, "(observatório)")
-    .replace(/Silvers e golds do domínio/g, "Bases do domínio")
-    .replace(/Silvers do domínio/g, "Histórico de capturas do domínio")
-    .replace(/silvers do pipeline/g, "histórico de capturas do observatório");
+/** Nome de fonte como o leitor o lê: sem "pipeline", "silver" e "gold" e sem caminho de arquivo. Em inglês, as trocas saem em inglês. */
+export function fonteLegivel(nome: string, idioma: Idioma = idiomaEnergia()): string {
+  const tx = <T,>(pt: T, en: T): T => traduz(pt, en, idioma);
+  return conjuntoLegivel(semCaminhosDeArquivo(nome), idioma)
+    .texto.replace(/\(pipeline do observatório\)/g, tx("(observatório)", "(observatory)"))
+    .replace(/Silvers e golds do domínio/g, tx("Bases do domínio", "Domain bases"))
+    .replace(/Silvers do domínio/g, tx("Histórico de capturas do domínio", "Domain capture history"))
+    .replace(/silvers do pipeline/g, tx("histórico de capturas do observatório", "observatory capture history"))
+    .replace(/\(avaliação do observatório\)/g, tx("(avaliação do observatório)", "(observatory evaluation)"));
 }
 
 /**
  * Vocabulário de engenharia que a gold e os módulos usam entre si (gold, silver, vintage, pipeline) trocado pelo que o leitor
  * entende. Só para frases escritas para o leitor; a evidência técnica mantém a palavra original em Analisar e Auditar.
  */
-export function leitor(texto: string): string {
+export function leitor(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  // em português, as palavras do leitor em português; em inglês, as inglesas (texto português da gold chama com "pt")
+  const tx = <T,>(pt: T, en: T): T => traduz(pt, en, idioma);
   return texto
-    .replace(/\buma gold\b/g, "uma base publicada")
-    .replace(/\bgolds\b/g, "bases publicadas")
-    .replace(/\bgold\b/g, "base publicada")
-    .replace(/\bsilvers\b/g, "históricos de capturas")
-    .replace(/\bsilver\b/g, "histórico de capturas")
-    .replace(/\bvintages\b/g, "versões")
-    .replace(/\bvintage\b/g, "versão")
-    .replace(/\bpipeline\b/g, "observatório");
+    .replace(/\buma gold\b/g, tx("uma base publicada", "a published base"))
+    .replace(/\bgolds\b/g, tx("bases publicadas", "published bases"))
+    .replace(/\bgold\b/g, tx("base publicada", "published base"))
+    .replace(/\bsilvers\b/g, tx("históricos de capturas", "capture histories"))
+    .replace(/\bsilver\b/g, tx("histórico de capturas", "capture history"))
+    .replace(/\bvintages\b/g, tx("versões", "versions"))
+    .replace(/\bvintage\b/g, tx("versão", "version"))
+    .replace(/\bpipeline\b/g, tx("observatório", "observatory"));
 }

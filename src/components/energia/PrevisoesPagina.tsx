@@ -1,6 +1,8 @@
-import { datasLegiveis } from "@/lib/energia/formato";
+import { datasLegiveis, mesAno } from "@/lib/energia/formato";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import type { Idioma } from "@/lib/idioma";
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
@@ -11,6 +13,7 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import {
   PAINEIS_PREVISOES,
   ROTA_MODELOS,
+  textosPainelPrevisoes,
   ROTA_PREVISOES,
   enderecoPainel,
   minusculaInicial,
@@ -33,8 +36,23 @@ import type { Natureza } from "@/lib/energia/tipos";
  * coeficientes, o arquivo e as provas de cada número a uma página só, acima da meta de cerca de 600 KB de HTML (contrato, seção 5.1).
  */
 
-/** Os painéis como itens da navegação local: o nome de cada um e a pergunta que responde. */
-const ITENS_PAINEIS: ItemLocal[] = PAINEIS_PREVISOES.map((p) => ({ id: p.id, href: enderecoPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
+/** Os painéis como itens da navegação local: o nome de cada um e a pergunta que responde, no idioma da página. */
+function itensPaineis(idioma: Idioma): ItemLocal[] {
+  return PAINEIS_PREVISOES.map((p) => {
+    const t = textosPainelPrevisoes(p.id, idioma);
+    return { id: p.id, href: enderecoPainel(p.id), rotulo: t.rotulo, descricao: t.pergunta };
+  });
+}
+
+/** Rótulo de arquivo para baixar das previsões (gold previsoes_desempenho.json): os dois rótulos fixos e as partições mensais. */
+function rotuloDownloadPrevisoes(rotulo: string, idioma: Idioma): string {
+  if (idioma !== "en") return datasLegiveis(rotulo, "pt");
+  if (rotulo === "Coeficientes do C2 por origem de ajuste (CSV)") return "C2 coefficients by fit origin (CSV)";
+  if (rotulo === "Emissões registradas (CSV)") return "Recorded forecasts (CSV)";
+  const m = /^Arquivo de emissões de (\d{4}-\d{2}) \(JSON\)$/.exec(rotulo);
+  if (m) return `Forecast archive for ${mesAno(m[1], "en")} (JSON)`;
+  return datasLegiveis(rotulo, idioma);
+}
 
 /**
  * Capítulos de uma abertura: as perguntas da outra página, cada uma com o nome do painel, a pergunta e o link. As duas perguntas desta
@@ -42,15 +60,15 @@ const ITENS_PAINEIS: ItemLocal[] = PAINEIS_PREVISOES.map((p) => ({ id: p.id, hre
  */
 export function PrevisoesCapitulos({ pagina }: { pagina: "previsoes" | "modelos" }) {
   const rota = pagina === "previsoes" ? ROTA_PREVISOES : ROTA_MODELOS;
-  const outros = ITENS_PAINEIS.filter((i) => painelPrevisoes(i.id as IdPainelPrevisoes).rota !== rota);
+  const outros = itensPaineis(idiomaEnergia()).filter((i) => painelPrevisoes(i.id as IdPainelPrevisoes).rota !== rota);
   return (
     <NavegacaoLocal
-      rotulo="Capítulos de previsões e modelos"
+      rotulo={tx("Capítulos de previsões e modelos", "Forecast and model chapters")}
       itens={outros}
       atual=""
       variante="capitulos"
       nivelTitulo={3}
-      titulo={pagina === "modelos" ? "Outras perguntas sobre as previsões" : "Outras perguntas sobre os modelos"}
+      titulo={pagina === "modelos" ? tx("Outras perguntas sobre as previsões", "Other questions about the forecasts") : tx("Outras perguntas sobre os modelos", "Other questions about the models")}
     />
   );
 }
@@ -58,10 +76,10 @@ export function PrevisoesCapitulos({ pagina }: { pagina: "previsoes" | "modelos"
 /** Faixa de páginas irmãs das fichas: o registro de modelos e as fichas de cada modelo, com a atual marcada. */
 export function PrevisoesFaixaFichas({ atual, fichas }: { atual: string; fichas: readonly { codigo: string }[] }) {
   const itens: ItemLocal[] = [
-    { id: "registro", href: ROTA_MODELOS, rotulo: "Modelos" },
+    { id: "registro", href: ROTA_MODELOS, rotulo: tx("Modelos", "Models") },
     ...fichas.map((f) => ({ id: slugModelo(f.codigo), href: rotaModelo(f.codigo), rotulo: f.codigo })),
   ];
-  return <NavegacaoLocal rotulo="Fichas dos modelos de previsão" itens={itens} atual={atual} />;
+  return <NavegacaoLocal rotulo={tx("Fichas dos modelos de previsão", "Forecast model sheets")} itens={itens} atual={atual} />;
 }
 
 /**
@@ -79,15 +97,18 @@ export function PrevisoesIndisponivel({ motivo }: { motivo?: string | null }) {
       <CabecalhoEnergia atual="pld-modelos" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
-          titulo="Previsões e modelos indisponíveis nesta publicação"
+          titulo={tx("Previsões e modelos indisponíveis nesta publicação", "Forecasts and models unavailable in this publication")}
           motivo={
             motivo ??
-            "Os dados de previsões não foram gerados nesta publicação ou não passaram na validação; a última publicação válida é mantida quando existe."
+            tx(
+              "Os dados de previsões não foram gerados nesta publicação ou não passaram na validação; a última publicação válida é mantida quando existe.",
+              "The forecast data were not generated in this publication or did not pass validation; the last valid publication is kept when there is one.",
+            )
           }
         />
         <p className="mt-6 text-sm">
           <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-            Voltar ao PLD
+            {tx("Voltar ao PLD", "Back to the PLD")}
           </Link>
         </p>
       </main>
@@ -125,8 +146,9 @@ export function PrevisoesResposta({
  * "vintages" nem fuso: corte, origem, rodada e a faixa P10 a P90. Cada linha só aparece quando a definição está no registro. Ficam
  * logo depois da figura que os usa, em texto visível.
  */
-export function PrevisoesTermos({ itens, titulo = "Termos desta página" }: { itens: { termo: string; texto: string }[]; titulo?: string }) {
+export function PrevisoesTermos({ itens, titulo: tituloDado }: { itens: { termo: string; texto: string }[]; titulo?: string }) {
   if (!itens.length) return null;
+  const titulo = tituloDado ?? tx("Termos desta página", "Terms on this page");
   return (
     <section aria-label={titulo} data-termos="" className="border-t border-linha pt-3">
       <p className="rotulo text-mineral">{titulo}</p>
@@ -147,15 +169,15 @@ export function PrevisoesRecorte({ periodo, universo, unidade }: { periodo: Reac
   return (
     <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3" data-recorte-painel="">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
         <dd className="mt-0.5">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5">{unidade}</dd>
       </div>
     </dl>
@@ -183,8 +205,9 @@ export function PrevisoesLegenda({ children }: { children: ReactNode }) {
  * Avisos materiais da rodada, junto da emissão: emissão manual ou depois do prazo, código sem versão registrada e rotina sem
  * comprovação. Ficam à vista em Entender, ao lado dos números que qualificam, e não só em Auditar.
  */
-export function PrevisoesAvisosRodada({ avisos, titulo = "Condições desta rodada" }: { avisos: AvisoRodada[]; titulo?: string }) {
+export function PrevisoesAvisosRodada({ avisos, titulo: tituloDado }: { avisos: AvisoRodada[]; titulo?: string }) {
   if (!avisos.length) return null;
+  const titulo = tituloDado ?? tx("Condições desta rodada", "Conditions of this run");
   return (
     <section aria-label={titulo} data-avisos-rodada="" className="mt-3 border-l-2 border-aviso pl-4">
       <p className="text-sm leading-relaxed text-carvao">
@@ -207,7 +230,7 @@ export function PrevisoesAvisosRodada({ avisos, titulo = "Condições desta roda
  */
 export function PrevisoesResumoFicha({ itens }: { itens: { rotulo: string; valor: ReactNode }[] }) {
   return (
-    <section aria-label="Resumo da ficha" className="ed-faixa" data-resumo-ficha="">
+    <section aria-label={tx("Resumo da ficha", "Sheet summary")} className="ed-faixa" data-resumo-ficha="">
       <dl className="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
         {itens.map((i) => (
           <div key={i.rotulo} className="min-w-0">
@@ -223,7 +246,7 @@ export function PrevisoesResumoFicha({ itens }: { itens: { rotulo: string; valor
 /** Datas de referência de cada parte, no bloco "Fontes, datas e siglas" da abertura: cada número diz o seu dia, sem sugerir simultaneidade. */
 export function PrevisoesDatas({ itens }: { itens: { rotulo: string; texto: string; natureza: Natureza }[] }) {
   return (
-    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx("Datas de referência de cada parte", "Reference dates for each part")}>
       {itens.map((x) => (
         <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
           <span>
@@ -246,7 +269,8 @@ export function PrevisoesSeguir({
   proximo: { href: string; pergunta: string };
   downloads: { rotulo: string; url: string }[];
 }) {
-  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads.map((d) => ({ ...d, rotulo: datasLegiveis(d.rotulo) }))} />;
+  const idioma = idiomaEnergia();
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads.map((d) => ({ ...d, rotulo: rotuloDownloadPrevisoes(d.rotulo, idioma) }))} />;
 }
 
 /** Seção que aparece a partir do modo Analisar. */
@@ -268,7 +292,7 @@ export function PrevisoesAuditoria({ titulo, id, children }: { titulo: string; i
 }
 
 /** Lista de definição compacta (rótulo e valor) para fichas e metadados da rodada; `nivel` esconde a linha em Entender. */
-export function PrevisoesFichaLinha({ rotulo, children, nivel }: { rotulo: string; children: ReactNode; nivel?: "analisar" | "auditar" }) {
+export function PrevisoesFichaLinha({ rotulo, children, nivel }: { rotulo: ReactNode; children: ReactNode; nivel?: "analisar" | "auditar" }) {
   return (
     <div data-nivel={nivel} className="border-t border-linha py-3 md:grid md:grid-cols-[13rem_1fr] md:gap-6">
       <dt className="rotulo text-mineral">{rotulo}</dt>
@@ -282,7 +306,7 @@ export function PrevisoesLinkExterno({ href, children }: { href: string; childre
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere] hover:text-carvao">
       {children}
-      <span className="sr-only"> (abre em nova aba)</span>
+      <span className="sr-only">{tx(" (abre em nova aba)", " (opens in a new tab)")}</span>
     </a>
   );
 }

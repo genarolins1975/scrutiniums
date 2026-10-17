@@ -12,8 +12,9 @@ import { sinonimosDe } from "./busca-sinonimos";
 import type { OpcaoDistribuidora } from "@/components/energia/EscolhaDistribuidora";
 import { CARTOES, FONTES_PRINCIPAIS, PERGUNTAS_COTIDIANAS, PERGUNTAS_PRIORITARIAS } from "./mapa";
 import type { DestinoNavegacao } from "./navegacao";
-
-const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+import type { Idioma } from "@/lib/idioma";
+import { idiomaEnergia, tx } from "./idioma";
+import { dataBR, mesAno } from "./formato";
 
 /** Recorte mínimo de um conjunto em publicacao.json que a home lê. */
 export type ConjuntoAtualidade = {
@@ -46,41 +47,46 @@ export type PublicacaoAtualidade = {
 
 /**
  * Último período de referência em linguagem simples, no grão em que a fonte o publica:
- * "28/09/2026 23h", "28/09/2026", "ago/2026" ou "2026". A data de captura nunca entra aqui.
+ * "28/09/2026 23h", "28/09/2026", "ago/2026" ou "2026" ("Sep 28, 2026, 23:00", "Sep 28, 2026", "Aug 2026"
+ * em inglês). A data de captura nunca entra aqui.
  */
-export function periodoLegivel(p: string | null | undefined): string | null {
+export function periodoLegivel(p: string | null | undefined, idioma: Idioma = idiomaEnergia()): string | null {
   if (!p) return null;
   let m = p.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
-  if (m) return `${m[3]}/${m[2]}/${m[1]} ${m[4]}h${m[5] === "00" ? "" : m[5]}`;
+  if (m) return idioma === "en" ? `${dataBR(`${m[1]}-${m[2]}-${m[3]}`, "en")}, ${m[4]}:${m[5]}` : `${m[3]}/${m[2]}/${m[1]} ${m[4]}h${m[5] === "00" ? "" : m[5]}`;
   m = p.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (m) return `${m[3]}/${m[2]}/${m[1]}`;
+  if (m) return dataBR(p, idioma);
   m = p.match(/^(\d{4})-(\d{2})$/);
-  if (m) return `${MESES[Number(m[2]) - 1]}/${m[1]}`;
+  if (m) return mesAno(p, idioma);
   if (/^\d{4}$/.test(p)) return p;
   return null;
 }
 
-const CADENCIA: Record<string, string> = {
-  diaria: "diária",
-  semanal: "semanal",
-  quinzenal: "quinzenal",
-  mensal: "mensal",
-  trimestral: "trimestral",
-  anual: "anual",
-};
+/** Cadência como a gold a grava (sem acento) e como a página a escreve, em cada idioma. */
+function cadenciaLegivel(c: string, idioma: Idioma): string {
+  const mapa = tx<Record<string, string>>(
+    { diaria: "diária", semanal: "semanal", quinzenal: "quinzenal", mensal: "mensal", trimestral: "trimestral", anual: "anual" },
+    { diaria: "daily", semanal: "weekly", quinzenal: "fortnightly", mensal: "monthly", trimestral: "quarterly", anual: "annual" },
+    idioma,
+  );
+  return mapa[c] ?? c;
+}
 
-const SITUACAO: Record<string, string> = {
-  "EM DIA": "em dia",
-  ATRASADO: "atrasada",
-  "SEM SLA": "sem calendário declarado",
-  "SEM DADO": "sem período de referência",
-};
+/** Situação de atualidade da gold (EM DIA, ATRASADO, SEM SLA, SEM DADO) em palavras, em cada idioma. */
+function situacaoLegivel(codigo: string, idioma: Idioma): string {
+  const mapa = tx<Record<string, string>>(
+    { "EM DIA": "em dia", ATRASADO: "atrasada", "SEM SLA": "sem calendário declarado", "SEM DADO": "sem período de referência" },
+    { "EM DIA": "up to date", ATRASADO: "late", "SEM SLA": "no declared schedule", "SEM DADO": "no reference period" },
+    idioma,
+  );
+  return mapa[codigo] ?? codigo.toLowerCase();
+}
 
 /** Conjunto publicado por vigência (as tarifas): sem período de referência, vale o início da vigência mais recente. */
-export function vigenciaMaisRecente(dado: ConjuntoAtualidade["dado"]): string | null {
+export function vigenciaMaisRecente(dado: ConjuntoAtualidade["dado"], idioma: Idioma = idiomaEnergia()): string | null {
   if (dado?.formato !== "vigencia" || !dado.ref_max) return null;
-  const inicio = periodoLegivel(dado.ref_max.split("|")[0]);
-  return inicio ? `vigência iniciada em ${inicio}` : null;
+  const inicio = periodoLegivel(dado.ref_max.split("|")[0], idioma);
+  return inicio ? tx(`vigência iniciada em ${inicio}`, `validity period starting ${inicio}`, idioma) : null;
 }
 
 /**
@@ -104,6 +110,10 @@ export type LinhaAtualidade = {
   ultimoMesRotulo: string | null;
   cadencia: string | null;
   situacao: string | null;
+  /** A situação como a gold a grava (EM DIA, ATRASADO, SEM SLA, SEM DADO): as contas e as notas comparam este código, e não o texto do idioma. */
+  codigoSituacao: string | null;
+  /** O conjunto é publicado por vigência (as tarifas): `ultimo` é o início da vigência mais recente. */
+  vigencia: boolean;
   atrasado: boolean;
   /** O que a situação compara com o calendário: o último período ("periodo") ou a data em que a fonte publicou o arquivo ("publicacao"). */
   base: "periodo" | "publicacao" | null;
@@ -115,7 +125,12 @@ export type LinhaAtualidade = {
   ficha: string | null;
 };
 
-export function linhasAtualidade(pub: PublicacaoAtualidade | null, fichas: ReadonlySet<string>, refinos: Readonly<Record<string, RefinoDePeriodo>> = {}): LinhaAtualidade[] {
+export function linhasAtualidade(
+  pub: PublicacaoAtualidade | null,
+  fichas: ReadonlySet<string>,
+  refinos: Readonly<Record<string, RefinoDePeriodo>> = {},
+  idioma: Idioma = idiomaEnergia(),
+): LinhaAtualidade[] {
   const porId = new Map((pub?.conjuntos ?? []).map((c) => [c.id, c]));
   const hoje = pub?.referencia.hoje ?? null;
   return FONTES_PRINCIPAIS.flatMap((f) =>
@@ -123,11 +138,13 @@ export function linhasAtualidade(pub: PublicacaoAtualidade | null, fichas: Reado
       const c = porId.get(fc.id) ?? null;
       const a = c?.atualidade ?? null;
       const fim = a?.fim_ultimo_periodo ?? null;
-      const ultimo = periodoLegivel(a?.ultimo_periodo) ?? vigenciaMaisRecente(c?.dado);
+      const periodo = periodoLegivel(a?.ultimo_periodo, idioma);
+      const vigencia = periodo === null ? vigenciaMaisRecente(c?.dado, idioma) : null;
+      const ultimo = periodo ?? vigencia;
       const emCurso = Boolean(a?.periodo_parcial) || Boolean(fim && hoje && fim > hoje);
       const refino = refinos[fc.id];
       // o mês só vale para o ano em curso que a publicação já mostra: "jun/2026" refina "2026", e nada mais
-      const mes = emCurso && refino && ultimo && /^\d{4}$/.test(ultimo) && refino.periodo.endsWith(`/${ultimo}`) ? refino : null;
+      const mes = emCurso && refino && ultimo && /^\d{4}$/.test(ultimo) && refino.periodo.endsWith(`${idioma === "en" ? " " : "/"}${ultimo}`) ? refino : null;
       const cadencia = a?.cadencia ?? null;
       const publicado = c?.capturas?.ultima_publicacao_fonte?.slice(0, 10) ?? null;
       const tolerancia = cadencia ? pub?.regras?.sla?.[cadencia]?.tolerancia_dias : null;
@@ -140,11 +157,13 @@ export function linhasAtualidade(pub: PublicacaoAtualidade | null, fichas: Reado
         emCurso,
         ultimoMes: mes?.periodo ?? null,
         ultimoMesRotulo: mes?.rotulo ?? null,
-        cadencia: cadencia ? (CADENCIA[cadencia] ?? cadencia) : null,
-        situacao: a?.situacao ? (SITUACAO[a.situacao] ?? a.situacao.toLowerCase()) : null,
+        cadencia: cadencia ? cadenciaLegivel(cadencia, idioma) : null,
+        situacao: a?.situacao ? situacaoLegivel(a.situacao, idioma) : null,
+        codigoSituacao: a?.situacao ?? null,
+        vigencia: vigencia !== null,
         atrasado: a?.situacao === "ATRASADO",
         base: a?.base === "publicacao_da_fonte" ? "publicacao" : a?.base === "periodo_de_referencia" ? "periodo" : null,
-        publicadoEm: periodoLegivel(publicado),
+        publicadoEm: periodoLegivel(publicado, idioma),
         toleranciaDias: typeof tolerancia === "number" && Number.isFinite(tolerancia) ? tolerancia : null,
         ficha: c?.slug && fichas.has(c.slug) ? `/setor-eletrico/dados/${c.slug}` : null,
       };
@@ -156,16 +175,16 @@ export function linhasAtualidade(pub: PublicacaoAtualidade | null, fichas: Reado
  * O refino de período que cada módulo sabe dar. Hoje só a Qualidade: o arquivo de DEC e FEC da ANEEL é anual e a fonte o reescreve
  * todo mês, então a publicação mostra "2026"; o módulo sabe qual é o último mês nacional completo.
  */
-export function refinosDePeriodo(qualidade: { disponivel?: boolean; ultimo_mes_completo?: string | null } | null): Record<string, RefinoDePeriodo> {
-  const mes = qualidade && qualidade.disponivel === true ? periodoLegivel(qualidade.ultimo_mes_completo) : null;
-  return mes ? { "aneel_qualidade/aneel_continuidade": { periodo: mes, rotulo: "último mês nacional completo" } } : {};
+export function refinosDePeriodo(qualidade: { disponivel?: boolean; ultimo_mes_completo?: string | null } | null, idioma: Idioma = idiomaEnergia()): Record<string, RefinoDePeriodo> {
+  const mes = qualidade && qualidade.disponivel === true ? periodoLegivel(qualidade.ultimo_mes_completo, idioma) : null;
+  return mes ? { "aneel_qualidade/aneel_continuidade": { periodo: mes, rotulo: tx("último mês nacional completo", "latest complete national month", idioma) } } : {};
 }
 
 /** Em que palavras o período em curso se diz: o ano, o mês ou, no grão que não se reconhece, o período. */
-export function nomeDoPeriodoEmCurso(ultimo: string | null): string {
-  if (ultimo && /^\d{4}$/.test(ultimo)) return "ano em curso";
-  if (ultimo && /^[a-z]{3}\/\d{4}$/.test(ultimo)) return "mês em curso";
-  return "período em curso";
+export function nomeDoPeriodoEmCurso(ultimo: string | null, idioma: Idioma = idiomaEnergia()): string {
+  if (ultimo && /^\d{4}$/.test(ultimo)) return tx("ano em curso", "current year", idioma);
+  if (ultimo && (/^[a-z]{3}\/\d{4}$/.test(ultimo) || /^[A-Z][a-z]{2} \d{4}$/.test(ultimo))) return tx("mês em curso", "current month", idioma);
+  return tx("período em curso", "current period", idioma);
 }
 
 /** A regra por trás da coluna "Situação": as tolerâncias de cada cadência que aparece no quadro e as fontes avaliadas pela data de publicação do arquivo. */
@@ -183,7 +202,7 @@ export function regraDeAtualidade(linhas: readonly LinhaAtualidade[]): RegraDeAt
   return {
     tolerancias: Array.from(vistas, ([cadencia, dias]) => ({ cadencia, dias })).sort((a, b) => a.dias - b.dias),
     pelaPublicacao,
-    comMesAtras: pelaPublicacao.filter((l) => l.situacao === "em dia" && l.ultimoMes !== null && l.publicadoEm !== null),
+    comMesAtras: pelaPublicacao.filter((l) => l.codigoSituacao === "EM DIA" && l.ultimoMes !== null && l.publicadoEm !== null),
   };
 }
 
@@ -214,7 +233,7 @@ export function marcaDoGrupo(topoNome: string | null | undefined): string | null
   t = t.replace(/\s+Participa[çc][õo]es$/i, "");
   t = t.replace(/\s+-\s+/g, " ").trim();
   if (!t) return null;
-  const ligacao = new Set(["DO", "DA", "DE", "DOS", "DAS", "E"]);
+  const ligacao = new Set(["DO", "DA", "DE", "DOS", "DAS", "E"]); // i18n: dado
   // o nome todo em caixa alta ganha caixa de título; as siglas curtas (EDP) ficam como estão
   return t === t.toUpperCase() ? t.split(" ").map((w) => (ligacao.has(w) ? w.toLowerCase() : w.length <= 3 ? w : w.charAt(0) + w.slice(1).toLowerCase())).join(" ") : t;
 }
@@ -223,10 +242,12 @@ export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: rea
   const itens: ItemBusca[] = [];
   for (const d of destinos) {
     if (!d.publicado || d.slug === "mapa") continue;
-    itens.push({ tipo: "Página", titulo: d.rotulo, detalhe: d.pergunta, href: d.href });
+    itens.push({ tipo: "Página", titulo: d.rotulo, detalhe: d.pergunta, href: d.href }); // i18n: dado
   }
   // as seis perguntas do alto da página e as nove do dia a dia: o leitor pode procurar por qualquer uma delas
+  // i18n: dado
   for (const p of PERGUNTAS_PRIORITARIAS) itens.push({ tipo: "Pergunta", titulo: p.pergunta, detalhe: p.link.rotulo, href: p.link.href });
+  // i18n: dado
   for (const p of PERGUNTAS_COTIDIANAS) itens.push({ tipo: "Pergunta", titulo: p.pergunta, detalhe: p.destinos.map((x) => x.rotulo).join(" · "), href: p.destinos[0].href });
   for (const d of destinos) {
     const c = CARTOES[d.slug];
@@ -235,11 +256,13 @@ export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: rea
     for (const e of c.encontra) {
       // um mesmo endereço sem âncora já é a própria página: não repete
       if (e.href === d.href) continue;
+      // i18n: dado
       itens.push({ tipo: "Painel", titulo: e.texto, detalhe: d.rotulo, href: e.href });
     }
   }
   for (const v of verbetes) {
     if (v.estado !== "CONFERIDO") continue;
+    // i18n: dado
     itens.push({ tipo: "Conceito", titulo: v.sigla ? `${v.sigla} · ${v.nome}` : v.nome, detalhe: v.emUmaFrase, href: `/setor-eletrico/aprenda/${v.slug}`, ...(v.sigla ? { sigla: v.sigla } : {}) });
   }
   // a marca de um grupo só vale como nome a mais quando o grupo tem mais de uma distribuidora: é ela que o leitor procura sem saber o nome antigo
@@ -251,12 +274,12 @@ export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: rea
   for (const d of distribuidoras) {
     const marca = marcaDoGrupo(d.grupo);
     itens.push({
-      tipo: "Distribuidora",
+      tipo: "Distribuidora", // i18n: dado
       titulo: d.nome && d.nome !== d.sigla ? `${d.sigla} · ${d.nome}` : d.sigla,
       detalhe: `${d.ufs.join(", ")}${d.ufs.length ? " · " : ""}CNPJ ${cnpjFormatado(d.cnpj)}`,
       href: `/setor-eletrico/empresas/${d.slug}`,
       sigla: d.sigla,
-      ...(marca && (porMarca.get(marca) ?? 0) > 1 ? { sinonimos: [`grupo ${marca}`] } : {}),
+      ...(marca && (porMarca.get(marca) ?? 0) > 1 ? { sinonimos: [tx(`grupo ${marca}`, `${marca} group`)] } : {}),
     });
   }
   // o vocabulário leigo entra por endereço: o mesmo nome vale para a página, o painel e a pergunta que levam ao mesmo lugar
@@ -286,8 +309,9 @@ export type ResumoAtualidade = {
 
 export function resumoAtualidade(linhas: readonly LinhaAtualidade[]): ResumoAtualidade {
   const atrasadas = linhas.filter((l) => l.atrasado);
-  const emDia = linhas.filter((l) => l.situacao === "em dia").length;
-  const semCalendario = linhas.filter((l) => l.situacao === "sem calendário declarado").length;
+  const emDia = linhas.filter((l) => l.codigoSituacao === "EM DIA").length;
+  const semCalendario = linhas.filter((l) => l.codigoSituacao === "SEM SLA").length;
+
   return { total: linhas.length, emDia, atrasadas, semCalendario, semAvaliacao: linhas.length - emDia - atrasadas.length - semCalendario };
 }
 

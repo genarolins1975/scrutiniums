@@ -7,6 +7,9 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR, mesAno } from "@/lib/energia/formato";
+import type { Idioma } from "@/lib/idioma";
+import { txEm } from "@/lib/energia/i18n/conta-inclusao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { CAMPO_DIST, expandirEntidades, linhasEventos, linhasHistorico, respostaHistorico, rotuloDistribuidora, type EntidadeCompacta, type LinhaEvolucao } from "@/lib/energia/conta";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { HistoricoB1 } from "@/lib/energia/tipos-conta";
@@ -26,46 +29,55 @@ import type { HistoricoB1 } from "@/lib/energia/tipos-conta";
 
 const ESQUEMA = {
   dist: CAMPO_DIST,
-  de: campo(tiposUrl.mes(), "", { param: "de" }),
+  de: campo(tiposUrl.mes(), "", { param: "de" }), // i18n: dado
   ate: campo(tiposUrl.mes(), "", { param: "ate" }),
 };
 
 const CORES = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)"];
 
-const COLUNAS_EVENTOS: ColunaTabela[] = [
-  { id: "data", rotulo: "Data", tipo: "data" },
-  { id: "ato", rotulo: "Ato da ANEEL", tipo: "texto", literal: { classe: "ato-retificacao-sem-numero", origem: "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica" } },
-  {
-    id: "antes",
-    rotulo: "Antes (TE + TUSD)",
-    tipo: "numero",
-    unidade: "R$/MWh",
-    casas: 2,
-  },
-  {
-    id: "depois",
-    rotulo: "Depois (TE + TUSD)",
-    tipo: "numero",
-    unidade: "R$/MWh",
-    casas: 2,
-  },
-  { id: "variacao", rotulo: "Variação", tipo: "percentual", casas: 2 },
-  { id: "variacao_te", rotulo: "Variação da TE", tipo: "percentual", casas: 2 },
-  {
-    id: "variacao_tusd",
-    rotulo: "Variação da TUSD",
-    tipo: "percentual",
-    casas: 2,
-  },
-  {
-    id: "ipca",
-    rotulo: "IPCA desde a mudança anterior",
-    tipo: "percentual",
-    casas: 2,
-  },
-  { id: "meses_ipca", rotulo: "Meses do IPCA", tipo: "texto" },
-  { id: "perimetro", rotulo: "Mudança de perímetro (ato)", tipo: "texto" },
-];
+function colunasEventos(idioma: Idioma): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "data", rotulo: tx("Data", "Date"), tipo: "data" },
+    {
+      id: "ato",
+      rotulo: tx("Ato da ANEEL", "ANEEL act"),
+      tipo: "texto",
+      idiomaTexto: "nome",
+      literal: { classe: "ato-retificacao-sem-numero", origem: "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica" },
+    },
+    {
+      id: "antes",
+      rotulo: tx("Antes (TE + TUSD)", "Before (TE + TUSD)"),
+      tipo: "numero",
+      unidade: "R$/MWh",
+      casas: 2,
+    },
+    {
+      id: "depois",
+      rotulo: tx("Depois (TE + TUSD)", "After (TE + TUSD)"),
+      tipo: "numero",
+      unidade: "R$/MWh",
+      casas: 2,
+    },
+    { id: "variacao", rotulo: tx("Variação", "Change"), tipo: "percentual", casas: 2 },
+    { id: "variacao_te", rotulo: tx("Variação da TE", "Change in TE"), tipo: "percentual", casas: 2 },
+    {
+      id: "variacao_tusd",
+      rotulo: tx("Variação da TUSD", "Change in TUSD"),
+      tipo: "percentual",
+      casas: 2,
+    },
+    {
+      id: "ipca",
+      rotulo: tx("IPCA desde a mudança anterior", "IPCA since the previous change"),
+      tipo: "percentual",
+      casas: 2,
+    },
+    { id: "meses_ipca", rotulo: tx("Meses do IPCA", "IPCA months"), tipo: "texto" },
+    { id: "perimetro", rotulo: tx("Mudança de perímetro (ato)", "Perimeter change (act)"), tipo: "texto" },
+  ];
+}
 
 // uma só requisição por visita, compartilhada por todas as instâncias
 let promessa: Promise<HistoricoB1> | null = null;
@@ -93,7 +105,9 @@ export type ContaHistoricoProps = {
 };
 
 export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, ultimoIpca, fonte, dataReferencia }: ContaHistoricoProps) {
-  const entidades = useMemo(() => expandirEntidades(compactas), [compactas]);
+  const idioma = useIdioma();
+  const tx = useTx();
+  const entidades = useMemo(() => expandirEntidades(compactas, idioma), [compactas, idioma]);
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const [hist, setHist] = useState<HistoricoB1 | null>(null);
   const [erro, setErro] = useState<string | null>(null);
@@ -142,8 +156,8 @@ export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, u
   const series = [
     {
       id: "mediana",
-      rotulo: "Mediana entre distribuidoras",
-      sigla: "Mediana",
+      rotulo: tx("Mediana entre distribuidoras", "Median across distribution utilities"),
+      sigla: tx("Mediana", "Median"),
       cor: "var(--serie-referencia)",
       espessura: 2.5,
     },
@@ -151,7 +165,7 @@ export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, u
       ? [
           {
             id: "real",
-            rotulo: `Mediana em R$ de ${mesAno(`${ultimoIpca}-01`)} (IPCA)`,
+            rotulo: tx(`Mediana em R$ de ${mesAno(`${ultimoIpca}-01`, idioma)} (IPCA)`, `Median in ${mesAno(`${ultimoIpca}-01`, idioma)} R$ (IPCA)`),
             sigla: "Real",
             cor: "var(--serie-referencia)",
             tracejada: true,
@@ -175,49 +189,61 @@ export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, u
         const x = inc.data.slice(0, 7);
         if (vistos.has(x)) continue;
         vistos.add(x);
-        out.push({ x, rotulo: `${porId.get(id)?.rotulo ?? id}: incorporação` });
+        out.push({ x, rotulo: tx(`${porId.get(id)?.rotulo ?? id}: incorporação`, `${porId.get(id)?.rotulo ?? id}: merger`) });
       }
     }
     return out.sort((a, b) => (a.x < b.x ? -1 : 1));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- a lista escolhida resume a dependência
-  }, [hist, escolhidas.join(","), porId]);
+  }, [hist, escolhidas.join(","), porId, idioma]);
 
   const destaque = escolhidas[0] ?? null;
   const dDestaque = destaque && hist ? hist.distribuidoras[destaque] : null;
-  const eventos = useMemo(() => (dDestaque ? linhasEventos(dDestaque.eventos) : []), [dDestaque]);
+  const eventos = useMemo(() => (dDestaque ? linhasEventos(dDestaque.eventos, idioma) : []), [dDestaque, idioma]);
   const nomeDestaque = destaque ? (porId.get(destaque)?.rotulo ?? destaque) : "";
   const intervalo = v.de && v.ate && v.de <= v.ate ? { inicio: v.de, fim: v.ate } : null;
 
   return (
     <div className="space-y-5">
       <Comparador
-        rotulo="Distribuidoras no histórico (até 4; a primeira fica em destaque)"
+        rotulo={tx("Distribuidoras no histórico (até 4; a primeira fica em destaque)", "Distribution utilities in the history (up to 4; the first is highlighted)")}
         entidades={entidades}
         selecionadas={v.dist}
         onMudar={(ids) => definir({ dist: ids })}
-        dicaBusca="Sigla, razão social ou CNPJ"
-        vazio="Nenhuma distribuidora escolhida: o gráfico mostra só a mediana nacional. Escolha aqui ou clique numa barra do ranking."
+        dicaBusca={tx("Sigla, razão social ou CNPJ", "Acronym, legal name or CNPJ")}
+        vazio={tx(
+          "Nenhuma distribuidora escolhida: o gráfico mostra só a mediana nacional. Escolha aqui ou clique numa barra do ranking.",
+          "No distribution utility chosen: the chart shows only the national median. Choose here or click a bar in the ranking.",
+        )}
       >
         {() => null}
       </Comparador>
 
       {precisa && !hist && !erro && (
         <p role="status" className="text-sm text-carvao-muted">
-          Carregando o histórico das distribuidoras (arquivo de vigências e mudanças da tarifa B1)…
+          {tx(
+            "Carregando o histórico das distribuidoras (arquivo de vigências e mudanças da tarifa B1)…",
+            "Loading the distribution utilities' history (file of B1 tariff validity periods and changes)…",
+          )}
         </p>
       )}
       {erro && (
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-          Não foi possível carregar o histórico ({erro}). O gráfico mostra só a mediana; o arquivo completo está em{" "}
+          {tx(
+            <>Não foi possível carregar o histórico ({erro}). O gráfico mostra só a mediana; o arquivo completo está em</>,
+            <>The history could not be loaded ({erro}). The chart shows only the median; the full file is at</>,
+          )}{" "}
           <a href={historicoUrl} download className="text-energia-dark underline underline-offset-4">
-            histórico da tarifa B1 por distribuidora (JSON)
+            {tx("histórico da tarifa B1 por distribuidora (JSON)", "B1 tariff history by distribution utility (JSON)")}
           </a>
           .
         </p>
       )}
 
       <GraficoLinhas
-        titulo="Tarifa B1 residencial no dia 1º de cada mês: distribuidoras escolhidas e mediana nacional"
+        titulo={tx(
+          "Tarifa B1 residencial no dia 1º de cada mês: distribuidoras escolhidas e mediana nacional",
+          "Residential B1 tariff on the 1st of each month: chosen distribution utilities and national median",
+        )}
         dados={dados}
         chaveX="m"
         formatoX="mes"
@@ -227,7 +253,7 @@ export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, u
         banda={{
           inferior: "p25",
           superior: "p75",
-          rotulo: "Entre o 1º e o 3º quartil das distribuidoras",
+          rotulo: tx("Entre o 1º e o 3º quartil das distribuidoras", "Between the 1st and 3rd quartile of the distribution utilities"),
         }}
         marcos={marcos}
         zoom
@@ -241,17 +267,25 @@ export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, u
       {dDestaque && (
         <div className="space-y-3">
           <p className="max-w-prose2 text-sm leading-relaxed text-carvao" aria-live="polite">
-            {respostaHistorico(rotuloDistribuidora(dDestaque.sigla, destaque!), dDestaque.eventos, dDestaque.vigencias)}
+            {respostaHistorico(rotuloDistribuidora(dDestaque.sigla, destaque!), dDestaque.eventos, dDestaque.vigencias, idioma)}
           </p>
           {dDestaque.incorporada_por && (
             <p className="text-sm text-carvao-muted">
-              Incorporada pela distribuidora de CNPJ {dDestaque.incorporada_por.cnpj} ({dDestaque.incorporada_por.ato}
-              ); a tarifa unificada começa em {dataBR(dDestaque.incorporada_por.data)}.
+              {tx(
+                <>
+                  Incorporada pela distribuidora de CNPJ {dDestaque.incorporada_por.cnpj} ({dDestaque.incorporada_por.ato}
+                  ); a tarifa unificada começa em {dataBR(dDestaque.incorporada_por.data, idioma)}.
+                </>,
+                <>
+                  Merged into the distribution utility with CNPJ {dDestaque.incorporada_por.cnpj} ({dDestaque.incorporada_por.ato}
+                  ); the unified tariff starts on {dataBR(dDestaque.incorporada_por.data, idioma)}.
+                </>,
+              )}
             </p>
           )}
           <TabelaInterativa
-            titulo={`Mudanças da tarifa B1 de ${nomeDestaque}`}
-            colunas={COLUNAS_EVENTOS}
+            titulo={tx(`Mudanças da tarifa B1 de ${nomeDestaque}`, `Changes in the B1 tariff of ${nomeDestaque}`)}
+            colunas={colunasEventos(idioma)}
             linhas={eventos}
             chaveLinha="id"
             colunaRotulo="data"
@@ -259,8 +293,11 @@ export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, u
             versao={dataReferencia}
             nomeArquivo={`conta-mudancas-b1-${destaque}`}
             tamanhoPagina={25}
-            semLinhas="A distribuidora tem uma só vigência no arquivo: nenhuma mudança a mostrar."
-            nota="Variação entre vigências contíguas da tarifa B1 residencial; não é o efeito médio do processo tarifário. Mudança de perímetro compara áreas diferentes."
+            semLinhas={tx("A distribuidora tem uma só vigência no arquivo: nenhuma mudança a mostrar.", "The distribution utility has a single validity period in the file: no change to show.")}
+            nota={tx(
+              "Variação entre vigências contíguas da tarifa B1 residencial; não é o efeito médio do processo tarifário. Mudança de perímetro compara áreas diferentes.",
+              "Change between contiguous validity periods of the residential B1 tariff; it is not the average effect of the tariff process. A perimeter change compares different areas.",
+            )}
           />
         </div>
       )}

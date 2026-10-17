@@ -30,12 +30,41 @@ export const PARES_DE_IDIOMA: readonly ParDeIdioma[] = Object.freeze(
   }),
 );
 
+/**
+ * Padrões com parâmetro ("/setor-eletrico/empresas/listadas/[papel]"): a irmã existe para todo valor
+ * que a página portuguesa gera. Casam segmento a segmento; o parâmetro aceita um segmento não vazio.
+ * Valor sem página continua dando 404 nos dois idiomas: o padrão não cria página.
+ */
+type Padrao = Readonly<{ pt: string; segmentos: readonly string[]; conteudo: ParDeIdioma["conteudo"] }>;
+const declaracaoPadroes = (inventario.rotas as { padroes?: { pt: string; conteudo: string }[] }).padroes ?? [];
+export const PADROES_DE_IDIOMA: readonly Padrao[] = Object.freeze(
+  declaracaoPadroes.map((item) => {
+    const segmentos = item.pt.slice(1).split("/");
+    if (!item.pt.startsWith("/") || !segmentos.some((s) => /^\[[a-z][a-zA-Z0-9_]*\]$/.test(s))
+      || !["portugues_marcado", "parcialmente_traduzido", "traduzido"].includes(item.conteudo)) {
+      throw new Error(`Padrão de idiomas inválido: ${item.pt}`);
+    }
+    return Object.freeze({ pt: item.pt, segmentos, conteudo: item.conteudo as ParDeIdioma["conteudo"] });
+  }),
+);
+
+function porPadrao(caminho: string): ParDeIdioma | null {
+  const partes = caminho.slice(1).split("/");
+  for (const p of PADROES_DE_IDIOMA) {
+    if (p.segmentos.length !== partes.length) continue;
+    if (p.segmentos.every((s, i) => (s.startsWith("[") ? partes[i] !== "" : s === partes[i]))) {
+      return Object.freeze({ pt: caminho, en: `/en${caminho}`, conteudo: p.conteudo });
+    }
+  }
+  return null;
+}
+
 /** Consulta pelo href interno; o resultado contém URLs canônicas, sem query ou fragmento. */
 export function parDeIdioma(href: string): ParDeIdioma | null {
   const pagina = analisarUrlPagina(href);
   if (!pagina) return null;
   const caminho = pagina.caminhoPt === "/" ? "/" : pagina.caminhoPt.replace(/\/$/, "");
-  return porCaminhoPt.get(caminho) ?? null;
+  return porCaminhoPt.get(caminho) ?? porPadrao(caminho);
 }
 
 /** Uma irmã que apenas reproduz o português não é uma tradução publicada. */

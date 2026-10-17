@@ -1,10 +1,12 @@
 "use client";
 
+import { Nome } from "@/components/i18n/Nome";
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { dominioBonito, escalaLinear, rotuloTick, type Dominio, type EscalaLinear } from "@/lib/energia/escalas";
 import { LIMITE_COMPARACAO, alternarSelecao, buscarEntidades, type EntidadeBuscavel } from "@/lib/energia/tabela";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Comparador de até quatro entidades (distribuidoras, submercados, usinas,
@@ -82,11 +84,14 @@ export function Comparador({
   valores,
   zeroNaEscala = false,
   unidade,
-  dicaBusca = "Digite para buscar",
+  dicaBusca: dicaBuscaDada,
   vazio,
   children,
   renderizarItem,
 }: ComparadorProps) {
+  const tx = useTx();
+  const idioma = useIdioma();
+  const dicaBusca = dicaBuscaDada ?? tx("Digite para buscar", "Type to search");
   const uid = useId();
   const max = Math.max(1, Math.min(LIMITE_COMPARACAO, Math.floor(maxPedido) || LIMITE_COMPARACAO));
   const porId = useMemo(() => new Map(entidades.map((e) => [e.id, e])), [entidades]);
@@ -154,11 +159,16 @@ export function Comparador({
     if (!e) return;
     const r = alternarSelecao(selecao, id, max);
     if (r.motivo === "limite") {
-      setAnuncio(`Limite de ${max} atingido. Remova uma escolha para incluir ${e.rotulo}.`);
+      setAnuncio(tx(`Limite de ${max} atingido. Remova uma escolha para incluir ${e.rotulo}.`, `Limit of ${max} reached. Remove one choice to include ${e.rotulo}.`));
       return;
     }
     mudar(r.ids);
-    setAnuncio(`${e.rotulo} ${r.motivo === "entrou" ? "entrou na" : "saiu da"} comparação: ${r.ids.length} de ${max}.`);
+    setAnuncio(
+      tx(
+        `${e.rotulo} ${r.motivo === "entrou" ? "entrou na" : "saiu da"} comparação: ${r.ids.length} de ${max}.`,
+        `${e.rotulo} ${r.motivo === "entrou" ? "added to" : "removed from"} the comparison: ${r.ids.length} of ${max}.`,
+      ),
+    );
     if (consulta) {
       setConsulta("");
       setAtiva(-1);
@@ -226,28 +236,40 @@ export function Comparador({
           {rotulo}
         </label>
         <p id={idDica} className="mt-1 text-sm text-carvao-muted">
-          Escolha até {max} para ver lado a lado, na mesma escala.{" "}
+          {tx(`Escolha até ${max} para ver lado a lado, na mesma escala.`, `Choose up to ${max} to see side by side, on the same scale.`)}{" "}
           <span className="font-medium tabular-nums text-carvao" data-contagem>
-            {selecao.length} de {max}
+            {tx(
+              <>
+                {selecao.length} de {max}
+              </>,
+              <>
+                {selecao.length} of {max}
+              </>,
+            )}
           </span>{" "}
-          {selecao.length === 1 ? "selecionada" : "selecionadas"}
-          {noLimite ? ". Limite atingido: remova uma para escolher outra." : "."}
+          {tx(selecao.length === 1 ? "selecionada" : "selecionadas", "selected")}
+          {noLimite ? tx(". Limite atingido: remova uma para escolher outra.", ". Limit reached: remove one to choose another.") : "."}
         </p>
 
         {selecionadas.length > 0 && (
-          <ul aria-label="Selecionadas para comparação" className="mt-3 flex flex-wrap gap-2">
+          <ul aria-label={tx("Selecionadas para comparação", "Selected for comparison")} className="mt-3 flex flex-wrap gap-2">
             {selecionadas.map((e, i) => (
               <li key={e.id} data-id={e.id} className="inline-flex items-center border border-energia bg-energia-fundo pl-3 text-sm text-carvao">
-                <span>{e.rotulo}</span>
+                <span>{e.nome ? <Nome>{e.rotulo}</Nome> : e.rotulo}</span>
                 <button
                   type="button"
                   ref={(el) => {
                     remocoes.current[i] = el;
                   }}
                   onClick={() => remover(e.id, i)}
-                  aria-label={`Remover ${e.rotulo} da comparação`}
+                  aria-label={e.nome && idioma === "en" ? undefined : tx(`Remover ${e.rotulo} da comparação`, `Remove ${e.rotulo} from the comparison`)}
                   className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-carvao-muted hover:text-carvao"
                 >
+                  {e.nome && idioma === "en" && (
+                    <span className="sr-only">
+                      Remove <Nome>{e.rotulo}</Nome> from the comparison
+                    </span>
+                  )}
                   <span aria-hidden="true">✕</span>
                 </button>
               </li>
@@ -316,16 +338,24 @@ export function Comparador({
                       <span aria-hidden="true" className="w-4 shrink-0 text-energia-dark">
                         {marcada ? "✓" : ""}
                       </span>
-                      <span className="min-w-0 flex-1">{e.rotulo}</span>
+                      <span className="min-w-0 flex-1">{e.nome ? <Nome>{e.rotulo}</Nome> : e.rotulo}</span>
                       {e.detalhe && <span className={`text-xs ${emFoco ? "text-carvao-muted" : "text-mineral"}`}>{e.detalhe}</span>}
                     </li>
                   );
                 })}
             </ul>
-            {aberto && resultados.total === 0 && <p className="px-3 py-3 text-sm text-carvao-muted">Nada encontrado para “{consulta}”.</p>}
+            {aberto && resultados.total === 0 && (
+              <p className="px-3 py-3 text-sm text-carvao-muted">
+                {tx("Nada encontrado para “", "Nothing found for “")}
+                {consulta}”.
+              </p>
+            )}
             {aberto && resultados.total > resultados.itens.length && (
               <p className="border-t border-linha px-3 py-2 text-xs text-carvao-muted">
-                Mostrando {resultados.itens.length} de {resultados.total}. Digite mais para refinar.
+                {tx(
+                  `Mostrando ${resultados.itens.length} de ${resultados.total}. Digite mais para refinar.`,
+                  `Showing ${resultados.itens.length} of ${resultados.total}. Type more to refine.`,
+                )}
               </p>
             )}
           </div>
@@ -334,10 +364,10 @@ export function Comparador({
             {!aberto
               ? ""
               : resultados.total === 0
-                ? "Nenhum resultado."
+                ? tx("Nenhum resultado.", "No results.")
                 : resultados.total > resultados.itens.length
-                  ? `${resultados.total} resultados; mostrando ${resultados.itens.length}. Refine a busca.`
-                  : `${resultados.total} ${resultados.total === 1 ? "resultado" : "resultados"}.`}
+                  ? tx(`${resultados.total} resultados; mostrando ${resultados.itens.length}. Refine a busca.`, `${resultados.total} results; showing ${resultados.itens.length}. Refine the search.`)
+                  : tx(`${resultados.total} ${resultados.total === 1 ? "resultado" : "resultados"}.`, `${resultados.total} ${resultados.total === 1 ? "result" : "results"}.`)}
           </p>
         </div>
         <p className="sr-only" aria-live="polite">
@@ -348,17 +378,18 @@ export function Comparador({
       <div className="mt-4" data-multiplos>
         {selecionadas.length === 0 ? (
           // div, não p: quem chama pode passar um parágrafo próprio como estado vazio
-          <div className="text-sm text-carvao-muted">{vazio ?? `Nada selecionado. Escolha até ${max} para comparar.`}</div>
+          <div className="text-sm text-carvao-muted">{vazio ?? tx(`Nada selecionado. Escolha até ${max} para comparar.`, `Nothing selected. Choose up to ${max} to compare.`)}</div>
         ) : (
           <>
             {dominio && (
               <p className="mb-2 text-xs text-mineral" data-escala-comum>
-                Mesma escala em todos os painéis: {rotuloTick(dominio.min, dominio.passo)} a {rotuloTick(dominio.max, dominio.passo)}
+                {tx("Mesma escala em todos os painéis: ", "Same scale in all panels: ")}
+                {rotuloTick(dominio.min, dominio.passo)} {tx("a", "to")} {rotuloTick(dominio.max, dominio.passo)}
                 {unidade ? ` ${unidade}` : ""}.
               </p>
             )}
             {renderizarItem ? (
-              <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2" aria-label={`Comparação: ${selecionadas.map((e) => e.rotulo).join(", ")}`}>
+              <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2" aria-label={tx(`Comparação: ${selecionadas.map((e) => e.rotulo).join(", ")}`, `Comparison: ${selecionadas.map((e) => e.rotulo).join(", ")}`)}>
                 {selecionadas.map((e, i) => (
                   <li key={e.id} className="min-w-0">
                     {renderizarItem(e, { ...ctx, indice: i })}

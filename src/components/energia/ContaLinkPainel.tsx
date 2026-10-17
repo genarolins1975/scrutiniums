@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { useIdioma } from "@/lib/energia/useIdioma";
+import { hrefNoIdioma } from "@/lib/i18n-href";
 
 /**
  * Link para outra página da Conta de luz que leva junto a escolha de distribuidoras (?dist=) feita nesta: quem escolheu a CEMIG-D no
@@ -24,10 +26,13 @@ export function ContaLinkFiltros({
   manter?: string[];
   atual?: boolean;
 }) {
-  const [alvo, setAlvo] = useState(href);
+  // o destino segue o idioma da página: na página inglesa, a irmã /en quando ela existe
+  const idioma = useIdioma();
+  const destino = hrefNoIdioma(href, idioma);
+  const [alvo, setAlvo] = useState(destino);
   const atualizar = () => {
     const corrente = new URLSearchParams(window.location.search);
-    const [base, ancora] = href.split("#");
+    const [base, ancora] = destino.split("#");
     const q = new URLSearchParams();
     for (const k of manter) {
       const v = corrente.get(k);

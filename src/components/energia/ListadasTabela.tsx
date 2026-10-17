@@ -4,6 +4,11 @@ import { useMemo, useState } from "react";
 import Link from "@/components/energia/LinkSemPrefetch";
 import { ListadasLogo } from "@/components/energia/ListadasLogo";
 import type { LogoListada } from "@/lib/energia/tipos-listadas";
+import type { Idioma } from "@/lib/idioma";
+import { num } from "@/lib/energia/formato";
+import { tx } from "@/lib/energia/idioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 
 export type ColunaListadas = {
   id: string;
@@ -26,11 +31,11 @@ export type LinhaListadas = {
   valores: Record<string, number | string | null>;
 };
 
-function fmt(v: number | string | null, c: ColunaListadas): string {
-  if (v === null || v === undefined || v === "") return "sem dado";
+function fmt(v: number | string | null, c: ColunaListadas, idioma: Idioma): string {
+  if (v === null || v === undefined || v === "") return tx("sem dado", "no data", idioma);
   if (typeof v === "string") return v;
   const casas = c.casas ?? 0;
-  const t = Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+  const t = num(Math.abs(v), casas, idioma);
   if (c.tipo === "sinal") return `${v > 0 ? "+" : v < 0 ? "−" : ""}${t}`;
   return v < 0 ? `−${t}` : t;
 }
@@ -51,6 +56,8 @@ export function ListadasTabela({
   legenda: string;
   ordemInicial?: string;
 }) {
+  const tx = useTx();
+  const idioma = useIdioma();
   const [ordem, setOrdem] = useState<{ id: string; desc: boolean }>({ id: ordemInicial, desc: true });
   const ordenadas = useMemo(() => {
     const col = colunas.find((c) => c.id === ordem.id);
@@ -81,12 +88,19 @@ export function ListadasTabela({
       <div className="tabela-scroll overflow-x-auto" role="region" aria-label={legenda} tabIndex={0}>
         <table className="w-full min-w-[960px] border-collapse text-sm">
           <caption className="sr-only">
-            {legenda}. Ordenada por {colAtual?.rotulo ?? "peso no índice"}, {ordem.desc ? "decrescente" : "crescente"}.
+            {tx(
+              <>
+                {legenda}. Ordenada por {colAtual?.rotulo ?? "peso no índice"}, {ordem.desc ? "decrescente" : "crescente"}.
+              </>,
+              <>
+                {legenda}. Sorted by {colAtual?.rotulo ?? "weight in the index"}, {ordem.desc ? "descending" : "ascending"}.
+              </>,
+            )}
           </caption>
           <thead>
             <tr className="text-left">
               <th scope="col" rowSpan={2} className="sticky left-0 z-10 bg-papel pb-2 pr-3 align-bottom text-xs font-medium text-carvao-muted">
-                Companhia
+                {tx("Companhia", "Company")}
               </th>
               {grupos.map((g, i) => (
                 <th key={`${g.rotulo}-${i}`} scope="colgroup" colSpan={g.n} className="border-b border-linha px-2 pb-1 text-center text-xs font-medium text-mineral">
@@ -129,7 +143,9 @@ export function ListadasTabela({
                   <Link href={l.href} className="flex min-h-[44px] items-center gap-3 text-carvao hover:text-energia-dark">
                     <ListadasLogo logo={l.logo} nome={l.nome} tamanho="sm" decorativo={!!l.logo?.arquivo} />
                     <span className="leading-tight">
-                      <span className="block whitespace-nowrap font-medium underline underline-offset-4">{l.nome}</span>
+                      <span className="block whitespace-nowrap font-medium underline underline-offset-4">
+                        <Nome>{l.nome}</Nome>
+                      </span>
                       <span className="block text-xs text-mineral">{l.papel}</span>
                     </span>
                   </Link>
@@ -139,7 +155,7 @@ export function ListadasTabela({
                   const aus = v === null || v === undefined || v === "";
                   return (
                     <td key={c.id} className={`px-2 py-2 text-right tabular-nums ${aus ? "text-mineral" : "text-carvao"}`}>
-                      {fmt(v ?? null, c)}
+                      {fmt(v ?? null, c, idioma)}
                     </td>
                   );
                 })}

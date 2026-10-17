@@ -1,3 +1,4 @@
+import { comNomes } from "@/components/i18n/comNomes";
 import { fonteLegivel } from "@/lib/energia/bastidor";
 import type { ReactNode } from "react";
 import type { Natureza, Proveniencia } from "@/lib/energia/tipos";
@@ -5,6 +6,10 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { SobreEsteDado } from "@/components/evidencia/SobreEsteDado";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
 import { provenienciaLegivel } from "@/lib/energia/mercado";
+import { Nome } from "@/components/i18n/Nome";
+import { dataBR } from "@/lib/energia/formato";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import type { Idioma } from "@/lib/idioma";
 
 /**
  * Regra editorial da plataforma incorporada ao design system: toda
@@ -22,6 +27,8 @@ import { provenienciaLegivel } from "@/lib/energia/mercado";
 export type RegraEditorial = {
   /** O que estou vendo: pergunta ou conclusão no título. */
   pergunta: string;
+  /** Nomes próprios dentro da pergunta ("How does Ceraçá serve its area?"): na página inglesa saem marcados. */
+  nomesNaPergunta?: readonly string[];
   /** Indicador · unidade (subtítulo técnico). */
   subtitulo: string;
   porQueImporta: ReactNode;
@@ -81,13 +88,35 @@ export function PainelEvidencia({
     if (!g) grupos.push({ orgao, ate, conjuntos: [conjunto] });
     else if (!g.conjuntos.includes(conjunto)) g.conjuntos.push(conjunto);
   }
-  const textoFontes = `${grupos.length === 1 ? "Fonte" : "Fontes"}: ${grupos.map((g) => `${g.orgao}, ${g.conjuntos.join("; ")} (referência até ${fim(g.ate)})`).join("; ")}. `;
+  const idioma = idiomaEnergia();
+  // em inglês, o nome do conjunto (base oficial) fica em português e marcado; o texto continua lido pela imagem baixada (BaixarImagem)
+  const textoFontes = tx<ReactNode>(
+    `${grupos.length === 1 ? "Fonte" : "Fontes"}: ${grupos.map((g) => `${g.orgao}, ${g.conjuntos.join("; ")} (referência até ${fim(g.ate)})`).join("; ")}. `, // i18n: dado (ramo português do tx)
+    <>
+      {grupos.length === 1 ? "Source: " : "Sources: "}
+      {grupos.map((g, i) => (
+        <span key={`${g.orgao}-${g.ate}`}>
+          {i > 0 && "; "}
+          {g.orgao},{" "}
+          {g.conjuntos.map((c, j) => (
+            <span key={c}>
+              {j > 0 && "; "}
+              <Nome>{c}</Nome>
+            </span>
+          ))}{" "}
+          (reference up to {fim(g.ate, idioma)})
+        </span>
+      ))}
+      .{" "}
+    </>,
+    idioma,
+  );
   const Titulo = nivelTitulo === 3 ? "h3" : "h2";
   return (
     <section id={id} aria-labelledby={`${id}-titulo`} data-nivel={nivel} data-painel-evidencia="" className="scroll-mt-28 border-t border-linha pt-6">
       <header>
         <Titulo id={`${id}-titulo`} className={`${nivelTitulo === 3 ? "ed-h3 text-[1.375rem]" : "ed-h2"} font-serif text-carvao`}>
-          {r.pergunta}
+          {comNomes(r.pergunta, r.nomesNaPergunta, idiomaEnergia())}
         </Titulo>
         <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-carvao-muted">
           <span>{r.subtitulo}</span>
@@ -98,7 +127,7 @@ export function PainelEvidencia({
       </header>
       <div className="mt-5">{children}</div>
       {!naoConcluirNoCorpo && <NotasDoPainel oQueMudou={r.oQueMudou} comoInterpretar={r.comoInterpretar} naoConcluir={r.naoConcluir} nome={r.pergunta} />}
-      <DetalheDoNivel resumo="Por que isso importa" abreEm="analisar" className="mt-1" dados={{ "data-por-que-importa": "" }}>
+      <DetalheDoNivel resumo={tx("Por que isso importa", "Why this matters")} abreEm="analisar" className="mt-1" dados={{ "data-por-que-importa": "" }}>
         <div className="max-w-prose2 border-t border-linha pb-2 pt-3 text-sm leading-relaxed text-carvao-muted">{r.porQueImporta}</div>
       </DetalheDoNivel>
       <footer className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-linha pt-3">
@@ -109,7 +138,7 @@ export function PainelEvidencia({
         <div className="flex flex-wrap items-center gap-x-5">
           {r.proveniencia.download && (
             <a href={r.proveniencia.download} download className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
-              Baixar CSV da série completa
+              {tx("Baixar CSV da série completa", "Download CSV of the full series")}
             </a>
           )}
           <SobreEsteDado p={r.proveniencia} />
@@ -149,25 +178,29 @@ export function NotasDoPainel({
   nome?: string;
 }) {
   const sufixo = nome ? `: ${nome}` : "";
+  const mudou = tx("O que mudou", "What changed");
+  const interpretar = tx("Como interpretar", "How to read it");
+  const naoPossivel = tx("O que não é possível concluir", "What cannot be concluded");
   return (
     <div data-notas-painel="" className="grid gap-x-8 gap-y-4 md:grid-cols-3">
-      <aside aria-label={`O que mudou${sufixo}`} data-que-mudou="" className="border-l-2 border-linha pl-4">
-        <p className="rotulo text-mineral">O que mudou</p>
+      <aside aria-label={`${mudou}${sufixo}`} data-que-mudou="" className="border-l-2 border-linha pl-4">
+        <p className="rotulo text-mineral">{mudou}</p>
         <div className="mt-1 text-sm leading-relaxed text-carvao-muted">{oQueMudou}</div>
       </aside>
-      <aside aria-label={`Como interpretar${sufixo}`} data-como-interpretar="" className="border-l-2 border-linha pl-4">
-        <p className="rotulo text-mineral">Como interpretar</p>
+      <aside aria-label={`${interpretar}${sufixo}`} data-como-interpretar="" className="border-l-2 border-linha pl-4">
+        <p className="rotulo text-mineral">{interpretar}</p>
         <div className="mt-1 text-sm leading-relaxed text-carvao-muted">{comoInterpretar}</div>
       </aside>
-      <aside aria-label={`O que não é possível concluir${sufixo}`} data-ressalva="" className="border-l-2 border-energia-soft pl-4">
-        <p className="rotulo text-mineral">O que não é possível concluir</p>
+      <aside aria-label={`${naoPossivel}${sufixo}`} data-ressalva="" className="border-l-2 border-energia-soft pl-4">
+        <p className="rotulo text-mineral">{naoPossivel}</p>
         <div className="mt-1 text-sm leading-relaxed text-carvao-muted">{naoConcluir}</div>
       </aside>
     </div>
   );
 }
 
-function fim(iso: string): string {
+function fim(iso: string, idioma: Idioma = "pt"): string {
+  if (idioma === "en") return iso.length > 10 ? `${dataBR(iso, "en")}, ${iso.slice(11, 16)}` : dataBR(iso, "en");
   const [a, m, d] = iso.slice(0, 10).split("-");
   if (d === undefined) return m === undefined ? a : `${m}/${a}`;
   return iso.length > 10 ? `${d}/${m}/${a} ${iso.slice(11, 16)}` : `${d}/${m}/${a}`;

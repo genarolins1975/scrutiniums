@@ -10,9 +10,9 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "babd92c791425489e2dea65ecd86ed977a1283f433fbeedae6771a9f2a3d45e2",
-    "arquivos_analisados": 1080,
-    "fontes_sha256": "dd5a55a0b084b782308c07d99e28a136b8c70339b4d6213f01c6e2cc93e49810",
+    "inventario_sha256": "81fa0497dc22b120d2f690894249cbdc229d93caeae253f350c0c47f59911e40",
+    "arquivos_analisados": 1178,
+    "fontes_sha256": "d1eca2efb9aa862a86914b20f34b81a9081dd2f5960ca4ae9872250fdba64aa9",
     "pendencias_sha256": "6aec7fb6213b86ab065379f940f3ba6abc04684d423da747daf4e84cbff94363",
     "nao_classificadas": [
       {
@@ -138,20 +138,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 208,
+        "arquivos": 213,
         "candidatos": {
-          "jsx_text": 568,
-          "atributos": 192,
-          "props": 634,
-          "outros_literais": 3316,
-          "templates": 388,
-          "expressoes_nao_resolvidas": 2140,
-          "chaves_objetos": 2518
+          "jsx_text": 537,
+          "atributos": 201,
+          "props": 660,
+          "outros_literais": 3535,
+          "templates": 414,
+          "expressoes_nao_resolvidas": 2299,
+          "chaves_objetos": 2541
         },
         "exclusoes": {
-          "importacoes": 873,
-          "atributos_tecnicos": 1154,
-          "tipos": 201
+          "importacoes": 919,
+          "atributos_tecnicos": 1162,
+          "tipos": 206
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -160,7 +160,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 9756,
+        "candidatos_nao_catalogados": 10187,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -187,20 +187,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 468,
+        "arquivos": 561,
         "candidatos": {
-          "jsx_text": 6926,
-          "atributos": 2574,
-          "props": 12786,
-          "outros_literais": 30079,
-          "templates": 6791,
-          "expressoes_nao_resolvidas": 34927,
-          "chaves_objetos": 32287
+          "jsx_text": 7496,
+          "atributos": 2846,
+          "props": 18488,
+          "outros_literais": 50584,
+          "templates": 12497,
+          "expressoes_nao_resolvidas": 54360,
+          "chaves_objetos": 35700
         },
         "exclusoes": {
-          "importacoes": 3644,
-          "atributos_tecnicos": 8409,
-          "tipos": 3617
+          "importacoes": 4860,
+          "atributos_tecnicos": 8481,
+          "tipos": 3705
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -209,18 +209,18 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 126370,
+        "candidatos_nao_catalogados": 181971,
         "percentual_traduzido": null
       },
       "rotas": {
         "paginas_pt": 79,
-        "paginas_en": 0,
+        "paginas_en": 79,
         "handlers": 1,
-        "templates_com_parametros": 6,
+        "templates_com_parametros": 12,
         "paginas_pt_literais": 73,
         "paginas_pt_fora_do_adaptador": 6,
-        "paginas_pt_literais_sem_irma": 73,
-        "pares_estruturais": 0,
+        "paginas_pt_literais_sem_irma": -6,
+        "pares_estruturais": 79,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
@@ -801,6 +801,881 @@
         "arquivos_presentes": true
       },
       {
+        "pt": "/setor-eletrico",
+        "en": "/en/setor-eletrico",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/page.tsx",
+          "en": "src/app/en/setor-eletrico/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/agua-e-clima",
+        "en": "/en/setor-eletrico/agua-e-clima",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/agua-e-clima/page.tsx",
+          "en": "src/app/en/setor-eletrico/agua-e-clima/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/agua-e-clima/afluencia",
+        "en": "/en/setor-eletrico/agua-e-clima/afluencia",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/agua-e-clima/afluencia/page.tsx",
+          "en": "src/app/en/setor-eletrico/agua-e-clima/afluencia/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/agua-e-clima/chuva-e-temperatura",
+        "en": "/en/setor-eletrico/agua-e-clima/chuva-e-temperatura",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/agua-e-clima/chuva-e-temperatura/page.tsx",
+          "en": "src/app/en/setor-eletrico/agua-e-clima/chuva-e-temperatura/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/agua-e-clima/reservatorios",
+        "en": "/en/setor-eletrico/agua-e-clima/reservatorios",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/agua-e-clima/reservatorios/page.tsx",
+          "en": "src/app/en/setor-eletrico/agua-e-clima/reservatorios/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/aprenda",
+        "en": "/en/setor-eletrico/aprenda",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/aprenda/page.tsx",
+          "en": "src/app/en/setor-eletrico/aprenda/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/aprenda/[conceito]",
+        "en": "/en/setor-eletrico/aprenda/[conceito]",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "padrao": true,
+        "fontes": {
+          "pt": "src/app/setor-eletrico/aprenda/[conceito]/page.tsx",
+          "en": "src/app/en/setor-eletrico/aprenda/[conceito]/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/aprenda/trilhas",
+        "en": "/en/setor-eletrico/aprenda/trilhas",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/aprenda/trilhas/page.tsx",
+          "en": "src/app/en/setor-eletrico/aprenda/trilhas/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/aprenda/trilhas/[trilha]",
+        "en": "/en/setor-eletrico/aprenda/trilhas/[trilha]",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "padrao": true,
+        "fontes": {
+          "pt": "src/app/setor-eletrico/aprenda/trilhas/[trilha]/page.tsx",
+          "en": "src/app/en/setor-eletrico/aprenda/trilhas/[trilha]/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/carga",
+        "en": "/en/setor-eletrico/carga",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/carga/page.tsx",
+          "en": "src/app/en/setor-eletrico/carga/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/carga/clima-e-calendario",
+        "en": "/en/setor-eletrico/carga/clima-e-calendario",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/carga/clima-e-calendario/page.tsx",
+          "en": "src/app/en/setor-eletrico/carga/clima-e-calendario/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/carga/perfil-horario",
+        "en": "/en/setor-eletrico/carga/perfil-horario",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/carga/perfil-horario/page.tsx",
+          "en": "src/app/en/setor-eletrico/carga/perfil-horario/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/conta-de-luz",
+        "en": "/en/setor-eletrico/conta-de-luz",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/conta-de-luz/page.tsx",
+          "en": "src/app/en/setor-eletrico/conta-de-luz/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/conta-de-luz/reajustes-e-subsidios",
+        "en": "/en/setor-eletrico/conta-de-luz/reajustes-e-subsidios",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/conta-de-luz/reajustes-e-subsidios/page.tsx",
+          "en": "src/app/en/setor-eletrico/conta-de-luz/reajustes-e-subsidios/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/dados",
+        "en": "/en/setor-eletrico/dados",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/dados/page.tsx",
+          "en": "src/app/en/setor-eletrico/dados/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/dados/[dataset]",
+        "en": "/en/setor-eletrico/dados/[dataset]",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "padrao": true,
+        "fontes": {
+          "pt": "src/app/setor-eletrico/dados/[dataset]/page.tsx",
+          "en": "src/app/en/setor-eletrico/dados/[dataset]/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/dados/reproducao",
+        "en": "/en/setor-eletrico/dados/reproducao",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/dados/reproducao/page.tsx",
+          "en": "src/app/en/setor-eletrico/dados/reproducao/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/dados/saude",
+        "en": "/en/setor-eletrico/dados/saude",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/dados/saude/page.tsx",
+          "en": "src/app/en/setor-eletrico/dados/saude/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/empresas",
+        "en": "/en/setor-eletrico/empresas",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/empresas/page.tsx",
+          "en": "src/app/en/setor-eletrico/empresas/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/empresas/[entidade]",
+        "en": "/en/setor-eletrico/empresas/[entidade]",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "padrao": true,
+        "fontes": {
+          "pt": "src/app/setor-eletrico/empresas/[entidade]/page.tsx",
+          "en": "src/app/en/setor-eletrico/empresas/[entidade]/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/empresas/analise",
+        "en": "/en/setor-eletrico/empresas/analise",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/empresas/analise/page.tsx",
+          "en": "src/app/en/setor-eletrico/empresas/analise/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/empresas/ativos",
+        "en": "/en/setor-eletrico/empresas/ativos",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/empresas/ativos/page.tsx",
+          "en": "src/app/en/setor-eletrico/empresas/ativos/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/empresas/controle",
+        "en": "/en/setor-eletrico/empresas/controle",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/empresas/controle/page.tsx",
+          "en": "src/app/en/setor-eletrico/empresas/controle/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/empresas/distribuidoras",
+        "en": "/en/setor-eletrico/empresas/distribuidoras",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/empresas/distribuidoras/page.tsx",
+          "en": "src/app/en/setor-eletrico/empresas/distribuidoras/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/empresas/financas",
+        "en": "/en/setor-eletrico/empresas/financas",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/empresas/financas/page.tsx",
+          "en": "src/app/en/setor-eletrico/empresas/financas/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/empresas/listadas",
+        "en": "/en/setor-eletrico/empresas/listadas",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/empresas/listadas/page.tsx",
+          "en": "src/app/en/setor-eletrico/empresas/listadas/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/empresas/listadas/[papel]",
+        "en": "/en/setor-eletrico/empresas/listadas/[papel]",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "padrao": true,
+        "fontes": {
+          "pt": "src/app/setor-eletrico/empresas/listadas/[papel]/page.tsx",
+          "en": "src/app/en/setor-eletrico/empresas/listadas/[papel]/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/expansao",
+        "en": "/en/setor-eletrico/expansao",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/expansao/page.tsx",
+          "en": "src/app/en/setor-eletrico/expansao/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/expansao/carteira",
+        "en": "/en/setor-eletrico/expansao/carteira",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/expansao/carteira/page.tsx",
+          "en": "src/app/en/setor-eletrico/expansao/carteira/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/expansao/cenarios",
+        "en": "/en/setor-eletrico/expansao/cenarios",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/expansao/cenarios/page.tsx",
+          "en": "src/app/en/setor-eletrico/expansao/cenarios/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/expansao/cronograma",
+        "en": "/en/setor-eletrico/expansao/cronograma",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/expansao/cronograma/page.tsx",
+          "en": "src/app/en/setor-eletrico/expansao/cronograma/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/expansao/geracao-e-transmissao",
+        "en": "/en/setor-eletrico/expansao/geracao-e-transmissao",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/expansao/geracao-e-transmissao/page.tsx",
+          "en": "src/app/en/setor-eletrico/expansao/geracao-e-transmissao/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/geracao",
+        "en": "/en/setor-eletrico/geracao",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/geracao/page.tsx",
+          "en": "src/app/en/setor-eletrico/geracao/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/geracao/capacidade",
+        "en": "/en/setor-eletrico/geracao/capacidade",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/geracao/capacidade/page.tsx",
+          "en": "src/app/en/setor-eletrico/geracao/capacidade/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/geracao/curtailment",
+        "en": "/en/setor-eletrico/geracao/curtailment",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/geracao/curtailment/page.tsx",
+          "en": "src/app/en/setor-eletrico/geracao/curtailment/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/geracao/restricoes",
+        "en": "/en/setor-eletrico/geracao/restricoes",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/geracao/restricoes/page.tsx",
+          "en": "src/app/en/setor-eletrico/geracao/restricoes/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/geracao/termica",
+        "en": "/en/setor-eletrico/geracao/termica",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/geracao/termica/page.tsx",
+          "en": "src/app/en/setor-eletrico/geracao/termica/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/inclusao-energetica",
+        "en": "/en/setor-eletrico/inclusao-energetica",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/inclusao-energetica/page.tsx",
+          "en": "src/app/en/setor-eletrico/inclusao-energetica/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/inclusao-energetica/acesso",
+        "en": "/en/setor-eletrico/inclusao-energetica/acesso",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/inclusao-energetica/acesso/page.tsx",
+          "en": "src/app/en/setor-eletrico/inclusao-energetica/acesso/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/inclusao-energetica/cobertura",
+        "en": "/en/setor-eletrico/inclusao-energetica/cobertura",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/inclusao-energetica/cobertura/page.tsx",
+          "en": "src/app/en/setor-eletrico/inclusao-energetica/cobertura/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/inclusao-energetica/orcamento",
+        "en": "/en/setor-eletrico/inclusao-energetica/orcamento",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/inclusao-energetica/orcamento/page.tsx",
+          "en": "src/app/en/setor-eletrico/inclusao-energetica/orcamento/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/inclusao-energetica/tarifa-social",
+        "en": "/en/setor-eletrico/inclusao-energetica/tarifa-social",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/inclusao-energetica/tarifa-social/page.tsx",
+          "en": "src/app/en/setor-eletrico/inclusao-energetica/tarifa-social/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/leiloes",
+        "en": "/en/setor-eletrico/leiloes",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/leiloes/page.tsx",
+          "en": "src/app/en/setor-eletrico/leiloes/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/leiloes/transmissao",
+        "en": "/en/setor-eletrico/leiloes/transmissao",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/leiloes/transmissao/page.tsx",
+          "en": "src/app/en/setor-eletrico/leiloes/transmissao/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/mercado",
+        "en": "/en/setor-eletrico/mercado",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/mercado/page.tsx",
+          "en": "src/app/en/setor-eletrico/mercado/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/mercado/agentes",
+        "en": "/en/setor-eletrico/mercado/agentes",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/mercado/agentes/page.tsx",
+          "en": "src/app/en/setor-eletrico/mercado/agentes/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/mercado/comercializacao",
+        "en": "/en/setor-eletrico/mercado/comercializacao",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/mercado/comercializacao/page.tsx",
+          "en": "src/app/en/setor-eletrico/mercado/comercializacao/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/mercado/encargos",
+        "en": "/en/setor-eletrico/mercado/encargos",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/mercado/encargos/page.tsx",
+          "en": "src/app/en/setor-eletrico/mercado/encargos/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/mercado/mre-e-gsf",
+        "en": "/en/setor-eletrico/mercado/mre-e-gsf",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/mercado/mre-e-gsf/page.tsx",
+          "en": "src/app/en/setor-eletrico/mercado/mre-e-gsf/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/metodologia",
+        "en": "/en/setor-eletrico/metodologia",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/metodologia/page.tsx",
+          "en": "src/app/en/setor-eletrico/metodologia/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/metodologia/avaliacao",
+        "en": "/en/setor-eletrico/metodologia/avaliacao",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/metodologia/avaliacao/page.tsx",
+          "en": "src/app/en/setor-eletrico/metodologia/avaliacao/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/perdas",
+        "en": "/en/setor-eletrico/perdas",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/perdas/page.tsx",
+          "en": "src/app/en/setor-eletrico/perdas/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/perdas/composicao",
+        "en": "/en/setor-eletrico/perdas/composicao",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/perdas/composicao/page.tsx",
+          "en": "src/app/en/setor-eletrico/perdas/composicao/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/perdas/custo-e-contexto",
+        "en": "/en/setor-eletrico/perdas/custo-e-contexto",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/perdas/custo-e-contexto/page.tsx",
+          "en": "src/app/en/setor-eletrico/perdas/custo-e-contexto/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/perdas/regulatorio",
+        "en": "/en/setor-eletrico/perdas/regulatorio",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/perdas/regulatorio/page.tsx",
+          "en": "src/app/en/setor-eletrico/perdas/regulatorio/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/pld",
+        "en": "/en/setor-eletrico/pld",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/pld/page.tsx",
+          "en": "src/app/en/setor-eletrico/pld/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/pld/cmo-e-formacao",
+        "en": "/en/setor-eletrico/pld/cmo-e-formacao",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/pld/cmo-e-formacao/page.tsx",
+          "en": "src/app/en/setor-eletrico/pld/cmo-e-formacao/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/pld/diferencas-regionais",
+        "en": "/en/setor-eletrico/pld/diferencas-regionais",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/pld/diferencas-regionais/page.tsx",
+          "en": "src/app/en/setor-eletrico/pld/diferencas-regionais/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/pld/historico",
+        "en": "/en/setor-eletrico/pld/historico",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/pld/historico/page.tsx",
+          "en": "src/app/en/setor-eletrico/pld/historico/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/pld/limites",
+        "en": "/en/setor-eletrico/pld/limites",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/pld/limites/page.tsx",
+          "en": "src/app/en/setor-eletrico/pld/limites/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/pld/modelos",
+        "en": "/en/setor-eletrico/pld/modelos",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/pld/modelos/page.tsx",
+          "en": "src/app/en/setor-eletrico/pld/modelos/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/pld/modelos/[modelo]",
+        "en": "/en/setor-eletrico/pld/modelos/[modelo]",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "padrao": true,
+        "fontes": {
+          "pt": "src/app/setor-eletrico/pld/modelos/[modelo]/page.tsx",
+          "en": "src/app/en/setor-eletrico/pld/modelos/[modelo]/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/pld/previsoes",
+        "en": "/en/setor-eletrico/pld/previsoes",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/pld/previsoes/page.tsx",
+          "en": "src/app/en/setor-eletrico/pld/previsoes/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/qualidade",
+        "en": "/en/setor-eletrico/qualidade",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/qualidade/page.tsx",
+          "en": "src/app/en/setor-eletrico/qualidade/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/rede",
+        "en": "/en/setor-eletrico/rede",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/rede/page.tsx",
+          "en": "src/app/en/setor-eletrico/rede/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/rede/balanco-e-exterior",
+        "en": "/en/setor-eletrico/rede/balanco-e-exterior",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/rede/balanco-e-exterior/page.tsx",
+          "en": "src/app/en/setor-eletrico/rede/balanco-e-exterior/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/rede/programado",
+        "en": "/en/setor-eletrico/rede/programado",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/rede/programado/page.tsx",
+          "en": "src/app/en/setor-eletrico/rede/programado/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/rede/restricoes",
+        "en": "/en/setor-eletrico/rede/restricoes",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/rede/restricoes/page.tsx",
+          "en": "src/app/en/setor-eletrico/rede/restricoes/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/regulacao",
+        "en": "/en/setor-eletrico/regulacao",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/regulacao/page.tsx",
+          "en": "src/app/en/setor-eletrico/regulacao/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/regulacao/consultas-e-agenda",
+        "en": "/en/setor-eletrico/regulacao/consultas-e-agenda",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/regulacao/consultas-e-agenda/page.tsx",
+          "en": "src/app/en/setor-eletrico/regulacao/consultas-e-agenda/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/regulacao/linha-do-tempo",
+        "en": "/en/setor-eletrico/regulacao/linha-do-tempo",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/regulacao/linha-do-tempo/page.tsx",
+          "en": "src/app/en/setor-eletrico/regulacao/linha-do-tempo/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/territorio",
+        "en": "/en/setor-eletrico/territorio",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/territorio/page.tsx",
+          "en": "src/app/en/setor-eletrico/territorio/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/territorio/atlas",
+        "en": "/en/setor-eletrico/territorio/atlas",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/territorio/atlas/page.tsx",
+          "en": "src/app/en/setor-eletrico/territorio/atlas/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/transicao",
+        "en": "/en/setor-eletrico/transicao",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/transicao/page.tsx",
+          "en": "src/app/en/setor-eletrico/transicao/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/transicao/emissoes",
+        "en": "/en/setor-eletrico/transicao/emissoes",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/transicao/emissoes/page.tsx",
+          "en": "src/app/en/setor-eletrico/transicao/emissoes/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/transicao/energia-estimada",
+        "en": "/en/setor-eletrico/transicao/energia-estimada",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/transicao/energia-estimada/page.tsx",
+          "en": "src/app/en/setor-eletrico/transicao/energia-estimada/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/transicao/mmgd",
+        "en": "/en/setor-eletrico/transicao/mmgd",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/transicao/mmgd/page.tsx",
+          "en": "src/app/en/setor-eletrico/transicao/mmgd/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/transicao/riscos",
+        "en": "/en/setor-eletrico/transicao/riscos",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/transicao/riscos/page.tsx",
+          "en": "src/app/en/setor-eletrico/transicao/riscos/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/setor-eletrico/visao-geral",
+        "en": "/en/setor-eletrico/visao-geral",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/visao-geral/page.tsx",
+          "en": "src/app/en/setor-eletrico/visao-geral/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
         "pt": "/sobre",
         "en": "/en/sobre",
         "dominio": "plataforma",
@@ -845,7 +1720,7 @@
         "arquivos_presentes": true
       }
     ],
-    "pares_estruturais": 13,
+    "pares_estruturais": 92,
     "fallbacks_declarados": 9,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false

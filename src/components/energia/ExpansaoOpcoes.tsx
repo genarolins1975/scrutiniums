@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Grupo de opções exclusivas das páginas da Expansão (medida do mapa, figura do
@@ -58,6 +59,7 @@ export function ExpansaoMarcas<T extends string>({
   valor: readonly T[];
   onMudar: (v: T[]) => void;
 }) {
+  const tx = useTx();
   const alternar = (id: T) => {
     const tem = valor.includes(id);
     if (tem && valor.length === 1) return;
@@ -81,7 +83,7 @@ export function ExpansaoMarcas<T extends string>({
               type="checkbox"
               checked={marcado}
               aria-disabled={unico || undefined}
-              title={unico ? "Pelo menos uma opção fica marcada" : undefined}
+              title={unico ? tx("Pelo menos uma opção fica marcada", "At least one option stays selected") : undefined}
               onChange={() => alternar(o.id)}
               className="accent-energia"
             />

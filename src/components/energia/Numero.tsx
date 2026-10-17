@@ -1,3 +1,4 @@
+import { comNomes } from "@/components/i18n/comNomes";
 import type { ReactNode } from "react";
 import type { Natureza, Periodo } from "@/lib/energia/tipos";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
@@ -11,6 +12,10 @@ import {
   type FormatoNumero,
   type Variacao,
 } from "@/lib/energia/evidencia";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
+import { unidadeNoIdioma } from "@/lib/energia/i18n/nucleo";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { num } from "@/lib/energia/formato";
 
 /**
  * Número de destaque (KPI) do Setor Elétrico: rótulo, valor formatado em pt-BR,
@@ -33,6 +38,8 @@ import {
 
 export type NumeroProps = {
   rotulo: string;
+  /** Nomes próprios dentro do rótulo ("30-day rainfall, Paranaíba basin"): na página inglesa saem marcados. */
+  nomesNoRotulo?: readonly string[];
   /** Valor na unidade exibida. Omitido, vem de `evidencia.valor_calculo`. null é ausência. */
   valor?: number | null;
   formato?: FormatoNumero;
@@ -73,6 +80,7 @@ export type NumeroProps = {
 
 export function Numero({
   rotulo,
+  nomesNoRotulo,
   valor,
   formato = "num",
   casas = 1,
@@ -95,11 +103,16 @@ export function Numero({
   const prova = ficha ? <ComproveNumero evidencia={ficha} endereco={endereco} /> : sobDemanda ? <ComproveNumero sobDemanda={sobDemanda} endereco={endereco} /> : null;
   const v = valor !== undefined ? valor : (evidencia?.valor_calculo ?? null);
   const ausente = v === null || !Number.isFinite(v);
-  const u = unidadeDestaque(unidade ?? evidencia?.unidade, formato);
+  const uBruta = unidadeDestaque(unidade ?? evidencia?.unidade, formato);
+  // unidade da gold em português (MWmed, "unidades consumidoras"): em inglês, a da tabela; sem entrada, marcada como trecho português
+  const uIdioma = uBruta ? unidadeNoIdioma(uBruta, idiomaEnergia()) : uBruta;
+  const u = uBruta && uIdioma === null ? <TrechoPortugues regiao="numero-unidade">{uBruta}</TrechoPortugues> : uIdioma;
   const per = periodo ?? evidencia?.periodo;
   const textoPer0 = typeof per === "string" ? per : per ? textoPeriodo(per) : null;
   const textoPer = recorte ? (textoPer0 ? `${recorte} · ${textoPer0}` : recorte) : textoPer0;
-  const vari = variacao ? descreverVariacao(variacao) : null;
+  const variPt = variacao ? descreverVariacao(variacao) : null;
+  // a frase da variação vem de evidencia.ts em português; em inglês, a mesma regra (mesmo arredondamento e sinal) escrita aqui
+  const vari = variPt && variacao && idiomaEnergia() === "en" ? { ...variPt, ...variacaoEn(variacao, variPt.direcao) } : variPt;
   const corpo = tamanho === "grande" ? "text-[2rem]" : "text-2xl";
 
   if (variante === "faixa") {
@@ -107,10 +120,10 @@ export function Numero({
     // variação, sem cartão nem faixa de cor; a cor de série, quando há, vira um marcador pequeno antes do rótulo. No celular a medida é
     // uma linha de lista (rótulo e contexto à esquerda, valor e unidade à direita); a partir de 640 px, uma coluna da faixa.
     return (
-      <div role="group" aria-label={rotulo} data-metrica="" className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-0.5 sm:block">
+      <div role="group" aria-label={nomesNoRotulo?.length && idiomaEnergia() === "en" ? undefined : rotulo} data-metrica="" className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-0.5 sm:block">
         <p className="flex items-start gap-2 text-[0.8125rem] leading-snug text-carvao-muted sm:mb-1.5">
           {cor && <span aria-hidden="true" className="mt-[0.3em] inline-block h-2 w-2 shrink-0" style={{ background: cor }} />}
-          <span>{rotulo}</span>
+          <span>{comNomes(rotulo, nomesNoRotulo, idiomaEnergia())}</span>
         </p>
         {ausente ? (
           <p className="col-start-2 row-span-2 row-start-1 inline-flex items-center gap-2 font-serif text-xl leading-none text-carvao-muted sm:block">
@@ -119,7 +132,7 @@ export function Numero({
               className="mr-2 inline-block h-4 w-4 border border-mineral align-middle"
               style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, transparent 1px 4px)" }}
             />
-            sem dado
+            {tx("sem dado", "no data")}
           </p>
         ) : (
           <p className="col-start-2 row-span-2 row-start-1 text-right font-serif text-[1.75rem] leading-none tabular-nums text-carvao sm:text-left sm:text-[2.25rem]">
@@ -148,9 +161,9 @@ export function Numero({
   }
 
   return (
-    <div role="group" aria-label={rotulo} className="relative flex h-full flex-col border border-linha bg-superficie p-5">
+    <div role="group" aria-label={nomesNoRotulo?.length && idiomaEnergia() === "en" ? undefined : rotulo} className="relative flex h-full flex-col border border-linha bg-superficie p-5">
       {cor && <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px]" style={{ background: cor }} />}
-      <p className="rotulo text-mineral">{rotulo}</p>
+      <p className="rotulo text-mineral">{comNomes(rotulo, nomesNoRotulo, idiomaEnergia())}</p>
       {ausente ? (
         <p className="mt-3 inline-flex items-center gap-2 font-serif text-xl leading-none text-carvao-muted">
           <span
@@ -158,7 +171,7 @@ export function Numero({
             className="inline-block h-4 w-4 border border-mineral"
             style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, transparent 1px 4px)" }}
           />
-          sem dado
+          {tx("sem dado", "no data")}
         </p>
       ) : (
         <p className={`mt-3 font-serif ${corpo} leading-none tabular-nums text-carvao`}>
@@ -185,4 +198,14 @@ export function Numero({
       {prova && <div className="mt-auto pt-2">{prova}</div>}
     </div>
   );
+}
+
+/** Texto e leitura da variação em inglês, com o mesmo arredondamento de descreverVariacao (evidencia.ts). */
+function variacaoEn(v: Variacao, direcao: "alta" | "queda" | "estavel" | null): { texto?: string; leitura: string } {
+  const casas = v.casas ?? 1;
+  const sufixo = v.sufixo ?? "";
+  if (direcao === null) return { texto: "no data", leitura: `Change ${v.referencia}: no data.` }; // i18n: dado (ramo inglês)
+  const arred = Number((v.valor as number).toFixed(casas));
+  if (direcao === "estavel") return { leitura: `Stable ${v.referencia} (${num(0, casas)}${sufixo}).` };
+  return { leitura: `${direcao === "alta" ? "Up" : "Down"} ${num(Math.abs(arred), casas)}${sufixo} ${v.referencia}.` };
 }

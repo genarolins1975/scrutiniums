@@ -5,8 +5,12 @@ import Link from "@/components/energia/LinkSemPrefetch";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ListaConsultavel, type ContextoLista } from "@/components/energia/ListaConsultavel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { Nome } from "@/components/i18n/Nome";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { carregaJson, carregaTexto, lerCaminho } from "@/lib/energia/carregaJson";
-import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { FREQUENCIA_EN, LICENCA_EN, PAINEIS_EN, rotuloDado, traduzido } from "@/lib/energia/i18n/regulacao-dados-metodo";
 import {
   COLUNAS_CATALOGO,
   COLUNAS_RECURSOS,
@@ -38,18 +42,32 @@ import { textoData, type LinhaTabela } from "@/lib/energia/tabela";
  * O detalhe lê a entrada completa de catalogo.json só ao abrir (uma leitura por página, compartilhada), para o HTML não carregar as 415
  * entradas. O item aberto fica na URL (?c=): o link abre o mesmo detalhe. A tabela completa (todas as colunas, mesma busca e mesmos
  * filtros, com exportação) fica em Analisar e segue o mesmo recorte pela URL.
+ *
+ * Idioma: as linhas chegam do servidor já no idioma da página (linhasCatalogo); os nomes oficiais dos conjuntos ficam em português,
+ * marcados como nome, e o texto escrito pela fonte (descrição, ressalva, mudança metodológica) sai marcado como trecho em português.
  */
 
-const MARCA: Record<SituacaoEtapa, { glifo: string; texto: string; cor: string }> = {
-  sim: { glifo: "●", texto: "cumprida", cor: "text-sucesso" },
-  nao: { glifo: "○", texto: "não alcançada", cor: "text-mineral" },
-  falhou: { glifo: "✕", texto: "tentada, sem êxito", cor: "text-erro" },
+const MARCA: Record<SituacaoEtapa, { glifo: string; cor: string }> = {
+  sim: { glifo: "●", cor: "text-sucesso" },
+  nao: { glifo: "○", cor: "text-mineral" },
+  falhou: { glifo: "✕", cor: "text-erro" },
 };
+
+function textoMarca(s: SituacaoEtapa, tx: <T>(pt: T, en: T) => T): string {
+  if (s === "sim") return tx("cumprida", "completed");
+  if (s === "falhou") return tx("tentada, sem êxito", "attempted, unsuccessful");
+  return tx("não alcançada", "not reached");
+}
 
 type Carga = { estado: "carregando" } | { estado: "erro"; motivo: string } | { estado: "ok"; entrada: EntradaDados; portais: CatalogoDados["portais"]; integracoes: ConjuntoIntegrado[] };
 
 function useEntrada(id: string, n: number | null): Carga {
+  const tx = useTx();
   const [c, setC] = useState<Carga>({ estado: "carregando" });
+  const naoEncontrada = tx(
+    "A entrada não foi encontrada no catálogo publicado: a gold foi atualizada depois desta página.",
+    "The entry was not found in the published catalog: the gold file was updated after this page.",
+  );
   useEffect(() => {
     if (n === null) return;
     let vivo = true;
@@ -59,7 +77,7 @@ function useEntrada(id: string, n: number | null): Carga {
       .then(async (cat) => {
         const e = lerCaminho(cat, `entradas[${n}]`) as EntradaDados | undefined;
         const portais = lerCaminho(cat, "portais") as CatalogoDados["portais"] | undefined;
-        if (!e || e.id !== id || !portais) return { erro: "A entrada não foi encontrada no catálogo publicado: a gold foi atualizada depois desta página.", e: null } as const;
+        if (!e || e.id !== id || !portais) return { erro: naoEncontrada, e: null } as const;
         let integracoes: ConjuntoIntegrado[] = [];
         if ((e.integracoes ?? []).length) {
           const conjuntos = (lerCaminho(await carregaJson<unknown>(URL_GOLD.publicacao), "conjuntos") as ConjuntoIntegrado[] | undefined) ?? [];
@@ -77,7 +95,7 @@ function useEntrada(id: string, n: number | null): Carga {
     return () => {
       vivo = false;
     };
-  }, [id, n]);
+  }, [id, n, naoEncontrada]);
   return c;
 }
 
@@ -92,35 +110,50 @@ function Passos({ n }: { n: number }) {
   );
 }
 
+/** Valor da gold com tabela de tradução: em inglês, a forma da tabela ou, sem entrada, o original marcado como trecho em português. */
+function DoDado({ tabela, valor, regiao }: { tabela: Record<string, string>; valor: string; regiao: string }) {
+  const idioma = useIdioma();
+  if (traduzido(tabela, valor, idioma)) return <>{rotuloDado(tabela, valor, idioma)}</>;
+  return <TrechoPortugues regiao={regiao}>{valor}</TrechoPortugues>;
+}
+
 function Detalhe({ id, n, rotulosDosArquivos }: { id: string; n: number; rotulosDosArquivos: Record<string, string> }) {
+  const tx = useTx();
+  const idioma = useIdioma();
+  const { dataBR, num } = formatos(idioma);
   const c = useEntrada(id, n);
   if (c.estado === "carregando")
     return (
       <p role="status" className="text-sm text-carvao-muted">
-        Lendo o histórico do conjunto no catálogo publicado…
+        {tx("Lendo o histórico do conjunto no catálogo publicado…", "Reading the dataset history in the published catalog…")}
       </p>
     );
   if (c.estado === "erro")
     return (
       <p role="alert" className="text-sm text-erro">
-        Não foi possível ler o detalhe: {c.motivo}
+        {tx("Não foi possível ler o detalhe:", "The detail could not be read:")} {c.motivo}
       </p>
     );
   const e = c.entrada;
   const etapas = evidenciaEtapas(e);
   const oficial = urlOficial(e, c.portais);
-  const licenca = e.licenca ?? c.portais[e.orgao]?.licenca ?? "não informada";
+  const licenca = e.licenca ?? c.portais[e.orgao]?.licenca ?? null;
   const nome = nomeDoConjunto(e, c.integracoes);
-  const paginas = (e.paginas ?? []).map((p) => p.rotulo);
+  const paginas = (e.paginas ?? []).map((p) => rotuloDado(PAINEIS_EN, p.rotulo, idioma));
   const baixar = e.downloads ?? [];
+  const naoInformada = tx("não informada", "not reported");
   return (
     <div className="space-y-4" data-detalhe={e.id}>
       <div>
-        <p className="rotulo text-mineral">Histórico de estados</p>
+        <p className="rotulo text-mineral">{tx("Histórico de estados", "History of states")}</p>
         <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          Estado mais avançado: <strong className="font-medium text-carvao">{ROTULO_ESTADO_DADOS[e.estado]}</strong>. Cada etapa só vale quando as anteriores foram cumpridas, e o que cada uma exigiu está registrado abaixo.
+          {tx("Estado mais avançado:", "Most advanced state:")} <strong className="font-medium text-carvao">{ROTULO_ESTADO_DADOS[e.estado]}</strong>.{" "}
+          {tx(
+            "Cada etapa só vale quando as anteriores foram cumpridas, e o que cada uma exigiu está registrado abaixo.",
+            "Each stage only counts when the previous ones were completed, and what each one required is recorded below.",
+          )}
         </p>
-        <ol className="mt-2 space-y-2" aria-label="Escada de estados do conjunto">
+        <ol className="mt-2 space-y-2" aria-label={tx("Escada de estados do conjunto", "Ladder of states of the dataset")}>
           {etapas.map((x) => {
             const m = MARCA[x.situacao];
             return (
@@ -131,7 +164,7 @@ function Detalhe({ id, n, rotulosDosArquivos }: { id: string; n: number; rotulos
                 <div className="min-w-0">
                   <p className="text-carvao">
                     <strong className="font-medium">{x.rotulo}</strong>
-                    <span className={`ml-2 ${m.cor}`}>{m.texto}</span>
+                    <span className={`ml-2 ${m.cor}`}>{textoMarca(x.situacao, tx)}</span>
                   </p>
                   <p className="text-xs leading-relaxed text-carvao-muted">{x.detalhe}</p>
                 </div>
@@ -143,7 +176,11 @@ function Detalhe({ id, n, rotulosDosArquivos }: { id: string; n: number; rotulos
 
       {c.integracoes.length > 0 && (
         <div className="text-sm" data-integracoes="true" data-nivel="analisar">
-          <p className="rotulo text-mineral">{c.integracoes.length === 1 ? "Integração do conjunto" : `Integrações do conjunto (${c.integracoes.length})`}</p>
+          <p className="rotulo text-mineral">
+            {c.integracoes.length === 1
+              ? tx("Integração do conjunto", "Integration of the dataset")
+              : tx(`Integrações do conjunto (${c.integracoes.length})`, `Integrations of the dataset (${c.integracoes.length})`)}
+          </p>
           <ul className="mt-1 space-y-2">
             {c.integracoes.map((i) => (
               <li key={i.id} className="leading-relaxed text-carvao-muted">
@@ -155,11 +192,13 @@ function Detalhe({ id, n, rotulosDosArquivos }: { id: string; n: number; rotulos
       )}
       {(e.ressalvas ?? []).length > 0 && (
         <div className="border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao" data-ressalva="true">
-          <p className="rotulo text-aviso">Ressalva declarada</p>
+          <p className="rotulo text-aviso">{tx("Ressalva declarada", "Declared caveat")}</p>
           <ul className="mt-1 list-disc pl-5">
             {(e.ressalvas ?? []).map((r) => (
               <li key={r}>
-                <TextoDoLeitor texto={r} />
+                <TrechoPortugues regiao="dados-ressalva">
+                  <TextoDoLeitor texto={r} />
+                </TrechoPortugues>
               </li>
             ))}
           </ul>
@@ -167,74 +206,90 @@ function Detalhe({ id, n, rotulosDosArquivos }: { id: string; n: number; rotulos
       )}
       {e.descontinuacao && (
         <p className="text-sm leading-relaxed text-carvao">
-          <span className="rotulo mr-2 text-mineral">Descontinuado</span>
-          Critério: {e.descontinuacao.motivo}. Evidência: {e.descontinuacao.evidencia}.
+          <span className="rotulo mr-2 text-mineral">{tx("Descontinuado", "Discontinued")}</span>
+          {tx("Critério:", "Criterion:")} <TrechoPortugues regiao="dados-descontinuacao">{e.descontinuacao.motivo}</TrechoPortugues>. {tx("Evidência:", "Evidence:")}{" "}
+          <TrechoPortugues regiao="dados-descontinuacao">{e.descontinuacao.evidencia}</TrechoPortugues>.
         </p>
       )}
 
       <dl className="grid gap-x-8 gap-y-3 text-sm md:grid-cols-2">
         <div className="min-w-0">
-          <dt className="rotulo text-mineral">Página oficial do conjunto</dt>
+          <dt className="rotulo text-mineral">{tx("Página oficial do conjunto", "Official page of the dataset")}</dt>
           <dd className="mt-0.5 [overflow-wrap:anywhere]">
             {oficial ? (
               <a href={oficial} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
                 {oficial} ↗
               </a>
             ) : (
-              "não informada"
+              naoInformada
             )}
           </dd>
         </div>
         <div className="min-w-0">
-          <dt className="rotulo text-mineral">Licença</dt>
-          <dd className="mt-0.5 [overflow-wrap:anywhere] text-carvao-muted">{licenca || "não informada"}</dd>
+          <dt className="rotulo text-mineral">{tx("Licença", "License")}</dt>
+          <dd className="mt-0.5 [overflow-wrap:anywhere] text-carvao-muted">{licenca ? <DoDado tabela={LICENCA_EN} valor={licenca} regiao="dados-licenca" /> : naoInformada}</dd>
         </div>
         <div>
-          <dt className="rotulo text-mineral">Frequência declarada pela fonte</dt>
-          <dd className="mt-0.5 text-carvao-muted">{e.frequencia_declarada ?? "não declarada"}</dd>
+          <dt className="rotulo text-mineral">{tx("Frequência declarada pela fonte", "Frequency declared by the source")}</dt>
+          <dd className="mt-0.5 text-carvao-muted">
+            {e.frequencia_declarada ? <DoDado tabela={FREQUENCIA_EN} valor={e.frequencia_declarada} regiao="dados-frequencia" /> : tx("não declarada", "not declared")}
+          </dd>
         </div>
         <div>
-          <dt className="rotulo text-mineral">Última modificação na fonte</dt>
-          <dd className="mt-0.5 text-carvao-muted">{e.modificado_na_fonte ? dataBR(e.modificado_na_fonte.slice(0, 10)) : e.recursos_resumo?.ultimo_publicado ? `arquivos até ${dataBR(e.recursos_resumo.ultimo_publicado.slice(0, 10))}` : "não informada"}</dd>
+          <dt className="rotulo text-mineral">{tx("Última modificação na fonte", "Latest modification at the source")}</dt>
+          <dd className="mt-0.5 text-carvao-muted">
+            {e.modificado_na_fonte
+              ? dataBR(e.modificado_na_fonte.slice(0, 10))
+              : e.recursos_resumo?.ultimo_publicado
+                ? tx(`arquivos até ${dataBR(e.recursos_resumo.ultimo_publicado.slice(0, 10))}`, `files up to ${dataBR(e.recursos_resumo.ultimo_publicado.slice(0, 10))}`)
+                : naoInformada}
+          </dd>
         </div>
         <div>
-          <dt className="rotulo text-mineral">Uso no observatório</dt>
+          <dt className="rotulo text-mineral">{tx("Uso no observatório", "Use in the observatory")}</dt>
           <dd className="mt-0.5 text-carvao-muted">
             {e.usado_em.length ? (
               <>
-                {(e.papeis ?? []).map((p) => ROTULO_PAPEL[p] ?? p).join(", ") || "indicador"}
-                {paginas.length ? ` ${paginas.length === 1 ? "na página" : "nas páginas"} ${paginas.join(", ")}` : ""}
+                {(e.papeis ?? []).map((p) => ROTULO_PAPEL[p] ?? p).join(", ") || ROTULO_PAPEL.indicador}
+                {paginas.length ? tx(` ${paginas.length === 1 ? "na página" : "nas páginas"} ${paginas.join(", ")}`, ` on the ${paginas.length === 1 ? "page" : "pages"} ${paginas.join(", ")}`) : ""}
                 <span data-nivel="analisar">
                   {" "}
                   ({e.usado_em.join(", ")}
-                  {(e.modelos ?? []).length ? ` · modelos ${(e.modelos ?? []).join(", ")}` : ""})
+                  {(e.modelos ?? []).length ? tx(` · modelos ${(e.modelos ?? []).join(", ")}`, ` · models ${(e.modelos ?? []).join(", ")}`) : ""})
                 </span>
               </>
             ) : (
-              "nenhum: o conjunto está catalogado, mas não alimenta nenhuma base publicada"
+              tx("nenhum: o conjunto está catalogado, mas não alimenta nenhuma base publicada", "none: the dataset is cataloged, but does not feed any published base")
             )}
           </dd>
         </div>
         <div>
-          <dt className="rotulo text-mineral">Cobertura em arquivos (recursos)</dt>
+          <dt className="rotulo text-mineral">{tx("Cobertura em arquivos (recursos)", "Coverage in files (resources)")}</dt>
           <dd className="mt-0.5 text-carvao-muted">
             {e.recursos_resumo
-              ? `${num(e.recursos_resumo.total, 0)} no conjunto, ${num(e.recursos_resumo.acessados ?? 0, 0)} acessados pelo observatório${e.recursos_resumo.removidos ? `, ${num(e.recursos_resumo.removidos, 0)} removidos pela fonte` : ""}`
-              : "não contados"}
+              ? tx(
+                  `${num(e.recursos_resumo.total, 0)} no conjunto, ${num(e.recursos_resumo.acessados ?? 0, 0)} acessados pelo observatório${e.recursos_resumo.removidos ? `, ${num(e.recursos_resumo.removidos, 0)} removidos pela fonte` : ""}`,
+                  `${num(e.recursos_resumo.total, 0)} in the dataset, ${num(e.recursos_resumo.acessados ?? 0, 0)} accessed by the observatory${e.recursos_resumo.removidos ? `, ${num(e.recursos_resumo.removidos, 0)} removed by the source` : ""}`,
+                )
+              : tx("não contados", "not counted")}
           </dd>
         </div>
         {nome.tituloNaFonte && (
           <div className="min-w-0 md:col-span-2" data-nivel="analisar">
-            <dt className="rotulo text-mineral">Título na fonte</dt>
-            <dd className="mt-0.5 text-carvao-muted [overflow-wrap:anywhere]">{nome.tituloNaFonte}</dd>
+            <dt className="rotulo text-mineral">{tx("Título na fonte", "Title at the source")}</dt>
+            <dd className="mt-0.5 text-carvao-muted [overflow-wrap:anywhere]">
+              <Nome>{nome.tituloNaFonte}</Nome>
+            </dd>
           </div>
         )}
         {e.descricao && (
           <div className="min-w-0 md:col-span-2" data-nivel="analisar">
-            <dt className="rotulo text-mineral">Descrição guardada no catálogo</dt>
+            <dt className="rotulo text-mineral">{tx("Descrição guardada no catálogo", "Description stored in the catalog")}</dt>
             <dd className="mt-0.5 text-xs leading-relaxed text-carvao-muted">
-              {e.descricao}
-              {e.descricao.endsWith("…") ? " O texto completo está no CSV do catálogo e na página oficial do conjunto." : ""}
+              <TrechoPortugues regiao="dados-descricao">{e.descricao}</TrechoPortugues>
+              {e.descricao.endsWith("…")
+                ? tx(" O texto completo está no CSV do catálogo e na página oficial do conjunto.", " The full text is in the catalog CSV and on the official page of the dataset.")
+                : ""}
             </dd>
           </div>
         )}
@@ -242,7 +297,7 @@ function Detalhe({ id, n, rotulosDosArquivos }: { id: string; n: number; rotulos
 
       {baixar.length > 0 && (
         <div className="text-sm">
-          <p className="rotulo text-mineral">Arquivos para baixar</p>
+          <p className="rotulo text-mineral">{tx("Arquivos para baixar", "Files to download")}</p>
           <ul className="mt-1 space-y-0">
             {baixar.map((u) => (
               <li key={u}>
@@ -252,18 +307,18 @@ function Detalhe({ id, n, rotulosDosArquivos }: { id: string; n: number; rotulos
               </li>
             ))}
           </ul>
-          <p className="text-xs text-mineral">A validação de cada arquivo e o significado das colunas estão na ficha do conjunto.</p>
+          <p className="text-xs text-mineral">{tx("A validação de cada arquivo e o significado das colunas estão na ficha do conjunto.", "The validation of each file and the meaning of the columns are in the dataset record.")}</p>
         </div>
       )}
 
       {(e.paginas ?? []).length > 0 && (
         <p className="text-sm">
-          <span className="rotulo mr-2 text-mineral">Usado nas páginas</span>
+          <span className="rotulo mr-2 text-mineral">{tx("Usado nas páginas", "Used on the pages")}</span>
           {(e.paginas ?? []).map((p, i) => (
             <span key={p.href}>
               {i > 0 ? " · " : ""}
               <Link href={p.href} className="text-energia-dark underline underline-offset-4">
-                {p.rotulo}
+                {rotuloDado(PAINEIS_EN, p.rotulo, idioma)}
               </Link>
             </span>
           ))}
@@ -271,11 +326,13 @@ function Detalhe({ id, n, rotulosDosArquivos }: { id: string; n: number; rotulos
       )}
       {e.quebras.length > 0 && (
         <div className="text-sm">
-          <p className="rotulo text-mineral">Mudanças metodológicas</p>
+          <p className="rotulo text-mineral">{tx("Mudanças metodológicas", "Methodological changes")}</p>
           <ul className="mt-1 space-y-1 text-carvao-muted">
             {e.quebras.map((q) => (
               <li key={`${q.data}-${q.origem ?? "FONTE"}`}>
-                <strong className="font-medium text-carvao">{dataBR(q.data)}</strong> ({q.origem === "PLATAFORMA" ? "identificada pela Scrutiniums no dado" : "declarada pela fonte"}): {q.descricao}
+                <strong className="font-medium text-carvao">{dataBR(q.data)}</strong> (
+                {q.origem === "PLATAFORMA" ? tx("identificada pela Scrutiniums no dado", "identified by Scrutiniums in the data") : tx("declarada pela fonte", "declared by the source")}):{" "}
+                <TrechoPortugues regiao="dados-quebra">{q.descricao}</TrechoPortugues>
               </li>
             ))}
           </ul>
@@ -283,17 +340,17 @@ function Detalhe({ id, n, rotulosDosArquivos }: { id: string; n: number; rotulos
       )}
       {(e.recursos ?? []).length > 0 && (
         <div className="text-sm">
-          <p className="rotulo text-mineral">Recursos do conjunto na CCEE, um a um</p>
+          <p className="rotulo text-mineral">{tx("Recursos do conjunto na CCEE, um a um", "Resources of the dataset at CCEE, one by one")}</p>
           <ul className="mt-1 divide-y divide-linha border border-linha">
             {(e.recursos ?? []).map((r) => (
               <li key={r.nome ?? "sem-nome"} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5 px-3 py-1.5">
-                <span className="text-carvao">{r.nome ?? "sem nome"}</span>
+                <span className="text-carvao">{r.nome ? <Nome>{r.nome}</Nome> : tx("sem nome", "no name")}</span>
                 <span className="text-xs text-carvao-muted">
                   {ROTULO_ESTADO_DADOS[r.estado]}
                   {r.formato ? ` · ${r.formato}` : ""}
-                  {r.publicado_em ? ` · publicado em ${dataBR(r.publicado_em.slice(0, 10))}` : ""}
-                  {r.capturas ? ` · ${num(r.capturas, 0)} ${r.capturas === 1 ? "captura" : "capturas"}` : ""}
-                  {r.removido ? " · removido pela fonte" : ""}
+                  {r.publicado_em ? tx(` · publicado em ${dataBR(r.publicado_em.slice(0, 10))}`, ` · published on ${dataBR(r.publicado_em.slice(0, 10))}`) : ""}
+                  {r.capturas ? tx(` · ${num(r.capturas, 0)} ${r.capturas === 1 ? "captura" : "capturas"}`, ` · ${num(r.capturas, 0)} ${r.capturas === 1 ? "capture" : "captures"}`) : ""}
+                  {r.removido ? tx(" · removido pela fonte", " · removed by the source") : ""}
                 </span>
               </li>
             ))}
@@ -306,43 +363,58 @@ function Detalhe({ id, n, rotulosDosArquivos }: { id: string; n: number; rotulos
 
 /** Um conjunto na lista: nome, órgão e tema, período dos dados, atualização na fonte, cobertura em arquivos e estado mais avançado. */
 function LinhaDoConjunto({ l }: { l: LinhaTabela }) {
+  const tx = useTx();
+  const { dataBR, num } = formatos(useIdioma());
+  // as linhas chegam no idioma da página: "sim", "não declarada" e "sem uso declarado" têm a forma inglesa correspondente
+  const sim = tx("sim", "yes");
+  const naoDeclarada = tx("não declarada", "not declared");
+  const semUso = tx("sem uso declarado", "no declared use");
+  const falhou = tx("falhou", "failed");
   const etapas = Number(l.etapas) || 0;
-  const periodo = typeof l.periodo === "string" ? textoData(l.periodo) : null;
+  // a data ISO sai no formato do idioma; o texto que não é data passa como veio
+  const periodo = typeof l.periodo === "string" ? (/^\d{4}(-\d{2}){0,2}$/.test(l.periodo) ? dataBR(l.periodo) : textoData(l.periodo)) : null;
   const modificado = typeof l.modificado === "string" ? dataBR(l.modificado.slice(0, 10)) : null;
   const recursos = typeof l.recursos === "number" ? l.recursos : null;
   const acessados = typeof l.acessados === "number" ? l.acessados : 0;
-  const uso = typeof l.uso === "string" && l.uso !== "sem uso declarado" ? l.uso : null;
+  const uso = typeof l.uso === "string" && l.uso !== semUso ? l.uso : null;
   return (
     <div className="grid gap-x-8 gap-y-2 md:grid-cols-[minmax(0,1fr)_13rem]">
       <div className="min-w-0">
         <p className="rotulo text-mineral">
           {String(l.orgao)} · {String(l.tema)}
-          {l.frequencia && l.frequencia !== "não declarada" ? ` · ${String(l.frequencia)}` : ""}
+          {l.frequencia && l.frequencia !== naoDeclarada ? ` · ${String(l.frequencia)}` : ""}
         </p>
-        <h3 className="mt-0.5 font-serif text-lg leading-snug text-carvao [overflow-wrap:anywhere]">{String(l.titulo)}</h3>
+        <h3 className="mt-0.5 font-serif text-lg leading-snug text-carvao [overflow-wrap:anywhere]">
+          <Nome>{String(l.titulo)}</Nome>
+        </h3>
         <p className="mt-1 text-sm leading-relaxed text-carvao-muted">
-          {periodo ? `Dados até ${periodo}` : "Período dos dados não medido"}
-          {modificado ? ` · fonte atualizada em ${modificado}` : ""}
-          {recursos !== null ? ` · ${num(acessados, 0)} de ${num(recursos, 0)} ${recursos === 1 ? "arquivo acessado" : "arquivos acessados"}` : " · arquivos não contados"}
+          {periodo ? tx(`Dados até ${periodo}`, `Data up to ${periodo}`) : tx("Período dos dados não medido", "Data period not measured")}
+          {modificado ? tx(` · fonte atualizada em ${modificado}`, ` · source updated on ${modificado}`) : ""}
+          {recursos !== null
+            ? tx(
+                ` · ${num(acessados, 0)} de ${num(recursos, 0)} ${recursos === 1 ? "arquivo acessado" : "arquivos acessados"}`,
+                ` · ${num(acessados, 0)} of ${num(recursos, 0)} ${recursos === 1 ? "file accessed" : "files accessed"}`,
+              )
+            : tx(" · arquivos não contados", " · files not counted")}
         </p>
-        {(l.descontinuado === "sim" || l.ressalva === "sim" || uso) && (
+        {(l.descontinuado === sim || l.ressalva === sim || uso) && (
           <p className="mt-1 flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-carvao-muted">
-            {uso && <span>Uso no observatório: {uso}</span>}
-            {l.ressalva === "sim" && <span>Com ressalva declarada</span>}
-            {l.descontinuado === "sim" && <span>Descontinuado pela fonte</span>}
+            {uso && <span>{tx(`Uso no observatório: ${uso}`, `Use in the observatory: ${uso}`)}</span>}
+            {l.ressalva === sim && <span>{tx("Com ressalva declarada", "With a declared caveat")}</span>}
+            {l.descontinuado === sim && <span>{tx("Descontinuado pela fonte", "Discontinued by the source")}</span>}
           </p>
         )}
       </div>
       <div className="md:text-right">
-        <p className="rotulo text-mineral">Estado mais avançado</p>
+        <p className="rotulo text-mineral">{tx("Estado mais avançado", "Most advanced state")}</p>
         <p className="mt-0.5 flex items-center gap-2 md:justify-end">
           <Passos n={etapas} />
           <span className="text-sm font-medium text-carvao" data-estado-linha={String(l.estado)}>
             {String(l.estado)}
           </span>
-          <span className="sr-only"> (etapa {etapas} de 5)</span>
+          <span className="sr-only">{tx(` (etapa ${etapas} de 5)`, ` (stage ${etapas} of 5)`)}</span>
         </p>
-        {l.verificado === "falhou" && <p className="mt-0.5 text-xs text-carvao-muted">A tentativa de abrir o arquivo falhou.</p>}
+        {l.verificado === falhou && <p className="mt-0.5 text-xs text-carvao-muted">{tx("A tentativa de abrir o arquivo falhou.", "The attempt to open the file failed.")}</p>}
       </div>
     </div>
   );
@@ -350,6 +422,8 @@ function LinhaDoConjunto({ l }: { l: LinhaTabela }) {
 
 /** Estado na barra de filtros: "chegou a" uma etapa ou além, porque a escada é cumulativa (a contagem de cada opção inclui as etapas seguintes). */
 function SeletorDeEstado({ ctx }: { ctx: ContextoLista }) {
+  const tx = useTx();
+  const { num } = formatos(useIdioma());
   const marcados = ctx.filtros["estado"] ?? [];
   const exatas = ctx.contagemPorValor("estado");
   const rotulos = (s: EstadoDados) => estadosAPartirDe(s).map((x) => ROTULO_ESTADO_DADOS[x]);
@@ -357,7 +431,7 @@ function SeletorDeEstado({ ctx }: { ctx: ContextoLista }) {
   const atual = marcados.length === 0 ? "CATALOGADO" : (ESTADOS_ESCADA.find((s) => s !== "CATALOGADO" && igual(marcados, rotulos(s))) ?? null);
   return (
     <label className="flex min-w-0 flex-col gap-1 text-xs text-mineral">
-      <span className="rotulo">Estado: chegou a</span>
+      <span className="rotulo">{tx("Estado: chegou a", "State: reached")}</span>
       <select
         value={atual ?? "__outro"}
         onChange={(ev) => {
@@ -375,7 +449,7 @@ function SeletorDeEstado({ ctx }: { ctx: ContextoLista }) {
             </option>
           );
         })}
-        {atual === null && <option value="__outro">Estados escolhidos na tabela</option>}
+        {atual === null && <option value="__outro">{tx("Estados escolhidos na tabela", "States chosen in the table")}</option>}
       </select>
     </label>
   );
@@ -401,13 +475,19 @@ export function DadosCatalogo({
   /** O que fica entre a lista e a tabela completa (notas, resposta, capítulos): servidor, passado como filho. */
   children?: ReactNode;
 }) {
+  const tx = useTx();
+  const { plural } = formatos(useIdioma());
   const linhas = useMemo(() => expandirLinhas(matriz), [matriz]);
   const colunasTabela = COLUNAS_CATALOGO;
+  const fonte = tx(
+    "Scrutiniums, catálogo de conjuntos (listagens do ONS, da ANEEL e da CCEE, metadados oficiais guardados, registros dos módulos e cadastro manual)",
+    "Scrutiniums, dataset catalog (ONS, ANEEL and CCEE listings, stored official metadata, module registers and manual entries)",
+  );
   return (
     <div className="space-y-8">
       <ListaConsultavel
-        rotulo="Conjuntos do catálogo"
-        substantivo={["conjunto", "conjuntos"]}
+        rotulo={tx("Conjuntos do catálogo", "Datasets in the catalog")}
+        substantivo={tx(["conjunto", "conjuntos"], ["dataset", "datasets"])}
         colunas={colunasTabela}
         linhas={linhas}
         chaveLinha="id"
@@ -416,36 +496,39 @@ export function DadosCatalogo({
         paramAberto="c"
         ordemInicial={{ coluna: "etapas", direcao: "desc" }}
         opcoesOrdem={[
-          { id: "estado", rotulo: "Estado mais avançado, do maior ao menor", ordem: { coluna: "etapas", direcao: "desc" } },
-          { id: "nome", rotulo: "Nome, de A a Z", ordem: { coluna: "titulo", direcao: "asc" } },
-          { id: "orgao", rotulo: "Órgão, de A a Z", ordem: { coluna: "orgao", direcao: "asc" } },
-          { id: "fonte", rotulo: "Atualização na fonte, da mais recente", ordem: { coluna: "modificado", direcao: "desc" } },
-          { id: "periodo", rotulo: "Último período dos dados, do mais recente", ordem: { coluna: "periodo", direcao: "desc" } },
-          { id: "arquivos", rotulo: "Número de arquivos, do maior ao menor", ordem: { coluna: "recursos", direcao: "desc" } },
+          { id: "estado", rotulo: tx("Estado mais avançado, do maior ao menor", "Most advanced state, highest first"), ordem: { coluna: "etapas", direcao: "desc" } },
+          { id: "nome", rotulo: tx("Nome, de A a Z", "Name, A to Z"), ordem: { coluna: "titulo", direcao: "asc" } },
+          { id: "orgao", rotulo: tx("Órgão, de A a Z", "Body, A to Z"), ordem: { coluna: "orgao", direcao: "asc" } },
+          // i18n: dado
+          { id: "fonte", rotulo: tx("Atualização na fonte, da mais recente", "Update at the source, most recent first"), ordem: { coluna: "modificado", direcao: "desc" } },
+          { id: "periodo", rotulo: tx("Último período dos dados, do mais recente", "Latest data period, most recent first"), ordem: { coluna: "periodo", direcao: "desc" } },
+          { id: "arquivos", rotulo: tx("Número de arquivos, do maior ao menor", "Number of files, highest first"), ordem: { coluna: "recursos", direcao: "desc" } },
         ]}
         filtrosDaBarra={["tema", "orgao"]}
         filtrosOcultos={["integrado", "validado", "publicado", "estado"]}
         tamanhoPagina={10}
-        rotuloBusca="Encontre um conjunto"
-        dicaBusca="Nome do conjunto, órgão ou tema"
-        fonte="Scrutiniums, catálogo de conjuntos (listagens do ONS, da ANEEL e da CCEE, metadados oficiais guardados, registros dos módulos e cadastro manual)"
+        rotuloBusca={tx("Encontre um conjunto", "Find a dataset")}
+        dicaBusca={tx("Nome do conjunto, órgão ou tema", "Dataset name, body or theme")}
+        fonte={fonte}
         versao={versao}
         nomeDoArquivo="dados-catalogo"
         arquivoCompleto={arquivoCompleto}
-        rotuloDetalhe="Histórico de estados e detalhes"
+        rotuloDetalhe={tx("Histórico de estados e detalhes", "History of states and details")}
         renderLinha={(l) => <LinhaDoConjunto l={l} />}
         renderAcoes={(l) => (
           <>
             {typeof l.slug === "string" && (
               <Link href={`/setor-eletrico/dados/${l.slug}`} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
-                {typeof l.baixar === "number" ? `Ficha e ${plural(l.baixar, "arquivo", "arquivos")} para baixar` : "Ficha do conjunto"}
+                {typeof l.baixar === "number"
+                  ? tx(`Ficha e ${plural(l.baixar, "arquivo", "arquivos")} para baixar`, `Record and ${plural(l.baixar, "file", "files")} to download`)
+                  : tx("Ficha do conjunto", "Dataset record")}
               </Link>
             )}
             {(() => {
               const oficial = urlOficial({ id: String(l.id), orgao: String(l.orgao), url: typeof l.url === "string" ? l.url : undefined }, portais);
               return oficial ? (
                 <a href={oficial} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
-                  Página oficial ↗
+                  {tx("Página oficial ↗", "Official page ↗")}
                 </a>
               ) : null;
             })()}
@@ -453,7 +536,10 @@ export function DadosCatalogo({
         )}
         renderDetalhe={(l) => <Detalhe id={String(l.id)} n={Number(l.n)} rotulosDosArquivos={rotulosDosArquivos} />}
         renderNaBarra={(ctx) => <SeletorDeEstado ctx={ctx} />}
-        semResultado={<>Nenhum conjunto corresponde à busca e aos filtros. O catálogo não contém tudo o que é público: um conjunto que não aparece aqui pode existir na fonte.</>}
+        semResultado={tx(
+          <>Nenhum conjunto corresponde à busca e aos filtros. O catálogo não contém tudo o que é público: um conjunto que não aparece aqui pode existir na fonte.</>,
+          <>No dataset matches the search and the filters. The catalog does not contain everything that is public: a dataset that does not appear here may exist at the source.</>,
+        )}
       />
 
       {children && <div className="space-y-6">{children}</div>}
@@ -464,19 +550,22 @@ export function DadosCatalogo({
         </h3>
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{apoioTabela}</p>
         <TabelaInterativa
-          titulo="Conjuntos catalogados, com as etapas da escada e o uso declarado"
+          titulo={tx("Conjuntos catalogados, com as etapas da escada e o uso declarado", "Cataloged datasets, with the ladder stages and the declared use")}
           colunas={colunasTabela}
           linhas={linhas}
           chaveLinha="id"
           colunaRotulo="titulo"
-          fonte="Scrutiniums, catálogo de conjuntos (listagens do ONS, da ANEEL e da CCEE, metadados oficiais guardados, registros dos módulos e cadastro manual)"
+          fonte={fonte}
           versao={versao}
           nomeArquivo="dados-catalogo"
           chaveUrl="cat"
           ordemInicial={{ coluna: "etapas", direcao: "desc" }}
           tamanhoPagina={25}
-          dicaBusca="Nome do conjunto"
-          nota="Sim e não nas cinco etapas seguem a escada: um conjunto só tem uma etapa quando cumpriu todas as anteriores, e a coluna de estado traz o mais avançado de cada um. Uso declarado é outro eixo: um conjunto pode estar em uso e abaixo de publicado, e nesse caso a ressalva diz o que falta. A frequência é o texto da fonte, sem correção."
+          dicaBusca={tx("Nome do conjunto", "Dataset name")}
+          nota={tx(
+            "Sim e não nas cinco etapas seguem a escada: um conjunto só tem uma etapa quando cumpriu todas as anteriores, e a coluna de estado traz o mais avançado de cada um. Uso declarado é outro eixo: um conjunto pode estar em uso e abaixo de publicado, e nesse caso a ressalva diz o que falta. A frequência é o texto da fonte, sem correção.",
+            "Yes and no in the five stages follow the ladder: a dataset only has a stage when it completed all the previous ones, and the state column shows the most advanced one for each. Declared use is another axis: a dataset can be in use and below published, and in that case the caveat says what is missing. The frequency is the source's text, uncorrected (translated when an exact match exists).",
+          )}
         />
       </div>
     </div>
@@ -487,6 +576,8 @@ type CargaCsv = { estado: "carregando" } | { estado: "erro"; motivo: string } | 
 
 /** Recurso a recurso da CCEE: o CSV publicado, lido ao abrir o bloco (733 linhas não vão no HTML). */
 export function DadosRecursosCcee({ url, versao }: { url: string; versao: string }) {
+  const tx = useTx();
+  const { carimbo } = formatos(useIdioma());
   const [c, setC] = useState<CargaCsv>({ estado: "carregando" });
   useEffect(() => {
     let vivo = true;
@@ -500,30 +591,39 @@ export function DadosRecursosCcee({ url, versao }: { url: string; versao: string
   if (c.estado === "carregando")
     return (
       <p role="status" className="text-sm text-carvao-muted">
-        Lendo a tabela de recursos da CCEE…
+        {tx("Lendo a tabela de recursos da CCEE…", "Reading the CCEE resource table…")}
       </p>
     );
   if (c.estado === "erro")
     return (
       <p role="alert" className="text-sm text-erro">
-        Não foi possível ler a tabela: {c.motivo}. O arquivo continua disponível para baixar no link do painel.
+        {tx(
+          `Não foi possível ler a tabela: ${c.motivo}. O arquivo continua disponível para baixar no link do painel.`,
+          `The table could not be read: ${c.motivo}. The file is still available to download from the panel link.`,
+        )}
       </p>
     );
   return (
     <TabelaInterativa
-      titulo="Recursos (arquivos) dos conjuntos da CCEE, um a um"
+      titulo={tx("Recursos (arquivos) dos conjuntos da CCEE, um a um", "Resources (files) of the CCEE datasets, one by one")}
       colunas={COLUNAS_RECURSOS}
       linhas={c.linhas}
       chaveLinha="id"
       colunaRotulo="recurso"
-      fonte="CCEE, portal de dados abertos (listagem package_search); estado de cada recurso calculado pelo pipeline"
+      fonte={tx(
+        "CCEE, portal de dados abertos (listagem package_search); estado de cada recurso calculado pelo pipeline",
+        "CCEE, open data portal (package_search listing); state of each resource computed by the pipeline",
+      )}
       versao={versao}
       nomeArquivo="dados-recursos-ccee"
       chaveUrl="rec"
       ordemInicial={{ coluna: "estado", direcao: "desc" }}
       tamanhoPagina={25}
-      dicaBusca="Conjunto ou recurso"
-      nota={`Um recurso herda o estado da integração que o capturou com sha256; o lido só por requisição parcial está em recurso verificado; os demais, em catalogado. Carimbo da gold: ${carimbo(versao)}.`}
+      dicaBusca={tx("Conjunto ou recurso", "Dataset or resource")}
+      nota={tx(
+        `Um recurso herda o estado da integração que o capturou com sha256; o lido só por requisição parcial está em recurso verificado; os demais, em catalogado. Carimbo da gold: ${carimbo(versao)}.`,
+        `A resource inherits the state of the integration that captured it with sha256; one read only by partial request is at resource verified; the others, at cataloged. Gold file timestamp: ${carimbo(versao)}.`,
+      )}
     />
   );
 }

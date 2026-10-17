@@ -50,7 +50,10 @@ import type { EventoRegulatorio, GoldRegulacao } from "./tipos-regulacao";
 import { campo, tiposUrl } from "./estadoUrl";
 import { quebrasFixas, quebrasQuantis, type Classificacao } from "./escalas";
 import { mesAno, num, pct, reais } from "./formato";
+import { idiomaEnergia } from "./idioma";
+import { dadoTexto, txEm } from "./i18n/conta-inclusao";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "./tabela";
+import type { Idioma } from "@/lib/idioma";
 
 /* ================================================================ comum */
 
@@ -75,6 +78,7 @@ export function siglaDoCodigo(codigo: string | null | undefined): string | null 
   return codigo ? (SIGLA_DO_CODIGO[codigo] ?? null) : null;
 }
 
+// i18n: dado (forma portuguesa; a tela usa nomeTerritorio, no idioma da página)
 export const NOME_TERRITORIO: Readonly<Record<string, string>> = {
   BR: "Brasil",
   "RG-N": "Norte",
@@ -83,6 +87,18 @@ export const NOME_TERRITORIO: Readonly<Record<string, string>> = {
   "RG-S": "Sul",
   "RG-CO": "Centro-Oeste",
 };
+const NOME_TERRITORIO_EN: Readonly<Record<string, string>> = {
+  BR: "Brazil",
+  "RG-N": "North",
+  "RG-NE": "Northeast",
+  "RG-SE": "Southeast",
+  "RG-S": "South",
+  "RG-CO": "Center-West",
+};
+/** Nome do território (Brasil e grandes regiões do IBGE) no idioma; código desconhecido volta como veio. */
+export function nomeTerritorio(id: string, idioma: Idioma = idiomaEnergia()): string {
+  return (idioma === "en" ? NOME_TERRITORIO_EN : NOME_TERRITORIO)[id] ?? id;
+}
 export const TERRITORIOS_POF = ["BR", "RG-N", "RG-NE", "RG-SE", "RG-S", "RG-CO"] as const;
 
 /**
@@ -90,28 +106,33 @@ export const TERRITORIOS_POF = ["BR", "RG-N", "RG-NE", "RG-SE", "RG-S", "RG-CO"]
  * de um texto ele se leria como pontuação ("SCS de – a –"), então as funções de
  * texto deste arquivo dizem "sem dado".
  */
-export const SEM_DADO = "sem dado";
+export const SEM_DADO = semDado("pt");
+/** "sem dado" no idioma ("no data"). */
+export function semDado(idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  return tx("sem dado", "no data");
+}
 const temValor = (v: number | null | undefined): v is number => v !== null && v !== undefined && Number.isFinite(v);
 
-/** "2025-05" → "mai/2025"; ausência → "sem dado". */
-export function mes(m: string | null | undefined): string {
-  return m ? mesAno(m) : SEM_DADO;
+/** "2025-05" → "mai/2025" ("May 2025"); ausência → "sem dado". */
+export function mes(m: string | null | undefined, idioma: Idioma = idiomaEnergia()): string {
+  return m ? mesAno(m, idioma) : semDado(idioma);
 }
 
-/** Inteiro em pt-BR (contagens de UC, faturas, famílias, domicílios e pessoas); ausência → "sem dado". */
-export function inteiro(v: number | null | undefined): string {
-  return temValor(v) ? num(v, 0) : SEM_DADO;
+/** Inteiro no formato do idioma (contagens de UC, faturas, famílias, domicílios e pessoas); ausência → "sem dado". */
+export function inteiro(v: number | null | undefined, idioma: Idioma = idiomaEnergia()): string {
+  return temValor(v) ? num(v, 0, idioma) : semDado(idioma);
 }
 
 /** Percentual, número e reais para frases: como pct, num e reais, com ausência → "sem dado". */
-export function pctTexto(v: number | null | undefined, casas = 1): string {
-  return temValor(v) ? pct(v, casas) : SEM_DADO;
+export function pctTexto(v: number | null | undefined, casas = 1, idioma: Idioma = idiomaEnergia()): string {
+  return temValor(v) ? pct(v, casas, idioma) : semDado(idioma);
 }
-export function numTexto(v: number | null | undefined, casas = 1): string {
-  return temValor(v) ? num(v, casas) : SEM_DADO;
+export function numTexto(v: number | null | undefined, casas = 1, idioma: Idioma = idiomaEnergia()): string {
+  return temValor(v) ? num(v, casas, idioma) : semDado(idioma);
 }
-export function reaisTexto(v: number | null | undefined, casas = 2): string {
-  return temValor(v) ? reais(v, casas) : SEM_DADO;
+export function reaisTexto(v: number | null | undefined, casas = 2, idioma: Idioma = idiomaEnergia()): string {
+  return temValor(v) ? reais(v, casas, idioma) : semDado(idioma);
 }
 
 /**
@@ -123,6 +144,28 @@ export function minusculaInicial(s: string): string {
 }
 
 /**
+ * Os formatadores de frase deste arquivo presos a um idioma, mais o tx: cada função de texto abre com
+ * `const { tx, mes, inteiro, ... } = em(idioma)` e escreve as duas formas lado a lado.
+ */
+function em(idioma: Idioma) {
+  return {
+    tx: txEm(idioma),
+    semDado: semDado(idioma),
+    mes: (m: string | null | undefined) => mes(m, idioma),
+    inteiro: (v: number | null | undefined) => inteiro(v, idioma),
+    pctTexto: (v: number | null | undefined, casas = 1) => pctTexto(v, casas, idioma),
+    numTexto: (v: number | null | undefined, casas = 1) => numTexto(v, casas, idioma),
+    reaisTexto: (v: number | null | undefined, casas = 2) => reaisTexto(v, casas, idioma),
+    reaisGrandes: (v: number | null | undefined) => reaisGrandes(v, idioma),
+    listaTexto: (itens: readonly string[]) => listaTexto(itens, idioma),
+    pct: (v: number | null | undefined, casas = 1) => pct(v, casas, idioma),
+    num: (v: number | null | undefined, casas = 1) => num(v, casas, idioma),
+    /** Rótulo da gold (classe da POF, medida, programa, evento) no idioma. */
+    dado: (s: string) => dadoTexto(s, idioma),
+  };
+}
+
+/**
  * Compara dois valores no arredondamento em que aparecem no texto: "maior", "menor"
  * ou "igual". Ausência em qualquer lado → null (o texto não afirma direção).
  */
@@ -131,7 +174,7 @@ export function comparaArredondado(a: number | null | undefined, b: number | nul
   const f = 10 ** casas;
   const ra = Math.round(a * f);
   const rb = Math.round(b * f);
-  return ra > rb ? "maior" : ra < rb ? "menor" : "igual";
+  return ra > rb ? "maior" : ra < rb ? "menor" : "igual"; // i18n: dado
 }
 
 /** Conversão de unidade (não é cálculo): valor ÷ 1 milhão; ausência continua ausência. */
@@ -140,16 +183,18 @@ export function emMilhoes(v: number | null | undefined): number | null {
 }
 
 /** "R$ 542,4 milhões" ou "R$ 6,50 bilhões"; ausência → "sem dado". */
-export function reaisGrandes(v: number | null | undefined): string {
-  if (v === null || v === undefined || !Number.isFinite(v)) return "sem dado";
-  if (Math.abs(v) >= 1e9) return `${reais(v / 1e9, 2)} bilhões`;
-  return `${reais(v / 1e6, 1)} milhões`;
+export function reaisGrandes(v: number | null | undefined, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  if (v === null || v === undefined || !Number.isFinite(v)) return semDado(idioma);
+  if (Math.abs(v) >= 1e9) return tx(`${reais(v / 1e9, 2, idioma)} bilhões`, `${reais(v / 1e9, 2, idioma)} billion`);
+  return tx(`${reais(v / 1e6, 1, idioma)} milhões`, `${reais(v / 1e6, 1, idioma)} million`);
 }
 
-/** Lista legível: "a", "a e b", "a, b e c". */
-export function listaTexto(itens: readonly string[]): string {
+/** Lista legível: "a", "a e b", "a, b e c" ("a, b and c"). */
+export function listaTexto(itens: readonly string[], idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
   if (itens.length <= 1) return itens[0] ?? "";
-  return `${itens.slice(0, -1).join(", ")} e ${itens.at(-1)}`;
+  return `${itens.slice(0, -1).join(", ")} ${tx("e", "and")} ${itens.at(-1)}`;
 }
 
 const leitorUf = tiposUrl.opcao(UFS);
@@ -158,43 +203,84 @@ const leitorUf = tiposUrl.opcao(UFS);
 
 export const ROTA_INCLUSAO = "/setor-eletrico/inclusao-energetica";
 export type PainelInclusao = "p059" | "p060" | "p061" | "p062";
-/** As quatro páginas de painel, na ordem das perguntas (a próxima pergunta de cada uma é a seguinte). */
-export const PAINEIS_INCLUSAO: readonly { id: PainelInclusao; slug: string; rotulo: string; titulo: string }[] = [
-  { id: "p059", slug: "tarifa-social", rotulo: "Tarifa Social", titulo: "Tarifa Social de Energia Elétrica" },
-  { id: "p060", slug: "cobertura", rotulo: "Cobertura potencial", titulo: "Cobertura potencial da Tarifa Social" },
-  { id: "p061", slug: "orcamento", rotulo: "Peso no orçamento", titulo: "Peso da energia no orçamento das famílias" },
-  { id: "p062", slug: "acesso", rotulo: "Acesso e sistemas isolados", titulo: "Acesso à energia e sistemas isolados" },
-];
+/** As quatro páginas de painel, na ordem das perguntas (a próxima pergunta de cada uma é a seguinte); rótulo e título no idioma. */
+export function paineisInclusao(idioma: Idioma = idiomaEnergia()): readonly { id: PainelInclusao; slug: string; rotulo: string; titulo: string }[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "p059", slug: "tarifa-social", rotulo: tx("Tarifa Social", "Tarifa Social"), titulo: tx("Tarifa Social de Energia Elétrica", "Tarifa Social (social electricity tariff)") },
+    { id: "p060", slug: "cobertura", rotulo: tx("Cobertura potencial", "Potential coverage"), titulo: tx("Cobertura potencial da Tarifa Social", "Potential coverage of the Tarifa Social") },
+    { id: "p061", slug: "orcamento", rotulo: tx("Peso no orçamento", "Weight in the budget"), titulo: tx("Peso da energia no orçamento das famílias", "Weight of energy in family budgets") },
+    { id: "p062", slug: "acesso", rotulo: tx("Acesso e sistemas isolados", "Access and isolated systems"), titulo: tx("Acesso à energia e sistemas isolados", "Access to energy and isolated systems") },
+  ];
+}
+export const PAINEIS_INCLUSAO = paineisInclusao("pt");
 export function rotaPainel(id: PainelInclusao): string {
   const p = PAINEIS_INCLUSAO.find((x) => x.id === id);
   return p ? `${ROTA_INCLUSAO}/${p.slug}` : ROTA_INCLUSAO;
 }
 
-export const FONTE_SCS = "ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais";
-export const FONTE_CDE = "ANEEL, Beneficiários da CDE";
-export const FONTE_COB = "ANEEL, Beneficiários da CDE; MDS, Cadastro Único (MI Social)";
-export const FONTE_POF = "IBGE, POF 2017-2018 (microdados e tabela 6715)";
-export const FONTE_PNAD = "IBGE, PNAD Contínua anual (tabelas 6731, 6737 e 6738)";
-export const FONTE_PASI = "EPE, PASI (Localização Geográfica por ciclo)";
-export const FONTE_LPT = "MME, Luz para Todos (dados abertos)";
+/** Fontes de cada painel, como a citação e o CSV as escrevem, no idioma da página (nome de base e de programa ficam como a fonte os publica). */
+export function fontesInclusao(idioma: Idioma = idiomaEnergia()) {
+  const tx = txEm(idioma);
+  return {
+    scs: tx("ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais", "ANEEL, SCS (subsidy and social program control system)"),
+    cde: tx("ANEEL, Beneficiários da CDE", "ANEEL, CDE Beneficiaries (bills with the Tarifa Social discount)"),
+    cob: tx("ANEEL, Beneficiários da CDE; MDS, Cadastro Único (MI Social)", "ANEEL, CDE Beneficiaries (bills with the Tarifa Social discount); MDS, Cadastro Único (MI Social)"),
+    pof: tx("IBGE, POF 2017-2018 (microdados e tabela 6715)", "IBGE, POF 2017-2018 (microdata and table 6715)"),
+    pnad: tx("IBGE, PNAD Contínua anual (tabelas 6731, 6737 e 6738)", "IBGE, annual Continuous PNAD (tables 6731, 6737 and 6738)"),
+    pasi: tx("EPE, PASI (Localização Geográfica por ciclo)", "EPE, PASI (geographic location by cycle)"),
+    lpt: tx("MME, Luz para Todos (dados abertos)", "MME, Luz para Todos (open data)"),
+  };
+}
+const FONTES_PT = fontesInclusao("pt");
+export const FONTE_SCS = FONTES_PT.scs;
+export const FONTE_CDE = FONTES_PT.cde;
+export const FONTE_COB = FONTES_PT.cob;
+export const FONTE_POF = FONTES_PT.pof;
+export const FONTE_PNAD = FONTES_PT.pnad;
+export const FONTE_PASI = FONTES_PT.pasi;
+export const FONTE_LPT = FONTES_PT.lpt;
 
 /* ================================================================ P059: Tarifa Social */
 
 export const MEDIDAS_TSEE = ["uc", "part", "dmr"] as const;
 export type MedidaTsee = (typeof MEDIDAS_TSEE)[number];
-export const MEDIDA_TSEE: Record<MedidaTsee, { rotulo: string; unidade: string; casas: number; titulo: string }> = {
-  uc: { rotulo: "UC com Tarifa Social", unidade: "milhões de UC", casas: 2, titulo: "Unidades consumidoras com Tarifa Social por mês" },
-  part: { rotulo: "% das UC residenciais", unidade: "%", casas: 2, titulo: "Participação da Tarifa Social nas UC residenciais por mês" },
-  dmr: { rotulo: "DMR", unidade: "R$ milhões", casas: 1, titulo: "Diferença Mensal de Receita (DMR) por mês" },
-};
+export function medidaTsee(idioma: Idioma = idiomaEnergia()): Record<MedidaTsee, { rotulo: string; unidade: string; casas: number; titulo: string }> {
+  const tx = txEm(idioma);
+  return {
+    uc: {
+      rotulo: tx("UC com Tarifa Social", "Consumer units with Tarifa Social"),
+      unidade: tx("milhões de UC", "million consumer units"),
+      casas: 2,
+      titulo: tx("Unidades consumidoras com Tarifa Social por mês", "Consumer units with Tarifa Social by month"),
+    },
+    part: {
+      rotulo: tx("% das UC residenciais", "% of residential consumer units"),
+      unidade: "%",
+      casas: 2,
+      titulo: tx("Participação da Tarifa Social nas UC residenciais por mês", "Share of the Tarifa Social in residential consumer units by month"),
+    },
+    dmr: {
+      rotulo: "DMR",
+      unidade: tx("R$ milhões", "R$ million"),
+      casas: 1,
+      titulo: tx("Diferença Mensal de Receita (DMR) por mês", "Monthly Revenue Difference (DMR) by month"),
+    },
+  };
+}
+export const MEDIDA_TSEE = medidaTsee("pt");
 
 export const MEDIDAS_MAPA_TSEE = ["faturas", "medio", "desconto"] as const;
 export type MedidaMapaTsee = (typeof MEDIDAS_MAPA_TSEE)[number];
-export const MEDIDA_MAPA_TSEE: Record<MedidaMapaTsee, { rotulo: string; unidade: string; casas: number }> = {
-  faturas: { rotulo: "Faturas com desconto", unidade: "faturas", casas: 0 },
-  medio: { rotulo: "Desconto médio por fatura", unidade: "R$ por fatura", casas: 2 },
-  desconto: { rotulo: "Desconto das faturas", unidade: "R$ milhões", casas: 1 },
-};
+export function medidaMapaTsee(idioma: Idioma = idiomaEnergia()): Record<MedidaMapaTsee, { rotulo: string; unidade: string; casas: number }> {
+  const tx = txEm(idioma);
+  return {
+    faturas: { rotulo: tx("Faturas com desconto", "Bills with a discount"), unidade: tx("faturas", "bills"), casas: 0 },
+    medio: { rotulo: tx("Desconto médio por fatura", "Average discount per bill"), unidade: tx("R$ por fatura", "R$ per bill"), casas: 2 },
+    desconto: { rotulo: tx("Desconto das faturas", "Discount on the bills"), unidade: tx("R$ milhões", "R$ million"), casas: 1 },
+  };
+}
+export const MEDIDA_MAPA_TSEE = medidaMapaTsee("pt");
 
 export const MEDIDAS_HIST_UF = ["faturas", "desconto"] as const;
 export type MedidaHistUf = (typeof MEDIDAS_HIST_UF)[number];
@@ -202,7 +288,7 @@ export type MedidaHistUf = (typeof MEDIDAS_HIST_UF)[number];
 /** Estado do P059 na URL: medida e intervalo da série nacional, medida do mapa e UF em comparação (até 4). */
 export const ESQUEMA_TSEE = {
   medida: campo(tiposUrl.opcao(MEDIDAS_TSEE), "uc", { param: "ts.med" }),
-  de: campo(tiposUrl.mes(), "", { param: "ts.de" }),
+  de: campo(tiposUrl.mes(), "", { param: "ts.de" }), // i18n: dado
   ate: campo(tiposUrl.mes(), "", { param: "ts.ate" }),
   mapa: campo(tiposUrl.opcao(MEDIDAS_MAPA_TSEE), "faturas", { param: "ts.mapa" }),
   hist: campo(tiposUrl.opcao(MEDIDAS_HIST_UF), "faturas", { param: "ts.hist" }),
@@ -230,11 +316,12 @@ export function dadosSerieTsee(serie: readonly PontoSerieTsee[], medida: MedidaT
 }
 
 /** Linhas da tabela mensal completa (mesmos números, sem conversão de unidade). */
-export function linhasTabelaSerieTsee(serie: readonly PontoSerieTsee[]) {
+export function linhasTabelaSerieTsee(serie: readonly PontoSerieTsee[], idioma: Idioma = idiomaEnergia()) {
+  const tx = txEm(idioma);
   return serie.map((p) => ({
     id: p.m,
     m: p.m,
-    completo: p.completo ? "completo" : "incompleto",
+    completo: p.completo ? tx("completo", "complete") : tx("incompleto", "incomplete"),
     distribuidoras: p.distribuidoras,
     faltantes: p.distribuidoras_faltantes,
     uc_faltantes: p.uc_tsee_faltantes_ultimo_informe,
@@ -246,51 +333,68 @@ export function linhasTabelaSerieTsee(serie: readonly PontoSerieTsee[]) {
   }));
 }
 
-export const COLUNAS_SERIE_TSEE: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "texto" },
-  { id: "completo", rotulo: "Situação do mês", tipo: "texto", categorica: true },
-  { id: "distribuidoras", rotulo: "Distribuidoras informantes", tipo: "numero", casas: 0 },
-  { id: "faltantes", rotulo: "Distribuidoras esperadas ausentes", tipo: "numero", casas: 0 },
-  { id: "uc_faltantes", rotulo: "UC das ausentes no último informe", tipo: "numero", casas: 0 },
-  { id: "uc_tsee", rotulo: "UC com Tarifa Social", tipo: "numero", unidade: "UC", casas: 0 },
-  { id: "participacao_pct", rotulo: "Das UC residenciais", tipo: "percentual", casas: 2 },
-  { id: "excluidas", rotulo: "Distribuidoras fora da participação", tipo: "numero", casas: 0 },
-  { id: "dmr_reais", rotulo: "DMR", tipo: "numero", unidade: "R$", casas: 2 },
-  { id: "mwh_tsee", rotulo: "Energia faturada com Tarifa Social", tipo: "numero", unidade: "MWh", casas: 0 },
-];
+export function colunasSerieTsee(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "m", rotulo: tx("Mês", "Month"), tipo: "texto" },
+    { id: "completo", rotulo: tx("Situação do mês", "Month status"), tipo: "texto", categorica: true },
+    { id: "distribuidoras", rotulo: tx("Distribuidoras informantes", "Reporting distribution utilities"), tipo: "numero", casas: 0 },
+    { id: "faltantes", rotulo: tx("Distribuidoras esperadas ausentes", "Expected distribution utilities missing"), tipo: "numero", casas: 0 },
+    { id: "uc_faltantes", rotulo: tx("UC das ausentes no último informe", "Consumer units of the missing ones in their last report"), tipo: "numero", casas: 0 },
+    { id: "uc_tsee", rotulo: tx("UC com Tarifa Social", "Consumer units with Tarifa Social"), tipo: "numero", unidade: tx("UC", "consumer units"), casas: 0 },
+    { id: "participacao_pct", rotulo: tx("Das UC residenciais", "Of residential consumer units"), tipo: "percentual", casas: 2 },
+    { id: "excluidas", rotulo: tx("Distribuidoras fora da participação", "Distribution utilities left out of the share"), tipo: "numero", casas: 0 },
+    { id: "dmr_reais", rotulo: "DMR", tipo: "numero", unidade: "R$", casas: 2 },
+    { id: "mwh_tsee", rotulo: tx("Energia faturada com Tarifa Social", "Energy billed with Tarifa Social"), tipo: "numero", unidade: "MWh", casas: 0 },
+  ];
+}
+export const COLUNAS_SERIE_TSEE: ColunaTabela[] = colunasSerieTsee("pt");
 
 /** Eventos da gold dentro do período da série, como marcos do gráfico (mês do evento). */
-export function marcosEventos(eventos: TarifaSocial["eventos"], inicio: string, fim: string): { x: string; rotulo: string }[] {
+export function marcosEventos(eventos: TarifaSocial["eventos"], inicio: string, fim: string, idioma: Idioma = idiomaEnergia()): { x: string; rotulo: string }[] {
   return eventos
     .filter((e) => e.data.slice(0, 7) >= inicio && e.data.slice(0, 7) <= fim)
-    .map((e) => ({ x: e.data.slice(0, 7), rotulo: `${mes(e.data.slice(0, 7))}: ${e.rotulo}` }));
+    .map((e) => ({ x: e.data.slice(0, 7), rotulo: `${mes(e.data.slice(0, 7), idioma)}: ${dadoTexto(e.rotulo, idioma)}` }));
 }
 
 /** Frase sobre os meses incompletos do SCS desde o início da série publicada (ficam fora da linha cheia). */
-export function textoMesesIncompletosScs(serie: readonly PontoSerieTsee[]): string {
+export function textoMesesIncompletosScs(serie: readonly PontoSerieTsee[], idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes, inteiro, listaTexto } = em(idioma);
   const inc = serie.filter((p) => !p.completo);
-  if (!inc.length) return "Todos os meses da série têm todas as distribuidoras esperadas.";
-  const partes = inc.map(
-    (p) =>
-      `${mes(p.m)} (${p.distribuidoras_faltantes} ${p.distribuidoras_faltantes === 1 ? "distribuidora esperada ausente" : "distribuidoras esperadas ausentes"}` +
-      `${p.uc_tsee_faltantes_ultimo_informe !== null ? `, ${inteiro(p.uc_tsee_faltantes_ultimo_informe)} UC no último informe delas` : ""})`,
+  if (!inc.length) return tx("Todos os meses da série têm todas as distribuidoras esperadas.", "Every month in the series has all expected distribution utilities.");
+  const partes = inc.map((p) => {
+    const n = p.distribuidoras_faltantes;
+    const uc = p.uc_tsee_faltantes_ultimo_informe;
+    return tx(
+      `${mes(p.m)} (${n} ${n === 1 ? "distribuidora esperada ausente" : "distribuidoras esperadas ausentes"}` + `${uc !== null ? `, ${inteiro(uc)} UC no último informe delas` : ""})`,
+      `${mes(p.m)} (${n} ${n === 1 ? "expected distribution utility missing" : "expected distribution utilities missing"}` + `${uc !== null ? `, ${inteiro(uc)} consumer units in their last report` : ""})`,
+    );
+  });
+  return tx(
+    `${inc.length === 1 ? "Mês incompleto" : "Meses incompletos"}, em linha tracejada e fora da comparação nacional: ${listaTexto(partes)}.`,
+    `${inc.length === 1 ? "Incomplete month" : "Incomplete months"}, in a dashed line and outside the national comparison: ${listaTexto(partes)}.`,
   );
-  return `${inc.length === 1 ? "Mês incompleto" : "Meses incompletos"}, em linha tracejada e fora da comparação nacional: ${listaTexto(partes)}.`;
 }
 
 /* ---------- Beneficiários da CDE: série mensal depois do SCS ---------- */
 
-export function siglasAusentes(m: MesCde): string {
-  return m.distribuidoras_ausentes.length ? m.distribuidoras_ausentes.map((d) => d.sigla ?? d.cnpj).join(", ") : "nenhuma";
+export function siglasAusentes(m: MesCde, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  return m.distribuidoras_ausentes.length ? m.distribuidoras_ausentes.map((d) => d.sigla ?? d.cnpj).join(", ") : tx("nenhuma", "none");
 }
 
-export function linhasMesesCde(meses: readonly MesCde[]) {
+export function linhasMesesCde(meses: readonly MesCde[], idioma: Idioma = idiomaEnergia()) {
+  const tx = txEm(idioma);
   return meses.map((m) => ({
     id: m.mes,
     mes: m.mes,
     cobertura: m.cobertura_scs_pct,
-    situacao: !m.original_no_bronze ? "só cobertura (original não guardado)" : m.completo ? "completo" : "incompleto",
-    ausentes: siglasAusentes(m),
+    situacao: !m.original_no_bronze
+      ? tx("só cobertura (original não guardado)", "coverage only (original not stored)")
+      : m.completo
+        ? tx("completo", "complete")
+        : tx("incompleto", "incomplete"),
+    ausentes: siglasAusentes(m, idioma),
     faturas: m.faturas_tsee,
     desconto: m.desconto_faturas_reais,
     medio: m.desconto_medio_por_fatura_reais,
@@ -299,17 +403,21 @@ export function linhasMesesCde(meses: readonly MesCde[]) {
   }));
 }
 
-export const COLUNAS_MESES_CDE: ColunaTabela[] = [
-  { id: "mes", rotulo: "Mês do arquivo", tipo: "texto" },
-  { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
-  { id: "cobertura", rotulo: "Cobertura pelas UC do SCS", tipo: "percentual", casas: 2 },
-  { id: "ausentes", rotulo: "Distribuidoras do SCS ausentes", tipo: "texto" },
-  { id: "faturas", rotulo: "Faturas com desconto", tipo: "numero", unidade: "faturas", casas: 0 },
-  { id: "desconto", rotulo: "Desconto das faturas", tipo: "numero", unidade: "R$", casas: 2 },
-  { id: "medio", rotulo: "Desconto médio por fatura", tipo: "numero", unidade: "R$", casas: 2 },
-  { id: "liquido", rotulo: "Desconto líquido do mês", tipo: "numero", unidade: "R$", casas: 2 },
-  { id: "fora", rotulo: "SubsBaixaRenda fora das subclasses 3.2 a 3.6", tipo: "numero", unidade: "R$", casas: 2 },
-];
+export function colunasMesesCde(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "mes", rotulo: tx("Mês do arquivo", "File month"), tipo: "texto" },
+    { id: "situacao", rotulo: tx("Situação", "Status"), tipo: "texto", categorica: true },
+    { id: "cobertura", rotulo: tx("Cobertura pelas UC do SCS", "Coverage by SCS consumer units"), tipo: "percentual", casas: 2 },
+    { id: "ausentes", rotulo: tx("Distribuidoras do SCS ausentes", "SCS distribution utilities missing"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "faturas", rotulo: tx("Faturas com desconto", "Bills with a discount"), tipo: "numero", unidade: tx("faturas", "bills"), casas: 0 },
+    { id: "desconto", rotulo: tx("Desconto das faturas", "Discount on the bills"), tipo: "numero", unidade: "R$", casas: 2 },
+    { id: "medio", rotulo: tx("Desconto médio por fatura", "Average discount per bill"), tipo: "numero", unidade: "R$", casas: 2 },
+    { id: "liquido", rotulo: tx("Desconto líquido do mês", "Net discount for the month"), tipo: "numero", unidade: "R$", casas: 2 },
+    { id: "fora", rotulo: tx("SubsBaixaRenda fora das subclasses 3.2 a 3.6", "SubsBaixaRenda outside subclasses 3.2 to 3.6"), tipo: "numero", unidade: "R$", casas: 2 },
+  ];
+}
+export const COLUNAS_MESES_CDE: ColunaTabela[] = colunasMesesCde("pt");
 
 /**
  * Desconto médio por fatura nos meses com o original no bronze (os sondados e
@@ -328,12 +436,12 @@ export function dadosMediaCde(meses: readonly MesCde[]): LinhaGraficoMensal[] {
 
 /* ---------- mapa e tabela por UF no mês do mapa ---------- */
 
-export function linhasUfsTsee(ufs: readonly UfTsee[]) {
+export function linhasUfsTsee(ufs: readonly UfTsee[], idioma: Idioma = idiomaEnergia()) {
   return ufs.map((u) => ({
     id: u.uf,
     uf: u.uf,
     nome: u.nome,
-    regiao: NOME_TERRITORIO[u.regiao] ?? u.regiao,
+    regiao: nomeTerritorio(u.regiao, idioma),
     faturas: u.faturas_tsee,
     desconto: emMilhoes(u.desconto_reais),
     medio: u.desconto_medio_por_fatura_reais,
@@ -341,15 +449,19 @@ export function linhasUfsTsee(ufs: readonly UfTsee[]) {
   }));
 }
 
-export const COLUNAS_UFS_TSEE: ColunaTabela[] = [
-  { id: "nome", rotulo: "UF", tipo: "texto" },
-  { id: "uf", rotulo: "Sigla", tipo: "texto" },
-  { id: "regiao", rotulo: "Região", tipo: "texto", categorica: true },
-  { id: "faturas", rotulo: "Faturas com desconto", tipo: "numero", unidade: "faturas", casas: 0 },
-  { id: "desconto", rotulo: "Desconto das faturas", tipo: "numero", unidade: "R$ milhões", casas: 1 },
-  { id: "medio", rotulo: "Desconto médio por fatura", tipo: "numero", unidade: "R$", casas: 2 },
-  { id: "municipios", rotulo: "Municípios com faturas", tipo: "numero", casas: 0 },
-];
+export function colunasUfsTsee(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "uf", rotulo: tx("Sigla", "Abbreviation"), tipo: "texto" },
+    { id: "regiao", rotulo: tx("Região", "Region"), tipo: "texto", categorica: true },
+    { id: "faturas", rotulo: tx("Faturas com desconto", "Bills with a discount"), tipo: "numero", unidade: tx("faturas", "bills"), casas: 0 },
+    { id: "desconto", rotulo: tx("Desconto das faturas", "Discount on the bills"), tipo: "numero", unidade: tx("R$ milhões", "R$ million"), casas: 1 },
+    { id: "medio", rotulo: tx("Desconto médio por fatura", "Average discount per bill"), tipo: "numero", unidade: "R$", casas: 2 },
+    { id: "municipios", rotulo: tx("Municípios com faturas", "Municipalities with bills"), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_UFS_TSEE: ColunaTabela[] = colunasUfsTsee("pt");
 
 /** Valores do mapa por código IBGE da UF, na medida escolhida (mesmos números da tabela). */
 export function valoresMapaTsee(ufs: readonly UfTsee[], medida: MedidaMapaTsee): Record<string, number | null> {
@@ -407,17 +519,24 @@ export function dadosHistoricoUf(
 }
 
 /** Frase com as lacunas do histórico das UF escolhidas (mês e distribuidora ausente). */
-export function textoLacunasHistorico(ufs: readonly string[], atingidas: Record<string, Record<string, string[]>>, meses: readonly string[]): string {
+export function textoLacunasHistorico(ufs: readonly string[], atingidas: Record<string, Record<string, string[]>>, meses: readonly string[], idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes, listaTexto } = em(idioma);
   const partes: string[] = [];
   for (const uf of ufs) {
     for (const m of meses) {
       const a = atingidas[m]?.[uf];
-      if (a?.length) partes.push(`${uf} em ${mes(m)} (${a.join(", ")} fora do arquivo)`);
+      if (a?.length) partes.push(tx(`${uf} em ${mes(m)} (${a.join(", ")} fora do arquivo)`, `${uf} in ${mes(m)} (${a.join(", ")} missing from the file)`));
     }
   }
   return partes.length
-    ? `Sem valor no gráfico por falta de distribuidora da UF no arquivo do mês: ${listaTexto(partes)}. O valor publicado está no CSV, marcado como mês incompleto.`
-    : "Nenhuma lacuna nas UF escolhidas: todas as distribuidoras delas aparecem em todos os meses.";
+    ? tx(
+        `Sem valor no gráfico por falta de distribuidora da UF no arquivo do mês: ${listaTexto(partes)}. O valor publicado está no CSV, marcado como mês incompleto.`,
+        `No value in the chart because a distribution utility of the state is missing from the month's file: ${listaTexto(partes)}. The published value is in the CSV, marked as an incomplete month.`,
+      )
+    : tx(
+        "Nenhuma lacuna nas UF escolhidas: todas as distribuidoras delas aparecem em todos os meses.",
+        "No gaps in the chosen states: all their distribution utilities appear in every month.",
+      );
 }
 
 /* ---------- distribuidoras ---------- */
@@ -426,7 +545,8 @@ export function rotuloDistribuidora(sigla: string | null | undefined, cnpj: stri
   return sigla && sigla.trim() ? sigla : `CNPJ ${cnpj}`;
 }
 
-export function linhasDistribuidoras(ds: readonly DistribuidoraTsee[]) {
+export function linhasDistribuidoras(ds: readonly DistribuidoraTsee[], idioma: Idioma = idiomaEnergia()) {
+  const tx = txEm(idioma);
   return ds.map((d) => ({
     id: d.cnpj,
     sigla: rotuloDistribuidora(d.sigla, d.cnpj),
@@ -435,7 +555,7 @@ export function linhasDistribuidoras(ds: readonly DistribuidoraTsee[]) {
     uc_tsee: d.uc_tsee,
     uc_residencial: d.uc_residencial,
     participacao_pct: d.participacao_pct,
-    residencial: d.residencial_inconsistente ? "inconsistente" : "consistente",
+    residencial: d.residencial_inconsistente ? tx("inconsistente", "inconsistent") : tx("consistente", "consistent"),
     dmr_reais: d.dmr_reais,
     dmr_por_uc_reais: d.dmr_por_uc_reais,
     kwh_por_uc: d.kwh_por_uc,
@@ -446,40 +566,58 @@ export function linhasDistribuidoras(ds: readonly DistribuidoraTsee[]) {
   }));
 }
 
-export const COLUNAS_DISTRIBUIDORAS: ColunaTabela[] = [
-  { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
-  { id: "cnpj", rotulo: "CNPJ", tipo: "texto" },
-  { id: "ufs", rotulo: "UF das faturas", tipo: "texto" },
-  { id: "uc_tsee", rotulo: "UC com Tarifa Social", tipo: "numero", unidade: "UC", casas: 0 },
-  { id: "uc_residencial", rotulo: "UC residenciais", tipo: "numero", unidade: "UC", casas: 0 },
-  { id: "participacao_pct", rotulo: "Das UC residenciais", tipo: "percentual", casas: 2 },
-  { id: "residencial", rotulo: "Total residencial", tipo: "texto", categorica: true },
-  { id: "dmr_reais", rotulo: "DMR do mês", tipo: "numero", unidade: "R$", casas: 2 },
-  { id: "dmr_por_uc_reais", rotulo: "DMR por UC", tipo: "numero", unidade: "R$", casas: 2 },
-  { id: "kwh_por_uc", rotulo: "Consumo por UC", tipo: "numero", unidade: "kWh", casas: 1 },
-  { id: "variacao_12m_pct", rotulo: "UC em 12 meses", tipo: "percentual", casas: 2 },
-  { id: "faturas_cde", rotulo: "Faturas na CDE (conferência)", tipo: "numero", casas: 0 },
-  { id: "diferenca_cde_pct", rotulo: "Faturas contra UC", tipo: "percentual", casas: 2 },
-  { id: "despacho", rotulo: "Despacho vigente", tipo: "texto" },
-];
+export function colunasDistribuidoras(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  const uc = tx("UC", "consumer units");
+  return [
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "cnpj", rotulo: "CNPJ", tipo: "texto" },
+    { id: "ufs", rotulo: tx("UF das faturas", "States of the bills"), tipo: "texto" },
+    { id: "uc_tsee", rotulo: tx("UC com Tarifa Social", "Consumer units with Tarifa Social"), tipo: "numero", unidade: uc, casas: 0 },
+    { id: "uc_residencial", rotulo: tx("UC residenciais", "Residential consumer units"), tipo: "numero", unidade: uc, casas: 0 },
+    { id: "participacao_pct", rotulo: tx("Das UC residenciais", "Of residential consumer units"), tipo: "percentual", casas: 2 },
+    { id: "residencial", rotulo: tx("Total residencial", "Residential total"), tipo: "texto", categorica: true },
+    { id: "dmr_reais", rotulo: tx("DMR do mês", "DMR for the month"), tipo: "numero", unidade: "R$", casas: 2 },
+    { id: "dmr_por_uc_reais", rotulo: tx("DMR por UC", "DMR per consumer unit"), tipo: "numero", unidade: "R$", casas: 2 },
+    { id: "kwh_por_uc", rotulo: tx("Consumo por UC", "Consumption per consumer unit"), tipo: "numero", unidade: "kWh", casas: 1 },
+    { id: "variacao_12m_pct", rotulo: tx("UC em 12 meses", "Consumer units over 12 months"), tipo: "percentual", casas: 2 },
+    { id: "faturas_cde", rotulo: tx("Faturas na CDE (conferência)", "Bills in the CDE (check)"), tipo: "numero", casas: 0 },
+    { id: "diferenca_cde_pct", rotulo: tx("Faturas contra UC", "Bills against consumer units"), tipo: "percentual", casas: 2 },
+    { id: "despacho", rotulo: tx("Despacho vigente", "Order in force"), tipo: "texto", idiomaTexto: "nome" },
+  ];
+}
+export const COLUNAS_DISTRIBUIDORAS: ColunaTabela[] = colunasDistribuidoras("pt");
 
 /* ---------- textos do P059 ---------- */
 
 /** Resposta curta do P059, derivada dos KPIs publicados. */
-export function respostaTarifaSocial(t: TarifaSocial): string {
+export function respostaTarifaSocial(t: TarifaSocial, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes, inteiro, pct, reaisTexto } = em(idioma);
   const k = t.kpis;
   const n = t.distribuidoras.length;
   const partes = [
-    `Em ${mes(k.uc_tsee.mes)}, último mês completo do SCS, ${inteiro(k.uc_tsee.valor)} unidades consumidoras de ${n} distribuidoras tinham Tarifa Social` +
-      (k.participacao_pct.valor === null ? " (participação nas UC residenciais sem dado)" : `, ${pct(k.participacao_pct.valor, 1)} das UC residenciais`),
+    tx(
+      `Em ${mes(k.uc_tsee.mes)}, último mês completo do SCS, ${inteiro(k.uc_tsee.valor)} unidades consumidoras de ${n} distribuidoras tinham Tarifa Social`,
+      `In ${mes(k.uc_tsee.mes)}, the latest complete month of the SCS, ${inteiro(k.uc_tsee.valor)} consumer units of ${n} distribution utilities had the Tarifa Social`,
+    ) +
+      (k.participacao_pct.valor === null
+        ? tx(" (participação nas UC residenciais sem dado)", " (share of residential consumer units: no data)")
+        : tx(`, ${pct(k.participacao_pct.valor, 1)} das UC residenciais`, `, ${pct(k.participacao_pct.valor, 1)} of residential consumer units`)),
   ];
   const v = k.variacao_12m_pct;
-  if (v.valor !== null && v.comparavel) partes[0] += ` (${v.valor >= 0 ? "alta" : "queda"} de ${pct(Math.abs(v.valor), 1)} sobre ${mes(v.mes_base)})`;
+  if (v.valor !== null && v.comparavel)
+    partes[0] += tx(
+      ` (${v.valor >= 0 ? "alta" : "queda"} de ${pct(Math.abs(v.valor), 1)} sobre ${mes(v.mes_base)})`,
+      ` (${v.valor >= 0 ? "up" : "down"} ${pct(Math.abs(v.valor), 1)} on ${mes(v.mes_base)})`,
+    );
   partes[0] += ".";
   const mapa = t.cde_meses.find((m) => m.mes === t.mes_mapa);
   if (k.faturas_cde_mapa && mapa) {
     partes.push(
-      `No arquivo de Beneficiários da CDE de ${mes(mapa.mes)}, o mais recente com todas as distribuidoras, foram ${inteiro(k.faturas_cde_mapa.valor)} faturas com desconto, em média ${reaisTexto(mapa.desconto_medio_por_fatura_reais)} por fatura.`,
+      tx(
+        `No arquivo de Beneficiários da CDE de ${mes(mapa.mes)}, o mais recente com todas as distribuidoras, foram ${inteiro(k.faturas_cde_mapa.valor)} faturas com desconto, em média ${reaisTexto(mapa.desconto_medio_por_fatura_reais)} por fatura.`,
+        `In the CDE Beneficiaries file for ${mes(mapa.mes)}, the most recent with all distribution utilities, there were ${inteiro(k.faturas_cde_mapa.valor)} bills with a discount, on average ${reaisTexto(mapa.desconto_medio_por_fatura_reais)} per bill.`,
+      ),
     );
   }
   return partes.join(" ");
@@ -490,12 +628,19 @@ export function respostaTarifaSocial(t: TarifaSocial): string {
  * parte das residenciais isso é e a variação relativa (em %, não em pontos percentuais) sobre o mesmo mês do ano anterior. As
  * faturas da CDE, o número de distribuidoras e o desconto médio ficam na resposta completa.
  */
-export function vereditoTarifaSocial(t: TarifaSocial): string {
+export function vereditoTarifaSocial(t: TarifaSocial, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes, inteiro, pct } = em(idioma);
   const k = t.kpis;
-  const part = k.participacao_pct.valor === null ? "" : ` (${pct(k.participacao_pct.valor, 1)} das residenciais)`;
+  const part = k.participacao_pct.valor === null ? "" : tx(` (${pct(k.participacao_pct.valor, 1)} das residenciais)`, ` (${pct(k.participacao_pct.valor, 1)} of residential ones)`);
   const v = k.variacao_12m_pct;
-  const variacao = v.valor !== null && v.comparavel ? `, ${pct(Math.abs(v.valor), 1)} ${v.valor >= 0 ? "a mais" : "a menos"} que em ${mes(v.mes_base)}` : "";
-  return `Em ${mes(k.uc_tsee.mes)}, ${inteiro(k.uc_tsee.valor)} unidades consumidoras${part} tinham Tarifa Social${variacao}.`;
+  const variacao =
+    v.valor !== null && v.comparavel
+      ? tx(`, ${pct(Math.abs(v.valor), 1)} ${v.valor >= 0 ? "a mais" : "a menos"} que em ${mes(v.mes_base)}`, `, ${pct(Math.abs(v.valor), 1)} ${v.valor >= 0 ? "more" : "fewer"} than in ${mes(v.mes_base)}`)
+      : "";
+  return tx(
+    `Em ${mes(k.uc_tsee.mes)}, ${inteiro(k.uc_tsee.valor)} unidades consumidoras${part} tinham Tarifa Social${variacao}.`,
+    `In ${mes(k.uc_tsee.mes)}, ${inteiro(k.uc_tsee.valor)} consumer units${part} had the Tarifa Social${variacao}.`,
+  );
 }
 
 /**
@@ -504,7 +649,8 @@ export function vereditoTarifaSocial(t: TarifaSocial): string {
  * fatura. O evento vem da gold, nunca de uma data escrita aqui: com outro evento
  * publicado, o texto acompanha.
  */
-export function mudancaTarifaSocial(t: TarifaSocial): string {
+export function mudancaTarifaSocial(t: TarifaSocial, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes, pctTexto, reaisTexto, reaisGrandes, listaTexto, dado } = em(idioma);
   const comValor = t.cde_meses.filter((m) => m.original_no_bronze && m.desconto_medio_por_fatura_reais !== null);
   const evento = [...t.eventos]
     .sort((a, b) => (a.data < b.data ? -1 : 1))
@@ -519,21 +665,37 @@ export function mudancaTarifaSocial(t: TarifaSocial): string {
   const partes: string[] = [];
   if (evento && antes && depois) {
     partes.push(
-      `${evento.rotulo}: o desconto médio por fatura passou de ${reaisTexto(antes.desconto_medio_por_fatura_reais)} em ${mes(antes.mes)} para ${reaisTexto(depois.desconto_medio_por_fatura_reais)} em ${mes(depois.mes)}`,
+      tx(
+        `${evento.rotulo}: o desconto médio por fatura passou de ${reaisTexto(antes.desconto_medio_por_fatura_reais)} em ${mes(antes.mes)} para ${reaisTexto(depois.desconto_medio_por_fatura_reais)} em ${mes(depois.mes)}`,
+        `${dado(evento.rotulo)}: the average discount per bill went from ${reaisTexto(antes.desconto_medio_por_fatura_reais)} in ${mes(antes.mes)} to ${reaisTexto(depois.desconto_medio_por_fatura_reais)} in ${mes(depois.mes)}`,
+      ),
     );
-    if (ultimo && ultimo.mes !== depois.mes) partes[0] += ` e estava em ${reaisTexto(ultimo.desconto_medio_por_fatura_reais)} em ${mes(ultimo.mes)}`;
+    if (ultimo && ultimo.mes !== depois.mes)
+      partes[0] += tx(` e estava em ${reaisTexto(ultimo.desconto_medio_por_fatura_reais)} em ${mes(ultimo.mes)}`, ` and stood at ${reaisTexto(ultimo.desconto_medio_por_fatura_reais)} in ${mes(ultimo.mes)}`);
     // evento depois do dia 1: o arquivo do mês tem faturas emitidas antes e depois dele
-    partes[0] += evento.data.slice(8, 10) > "01" ? ` (${mes(depois.mes)} mistura faturas emitidas antes e depois da mudança).` : ".";
+    partes[0] +=
+      evento.data.slice(8, 10) > "01"
+        ? tx(` (${mes(depois.mes)} mistura faturas emitidas antes e depois da mudança).`, ` (${mes(depois.mes)} mixes bills issued before and after the change).`)
+        : ".";
   }
   const sondados = t.cde_meses.filter((m) => !m.original_no_bronze);
   if (sondados.length) {
+    const meses = listaTexto(sondados.map((m) => mes(m.mes)));
+    const coberturas = listaTexto(sondados.map((m) => pctTexto(m.cobertura_scs_pct, 2)));
     partes.push(
-      `Os arquivos de ${listaTexto(sondados.map((m) => mes(m.mes)))} ainda não trazem todas as distribuidoras (cobertura de ${listaTexto(sondados.map((m) => pctTexto(m.cobertura_scs_pct, 2)))}) e publicam só a cobertura.`,
+      tx(
+        `Os arquivos de ${meses} ainda não trazem todas as distribuidoras (cobertura de ${coberturas}) e publicam só a cobertura.`,
+        `The files for ${meses} do not yet include all distribution utilities (coverage of ${coberturas}) and publish only the coverage.`,
+      ),
     );
   }
   const k = t.kpis.dmr_12m_reais;
+  const n = k.meses_incompletos;
   partes.push(
-    `De ${mes(k.inicio)} a ${mes(k.fim)}, a DMR somou ${reaisGrandes(k.valor)}${k.meses_incompletos ? ` (${k.meses_incompletos} ${k.meses_incompletos === 1 ? "mês incompleto" : "meses incompletos"} na soma)` : ""}.`,
+    tx(
+      `De ${mes(k.inicio)} a ${mes(k.fim)}, a DMR somou ${reaisGrandes(k.valor)}${n ? ` (${n} ${n === 1 ? "mês incompleto" : "meses incompletos"} na soma)` : ""}.`,
+      `From ${mes(k.inicio)} to ${mes(k.fim)}, the DMR added up to ${reaisGrandes(k.valor)}${n ? ` (${n} ${n === 1 ? "incomplete month" : "incomplete months"} in the sum)` : ""}.`,
+    ),
   );
   return partes.join(" ");
 }
@@ -543,15 +705,25 @@ export function mudancaTarifaSocial(t: TarifaSocial): string {
  * fechado e, à parte, no ano em curso, que só pode ser valor orçado (a fonte não
  * separa orçado de executado). O ano em curso nunca é dito como realizado.
  */
-export function textoCusteioTarifaSocial(c: NonNullable<TarifaSocial["custeio_cde"]>): string {
-  const partes = [...c.proveniencia.limitacoes];
+export function textoCusteioTarifaSocial(c: NonNullable<TarifaSocial["custeio_cde"]>, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pctTexto, reaisGrandes, dado } = em(idioma);
+  const partes = c.proveniencia.limitacoes.map(dado);
   const fechado = [...c.linhas].reverse().find((l) => l.ano !== c.ano_corrente);
   const corrente = c.linhas.find((l) => l.ano === c.ano_corrente);
   if (fechado) {
-    partes.push(`Em ${fechado.ano}, a Tarifa Social foi ${pctTexto(fechado.tarifa_social_pct_despesa, 1)} da despesa da CDE (${reaisGrandes(fechado.tarifa_social_reais)}).`);
+    const p = pctTexto(fechado.tarifa_social_pct_despesa, 1);
+    const r = reaisGrandes(fechado.tarifa_social_reais);
+    partes.push(tx(`Em ${fechado.ano}, a Tarifa Social foi ${p} da despesa da CDE (${r}).`, `In ${fechado.ano}, the Tarifa Social was ${p} of CDE expenses (${r}).`));
   }
   if (corrente) {
-    partes.push(`Em ${corrente.ano}, ano em curso, o valor orçado é ${pctTexto(corrente.tarifa_social_pct_despesa, 1)} da despesa prevista (${reaisGrandes(corrente.tarifa_social_reais)}).`);
+    const p = pctTexto(corrente.tarifa_social_pct_despesa, 1);
+    const r = reaisGrandes(corrente.tarifa_social_reais);
+    partes.push(
+      tx(
+        `Em ${corrente.ano}, ano em curso, o valor orçado é ${p} da despesa prevista (${r}).`,
+        `In ${corrente.ano}, the current year, the budgeted value is ${p} of forecast expenses (${r}).`,
+      ),
+    );
   }
   return partes.join(" ");
 }
@@ -570,12 +742,12 @@ export const ESQUEMA_COBERTURA = {
   msel: campo(tiposUrl.texto({ max: 7 }), "", { param: "cob.msel" }),
 };
 
-export function linhasCoberturaUf(ufs: readonly CoberturaUf[]) {
+export function linhasCoberturaUf(ufs: readonly CoberturaUf[], idioma: Idioma = idiomaEnergia()) {
   return ufs.map((u) => ({
     id: u.uf,
     uf: u.uf,
     nome: u.nome,
-    regiao: NOME_TERRITORIO[u.regiao] ?? u.regiao,
+    regiao: nomeTerritorio(u.regiao, idioma),
     faturas: u.faturas_tsee,
     atualizadas: u.familias_atualizadas,
     cadastradas: u.familias_cadastradas,
@@ -585,17 +757,22 @@ export function linhasCoberturaUf(ufs: readonly CoberturaUf[]) {
   }));
 }
 
-export const COLUNAS_COBERTURA_UF: ColunaTabela[] = [
-  { id: "nome", rotulo: "UF", tipo: "texto" },
-  { id: "uf", rotulo: "Sigla", tipo: "texto" },
-  { id: "regiao", rotulo: "Região", tipo: "texto", categorica: true },
-  { id: "faturas", rotulo: "Faturas com desconto", tipo: "numero", unidade: "faturas", casas: 0 },
-  { id: "atualizadas", rotulo: "Famílias até ½ SM, cadastro atualizado", tipo: "numero", unidade: "famílias", casas: 0 },
-  { id: "cadastradas", rotulo: "Famílias até ½ SM, todas as cadastradas", tipo: "numero", unidade: "famílias", casas: 0 },
-  { id: "razao_atualizadas", rotulo: "Faturas por 100 famílias atualizadas", tipo: "numero", casas: 2 },
-  { id: "razao_cadastradas", rotulo: "Faturas por 100 famílias cadastradas", tipo: "numero", casas: 2 },
-  { id: "municipios", rotulo: "Municípios", tipo: "numero", casas: 0 },
-];
+export function colunasCoberturaUf(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  const familias = tx("famílias", "families");
+  return [
+    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "uf", rotulo: tx("Sigla", "Abbreviation"), tipo: "texto" },
+    { id: "regiao", rotulo: tx("Região", "Region"), tipo: "texto", categorica: true },
+    { id: "faturas", rotulo: tx("Faturas com desconto", "Bills with a discount"), tipo: "numero", unidade: tx("faturas", "bills"), casas: 0 },
+    { id: "atualizadas", rotulo: tx("Famílias até ½ SM, cadastro atualizado", "Families up to ½ minimum wage, updated record"), tipo: "numero", unidade: familias, casas: 0 },
+    { id: "cadastradas", rotulo: tx("Famílias até ½ SM, todas as cadastradas", "Families up to ½ minimum wage, all registered"), tipo: "numero", unidade: familias, casas: 0 },
+    { id: "razao_atualizadas", rotulo: tx("Faturas por 100 famílias atualizadas", "Bills per 100 updated families"), tipo: "numero", casas: 2 },
+    { id: "razao_cadastradas", rotulo: tx("Faturas por 100 famílias cadastradas", "Bills per 100 registered families"), tipo: "numero", casas: 2 },
+    { id: "municipios", rotulo: tx("Municípios", "Municipalities"), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_COBERTURA_UF: ColunaTabela[] = colunasCoberturaUf("pt");
 
 export function valoresMapaCobertura(ufs: readonly CoberturaUf[], den: Denominador): Record<string, number | null> {
   const out: Record<string, number | null> = {};
@@ -607,13 +784,17 @@ export function valoresMapaCobertura(ufs: readonly CoberturaUf[], den: Denominad
 }
 
 /** Itens do gráfico de faixa por UF: círculo = com cadastro atualizado; losango = todas as cadastradas. */
-export function itensFaixaCobertura(ufs: readonly CoberturaUf[]) {
+export function itensFaixaCobertura(ufs: readonly CoberturaUf[], idioma: Idioma = idiomaEnergia()) {
+  const { tx, inteiro } = em(idioma);
   return ufs.map((u) => ({
     id: u.uf,
     rotulo: u.nome,
     valor: u.razao_atualizadas_pct,
     referencia: u.razao_cadastradas_pct,
-    detalhe: `${inteiro(u.faturas_tsee)} faturas; ${inteiro(u.familias_atualizadas)} famílias atualizadas e ${inteiro(u.familias_cadastradas)} cadastradas`,
+    detalhe: tx(
+      `${inteiro(u.faturas_tsee)} faturas; ${inteiro(u.familias_atualizadas)} famílias atualizadas e ${inteiro(u.familias_cadastradas)} cadastradas`,
+      `${inteiro(u.faturas_tsee)} bills; ${inteiro(u.familias_atualizadas)} updated families and ${inteiro(u.familias_cadastradas)} registered`,
+    ),
   }));
 }
 
@@ -622,27 +803,44 @@ export function dadosSerieCobertura(serie: readonly PontoCoberturaMensal[]) {
   return serie.map((p) => ({ m: p.m, atualizadas: p.razao_atualizadas_pct, cadastradas: p.razao_cadastradas_pct }));
 }
 
-export function linhasHistogramaMunicipios(dist: NonNullable<Cobertura["distribuicao_municipal"]>) {
+export function linhasHistogramaMunicipios(dist: NonNullable<Cobertura["distribuicao_municipal"]>, idioma: Idioma = idiomaEnergia()) {
+  const { tx, num } = em(idioma);
   return dist.histograma.map((h) => ({
     id: `${h.de}`,
-    faixa: h.ate === null ? `${num(h.de, 0)} ou mais` : `${num(h.de, 0)} a menos de ${num(h.ate, 0)}`,
+    // o rótulo inglês tem o mesmo número de caracteres do português (" a menos de " e " and under " + U+2060, invisível): o gráfico encurta
+    // o rótulo que não cabe no mesmo ponto nos dois idiomas, e a página inglesa mostra os mesmos números
+    faixa:
+      h.ate === null
+        ? tx(`${num(h.de, 0)} ou mais`, `${num(h.de, 0)} or more`)
+        : tx(`${num(h.de, 0)} a menos de ${num(h.ate, 0)}`, `${num(h.de, 0)} and under \u2060${num(h.ate, 0)}`),
     municipios: h.municipios,
   }));
 }
 
 /** Resposta curta do P060 (proxy declarada na própria frase). */
-export function respostaCobertura(c: Cobertura): string {
+export function respostaCobertura(c: Cobertura, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes, numTexto } = em(idioma);
   const b = c.brasil;
-  if (!b) return "Sem dado: a gold desta publicação não tem o cruzamento entre faturas e Cadastro Único.";
+  if (!b)
+    return tx(
+      "Sem dado: a gold desta publicação não tem o cruzamento entre faturas e Cadastro Único.",
+      "No data: this publication's gold does not have the match between bills and the Cadastro Único.",
+    );
   const ufs = c.ufs.filter((u) => u.razao_atualizadas_pct !== null);
   const ord = [...ufs].sort((a, z) => (a.razao_atualizadas_pct as number) - (z.razao_atualizadas_pct as number));
   const menor = ord[0];
   const maior = ord.at(-1);
-  let t =
+  let t = tx(
     `Proxy, não lacuna: em ${mes(b.mes)} havia ${numTexto(b.razao_atualizadas_pct, 1)} faturas com Tarifa Social para cada 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo e cadastro atualizado ` +
-    `(${numTexto(b.razao_cadastradas_pct, 1)} contando todas as cadastradas nessa renda).`;
+      `(${numTexto(b.razao_cadastradas_pct, 1)} contando todas as cadastradas nessa renda).`,
+    `Proxy, not a gap: in ${mes(b.mes)} there were ${numTexto(b.razao_atualizadas_pct, 1)} bills with the Tarifa Social for every 100 Cadastro Único families with per capita income up to half a minimum wage and an updated record ` +
+      `(${numTexto(b.razao_cadastradas_pct, 1)} counting all registered families in that income range).`,
+  );
   if (menor && maior && menor !== maior) {
-    t += ` Entre as UF, a razão vai de ${numTexto(menor.razao_atualizadas_pct, 1)} (${menor.nome}) a ${numTexto(maior.razao_atualizadas_pct, 1)} (${maior.nome}).`;
+    t += tx(
+      ` Entre as UF, a razão vai de ${numTexto(menor.razao_atualizadas_pct, 1)} (${menor.nome}) a ${numTexto(maior.razao_atualizadas_pct, 1)} (${maior.nome}).`,
+      ` Across states, the ratio ranges from ${numTexto(menor.razao_atualizadas_pct, 1)} (${menor.nome}) to ${numTexto(maior.razao_atualizadas_pct, 1)} (${maior.nome}).`,
+    );
   }
   return t;
 }
@@ -652,29 +850,50 @@ export function respostaCobertura(c: Cobertura): string {
  * limite de leitura (medida indireta: não mede quantas famílias com direito ficaram sem o desconto). A razão contando todas as
  * cadastradas e o intervalo entre as UF ficam na resposta completa.
  */
-export function vereditoCobertura(c: Cobertura): string {
+export function vereditoCobertura(c: Cobertura, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes, numTexto } = em(idioma);
   const b = c.brasil;
-  if (!b) return "Sem dado: a gold desta publicação não tem o cruzamento entre faturas e Cadastro Único.";
-  return `Em ${mes(b.mes)} havia ${numTexto(b.razao_atualizadas_pct, 1)} faturas com Tarifa Social para cada 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo e cadastro atualizado. É uma medida indireta: não mede quantas famílias com direito ficaram sem o desconto.`;
+  if (!b)
+    return tx(
+      "Sem dado: a gold desta publicação não tem o cruzamento entre faturas e Cadastro Único.",
+      "No data: this publication's gold does not have the match between bills and the Cadastro Único.",
+    );
+  return tx(
+    `Em ${mes(b.mes)} havia ${numTexto(b.razao_atualizadas_pct, 1)} faturas com Tarifa Social para cada 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo e cadastro atualizado. É uma medida indireta: não mede quantas famílias com direito ficaram sem o desconto.`,
+    `In ${mes(b.mes)} there were ${numTexto(b.razao_atualizadas_pct, 1)} bills with the Tarifa Social for every 100 Cadastro Único families with per capita income up to half a minimum wage and an updated record. It is an indirect measure: it does not measure how many entitled families went without the discount.`,
+  );
 }
 
-export function mudancaCobertura(c: Cobertura): string {
+export function mudancaCobertura(c: Cobertura, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes, numTexto, inteiro } = em(idioma);
   const u = c.serie_mensal_ultimo;
   const b = c.brasil;
   const partes: string[] = [];
   if (u) {
     partes.push(
-      `Na série mensal com o numerador do SCS (UC, meses completos, ${c.serie_mensal_meses} meses), o último ponto é ${mes(u.m)}: ${numTexto(u.razao_atualizadas_pct, 1)} UC por 100 famílias atualizadas e ${numTexto(u.razao_cadastradas_pct, 1)} por 100 cadastradas.`,
+      tx(
+        `Na série mensal com o numerador do SCS (UC, meses completos, ${c.serie_mensal_meses} meses), o último ponto é ${mes(u.m)}: ${numTexto(u.razao_atualizadas_pct, 1)} UC por 100 famílias atualizadas e ${numTexto(u.razao_cadastradas_pct, 1)} por 100 cadastradas.`,
+        `In the monthly series with the SCS numerator (consumer units, complete months, ${c.serie_mensal_meses} months), the latest point is ${mes(u.m)}: ${numTexto(u.razao_atualizadas_pct, 1)} consumer units per 100 updated families and ${numTexto(u.razao_cadastradas_pct, 1)} per 100 registered.`,
+      ),
     );
   }
-  if (b) partes.push(`O ponto de ${mes(b.mes)} usa faturas da CDE, outra unidade: as duas séries não se emendam.`);
+  if (b) partes.push(tx(`O ponto de ${mes(b.mes)} usa faturas da CDE, outra unidade: as duas séries não se emendam.`, `The ${mes(b.mes)} point uses CDE bills, a different unit: the two series do not join.`));
   const d = c.distribuicao_municipal;
   if (d) {
     // as faixas do histograma começam em número inclusive; "passam de 100" é estritamente acima: a diferença são os municípios com razão exatamente 100
     const deCemEmDiante = d.histograma.filter((h) => h.de >= 100).reduce((acc, h) => acc + h.municipios, 0);
-    const faixas = deCemEmDiante !== d.acima_de_100 ? ` (as faixas do histograma de 100 em diante somam ${inteiro(deCemEmDiante)} porque a faixa começa em 100, inclusive)` : "";
+    const faixas =
+      deCemEmDiante !== d.acima_de_100
+        ? tx(
+            ` (as faixas do histograma de 100 em diante somam ${inteiro(deCemEmDiante)} porque a faixa começa em 100, inclusive)`,
+            ` (the histogram bands from 100 upward add up to ${inteiro(deCemEmDiante)} because the band starts at 100, inclusive)`,
+          )
+        : "";
     partes.push(
-      `Nos municípios, a mediana é ${numTexto(d.quantis.p50, 1)} e metade fica entre ${numTexto(d.quantis.p25, 1)} e ${numTexto(d.quantis.p75, 1)}; ${inteiro(d.acima_de_100)} passam de 100${faixas}, o que a proxy admite sem erro de cálculo: o numerador inclui beneficiários fora do critério de renda do denominador.`,
+      tx(
+        `Nos municípios, a mediana é ${numTexto(d.quantis.p50, 1)} e metade fica entre ${numTexto(d.quantis.p25, 1)} e ${numTexto(d.quantis.p75, 1)}; ${inteiro(d.acima_de_100)} passam de 100${faixas}, o que a proxy admite sem erro de cálculo: o numerador inclui beneficiários fora do critério de renda do denominador.`,
+        `In the municipalities, the median is ${numTexto(d.quantis.p50, 1)} and half fall between ${numTexto(d.quantis.p25, 1)} and ${numTexto(d.quantis.p75, 1)}; ${inteiro(d.acima_de_100)} exceed 100${faixas}, which the proxy allows without a calculation error: the numerator includes beneficiaries outside the denominator's income criterion.`,
+      ),
     );
   }
   return partes.join(" ");
@@ -725,15 +944,19 @@ export function municipiosDoCsv(texto: string): MunicipioCobertura[] {
   }));
 }
 
-export const COLUNAS_MUNICIPIOS: ColunaTabela[] = [
-  { id: "municipio", rotulo: "Município", tipo: "texto" },
-  { id: "uf", rotulo: "UF", tipo: "texto", categorica: true },
-  { id: "faturas", rotulo: "Faturas com desconto", tipo: "numero", casas: 0 },
-  { id: "atualizadas", rotulo: "Famílias até ½ SM, atualizadas", tipo: "numero", casas: 0 },
-  { id: "razao_atualizadas", rotulo: "Faturas por 100 famílias atualizadas", tipo: "numero", casas: 2 },
-  { id: "razao_cadastradas", rotulo: "Faturas por 100 famílias cadastradas", tipo: "numero", casas: 2 },
-  { id: "base", rotulo: "Base", tipo: "texto", categorica: true },
-];
+export function colunasMunicipios(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "municipio", rotulo: tx("Município", "Municipality"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "uf", rotulo: tx("UF", "State"), tipo: "texto", categorica: true },
+    { id: "faturas", rotulo: tx("Faturas com desconto", "Bills with a discount"), tipo: "numero", casas: 0 },
+    { id: "atualizadas", rotulo: tx("Famílias até ½ SM, atualizadas", "Families up to ½ minimum wage, updated"), tipo: "numero", casas: 0 },
+    { id: "razao_atualizadas", rotulo: tx("Faturas por 100 famílias atualizadas", "Bills per 100 updated families"), tipo: "numero", casas: 2 },
+    { id: "razao_cadastradas", rotulo: tx("Faturas por 100 famílias cadastradas", "Bills per 100 registered families"), tipo: "numero", casas: 2 },
+    { id: "base", rotulo: tx("Base", "Base"), tipo: "texto", categorica: true },
+  ];
+}
+export const COLUNAS_MUNICIPIOS: ColunaTabela[] = colunasMunicipios("pt");
 
 /* ================================================================ P061: peso no orçamento (POF) */
 
@@ -780,22 +1003,26 @@ export const ESQUEMA_ORCAMENTO = {
  * Rótulo do estado de precisão de cada estimativa, com os limites de CV da regra
  * publicada na gold (`regra_precisao`): mudar a regra no pipeline muda o rótulo.
  */
-export function rotulosEstadoPof(regra: Orcamento["regra_precisao"]): Record<string, string> {
+export function rotulosEstadoPof(regra: Orcamento["regra_precisao"], idioma: Idioma = idiomaEnergia()): Record<string, string> {
+  const { tx, pct } = em(idioma);
   const c = pct(regra.cautela_cv_pct, 0);
   const s = pct(regra.suprime_cv_pct, 0);
   return {
-    publicado: `CV até ${c}`,
-    cautela: `cautela: CV de ${c} a ${s}`,
-    suprimido: `suprimido: CV acima de ${s}`,
-    sem_erro_padrao: "sem erro-padrão (mediana)",
-    zero_na_amostra: "zero na amostra",
-    ausente: "ausente",
+    publicado: tx(`CV até ${c}`, `CV up to ${c}`),
+    cautela: tx(`cautela: CV de ${c} a ${s}`, `caution: CV from ${c} to ${s}`),
+    suprimido: tx(`suprimido: CV acima de ${s}`, `suppressed: CV above ${s}`),
+    sem_erro_padrao: tx("sem erro-padrão (mediana)", "no standard error (median)"),
+    zero_na_amostra: tx("zero na amostra", "zero in the sample"),
+    ausente: tx("ausente", "missing"),
   };
 }
 
 /** Frase da regra de precisão para notas de tabela e "Como interpretar". */
-export function textoPrecisaoPof(regra: Orcamento["regra_precisao"]): string {
-  return `CV de ${pct(regra.cautela_cv_pct, 0)} a ${pct(regra.suprime_cv_pct, 0)}: cautela; acima de ${pct(regra.suprime_cv_pct, 0)}: suprimido (sem dado).`;
+export function textoPrecisaoPof(regra: Orcamento["regra_precisao"], idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pct } = em(idioma);
+  const c = pct(regra.cautela_cv_pct, 0);
+  const s = pct(regra.suprime_cv_pct, 0);
+  return tx(`CV de ${c} a ${s}: cautela; acima de ${s}: suprimido (sem dado).`, `CV from ${c} to ${s}: caution; above ${s}: suppressed (no data).`);
 }
 
 /** [valor, CV, estado] de uma medida; medida não publicada no território = ausente. */
@@ -808,17 +1035,23 @@ export function linhaPof(orc: OrcamentoBase, territorio: string, classe: string)
 }
 
 /** Medidas comparáveis de cada base: a razão de médias só existe para a despesa total. */
-export const MEDIDAS_BASE: Record<BasePof, { id: MedidaPof; rotulo: string }[]> = {
-  despesa: [
-    { id: "razao_medias_pct", rotulo: "Razão de médias" },
-    { id: "media_razoes_desp_pct", rotulo: "Média das participações" },
-    { id: "mediana_desp_pct", rotulo: "Mediana das participações" },
-  ],
-  renda: [
-    { id: "media_razoes_renda_pct", rotulo: "Média das participações" },
-    { id: "mediana_renda_pct", rotulo: "Mediana das participações" },
-  ],
-};
+export function medidasBase(idioma: Idioma = idiomaEnergia()): Record<BasePof, { id: MedidaPof; rotulo: string }[]> {
+  const tx = txEm(idioma);
+  const media = tx("Média das participações", "Average of the shares");
+  const mediana = tx("Mediana das participações", "Median of the shares");
+  return {
+    despesa: [
+      { id: "razao_medias_pct", rotulo: tx("Razão de médias", "Ratio of averages") },
+      { id: "media_razoes_desp_pct", rotulo: media },
+      { id: "mediana_desp_pct", rotulo: mediana },
+    ],
+    renda: [
+      { id: "media_razoes_renda_pct", rotulo: media },
+      { id: "mediana_renda_pct", rotulo: mediana },
+    ],
+  };
+}
+export const MEDIDAS_BASE: Record<BasePof, { id: MedidaPof; rotulo: string }[]> = medidasBase("pt");
 
 /** Classes de rendimento sem o total (o total é a referência). */
 export function classesRenda(orc: OrcamentoBase) {
@@ -829,32 +1062,32 @@ export function classesRenda(orc: OrcamentoBase) {
  * Barras por classe de rendimento: uma coluna por medida da base escolhida, para UM
  * território. Valor suprimido (CV acima de 30%) é ausência, não zero.
  */
-export function dadosClassesPof(orc: OrcamentoBase, territorio: string, base: BasePof) {
+export function dadosClassesPof(orc: OrcamentoBase, territorio: string, base: BasePof, idioma: Idioma = idiomaEnergia()) {
   return classesRenda(orc).map((c) => {
     const l = linhaPof(orc, territorio, c.codigo);
-    const linha: Record<string, string | number | null> = { id: c.codigo, rotulo: c.rotulo };
+    const linha: Record<string, string | number | null> = { id: c.codigo, rotulo: dadoTexto(c.rotulo, idioma) };
     for (const m of MEDIDAS_BASE[base]) linha[m.id] = estimativa(l, m.id)[0];
     return linha;
   });
 }
 
 /** Comparação entre territórios (até 4) numa medida: uma coluna por território. */
-export function dadosComparacaoPof(orc: OrcamentoBase, territorios: readonly string[], medida: MedidaPof) {
+export function dadosComparacaoPof(orc: OrcamentoBase, territorios: readonly string[], medida: MedidaPof, idioma: Idioma = idiomaEnergia()) {
   return classesRenda(orc).map((c) => {
-    const linha: Record<string, string | number | null> = { id: c.codigo, rotulo: c.rotulo };
+    const linha: Record<string, string | number | null> = { id: c.codigo, rotulo: dadoTexto(c.rotulo, idioma) };
     for (const t of territorios) linha[t] = estimativa(linhaPof(orc, t, c.codigo), medida)[0];
     return linha;
   });
 }
 
 /** Tabela completa de um território: todas as medidas, CV e estado, por classe (total incluído). */
-export function linhasTabelaPof(orc: OrcamentoBase, territorio: string) {
-  const rotulos = rotulosEstadoPof(orc.regra_precisao);
+export function linhasTabelaPof(orc: OrcamentoBase, territorio: string, idioma: Idioma = idiomaEnergia()) {
+  const rotulos = rotulosEstadoPof(orc.regra_precisao, idioma);
   return orc.classes.map((c) => {
     const l = linhaPof(orc, territorio, c.codigo);
     const linha: Record<string, string | number | null> = {
       id: c.codigo,
-      classe: c.rotulo,
+      classe: dadoTexto(c.rotulo, idioma),
       n_amostra: l?.n_amostra ?? null,
       familias: l?.familias ?? null,
     };
@@ -868,33 +1101,35 @@ export function linhasTabelaPof(orc: OrcamentoBase, territorio: string) {
   });
 }
 
-export function colunasTabelaPof(orc: OrcamentoBase): ColunaTabela[] {
+export function colunasTabelaPof(orc: OrcamentoBase, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
   const cols: ColunaTabela[] = [
-    { id: "classe", rotulo: "Classe de rendimento", tipo: "texto" },
-    { id: "n_amostra", rotulo: "Famílias na amostra", tipo: "numero", casas: 0 },
-    { id: "familias", rotulo: "Famílias representadas", tipo: "numero", casas: 0 },
+    { id: "classe", rotulo: tx("Classe de rendimento", "Income class"), tipo: "texto" },
+    { id: "n_amostra", rotulo: tx("Famílias na amostra", "Families in the sample"), tipo: "numero", casas: 0 },
+    { id: "familias", rotulo: tx("Famílias representadas", "Families represented"), tipo: "numero", casas: 0 },
   ];
   for (const m of orc.medidas) {
     const reais_ = m.id === "energia_media" || m.id === "despesa_media";
-    cols.push({ id: m.id, rotulo: m.rotulo, tipo: reais_ ? "numero" : "percentual", unidade: reais_ ? "R$" : undefined, casas: 2 });
-    cols.push({ id: `${m.id}__cv`, rotulo: `CV: ${m.rotulo}`, tipo: "percentual", casas: 1 });
-    cols.push({ id: `${m.id}__estado`, rotulo: `Precisão: ${m.rotulo}`, tipo: "texto", categorica: true });
+    const r = dadoTexto(m.rotulo, idioma);
+    cols.push({ id: m.id, rotulo: r, tipo: reais_ ? "numero" : "percentual", unidade: reais_ ? "R$" : undefined, casas: 2 });
+    cols.push({ id: `${m.id}__cv`, rotulo: `CV: ${r}`, tipo: "percentual", casas: 1 });
+    cols.push({ id: `${m.id}__estado`, rotulo: tx(`Precisão: ${r}`, `Precision: ${r}`), tipo: "texto", categorica: true });
   }
   return cols;
 }
 
 /** Sensibilidade ao limiar: famílias acima de 3%, 5% ou 10% da renda e da despesa, por classe, num território. */
-export function linhasLimiaresPof(orc: OrcamentoBase, territorio: string, limiar: LimiarPof) {
+export function linhasLimiaresPof(orc: OrcamentoBase, territorio: string, limiar: LimiarPof, idioma: Idioma = idiomaEnergia()) {
   const mr = `acima_${limiar}_renda_pct` as MedidaPof;
   const md = `acima_${limiar}_desp_pct` as MedidaPof;
-  const rotulos = rotulosEstadoPof(orc.regra_precisao);
+  const rotulos = rotulosEstadoPof(orc.regra_precisao, idioma);
   return orc.classes.map((c) => {
     const l = linhaPof(orc, territorio, c.codigo);
     const [vr, cvr, er] = estimativa(l, mr);
     const [vd, cvd, ed] = estimativa(l, md);
     return {
       id: c.codigo,
-      classe: c.rotulo,
+      classe: dadoTexto(c.rotulo, idioma),
       renda: vr,
       renda_cv: cvr,
       renda_estado: rotulos[er] ?? er,
@@ -905,19 +1140,23 @@ export function linhasLimiaresPof(orc: OrcamentoBase, territorio: string, limiar
   });
 }
 
-export const COLUNAS_LIMIARES: ColunaTabela[] = [
-  { id: "classe", rotulo: "Classe de rendimento", tipo: "texto" },
-  { id: "renda", rotulo: "Famílias acima do limiar da renda", tipo: "percentual", casas: 1 },
-  { id: "renda_cv", rotulo: "CV (renda)", tipo: "percentual", casas: 1 },
-  { id: "renda_estado", rotulo: "Precisão (renda)", tipo: "texto", categorica: true },
-  { id: "despesa", rotulo: "Famílias acima do limiar da despesa", tipo: "percentual", casas: 1 },
-  { id: "despesa_cv", rotulo: "CV (despesa)", tipo: "percentual", casas: 1 },
-  { id: "despesa_estado", rotulo: "Precisão (despesa)", tipo: "texto", categorica: true },
-];
+export function colunasLimiares(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "classe", rotulo: tx("Classe de rendimento", "Income class"), tipo: "texto" },
+    { id: "renda", rotulo: tx("Famílias acima do limiar da renda", "Families above the income threshold"), tipo: "percentual", casas: 1 },
+    { id: "renda_cv", rotulo: tx("CV (renda)", "CV (income)"), tipo: "percentual", casas: 1 },
+    { id: "renda_estado", rotulo: tx("Precisão (renda)", "Precision (income)"), tipo: "texto", categorica: true },
+    { id: "despesa", rotulo: tx("Famílias acima do limiar da despesa", "Families above the expense threshold"), tipo: "percentual", casas: 1 },
+    { id: "despesa_cv", rotulo: tx("CV (despesa)", "CV (expense)"), tipo: "percentual", casas: 1 },
+    { id: "despesa_estado", rotulo: tx("Precisão (despesa)", "Precision (expense)"), tipo: "texto", categorica: true },
+  ];
+}
+export const COLUNAS_LIMIARES: ColunaTabela[] = colunasLimiares("pt");
 
 /** UF (só o total: a amostra por classe nas UF é pequena demais). */
-export function linhasUfsPof(orc: OrcamentoBase) {
-  const rotulos = rotulosEstadoPof(orc.regra_precisao);
+export function linhasUfsPof(orc: OrcamentoBase, idioma: Idioma = idiomaEnergia()) {
+  const rotulos = rotulosEstadoPof(orc.regra_precisao, idioma);
   return orc.linhas
     .filter((l) => l.classe === "7999" && codigoUf(l.territorio))
     .map((l) => {
@@ -932,18 +1171,19 @@ export function linhasUfsPof(orc: OrcamentoBase) {
     });
 }
 
-export function colunasUfsPof(orc: OrcamentoBase): ColunaTabela[] {
-  const rot = new Map(orc.medidas.map((m) => [m.id, m.rotulo]));
+export function colunasUfsPof(orc: OrcamentoBase, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  const rot = new Map(orc.medidas.map((m) => [m.id, dadoTexto(m.rotulo, idioma)]));
   const cols: ColunaTabela[] = [
-    { id: "nome", rotulo: "UF", tipo: "texto" },
-    { id: "uf", rotulo: "Sigla", tipo: "texto" },
-    { id: "n_amostra", rotulo: "Famílias na amostra", tipo: "numero", casas: 0 },
+    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "uf", rotulo: tx("Sigla", "Abbreviation"), tipo: "texto" },
+    { id: "n_amostra", rotulo: tx("Famílias na amostra", "Families in the sample"), tipo: "numero", casas: 0 },
   ];
   for (const m of orc.medidas_uf) {
     const r = rot.get(m) ?? m;
     cols.push({ id: m, rotulo: r, tipo: m === "energia_media" ? "numero" : "percentual", unidade: m === "energia_media" ? "R$" : undefined, casas: 2 });
     cols.push({ id: `${m}__cv`, rotulo: `CV: ${r}`, tipo: "percentual", casas: 1 });
-    cols.push({ id: `${m}__estado`, rotulo: `Precisão: ${r}`, tipo: "texto", categorica: true });
+    cols.push({ id: `${m}__estado`, rotulo: tx(`Precisão: ${r}`, `Precision: ${r}`), tipo: "texto", categorica: true });
   }
   return cols;
 }
@@ -969,14 +1209,15 @@ export function nomePof(orc: Pick<OrcamentoBase, "referencia">): string {
  * medidas saem dos números publicados, no arredondamento em que aparecem; sem um
  * dos números, o texto não afirma direção.
  */
-export function respostaOrcamento(orc: OrcamentoBase): string {
+export function respostaOrcamento(orc: OrcamentoBase, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pctTexto, dado } = em(idioma);
   const classes = classesRenda(orc);
   const baixa = classes[0];
   const alta = classes.at(-1);
   const t = linhaPof(orc, "BR", "7999");
   const b = baixa ? linhaPof(orc, "BR", baixa.codigo) : undefined;
   const a = alta ? linhaPof(orc, "BR", alta.codigo) : undefined;
-  if (!t || !b || !baixa) return "Sem dado: a POF não foi processada nesta publicação.";
+  if (!t || !b || !baixa) return tx("Sem dado: a POF não foi processada nesta publicação.", "No data: the POF was not processed in this publication.");
   const rmV = (l: LinhaPof | undefined) => estimativa(l, "razao_medias_pct")[0];
   const mrV = (l: LinhaPof | undefined) => estimativa(l, "media_razoes_desp_pct")[0];
   const rm = (l: LinhaPof | undefined) => pctTexto(rmV(l), 1);
@@ -984,19 +1225,29 @@ export function respostaOrcamento(orc: OrcamentoBase): string {
   const dir = comparaArredondado(rmV(b), rmV(t), 1);
   const abertura =
     dir === "maior"
-      ? "a energia elétrica pesou mais nas famílias de menor renda"
+      ? tx("a energia elétrica pesou mais nas famílias de menor renda", "electricity weighed more on lower-income families")
       : dir === "menor"
-        ? "a energia elétrica pesou menos nas famílias de menor renda"
+        ? tx("a energia elétrica pesou menos nas famílias de menor renda", "electricity weighed less on lower-income families")
         : dir === "igual"
-          ? "a energia elétrica pesou o mesmo nas famílias de menor renda e no conjunto"
-          : "o peso da energia elétrica nas famílias de menor renda não tem as duas estimativas para comparar";
-  let s = `Na ${nomePof(orc)}, ${abertura}: ${rm(b)} da despesa total das famílias com rendimento ${minusculaInicial(baixa.rotulo)} (razão de médias), contra ${rm(t)} no conjunto das famílias`;
-  if (a && alta) s += ` e ${rm(a)} na classe ${minusculaInicial(alta.rotulo)}`;
+          ? tx("a energia elétrica pesou o mesmo nas famílias de menor renda e no conjunto", "electricity weighed the same on lower-income families and on all families")
+          : tx(
+              "o peso da energia elétrica nas famílias de menor renda não tem as duas estimativas para comparar",
+              "the weight of electricity on lower-income families does not have both estimates to compare",
+            );
+  const classeBaixa = minusculaInicial(dado(baixa.rotulo));
+  let s = tx(
+    `Na ${nomePof(orc)}, ${abertura}: ${rm(b)} da despesa total das famílias com rendimento ${classeBaixa} (razão de médias), contra ${rm(t)} no conjunto das famílias`,
+    `In the ${nomePof(orc)}, ${abertura}: ${rm(b)} of the total expense of families with income ${classeBaixa} (ratio of averages), against ${rm(t)} for all families`,
+  );
+  if (a && alta) s += tx(` e ${rm(a)} na classe ${minusculaInicial(alta.rotulo)}`, ` and ${rm(a)} in the ${minusculaInicial(dado(alta.rotulo))} class`);
   const db = comparaArredondado(mrV(b), rmV(b), 1);
   const dt = comparaArredondado(mrV(t), rmV(t), 1);
   // só afirma "maior" ou "menor" quando a relação vale nas duas linhas comparadas
-  const rel = db !== null && db === dt ? (db === "maior" ? "maior" : db === "menor" ? "menor" : "a mesma") : null;
-  s += rel ? `. Medida família a família, a participação média é ${rel}: ${mr(b)} e ${mr(t)}.` : `. Medida família a família, a participação média é ${mr(b)} e ${mr(t)}.`;
+  const rel =
+    db !== null && db === dt ? (db === "maior" ? tx("maior", "higher") : db === "menor" ? tx("menor", "lower") : tx("a mesma", "the same")) : null;
+  s += rel
+    ? tx(`. Medida família a família, a participação média é ${rel}: ${mr(b)} e ${mr(t)}.`, `. Measured family by family, the average share is ${rel}: ${mr(b)} and ${mr(t)}.`)
+    : tx(`. Medida família a família, a participação média é ${mr(b)} e ${mr(t)}.`, `. Measured family by family, the average share is ${mr(b)} and ${mr(t)}.`);
   return s;
 }
 
@@ -1005,32 +1256,58 @@ export function respostaOrcamento(orc: OrcamentoBase): string {
  * médias (despesa média com energia sobre despesa média total). A direção sai dos números no arredondamento em que aparecem; a
  * participação família a família, a classe mais alta e a sensibilidade ficam na resposta completa.
  */
-export function vereditoOrcamento(orc: OrcamentoBase): string {
+/** Abertura comum dos vereditos da POF: a direção do peso, no idioma. */
+function aberturaPeso(dir: "maior" | "menor" | "igual" | null, idioma: Idioma): string {
+  const tx = txEm(idioma);
+  return dir === "maior"
+    ? tx("a energia elétrica pesou mais", "electricity weighed more")
+    : dir === "menor"
+      ? tx("a energia elétrica pesou menos", "electricity weighed less")
+      : dir === "igual"
+        ? tx("a energia elétrica pesou o mesmo", "electricity weighed the same")
+        : tx("o peso da energia elétrica não tem as duas estimativas para comparar", "the weight of electricity does not have both estimates to compare");
+}
+
+export function vereditoOrcamento(orc: OrcamentoBase, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pctTexto, dado } = em(idioma);
   const classes = classesRenda(orc);
   const baixa = classes[0];
   const t = linhaPof(orc, "BR", "7999");
   const b = baixa ? linhaPof(orc, "BR", baixa.codigo) : undefined;
-  if (!t || !b || !baixa) return "Sem dado: a POF não foi processada nesta publicação.";
+  if (!t || !b || !baixa) return tx("Sem dado: a POF não foi processada nesta publicação.", "No data: the POF was not processed in this publication.");
   const rmV = (l: LinhaPof | undefined) => estimativa(l, "razao_medias_pct")[0];
   const dir = comparaArredondado(rmV(b), rmV(t), 1);
-  const abertura =
-    dir === "maior" ? "a energia elétrica pesou mais" : dir === "menor" ? "a energia elétrica pesou menos" : dir === "igual" ? "a energia elétrica pesou o mesmo" : "o peso da energia elétrica não tem as duas estimativas para comparar";
-  const quem = dir === "igual" ? "nas famílias de menor renda e no conjunto" : "nas famílias de menor renda";
-  return `Na ${nomePof(orc)}, ${abertura} ${quem}: a despesa média com energia foi ${pctTexto(rmV(b), 1)} da despesa média total das famílias com rendimento ${minusculaInicial(baixa.rotulo)}, contra ${pctTexto(rmV(t), 1)} no conjunto das famílias.`;
+  const abertura = aberturaPeso(dir, idioma);
+  const quem = dir === "igual" ? tx("nas famílias de menor renda e no conjunto", "on lower-income families and on all families") : tx("nas famílias de menor renda", "on lower-income families");
+  const classe = minusculaInicial(dado(baixa.rotulo));
+  return tx(
+    `Na ${nomePof(orc)}, ${abertura} ${quem}: a despesa média com energia foi ${pctTexto(rmV(b), 1)} da despesa média total das famílias com rendimento ${classe}, contra ${pctTexto(rmV(t), 1)} no conjunto das famílias.`,
+    `In the ${nomePof(orc)}, ${abertura} ${quem}: average electricity expense was ${pctTexto(rmV(b), 1)} of the average total expense of families with income ${classe}, against ${pctTexto(rmV(t), 1)} for all families.`,
+  );
 }
 
-export function mudancaOrcamento(orc: OrcamentoBase): string {
+export function mudancaOrcamento(orc: OrcamentoBase, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pctTexto, inteiro, dado } = em(idioma);
   const classes = classesRenda(orc);
   const baixa = classes[0];
   const s = baixa ? orc.sensibilidade_media_razoes_renda[baixa.codigo] : undefined;
   const partes = [
-    `A estatística é da ${orc.referencia}: a pesquisa seguinte ainda não foi publicada pelo IBGE e nenhuma atualização modelada é publicada aqui.`,
+    tx(
+      `A estatística é da ${orc.referencia}: a pesquisa seguinte ainda não foi publicada pelo IBGE e nenhuma atualização modelada é publicada aqui.`,
+      `The statistic is from the ${dado(orc.referencia)}: the next survey has not yet been published by IBGE and no modeled update is published here.`,
+    ),
   ];
   if (s && baixa) {
     const dir = comparaArredondado(s.media_sem_energia_acima_da_renda_pct, s.media_razoes_renda_pct, 2);
-    const verbo = dir === "menor" ? "cai para" : dir === "maior" ? "sobe para" : dir === "igual" ? "fica em" : "seria";
+    const verbo =
+      dir === "menor" ? tx("cai para", "falls to") : dir === "maior" ? tx("sobe para", "rises to") : dir === "igual" ? tx("fica em", "stays at") : tx("seria", "would be");
+    const classe = minusculaInicial(dado(baixa.rotulo));
+    const n = inteiro(s.familias_amostra_energia_acima_da_renda);
     partes.push(
-      `Na renda da classe ${minusculaInicial(baixa.rotulo)}, a média das participações (${pctTexto(s.media_razoes_renda_pct, 2)}) é sensível às famílias que declaram renda menor que a própria despesa com energia: a mediana é ${pctTexto(s.mediana_renda_pct, 2)} e, sem as ${inteiro(s.familias_amostra_energia_acima_da_renda)} famílias da amostra nessa situação, a média ${verbo} ${pctTexto(s.media_sem_energia_acima_da_renda_pct, 2)}.`,
+      tx(
+        `Na renda da classe ${classe}, a média das participações (${pctTexto(s.media_razoes_renda_pct, 2)}) é sensível às famílias que declaram renda menor que a própria despesa com energia: a mediana é ${pctTexto(s.mediana_renda_pct, 2)} e, sem as ${n} famílias da amostra nessa situação, a média ${verbo} ${pctTexto(s.media_sem_energia_acima_da_renda_pct, 2)}.`,
+        `In the income of the ${classe} class, the average of the shares (${pctTexto(s.media_razoes_renda_pct, 2)}) is sensitive to families that report income lower than their own electricity expense: the median is ${pctTexto(s.mediana_renda_pct, 2)} and, without the ${n} sample families in that situation, the average ${verbo} ${pctTexto(s.media_sem_energia_acima_da_renda_pct, 2)}.`,
+      ),
     );
   }
   return partes.join(" ");
@@ -1038,24 +1315,34 @@ export function mudancaOrcamento(orc: OrcamentoBase): string {
 
 /* ================================================================ P062: acesso e sistemas isolados */
 
-export const INDICADORES_PNAD = ["sem", "rede", "integral"] as const;
+export const INDICADORES_PNAD = ["sem", "rede", "integral"] as const; // i18n: dado
 export type IndicadorPnad = (typeof INDICADORES_PNAD)[number];
-export const INDICADOR_PNAD: Record<IndicadorPnad, { rotulo: string; campo: keyof LinhaPnad; cv: keyof LinhaPnad | null; unidade: string }> = {
-  sem: { rotulo: "Domicílios sem energia elétrica de nenhuma fonte", campo: "pct_sem_energia", cv: null, unidade: "% dos domicílios" },
-  rede: { rotulo: "Domicílios ligados à rede geral", campo: "pct_rede_geral", cv: "cv_pct_rede_geral", unidade: "% dos domicílios" },
-  integral: { rotulo: "Rede em tempo integral, entre os ligados à rede", campo: "pct_integral_entre_rede", cv: "cv_pct_integral", unidade: "% dos domicílios ligados à rede geral" },
-};
-export const SITUACOES_PNAD = ["total", "rural"] as const;
+export function indicadorPnad(idioma: Idioma = idiomaEnergia()): Record<IndicadorPnad, { rotulo: string; campo: keyof LinhaPnad; cv: keyof LinhaPnad | null; unidade: string }> {
+  const tx = txEm(idioma);
+  const domicilios = tx("% dos domicílios", "% of households");
+  return {
+    sem: { rotulo: tx("Domicílios sem energia elétrica de nenhuma fonte", "Households without electricity from any source"), campo: "pct_sem_energia", cv: null, unidade: domicilios },
+    rede: { rotulo: tx("Domicílios ligados à rede geral", "Households connected to the general grid"), campo: "pct_rede_geral", cv: "cv_pct_rede_geral", unidade: domicilios },
+    integral: {
+      rotulo: tx("Rede em tempo integral, entre os ligados à rede", "Full-time grid supply, among those connected to the grid"),
+      campo: "pct_integral_entre_rede",
+      cv: "cv_pct_integral",
+      unidade: tx("% dos domicílios ligados à rede geral", "% of households connected to the general grid"),
+    },
+  };
+}
+export const INDICADOR_PNAD = indicadorPnad("pt");
+export const SITUACOES_PNAD = ["total", "rural"] as const; // i18n: dado
 export type SituacaoPnad = (typeof SITUACOES_PNAD)[number];
-export const PROGRAMAS_LPT = ["total", "rural", "regioes_remotas", "recurso_distribuidora"] as const;
+export const PROGRAMAS_LPT = ["total", "rural", "regioes_remotas", "recurso_distribuidora"] as const; // i18n: dado
 export type ProgramaLptUrl = (typeof PROGRAMAS_LPT)[number];
 
 /** Estado do P062 na URL: indicador e situação do mapa, UF em comparação (até 4) e programa do Luz para Todos. */
 export const ESQUEMA_ACESSO = {
-  ind: campo(tiposUrl.opcao(INDICADORES_PNAD), "sem", { param: "ac.ind" }),
-  sit: campo(tiposUrl.opcao(SITUACOES_PNAD), "total", { param: "ac.sit" }),
+  ind: campo(tiposUrl.opcao(INDICADORES_PNAD), "sem", { param: "ac.ind" }), // i18n: dado
+  sit: campo(tiposUrl.opcao(SITUACOES_PNAD), "total", { param: "ac.sit" }), // i18n: dado
   ufs: campo(tiposUrl.lista(leitorUf, { max: LIMITE_COMPARACAO }), [] as string[], { param: "ac.uf" }),
-  prog: campo(tiposUrl.opcao(PROGRAMAS_LPT), "total", { param: "ac.prog" }),
+  prog: campo(tiposUrl.opcao(PROGRAMAS_LPT), "total", { param: "ac.prog" }), // i18n: dado
 };
 
 function valorPnad(l: LinhaPnad | undefined, ind: IndicadorPnad): number | null {
@@ -1089,7 +1376,8 @@ export function dadosSeriePnad(serie: readonly LinhaPnad[], territorios: readonl
 /** Linhas por UF no último ano, na situação escolhida (total vem de pnad_serie; rural de pnad_situacao). */
 export type AcessoPnad = Pick<Acesso, "ano_referencia" | "pnad_serie" | "pnad_situacao">;
 
-export function linhasUfsPnad(acesso: AcessoPnad, situacao: SituacaoPnad) {
+export function linhasUfsPnad(acesso: AcessoPnad, situacao: SituacaoPnad, idioma: Idioma = idiomaEnergia()) {
+  const tx = txEm(idioma);
   const ano = acesso.ano_referencia;
   const fonte = situacao === "total" ? acesso.pnad_serie.filter((l) => l.ano === ano && l.situacao === "total") : acesso.pnad_situacao.filter((l) => l.situacao === "rural");
   return fonte
@@ -1106,20 +1394,30 @@ export function linhasUfsPnad(acesso: AcessoPnad, situacao: SituacaoPnad) {
       cv_integral: l.cv_pct_integral,
       domicilios_mil: l.domicilios_mil,
       sem_mil: l.domicilios_sem_energia_mil,
-      sem_estado: l.domicilios_sem_energia_estado === "menos_de_1_mil" ? "menos de 1 mil" : l.domicilios_sem_energia_estado,
+      sem_estado:
+        l.domicilios_sem_energia_estado === "menos_de_1_mil"
+          ? tx("menos de 1 mil", "less than 1 thousand")
+          : l.domicilios_sem_energia_estado === "calculado" // i18n: dado
+            ? tx("calculado", "calculated")
+            : l.domicilios_sem_energia_estado,
     }));
 }
 
-export const COLUNAS_UFS_PNAD: ColunaTabela[] = [
-  { id: "uf", rotulo: "UF", tipo: "texto" },
-  { id: "pct_sem", rotulo: "Sem energia de nenhuma fonte", tipo: "percentual", casas: 1 },
-  { id: "sem_mil", rotulo: "Domicílios sem energia", tipo: "numero", unidade: "mil", casas: 0 },
-  { id: "sem_estado", rotulo: "Contagem sem energia", tipo: "texto", categorica: true },
-  { id: "pct_rede", rotulo: "Ligados à rede geral", tipo: "percentual", casas: 1 },
-  { id: "pct_integral", rotulo: "Rede em tempo integral (entre os ligados)", tipo: "percentual", casas: 1 },
-  { id: "cv_integral", rotulo: "CV do tempo integral", tipo: "percentual", casas: 1 },
-  { id: "domicilios_mil", rotulo: "Domicílios", tipo: "numero", unidade: "mil", casas: 0 },
-];
+export function colunasUfsPnad(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  const mil = tx("mil", "thousand");
+  return [
+    { id: "uf", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "pct_sem", rotulo: tx("Sem energia de nenhuma fonte", "Without energy from any source"), tipo: "percentual", casas: 1 },
+    { id: "sem_mil", rotulo: tx("Domicílios sem energia", "Households without energy"), tipo: "numero", unidade: mil, casas: 0 },
+    { id: "sem_estado", rotulo: tx("Contagem sem energia", "Count without energy"), tipo: "texto", categorica: true },
+    { id: "pct_rede", rotulo: tx("Ligados à rede geral", "Connected to the general grid"), tipo: "percentual", casas: 1 },
+    { id: "pct_integral", rotulo: tx("Rede em tempo integral (entre os ligados)", "Full-time grid (among those connected)"), tipo: "percentual", casas: 1 },
+    { id: "cv_integral", rotulo: tx("CV do tempo integral", "CV of full-time supply"), tipo: "percentual", casas: 1 },
+    { id: "domicilios_mil", rotulo: tx("Domicílios", "Households"), tipo: "numero", unidade: mil, casas: 0 },
+  ];
+}
+export const COLUNAS_UFS_PNAD: ColunaTabela[] = colunasUfsPnad("pt");
 
 const CAMPO_LINHA_UF: Record<IndicadorPnad, "pct_sem" | "pct_rede" | "pct_integral"> = { sem: "pct_sem", rede: "pct_rede", integral: "pct_integral" };
 
@@ -1148,19 +1446,21 @@ export function dadosHistoricoPnadCsv(texto: string, ufs: readonly string[], ind
 }
 
 /** Luz para Todos por ano, no programa escolhido (total ou um programa; nulo = nenhuma linha do programa no ano). */
-export function dadosLptAnual(lpt: Pick<LuzParaTodos, "serie_anual" | "ultimo_mes">, prog: ProgramaLptUrl) {
+export function dadosLptAnual(lpt: Pick<LuzParaTodos, "serie_anual" | "ultimo_mes">, prog: ProgramaLptUrl, idioma: Idioma = idiomaEnergia()) {
+  const { tx, mes } = em(idioma);
   return lpt.serie_anual.map((a) => ({
     id: a.ano,
-    rotulo: a.parcial ? `${a.ano} (até ${mes(lpt.ultimo_mes)})` : a.ano,
+    rotulo: a.parcial ? tx(`${a.ano} (até ${mes(lpt.ultimo_mes)})`, `${a.ano} (up to ${mes(lpt.ultimo_mes)})`) : a.ano,
     valor: prog === "total" ? a.total : a[prog as ProgramaLpt],
   }));
 }
 
-export function linhasLptAnual(lpt: Pick<LuzParaTodos, "serie_anual" | "ultimo_mes">) {
+export function linhasLptAnual(lpt: Pick<LuzParaTodos, "serie_anual" | "ultimo_mes">, idioma: Idioma = idiomaEnergia()) {
+  const { tx, mes } = em(idioma);
   return lpt.serie_anual.map((a) => ({
     id: a.ano,
     ano: a.ano,
-    situacao: a.parcial ? `parcial (até ${mes(lpt.ultimo_mes)})` : "completo",
+    situacao: a.parcial ? tx(`parcial (até ${mes(lpt.ultimo_mes)})`, `partial (up to ${mes(lpt.ultimo_mes)})`) : tx("completo", "complete"),
     total: a.total,
     rural: a.rural,
     regioes_remotas: a.regioes_remotas,
@@ -1168,12 +1468,15 @@ export function linhasLptAnual(lpt: Pick<LuzParaTodos, "serie_anual" | "ultimo_m
   }));
 }
 
-export function colunasLpt(lpt: Pick<LuzParaTodos, "programas">): ColunaTabela[] {
+export function colunasLpt(lpt: Pick<LuzParaTodos, "programas">, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  const domicilios = tx("domicílios", "households");
   return [
-    { id: "ano", rotulo: "Ano do atendimento", tipo: "texto" },
-    { id: "situacao", rotulo: "Ano", tipo: "texto", categorica: true },
-    { id: "total", rotulo: "Total", tipo: "numero", unidade: "domicílios", casas: 0 },
-    ...lpt.programas.map((p): ColunaTabela => ({ id: p.id, rotulo: p.rotulo, tipo: "numero", unidade: "domicílios", casas: 0 })),
+    // i18n: dado
+    { id: "ano", rotulo: tx("Ano do atendimento", "Year of service"), tipo: "texto" },
+    { id: "situacao", rotulo: tx("Ano", "Year"), tipo: "texto", categorica: true },
+    { id: "total", rotulo: tx("Total", "Total"), tipo: "numero", unidade: domicilios, casas: 0 }, // i18n: dado
+    ...lpt.programas.map((p): ColunaTabela => ({ id: p.id, rotulo: dadoTexto(p.rotulo, idioma), tipo: "numero", unidade: domicilios, casas: 0 })),
   ];
 }
 
@@ -1188,12 +1491,16 @@ export function linhasIsoladosUf(si: Pick<SistemasIsolados, "por_uf">) {
   }));
 }
 
-export const COLUNAS_ISOLADOS_UF: ColunaTabela[] = [
-  { id: "nome", rotulo: "UF", tipo: "texto" },
-  { id: "localidades", rotulo: "Localidades", tipo: "numero", casas: 0 },
-  { id: "populacao", rotulo: "População informada", tipo: "numero", unidade: "pessoas", casas: 0 },
-  { id: "sem_populacao", rotulo: "Localidades sem população informada", tipo: "numero", casas: 0 },
-];
+export function colunasIsoladosUf(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "localidades", rotulo: tx("Localidades", "Localities"), tipo: "numero", casas: 0 },
+    { id: "populacao", rotulo: tx("População informada", "Reported population"), tipo: "numero", unidade: tx("pessoas", "people"), casas: 0 },
+    { id: "sem_populacao", rotulo: tx("Localidades sem população informada", "Localities without reported population"), tipo: "numero", casas: 0 },
+  ];
+}
+export const COLUNAS_ISOLADOS_UF: ColunaTabela[] = colunasIsoladosUf("pt");
 
 export type LocalidadeLinha = {
   id: string;
@@ -1238,48 +1545,74 @@ export function localidadesDoJson(j: { campos: string[]; localidades: (string | 
   }));
 }
 
-export const COLUNAS_LOCALIDADES: ColunaTabela[] = [
-  { id: "nome", rotulo: "Localidade", tipo: "texto" },
-  { id: "sigla", rotulo: "Código PASI", tipo: "texto" },
-  { id: "uf", rotulo: "UF", tipo: "texto", categorica: true },
-  { id: "municipio", rotulo: "Município", tipo: "texto" },
-  { id: "distribuidora", rotulo: "Distribuidora", tipo: "texto", categorica: true },
-  { id: "populacao", rotulo: "População informada", tipo: "numero", unidade: "pessoas", casas: 0 },
-  { id: "previsao", rotulo: "Previsão de interligação", tipo: "data" },
-  { id: "programa", rotulo: "Programa", tipo: "texto", categorica: true },
-];
+export function colunasLocalidades(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "nome", rotulo: tx("Localidade", "Locality"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "sigla", rotulo: tx("Código PASI", "PASI code"), tipo: "texto" },
+    { id: "uf", rotulo: tx("UF", "State"), tipo: "texto", categorica: true },
+    { id: "municipio", rotulo: tx("Município", "Municipality"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "distribuidora", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome", categorica: true },
+    { id: "populacao", rotulo: tx("População informada", "Reported population"), tipo: "numero", unidade: tx("pessoas", "people"), casas: 0 },
+    { id: "previsao", rotulo: tx("Previsão de interligação", "Expected interconnection"), tipo: "data" },
+    { id: "programa", rotulo: tx("Programa", "Program"), tipo: "texto", idiomaTexto: "nome", categorica: true },
+  ];
+}
+export const COLUNAS_LOCALIDADES: ColunaTabela[] = colunasLocalidades("pt");
 
 /** Resposta curta do P062: falta de acesso (PNAD), isolamento (PASI) e atendimento (Luz para Todos), cada um na sua unidade. */
-export function respostaAcesso(a: Acesso): string {
+/** "N mil domicílios" sem energia, a contagem que a PNAD publica (ou a marca de menos de mil), no idioma. */
+function domiciliosSemEnergia(l: LinhaPnad, idioma: Idioma): string {
+  const { tx, inteiro } = em(idioma);
+  return l.domicilios_sem_energia_estado === "menos_de_1_mil"
+    ? tx("menos de 1 mil domicílios", "less than 1 thousand households")
+    : l.domicilios_sem_energia_mil === null
+      ? tx("um número sem dado de domicílios", "an unknown number of households")
+      : tx(`${inteiro(l.domicilios_sem_energia_mil)} mil domicílios`, `${inteiro(l.domicilios_sem_energia_mil)} thousand households`);
+}
+
+export function respostaAcesso(a: Acesso, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes, inteiro, pctTexto } = em(idioma);
   const br = a.pnad_serie.find((l) => l.territorio === "BR" && l.ano === a.ano_referencia && l.situacao === "total");
   const rural = a.pnad_situacao.find((l) => l.territorio === "BR" && l.situacao === "rural");
   const partes: string[] = [];
   if (br) {
-    const sem =
-      br.domicilios_sem_energia_estado === "menos_de_1_mil"
-        ? "menos de 1 mil domicílios"
-        : br.domicilios_sem_energia_mil === null
-          ? "um número sem dado de domicílios"
-          : `${inteiro(br.domicilios_sem_energia_mil)} mil domicílios`;
+    const sem = domiciliosSemEnergia(br, idioma);
+    const naRural = rural ? tx(`; na área rural, ${pctTexto(rural.pct_sem_energia, 1)}`, `; in rural areas, ${pctTexto(rural.pct_sem_energia, 1)}`) : "";
     partes.push(
-      `Em ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) não tinham energia elétrica de nenhuma fonte, segundo a PNAD Contínua${rural ? `; na área rural, ${pctTexto(rural.pct_sem_energia, 1)}` : ""}.`,
+      tx(
+        `Em ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) não tinham energia elétrica de nenhuma fonte, segundo a PNAD Contínua${naRural}.`,
+        `In ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) had no electricity from any source, according to the Continuous PNAD${naRural}.`,
+      ),
     );
-    partes.push(`Entre os domicílios ligados à rede geral, ${pctTexto(br.pct_integral_entre_rede, 1)} tinham fornecimento em tempo integral.`);
+    partes.push(
+      tx(
+        `Entre os domicílios ligados à rede geral, ${pctTexto(br.pct_integral_entre_rede, 1)} tinham fornecimento em tempo integral.`,
+        `Among households connected to the general grid, ${pctTexto(br.pct_integral_entre_rede, 1)} had full-time supply.`,
+      ),
+    );
   }
   const si = a.sistemas_isolados;
   const c = si?.ciclos.find((x) => x.ciclo === si.ciclo);
   if (si && c) {
+    const k = c.localidades_sem_populacao;
     partes.push(
-      `Fora do SIN, ${inteiro(c.localidades)} localidades com ${inteiro(c.populacao)} pessoas${c.localidades_sem_populacao ? ` (${c.localidades_sem_populacao} sem população informada)` : ""} dependiam de sistemas isolados no ciclo ${si.ciclo} do PASI.`,
+      tx(
+        `Fora do SIN, ${inteiro(c.localidades)} localidades com ${inteiro(c.populacao)} pessoas${k ? ` (${k} sem população informada)` : ""} dependiam de sistemas isolados no ciclo ${si.ciclo} do PASI.`,
+        `Outside the SIN, ${inteiro(c.localidades)} localities with ${inteiro(c.populacao)} people${k ? ` (${k} without reported population)` : ""} depended on isolated systems in PASI cycle ${si.ciclo}.`,
+      ),
     );
   }
   const lpt = a.universalizacao.luz_para_todos;
   if (lpt) {
     partes.push(
-      `O Luz para Todos registra ${inteiro(lpt.evidencia_total.valor_calculo)} domicílios atendidos de ${mes(lpt.evidencia_total.periodo.inicio)} a ${mes(lpt.ultimo_mes)}.`,
+      tx(
+        `O Luz para Todos registra ${inteiro(lpt.evidencia_total.valor_calculo)} domicílios atendidos de ${mes(lpt.evidencia_total.periodo.inicio)} a ${mes(lpt.ultimo_mes)}.`,
+        `Luz para Todos records ${inteiro(lpt.evidencia_total.valor_calculo)} households served from ${mes(lpt.evidencia_total.periodo.inicio)} to ${mes(lpt.ultimo_mes)}.`,
+      ),
     );
   }
-  return partes.join(" ") || "Sem dado: o bloco de acesso não foi publicado nesta gold.";
+  return partes.join(" ") || tx("Sem dado: o bloco de acesso não foi publicado nesta gold.", "No data: the access block was not published in this release.");
 }
 
 /**
@@ -1287,61 +1620,95 @@ export function respostaAcesso(a: Acesso): string {
  * sistemas isolados (pessoas) e Luz para Todos (domicílios atendidos) têm outra unidade e outra fonte e não se somam a esse
  * número. O fornecimento em tempo integral, as localidades e o total atendido ficam na resposta completa.
  */
-export function vereditoAcesso(a: Acesso): string {
+export function vereditoAcesso(a: Acesso, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pctTexto } = em(idioma);
   const br = a.pnad_serie.find((l) => l.territorio === "BR" && l.ano === a.ano_referencia && l.situacao === "total");
-  if (!br) return "Sem dado: o bloco de acesso não foi publicado nesta gold.";
-  const sem =
-    br.domicilios_sem_energia_estado === "menos_de_1_mil"
-      ? "menos de 1 mil domicílios"
-      : br.domicilios_sem_energia_mil === null
-        ? "um número sem dado de domicílios"
-        : `${inteiro(br.domicilios_sem_energia_mil)} mil domicílios`;
-  return `Em ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) não tinham energia elétrica de nenhuma fonte, segundo a PNAD Contínua. Sistemas isolados e Luz para Todos têm outra fonte e outra unidade e não se somam a esse número.`;
+  if (!br) return tx("Sem dado: o bloco de acesso não foi publicado nesta gold.", "No data: the access block was not published in this release.");
+  const sem = domiciliosSemEnergia(br, idioma);
+  return tx(
+    `Em ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) não tinham energia elétrica de nenhuma fonte, segundo a PNAD Contínua. Sistemas isolados e Luz para Todos têm outra fonte e outra unidade e não se somam a esse número.`,
+    `In ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) had no electricity from any source, according to the Continuous PNAD. Isolated systems and Luz para Todos have another source and another unit and do not add to this number.`,
+  );
 }
 
-export function mudancaAcesso(a: Acesso): string {
+export function mudancaAcesso(a: Acesso, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, inteiro, pctTexto, listaTexto } = em(idioma);
   const serieBr = a.pnad_serie.filter((l) => l.territorio === "BR" && l.situacao === "total").sort((x, y) => (x.ano < y.ano ? -1 : 1));
   const prim = serieBr[0];
   const ult = serieBr.at(-1);
   const partes: string[] = [];
   if (prim && ult && prim !== ult) {
+    const mil = (v: number | null) => (v === null ? semDado(idioma) : tx(`${inteiro(v)} mil`, `${inteiro(v)} thousand`));
+    const a0 = mil(prim.domicilios_sem_energia_mil);
+    const a1 = mil(ult.domicilios_sem_energia_mil);
+    const p0 = pctTexto(prim.pct_integral_entre_rede, 1);
+    const p1 = pctTexto(ult.pct_integral_entre_rede, 1);
     partes.push(
-      `Domicílios sem energia: ${prim.domicilios_sem_energia_mil === null ? "sem dado" : `${inteiro(prim.domicilios_sem_energia_mil)} mil`} em ${prim.ano} e ${ult.domicilios_sem_energia_mil === null ? "sem dado" : `${inteiro(ult.domicilios_sem_energia_mil)} mil`} em ${ult.ano}; rede em tempo integral entre os ligados, ${pctTexto(prim.pct_integral_entre_rede, 1)} e ${pctTexto(ult.pct_integral_entre_rede, 1)}.`,
+      tx(
+        `Domicílios sem energia: ${a0} em ${prim.ano} e ${a1} em ${ult.ano}; rede em tempo integral entre os ligados, ${p0} e ${p1}.`,
+        `Households without energy: ${a0} in ${prim.ano} and ${a1} in ${ult.ano}; full-time grid among those connected, ${p0} and ${p1}.`,
+      ),
     );
   }
   const lacunas = anosComLacunas(serieBr.map((l) => l.ano)).filter((x) => !x.publicado);
-  if (lacunas.length) partes.push(`O IBGE não publicou ${listaTexto(lacunas.map((x) => x.ano))} nas tabelas 6737 e 6738: a linha fica interrompida.`);
+  const anosLacuna = listaTexto(lacunas.map((x) => x.ano));
+  if (lacunas.length)
+    partes.push(tx(`O IBGE não publicou ${anosLacuna} nas tabelas 6737 e 6738: a linha fica interrompida.`, `IBGE did not publish ${anosLacuna} in tables 6737 and 6738: the line is interrupted.`));
   const si = a.sistemas_isolados;
   if (si && si.ciclos.length > 1) {
     const p = si.ciclos[0];
     const u = si.ciclos.at(-1)!;
-    partes.push(`Sistemas isolados: ${inteiro(p.localidades)} localidades no ciclo ${p.ciclo} e ${inteiro(u.localidades)} no ciclo ${u.ciclo}${u.sairam_da_lista !== undefined ? ` (${inteiro(u.sairam_da_lista)} saíram da lista no último ciclo)` : ""}.`);
+    const sairam = u.sairam_da_lista !== undefined ? tx(` (${inteiro(u.sairam_da_lista)} saíram da lista no último ciclo)`, ` (${inteiro(u.sairam_da_lista)} left the list in the latest cycle)`) : "";
+    partes.push(
+      tx(
+        `Sistemas isolados: ${inteiro(p.localidades)} localidades no ciclo ${p.ciclo} e ${inteiro(u.localidades)} no ciclo ${u.ciclo}${sairam}.`,
+        `Isolated systems: ${inteiro(p.localidades)} localities in cycle ${p.ciclo} and ${inteiro(u.localidades)} in cycle ${u.ciclo}${sairam}.`,
+      ),
+    );
   }
   const lpt = a.universalizacao.luz_para_todos;
   const ultAno = lpt?.serie_anual.filter((x) => !x.parcial).at(-1);
-  if (lpt && ultAno) partes.push(`Luz para Todos: ${inteiro(ultAno.total)} domicílios atendidos em ${ultAno.ano}, o último ano completo do arquivo.`);
+  if (lpt && ultAno)
+    partes.push(
+      tx(
+        `Luz para Todos: ${inteiro(ultAno.total)} domicílios atendidos em ${ultAno.ano}, o último ano completo do arquivo.`,
+        `Luz para Todos: ${inteiro(ultAno.total)} households served in ${ultAno.ano}, the latest complete year in the file.`,
+      ),
+    );
   return partes.join(" ");
 }
 
-const ROTULO_CV_PNAD: Record<"cv_pct_com_energia" | "cv_pct_rede_geral" | "cv_pct_integral", string> = {
-  cv_pct_com_energia: "domicílios com energia",
-  cv_pct_rede_geral: "ligados à rede geral",
-  cv_pct_integral: "rede em tempo integral",
-};
+function rotuloCvPnad(k: "cv_pct_com_energia" | "cv_pct_rede_geral" | "cv_pct_integral", idioma: Idioma): string {
+  const tx = txEm(idioma);
+  const rotulos = {
+    cv_pct_com_energia: tx("domicílios com energia", "households with energy"),
+    cv_pct_rede_geral: tx("ligados à rede geral", "connected to the general grid"),
+    cv_pct_integral: tx("rede em tempo integral", "full-time grid"),
+  };
+  return rotulos[k];
+}
+const CHAVES_CV_PNAD = ["cv_pct_com_energia", "cv_pct_rede_geral", "cv_pct_integral"] as const;
 
 /**
  * Maior coeficiente de variação publicado pelo IBGE entre as UF no ano de
  * referência, no total e por situação: quanto a precisão cai nos recortes
  * pequenos, lido da gold (nunca um limite escrito no texto).
  */
-export function maiorCvPnad(acesso: AcessoPnad): { cv: number; uf: string; indicador: string; situacao: string } | null {
+export function maiorCvPnad(acesso: AcessoPnad, idioma: Idioma = idiomaEnergia()): { cv: number; uf: string; indicador: string; situacao: string } | null {
+  const tx = txEm(idioma);
   const linhas = [...acesso.pnad_serie.filter((l) => l.ano === acesso.ano_referencia), ...acesso.pnad_situacao].filter((l) => codigoUf(l.territorio));
   let melhor: { cv: number; uf: string; indicador: string; situacao: string } | null = null;
   for (const l of linhas) {
-    for (const k of Object.keys(ROTULO_CV_PNAD) as (keyof typeof ROTULO_CV_PNAD)[]) {
+    for (const k of CHAVES_CV_PNAD) {
       const v = l[k];
       if (typeof v === "number" && Number.isFinite(v) && (!melhor || v > melhor.cv)) {
-        melhor = { cv: v, uf: l.territorio, indicador: ROTULO_CV_PNAD[k], situacao: l.situacao === "total" ? "todos os domicílios" : `área ${l.situacao}` };
+        const situacaoEn = l.situacao === "rural" ? "rural" : l.situacao === "urbana" ? "urban" : l.situacao; // i18n: dado
+        melhor = {
+          cv: v,
+          uf: l.territorio,
+          indicador: rotuloCvPnad(k, idioma),
+          situacao: l.situacao === "total" ? tx("todos os domicílios", "all households") : tx(`área ${l.situacao}`, `${situacaoEn} area`),
+        };
       }
     }
   }
@@ -1349,11 +1716,18 @@ export function maiorCvPnad(acesso: AcessoPnad): { cv: number; uf: string; indic
 }
 
 /** Frase do "O que não permite concluir" do P062 sobre precisão amostral. */
-export function textoPrecisaoPnad(acesso: AcessoPnad): string {
-  const m = maiorCvPnad(acesso);
-  const base = "Domicílio sem energia não tem erro-padrão publicado (é a diferença entre duas estimativas).";
+export function textoPrecisaoPnad(acesso: AcessoPnad, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pctTexto } = em(idioma);
+  const m = maiorCvPnad(acesso, idioma);
+  const base = tx(
+    "Domicílio sem energia não tem erro-padrão publicado (é a diferença entre duas estimativas).",
+    "Households without energy have no published standard error (it is the difference between two estimates).",
+  );
   return m
-    ? `${base} Nos recortes pequenos a precisão cai: o maior coeficiente de variação publicado em ${acesso.ano_referencia} entre as UF é ${pctTexto(m.cv, 1)} (${m.indicador}, ${m.uf}, ${m.situacao}).`
+    ? tx(
+        `${base} Nos recortes pequenos a precisão cai: o maior coeficiente de variação publicado em ${acesso.ano_referencia} entre as UF é ${pctTexto(m.cv, 1)} (${m.indicador}, ${m.uf}, ${m.situacao}).`,
+        `${base} In small breakdowns precision falls: the largest coefficient of variation published in ${acesso.ano_referencia} among the states is ${pctTexto(m.cv, 1)} (${m.indicador}, ${m.uf}, ${m.situacao}).`,
+      )
     : base;
 }
 
@@ -1366,9 +1740,10 @@ export function textoPrecisaoPnad(acesso: AcessoPnad): string {
  */
 
 /** Período da pesquisa de orçamento, lido da proveniência dos microdados ("jul/2017 a jul/2018"). */
-export function periodoPof(o: Pick<Orcamento, "proveniencia">): string {
+export function periodoPof(o: Pick<Orcamento, "proveniencia">, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes } = em(idioma);
   const p = o.proveniencia.microdados.periodo_referencia;
-  return `${mes(p.inicio)} a ${mes(p.fim)}`;
+  return tx(`${mes(p.inicio)} a ${mes(p.fim)}`, `${mes(p.inicio)} to ${mes(p.fim)}`);
 }
 
 /** Data de referência dos valores em reais da pesquisa ("15/01/2018"), lida da unidade que a gold publica; null quando a unidade não a traz. */
@@ -1397,8 +1772,12 @@ export function destaquesRendaPof(orc: OrcamentoBase): {
 }
 
 /** Frase que declara a idade da pesquisa junto do valor: o ano da publicação vem da própria gold, nunca escrito à mão. */
-export function textoPofHistorica(orc: Pick<OrcamentoBase, "referencia">, anoPublicacao: string): string {
-  return `Estatística histórica: a POF mais recente publicada pelo IBGE é a ${nomePof(orc)}; o resultado não é projetado para ${anoPublicacao}.`;
+export function textoPofHistorica(orc: Pick<OrcamentoBase, "referencia">, anoPublicacao: string, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  return tx(
+    `Estatística histórica: a POF mais recente publicada pelo IBGE é a ${nomePof(orc)}; o resultado não é projetado para ${anoPublicacao}.`,
+    `Historical statistic: the most recent POF published by IBGE is the ${nomePof(orc)}; the result is not projected to ${anoPublicacao}.`,
+  );
 }
 
 /** Uma medida da abertura com a sua data, a sua unidade e a sua natureza: cada fonte tem calendário próprio e nenhum rótulo genérico de atualização. */
@@ -1414,35 +1793,44 @@ export type DataMedida = {
  * Datas de referência de cada parte da página, na ordem em que as medidas aparecem. O mês do SCS e o da CDE trazem o último
  * mês do arquivo e o último mês completo, porque só o mês completo entra nas comparações.
  */
-export function datasMedidas(g: Pick<InclusaoGold, "referencias" | "tarifa_social" | "cobertura" | "orcamento" | "acesso">): DataMedida[] {
+export function datasMedidas(g: Pick<InclusaoGold, "referencias" | "tarifa_social" | "cobertura" | "orcamento" | "acesso">, idioma: Idioma = idiomaEnergia()): DataMedida[] {
+  const { tx, mes, semDado } = em(idioma);
   const t = g.tarifa_social;
   const si = g.acesso.sistemas_isolados;
   const lpt = g.acesso.universalizacao.luz_para_todos;
   const mesMapa = t.mes_mapa ?? t.mes_referencia;
+  const familias = tx("famílias", "families");
+  const domicilios = tx("domicílios", "households");
   return [
-    { id: "pof", rotulo: "Orçamento das famílias (POF)", periodo: periodoPof(g.orcamento), unidade: "famílias", natureza: "ESTIMADO" },
+    { id: "pof", rotulo: tx("Orçamento das famílias (POF)", "Family budgets (POF)"), periodo: periodoPof(g.orcamento, idioma), unidade: familias, natureza: "ESTIMADO" },
     {
       id: "scs",
-      rotulo: "Tarifa Social, UC (SCS)",
-      periodo: `até ${mes(g.referencias.scs_ultimo_mes_no_arquivo)}; último mês completo ${mes(t.mes_referencia)}`,
-      unidade: "unidades consumidoras",
+      rotulo: tx("Tarifa Social, UC (SCS)", "Tarifa Social, consumer units (SCS)"),
+      periodo: tx(
+        `até ${mes(g.referencias.scs_ultimo_mes_no_arquivo)}; último mês completo ${mes(t.mes_referencia)}`,
+        `up to ${mes(g.referencias.scs_ultimo_mes_no_arquivo)}; latest complete month ${mes(t.mes_referencia)}`,
+      ),
+      unidade: tx("unidades consumidoras", "consumer units"),
       natureza: "OBSERVADO",
     },
     {
       id: "cde",
-      rotulo: "Tarifa Social, faturas (Beneficiários da CDE)",
-      periodo: `até ${mes(g.referencias.cde_mes_mais_recente)}; último mês completo ${mes(mesMapa)}`,
-      unidade: "faturas",
+      rotulo: tx("Tarifa Social, faturas (Beneficiários da CDE)", "Tarifa Social, bills (CDE Beneficiaries)"),
+      periodo: tx(
+        `até ${mes(g.referencias.cde_mes_mais_recente)}; último mês completo ${mes(mesMapa)}`,
+        `up to ${mes(g.referencias.cde_mes_mais_recente)}; latest complete month ${mes(mesMapa)}`,
+      ),
+      unidade: tx("faturas", "bills"),
       natureza: "CALCULADO",
     },
-    { id: "cadunico", rotulo: "Cadastro Único (MI Social)", periodo: mes(g.cobertura.brasil?.mes), unidade: "famílias", natureza: "CALCULADO" },
-    { id: "pnad", rotulo: "Acesso (PNAD Contínua)", periodo: g.acesso.ano_referencia, unidade: "domicílios", natureza: "ESTIMADO" },
-    { id: "pasi", rotulo: "Sistemas isolados (PASI)", periodo: si ? `ciclo ${si.ciclo}` : SEM_DADO, unidade: "pessoas", natureza: "OBSERVADO" },
+    { id: "cadunico", rotulo: tx("Cadastro Único (MI Social)", "Cadastro Único (federal social registry, MI Social)"), periodo: mes(g.cobertura.brasil?.mes), unidade: familias, natureza: "CALCULADO" },
+    { id: "pnad", rotulo: tx("Acesso (PNAD Contínua)", "Access (Continuous PNAD)"), periodo: g.acesso.ano_referencia, unidade: domicilios, natureza: "ESTIMADO" },
+    { id: "pasi", rotulo: tx("Sistemas isolados (PASI)", "Isolated systems (PASI)"), periodo: si ? tx(`ciclo ${si.ciclo}`, `cycle ${si.ciclo}`) : semDado, unidade: tx("pessoas", "people"), natureza: "OBSERVADO" },
     {
       id: "lpt",
-      rotulo: "Luz para Todos (MME)",
-      periodo: lpt ? `${mes(lpt.evidencia_total.periodo.inicio)} a ${mes(lpt.ultimo_mes)}` : SEM_DADO,
-      unidade: "domicílios",
+      rotulo: tx("Luz para Todos (MME)", "Luz para Todos (MME electrification program)"),
+      periodo: lpt ? tx(`${mes(lpt.evidencia_total.periodo.inicio)} a ${mes(lpt.ultimo_mes)}`, `${mes(lpt.evidencia_total.periodo.inicio)} to ${mes(lpt.ultimo_mes)}`) : semDado,
+      unidade: domicilios,
       natureza: "OBSERVADO",
     },
   ];
@@ -1455,8 +1843,14 @@ export function datasMedidas(g: Pick<InclusaoGold, "referencias" | "tarifa_socia
  * com o sinal da fonte) e a página o mostra como está, sem corrigir nem excluir. A regra lê o dado: qualquer UF e qualquer mês com
  * desconto (total ou médio por fatura) negativo recebe a mesma nota, no mapa, na tabela e no histórico.
  */
-export const NOTA_DESCONTO_NEGATIVO =
-  "valor negativo na fonte; a fonte não diz o motivo; pode refletir ajuste ou estorno, o que é inferência e não está confirmado. O valor aparece como publicado, sem correção nem exclusão.";
+export function notaDescontoNegativo(idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  return tx(
+    "valor negativo na fonte; a fonte não diz o motivo; pode refletir ajuste ou estorno, o que é inferência e não está confirmado. O valor aparece como publicado, sem correção nem exclusão.",
+    "negative value in the source; the source does not give the reason; it may reflect an adjustment or reversal, which is an inference and is not confirmed. The value appears as published, without correction or exclusion.",
+  );
+}
+export const NOTA_DESCONTO_NEGATIVO = notaDescontoNegativo("pt");
 
 const negativo = (v: number | null | undefined): v is number => temValor(v) && v < 0;
 
@@ -1471,17 +1865,25 @@ export function ufsComDescontoNegativo(ufs: readonly UfTsee[]): UfTsee[] {
 }
 
 /** Nota da tabela por UF: nomes das UF com desconto negativo e a nota; null quando nenhuma UF tem valor negativo. */
-export function textoDescontoNegativoUf(ufs: readonly UfTsee[]): string | null {
+export function textoDescontoNegativoUf(ufs: readonly UfTsee[], idioma: Idioma = idiomaEnergia()): string | null {
   const neg = ufsComDescontoNegativo(ufs);
-  return neg.length ? `${listaTexto(neg.map((u) => u.nome))}: ${NOTA_DESCONTO_NEGATIVO}` : null;
+  return neg.length ? `${listaTexto(neg.map((u) => u.nome), idioma)}: ${notaDescontoNegativo(idioma)}` : null;
 }
 
 /** Nota do mapa: só nas medidas em reais (a contagem de faturas não tem sinal negativo); null sem valor negativo na medida escolhida. */
-export function textoDescontoNegativoMapa(ufs: readonly UfTsee[], medida: MedidaMapaTsee): string | null {
+export function textoDescontoNegativoMapa(ufs: readonly UfTsee[], medida: MedidaMapaTsee, idioma: Idioma = idiomaEnergia()): string | null {
+  const tx = txEm(idioma);
   if (medida === "faturas") return null;
   const valores = valoresMapaTsee(ufs, medida);
   const neg = ufs.filter((u) => negativo(valores[codigoUf(u.uf) ?? ""]));
-  return neg.length ? `${listaTexto(neg.map((u) => u.nome))}: ${NOTA_DESCONTO_NEGATIVO} A classe "menos de 0" é só desse valor e não faz parte da escala do desconto positivo.` : null;
+  const nomes = listaTexto(neg.map((u) => u.nome), idioma);
+  const nota = notaDescontoNegativo(idioma);
+  return neg.length
+    ? tx(
+        `${nomes}: ${nota} A classe "menos de 0" é só desse valor e não faz parte da escala do desconto positivo.`,
+        `${nomes}: ${nota} The "less than 0" class is only for this value and is not part of the positive discount scale.`,
+      )
+    : null;
 }
 
 /**
@@ -1526,39 +1928,66 @@ export function textoDescontoNegativoHistorico(
   ufs: readonly string[],
   nomeUf: (uf: string) => string,
   atingidas: Record<string, Record<string, string[]>> = {},
+  idioma: Idioma = idiomaEnergia(),
 ): string | null {
+  const { tx, mes, listaTexto } = em(idioma);
   const neg = mesesComDescontoNegativo(json, ufs, atingidas);
   if (!neg.length) return null;
-  const partes = neg.map((x) => `${nomeUf(x.uf)} ${x.meses.length === x.comValor ? "em todos os meses com valor" : `em ${listaTexto(x.meses.map(mes))}`}`);
-  return `${listaTexto(partes)}: ${NOTA_DESCONTO_NEGATIVO}`;
+  const partes = neg.map((x) =>
+    x.meses.length === x.comValor
+      ? tx(`${nomeUf(x.uf)} em todos os meses com valor`, `${nomeUf(x.uf)} in every month with a value`)
+      : tx(`${nomeUf(x.uf)} em ${listaTexto(x.meses.map(mes))}`, `${nomeUf(x.uf)} in ${listaTexto(x.meses.map(mes))}`),
+  );
+  return `${listaTexto(partes)}: ${notaDescontoNegativo(idioma)}`;
 }
 
 /** Linha de "o que não permite concluir" da abertura da Tarifa Social: o limite das unidades e, lidas do dado, as UF com desconto negativo. */
-export function limiteTarifaSocial(ufs: readonly UfTsee[]): string {
+export function limiteTarifaSocial(ufs: readonly UfTsee[], idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
   const neg = ufsComDescontoNegativo(ufs);
-  const base = "número de famílias nem de pessoas beneficiadas: UC e fatura são unidades da conta.";
-  return neg.length ? `${base} UF com desconto negativo na fonte, sem motivo informado: ${listaTexto(neg.map((u) => u.nome))}.` : base;
+  const base = tx(
+    "número de famílias nem de pessoas beneficiadas: UC e fatura são unidades da conta.",
+    "the number of families or people benefited: consumer units and bills are units of the electricity account.",
+  );
+  const nomes = listaTexto(neg.map((u) => u.nome), idioma);
+  return neg.length
+    ? tx(`${base} UF com desconto negativo na fonte, sem motivo informado: ${nomes}.`, `${base} States with a negative discount in the source, with no reason given: ${nomes}.`)
+    : base;
 }
 
 /** Veredito da medida escolhida na série nacional (UC, participação ou DMR): a frase acompanha o controle, não só o gráfico. */
-export function vereditoTarifaSocialMedida(t: TarifaSocial, medida: MedidaTsee): string {
+export function vereditoTarifaSocialMedida(t: TarifaSocial, medida: MedidaTsee, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes, pctTexto, reaisGrandes, reaisTexto } = em(idioma);
   const k = t.kpis;
-  if (medida === "uc") return vereditoTarifaSocial(t);
+  if (medida === "uc") return vereditoTarifaSocial(t, idioma);
   if (medida === "part") {
-    return `Em ${mes(k.participacao_pct.mes)}, ${pctTexto(k.participacao_pct.valor, 1)} das UC residenciais tinham Tarifa Social: a razão entre as UC com o benefício e as UC residenciais das mesmas distribuidoras, em meses completos.`;
+    return tx(
+      `Em ${mes(k.participacao_pct.mes)}, ${pctTexto(k.participacao_pct.valor, 1)} das UC residenciais tinham Tarifa Social: a razão entre as UC com o benefício e as UC residenciais das mesmas distribuidoras, em meses completos.`,
+      `In ${mes(k.participacao_pct.mes)}, ${pctTexto(k.participacao_pct.valor, 1)} of residential consumer units had the Tarifa Social: the ratio between the consumer units with the benefit and the residential consumer units of the same distribution utilities, in complete months.`,
+    );
   }
-  return `Em ${mes(k.dmr_mes_reais.mes)}, a Diferença Mensal de Receita (DMR) da Tarifa Social foi de ${reaisGrandes(k.dmr_mes_reais.valor)}, ou ${reaisTexto(k.dmr_por_uc_reais.valor)} por UC: a receita que a distribuidora deixa de cobrar, não o desconto de cada família.`;
+  return tx(
+    `Em ${mes(k.dmr_mes_reais.mes)}, a Diferença Mensal de Receita (DMR) da Tarifa Social foi de ${reaisGrandes(k.dmr_mes_reais.valor)}, ou ${reaisTexto(k.dmr_por_uc_reais.valor)} por UC: a receita que a distribuidora deixa de cobrar, não o desconto de cada família.`,
+    `In ${mes(k.dmr_mes_reais.mes)}, the Tarifa Social's Monthly Revenue Difference (DMR) was ${reaisGrandes(k.dmr_mes_reais.valor)}, or ${reaisTexto(k.dmr_por_uc_reais.valor)} per consumer unit: the revenue the distribution utility does not charge, not each family's discount.`,
+  );
 }
 
 /** Resposta completa da medida escolhida: a da UC já traz as três medidas; as outras abrem pela própria medida. */
-export function respostaTarifaSocialMedida(t: TarifaSocial, medida: MedidaTsee): string {
-  if (medida === "uc") return respostaTarifaSocial(t);
+export function respostaTarifaSocialMedida(t: TarifaSocial, medida: MedidaTsee, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, mes, pctTexto, reaisGrandes, reaisTexto, numTexto } = em(idioma);
+  if (medida === "uc") return respostaTarifaSocial(t, idioma);
   const k = t.kpis;
   const abertura =
     medida === "part"
-      ? `Participação nas UC residenciais: ${pctTexto(k.participacao_pct.valor, 1)} em ${mes(k.participacao_pct.mes)}.`
-      : `DMR: ${reaisGrandes(k.dmr_mes_reais.valor)} em ${mes(k.dmr_mes_reais.mes)}, ${reaisTexto(k.dmr_por_uc_reais.valor)} por UC e ${numTexto(k.kwh_por_uc.valor, 1)} kWh por UC no mês.`;
-  return `${abertura} ${respostaTarifaSocial(t)}`;
+      ? tx(
+          `Participação nas UC residenciais: ${pctTexto(k.participacao_pct.valor, 1)} em ${mes(k.participacao_pct.mes)}.`,
+          `Share of residential consumer units: ${pctTexto(k.participacao_pct.valor, 1)} in ${mes(k.participacao_pct.mes)}.`,
+        )
+      : tx(
+          `DMR: ${reaisGrandes(k.dmr_mes_reais.valor)} em ${mes(k.dmr_mes_reais.mes)}, ${reaisTexto(k.dmr_por_uc_reais.valor)} por UC e ${numTexto(k.kwh_por_uc.valor, 1)} kWh por UC no mês.`,
+          `DMR: ${reaisGrandes(k.dmr_mes_reais.valor)} in ${mes(k.dmr_mes_reais.mes)}, ${reaisTexto(k.dmr_por_uc_reais.valor)} per consumer unit and ${numTexto(k.kwh_por_uc.valor, 1)} kWh per consumer unit in the month.`,
+        );
+  return `${abertura} ${respostaTarifaSocial(t, idioma)}`;
 }
 
 /**
@@ -1582,36 +2011,58 @@ export function destaquesParticipacaoRendaPof(orc: OrcamentoBase): {
 }
 
 /** Veredito da base renda: a média das participações da energia na renda da classe de menor renda contra o conjunto, com a mediana ao lado. */
-export function vereditoOrcamentoRenda(orc: OrcamentoBase): string {
+export function vereditoOrcamentoRenda(orc: OrcamentoBase, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pctTexto, dado } = em(idioma);
   const classes = classesRenda(orc);
   const baixa = classes[0];
   const t = linhaPof(orc, "BR", "7999");
   const b = baixa ? linhaPof(orc, "BR", baixa.codigo) : undefined;
-  if (!t || !b || !baixa) return "Sem dado: a POF não foi processada nesta publicação.";
+  if (!t || !b || !baixa) return tx("Sem dado: a POF não foi processada nesta publicação.", "No data: the POF was not processed in this publication.");
   const mr = (l: LinhaPof | undefined) => estimativa(l, "media_razoes_renda_pct")[0];
   const dir = comparaArredondado(mr(b), mr(t), 1);
-  const abertura =
-    dir === "maior" ? "a energia elétrica pesou mais" : dir === "menor" ? "a energia elétrica pesou menos" : dir === "igual" ? "a energia elétrica pesou o mesmo" : "o peso da energia elétrica não tem as duas estimativas para comparar";
-  const quem = dir === "igual" ? "na renda das famílias de menor renda e do conjunto" : "na renda das famílias de menor renda";
-  return `Na ${nomePof(orc)}, ${abertura} ${quem}: a média das participações da energia foi ${pctTexto(mr(b), 1)} da renda das famílias com rendimento ${minusculaInicial(baixa.rotulo)} (mediana ${pctTexto(estimativa(b, "mediana_renda_pct")[0], 1)}), contra ${pctTexto(mr(t), 1)} no conjunto das famílias.`;
+  const abertura = aberturaPeso(dir, idioma);
+  const quem =
+    dir === "igual"
+      ? tx("na renda das famílias de menor renda e do conjunto", "in the income of lower-income families and of all families")
+      : tx("na renda das famílias de menor renda", "in the income of lower-income families");
+  const classe = minusculaInicial(dado(baixa.rotulo));
+  const mediana = pctTexto(estimativa(b, "mediana_renda_pct")[0], 1);
+  return tx(
+    `Na ${nomePof(orc)}, ${abertura} ${quem}: a média das participações da energia foi ${pctTexto(mr(b), 1)} da renda das famílias com rendimento ${classe} (mediana ${mediana}), contra ${pctTexto(mr(t), 1)} no conjunto das famílias.`,
+    `In the ${nomePof(orc)}, ${abertura} ${quem}: the average share of energy was ${pctTexto(mr(b), 1)} of the income of families with income ${classe} (median ${mediana}), against ${pctTexto(mr(t), 1)} for all families.`,
+  );
 }
 
 /** Resposta completa da base renda: média e mediana nas três linhas, o que a base não traz e a sensibilidade da classe mais baixa. */
-export function respostaOrcamentoRenda(orc: OrcamentoBase): string {
+export function respostaOrcamentoRenda(orc: OrcamentoBase, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pctTexto, inteiro, dado } = em(idioma);
   const classes = classesRenda(orc);
   const baixa = classes[0];
   const alta = classes.length > 1 ? classes.at(-1) : undefined;
   const t = linhaPof(orc, "BR", "7999");
   const b = baixa ? linhaPof(orc, "BR", baixa.codigo) : undefined;
   const a = alta ? linhaPof(orc, "BR", alta.codigo) : undefined;
-  if (!t || !b || !baixa) return "Sem dado: a POF não foi processada nesta publicação.";
+  if (!t || !b || !baixa) return tx("Sem dado: a POF não foi processada nesta publicação.", "No data: the POF was not processed in this publication.");
   const mr = (l: LinhaPof | undefined) => pctTexto(estimativa(l, "media_razoes_renda_pct")[0], 2);
   const md = (l: LinhaPof | undefined) => pctTexto(estimativa(l, "mediana_renda_pct")[0], 2);
-  let s = `Na ${nomePof(orc)}, a média das participações da energia na renda foi ${mr(b)} nas famílias com rendimento ${minusculaInicial(baixa.rotulo)}, ${mr(t)} no conjunto das famílias${a && alta ? ` e ${mr(a)} na classe ${minusculaInicial(alta.rotulo)}` : ""}. A mediana da participação é ${md(b)}, ${md(t)}${a ? ` e ${md(a)}` : ""} nas mesmas linhas.`;
-  s += " Na renda o observatório não publica razão de médias: só a média e a mediana das participações, calculadas família a família.";
+  const classe = minusculaInicial(dado(baixa.rotulo));
+  const classeAlta = alta ? minusculaInicial(dado(alta.rotulo)) : "";
+  let s = tx(
+    `Na ${nomePof(orc)}, a média das participações da energia na renda foi ${mr(b)} nas famílias com rendimento ${classe}, ${mr(t)} no conjunto das famílias${a && alta ? ` e ${mr(a)} na classe ${classeAlta}` : ""}. A mediana da participação é ${md(b)}, ${md(t)}${a ? ` e ${md(a)}` : ""} nas mesmas linhas.`,
+    `In the ${nomePof(orc)}, the average share of energy in income was ${mr(b)} for families with income ${classe}, ${mr(t)} for all families${a && alta ? ` and ${mr(a)} in the ${classeAlta} class` : ""}. The median share is ${md(b)}, ${md(t)}${a ? ` and ${md(a)}` : ""} in the same rows.`,
+  );
+  s += tx(
+    " Na renda o observatório não publica razão de médias: só a média e a mediana das participações, calculadas família a família.",
+    " For income the observatory does not publish a ratio of averages: only the average and the median of the shares, calculated family by family.",
+  );
   const sens = orc.sensibilidade_media_razoes_renda[baixa.codigo];
   if (sens) {
-    s += ` A média da classe mais baixa depende de ${inteiro(sens.familias_amostra_energia_acima_da_renda)} famílias da amostra com despesa com energia acima da renda: sem elas, ${pctTexto(sens.media_sem_energia_acima_da_renda_pct, 2)}.`;
+    const n = inteiro(sens.familias_amostra_energia_acima_da_renda);
+    const p = pctTexto(sens.media_sem_energia_acima_da_renda_pct, 2);
+    s += tx(
+      ` A média da classe mais baixa depende de ${n} famílias da amostra com despesa com energia acima da renda: sem elas, ${p}.`,
+      ` The average of the lowest class depends on ${n} sample families with electricity expense above income: without them, ${p}.`,
+    );
   }
   return s;
 }
@@ -1622,28 +2073,44 @@ function linhaBrPnad(a: Pick<Acesso, "ano_referencia" | "pnad_serie">): LinhaPna
 }
 
 /** Veredito do indicador escolhido (sem energia, ligados à rede geral ou rede em tempo integral): a frase acompanha o controle. */
-export function vereditoAcessoIndicador(a: Acesso, ind: IndicadorPnad): string {
-  if (ind === "sem") return vereditoAcesso(a);
+export function vereditoAcessoIndicador(a: Acesso, ind: IndicadorPnad, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pctTexto } = em(idioma);
+  if (ind === "sem") return vereditoAcesso(a, idioma);
   const br = linhaBrPnad(a);
-  if (!br) return "Sem dado: o bloco de acesso não foi publicado nesta gold.";
-  const limite = "Sistemas isolados e Luz para Todos têm outra fonte e outra unidade e não se somam a esse número.";
+  if (!br) return tx("Sem dado: o bloco de acesso não foi publicado nesta gold.", "No data: the access block was not published in this release.");
+  const limite = tx(
+    "Sistemas isolados e Luz para Todos têm outra fonte e outra unidade e não se somam a esse número.",
+    "Isolated systems and Luz para Todos have another source and another unit and do not add to this number.",
+  );
   if (ind === "rede") {
-    return `Em ${a.ano_referencia}, ${pctTexto(br.pct_rede_geral, 1)} dos domicílios estavam ligados à rede geral, segundo a PNAD Contínua. ${limite}`;
+    return tx(
+      `Em ${a.ano_referencia}, ${pctTexto(br.pct_rede_geral, 1)} dos domicílios estavam ligados à rede geral, segundo a PNAD Contínua. ${limite}`,
+      `In ${a.ano_referencia}, ${pctTexto(br.pct_rede_geral, 1)} of households were connected to the general grid, according to the Continuous PNAD. ${limite}`,
+    );
   }
-  return `Em ${a.ano_referencia}, entre os domicílios ligados à rede geral, ${pctTexto(br.pct_integral_entre_rede, 1)} tinham fornecimento em tempo integral, segundo a PNAD Contínua. ${limite}`;
+  return tx(
+    `Em ${a.ano_referencia}, entre os domicílios ligados à rede geral, ${pctTexto(br.pct_integral_entre_rede, 1)} tinham fornecimento em tempo integral, segundo a PNAD Contínua. ${limite}`,
+    `In ${a.ano_referencia}, among households connected to the general grid, ${pctTexto(br.pct_integral_entre_rede, 1)} had full-time supply, according to the Continuous PNAD. ${limite}`,
+  );
 }
 
 /** Resposta completa do indicador escolhido: abre pelo indicador e segue com a resposta que já traz os demais. */
-export function respostaAcessoIndicador(a: Acesso, ind: IndicadorPnad): string {
-  if (ind === "sem") return respostaAcesso(a);
+export function respostaAcessoIndicador(a: Acesso, ind: IndicadorPnad, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pctTexto } = em(idioma);
+  if (ind === "sem") return respostaAcesso(a, idioma);
   const br = linhaBrPnad(a);
-  const abertura =
-    !br
-      ? ""
-      : ind === "rede"
-        ? `Ligados à rede geral: ${pctTexto(br.pct_rede_geral, 1)} dos domicílios (coeficiente de variação de ${pctTexto(br.cv_pct_rede_geral, 1)}). `
-        : `Rede em tempo integral entre os ligados à rede geral: ${pctTexto(br.pct_integral_entre_rede, 1)} (coeficiente de variação de ${pctTexto(br.cv_pct_integral, 1)}). `;
-  return `${abertura}${respostaAcesso(a)}`;
+  const abertura = !br
+    ? ""
+    : ind === "rede"
+      ? tx(
+          `Ligados à rede geral: ${pctTexto(br.pct_rede_geral, 1)} dos domicílios (coeficiente de variação de ${pctTexto(br.cv_pct_rede_geral, 1)}). `,
+          `Connected to the general grid: ${pctTexto(br.pct_rede_geral, 1)} of households (coefficient of variation of ${pctTexto(br.cv_pct_rede_geral, 1)}). `,
+        )
+      : tx(
+          `Rede em tempo integral entre os ligados à rede geral: ${pctTexto(br.pct_integral_entre_rede, 1)} (coeficiente de variação de ${pctTexto(br.cv_pct_integral, 1)}). `,
+          `Full-time grid among those connected to the general grid: ${pctTexto(br.pct_integral_entre_rede, 1)} (coefficient of variation of ${pctTexto(br.cv_pct_integral, 1)}). `,
+        );
+  return `${abertura}${respostaAcesso(a, idioma)}`;
 }
 
 /** Os três atos da base legal da regra de 80 kWh, lidos da linha do tempo da Regulação; null quando o ato não está lá. */
@@ -1669,13 +2136,26 @@ export const ancoraEventoRegulacao = (id: string) => `${ROTA_LINHA_DO_TEMPO}#eve
  * média com energia sobre despesa média total da classe); na renda, a média das participações família a família, que é a mais
  * sensível a famílias com renda declarada muito baixa e vem com a mediana e a média sem essas famílias, lidas da gold.
  */
-export function textoEstimadorDestaque(orc: OrcamentoBase, base: BasePof): string {
+export function textoEstimadorDestaque(orc: OrcamentoBase, base: BasePof, idioma: Idioma = idiomaEnergia()): string {
+  const { tx, pctTexto, inteiro } = em(idioma);
   if (base === "despesa") {
-    return "O destaque é a razão de médias: a despesa média com energia sobre a despesa média total da classe, que não depende da participação de cada família.";
+    return tx(
+      "O destaque é a razão de médias: a despesa média com energia sobre a despesa média total da classe, que não depende da participação de cada família.",
+      "The highlight is the ratio of averages: the average electricity expense over the average total expense of the class, which does not depend on each family's share.",
+    );
   }
   const baixa = classesRenda(orc)[0];
   const sens = baixa ? orc.sensibilidade_media_razoes_renda[baixa.codigo] : undefined;
-  const abertura = "O destaque é a média das participações família a família, o estimador mais sensível a famílias com renda declarada muito baixa.";
+  const abertura = tx(
+    "O destaque é a média das participações família a família, o estimador mais sensível a famílias com renda declarada muito baixa.",
+    "The highlight is the average of the shares family by family, the estimator most sensitive to families with very low declared income.",
+  );
   if (!sens) return abertura;
-  return `${abertura} Na classe mais baixa a mediana é ${pctTexto(sens.mediana_renda_pct, 1)} e, sem as ${inteiro(sens.familias_amostra_energia_acima_da_renda)} famílias da amostra com despesa com energia acima da renda, a média é ${pctTexto(sens.media_sem_energia_acima_da_renda_pct, 1)}.`;
+  const md = pctTexto(sens.mediana_renda_pct, 1);
+  const n = inteiro(sens.familias_amostra_energia_acima_da_renda);
+  const sem = pctTexto(sens.media_sem_energia_acima_da_renda_pct, 1);
+  return tx(
+    `${abertura} Na classe mais baixa a mediana é ${md} e, sem as ${n} famílias da amostra com despesa com energia acima da renda, a média é ${sem}.`,
+    `${abertura} In the lowest class the median is ${md} and, without the ${n} sample families with electricity expense above income, the average is ${sem}.`,
+  );
 }

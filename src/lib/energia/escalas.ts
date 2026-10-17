@@ -17,8 +17,12 @@
  *
  * Três estados distintos, nunca confundidos: número (inclusive zero), ausência
  * (null ou undefined, "sem dado") e "não se aplica" (NAO_SE_APLICA).
+ *
+ * Idioma: as funções que escrevem texto (rótulo de tick, valor, classe) recebem o idioma por último; sem ele, o da página.
  */
 import { num, pct, sinal, unidadeConcordante } from "@/lib/energia/formato";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import type { Idioma } from "@/lib/idioma";
 
 /* ---------- números ---------- */
 
@@ -73,8 +77,8 @@ export function casasDoPasso(passo: number): number {
 }
 
 /** Rótulo de tick em pt-BR com as casas do passo e sinal de menos tipográfico. */
-export function rotuloTick(v: number, passo: number): string {
-  return num(limpa(v), casasDoPasso(passo));
+export function rotuloTick(v: number, passo: number, idioma: Idioma = idiomaEnergia()): string {
+  return num(limpa(v), casasDoPasso(passo), idioma);
 }
 
 /**
@@ -216,7 +220,12 @@ export function empilhar(valores: readonly (number | null | undefined)[]): Pilha
 
 /* ---------- formatação de valores de gráfico ---------- */
 
-export const SEM_DADO_TEXTO = "sem dado";
+export const SEM_DADO_TEXTO = "sem dado"; // i18n: dado (forma portuguesa; semDadoTexto() escolhe o idioma)
+
+/** "sem dado" no idioma ("no data"). */
+export function semDadoTexto(idioma: Idioma = idiomaEnergia()): string {
+  return tx(SEM_DADO_TEXTO, "no data", idioma);
+}
 
 /**
  * Valor com unidade em pt-BR. Ausência vira "sem dado"; o arredondamento
@@ -224,18 +233,18 @@ export const SEM_DADO_TEXTO = "sem dado";
  * não como "−0,0". Percentual cola o símbolo ("12,3%"); demais unidades usam
  * espaço não separável.
  */
-export function formatarValor(v: number | null | undefined, casas = 1, unidade = ""): string {
-  if (!valido(v)) return SEM_DADO_TEXTO;
+export function formatarValor(v: number | null | undefined, casas = 1, unidade = "", idioma: Idioma = idiomaEnergia()): string {
+  if (!valido(v)) return semDadoTexto(idioma);
   const r = arredonda(v, casas);
-  if (unidade === "%") return pct(r, casas);
-  return unidade ? `${num(r, casas)} ${unidadeConcordante(r, unidade)}` : num(r, casas);
+  if (unidade === "%") return pct(r, casas, idioma);
+  return unidade ? `${num(r, casas, idioma)} ${unidadeConcordante(r, unidade)}` : num(r, casas, idioma);
 }
 
 /** Diferença com sinal explícito (+ ou −, tipográfico) e unidade; zero após arredondar não leva sinal. */
-export function formatarDiferenca(v: number | null | undefined, casas = 1, unidade = ""): string {
-  if (!valido(v)) return SEM_DADO_TEXTO;
+export function formatarDiferenca(v: number | null | undefined, casas = 1, unidade = "", idioma: Idioma = idiomaEnergia()): string {
+  if (!valido(v)) return semDadoTexto(idioma);
   const r = arredonda(v, casas);
-  return sinal(r, casas, unidade ? ` ${unidade}` : "");
+  return sinal(r, casas, unidade ? ` ${unidade}` : "", idioma);
 }
 
 /** Diferença entre valor e referência; null quando qualquer um dos dois falta. */
@@ -315,10 +324,11 @@ export const NAO_SE_APLICA = "nao-se-aplica" as const;
 export type ValorClassificavel = number | null | undefined | typeof NAO_SE_APLICA;
 export type MetodoClasses = "quantis" | "intervalos-iguais" | "fixas";
 
+/** Nome do método de classes; os textos seguem o idioma da página no momento da leitura. */
 export const ROTULO_METODO: Record<MetodoClasses, string> = {
-  quantis: "Quantis: classes com número parecido de entidades",
-  "intervalos-iguais": "Intervalos iguais: classes com a mesma largura",
-  fixas: "Quebras fixas definidas pela metodologia",
+  get quantis() { return tx("Quantis: classes com número parecido de entidades", "Quantiles: classes with a similar number of entities"); },
+  get "intervalos-iguais"() { return tx("Intervalos iguais: classes com a mesma largura", "Equal intervals: classes of the same width"); },
+  get fixas() { return tx("Quebras fixas definidas pela metodologia", "Fixed breaks defined by the methodology"); },
 };
 
 export type Classe = {
@@ -349,6 +359,8 @@ export type OpcoesClasses = {
   casas?: number;
   /** Formatação do limite no rótulo (ex.: v => pct(v, 1)); padrão num(v, casas). */
   formatar?: (v: number) => string;
+  /** Idioma dos rótulos das classes ("menos de", "ou mais"); sem ele, o da página. */
+  idioma?: Idioma;
 };
 
 /** Quantil tipo 7 (interpolação linear, o padrão do R e do numpy) de valores já ordenados. */
@@ -378,9 +390,9 @@ function montar(
   metodo: MetodoClasses,
   cortes: number[],
   r: ReturnType<typeof resumo>,
-  { casas = 1, formatar }: OpcoesClasses,
+  { casas = 1, formatar, idioma = idiomaEnergia() }: OpcoesClasses,
 ): Classificacao {
-  const f = formatar ?? ((v: number) => num(v, casas));
+  const f = formatar ?? ((v: number) => num(v, casas, idioma));
   const minimo = r.nums.length ? r.nums[0] : null;
   const maximo = r.nums.length ? r.nums[r.nums.length - 1] : null;
   let classes: Classe[];
@@ -388,7 +400,7 @@ function montar(
     classes =
       minimo === null || maximo === null
         ? []
-        : [{ indice: 0, inferior: null, superior: null, rotulo: minimo === maximo ? f(minimo) : `${f(minimo)} a ${f(maximo)}`, contagem: 0 }];
+        : [{ indice: 0, inferior: null, superior: null, rotulo: minimo === maximo ? f(minimo) : tx(`${f(minimo)} a ${f(maximo)}`, `${f(minimo)} to ${f(maximo)}`, idioma), contagem: 0 }];
   } else {
     // extremos abertos ("menos de", "ou mais"): a mesma classificação continua
     // honesta quando reaplicada a outro ano com valores fora da faixa original
@@ -396,7 +408,11 @@ function montar(
       const inferior = i === 0 ? null : cortes[i - 1];
       const superior = i === cortes.length ? null : cortes[i];
       const rotulo =
-        inferior === null ? `menos de ${f(superior as number)}` : superior === null ? `${f(inferior)} ou mais` : `${f(inferior)} a menos de ${f(superior)}`;
+        inferior === null
+          ? tx(`menos de ${f(superior as number)}`, `less than ${f(superior as number)}`, idioma)
+          : superior === null
+            ? tx(`${f(inferior)} ou mais`, `${f(inferior)} or more`, idioma)
+            : tx(`${f(inferior)} a menos de ${f(superior)}`, `${f(inferior)} to less than ${f(superior)}`, idioma);
       return { indice: i, inferior, superior, rotulo, contagem: 0 };
     });
   }

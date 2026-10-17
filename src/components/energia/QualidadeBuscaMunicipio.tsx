@@ -2,9 +2,11 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import LinkSemPrefetch from "@/components/energia/LinkSemPrefetch";
+import { Nome } from "@/components/i18n/Nome";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { buscarRegioes } from "@/lib/energia/mapa-coropletico";
 import { CAMPO_MUN, carregarMunicipios, orientacaoSemDado, regiaoDoMunicipio, resumoMunicipio, type MunicipioQualidade } from "@/lib/energia/qualidade";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Busca do município na primeira tela. A tarefa de quem chega aqui é achar a própria área, e o mapa que a resolve fica a vários
@@ -24,6 +26,8 @@ const BOTAO =
 
 export function QualidadeBuscaMunicipio({ ano, urlMunicipios, idFicha = "municipio-escolhido" }: { ano: number; urlMunicipios: string; /** `id` da ficha do município, no mapa. */ idFicha?: string }) {
   const uid = useId();
+  const idioma = useIdioma();
+  const tx = useTx();
   const campo = useRef<HTMLInputElement>(null);
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const [carga, setCarga] = useState<Carga>({ estado: "parado" });
@@ -88,19 +92,22 @@ export function QualidadeBuscaMunicipio({ ano, urlMunicipios, idFicha = "municip
 
   const aviso =
     carga.estado === "carregando"
-      ? "Carregando a lista de municípios."
+      ? tx("Carregando a lista de municípios.", "Loading the list of municipalities.")
       : carga.estado === "erro"
-        ? `A lista de municípios não carregou (${carga.erro}). Use o mapa ou a tabela mais abaixo.`
+        ? tx(
+            `A lista de municípios não carregou (${carga.erro}). Use o mapa ou a tabela mais abaixo.`,
+            `The list of municipalities did not load (${carga.erro}). Use the map or the table further down.`,
+          )
         : carga.estado === "pronto" && termo.trim().length >= 2 && !resultados.total && termo !== escolhido
-          ? "Nenhum município com esse nome."
+          ? tx("Nenhum município com esse nome.", "No municipality with that name.")
           : "";
-  const orientacao = selecionado ? orientacaoSemDado(selecionado) : "";
+  const orientacao = selecionado ? orientacaoSemDado(selecionado, idioma) : "";
 
   return (
-    <section aria-label="Buscar o meu município" data-busca-municipio-topo="" className="border-y border-linha py-3">
+    <section aria-label={tx("Buscar o meu município", "Find my municipality")} data-busca-municipio-topo="" className="border-y border-linha py-3">
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
         <label htmlFor={`${uid}-campo`} className="rotulo shrink-0 text-mineral">
-          Procure o seu município
+          {tx("Procure o seu município", "Look up your municipality")}
         </label>
         <div className="relative w-full min-w-0 md:max-w-sm">
           <input
@@ -114,7 +121,7 @@ export function QualidadeBuscaMunicipio({ ano, urlMunicipios, idFicha = "municip
             aria-activedescendant={mostrando ? `${uid}-op-${ativo}` : undefined}
             autoComplete="off"
             spellCheck={false}
-            placeholder="Digite o nome, por exemplo Caxias do Sul"
+            placeholder={tx("Digite o nome, por exemplo Caxias do Sul", "Type the name, for example Caxias do Sul")}
             value={termo}
             onFocus={iniciar}
             onChange={(e) => {
@@ -143,7 +150,7 @@ export function QualidadeBuscaMunicipio({ ano, urlMunicipios, idFicha = "municip
             className="min-h-[44px] w-full border border-linha bg-superficie px-3 text-sm text-carvao placeholder:text-mineral focus:outline focus:outline-2 focus:outline-energia"
           />
           {mostrando && (
-            <ul id={`${uid}-lista`} role="listbox" aria-label="Municípios encontrados" className="absolute left-0 z-20 mt-0.5 max-h-80 w-full overflow-y-auto border border-linha bg-superficie shadow-sm">
+            <ul id={`${uid}-lista`} role="listbox" aria-label={tx("Municípios encontrados", "Municipalities found")} className="absolute left-0 z-20 mt-0.5 max-h-80 w-full overflow-y-auto border border-linha bg-superficie shadow-sm">
               {resultados.itens.map((m, i) => (
                 <li
                   key={m.id}
@@ -157,26 +164,30 @@ export function QualidadeBuscaMunicipio({ ano, urlMunicipios, idFicha = "municip
                   onMouseEnter={() => setAtivo(i)}
                   className={`flex min-h-[44px] cursor-pointer items-center justify-between gap-3 px-3 py-1 text-sm text-carvao ${i === ativo ? "bg-energia-fundo" : ""}`}
                 >
-                  <span>{m.nome}</span>
+                  <span>
+                    <Nome>{m.nome}</Nome>
+                  </span>
                   <span className="text-carvao-muted">{m.uf}</span>
                 </li>
               ))}
             </ul>
           )}
         </div>
-        <p className="text-sm leading-snug text-carvao-muted md:min-w-0 md:flex-1">DEC e FEC dos conjuntos que atendem o município, com o limite de cada um.</p>
+        <p className="text-sm leading-snug text-carvao-muted md:min-w-0 md:flex-1">
+          {tx("DEC e FEC dos conjuntos que atendem o município, com o limite de cada um.", "DEC and FEC of the consumer sets serving the municipality, with the limit of each one.")}
+        </p>
       </div>
       <p role="status" aria-live="polite" className={aviso ? "mt-2 text-sm text-carvao-muted" : "sr-only"}>
         {aviso}
       </p>
       {selecionado && (
         <div className="mt-3 space-y-2" data-resposta="municipio-topo" aria-live="polite">
-          <p className="max-w-prose2 text-sm leading-relaxed text-carvao">{resumoMunicipio(selecionado, ano)}</p>
+          <p className="max-w-prose2 text-sm leading-relaxed text-carvao">{resumoMunicipio(selecionado, ano, idioma)}</p>
           {orientacao && (
             <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-orientacao="sem-dado">
               {orientacao}{" "}
               <LinkSemPrefetch href="/setor-eletrico/conta-de-luz" className="text-energia-dark underline underline-offset-4">
-                Abrir a Conta de luz
+                {tx("Abrir a Conta de luz", "Open the Electricity bill page")}
               </LinkSemPrefetch>
               .
             </p>
@@ -184,11 +195,11 @@ export function QualidadeBuscaMunicipio({ ano, urlMunicipios, idFicha = "municip
           <div className="flex flex-wrap gap-2">
             {selecionado.conjuntos.length > 0 && (
               <a href={`#${idFicha}`} className={BOTAO}>
-                Ver os conjuntos, o limite de cada um e o histórico
+                {tx("Ver os conjuntos, o limite de cada um e o histórico", "See the consumer sets, the limit of each one and the history")}
               </a>
             )}
             <button type="button" className={BOTAO} onClick={limpar}>
-              Limpar município
+              {tx("Limpar município", "Clear municipality")}
             </button>
           </div>
         </div>

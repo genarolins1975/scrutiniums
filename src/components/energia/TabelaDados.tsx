@@ -1,11 +1,15 @@
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { TextoDaColuna } from "@/components/energia/TabelaInterativa";
+
 /**
  * Tabela equivalente de um gráfico (acessibilidade e auditoria): recolhida por
- * padrão, com as últimas linhas e o link para a série completa.
+ * padrão, com as últimas linhas e o link para a série completa. Textos e números no idioma da página.
  */
 function formata(v: number, casas: number | null | undefined): string {
+  const locale = tx("pt-BR", "en-US"); // i18n: dado
   return typeof casas === "number"
-    ? v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "\u2212")
-    : v.toLocaleString("pt-BR", { maximumFractionDigits: 2 }).replace(/^-/, "\u2212");
+    ? v.toLocaleString(locale, { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "\u2212")
+    : v.toLocaleString(locale, { maximumFractionDigits: 2 }).replace(/^-/, "\u2212");
 }
 
 export function TabelaDados({
@@ -15,6 +19,7 @@ export function TabelaDados({
   csv,
   limite = 30,
   casas,
+  idiomaTexto,
 }: {
   titulo: string;
   colunas: string[];
@@ -23,14 +28,24 @@ export function TabelaDados({
   limite?: number;
   /** Casas decimais fixas por coluna numérica (null = até 2 casas); padroniza com o texto da página. */
   casas?: (number | null)[];
+  /**
+   * Por coluna (mesma posição de `colunas`): texto que vem dos dados em português. "nome" sai em <Nome> e "portugues" em
+   * <TrechoPortugues> na página inglesa; null ou ausente, como está. Em português nada muda.
+   */
+  idiomaTexto?: ("nome" | "portugues" | null)[];
 }) {
   const ult = linhas.slice(-limite);
+  const en = idiomaEnergia() === "en";
+  const n = (x: number) => x.toLocaleString(en ? "en-US" : "pt-BR");
   return (
     <details className="mt-4 border-t border-linha pt-3">
       <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-        Resumo em tabela ({ult.length === linhas.length ? `${linhas.length} linhas` : `últimas ${ult.length} de ${linhas.length} linhas`})
+        {tx(
+          `Resumo em tabela (${ult.length === linhas.length ? `${linhas.length} linhas` : `últimas ${ult.length} de ${linhas.length} linhas`})`,
+          `Table summary (${ult.length === linhas.length ? `${n(linhas.length)} ${linhas.length === 1 ? "row" : "rows"}` : `last ${n(ult.length)} of ${n(linhas.length)} rows`})`,
+        )}
       </summary>
-      <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={`${titulo} (tabela rolável)`}>
+      <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={tx(`${titulo} (tabela rolável)`, `${titulo} (scrollable table)`)}>
         <table className="w-full min-w-[28rem] border-collapse text-xs tabular-nums">
           <caption className="sr-only">{titulo}</caption>
           <thead>
@@ -47,7 +62,7 @@ export function TabelaDados({
               <tr key={i} className="odd:bg-papel">
                 {l.map((v, j) => (
                   <td key={j} className="px-2 py-1 text-carvao">
-                    {v === null || v === undefined ? <span className="text-mineral">sem dado</span> : typeof v === "number" ? formata(v, casas?.[j]) : v}
+                    {v === null || v === undefined ? <span className="text-mineral">{tx("sem dado", "no data")}</span> : typeof v === "number" ? formata(v, casas?.[j]) : idiomaTexto?.[j] ? <TextoDaColuna coluna={{ id: `dados-${j}`, idiomaTexto: idiomaTexto[j] ?? undefined }}>{v}</TextoDaColuna> : v}
                   </td>
                 ))}
               </tr>
@@ -57,7 +72,7 @@ export function TabelaDados({
       </div>
       {csv && (
         <a href={csv} download className="rotulo mt-3 inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-          Baixar série completa (CSV)
+          {tx("Baixar série completa (CSV)", "Download full series (CSV)")}
         </a>
       )}
     </details>

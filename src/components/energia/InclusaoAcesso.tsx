@@ -10,23 +10,26 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { quebrasQuantis } from "@/lib/energia/escalas";
 import { URL_GEO } from "@/lib/energia/geo";
+import { txEm } from "@/lib/energia/i18n/conta-inclusao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import type { Idioma } from "@/lib/idioma";
 import {
-  COLUNAS_LOCALIDADES,
-  COLUNAS_UFS_PNAD,
   ESQUEMA_ACESSO,
-  INDICADOR_PNAD,
-  NOME_TERRITORIO,
   UFS,
   codigoUf,
+  colunasIsoladosUf,
+  colunasLocalidades,
+  colunasUfsPnad,
   dadosHistoricoPnadCsv,
   dadosLptAnual,
   dadosSeriePnad,
-  COLUNAS_ISOLADOS_UF,
+  indicadorPnad,
   linhasIsoladosUf,
   linhasLocalidades,
   linhasUfsPnad,
   localidadesDoJson,
-  mes,
+  mes as mesEm,
+  nomeTerritorio,
   siglaDoCodigo,
   valoresMapaPnad,
   type AcessoPnad,
@@ -52,15 +55,21 @@ import type { Acesso, LinhaPnad, LuzParaTodos, SistemasIsolados } from "@/lib/en
  * resposta, o recorte e as notas já prontos, para vir primeiro e ter a ressalva junto.
  */
 
-const OPCOES_IND: readonly (readonly [IndicadorPnad, string])[] = [
-  ["sem", "Sem energia de nenhuma fonte"],
-  ["rede", "Ligados à rede geral"],
-  ["integral", "Rede em tempo integral"],
-];
-const OPCOES_SIT: readonly (readonly [SituacaoPnad, string])[] = [
-  ["total", "Todos os domicílios"],
-  ["rural", "Só área rural"],
-];
+function opcoesInd(idioma: Idioma): readonly (readonly [IndicadorPnad, string])[] {
+  const tx = txEm(idioma);
+  return [
+    ["sem", tx("Sem energia de nenhuma fonte", "No energy from any source")], // i18n: dado
+    ["rede", tx("Ligados à rede geral", "Connected to the general grid")],
+    ["integral", tx("Rede em tempo integral", "Full-time grid")],
+  ];
+}
+function opcoesSit(idioma: Idioma): readonly (readonly [SituacaoPnad, string])[] {
+  const tx = txEm(idioma);
+  return [
+    ["total", tx("Todos os domicílios", "All households")], // i18n: dado
+    ["rural", tx("Só área rural", "Rural areas only")],
+  ];
+}
 const CORES_MAPA = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
 const CORES_REG: Record<string, string> = {
   BR: "var(--cor-carvao)",
@@ -98,21 +107,24 @@ export function InclusaoRegioesPnad({
   recorte?: ReactNode;
   notas?: ReactNode;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_ACESSO);
-  const ind = INDICADOR_PNAD[v.ind];
+  const ind = indicadorPnad(idioma)[v.ind];
   const dados = useMemo(() => dadosSeriePnad(serie, REGIOES, v.ind), [serie, v.ind]);
+  const anos = `${dados[0]?.ano ?? ""}${tx(" a ", " to ")}${dados.at(-1)?.ano ?? ""}`;
   return (
     <div className="space-y-4">
       <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
         {resposta}
-        <InclusaoOpcoes rotulo="Indicador" nome="inclusao-ac-ind" opcoes={OPCOES_IND} valor={v.ind} onMudar={(i) => definir({ ind: i })} />
+        <InclusaoOpcoes rotulo={tx("Indicador", "Indicator")} nome="inclusao-ac-ind" opcoes={opcoesInd(idioma)} valor={v.ind} onMudar={(i) => definir({ ind: i })} />
       </div>
       <GraficoLinhas
-        titulo={`${ind.rotulo}: Brasil e grandes regiões, ${dados[0]?.ano ?? ""} a ${dados.at(-1)?.ano ?? ""} (PNAD Contínua)`}
+        titulo={tx(`${ind.rotulo}: Brasil e grandes regiões, ${anos} (PNAD Contínua)`, `${ind.rotulo}: Brazil and major regions, ${anos} (Continuous PNAD)`)}
         dados={dados}
-        chaveX="ano"
+        chaveX="ano" // i18n: dado
         formatoX="texto"
-        series={REGIOES.map((t) => ({ id: t, rotulo: NOME_TERRITORIO[t], sigla: t === "BR" ? "BR" : t.replace("RG-", ""), cor: CORES_REG[t], espessura: t === "BR" ? 3 : 2 }))}
+        series={REGIOES.map((t) => ({ id: t, rotulo: nomeTerritorio(t, idioma), sigla: t === "BR" ? "BR" : t.replace("RG-", ""), cor: CORES_REG[t], espessura: t === "BR" ? 3 : 2 }))}
         unidade={ind.unidade}
         casas={1}
         legendaInterativa
@@ -126,12 +138,15 @@ export function InclusaoRegioesPnad({
 
 /** Mapa e tabela por UF; as UF escolhidas (até quatro) vão para a URL e alimentam o histórico. */
 export function InclusaoMapaPnad({ acesso, fonte }: { acesso: AcessoPnad; fonte: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_ACESSO);
   const [aviso, setAviso] = useState("");
-  const ind = INDICADOR_PNAD[v.ind];
+  const ind = indicadorPnad(idioma)[v.ind];
   const valores = useMemo(() => valoresMapaPnad(acesso, v.sit, v.ind), [acesso, v.sit, v.ind]);
   const classes = useMemo(() => quebrasQuantis(Object.values(valores), CORES_MAPA.length, { casas: 1 }), [valores]);
-  const linhas = useMemo(() => linhasUfsPnad(acesso, v.sit), [acesso, v.sit]);
+  const linhas = useMemo(() => linhasUfsPnad(acesso, v.sit, idioma), [acesso, v.sit, idioma]);
+  const rural = v.sit === "rural" ? tx(", área rural", ", rural areas") : "";
   const escolhidas = v.ufs.filter((u) => linhas.some((l) => l.uf === u));
   const ultima = escolhidas.at(-1) ?? null;
 
@@ -142,7 +157,7 @@ export function InclusaoMapaPnad({ acesso, fonte }: { acesso: AcessoPnad; fonte:
     }
     const r = alternarSelecao(escolhidas, uf, LIMITE_COMPARACAO);
     if (r.motivo === "limite") {
-      setAviso(`Limite de ${LIMITE_COMPARACAO} UF no histórico: remova uma para incluir ${uf}.`);
+      setAviso(tx(`Limite de ${LIMITE_COMPARACAO} UF no histórico: remova uma para incluir ${uf}.`, `Limit of ${LIMITE_COMPARACAO} states in the history: remove one to include ${uf}.`));
       return;
     }
     setAviso("");
@@ -152,23 +167,26 @@ export function InclusaoMapaPnad({ acesso, fonte }: { acesso: AcessoPnad; fonte:
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-        <InclusaoOpcoes rotulo="Indicador" nome="inclusao-ac-ind-mapa" opcoes={OPCOES_IND} valor={v.ind} onMudar={(i) => definir({ ind: i })} />
-        <InclusaoOpcoes rotulo="Situação" nome="inclusao-ac-sit" opcoes={OPCOES_SIT} valor={v.sit} onMudar={(sit) => definir({ sit })} />
+        <InclusaoOpcoes rotulo={tx("Indicador", "Indicator")} nome="inclusao-ac-ind-mapa" opcoes={opcoesInd(idioma)} valor={v.ind} onMudar={(i) => definir({ ind: i })} />
+        <InclusaoOpcoes rotulo={tx("Situação", "Area")} nome="inclusao-ac-sit" opcoes={opcoesSit(idioma)} valor={v.sit} onMudar={(sit) => definir({ sit })} />
       </div>
       <MapaCoropletico
-        titulo={`${ind.rotulo} por UF, ${acesso.ano_referencia}${v.sit === "rural" ? ", área rural" : ""} (PNAD Contínua)`}
+        titulo={tx(`${ind.rotulo} por UF, ${acesso.ano_referencia}${rural} (PNAD Contínua)`, `${ind.rotulo} by state, ${acesso.ano_referencia}${rural} (Continuous PNAD)`)}
         fonteGeometria={URL_GEO.uf}
         valores={valores}
         cores={CORES_MAPA}
         classificacao={classes}
         unidade={ind.unidade}
         casas={1}
-        rotuloRegiao={{ singular: "UF", plural: "UF" }}
+        rotuloRegiao={tx({ singular: "UF", plural: "UF" }, { singular: "state", plural: "states" })}
         selecionado={ultima ? codigoUf(ultima) : null}
         onSelecionar={(id) => alternar(siglaDoCodigo(id))}
         rotulos
         periodo={acesso.ano_referencia}
-        nota="Estimativa amostral; 0,0% quer dizer menos de 0,05%. Clique numa UF para incluí-la no histórico (até quatro)."
+        nota={tx(
+          "Estimativa amostral; 0,0% quer dizer menos de 0,05%. Clique numa UF para incluí-la no histórico (até quatro).",
+          "Sample estimate; 0.0% means less than 0.05%. Click a state to include it in the history (up to four).",
+        )}
       />
       {aviso && (
         <p role="status" className="text-sm text-carvao">
@@ -176,8 +194,8 @@ export function InclusaoMapaPnad({ acesso, fonte }: { acesso: AcessoPnad; fonte:
         </p>
       )}
       <TabelaInterativa
-        titulo={`Acesso à energia por UF, ${acesso.ano_referencia}${v.sit === "rural" ? ", área rural" : ""}`}
-        colunas={COLUNAS_UFS_PNAD}
+        titulo={tx(`Acesso à energia por UF, ${acesso.ano_referencia}${rural}`, `Access to energy by state, ${acesso.ano_referencia}${rural}`)}
+        colunas={colunasUfsPnad(idioma)}
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="uf"
@@ -188,8 +206,11 @@ export function InclusaoMapaPnad({ acesso, fonte }: { acesso: AcessoPnad; fonte:
         ordemInicial={{ coluna: "pct_sem", direcao: "desc" }}
         selecionado={ultima}
         onSelecionar={(id) => alternar(id)}
-        dicaBusca="Sigla da UF"
-        nota="Domicílios sem energia: diferença entre duas estimativas do IBGE arredondadas em milhares. Quando as duas coincidem, a coluna fica sem número e a contagem diz menos de 1 mil (não é zero)."
+        dicaBusca={tx("Sigla da UF", "State abbreviation")}
+        nota={tx(
+          "Domicílios sem energia: diferença entre duas estimativas do IBGE arredondadas em milhares. Quando as duas coincidem, a coluna fica sem número e a contagem diz menos de 1 mil (não é zero).",
+          "Households without energy: difference between two IBGE estimates rounded to thousands. When the two coincide, the column has no number and the count says less than 1 thousand (it is not zero).",
+        )}
       />
     </div>
   );
@@ -200,10 +221,12 @@ export function InclusaoMapaPnad({ acesso, fonte }: { acesso: AcessoPnad; fonte:
  * na tabela. Recebe só as linhas do Brasil: as UF vêm do CSV, e o conjunto de UF é o das 27 da federação.
  */
 export function InclusaoHistoricoPnad({ serieBr, csvUrl }: { serieBr: LinhaPnad[]; csvUrl: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_ACESSO);
   const [csv, setCsv] = useState<string | null>(null);
   const [erro, setErro] = useState<string | null>(null);
-  const ind = INDICADOR_PNAD[v.ind];
+  const ind = indicadorPnad(idioma)[v.ind];
   const escolhidas = v.ufs.filter((u) => UFS.includes(u));
   const precisa = escolhidas.length > 0;
 
@@ -233,36 +256,42 @@ export function InclusaoHistoricoPnad({ serieBr, csvUrl }: { serieBr: LinhaPnad[
   return (
     <div className="space-y-4">
       <Comparador
-        rotulo="UF no histórico (até 4)"
+        rotulo={tx("UF no histórico (até 4)", "States in the history (up to 4)")}
         entidades={entidades}
         selecionadas={escolhidas}
         onMudar={(ids) => definir({ ufs: ids })}
-        dicaBusca="Sigla da UF"
-        vazio="Nenhuma UF escolhida: o histórico mostra só o Brasil. Escolha aqui, no mapa ou na tabela."
+        dicaBusca={tx("Sigla da UF", "State abbreviation")}
+        vazio={tx(
+          "Nenhuma UF escolhida: o histórico mostra só o Brasil. Escolha aqui, no mapa ou na tabela.",
+          "No state chosen: the history shows only Brazil. Choose here, on the map or in the table.",
+        )}
       >
         {() => null}
       </Comparador>
       {precisa && !csv && !erro && (
         <p role="status" className="text-sm text-carvao-muted">
-          Carregando a série das UF (CSV publicado da PNAD)…
+          {tx("Carregando a série das UF (CSV publicado da PNAD)…", "Loading the state series (published PNAD CSV)…")}
         </p>
       )}
       {erro && (
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-          Não foi possível carregar a série das UF ({erro}). O arquivo está em{" "}
+          {tx(`Não foi possível carregar a série das UF (${erro}). O arquivo está em`, `The state series could not be loaded (${erro}). The file is at`)}{" "}
           <a href={csvUrl} download className="text-energia-dark underline underline-offset-4">
-            acesso à energia por UF, PNAD (CSV)
+            {tx("acesso à energia por UF, PNAD (CSV)", "access to energy by state, PNAD (CSV)")}
           </a>
           .
         </p>
       )}
       <GraficoLinhas
-        titulo={`${ind.rotulo}: Brasil${escolhidas.length ? ` e ${escolhidas.join(", ")}` : ""}, todos os domicílios`}
+        titulo={tx(
+          `${ind.rotulo}: Brasil${escolhidas.length ? ` e ${escolhidas.join(", ")}` : ""}, todos os domicílios`,
+          `${ind.rotulo}: Brazil${escolhidas.length ? ` and ${escolhidas.join(", ")}` : ""}, all households`,
+        )}
         dados={historico}
-        chaveX="ano"
+        chaveX="ano" // i18n: dado
         formatoX="texto"
         series={[
-          { id: "BR", rotulo: "Brasil", sigla: "BR", cor: "var(--cor-carvao)", espessura: 3 },
+          { id: "BR", rotulo: tx("Brasil", "Brazil"), sigla: "BR", cor: "var(--cor-carvao)", espessura: 3 },
           ...(csv ? escolhidas.map((uf, i) => ({ id: uf, rotulo: uf, sigla: uf, cor: CORES_COMP[i % CORES_COMP.length] })) : []),
         ]}
         unidade={ind.unidade}
@@ -273,61 +302,83 @@ export function InclusaoHistoricoPnad({ serieBr, csvUrl }: { serieBr: LinhaPnad[
   );
 }
 
-const OPCOES_PROG: readonly (readonly [ProgramaLptUrl, string])[] = [
-  ["total", "Todos"],
-  ["rural", "Rural"],
-  ["regioes_remotas", "Regiões remotas da Amazônia Legal"],
-  ["recurso_distribuidora", "Recurso da distribuidora"],
-];
+function opcoesProg(idioma: Idioma): readonly (readonly [ProgramaLptUrl, string])[] {
+  const tx = txEm(idioma);
+  return [
+    ["total", tx("Todos", "All")], // i18n: dado
+    ["rural", tx("Rural", "Rural")],
+    ["regioes_remotas", tx("Regiões remotas da Amazônia Legal", "Remote regions of the Legal Amazon")],
+    ["recurso_distribuidora", tx("Recurso da distribuidora", "Distribution utility funds")],
+  ];
+}
 
-const COLUNAS_LPT_UF: ColunaTabela[] = [
-  { id: "nome", rotulo: "UF", tipo: "texto" },
-  { id: "regiao", rotulo: "Região", tipo: "texto", categorica: true },
-  { id: "total", rotulo: "Domicílios atendidos (total)", tipo: "numero", casas: 0 },
-  { id: "desde_2023", rotulo: "Desde jan/2023", tipo: "numero", casas: 0 },
-  { id: "rural", rotulo: "Rural", tipo: "numero", casas: 0 },
-  { id: "regioes_remotas", rotulo: "Regiões remotas", tipo: "numero", casas: 0 },
-  { id: "recurso_distribuidora", rotulo: "Recurso da distribuidora", tipo: "numero", casas: 0 },
-];
+function colunasLptUf(idioma: Idioma): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "nome", rotulo: tx("UF", "State"), tipo: "texto", idiomaTexto: "nome" },
+    { id: "regiao", rotulo: tx("Região", "Region"), tipo: "texto", categorica: true },
+    { id: "total", rotulo: tx("Domicílios atendidos (total)", "Households served (total)"), tipo: "numero", casas: 0 }, // i18n: dado
+    { id: "desde_2023", rotulo: tx("Desde jan/2023", "Since Jan 2023"), tipo: "numero", casas: 0 },
+    { id: "rural", rotulo: tx("Rural", "Rural"), tipo: "numero", casas: 0 },
+    { id: "regioes_remotas", rotulo: tx("Regiões remotas", "Remote regions"), tipo: "numero", casas: 0 },
+    { id: "recurso_distribuidora", rotulo: tx("Recurso da distribuidora", "Distribution utility funds"), tipo: "numero", casas: 0 },
+  ];
+}
 
 export function InclusaoLpt({ lpt, fonte }: { lpt: Pick<LuzParaTodos, "serie_anual" | "ultimo_mes" | "programas" | "por_uf">; fonte: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const mes = (x: string | null | undefined) => mesEm(x, idioma);
   const [v, definir] = useEstadoUrl(ESQUEMA_ACESSO);
-  const dados = useMemo(() => dadosLptAnual(lpt, v.prog), [lpt, v.prog]);
-  const rotProg = OPCOES_PROG.find(([id]) => id === v.prog)?.[1] ?? v.prog;
+  const dados = useMemo(() => dadosLptAnual(lpt, v.prog, idioma), [lpt, v.prog, idioma]);
+  const opcoes = opcoesProg(idioma);
+  const rotProg = opcoes.find(([id]) => id === v.prog)?.[1] ?? v.prog;
   const linhasUf = useMemo(
     () =>
       lpt.por_uf.map((u) => ({
         id: u.uf,
         nome: u.nome ?? u.uf,
-        regiao: u.regiao ? (NOME_TERRITORIO[u.regiao] ?? u.regiao) : null,
+        regiao: u.regiao ? nomeTerritorio(u.regiao, idioma) : null,
         total: u.total,
         desde_2023: u.desde_2023,
         rural: u.rural,
         regioes_remotas: u.regioes_remotas,
         recurso_distribuidora: u.recurso_distribuidora,
       })),
-    [lpt.por_uf],
+    [lpt.por_uf, idioma],
   );
+  const programa = v.prog === "total" ? tx("todos os programas", "all programs") : tx(`programa ${rotProg}`, `${rotProg} program`);
   return (
     <div className="space-y-5">
-      <InclusaoOpcoes rotulo="Programa" nome="inclusao-ac-prog" opcoes={OPCOES_PROG} valor={v.prog} onMudar={(prog) => definir({ prog })} />
+      <InclusaoOpcoes rotulo={tx("Programa", "Program")} nome="inclusao-ac-prog" opcoes={opcoes} valor={v.prog} onMudar={(prog) => definir({ prog })} />
       <GraficoBarras
-        titulo={`Domicílios atendidos por ano do atendimento, ${v.prog === "total" ? "todos os programas" : `programa ${rotProg}`} (MME, até ${mes(lpt.ultimo_mes)})`}
+        titulo={tx(
+          `Domicílios atendidos por ano do atendimento, ${programa} (MME, até ${mes(lpt.ultimo_mes)})`,
+          `Households served by year of service, ${programa} (MME, up to ${mes(lpt.ultimo_mes)})`,
+        )}
         dados={dados}
         chaveCategoria="id"
         chaveRotulo="rotulo"
-        series={[{ id: "valor", rotulo: v.prog === "total" ? "Todos os programas" : rotProg, cor: "var(--cor-energia)" }]}
-        unidade="domicílios"
+        series={[{ id: "valor", rotulo: v.prog === "total" ? tx("Todos os programas", "All programs") : rotProg, cor: "var(--cor-energia)" }]} // i18n: dado
+        unidade={tx("domicílios", "households")}
         casas={0}
         altura={300}
       />
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-        Sem dado num programa quer dizer nenhuma linha dele no arquivo naquele ano; zero quer dizer linhas com quantidade zero. O último ano vai só até {mes(lpt.ultimo_mes)} e não se
-        compara a ano completo.
+        {tx(
+          <>
+            Sem dado num programa quer dizer nenhuma linha dele no arquivo naquele ano; zero quer dizer linhas com quantidade zero. O último ano vai só até {mes(lpt.ultimo_mes)} e não se
+            compara a ano completo.
+          </>,
+          <>
+            No data in a program means no row of it in the file that year; zero means rows with a quantity of zero. The latest year only runs to {mes(lpt.ultimo_mes)} and is not
+            compared with a complete year.
+          </>,
+        )}
       </p>
       <TabelaInterativa
-        titulo={`Luz para Todos por UF, ${lpt.serie_anual[0]?.ano ?? ""} a ${mes(lpt.ultimo_mes)}`}
-        colunas={COLUNAS_LPT_UF}
+        titulo={tx(`Luz para Todos por UF, ${lpt.serie_anual[0]?.ano ?? ""} a ${mes(lpt.ultimo_mes)}`, `Luz para Todos by state, ${lpt.serie_anual[0]?.ano ?? ""} to ${mes(lpt.ultimo_mes)}`)}
+        colunas={colunasLptUf(idioma)}
         linhas={linhasUf}
         chaveLinha="id"
         colunaRotulo="nome"
@@ -335,9 +386,12 @@ export function InclusaoLpt({ lpt, fonte }: { lpt: Pick<LuzParaTodos, "serie_anu
         versao={lpt.ultimo_mes}
         nomeArquivo="inclusao-luz-para-todos-uf"
         chaveUrl="ac.lpt"
-        ordemInicial={{ coluna: "total", direcao: "desc" }}
-        dicaBusca="Nome da UF"
-        nota="Domicílios ligados pelo programa (não pessoas, não UC com benefício). Ligação não mede a qualidade do fornecimento depois dela."
+        ordemInicial={{ coluna: "total", direcao: "desc" }} // i18n: dado
+        dicaBusca={tx("Nome da UF", "State name")}
+        nota={tx(
+          "Domicílios ligados pelo programa (não pessoas, não UC com benefício). Ligação não mede a qualidade do fornecimento depois dela.",
+          "Households connected by the program (not people, not consumer units with a benefit). A connection does not measure the quality of supply after it.",
+        )}
       />
     </div>
   );
@@ -351,6 +405,8 @@ export function InclusaoIsolados({
   si: Pick<SistemasIsolados, "ciclo" | "por_uf" | "localidades_mais_populosas" | "pontos_json">;
   fonte: string;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [todas, setTodas] = useState<LocalidadeLinha[] | null>(null);
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
@@ -371,19 +427,20 @@ export function InclusaoIsolados({
   return (
     <div className="space-y-5">
       <GraficoBarras
-        titulo={`População das localidades isoladas por UF, ciclo ${si.ciclo} do PASI`}
+        titulo={tx(`População das localidades isoladas por UF, ciclo ${si.ciclo} do PASI`, `Population of isolated localities by state, PASI cycle ${si.ciclo}`)}
         dados={porUf}
         chaveCategoria="id"
         chaveRotulo="nome"
-        series={[{ id: "populacao", rotulo: "População informada", cor: "var(--serie-termica)" }]}
-        unidade="pessoas"
+        rotulosSaoNomes
+        series={[{ id: "populacao", rotulo: tx("População informada", "Reported population"), cor: "var(--serie-termica)" }]}
+        unidade={tx("pessoas", "people")}
         casas={0}
         orientacao="horizontal"
         rotulosValor
       />
       <TabelaInterativa
-        titulo={`Localidades e população por UF, ciclo ${si.ciclo}`}
-        colunas={COLUNAS_ISOLADOS_UF}
+        titulo={tx(`Localidades e população por UF, ciclo ${si.ciclo}`, `Localities and population by state, cycle ${si.ciclo}`)}
+        colunas={colunasIsoladosUf(idioma)}
         linhas={porUf}
         chaveLinha="id"
         colunaRotulo="nome"
@@ -392,12 +449,19 @@ export function InclusaoIsolados({
         nomeArquivo={`inclusao-sistemas-isolados-uf-${si.ciclo}`}
         chaveUrl="ac.isouf"
         ordemInicial={{ coluna: "populacao", direcao: "desc" }}
-        nota="População ausente na fonte não vira zero: a soma usa só as localidades que informam, e a última coluna conta as que não informam."
+        nota={tx(
+          "População ausente na fonte não vira zero: a soma usa só as localidades que informam, e a última coluna conta as que não informam.",
+          "Population missing in the source does not become zero: the sum uses only the localities that report it, and the last column counts those that do not.",
+        )}
       />
       <div className="space-y-3">
         <TabelaInterativa
-          titulo={todas ? `Todas as ${todas.length} localidades do ciclo ${si.ciclo}` : `As ${linhas.length} localidades mais populosas do ciclo ${si.ciclo}`}
-          colunas={COLUNAS_LOCALIDADES}
+          titulo={
+            todas
+              ? tx(`Todas as ${todas.length} localidades do ciclo ${si.ciclo}`, `All ${todas.length} localities of cycle ${si.ciclo}`)
+              : tx(`As ${linhas.length} localidades mais populosas do ciclo ${si.ciclo}`, `The ${linhas.length} most populous localities of cycle ${si.ciclo}`)
+          }
+          colunas={colunasLocalidades(idioma)}
           linhas={linhas}
           chaveLinha="id"
           colunaRotulo="nome"
@@ -406,7 +470,7 @@ export function InclusaoIsolados({
           nomeArquivo={`inclusao-localidades-isoladas-${si.ciclo}`}
           chaveUrl="ac.iso"
           ordemInicial={{ coluna: "populacao", direcao: "desc" }}
-          dicaBusca="Localidade, município ou distribuidora"
+          dicaBusca={tx("Localidade, município ou distribuidora", "Locality, municipality or distribution utility")}
         />
         {!todas && (
           <button
@@ -415,14 +479,14 @@ export function InclusaoIsolados({
             disabled={carregando}
             className="rotulo inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-carvao hover:bg-energia-fundo disabled:opacity-60"
           >
-            {carregando ? "Carregando…" : "Ver todas as localidades do ciclo"}
+            {carregando ? tx("Carregando…", "Loading…") : tx("Ver todas as localidades do ciclo", "See all localities of the cycle")}
           </button>
         )}
         {erro && (
           <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-            Não foi possível carregar a lista completa ({erro}). Ela também está em{" "}
+            {tx(`Não foi possível carregar a lista completa (${erro}). Ela também está em`, `The full list could not be loaded (${erro}). It is also in`)}{" "}
             <a href="/energia/series/inclusao_sistemas_isolados.csv" download className="text-energia-dark underline underline-offset-4">
-              localidades de sistemas isolados (CSV)
+              {tx("localidades de sistemas isolados (CSV)", "isolated system localities (CSV)")}
             </a>
             .
           </p>
