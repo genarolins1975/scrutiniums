@@ -53,8 +53,13 @@ function fmt(n: number) {
   return n.toLocaleString("pt-BR", { maximumFractionDigits: 3 });
 }
 
+/** Categoria com teto de consumo no ato (como a tarifa social da Saneago, até 20 m³): acima dele não há preço definido. */
+export const acimaDoLimite = (cat: Categoria, consumo: number) => cat.consumoMaximo != null && consumo > cat.consumoMaximo;
+
+/** Quem chama confere `acimaDoLimite` antes: calcular acima do teto seria inventar um preço que o ato não traz. */
 export function calcularConta(cat: Categoria, consumo: number, adicionais: { rotulo: string; percentual: number }[] = []): Conta {
   const c = Math.max(0, consumo);
+  if (acimaDoLimite(cat, c)) throw new RangeError(`${cat.rotulo}: o ato só define preço até ${cat.consumoMaximo} m³ por mês`);
   const a = servico(cat.agua, c, "agua");
   let esgoto: { total: number; linhas: LinhaConta[] } | null = null;
   if (cat.esgoto) {
@@ -84,14 +89,14 @@ export function calcularConta(cat: Categoria, consumo: number, adicionais: { rot
   };
 }
 
-/** Preço médio efetivo (R$/m³) e custo do metro cúbico seguinte. */
+/** Preço médio efetivo (R$/m³) e custo do metro cúbico seguinte (nulo quando o seguinte passa do teto da categoria). */
 export function leituras(t: TarifaVerificada, categoria: string, consumo: number) {
   const cat = t.categorias[categoria];
   const atual = calcularConta(cat, consumo);
-  const proximo = calcularConta(cat, consumo + 1);
+  const proximo = acimaDoLimite(cat, consumo + 1) ? null : calcularConta(cat, consumo + 1);
   return {
     conta: atual,
     precoMedio: consumo > 0 ? atual.total / consumo : null,
-    m3Adicional: Math.round((proximo.total - atual.total) * 100) / 100,
+    m3Adicional: proximo ? Math.round((proximo.total - atual.total) * 100) / 100 : null,
   };
 }

@@ -9,7 +9,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { agregado, agregados, fichas, meta, municipios } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
-import { calcularConta } from "@/lib/saneamento/conta";
+import { acimaDoLimite, calcularConta } from "@/lib/saneamento/conta";
 import { TARIFAS } from "@/lib/saneamento/tarifas";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { LIMITE_RAZAO_TARIFA_SOCIAL, razaoTarifaSocial } from "@/lib/saneamento/medidas";
@@ -69,7 +69,7 @@ export default function Pagina() {
     const res = t.categorias.residencial;
     if (!res) return [];
     return Object.entries(t.categorias)
-      .filter(([k]) => k !== "residencial")
+      .filter(([k, cat]) => k !== "residencial" && CONSUMOS.every((c) => !acimaDoLimite(cat, c)))
       .map(([k, cat]) => {
         // Sem esgoto verificado na categoria, compara só a água dos dois lados: nunca conta completa contra conta parcial.
         const soAgua = !cat.esgoto || !!cat.esgotoNaoVerificado || !res.esgoto || !!res.esgotoNaoVerificado;
@@ -163,7 +163,7 @@ export default function Pagina() {
               limite da elegibilidade.
             </p>
           }
-          recorte={<>SINISA 2024: {inteiro(vinculos)} vínculos prestador × município de água; tabelas verificadas de cinco prestadores, vigentes em 2026.</>}
+          recorte={<>SINISA 2024: {inteiro(vinculos)} vínculos prestador × município de água; tabelas verificadas de {new Set(TARIFAS.map((t) => t.prestadorSinisa)).size} prestadores, vigentes em 2026.</>}
           situacao={cap.situacao}
           pendencia={cap.pendencia}
         />

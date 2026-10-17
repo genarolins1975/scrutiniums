@@ -8,6 +8,7 @@ import { agregado, agregados, municipios, reguladores } from "@/lib/saneamento/g
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { inteiro, numero } from "@/lib/saneamento/formato";
+import atos from "@/lib/saneamento/dados/atos.json";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ const PAPEIS = [
 ];
 
 export default function Pagina() {
+  const nPrestadoresAtos = new Set((atos as { atos: { prestador: string }[] }).atos.map((a) => a.prestador)).size;
   const cap = capituloPorSlug("responsaveis")!;
   const br = agregado("BR");
   const g = br?.gestao;
@@ -182,7 +184,7 @@ export default function Pagina() {
           <Indisponivel titulo="Atos dos reguladores ainda não integrados">
             <p>
               Relatórios de fiscalização, autos de infração, sanções e estatísticas de ouvidoria ficam nos portais de cada regulador, em formatos
-              diferentes. Não há base nacional. O capítulo 5.3 já cataloga os atos tarifários verificados de cinco prestadores; os demais atos não foram
+              diferentes. Não há base nacional. O capítulo 5.3 já cataloga os atos tarifários verificados de {nPrestadoresAtos} prestadores; os demais atos não foram
               coletados.
             </p>
           </Indisponivel>

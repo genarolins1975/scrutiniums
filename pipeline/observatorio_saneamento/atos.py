@@ -49,6 +49,22 @@ ACRESCIMOS = [
      "decisao": "50% de desconto sobre a tarifa residencial até 15 m³", "ato": "Deliberação 1.699/2025", "data": "2025",
      "vigencia": "01/06/2025", "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl16992025.pdf", "verificado": True,
      "obs": "Conferido nos valores da Tabela 1 de 2026: 20,21 = 40,42 ÷ 2 e 3,20 = 6,40 ÷ 2."},
+    # Saneago (AGR): reajustes anuais lidos nos atos publicados no site da prestadora, em 17/10/2026.
+    {"prestador": "SANEAGO", "area": "Municípios atendidos pela Saneago em Goiás", "regulador": "AGR", "tipo": "reajuste", "pedido": "Nota Técnica Conjunta 4/2023 (processo 202200052000382)",
+     "decisao": "7,02% sobre a tabela de fevereiro de 2022, para as tarifas de água e esgoto e para a tarifa básica", "ato": "Resolução Normativa AGR 203, 27/02/2023", "data": "2023-02-27",
+     "vigencia": "a partir de 01/04/2023", "url": "https://www.saneago.com.br/2016/arquivos/Resolucao203-2023_AGR_CR.pdf", "verificado": True,
+     "obs": "Lido no Diário Oficial de Goiás de 01/03/2023, p.90-91 (PDF em imagem). Tarifa básica residencial normal de R$ 15,67."},
+    {"prestador": "SANEAGO", "area": "Municípios atendidos pela Saneago em Goiás", "regulador": "AGR", "tipo": "reajuste", "pedido": "Nota Técnica Conjunta 1/2024 (processo 202300052000337)",
+     "decisao": "1,950% sobre a tabela de fevereiro de 2023, para as tarifas de água e esgoto e para a tarifa básica", "ato": "Resolução Normativa AGR 242, 28/02/2024", "data": "2024-02-28",
+     "vigencia": "a partir de 01/04/2024", "url": "https://www.saneago.com.br/2024/arquivos/res-AGR-242-2024-CR.pdf", "verificado": True, "obs": ""},
+    {"prestador": "SANEAGO", "area": "Municípios atendidos pela Saneago em Goiás", "regulador": "AGR", "tipo": "reajuste", "pedido": "Nota Técnica Conjunta 1/2025 (processo 202400052000395)",
+     "decisao": "4,196% sobre a tabela de abril de 2024, para as tarifas de água e esgoto e para a tarifa básica", "ato": "Resolução Normativa AGR 283, 27/02/2025", "data": "2025-02-27",
+     "vigencia": "a partir de 01/04/2025", "url": "https://www.saneago.com.br/2025/arquivos/Res_Normativa_AGR_283_2025.pdf", "verificado": True, "obs": ""},
+    {"prestador": "SANEAGO", "area": "Municípios atendidos pela Saneago e por sua subdelegatária BRK Ambiental Goiás", "regulador": "AGR", "tipo": "reajuste",
+     "pedido": "Nota Técnica Conjunta 1/2026 AR/AGR/AMAE/ARM (processo 202500052000440)",
+     "decisao": "4,845% linear para as tarifas e para o custo mínimo fixo; estrutura tarifária homologada em anexo único", "ato": "Resolução Conjunta 1/2026 AGR/AMAE, 24/02/2026", "data": "2026-02-24",
+     "vigencia": "a partir de 01/04/2026", "url": "https://www.saneago.com.br/2025/arquivos/Resolucao_Normativa_Conjunta_1-2026_AGR-AMAE_Reajuste_Tarifario_2026.pdf", "verificado": True,
+     "obs": "Resolução conjunta da AGR com a AMAE (Rio Verde). Mesmo texto e mesma tabela nas resoluções conjuntas AGR/AR (25/02/2026) e AGR/ARM (assinada em 27/02/2026), conferidas na imagem do anexo."},
 ]
 
 
@@ -89,7 +105,7 @@ def main():
     for i, a in enumerate(atos):
         a["id"] = f"ato-{i + 1:03d}"
     with open(DESTINO, "w", encoding="utf-8") as fh:
-        json.dump({"levantado_em": "2026-10-14", "atos": atos}, fh, ensure_ascii=False, indent=1)
+        json.dump({"levantado_em": "2026-10-14", "levantado_por_prestador": {"SANEAGO": "2026-10-17"}, "atos": atos}, fh, ensure_ascii=False, indent=1)
         fh.write("\n")
     print(f"{len(atos)} atos; verificados {sum(a['verificado'] for a in atos)}")
 

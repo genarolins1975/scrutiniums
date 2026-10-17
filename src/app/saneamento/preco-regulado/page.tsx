@@ -5,7 +5,7 @@ import { Abertura, Fonte, Nota, Secao } from "@/components/saneamento/Editorial"
 import { AmostraTarifas, SubnavPreco } from "@/components/saneamento/PrecoRegulado";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { ROTA, capituloPorSlug } from "@/lib/saneamento/capitulos";
-import { TARIFAS } from "@/lib/saneamento/tarifas";
+import { TARIFAS, periodoConsultaTarifas } from "@/lib/saneamento/tarifas";
 import { calcularConta } from "@/lib/saneamento/conta";
 import { ESTUDOS } from "@/lib/saneamento/dados/estudos";
 import atos from "@/lib/saneamento/dados/atos.json";
@@ -68,6 +68,14 @@ const REGULADORES = [
     social: "50% até 30 m³ (Resolução 14/2011, art. 101, II)",
     documentos: "Resolução publicada e acessada; Diário Oficial do DF inacessível",
   },
+  {
+    sigla: "AGR, AR, AMAE e ARM",
+    prestador: "SANEAGO (GO)",
+    modelo: "Reajuste anual por índice, em resolução conjunta da AGR com as agências de Goiânia, de Rio Verde e de Anápolis; revisão periódica com tarifa máxima (P0) e Fator X na última lida, de Goiânia (2021)",
+    estrutura: "Tarifa básica por economia somada à conta; faixas de consumo sem consumo mínimo; esgoto em coleta (80%) e tratamento (20%) da água",
+    social: "Tabela própria até 20 m³, cerca de 53% abaixo da residencial normal, e básica pela metade (Resolução Conjunta 1/2026)",
+    documentos: "Resoluções no site da Saneago e da AGR lidas; Nota Técnica Conjunta 12/2021 (Goiânia) lida; Nota Técnica Conjunta 1/2026 não localizada",
+  },
 ];
 
 export default function Pagina() {
@@ -92,7 +100,7 @@ export default function Pagina() {
           recorte={
             <>
               {TARIFAS.length} tabelas verificadas, 2 estudos completos de formação de tarifa (ARSESP e AGEPAR) e {lista.length} atos tarifários de
-              2023 a 2026, {lista.filter((a) => a.verificado).length} lidos no texto oficial. Consulta em 14/10/2026.
+              2023 a 2026, {lista.filter((a) => a.verificado).length} lidos no texto oficial. Consultas em {periodoConsultaTarifas()}.
             </>
           }
           situacao={cap.situacao}

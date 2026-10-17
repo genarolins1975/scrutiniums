@@ -5,7 +5,7 @@ import { AmostraTarifas, FichasTabelas, SubnavPreco } from "@/components/saneame
 import { SimuladorConta } from "@/components/saneamento/SimuladorConta";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { ROTA } from "@/lib/saneamento/capitulos";
-import { TARIFAS } from "@/lib/saneamento/tarifas";
+import { TARIFAS, periodoConsultaTarifas } from "@/lib/saneamento/tarifas";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export default function Pagina() {
               preço médio efetivo e quanto custa o metro cúbico seguinte.
             </p>
           }
-          recorte={<>{TARIFAS.length} tabelas verificadas; 1 economia, esgoto convencional; tabelas vigentes em 14/10/2026.</>}
+          recorte={<>{TARIFAS.length} tabelas verificadas; 1 economia, esgoto convencional; tabelas vigentes nas consultas de {periodoConsultaTarifas()}.</>}
         />
         <SubnavPreco atual="simulador" />
         <AmostraTarifas />

@@ -8,7 +8,8 @@ import dados from "./dados/tarifas.json";
 export type Faixa = { de: number; ate: number | null; preco: number };
 export type TabelaServico = { fixo?: number; minimo?: { m3: number; valor: number }; faixas: Faixa[] };
 export type Esgoto = TabelaServico | { percentual: number };
-export type Categoria = { rotulo: string; agua: TabelaServico; esgoto?: Esgoto; esgotoNaoVerificado?: string };
+/** consumoMaximo: m³ por mês até onde o ato define preço para a categoria; acima disso a conta não é calculada. */
+export type Categoria = { rotulo: string; agua: TabelaServico; esgoto?: Esgoto; esgotoNaoVerificado?: string; consumoMaximo?: number };
 export type FonteTarifa = { rotulo: string; url: string; sha256: string; localizador: string };
 export type TarifaVerificada = {
   id: string;
@@ -25,6 +26,8 @@ export type TarifaVerificada = {
   unidade: string;
   categorias: Record<string, Categoria>;
   adicionais?: { id: string; rotulo: string; percentual: number; nota: string }[];
+  /** Regra de cobrança que o ato não diz por extenso e que a simulação assume; aparece junto da conta simulada. */
+  metodoNaoVerificado?: string;
   observacoes: string[];
   exemplos: Record<string, Record<string, number>>;
   municipios: string[];
@@ -33,6 +36,16 @@ export type TarifaVerificada = {
 
 export const TARIFAS = (dados as unknown as { tarifas: TarifaVerificada[] }).tarifas;
 export const ACESSO_TARIFAS = (dados as { acessado: string }).acessado;
+
+const dataBr = (iso: string) => iso.split("-").reverse().join("/");
+
+/** Intervalo em que as tabelas foram consultadas, para o recorte das páginas. */
+export function periodoConsultaTarifas(): string {
+  const datas = TARIFAS.map((t) => t.acessado).sort();
+  const ini = dataBr(datas[0]);
+  const fim = dataBr(datas[datas.length - 1]);
+  return ini === fim ? ini : `${ini} a ${fim}`;
+}
 
 export function tarifa(id: string): TarifaVerificada | undefined {
   return TARIFAS.find((t) => t.id === id);
