@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -11,6 +11,7 @@ import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { inteiro, numero, sinal } from "@/lib/saneamento/formato";
+import { ANOS_ATE_META } from "@/lib/saneamento/respostas";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -21,8 +22,6 @@ export const metadata: Metadata = {
 };
 
 const ATLAS = ["nr8-iaa-rede", "nr8-iae-rede"];
-/** Anos de 2025 a 2033: do ano de referência do SINISA (2024) ao prazo legal (31/12/2033). */
-const ANOS_ATE_META = 9;
 
 export default function Pagina() {
   const cap = capituloPorSlug("planejamento")!;
@@ -116,6 +115,15 @@ export default function Pagina() {
               responderam.
             </>
           }
+        />
+        <NestaPagina
+          itens={[
+            { id: "atlas", rotulo: "Atlas da NR 8" },
+            { id: "ritmo", rotulo: "Ritmo até a meta" },
+            { id: "laboratorio-ritmo", rotulo: "Se o ritmo continuasse" },
+            { id: "mundo", rotulo: "No mundo" },
+            { id: "planos", rotulo: "Planos municipais" },
+          ]}
         />
 
         <Numeros

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Nota, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, NestaPagina, Nota, Secao } from "@/components/saneamento/Editorial";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { meta, URL_GOLD } from "@/lib/saneamento/gold";
@@ -91,6 +91,16 @@ export default function Pagina() {
               2024. Captura em {m?.sinisa.capturado_em.slice(0, 10).split("-").reverse().join("/") ?? "sem dado"}.
             </>
           }
+        />
+        <NestaPagina
+          itens={[
+            { id: "contrato", rotulo: "Contrato metodológico" },
+            { id: "viabilidade", rotulo: "Matriz de viabilidade" },
+            { id: "conferencias", rotulo: "Conferências entre bases" },
+            { id: "fontes", rotulo: "Arquivos de origem" },
+            { id: "downloads", rotulo: "Downloads" },
+            { id: "limitacoes", rotulo: "Limitações" },
+          ]}
         />
 
         <Secao id="contrato" titulo="Contrato metodológico">

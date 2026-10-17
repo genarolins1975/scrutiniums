@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
@@ -53,6 +53,15 @@ export default function Pagina() {
         texto={<p>Entre moradores de cor ou raça parda, {numero(proporcao("parda-esgoto"), 1)}% viviam sem rede nem fossa séptica. Entre moradores de cor ou raça branca, eram {numero(proporcao("branca-esgoto"), 1)}%. O Censo permite observar diferenças entre grupos no mesmo ano. Não identifica a causa dessas diferenças.</p>}
         recorte="Censo Demográfico 2022. Moradores em domicílios particulares permanentes ocupados; na medida de água em favelas, a unidade é domicílio. Brasil, UFs e municípios com resultado disponível."
         situacao={cap.situacao} pendencia={cap.pendencia} />
+      <NestaPagina
+        itens={[
+          { id: "cor-raca", rotulo: "Cor ou raça" },
+          { id: "outros-universos", rotulo: "Quilombolas, indígenas e favelas" },
+          { id: "atlas", rotulo: "Atlas por grupo" },
+          { id: "mundo", rotulo: "Cidade e campo no mundo" },
+          { id: "dados", rotulo: "Conferir os números" },
+        ]}
+      />
       <Numeros colunas={2} itens={[
         { rotulo: "Sem ligação à rede de água, cor ou raça parda", valor: `${numero(proporcao("parda-agua"),1)}%`, contexto: `Brasil, Censo 2022, SIDRA 6894. ${inteiro(br?.desigualdades?.["parda-agua"]?.[0])} de ${inteiro(br?.desigualdades?.["parda-agua"]?.[1])} moradores.` },
         { rotulo: "Sem ligação à rede de água, cor ou raça branca", valor: `${numero(proporcao("branca-agua"),1)}%`, contexto: `Brasil, Censo 2022, SIDRA 6894. ${inteiro(br?.desigualdades?.["branca-agua"]?.[0])} de ${inteiro(br?.desigualdades?.["branca-agua"]?.[1])} moradores.` },

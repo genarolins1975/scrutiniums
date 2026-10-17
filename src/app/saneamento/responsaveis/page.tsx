@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { agregado, agregados, municipios, reguladores } from "@/lib/saneamento/gold";
@@ -81,6 +81,14 @@ export default function Pagina() {
           recorte={<>Módulo Gestão Municipal do SINISA 2024: {inteiro(g?.respondentes)} municípios responderam; {inteiro(g?.nao_respondentes)} não responderam.</>}
           situacao={cap.situacao}
           pendencia={cap.pendencia}
+        />
+        <NestaPagina
+          itens={[
+            { id: "papeis", rotulo: "Quem faz o quê" },
+            { id: "reguladores", rotulo: "Reguladores" },
+            { id: "controle-social", rotulo: "Controle social" },
+            { id: "fiscalizacao", rotulo: "Fiscalização e sanções" },
+          ]}
         />
 
         <Numeros

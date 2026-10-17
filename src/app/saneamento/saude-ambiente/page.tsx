@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -9,10 +9,11 @@ import { DiagramaF } from "@/components/saneamento/Ilustracoes";
 import { agregados, meta, municipiosComSaude, URL_SAUDE_MUNICIPIOS } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
-import { ANOS_SAUDE, MEDIDAS_SAUDE, agregarMedida, medida } from "@/lib/saneamento/medidas";
+import { MEDIDAS_SAUDE, agregarMedida, medida } from "@/lib/saneamento/medidas";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { data, inteiro, numero } from "@/lib/saneamento/formato";
 import type { Municipio } from "@/lib/saneamento/tipos";
+import { JANELA_SAUDE } from "@/lib/saneamento/respostas";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 const ATLAS = MEDIDAS_SAUDE.map((m) => m.id);
-const JANELA = `${ANOS_SAUDE[0]} a ${ANOS_SAUDE[ANOS_SAUDE.length - 1]}`;
+const JANELA = JANELA_SAUDE;
 
 /** Doenças do recorte, a ligação de transmissão com o saneamento e o que cada medida usa. */
 const DOENCAS = [
@@ -133,6 +134,16 @@ export default function Pagina() {
           }
           situacao={cap.situacao}
           pendencia={cap.pendencia}
+        />
+        <NestaPagina
+          itens={[
+            { id: "doencas", rotulo: "Que doenças entram" },
+            { id: "atlas", rotulo: "Atlas" },
+            { id: "carencia", rotulo: "Carência e taxas" },
+            { id: "ufs", rotulo: "Brasil e UFs" },
+            { id: "mundo", rotulo: "No mundo" },
+            { id: "dados", rotulo: "Conferir os números" },
+          ]}
         />
 
         <Numeros
