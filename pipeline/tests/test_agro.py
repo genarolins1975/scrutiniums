@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from pathlib import Path
-from pipeline.agro import run,capturar,economia,sociedade
+from pipeline.agro import run,capturar,economia,sociedade,apoio,ambiente
 
 class AgroDadosTest(unittest.TestCase):
     @classmethod
@@ -175,6 +175,38 @@ class AgroSociedadeTest(unittest.TestCase):
         self.assertTrue(all(i['peso'] is None or 0<=i['peso']<=100 for i in p['itens']))
         b=copy.deepcopy(self.coletas['ipca']);serie=b['consultas']['serie2020']['resposta'][0]['resultados'][0]['series'][0]['serie'];serie.pop(sorted(serie)[5])
         with self.assertRaisesRegex(ValueError,'mês ausente'):sociedade.normalizar_ipca(b)
+
+class AgroApoioAmbienteTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        _,cls.coletas=economia.carregar();cls.a=apoio.normalizar(cls.coletas)['apoio'];cls.m=ambiente.normalizar(cls.coletas)['ambiente']
+    def test_taxa_media_ponderada_so_com_contratos_sem_indexador(self):
+        linhas=[{'valorTotal':100.0,'contratosTotal':2,'valorTaxa':100.0,'somaTaxa':500.0,'contratosTaxa':2},{'valorTotal':300.0,'contratosTotal':1,'valorTaxa':300.0,'somaTaxa':3000.0,'contratosTaxa':1}]
+        self.assertAlmostEqual(apoio._media(linhas),8.75);self.assertIsNone(apoio._media([{'valorTaxa':0.0,'somaTaxa':0.0}]))
+        for m in self.a['juros']['meses']:
+            self.assertTrue(0<m['coberturaTaxa']<=1);self.assertTrue(m['geral'] is None or 0<=m['geral']<40)
+        b=copy.deepcopy(self.coletas['sicor']);k=next(iter(b['agregado']));b['agregado'][k]['valorTaxa']=b['agregado'][k]['valorTotal']+10
+        with self.assertRaisesRegex(ValueError,'maior que o total'):apoio.normalizar_sicor(b)
+    def test_grupo_de_fonte_pela_descricao_oficial(self):
+        self.assertEqual(apoio._grupo_fonte('LETRA DE CRÉDITO DO AGRONEGÓCIO (LCA) - EQUALIZADA - DIRECIONADA/CONTROLADA'),'equalizada')
+        self.assertEqual(apoio._grupo_fonte('RECURSOS LIVRES - EQUALIZADA - LIVRE/CONTROLADA'),'equalizada')
+        self.assertEqual(apoio._grupo_fonte('LETRA DE CRÉDITO DO AGRONEGÓCIO (LCA) - DIRECIONADA/NÃO CONTROLADA'),'livre')
+        self.assertEqual(apoio._grupo_fonte('OBRIGATÓRIOS - MCR 6.2 - DIRECIONADA/CONTROLADA'),'controlada')
+    def test_pagamentos_somam_as_acoes_e_anos_consecutivos(self):
+        for a in self.a['pagamentos']['anos']:self.assertAlmostEqual(a['total'],sum(a['acoes'].values()),places=2)
+        b=copy.deepcopy(self.coletas['tesouro']);ano=sorted({k.split('|')[0] for k in b['pagamentos']})[2];b['pagamentos']={k:v for k,v in b['pagamentos'].items() if not k.startswith(ano)}
+        with self.assertRaisesRegex(ValueError,'ano ausente'):apoio.normalizar_tesouro(b)
+    def test_prodes_taxa_anual_continua_e_estimativa_marcada(self):
+        t=self.m['prodes']['taxaAmazoniaLegal'];self.assertEqual([r['fim'] for r in t],list(range(t[0]['fim'],t[-1]['fim']+1)))
+        self.assertTrue(all(r['estimada']==(r['fim']>=self.m['prodes']['anoPreliminar']) for r in t))
+        for b in self.m['prodes']['biomas']:
+            self.assertTrue(all(p['anual']==(p['fim']-p['inicio']==1) for p in b['periodos']))
+    def test_seeg_anos_consecutivos_e_mapbiomas_dentro_do_territorio(self):
+        anos=[r['ano'] for r in self.m['emissoes']['anos']];self.assertEqual(anos,list(range(anos[0],anos[-1]+1)))
+        for r in self.m['usoTerra']['anos']:
+            self.assertAlmostEqual(r['agropecuaria'],r['pastagem']+r['agricultura']+r['silvicultura']+r['mosaico']);self.assertLess(r['agropecuaria']+r['vegetacaoNativa'],r['total'])
+        b=copy.deepcopy(self.coletas['mapbiomas']);b['classes'][0]['anos']={k:v*1000 for k,v in b['classes'][0]['anos'].items()}
+        with self.assertRaisesRegex(ValueError,'fora do território'):ambiente.normalizar_mapbiomas(b)
 
 class AgroCapturaTest(unittest.TestCase):
     def test_cobertura_exige_cada_indicador_ano_e_territorio(self):

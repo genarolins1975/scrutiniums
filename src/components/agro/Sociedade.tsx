@@ -5,7 +5,7 @@ import { mesCurtoAgro, trimestreAgro, variacaoPctAgro } from '@/lib/agro/economi
 import { BarrasAgro, DivergenteAgro, LinhasAgro, TabelaAgro } from './Graficos';
 import { FonteAgro, LimiteAgro, SecaoAgro } from './Editorial';
 import { ExportarAgro } from './Exportar';
-import { AlimentacaoObservadaAgro } from './DadosObservados';
+import { AlimentacaoObservadaAgro, ProgramasAgro } from './DadosObservados';
 import s from './Agro.module.css';
 
 const pct = (v: number | null | undefined, casas = 1) => v == null ? 'Não disponível' : numeroAgro(v, casas) + '%';
@@ -104,5 +104,102 @@ export function PratoAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaAgro }
             <AlimentacaoObservadaAgro dados={dados}/>
         </SecaoAgro>
         <LimiteAgro titulo="O que esta página não diz">Não atribui a alta de um alimento à exportação, ao clima ou a uma política: o IPCA mede o preço, não a causa. Também não mede o preço pago ao produtor. Para testar o efeito de uma alta no seu orçamento, use o <Link href="/agronegocio/alimentos-consumo#c1" prefetch={false}>cenário de orçamento familiar</Link>.</LimiteAgro>
+    </>;
+}
+
+// ---------------------------------------------------------------- 6. Apoio público
+
+export function respostasPolitica(e: EconomiaAgro) {
+    const j = e.apoio.juros.meses.at(-1)!, pag = e.apoio.pagamentos.anos.filter(a => a.ano < Number(e.apoio.pagamentos.ultimoMesPagamento.slice(0, 4)) || e.apoio.pagamentos.ultimoMesPagamento.endsWith('-12')).at(-1)!, taxa = e.ambiente.prodes.taxaAmazoniaLegal.filter(t => !t.estimada).at(-1)!, emi = e.ambiente.emissoes.anos.at(-1)!;
+    return {
+        apoio: `Em ${mesCurtoAgro(j.mes)}, o Pronaf saiu a ${pct(j.pronaf)} ao ano em média, contra ${pct(j.demais)} nos demais contratos e Selic de ${pct(j.selic)}. O Tesouro pagou R$ ${numeroAgro(pag.total / 1e9, 1)} bi em subvenções ao crédito rural em ${pag.ano}.`,
+        ambiente: `A Amazônia Legal perdeu ${numeroAgro(taxa.km2)} km² de vegetação nativa em ${taxa.inicio}/${String(taxa.fim).slice(2)} (INPE). A agropecuária emitiu ${numeroAgro(emi.agropecuaria / 1e6, 0)} milhões de t de CO2e em ${emi.ano} (SEEG).`,
+    };
+}
+
+export function ApoioAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaAgro }) {
+    const j = e.apoio.juros, meses = j.meses, ult = meses.at(-1)!, pag = e.apoio.pagamentos, c = dados.credito;
+    const anoAberto = !pag.ultimoMesPagamento.endsWith('-12') ? Number(pag.ultimoMesPagamento.slice(0, 4)) : null;
+    const fechados = pag.anos.filter(a => a.ano !== anoAberto), ultFechado = fechados.at(-1)!;
+    const pronaf = c.programas.find(p => /pronaf/i.test(p.nome)), pronamp = c.programas.find(p => /pronamp/i.test(p.nome));
+    const rotuloMes = meses.map(m => mesCurtoAgro(m.mes));
+    const colsJ = ['Mês', 'Geral, % a.a.', 'Pronaf', 'Pronamp', 'Demais', 'Equalizada', 'Controlada sem equalização', 'Livre ou não controlada', 'Selic, % a.a.', 'Valor contratado, R$', 'Parcela do valor na média, %'];
+    const linhasJ = meses.map(m => [m.mes, m.geral, m.pronaf, m.pronamp, m.demais, m.equalizada, m.controlada, m.livre, m.selic, m.valor, 100 * m.coberturaTaxa]);
+    const acoes = Object.entries(pag.acoes).filter(([k]) => fechados.some(a => (a.acoes[k] ?? 0) !== 0));
+    const colsP = ['Ano', 'Total, R$', ...acoes.map(([, n]) => n + ', R$')], linhasP = pag.anos.map(a => [a.ano === anoAberto ? `${a.ano} (até ${mesCurtoAgro(pag.ultimoMesPagamento)})` : String(a.ano), a.total, ...acoes.map(([k]) => a.acoes[k] ?? 0)]);
+    return <>
+        <dl className={`${s.metrics} ${s.metrics4}`}>
+            <Metrica rotulo="Taxa média do Pronaf" valor={pct(ult.pronaf, 1)} nota={`Ao ano · ${mesCurtoAgro(ult.mes)} · contratos sem indexador · BCB/Sicor`}/>
+            <Metrica rotulo="Taxa média dos demais contratos" valor={pct(ult.demais, 1)} nota={`Fora de Pronaf e Pronamp · ${mesCurtoAgro(ult.mes)} · Selic do mês: ${pct(ult.selic)}`}/>
+            <Metrica rotulo="Pronaf no crédito rural contratado" valor={pronaf ? pct(100 * pronaf.valor / c.nacional.valor, 0) : 'Não disponível'} nota={`R$ ${pronaf ? numeroAgro(pronaf.valor / 1e9, 1) : '?'} bi de R$ ${numeroAgro(c.nacional.valor / 1e9, 1)} bi · ${mesAgro(c.janela.ini)} a ${mesAgro(c.janela.fim)} · snapshot preservado`}/>
+            <Metrica rotulo={`Subvenções pagas pelo Tesouro em ${ultFechado.ano}`} valor={`R$ ${numeroAgro(ultFechado.total / 1e9, 1)} bi`} nota="Equalização de juros, Pronaf, alongamento de dívidas e indenizações do Proagro · Tesouro Transparente · R$ correntes"/>
+        </dl>
+        <SecaoAgro titulo="Quanto custa o dinheiro do crédito rural?" texto={`Em ${mesAgro(ult.mes)}, a taxa média ficou em ${pct(ult.pronaf)} no Pronaf, ${pct(ult.pronamp)} no Pronamp e ${pct(ult.demais)} nos demais contratos. A Selic do mês foi ${pct(ult.selic)}.`}>
+            <span className={s.status}>Dado observado · microdados do Sicor</span>
+            <LinhasAgro titulo="Taxa média contratada por programa" unidade="% ao ano" rotulos={rotuloMes} series={[{ nome: 'Pronaf', valores: meses.map(m => m.pronaf) }, { nome: 'Pronamp', valores: meses.map(m => m.pronamp) }, { nome: 'Demais', valores: meses.map(m => m.demais) }, { nome: 'Selic', valores: meses.map(m => m.selic), referencia: true }]} nota={`Média ponderada pelo valor de cada contrato, só os sem indexador (${pct(100 * ult.coberturaTaxa, 0)} do valor em ${mesCurtoAgro(ult.mes)}). Taxa contratada, não custo efetivo total. Selic: média do mês anualizada (BCB, série 4189).`}/>
+            <LinhasAgro titulo="Taxa média pela origem do dinheiro" unidade="% ao ano" rotulos={rotuloMes} series={[{ nome: 'Equalizada pelo Tesouro', valores: meses.map(m => m.equalizada) }, { nome: 'Controlada sem equalização', valores: meses.map(m => m.controlada) }, { nome: 'Livre ou não controlada', valores: meses.map(m => m.livre) }]} nota="Grupos pela descrição oficial da fonte de recursos. Equalizada: o Tesouro paga ao banco a diferença entre o custo de captação e a taxa do programa. Controlada: taxa limitada por regra, como recursos obrigatórios e fundos constitucionais. Livre: taxa de mercado, como a LCA não controlada."/>
+            <details className={s.sourceDetails}><summary>Ver todos os meses</summary><div><TabelaAgro titulo="Juros do crédito rural · média ponderada por valor" colunas={colsJ} linhas={linhasJ}/></div></details>
+            <div className={s.actions}><ExportarAgro nome="agro-juros-credito-rural.csv" colunas={[...colsJ, 'Fonte']} linhas={linhasJ.map(r => [...r, url(dados, 'sicor')])}/></div>
+            <FonteAgro dados={dados} id="sicor" periodo={`${meses[0].mes} a ${ult.mes}`} nota={capturado(dados, 'sicor')}/>
+        </SecaoAgro>
+        <SecaoAgro titulo="Quanto o Tesouro paga para o juro ser menor?" texto={`Os pagamentos de subvenção ao crédito rural somaram R$ ${numeroAgro(ultFechado.total / 1e9, 1)} bilhões em ${ultFechado.ano}. Eles se referem a contratos de safras anteriores e oscilam com a Selic, que define o custo de captação dos bancos.`}>
+            <span className={s.status}>Dado observado · Tesouro Transparente</span>
+            <BarrasAgro titulo="Subvenções ao crédito rural pagas por ano" unidade="R$ bilhões correntes" periodo={`${pag.anos[0].ano} a ${mesCurtoAgro(pag.ultimoMesPagamento)}`} linhas={pag.anos.map(a => ({ nome: a.ano === anoAberto ? `${a.ano} (até ${mesCurtoAgro(pag.ultimoMesPagamento)})` : String(a.ano), valor: a.total / 1e9, focal: a.ano === ultFechado.ano }))} nota="Ações orçamentárias do crédito rural e do Proagro, pela data de pagamento. O ano em curso só tem os meses publicados."/>
+            <TabelaAgro titulo="Pagamentos por ação orçamentária" colunas={colsP} linhas={linhasP}/>
+            <div className={s.actions}><ExportarAgro nome="agro-subvencoes-tesouro.csv" colunas={[...colsP, 'Fonte']} linhas={linhasP.map(r => [...r, url(dados, 'tesouro')])}/></div>
+            <FonteAgro dados={dados} id="tesouro" periodo={`${pag.anos[0].ano} a ${mesCurtoAgro(pag.ultimoMesPagamento)}`} nota={capturado(dados, 'tesouro')}/>
+        </SecaoAgro>
+        <SecaoAgro titulo="Quem recebe o crédito." texto={`Pronaf${pronamp ? ' e Pronamp' : ''} são os programas para agricultores familiares e médios produtores. O restante sai sem programa ou por linhas de investimento.`}>
+            <ProgramasAgro dados={dados}/>
+        </SecaoAgro>
+        <LimiteAgro titulo="O que ainda não está nesta conta">Subvenção ao prêmio do seguro rural (PSR), renúncia tributária, custo implícito dos fundos constitucionais e das exigibilidades bancárias. Contratos não são beneficiários únicos, e taxa menor não demonstra impacto sobre renda ou produção. Para simular uma parcela, use o <Link href="/agronegocio/credito-protecao#d4" prefetch={false}>cenário de financiamento</Link>.</LimiteAgro>
+    </>;
+}
+
+// ---------------------------------------------------------------- 7. Ambiente
+
+export function AmbienteAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaAgro }) {
+    const pr = e.ambiente.prodes, taxa = pr.taxaAmazoniaLegal, fechada = taxa.filter(t => !t.estimada).at(-1)!, estimada = taxa.find(t => t.estimada) ?? null, pico = taxa.reduce((a, b) => b.km2 > a.km2 ? b : a), minimo = taxa.filter(t => !t.estimada).reduce((a, b) => b.km2 < a.km2 ? b : a);
+    const em = e.ambiente.emissoes.anos, ultEm = em.at(-1)!, uso = e.ambiente.usoTerra.anos, ultUso = uso.at(-1)!, priUso = uso[0];
+    const ano = (p: { inicio: number; fim: number }) => `${p.inicio}/${String(p.fim).slice(2)}`;
+    const ultimos = pr.biomas.map(b => ({ b, p: b.periodos.filter(p => p.anual && !p.parcial).at(-1) ?? null }));
+    const cerrado = pr.biomas.find(b => b.id === 'cerrado')!, cerradoAnual = cerrado.periodos.filter(p => p.anual && !p.parcial);
+    const colsT = ['Ano PRODES', 'Taxa, km²', 'Natureza'], linhasT = taxa.map(t => [ano(t), t.km2, t.estimada ? 'Estimativa preliminar' : 'Taxa consolidada']);
+    const colsE = ['Ano', 'Agropecuária, t CO2e', 'Mudança de uso da terra, emissão bruta, t CO2e', 'Mudança de uso da terra, remoções, t CO2e'], linhasE = em.map(r => [r.ano, r.agropecuaria, r.mudancaUsoTerra, r.mudancaUsoTerraRemocao]);
+    const colsU = ['Ano', 'Pastagem, ha', 'Agricultura, ha', 'Silvicultura, ha', 'Mosaico de usos, ha', 'Agropecuária, ha', 'Vegetação nativa, ha'], linhasU = uso.map(r => [r.ano, r.pastagem, r.agricultura, r.silvicultura, r.mosaico, r.agropecuaria, r.vegetacaoNativa]);
+    return <>
+        <dl className={`${s.metrics} ${s.metrics4}`}>
+            <Metrica rotulo={`Desmatamento na Amazônia Legal, ${ano(fechada)}`} valor={`${numeroAgro(fechada.km2)} km²`} nota={`INPE, PRODES · taxa oficial · ${sinal(variacaoPctAgro(fechada.km2, taxa[taxa.indexOf(fechada) - 1]?.km2))} sobre o ano anterior${estimada ? ` · ${ano(estimada)}: ${numeroAgro(estimada.km2)} km², estimativa preliminar` : ''}`}/>
+            <Metrica rotulo={`Desmatamento mapeado no Cerrado, ${cerradoAnual.length ? ano(cerradoAnual.at(-1)!) : ''}`} valor={`${numeroAgro(cerradoAnual.at(-1)?.km2 ?? null)} km²`} nota="INPE, PRODES · incremento mapeado, não taxa · soma das UFs do bioma"/>
+            <Metrica rotulo={`Emissões da agropecuária, ${ultEm.ano}`} valor={`${numeroAgro(ultEm.agropecuaria / 1e6, 0)} Mt CO2e`} nota={`SEEG ${e.ambiente.emissoes.versao ?? ''} · mudança de uso da terra: ${numeroAgro(ultEm.mudancaUsoTerra / 1e6, 0)} Mt de emissão bruta · estimativa da sociedade civil`}/>
+            <Metrica rotulo={`Área de agropecuária, ${ultUso.ano}`} valor={`${numeroAgro(ultUso.agropecuaria / 1e6, 0)} mi ha`} nota={`MapBiomas · ${pct(100 * ultUso.agropecuaria / ultUso.total, 0)} do território · ${numeroAgro(priUso.agropecuaria / 1e6, 0)} mi ha em ${priUso.ano}`}/>
+        </dl>
+        <SecaoAgro titulo="Quanto se desmata na Amazônia?" texto={`A taxa oficial chegou a ${numeroAgro(pico.km2)} km² em ${ano(pico)} e ao menor valor da série, ${numeroAgro(minimo.km2)} km², em ${ano(minimo)}. Em ${ano(fechada)}, foram ${numeroAgro(fechada.km2)} km².`}>
+            <span className={s.status}>Dado observado · INPE PRODES</span>
+            <LinhasAgro titulo="Taxa anual de desmatamento na Amazônia Legal" unidade="km²" casas={0} rotulos={taxa.map(t => ano(t))} series={[{ nome: 'Taxa PRODES', valores: taxa.map(t => t.km2) }]} nota={`Corte raso da vegetação nativa, ano PRODES de agosto a julho. ${estimada ? `O último ponto (${ano(estimada)}) é estimativa preliminar do INPE, revista na consolidação.` : ''} Painel atualizado em ${new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(new Date(pr.atualizado))}.`}/>
+            <details className={s.sourceDetails}><summary>Ver todos os anos</summary><div><TabelaAgro titulo="Taxa PRODES · Amazônia Legal" colunas={colsT} linhas={linhasT}/></div></details>
+            <div className={s.actions}><ExportarAgro nome="agro-prodes-amazonia-legal.csv" colunas={[...colsT, 'Fonte']} linhas={linhasT.map(r => [...r, url(dados, 'prodes')])}/></div>
+        </SecaoAgro>
+        <SecaoAgro titulo="E nos outros biomas?" texto="Fora da Amazônia, o INPE publica a área mapeada a cada ano, não uma taxa oficial. Os números servem para acompanhar cada bioma, não para somar com a taxa amazônica.">
+            <LinhasAgro titulo="Desmatamento mapeado no Cerrado" unidade="km²" casas={0} rotulos={cerradoAnual.map(p => ano(p))} series={[{ nome: 'Cerrado', valores: cerradoAnual.map(p => p.km2) }]} nota="Só os anos com mapeamento anual; o início da série tem períodos de dois a quatro anos, fora do gráfico."/>
+            <TabelaAgro titulo="Último ano completo mapeado em cada bioma" colunas={['Bioma', 'Ano PRODES', 'Área mapeada, km²']} linhas={ultimos.map(({ b, p }) => [b.nome, p ? ano(p) : null, p?.km2 ?? null])}/>
+            <p className={s.note}>A Amazônia como bioma é outro recorte que a Amazônia Legal, que inclui parte do Cerrado. O PRODES mede supressão da vegetação nativa, sem dizer se foi legal, nem qual atividade ocupou a área depois.</p>
+            <FonteAgro dados={dados} id="prodes" periodo={`${ano(taxa[0])} a ${ano(taxa.at(-1)!)}`} nota={capturado(dados, 'prodes')}/>
+        </SecaoAgro>
+        <SecaoAgro titulo="Quanto o campo emite?" texto={`Em ${ultEm.ano}, a agropecuária respondeu por ${numeroAgro(ultEm.agropecuaria / 1e6, 0)} milhões de toneladas de CO2 equivalente, sobretudo pela fermentação entérica do gado e pelos solos manejados. A mudança de uso da terra, que inclui o desmatamento, emitiu ${numeroAgro(ultEm.mudancaUsoTerra / 1e6, 0)} milhões em termos brutos.`}>
+            <span className={s.status}>Estimativa · SEEG, Observatório do Clima</span>
+            <LinhasAgro titulo="Emissões brutas por setor" unidade="milhões de t CO2e (GWP-AR5)" casas={0} rotulos={em.map(r => String(r.ano))} series={[{ nome: 'Agropecuária', valores: em.map(r => r.agropecuaria / 1e6) }, { nome: 'Mudança de uso da terra', valores: em.map(r => r.mudancaUsoTerra / 1e6), referencia: true }]} nota={`Estimativa da sociedade civil, não o inventário oficial do governo. A mudança de uso da terra inclui desmatamento por qualquer causa e tem remoções (${numeroAgro((ultEm.mudancaUsoTerraRemocao ?? 0) / 1e6, 0)} Mt em ${ultEm.ano}) que não aparecem no gráfico.`}/>
+            <details className={s.sourceDetails}><summary>Ver todos os anos</summary><div><TabelaAgro titulo="Emissões SEEG · Brasil" colunas={colsE} linhas={linhasE}/></div></details>
+            <div className={s.actions}><ExportarAgro nome="agro-emissoes-seeg.csv" colunas={[...colsE, 'Fonte']} linhas={linhasE.map(r => [...r, url(dados, 'seeg')])}/></div>
+            <FonteAgro dados={dados} id="seeg" periodo={`${em[0].ano} a ${ultEm.ano}`} nota={capturado(dados, 'seeg')}/>
+        </SecaoAgro>
+        <SecaoAgro titulo="Quanta terra a agropecuária ocupa?" texto={`Pastagem, agricultura, silvicultura e mosaico de usos passaram de ${numeroAgro(priUso.agropecuaria / 1e6, 0)} para ${numeroAgro(ultUso.agropecuaria / 1e6, 0)} milhões de hectares entre ${priUso.ano} e ${ultUso.ano}; a vegetação nativa, de ${numeroAgro(priUso.vegetacaoNativa / 1e6, 0)} para ${numeroAgro(ultUso.vegetacaoNativa / 1e6, 0)} milhões.`}>
+            <span className={s.status}>Dado observado · MapBiomas</span>
+            <LinhasAgro titulo="Agropecuária e vegetação nativa no território" unidade="milhões de hectares" casas={0} rotulos={uso.map(r => String(r.ano))} series={[{ nome: 'Agropecuária', valores: uso.map(r => r.agropecuaria / 1e6) }, { nome: 'Vegetação nativa', valores: uso.map(r => r.vegetacaoNativa / 1e6), referencia: true }]} nota="Mapeamento anual por satélite. Vegetação nativa reúne formações florestais e não florestais naturais. As curvas não provam que cada hectare de uma virou o da outra; para isso há a matriz de transição do MapBiomas, não integrada."/>
+            <details className={s.sourceDetails}><summary>Ver todos os anos e classes</summary><div><TabelaAgro titulo="Uso da terra · Brasil · MapBiomas" colunas={colsU} linhas={linhasU}/></div></details>
+            <div className={s.actions}><ExportarAgro nome="agro-uso-terra-mapbiomas.csv" colunas={[...colsU, 'Fonte']} linhas={linhasU.map(r => [...r, url(dados, 'mapbiomas')])}/></div>
+            <FonteAgro dados={dados} id="mapbiomas" periodo={`${priUso.ano} a ${ultUso.ano}`} nota={capturado(dados, 'mapbiomas')}/>
+        </SecaoAgro>
+        <LimiteAgro titulo="O que esta página não diz">Não atribui desmatamento nem emissão a um produtor, cadeia ou estado: as séries são nacionais ou por bioma. Desmatamento legal e ilegal não se distinguem aqui. Risco climático, seguro e perdas de safra ainda não estão integrados. Conceitos e cenários continuam no capítulo <Link href="/agronegocio/clima-ambiente" prefetch={false}>Clima e ambiente</Link>.</LimiteAgro>
     </>;
 }

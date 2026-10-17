@@ -16,7 +16,7 @@ import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 
-from . import sociedade
+from . import ambiente, apoio, sociedade
 from .run import ROOT, SEED, numero
 
 MANIFESTO = 'coletas.json'
@@ -57,6 +57,8 @@ FONTES = {
     'cnt': {'arquivo': 'cnt.json.gz', 'url': 'https://sidra.ibge.gov.br/tabela/1846', 'nome': 'IBGE, Contas Nacionais Trimestrais (SIDRA 1846 e 5932)', 'licenca': 'Dados públicos do IBGE; citar a fonte', 'limite': 'Agropecuária no sentido das Contas Nacionais: produção dentro da porteira, com pesca e produção florestal. Não inclui insumos, agroindústria e serviços do agronegócio ampliado. Valores correntes; taxas de crescimento em volume.'},
     'lspa': {'arquivo': 'lspa.json.gz', 'url': 'https://sidra.ibge.gov.br/tabela/6588', 'nome': 'IBGE, Levantamento Sistemático da Produção Agrícola (SIDRA 6588)', 'licenca': 'Dados públicos do IBGE; citar a fonte', 'limite': 'Estimativa mensal da safra do ano, revista a cada mês e depois substituída pela PAM. Anos anteriores usam a estimativa de dezembro. Brasil, sem recorte por UF nesta coleta.'},
     **sociedade.FONTES,
+    **apoio.FONTES,
+    **ambiente.FONTES,
     'comex': {'arquivo': 'comex.json.gz', 'url': 'https://comexstat.mdic.gov.br/', 'nome': 'MDIC, Comex Stat (exportação e importação por capítulo, posição, NCM e país)', 'licenca': 'Dados abertos do governo federal; citar a fonte', 'limite': 'Valores FOB em US$ correntes e massa líquida em kg. O recorte agro por capítulo SH não é o Agrostat/MAPA. Valor unitário de comércio não é preço pago ou recebido na fazenda.'},
 }
 
@@ -132,7 +134,7 @@ def coletar_bundles():
     ultimo = max(periodos)
     escolhidos = sorted({ultimo, *[f'{a}12' for a in range(int(ultimo[:4]) - ANOS_LSPA, int(ultimo[:4])) if f'{a}12' in periodos]})
     lspa = {'ultimoPeriodo': ultimo, 'consultas': {'safra': sidra(f'/6588/periodos/{"|".join(escolhidos)}/variaveis/{"|".join(VARIAVEIS_LSPA)}?localidades=N1[all]&classificacao=48[{",".join(PRODUTOS_LSPA)}]')}}
-    return {'cnt': cnt, 'lspa': lspa, 'comex': comex, **sociedade.coletar(_baixar)}
+    return {'cnt': cnt, 'lspa': lspa, 'comex': comex, **sociedade.coletar(_baixar), **apoio.coletar(), **ambiente.coletar()}
 
 
 # ---------------------------------------------------------------- normalização
@@ -366,7 +368,7 @@ def normalizar_comex(bundle):
 
 
 def normalizar(coletas):
-    return {'pib': normalizar_cnt(coletas['cnt']), 'safra': normalizar_lspa(coletas['lspa']), 'comercio': normalizar_comex(coletas['comex']), **sociedade.normalizar(coletas)}
+    return {'pib': normalizar_cnt(coletas['cnt']), 'safra': normalizar_lspa(coletas['lspa']), 'comercio': normalizar_comex(coletas['comex']), **sociedade.normalizar(coletas), **apoio.normalizar(coletas), **ambiente.normalizar(coletas)}
 
 
 # ---------------------------------------------------------------- sementes

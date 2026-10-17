@@ -6,6 +6,7 @@ import { BarrasAgro, LinhasAgro, TabelaAgro } from './Graficos';
 import { FonteAgro, LimiteAgro, SecaoAgro } from './Editorial';
 import { ExportarAgro } from './Exportar';
 import { SetaAgro } from './Figuras';
+import { respostasPolitica, respostasSociedade } from './Sociedade';
 import s from './Agro.module.css';
 
 /** Nomes curtos dos capítulos do recorte agro; a tabela mantém o nome oficial. */
@@ -45,6 +46,8 @@ export function respostasAgro(e: EconomiaAgro): Record<(typeof PERGUNTAS_AGRO)[n
         conjuntura: `Safra de grãos estimada em ${mi(safra.atual.producao)} milhões de toneladas em ${safra.atual.ano}, ${sinalAgro(safra.variacao)} sobre ${safra.atual.ano - 1}. Exportações agro ${sinalAgro(x.acumulado.variacaoAgro)} em ${mesesAgro(x.acumulado.ano, x.acumulado.meses)}.`,
         insumos: `Fertilizante importado a US$ ${numeroAgro(fert.valorUnitario, 0)} por tonelada em ${mesesAgro(fert.ano, fert.meses)}: ${numeroAgro(m.relacao.at(-1), 2)} t de soja exportada para cada tonelada.`,
         mercados: china && chinaSoja ? `A China comprou ${pct(china.participacao)} das exportações agro e ${pct(chinaSoja.participacao)} da soja em grão em ${x.destinos.ano}.` : `Destinos das exportações agro e da soja em ${x.destinos.ano}, por país.`,
+        ...respostasSociedade(e),
+        ...respostasPolitica(e),
     };
 }
 
@@ -166,7 +169,10 @@ export function InsumosAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaAgro
             <PaisesBarras titulo="Origem dos fertilizantes importados" recorte={origens} n={8} nota="País de origem declarado na importação, capítulo 31. Parcela do valor FOB do ano."/>
             <TabelaPaises dados={dados} recorte={origens} titulo={`Todas as origens · ${origens.ano}`} arquivo="agro-fertilizantes-origens.csv" universo="Importações do capítulo 31 (adubos)"/>
         </SecaoAgro>
-        <LimiteAgro titulo="O que esta página ainda não mede">Custo de produção por lavoura (a Conab publica a referência, mas o portal não respondeu na coleta de 17/10/2026), preço do insumo na fazenda, juros do crédito rural e consumo nacional de fertilizantes. Sem o consumo, não se calcula a parcela importada. Para testar hipóteses com seus próprios números, use os cenários de <Link href="/agronegocio/custos-renda#b1" prefetch={false}>margem</Link> e de <Link href="/agronegocio/custos-renda#k1" prefetch={false}>caixa da safra</Link>; eles não são estatística do setor.</LimiteAgro>
+        <SecaoAgro titulo="E o custo do dinheiro?" texto={`Quem financia o insumo paga juros. Em ${mesAgro(e.apoio.juros.ultimoMes)}, a taxa média dos contratos de crédito rural sem indexador foi ${numeroAgro(e.apoio.juros.meses.at(-1)!.geral, 1)}% ao ano: ${numeroAgro(e.apoio.juros.meses.at(-1)!.pronaf, 1)}% no Pronaf e ${numeroAgro(e.apoio.juros.meses.at(-1)!.demais, 1)}% fora dos programas.`}>
+            <div className={s.actions}><Link className={s.button} href="/agronegocio/apoio" prefetch={false}>Juros por programa e subvenções do Tesouro</Link></div>
+        </SecaoAgro>
+        <LimiteAgro titulo="O que esta página ainda não mede">Custo de produção por lavoura (a Conab publica planilhas por município de referência, sob licença CC BY-ND, que não permite adaptar os dados, e com formato diferente a cada aba), preço do insumo na fazenda e consumo nacional de fertilizantes. Sem o consumo, não se calcula a parcela importada. Para testar hipóteses com seus próprios números, use os cenários de <Link href="/agronegocio/custos-renda#b1" prefetch={false}>margem</Link> e de <Link href="/agronegocio/custos-renda#k1" prefetch={false}>caixa da safra</Link>; eles não são estatística do setor.</LimiteAgro>
     </>;
 }
 

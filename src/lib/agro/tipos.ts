@@ -244,4 +244,17 @@ export type EconomiaAgro = {
         itens: { id: string; nome: string; doze: number | null; peso: number | null }[];
         fonte: string;
     };
+    apoio: {
+        juros: {
+            ultimoMes: string;
+            meses: ({ mes: string; valor: number; contratos: number; coberturaTaxa: number; selic: number | null } & Record<'geral' | 'pronaf' | 'pronamp' | 'demais' | 'equalizada' | 'controlada' | 'livre', number | null> & Record<'valor_equalizada' | 'valor_controlada' | 'valor_livre', number>)[];
+            fonte: string;
+        };
+        pagamentos: { acoes: Record<string, string>; anos: { ano: number; total: number; acoes: Record<string, number> }[]; ultimoMesPagamento: string; atualizadoNaFonte: string | null; fonte: string };
+    };
+    ambiente: {
+        prodes: { atualizado: string; anoPreliminar: number; taxaAmazoniaLegal: { inicio: number; fim: number; km2: number; estimada: boolean }[]; biomas: { id: string; nome: string; periodos: { inicio: number; fim: number; km2: number; anual: boolean; parcial: boolean }[] }[]; fonte: string };
+        emissoes: { versao: string | null; unidade: string; anos: { ano: number; agropecuaria: number; mudancaUsoTerra: number; mudancaUsoTerraRemocao: number | null }[]; fonte: string };
+        usoTerra: { url: string; unidade: string; anos: { ano: number; pastagem: number; agricultura: number; silvicultura: number; mosaico: number; vegetacaoNativa: number; total: number; agropecuaria: number }[]; fonte: string };
+    };
 };
