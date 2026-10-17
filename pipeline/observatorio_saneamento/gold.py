@@ -27,6 +27,7 @@ import re
 import unicodedata
 from collections import Counter, defaultdict
 
+from . import controle
 from . import saude
 from .desigualdades import SPECS as SPECS_DESIGUALDADES
 from .desigualdades import construir as construir_desigualdades
@@ -1103,6 +1104,8 @@ def construir():
     saude_campos, meta["saude"] = saude.construir(ids6, uf6)
     for r in regs:
         r.update(saude_campos[r["id"][:6]])
+    # Controle societário das companhias abertas (CVM, FRE), ligado aos prestadores por CNPJ: arquivo próprio.
+    controle_gold, meta["cvm"] = controle.construir(controle.declarados(aba("Detalhamento Prestadores Serv")), lista_prest)
     return {
         "reguladores": lista_reg,
         "meta": meta,
@@ -1111,6 +1114,7 @@ def construir():
         "agregados": agregados,
         "prestadores": lista_prest,
         "etes": lista_etes,
+        "controle": controle_gold,
     }
 
 
@@ -1296,6 +1300,9 @@ def arquivos(g):
         "linhas": [[r[c] for c in campos_sd] for r in g["municipios"]],
     })
     out["saude_municipios.csv"] = csv_bytes([r for _, r in CAMPOS_SAUDE], [[r[c] for c in campos_sd] for r in g["municipios"]])
+    out["controle_societario.json"] = json_bytes(g["controle"])
+    cab_cs, linhas_cs = controle.linhas_csv(g["controle"])
+    out["controle_societario.csv"] = csv_bytes(cab_cs, linhas_cs)
     cab_p = ["id", "nome", "sigla", "natureza", "abrangencia", "ufs", "municipios_agua", "municipios_esgoto",
              "populacao_atendida_agua", "populacao_atendida_esgoto", "perdas_distribuicao_pct",
              "investimento_agua", "investimento_esgoto"]

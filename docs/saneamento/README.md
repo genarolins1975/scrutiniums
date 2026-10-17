@@ -18,7 +18,7 @@ Documentos desta pasta:
 | | 4 Para onde vai o esgoto? | `/saneamento/esgoto` | Publicado |
 | B Preço regulado | 5 Preço regulado: o que pagamos, por que foi autorizado, o que financia | `/saneamento/preco-regulado` e subpainéis 5.1 a 5.5 | Parcial (amostra verificada) |
 | | 6 A conta cabe no orçamento? A tarifa social chega a quem precisa? | `/saneamento/tarifa-social` | Parcial (economias por família elegível do CadÚnico; famílias beneficiadas não publicadas) |
-| C Prestadores | 7 Quem presta o serviço e quem controla as empresas? | `/saneamento/prestadores` e `/saneamento/prestadores/[id]` | Parcial (sem controle societário) |
+| C Prestadores | 7 Quem presta o serviço e quem controla as empresas? | `/saneamento/prestadores` e `/saneamento/prestadores/[id]` | Parcial (controle societário só das 17 companhias abertas com FRE na CVM) |
 | | 8 Como os prestadores se comparam? | `/saneamento/prestadores/comparar` | Parcial (sem seleção de pares) |
 | D Investimento e planejamento | 9 Onde o investimento está chegando? | `/saneamento/investimento` | Parcial (sem obras) |
 | | 10 De onde vem o dinheiro? | `/saneamento/financiamento` | Parcial (sem BNDES, CAIXA, Transferegov) |
@@ -32,7 +32,7 @@ Ferramentas: `/saneamento/municipio` e `/saneamento/municipio/[id]` (Meu municí
 ## Arquitetura
 
 - `pipeline/observatorio_saneamento/`: `fontes.py` (catálogo), `coletar.py` (baixa e extrai para `seed/` com sha256), `gold.py` (constrói a gold sem rede), `tarifas.py` (tabelas verificadas → `src/lib/saneamento/dados/tarifas.json`, com exemplos conferidos em Decimal), `atos.py` e `curadoria/` (catálogo de atos → `atos.json`).
-- `public/saneamento/gold/`: `municipios.json|csv`, `desigualdades_municipios.json|csv` (capítulo 2, carregado só pelo atlas do capítulo), `qualidade_municipios.json|csv` (SISAGUA, capítulo 3, idem), `indice.json`, `agregados.json`, `prestadores.json|csv`, `reguladores.json`, `etes.json|csv`, `meta.json` (proveniência e conferências), `uf/SIGLA.json` (fichas municipais completas).
+- `public/saneamento/gold/`: `municipios.json|csv`, `desigualdades_municipios.json|csv` (capítulo 2, carregado só pelo atlas do capítulo), `qualidade_municipios.json|csv` (SISAGUA, capítulo 3, idem), `saude_municipios.json|csv` (SIH e SIM, capítulo 13, idem), `controle_societario.json|csv` (posição acionária das companhias abertas, capítulo 7, lida pela ficha do prestador e pelo capítulo), `indice.json`, `agregados.json`, `prestadores.json|csv`, `reguladores.json`, `etes.json|csv`, `meta.json` (proveniência e conferências), `uf/SIGLA.json` (fichas municipais completas).
 - `src/lib/saneamento/`: tipos, leitura da gold, catálogo de medidas, referências territoriais, capítulos, prestadores, viabilidade, simulador.
 - `src/components/saneamento/`: cabeçalho, peças editoriais, atlas municipal, tabela de dados, comparadores, simulador.
 - `src/app/saneamento/`: páginas estáticas lidas da gold no build; fichas de município e prestador renderizadas sob demanda e guardadas.
@@ -45,11 +45,12 @@ python3 -m pipeline.observatorio_saneamento.coletar --zips <pasta com os ZIPs do
 python3 -m pipeline.observatorio_saneamento.coletar --so-cadunico                         # com rede
 python3 -m pipeline.observatorio_saneamento.gold
 python3 -m pipeline.observatorio_saneamento.saude --coletar                               # com rede (TabNet do DATASUS)
+python3 -m pipeline.observatorio_saneamento.controle --coletar                            # com rede (FRE da CVM)
 python3 -m pipeline.observatorio_saneamento.tarifas
 python3 -m pipeline.observatorio_saneamento.atos
 python3 -m unittest pipeline.tests.test_observatorio_saneamento
-python3 -m unittest pipeline.tests.test_saude
-npx vitest run src/tests/saneamento-gold.test.ts src/tests/saneamento-conta.test.ts src/tests/saneamento-saude.test.ts
+python3 -m unittest pipeline.tests.test_saude pipeline.tests.test_controle
+npx vitest run src/tests/saneamento-gold.test.ts src/tests/saneamento-conta.test.ts src/tests/saneamento-saude.test.ts src/tests/saneamento-controle.test.ts
 ```
 
 ## Atualização e vigilância
@@ -62,8 +63,10 @@ O saneamento não tem coleta diária: a gold sai do seed versionado, e a proveni
 | SINISA, ZIPs integrados | Tamanho diferente do registrado (retificação de arquivo já integrado) | Recoletar e reconstruir a gold |
 | SISAGUA | Arquivo registrado reescrito 60 dias ou mais depois do Last-Modified registrado; arquivo anual novo a partir de março do ano seguinte | Recoletar e reconstruir a gold |
 | CadÚnico | Mês mais recente da API, até o mês corrente, 3 ou mais meses à frente do mês da gold | `coletar --so-cadunico` e `gold` |
+| CVM, FRE | Arquivo do ano atualizado depois da captura, com a captura já tendo 90 dias ou mais; arquivo do ano seguinte publicado a partir de junho | `controle --coletar` e `gold` |
+| DATASUS, SIM | A página da tabulação declara dados finais até ano posterior ao fim da janela da gold; nota ausente (vigia cego) | `saude --coletar` e `gold`, com a nova janela |
 
-Fonte que não responde vira linha "não verificado" na issue, nunca silêncio. Fora do alcance da vigília, por não haver sinal barato e confiável: Censo (decenal), atos tarifários dos reguladores (curadoria manual), conteúdo do módulo Gestão Municipal do SINISA além da presença do link, e fontes ainda não integradas. A API do CadÚnico lista meses cheios posteriores ao mês corrente (consulta de 16/10/2026: até 202612), por isso o cheque limita a consulta ao mês corrente.
+Fonte que não responde vira linha "não verificado" na issue, nunca silêncio. Fora do alcance da vigília, por não haver sinal barato e confiável: Censo (decenal), atos tarifários dos reguladores (curadoria manual), conteúdo do módulo Gestão Municipal do SINISA além da presença do link, SIH (os últimos seis meses são revisados pela fonte, sem sinal de data) e fontes ainda não integradas. A API do CadÚnico lista meses cheios posteriores ao mês corrente (consulta de 16/10/2026: até 202612), por isso o cheque limita a consulta ao mês corrente.
 
 ## Fontes e períodos
 
@@ -77,6 +80,7 @@ Fonte que não responde vira linha "não verificado" na issue, nunca silêncio. 
 | MDS, CadÚnico (SAGI, API MI Social) | Dez/2024 e set/2026 | Famílias elegíveis à tarifa social pelo critério de renda |
 | Ministério da Saúde, SISAGUA (dados abertos) | 2014 a 2025 (plano desde 2023); arquivos atualizados em out/2026, extraídos em 14/10/2026 | Controle mensal, plano de amostragem, vigilância e cadastro de população abastecida; Portaria GM/MS 888/2021 para os limites |
 | Ministério da Saúde, DATASUS: SIH/SUS e SIM (TabNet), por local de residência | 2022 a 2024; extração de 16/10/2026 (SIM com dados finais até 2024) | Internações no SUS e óbitos por infecções intestinais, leptospirose e esquistossomose, por município, ao lado da carência de esgoto |
+| CVM, Formulário de Referência (posição acionária) | FRE 2026, versões recebidas de maio a outubro de 2026; captura de 16/10/2026 | Acionistas, controlador e cadeia de controle de 17 companhias abertas prestadoras de água e esgoto, ligadas ao SINISA por CNPJ |
 | Lei 11.445/2007, Lei 14.898/2024, NR ANA 8/2024, Decreto 12.797/2025 | Vigentes | Metas, tarifa social, medição das metas, salário-mínimo de 2026 |
 
 ## Relação com a Eficiência Estatal

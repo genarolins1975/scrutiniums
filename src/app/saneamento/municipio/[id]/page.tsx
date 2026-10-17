@@ -273,7 +273,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
           <Reguladores f={ficha} />
           <Nota>
             Natureza jurídica e instrumento são os declarados ao SINISA para 2024. Controle societário e grupo econômico não são publicados
-            pelo SINISA e não aparecem aqui.
+            pelo SINISA e não aparecem aqui; para companhias abertas, a posição acionária está na ficha do prestador.
           </Nota>
         </Secao>
 
