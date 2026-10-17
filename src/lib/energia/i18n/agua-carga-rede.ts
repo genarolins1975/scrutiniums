@@ -197,6 +197,11 @@ export const DEFINICAO_FLUXO_EN: Readonly<Record<string, string>> = {
   "Recebimento pelo Sudeste": "Intake by the Southeast",
 };
 
+/** Unidade publicada do ATLS (rede_detalhe.restricoes.atls.unidade_publicada). */
+export const UNIDADE_ATLS_EN: Readonly<Record<string, string>> = {
+  "fração de 0 a 1 (o dicionário diz %)": "fraction from 0 to 1 (the data dictionary says %)",
+};
+
 /** Tipo de regra da validação física da carga (carga_detalhe.p025.validacao.regras[].tipo). */
 export const TIPO_REGRA_CARGA_EN: Readonly<Record<string, string>> = {
   dominio: "domain",
