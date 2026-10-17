@@ -1,6 +1,8 @@
 # Judiciário — continuidade
 
-**Estado atual:** implementação v2 com 57 tribunais e finanças de 17 anos; fonte integral conferida. Build de 718 páginas, pipeline integrado (1.854 testes, 6 pulados), Vitest (6.353 aprovados, 1 pulado) e QA final (52 telas/113 verificações, zero erros) concluídos. Commits de implementação `ba9893c53` e integração de main `d7409e8ac`. Correção SSR financeira e evidências estão sendo salvas para abrir o PR. Falta acompanhar CI remoto, merge e deploy. O bloqueio inicial de acesso ao PDF/GitHub foi superado.
+**Estado atual:** módulo v2 publicado pelo PR #251, merge `473f03e994df26456607c95d522f2977d02b7617`, deploy de produção confirmado em 17/10/2026 às 09:12:30 UTC. CI completo e auditoria de interface aprovados; domínio público conferido (18 verificações HTTP e 10 de navegador público, sem sessão de produção). Os fluxos autenticados foram validados localmente e no CI. Relatório de produção no workspace em `/workspace/judiciario-producao/README.md`.
+
+**Correção solicitada em seguida:** faltava uma opção própria no seletor pós-login mostrado pelo usuário. Branch `codex/judiciario-seletor`, baseada no merge acima: cartão Judiciário logo depois de Eficiência Estatal, POST com allowlist, preferência de último acesso específica e atribuição ao domínio do OBEE. Os sete observatórios existentes são preservados. Testes direcionados: 41 aprovados; lint e tipos aprovados. O verificador de navegador agora inclui seletor em quatro larguras, fontes/cobertura, teclado, destino, sessão, cookie e último acesso, além de recusa sem sessão. Build, QA e CI desta correção devem ser conferidos no respectivo PR antes do merge; não confundir com as evidências da publicação anterior. O restante deste arquivo preserva os marcos de desenvolvimento anteriores.
 
 ## Objetivo e aceite
 

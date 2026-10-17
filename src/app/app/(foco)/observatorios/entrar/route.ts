@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { trackEvent } from "@/lib/events";
-import { COOKIE_OBSERVATORIO, dominio, isDominioId } from "@/lib/dominios";
+import { COOKIE_OBSERVATORIO } from "@/lib/dominios";
+import { opcaoObservatorio } from "@/lib/opcoesObservatorios";
 
 export const runtime = "nodejs";
 
 /**
  * "Entrar" da tela de escolha. Só POST altera estado: guarda o último
- * observatório escolhido (cookie sem PII, só o id do domínio), registra o evento
+ * observatório ou módulo escolhido (cookie sem PII, só o id da opção), registra o evento
  * e leva à raiz do observatório. GET não grava nada (o prefetch de links do
  * Next faria GET sem clique) e volta à tela de escolha. A rota está sob /app:
  * o middleware exige sessão. POST de outra origem é recusado.
@@ -46,13 +47,14 @@ export async function POST(req: Request) {
   } catch {
     d = null;
   }
-  if (!isDominioId(d)) {
+  const opcao = opcaoObservatorio(d);
+  if (!opcao) {
     return NextResponse.redirect(new URL("/app/observatorios", url), 303);
   }
   const user = await getSessionUser();
-  if (user) await trackEvent(`observatorio_escolhido:${d}`, user.id);
-  const res = NextResponse.redirect(new URL(dominio(d).rotaRaiz, url), 303);
-  res.cookies.set(COOKIE_OBSERVATORIO, d, {
+  if (user) await trackEvent(`observatorio_escolhido:${opcao.dominioId}`, user.id);
+  const res = NextResponse.redirect(new URL(opcao.rotaRaiz, url), 303);
+  res.cookies.set(COOKIE_OBSERVATORIO, opcao.id, {
     path: "/",
     maxAge: 60 * 60 * 24 * 365,
     sameSite: "lax",

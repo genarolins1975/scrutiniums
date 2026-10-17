@@ -3,7 +3,8 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
-import { COOKIE_OBSERVATORIO, DOMINIOS, type DominioId } from "@/lib/dominios";
+import { COOKIE_OBSERVATORIO } from "@/lib/dominios";
+import { OPCOES_OBSERVATORIOS, type OpcaoObservatorioId } from "@/lib/opcoesObservatorios";
 import { atualizacaoObservatorio } from "@/lib/atualizacaoObservatorios";
 import styles from "./escolha.module.css";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -14,7 +15,11 @@ export const metadata: Metadata = {
 };
 export const dynamic = "force-dynamic";
 
-const GUIAS: Record<DominioId, { chamada: string; temas: [string, string][] }> = {
+const GUIAS: Record<OpcaoObservatorioId, { chamada: string; temas: [string, string][] }> = {
+  judiciario: {
+    chamada: "Recursos, filas e tempos da Justiça brasileira.",
+    temas: [["Recursos e despesas", "Série financeira e composição dos gastos"], ["Tempos e filas", "Duração dos processos, pendências e congestionamento"], ["Comparar tribunais", "57 fichas e comparação dentro de cada ramo"]],
+  },
   saneamento: {
     chamada: "Água, esgoto, preço regulado e metas em cada município.",
     temas: [["Acesso e carência", "Censo 2022 e SINISA 2024 nos 5.570 municípios"], ["Preço regulado", "Tarifas verificadas, decisões dos reguladores e conta das famílias"], ["Prestadores, investimento e metas", "Quem presta, quem regula, quanto se investe e quanto falta"]],
@@ -46,12 +51,16 @@ const GUIAS: Record<DominioId, { chamada: string; temas: [string, string][] }> =
 };
 
 /** Símbolos temáticos: identidade de cada área, sem representar dados. */
-function Simbolo({ id }: { id: DominioId }) {
+function Simbolo({ id }: { id: OpcaoObservatorioId }) {
   return (
     <svg viewBox="0 0 80 80" fill="none" aria-hidden="true" className={styles.simbolo}>
       {id === "credito" ? <>
         <path d="M12 29 40 13l28 16H12Zm5 34h46M12 69h56M23 36v20m17-20v20m17-20v20" />
         <circle cx="40" cy="24" r="3" />
+      </> : id === "judiciario" ? <>
+        <path d="M17 12h29l10 10v12M17 12v54h19M46 12v12h10M25 32h21M25 41h12M25 50h8" />
+        <circle cx="54" cy="54" r="17" />
+        <path d="M54 43v11l7 5" />
       </> : id === "energia" ? <>
         <circle cx="40" cy="40" r="28" />
         <path d="m44 19-21 25h15l-2 18 22-26H43l1-17Z" />
@@ -93,7 +102,7 @@ export default async function EscolhaObservatorioPage() {
         </section>
 
         <ul className={styles.grade} aria-label="Escolha seu observatório">
-          {DOMINIOS.map((d) => {
+          {OPCOES_OBSERVATORIOS.map((d) => {
             const at = atualizacaoObservatorio(d.id);
             const guia = GUIAS[d.id];
             const recente = ultimo === d.id;
@@ -127,7 +136,7 @@ export default async function EscolhaObservatorioPage() {
                     <input type="hidden" name="d" value={d.id} />
                     <button type="submit">
                       {recente ? "Continuar" : "Explorar"} {d.nomeCurto}
-                      <span aria-hidden="true">↗</span>
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M4 16 16 4M4 4h12v12" /></svg>
                       <span className="sr-only"> — entrar no {d.nome}</span>
                     </button>
                   </form>

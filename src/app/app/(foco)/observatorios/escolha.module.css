@@ -11,6 +11,7 @@
 .cartao{--acento:#78542f;--suave:#f3ede4;display:flex;flex-direction:column;height:100%;background:var(--cor-superficie);border:1px solid var(--obs-regra);border-top:4px solid var(--acento);transition:border-color .15s ease}
 .energia{--acento:#00697f;--suave:#e9f0f1}
 .eficiencia{--acento:#3f635c;--suave:#eaf0eb}
+.judiciario{--acento:#3f635c;--suave:#eaf0eb}
 .estados{--acento:#3f635c;--suave:#eaf0eb}
 .contas{--acento:#245365;--suave:#e9eff1}
 .gas{--acento:#35598a;--suave:#e8edf4}
@@ -32,7 +33,7 @@
 .entrada{padding:0 24px 20px}
 .entrada button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:52px;background:var(--obs-tinta);color:white;padding:12px 16px;font-size:14px;font-weight:600;text-align:left;line-height:1.5;transition:background .15s ease}
 .entrada button:hover{background:var(--acento)}
-.entrada button>span[aria-hidden]{font-size:20px;line-height:1}
+.entrada button>svg{width:20px;height:20px;flex-shrink:0}
 .entrada button:focus-visible,.atualizacao summary:focus-visible,.conta a:focus-visible{outline:3px solid var(--acento);outline-offset:4px}
 .atualizacao{margin:0 24px;border-top:1px solid var(--obs-regra)}
 .atualizacao summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;cursor:pointer;list-style:none;font-size:13px;color:#42545d}
