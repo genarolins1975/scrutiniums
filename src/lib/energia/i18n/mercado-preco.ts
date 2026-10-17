@@ -263,6 +263,27 @@ export function textoRegistroModelos(texto: string, idioma: Idioma): string {
   return traducaoExata(REGISTRO_MODELOS_EN, texto, idioma) ?? texto;
 }
 
+/** Frases fixas da gold de previsões (bandas, candidatos, leitura do acompanhamento, rotina, definição do realizado), texto exato publicado. */
+export const TEXTOS_PREVISOES_EN: Readonly<Record<string, string>> = {
+  "Sem faixa: nenhum segmento do B0 está calibrado no período de teste (estado em cada célula; a cobertura do teste retrospectivo está retida fora do portal até a liberação dos números de desempenho).":
+    "No band: no B0 segment is calibrated in the test period (state in each cell; the coverage of the retrospective test is withheld outside the portal until the performance numbers are released).",
+  "C2-P e C2-H não são emitidos: a governança retém número de rodada interna dos candidatos até a liberação formal registrada no registro de modelos. O período prospectivo deles ainda não começou.":
+    "C2-P and C2-H are not issued: governance withholds the internal run numbers of the candidates until the formal release recorded in the model registry. Their prospective period has not started yet.",
+  "Nenhuma entrega prevista pelo arquivo terminou ainda: não há desempenho prospectivo, e nada pode ser concluído sobre a operação real.":
+    "No delivery forecast in the archive has ended yet: there is no prospective performance, and nothing can be concluded about real operation.",
+  "Pelo menos sete rodadas agendadas no prazo, sem dia faltante desde o início da operação agendada. Dia faltante é dia de Brasília cujo prazo das 08h00 já passou sem rodada agendada registrada.":
+    "At least seven scheduled runs on time, with no missing day since the start of scheduled operation. A missing day is a Brasília day whose 08:00 deadline has passed with no scheduled run recorded.", // i18n: dado
+  "Nenhuma execução agendada registrada até agora: a rotina está escrita no código, mas ainda não foi comprovada por execução real.":
+    "No scheduled run recorded so far: the routine is written in the code but has not yet been demonstrated by a real run.",
+  "Média de todas as horas da entrega no PLD horário vigente; só existe quando as 168 horas da semana (ou 24 × dias do mês) estão publicadas. Entrega incompleta não tem realizado.":
+    "Average of all hours of the delivery in the hourly PLD in force; it only exists when the 168 hours of the week (or 24 × days of the month) are published. An incomplete delivery has no actual value.",
+};
+
+/** Forma inglesa de uma frase fixa da gold de previsões ou do registro de modelos; null sem entrada (a página marca o trecho em português). */
+export function traducaoPrevisoes(pt: string | null | undefined, idioma: Idioma): string | null {
+  return traducaoExata(TEXTOS_PREVISOES_EN, pt, idioma) ?? traducaoExata(REGISTRO_MODELOS_EN, pt, idioma);
+}
+
 /** Critério da tabela de distribuidoras (gold mercado.json, livre_regulado.distribuidoras.criterio). */
 export const CRITERIOS_MERCADO_EN: Readonly<Record<string, string>> = {
   "as 30 maiores em energia livre faturada no ano; a tabela completa está no CSV": "the 30 largest by free-market energy billed in the year; the full table is in the CSV",
