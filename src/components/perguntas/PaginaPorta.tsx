@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ACENTO } from "@/components/home/acentos";
-import { BotaoLink } from "@/components/home/BotaoLink";
+import { ConviteConta } from "@/components/perguntas/ConviteConta";
 import { ehRotaPublica, prefetchDoLink } from "@/lib/rotasPublicas";
 import { rotaPorta } from "@/lib/perguntas/rotas";
 import type { Porta } from "@/lib/perguntas/tipos";
@@ -24,7 +24,9 @@ function Cadeado() {
  * os interativos. Não vira painel: nada de série, filtro ou download aqui.
  * Fecha com o que a plataforma ainda não responde e o método recolhido.
  */
-export function PaginaPorta({ porta, outras }: Readonly<{ porta: Porta; outras: Porta[] }>) {
+export type ColecaoPorta = { id: string; nome: string; href: string; paineis: number; origens: string };
+
+export function PaginaPorta({ porta, outras, colecoes }: Readonly<{ porta: Porta; outras: Porta[]; colecoes: ColecaoPorta[] }>) {
   const a = ACENTO[porta.acento];
   return (
     <main className="bg-papel">
@@ -32,14 +34,14 @@ export function PaginaPorta({ porta, outras }: Readonly<{ porta: Porta; outras: 
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-16 md:pt-14">
           <nav aria-label="Trilha" className="text-sm text-carvao-muted">
             <Link href="/#perguntas" className="underline decoration-linha underline-offset-4 hover:text-carvao">
-              O Brasil em perguntas
+              Os seis observatórios
             </Link>
             <span aria-hidden="true" className="mx-2 text-mineral">/</span>
             <span aria-current="page">{porta.nome}</span>
           </nav>
           <p className="rotulo mt-8 flex items-center gap-3 text-mineral">
             <span aria-hidden="true" className={`h-[3px] w-8 ${a.filete}`} />
-            {porta.nome}
+            {porta.nomeCompleto}
           </p>
           <h1
             id="porta-titulo"
@@ -100,23 +102,14 @@ export function PaginaPorta({ porta, outras }: Readonly<{ porta: Porta; outras: 
               estados, municípios ou instituições, fichas e downloads. Os painéis abrem com a conta gratuita; depois de
               entrar, você segue direto para o painel escolhido.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <BotaoLink href="/cadastro">Criar conta gratuita</BotaoLink>
-            </div>
-            <p className="mt-3 text-sm text-carvao-muted">
-              Já tem conta?{" "}
-              <Link href="/entrar" className="text-carvao underline decoration-linha underline-offset-4">
-                Entrar
-              </Link>
-              .
-            </p>
+            <ConviteConta />
           </div>
           <ul className="border-t border-linha lg:col-span-8">
             {porta.caminhos.map((c) => (
               <li key={c.href} className="border-b border-linha">
                 <Link href={c.href} prefetch={prefetchDoLink(c.href)} className="group flex min-h-[44px] flex-col py-5">
                   <span className="rotulo flex flex-wrap items-center gap-x-3 gap-y-1 text-mineral">
-                    {c.observatorio}
+                    {c.colecao}
                     {!aberto(c.href) && (
                       <span className="inline-flex items-center gap-1.5 normal-case tracking-normal text-carvao-muted">
                         <Cadeado /> com conta gratuita
@@ -135,6 +128,36 @@ export function PaginaPorta({ porta, outras }: Readonly<{ porta: Porta; outras: 
         </div>
       </section>
 
+      <section aria-labelledby="colecoes-titulo" className="border-t border-linha">
+        <div className="mx-auto grid max-w-page gap-6 px-6 py-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-4">
+            <h2 id="colecoes-titulo" className="font-serif text-2xl leading-tight text-carvao">
+              Tudo o que este observatório reúne
+            </h2>
+            <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+              As coleções do {porta.nomeCompleto}, com a quantidade de páginas de cada uma e a origem dos dados. Todas
+              abrem com a conta gratuita.
+            </p>
+          </div>
+          <ul className="grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:col-span-8">
+            {colecoes.map((c, i) => (
+              // com quantidade ímpar, a última coleção ocupa a linha inteira em vez de deixar uma célula vazia
+              <li key={c.id} className={`bg-papel ${i === colecoes.length - 1 && colecoes.length % 2 === 1 ? "sm:col-span-2" : ""}`}>
+                <Link href={c.href} prefetch={prefetchDoLink(c.href)} className="group flex h-full min-h-[44px] flex-col p-4">
+                  <span className={`flex items-baseline justify-between gap-3 font-serif text-lg leading-snug text-carvao ${a.hover}`}>
+                    {c.nome}
+                    <span aria-hidden="true" className="font-sans text-sm text-mineral">→</span>
+                  </span>
+                  <span className="mt-1 text-sm text-carvao-muted">
+                    <span className="tabular-nums text-carvao">{c.paineis}</span> {c.paineis === 1 ? "página" : "páginas"} · {c.origens}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {porta.lacunas.length > 0 && (
         <section aria-labelledby="lacunas-titulo" className="border-t border-linha bg-marfim">
           <div className="mx-auto grid max-w-page gap-6 px-6 py-12 lg:grid-cols-12 lg:gap-8">
@@ -143,7 +166,7 @@ export function PaginaPorta({ porta, outras }: Readonly<{ porta: Porta; outras: 
             </h2>
             <div className="lg:col-span-8">
               <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                Perguntas desta porta que nenhum observatório cobre hoje. Elas não aparecem como resposta até que exista
+                Perguntas deste tema que a plataforma não cobre hoje. Elas não aparecem como resposta até que exista
                 base oficial integrada e conferida.
               </p>
               <ul className="mt-4 space-y-2 text-base leading-relaxed text-carvao">

@@ -18,7 +18,7 @@ function partesIntroducaoHero(idioma: Idioma) {
 }
 
 /**
- * Índice dos observatórios, logo depois das perguntas (HeroPerguntas, que
+ * Índice das coleções, logo depois das perguntas (HeroPerguntas, que
  * leva o H1 da página): promessa curta e as lâminas de cada observatório.
  * Cada lâmina usa a gravura editorial do próprio observatório e traz a
  * contagem lida do registro do domínio, na unidade que ele publica.

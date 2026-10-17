@@ -84,14 +84,14 @@ describe("home PT/EN: navegador do build de produção", () => {
           expect(await page.locator("html").getAttribute("lang")).toBe(caminho === "/en" ? "en" : "pt-BR");
           if (caminho === "/en") {
             const avisos = page.locator("[data-i18n-aviso]");
-            expect(await avisos.count()).toBe(3);
+            expect(await avisos.count()).toBe(4);
             for (const aviso of await avisos.all()) {
               expect(await aviso.isVisible()).toBe(true);
               expect(await aviso.getAttribute("lang")).toBe("en");
               expect(await aviso.textContent()).toBe("Portuguese only");
             }
             const regioes = page.locator("[data-i18n-regiao]");
-            expect(await regioes.count()).toBe(9);
+            expect(await regioes.count()).toBe(10);
             for (const regiao of await regioes.all()) expect(await regiao.isVisible()).toBe(true);
           }
           await page.addScriptTag({ path: require.resolve("axe-core/axe.min.js") });
@@ -159,7 +159,7 @@ describe("home PT/EN: navegador do build de produção", () => {
       const acoes = page.locator('[data-i18n-regiao="home-acoes"]');
       expect(await acoes.locator('a[href="/cadastro"]').textContent()).toBe(en["acesso.criar_conta"].texto);
       expect(await acoes.locator('a[href="/entrar"]').textContent()).toBe(en["home.hero.ja_cadastrado"].texto);
-      const nav = page.getByRole("navigation", { name: "Observatory index", exact: true });
+      const nav = page.getByRole("navigation", { name: "Collection index", exact: true });
       expect(await nav.count()).toBe(1);
       expect(await nav.getAttribute("data-i18n-regiao")).toBe("home-indice");
       expect(await nav.locator(":scope > p").textContent()).toBe(en["home.indice.ilustracoes"].texto);

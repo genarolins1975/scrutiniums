@@ -13,11 +13,11 @@ import { formatarContagemIndice } from "@/lib/i18n-home-indice";
 import { vitrines, type ContagemIndice, type UnidadeSimplesIndice, type Vitrine } from "@/lib/vitrine";
 
 const MENSAGENS = [
-  { chave: "home.indice.rotulo", pt: "Índice dos observatórios", en: "Observatory index" },
+  { chave: "home.indice.rotulo", pt: "Índice das coleções", en: "Collection index" },
   {
     chave: "home.indice.ilustracoes",
-    pt: "Ilustrações editoriais de cada observatório. Não representam dados nem lugares específicos.",
-    en: "Editorial illustrations for each observatory. They do not represent data or specific places.",
+    pt: "Ilustrações editoriais de cada coleção. Não representam dados nem lugares específicos.",
+    en: "Editorial illustrations for each collection. They do not represent data or specific places.",
   },
   { chave: "home.indice.paginas_tematicas", pt: "páginas temáticas", en: "thematic pages" },
   { chave: "home.indice.secoes_publicadas", pt: "seções publicadas", en: "published sections" },

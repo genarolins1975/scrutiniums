@@ -11,6 +11,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { dominio, type DominioId } from "@/lib/dominios";
+import { donoDaRota, observatorio, type ObservatorioId } from "@/lib/observatorios/registro";
 import contasFederais from "@/lib/contas-publicas/snapshots/dados.json";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import type { CaminhoPorta, NumeroPorta, Porta } from "./tipos";
@@ -53,20 +54,27 @@ function numero(def: Omit<NumeroPorta, "valor" | "periodo">, ler: () => Leitura)
   }
 }
 
+/** Destino com o domínio de origem e a coleção do registro a que pertence. */
 function caminho(obs: DominioId, pergunta: string, resumo: string, href: string): CaminhoPorta {
-  return { pergunta, resumo, href, observatorio: dominio(obs).nomeCurto };
+  const dono = donoDaRota(href);
+  const colecao = dono ? observatorio(dono.observatorio).colecoes.find((c) => c.id === dono.colecao)?.nome : undefined;
+  return { pergunta, resumo, href, observatorio: dominio(obs).nomeCurto, colecao: colecao ?? dominio(obs).nomeCurto };
+}
+
+/** Identidade da porta lida do registro dos observatórios. */
+function identidade(id: ObservatorioId) {
+  const o = observatorio(id);
+  return { id, nome: o.nomeCurto, nomeCompleto: o.nome, acento: o.acento };
 }
 
 // ------------------------------------------------------------------ Bolso
 
-function porta_bolso(): Porta {
+function porta_familias(): Porta {
   return {
-    id: "bolso",
-    nome: "Bolso",
+    ...identidade("familias"),
     pergunta: "Quanto custa viver e quanto pesa a dívida das famílias?",
     resumo:
-      "Preços que entram no orçamento doméstico (botijão, comida, luz, água) e a situação do crédito das famílias, cada um medido pela fonte oficial do seu tema.",
-    acento: "bronze",
+      "Renda, dívidas, proteção social, moradia e os preços que entram no orçamento doméstico, cada um medido pela fonte oficial do seu tema.",
     numeros: [
       numero(
         {
@@ -109,17 +117,17 @@ function porta_bolso(): Porta {
       ),
     ],
     caminhos: [
-      caminho("gas", "Quanto custa o botijão no meu estado?", "Preço médio de revenda por UF, variação em 12 meses e o caminho do preço até o consumidor.", "/gas-natural/gas-de-cozinha"),
+      caminho("eficiencia", "Quanto as famílias ganham com o trabalho?", "Rendimento, ocupação, emprego formal e Cadastro Único nos recortes de cada fonte.", "/eficiencia-estatal/trabalho-renda"),
+      caminho("credito", "Os aposentados estão mais endividados?", "Crédito consignado por idade, benefício e instituição.", "/observatorio/payroll-lending-aging"),
+      caminho("credito", "As apostas online pesam no crédito das famílias?", "Apostas, endividamento e inadimplência, com o grau de evidência de cada número.", "/observatorio/bets-financial-risk"),
+      caminho("credito", "Quantos golpes financeiros acontecem?", "Golpes e fraudes registrados, por tipo e canal, com fonte primária.", "/observatorio/financial-fraud"),
+      caminho("eficiencia", "Falta moradia ou falta moradia adequada?", "Déficit habitacional, peso do aluguel na renda e inadequação dos domicílios.", "/eficiencia-estatal/habitacao"),
       caminho("agro", "Por que a comida subiu?", "Inflação de alimentos, itens da cesta e segurança alimentar dos domicílios.", "/agronegocio/prato"),
-      caminho("energia", "Como se forma a conta de luz?", "Tarifa de cada distribuidora, o que ela remunera e o que fica fora dela.", "/setor-eletrico/conta-de-luz"),
-      caminho("saneamento", "Quanto se paga pela água e pelo esgoto?", "Tarifas autorizadas pelos reguladores e simulador da conta para o mesmo consumo.", "/saneamento/preco-regulado"),
-      caminho("credito", "Os juros e os atrasos estão subindo?", "Concessões, saldo, taxas e inadimplência por segmento, com a série histórica.", "/observatorio/credit"),
-      caminho("eficiencia", "Quanto as famílias ganham com o trabalho?", "Rendimento, ocupação e proteção social nos recortes do IBGE e do Cadastro Único.", "/eficiencia-estatal/trabalho-renda"),
     ],
     lacunas: [
       "Inflação de todos os itens do orçamento, por região metropolitana.",
-      "Preço da gasolina e do diesel nos postos.",
       "Quanto cada família paga de impostos sobre o consumo.",
+      "Dívidas fora dos bancos: crediário e contas de consumo atrasadas.",
     ],
     metodos: [
       { rotulo: "Gás Natural: método", href: "/gas-natural/metodologia" },
@@ -133,30 +141,11 @@ function porta_bolso(): Porta {
 
 function porta_servicos(): Porta {
   return {
-    id: "servicos",
-    nome: "Serviços públicos",
-    pergunta: "Água, esgoto, escola e justiça chegam a quem precisa?",
+    ...identidade("servicos-publicos"),
+    pergunta: "Escola, saúde, segurança e justiça chegam a quem precisa?",
     resumo:
-      "Acesso a saneamento em todo o país, resultados da educação municipal nas capitais e o volume e o tempo dos processos na Justiça, cada medida com o universo da sua fonte.",
-    acento: "obee",
+      "Recursos, atendimento e resultados dos serviços públicos, com a mesma régua para cada capital e o volume e o tempo dos processos na Justiça, cada medida com o universo da sua fonte.",
     numeros: [
-      numero(
-        {
-          rotulo: "Pessoas sem rede de esgoto nem fossa séptica",
-          unidade: "milhões de moradores",
-          fonte: "IBGE, Censo Demográfico",
-          href: "/saneamento/acesso",
-        },
-        () => {
-          const br = (lerPublico("saneamento", "gold", "agregados.json") as any[]).find((x) => x.id === "BR");
-          const e = br.censo2022.moradores.esgoto;
-          return {
-            valor: num(e.sem_rede_nem_septica / 1e6, 1),
-            periodo: "2022",
-            nota: `${num((100 * e.sem_rede_nem_septica) / e.total, 1)}% dos moradores. Inclui fossa rudimentar, vala, rio e domicílios sem banheiro.`,
-          };
-        },
-      ),
       numero(
         {
           rotulo: "Processos à espera de decisão final na Justiça",
@@ -193,14 +182,31 @@ function porta_servicos(): Porta {
           };
         },
       ),
+      numero(
+        {
+          rotulo: "Despesa da prefeitura com saúde por morador (mediana das capitais)",
+          unidade: "por habitante no ano",
+          fonte: "Tesouro Nacional, Siconfi, e IBGE, população",
+          href: "/eficiencia-estatal/saude-capitais",
+          nota: "Despesa liquidada pelo município; não inclui o gasto da União e do estado no território. Valores nominais.",
+        },
+        () => {
+          const g = lerPublico("eficiencia", "gold", "saude_capitais.json");
+          const refs = (g.referencias as any[]).filter(
+            (r) => r.indicador === "sau.despesa.por_habitante" && r.componente === "nominal" && r.grupo === "todas" && typeof r.mediana === "number",
+          );
+          const r = refs.reduce((a, b) => (b.ano > a.ano ? b : a));
+          return { valor: `R$ ${num(r.mediana, 0)}`, periodo: `${r.ano}, ${r.n} capitais com dado` };
+        },
+      ),
     ],
     caminhos: [
-      caminho("saneamento", "Quem está sem água e esgoto no meu município?", "Ficha de cada um dos 5.570 municípios, com prestador, regulador e comparação com o estado.", "/saneamento/municipio"),
       caminho("eficiencia", "Como estão as escolas municipais das capitais?", "Despesa por matrícula, alunos por turma, aprovação, Ideb e Saeb nas 26 capitais.", "/eficiencia-estatal/educacao-municipal-capitais"),
       caminho("eficiencia", "A atenção primária à saúde alcança a população?", "Despesa, unidades básicas, equipes e internações evitáveis nas capitais.", "/eficiencia-estatal/saude-capitais"),
       caminho("eficiencia", "Quanto tempo a Justiça leva?", "Despesas, filas e tempos em 57 tribunais, sem nota própria de eficiência.", "/eficiencia-estatal/judiciario"),
-      caminho("eficiencia", "Quem recebe assistência social e cuidado?", "Necessidades, acesso, acompanhamento e recursos da assistência social.", "/eficiencia-estatal/assistencia-social"),
-      caminho("eficiencia", "Falta comida nas casas?", "Situação alimentar, acesso a programas e qualidade das entregas.", "/eficiencia-estatal/seguranca-alimentar"),
+      caminho("eficiencia", "A Justiça é acessível a quem precisa?", "Cobertura das defensorias, tempo de resposta e conciliação.", "/eficiencia-estatal/acesso-justica"),
+      caminho("eficiencia", "Que violência é registrada no país?", "Indicadores nacionais de violência, crimes patrimoniais, desaparecimentos e recursos por esfera de governo.", "/eficiencia-estatal/seguranca-publica"),
+      caminho("eficiencia", "Como as capitais se comparam nos serviços?", "Duas capitais lado a lado em educação, saúde, renda e mobilidade, com a mesma régua.", "/eficiencia-estatal"),
     ],
     lacunas: [
       "Filas e tempo de espera no SUS.",
@@ -208,7 +214,6 @@ function porta_servicos(): Porta {
       "Violência comparável entre estados, em taxa por habitante.",
     ],
     metodos: [
-      { rotulo: "Saneamento: método", href: "/saneamento/metodologia" },
       { rotulo: "Educação: métodos", href: "/eficiencia-estatal/educacao-municipal-capitais/metodos" },
       { rotulo: "Saúde: métodos", href: "/eficiencia-estatal/saude-capitais/metodos" },
     ],
@@ -221,12 +226,10 @@ function porta_dinheiro(): Porta {
   const rtn = contasFederais.rtnAnual as { periodo: string; despesa: number; previdencia: number; resultado: number }[];
   const anoCompleto = () => rtn.filter((r) => /^\d{4}$/.test(r.periodo)).reduce((a, b) => (b.periodo > a.periodo ? b : a));
   return {
-    id: "dinheiro-publico",
-    nome: "Dinheiro público",
+    ...identidade("contas-publicas"),
     pergunta: "De onde vem e para onde vai o dinheiro dos impostos?",
     resumo:
       "Receitas e despesas do governo federal, o resultado das contas e a dívida dos estados, com valores nominais e o período de cada demonstrativo.",
-    acento: "energia",
     numeros: [
       numero(
         {
@@ -288,6 +291,7 @@ function porta_dinheiro(): Porta {
       caminho("contas", "Quanto custa cada área do governo?", "Custos da União por área, do relatório de custos do Tesouro.", "/contas-publicas/custos"),
       caminho("contas", "O que ficou para pagar no ano seguinte?", "Restos a pagar inscritos, pagos e cancelados.", "/contas-publicas/restos-a-pagar"),
       caminho("estados", "Como está a dívida do meu estado?", "Execução, receitas, despesas e dívida das 27 unidades da Federação lado a lado.", "/contas-publicas-estaduais"),
+      caminho("credito", "Quem deve à União?", "Dívida ativa da União inscrita na Procuradoria da Fazenda, por tipo de devedor.", "/observatorio/federal-tax-debt"),
     ],
     lacunas: [
       "Despesa federal por área (saúde, educação, previdência) no orçamento executado.",
@@ -306,13 +310,28 @@ function porta_dinheiro(): Porta {
 
 function porta_energia(): Porta {
   return {
-    id: "energia",
-    nome: "Energia e infraestrutura",
-    pergunta: "De onde vem a energia e quanto ela custa?",
+    ...identidade("energia-e-infraestrutura"),
+    pergunta: "De onde vêm a energia e a água, e quanto custam?",
     resumo:
-      "Água nos reservatórios, fontes de geração, tarifas de luz e o caminho do gás, a partir dos dados abertos do ONS, da ANEEL, da CCEE e da ANP.",
-    acento: "energia",
+      "Eletricidade, gás, água e esgoto e transporte: oferta, preço regulado e acesso, a partir dos dados abertos do ONS, da ANEEL, da ANP, do IBGE e do SINISA.",
     numeros: [
+      numero(
+        {
+          rotulo: "Pessoas sem rede de esgoto nem fossa séptica",
+          unidade: "milhões de moradores",
+          fonte: "IBGE, Censo Demográfico",
+          href: "/saneamento/acesso",
+        },
+        () => {
+          const br = (lerPublico("saneamento", "gold", "agregados.json") as any[]).find((x) => x.id === "BR");
+          const e = br.censo2022.moradores.esgoto;
+          return {
+            valor: num(e.sem_rede_nem_septica / 1e6, 1),
+            periodo: "2022",
+            nota: `${num((100 * e.sem_rede_nem_septica) / e.total, 1)}% dos moradores. Inclui fossa rudimentar, vala, rio e domicílios sem banheiro.`,
+          };
+        },
+      ),
       numero(
         {
           rotulo: "Água guardada nos reservatórios das hidrelétricas",
@@ -340,37 +359,25 @@ function porta_energia(): Porta {
           return { valor: `R$ ${num(c.tarifas.resumo.mediana / 1000, 2)}`, periodo: `vigente em ${dataBr(c.data_referencia)}` };
         },
       ),
-      numero(
-        {
-          rotulo: "Geração hidráulica, eólica e solar",
-          unidade: "% da geração",
-          fonte: "ONS, balanço de energia nos subsistemas",
-          href: "/setor-eletrico/geracao",
-          nota: "Soma das três fontes no sistema interligado. Não é a participação renovável, porque o balanço não separa a geração térmica por combustível.",
-        },
-        () => {
-          const sin = (lerPublico("energia", "gold", "geracao.json").regioes as any[]).find((r) => r.rg === "SIN")["12m"];
-          return { valor: num(sin.hes, 1), periodo: `${dataBr(sin.inicio)} a ${dataBr(sin.fim)}` };
-        },
-      ),
     ],
     caminhos: [
       caminho("energia", "Os reservatórios estão cheios ou vazios?", "Armazenamento e chuvas por região, comparados ao histórico da mesma época.", "/setor-eletrico/agua-e-clima"),
       caminho("energia", "Quais fontes geram a energia do país?", "Geração por fonte e por usina, com solar distribuída separada.", "/setor-eletrico/geracao"),
       caminho("energia", "Por que a conta de luz muda?", "Tarifas por distribuidora e o que cada parcela remunera.", "/setor-eletrico/conta-de-luz"),
-      caminho("energia", "Quanto vale a energia no mercado?", "Preço de liquidação das diferenças (PLD) por submercado e o que ele não é.", "/setor-eletrico/pld"),
       caminho("gas", "Quanto gás o Brasil produz e importa?", "Produção por estado, gás reinjetado e queimado, importação por origem.", "/gas-natural/producao"),
+      caminho("saneamento", "Quem está sem água e esgoto no meu município?", "Ficha de cada um dos 5.570 municípios, com prestador, regulador e comparação com o estado.", "/saneamento/municipio"),
       caminho("eficiencia", "Como as pessoas se deslocam nas cidades?", "Oferta e uso do transporte público nos recortes disponíveis.", "/eficiencia-estatal/mobilidade-transporte"),
     ],
     lacunas: [
       "Valor final da conta de luz com tributos e bandeira tarifária.",
       "Preço da gasolina e do diesel nos postos.",
-      "Cobertura e qualidade da internet nos municípios.",
+      "Rodovias, ferrovias e portos.",
     ],
     metodos: [
       { rotulo: "Setor Elétrico: método", href: "/setor-eletrico/metodologia" },
       { rotulo: "Setor Elétrico: aprenda", href: "/setor-eletrico/aprenda" },
       { rotulo: "Gás Natural: método", href: "/gas-natural/metodologia" },
+      { rotulo: "Saneamento: método", href: "/saneamento/metodologia" },
     ],
   };
 }
@@ -379,12 +386,10 @@ function porta_energia(): Porta {
 
 function porta_economia(): Porta {
   return {
-    id: "economia",
-    nome: "Economia que produz",
+    ...identidade("economia"),
     pergunta: "O que o Brasil produz, vende ao mundo e financia?",
     resumo:
-      "O peso da agropecuária na economia e nas exportações e o tamanho do crédito em relação ao PIB, a partir das contas nacionais, do comércio exterior e do Banco Central.",
-    acento: "energia",
+      "O peso da agropecuária na economia e nas exportações, o sistema financeiro e os pagamentos, a partir das contas nacionais, do comércio exterior e do Banco Central.",
     numeros: [
       numero(
         {
@@ -432,8 +437,8 @@ function porta_economia(): Porta {
       caminho("agro", "Para quem o Brasil vende e de quem depende?", "Exportações por produto e país e a origem dos fertilizantes.", "/agronegocio/mercados"),
       caminho("credito", "Quem empresta e para quem?", "Carteira por estado, faixa de renda, ocupação e produto.", "/observatorio/credit-panorama"),
       caminho("credito", "Como se comparam os bancos?", "Capital, inadimplência e rentabilidade dentro de cada segmento.", "/observatorio/institutions"),
-      caminho("energia", "Quem são as empresas de energia?", "Grupos, ativos e companhias listadas do setor elétrico.", "/setor-eletrico/empresas"),
-      caminho("gas", "O mercado de gás está se abrindo?", "Novos agentes, contratos e uso da malha de transporte.", "/gas-natural/mercado"),
+      caminho("credito", "Os juros e os atrasos estão subindo?", "Concessões, saldo, taxas e inadimplência por segmento, com a série histórica.", "/observatorio/credit"),
+      caminho("credito", "Como o Pix mudou os pagamentos?", "Pix comparado a cartões, TED e boleto, com geografia municipal.", "/observatorio/pix"),
     ],
     lacunas: [
       "Indústria e serviços: produção, emprego e investimento por setor.",
@@ -455,12 +460,10 @@ function trimestre(p: string): string {
 
 function porta_territorio(): Porta {
   return {
-    id: "territorio",
-    nome: "Território e clima",
+    ...identidade("territorio-e-clima"),
     pergunta: "O que está mudando no ambiente e quem sente primeiro?",
     resumo:
       "Desmatamento medido por satélite, cidades expostas a inundações e municípios com falta de água declarada pelos prestadores, cada dado com o período da sua fonte.",
-    acento: "obee",
     numeros: [
       numero(
         {
@@ -541,6 +544,6 @@ let cache: Porta[] | null = null;
  * golds só mudam com nova publicação, que reinicia as instâncias.
  */
 export function portas(): Porta[] {
-  cache ??= [porta_bolso(), porta_servicos(), porta_dinheiro(), porta_energia(), porta_economia(), porta_territorio()];
+  cache ??= [porta_familias(), porta_servicos(), porta_dinheiro(), porta_energia(), porta_economia(), porta_territorio()];
   return cache;
 }

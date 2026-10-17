@@ -9,10 +9,9 @@ import { TEXTOS_LAYOUT } from "@/i18n/paginas/layout";
 import { hrefNoIdioma } from "@/lib/i18n-href";
 import type { Idioma } from "@/lib/idioma";
 
-// Abas do cabeçalho: os observatórios do registro e a imprensa (navCabecalho). Quem tem
-// conta vai ao painel; o visitante, à seção do observatório na página inicial.
-// Com oito observatórios as abas não cabem na linha da marca nem a 1440 px: ficam
-// sempre numa segunda linha, que quebra em vez de rolar, para nenhuma aba ficar escondida.
+// Abas do cabeçalho: os seis observatórios do registro e a imprensa (navCabecalho). Cada
+// aba leva à página aberta do observatório (/perguntas/<id>), para quem tem conta e para
+// quem não tem. As abas ficam numa segunda linha, que quebra em vez de rolar.
 // No celular a quebra levava quatro linhas: abaixo de 640 px os observatórios ficam num
 // seletor ("Observatórios ▾") com a lista inteira, e Imprensa e Entrar seguem à vista.
 
@@ -77,11 +76,11 @@ export function PublicHeaderView({ authenticated = false, idioma = "pt" }: { aut
           </summary>
           {/* o painel ocupa a largura útil (fixo, 1rem de margem) para não sair da tela */}
           <div className="fixed inset-x-4 z-40 mt-1 hidden flex-col border border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)] group-open:flex">
-            <AbasCabecalho logadoNoServidor={authenticated} idioma={idioma} soObservatorios className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-papel" />
+            <AbasCabecalho idioma={idioma} soObservatorios className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-papel" />
           </div>
         </DetalhesFechaveis>
         <div className="hidden sm:contents">
-          <AbasCabecalho logadoNoServidor={authenticated} idioma={idioma} className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze" />
+          <AbasCabecalho idioma={idioma} className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze" />
         </div>
         <Link href={hrefNoIdioma("/imprensa", idioma)} className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze sm:hidden">
           {t.imprensa}

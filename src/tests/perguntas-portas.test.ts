@@ -5,6 +5,7 @@ import { portas } from "@/lib/perguntas/portas";
 import { IDS_PORTAS, rotaPorta } from "@/lib/perguntas/rotas";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 import { DOMINIOS } from "@/lib/dominios";
+import { OBSERVATORIOS, rotasDoObservatorio } from "@/lib/observatorios/registro";
 import sitemap from "@/app/sitemap";
 
 /** Uma rota do App Router existe se houver page.tsx no caminho literal, num segmento dinâmico ou num catch-all. */
@@ -25,8 +26,19 @@ function rotaExiste(href: string): boolean {
 describe("O Brasil em perguntas", () => {
   const todas = portas();
 
-  it("publica as seis portas na ordem do registro de rotas", () => {
+  it("publica uma porta por observatório, na ordem do registro", () => {
     expect(todas.map((p) => p.id)).toEqual([...IDS_PORTAS]);
+    expect(todas.map((p) => p.id)).toEqual(OBSERVATORIOS.map((o) => o.id));
+    for (const p of todas) expect(p.nome).toBe(OBSERVATORIOS.find((o) => o.id === p.id)?.nomeCurto);
+  });
+
+  it("cada porta só leva a painéis do próprio observatório ou a atalhos registrados para ele", () => {
+    for (const p of todas) {
+      const permitidas = rotasDoObservatorio(p.id);
+      for (const href of [...p.numeros.map((n) => n.href), ...p.caminhos.map((c) => c.href)]) {
+        expect(permitidas.has(href.split("#")[0]), `${p.id}: ${href} não pertence ao observatório`).toBe(true);
+      }
+    }
   });
 
   it("cada número tem valor lido da base, unidade, período e fonte", () => {
@@ -55,9 +67,13 @@ describe("O Brasil em perguntas", () => {
     }
   });
 
-  it("todo caminho nomeia um observatório do registro", () => {
+  it("todo caminho nomeia o domínio de origem e a coleção do registro", () => {
     const nomes = new Set(DOMINIOS.map((d) => d.nomeCurto));
-    for (const p of todas) for (const c of p.caminhos) expect(nomes.has(c.observatorio), c.observatorio).toBe(true);
+    const colecoes = new Set(OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => c.nome)));
+    for (const p of todas) for (const c of p.caminhos) {
+      expect(nomes.has(c.observatorio), c.observatorio).toBe(true);
+      expect(colecoes.has(c.colecao), `${c.href}: ${c.colecao}`).toBe(true);
+    }
   });
 
   it("as páginas das perguntas são públicas e estão no sitemap; o prefixo não abre vizinhos", () => {

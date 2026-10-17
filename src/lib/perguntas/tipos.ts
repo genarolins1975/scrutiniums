@@ -7,8 +7,10 @@
  * falha, o número fica ausente e a página diz isso; ausência nunca vira zero.
  */
 import type { Dominio } from "@/lib/dominios";
+import type { ObservatorioId } from "@/lib/observatorios/registro";
 
-export type PortaId = "bolso" | "servicos" | "dinheiro-publico" | "energia" | "economia" | "territorio";
+/** Cada porta é a página aberta de um dos seis observatórios. */
+export type PortaId = ObservatorioId;
 
 /** Número de manchete com a prova ao lado: medida, período, fonte e destino. */
 export type NumeroPorta = {
@@ -30,14 +32,18 @@ export type CaminhoPorta = {
   /** O que o leitor encontra no destino, em uma frase. */
   resumo: string;
   href: string;
-  /** Observatório que mantém o destino. */
+  /** Domínio de origem que mantém o destino (Setor Elétrico, Crédito...). */
   observatorio: string;
+  /** Coleção do registro a que o destino pertence, como o leitor a vê. */
+  colecao: string;
 };
 
 export type Porta = {
   id: PortaId;
-  /** Nome curto da porta, como aparece no cartão da home. */
+  /** Nome curto do observatório, como aparece no cartão da home. */
   nome: string;
+  /** Nome completo do observatório. */
+  nomeCompleto: string;
   pergunta: string;
   /** Uma frase sobre o que a porta cobre, sem juízo de valor. */
   resumo: string;

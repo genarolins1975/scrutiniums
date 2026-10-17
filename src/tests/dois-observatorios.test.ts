@@ -73,7 +73,8 @@ describe("registro de domínios", () => {
     expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("DOMINIOS.map");
     expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OPCOES_OBSERVATORIOS.map");
     expect(ler("src/components/layout/PublicHeader.tsx")).toContain("<AbasCabecalho");
-    expect(ler("src/components/layout/navCabecalho.ts")).toContain("ABAS_OBSERVATORIOS");
+    // o cabeçalho público lista os seis observatórios; a Eficiência Estatal chega por eles (src/lib/observatorios/registro.ts)
+    expect(ler("src/components/layout/navCabecalho.ts")).toContain("OBSERVATORIOS");
     expect(ler("src/components/observatorios/NavegacaoObservatorios.tsx")).toContain(`href: "${rota}"`);
     expect(ler("src/components/layout/Footer.tsx")).toContain(rota);
     expect(ler("public/obs/index.html")).toContain(`href="${rota}"`);

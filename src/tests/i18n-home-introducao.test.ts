@@ -38,16 +38,16 @@ const CONTAGENS = [
 ] as const;
 
 afterEach(() => {
-  vi.doUnmock("@/lib/dominios");
+  vi.doUnmock("@/lib/observatorios/lista");
   vi.resetModules();
 });
 
 describe("contagem da introdução derivada do registro", () => {
   it.each(CONTAGENS)("localiza $quantidade sem alterar as chamadas portuguesas existentes", async (esperado) => {
     vi.resetModules();
-    vi.doMock("@/lib/dominios", () => ({
-      DOMINIOS: Array.from({ length: esperado.quantidade }, (_, indice) => ({
-        id: `dominio-sintetico-${indice}`, nomeCurto: `Domínio sintético ${indice}`,
+    vi.doMock("@/lib/observatorios/lista", () => ({
+      OBSERVATORIOS: Array.from({ length: esperado.quantidade }, (_, indice) => ({
+        id: `observatorio-sintetico-${indice}`, nomeCurto: `Observatório sintético ${indice}`,
       })),
     }));
     const { N_OBSERVATORIOS, observatoriosPorExtenso } = await import("@/lib/acesso");

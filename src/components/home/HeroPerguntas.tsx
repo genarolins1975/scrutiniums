@@ -16,7 +16,7 @@ export function HeroPerguntas({ portas }: Readonly<{ portas: Porta[] }>) {
       <div className="mx-auto max-w-page px-6 pb-14 pt-12 md:pb-20 md:pt-16">
         <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-8">
           <div className="lg:col-span-8">
-            <p className="rotulo text-mineral">O Brasil em perguntas</p>
+            <p className="rotulo text-mineral">Seis observatórios, seis perguntas</p>
             <h1
               id="perguntas-titulo"
               className="mt-5 max-w-4xl font-serif text-[clamp(2.1rem,4.8vw,3.6rem)] leading-[1.08] tracking-[-0.01em] text-carvao [text-wrap:balance]"
@@ -25,8 +25,9 @@ export function HeroPerguntas({ portas }: Readonly<{ portas: Porta[] }>) {
             </h1>
           </div>
           <p className="max-w-prose2 text-base leading-relaxed text-carvao-muted lg:col-span-4 md:text-lg">
-            Seis perguntas sobre a vida de quem mora aqui, com uma amostra de cada tema aberta a todos: poucos números,
-            cada um com fonte e período. Séries, comparações e downloads ficam nos painéis, que abrem com conta gratuita.
+            Cada observatório responde a uma pergunta sobre a vida de quem mora aqui. Nesta página, uma amostra aberta a
+            todos: poucos números, cada um com fonte e período. Séries, comparações e downloads ficam nos painéis, que
+            abrem com conta gratuita.
           </p>
         </div>
 
@@ -76,7 +77,7 @@ export function HeroPerguntas({ portas }: Readonly<{ portas: Porta[] }>) {
   );
 }
 
-/** Quais observatórios respondem a cada pergunta, a partir dos destinos declarados em cada porta. */
+/** Quais coleções alimentam cada observatório, a partir dos destinos declarados em cada porta. */
 function MatrizFontes({ portas }: Readonly<{ portas: Porta[] }>) {
   const usados = DOMINIOS.filter((d) => portas.some((p) => p.caminhos.some((c) => c.observatorio === d.nomeCurto)));
   return (
@@ -85,15 +86,15 @@ function MatrizFontes({ portas }: Readonly<{ portas: Porta[] }>) {
         De onde vêm as respostas
       </summary>
       <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-        Cada pergunta cruza mais de um observatório. A marca indica que a página da pergunta leva a pelo menos um painel
-        daquele observatório.
+        Cada observatório reúne painéis de várias coleções. A marca indica que a página do observatório leva a pelo menos
+        um painel daquela coleção.
       </p>
       <div className="tabela-scroll mt-4">
         <table className="w-full min-w-[640px] border-collapse text-sm">
-          <caption className="sr-only">Observatórios que alimentam cada pergunta</caption>
+          <caption className="sr-only">Coleções que alimentam cada observatório</caption>
           <thead>
             <tr className="border-b border-linha text-left">
-              <th scope="col" className="py-2 pr-4 font-normal text-mineral">Pergunta</th>
+              <th scope="col" className="py-2 pr-4 font-normal text-mineral">Observatório</th>
               {usados.map((d) => (
                 <th key={d.id} scope="col" className="px-2 py-2 text-center font-normal text-mineral">
                   {d.nomeCurto}

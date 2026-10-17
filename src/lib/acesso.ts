@@ -13,7 +13,7 @@
  * promessa antiga de leitura sem cadastro e qualquer contagem divergente do
  * registro.
  */
-import { DOMINIOS } from "@/lib/dominios";
+import { OBSERVATORIOS } from "@/lib/observatorios/lista";
 import { pt } from "@/i18n/pt";
 import { fmtNumber } from "@/lib/format";
 import type { Idioma } from "@/lib/idioma";
@@ -22,7 +22,8 @@ const EXTENSO: Record<number, string> = { 1: "um", 2: "dois", 3: "três", 4: "qu
 // Representação lexical da quantidade; a mensagem completa pertence ao catálogo.
 const EXTENSO_EN: Record<number, string> = { 1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine" };
 
-export const N_OBSERVATORIOS = DOMINIOS.length;
+/** Os seis observatórios do reagrupamento de 17/10/2026; os oito domínios antigos são coleções dentro deles. */
+export const N_OBSERVATORIOS = OBSERVATORIOS.length;
 
 /** "cinco observatórios" (ou "Cinco observatórios" com `maiuscula`). */
 export function observatoriosPorExtenso(maiuscula = false, idioma: Idioma = "pt"): string {
@@ -36,9 +37,9 @@ export function observatoriosPorExtenso(maiuscula = false, idioma: Idioma = "pt"
   return maiuscula ? s[0].toUpperCase() + s.slice(1) : s;
 }
 
-/** "Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais e Contas Públicas Estaduais". */
+/** "Famílias, Serviços Públicos, Contas Públicas, Energia e Infraestrutura, Economia e Território e Clima". */
 export function listaObservatorios(idioma: Idioma = "pt"): string {
-  const nomes = DOMINIOS.map((d) => d.nomeCurto);
+  const nomes = OBSERVATORIOS.map((o) => o.nomeCurto);
   const e = idioma === "en" ? "and" : "e";
   return nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} ${e} ${nomes.at(-1)}` : nomes.join("");
 }
