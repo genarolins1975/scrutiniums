@@ -5,10 +5,11 @@ import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/sa
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { agregado, prestadores } from "@/lib/saneamento/gold";
+import { agregado, controleSocietario, meta, prestador, prestadores } from "@/lib/saneamento/gold";
+import { controladoresDiretos, resumoControlador } from "@/lib/saneamento/controle";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
-import { inteiro, numero } from "@/lib/saneamento/formato";
+import { data, inteiro, numero } from "@/lib/saneamento/formato";
 import { NATUREZA_CURTA } from "@/lib/saneamento/rotulos";
 
 export const dynamic = "force-static";
@@ -39,6 +40,12 @@ export default function Pagina() {
     .sort((a, b) => b.pop - a.pop);
   const regionais = lista.filter((p) => p.abrangencia === "Regional");
   const popRegionais = regionais.reduce((s, p) => s + (p.populacao_atendida_agua ?? 0), 0);
+
+  const companhias = controleSocietario();
+  const cvm = meta()?.cvm;
+  const popCompanhias = companhias.reduce((s, c) => s + ((c.prestador && prestador(c.prestador)?.populacao_atendida_agua) || 0), 0);
+  const semControlador = companhias.filter((c) => !c.controlador_declarado);
+  const siglaDe = (c: (typeof companhias)[number]) => (c.prestador && prestador(c.prestador)?.sigla) || c.nome;
 
   const linhas = lista.map((p) => ({
     nome: p.nome ?? p.id,
@@ -128,13 +135,90 @@ export default function Pagina() {
           </div>
           <Ressalva
             permite="Ver o peso de cada forma de prestação no atendimento declarado de água."
-            naoPermite="Inferir quem controla as empresas: natureza jurídica não é controle societário. Participações acionárias e grupos econômicos não aparecem no SINISA."
+            naoPermite="Inferir quem controla as empresas: natureza jurídica não é controle societário. Participações acionárias e grupos econômicos não aparecem no SINISA; para as companhias abertas, a seção seguinte traz a posição acionária declarada à CVM."
           />
           <Nota>
             Municípios com mais de um prestador (por exemplo, água de um e esgoto de outro, ou concessões parciais) contam em cada natureza em que
             aparecem; por isso a coluna de municípios não soma o total do Brasil.
           </Nota>
         </Secao>
+
+        {cvm && companhias.length > 0 && (
+          <Secao
+            id="controle"
+            titulo="Quem controla as companhias abertas?"
+            texto="Para as companhias com registro na CVM, o Formulário de Referência informa os acionistas, o controlador e a cadeia de controle. Cada companhia foi ligada ao prestador do SINISA pelo CNPJ que os municípios declararam."
+          >
+            <Numeros
+              colunas={3}
+              itens={[
+                {
+                  rotulo: "Companhias abertas com posição acionária",
+                  valor: inteiro(companhias.length),
+                  contexto: <>De {inteiro(lista.length)} prestadores declarados; os outros {inteiro(lista.length - companhias.length)} não publicam a posição acionária neste formato.</>,
+                },
+                {
+                  rotulo: "População atendida com água por essas companhias",
+                  valor: `${numero(razaoPct(popCompanhias, popAguaTotal), 1)}%`,
+                  contexto: <>{inteiro(popCompanhias)} de {inteiro(popAguaTotal)} pessoas atendidas com rede de água declaradas no Brasil, SINISA 2024.</>,
+                },
+                {
+                  rotulo: "Sem controlador declarado",
+                  valor: `${inteiro(semControlador.length)} de ${inteiro(companhias.length)}`,
+                  contexto: <>{semControlador.map(siglaDe).join(", ") || "Nenhuma"}. Sem controlador declarado não significa sem controle.</>,
+                },
+              ]}
+            />
+            <div className="tabela-scroll mt-8" tabIndex={0} role="region" aria-label="Controle das companhias abertas (rolável)">
+              <table className="w-full min-w-[44rem] border-collapse text-sm">
+                <caption className="sr-only">Companhias abertas prestadoras de água e esgoto, controlador declarado e acordo de acionistas</caption>
+                <thead>
+                  <tr className="border-b border-carvao text-left">
+                    <th scope="col" className="py-2 pr-4 font-medium">Companhia</th>
+                    <th scope="col" className="py-2 pr-4 font-medium">Controlador declarado</th>
+                    <th scope="col" className="py-2 pr-4 font-medium">Acordo de acionistas</th>
+                    <th scope="col" className="py-2 pr-4 text-right font-medium">Municípios</th>
+                    <th scope="col" className="py-2 font-medium">Documento na CVM</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {companhias.map((c) => (
+                    <tr key={c.cnpj} className="border-b border-linha align-top">
+                      <th scope="row" className="py-2 pr-4 text-left font-normal">
+                        {c.prestador ? (
+                          <Link href={`${ROTA}/prestadores/${c.prestador}#controle`} className="text-obee-dark underline underline-offset-2">
+                            {c.nome}
+                          </Link>
+                        ) : (
+                          c.nome
+                        )}
+                        <span className="block text-xs text-carvao-muted">CNPJ {c.cnpj}</span>
+                      </th>
+                      <td className={`py-2 pr-4 ${controladoresDiretos(c).length === 0 ? "text-carvao-muted" : "text-carvao"}`}>{resumoControlador(c)}</td>
+                      <td className="py-2 pr-4">{c.acordo_acionistas ? "Sim" : "Não"}</td>
+                      <td className="py-2 pr-4 text-right tabular-nums">{inteiro(c.municipios_declarados)}</td>
+                      <td className="py-2 text-xs text-carvao-muted">
+                        FRE versão {c.documento.versao}, recebido em {data(c.documento.recebido_em)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <Ressalva
+              permite="Ver quem cada companhia aberta declara como controlador e participante de acordo de acionistas, e abrir a cadeia completa na ficha do prestador."
+              naoPermite="Concluir que prestador fora da tabela não tem controle definido: empresas fechadas, sociedades sem registro na CVM, autarquias e serviços municipais não aparecem neste formato. Também não dá para acompanhar mudanças posteriores ao último documento recebido."
+            />
+            <Nota>
+              Municípios é a contagem dos que declararam o CNPJ da companhia como prestador de água ou esgoto no módulo Gestão Municipal do SINISA 2024.
+              A posição é a do último FRE de {cvm.ano} recebido pela CVM até a captura, em {data(cvm.capturado_em)}.
+            </Nota>
+            <Fonte>
+              CVM, dados abertos, Formulário de Referência {cvm.ano}, arquivo posicao_acionaria. Árvore completa por companhia em{" "}
+              <a className="text-obee-dark underline" href="/saneamento/gold/controle_societario.csv">controle_societario.csv</a>.
+            </Fonte>
+          </Secao>
+        )}
 
         <Secao
           id="cadastro"

@@ -4,7 +4,7 @@ import { Abertura, Nota, Secao } from "@/components/saneamento/Editorial";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { meta, URL_GOLD } from "@/lib/saneamento/gold";
-import { inteiro } from "@/lib/saneamento/formato";
+import { data, inteiro, numero } from "@/lib/saneamento/formato";
 import { ROTULO_SITUACAO_FONTE, VIABILIDADE } from "@/lib/saneamento/viabilidade";
 import { TARIFAS } from "@/lib/saneamento/tarifas";
 import { ESTUDOS } from "@/lib/saneamento/dados/estudos";
@@ -24,7 +24,7 @@ const CONTRATO: [string, string][] = [
   ["Valores nominais", "Reais correntes do ano de referência, sem correção monetária. Nenhuma série monetária do Observatório mistura anos sem deflator declarado."],
   ["Validade temporal", "Censo 2022 e SINISA 2024 ficam lado a lado com os anos nos rótulos. Tabelas tarifárias valem pela vigência do ato. Nenhuma comparação apresenta períodos diferentes como simultâneos."],
   ["Sem imputação silenciosa", "Municípios fora de um módulo ficam fora da soma e a cobertura é informada. Não há estimativa para quem não declarou."],
-  ["Sem dado pessoal", "Todas as bases são agregadas por município, prestador ou estação. Nenhum dado de pessoa física é coletado ou publicado."],
+  ["Sem dado pessoal, com uma exceção declarada", "As bases são agregadas por município, prestador ou estação. Exceção, capítulo 7: o nome de pessoa física que a companhia aberta declara à CVM como controladora ou participante de acordo de acionistas aparece na posição acionária, como consta no Formulário de Referência público. CPF não é coletado nem publicado; as demais pessoas físicas entram somadas, sem nome."],
   ["Divergências explicadas", "Quando duas bases discordam, a diferença é calculada, publicada e explicada nas conferências abaixo; nunca redistribuída."],
 ];
 
@@ -39,6 +39,7 @@ const ARQUIVOS: [string, string][] = [
   ["desigualdades_municipios.csv", "Censo 2022 por grupo (cor ou raça, quilombolas, indígenas, favelas): carência e universo por município"],
   ["qualidade_municipios.csv", "SISAGUA 2024 e 2025: registro de controle e vigilância e numerador e denominador de cada medida de qualidade da água, por município"],
   ["saude_municipios.csv", "SIH e SIM, 2022 a 2024: internações e óbitos por infecções intestinais, leptospirose e esquistossomose, soma dos três anos por município de residência"],
+  ["controle_societario.csv", "CVM, Formulário de Referência: acionistas, controlador e cadeia de controle das companhias abertas prestadoras de água e esgoto, uma linha por acionista"],
   ["meta.json", "Proveniência: arquivos de origem, sha256, datas, cobertura e conferências"],
 ];
 
@@ -48,6 +49,7 @@ export default function Pagina() {
   const planilhas = Object.entries(m?.sinisa.planilhas ?? {});
   const censo = Object.entries(m?.censo.tabelas ?? {});
   const consultasSaude = m?.saude?.consultas ?? [];
+  const cvm = m?.cvm;
 
   const linhasViab = VIABILIDADE.map((v) => ({
     pergunta: v.pergunta,
@@ -261,6 +263,46 @@ export default function Pagina() {
                         <th scope="row" className="py-1 pr-4 text-left font-normal">{c.rotulo}</th>
                         <td className="py-1 pr-4 text-right tabular-nums">{inteiro(c.bytes)}</td>
                         <td className="py-1 font-mono [overflow-wrap:anywhere]">{c.sha256}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          )}
+
+          {cvm && (
+            <details className="mt-6">
+              <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm font-medium text-obee-dark underline underline-offset-4">
+                Arquivo da CVM, capítulo 7 ({cvm.companhias} companhias)
+              </summary>
+              <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                Formulário de Referência {cvm.ano}, arquivo anual das companhias abertas, capturado em {data(cvm.capturado_em)}
+                {cvm.zip.last_modified ? `; Last-Modified do servidor: ${cvm.zip.last_modified}` : ""}. Critério: {cvm.criterio}. Ficha do prestador ligada só
+                quando a ficha cobre ao menos {numero(cvm.regras.limiar_ficha * 100, 0)}% dos municípios que declaram o CNPJ; sem casamento por nome.
+                Pessoas físicas: {cvm.regras.pessoa_fisica}.
+              </p>
+              <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Arquivos da CVM (rolável)">
+                <table className="w-full min-w-[40rem] border-collapse text-xs">
+                  <caption className="sr-only">Arquivos da CVM com sha256</caption>
+                  <thead>
+                    <tr className="border-b border-carvao text-left">
+                      <th scope="col" className="py-2 pr-4 font-medium">Arquivo</th>
+                      <th scope="col" className="py-2 pr-4 text-right font-medium">Bytes</th>
+                      <th scope="col" className="py-2 font-medium">sha256</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-linha align-top">
+                      <th scope="row" className="py-1 pr-4 text-left font-normal">fre_cia_aberta_{cvm.ano}.zip</th>
+                      <td className="py-1 pr-4 text-right tabular-nums">{inteiro(cvm.zip.bytes)}</td>
+                      <td className="py-1 font-mono [overflow-wrap:anywhere]">{cvm.zip.sha256}</td>
+                    </tr>
+                    {Object.entries(cvm.membros).map(([nome, v]) => (
+                      <tr key={nome} className="border-b border-linha align-top">
+                        <th scope="row" className="py-1 pr-4 text-left font-normal">{nome}</th>
+                        <td className="py-1 pr-4 text-right tabular-nums">{inteiro(v.bytes)}</td>
+                        <td className="py-1 font-mono [overflow-wrap:anywhere]">{v.sha256}</td>
                       </tr>
                     ))}
                   </tbody>

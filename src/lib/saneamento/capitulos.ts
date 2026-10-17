@@ -124,10 +124,10 @@ export const EIXOS: Eixo[] = [
         slug: "prestadores",
         rotulo: "Quem presta",
         pergunta: "Quem presta o serviço e quem controla as empresas?",
-        resumo: "Cadastro de prestadores declarados ao SINISA, com natureza jurídica, abrangência, municípios, instrumento de delegação e vigência.",
+        resumo: "Cadastro de prestadores declarados ao SINISA, com natureza jurídica, abrangência, municípios, instrumento de delegação e vigência, e a posição acionária das companhias abertas.",
         situacao: "parcial",
         pendencia:
-          "Controle societário e grupos econômicos: dependem de formulários da CVM e de documentos societários; não integrados. O painel mostra a natureza jurídica declarada em 2024.",
+          "Controle societário só das 17 companhias abertas com Formulário de Referência na CVM. Empresas fechadas, SPEs sem registro, autarquias e serviços municipais não têm esse dado; para eles o painel mostra a natureza jurídica declarada em 2024.",
       },
       {
         numero: 8,
