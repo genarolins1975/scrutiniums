@@ -311,7 +311,7 @@ function montarContrastes(tx: TxIdioma): Contraste[] {
       a: "fator-de-emissao",
       b: { rotulo: tx("fator marginal", "marginal factor") },
       texto:
-        tx("O fator médio considera todas as usinas que estão gerando; a margem de operação, que o MCTI publica para o MDL, considera a energia despachada na margem. O fator médio não mede o efeito de consumir ou economizar um MWh a mais.", "The average factor considers all plants that are generating; the operating margin, which the MCTI publishes for the CDM, considers the energy dispatched at the margin. The average factor does not measure the effect of consuming or saving one more MWh."),
+        tx("O fator médio considera todas as usinas que estão gerando; a margem de operação, que o MCTI publica para o MDL, considera a energia despachada na margem. O fator médio não mede o efeito de consumir ou economizar um MWh a mais.", "The average factor considers all plants that are generating; the operating margin, which the MCTI publishes for the MDL, considers the energy dispatched at the margin. The average factor does not measure the effect of consuming or saving one more MWh."),
     },
     {
       a: "agenda-regulatoria",

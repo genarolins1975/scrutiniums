@@ -4,6 +4,8 @@
  * usa estas regras para montar o destino e o texto do botão. Sem dependências: roda no
  * navegador.
  */
+import type { Idioma } from "@/lib/idioma";
+
 export type RotulosRetorno = {
   /** slug → nome curto do verbete (sigla ou nome). */
   verbetes: Record<string, string>;
@@ -15,15 +17,17 @@ export type DestinoRetorno = { href: string; texto: string };
 
 export const CHAVE_RETORNO = "scrutiniums:energia:volta";
 
-export function destinoDaVolta(volta: string, rotulos: RotulosRetorno): DestinoRetorno | null {
+export function destinoDaVolta(volta: string, rotulos: RotulosRetorno, idioma: Idioma = "pt"): DestinoRetorno | null {
   const [tipo, a, b] = volta.split(":");
-  if (tipo === "verbete" && a && rotulos.verbetes[a]) return { href: `/setor-eletrico/aprenda/${a}#exemplo`, texto: `Voltar ao verbete ${rotulos.verbetes[a]}` };
+  const tx = <T,>(pt: T, en: T): T => (idioma === "en" ? en : pt);
+  if (tipo === "verbete" && a && rotulos.verbetes[a])
+    return { href: `/setor-eletrico/aprenda/${a}#exemplo`, texto: tx(`Voltar ao verbete ${rotulos.verbetes[a]}`, `Back to the entry ${rotulos.verbetes[a]}`) };
   if (tipo === "trilha" && a && rotulos.trilhas[a]) {
     const t = rotulos.trilhas[a];
     const i = b ? t.passos.indexOf(b) : -1;
     return {
       href: `/setor-eletrico/aprenda/trilhas/${a}${i >= 0 ? `#passo-${b}` : ""}`,
-      texto: `Voltar à trilha ${t.titulo}${i >= 0 ? `, passo ${i + 1}` : ""}`,
+      texto: tx(`Voltar à trilha ${t.titulo}${i >= 0 ? `, passo ${i + 1}` : ""}`, `Back to the learning path ${t.titulo}${i >= 0 ? `, step ${i + 1}` : ""}`),
     };
   }
   return null;

@@ -102,9 +102,9 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
       emUmaFrase:
         tx("Quantidade de CO2 associada a cada MWh gerado no Sistema Interligado Nacional, publicada pelo MCTI. O fator médio considera todas as usinas que estão gerando, e não só as que funcionam na margem.", "Amount of CO2 associated with each MWh generated in the National Interconnected System, published by the MCTI. The average factor considers all plants that are generating, and not only those operating at the margin."),
       porQueImporta:
-        tx("É o fator para inventários: se todos os consumidores do SIN multiplicassem a energia consumida pelo fator médio, a soma daria as emissões do SIN. Os fatores de margem servem a outra pergunta (a emissão deslocada na margem) e, segundo o MCTI, aplicam-se exclusivamente a projetos de MDL.", "It is the factor for inventories: if all consumers of the SIN multiplied the energy consumed by the average factor, the sum would give the emissions of the SIN. The margin factors serve another question (the emission displaced at the margin) and, according to the MCTI, apply exclusively to CDM projects."),
+        tx("É o fator para inventários: se todos os consumidores do SIN multiplicassem a energia consumida pelo fator médio, a soma daria as emissões do SIN. Os fatores de margem servem a outra pergunta (a emissão deslocada na margem) e, segundo o MCTI, aplicam-se exclusivamente a projetos de MDL.", "It is the factor for inventories: if all consumers of the SIN multiplied the energy consumed by the average factor, the sum would give the emissions of the SIN. The margin factors serve another question (the emission displaced at the margin) and, according to the MCTI, apply exclusively to MDL projects."),
       comoEMedido:
-        tx("O MCTI publica planilhas com o fator médio mensal e anual, em toneladas de CO2 por MWh, e, para o MDL, a margem de operação (energia despachada na margem) e a margem de construção (últimas usinas construídas). O observatório publica os valores como o MCTI os publica, sem recalcular.", "The MCTI publishes spreadsheets with the monthly and annual average factor, in tonnes of CO2 per MWh, and, for the CDM, the operating margin (energy dispatched at the margin) and the build margin (most recently built plants). The observatory publishes the values as the MCTI publishes them, without recalculating."),
+        tx("O MCTI publica planilhas com o fator médio mensal e anual, em toneladas de CO2 por MWh, e, para o MDL, a margem de operação (energia despachada na margem) e a margem de construção (últimas usinas construídas). O observatório publica os valores como o MCTI os publica, sem recalcular.", "The MCTI publishes spreadsheets with the monthly and annual average factor, in tonnes of CO2 per MWh, and, for the MDL, the operating margin (energy dispatched at the margin) and the build margin (most recently built plants). The observatory publishes the values as the MCTI publishes them, without recalculating."),
       relacoes: ["geracao-distribuida"],
       fontes: [
         {
@@ -119,7 +119,7 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
         },
         {
           orgao: "MCTI",
-          documento: tx("Mesma página, seção dos fatores para projetos de MDL, acessada em 01/10/2026", "Same page, section on the factors for CDM projects, accessed on Oct 1, 2026"),
+          documento: tx("Mesma página, seção dos fatores para projetos de MDL, acessada em 01/10/2026", "Same page, section on the factors for MDL projects, accessed on Oct 1, 2026"),
           url: PAGINA_MCTI,
           trecho:
             // i18n: dado
