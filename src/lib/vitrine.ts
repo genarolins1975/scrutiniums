@@ -265,7 +265,7 @@ export function vitrines(idioma: Idioma = "pt"): Record<DominioId, Vitrine> {
       paineis: [
         { titulo: "Tamanho na economia", href: "/agronegocio/tamanho", descricao: "Parcela da agropecuária no valor adicionado, crescimento em volume e peso nas exportações." },
         { titulo: "Conjuntura do ano", href: "/agronegocio/conjuntura", descricao: "Safra estimada pelo IBGE, ritmo trimestral, exportações do ano e crédito rural." },
-        { titulo: "Custo dos insumos", href: "/agronegocio/insumos", descricao: "Fertilizantes e defensivos importados, valor por tonelada e relação com a soja exportada." },
+        { titulo: "Insumos importados", href: "/agronegocio/insumos", descricao: "Fertilizantes e defensivos importados, valor por tonelada e relação com a soja exportada." },
         { titulo: "Mercados e dependência", href: "/agronegocio/mercados", descricao: "O que o agro exporta, para quais países, e de onde vêm os fertilizantes." },
         { titulo: "Sete cadeias", href: "/agronegocio/cadeias", descricao: "Mecanismos de soja, milho, arroz, feijão, café, carne bovina e leite; cobertura dos dados por cadeia." },
         { titulo: "Aprenda e experimente", href: "/agronegocio/aprenda", descricao: "Percursos, glossário, laboratórios de margem e orçamento e catálogo com categorias e limites." },

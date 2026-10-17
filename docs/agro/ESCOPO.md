@@ -30,7 +30,7 @@ Quatro páginas respondem às perguntas sobre o agro como negócio, todas com da
 |---|---|---|---|
 | Qual o tamanho do agro na economia? | `/agronegocio/tamanho` | Valor adicionado da agropecuária e parcela no total, crescimento em volume, parcela agro nas exportações | IBGE SIDRA 1846 e 5932; Comex Stat |
 | Como vai o negócio neste ano? | `/agronegocio/conjuntura` | Safra estimada (produção, área, rendimento), crescimento trimestral, exportações do ano, crédito rural (snapshot) | IBGE LSPA, SIDRA 6588; SIDRA 5932; Comex Stat; BCB/Sicor preservado |
-| Quanto custa produzir? | `/agronegocio/insumos` | Fertilizantes (posições 3101 a 3105) e defensivos (3808) importados, valor unitário, origem, relação com a soja exportada | Comex Stat |
+| Quanto custam os insumos importados? | `/agronegocio/insumos` | Fertilizantes (posições 3101 a 3105) e defensivos (3808) importados, valor unitário, origem, relação com a soja exportada | Comex Stat |
 | Para quem vendemos e de quem dependemos? | `/agronegocio/mercados` | Exportações por capítulo e por país, destinos da soja em grão, origem dos fertilizantes | Comex Stat |
 
 Decisões: agropecuária é a das Contas Nacionais (dentro da porteira), não o agronegócio ampliado; o recorte agro do comércio é por capítulo do Sistema Harmonizado (01 a 24, 41, 44, 47, 50 a 53), não a lista do Agrostat; valor unitário de comércio não é preço na fazenda; a relação de troca compara o mesmo intervalo de meses nos dois anos; safras de milho e feijão somam produção, nunca área. O Comex Stat aplica o intervalo de meses do período a cada ano quando há detalhe mensal, por isso séries anuais usam anos fechados e o acumulado do ano tem consulta própria. Conab (custos de referência) não respondeu na coleta de 17/10/2026 e continua fora.

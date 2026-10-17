@@ -51,6 +51,6 @@ export function medianaAgro(values: (number | null | undefined)[]) { const vals 
 export const PERGUNTAS_AGRO = [
     { id: 'tamanho', numero: 1, titulo: 'Qual o tamanho do agro na economia?', curto: 'Tamanho na economia' },
     { id: 'conjuntura', numero: 2, titulo: 'Como vai o negócio neste ano?', curto: 'Conjuntura do ano' },
-    { id: 'insumos', numero: 3, titulo: 'Quanto custa produzir?', curto: 'Custo dos insumos' },
+    { id: 'insumos', numero: 3, titulo: 'Quanto custam os insumos importados?', curto: 'Insumos importados' },
     { id: 'mercados', numero: 4, titulo: 'Para quem vendemos e de quem dependemos?', curto: 'Mercados e dependência' },
 ] as const;
