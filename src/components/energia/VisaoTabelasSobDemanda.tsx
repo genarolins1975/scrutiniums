@@ -4,13 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { carregaJson } from "@/lib/energia/carregaJson";
 import type { SinteseVisaoGold } from "@/lib/energia/tipos-visao";
+import { goldNoBloco } from "@/lib/energia/i18n/entrada-visao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import {
-  COLUNAS_ALTERNATIVAS,
-  COLUNAS_EPISODIOS,
-  COLUNAS_REGRAS,
-  COLUNAS_SENSIBILIDADE,
-  COLUNAS_VALORES_FRASES,
-  COLUNAS_VERSOES,
+  colunasAlternativas,
+  colunasEpisodios,
+  colunasRegras,
+  colunasSensibilidade,
+  colunasValoresFrases,
+  colunasVersoes,
   URL_GOLD_VISAO,
   corteEpisodios,
   linhasAlternativas,
@@ -41,6 +43,8 @@ export function VisaoTabelasSobDemanda({
   versao: string;
   downloads: { rotulo: string; url: string }[];
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const caixa = useRef<HTMLDivElement>(null);
   const [pedido, setPedido] = useState(false);
   const [g, setG] = useState<SinteseVisaoGold | null>(null);
@@ -85,19 +89,19 @@ export function VisaoTabelasSobDemanda({
         <div className="space-y-2 text-sm text-carvao-muted" role="status" aria-live="polite">
           <p>
             {erro
-              ? `As tabelas não puderam ser lidas da base publicada: ${erro}`
+              ? tx(`As tabelas não puderam ser lidas da base publicada: ${erro}`, `The tables could not be read from the published base: ${erro}`)
               : pedido
-                ? "Lendo as tabelas na base publicada…"
-                : "As tabelas desta seção são lidas da base publicada quando a seção aparece na tela."}
+                ? tx("Lendo as tabelas na base publicada…", "Reading the tables from the published base…")
+                : tx("As tabelas desta seção são lidas da base publicada quando a seção aparece na tela.", "The tables in this section are read from the published base when the section comes into view.")}
           </p>
           {!pedido && (
             <button type="button" onClick={() => setPedido(true)} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
-              Carregar as tabelas
+              {tx("Carregar as tabelas", "Load the tables")}
             </button>
           )}
           {erro && (
             <button type="button" onClick={() => setErro(null)} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
-              Tentar de novo
+              {tx("Tentar de novo", "Try again")}
             </button>
           )}
           {downloads.length > 0 && (
@@ -105,7 +109,7 @@ export function VisaoTabelasSobDemanda({
               {downloads.map((d) => (
                 <li key={d.url}>
                   <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-                    {d.rotulo}
+                    {goldNoBloco(d.rotulo, idioma, "visao-tabelas-download")}
                   </a>
                 </li>
               ))}
@@ -114,52 +118,76 @@ export function VisaoTabelasSobDemanda({
         </div>
       ) : conjunto === "sistema-auditoria" ? (
         <>
-          <TabelaInterativa {...comum} titulo="Valores usados nas frases" colunas={COLUNAS_VALORES_FRASES} linhas={linhasValoresFrases(g.frases)} colunaRotulo="chave" nomeArquivo="visao-geral-valores" chaveUrl="p004.v" />
-          <TabelaInterativa {...comum} titulo="Versões de origem de cada frase" colunas={COLUNAS_VERSOES} linhas={linhasVersoes(g.frases)} colunaRotulo="frase" nomeArquivo="visao-geral-versoes" chaveUrl="p004.s" />
+          <TabelaInterativa
+            {...comum}
+            titulo={tx("Valores usados nas frases", "Values used in the sentences")}
+            colunas={colunasValoresFrases(idioma)}
+            linhas={linhasValoresFrases(g.frases)}
+            colunaRotulo="chave"
+            nomeArquivo="visao-geral-valores"
+            chaveUrl="p004.v"
+          />
+          <TabelaInterativa
+            {...comum}
+            titulo={tx("Versões de origem de cada frase", "Source versions of each sentence")}
+            colunas={colunasVersoes(idioma)}
+            linhas={linhasVersoes(g.frases)}
+            colunaRotulo="frase"
+            nomeArquivo="visao-geral-versoes"
+            chaveUrl="p004.s"
+          />
         </>
       ) : (
         <>
           <TabelaInterativa
             {...comum}
-            titulo="Regras: estado do dia, limiares e histórico"
-            colunas={COLUNAS_REGRAS}
-            linhas={linhasRegras(g.observar)}
+            titulo={tx("Regras: estado do dia, limiares e histórico", "Rules: state of the day, thresholds and history")}
+            colunas={colunasRegras(idioma)}
+            linhas={linhasRegras(g.observar, idioma)}
             colunaRotulo="titulo"
             nomeArquivo="visao-geral-regras"
             chaveUrl="p007.t"
-            nota="Percentuais sobre os dias avaliáveis de cada regra, que começam em datas diferentes."
+            nota={tx("Percentuais sobre os dias avaliáveis de cada regra, que começam em datas diferentes.", "Percentages over the assessable days of each rule, which start on different dates.")}
           />
           <TabelaInterativa
             {...comum}
-            titulo="Sensibilidade à duração mínima (1, 3, 7 e 14 dias)"
-            colunas={COLUNAS_SENSIBILIDADE}
-            linhas={linhasSensibilidade(g.observar)}
+            titulo={tx("Sensibilidade à duração mínima (1, 3, 7 e 14 dias)", "Sensitivity to the minimum duration (1, 3, 7 and 14 days)")}
+            colunas={colunasSensibilidade(idioma)}
+            linhas={linhasSensibilidade(g.observar, idioma)}
             colunaRotulo="regra"
             nomeArquivo="visao-geral-sensibilidade"
             chaveUrl="p007.s"
-            nota="A duração adotada está marcada; as outras mostram quantos episódios e dias em alerta a regra teria com outro mínimo."
+            nota={tx(
+              "A duração adotada está marcada; as outras mostram quantos episódios e dias em alerta a regra teria com outro mínimo.",
+              "The adopted duration is marked; the others show how many episodes and days in alert the rule would have with another minimum.",
+            )}
           />
           <TabelaInterativa
             {...comum}
-            titulo="Últimos episódios de alerta"
-            colunas={COLUNAS_EPISODIOS}
-            linhas={linhasEpisodios(g.observar)}
+            titulo={tx("Últimos episódios de alerta", "Latest alert episodes")}
+            colunas={colunasEpisodios(idioma)}
+            linhas={linhasEpisodios(g.observar, idioma)}
             colunaRotulo="regra"
             nomeArquivo="visao-geral-episodios"
             chaveUrl="p007.e"
             ordemInicial={{ coluna: "inicio", direcao: "desc" }}
+            // o idioma vem do endereço da janela: a tabela só existe no navegador, depois de lida a gold
             nota={corteEpisodios(g.observar, g.historico_regras.inicio).texto}
           />
           <TabelaInterativa
             {...comum}
-            titulo="Variantes avaliadas e não adotadas"
-            colunas={COLUNAS_ALTERNATIVAS}
-            linhas={linhasAlternativas(g.observar)}
+            titulo={tx("Variantes avaliadas e não adotadas", "Variants assessed and not adopted")}
+            colunas={colunasAlternativas(idioma)}
+            linhas={linhasAlternativas(g.observar, idioma)}
             colunaRotulo="regra"
             nomeArquivo="visao-geral-variantes"
             chaveUrl="p007.a"
-            nota="Cada variante foi avaliada no mesmo histórico; a frequência que teria é o motivo registrado para adotar ou rejeitar."
+            nota={tx(
+              "Cada variante foi avaliada no mesmo histórico; a frequência que teria é o motivo registrado para adotar ou rejeitar.",
+              "Each variant was assessed on the same history; the frequency it would have is the recorded reason for adopting or rejecting it.",
+            )}
           />
+
         </>
       )}
     </div>

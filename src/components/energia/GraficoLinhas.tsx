@@ -7,6 +7,8 @@ import { useCursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { rotuloTick } from "@/lib/energia/escalas";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import type { Idioma } from "@/lib/idioma";
 import {
   dominioLinhas,
   formatarX,
@@ -107,12 +109,11 @@ export type GraficoLinhasProps = {
   chaveUrl?: string;
 };
 
-const fmtX = formatarX;
-
-function fmtV(v: number | null | undefined, casas: number, unidade: string): string {
-  if (v === null || v === undefined || !Number.isFinite(v)) return "sem dado";
+function fmtV(v: number | null | undefined, casas: number, unidade: string, idioma: Idioma = "pt"): string {
+  if (v === null || v === undefined || !Number.isFinite(v)) return idioma === "en" ? "no data" : "sem dado"; // i18n: dado (as duas formas)
   // sinal de menos tipográfico, como no resto do portal
-  return `${v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "\u2212")} ${unidade}`.trim();
+  const locale = idioma === "en" ? "en-US" : "pt-BR"; // i18n: dado
+  return `${v.toLocaleString(locale, { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "\u2212")} ${unidade}`.trim();
 }
 
 function ticks(min: number, max: number, n = 4): number[] {
@@ -185,6 +186,11 @@ export function GraficoLinhas({
   semTitulo = false,
   chaveUrl,
 }: GraficoLinhasProps) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const fmtX = (v: string, f: FormatoX | undefined, longo = false) => formatarX(v, f, longo, idioma);
+  const fV = (v: number | null | undefined, c: number, u: string) => fmtV(v, c, u, idioma);
+  const nLoc = (v: number) => v.toLocaleString(idioma === "en" ? "en-US" : "pt-BR");
   const uid = useId();
   const [largura, setLargura] = useState(760);
   const [ativo, setAtivo] = useState<number | null>(null);
@@ -200,7 +206,7 @@ export function GraficoLinhas({
   const chaveOcultasIniciais = ocultasIniciais.join(",");
   const esquemaUrl = useMemo(
     () => ({
-      de: campo(tiposUrl.texto({ max: 10 }), "", { param: `${chaveUrl}.de` }),
+      de: campo(tiposUrl.texto({ max: 10 }), "", { param: `${chaveUrl}.de` }), // i18n: dado
       ate: campo(tiposUrl.texto({ max: 10 }), "", { param: `${chaveUrl}.ate` }),
       oc: campo(tiposUrl.lista(tiposUrl.texto({ max: 60 })), chaveOcultasIniciais ? chaveOcultasIniciais.split(",") : [], { param: `${chaveUrl}.oc` }),
     }),
@@ -241,8 +247,8 @@ export function GraficoLinhas({
   // valores de X e períodos prontos só mudam com os dados: não são refeitos a cada movimento do cursor
   const xsTodos = useMemo(() => (zoom ? dados.map((d) => String(d[chaveX] ?? "")) : []), [zoom, dados, chaveX]);
   const periodos = useMemo(
-    () => (zoom ? periodosProntos(xsTodos, formatoX).map((p) => ({ ...p, indices: indicesDoIntervalo(xsTodos, p) })) : []),
-    [zoom, xsTodos, formatoX],
+    () => (zoom ? periodosProntos(xsTodos, formatoX, idioma).map((p) => ({ ...p, indices: indicesDoIntervalo(xsTodos, p) })) : []),
+    [zoom, xsTodos, formatoX, idioma],
   );
   const intervaloDaUrl: IntervaloX | null = vUrl.de && vUrl.ate ? { inicio: vUrl.de, fim: vUrl.ate } : intervaloInicial;
   const ivAtual = zoom ? (intervaloControlado !== undefined ? intervaloControlado : usaUrl ? intervaloDaUrl : intervaloInterno) : null;
@@ -278,7 +284,7 @@ export function GraficoLinhas({
   const passoY = yt.length > 1 ? yt[1] - yt[0] : 1;
   // margem esquerda: a de sempre, ampliada quando o maior rótulo do eixo (12 px, cerca de 6,8 px por caractere) não cabe nela; um rótulo
   // como "−5.000.000" não pode sair cortado pela borda do gráfico
-  const maiorRotuloY = yt.reduce((m, v) => Math.max(m, (rotuloTick(v, passoY) + unidadeNoEixo).length), 0);
+  const maiorRotuloY = yt.reduce((m, v) => Math.max(m, (rotuloTick(v, passoY, idioma) + unidadeNoEixo).length), 0);
   const L = Math.max(largura < ESTREITO ? 48 : 60, Math.ceil(maiorRotuloY * 6.8) + 12);
 
   const n = vis.length;
@@ -381,7 +387,7 @@ export function GraficoLinhas({
   // marcas com passo constante a partir do último ponto (anos, trimestres, quinzenas), não em partes iguais do total
   const xt = indicesDoEixoX(n, largura < ESTREITO ? 4 : 7, formatoX);
 
-  const rotulosX = rotulosDoEixoX(xt.map((i) => String(vis[i]?.[chaveX] ?? "")), formatoX);
+  const rotulosX = rotulosDoEixoX(xt.map((i) => String(vis[i]?.[chaveX] ?? "")), formatoX, idioma);
 
   /* ---------- interação ---------- */
   const podeArrastar = zoom && largura >= ESTREITO && n > 2;
@@ -437,7 +443,7 @@ export function GraficoLinhas({
     if (atual.has(id)) atual.delete(id);
     else {
       if (series.length - atual.size <= 1) {
-        setAviso("Ao menos uma série fica visível.");
+        setAviso(tx("Ao menos uma série fica visível.", "At least one series stays visible."));
         return;
       }
       atual.add(id);
@@ -477,18 +483,24 @@ export function GraficoLinhas({
   const estado: string[] = [];
   if (ampliado) {
     estado.push(
-      `Intervalo exibido: ${rotuloX(i0)} a ${rotuloX(i1)}, ${n.toLocaleString("pt-BR")} de ${N.toLocaleString("pt-BR")} pontos` +
-        (escalaDoTrecho ? "; eixo vertical recalculado para o intervalo." : "."),
+      tx(
+        `Intervalo exibido: ${rotuloX(i0)} a ${rotuloX(i1)}, ${n.toLocaleString("pt-BR")} de ${N.toLocaleString("pt-BR")} pontos` +
+          (escalaDoTrecho ? "; eixo vertical recalculado para o intervalo." : "."),
+        `Range shown: ${rotuloX(i0)} to ${rotuloX(i1)}, ${nLoc(n)} of ${nLoc(N)} points` + (escalaDoTrecho ? "; vertical axis recalculated for the range." : "."),
+      ),
     );
   }
   if (escalaDasVisiveis) {
     estado.push(
-      `Escala ajustada às séries visíveis: eixo de ${fmtV(domVisiveis.yMin, casas, "")} a ${fmtV(domVisiveis.yMax, casas, unidade)}; com todas as séries, ${fmtV(domTodas.yMin, casas, "")} a ${fmtV(domTodas.yMax, casas, unidade)}.`,
+      tx(
+        `Escala ajustada às séries visíveis: eixo de ${fmtV(domVisiveis.yMin, casas, "")} a ${fmtV(domVisiveis.yMax, casas, unidade)}; com todas as séries, ${fmtV(domTodas.yMin, casas, "")} a ${fmtV(domTodas.yMax, casas, unidade)}.`,
+        `Scale adjusted to the visible series: axis from ${fV(domVisiveis.yMin, casas, "")} to ${fV(domVisiveis.yMax, casas, unidade)}; with all series, ${fV(domTodas.yMin, casas, "")} to ${fV(domTodas.yMax, casas, unidade)}.`,
+      ),
     );
   } else if (temOcultas && modoEscala === "manter") {
-    estado.push("Escala mantida com todas as séries, inclusive as ocultas.");
+    estado.push(tx("Escala mantida com todas as séries, inclusive as ocultas.", "Scale kept with all series, including the hidden ones."));
   } else if (temOcultas) {
-    estado.push("Ocultar séries não mudou a escala do eixo.");
+    estado.push(tx("Ocultar séries não mudou a escala do eixo.", "Hiding series did not change the axis scale."));
   }
   if (aviso) estado.push(aviso);
   const textoEstado = estado.join(" ");
@@ -501,11 +513,11 @@ export function GraficoLinhas({
     <div ref={ref} className="relative w-full">
       <p className={semTitulo ? "sr-only" : "mb-1 text-sm font-medium text-carvao"} data-titulo-grafico="true">
         {titulo}
-        {unidade.length > 1 && <span className={semTitulo ? undefined : "font-normal text-mineral"}>, em {unidade}</span>}
+        {unidade.length > 1 && <span className={semTitulo ? undefined : "font-normal text-mineral"}>{tx(", em ", ", in ")}{unidade}</span>}
       </p>
       {zoom && N > 2 && (
-        <div role="group" aria-label={`Intervalo do gráfico: ${titulo}`} className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1" data-controles="intervalo">
-          {periodos.length > 0 && <span className="rotulo mr-1 text-mineral">Período</span>}
+        <div role="group" aria-label={tx(`Intervalo do gráfico: ${titulo}`, `Chart range: ${titulo}`)} className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1" data-controles="intervalo">
+          {periodos.length > 0 && <span className="rotulo mr-1 text-mineral">{tx("Período", "Period")}</span>}
           {periodos.map((p) => {
             const [a, b] = p.indices;
             const atual = ampliado && a === i0 && b === i1;
@@ -527,16 +539,17 @@ export function GraficoLinhas({
             onClick={() => ampliado && aplicarIndices(0, N - 1)}
             className={`${botao} ${ampliado ? "border-carvao-muted text-carvao hover:border-carvao" : "cursor-default border-linha text-mineral"}`}
           >
-            Restaurar intervalo
+            {tx("Restaurar intervalo", "Reset range")}
           </button>
-          <span className="hidden text-xs text-mineral sm:inline">ou arraste sobre o gráfico com o mouse</span>
+          <span className="hidden text-xs text-mineral sm:inline">{tx("ou arraste sobre o gráfico com o mouse", "or drag across the chart with the mouse")}</span>
           <details className="w-full">
             <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-              Ajustar início e fim
+              {tx("Ajustar início e fim", "Adjust start and end")}
             </summary>
             <div className="grid gap-x-6 gap-y-1 sm:grid-cols-2">
               <label className="block text-xs text-carvao-muted">
-                Início: <span className="tabular-nums text-carvao">{rotuloX(i0)}</span>
+                {tx("Início: ", "Start: ")}
+                <span className="tabular-nums text-carvao">{rotuloX(i0)}</span>
                 <input
                   type="range"
                   min={0}
@@ -552,7 +565,8 @@ export function GraficoLinhas({
                 />
               </label>
               <label className="block text-xs text-carvao-muted">
-                Fim: <span className="tabular-nums text-carvao">{rotuloX(i1)}</span>
+                {tx("Fim: ", "End: ")}
+                <span className="tabular-nums text-carvao">{rotuloX(i1)}</span>
                 <input
                   type="range"
                   min={1}
@@ -573,7 +587,7 @@ export function GraficoLinhas({
       )}
       <div className="flex flex-wrap items-baseline gap-x-4">
         {legendaInterativa ? (
-          <ul className="mb-1 flex flex-wrap items-center gap-x-1 gap-y-0 text-xs text-carvao-muted" aria-label="Legenda: ative ou oculte séries">
+          <ul className="mb-1 flex flex-wrap items-center gap-x-1 gap-y-0 text-xs text-carvao-muted" aria-label={tx("Legenda: ative ou oculte séries", "Legend: show or hide series")}>
             {series.map((s) => {
               const visivel = seriesVis.includes(s);
               return (
@@ -596,7 +610,7 @@ export function GraficoLinhas({
                       />
                     </svg>
                     {s.rotulo}
-                    {!visivel && <span className="italic">(oculta)</span>}
+                    {!visivel && <span className="italic">{tx("(oculta)", "(hidden)")}</span>}
                   </button>
                 </li>
               );
@@ -608,11 +622,12 @@ export function GraficoLinhas({
               </li>
             )}
             <li className="flex min-h-[44px] items-center px-1.5 text-mineral" data-legenda="unidade">
-              Valores em {unidade}
+              {tx("Valores em ", "Values in ")}
+              {unidade}
             </li>
           </ul>
         ) : (
-          <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
+          <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label={tx("Legenda", "Legend")}>
             {series.map((s) => (
               <li key={s.id} className="flex items-center gap-1.5">
                 <svg width="18" height="8" aria-hidden="true">
@@ -629,7 +644,8 @@ export function GraficoLinhas({
             )}
             {semTitulo && (
               <li className="text-mineral" data-legenda="unidade">
-                Valores em {unidade}
+                {tx("Valores em ", "Values in ")}
+                {unidade}
               </li>
             )}
           </ul>
@@ -647,14 +663,19 @@ export function GraficoLinhas({
               onClick={() => setModoEscala((m) => (m === "ajustar" ? "manter" : "ajustar"))}
               className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao"
             >
-              {modoEscala === "ajustar" ? "Manter a escala de todas as séries" : "Ajustar a escala às séries visíveis"}
+              {modoEscala === "ajustar"
+                ? tx("Manter a escala de todas as séries", "Keep the scale of all series")
+                : tx("Ajustar a escala às séries visíveis", "Fit the scale to the visible series")}
             </button>
           )}
         </div>
       )}
       {zoom && (
         <p id={`${uid}-d`} className="sr-only">
-          Para ampliar um trecho, use os botões de período ou os controles de início e fim acima do gráfico.
+          {tx(
+            "Para ampliar um trecho, use os botões de período ou os controles de início e fim acima do gráfico.",
+            "To zoom into a stretch, use the period buttons or the start and end controls above the chart.",
+          )}
         </p>
       )}
       {/* altura fixa em pixels: o HTML do servidor já reserva a altura final, e âncoras abaixo
@@ -674,12 +695,12 @@ export function GraficoLinhas({
           className="block overflow-visible focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
           data-svg-grafico=""
         >
-          <title id={`${uid}-t`}>{`${titulo}. Use as setas para percorrer os pontos.`}</title>
+          <title id={`${uid}-t`}>{tx(`${titulo}. Use as setas para percorrer os pontos.`, `${titulo}. Use the arrow keys to move through the points.`)}</title>
           {yt.map((v) => (
             <g key={v}>
               <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
               <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
-                {rotuloTick(v, passoY)}
+                {rotuloTick(v, passoY, idioma)}
                 {unidadeNoEixo}
               </text>
             </g>
@@ -791,14 +812,14 @@ export function GraficoLinhas({
                     <span aria-hidden="true" className="inline-block h-2 w-2" style={{ background: s.cor }} />
                     {s.rotulo}
                   </span>
-                  <span className="tabular-nums">{fmtV(pa[s.id] as number | null, casas, unidade)}</span>
+                  <span className="tabular-nums">{fV(pa[s.id] as number | null, casas, unidade)}</span>
                 </li>
               ))}
               {banda && typeof pa[banda.inferior] === "number" && (
                 <li className="flex justify-between gap-3 text-mineral">
                   <span>{banda.rotulo}</span>
                   <span className="tabular-nums">
-                    {fmtV(pa[banda.inferior] as number, casas, "")} a {fmtV(pa[banda.superior] as number, casas, unidade)}
+                    {fV(pa[banda.inferior] as number, casas, "")} {tx("a", "to")} {fV(pa[banda.superior] as number, casas, unidade)}
                   </span>
                 </li>
               )}
@@ -809,27 +830,35 @@ export function GraficoLinhas({
       {/* leitura do ponto ativo para leitor de tela: região persistente, anunciada a cada mudança */}
       <p className="sr-only" aria-live="polite">
         {pa
-          ? `${fmtX(String(pa[chaveX]), formatoX, true)}: ${seriesVis.map((s) => `${s.rotulo} ${fmtV(pa[s.id] as number | null, casas, unidade)}`).join("; ")}`
+          ? `${fmtX(String(pa[chaveX]), formatoX, true)}: ${seriesVis.map((s) => `${s.rotulo} ${fV(pa[s.id] as number | null, casas, unidade)}`).join("; ")}`
           : ""}
       </p>
       <details className="mt-3 text-xs" open={tabelaAbertaInicial || undefined} onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
           {ampliado
-            ? `Dados do gráfico em tabela (${n.toLocaleString("pt-BR")} de ${N.toLocaleString("pt-BR")} linhas, intervalo exibido)`
-            : `Dados do gráfico em tabela (${n.toLocaleString("pt-BR")} ${n === 1 ? "linha" : "linhas"})`}
+            ? tx(
+                `Dados do gráfico em tabela (${n.toLocaleString("pt-BR")} de ${N.toLocaleString("pt-BR")} linhas, intervalo exibido)`,
+                `Chart data as a table (${nLoc(n)} of ${nLoc(N)} rows, range shown)`,
+              )
+            : tx(`Dados do gráfico em tabela (${n.toLocaleString("pt-BR")} ${n === 1 ? "linha" : "linhas"})`, `Chart data as a table (${nLoc(n)} ${n === 1 ? "row" : "rows"})`)}
         </summary>
         {tabelaAberta && (
-          <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
+          <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
             <table className="w-full border-collapse tabular-nums">
               <caption className="sr-only">
-                {`${titulo}, em ${unidade}` +
-                  (ampliado ? `; intervalo de ${rotuloX(i0)} a ${rotuloX(i1)}` : "") +
-                  (nomesOcultas.length ? `; séries ocultas no gráfico e na tabela: ${nomesOcultas.join(", ")}` : "")}
+                {tx(
+                  `${titulo}, em ${unidade}` +
+                    (ampliado ? `; intervalo de ${rotuloX(i0)} a ${rotuloX(i1)}` : "") +
+                    (nomesOcultas.length ? `; séries ocultas no gráfico e na tabela: ${nomesOcultas.join(", ")}` : ""),
+                  `${titulo}, in ${unidade}` +
+                    (ampliado ? `; range from ${rotuloX(i0)} to ${rotuloX(i1)}` : "") +
+                    (nomesOcultas.length ? `; series hidden in the chart and the table: ${nomesOcultas.join(", ")}` : ""),
+                )}
               </caption>
               <thead className="sticky top-0 bg-superficie">
                 <tr className="text-left text-mineral">
                   <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">
-                    {formatoX === "hora" ? "Hora" : formatoX === "mes" ? "Mês" : formatoX === "texto" ? "Item" : "Data"}
+                    {formatoX === "hora" ? tx("Hora", "Hour") : formatoX === "mes" ? tx("Mês", "Month") : formatoX === "texto" ? tx("Item", "Item") : tx("Data", "Date")}
                   </th>
                   {seriesVis.map((s) => (
                     <th key={s.id} scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{s.rotulo} ({unidade})</th>
@@ -842,11 +871,13 @@ export function GraficoLinhas({
                   <tr key={i} className="border-b border-linha">
                     <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">{fmtX(String(p[chaveX] ?? ""), formatoX, true)}</th>
                     {seriesVis.map((s) => (
-                      <td key={s.id} className="px-2 py-1 text-carvao">{fmtV(p[s.id] as number | null, casas, "")}</td>
+                      <td key={s.id} className="px-2 py-1 text-carvao">{fV(p[s.id] as number | null, casas, "")}</td>
                     ))}
                     {banda && (
                       <td className="px-2 py-1 text-mineral">
-                        {typeof p[banda.inferior] === "number" ? `${fmtV(p[banda.inferior] as number, casas, "")} a ${fmtV(p[banda.superior] as number, casas, "")}` : "sem dado"}
+                        {typeof p[banda.inferior] === "number"
+                          ? tx(`${fmtV(p[banda.inferior] as number, casas, "")} a ${fmtV(p[banda.superior] as number, casas, "")}`, `${fV(p[banda.inferior] as number, casas, "")} to ${fV(p[banda.superior] as number, casas, "")}`)
+                          : tx("sem dado", "no data")}
                       </td>
                     )}
                   </tr>

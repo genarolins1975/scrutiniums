@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Faixa de métricas da abertura: de duas a seis medidas lado a lado, separadas por linhas finas (sem cartões). Cada medida é um
@@ -13,7 +14,7 @@ import type { ReactNode } from "react";
 export function FaixaMetricas({
   children,
   colunas = 3,
-  rotulo = "Indicadores principais da página",
+  rotulo,
   nota,
 }: {
   children: ReactNode;
@@ -24,7 +25,7 @@ export function FaixaMetricas({
   nota?: ReactNode;
 }) {
   return (
-    <section aria-label={rotulo} className="ed-faixa" data-faixa-metricas="">
+    <section aria-label={rotulo ?? tx("Indicadores principais da página", "Main indicators on this page")} className="ed-faixa" data-faixa-metricas="">
       <div className="ed-faixa-grade" data-colunas={colunas}>
         {children}
       </div>

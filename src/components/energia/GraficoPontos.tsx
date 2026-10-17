@@ -4,15 +4,17 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 import {
   diferencaPar,
   dominioBonito,
   escalaLinear,
-  formatarDiferenca,
-  formatarValor,
+  formatarDiferenca as formatarDiferencaEm,
+  formatarValor as formatarValorEm,
   ordenarPares,
   pxCaractere12,
-  rotuloTick,
+  rotuloTick as rotuloTickEm,
   sentidoDiferenca,
   ticksQueCabem,
   valido,
@@ -89,6 +91,11 @@ export type GraficoPontosProps = {
   alturaLinha?: number;
   /** Acima desta altura a área das linhas rola na vertical. */
   alturaMaxima?: number;
+  /**
+   * Os rótulos de categoria são nomes próprios que vêm dos dados em português (empresa, usina, distribuidora, município). Na página
+   * inglesa, o texto do SVG ganha lang="pt-BR", translate="no" e data-i18n-nome, e a dica e a tabela os marcam com <Nome>.
+   */
+  rotulosSaoNomes?: boolean;
 };
 
 const LARGURA_SSR = 760;
@@ -106,11 +113,18 @@ function cabe(texto: string, largura: number, px = PX_CARACTERE): string {
 
 const losango = (x: number, y: number, m = MEIA_DIAGONAL) => `${r1(x)},${r1(y - m)} ${r1(x + m)},${r1(y)} ${r1(x)},${r1(y + m)} ${r1(x - m)},${r1(y)}`;
 
-const TEXTO_SENTIDO = { acima: "acima da referência", abaixo: "abaixo da referência", igual: "igual à referência" } as const;
+/** Sentido da diferença no idioma da página (padrão quando a página não passa `textoSentido`). */
+function textoSentidoPadrao(tx: <T>(pt: T, en: T) => T) {
+  return {
+    acima: tx("acima da referência", "above the reference"),
+    abaixo: tx("abaixo da referência", "below the reference"),
+    igual: tx("igual à referência", "equal to the reference"),
+  };
+}
 
-function textoDirecao(o: OrdemPontos): string {
-  if (o.por === "nome") return o.direcao === "asc" ? "A a Z" : "Z a A";
-  return o.direcao === "desc" ? "maior primeiro" : "menor primeiro";
+function textoDirecao(o: OrdemPontos, tx: <T>(pt: T, en: T) => T): string {
+  if (o.por === "nome") return o.direcao === "asc" ? tx("A a Z", "A to Z") : tx("Z a A", "Z to A");
+  return o.direcao === "desc" ? tx("maior primeiro", "largest first") : tx("menor primeiro", "smallest first");
 }
 
 export function GraficoPontos({
@@ -121,10 +135,10 @@ export function GraficoPontos({
   rotuloValor,
   rotuloReferencia,
   unidadeDiferenca,
-  corValor = "var(--cor-energia)",
+  corValor = "var(--cor-energia)", // i18n: dado
   corReferencia = "var(--cor-carvao-muted)",
   zeroNoEixo = false,
-  ordemInicial = { por: "valor", direcao: "desc" },
+  ordemInicial = { por: "valor", direcao: "desc" }, // i18n: dado
   ordem: ordemControlada,
   onOrdenar,
   chaveUrl,
@@ -133,8 +147,19 @@ export function GraficoPontos({
   textoSentido,
   alturaLinha = 44,
   alturaMaxima = 528,
+  rotulosSaoNomes = false,
 }: GraficoPontosProps) {
-  const sentidos = textoSentido ?? TEXTO_SENTIDO;
+  const idioma = useIdioma();
+  // atributos de nome próprio para o texto do SVG (onde <Nome>, que é span, não cabe) e o nome marcado na parte HTML
+  const attrNome = rotulosSaoNomes && idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {};
+  const nomeHtml = (t: React.ReactNode) => (rotulosSaoNomes ? <Nome>{t}</Nome> : t);
+  const tx = useTx();
+  // os formatadores do gráfico presos ao idioma da página (mesmas assinaturas de escalas.ts)
+  const formatarValor = (v: number | null | undefined, c = 1, u = "") => formatarValorEm(v, c, u, idioma);
+  const formatarDiferenca = (v: number | null | undefined, c = 1, u = "") => formatarDiferencaEm(v, c, u, idioma);
+  const rotuloTick = (v: number, passo: number) => rotuloTickEm(v, passo, idioma);
+  const nLoc = (v: number) => v.toLocaleString(idioma === "en" ? "en-US" : "pt-BR");
+  const sentidos = textoSentido ?? textoSentidoPadrao(tx);
   const uid = useId().replace(/:/g, "");
   const [largura, setLargura] = useState(LARGURA_SSR);
   const [todas, setTodas] = useState(false);
@@ -165,7 +190,7 @@ export function GraficoPontos({
 
   const esquemaUrl = useMemo(
     () => ({
-      por: campo(tiposUrl.opcao(["nome", "valor", "diferenca"] as const), ordemInicial.por, { param: `${chaveUrl}.ord` }),
+      por: campo(tiposUrl.opcao(["nome", "valor", "diferenca"] as const), ordemInicial.por, { param: `${chaveUrl}.ord` }), // i18n: dado
       dir: campo(tiposUrl.opcao(["asc", "desc"] as const), ordemInicial.direcao, { param: `${chaveUrl}.dir` }),
     }),
     [chaveUrl, ordemInicial.por, ordemInicial.direcao],
@@ -173,7 +198,7 @@ export function GraficoPontos({
   const [vUrl, definirUrl] = useEstadoUrl(esquemaUrl, { sincronizar: !!chaveUrl });
   const ordem: OrdemPontos = ordemControlada ?? (chaveUrl ? { por: vUrl.por, direcao: vUrl.dir } : ordemInterna);
   const uDif = unidadeDiferenca ?? (unidade === "%" ? "p.p." : unidade);
-  const nomeCriterio = (c: CriterioPontos) => (c === "valor" ? rotuloValor : c === "diferenca" ? "Diferença" : "Nome");
+  const nomeCriterio = (c: CriterioPontos) => (c === "valor" ? rotuloValor : c === "diferenca" ? tx("Diferença", "Difference") : tx("Nome", "Name"));
 
   function mudarOrdem(o: OrdemPontos) {
     if (!ordemControlada) {
@@ -181,7 +206,12 @@ export function GraficoPontos({
       else setOrdemInterna(o);
     }
     onOrdenar?.(o);
-    setAnuncio(`Ordenado por: ${nomeCriterio(o.por)}, ${textoDirecao(o)}. Entidades sem dado ficam no fim.`);
+    setAnuncio(
+      tx(
+        `Ordenado por: ${nomeCriterio(o.por)}, ${textoDirecao(o, tx)}. Entidades sem dado ficam no fim.`,
+        `Sorted by: ${nomeCriterio(o.por)}, ${textoDirecao(o, tx)}. Entities with no data stay at the end.`,
+      ),
+    );
   }
 
   const lista = ordenarPares(itens, ordem.por, ordem.direcao);
@@ -190,7 +220,7 @@ export function GraficoPontos({
   if (!n) {
     return (
       <div ref={raiz} className="flex h-[88px] items-center border border-dashed border-linha px-4 text-sm text-carvao-muted">
-        Nenhuma entidade com dados para exibir.
+        {tx("Nenhuma entidade com dados para exibir.", "No entity with data to display.")}
       </div>
     );
   }
@@ -222,7 +252,9 @@ export function GraficoPontos({
     const sentido = sentidoDiferenca(dif, casas);
     return (
       `${p.rotulo}: ${rotuloValor} ${formatarValor(p.valor, casas, unidade)}; ${rotuloReferencia} ${formatarValor(p.referencia, casas, unidade)}; ` +
-      (sentido ? `diferença ${formatarDiferenca(dif, casas, uDif)}, ${sentidos[sentido]}` : "diferença sem dado")
+      (sentido
+        ? tx(`diferença ${formatarDiferenca(dif, casas, uDif)}, ${sentidos[sentido]}`, `difference ${formatarDiferenca(dif, casas, uDif)}, ${sentidos[sentido]}`)
+        : tx("diferença sem dado", "difference with no data"))
     );
   };
 
@@ -230,7 +262,7 @@ export function GraficoPontos({
     if (!onSelecionar) return;
     const novo = selecionado === p.id ? null : p.id;
     onSelecionar(novo);
-    setAnuncio(novo === null ? `Seleção de ${p.rotulo} removida` : `Selecionada: ${p.rotulo}`);
+    setAnuncio(novo === null ? tx(`Seleção de ${p.rotulo} removida`, `Selection of ${p.rotulo} removed`) : tx(`Selecionada: ${p.rotulo}`, `Selected: ${p.rotulo}`));
   }
 
   function irPara(i: number) {
@@ -308,7 +340,7 @@ export function GraficoPontos({
       >
         {/* alvo de ponteiro e toque: a linha inteira */}
         <rect x="0" y={y0} width={w} height={hc} fill="transparent" />
-        <text x="4" y={r1(yTexto)} fontSize="12" fontWeight={sel ? 600 : 400} fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"} data-rotulo-categoria="true">
+        <text x="4" y={r1(yTexto)} fontSize="12" fontWeight={sel ? 600 : 400} fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"} data-rotulo-categoria="true" {...attrNome}>
           {rotuloEmCima ? cabe(p.rotulo, w - colunaDif - 12, pxCaractere12(p.rotulo)) : cabe(p.rotulo, colunaRotulo - 8)}
         </text>
         {temV && temR && Math.abs(xv - xr) > 0.5 && <line x1={r1(xv)} x2={r1(xr)} y1={r1(cy)} y2={r1(cy)} stroke="var(--cor-mineral-soft)" strokeWidth="2" strokeLinecap="round" />}
@@ -316,7 +348,7 @@ export function GraficoPontos({
         {temV && <circle data-forma="circulo" cx={r1(xv)} cy={r1(cy)} r="5" fill={corValor} stroke="var(--cor-superficie)" strokeWidth="2" />}
         {!temV && !temR && (
           <text data-estado="sem-dado" x={rotuloEmCima ? 12 : colunaRotulo + 12} y={r1(cy + 4)} fontSize="12" fontStyle="italic" fill="var(--cor-carvao-muted)">
-            sem dado
+            {tx("sem dado", "no data")}
           </text>
         )}
         <text
@@ -354,7 +386,7 @@ export function GraficoPontos({
         className="pointer-events-none absolute z-20 min-w-[12rem] max-w-[17rem] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
         style={{ top: acima ? y0 : y0 + hc, transform: acima ? "translateY(-100%)" : undefined, left: `min(${colunaRotulo}px, calc(100% - 13rem))` }}
       >
-        <p className="font-medium text-carvao">{pa.rotulo}</p>
+        <p className="font-medium text-carvao">{nomeHtml(pa.rotulo)}</p>
         {pa.detalhe && <p className="text-carvao-muted">{pa.detalhe}</p>}
         <ul className="mt-1 space-y-0.5">
           <li className="flex items-center justify-between gap-3">
@@ -378,9 +410,9 @@ export function GraficoPontos({
             </span>
           </li>
           <li className="flex justify-between gap-3 border-t border-linha pt-0.5">
-            <span className="text-carvao-muted">Diferença</span>
+            <span className="text-carvao-muted">{tx("Diferença", "Difference")}</span>
             <span className="text-right tabular-nums text-carvao">
-              {sentido ? `${formatarDiferenca(dif, casas, uDif)}, ${sentidos[sentido]}` : "sem dado: falta um dos valores"}
+              {sentido ? `${formatarDiferenca(dif, casas, uDif)}, ${sentidos[sentido]}` : tx("sem dado: falta um dos valores", "no data: one of the values is missing")}
             </span>
           </li>
         </ul>
@@ -388,7 +420,10 @@ export function GraficoPontos({
     );
   }
 
-  const instrucoes = `${n} ${n === 1 ? "entidade" : "entidades"}, cada uma com ${rotuloValor} (círculo cheio) e ${rotuloReferencia} (losango vazado). Use Tab para entrar no gráfico, as setas para percorrer as linhas, Home e End para ir ao início e ao fim${onSelecionar ? " e Enter ou Espaço para selecionar" : ""}. A tabela com os mesmos dados está logo abaixo.`;
+  const instrucoes = tx(
+    `${n} ${n === 1 ? "entidade" : "entidades"}, cada uma com ${rotuloValor} (círculo cheio) e ${rotuloReferencia} (losango vazado). Use Tab para entrar no gráfico, as setas para percorrer as linhas, Home e End para ir ao início e ao fim${onSelecionar ? " e Enter ou Espaço para selecionar" : ""}. A tabela com os mesmos dados está logo abaixo.`,
+    `${n} ${n === 1 ? "entity" : "entities"}, each with ${rotuloValor} (filled circle) and ${rotuloReferencia} (hollow diamond). Use Tab to enter the chart, the arrow keys to move through the rows, Home and End to go to the start and the end${onSelecionar ? " and Enter or Space to select" : ""}. The table with the same data is just below.`,
+  );
   const colunaOrdenada = ordem.por === "nome" ? "nome" : ordem.por;
   const ariaSort = (c: "nome" | "valor" | "diferenca") => (colunaOrdenada === c ? (ordem.direcao === "asc" ? "ascending" : "descending") : undefined);
 
@@ -396,12 +431,17 @@ export function GraficoPontos({
     <div ref={raiz} className="relative w-full" data-grafico="pontos" data-rotulos={rotuloEmCima ? "acima" : "lateral"}>
       <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
         {titulo}
-        {unidade.length > 1 && <span className="font-normal text-mineral">, em {unidade}</span>}
+        {unidade.length > 1 && (
+          <span className="font-normal text-mineral">
+            {tx(", em ", ", in ")}
+            {unidade}
+          </span>
+        )}
       </p>
       <div className="mb-2 flex flex-wrap items-center gap-x-5 gap-y-1">
         <fieldset className="flex flex-wrap items-center gap-x-4">
-          <legend className="rotulo float-left mr-3 text-mineral">Ordenar por</legend>
-          {(["valor", "diferenca", "nome"] as CriterioPontos[]).map((c) => (
+          <legend className="rotulo float-left mr-3 text-mineral">{tx("Ordenar por", "Sort by")}</legend>
+          {(["valor", "diferenca", "nome"] as CriterioPontos[]).map((c) => ( // i18n: dado
             <label key={c} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
               <input
                 type="radio"
@@ -418,36 +458,48 @@ export function GraficoPontos({
         <button
           type="button"
           onClick={() => mudarOrdem({ por: ordem.por, direcao: ordem.direcao === "asc" ? "desc" : "asc" })}
-          aria-label={`Ordem: ${textoDirecao(ordem)}. Inverter`}
+          aria-label={tx(`Ordem: ${textoDirecao(ordem, tx)}. Inverter`, `Order: ${textoDirecao(ordem, tx)}. Reverse`)}
           className="rotulo inline-flex min-h-[44px] items-center gap-1.5 border border-linha px-3 text-carvao-muted hover:border-carvao hover:text-carvao"
         >
           <span aria-hidden="true">{ordem.direcao === "desc" ? "↓" : "↑"}</span>
-          Ordem: {textoDirecao(ordem)}
+          {tx("Ordem: ", "Order: ")}
+          {textoDirecao(ordem, tx)}
         </button>
       </div>
       <div className="flex flex-wrap items-baseline gap-x-4">
-        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
+        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label={tx("Legenda", "Legend")}>
           <li className="flex items-center gap-1.5">
             <svg width="12" height="12" aria-hidden="true">
               <circle cx="6" cy="6" r="5" fill={corValor} />
             </svg>
-            {rotuloValor} (círculo cheio)
+            {rotuloValor} {tx("(círculo cheio)", "(filled circle)")}
           </li>
           <li className="flex items-center gap-1.5">
             <svg width="14" height="14" aria-hidden="true">
               <polygon points={losango(7, 7, 6)} fill="var(--cor-superficie)" stroke={corReferencia} strokeWidth="2" />
             </svg>
-            {rotuloReferencia} (losango vazado)
+            {rotuloReferencia} {tx("(losango vazado)", "(hollow diamond)")}
           </li>
           <li>
-            Diferença: {rotuloValor} menos {rotuloReferencia}, em {uDif}
+            {tx(
+              <>
+                Diferença: {rotuloValor} menos {rotuloReferencia}, em {uDif}
+              </>,
+              <>
+                Difference: {rotuloValor} minus {rotuloReferencia}, in {uDif}
+              </>,
+            )}
           </li>
           {temAusencia && (
             <li data-legenda="sem-dado">
-              <span className="italic">sem dado</span>: a marca ausente não é desenhada e a diferença não é calculada
+              <span className="italic">{tx("sem dado", "no data")}</span>
+              {tx(": a marca ausente não é desenhada e a diferença não é calculada", ": the missing mark is not drawn and the difference is not calculated")}
             </li>
           )}
-          <li className="text-mineral">Valores em {unidade}</li>
+          <li className="text-mineral">
+            {tx("Valores em ", "Values in ")}
+            {unidade}
+          </li>
         </ul>
         <BaixarImagem raiz={raiz} titulo={titulo} unidade={unidade} />
       </div>
@@ -458,7 +510,7 @@ export function GraficoPontos({
       <svg width="100%" height={rotuloEmCima ? 36 : 22} viewBox={`0 0 ${w} ${rotuloEmCima ? 36 : 22}`} aria-hidden="true" className="block overflow-visible" data-svg-grafico="">
         {/* celular: o cabeçalho da diferença ocupa a própria linha, para não encostar na última marca do eixo */}
         <text x={w - 4} y="12" textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
-          Diferença
+          {tx("Diferença", "Difference")}
         </text>
         <g transform={rotuloEmCima ? "translate(0 14)" : undefined}>
           {ticksEixo.map((t) => {
@@ -494,14 +546,21 @@ export function GraficoPontos({
       </div>
       {h > alturaMaxima && (
         <p className="mt-1 flex flex-wrap items-center gap-x-3 text-xs text-mineral" data-aviso-rolagem="true">
-          <span>{todas ? `Todas as ${n.toLocaleString("pt-BR")} entidades.` : `O gráfico mostra só parte das ${n.toLocaleString("pt-BR")} entidades, na ordem escolhida.`}</span>
+          <span>
+            {todas
+              ? tx(`Todas as ${n.toLocaleString("pt-BR")} entidades.`, `All ${nLoc(n)} entities.`)
+              : tx(
+                  `O gráfico mostra só parte das ${n.toLocaleString("pt-BR")} entidades, na ordem escolhida.`,
+                  `The chart shows only part of the ${nLoc(n)} entities, in the chosen order.`,
+                )}
+          </span>
           <button
             type="button"
             aria-expanded={todas}
             onClick={() => setTodas((t) => !t)}
             className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao"
           >
-            {todas ? "Mostrar só o início" : `Mostrar todas as ${n.toLocaleString("pt-BR")}`}
+            {todas ? tx("Mostrar só o início", "Show only the beginning") : tx(`Mostrar todas as ${n.toLocaleString("pt-BR")}`, `Show all ${nLoc(n)}`)}
           </button>
         </p>
       )}
@@ -510,15 +569,23 @@ export function GraficoPontos({
       </p>
       <details className="mt-3 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Dados do gráfico em tabela ({n.toLocaleString("pt-BR")} {n === 1 ? "linha" : "linhas"})
+          {tx(
+            `Dados do gráfico em tabela (${n.toLocaleString("pt-BR")} ${n === 1 ? "linha" : "linhas"})`,
+            `Chart data as a table (${nLoc(n)} ${n === 1 ? "row" : "rows"})`,
+          )}
         </summary>
-        <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
+        <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
           <table className="w-full border-collapse tabular-nums">
-            <caption className="sr-only">{`${titulo}, em ${unidade}. Ordenado por: ${nomeCriterio(ordem.por)}, ${textoDirecao(ordem)}`}</caption>
+            <caption className="sr-only">
+              {tx(
+                `${titulo}, em ${unidade}. Ordenado por: ${nomeCriterio(ordem.por)}, ${textoDirecao(ordem, tx)}`,
+                `${titulo}, in ${unidade}. Sorted by: ${nomeCriterio(ordem.por)}, ${textoDirecao(ordem, tx)}`,
+              )}
+            </caption>
             <thead className="sticky top-0 bg-superficie">
               <tr className="text-left text-mineral">
                 <th scope="col" aria-sort={ariaSort("nome")} className="border-b border-linha px-2 py-1.5 font-medium">
-                  Entidade
+                  {tx("Entidade", "Entity")}
                 </th>
                 <th scope="col" aria-sort={ariaSort("valor")} className="border-b border-linha px-2 py-1.5 text-right font-medium">
                   {rotuloValor} ({unidade})
@@ -527,7 +594,7 @@ export function GraficoPontos({
                   {rotuloReferencia} ({unidade})
                 </th>
                 <th scope="col" aria-sort={ariaSort("diferenca")} className="border-b border-linha px-2 py-1.5 text-right font-medium">
-                  Diferença ({uDif})
+                  {tx("Diferença", "Difference")} ({uDif})
                 </th>
               </tr>
             </thead>
@@ -539,8 +606,8 @@ export function GraficoPontos({
                 return (
                   <tr key={p.id} data-id={p.id} className={`border-b border-linha ${sel ? "bg-energia-fundo" : ""}`}>
                     <th scope="row" className={`px-2 py-1 text-left text-carvao ${sel ? "font-semibold" : "font-normal"}`}>
-                      {p.rotulo}
-                      {sel && <span className="sr-only"> (selecionada)</span>}
+                      {nomeHtml(p.rotulo)}
+                      {sel && <span className="sr-only">{tx(" (selecionada)", " (selected)")}</span>}
                     </th>
                     <td className={`px-2 py-1 text-right ${valido(p.valor) ? "text-carvao" : ausente}`}>{formatarValor(p.valor, casas)}</td>
                     <td className={`px-2 py-1 text-right ${valido(p.referencia) ? "text-carvao" : ausente}`}>{formatarValor(p.referencia, casas)}</td>
