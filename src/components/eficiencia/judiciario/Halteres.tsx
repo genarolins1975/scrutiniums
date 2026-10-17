@@ -31,6 +31,6 @@ export function HalteresTribunais({linhas,medida:inicial='tempoBaixados',selecio
    </div>
    <span className={s.dumbbellValues}>{l.tempoBaixados}<small> · {l.idadePendentes}</small></span>
   </li>;})}</ol>
-  <p className={s.figureNote}>Cada linha liga as duas médias publicadas do tribunal; valores à direita: baixados · pendentes. Escala comum de zero a {topo} meses. Médias, não medianas; assuntos e proporção de execuções não controlados. Quando os baixados superam os pendentes, o tribunal encerrou processos mais antigos que o acervo restante.</p>
+  <p className={s.figureNote}>Cada linha liga as duas médias publicadas do tribunal; valores à direita: baixados · pendentes. Escala comum de zero a {topo} meses. Médias, não medianas; assuntos e proporção de execuções não controlados. Baixados acima dos pendentes indicam apenas que os processos encerrados no ano tinham média maior que a do acervo restante; encerrar processos antigos é uma explicação possível, não demonstrada por um único ano.</p>
  </figure>;
 }
