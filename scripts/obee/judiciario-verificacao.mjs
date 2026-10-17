@@ -104,7 +104,7 @@ try{
  check('Cookie guarda o Judiciário',(await context.cookies()).some(c=>c.name==='scrutiniums_observatorio'&&c.value==='judiciario'&&c.httpOnly));
  await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
  check('Último acesso identifica o cartão do Judiciário',await page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true}).getByText('Último acesso',{exact:true}).isVisible());
- const slugs=['','panorama','internacional','recursos','tempo','filas','entrega','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
+ const slugs=['','panorama','internacional','recursos','tempo','filas','entrega','consistencia','criminal','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
  for(const width of [320,390,768,1440]){
   await page.setViewportSize({width,height:width===390?844:1000});
   for(const slug of slugs){

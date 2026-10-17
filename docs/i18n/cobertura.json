@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "2b025680cd1d60990a0c71bb68d6288caaff6ca39d1079f72cec33919209c4b5",
-    "arquivos_analisados": 1238,
-    "fontes_sha256": "46ff6c32334cee4ba2ba254669520da64f52fbd5f5123fe99745267541f9d101",
-    "pendencias_sha256": "38ba50afacdbba8c2dc75042941d0137f987d18eeaac6905ef209b2415a000ae",
+    "arquivos_analisados": 1240,
+    "fontes_sha256": "8996f4f3d6b292543b23db3aaa1442804a7807c149142caedc8a10dd53128a21",
+    "pendencias_sha256": "f5dbbdfdc559e238fbd4ceee661b699de38c4cdcaa2cc51500643afa4e9dd822",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -336,20 +336,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 224,
+        "arquivos": 226,
         "candidatos": {
-          "jsx_text": 2868,
-          "atributos": 989,
-          "props": 1212,
-          "outros_literais": 7273,
-          "templates": 693,
-          "expressoes_nao_resolvidas": 7268,
-          "chaves_objetos": 4444
+          "jsx_text": 2938,
+          "atributos": 1021,
+          "props": 1281,
+          "outros_literais": 7443,
+          "templates": 724,
+          "expressoes_nao_resolvidas": 7554,
+          "chaves_objetos": 4600
         },
         "exclusoes": {
-          "importacoes": 852,
-          "atributos_tecnicos": 3150,
-          "tipos": 420
+          "importacoes": 864,
+          "atributos_tecnicos": 3183,
+          "tipos": 424
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -358,7 +358,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 24747,
+        "candidatos_nao_catalogados": 25561,
         "percentual_traduzido": null
       },
       "rotas": {
