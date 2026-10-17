@@ -1072,28 +1072,37 @@ def construir():
         else:
             n19_dif += 1
     ufs_ids = sorted(UF_NOME)
-    ufs19_igual = sum(1 for t in ufs_ids if tec_uf(t, "GTA0019") == soma(tec_uf(t, "GTA0001"), tec_uf(t, "GTA0002")))
+    ufs19_igual = sum(1 for t in ufs_ids if tec_uf(t, "GTA0019") is not None and tec_uf(t, "GTA0019") == soma(tec_uf(t, "GTA0001"), tec_uf(t, "GTA0002")))
     ufs19_dif = sum(1 for t in ufs_ids if somar(por_uf[t]["GTA0019"]) != tec_uf(t, "GTA0019"))
-    # GTA3006: o consolidado é a parte inteira da média de dias por município que informou o campo (vazio quando é zero)
-    ufs3006_media = 0
+    # GTA3006: nas UFs com valor, o consolidado é a parte inteira da média de dias por município que informou o campo; as UFs
+    # em branco ficam à parte, porque branco não se distingue de ausência na planilha.
+    ufs3006_valor = ufs3006_igual = ufs3006_branco = ufs3006_branco_pos = ufs3006_branco_zero_int = 0
     for t in ufs_ids:
         xs = por_uf[t]["GTA3006"]
         media = somar(xs) / len(xs) if xs else 0
-        v = tec_uf(t, "GTA3006") or 0
-        if v <= media < v + 1:
-            ufs3006_media += 1
+        v = tec_uf(t, "GTA3006")
+        if v is not None:
+            ufs3006_valor += 1
+            if v <= media < v + 1:
+                ufs3006_igual += 1
+        else:
+            ufs3006_branco += 1
+            if media > 0:
+                ufs3006_branco_pos += 1
+            if media < 1:
+                ufs3006_branco_zero_int += 1
     dias_br = somar([x for t in ufs_ids for x in por_uf[t]["GTA3006"]])
     # GTA1014: diferença para a soma municipal contra a água importada (GTA1009) que o consolidado não repete
     ufs1014_dif = ufs1014_fecha = 0
     for t in ufs_ids:
-        c14, c09 = tec_uf(t, "GTA1014"), (tec_uf(t, "GTA1009") or 0)
+        c14, c09 = tec_uf(t, "GTA1014"), tec_uf(t, "GTA1009")
         if c14 is None:
             continue
         d14 = c14 - somar(por_uf[t]["GTA1014"])
         if abs(d14) <= 0.05:
             continue
         ufs1014_dif += 1
-        if abs(d14 + (somar(por_uf[t]["GTA1009"]) - c09)) <= 0.05:
+        if c09 is not None and abs(d14 + (somar(por_uf[t]["GTA1009"]) - c09)) <= 0.05:
             ufs1014_fecha += 1
     maior_vazio = vazios_por_uf.most_common(1)[0] if vazios_por_uf else None
     conferencias.append({
@@ -1106,7 +1115,10 @@ def construir():
             "gta0019_municipios_diferentes": n19_dif,
             "gta0019_ufs_consolidado_igual_a_gta0001_mais_gta0002": ufs19_igual,
             "gta0019_ufs_com_soma_municipal_diferente": ufs19_dif,
-            "gta3006_ufs_consolidado_igual_a_media_truncada": ufs3006_media,
+            "gta3006_ufs_com_valor": ufs3006_valor,
+            "gta3006_ufs_com_valor_igual_a_media_truncada": ufs3006_igual,
+            "gta3006_ufs_em_branco": ufs3006_branco,
+            "gta3006_ufs_em_branco_com_media_municipal_positiva": ufs3006_branco_pos,
             "gta3006_soma_municipal_dias": r2(dias_br),
             "gta3006_consolidado_brasil": tec_uf("BR", "GTA3006"),
             "gta1014_ufs_com_diferenca": ufs1014_dif,
@@ -1117,9 +1129,11 @@ def construir():
             f"Observatório usa no município; a coluna GTA0019 da planilha municipal está vazia em {n19_vazio} municípios"
             + (f" ({maior_vazio[1]} em {maior_vazio[0]})" if maior_vazio else "")
             + f" e difere dessa soma em {n19_dif}, por isso a soma municipal de GTA0019 não fecha em {ufs19_dif} UFs. "
-            f"GTA3006: em {ufs3006_media} das {len(ufs_ids)} UFs o consolidado é a parte inteira da média de dias por município "
-            "que informou o campo, vazio quando é zero, e não a soma de dias; o painel de resiliência usa a soma municipal e a "
-            "rotula como tal. "
+            f"GTA3006: nas {ufs3006_valor} UFs com valor, o consolidado é a parte inteira da média de dias por município que "
+            f"informou o campo ({ufs3006_igual} de {ufs3006_valor}), e não a soma de dias; nas {ufs3006_branco} UFs em branco a "
+            f"parte inteira da média é zero ({ufs3006_branco_pos} com média positiva, abaixo de 1 dia), compatível com branco "
+            "para parte inteira zero, mas a planilha não distingue branco de ausência e isso não foi verificado. O painel de "
+            "resiliência usa a soma municipal e a rotula como tal. "
             f"GTA1014: das {ufs1014_dif} UFs com diferença, {ufs1014_fecha} fecham exatamente com a água importada (soma "
             "municipal de GTA1009 menos o GTA1009 consolidado); nas demais a diferença não se reproduz e a causa não foi "
             "estabelecida. A planilha não declara essas agregações no cabeçalho: as regras de GTA0019 e GTA3006 foram "

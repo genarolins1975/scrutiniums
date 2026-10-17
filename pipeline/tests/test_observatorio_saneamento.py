@@ -74,19 +74,30 @@ class ObservatorioSaneamento(unittest.TestCase):
                          (iguais, vazios, difs))
         self.assertEqual(iguais + vazios + difs, sum(1 for l in mun if gold.num(l.get("GTA0001")) is not None or gold.num(l.get("GTA0002")) is not None))
         self.assertEqual(v["gta0019_ufs_consolidado_igual_a_gta0001_mais_gta0002"], 27)
-        # GTA3006: consolidado = parte inteira da média municipal, em todas as UFs; Brasil idem
+        # GTA3006: com valor, o consolidado é a parte inteira da média municipal (UFs e Brasil); em branco fica à parte
         dias = {}
         for l in mun:
             d = gold.num(l.get("GTA3006"))
             if d is not None:
                 dias.setdefault(gold.UF_COD.get(str(l["cod_IBGE"])[:2]), []).append(d)
+        com_valor = igual = branco = branco_pos = 0
         for u in gold.UF_NOME:
             xs = dias.get(u, [])
-            esperado = int(sum(xs) // len(xs)) if xs else 0
-            self.assertEqual(gold.num(uf[u].get("GTA3006")) or 0, esperado, u)
+            media = sum(xs) / len(xs) if xs else 0
+            valor = gold.num(uf[u].get("GTA3006"))
+            if valor is None:
+                branco += 1
+                self.assertLess(media, 1, u)  # em branco só onde a parte inteira da média é zero
+                branco_pos += 1 if media > 0 else 0
+            else:
+                com_valor += 1
+                igual += 1 if int(media // 1) == valor else 0
+        self.assertEqual((com_valor, igual), (14, 14))
+        self.assertEqual((v["gta3006_ufs_com_valor"], v["gta3006_ufs_com_valor_igual_a_media_truncada"]), (com_valor, igual))
+        self.assertEqual((v["gta3006_ufs_em_branco"], v["gta3006_ufs_em_branco_com_media_municipal_positiva"]), (branco, branco_pos))
+        self.assertEqual(com_valor + branco, 27)
         todos = [x for xs in dias.values() for x in xs]
         self.assertEqual(gold.num(uf["Brasil"].get("GTA3006")), int(sum(todos) // len(todos)))
-        self.assertEqual(v["gta3006_ufs_consolidado_igual_a_media_truncada"], 27)
         self.assertAlmostEqual(v["gta3006_soma_municipal_dias"], sum(todos), places=1)
         self.assertGreater(v["gta1014_ufs_com_diferenca"], v["gta1014_ufs_que_fecham_com_agua_importada"])
 

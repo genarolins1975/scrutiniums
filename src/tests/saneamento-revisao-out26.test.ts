@@ -240,9 +240,11 @@ describe("Itens abertos da revisão 1.11 (c e f)", () => {
   it("colunas sem soma: a metodologia publica GTA0019, GTA3006 e GTA1014 com os números da conferência", () => {
     const conf = meta()!.conferencias.find((c) => c.id === "agua_colunas_sem_soma")!;
     expect(conf.valores.gta0019_ufs_consolidado_igual_a_gta0001_mais_gta0002).toBe(27);
-    expect(conf.valores.gta3006_ufs_consolidado_igual_a_media_truncada).toBe(27);
+    expect(conf.valores.gta3006_ufs_com_valor_igual_a_media_truncada).toBe(conf.valores.gta3006_ufs_com_valor);
+    expect((conf.valores.gta3006_ufs_com_valor ?? 0) + (conf.valores.gta3006_ufs_em_branco ?? 0)).toBe(27);
     const t = texto(renderToStaticMarkup(createElement(MetodologiaPage)));
-    expect(t).toContain("GTA3006: em 27 das 27 UFs o consolidado é a parte inteira da média de dias por município que informou o campo");
+    expect(t).toContain("GTA3006: nas 14 UFs com valor, o consolidado é a parte inteira da média de dias por município que informou o campo (14 de 14)");
+    expect(t).toContain("a planilha não distingue branco de ausência e isso não foi verificado");
     expect(t).toContain(`a coluna GTA0019 da planilha municipal está vazia em ${inteiro(conf.valores.gta0019_municipios_vazios!)} municípios`);
     // o painel de resiliência usa a soma municipal, que é o número que a conferência diz usar
     expect(texto(renderToStaticMarkup(createElement(ResilienciaPage)))).toContain(inteiro(conf.valores.gta3006_soma_municipal_dias!));
