@@ -5,6 +5,7 @@ import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { useCursorSincronizado } from "@/components/energia/CursorSincronizado";
 import type { SerieLinha } from "@/components/energia/GraficoLinhas";
 import { escalaLinear, formatarValor, rotuloTick, valido, type Dominio } from "@/lib/energia/escalas";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { dominiosPaineis, formatarX, indiceDoValorX, painelSemDado, type EscalaPaineis, type FormatoX, type PontoSerie } from "@/lib/energia/series-temporais";
 
 /**
@@ -89,12 +90,15 @@ export function PequenosMultiplos({
   zeroNoEixo = false,
   alturaPainel = 140,
   colunas = 3,
-  cor = "var(--cor-energia)",
+  cor = "var(--cor-energia)", // i18n: dado
   nivelTitulo = 3,
   sincronizarCursor = true,
   grupoCursor,
   tabelaAbertaInicial = false,
 }: PequenosMultiplosProps) {
+  const tx = useTx();
+  const idioma = useIdioma();
+  const nLoc = (v: number) => v.toLocaleString(idioma === "en" ? "en-US" : "pt-BR");
   const uid = useId();
   const [iAtivo, setIAtivo] = useState<number | null>(null);
   const [painelFoco, setPainelFoco] = useState(0);
@@ -178,28 +182,41 @@ export function PequenosMultiplos({
   if (!paineis.length || !n) {
     return (
       <div className="flex h-[88px] items-center border border-dashed border-linha px-4 text-sm text-carvao-muted">
-        Nenhum dado para exibir nos painéis.
+        {tx("Nenhum dado para exibir nos painéis.", "No data to display in the panels.")}
       </div>
     );
   }
 
   const domCompartilhado = escala === "compartilhada" ? doms[0] : null;
-  const instrucoes = `${paineis.length} painéis de ${titulo}, com o mesmo eixo de tempo. Use Tab para entrar na grade, as setas esquerda e direita para percorrer as datas, Home e End para os extremos e as setas acima e abaixo para trocar de painel. A tabela com os mesmos dados está abaixo da grade.`;
+  const instrucoes = tx(
+    `${paineis.length} painéis de ${titulo}, com o mesmo eixo de tempo. Use Tab para entrar na grade, as setas esquerda e direita para percorrer as datas, Home e End para os extremos e as setas acima e abaixo para trocar de painel. A tabela com os mesmos dados está abaixo da grade.`,
+    `${paineis.length} panels of ${titulo}, with the same time axis. Use Tab to enter the grid, the left and right arrow keys to move through the dates, Home and End for the extremes and the up and down arrow keys to switch panels. The table with the same data is below the grid.`,
+  );
 
   return (
     <div ref={raiz} className="relative w-full" data-grafico="pequenos-multiplos" data-escala={escala}>
       {escala === "livre" ? (
         <p role="note" data-aviso="escala-livre" className="mb-2 border-l-2 border-aviso bg-papel px-3 py-2 text-sm text-carvao">
-          <strong className="font-medium">Escala livre:</strong> cada painel tem o próprio eixo vertical. Compare a forma das curvas, não a altura entre painéis.
+          <strong className="font-medium">{tx("Escala livre:", "Free scale:")}</strong>{" "}
+          {tx(
+            "cada painel tem o próprio eixo vertical. Compare a forma das curvas, não a altura entre painéis.",
+            "each panel has its own vertical axis. Compare the shape of the curves, not the height across panels.",
+          )}
         </p>
       ) : (
         <p className="mb-2 text-xs text-carvao-muted" data-aviso="escala-compartilhada">
-          Escala compartilhada: a mesma régua vertical em todos os painéis
-          {domCompartilhado ? `, de ${rotuloTick(domCompartilhado.min, domCompartilhado.passo)} a ${rotuloTick(domCompartilhado.max, domCompartilhado.passo)} ${unidade}` : ""}.
+          {tx("Escala compartilhada: a mesma régua vertical em todos os painéis", "Shared scale: the same vertical ruler in all panels")}
+          {domCompartilhado
+            ? tx(
+                `, de ${rotuloTick(domCompartilhado.min, domCompartilhado.passo)} a ${rotuloTick(domCompartilhado.max, domCompartilhado.passo)} ${unidade}`,
+                `, from ${rotuloTick(domCompartilhado.min, domCompartilhado.passo)} to ${rotuloTick(domCompartilhado.max, domCompartilhado.passo)} ${unidade}`,
+              )
+            : ""}
+          .
         </p>
       )}
       <div className="flex flex-wrap items-baseline gap-x-4">
-        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
+        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label={tx("Legenda", "Legend")}>
           {multiSeries &&
             entradasLegenda.map((e) => (
               <li key={e.chave} className="flex items-center gap-1.5">
@@ -209,9 +226,12 @@ export function PequenosMultiplos({
                 {e.rotulo}
               </li>
             ))}
-          {multiSeries && corPorPainel && <li className="text-mineral">A cor identifica o painel</li>}
-          <li className="text-mineral">Valores em {unidade}</li>
-          <li className="text-mineral">Lacuna na linha: sem dado</li>
+          {multiSeries && corPorPainel && <li className="text-mineral">{tx("A cor identifica o painel", "The color identifies the panel")}</li>}
+          <li className="text-mineral">
+            {tx("Valores em ", "Values in ")}
+            {unidade}
+          </li>
+          <li className="text-mineral">{tx("Lacuna na linha: sem dado", "Gap in the line: no data")}</li>
         </ul>
         <BaixarImagem raiz={raiz} titulo={titulo} unidade={unidade} />
       </div>
@@ -264,16 +284,19 @@ export function PequenosMultiplos({
       </p>
       <details className="mt-3 text-xs" open={tabelaAbertaInicial || undefined} onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Dados dos painéis em tabela ({n.toLocaleString("pt-BR")} {n === 1 ? "linha" : "linhas"}, {paineis.length} {paineis.length === 1 ? "painel" : "painéis"})
+          {tx(
+            `Dados dos painéis em tabela (${n.toLocaleString("pt-BR")} ${n === 1 ? "linha" : "linhas"}, ${paineis.length} ${paineis.length === 1 ? "painel" : "painéis"})`,
+            `Panel data as a table (${nLoc(n)} ${n === 1 ? "row" : "rows"}, ${paineis.length} ${paineis.length === 1 ? "panel" : "panels"})`,
+          )}
         </summary>
         {tabelaAberta && (
-          <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
+          <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
             <table className="w-full border-collapse tabular-nums">
-              <caption className="sr-only">{`${titulo}, em ${unidade}`}</caption>
+              <caption className="sr-only">{tx(`${titulo}, em ${unidade}`, `${titulo}, in ${unidade}`)}</caption>
               <thead className="sticky top-0 bg-superficie">
                 <tr className="text-left text-mineral">
                   <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">
-                    {formatoX === "hora" ? "Hora" : formatoX === "mes" ? "Mês" : formatoX === "texto" ? "Item" : "Data"}
+                    {formatoX === "hora" ? tx("Hora", "Hour") : formatoX === "mes" ? tx("Mês", "Month") : formatoX === "texto" ? tx("Item", "Item") : tx("Data", "Date")}
                   </th>
                   {paineis.flatMap((p) =>
                     seriesDe(p).map((s, j, ss) => (
@@ -352,6 +375,7 @@ function Painel({
   onPonteiro,
   onSair,
 }: PainelProps) {
+  const tx = useTx();
   const uid = useId().replace(/:/g, "");
   const [largura, setLargura] = useState(LARGURA_SSR_PAINEL);
   const ref = useRef<HTMLDivElement>(null);
@@ -466,7 +490,7 @@ function Painel({
           <g data-estado="sem-dado">
             <rect x={L} y={T} width={Math.max(1, w - L - R)} height={Math.max(1, h - T - B)} fill={`url(#${uid}-hachura)`} stroke="var(--cor-mineral-soft)" strokeDasharray="3 3" />
             <text x={L + (w - L - R) / 2} y={T + (h - T - B) / 2 + 4} textAnchor="middle" fontSize="12" fill="var(--cor-carvao-muted)">
-              sem dado no período
+              {tx("sem dado no período", "no data in the period")}
             </text>
           </g>
         ) : (

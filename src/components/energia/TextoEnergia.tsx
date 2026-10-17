@@ -14,15 +14,18 @@ export function TextoEnergia({
   origem,
   literais = [],
   competencia,
+  idioma,
 }: {
   texto: string;
   /** Endereço do recurso de onde vêm os literais deste texto. */
   origem?: string;
   literais?: ClasseLiteral[];
   competencia?: OpcoesData["competencia"];
+  /** Língua das datas: a da página por padrão; "pt" quando o texto da fonte fica em português (TrechoPortugues). */
+  idioma?: OpcoesData["idioma"];
 }) {
   const declarados: LiteralNoTexto[] = origem ? literais.map((classe) => ({ classe, origem })) : [];
-  return <TextoComDatas texto={texto} literais={declarados} fusoSemOffset={FUSO_SEM_OFFSET_ENERGIA} competencia={competencia} />;
+  return <TextoComDatas texto={texto} literais={declarados} fusoSemOffset={FUSO_SEM_OFFSET_ENERGIA} competencia={competencia} idioma={idioma} />;
 }
 
 /**

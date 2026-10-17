@@ -39,8 +39,9 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
     <header className="obs-identidade border-b border-linha bg-superficie">
       <div className="ed-pagina flex flex-wrap items-center justify-between gap-x-6">
         <div className="flex min-w-0 items-center gap-3">
-          <Link href="/" aria-label="Scrutiniums: página inicial" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2.5 sm:justify-start">
+          <Link href="/" aria-label={tx("Scrutiniums: página inicial", "Scrutiniums: home page")} className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2.5 sm:justify-start">
             <LogoMark size={20} />
+            {/* // i18n: dado (marca, igual nos dois idiomas) */}
             <span className="hidden font-serif text-base uppercase tracking-wide2 text-carvao sm:inline">Scrutiniums</span>
           </Link>
           <span aria-hidden="true" className="h-5 w-px bg-linha" />
@@ -60,13 +61,13 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
             aria-current={atual === "metodologia" ? "page" : undefined}
             className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-energia-dark md:inline-flex"
           >
-            Metodologia
+            {tx("Metodologia", "Methodology")}
           </Link>
           <SeletorIdiomaPublico idioma={tx("pt", "en")} />
           <AcessoConta destino="/setor-eletrico" />
         </div>
       </div>
-      <nav aria-label="Navegação do Observatório do Setor Elétrico" className="border-t border-linha">
+      <nav aria-label={tx("Navegação do Observatório do Setor Elétrico", "Setor Elétrico observatory navigation")} className="border-t border-linha">
         <div className="ed-pagina relative">
           {/* tela larga: os seis grupos numa linha */}
           <ul className="hidden flex-wrap gap-x-1 xl:flex">
@@ -79,7 +80,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
                     }`}
                   >
                     {item.grupo.rotulo}
-                    {item.ativo && <span className="sr-only"> (grupo da página atual)</span>}
+                    {item.ativo && <span className="sr-only">{tx(" (grupo da página atual)", " (group of the current page)")}</span>}
                     <span aria-hidden="true" className="text-xs motion-safe:transition-transform group-open:rotate-180">
                       ▾
                     </span>
@@ -110,7 +111,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
           <div className="flex min-h-[44px] items-center gap-3 xl:hidden">
             <DetalhesFechaveis className="group shrink-0">
               <summary className="flex min-h-[44px] min-w-[44px] cursor-pointer list-none items-center gap-1.5 whitespace-nowrap pr-1 text-sm font-medium text-carvao hover:text-energia-dark [&::-webkit-details-marker]:hidden">
-                Menu
+                {tx("Menu", "Menu")}
                 <span aria-hidden="true" className="text-xs motion-safe:transition-transform group-open:rotate-180">
                   ▾
                 </span>
@@ -118,7 +119,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
               <div className="absolute inset-x-0 top-full z-40 mt-px hidden border border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)] group-open:block">
                 <div className="grid gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
                   {itens.map((item) => {
-                    const idRotulo = `menu-energia-${item.grupo.id}`;
+                    const idRotulo = `menu-energia-${item.grupo.id}`; // i18n: dado
                     return (
                       <div key={item.grupo.id} className="pb-2">
                         <p id={idRotulo} className="rotulo px-3 pb-1 pt-3 text-mineral">
@@ -142,7 +143,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
             </DetalhesFechaveis>
             {grupoAtual && (
               <p className="min-w-0 text-sm leading-tight text-carvao-muted" data-onde-estou="">
-                <span className="sr-only">Você está em: </span>
+                <span className="sr-only">{tx("Você está em: ", "You are in: ")}</span>
                 {grupoAtual.grupo.rotulo}
                 {paginaAtual && <span className="text-carvao"> · {paginaAtual.rotulo}</span>}
               </p>
@@ -153,7 +154,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
       {grupoAtual && (
         <div className="hidden border-t border-linha bg-energia-fundo md:block">
           <div className="ed-pagina">
-            <ul id="modulos-energia" aria-label={`Páginas do grupo ${grupoAtual.grupo.rotulo}`} className="tabela-scroll relative flex min-w-0 gap-1">
+            <ul id="modulos-energia" aria-label={tx(`Páginas do grupo ${grupoAtual.grupo.rotulo}`, `Pages in the ${grupoAtual.grupo.rotulo} group`)} className="tabela-scroll relative flex min-w-0 gap-1">
               {grupoAtual.links.map((d) => {
                 const ativo = d.slug === atual;
                 return (
@@ -205,9 +206,9 @@ function ItemDestino({ d, atual, comPergunta = false }: { d: DestinoNavegacao; a
 function MarcaIntegracao({ d }: { d: DestinoNavegacao }) {
   if (d.integrado) return null;
   return (
-    <span className="text-xs tracking-normal text-carvao-muted" title="Módulo em integração: escopo e fontes catalogadas, sem números publicados">
+    <span className="text-xs tracking-normal text-carvao-muted" title={tx("Módulo em integração: escopo e fontes catalogadas, sem números publicados", "Module in integration: scope and sources catalogued, no figures published yet")}>
       <span aria-hidden="true">○</span>
-      <span className="sr-only">(em integração)</span>
+      <span className="sr-only">{tx("(em integração)", "(in integration)")}</span>
     </span>
   );
 }
@@ -217,7 +218,8 @@ function EmPreparacao({ item }: { item: ItemMenu }) {
   if (!item.emPreparacao.length) return null;
   return (
     <p className="px-3 py-2 text-xs leading-snug text-mineral">
-      Em preparação, ainda sem página: {listaPorExtenso(item.emPreparacao.map((d) => d.rotulo))}.
+      {tx("Em preparação, ainda sem página: ", "In preparation, no page yet: ")}
+      {listaPorExtenso(item.emPreparacao.map((d) => d.rotulo))}.
     </p>
   );
 }
