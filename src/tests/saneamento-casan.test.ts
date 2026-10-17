@@ -55,7 +55,7 @@ describe("CASAN: conta igual à da planilha oficial", () => {
     const t = tarifa(ID)!;
     for (const c of Object.values(t.categorias)) expect(c.consumoMaximo).toBeUndefined();
     expect(t.metodoNaoVerificado).toBeUndefined();
-    expect(TARIFAS.filter((x) => x.metodoNaoVerificado).map((x) => x.id)).toEqual(["saneago-2026", "corsan-2026"]);
+    expect(TARIFAS.filter((x) => x.metodoNaoVerificado).map((x) => x.id)).toEqual(["saneago-2026", "corsan-2026", "corsan-canoas-esteio-2026", "corsan-santa-cruz-2026", "corsan-erechim-2026"]);
   });
 });
 

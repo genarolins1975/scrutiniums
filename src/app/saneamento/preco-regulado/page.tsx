@@ -85,12 +85,12 @@ const REGULADORES = [
     documentos: "Resoluções ARESC 321/2025 e 389/2026, tabela e duas planilhas da CASAN lidas; notas técnicas e atos de ARIS, AGIR e CISAM-SUL não lidos",
   },
   {
-    sigla: "AGERGS e outras agências",
+    sigla: "AGERGS, AGESAN e outras agências",
     prestador: "CORSAN (RS)",
     modelo: "Revisão extraordinária de 5,76% em julho de 2026 (RED 892/2026, não lida) sobre o reajuste de 4,68% de janeiro; revisão periódica prevista para 2027",
-    estrutura: "Serviço básico por economia mais água pelo preço-base vezes o consumo elevado a um expoente por faixa, com mínimo de 10 m³; esgoto a 70% do preço-base por m³ (50% só com coleta)",
-    social: "Categoria criada pela Lei 14.898/2024 (desconto a partir das faturas de agosto de 2026), não simulada: o valor da tarifa mínima publicado não fecha com o serviço básico mais 10 m³",
-    documentos: "Tabelas de 2025 e 2026, Tabela de Exponenciais, comunicados da Corsan e Regulamento da AGERGS (2008) lidos; resoluções da AGERGS e da AGESAN não localizadas ou não lidas",
+    estrutura: "Serviço básico por economia mais água pelo preço-base vezes o consumo elevado a um expoente por faixa, sem mínimo na ligação com hidrômetro; esgoto a 70% do preço-base por m³ (50% só com coleta). Tabelas próprias em Canoas e Esteio, Santa Cruz do Sul e Erechim",
+    social: "Categoria da Lei 14.898/2024 (desconto a partir das faturas de agosto de 2026), simulada até 15 m³ nas tabelas de julho de 2026; a mínima publicada é metade da Residencial B e difere em centavos de serviço básico mais 10 m³ aos preços impressos; Erechim não tem a linha na tabela de janeiro de 2026",
+    documentos: "Tabelas de 2025 e 2026 (298 municípios, AGESAN, Canoas e Esteio, Santa Cruz do Sul e Erechim), Tabela de Exponenciais, comunicados da Corsan e Regulamento da AGERGS (2008) lidos; resoluções da AGERGS, da AGESAN e da agência de Santa Cruz do Sul não localizadas ou não lidas",
   },
 ];
 

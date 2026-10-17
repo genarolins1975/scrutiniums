@@ -40,6 +40,10 @@ export type TarifaVerificada = {
   unidade: string;
   categorias: Record<string, Categoria>;
   adicionais?: { id: string; rotulo: string; percentual: number; nota: string }[];
+  /** Recorte da tabela dentro do prestador (município ou grupo com tabela própria), para os rótulos curtos. */
+  recorte?: string;
+  /** Tabela própria de um município ou grupo cujo prestador já tem outra tabela: entra no seletor, nas barras e no CSV, não no gráfico de curvas. */
+  variante?: boolean;
   /** Regra de cobrança que o ato não diz por extenso e que a simulação assume; aparece junto da conta simulada. */
   metodoNaoVerificado?: string;
   observacoes: string[];

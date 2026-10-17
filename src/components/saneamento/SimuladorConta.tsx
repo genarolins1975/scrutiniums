@@ -10,13 +10,17 @@ import { CABECALHO_EXPORTACAO, acimaDoLimite, arredondamentoDifere, calcularCont
 import { baixarCsv } from "@/lib/saneamento/csv";
 import { numero, reais } from "@/lib/saneamento/formato";
 
+/** Tabelas próprias de município ou grupo (Corsan: Canoas e Esteio, Santa Cruz do Sul, Erechim) não entram no gráfico de curvas. */
+const TARIFAS_NA_CURVA = TARIFAS.filter((x) => !x.variante);
+const TARIFAS_FORA_DA_CURVA = TARIFAS.filter((x) => x.variante);
+
 const controle = "mt-1 min-h-[44px] w-full min-w-0 border border-mineral bg-superficie px-3 py-2 text-sm text-carvao";
 const PRESETS = [5, 10, 15, 20];
 
 /** Rótulo curto da tabela para gráficos: sigla, UF e recorte. */
 function curto(t: TarifaVerificada) {
   const sigla = t.prestador.match(/\(([^)]+)\)/)?.[1] ?? t.prestador;
-  const recorte = t.id.endsWith("curitiba") ? ", Curitiba" : t.id.endsWith("demais") ? ", demais" : t.id.endsWith("t1") ? ", Tabela 1" : "";
+  const recorte = t.recorte ? `, ${t.recorte}` : t.id.endsWith("curitiba") ? ", Curitiba" : t.id.endsWith("demais") ? ", demais" : t.id.endsWith("t1") ? ", Tabela 1" : "";
   return `${sigla} (${t.uf}${recorte})`;
 }
 
@@ -79,7 +83,7 @@ export function SimuladorConta() {
     const pts: Record<string, number | string | null>[] = [];
     for (let c = 0; c <= 40; c++) {
       const p: Record<string, number | string | null> = { consumo: String(c) };
-      for (const x of TARIFAS) p[x.id] = calcularConta(x.categorias.residencial, c).total;
+      for (const x of TARIFAS_NA_CURVA) p[x.id] = calcularConta(x.categorias.residencial, c).total;
       pts.push(p);
     }
     return pts;
@@ -280,7 +284,7 @@ export function SimuladorConta() {
         />
         <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
           Consumo, número de economias e tipo de esgoto (convencional) são os mesmos em todas as barras{algumaInteira && consumo % 1 !== 0 ? ", salvo nas tabelas que desprezam a fração de metro cúbico (Corsan), que usam a parte inteira" : ""}. Mudam o ato e a data de vigência de cada
-          tabela, que estão na ficha abaixo. Barra ausente: a categoria não tem preço definido no ato para o consumo escolhido (a social da Saneago acima de 20 m³) ou, no esgoto, a cobrança não foi verificada. A diferença de conta não mede qualidade
+          tabela, que estão na ficha abaixo. Barra ausente: a categoria não tem preço definido no ato para o consumo escolhido (a social da Saneago acima de 20 m³ e a da Corsan acima de 15 m³) ou, no esgoto, a cobrança não foi verificada. A diferença de conta não mede qualidade
           nem eficiência do prestador.
         </p>
       </section>
@@ -293,7 +297,7 @@ export function SimuladorConta() {
           titulo="Conta residencial de água e esgoto conforme o consumo, de 0 a 40 m³ (R$ por mês)"
           dados={curva}
           chaveX="consumo"
-          series={TARIFAS.map((x, i) => ({ id: x.id, rotulo: curto(x), cor: cores[i % cores.length] }))}
+          series={TARIFAS_NA_CURVA.map((x, i) => ({ id: x.id, rotulo: curto(x), cor: cores[i % cores.length] }))}
           unidade="R$"
           casas={2}
           formatoX="texto"
@@ -303,6 +307,12 @@ export function SimuladorConta() {
         <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
           Os degraus são as faixas: onde a curva fica plana, o valor mínimo cobre o consumo; onde ela empina, cada metro cúbico custa mais.
         </p>
+        {TARIFAS_FORA_DA_CURVA.length > 0 && (
+          <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+            Ficam fora do gráfico de curvas, para não sobrepor a linha do mesmo prestador, as tabelas próprias de{" "}
+            {TARIFAS_FORA_DA_CURVA.map((x) => x.recorte ?? x.prestador).join(", ")}. Elas estão no seletor, nas barras de comparação e no CSV.
+          </p>
+        )}
       </section>
 
       <div className="mt-8">
