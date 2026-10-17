@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import {
   dominioComZero,
@@ -15,6 +15,7 @@ import {
   type Pilha,
 } from "@/lib/energia/escalas";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 
 /**
  * Gráfico de barras SVG do Setor Elétrico, vertical ou horizontal, simples,
@@ -91,6 +92,11 @@ export type GraficoBarrasProps = {
    * a caixa de rolagem dentro da página.
    */
   limiteInicial?: number;
+  /**
+   * Os rótulos de categoria são nomes próprios que vêm dos dados em português (empresa, usina, distribuidora, município). Na página
+   * inglesa, o texto do SVG ganha lang="pt-BR", translate="no" e data-i18n-nome, e a dica e a tabela os marcam com <Nome>.
+   */
+  rotulosSaoNomes?: boolean;
 };
 
 const LARGURA_SSR = 760;
@@ -153,8 +159,12 @@ export function GraficoBarras({
   alturaCategoria,
   alturaMaxima = 480,
   limiteInicial,
+  rotulosSaoNomes = false,
 }: GraficoBarrasProps) {
   const idioma = useIdioma();
+  // atributos de nome próprio para o texto do SVG (onde <Nome>, que é span, não cabe) e o nome marcado na parte HTML
+  const attrNome = rotulosSaoNomes && idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {};
+  const nomeHtml = (t: ReactNode) => (rotulosSaoNomes ? <Nome>{t}</Nome> : t);
   const tx = useTx();
   // os formatadores do gráfico presos ao idioma da página (mesmas assinaturas de escalas.ts)
   const formatarValor = (v: number | null | undefined, c = 1, u = "") => formatarValorEm(v, c, u, idioma);
@@ -550,6 +560,7 @@ export function GraficoBarras({
                   fontSize={FS}
                   fontWeight={sel ? 600 : 400}
                   fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"}
+                  {...attrNome}
                 >
                   {texto}
                 </text>
@@ -569,6 +580,7 @@ export function GraficoBarras({
                 strokeWidth={rotuloEmCima ? 3 : undefined}
                 paintOrder={rotuloEmCima ? "stroke" : undefined}
                 data-rotulo-categoria="true"
+                {...attrNome}
               >
                 {linhas.length > 1
                   ? linhas.map((l, q) => (
@@ -706,7 +718,7 @@ export function GraficoBarras({
               })()
         }
       >
-        <p className="font-medium text-carvao">{nomes[ativo]}</p>
+        <p className="font-medium text-carvao">{nomeHtml(nomes[ativo])}</p>
         <ul className="mt-1 space-y-0.5">
           {series
             .filter((s) => !naoSeAplica(valor(ativo, s), s))
@@ -948,7 +960,7 @@ export function GraficoBarras({
                 return (
                   <tr key={idsTodos[i] || i} className={`border-b border-linha ${sel ? "bg-energia-fundo" : ""}`} data-id={idsTodos[i]}>
                     <th scope="row" className={`px-2 py-1 text-left text-carvao ${sel ? "font-semibold" : "font-normal"}`}>
-                      {nomesTodos[i]}
+                      {nomeHtml(nomesTodos[i])}
                       {sel && <span className="sr-only">{tx(" (selecionada)", " (selected)")}</span>}
                     </th>
                     {series.map((s) => {

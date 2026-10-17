@@ -5,6 +5,7 @@ import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 import {
   diferencaPar,
   dominioBonito,
@@ -90,6 +91,11 @@ export type GraficoPontosProps = {
   alturaLinha?: number;
   /** Acima desta altura a área das linhas rola na vertical. */
   alturaMaxima?: number;
+  /**
+   * Os rótulos de categoria são nomes próprios que vêm dos dados em português (empresa, usina, distribuidora, município). Na página
+   * inglesa, o texto do SVG ganha lang="pt-BR", translate="no" e data-i18n-nome, e a dica e a tabela os marcam com <Nome>.
+   */
+  rotulosSaoNomes?: boolean;
 };
 
 const LARGURA_SSR = 760;
@@ -141,8 +147,12 @@ export function GraficoPontos({
   textoSentido,
   alturaLinha = 44,
   alturaMaxima = 528,
+  rotulosSaoNomes = false,
 }: GraficoPontosProps) {
   const idioma = useIdioma();
+  // atributos de nome próprio para o texto do SVG (onde <Nome>, que é span, não cabe) e o nome marcado na parte HTML
+  const attrNome = rotulosSaoNomes && idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {};
+  const nomeHtml = (t: React.ReactNode) => (rotulosSaoNomes ? <Nome>{t}</Nome> : t);
   const tx = useTx();
   // os formatadores do gráfico presos ao idioma da página (mesmas assinaturas de escalas.ts)
   const formatarValor = (v: number | null | undefined, c = 1, u = "") => formatarValorEm(v, c, u, idioma);
@@ -330,7 +340,7 @@ export function GraficoPontos({
       >
         {/* alvo de ponteiro e toque: a linha inteira */}
         <rect x="0" y={y0} width={w} height={hc} fill="transparent" />
-        <text x="4" y={r1(yTexto)} fontSize="12" fontWeight={sel ? 600 : 400} fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"} data-rotulo-categoria="true">
+        <text x="4" y={r1(yTexto)} fontSize="12" fontWeight={sel ? 600 : 400} fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"} data-rotulo-categoria="true" {...attrNome}>
           {rotuloEmCima ? cabe(p.rotulo, w - colunaDif - 12, pxCaractere12(p.rotulo)) : cabe(p.rotulo, colunaRotulo - 8)}
         </text>
         {temV && temR && Math.abs(xv - xr) > 0.5 && <line x1={r1(xv)} x2={r1(xr)} y1={r1(cy)} y2={r1(cy)} stroke="var(--cor-mineral-soft)" strokeWidth="2" strokeLinecap="round" />}
@@ -376,7 +386,7 @@ export function GraficoPontos({
         className="pointer-events-none absolute z-20 min-w-[12rem] max-w-[17rem] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
         style={{ top: acima ? y0 : y0 + hc, transform: acima ? "translateY(-100%)" : undefined, left: `min(${colunaRotulo}px, calc(100% - 13rem))` }}
       >
-        <p className="font-medium text-carvao">{pa.rotulo}</p>
+        <p className="font-medium text-carvao">{nomeHtml(pa.rotulo)}</p>
         {pa.detalhe && <p className="text-carvao-muted">{pa.detalhe}</p>}
         <ul className="mt-1 space-y-0.5">
           <li className="flex items-center justify-between gap-3">
@@ -596,7 +606,7 @@ export function GraficoPontos({
                 return (
                   <tr key={p.id} data-id={p.id} className={`border-b border-linha ${sel ? "bg-energia-fundo" : ""}`}>
                     <th scope="row" className={`px-2 py-1 text-left text-carvao ${sel ? "font-semibold" : "font-normal"}`}>
-                      {p.rotulo}
+                      {nomeHtml(p.rotulo)}
                       {sel && <span className="sr-only">{tx(" (selecionada)", " (selected)")}</span>}
                     </th>
                     <td className={`px-2 py-1 text-right ${valido(p.valor) ? "text-carvao" : ausente}`}>{formatarValor(p.valor, casas)}</td>
