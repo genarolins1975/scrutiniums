@@ -9,7 +9,7 @@ import type { Idioma } from "@/lib/idioma";
 import { normalizaBusca } from "../aprenda-busca";
 import { dataBR, plural } from "../formato";
 import { idiomaEnergia, tx } from "../idioma";
-import { rotuloGrupoConceito } from "../i18n/aprenda";
+import { rotuloGrupoConceito, rotuloModuloEn } from "../i18n/aprenda";
 import { DESTINOS_NAVEGACAO } from "../navegacao";
 import { CONCEITOS_IDIOMAS, GRUPOS, type Conceito, type GrupoConceito } from "./conceitos";
 import { perguntaPratica } from "./perguntas-praticas";
@@ -46,9 +46,10 @@ export function idDoGrupo(g: string): string {
 }
 
 /** Nome da página de destino pelo primeiro trecho do caminho ("/setor-eletrico/pld#cmo" → "Preço de curto prazo (PLD)"). */
-function rotuloDoModulo(href: string): string | null {
+function rotuloDoModulo(href: string, idioma: Idioma = idiomaEnergia()): string | null {
   const caminho = href.split("#")[0].split("?")[0];
   const segmento = caminho.replace(/^\/setor-eletrico\/?/, "").split("/")[0];
+  if (idioma === "en") return rotuloModuloEn(segmento);
   return DESTINOS_NAVEGACAO.find((d) => d.href === `/setor-eletrico/${segmento}`)?.rotulo ?? null;
 }
 

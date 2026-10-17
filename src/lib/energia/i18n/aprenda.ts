@@ -141,6 +141,38 @@ const FICHA_EN: Record<string, string> = {
   MWmed: "MWavg",
 };
 
+/**
+ * Nome inglês da página de destino pelo primeiro trecho do endereço (/setor-eletrico/<trecho>), para o link "Ver no painel" do índice
+ * do Aprenda quando o verbete não dá o nome do painel. Segue a tabela de terminologia de docs/i18n/ENERGIA.md.
+ */
+const MODULO_EN: Record<string, string> = {
+  "": "Home",
+  "visao-geral": "Overview",
+  territorio: "My region",
+  "agua-e-clima": "Water and climate",
+  geracao: "Generation",
+  carga: "Load",
+  rede: "Grid",
+  pld: "Short-term price (PLD)",
+  mercado: "Market",
+  leiloes: "Auctions",
+  "conta-de-luz": "Electricity bill",
+  perdas: "Energy losses",
+  qualidade: "Quality of supply",
+  "inclusao-energetica": "Energy inclusion",
+  empresas: "Companies",
+  expansao: "Expansion",
+  transicao: "Transition and environment",
+  regulacao: "Regulation",
+  aprenda: "Learn",
+  dados: "Data",
+  metodologia: "Methodology",
+};
+
+export function rotuloModuloEn(segmento: string): string | null {
+  return MODULO_EN[segmento] ?? null;
+}
+
 /** Rótulos de ficha com data ou nome dentro: a parte variável passa como está (data e nome de bacia). */
 const FICHA_EN_PADROES: [RegExp, (...g: string[]) => string][] = [
   [/^PLD médio da semana operativa de (\S+) a (\S+)$/, (a, b) => `Average PLD of the operating week from ${a} to ${b}`],
@@ -176,5 +208,6 @@ export function valorExibidoNoIdioma(v: string, idioma: Idioma): string {
     .replace(/^Verde:/, "Green:")
     .replace(/^Amarela:/, "Yellow:")
     .replace(/^Vermelha patamar (\d):/, "Red level $1:")
-    .replace(/^Vermelha:/, "Red:");
+    .replace(/^Vermelha:/, "Red:")
+    .replace(/(\d)\s?(%\s.+)$/, (todo, d: string, unidade: string) => (unidade in FICHA_EN ? `${d}${FICHA_EN[unidade]}` : todo));
 }

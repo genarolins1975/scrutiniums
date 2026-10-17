@@ -8,7 +8,7 @@
  */
 import { gold, integra, lerGold } from "../gold";
 import { idRecorte, rotuloRecorte } from "../agua";
-import { dataBR, mesAno, nomeSubmercado, num, pct, reais } from "../formato";
+import { dataBR, mesAno, nomeMes, nomeSubmercado, num, pct, reais } from "../formato";
 import { tx } from "../idioma";
 import { linhasRegulatorio } from "../perdas";
 import type { Natureza } from "../tipos";
@@ -22,6 +22,17 @@ export type TrechoExemplo = { texto: string; natureza?: Natureza };
 export type Exemplo = { partes: TrechoExemplo[]; href: string } | null;
 
 const t = (texto: string, natureza?: Natureza): TrechoExemplo => ({ texto, natureza });
+
+/**
+ * Nome da portaria lido da gold ("Portaria ANEEL nº 7.030, de 2 de dezembro de 2025") na forma inglesa ("ANEEL Ordinance No. 7.030 of
+ * Dec 2, 2025"); fora desse formato, volta como veio.
+ */
+function portariaEmIngles(p: string): string {
+  const m = /^Portaria ANEEL nº ([\d.]+), de (\d{1,2})º? de (\p{L}+) de (\d{4})$/u.exec(p);
+  if (!m) return p;
+  const mes = Array.from({ length: 12 }, (_, i) => nomeMes(i + 1, "pt", true)).indexOf(m[3].toLowerCase()) + 1;
+  return mes ? `ANEEL Ordinance No. ${m[1]} of ${nomeMes(mes, "en")} ${Number(m[2])}, ${m[4]}` : p;
+}
 
 export function exemploDe(slug: string): Exemplo {
   const pld = gold.pld();
@@ -269,8 +280,8 @@ export function exemploDe(slug: string): Exemplo {
       if (!anos.length) return null;
       return {
         partes: [
-          t(tx(`O Anexo I da agenda vigente${a.portaria ? ` (${a.portaria})` : ""} prevê `, `Annex I of the agenda in force${a.portaria ? ` (${a.portaria})` : ""} provides for `)),
-          t(anos.map((x) => tx(`${num(a.por_ano![x], 0)} atividades para ${x}`, `${num(a.por_ano![x], 0)} activities for ${x}`)).join(" e "), "CALCULADO"),
+          t(tx(`O Anexo I da agenda vigente${a.portaria ? ` (${a.portaria})` : ""} prevê `, `Annex I of the agenda in force${a.portaria ? ` (${portariaEmIngles(a.portaria)})` : ""} provides for `)),
+          t(anos.map((x) => tx(`${num(a.por_ano![x], 0)} atividades para ${x}`, `${num(a.por_ano![x], 0)} activities for ${x}`)).join(tx(" e ", " and ")), "CALCULADO"),
           t(tx(". Cada uma é uma previsão de edição de norma, não norma editada.", ". Each one is a plan to issue a norm, not an issued norm.")),
         ],
         href: "/setor-eletrico/regulacao/consultas-e-agenda#p046",
