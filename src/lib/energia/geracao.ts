@@ -425,6 +425,14 @@ export function rotuloJanela(idioma: Idioma = idiomaEnergia()): Record<JanelaMat
   });
 }
 
+/** A janela como adjetivo da frase inglesa ("the 30-day window"); em português, o rótulo da janela. */
+export function janelaAdjetivo(j: JanelaMatriz, idioma: Idioma = idiomaEnergia()): string {
+  return porIdioma(idioma, {
+    pt: rotuloJanela("pt"),
+    en: { dia: "last-day", "7d": "7-day", "30d": "30-day", "12m": "365-day" },
+  })[j];
+}
+
 export type Perimetro = "com" | "sem";
 export const PERIMETROS: readonly Perimetro[] = ["com", "sem"]; // i18n: dado
 
@@ -2697,7 +2705,7 @@ export function comparacaoEntreJanelas(
       fora.push({ id: c, rotulo: curto[c], motivo: ressalvaEmFrase(dona, idioma) ?? tx("cobertura da fonte alterada", "source coverage changed") });
     } else if (p === null || pr === null) {
       const qual = rj[p === null ? janela : ref];
-      fora.push({ id: c, rotulo: curto[c], motivo: tx(`sem valor na janela de ${qual}`, `no value in the ${qual} window`) });
+      fora.push({ id: c, rotulo: curto[c], motivo: tx(`sem valor na janela de ${qual}`, `no value in the ${janelaAdjetivo(p === null ? janela : ref)} window`) });
     } else comparaveis.push({ id: c, rotulo: curto[c], participacao: p, participacao_ref: pr });
   }
   comparaveis.sort((a, b) => b.participacao - a.participacao);
@@ -3108,11 +3116,13 @@ export function notaTipoIII(mix: Mix | null, per: Perimetro, fontes: readonly st
   const grupo = mix.natureza_pct.grupo_tipo3;
   const termica = per === "com" ? mix.participacao.termica_sem_combustivel : mix.participacao_sem_mmgd.termica_sem_combustivel;
   if (grupo === null || termica === null) return "";
-  const quais = fontes.length ? tx(`${listaTexto(fontes, idioma)}, cada uma contada na sua fonte`, `${listaTexto(fontes, idioma)}, each counted in its own source`) : tx("de várias fontes", "from several sources");
+  const quais = fontes.length
+    ? tx(`${listaTexto(fontes, idioma)}, cada uma contada na sua fonte`, `${listaTexto(fontes, idioma)} plants, each counted in its own source`)
+    : tx("de várias fontes", "plants from several sources");
   const sem = per === "sem" ? tx(" (sem a MMGD no total)", " (without the MMGD in the total)") : "";
   return tx(
     `Pequenas usinas Tipo III: ${f.num(grupo, 1)}% da geração com a MMGD estimada, somando usinas ${quais}. O gráfico mostra só a parte térmica do grupo, "Térmicas Tipo III": ${f.num(termica, 1)}%${sem}.`,
-    `Small Type III plants: ${f.num(grupo, 1)}% of generation including the estimated MMGD, adding up ${quais} plants. The chart shows only the thermal part of the group, "Type III thermal plants": ${f.num(termica, 1)}%${sem}.`,
+    `Small Type III plants: ${f.num(grupo, 1)}% of generation including the estimated MMGD, adding up ${quais}. The chart shows only the thermal part of the group, "Type III thermal plants": ${f.num(termica, 1)}%${sem}.`,
   );
 }
 

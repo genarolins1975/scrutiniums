@@ -27,6 +27,7 @@ import {
   curtoCategoria,
   doRegiao,
   fechamentoDaComposicao,
+  janelaAdjetivo,
   janelaEscolhida,
   janelaReferencia,
   janelasDisponiveis,
@@ -174,7 +175,7 @@ export function GeracaoMatriz({
     desativada: !disponiveis.includes(j),
     detalhe: disponiveis.includes(j)
       ? undefined
-      : tx(`indisponível ${NO_REGIAO[rg]}: só o SIN tem a janela de ${ROTULO_JANELA[j].toLowerCase()}`, `unavailable ${NO_REGIAO[rg]}: only the SIN has the ${ROTULO_JANELA[j].toLowerCase()} window`),
+      : tx(`indisponível ${NO_REGIAO[rg]}: só o SIN tem a janela de ${ROTULO_JANELA[j].toLowerCase()}`, `unavailable ${NO_REGIAO[rg]}: only the SIN has the ${janelaAdjetivo(j, idioma)} window`),
   }));
   const janelasFaltam = disponiveis.length < JANELAS.length;
   const total = totalDaJanela(mix, per);
@@ -418,7 +419,7 @@ export function GeracaoMatriz({
 
       <SecaoDoPainel
         id="janelas"
-        titulo={tx(`Como a janela de ${ROTULO_JANELA[janela]} se compara com a de ${ROTULO_JANELA[ref]}?`, `How does the ${ROTULO_JANELA[janela]} window compare with the ${ROTULO_JANELA[ref]} window?`)}
+        titulo={tx(`Como a janela de ${ROTULO_JANELA[janela]} se compara com a de ${ROTULO_JANELA[ref]}?`, `How does the ${janelaAdjetivo(janela, idioma)} window compare with the ${janelaAdjetivo(ref, idioma)} window?`)}
         lead={tx(
           "A participação de cada fonte na janela escolhida e na janela de referência. Só entram as fontes cuja cobertura na base não mudou entre as duas.",
           "The share of each source in the chosen window and in the reference window. Only sources whose coverage in the dataset did not change between the two are included.",
