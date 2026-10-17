@@ -9,9 +9,10 @@ import { dominio } from "@/lib/dominios";
 import { observatorio, paineis } from "@/lib/observatorios/registro";
 
 /**
- * Camada aberta "O Brasil em perguntas" (decisão de 17/10/2026): a resposta
- * curta de cada pergunta é pública; painéis e downloads seguem com conta.
- * Estática por construção: os números são lidos das golds no build.
+ * Página aberta de cada observatório (camada aberta, decisão de 17/10/2026):
+ * a amostra do tema é pública; painéis e downloads seguem com conta.
+ * Estática: os números são lidos das golds no build e endereço desconhecido
+ * responde 404. O cabeçalho reconhece a sessão no navegador (LinkConta).
  */
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -22,7 +23,7 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { porta: string } }): Metadata {
   const p = portas().find((x) => x.id === params.porta);
-  if (!p) return {};
+  if (!p) notFound();
   return {
     title: `${p.nomeCompleto}: ${p.pergunta}`,
     description: p.resumo,
@@ -39,7 +40,8 @@ export default function PortaPage({ params }: { params: { porta: string } }) {
   const colecoes = observatorio(porta.id).colecoes.map((c) => {
     const proprios = todos.filter((p) => p.observatorio === porta.id && p.colecao === c.id);
     const origens = Array.from(new Set(proprios.map((p) => dominio(p.origem).nomeCurto)));
-    return { id: c.id, nome: c.nome, href: c.href, paineis: proprios.length, origens: `vem de ${origens.join(" e ")}` };
+    const destaques = proprios.filter((p) => p.rota !== c.href).map((p) => p.titulo);
+    return { id: c.id, nome: c.nome, href: c.href, destaques: destaques.slice(0, 4), mais: destaques.length > 4, origens: `vem de ${origens.join(" e ")}` };
   });
   return (
     <>

@@ -24,7 +24,8 @@ function Cadeado() {
  * os interativos. Não vira painel: nada de série, filtro ou download aqui.
  * Fecha com o que a plataforma ainda não responde e o método recolhido.
  */
-export type ColecaoPorta = { id: string; nome: string; href: string; paineis: number; origens: string };
+/** Coleção com até quatro painéis de exemplo; sem contagem, porque subpáginas não entram no registro. */
+export type ColecaoPorta = { id: string; nome: string; href: string; destaques: string[]; mais: boolean; origens: string };
 
 export function PaginaPorta({ porta, outras, colecoes }: Readonly<{ porta: Porta; outras: Porta[]; colecoes: ColecaoPorta[] }>) {
   const a = ACENTO[porta.acento];
@@ -135,8 +136,8 @@ export function PaginaPorta({ porta, outras, colecoes }: Readonly<{ porta: Porta
               Tudo o que este observatório reúne
             </h2>
             <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-              As coleções do {porta.nomeCompleto}, com a quantidade de páginas de cada uma e a origem dos dados. Todas
-              abrem com a conta gratuita.
+              As coleções do {porta.nomeCompleto}, com exemplos de painéis de cada uma e a origem dos dados. Todas abrem
+              com a conta gratuita.
             </p>
           </div>
           <ul className="grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:col-span-8">
@@ -148,9 +149,13 @@ export function PaginaPorta({ porta, outras, colecoes }: Readonly<{ porta: Porta
                     {c.nome}
                     <span aria-hidden="true" className="font-sans text-sm text-mineral">→</span>
                   </span>
-                  <span className="mt-1 text-sm text-carvao-muted">
-                    <span className="tabular-nums text-carvao">{c.paineis}</span> {c.paineis === 1 ? "página" : "páginas"} · {c.origens}
-                  </span>
+                  {c.destaques.length > 0 && (
+                    <span className="mt-1 text-sm leading-relaxed text-carvao">
+                      {c.destaques.join(", ")}
+                      {c.mais ? " e outros" : ""}
+                    </span>
+                  )}
+                  <span className="mt-1 text-xs text-mineral">{c.origens}</span>
                 </Link>
               </li>
             ))}

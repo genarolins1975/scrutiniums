@@ -76,6 +76,30 @@ describe("O Brasil em perguntas", () => {
     }
   });
 
+  it("toda gold lida pelas portas está no pacote do servidor da home", async () => {
+    const { readFileSync } = await import("node:fs");
+    const fonte = readFileSync(join(process.cwd(), "src", "lib", "perguntas", "portas.ts"), "utf-8");
+    const lidas = [...fonte.matchAll(/lerPublico\(((?:"[^"]+",?\s*)+)\)/g)]
+      .map((m) => "./public/" + [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]).join("/"));
+    expect(lidas.length).toBeGreaterThan(5);
+    const { default: config } = await import("../../next.config.mjs");
+    const includes = (config as { experimental: { outputFileTracingIncludes: Record<string, string[]> } }).experimental.outputFileTracingIncludes;
+    for (const arquivo of new Set(lidas)) expect(includes["/"], arquivo).toContain(arquivo);
+  });
+
+  it("as páginas abertas são estáticas e o cabeçalho reconhece a sessão no navegador", async () => {
+    const { readFileSync } = await import("node:fs");
+    const pagina = readFileSync(join(process.cwd(), "src", "app", "perguntas", "[porta]", "page.tsx"), "utf-8");
+    expect(pagina).toMatch(/dynamic\s*=\s*"force-static"/);
+    expect(pagina).toMatch(/dynamicParams\s*=\s*false/);
+    const link = readFileSync(join(process.cwd(), "src", "components", "layout", "LinkConta.tsx"), "utf-8");
+    expect(link).toMatch(/^"use client";/);
+    expect(link).toContain('fetch("/api/auth/eu"');
+    expect(link).toContain("r.status === 204");
+    const cabecalho = readFileSync(join(process.cwd(), "src", "components", "layout", "PublicHeader.tsx"), "utf-8");
+    expect(cabecalho.match(/<LinkConta/g)).toHaveLength(3);
+  });
+
   it("as páginas das perguntas são públicas e estão no sitemap; o prefixo não abre vizinhos", () => {
     const urls = sitemap().map((u) => new URL(u.url).pathname);
     for (const id of IDS_PORTAS) {
