@@ -149,7 +149,7 @@ export const DOMINIOS: Dominio[] = [
     nome: "Observatório do Agronegócio Brasileiro",
     nomeCurto: "Agronegócio",
     pergunta: "Como está o agronegócio brasileiro e o que ele representa para o país?",
-    descricao: "Oito perguntas sobre o setor com dados oficiais atualizados automaticamente: peso na economia, safra, insumos importados, exportações, produtores e trabalho, juros e subsídios, desmatamento e emissões, preço da comida. Sete cadeias e cenários de margem e orçamento completam o observatório. A cobertura de cada medição e as limitações aparecem junto do conteúdo.",
+    descricao: "Oito perguntas sobre o setor com dados oficiais atualizados automaticamente: peso na economia, safra, insumos importados, exportações, produtores e trabalho, juros e subsídios, desmatamento e emissões, preço da comida. Doze cadeias, com produção por estado e exportação, e cenários de margem e orçamento completam o observatório. A cobertura de cada medição e as limitações aparecem junto do conteúdo.",
     descricaoCurta: "Peso na economia, safra, insumos, exportações, trabalho, apoio público, desmatamento e preço da comida, com dados oficiais atualizados e limites explícitos.",
     chips: ["Peso na economia", "Safra", "Insumos", "Exportações"],
     rotaRaiz: "/agronegocio",

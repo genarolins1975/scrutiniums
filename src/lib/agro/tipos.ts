@@ -1,4 +1,4 @@
-export type CadeiaId = 'soja' | 'milho' | 'arroz' | 'feijao' | 'cafe' | 'bovinos' | 'leite';
+export type CadeiaId = 'soja' | 'milho' | 'cana' | 'cafe' | 'algodao' | 'arroz' | 'feijao' | 'bovinos' | 'frango' | 'suinos' | 'leite' | 'celulose';
 export type CapituloId = 'producao' | 'custos-renda' | 'alimentos-consumo' | 'credito-protecao' | 'logistica-mercados' | 'empresas-trabalho' | 'clima-ambiente' | 'politicas-inclusao';
 export type FonteAgro = {
     id: string;
@@ -257,4 +257,19 @@ export type EconomiaAgro = {
         emissoes: { versao: string | null; unidade: string; anos: { ano: number; agropecuaria: number; mudancaUsoTerra: number; mudancaUsoTerraRemocao: number | null }[]; fonte: string };
         usoTerra: { url: string; unidade: string; anos: { ano: number; pastagem: number; agricultura: number; silvicultura: number; mosaico: number; vegetacaoNativa: number; total: number; agropecuaria: number }[]; fonte: string };
     };
+    cadeias: {
+        ultimoAnoProducao: number;
+        ultimoTrimestreAbate: string;
+        comercioUltimoMes: string;
+        comercioAnoCompleto: number;
+        itens: Record<CadeiaId, CadeiaObservadaAgro>;
+        fontes: string[];
+    };
+};
+export type UfProducaoAgro = { id: string; sigla: string; valor: number | null; participacao: number | null; sigilo: boolean };
+export type MedidaProducaoAgro = { medida: string; unidade: string; periodo: string; tabela: string; serie: { ano: number; valor: number | null; cabecas?: number }[]; ufs: UfProducaoAgro[]; trimestres?: string[]; totalUltimos4?: number };
+export type CadeiaObservadaAgro = {
+    producao: { producao: MedidaProducaoAgro; rebanho?: MedidaProducaoAgro; area?: { ano: number; valor: number | null }[]; valorProducao?: { ano: number; valor: number | null }[] };
+    comercio: { posicoes: { posicao: string; nome: string; fob: number; kg: number }[]; anual: { ano: number; fob: number; kg: number; importFob: number; importKg: number }[]; mesmoPeriodo: { ano: number; meses: number; fob: number; kg: number }[]; destinos: { pais: string; fob: number; participacao: number | null }[]; paisesDestino: number };
+    ipca: string | null;
 };

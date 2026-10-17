@@ -22,7 +22,7 @@ python3 -m pipeline.agro.dicionario
 python3 -m unittest pipeline.tests.test_agro
 ```
 
-A coleta consulta o IBGE (SIDRA 1846, 5932, 6588, 6754, 6884, 6898, 5434, 5442, 1419 e 7060, pela API v3), o Comex Stat, o BCB (microdados do Sicor dos dois últimos anos e SGS 4189), o Tesouro Transparente (pagamentos de subvenções), o INPE (PRODES no TerraBrasilis), o SEEG (API GraphQL) e o MapBiomas (planilha de estatísticas), normaliza e valida tudo antes de gravar. Cada fonte vira uma semente em `pipeline/agro/seed` com a consulta e a resposta integral (ou, nos arquivos grandes, o recorte agregado com sha256 e tamanho do original) e a data de captura em `coletas.json`. Módulos: `economia.py` (fase 1 e gravação), `sociedade.py`, `apoio.py` e `ambiente.py`. Resposta idêntica à integrada mantém o manifesto e não gera commit. O Comex Stat limita a frequência (11 segundos entre consultas); os microdados do Sicor somam cerca de 90 MB e a planilha do MapBiomas, 18 MB. A coleta completa leva de cinco a dez minutos.
+A coleta consulta o IBGE (SIDRA 1846, 5932, 6588, 6754, 6884, 6898, 5434, 5442, 1419, 7060, 5457, 3939, 74, 291, 1092, 1093 e 1094, pela API v3), o Comex Stat, o BCB (microdados do Sicor dos dois últimos anos e SGS 4189), o Tesouro Transparente (pagamentos de subvenções), o INPE (PRODES no TerraBrasilis), o SEEG (API GraphQL) e o MapBiomas (planilha de estatísticas), normaliza e valida tudo antes de gravar. Cada fonte vira uma semente em `pipeline/agro/seed` com a consulta e a resposta integral (ou, nos arquivos grandes, o recorte agregado com sha256 e tamanho do original) e a data de captura em `coletas.json`. Módulos: `economia.py` (fase 1 e gravação), `sociedade.py`, `apoio.py`, `ambiente.py` e `producao.py` (PAM 5457, PPM 3939 e 74, PEVS 291, Abate 1092 a 1094, por estado, e Comex Stat por posição SH das doze cadeias). Resposta idêntica à integrada mantém o manifesto e não gera commit. O Comex Stat limita a frequência (11 segundos entre consultas); os microdados do Sicor somam cerca de 90 MB e a planilha do MapBiomas, 18 MB. A coleta completa leva de cinco a dez minutos.
 
 Validações que bloqueiam a publicação: setores que não somam o valor adicionado, trimestres não consecutivos, taxas e valores terminando em trimestres diferentes, produto do LSPA sem estimativa do último mês, ano ou mês ausente no Comex Stat, acumulado do ano diferente da soma dos meses, país ou linha duplicada.
 
@@ -38,20 +38,8 @@ python3 -m pipeline.agro.preservar --destino /tmp/agro-candidato --data AAAA-MM-
 
 O helper rejeita destino existente e original diferente do commit declarado, valida as sete fontes, reconcilia os agregados e calcula as cinco saídas antes de disponibilizar o candidato. Não modifica seed nem gold aceitos. Revise diferenças, períodos, unidades, licenças, cobertura e compatibilidade; só então substitua o seed em branch de atualização e regenere os derivados. Fonte incompleta ou falha de validação preserva a última edição aceita. A gravação do gerador é atômica **por arquivo**, não uma transação de vários arquivos; a publicação conjunta ocorre pelo commit/deploy.
 
-## Capturar produção oficial: trabalho ainda parcial
+## Produção oficial por estado
 
-`python3 -m pipeline.agro.capturar --help` descreve o capturador de candidatos PAM 5457/PPM 3939/74. Ele consulta metadados e períodos antes dos valores, limita tentativas e volume, preserva resposta e manifesto e distingue toneladas, hectares, cabeças, litros e mil litros. Testes sintéticos ficam somente nos testes.
+A produção por estado das doze cadeias entra pela coleta automática (`producao.py`), com as mesmas regras das demais fontes: ano ausente, trimestre fora de sequência, soma dos estados acima do total nacional e destinos que não somam a exportação da cadeia bloqueiam a publicação; dado sigiloso fica sem valor. O capturador antigo de candidatos (`python3 -m pipeline.agro.capturar`) continua disponível para auditoria de metadados, mas não alimenta a gold.
 
-**Este capturador ainda não está integrado ao gerador publicado.** Em 17/10/2026 a API do IBGE passou a responder neste ambiente (a coleta da economia usa o mesmo domínio), mas a captura de PAM/PPM por estado ainda não foi rodada, conciliada e aprovada.
-
-Após liberação efetiva: capturar metadados e originais, validar chaves únicas, unidades, municípios/UF/BR, safras, calendários, ausência/zero e revisão; reconciliar amostra com publicação oficial; implementar integração do candidato no normalizador e testes com original real fixado. Só depois ativar mapas/séries agrícolas e retirar os respectivos bloqueios do catálogo. Carne exige validar Abate separadamente de rebanho PPM; não supor integração existente. Custos Conab, proteção, agricultura familiar, ambiente e FAOSTAT continuam com tarefas próprias, não são resolvidos pelo capturador PAM/PPM. O Comex Stat já é coletado pelo módulo da economia.
-
-Não agendar a coleta de PAM/PPM nem anunciar atualização automática da produção por estado antes dessa integração. Dados pagos, scraping não autorizado e licenças não confirmadas não são alternativas presumidas.
-
-## Recuperação
-
-Falha de coleta: não promover candidato, conservar seed e gold da edição aceita. Falha em derivadas: restaurar o commit aceito dos seeds, regenerar todos os derivados e comparar o manifesto; não editar JSON/CSV manualmente. Regressão de interface: reverter o commit via PR e gates normais, confirmar deploy do novo SHA. Evitar restauração parcial de fonte sem seu manifesto, dicionário, catálogo ou cobertura.
-
-Gates: lint, tipos, Python, build, Vitest com HTML obrigatório, inventário i18n e `scripts/agro/verificacao.mjs`. CI do Agronegócio mantém screenshots, CSVs e PDF no artefato `agronegocio-interface`; não contém dados de contas reais. Não enviar valores digitados para analytics.
-
-A captura candidata exige exatamente cada indicador solicitado × ano solicitado × Brasil/27 UFs, por produto. A falta de uma variável, de uma célula territorial ou a inclusão de ano extra interrompe o processo antes de gravar qualquer arquivo. Células presentes com sinal oficial de ausência/supressão continuam distintas de células omitidas. IDs duplicados de variável nos metadados são rejeitados. Testes isolados conferem também a preservação de um candidato anterior em caso de resposta incompleta; isso não libera nem integra a fonte online.
+Continuam fora: calendário de plantio e colheita da Conab, produção municipal, custos Conab, proteção, ambiente territorial e FAOSTAT.

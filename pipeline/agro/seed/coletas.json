@@ -143,6 +143,34 @@
       "capturadoEm": "2026-10-17T19:21:27+00:00"
     },
     {
+      "id": "producao",
+      "arquivo": "producao.json.gz",
+      "url": "https://sidra.ibge.gov.br/pesquisa/pam/tabelas",
+      "nome": "IBGE, Produção Agrícola Municipal, Pesquisa da Pecuária Municipal, Produção da Extração Vegetal e da Silvicultura e Pesquisa Trimestral do Abate de Animais (SIDRA 5457, 3939, 74, 291, 1092, 1093 e 1094)",
+      "licenca": "Dados públicos do IBGE; citar a fonte",
+      "limite": "Produção anual por estado; o abate é trimestral, só de estabelecimentos sob inspeção sanitária, e tem estados com dado sigiloso. Rebanho é estoque em 31 de dezembro, não produção. A PAM substitui a estimativa do LSPA quando sai, por volta de setembro do ano seguinte.",
+      "arquivoRepositorio": "pipeline/agro/seed/producao.json.gz",
+      "commitRepositorio": "",
+      "sha256Original": "566c110001240c3d4013d2e338b45da7d69e6aee20a3e37e4c2cf12c41cf069a",
+      "sha256Arquivo": "e173c2d820a8a7a83d9ecc952e9ba564f81bbeb27de7f17f2bafb3dc8c559065",
+      "estadoAcesso": "COLETA_OFICIAL",
+      "capturadoEm": "2026-10-17T21:39:34+00:00"
+    },
+    {
+      "id": "comexcadeias",
+      "arquivo": "comexcadeias.json.gz",
+      "url": "https://comexstat.mdic.gov.br/",
+      "nome": "MDIC, Comex Stat (exportação e importação por posição SH e país)",
+      "licenca": "Dados abertos do governo federal; citar a fonte",
+      "limite": "Valores FOB em US$ correntes e massa líquida em kg, por posição de quatro dígitos do Sistema Harmonizado. Uma posição pode incluir produto de outra origem (álcool etílico de milho, leguminosas que não são feijão, aves que não são frango).",
+      "arquivoRepositorio": "pipeline/agro/seed/comexcadeias.json.gz",
+      "commitRepositorio": "",
+      "sha256Original": "4ccca9aba63d0865c8177380e227117329424782862bb37182091dc774dae0aa",
+      "sha256Arquivo": "5d97a679b1389fb6552ccf9faf400dc1e42cbaf5dbcaa0451db14135d482e7bd",
+      "estadoAcesso": "COLETA_OFICIAL",
+      "capturadoEm": "2026-10-17T21:39:34+00:00"
+    },
+    {
       "id": "comex",
       "arquivo": "comex.json.gz",
       "url": "https://comexstat.mdic.gov.br/",

@@ -273,7 +273,7 @@ export function vitrines(idioma: Idioma = "pt"): Record<DominioId, Vitrine> {
         { titulo: "Comida no prato", href: "/agronegocio/prato", descricao: "Inflação de alimentos, itens da cesta e segurança alimentar dos domicílios." },
       ],
       fontes: "IBGE, MDIC, BCB, Tesouro Nacional, INPE, SEEG e MapBiomas por coleta automática; BCB/MDCR, MTE/Novo Caged e IBGE por snapshots preservados na plataforma.",
-      situacao: "Cobertura parcial: produção por estado e cadeia, custos de referência da Conab, seguro rural e camadas ambientais territoriais ainda sem coleta validada. Explicações e cenários não substituem essas medições.",
+      situacao: "Cobertura parcial: calendário agrícola, custos de referência da Conab, seguro rural e camadas ambientais territoriais ainda sem coleta validada. Explicações e cenários não substituem essas medições.",
       metodologia: { href: "/agronegocio/metodologia", rotulo: "Cobertura, fontes e método" },
     },
   };

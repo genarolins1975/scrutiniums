@@ -33,3 +33,31 @@ describe('economia do Agro: números de destaque', () => {
         expect(concentracaoAgro([{ participacao: 50 }, { participacao: 20 }, { participacao: 5 }], 2)).toBe(70);
     });
 });
+
+describe('cadeias do Agro: produção por estado e comércio', () => {
+    it('as doze cadeias do modelo têm dados e o maior estado vem primeiro', async () => {
+        const { CADEIAS } = await import('@/lib/agro/modelo');
+        const { resumoCadeiaAgro, fisicoAgro, dolarAgro } = await import('@/components/agro/Cadeias');
+        expect(CADEIAS).toHaveLength(12);
+        expect(Object.keys(e.cadeias.itens).sort()).toEqual(CADEIAS.map(c => c.id).sort());
+        for (const c of CADEIAS) {
+            const r = resumoCadeiaAgro(e, c.id), valores = r.conhecidos.map(u => u.valor!);
+            expect(valores).toEqual([...valores].sort((a, b) => b - a));
+            expect(r.top[0].participacao).toBeGreaterThan(0);
+            expect(r.exp.ano).toBe(e.cadeias.comercioAnoCompleto);
+        }
+        expect(fisicoAgro(null, 't')).toBe('Não disponível');
+        expect(fisicoAgro(2_500_000, 't')).toBe('2,5 milhões de t');
+        expect(fisicoAgro(36_684_276, 'mil litros')).toBe('36,7 bilhões de litros');
+        expect(dolarAgro(450_000_000)).toBe('US$ 450 mi');
+    });
+    it('estado sob sigilo fica sem valor, nunca zero, e não entra nas barras', async () => {
+        const { resumoCadeiaAgro } = await import('@/components/agro/Cadeias');
+        for (const id of ['bovinos', 'frango', 'suinos'] as const) {
+            const r = resumoCadeiaAgro(e, id);
+            for (const u of r.p.ufs) if (u.sigilo) expect(u.valor).toBeNull();
+            expect(r.conhecidos.every(u => u.valor !== null)).toBe(true);
+            expect(r.p.totalUltimos4).toBeGreaterThan(0);
+        }
+    });
+});

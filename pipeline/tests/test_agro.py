@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from pathlib import Path
-from pipeline.agro import run,capturar,economia,sociedade,apoio,ambiente
+from pipeline.agro import run,capturar,economia,sociedade,apoio,ambiente,producao
 
 class AgroDadosTest(unittest.TestCase):
     @classmethod
@@ -220,6 +220,38 @@ class AgroApoioAmbienteTest(unittest.TestCase):
             self.assertAlmostEqual(r['agropecuaria'],r['pastagem']+r['agricultura']+r['silvicultura']+r['mosaico']);self.assertLess(r['agropecuaria']+r['vegetacaoNativa'],r['total'])
         b=copy.deepcopy(self.coletas['mapbiomas']);b['classes'][0]['anos']={k:v*1000 for k,v in b['classes'][0]['anos'].items()}
         with self.assertRaisesRegex(ValueError,'fora do território'):ambiente.normalizar_mapbiomas(b)
+
+class AgroCadeiasTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        _,cls.coletas=economia.carregar();cls.c=producao.normalizar(cls.coletas)['cadeias']
+    def test_doze_cadeias_com_producao_e_comercio(self):
+        self.assertEqual(len(self.c['itens']),12)
+        for cid,v in self.c['itens'].items():
+            p=v['producao']['producao'];self.assertEqual(len(p['ufs']),27,cid)
+            self.assertGreater(p['serie'][-1]['valor'],0,cid)
+            self.assertEqual([r['ano'] for r in v['comercio']['anual']],list(range(producao.INICIO_COMEX,self.c['comercioAnoCompleto']+1)))
+            self.assertAlmostEqual(sum(x['fob'] for x in v['comercio']['posicoes']),v['comercio']['anual'][-1]['fob'],places=0)
+    def test_estados_nao_passam_do_total_e_sigilo_nao_vira_zero(self):
+        for cid,v in self.c['itens'].items():
+            p=v['producao']['producao'];total=p.get('totalUltimos4',p['serie'][-1]['valor'])
+            self.assertLessEqual(sum(u['valor'] or 0 for u in p['ufs']),total*1.002,cid)
+            for u in p['ufs']:
+                if u['sigilo']:self.assertIsNone(u['valor'],cid)
+        pam=self.c['itens']['soja']['producao']['producao'];self.assertAlmostEqual(sum(u['valor'] or 0 for u in pam['ufs']),pam['serie'][-1]['valor'],delta=pam['serie'][-1]['valor']*0.001)
+        b=copy.deepcopy(self.coletas['producao']);r=b['consultas']['abate1094']['resposta'][1]['resultados'][0]
+        uf=next(s for s in r['series'] if s['localidade']['id']=='41');uf['serie'][max(uf['serie'])]='X'
+        f=producao.normalizar_producao(b)['cadeias']['frango']['producao']['ufs'];pr=next(u for u in f if u['sigla']=='PR')
+        self.assertIsNone(pr['valor']);self.assertTrue(pr['sigilo'])
+    def test_ano_ausente_e_destinos_divergentes_sao_recusados(self):
+        b=copy.deepcopy(self.coletas['producao']);r=b['consultas']['pam']['resposta'][0]['resultados'][0]
+        br=next(s for s in r['series'] if s['localidade']['id']=='1');br['serie'].pop(min(br['serie']))
+        with self.assertRaisesRegex(ValueError,'Ano ausente'):producao.normalizar_producao(b)
+        c=copy.deepcopy(self.coletas['comexcadeias']);c['consultas']['destinos']['resposta'].pop(0)
+        with self.assertRaisesRegex(ValueError,'Destinos não somam'):producao.normalizar_comercio(c)
+        d=copy.deepcopy(self.coletas['producao']);serie=d['consultas']['abate1092']['resposta'][1]['resultados'][0]['series']
+        br=next(s for s in serie if s['localidade']['id']=='1');del br['serie'][sorted(br['serie'])[-2]]
+        with self.assertRaises(ValueError):producao.normalizar_producao(d)
 
 class AgroCapturaTest(unittest.TestCase):
     def test_cobertura_exige_cada_indicador_ano_e_territorio(self):

@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
 const GUIAS: Record<OpcaoObservatorioId, { chamada: string; temas: [string, string][] }> = {
   agro: {
     chamada: "Do campo à mesa e aos mercados.",
-    temas: [["Crédito e trabalho", "Registros públicos com universo, período e limites"], ["Sete cadeias", "Mecanismos e cobertura de cada medição"], ["Cenários econômicos e sociais", "Margem, caixa, financiamento e orçamento alimentar"]],
+    temas: [["Crédito e trabalho", "Registros públicos com universo, período e limites"], ["Doze cadeias", "Produção por estado, exportação e destino de cada uma"], ["Cenários econômicos e sociais", "Margem, caixa, financiamento e orçamento alimentar"]],
   },
   judiciario: {
     chamada: "Recursos, filas e tempos da Justiça brasileira.",
