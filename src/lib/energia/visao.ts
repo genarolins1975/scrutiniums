@@ -11,8 +11,11 @@
  * é null e vira "sem dado", nunca zero. Testadas em src/tests/energia-visao.test.ts.
  */
 import { resumo } from "./distribuicao";
-import { dataBR, mesAno, num, plural } from "./formato";
+import { dataBR, mesAno, nomeMes, num, plural } from "./formato";
 import { PADRAO_SIGLA, SIGLAS } from "./siglas";
+import type { Idioma } from "@/lib/idioma";
+import { idiomaEnergia, tx } from "./idioma";
+import { fronteiraEn, goldEmString, listaEn, traduzModeloDaGold, trechoEn } from "./i18n/entrada-visao";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
 import type { BrasilAnual, Conjuntos } from "./tipos-qualidade";
 import type {
@@ -41,26 +44,52 @@ export { datasLegiveis } from "./formato";
 
 /**
  * Identificador de snapshot ("ccee_pld_horario@2026-09-30T02:20:14Z") com a captura escrita como na página:
- * "ccee_pld_horario (captura de 30/09/2026 02:20 UTC)". Sem "@" e data, devolve o texto como veio.
+ * "ccee_pld_horario (captura de 30/09/2026 02:20 UTC)" ("captured on Sep 30, 2026, 02:20 UTC" em inglês). Sem "@" e data,
+ * devolve o texto como veio.
  */
-export function snapshotLegivel(id: string): string {
-  return id.replace(/@(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::\d{2}(?:\.\d+)?)?Z?/g, (_, a: string, m: string, d: string, h: string, mi: string) => ` (captura de ${d}/${m}/${a} ${h}:${mi} UTC)`);
+export function snapshotLegivel(id: string, idioma: Idioma = idiomaEnergia()): string {
+  return id.replace(/@(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::\d{2}(?:\.\d+)?)?Z?/g, (_, a: string, m: string, d: string, h: string, mi: string) =>
+    tx(` (captura de ${d}/${m}/${a} ${h}:${mi} UTC)`, ` (captured on ${dataBR(`${a}-${m}-${d}`, "en")}, ${h}:${mi} UTC)`, idioma),
+  );
 }
+
+/** Texto da gold dentro de uma frase da página: a forma inglesa na página inglesa (tabela ou modelo), o texto como veio na portuguesa. */
+function gold(texto: string, idioma: Idioma): string {
+  return goldEmString(texto, idioma);
+}
+
+/** Lista "a, b e c" no idioma ("a, b and c"). */
+export function listaNoIdioma(xs: readonly string[], idioma: Idioma = idiomaEnergia()): string {
+  return idioma === "en" ? listaEn(xs) : listaEmPortugues(xs);
+}
+
+/** Natureza do dado (OBSERVADO, CALCULADO, ESTIMADO, PREVISTO, CENARIO) em palavra inglesa, como o glossário a escreve. */
+const NATUREZA_EN: Readonly<Record<string, string>> = { OBSERVADO: "observed", CALCULADO: "calculated", ESTIMADO: "estimated", PREVISTO: "forecast", CENARIO: "scenario" };
 
 /* ---------------------------------------------------------------- painéis */
 
 export type IdPainelVisao = "sistema" | "determinantes" | "sociedade" | "observar";
 
-/** Perguntas do Anexo A da especificação (P004 a P007), na ordem da página. */
-export const PAINEIS_VISAO: readonly { id: IdPainelVisao; codigo: string; rotulo: string; pergunta: string }[] = [
-  { id: "sistema", codigo: "P004", rotulo: "O sistema em 60 segundos", pergunta: "O que mudou e merece atenção?" },
-  { id: "determinantes", codigo: "P005", rotulo: "Preço, água, geração, carga e rede", pergunta: "Como estão os principais determinantes?" },
-  { id: "sociedade", codigo: "P006", rotulo: "Energia e sociedade", pergunta: "Como custo e qualidade chegam ao consumidor?" },
-  { id: "observar", codigo: "P007", rotulo: "O que observar", pergunta: "Quais alterações são relevantes?" },
-];
+/** Perguntas do Anexo A da especificação (P004 a P007), na ordem da página, no idioma pedido. */
+export function paineisVisao(idioma: Idioma = idiomaEnergia()): readonly { id: IdPainelVisao; codigo: string; rotulo: string; pergunta: string }[] {
+  return [
+    { id: "sistema", codigo: "P004", rotulo: tx("O sistema em 60 segundos", "The system in 60 seconds", idioma), pergunta: tx("O que mudou e merece atenção?", "What changed and deserves attention?", idioma) },
+    {
+      id: "determinantes",
+      codigo: "P005",
+      rotulo: tx("Preço, água, geração, carga e rede", "Price, water, generation, load and grid", idioma),
+      pergunta: tx("Como estão os principais determinantes?", "How are the main determinants doing?", idioma),
+    },
+    { id: "sociedade", codigo: "P006", rotulo: tx("Energia e sociedade", "Energy and society", idioma), pergunta: tx("Como custo e qualidade chegam ao consumidor?", "How do cost and quality reach the consumer?", idioma) },
+    { id: "observar", codigo: "P007", rotulo: tx("O que observar", "What to watch", idioma), pergunta: tx("Quais alterações são relevantes?", "Which changes are relevant?", idioma) },
+  ];
+}
 
-export function painelVisao(id: IdPainelVisao) {
-  return PAINEIS_VISAO.find((p) => p.id === id)!;
+/** As perguntas em português (a forma de referência dos testes e dos códigos P004 a P007). */
+export const PAINEIS_VISAO = paineisVisao("pt");
+
+export function painelVisao(id: IdPainelVisao, idioma: Idioma = idiomaEnergia()) {
+  return paineisVisao(idioma).find((p) => p.id === id)!;
 }
 
 /* ---------------------------------------------------------------- utilidades */
@@ -112,41 +141,52 @@ export function casasUnidade(unidade: string): number {
   return 0;
 }
 
-/** Número com a unidade, na forma da página: R$ antes, percentual colado, demais com espaço. */
-export function comUnidade(v: number | null | undefined, unidade: string, casas: number): string {
-  if (v === null || v === undefined || !Number.isFinite(v)) return "sem dado";
-  if (unidade === "R$/MWh") return `R$ ${num(v, casas)}/MWh`;
-  if (unidade.startsWith("%")) return `${num(v, casas)}${unidade}`;
-  return `${num(v, casas)} ${unidade}`;
+/** Número com a unidade, na forma da página: R$ antes, percentual colado, demais com espaço. A unidade da gold sai no idioma da página. */
+export function comUnidade(v: number | null | undefined, unidade: string, casas: number, idioma: Idioma = idiomaEnergia()): string {
+  if (v === null || v === undefined || !Number.isFinite(v)) return tx("sem dado", "no data", idioma);
+  if (unidade === "R$/MWh") return `R$ ${num(v, casas, idioma)}/MWh`; // i18n: dado
+  const u = gold(unidade, idioma);
+  if (unidade.startsWith("%")) return `${num(v, casas, idioma)}${u}`;
+  return `${num(v, casas, idioma)} ${u}`;
 }
 
 /* ---------------------------------------------------------------- P004: o sistema em 60 segundos */
 
-export const ROTULO_FRASE: Record<IdFrase, string> = {
-  reservatorios: "Reservatórios",
-  afluencias: "Afluências",
-  carga: "Carga",
-  termica: "Térmicas",
-  pld: "PLD",
-  rede: "Rede",
-};
+function rotulosFrase(idioma: Idioma): Record<IdFrase, string> {
+  return tx(
+    { reservatorios: "Reservatórios", afluencias: "Afluências", carga: "Carga", termica: "Térmicas", pld: "PLD", rede: "Rede" },
+    { reservatorios: "Reservoirs", afluencias: "Inflows", carga: "Load", termica: "Thermal plants", pld: "PLD", rede: "Grid" },
+    idioma,
+  );
+}
 
-export const ROTULO_ATUALIDADE: Record<string, string> = {
-  "EM DIA": "em dia",
-  ATRASADO: "atrasada",
-  "SEM SLA": "sem prazo declarado pela fonte",
-  "SEM DADO": "sem registro de atualidade",
-};
+/** Rótulo de cada frase em português (a forma de referência); `rotuloFrase` dá o rótulo no idioma da página. */
+export const ROTULO_FRASE: Record<IdFrase, string> = rotulosFrase("pt");
+
+export function rotuloFrase(id: IdFrase, idioma: Idioma = idiomaEnergia()): string {
+  return rotulosFrase(idioma)[id];
+}
+
+function rotulosAtualidade(idioma: Idioma): Record<string, string> {
+  return tx(
+    { "EM DIA": "em dia", ATRASADO: "atrasada", "SEM SLA": "sem prazo declarado pela fonte", "SEM DADO": "sem registro de atualidade" },
+    { "EM DIA": "up to date", ATRASADO: "late", "SEM SLA": "with no deadline declared by the source", "SEM DADO": "with no timeliness record" },
+    idioma,
+  );
+}
+
+export const ROTULO_ATUALIDADE: Record<string, string> = rotulosAtualidade("pt");
 
 /** Cadência como a gold a grava (sem acento) e como a página a escreve. */
-export const ROTULO_CADENCIA: Record<string, string> = {
-  diaria: "diária",
-  semanal: "semanal",
-  quinzenal: "quinzenal",
-  mensal: "mensal",
-  trimestral: "trimestral",
-  anual: "anual",
-};
+function rotulosCadencia(idioma: Idioma): Record<string, string> {
+  return tx(
+    { diaria: "diária", semanal: "semanal", quinzenal: "quinzenal", mensal: "mensal", trimestral: "trimestral", anual: "anual" },
+    { diaria: "daily", semanal: "weekly", quinzenal: "fortnightly", mensal: "monthly", trimestral: "quarterly", anual: "annual" },
+    idioma,
+  );
+}
+
+export const ROTULO_CADENCIA: Record<string, string> = rotulosCadencia("pt");
 
 /** Menor e maior data de referência entre as frases (cada frase tem a sua). */
 export function referenciasFrases(frases: readonly FraseVisao[]): { min: string; max: string } | null {
@@ -156,48 +196,85 @@ export function referenciasFrases(frases: readonly FraseVisao[]): { min: string;
 }
 
 /** Texto curto de atualidade e defasagem de uma frase, a partir da qualidade publicada. */
-export function textoAtualidadeFrase(f: FraseVisao): string {
+export function textoAtualidadeFrase(f: FraseVisao, idioma: Idioma = idiomaEnergia()): string {
   const a = f.qualidade.atualidade;
-  const sit = a?.situacao ? (ROTULO_ATUALIDADE[a.situacao] ?? a.situacao.toLowerCase()) : null;
-  const atraso = a?.dias_atraso ? `, ${plural(a.dias_atraso, "dia", "dias")} além do prazo` : "";
-  return sit ? `Fonte ${sit}${a?.cadencia ? ` pela cadência ${ROTULO_CADENCIA[a.cadencia] ?? a.cadencia}` : ""}${atraso}.` : "Sem registro de atualidade da fonte.";
+  const sit = a?.situacao ? (rotulosAtualidade(idioma)[a.situacao] ?? a.situacao.toLowerCase()) : null;
+  const cad = a?.cadencia ? (rotulosCadencia(idioma)[a.cadencia] ?? a.cadencia) : null;
+  const atraso = a?.dias_atraso
+    ? tx(`, ${plural(a.dias_atraso, "dia", "dias", "pt")} além do prazo`, `, ${plural(a.dias_atraso, "day", "days", "en")} past the deadline`, idioma)
+    : "";
+  if (!sit) return tx("Sem registro de atualidade da fonte.", "No timeliness record for the source.", idioma);
+  return tx(`Fonte ${sit}${cad ? ` pela cadência ${cad}` : ""}${atraso}.`, `Source ${sit}${cad ? ` by its ${cad} update frequency` : ""}${atraso}.`, idioma);
 }
 
 /** Componentes que não são medição, como a gold de origem declara (PREVISTO, ESTIMADO). */
-export function textoComponentesFrase(f: FraseVisao): string | null {
+export function textoComponentesFrase(f: FraseVisao, idioma: Idioma = idiomaEnergia()): string | null {
   const cs = f.qualidade.componentes_natureza;
   if (!cs.length) return null;
-  return cs.map((c) => `${String(c.natureza).toLowerCase()} desde ${dataBR(c.desde)}: ${minuscula(c.descricao)}`).join("; ");
+  return cs
+    .map((c) =>
+      tx(
+        `${String(c.natureza).toLowerCase()} desde ${dataBR(c.desde, "pt")}: ${minuscula(c.descricao)}`,
+        `${NATUREZA_EN[String(c.natureza)] ?? String(c.natureza).toLowerCase()} since ${dataBR(c.desde, "en")}: ${minuscula(gold(c.descricao, "en"))}`,
+        idioma,
+      ),
+    )
+    .join("; ");
 }
 
 /**
  * Resposta do P004: quantos fatos, de que datas, o que a caixa de destaques diz e quais
  * regras sobre os próprios dados estão em alerta. Tudo lido da gold; nenhuma frase fixa com número.
  */
-export function respostaSistema(g: Pick<SinteseVisaoGold, "frases" | "frases_ausentes" | "destaques" | "observar">): string {
+export function respostaSistema(g: Pick<SinteseVisaoGold, "frases" | "frases_ausentes" | "destaques" | "observar">, idioma: Idioma = idiomaEnergia()): string {
   const partes: string[] = [];
   const refs = referenciasFrases(g.frases);
+  const titulo = (t: string) => minuscula(gold(t, idioma));
   if (refs) {
     const n = g.frases.length;
     partes.push(
-      refs.min === refs.max
-        ? `${n === 1 ? "Um fato" : `${num(n, 0)} fatos`} do sistema, com referência em ${dataBR(refs.min)}.`
-        : `${n === 1 ? "Um fato" : `${num(n, 0)} fatos`} do sistema, cada um com a sua data de referência, de ${dataBR(refs.min)} a ${dataBR(refs.max)}.`,
+      tx(
+        refs.min === refs.max
+          ? `${n === 1 ? "Um fato" : `${num(n, 0, "pt")} fatos`} do sistema, com referência em ${dataBR(refs.min, "pt")}.`
+          : `${n === 1 ? "Um fato" : `${num(n, 0, "pt")} fatos`} do sistema, cada um com a sua data de referência, de ${dataBR(refs.min, "pt")} a ${dataBR(refs.max, "pt")}.`,
+        refs.min === refs.max
+          ? `${n === 1 ? "One fact" : `${num(n, 0, "en")} facts`} about the system, with reference date ${dataBR(refs.min, "en")}.`
+          : `${n === 1 ? "One fact" : `${num(n, 0, "en")} facts`} about the system, each with its own reference date, from ${dataBR(refs.min, "en")} to ${dataBR(refs.max, "en")}.`,
+        idioma,
+      ),
     );
   } else {
-    partes.push("Nenhum fato do sistema pôde ser escrito nesta publicação: faltam os dados de origem.");
+    partes.push(tx("Nenhum fato do sistema pôde ser escrito nesta publicação: faltam os dados de origem.", "No fact about the system could be written in this publication: the source data is missing.", idioma));
   }
   if (g.destaques.itens.length) {
-    const t = g.destaques.itens.map((d) => minuscula(d.titulo));
-    partes.push(`${g.destaques.itens.length === 1 ? "Um destaque" : `${num(g.destaques.itens.length, 0)} destaques`} de regra sobre o sistema: ${t.join("; ")}.`);
+    const t = g.destaques.itens.map((d) => titulo(d.titulo));
+    const n = g.destaques.itens.length;
+    partes.push(
+      tx(
+        `${n === 1 ? "Um destaque" : `${num(n, 0, "pt")} destaques`} de regra sobre o sistema: ${t.join("; ")}.`,
+        `${n === 1 ? "One rule highlight" : `${num(n, 0, "en")} rule highlights`} about the system: ${t.join("; ")}.`,
+        idioma,
+      ),
+    );
   } else if (g.destaques.vazio) {
-    partes.push(g.destaques.vazio);
+    partes.push(gold(g.destaques.vazio, idioma));
   }
   const observacao = regrasEmObservacao(g.observar);
-  if (observacao.length) partes.push(`Em observação, com a condição presente e ainda sem a duração mínima para virar alerta: ${observacao.map((o) => minuscula(o.titulo)).join("; ")}.`);
+  if (observacao.length)
+    partes.push(
+      tx(
+        `Em observação, com a condição presente e ainda sem a duração mínima para virar alerta: ${observacao.map((o) => titulo(o.titulo)).join("; ")}.`,
+        `Under observation, with the condition present and still without the minimum duration to become an alert: ${observacao.map((o) => titulo(o.titulo)).join("; ")}.`,
+        idioma,
+      ),
+    );
   const dados = g.observar.filter((o) => o.assunto === "dados" && o.tipo !== "evento" && o.ativo);
-  if (dados.length) partes.push(`Em alerta sobre os próprios dados: ${dados.map((o) => minuscula(o.titulo)).join("; ")}.`);
-  if (g.frases_ausentes.length) partes.push(`Sem frase nesta publicação: ${g.frases_ausentes.map((id) => minuscula(ROTULO_FRASE[id])).join(", ")}.`);
+  if (dados.length)
+    partes.push(tx(`Em alerta sobre os próprios dados: ${dados.map((o) => titulo(o.titulo)).join("; ")}.`, `In alert about the data itself: ${dados.map((o) => titulo(o.titulo)).join("; ")}.`, idioma));
+  if (g.frases_ausentes.length) {
+    const ids = g.frases_ausentes.map((id) => minuscula(rotuloFrase(id, idioma))).join(", ");
+    partes.push(tx(`Sem frase nesta publicação: ${ids}.`, `No sentence in this publication: ${ids}.`, idioma));
+  }
   return partes.join(" ");
 }
 
@@ -205,16 +282,19 @@ export function respostaSistema(g: Pick<SinteseVisaoGold, "frases" | "frases_aus
  * As regras sobre os próprios dados, em palavras comuns. O título da gold ("Revisão material de dado já publicado") e a
  * condição técnica ficam na lista do P007 e em Analisar; o veredito diz só o que o leitor precisa saber.
  */
-const DADOS_EM_PALAVRAS: Partial<Record<IdRegra, string>> = {
-  revisao_material: "um dado publicado foi revisado",
-  atualidade_fontes: "uma fonte desta página está atrasada",
-  pld_defasagem: "a série do PLD está sem atualização recente",
-};
+function dadosEmPalavras(idioma: Idioma): Partial<Record<IdRegra, string>> {
+  return tx<Partial<Record<IdRegra, string>>>(
+    { revisao_material: "um dado publicado foi revisado", atualidade_fontes: "uma fonte desta página está atrasada", pld_defasagem: "a série do PLD está sem atualização recente" },
+    { revisao_material: "a published figure was revised", atualidade_fontes: "a source of this page is late", pld_defasagem: "the PLD series has no recent update" },
+    idioma,
+  );
+}
 
 /** Nomes de regras no veredito: até duas por extenso; mais que isso, só a contagem, para a frase não virar lista. */
-function nomesNoVeredito(regras: readonly RegraObservar[], palavras: boolean): string | null {
+function nomesNoVeredito(regras: readonly RegraObservar[], palavras: boolean, idioma: Idioma): string | null {
   if (regras.length === 0 || regras.length > 2) return null;
-  return listaEmPortugues(regras.map((o) => (palavras ? (DADOS_EM_PALAVRAS[o.id] ?? minuscula(o.titulo)) : minuscula(o.titulo))));
+  const titulo = (o: RegraObservar) => minuscula(gold(o.titulo, idioma));
+  return listaNoIdioma(regras.map((o) => (palavras ? (dadosEmPalavras(idioma)[o.id] ?? titulo(o)) : titulo(o))), idioma);
 }
 
 /** Regras sobre o sistema em observação: a condição está presente, mas ainda sem a duração mínima que a confirma como alerta. */
@@ -228,95 +308,137 @@ export function regrasEmObservacao<T extends Pick<RegraObservar, "tipo" | "assun
  * A regra em observação aparece aqui porque o leitor que só lê o topo não pode concluir que "nada merece atenção" quando uma
  * condição já está presente e só falta a duração mínima para virar alerta.
  */
-export function vereditoSistema(g: Pick<SinteseVisaoGold, "frases" | "observar">): string {
+export function vereditoSistema(g: Pick<SinteseVisaoGold, "frases" | "observar">, idioma: Idioma = idiomaEnergia()): string {
   const regras = g.observar.filter((o) => o.tipo !== "evento");
   const sistema = regras.filter((o) => o.assunto === "sistema" && o.ativo);
   const observacao = regrasEmObservacao(regras);
   const dados = regras.filter((o) => o.assunto === "dados" && o.ativo);
   const partes: string[] = [];
-  const nomesObs = observacao.length ? nomesNoVeredito(observacao, false) : null;
+  const nomesObs = observacao.length ? nomesNoVeredito(observacao, false, idioma) : null;
   const sufixoObs = nomesObs ? `: ${nomesObs}` : "";
+  const n = (x: number) => num(x, 0, idioma);
   if (sistema.length) {
-    const nomes = nomesNoVeredito(sistema, false);
-    partes.push(`${sistema.length === 1 ? "Uma regra sobre o sistema está" : `${num(sistema.length, 0)} regras sobre o sistema estão`} em alerta${nomes ? `: ${nomes}` : ""}.`);
-    if (observacao.length) partes.push(`${observacao.length === 1 ? "Uma regra está" : `${num(observacao.length, 0)} regras estão`} em observação${sufixoObs}.`);
+    const nomes = nomesNoVeredito(sistema, false, idioma);
+    partes.push(
+      tx(
+        `${sistema.length === 1 ? "Uma regra sobre o sistema está" : `${n(sistema.length)} regras sobre o sistema estão`} em alerta${nomes ? `: ${nomes}` : ""}.`,
+        `${sistema.length === 1 ? "One rule about the system is" : `${n(sistema.length)} rules about the system are`} in alert${nomes ? `: ${nomes}` : ""}.`,
+        idioma,
+      ),
+    );
+    if (observacao.length)
+      partes.push(
+        tx(
+          `${observacao.length === 1 ? "Uma regra está" : `${n(observacao.length)} regras estão`} em observação${sufixoObs}.`,
+          `${observacao.length === 1 ? "One rule is" : `${n(observacao.length)} rules are`} under observation${sufixoObs}.`,
+          idioma,
+        ),
+      );
   } else {
-    const obs = observacao.length ? `; ${observacao.length === 1 ? "uma está" : `${num(observacao.length, 0)} estão`} em observação${sufixoObs}` : "";
-    partes.push(`Nenhuma regra sobre o sistema está em alerta${obs}.`);
+    const obs = observacao.length
+      ? tx(
+          `; ${observacao.length === 1 ? "uma está" : `${n(observacao.length)} estão`} em observação${sufixoObs}`,
+          `; ${observacao.length === 1 ? "one is" : `${n(observacao.length)} are`} under observation${sufixoObs}`,
+          idioma,
+        )
+      : "";
+    partes.push(tx(`Nenhuma regra sobre o sistema está em alerta${obs}.`, `No rule about the system is in alert${obs}.`, idioma));
   }
   if (dados.length) {
-    const nomes = nomesNoVeredito(dados, true);
-    partes.push(`Sobre os próprios dados, ${dados.length === 1 ? "1 regra está" : `${num(dados.length, 0)} regras estão`} em alerta${nomes ? `: ${nomes}` : ""}.`);
+    const nomes = nomesNoVeredito(dados, true, idioma);
+    partes.push(
+      tx(
+        `Sobre os próprios dados, ${dados.length === 1 ? "1 regra está" : `${n(dados.length)} regras estão`} em alerta${nomes ? `: ${nomes}` : ""}.`,
+        `About the data itself, ${dados.length === 1 ? "1 rule is" : `${n(dados.length)} rules are`} in alert${nomes ? `: ${nomes}` : ""}.`,
+        idioma,
+      ),
+    );
   }
   return partes.join(" ");
 }
 
-export const COLUNAS_FRASES: ColunaTabela[] = [
-  { id: "indicador", rotulo: "Indicador", tipo: "texto" },
-  { id: "texto", rotulo: "Frase publicada", tipo: "texto" },
-  { id: "referencia", rotulo: "Referência", tipo: "data" },
-  { id: "defasagem", rotulo: "Defasagem até o processamento", tipo: "numero", unidade: "dias", casas: 0 },
-  { id: "atualidade", rotulo: "Atualidade da fonte", tipo: "texto", categorica: true },
-  { id: "natureza", rotulo: "Natureza", tipo: "texto", categorica: true },
-  { id: "componentes", rotulo: "Componentes que não são medição", tipo: "texto" },
-  { id: "revisadas", rotulo: "Referências revisadas na janela", tipo: "numero", casas: 0 },
-  { id: "gold", rotulo: "Gold de origem", tipo: "texto", categorica: true },
-];
+export function colunasFrases(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "indicador", rotulo: tx("Indicador", "Indicator", idioma), tipo: "texto" },
+    { id: "texto", rotulo: tx("Frase publicada", "Published sentence", idioma), tipo: "texto" },
+    { id: "referencia", rotulo: tx("Referência", "Reference", idioma), tipo: "data" },
+    { id: "defasagem", rotulo: tx("Defasagem até o processamento", "Lag until processing", idioma), tipo: "numero", unidade: tx("dias", "days", idioma), casas: 0 },
+    { id: "atualidade", rotulo: tx("Atualidade da fonte", "Source timeliness", idioma), tipo: "texto", categorica: true },
+    { id: "natureza", rotulo: tx("Natureza", "Nature", idioma), tipo: "texto", categorica: true },
+    { id: "componentes", rotulo: tx("Componentes que não são medição", "Components that are not measurements", idioma), tipo: "texto" },
+    { id: "revisadas", rotulo: tx("Referências revisadas na janela", "References revised in the window", idioma), tipo: "numero", casas: 0 },
+    { id: "gold", rotulo: tx("Gold de origem", "Source gold", idioma), tipo: "texto", categorica: true },
+  ];
+}
+
+export const COLUNAS_FRASES: ColunaTabela[] = colunasFrases("pt");
 
 /** Tabela equivalente da síntese: uma linha por frase exibida, na ordem da lista. */
-export function linhasFrases(frases: readonly FraseVisao[]): LinhaTabela[] {
+export function linhasFrases(frases: readonly FraseVisao[], idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return frases.map((f) => ({
     id: f.id,
-    indicador: ROTULO_FRASE[f.id],
-    texto: f.texto,
+    indicador: rotuloFrase(f.id, idioma),
+    texto: idioma === "en" ? (textoFraseEn(f) ?? f.texto) : f.texto,
     referencia: f.ref,
     defasagem: f.qualidade.defasagem_dias,
-    atualidade: f.qualidade.atualidade?.situacao ? enumLegivel(f.qualidade.atualidade.situacao) : null,
-    natureza: f.natureza,
-    componentes: f.qualidade.componentes_natureza.map((c) => `${c.natureza} desde ${dataBR(c.desde)}`).join("; ") || null,
+    atualidade: f.qualidade.atualidade?.situacao ? enumLegivel(f.qualidade.atualidade.situacao, idioma) : null,
+    natureza: idioma === "en" ? (NATUREZA_EN[f.natureza] ?? f.natureza) : f.natureza,
+    componentes:
+      f.qualidade.componentes_natureza
+        .map((c) => tx(`${c.natureza} desde ${dataBR(c.desde, "pt")}`, `${NATUREZA_EN[String(c.natureza)] ?? c.natureza} since ${dataBR(c.desde, "en")}`, idioma))
+        .join("; ") || null,
     revisadas: f.qualidade.revisoes.referencias_revisadas_na_janela,
     gold: f.versoes.gold,
   }));
 }
 
-export const COLUNAS_VALORES_FRASES: ColunaTabela[] = [
-  { id: "frase", rotulo: "Frase", tipo: "texto", categorica: true },
-  { id: "chave", rotulo: "Valor", tipo: "texto" },
-  { id: "numero", rotulo: "Número", tipo: "numero", casas: 4 },
-  { id: "texto", rotulo: "Texto ou data", tipo: "texto" },
-  { id: "unidade", rotulo: "Unidade", tipo: "texto" },
-  { id: "caminho", rotulo: "Caminho na base publicada de origem", tipo: "texto" },
-];
+export function colunasValoresFrases(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "frase", rotulo: tx("Frase", "Sentence", idioma), tipo: "texto", categorica: true },
+    { id: "chave", rotulo: tx("Valor", "Value", idioma), tipo: "texto" },
+    { id: "numero", rotulo: tx("Número", "Number", idioma), tipo: "numero", casas: 4 },
+    { id: "texto", rotulo: tx("Texto ou data", "Text or date", idioma), tipo: "texto" },
+    { id: "unidade", rotulo: tx("Unidade", "Unit", idioma), tipo: "texto" },
+    { id: "caminho", rotulo: tx("Caminho na base publicada de origem", "Path in the published source base", idioma), tipo: "texto" },
+  ];
+}
+
+export const COLUNAS_VALORES_FRASES: ColunaTabela[] = colunasValoresFrases("pt");
 
 /** Cada valor usado numa frase, com o caminho na gold de origem (reprodução da frase). */
-export function linhasValoresFrases(frases: readonly FraseVisao[]): LinhaTabela[] {
+export function linhasValoresFrases(frases: readonly FraseVisao[], idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return frases.flatMap((f) =>
     Object.entries(f.valores).map(([k, v]) => ({
       id: `${f.id}:${k}`,
-      frase: ROTULO_FRASE[f.id],
+      frase: rotuloFrase(f.id, idioma),
       chave: k,
       numero: typeof v.valor === "number" ? v.valor : null,
       texto: typeof v.valor === "string" ? v.valor : null,
-      unidade: v.unidade ?? null,
+      unidade: v.unidade ? gold(v.unidade, idioma) : null,
       caminho: v.caminho,
     })),
   );
 }
 
-export const COLUNAS_VERSOES: ColunaTabela[] = [
-  { id: "frase", rotulo: "Frase", tipo: "texto" },
-  { id: "gold", rotulo: "Gold", tipo: "texto" },
-  { id: "gerado_em", rotulo: "Gerada em (UTC)", tipo: "texto" },
-  { id: "versao_codigo", rotulo: "Versão do código", tipo: "texto" },
-  { id: "dataset", rotulo: "Conjunto", tipo: "texto" },
-  { id: "snapshot", rotulo: "Snapshot", tipo: "texto" },
-  { id: "sha256", rotulo: "sha256 do snapshot", tipo: "texto" },
-];
+export function colunasVersoes(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "frase", rotulo: tx("Frase", "Sentence", idioma), tipo: "texto" },
+    { id: "gold", rotulo: tx("Gold", "Gold", idioma), tipo: "texto" },
+    { id: "gerado_em", rotulo: tx("Gerada em (UTC)", "Generated on (UTC)", idioma), tipo: "texto" },
+    { id: "versao_codigo", rotulo: tx("Versão do código", "Code version", idioma), tipo: "texto" },
+    { id: "dataset", rotulo: tx("Conjunto", "Dataset", idioma), tipo: "texto" },
+    { id: "snapshot", rotulo: tx("Snapshot", "Snapshot", idioma), tipo: "texto" },
+    { id: "sha256", rotulo: tx("sha256 do snapshot", "Snapshot sha256", idioma), tipo: "texto" },
+  ];
+}
 
-export function linhasVersoes(frases: readonly FraseVisao[]): LinhaTabela[] {
+export const COLUNAS_VERSOES: ColunaTabela[] = colunasVersoes("pt");
+
+export function linhasVersoes(frases: readonly FraseVisao[], idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return frases.map((f) => ({
     id: f.id,
-    frase: ROTULO_FRASE[f.id],
+    frase: rotuloFrase(f.id, idioma),
+
     gold: f.versoes.gold,
     gerado_em: f.versoes.gerado_em,
     versao_codigo: f.versoes.versao_codigo,
@@ -324,6 +446,113 @@ export function linhasVersoes(frases: readonly FraseVisao[]): LinhaTabela[] {
     snapshot: f.versoes.snapshot_id,
     sha256: f.versoes.snapshot_sha256,
   }));
+}
+
+/* ---------------------------------------------------------------- as frases do P004 em inglês */
+
+/** Um trecho de frase como a gold o publica: o texto e, quando o trecho é um número, o painel que o publica e o caminho dele. */
+export type TrechoFrase = FraseVisao["trechos"][number];
+
+const NUM = String.raw`[\d.,]+`;
+const DIA = String.raw`\d{2}\/\d{2}\/\d{4}`;
+const LADO: Readonly<Record<string, string>> = { acima: "above", abaixo: "below" };
+const FAIXA_PLD: Readonly<Record<string, string>> = { central: "central", baixa: "low", alta: "high" };
+const dataPt = (d: string) => dataBR(`${d.slice(6, 10)}-${d.slice(3, 5)}-${d.slice(0, 2)}`, "en");
+const numPt = (x: string) => x.replace(/\./g, "\u0000").replace(/,/g, ".").replace(/\u0000/g, ",");
+
+/**
+ * Modelo inglês de cada frase do P004: um padrão por trecho da frase publicada (o mesmo número de trechos e os mesmos links), que
+ * reconhece o texto português do modelo fixo do pipeline e o reescreve em inglês com os mesmos números, unidades e datas. Trecho que
+ * não segue o modelo anula a frase inteira (a página mostra então a frase portuguesa marcada), para nunca misturar os dois idiomas.
+ */
+const MODELOS_FRASE_EN: Readonly<Record<IdFrase, readonly [RegExp, (m: RegExpExecArray) => string][]>> = {
+  reservatorios: [
+    [/^Os reservatórios do SIN guardam $/, () => "The SIN reservoirs hold "],
+    [new RegExp(`^(${NUM}%) da energia armazenável máxima$`), (m) => `${numPt(m[1])} of maximum storable energy`],
+    [/^, $/, () => ", "],
+    [new RegExp(`^(${NUM}) p\\.p\\. (acima|abaixo) da mediana histórica para (${DIA})$`), (m) => `${numPt(m[1])} p.p. ${LADO[m[2]]} the historical median for ${dataPt(m[3])}`],
+    [/^\.$/, () => "."],
+  ],
+  afluencias: [
+    [
+      new RegExp(`^Nos 30 dias até (${DIA}), a energia natural afluente \\(vazões naturais aos reservatórios, em energia\\) equivaleu a $`),
+      (m) => `In the 30 days through ${dataPt(m[1])}, natural inflow energy (natural flows into the reservoirs, expressed as energy) was equivalent to `,
+    ],
+    [new RegExp(`^(${NUM}%) da média de longo termo$`), (m) => `${numPt(m[1])} of the long-term average (MLT)`],
+    [/^\.$/, () => "."],
+  ],
+  carga: [
+    [new RegExp(`^A carga do SIN nos 7 dias até (${DIA}) ficou $`), (m) => `SIN load in the 7 days through ${dataPt(m[1])} was `],
+    [new RegExp(`^(${NUM}%) (acima|abaixo) dos mesmos dias de (\\d{4})$`), (m) => `${numPt(m[1])} ${LADO[m[2]]} the same days of ${m[3]}`],
+    [/^\.$/, () => "."],
+  ],
+  termica: [
+    [/^As térmicas responderam por $/, () => "Thermal plants accounted for "],
+    [new RegExp(`^(${NUM}%) da geração do balanço do ONS nos 7 dias até (${DIA})$`), (m) => `${numPt(m[1])} of the generation in the ONS balance in the 7 days through ${dataPt(m[2])}`],
+    [
+      /^ \(a solar desse total inclui a micro e minigeração distribuída estimada pelo ONS\); nos 12 meses anteriores, a mediana dessa participação foi $/,
+      // i18n: dado (texto inglês do modelo)
+      () => " (the solar portion of that total includes the distributed micro and mini generation estimated by ONS); in the previous 12 months, the median of that share was ",
+    ],
+    [new RegExp(`^(${NUM}%)$`), (m) => numPt(m[1])],
+    [/^\.$/, () => "."],
+  ],
+  pld: [
+    [new RegExp(`^Em (${DIA}), o PLD médio do (.+?) foi $`), (m) => `On ${dataPt(m[1])}, the average PLD in the ${fronteiraEn(m[2])} was `],
+    [new RegExp(`^R\\$ (${NUM})\\/MWh$`), (m) => `R$ ${numPt(m[1])}/MWh`],
+    [/^, $/, () => ", "],
+    [
+      new RegExp(`^na faixa (central|baixa|alta) da distribuição desde (\\d{4}) \\(percentil (${NUM})\\)$`),
+      (m) => `in the ${FAIXA_PLD[m[1]]} range of the distribution since ${m[2]} (percentile ${numPt(m[3])})`,
+    ],
+    [/^, com diferença de $/, () => ", with a difference of "],
+    [new RegExp(`^R\\$ (${NUM})\\/MWh entre o maior e o menor submercado$`), (m) => `R$ ${numPt(m[1])}/MWh between the highest and the lowest submarket`],
+    [/^\.$/, () => "."],
+  ],
+  rede: [
+    [new RegExp(`^Nos 30 dias até (${DIA}), o maior fluxo médio entre subsistemas foi $`), (m) => `In the 30 days through ${dataPt(m[1])}, the largest average flow between subsystems was `],
+    [new RegExp(`^(.+?), com (${NUM}) MWmed$`), (m) => `${fronteiraEn(m[1])}, with ${numPt(m[2])} MWavg`],
+    [/^\.$/, () => "."],
+  ],
+};
+
+/** Os trechos da frase em inglês, com os mesmos links e caminhos da gold; null quando a frase publicada não segue o modelo conhecido. */
+export function trechosFraseEn(f: Pick<FraseVisao, "id" | "trechos">): TrechoFrase[] | null {
+  const modelo = MODELOS_FRASE_EN[f.id];
+  if (!modelo || modelo.length !== f.trechos.length) return null;
+  const saida: TrechoFrase[] = [];
+  for (let i = 0; i < modelo.length; i++) {
+    const [re, en] = modelo[i];
+    const t = f.trechos[i];
+    const m = re.exec(t.texto);
+    if (!m) return null;
+    saida.push({ ...t, texto: en(m) });
+  }
+  return saida;
+}
+
+/** A frase inteira em inglês, ou null quando ela não segue o modelo. */
+export function textoFraseEn(f: Pick<FraseVisao, "id" | "trechos">): string | null {
+  const t = trechosFraseEn(f);
+  return t ? t.map((x) => x.texto).join("") : null;
+}
+
+/**
+ * As revisões entre capturas de uma frase em inglês, escritas a partir dos campos que a gold publica (contagem, pares, maior variação),
+ * com os mesmos números; null quando os campos não bastam (a página mostra então o texto português marcado).
+ */
+export function textoRevisoesFraseEn(r: FraseVisao["qualidade"]["revisoes"]): string | null {
+  const n = r.referencias_revisadas_na_janela;
+  if (typeof n !== "number" || typeof r.total_no_conjunto !== "number") return null;
+  if (n === 0)
+    // i18n: dado (texto inglês do modelo)
+    return `No reference of the series used in this sentence was revised between the integrated captures; the dataset has ${num(r.total_no_conjunto, 0, "en")} revised ${r.total_no_conjunto === 1 ? "observation" : "observations"} in total, across all series.`;
+
+  const m = r.maior;
+  if (!m || m.relativa_pct === null || typeof r.pares_serie_referencia !== "number") return null;
+  const horaria = m.ref.length > 10;
+  const quando = horaria ? `${dataBR(m.ref, "en")} at ${m.ref.slice(11, 16)}` : dataBR(m.ref, "en");
+  return `${num(n, 0, "en")} ${horaria ? "hourly" : "daily"} ${n === 1 ? "reference" : "references"} of the series used in this sentence ${n === 1 ? "was" : "were"} revised by the source between captures (${num(r.pares_serie_referencia, 0, "en")} series and reference pairs); largest change of ${num(m.relativa_pct, 2, "en")}% over the previous value, in ${m.serie} on ${quando}; the value displayed is that of the most recent capture.`;
 }
 
 /* ---------------------------------------------------------------- P005: determinantes */
@@ -345,7 +574,7 @@ const COR_COLUNA: Record<string, string> = {
   preco_N: "var(--serie-sm-n)",
   agua_SIN: "var(--serie-hidraulica)",
   geracao_termica_7d: "var(--serie-termica)",
-  carga_SIN: "var(--cor-energia)",
+  carga_SIN: "var(--cor-energia)", // i18n: dado
 };
 /** Fronteiras da rede em tons neutros: a cor de cada submercado do preço (roxo, laranja, verde, azul) não é reaproveitada para outra entidade na mesma página. */
 const COR_FRONTEIRA = ["var(--serie-1)", "var(--serie-3)", "var(--serie-4)", "var(--serie-2)"];
@@ -414,8 +643,34 @@ export function dadosDeterminante(p: PainelGrafico, linhas: readonly LinhaMultip
 }
 
 /** Valor atual de um painel como a página escreve (o mesmo texto da evidência do pipeline). */
-export function valorAtualTexto(p: PainelDeterminante): string {
-  return comUnidade(p.valor_atual.valor, p.unidade, p.casas);
+export function valorAtualTexto(p: PainelDeterminante, idioma: Idioma = idiomaEnergia()): string {
+  return comUnidade(p.valor_atual.valor, p.unidade, p.casas, idioma);
+}
+
+/**
+ * Os determinantes com os textos da gold no idioma da página (títulos, perguntas, colunas, referências, notas, unidades e o aviso
+ * de datas), pela tabela de tradução: o que a tabela não reconhece fica como veio. Números, datas e ids não mudam, e as comparações
+ * entre rótulos (a coluna do valor do painel) continuam valendo, porque os dois lados passam pela mesma tradução.
+ */
+export function multiplosNoIdioma(m: MultiplosVisao, idioma: Idioma = idiomaEnergia()): MultiplosVisao {
+  if (idioma !== "en") return m;
+  const t = (x: string) => traduzModeloDaGold(x) ?? x;
+  return {
+    ...m,
+    aviso_datas: t(m.aviso_datas),
+    regra: t(m.regra),
+    paineis: m.paineis.map((p) => ({
+      ...p,
+      titulo: t(p.titulo),
+      pergunta: t(p.pergunta),
+      unidade: t(p.unidade),
+      nota: t(p.nota),
+      texto_defasagem: t(p.texto_defasagem),
+      colunas: p.colunas.map((c) => ({ ...c, rotulo: t(c.rotulo) })),
+      referencia: { ...p.referencia, rotulo: t(p.referencia.rotulo) },
+      valor_atual: { ...p.valor_atual, rotulo: p.valor_atual.rotulo ? t(p.valor_atual.rotulo) : p.valor_atual.rotulo },
+    })),
+  };
 }
 
 export type PosicaoDeterminante = {
@@ -458,39 +713,60 @@ export function posicaoDeterminante(p: PainelDeterminante, m: MultiplosVisao): P
   return { ...vazio, situacao: "sentido", valor: v };
 }
 
-/** Leitura de um determinante em uma frase: valor, data, posição frente à referência e o que ele não diz. */
-export function leituraDeterminante(p: PainelDeterminante, m: MultiplosVisao): string {
+/**
+ * Leitura de um determinante em uma frase: valor, data, posição frente à referência e o que ele não diz. Os rótulos vêm do painel como
+ * ele chega (na página inglesa, os determinantes passam antes por multiplosNoIdioma).
+ */
+export function leituraDeterminante(p: PainelDeterminante, m: MultiplosVisao, idioma: Idioma = idiomaEnergia()): string {
   const pos = posicaoDeterminante(p, m);
   const quem = p.valor_atual.rotulo ? ` (${p.valor_atual.rotulo})` : "";
-  const quando = p.id === "geracao" ? `nos 7 dias até ${dataBR(p.data_referencia)}` : `em ${dataBR(p.data_referencia)}`;
-  if (pos.situacao === "sem_dado") return `${p.titulo}: sem dado na data de referência (${dataBR(p.data_referencia)}).`;
-  const valor = valorAtualTexto(p);
-  const fmt = (x: number | null) => comUnidade(x, p.unidade, p.casas);
+  const data = dataBR(p.data_referencia, idioma);
+  const quando = p.id === "geracao" ? tx(`nos 7 dias até ${data}`, `in the 7 days through ${data}`, idioma) : tx(`em ${data}`, `on ${data}`, idioma);
+  if (pos.situacao === "sem_dado") return tx(`${p.titulo}: sem dado na data de referência (${data}).`, `${p.titulo}: no data on the reference date (${data}).`, idioma);
+  const valor = valorAtualTexto(p, idioma);
+  const fmt = (x: number | null) => comUnidade(x, p.unidade, p.casas, idioma);
   const ref = p.referencia;
   // o rótulo da referência já traz parênteses (anos da base, regime metodológico): dentro da leitura eles viram vírgulas
   const rotulo = minuscula(ref.rotulo).replace(/\s*\(([^()]*)\)/g, ", $1");
   if (ref.tipo === "faixa_constante" || ref.tipo === "faixa_por_data") {
-    if (pos.situacao === "sem_referencia") return `${p.titulo}: ${valor}${quem} ${quando}; sem faixa de referência publicada para a data.`;
-    const onde = pos.situacao === "dentro" ? "dentro da" : pos.situacao === "acima" ? "acima da" : "abaixo da";
-    return `${p.titulo}: ${valor}${quem} ${quando}, ${onde} faixa de referência (${rotulo}: ${fmt(pos.inferior)} a ${fmt(pos.superior)}).`;
+    if (pos.situacao === "sem_referencia")
+      return tx(`${p.titulo}: ${valor}${quem} ${quando}; sem faixa de referência publicada para a data.`, `${p.titulo}: ${valor}${quem} ${quando}; no reference range published for the date.`, idioma);
+    const onde = tx(pos.situacao === "dentro" ? "dentro da" : pos.situacao === "acima" ? "acima da" : "abaixo da", pos.situacao === "dentro" ? "within the" : pos.situacao === "acima" ? "above the" : "below the", idioma);
+    return tx(
+      `${p.titulo}: ${valor}${quem} ${quando}, ${onde} faixa de referência (${rotulo}: ${fmt(pos.inferior)} a ${fmt(pos.superior)}).`,
+      `${p.titulo}: ${valor}${quem} ${quando}, ${onde} reference range (${rotulo}: ${fmt(pos.inferior)} to ${fmt(pos.superior)}).`,
+      idioma,
+    );
   }
   if (ref.tipo === "serie") {
     if (pos.situacao === "sem_referencia")
-      return `${p.titulo}: ${valor}${quem} ${quando}; sem referência comparável (${rotulo}): o dia do ano anterior não tem valor ou está em outro regime metodológico.`;
-    const pctTxt = pos.variacao_pct === null ? "" : `${num(Math.abs(pos.variacao_pct), 1)}% `;
+      return tx(
+        `${p.titulo}: ${valor}${quem} ${quando}; sem referência comparável (${rotulo}): o dia do ano anterior não tem valor ou está em outro regime metodológico.`,
+        `${p.titulo}: ${valor}${quem} ${quando}; no comparable reference (${rotulo}): the day of the previous year has no value or is in another methodological regime.`,
+        idioma,
+      );
+    const pctTxt = pos.variacao_pct === null ? "" : `${num(Math.abs(pos.variacao_pct), 1, idioma)}% `;
     const onde = pos.situacao === "acima" ? "acima" : pos.situacao === "abaixo" ? "abaixo" : "igual";
-    return `${p.titulo}: ${valor}${quem} ${quando}, ${onde === "igual" ? "igual à" : `${pctTxt}${onde} da`} referência (${rotulo}: ${fmt(pos.referencia)}).`;
+    return tx(
+      `${p.titulo}: ${valor}${quem} ${quando}, ${onde === "igual" ? "igual à" : `${pctTxt}${onde} da`} referência (${rotulo}: ${fmt(pos.referencia)}).`,
+      `${p.titulo}: ${valor}${quem} ${quando}, ${onde === "igual" ? "equal to the" : `${pctTxt}${LADO[onde]} the`} reference (${rotulo}: ${fmt(pos.referencia)}).`,
+      idioma,
+    );
   }
   // rede: o sinal dá o sentido; não há referência de capacidade
   const v = pos.valor ?? 0;
   const [de, para] = (p.valor_atual.rotulo ?? "").split(" → ");
-  const sentido = de && para ? (v >= 0 ? `de ${de} para ${para}` : `de ${para} para ${de}`) : "";
-  return `${p.titulo}: ${comUnidade(Math.abs(v), p.unidade, p.casas)}${sentido ? ` ${sentido}` : ""} ${quando} (saldo líquido do dia, a média das 24 horas do fluxo verificado, sem comparação com limites de intercâmbio).`;
+  const sentido = de && para ? tx(v >= 0 ? `de ${de} para ${para}` : `de ${para} para ${de}`, v >= 0 ? `from ${de} to ${para}` : `from ${para} to ${de}`, idioma) : "";
+  return tx(
+    `${p.titulo}: ${comUnidade(Math.abs(v), p.unidade, p.casas, idioma)}${sentido ? ` ${sentido}` : ""} ${quando} (saldo líquido do dia, a média das 24 horas do fluxo verificado, sem comparação com limites de intercâmbio).`,
+    `${p.titulo}: ${comUnidade(Math.abs(v), p.unidade, p.casas, idioma)}${sentido ? ` ${sentido}` : ""} ${quando} (net balance of the day, the average of the 24 hours of verified flow, with no comparison with interchange limits).`,
+    idioma,
+  );
 }
 
 /** Resposta do P005: uma leitura por painel, na ordem publicada. */
-export function respostaDeterminantes(m: MultiplosVisao): string[] {
-  return m.paineis.map((p) => leituraDeterminante(p, m));
+export function respostaDeterminantes(m: MultiplosVisao, idioma: Idioma = idiomaEnergia()): string[] {
+  return m.paineis.map((p) => leituraDeterminante(p, m, idioma));
 }
 
 /**
@@ -498,7 +774,7 @@ export function respostaDeterminantes(m: MultiplosVisao): string[] {
  * próprio painel publica, qual está fora e a comparação da carga com o ano anterior. A rede só tem o sentido do fluxo.
  * Os mesmos campos e a mesma posição de leituraDeterminante; os valores e as datas de cada painel ficam na resposta completa.
  */
-export function vereditoDeterminantes(m: MultiplosVisao): string {
+export function vereditoDeterminantes(m: MultiplosVisao, idioma: Idioma = idiomaEnergia()): string {
   const dentro: string[] = [];
   const fora: string[] = [];
   const semDado: string[] = [];
@@ -508,19 +784,47 @@ export function vereditoDeterminantes(m: MultiplosVisao): string {
     const nome = p.titulo;
     if (pos.situacao === "sem_dado") semDado.push(nome);
     else if (pos.situacao === "sentido") sentido.push(nome);
-    else if (pos.situacao === "sem_referencia") semDado.push(`${nome} (sem referência)`);
+    else if (pos.situacao === "sem_referencia") semDado.push(tx(`${nome} (sem referência)`, `${nome} (no reference)`, idioma));
     else if (p.referencia.tipo === "serie") {
       const ref = p.referencia.rotulo.split(",")[0];
-      const pct = pos.variacao_pct === null ? "" : `${num(Math.abs(pos.variacao_pct), 1)}% `;
-      fora.push(pos.situacao === "dentro" ? `${nome}: igual ao ${minuscula(ref)}` : `${nome}: ${pct}${pos.situacao === "acima" ? "acima" : "abaixo"} do ${minuscula(ref)}`);
+      const pct = pos.variacao_pct === null ? "" : `${num(Math.abs(pos.variacao_pct), 1, idioma)}% `;
+      fora.push(
+        tx(
+          pos.situacao === "dentro" ? `${nome}: igual ao ${minuscula(ref)}` : `${nome}: ${pct}${pos.situacao === "acima" ? "acima" : "abaixo"} do ${minuscula(ref)}`,
+          pos.situacao === "dentro" ? `${nome}: equal to the ${minuscula(ref)}` : `${nome}: ${pct}${pos.situacao === "acima" ? "above" : "below"} the ${minuscula(ref)}`,
+          idioma,
+        ),
+      );
     } else if (pos.situacao === "dentro") dentro.push(nome);
-    else fora.push(`${nome}: ${pos.situacao === "acima" ? "acima" : "abaixo"} da faixa de referência`);
+    else
+      fora.push(
+        tx(`${nome}: ${pos.situacao === "acima" ? "acima" : "abaixo"} da faixa de referência`, `${nome}: ${pos.situacao === "acima" ? "above" : "below"} the reference range`, idioma),
+      );
   });
   const partes: string[] = [];
-  if (dentro.length) partes.push(`${listaEmPortugues(dentro.map((x, i) => (i === 0 ? x : minuscula(x))))} ${dentro.length === 1 ? "está" : "estão"} dentro da faixa de referência ${dentro.length === 1 ? "do painel" : "de cada painel"}.`);
+  if (dentro.length) {
+    const lista = listaNoIdioma(dentro.map((x, i) => (i === 0 ? x : minuscula(x))), idioma);
+    partes.push(
+      tx(
+        `${lista} ${dentro.length === 1 ? "está" : "estão"} dentro da faixa de referência ${dentro.length === 1 ? "do painel" : "de cada painel"}.`,
+        `${lista} ${dentro.length === 1 ? "is" : "are"} within the reference range of ${dentro.length === 1 ? "the panel" : "each panel"}.`,
+        idioma,
+      ),
+    );
+  }
   for (const f of fora) partes.push(`${f}.`);
-  if (sentido.length) partes.push(`${sentido.join(", ")}: o painel mostra só o sentido do fluxo, sem comparação com limites de intercâmbio.`);
-  if (semDado.length) partes.push(`Sem dado: ${listaEmPortugues(semDado.map((x) => minuscula(x)))}.`);
+  if (sentido.length)
+    partes.push(
+      tx(
+        `${sentido.join(", ")}: o painel mostra só o sentido do fluxo, sem comparação com limites de intercâmbio.`,
+        `${sentido.join(", ")}: the panel shows only the direction of the flow, with no comparison with interchange limits.`,
+        idioma,
+      ),
+    );
+  if (semDado.length) {
+    const lista = listaNoIdioma(semDado.map((x) => minuscula(x)), idioma);
+    partes.push(tx(`Sem dado: ${lista}.`, `No data: ${lista}.`, idioma));
+  }
   return partes.join(" ");
 }
 
@@ -528,30 +832,44 @@ export function vereditoDeterminantes(m: MultiplosVisao): string {
  * A janela da faixa de referência da participação térmica: 365 janelas de 7 dias, todas anteriores à atual e sem sobreposição com ela. A primeira termina 7
  * dias antes do dia de referência e a 365ª, 371 dias antes; "dos 365 dias anteriores" é o número de janelas, não o intervalo que elas cobrem.
  */
-export function textoJanelaTermica(t: { p10: number | null; p90: number | null; n?: number }, diaReferencia: string | null): string {
+export function textoJanelaTermica(t: { p10: number | null; p90: number | null; n?: number }, diaReferencia: string | null, idioma: Idioma = idiomaEnergia()): string {
   if (t.p10 === null || t.p90 === null) return "";
   const n = t.n ?? 365;
-  const entre = diaReferencia ? `, entre ${dataBR(somaDias(diaReferencia, -(6 + n)))} e ${dataBR(somaDias(diaReferencia, -7))}` : "";
-  return `Faixa de ${num(t.p10, 1)}% a ${num(t.p90, 1)}%, do 10º ao 90º percentil de ${num(n, 0)} janelas de 7 dias que terminam de 7 a ${num(6 + n, 0)} dias antes do dia de referência${entre}, sem sobreposição com a janela de 7 dias que termina no dia de referência.`;
+  const ini = diaReferencia ? dataBR(somaDias(diaReferencia, -(6 + n)), idioma) : "";
+  const fim = diaReferencia ? dataBR(somaDias(diaReferencia, -7), idioma) : "";
+  const entre = diaReferencia ? tx(`, entre ${ini} e ${fim}`, `, between ${ini} and ${fim}`, idioma) : "";
+  return tx(
+    `Faixa de ${num(t.p10, 1, idioma)}% a ${num(t.p90, 1, idioma)}%, do 10º ao 90º percentil de ${num(n, 0, idioma)} janelas de 7 dias que terminam de 7 a ${num(6 + n, 0, idioma)} dias antes do dia de referência${entre}, sem sobreposição com a janela de 7 dias que termina no dia de referência.`,
+    `Range of ${num(t.p10, 1, idioma)}% to ${num(t.p90, 1, idioma)}%, from the 10th to the 90th percentile of ${num(n, 0, idioma)} 7-day windows ending 7 to ${num(6 + n, 0, idioma)} days before the reference day${entre}, with no overlap with the 7-day window ending on the reference day.`,
+    idioma,
+  );
 }
 
 /** "O que mudou" dos determinantes sem repetir o veredito: o período dos cinco gráficos e a data de referência de cada painel. */
-export function textoMudouDeterminantes(m: MultiplosVisao): string {
+export function textoMudouDeterminantes(m: MultiplosVisao, idioma: Idioma = idiomaEnergia()): string {
   const dias = [...m.dados].map((l) => l.d).sort();
-  const periodo = dias.length ? `Os gráficos cobrem ${plural(dias.length, "dia", "dias")} publicados, de ${dataBR(dias[0])} a ${dataBR(dias[dias.length - 1])}.` : "Nenhum dia publicado nesta execução.";
-  const datas = m.paineis.map((p) => `${minuscula(p.titulo)} ${dataBR(p.data_referencia)}`);
-  return `${periodo} A data de referência de cada painel é a da sua fonte: ${datas.join("; ")}.`;
+  const datas = m.paineis.map((p) => `${minuscula(p.titulo)} ${dataBR(p.data_referencia, idioma)}`);
+  const ini = dias.length ? dataBR(dias[0], idioma) : "";
+  const fim = dias.length ? dataBR(dias[dias.length - 1], idioma) : "";
+  const periodo = dias.length
+    ? tx(
+        `Os gráficos cobrem ${plural(dias.length, "dia", "dias", "pt")} publicados, de ${ini} a ${fim}.`,
+        `The charts cover ${plural(dias.length, "published day", "published days", "en")}, from ${ini} to ${fim}.`,
+        idioma,
+      )
+    : tx("Nenhum dia publicado nesta execução.", "No day published in this run.", idioma);
+  return tx(`${periodo} A data de referência de cada painel é a da sua fonte: ${datas.join("; ")}.`, `${periodo} The reference date of each panel is that of its source: ${datas.join("; ")}.`, idioma);
 }
 
 /** Colunas da tabela equivalente aos pequenos múltiplos: a data e todas as colunas publicadas no recorte. */
-export function colunasMultiplos(m: MultiplosVisao): ColunaTabela[] {
-  const cols: ColunaTabela[] = [{ id: "d", rotulo: "Data", tipo: "data" }];
+export function colunasMultiplos(m: MultiplosVisao, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const cols: ColunaTabela[] = [{ id: "d", rotulo: tx("Data", "Date", idioma), tipo: "data" }];
   for (const p of m.paineis) {
     for (const c of p.colunas) cols.push({ id: c.id, rotulo: `${p.titulo}: ${c.rotulo}`, tipo: "numero", unidade: p.unidade, casas: p.casas });
     const r = p.referencia;
     if (r.tipo === "faixa_por_data") {
-      cols.push({ id: r.inferior, rotulo: `${p.titulo}: limite inferior da referência`, tipo: "numero", unidade: p.unidade, casas: p.casas });
-      cols.push({ id: r.superior, rotulo: `${p.titulo}: limite superior da referência`, tipo: "numero", unidade: p.unidade, casas: p.casas });
+      cols.push({ id: r.inferior, rotulo: tx(`${p.titulo}: limite inferior da referência`, `${p.titulo}: lower limit of the reference`, idioma), tipo: "numero", unidade: p.unidade, casas: p.casas });
+      cols.push({ id: r.superior, rotulo: tx(`${p.titulo}: limite superior da referência`, `${p.titulo}: upper limit of the reference`, idioma), tipo: "numero", unidade: p.unidade, casas: p.casas });
     }
     if (r.tipo === "serie") cols.push({ id: r.coluna, rotulo: `${p.titulo}: ${minuscula(r.rotulo)}`, tipo: "numero", unidade: p.unidade, casas: p.casas });
   }
@@ -582,57 +900,78 @@ export const ANCORAS_DETERMINANTES: Readonly<Record<IdPainelMultiplo, { id: stri
 /* ---------------------------------------------------------------- P006: energia e sociedade */
 
 /** Período de um indicador em poucas palavras (vigência, ano ou mês), sem sugerir que é o dia. */
-export function periodoCurto(it: Pick<ItemSociedade, "periodo">): string {
+export function periodoCurto(it: Pick<ItemSociedade, "periodo">, idioma: Idioma = idiomaEnergia()): string {
   const { tipo, inicio, fim } = it.periodo;
-  if (tipo === "vigencia") return `vigente em ${dataBR(fim)}`;
-  if (tipo === "anual") return inicio.slice(0, 4) === fim.slice(0, 4) && inicio.endsWith("-01") && fim.endsWith("-12") ? `ano de ${inicio.slice(0, 4)}` : `${mesAno(inicio.slice(0, 7))} a ${mesAno(fim.slice(0, 7))}`;
-  return inicio === fim ? mesAno(inicio.slice(0, 7)) : `${mesAno(inicio.slice(0, 7))} a ${mesAno(fim.slice(0, 7))}`;
+  const a = tx(" a ", " to ", idioma);
+  if (tipo === "vigencia") return tx(`vigente em ${dataBR(fim, "pt")}`, `in force on ${dataBR(fim, "en")}`, idioma);
+  if (tipo === "anual")
+    return inicio.slice(0, 4) === fim.slice(0, 4) && inicio.endsWith("-01") && fim.endsWith("-12")
+      ? tx(`ano de ${inicio.slice(0, 4)}`, `year ${inicio.slice(0, 4)}`, idioma)
+      : `${mesAno(inicio.slice(0, 7), idioma)}${a}${mesAno(fim.slice(0, 7), idioma)}`;
+  return inicio === fim ? mesAno(inicio.slice(0, 7), idioma) : `${mesAno(inicio.slice(0, 7), idioma)}${a}${mesAno(fim.slice(0, 7), idioma)}`;
 }
 
-/** Valor do indicador com a unidade, quando o texto publicado é só o número. */
-export function valorSociedade(it: Pick<ItemSociedade, "valor_exibido" | "unidade" | "equivalente">): string {
+/** Valor do indicador com a unidade, quando o texto publicado é só o número (os números do texto publicado saem na forma do idioma). */
+export function valorSociedade(it: Pick<ItemSociedade, "valor_exibido" | "unidade" | "equivalente">, idioma: Idioma = idiomaEnergia()): string {
   const soNumero = /^[\d.,−-]+$/.test(it.valor_exibido.trim());
-  return `${it.valor_exibido}${soNumero ? ` ${it.unidade}` : ""}${it.equivalente ? ` (${it.equivalente})` : ""}`;
+  const valor = idioma === "en" ? trechoEn(it.valor_exibido) : it.valor_exibido;
+  return `${valor}${soNumero ? ` ${gold(it.unidade, idioma)}` : ""}${it.equivalente ? ` (${it.equivalente})` : ""}`;
 }
 
 /** Texto de um complemento: número único ou par (faixa entre percentis ou atual e comparação). */
-export function textoComplemento(c: { rotulo: string; valor: number | (number | null)[] | null; unidade: string | null; valor_exibido?: string }): string {
-  if (c.valor_exibido) return c.valor_exibido;
-  if (c.valor === null) return "sem dado";
+export function textoComplemento(
+  c: { rotulo: string; valor: number | (number | null)[] | null; unidade: string | null; valor_exibido?: string },
+  idioma: Idioma = idiomaEnergia(),
+): string {
+  if (c.valor_exibido) return idioma === "en" ? trechoEn(c.valor_exibido) : c.valor_exibido;
+  const semDado = tx("sem dado", "no data", idioma);
+  if (c.valor === null) return semDado;
+  // entre os percentis é uma faixa ("a"); nos outros pares, o valor atual e a comparação ("e")
+  const liga = /percentil/i.test(c.rotulo) ? tx("a", "to", idioma) : tx("e", "and", idioma);
   // tarifa: o cartão mostra o valor em R$/kWh (R$/MWh ÷ 1000, como o verbete TE e TUSD explica), então a faixa também
   if (c.unidade === "R$/MWh") {
-    const kwh = (x: number | null) => (x === null ? "sem dado" : `R$ ${num(x / 1000, 4)}/kWh`);
-    return Array.isArray(c.valor) ? `${kwh(c.valor[0])} ${/percentil/i.test(c.rotulo) ? "a" : "e"} ${kwh(c.valor[1])}` : kwh(c.valor);
+    const kwh = (x: number | null) => (x === null ? semDado : `R$ ${num(x / 1000, 4, idioma)}/kWh`);
+    return Array.isArray(c.valor) ? `${kwh(c.valor[0])} ${liga} ${kwh(c.valor[1])}` : kwh(c.valor);
   }
-  if (c.unidade === "R$/mês" && typeof c.valor === "number") return `R$ ${num(c.valor, 2)} por mês`;
+  if (c.unidade === "R$/mês" && typeof c.valor === "number") return tx(`R$ ${num(c.valor, 2, "pt")} por mês`, `R$ ${num(c.valor, 2, "en")} per month`, idioma);
   // percentual colado ao número, como no resto da página ("61,6%", e não "61,6 %")
-  const u = c.unidade ? (c.unidade.startsWith("%") ? c.unidade : ` ${c.unidade}`) : "";
+  const unidade = c.unidade ? gold(c.unidade, idioma) : "";
+  const u = c.unidade ? (c.unidade.startsWith("%") ? unidade : ` ${unidade}`) : "";
   if (Array.isArray(c.valor)) {
     const [a, b] = c.valor;
-    const f = (x: number | null) => (x === null ? "sem dado" : num(x, casasDe(x)));
-    return `${f(a)} ${/percentil/i.test(c.rotulo) ? "a" : "e"} ${f(b)}${u}`;
+    const f = (x: number | null) => (x === null ? semDado : num(x, casasDe(x), idioma));
+    return `${f(a)} ${liga} ${f(b)}${u}`;
   }
-  return `${num(c.valor, casasDe(c.valor))}${u}`;
+  return `${num(c.valor, casasDe(c.valor), idioma)}${u}`;
 }
+
 
 /* ---------------------------------------------------------------- ressalvas essenciais dos indicadores de sociedade */
 
 /** Horas decimais como horas e minutos ("17,20" vira "17 h 12 min"), na forma do resto do observatório. */
-export function horasMinutos(h: number): string {
+export function horasMinutos(h: number, idioma: Idioma = idiomaEnergia()): string {
   const total = Math.round(h * 60);
   const horas = Math.floor(total / 60);
   const minutos = total % 60;
   if (horas === 0) return `${minutos} min`;
-  return minutos === 0 ? `${num(horas, 0)} h` : `${num(horas, 0)} h ${minutos} min`;
+  return minutos === 0 ? `${num(horas, 0, idioma)} h` : `${num(horas, 0, idioma)} h ${minutos} min`;
 }
 
 /** Parcelas do DEC que a regra exclui do apurado, na ordem em que a página as lista. */
 export const PARCELAS_EXCLUIDAS_DEC = [
-  { chave: "emergencia", rotulo: "situação de emergência" },
-  { chave: "dia_critico", rotulo: "dia crítico" },
-  { chave: "externa", rotulo: "origem externa ao sistema de distribuição" },
-  { chave: "ons", rotulo: "racionamento ou alívio de carga pelo ONS" },
+  { chave: "emergencia", rotulo: "situação de emergência" }, // i18n: dado (a forma inglesa está em PARCELA_EN)
+  { chave: "dia_critico", rotulo: "dia crítico" }, // i18n: dado
+  { chave: "externa", rotulo: "origem externa ao sistema de distribuição" }, // i18n: dado
+  { chave: "ons", rotulo: "racionamento ou alívio de carga pelo ONS" }, // i18n: dado
 ] as const;
+
+/** As parcelas excluídas do DEC em inglês, pela chave. */
+const PARCELA_EN: Readonly<Record<(typeof PARCELAS_EXCLUIDAS_DEC)[number]["chave"], string>> = {
+  emergencia: "emergency situation",
+  dia_critico: "critical day",
+  externa: "origin external to the distribution system",
+  ons: "rationing or load relief by ONS",
+};
 
 /**
  * O DEC apurado de um ano com o que a regra deixa de fora dele (parcelas expurgadas e total de todas as origens) e a posição dos
@@ -684,7 +1023,7 @@ function universoDec(ds: readonly { sigla: string | null; ano: number; meses: nu
   const anuais = doAno.filter((d) => d.meses >= 12);
   const parciais = doAno.filter((d) => d.meses < 12);
   const soma = (xs: typeof doAno) => xs.reduce((a, d) => a + (d.conjuntos ?? 0), 0);
-  return { distribuidoras: doAno.length, anuais: anuais.length, parciais: parciais.map((d) => ({ sigla: d.sigla ?? "sem sigla", meses: d.meses })), conjuntosAnuais: soma(anuais), conjuntosParciais: soma(parciais) };
+  return { distribuidoras: doAno.length, anuais: anuais.length, parciais: parciais.map((d) => ({ sigla: d.sigla ?? tx("sem sigla", "no acronym"), meses: d.meses })), conjuntosAnuais: soma(anuais), conjuntosParciais: soma(parciais) };
 }
 
 /**
@@ -692,48 +1031,82 @@ function universoDec(ds: readonly { sigla: string | null; ano: number; meses: nu
  * números são do mesmo universo: das distribuidoras que enviaram DEC no ano, as que têm os 12 meses somam os 3.146 conjuntos com limite, e as de ano parcial,
  * que ficam fora do DEC anual, somam os outros.
  */
-export function textoUniversoDec(d: DecDoAno): string {
+export function textoUniversoDec(d: DecDoAno, idioma: Idioma = idiomaEnergia()): string {
   const u = d.universo;
   if (!u || !u.parciais.length) return "";
-  const nomes = listaEmPortugues(u.parciais.map((x) => `${x.sigla} (${x.meses} meses)`));
+  const n = (x: number) => num(x, 0, idioma);
+  const nomes = listaNoIdioma(
+    u.parciais.map((x) => tx(`${x.sigla} (${x.meses} meses)`, `${x.sigla} (${x.meses} ${x.meses === 1 ? "month" : "months"})`, idioma)),
+    idioma,
+  );
   const outros = u.conjuntosParciais;
-  return `Universo do DEC de ${d.ano}: ${num(u.distribuidoras, 0)} distribuidoras enviaram DEC; ${num(u.anuais, 0)} têm os 12 meses e entram no DEC anual, com ${num(u.conjuntosAnuais, 0)} conjuntos (a contagem de conjuntos acima do limite usa esses). ${plural(u.parciais.length, "distribuidora enviou", "distribuidoras enviaram")} só parte do ano e ${u.parciais.length === 1 ? "fica" : "ficam"} fora do DEC anual: ${nomes}${outros ? `, com ${num(outros, 0)} ${outros === 1 ? "conjunto" : "conjuntos"}` : ""}.`;
+  return tx(
+    `Universo do DEC de ${d.ano}: ${n(u.distribuidoras)} distribuidoras enviaram DEC; ${n(u.anuais)} têm os 12 meses e entram no DEC anual, com ${n(u.conjuntosAnuais)} conjuntos (a contagem de conjuntos acima do limite usa esses). ${plural(u.parciais.length, "distribuidora enviou", "distribuidoras enviaram", "pt")} só parte do ano e ${u.parciais.length === 1 ? "fica" : "ficam"} fora do DEC anual: ${nomes}${outros ? `, com ${n(outros)} ${outros === 1 ? "conjunto" : "conjuntos"}` : ""}.`,
+    `Universe of the ${d.ano} DEC: ${n(u.distribuidoras)} distribution utilities submitted DEC; ${n(u.anuais)} have all 12 months and enter the annual DEC, with ${n(u.conjuntosAnuais)} sets (the count of sets above the limit uses these). ${plural(u.parciais.length, "distribution utility", "distribution utilities", "en")} submitted only part of the year and ${u.parciais.length === 1 ? "is" : "are"} left out of the annual DEC: ${nomes}${outros ? `, with ${n(outros)} ${outros === 1 ? "set" : "sets"}` : ""}.`,
+    idioma,
+  );
 }
 
 /** A ressalva essencial do DEC, junto do número: o que "apurado" quer dizer, o que a regra deixa de fora e o total de todas as origens. */
-export function textoDecApurado(d: DecDoAno): string {
-  const lista = d.parcelas.map((x) => (x.horas === null ? x.rotulo : `${x.rotulo} (${num(x.horas, 2)} h)`));
-  const exclusoes = listaEmPortugues(lista);
+export function textoDecApurado(d: DecDoAno, idioma: Idioma = idiomaEnergia()): string {
+  const rot = (x: DecDoAno["parcelas"][number]) => (idioma === "en" ? PARCELA_EN[x.chave] : x.rotulo);
+  const lista = d.parcelas.map((x) => (x.horas === null ? rot(x) : `${rot(x)} (${num(x.horas, 2, idioma)} h)`));
+  const exclusoes = listaNoIdioma(lista, idioma);
+  const h = (x: number) => num(x, 2, idioma);
   if (d.excluido === null || d.todasOrigens === null)
-    return `O DEC apurado de ${d.ano}, ${num(d.apurado, 2)} h por unidade consumidora, não conta as interrupções que a regra exclui do apurado: ${exclusoes}. A fonte não publica todas essas parcelas para o ano.`;
-  return (
-    `O DEC apurado de ${d.ano}, ${num(d.apurado, 2)} h por unidade consumidora, não conta as interrupções que a regra exclui do apurado: ${exclusoes}, que somam ${num(d.excluido, 2)} h. ` +
-    `Com todas as origens, o DEC de ${d.ano} foi de ${num(d.todasOrigens, 2)} h (${horasMinutos(d.todasOrigens)}).`
+    return tx(
+      `O DEC apurado de ${d.ano}, ${h(d.apurado)} h por unidade consumidora, não conta as interrupções que a regra exclui do apurado: ${exclusoes}. A fonte não publica todas essas parcelas para o ano.`,
+      `The assessed DEC for ${d.ano}, ${h(d.apurado)} h per consumer unit, does not count the interruptions that the rule excludes from the assessment: ${exclusoes}. The source does not publish all of these components for the year.`,
+      idioma,
+    );
+  return tx(
+    `O DEC apurado de ${d.ano}, ${h(d.apurado)} h por unidade consumidora, não conta as interrupções que a regra exclui do apurado: ${exclusoes}, que somam ${h(d.excluido)} h. ` +
+      `Com todas as origens, o DEC de ${d.ano} foi de ${h(d.todasOrigens)} h (${horasMinutos(d.todasOrigens, idioma)}).`,
+    `The assessed DEC for ${d.ano}, ${h(d.apurado)} h per consumer unit, does not count the interruptions that the rule excludes from the assessment: ${exclusoes}, which add up to ${h(d.excluido)} h. ` +
+      `With all origins, the ${d.ano} DEC was ${h(d.todasOrigens)} h (${horasMinutos(d.todasOrigens, idioma)}).`,
+    idioma,
   );
 }
 
 /** Versão de uma linha da ressalva do DEC, para a nota que fica sob o número. */
-export function textoDecApuradoCurto(d: DecDoAno): string {
-  if (d.excluido === null || d.todasOrigens === null) return "Apurado: não conta as interrupções que a regra exclui.";
-  return `Apurado: não conta ${num(d.excluido, 2)} h que a regra exclui; todas as origens somam ${num(d.todasOrigens, 2)} h.`;
+export function textoDecApuradoCurto(d: DecDoAno, idioma: Idioma = idiomaEnergia()): string {
+  if (d.excluido === null || d.todasOrigens === null) return tx("Apurado: não conta as interrupções que a regra exclui.", "Assessed: it does not count the interruptions that the rule excludes.", idioma);
+  return tx(
+    `Apurado: não conta ${num(d.excluido, 2, idioma)} h que a regra exclui; todas as origens somam ${num(d.todasOrigens, 2, idioma)} h.`,
+    `Assessed: it does not count ${num(d.excluido, 2, idioma)} h that the rule excludes; all origins add up to ${num(d.todasOrigens, 2, idioma)} h.`,
+    idioma,
+  );
 }
 
 /** O que o limite agregado é e o que ele não é, com a parcela de conjuntos acima do próprio limite. */
-export function textoLimiteAgregado(d: DecDoAno): string {
+export function textoLimiteAgregado(d: DecDoAno, idioma: Idioma = idiomaEnergia()): string {
   if (d.limite === null) return "";
-  const base = `Não existe limite nacional de DEC. O limite agregado de ${num(d.limite, 2)} h é a média dos limites de cada conjunto elétrico, ponderada pelas unidades consumidoras médias do ano, calculada pelo observatório.`;
+  const base = tx(
+    `Não existe limite nacional de DEC. O limite agregado de ${num(d.limite, 2, idioma)} h é a média dos limites de cada conjunto elétrico, ponderada pelas unidades consumidoras médias do ano, calculada pelo observatório.`,
+    `There is no national DEC limit. The aggregate limit of ${num(d.limite, 2, idioma)} h is the average of the limits of each electrical set, weighted by the average consumer units of the year, calculated by the observatory.`,
+    idioma,
+  );
   const c = d.conjuntos;
   if (!c || c.pct === null) return base;
-  const uc = c.pctUc === null ? "" : `, que reúnem ${num(c.pctUc, 1)}% das unidades consumidoras`;
-  const universo = textoUniversoDec(d);
-  return `${base} Em ${d.ano}, ${num(c.acima, 0)} de ${num(c.total, 0)} conjuntos (${num(c.pct, 1)}%${uc}) ficaram acima do próprio limite.${universo ? ` ${universo}` : ""}`;
+  const uc = c.pctUc === null ? "" : tx(`, que reúnem ${num(c.pctUc, 1, idioma)}% das unidades consumidoras`, `, which hold ${num(c.pctUc, 1, idioma)}% of the consumer units`, idioma);
+  const universo = textoUniversoDec(d, idioma);
+  return tx(
+    `${base} Em ${d.ano}, ${num(c.acima, 0, idioma)} de ${num(c.total, 0, idioma)} conjuntos (${num(c.pct, 1, idioma)}%${uc}) ficaram acima do próprio limite.${universo ? ` ${universo}` : ""}`,
+    `${base} In ${d.ano}, ${num(c.acima, 0, idioma)} of ${num(c.total, 0, idioma)} sets (${num(c.pct, 1, idioma)}%${uc}) were above their own limit.${universo ? ` ${universo}` : ""}`,
+    idioma,
+  );
 }
 
 /** Dispersão do DEC apurado entre os conjuntos elétricos: a média nacional não mostra que o valor varia de conjunto para conjunto. */
-export function textoDispersaoDec(d: DecDoAno): string {
+export function textoDispersaoDec(d: DecDoAno, idioma: Idioma = idiomaEnergia()): string {
   const q = d.quantis;
   if (!q || q.min === null || q.max === null || q.p25 === null || q.p50 === null || q.p75 === null) return "";
-  return `O DEC apurado de cada conjunto elétrico em ${d.ano} vai de ${num(q.min, 2)} h a ${num(q.max, 2)} h; metade dos conjuntos ficou entre ${num(q.p25, 2)} h e ${num(q.p75, 2)} h, com mediana de ${num(q.p50, 2)} h.`;
+  const h = (x: number) => num(x, 2, idioma);
+  return tx(
+    `O DEC apurado de cada conjunto elétrico em ${d.ano} vai de ${h(q.min)} h a ${h(q.max)} h; metade dos conjuntos ficou entre ${h(q.p25)} h e ${h(q.p75)} h, com mediana de ${h(q.p50)} h.`,
+    `The assessed DEC of each electrical set in ${d.ano} ranges from ${h(q.min)} h to ${h(q.max)} h; half of the sets were between ${h(q.p25)} h and ${h(q.p75)} h, with a median of ${h(q.p50)} h.`,
+    idioma,
+  );
 }
 
 /**
@@ -792,23 +1165,37 @@ export function denominadorPerdas(
   };
 }
 
-export function textoDenominadorPerdas(d: DenominadorPerdas): string {
-  return (
-    `A taxa tem como denominador a energia injetada de referência (${num(d.referenciaTwh, 2)} TWh). Em ${num(d.requeridaOuMista, 0)} das ${num(d.concessionarias, 0)} concessionárias, ela é a energia requerida ` +
-    `(fornecida mais irregular mais perdas, leiaute de 2024 da ANEEL) ou uma mistura dos dois leiautes, e não a linha de energia injetada publicada. ` +
-    `Com a injetada publicada (${num(d.publicadaTwh, 2)} TWh), a mesma perda de ${num(d.perdasTwh, 2)} TWh daria ${num(d.taxaPublicadaPct, 1)}%, e não ${num(d.taxaReferenciaPct, 1)}%.`
+export function textoDenominadorPerdas(d: DenominadorPerdas, idioma: Idioma = idiomaEnergia()): string {
+  const n = (x: number, c: number) => num(x, c, idioma);
+  return tx(
+    `A taxa tem como denominador a energia injetada de referência (${n(d.referenciaTwh, 2)} TWh). Em ${n(d.requeridaOuMista, 0)} das ${n(d.concessionarias, 0)} concessionárias, ela é a energia requerida ` +
+      `(fornecida mais irregular mais perdas, leiaute de 2024 da ANEEL) ou uma mistura dos dois leiautes, e não a linha de energia injetada publicada. ` +
+      `Com a injetada publicada (${n(d.publicadaTwh, 2)} TWh), a mesma perda de ${n(d.perdasTwh, 2)} TWh daria ${n(d.taxaPublicadaPct, 1)}%, e não ${n(d.taxaReferenciaPct, 1)}%.`,
+    `The rate's denominator is the reference injected energy (${n(d.referenciaTwh, 2)} TWh). In ${n(d.requeridaOuMista, 0)} of the ${n(d.concessionarias, 0)} concession holders, it is the required energy ` +
+      `(supplied plus irregular plus losses, ANEEL's 2024 layout) or a mix of the two layouts, and not the published injected energy line. ` +
+      `With the published injected energy (${n(d.publicadaTwh, 2)} TWh), the same loss of ${n(d.perdasTwh, 2)} TWh would give ${n(d.taxaPublicadaPct, 1)}%, not ${n(d.taxaReferenciaPct, 1)}%.`,
+    idioma,
   );
 }
 
 /** Dispersão da taxa entre as concessionárias: a taxa nacional não mostra que ela varia muito de uma distribuidora para outra. */
-export function textoDispersaoPerdas(d: DenominadorPerdas): string {
+export function textoDispersaoPerdas(d: DenominadorPerdas, idioma: Idioma = idiomaEnergia()): string {
   const q = d.dispersao;
   if (!q) return "";
-  return `A taxa de cada uma das ${num(d.concessionarias, 0)} concessionárias em ${d.ano} vai de ${num(q.min, 1)}% a ${num(q.max, 1)}%; metade ficou entre ${num(q.p25, 1)}% e ${num(q.p75, 1)}%, com mediana de ${num(q.mediana, 1)}%.`;
+  const p = (x: number) => num(x, 1, idioma);
+  return tx(
+    `A taxa de cada uma das ${num(d.concessionarias, 0, idioma)} concessionárias em ${d.ano} vai de ${p(q.min)}% a ${p(q.max)}%; metade ficou entre ${p(q.p25)}% e ${p(q.p75)}%, com mediana de ${p(q.mediana)}%.`,
+    `The rate of each of the ${num(d.concessionarias, 0, idioma)} concession holders in ${d.ano} ranges from ${p(q.min)}% to ${p(q.max)}%; half were between ${p(q.p25)}% and ${p(q.p75)}%, with a median of ${p(q.mediana)}%.`,
+    idioma,
+  );
 }
 
-export function textoDenominadorPerdasCurto(d: DenominadorPerdas): string {
-  return `Denominador: energia injetada de referência, que em ${num(d.requeridaOuMista, 0)} das ${num(d.concessionarias, 0)} concessionárias é a requerida; com a injetada publicada, ${num(d.taxaPublicadaPct, 1)}%.`;
+export function textoDenominadorPerdasCurto(d: DenominadorPerdas, idioma: Idioma = idiomaEnergia()): string {
+  return tx(
+    `Denominador: energia injetada de referência, que em ${num(d.requeridaOuMista, 0, idioma)} das ${num(d.concessionarias, 0, idioma)} concessionárias é a requerida; com a injetada publicada, ${num(d.taxaPublicadaPct, 1, idioma)}%.`,
+    `Denominator: reference injected energy, which in ${num(d.requeridaOuMista, 0, idioma)} of the ${num(d.concessionarias, 0, idioma)} concession holders is the required energy; with the published injected energy, ${num(d.taxaPublicadaPct, 1, idioma)}%.`,
+    idioma,
+  );
 }
 
 /**
@@ -851,62 +1238,111 @@ export function coberturaTarifa(
 }
 
 /** O que a mediana simples é: cada distribuidora pesa o mesmo, e o resultado muda com o conjunto que o arquivo da ANEEL tem na data. */
-const NOTA_MEDIANA_SIMPLES =
-  " A mediana é simples (cada distribuidora pesa o mesmo, qualquer que seja o número de consumidores) e muda se a ANEEL acrescentar distribuidoras ao arquivo; a tabela de quartis de Minha região traz também a mediana pesada pelas unidades consumidoras.";
+const notaMedianaSimples = (idioma: Idioma) =>
+  tx(
+    " A mediana é simples (cada distribuidora pesa o mesmo, qualquer que seja o número de consumidores) e muda se a ANEEL acrescentar distribuidoras ao arquivo; a tabela de quartis de Minha região traz também a mediana pesada pelas unidades consumidoras.",
+    " The median is simple (each distribution utility has the same weight, whatever its number of consumers) and changes if ANEEL adds distribution utilities to the file; the quartile table in My region also has the median weighted by consumer units.",
+    idioma,
+  );
 
-export function textoCoberturaTarifa(c: CoberturaTarifa): string {
+export function textoCoberturaTarifa(c: CoberturaTarifa, idioma: Idioma = idiomaEnergia()): string {
+  const n = (x: number) => num(x, 0, idioma);
+  const data = dataBR(c.data, idioma);
   if (c.fora === 0)
-    return `Mediana das ${num(c.comTarifa, 0)} distribuidoras com tarifa B1 residencial vigente em ${dataBR(c.data)}, todas as que constam no conjunto de dados.${NOTA_MEDIANA_SIMPLES}`;
+    return tx(
+      `Mediana das ${n(c.comTarifa)} distribuidoras com tarifa B1 residencial vigente em ${data}, todas as que constam no conjunto de dados.${notaMedianaSimples(idioma)}`,
+      `Median of the ${n(c.comTarifa)} distribution utilities with a B1 residential tariff in force on ${data}, all of those in the dataset.${notaMedianaSimples(idioma)}`,
+      idioma,
+    );
+  const vespera = dataBR(somaDias(c.data, -1), idioma);
   const recentes =
     c.foraRecente > 0
-      ? `${num(c.foraRecente, 0)} tiveram a vigência encerrada nos 90 dias anteriores e a tarifa seguinte ainda não constava no arquivo da ANEEL gerado em ${dataBR(c.data)}${c.naVespera > 0 ? ` (${num(c.naVespera, 0)} delas com a vigência encerrada em ${dataBR(somaDias(c.data, -1))})` : ""}`
+      ? tx(
+          `${n(c.foraRecente)} tiveram a vigência encerrada nos 90 dias anteriores e a tarifa seguinte ainda não constava no arquivo da ANEEL gerado em ${data}${c.naVespera > 0 ? ` (${n(c.naVespera)} delas com a vigência encerrada em ${vespera})` : ""}`,
+          `${n(c.foraRecente)} had their validity period end in the previous 90 days and the next tariff was not yet in the ANEEL file generated on ${data}${c.naVespera > 0 ? ` (${n(c.naVespera)} of them with the validity period ending on ${vespera})` : ""}`,
+          idioma,
+        )
       : "";
   const antigas =
     c.foraAntigas > 0
-      ? `${num(c.foraAntigas, 0)} estão sem tarifa há mais de 90 dias${c.incorporadas > 0 ? ` (${num(c.incorporadas, 0)} incorporadas por outra distribuidora)` : ""}`
+      ? tx(
+          `${n(c.foraAntigas)} estão sem tarifa há mais de 90 dias${c.incorporadas > 0 ? ` (${n(c.incorporadas)} incorporadas por outra distribuidora)` : ""}`,
+          `${n(c.foraAntigas)} have had no tariff for more than 90 days${c.incorporadas > 0 ? ` (${n(c.incorporadas)} merged into another distribution utility)` : ""}`,
+          idioma,
+        )
       : "";
-  return (
-    `A tarifa de referência é a mediana de ${num(c.comTarifa, 0)} distribuidoras com tarifa B1 residencial vigente em ${dataBR(c.data)}, de ${num(c.cnpjs, 0)} com tarifa no conjunto de dados. ` +
-    `Ficaram fora ${num(c.fora, 0)}: ${[recentes, antigas].filter(Boolean).join("; ")}.${NOTA_MEDIANA_SIMPLES}`
+  return tx(
+    `A tarifa de referência é a mediana de ${n(c.comTarifa)} distribuidoras com tarifa B1 residencial vigente em ${data}, de ${n(c.cnpjs)} com tarifa no conjunto de dados. ` +
+      `Ficaram fora ${n(c.fora)}: ${[recentes, antigas].filter(Boolean).join("; ")}.${notaMedianaSimples(idioma)}`,
+    `The reference tariff is the median of ${n(c.comTarifa)} distribution utilities with a B1 residential tariff in force on ${data}, out of ${n(c.cnpjs)} with a tariff in the dataset. ` +
+      `${n(c.fora)} were left out: ${[recentes, antigas].filter(Boolean).join("; ")}.${notaMedianaSimples(idioma)}`,
+    idioma,
   );
 }
 
-export function textoCoberturaTarifaCurto(c: CoberturaTarifa): string {
-  return `Mediana de ${num(c.comTarifa, 0)} de ${num(c.cnpjs, 0)} distribuidoras: ${num(c.fora, 0)} ficaram fora (${num(c.foraRecente, 0)} com a tarifa seguinte ainda ausente do arquivo da ANEEL).`;
+export function textoCoberturaTarifaCurto(c: CoberturaTarifa, idioma: Idioma = idiomaEnergia()): string {
+  const n = (x: number) => num(x, 0, idioma);
+  return tx(
+    `Mediana de ${n(c.comTarifa)} de ${n(c.cnpjs)} distribuidoras: ${n(c.fora)} ficaram fora (${n(c.foraRecente)} com a tarifa seguinte ainda ausente do arquivo da ANEEL).`,
+    `Median of ${n(c.comTarifa)} of ${n(c.cnpjs)} distribution utilities: ${n(c.fora)} were left out (${n(c.foraRecente)} with the next tariff still missing from the ANEEL file).`,
+    idioma,
+  );
 }
 
 /** O que cada indicador de sociedade precisa dizer junto do número; ausente quando a gold de origem não está disponível. */
 export type ContextoSociedade = { dec?: DecDoAno | null; perdas?: DenominadorPerdas | null; tarifa?: CoberturaTarifa | null };
 
 /** Título de um indicador como a página o escreve: o DEC leva a palavra "apurado", que carrega a ressalva essencial. */
-export function tituloSociedade(it: Pick<ItemSociedade, "id" | "titulo">): string {
-  return it.id === "continuidade" ? `${it.titulo} (DEC apurado)` : it.titulo;
+export function tituloSociedade(it: Pick<ItemSociedade, "id" | "titulo">, idioma: Idioma = idiomaEnergia()): string {
+  const titulo = gold(it.titulo, idioma);
+  return it.id === "continuidade" ? tx(`${titulo} (DEC apurado)`, `${titulo} (assessed DEC)`, idioma) : titulo;
 }
 
 /** Título do cartão: o indicador mensal leva o mês no cabeçalho (a Tarifa Social de maio de 2025 não é a de outro mês). */
-export function tituloCartaoSociedade(it: Pick<ItemSociedade, "id" | "titulo" | "periodo">): string {
-  const t = tituloSociedade(it);
-  return it.periodo.tipo === "mensal" ? `${t}, ${periodoCurto(it)}` : t;
+export function tituloCartaoSociedade(it: Pick<ItemSociedade, "id" | "titulo" | "periodo">, idioma: Idioma = idiomaEnergia()): string {
+  const t = tituloSociedade(it, idioma);
+  return it.periodo.tipo === "mensal" ? `${t}, ${periodoCurto(it, idioma)}` : t;
 }
 
 /** A tarifa em R$/MWh, a unidade do conjunto de dados e da página Conta de luz, para quem compara com o cartão em R$/kWh. */
-export function textoUnidadeTarifa(valorMwh: number): string {
-  return `O cartão mostra a tarifa em R$/kWh; em R$/MWh, a unidade da página Conta de luz, é o mesmo valor multiplicado por 1.000: R$ ${num(valorMwh, 2)}/MWh.`;
+export function textoUnidadeTarifa(valorMwh: number, idioma: Idioma = idiomaEnergia()): string {
+  return tx(
+    `O cartão mostra a tarifa em R$/kWh; em R$/MWh, a unidade da página Conta de luz, é o mesmo valor multiplicado por 1.000: R$ ${num(valorMwh, 2, "pt")}/MWh.`,
+    `The card shows the tariff in R$/kWh; in R$/MWh, the unit of the Electricity bill page, it is the same value multiplied by 1,000: R$ ${num(valorMwh, 2, "en")}/MWh.`,
+    idioma,
+  );
 }
 
 /** Pergunta de cada indicador como a página a escreve; a do DEC diz que só as interrupções apuradas entram. */
-export const PERGUNTA_SOCIEDADE: Partial<Record<IdSociedade, string>> = {
-  continuidade: "Quanto tempo e quantas vezes, em média, cada consumidor ficou sem energia no ano, contadas só as interrupções que a regra apura?",
+export function perguntaSociedade(id: IdSociedade, idioma: Idioma = idiomaEnergia()): string | undefined {
+  if (id === "continuidade")
+    return tx(
+      "Quanto tempo e quantas vezes, em média, cada consumidor ficou sem energia no ano, contadas só as interrupções que a regra apura?",
+      "How long and how many times, on average, was each consumer without power in the year, counting only the interruptions that the rule assesses?",
+      idioma,
+    );
+  return undefined;
+}
+
+export const PERGUNTA_SOCIEDADE: Partial<Record<IdSociedade, string>> = { continuidade: perguntaSociedade("continuidade", "pt") };
+
+/** Nome inglês das siglas que a Visão geral expande no primeiro uso (o dicionário do observatório só tem o português). */
+const SIGLAS_EN: Readonly<Record<string, string>> = {
+  MMGD: "distributed micro and mini generation",
+  DEC: "equivalent interruption duration per consumer unit",
+  SCS: "ANEEL's control system for subsidies and social programs",
+  CDE: "Energy Development Account",
 };
 
 /**
  * Sigla com o nome por extenso no primeiro uso: "SCS" vira "SCS (Sistema de Controle de Subvenções e Programas Sociais)". Só a primeira
- * ocorrência de cada sigla da lista, e só se o texto ainda não a expande. O nome vem do dicionário de siglas do observatório.
+ * ocorrência de cada sigla da lista, e só se o texto ainda não a expande. O nome vem do dicionário de siglas do observatório (em
+ * inglês, da tabela acima).
  */
-export function expandeSiglas(texto: string, siglas: readonly string[]): string {
+export function expandeSiglas(texto: string, siglas: readonly string[], idioma: Idioma = idiomaEnergia()): string {
   let out = texto;
   for (const sigla of siglas) {
-    const nome = SIGLAS[sigla];
+    const nome = idioma === "en" ? SIGLAS_EN[sigla] : SIGLAS[sigla];
     if (!nome || out.includes(`${sigla} (${nome}`)) continue;
     out = out.replace(PADRAO_SIGLA(sigla), `${sigla} (${nome})`);
   }
@@ -914,30 +1350,38 @@ export function expandeSiglas(texto: string, siglas: readonly string[]): string 
 }
 
 /** Valor de enumeração da gold ("ATRASADO", "EM DIA") escrito como palavra comum no texto corrido. */
-export function enumLegivel(texto: string): string {
-  return texto.replace(/\bEM DIA\b/g, "em dia").replace(/\bATRASADO\b/g, "atrasado").replace(/\bSEM SLA\b/g, "sem prazo declarado").replace(/\bSEM DADO\b/g, "sem registro");
+export function enumLegivel(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma === "en") return texto.replace(/\bEM DIA\b/g, "up to date").replace(/\bATRASADO\b/g, "late").replace(/\bSEM SLA\b/g, "no declared deadline").replace(/\bSEM DADO\b/g, "no record");
+  return texto
+    .replace(/\bEM DIA\b/g, "em dia") // i18n: dado
+    .replace(/\bATRASADO\b/g, "atrasado") // i18n: dado
+    .replace(/\bSEM SLA\b/g, tx("sem prazo declarado", "no declared deadline", idioma))
+    .replace(/\bSEM DADO\b/g, tx("sem registro", "no record", idioma));
 }
 
 /** Resposta do P006: cada indicador com o seu período; nenhum descreve o dia. */
-export function respostaSociedade(s: SociedadeVisao, ctx: ContextoSociedade = {}): string {
-  if (!s.itens.length) return "Nenhum indicador de energia e sociedade disponível nesta publicação.";
+export function respostaSociedade(s: SociedadeVisao, ctx: ContextoSociedade = {}, idioma: Idioma = idiomaEnergia()): string {
+  if (!s.itens.length) return tx("Nenhum indicador de energia e sociedade disponível nesta publicação.", "No energy and society indicator available in this publication.", idioma);
   const partes = s.itens.map((it) => {
-    const atrasado = it.atualidade?.situacao === "ATRASADO" ? "; conjunto atrasado no painel de saúde dos dados" : "";
+    const atrasado = it.atualidade?.situacao === "ATRASADO" ? tx("; conjunto atrasado no painel de saúde dos dados", "; dataset late in the data health panel", idioma) : "";
     if (it.id === "continuidade" && ctx.dec) {
-      const limite = textoLimiteAgregado(ctx.dec);
-      return `${tituloSociedade(it)}: ${valorSociedade(it)}, ${periodoCurto(it)}${atrasado}. ${textoDecApurado(ctx.dec)}${limite ? ` ${limite}` : ""}`;
+      const limite = textoLimiteAgregado(ctx.dec, idioma);
+      return `${tituloSociedade(it, idioma)}: ${valorSociedade(it, idioma)}, ${periodoCurto(it, idioma)}${atrasado}. ${textoDecApurado(ctx.dec, idioma)}${limite ? ` ${limite}` : ""}`;
     }
-    const titulo = tituloSociedade(it);
-    const extra = it.id === "perdas" && ctx.perdas ? ` ${textoDenominadorPerdas(ctx.perdas)}` : it.id === "tarifa" && ctx.tarifa ? ` ${textoCoberturaTarifa(ctx.tarifa)}` : "";
-    return `${titulo}: ${valorSociedade(it)}, ${periodoCurto(it)}${atrasado}.${extra}`;
+    const titulo = tituloSociedade(it, idioma);
+    const extra =
+      it.id === "perdas" && ctx.perdas ? ` ${textoDenominadorPerdas(ctx.perdas, idioma)}` : it.id === "tarifa" && ctx.tarifa ? ` ${textoCoberturaTarifa(ctx.tarifa, idioma)}` : "";
+    return `${titulo}: ${valorSociedade(it, idioma)}, ${periodoCurto(it, idioma)}${atrasado}.${extra}`;
   });
-  const aus = s.ausentes.length ? ` Sem dado: ${s.ausentes.map((a) => a.id).join(", ")}.` : "";
-  return `Cada número tem o seu período, e nenhum descreve o dia. ${partes.join(" ")}${aus}`;
+  const ids = s.ausentes.map((a) => a.id).join(", ");
+  const aus = s.ausentes.length ? tx(` Sem dado: ${ids}.`, ` No data: ${ids}.`, idioma) : "";
+  return tx(`Cada número tem o seu período, e nenhum descreve o dia. ${partes.join(" ")}${aus}`, `Each number has its own period, and none describes the day. ${partes.join(" ")}${aus}`, idioma);
 }
 
 /** Valor com a unidade quando o texto publicado é só o número (sem o equivalente em horas e minutos do DEC). */
-function valorComUnidade(it: Pick<ItemSociedade, "valor_exibido" | "unidade">): string {
-  return /^[\d.,−-]+$/.test(it.valor_exibido.trim()) ? `${it.valor_exibido} ${it.unidade}` : it.valor_exibido;
+function valorComUnidade(it: Pick<ItemSociedade, "valor_exibido" | "unidade">, idioma: Idioma): string {
+  const valor = idioma === "en" ? trechoEn(it.valor_exibido) : it.valor_exibido;
+  return /^[\d.,−-]+$/.test(it.valor_exibido.trim()) ? `${valor} ${gold(it.unidade, idioma)}` : valor;
 }
 
 /**
@@ -945,60 +1389,84 @@ function valorComUnidade(it: Pick<ItemSociedade, "valor_exibido" | "unidade">): 
  * com o seu período, e o limite de leitura (nenhum descreve o dia). Os mesmos itens e campos de respostaSociedade; perdas e
  * Tarifa Social ficam nos cartões.
  */
-export function vereditoSociedade(s: SociedadeVisao, ctx: ContextoSociedade = {}): string {
+export function vereditoSociedade(s: SociedadeVisao, ctx: ContextoSociedade = {}, idioma: Idioma = idiomaEnergia()): string {
   const por = new Map(s.itens.map((i) => [i.id, i]));
   const partes: string[] = [];
   const t = por.get("tarifa");
-  if (t) partes.push(`A tarifa residencial de referência é ${valorComUnidade(t)}${/sem tributos/i.test(t.aviso) ? ", sem tributos" : ""}, ${periodoCurto(t)}.`);
+  if (t) {
+    // o aviso da gold é português: a comparação é com ele, e a página escreve "sem tributos" no idioma
+    const semTributos = /sem tributos/i.test(t.aviso);
+    partes.push(
+      tx(
+        `A tarifa residencial de referência é ${valorComUnidade(t, idioma)}${semTributos ? ", sem tributos" : ""}, ${periodoCurto(t, idioma)}.`,
+        `The reference residential tariff is ${valorComUnidade(t, idioma)}${semTributos ? ", before taxes" : ""}, ${periodoCurto(t, idioma)}.`,
+        idioma,
+      ),
+    );
+  }
   const c = por.get("continuidade");
   if (c) {
     // o número é o DEC apurado: o veredito diz o que a regra deixa de fora, para ninguém ler 9,33 h como todo o tempo sem energia
     const d = ctx.dec;
+    const v = valorComUnidade(c, idioma);
+    const p = periodoCurto(c, idioma);
     partes.push(
       d && d.excluido !== null && d.todasOrigens !== null
-        ? `O DEC apurado (${periodoCurto(c)}) foi de ${valorComUnidade(c)}, sem ${num(d.excluido, 2)} h que a regra exclui (todas as origens: ${num(d.todasOrigens, 2)} h).`
-        : `O DEC apurado (${periodoCurto(c)}) foi de ${valorComUnidade(c)}, sem as interrupções que a regra exclui.`,
+        ? tx(
+            `O DEC apurado (${p}) foi de ${v}, sem ${num(d.excluido, 2, idioma)} h que a regra exclui (todas as origens: ${num(d.todasOrigens, 2, idioma)} h).`,
+            `The assessed DEC (${p}) was ${v}, without ${num(d.excluido, 2, idioma)} h that the rule excludes (all origins: ${num(d.todasOrigens, 2, idioma)} h).`,
+            idioma,
+          )
+        : tx(`O DEC apurado (${p}) foi de ${v}, sem as interrupções que a regra exclui.`, `The assessed DEC (${p}) was ${v}, without the interruptions that the rule excludes.`, idioma),
     );
   }
   if (!partes.length) {
-    const outros = s.itens.slice(0, 2).map((it) => `${it.titulo}: ${valorComUnidade(it)} (${periodoCurto(it)})`);
+    const outros = s.itens.slice(0, 2).map((it) => `${gold(it.titulo, idioma)}: ${valorComUnidade(it, idioma)} (${periodoCurto(it, idioma)})`);
     if (!outros.length) return "";
     partes.push(`${outros.join("; ")}.`);
   }
-  partes.push("Nenhum número descreve o dia.");
+  partes.push(tx("Nenhum número descreve o dia.", "No number describes the day.", idioma));
   return partes.join(" ");
 }
 
-export const COLUNAS_SOCIEDADE: ColunaTabela[] = [
-  { id: "indicador", rotulo: "Indicador", tipo: "texto" },
-  { id: "valor", rotulo: "Valor", tipo: "numero", casas: 2 },
-  { id: "unidade", rotulo: "Unidade", tipo: "texto" },
-  { id: "valor_exibido", rotulo: "Como o módulo de origem exibe", tipo: "texto" },
-  { id: "tipo_periodo", rotulo: "Tipo de período", tipo: "texto", categorica: true },
-  { id: "inicio", rotulo: "Início do período", tipo: "data" },
-  { id: "fim", rotulo: "Fim do período", tipo: "data" },
-  { id: "defasagem", rotulo: "Defasagem", tipo: "texto" },
-  { id: "atualidade", rotulo: "Atualidade do conjunto", tipo: "texto", categorica: true },
-  { id: "cobertura", rotulo: "Cobertura", tipo: "texto" },
-  { id: "gold", rotulo: "Módulo de origem", tipo: "texto" },
-];
+export function colunasSociedade(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "indicador", rotulo: tx("Indicador", "Indicator", idioma), tipo: "texto" },
+    { id: "valor", rotulo: tx("Valor", "Value", idioma), tipo: "numero", casas: 2 }, // i18n: dado (o id da coluna)
+    { id: "unidade", rotulo: tx("Unidade", "Unit", idioma), tipo: "texto" },
+    { id: "valor_exibido", rotulo: tx("Como o módulo de origem exibe", "How the source module displays it", idioma), tipo: "texto" },
+    { id: "tipo_periodo", rotulo: tx("Tipo de período", "Period type", idioma), tipo: "texto", categorica: true },
+    { id: "inicio", rotulo: tx("Início do período", "Start of period", idioma), tipo: "data" },
+    { id: "fim", rotulo: tx("Fim do período", "End of period", idioma), tipo: "data" },
+    { id: "defasagem", rotulo: tx("Defasagem", "Lag", idioma), tipo: "texto" },
+    { id: "atualidade", rotulo: tx("Atualidade do conjunto", "Dataset timeliness", idioma), tipo: "texto", categorica: true },
+    { id: "cobertura", rotulo: tx("Cobertura", "Coverage", idioma), tipo: "texto" },
+    { id: "gold", rotulo: tx("Módulo de origem", "Source module", idioma), tipo: "texto" },
+  ];
+}
 
-export const ROTULO_TIPO_PERIODO: Record<string, string> = { vigencia: "vigência", anual: "anual", mensal: "mensal" };
+export const COLUNAS_SOCIEDADE: ColunaTabela[] = colunasSociedade("pt");
+
+function rotulosTipoPeriodo(idioma: Idioma): Record<string, string> {
+  return tx({ vigencia: "vigência", anual: "anual", mensal: "mensal" }, { vigencia: "validity period", anual: "annual", mensal: "monthly" }, idioma);
+}
+
+export const ROTULO_TIPO_PERIODO: Record<string, string> = rotulosTipoPeriodo("pt");
 
 /** Tabela equivalente do P006: uma linha por indicador, com período e defasagem. */
-export function linhasSociedade(s: SociedadeVisao): LinhaTabela[] {
+export function linhasSociedade(s: SociedadeVisao, idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return s.itens.map((it) => ({
     id: it.id,
-    indicador: it.titulo,
+    indicador: gold(it.titulo, idioma),
     valor: it.valor,
-    unidade: it.unidade,
-    valor_exibido: it.valor_exibido,
-    tipo_periodo: ROTULO_TIPO_PERIODO[it.periodo.tipo] ?? it.periodo.tipo,
+    unidade: gold(it.unidade, idioma),
+    valor_exibido: idioma === "en" ? trechoEn(it.valor_exibido) : it.valor_exibido,
+    tipo_periodo: rotulosTipoPeriodo(idioma)[it.periodo.tipo] ?? it.periodo.tipo,
     inicio: inicioDoPeriodo(it.periodo.inicio),
     fim: fimDoPeriodo(it.periodo.fim),
-    defasagem: enumLegivel(it.defasagem.texto),
-    atualidade: it.atualidade?.situacao ? enumLegivel(it.atualidade.situacao) : null,
-    cobertura: it.cobertura,
+    defasagem: idioma === "en" ? (traduzModeloDaGold(it.defasagem.texto) ?? enumLegivel(it.defasagem.texto, idioma)) : enumLegivel(it.defasagem.texto, idioma),
+    atualidade: it.atualidade?.situacao ? enumLegivel(it.atualidade.situacao, idioma) : null,
+    cobertura: gold(it.cobertura, idioma),
     gold: it.gold,
   }));
 }
@@ -1006,13 +1474,14 @@ export function linhasSociedade(s: SociedadeVisao): LinhaTabela[] {
 export type FaixaTempo = { id: string; rotulo: string; inicio: string; fim: string; defasagemDias: number; texto: string };
 
 /** Período de referência de cada indicador contra a data de processamento (dias corridos até ela). */
-export function faixasTempo(s: SociedadeVisao, dataProcessamento: string): FaixaTempo[] {
+export function faixasTempo(s: SociedadeVisao, dataProcessamento: string, idioma: Idioma = idiomaEnergia()): FaixaTempo[] {
   return s.itens.map((it) => {
     const inicio = inicioDoPeriodo(it.periodo.inicio);
     const fim = fimDoPeriodo(it.periodo.fim);
-    return { id: it.id, rotulo: it.titulo, inicio, fim, defasagemDias: diasEntre(fim, dataProcessamento), texto: periodoCurto(it) };
+    return { id: it.id, rotulo: gold(it.titulo, idioma), inicio, fim, defasagemDias: diasEntre(fim, dataProcessamento), texto: periodoCurto(it, idioma) };
   });
 }
+
 
 /** Domínio comum da linha do tempo: do início mais antigo à data de processamento. */
 export function dominioTempo(faixas: readonly FaixaTempo[], dataProcessamento: string): { inicio: string; fim: string; dias: number } {
@@ -1022,23 +1491,33 @@ export function dominioTempo(faixas: readonly FaixaTempo[], dataProcessamento: s
 
 /* ---------------------------------------------------------------- P007: o que observar */
 
-export const ROTULO_ESTADO: Record<EstadoRegra, string> = {
-  ativo: "Em alerta",
-  em_retorno: "Em alerta, em retorno",
-  em_observacao: "Em observação",
-  normal: "Normal",
-  sem_dado: "Sem dado",
-  evento: "Evento",
-};
+function rotulosEstado(idioma: Idioma): Record<EstadoRegra, string> {
+  return tx<Record<EstadoRegra, string>>(
+    { ativo: "Em alerta", em_retorno: "Em alerta, em retorno", em_observacao: "Em observação", normal: "Normal", sem_dado: "Sem dado", evento: "Evento" },
+    { ativo: "In alert", em_retorno: "In alert, returning", em_observacao: "Under observation", normal: "Normal", sem_dado: "No data", evento: "Event" },
+    idioma,
+  );
+}
 
+export const ROTULO_ESTADO: Record<EstadoRegra, string> = rotulosEstado("pt");
+
+export function rotuloEstado(estado: EstadoRegra, idioma: Idioma = idiomaEnergia()): string {
+  return rotulosEstado(idioma)[estado] ?? estado;
+}
+
+// i18n: dado (os ids dos filtros, gravados na URL)
 export const FILTROS_P007 = ["todas", "atencao", "sistema", "dados"] as const;
 export type FiltroP007 = (typeof FILTROS_P007)[number];
-export const ROTULO_FILTRO_P007: Record<FiltroP007, string> = {
-  todas: "Todas",
-  atencao: "Em alerta ou observação",
-  sistema: "Sobre o sistema",
-  dados: "Sobre os dados",
-};
+
+export function rotulosFiltroP007(idioma: Idioma = idiomaEnergia()): Record<FiltroP007, string> {
+  return tx<Record<FiltroP007, string>>(
+    { todas: "Todas", atencao: "Em alerta ou observação", sistema: "Sobre o sistema", dados: "Sobre os dados" },
+    { todas: "All", atencao: "In alert or under observation", sistema: "About the system", dados: "About the data" },
+    idioma,
+  );
+}
+
+export const ROTULO_FILTRO_P007: Record<FiltroP007, string> = rotulosFiltroP007("pt");
 
 /** Regra que pede atenção hoje: em alerta (inclui em retorno) ou em observação; evento não conta. */
 export function pedeAtencao(o: Pick<RegraObservar, "tipo" | "estado">): boolean {
@@ -1054,27 +1533,42 @@ export function filtraRegras<T extends Pick<RegraObservar, "tipo" | "estado" | "
 }
 
 /** Resposta do P007: quantas regras estão em alerta e em observação, sobre o sistema e sobre os dados. */
-export function respostaObservar(observar: readonly RegraObservar[]): string {
+export function respostaObservar(observar: readonly RegraObservar[], idioma: Idioma = idiomaEnergia()): string {
   const regras = observar.filter((o) => o.tipo !== "evento");
   const alerta = regras.filter((o) => o.ativo);
   const obs = regras.filter((o) => o.estado === "em_observacao");
   const sistema = alerta.filter((o) => o.assunto === "sistema");
   const dados = alerta.filter((o) => o.assunto === "dados");
-  const nomes = (xs: RegraObservar[]) => xs.map((o) => minuscula(o.titulo)).join("; ");
+  const nomes = (xs: RegraObservar[]) => xs.map((o) => minuscula(gold(o.titulo, idioma))).join("; ");
+  const n = (x: number) => num(x, 0, idioma);
   const partes: string[] = [];
   partes.push(
     alerta.length
-      ? `Das ${num(regras.length, 0)} regras, ${alerta.length === 1 ? "1 está" : `${num(alerta.length, 0)} estão`} em alerta`
-        + (sistema.length ? `; sobre o sistema: ${nomes(sistema)}` : "; nenhuma sobre o sistema")
-        + (dados.length ? `; sobre os próprios dados: ${nomes(dados)}` : "")
-        + "."
-      : `Nenhuma das ${num(regras.length, 0)} regras está em alerta.`,
+      ? tx(
+          `Das ${n(regras.length)} regras, ${alerta.length === 1 ? "1 está" : `${n(alerta.length)} estão`} em alerta` +
+            (sistema.length ? `; sobre o sistema: ${nomes(sistema)}` : "; nenhuma sobre o sistema") +
+            (dados.length ? `; sobre os próprios dados: ${nomes(dados)}` : "") +
+            ".",
+          `Of the ${n(regras.length)} rules, ${alerta.length === 1 ? "1 is" : `${n(alerta.length)} are`} in alert` +
+            (sistema.length ? `; about the system: ${nomes(sistema)}` : "; none about the system") +
+            (dados.length ? `; about the data itself: ${nomes(dados)}` : "") +
+            ".",
+          idioma,
+        )
+      : tx(`Nenhuma das ${n(regras.length)} regras está em alerta.`, `None of the ${n(regras.length)} rules is in alert.`, idioma),
   );
-  if (obs.length) partes.push(`${obs.length === 1 ? "Uma regra está" : `${num(obs.length, 0)} regras estão`} em observação (condição presente, ainda sem a duração mínima): ${nomes(obs)}.`);
+  if (obs.length)
+    partes.push(
+      tx(
+        `${obs.length === 1 ? "Uma regra está" : `${n(obs.length)} regras estão`} em observação (condição presente, ainda sem a duração mínima): ${nomes(obs)}.`,
+        `${obs.length === 1 ? "One rule is" : `${n(obs.length)} rules are`} under observation (condition present, still without the minimum duration): ${nomes(obs)}.`,
+        idioma,
+      ),
+    );
   const sd = regras.filter((o) => o.estado === "sem_dado");
-  if (sd.length) partes.push(`Sem dado para avaliar: ${nomes(sd)}.`);
+  if (sd.length) partes.push(tx(`Sem dado para avaliar: ${nomes(sd)}.`, `No data to assess: ${nomes(sd)}.`, idioma));
   const ev = observar.filter((o) => o.tipo === "evento");
-  if (ev.length) partes.push(`No calendário: ${nomes(ev)}.`);
+  if (ev.length) partes.push(tx(`No calendário: ${nomes(ev)}.`, `On the calendar: ${nomes(ev)}.`, idioma));
   return partes.join(" ");
 }
 
@@ -1083,22 +1577,42 @@ export function respostaObservar(observar: readonly RegraObservar[]): string {
  * observação (condição presente, ainda sem a duração mínima) e quantas regras sobre os dados estão em alerta. Os mesmos campos
  * de respostaObservar.
  */
-export function vereditoObservar(observar: readonly RegraObservar[]): string {
+export function vereditoObservar(observar: readonly RegraObservar[], idioma: Idioma = idiomaEnergia()): string {
   const regras = observar.filter((o) => o.tipo !== "evento");
   const alerta = regras.filter((o) => o.ativo);
   const sistema = alerta.filter((o) => o.assunto === "sistema");
   const dados = alerta.filter((o) => o.assunto === "dados");
   const obs = regras.filter((o) => o.estado === "em_observacao");
+  const n = (x: number) => num(x, 0, idioma);
   const partes: string[] = [];
   if (sistema.length) {
-    const nomes = nomesNoVeredito(sistema, false);
-    partes.push(`${sistema.length === 1 ? "Uma regra sobre o sistema está" : `${num(sistema.length, 0)} regras sobre o sistema estão`} em alerta${nomes ? `: ${nomes}` : ""}.`);
-  } else partes.push("Nenhuma regra sobre o sistema está em alerta.");
+    const nomes = nomesNoVeredito(sistema, false, idioma);
+    partes.push(
+      tx(
+        `${sistema.length === 1 ? "Uma regra sobre o sistema está" : `${n(sistema.length)} regras sobre o sistema estão`} em alerta${nomes ? `: ${nomes}` : ""}.`,
+        `${sistema.length === 1 ? "One rule about the system is" : `${n(sistema.length)} rules about the system are`} in alert${nomes ? `: ${nomes}` : ""}.`,
+        idioma,
+      ),
+    );
+  } else partes.push(tx("Nenhuma regra sobre o sistema está em alerta.", "No rule about the system is in alert.", idioma));
   if (obs.length) {
-    const nomes = nomesNoVeredito(obs, false);
-    partes.push(`${obs.length === 1 ? "Uma regra está" : `${num(obs.length, 0)} regras estão`} em observação, ainda sem a duração mínima para virar alerta${nomes ? `: ${nomes}` : ""}.`);
+    const nomes = nomesNoVeredito(obs, false, idioma);
+    partes.push(
+      tx(
+        `${obs.length === 1 ? "Uma regra está" : `${n(obs.length)} regras estão`} em observação, ainda sem a duração mínima para virar alerta${nomes ? `: ${nomes}` : ""}.`,
+        `${obs.length === 1 ? "One rule is" : `${n(obs.length)} rules are`} under observation, still without the minimum duration to become an alert${nomes ? `: ${nomes}` : ""}.`,
+        idioma,
+      ),
+    );
   }
-  if (dados.length) partes.push(`Sobre os próprios dados, ${dados.length === 1 ? "1 regra está" : `${num(dados.length, 0)} regras estão`} em alerta.`);
+  if (dados.length)
+    partes.push(
+      tx(
+        `Sobre os próprios dados, ${dados.length === 1 ? "1 regra está" : `${n(dados.length)} regras estão`} em alerta.`,
+        `About the data itself, ${dados.length === 1 ? "1 rule is" : `${n(dados.length)} rules are`} in alert.`,
+        idioma,
+      ),
+    );
   return partes.join(" ");
 }
 
@@ -1109,57 +1623,68 @@ export function vereditoObservar(observar: readonly RegraObservar[]): string {
 const ALERTA_COM_O_LIMIAR: ReadonlySet<IdRegra> = new Set<IdRegra>(["pld_piso"]);
 
 /** Texto do valor avaliado de uma regra com os limiares, na unidade da regra. */
-export function textoValorRegra(o: Pick<RegraObservar, "valor" | "unidade"> & { id?: IdRegra }): string | null {
+export function textoValorRegra(o: Pick<RegraObservar, "valor" | "unidade"> & { id?: IdRegra }, idioma: Idioma = idiomaEnergia()): string | null {
   const v = o.valor;
   if (!v) return null;
   const c = casasUnidade(o.unidade);
-  const f = (x: number | null) => comUnidade(x, o.unidade, c);
+  const f = (x: number | null) => comUnidade(x, o.unidade, c, idioma);
   const igual = o.id !== undefined && ALERTA_COM_O_LIMIAR.has(o.id);
   const lim =
     v.limiar_inferior !== null && v.limiar_superior !== null
-      ? `alerta abaixo de ${f(v.limiar_inferior)} ou acima de ${f(v.limiar_superior)}`
+      ? tx(`alerta abaixo de ${f(v.limiar_inferior)} ou acima de ${f(v.limiar_superior)}`, `alert below ${f(v.limiar_inferior)} or above ${f(v.limiar_superior)}`, idioma)
       : v.limiar_superior !== null
         ? igual
-          ? `alerta com ${f(v.limiar_superior)}`
-          : `alerta acima de ${f(v.limiar_superior)}`
+          ? tx(`alerta com ${f(v.limiar_superior)}`, `alert at ${f(v.limiar_superior)}`, idioma)
+          : tx(`alerta acima de ${f(v.limiar_superior)}`, `alert above ${f(v.limiar_superior)}`, idioma)
         : v.limiar_inferior !== null
-          ? `alerta abaixo de ${f(v.limiar_inferior)}`
-          : "sem limiar numérico";
+          ? tx(`alerta abaixo de ${f(v.limiar_inferior)}`, `alert below ${f(v.limiar_inferior)}`, idioma)
+          : tx("sem limiar numérico", "no numeric threshold", idioma);
   return `${f(v.valor)} (${lim})`;
 }
 
-export const COLUNAS_REGRAS: ColunaTabela[] = [
-  { id: "titulo", rotulo: "Regra", tipo: "texto" },
-  { id: "assunto", rotulo: "Assunto", tipo: "texto", categorica: true },
-  { id: "estado", rotulo: "Estado", tipo: "texto", categorica: true },
-  { id: "referencia", rotulo: "Referência", tipo: "data" },
-  { id: "valor", rotulo: "Valor avaliado", tipo: "numero", casas: 2 },
-  { id: "limiar_inferior", rotulo: "Limiar inferior", tipo: "numero", casas: 2 },
-  { id: "limiar_superior", rotulo: "Limiar superior", tipo: "numero", casas: 2 },
-  { id: "unidade", rotulo: "Unidade", tipo: "texto" },
-  { id: "duracao", rotulo: "Duração mínima", tipo: "numero", unidade: "dias", casas: 0 },
-  { id: "retorno", rotulo: "Retorno", tipo: "numero", unidade: "dias", casas: 0 },
-  { id: "desde", rotulo: "Avaliável desde", tipo: "data" },
-  { id: "dias_avaliados", rotulo: "Dias avaliados", tipo: "numero", casas: 0 },
-  { id: "pct_condicao", rotulo: "Dias com a condição", tipo: "percentual", casas: 1 },
-  { id: "pct_alerta", rotulo: "Dias em alerta", tipo: "percentual", casas: 1 },
-  { id: "episodios", rotulo: "Episódios", tipo: "numero", casas: 0 },
-  { id: "por_ano", rotulo: "Episódios por ano", tipo: "numero", casas: 1 },
-  { id: "descartados", rotulo: "Acionamentos curtos descartados", tipo: "numero", casas: 0 },
-];
+export function colunasRegras(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const dias = tx("dias", "days", idioma);
+  return [
+    { id: "titulo", rotulo: tx("Regra", "Rule", idioma), tipo: "texto" },
+    { id: "assunto", rotulo: tx("Assunto", "Subject", idioma), tipo: "texto", categorica: true },
+    { id: "estado", rotulo: tx("Estado", "State", idioma), tipo: "texto", categorica: true },
+    { id: "referencia", rotulo: tx("Referência", "Reference", idioma), tipo: "data" },
+    { id: "valor", rotulo: tx("Valor avaliado", "Value assessed", idioma), tipo: "numero", casas: 2 }, // i18n: dado (o id da coluna)
+    { id: "limiar_inferior", rotulo: tx("Limiar inferior", "Lower threshold", idioma), tipo: "numero", casas: 2 },
+    { id: "limiar_superior", rotulo: tx("Limiar superior", "Upper threshold", idioma), tipo: "numero", casas: 2 },
+    { id: "unidade", rotulo: tx("Unidade", "Unit", idioma), tipo: "texto" },
+    { id: "duracao", rotulo: tx("Duração mínima", "Minimum duration", idioma), tipo: "numero", unidade: dias, casas: 0 },
+    { id: "retorno", rotulo: tx("Retorno", "Return", idioma), tipo: "numero", unidade: dias, casas: 0 },
+    { id: "desde", rotulo: tx("Avaliável desde", "Assessable since", idioma), tipo: "data" }, // i18n: dado (o id da coluna)
+    { id: "dias_avaliados", rotulo: tx("Dias avaliados", "Days assessed", idioma), tipo: "numero", casas: 0 },
+    { id: "pct_condicao", rotulo: tx("Dias com a condição", "Days with the condition", idioma), tipo: "percentual", casas: 1 },
+    { id: "pct_alerta", rotulo: tx("Dias em alerta", "Days in alert", idioma), tipo: "percentual", casas: 1 },
+    { id: "episodios", rotulo: tx("Episódios", "Episodes", idioma), tipo: "numero", casas: 0 },
+    { id: "por_ano", rotulo: tx("Episódios por ano", "Episodes per year", idioma), tipo: "numero", casas: 1 },
+    { id: "descartados", rotulo: tx("Acionamentos curtos descartados", "Short triggers discarded", idioma), tipo: "numero", casas: 0 },
+  ];
+}
+
+export const COLUNAS_REGRAS: ColunaTabela[] = colunasRegras("pt");
+
+/** Assunto de uma regra na tabela: o evento de calendário, a regra sobre o sistema ou sobre os dados. */
+function assuntoRegra(o: Pick<RegraObservar, "tipo" | "assunto">, idioma: Idioma): string {
+  if (o.tipo === "evento") return tx("evento", "event", idioma);
+  return o.assunto === "sistema" ? tx("sistema", "system", idioma) : tx("dados", "data", idioma);
+}
 
 /** Tabela equivalente da lista de regras: estado do dia, limiares e frequência de disparo. */
-export function linhasRegras(observar: readonly RegraObservar[]): LinhaTabela[] {
+export function linhasRegras(observar: readonly RegraObservar[], idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return observar.map((o) => ({
     id: o.id,
-    titulo: o.titulo,
-    assunto: o.tipo === "evento" ? "evento" : o.assunto,
-    estado: ROTULO_ESTADO[o.estado] ?? o.estado,
+    titulo: gold(o.titulo, idioma),
+    assunto: assuntoRegra(o, idioma),
+    estado: rotuloEstado(o.estado, idioma),
     referencia: o.referencia,
     valor: o.valor?.valor ?? null,
     limiar_inferior: o.valor?.limiar_inferior ?? null,
     limiar_superior: o.valor?.limiar_superior ?? null,
-    unidade: o.unidade,
+    unidade: gold(o.unidade, idioma),
     duracao: o.duracao_minima_dias,
     retorno: o.retorno_dias,
     desde: o.historico?.primeiro_dia_avaliado ?? null,
@@ -1172,24 +1697,28 @@ export function linhasRegras(observar: readonly RegraObservar[]): LinhaTabela[] 
   }));
 }
 
-export const COLUNAS_SENSIBILIDADE: ColunaTabela[] = [
-  { id: "regra", rotulo: "Regra", tipo: "texto", categorica: true },
-  { id: "duracao", rotulo: "Duração mínima", tipo: "numero", unidade: "dias", casas: 0 },
-  { id: "adotada", rotulo: "Adotada", tipo: "texto", categorica: true },
-  { id: "episodios", rotulo: "Episódios", tipo: "numero", casas: 0 },
-  { id: "dias", rotulo: "Dias em alerta", tipo: "numero", casas: 0 },
-  { id: "pct", rotulo: "Dias em alerta", tipo: "percentual", casas: 1 },
-  { id: "por_ano", rotulo: "Episódios por ano", tipo: "numero", casas: 1 },
-];
+export function colunasSensibilidade(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "regra", rotulo: tx("Regra", "Rule", idioma), tipo: "texto", categorica: true },
+    { id: "duracao", rotulo: tx("Duração mínima", "Minimum duration", idioma), tipo: "numero", unidade: tx("dias", "days", idioma), casas: 0 },
+    { id: "adotada", rotulo: tx("Adotada", "Adopted", idioma), tipo: "texto", categorica: true },
+    { id: "episodios", rotulo: tx("Episódios", "Episodes", idioma), tipo: "numero", casas: 0 },
+    { id: "dias", rotulo: tx("Dias em alerta", "Days in alert", idioma), tipo: "numero", casas: 0 }, // i18n: dado (o id da coluna)
+    { id: "pct", rotulo: tx("Dias em alerta", "Days in alert", idioma), tipo: "percentual", casas: 1 },
+    { id: "por_ano", rotulo: tx("Episódios por ano", "Episodes per year", idioma), tipo: "numero", casas: 1 },
+  ];
+}
+
+export const COLUNAS_SENSIBILIDADE: ColunaTabela[] = colunasSensibilidade("pt");
 
 /** Sensibilidade de cada regra a durações mínimas de 1, 3, 7 e 14 dias. */
-export function linhasSensibilidade(observar: readonly RegraObservar[]): LinhaTabela[] {
+export function linhasSensibilidade(observar: readonly RegraObservar[], idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return observar.flatMap((o) =>
     (o.historico?.sensibilidade_duracao ?? []).map((s) => ({
       id: `${o.id}:${s.duracao_minima_dias}`,
-      regra: o.titulo,
+      regra: gold(o.titulo, idioma),
       duracao: s.duracao_minima_dias,
-      adotada: s.duracao_minima_dias === o.duracao_minima_dias ? "sim" : "não",
+      adotada: s.duracao_minima_dias === o.duracao_minima_dias ? tx("sim", "yes", idioma) : tx("não", "no", idioma),
       episodios: s.episodios,
       dias: s.dias_exibidos,
       pct: s.pct_dias_exibidos,
@@ -1198,49 +1727,65 @@ export function linhasSensibilidade(observar: readonly RegraObservar[]): LinhaTa
   );
 }
 
-export const COLUNAS_EPISODIOS: ColunaTabela[] = [
-  { id: "regra", rotulo: "Regra", tipo: "texto", categorica: true },
-  { id: "inicio", rotulo: "Início da condição", tipo: "data" },
-  { id: "confirmado_em", rotulo: "Alerta confirmado em", tipo: "data" },
-  { id: "fim", rotulo: "Último dia com a condição", tipo: "data" },
-  { id: "normalizado_em", rotulo: "Normalizado em", tipo: "data" },
-  { id: "dias_condicao", rotulo: "Dias com a condição", tipo: "numero", casas: 0 },
-  { id: "duracao", rotulo: "Duração", tipo: "numero", unidade: "dias", casas: 0 },
-  { id: "em_curso", rotulo: "Em curso", tipo: "texto", categorica: true },
-];
+export function colunasEpisodios(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "regra", rotulo: tx("Regra", "Rule", idioma), tipo: "texto", categorica: true },
+    { id: "inicio", rotulo: tx("Início da condição", "Start of the condition", idioma), tipo: "data" },
+    { id: "confirmado_em", rotulo: tx("Alerta confirmado em", "Alert confirmed on", idioma), tipo: "data" },
+    { id: "fim", rotulo: tx("Último dia com a condição", "Last day with the condition", idioma), tipo: "data" },
+    { id: "normalizado_em", rotulo: tx("Normalizado em", "Back to normal on", idioma), tipo: "data" },
+    { id: "dias_condicao", rotulo: tx("Dias com a condição", "Days with the condition", idioma), tipo: "numero", casas: 0 },
+    { id: "duracao", rotulo: tx("Duração", "Duration", idioma), tipo: "numero", unidade: tx("dias", "days", idioma), casas: 0 },
+    { id: "em_curso", rotulo: tx("Em curso", "Ongoing", idioma), tipo: "texto", categorica: true },
+  ];
+}
+
+export const COLUNAS_EPISODIOS: ColunaTabela[] = colunasEpisodios("pt");
 
 /** Últimos episódios publicados de cada regra. */
-export function linhasEpisodios(observar: readonly RegraObservar[]): LinhaTabela[] {
+export function linhasEpisodios(observar: readonly RegraObservar[], idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return observar.flatMap((o) =>
     (o.historico?.ultimos_episodios ?? []).map((e) => ({
       id: `${o.id}:${e.inicio}`,
-      regra: o.titulo,
+      regra: gold(o.titulo, idioma),
       inicio: e.inicio,
       confirmado_em: e.confirmado_em,
       fim: e.fim,
       normalizado_em: e.normalizado_em,
       dias_condicao: e.dias_condicao,
       duracao: e.duracao_dias,
-      em_curso: e.em_curso ? "sim" : "não",
+      em_curso: e.em_curso ? tx("sim", "yes", idioma) : tx("não", "no", idioma),
     })),
   );
 }
 
-export const COLUNAS_ALTERNATIVAS: ColunaTabela[] = [
-  { id: "regra", rotulo: "Regra", tipo: "texto", categorica: true },
-  { id: "condicao", rotulo: "Variante avaliada", tipo: "texto" },
-  { id: "pct", rotulo: "Dias em alerta", tipo: "percentual", casas: 1 },
-  { id: "episodios", rotulo: "Episódios", tipo: "numero", casas: 0 },
-  { id: "desde", rotulo: "Avaliável desde", tipo: "data" },
-  { id: "motivo", rotulo: "Por que não foi adotada", tipo: "texto" },
-];
+export function colunasAlternativas(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  return [
+    { id: "regra", rotulo: tx("Regra", "Rule", idioma), tipo: "texto", categorica: true },
+    { id: "condicao", rotulo: tx("Variante avaliada", "Variant assessed", idioma), tipo: "texto" },
+    { id: "pct", rotulo: tx("Dias em alerta", "Days in alert", idioma), tipo: "percentual", casas: 1 },
+    { id: "episodios", rotulo: tx("Episódios", "Episodes", idioma), tipo: "numero", casas: 0 },
+    { id: "desde", rotulo: tx("Avaliável desde", "Assessable since", idioma), tipo: "data" }, // i18n: dado (o id da coluna)
+    { id: "motivo", rotulo: tx("Por que não foi adotada", "Why it was not adopted", idioma), tipo: "texto" },
+  ];
+}
+
+export const COLUNAS_ALTERNATIVAS: ColunaTabela[] = colunasAlternativas("pt");
 
 /** Variantes rejeitadas de cada regra, com a frequência que teriam. */
-export function linhasAlternativas(observar: readonly RegraObservar[]): LinhaTabela[] {
+export function linhasAlternativas(observar: readonly RegraObservar[], idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
   return observar.flatMap((o) =>
     (o.alternativas_avaliadas ?? [])
       .filter((a) => !a.adotada)
-      .map((a) => ({ id: `${o.id}:${a.id}`, regra: o.titulo, condicao: a.condicao, pct: a.pct_dias_exibidos, episodios: a.episodios, desde: a.primeiro_dia_avaliado, motivo: a.motivo })),
+      .map((a) => ({
+        id: `${o.id}:${a.id}`,
+        regra: gold(o.titulo, idioma),
+        condicao: gold(a.condicao, idioma),
+        pct: a.pct_dias_exibidos,
+        episodios: a.episodios,
+        desde: a.primeiro_dia_avaliado,
+        motivo: a.motivo ? gold(a.motivo, idioma) : a.motivo,
+      })),
   );
 }
 
@@ -1284,42 +1829,61 @@ export function dominioEstados(regras: readonly Pick<RegraObservar, "linha_estad
 }
 
 /** Texto da linha de estado em palavras (alternativa ao desenho). */
-export function textoLinhaEstado(o: Pick<RegraObservar, "linha_estado">): string | null {
+export function textoLinhaEstado(o: Pick<RegraObservar, "linha_estado">, idioma: Idioma = idiomaEnergia()): string | null {
   const le = o.linha_estado;
   if (!le?.inicio || !le.estados) return null;
   const c = contagemEstados(le);
   const fim = somaDias(le.inicio, le.estados.length - 1);
-  const partes = [
-    c["A"] ? `${plural(c["A"], "dia", "dias")} com alerta exibido` : "nenhum dia com alerta exibido",
-    c["o"] ? `${plural(c["o"], "dia", "dias")} com a condição sem a duração mínima` : null,
-    c["."] ? `${plural(c["."], "dia normal", "dias normais")}` : null,
-    c["-"] ? `${plural(c["-"], "dia", "dias")} sem dado` : null,
-  ].filter(Boolean);
-  return `De ${dataBR(le.inicio)} a ${dataBR(fim)}: ${partes.join(", ")}.`;
+  const partes = tx(
+    [
+      c["A"] ? `${plural(c["A"], "dia", "dias", "pt")} com alerta exibido` : "nenhum dia com alerta exibido",
+      c["o"] ? `${plural(c["o"], "dia", "dias", "pt")} com a condição sem a duração mínima` : null,
+      c["."] ? `${plural(c["."], "dia normal", "dias normais", "pt")}` : null,
+      c["-"] ? `${plural(c["-"], "dia", "dias", "pt")} sem dado` : null,
+    ],
+    [
+      c["A"] ? `${plural(c["A"], "day", "days", "en")} with an alert displayed` : "no day with an alert displayed",
+      c["o"] ? `${plural(c["o"], "day", "days", "en")} with the condition but without the minimum duration` : null,
+      c["."] ? `${plural(c["."], "normal day", "normal days", "en")}` : null,
+      c["-"] ? `${plural(c["-"], "day", "days", "en")} with no data` : null,
+    ],
+    idioma,
+  ).filter(Boolean);
+  return tx(
+    `De ${dataBR(le.inicio, "pt")} a ${dataBR(fim, "pt")}: ${partes.join(", ")}.`,
+    `From ${dataBR(le.inicio, "en")} to ${dataBR(fim, "en")}: ${partes.join(", ")}.`,
+    idioma,
+  );
 }
 
 /** Frequência conjunta da caixa de destaques em uma frase, com a meta de materialidade. */
-export function textoFrequenciaConjunta(g: Pick<SinteseVisaoGold, "destaques">): string | null {
+export function textoFrequenciaConjunta(g: Pick<SinteseVisaoGold, "destaques">, idioma: Idioma = idiomaEnergia()): string | null {
   const f = g.destaques.frequencia_conjunta;
   if (!f) return null;
   const pc = f.periodo_comum;
-  return (
-    `No período em que todas as regras sobre o sistema são avaliáveis (${dataBR(pc.inicio)} a ${dataBR(pc.fim)}), a caixa de destaques teria ficado ocupada em `
-    + `${num(pc.dias_com_destaque, 0)} de ${num(pc.dias, 0)} dias (${num(pc.pct_dias_com_destaque, 1)}%); a meta é no máximo ${num(f.meta_pct, 1)}%`
-    + `${f.atende_meta ? ", cumprida" : ", não cumprida"}. O limite de novidade é de ${plural(f.novidade_dias, "dia", "dias")} depois da confirmação.`
+  const ini = dataBR(pc.inicio, idioma);
+  const fim = dataBR(pc.fim, idioma);
+  return tx(
+    `No período em que todas as regras sobre o sistema são avaliáveis (${ini} a ${fim}), a caixa de destaques teria ficado ocupada em ` +
+      `${num(pc.dias_com_destaque, 0, "pt")} de ${num(pc.dias, 0, "pt")} dias (${num(pc.pct_dias_com_destaque, 1, "pt")}%); a meta é no máximo ${num(f.meta_pct, 1, "pt")}%` +
+      `${f.atende_meta ? ", cumprida" : ", não cumprida"}. O limite de novidade é de ${plural(f.novidade_dias, "dia", "dias", "pt")} depois da confirmação.`,
+    `In the period in which all rules about the system are assessable (${ini} to ${fim}), the highlights box would have been filled on ` +
+      `${num(pc.dias_com_destaque, 0, "en")} of ${num(pc.dias, 0, "en")} days (${num(pc.pct_dias_com_destaque, 1, "en")}%); the target is at most ${num(f.meta_pct, 1, "en")}%` +
+      `${f.atende_meta ? ", met" : ", not met"}. The novelty limit is ${plural(f.novidade_dias, "day", "days", "en")} after confirmation.`,
+    idioma,
   );
 }
 
 /* ---------------------------------------------------------------- conciliações no ponto de uso (r8) */
 
-const sinal = (v: number) => (v >= 0 ? "acima" : "abaixo");
+const sinal = (v: number, idioma: Idioma) => (v >= 0 ? tx("acima", "above", idioma) : tx("abaixo", "below", idioma));
 
 /**
  * Carga contra o ano anterior em duas janelas: a frase do P004 compara a média dos 7 dias com as mesmas datas do ano
  * anterior; o painel de determinantes compara o dia com o mesmo dia da semana, 364 dias antes. Lê os dois números da gold
  * (frase `carga` e painel `carga`) e as datas de cada janela; não recalcula nenhum percentual.
  */
-export function notaCarga(g: Pick<SinteseVisaoGold, "frases" | "multiplos">): string | null {
+export function notaCarga(g: Pick<SinteseVisaoGold, "frases" | "multiplos">, idioma: Idioma = idiomaEnergia()): string | null {
   const f = g.frases.find((x) => x.id === "carga");
   const m = g.multiplos;
   const p = m?.paineis.find((x) => x.id === "carga");
@@ -1329,10 +1893,16 @@ export function notaCarga(g: Pick<SinteseVisaoGold, "frases" | "multiplos">): st
   const pos = posicaoDeterminante(p, m);
   if (pos.variacao_pct === null) return null;
   const dia = p.data_referencia;
-  return (
-    `A carga aparece contra o ano anterior de duas formas: a média dos 7 dias de ${dataBR(atual.inicio)} a ${dataBR(atual.fim)}, contra ${dataBR(anterior.inicio)} a ${dataBR(anterior.fim)}, ficou ${num(Math.abs(v7), 1)}% ${sinal(v7)}; ` +
-    `o dia ${dataBR(dia)}, contra o mesmo dia da semana (${dataBR(somaDias(dia, -364))}), ficou ${num(Math.abs(pos.variacao_pct), 1)}% ${sinal(pos.variacao_pct)}. ` +
-    `A janela e o dia de comparação são diferentes, e por isso os dois percentuais não precisam coincidir.`
+  const d = (x: string) => dataBR(x, idioma);
+  const v = (x: number) => `${num(Math.abs(x), 1, idioma)}% ${sinal(x, idioma)}`;
+  return tx(
+    `A carga aparece contra o ano anterior de duas formas: a média dos 7 dias de ${d(atual.inicio)} a ${d(atual.fim)}, contra ${d(anterior.inicio)} a ${d(anterior.fim)}, ficou ${v(v7)}; ` +
+      `o dia ${d(dia)}, contra o mesmo dia da semana (${d(somaDias(dia, -364))}), ficou ${v(pos.variacao_pct)}. ` +
+      `A janela e o dia de comparação são diferentes, e por isso os dois percentuais não precisam coincidir.`,
+    `Load appears against the previous year in two ways: the 7-day average from ${d(atual.inicio)} to ${d(atual.fim)}, versus ${d(anterior.inicio)} to ${d(anterior.fim)}, was ${v(v7)}; ` +
+      `the day ${d(dia)}, versus the same weekday (${d(somaDias(dia, -364))}), was ${v(pos.variacao_pct)}. ` +
+      `The comparison window and day are different, so the two percentages need not match.`,
+    idioma,
   );
 }
 
@@ -1340,7 +1910,7 @@ export function notaCarga(g: Pick<SinteseVisaoGold, "frases" | "multiplos">): st
  * Rede: a frase do P004 traz a média de 30 dias da fronteira de maior fluxo; o painel de determinantes, o fluxo médio de um
  * dia. Só escreve a nota quando as duas leituras são da mesma fronteira (o par da frase está no caminho do valor do painel).
  */
-export function notaRede(g: Pick<SinteseVisaoGold, "frases" | "multiplos">): string | null {
+export function notaRede(g: Pick<SinteseVisaoGold, "frases" | "multiplos">, idioma: Idioma = idiomaEnergia()): string | null {
   const f = g.frases.find((x) => x.id === "rede");
   const p = g.multiplos?.paineis.find((x) => x.id === "rede");
   const media = f?.valores.fluxo_mwmed?.valor;
@@ -1351,9 +1921,13 @@ export function notaRede(g: Pick<SinteseVisaoGold, "frases" | "multiplos">): str
   if (!f || !p || typeof media !== "number" || typeof par !== "string" || typeof ini !== "string" || typeof fim !== "string" || typeof dia !== "number") return null;
   if (!p.valor_atual.caminho?.includes(`[${par}]`)) return null;
   const nome = p.valor_atual.rotulo ?? par;
-  return (
-    `Na fronteira ${nome}, a frase de Rede traz a média dos 30 dias de ${dataBR(ini)} a ${dataBR(fim)} (${comUnidade(media, "MWmed", 0)}) e o gráfico de Rede traz o fluxo médio do dia ${dataBR(p.data_referencia)} (${comUnidade(dia, "MWmed", 0)}). ` +
-    `Média de 30 dias e valor de um dia não precisam coincidir.`
+  const d = (x: string) => dataBR(x, idioma);
+  return tx(
+    `Na fronteira ${nome}, a frase de Rede traz a média dos 30 dias de ${d(ini)} a ${d(fim)} (${comUnidade(media, "MWmed", 0, idioma)}) e o gráfico de Rede traz o fluxo médio do dia ${d(p.data_referencia)} (${comUnidade(dia, "MWmed", 0, idioma)}). ` +
+      `Média de 30 dias e valor de um dia não precisam coincidir.`,
+    `On the ${nome} border, the Grid sentence has the 30-day average from ${d(ini)} to ${d(fim)} (${comUnidade(media, "MWmed", 0, idioma)}) and the Grid chart has the average flow of the day ${d(p.data_referencia)} (${comUnidade(dia, "MWmed", 0, idioma)}). ` +
+      `A 30-day average and a single day's value need not match.`,
+    idioma,
   );
 }
 
@@ -1364,14 +1938,22 @@ export type MesSerieTarifaSocial = { m: string; completo: boolean; distribuidora
  * Tarifa Social: o cartão usa o último mês completo do arquivo do SCS e a regra de atualidade usa o último mês do arquivo,
  * que pode estar incompleto. Escreve a ponte entre os dois meses; sem divergência, devolve null.
  */
-export function notaTarifaSocial(it: Pick<ItemSociedade, "periodo" | "atualidade">, serie: readonly MesSerieTarifaSocial[] | null | undefined): string | null {
+export function notaTarifaSocial(it: Pick<ItemSociedade, "periodo" | "atualidade">, serie: readonly MesSerieTarifaSocial[] | null | undefined, idioma: Idioma = idiomaEnergia()): string | null {
   const ultimo = it.atualidade?.ultimo_periodo;
   const ref = it.periodo.fim.slice(0, 7);
   if (!ultimo || ultimo.slice(0, 7) === ref) return null;
   const mes = (serie ?? []).find((x) => x.m === ultimo.slice(0, 7));
-  const base = `O número é de ${mesAno(ref)}, o último mês completo do arquivo da ANEEL; o conjunto chega a ${mesAno(ultimo.slice(0, 7))}, e é esse último mês que a regra de atualidade usa para dizer que a fonte está atrasada.`;
+  const base = tx(
+    `O número é de ${mesAno(ref, "pt")}, o último mês completo do arquivo da ANEEL; o conjunto chega a ${mesAno(ultimo.slice(0, 7), "pt")}, e é esse último mês que a regra de atualidade usa para dizer que a fonte está atrasada.`,
+    `The number is for ${mesAno(ref, "en")}, the latest complete month in the ANEEL file; the dataset reaches ${mesAno(ultimo.slice(0, 7), "en")}, and it is this latest month that the timeliness rule uses to say that the source is late.`,
+    idioma,
+  );
   if (mes && !mes.completo && typeof mes.distribuidoras_faltantes === "number")
-    return `${base} ${mesAno(mes.m)} não entra no número porque está incompleto: ${plural(mes.distribuidoras_faltantes, "distribuidora esperada não informou", "distribuidoras esperadas não informaram")} nesse mês.`;
+    return tx(
+      `${base} ${mesAno(mes.m, "pt")} não entra no número porque está incompleto: ${plural(mes.distribuidoras_faltantes, "distribuidora esperada não informou", "distribuidoras esperadas não informaram", "pt")} nesse mês.`,
+      `${base} ${mesAno(mes.m, "en")} is not part of the number because it is incomplete: ${plural(mes.distribuidoras_faltantes, "expected distribution utility did not report", "expected distribution utilities did not report", "en")} in that month.`,
+      idioma,
+    );
   return base;
 }
 
@@ -1383,7 +1965,7 @@ export type SemanaCmo = { s: string; SE: number; S: number; NE: number; N: numbe
  * quantas semanas seguidas isso acontece, para o leitor ver que não é um valor isolado nem de outra semana. A causa não está
  * no dado: a nota diz isso.
  */
-export function notaCmoNorte(serie: readonly SemanaCmo[] | null | undefined, referencia: string): string | null {
+export function notaCmoNorte(serie: readonly SemanaCmo[] | null | undefined, referencia: string, idioma: Idioma = idiomaEnergia()): string | null {
   const ate = (serie ?? []).filter((x) => x.s <= referencia);
   const ult = ate[ate.length - 1];
   if (!ult || ult.s !== referencia) return null;
@@ -1391,20 +1973,43 @@ export function notaCmoNorte(serie: readonly SemanaCmo[] | null | undefined, ref
   if (!difere(ult)) return null;
   let n = 0;
   for (let i = ate.length - 1; i >= 0 && difere(ate[i]); i--) n++;
-  const outros = listaEmPortugues(Array.from(new Set([ult.SE, ult.S, ult.NE])).map((v) => comUnidade(v, "R$/MWh", 2)));
-  const quando = n < 2 ? "" : `, e a série semanal do ONS mostra essa diferença em ${plural(n, "semana seguida", "semanas seguidas")}, desde a semana de ${dataBR(ate[ate.length - n].s)}`;
-  return `Na semana de ${dataBR(ult.s)}, o Norte (${comUnidade(ult.N, "R$/MWh", 2)}) difere de cada um dos outros três subsistemas (${outros})${quando}. O dado do ONS não informa o motivo, e o observatório não o atribui.`;
+  const outros = listaNoIdioma(
+    Array.from(new Set([ult.SE, ult.S, ult.NE])).map((v) => comUnidade(v, "R$/MWh", 2, idioma)),
+    idioma,
+  );
+  const desde = n < 2 ? "" : dataBR(ate[ate.length - n].s, idioma);
+  const quando =
+    n < 2
+      ? ""
+      : tx(
+          `, e a série semanal do ONS mostra essa diferença em ${plural(n, "semana seguida", "semanas seguidas", "pt")}, desde a semana de ${desde}`,
+          `, and the ONS weekly series shows this difference for ${plural(n, "consecutive week", "consecutive weeks", "en")}, since the week of ${desde}`,
+          idioma,
+        );
+  return tx(
+    `Na semana de ${dataBR(ult.s, "pt")}, o Norte (${comUnidade(ult.N, "R$/MWh", 2, idioma)}) difere de cada um dos outros três subsistemas (${outros})${quando}. O dado do ONS não informa o motivo, e o observatório não o atribui.`,
+    `In the week of ${dataBR(ult.s, "en")}, the North (${comUnidade(ult.N, "R$/MWh", 2, idioma)}) differs from each of the other three subsystems (${outros})${quando}. The ONS data does not state the reason, and the observatory does not attribute one.`,
+    idioma,
+  );
 }
 
 /**
  * Aviso de um complemento sem o bastidor de coleta: o parêntese com o nome de campo da fonte (NumCon) sai do texto do
  * leitor e fica inteiro no detalhe, que a página põe em Analisar. O leitor lê a mesma exclusão em palavras comuns.
  */
-export function avisoSemBastidor(aviso: string): { leitor: string; detalhe: string } {
+export function avisoSemBastidor(aviso: string, idioma: Idioma = idiomaEnergia()): { leitor: string; detalhe: string } {
   const m = /\s*\(([^()]*NumCon[^()]*)\)/.exec(aviso);
   if (!m) return { leitor: aviso, detalhe: "" };
-  const quem = /NumCon implausível de ([^;)]+)/.exec(m[1])?.[1]?.trim();
-  const leitor = aviso.replace(m[0], ` (o número de unidades consumidoras informado${quem ? ` por ${quem}` : ""} não é plausível)`);
+  // o aviso chega em português da gold ou já na forma inglesa (traduzModeloDaGold): o nome da distribuidora sai de qualquer um dos dois
+  const quem = (/NumCon implausível de ([^;)]+)/.exec(m[1]) ?? /implausible NumCon from ([^;)]+)/.exec(m[1]))?.[1]?.trim();
+  const leitor = aviso.replace(
+    m[0],
+    tx(
+      ` (o número de unidades consumidoras informado${quem ? ` por ${quem}` : ""} não é plausível)`,
+      ` (the number of consumer units reported${quem ? ` by ${quem}` : ""} is not plausible)`,
+      idioma,
+    ),
+  );
   return { leitor, detalhe: m[1] };
 }
 
@@ -1428,15 +2033,25 @@ export function conjuntosLegiveis(texto: string, titulos: Readonly<Record<string
  * O corte da tabela de episódios: a gold guarda os últimos episódios de cada regra (até cinco), e o arquivo para baixar traz todos. A
  * tabela diz quantos lista e quantos existem, em vez de se apresentar como a lista inteira.
  */
-export function corteEpisodios(observar: readonly Pick<RegraObservar, "historico">[], inicioHistorico: string): { listados: number; total: number; porRegra: number; texto: string } {
+export function corteEpisodios(
+  observar: readonly Pick<RegraObservar, "historico">[],
+  inicioHistorico: string,
+  idioma: Idioma = idiomaEnergia(),
+): { listados: number; total: number; porRegra: number; texto: string } {
   const comHistorico = observar.filter((o) => o.historico);
   const listados = comHistorico.reduce((s, o) => s + (o.historico?.ultimos_episodios.length ?? 0), 0);
   const total = comHistorico.reduce((s, o) => s + (o.historico?.episodios ?? 0), 0);
   const porRegra = comHistorico.reduce((m, o) => Math.max(m, o.historico?.ultimos_episodios.length ?? 0), 0);
+  const n = (x: number) => num(x, 0, idioma);
+  const desde = dataBR(inicioHistorico, idioma);
   const texto =
     listados >= total
-      ? `A tabela lista todos os ${num(total, 0)} episódios registrados desde ${dataBR(inicioHistorico)}.`
-      : `A tabela lista os últimos ${num(porRegra, 0)} episódios de cada regra: ${num(listados, 0)} dos ${num(total, 0)} registrados desde ${dataBR(inicioHistorico)}. A lista completa está no arquivo de episódios das regras (CSV).`;
+      ? tx(`A tabela lista todos os ${n(total)} episódios registrados desde ${desde}.`, `The table lists all ${n(total)} episodes recorded since ${desde}.`, idioma)
+      : tx(
+          `A tabela lista os últimos ${n(porRegra)} episódios de cada regra: ${n(listados)} dos ${n(total)} registrados desde ${desde}. A lista completa está no arquivo de episódios das regras (CSV).`,
+          `The table lists the last ${n(porRegra)} episodes of each rule: ${n(listados)} of the ${n(total)} recorded since ${desde}. The full list is in the rule episodes file (CSV).`,
+          idioma,
+        );
   return { listados, total, porRegra, texto };
 }
 
@@ -1481,9 +2096,15 @@ export function comMedianaAgua(dados: readonly LinhaMultiplos[], bandas: readonl
 }
 
 /** Texto do campo "Período" dos determinantes para a janela escolhida: o recorte exibido, não o recorte publicado. */
-export function periodoDaJanela(linhas: readonly Pick<LinhaMultiplos, "d">[]): string {
-  if (!linhas.length) return "sem dia na janela";
-  return `${dataBR(linhas[0].d)} a ${dataBR(linhas[linhas.length - 1].d)} (${plural(linhas.length, "dia", "dias")} alinhados pelo calendário); cada gráfico termina na data de referência da sua fonte`;
+export function periodoDaJanela(linhas: readonly Pick<LinhaMultiplos, "d">[], idioma: Idioma = idiomaEnergia()): string {
+  if (!linhas.length) return tx("sem dia na janela", "no day in the window", idioma);
+  const ini = dataBR(linhas[0].d, idioma);
+  const fim = dataBR(linhas[linhas.length - 1].d, idioma);
+  return tx(
+    `${ini} a ${fim} (${plural(linhas.length, "dia", "dias", "pt")} alinhados pelo calendário); cada gráfico termina na data de referência da sua fonte`,
+    `${ini} to ${fim} (${plural(linhas.length, "day", "days", "en")} aligned by calendar); each chart ends on the reference date of its source`,
+    idioma,
+  );
 }
 
 /**
@@ -1522,18 +2143,27 @@ export function regrasDaFrase<T extends Pick<RegraObservar, "id" | "tipo" | "est
 
 /* ---------------------------------------------------------------- r10: cada medida diz o corte e a data que usa, e o que o módulo de origem mostra */
 
-const MES_POR_EXTENSO = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-const reaisMwh = (v: number) => `R$ ${num(v, 2)}/MWh`;
+const reaisMwh = (v: number, idioma: Idioma) => `R$ ${num(v, 2, idioma)}/MWh`;
 
 /** O mesmo mês nos anos anteriores: a referência sazonal do PLD (pld_detalhe.json, historico.posicao_referencia). */
 export type PosicaoPldSazonal = { mes: number; percentil: number | null; n_dias: number; p50: number | null; anos: readonly number[] };
 
 /** "percentil 38,7 entre as 150 médias diárias de setembro de 2021 a 2025 (mediana R$ 247,81/MWh)"; null sem percentil. */
-export function textoSazonalPld(s: PosicaoPldSazonal): string | null {
+export function textoSazonalPld(s: PosicaoPldSazonal, idioma: Idioma = idiomaEnergia()): string | null {
   if (s.percentil === null) return null;
-  const anos = s.anos.length > 1 ? ` de ${s.anos[0]} a ${s.anos[s.anos.length - 1]}` : s.anos.length === 1 ? ` de ${s.anos[0]}` : "";
-  const mediana = s.p50 === null ? "" : `, mediana ${reaisMwh(s.p50)}`;
-  return `percentil ${num(s.percentil, 1)} entre as ${num(s.n_dias, 0)} médias diárias de ${MES_POR_EXTENSO[s.mes - 1]}${anos}${mediana}`;
+  const mes = s.mes >= 1 && s.mes <= 12 ? nomeMes(s.mes, idioma, true) : undefined;
+  const anos =
+    s.anos.length > 1
+      ? tx(` de ${s.anos[0]} a ${s.anos[s.anos.length - 1]}`, ` from ${s.anos[0]} to ${s.anos[s.anos.length - 1]}`, idioma)
+      : s.anos.length === 1
+        ? tx(` de ${s.anos[0]}`, ` of ${s.anos[0]}`, idioma)
+        : "";
+  const mediana = s.p50 === null ? "" : tx(`, mediana ${reaisMwh(s.p50, idioma)}`, `, median ${reaisMwh(s.p50, idioma)}`, idioma);
+  return tx(
+    `percentil ${num(s.percentil, 1, idioma)} entre as ${num(s.n_dias, 0, idioma)} médias diárias de ${mes}${anos}${mediana}`,
+    `percentile ${num(s.percentil, 1, idioma)} among the ${num(s.n_dias, 0, idioma)} daily averages of ${mes}${anos}${mediana}`,
+    idioma,
+  );
 }
 
 /**
@@ -1549,36 +2179,65 @@ export function textoDoisCriteriosPld(a: {
   pisos: readonly number[];
   anoInicial: string;
   anoFinal: string;
-}): string | null {
-  const sazonal = a.sazonal ? textoSazonalPld(a.sazonal) : null;
+}, idioma: Idioma = idiomaEnergia()): string | null {
+  const sazonal = a.sazonal ? textoSazonalPld(a.sazonal, idioma) : null;
   if (a.percentilTodos === null) return null;
-  const piso = a.pisos.length ? ` Os dois critérios juntam anos com limites regulatórios diferentes: o piso foi de R$ ${num(Math.min(...a.pisos), 2)} a ${reaisMwh(Math.max(...a.pisos))} entre ${a.anoInicial} e ${a.anoFinal}.` : "";
-  return (
-    `Dois critérios para a mesma média de ${reaisMwh(a.media)}: a frase compara com as ${num(a.diasTodos, 0)} médias diárias nominais desde 2021, de todos os meses, e dá percentil ${num(a.percentilTodos, 1)}` +
-    `${sazonal ? `; a referência sazonal da página de PLD compara com o mesmo mês dos anos anteriores e dá ${sazonal}` : ""}.${piso}`
+  const pisoMin = a.pisos.length ? num(Math.min(...a.pisos), 2, idioma) : "";
+  const pisoMax = a.pisos.length ? reaisMwh(Math.max(...a.pisos), idioma) : "";
+  const piso = a.pisos.length
+    ? tx(
+        ` Os dois critérios juntam anos com limites regulatórios diferentes: o piso foi de R$ ${pisoMin} a ${pisoMax} entre ${a.anoInicial} e ${a.anoFinal}.`,
+        ` Both criteria combine years with different regulatory limits: the floor ranged from R$ ${pisoMin} to ${pisoMax} between ${a.anoInicial} and ${a.anoFinal}.`,
+        idioma,
+      )
+    : "";
+  return tx(
+    `Dois critérios para a mesma média de ${reaisMwh(a.media, idioma)}: a frase compara com as ${num(a.diasTodos, 0, idioma)} médias diárias nominais desde 2021, de todos os meses, e dá percentil ${num(a.percentilTodos, 1, idioma)}` +
+      `${sazonal ? `; a referência sazonal da página de PLD compara com o mesmo mês dos anos anteriores e dá ${sazonal}` : ""}.${piso}`,
+    `Two criteria for the same average of ${reaisMwh(a.media, idioma)}: the sentence compares it with the ${num(a.diasTodos, 0, idioma)} nominal daily averages since 2021, of all months, and gives percentile ${num(a.percentilTodos, 1, idioma)}` +
+      `${sazonal ? `; the seasonal reference of the PLD page compares it with the same month of previous years and gives ${sazonal}` : ""}.${piso}`,
+    idioma,
   );
 }
 
 /** EAR do SIN e capacidade: a faixa do mesmo dia está em % da EAR máxima de cada ano, e a EAR máxima mudou ao longo da base. */
-export function textoCapacidadeAgua(a: { periodoBase: string | null; minMwmes: number | null; maxMwmes: number | null; mudou: boolean }): string | null {
+export function textoCapacidadeAgua(a: { periodoBase: string | null; minMwmes: number | null; maxMwmes: number | null; mudou: boolean }, idioma: Idioma = idiomaEnergia()): string | null {
   if (!a.mudou || a.minMwmes === null || a.maxMwmes === null || a.maxMwmes <= 0) return null;
   const queda = (100 * (a.maxMwmes - a.minMwmes)) / a.maxMwmes;
-  const base = a.periodoBase ? ` de ${a.periodoBase.replace("-", " a ")}` : "";
-  return `A faixa e a mediana comparam anos${base} em % da EAR máxima de cada época, e a EAR máxima do SIN variou de ${num(a.minMwmes, 0)} a ${num(a.maxMwmes, 0)} MWmês nesse período (a menor ${num(queda, 1)}% abaixo da maior): o mesmo percentual em épocas diferentes não é a mesma energia.`;
+  const base = a.periodoBase ? tx(` de ${a.periodoBase.replace("-", " a ")}`, ` from ${a.periodoBase.replace("-", " to ")}`, idioma) : "";
+  return tx(
+    `A faixa e a mediana comparam anos${base} em % da EAR máxima de cada época, e a EAR máxima do SIN variou de ${num(a.minMwmes, 0, idioma)} a ${num(a.maxMwmes, 0, idioma)} MWmês nesse período (a menor ${num(queda, 1, idioma)}% abaixo da maior): o mesmo percentual em épocas diferentes não é a mesma energia.`,
+    `The range and the median compare years${base} as % of the maximum EAR of each period, and the SIN maximum EAR ranged from ${num(a.minMwmes, 0, idioma)} to ${num(a.maxMwmes, 0, idioma)} MWmonth over that period (the smallest ${num(queda, 1, idioma)}% below the largest): the same percentage in different periods is not the same energy.`,
+    idioma,
+  );
 }
 
 /** A EAR que o módulo Água e clima mostra, quando o dia dele não é o da Visão geral: cada página diz o dia que usa. */
-export function textoEarNoModulo(a: { diaVisao: string; diaModulo: string | null; pctModulo: number | null }): string | null {
+export function textoEarNoModulo(a: { diaVisao: string; diaModulo: string | null; pctModulo: number | null }, idioma: Idioma = idiomaEnergia()): string | null {
   if (a.diaModulo === null || a.pctModulo === null || a.diaModulo === a.diaVisao) return null;
-  return `A página Água e clima, de outra captura do ONS, traz ${num(a.pctModulo, 1)}% em ${dataBR(a.diaModulo)}.`;
+  return tx(
+    `A página Água e clima, de outra captura do ONS, traz ${num(a.pctModulo, 1, idioma)}% em ${dataBR(a.diaModulo, idioma)}.`,
+    `The Water and climate page, from another ONS capture, shows ${num(a.pctModulo, 1, idioma)}% on ${dataBR(a.diaModulo, idioma)}.`,
+    idioma,
+  );
 }
 
 /** A carga nos dois cortes: o que esta página usa na frase e o padrão da página Carga, com os dois percentuais na mesma casa. */
-export function textoCargaNoModulo(a: { mesmasDatasPct: number | null; mesmosDiasDaSemanaPct: number | null; mesmosDiasDaSemanaInicio: string | null; mesmosDiasDaSemanaFim: string | null }): string | null {
+export function textoCargaNoModulo(
+  a: { mesmasDatasPct: number | null; mesmosDiasDaSemanaPct: number | null; mesmosDiasDaSemanaInicio: string | null; mesmosDiasDaSemanaFim: string | null },
+  idioma: Idioma = idiomaEnergia(),
+): string | null {
   if (a.mesmasDatasPct === null || a.mesmosDiasDaSemanaPct === null) return null;
-  const periodo = a.mesmosDiasDaSemanaInicio && a.mesmosDiasDaSemanaFim ? ` (${dataBR(a.mesmosDiasDaSemanaInicio)} a ${dataBR(a.mesmosDiasDaSemanaFim)})` : "";
-  const direcao = (v: number) => (v >= 0 ? "alta" : "queda");
-  return `Na página Carga, a comparação padrão é com os mesmos dias da semana, 52 semanas antes${periodo}: ${direcao(a.mesmosDiasDaSemanaPct)} de ${num(Math.abs(a.mesmosDiasDaSemanaPct), 2)}%. Esta página usa as mesmas datas do ano anterior, que na Carga dão ${direcao(a.mesmasDatasPct)} de ${num(Math.abs(a.mesmasDatasPct), 2)}%.`;
+  const ini = a.mesmosDiasDaSemanaInicio ? dataBR(a.mesmosDiasDaSemanaInicio, idioma) : "";
+  const fim = a.mesmosDiasDaSemanaFim ? dataBR(a.mesmosDiasDaSemanaFim, idioma) : "";
+  const periodo = a.mesmosDiasDaSemanaInicio && a.mesmosDiasDaSemanaFim ? tx(` (${ini} a ${fim})`, ` (${ini} to ${fim})`, idioma) : "";
+  const direcao = (v: number) => (v >= 0 ? tx("alta", "an increase", idioma) : tx("queda", "a decrease", idioma));
+  const p = (v: number) => num(Math.abs(v), 2, idioma);
+  return tx(
+    `Na página Carga, a comparação padrão é com os mesmos dias da semana, 52 semanas antes${periodo}: ${direcao(a.mesmosDiasDaSemanaPct)} de ${p(a.mesmosDiasDaSemanaPct)}%. Esta página usa as mesmas datas do ano anterior, que na Carga dão ${direcao(a.mesmasDatasPct)} de ${p(a.mesmasDatasPct)}%.`,
+    `On the Load page, the default comparison is with the same weekdays, 52 weeks earlier${periodo}: ${direcao(a.mesmosDiasDaSemanaPct)} of ${p(a.mesmosDiasDaSemanaPct)}%. This page uses the same dates of the previous year, which on the Load page give ${direcao(a.mesmasDatasPct)} of ${p(a.mesmasDatasPct)}%.`,
+    idioma,
+  );
 }
 
 /** Horas do dia em que o fluxo da fronteira foi contra o sentido do saldo líquido (o saldo as compensa). */
@@ -1591,11 +2250,29 @@ export function horasContraOSaldo(c: { liquido_mwh: readonly (number | null)[]; 
 }
 
 /** Saldo líquido do dia e as horas contra o saldo em cada fronteira, com a ligação para a página Rede escrita pelo componente. */
-export function textoSaldoLiquidoRede(a: { dia: string; fronteiras: readonly { rotulo: string; horasContra: number | null; horas: number }[]; diaModulo: string | null }): string {
-  const listadas = a.fronteiras.filter((f) => f.horasContra !== null).map((f) => `${f.rotulo}, ${num(f.horasContra as number, 0)} de ${num(f.horas, 0)}`);
-  const horas = listadas.length ? ` Horas do dia em que o fluxo foi contra o sentido do saldo: ${listadas.join("; ")}.` : "";
-  const modulo = a.diaModulo && a.diaModulo !== a.dia ? ` A página Rede traz também ${dataBR(a.diaModulo)}.` : "";
-  return `Saldo líquido do dia ${dataBR(a.dia)}: a média das 24 horas do fluxo verificado em cada fronteira, positiva da primeira para a segunda ponta; as horas em sentido contrário ficam compensadas no saldo.${horas}${modulo}`;
+export function textoSaldoLiquidoRede(
+  a: { dia: string; fronteiras: readonly { rotulo: string; horasContra: number | null; horas: number }[]; diaModulo: string | null },
+  idioma: Idioma = idiomaEnergia(),
+): string {
+  const listadas = a.fronteiras
+    .filter((f) => f.horasContra !== null)
+    .map((f) =>
+      tx(
+        `${f.rotulo}, ${num(f.horasContra as number, 0, "pt")} de ${num(f.horas, 0, "pt")}`,
+        `${fronteiraEn(f.rotulo)}, ${num(f.horasContra as number, 0, "en")} of ${num(f.horas, 0, "en")}`,
+        idioma,
+      ),
+    );
+  const horas = listadas.length
+    ? tx(` Horas do dia em que o fluxo foi contra o sentido do saldo: ${listadas.join("; ")}.`, ` Hours of the day in which the flow ran against the direction of the balance: ${listadas.join("; ")}.`, idioma)
+    : "";
+  const outroDia = a.diaModulo ? dataBR(a.diaModulo, idioma) : "";
+  const modulo = a.diaModulo && a.diaModulo !== a.dia ? tx(` A página Rede traz também ${outroDia}.`, ` The Grid page also shows ${outroDia}.`, idioma) : "";
+  return tx(
+    `Saldo líquido do dia ${dataBR(a.dia, "pt")}: a média das 24 horas do fluxo verificado em cada fronteira, positiva da primeira para a segunda ponta; as horas em sentido contrário ficam compensadas no saldo.${horas}${modulo}`,
+    `Net balance of the day ${dataBR(a.dia, "en")}: the average of the 24 hours of verified flow on each border, positive from the first to the second end; the hours in the opposite direction are offset in the balance.${horas}${modulo}`,
+    idioma,
+  );
 }
 
 /* ---------------------------------------------------------------- r10: determinantes com poucas props para o cliente */
@@ -1653,6 +2330,7 @@ export function determinantesDaPagina(
   ear: ReadonlyMap<string, number>,
   bandas: readonly { md: string; SIN_p50?: number | null }[],
   periodoMediana: string | null,
+  idioma: Idioma = idiomaEnergia(),
 ): { m: MultiplosVisao; leves: DeterminantesLeves } {
   const dados = comMedianaAgua(comEarPrecisa(m.dados, ear), bandas).sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
   const temMediana = dados.some((l) => typeof l.agua_p50 === "number");
@@ -1664,12 +2342,19 @@ export function determinantesDaPagina(
   const exato: MultiplosVisao = { ...m, dados, paineis };
   const campos = Array.from(new Set(dados.flatMap((l) => Object.keys(l))));
   campos.sort((a, b) => (a === "d" ? -1 : b === "d" ? 1 : 0));
-  const colunasTabela = colunasMultiplos(exato);
-  const extras: Partial<Record<IdPainelMultiplo, SerieExtra[]>> = temMediana ? { agua: [{ id: "agua_p50", rotulo: `Mediana da data${periodoMediana ? ` (${periodoMediana})` : ""}` }] } : {};
+  const colunasTabela = colunasMultiplos(exato, idioma);
+  const base = periodoMediana ? ` (${periodoMediana})` : "";
+  const extras: Partial<Record<IdPainelMultiplo, SerieExtra[]>> = temMediana ? { agua: [{ id: "agua_p50", rotulo: tx(`Mediana da data${base}`, `Median for the date${base}`, idioma) }] } : {};
   if (temMediana) {
     const i = colunasTabela.findIndex((c) => c.id === "agua_p10");
     const agua = paineis.find((p) => p.id === "agua");
-    const col: ColunaTabela = { id: "agua_p50", rotulo: `Água: mediana da data${periodoMediana ? ` (${periodoMediana})` : ""}`, tipo: "numero", unidade: agua?.unidade, casas: agua?.casas ?? 1 };
+    const col: ColunaTabela = {
+      id: "agua_p50",
+      rotulo: tx(`Água: mediana da data${base}`, `${agua?.titulo ?? "Water"}: median for the date${base}`, idioma),
+      tipo: "numero",
+      unidade: agua?.unidade,
+      casas: agua?.casas ?? 1,
+    };
     colunasTabela.splice(i >= 0 ? i : colunasTabela.length, 0, col);
   }
   const leves: PainelLeve[] = paineis.map((p, k) => ({
@@ -1681,12 +2366,13 @@ export function determinantesDaPagina(
     colunas: p.colunas,
     referencia: referenciaLeve(p.referencia),
     dataReferencia: p.data_referencia,
-    valorTexto: valorAtualTexto(p),
+    valorTexto: valorAtualTexto(p, idioma),
     rotuloValor: p.valor_atual.rotulo,
-    leitura: leituraDeterminante(p, exato),
+    leitura: leituraDeterminante(p, exato, idioma),
     defasagem: p.texto_defasagem,
     // sigla no primeiro uso: a nota do pipeline cita a MMGD sem dizer o que é
-    nota: expandeSiglas(p.nota, ["MMGD"]),
+    nota: expandeSiglas(p.nota, ["MMGD"], idioma),
+
     href: p.href,
     comprove: p.evidencia
       ? { caminho: `multiplos.paineis[${k}].evidencia`, indicador: p.valor_atual.rotulo ? `${p.titulo} (${p.valor_atual.rotulo})` : p.titulo, valorExibido: p.evidencia.valor_exibido }

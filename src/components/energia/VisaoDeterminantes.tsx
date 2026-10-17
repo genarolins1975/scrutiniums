@@ -2,13 +2,17 @@
 
 import { useId, useMemo } from "react";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
+import Link from "@/components/energia/LinkSemPrefetch";
+
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { goldNoBloco } from "@/lib/energia/i18n/entrada-visao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { IdPainelMultiplo, LinhaMultiplos } from "@/lib/energia/tipos-visao";
 import {
   JANELAS_P005,
@@ -42,7 +46,7 @@ import {
  */
 
 const ESQUEMA = {
-  dias: campo(tiposUrl.opcao(JANELAS_P005), "90" as JanelaP005, { param: "p005.dias" }),
+  dias: campo(tiposUrl.opcao(JANELAS_P005), "90" as JanelaP005, { param: "p005.dias" }), // i18n: dado
   sm: campo(tiposUrl.lista(tiposUrl.texto({ max: 24 }), { max: 4 }), [] as string[], { param: "p005.sm" }),
   fr: campo(tiposUrl.lista(tiposUrl.texto({ max: 24 }), { max: 4 }), [] as string[], { param: "p005.fr" }),
 };
@@ -75,12 +79,15 @@ function Cartao({
   /** Pontes entre este número e o da mesma grandeza em outro corte ou em outro módulo, escritas a partir da gold (visao.ts). */
   notas?: readonly string[];
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { dataBR } = formatos(idioma);
   const extras = d.extras[p.id] ?? [];
   const dados = dadosDeterminante(p, linhas, extras);
   const banda = bandaDeterminante(p);
   const series = seriesDeterminante(p, extras);
   const multi = p.colunas.length > 1;
-  const fmt = (v: number | null) => comUnidade(v, p.unidade, p.casas);
+  const fmt = (v: number | null) => comUnidade(v, p.unidade, p.casas, idioma);
   // o valor das séries extras (a mediana da data) no dia de referência do painel, lido da mesma linha do gráfico
   const doDia = extras.map((e) => ({ rotulo: e.rotulo, valor: valorNoDia(todas, p.dataReferencia, e.id) })).filter((x) => x.valor !== null);
   return (
@@ -96,7 +103,10 @@ function Cartao({
               endereco={`${ROTA_VISAO}#${ancoras?.id ?? "determinantes"}`}
             />
           ) : (
-            <span className="text-xs text-aviso">Prova do valor não publicada nesta execução{p.semEvidencia ? `: ${p.semEvidencia}` : "."}</span>
+            <span className="text-xs text-aviso">
+              {tx("Prova do valor não publicada nesta execução", "Proof of the value not published in this run")}
+              {p.semEvidencia ? <>: {goldNoBloco(p.semEvidencia, idioma, `visao-determinante-${p.id}-prova-ausente`)}</> : "."}
+            </span>
           )}
         </div>
         <p data-nivel="analisar" className="text-xs text-carvao-muted">
@@ -107,7 +117,7 @@ function Cartao({
             {p.valorTexto}
           </span>
           {p.rotuloValor && <span className="text-sm text-carvao-muted">{p.rotuloValor}</span>}
-          <span className="text-xs text-carvao-muted">{p.id === "geracao" ? `7 dias até ${dataBR(p.dataReferencia)}` : dataBR(p.dataReferencia)}</span>
+          <span className="text-xs text-carvao-muted">{p.id === "geracao" ? tx(`7 dias até ${dataBR(p.dataReferencia)}`, `7 days through ${dataBR(p.dataReferencia)}`) : dataBR(p.dataReferencia)}</span>
         </p>
       </div>
       <div className="mt-1">
@@ -135,8 +145,16 @@ function Cartao({
       )}
       {p.id === "preco" && (
         <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-precos-do-dia="">
-          Mesmo dia nos quatro submercados: {p.colunas.map((c) => `${c.rotulo} ${fmt(valorNoDia(todas, p.dataReferencia, c.id))}`).join("; ")}. Quando os preços coincidem, as linhas se sobrepõem: a do Norte é tracejada para a do
-          Sudeste/Centro-Oeste continuar visível.
+          {tx(
+            <>
+              Mesmo dia nos quatro submercados: {p.colunas.map((c) => `${c.rotulo} ${fmt(valorNoDia(todas, p.dataReferencia, c.id))}`).join("; ")}. Quando os preços coincidem, as linhas se sobrepõem: a do Norte é tracejada para a do
+              Sudeste/Centro-Oeste continuar visível.
+            </>,
+            <>
+              Same day in the four submarkets: {p.colunas.map((c) => `${c.rotulo} ${fmt(valorNoDia(todas, p.dataReferencia, c.id))}`).join("; ")}. When the prices coincide, the lines overlap: the North line is dashed so that the
+              Southeast/Center-West line stays visible.
+            </>,
+          )}
         </p>
       )}
       <p data-nivel="analisar" className="mt-1 text-xs text-mineral">
@@ -146,18 +164,25 @@ function Cartao({
         <div className="mt-3 space-y-1.5 border-t border-linha pt-3 text-xs leading-relaxed text-carvao" data-nota-determinante={p.id}>
           {notas.map((n, i) => (
             <p key={n}>
-              {i === 0 && <span className="rotulo mr-2 text-mineral">Para ler junto</span>}
+              {i === 0 && <span className="rotulo mr-2 text-mineral">{tx("Para ler junto", "Read together")}</span>}
               {n}
             </p>
           ))}
         </div>
       )}
       <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
-        Referência: {p.referencia.rotulo}.{extras.length > 0 ? ` Linha tracejada: ${extras.map((e) => e.rotulo.toLowerCase()).join("; ")}.` : ""} {p.nota}
+        {tx(
+          <>
+            Referência: {p.referencia.rotulo}.{extras.length > 0 ? ` Linha tracejada: ${extras.map((e) => e.rotulo.toLowerCase()).join("; ")}.` : ""} {p.nota}
+          </>,
+          <>
+            Reference: {p.referencia.rotulo}.{extras.length > 0 ? ` Dashed line: ${extras.map((e) => e.rotulo.toLowerCase()).join("; ")}.` : ""} {p.nota}
+          </>,
+        )}
       </p>
-      <a href={p.href} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">
-        Ver no painel de origem
-      </a>
+      <Link href={p.href} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">
+        {tx("Ver no painel de origem", "See it in the source panel")}
+      </Link>
     </section>
   );
 }
@@ -175,6 +200,9 @@ export function VisaoDeterminantes({
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const nome = useId();
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { dataBR } = formatos(idioma);
   const todas = useMemo(() => linhasDeColunas(d.campos, d.linhas), [d.campos, d.linhas]);
   const n = Number(v.dias);
   const linhas = useMemo(() => todas.slice(-Math.max(1, Math.min(n, todas.length))), [todas, n]);
@@ -186,7 +214,7 @@ export function VisaoDeterminantes({
       <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
         <div role="radiogroup" aria-labelledby={`${nome}-rotulo`} className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
           <span id={`${nome}-rotulo`} className="rotulo text-mineral">
-            Janela dos cinco gráficos
+            {tx("Janela dos cinco gráficos", "Window of the five charts")}
           </span>
           <div className="flex flex-wrap gap-1.5">
             {JANELAS_P005.map((j) => {
@@ -199,15 +227,22 @@ export function VisaoDeterminantes({
                   }`}
                 >
                   <input type="radio" name={nome} value={j} checked={ativo} onChange={() => definir({ dias: j })} className="sr-only" />
-                  Últimos {j} dias
+                  {tx(`Últimos ${j} dias`, `Last ${j} days`)}
                 </label>
               );
             })}
           </div>
         </div>
         <p className="min-w-0 text-xs leading-relaxed text-carvao-muted" data-periodo-determinantes="" aria-live="polite">
-          <span className="rotulo mr-1.5 text-mineral">Período</span>
-          {dataBR(inicio)} a {dataBR(fim)} ({linhas.length} dias)
+          <span className="rotulo mr-1.5 text-mineral">{tx("Período", "Period")}</span>
+          {tx(
+            <>
+              {dataBR(inicio)} a {dataBR(fim)} ({linhas.length} dias)
+            </>,
+            <>
+              {dataBR(inicio)} to {dataBR(fim)} ({linhas.length} {linhas.length === 1 ? "day" : "days"})
+            </>,
+          )}
         </p>
       </div>
       <CursorSincronizado>
@@ -229,21 +264,26 @@ export function VisaoDeterminantes({
       </CursorSincronizado>
       <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3" data-recorte-determinantes="">
         <div>
-          <dt className="rotulo text-mineral">Período</dt>
-          <dd className="mt-0.5 leading-relaxed">{periodoDaJanela(linhas)}</dd>
+          <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
+          <dd className="mt-0.5 leading-relaxed">{periodoDaJanela(linhas, idioma)}</dd>
         </div>
         <div>
-          <dt className="rotulo text-mineral">Universo</dt>
-          <dd className="mt-0.5 leading-relaxed">PLD por submercado; EAR e carga do SIN; participação térmica do SIN em 7 dias; intercâmbio nas fronteiras do ONS. O cursor de um gráfico marca a mesma data nos outros quatro.</dd>
+          <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
+          <dd className="mt-0.5 leading-relaxed">
+            {tx(
+              "PLD por submercado; EAR e carga do SIN; participação térmica do SIN em 7 dias; intercâmbio nas fronteiras do ONS. O cursor de um gráfico marca a mesma data nos outros quatro.",
+              "PLD by submarket; SIN EAR and load; SIN thermal share over 7 days; interchange on the ONS borders. The cursor of one chart marks the same date in the other four.",
+            )}
+          </dd>
         </div>
         <div>
-          <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5 leading-relaxed">{d.paineis.map((p) => `${p.titulo.toLowerCase()} em ${p.unidade}`).join("; ")}</dd>
+          <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
+          <dd className="mt-0.5 leading-relaxed">{d.paineis.map((p) => tx(`${p.titulo.toLowerCase()} em ${p.unidade}`, `${p.titulo.toLowerCase()} in ${p.unidade}`)).join("; ")}</dd>
         </div>
       </dl>
-      <SecaoDoPainel nivel="analisar" id="determinantes-tabela" titulo="Os cinco determinantes como tabela, dia a dia">
+      <SecaoDoPainel nivel="analisar" id="determinantes-tabela" titulo={tx("Os cinco determinantes como tabela, dia a dia", "The five determinants as a table, day by day")}>
         <TabelaInterativa
-          titulo={`Os cinco determinantes, dia a dia, de ${dataBR(inicio)} a ${dataBR(fim)}`}
+          titulo={tx(`Os cinco determinantes, dia a dia, de ${dataBR(inicio)} a ${dataBR(fim)}`, `The five determinants, day by day, from ${dataBR(inicio)} to ${dataBR(fim)}`)}
           colunas={d.colunasTabela}
           linhas={linhasMultiplos(linhas)}
           chaveLinha="id"
@@ -253,7 +293,10 @@ export function VisaoDeterminantes({
           nomeArquivo="visao-geral-determinantes"
           chaveUrl="p005.t"
           ordemInicial={{ coluna: "d", direcao: "desc" }}
-          nota="Célula vazia é dia sem valor na base publicada de origem (nunca zero). Mesmas linhas dos cinco gráficos, na janela escolhida, e a mesma EAR do cartão, arredondada uma só vez."
+          nota={tx(
+            "Célula vazia é dia sem valor na base publicada de origem (nunca zero). Mesmas linhas dos cinco gráficos, na janela escolhida, e a mesma EAR do cartão, arredondada uma só vez.",
+            "An empty cell is a day with no value in the published source base (never zero). The same rows as the five charts, in the chosen window, and the same EAR as the card, rounded only once.",
+          )}
         />
       </SecaoDoPainel>
     </div>

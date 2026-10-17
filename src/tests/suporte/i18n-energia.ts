@@ -17,7 +17,7 @@ const ATRIBUTOS = ["aria-label", "aria-description", "title", "alt", "placeholde
 /** Nomes próprios que aparecem em prosa inglesa com a grafia original (sem marca). */
 const NOMES_LIVRES = ["Brasília", "São Paulo", "Paraná", "Maranhão", "Pará", "Amapá", "Goiás", "Piauí", "Ceará", "Rondônia", "Espírito Santo"];
 
-const PT_FORTE = new RegExp("(?:^|[^\\p{L}])(?:de|da|das|dos|em|na|nas|nos|para|pelo|pela|pelos|pelas|com|que|uma|não|são|à|às|ao|aos|também|está|entre|quando|cada|até|desde|após|sem|mais|ou|é)(?=$|[^\\p{L}])|\\p{L}(?:ção|ções|ões)(?=$|[^\\p{L}])", "iu");
+const PT_FORTE = new RegExp("(?:^|[^\\p{L}])(?:de|da|das|dos|em|na|nas|nos|para|pelo|pela|pelos|pelas|com|que|uma|não|são|à|às|ao|aos|também|está|entre|quando|cada|até|desde|após|sem|mais|ou|é|energia|armazenada|usina|usinas|preço|preços|consumo|fonte|fontes|dados|valor|valores|ano|anos|mês|meses|dia|dias|hora|horas|média|leilão|leilões|tarifa|tarifas|conta|distribuidora|distribuidoras|geração|carga|rede|perdas|qualidade|mercado|regra|regras|ver|abrir|baixar|mostrar|fechar|todos|todas|nenhum|nenhuma|outros|outras|sobre|período|janela|observado|calculado|estimado|previsto|cenário|página|painel|semana|semanas|abaixo|acima|maior|menor|últimos|últimas|hoje|ontem)(?=$|[^\\p{L}])|\\p{L}(?:ção|ções|ões)(?=$|[^\\p{L}])", "iu");
 const PT_ATRIBUTO = new RegExp("(?:^|[^\\p{L}])(?:não|para|com|que|uma|também|está|abrir|baixar|ver|fechar|mostrar|página|painel)(?=$|[^\\p{L}])|\\p{L}(?:ção|ções)(?=$|[^\\p{L}])", "iu");
 const ACENTO = /[ãõçáéíóúâêôàÃÕÇÁÉÍÓÚÂÊÔÀ]/;
 
@@ -59,12 +59,22 @@ export function vazamentosEnergia(pt: No, en: No): { pt: string[]; en: string[] 
   return { pt: vazamentos(pt, "pt"), en: [...vazamentos(en, "en"), ...portuguesSemMarca(en)] };
 }
 
-const MESES: Record<string, number> = {
-  jan: 1, fev: 2, mar: 3, abr: 4, mai: 5, jun: 6, jul: 7, ago: 8, set: 9, out: 10, nov: 11, dez: 12,
-  janeiro: 1, fevereiro: 2, "março": 3, abril: 4, maio: 5, junho: 6, julho: 7, agosto: 8, setembro: 9, outubro: 10, novembro: 11, dezembro: 12,
-  feb: 2, apr: 4, may: 5, aug: 8, sep: 9, oct: 10, dec: 12,
-  january: 1, february: 2, march: 3, april: 4, june: 6, july: 7, august: 8, september: 9, october: 10, november: 11, december: 12,
-};
+const ABREV_PT = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+const LONGO_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+const ABREV_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const LONGO_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const alternativa = (lista: string[]) => lista.join("|");
+/**
+ * O nome do mês só conta como mês colado a um número, como os formatadores o escrevem: "out/2026",
+ * "7 de outubro de 2026", "outubro de 2026", "Oct 17, 2026", "Oct 2026", "May ’23", "October 7".
+ * Assim "dez períodos", "set of" e "may" verbal não viram mês.
+ */
+const MES_DATA: [RegExp, string[]][] = [
+  [new RegExp(`(?<![\\p{L}])(${alternativa(ABREV_PT)})(?=/\\d)`, "giu"), ABREV_PT],
+  [new RegExp(`(?<![\\p{L}])(${alternativa(LONGO_PT)})(?= de \\d)`, "giu"), LONGO_PT],
+  [new RegExp(`(?<![\\p{L}])(${alternativa(LONGO_EN)})(?= \\d)`, "gu"), LONGO_EN],
+  [new RegExp(`(?<![\\p{L}])(${alternativa(ABREV_EN)})(?= (?:\\d|\u2019\\d))`, "gu"), ABREV_EN],
+];
 
 function textoVisivel(no: No): string {
   if ("value" in no) return no.value;
@@ -78,12 +88,9 @@ function textoVisivel(no: No): string {
  */
 export function numerosNormalizados(corpo: No): string[] {
   const t = textoVisivel(corpo)
-    .replace(/\b(\d{1,2})h\b/g, "$1:00")
-    .replace(new RegExp("\\p{L}+", "gu"), (p) => {
-      const n = MESES[p.toLowerCase()];
-      return n ? ` ${n} ` : p;
-    });
-  return (t.match(/\d+/g) ?? []).map((d) => String(Number(d))).sort();
+    .replace(/\b(\d{1,2})h\b/g, "$1:00");
+  const comMeses = MES_DATA.reduce((acc, [re, lista]) => acc.replace(re, (m) => ` ${lista.findIndex((x) => x.toLowerCase() === m.toLowerCase()) + 1} `), t);
+  return (comMeses.match(/\d+/g) ?? []).map((d) => String(Number(d))).sort();
 }
 
 export function diferencaMulticonjunto(a: string[], b: string[]): { soEmA: string[]; soEmB: string[] } {

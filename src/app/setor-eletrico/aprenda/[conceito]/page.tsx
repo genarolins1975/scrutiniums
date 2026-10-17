@@ -6,6 +6,7 @@ import { AprendaVerbete } from "@/components/energia/AprendaVerbete";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { CONCEITOS, conceito } from "@/lib/energia/conteudo/conceitos";
+import { tx } from "@/lib/energia/idioma";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -19,8 +20,9 @@ function metadadosDaPagina({ params }: { params: { conceito: string } }): Metada
   if (!c) return {};
   const nome = c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() ? `${c.sigla}: ${c.nome}` : c.nome;
   return {
-    title: `${nome} · Aprenda`,
-    description: c.estado === "CONFERIDO" ? c.emUmaFrase : `Verbete em preparação: ${c.nome}. Fonte primária a conferir.`,
+    title: tx(`${nome} · Aprenda`, `${nome} · Learn`),
+    description:
+      c.estado === "CONFERIDO" ? c.emUmaFrase : tx(`Verbete em preparação: ${c.nome}. Fonte primária a conferir.`, `Entry in preparation: ${c.nome}. Primary source still to be checked.`),
     alternates: { canonical: `/setor-eletrico/aprenda/${c.slug}` },
     // verbete em preparação não tem definição publicada: não deve ser indexado
     ...(c.estado === "PENDENTE" ? { robots: { index: false, follow: true } } : {}),

@@ -21,19 +21,34 @@
  */
 import { somarDias, somarHoras, somarMeses } from "@/lib/energia/calendario";
 import { dominioBonito, valido, type Dominio } from "@/lib/energia/escalas";
+import { dataBR, mesAnoCurto, nomeMes } from "@/lib/energia/formato";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import type { Idioma } from "@/lib/idioma";
 
 export type FormatoX = "data" | "hora" | "mes" | "md" | "texto";
 export type PontoSerie = Record<string, string | number | null | undefined>;
 
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 
-/** Rótulo do valor de X: curto no eixo, longo (data completa) na dica, na tabela e no leitor de tela. */
-export function formatarX(v: string, f: FormatoX | undefined, longo = false): string {
+/**
+ * Rótulo do valor de X: curto no eixo, longo (data completa) na dica, na tabela e no leitor de tela. Em inglês: "May ’23" no eixo,
+ * "May 3, 2023" por extenso, "23:00" e "Oct 7, 23:00" para hora; o valor é o mesmo.
+ */
+export function formatarX(v: string, f: FormatoX | undefined, longo = false, idioma: Idioma = idiomaEnergia()): string {
   if (!v) return "";
+  if (idioma === "en") return formatarXEn(v, f, longo);
   if (f === "hora") return longo && v.length > 5 ? `${v.slice(8, 10)}/${v.slice(5, 7)} ${v.slice(11, 13)}h` : v.length > 5 ? `${v.slice(11, 13)}h` : `${v.slice(0, 2)}h`;
   if (f === "mes") return `${MESES[Number(v.slice(5, 7)) - 1]}/${v.slice(2, 4)}`;
   if (f === "md") return `${v.slice(3, 5)}/${v.slice(0, 2)}`;
   if (f === "data") return longo ? `${v.slice(8, 10)}/${v.slice(5, 7)}/${v.slice(0, 4)}` : `${MESES[Number(v.slice(5, 7)) - 1]}/${v.slice(2, 4)}`;
+  return v;
+}
+
+function formatarXEn(v: string, f: FormatoX | undefined, longo: boolean): string {
+  if (f === "hora") return longo && v.length > 5 ? `${nomeMes(Number(v.slice(5, 7)), "en")} ${Number(v.slice(8, 10))}, ${v.slice(11, 13)}:00` : v.length > 5 ? `${v.slice(11, 13)}:00` : `${v.slice(0, 2)}:00`;
+  if (f === "mes") return mesAnoCurto(v.slice(0, 7), "en");
+  if (f === "md") return `${nomeMes(Number(v.slice(0, 2)), "en")} ${Number(v.slice(3, 5))}`;
+  if (f === "data") return longo ? dataBR(v.slice(0, 10), "en") : mesAnoCurto(v.slice(0, 7), "en");
   return v;
 }
 
@@ -42,16 +57,16 @@ export function formatarX(v: string, f: FormatoX | undefined, longo = false): st
  * repete quando o intervalo exibido cabe em poucas semanas ("set/26" seis vezes). Nesse caso o eixo
  * passa para dia/mês e, se ainda repetir (anos diferentes), para dia/mês/ano.
  */
-export function rotulosDoEixoX(valores: readonly string[], f: FormatoX | undefined): string[] {
-  const curto = valores.map((v) => formatarX(v, f));
+export function rotulosDoEixoX(valores: readonly string[], f: FormatoX | undefined, idioma: Idioma = idiomaEnergia()): string[] {
+  const curto = valores.map((v) => formatarX(v, f, false, idioma));
   const unico = (l: string[]) => new Set(l).size === l.length;
   // marcas de hora que cobrem mais de um dia ("23h" três vezes) passam a dizer o dia: "07/10 23h"
-  if (f === "hora") return unico(curto) ? curto : valores.map((v) => formatarX(v, f, true));
+  if (f === "hora") return unico(curto) ? curto : valores.map((v) => formatarX(v, f, true, idioma));
   if (f !== "data") return curto;
   if (unico(curto)) return curto;
-  const diaMes = valores.map((v) => (v ? `${v.slice(8, 10)}/${v.slice(5, 7)}` : ""));
+  const diaMes = valores.map((v) => (v ? (idioma === "en" ? `${nomeMes(Number(v.slice(5, 7)), "en")} ${Number(v.slice(8, 10))}` : `${v.slice(8, 10)}/${v.slice(5, 7)}`) : ""));
   if (unico(diaMes)) return diaMes;
-  return valores.map((v) => formatarX(v, f, true));
+  return valores.map((v) => formatarX(v, f, true, idioma));
 }
 
 /* ---------- marcas do eixo X ---------- */
@@ -144,24 +159,24 @@ export function intervaloDosIndices(xs: readonly string[], a: number, b: number,
 
 export type PeriodoPronto = { id: string; rotulo: string; inicio: string; fim: string; pontos: number };
 
-type Regra = { id: string; rotulo: string; inicio: (fim: string) => string | null };
+type Regra = { id: string; rotulo: (idioma: Idioma) => string; inicio: (fim: string) => string | null };
 
 const REGRAS: Partial<Record<FormatoX, Regra[]>> = {
   data: [
-    { id: "30d", rotulo: "30 dias", inicio: (f) => somarDias(f, -29) },
-    { id: "90d", rotulo: "90 dias", inicio: (f) => somarDias(f, -89) },
-    { id: "1a", rotulo: "1 ano", inicio: (f) => (somarMeses(f, -12) ? somarDias(somarMeses(f, -12) as string, 1) : null) },
-    { id: "5a", rotulo: "5 anos", inicio: (f) => (somarMeses(f, -60) ? somarDias(somarMeses(f, -60) as string, 1) : null) },
+    { id: "30d", rotulo: (i) => tx("30 dias", "30 days", i), inicio: (f) => somarDias(f, -29) },
+    { id: "90d", rotulo: (i) => tx("90 dias", "90 days", i), inicio: (f) => somarDias(f, -89) },
+    { id: "1a", rotulo: (i) => tx("1 ano", "1 year", i), inicio: (f) => (somarMeses(f, -12) ? somarDias(somarMeses(f, -12) as string, 1) : null) },
+    { id: "5a", rotulo: (i) => tx("5 anos", "5 years", i), inicio: (f) => (somarMeses(f, -60) ? somarDias(somarMeses(f, -60) as string, 1) : null) },
   ],
   mes: [
-    { id: "12m", rotulo: "12 meses", inicio: (f) => somarMeses(f, -11) },
-    { id: "5a", rotulo: "5 anos", inicio: (f) => somarMeses(f, -59) },
-    { id: "10a", rotulo: "10 anos", inicio: (f) => somarMeses(f, -119) },
+    { id: "12m", rotulo: (i) => tx("12 meses", "12 months", i), inicio: (f) => somarMeses(f, -11) },
+    { id: "5a", rotulo: (i) => tx("5 anos", "5 years", i), inicio: (f) => somarMeses(f, -59) },
+    { id: "10a", rotulo: (i) => tx("10 anos", "10 years", i), inicio: (f) => somarMeses(f, -119) },
   ],
   hora: [
-    { id: "24h", rotulo: "24 horas", inicio: (f) => somarHoras(f, -23) },
-    { id: "7d", rotulo: "7 dias", inicio: (f) => somarHoras(f, -(7 * 24 - 1)) },
-    { id: "30d", rotulo: "30 dias", inicio: (f) => somarHoras(f, -(30 * 24 - 1)) },
+    { id: "24h", rotulo: (i) => tx("24 horas", "24 hours", i), inicio: (f) => somarHoras(f, -23) },
+    { id: "7d", rotulo: (i) => tx("7 dias", "7 days", i), inicio: (f) => somarHoras(f, -(7 * 24 - 1)) },
+    { id: "30d", rotulo: (i) => tx("30 dias", "30 days", i), inicio: (f) => somarHoras(f, -(30 * 24 - 1)) },
   ],
 };
 
@@ -172,7 +187,7 @@ const REGRAS: Partial<Record<FormatoX, Regra[]>> = {
  * mesmo recorte aparecem uma vez. Formatos sem calendário (dia do ano,
  * texto) não têm períodos prontos.
  */
-export function periodosProntos(xs: readonly string[], formato: FormatoX | undefined): PeriodoPronto[] {
+export function periodosProntos(xs: readonly string[], formato: FormatoX | undefined, idioma: Idioma = idiomaEnergia()): PeriodoPronto[] {
   const regras = REGRAS[formato ?? "data"];
   const n = xs.length;
   if (!regras || n < 3 || !crescente(xs)) return [];
@@ -184,7 +199,7 @@ export function periodosProntos(xs: readonly string[], formato: FormatoX | undef
     const i0 = xs.findIndex((x) => x >= ini);
     if (i0 <= 0 || n - i0 < 2) continue;
     if (out.some((p) => p.inicio === xs[i0])) continue;
-    out.push({ id: r.id, rotulo: r.rotulo, inicio: xs[i0], fim, pontos: n - i0 });
+    out.push({ id: r.id, rotulo: r.rotulo(idioma), inicio: xs[i0], fim, pontos: n - i0 });
   }
   return out;
 }

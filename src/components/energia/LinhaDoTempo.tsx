@@ -1,7 +1,8 @@
 "use client";
 
 import { Fragment, useId, useState } from "react";
-import { dataBR } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import {
   FILTRO_PADRAO,
   ROTULO_BASE,
@@ -54,6 +55,12 @@ export type LinhaDoTempoProps = {
 };
 
 export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroControlado, filtroInicial, onFiltro, ordem = "recentes", nivelTitulo = 3 }: LinhaDoTempoProps) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { dataBR } = formatos(idioma);
+  const nLoc = (v: number) => v.toLocaleString(idioma === "en" ? "en-US" : "pt-BR");
+  /** Nome da base de data no idioma ("publicação" / "publication"). */
+  const nomeBase = (b: BaseData) => tx(ROTULO_BASE[b], b === "publicacao" ? "publication" : "effective date");
   const uid = useId().replace(/:/g, "");
   const [filtroInterno, setFiltroInterno] = useState<FiltroLinhaDoTempo>({ ...FILTRO_PADRAO, ...filtroInicial });
   const filtro = filtroControlado ?? filtroInterno;
@@ -81,22 +88,29 @@ export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroContro
   const rotuloCategoria = (id: string) => categorias.find((c) => c.id === id)?.rotulo ?? id;
   const contagem = (id: string) => eventos.filter((e) => e.categoria === id).length;
 
-  const estado =
+  const estado = tx(
     `Mostrando ${r.eventos.length.toLocaleString("pt-BR")} de ${r.total.toLocaleString("pt-BR")} ${r.total === 1 ? "evento" : "eventos"}` +
-    (resumo ? `; ${resumo}` : "") +
-    "." +
-    (r.semDataNaBase
-      ? ` ${r.semDataNaBase.toLocaleString("pt-BR")} ${r.semDataNaBase === 1 ? "evento sem data" : "eventos sem data"} de ${ROTULO_BASE[filtro.base]} ${r.semDataNaBase === 1 ? "fica" : "ficam"} fora do recorte por período.`
-      : "");
+      (resumo ? `; ${resumo}` : "") +
+      "." +
+      (r.semDataNaBase
+        ? ` ${r.semDataNaBase.toLocaleString("pt-BR")} ${r.semDataNaBase === 1 ? "evento sem data" : "eventos sem data"} de ${ROTULO_BASE[filtro.base]} ${r.semDataNaBase === 1 ? "fica" : "ficam"} fora do recorte por período.`
+        : ""),
+    `Showing ${nLoc(r.eventos.length)} of ${nLoc(r.total)} ${r.total === 1 ? "event" : "events"}` +
+      (resumo ? `; ${resumo}` : "") +
+      "." +
+      (r.semDataNaBase
+        ? ` ${nLoc(r.semDataNaBase)} ${r.semDataNaBase === 1 ? "event" : "events"} with no ${nomeBase(filtro.base)} date ${r.semDataNaBase === 1 ? "falls" : "fall"} outside the period filter.`
+        : ""),
+  );
 
   const campoData = "mt-0.5 block min-h-[44px] border border-linha bg-superficie px-2 text-sm text-carvao focus:border-energia";
 
   return (
     <div className="w-full" data-grafico="linha-do-tempo">
-      <div role="group" aria-label={`Filtros: ${titulo}`} className="mb-4 space-y-1 border-b border-linha pb-3">
+      <div role="group" aria-label={tx(`Filtros: ${titulo}`, `Filters: ${titulo}`)} className="mb-4 space-y-1 border-b border-linha pb-3">
         {categorias.length > 1 && (
           <fieldset className="flex flex-wrap items-center gap-x-4">
-            <legend className="rotulo float-left mr-3 text-mineral">Categoria</legend>
+            <legend className="rotulo float-left mr-3 text-mineral">{tx("Categoria", "Category")}</legend>
             {categorias.map((c) => (
               <label key={c.id} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
                 <input
@@ -111,19 +125,19 @@ export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroContro
           </fieldset>
         )}
         <fieldset className="flex flex-wrap items-end gap-x-4 gap-y-1">
-          <legend className="rotulo float-left mr-3 self-center text-mineral">Período por data de</legend>
+          <legend className="rotulo float-left mr-3 self-center text-mineral">{tx("Período por data de", "Period by date of")}</legend>
           {(["publicacao", "vigencia"] as BaseData[]).map((b) => (
             <label key={b} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
               <input type="radio" name={`${uid}-base`} value={b} checked={filtro.base === b} onChange={() => mudar({ base: b })} className="h-4 w-4 accent-energia" />
-              {ROTULO_BASE[b]}
+              {nomeBase(b)}
             </label>
           ))}
           <label className="text-xs text-carvao-muted">
-            De
+            {tx("De", "From")}
             <input type="date" value={periodo.inicio ?? ""} onChange={(e) => mudar({ inicio: e.currentTarget.value || null })} className={campoData} />
           </label>
           <label className="text-xs text-carvao-muted">
-            Até
+            {tx("Até", "To")}
             <input type="date" value={periodo.fim ?? ""} onChange={(e) => mudar({ fim: e.currentTarget.value || null })} className={campoData} />
           </label>
         </fieldset>
@@ -137,21 +151,21 @@ export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroContro
             onClick={() => ativo && mudar({ categorias: null, inicio: null, fim: null })}
             className={`rotulo inline-flex min-h-[44px] items-center border px-3 ${ativo ? "border-carvao-muted text-carvao hover:border-carvao" : "cursor-default border-linha text-mineral"}`}
           >
-            Limpar filtros
+            {tx("Limpar filtros", "Clear filters")}
           </button>
         </div>
       </div>
       {r.eventos.length === 0 ? (
         <p className="border border-dashed border-linha px-4 py-6 text-sm text-carvao-muted">
-          {eventos.length ? "Nenhum evento no filtro atual." : "Nenhum evento registrado."}
+          {eventos.length ? tx("Nenhum evento no filtro atual.", "No events in the current filter.") : tx("Nenhum evento registrado.", "No events recorded.")}
         </p>
       ) : (
         <ol aria-label={titulo} className="ml-1.5 border-l border-linha">
           {r.eventos.map((e, k) => {
             const dataBase = e[filtro.base];
-            const ano = dataBase ? dataBase.slice(0, 4) : `sem data de ${ROTULO_BASE[filtro.base]}`;
+            const ano = dataBase ? dataBase.slice(0, 4) : tx(`sem data de ${ROTULO_BASE[filtro.base]}`, `no ${nomeBase(filtro.base)} date`);
             const anterior = k > 0 ? r.eventos[k - 1][filtro.base] : undefined;
-            const anoAnterior = k === 0 ? null : anterior ? anterior.slice(0, 4) : `sem data de ${ROTULO_BASE[filtro.base]}`;
+            const anoAnterior = k === 0 ? null : anterior ? anterior.slice(0, 4) : tx(`sem data de ${ROTULO_BASE[filtro.base]}`, `no ${nomeBase(filtro.base)} date`);
             const url = urlSegura(e.fonte?.url);
             const defasagem = textoDefasagem(e.publicacao, e.vigencia);
             const idTitulo = `${uid}-${k}`;
@@ -173,31 +187,31 @@ export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroContro
                     {e.titulo}
                   </Titulo>
                   <dl className="mt-1.5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-0.5 text-sm">
-                    <dt className="text-carvao-muted">Publicação</dt>
+                    <dt className="text-carvao-muted">{tx("Publicação", "Publication")}</dt>
                     <dd className="tabular-nums text-carvao">
-                      {e.publicacao ? <time dateTime={e.publicacao}>{dataBR(e.publicacao)}</time> : <span className="italic text-mineral">não informada</span>}
+                      {e.publicacao ? <time dateTime={e.publicacao}>{dataBR(e.publicacao)}</time> : <span className="italic text-mineral">{tx("não informada", "not reported")}</span>}
                     </dd>
-                    <dt className="text-carvao-muted">Vigência</dt>
+                    <dt className="text-carvao-muted">{tx("Vigência", "Effective")}</dt>
                     <dd className="tabular-nums text-carvao">
                       {e.vigencia ? (
                         <>
-                          {e.fimVigencia ? "de " : "a partir de "}
+                          {e.fimVigencia ? tx("de ", "from ") : tx("a partir de ", "from ")}
                           <time dateTime={e.vigencia}>{dataBR(e.vigencia)}</time>
                           {e.fimVigencia ? (
                             <>
-                              {" a "}
+                              {tx(" a ", " to ")}
                               <time dateTime={e.fimVigencia}>{dataBR(e.fimVigencia)}</time>
                             </>
                           ) : null}
                         </>
                       ) : (
-                        <span className="italic text-mineral">não informada</span>
+                        <span className="italic text-mineral">{tx("não informada", "not reported")}</span>
                       )}
                       {defasagem && <span className="block text-xs text-carvao-muted">{defasagem}</span>}
                     </dd>
                     {e.dispositivo && (
                       <Fragment>
-                        <dt className="text-carvao-muted">Dispositivo</dt>
+                        <dt className="text-carvao-muted">{tx("Dispositivo", "Provision")}</dt>
                         <dd className="text-carvao">{e.dispositivo}</dd>
                       </Fragment>
                     )}
@@ -205,12 +219,13 @@ export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroContro
                   {e.resumo && <p className="mt-1.5 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{e.resumo}</p>}
                   {url && e.fonte ? (
                     <a href={url} target="_blank" rel="noopener noreferrer" className="rotulo mt-1 inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                      Fonte primária: {e.fonte.rotulo}
-                      <span className="sr-only"> (abre em nova aba)</span>
+                      {tx("Fonte primária: ", "Primary source: ")}
+                      {e.fonte.rotulo}
+                      <span className="sr-only">{tx(" (abre em nova aba)", " (opens in a new tab)")}</span>
                     </a>
                   ) : (
                     <p className="mt-1.5 text-xs italic text-mineral" data-fonte="ausente">
-                      Fonte primária não localizada: confira o ato antes de citar este evento.
+                      {tx("Fonte primária não localizada: confira o ato antes de citar este evento.", "Primary source not found: check the act before citing this event.")}
                     </p>
                   )}
                 </article>
