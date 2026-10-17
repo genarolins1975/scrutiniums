@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { TARIFAS, tarifa, prestadorComTarifa } from "@/lib/saneamento/tarifas";
-import { calcularConta, leituras } from "@/lib/saneamento/conta";
+import { acimaDoLimite, calcularConta, diferencaDeArredondamento, leituras } from "@/lib/saneamento/conta";
 
 const conta = (id: string, cat: string, c: number) => calcularConta(tarifa(id)!.categorias[cat], c).total;
 
@@ -92,5 +92,40 @@ describe("Saneamento: simulador de conta com tabelas verificadas", () => {
     expect(prestadorComTarifa("3550308")).toBe("sabesp-2026-t1");
     expect(prestadorComTarifa("4119954")).toBeNull(); // Pontal do Paraná: ajuste sazonal, fora
     expect(prestadorComTarifa("3155801")).toBeNull(); // Rio Pomba: tabela própria
+  });
+});
+
+describe("Saneamento: arredondamento do simulador (revisão 1.11, item i)", () => {
+  const todas = () =>
+    TARIFAS.flatMap((t) =>
+      Object.entries(t.categorias).flatMap(([cid, cat]) =>
+        Array.from({ length: 201 }, (_, i) => i / 2)
+          .filter((c) => !acimaDoLimite(cat, c))
+          .map((c) => ({ t, cid, c, r: calcularConta(cat, c) })),
+      ),
+    );
+
+  it("o total difere da soma das parcelas exibidas em no máximo R$ 0,01, e a diferença existe em consumo inteiro e fracionado", () => {
+    const linhas = todas();
+    const difs = linhas.map((x) => ({ ...x, d: diferencaDeArredondamento(x.r) }));
+    for (const x of difs) expect(Math.abs(x.d), `${x.t.id} ${x.cid} ${x.c}`).toBeLessThanOrEqual(0.01);
+    expect(difs.some((x) => x.d !== 0 && Number.isInteger(x.c))).toBe(true);
+    expect(difs.some((x) => x.d !== 0 && !Number.isInteger(x.c))).toBe(true);
+  });
+
+  it("sem diferença, água mais esgoto mais adicionais é exatamente o total", () => {
+    for (const x of todas()) {
+      if (diferencaDeArredondamento(x.r) === 0) expect(Math.round((x.r.agua + (x.r.esgoto ?? 0) + x.r.adicionais) * 100) / 100).toBe(x.r.total);
+    }
+  });
+
+  it("os exemplos conferidos continuam iguais: o aviso não muda nenhum total", () => {
+    for (const t of TARIFAS) {
+      for (const exemplos of [t.exemplos, t.exemplosOficiais ?? {}]) {
+        for (const [cat, ex] of Object.entries(exemplos)) {
+          for (const [c, esperado] of Object.entries(ex)) expect(calcularConta(t.categorias[cat], Number(c)).total).toBe(esperado);
+        }
+      }
+    }
   });
 });

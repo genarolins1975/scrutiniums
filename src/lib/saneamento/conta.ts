@@ -113,6 +113,15 @@ export function calcularConta(cat: Categoria, consumo: number, adicionais: { rot
   };
 }
 
+/**
+ * Total menos a soma das parcelas exibidas (água, esgoto, adicionais), em reais. A regra única arredonda cada valor e o total
+ * separadamente, e nenhum ato consultado define o arredondamento; a diferença, de no máximo alguns centavos, é dita ao leitor
+ * em vez de escondida por uma regra que o ato não traz.
+ */
+export function diferencaDeArredondamento(c: Conta): number {
+  return Math.round((c.total - (c.agua + (c.esgoto ?? 0) + c.adicionais)) * 100) / 100;
+}
+
 export const CONSUMOS_EXPORTACAO = [5, 10, 15, 20, 30];
 export const CABECALHO_EXPORTACAO = ["tabela", "prestador", "uf", "regulador", "ato", "vigencia", "categoria", "consumo_m3", "agua_R$", "esgoto_R$", "total_R$", "situacao"] as const;
 

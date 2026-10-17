@@ -6,7 +6,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { TARIFAS, type TarifaVerificada } from "@/lib/saneamento/tarifas";
-import { CABECALHO_EXPORTACAO, acimaDoLimite, calcularConta, leituras, linhasExportacao } from "@/lib/saneamento/conta";
+import { CABECALHO_EXPORTACAO, acimaDoLimite, calcularConta, diferencaDeArredondamento, leituras, linhasExportacao } from "@/lib/saneamento/conta";
 import { baixarCsv } from "@/lib/saneamento/csv";
 import { numero, reais } from "@/lib/saneamento/formato";
 
@@ -195,6 +195,13 @@ export function SimuladorConta() {
               </tbody>
             </table>
           </div>
+          )}
+          {conta && diferencaDeArredondamento(conta) !== 0 && (
+            <p className="mt-3 text-xs leading-relaxed text-carvao-muted">
+              Cada valor é arredondado ao centavo e o total é arredondado uma só vez, sobre a soma sem arredondar: aqui as parcelas somam{" "}
+              {reais(Math.round((conta.agua + (conta.esgoto ?? 0) + conta.adicionais) * 100) / 100)} e o total é {reais(conta.total)}. Nenhum ato
+              consultado define a regra de arredondamento.
+            </p>
           )}
           {cat.esgotoNaoVerificado && <p className="mt-3 border-l-2 border-aviso pl-3 text-sm text-carvao-muted">{cat.esgotoNaoVerificado}</p>}
           {t.metodoNaoVerificado && <p className="mt-3 border-l-2 border-aviso pl-3 text-sm text-carvao-muted">{t.metodoNaoVerificado}</p>}
