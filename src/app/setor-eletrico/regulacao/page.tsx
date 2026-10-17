@@ -72,7 +72,8 @@ import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 import { snapshotLegivel } from "@/lib/energia/visao";
 import { tx } from "@/lib/energia/idioma";
-import { PATAMAR_EN, comNomes, rotuloDado } from "@/lib/energia/i18n/regulacao-dados-metodo";
+import { PATAMAR_EN, codigo, comNomes, marcado, rotuloDado } from "@/lib/energia/i18n/regulacao-dados-metodo";
+import type { ReactNode } from "react";
 import Link from "@/components/i18n/LinkIdioma";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
@@ -432,7 +433,7 @@ export default function RegulacaoPage() {
                     linhas={linhasBandeiras(g)}
                     chaveLinha="id"
                     colunaRotulo="patamar"
-                    fonte={tx("ANEEL, Bandeiras Tarifárias (recursos Adicional e Acionamento)", "ANEEL, Bandeiras Tarifárias dataset (Adicional and Acionamento resources)")}
+                    fonte={tx("ANEEL, Bandeiras Tarifárias (recursos Adicional e Acionamento)", "ANEEL, tariff flag dataset (Adicional and Acionamento resources)")}
                     versao={band.acionamento_gerado_pela_fonte_em ?? versao}
                     nomeArquivo="regulacao-bandeiras-adicionais"
                     chaveUrl="band"
@@ -452,7 +453,7 @@ export default function RegulacaoPage() {
                         "PRODIST é o conjunto de Procedimentos de Distribuição de Energia Elétrica no Sistema Elétrico Nacional e PRORET, o de Procedimentos de Regulação Tarifária.",
                         "PRODIST is the set of Electricity Distribution Procedures in the National Electric System, and PRORET the set of Tariff Regulation Procedures.",
                       )}{" "}
-                      <span data-resposta-procedimentos="">{respostaProcedimentos(proc)}</span>
+                      <span data-resposta-procedimentos="">{marcado(respostaProcedimentos(proc), proc.itens.map((i) => `${i.conjunto} ${i.modulo}`))}</span>
                     </>
                   }
                 >
@@ -618,7 +619,7 @@ export default function RegulacaoPage() {
                     }))}
                     chaveLinha="id"
                     colunaRotulo="patamar"
-                    fonte={tx("ANEEL, Bandeiras Tarifárias (recurso Acionamento)", "ANEEL, Bandeiras Tarifárias dataset (Acionamento resource)")}
+                    fonte={tx("ANEEL, Bandeiras Tarifárias (recurso Acionamento)", "ANEEL, tariff flag dataset (Acionamento resource)")}
                     versao={band.acionamento_gerado_pela_fonte_em ?? versao}
                     nomeArquivo="regulacao-bandeiras-acionamento-sem-resolucao"
                     chaveUrl="acion"
@@ -641,11 +642,13 @@ export default function RegulacaoPage() {
                     ))}
                   </ul>
                   <p className="text-sm text-carvao-muted [overflow-wrap:anywhere]">
-                    {tx("Curadoria versionada", "Versioned curation")} {g.curadoria.snapshot.id ? snapshotLegivel(g.curadoria.snapshot.id) : tx("sem identificador", "no identifier")} (sha256{" "}
-                    {g.curadoria.snapshot.sha256 ?? tx("não informado", "not reported")}):{" "}
-                    {g.curadoria.arquivos
-                      .map((a) => tx(`${a.arquivo} (sha256 ${a.sha256.slice(0, 12)}…, registrado em ${carimbo(a.registrado_em)})`, `${a.arquivo} (sha256 ${a.sha256.slice(0, 12)}…, recorded on ${carimbo(a.registrado_em)})`))
-                      .join("; ")}
+                    {tx("Curadoria versionada", "Versioned curation")} {g.curadoria.snapshot.id ? marcado(snapshotLegivel(g.curadoria.snapshot.id)) : tx("sem identificador", "no identifier")} (sha256{" "}
+                    {g.curadoria.snapshot.sha256 ? codigo(g.curadoria.snapshot.sha256) : tx("não informado", "not reported")}):{" "}
+                    {marcado(
+                      g.curadoria.arquivos
+                        .map((a) => tx(`${a.arquivo} (sha256 ${a.sha256.slice(0, 12)}…, registrado em ${carimbo(a.registrado_em)})`, `${a.arquivo} (sha256 ${a.sha256.slice(0, 12)}…, recorded on ${carimbo(a.registrado_em)})`))
+                        .join("; "),
+                    )}
                     .
                   </p>
                   <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
@@ -656,9 +659,12 @@ export default function RegulacaoPage() {
                     ))}
                   </ul>
                   <p className="text-xs text-mineral">
-                    {tx(
+                    {tx<ReactNode>(
                       `${num(L.atos.length, 0)} atos; conferências refeitas em ${dataBR(L.conferido_em)}. Para reproduzir: python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta.`,
-                      `${num(L.atos.length, 0)} acts; checks redone on ${dataBR(L.conferido_em)}. To reproduce: python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta.`,
+                      // o comando é identificador, não prosa
+                      <>
+                        {num(L.atos.length, 0)} acts; checks redone on {dataBR(L.conferido_em)}. To reproduce: {codigo("python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta")}.
+                      </>,
                     )}
                   </p>
                 </SecaoDoPainel>

@@ -1,7 +1,8 @@
 import { carimbo, dataBR, num, plural } from "./formato";
 import { NAO_SE_APLICA } from "./escalas";
-import { tx } from "./idioma";
-import { FREQUENCIA_EN, rotuloDado } from "./i18n/regulacao-dados-metodo";
+import { idiomaEnergia, tx } from "./idioma";
+import type { Idioma } from "@/lib/idioma";
+import { FREQUENCIA_EN, fraseDeAtualidade, rotuloDado } from "./i18n/regulacao-dados-metodo";
 import { textoData, type ColunaTabela, type LinhaTabela } from "./tabela";
 import type {
   Afirmacao,
@@ -268,7 +269,7 @@ export function linhasCatalogo(cat: CatalogoDados, ctx: ContextoCatalogo = {}): 
 
 /* rótulos de coluna lidos na hora (getter), no idioma da página */
 export const COLUNAS_CATALOGO: ColunaTabela[] = [
-  { id: "titulo", get rotulo() { return tx("Conjunto", "Dataset"); }, tipo: "texto" },
+  { id: "titulo", get rotulo() { return tx("Conjunto", "Dataset"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "orgao", get rotulo() { return tx("Órgão", "Body"); }, tipo: "texto", categorica: true },
   { id: "tema", get rotulo() { return tx("Tema", "Theme"); }, tipo: "texto", categorica: true },
   { id: "estado", get rotulo() { return tx("Estado mais avançado", "Most advanced state"); }, tipo: "texto", categorica: true },
@@ -658,7 +659,25 @@ const rotulosFormatoRef = (): Record<string, string> =>
 
 /** Granularidade escrita pelo pipeline (texto livre) no idioma da página; sem entrada, a do pipeline. */
 const granularidadeLegivel = (g: string) =>
-  tx(g, ({ "cadência irregular": "irregular cadence", diária: "daily", mensal: "monthly", anual: "annual", horária: "hourly", semanal: "weekly" } as Record<string, string>)[g] ?? g);
+  tx(
+    g,
+    (
+      {
+        "cadência irregular": "irregular cadence",
+        diária: "daily",
+        mensal: "monthly",
+        anual: "annual",
+        horária: "hourly",
+        semanal: "weekly",
+        trimestral: "quarterly",
+        "semi-horária": "half-hourly",
+        "a cada 365 dias": "every 365 days",
+        vigências: "validity periods",
+        "sem referência temporal": "no time reference",
+        "cadastro (sem período de referência)": "register (no reference period)",
+      } as Record<string, string>
+    )[g] ?? g,
+  );
 
 /** Módulos e família do conjunto, em texto. */
 const rotuloFamilia = (id: string) => id.split("/")[0].replace(/_/g, " ");
@@ -697,8 +716,9 @@ export function linhasSaude(pub: PublicacaoGold): LinhaTabela[] {
 }
 
 export const COLUNAS_SAUDE: ColunaTabela[] = [
-  { id: "titulo", get rotulo() { return tx("Conjunto", "Dataset"); }, tipo: "texto" },
-  { id: "familia", get rotulo() { return tx("Família", "Family"); }, tipo: "texto", categorica: true },
+  { id: "titulo", get rotulo() { return tx("Conjunto", "Dataset"); }, tipo: "texto", idiomaTexto: "nome" },
+  // família é o identificador do módulo do pipeline ("aneel qualidade"): na página inglesa fica como está, marcado
+  { id: "familia", get rotulo() { return tx("Família", "Family"); }, tipo: "texto", categorica: true, idiomaTexto: "nome" },
   { id: "situacao", get rotulo() { return tx("Situação", "Status"); }, tipo: "texto", categorica: true },
   { id: "frequencia", get rotulo() { return tx("Frequência declarada pela fonte", "Frequency declared by the source"); }, tipo: "texto", categorica: true },
   { id: "caso", get rotulo() { return tx("Regra de prazo aplicada (caso A a E)", "Deadline rule applied (case A to E)"); }, tipo: "texto", categorica: true },
@@ -992,7 +1012,8 @@ export const COLUNAS_MANIFESTO: ColunaTabela[] = [
   { id: "dicionario", get rotulo() { return tx("Dicionário publicado", "Published dictionary"); }, tipo: "texto", categorica: true },
   { id: "parquet", get rotulo() { return tx("Parquet equivalente", "Equivalent Parquet"); }, tipo: "texto", categorica: true },
   { id: "validacao", get rotulo() { return tx("Validação automática", "Automatic validation"); }, tipo: "texto", categorica: true },
-  { id: "sha256", rotulo: "sha256", tipo: "texto", ordenavel: false },
+  // impressão digital: identificador, não prosa (na página inglesa sai como está, sem tradução)
+  { id: "sha256", rotulo: "sha256", tipo: "texto", ordenavel: false, idiomaTexto: "nome" },
 ];
 
 /** Veredito da validação automática de um arquivo publicado (só os CSV são validados um a um; os demais não se aplicam). */
@@ -1130,10 +1151,11 @@ export type MetricaPublicada = {
 };
 
 /* módulo de cada gold, no idioma da página (a tabela de terminologia dá os nomes ingleses) */
-const modulosDaGold = (): Record<string, string> => {
+const modulosDaGold = (idioma: Idioma = idiomaEnergia()): Record<string, string> => {
   const [pld, agua, carga, geracao, rede, previsoes, dados, conta, empresas, expansao, inclusao, leiloes, mercado, perdas, qualidade, regulacao, visao, regiao, transicao] = tx(
     ["PLD", "Água e clima", "Carga", "Geração", "Rede", "Previsões e modelos", "Dados e metodologia", "Conta de luz", "Empresas", "Expansão", "Inclusão energética", "Leilões", "Mercado", "Perdas", "Qualidade do serviço", "Regulação", "Visão geral", "Minha região", "Transição e ambiente"],
     ["PLD", "Water and climate", "Load", "Generation", "Grid", "Forecasts and models", "Data and methodology", "Electricity bill", "Companies", "Expansion", "Energy inclusion", "Auctions", "Market", "Losses", "Quality of supply", "Regulation", "Overview", "My region", "Transition and environment"],
+    idioma,
   );
   return {
     "pld.json": pld,
@@ -1173,7 +1195,7 @@ const modulosDaGold = (): Record<string, string> => {
     "transicao.json": transicao,
   };
 };
-export const moduloDaGold = (gold: string) => modulosDaGold()[gold] ?? gold.replace(/\.json$/, "");
+export const moduloDaGold = (gold: string, idioma: Idioma = idiomaEnergia()) => modulosDaGold(idioma)[gold] ?? gold.replace(/\.json$/, "");
 
 const rotulosNatureza = (): Record<string, string> =>
   tx(
@@ -1190,15 +1212,16 @@ export function naturezaCurta(n: string): string {
   return rotulosNatureza()[n] ?? n.charAt(0) + n.slice(1).toLowerCase();
 }
 
+// texto da regra de cada indicador (metricas.json): português da gold, marcado na página inglesa
 export const COLUNAS_METRICAS: ColunaTabela[] = [
-  { id: "titulo", get rotulo() { return tx("Indicador", "Indicator"); }, tipo: "texto" },
-  { id: "pergunta", get rotulo() { return tx("Pergunta que responde", "Question it answers"); }, tipo: "texto" },
+  { id: "titulo", get rotulo() { return tx("Indicador", "Indicator"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "pergunta", get rotulo() { return tx("Pergunta que responde", "Question it answers"); }, tipo: "texto", idiomaTexto: "portugues" },
   { id: "modulo", get rotulo() { return tx("Módulo", "Module"); }, tipo: "texto", categorica: true },
   { id: "natureza_fonte", get rotulo() { return tx("Natureza do dado de origem", "Nature of the source data"); }, tipo: "texto", categorica: true },
   { id: "natureza_calculo", get rotulo() { return tx("Natureza do resultado", "Nature of the result"); }, tipo: "texto", categorica: true },
-  { id: "unidade", get rotulo() { return tx("Unidade", "Unit"); }, tipo: "texto" },
-  { id: "grao_geografico", get rotulo() { return tx("Recorte geográfico", "Geographic breakdown"); }, tipo: "texto" },
-  { id: "grao_temporal", get rotulo() { return tx("Recorte temporal", "Time breakdown"); }, tipo: "texto" },
+  { id: "unidade", get rotulo() { return tx("Unidade", "Unit"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "grao_geografico", get rotulo() { return tx("Recorte geográfico", "Geographic breakdown"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "grao_temporal", get rotulo() { return tx("Recorte temporal", "Time breakdown"); }, tipo: "texto", idiomaTexto: "portugues" },
   { id: "formula", get rotulo() { return tx("Tem fórmula publicada", "Has a published formula"); }, tipo: "texto", categorica: true, buscavel: false },
   { id: "paginas", get rotulo() { return tx("Páginas", "Pages"); }, tipo: "numero", casas: 0 },
 ];
@@ -1358,7 +1381,7 @@ export function situacaoDoConjunto(c: Pick<ConjuntoIntegrado, "atualidade">): { 
         `Dado atrasado${a.dias_atraso ? `: ${plural(a.dias_atraso, "dia", "dias")} além do prazo${a.prazo_proximo ? ` de ${dataBR(a.prazo_proximo)}` : ""}` : ""}`,
         `Data late${a.dias_atraso ? `: ${plural(a.dias_atraso, "day", "days")} past the deadline${a.prazo_proximo ? ` of ${dataBR(a.prazo_proximo)}` : ""}` : ""}`,
       ),
-      texto: `${periodo} ${instantesLegiveis(a.causa ?? tx("A fonte não publicou período mais recente.", "The source has not published a more recent period."))}`.trim(),
+      texto: `${periodo} ${instantesLegiveis(a.causa != null ? fraseDeAtualidade(a.causa) : tx("A fonte não publicou período mais recente.", "The source has not published a more recent period."))}`.trim(),
     };
   }
   if (a.situacao === "EM DIA") return { alerta: false, titulo: tx("Dado em dia", "Data up to date"), texto: periodo };
@@ -1371,6 +1394,6 @@ export function situacaoDoConjunto(c: Pick<ConjuntoIntegrado, "atualidade">): { 
   return {
     alerta: false,
     titulo: tx("Atraso não medido", "Delay not measured"),
-    texto: a.motivo_sem_sla ?? tx("Sem série regular de referência e sem data de publicação da fonte.", "No regular reference series and no publication date from the source."),
+    texto: a.motivo_sem_sla != null ? fraseDeAtualidade(a.motivo_sem_sla) : tx("Sem série regular de referência e sem data de publicação da fonte.", "No regular reference series and no publication date from the source."),
   };
 }

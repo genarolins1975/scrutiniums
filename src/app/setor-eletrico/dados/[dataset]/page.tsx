@@ -1,4 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
+import type { ReactNode } from "react";
 import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/i18n/LinkIdioma";
 import { Nome } from "@/components/i18n/Nome";
@@ -12,11 +13,12 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, dataBR, plural } from "@/lib/energia/formato";
 import { tx } from "@/lib/energia/idioma";
-import { LICENCA_EN, PAINEIS_EN, rotuloDado, traduzido } from "@/lib/energia/i18n/regulacao-dados-metodo";
+import { LICENCA_EN, PAINEIS_EN, codigo, identificadorDaFicha, marcado, rotuloDado, traduzido } from "@/lib/energia/i18n/regulacao-dados-metodo";
 import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, catalogoDados, datasetPorSlug, urlDoConjunto } from "@/lib/energia/datasets";
 import { CSV_DADOS, DEFINICAO_ETAPA_LEITOR, ROTULO_ESTADO_DADOS, ROTULO_PAPEL, linhasIntegracao, refLegivel, rotuloTema, situacaoDoConjunto } from "@/lib/energia/dados";
 import {
   criterioDaSituacao,
+  descricaoDoArquivo,
   diaEmBrasilia,
   eApenasPaginaInicial,
   escolheDescricao,
@@ -28,6 +30,7 @@ import {
   nomeDoConjunto,
   nomesLegiveisDosTitulos,
   notasDeQuebraPosterior,
+  quebrasPosteriores,
   rotuloDoLinkOficial,
   rotuloDoArquivo,
   trocaIdentificadores,
@@ -50,11 +53,12 @@ function metadadosDaPagina({ params }: { params: { dataset: string } }): Metadat
   if (!d || !e) return {};
   const pub = publicacaoDados();
   const { nome } = nomeDoConjunto(e, (pub?.conjuntos ?? []).filter((c) => c.id.endsWith(`/${d.interno}`)));
+  // o head não aceita a marca de nome: em inglês, o conjunto é identificado pelo endereço da ficha, não pelo nome português
   return {
-    title: tx(`${nome} (${e.orgao}) · dados`, `${nome} (${e.orgao}) · data`),
+    title: tx(`${nome} (${e.orgao}) · dados`, `${e.orgao} dataset ${identificadorDaFicha(d.slug)} · data`),
     description: tx(
       `Origem, atualidade, licença, arquivos para baixar e forma de citação do conjunto ${nome} (${e.orgao}) usado pelo Observatório do Setor Elétrico.`,
-      `Origin, timeliness, license, files to download and citation form of the dataset ${nome} (${e.orgao}) used by the Power Sector Observatory.`,
+      `Origin, timeliness, license, files to download and citation form of an open dataset published by ${e.orgao} and used by the Power Sector Observatory; dataset record /en/setor-eletrico/dados/${d.slug}.`,
     ),
     alternates: { canonical: `/setor-eletrico/dados/${d.slug}` },
   };
@@ -100,6 +104,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
   const cadencias = integr.flatMap((c) => c.frequencia?.cadencias ?? []).filter((c, i, a) => a.indexOf(c) === i);
   const capturas = f?.historico?.length ? f.historico : (f?.capturas ?? []).map((x) => ({ ...x, vigente: true }));
   const notasDeQuebra = integr.length ? notasDeQuebraPosterior(e.quebras, integr[0]) : [];
+  const quebrasEn = integr.length ? quebrasPosteriores(e.quebras, integr[0]) : [];
   // indicadores publicados que listam este conjunto entre as fontes (metricas.json)
   const indicadores = metricasPublicadas()
     .filter((m) => m.fontes.includes(d.interno))
@@ -126,6 +131,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
     const outras = outrasFichas(a.url);
     return {
       ...a,
+      descricaoPt: tx(null, descricaoDoArquivo(a.url, COLUNAS_ARQUIVO[a.url])),
       origemDosLiterais: urlDoConjunto(e) ?? undefined,
       aviso:
         outras.length > 0 ? (
@@ -159,8 +165,9 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
         </nav>
         <CabecalhoModulo
           rotulo={`${e.orgao}${e.tema === "outros" ? "" : ` · ${rotuloTema(e.tema)}`}`}
-          titulo={nome.nome}
-          lead={fraseAbertura({ orgao: e.orgao, cadencias, paginas: paginasNoIdioma })}
+          // o título é o nome oficial do conjunto: em inglês, marcado como nome e precedido do que ele é
+          titulo={tx<ReactNode>(nome.nome, <>Dataset: <Nome>{nome.nome}</Nome></>) as string}
+          lead={marcado(fraseAbertura({ orgao: e.orgao, cadencias, paginas: paginasNoIdioma }))}
           recorte={tx(
             `${periodo} · última captura ${ultimaCaptura ? carimbo(ultimaCaptura) : "sem registro"} · etapa no catálogo: ${ROTULO_ESTADO_DADOS[e.estado].toLowerCase()}`,
             `${periodo} · latest capture ${ultimaCaptura ? carimbo(ultimaCaptura) : "no record"} · stage in the catalog: ${ROTULO_ESTADO_DADOS[e.estado].toLowerCase()}`,
@@ -180,7 +187,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                 >
                   <p className={`rotulo ${situacao.alerta ? "text-aviso" : "text-mineral"}`}>{tx("Situação dos dados", "Status of the data")}</p>
                   <p className="mt-1 font-serif text-lg text-carvao">{situacao.titulo}</p>
-                  {situacao.texto && <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{situacao.texto}</p>}
+                  {situacao.texto && <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{marcado(situacao.texto)}</p>}
                   {criterio && (
                     <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-criterio="true">
                       {criterio}
@@ -272,7 +279,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                     {paginasNoIdioma.map((p) => (
                       <li key={p.href}>
                         <Link href={p.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                          {p.rotulo}
+                          {marcado(p.rotulo)}
                         </Link>
                       </li>
                     ))}
@@ -305,9 +312,20 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                       );
                     })}
                   </ul>
-                  {notasDeQuebra.map((n) => (
+                  {notasDeQuebra.map((n, i) => (
                     <p key={n} className="border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao" data-quebra-posterior="true">
-                      {n}
+                      {tx<ReactNode>(
+                        n,
+                        // a descrição da mudança é texto da fonte ou do catálogo, em português: fica marcada dentro da frase inglesa
+                        quebrasEn[i] ? (
+                          <>
+                            The change of {dataBR(quebrasEn[i].data)} (<TrechoPortugues regiao="ficha-quebra">{quebrasEn[i].descricao}</TrechoPortugues>) is later than the latest
+                            period available, {quebrasEn[i].ultimo}: the data available do not yet reflect this change.
+                          </>
+                        ) : (
+                          n
+                        ),
+                      )}
                     </p>
                   ))}
                 </SecaoDoPainel>
@@ -358,10 +376,11 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                       {paraCitar === "não informada" ? "stated at the source" : nomeDaLicenca(paraCitar.replace(/\.$/, ""))}. Integrated and processed by Scrutiniums, Brazilian Power Sector Observatory, capture of {ultimaCaptura ? diaEmBrasilia(ultimaCaptura) : "date not reported"}
                     </>,
                   )}
-                  {f?.snapshot ? <span data-nivel="analisar">, snapshot {f.snapshot}</span> : null}.{" "}
+                  {f?.snapshot ? <span data-nivel="analisar">, snapshot {codigo(f.snapshot)}</span> : null}.{" "}
                   {tx(
                     <>Disponível em: https://scrutiniums.com/setor-eletrico/dados/{d.slug}. Acesso em: [data do seu acesso].</>,
-                    <>Available at: https://scrutiniums.com/setor-eletrico/dados/{d.slug}. Accessed on: [date of your access].</>,
+                    // o endereço vai inteiro num só texto (o slug sozinho não é prosa) e aponta a ficha inglesa
+                    <>{`Available at: https://scrutiniums.com/en/setor-eletrico/dados/${d.slug}. Accessed on: [date of your access].`}</>,
                   )}
                 </p>
                 {nome.tituloNaFonte && (
@@ -461,7 +480,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                   {integr.length > 0 && pub && (
                     <div className="min-w-0 md:col-span-2">
                       <dt className="rotulo text-mineral">{tx(`Atualidade e coleta (publicação de ${dataBR(pub.referencia.hoje)})`, `Timeliness and collection (publication of ${dataBR(pub.referencia.hoje)})`)}</dt>
-                      <dd className="mt-0.5 text-carvao-muted [overflow-wrap:anywhere]">{integr.map((c) => linhasIntegracao(c).join(" ")).join(" ")}</dd>
+                      <dd className="mt-0.5 text-carvao-muted [overflow-wrap:anywhere]">{marcado(integr.map((c) => linhasIntegracao(c).join(" ")).join(" "))}</dd>
                     </div>
                   )}
                   {f?.ultima_tentativa && (
@@ -484,13 +503,13 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                       {f?.snapshot && (
                         <div className="min-w-0 md:col-span-2">
                           <dt className="rotulo text-mineral">{tx("Snapshot", "Snapshot")}</dt>
-                          <dd className="mt-1 text-sm text-carvao [overflow-wrap:anywhere]">{f.snapshot}</dd>
+                          <dd className="mt-1 text-sm text-carvao [overflow-wrap:anywhere]">{codigo(f.snapshot)}</dd>
                         </div>
                       )}
                       {f?.snapshot_sha256 && (
                         <div className="min-w-0 md:col-span-2">
                           <dt className="rotulo text-mineral">{tx("sha256 do snapshot", "sha256 of the snapshot")}</dt>
-                          <dd className="mt-1 break-all font-mono text-xs text-carvao">{f.snapshot_sha256}</dd>
+                          <dd className="mt-1 break-all font-mono text-xs text-carvao">{codigo(f.snapshot_sha256)}</dd>
                         </div>
                       )}
                     </dl>
@@ -532,12 +551,12 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                         <tbody>
                           {capturas.map((cpt) => (
                             <tr key={`${cpt.recurso}:${cpt.sha256}`} className="border-b border-linha">
-                              <td className="px-2 py-1.5 text-carvao">{cpt.recurso}</td>
+                              <td className="px-2 py-1.5 text-carvao">{codigo(cpt.recurso)}</td>
                               <td className="px-2 py-1.5 text-carvao">{carimbo(cpt.capturado_em)}</td>
                               <td className="px-2 py-1.5 text-carvao-muted">{dataFonte(cpt.publicado_em)}</td>
                               <td className="px-2 py-1.5 text-carvao-muted">{cpt.origem === "seed" ? tx("captura primária versionada", "versioned primary capture") : tx("coleta direta", "direct collection")}</td>
                               <td className="px-2 py-1.5 text-carvao-muted">{cpt.vigente ? tx("vigente", "current") : tx("substituída", "replaced")}</td>
-                              <td className="break-all px-2 py-1.5 font-mono text-xs text-mineral">{cpt.sha256}</td>
+                              <td className="break-all px-2 py-1.5 font-mono text-xs text-mineral">{codigo(cpt.sha256)}</td>
                             </tr>
                           ))}
                         </tbody>

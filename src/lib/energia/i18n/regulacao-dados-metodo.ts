@@ -1,7 +1,9 @@
 import { createElement, Fragment, type ReactNode } from "react";
 import type { Idioma } from "@/lib/idioma";
 import { idiomaEnergia } from "@/lib/energia/idioma";
+import { dataBR } from "@/lib/energia/formato";
 import { Nome } from "@/components/i18n/Nome";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 
 /**
  * Nome de ato, lei ou consulta citado dentro de uma frase montada pela lib ("pelo Despacho ANEEL nº 3.850/2025",
@@ -25,6 +27,90 @@ export function comNomes(texto: string | null | undefined, idioma: Idioma = idio
   if (!partes.length) return texto;
   if (ultimo < texto.length) partes.push(texto.slice(ultimo));
   return createElement(Fragment, null, ...partes);
+}
+
+/** Nomes próprios que as frases da lib citam por extenso (programas, bases oficiais): na página inglesa, marcados como nome. */
+export const NOMES_CITADOS: readonly string[] = [
+  "Tarifa Social", // i18n: dado
+  "Luz para Todos",
+  "Setor Elétrico", // i18n: dado
+  // unidade como o dicionário do ONS a escreve, citada como termo da fonte
+  "MWmês", // i18n: dado
+];
+
+/**
+ * Identificador técnico no meio de uma frase (arquivo ou tabela com sublinhado, integração "modulo/conjunto", vintage
+ * "conjunto@data", impressão digital hexadecimal): não é prosa, nem portuguesa nem inglesa.
+ */
+const IDENTIFICADOR_TECNICO =
+  "(?<![\\p{L}\\p{N}_@/.:-])(?:[A-Za-z0-9][A-Za-z0-9.:@/-]*_[A-Za-z0-9_.:@/-]*|_[A-Za-z0-9][A-Za-z0-9_]*|(?=[0-9]*[a-f])[0-9a-f]{12,64})(?![\\p{L}\\p{N}_])";
+
+const ESTILO_CODIGO = { fontFamily: "inherit", fontSize: "inherit" } as const;
+
+/** Identificador técnico solto (nome de arquivo, slug, hash): na página inglesa em <code> com a fonte do texto; em português, o texto puro. */
+export function codigo(texto: string, idioma: Idioma = idiomaEnergia()): ReactNode {
+  if (idioma !== "en" || !texto) return texto;
+  return createElement("code", { style: ESTILO_CODIGO, translate: "no" }, texto);
+}
+
+const escaparRegex = (t: string) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/**
+ * Frase montada pela lib com nomes e identificadores dentro: em português, o texto como veio; em inglês, nomes de atos e os nomes
+ * citados (NOMES_CITADOS e os de `nomes`) em <Nome>, identificadores técnicos em <code> e os `trechos` (texto da gold citado dentro
+ * da frase inglesa, como o título de um evento) em <TrechoPortugues>. O texto não muda, só ganha as marcas.
+ */
+export function marcado(
+  texto: string | null | undefined,
+  nomes: readonly string[] = [],
+  idioma: Idioma = idiomaEnergia(),
+  trechos: readonly string[] = [],
+  regiao = "frase-gold",
+): ReactNode {
+  if (!texto || idioma !== "en") return texto ?? "";
+  const lista = [...nomes, ...NOMES_CITADOS].filter(Boolean).sort((a, b) => b.length - a.length);
+  const achados: { i: number; f: number; tipo: "nome" | "codigo" | "trecho" }[] = [];
+  for (const t of Array.from(new Set(trechos.filter(Boolean)))) {
+    for (let i = texto.indexOf(t); i >= 0; i = texto.indexOf(t, i + t.length)) achados.push({ i, f: i + t.length, tipo: "trecho" });
+  }
+  const junta = (re: RegExp, tipo: "nome" | "codigo") => {
+    for (const m of texto.matchAll(re)) {
+      let t = m[0];
+      if (tipo === "codigo") t = t.replace(/[.:,/-]+$/, "");
+      if (t) achados.push({ i: m.index ?? 0, f: (m.index ?? 0) + t.length, tipo });
+    }
+  };
+  junta(new RegExp(NOME_ATO.source, "g"), "nome");
+  if (lista.length) junta(new RegExp(`(?<![\\p{L}\\p{N}])(?:${lista.map(escaparRegex).join("|")})(?![\\p{L}\\p{N}])`, "gu"), "nome");
+  junta(new RegExp(IDENTIFICADOR_TECNICO, "gu"), "codigo");
+  achados.sort((a, b) => a.i - b.i || b.f - a.f);
+  const partes: ReactNode[] = [];
+  let ultimo = 0;
+  for (const a of achados) {
+    if (a.i < ultimo) continue;
+    if (a.i > ultimo) partes.push(texto.slice(ultimo, a.i));
+    const trecho = texto.slice(a.i, a.f);
+    partes.push(
+      a.tipo === "trecho"
+        ? createElement(TrechoPortugues, { key: `t${a.i}`, regiao } as unknown as { children: ReactNode; regiao: string }, trecho)
+        : a.tipo === "nome"
+          ? createElement(Nome, { key: `n${a.i}` } as unknown as { children: ReactNode }, trecho)
+          : createElement("code", { key: `c${a.i}`, style: ESTILO_CODIGO, translate: "no" }, trecho),
+    );
+    ultimo = a.f;
+  }
+  if (!partes.length) return texto;
+  if (ultimo < texto.length) partes.push(texto.slice(ultimo));
+  return createElement(Fragment, null, ...partes);
+}
+
+/**
+ * Como o head inglês de uma ficha de conjunto identifica o conjunto: o nome oficial é português e o head não aceita marca de
+ * nome, então vale o slug da ficha. Slug que contém palavra portuguesa solta ("ons-dados-hidrologicos-res") sai como o endereço
+ * da ficha inglesa, que é identificador e não prosa.
+ */
+export function identificadorDaFicha(slug: string): string {
+  return /(?:^|-)(?:dados|nao|sao)(?:-|$)/.test(slug) ? `/en/setor-eletrico/dados/${slug}` : slug;
 }
 
 /**
@@ -67,6 +153,24 @@ export const PAINEIS_EN: Record<string, string> = {
   "Previsões e modelos": "Forecasts and models",
   "Qualidade do serviço": "Quality of supply",
   "Minha região": "My region",
+  "Acesso e sistemas isolados": "Access and isolated systems",
+  "Cobertura potencial": "Potential coverage",
+  "Modelos de previsão do PLD": "PLD forecasting models",
+  "PLD: CMO e formação de preço": "PLD: CMO and price formation",
+  "PLD: entenda o preço": "PLD: understanding the price",
+  "PLD: histórico e distribuição": "PLD: history and distribution",
+  "PLD: histórico em moeda constante": "PLD: history in constant currency",
+  "Peso no orçamento": "Weight in the budget",
+  "Previsões do PLD": "PLD forecasts",
+  "Rede: balanço e exterior": "Grid: balance and abroad",
+  "Rede: circulação de energia": "Grid: energy flows",
+  "Rede: programado e verificado": "Grid: scheduled and verified",
+  "Rede: restrições publicadas": "Grid: published restrictions",
+  // nome de programa: fica, e a página que o mostra o marca (marcado())
+  "Tarifa Social": "Tarifa Social",
+  "Água e clima: armazenamento": "Water and climate: storage",
+  "Água e clima: chuva e temperatura": "Water and climate: rainfall and temperature",
+  "Água e clima: reservatórios e balanço": "Water and climate: reservoirs and balance",
 };
 
 /** Tipo de ato da linha do tempo (campo tipo_ato). */
@@ -167,7 +271,7 @@ export const FREQUENCIA_EN: Record<string, string> = {
   "Periódica": "Periodic",
   "A depender do surgimento de novos termos.": "Depending on new terms appearing.",
   "Quando houver atualização": "When there is an update",
-  "Diariamente de 15 em 15 min": "Daily, every 15 min",
+  "Diariamente de 15 em 15 min": "Daily, every 15 min (15-min steps)",
   "Sob demanda": "On demand",
 };
 
@@ -207,3 +311,93 @@ export const LICENCA_EN: Record<string, string> = {
   "Dados públicos do IBGE; reprodução permitida com citação da fonte (IBGE, Sistema IBGE de Recuperação Automática, SIDRA)":
     "Public IBGE data; reproduction allowed with source citation (IBGE, IBGE Automatic Retrieval System, SIDRA)",
 };
+
+/**
+ * Frases que o pipeline escreve na atualidade de cada integração (publicacao.json: causa do atraso e motivo de não haver prazo).
+ * São poucos modelos fixos: a forma inglesa é a do modelo, com as partes variáveis (instante) copiadas. Frase fora dos modelos
+ * volta como veio, em português (quem a mostra marca).
+ */
+const FRASES_ATUALIDADE_EN: readonly (readonly [RegExp, string])[] = [
+  [/^A fonte não publicou período mais recente até a última coleta bem-sucedida \((.+)\)\.$/, "The source has not published a more recent period up to the latest successful collection ($1)."],
+  [/^A fonte não publicou período mais recente\.$/, "The source has not published a more recent period."],
+  [/^Conjunto descontinuado pela fonte: não há atualização a esperar\.$/, "Dataset discontinued by the source: there is no update to expect."],
+  [/^A fonte não declara frequência de atualização em metadado legível\.$/, "The source does not declare an update frequency in readable metadata."],
+  [
+    /^Sem série regular de referência e sem data de publicação informada pela fonte: não há como medir atraso sem usar a data da captura\.$/,
+    "No regular reference series and no publication date reported by the source: the delay cannot be measured without using the capture date.",
+  ],
+];
+
+export function fraseDeAtualidade(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma !== "en") return texto;
+  const t = texto.trim();
+  for (const [re, en] of FRASES_ATUALIDADE_EN) if (re.test(t)) return t.replace(re, en);
+  return texto;
+}
+
+/** Se a frase da atualidade tem forma inglesa (em português, sempre verdadeiro). */
+export function fraseDeAtualidadeTraduzida(texto: string, idioma: Idioma = idiomaEnergia()): boolean {
+  return idioma !== "en" || FRASES_ATUALIDADE_EN.some(([re]) => re.test(texto.trim()));
+}
+
+/**
+ * Detalhe que o validador automático escreve em cada checagem reprovada ou com ressalva (dados_validacoes.csv): poucos modelos
+ * fixos, traduzidos pelo modelo com os números copiados. Detalhe fora dos modelos volta como veio.
+ */
+const DETALHES_VALIDADOR_EN: readonly (readonly [RegExp, string])[] = [
+  [/^(\d+) linhas? idênticas? a outra$/, "$1 rows identical to another"],
+  [/^(\d+) linhas? repetem a mesma chave com valores diferentes$/, "$1 rows repeat the same key with different values"],
+  [/^(\d+) linhas? repetem a chave inferida com valores diferentes$/, "$1 rows repeat the inferred key with different values"],
+  [/^(\d+) linhas? com número de colunas diferente do cabeçalho$/, "$1 rows with a number of columns different from the header"],
+  [/^Colunas de tempo com valores além de (.+?): (\[.*\])$/, "Time columns with values beyond $1: $2"],
+];
+
+export function detalheDoValidador(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma !== "en") return texto;
+  return texto
+    .split("; ")
+    .map((p) => {
+      for (const [re, en] of DETALHES_VALIDADOR_EN) if (re.test(p)) return p.replace(re, en);
+      return p;
+    })
+    .join("; ");
+}
+
+/** Datas que o pipeline distingue (publicacao.json, regras.tempo): rótulo inglês de cada chave. */
+export const REGRAS_TEMPO_EN: Record<string, string> = {
+  periodo_referencia: "Reference period",
+  publicado_pela_fonte_em: "Published by the source on",
+  capturado_em: "Captured on",
+  gerado_em: "Generated on",
+  validado_em: "Validated on",
+  vigencia: "Validity",
+  versoes: "Versions",
+};
+
+/**
+ * Versão da Agenda Regulatória como a gold a escreve ("Anexo I da Portaria ANEEL nº 7.030/2025 (versão aprovada em 02/12/2025)"): em
+ * inglês, a mesma referência com o nome do ato e a data; fora do modelo, a forma inglesa genérica com o texto da gold só no português.
+ */
+export function versaoDaAgenda(versao: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma !== "en") return versao;
+  const m = /^Anexo ([IVX]+) da (Portaria ANEEL nº [\d.]+\/\d{4}) \(versão aprovada em (\d{2})\/(\d{2})\/(\d{4})\)$/.exec(versao.trim());
+  if (!m) return "regulatory agenda";
+  return `Annex ${m[1]} to ${m[2]} (version approved on ${dataBR(`${m[5]}-${m[4]}-${m[3]}`, "en")})`;
+}
+
+/**
+ * Como a gold registra a conferência da data de publicação de um ato (linha do tempo): dois modelos fixos, o dos metadados abertos do
+ * Senado e o da data escrita no PDF do ato. Em inglês, o mesmo registro com as datas e os identificadores copiados; fora dos modelos,
+ * o texto volta como veio.
+ */
+export function detalhePublicacao(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma !== "en") return texto;
+  const senado = /^metadados abertos do Senado \(sha256 (\w+)\): Publicação Original \[Diário Oficial da União( - Edição Extra)? de (\d{2})\/(\d{2})\/(\d{4})(?: - nº ([\w-]+))?\] \((p\. \d+, col\. \d+)\)$/.exec(texto);
+  if (senado) {
+    const [, sha, extra, d, m, a, n, pagina] = senado;
+    return `Senate open metadata (sha256 ${sha}): original publication in the Official Gazette of the Union${extra ? `, extra edition${n ? ` no. ${n}` : ""}` : ""}, ${dataBR(`${a}-${m}-${d}`, "en")} (${pagina})`;
+  }
+  const ato = /^data '([\d./]+)' escrita no texto do ato \(sha256 (\w+)\)$/.exec(texto);
+  if (ato) return `date '${ato[1]}' written in the text of the act (sha256 ${ato[2]})`;
+  return texto;
+}

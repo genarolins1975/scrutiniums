@@ -5,6 +5,7 @@ import { listaEmPortugues, refLegivel, type ConferenciaManifesto, type ResumoCat
 import type { EstadoDoArquivo, VersaoDoCodigo } from "./dados-servidor";
 import type { Afirmacao, CatalogoDados, ConjuntoIntegrado, DiaCalendario, ManifestoGold, PublicacaoGold } from "./tipos-dados";
 import type { Idioma } from "@/lib/idioma";
+import { detalheDoValidador } from "./i18n/regulacao-dados-metodo";
 
 /**
  * Textos de Entender das quatro páginas de Dados e Metodologia (rodada r8 de conteúdo): vereditos em duas camadas, o
@@ -222,11 +223,16 @@ export function textoMudancaReproducao(m: Pick<ManifestoGold, "gerado_em" | "tot
   );
 }
 
-/** P070: a correção de afirmações desta página, lida das afirmações com `afirmacao_anterior`, e as que conferem com o catálogo. */
-export function textoMudancaRegras(afirmacoes: readonly Pick<Afirmacao, "tema" | "afirmacao_anterior" | "texto">[], conferidas: number): string {
+/**
+ * As partes da frase P070: a abertura (quantas afirmações foram corrigidas), cada correção (a afirmação anterior e a primeira frase do
+ * texto atual, ambas escritas pela gold, em português) e a conferência das demais. Nula quando nenhuma foi corrigida.
+ */
+export function partesMudancaRegras(
+  afirmacoes: readonly Pick<Afirmacao, "tema" | "afirmacao_anterior" | "texto">[],
+  conferidas: number,
+): { abertura: string; cada: { anterior: string; agora: string }[]; confere: string } | null {
   const corrigidas = afirmacoes.filter((a) => a.afirmacao_anterior);
-  if (!corrigidas.length) return tx("Nenhuma afirmação desta página foi corrigida nesta publicação.", "No statement on this page was corrected in this publication.");
-  const cada = corrigidas.map((a) => tx(`${a.afirmacao_anterior} Agora a página diz: ${a.texto.split(/(?<=\.)\s/)[0]}`, `${a.afirmacao_anterior} The page now says: ${a.texto.split(/(?<=\.)\s/)[0]}`)).join(" ");
+  if (!corrigidas.length) return null;
   const restantes = afirmacoes.length - corrigidas.length;
   const confere =
     conferidas === afirmacoes.length
@@ -235,10 +241,22 @@ export function textoMudancaRegras(afirmacoes: readonly Pick<Afirmacao, "tema" |
           `${num(afirmacoes.length - conferidas, 0)} de ${num(afirmacoes.length, 0)} afirmações sobre fontes integradas não conferem com o catálogo.`,
           `${num(afirmacoes.length - conferidas, 0)} of ${num(afirmacoes.length, 0)} statements about integrated sources do not match the catalog.`,
         );
-  return tx(
-    `${plural(corrigidas.length, "afirmação desta página foi corrigida", "afirmações desta página foram corrigidas")}. ${cada} ${confere}`,
-    `${plural(corrigidas.length, "statement on this page was corrected", "statements on this page were corrected")}. ${cada} ${confere}`,
-  );
+  return {
+    abertura: tx(
+      plural(corrigidas.length, "afirmação desta página foi corrigida", "afirmações desta página foram corrigidas"),
+      plural(corrigidas.length, "statement on this page was corrected", "statements on this page were corrected"),
+    ),
+    cada: corrigidas.map((a) => ({ anterior: a.afirmacao_anterior ?? "", agora: a.texto.split(/(?<=\.)\s/)[0] })),
+    confere,
+  };
+}
+
+/** P070: a correção de afirmações desta página, lida das afirmações com `afirmacao_anterior`, e as que conferem com o catálogo. */
+export function textoMudancaRegras(afirmacoes: readonly Pick<Afirmacao, "tema" | "afirmacao_anterior" | "texto">[], conferidas: number): string {
+  const p = partesMudancaRegras(afirmacoes, conferidas);
+  if (!p) return tx("Nenhuma afirmação desta página foi corrigida nesta publicação.", "No statement on this page was corrected in this publication.");
+  const cada = p.cada.map((c) => tx(`${c.anterior} Agora a página diz: ${c.agora}`, `${c.anterior} The page now says: ${c.agora}`)).join(" ");
+  return `${p.abertura}. ${cada} ${p.confere}`;
 }
 
 /* ---------------------------------------------------------------- ressalvas do catálogo, para o leitor */
@@ -438,8 +456,8 @@ function problemaEmPalavras(tipo: string, detalhe: string): string {
   if (tipo === "datas_futuras")
     return tx("há datas depois da data de referência da publicação, porque o arquivo traz valores previstos", "there are dates after the reference date of the publication, as the file carries forecast values");
   // i18n: dado (troca dentro do texto do validador, que é português)
-  if (tipo === "chaves_unicas") return detalhe.replace(/a chave inferida/g, "a mesma chave");
-  return datasLegiveis(detalhe);
+  if (tipo === "chaves_unicas") return detalheDoValidador(detalhe.replace(/a chave inferida/g, "a mesma chave"));
+  return detalheDoValidador(datasLegiveis(detalhe));
 }
 
 /**
@@ -453,7 +471,7 @@ export function textoEstadoDoArquivo(e: EstadoDoArquivo): { frase: string; tecni
   if (e.veredito === "sem_validacao")
     return { frase: tx("Validação automática: o relatório desta publicação não cobre este arquivo.", "Automatic validation: this publication's report does not cover this file."), tecnico: "" };
   if (e.veredito === "aprovado") return { frase: tx("Validação automática: aprovada.", "Automatic validation: passed."), tecnico: "" };
-  const detalhes = e.problemas.map((p) => `${p.tipo}: ${datasLegiveis(p.detalhe)}`).join("; ");
+  const detalhes = e.problemas.map((p) => `${p.tipo}: ${detalheDoValidador(datasLegiveis(p.detalhe))}`).join("; ");
   if (e.veredito === "ressalva") {
     const frase = e.problemas.map((p) => problemaEmPalavras(p.tipo, p.detalhe)).join("; ");
     return {
@@ -561,7 +579,7 @@ function checagensReprovadasEn(reprovados: readonly EstadoDoArquivo[], checagens
   const tecnico = reprovados
     .map((e) => {
       const nome = e.caminho.split("/").pop() ?? e.caminho;
-      const checagem = e.problemas.filter((p) => p.resultado === "reprovado").map((p) => `${p.tipo}: ${datasLegiveis(p.detalhe, "en")}`).join("; ");
+      const checagem = e.problemas.filter((p) => p.resultado === "reprovado").map((p) => `${p.tipo}: ${detalheDoValidador(datasLegiveis(p.detalhe, "en"), "en")}`).join("; ");
       const digitais = e.outraVersao ? ` Fingerprint judged: ${e.outraVersao.julgada}. Fingerprint in the file list: ${e.outraVersao.publicada}.` : "";
       const r = e.releitura
         ? ` Reread: ${num(e.releitura.linhas, 0, "en")} rows, ${num(e.releitura.colunas, 0, "en")} columns in the header, ${num(e.releitura.divergentes, 0, "en")} rows with a different number of columns.`

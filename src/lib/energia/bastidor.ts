@@ -61,7 +61,8 @@ export function fonteLegivel(nome: string, idioma: Idioma = idiomaEnergia()): st
     .texto.replace(/\(pipeline do observatório\)/g, tx("(observatório)", "(observatory)"))
     .replace(/Silvers e golds do domínio/g, tx("Bases do domínio", "Domain bases"))
     .replace(/Silvers do domínio/g, tx("Histórico de capturas do domínio", "Domain capture history"))
-    .replace(/silvers do pipeline/g, tx("histórico de capturas do observatório", "observatory capture history"));
+    .replace(/silvers do pipeline/g, tx("histórico de capturas do observatório", "observatory capture history"))
+    .replace(/\(avaliação do observatório\)/g, tx("(avaliação do observatório)", "(observatory evaluation)"));
 }
 
 /**

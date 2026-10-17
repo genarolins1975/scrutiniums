@@ -310,7 +310,11 @@ export function MetodologiaRegras({
   children?: ReactNode;
 }) {
   const tx = useTx();
+  const idioma = useIdioma();
   const linhas = useMemo(() => expandirLinhas(matriz), [matriz]);
+  // as linhas chegam na ordem dos módulos pelo nome português; em inglês essa é a ordem inicial (coluna fora da tabela: não reordena),
+  // para que a primeira página mostre os mesmos indicadores da página portuguesa. "Module, A to Z" ordena pelo nome inglês.
+  const ordemPadraoEn = { coluna: "ordem_padrao", direcao: "asc" } as const;
   const fonte = tx(
     "Scrutiniums, catálogo de indicadores dos módulos (o mesmo que o observatório usa para calcular)",
     "Scrutiniums, catalog of module indicators (the same one the observatory uses to calculate)",
@@ -326,8 +330,9 @@ export function MetodologiaRegras({
         colunaRotulo="titulo"
         prefixo="reg"
         paramAberto="m"
-        ordemInicial={{ coluna: "modulo", direcao: "asc" }}
+        ordemInicial={idioma === "en" ? ordemPadraoEn : { coluna: "modulo", direcao: "asc" }}
         opcoesOrdem={[
+          ...(idioma === "en" ? [{ id: "padrao", rotulo: "Module (default order)", ordem: ordemPadraoEn }] : []),
           { id: "modulo", rotulo: tx("Módulo, de A a Z", "Module, A to Z"), ordem: { coluna: "modulo", direcao: "asc" } },
           { id: "nome", rotulo: tx("Indicador, de A a Z", "Indicator, A to Z"), ordem: { coluna: "titulo", direcao: "asc" } },
           { id: "unidade", rotulo: tx("Unidade, de A a Z", "Unit, A to Z"), ordem: { coluna: "unidade", direcao: "asc" } },
@@ -365,7 +370,7 @@ export function MetodologiaRegras({
           versao={versao}
           nomeArquivo="metodologia-regras-por-indicador"
           chaveUrl="reg"
-          ordemInicial={{ coluna: "modulo", direcao: "asc" }}
+          ordemInicial={idioma === "en" ? null : { coluna: "modulo", direcao: "asc" }}
           tamanhoPagina={25}
           dicaBusca={tx("Indicador, módulo ou unidade", "Indicator, module or unit")}
           nota={tx(

@@ -20,6 +20,7 @@ import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { semDado } from "@/lib/energia/evidencia";
 import { lerGold } from "@/lib/energia/gold";
 import { tx } from "@/lib/energia/idioma";
+import { codigo as identificador } from "@/lib/energia/i18n/regulacao-dados-metodo";
 
 export const dynamic = "force-static";
 
@@ -456,7 +457,7 @@ export default function DadosReproducaoPage() {
                     <dl className="mt-2 space-y-2 text-sm" data-lista="dicionario-operacao">
                       {Object.entries(pub.dicionario_operacao).map(([k, v]) => (
                         <div key={k}>
-                          <dt className="font-medium text-carvao [overflow-wrap:anywhere]">{k}</dt>
+                          <dt className="font-medium text-carvao [overflow-wrap:anywhere]">{identificador(k)}</dt>
                           <dd className="mt-0.5 leading-relaxed text-carvao-muted">
                             <TrechoPortugues regiao="reproducao-dicionario">{v}</TrechoPortugues>
                           </dd>

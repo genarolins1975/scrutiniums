@@ -22,9 +22,22 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
 import { conceitos } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS, catalogoDados } from "@/lib/energia/datasets";
-import { CSV_DADOS, URL_GOLD, afirmacoesConferidas, compactarLinhas, linhasMetricas, respostaRegras, resumoMetricas, ROTULO_ESTADO_DADOS } from "@/lib/energia/dados";
+import { CSV_DADOS, URL_GOLD, afirmacoesConferidas, compactarLinhas, linhasMetricas, moduloDaGold, respostaRegras, resumoMetricas, ROTULO_ESTADO_DADOS } from "@/lib/energia/dados";
+import { ordenarComNulos } from "@/lib/energia/escalas";
 import { fichasDasFontes } from "@/lib/energia/dados-ficha";
-import { maiuscula, quadroDeDatas, resumirAcessoCcee, separaIdentificadores, textoChecagensReprovadas, textoDatasDaColetaCcee, textoMudancaRegras, textoVersaoDoCodigo, vereditoRegras } from "@/lib/energia/dados-leitor";
+import {
+  maiuscula,
+  partesMudancaRegras,
+  quadroDeDatas,
+  resumirAcessoCcee,
+  separaIdentificadores,
+  textoChecagensReprovadas,
+  textoDatasDaColetaCcee,
+  textoMudancaRegras,
+  textoVersaoDoCodigo,
+  vereditoRegras,
+} from "@/lib/energia/dados-leitor";
+import { REGRAS_TEMPO_EN, codigo, marcado } from "@/lib/energia/i18n/regulacao-dados-metodo";
 import { acessoCceeDados, contagemNoCsvDoCatalogo, estadoDoArquivo, manifestoDados, metricasGeradoEm, metricasPublicadas, provenienciaDados, publicacaoDados, validacoesDosCsv, versoesDoCodigoDasBases } from "@/lib/energia/dados-servidor";
 import { carimbo, dataBR, num, rotuloRegra } from "@/lib/energia/formato";
 import { tx } from "@/lib/energia/idioma";
@@ -155,7 +168,12 @@ export default function MetodologiaEnergia() {
   const porIdNoCatalogo = new Set((cat?.entradas ?? []).map((e) => e.id));
   const fichas = new Set(DATASETS_INTEGRADOS.filter((d) => porIdNoCatalogo.has(d.catalogoId)).map((d) => d.slug));
   const fichasPorFonte = cat ? fichasDasFontes(fontesCitadas, cat, pub, fichas) : {};
-  const matriz = compactarLinhas(linhasMetricas(metricas), CHAVES_DAS_REGRAS);
+  // as linhas seguem a ordem dos módulos pelo nome português (a mesma que a lista portuguesa aplica): a página inglesa começa nessa
+  // ordem, para que a primeira página da lista e da tabela traga os mesmos indicadores nos dois idiomas
+  const matriz = compactarLinhas(
+    ordenarComNulos(linhasMetricas(metricas), (l) => moduloDaGold(metricas[Number(l.n)]?.gold ?? "", "pt"), "asc"),
+    CHAVES_DAS_REGRAS,
+  );
 
   // as checagens reprovadas do relatório, com o que a releitura do arquivo publicado mostra
   const reprovados = pub ? Array.from(validacoesDosCsv()).filter((par) => par[1].veredito === "reprovado").map((par) => estadoDoArquivo(`/energia/series/${par[0]}`, pub, man)) : [];
@@ -169,7 +187,25 @@ export default function MetodologiaEnergia() {
 
   const ENDERECO = "https://scrutiniums.com/setor-eletrico/metodologia#regras";
 
-  const oQueMudou = <>{textoMudancaRegras(afirm.map((x) => x.afirmacao), conferidas)}</>;
+  const mudanca = partesMudancaRegras(afirm.map((x) => x.afirmacao), conferidas);
+  // em inglês, a afirmação anterior e a atual (texto da gold) ficam marcadas como trechos em português dentro da frase
+  const oQueMudou = tx(
+    <>{textoMudancaRegras(afirm.map((x) => x.afirmacao), conferidas)}</>,
+    mudanca ? (
+      <>
+        {mudanca.abertura}.{" "}
+        {mudanca.cada.map((c, i) => (
+          <span key={i}>
+            <TrechoPortugues regiao="metodologia-afirmacao">{c.anterior}</TrechoPortugues> The page now says:{" "}
+            <TrechoPortugues regiao="metodologia-afirmacao">{c.agora}</TrechoPortugues>{" "}
+          </span>
+        ))}
+        {mudanca.confere}
+      </>
+    ) : (
+      <>{textoMudancaRegras(afirm.map((x) => x.afirmacao), conferidas)}</>
+    ),
+  );
   const comoInterpretar = tx(
     <>
       A natureza do dado de origem e a do resultado são diferentes: um valor observado pode virar um calculado, e um calculado de dado estimado continua dependendo da estimativa. Mista é a combinação de naturezas. A regra de cobertura diz o mínimo para publicar; a política de ausência diz o que aparece quando falta (nunca zero).
@@ -318,7 +354,7 @@ export default function MetodologiaEnergia() {
                       "The usual names in data engineering are bronze (the original file of each capture), silver (the history of observations by capture, the vintage) and gold (the processed data the pages publish).",
                     )}
                   </p>
-                  <pre tabIndex={0} aria-label={tx("Linhagem dos dados, do arquivo da fonte à visualização (rolável)", "Data lineage, from the source file to the visualization (scrollable)")} className="overflow-x-auto border border-linha bg-superficie p-4 font-mono text-xs leading-relaxed text-carvao">{tx(`FONTE (CCEE, ONS, ANEEL)
+                  <pre tabIndex={0} aria-label={tx("Linhagem dos dados, do arquivo da fonte à visualização (rolável)", "Data lineage, from the source file to the visualization (scrollable)")} className="overflow-x-auto border border-linha bg-superficie p-4 font-mono text-xs leading-relaxed text-carvao">{tx<ReactNode>(`FONTE (CCEE, ONS, ANEEL)
   ↓ captura: arquivo original, sha256, url, capturado_em, publicado_em (metadado da fonte)
 BRONZE: cópia imutável por captura
   ↓ normalização determinística
@@ -328,17 +364,17 @@ GOLD (dados processados): indicadores com proveniência, publicados em /energia/
   ↓
 INDICADOR → VISUALIZAÇÃO | MODELO
 
-Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO → PUBLICAÇÃO → REALIZADO → APURAÇÃO`, `SOURCE (CCEE, ONS, ANEEL)
-  ↓ capture: original file, sha256, url, capturado_em, publicado_em (source metadata)
+Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO → PUBLICAÇÃO → REALIZADO → APURAÇÃO`, <>{`SOURCE (CCEE, ONS, ANEEL)
+  ↓ capture: original file, sha256, url, `}{codigo("capturado_em")}, {codigo("publicado_em")}{` (source metadata)
 BRONZE: immutable copy per capture
   ↓ deterministic normalization
 SILVER (history): observations by vintage; only appends, never deletes
   ↓ published rules
-GOLD (processed data): indicators with provenance, published in /energia/gold
+GOLD (processed data): indicators with provenance, published in `}{codigo("/energia/gold")}{`
   ↓
 INDICATOR → VISUALIZATION | MODEL
 
-Forecasts: SOURCE VINTAGE → INPUT VARIABLES → MODEL VERSION → PUBLICATION → ACTUAL → SCORING`)}</pre>
+Forecasts: SOURCE VINTAGE → INPUT VARIABLES → MODEL VERSION → PUBLICATION → ACTUAL → SCORING`}</>)}</pre>
                 </div>
               </Secao>
 
@@ -463,9 +499,11 @@ Forecasts: SOURCE VINTAGE → INPUT VARIABLES → MODEL VERSION → PUBLICATION 
                         </div>
                         {arquivoDoCatalogo && (
                           <p data-nivel="auditar" className="max-w-prose2 break-all border-l-2 border-linha pl-3 text-xs leading-relaxed text-carvao-muted">
-                            {tx(
-                              `Impressão digital (sha256) do arquivo na lista de arquivos: ${arquivoDoCatalogo.sha256}. Confira a do arquivo baixado na página Download e reprodução.`,
-                              `Fingerprint (sha256) of the file in the file list: ${arquivoDoCatalogo.sha256}. Check that of the downloaded file on the Download and reproduction page.`,
+                            {marcado(
+                              tx(
+                                `Impressão digital (sha256) do arquivo na lista de arquivos: ${arquivoDoCatalogo.sha256}. Confira a do arquivo baixado na página Download e reprodução.`,
+                                `Fingerprint (sha256) of the file in the file list: ${arquivoDoCatalogo.sha256}. Check that of the downloaded file on the Download and reproduction page.`,
+                              ),
                             )}
                           </p>
                         )}
@@ -516,7 +554,7 @@ Forecasts: SOURCE VINTAGE → INPUT VARIABLES → MODEL VERSION → PUBLICATION 
                         )}
                         {notaReprovadas.tecnico && (
                           <p data-nivel="analisar" className="max-w-prose2 break-words border-l-2 border-linha pl-3 text-xs leading-relaxed text-carvao-muted">
-                            {notaReprovadas.tecnico}
+                            {marcado(notaReprovadas.tecnico)}
                           </p>
                         )}
                         <p className="text-sm text-carvao-muted">
@@ -551,7 +589,14 @@ Forecasts: SOURCE VINTAGE → INPUT VARIABLES → MODEL VERSION → PUBLICATION 
                               <TrechoPortugues regiao="metodologia-afirmacao">{a.texto}</TrechoPortugues>
                             </p>
                             <p className="mt-2 text-xs leading-relaxed text-mineral">
-                              {tx("Conjuntos citados:", "Datasets cited:")} {a.conjuntos.map((c) => `${c.id} (${ROTULO_ESTADO_DADOS[c.estado].toLowerCase()})`).join("; ")}.
+                              {tx("Conjuntos citados:", "Datasets cited:")}{" "}
+                              {a.conjuntos.map((c, i) => (
+                                <span key={c.id}>
+                                  {i > 0 ? "; " : ""}
+                                  {codigo(c.id)} ({ROTULO_ESTADO_DADOS[c.estado].toLowerCase()})
+                                </span>
+                              ))}
+                              .
                             </p>
                             {a.afirmacao_anterior && (
                               <p className="mt-2 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao">
@@ -644,7 +689,7 @@ Forecasts: SOURCE VINTAGE → INPUT VARIABLES → MODEL VERSION → PUBLICATION 
                             <dl className="space-y-1.5">
                               {Object.entries(pub.regras.tempo).map(([k, v]) => (
                                 <div key={k}>
-                                  <dt className="inline font-medium text-carvao">{rotuloRegra(k)}: </dt>
+                                  <dt className="inline font-medium text-carvao">{tx(rotuloRegra(k), REGRAS_TEMPO_EN[k] ?? rotuloRegra(k))}: </dt>
                                   <dd className="inline leading-relaxed text-carvao-muted">
                                     <TrechoPortugues regiao="metodologia-regras-pipeline">{v}</TrechoPortugues>
                                   </dd>
@@ -659,7 +704,7 @@ Forecasts: SOURCE VINTAGE → INPUT VARIABLES → MODEL VERSION → PUBLICATION 
                             <ul className="list-disc space-y-0.5 pl-5 leading-relaxed text-carvao-muted">
                               {Object.entries(pub.regras.horizonte).map(([k, v]) => (
                                 <li key={k}>
-                                  <span className="font-medium text-carvao">{k}</span>: <TrechoPortugues regiao="metodologia-regras-pipeline">{v}</TrechoPortugues>
+                                  <span className="font-medium text-carvao">{codigo(k)}</span>: <TrechoPortugues regiao="metodologia-regras-pipeline">{v}</TrechoPortugues>
                                 </li>
                               ))}
                             </ul>
@@ -741,7 +786,7 @@ Forecasts: SOURCE VINTAGE → INPUT VARIABLES → MODEL VERSION → PUBLICATION 
               {LISTA_UNIDADES.map((x) => (
                 <div key={x.u} className="border-t border-linha pt-3">
                   <dt className="font-medium text-carvao">
-                    {x.u} · {x.nome}
+                    {marcado(x.u)} · {x.nome}
                   </dt>
                   <dd className="mt-1 text-sm text-carvao-muted">{x.dica}</dd>
                 </div>
@@ -897,7 +942,13 @@ Forecasts: SOURCE VINTAGE → INPUT VARIABLES → MODEL VERSION → PUBLICATION 
                 return (
                   <li key={a.id}>
                     <TrechoPortugues regiao="metodologia-afirmacao">{texto}</TrechoPortugues>
-                    {tecnico && <span data-nivel="analisar"> {tecnico}</span>}
+                    {tecnico && (
+                      <span data-nivel="analisar">
+                        {" "}
+                        {/* identificador solto fica como código; o resto (estado e achado da auditoria) é texto da gold, em português */}
+                        {/^\([\w:.-]+\)$/.test(tecnico) ? codigo(tecnico) : <TrechoPortugues regiao="metodologia-afirmacao">{tecnico}</TrechoPortugues>}
+                      </span>
+                    )}
                   </li>
                 );
               })}

@@ -1,4 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
+import type { ReactNode } from "react";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/i18n/LinkIdioma";
 import { Nome } from "@/components/i18n/Nome";
@@ -33,6 +34,7 @@ import {
 } from "@/lib/energia/dados-leitor";
 import { COLUNAS_ARQUIVO, catalogoDados } from "@/lib/energia/datasets";
 import { nomeDoConjunto } from "@/lib/energia/dados-ficha";
+import { codigo, marcado } from "@/lib/energia/i18n/regulacao-dados-metodo";
 import { manifestoDados, provenienciaDados, publicacaoDados } from "@/lib/energia/dados-servidor";
 import { datasLegiveis } from "@/lib/energia/visao";
 
@@ -50,8 +52,16 @@ export async function generateMetadata(_props: unknown, anterior: ResolvingMetad
 }
 
 /** Texto escrito pelo pipeline (regras, motivos de falha): fica em português, com as datas no formato brasileiro do próprio trecho. */
+/** Termo técnico inglês que a gold usa no meio do texto português ("append only"): fica como está, marcado com lang="en". */
+const TERMO_INGLES_DA_GOLD = /(\(append only\))/; // i18n: dado
+
 function DaGold({ texto, regiao }: { texto: string; regiao: string }) {
-  return <TrechoPortugues regiao={regiao}>{datasLegiveis(texto, "pt")}</TrechoPortugues>;
+  const partes = datasLegiveis(texto, "pt").split(TERMO_INGLES_DA_GOLD);
+  return (
+    <TrechoPortugues regiao={regiao}>
+      {partes.map((p, i) => (TERMO_INGLES_DA_GOLD.test(p) ? <span key={i} lang="en">{p}</span> : p))}
+    </TrechoPortugues>
+  );
 }
 
 export default function DadosSaudePage() {
@@ -83,7 +93,7 @@ export default function DadosSaudePage() {
   const evRevisaoLegivel = evRevisao ? { ...evRevisao, valor_exibido: pct(evRevisao.valor_calculo, 1) } : undefined;
   const maiorRevisao = r.comRevisao.map((c) => ({ c, e: c.revisoes?.maior_rel })).filter((x) => x.e && x.e.relativa_pct !== null).sort((a, b) => (b.e!.relativa_pct ?? 0) - (a.e!.relativa_pct ?? 0))[0];
   const ENDERECO = "https://scrutiniums.com/setor-eletrico/dados/saude#saude";
-  const oQueMudou = <>{textoMudancaSaude(r)}</>;
+  const oQueMudou = <>{marcado(textoMudancaSaude(r), r.comRevisao.map((c) => c.titulo))}</>;
   const comoInterpretar = tx(
     <>
       Em dia quer dizer que o período seguinte ao último disponível ainda está dentro do prazo (o fim desse período mais a tolerância da frequência declarada). Sem prazo declarado é a fonte que não declara frequência: o observatório não inventa uma. Revisão é a troca de valor de uma mesma série e
@@ -291,7 +301,7 @@ export default function DadosSaudePage() {
                 <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
 
                 <DadosResposta depois painel="P068" veredito={vereditoSaude(r)}>
-                  {respostaSaude(r)}
+                  {marcado(respostaSaude(r), r.atrasados.map((c) => c.titulo))}
                 </DadosResposta>
 
                 <SecaoDoPainel id="calendario" titulo={tx("Quando a fonte publica e quando o observatório coleta?", "When does the source publish and when does the observatory collect?")}>
@@ -357,7 +367,7 @@ export default function DadosSaudePage() {
                             <div className="mt-1 space-y-1 text-xs leading-relaxed text-mineral" data-nivel="analisar">
                               {rv.maior_abs && (
                                 <p>
-                                  {tx("Maior mudança absoluta: série", "Largest absolute change: series")} <strong className="font-medium text-carvao">{rv.maior_abs.serie}</strong>{" "}
+                                  {tx("Maior mudança absoluta: série", "Largest absolute change: series")} <strong className="font-medium text-carvao">{codigo(rv.maior_abs.serie)}</strong>{" "}
                                   {tx(
                                     `em ${refLegivel(rv.maior_abs.ref)}, de ${num(rv.maior_abs.de, 2)} para ${num(rv.maior_abs.para, 2)} (diferença de ${num(rv.maior_abs.diferenca, 2)}, na unidade da série).`,
                                     `in ${refLegivel(rv.maior_abs.ref)}, from ${num(rv.maior_abs.de, 2)} to ${num(rv.maior_abs.para, 2)} (difference of ${num(rv.maior_abs.diferenca, 2)}, in the unit of the series).`,
@@ -366,8 +376,11 @@ export default function DadosSaudePage() {
                               )}
                               {ev && (
                                 <p>
-                                  {tx("Maior mudança relativa: série", "Largest relative change: series")} <strong className="font-medium text-carvao">{ev.serie}</strong>
-                                  {tx(`, arquivo ${ev.recurso}. Cada captura guarda o original com sha256.`, `, file ${ev.recurso}. Each capture stores the original with sha256.`)}
+                                  {tx("Maior mudança relativa: série", "Largest relative change: series")} <strong className="font-medium text-carvao">{codigo(ev.serie)}</strong>
+                                  {tx<ReactNode>(
+                                    `, arquivo ${ev.recurso}. Cada captura guarda o original com sha256.`,
+                                    <>, file {codigo(ev.recurso)}. Each capture stores the original with sha256.</>,
+                                  )}
                                 </p>
                               )}
                             </div>

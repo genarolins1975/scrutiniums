@@ -186,8 +186,9 @@ export function dadosPorDimensao(a: AvaliacaoGold): { id: IdDimensao; rotulo: st
 /* ------------------------------------------------------------------ tabelas */
 
 export const COLUNAS_PAGINAS: ColunaTabela[] = [
-  { id: "titulo", get rotulo() { return tx("Página", "Page"); }, tipo: "texto" },
-  { id: "rota", get rotulo() { return tx("Rota", "Route"); }, tipo: "texto" },
+  // título da página como a gold o registra (português) e rota (identificador): na página inglesa, marcados
+  { id: "titulo", get rotulo() { return tx("Página", "Page"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "rota", get rotulo() { return tx("Rota", "Route"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "entrega", get rotulo() { return tx("Entrega", "Delivery"); }, tipo: "texto", categorica: true },
   { id: "tipo", get rotulo() { return tx("Tipo", "Type"); }, tipo: "texto", categorica: true },
   ...ORDEM_DIMENSOES.map((i): ColunaTabela => ({ id: i, get rotulo() { return ROTULO_CURTO[i]; }, tipo: "numero", casas: 1 })),
@@ -216,9 +217,9 @@ export const COLUNAS_DEFEITOS: ColunaTabela[] = [
   { id: "id", get rotulo() { return tx("Defeito", "Defect"); }, tipo: "texto" },
   { id: "severidade", get rotulo() { return tx("Severidade", "Severity"); }, tipo: "texto", categorica: true },
   { id: "dimensao", get rotulo() { return tx("Dimensão", "Dimension"); }, tipo: "texto", categorica: true },
-  { id: "descricao", get rotulo() { return tx("Descrição", "Description"); }, tipo: "texto" },
+  { id: "descricao", get rotulo() { return tx("Descrição", "Description"); }, tipo: "texto", idiomaTexto: "portugues" },
   { id: "n_paginas", get rotulo() { return tx("Páginas afetadas", "Pages affected"); }, tipo: "numero", casas: 0 },
-  { id: "exemplo", get rotulo() { return tx("Primeira página", "First page"); }, tipo: "texto" },
+  { id: "exemplo", get rotulo() { return tx("Primeira página", "First page"); }, tipo: "texto", idiomaTexto: "nome" },
 ];
 
 /* lido na hora (ROTULO_CURTO tem getters): o spread de módulo congelaria o idioma da primeira leitura */

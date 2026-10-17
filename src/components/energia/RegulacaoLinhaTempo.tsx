@@ -11,7 +11,7 @@ import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { formatos } from "@/lib/energia/formato";
-import { comNomes } from "@/lib/energia/i18n/regulacao-dados-metodo";
+import { codigo, comNomes } from "@/lib/energia/i18n/regulacao-dados-metodo";
 import { ROTULO_BASE, type BaseData } from "@/lib/energia/linha-do-tempo";
 import {
   COLUNAS_LINHA_TEMPO,
@@ -565,7 +565,7 @@ export function RegulacaoLinhaTempo({
                             </a>
                           )}
                         </p>
-                        {e.sha256 && <p className="text-xs [overflow-wrap:anywhere]">sha256 {e.sha256}</p>}
+                        {e.sha256 && <p className="text-xs [overflow-wrap:anywhere]">sha256 {codigo(e.sha256, idioma)}</p>}
                       </div>
                     </details>
                     <button

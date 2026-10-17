@@ -1,5 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import { Nome } from "@/components/i18n/Nome";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -34,7 +35,7 @@ import {
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 import { tx } from "@/lib/energia/idioma";
-import { comNomes } from "@/lib/energia/i18n/regulacao-dados-metodo";
+import { comNomes, detalhePublicacao, marcado } from "@/lib/energia/i18n/regulacao-dados-metodo";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 
 export const dynamic = "force-static";
@@ -51,12 +52,13 @@ export async function generateMetadata(_props: unknown, anterior: ResolvingMetad
 
 function colunasPublicacao(): ColunaTabela[] {
   return [
-    { id: "ato", rotulo: tx("Ato", "Act"), tipo: "texto" },
+    // nome do ato e, na fonte, o trecho dos metadados do Senado ou do PDF: português da fonte, marcados na página inglesa
+    { id: "ato", rotulo: tx("Ato", "Act"), tipo: "texto", idiomaTexto: "nome" },
     { id: "data_publicacao", rotulo: tx("Publicação na gold", "Publication in the gold file"), tipo: "data" },
     { id: "resultado", rotulo: tx("Conferência", "Check"), tipo: "texto", categorica: true },
     { id: "detalhe", rotulo: tx("Como foi conferida", "How it was checked"), tipo: "texto" },
     // i18n: dado
-    { id: "fonte", rotulo: tx("Fonte da conferência", "Source of the check"), tipo: "texto" },
+    { id: "fonte", rotulo: tx("Fonte da conferência", "Source of the check"), tipo: "texto", idiomaTexto: "portugues" },
   ];
 }
 
@@ -80,7 +82,7 @@ export default function LinhaDoTempoPage() {
   const versao = T.conferido_em;
   const fonte = tx(
     "ANEEL, Congresso Nacional, Presidência da República e MME (atos lidos no texto) e ANEEL, Bandeiras Tarifárias",
-    "ANEEL, National Congress, Presidency of the Republic and MME (acts read in full text) and ANEEL, Bandeiras Tarifárias dataset",
+    "ANEEL, National Congress, Presidency of the Republic and MME (acts read in full text) and ANEEL, tariff flag dataset",
   );
 
   const oQueMudou = tx(
@@ -190,7 +192,7 @@ export default function LinhaDoTempoPage() {
                     exata em que a regra passou a valer evita atribuir à norma o que aconteceu antes dela, ou o contrário.
                   </>,
                   <>
-                    A series reads differently when the rule changes: the Tarifa Social (social electricity tariff), the calculation of losses, the hourly PLD and the tariff flags change
+                    A series reads differently when the rule changes: the <Nome>Tarifa Social</Nome> (social electricity tariff), the calculation of losses, the hourly PLD and the tariff flags change
                     what a number means. Knowing the exact date a rule took effect avoids attributing to the rule what happened before it, or the reverse.
                   </>,
                 )
@@ -203,8 +205,12 @@ export default function LinhaDoTempoPage() {
               complementares={[{ rotulo: tx("Adicionais das bandeiras tarifárias", "Tariff flag surcharges"), p: g.proveniencia.bandeiras }]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p045" veredito={vereditoLinhaTempo(eventos, eventos.length, "vigencia", T.conferido_em)}>
-                  {comNomes(respostaLinhaTempo(eventos, eventos.length))}
+                {/* o título de cada evento é resumo escrito em português na gold: na frase inglesa, marcado como trecho em português */}
+                <RespostaCurta
+                  id="p045"
+                  veredito={marcado(vereditoLinhaTempo(eventos, eventos.length, "vigencia", T.conferido_em), [], undefined, eventos.map((e) => e.titulo), "linha-tempo-titulo")}
+                >
+                  {marcado(respostaLinhaTempo(eventos, eventos.length), [], undefined, eventos.map((e) => e.titulo), "linha-tempo-titulo")}
                 </RespostaCurta>
 
                 <RegulacaoLinhaTempo
@@ -306,7 +312,11 @@ export default function LinhaDoTempoPage() {
                             ? tx("aprovada", "passed")
                             : e.conferencia_publicacao.resultado
                           : tx("sem conferência", "no check"),
-                        detalhe: e.conferencia_publicacao?.detalhe ?? (e.data_publicacao ? null : tx("sem data de publicação: nada a conferir", "no publication date: nothing to check")),
+                        detalhe: e.conferencia_publicacao?.detalhe != null
+                          ? detalhePublicacao(e.conferencia_publicacao.detalhe)
+                          : e.data_publicacao
+                            ? null
+                            : tx("sem data de publicação: nada a conferir", "no publication date: nothing to check"),
                         fonte: e.conferencia_publicacao?.fonte ?? null,
                       }))}
                     chaveLinha="id"

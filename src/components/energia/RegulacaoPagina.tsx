@@ -24,6 +24,7 @@ import type { AtoLimite } from "@/lib/energia/tipos-regulacao";
 import { tx } from "@/lib/energia/idioma";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
+import { codigo } from "@/lib/energia/i18n/regulacao-dados-metodo";
 
 /**
  * Peças de servidor das páginas da Regulação (um painel por página: /setor-eletrico/regulacao para o P044, /linha-do-tempo para o
@@ -317,7 +318,7 @@ export function FichaDoAto({ a }: { a: AtoLimite }) {
               {a.url_oficial && <RegulacaoLinkExterno bloco href={a.url_oficial}>{tx("Endereço oficial (ANEEL)", "Official address (ANEEL)")}</RegulacaoLinkExterno>}
               {a.copia_publica && <RegulacaoLinkExterno bloco href={a.copia_publica}>{tx("Cópia pública lida, conferida por sha256", "Public copy read, checked by sha256")}</RegulacaoLinkExterno>}
             </p>
-            {a.sha256 && <p className="[overflow-wrap:anywhere]">sha256 {a.sha256}</p>}
+            {a.sha256 && <p className="[overflow-wrap:anywhere]">sha256 {codigo(a.sha256)}</p>}
           </div>
         </details>
       </div>

@@ -318,9 +318,9 @@ export const COLUNAS_LIMITES: ColunaTabela[] = [
   { id: "pld_max_horario", get rotulo() { return tx("Teto horário", "Hourly ceiling"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "inicio", get rotulo() { return tx("Vigência: início", "In force: start"); }, tipo: "data" },
   { id: "fim", get rotulo() { return tx("Vigência: fim", "In force: end"); }, tipo: "data" },
-  { id: "ato_pld_min", get rotulo() { return tx("Ato do piso", "Act setting the floor"); }, tipo: "texto" },
+  { id: "ato_pld_min", get rotulo() { return tx("Ato do piso", "Act setting the floor"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "publicacao_pld_min", get rotulo() { return tx("Publicação no DOU (piso)", "Publication in the DOU (floor)"); }, tipo: "data" },
-  { id: "ato_tetos", get rotulo() { return tx("Ato dos tetos", "Act setting the ceilings"); }, tipo: "texto" },
+  { id: "ato_tetos", get rotulo() { return tx("Ato dos tetos", "Act setting the ceilings"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "publicacao_tetos", get rotulo() { return tx("Publicação no DOU (tetos)", "Publication in the DOU (ceilings)"); }, tipo: "data" },
 ];
 
@@ -482,7 +482,7 @@ export function linhasAtos(g: Pick<GoldRegulacao, "limites_pld">): LinhaTabela[]
 /* rótulos lidos na hora (getter), no idioma da página */
 export const COLUNAS_ATOS: ColunaTabela[] = [
   { id: "ano", get rotulo() { return tx("Ano", "Year"); }, tipo: "texto", categorica: true }, // i18n: dado
-  { id: "ato", get rotulo() { return tx("Ato", "Act"); }, tipo: "texto" },
+  { id: "ato", get rotulo() { return tx("Ato", "Act"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "data_do_ato", get rotulo() { return tx("Data do ato", "Date of the act"); }, tipo: "data" },
   { id: "data_publicacao", get rotulo() { return tx("Publicação no DOU", "Publication in the DOU"); }, tipo: "data" },
   { id: "vigencia_inicio", get rotulo() { return tx("Vigência: início", "In force: start"); }, tipo: "data" },
@@ -490,12 +490,12 @@ export const COLUNAS_ATOS: ColunaTabela[] = [
   { id: "pld_min", get rotulo() { return tx("Piso", "Floor"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "pld_max_estrutural", get rotulo() { return tx("Teto estrutural", "Structural ceiling"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "pld_max_horario", get rotulo() { return tx("Teto horário", "Hourly ceiling"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "dispositivo", get rotulo() { return tx("Dispositivo", "Provision"); }, tipo: "texto" },
+  { id: "dispositivo", get rotulo() { return tx("Dispositivo", "Provision"); }, tipo: "texto", idiomaTexto: "portugues" },
   { id: "nivel", get rotulo() { return tx("Onde o valor foi lido", "Where the value was read"); }, tipo: "texto", categorica: true },
-  { id: "documento", get rotulo() { return tx("Documento", "Document"); }, tipo: "texto" },
+  { id: "documento", get rotulo() { return tx("Documento", "Document"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "pagina", get rotulo() { return tx("Página do PDF", "PDF page"); }, tipo: "numero", casas: 0 },
   { id: "trecho_confere", get rotulo() { return tx("Trecho encontrado no PDF", "Passage found in the PDF"); }, tipo: "texto", categorica: true },
-  { id: "sha256", get rotulo() { return tx("sha256 do PDF", "PDF sha256"); }, tipo: "texto" },
+  { id: "sha256", get rotulo() { return tx("sha256 do PDF", "PDF sha256"); }, tipo: "texto", idiomaTexto: "nome" },
 ];
 
 export const ROTULO_CONFERENCIA: Record<string, string> = {
@@ -552,14 +552,14 @@ export function linhasConferenciasDetalhe(g: Pick<GoldRegulacao, "limites_pld">)
 export const COLUNAS_CONFERENCIAS_DETALHE: ColunaTabela[] = [
   { id: "conferencia", get rotulo() { return tx("Conferência", "Check"); }, tipo: "texto", categorica: true },
   { id: "ano", get rotulo() { return tx("Ano", "Year"); }, tipo: "texto", categorica: true }, // i18n: dado
-  { id: "ato", get rotulo() { return tx("Ato", "Act"); }, tipo: "texto" },
+  { id: "ato", get rotulo() { return tx("Ato", "Act"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "campo", get rotulo() { return tx("Campo", "Field"); }, tipo: "texto", categorica: true },
   { id: "valor_ato", get rotulo() { return tx("Valor no ato", "Value in the act"); }, tipo: "numero", unidade: "R$/MWh", casas: 4 },
   { id: "valor_esperado", get rotulo() { return tx("Valor esperado", "Expected value"); }, tipo: "numero", unidade: "R$/MWh", casas: 4 },
   { id: "diferenca", get rotulo() { return tx("Diferença (ato menos esperado)", "Difference (act minus expected)"); }, tipo: "numero", unidade: "R$/MWh", casas: 4 },
-  { id: "tolerancia", get rotulo() { return tx("Tolerância", "Tolerance"); }, tipo: "texto" },
+  { id: "tolerancia", get rotulo() { return tx("Tolerância", "Tolerance"); }, tipo: "texto", idiomaTexto: "portugues" },
   { id: "resultado", get rotulo() { return tx("Resultado", "Result"); }, tipo: "texto", categorica: true },
-  { id: "detalhe", get rotulo() { return tx("Detalhe", "Detail"); }, tipo: "texto" },
+  { id: "detalhe", get rotulo() { return tx("Detalhe", "Detail"); }, tipo: "texto", idiomaTexto: "portugues" },
 ];
 
 /**
@@ -576,7 +576,9 @@ export function paresRegraIpca(g: Pick<GoldRegulacao, "limites_pld">): { id: str
     const repetido = (vezes.get(chave) ?? 0) > 1;
     const semAto = tx("ato não identificado", "act not identified");
     const ato = c.ato ? abreviarAto(c.ato) : semAto;
-    const nome = `${c.ano}, ${ARTIGO_LIMITE[c.campo as CampoLimite]?.replace(/^(?:o|the) /, "") ?? c.campo}`;
+    const limite = ARTIGO_LIMITE[c.campo as CampoLimite]?.replace(/^(?:o|the) /, "") ?? c.campo;
+    // em inglês sem vírgula ("2023 hourly ceiling"): o rótulo cortado no gráfico mostra o mesmo trecho do ato que o português
+    const nome = tx(`${c.ano}, ${limite}`, `${c.ano} ${limite}`);
     return {
       id: repetido ? `${chave}:${c.ato ?? "sem-ato"}` : chave,
       rotulo: repetido ? `${nome} (${ato})` : nome,
@@ -644,7 +646,7 @@ export function linhasBandeiras(g: Pick<GoldRegulacao, "bandeiras">): LinhaTabel
 
 export const COLUNAS_BANDEIRAS: ColunaTabela[] = [
   { id: "patamar", get rotulo() { return tx("Patamar", "Level"); }, tipo: "texto", categorica: true },
-  { id: "ato", get rotulo() { return tx("Resolução", "Resolution"); }, tipo: "texto" },
+  { id: "ato", get rotulo() { return tx("Resolução", "Resolution"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "rs_mwh", get rotulo() { return tx("Adicional", "Surcharge"); }, tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "vigencia_inicio", get rotulo() { return tx("Vigência: início", "In force: start"); }, tipo: "data" },
   { id: "vigencia_fim", get rotulo() { return tx("Vigência: fim", "In force: end"); }, tipo: "texto" },
@@ -702,18 +704,18 @@ export function linhasProcedimentos(itens: readonly Procedimento[]): LinhaTabela
 
 export const COLUNAS_PROCEDIMENTOS: ColunaTabela[] = [
   { id: "conjunto", get rotulo() { return tx("Conjunto", "Set"); }, tipo: "texto", categorica: true },
-  { id: "modulo", get rotulo() { return tx("Módulo", "Module"); }, tipo: "texto" },
-  { id: "titulo", get rotulo() { return tx("Título", "Title"); }, tipo: "texto" },
+  { id: "modulo", get rotulo() { return tx("Módulo", "Module"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "titulo", get rotulo() { return tx("Título", "Title"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "versao_na_pagina", get rotulo() { return tx("Versão na página oficial", "Version on the official page"); }, tipo: "texto" },
-  { id: "ato_na_pagina", get rotulo() { return tx("Ato na página oficial", "Act on the official page"); }, tipo: "texto" },
+  { id: "ato_na_pagina", get rotulo() { return tx("Ato na página oficial", "Act on the official page"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "data_ato_na_pagina", get rotulo() { return tx("Data do ato da página", "Date of the page's act"); }, tipo: "data" },
   { id: "conferencia", get rotulo() { return tx("Conferência", "Check"); }, tipo: "texto", categorica: true },
-  { id: "ato_vigente", get rotulo() { return tx("Ato vigente confirmado", "Confirmed act in force"); }, tipo: "texto" },
+  { id: "ato_vigente", get rotulo() { return tx("Ato vigente confirmado", "Confirmed act in force"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "conferencia_versao", get rotulo() { return tx("Versão contra o ato", "Version against the act"); }, tipo: "texto", categorica: true },
   { id: "versao_no_ato", get rotulo() { return tx("Versão escrita no ato", "Version written in the act"); }, tipo: "texto" },
-  { id: "atos_posteriores", get rotulo() { return tx("Atos posteriores sobre o módulo", "Later acts on the module"); }, tipo: "texto" },
-  { id: "ressalvas", get rotulo() { return tx("Ressalvas", "Caveats"); }, tipo: "texto" },
-  { id: "observacao", get rotulo() { return tx("Observação da página", "Note on the page"); }, tipo: "texto" },
+  { id: "atos_posteriores", get rotulo() { return tx("Atos posteriores sobre o módulo", "Later acts on the module"); }, tipo: "texto", idiomaTexto: "nome" },
+  { id: "ressalvas", get rotulo() { return tx("Ressalvas", "Caveats"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "observacao", get rotulo() { return tx("Observação da página", "Note on the page"); }, tipo: "texto", idiomaTexto: "portugues" },
 ];
 
 /** Contagem por conjunto e conferência (barras empilhadas: as três partes somam o total do conjunto). */
@@ -922,17 +924,17 @@ export function respostaLinhaTempo(eventos: readonly EventoRegulatorio[], total:
 }
 
 export const COLUNAS_LINHA_TEMPO: ColunaTabela[] = [
-  { id: "titulo", get rotulo() { return tx("Evento", "Event"); }, tipo: "texto" },
-  { id: "ato", get rotulo() { return tx("Ato", "Act"); }, tipo: "texto" },
+  { id: "titulo", get rotulo() { return tx("Evento", "Event"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "ato", get rotulo() { return tx("Ato", "Act"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "orgao", get rotulo() { return tx("Órgão", "Body"); }, tipo: "texto", categorica: true },
   { id: "origem", get rotulo() { return tx("Origem", "Origin"); }, tipo: "texto", categorica: true },
   { id: "data_publicacao", get rotulo() { return tx("Publicação", "Publication"); }, tipo: "data" },
   { id: "vigencia_inicio", get rotulo() { return tx("Vigência: início", "In force: start"); }, tipo: "data" },
   { id: "defasagem", get rotulo() { return tx("Publicação até a vigência", "Publication to validity"); }, tipo: "numero", get unidade() { return tx("dias", "days"); }, casas: 0 },
-  { id: "dispositivo", get rotulo() { return tx("Dispositivo", "Provision"); }, tipo: "texto" },
+  { id: "dispositivo", get rotulo() { return tx("Dispositivo", "Provision"); }, tipo: "texto", idiomaTexto: "portugues" },
   { id: "paineis", get rotulo() { return tx("Painéis afetados", "Panels affected"); }, tipo: "texto" },
-  { id: "efeito_declarado", get rotulo() { return tx("Efeito declarado pelo ato (literal)", "Effect declared by the act (literal)"); }, tipo: "texto" },
-  { id: "impacto_estimado", get rotulo() { return tx("Impacto estimado pelo observatório", "Impact estimated by the observatory"); }, tipo: "texto" },
+  { id: "efeito_declarado", get rotulo() { return tx("Efeito declarado pelo ato (literal)", "Effect declared by the act (literal)"); }, tipo: "texto", idiomaTexto: "portugues" },
+  { id: "impacto_estimado", get rotulo() { return tx("Impacto estimado pelo observatório", "Impact estimated by the observatory"); }, tipo: "texto", idiomaTexto: "portugues" },
   { id: "nivel", get rotulo() { return tx("Conferência", "Check"); }, tipo: "texto", categorica: true },
 ];
 
@@ -1025,7 +1027,8 @@ export function faixasLinhaTempo(eventos: readonly EventoRegulatorio[]): FaixaTe
       fim: vig,
       traco: pub ? "cheio" : "nenhum", // i18n: dado
       cor: origemEvento(e) === "ato" ? "var(--cor-energia)" : "var(--serie-referencia)", // i18n: dado
-      leitura: `${e.titulo}. ${e.ato ?? tipoAtoNoIdioma(e.tipo_ato)}. ${pub ? pub.rotulo : tx("publicação não informada", "publication not reported")}; ${vig.rotulo}; ${textoDefasagemEvento(e)}.`,
+      // em inglês, o atributo não leva o título nem o nome do ato (português, sem marca possível num atributo): o ato abreviado e o tipo
+      leitura: `${tx(`${e.titulo}. ${e.ato ?? tipoAtoNoIdioma(e.tipo_ato)}`, e.ato ? `${abreviarAto(e.ato)} (${tipoAtoNoIdioma(e.tipo_ato)})` : tipoAtoNoIdioma(e.tipo_ato))}. ${pub ? pub.rotulo : tx("publicação não informada", "publication not reported")}; ${vig.rotulo}; ${textoDefasagemEvento(e)}.`,
     };
   });
 }
@@ -1090,7 +1093,7 @@ export const ROTULO_CURTO_SITUACAO: Record<SituacaoConsulta, string> = {
 export const SITUACOES_PADRAO: SituacaoConsulta[] = ORDEM_SITUACAO.filter((s) => s !== "decidida");
 
 export const ROTULO_FORMA_RESULTADO: Record<FormaResultado, string> = {
-  get resultado() { return tx("\"Resultado da ...\" deliberado", "\"Resultado da ...\" (result) decided"); },
+  get resultado() { return tx("\"Resultado da ...\" deliberado", "item headed \"Resultado ...\" (result) decided"); },
   get encerramento() { return tx("encerramento", "closure"); },
   get apos_contribuicoes() { return tx("decisão após a análise das contribuições", "decision after analysis of the contributions"); },
   get consolidacao() { return tx("consolidação do documento submetido à consulta", "consolidation of the document submitted to consultation"); },
@@ -1339,10 +1342,10 @@ export function linhasConsultas(itens: readonly ConsultaNaData[]): LinhaTabela[]
 }
 
 export const COLUNAS_CONSULTAS: ColunaTabela[] = [
-  { id: "rotulo", get rotulo() { return tx("Consulta", "Consultation"); }, tipo: "texto" },
+  { id: "rotulo", get rotulo() { return tx("Consulta", "Consultation"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "situacao", get rotulo() { return tx("Situação na data", "Status on the date"); }, tipo: "texto", categorica: true },
   { id: "modalidade", get rotulo() { return tx("Modalidade", "Type"); }, tipo: "texto", categorica: true },
-  { id: "tema", get rotulo() { return tx("Assunto", "Subject"); }, tipo: "texto" },
+  { id: "tema", get rotulo() { return tx("Assunto", "Subject"); }, tipo: "texto", idiomaTexto: "portugues" },
   { id: "fase", get rotulo() { return tx("Fase atual", "Current phase"); }, tipo: "texto", categorica: true },
   { id: "inicio", get rotulo() { return tx("Contribuições: início", "Contributions: start"); }, tipo: "data" },
   { id: "fim", get rotulo() { return tx("Contribuições: fim", "Contributions: end"); }, tipo: "data" },
@@ -1351,11 +1354,11 @@ export const COLUNAS_CONSULTAS: ColunaTabela[] = [
   { id: "sessao", get rotulo() { return tx("Sessão da audiência", "Hearing session"); }, tipo: "data" },
   { id: "deliberacao", get rotulo() { return tx("Deliberação da fase atual", "Decision on the current phase"); }, tipo: "data" },
   { id: "resultado_data", get rotulo() { return tx("Resultado: reunião", "Result: meeting"); }, tipo: "data" },
-  { id: "resultado_ato", get rotulo() { return tx("Resultado: ato", "Result: act"); }, tipo: "texto" },
+  { id: "resultado_ato", get rotulo() { return tx("Resultado: ato", "Result: act"); }, tipo: "texto", idiomaTexto: "nome" },
   { id: "resultado_forma", get rotulo() { return tx("Resultado: forma", "Result: form"); }, tipo: "texto", categorica: true },
   { id: "processo", get rotulo() { return tx("Processo", "Proceeding"); }, tipo: "texto" },
-  { id: "relator", get rotulo() { return tx("Relator", "Rapporteur"); }, tipo: "texto", categorica: true },
-  { id: "agenda", get rotulo() { return tx("Atividade da Agenda citada", "Agenda activity cited"); }, tipo: "texto" },
+  { id: "relator", get rotulo() { return tx("Relator", "Rapporteur"); }, tipo: "texto", categorica: true, idiomaTexto: "nome" },
+  { id: "agenda", get rotulo() { return tx("Atividade da Agenda citada", "Agenda activity cited"); }, tipo: "texto", idiomaTexto: "portugues" },
 ];
 
 const ESTILO_SITUACAO: Record<SituacaoConsulta, { cor: string; traco: FaixaTempo["traco"] }> = {
@@ -1394,7 +1397,7 @@ export function faixasConsultas(itens: readonly ConsultaNaData[]): FaixaTempo[] 
     const res = c.resultado
       ? tx(
           `; resultado ${c.resultado.decidido ? "deliberado" : "levado à reunião sem decisão"} em ${dataBR(c.resultado.data)}${c.resultado.ato ? ` (${c.resultado.ato})` : ""}`,
-          `; result ${c.resultado.decidido ? "decided" : "taken to a meeting without a decision"} on ${dataBR(c.resultado.data)}${c.resultado.ato ? ` (${c.resultado.ato})` : ""}`,
+          `; result ${c.resultado.decidido ? "decided" : "taken to a meeting without a decision"} on ${dataBR(c.resultado.data)}${c.resultado.ato ? ` (${abreviarAto(c.resultado.ato)})` : ""}`,
         )
       : "";
     return {
@@ -1418,7 +1421,8 @@ export function faixasConsultas(itens: readonly ConsultaNaData[]): FaixaTempo[] 
               `Contribuições de ${dataBR(c.inicio)} a ${dataBR(c.fim)}${c.fim_calculado ? " (fim calculado)" : ""}`,
               `Contributions from ${dataBR(c.inicio)} to ${dataBR(c.fim)}${c.fim_calculado ? " (end computed)" : ""}`,
             )) +
-        `${res}. ${temaCurto(c.tema)}`,
+        // o assunto é texto da ata, em português: fica fora do atributo na página inglesa (a lista e a tabela o mostram marcado)
+        `${res}.${tx(` ${temaCurto(c.tema)}`, "")}`,
       ausencia,
     };
   });
@@ -1460,11 +1464,11 @@ export function linhasAgenda(itens: readonly AtividadeAgenda[], limites: readonl
 
 export const COLUNAS_AGENDA: ColunaTabela[] = [
   { id: "codigo", get rotulo() { return tx("Código", "Code"); }, tipo: "texto" },
-  { id: "atividade", get rotulo() { return tx("Atividade", "Activity"); }, tipo: "texto" },
+  { id: "atividade", get rotulo() { return tx("Atividade", "Activity"); }, tipo: "texto", idiomaTexto: "portugues" },
   { id: "ano_previsto", get rotulo() { return tx("Ano previsto", "Planned year"); }, tipo: "texto", categorica: true },
   { id: "paineis", get rotulo() { return tx("Painéis relacionados (palavra-chave)", "Related panels (keyword)"); }, tipo: "texto", categorica: true },
   { id: "limites_pld", get rotulo() { return tx("Trata dos limites do PLD", "Deals with PLD limits"); }, tipo: "texto", categorica: true },
-  { id: "consultas", get rotulo() { return tx("Consultas que citam o código", "Consultations citing the code"); }, tipo: "texto" },
+  { id: "consultas", get rotulo() { return tx("Consultas que citam o código", "Consultations citing the code"); }, tipo: "texto", idiomaTexto: "nome" },
 ];
 
 export function respostaAgenda(a: GoldRegulacao["agenda"], limites: GoldRegulacao["limites_em_revisao"]): string {

@@ -41,7 +41,7 @@ import {
 } from "@/lib/energia/regulacao";
 import { hojeBrasilia, type FormaResultado, type GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 import { tx } from "@/lib/energia/idioma";
-import { comNomes } from "@/lib/energia/i18n/regulacao-dados-metodo";
+import { comNomes, versaoDaAgenda } from "@/lib/energia/i18n/regulacao-dados-metodo";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 
@@ -390,7 +390,7 @@ export default function ConsultasEAgendaPage() {
                         linhas={linhasAgenda(A.itens, limitesEmRevisao)}
                         chaveLinha="id"
                         colunaRotulo="codigo"
-                        fonte={`ANEEL, ${A.versao ?? tx("Agenda Regulatória", "regulatory agenda")}`}
+                        fonte={`ANEEL, ${A.versao ? versaoDaAgenda(A.versao) : tx("Agenda Regulatória", "regulatory agenda")}`}
                         versao={A.data_publicacao ?? C.data_referencia}
                         nomeArquivo="regulacao-agenda"
                         chaveUrl="ag"

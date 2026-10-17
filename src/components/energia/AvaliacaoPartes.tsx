@@ -3,7 +3,7 @@ import Link from "@/components/i18n/LinkIdioma";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { num } from "@/lib/energia/formato";
 import { tx } from "@/lib/energia/idioma";
-import { PAINEIS_EN, rotuloDado } from "@/lib/energia/i18n/regulacao-dados-metodo";
+import { PAINEIS_EN, codigo, rotuloDado } from "@/lib/energia/i18n/regulacao-dados-metodo";
 import { datasLegiveis } from "@/lib/energia/visao";
 import { ESCALA_AVALIACAO, ORDEM_DIMENSOES, ROTULO_CURTO, ROTULO_RESULTADO_JORNADA, evolucao, textoCitado as citado } from "@/lib/energia/avaliacao";
 import { JornadaDetalhe } from "@/components/energia/AvaliacaoJornada";
@@ -281,7 +281,19 @@ export function AvaliacaoMetodo({ a, children }: { a: AvaliacaoGold; children?: 
         <div className="md:col-span-2">
           <dt className="rotulo text-mineral">{tx("Scripts e entradas", "Scripts and inputs")}</dt>
           <dd className="mt-0.5 [overflow-wrap:anywhere]">
-            {tx(`${a.metodo.scripts.join("; ")}; entradas versionadas em ${a.metodo.entradas}`, `${a.metodo.scripts.join("; ")}; inputs versioned in ${a.metodo.entradas}`)}
+            {tx<ReactNode>(
+              `${a.metodo.scripts.join("; ")}; entradas versionadas em ${a.metodo.entradas}`,
+              // caminhos de arquivo no repositório: identificadores, não prosa
+              <>
+                {a.metodo.scripts.map((sc, i) => (
+                  <span key={sc}>
+                    {i > 0 ? "; " : ""}
+                    {codigo(sc)}
+                  </span>
+                ))}
+                ; inputs versioned in {codigo(a.metodo.entradas)}
+              </>,
+            )}
           </dd>
         </div>
       </dl>

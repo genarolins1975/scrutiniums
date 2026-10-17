@@ -329,6 +329,17 @@ export function fraseReferencia(c: FatiaIntegracao | null | undefined, haIntegra
 
 /* ---------------------------------------------------------------- mudanças metodológicas depois do último período */
 
+/** As mudanças metodológicas posteriores ao último período disponível, com a descrição sem o ponto final e o último período legível. */
+export function quebrasPosteriores(
+  quebras: readonly { data: string; descricao: string }[],
+  c: Pick<ConjuntoIntegrado, "atualidade">,
+): { data: string; descricao: string; ultimo: string }[] {
+  const fim = c.atualidade.fim_ultimo_periodo;
+  if (!fim || !c.atualidade.ultimo_periodo) return [];
+  const ultimo = refLegivel(c.atualidade.ultimo_periodo);
+  return quebras.filter((q) => q.data > fim).map((q) => ({ data: q.data, descricao: q.descricao.replace(/[.\s]+$/, ""), ultimo }));
+}
+
 /** Mudança metodológica posterior ao último período disponível: os dados disponíveis ainda não refletem essa mudança. */
 export function notasDeQuebraPosterior(quebras: readonly { data: string; descricao: string }[], c: Pick<ConjuntoIntegrado, "atualidade">): string[] {
   const fim = c.atualidade.fim_ultimo_periodo;
@@ -469,6 +480,13 @@ const FORMATO_DO_ARQUIVO: Record<string, string> = { csv: "CSV", json: "JSON", p
 export function formatoDoArquivo(url: string): string {
   const ext = /\.([a-z0-9]+)$/i.exec(nomeDoArquivo(url))?.[1].toLowerCase() ?? "";
   return FORMATO_DO_ARQUIVO[ext] ?? ext.toUpperCase();
+}
+
+/** Descrição que o dicionário dá ao arquivo antes da lista de colunas ("Mudanças da MLT por usina"), em português; nula sem ela ou com rótulo próprio. */
+export function descricaoDoArquivo(url: string, dicionario?: string | null): string | null {
+  if (ROTULO_DO_ARQUIVO[url]) return null;
+  const antes = /^([^:;]{10,140}?)\.\s+Colunas:/.exec(dicionario ?? "")?.[1]; // i18n: dado
+  return antes ? antes.charAt(0).toUpperCase() + antes.slice(1) : null;
 }
 
 /**

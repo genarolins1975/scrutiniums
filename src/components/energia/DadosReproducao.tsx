@@ -260,7 +260,8 @@ export function DadosManifesto({
         colunaRotulo="caminho"
         fonte={tx(
           "Scrutiniums, lista de arquivos publicados em /energia/ (manifesto: impressão digital e tamanho de cada arquivo)",
-          "Scrutiniums, list of files published in /energia/ (manifest: fingerprint and size of each file)",
+          // o caminho /energia/ fica na própria tabela; a fonte em inglês descreve a pasta sem repeti-lo
+          "Scrutiniums, list of the published data files (manifest: fingerprint and size of each file)",
         )}
         versao={versao}
         nomeArquivo="dados-manifesto"
