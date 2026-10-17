@@ -47,7 +47,7 @@ export default function PerdasCustoContextoPage() {
             titulo={tx("Perdas indisponíveis", "Losses unavailable")}
             motivo={
               g?.motivo
-                ? tx(g.motivo, <TrechoPortugues regiao="perdas-motivo">{g.motivo}</TrechoPortugues>)
+                ? tx(<>{g.motivo}</>, <TrechoPortugues regiao="perdas-motivo">{g.motivo}</TrechoPortugues>)
                 : tx("Os dados processados de perdas não foram gerados nesta publicação.", "The processed loss data were not generated in this release.")
             }
           />

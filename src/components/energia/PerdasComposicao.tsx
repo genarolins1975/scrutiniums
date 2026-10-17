@@ -23,7 +23,7 @@ import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 function colunas(tx: <T>(pt: T, en: T) => T): ColunaTabela[] {
   return [
-    { id: "rotulo", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
+    { id: "rotulo", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
     { id: "tecnica", rotulo: tx("Técnicas", "Technical"), tipo: "percentual", casas: 2 },
     { id: "nao_tecnica", rotulo: tx("Não técnicas sobre a injetada", "Non-technical over the injected energy"), tipo: "percentual", casas: 2 },
     { id: "total", rotulo: tx("Perdas totais", "Total losses"), tipo: "percentual", casas: 2 }, // i18n: dado

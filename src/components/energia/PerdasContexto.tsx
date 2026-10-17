@@ -28,7 +28,7 @@ const ESQUEMA = { rel: campo(tiposUrl.opcao(["taxa", "pnt_bt"] as const), "taxa"
 const colunas = (censo: string, idioma: Idioma): ColunaTabela[] =>
   porIdioma(idioma, {
     pt: [
-      { id: "rotulo", rotulo: "Distribuidora", tipo: "texto" },
+      { id: "rotulo", rotulo: "Distribuidora", tipo: "texto", idiomaTexto: "nome" },
       { id: "ufs", rotulo: "UF", tipo: "texto", categorica: true },
       { id: "municipios", rotulo: "Municípios na área", tipo: "numero", casas: 0 },
       { id: "confirmados", rotulo: "Municípios confirmados", tipo: "numero", casas: 0 },
@@ -39,7 +39,7 @@ const colunas = (censo: string, idioma: Idioma): ColunaTabela[] =>
       { id: "cobertura_exclusivos", rotulo: "População em municípios só dela", tipo: "percentual", casas: 1 },
     ],
     en: [
-      { id: "rotulo", rotulo: "Distribution utility", tipo: "texto" },
+      { id: "rotulo", rotulo: "Distribution utility", tipo: "texto", idiomaTexto: "nome" },
       { id: "ufs", rotulo: "State", tipo: "texto", categorica: true },
       { id: "municipios", rotulo: "Municipalities in the area", tipo: "numero", casas: 0 },
       { id: "confirmados", rotulo: "Confirmed municipalities", tipo: "numero", casas: 0 },

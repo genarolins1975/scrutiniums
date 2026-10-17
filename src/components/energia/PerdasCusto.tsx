@@ -23,7 +23,7 @@ import { componentesParaBarra, pctOu, rotuloResolucao, type LinhaCusto } from "@
 
 function colunas(tx: <T>(pt: T, en: T) => T): ColunaTabela[] {
   return [
-    { id: "rotulo", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
+    { id: "rotulo", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
     { id: "situacao", rotulo: tx("Situação na data da consulta", "Status on the query date"), tipo: "texto", categorica: true },
     { id: "reh", rotulo: tx("Resolução", "Resolution"), tipo: "texto" },
     { id: "inicio", rotulo: tx("Início da vigência", "Effective from"), tipo: "data" },

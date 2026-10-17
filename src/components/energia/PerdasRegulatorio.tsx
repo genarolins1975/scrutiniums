@@ -31,7 +31,7 @@ import type { SegmentoTecnico } from "@/lib/energia/tipos-perdas";
 function colunas(tx: <T>(pt: T, en: T) => T): ColunaTabela[] {
   const unidade = tx("% da injetada publicada", "% of published injected energy");
   return [
-    { id: "rotulo", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
+    { id: "rotulo", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto", idiomaTexto: "nome" },
     // AAAA-MM como data: ordena pelo tempo (como texto, "abr/2025" viria antes de "jan/2020")
     { id: "inicio", rotulo: tx("Início do trecho", "Segment start"), tipo: "data" },
     { id: "fim", rotulo: tx("Fim do trecho", "Segment end"), tipo: "data" },

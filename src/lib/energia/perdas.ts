@@ -1178,7 +1178,7 @@ export function serieComparacao(ids: readonly string[], anual: SerieAnualPerdas,
 
 export function colunasDistribuidoras(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "distribuidora", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto" },
+    { id: "distribuidora", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "cnpj", rotulo: "CNPJ", tipo: "texto", ordenavel: false },
     { id: "grupo", rotulo: tx("Tipo", "Type", idioma), tipo: "texto", categorica: true },
     { id: "ufs", rotulo: tx("UF", "State (UF)", idioma), tipo: "texto", categorica: true },

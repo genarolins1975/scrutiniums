@@ -385,7 +385,7 @@ export function linhasDistribuidorasP051(g: QualidadeGold, idioma: Idioma = idio
 export function colunasDistP051(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const int = tx("interrupções", "interruptions", idioma);
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "classificacao", rotulo: tx("Classificação", "Classification", idioma), tipo: "texto", categorica: true },
     { id: "ucs", rotulo: tx("UCs (média do ano)", "UCs (annual average)", idioma), tipo: "numero", casas: 0 },
     { id: "conjuntos", rotulo: tx("Conjuntos", "Consumer clusters", idioma), tipo: "numero", casas: 0 },
@@ -575,7 +575,7 @@ export function linhasMunicipios(municipios: readonly MunicipioQualidade[], rotu
 export function colunasMunicipios(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const int = tx("interrupções", "interruptions", idioma);
   return [
-    { id: "municipio", rotulo: tx("Município", "Municipality", idioma), tipo: "texto" },
+    { id: "municipio", rotulo: tx("Município", "Municipality", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "uf", rotulo: tx("UF", "State (UF)", idioma), tipo: "texto", categorica: true },
     { id: "relacao", rotulo: tx("Relação com os conjuntos", "Relation to the consumer clusters", idioma), tipo: "texto", categorica: true },
     { id: "n_conjuntos", rotulo: tx("Conjuntos citados", "Consumer clusters listed", idioma), tipo: "numero", casas: 0 },
@@ -583,7 +583,7 @@ export function colunasMunicipios(idioma: Idioma = idiomaEnergia()): ColunaTabel
     { id: "dec_max", rotulo: tx("DEC do maior conjunto", "DEC of the highest cluster", idioma), tipo: "numero", unidade: "h", casas: 2 },
     { id: "fec_min", rotulo: tx("FEC do menor conjunto", "FEC of the lowest cluster", idioma), tipo: "numero", unidade: int, casas: 2 },
     { id: "fec_max", rotulo: tx("FEC do maior conjunto", "FEC of the highest cluster", idioma), tipo: "numero", unidade: int, casas: 2 },
-    { id: "distribuidoras", rotulo: tx("Distribuidoras", "Distribution utilities", idioma), tipo: "texto" },
+    { id: "distribuidoras", rotulo: tx("Distribuidoras", "Distribution utilities", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "cod_ibge", rotulo: tx("Código IBGE", "IBGE code", idioma), tipo: "texto", buscavel: true },
   ];
 }
@@ -764,7 +764,7 @@ export function situacaoLimite(d: Pick<Distribuidora, "dec" | "fec" | "dec_limit
 export function colunasLimites(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const int = tx("interrupções", "interruptions", idioma);
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "situacao", rotulo: tx("Situação", "Status", idioma), tipo: "texto", categorica: true },
     { id: "dec", rotulo: tx("DEC apurado", "Assessed DEC", idioma), tipo: "numero", unidade: "h", casas: 2 },
     { id: "dec_limite", rotulo: tx("Limite de DEC", "DEC limit", idioma), tipo: "numero", unidade: "h", casas: 2 },
@@ -906,9 +906,9 @@ export function linhasCauda(itens: Conjuntos["cauda_dec"]): LinhaTabela[] {
 export function colunasCauda(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const int = tx("interrupções", "interruptions", idioma);
   return [
-    { id: "nome", rotulo: tx("Conjunto", "Consumer cluster", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Conjunto", "Consumer cluster", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "conjunto", rotulo: tx("Código", "Code", idioma), tipo: "texto" },
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", categorica: true },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", categorica: true, idiomaTexto: "nome" },
     { id: "dec", rotulo: "DEC", tipo: "numero", unidade: "h", casas: 2 },
     { id: "dec_limite", rotulo: tx("Limite de DEC", "DEC limit", idioma), tipo: "numero", unidade: "h", casas: 2 },
     { id: "razao_dec", rotulo: tx("DEC ÷ limite", "DEC ÷ limit", idioma), tipo: "numero", casas: 3 },
@@ -987,9 +987,9 @@ export function conjuntosDoCsv(texto: string, ano: number, idioma: Idioma = idio
 export function colunasConjuntos(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const int = tx("interrupções", "interruptions", idioma);
   return [
-    { id: "nome", rotulo: tx("Conjunto", "Consumer cluster", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Conjunto", "Consumer cluster", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "conjunto", rotulo: tx("Código", "Code", idioma), tipo: "texto" },
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", categorica: true },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", categorica: true, idiomaTexto: "nome" },
     { id: "situacao_dec", rotulo: tx("DEC diante do limite", "DEC against the limit", idioma), tipo: "texto", categorica: true },
     { id: "meses", rotulo: tx("Meses", "Months", idioma), tipo: "numero", casas: 0 },
     { id: "dec", rotulo: "DEC", tipo: "numero", unidade: "h", casas: 2 },
@@ -1294,7 +1294,7 @@ export function linhasCompensacaoDistribuidoras(g: QualidadeGold, idioma: Idioma
 export function colunasCompensacaoDistribuidoras(rotulos: Record<TipoCompensacao, string>, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const r = rotulosTipoNoIdioma(rotulos, idioma);
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "classificacao", rotulo: tx("Classificação", "Classification", idioma), tipo: "texto", categorica: true },
     { id: "valor", rotulo: tx("Valor no ano (UC e UG)", "Amount in the year (UC and UG)", idioma), tipo: "numero", unidade: "R$", casas: 2 }, // i18n: dado
     { id: "quantidade", rotulo: tx("Compensações no ano (UC e UG)", "Compensation payments in the year (UC and UG)", idioma), tipo: "numero", casas: 0 },
@@ -1565,7 +1565,7 @@ export function linhasEventos(g: QualidadeGold, idioma: Idioma = idiomaEnergia()
 export function colunasEventos(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const chi = tx("consumidor × hora", "consumer × hour", idioma);
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", categorica: true },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", categorica: true, idiomaTexto: "nome" },
     { id: "codigo", rotulo: tx("Código do evento", "Event code", idioma), tipo: "texto" },
     { id: "competencia", rotulo: tx("Competência", "Accrual month", idioma), tipo: "texto" },
     { id: "inicio", rotulo: tx("Início", "Start", idioma), tipo: "texto" },
@@ -1605,7 +1605,7 @@ export function linhasAtendimentoDistribuidoras(g: QualidadeGold, idioma: Idioma
 function colunasAtendimentoBase(idioma: Idioma): ColunaTabela[] {
   const porMil = tx("por mil UCs", "per thousand UCs", idioma);
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "classificacao", rotulo: tx("Classificação", "Classification", idioma), tipo: "texto", categorica: true },
     { id: "ucs", rotulo: tx("UCs (média do ano)", "UCs (annual average)", idioma), tipo: "numero", casas: 0 },
     { id: "iasc", rotulo: "IASC", tipo: "numero", unidade: tx("0 a 100", "0 to 100", idioma), casas: 2 },
@@ -1753,17 +1753,17 @@ function colunasDivulgado(idioma: Idioma): ColunaTabela[] {
 
 function colunasValidacao(idioma: Idioma): ColunaTabela[] {
   return [
-    { id: "nome", rotulo: tx("Controle", "Check", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Controle", "Check", idioma), tipo: "texto", idiomaTexto: "portugues" },
     { id: "resultado", rotulo: tx("Resultado", "Result", idioma), tipo: "texto", categorica: true },
     { id: "critico", rotulo: tx("Crítico", "Critical", idioma), tipo: "texto", categorica: true },
-    { id: "detalhe", rotulo: tx("Detalhe", "Detail", idioma), tipo: "texto" },
+    { id: "detalhe", rotulo: tx("Detalhe", "Detail", idioma), tipo: "texto", idiomaTexto: "portugues" },
   ];
 }
 
 function colunasArquivos(idioma: Idioma): ColunaTabela[] {
   return [
-    { id: "dataset", rotulo: tx("Conjunto", "Dataset", idioma), tipo: "texto", categorica: true },
-    { id: "recurso", rotulo: tx("Recurso", "Resource", idioma), tipo: "texto" },
+    { id: "dataset", rotulo: tx("Conjunto", "Dataset", idioma), tipo: "texto", categorica: true, idiomaTexto: "nome" },
+    { id: "recurso", rotulo: tx("Recurso", "Resource", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "publicado_em", rotulo: tx("Publicado pela fonte", "Published by the source", idioma), tipo: "texto" },
     { id: "capturado_em", rotulo: tx("Capturado", "Captured", idioma), tipo: "texto" },
     { id: "versao", rotulo: tx("Regra de importação", "Import rule", idioma), tipo: "texto" },
@@ -2894,7 +2894,7 @@ export function limpaProveniencia<T extends Proveniencia>(p: T): T {
 export function colunasConjuntosMunicipio(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const int = tx("interrupções", "interruptions", idioma);
   return [
-    { id: "nome", rotulo: tx("Conjunto", "Consumer cluster", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Conjunto", "Consumer cluster", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "meses", rotulo: tx("Meses publicados", "Months published", idioma), tipo: "numero", casas: 0 },
     { id: "dec", rotulo: "DEC", tipo: "numero", unidade: "h", casas: 2 },
     { id: "dec_limite", rotulo: tx("Limite de DEC", "DEC limit", idioma), tipo: "numero", unidade: "h", casas: 2 },
@@ -2902,7 +2902,7 @@ export function colunasConjuntosMunicipio(idioma: Idioma = idiomaEnergia()): Col
     { id: "fec", rotulo: "FEC", tipo: "numero", unidade: int, casas: 2 },
     { id: "fec_limite", rotulo: tx("Limite de FEC", "FEC limit", idioma), tipo: "numero", unidade: int, casas: 2 },
     { id: "razao_fec", rotulo: tx("FEC ÷ limite", "FEC ÷ limit", idioma), tipo: "numero", casas: 3 },
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", categorica: true },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", categorica: true, idiomaTexto: "nome" },
     { id: "situacao_dec", rotulo: tx("DEC diante do limite", "DEC against the limit", idioma), tipo: "texto", categorica: true },
     { id: "situacao_fec", rotulo: tx("FEC diante do limite", "FEC against the limit", idioma), tipo: "texto", categorica: true },
     { id: "conjunto", rotulo: tx("Código", "Code", idioma), tipo: "texto" },
