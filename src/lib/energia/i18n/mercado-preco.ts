@@ -119,6 +119,27 @@ export const NOTAS_REVISAO_EN: Readonly<Record<string, string>> = {
   "linha publicada na edição anterior e retirada na seguinte": "row published in the previous edition and removed in the next one",
 };
 
+/* ---------------------------------------------------------------- PLD (gold pld_detalhe.json) */
+
+/** Rótulos dos arquivos para baixar do PLD (pld_detalhe.json, downloads[].rotulo). */
+export const DOWNLOADS_PLD_EN: Readonly<Record<string, string>> = {
+  "CMO do DESSEM na hora e PLD horário, quatro submercados (CSV)": "Hourly DESSEM CMO and hourly PLD, four submarkets (CSV)",
+  "CMO semanal, média do DESSEM e média do PLD por semana operativa (CSV)": "Weekly CMO, DESSEM average and PLD average by operating week (CSV)",
+  "PLD diário com horas no piso e nos tetos e limites vigentes (CSV)": "Daily PLD with hours at the floor and caps and limits in force (CSV)",
+  "PLD mensal: temporal, ponderado pela carga e em moeda constante (CSV)": "Monthly PLD: time-weighted, load-weighted and in constant currency (CSV)",
+  "Percentis sazonais da média diária por mês (CSV)": "Seasonal percentiles of the daily average by month (CSV)",
+  "Mapa hora × dia do PLD, últimos 90 dias (JSON)": "PLD hour × day map, last 90 days (JSON)",
+  "PLD, CMO do DESSEM e fluxo nas fronteiras, últimas 168 horas (JSON)": "PLD, DESSEM CMO and flow at the boundaries, last 168 hours (JSON)",
+  "Separação diária por par de submercados e fluxo na fronteira (CSV)": "Daily divergence by pair of submarkets and flow at the boundary (CSV)",
+  "Amplitude diária entre submercados (CSV)": "Daily spread between submarkets (CSV)",
+};
+
+/** Notas fixas que a gold do PLD publica ao lado de figuras e tabelas (texto original, antes de qualquer troca). */
+export const NOTAS_PLD_EN: Readonly<Record<string, string>> = {
+  "Recorte hora × dia dos últimos 90 dias, lido sob demanda; o histórico horário inteiro está em pld_cmo_horario.csv.":
+    "Hour × day selection for the last 90 days, read on demand; the full hourly history is in the hourly CMO and PLD file (CSV, under Download the data).",
+};
+
 /** Critério da tabela de distribuidoras (gold mercado.json, livre_regulado.distribuidoras.criterio). */
 export const CRITERIOS_MERCADO_EN: Readonly<Record<string, string>> = {
   "as 30 maiores em energia livre faturada no ano; a tabela completa está no CSV": "the 30 largest by free-market energy billed in the year; the full table is in the CSV",
