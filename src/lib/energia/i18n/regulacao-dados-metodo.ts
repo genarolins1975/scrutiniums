@@ -58,6 +58,15 @@ export const PAINEIS_EN: Record<string, string> = {
   Dados: "Data",
   Metodologia: "Methodology",
   "Visão geral": "Overview",
+  "Página inicial": "Home page",
+  "PLD e previsões": "PLD and forecasts",
+  "PLD (formação)": "PLD (formation)",
+  "Água e clima: afluência": "Water and climate: inflow",
+  Aprenda: "Learn",
+  "Dados e metodologia": "Data and methodology",
+  "Previsões e modelos": "Forecasts and models",
+  "Qualidade do serviço": "Quality of supply",
+  "Minha região": "My region",
 };
 
 /** Tipo de ato da linha do tempo (campo tipo_ato). */

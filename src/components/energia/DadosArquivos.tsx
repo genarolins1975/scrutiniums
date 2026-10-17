@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { num } from "@/lib/energia/formato";
+import { tx } from "@/lib/energia/idioma";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { formatoDoArquivo, nomeDoArquivo } from "@/lib/energia/dados-ficha";
 import { textoEstadoDoArquivo } from "@/lib/energia/dados-leitor";
 import { estadoDoArquivo, type EstadoDoArquivo } from "@/lib/energia/dados-servidor";
@@ -55,10 +57,10 @@ export function DadosArquivos({ itens }: { itens: readonly ItemArquivo[] }) {
             <a href={a.url} download className={LINK}>
               {a.rotulo} ({formatoDoArquivo(a.url)})
             </a>
-            {a.linhas != null && <span className="ml-2 text-xs text-mineral">{num(a.linhas, 0)} linhas</span>}
+            {a.linhas != null && <span className="ml-2 text-xs text-mineral">{tx(`${num(a.linhas, 0)} linhas`, `${num(a.linhas, 0)} rows`)}</span>}
             {a.aviso}
             <span className="block text-xs text-mineral" data-nivel="analisar">
-              Arquivo {nomeDoArquivo(a.url)}
+              {tx("Arquivo", "File")} {nomeDoArquivo(a.url)}
             </span>
             {t.frase && (
               <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-estado-arquivo={a.estado.veredito}>
@@ -72,8 +74,11 @@ export function DadosArquivos({ itens }: { itens: readonly ItemArquivo[] }) {
             )}
             {a.colunas && (
               <div className="max-w-prose2 pb-1 text-xs leading-relaxed text-carvao-muted [overflow-wrap:anywhere]" data-nivel="analisar" data-legenda-arquivo="">
-                <span className="rotulo mr-2 text-mineral">Colunas e códigos</span>
-                <TextoEnergia texto={a.colunas} origem={a.origemDosLiterais} literais={["marcador-ausencia-siga"]} />
+                <span className="rotulo mr-2 text-mineral">{tx("Colunas e códigos", "Columns and codes")}</span>
+                {/* o dicionário de colunas é texto do pipeline, em português */}
+                <TrechoPortugues regiao="dados-arquivo-colunas">
+                  <TextoEnergia texto={a.colunas} origem={a.origemDosLiterais} literais={["marcador-ausencia-siga"]} />
+                </TrechoPortugues>
               </div>
             )}
           </li>
