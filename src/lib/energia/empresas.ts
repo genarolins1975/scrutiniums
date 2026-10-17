@@ -73,6 +73,7 @@ import {
   SITUACAO_CVM_EN,
   motivoTarifa,
   traduzir,
+  universoPerdas,
 } from "./i18n/empresas-leiloes";
 
 /* ================================================================ comum */
@@ -1341,7 +1342,7 @@ export function referenciaPerdasNacional(
   idioma: Idioma = idiomaEnergia(),
 ): { valor: number; rotulo: string } | null {
   if (!ev || !anoPerdas || ev.valor_calculo === null || !ev.periodo.inicio?.startsWith(String(anoPerdas))) return null;
-  return { valor: ev.valor_calculo, rotulo: tx(`Brasil, ${ev.universo}`, `Brazil, ${ev.universo}`, idioma) };
+  return { valor: ev.valor_calculo, rotulo: tx(`Brasil, ${ev.universo}`, `Brazil, ${universoPerdas(ev.universo, idioma)}`, idioma) };
 }
 
 /** Anos de referência diferentes não se comparam (regra de pares da gold): o comparador avisa. */

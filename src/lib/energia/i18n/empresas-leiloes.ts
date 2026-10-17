@@ -56,6 +56,78 @@ export const NOTA_EMPRESAS_EN: Tabela = {
   "usinas de todas as fases do SIGA (operação, construção e construção não iniciada)": "plants in all SIGA phases (operation, construction and construction not started)",
 };
 
+/** Rótulos dos downloads da gold de Empresas (downloads[].rotulo). */
+export const DOWNLOAD_EMPRESAS_EN: Tabela = {
+  "Usinas e proprietários (CSV)": "Plants and owners (CSV)",
+  "Proprietários diretos (CSV)": "Direct owners (CSV)",
+  "Grupos de controle (CSV)": "Controlling groups (CSV)",
+  "Cadeia societária vigente (CSV)": "Current shareholding chain (CSV)",
+  "Cadastro de agentes (CSV)": "Agent registry (CSV)",
+  "Transmissão por CNPJ, SIGET (CSV)": "Transmission by CNPJ, SIGET (CSV)",
+  "Distribuidoras (CSV)": "Distribution utilities (CSV)",
+  "Companhias abertas do universo (CSV)": "Publicly held companies in the universe (CSV)",
+  "Demonstrações anuais, DFP (CSV)": "Annual financial statements, DFP (CSV)",
+  "Informações trimestrais, ITR (CSV)": "Quarterly information, ITR (CSV)",
+};
+
+/** Limitações e bloqueios publicados pela gold de Empresas (proveniencia.*.limitacoes, bloqueios[]). */
+export const LIMITACAO_EMPRESAS_EN: Tabela = {
+  "O SIGA registra a propriedade direta (a empresa titular da outorga, em geral uma sociedade de propósito específico); o grupo econômico vem da Composição Societária declarada à ANEEL, com as regras de controle publicadas neste módulo.":
+    // i18n: dado (inglês com nome próprio da base)
+    "SIGA records direct ownership (the company holding the grant, usually a special purpose company); the economic group comes from the Composição Societária (shareholding structure) declared to ANEEL, with the control rules published in this module.",
+  "Potência fiscalizada é a capacidade instalada em operação conforme a fiscalização da ANEEL; usina fora de operação não tem potência fiscalizada e entra pela outorgada só nas contagens de carteira.":
+    "Inspected capacity is the installed capacity in operation according to ANEEL inspection; a plant out of operation has no inspected capacity and enters through its granted capacity only in portfolio counts.",
+  "Micro e minigeração distribuída não está no SIGA e fica fora de todas as medidas de capacidade deste módulo.":
+    "Distributed micro and mini generation (MMGD) is not in SIGA and is left out of all capacity measures in this module.",
+  "Micro e minigeração distribuída não está no SIGA e fica fora das medidas de capacidade.": "Distributed micro and mini generation (MMGD) is not in SIGA and is left out of the capacity measures.",
+  "Demonstrações regulatórias das distribuidoras (Balancete Mensal Padronizado e base de dados da sustentabilidade econômico-financeira) não integradas.":
+    "Regulatory financial statements of the distribution utilities (Balancete Mensal Padronizado and the economic and financial sustainability database) not integrated.",
+  "Em 30/09/2026, git.aneel.gov.br respondeu HTTP 403 com cf-mitigated: challenge (desafio do Cloudflare) para os arquivos da base de sustentabilidade (2026_1T_base_dados_sustentabilidade.zip) e para a listagem da pasta; http://informacoesbmp.aneel.gov.br/ respondeu HTTP 503. Nenhum conjunto equivalente no portal de dados abertos da ANEEL (buscas: balancete, econômico-financeiro, demonstrações). O acesso não foi contornado.":
+    // i18n: dado (inglês com termos de busca literais da fonte)
+    "On Sep 30, 2026, git.aneel.gov.br responded HTTP 403 with cf-mitigated: challenge (Cloudflare challenge) for the sustainability database files (2026_1T_base_dados_sustentabilidade.zip) and for the folder listing; http://informacoesbmp.aneel.gov.br/ responded HTTP 503. No equivalent dataset on ANEEL's open data portal (searches: balancete, econômico-financeiro, demonstrações). Access was not circumvented.",
+  "Demonstrações societárias da CVM (DFP e ITR), rotuladas como societárias; as regulatórias ficam como pendência.":
+    "Corporate financial statements from CVM (DFP and ITR), labeled as corporate; the regulatory ones remain pending.",
+  "Participação econômica indireta dos grupos (look-through) não calculada.": "Indirect economic interest of the groups (look-through) not calculated.",
+  "O Polímero publica o percentual em relação ao agente declarante e há caminhos múltiplos; o módulo publica a capacidade sob controle e a capacidade proporcional das participações diretas das controladas, métricas sem dupla contagem.":
+    // i18n: dado (inglês com nome próprio da base)
+    "Polímero publishes the percentage relative to the declaring agent and there are multiple paths; the module publishes the capacity under control and the proportional capacity of the subsidiaries' direct stakes, measures without double counting.",
+  "Árvore societária com percentuais diretos quando definidos (CSV da cadeia).": "Shareholding tree with direct percentages when defined (chain CSV).",
+};
+
+/** Definições e regras publicadas pela gold de Empresas (definicoes.*, cadastro.transmissao.definicoes.*, regra_vinculo, ramos_universo). */
+export const DEFINICAO_EMPRESAS_EN: Tabela = {
+  "Vínculo provado = CNPJ publicado pela fonte oficial no mesmo registro do ativo. Nenhum vínculo por semelhança de nome.":
+    "Proven link = CNPJ published by the official source in the same record as the asset. No link by name similarity.",
+  "Potência fiscalizada da usina × participação do proprietário ÷ soma das participações publicadas (100% dentro da tolerância de arredondamento), somada sobre as usinas em operação com participações válidas.":
+    "Inspected capacity of the plant × the owner's stake ÷ sum of the published stakes (100% within the rounding tolerance), summed over the plants in operation with valid stakes.",
+  "Potência fiscalizada das usinas em operação em que o proprietário tem mais de 50% (maioria da propriedade do ativo).":
+    "Inspected capacity of the plants in operation in which the owner holds more than 50% (majority ownership of the asset).",
+  // i18n: dado (inglês com o nome próprio da base, Composição Societária)
+  "Topo da cadeia de controladores únicos declarada à ANEEL (Composição Societária): sobe-se de sócio controlador em sócio controlador enquanto há um único controlador com CNPJ.":
+    // i18n: dado (inglês com o nome próprio da base, Composição Societária)
+    "Top of the chain of single controlling shareholders declared to ANEEL (Composição Societária): the chain goes up from controlling shareholder to controlling shareholder while there is a single controlling shareholder with CNPJ.",
+  "Potência das usinas em operação cujo proprietário majoritário pertence ao grupo (está na cadeia de controle que termina nele).":
+    "Capacity of the plants in operation whose majority owner belongs to the group (is in the control chain that ends in it).",
+  "Soma das participações diretas detidas pelas empresas do grupo (potência × participação); cada parcela pertence a um só grupo, por isso as parcelas somam a fronteira sem dupla contagem.":
+    "Sum of the direct stakes held by the group's companies (capacity × stake); each part belongs to a single group, so the parts add up to the boundary without double counting.",
+  "Índice Herfindahl-Hirschman: soma dos quadrados das cotas em % (0 a 10.000).": "Herfindahl-Hirschman Index: sum of the squares of the shares in % (0 to 10,000).",
+  "Soma da extensão (NumEtnLinTms) dos módulos de linha ativos cujo módulo tem obra em operação ou concluída. Cada módulo de linha é um circuito: linha de circuito duplo conta duas vezes (km de circuito, não km de traçado).":
+    "Sum of the length (NumEtnLinTms) of the active line modules whose module has works in operation or completed. Each line module is a circuit: a double-circuit line counts twice (circuit km, not route km).",
+  "Subestações distintas em que o CNPJ tem módulo de equipamento em operação. O SIGET aberto liga à subestação só os módulos de equipamento; a mesma subestação pode ter módulos de mais de um CNPJ.":
+    "Distinct substations in which the CNPJ has an equipment module in operation. The open SIGET links only equipment modules to the substation; the same substation can have modules from more than one CNPJ.",
+  "Potência dos transformadores de potência principais em operação (o reserva não acrescenta capacidade).": "Capacity of the main power transformers in operation (the spare adds no capacity).",
+  "Módulo → contrato proprietário (IdeCcdProprietario) → CNPJ publicado no recurso 'SIGET - Contrato Agente'; nenhum vínculo por nome.":
+    "Module → owner contract (IdeCcdProprietario) → CNPJ published in the 'SIGET - Contrato Agente' resource; no link by name.",
+  "agentes ativos (situação A no cadastro) por ramo declarado": "active agents (status A in the registry) by declared line of business",
+};
+
+/** Universo da taxa nacional de perdas (gold de Perdas, "51 concessionárias com os 12 meses de 2025 e sem alerta"), no idioma da página. */
+export function universoPerdas(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma !== "en") return texto;
+  const m = /^(\d+) concessionárias com os 12 meses de (\d{4}) e sem alerta$/.exec(texto);
+  return m ? `${m[1]} concession holders with all 12 months of ${m[2]} and no warning` : texto;
+}
+
 /* ---------------------------------------------------------------- Empresas: controle */
 
 /** Motivo da parada da cadeia de controle, como a gold o explica (controle.cobertura.motivos_parada[].rotulo). */
