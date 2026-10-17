@@ -531,7 +531,7 @@ export default function AguaPage() {
                 oQueMudou={<>{textoResumo(h, g.dias_referencia.ear, g.dias_referencia.ena, baseSin)}</>}
                 comoInterpretar={tx(
                   <>Cada linha traz o valor do resumo e o desta página com o dia de cada um. Nenhuma diferença é calculada: dias diferentes não se subtraem.</>,
-                  <>Each row shows the summary value and this page's value with the day of each. No difference is calculated: different days are not subtracted.</>,
+                  <>Each row shows the summary value and this page&apos;s value with the day of each. No difference is calculated: different days are not subtracted.</>,
                 )}
                 naoConcluir={tx(
                   <>

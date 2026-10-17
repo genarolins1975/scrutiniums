@@ -63,7 +63,7 @@ export function AguaIndisponivel({ motivo }: { motivo?: string | null }) {
 }
 
 /** Ausência legítima de uma parte (clima ou reservatórios) dentro de uma gold disponível. */
-export function AguaParteAusente({ titulo, motivo }: { titulo: string; motivo: string }) {
+export function AguaParteAusente({ titulo, motivo }: { titulo: string; motivo: ReactNode }) {
   return (
     <div role="status" className="border border-dashed border-linha bg-superficie px-5 py-4 text-sm leading-relaxed text-carvao">
       <p className="font-medium">{titulo}</p>
@@ -191,8 +191,11 @@ export function AguaDatas({ itens }: { itens: { rotulo: string; dia: string | nu
   );
 }
 
-/** Regras publicadas na gold (chave e texto), para o modo Auditar. */
-export function AguaRegras({ regras, chaves }: { regras: Record<string, string>; chaves: string[] }) {
+/**
+ * Regras publicadas na gold (chave e texto), para o modo Auditar. O texto da gold só existe em português e sai marcado como tal; as
+ * regras que a página reescreve (`proprias`) já vêm no idioma da página.
+ */
+export function AguaRegras({ regras, chaves, proprias = [] }: { regras: Record<string, string>; chaves: string[]; proprias?: readonly string[] }) {
   const ROTULOS: Record<string, string> = {
     ear_agregada: tx("EAR agregada", "Aggregated EAR"),
     ear_absoluta: tx("EAR em energia", "EAR in energy"),
@@ -217,7 +220,7 @@ export function AguaRegras({ regras, chaves }: { regras: Record<string, string>;
           <div key={k}>
             <dt className="rotulo text-mineral">{ROTULOS[k] ?? k}</dt>
             <dd className="mt-1 text-sm leading-relaxed text-carvao">
-              <TrechoPortugues regiao={`agua-regra-${k}`}>{regras[k]}</TrechoPortugues>
+              {proprias.includes(k) ? regras[k] : <TrechoPortugues regiao={`agua-regra-${k}`}>{regras[k]}</TrechoPortugues>}
             </dd>
           </div>
         ))}

@@ -116,6 +116,14 @@ const ehRegiao = (x: string): x is Regiao => (REGIOES as readonly string[]).incl
 
 /* ---------- textos auxiliares ---------- */
 
+/**
+ * O idioma pedido, ou o da página quando o segundo argumento não é um idioma: algumas funções de texto são passadas direto a
+ * `.map(f)`, que entrega o índice no lugar do idioma.
+ */
+function idiomaDe(x: Idioma | number | undefined): Idioma {
+  return x === "en" || x === "pt" ? x : idiomaEnergia();
+}
+
 const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
 /** "a, b e c" ("a, b and c" em inglês). */
@@ -523,7 +531,8 @@ export function textoAmplitude(razao: number, idioma: Idioma = idiomaEnergia()):
 /** "1 ano", "5 anos" ("1 year", "5 years"). */
 const nAnos = (n: number, idioma: Idioma) => plural(n, tx("ano", "year", idioma), tx("anos", "years", idioma), idioma);
 
-export function respostaArmazenamento(e: EntidadeEar, idioma: Idioma = idiomaEnergia()): string {
+export function respostaArmazenamento(e: EntidadeEar, idiomaOuIndice?: Idioma | number): string {
+  const idioma = idiomaDe(idiomaOuIndice);
   const quem = artigoRecorte(e.tipo, e.nome, idioma);
   const mw = (v: number | null | undefined) => mwmes(v, idioma);
   const p1 = (v: number | null | undefined) => pct(v, 1, idioma);
@@ -587,7 +596,8 @@ export function respostaArmazenamento(e: EntidadeEar, idioma: Idioma = idiomaEne
  * diante da faixa usual da data e a variação em 30 dias. Os percentis, a EAR em MWmês, a EAR máxima e a mudança de perímetro
  * ficam em respostaArmazenamento. Quando a capacidade variou além do limite na base, a posição não é dita e a amplitude entra no lugar.
  */
-export function vereditoArmazenamento(e: EntidadeEar, idioma: Idioma = idiomaEnergia()): string {
+export function vereditoArmazenamento(e: EntidadeEar, idiomaOuIndice?: Idioma | number): string {
+  const idioma = idiomaDe(idiomaOuIndice);
   const quem = artigoRecorte(e.tipo, e.nome, idioma);
   if (e.dia === null || e.ear_mwmes === null) return tx(`${cap(quem)} não tem EAR publicada no dia de referência: o valor fica ausente, nunca zero.`, `${cap(quem)} has no EAR published for the reference day: the value is left absent, never zero.`, idioma);
   if (e.sem_armazenamento) return tx(`${cap(quem)} não tem armazenamento, só usinas a fio d'água: percentual, faixa usual e percentil não se aplicam.`, `${cap(quem)} has no storage, only run-of-river plants: percentage, usual range and percentile do not apply.`, idioma);
@@ -1157,7 +1167,8 @@ export function textoMedianaEMlt(e: Pick<EntidadeEna, "p50_30d" | "periodo_base"
   );
 }
 
-export function respostaAfluencia(e: EntidadeEna, idioma: Idioma = idiomaEnergia()): string {
+export function respostaAfluencia(e: EntidadeEna, idiomaOuIndice?: Idioma | number): string {
+  const idioma = idiomaDe(idiomaOuIndice);
   const de = doRecorte(e.tipo, e.nome, idioma);
   const d = dataBR(e.dia, idioma);
   const n0 = (v: number | null | undefined) => num(v, 0, idioma);
@@ -1203,7 +1214,8 @@ export function respostaAfluencia(e: EntidadeEna, idioma: Idioma = idiomaEnergia
  * Veredito do P018 em palavras simples: a água que chegou em 30 dias contra a média de longo termo e contra a faixa usual da
  * janela. As somas em MWmed·dia, o percentil e a ENA armazenável ficam em respostaAfluencia.
  */
-export function vereditoAfluencia(e: EntidadeEna, idioma: Idioma = idiomaEnergia()): string {
+export function vereditoAfluencia(e: EntidadeEna, idiomaOuIndice?: Idioma | number): string {
+  const idioma = idiomaDe(idiomaOuIndice);
   const d = dataBR(e.dia, idioma);
   if (e.pct_mlt_30d === null) return tx(`Sem ENA de 30 dias ${doRecorte(e.tipo, e.nome, idioma)} até ${d}: ${motivoSemEna30d(e, idioma)}.`, `No 30-day ENA ${doRecorte(e.tipo, e.nome, idioma)} through ${d}: ${motivoSemEna30d(e, idioma)}.`, idioma);
   const base = tx(
@@ -1672,7 +1684,8 @@ export function respostaTemperatura(t: AguaTemperatura, base: string, idioma: Id
  * percentil), com a média ao lado. A anomalia em % sozinha engana quando a média é pequena (um período seco faz 70 mm virar +351%), por
  * isso ela fica na nota do destaque e em respostaChuva, junto da cautela.
  */
-export function vereditoChuva(b: AguaPrecipitacaoBacia, idioma: Idioma = idiomaEnergia()): string {
+export function vereditoChuva(b: AguaPrecipitacaoBacia, idiomaOuIndice?: Idioma | number): string {
+  const idioma = idiomaDe(idiomaOuIndice);
   const onde = tx(`a bacia do ${nomeProprio(b.bacia, "pt")}`, `the ${nomeProprio(b.bacia, "en")} basin`, idioma);
   const d = dataBR(b.dia, idioma);
   if (b.mm_30d === null)
@@ -2076,7 +2089,8 @@ export function textoPartesDaEar(ds: readonly AguaDecomposicaoEar[], lista: read
   return base;
 }
 
-export function respostaDecomposicao(d: AguaDecomposicaoEar, idioma: Idioma = idiomaEnergia()): string {
+export function respostaDecomposicao(d: AguaDecomposicaoEar, idiomaOuIndice?: Idioma | number): string {
+  const idioma = idiomaDe(idiomaOuIndice);
   const de = doRegiao(d.sm, idioma);
   const s1 = (v: number | null | undefined) => sinal(v, 1, "", idioma);
   const fmt = (x: { nome: string | null; cod: string; parte: string; delta_mwmes: number | null }) => `${nomeDaParcela(x, idioma)} (${s1(x.delta_mwmes)})`;
@@ -2112,7 +2126,8 @@ export function respostaDecomposicao(d: AguaDecomposicaoEar, idioma: Idioma = id
  * pesou mais nessa variação. A soma dos reservatórios, o resíduo, os três maiores de cada sentido e o contexto (ENA e geração)
  * ficam em respostaDecomposicao.
  */
-export function vereditoDecomposicao(d: AguaDecomposicaoEar, idioma: Idioma = idiomaEnergia()): string {
+export function vereditoDecomposicao(d: AguaDecomposicaoEar, idiomaOuIndice?: Idioma | number): string {
+  const idioma = idiomaDe(idiomaOuIndice);
   const de = doRegiao(d.sm, idioma);
   const ini = dataBR(d.inicio, idioma);
   const fim = dataBR(d.fim, idioma);

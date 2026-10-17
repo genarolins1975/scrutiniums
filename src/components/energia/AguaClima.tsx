@@ -247,7 +247,7 @@ export function AguaClima({
   aposNotas?: ReactNode;
   /** Último item visível em Entender: onde a relação com a demanda e com a afluência é medida. */
   fecho?: ReactNode;
-  motivoSemPrevisao: string;
+  motivoSemPrevisao: ReactNode;
 }) {
   const idioma = useIdioma();
   const tx = useTx();
