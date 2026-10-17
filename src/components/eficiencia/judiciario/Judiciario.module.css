@@ -149,3 +149,4 @@
 .funnelFigure{margin:0}.funnelFigure svg{display:block;width:100%;height:auto}.funnelOuter{fill:var(--cor-obee-fundo)}.funnelInner{fill:var(--cor-linha)}.funnelReference{stroke:var(--cor-carvao-muted);stroke-dasharray:4 3}.funnelDot{fill:var(--cor-obee);stroke:var(--cor-superficie);stroke-width:2}.funnelDotOut{fill:var(--cor-obee-atlas-serie-par);stroke:var(--cor-superficie);stroke-width:2}
 .compareTable td,.compareTable th{white-space:nowrap}
 @media(max-width:767px){.seriesFigure,.multiples,.funnelLab{padding:18px 12px}.funnelControls{grid-template-columns:1fr}.multiplesGrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px}}
+.seriesFigure .seriesSvg,.funnelFigure svg{max-width:760px}

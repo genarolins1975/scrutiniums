@@ -15,11 +15,11 @@ const casosDe=(posicao:number)=>Math.round(20*Math.pow(250,posicao/100));
 
 /** Modelo didático: só a conta da variação do acaso; nenhum dado de vara real. */
 export function LaboratorioConsistencia(){
- const [taxa,setTaxa]=useState(50),[posicao,setPosicao]=useState(54),[observada,setObservada]=useState(58);
+ const [taxa,setTaxa]=useState(50),[posicao,setPosicao]=useState(54),[observada,setObservada]=useState(54);
  const p=taxa/100,casos=casosDe(posicao),o=observada/100;
  const [i95,s95]=limitesAcaso(p,casos,1.96),[i998,s998]=limitesAcaso(p,casos,3.09);
  const fora95=o<i95||o>s95,fora998=o<i998||o>s998;
- const W=560,H=300,E=44,D=14,T=12,B=36;
+ const W=560,H=300,E=44,D=30,T=12,B=36;
  const x=(c:number)=>E+(W-E-D)*Math.log(c/20)/Math.log(250),y=(v:number)=>H-B-(H-B-T)*v;
  const faixa=(k:number)=>{const sup:string[]=[],inf:string[]=[];for(let i=0;i<=60;i++){const c=20*Math.pow(250,i/60);const [a,b]=limitesAcaso(p,c,k);sup.push(`${x(c).toFixed(1)},${y(b).toFixed(1)}`);inf.unshift(`${x(c).toFixed(1)},${y(a).toFixed(1)}`);}return 'M'+sup.join('L')+'L'+inf.join('L')+'Z';};
  const pct=(v:number)=>n(100*v,1)+'%';
