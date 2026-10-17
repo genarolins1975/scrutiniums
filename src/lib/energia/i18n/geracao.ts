@@ -168,6 +168,17 @@ export function rotuloGoldNo(pt: string, idioma: Idioma, regiao: string, tabela:
   return en ?? createElement(TrechoPortugues, { regiao, children: pt });
 }
 
+/**
+ * Valor já formatado pela gold em português ("18,4%", "82.216 MWmed", "28.923 GWh") na forma inglesa ("18.4%", "82,216 MWavg"):
+ * só troca os separadores de milhar e decimal e a unidade MWmed; o número é o mesmo.
+ */
+export function valorExibidoNoIdioma(texto: string, idioma: Idioma): string {
+  if (idioma !== "en") return texto;
+  return texto
+    .replace(/\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+,\d+/g, (m) => m.replace(/\./g, "\u0000").replace(/,/g, ".").replace(/\u0000/g, ","))
+    .replace(/\bMWmed\b/g, "MWavg");
+}
+
 /** Prosa da gold sem versão inglesa (nota, regra, descrição publicada): em inglês, marcada como trecho só em português. */
 export function trechoPt(texto: string, regiao: string, idioma: Idioma, como: "span" | "div" = "span"): ReactNode {
   if (idioma !== "en") return texto;
