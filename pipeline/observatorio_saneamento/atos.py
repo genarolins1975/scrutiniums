@@ -74,6 +74,15 @@ ACRESCIMOS = [
      "decisao": "5,80% nas tarifas de água e esgoto e na tabela de serviços e infrações, pelo IPCA de outubro de 2024 a dezembro de 2025", "ato": "Resolução ARESC 389, 12/02/2026", "data": "2026-02-12",
      "vigencia": "reajuste aplicável 30 dias após a publicação (art. 2º); a CASAN publica a tabela como válida desde 01/04/2026", "url": "https://aresc.sc.gov.br/wp-content/uploads/2026/02/RESOLUCAO-ARESC-No-389.pdf", "verificado": True,
      "obs": "A página da CASAN data este ato de 13/01/2026; o original é de 12/02/2026. ARIS, AGIR e CISAM-SUL também autorizaram o reajuste, segundo a CASAN; esses atos não foram lidos."},
+    # CORSAN (AGERGS): atos citados nos comunicados da Corsan; as resoluções em si não foram localizadas (levantamento de 17/10/2026).
+    {"prestador": "CORSAN", "area": "Municípios do Apêndice 1 da Tabela I (298, em julho de 2026)", "regulador": "AGERGS", "tipo": "reajuste", "pedido": "não publicado",
+     "decisao": "4,68% (reproduzido nos preços da Tabela I de janeiro de 2026 sobre a de janeiro de 2025); a mesma data-base passou a ser 1º de janeiro", "ato": "Reajuste anual de 2026, citado no comunicado da Corsan de 30/11/2025", "data": "2025-11-30",
+     "vigencia": "a partir de 01/01/2026", "url": "https://www.corsan.com.br/comunicado-de-reajuste-tarifario-anual-2/", "verificado": False,
+     "obs": "Ato da AGERGS não localizado; valores conferidos nas tabelas publicadas pela Corsan. O comunicado trata também de Erechim (5,34%), Santa Cruz do Sul, Canoas e Esteio e dos 15 municípios da AGESAN."},
+    {"prestador": "CORSAN", "area": "Municípios do Apêndice 1 da Tabela I (298, em julho de 2026)", "regulador": "AGERGS", "tipo": "revisão extraordinária (criação da categoria Residencial Social, Lei 14.898/2024)", "pedido": "não publicado",
+     "decisao": "5,76% sobre as tarifas (reproduzido nos preços da Tabela I de julho de 2026 sobre a de janeiro) e criação da categoria Residencial Social", "ato": "Resolução Decisória AGERGS RED 892, 09/06/2026", "data": "2026-06-09",
+     "vigencia": "a partir de 01/07/2026; descontos da categoria social a partir das faturas de agosto", "url": "https://corsan.com.br/comunicado-de-criacao-de-categoria-residencial-social-e-revisao-tarifaria/", "verificado": False,
+     "obs": "RED 892/2026 conhecida pelo comunicado da Corsan de 12/06/2026 e pelo Anexo 5; a íntegra não foi localizada. O comunicado lista 247 municípios e o Anexo 5 aplica a Tabela I a 298."},
 ]
 
 
@@ -114,7 +123,7 @@ def main():
     for i, a in enumerate(atos):
         a["id"] = f"ato-{i + 1:03d}"
     with open(DESTINO, "w", encoding="utf-8") as fh:
-        json.dump({"levantado_em": "2026-10-14", "levantado_por_prestador": {"SANEAGO": "2026-10-17", "CASAN": "2026-10-17"}, "atos": atos}, fh, ensure_ascii=False, indent=1)
+        json.dump({"levantado_em": "2026-10-14", "levantado_por_prestador": {"SANEAGO": "2026-10-17", "CASAN": "2026-10-17", "CORSAN": "2026-10-17"}, "atos": atos}, fh, ensure_ascii=False, indent=1)
         fh.write("\n")
     print(f"{len(atos)} atos; verificados {sum(a['verificado'] for a in atos)}")
 
