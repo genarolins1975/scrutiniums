@@ -2,6 +2,8 @@ import Link from "@/components/energia/LinkSemPrefetch";
 import { ListadasLogo } from "@/components/energia/ListadasLogo";
 import { SEGMENTOS, type CelulaMatriz, type Segmento } from "@/lib/energia/listadas";
 import type { LogoListada } from "@/lib/energia/tipos-listadas";
+import { Nome } from "@/components/i18n/Nome";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Matriz de atuação: uma linha por companhia e uma coluna por segmento, cada coluna na sua unidade e com a sua escala (fração do maior
@@ -22,7 +24,7 @@ export function ListadasMatriz({
         <thead>
           <tr>
             <th scope="col" className="pb-2 pr-3 text-left text-xs font-medium text-carvao-muted">
-              Companhia
+              {tx("Companhia", "Company")}
             </th>
             {SEGMENTOS.map((s) => (
               <th key={s.id} scope="col" className="w-[26%] px-3 pb-2 text-left text-xs font-medium text-carvao-muted">
@@ -39,7 +41,9 @@ export function ListadasMatriz({
                 <Link href={l.href} className="flex min-h-[44px] items-center gap-3 text-carvao hover:text-energia-dark">
                   <ListadasLogo logo={l.logo} nome={l.nome} tamanho="sm" decorativo={!!l.logo?.arquivo} />
                   <span className="leading-tight">
-                    <span className="block font-medium underline underline-offset-4">{l.nome}</span>
+                    <span className="block font-medium underline underline-offset-4">
+                      <Nome>{l.nome}</Nome>
+                    </span>
                     <span className="block text-xs text-mineral">{l.papel}</span>
                   </span>
                 </Link>
@@ -49,7 +53,7 @@ export function ListadasMatriz({
                 return (
                   <td key={s.id} className="px-3 py-2 align-middle">
                     {c.valor === null ? (
-                      <span className="text-xs text-mineral">não atua</span>
+                      <span className="text-xs text-mineral">{tx("não atua", "not active")}</span>
                     ) : (
                       <span className="flex items-center gap-2">
                         <span className="relative h-3 w-full max-w-[9rem] bg-energia-fundo" aria-hidden="true">
