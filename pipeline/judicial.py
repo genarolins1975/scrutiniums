@@ -80,18 +80,43 @@ def _casa_escala(escala_cod, cod_if):
     return (rotulo, met) if met else (rotulo, None)
 
 
+def _lacunas(assuntos, esperado):
+    """Pares tribunal/categoria da taxonomia sem nenhuma linha no silver.
+
+    A camada nacional é uma SOMA sobre tribunais: com tribunal ou categoria faltando,
+    o total encolhe e parece queda de litigiosidade, e o ramo ausente sairia com total
+    zero. Em 17/10/2026 o silver (semeado de novo em 15/10) só tinha o TJSP sem
+    garantias e cobrança: 1 tribunal e 2 categorias contra 15 e 7 na publicação de
+    24/09. Ausência não vira zero nem total menor."""
+    presentes = {(a[0], a[2]) for a in assuntos}
+    return [f"{t}/{cat}" for tribunais, tax in esperado for t in tribunais for cat in tax
+            if (t, cat) not in presentes]
+
+
 def build(con, cfg):
     try:
-        from pipeline.sources.judicial import TAXONOMIA_CIVEL, TAXONOMIA_TRABALHISTA, UF_DO_TRIBUNAL
+        from pipeline.sources.judicial import (TAXONOMIA_CIVEL, TAXONOMIA_TRABALHISTA, UF_DO_TRIBUNAL,
+                                               TRIBUNAIS_CIVEL, TRIBUNAIS_TRABALHO)
     except Exception:
         TAXONOMIA_CIVEL = TAXONOMIA_TRABALHISTA = {}
         UF_DO_TRIBUNAL = {}
+        TRIBUNAIS_CIVEL = TRIBUNAIS_TRABALHO = []
     assuntos = _rows(con, """SELECT tribunal, ramo, categoria, codigo, nome, registros, casos_unicos
                              FROM jud_assunto ORDER BY registros DESC""")
     if not assuntos:
         common.write_gold("judicial.json", {"disponivel": False,
                                             "motivo": "nenhuma coleta do DataJud disponível no silver"})
         return {"ok": False, "error": "sem dados"}
+    lacunas = _lacunas(assuntos, ((TRIBUNAIS_CIVEL, TAXONOMIA_CIVEL), (TRIBUNAIS_TRABALHO, TAXONOMIA_TRABALHISTA)))
+    if lacunas:
+        # stub declarado: a sentinela (scripts/sanidade_gold.py) mantém no ar a última
+        # publicação íntegra e a registra em meta.json `restaurados`, que a vigília acusa
+        common.write_gold("judicial.json", {
+            "disponivel": False,
+            "motivo": (f"coleta do DataJud incompleta no silver: {len(lacunas)} pares tribunal/categoria "
+                       "sem dado; a camada nacional não é publicada parcial"),
+            "lacunas": lacunas})
+        return {"ok": False, "error": "cobertura incompleta", "lacunas": len(lacunas)}
     tribunais = {t: {"ramo": r, "uf": uf, "registros_indice": n, "coletado_em": c}
                  for t, r, uf, n, c in _rows(con, "SELECT tribunal, ramo, uf, registros_indice, coletado_em FROM jud_tribunal")}
     coletado_em = max((v["coletado_em"] for v in tribunais.values() if v["coletado_em"]), default=None)
