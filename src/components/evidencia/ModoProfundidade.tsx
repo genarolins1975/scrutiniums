@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
 import { FaixasDeSecao } from "@/components/energia/AtivoVisivel";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Três níveis de profundidade sobre a MESMA página (nunca três páginas):
@@ -20,11 +21,14 @@ import { FaixasDeSecao } from "@/components/energia/AtivoVisivel";
  * num nível mais profundo que o atual, o modo sobe até esse nível.
  */
 export type Modo = "entender" | "analisar" | "auditar";
-const MODOS: { id: Modo; rotulo: string; dica: string }[] = [
-  { id: "entender", rotulo: "Entender", dica: "O essencial em poucos minutos" },
-  { id: "analisar", rotulo: "Analisar", dica: "Mais séries, períodos e comparações" },
-  { id: "auditar", rotulo: "Auditar", dica: "Dados, regras, modelo, versões e arquivos" },
-];
+/** Os três níveis com rótulo e dica no idioma da página (tx de useTx). */
+function modos(tx: <T>(pt: T, en: T) => T): { id: Modo; rotulo: string; dica: string }[] {
+  return [
+    { id: "entender", rotulo: tx("Entender", "Understand"), dica: tx("O essencial em poucos minutos", "The essentials in a few minutes") },
+    { id: "analisar", rotulo: tx("Analisar", "Analyze"), dica: tx("Mais séries, períodos e comparações", "More series, periods and comparisons") },
+    { id: "auditar", rotulo: tx("Auditar", "Audit"), dica: tx("Dados, regras, modelo, versões e arquivos", "Data, rules, model, versions and files") },
+  ];
+}
 const ORDEM: Record<Modo, number> = { entender: 0, analisar: 1, auditar: 2 };
 
 function nivelExigido(el: Element | null): Modo {
@@ -43,9 +47,15 @@ function alvoDoHash(): HTMLElement | null {
   return h ? document.getElementById(h) : null;
 }
 
-/** Destinos que não têm seletor de profundidade: o nível não viaja para lá. */
+/** Destinos que não têm seletor de profundidade: o nível não viaja para lá. Vale também para a irmã inglesa (/en/setor-eletrico). */
 function destinoSemNivel(caminho: string): boolean {
-  return caminho === "/setor-eletrico" || caminho === "/setor-eletrico/" || caminho.startsWith("/setor-eletrico/aprenda");
+  const c = semPrefixoIngles(caminho);
+  return c === "/setor-eletrico" || c === "/setor-eletrico/" || c.startsWith("/setor-eletrico/aprenda");
+}
+
+/** "/en/setor-eletrico/pld" → "/setor-eletrico/pld": as regras do nível são as mesmas nos dois idiomas. */
+function semPrefixoIngles(caminho: string): string {
+  return caminho.startsWith("/en/") ? caminho.slice(3) : caminho;
 }
 
 /**
@@ -62,7 +72,7 @@ export function urlComNivel(href: string, atual: { origin: string; pathname: str
   } catch {
     return null;
   }
-  if (url.origin !== atual.origin || !url.pathname.startsWith("/setor-eletrico")) return null;
+  if (url.origin !== atual.origin || !semPrefixoIngles(url.pathname).startsWith("/setor-eletrico")) return null;
   if (url.pathname === atual.pathname || destinoSemNivel(url.pathname) || url.searchParams.has("modo")) return null;
   url.searchParams.set("modo", nivel);
   return `${url.pathname}${url.search}${url.hash}`;
@@ -78,8 +88,10 @@ function useRoteadorOuNulo() {
 }
 
 export function ModoProfundidade({ children }: { children: ReactNode }) {
+  const tx = useTx();
+  const MODOS = modos(tx);
   const router = useRoteadorOuNulo();
-  const [modo, setModo] = useState<Modo | "todos">("todos");
+  const [modo, setModo] = useState<Modo | "todos">("todos"); // i18n: dado
   const rolarPendente = useRef(false);
   const botoes = useRef<(HTMLButtonElement | null)[]>([]);
   const barra = useRef<HTMLDivElement>(null);
@@ -219,8 +231,8 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
       <AbreDetalhesAoImprimir />
       <FaixasDeSecao />
       <div ref={barra} data-barra-profundidade="" className="sticky top-0 z-30 border-b border-linha bg-papel py-1.5">
-        <div role="radiogroup" aria-label="Nível de profundidade" className="flex items-center gap-3">
-          <span className="rotulo hidden text-mineral sm:inline">Profundidade</span>
+        <div role="radiogroup" aria-label={tx("Nível de profundidade", "Depth level")} className="flex items-center gap-3">
+          <span className="rotulo hidden text-mineral sm:inline">{tx("Profundidade", "Depth")}</span>
           <div className="flex min-w-0 flex-1 flex-wrap sm:flex-none">
             {MODOS.map((m, i) => {
               const ativo = modo === m.id;
@@ -246,7 +258,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
               );
             })}
           </div>
-          <span className="hidden text-xs text-carvao-muted md:inline">{MODOS.find((m) => m.id === modo)?.dica ?? "Todos os níveis visíveis"}</span>
+          <span className="hidden text-xs text-carvao-muted md:inline">{MODOS.find((m) => m.id === modo)?.dica ?? tx("Todos os níveis visíveis", "All levels visible")}</span>
         </div>
       </div>
       {/* abaixo de 768 px a barra só tem os três botões; o que o nível escolhido acrescenta fica numa linha sob ela, fora da barra presa */}
@@ -256,7 +268,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
             <span className="font-medium text-carvao">{nivelAtual.rotulo}:</span> {nivelAtual.dica.charAt(0).toLowerCase() + nivelAtual.dica.slice(1)}.
           </>
         ) : (
-          "Todos os níveis visíveis."
+          tx("Todos os níveis visíveis.", "All levels visible.")
         )}
       </p>
       {children}
