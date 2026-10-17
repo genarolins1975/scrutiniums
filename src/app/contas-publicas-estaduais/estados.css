@@ -92,3 +92,7 @@
 @media(max-width:1000px){.ce-question-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.ce-question-grid button{padding:18px 14px;min-height:184px}.ce-question-grid strong{font-size:20px}.ce-comparison .ce-compare-row{grid-template-columns:72px minmax(40px,1fr) 92px;gap:8px}.ce-learning>summary{font-size:21px}}
 @media(max-width:360px){.ce-question-grid{grid-template-columns:1fr}.ce-question-grid button{min-height:0}.ce-question-grid small{margin-top:0}}
+/* no celular a lista de observatórios sai (o seletor da linha da marca guarda os mesmos destinos), e com ela a faixa que a contém */
+@media(max-width:639px){.ce-nav-obs{display:none}}
+/* o seletor de observatório é o mesmo dos outros cabeçalhos: não herda a cor, o corpo e o recuo dos resumos do catálogo */
+.ce-root .ce-header summary{color:var(--ce-ink);font-size:0.72rem;padding:0}
