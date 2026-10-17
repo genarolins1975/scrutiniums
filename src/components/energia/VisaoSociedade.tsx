@@ -5,7 +5,7 @@ import { dataBR, mesAno, plural } from "@/lib/energia/formato";
 import type { Natureza } from "@/lib/energia/tipos";
 import type { IdSociedade, ItemSociedade, SociedadeVisao } from "@/lib/energia/tipos-visao";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { goldEmString, goldNoBloco, traduzModeloDaGold, trechoEn } from "@/lib/energia/i18n/entrada-visao";
+import { comNomesProprios, goldEmString, goldNoBloco, traduzModeloDaGold, trechoEn, valorProvaNoIdioma } from "@/lib/energia/i18n/entrada-visao";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import type { Idioma } from "@/lib/idioma";
 import {
@@ -134,7 +134,7 @@ function Cartao({ it, i, ctx, nota }: { it: ItemSociedade; i: number; ctx: Conte
       {limite && (
         <p className="mt-2 text-xs leading-relaxed text-carvao-muted" data-limite-agregado="">
           <span className="rotulo mr-2 text-mineral">{tx("Sobre o limite agregado", "About the aggregate limit")}</span>
-          {limite}
+          {comNomesProprios(limite, idioma, dec?.universo?.parciais.map((x) => x.sigla))}
         </p>
       )}
       {dispersaoDec && (
@@ -148,7 +148,7 @@ function Cartao({ it, i, ctx, nota }: { it: ItemSociedade; i: number; ctx: Conte
         {tx("Cobertura:", "Coverage:")} {goldNoBloco(it.cobertura, idioma, `visao-sociedade-${it.id}-cobertura`)}
       </p>
       <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-0 pt-2">
-        <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `sociedade.itens[${i}].evidencia`, indicador: titulo, valorExibido: it.evidencia.valor_exibido }} endereco={`${ROTA_VISAO}#sociedade-${it.id}`} />
+        <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `sociedade.itens[${i}].evidencia`, indicador: titulo, valorExibido: valorProvaNoIdioma(it.evidencia.valor_exibido, idioma) }} endereco={`${ROTA_VISAO}#sociedade-${it.id}`} />
         {(it.evidencias_complementares ?? []).map((c, k) => (
           <ComproveNumero
             key={c.caminho}
@@ -156,7 +156,7 @@ function Cartao({ it, i, ctx, nota }: { it: ItemSociedade; i: number; ctx: Conte
               url: URL_GOLD_VISAO,
               caminho: `sociedade.itens[${i}].evidencias_complementares[${k}].evidencia`,
               indicador: `${titulo}, ${minuscula(goldEmString(it.complementos.find((x) => x.valor_exibido === c.evidencia.valor_exibido)?.rotulo ?? c.evidencia.indicador, idioma))}`,
-              valorExibido: c.evidencia.valor_exibido,
+              valorExibido: valorProvaNoIdioma(c.evidencia.valor_exibido, idioma),
             }}
             rotulo={tx(`Comprove: ${c.evidencia.valor_exibido}`, `Check: ${trechoEn(c.evidencia.valor_exibido)}`)}
             endereco={`${ROTA_VISAO}#sociedade-${it.id}`}

@@ -27,7 +27,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { partirBastidor } from "@/lib/energia/bastidor";
 import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { goldEmString, goldNoBloco } from "@/lib/energia/i18n/entrada-visao";
+import { comNomesProprios, goldEmString, goldNoBloco, valorProvaNoIdioma } from "@/lib/energia/i18n/entrada-visao";
 import type { Idioma } from "@/lib/idioma";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { COLUNAS_ARQUIVO } from "@/lib/energia/datasets";
@@ -216,7 +216,7 @@ export default function VisaoGeralEnergia() {
     const l = leve(id);
     return l?.comprove ? (
       <div className="-my-2.5">
-        <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, ...l.comprove }} endereco={`${ROTA_VISAO}#${ANCORAS_DETERMINANTES[id].id}`} />
+        <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, ...l.comprove, valorExibido: valorProvaNoIdioma(l.comprove.valorExibido, idioma) }} endereco={`${ROTA_VISAO}#${ANCORAS_DETERMINANTES[id].id}`} />
       </div>
     ) : null;
   };
@@ -668,7 +668,7 @@ export default function VisaoGeralEnergia() {
             )}
           >
             <RespostaCurta id="sociedade" veredito={vereditoSociedade(g.sociedade, ctx.sociedade)}>
-              {respostaSociedade(g.sociedade, ctx.sociedade)}
+              {comNomesProprios(respostaSociedade(g.sociedade, ctx.sociedade), idioma, ctx.sociedade.dec?.universo?.parciais.map((x) => x.sigla))}
             </RespostaCurta>
             <VisaoRecorte
               periodo={
@@ -858,7 +858,7 @@ export default function VisaoGeralEnergia() {
                       </>,
                       <>
                         {o.gold}: {o.disponivel ? `generated on ${carimbo(o.gerado_em)}` : "unavailable"}
-                        {o.versao_codigo ? `, code ${o.versao_codigo}` : ""}; {goldNoBloco(o.origem, idioma, `visao-origem-${o.gold}`)}; read on {carimbo(o.lida_em)}
+                        {o.versao_codigo ? <>, code <code>{o.versao_codigo}</code></> : ""}; {goldNoBloco(o.origem, idioma, `visao-origem-${o.gold}`)}; read on {carimbo(o.lida_em)}
                         {o.idade_horas !== null && o.idade_horas !== undefined ? ` (${num(o.idade_horas, 1)} h old)` : ""}.
                       </>,
                     )}

@@ -60,6 +60,7 @@ import {
   textoDozeMeses,
 } from "@/lib/energia/geracao";
 import { integra, lerGold } from "@/lib/energia/gold";
+import { rotuloFicha } from "@/lib/energia/i18n/aprenda";
 import { valorExibidoNoIdioma } from "@/lib/energia/i18n/geracao";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
@@ -157,7 +158,7 @@ export default function GeracaoPage() {
           {nome} {valor}
         </span>
         <ComproveNumero
-          sobDemanda={{ url: URL_GOLD_GERACAO_DETALHE, caminho: `evidencias.${chave}`, indicador: e.indicador, valorExibido: valor }}
+          sobDemanda={{ url: URL_GOLD_GERACAO_DETALHE, caminho: `evidencias.${chave}`, indicador: rotuloFicha(e.indicador, idioma) ?? e.indicador, valorExibido: valor }}
           endereco={`${rotaPainel("p021")}#composicao`}
         />
       </li>

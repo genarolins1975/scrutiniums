@@ -88,6 +88,7 @@ export function GeracaoCapacidadeDistribuicao({ ultimos12m, fonte, versao, usina
             orientacao="horizontal"
             alturaCategoria={44}
             rotulosValor
+            rotulosSaoNomes
           />
         </>
       ) : (

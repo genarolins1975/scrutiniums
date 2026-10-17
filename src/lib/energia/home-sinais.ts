@@ -24,7 +24,7 @@ import { join } from "node:path";
 import { lerGold, integra } from "./gold";
 import { dataBR, nomeMes, nomeSubmercado, num, pct, reais } from "./formato";
 import { idiomaEnergia, tx } from "./idioma";
-import { traduzDaGold } from "./i18n/entrada-visao";
+import { traduzDaGold, valorProvaNoIdioma } from "./i18n/entrada-visao";
 import { horasMinutos, minuscula as minusculaEn } from "./visao";
 import { valorDestaque, type Evidencia, type FormatoNumero, type Variacao } from "./evidencia";
 import { resumo as resumoDistribuicao } from "./distribuicao";
@@ -145,7 +145,8 @@ function provaConfere(ev: Pick<Evidencia, "valor_calculo"> | null | undefined, v
 }
 
 function prova(url: string, caminho: string, medida: string, ev: Pick<Evidencia, "valor_exibido">): ProvaSinal {
-  return { url, caminho, indicador: medida, valorExibido: ev.valor_exibido };
+  // o valor como a gold o escreve, na grafia do idioma (o leitor de tela lê o botão da ficha)
+  return { url, caminho, indicador: medida, valorExibido: valorProvaNoIdioma(ev.valor_exibido, idiomaEnergia()) };
 }
 
 /** Os CSV da própria ficha: rótulo e endereço, sem repetir o mesmo arquivo. */
@@ -723,7 +724,8 @@ const MEDIDA_PLD = () => tx("PLD médio do dia no Sudeste/Centro-Oeste", "Daily 
 /** Hora de um instante "2026-09-30T06:00": "6 h" ("6:00" em inglês). Null quando o texto não traz a hora. */
 function horaDe(instante: string | null | undefined): string | null {
   const m = instante ? /T(\d{2}):/.exec(instante) : null;
-  return m ? tx(`${Number(m[1])} h`, `${Number(m[1])}:00`) : null;
+  // "hour 6", e não "6:00": o português escreve "6 h", e a hora não ganha um zero que o português não mostra
+  return m ? tx(`${Number(m[1])} h`, `hour ${Number(m[1])}`) : null;
 }
 
 /** Evidência do mesmo número na Visão geral (o painel de preço lê pld.json#cartoes[SE].media_dia): só vale se o dia e o valor forem os mesmos. */

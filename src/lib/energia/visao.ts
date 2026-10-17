@@ -1925,7 +1925,7 @@ export function notaRede(g: Pick<SinteseVisaoGold, "frases" | "multiplos">, idio
   return tx(
     `Na fronteira ${nome}, a frase de Rede traz a média dos 30 dias de ${d(ini)} a ${d(fim)} (${comUnidade(media, "MWmed", 0, idioma)}) e o gráfico de Rede traz o fluxo médio do dia ${d(p.data_referencia)} (${comUnidade(dia, "MWmed", 0, idioma)}). ` +
       `Média de 30 dias e valor de um dia não precisam coincidir.`,
-    `On the ${nome} border, the Grid sentence has the 30-day average from ${d(ini)} to ${d(fim)} (${comUnidade(media, "MWmed", 0, idioma)}) and the Grid chart has the average flow of the day ${d(p.data_referencia)} (${comUnidade(dia, "MWmed", 0, idioma)}). ` +
+    `On the ${fronteiraEn(nome)} border, the Grid sentence has the 30-day average from ${d(ini)} to ${d(fim)} (${comUnidade(media, "MWmed", 0, idioma)}) and the Grid chart has the average flow of the day ${d(p.data_referencia)} (${comUnidade(dia, "MWmed", 0, idioma)}). ` +
       `A 30-day average and a single day's value need not match.`,
     idioma,
   );
@@ -2148,15 +2148,18 @@ const reaisMwh = (v: number, idioma: Idioma) => `R$ ${num(v, 2, idioma)}/MWh`;
 /** O mesmo mês nos anos anteriores: a referência sazonal do PLD (pld_detalhe.json, historico.posicao_referencia). */
 export type PosicaoPldSazonal = { mes: number; percentil: number | null; n_dias: number; p50: number | null; anos: readonly number[] };
 
-/** "percentil 38,7 entre as 150 médias diárias de setembro de 2021 a 2025 (mediana R$ 247,81/MWh)"; null sem percentil. */
+/**
+ * "percentil 38,7 entre as 150 médias diárias de setembro de 2021 a 2025 (mediana R$ 247,81/MWh)"; null sem percentil. Em inglês,
+ * "of September 2021 to 2025": o mês colado ao ano, como no português, para os dois idiomas contarem os mesmos números.
+ */
 export function textoSazonalPld(s: PosicaoPldSazonal, idioma: Idioma = idiomaEnergia()): string | null {
   if (s.percentil === null) return null;
   const mes = s.mes >= 1 && s.mes <= 12 ? nomeMes(s.mes, idioma, true) : undefined;
   const anos =
     s.anos.length > 1
-      ? tx(` de ${s.anos[0]} a ${s.anos[s.anos.length - 1]}`, ` from ${s.anos[0]} to ${s.anos[s.anos.length - 1]}`, idioma)
+      ? tx(` de ${s.anos[0]} a ${s.anos[s.anos.length - 1]}`, ` ${s.anos[0]} to ${s.anos[s.anos.length - 1]}`, idioma)
       : s.anos.length === 1
-        ? tx(` de ${s.anos[0]}`, ` of ${s.anos[0]}`, idioma)
+        ? tx(` de ${s.anos[0]}`, ` ${s.anos[0]}`, idioma)
         : "";
   const mediana = s.p50 === null ? "" : tx(`, mediana ${reaisMwh(s.p50, idioma)}`, `, median ${reaisMwh(s.p50, idioma)}`, idioma);
   return tx(

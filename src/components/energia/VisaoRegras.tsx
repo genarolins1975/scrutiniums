@@ -11,7 +11,7 @@ import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { partirBastidor } from "@/lib/energia/bastidor";
 import { idiomaEnergia, tx, tx as txNoIdioma } from "@/lib/energia/idioma";
-import { goldEmString, goldNoBloco, traduzModeloDaGold } from "@/lib/energia/i18n/entrada-visao";
+import { goldEmString, goldNoBloco, traduzModeloDaGold, valorProvaNoIdioma } from "@/lib/energia/i18n/entrada-visao";
 import type { Idioma } from "@/lib/idioma";
 
 /**
@@ -105,7 +105,7 @@ export function VisaoRegraResumo({
       )}
       {o.evidencia_numero ? (
         caminho ? (
-          <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `${caminho}.evidencia_numero`, indicador: titulo, valorExibido: o.evidencia_numero.valor_exibido }} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
+          <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `${caminho}.evidencia_numero`, indicador: titulo, valorExibido: valorProvaNoIdioma(o.evidencia_numero.valor_exibido, idioma) }} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
         ) : (
           <ComproveNumero evidencia={o.evidencia_numero} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
         )

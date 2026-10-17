@@ -11,7 +11,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { formatos } from "@/lib/energia/formato";
-import { goldNoBloco } from "@/lib/energia/i18n/entrada-visao";
+import { goldNoBloco, valorProvaNoIdioma } from "@/lib/energia/i18n/entrada-visao";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { IdPainelMultiplo, LinhaMultiplos } from "@/lib/energia/tipos-visao";
 import {
@@ -99,7 +99,7 @@ function Cartao({
           </h3>
           {p.comprove ? (
             <ComproveNumero
-              sobDemanda={{ url: URL_GOLD_VISAO, caminho: p.comprove.caminho, indicador: p.comprove.indicador, valorExibido: p.comprove.valorExibido }}
+              sobDemanda={{ url: URL_GOLD_VISAO, caminho: p.comprove.caminho, indicador: p.comprove.indicador, valorExibido: valorProvaNoIdioma(p.comprove.valorExibido, idioma) }}
               endereco={`${ROTA_VISAO}#${ancoras?.id ?? "determinantes"}`}
             />
           ) : (

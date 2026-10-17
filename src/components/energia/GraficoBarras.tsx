@@ -97,6 +97,8 @@ export type GraficoBarrasProps = {
    * inglesa, o texto do SVG ganha lang="pt-BR", translate="no" e data-i18n-nome, e a dica e a tabela os marcam com <Nome>.
    */
   rotulosSaoNomes?: boolean;
+  /** Os nomes das séries são nomes próprios (uma usina por série, por exemplo): legenda, dica e tabela os marcam com <Nome>. */
+  seriesSaoNomes?: boolean;
 };
 
 const LARGURA_SSR = 760;
@@ -160,11 +162,13 @@ export function GraficoBarras({
   alturaMaxima = 480,
   limiteInicial,
   rotulosSaoNomes = false,
+  seriesSaoNomes = false,
 }: GraficoBarrasProps) {
   const idioma = useIdioma();
   // atributos de nome próprio para o texto do SVG (onde <Nome>, que é span, não cabe) e o nome marcado na parte HTML
   const attrNome = rotulosSaoNomes && idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {};
   const nomeHtml = (t: ReactNode) => (rotulosSaoNomes ? <Nome>{t}</Nome> : t);
+  const nomeSerie = (t: ReactNode) => (seriesSaoNomes ? <Nome>{t}</Nome> : t);
   const tx = useTx();
   // os formatadores do gráfico presos ao idioma da página (mesmas assinaturas de escalas.ts)
   const formatarValor = (v: number | null | undefined, c = 1, u = "") => formatarValorEm(v, c, u, idioma);
@@ -504,6 +508,7 @@ export function GraficoBarras({
         }}
         role={onSelecionar ? "button" : "img"}
         aria-label={leitura(i)}
+        {...attrNome}
         aria-pressed={onSelecionar ? sel : undefined}
         tabIndex={i === cursorEfetivo ? 0 : -1}
         data-id={ids[i]}
@@ -726,7 +731,7 @@ export function GraficoBarras({
             <li key={s.id} className="flex items-center justify-between gap-3">
               <span className="flex items-center gap-1.5 text-carvao-muted">
                 <span aria-hidden="true" className="inline-block h-0.5 w-3" style={{ background: s.cor }} />
-                {s.rotulo}
+                {nomeSerie(s.rotulo)}
               </span>
               <span className={`tabular-nums ${valor(ativo, s) === null ? "italic text-carvao-muted" : "font-medium text-carvao"}`}>
                 {formatarValor(valor(ativo, s), casas, unidade)}
@@ -827,7 +832,7 @@ export function GraficoBarras({
             series.map((s) => (
               <li key={s.id} className="flex items-center gap-1.5">
                 <span aria-hidden="true" className="inline-block h-2.5 w-2.5 rounded-[2px]" style={{ background: s.cor }} />
-                {s.rotulo}
+                {nomeSerie(s.rotulo)}
               </li>
             ))}
           {referencias.map((r, k) => (
@@ -943,7 +948,7 @@ export function GraficoBarras({
                 </th>
                 {series.map((s) => (
                   <th key={s.id} scope="col" className="border-b border-linha px-2 py-1.5 text-right font-medium">
-                    {s.rotulo} ({unidade})
+                    {nomeSerie(s.rotulo)} ({unidade})
                   </th>
                 ))}
                 {pilhasTodas && series.length > 1 && (

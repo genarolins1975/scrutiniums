@@ -63,6 +63,8 @@ export type ColunaTabela = {
    * as células e para as opções do filtro. Em português nada muda; o arquivo baixado leva o valor como está.
    */
   idiomaTexto?: "nome" | "portugues";
+  /** O rótulo da coluna é um nome próprio (uma coluna por usina, por exemplo): o cabeçalho sai marcado com <Nome>. */
+  rotuloEhNome?: boolean;
 };
 
 export type Ordem = { coluna: string; direcao: Direcao } | null;

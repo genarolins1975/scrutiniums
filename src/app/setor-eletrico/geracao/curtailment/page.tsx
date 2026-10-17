@@ -1062,6 +1062,7 @@ export default function CurtailmentPage() {
                             casas={1}
                             orientacao="horizontal"
                             rotulosValor
+                            rotulosSaoNomes
                           />,
                         ];
                       }),

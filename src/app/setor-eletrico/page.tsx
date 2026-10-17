@@ -84,7 +84,7 @@ import { publicacaoDados } from "@/lib/energia/dados-servidor";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
-import { ORGAOS_EN, legendaDeOrgaosEn, listaEn, traduzDaGold, traduzModeloDaGold } from "@/lib/energia/i18n/entrada-visao";
+import { ORGAOS_EN, comNomesProprios, legendaDeOrgaosEn, listaEn, traduzDaGold, traduzModeloDaGold } from "@/lib/energia/i18n/entrada-visao";
 
 export const dynamic = "force-static";
 
@@ -598,7 +598,7 @@ function MedidaDisponivel({ s }: { s: SinalDisponivel }) {
           </ul>
         )}
         <p className="text-xs leading-relaxed text-carvao-muted">
-          {s.universo} {s.ressalva}
+          {comNomesProprios(s.universo, idiomaEnergia())} {s.ressalva}
         </p>
         {s.semFicha && (
           <p className="text-xs leading-relaxed text-carvao-muted" data-sem-ficha="">
@@ -814,7 +814,7 @@ export default function MapaDoObservatorio() {
               priority
             />
             <div className="energia-cenario-texto">
-              <p className="rotulo">{tx("Observatório Brasileiro do Setor Elétrico", "Setor Elétrico · Brazilian power sector observatory")}</p>
+              <p className="rotulo">{tx<ReactNode>("Observatório Brasileiro do Setor Elétrico", <><Nome>Setor Elétrico</Nome> · Brazilian power sector observatory</>)}</p>
               <h1>{tx("A energia que move o Brasil.", "The energy that powers Brazil.")}</h1>
               <p>{tx("Explore o sistema. Compare regiões. Entenda sua conta.", "Explore the system. Compare regions. Understand your bill.")}</p>
               <a className="energia-explorar" href="#percurso-energia">{tx("Explorar o sistema", "Explore the system")} <span aria-hidden="true">↓</span></a>
@@ -841,7 +841,7 @@ export default function MapaDoObservatorio() {
           <details className="energia-contexto"><summary>{tx("Sobre o observatório, caminhos e fontes", "About the observatory, paths and sources")} <span aria-hidden="true">+</span></summary>
           <div className="obs-hero grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
             <div className="min-w-0">
-              <p className="rotulo text-mineral">{tx("Observatório Brasileiro do Setor Elétrico", "Setor Elétrico · Brazilian power sector observatory")}</p>
+              <p className="rotulo text-mineral">{tx<ReactNode>("Observatório Brasileiro do Setor Elétrico", <><Nome>Setor Elétrico</Nome> · Brazilian power sector observatory</>)}</p>
               <p className="font-serif text-2xl">{tx("Energia, do sistema à sua conta", "Energy, from the system to your bill")}</p>
               <p className="ed-lead mt-3 max-w-3xl text-carvao-muted">
                 {tx(
@@ -1596,7 +1596,7 @@ export default function MapaDoObservatorio() {
                         {b.arquivos.map((a) => (
                           <li key={a.url}>
                             <a href={a.url} download className={link}>
-                              {tx<ReactNode>(a.rotulo, traduzDaGold(a.rotulo) ?? <TrechoPortugues regiao="inicial-download">{a.rotulo}</TrechoPortugues>)}
+                              {tx<ReactNode>(a.rotulo, comNomesProprios(traduzDaGold(a.rotulo) ?? "", "en") || <TrechoPortugues regiao="inicial-download">{a.rotulo}</TrechoPortugues>)}
                             </a>
                           </li>
                         ))}

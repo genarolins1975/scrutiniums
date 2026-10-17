@@ -54,7 +54,7 @@ import {
 } from "@/lib/energia/geracao";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { rotuloGoldNo } from "@/lib/energia/i18n/geracao";
+import { nomeNo, nomesNo, rotuloGoldNo } from "@/lib/energia/i18n/geracao";
 import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
 
 export const dynamic = "force-static";
@@ -196,6 +196,14 @@ export default function GeracaoTermicaPage() {
     .join("; ");
   const naoIdentificadas = mapa.nao_identificadas.map((x) => x.nome ?? x.id).join(", ");
   const variasChaves = identidade.usinas_com_mais_de_uma_chave.map((x) => `${x.nome ?? x.usina} (${x.chaves.join(", ")})`).join("; ");
+  // em inglês, as mesmas listas com cada nome de usina marcado como nome próprio
+  const naoIdentificadasNo = nomesNo(mapa.nao_identificadas.map((x) => x.nome ?? x.id), idioma);
+  const variasChavesEn = identidade.usinas_com_mais_de_uma_chave.map((x, i) => (
+    <span key={`${x.usina}-${i}`}>
+      {i > 0 ? "; " : ""}
+      {nomeNo(x.nome ?? x.usina, idioma)} ({x.chaves.join(", ")})
+    </span>
+  ));
 
   return (
     <>
@@ -452,7 +460,7 @@ export default function GeracaoTermicaPage() {
                         Fuel of {num(mapa.usinas, 0)} plants, by the published authority: {origens}
                         .{" "}
                         {mapa.nao_identificadas.length
-                          ? `No identified fuel: ${naoIdentificadas}, with ${num(mapa.nao_identificadas_mwh_12m, 1)} MWh over the 12 months (${num(mapa.nao_identificadas_pct_12m, 3)}% of thermal energy).`
+                          ? <>No identified fuel: {naoIdentificadasNo}, with {num(mapa.nao_identificadas_mwh_12m, 1)} MWh over the 12 months ({num(mapa.nao_identificadas_pct_12m, 3)}% of thermal energy).</>
                           : "All with an identified fuel."}
                       </>,
                     )}
@@ -460,7 +468,7 @@ export default function GeracaoTermicaPage() {
                   <p className="text-sm text-carvao-muted">
                     <TrechoPortugues regiao="geracao-termica-identidade-regra">{emPortugues(identidade.regra)}</TrechoPortugues>{" "}
                     {identidade.usinas_com_mais_de_uma_chave.length
-                      ? tx(`Usinas com mais de uma chave na fonte: ${variasChaves}.`, `Plants with more than one key in the source: ${variasChaves}.`)
+                      ? tx(<>{`Usinas com mais de uma chave na fonte: ${variasChaves}.`}</>, <>Plants with more than one key in the source: {variasChavesEn}.</>)
                       : ""}
                   </p>
                   <p className="text-sm text-carvao-muted">

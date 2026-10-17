@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, type ReactNode } from "react";
+import { Fragment, useMemo, type ReactNode } from "react";
 import { Comparador } from "@/components/energia/Comparador";
 import { GeracaoAviso, GeracaoEscolha, GeracaoRecorte } from "@/components/energia/GeracaoControles";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -44,7 +44,7 @@ import {
   vereditoTermica,
   type TermicaCliente,
 } from "@/lib/energia/geracao";
-import { rotuloGoldNo } from "@/lib/energia/i18n/geracao";
+import { nomesNo, rotuloGoldNo } from "@/lib/energia/i18n/geracao";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { CategoriaCombustivel } from "@/lib/energia/tipos-geracao";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
@@ -151,6 +151,14 @@ export function GeracaoTermica({
       ),
     )
     .join("; ");
+  // em inglês, a mesma lista com cada nome de usina marcado como nome próprio
+  const cvuComparadasEn = usinasComparadas.map((x, i) => (
+    <Fragment key={x.id}>
+      {i > 0 ? "; " : ""}
+      <Nome>{x.nome ?? x.id}</Nome>, {x.cvu_semana_vigente === null ? "one value per portion (portions table)" : `${num(x.cvu_semana_vigente, 2)} R$/MWh`}
+    </Fragment>
+  ));
+  const nomesComparadasNo = nomesNo(usinasComparadas.map((x) => x.nome ?? x.id), idioma);
 
   return (
     <div className="space-y-6">
@@ -292,6 +300,7 @@ export function GeracaoTermica({
           orientacao="horizontal"
           alturaCategoria={44}
           rotulosValor
+          rotulosSaoNomes
           selecionado={sel}
           onSelecionar={selecionar}
         />
@@ -368,11 +377,18 @@ export function GeracaoTermica({
           vazio={
             comparacaoPadrao && usinasComparadas.length
               ? tx(
-                  `Mostrando ${nomesComparadas}, a maior usina de cada um de ${usinasComparadas.length} combustíveis. Escolha até quatro usinas para comparar.`,
-                  `Showing ${nomesComparadas}, the largest plant of each of ${usinasComparadas.length} fuels. Choose up to four plants to compare.`,
+                  <>{`Mostrando ${nomesComparadas}, a maior usina de cada um de ${usinasComparadas.length} combustíveis. Escolha até quatro usinas para comparar.`}</>,
+                  <>
+                    Showing {nomesComparadasNo}, the largest plant of each of {usinasComparadas.length} fuels. Choose up to four plants to compare.
+                  </>,
                 )
               : usina
-                ? tx(`Mostrando ${nomeUsina}. Escolha até quatro usinas para comparar.`, `Showing ${nomeUsina}. Choose up to four plants to compare.`)
+                ? tx(
+                    <>{`Mostrando ${nomeUsina}. Escolha até quatro usinas para comparar.`}</>,
+                    <>
+                      Showing <Nome>{nomeUsina}</Nome>. Choose up to four plants to compare.
+                    </>,
+                  )
                 : tx("Escolha até quatro usinas.", "Choose up to four plants.")
           }
         >
@@ -381,7 +397,8 @@ export function GeracaoTermica({
         {usinasComparadas.length > 0 && (
           <>
             <GraficoBarras
-              titulo={tx(`Parcela de cada motivo na geração da usina, 12 meses: ${nomesComparadas}`, `Share of each reason in the plant's generation, 12 months: ${nomesComparadas}`)}
+              // em inglês, o título não repete os nomes (texto do gráfico não leva marca); eles estão no comparador logo acima e na legenda
+              titulo={tx(`Parcela de cada motivo na geração da usina, 12 meses: ${nomesComparadas}`, "Share of each reason in the generation of each compared plant, 12 months")}
               dados={paraTabela(motivosUsinas, idioma)}
               chaveCategoria="id"
               chaveRotulo="motivo"
@@ -390,6 +407,7 @@ export function GeracaoTermica({
               casas={1}
               orientacao="horizontal"
               rotulosValor
+              seriesSaoNomes
             />
             <p className="text-xs leading-relaxed text-carvao-muted" data-cvu-comparadas="">
               {tx(
@@ -398,7 +416,7 @@ export function GeracaoTermica({
                   {usinasComparadas.some((x) => x.cvu_semana_vigente === 0) ? "; CVU 0,00 é valor publicado pela fonte, mantido como publicado e nunca tratado como ausência" : ""}.
                 </>,
                 <>
-                  CVU for the current week: {cvuComparadas}. Cost declared for scheduling, not realized cost
+                  CVU for the current week: {cvuComparadasEn}. Cost declared for scheduling, not realized cost
                   {usinasComparadas.some((x) => x.cvu_semana_vigente === 0) ? `; a CVU of ${num(0, 2)} is a value published by the source, kept as published and never treated as missing` : ""}.
                 </>,
               )}

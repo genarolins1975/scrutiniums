@@ -16,10 +16,11 @@
  * Idioma: toda função que escreve texto recebe `idioma` por último (padrão: o da página, por idiomaEnergia()); o
  * componente de cliente passa o de useIdioma(). Os números e as datas são os mesmos nos dois idiomas.
  */
+import { Fragment, createElement, type ReactNode } from "react";
 import type { Idioma } from "@/lib/idioma";
 import { formatos } from "./formato";
 import { idiomaEnergia, porIdioma, tx } from "./idioma";
-import { CONTROLES_GERACAO_EN, DOWNLOADS_GERACAO_EN, RESULTADOS_CONTROLE_EN, estudoNoIdioma, rotuloGold, rotuloGoldEn, txEm } from "./i18n/geracao";
+import { CONTROLES_GERACAO_EN, DOWNLOADS_GERACAO_EN, RESULTADOS_CONTROLE_EN, nomeNo, rotuloGold, rotuloGoldEn, txEm } from "./i18n/geracao";
 import type { ColunaTabela, LinhaTabela, ValorCelula } from "./tabela";
 import type { Natureza, Submercado } from "./tipos";
 import type {
@@ -1244,7 +1245,7 @@ export function colunasQuebras(idioma: Idioma = idiomaEnergia()): ColunaTabela[]
     { id: "tipo", rotulo: tx("Tipo", "Type"), tipo: "texto", categorica: true },
     { id: "origem", rotulo: tx("Origem", "Origin"), tipo: "texto", categorica: true },
     { id: "categorias", rotulo: tx("Categorias", "Categories"), tipo: "texto" },
-    { id: "descricao", rotulo: tx("Descrição (em português, como publicada)", "Description (in Portuguese, as published)"), tipo: "texto" },
+    { id: "descricao", rotulo: tx("Descrição (em português, como publicada)", "Description (in Portuguese, as published)"), tipo: "texto", idiomaTexto: "portugues" },
   ];
 }
 
@@ -1269,7 +1270,7 @@ export function colunasControles(idioma: Idioma = idiomaEnergia()): ColunaTabela
     { id: "nome", rotulo: tx("Controle", "Check"), tipo: "texto" },
     { id: "resultado", rotulo: tx("Resultado", "Result"), tipo: "texto", categorica: true },
     { id: "critico", rotulo: tx("Crítico", "Critical"), tipo: "texto", categorica: true },
-    { id: "detalhe", rotulo: tx("Detalhe", "Detail (in Portuguese, as published)"), tipo: "texto" },
+    { id: "detalhe", rotulo: tx("Detalhe", "Detail (in Portuguese, as published)"), tipo: "texto", idiomaTexto: "portugues" },
   ];
 }
 
@@ -1281,7 +1282,7 @@ export function colunasFontes(idioma: Idioma = idiomaEnergia()): ColunaTabela[] 
   const tx = txEm(idioma);
   return [
     { id: "orgao", rotulo: tx("Órgão", "Agency"), tipo: "texto", categorica: true },
-    { id: "conjunto", rotulo: tx("Conjunto", "Dataset (official name)"), tipo: "texto" },
+    { id: "conjunto", rotulo: tx("Conjunto", "Dataset (official name)"), tipo: "texto", idiomaTexto: "nome" },
     { id: "arquivos", rotulo: tx("Arquivos integrados", "Integrated files"), tipo: "numero", casas: 0 },
     { id: "primeiro", rotulo: tx("Primeiro período", "First period"), tipo: "texto" },
     { id: "ultimo", rotulo: tx("Último período", "Last period"), tipo: "texto" },
@@ -1621,7 +1622,7 @@ export function linhasUsinasTermicas(t: Pick<Termica, "usinas_12m">, idioma: Idi
 export function colunasUsinasTermicas(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const tx = txEm(idioma);
   return [
-    { id: "nome", rotulo: tx("Usina", "Plant"), tipo: "texto" },
+    { id: "nome", rotulo: tx("Usina", "Plant"), tipo: "texto", idiomaTexto: "nome" },
     { id: "combustivel", rotulo: tx("Combustível", "Fuel"), tipo: "texto", categorica: true },
     { id: "sm", rotulo: tx("Subsistema", "Subsystem"), tipo: "texto", categorica: true },
     { id: "gwh", rotulo: tx("Geração em 12 meses", "Generation in 12 months"), tipo: "numero", unidade: "GWh", casas: 1 },
@@ -1664,7 +1665,7 @@ export function colunasParcelas(idioma: Idioma = idiomaEnergia()): ColunaTabela[
   const tx = txEm(idioma);
   return [
     { id: "cod", rotulo: tx("Código do ONS nos modelos", "ONS code in the models"), tipo: "numero", casas: 0, buscavel: true },
-    { id: "nome", rotulo: tx("Nome da parcela", "Portion name"), tipo: "texto" },
+    { id: "nome", rotulo: tx("Nome da parcela", "Portion name"), tipo: "texto", idiomaTexto: "nome" },
     { id: "gwh", rotulo: tx("Geração em 12 meses", "Generation in 12 months"), tipo: "numero", unidade: "GWh", casas: 1 },
     { id: "cvu", rotulo: tx("CVU da semana vigente", "CVU for the current week"), tipo: "numero", unidade: "R$/MWh", casas: 2 },
   ];
@@ -1708,7 +1709,7 @@ export function colunasCvuUsinas(idioma: Idioma = idiomaEnergia()): ColunaTabela
   const tx = txEm(idioma);
   return [
     { id: "cod", rotulo: tx("Código do ONS", "ONS code"), tipo: "numero", casas: 0, buscavel: true },
-    { id: "nome", rotulo: tx("Nome no CVU", "Name in the CVU"), tipo: "texto" },
+    { id: "nome", rotulo: tx("Nome no CVU", "Name in the CVU"), tipo: "texto", idiomaTexto: "nome" },
     { id: "sm", rotulo: tx("Subsistema", "Subsystem"), tipo: "texto", categorica: true },
     { id: "combustivel", rotulo: tx("Combustível", "Fuel"), tipo: "texto", categorica: true },
     { id: "cvu", rotulo: "CVU", tipo: "numero", unidade: "R$/MWh", casas: 2 },
@@ -1729,15 +1730,24 @@ export function combustiveisCvu(cvu: NonNullable<Termica["cvu"]>): CategoriaComb
   return COMBUSTIVEIS.filter((c) => (cvu.mediana_mensal[c] ?? []).some((v) => v !== null));
 }
 
-export function textoCvu(cvu: NonNullable<Termica["cvu"]>, idioma: Idioma = idiomaEnergia()): string {
+export function textoCvu(cvu: NonNullable<Termica["cvu"]>, idioma: Idioma = idiomaEnergia()): ReactNode {
   const tx = txEm(idioma);
   const f = formatos(idioma);
   const s = cvu.semana;
-  const estudo = s.estudo ? ` (${estudoNoIdioma(s.estudo, idioma)}${s.revisao !== null ? tx(`, revisão ${s.revisao}`, `, revision ${s.revisao}`) : ""})` : "";
-  const semPar = cvu.cobertura.sem_par.length ? tx(`; sem par: ${listaTexto(cvu.cobertura.sem_par, idioma)}`, `; unmatched: ${listaTexto(cvu.cobertura.sem_par, idioma)}`) : "";
-  return tx(
-    `Semana operativa de ${f.dataBR(s.inicio)} a ${f.dataBR(s.fim)}${estudo}: ${f.num(cvu.cobertura.usinas_com_cvu, 0)} usinas com CVU, ${f.num(cvu.cobertura.pareadas_com_termica, 0)} pareadas com a térmica por motivo pelo código do ONS${semPar}.`,
-    `Operating week from ${f.dataBR(s.inicio)} to ${f.dataBR(s.fim)}${estudo}: ${f.num(cvu.cobertura.usinas_com_cvu, 0)} plants with a CVU, ${f.num(cvu.cobertura.pareadas_com_termica, 0)} matched with thermal by dispatch reason through the ONS code${semPar}.`,
+  const semPar = cvu.cobertura.sem_par;
+  // o estudo do ONS ("PMO Outubro 2026") e as usinas sem par ficam com o nome publicado; em inglês, marcados como nome próprio
+  const nomesSemPar = semPar.flatMap((n, i) => [i === 0 ? "" : i === semPar.length - 1 ? tx(" e ", " and ") : ", ", nomeNo(n, idioma)]);
+  return createElement(
+    Fragment,
+    null,
+    tx(`Semana operativa de ${f.dataBR(s.inicio)} a ${f.dataBR(s.fim)}`, `Operating week from ${f.dataBR(s.inicio)} to ${f.dataBR(s.fim)}`),
+    ...(s.estudo ? [" (", nomeNo(s.estudo, idioma), s.revisao !== null ? tx(`, revisão ${s.revisao}`, `, revision ${s.revisao}`) : "", ")"] : []),
+    tx(
+      `: ${f.num(cvu.cobertura.usinas_com_cvu, 0)} usinas com CVU, ${f.num(cvu.cobertura.pareadas_com_termica, 0)} pareadas com a térmica por motivo pelo código do ONS`,
+      `: ${f.num(cvu.cobertura.usinas_com_cvu, 0)} plants with a CVU, ${f.num(cvu.cobertura.pareadas_com_termica, 0)} matched with thermal by dispatch reason through the ONS code`,
+    ),
+    ...(semPar.length ? [tx("; sem par: ", "; unmatched: "), ...nomesSemPar] : []),
+    ".",
   );
 }
 
@@ -2041,7 +2051,7 @@ export function linhasUsinasRestricao(r: Pick<Restricao, "usinas_12m">, idioma: 
 export function colunasUsinasRestricao(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const tx = txEm(idioma);
   return [
-    { id: "nome", rotulo: tx("Usina ou conjunto", "Plant or plant cluster"), tipo: "texto" },
+    { id: "nome", rotulo: tx("Usina ou conjunto", "Plant or plant cluster"), tipo: "texto", idiomaTexto: "nome" },
     // o identificador do ONS (CJU_..., ceg:...) é a chave da linha e do arquivo por usina e mês; a tabela do leitor mostra o nome
     { id: "sm", rotulo: tx("Subsistema", "Subsystem"), tipo: "texto", categorica: true },
     { id: "uf", rotulo: tx("UF", "State"), tipo: "texto", categorica: true },
@@ -2205,7 +2215,7 @@ export function linhasDescricoes(r: Pick<Restricao, "descricoes_ultimo_mes">) {
 export function colunasDescricoes(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const tx = txEm(idioma);
   return [
-    { id: "descricao", rotulo: tx("Detalhamento publicado pelo ONS", "Detail published by the ONS (in Portuguese)"), tipo: "texto" },
+    { id: "descricao", rotulo: tx("Detalhamento publicado pelo ONS", "Detail published by the ONS (in Portuguese)"), tipo: "texto", idiomaTexto: "portugues" },
     { id: "gwh", rotulo: tx("Energia não gerada", "Energy not generated"), tipo: "numero", unidade: "GWh", casas: 2 },
   ];
 }
@@ -2426,7 +2436,7 @@ export function colunasExtremosFc(idioma: Idioma = idiomaEnergia()): ColunaTabel
   const tx = txEm(idioma);
   return [
     { id: "grupo", rotulo: tx("Grupo", "Group"), tipo: "texto", categorica: true },
-    { id: "nome", rotulo: tx("Usina ou conjunto", "Plant or plant cluster"), tipo: "texto" },
+    { id: "nome", rotulo: tx("Usina ou conjunto", "Plant or plant cluster"), tipo: "texto", idiomaTexto: "nome" },
     { id: "fc_pct", rotulo: tx("Fator de capacidade, 12 meses", "Capacity factor, 12 months"), tipo: "percentual", casas: 1 },
     { id: "potencia_media_mw", rotulo: tx("Potência média em operação", "Average capacity in operation"), tipo: "numero", unidade: "MW", casas: 1 },
   ];
@@ -2539,7 +2549,7 @@ export function linhasFcAcima100(p: Capacidade["pareamento"], idioma: Idioma = i
 export function colunasFcAcima100(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const tx = txEm(idioma);
   return [
-    { id: "nome", rotulo: tx("Usina ou conjunto", "Plant or plant cluster"), tipo: "texto" },
+    { id: "nome", rotulo: tx("Usina ou conjunto", "Plant or plant cluster"), tipo: "texto", idiomaTexto: "nome" },
     { id: "categoria", rotulo: tx("Categoria", "Category"), tipo: "texto", categorica: true },
     { id: "mes", rotulo: tx("Mês", "Month"), tipo: "texto" },
     { id: "fc_pct", rotulo: tx("Fator de capacidade do mês", "Capacity factor for the month"), tipo: "percentual", casas: 1 },

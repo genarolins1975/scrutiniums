@@ -6,7 +6,7 @@ import type { Natureza } from "@/lib/energia/tipos";
 import type { DestaquesVisao, DestaqueVisao, EstadoRegra, FraseVisao, IdFrase } from "@/lib/energia/tipos-visao";
 import { ROTA_VISAO, URL_GOLD_VISAO, minuscula, rotuloEstado, rotuloFrase, textoAtualidadeFrase, textoComponentesFrase, textoRevisoesFraseEn, trechosFraseEn } from "@/lib/energia/visao";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { goldEmString, goldNoBloco } from "@/lib/energia/i18n/entrada-visao";
+import { comCodigo, goldEmString, goldNoBloco, valorProvaNoIdioma } from "@/lib/energia/i18n/entrada-visao";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import type { ReactNode } from "react";
 
@@ -96,7 +96,7 @@ export function VisaoFrases({
             )}
             <div data-nivel="analisar" className="mt-1.5 space-y-1 text-xs leading-relaxed text-carvao-muted">
               <p>
-                {tx("Revisões:", "Revisions:")} {revisoes ?? goldNoBloco(f.qualidade.revisoes.texto, idioma, `visao-frase-revisoes-${f.id}`)}
+                {tx("Revisões:", "Revisions:")} {revisoes ? comCodigo(revisoes) : goldNoBloco(f.qualidade.revisoes.texto, idioma, `visao-frase-revisoes-${f.id}`)}
               </p>
               {f.regra && (
                 <p>
@@ -107,7 +107,7 @@ export function VisaoFrases({
             <p className="mt-1">
               {f.evidencia ? (
                 <ComproveNumero
-                  sobDemanda={{ url: URL_GOLD_VISAO, caminho: `frases[${i}].evidencia`, indicador: rotuloFrase(f.id, idioma), valorExibido: f.evidencia.valor_exibido }}
+                  sobDemanda={{ url: URL_GOLD_VISAO, caminho: `frases[${i}].evidencia`, indicador: rotuloFrase(f.id, idioma), valorExibido: valorProvaNoIdioma(f.evidencia.valor_exibido, idioma) }}
                   endereco={`${ROTA_VISAO}#frase-${f.id}`}
                 />
               ) : (
@@ -179,7 +179,7 @@ function Destaque({ d, i }: { d: DestaqueVisao; i: number }) {
       </p>
       {d.evidencia && (
         <ComproveNumero
-          sobDemanda={{ url: URL_GOLD_VISAO, caminho: `destaques.itens[${i}].evidencia`, indicador: goldEmString(d.titulo, idioma), valorExibido: d.evidencia.valor_exibido }}
+          sobDemanda={{ url: URL_GOLD_VISAO, caminho: `destaques.itens[${i}].evidencia`, indicador: goldEmString(d.titulo, idioma), valorExibido: valorProvaNoIdioma(d.evidencia.valor_exibido, idioma) }}
           endereco={`${ROTA_VISAO}#destaques`}
         />
       )}

@@ -1,4 +1,5 @@
-import { createElement, type ComponentProps, type ReactNode } from "react";
+import { Fragment, createElement, type ComponentProps, type ReactNode } from "react";
+import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import type { Idioma } from "@/lib/idioma";
 
@@ -140,16 +141,6 @@ export const RESULTADOS_CONTROLE_EN: Record<string, string> = {
   reprovado: "failed",
 };
 
-// i18n: dado
-const MESES_PT = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-/** Nome do estudo do ONS ("PMO Outubro 2026") no idioma: só o mês muda; sigla e ano ficam. */
-export function estudoNoIdioma(estudo: string, idioma: Idioma): string {
-  if (idioma !== "en") return estudo;
-  return estudo.replace(new RegExp(`\\b(${MESES_PT.join("|")})\\b`, "g"), (m) => MONTHS_EN[MESES_PT.indexOf(m)]);
-}
-
 /** Rótulo da gold em inglês pela tabela exata; null quando a tabela não tem a entrada. */
 export function rotuloGoldEn(pt: string, tabela: Record<string, string> = ROTULOS_GOLD_GERACAO_EN): string | null {
   return tabela[pt] ?? null;
@@ -186,4 +177,18 @@ export function valorExibidoNoIdioma(texto: string, idioma: Idioma): string {
 export function trechoPt(texto: string, regiao: string, idioma: Idioma, como: "span" | "div" = "span"): ReactNode {
   if (idioma !== "en") return texto;
   return createElement(TrechoPortugues, { regiao, como } as PropsTrecho, texto);
+}
+
+/** Nome próprio da gold (usina, conjunto, estudo do ONS) no idioma, para JSX: em inglês, marcado com <Nome>; em português, o texto puro. */
+export function nomeNo(texto: string, idioma: Idioma): ReactNode {
+  return idioma === "en" ? createElement(Nome, null, texto) : texto;
+}
+
+/**
+ * Lista de nomes próprios para JSX, com o separador dado (", " por padrão): em português, o mesmo texto do `join`; em inglês, cada
+ * nome marcado com <Nome> e o separador fora da marca.
+ */
+export function nomesNo(nomes: readonly string[], idioma: Idioma, separador = ", "): ReactNode {
+  if (idioma !== "en") return nomes.join(separador);
+  return createElement(Fragment, null, ...nomes.flatMap((n, i) => (i === 0 ? [nomeNo(n, idioma)] : [separador, nomeNo(n, idioma)])));
 }

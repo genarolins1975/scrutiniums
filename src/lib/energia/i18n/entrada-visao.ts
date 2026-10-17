@@ -8,9 +8,11 @@
  *
  * Só dado e conversão de texto: nada aqui lê o idioma da página. Quem chama escolhe a forma.
  */
-import { createElement, type ComponentProps, type ReactNode } from "react";
+import { createElement, Fragment, type ComponentProps, type ReactNode } from "react";
+import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { nomeSubmercado } from "../formato";
+import { valorGoldNoIdioma } from "./nucleo";
 
 /* ------------------------------------------------------------------ conversões de número, data e mês */
 
@@ -122,7 +124,7 @@ const GOLD_EN: Readonly<Record<string, string>> = {
 
   /* ---------------- Visão geral: frases (P004) */
   "EAR do SIN = soma das EAR verificadas dos quatro subsistemas (MWmês) ÷ soma das EAR máximas. Mediana, 10º e 90º percentis do valor do mesmo dia do calendário nos anos completos anteriores, desde 2001. Para 29 de fevereiro usa-se 28 de fevereiro.":
-    "SIN EAR = sum of the verified EAR of the four subsystems (MWmonth) ÷ sum of the maximum EAR. Median, 10th and 90th percentiles of the value on the same calendar day in the previous complete years, since 2001. For February 29, February 28 is used.",
+    "SIN EAR = sum of the verified EAR of the four subsystems (MWmonth) ÷ sum of the maximum EAR. Median, 10th and 90th percentiles of the value on the same calendar day in the previous complete years, since 2001. For 29 February, 28 February is used.",
   "ENA de 30 dias em % da MLT = soma da ENA bruta dos 30 dias ÷ soma da MLT implícita de cada dia (ENA ÷ percentual da MLT informado pelo ONS).":
     "30-day ENA as % of MLT = sum of the gross ENA of the 30 days ÷ sum of the implied MLT of each day (ENA ÷ percentage of MLT reported by ONS).",
   "Média dos últimos 7 ou 30 dias contra os mesmos dias do ano anterior, apenas quando os dois períodos estão no mesmo regime metodológico declarado pelo ONS.":
@@ -362,7 +364,7 @@ const GOLD_EN: Readonly<Record<string, string>> = {
   "Percentil da média diária do dia de referência na distribuição das médias diárias do mesmo submercado desde 01/01/2021, em valores nominais. Faixa baixa: abaixo do 25º percentil. Central: do 25º ao 75º. Alta: acima do 75º.":
     "Percentile of the reference day's daily average within the distribution of daily averages of the same submarket since Jan 1, 2021, in nominal values. Low range: below the 25th percentile. Central: from the 25th to the 75th. High: above the 75th.",
   // sintese.json, origens[].origem
-  "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)": "run context, identical to the published file (same gerado_em)",
+  "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)": "run context, identical to the published file (same generation timestamp)",
 };
 
 /** A forma inglesa de um texto da gold, quando a tabela a tem; null quando não tem (quem chama decide o que mostrar). */
@@ -541,7 +543,14 @@ const MODELOS_EN: readonly [RegExp, (m: RegExpExecArray) => string | null][] = [
   ],
   // energia e sociedade: complementos e cobertura
   [/^DEC parcial de (\d{4}) \((\d+) meses?\) e mesmos meses do ano anterior$/, (m) => `Partial DEC for ${m[1]} (${meses(m[2])}) and the same months of the previous year`],
-  [/^Acumulado de ([a-z]{3}) a ([a-z]{3}) de (\d{4}) e mesmo período do ano anterior$/, (m) => `Cumulative from ${mesEn(m[1])} to ${mesEn(m[2])} ${m[3]} and the same period of the previous year`],
+  // meses por extenso e "of": "Jul 2026" contaria o mês como número, e o português ("jul de 2026") não o conta
+  [
+    /^Acumulado de ([a-z]{3}) a ([a-z]{3}) de (\d{4}) e mesmo período do ano anterior$/,
+    (m) => {
+      const [a, b] = [MESES_PT.indexOf(m[1]), MESES_PT.indexOf(m[2])];
+      return a < 0 || b < 0 ? null : `Cumulative from ${MESES_LONGOS_EN[a]} to ${MESES_LONGOS_EN[b]} of ${m[3]} and the same period of the previous year`;
+    },
+  ],
   [
     /^(\d{4}) tem dados até ([a-z]{3}\/\d{4}) e não entra em comparações com anos completos; o acumulado de janeiro a ([a-zç]+) é comparado com o mesmo período de (\d{4})\.$/,
     (m) => {
@@ -610,7 +619,87 @@ export function goldEmString(texto: string, idioma: "pt" | "en"): string {
 export function goldNoBloco(texto: string, idioma: "pt" | "en", regiao: string): ReactNode {
   if (idioma !== "en") return texto;
   const en = traduzModeloDaGold(texto);
-  return en ?? createElement(TrechoPortugues, { regiao } as ComponentProps<typeof TrechoPortugues>, texto);
+  return en ? comCodigo(en) : createElement(TrechoPortugues, { regiao } as ComponentProps<typeof TrechoPortugues>, texto);
+}
+
+/** Identificador técnico dentro de uma frase (campo, série, conjunto: "primeiro_dia_avaliado", "_visao_alertas", "carga_mwmed.NE"). */
+const IDENTIFICADOR = /(?<![A-Za-z0-9_.À-ÿ])_?[a-z][a-z0-9]*(?:_[a-z0-9]+)+(?:\.[A-Za-z0-9]+)?(?![A-Za-z0-9_À-ÿ])/g;
+
+/** Frase com identificadores técnicos dentro de <code>: são nomes de campo da gold, não prosa, e ficam como a gold os escreve. */
+export function comCodigo(texto: string): ReactNode {
+  const partes: ReactNode[] = [];
+  let ultimo = 0;
+  for (const m of texto.matchAll(IDENTIFICADOR)) {
+    const i = m.index ?? 0;
+    if (i > ultimo) partes.push(texto.slice(ultimo, i));
+    partes.push(createElement("code", { key: `c${i}` }, m[0]));
+    ultimo = i + m[0].length;
+  }
+  if (!partes.length) return texto;
+  if (ultimo < texto.length) partes.push(texto.slice(ultimo));
+  return createElement(Fragment, null, ...partes);
+}
+
+/** Nomes próprios em português que as frases inglesas da entrada e da Visão geral citam (programas, pesquisas, o observatório). */
+const NOMES_PROPRIOS: readonly string[] = ["Setor Elétrico", "PNAD Contínua", "Tarifa Social", "Cadastro Único", "Luz para Todos"]; // i18n: dado (nomes próprios procurados no texto)
+
+/**
+ * Frase inglesa com nomes próprios portugueses dentro: na página inglesa, cada nome (os da lista acima e os `extras`, como siglas
+ * de distribuidoras) sai marcado com <Nome>; em português, o texto volta como está.
+ */
+export function comNomesProprios(texto: string, idioma: "pt" | "en", extras: readonly (string | null | undefined)[] = []): ReactNode {
+  if (idioma !== "en" || !texto) return texto;
+  const nomes = Array.from(new Set([...NOMES_PROPRIOS, ...extras].filter((n): n is string => !!n && n.length > 1 && texto.includes(n)))).sort((a, b) => b.length - a.length);
+  if (!nomes.length) return texto;
+  const partes: ReactNode[] = [];
+  let resto = texto;
+  // a cada passo, o nome mais longo que começa mais cedo no texto
+  for (;;) {
+    let achado: { pos: number; nome: string } | null = null;
+    for (const n of nomes) {
+      const pos = resto.indexOf(n);
+      if (pos >= 0 && (!achado || pos < achado.pos)) achado = { pos, nome: n };
+    }
+    if (!achado) break;
+    if (achado.pos > 0) partes.push(resto.slice(0, achado.pos));
+    partes.push(createElement(Nome as (p: { children?: ReactNode }) => ReactNode, { key: partes.length }, achado.nome));
+    resto = resto.slice(achado.pos + achado.nome.length);
+  }
+  if (resto) partes.push(resto);
+  return createElement(Fragment, null, ...partes);
+}
+
+/* ------------------------------------------------------------------ valor exibido da ficha de prova */
+
+/** Valores da gold escritos com palavras (valor_exibido das evidências da Visão geral) na forma inglesa, com os mesmos números. */
+const VALOR_PROVA_EN: readonly [RegExp, (m: RegExpExecArray) => string | null][] = [
+  [new RegExp(`^(${N}%) da energia armazenável máxima$`), (m) => `${numeroEn(m[1])} of maximum storable energy`],
+  [new RegExp(`^(${N}%) da EAR máxima$`), (m) => `${numeroEn(m[1])} of maximum EAR`],
+  [new RegExp(`^(${N}%) da média de longo termo$`), (m) => `${numeroEn(m[1])} of the long-term average`],
+  [new RegExp(`^(${N}%) da geração verificada$`), (m) => `${numeroEn(m[1])} of verified generation`],
+  [new RegExp(`^(${N}%) (acima|abaixo) dos mesmos dias de (\\d{4})$`), (m) => `${numeroEn(m[1])} ${LADO_EN[m[2]]} the same days of ${m[3]}`],
+  [
+    new RegExp(`^(${N}%) da geração do balanço do ONS nos (\\d+) dias até (${D})$`),
+    (m) => `${numeroEn(m[1])} of the ONS balance generation in the ${m[2]} days through ${dataEn(m[3])}`,
+  ],
+  [new RegExp(`^(.+?), com (${N}) MWmed$`), (m) => `${fronteiraEn(m[1])}, with ${numeroEn(m[2])} MWavg`],
+  [/^(\d[\d.]*) revis(?:ões|ão)$/, (m) => `${numeroEn(m[1])} ${m[1] === "1" ? "revision" : "revisions"}`],
+  [/^(\d[\d.]*) horas?$/, (m) => `${numeroEn(m[1])} ${m[1] === "1" ? "hour" : "hours"}`],
+];
+
+/**
+ * valor_exibido de uma evidência da gold (o que a ficha "Comprove este número" lê para o leitor de tela) no idioma: em inglês, pelos
+ * modelos acima ou pela conversão comum de número e unidade (valorGoldNoIdioma); o que nenhum dos dois reconhece volta como veio.
+ */
+export function valorProvaNoIdioma(valor: string, idioma: "pt" | "en"): string {
+  if (idioma !== "en" || !valor) return valor;
+  const t = valor.trim();
+  for (const [re, f] of VALOR_PROVA_EN) {
+    const m = re.exec(t);
+    const r = m ? f(m) : null;
+    if (r) return r;
+  }
+  return valorGoldNoIdioma(t, "en").texto;
 }
 
 /**

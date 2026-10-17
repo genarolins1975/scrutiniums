@@ -539,13 +539,13 @@ export function TabelaInterativa({
                         onClick={() => alternarOrdem(c)}
                         className={`inline-flex min-h-[44px] w-full items-center gap-1.5 py-1 ${numerica ? "justify-end text-right" : "text-left"} hover:text-carvao`}
                       >
-                        <span>{rotuloCabecalho(c)}</span>
+                        <span>{c.rotuloEhNome ? <Nome>{rotuloCabecalho(c)}</Nome> : rotuloCabecalho(c)}</span>
                         <span aria-hidden="true" className={`text-[0.7rem] ${ativa ? "text-energia-dark" : "text-mineral"}`}>
                           {ativa && ordem ? (ordem.direcao === "asc" ? "▲" : "▼") : "↕"}
                         </span>
                       </button>
                     ) : (
-                      <span className="inline-flex min-h-[44px] items-center py-1">{rotuloCabecalho(c)}</span>
+                      <span className="inline-flex min-h-[44px] items-center py-1">{c.rotuloEhNome ? <Nome>{rotuloCabecalho(c)}</Nome> : rotuloCabecalho(c)}</span>
                     )}
                   </th>
                 );
