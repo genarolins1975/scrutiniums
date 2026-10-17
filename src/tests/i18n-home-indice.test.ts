@@ -63,7 +63,7 @@ describe("mensagens literais do índice da home", () => {
 // As expectativas vêm dos registros de origem, não de contagem, contagemIndice
 // ou de outro resultado do adaptador. Nenhuma fonte publicada é simulada ou alterada.
 const CONTAGENS_REAIS = {
-  agro: { tipo: "simples", quantidade: 8, unidade: "paginas_por_pergunta" },
+  agro: { tipo: "simples", quantidade: 12, unidade: "paginas_por_pergunta" },
   credito: {
     tipo: "simples",
     quantidade: ABAS_OBSERVATORIO.reduce((n, aba) => n + Number(

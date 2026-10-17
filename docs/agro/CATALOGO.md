@@ -2,11 +2,11 @@
 
 68 requisitos originais + X1. Contagem por tarefa de aprendizagem, sem contar instâncias de cadeia, cartões, controles ou tabelas alternativas. Cenário e explicação não satisfazem requisito de medição observada.
 
-Implementados no recorte declarado: 56; bloqueados: 13. Categorias: {"DADO OBSERVADO":7,"EXPLICAÇÃO CONCEITUAL":16,"CENÁRIO":33}.
+Implementados no recorte declarado: 58; bloqueados: 11. Categorias: {"DADO OBSERVADO":9,"EXPLICAÇÃO CONCEITUAL":16,"CENÁRIO":33}.
 
 | ID | Tarefa | Categoria | Estado | Rota | Limite |
 |---|---|---|---|---|---|
-| A1 | Atlas “De onde vem o que consumimos?” | Não medido | BLOQUEADO | /agronegocio/producao#a1 | Sem PAM/PPM com área/quantidade/valor por território validados; APIs IBGE bloqueadas por CONNECT 403. Crédito não substitui produção. |
+| A1 | Atlas “De onde vem o que consumimos?” | Não medido | BLOQUEADO | /agronegocio/producao#a1 | Sem PAM/PPM com área/quantidade/valor por território integrados; a safra nacional do LSPA não tem recorte por estado. Crédito não substitui produção. |
 | A2 | Decompositor “Mais terra ou maior rendimento?” | CENÁRIO | CENARIO | /agronegocio/producao#a2 | Uma cultura, mesma unidade, mesmo perímetro. Sem decomposição observada publicada enquanto PAM/PPM não forem validadas. |
 | A3 | Calendário visual regional | Não medido | BLOQUEADO | /agronegocio/producao#a3 | Sem calendário Conab/ZARC por cultura, região e parâmetros validado. Não se publica calendário genérico ou recomendação. |
 | A4 | Laboratório de unidades | CENÁRIO | CENARIO | /agronegocio/producao#a4 | Saca exige massa informada. Arroba aqui é unidade de massa de 15 kg; não transforma peso vivo em carcaça. Litros e cabeças não viram massa por suposição. |
@@ -32,10 +32,10 @@ Implementados no recorte declarado: 56; bloqueados: 13. Categorias: {"DADO OBSER
 | D6 | Mapa da proteção observada | Não medido | BLOQUEADO | /agronegocio/credito-protecao#d6 | Sem apólices do PSR ou cobertura Proagro validadas e denominador compatível. Contratos de crédito não são proteção. |
 | E1 | Mapa de corredores documentados | Não medido | BLOQUEADO | /agronegocio/logistica-mercados#e1 | Sem geometria e origem documentada de corredores, portos e armazenagem; não há rotas ou fluxos inventados. |
 | E2 | Laboratório de armazenagem | CENÁRIO | CENARIO | /agronegocio/logistica-mercados#e2 | Meses relativos e cenário. Excesso indica volume a realocar sob essa ordem, não perda observada ou déficit nacional. |
-| E3 | Explorador de destinos de exportação | Não medido | BLOQUEADO | /agronegocio/logistica-mercados#e3 | Comex Stat bloqueado por CONNECT 403; sem NCM/país/ano, FOB e quantidades homologados. |
+| E3 | Explorador de destinos de exportação | DADO OBSERVADO | COM_DADOS | /agronegocio/mercados#e3 | Dados parciais: país de destino declarado no ano fechado, recorte agro por capítulo SH (não Agrostat). Destino não é consumidor final; concentração não mede risco. |
 | E4 | Cenário de concentração | CENÁRIO | CENARIO | /agronegocio/logistica-mercados#e4 | Sem realocação para outros destinos e sem reação de preços, câmbio ou oferta. Não prevê perda macroeconômica. |
 | E5 | Decomposição de variação de exportações em quantidade e valor unitário quando houver unidades homogêneas | CENÁRIO | CENARIO | /agronegocio/logistica-mercados#e5 | Exige produto homogêneo e mesma unidade. Mesmo assim, valor unitário não é preço puro: qualidade e composição podem mudar. |
-| E6 | Painel visual de insumos importados | Não medido | BLOQUEADO | /agronegocio/logistica-mercados#e6 | Sem importações por insumo/origem validadas nem denominador de consumo para dependência nacional. |
+| E6 | Painel visual de insumos importados | DADO OBSERVADO | COM_DADOS | /agronegocio/insumos#e6 | Dados parciais: valor unitário de comércio exterior, não preço na fazenda. Sem consumo nacional de fertilizantes, não se calcula a dependência; sem custo de referência da Conab. |
 | F1 | Mapa visual dos agentes da cadeia | EXPLICAÇÃO CONCEITUAL | CONCEITUAL_SEM_MEDICAO | /agronegocio/empresas-trabalho#f1 | Sem mapa de empresas identificadas ou participação de mercado. Nenhum cadastro pessoal foi publicado. |
 | F2 | Atlas de emprego formal e remuneração com perímetro CNAE explícito e séries compatíveis. | DADO OBSERVADO | COM_DADOS | /agronegocio/empresas-trabalho#f2 | Dados parciais: somente seção A nacional; sem remuneração ou UF × CNAE. |
 | F3 | Decompositor de emprego | CENÁRIO | CENARIO | /agronegocio/empresas-trabalho#f3 | Mesmo período, perímetro e unidade. Na série observada da seção A, a variação é diferença de estoque; admissões setoriais não foram integradas. |
@@ -68,7 +68,7 @@ Implementados no recorte declarado: 56; bloqueados: 13. Categorias: {"DADO OBSER
 | K4 | Simulador econômico de perdas pós-colheita | CENÁRIO | CENARIO | /agronegocio/custos-renda#k4 | Perdas hipotéticas, sem desperdício observado ou rendimento industrial presumido. |
 | K5 | Laboratório de competitividade logística | CENÁRIO | CENARIO | /agronegocio/logistica-mercados#k5 | Alternativas sem rota geográfica presumida. Não usa piso de frete como preço praticado, nem estima tempo de viagem. |
 | K6 | Sensibilidade ao câmbio | CENÁRIO | CENARIO | /agronegocio/logistica-mercados#k6 | Um mesmo horizonte, preços em moeda estrangeira constantes. Não supõe repasse integral, simultâneo ou igual entre elos. |
-| K7 | Régua de posição competitiva internacional | Não medido | BLOQUEADO | /agronegocio/producao#k7 | FAOSTAT/Comex bloqueados; sem produto, conceito, ano e unidade internacional harmonizados. Máximo observado não vira meta. |
+| K7 | Régua de posição competitiva internacional | Não medido | BLOQUEADO | /agronegocio/producao#k7 | FAOSTAT não integrado; o Comex Stat não traz produto, conceito, ano e unidade harmonizados entre países. Máximo observado não vira meta. |
 | K8 | Anatomia do valor econômico | CENÁRIO | CENARIO | /agronegocio/empresas-trabalho#k8 | Modelo conceitual parametrizado, não estimativa do PIB da cadeia. Valor adicionado não é lucro nem renda líquida do produtor. |
 | K9 | Painel de diversificação e volatilidade | CENÁRIO | CENARIO | /agronegocio/logistica-mercados#k9 | Valores escolhidos pelo usuário. Nenhuma distribuição de perdas futuras, correlação ou benefício causal de diversificação é estimado. |
 | K10 | Laboratório de energia na produção | CENÁRIO | CENARIO | /agronegocio/custos-renda#k10 | Preço informado pelo usuário, com tributos/encargos que ele incluir. kW é potência e não pode ser digitado como kWh. PLD não é automaticamente tarifa final. |

@@ -1,0 +1,48 @@
+{
+  "versao": 1,
+  "nota": "Coletas oficiais da economia do agro. Cada arquivo guarda as consultas e as respostas integrais; a gold é derivada só destas sementes.",
+  "fontes": [
+    {
+      "id": "cnt",
+      "arquivo": "cnt.json.gz",
+      "url": "https://sidra.ibge.gov.br/tabela/1846",
+      "nome": "IBGE, Contas Nacionais Trimestrais (SIDRA 1846 e 5932)",
+      "licenca": "Dados públicos do IBGE; citar a fonte",
+      "limite": "Agropecuária no sentido das Contas Nacionais: produção dentro da porteira, com pesca e produção florestal. Não inclui insumos, agroindústria e serviços do agronegócio ampliado. Valores correntes; taxas de crescimento em volume.",
+      "arquivoRepositorio": "pipeline/agro/seed/cnt.json.gz",
+      "commitRepositorio": "",
+      "sha256Original": "2d17bfc34aeda3f3f71020cdecbbcac45b7d13c36cbc88728e209153777ebd39",
+      "sha256Arquivo": "79d17a5a85e05adfc41ef1e68628b1064942299dc647d63dfdcb15a307dac9ec",
+      "estadoAcesso": "COLETA_OFICIAL",
+      "capturadoEm": "2026-10-17T18:03:46+00:00"
+    },
+    {
+      "id": "lspa",
+      "arquivo": "lspa.json.gz",
+      "url": "https://sidra.ibge.gov.br/tabela/6588",
+      "nome": "IBGE, Levantamento Sistemático da Produção Agrícola (SIDRA 6588)",
+      "licenca": "Dados públicos do IBGE; citar a fonte",
+      "limite": "Estimativa mensal da safra do ano, revista a cada mês e depois substituída pela PAM. Anos anteriores usam a estimativa de dezembro. Brasil, sem recorte por UF nesta coleta.",
+      "arquivoRepositorio": "pipeline/agro/seed/lspa.json.gz",
+      "commitRepositorio": "",
+      "sha256Original": "e21112fd48b8c1507142fa8d2c54dd2d1aa6c324ddf247f7d3eca1efdb4152ee",
+      "sha256Arquivo": "83c777423a1c97f864b8087ff501359e9d99d5c26f2a68a36a7be996d7603c55",
+      "estadoAcesso": "COLETA_OFICIAL",
+      "capturadoEm": "2026-10-17T18:03:46+00:00"
+    },
+    {
+      "id": "comex",
+      "arquivo": "comex.json.gz",
+      "url": "https://comexstat.mdic.gov.br/",
+      "nome": "MDIC, Comex Stat (exportação e importação por capítulo, posição, NCM e país)",
+      "licenca": "Dados abertos do governo federal; citar a fonte",
+      "limite": "Valores FOB em US$ correntes e massa líquida em kg. O recorte agro por capítulo SH não é o Agrostat/MAPA. Valor unitário de comércio não é preço pago ou recebido na fazenda.",
+      "arquivoRepositorio": "pipeline/agro/seed/comex.json.gz",
+      "commitRepositorio": "",
+      "sha256Original": "fac5349e1cbcbd3423685ea41b9f807ad06fee8e6b667f34ffeccd4ed959300c",
+      "sha256Arquivo": "e1b881f647cab2a3fe021012716784a83116ec5fc0f6666d5a56570a6da92804",
+      "estadoAcesso": "COLETA_OFICIAL",
+      "capturadoEm": "2026-10-17T18:03:46+00:00"
+    }
+  ]
+}

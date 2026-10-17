@@ -1,6 +1,6 @@
 # Agronegócio: escopo e decisões
 
-Edição de 17/10/2026. Entrega **parcial em relação à especificação**, com oito capítulos e sete fichas de cadeia. Não foi entregue um observatório completo de produção, preços, comércio e ambiente. Todas as páginas distinguem dado observado, explicação conceitual e cenário do usuário.
+Edição de 17/10/2026. Entrega **parcial em relação à especificação**, com oito capítulos, sete fichas de cadeia e, desde a fase 1 da economia do setor, quatro páginas de perguntas com coleta oficial automática (ver seção abaixo). Não foi entregue um observatório completo de produção por estado, preços, custos de referência e ambiente. Todas as páginas distinguem dado observado, explicação conceitual e cenário do usuário.
 
 Pergunta central: como produção, financiamento, trabalho e consumo se relacionam, e o que cada medida permite concluir? Economia e distribuição social aparecem em eixos separados; não existe nota de impacto ou ranking de eficiência.
 
@@ -12,7 +12,7 @@ Pergunta central: como produção, financiamento, trabalho e consumo se relacion
 | B — Custos e renda | 6 | Cenários de lavoura; IPCA geral observado só para converter valores informados | Nenhum widget bloqueado; referências Conab não medidas |
 | C — Alimentos e consumo | 4 | Orçamento hipotético; PNADC 2023/2024, Brasil e Grandes Regiões | C3, C4 |
 | D — Crédito e proteção | 5 | Crédito por UF/finalidade, Brasil por programa e modelos de financiamento/proteção | D6 |
-| E — Logística e mercados | 3 | Armazenagem, concentração e decomposição FOB hipotéticas | E1, E3, E6 |
+| E — Logística e mercados | 5 | Destinos de exportação (E3) e insumos importados (E6) observados no Comex Stat; armazenagem, concentração e decomposição FOB hipotéticas | E1 |
 | F — Empresas e trabalho | 4 | Seção A nacional; mecanismos e cenários de estoque/valor | F4, F6 |
 | G — Clima e ambiente | 4 | Água, uso do solo e vulnerabilidade hipotéticos; limites de atribuição | G1, G2 |
 | H — Políticas e inclusão | 6 | Programas de crédito observados, alcance hipotético e leitura crítica | Custo fiscal e resultados não medidos |
@@ -20,7 +20,20 @@ Pergunta central: como produção, financiamento, trabalho e consumo se relacion
 | K — Complementares | 11 | Caixa, VPL, operação, perdas, logística, câmbio, valor adicionado, HHI/CV, energia, custo por entrega e especialização | K7 |
 | X — Adicional | 1 | Grupo ocupacional qualificado por UF e sexo, Censo Demográfico 2022 | Não substitui emprego formal territorial |
 
-Total: **56 tarefas distintas implementadas**, de 69 contratos (68 originais + X1); **7 com dados observados, 16 conceituais e 33 cenários** (32 numéricos e um qualitativo). Existem 13 itens bloqueados integralmente. Um cenário operacional NÃO satisfaz a medição observada exigida no item original: o catálogo identifica isso em `medicaoRequerida`, além dos 13 bloqueios integrais. Quatro funções pedagógicas de uma seção não significam quatro novas estatísticas.
+Total: **58 tarefas distintas implementadas**, de 69 contratos (68 originais + X1); **9 com dados observados, 16 conceituais e 33 cenários** (32 numéricos e um qualitativo). Existem 11 itens bloqueados integralmente. Um cenário operacional NÃO satisfaz a medição observada exigida no item original: o catálogo identifica isso em `medicaoRequerida`, além dos 13 bloqueios integrais. Quatro funções pedagógicas de uma seção não significam quatro novas estatísticas.
+
+## Economia do setor: fase 1 (coleta oficial automática)
+
+Quatro páginas respondem às perguntas sobre o agro como negócio, todas com dados observados e atualização automática (`.github/workflows/atualizar-agro.yml`, dias 9 e 24):
+
+| Pergunta | Rota | Medidas | Fonte |
+|---|---|---|---|
+| Qual o tamanho do agro na economia? | `/agronegocio/tamanho` | Valor adicionado da agropecuária e parcela no total, crescimento em volume, parcela agro nas exportações | IBGE SIDRA 1846 e 5932; Comex Stat |
+| Como vai o negócio neste ano? | `/agronegocio/conjuntura` | Safra estimada (produção, área, rendimento), crescimento trimestral, exportações do ano, crédito rural (snapshot) | IBGE LSPA, SIDRA 6588; SIDRA 5932; Comex Stat; BCB/Sicor preservado |
+| Quanto custam os insumos importados? | `/agronegocio/insumos` | Fertilizantes (posições 3101 a 3105) e defensivos (3808) importados, valor unitário, origem, relação com a soja exportada | Comex Stat |
+| Para quem vendemos e de quem dependemos? | `/agronegocio/mercados` | Exportações por capítulo e por país, destinos da soja em grão, origem dos fertilizantes | Comex Stat |
+
+Decisões: agropecuária é a das Contas Nacionais (dentro da porteira), não o agronegócio ampliado; o recorte agro do comércio é por capítulo do Sistema Harmonizado (01 a 24, 41, 44, 47, 50 a 53), não a lista do Agrostat; valor unitário de comércio não é preço na fazenda; a relação de troca compara o mesmo intervalo de meses nos dois anos; safras de milho e feijão somam produção, nunca área. O Comex Stat aplica o intervalo de meses do período a cada ano quando há detalhe mensal, por isso séries anuais usam anos fechados e o acumulado do ano tem consulta própria. Conab (custos de referência) não respondeu na coleta de 17/10/2026 e continua fora.
 
 ## Cobertura por cadeia
 
@@ -62,7 +75,7 @@ Não somar esta tabela à tabela anterior: é a mesma entrega, redistribuída pe
 | B | 0 | 0 | 11 | 11 |
 | C | 1 | 1 | 2 | 4 |
 | D | 1 | 1 | 3 | 5 |
-| E | 0 | 0 | 6 | 6 |
+| E | 2 | 0 | 6 | 8 |
 | F | 2 | 2 | 3 | 7 |
 | G | 0 | 1 | 3 | 4 |
 | H | 1 | 4 | 2 | 7 |

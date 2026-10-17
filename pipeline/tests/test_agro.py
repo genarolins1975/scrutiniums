@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from pathlib import Path
-from pipeline.agro import run,capturar
+from pipeline.agro import run,capturar,economia
 
 class AgroDadosTest(unittest.TestCase):
     @classmethod
@@ -77,6 +77,80 @@ class AgroDadosTest(unittest.TestCase):
     def test_geometria_oficial_preservada_sem_aproximacao(self):
         source=next(s for s in self.manifest['fontes'] if s['id']=='geometria');raw=(run.ROOT/source['arquivoRepositorio']).read_bytes()
         self.assertEqual(hashlib.sha256(raw).hexdigest(),source['sha256Original']);self.assertEqual(len(self.fontes['geometria']['features']),27)
+
+class AgroEconomiaTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.manifesto,cls.coletas=economia.carregar();cls.e=economia.normalizar(cls.coletas)
+    def test_snapshot_publica_economia_e_fontes_coletadas(self):
+        manifest,fontes=run.carregar_fontes();dados=run.normalizar(manifest,fontes)
+        self.assertEqual(dados['economia'],self.e)
+        ids={f['id'] for f in dados['fontes']};self.assertTrue({'cnt','lspa','comex'}<=ids)
+        for f in dados['fontes']:
+            if f['estadoAcesso']=='COLETA_OFICIAL':self.assertTrue(f['capturadoEm'] and f['url'].startswith('https://'))
+    def test_participacao_do_valor_adicionado_usa_quatro_trimestres_consecutivos(self):
+        p=self.e['pib'];u=p['ultimos4'];ult=p['trimestres'][-4:]
+        self.assertEqual((u['inicio'],u['fim']),(ult[0]['periodo'],ult[-1]['periodo']))
+        self.assertAlmostEqual(u['participacaoVa'],100*sum(t['agro'] for t in ult)/sum(t['va'] for t in ult))
+        for t in p['trimestres']:self.assertLessEqual(abs(t['agro']+t['industria']+t['servicos']-t['va']),max(10,t['va']*1e-4))
+        for a in p['anual']:self.assertEqual(len([t for t in p['trimestres'] if t['periodo'].startswith(str(a['ano']))]),4)
+        self.assertEqual(p['crescimento']['acumulado4'][-1]['periodo'],u['fim'])
+    def test_safra_soma_producao_das_safras_sem_somar_areas(self):
+        prods={p['id']:p for p in self.e['safra']['produtos']}
+        for total,partes in [('milho',['milho1','milho2']),('feijao',['feijao1','feijao2','feijao3'])]:
+            for i,linha in enumerate(prods[total]['anos']):
+                self.assertEqual(linha['producao'],sum(prods[p]['anos'][i]['producao'] for p in partes))
+                self.assertIsNone(linha['area']);self.assertIsNone(linha['rendimento'])
+        self.assertTrue(all(a['rendimento'] is None for a in prods['graos']['anos']))
+        self.assertEqual(prods['graos']['anos'][-1]['mesEstimativa'],self.e['safra']['mesReferencia'])
+    def test_exportacoes_reconciliam_ano_meses_e_acumulado(self):
+        c=self.e['comercio'];x=c['exportacoes'];ano=int(c['ultimoMes'][:4]);mes=int(c['ultimoMes'][5:])
+        anos=[r['ano'] for r in x['anual']];self.assertEqual(anos,list(range(economia.INICIO_COMEX,c['anoCompleto']+1)))
+        for r in x['anual']:self.assertTrue(0<r['agro']<r['total'])
+        self.assertEqual(len(x['mensal']),12+mes)
+        self.assertAlmostEqual(sum(r['agro'] for r in x['mensal'] if r['mes'].startswith(str(ano))),x['acumulado']['agro'],places=0)
+        self.assertAlmostEqual(sum(r['agro'] for r in x['mensal'] if r['mes'].startswith(str(ano-1)) and int(r['mes'][5:])<=mes),x['acumulado']['agroAnterior'],places=0)
+        self.assertAlmostEqual(sum(r['fob'] for r in x['composicao']),x['anual'][-1]['agro'],places=0)
+        self.assertTrue(all(r['capitulo'] in economia.CAPITULOS_AGRO for r in x['composicao']))
+        for d in [x['destinos'],c['soja']['destinos'],c['insumos']['origensFertilizantes']]:
+            self.assertAlmostEqual(sum(p['participacao'] for p in d['paises']),100);self.assertEqual(d['ano'],c['anoCompleto'])
+        self.assertAlmostEqual(x['destinos']['fob'],x['anual'][-1]['agro'],places=0)
+    def test_relacao_de_troca_divide_valores_unitarios_do_mesmo_periodo(self):
+        c=self.e['comercio'];fert={r['ano']:r for r in c['insumos']['fertilizantes']}
+        for r in c['relacaoTroca']:
+            self.assertAlmostEqual(r['relacao'],fert[r['ano']]['valorUnitario']/r['soja']);self.assertEqual(r['meses'],fert[r['ano']]['meses'])
+        m=c['insumos']['mesmoPeriodo'];self.assertEqual([r['meses'] for r in m['soja']],[r['meses'] for r in m['fertilizantes']])
+        for r in c['insumos']['fertilizantes']:
+            self.assertAlmostEqual(r['fob'],sum(next(a['fob'] for a in p['anos'] if a['ano']==r['ano']) for p in c['insumos']['posicoes']),places=0)
+    def test_mes_ausente_no_comex_e_recusado(self):
+        bundle=copy.deepcopy(self.coletas['comex']);q=bundle['consultas']['capitulosMensalAtual']
+        q['resposta']=[r for r in q['resposta'] if r['monthNumber']!='01']
+        with self.assertRaisesRegex(ValueError,'Meses incompletos'):economia.normalizar_comex(bundle)
+    def test_setores_que_nao_somam_sao_recusados(self):
+        bundle=copy.deepcopy(self.coletas['cnt']);resp=bundle['consultas']['valores']['resposta']
+        serie=next(r for r in resp[0]['resultados'] if '90687' in r['classificacoes'][0]['categoria'])['series'][0]['serie'];chave=sorted(serie)[-1];serie[chave]=str(float(serie[chave])*2)
+        with self.assertRaisesRegex(ValueError,'não reconciliam'):economia.normalizar_cnt(bundle)
+    def test_coleta_identica_nao_altera_manifesto_e_alterada_e_recusada(self):
+        with tempfile.TemporaryDirectory() as folder:
+            dest=Path(folder)
+            for p in run.SEED.iterdir():
+                if p.is_file():(dest/p.name).write_bytes(p.read_bytes())
+            antes={p.name:p.read_bytes() for p in dest.iterdir()}
+            r=economia.gravar(self.coletas,dest,agora='2099-01-01T00:00:00+00:00')
+            self.assertEqual(r['atualizadas'],[]);self.assertEqual({p.name:p.read_bytes() for p in dest.iterdir()},antes)
+            novo=copy.deepcopy(self.coletas);novo['lspa']['consultas']['safra']['url']+='&x=1'
+            r=economia.gravar(novo,dest,agora='2099-01-01T00:00:00+00:00');self.assertEqual(r['atualizadas'],['lspa.json.gz'])
+            m=json.loads((dest/'coletas.json').read_text());self.assertEqual(next(f for f in m['fontes'] if f['id']=='lspa')['capturadoEm'],'2099-01-01T00:00:00+00:00')
+            self.assertNotEqual(next(f for f in m['fontes'] if f['id']=='cnt')['capturadoEm'],'2099-01-01T00:00:00+00:00')
+            (dest/'comex.json.gz').write_bytes((dest/'comex.json.gz').read_bytes()+b'x')
+            with self.assertRaisesRegex(ValueError,'alterado'):economia.carregar(dest)
+    def test_coleta_invalida_nao_grava(self):
+        with tempfile.TemporaryDirectory() as folder:
+            dest=Path(folder);(dest/'marcador').write_text('x')
+            ruim=copy.deepcopy(self.coletas);ruim['lspa']['ultimoPeriodo']='209912'
+            with self.assertRaises(ValueError):economia.gravar(ruim,dest)
+            self.assertEqual([p.name for p in dest.iterdir()],['marcador'])
+
 
 class AgroCapturaTest(unittest.TestCase):
     def test_cobertura_exige_cada_indicador_ano_e_territorio(self):
