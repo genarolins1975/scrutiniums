@@ -2,10 +2,11 @@
   "arquivos": {
     "despesas-historico.csv": "a509bdb5e6d50f902970c93178b890dc6c5eb535bb3773294e0564397dce00a4",
     "ramos.csv": "456d4e94c1f243ef43926c9e86c74127256c505d90951e7db8b724baf7a84d67",
-    "snapshot.json": "5effb4282f174dac44357b57a49d49e57ad0a0b7024b855864717167eb1adb56",
-    "tribunais.csv": "baa1a04357025e6ef63b88ab0322d51b42885a6dc7b9b7bce9f3fad5eac9ef15"
+    "snapshot.json": "e5f21209a1b52a9ffaacb4bbccff12d8552e0475458e14a86453f253c421b8f3",
+    "tribunais-historico.csv": "c60c8f792042d5ab726d65307896d4ce3142c7e8d7fbf580fc68c91476762099",
+    "tribunais.csv": "cfa27e950d30187f93babc7bd6d80932b9e34608d33ea62b678b80948aaf1bad"
   },
-  "calculo": "judiciario-3",
+  "calculo": "judiciario-4",
   "fonte": {
     "id": "cnj",
     "localizadores": "Páginas 22–24; tabelas 1/2 p. 40–41; finanças e despesa por habitante p. 62–71, 110–118, 132–139 e 157–165; acervo suspenso p. 214; execução fiscal p. 229; conciliação p. 232–234; desempenho e tempos p. 310–313, 333, 351–353, 383–384, 397, 407, 438–440, 459 e 473.",
@@ -15,7 +16,8 @@
     "url": "https://bibliotecadigital.cnj.jus.br/bitstream/123456789/1126/1/relatorio_justica_em_numeros2026_1.pdf"
   },
   "sementes": {
-    "ampliado": "1a07e1696473b187234809b3887172a387fd72b056a6f7196f49208efc149ec6",
+    "ampliado": "dea4d493d2f7ba0cb2818f90ff708ec8d6913ca9ecd8a53e4b7d85d4e51562e8",
+    "historico": "8588a6fe3b850a285bf273d962bdc09f2b996a87f3e9b024fafaf8ce3627db6b",
     "recorte": "fe0164e193c577560f697012cdad38113d175ab1c6d3f9c8cddfee7a4fca58ef",
     "texto": "d60a87ae35dea2511f714798eaf2234696642eb7b6821b6061e6e29fa4b3bedb"
   }

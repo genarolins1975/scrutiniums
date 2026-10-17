@@ -19,11 +19,13 @@ ROOT = Path(__file__).resolve().parents[2]
 TEXT = ROOT / 'pipeline/justica/seed/cnj-quadros.txt'
 SEED = ROOT / 'pipeline/justica/seed/recorte.json.gz'
 EXPANDED = ROOT / 'pipeline/judiciario/seed/cnj-ampliado.json.gz'
+HISTORY = ROOT / 'pipeline/judiciario/seed/historico-tempos.json.gz'
 OUT = ROOT / 'public/eficiencia/judiciario'
 HASHES = {
     'texto': 'd60a87ae35dea2511f714798eaf2234696642eb7b6821b6061e6e29fa4b3bedb',
     'recorte': 'fe0164e193c577560f697012cdad38113d175ab1c6d3f9c8cddfee7a4fca58ef',
-    'ampliado': '1a07e1696473b187234809b3887172a387fd72b056a6f7196f49208efc149ec6',
+    'ampliado': 'dea4d493d2f7ba0cb2818f90ff708ec8d6913ca9ecd8a53e4b7d85d4e51562e8',
+    'historico': '8588a6fe3b850a285bf273d962bdc09f2b996a87f3e9b024fafaf8ce3627db6b',
 }
 BRANCHES = [('estadual', 'Justiça Estadual'), ('federal', 'Justiça Federal'),
             ('trabalho', 'Justiça do Trabalho')]
@@ -106,7 +108,7 @@ def extract():
                                  limite='Despesa, porte, IPC-Jus e satisfação do direito não disponíveis neste recorte.'),
                   revisao=dict(portalRevalidado=False,
                                nota='Reprodução da captura de 10/10/2026; consulta ao portal bloqueada em 17/10/2026. Variações anuais e pessoal da p. 22 excluídos por inconsistência de ano no texto preservado.'))
-    result = expand(result)
+    result = history(expand(result))
     validate(result)
     return result
 
@@ -239,7 +241,64 @@ def expand(data):
                                       percentualExecucoes=number(fiscal[2]),congestionamento=number(fiscal[3]),
                                       estadualPercentual=number(fiscal_stock[3]),federalPercentual=number(fiscal_stock[5]),pagina=229),
                   nota='Os dois recortes são publicados separadamente sobre o acervo pendente; a fonte não informa a sobreposição, por isso não se somam.')
-    data.update(versao=2,calculo='judiciario-3',capturadoEm=seed['capturadoEm'],tribunais=tribunals,porHabitante=per_capita,acervo=acervo,
+    def section(page_number,start,end=None):
+        """Trecho de uma figura numa página que reúne várias."""
+        text=pages[str(page_number)]
+        begin=text.index(start)
+        return text[begin:text.index(end,begin)] if end else text[begin:]
+    def pairs(text,value,expected,label):
+        found={}
+        for m in re.finditer(value+r'\s+(TJ[A-Z]+|TRF\d|TRT\d+)\s+'+value,text):
+            found.setdefault(m[2],(m[1],m[3]))
+        if set(found)!=set(expected):
+            raise ValueError(f'{label}: tribunais divergentes {sorted(set(expected)^set(found))}')
+        return found
+    duration=r'(\d+a(?: e \d+m)?|\d+m)'
+    percent=r'([\d,]+)%'
+    for branch,page_number,start,end,interno_externo in [
+            ('estadual',340,'Figura 290',None,(329,'Figura 282',None)),
+            ('federal',400,'Figura 357',None,(394,'Figura 349','Figura 350')),
+            ('trabalho',465,'Figura 421',None,(455,'Figura 413',None))]:
+        expected=[t['sigla'] for t in tribunals if t['ramo']==branch]
+        execution=pairs(section(page_number,start,end),duration,expected,'Execução '+branch)
+        appeals=pairs(section(*interno_externo),percent,expected,'Recorribilidade '+branch)
+        for sigla in expected:
+            by_sigla[sigla].update(execucaoBaixados=short_months(execution[sigla][0]),execucaoPendentes=short_months(execution[sigla][1]),
+                                   execucaoPagina=page_number,recorribilidadeInterna=number(appeals[sigla][0]),
+                                   recorribilidadeExterna=number(appeals[sigla][1]),recorribilidadePagina=interno_externo[0])
+    free=dict(re.findall(r'^\s*(TJ[A-Z]+)\s+(\d+)%\s*$',pages['303'],re.M))
+    if set(free)!={t['sigla'] for t in tribunals if t['ramo']=='estadual'}:
+        raise ValueError('Justiça gratuita por TJ incompleta')
+    for t in tribunals:
+        t['justicaGratuita']=float(free[t['sigla']]) if t['sigla'] in free else None
+        t['justicaGratuitaPagina']=303 if t['sigla'] in free else None
+    gratuity=found(r'casos solucionados com o benefício em 2025, de ([\d,]+)%\. Houve aumento de ([\d,]+) pontos percentuais',221)
+    judges=dict(re.findall(r'^\s*(Justiça Estadual|Justiça do Trabalho|Justiça Federal|Tribunais Superiores|Poder Judiciário)\s+([\d,]+)\s*$',pages['51'],re.M))
+    if len(judges)!=5:
+        raise ValueError('Magistrados por cem mil habitantes incompletos')
+    def table_row(label):
+        match=re.search(re.escape(label)+r'\s+(\d+a e \d+m|\d+m|[\d.,]+%?)\s+(\d+a e \d+m|\d+m|[\d.,]+%?)(?=\s)',pages['231'])
+        if not match:
+            raise ValueError('Linha ausente na comparação europeia: '+label)
+        return match[1],match[2]
+    europe=[dict(indicador=label,uniaoEuropeia=ue,brasil=br) for label in
+            ['Casos Novos por cem habitantes','Casos Pendentes por cem habitantes','Índice de Atendimento à Demanda',
+             'Tempo de Giro do Acervo','Magistrados(as) por cem mil habitantes','Casos Novos por Magistrado(a)',
+             'Processos Baixados por Magistrado(a)'] for ue,br in [table_row(label)]]
+    criminal_text=found(r'ingressaram na Justiça Estadual no ano de\s+2025, ([\d,]+) milhões de casos novos criminais.*?foram iniciadas ([\d,]+) mil \(([\d,]+)%\)\s+execuções penais',286)
+    penal=found(r'havia ([\d,]+) milhões de execuções penais pendentes, sendo ([\d,]+) milhão de penas privativas de liberdade \(([\d,]+)%\) e ([\d,]+) mil de penas alternativas\s+\(([\d,]+)%\)',286)
+    share=found(r'Na área criminal, essa representatividade\s+aumenta para ([\d,]+)%',286)
+    data.update(magistrados=dict(porCemMil=number(judges['Poder Judiciário']),
+                                 porRamo={k:number(v) for k,v in judges.items() if k!='Poder Judiciário'},pagina=51,
+                                 nota='Cargos de magistrado providos por cem mil habitantes, como publicados.'),
+                comparacaoEuropa=dict(linhas=europe,pagina=231,
+                                      nota='Comparação feita pelo CNJ com dados da CEPEJ; para comparabilidade, o CNJ soma todas as instâncias e usa cargos providos.'),
+                justicaGratuita=dict(percentual=number(gratuity[1]),variacaoPontos=number(gratuity[2]),pagina=221,
+                                     definicao='Processos arquivados definitivamente com assistência judiciária gratuita sobre o total arquivado, sem ações criminais e Juizados Especiais.'),
+                criminal=dict(casosNovosEstadualMilhoes=number(criminal_text[1]),execucoesPenaisIniciadasMil=number(criminal_text[2]),
+                              execucoesPenaisPendentesMilhoes=number(penal[1]),privativasMilhoes=number(penal[2]),privativasPercentual=number(penal[3]),
+                              alternativasMil=number(penal[4]),alternativasPercentual=number(penal[5]),estadualPercentualCriminal=number(share[1]),pagina=286))
+    data.update(versao=2,calculo='judiciario-4',capturadoEm=seed['capturadoEm'],tribunais=tribunals,porHabitante=per_capita,acervo=acervo,
                 financeiro=dict(ramos=all_branches,total=sum(r['valor'] for r in all_branches),
                                 pessoal=components,pessoalTotal=sum(r['valor'] for r in components),
                                 series=seed['seriesDespesas'],convencao=seed['convencao'],
@@ -248,12 +307,44 @@ def expand(data):
                                anosTribunais=[2025],anosFinanceiros=list(range(2009,2026)),
                                precisao='Volumes por ramo arredondados; tabelas de TJs/TRTs em unidades; tempos em meses; percentuais oficiais na precisão publicada.',
                                limite='Satisfação do direito, histórico individual de tribunais, despesa por TRF e nominal histórico não disponíveis.'),
-                revisao=dict(portalRevalidado=False,originalBaixadoConferido=True,
-                             nota='PDF integral da Biblioteca Digital baixado em 17/10/2026; checksum idêntico ao original identificado. Portal principal retorna 403; edição mais recente não confirmada. Variações e pessoal do sumário p. 22 não utilizados por inconsistência de ano.'))
+                revisao=dict(portalRevalidado=True,originalBaixadoConferido=True,
+                             nota='PDF integral da Biblioteca Digital e cópia do portal do CNJ (www.cnj.jus.br) baixados em 17/10/2026, com checksum idêntico; o portal lista a edição 2026 como a mais recente. Variações e pessoal do sumário p. 22 não utilizados por inconsistência de ano.'))
     data['fonte']['localizadores']='Páginas 22–24; tabelas 1/2 p. 40–41; finanças e despesa por habitante p. 62–71, 110–118, 132–139 e 157–165; acervo suspenso p. 214; execução fiscal p. 229; conciliação p. 232–234; desempenho e tempos p. 310–313, 333, 351–353, 383–384, 397, 407, 438–440, 459 e 473.'
     data['unidades'].update(despesaTotal='R$ nominais de 2025',despesaPorBaixaAproximada='R$/baixa (aproximação)',
-                            ipcJus='%',congestionamento='%',iadOficial='%',despesaPorHabitante='R$ por habitante, nominais de 2025',despesaPorHabitanteSemInativos='R$ por habitante, nominais de 2025',congestionamentoBruto='%',
+                            ipcJus='%',congestionamento='%',iadOficial='%',despesaPorHabitante='R$ por habitante, nominais de 2025',execucaoBaixados='meses',execucaoPendentes='meses',recorribilidadeInterna='%',recorribilidadeExterna='%',justicaGratuita='%',despesaPorHabitanteSemInativos='R$ por habitante, nominais de 2025',congestionamentoBruto='%',
                             congestionamentoLiquido='%',magistrados='pessoas',servidores='pessoas')
+    return data
+
+
+def history(data):
+    """Tempos por tribunal publicados nas edições 2022 a 2025; a edição 2026 é a corrente."""
+    from pipeline.judiciario.historico import tempos
+    if hashlib.sha256(HISTORY.read_bytes()).hexdigest() != HASHES['historico']:
+        raise ValueError('Integridade da semente histórica divergente')
+    seed = json.loads(gzip.decompress(HISTORY.read_bytes()))
+    siglas = {t['sigla'] for t in data['tribunais']}
+    editions = []
+    for edition in seed['edicoes']:
+        found = tempos('\n'.join(edition['paginas'].values()), siglas)
+        tjs = [s for s in found if s.startswith('TJ')]
+        if len(tjs) != 27:
+            raise ValueError(f'Edição {edition["edicao"]}: Tribunais de Justiça incompletos')
+        editions.append(dict(edicao=edition['edicao'], ano=edition['ano'], url=edition['url'], sha256=edition['sha256'],
+                             paginas=sorted(int(p) for p in edition['paginas']), valores=found))
+    years = [e['ano'] for e in editions] + [data['ano']]
+    if years != sorted(years) or len(set(years)) != len(years):
+        raise ValueError('Anos da série histórica fora de ordem')
+    for t in data['tribunais']:
+        t['historico'] = [dict(ano=e['ano'], edicao=e['edicao'], **e['valores'][t['sigla']]) if t['sigla'] in e['valores']
+                          else dict(ano=e['ano'], edicao=e['edicao'], tempoBaixados=None, idadePendentes=None)
+                          for e in editions] + [dict(ano=data['ano'], edicao=data['edicao'], tempoBaixados=t['tempoBaixados'],
+                                                     idadePendentes=t['idadePendentes'])]
+    data['historicoTempos'] = dict(
+        anos=years, edicoes=[{k: e[k] for k in ['edicao', 'ano', 'url', 'sha256', 'paginas']} for e in editions],
+        ausentes=sorted(f'{t["sigla"]} {h["ano"]}' for t in data['tribunais'] for h in t['historico'] if h['tempoBaixados'] is None),
+        nota='Cada edição publica médias calculadas com os dados disponíveis à época; anos anteriores não são revisados. '
+             'Mudanças de cadastro e de sistemas no DataJud podem alterar a série. Ausência significa valor não legível no texto da figura ou tribunal ainda não instalado (TRF6, criado em 2022), não zero.')
+    data['integridadeSementes'] = HASHES
     return data
 
 
@@ -306,6 +397,19 @@ def validate(data):
             actual=sum(t['despesaTotal'] for t in rows if t['ramo']==r['id'])
             if actual!=c['somaTribunais'] or r['despesaTotal']-actual!=c['residuo'] or abs(c['residuo'])>c['tolerancia']:
                 raise ValueError('Reconciliação financeira inválida')
+    for r in rows:
+        for key in ['execucaoBaixados','execucaoPendentes']:
+            if not isinstance(r[key],int) or r[key]<0:
+                raise ValueError('Tempo de execução inválido: '+r['sigla'])
+        for key in ['recorribilidadeInterna','recorribilidadeExterna']:
+            if not 0<=r[key]<=100:
+                raise ValueError('Recorribilidade inválida: '+r['sigla'])
+        if (r['ramo']=='estadual')!=(r['justicaGratuita'] is not None):
+            raise ValueError('Justiça gratuita fora do universo dos TJs: '+r['sigla'])
+        if len(r['historico'])!=len(data['historicoTempos']['anos']) or r['historico'][-1]['tempoBaixados']!=r['tempoBaixados']:
+            raise ValueError('Série histórica incoerente: '+r['sigla'])
+    if not 0<data['magistrados']['porCemMil']<100 or not 0<data['justicaGratuita']['percentual']<100:
+        raise ValueError('Indicador nacional incoerente')
     capita=data['porHabitante']
     if not (0<capita['semInativos']<capita['valor'] and 0<capita['pibSemInativos']<=capita['pib']<100 and 0<capita['inativosPercentual']<100):
         raise ValueError('Despesa por habitante nacional incoerente')
@@ -329,7 +433,7 @@ def artifacts(data):
         return json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + '\n'
     files = {'snapshot.json': encoded(data)}
     for name, fields in [('ramos', ['id','nome','ano','novos','baixados','pendentes','idadePendente','conhecimento','execucao','cejuscs','atendimentoAproximado','resolucaoVolumes','nota','despesaTotal','despesaPorBaixaAproximada','iadOficial','congestionamentoBruto','congestionamentoLiquido','desempenhoPagina']),
-                         ('tribunais', ['id','sigla','uf','ramo','ano','tempoBaixados','idadePendentes','pagina','porte','despesaTotal','novos','pendentes','magistrados','servidores','ipcJus','ipcPagina','congestionamento','congestionamentoPagina','estruturaPagina','despesaPorHabitante','despesaPorHabitanteSemInativos','porHabitantePagina'])]:
+                         ('tribunais', ['id','sigla','uf','ramo','ano','tempoBaixados','idadePendentes','pagina','porte','despesaTotal','novos','pendentes','magistrados','servidores','ipcJus','ipcPagina','congestionamento','congestionamentoPagina','estruturaPagina','despesaPorHabitante','despesaPorHabitanteSemInativos','porHabitantePagina','execucaoBaixados','execucaoPendentes','execucaoPagina','recorribilidadeInterna','recorribilidadeExterna','recorribilidadePagina','justicaGratuita','justicaGratuitaPagina'])]:
         stream = io.StringIO(newline='')
         writer = csv.DictWriter(stream, fields + ['unidades','fonte','url','captura'], delimiter=';')
         writer.writeheader()
@@ -341,6 +445,14 @@ def artifacts(data):
         for point in series:
             writer.writerow([branch,point['ano'],point['valor'],point['unidade'],point['resolucao'],point['pagina'],data['fonte']['url'],data['financeiro']['convencao']])
     files['despesas-historico.csv']='\ufeff'+stream.getvalue()
+    stream=io.StringIO(newline='')
+    writer=csv.writer(stream,delimiter=';');writer.writerow(['Tribunal','Ramo','Ano','Edicao','DuracaoMediaBaixados','IdadeMediaPendentes','Unidade','Fonte','Nota'])
+    sources={e['edicao']:e['url'] for e in data['historicoTempos']['edicoes']}
+    sources[data['edicao']]=data['fonte']['url']
+    for t in data['tribunais']:
+        for h in t['historico']:
+            writer.writerow([t['sigla'],t['ramo'],h['ano'],h['edicao'],h['tempoBaixados'],h['idadePendentes'],'meses',sources[h['edicao']],'Vazio: valor ausente na figura extraída; não é zero.'])
+    files['tribunais-historico.csv']='\ufeff'+stream.getvalue()
     manifest = dict(calculo=data['calculo'], fonte=data['fonte'], sementes=data['integridadeSementes'],
                     arquivos={name:hashlib.sha256(body.encode()).hexdigest() for name,body in files.items()})
     files['manifesto.json'] = encoded(manifest)
