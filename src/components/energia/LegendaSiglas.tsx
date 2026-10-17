@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { NATUREZAS } from "@/components/evidencia/SeloNatureza";
 import { legendaDeSiglas, siglasNoTexto } from "@/lib/energia/siglas";
 import type { Natureza } from "@/lib/energia/tipos";
+import { NATUREZA_EN } from "@/lib/energia/i18n/aprenda";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /** Quantas siglas a legenda mostra de uma vez: a mais antiga no texto vem primeiro, o resto fica atrás de "Mais siglas". */
 const NA_LINHA = 6;
@@ -22,6 +24,8 @@ const TETO = 14;
  * fechado) não conta: a legenda não define o que o leitor ainda não leu. Sigla fora do dicionário não é expandida.
  */
 export function LegendaDeSiglas({ siglas }: { siglas?: readonly string[] }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [viva, setViva] = useState<readonly string[] | null>(null);
   const [naturezas, setNaturezas] = useState<readonly Natureza[]>([]);
 
@@ -30,7 +34,7 @@ export function LegendaDeSiglas({ siglas }: { siglas?: readonly string[] }) {
     const recalcula = () => {
       const main = document.querySelector("main");
       if (!main) return;
-      const achadas = siglasNoTexto(textoVisivel(main), TETO);
+      const achadas = siglasNoTexto(textoVisivel(main), TETO, idioma);
       setViva((antes) => (antes && antes.join("|") === achadas.join("|") ? antes : achadas));
       const selos = naturezasNaPagina(main);
       setNaturezas((antes) => (antes.join("|") === selos.join("|") ? antes : selos));
@@ -49,10 +53,11 @@ export function LegendaDeSiglas({ siglas }: { siglas?: readonly string[] }) {
       mo.disconnect();
       document.removeEventListener("toggle", agenda, true);
     };
-  }, []);
+  }, [idioma]);
 
   const lista = viva ?? siglas ?? [];
-  const entradas = legendaDeSiglas(lista).split("; ").filter(Boolean);
+  const entradas = legendaDeSiglas(lista, idioma).split("; ").filter(Boolean);
+  const natureza = (n: Natureza) => (idioma === "en" ? NATUREZA_EN[n] : NATUREZAS[n]);
   if (!entradas.length && !naturezas.length) return null;
   const visiveis = entradas.slice(0, NA_LINHA);
   const resto = entradas.slice(NA_LINHA);
@@ -60,25 +65,25 @@ export function LegendaDeSiglas({ siglas }: { siglas?: readonly string[] }) {
     <div className="mt-2 max-w-prose2 text-xs leading-relaxed text-mineral" data-siglas="true">
       {entradas.length > 0 && (
         <p>
-          <span className="font-medium text-carvao-muted">Siglas: </span>
+          <span className="font-medium text-carvao-muted">{tx("Siglas: ", "Acronyms: ")}</span>
           {visiveis.join("; ")}.
         </p>
       )}
       {resto.length > 0 && (
         <details className="mt-1">
           <summary className="inline-flex min-h-[24px] cursor-pointer items-center text-energia-dark underline underline-offset-4 max-md:min-h-[44px] [@media(pointer:coarse)]:min-h-[44px]">
-            Mais {resto.length} {resto.length === 1 ? "sigla" : "siglas"}
+            {tx(`Mais ${resto.length} ${resto.length === 1 ? "sigla" : "siglas"}`, `${resto.length} more ${resto.length === 1 ? "acronym" : "acronyms"}`)}
           </summary>
           <p>{resto.join("; ")}.</p>
         </details>
       )}
       {naturezas.length > 0 && (
         <p className={entradas.length > 0 ? "mt-1" : undefined} data-legenda-naturezas="true">
-          <span className="font-medium text-carvao-muted">Natureza do dado: </span>
+          <span className="font-medium text-carvao-muted">{tx("Natureza do dado: ", "Nature of the data: ")}</span>
           {naturezas.map((n) => (
             <span key={n} className="mr-2 inline-block">
               <span aria-hidden="true">{NATUREZAS[n].glifo} </span>
-              {NATUREZAS[n].rotulo}, {NATUREZAS[n].definicao.charAt(0).toLowerCase() + NATUREZAS[n].definicao.slice(1)}{" "}
+              {natureza(n).rotulo}, {natureza(n).definicao.charAt(0).toLowerCase() + natureza(n).definicao.slice(1)}{" "}
             </span>
           ))}
         </p>
