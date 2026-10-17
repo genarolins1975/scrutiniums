@@ -51,6 +51,45 @@ class ObservatorioSaneamento(unittest.TestCase):
         self.assertEqual(conf["agua_retificacao"]["valores"]["diferenca"], 0)
         self.assertNotIn("A diferença é publicada", conf["agua_retificacao"]["conclusao"])
 
+    def test_colunas_sem_soma_reproduzem_do_seed_por_outro_caminho(self):
+        c = {x["id"]: x for x in self.g["meta"]["conferencias"]}["agua_colunas_sem_soma"]
+        v = c["valores"]
+        _, mun = gold.planilha("agua_tecnica_municipio")
+        _, cons = gold.planilha("agua_tecnica_uf")
+        nome_uf = {n: u for u, n in gold.UF_NOME.items()}
+        uf = {nome_uf.get((l.get("UF/Macrorregião") or "").strip(), (l.get("UF/Macrorregião") or "").strip()): l for l in cons}
+        # GTA0019 por município
+        iguais = vazios = difs = 0
+        for l in mun:
+            a, g1, g2 = gold.num(l.get("GTA0019")), gold.num(l.get("GTA0001")), gold.num(l.get("GTA0002"))
+            if g1 is None and g2 is None:
+                continue
+            if a is None:
+                vazios += 1
+            elif a == (g1 or 0) + (g2 or 0):
+                iguais += 1
+            else:
+                difs += 1
+        self.assertEqual((v["gta0019_municipios_iguais_a_gta0001_mais_gta0002"], v["gta0019_municipios_vazios"], v["gta0019_municipios_diferentes"]),
+                         (iguais, vazios, difs))
+        self.assertEqual(iguais + vazios + difs, sum(1 for l in mun if gold.num(l.get("GTA0001")) is not None or gold.num(l.get("GTA0002")) is not None))
+        self.assertEqual(v["gta0019_ufs_consolidado_igual_a_gta0001_mais_gta0002"], 27)
+        # GTA3006: consolidado = parte inteira da média municipal, em todas as UFs; Brasil idem
+        dias = {}
+        for l in mun:
+            d = gold.num(l.get("GTA3006"))
+            if d is not None:
+                dias.setdefault(gold.UF_COD.get(str(l["cod_IBGE"])[:2]), []).append(d)
+        for u in gold.UF_NOME:
+            xs = dias.get(u, [])
+            esperado = int(sum(xs) // len(xs)) if xs else 0
+            self.assertEqual(gold.num(uf[u].get("GTA3006")) or 0, esperado, u)
+        todos = [x for xs in dias.values() for x in xs]
+        self.assertEqual(gold.num(uf["Brasil"].get("GTA3006")), int(sum(todos) // len(todos)))
+        self.assertEqual(v["gta3006_ufs_consolidado_igual_a_media_truncada"], 27)
+        self.assertAlmostEqual(v["gta3006_soma_municipal_dias"], sum(todos), places=1)
+        self.assertGreater(v["gta1014_ufs_com_diferenca"], v["gta1014_ufs_que_fecham_com_agua_importada"])
+
     def test_investimento_dos_prestadores_reproduz_o_consolidado(self):
         br = next(a for a in self.g["agregados"] if a["id"] == "BR")
         for campo, servico in (("investimento_agua", "agua"), ("investimento_esgoto", "esgoto")):
