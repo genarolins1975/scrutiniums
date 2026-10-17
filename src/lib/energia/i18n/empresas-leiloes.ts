@@ -149,3 +149,204 @@ export function motivoTarifa(texto: string, idioma: Idioma = idiomaEnergia()): s
 export function motivoTarifaTraduzido(texto: string): boolean {
   return motivoTarifa(texto, "en") !== texto;
 }
+
+/* ---------------------------------------------------------------- Listadas (IEE) */
+
+/** Espécie de controle declarada no FCA (controle.especie_fca). */
+export const ESPECIE_CONTROLE_EN: Tabela = {
+  Privado: "Private",
+  "Privado Holding": "Private holding",
+  Estatal: "State-owned",
+  "Estatal Holding": "State-owned holding",
+  Estrangeiro: "Foreign",
+  "Estrangeiro Holding": "Foreign holding",
+  "não declarada": "not declared",
+};
+
+/** Fonte energética das usinas no SIGA (geracao.maiores[].fonte). */
+export const FONTE_SIGA_EN: Tabela = {
+  "Potencial hidráulico": "Hydraulic potential",
+  "Cinética do vento": "Wind kinetics",
+  "Radiação solar": "Solar radiation",
+  "Gás natural": "Natural gas",
+  Petróleo: "Oil",
+  "Carvão mineral": "Coal",
+  Agroindustriais: "Agro-industrial",
+  Nuclear: "Nuclear",
+  "Biomassa": "Biomass",
+};
+
+/** País declarado do acionista no FRE (controle.fre.acionistas[].nacionalidade). */
+export const PAIS_EN: Tabela = {
+  Brasil: "Brazil",
+  "Estados Unidos": "United States",
+  Canadá: "Canada",
+};
+
+/** Unidade das finanças das listadas. */
+export const UNIDADE_LISTADAS_EN: Tabela = {
+  "R$ milhões nominais": "nominal R$ million",
+};
+
+/** Regras e definições da gold de Listadas (universo.regra, universo.nota, definicoes.*). */
+export const DEFINICAO_LISTADAS_EN: Tabela = {
+  "Papéis da carteira do dia do Índice de Energia Elétrica (IEE) da B3, ligados à companhia pelo código CVM publicado pela B3 e conferido no código de negociação declarado no FCA da CVM.":
+    "Stocks in the day's portfolio of the B3 Electric Power Index (IEE), linked to the company by the CVM code published by B3 and checked against the ticker declared in the company's CVM registration form (FCA).",
+  "O IEE é uma carteira teórica da B3 revista a cada quatro meses: entra e sai papel. Companhias de energia listadas fora do índice (por liquidez ou critério da B3) não estão neste painel.":
+    "The IEE is a B3 theoretical portfolio reviewed every four months: stocks enter and leave. Listed power companies outside the index (because of liquidity or B3 criteria) are not in this panel.",
+  "Empresa sob controle da companhia listada: a cadeia de controladores únicos declarada à ANEEL (Composição Societária, Polímero) que sobe a partir dela passa pela companhia. Inclui a própria companhia. Controle compartilhado interrompe a cadeia: a SPE em que a companhia divide o controle com outro sócio não entra.":
+    // i18n: dado (inglês com o nome próprio da base, Composição Societária)
+    "Company under the listed company's control: the chain of single controlling shareholders declared to ANEEL (Composição Societária, Polímero) that rises from it passes through the listed company. It includes the company itself. Shared control breaks the chain: an SPV in which the company shares control with another shareholder is not included.",
+  "Potência fiscalizada das usinas em operação no SIGA cujo dono majoritário (mais de 50%, em usina de participações válidas) está sob controle da companhia. Mede comando sobre a usina inteira, não propriedade.":
+    "Inspected capacity of the plants in operation in SIGA whose majority owner (more than 50%, in a plant with valid stakes) is under the company's control. It measures command over the whole plant, not ownership.",
+  "Soma da potência fiscalizada × participação direta de cada empresa sob controle, nas usinas em operação de participações válidas. Exclui participações detidas por coligadas e por SPE de controle compartilhado (não há look-through).":
+    "Sum of inspected capacity × direct stake of each company under control, in plants in operation with valid stakes. It excludes stakes held by affiliates and by shared-control SPVs (no look-through).",
+  "Potência outorgada das usinas em construção ou com construção não iniciada no SIGA cujo dono majoritário está sob controle da companhia.":
+    "Granted capacity of the plants under construction or with construction not started in SIGA whose majority owner is under the company's control.",
+  "Quilômetros de circuito em operação das concessionárias de transmissão sob controle (SIGET, pelo CNPJ do contrato); linha de circuito duplo conta duas vezes.":
+    "Circuit kilometers in operation of the transmission concession holders under control (SIGET, by the contract's CNPJ); a double-circuit line counts twice.",
+  "Soma das unidades consumidoras das distribuidoras ativas sob controle, no ano de referência da continuidade publicado pelo módulo Qualidade.":
+    "Sum of the consumer units of the active distribution utilities under control, in the continuity reference year published by the Quality of supply module.",
+  "Resultado antes do resultado financeiro e dos tributos (conta 3.05) ÷ receita (conta 3.01), consolidado, × 100. Nas distribuidoras a receita inclui a receita de construção, que reduz a margem sem mudar o resultado.":
+    "Earnings before financial result and taxes (account 3.05) ÷ net revenue (account 3.01), consolidated, × 100. For distribution utilities, revenue includes construction revenue, which lowers the margin without changing earnings.",
+  "Empréstimos, financiamentos e debêntures (2.01.04 + 2.02.01) ÷ patrimônio líquido (2.03), consolidado, no fim do exercício. O patrimônio inclui não controladores.":
+    "Loans, financing and debentures (2.01.04 + 2.02.01) ÷ shareholders' equity (2.03), consolidated, at the end of the fiscal year. Equity includes non-controlling interests.",
+  "Lucro atribuído aos sócios da controladora (3.11.01) ÷ patrimônio líquido no fim do exercício (2.03) × 100. Não é o ROE médio que as companhias divulgam.":
+    "Net income attributable to owners of the parent (3.11.01) ÷ shareholders' equity at the end of the fiscal year (2.03) × 100. It is not the average ROE that companies disclose.",
+  "Variação do preço de fechamento do papel ajustada por desdobramentos, grupamentos e bonificações, sem proventos em dinheiro.":
+    "Change in the stock's closing price adjusted for splits, reverse splits and bonus shares, without cash distributions.",
+  "Variação com os proventos em dinheiro (dividendos, juros sobre capital próprio e rendimentos, valores brutos por ação publicados pela B3) reinvestidos no fechamento da data ex, e com os eventos em ações. Não desconta imposto nem custos de negociação.":
+    "Change with cash distributions (dividends and interest on equity and other income, gross amounts per share published by B3) reinvested at the close of the ex-date, and with stock events. It does not deduct taxes or trading costs.",
+  "Média do volume financeiro diário negociado no papel, lote padrão do mercado à vista, nos pregões dos últimos 3 meses.":
+    "Average daily traded value of the stock, standard lot in the cash market, over the trading sessions of the last 3 months.",
+};
+
+/* ---------------------------------------------------------------- Leilões */
+
+/** Categorias de fonte dos leilões (leiloes.categorias[].rotulo e por_categoria[].rotulo). */
+export const CATEGORIA_LEILAO_EN: Tabela = {
+  "Hidrelétrica (UHE)": "Hydropower plant (UHE)",
+  "Pequena hidrelétrica (PCH e CGH)": "Small hydropower (PCH and CGH)",
+  Eólica: "Wind",
+  "Solar fotovoltaica": "Solar photovoltaic",
+  "Biomassa e resíduos": "Biomass and waste",
+  "Gás natural": "Natural gas",
+  "Óleo combustível e diesel": "Fuel oil and diesel",
+  "Carvão mineral": "Coal",
+};
+
+/** Tipos de leilão (leiloes.tipos[].rotulo e cobertura.tipos_presentes[].rotulo). */
+export const TIPO_LEILAO_EN: Tabela = {
+  "Energia nova A-3": "New energy A-3",
+  "Energia nova A-4": "New energy A-4",
+  "Energia nova A-5": "New energy A-5",
+  "Energia nova A-6": "New energy A-6",
+  "Energia nova A-7": "New energy A-7",
+  "Energia de reserva": "Reserve energy",
+  "Fontes alternativas": "Alternative sources",
+  "Projeto estruturante": "Structuring project",
+};
+
+/** Situação atual das usinas vendidas (leiloes.situacoes[].rotulo e .definicao). */
+export const SITUACAO_LEILAO_EN: Tabela = {
+  "Em operação": "In operation",
+  "Em construção": "Under construction",
+  "Construção não iniciada": "Construction not started",
+  "Outorga revogada ou extinta": "Grant revoked or extinguished",
+  "Sem situação identificada": "No status identified",
+  "Sem código da usina": "No plant code",
+  "Usina com fase Operação no SIGA.": "Plant with the Operation phase in SIGA.",
+  "Usina com fase Construção no SIGA.": "Plant with the Construction phase in SIGA.",
+  "Usina outorgada com fase Construção não iniciada no SIGA.": "Granted plant with the Construction not started phase in SIGA.",
+  "Fora do arquivo aberto do SIGA, com ato de revogação ou extinção da outorga publicado desde 2015.":
+    "Outside the open SIGA file, with an act revoking or extinguishing the grant published since 2015.",
+  "Fora do arquivo aberto do SIGA e sem ato de encerramento desde 2015 vinculado ao núcleo do CEG.":
+    "Outside the open SIGA file and with no termination act since 2015 linked to the CEG core.",
+  "Linha do leilão sem núcleo do CEG: não há como cruzar com o cadastro.": "Auction row without a CEG core: it cannot be matched with the registry.",
+};
+
+/** Vendas sem grupo de controle provado (leiloes.grupos_controle.sem_vinculo[].rotulo). */
+export const SEM_VINCULO_LEILAO_EN: Tabela = {
+  "Usina fora do cadastro aberto do SIGA": "Plant outside the open SIGA registry",
+  "Usina sem proprietário com mais de 50%": "Plant without an owner holding more than 50%",
+  "Usina sem proprietário com CNPJ no SIGA": "Plant without an owner with CNPJ in SIGA",
+  "Linha sem código da usina (CEG)": "Row without the plant code (CEG)",
+};
+
+/** Regras e notas publicadas pela gold de Leilões (regras, cobertura, vencedoras, grupos_controle, transmissao). */
+export const REGRA_LEILAO_EN: Tabela = {
+  "Energia vendida (VlrEnergiaVendida) em MWmédio: cada linha é um contrato, então a soma entre leilões é válida. A potência (MW) de uma usina vendida em mais de um leilão se repete em cada um e não é somada entre leilões.":
+    "Energy sold (VlrEnergiaVendida) in MWavg: each row is a contract, so the sum across auctions is valid. The capacity (MW) of a plant sold in more than one auction is repeated in each one and is not added across auctions.",
+  "Preço de venda por empreendimento (VlrPrecoLeilao), em R$/MWh nominais da data do leilão; nas termelétricas contratadas por disponibilidade, o campo traz o Índice de Custo Benefício (ICB), como diz o dicionário. Média ponderada pela energia vendida das linhas com preço.":
+    "Sale price per project (VlrPrecoLeilao), in nominal R$/MWh as of the auction date; for thermal plants contracted by availability, the field carries the Cost-Benefit Index (ICB), as the data dictionary states. Average weighted by the energy sold in rows with a price.",
+  "Deságio por empreendimento como publicado (VlrDesagio, %), conferido contra 100 × (1 − preço ÷ teto). Agregado = 100 × (1 − Σ preço × energia ÷ Σ teto × energia).":
+    "Discount per project as published (VlrDesagio, %), checked against 100 × (1 − price ÷ ceiling). Aggregate = 100 × (1 − Σ price × energy ÷ Σ ceiling × energy).",
+  "Zero que é campo não preenchido vira ausência: preço 0 (1 linha, com deságio 100%), garantia física 0 com energia vendida (2 linhas) e investimento 0 (ampliações e usinas existentes, em geral).":
+    "A zero that is an unfilled field becomes missing: price 0 (1 row, with a 100% discount), physical guarantee 0 with energy sold (2 rows) and investment 0 (expansions and existing plants, in general).",
+  "Situação atual pelo núcleo do CEG: a fase no SIGA prevalece; fora do SIGA, o ato de revogação ou extinção publicado desde 2015 classifica como outorga encerrada; o resto fica sem situação identificada. Não é cumprimento de contrato: prazos alterados por ato, rescisões, substituições e descontratações não estão nos arquivos.":
+    "Current status by CEG core: the SIGA phase prevails; outside SIGA, an act of revocation or extinction published since 2015 classifies the grant as terminated; the rest has no status identified. It is not contract compliance: deadlines changed by act, terminations, substitutions and contract cancellations are not in the files.",
+  "Nos produtos A-x, o ano A (início do suprimento) é o ano do leilão mais x. A entrada em operação comparada é a data do SIGA para a usina inteira; ampliação ou usina que já operava antes do leilão fica numa classe própria.":
+    "In A-x products, year A (start of supply) is the auction year plus x. The start of operation compared is the SIGA date for the whole plant; an expansion or a plant that was already operating before the auction falls into a class of its own.",
+  "Categoria de fonte = DscFonteEnergia, com a hídrica separada em UHE e em PCH ou CGH pelo tipo de geração.":
+    "Source category = DscFonteEnergia, with hydro split into UHE and into PCH or CGH by generation type.",
+  "O dicionário da ANEEL (versão 1.0, 30/03/2023) descreve o conjunto como os resultados dos leilões de energia do Ambiente de Contratação Regulada realizados desde 2005, com o tipo de leilão entre energia nova (A-3 a A-7), energia de reserva, estruturante e fontes alternativas.":
+    "The ANEEL data dictionary (version 1.0, Mar 30, 2023) describes the dataset as the results of the energy auctions of the regulated contracting environment held since 2005, with the auction type among new energy (A-3 to A-7), reserve energy, structuring and alternative sources.",
+  "Não estão no arquivo os leilões de energia existente e de ajuste, os de reserva de capacidade, os de sistemas isolados e os procedimentos competitivos simplificados. Ausência na base não prova que não houve leilão.":
+    "The file does not include existing energy and adjustment auctions, capacity reserve auctions, isolated systems auctions or simplified competitive procedures. Absence from the database does not prove that no auction took place.",
+  "Nome como publicado em DscEmpresaVencedora, que o dicionário descreve como a empresa vencedora ou o nome do cotista do consórcio. O arquivo não traz CNPJ: grafias diferentes da mesma empresa ficam separadas e nenhum nome é fundido por semelhança.":
+    "Name as published in DscEmpresaVencedora, which the data dictionary describes as the winning company or the name of the consortium member. The file has no CNPJ: different spellings of the same company stay separate and no name is merged by similarity.",
+  "Grupo que controla a usina no cadastro mais recente: proprietário com mais de 50% da usina no SIGA (vínculo pelo CNPJ publicado no mesmo registro) e o topo da sua cadeia de controladores únicos declarada à ANEEL (Composição Societária), como no módulo Empresas. Não é a vencedora na data do leilão: a usina pode ter mudado de dono, e a vencedora publicada pode ser um cotista do consórcio.":
+    // i18n: dado (inglês com o nome próprio da base, Composição Societária)
+    "Group that controls the plant in the most recent registry: the owner with more than 50% of the plant in SIGA (link by the CNPJ published in the same record) and the top of its chain of single controlling shareholders declared to ANEEL (Composição Societária), as in the Companies module. It is not the winner on the auction date: the plant may have changed owners, and the published winner may be a consortium member.",
+  "Deságio de cada lote = 100 × (1 − RAP vencedora ÷ RAP do edital), recalculado das RAPs publicadas; o agregado do ano pondera pela RAP do edital. Lotes sem vencedor não entram.":
+    "Discount of each lot = 100 × (1 − winning RAP ÷ tender RAP), recalculated from the published RAPs; the year's aggregate is weighted by the tender RAP. Lots without a winner are excluded.",
+  "RAP e investimento de cada lote × I(último mês) ÷ I(mês do leilão), número-índice do IPCA (IBGE).": "RAP and investment of each lot × I(latest month) ÷ I(auction month), IPCA index number (IBGE).",
+  "Lote com vencedor 'SEM LANCE', 'SEM INSCRITO APTO' ou 'NÃO LEILOADO' não foi contratado: fica fora de lotes contratados, km, MVA, investimento e RAP, e o 0 que a fonte publica em km, MVA, prazo e RAP vencedora é tratado como ausência.":
+    // i18n: dado (inglês com os valores literais da fonte entre aspas)
+    "A lot with winner 'SEM LANCE' (no bid), 'SEM INSCRITO APTO' (no qualified bidder) or 'NÃO LEILOADO' (not auctioned) was not contracted: it is left out of contracted lots, km, MVA, investment and RAP, and the 0 the source publishes for km, MVA, deadline and winning RAP is treated as missing.",
+};
+
+/** Rótulos dos downloads da gold de Leilões (downloads[].rotulo). */
+export const DOWNLOAD_LEILAO_EN: Tabela = {
+  "Empreendimentos contratados, com situação atual e grupo de controle (CSV)": "Contracted projects, with current status and controlling group (CSV)",
+  "Resumo por leilão (CSV)": "Summary by auction (CSV)",
+  "Preço médio por fonte e ano, nominal e real (CSV)": "Average price by source and year, nominal and real (CSV)",
+  "Energia contratada por grupo que controla a usina no cadastro mais recente (CSV)": "Energy contracted by group that controls the plant in the most recent registry (CSV)",
+  "Leilões de transmissão por ano, corrigidos pelo IPCA (CSV)": "Transmission auctions by year, adjusted by the IPCA (CSV)",
+};
+
+/** Situação da obra no RALIE (entrega.ralie_situacao_obra, chaves). */
+export const OBRA_RALIE_EN: Tabela = {
+  "Em andamento": "in progress",
+  "Não Iniciada": "not started",
+  Paralisada: "halted",
+};
+
+/** Módulo do observatório que publicou um insumo (insumos[].modulo). */
+export const MODULO_EN: Tabela = {
+  expansao: "Expansion",
+  empresas: "Companies",
+  geracao: "Generation",
+  perdas: "Losses",
+  qualidade: "Quality of supply",
+};
+
+/** Regra do preço real dos leilões, que traz o mês do IPCA ("I(set/2026)"): reescrita com o mesmo mês, em inglês. */
+export function regraPrecoReal(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma !== "en") return texto;
+  const meses: Record<string, string> = { jan: "Jan", fev: "Feb", mar: "Mar", abr: "Apr", mai: "May", jun: "Jun", jul: "Jul", ago: "Aug", set: "Sep", out: "Oct", nov: "Nov", dez: "Dec" };
+  const m = /^Preço real = preço × I\(([a-z]{3})\/(\d{4})\) ÷ I\(mês do leilão\), com o número-índice do IPCA do IBGE \(tabela 1737\)\. É uma régua de comparação entre anos, não o preço vigente de cada contrato, que segue o reajuste próprio do edital e do contrato\.$/.exec(texto);
+  if (!m || !meses[m[1]]) return texto;
+  return `Real price = price × I(${meses[m[1]]}/${m[2]}) ÷ I(auction month), using the IBGE IPCA index number (table 1737). It is a yardstick for comparing years, not the current price of each contract, which follows the adjustment set in its own tender and contract.`;
+}
+
+/** Regra da gold de Leilões no idioma da página: a tabela exata, e a do preço real pelo padrão. */
+export function regraLeilao(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma !== "en") return texto;
+  return REGRA_LEILAO_EN[texto] ?? regraPrecoReal(texto, idioma);
+}
+
+/** Se a regra tem forma inglesa (sem ela, o componente marca o trecho como só em português). */
+export function regraLeilaoTraduzida(texto: string): boolean {
+  return regraLeilao(texto, "en") !== texto;
+}
