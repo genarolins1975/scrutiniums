@@ -79,7 +79,7 @@ export default function AvaliacaoPage() {
       Cada célula da matriz é a média das notas das páginas da entrega naquela dimensão. A meta de produto é 9,0 em todas as dimensões, 9,5 em didatismo e qualidade visual, e nenhum defeito crítico; uma página só atende se nenhuma dimensão aplicável ficar sem avaliação. Célula sem número é dimensão não avaliada ou que não se aplica, e não é zero. Cada nota tem tetos escritos: o teto de acessibilidade, por exemplo, existe porque nenhum leitor de tela real foi usado.
     </>,
     <>
-      Each cell of the matrix is the average of the scores of the delivery&apos;s pages in that dimension. The product target is 9.0 in every dimension, 9.5 in didactic and visual quality, and no critical defect; a page only meets it if no applicable dimension is left unassessed. A cell without a number is a dimension not assessed or not applicable, and is not zero. Each score has written caps: the accessibility cap, for example, exists because no real screen reader was used.
+      Each cell of the matrix is the average of the scores of the delivery&apos;s pages in that dimension. The product target is 9.0 in every dimension, 9.5 in didactic and visual quality, and no critical defect; a page only meets it if no applicable dimension is left unassessed. A cell without a number is a dimension not assessed or not applicable, and is not zero. Each score has written caps: the accessibility cap, for example, exists since no real screen reader was used.
     </>,
   );
   const naoConcluir = tx(
@@ -300,7 +300,7 @@ export default function AvaliacaoPage() {
 
                 <SecaoDoPainel id="defeitos" nivel="analisar" titulo={tx("Defeitos abertos", "Open defects")}>
                   <TabelaInterativa
-                    titulo={tx("Defeitos abertos nesta rodada, agrupados por causa", "Open defects in this round, grouped by cause")}
+                    titulo={tx("Defeitos abertos nesta rodada, agrupados por causa", "Open defects in this round, grouped by origin")}
                     colunas={COLUNAS_DEFEITOS}
                     linhas={defeitos}
                     chaveLinha="id"

@@ -446,7 +446,7 @@ export function avisoToleranciaIpca(g: Pick<GoldRegulacao, "limites_pld" | "regr
     partes.push(
       tx(
         `A aplicação literal do art. 23, § 1º${g.regras_limites ? `, da ${abreviarAto(g.regras_limites.ato)}` : ""}, aparece só como conferência informativa, porque não reproduz os valores publicados.`,
-        `The literal application of art. 23, § 1º${g.regras_limites ? `, of ${abreviarAto(g.regras_limites.ato)}` : ""}, appears only as an informative check, because it does not reproduce the published values.`,
+        `The literal application of art. 23, § 1º${g.regras_limites ? `, of ${abreviarAto(g.regras_limites.ato)}` : ""}, appears only as an informative check, as it does not reproduce the published values.`,
       ),
     );
   return partes.length ? partes.join(" ") : null;

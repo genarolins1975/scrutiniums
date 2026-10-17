@@ -599,7 +599,7 @@ export function RegulacaoLinhaTempo({
         semLinhas={tx("Nenhum evento no recorte atual.", "No event in the current selection.")}
         nota={tx(
           "Mesmas linhas, na mesma ordem, do gráfico e da lista. Sem impacto estimado nesta fonte: a coluna de impacto fica vazia em todos os eventos, porque o observatório não estima efeito de norma.",
-          "Same rows, in the same order, as the chart and the list. No impact estimated in this source: the impact column is empty for every event, because the observatory does not estimate the effect of rules.",
+          "Same rows, in the same order, as the chart and the list. No impact estimated in this source: the impact column is empty for every event, as the observatory does not estimate the effect of rules.",
         )}
       />
     </div>

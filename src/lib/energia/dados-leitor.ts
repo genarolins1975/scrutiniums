@@ -436,7 +436,7 @@ export function textoDatasDaColetaCcee(a: ResumoAcessoCcee, referencia: string, 
 /** O que o validador diz de cada tipo de problema de um CSV, em palavras de leitor (o texto exato da checagem fica em Analisar). */
 function problemaEmPalavras(tipo: string, detalhe: string): string {
   if (tipo === "datas_futuras")
-    return tx("há datas depois da data de referência da publicação, porque o arquivo traz valores previstos", "there are dates after the reference date of the publication, because the file carries forecast values");
+    return tx("há datas depois da data de referência da publicação, porque o arquivo traz valores previstos", "there are dates after the reference date of the publication, as the file carries forecast values");
   // i18n: dado (troca dentro do texto do validador, que é português)
   if (tipo === "chaves_unicas") return detalhe.replace(/a chave inferida/g, "a mesma chave");
   return datasLegiveis(detalhe);

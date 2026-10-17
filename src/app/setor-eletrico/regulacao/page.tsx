@@ -174,7 +174,7 @@ export default function RegulacaoPage() {
       </Link>
       . The version published on the official PRODIST or PRORET page does not prove it is the one in force when a later act approves another.
       {semPublicacao.length
-        ? ` Publication in the DOU for ${semPublicacao.join(", ")} was not checked, because the summary of the act is not accessible: the date stays empty, never filled with the capture date.`
+        ? ` Publication in the DOU for ${semPublicacao.join(", ")} was not checked, as the summary of the act is not accessible: the date stays empty, never filled with the capture date.`
         : ""}{" "}
       The reading of the acts is the observatory&apos;s: it is not legal advice, and the official text of each act is under Analyze.
     </>,
@@ -334,7 +334,7 @@ export default function RegulacaoPage() {
                         <RegulacaoAviso>
                           {tx(
                             `Os valores de ${anosSemTexto.join(" e ")} foram lidos em documento oficial do mesmo processo, porque o texto do ato não estava acessível. O detalhe de cada limitação está em Analisar.`,
-                            `The values for ${anosSemTexto.join(" and ")} were read in an official document of the same proceeding, because the text of the act was not accessible. The detail of each limitation is under Analyze.`,
+                            `The values for ${anosSemTexto.join(" and ")} were read in an official document of the same proceeding, as the text of the act was not accessible. The detail of each limitation is under Analyze.`,
                           )}
                         </RegulacaoAviso>
                       )}

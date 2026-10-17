@@ -438,7 +438,7 @@ export function evidenciaEtapas(e: EntradaDados): EvidenciaEtapa[] {
   out.push({ id: "integrado", rotulo: ETAPAS[2].rotulo, situacao: sit.integrado, detalhe: di });
 
   const val = et?.validado;
-  let dval = tx("sem validação registrada, porque a integração não foi concluída.", "no validation recorded, because the integration was not completed.");
+  let dval = tx("sem validação registrada, porque a integração não foi concluída.", "no validation recorded, as the integration was not completed.");
   if (sit.validado === "sim") {
     const p = [val?.resultado ? tx(`resultado ${resultadoLegivel(val.resultado)}`, `result ${resultadoLegivel(val.resultado)}`) : tx("sem checagem reprovada", "no failed check")];
     if (val?.aprovadas !== undefined) p.push(tx(plural(val.aprovadas, "checagem aprovada", "checagens aprovadas"), plural(val.aprovadas, "check passed", "checks passed")));
