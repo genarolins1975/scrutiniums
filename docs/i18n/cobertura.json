@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "81fa0497dc22b120d2f690894249cbdc229d93caeae253f350c0c47f59911e40",
-    "arquivos_analisados": 1143,
-    "fontes_sha256": "f5a572df4012743468ec80a60b62e90131d314101acebb45679bc08a6ca25c6f",
+    "arquivos_analisados": 1152,
+    "fontes_sha256": "6e0c7a8d9f9918c7a658abb6e58de2d6fd728f1dceae10b7f9ae3caae780963c",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -130,17 +130,17 @@
       "interface": {
         "arquivos": 211,
         "candidatos": {
-          "jsx_text": 570,
-          "atributos": 184,
-          "props": 640,
-          "outros_literais": 3309,
-          "templates": 388,
-          "expressoes_nao_resolvidas": 2148,
-          "chaves_objetos": 2505
+          "jsx_text": 538,
+          "atributos": 191,
+          "props": 660,
+          "outros_literais": 3492,
+          "templates": 410,
+          "expressoes_nao_resolvidas": 2290,
+          "chaves_objetos": 2517
         },
         "exclusoes": {
-          "importacoes": 882,
-          "atributos_tecnicos": 1159,
+          "importacoes": 912,
+          "atributos_tecnicos": 1162,
           "tipos": 204
         },
         "scripts_embutidos": {},
@@ -150,7 +150,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 9744,
+        "candidatos_nao_catalogados": 10098,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -177,20 +177,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 552,
+        "arquivos": 561,
         "candidatos": {
-          "jsx_text": 7060,
-          "atributos": 2594,
-          "props": 13158,
-          "outros_literais": 32994,
-          "templates": 7268,
-          "expressoes_nao_resolvidas": 36373,
-          "chaves_objetos": 32840
+          "jsx_text": 7365,
+          "atributos": 2838,
+          "props": 18453,
+          "outros_literais": 50029,
+          "templates": 12471,
+          "expressoes_nao_resolvidas": 54129,
+          "chaves_objetos": 35325
         },
         "exclusoes": {
-          "importacoes": 3938,
-          "atributos_tecnicos": 8410,
-          "tipos": 3620
+          "importacoes": 4768,
+          "atributos_tecnicos": 8457,
+          "tipos": 3686
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -199,7 +199,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 132287,
+        "candidatos_nao_catalogados": 180610,
         "percentual_traduzido": null
       },
       "rotas": {
