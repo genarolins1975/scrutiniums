@@ -311,8 +311,89 @@ const PROSA_CONTA: Record<string, string> = {
 
 /* ---------- Inclusão energética ---------- */
 
-/** Rótulos curtos e categorias da gold de Inclusão energética (preenchida pelos componentes do módulo). */
-const PROSA_INCLUSAO: Record<string, string> = {};
+/** Rótulos curtos, categorias e regras da gold de Inclusão energética (`inclusao.json`). */
+const PROSA_INCLUSAO: Record<string, string> = {
+  // classes de rendimento da POF 2017-2018 (valores de 15/01/2018)
+  Total: "Total",
+  "Até R$ 1.908": "Up to R$ 1,908",
+  "Mais de R$ 1.908 a R$ 2.862": "More than R$ 1,908 to R$ 2,862",
+  "Mais de R$ 2.862 a R$ 5.724": "More than R$ 2,862 to R$ 5,724",
+  "Mais de R$ 5.724 a R$ 9.540": "More than R$ 5,724 to R$ 9,540",
+  "Mais de R$ 9.540 a R$ 14.310": "More than R$ 9,540 to R$ 14,310",
+  "Mais de R$ 14.310 a R$ 23.850": "More than R$ 14,310 to R$ 23,850",
+  "Mais de R$ 23.850": "More than R$ 23,850",
+  // medidas da POF
+  "Despesa média com energia elétrica (R$ por família e mês)": "Average electricity expense (R$ per family per month)",
+  "Despesa total média (R$ por família e mês)": "Average total expense (R$ per family per month)",
+  "Razão de médias: energia ÷ despesa total (%)": "Ratio of averages: energy ÷ total expense (%)",
+  "Média das participações da energia na despesa de cada família (%)": "Average share of energy in each family's expense (%)",
+  "Média das participações da energia na renda de cada família (%)": "Average share of energy in each family's income (%)",
+  "Mediana da participação na despesa (%)": "Median share in expense (%)",
+  "Mediana da participação na renda (%)": "Median share in income (%)",
+  "Famílias sem despesa com energia elétrica (%)": "Families without electricity expense (%)",
+  "Famílias com energia acima de 3% da renda (%)": "Families with energy above 3% of income (%)",
+  "Famílias com energia acima de 3% da despesa total (%)": "Families with energy above 3% of total expense (%)",
+  "Famílias com energia acima de 5% da renda (%)": "Families with energy above 5% of income (%)",
+  "Famílias com energia acima de 5% da despesa total (%)": "Families with energy above 5% of total expense (%)",
+  "Famílias com energia acima de 10% da renda (%)": "Families with energy above 10% of income (%)",
+  "Famílias com energia acima de 10% da despesa total (%)": "Families with energy above 10% of total expense (%)",
+  "POF 2017-2018 (valores de 15/01/2018)": "POF 2017-2018 (values as of Jan 15, 2018)",
+  // faixas de consumo e eventos da Tarifa Social
+  "até 30 kWh": "up to 30 kWh",
+  "31 a 50 kWh": "31 to 50 kWh",
+  "51 a 100 kWh": "51 to 100 kWh",
+  "101 a 220 kWh": "101 to 220 kWh",
+  "acima de 220 kWh": "above 220 kWh",
+  "Concessão automática (Lei nº 14.203/2021)": "Automatic granting (Law 14,203/2021)",
+  "Gratuidade até 80 kWh (MPV nº 1.300/2025)": "Free of charge up to 80 kWh (Provisional Measure 1,300/2025)",
+  "A ANEEL informa que a Tarifa Social é concedida automaticamente desde janeiro de 2022 a quem tem direito e é titular da conta.":
+    "ANEEL states that the Tarifa Social has been granted automatically since January 2022 to those entitled who hold the account.",
+  "Faturas emitidas a partir de 5 de julho de 2025 têm desconto de 100% até 80 kWh por mês e nenhum desconto acima disso, segundo a ANEEL.":
+    "Bills issued from July 5, 2025 have a 100% discount up to 80 kWh a month and no discount above that, according to ANEEL.",
+  // Luz para Todos
+  "Luz para Todos: rural": "Luz para Todos: rural",
+  "Luz para Todos: regiões remotas da Amazônia Legal": "Luz para Todos: remote regions of the Legal Amazon",
+  "Recurso da distribuidora": "Distribution utility funds",
+  // elegibilidade da Tarifa Social (Cobertura)
+  "Família inscrita no Cadastro Único com renda familiar mensal por pessoa de até meio salário mínimo.":
+    "Family registered in the Cadastro Único (federal social registry) with monthly family income per person of up to half a minimum wage.",
+  "Idoso com 65 anos ou mais ou pessoa com deficiência que recebe o BPC.": "Person aged 65 or older or person with a disability who receives the BPC (continuous cash benefit).",
+  "Família no Cadastro Único com renda de até 3 salários mínimos e morador que depende de equipamento elétrico para tratamento de saúde.":
+    "Family in the Cadastro Único with income of up to 3 minimum wages and a resident who depends on electrical equipment for health treatment.",
+  "Cadastro Único atualizado nos últimos 2 anos.": "Cadastro Único record updated in the last 2 years.",
+  "Uma única UC por família, residencial.": "A single residential consumer unit per family.",
+  "Endereço do cadastro na área da distribuidora.": "Registered address within the distribution utility's area.",
+  "Concessão automática desde janeiro de 2022 quando um membro da família é titular da conta.": "Automatic granting since January 2022 when a family member holds the account.",
+  "O numerador inclui beneficiários pelos critérios II e III, que não estão (ou não estão todos) no denominador; por isso a razão pode passar de 100%.":
+    "The numerator includes beneficiaries under criteria II and III, who are not (or not all) in the denominator; that is why the ratio can exceed 100%.",
+  "O município da fatura é o da UC; o do Cadastro Único é o da residência declarada.": "The municipality of the bill is that of the consumer unit; that of the Cadastro Único is that of the declared residence.",
+  "Famílias sem acesso à rede elétrica estão no denominador e não podem estar no numerador.": "Families without access to the electricity grid are in the denominator and cannot be in the numerator.",
+  "Denominador com todas as famílias cadastradas (limite inferior da razão) e só com as atualizadas (limite superior): não é intervalo estatístico, é sensibilidade à definição do denominador.":
+    "Denominator with all registered families (lower bound of the ratio) and with only the updated ones (upper bound): it is not a statistical interval, it is sensitivity to the denominator definition.",
+  // custeio da Tarifa Social na CDE
+  "O conjunto não distingue valor orçado de valor executado; o ano em curso só pode ser valor orçado.":
+    "The dataset does not distinguish budgeted from executed values; the current year can only be a budgeted value.",
+  "Os valores anuais da CDE não coincidem com a soma da DMR do SCS: a CDE registra o ano de referência do orçamento e dos repasses, o SCS a competência do desconto.":
+    "The annual CDE values do not match the sum of the SCS monthly revenue difference (DMR): the CDE records the reference year of the budget and transfers, the SCS the accrual month of the discount.",
+  "Valores nominais, sem correção pela inflação.": "Nominal values, without inflation adjustment.",
+  // arquivos para baixar
+  "Tarifa Social: série mensal nacional (SCS)": "Tarifa Social: national monthly series (SCS)",
+  "Tarifa Social por distribuidora e mês (SCS)": "Tarifa Social by distribution utility and month (SCS)",
+  "Tarifa Social: faturas e desconto por mês e UF (Beneficiários da CDE)": "Tarifa Social: bills and discount by month and state (CDE Beneficiaries)",
+  "Municípios: faturas com Tarifa Social e Cadastro Único (proxy)": "Municipalities: bills with Tarifa Social and Cadastro Único (proxy)",
+  "Cobertura potencial nacional por mês (proxy)": "National potential coverage by month (proxy)",
+  "Série antiga da ANEEL por região (descontinuada)": "ANEEL's old series by region (discontinued)",
+  "CDE: custeio anual por rubrica": "CDE: annual funding by budget line",
+  "POF 2017-2018: energia no orçamento das famílias": "POF 2017-2018: energy in family budgets",
+  "PNAD Contínua: acesso à energia elétrica": "PNAD Contínua: access to electricity",
+  "Tarifa Social: faturas e desconto por mês e UF (JSON do gráfico)": "Tarifa Social: bills and discount by month and state (chart JSON)",
+  "Cobertura potencial nacional por mês (JSON do gráfico, proxy)": "National potential coverage by month (chart JSON, proxy)",
+  "Sistemas isolados: localidades do ciclo mais recente (JSON do mapa)": "Isolated systems: localities of the latest cycle (map JSON)",
+  "Luz para Todos: domicílios atendidos por UF e mês": "Luz para Todos: households served by state and month",
+  "Luz para Todos: domicílios atendidos por município e ano": "Luz para Todos: households served by municipality and year",
+  "Luz para Todos: recursos por contrato": "Luz para Todos: funds by contract",
+  "Sistemas isolados: localidades (PASI)": "Isolated systems: localities (PASI)",
+};
 
 const TABELAS: Record<string, Record<string, string>> = {
   bandeira: BANDEIRAS,
