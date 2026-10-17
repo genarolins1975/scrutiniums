@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Estado de ausência. Ausência nunca vira zero, erro nunca vira valor, ensaio
@@ -30,13 +31,13 @@ export function Indisponivel({
       <dl className="mt-5 space-y-4 text-sm">
         {ultimaExecucao && (
           <div>
-            <dt className="rotulo text-mineral">Última execução</dt>
+            <dt className="rotulo text-mineral">{tx("Última execução", "Last run")}</dt>
             <dd className="mt-1 text-carvao-muted">{ultimaExecucao}</dd>
           </div>
         )}
         {faltante && faltante.length > 0 && (
           <div>
-            <dt className="rotulo text-mineral">O que falta</dt>
+            <dt className="rotulo text-mineral">{tx("O que falta", "What is missing")}</dt>
             <dd className="mt-1 text-carvao-muted">
               <ul className="list-disc space-y-1 pl-4">
                 {faltante.map((f, i) => (
@@ -48,7 +49,7 @@ export function Indisponivel({
         )}
         {estado && (
           <div>
-            <dt className="rotulo text-mineral">Situação atual</dt>
+            <dt className="rotulo text-mineral">{tx("Situação atual", "Current status")}</dt>
             <dd className="mt-1 text-carvao-muted">{estado}</dd>
           </div>
         )}

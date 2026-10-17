@@ -22,7 +22,10 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { lerGold, integra } from "./gold";
-import { dataBR, num, pct, reais } from "./formato";
+import { dataBR, nomeMes, nomeSubmercado, num, pct, reais } from "./formato";
+import { idiomaEnergia, tx } from "./idioma";
+import { traduzDaGold } from "./i18n/entrada-visao";
+import { horasMinutos, minuscula as minusculaEn } from "./visao";
 import { valorDestaque, type Evidencia, type FormatoNumero, type Variacao } from "./evidencia";
 import { resumo as resumoDistribuicao } from "./distribuicao";
 import { periodoLegivel } from "./home";
@@ -122,8 +125,18 @@ function ausente(id: IdDoSinal, medida: string, motivo: string, periodo: string 
   return { id, medida, natureza: "CALCULADO", estado, motivo, periodo };
 }
 
+/** O motivo da ausência como a gold o escreve; a gold só o tem em português, e a página inglesa usa o motivo padrão, em inglês. */
 function motivoDaGold(g: { motivo?: string } | null, padrao: string): string {
+  if (idiomaEnergia() === "en") return traduzDaGold(g?.motivo?.trim() ?? "") ?? padrao;
   return g?.motivo?.trim() ? g.motivo : padrao;
+}
+
+/** "2001-2025" em palavras ("2001 a 2025", "2001 to 2025"), como periodoBase de agua.ts, no idioma da página. */
+function periodoDaBase(p: string | null | undefined): string {
+  if (idiomaEnergia() !== "en") return periodoBase(p);
+  if (!p) return "no base period";
+  const [a, b] = p.split("-");
+  return b && b !== a ? `${a} to ${b}` : a;
 }
 
 /** A evidência prova o número exibido: o valor de cálculo dela, na mesma escala, cai no arredondamento do valor mostrado. */
@@ -154,7 +167,7 @@ const minuscula = (t: string) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : t
 
 /* ------------------------------------------------------------------ 1. conta de luz */
 
-const MEDIDA_CONTA = "Tarifa residencial mediana entre as distribuidoras";
+const MEDIDA_CONTA = () => tx("Tarifa residencial mediana entre as distribuidoras", "Median residential tariff across distribution utilities");
 
 /** Perfil de consumo de referência da tarifa: o do meio da lista que o módulo publica (200 kWh, quando a lista é 100, 200 e 300). */
 function perfilDeReferencia(perfis: readonly number[]): number | null {
@@ -195,22 +208,34 @@ export function medianaPonderadaPorUc(conta: ContaGold | null, qualidade: Qualid
 }
 
 export function sinalConta(g: ContaGold | null = lerGold<ContaGold>("conta.json"), qualidade: QualidadeGold | null = lerGold<QualidadeGold>("qualidade.json")): SinalHome {
-  if (!integra(g)) return ausente("conta", MEDIDA_CONTA, motivoDaGold(g, "A base publicada de Conta de luz não foi processada nesta publicação."), null, "indisponivel");
+  if (!integra(g)) return ausente("conta", MEDIDA_CONTA(), motivoDaGold(g, tx("A base publicada de Conta de luz não foi processada nesta publicação.", "The published Electricity bill base was not processed in this publication.")), null, "indisponivel");
   const r = g.tarifas.resumo;
   const data = dataBR(g.data_referencia);
-  if (!temValor(r.mediana)) return ausente("conta", MEDIDA_CONTA, `Nenhuma distribuidora tem tarifa residencial em vigor em ${data} no arquivo da ANEEL.`, `vigente em ${data}`);
+  if (!temValor(r.mediana))
+    return ausente(
+      "conta",
+      MEDIDA_CONTA(),
+      tx(`Nenhuma distribuidora tem tarifa residencial em vigor em ${data} no arquivo da ANEEL.`, `No distribution utility has a residential tariff in force on ${data} in the ANEEL file.`),
+      tx(`vigente em ${data}`, `in force on ${data}`),
+    );
   const valor = r.mediana / 1000;
   const perfil = perfilDeReferencia(g.perfis_kwh);
   const custo = perfil === null ? null : r.perfis_mediana[String(perfil) as "100" | "200" | "300"];
   const referencias: string[] = [];
-  if (perfil !== null && temValor(custo)) referencias.push(`${num(perfil, 0)} kWh por mês custam ${reais(custo)} nessa tarifa.`);
+  if (perfil !== null && temValor(custo)) referencias.push(tx(`${num(perfil, 0)} kWh por mês custam ${reais(custo)} nessa tarifa.`, `${num(perfil, 0)} kWh per month cost ${reais(custo)} at this tariff.`));
   const ev = g.tarifas.evidencia_mediana;
   // as distribuidoras que ficam de fora (sem vigência cobrindo a data): o valor muda quando a ANEEL completa o arquivo
   const fora = (r.fora_vigencia_recente ?? 0) + (r.fora_sem_tarifa_ha_mais_de_90_dias ?? 0);
   const ponderada = medianaPonderadaPorUc(g, qualidade);
   const ponderacao = ponderada
-    ? `Cada distribuidora pesa igual. Pesada pelas unidades consumidoras de ${ponderada.ano}, a mediana seria ${kwh(ponderada.valorMwh)} por kWh.`
-    : "Cada distribuidora pesa igual, sem ponderar pelas unidades consumidoras: pesada por elas, a mediana seria outra.";
+    ? tx(
+        `Cada distribuidora pesa igual. Pesada pelas unidades consumidoras de ${ponderada.ano}, a mediana seria ${kwh(ponderada.valorMwh)} por kWh.`,
+        `Each distribution utility has the same weight. Weighted by the consumer units of ${ponderada.ano}, the median would be ${kwh(ponderada.valorMwh)} per kWh.`,
+      )
+    : tx(
+        "Cada distribuidora pesa igual, sem ponderar pelas unidades consumidoras: pesada por elas, a mediana seria outra.",
+        "Each distribution utility has the same weight, with no weighting by consumer units: weighted by them, the median would be different.",
+      );
   const figura: FiguraReferencia | null =
     temValor(r.minimo) && temValor(r.maximo) && temValor(r.p25) && temValor(r.p75)
       ? {
@@ -218,27 +243,38 @@ export function sinalConta(g: ContaGold | null = lerGold<ContaGold>("conta.json"
           caixa: [r.p25 / 1000, r.p75 / 1000],
           mediana: valor,
           valor,
-          legenda: `Entre as ${num(r.n, 0)} distribuidoras, de ${kwh(r.minimo)} a ${kwh(r.maximo)} por kWh; a metade central, de ${kwh(r.p25)} a ${kwh(r.p75)}.`,
+          legenda: tx(
+            `Entre as ${num(r.n, 0)} distribuidoras, de ${kwh(r.minimo)} a ${kwh(r.maximo)} por kWh; a metade central, de ${kwh(r.p25)} a ${kwh(r.p75)}.`,
+            `Across the ${num(r.n, 0)} distribution utilities, from ${kwh(r.minimo)} to ${kwh(r.maximo)} per kWh; the middle half, from ${kwh(r.p25)} to ${kwh(r.p75)}.`,
+          ),
         }
       : null;
   return {
     id: "conta",
     estado: "disponivel",
-    medida: MEDIDA_CONTA,
+    medida: MEDIDA_CONTA(),
     natureza: "CALCULADO",
     valor,
     formato: "reais",
     casas: 4,
     valorTexto: valorDestaque(valor, "reais", 4),
-    unidade: "por kWh",
-    periodo: `vigente em ${data}`,
-    universo: `Mediana de ${num(r.n, 0)} distribuidoras com tarifa em vigor na data (grupo B1, residencial convencional)${
-      fora > 0 ? `; outros ${num(fora, 0)} CNPJs ficam de fora por não terem vigência na data, e o valor muda quando a ANEEL completar o arquivo` : ""
-    }.`,
+    unidade: tx("por kWh", "per kWh"),
+    periodo: tx(`vigente em ${data}`, `in force on ${data}`),
+    universo: tx(
+      `Mediana de ${num(r.n, 0)} distribuidoras com tarifa em vigor na data (grupo B1, residencial convencional)${
+        fora > 0 ? `; outros ${num(fora, 0)} CNPJs ficam de fora por não terem vigência na data, e o valor muda quando a ANEEL completar o arquivo` : ""
+      }.`,
+      `Median of ${num(r.n, 0)} distribution utilities with a tariff in force on the date (group B1, conventional residential)${
+        fora > 0 ? `; another ${num(fora, 0)} CNPJs are left out because they have no validity period on the date, and the value changes when ANEEL completes the file` : ""
+      }.`,
+    ),
     variacao: null,
     referencias,
-    ressalva: `${ponderacao} É a tarifa homologada de energia e de uso da rede, sem tributos, bandeira nem iluminação pública: não é o valor da fatura.`,
-    prova: provaConfere(ev, valor, 4, 1000) ? prova("/energia/gold/conta.json", "tarifas.evidencia_mediana", MEDIDA_CONTA, ev) : null,
+    ressalva: tx(
+      `${ponderacao} É a tarifa homologada de energia e de uso da rede, sem tributos, bandeira nem iluminação pública: não é o valor da fatura.`,
+      `${ponderacao} It is the approved energy and network use tariff, without taxes, tariff flag or public lighting: it is not the amount on the bill.`,
+    ),
+    prova: provaConfere(ev, valor, 4, 1000) ? prova("/energia/gold/conta.json", "tarifas.evidencia_mediana", MEDIDA_CONTA(), ev) : null,
     endereco: enderecoDe("conta"),
     figura,
     semFicha: null,
@@ -248,17 +284,23 @@ export function sinalConta(g: ContaGold | null = lerGold<ContaGold>("conta.json"
 
 /* ------------------------------------------------------------------ 2. qualidade do serviço */
 
-const MEDIDA_QUALIDADE = "Tempo médio sem energia por unidade consumidora (DEC)";
+const MEDIDA_QUALIDADE = () =>
+  tx("Tempo médio sem energia por unidade consumidora (DEC)", "Average time without power per consumer unit (DEC, equivalent interruption duration per consumer unit)");
 
 export function sinalQualidade(g: QualidadeGold | null = lerGold<QualidadeGold>("qualidade.json")): SinalHome {
-  if (!integra(g)) return ausente("qualidade", MEDIDA_QUALIDADE, motivoDaGold(g, "A base publicada de Qualidade do serviço não foi processada nesta publicação."), null, "indisponivel");
+  if (!integra(g)) return ausente("qualidade", MEDIDA_QUALIDADE(), motivoDaGold(g, tx("A base publicada de Qualidade do serviço não foi processada nesta publicação.", "The published Quality of supply base was not processed in this publication.")), null, "indisponivel");
   const ref = g.ano_referencia;
   const a = anoBrasil(g, ref);
   if (!a || !temValor(a.dec)) {
-    return ausente("qualidade", MEDIDA_QUALIDADE, `Sem DEC nacional para ${ref}: o ano não tem os 12 meses nacionais completos publicados.`, `ano de ${ref}`);
+    return ausente(
+      "qualidade",
+      MEDIDA_QUALIDADE(),
+      tx(`Sem DEC nacional para ${ref}: o ano não tem os 12 meses nacionais completos publicados.`, `No national DEC for ${ref}: the year does not have all 12 complete national months published.`),
+      tx(`ano de ${ref}`, `year ${ref}`),
+    );
   }
   const ant = anoBrasil(g, ref - 1);
-  const variacao: Variacao | null = ant && temValor(ant.dec) ? { valor: a.dec - ant.dec, casas: 2, sufixo: " h", referencia: `contra ${ref - 1}` } : null;
+  const variacao: Variacao | null = ant && temValor(ant.dec) ? { valor: a.dec - ant.dec, casas: 2, sufixo: " h", referencia: tx(`contra ${ref - 1}`, `versus ${ref - 1}`) } : null;
   const todas = temValor(a.dec_todas_parcelas) ? a.dec_todas_parcelas : null;
   const ev = g.evidencias?.dec_brasil ?? null;
   // o universo do número nacional: as que têm DEC anual; as que enviaram só parte do ano ficam fora e são contadas à parte
@@ -274,30 +316,43 @@ export function sinalQualidade(g: QualidadeGold | null = lerGold<QualidadeGold>(
           caixa: [r.p25, r.p75],
           ...(r.mediana !== null ? { mediana: r.mediana } : {}),
           valor: a.dec,
-          ...(limite !== null ? { marca: { valor: limite, rotulo: "limite regulatório" } } : {}),
-          legenda: `Entre as ${num(r.n, 0)} distribuidoras, de ${num(r.min, 2)} h a ${num(r.max, 2)} h; a metade central, de ${num(r.p25, 2)} h a ${num(r.p75, 2)} h.${
-            limite !== null ? ` O traço tracejado é o limite regulatório do DEC, ponderado pelas unidades consumidoras: ${num(limite, 2)} h.` : ""
-          }`,
+          ...(limite !== null ? { marca: { valor: limite, rotulo: tx("limite regulatório", "regulatory limit") } } : {}),
+          legenda: tx(
+            `Entre as ${num(r.n, 0)} distribuidoras, de ${num(r.min, 2)} h a ${num(r.max, 2)} h; a metade central, de ${num(r.p25, 2)} h a ${num(r.p75, 2)} h.${
+              limite !== null ? ` O traço tracejado é o limite regulatório do DEC, ponderado pelas unidades consumidoras: ${num(limite, 2)} h.` : ""
+            }`,
+            `Across the ${num(r.n, 0)} distribution utilities, from ${num(r.min, 2)} h to ${num(r.max, 2)} h; the middle half, from ${num(r.p25, 2)} h to ${num(r.p75, 2)} h.${
+              limite !== null ? ` The dashed line is the regulatory DEC limit, weighted by consumer units: ${num(limite, 2)} h.` : ""
+            }`,
+          ),
         }
       : null;
   return {
     id: "qualidade",
     estado: "disponivel",
-    medida: MEDIDA_QUALIDADE,
+    medida: MEDIDA_QUALIDADE(),
     natureza: "CALCULADO",
     valor: a.dec,
     formato: "num",
     casas: 2,
     valorTexto: valorDestaque(a.dec, "num", 2),
-    unidade: "horas",
-    periodo: `ano de ${ref}`,
-    universo: `${num(comDec.length, 0)} distribuidoras com DEC anual de ${ref}, ponderado pelas unidades consumidoras${
-      parciais > 0 ? `; outras ${num(parciais, 0)}, com dado de parte do ano, ficam de fora` : ""
-    }.`,
+    unidade: tx("horas", "hours"),
+    periodo: tx(`ano de ${ref}`, `year ${ref}`),
+    universo: tx(
+      `${num(comDec.length, 0)} distribuidoras com DEC anual de ${ref}, ponderado pelas unidades consumidoras${
+        parciais > 0 ? `; outras ${num(parciais, 0)}, com dado de parte do ano, ficam de fora` : ""
+      }.`,
+      `${num(comDec.length, 0)} distribution utilities with an annual DEC for ${ref}, weighted by consumer units${
+        parciais > 0 ? `; another ${num(parciais, 0)}, with data for part of the year, are left out` : ""
+      }.`,
+    ),
     variacao,
-    referencias: [`Equivale a ${horasEMinutos(a.dec)} por unidade consumidora.`],
-    ressalva: `Não conta as interrupções que a regra exclui${todas !== null ? `; contando todas, são ${num(todas, 2)} h` : ""}.`,
-    prova: ev && provaConfere(ev, a.dec, 2) ? prova("/energia/gold/qualidade.json", "evidencias.dec_brasil", MEDIDA_QUALIDADE, ev) : null,
+    referencias: [tx(`Equivale a ${horasEMinutos(a.dec)} por unidade consumidora.`, `Equivalent to ${horasMinutos(a.dec)} per consumer unit.`)],
+    ressalva: tx(
+      `Não conta as interrupções que a regra exclui${todas !== null ? `; contando todas, são ${num(todas, 2)} h` : ""}.`,
+      `It does not count the interruptions that the rule excludes${todas !== null ? `; counting all of them, the total is ${num(todas, 2)} h` : ""}.`,
+    ),
+    prova: ev && provaConfere(ev, a.dec, 2) ? prova("/energia/gold/qualidade.json", "evidencias.dec_brasil", MEDIDA_QUALIDADE(), ev) : null,
     endereco: enderecoDe("qualidade"),
     figura,
     semFicha: null,
@@ -307,7 +362,7 @@ export function sinalQualidade(g: QualidadeGold | null = lerGold<QualidadeGold>(
 
 /* ------------------------------------------------------------------ 3. perdas */
 
-const MEDIDA_PERDAS = "Perdas totais das concessionárias de distribuição";
+const MEDIDA_PERDAS = () => tx("Perdas totais das concessionárias de distribuição", "Total losses of the distribution concession holders");
 
 /** Quantas distribuidoras têm dado no ano de referência e quantas são concessionárias e permissionárias (o total nacional soma só as primeiras). */
 export function universoPerdas(g: PerdasGold | null): { ano: number; total: number; concessionarias: number; permissionarias: number } | null {
@@ -410,31 +465,56 @@ export function denominadorDePerdas(g: PerdasGold | null = lerGold<PerdasGold>("
 export function descreverDenominador(d: DenominadorDePerdas): { curta: string; completa: string; rotuloDaFicha: string } {
   const fora = d.nRequerida + d.nMista;
   const twh = (v: number) => `${num(v, 2)} TWh`;
-  const ponto = (x: number) => (Math.abs(x) < 2 ? "ponto percentual" : "pontos percentuais");
+  const ponto = (x: number) => (Math.abs(x) < 2 ? tx("ponto percentual", "percentage point") : tx("pontos percentuais", "percentage points"));
   const dif = d.taxaComPublicadaPct === null ? null : d.taxaPct - d.taxaComPublicadaPct;
   const comPublicada = d.taxaComPublicadaPct === null ? null : `${num(d.taxaComPublicadaPct, 1)}%`;
   const curta =
     fora === 0
-      ? `Em todas as ${d.n} concessionárias a energia injetada de referência é a linha que a ANEEL publica.`
-      : `Em ${fora} das ${d.n} concessionárias a base é a energia requerida, ou uma mistura dela com a energia injetada publicada${
-          comPublicada ? `; sobre a injetada publicada, a taxa seria de ${comPublicada}` : ""
-        }.`;
+      ? tx(
+          `Em todas as ${d.n} concessionárias a energia injetada de referência é a linha que a ANEEL publica.`,
+          `In all ${d.n} concession holders, the reference injected energy is the line that ANEEL publishes.`,
+        )
+      : tx(
+          `Em ${fora} das ${d.n} concessionárias a base é a energia requerida, ou uma mistura dela com a energia injetada publicada${
+            comPublicada ? `; sobre a injetada publicada, a taxa seria de ${comPublicada}` : ""
+          }.`,
+          `In ${fora} of the ${d.n} concession holders, the base is the required energy, or a mix of it with the published injected energy${
+            comPublicada ? `; on the published injected energy, the rate would be ${comPublicada}` : ""
+          }.`,
+        );
   const completa =
     fora === 0
-      ? `O denominador é a energia injetada de referência, ${twh(d.referenciaTwh)} nas ${d.n} concessionárias, e em todas elas é a linha de energia injetada que a ANEEL publica.`
-      : `O denominador é a energia injetada de referência: ${twh(d.referenciaTwh)} nas ${d.n} concessionárias. Em ${d.nPublicada} delas é a linha de energia injetada que a ANEEL publica. Nas outras ${fora} essa linha deixou de fechar o balanço com a perda calculada pela fonte, sem explicação publicada, e a referência é a energia requerida, isto é, fornecida mais irregular mais perdas${
-          d.nMista ? ` (em ${d.nMista} delas o ano mistura meses dos dois leiautes)` : ""
-        }.${
-          d.publicadaTwh !== null && comPublicada !== null && dif !== null
-            ? ` Sobre a energia injetada publicada, ${twh(d.publicadaTwh)}, a mesma soma de perdas daria ${comPublicada}, e não ${num(d.taxaPct, 1)}%: uma diferença de ${num(Math.abs(dif), 1)} ${ponto(dif)}.`
-            : " A energia injetada publicada, que daria outra taxa, não está disponível nesta publicação."
-        }`;
+      ? tx(
+          `O denominador é a energia injetada de referência, ${twh(d.referenciaTwh)} nas ${d.n} concessionárias, e em todas elas é a linha de energia injetada que a ANEEL publica.`,
+          `The denominator is the reference injected energy, ${twh(d.referenciaTwh)} in the ${d.n} concession holders, and in all of them it is the injected energy line that ANEEL publishes.`,
+        )
+      : tx(
+          `O denominador é a energia injetada de referência: ${twh(d.referenciaTwh)} nas ${d.n} concessionárias. Em ${d.nPublicada} delas é a linha de energia injetada que a ANEEL publica. Nas outras ${fora} essa linha deixou de fechar o balanço com a perda calculada pela fonte, sem explicação publicada, e a referência é a energia requerida, isto é, fornecida mais irregular mais perdas${
+            d.nMista ? ` (em ${d.nMista} delas o ano mistura meses dos dois leiautes)` : ""
+          }.${
+            d.publicadaTwh !== null && comPublicada !== null && dif !== null
+              ? ` Sobre a energia injetada publicada, ${twh(d.publicadaTwh)}, a mesma soma de perdas daria ${comPublicada}, e não ${num(d.taxaPct, 1)}%: uma diferença de ${num(Math.abs(dif), 1)} ${ponto(dif)}.`
+              : " A energia injetada publicada, que daria outra taxa, não está disponível nesta publicação."
+          }`,
+          `The denominator is the reference injected energy: ${twh(d.referenciaTwh)} in the ${d.n} concession holders. In ${d.nPublicada} of them it is the injected energy line that ANEEL publishes. In the other ${fora}, that line no longer balances with the loss calculated by the source, with no published explanation, and the reference is the required energy, that is, energy supplied plus irregular consumption plus losses${
+            d.nMista ? ` (in ${d.nMista} of them the year mixes months from both layouts)` : ""
+          }.${
+            d.publicadaTwh !== null && comPublicada !== null && dif !== null
+              ? ` On the published injected energy, ${twh(d.publicadaTwh)}, the same sum of losses would give ${comPublicada}, not ${num(d.taxaPct, 1)}%: a difference of ${num(Math.abs(dif), 1)} ${ponto(dif)}.`
+              : " The published injected energy, which would give a different rate, is not available in this publication."
+          }`,
+        );
   const rotuloDaFicha =
     fora === 0
-      ? `a linha de energia injetada publicada pela ANEEL nas ${d.n} concessionárias`
-      : `em ${d.nPublicada} concessionárias, a linha de energia injetada publicada pela ANEEL; nas outras ${fora}, a energia requerida (fornecida + irregular + perdas)${
-          d.publicadaTwh !== null && comPublicada ? `; sobre a energia injetada publicada, ${twh(d.publicadaTwh)}, a taxa seria de ${comPublicada}` : ""
-        }`;
+      ? tx(`a linha de energia injetada publicada pela ANEEL nas ${d.n} concessionárias`, `the injected energy line published by ANEEL in the ${d.n} concession holders`)
+      : tx(
+          `em ${d.nPublicada} concessionárias, a linha de energia injetada publicada pela ANEEL; nas outras ${fora}, a energia requerida (fornecida + irregular + perdas)${
+            d.publicadaTwh !== null && comPublicada ? `; sobre a energia injetada publicada, ${twh(d.publicadaTwh)}, a taxa seria de ${comPublicada}` : ""
+          }`,
+          `in ${d.nPublicada} concession holders, the injected energy line published by ANEEL; in the other ${fora}, the required energy (supplied + irregular + losses)${
+            d.publicadaTwh !== null && comPublicada ? `; on the published injected energy, ${twh(d.publicadaTwh)}, the rate would be ${comPublicada}` : ""
+          }`,
+        );
   return { curta, completa, rotuloDaFicha };
 }
 
@@ -466,16 +546,24 @@ export function sinalPerdas(
   csv: string | null = lerSerieCsv("perdas_distribuidoras.csv"),
   catalogo: CatalogoGold | null = lerGold<CatalogoGold>("catalogo.json"),
 ): SinalHome {
-  if (!integra(g)) return ausente("perdas", MEDIDA_PERDAS, motivoDaGold(g, "A base publicada de Perdas não foi processada nesta publicação."), null, "indisponivel");
+  if (!integra(g)) return ausente("perdas", MEDIDA_PERDAS(), motivoDaGold(g, tx("A base publicada de Perdas não foi processada nesta publicação.", "The published Losses base was not processed in this publication.")), null, "indisponivel");
   const ano = g.referencia.ano;
   const nac = linhaNacional(g, ano);
   if (!nac || !temValor(nac.taxa_total_pct)) {
-    return ausente("perdas", MEDIDA_PERDAS, `Sem taxa nacional de perdas para ${ano}: nenhuma concessionária tem os 12 meses do ano sem alerta.`, `ano de ${ano}`);
+    return ausente(
+      "perdas",
+      MEDIDA_PERDAS(),
+      tx(`Sem taxa nacional de perdas para ${ano}: nenhuma concessionária tem os 12 meses do ano sem alerta.`, `No national loss rate for ${ano}: no concession holder has all 12 months of the year without an alert.`),
+      tx(`ano de ${ano}`, `year ${ano}`),
+    );
   }
   const u = universoPerdas(g);
   const mesmas = nac.mesmas_ano_anterior;
   const dif = mesmas ? variacaoMesmas(mesmas.taxa_total_pct) : null;
-  const variacao: Variacao | null = mesmas && dif !== null ? { valor: dif, casas: 2, sufixo: " p.p.", referencia: `contra ${ano - 1}, nas mesmas ${num(mesmas.n_total, 0)} concessionárias` } : null;
+  const variacao: Variacao | null =
+    mesmas && dif !== null
+      ? { valor: dif, casas: 2, sufixo: " p.p.", referencia: tx(`contra ${ano - 1}, nas mesmas ${num(mesmas.n_total, 0)} concessionárias`, `versus ${ano - 1}, in the same ${num(mesmas.n_total, 0)} concession holders`) }
+      : null;
   const ev = g.evidencias?.taxa_nacional ?? null;
   // o número exibido é o da ficha (14,7%): o valor sem arredondar vem da própria evidência, e não do campo da série nacional, que já traz duas casas
   const valor = ev && temValor(ev.valor_calculo) && Math.abs(ev.valor_calculo - nac.taxa_total_pct) <= 0.006 ? ev.valor_calculo : nac.taxa_total_pct;
@@ -487,7 +575,15 @@ export function sinalPerdas(
   const quebra = quebraDaBaseDePerdas(ano, catalogo);
   const referencias: string[] = [];
   if (quebra) {
-    referencias.push(`Em ${dataBR(quebra.data)}, ${minuscula(quebra.descricao.replace(/\.$/, ""))}: a comparação com ${ano - 1} atravessa essa mudança.`);
+    const descricaoEn = traduzDaGold(quebra.descricao);
+    referencias.push(
+      tx(
+        `Em ${dataBR(quebra.data)}, ${minuscula(quebra.descricao.replace(/\.$/, ""))}: a comparação com ${ano - 1} atravessa essa mudança.`,
+        descricaoEn
+          ? `On ${dataBR(quebra.data)}, ${minusculaEn(descricaoEn.replace(/\.$/, ""))}: the comparison with ${ano - 1} crosses this change.`
+          : `On ${dataBR(quebra.data)}, the source changed its methodology for this base: the comparison with ${ano - 1} crosses this change.`,
+      ),
+    );
   }
   if (den) referencias.push(descreverDenominador(den).curta);
   const r = den ? resumoDistribuicao(den.taxasPct) : null;
@@ -498,27 +594,38 @@ export function sinalPerdas(
           caixa: [r.p25, r.p75],
           ...(r.mediana !== null ? { mediana: r.mediana } : {}),
           valor,
-          legenda: `Entre as ${num(r.n, 0)} concessionárias, de ${pct(r.min, 1)} a ${pct(r.max, 1)}; a metade central, de ${pct(r.p25, 1)} a ${pct(r.p75, 1)}. A taxa nacional pesa cada uma pela energia que recebe; a mediana simples (${pct(r.mediana, 1)}) não.`,
+          legenda: tx(
+            `Entre as ${num(r.n, 0)} concessionárias, de ${pct(r.min, 1)} a ${pct(r.max, 1)}; a metade central, de ${pct(r.p25, 1)} a ${pct(r.p75, 1)}. A taxa nacional pesa cada uma pela energia que recebe; a mediana simples (${pct(r.mediana, 1)}) não.`,
+            `Across the ${num(r.n, 0)} concession holders, from ${pct(r.min, 1)} to ${pct(r.max, 1)}; the middle half, from ${pct(r.p25, 1)} to ${pct(r.p75, 1)}. The national rate weights each one by the energy it receives; the simple median (${pct(r.mediana, 1)}) does not.`,
+          ),
         }
       : null;
   return {
     id: "perdas",
     estado: "disponivel",
-    medida: MEDIDA_PERDAS,
+    medida: MEDIDA_PERDAS(),
     natureza: "CALCULADO",
     valor,
     formato: "pct",
     casas,
     valorTexto: valorDestaque(valor, "pct", casas),
-    unidade: baseMista ? "da energia injetada ou requerida" : "da energia injetada",
-    periodo: `ano de ${ano}`,
-    universo: `${num(nac.n_distribuidoras, 0)} concessionárias com os 12 meses de ${ano} e sem alerta${
-      u ? `; das ${num(u.total, 0)} distribuidoras com dado no ano, as ${num(u.permissionarias, 0)} permissionárias ficam fora deste total` : "; as permissionárias ficam fora deste total"
-    }.`,
+    unidade: baseMista ? tx("da energia injetada ou requerida", "of injected or required energy") : tx("da energia injetada", "of injected energy"),
+    periodo: tx(`ano de ${ano}`, `year ${ano}`),
+    universo: tx(
+      `${num(nac.n_distribuidoras, 0)} concessionárias com os 12 meses de ${ano} e sem alerta${
+        u ? `; das ${num(u.total, 0)} distribuidoras com dado no ano, as ${num(u.permissionarias, 0)} permissionárias ficam fora deste total` : "; as permissionárias ficam fora deste total"
+      }.`,
+      `${num(nac.n_distribuidoras, 0)} concession holders with all 12 months of ${ano} and no alert${
+        u ? `; of the ${num(u.total, 0)} distribution utilities with data for the year, the ${num(u.permissionarias, 0)} permit holders are left out of this total` : "; permit holders are left out of this total"
+      }.`,
+    ),
     variacao,
     referencias,
-    ressalva: "Soma perdas técnicas e não técnicas; perda não técnica não é sinônimo de furto.",
-    prova: confere ? prova("/energia/gold/perdas.json", "evidencias.taxa_nacional", MEDIDA_PERDAS, ev!) : null,
+    ressalva: tx(
+      "Soma perdas técnicas e não técnicas; perda não técnica não é sinônimo de furto.",
+      "It adds technical and non-technical losses; a non-technical loss is not a synonym for theft.",
+    ),
+    prova: confere ? prova("/energia/gold/perdas.json", "evidencias.taxa_nacional", MEDIDA_PERDAS(), ev!) : null,
     // com o denominador refeito, a ficha vai completa e com ele nomeado; sem ele, vale a ficha lida sob demanda como a gold a publica
     ...(confere && den && ev!.denominador ? { evidencia: evidenciaComDenominadorNomeado(ev as unknown as Evidencia, den) } : {}),
     endereco: enderecoDe("perdas"),
@@ -530,7 +637,7 @@ export function sinalPerdas(
 
 /* ------------------------------------------------------------------ 4. reservatórios */
 
-const MEDIDA_AGUA = "Energia armazenada no Sistema Interligado Nacional (SIN)";
+const MEDIDA_AGUA = () => tx("Energia armazenada no Sistema Interligado Nacional (SIN)", "Stored energy (EAR) in the National Interconnected System (SIN)");
 
 /**
  * A EAR do SIN que a Visão geral mostra, quando o dia dela não é o do módulo Água e clima: as duas páginas leem capturas diferentes do ONS (a do
@@ -542,17 +649,25 @@ export function earNaVisaoGeral(sintese: SinteseVisaoGold | null, diaDoModulo: s
   const dia = painel?.data_referencia ?? null;
   const v = painel?.valor_atual?.valor;
   if (!painel || !dia || dia === diaDoModulo || !temValor(v)) return null;
-  return `A Visão geral, de outra captura do ONS, traz ${pct(v, 1)} em ${dataBR(dia)}.`;
+  return tx(`A Visão geral, de outra captura do ONS, traz ${pct(v, 1)} em ${dataBR(dia)}.`, `The Overview, from another ONS capture, shows ${pct(v, 1)} on ${dataBR(dia)}.`);
 }
 
 export function sinalAgua(g: AguaDetalheGold | null = lerGold<AguaDetalheGold>("agua_detalhe.json"), sintese: SinteseVisaoGold | null = lerGold<SinteseVisaoGold>("sintese.json")): SinalHome {
-  if (!integra(g)) return ausente("agua", MEDIDA_AGUA, motivoDaGold(g, "A base publicada de Água e clima não foi processada nesta publicação."), null, "indisponivel");
+  if (!integra(g)) return ausente("agua", MEDIDA_AGUA(), motivoDaGold(g, tx("A base publicada de Água e clima não foi processada nesta publicação.", "The published Water and climate base was not processed in this publication.")), null, "indisponivel");
   const sin = entidadesEar(g.armazenamento).find((e) => e.tipo === "subsistema" && e.id === "SIN") ?? null;
   const dia = sin?.dia ?? g.dias_referencia.ear ?? null;
   if (!sin || !temValor(sin.ear_pct)) {
-    return ausente("agua", MEDIDA_AGUA, `Sem a energia armazenada do Sistema Interligado Nacional${dia ? ` em ${dataBR(dia)}` : " nesta publicação"}.`, dia ? dataBR(dia) : null);
+    return ausente(
+      "agua",
+      MEDIDA_AGUA(),
+      tx(
+        `Sem a energia armazenada do Sistema Interligado Nacional${dia ? ` em ${dataBR(dia)}` : " nesta publicação"}.`,
+        `No stored energy for the National Interconnected System${dia ? ` on ${dataBR(dia)}` : " in this publication"}.`,
+      ),
+      dia ? dataBR(dia) : null,
+    );
   }
-  const variacao: Variacao | null = temValor(sin.variacao_30d_pp) ? { valor: sin.variacao_30d_pp, casas: 1, sufixo: " p.p.", referencia: "em 30 dias" } : null;
+  const variacao: Variacao | null = temValor(sin.variacao_30d_pp) ? { valor: sin.variacao_30d_pp, casas: 1, sufixo: " p.p.", referencia: tx("em 30 dias", "in 30 days") } : null;
   const ev = g.evidencias?.ear_sin ?? null;
   const referencias: string[] = [];
   const outraCaptura = dia ? earNaVisaoGeral(sintese, dia) : null;
@@ -563,29 +678,37 @@ export function sinalAgua(g: AguaDetalheGold | null = lerGold<AguaDetalheGold>("
           extremos: [sin.p10, sin.p90],
           mediana: sin.p50,
           valor: sin.ear_pct,
-          legenda: `No mesmo dia do ano, em ${periodoBase(sin.periodo_base)}, de ${pct(sin.p10, 1)} (percentil 10) a ${pct(sin.p90, 1)} (percentil 90), com mediana de ${pct(sin.p50, 1)}.${
-            temValor(sin.percentil_na_data) ? ` O dia fica no percentil ${num(sin.percentil_na_data, 0)}.` : ""
-          }`,
+          legenda: tx(
+            `No mesmo dia do ano, em ${periodoBase(sin.periodo_base)}, de ${pct(sin.p10, 1)} (percentil 10) a ${pct(sin.p90, 1)} (percentil 90), com mediana de ${pct(sin.p50, 1)}.${
+              temValor(sin.percentil_na_data) ? ` O dia fica no percentil ${num(sin.percentil_na_data, 0)}.` : ""
+            }`,
+            `On the same day of the year, from ${periodoDaBase(sin.periodo_base)}, from ${pct(sin.p10, 1)} (10th percentile) to ${pct(sin.p90, 1)} (90th percentile), with a median of ${pct(sin.p50, 1)}.${
+              temValor(sin.percentil_na_data) ? ` The day falls at percentile ${num(sin.percentil_na_data, 0)}.` : ""
+            }`,
+          ),
         }
       : null;
   return {
     id: "agua",
     estado: "disponivel",
-    medida: MEDIDA_AGUA,
+    medida: MEDIDA_AGUA(),
     natureza: "CALCULADO",
     valor: sin.ear_pct,
     formato: "pct",
     casas: 1,
     valorTexto: valorDestaque(sin.ear_pct, "pct", 1),
-    unidade: "da EAR máxima",
-    periodo: dia ? dataBR(dia) : "dia não informado",
-    universo: "Soma da energia armazenada dos quatro subsistemas sobre a soma das capacidades, e não a média dos percentuais.",
+    unidade: tx("da EAR máxima", "of maximum EAR"),
+    periodo: dia ? dataBR(dia) : tx("dia não informado", "day not reported"),
+    universo: tx(
+      "Soma da energia armazenada dos quatro subsistemas sobre a soma das capacidades, e não a média dos percentuais.",
+      "Sum of the stored energy of the four subsystems over the sum of their capacities, not the average of the percentages.",
+    ),
     variacao,
     referencias,
     ressalva: sin.capacidade_mudou_na_base
-      ? "O percentual não mede risco de desabastecimento, e a EAR máxima mudou ao longo da base."
-      : "O percentual não mede risco de desabastecimento.",
-    prova: ev && provaConfere(ev, sin.ear_pct, 1) ? prova("/energia/gold/agua_detalhe.json", "evidencias.ear_sin", MEDIDA_AGUA, ev) : null,
+      ? tx("O percentual não mede risco de desabastecimento, e a EAR máxima mudou ao longo da base.", "The percentage does not measure the risk of supply shortage, and the maximum EAR changed over the base period.")
+      : tx("O percentual não mede risco de desabastecimento.", "The percentage does not measure the risk of supply shortage."),
+    prova: ev && provaConfere(ev, sin.ear_pct, 1) ? prova("/energia/gold/agua_detalhe.json", "evidencias.ear_sin", MEDIDA_AGUA(), ev) : null,
     endereco: enderecoDe("agua"),
     figura,
     semFicha: null,
@@ -595,14 +718,12 @@ export function sinalAgua(g: AguaDetalheGold | null = lerGold<AguaDetalheGold>("
 
 /* ------------------------------------------------------------------ 5. PLD */
 
-const MEDIDA_PLD = "PLD médio do dia no Sudeste/Centro-Oeste";
+const MEDIDA_PLD = () => tx("PLD médio do dia no Sudeste/Centro-Oeste", "Daily average spot price (PLD) in the Southeast/Center-West");
 
-const NOMES_DOS_MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-
-/** Hora de um instante "2026-09-30T06:00": "6 h". Null quando o texto não traz a hora. */
+/** Hora de um instante "2026-09-30T06:00": "6 h" ("6:00" em inglês). Null quando o texto não traz a hora. */
 function horaDe(instante: string | null | undefined): string | null {
   const m = instante ? /T(\d{2}):/.exec(instante) : null;
-  return m ? `${Number(m[1])} h` : null;
+  return m ? tx(`${Number(m[1])} h`, `${Number(m[1])}:00`) : null;
 }
 
 /** Evidência do mesmo número na Visão geral (o painel de preço lê pld.json#cartoes[SE].media_dia): só vale se o dia e o valor forem os mesmos. */
@@ -620,15 +741,21 @@ export function sinalPld(
   sintese: SinteseVisaoGold | null = lerGold<SinteseVisaoGold>("sintese.json"),
   detalhe: PldDetalheGold | null = lerGold<PldDetalheGold>("pld_detalhe.json"),
 ): SinalHome {
-  if (!integra(g)) return ausente("pld", MEDIDA_PLD, motivoDaGold(g, "A base publicada do PLD não foi processada nesta publicação."), null, "indisponivel");
+  if (!integra(g)) return ausente("pld", MEDIDA_PLD(), motivoDaGold(g, tx("A base publicada do PLD não foi processada nesta publicação.", "The published PLD base was not processed in this publication.")), null, "indisponivel");
   const dia = g.dia_referencia;
   const se = g.cartoes.find((c) => c.sm === "SE") ?? null;
-  if (!se || !temValor(se.media_dia)) return ausente("pld", MEDIDA_PLD, `Sem a média do dia ${dataBR(dia)} no Sudeste/Centro-Oeste: o dia não tem as 24 horas publicadas.`, dataBR(dia));
+  if (!se || !temValor(se.media_dia))
+    return ausente(
+      "pld",
+      MEDIDA_PLD(),
+      tx(`Sem a média do dia ${dataBR(dia)} no Sudeste/Centro-Oeste: o dia não tem as 24 horas publicadas.`, `No daily average for ${dataBR(dia)} in the Southeast/Center-West: the day does not have all 24 hours published.`),
+      dataBR(dia),
+    );
   // os outros submercados, cada um com o próprio nome e valor: nenhum "PLD Brasil" por média dos quatro
   const outros = SUBMERCADOS.filter((sm) => sm !== "SE")
     .map((sm) => {
       const c = g.cartoes.find((x) => x.sm === sm);
-      return `${NOME_SM[sm]} ${temValor(c?.media_dia) ? reais(c!.media_dia) : "sem dado"}`;
+      return `${tx(NOME_SM[sm], nomeSubmercado(sm, "en"))} ${temValor(c?.media_dia) ? reais(c!.media_dia) : tx("sem dado", "no data")}`;
     })
     .join("; ");
   const referencias: string[] = [];
@@ -636,9 +763,14 @@ export function sinalPld(
   if (temValor(se.min_hora) && temValor(se.max_hora)) {
     const hMin = horaDe(se.quando_min);
     const hMax = horaDe(se.quando_max);
-    referencias.push(`No dia, o preço por hora foi de ${reais(se.min_hora)}${hMin ? ` (às ${hMin})` : ""} a ${reais(se.max_hora)}${hMax ? ` (às ${hMax})` : ""}.`);
+    referencias.push(
+      tx(
+        `No dia, o preço por hora foi de ${reais(se.min_hora)}${hMin ? ` (às ${hMin})` : ""} a ${reais(se.max_hora)}${hMax ? ` (às ${hMax})` : ""}.`,
+        `On the day, the hourly price ranged from ${reais(se.min_hora)}${hMin ? ` (at ${hMin})` : ""} to ${reais(se.max_hora)}${hMax ? ` (at ${hMax})` : ""}.`,
+      ),
+    );
   }
-  referencias.push(`Nos outros submercados: ${outros}.`);
+  referencias.push(tx(`Nos outros submercados: ${outros}.`, `In the other submarkets: ${outros}.`));
   // o dia contra os dias do mesmo mês da série, e contra todos: a mesma posição que a Visão geral mostra
   const posicao = integra(detalhe) ? detalhe.historico.posicao_referencia.find((x) => x.sm === "SE" && x.dia === dia) : undefined;
   const mm = posicao?.mesmo_mes;
@@ -649,30 +781,40 @@ export function sinalPld(
           caixa: [mm.p25, mm.p75],
           mediana: mm.p50,
           valor: se.media_dia,
-          legenda: `Entre os ${num(mm.n_dias, 0)} dias de ${NOMES_DOS_MESES[mm.mes - 1] ?? "mesmo mês"} da série, de ${reais(mm.p10)} (percentil 10) a ${reais(mm.p90)} (percentil 90); a metade central, de ${reais(mm.p25)} a ${reais(mm.p75)}.${
-            temValor(mm.percentil) && temValor(se.posicao?.percentil) && temValor(se.posicao?.n_dias)
-              ? ` A média do dia fica no percentil ${num(mm.percentil, 1)} entre esses dias e no ${num(se.posicao.percentil, 1)} entre todos os ${num(se.posicao.n_dias, 0)} dias da série.`
-              : ""
-          }`,
+          legenda: tx(
+            `Entre os ${num(mm.n_dias, 0)} dias de ${(mm.mes >= 1 && mm.mes <= 12 ? nomeMes(mm.mes, "pt", true) : undefined) ?? "mesmo mês"} da série, de ${reais(mm.p10)} (percentil 10) a ${reais(mm.p90)} (percentil 90); a metade central, de ${reais(mm.p25)} a ${reais(mm.p75)}.${
+              temValor(mm.percentil) && temValor(se.posicao?.percentil) && temValor(se.posicao?.n_dias)
+                ? ` A média do dia fica no percentil ${num(mm.percentil, 1)} entre esses dias e no ${num(se.posicao.percentil, 1)} entre todos os ${num(se.posicao.n_dias, 0)} dias da série.`
+                : ""
+            }`,
+            `Across the ${num(mm.n_dias, 0)} days of ${mm.mes >= 1 && mm.mes <= 12 ? nomeMes(mm.mes, "en", true) : "the same month"} in the series, from ${reais(mm.p10)} (10th percentile) to ${reais(mm.p90)} (90th percentile); the middle half, from ${reais(mm.p25)} to ${reais(mm.p75)}.${
+              temValor(mm.percentil) && temValor(se.posicao?.percentil) && temValor(se.posicao?.n_dias)
+                ? ` The daily average falls at percentile ${num(mm.percentil, 1)} among those days and at ${num(se.posicao.percentil, 1)} among all ${num(se.posicao.n_dias, 0)} days in the series.`
+                : ""
+            }`,
+          ),
         }
       : null;
   const daVisao = evidenciaPldDaVisao(sintese, dia, se.media_dia);
   return {
     id: "pld",
     estado: "disponivel",
-    medida: MEDIDA_PLD,
+    medida: MEDIDA_PLD(),
     natureza: "CALCULADO",
     valor: se.media_dia,
     formato: "reais",
     casas: 2,
     valorTexto: valorDestaque(se.media_dia, "reais", 2),
-    unidade: "por MWh",
+    unidade: tx("por MWh", "per MWh"),
     periodo: dataBR(dia),
-    universo: "Média simples das 24 horas do dia, em valores nominais.",
+    universo: tx("Média simples das 24 horas do dia, em valores nominais.", "Simple average of the 24 hours of the day, in nominal values."),
     variacao: null,
     referencias,
-    ressalva: "É o preço das diferenças liquidadas no mercado de curto prazo, e não a tarifa que a distribuidora cobra.",
-    prova: daVisao ? prova("/energia/gold/sintese.json", `multiplos.paineis[${daVisao.indice}].evidencia`, MEDIDA_PLD, daVisao.ev) : null,
+    ressalva: tx(
+      "É o preço das diferenças liquidadas no mercado de curto prazo, e não a tarifa que a distribuidora cobra.",
+      "It is the price of the differences settled in the short-term market, not the tariff that the distribution utility charges.",
+    ),
+    prova: daVisao ? prova("/energia/gold/sintese.json", `multiplos.paineis[${daVisao.indice}].evidencia`, MEDIDA_PLD(), daVisao.ev) : null,
     endereco: enderecoDe("pld"),
     figura,
     semFicha: null,
@@ -682,13 +824,14 @@ export function sinalPld(
 
 /* ------------------------------------------------------------------ 6. expansão */
 
-const MEDIDA_EXPANSAO = "Usinas em construção, potência outorgada";
+const MEDIDA_EXPANSAO = () => tx("Usinas em construção, potência outorgada", "Plants under construction, granted capacity");
 
 export function sinalExpansao(g: ExpansaoGold | null = lerGold<ExpansaoGold>("expansao.json"), territorio: GoldTerritorio | null = lerGold<GoldTerritorio>("territorio.json")): SinalHome {
-  if (!integra(g)) return ausente("expansao", MEDIDA_EXPANSAO, motivoDaGold(g, "A base publicada de Expansão não foi processada nesta publicação."), null, "indisponivel");
+  if (!integra(g)) return ausente("expansao", MEDIDA_EXPANSAO(), motivoDaGold(g, tx("A base publicada de Expansão não foi processada nesta publicação.", "The published Expansion base was not processed in this publication.")), null, "indisponivel");
   const data = dataTexto(g.estagios.data_referencia);
   const con = estagio(g, "construcao");
-  if (!con || !temValor(con.mw_outorgado)) return ausente("expansao", MEDIDA_EXPANSAO, `Sem a potência em construção no SIGA de ${data}.`, data);
+  if (!con || !temValor(con.mw_outorgado))
+    return ausente("expansao", MEDIDA_EXPANSAO(), tx(`Sem a potência em construção no SIGA de ${data}.`, `No capacity under construction in the SIGA of ${data}.`), data);
   const op = estagio(g, "operacao");
   const nao = estagio(g, "construcao_nao_iniciada");
   const referencias: string[] = [];
@@ -697,18 +840,31 @@ export function sinalExpansao(g: ExpansaoGold | null = lerGold<ExpansaoGold>("ex
     const reg = integra(territorio) ? territorio.resumo.usinas : null;
     const registros = reg && temValor(reg.registros_ate_10kw) && reg.registros_ate_10kw > 0 && reg.registros_ate_10kw <= op.usinas ? reg : null;
     referencias.push(
-      `Em operação, no mesmo cadastro: ${mwTexto(op.mw_fiscalizado)} fiscalizados em ${inteiro(op.usinas)} usinas${
-        registros
-          ? `; ${inteiro(registros.registros_ate_10kw)} delas (${num((100 * registros.registros_ate_10kw) / op.usinas, 0)}%) são registros de até ${num(registros.limite_registro_kw, 0)} kW, que o Território conta à parte (sem eles, ${inteiro(op.usinas - registros.registros_ate_10kw)})`
-          : ""
-      }.`,
+      tx(
+        `Em operação, no mesmo cadastro: ${mwTexto(op.mw_fiscalizado)} fiscalizados em ${inteiro(op.usinas)} usinas${
+          registros
+            ? `; ${inteiro(registros.registros_ate_10kw)} delas (${num((100 * registros.registros_ate_10kw) / op.usinas, 0)}%) são registros de até ${num(registros.limite_registro_kw, 0)} kW, que o Território conta à parte (sem eles, ${inteiro(op.usinas - registros.registros_ate_10kw)})`
+            : ""
+        }.`,
+        `In operation, in the same registry: ${mwTexto(op.mw_fiscalizado)} inspected in ${inteiro(op.usinas)} plants${
+          registros
+            ? `; ${inteiro(registros.registros_ate_10kw)} of them (${num((100 * registros.registros_ate_10kw) / op.usinas, 0)}%) are registrations of up to ${num(registros.limite_registro_kw, 0)} kW, which the Territory page counts separately (without them, ${inteiro(op.usinas - registros.registros_ate_10kw)})`
+            : ""
+        }.`,
+      ),
     );
   }
-  if (nao && temValor(nao.mw_outorgado)) referencias.push(`Outorgadas com a obra ainda não iniciada: ${mwTexto(nao.mw_outorgado)} em ${inteiro(nao.usinas)} usinas.`);
+  if (nao && temValor(nao.mw_outorgado))
+    referencias.push(
+      tx(
+        `Outorgadas com a obra ainda não iniciada: ${mwTexto(nao.mw_outorgado)} em ${inteiro(nao.usinas)} usinas.`,
+        `Granted with construction not yet started: ${mwTexto(nao.mw_outorgado)} in ${inteiro(nao.usinas)} plants.`,
+      ),
+    );
   return {
     id: "expansao",
     estado: "disponivel",
-    medida: MEDIDA_EXPANSAO,
+    medida: MEDIDA_EXPANSAO(),
     natureza: "CALCULADO",
     valor: con.mw_outorgado,
     formato: "num",
@@ -716,15 +872,24 @@ export function sinalExpansao(g: ExpansaoGold | null = lerGold<ExpansaoGold>("ex
     valorTexto: valorDestaque(con.mw_outorgado, "num", 1),
     unidade: "MW",
     periodo: data,
-    universo: `${inteiro(con.usinas)} usinas na fase de construção do SIGA, o Sistema de Informações de Geração da ANEEL.`,
+    universo: tx(
+      `${inteiro(con.usinas)} usinas na fase de construção do SIGA, o Sistema de Informações de Geração da ANEEL.`,
+      `${inteiro(con.usinas)} plants in the construction phase of the SIGA, ANEEL's generation information system.`,
+    ),
     variacao: null,
     referencias,
-    ressalva: "MW é potência, e não energia. Outorga não é obra, obra não é entrada certa, e as três etapas não se somam.",
+    ressalva: tx(
+      "MW é potência, e não energia. Outorga não é obra, obra não é entrada certa, e as três etapas não se somam.",
+      "MW is capacity, not energy. A grant is not construction, construction is not certain entry into operation, and the three stages do not add up.",
+    ),
     // a gold publica a ficha da potência em operação e a da obra não iniciada, mas não a da fase de construção: sem ficha, sem prova
     prova: null,
     endereco: enderecoDe("expansao"),
     figura: null,
-    semFicha: "Esta medida ainda não tem a ficha Comprove: a base publicada traz a ficha de outras etapas do SIGA, mas não a da fase de construção.",
+    semFicha: tx(
+      "Esta medida ainda não tem a ficha Comprove: a base publicada traz a ficha de outras etapas do SIGA, mas não a da fase de construção.",
+      "This measure does not yet have a Check this number record: the published base has the record for other SIGA stages, but not for the construction phase.",
+    ),
     // o arquivo do SIGA com a fase de cada usina refaz a soma
     downloads: arquivosDaFicha(g.evidencias?.capacidade_total),
   };
@@ -732,55 +897,72 @@ export function sinalExpansao(g: ExpansaoGold | null = lerGold<ExpansaoGold>("ex
 
 /* ------------------------------------------------------------------ acesso e desigualdade */
 
-const MEDIDA_TARIFA_SOCIAL = "Unidades consumidoras com Tarifa Social";
+const MEDIDA_TARIFA_SOCIAL = () => tx("Unidades consumidoras com Tarifa Social", "Consumer units with the Tarifa Social (social electricity tariff)");
 
 /** A sigla do arquivo da ANEEL por extenso na primeira vez que o leitor a vê: "informaram o SCS" vira "informaram ao Sistema de Controle de Subvenções e Programas Sociais (SCS)". */
 const SCS_POR_EXTENSO = (t: string) => {
+  if (idiomaEnergia() === "en") {
+    // o universo da gold só existe em português ("102 distribuidoras que informaram o SCS na competência"): a contagem passa, a frase é a inglesa
+    const n = /^(\d[\d.]*) distribuidoras que informaram o SCS/.exec(t)?.[1];
+    const quem = n ? `${n} distribution utilities that reported` : "Distribution utilities that reported";
+    return `${quem} to the SCS (ANEEL's control system for subsidies and social programs)${/na competência/.test(t) ? " in the reference month" : ""}`;
+  }
   const longo = t.replace(/\bo SCS\b/, `ao ${SIGLAS.SCS} (SCS)`).replace(/(?<!\()\bSCS\b(?!\))/, `${SIGLAS.SCS} (SCS)`);
   return `${longo.charAt(0).toUpperCase()}${longo.slice(1)}`;
 };
-const MEDIDA_ACESSO = "Domicílios sem energia elétrica";
+const MEDIDA_ACESSO = () => tx("Domicílios sem energia elétrica", "Households without electricity");
 
 /**
  * Tarifa Social: as unidades consumidoras com desconto no último mês completo do arquivo da ANEEL (SCS), com a participação nas residenciais e a
  * variação contra 12 meses antes. O mês é o da gold, e o aviso diz que o arquivo vai um mês além, com distribuidoras faltando.
  */
 export function sinalTarifaSocial(g: InclusaoGold | null = lerGold<InclusaoGold>("inclusao.json")): SinalHome {
-  if (!integra(g)) return ausente("tarifa-social", MEDIDA_TARIFA_SOCIAL, motivoDaGold(g, "A base publicada de Inclusão energética não foi processada nesta publicação."), null, "indisponivel");
+  if (!integra(g))
+    return ausente("tarifa-social", MEDIDA_TARIFA_SOCIAL(), motivoDaGold(g, tx("A base publicada de Inclusão energética não foi processada nesta publicação.", "The published Energy inclusion base was not processed in this publication.")), null, "indisponivel");
   const k = g.tarifa_social.kpis;
   const mes = g.tarifa_social.mes_referencia;
   const mesLegivel = periodoLegivel(mes) ?? mes;
-  if (!k.uc_tsee || !temValor(k.uc_tsee.valor)) return ausente("tarifa-social", MEDIDA_TARIFA_SOCIAL, `Sem as unidades consumidoras com Tarifa Social em ${mesLegivel}: o mês não está completo no arquivo da ANEEL.`, mesLegivel);
+  if (!k.uc_tsee || !temValor(k.uc_tsee.valor))
+    return ausente(
+      "tarifa-social",
+      MEDIDA_TARIFA_SOCIAL(),
+      tx(`Sem as unidades consumidoras com Tarifa Social em ${mesLegivel}: o mês não está completo no arquivo da ANEEL.`, `No consumer units with the Tarifa Social for ${mesLegivel}: the month is not complete in the ANEEL file.`),
+      mesLegivel,
+    );
   const ev = k.uc_tsee.evidencia;
   const valor = k.uc_tsee.valor;
   const v12 = k.variacao_12m_pct;
   const variacao: Variacao | null =
-    v12 && temValor(v12.valor) && v12.comparavel ? { valor: v12.valor, casas: 1, sufixo: "%", referencia: `contra ${periodoLegivel(v12.mes_base) ?? v12.mes_base}` } : null;
+    v12 && temValor(v12.valor) && v12.comparavel ? { valor: v12.valor, casas: 1, sufixo: "%", referencia: tx(`contra ${periodoLegivel(v12.mes_base) ?? v12.mes_base}`, `versus ${periodoLegivel(v12.mes_base) ?? v12.mes_base}`) } : null;
   const referencias: string[] = [];
-  if (k.participacao_pct && temValor(k.participacao_pct.valor)) referencias.push(`Equivale a ${pct(k.participacao_pct.valor, 1)} das unidades consumidoras residenciais.`);
+  if (k.participacao_pct && temValor(k.participacao_pct.valor))
+    referencias.push(tx(`Equivale a ${pct(k.participacao_pct.valor, 1)} das unidades consumidoras residenciais.`, `Equivalent to ${pct(k.participacao_pct.valor, 1)} of residential consumer units.`));
   // o arquivo da fonte vai além do último mês completo, com distribuidoras faltando: a inicial diz por que o mês não é o último do arquivo
   const ultimo = g.referencias.scs_ultimo_mes_no_arquivo;
   const pontoUltimo = g.tarifa_social.serie_mensal.find((x) => x.m === ultimo);
   const alem =
     ultimo && ultimo !== mes
-      ? ` É o último mês completo: o arquivo da ANEEL vai até ${periodoLegivel(ultimo) ?? ultimo}${pontoUltimo && pontoUltimo.distribuidoras_faltantes > 0 ? `, com ${num(pontoUltimo.distribuidoras_faltantes, 0)} distribuidoras faltando` : ""}.`
+      ? tx(
+          ` É o último mês completo: o arquivo da ANEEL vai até ${periodoLegivel(ultimo) ?? ultimo}${pontoUltimo && pontoUltimo.distribuidoras_faltantes > 0 ? `, com ${num(pontoUltimo.distribuidoras_faltantes, 0)} distribuidoras faltando` : ""}.`,
+          ` It is the latest complete month: the ANEEL file runs through ${periodoLegivel(ultimo) ?? ultimo}${pontoUltimo && pontoUltimo.distribuidoras_faltantes > 0 ? `, with ${num(pontoUltimo.distribuidoras_faltantes, 0)} distribution ${pontoUltimo.distribuidoras_faltantes === 1 ? "utility" : "utilities"} missing` : ""}.`,
+        )
       : "";
   return {
     id: "tarifa-social",
     estado: "disponivel",
-    medida: MEDIDA_TARIFA_SOCIAL,
+    medida: MEDIDA_TARIFA_SOCIAL(),
     natureza: "CALCULADO",
     valor,
     formato: "num",
     casas: 0,
     valorTexto: valorDestaque(valor, "num", 0),
-    unidade: "unidades consumidoras",
+    unidade: tx("unidades consumidoras", "consumer units"),
     periodo: mesLegivel,
-    universo: `${SCS_POR_EXTENSO(ev?.universo ?? "Distribuidoras que informaram o SCS")}.`,
+    universo: `${SCS_POR_EXTENSO(ev?.universo ?? tx("Distribuidoras que informaram o SCS", "Distribution utilities that reported to the SCS"))}.`,
     variacao,
     referencias,
-    ressalva: `Conta unidades consumidoras com desconto, e não famílias.${alem}`,
-    prova: ev && provaConfere(ev, valor, 0) ? prova("/energia/gold/inclusao.json", "tarifa_social.kpis.uc_tsee.evidencia", MEDIDA_TARIFA_SOCIAL, ev) : null,
+    ressalva: tx(`Conta unidades consumidoras com desconto, e não famílias.${alem}`, `It counts consumer units with the discount, not families.${alem}`),
+    prova: ev && provaConfere(ev, valor, 0) ? prova("/energia/gold/inclusao.json", "tarifa_social.kpis.uc_tsee.evidencia", MEDIDA_TARIFA_SOCIAL(), ev) : null,
     endereco: enderecoDe("tarifa-social"),
     figura: null,
     semFicha: null,
@@ -790,26 +972,36 @@ export function sinalTarifaSocial(g: InclusaoGold | null = lerGold<InclusaoGold>
 
 /** Acesso: os domicílios sem energia elétrica no ano da PNAD Contínua, como a diferença de duas estimativas amostrais do IBGE. */
 export function sinalAcesso(g: InclusaoGold | null = lerGold<InclusaoGold>("inclusao.json")): SinalHome {
-  if (!integra(g)) return ausente("acesso", MEDIDA_ACESSO, motivoDaGold(g, "A base publicada de Inclusão energética não foi processada nesta publicação."), null, "indisponivel");
+  if (!integra(g)) return ausente("acesso", MEDIDA_ACESSO(), motivoDaGold(g, tx("A base publicada de Inclusão energética não foi processada nesta publicação.", "The published Energy inclusion base was not processed in this publication.")), null, "indisponivel");
   const ev = g.acesso.evidencia_sem_energia;
   const ano = g.acesso.ano_referencia;
-  if (!ev || !temValor(ev.valor_calculo)) return ausente("acesso", MEDIDA_ACESSO, `Sem os domicílios sem energia elétrica em ${ano}: a PNAD Contínua não publicou as duas tabelas do ano.`, ano);
+  if (!ev || !temValor(ev.valor_calculo))
+    return ausente(
+      "acesso",
+      MEDIDA_ACESSO(),
+      tx(`Sem os domicílios sem energia elétrica em ${ano}: a PNAD Contínua não publicou as duas tabelas do ano.`, `No households without electricity for ${ano}: the PNAD Contínua did not publish the two tables for the year.`),
+      ano,
+    );
   return {
     id: "acesso",
     estado: "disponivel",
-    medida: MEDIDA_ACESSO,
+    medida: MEDIDA_ACESSO(),
     natureza: "CALCULADO",
     valor: ev.valor_calculo,
     formato: "num",
     casas: 0,
     valorTexto: valorDestaque(ev.valor_calculo, "num", 0),
-    unidade: "mil domicílios",
+    unidade: tx("mil domicílios", "thousand households"),
     periodo: ano,
-    universo: `Domicílios particulares permanentes do país, na ${SIGLAS.PNAD.split(",")[0]} Contínua (PNAD Contínua), do ${SIGLAS.IBGE} (IBGE): uma pesquisa por amostra.`,
+    universo: tx(
+      `Domicílios particulares permanentes do país, na ${SIGLAS.PNAD.split(",")[0]} Contínua (PNAD Contínua), do ${SIGLAS.IBGE} (IBGE): uma pesquisa por amostra.`,
+      "Permanent private households in the country, in the Continuous National Household Sample Survey (PNAD Contínua) of the Brazilian Institute of Geography and Statistics (IBGE): a sample survey.",
+    ),
     variacao: null,
     referencias: [],
-    ressalva: "É a diferença entre duas estimativas amostrais, e o IBGE não publica o erro-padrão dela.",
-    prova: provaConfere(ev, ev.valor_calculo, 0) ? prova("/energia/gold/inclusao.json", "acesso.evidencia_sem_energia", MEDIDA_ACESSO, ev) : null,
+    ressalva: tx("É a diferença entre duas estimativas amostrais, e o IBGE não publica o erro-padrão dela.", "It is the difference between two sample estimates, and IBGE does not publish its standard error."),
+    prova: provaConfere(ev, ev.valor_calculo, 0) ? prova("/energia/gold/inclusao.json", "acesso.evidencia_sem_energia", MEDIDA_ACESSO(), ev) : null,
+
     endereco: enderecoDe("acesso"),
     figura: null,
     semFicha: null,

@@ -6,7 +6,9 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { dataBR } from "@/lib/energia/formato";
 import type { Natureza } from "@/lib/energia/tipos";
 import type { ControleVisao } from "@/lib/energia/tipos-visao";
-import { PAINEIS_VISAO, datasLegiveis, enumLegivel, type IdPainelVisao } from "@/lib/energia/visao";
+import { datasLegiveis, enumLegivel, painelVisao, type IdPainelVisao } from "@/lib/energia/visao";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { goldEmString, goldNoBloco } from "@/lib/energia/i18n/entrada-visao";
 
 /**
  * Peças de servidor da Visão geral (/setor-eletrico/visao-geral): o painel (pergunta, subtítulo, "Por que isso importa" recolhido
@@ -33,7 +35,7 @@ export function PainelVisao({
   fonte: ReactNode;
   children: ReactNode;
 }) {
-  const p = PAINEIS_VISAO.find((x) => x.id === id)!;
+  const p = painelVisao(id);
   return (
     <section id={id} aria-labelledby={`${id}-h`} data-painel-evidencia="" className="scroll-mt-28 border-t border-linha pt-6">
       <header>
@@ -53,7 +55,7 @@ export function PainelVisao({
 /** Data de referência de cada parte da página, na forma de uma lista curta (dentro do bloco "Fontes, datas e siglas" da abertura). */
 export function VisaoDatas({ itens }: { itens: { rotulo: string; texto: string; natureza?: Natureza }[] }) {
   return (
-    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx("Datas de referência de cada parte", "Reference dates of each part")}>
       {itens.map((x) => (
         <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
           <span>
@@ -81,12 +83,13 @@ export function VisaoAtencao({
   observacao: readonly RegraDaTira[];
   alertaDados: readonly RegraDaTira[];
 }) {
+  const idioma = idiomaEnergia();
   const lista = (xs: readonly RegraDaTira[]) =>
     xs.map((x, i) => (
       <span key={x.id}>
         {i > 0 && "; "}
         <Link href={`#regra-${x.id}`} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
-          {x.titulo}
+          {goldEmString(x.titulo, idioma)}
         </Link>
       </span>
     ));
@@ -95,28 +98,28 @@ export function VisaoAtencao({
   const dados =
     alertaDados.length > 1 ? (
       <Link href="#observar" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
-        {alertaDados.length} regras
+        {tx(`${alertaDados.length} regras`, `${alertaDados.length} rules`)}
       </Link>
     ) : (
       lista(alertaDados)
     );
   return (
-    <aside aria-label="Regras que pedem atenção" data-atencao="" className="space-y-1 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao">
-      {nada && <p>Nenhuma regra sobre o sistema está em alerta nem em observação.</p>}
+    <aside aria-label={tx("Regras que pedem atenção", "Rules that call for attention")} data-atencao="" className="space-y-1 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao">
+      {nada && <p>{tx("Nenhuma regra sobre o sistema está em alerta nem em observação.", "No rule about the system is in alert or under observation.")}</p>}
       {alertaSistema.length > 0 && (
         <p>
-          <span className="rotulo mr-2 text-mineral">Em alerta sobre o sistema</span>
+          <span className="rotulo mr-2 text-mineral">{tx("Em alerta sobre o sistema", "In alert about the system")}</span>
           {lista(alertaSistema)}.
         </p>
       )}
       {observacao.length > 0 && (
         <p>
-          <span className="rotulo mr-2 text-mineral">Em observação</span>
-          {lista(observacao)} <span className="text-carvao-muted">(ainda sem a duração mínima de alerta)</span>.
+          <span className="rotulo mr-2 text-mineral">{tx("Em observação", "Under observation")}</span>
+          {lista(observacao)} <span className="text-carvao-muted">{tx("(ainda sem a duração mínima de alerta)", "(still without the minimum alert duration)")}</span>.
           {alertaDados.length > 0 && (
             <>
               {" "}
-              <span className="rotulo mx-2 text-mineral">Em alerta sobre os dados</span>
+              <span className="rotulo mx-2 text-mineral">{tx("Em alerta sobre os dados", "In alert about the data")}</span>
               {dados}.
             </>
           )}
@@ -124,7 +127,7 @@ export function VisaoAtencao({
       )}
       {observacao.length === 0 && alertaDados.length > 0 && (
         <p>
-          <span className="rotulo mr-2 text-mineral">Em alerta sobre os dados</span>
+          <span className="rotulo mr-2 text-mineral">{tx("Em alerta sobre os dados", "In alert about the data")}</span>
           {dados}.
         </p>
       )}
@@ -137,15 +140,15 @@ export function VisaoRecorte({ periodo, universo, unidade }: { periodo: ReactNod
   return (
     <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3" data-recorte-painel="">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5 leading-relaxed">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
         <dd className="mt-0.5 leading-relaxed">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5 leading-relaxed">{unidade}</dd>
       </div>
     </dl>
@@ -166,12 +169,23 @@ export function VisaoAviso({ children, tipo = "nota" }: { children: ReactNode; t
 
 /** Controles de execução publicados na gold (não são testes): nome, resultado com palavra e detalhe. */
 export function VisaoControles({ controles }: { controles: ControleVisao[] }) {
-  const rot = { aprovado: "aprovado", ressalva: "com ressalva", reprovado: "reprovado" } as const;
+  const idioma = idiomaEnergia();
+  const rot = tx<Record<string, string>>(
+    { aprovado: "aprovado", ressalva: "com ressalva", reprovado: "reprovado" },
+    { aprovado: "passed", ressalva: "passed with a caveat", reprovado: "failed" },
+  );
   return (
     <ul className="space-y-1.5 text-sm text-carvao-muted">
       {controles.map((c) => (
         <li key={c.nome} className="leading-relaxed [overflow-wrap:anywhere]">
-          <span className={c.resultado === "aprovado" ? "text-carvao" : "text-aviso"}>{rot[c.resultado] ?? c.resultado}</span>: {c.nome}. {enumLegivel(datasLegiveis(c.detalhe))}
+          <span className={c.resultado === "aprovado" ? "text-carvao" : "text-aviso"}>{rot[c.resultado] ?? c.resultado}</span>:{" "}
+          {idioma === "en" ? (
+            <>
+              {goldNoBloco(c.nome, idioma, "visao-controle-nome")}. {goldNoBloco(enumLegivel(datasLegiveis(c.detalhe, "pt"), "pt"), idioma, "visao-controle-detalhe")}
+            </>
+          ) : (
+            `${c.nome}. ${enumLegivel(datasLegiveis(c.detalhe))}`
+          )}
         </li>
       ))}
     </ul>
@@ -185,15 +199,19 @@ export function VisaoIndisponivel({ motivo }: { motivo?: string | null }) {
       <CabecalhoEnergia atual="visao-geral" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
-          titulo="Visão geral indisponível nesta publicação"
+          titulo={tx("Visão geral indisponível nesta publicação", "Overview unavailable in this publication")}
           motivo={
-            motivo ??
-            "A gold da visão geral (public/energia/gold/sintese.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."
+            motivo
+              ? goldNoBloco(motivo, idiomaEnergia(), "visao-indisponivel")
+              : tx(
+                  "A gold da visão geral (public/energia/gold/sintese.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe.",
+                  "The overview gold (public/energia/gold/sintese.json) was not generated or did not pass validation; the last valid publication is kept when it exists.",
+                )
           }
         />
         <p className="mt-6 text-sm">
           <Link href="/setor-eletrico" className="text-energia-dark underline underline-offset-4">
-            Voltar ao mapa do observatório
+            {tx("Voltar ao mapa do observatório", "Back to the observatory map")}
           </Link>
         </p>
       </main>
@@ -203,5 +221,6 @@ export function VisaoIndisponivel({ motivo }: { motivo?: string | null }) {
 
 /** Data na forma da página, para os textos de datas das partes. */
 export function dataDaParte(dia: string | null): string {
-  return dia ? dataBR(dia) : "sem dado nesta publicação";
+  return dia ? dataBR(dia) : tx("sem dado nesta publicação", "no data in this publication");
+
 }

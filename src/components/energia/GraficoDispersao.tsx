@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { num, plural } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { casasMarcas, dominioLegivel, textoValor } from "@/lib/energia/distribuicao";
 import {
   afastaRotulos,
@@ -84,13 +85,17 @@ export function GraficoDispersao({
   eixoX,
   eixoY,
   rodape,
-  entidade = { singular: "ponto", plural: "pontos" },
+  entidade: entidadeDada,
   destacados,
   reta,
   altura = 340,
   corPontos = "var(--cor-mineral)",
-  corDestaque = "var(--cor-energia)",
+  corDestaque = "var(--cor-energia)", // i18n: dado
 }: GraficoDispersaoProps) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { num, plural } = formatos(idioma);
+  const entidade = entidadeDada ?? tx({ singular: "ponto", plural: "pontos" }, { singular: "point", plural: "points" });
   const uid = useId().replace(/:/g, "");
   const [largura, setLargura] = useState(760);
   const [ativo, setAtivo] = useState<number | null>(null);
@@ -182,9 +187,9 @@ export function GraficoDispersao({
   const pa = ativo !== null && ativo < n ? validos[ativo] : null;
   const ta = ativo !== null && ativo < n ? tela[ativo] : null;
   const leitura = pa
-    ? `${pa.rotulo}: ${eixoX.rotulo} ${textoValor(pa.x, casasX, eixoX.unidade)}; ${eixoY.rotulo} ${textoValor(pa.y, casasY, eixoY.unidade)}. Ponto ${ativo! + 1} de ${n} em ordem de ${eixoX.rotulo}.${
-        ehDestaque.has(ativo!) ? " Destacado." : ""
-      }`
+    ? `${pa.rotulo}: ${eixoX.rotulo} ${textoValor(pa.x, casasX, eixoX.unidade)}; ${eixoY.rotulo} ${textoValor(pa.y, casasY, eixoY.unidade)}. ` +
+      tx(`Ponto ${ativo! + 1} de ${n} em ordem de ${eixoX.rotulo}.`, `Point ${ativo! + 1} of ${n} in order of ${eixoX.rotulo}.`) +
+      (ehDestaque.has(ativo!) ? tx(" Destacado.", " Highlighted.") : "")
     : "";
   const acima = ta ? ta.y > 120 : false;
   const nomeX = `${eixoX.rotulo} (${eixoX.unidade})`;
@@ -195,7 +200,7 @@ export function GraficoDispersao({
       <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
         {titulo}
       </p>
-      <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
+      <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label={tx("Legenda", "Legend")}>
         <li className="flex items-center gap-1.5">
           <svg width="12" height="12" aria-hidden="true">
             <circle cx="6" cy="6" r="4" fill={corPontos} fillOpacity="0.45" stroke={corPontos} strokeWidth="1" />
@@ -207,7 +212,7 @@ export function GraficoDispersao({
             <svg width="14" height="14" aria-hidden="true">
               <circle cx="7" cy="7" r="5.5" fill={corDestaque} stroke="var(--cor-superficie)" strokeWidth="1.5" />
             </svg>
-            Destaque, com nome no gráfico
+            {tx("Destaque, com nome no gráfico", "Highlighted, named on the chart")}
           </li>
         )}
         {reta && (
@@ -235,7 +240,10 @@ export function GraficoDispersao({
           className="block overflow-visible focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
         >
           <title id={`${uid}-t`}>
-            {`${titulo}. Dispersão de ${plural(n, entidade.singular, entidade.plural)}: ${nomeX} no eixo horizontal e ${nomeY} no vertical. Use as setas para percorrer os pontos em ordem crescente de ${eixoX.rotulo}.`}
+            {tx(
+              `${titulo}. Dispersão de ${plural(n, entidade.singular, entidade.plural)}: ${nomeX} no eixo horizontal e ${nomeY} no vertical. Use as setas para percorrer os pontos em ordem crescente de ${eixoX.rotulo}.`,
+              `${titulo}. Scatter of ${plural(n, entidade.singular, entidade.plural)}: ${nomeX} on the horizontal axis and ${nomeY} on the vertical. Use the arrow keys to move through the points in ascending order of ${eixoX.rotulo}.`,
+            )}
           </title>
           {dy.marcas.map((v) => (
             <g key={`y${v}`}>
@@ -290,7 +298,7 @@ export function GraficoDispersao({
 
           {n === 0 && (
             <text x={L + (w - L - R) / 2} y={T + (h - T - B) / 2} textAnchor="middle" fontSize="12" fill="var(--cor-mineral)">
-              Sem {entidade.plural} com os dois valores no período
+              {tx(`Sem ${entidade.plural} com os dois valores no período`, `No ${entidade.plural} with both values in the period`)}
             </text>
           )}
 
@@ -387,48 +395,63 @@ export function GraficoDispersao({
 
       <div id={`${uid}-r`} className="mt-3 space-y-1 border-t border-linha pt-2 text-xs leading-relaxed text-carvao-muted">
         <p>
-          <span className="rotulo mr-2 text-mineral">Amostra</span>
-          <span className="tabular-nums">n = {num(n, 0)}</span> {n === 1 ? entidade.singular : entidade.plural} com os dois valores
+          <span className="rotulo mr-2 text-mineral">{tx("Amostra", "Sample")}</span>
+          <span className="tabular-nums">n = {num(n, 0)}</span> {n === 1 ? entidade.singular : entidade.plural} {tx("com os dois valores", "with both values")}
           {semDado.length > 0 && (
             <>
               {"; "}
               <span data-sem-dado={semDado.length}>
-                sem dado em {eixoX.rotulo} ou em {eixoY.rotulo}: {plural(semDado.length, entidade.singular, entidade.plural)}
+                {tx(
+                  `sem dado em ${eixoX.rotulo} ou em ${eixoY.rotulo}: ${plural(semDado.length, entidade.singular, entidade.plural)}`,
+                  `no data for ${eixoX.rotulo} or ${eixoY.rotulo}: ${plural(semDado.length, entidade.singular, entidade.plural)}`,
+                )}
               </span>{" "}
-              (ficam fora do gráfico e constam da tabela)
+              {tx("(ficam fora do gráfico e constam da tabela)", "(left out of the chart and listed in the table)")}
             </>
           )}
           .
         </p>
         <p>
-          <span className="rotulo mr-2 text-mineral">Período</span>
+          <span className="rotulo mr-2 text-mineral">{tx("Período", "Period")}</span>
           {rodape.periodo}
         </p>
         {reta && (
           <p>
-            <span className="rotulo mr-2 text-mineral">Reta</span>
-            {reta.rotulo}, com coeficientes calculados no pipeline{reta.detalhe ? ` (${reta.detalhe})` : ""}.
-            {!seg && " A reta não cruza a área do gráfico e não foi desenhada."}
+            <span className="rotulo mr-2 text-mineral">{tx("Reta", "Line")}</span>
+            {reta.rotulo}
+            {tx(", com coeficientes calculados no pipeline", ", with coefficients calculated in the pipeline")}
+            {reta.detalhe ? ` (${reta.detalhe})` : ""}.
+            {!seg && tx(" A reta não cruza a área do gráfico e não foi desenhada.", " The line does not cross the chart area and was not drawn.")}
           </p>
         )}
-        {destaqueSemDado.length > 0 && <p>Destaque sem dado (não desenhado): {destaqueSemDado.join(", ")}.</p>}
+        {destaqueSemDado.length > 0 && (
+          <p>
+            {tx("Destaque sem dado (não desenhado): ", "Highlighted with no data (not drawn): ")}
+            {destaqueSemDado.join(", ")}.
+          </p>
+        )}
         <p className="text-carvao">{rodape.avisoCausalidade}</p>
         {rodape.nota && <p>{rodape.nota}</p>}
       </div>
 
       <details className="mt-3 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Dados do gráfico em tabela ({plural(linhasTabela.length, "linha", "linhas")})
+          {tx(`Dados do gráfico em tabela (${plural(linhasTabela.length, "linha", "linhas")})`, `Chart data as a table (${plural(linhasTabela.length, "row", "rows")})`)}
         </summary>
-        <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
+        <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
           <table className="w-full border-collapse tabular-nums">
-            <caption className="sr-only">{`${titulo}: ${nomeX} e ${nomeY}, em ordem crescente de ${eixoX.rotulo}; sem dado ao fim`}</caption>
+            <caption className="sr-only">
+              {tx(
+                `${titulo}: ${nomeX} e ${nomeY}, em ordem crescente de ${eixoX.rotulo}; sem dado ao fim`,
+                `${titulo}: ${nomeX} and ${nomeY}, in ascending order of ${eixoX.rotulo}; no data at the end`,
+              )}
+            </caption>
             <thead className="sticky top-0 bg-superficie">
               <tr className="text-left text-mineral">
                 <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{capitaliza(entidade.singular)}</th>
                 <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{nomeX}</th>
                 <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{nomeY}</th>
-                {ids.length > 0 && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">Destaque</th>}
+                {ids.length > 0 && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{tx("Destaque", "Highlighted")}</th>}
               </tr>
             </thead>
             <tbody>
@@ -437,7 +460,7 @@ export function GraficoDispersao({
                   <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">{p.rotulo}</th>
                   <td className={`px-2 py-1 ${typeof p.x === "number" && Number.isFinite(p.x) ? "text-carvao" : "text-mineral"}`}>{textoValor(p.x, casasX, "")}</td>
                   <td className={`px-2 py-1 ${typeof p.y === "number" && Number.isFinite(p.y) ? "text-carvao" : "text-mineral"}`}>{textoValor(p.y, casasY, "")}</td>
-                  {ids.length > 0 && <td className="px-2 py-1 text-carvao">{ids.includes(p.id) ? "sim" : ""}</td>}
+                  {ids.length > 0 && <td className="px-2 py-1 text-carvao">{ids.includes(p.id) ? tx("sim", "yes") : ""}</td>}
                 </tr>
               ))}
             </tbody>

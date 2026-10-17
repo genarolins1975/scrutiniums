@@ -1,7 +1,12 @@
 "use client";
 
 import { memo, useEffect, useId, useMemo, useRef, useState } from "react";
-import { carimbo, num, plural } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { Nome } from "@/components/i18n/Nome";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
+import { PROJECAO_EN, QUALIDADE_MALHA, traducaoDoDado } from "@/lib/energia/i18n/nucleo";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import type { Idioma } from "@/lib/idioma";
 import {
   ROTULO_METODO,
   classeDe,
@@ -150,10 +155,11 @@ function carregarGeometria(url: string): Promise<CamadaGeo> {
 
 type Carga = { estado: "carregando" } | { estado: "pronto"; geo: CamadaGeo } | { estado: "erro"; erro: string };
 
-function rotuloPadrao(camada: string | undefined): { singular: string; plural: string } {
-  if (camada === "uf") return { singular: "UF", plural: "UFs" };
-  if (camada === "municipios") return { singular: "município", plural: "municípios" };
-  return { singular: "região", plural: "regiões" };
+function rotuloPadrao(camada: string | undefined, idioma: Idioma): { singular: string; plural: string } {
+  const en = idioma === "en";
+  if (camada === "uf") return en ? { singular: "state", plural: "states" } : { singular: "UF", plural: "UFs" };
+  if (camada === "municipios") return en ? { singular: "municipality", plural: "municipalities" } : { singular: "município", plural: "municípios" }; // i18n: dado (as duas formas)
+  return en ? { singular: "region", plural: "regions" } : { singular: "região", plural: "regiões" }; // i18n: dado (as duas formas)
 }
 
 const maiuscula = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -217,6 +223,9 @@ const TabelaRegioes = memo(function TabelaRegioes({
   rotulo: { singular: string; plural: string };
   selecionado: string | null;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { plural } = formatos(idioma);
   const [aberta, setAberta] = useState(false);
   const [ordem, setOrdem] = useState<{ por: "nome" | "valor"; dir: Direcao }>({ por: "nome", dir: "asc" });
   const montar = linhas.length <= LIMITE_TABELA_MONTADA || aberta;
@@ -237,12 +246,18 @@ const TabelaRegioes = memo(function TabelaRegioes({
   return (
     <details className="mt-3 text-xs" onToggle={(e) => setAberta((e.currentTarget as HTMLDetailsElement).open)}>
       <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-        Dados do mapa em tabela ({plural(linhas.length, rotulo.singular, rotulo.plural)})
+        {tx("Dados do mapa em tabela (", "Map data as a table (")}
+        {plural(linhas.length, rotulo.singular, rotulo.plural)})
       </summary>
       {montar && (
-        <div className="tabela-scroll mt-2 max-h-96 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
+        <div className="tabela-scroll mt-2 max-h-96 overflow-y-auto" tabIndex={0} role="region" aria-label={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
           <table className="w-full border-collapse tabular-nums">
-            <caption className="sr-only">{`${titulo}, em ${unidade}. Sem dado e não se aplica ficam no fim em qualquer ordem.`}</caption>
+            <caption className="sr-only">
+              {tx(
+                `${titulo}, em ${unidade}. Sem dado e não se aplica ficam no fim em qualquer ordem.`,
+                `${titulo}, in ${unidade}. No data and not applicable stay at the end in any order.`,
+              )}
+            </caption>
             <thead className="sticky top-0 bg-superficie">
               <tr className="text-left">
                 <th scope="col" aria-sort={ariaSort("nome")} className="border-b border-linha px-2">
@@ -251,31 +266,31 @@ const TabelaRegioes = memo(function TabelaRegioes({
                   </button>
                 </th>
                 <th scope="col" className="border-b border-linha px-2 font-medium text-mineral">UF</th>
-                <th scope="col" className="border-b border-linha px-2 font-medium text-mineral">Código IBGE</th>
+                <th scope="col" className="border-b border-linha px-2 font-medium text-mineral">{tx("Código IBGE", "IBGE code")}</th>
                 <th scope="col" aria-sort={ariaSort("valor")} className="border-b border-linha px-2">
-                  <button type="button" onClick={() => alterna("valor")} className={botaoOrdem}>
-                    Valor ({unidade}) <span aria-hidden="true">{seta("valor")}</span>
+                  <button type="button" onClick={() => alterna("valor") /* // i18n: dado */} className={botaoOrdem}>
+                    {tx("Valor", "Value")} ({unidade}) <span aria-hidden="true">{seta("valor") /* // i18n: dado */}</span>
                   </button>
                 </th>
-                <th scope="col" className="border-b border-linha px-2 font-medium text-mineral">Classe</th>
-                {temDetalhe && <th scope="col" className="border-b border-linha px-2 font-medium text-mineral">O valor representa</th>}
+                <th scope="col" className="border-b border-linha px-2 font-medium text-mineral">{tx("Classe", "Class")}</th>
+                {temDetalhe && <th scope="col" className="border-b border-linha px-2 font-medium text-mineral">{tx("O valor representa", "The value represents")}</th>}
               </tr>
             </thead>
             <tbody>
               {ordenadas.map((l) => {
-                const d = descreveRegiao(l.v, classes, casas, "");
+                const d = descreveRegiao(l.v, classes, casas, "", idioma);
                 const sel = l.id === selecionado;
                 // linha selecionada tem fundo energia-fundo: ali o texto fica só em carvão e carvão-muted
                 return (
                   <tr key={l.id} data-estado={d.estado} className={`border-b border-linha ${sel ? "bg-energia-fundo shadow-[inset_4px_0_0_var(--cor-energia)]" : ""}`}>
                     <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">
-                      {l.nome}
-                      {sel && <span className="sr-only"> (selecionado)</span>}
+                      <Nome>{l.nome}</Nome>
+                      {sel && <span className="sr-only">{tx(" (selecionado)", " (selected)")}</span>}
                     </th>
                     <td className="px-2 py-1 text-carvao">{l.uf}</td>
                     <td className="px-2 py-1 text-carvao-muted">{l.id}</td>
                     <td className={`px-2 py-1 ${d.estado === "valor" ? "text-carvao" : "text-carvao-muted"}`}>{d.valor}</td>
-                    <td className="px-2 py-1 text-carvao-muted">{d.classe ?? "sem classe"}</td>
+                    <td className="px-2 py-1 text-carvao-muted">{d.classe ?? tx("sem classe", "no class")}</td>
                     {temDetalhe && <td className="px-2 py-1 text-carvao-muted">{l.detalhe ?? ""}</td>}
                   </tr>
                 );
@@ -314,6 +329,9 @@ export function MapaCoropletico({
   nota,
   detalheRegiao,
 }: MapaCoropleticoProps) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { num, plural, carimbo } = formatos(idioma);
   const uid = useId().replace(/:/g, "");
 
   /* carga */
@@ -335,17 +353,17 @@ export function MapaCoropletico({
   const features = geo?.features ?? SEM_FEATURES;
   const camada = geo?.camada;
   // objeto estável: a tabela memoizada não re-renderiza a cada movimento do ponteiro
-  const rotulo = useMemo(() => rotuloRegiao ?? rotuloPadrao(camada), [rotuloRegiao, camada]);
+  const rotulo = useMemo(() => rotuloRegiao ?? rotuloPadrao(camada, idioma), [rotuloRegiao, camada, idioma]);
   const porId = useMemo(() => new Map(features.map((f) => [f.id, f])), [features]);
 
   /* classes e cores: o universo das classes é o das regiões desenhadas */
   const universo = useMemo(() => (features.length ? features.map((f) => valores[f.id]) : Object.values(valores)), [features, valores]);
-  const classes = useMemo(() => classificacao ?? quebrasQuantis(universo, cores.length, { casas }), [classificacao, universo, cores.length, casas]);
+  const classes = useMemo(() => classificacao ?? quebrasQuantis(universo, cores.length, { casas, idioma }), [classificacao, universo, cores.length, casas, idioma]);
   const errosCores = validaCores(cores, classes.classes.length);
   // a paleta costuma chegar como literal novo a cada render do pai: a chave em texto mantém o memo
   const chaveCores = cores.join("|");
   const coresClasses = useMemo(() => coresParaClasses(chaveCores.split("|"), classes.classes.length), [chaveCores, classes.classes.length]);
-  const hachura = `${uid}-sem-dado`;
+  const hachura = `${uid}-sem-dado`; // i18n: dado
   const fills = useMemo(
     () => features.map((f) => preenchimento(valores[f.id], classes, { classes: coresClasses, semDado: `url(#${hachura})`, naoSeAplica: corNaoSeAplica })),
     [features, valores, classes, coresClasses, hachura, corNaoSeAplica],
@@ -367,18 +385,18 @@ export function MapaCoropletico({
   const selFeature = selecionado ? porId.get(selecionado) ?? null : null;
   const [leitura, setLeitura] = useState("");
 
-  const descricao = (id: string) => descreveRegiao(valores[id], classes, casas, unidade);
+  const descricao = (id: string) => descreveRegiao(valores[id], classes, casas, unidade, idioma);
   const detalhe = (id: string) => detalheRegiao?.(id) ?? null;
   const frase = (f: FeatureGeo) => {
     const det = detalhe(f.id);
-    return fraseRegiao(f, descricao(f.id)) + (det ? `; ${det}` : "");
+    return fraseRegiao(f, descricao(f.id), idioma) + (det ? `; ${det}` : "");
   };
 
   function selecionar(id: string | null) {
     if (!controlado) setSelInterna(id);
     onSelecionar?.(id);
     const f = id ? porId.get(id) : null;
-    setLeitura(f ? `Selecionado: ${frase(f)}.` : "Seleção removida.");
+    setLeitura(f ? tx(`Selecionado: ${frase(f)}.`, `Selected: ${frase(f)}.`) : tx("Seleção removida.", "Selection removed."));
   }
 
   /* tamanho medido e enquadramento */
@@ -492,12 +510,19 @@ export function MapaCoropletico({
     const z = aplicarZoom(base, zAtual, fator, maxEscala, alvo);
     setZoom(z);
     setDica(null);
-    setLeitura(z.escala > 1 ? `Mapa aproximado ${num(z.escala, 0)} vezes${alvo && selFeature ? `, em ${selFeature.nome}` : ""}.` : "Mapa no enquadramento inicial.");
+    setLeitura(
+      z.escala > 1
+        ? tx(
+            `Mapa aproximado ${num(z.escala, 0)} vezes${alvo && selFeature ? `, em ${selFeature.nome}` : ""}.`,
+            `Map zoomed in ${num(z.escala, 0)} times${alvo && selFeature ? `, on ${selFeature.nome}` : ""}.`,
+          )
+        : tx("Mapa no enquadramento inicial.", "Map at the initial framing."),
+    );
   }
   function restaurar() {
     setZoom(null);
     setDica(null);
-    setLeitura("Mapa no enquadramento inicial.");
+    setLeitura(tx("Mapa no enquadramento inicial.", "Map at the initial framing."));
   }
 
   /* busca (combobox) */
@@ -584,10 +609,11 @@ export function MapaCoropletico({
       {/* legenda: unidade, método, classes e os três estados */}
       <div className="mb-3">
         <p className="rotulo text-mineral">
-          Classes em {unidade}
+          {tx("Classes em ", "Classes in ")}
+          {unidade}
           {periodo ? ` · ${periodo}` : ""}
         </p>
-        <ul className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-carvao-muted" aria-label={`Legenda: classes em ${unidade}`}>
+        <ul className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx(`Legenda: classes em ${unidade}`, `Legend: classes in ${unidade}`)}>
           {classes.classes.map((c, i) => (
             <li key={i} className="flex items-center gap-1.5" data-classe={i}>
               <span aria-hidden="true" className="inline-block h-3 w-5 border border-linha" style={{ background: coresClasses[i] }} />
@@ -597,17 +623,21 @@ export function MapaCoropletico({
           ))}
           <li className="flex items-center gap-1.5" data-estado="sem-dado">
             <span aria-hidden="true" className="inline-block h-3 w-5 border border-linha" style={{ background: FUNDO_SEM_DADO }} />
-            sem dado <span className="tabular-nums">({num(resumo.semDado, 0)})</span>
+            {tx("sem dado", "no data")} <span className="tabular-nums">({num(resumo.semDado, 0)})</span>
           </li>
           <li className="flex items-center gap-1.5" data-estado="nao-se-aplica">
             <span aria-hidden="true" className="inline-block h-3 w-5 border border-linha" style={{ background: corNaoSeAplica }} />
-            não se aplica <span className="tabular-nums">({num(resumo.naoSeAplica, 0)})</span>
+            {tx("não se aplica", "not applicable")} <span className="tabular-nums">({num(resumo.naoSeAplica, 0)})</span>
           </li>
         </ul>
         <p className="mt-1 text-xs text-carvao-muted">
-          {ROTULO_METODO[classes.metodo]}. Cada classe inclui o limite inferior.
+          {ROTULO_METODO[classes.metodo]}
+          {tx(". Cada classe inclui o limite inferior.", ". Each class includes its lower bound.")}
           {typeof classeDoZero === "number" &&
-            ` Zero é valor, não ausência: ${plural(resumo.zeros, `${rotulo.singular} tem`, `${rotulo.plural} têm`)} valor 0, na classe ${classes.classes[classeDoZero].rotulo}.`}
+            tx(
+              ` Zero é valor, não ausência: ${plural(resumo.zeros, `${rotulo.singular} tem`, `${rotulo.plural} têm`)} valor 0, na classe ${classes.classes[classeDoZero].rotulo}.`,
+              ` Zero is a value, not a missing value: ${plural(resumo.zeros, `${rotulo.singular} has`, `${rotulo.plural} have`)} value 0, in class ${classes.classes[classeDoZero].rotulo}.`,
+            )}
         </p>
       </div>
 
@@ -615,7 +645,8 @@ export function MapaCoropletico({
       <div className="mb-2 flex flex-wrap items-end gap-2">
         <div className="relative min-w-[min(13rem,100%)] flex-1">
           <label htmlFor={`${uid}-busca`} className="rotulo mb-1 block text-mineral">
-            Buscar {rotulo.singular}
+            {tx("Buscar ", "Search ")}
+            {rotulo.singular}
           </label>
           <input
             id={`${uid}-busca`}
@@ -630,7 +661,7 @@ export function MapaCoropletico({
             spellCheck={false}
             disabled={!geo}
             value={consulta}
-            placeholder={geo ? "Nome, sigla da UF ou código IBGE" : "Aguardando a malha"}
+            placeholder={geo ? tx("Nome, sigla da UF ou código IBGE", "Name, state abbreviation or IBGE code") : tx("Aguardando a malha", "Waiting for the map grid")}
             onChange={(e) => {
               setConsulta(e.target.value);
               setAberta(true);
@@ -646,14 +677,17 @@ export function MapaCoropletico({
             className="h-11 w-full border border-linha bg-superficie px-3 text-sm text-carvao placeholder:text-mineral focus:outline-none focus-visible:ring-2 focus-visible:ring-energia disabled:cursor-wait"
           />
           <p id={`${uid}-ajuda`} className="sr-only">
-            Digite parte do nome, a sigla da UF ou o código IBGE. Setas percorrem a lista e acendem a região no mapa; Enter seleciona; Esc fecha a lista.
+            {tx(
+              "Digite parte do nome, a sigla da UF ou o código IBGE. Setas percorrem a lista e acendem a região no mapa; Enter seleciona; Esc fecha a lista.",
+              "Type part of the name, the state abbreviation or the IBGE code. The arrow keys move through the list and highlight the region on the map; Enter selects; Esc closes the list.",
+            )}
           </p>
           {/* a lista existe sempre (aria-controls aponta para ela) e só aparece aberta */}
           <ul
               id={`${uid}-lista`}
               role="listbox"
               hidden={!aberta || !geo}
-              aria-label={`${maiuscula(rotulo.plural)} encontrados`}
+              aria-label={tx(`${maiuscula(rotulo.plural)} encontrados`, `${maiuscula(rotulo.plural)} found`)}
               // o clique na lista não pode tirar o foco do campo antes de selecionar
               onPointerDown={(e) => e.preventDefault()}
               className="absolute left-0 right-0 top-full z-30 mt-1 max-h-72 overflow-y-auto border border-linha bg-superficie shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
@@ -673,9 +707,9 @@ export function MapaCoropletico({
                     }`}
                   >
                     <span>
-                      {f.nome}
+                      <Nome>{f.nome}</Nome>
                       {f.uf && f.uf !== f.nome && <span className="text-carvao-muted">, {f.uf}</span>}
-                      {f.id === selecionado && <span className="text-carvao-muted"> (selecionado)</span>}
+                      {f.id === selecionado && <span className="text-carvao-muted">{tx(" (selecionado)", " (selected)")}</span>}
                     </span>
                     <span className="whitespace-nowrap tabular-nums text-carvao-muted">{d.valor}</span>
                   </li>
@@ -683,25 +717,35 @@ export function MapaCoropletico({
               })}
               {resultados.total === 0 && (
                 <li role="presentation" className="px-3 py-2 text-xs text-carvao-muted">
-                  Nenhum resultado para essa busca.
+                  {tx("Nenhum resultado para essa busca.", "No results for this search.")}
                 </li>
               )}
               {resultados.total > resultados.itens.length && (
                 <li role="presentation" className="px-3 py-2 text-xs text-carvao-muted">
-                  Mais {num(resultados.total - resultados.itens.length, 0)} resultados: refine a busca.
+                  {tx(
+                    `Mais ${num(resultados.total - resultados.itens.length, 0)} resultados: refine a busca.`,
+                    `${num(resultados.total - resultados.itens.length, 0)} more results: refine the search.`,
+                  )}
                 </li>
               )}
             </ul>
         </div>
-        <div role="group" aria-label="Zoom do mapa" className="flex gap-1">
-          <button type="button" className={BOTAO} onClick={() => zoomPor(2)} disabled={!zAtual || zAtual.escala >= maxEscala} aria-label={selFeature ? `Aproximar em ${selFeature.nome}` : "Aproximar"} title="Aproximar">
+        <div role="group" aria-label={tx("Zoom do mapa", "Map zoom")} className="flex gap-1">
+          <button
+            type="button"
+            className={BOTAO}
+            onClick={() => zoomPor(2)}
+            disabled={!zAtual || zAtual.escala >= maxEscala}
+            aria-label={selFeature ? tx(`Aproximar em ${selFeature.nome}`, `Zoom in on ${selFeature.nome}`) : tx("Aproximar", "Zoom in")}
+            title={tx("Aproximar", "Zoom in")}
+          >
             +
           </button>
-          <button type="button" className={BOTAO} onClick={() => zoomPor(0.5)} disabled={!noZoom} aria-label="Afastar" title="Afastar">
+          <button type="button" className={BOTAO} onClick={() => zoomPor(0.5)} disabled={!noZoom} aria-label={tx("Afastar", "Zoom out")} title={tx("Afastar", "Zoom out")}>
             −
           </button>
           <button type="button" className={`${BOTAO} rotulo px-3`} onClick={restaurar} disabled={!noZoom}>
-            Restaurar
+            {tx("Restaurar", "Reset")}
           </button>
         </div>
       </div>
@@ -715,16 +759,18 @@ export function MapaCoropletico({
       >
         {!geo && carga.estado !== "erro" && (
           <div role="status" className="flex h-full items-center justify-center px-6 text-center text-sm text-carvao-muted">
-            Carregando a malha territorial do IBGE.
+            {tx("Carregando a malha territorial do IBGE.", "Loading the IBGE territorial map grid.")}
           </div>
         )}
         {!geo && carga.estado === "erro" && (
           <div role="alert" className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center text-sm text-carvao">
             <p>
-              Não foi possível carregar a malha territorial ({carga.erro}). Os valores continuam na tabela abaixo, pelo código IBGE.
+              {tx("Não foi possível carregar a malha territorial (", "The territorial map grid could not be loaded (")}
+              <TrechoPortugues regiao="mapa-erro-malha">{carga.erro}</TrechoPortugues>
+              {tx("). Os valores continuam na tabela abaixo, pelo código IBGE.", "). The values remain in the table below, by IBGE code.")}
             </p>
             <button type="button" className={`${BOTAO} rotulo px-4 text-energia-dark`} onClick={() => setTentativa((t) => t + 1)}>
-              Tentar de novo
+              {tx("Tentar de novo", "Try again")}
             </button>
           </div>
         )}
@@ -751,7 +797,12 @@ export function MapaCoropletico({
             }}
             onClick={aoClicar}
           >
-            <title id={`${uid}-t`}>{`${titulo}: mapa por ${rotulo.singular}. A busca acima do mapa escolhe uma região pelo teclado.`}</title>
+            <title id={`${uid}-t`}>
+              {tx(
+                `${titulo}: mapa por ${rotulo.singular}. A busca acima do mapa escolhe uma região pelo teclado.`,
+                `${titulo}: map by ${rotulo.singular}. The search above the map chooses a region by keyboard.`,
+              )}
+            </title>
             <defs>
               {/* hachura de "sem dado" com 6 px de passo em qualquer zoom */}
               <pattern id={hachura} patternUnits="userSpaceOnUse" width={6 * upx} height={6 * upx} patternTransform="rotate(45)">
@@ -784,9 +835,17 @@ export function MapaCoropletico({
               transform: dicaPos[1] > 96 ? "translateY(calc(-100% - 12px))" : "translateY(16px)",
             }}
           >
-            <p className="rotulo text-mineral">{dicaFeature.uf && dicaFeature.uf !== dicaFeature.nome ? `${dicaFeature.nome} · ${dicaFeature.uf}` : dicaFeature.nome}</p>
+            <p className="rotulo text-mineral">
+              <Nome>{dicaFeature.nome}</Nome>
+              {dicaFeature.uf && dicaFeature.uf !== dicaFeature.nome ? ` · ${dicaFeature.uf}` : ""}
+            </p>
             <p className="mt-1 tabular-nums text-carvao">{dicaDesc.valor}</p>
-            {dicaDesc.classe && <p className="text-carvao-muted">classe {dicaDesc.classe}</p>}
+            {dicaDesc.classe && (
+              <p className="text-carvao-muted">
+                {tx("classe ", "class ")}
+                {dicaDesc.classe}
+              </p>
+            )}
             {detalhe(dicaFeature.id) && <p className="text-carvao-muted">{detalhe(dicaFeature.id)}</p>}
           </div>
         )}
@@ -801,23 +860,31 @@ export function MapaCoropletico({
       <div className="mt-2 flex min-h-[44px] flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-linha pb-2 text-sm" data-selecao={selecionado ?? ""}>
         {selFeature ? (
           <p className="text-carvao">
-            <span className="rotulo mr-2 text-mineral">Seleção</span>
-            <strong className="font-medium">{selFeature.nome}</strong>
+            <span className="rotulo mr-2 text-mineral">{tx("Seleção", "Selection")}</span>
+            <strong className="font-medium">
+              <Nome>{selFeature.nome}</Nome>
+            </strong>
             {selFeature.uf && selFeature.uf !== selFeature.nome ? ` (${selFeature.uf})` : ""}: <span className="tabular-nums">{descricao(selFeature.id).valor}</span>
-            {descricao(selFeature.id).classe && <span className="text-carvao-muted">, classe {descricao(selFeature.id).classe}</span>}
+            {descricao(selFeature.id).classe && (
+              <span className="text-carvao-muted">
+                {tx(", classe ", ", class ")}
+                {descricao(selFeature.id).classe}
+              </span>
+            )}
             {detalhe(selFeature.id) && <span className="text-carvao-muted">; {detalhe(selFeature.id)}</span>}
           </p>
         ) : selecionado && geo ? (
           <p className="text-carvao">
-            <span className="rotulo mr-2 text-mineral">Seleção</span>
-            {selecionado}: sem polígono nesta malha.
+            <span className="rotulo mr-2 text-mineral">{tx("Seleção", "Selection")}</span>
+            {selecionado}
+            {tx(": sem polígono nesta malha.", ": no polygon in this map grid.")}
           </p>
         ) : (
-          <p className="text-carvao-muted">Sem seleção. Clique ou toque numa região, ou escolha pela busca.</p>
+          <p className="text-carvao-muted">{tx("Sem seleção. Clique ou toque numa região, ou escolha pela busca.", "No selection. Click or tap a region, or choose through the search.")}</p>
         )}
         {selecionado && (
           <button type="button" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia" onClick={() => selecionar(null)}>
-            Limpar seleção
+            {tx("Limpar seleção", "Clear selection")}
           </button>
         )}
       </div>
@@ -825,23 +892,48 @@ export function MapaCoropletico({
       {/* resumo da cobertura, fonte da malha e modo de uso */}
       <div id={`${uid}-r`} className="mt-2 space-y-1 text-xs leading-relaxed text-carvao-muted">
         <p className="tabular-nums">
-          {plural(resumo.regioes, rotulo.singular, rotulo.plural)}: {num(resumo.comValor, 0)} com valor
-          {`, ${num(resumo.semDado, 0)} sem dado (hachura), ${num(resumo.naoSeAplica, 0)} não se aplica (cinza liso)`}
-          {resumo.minimo !== null && resumo.maximo !== null && `. Valores de ${descreveRegiao(resumo.minimo, classes, casas, unidade).valor} a ${descreveRegiao(resumo.maximo, classes, casas, unidade).valor}`}.
+          {plural(resumo.regioes, rotulo.singular, rotulo.plural)}: {num(resumo.comValor, 0)} {tx("com valor", "with a value")}
+          {tx(
+            `, ${num(resumo.semDado, 0)} sem dado (hachura), ${num(resumo.naoSeAplica, 0)} não se aplica (cinza liso)`,
+            `, ${num(resumo.semDado, 0)} no data (hatched), ${num(resumo.naoSeAplica, 0)} not applicable (plain gray)`,
+          )}
+          {resumo.minimo !== null &&
+            resumo.maximo !== null &&
+            tx(
+              `. Valores de ${descreveRegiao(resumo.minimo, classes, casas, unidade, idioma).valor} a ${descreveRegiao(resumo.maximo, classes, casas, unidade, idioma).valor}`,
+              `. Values from ${descreveRegiao(resumo.minimo, classes, casas, unidade, idioma).valor} to ${descreveRegiao(resumo.maximo, classes, casas, unidade, idioma).valor}`,
+            )}
+          .
         </p>
         {geo && resumo.foraDaMalha.length > 0 && (
           <p data-fora-da-malha={resumo.foraDaMalha.length}>
-            {plural(resumo.foraDaMalha.length, "valor informado não tem", "valores informados não têm")} polígono nesta malha e {resumo.foraDaMalha.length === 1 ? "não aparece" : "não aparecem"} no desenho: {resumo.foraDaMalha.slice(0, 8).join(", ")}
-            {resumo.foraDaMalha.length > 8 ? " e outros" : ""}.
+            {tx(
+              `${plural(resumo.foraDaMalha.length, "valor informado não tem", "valores informados não têm")} polígono nesta malha e ${resumo.foraDaMalha.length === 1 ? "não aparece" : "não aparecem"} no desenho: ${resumo.foraDaMalha.slice(0, 8).join(", ")}${resumo.foraDaMalha.length > 8 ? " e outros" : ""}.`,
+              `${plural(resumo.foraDaMalha.length, "reported value has", "reported values have")} no polygon in this map grid and ${resumo.foraDaMalha.length === 1 ? "does not appear" : "do not appear"} in the drawing: ${resumo.foraDaMalha.slice(0, 8).join(", ")}${resumo.foraDaMalha.length > 8 ? " and others" : ""}.`,
+            )}
           </p>
         )}
         {geo && (
           <p>
-            Malha territorial do IBGE{geo.malha.revisao ? `, revisão de ${geo.malha.revisao}` : ""}, qualidade {geo.malha.qualidade === "intermediaria" ? "intermediária" : geo.malha.qualidade === "minima" ? "mínima" : geo.malha.qualidade},
-            capturada em {carimbo(geo.capturado_em)}. Projeção: {geo.projecao.nome} (áreas proporcionais às reais).
+            {tx(
+              <>
+                Malha territorial do IBGE{geo.malha.revisao ? `, revisão de ${geo.malha.revisao}` : ""}, qualidade {geo.malha.qualidade === "intermediaria" ? "intermediária" : geo.malha.qualidade === "minima" ? "mínima" : geo.malha.qualidade},
+                capturada em {carimbo(geo.capturado_em)}. Projeção: {geo.projecao.nome} (áreas proporcionais às reais).
+              </>,
+              <>
+                IBGE territorial map grid{geo.malha.revisao ? `, ${geo.malha.revisao} revision` : ""}, {QUALIDADE_MALHA[geo.malha.qualidade]?.en ?? <TrechoPortugues regiao="mapa-qualidade">{geo.malha.qualidade}</TrechoPortugues>} quality, captured
+                on {carimbo(geo.capturado_em)}. Projection:{" "}
+                {traducaoDoDado(PROJECAO_EN, geo.projecao.nome, idioma) ?? <TrechoPortugues regiao="mapa-projecao">{geo.projecao.nome}</TrechoPortugues>} (areas proportional to the real ones).
+              </>,
+            )}
           </p>
         )}
-        <p>Clique ou toque numa região para selecioná-la; pelo teclado, use a busca. Com zoom, arraste o mapa para movê-lo.</p>
+        <p>
+          {tx(
+            "Clique ou toque numa região para selecioná-la; pelo teclado, use a busca. Com zoom, arraste o mapa para movê-lo.",
+            "Click or tap a region to select it; with the keyboard, use the search. When zoomed in, drag the map to move it.",
+          )}
+        </p>
         {nota && <p>{nota}</p>}
       </div>
 

@@ -50,17 +50,26 @@ export function normalizarBusca(t: string): string {
     .replace(/\b([a-z]{2,})(?:oes|aes)\b/g, "$1ao");
 }
 
-/** Palavras de ligação: nunca decidem se um item casa. */
-const LIGACAO = new Set(["a", "o", "as", "os", "de", "da", "do", "das", "dos", "e", "em", "no", "na", "nos", "nas", "um", "uma", "para", "por", "pelo", "pela", "que", "com", "se", "ao", "aos", "sao"]);
+/**
+ * Palavras de ligação: nunca decidem se um item casa. As inglesas servem à página inglesa ("the price of energy") e nenhuma delas é
+ * palavra portuguesa com sentido próprio, então a busca portuguesa não muda.
+ */
+const LIGACAO = new Set([
+  "a", "o", "as", "os", "de", "da", "do", "das", "dos", "e", "em", "no", "na", "nos", "nas", "um", "uma", "para", "por", "pelo", "pela", "que", "com", "se", "ao", "aos", "sao", // i18n: dado
+  "the", "of", "in", "on", "at", "to", "for", "and", "an", "is", "are", "by", "with", "my", "its", "it", // i18n: dado
+]);
 
 /**
  * Palavras de quem pergunta ou pede: saem da busca quando sobra outra palavra ("o que é PLD", "qual a tarifa", "como funciona o PLD",
  * "quero saber o preço da luz").
  */
 const PERGUNTA = new Set([
-  "qual", "quais", "quanto", "quanta", "quantos", "quantas", "quem", "onde", "como", "quando",
+  "qual", "quais", "quanto", "quanta", "quantos", "quantas", "quem", "onde", "como", "quando", // i18n: dado
   "significa", "significado", "funciona", "funcionam", "funcionamento", "explica", "explicar", "explique",
-  "quero", "preciso", "procuro", "saber", "entender", "ver", "existe", "existem",
+  "quero", "preciso", "procuro", "saber", "entender", "ver", "existe", "existem", // i18n: dado
+  // as mesmas, em inglês ("what is PLD", "how does the PLD work")
+  "what", "which", "how", "who", "where", "when", "why", "much", "many", "does", "mean", "means", "meaning",
+  "work", "works", "explain", "want", "need", "looking", "know", "understand", "see", "there",
 ]);
 
 const PONTOS = {

@@ -2,9 +2,11 @@
 
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { comFolga, lerViewBox, textoViewBox, type Caixa } from "@/lib/energia/geo";
-import { num } from "@/lib/energia/formato";
-import { COR_RAZAO, CURTO_RAZAO, RAZOES, type PontoUsina } from "@/lib/energia/geracao";
+import { Nome } from "@/components/i18n/Nome";
+import { formatos } from "@/lib/energia/formato";
+import { COR_RAZAO, RAZOES, curtoRazao, type PontoUsina } from "@/lib/energia/geracao";
 import type { RazaoRestricao } from "@/lib/energia/tipos-geracao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Mapa das usinas e conjuntos com mais energia não gerada por restrição (P023), sobre a
@@ -59,6 +61,10 @@ function marca(razao: RazaoRestricao, x: number, y: number, r: number): string {
 
 export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse, selecionado, onSelecionar, semCoordenada, nota, ampliado: ampliadoControlado, onAmpliar, naLista = 10 }: MapaUsinasProps) {
   const uid = useId().replace(/:/g, "");
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { num } = formatos(idioma);
+  const CURTO_RAZAO = curtoRazao(idioma);
   const raiz = useRef<HTMLDivElement>(null);
   const [largura, setLargura] = useState(LARGURA_SSR);
   const [ampliadoLocal, setAmpliadoLocal] = useState(true);
@@ -91,7 +97,14 @@ export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse,
   }, [base, ampliado, pontos]);
 
   if (!base || !janela) {
-    return <p className="border-l-2 border-aviso pl-3 text-sm text-carvao">A malha de UF publicada não tem enquadramento válido; o mapa não é desenhado e a tabela abaixo traz as mesmas usinas.</p>;
+    return (
+      <p className="border-l-2 border-aviso pl-3 text-sm text-carvao">
+        {tx(
+          "A malha de UF publicada não tem enquadramento válido; o mapa não é desenhado e a tabela abaixo traz as mesmas usinas.",
+          "The published state boundary file has no valid framing; the map is not drawn, and the table below lists the same plants.",
+        )}
+      </p>
+    );
   }
   const unidadesPorPx = janela.largura / largura;
   const altura = Math.round(largura * (janela.altura / janela.largura));
@@ -128,7 +141,7 @@ export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse,
           onClick={() => setAmpliado(true)}
           className={`inline-flex min-h-[44px] items-center border px-3 ${ampliado ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted"}`}
         >
-          Ampliar nas usinas
+          {tx("Ampliar nas usinas", "Zoom to the plants")}
         </button>
         <button
           type="button"
@@ -136,11 +149,11 @@ export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse,
           onClick={() => setAmpliado(false)}
           className={`inline-flex min-h-[44px] items-center border px-3 ${!ampliado ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted"}`}
         >
-          Brasil inteiro
+          {tx("Brasil inteiro", "All of Brazil")}
         </button>
         {selecionado && (
           <button type="button" onClick={() => onSelecionar(null)} className="inline-flex min-h-[44px] items-center px-2 text-carvao-muted underline underline-offset-4 hover:text-carvao">
-            Limpar seleção
+            {tx("Limpar seleção", "Clear selection")}
           </button>
         )}
       </div>
@@ -151,7 +164,10 @@ export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse,
             width="100%"
             height={altura}
             role="img"
-            aria-label={`${titulo}. ${pontos.length} usinas e conjuntos com coordenada; a lista ao lado e a tabela equivalente abaixo trazem os mesmos dados e permitem selecionar pelo teclado.`}
+            aria-label={tx(
+              `${titulo}. ${pontos.length} usinas e conjuntos com coordenada; a lista ao lado e a tabela equivalente abaixo trazem os mesmos dados e permitem selecionar pelo teclado.`,
+              `${titulo}. ${pontos.length} plants and plant clusters with coordinates; the list beside the map and the equivalent table below carry the same data and allow keyboard selection.`,
+            )}
             className="block border border-linha bg-superficie"
             onPointerLeave={() => setSobre(null)}
           >
@@ -178,7 +194,12 @@ export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse,
                     onPointerEnter={() => setSobre(p.id)}
                     onClick={() => onSelecionar(sel ? null : p.id)}
                   >
-                    <title>{`${p.nome}${p.uf ? ` (${p.uf})` : ""}: ${num(p.nao_gerada_gwh, 1)} GWh não gerados, taxa ${num(p.taxa_pct, 1)}%, ${CURTO_RAZAO[p.razao]}`}</title>
+                    <title>
+                      {tx(
+                        `${p.nome}${p.uf ? ` (${p.uf})` : ""}: ${num(p.nao_gerada_gwh, 1)} GWh não gerados, taxa ${num(p.taxa_pct, 1)}%, ${CURTO_RAZAO[p.razao]}`,
+                        `${p.nome}${p.uf ? ` (${p.uf})` : ""}: ${num(p.nao_gerada_gwh, 1)} GWh not generated, rate ${num(p.taxa_pct, 1)}%, ${CURTO_RAZAO[p.razao]}`,
+                      )}
+                    </title>
                   </path>
                 );
               })}
@@ -193,15 +214,17 @@ export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse,
                   className="pointer-events-none absolute z-10 max-w-[min(18rem,calc(100%-1rem))] border border-linha bg-superficie px-2 py-1 text-xs text-carvao shadow-sm"
                   style={{ top: Math.min(Math.max(0, py + 10), Math.max(0, altura - 64)), ...(esquerda ? { right: Math.max(0, largura - px + 10) } : { left: Math.max(0, px + 10) }) }}
                 >
-                  <span className="font-medium">{emFoco.nome}</span>
-                  {emFoco.uf ? ` (${emFoco.uf})` : ""}: {num(emFoco.nao_gerada_gwh, 1)} GWh não gerados; taxa {num(emFoco.taxa_pct, 1)}%; {CURTO_RAZAO[emFoco.razao]}
+                  <span className="font-medium">
+                    <Nome>{emFoco.nome}</Nome>
+                  </span>
+                  {emFoco.uf ? ` (${emFoco.uf})` : ""}: {num(emFoco.nao_gerada_gwh, 1)} {tx("GWh não gerados; taxa", "GWh not generated; rate")} {num(emFoco.taxa_pct, 1)}%; {CURTO_RAZAO[emFoco.razao]}
                 </div>
               );
             })()}
         </div>
         <div className="min-w-0" data-lista-usinas="">
-          <p className="rotulo text-mineral">As {lista.length} com mais energia não gerada, em 12 meses</p>
-          <ol className="mt-1" aria-label="Usinas e conjuntos com mais energia não gerada">
+          <p className="rotulo text-mineral">{tx(`As ${lista.length} com mais energia não gerada, em 12 meses`, `The ${lista.length} with the most energy not generated, over 12 months`)}</p>
+          <ol className="mt-1" aria-label={tx("Usinas e conjuntos com mais energia não gerada", "Plants and plant clusters with the most energy not generated")}>
             {lista.map((p, i) => {
               const sel = p.id === selecionado;
               return (
@@ -228,27 +251,39 @@ export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse,
                       <path d={marca(p.razao, 8, 8, 5)} fill={p.razao === "SEM" ? "var(--cor-superficie)" : COR_RAZAO[p.razao]} stroke={COR_RAZAO[p.razao]} />
                     </svg>
                     <span className="min-w-0 [overflow-wrap:anywhere]">
-                      {p.nome}
+                      <Nome>{p.nome}</Nome>
                       {p.uf ? <span className="text-xs text-carvao-muted"> ({p.uf})</span> : null}
                     </span>
                     <span className="text-right tabular-nums">
                       {num(p.nao_gerada_gwh, 0)} GWh
-                      <span className="block text-xs text-carvao-muted">taxa {num(p.taxa_pct, 1)}%</span>
+                      <span className="block text-xs text-carvao-muted">
+                        {tx("taxa", "rate")} {num(p.taxa_pct, 1)}%
+                      </span>
                     </span>
                   </button>
                 </li>
               );
             })}
           </ol>
-          <p className="mt-2 text-xs text-carvao-muted">As {num(pontos.length, 0)} usinas e conjuntos do mapa estão na tabela completa, logo abaixo.</p>
+          <p className="mt-2 text-xs text-carvao-muted">
+            {tx(
+              `As ${num(pontos.length, 0)} usinas e conjuntos do mapa estão na tabela completa, logo abaixo.`,
+              `The ${num(pontos.length, 0)} plants and plant clusters on the map are in the full table, just below.`,
+            )}
+          </p>
         </div>
       </div>
       <p role="status" aria-live="polite" className="sr-only">
-        {escolhido ? `Selecionada: ${escolhido.nome}, ${num(escolhido.nao_gerada_gwh, 1)} GWh não gerados, taxa ${num(escolhido.taxa_pct, 1)}%.` : ""}
+        {escolhido
+          ? tx(
+              `Selecionada: ${escolhido.nome}, ${num(escolhido.nao_gerada_gwh, 1)} GWh não gerados, taxa ${num(escolhido.taxa_pct, 1)}%.`,
+              `Selected: ${escolhido.nome}, ${num(escolhido.nao_gerada_gwh, 1)} GWh not generated, rate ${num(escolhido.taxa_pct, 1)}%.`,
+            )
+          : ""}
       </p>
       <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-carvao-muted">
         <div>
-          <p className="rotulo text-mineral">Razão com mais energia não gerada</p>
+          <p className="rotulo text-mineral">{tx("Razão com mais energia não gerada", "Reason with the most energy not generated")}</p>
           <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
             {razoesPresentes.map((z) => (
               <li key={z} className="inline-flex items-center gap-1">
@@ -261,7 +296,7 @@ export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse,
           </ul>
         </div>
         <div>
-          <p className="rotulo text-mineral">Energia não gerada em 12 meses (tamanho da marca)</p>
+          <p className="rotulo text-mineral">{tx("Energia não gerada em 12 meses (tamanho da marca)", "Energy not generated over 12 months (marker size)")}</p>
           <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
             {rotulosClasse.map((r, k) => (
               <li key={r} className="inline-flex items-center gap-1">
@@ -275,8 +310,17 @@ export function GeracaoMapaUsinas({ titulo, ufs, viewBox, pontos, rotulosClasse,
         </div>
       </div>
       <p className="text-xs text-carvao-muted">
-        Malha de UF do IBGE (Albers cônica equivalente); coordenadas publicadas pelo ONS.
-        {semCoordenada > 0 ? ` ${semCoordenada} usinas sem coordenada ficam só na tabela.` : ""} {nota}
+        {tx(
+          <>
+            Malha de UF do IBGE (Albers cônica equivalente); coordenadas publicadas pelo ONS.
+            {semCoordenada > 0 ? ` ${semCoordenada} usinas sem coordenada ficam só na tabela.` : ""}
+          </>,
+          <>
+            IBGE state boundaries (Albers equal-area conic); coordinates published by the ONS.
+            {semCoordenada > 0 ? ` ${semCoordenada} ${semCoordenada === 1 ? "plant without coordinates appears" : "plants without coordinates appear"} only in the table.` : ""}
+          </>,
+        )}{" "}
+        {nota}
       </p>
     </figure>
   );

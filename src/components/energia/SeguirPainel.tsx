@@ -2,6 +2,7 @@ import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
 import { LinkDoPainel } from "@/components/energia/LinkDoPainel";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Próximos passos de um painel numa linha só: baixar os dados, copiar o link com o recorte e seguir para a próxima pergunta.
@@ -26,11 +27,12 @@ export function SeguirPainel({
         <div className="flex flex-wrap items-center gap-x-5 gap-y-0">
           {downloads.length === 1 && (
             <a href={downloads[0].url} download className={link}>
-              Baixar os dados: {downloads[0].rotulo}
+              {tx("Baixar os dados: ", "Download the data: ")}
+              {downloads[0].rotulo}
             </a>
           )}
           {downloads.length > 1 && (
-            <DetalheDoNivel resumo={`Baixar os dados (${downloads.length} arquivos)`} abreEm="analisar" className="[&[open]]:basis-full" dados={{ "data-downloads": "" }}>
+            <DetalheDoNivel resumo={tx(`Baixar os dados (${downloads.length} arquivos)`, `Download the data (${downloads.length} files)`)} abreEm="analisar" className="[&[open]]:basis-full" dados={{ "data-downloads": "" }}>
               <ul className="flex flex-col gap-x-6 pb-2 md:flex-row md:flex-wrap">
                 {downloads.map((d) => (
                   <li key={d.url}>
@@ -46,7 +48,7 @@ export function SeguirPainel({
         </div>
         {proximo && (
           <p className="text-sm">
-            <span className="text-mineral">Próxima pergunta: </span>
+            <span className="text-mineral">{tx("Próxima pergunta: ", "Next question: ")}</span>
             <Link href={proximo.href} className={link}>
               {proximo.pergunta}
             </Link>
