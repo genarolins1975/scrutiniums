@@ -220,7 +220,7 @@ export default function MercadoAgentesPage() {
             <>
               Agent, profile, load parcel and consumer unit are different counts and cannot be added up: an agent (the company, identified by its CNPJ) can have several profiles at CCEE, a load parcel can
               group several consumer units, and EPE counts units, not companies. The load parcels counted are those of the free market (<Termo slug="acl">ACL</Termo>); those of distribution utilities, which represent
-              the regulated market (<Termo slug="acr">ACR</Termo>), are left out. Here each number states what it counts.
+              the regulated market (<Termo slug="acr">ACR</Termo>), are excluded. Here each number states what it counts.
             </>,
           )}
         </CabecalhoModulo>

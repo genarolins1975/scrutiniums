@@ -85,7 +85,7 @@ export default function MercadoEncargosPage() {
     inad && ultimaLiq && ultimaLiq.mes === inad.mes && liqs.length === 3
       ? tx(
           ` São ${reaisCurto(ultimaLiq.inadimplencia)} sobre ${reaisCurto(ultimaLiq.a_liquidar)} a liquidar. De ${mesAno(liqs[0].mes)} a ${mesAno(ultimaLiq.mes)}, o valor não pago ficou entre ${reaisCurto(Math.min(...liqs.map((x) => x.inadimplencia as number)))} e ${reaisCurto(Math.max(...liqs.map((x) => x.inadimplencia as number)))} e o valor a liquidar passou de ${reaisCurto(liqs[0].a_liquidar)} para ${reaisCurto(ultimaLiq.a_liquidar)}, e é por isso que o percentual sobe.`,
-          ` That is ${reaisCurto(ultimaLiq.inadimplencia)} out of ${reaisCurto(ultimaLiq.a_liquidar)} to be settled. From ${mesAno(liqs[0].mes)} to ${mesAno(ultimaLiq.mes)}, the unpaid amount stayed between ${reaisCurto(Math.min(...liqs.map((x) => x.inadimplencia as number)))} and ${reaisCurto(Math.max(...liqs.map((x) => x.inadimplencia as number)))} and the amount to be settled went from ${reaisCurto(liqs[0].a_liquidar)} to ${reaisCurto(ultimaLiq.a_liquidar)}, which is why the percentage rises.`,
+          ` That is ${reaisCurto(ultimaLiq.inadimplencia)} of the ${reaisCurto(ultimaLiq.a_liquidar)} to be settled. From ${mesAno(liqs[0].mes)} to ${mesAno(ultimaLiq.mes)}, the unpaid amount stayed between ${reaisCurto(Math.min(...liqs.map((x) => x.inadimplencia as number)))} and ${reaisCurto(Math.max(...liqs.map((x) => x.inadimplencia as number)))} and the amount to be settled went from ${reaisCurto(liqs[0].a_liquidar)} to ${reaisCurto(ultimaLiq.a_liquidar)}, which is why the percentage rises.`,
         )
       : "";
   const versao = tx(
@@ -135,8 +135,8 @@ export default function MercadoEncargosPage() {
     </>,
     <>
       The accounting month is the month of the accounting; payment is the financial settlement, which comes later and goes through relief with funds from the market itself. The bars add up the ESS types for the month;
-      demand response comes from a separate CCEE dataset and is left out of the sum. Operating restriction groups three charges: <Termo slug="constrained-off">constrained-off</Termo>, constrained-on and unit
-      commitment. A month with no bar is missing data, with the reason written out: never zero.
+      demand response comes from a separate CCEE dataset and is excluded from the sum. Operating restriction groups three charges: <Termo slug="constrained-off">constrained-off</Termo>, constrained-on and unit
+      commitment. A month with no bar is missing data, with the reason stated: never zero.
     </>,
   );
   const naoConcluir = tx(
@@ -371,7 +371,7 @@ export default function MercadoEncargosPage() {
                   titulo={tx("Quanto da liquidação ficou sem pagamento?", "How much of the settlement went unpaid?")}
                   lead={tx(
                     "Inadimplência é o valor que a CCEE registra como não pago sobre o valor a liquidar do mês; o valor não pago numa liquidação pode ser pago depois.",
-                    "Default is the amount CCEE records as unpaid out of the amount to be settled in the month; the amount unpaid in a settlement can be paid later.",
+                    "Default is the amount CCEE records as unpaid relative to the amount to be settled in the month; the amount unpaid in a settlement can be paid later.",
                   )}
                 >
                   <GraficoLinhas
@@ -390,7 +390,7 @@ export default function MercadoEncargosPage() {
                       <span data-zeros="pagamento_ess">
                         {tx(
                           `Pagamento de ESS publicado como zero de ${mesAno(zeros[0].inicio)} a ${mesAno(zeros[0].fim)} (${zeros[0].meses} meses seguidos) com encargo positivo na competência: o zero não é confirmado por publicação independente e aparece como nulo, com a situação escrita.`,
-                          `ESS payment published as zero from ${mesAno(zeros[0].inicio)} to ${mesAno(zeros[0].fim)} (${zeros[0].meses} consecutive months) with a positive charge in the accounting month: the zero is not confirmed by an independent publication and appears as null, with the status written out.`,
+                          `ESS payment published as zero from ${mesAno(zeros[0].inicio)} to ${mesAno(zeros[0].fim)} (${zeros[0].meses} consecutive months) with a positive charge in the accounting month: the zero is not confirmed by an independent publication and appears as null, with the status stated.`,
                         )}
                       </span>
                     </MercadoAviso>

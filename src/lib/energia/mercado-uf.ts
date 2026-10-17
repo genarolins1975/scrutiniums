@@ -62,7 +62,7 @@ export function partesUfsSemJanela(g: MercadoGold, idioma: Idioma = idiomaEnergi
     ...listaUfs(ufs, idioma),
     tx(
       ` ${um ? "fica" : "ficam"} de fora: a série da EPE por UF não tem a janela completa de 12 meses ${um ? "do estado" : "dos estados"}, e ausência de dado não é zero.`,
-      ` ${um ? "is" : "are"} left out: the EPE series by state does not have the complete 12-month window for ${um ? "that state" : "those states"}, and missing data is not zero.`,
+      ` ${um ? "is" : "are"} excluded: the EPE series by state does not have the complete 12-month window for ${um ? "that state" : "those states"}, and missing data is not zero.`,
       idioma,
     ),
   ];

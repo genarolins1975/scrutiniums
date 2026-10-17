@@ -171,7 +171,7 @@ export default function MercadoPage() {
     <>
       Three universes coexist and none of them is the ONS load. EPE measures grid consumption (captive and free) reported by agents. CCEE measures the consumption accounted at the center of gravity of each
       submarket, already including 50% of basic network losses (note 6 of InfoMercado No. 229, CCEE&apos;s monthly bulletin). The bases differ and the shares cannot be compared point by point: the difference between CCEE and
-      EPE has not been broken down{razao ? `, and ${razao}` : ""}. ANEEL&apos;s SAMP measures what each distribution utility billed and leaves out free consumers connected directly to the basic network. Each share divides the sum of free-market energy by the sum of total energy; it is never an average of percentages.
+      EPE has not been broken down{razao ? `, and ${razao}` : ""}. ANEEL&apos;s SAMP measures what each distribution utility billed and excludes free consumers connected directly to the basic network. Each share divides the sum of free-market energy by the sum of total energy; it is never an average of percentages.
     </>,
   );
   const naoConcluir = tx(
@@ -304,7 +304,7 @@ export default function MercadoPage() {
         <AtalhoLeitura
           href="/setor-eletrico/mercado/comercializacao"
           titulo={tx("Como a operação física se conecta aos contratos?", "How does physical operation connect to contracts?")}
-          texto={tx("Entenda a comercialização e experimente o efeito dos horários na liquidação.", "Understand energy trading and try out the effect of hours on settlement.")}
+          texto={tx("Entenda a comercialização e experimente o efeito dos horários na liquidação.", "Understand energy trading and test the effect of hours on settlement.")}
         />
         <ModoProfundidade>
           <Bloco id="livre-regulado">
@@ -582,7 +582,7 @@ export default function MercadoPage() {
                       <>
                         SAMP: {sampComparaveis.length} of {lr.samp_nacional_mensal.length} months since {mesAno(lr.samp_nacional_mensal_desde)} are comparable with EPE
                         {sampUltimo ? <> (the latest is {mesAno(sampUltimo.mes)}, with {pct(sampUltimo.samp_sobre_epe_uc_pct, 1)} of EPE&apos;s free consumer units)</> : null}; the others have a distribution utility with no free-market
-                        rows, rows repeated from the previous month or fewer distribution utilities than usual, and are left out of the comparison.
+                        rows, rows repeated from the previous month or fewer distribution utilities than usual, and are excluded from the comparison.
                       </>,
                     )}
                   </p>

@@ -124,7 +124,7 @@ export function MercadoTabelasSobDemanda({ conjunto, versao, downloads }: { conj
             nomeArquivo="mercado-samp-completude"
             chaveUrl="samp"
             ordemInicial={{ coluna: "mes", direcao: "desc" }}
-            nota={tx(`Mês incompleto ou com linhas repetidas fica fora da comparação com a EPE. Série desde ${mesAno(g.livre_regulado.samp_nacional_mensal_desde, idioma)}; desde 2019 no CSV nacional.`, `An incomplete month or one with repeated rows is left out of the comparison with EPE. Series since ${mesAno(g.livre_regulado.samp_nacional_mensal_desde, idioma)}; since 2019 in the national CSV.`)}
+            nota={tx(`Mês incompleto ou com linhas repetidas fica fora da comparação com a EPE. Série desde ${mesAno(g.livre_regulado.samp_nacional_mensal_desde, idioma)}; desde 2019 no CSV nacional.`, `An incomplete month or one with repeated rows is excluded from the comparison with EPE. Series since ${mesAno(g.livre_regulado.samp_nacional_mensal_desde, idioma)}; since 2019 in the national CSV.`)}
           />
         </>
       ) : conjunto === "encargos-analise" ? (
@@ -139,7 +139,7 @@ export function MercadoTabelasSobDemanda({ conjunto, versao, downloads }: { conj
             nomeArquivo="mercado-liquidacao"
             chaveUrl="liq"
             ordemInicial={{ coluna: "mes", direcao: "desc" }}
-            nota={tx("A grade tem todos os meses: o mês ausente do arquivo e os meses com zero publicado no lugar da liquidação aparecem sem valor, com a situação escrita.", "The grid has every month: the month missing from the file and the months with a zero published in place of settlement appear without a value, with the status written out.")}
+            nota={tx("A grade tem todos os meses: o mês ausente do arquivo e os meses com zero publicado no lugar da liquidação aparecem sem valor, com a situação escrita.", "The grid has every month: the month missing from the file and the months with a zero published in place of settlement appear without a value, with the status stated.")}
           />
           <TabelaInterativa
             {...comum}

@@ -134,7 +134,7 @@ export default function MercadoMreGsfPage() {
           titulo={TITULO_PAGINA_MERCADO["mre-gsf"]}
           lead={tx(
             "As hidrelétricas do Mecanismo de Realocação de Energia (MRE) dividem o risco de gerar menos que a garantia física. O GSF (Generation Scaling Factor, o fator de ajuste do MRE) mede, no conjunto, quanto foi gerado em relação a ela.",
-            "The hydropower plants in the Energy Reallocation Mechanism (MRE) share the risk of generating less than their physical guarantee. The generation scaling factor (GSF), the MRE adjustment factor, measures how much was generated relative to it for the whole set.",
+            "The hydropower plants in the Energy Reallocation Mechanism (MRE) share the risk of generating less than their physical guarantee. The generation scaling factor (GSF), the MRE adjustment factor, measures how much was generated relative to it for all of them combined.",
           )}
           recorte={versao}
           fonte={tx<ReactNode>(
@@ -221,7 +221,7 @@ export default function MercadoMreGsfPage() {
             </>,
             <>
               The hydropower plants in the <Termo slug="mre">MRE</Termo> share among themselves the risk of generating less than their physical guarantee, because centralized dispatch decides how much each one generates. The{" "}
-              <Termo slug="gsf">GSF</Termo> measures, for the whole set, how much was generated relative to the adjusted physical guarantee; below 100%, the plants in the mechanism together generated less than the{" "}
+              <Termo slug="gsf">GSF</Termo> measures, for all of them combined, how much was generated relative to the adjusted physical guarantee; below 100%, the plants in the mechanism together generated less than the{" "}
               <Termo slug="garantia-fisica">physical guarantee</Termo>, and MME documents record that this exposed hydropower agents to high values of the spot price (PLD). Further down, ANEEL&apos;s <Nome>Conta Bandeira</Nome> (tariff flag account) shows the
               hydrological risk allocated to distribution utilities.
             </>,
