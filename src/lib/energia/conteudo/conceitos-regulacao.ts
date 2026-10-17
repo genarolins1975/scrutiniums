@@ -82,7 +82,7 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
       conferidoEm: "2026-09-30",
       emUmaFrase: tx("Lista, aprovada por portaria da ANEEL para um biênio, das atividades regulatórias com previsão de edição de norma no período.", "List, approved by an ANEEL ordinance for a two-year period, of the regulatory activities expected to result in a norm in the period."),
       porQueImporta:
-        tx("Mostra o que a agência pretende decidir e em que ano. O ano é previsão e pode ser reprogramado nas revisões da agenda; não é data de decisão.", "It shows what the agency intends to decide and in which year. The year is a forecast and may be rescheduled in the agenda reviews; it is not a decision date."),
+        tx("Mostra o que a agência pretende decidir e em que ano. O ano é previsão e pode ser reprogramado nas revisões da agenda; não é data de decisão.", "It shows what the agency intends to decide and in which year. The year is a forecast and might be rescheduled in the agenda reviews; it is not a decision date."),
       comoEMedido:
         tx("Cada atividade tem um código e o ano previsto. O observatório lê o Anexo I da portaria vigente e liga cada atividade aos painéis por palavra-chave do texto e às consultas cujas atas citam o código.", "Each activity has a code and the expected year. The observatory reads Annex I of the ordinance in force and links each activity to the panels by keywords in the text and to the consultations whose minutes cite the code."),
       relacoes: ["limites-do-pld"],

@@ -252,7 +252,7 @@ function montarConceitosBase(tx: TxIdioma): Conceito[] {
       emUmaFrase:
         tx("Cada uma das quatro divisões do SIN para as quais a CCEE calcula um PLD próprio: Norte, Nordeste, Sul e Sudeste (esta plataforma usa o rótulo Sudeste/Centro-Oeste para o último).", "Each of the four divisions of the SIN for which the CCEE calculates its own PLD: North, Northeast, South and Southeast (this platform uses the label Southeast/Center-West for the last one)."),
       porQueImporta:
-        tx("Os quatro valores de cada hora podem coincidir ou diferir. Por que diferem (limites de transmissão entre regiões, por exemplo) é matéria dos modelos e das regras da CCEE e do ONS, que este verbete não lê: a plataforma mostra a diferença observada e o intercâmbio medido, sem atribuir causa.", "The four values of each hour may coincide or differ. Why they differ (transmission limits between regions, for example) is a matter for the models and rules of the CCEE and the ONS, which this entry does not read: the platform shows the observed difference and the measured interchange, without attributing a cause."),
+        tx("Os quatro valores de cada hora podem coincidir ou diferir. Por que diferem (limites de transmissão entre regiões, por exemplo) é matéria dos modelos e das regras da CCEE e do ONS, que este verbete não lê: a plataforma mostra a diferença observada e o intercâmbio medido, sem atribuir causa.", "The four values of each hour might coincide or differ. Why they differ (transmission limits between regions, for example) is a matter for the models and rules of the CCEE and the ONS, which this entry does not read: the platform shows the observed difference and the measured interchange, without attributing a cause."),
       comoEMedido:
         tx("O conjunto PLD_HORARIO traz um valor por hora para cada submercado. Nos conjuntos do ONS usados aqui, o campo de região é o subsistema, identificado por SE, S, NE e N.", "The PLD_HORARIO dataset gives one value per hour for each submarket. In the ONS datasets used here, the region field is the subsystem, identified by SE, S, NE and N."),
       relacoes: ["pld", "intercambio"],
@@ -276,7 +276,7 @@ function montarConceitosBase(tx: TxIdioma): Conceito[] {
       estado: "CONFERIDO",
       conferidoEm: "2026-09-28",
       emUmaFrase:
-        tx("Nome do sistema elétrico interligado do país. A CCEE descreve os quatro submercados (Norte, Nordeste, Sul e Sudeste) como submercados \"de atuação no SIN\".", "Name of the country's interconnected electricity system. The CCEE describes the four submarkets (North, Northeast, South and Southeast) as submarkets «de atuação no SIN» (operating in the SIN)."),
+        tx("Nome do sistema elétrico interligado do país. A CCEE descreve os quatro submercados (Norte, Nordeste, Sul e Sudeste) como submercados \"de atuação no SIN\".", "Name of the country's interconnected electricity system. The CCEE describes the four submarkets (North, Northeast, South and Southeast) as submarkets \"operating in the SIN\"."),
       porQueImporta:
         tx("Nos conjuntos do ONS usados aqui, os valores vêm por subsistema (N, NE, S e SE). Quando a plataforma mostra um valor do SIN, como a EAR ou a carga do SIN, ela o calcula a partir dos quatro, com a regra declarada no indicador.", "In the ONS datasets used here, the values come by subsystem (N, NE, S and SE). When the platform shows a SIN value, such as the EAR or the load of the SIN, it calculates it from the four, with the rule declared in the indicator."),
       comoEMedido:
@@ -291,7 +291,7 @@ function montarConceitosBase(tx: TxIdioma): Conceito[] {
           trecho: "Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).",
         },
       ],
-      limitacoes: [tx("A abrangência física do SIN (quais sistemas isolados ficam de fora) não foi conferida em documento do ONS.", "The physical scope of the SIN (which isolated systems are left out) was not checked in an ONS document.")],
+      limitacoes: [tx("A abrangência física do SIN (quais sistemas isolados ficam de fora) não foi conferida em documento do ONS.", "The physical scope of the SIN (which isolated systems are excluded) was not checked in an ONS document.")],
       vejaNoPortal: [{ rotulo: tx("Visão geral do sistema", "System overview"), href: "/setor-eletrico/visao-geral" }],
     },
     {
@@ -341,7 +341,7 @@ function montarConceitosBase(tx: TxIdioma): Conceito[] {
       ],
       limitacoes: [
         tx("Percentual da EAR máxima: a capacidade muda com a entrada de reservatórios, o que afeta comparações longas.", "Percentage of the maximum EAR: the capacity changes with the entry of reservoirs, which affects long comparisons."),
-        tx("O ONS informa que os dados passam por consistência recorrente e podem ser revisados.", "The ONS states that the data undergo recurring consistency checks and may be revised."),
+        tx("O ONS informa que os dados passam por consistência recorrente e podem ser revisados.", "The ONS states that the data undergo recurring consistency checks and might be revised."),
       ],
       vejaNoPortal: [{ rotulo: tx("Água e reservatórios", "Water and reservoirs"), href: "/setor-eletrico/agua-e-clima" }],
     },
@@ -518,7 +518,7 @@ function montarConceitosBase(tx: TxIdioma): Conceito[] {
       // i18n: dado
       fontes: [ONS("restricao_coff_eolica_usi", "Restrição de Operação por Constrained-off de Usinas Eólicas")],
       fontePlanejada:
-        tx("Regulamentação da ANEEL sobre restrições de operação e a rotina operacional RO-AO.BR.13 do ONS. Consultados em 06/10/2026 sem definição do termo: a descrição e o dicionário de dados do conjunto de restrição de eólicas do ONS, que descrevem a apuração e as razões da restrição, não o termo.", "ANEEL regulations on operating restrictions and the ONS operating routine RO-AO.BR.13. Consulted on Oct 6, 2026 without a definition of the term: the description and data dictionary of the ONS wind restriction dataset, which describe the determination and the reasons for the restriction, not the term."),
+        tx("Regulamentação da ANEEL sobre restrições de operação e a rotina operacional RO-AO.BR.13 do ONS. Consultados em 06/10/2026 sem definição do termo: a descrição e o dicionário de dados do conjunto de restrição de eólicas do ONS, que descrevem a apuração e as razões da restrição, não o termo.", "ANEEL regulations on operating restrictions and the ONS operating routine «RO-AO.BR.13». Consulted on Oct 6, 2026 without a definition of the term: the description and data dictionary of the ONS wind restriction dataset, which describe the determination and the reasons for the restriction, not the term."),
       vejaNoPortal: [{ rotulo: tx("Geração: renováveis restringidas", "Generation: curtailed renewables"), href: "/setor-eletrico/geracao/restricoes" }],
     },
     {

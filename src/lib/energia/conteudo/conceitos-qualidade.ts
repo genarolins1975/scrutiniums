@@ -48,17 +48,17 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
       grupo: "Qualidade e perdas", // i18n: dado
       estado: "CONFERIDO",
       conferidoEm: "2026-09-30",
-      emUmaFrase: tx("Tempo médio, em horas, em que as unidades consumidoras de um conjunto ficaram sem energia; contam as interrupções de 3 minutos ou mais.", "Average time, in hours, that the consumer units of a set were without electricity; interruptions of 3 minutes or more count."),
+      emUmaFrase: tx("Tempo médio, em horas, em que as unidades consumidoras de um conjunto ficaram sem energia; contam as interrupções de 3 minutos ou mais.", "Average time, in hours, that the consumer units of a group were without electricity; interruptions of 3 minutes or more count."),
       porQueImporta:
-        tx("É um dos dois indicadores coletivos com que a ANEEL acompanha a continuidade do fornecimento. A ANEEL fixa limites de DEC para cada conjunto, e o descumprimento traz consequências à distribuidora, como plano de resultados e limitação de proventos aos acionistas.", "It is one of the two collective indicators with which ANEEL monitors continuity of supply. ANEEL sets DEC limits for each set, and non-compliance has consequences for the distribution utility, such as a results plan and a limit on payouts to shareholders."),
+        tx("É um dos dois indicadores coletivos com que a ANEEL acompanha a continuidade do fornecimento. A ANEEL fixa limites de DEC para cada conjunto, e o descumprimento traz consequências à distribuidora, como plano de resultados e limitação de proventos aos acionistas.", "It is one of the two collective indicators with which ANEEL monitors continuity of supply. ANEEL sets DEC limits for each group, and non-compliance has consequences for the distribution utility, such as a results plan and a limit on payouts to shareholders."),
       comoEMedido:
-        tx("Em horas e centésimos de hora (10,50 h são 10 horas e 30 minutos), por conjunto e por mês, apurado pela distribuidora e enviado à ANEEL. No observatório, o DEC de uma distribuidora ou do Brasil é a média mensal dos conjuntos ponderada pelas unidades consumidoras, somada nos 12 meses.", "In hours and hundredths of an hour (10.50 h is 10 hours and 30 minutes), by set and by month, determined by the distribution utility and sent to ANEEL. In the observatory, the DEC of a distribution utility or of Brazil is the monthly average of the sets weighted by consumer units, summed over the 12 months."),
+        tx("Em horas e centésimos de hora (10,50 h são 10 horas e 30 minutos), por conjunto e por mês, apurado pela distribuidora e enviado à ANEEL. No observatório, o DEC de uma distribuidora ou do Brasil é a média mensal dos conjuntos ponderada pelas unidades consumidoras, somada nos 12 meses.", "In hours and hundredths of an hour (10.50 h is 10 hours and 30 minutes), by group and by month, determined by the distribution utility and sent to ANEEL. In the observatory, the DEC of a distribution utility or of Brazil is the monthly average of the groups weighted by consumer units, summed over the 12 months."),
       relacoes: ["fec", "conjunto-eletrico", "compensacao-continuidade"],
       fontes: [
         s16(
           // i18n: dado
           "O indicador DEC representa, para cada conjunto de unidades consumidoras, o tempo médio, em horas, no qual as unidades consumidoras permaneceram sem o fornecimento de energia elétrica.",
-          tx("Em outras palavras: em cada conjunto, quantas horas, em média, cada unidade ficou sem energia.", "In other words: in each set, how many hours, on average, each unit was without electricity."),
+          tx("Em outras palavras: em cada conjunto, quantas horas, em média, cada unidade ficou sem energia.", "In other words: in each group, how many hours, on average, each unit was without electricity."),
         ),
         s16(TRECHO_3_MINUTOS),
         s8(TRECHO_UNIDADES, tx("Em outras palavras: o DEC vem em horas com centésimos, e o FEC em número de interrupções com centésimos.", "In other words: DEC comes in hours with hundredths, and FEC in number of interruptions with hundredths.")),
@@ -81,16 +81,16 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
       grupo: "Qualidade e perdas", // i18n: dado
       estado: "CONFERIDO",
       conferidoEm: "2026-09-30",
-      emUmaFrase: tx("Número médio de vezes em que o fornecimento foi interrompido nas unidades consumidoras de um conjunto; contam as interrupções de 3 minutos ou mais.", "Average number of times supply was interrupted at the consumer units of a set; interruptions of 3 minutes or more count."),
-      porQueImporta: tx("É o par do DEC: um conjunto pode ter poucas interrupções longas ou muitas curtas. A ANEEL também fixa limites de FEC para cada conjunto.", "It is the counterpart of DEC: a set may have few long interruptions or many short ones. ANEEL also sets FEC limits for each set."),
+      emUmaFrase: tx("Número médio de vezes em que o fornecimento foi interrompido nas unidades consumidoras de um conjunto; contam as interrupções de 3 minutos ou mais.", "Average number of times supply was interrupted at the consumer units of a group; interruptions of 3 minutes or more count."),
+      porQueImporta: tx("É o par do DEC: um conjunto pode ter poucas interrupções longas ou muitas curtas. A ANEEL também fixa limites de FEC para cada conjunto.", "It is the counterpart of DEC: a group might have few long interruptions or many short ones. ANEEL also sets FEC limits for each group."),
       comoEMedido:
-        tx("Em número de interrupções e centésimos, por conjunto e por mês. No observatório, o FEC de uma distribuidora ou do Brasil é a média mensal dos conjuntos ponderada pelas unidades consumidoras, somada nos 12 meses.", "In number of interruptions and hundredths, by set and by month. In the observatory, the FEC of a distribution utility or of Brazil is the monthly average of the sets weighted by consumer units, summed over the 12 months."),
+        tx("Em número de interrupções e centésimos, por conjunto e por mês. No observatório, o FEC de uma distribuidora ou do Brasil é a média mensal dos conjuntos ponderada pelas unidades consumidoras, somada nos 12 meses.", "In number of interruptions and hundredths, by group and by month. In the observatory, the FEC of a distribution utility or of Brazil is the monthly average of the groups weighted by consumer units, summed over the 12 months."),
       relacoes: ["dec", "conjunto-eletrico", "compensacao-continuidade"],
       fontes: [
         s16(
           // i18n: dado
           "Já o FEC indica a quantidade média de vezes em que o fornecimento foi interrompido nas unidades consumidoras, para cada conjunto de unidades consumidoras.",
-          tx("Em outras palavras: em cada conjunto, quantas vezes, em média, cada unidade ficou sem energia.", "In other words: in each set, how many times, on average, each unit was without electricity."),
+          tx("Em outras palavras: em cada conjunto, quantas vezes, em média, cada unidade ficou sem energia.", "In other words: in each group, how many times, on average, each unit was without electricity."),
         ),
         s16(TRECHO_3_MINUTOS),
         s8(TRECHO_UNIDADES),
@@ -100,28 +100,28 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
     },
     {
       slug: "conjunto-eletrico",
-      nome: tx("Conjunto de unidades consumidoras (conjunto elétrico)", "Set of consumer units (electrical set)"),
+      nome: tx("Conjunto de unidades consumidoras (conjunto elétrico)", "Group of consumer units (electrical group)"),
       grupo: "Qualidade e perdas", // i18n: dado
       estado: "CONFERIDO",
       conferidoEm: "2026-09-30",
       emUmaFrase:
         tx("Subdivisão da área de uma distribuidora, em geral formada por uma ou mais subestações de distribuição, em que a ANEEL acompanha o DEC e o FEC e fixa os limites.", "Subdivision of a distribution utility's area, generally formed by one or more distribution substations, in which ANEEL monitors DEC and FEC and sets the limits."),
       porQueImporta:
-        tx("É a menor unidade dos indicadores coletivos publicados. Como a abrangência varia muito, um conjunto pode atender vários municípios pequenos e um município populoso pode ter vários conjuntos: o conjunto não é o município.", "It is the smallest unit of the published collective indicators. Since coverage varies widely, a set may serve several small municipalities and a populous municipality may have several sets: the set is not the municipality."),
+        tx("É a menor unidade dos indicadores coletivos publicados. Como a abrangência varia muito, um conjunto pode atender vários municípios pequenos e um município populoso pode ter vários conjuntos: o conjunto não é o município.", "It is the smallest unit of the published collective indicators. Since coverage varies widely, a group might serve several small municipalities and a populous municipality might have several sets: the group is not the municipality."),
       comoEMedido:
-        tx("Cada conjunto tem um código da ANEEL, um número de unidades consumidoras por mês e limites anuais de DEC e FEC. A relação entre conjuntos e municípios vem da base IndQual Município, sem a quantidade de unidades de cada conjunto em cada município.", "Each set has an ANEEL code, a number of consumer units per month and annual DEC and FEC limits. The relation between sets and municipalities comes from the IndQual Município database, without the number of units of each set in each municipality."),
+        tx("Cada conjunto tem um código da ANEEL, um número de unidades consumidoras por mês e limites anuais de DEC e FEC. A relação entre conjuntos e municípios vem da base IndQual Município, sem a quantidade de unidades de cada conjunto em cada município.", "Each group has an ANEEL code, a number of consumer units per month and annual DEC and FEC limits. The relation between groups and municipalities comes from the «IndQual Município» database, without the number of units of each group in each municipality."),
       relacoes: ["dec", "fec"],
       fontes: [
         s16(TRECHO_COLETIVOS),
         s16(
           // i18n: dado
           "Os conjuntos geralmente são formados por uma ou mais subestações de distribuição (SED). Assim, os conjuntos possuem grande variação de abrangência: diversos municípios pequenos podem ser atendidos por um único conjunto, ao mesmo tempo em que municípios populosos costumam possuir vários conjuntos.",
-          tx("Em outras palavras: o conjunto segue a rede (as subestações), não o mapa político; por isso não coincide com municípios.", "In other words: the set follows the grid (the substations), not the political map; that is why it does not coincide with municipalities."),
+          tx("Em outras palavras: o conjunto segue a rede (as subestações), não o mapa político; por isso não coincide com municípios.", "In other words: the group follows the grid (the substations), not the political map; that is why it does not coincide with municipalities."),
         ),
         s16(TRECHO_LIMITES),
       ],
-      limitacoes: [tx("Um mapa municipal de DEC por atribuição de conjunto mostra o valor do conjunto inteiro, não uma medição no município.", "A municipal DEC map built by assigning sets shows the value of the whole set, not a measurement in the municipality.")],
-      vejaNoPortal: [{ rotulo: tx("Mapa dos conjuntos por município", "Map of sets by municipality"), href: "/setor-eletrico/qualidade#duracao" }],
+      limitacoes: [tx("Um mapa municipal de DEC por atribuição de conjunto mostra o valor do conjunto inteiro, não uma medição no município.", "A municipal DEC map built by assigning groups shows the value of the whole group, not a measurement in the municipality.")],
+      vejaNoPortal: [{ rotulo: tx("Mapa dos conjuntos por município", "Map of groups by municipality"), href: "/setor-eletrico/qualidade#duracao" }],
     },
     {
       slug: "compensacao-continuidade",
@@ -134,7 +134,7 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
       porQueImporta:
         tx("É o efeito da continuidade que chega diretamente ao consumidor. Os indicadores coletivos (DEC e FEC) são médias; os individuais medem o que cada unidade sofreu, e é a violação deles que gera a compensação.", "It is the effect of continuity that reaches the consumer directly. The collective indicators (DEC and FEC) are averages; the individual ones measure what each unit experienced, and it is their violation that generates compensation."),
       comoEMedido:
-        tx("A ANEEL publica, por conjunto e mês de apuração, a quantidade e o valor das compensações pagas, separados por tipo de limite violado. O valor individual depende dos indicadores da própria unidade, que não são publicados: não se calcula a partir do DEC.", "ANEEL publishes, by set and month of determination, the number and value of compensations paid, separated by type of limit violated. The individual value depends on the indicators of the unit itself, which are not published: it is not calculated from the DEC."),
+        tx("A ANEEL publica, por conjunto e mês de apuração, a quantidade e o valor das compensações pagas, separados por tipo de limite violado. O valor individual depende dos indicadores da própria unidade, que não são publicados: não se calcula a partir do DEC.", "ANEEL publishes, by group and month of determination, the number and value of compensations paid, separated by type of limit violated. The individual value depends on the indicators of the unit itself, which are not published: it is not calculated from the DEC."),
       relacoes: ["dec", "fec", "conjunto-eletrico"],
       fontes: [
         s16(

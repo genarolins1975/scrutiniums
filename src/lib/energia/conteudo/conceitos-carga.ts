@@ -67,7 +67,7 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
       ],
       limitacoes: [
         tx("Comparações que atravessam 01/03/2021 ou a inclusão da MMGD não são homogêneas.", "Comparisons that cross Mar 1, 2021 or the inclusion of MMGD are not homogeneous."),
-        tx("Nos dados publicados, o degrau da inclusão da MMGD aparece em 01/05/2023, não na data declarada (29/04/2023); 29 e 30/04/2023 ficam fora das comparações.", "In the published data, the step from the inclusion of MMGD appears on May 1, 2023, not on the declared date (Apr 29, 2023); Apr 29 and 30, 2023 are left out of the comparisons."),
+        tx("Nos dados publicados, o degrau da inclusão da MMGD aparece em 01/05/2023, não na data declarada (29/04/2023); 29 e 30/04/2023 ficam fora das comparações.", "In the published data, the step from the inclusion of MMGD appears on May 1, 2023, not on the declared date (Apr 29, 2023); Apr 29 and 30, 2023 are excluded from the comparisons."),
         tx("A MMGD está dentro da carga, mas o ONS não a publica separada nesse conjunto.", "MMGD is inside the load, but the ONS does not publish it separately in this dataset."),
       ],
       vejaNoPortal: [...VEJA, ...VEJA_PERFIL],

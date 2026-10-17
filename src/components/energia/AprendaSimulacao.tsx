@@ -137,7 +137,7 @@ export function SimulacaoLiquidacao() {
       titulo={tx("Do CMO ao PLD e à liquidação da diferença", "From the CMO to the PLD and the settlement of the difference")}
       simplificacao={tx(
         `Simplificação pedagógica. O piso (${RMWH(PISO)}) e o teto horário (${RMWH(TETO)}) são hipotéticos e não são os vigentes, que estão no verbete Limites do PLD; o teto estrutural, que limita a média do dia, fica de fora. O balanço real de cada perfil de agente segue as Regras de Comercialização da CCEE, não conferidas nesta fase: aqui aparece só a ideia de liquidar a diferença entre o contratado e o verificado ao preço da hora.`,
-        `Teaching simplification. The floor (${RMWH(PISO)}) and the hourly ceiling (${RMWH(TETO)}) are hypothetical and are not the ones in force, which are in the PLD limits entry; the structural ceiling, which limits the daily average, is left out. The actual balance of each agent profile follows the CCEE Trading Rules, not checked in this phase: here only the idea of settling the difference between contracted and verified energy at the hourly price appears.`,
+        `Teaching simplification. The floor (${RMWH(PISO)}) and the hourly ceiling (${RMWH(TETO)}) are hypothetical and are not the ones in force, which are in the PLD limits entry; the structural ceiling, which limits the daily average, is excluded. The actual balance of each agent profile follows the CCEE Trading Rules, not checked in this phase: here only the idea of settling the difference between contracted and verified energy at the hourly price appears.`,
       )}
     >
       <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-enunciado="true">

@@ -191,12 +191,12 @@ function montarContrastes(tx: TxIdioma): Contraste[] {
       texto:
         tx("A garantia física é a quantidade máxima de energia de cada empreendimento que pode lastrear contratos; o MRE é o mecanismo pelo qual as hidrelétricas compartilham o risco hidrológico. No observatório, a geração das usinas do MRE dividida pela garantia física modulada e ajustada pelo fator de disponibilidade é o GSF.", "Physical guarantee is the maximum amount of energy of each project that can back contracts; the MRE is the mechanism through which hydropower plants share hydrological risk. In the observatory, the generation of the MRE plants divided by the physical guarantee modulated and adjusted by the availability factor is the GSF."),
       textoB:
-        tx("A garantia física é um limite de energia de cada empreendimento; o MRE é o mecanismo pelo qual as hidrelétricas compartilham o risco hidrológico, e não define a garantia física de ninguém (ver MRE).", "Physical guarantee is an energy limit of each project; the MRE is the mechanism through which hydropower plants share hydrological risk, and it does not set anyone's physical guarantee (see MRE)."),
+        tx("A garantia física é um limite de energia de cada empreendimento; o MRE é o mecanismo pelo qual as hidrelétricas compartilham o risco hidrológico, e não define a garantia física de ninguém (ver MRE).", "Physical guarantee is an energy limit of each project; the MRE is the mechanism through which hydropower plants share hydrological risk, and it does not define anyone's physical guarantee (see MRE)."),
     },
     {
       a: "garantia-fisica",
       b: "geracao-centralizada",
-      texto: tx("Garantia física não é geração: a usina pode gerar mais ou menos que ela em cada mês.", "Physical guarantee is not generation: the plant may generate more or less than it each month."),
+      texto: tx("Garantia física não é geração: a usina pode gerar mais ou menos que ela em cada mês.", "Physical guarantee is not generation: the plant might generate more or less than it each month."),
     },
     {
       a: "gsf",
@@ -288,24 +288,24 @@ function montarContrastes(tx: TxIdioma): Contraste[] {
     {
       a: "dec",
       b: "fec",
-      texto: tx("O DEC mede duração, em horas; o FEC mede frequência, em número de interrupções. Os dois são médias por unidade consumidora do conjunto.", "DEC measures duration, in hours; FEC measures frequency, in number of interruptions. Both are averages per consumer unit of the set."),
+      texto: tx("O DEC mede duração, em horas; o FEC mede frequência, em número de interrupções. Os dois são médias por unidade consumidora do conjunto.", "DEC measures duration, in hours; FEC measures frequency, in number of interruptions. Both are averages per consumer unit of the group."),
     },
     {
       a: "compensacao-continuidade",
       b: "dec",
       texto:
-        tx("A compensação depende dos indicadores individuais de cada unidade (DIC, FIC e outros), que não são publicados; não se calcula a partir do DEC do conjunto.", "Compensation depends on the individual indicators of each unit (DIC, FIC and others), which are not published; it is not calculated from the DEC of the set."),
+        tx("A compensação depende dos indicadores individuais de cada unidade (DIC, FIC e outros), que não são publicados; não se calcula a partir do DEC do conjunto.", "Compensation depends on the individual indicators of each unit (DIC, FIC and others), which are not published; it is not calculated from the DEC of the group."),
     },
     {
       a: "conjunto-eletrico",
       b: { rotulo: tx("município", "municipality") },
       texto:
-        tx("O conjunto é uma subdivisão da área da distribuidora, em geral formada por uma ou mais subestações de distribuição. Num mapa municipal de DEC por atribuição de conjunto, o valor é o do conjunto inteiro, não uma medição no município.", "The set is a subdivision of the distribution utility's area, generally formed by one or more distribution substations. In a municipal DEC map built by assigning sets, the value is that of the whole set, not a measurement in the municipality."),
+        tx("O conjunto é uma subdivisão da área da distribuidora, em geral formada por uma ou mais subestações de distribuição. Num mapa municipal de DEC por atribuição de conjunto, o valor é o do conjunto inteiro, não uma medição no município.", "The group is a subdivision of the distribution utility's area, generally formed by one or more distribution substations. In a municipal DEC map built by assigning groups, the value is that of the whole group, not a measurement in the municipality."),
     },
     {
       a: "tarifa-social",
       b: { rotulo: tx("família", "family") },
-      texto: tx("O alcance é contado em unidades consumidoras e faturas, nunca em famílias: uma família pode não ser titular da conta da casa em que mora.", "Reach is counted in consumer units and bills, never in families: a family may not hold the account of the house it lives in."),
+      texto: tx("O alcance é contado em unidades consumidoras e faturas, nunca em famílias: uma família pode não ser titular da conta da casa em que mora.", "Reach is counted in consumer units and bills, never in families: a family might not hold the account of the house it lives in."),
     },
     {
       a: "fator-de-emissao",
@@ -346,7 +346,7 @@ function montarContrastes(tx: TxIdioma): Contraste[] {
       a: "sin",
       b: "sistemas-isolados",
       texto:
-        tx("O SIN é, segundo o ONS, o conjunto de quatro subsistemas: Sul, Sudeste/Centro-Oeste, Nordeste e a maior parte da região Norte. Os Sistemas Isolados são sistemas de distribuição que, em sua configuração normal, não estão conectados ao SIN. Um valor do SIN não descreve as localidades atendidas por Sistemas Isolados.", "According to the ONS, the SIN is the set of four subsystems: South, Southeast/Center-West, Northeast and most of the North region. Isolated Systems are distribution systems that, in their normal configuration, are not connected to the SIN. A SIN value does not describe the localities served by Isolated Systems."),
+        tx("O SIN é, segundo o ONS, o conjunto de quatro subsistemas: Sul, Sudeste/Centro-Oeste, Nordeste e a maior parte da região Norte. Os Sistemas Isolados são sistemas de distribuição que, em sua configuração normal, não estão conectados ao SIN. Um valor do SIN não descreve as localidades atendidas por Sistemas Isolados.", "According to the ONS, the SIN is the group of four subsystems: South, Southeast/Center-West, Northeast and most of the North region. Isolated Systems are distribution systems that, in their normal configuration, are not connected to the SIN. A SIN value does not describe the localities served by Isolated Systems."),
     },
     {
       a: "ibge",

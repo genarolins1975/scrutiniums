@@ -35,7 +35,7 @@ export function PercursoVisualEnergia() {
     <div className={styles.cabecalho}>
       <p className={styles.sobretitulo}>{tx("Explore o caminho da energia", "Explore the path of energy")}</p>
       <h2 id="percurso-titulo">{tx("Do reservatório à sua tomada.", "From the reservoir to your socket.")}</h2>
-      <p>{tx("Escolha uma etapa e descubra o que acontece nela.", "Choose a stage and find out what happens in it.")}</p>
+      <p>{tx("Escolha uma etapa e descubra o que acontece nela.", "Choose a stage and discover what happens in it.")}</p>
     </div>
     <div id="energia-etapas" className={styles.etapas} role="group" aria-label={tx("Etapas do caminho da energia", "Stages of the path of energy")}>
       {ETAPAS_ENERGIA.map((e, i) => <button key={e.id} id={`etapa-${e.id}`} type="button"

@@ -28,7 +28,7 @@ function montarEtapasEnergia(tx: TxIdioma) {
       conceito: tx("Perdas totais incluem parcelas técnicas e não técnicas. Perda não técnica não é sinônimo de furto.", "Total losses include technical and non-technical portions. A non-technical loss is not a synonym for theft."),
       href: "/setor-eletrico/qualidade", link: tx("Comparar a qualidade do serviço", "Compare the quality of supply"),
       detalhe: "/setor-eletrico/perdas", detalheNome: tx("Perdas por distribuidora", "Losses by distribution utility"),
-      pergunta: tx("Quanto tempo e quantas vezes falta luz?", "How long and how often does the power go out?"),
+      pergunta: tx("Quanto tempo e quantas vezes falta luz?", "How long and how often is there a power outage?"),
     },
     {
       id: "consumo", encontra: tx("Componentes da conta, simulação de consumo e Tarifa Social.", "Components of the bill, consumption simulation and the Tarifa Social."), recorte: tx("A simulação depende do consumo e da tarifa selecionados; não substitui a fatura real.", "The simulation depends on the consumption and tariff selected; it does not replace the actual bill."), nome: tx("Consumo", "Consumption"), numero: "04",

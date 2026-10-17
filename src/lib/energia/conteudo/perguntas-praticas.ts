@@ -88,7 +88,7 @@ function montarPerguntaPratica(tx: TxIdioma): Record<string, string> {
     aneel: tx("Quem regula e fiscaliza o setor de energia elétrica?", "Who regulates and oversees the electricity sector?"),
   
     // Expansão
-    epe: tx("Quem faz os estudos que subsidiam o planejamento do setor energético?", "Who carries out the studies that support energy sector planning?"),
+    epe: tx("Quem faz os estudos que subsidiam o planejamento do setor energético?", "Who performs the studies that support energy sector planning?"),
   
     // Fontes de dados
     ibge: tx("Quem produz as informações estatísticas e geográficas do País?", "Who produces the country's statistical and geographical information?"),

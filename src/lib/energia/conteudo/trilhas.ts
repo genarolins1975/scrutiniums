@@ -134,7 +134,7 @@ function montarTrilhasAprenda(tx: TxIdioma): TrilhaConceitual[] {
           titulo: tx("O preço de curto prazo", "The short-term price"),
           conceitos: ["pld", "limites-do-pld", "submercado"],
           texto:
-            tx("O PLD é o preço do Mercado de Curto Prazo, calculado por hora e por submercado. O cálculo aplica um piso e dois tetos que a ANEEL fixa a cada ano; por isso o PLD pode diferir do CMO da mesma hora. O número abaixo é o PLD médio do Sudeste/Centro-Oeste na mesma semana operativa do CMO do passo anterior, para os dois ficarem lado a lado.", "The PLD is the price of the Short-Term Market, calculated by hour and by submarket. The calculation applies a floor and two ceilings that ANEEL sets each year; that is why the PLD may differ from the CMO of the same hour. The number below is the average Southeast/Center-West PLD in the same operating week as the CMO of the previous step, so that the two sit side by side."),
+            tx("O PLD é o preço do Mercado de Curto Prazo, calculado por hora e por submercado. O cálculo aplica um piso e dois tetos que a ANEEL fixa a cada ano; por isso o PLD pode diferir do CMO da mesma hora. O número abaixo é o PLD médio do Sudeste/Centro-Oeste na mesma semana operativa do CMO do passo anterior, para os dois ficarem lado a lado.", "The PLD is the price of the Short-Term Market, calculated by hour and by submarket. The calculation applies a floor and two ceilings that ANEEL sets each year; that is why the PLD might differ from the CMO of the same hour. The number below is the average Southeast/Center-West PLD in the same operating week as the CMO of the previous step, so that the two sit side by side."),
           prova: { tipo: "verbete", slug: "pld" },
           ligacao: {
             tipo: "mercado",
@@ -199,7 +199,7 @@ function montarTrilhasAprenda(tx: TxIdioma): TrilhaConceitual[] {
           titulo: tx("A bandeira do mês", "The month's tariff flag"),
           conceitos: ["bandeira-tarifaria"],
           texto:
-            tx("A cor definida para o mês sinaliza o custo da geração e indica se há acréscimo por kWh consumido, e de quanto. Não se aplica aos consumidores dos sistemas isolados.", "The color set for the month signals the cost of generation and indicates whether there is a surcharge per kWh consumed, and how much. It does not apply to consumers in isolated systems."),
+            tx("A cor definida para o mês sinaliza o custo da geração e indica se há acréscimo por kWh consumido, e de quanto. Não se aplica aos consumidores dos sistemas isolados.", "The color defined for the month signals the cost of generation and indicates whether there is a surcharge per kWh consumed, and how much. It does not apply to consumers in isolated systems."),
           prova: { tipo: "verbete", slug: "bandeira-tarifaria" },
           ligacao: {
             tipo: "custo",

@@ -39,10 +39,10 @@ function montarSinonimosBusca(tx: TxIdioma): readonly GrupoDeSinonimos[] {
     // qualidade do serviço
     {
       alvos: [`${S}/qualidade`, `${S}/qualidade#p051`],
-      termos: [tx("falta de luz", "power outage"), tx("falta de energia", "electricity outage"), tx("queda de energia", "power cut"), tx("queda de luz", "power failure"), tx("luz caiu", "power went out"), tx("energia caiu", "electricity went out"), tx("sem luz", "no power"), tx("interrupção de energia", "electricity interruption"), tx("apagão", "blackout"), tx("blecaute", "power blackout")],
+      termos: [tx("falta de luz", "power outage"), tx("falta de energia", "electricity outage"), tx("queda de energia", "power cut"), tx("queda de luz", "power failure"), tx("luz caiu", "power failed"), tx("energia caiu", "electricity failed"), tx("sem luz", "no power"), tx("interrupção de energia", "electricity interruption"), tx("apagão", "blackout"), tx("blecaute", "power blackout")],
     },
     { alvos: [`${S}/aprenda/dec`], termos: [tx("tempo sem energia", "time without electricity"), tx("tempo sem luz", "time without power"), tx("duração das faltas de energia", "duration of power outages"), tx("horas sem luz", "hours without power")] },
-    { alvos: [`${S}/aprenda/fec`], termos: [tx("quantas vezes falta energia", "how often the power goes out"), tx("quantas vezes falta luz", "how many times the power goes out"), tx("frequência das faltas de energia", "frequency of power outages"), tx("número de quedas de energia", "number of power cuts")] },
+    { alvos: [`${S}/aprenda/fec`], termos: [tx("quantas vezes falta energia", "how often there is a power outage"), tx("quantas vezes falta luz", "how many power outages"), tx("frequência das faltas de energia", "frequency of power outages"), tx("número de quedas de energia", "number of power cuts")] },
     { alvos: [`${S}/qualidade#expurgos`], termos: [tx("apagão", "blackout"), tx("blecaute", "power blackout")] },
     { alvos: [`${S}/qualidade#p053`, `${S}/aprenda/compensacao-continuidade`], termos: [tx("desconto por falta de luz", "discount for power outage"), tx("crédito na fatura", "credit on the bill"), tx("ressarcimento por falta de energia", "refund for power outage")] },
     // perdas

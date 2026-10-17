@@ -147,7 +147,7 @@ function montarExemploEvidencia(tx: TxIdioma): Record<string, FonteExemplo> {
       caminho: ["evidencias", "dec_brasil"],
       natureza: "CALCULADO",
       painel: { rotulo: tx("Qualidade: duração e frequência", "Quality of supply: duration and frequency"), href: "/setor-eletrico/qualidade#p051" },
-      leitura: tx("DEC do Brasil no ano: média mensal dos conjuntos ponderada pelas unidades consumidoras, somada nos 12 meses.", "DEC of Brazil in the year: monthly average of the sets weighted by consumer units, summed over the 12 months."),
+      leitura: tx("DEC do Brasil no ano: média mensal dos conjuntos ponderada pelas unidades consumidoras, somada nos 12 meses.", "DEC of Brazil in the year: monthly average of the groups weighted by consumer units, summed over the 12 months."),
     },
     fec: {
       arquivo: "gold/qualidade.json",
@@ -161,7 +161,7 @@ function montarExemploEvidencia(tx: TxIdioma): Record<string, FonteExemplo> {
       caminho: ["evidencias", "conjuntos_acima_limite"],
       natureza: "CALCULADO",
       painel: { rotulo: tx("Qualidade: conjuntos e limites", "Quality of supply: sets and limits"), href: "/setor-eletrico/qualidade#p052" },
-      leitura: tx("Parcela dos conjuntos com 12 meses apurados cujo DEC anual passou do limite fixado para o próprio conjunto.", "Share of the sets with 12 months determined whose annual DEC exceeded the limit set for the set itself."),
+      leitura: tx("Parcela dos conjuntos com 12 meses apurados cujo DEC anual passou do limite fixado para o próprio conjunto.", "Share of the groups with 12 months determined whose annual DEC exceeded the limit defined for the group itself."),
     },
     "compensacao-continuidade": {
       arquivo: "gold/qualidade.json",
@@ -267,7 +267,7 @@ function montarExemploEvidencia(tx: TxIdioma): Record<string, FonteExemplo> {
       caminho: ["acesso", "sistemas_isolados", "evidencia_populacao"],
       natureza: "OBSERVADO",
       painel: { rotulo: tx("Inclusão: sistemas isolados", "Inclusion: isolated systems"), href: "/setor-eletrico/inclusao-energetica/acesso#isolados" },
-      leitura: tx("População das localidades de sistemas isolados que a EPE lista no ciclo mais recente do PASI, informada pelas distribuidoras; localidade sem população informada fica fora da soma.", "Population of the isolated system localities that the EPE lists in the most recent PASI cycle, reported by the distribution utilities; a locality without reported population is left out of the sum."),
+      leitura: tx("População das localidades de sistemas isolados que a EPE lista no ciclo mais recente do PASI, informada pelas distribuidoras; localidade sem população informada fica fora da soma.", "Population of the isolated system localities that the EPE lists in the most recent PASI cycle, reported by the distribution utilities; a locality without reported population is excluded from the sum."),
     },
   };
 }
@@ -376,7 +376,7 @@ const COMPLEMENTO_EXEMPLO: Record<string, (ev: Evidencia) => string | null> = {
     const n = ev.numerador?.valor;
     const d = ev.denominador?.valor;
     if (typeof n !== "number" || typeof d !== "number") return null;
-    return tx(`No orçamento aprovado de ${ev.periodo.fim}, as quotas pagas nas tarifas somam ${bilhoes(n)}, de ${bilhoes(d)} em receitas publicadas.`, `In the approved budget for ${ev.periodo.fim}, the quotas paid in the tariffs add up to ${bilhoes(n)}, out of ${bilhoes(d)} in published revenues.`);
+    return tx(`No orçamento aprovado de ${ev.periodo.fim}, as quotas pagas nas tarifas somam ${bilhoes(n)}, de ${bilhoes(d)} em receitas publicadas.`, `In the approved budget for ${ev.periodo.fim}, the quotas paid in the tariffs add up to ${bilhoes(n)}, of ${bilhoes(d)} in published revenues.`);
   },
   ear: (ev) => {
     const sin = (noCaminho(lerPublicado("gold/agua_detalhe.json"), ["armazenamento", "subsistemas"]) as Record<string, unknown>[] | undefined)?.find((x) => x.sm === "SIN");

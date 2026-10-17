@@ -93,7 +93,7 @@ const FICHA_EN: Record<string, string> = {
     "DEC of Brazil (determined, weighted by consumer units; all distribution utilities, including permit holders)",
   "FEC do Brasil (apurado, ponderado por unidades consumidoras; todas as distribuidoras, inclusive permissionárias)":
     "FEC of Brazil (determined, weighted by consumer units; all distribution utilities, including permit holders)",
-  "Conjuntos com DEC anual acima do limite": "Sets with annual DEC above the limit",
+  "Conjuntos com DEC anual acima do limite": "Groups with annual DEC above the limit",
   "Compensações pagas a unidades consumidoras por violação dos limites individuais de continuidade": "Compensations paid to consumer units for violation of the individual continuity limits",
   "Unidades consumidoras com Tarifa Social": "Consumer units with the Tarifa Social",
   "Fator médio anual de emissão de CO2 do SIN (inventários)": "Annual average CO2 emission factor of the SIN (inventories)",
@@ -130,7 +130,7 @@ const FICHA_EN: Record<string, string> = {
   "% do mercado de baixa tensão medido": "% of the measured low-voltage market",
   "horas por unidade consumidora": "hours per consumer unit",
   "interrupções por unidade consumidora": "interruptions per consumer unit",
-  "% dos conjuntos com 12 meses e limite de DEC": "% of the sets with 12 months and a DEC limit",
+  "% dos conjuntos com 12 meses e limite de DEC": "% of the groups with 12 months and a DEC limit",
   "R$ nominais da competência": "nominal R$ of the accrual period",
   "unidades consumidoras": "consumer units",
   "% da EAR máxima": "% of the maximum EAR",

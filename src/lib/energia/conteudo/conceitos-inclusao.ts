@@ -50,7 +50,7 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
         },
       ],
       limitacoes: [
-        tx("Unidade consumidora e fatura não são família: uma família pode não ser titular da conta da casa em que mora.", "A consumer unit or a bill is not a family: a family may not hold the account of the house it lives in."),
+        tx("Unidade consumidora e fatura não são família: uma família pode não ser titular da conta da casa em que mora.", "A consumer unit or a bill is not a family: a family might not hold the account of the house it lives in."),
         tx("O critério de renda é um entre três; o BPC e o uso de equipamento médico também dão direito ao desconto.", "The income criterion is one of three; the BPC and the use of medical equipment also give the right to the discount."),
       ],
       vejaNoPortal: [
