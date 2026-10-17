@@ -186,7 +186,7 @@ export function textoAtualidade(g: QualidadeGold, idioma: Idioma = idiomaEnergia
     partes.push(
       tx(
         `A ANEEL já publicou ${listaPt(incompletos)}, mas sem todas as distribuidoras: ${incompletos.length === 1 ? "esse mês fica" : "esses meses ficam"} fora de totais e comparações até completar.`,
-        `ANEEL has already published ${listaPt(incompletos, idioma)}, but without all distribution utilities: ${incompletos.length === 1 ? "that month stays" : "those months stay"} out of totals and comparisons until complete.`,
+        `ANEEL has already published ${listaPt(incompletos, idioma)}, but without all distribution utilities: ${incompletos.length === 1 ? "that month stays" : "those months stay"} outside totals and comparisons until complete.`,
         idioma,
       ),
     );
@@ -279,7 +279,7 @@ export function respostaParcial(p: ParcialAno | null, idioma: Idioma = idiomaEne
   const meses = listaPt(p.meses_incluidos.map((m) => mesAno(m, idioma).slice(0, 3)), idioma);
   const s = comparaNaPrecisao(p.dec, p.dec_mesmos_meses_ano_anterior, 2);
   const excluidos = listaPt(p.meses_excluidos.map((m) => mesAno(m.m, idioma)), idioma);
-  const fora = p.meses_excluidos.length ? tx(` (${excluidos} fora, incompleto)`, ` (${excluidos} left out, incomplete)`, idioma) : "";
+  const fora = p.meses_excluidos.length ? tx(` (${excluidos} fora, incompleto)`, ` (${excluidos} excluded, incomplete)`, idioma) : "";
   return tx(
     ` Em ${p.ano}, somando ${meses}${fora}, foram ${num(p.dec, 2)} h, ${s === "igual" ? "iguais às" : s === "abaixo" ? "abaixo das" : "acima das"} ${num(p.dec_mesmos_meses_ano_anterior, 2)} h dos mesmos meses de ${p.ano - 1}.`,
     ` In ${p.ano}, adding ${meses}${fora}, there were ${num(p.dec, 2, idioma)} h, ${s === "igual" ? "equal to the" : s === "abaixo" ? "below the" : "above the"} ${num(p.dec_mesmos_meses_ano_anterior, 2, idioma)} h of the same months of ${p.ano - 1}.`,
@@ -388,7 +388,7 @@ export function colunasDistP051(idioma: Idioma = idiomaEnergia()): ColunaTabela[
     { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto" },
     { id: "classificacao", rotulo: tx("Classificação", "Classification", idioma), tipo: "texto", categorica: true },
     { id: "ucs", rotulo: tx("UCs (média do ano)", "UCs (annual average)", idioma), tipo: "numero", casas: 0 },
-    { id: "conjuntos", rotulo: tx("Conjuntos", "Consumer sets", idioma), tipo: "numero", casas: 0 },
+    { id: "conjuntos", rotulo: tx("Conjuntos", "Consumer clusters", idioma), tipo: "numero", casas: 0 },
     { id: "meses", rotulo: tx("Meses publicados", "Months published", idioma), tipo: "numero", casas: 0 },
     { id: "dec", rotulo: tx("DEC apurado", "Assessed DEC", idioma), tipo: "numero", unidade: "h", casas: 2 },
     { id: "fec", rotulo: tx("FEC apurado", "Assessed FEC", idioma), tipo: "numero", unidade: int, casas: 2 },
@@ -520,10 +520,10 @@ export function municipiosDoCsv(texto: string): MunicipioQualidade[] {
 
 export function rotulosRelacao(idioma: Idioma = idiomaEnergia()): Record<RelacaoMunicipio, string> {
   return {
-    conjunto_exclusivo: tx("um conjunto, só deste município", "one consumer set, serving only this municipality", idioma),
-    conjunto_compartilhado: tx("um conjunto, compartilhado com outros municípios", "one consumer set, shared with other municipalities", idioma),
-    varios_conjuntos: tx("vários conjuntos", "several consumer sets", idioma),
-    sem_conjunto_ativo: tx("sem conjunto com DEC no ano", "no consumer set with DEC in the year", idioma),
+    conjunto_exclusivo: tx("um conjunto, só deste município", "one consumer cluster, serving only this municipality", idioma),
+    conjunto_compartilhado: tx("um conjunto, compartilhado com outros municípios", "one consumer cluster, shared with other municipalities", idioma),
+    varios_conjuntos: tx("vários conjuntos", "several consumer clusters", idioma),
+    sem_conjunto_ativo: tx("sem conjunto com DEC no ano", "no consumer cluster with DEC in the year", idioma),
     sem_relacao_na_fonte: tx("não citado na base da ANEEL", "not listed in the ANEEL database", idioma),
   };
 }
@@ -532,10 +532,10 @@ export const ROTULO_RELACAO: Record<RelacaoMunicipio, string> = rotulosRelacao("
 export function rotulosMedida(idioma: Idioma = idiomaEnergia()): Record<MedidaMapa, { rotulo: string; unidade: string; curto: string }> {
   const int = tx("interrupções", "interruptions", idioma);
   return {
-    dec_max: { rotulo: tx("Maior DEC entre os conjuntos que atendem o município", "Highest DEC among the consumer sets serving the municipality", idioma), unidade: "h", curto: tx("DEC, maior conjunto", "DEC, highest set", idioma) },
-    dec_min: { rotulo: tx("Menor DEC entre os conjuntos que atendem o município", "Lowest DEC among the consumer sets serving the municipality", idioma), unidade: "h", curto: tx("DEC, menor conjunto", "DEC, lowest set", idioma) },
-    fec_max: { rotulo: tx("Maior FEC entre os conjuntos que atendem o município", "Highest FEC among the consumer sets serving the municipality", idioma), unidade: int, curto: tx("FEC, maior conjunto", "FEC, highest set", idioma) },
-    fec_min: { rotulo: tx("Menor FEC entre os conjuntos que atendem o município", "Lowest FEC among the consumer sets serving the municipality", idioma), unidade: int, curto: tx("FEC, menor conjunto", "FEC, lowest set", idioma) },
+    dec_max: { rotulo: tx("Maior DEC entre os conjuntos que atendem o município", "Highest DEC among the consumer clusters serving the municipality", idioma), unidade: "h", curto: tx("DEC, maior conjunto", "DEC, highest cluster", idioma) },
+    dec_min: { rotulo: tx("Menor DEC entre os conjuntos que atendem o município", "Lowest DEC among the consumer clusters serving the municipality", idioma), unidade: "h", curto: tx("DEC, menor conjunto", "DEC, lowest cluster", idioma) },
+    fec_max: { rotulo: tx("Maior FEC entre os conjuntos que atendem o município", "Highest FEC among the consumer clusters serving the municipality", idioma), unidade: int, curto: tx("FEC, maior conjunto", "FEC, highest cluster", idioma) },
+    fec_min: { rotulo: tx("Menor FEC entre os conjuntos que atendem o município", "Lowest FEC among the consumer clusters serving the municipality", idioma), unidade: int, curto: tx("FEC, menor conjunto", "FEC, lowest cluster", idioma) },
   };
 }
 export const ROTULO_MEDIDA: Record<MedidaMapa, { rotulo: string; unidade: string; curto: string }> = rotulosMedida("pt");
@@ -577,12 +577,12 @@ export function colunasMunicipios(idioma: Idioma = idiomaEnergia()): ColunaTabel
   return [
     { id: "municipio", rotulo: tx("Município", "Municipality", idioma), tipo: "texto" },
     { id: "uf", rotulo: tx("UF", "State (UF)", idioma), tipo: "texto", categorica: true },
-    { id: "relacao", rotulo: tx("Relação com os conjuntos", "Relation to the consumer sets", idioma), tipo: "texto", categorica: true },
-    { id: "n_conjuntos", rotulo: tx("Conjuntos citados", "Consumer sets listed", idioma), tipo: "numero", casas: 0 },
-    { id: "dec_min", rotulo: tx("DEC do menor conjunto", "DEC of the lowest set", idioma), tipo: "numero", unidade: "h", casas: 2 },
-    { id: "dec_max", rotulo: tx("DEC do maior conjunto", "DEC of the highest set", idioma), tipo: "numero", unidade: "h", casas: 2 },
-    { id: "fec_min", rotulo: tx("FEC do menor conjunto", "FEC of the lowest set", idioma), tipo: "numero", unidade: int, casas: 2 },
-    { id: "fec_max", rotulo: tx("FEC do maior conjunto", "FEC of the highest set", idioma), tipo: "numero", unidade: int, casas: 2 },
+    { id: "relacao", rotulo: tx("Relação com os conjuntos", "Relation to the consumer clusters", idioma), tipo: "texto", categorica: true },
+    { id: "n_conjuntos", rotulo: tx("Conjuntos citados", "Consumer clusters listed", idioma), tipo: "numero", casas: 0 },
+    { id: "dec_min", rotulo: tx("DEC do menor conjunto", "DEC of the lowest cluster", idioma), tipo: "numero", unidade: "h", casas: 2 },
+    { id: "dec_max", rotulo: tx("DEC do maior conjunto", "DEC of the highest cluster", idioma), tipo: "numero", unidade: "h", casas: 2 },
+    { id: "fec_min", rotulo: tx("FEC do menor conjunto", "FEC of the lowest cluster", idioma), tipo: "numero", unidade: int, casas: 2 },
+    { id: "fec_max", rotulo: tx("FEC do maior conjunto", "FEC of the highest cluster", idioma), tipo: "numero", unidade: int, casas: 2 },
     { id: "distribuidoras", rotulo: tx("Distribuidoras", "Distribution utilities", idioma), tipo: "texto" },
     { id: "cod_ibge", rotulo: tx("Código IBGE", "IBGE code", idioma), tipo: "texto", buscavel: true },
   ];
@@ -601,31 +601,31 @@ export function respostaMunicipio(m: MunicipioQualidade, ano: number, idioma: Id
     case "sem_relacao_na_fonte":
       return tx(
         `${lugar} não aparece na base IndQual Município da ANEEL: nenhum conjunto é atribuído a ele, e o mapa fica sem valor.`,
-        `${lugar} does not appear in ANEEL's IndQual Município database: no consumer set is assigned to it, and the map has no value.`,
+        `${lugar} does not appear in ANEEL's IndQual Município database: no consumer cluster is assigned to it, and the map has no value.`,
         idioma,
       );
     case "sem_conjunto_ativo":
       return tx(
         `${lugar} é citado na base da ANEEL, mas nenhum dos conjuntos ligados a ele publicou DEC com 12 meses em ${ano}: sem valor no mapa.`,
-        `${lugar} is listed in the ANEEL database, but none of the consumer sets linked to it published a 12-month DEC in ${ano}: no value on the map.`,
+        `${lugar} is listed in the ANEEL database, but none of the consumer clusters linked to it published a 12-month DEC in ${ano}: no value on the map.`,
         idioma,
       );
     case "conjunto_exclusivo":
       return tx(
         `${lugar} é atendido por um conjunto que só atende este município (${codigo}): DEC de ${num(m.dec_max, 2)} h (${horasEMinutos(m.dec_max)}) e FEC de ${num(m.fec_max, 2)} interrupções em ${ano}.`,
-        `${lugar} is served by one consumer set that serves only this municipality (${codigo}): DEC of ${n2(m.dec_max)} h (${horasEMinutos(m.dec_max, idioma)}) and FEC of ${n2(m.fec_max)} interruptions in ${ano}.`,
+        `${lugar} is served by one consumer cluster that serves only this municipality (${codigo}): DEC of ${n2(m.dec_max)} h (${horasEMinutos(m.dec_max, idioma)}) and FEC of ${n2(m.fec_max)} interruptions in ${ano}.`,
         idioma,
       );
     case "conjunto_compartilhado":
       return tx(
         `${lugar} é atendido por um conjunto (${codigo}) que também atende outros municípios: DEC de ${num(m.dec_max, 2)} h e FEC de ${num(m.fec_max, 2)} interrupções em ${ano}, valores do conjunto inteiro, não medidos só no município.`,
-        `${lugar} is served by one consumer set (${codigo}) that also serves other municipalities: DEC of ${n2(m.dec_max)} h and FEC of ${n2(m.fec_max)} interruptions in ${ano}, values of the whole set, not measured in the municipality alone.`,
+        `${lugar} is served by one consumer cluster (${codigo}) that also serves other municipalities: DEC of ${n2(m.dec_max)} h and FEC of ${n2(m.fec_max)} interruptions in ${ano}, values of the whole cluster, not measured in the municipality alone.`,
         idioma,
       );
     default:
       return tx(
         `${lugar} é atendido por ${m.conjuntos.length} conjuntos. Em ${ano}, o DEC anual desses conjuntos vai ${dec(m.dec_min, m.dec_max)} e o FEC ${fec(m.fec_min, m.fec_max)}; a base não informa quantas unidades de cada conjunto ficam no município, então nenhuma média municipal é calculada.`,
-        `${lugar} is served by ${m.conjuntos.length} consumer sets. In ${ano}, the annual DEC of these sets ranges ${dec(m.dec_min, m.dec_max)} and the FEC ${fec(m.fec_min, m.fec_max)}; the database does not report how many units of each set are in the municipality, so no municipal average is calculated.`,
+        `${lugar} is served by ${m.conjuntos.length} consumer clusters. In ${ano}, the annual DEC of these sets ranges ${dec(m.dec_min, m.dec_max)} and the FEC ${fec(m.fec_min, m.fec_max)}; the database does not report how many units of each cluster are in the municipality, so no municipal average is calculated.`,
         idioma,
       );
   }
@@ -644,8 +644,8 @@ export function respostaP052(g: QualidadeGold, idioma: Idioma = idiomaEnergia())
       `Em ${c.ano}, ${num(c.acima_limite_dec, 0)} dos ${num(c.com_limite, 0)} conjuntos com limite (${pct(c.pct_acima_limite_dec, 1)}) ficaram acima do limite anual de DEC, com ${pct(c.pct_ucs_acima_limite_dec, 1)} das unidades consumidoras` +
         (ant ? `, contra ${pct(ant.pct_acima_limite_dec, 1)} dos conjuntos em ${ant.ano}` : "") +
         `; ${num(c.acima_limite_fec, 0)} passaram do limite de FEC.`,
-      `In ${c.ano}, ${num(c.acima_limite_dec, 0, idioma)} of the ${num(c.com_limite, 0, idioma)} consumer sets with a limit (${pct(c.pct_acima_limite_dec, 1, idioma)}) were above the annual DEC limit, with ${pct(c.pct_ucs_acima_limite_dec, 1, idioma)} of the consumer units` +
-        (ant ? `, against ${pct(ant.pct_acima_limite_dec, 1, idioma)} of the sets in ${ant.ano}` : "") +
+      `In ${c.ano}, ${num(c.acima_limite_dec, 0, idioma)} of the ${num(c.com_limite, 0, idioma)} consumer clusters with a limit (${pct(c.pct_acima_limite_dec, 1, idioma)}) were above the annual DEC limit, with ${pct(c.pct_ucs_acima_limite_dec, 1, idioma)} of the consumer units` +
+        (ant ? `, against ${pct(ant.pct_acima_limite_dec, 1, idioma)} of the clusters in ${ant.ano}` : "") +
         `; ${num(c.acima_limite_fec, 0, idioma)} exceeded the FEC limit.`,
       idioma,
     ),
@@ -664,7 +664,7 @@ export function respostaP052(g: QualidadeGold, idioma: Idioma = idiomaEnergia())
     partes.push(
       tx(
         `A média esconde as pontas: metade dos conjuntos ficou abaixo de ${num(q.p50, 2)} ${vezes(q.p50)} o próprio limite e um em cada dez ficou acima de ${num(q.p90, 2)} ${vezes(q.p90)}.`,
-        `The average hides the tails: half of the consumer sets were below ${num(q.p50, 2, idioma)} ${vezes(q.p50, idioma)} their own limit and one in ten was above ${num(q.p90, 2, idioma)} ${vezes(q.p90, idioma)}.`,
+        `The average hides the tails: half of the consumer clusters were below ${num(q.p50, 2, idioma)} ${vezes(q.p50, idioma)} their own DEC limit and one in ten was above ${num(q.p90, 2, idioma)} ${vezes(q.p90, idioma)}.`,
         idioma,
       ),
     );
@@ -684,11 +684,11 @@ export function vereditoP052(g: QualidadeGold, idioma: Idioma = idiomaEnergia())
   const q = c.quantis_razao_dec;
   const pontas =
     q.p90 !== null && q.p90 > 1
-      ? tx(" A média do Brasil esconde as pontas: há conjuntos bem acima do próprio limite.", " The Brazilian average hides the tails: some consumer sets are well above their own limit.", idioma)
+      ? tx(" A média do Brasil esconde as pontas: há conjuntos bem acima do próprio limite.", " The Brazilian average hides the tails: some consumer clusters are well above their own limit.", idioma)
       : "";
   return tx(
     `Em ${c.ano}, ${pct(c.pct_acima_limite_dec, 1)} dos conjuntos com limite ficaram acima do limite anual de DEC${contra}.${pontas}`,
-    `In ${c.ano}, ${pct(c.pct_acima_limite_dec, 1, idioma)} of the consumer sets with a limit were above the annual DEC limit${contra}.${pontas}`,
+    `In ${c.ano}, ${pct(c.pct_acima_limite_dec, 1, idioma)} of the consumer clusters with a limit were above the annual DEC limit${contra}.${pontas}`,
     idioma,
   );
 }
@@ -696,12 +696,12 @@ export function vereditoP052(g: QualidadeGold, idioma: Idioma = idiomaEnergia())
 /** P052, "o que mudou": trajetória da fração de conjuntos acima do limite. */
 export function mudancaP052(c: Conjuntos, idioma: Idioma = idiomaEnergia()): string {
   const h = c.historico.filter((x) => x.pct_acima_limite_dec !== null);
-  if (h.length < 2) return tx("Sem histórico suficiente de conjuntos com limite.", "Not enough history of consumer sets with a limit.", idioma);
+  if (h.length < 2) return tx("Sem histórico suficiente de conjuntos com limite.", "Not enough history of consumer clusters with a limit.", idioma);
   const maior = h.reduce((m, x) => ((x.pct_acima_limite_dec ?? -1) > (m.pct_acima_limite_dec ?? -1) ? x : m));
   const ult = h[h.length - 1];
   return tx(
     `De ${h[0].ano} a ${ult.ano}, a fração de conjuntos acima do limite de DEC teve o máximo em ${maior.ano} (${pct(maior.pct_acima_limite_dec, 1)}) e fechou ${ult.ano} em ${pct(ult.pct_acima_limite_dec, 1)}. O limite de cada conjunto também muda de um ano para outro, então a fração acima dele mistura desempenho e meta.`,
-    `From ${h[0].ano} to ${ult.ano}, the share of consumer sets above the DEC limit peaked in ${maior.ano} (${pct(maior.pct_acima_limite_dec, 1, idioma)}) and closed ${ult.ano} at ${pct(ult.pct_acima_limite_dec, 1, idioma)}. The limit of each set also changes from one year to the next, so the share above it mixes performance and target.`,
+    `From ${h[0].ano} to ${ult.ano}, the share of consumer clusters above the DEC limit peaked in ${maior.ano} (${pct(maior.pct_acima_limite_dec, 1, idioma)}) and closed ${ult.ano} at ${pct(ult.pct_acima_limite_dec, 1, idioma)}. The limit of each cluster also changes from one year to the next, so the share above it mixes performance and target.`,
     idioma,
   );
 }
@@ -877,12 +877,12 @@ export function linhasMatriz(c: Conjuntos, idioma: Idioma = idiomaEnergia()): Li
 
 export function colunasMatriz(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "faixa", rotulo: tx("Limite de DEC do conjunto", "DEC limit of the consumer set", idioma), tipo: "texto" },
+    { id: "faixa", rotulo: tx("Limite de DEC do conjunto", "DEC limit of the consumer cluster", idioma), tipo: "texto" },
     { id: "r0", rotulo: tx("Até metade do limite", "Up to half the limit", idioma), tipo: "numero", casas: 0 },
     { id: "r1", rotulo: tx("Da metade até o limite", "From half up to the limit", idioma), tipo: "numero", casas: 0 },
     { id: "r2", rotulo: tx("De 1 a 1,5 vez o limite", "From 1 to 1.5 times the limit", idioma), tipo: "numero", casas: 0 },
     { id: "r3", rotulo: tx("1,5 vez o limite ou mais", "1.5 times the limit or more", idioma), tipo: "numero", casas: 0 },
-    { id: "total", rotulo: tx("Conjuntos", "Consumer sets", idioma), tipo: "numero", casas: 0 }, // i18n: dado
+    { id: "total", rotulo: tx("Conjuntos", "Consumer clusters", idioma), tipo: "numero", casas: 0 }, // i18n: dado
   ];
 }
 export const COLUNAS_MATRIZ: ColunaTabela[] = colunasMatriz("pt");
@@ -906,7 +906,7 @@ export function linhasCauda(itens: Conjuntos["cauda_dec"]): LinhaTabela[] {
 export function colunasCauda(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const int = tx("interrupções", "interruptions", idioma);
   return [
-    { id: "nome", rotulo: tx("Conjunto", "Consumer set", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Conjunto", "Consumer cluster", idioma), tipo: "texto" },
     { id: "conjunto", rotulo: tx("Código", "Code", idioma), tipo: "texto" },
     { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", categorica: true },
     { id: "dec", rotulo: "DEC", tipo: "numero", unidade: "h", casas: 2 },
@@ -987,7 +987,7 @@ export function conjuntosDoCsv(texto: string, ano: number, idioma: Idioma = idio
 export function colunasConjuntos(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const int = tx("interrupções", "interruptions", idioma);
   return [
-    { id: "nome", rotulo: tx("Conjunto", "Consumer set", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Conjunto", "Consumer cluster", idioma), tipo: "texto" },
     { id: "conjunto", rotulo: tx("Código", "Code", idioma), tipo: "texto" },
     { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", categorica: true },
     { id: "situacao_dec", rotulo: tx("DEC diante do limite", "DEC against the limit", idioma), tipo: "texto", categorica: true },
@@ -1359,7 +1359,7 @@ export function respostaP054(g: QualidadeGold, idioma: Idioma = idiomaEnergia())
     partes.push(
       tx(
         `Na pesquisa IASC de ${at.iasc.ano}, com ${num(at.iasc.entrevistas, 0)} entrevistas em ${at.iasc.distribuidoras} distribuidoras, o índice mediano foi ${num(at.iasc.quantis.p50, 1)} de 100.`,
-        `In the ${at.iasc.ano} IASC survey, with ${num(at.iasc.entrevistas, 0, idioma)} interviews at ${at.iasc.distribuidoras} distribution utilities, the median index was ${num(at.iasc.quantis.p50, 1, idioma)} out of 100.`,
+        `In the ${at.iasc.ano} IASC survey, with ${num(at.iasc.entrevistas, 0, idioma)} interviews at ${at.iasc.distribuidoras} distribution utilities, the median index was ${num(at.iasc.quantis.p50, 1, idioma)} on a 100-point scale.`,
         idioma,
       ),
     );
@@ -1715,14 +1715,14 @@ function colunasMensal(idioma: Idioma): ColunaTabela[] {
     { id: "dec_publicado", rotulo: tx("DEC publicado", "Published DEC", idioma), tipo: "numero", unidade: "h", casas: 2 },
     { id: "fec_publicado", rotulo: tx("FEC publicado", "Published FEC", idioma), tipo: "numero", unidade: tx("interrupções", "interruptions", idioma), casas: 2 },
     { id: "ucs", rotulo: tx("UCs com DEC", "UCs with DEC", idioma), tipo: "numero", casas: 0 },
-    { id: "conjuntos", rotulo: tx("Conjuntos", "Consumer sets", idioma), tipo: "numero", casas: 0 },
+    { id: "conjuntos", rotulo: tx("Conjuntos", "Consumer clusters", idioma), tipo: "numero", casas: 0 },
   ];
 }
 
 function colunasIdentidade(idioma: Idioma): ColunaTabela[] {
   return [
     { id: "ano", rotulo: tx("Ano", "Year", idioma), tipo: "texto" }, // i18n: dado
-    { id: "conjunto_meses", rotulo: tx("Conjunto-meses", "Set-months", idioma), tipo: "numero", casas: 0 },
+    { id: "conjunto_meses", rotulo: tx("Conjunto-meses", "Cluster-months", idioma), tipo: "numero", casas: 0 },
     { id: "pct_dec", rotulo: "DEC = IP + IND", tipo: "percentual", casas: 2 },
     { id: "pct_fec", rotulo: "FEC = IP + IND", tipo: "percentual", casas: 2 },
   ];
@@ -1907,7 +1907,7 @@ export function tabelaQualidade(id: IdTabela, g: QualidadeGold, avisos: AvisosFe
         ordemInicial: { coluna: "ano", direcao: "desc" }, // i18n: dado
         nota: tx(
           `Unidade geradora sem linha na fonte${inicioUg ? ` (antes de ${inicioUg})` : ""} é ausência, não zero. O ano corrente é parcial e fica fora do gráfico.${quebra ? ` ${quebra}` : ""}`,
-          `A generating unit with no line in the source${inicioUg ? ` (before ${inicioUg})` : ""} is absence, not zero. The current year is partial and stays out of the chart.${quebra ? ` ${quebra}` : ""}`,
+          `A generating unit with no line in the source${inicioUg ? ` (before ${inicioUg})` : ""} is absence, not zero. The current year is partial and is kept outside the chart.${quebra ? ` ${quebra}` : ""}`,
           idioma,
         ),
       };
@@ -2051,7 +2051,7 @@ export function paineisQualidade(idioma: Idioma = idiomaEnergia()) {
       titulo: tx("Duração e frequência das interrupções no Brasil, ano a ano", "Duration and frequency of interruptions in Brazil, year by year", idioma),
       descricao: tx(
         "Por quanto tempo e quantas vezes falta energia, no Brasil, nas distribuidoras e nos conjuntos?",
-        "For how long and how often does power go out, in Brazil, at the distribution utilities and in the consumer sets?",
+        "For how long and how often is power interrupted, in Brazil, at the distribution utilities and in the consumer clusters?",
         idioma,
       ),
     },
@@ -2059,10 +2059,10 @@ export function paineisQualidade(idioma: Idioma = idiomaEnergia()) {
       id: "p052",
       ancora: "limites",
       rotulo: tx("Limites", "Limits", idioma),
-      titulo: tx("Cada distribuidora e cada conjunto diante do próprio limite", "Each distribution utility and each consumer set against its own limit", idioma),
+      titulo: tx("Cada distribuidora e cada conjunto diante do próprio limite", "Each distribution utility and each consumer cluster against its own limit", idioma),
       descricao: tx(
         "Quantos conjuntos passam do limite de DEC e como cada distribuidora fica diante do próprio limite?",
-        "How many consumer sets exceed the DEC limit and how does each distribution utility stand against its own limit?",
+        "How many consumer clusters exceed the DEC limit and how does each distribution utility stand against its own limit?",
         idioma,
       ),
     },
@@ -2151,7 +2151,7 @@ export function textoUniversoBrasil(g: QualidadeGold, idioma: Idioma = idiomaEne
   const distribuidoras = g.distribuidoras.filter((d) => d.dec !== null).length;
   const base = tx(
     `Todas as distribuidoras com indicadores publicados, inclusive permissionárias: ${num(distribuidoras, 0)} distribuidoras e ${num(a.conjuntos, 0)} conjuntos em ${a.ano}.`,
-    `All distribution utilities with published indicators, including permit holders: ${num(distribuidoras, 0, idioma)} distribution utilities and ${num(a.conjuntos, 0, idioma)} consumer sets in ${a.ano}.`,
+    `All distribution utilities with published indicators, including permit holders: ${num(distribuidoras, 0, idioma)} distribution utilities and ${num(a.conjuntos, 0, idioma)} consumer clusters in ${a.ano}.`,
     idioma,
   );
   if (a.dec_concessionarias === null || a.fec_concessionarias === null || a.concessionarias === null) return base;
@@ -2256,8 +2256,8 @@ function rotulosArquivo(idioma: Idioma): Record<string, string> {
     "qualidade_brasil.csv": tx("DEC e FEC do Brasil, por ano e por mês", "DEC and FEC of Brazil, by year and by month", idioma),
     "qualidade_distribuidoras_anual.csv": tx("DEC, FEC e limites de cada distribuidora, por ano", "DEC, FEC and limits of each distribution utility, by year", idioma),
     "qualidade_distribuidoras_mensal.csv": tx("DEC e FEC de cada distribuidora, por mês", "DEC and FEC of each distribution utility, by month", idioma),
-    "qualidade_conjuntos_mensal.csv": tx("DEC e FEC de cada conjunto, por mês", "DEC and FEC of each consumer set, by month", idioma),
-    "qualidade_municipios.csv": tx("Conjuntos que atendem cada município, com o DEC e o FEC deles", "Consumer sets serving each municipality, with their DEC and FEC", idioma),
+    "qualidade_conjuntos_mensal.csv": tx("DEC e FEC de cada conjunto, por mês", "DEC and FEC of each consumer cluster, by month", idioma),
+    "qualidade_municipios.csv": tx("Conjuntos que atendem cada município, com o DEC e o FEC deles", "Consumer clusters serving each municipality, with their DEC and FEC", idioma),
     "qualidade_mapa.json": tx("Mapa por município (JSON)", "Map by municipality (JSON)", idioma),
     "qualidade_distribuidoras_serie.json": tx("Série anual de cada distribuidora (JSON)", "Annual series of each distribution utility (JSON)", idioma),
     "qualidade_reconciliacao_dgc.csv": tx("DGC calculado e DGC publicado no ranking da ANEEL", "Calculated DGC and DGC published in the ANEEL ranking", idioma),
@@ -2276,7 +2276,7 @@ function rotulosArquivo(idioma: Idioma): Record<string, string> {
 export function rotuloArquivo(url: string, idioma: Idioma = idiomaEnergia()): string {
   const nome = url.split("/").at(-1) ?? url;
   const decada = /^qualidade_conjuntos_anual_(\d{4})_(\d{4})\.csv$/.exec(nome);
-  if (decada) return tx(`DEC, FEC e limites de cada conjunto, por ano, de ${decada[1]} a ${decada[2]}`, `DEC, FEC and limits of each consumer set, by year, from ${decada[1]} to ${decada[2]}`, idioma);
+  if (decada) return tx(`DEC, FEC e limites de cada conjunto, por ano, de ${decada[1]} a ${decada[2]}`, `DEC, FEC and limits of each consumer cluster, by year, from ${decada[1]} to ${decada[2]}`, idioma);
   return rotulosArquivo(idioma)[nome] ?? tx("Arquivo de dados", "Data file", idioma);
 }
 
@@ -2596,7 +2596,7 @@ export function textoContagemFec(g: QualidadeGold, resumo: ResumoSemRazaoFec | n
   const n = g.conjuntos.acima_limite_fec;
   const base = tx(
     `A contagem de FEC é de pelo menos ${num(n, 0)}: só entram os conjuntos com os 12 meses de FEC publicados.`,
-    `The FEC count is at least ${num(n, 0, idioma)}: only consumer sets with the 12 months of FEC published are included.`,
+    `The FEC count is at least ${num(n, 0, idioma)}: only consumer clusters with the 12 months of FEC published are included.`,
     idioma,
   );
   if (!resumo || resumo.total === 0 || !resumo.porDistribuidora.length) return base;
@@ -2611,7 +2611,7 @@ export function textoContagemFec(g: QualidadeGold, resumo: ResumoSemRazaoFec | n
     resumo.acima.map((x) =>
       tx(
         `${x.nome}, conjunto ${x.conjunto} (FEC ${num(x.fec, 2)} contra limite de ${num(x.limite, 2)})`,
-        `${x.nome}, consumer set ${x.conjunto} (FEC ${num(x.fec, 2, idioma)} against a limit of ${num(x.limite, 2, idioma)})`,
+        `${x.nome}, consumer cluster ${x.conjunto} (FEC ${num(x.fec, 2, idioma)} against a limit of ${num(x.limite, 2, idioma)})`,
         idioma,
       ),
     ),
@@ -2626,7 +2626,7 @@ export function textoContagemFec(g: QualidadeGold, resumo: ResumoSemRazaoFec | n
     : "";
   return tx(
     `${base} ${num(resumo.total, 0)} ${resumo.total === 1 ? "conjunto com limite de FEC tem menos meses e fica" : "conjuntos com limite de FEC têm menos meses e ficam"} fora (${quem}).${acima}`,
-    `${base} ${num(resumo.total, 0, idioma)} ${resumo.total === 1 ? "consumer set with a FEC limit has fewer months and is" : "consumer sets with a FEC limit have fewer months and are"} left out (${quem}).${acima}`,
+    `${base} ${num(resumo.total, 0, idioma)} ${resumo.total === 1 ? "consumer cluster with a FEC limit has fewer months and is" : "consumer clusters with a FEC limit have fewer months and are"} excluded (${quem}).${acima}`,
     idioma,
   );
 }
@@ -2650,7 +2650,7 @@ export function textoUniversosConjuntos(g: QualidadeGold, idioma: Idioma = idiom
   itens.push(em(ultimo));
   return tx(
     `O número de conjuntos com limite foi de ${listaPt(itens)}, e o limite de cada um também muda: a fração de conjuntos mistura desempenho, meta e mudança de universo. A fração das unidades consumidoras que estão em conjuntos acima do limite pesa cada conjunto pelo seu tamanho e é a leitura principal.`,
-    `The number of consumer sets with a limit was ${listaPt(itens, idioma)}, and the limit of each one also changes: the share of sets mixes performance, target and change of universe. The share of consumer units in sets above the limit weights each set by its size and is the main reading.`,
+    `The number of consumer clusters with a limit was ${listaPt(itens, idioma)}, and the limit of each one also changes: the share of clusters mixes performance, target and change of universe. The share of consumer units in clusters above the limit weights each cluster by its size and is the main reading.`,
     idioma,
   );
 }
@@ -2698,7 +2698,7 @@ export function textoQuebraApurado(g: QualidadeGold, idioma: Idioma = idiomaEner
     c.uniforme !== null
       ? tx(
           `O maior valor publicado, o de ${c.maiorPublicado.ano}, cruza regras diferentes do apurado: de ${c.desde} a ${c.uniforme - 1} ele incluía, em parte dos conjuntos, interrupções de origem externa; desde ${c.uniforme}, inclui só as internas.`,
-          `The highest published value, that of ${c.maiorPublicado.ano}, spans different rules for the assessed value: from ${c.desde} to ${c.uniforme - 1} it included, in part of the consumer sets, interruptions of external origin; since ${c.uniforme}, it includes only internal ones.`,
+          `The highest published value, that of ${c.maiorPublicado.ano}, spans different rules for the assessed value: from ${c.desde} to ${c.uniforme - 1} it included, in part of the consumer clusters, interruptions of external origin; since ${c.uniforme}, it includes only internal ones.`,
           idioma,
         )
       : tx(
@@ -2809,14 +2809,14 @@ export function taxaNaBaseDaOuvidoria(porMilUcs: number | null | undefined): num
 export function definicaoConjunto(idioma: Idioma = idiomaEnergia()): string {
   return tx(
     "Conjunto elétrico é uma subdivisão da área de uma distribuidora para a qual a ANEEL fixa limites de DEC e de FEC.",
-    "A consumer set (conjunto elétrico) is a subdivision of a distribution utility's area for which ANEEL sets DEC and FEC limits.",
+    "A consumer cluster is a subdivision of a distribution utility's area for which ANEEL sets DEC and FEC limits.",
     idioma,
   );
 }
 export const DEFINICAO_CONJUNTO = definicaoConjunto("pt");
 /** A mesma definição em poucas palavras, para o cartão da faixa de métricas (onde cada linha custa altura da primeira tela). */
 export function definicaoConjuntoCurta(idioma: Idioma = idiomaEnergia()): string {
-  return tx("Conjunto elétrico: subdivisão da área de uma distribuidora, com limites próprios.", "Consumer set: a subdivision of a distribution utility's area, with its own limits.", idioma);
+  return tx("Conjunto elétrico: subdivisão da área de uma distribuidora, com limites próprios.", "Consumer cluster: a subdivision of a distribution utility's area, with its own limits.", idioma);
 }
 export const DEFINICAO_CONJUNTO_CURTA = definicaoConjuntoCurta("pt");
 export function definicaoLimitesIndividuais(idioma: Idioma = idiomaEnergia()): string {
@@ -2894,7 +2894,7 @@ export function limpaProveniencia<T extends Proveniencia>(p: T): T {
 export function colunasConjuntosMunicipio(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   const int = tx("interrupções", "interruptions", idioma);
   return [
-    { id: "nome", rotulo: tx("Conjunto", "Consumer set", idioma), tipo: "texto" },
+    { id: "nome", rotulo: tx("Conjunto", "Consumer cluster", idioma), tipo: "texto" },
     { id: "meses", rotulo: tx("Meses publicados", "Months published", idioma), tipo: "numero", casas: 0 },
     { id: "dec", rotulo: "DEC", tipo: "numero", unidade: "h", casas: 2 },
     { id: "dec_limite", rotulo: tx("Limite de DEC", "DEC limit", idioma), tipo: "numero", unidade: "h", casas: 2 },
@@ -2932,10 +2932,10 @@ export function textoCorDoMapa(m: MunicipioQualidade, medida: MedidaMapa, idioma
   const valor = m[medida];
   if (valor === null || !m.conjuntos.length) return "";
   const un = medida.startsWith("dec") ? `${num(valor, 2, idioma)} h` : tx(`${num(valor, 2)} interrupções`, `${num(valor, 2, idioma)} interruptions`, idioma);
-  if (m.conjuntos.length === 1) return tx(`Cor do mapa: o valor do único conjunto citado, ${un}.`, `Map colour: the value of the only consumer set listed, ${un}.`, idioma);
+  if (m.conjuntos.length === 1) return tx(`Cor do mapa: o valor do único conjunto citado, ${un}.`, `Map colour: the value of the only consumer cluster listed, ${un}.`, idioma);
   return tx(
     `Cor do mapa: ${maior ? "o maior" : "o menor"} valor entre os ${num(m.conjuntos.length, 0)} conjuntos citados, ${un}.`,
-    `Map colour: the ${maior ? "highest" : "lowest"} value among the ${num(m.conjuntos.length, 0, idioma)} consumer sets listed, ${un}.`,
+    `Map colour: the ${maior ? "highest" : "lowest"} value among the ${num(m.conjuntos.length, 0, idioma)} consumer clusters listed, ${un}.`,
     idioma,
   );
 }
@@ -2976,7 +2976,7 @@ export function textoMesesIncompletos(linhas: readonly LinhaTabela[], idioma: Id
   ].filter((x): x is string => !!x);
   return tx(
     `Dos ${num(linhas.length, 0)} conjuntos da tabela, ${listaPt(partes)}: mostram a soma dos meses publicados, sem razão, e não entram no intervalo de ${dec && fec ? "DEC e de FEC" : dec ? "DEC" : "FEC"} da frase acima.`,
-    `Of the ${num(linhas.length, 0, idioma)} consumer sets in the table, ${listaPt(partes, idioma)}: they show the sum of the months published, without a ratio, and do not enter the ${dec && fec ? "DEC and FEC" : dec ? "DEC" : "FEC"} range of the sentence above.`,
+    `Of the ${num(linhas.length, 0, idioma)} consumer clusters in the table, ${listaPt(partes, idioma)}: they show the sum of the months published, without a ratio, and do not enter the ${dec && fec ? "DEC and FEC" : dec ? "DEC" : "FEC"} range of the sentence above.`,
     idioma,
   );
 }
@@ -3232,7 +3232,7 @@ export function orientacaoSemDado(m: Pick<MunicipioQualidade, "relacao">, idioma
   if (m.relacao !== "sem_relacao_na_fonte" && m.relacao !== "sem_conjunto_ativo") return "";
   return tx(
     "Sem dado não quer dizer sem energia: a base da ANEEL não traz um conjunto com DEC no ano para este município. Para saber qual distribuidora atende você, veja a sua conta de luz ou use a busca da página Conta de luz. Reclamações sobre falta de energia vão primeiro à distribuidora e, depois, à Ouvidoria da ANEEL.",
-    "No data does not mean no power: the ANEEL database has no consumer set with DEC in the year for this municipality. To find out which distribution utility serves you, check your electricity bill or use the search on the Electricity bill page. Complaints about power outages go first to the distribution utility and then to the ANEEL Ombudsman.",
+    "No data does not mean no power: the ANEEL database has no consumer cluster with DEC in the year for this municipality. To learn which distribution utility serves you, check your electricity bill or use the search on the Electricity bill page. Complaints about power outages go first to the distribution utility and then to the ANEEL Ombudsman.",
     idioma,
   );
 }
@@ -3262,20 +3262,20 @@ export function resumoMunicipio(m: MunicipioQualidade, ano: number, idioma: Idio
     case "sem_conjunto_ativo":
       return tx(
         `${lugar} é citado na base da ANEEL, mas sem conjunto com DEC de 12 meses em ${ano}.`,
-        `${lugar} is listed in the ANEEL database, but with no consumer set with a 12-month DEC in ${ano}.`,
+        `${lugar} is listed in the ANEEL database, but with no consumer cluster with a 12-month DEC in ${ano}.`,
         idioma,
       );
     case "conjunto_exclusivo":
     case "conjunto_compartilhado":
       return tx(
         `${lugar}: um conjunto atende o município, com DEC de ${dec} e FEC de ${fec} em ${ano}${m.relacao === "conjunto_compartilhado" ? " (valores do conjunto inteiro)" : ""}.`,
-        `${lugar}: one consumer set serves the municipality, with a DEC of ${dec} and a FEC of ${fec} in ${ano}${m.relacao === "conjunto_compartilhado" ? " (values of the whole set)" : ""}.`,
+        `${lugar}: one consumer cluster serves the municipality, with a DEC of ${dec} and a FEC of ${fec} in ${ano}${m.relacao === "conjunto_compartilhado" ? " (values of the whole cluster)" : ""}.`,
         idioma,
       );
     default:
       return tx(
         `${lugar}: ${num(m.conjuntos.length, 0)} conjuntos atendem o município; em ${ano}, o DEC deles vai ${dec} e o FEC ${fec} (nenhuma média municipal).`,
-        `${lugar}: ${num(m.conjuntos.length, 0, idioma)} consumer sets serve the municipality; in ${ano}, their DEC ranges ${dec} and their FEC ${fec} (no municipal average).`,
+        `${lugar}: ${num(m.conjuntos.length, 0, idioma)} consumer clusters serve the municipality; in ${ano}, their DEC ranges ${dec} and their FEC ${fec} (no municipal average).`,
         idioma,
       );
   }

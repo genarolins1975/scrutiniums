@@ -2,6 +2,14 @@
 
 import { useRef, useState } from "react";
 import { MENSAGEM_COPIA, copiarComFallback, type ResultadoCopia } from "@/lib/energia/evidencia";
+import { useTx } from "@/lib/energia/useIdioma";
+
+/** Mensagens da cópia em inglês (as portuguesas são as de MENSAGEM_COPIA). */
+const MENSAGEM_COPIA_EN: Record<ResultadoCopia, string> = {
+  copiado: "Copied to the clipboard.",
+  selecionado: "Text selected: use Ctrl+C (or Copy, in the menu) to copy.",
+  falhou: "Could not copy: select the text of the block and copy it.",
+};
 
 /**
  * Link compartilhável de um painel da Qualidade do serviço: copia o endereço atual com
@@ -11,7 +19,8 @@ import { MENSAGEM_COPIA, copiarComFallback, type ResultadoCopia } from "@/lib/en
  * área de transferência, o endereço aparece num campo já selecionado para cópia manual.
  * No servidor sai só o botão.
  */
-export function QualidadeLinkPainel({ ancora, rotulo = "Copiar link deste painel" }: { ancora: string; rotulo?: string }) {
+export function QualidadeLinkPainel({ ancora, rotulo }: { ancora: string; rotulo?: string }) {
+  const tx = useTx();
   const [estado, setEstado] = useState<ResultadoCopia | null>(null);
   const [url, setUrl] = useState("");
   const campo = useRef<HTMLInputElement>(null);
@@ -38,18 +47,18 @@ export function QualidadeLinkPainel({ ancora, rotulo = "Copiar link deste painel
   return (
     <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
       <button type="button" onClick={copiar} className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-        {rotulo}
+        {rotulo ?? tx("Copiar link deste painel", "Copy link to this panel")}
       </button>
       <input
         ref={campo}
         readOnly
-        aria-label="Endereço deste painel com os recortes atuais"
+        aria-label={tx("Endereço deste painel com os recortes atuais", "Address of this panel with the current selections")}
         value={url}
         className={manual ? "min-h-[44px] w-full max-w-md border border-linha bg-superficie px-2 text-xs text-carvao" : "sr-only"}
         tabIndex={manual ? 0 : -1}
       />
       <span role="status" aria-live="polite" className="text-xs text-carvao-muted">
-        {estado ? MENSAGEM_COPIA[estado] : ""}
+        {estado ? tx(MENSAGEM_COPIA[estado], MENSAGEM_COPIA_EN[estado]) : ""}
       </span>
     </span>
   );

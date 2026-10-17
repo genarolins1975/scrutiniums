@@ -10,6 +10,9 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { quebrasFixas } from "@/lib/energia/escalas";
 import { num } from "@/lib/energia/formato";
+import { REGRA_MAPA_QUALIDADE_EN, traduzOuMarca } from "@/lib/energia/i18n/qualidade-perdas";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 import { URL_GEO } from "@/lib/energia/geo";
 import type { EscalaPaineis } from "@/lib/energia/series-temporais";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
@@ -17,19 +20,20 @@ import {
   CAMPO_DIST,
   CAMPO_MEDIDA,
   CAMPO_MUN,
-  COLUNAS_MUNICIPIOS,
   CORES_MAPA,
   CORTES_MAPA,
   MEDIDAS_MAPA,
-  ROTULO_MEDIDA,
-  ROTULO_RELACAO,
   carregarMunicipios,
   carregarUmaVez,
+  colunasMunicipios,
   linhasMunicipios,
   linhasSerieDistribuidoras,
   orientacaoSemDado,
   respostaMunicipio,
+  rotulosMedida,
+  rotulosRelacao,
   textoCorDoMapa,
+  unidadeIndicador,
   valoresMapa,
   type AvisosFec,
   type MedidaMapa,
@@ -92,6 +96,9 @@ export function QualidadeMapa({
   tamanhoConjuntos?: string;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
+  const idioma = useIdioma();
+  const tx = useTx();
+  const ROTULO_MEDIDA = rotulosMedida(idioma);
   const caixa = useRef<HTMLDivElement>(null);
   const [ativo, setAtivo] = useState(false);
   const [carga, setCarga] = useState<Carga>({ estado: "parado" });
@@ -160,7 +167,7 @@ export function QualidadeMapa({
   const ind = v.med.startsWith("dec") ? "dec" : "fec";
   const valores = useMemo(() => (municipios ? valoresMapa(municipios, v.med) : {}), [municipios, v.med]);
   const classificacao = useMemo(() => quebrasFixas(CORTES_MAPA[ind], Object.values(valores), { casas: 0 }), [ind, valores]);
-  const linhas = useMemo(() => (municipios ? linhasMunicipios(municipios, rotuloCnpj) : []), [municipios]); // eslint-disable-line react-hooks/exhaustive-deps
+  const linhas = useMemo(() => (municipios ? linhasMunicipios(municipios, rotuloCnpj, idioma) : []), [municipios, idioma]); // eslint-disable-line react-hooks/exhaustive-deps
   const med = ROTULO_MEDIDA[v.med];
   const selecionar = (id: string | null) => definir({ mun: id ?? "" });
   // o valor do município é o de um conjunto (o maior ou o menor entre os que o atendem): a dica, a linha Seleção e a tabela dizem entre quantos
@@ -171,10 +178,13 @@ export function QualidadeMapa({
     return (id: string): string | null => {
       const n = porCodigo.get(id)?.conjuntos.length ?? 0;
       if (n === 0) return null;
-      if (n === 1) return "valor do conjunto que atende o município";
-      return `${maior ? "maior" : "menor"} valor entre os ${num(n, 0)} conjuntos que atendem o município`;
+      if (n === 1) return tx("valor do conjunto que atende o município", "value of the consumer cluster serving the municipality");
+      return tx(
+        `${maior ? "maior" : "menor"} valor entre os ${num(n, 0)} conjuntos que atendem o município`,
+        `${maior ? "highest" : "lowest"} value among the ${num(n, 0, idioma)} consumer clusters serving the municipality`,
+      );
     };
-  }, [municipios, v.med]);
+  }, [municipios, v.med, idioma]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // os pequenos múltiplos e a comparação aceitam no máximo LIMITE_COMPARACAO distribuidoras
   const cnpjsSel = selecionado ? selecionado.cnpjs.slice(0, LIMITE_COMPARACAO) : [];
@@ -185,7 +195,7 @@ export function QualidadeMapa({
   return (
     <div className="space-y-4">
       <fieldset className="flex flex-wrap items-center gap-x-4 gap-y-1">
-        <legend className="rotulo mb-1 text-mineral">Cor do mapa</legend>
+        <legend className="rotulo mb-1 text-mineral">{tx("Cor do mapa", "Map colour")}</legend>
         {MEDIDAS_MAPA.map((m: MedidaMapa) => (
           <label key={m} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
             <input type="radio" name="qualidade-medida-mapa" value={m} checked={v.med === m} onChange={() => definir({ med: m })} className="h-4 w-4 accent-energia" />
@@ -202,41 +212,55 @@ export function QualidadeMapa({
             valores={valores}
             cores={CORES_MAPA}
             classificacao={classificacao}
-            unidade={`${med.unidade}, ${v.med.endsWith("max") ? "maior" : "menor"} entre os conjuntos do município`}
+            unidade={tx(
+              `${med.unidade}, ${v.med.endsWith("max") ? "maior" : "menor"} entre os conjuntos do município`,
+              `${med.unidade}, ${v.med.endsWith("max") ? "highest" : "lowest"} among the municipality's consumer clusters`,
+            )}
             casas={2}
-            rotuloRegiao={{ singular: "município", plural: "municípios" }}
+            rotuloRegiao={tx({ singular: "município", plural: "municípios" }, { singular: "municipality", plural: "municipalities" })}
             selecionado={v.mun || null}
             onSelecionar={selecionar}
             detalheRegiao={detalheMunicipio}
             contornos
             periodo={String(ano)}
-            nota="Valor do conjunto inteiro que atende o município, não medido no município. Hachura: município sem conjunto com DEC no ano ou não citado na base da ANEEL."
+            nota={tx(
+              "Valor do conjunto inteiro que atende o município, não medido no município. Hachura: município sem conjunto com DEC no ano ou não citado na base da ANEEL.",
+              "Value of the whole consumer cluster serving the municipality, not measured in the municipality. Hatching: municipality with no consumer cluster with DEC in the year or not listed in the ANEEL database.",
+            )}
           />
         ) : carga.estado === "erro" ? (
           <div role="alert" className="border border-dashed border-mineral bg-papel p-4 text-sm text-carvao">
-            <p>Não foi possível carregar os municípios ({carga.erro}).</p>
+            <p>{tx(<>Não foi possível carregar os municípios ({carga.erro}).</>, <>The municipalities could not be loaded ({carga.erro}).</>)}</p>
             <p className="mt-2">
-              A mesma informação está no arquivo{" "}
+              {tx("A mesma informação está no arquivo", "The same information is in the file")}{" "}
               <a href={urlMunicipios} download className="text-energia-dark underline underline-offset-4">
-                DEC e FEC dos conjuntos por município (CSV)
+                {tx("DEC e FEC dos conjuntos por município (CSV)", "DEC and FEC of the consumer clusters by municipality (CSV)")}
               </a>
               .{" "}
               <button type="button" className={BOTAO} onClick={() => setTentativa((t) => t + 1)}>
-                Tentar de novo
+                {tx("Tentar de novo", "Try again")}
               </button>
             </p>
           </div>
         ) : (
           <div className="flex h-[380px] flex-col items-start justify-center gap-3 border border-dashed border-linha bg-papel p-5 text-sm text-carvao-muted sm:h-[520px]">
             <p className="max-w-prose2">
-              O mapa {totalMunicipios !== null ? `dos ${totalMunicipios.toLocaleString("pt-BR")} municípios do cadastro do IBGE ` : ""}usa a malha municipal do IBGE e o arquivo de
-              municípios deste painel; os dois só são baixados quando o mapa aparece na tela.
+              {tx(
+                <>
+                  O mapa {totalMunicipios !== null ? `dos ${totalMunicipios.toLocaleString("pt-BR")} municípios do cadastro do IBGE ` : ""}usa a malha municipal do IBGE e o arquivo de
+                  municípios deste painel; os dois só são baixados quando o mapa aparece na tela.
+                </>,
+                <>
+                  The map {totalMunicipios !== null ? `of the ${totalMunicipios.toLocaleString("en-US")} municipalities in the IBGE registry ` : ""}uses the IBGE municipal grid and this
+                  panel&apos;s municipality file; both are downloaded only when the map appears on screen.
+                </>,
+              )}
             </p>
             {carga.estado === "carregando" ? (
-              <p role="status">Carregando os municípios…</p>
+              <p role="status">{tx("Carregando os municípios…", "Loading the municipalities…")}</p>
             ) : (
               <button type="button" className={BOTAO} onClick={() => setAtivo(true)}>
-                Carregar o mapa
+                {tx("Carregar o mapa", "Load the map")}
               </button>
             )}
           </div>
@@ -245,67 +269,85 @@ export function QualidadeMapa({
 
       {selecionado && (
         <p className="text-sm text-carvao" data-ir-para-ficha="">
-          {selecionado.nome} ({selecionado.uf}) escolhido.{" "}
+          {tx(
+            <>
+              {selecionado.nome} ({selecionado.uf}) escolhido.
+            </>,
+            <>
+              <Nome>{selecionado.nome}</Nome> ({selecionado.uf}) selected.
+            </>,
+          )}{" "}
           <a href="#municipio-escolhido" className="text-energia-dark underline underline-offset-4">
-            Ver os conjuntos, o limite de cada um e o histórico, logo abaixo
+            {tx("Ver os conjuntos, o limite de cada um e o histórico, logo abaixo", "See the consumer clusters, the limit of each one and the history, just below")}
           </a>
           .
         </p>
       )}
 
-      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{regra}</p>
+      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{traduzOuMarca(regra, REGRA_MAPA_QUALIDADE_EN, idioma, "regra-mapa-qualidade")}</p>
 
-      <section id="municipio-escolhido" aria-live="polite" aria-label="Município escolhido" className="scroll-mt-28 border-t border-linha pt-4">
+      <section id="municipio-escolhido" aria-live="polite" aria-label={tx("Município escolhido", "Selected municipality")} className="scroll-mt-28 border-t border-linha pt-4">
         {selecionado ? (
           <div className="space-y-3">
             <h4 className="font-serif text-lg text-carvao">
-              {selecionado.nome} ({selecionado.uf})
+              <Nome>{selecionado.nome}</Nome> ({selecionado.uf})
             </h4>
             <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="municipio">
-              {respostaMunicipio(selecionado, ano)}
+              {respostaMunicipio(selecionado, ano, idioma)}
             </p>
-            {orientacaoSemDado(selecionado) && (
+            {orientacaoSemDado(selecionado, idioma) && (
               <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-orientacao="sem-dado">
-                {orientacaoSemDado(selecionado)}{" "}
+                {orientacaoSemDado(selecionado, idioma)}{" "}
                 <LinkSemPrefetch href="/setor-eletrico/conta-de-luz" className="text-energia-dark underline underline-offset-4">
-                  Abrir a Conta de luz
+                  {tx("Abrir a Conta de luz", "Open the Electricity bill page")}
                 </LinkSemPrefetch>
                 .
               </p>
             )}
-            {textoCorDoMapa(selecionado, v.med) && (
+            {textoCorDoMapa(selecionado, v.med, idioma) && (
               <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-cor-mapa="">
-                {textoCorDoMapa(selecionado, v.med)}
+                {textoCorDoMapa(selecionado, v.med, idioma)}
               </p>
             )}
             <dl className="grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
               <div>
-                <dt className="rotulo text-mineral">Relação com os conjuntos</dt>
-                <dd className="text-carvao-muted">{ROTULO_RELACAO[selecionado.relacao]}</dd>
+                <dt className="rotulo text-mineral">{tx("Relação com os conjuntos", "Relation to the consumer clusters")}</dt>
+                <dd className="text-carvao-muted">{rotulosRelacao(idioma)[selecionado.relacao]}</dd>
               </div>
               <div>
-                <dt className="rotulo text-mineral">Conjuntos (código ANEEL)</dt>
-                <dd className="break-words text-carvao-muted">{selecionado.conjuntos.length ? selecionado.conjuntos.join(", ") : "nenhum"}</dd>
+                <dt className="rotulo text-mineral">{tx("Conjuntos (código ANEEL)", "Consumer clusters (ANEEL code)")}</dt>
+                <dd className="break-words text-carvao-muted">{selecionado.conjuntos.length ? selecionado.conjuntos.join(", ") : tx("nenhum", "none")}</dd>
               </div>
               <div className="sm:col-span-2">
-                <dt className="rotulo text-mineral">Distribuidoras</dt>
-                <dd className="text-carvao-muted">{selecionado.cnpjs.length ? selecionado.cnpjs.map(rotuloCnpj).join(", ") : "nenhuma com conjunto ativo no ano"}</dd>
+                <dt className="rotulo text-mineral">{tx("Distribuidoras", "Distribution utilities")}</dt>
+                <dd className="text-carvao-muted">{selecionado.cnpjs.length ? selecionado.cnpjs.map(rotuloCnpj).join(", ") : tx("nenhuma com conjunto ativo no ano", "none with an active consumer cluster in the year")}</dd>
               </div>
             </dl>
             <div className="flex flex-wrap gap-2">
               {selecionado.cnpjs.length > 0 && (
                 <a href="#comparar-distribuidoras" className={BOTAO} onClick={() => definir({ dist: cnpjsSel })}>
-                  Comparar {cnpjsSel.length === 1 ? "esta distribuidora" : "estas distribuidoras"} com o próprio limite
+                  {tx(
+                    <>Comparar {cnpjsSel.length === 1 ? "esta distribuidora" : "estas distribuidoras"} com o próprio limite</>,
+                    <>Compare {cnpjsSel.length === 1 ? "this distribution utility" : "these distribution utilities"} with its own limit</>,
+                  )}
                 </a>
               )}
               <button type="button" className={BOTAO} onClick={() => selecionar(null)}>
-                Limpar município
+                {tx("Limpar município", "Clear municipality")}
               </button>
             </div>
             {foraDaComparacao > 0 && (
               <p className="text-sm text-carvao-muted">
-                A comparação aceita até {LIMITE_COMPARACAO} distribuidoras: entram as {LIMITE_COMPARACAO} primeiras da lista; {foraDaComparacao}{" "}
-                {foraDaComparacao === 1 ? "fica" : "ficam"} só na lista acima.
+                {tx(
+                  <>
+                    A comparação aceita até {LIMITE_COMPARACAO} distribuidoras: entram as {LIMITE_COMPARACAO} primeiras da lista; {foraDaComparacao}{" "}
+                    {foraDaComparacao === 1 ? "fica" : "ficam"} só na lista acima.
+                  </>,
+                  <>
+                    The comparison accepts up to {LIMITE_COMPARACAO} distribution utilities: the first {LIMITE_COMPARACAO} in the list are included; {foraDaComparacao}{" "}
+                    {foraDaComparacao === 1 ? "stays" : "stay"} only in the list above.
+                  </>,
+                )}
               </p>
             )}
             <QualidadeConjuntosDoMunicipio
@@ -323,11 +365,14 @@ export function QualidadeMapa({
                   {(["dec", "fec"] as const).map((ind) => (
                     <PequenosMultiplos
                       key={ind}
-                      titulo={`${ind === "dec" ? "DEC" : "FEC"} anual e limite das distribuidoras que atendem ${selecionado.nome}`}
+                      titulo={tx(
+                        `${ind === "dec" ? "DEC" : "FEC"} anual e limite das distribuidoras que atendem ${selecionado.nome}`,
+                        `Annual ${ind === "dec" ? "DEC" : "FEC"} and limit of the distribution utilities serving ${selecionado.nome}`,
+                      )}
                       dados={ind === "dec" ? dadosDec : dadosFec}
-                      chaveX="ano"
+                      chaveX="ano" // i18n: dado
                       formatoX="texto"
-                      unidade={ind === "dec" ? "h" : "interrupções"}
+                      unidade={unidadeIndicador(ind, idioma)}
                       casas={2}
                       colunas={2}
                       nivelTitulo={4}
@@ -337,13 +382,15 @@ export function QualidadeMapa({
                         id: c,
                         titulo: `${rotuloCnpj(c)}, ${ind === "dec" ? "DEC" : "FEC"}`,
                         series: [
-                          { id: `${ind}_${c}`, rotulo: ind === "dec" ? "DEC apurado" : "FEC apurado", cor: "var(--cor-energia)" },
-                          { id: `lim_${c}`, rotulo: "Limite", cor: "var(--serie-referencia)", tracejada: true },
+                          { id: `${ind}_${c}`, rotulo: ind === "dec" ? tx("DEC apurado", "Assessed DEC") : tx("FEC apurado", "Assessed FEC"), cor: "var(--cor-energia)" }, // i18n: dado
+                          { id: `lim_${c}`, rotulo: tx("Limite", "Limit"), cor: "var(--serie-referencia)", tracejada: true },
                         ],
                         nota:
                           [
-                            serie.distribuidoras[c]?.quebras.length ? `perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}` : null,
-                            ind === "fec" && avisosFec[c] ? `${avisosFec[c].ano}: FEC de cobertura parcial` : null,
+                            serie.distribuidoras[c]?.quebras.length
+                              ? tx(`perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}`, `perimeter changed in ${serie.distribuidoras[c].quebras.join(", ")}`)
+                              : null,
+                            ind === "fec" && avisosFec[c] ? tx(`${avisosFec[c].ano}: FEC de cobertura parcial`, `${avisosFec[c].ano}: FEC with partial coverage`) : null,
                           ]
                             .filter(Boolean)
                             .join("; ") || undefined,
@@ -353,11 +400,14 @@ export function QualidadeMapa({
                 </div>
               ) : erroSerie ? (
                 <p role="alert" className="text-sm text-carvao">
-                  Histórico indisponível ({erroSerie}); a série anual por distribuidora está no CSV da lista de downloads do painel.
+                  {tx(
+                    <>Histórico indisponível ({erroSerie}); a série anual por distribuidora está no CSV da lista de downloads do painel.</>,
+                    <>History unavailable ({erroSerie}); the annual series by distribution utility is in the CSV in the panel&apos;s download list.</>,
+                  )}
                 </p>
               ) : (
                 <p role="status" className="text-sm text-carvao-muted">
-                  Carregando o histórico das distribuidoras…
+                  {tx("Carregando o histórico das distribuidoras…", "Loading the history of the distribution utilities…")}
                 </p>
               ))}
             {cnpjsSel.filter((c) => avisosFec[c]).map((c) => (
@@ -366,18 +416,26 @@ export function QualidadeMapa({
               </p>
             ))}
             <p className="text-sm text-carvao-muted">
-              O histórico é da distribuidora inteira (todos os seus conjuntos), não do município: a fonte não publica série municipal.
+              {tx(
+                "O histórico é da distribuidora inteira (todos os seus conjuntos), não do município: a fonte não publica série municipal.",
+                "The history is that of the whole distribution utility (all its consumer clusters), not of the municipality: the source does not publish a municipal series.",
+              )}
             </p>
           </div>
         ) : (
-          <p className="text-sm text-carvao-muted">Escolha um município no mapa, na busca do mapa ou na tabela para ver os conjuntos que o atendem e o histórico das distribuidoras.</p>
+          <p className="text-sm text-carvao-muted">
+            {tx(
+              "Escolha um município no mapa, na busca do mapa ou na tabela para ver os conjuntos que o atendem e o histórico das distribuidoras.",
+              "Choose a municipality on the map, in the map search or in the table to see the consumer clusters serving it and the history of the distribution utilities.",
+            )}
+          </p>
         )}
       </section>
 
       {municipios && (
         <TabelaInterativa
-          titulo={`Municípios e conjuntos que os atendem, ${ano}`}
-          colunas={COLUNAS_MUNICIPIOS}
+          titulo={tx(`Municípios e conjuntos que os atendem, ${ano}`, `Municipalities and the consumer clusters serving them, ${ano}`)}
+          colunas={colunasMunicipios(idioma)}
           linhas={linhas}
           chaveLinha="id"
           colunaRotulo="municipio"
@@ -388,8 +446,8 @@ export function QualidadeMapa({
           ordemInicial={{ coluna: v.med, direcao: "desc" }}
           selecionado={v.mun || null}
           onSelecionar={selecionar}
-          dicaBusca="Município, UF, distribuidora ou código IBGE"
-          nota="DEC e FEC dos conjuntos inteiros; nenhuma média municipal é calculada."
+          dicaBusca={tx("Município, UF, distribuidora ou código IBGE", "Municipality, state (UF), distribution utility or IBGE code")}
+          nota={tx("DEC e FEC dos conjuntos inteiros; nenhuma média municipal é calculada.", "DEC and FEC of the whole consumer clusters; no municipal average is calculated.")}
         />
       )}
     </div>
