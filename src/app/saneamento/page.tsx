@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
 import { BuscaMunicipio } from "@/components/saneamento/BuscaMunicipio";
 import { DiagramaSistema } from "@/components/saneamento/DiagramaSistema";
+import { FaixaMundo } from "@/components/saneamento/ReferenciaMundial";
 import { SeloSituacao } from "@/components/saneamento/Editorial";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { agregado, meta } from "@/lib/saneamento/gold";
@@ -109,7 +110,31 @@ export default function Pagina() {
           </div>
         </section>
 
-        <section aria-labelledby="eixos" className="ed-pagina py-12">
+        <section aria-labelledby="no-mundo" className="ed-pagina py-12">
+          <h2 id="no-mundo" className="font-serif text-[1.7rem] leading-snug text-carvao md:text-[2rem]">
+            O Brasil no mundo
+          </h2>
+          <p className="mt-3 max-w-prose2 text-[0.95rem] leading-relaxed text-carvao-muted">
+            Três indicadores dos Objetivos de Desenvolvimento Sustentável, com a mesma definição para todos os países, no ano mais recente em que o
+            Brasil tem valor.
+          </p>
+          <div className="mt-8">
+            <FaixaMundo
+              itens={[
+                { codigo: "SH_H2O_SAFE", titulo: "Água gerenciada com segurança", href: `${ROTA}/acesso#mundo` },
+                { codigo: "SH_SAN_SAFE", titulo: "Esgotamento gerenciado com segurança", href: `${ROTA}/acesso#mundo` },
+                { codigo: "EN_WWT_WWDS", titulo: "Esgoto doméstico tratado com segurança", href: `${ROTA}/esgoto#mundo` },
+              ]}
+            />
+          </div>
+          <p className="mt-6">
+            <Link href={`${ROTA}/internacional`} className="text-sm text-obee-dark underline underline-offset-4">
+              Brasil no mundo: todos os indicadores e a conciliação com o Censo e o SINISA
+            </Link>
+          </p>
+        </section>
+
+        <section aria-labelledby="eixos" className="ed-pagina border-t border-linha py-12">
           <h2 id="eixos" className="font-serif text-[1.7rem] leading-snug text-carvao md:text-[2rem]">
             Cinco eixos, catorze perguntas
           </h2>

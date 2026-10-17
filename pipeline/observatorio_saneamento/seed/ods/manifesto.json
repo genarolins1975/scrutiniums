@@ -1,0 +1,140 @@
+{
+  "capturado_em": "2026-10-17T09:52:45+00:00",
+  "api": "https://unstats.un.org/sdgapi/v1/sdg",
+  "arquivos": {
+    "SH_H2O_SAFE": {
+      "arquivo": "SH_H2O_SAFE.csv.gz",
+      "sha256": "b86324c9b026e20e60ac678033bdf0f35a21321a1e952f8b44257e2a5ae7bf03",
+      "bytes": 1705222,
+      "linhas": 10780,
+      "url": "https://unstats.un.org/sdgapi/v1/sdg/Series/Data?seriesCode=SH_H2O_SAFE&pageSize=100000",
+      "resposta": {
+        "sha256": "69f2d01a568e1238a66ea1c136def597e8561005676105e3f606c0902bee0fe1",
+        "bytes": 7020397,
+        "linhas": 10780
+      },
+      "edicao": "2026.Q3.G.01",
+      "descricao_onu": "Proportion of population using safely managed drinking water services, by urban/rural (%)"
+    },
+    "SH_SAN_SAFE": {
+      "arquivo": "SH_SAN_SAFE.csv.gz",
+      "sha256": "5e29a5e3f88bf8c267005f0e2346a09c4b88f61a2a7373fa42a5cf3c864c59f2",
+      "bytes": 1832194,
+      "linhas": 11594,
+      "url": "https://unstats.un.org/sdgapi/v1/sdg/Series/Data?seriesCode=SH_SAN_SAFE&pageSize=100000",
+      "resposta": {
+        "sha256": "d4a04ea5cde90e0743f09c4f4ef4dc1c3c46d9d3cdc712c158bb241f6514e518",
+        "bytes": 7502295,
+        "linhas": 11594
+      },
+      "edicao": "2026.Q3.G.01",
+      "descricao_onu": "Proportion of population using safely managed sanitation services, by urban/rural (%)"
+    },
+    "EN_WWT_WWDS": {
+      "arquivo": "EN_WWT_WWDS.csv.gz",
+      "sha256": "84985d12726123e2553587328b14ee1b965b30455228c0c6e9ba5f890561abc9",
+      "bytes": 27870,
+      "linhas": 493,
+      "url": "https://unstats.un.org/sdgapi/v1/sdg/Series/Data?seriesCode=EN_WWT_WWDS&pageSize=100000",
+      "resposta": {
+        "sha256": "1efe91e01924009ef8bdb6079cb5ad64b490b4975c4874d6bb208d30d775cadf",
+        "bytes": 270773,
+        "linhas": 493
+      },
+      "edicao": "2026.Q3.G.01",
+      "descricao_onu": "Proportion of safely treated domestic wastewater flows (%)"
+    },
+    "EN_H2O_WBAMBQ": {
+      "arquivo": "EN_H2O_WBAMBQ.csv.gz",
+      "sha256": "71c8b7bf8147a1c1f0d238e4b08d28b70ceb378d40b0ca5bbcb6e97b91357ae7",
+      "bytes": 31914,
+      "linhas": 409,
+      "url": "https://unstats.un.org/sdgapi/v1/sdg/Series/Data?seriesCode=EN_H2O_WBAMBQ&pageSize=100000",
+      "resposta": {
+        "sha256": "5e6de1284cc53df9a2aa71aff2108e30308fd16f27f9620148374451419745e8",
+        "bytes": 237254,
+        "linhas": 409
+      },
+      "edicao": "2026.Q3.G.01",
+      "descricao_onu": "Proportion of bodies of water with good ambient water quality (%)"
+    },
+    "ER_H2O_STRESS": {
+      "arquivo": "ER_H2O_STRESS.csv.gz",
+      "sha256": "9a43177d04f6cd2f5bdafd32d72ea7ba64fe7b9bcae699bc23024306fb6a6824",
+      "bytes": 612665,
+      "linhas": 5064,
+      "url": "https://unstats.un.org/sdgapi/v1/sdg/Series/Data?seriesCode=ER_H2O_STRESS&pageSize=100000",
+      "resposta": {
+        "sha256": "c32792090473026e25cdb07a5a41f74f8cef1aee91c968336e590d5f7756d7c0",
+        "bytes": 13145531,
+        "linhas": 20016
+      },
+      "edicao": "2026.Q3.G.01",
+      "descricao_onu": "Level of water stress: freshwater withdrawal as a proportion of available freshwater resources (%)"
+    },
+    "ER_H2O_IWRMD": {
+      "arquivo": "ER_H2O_IWRMD.csv.gz",
+      "sha256": "e90c704dd096dae95ba575ffc8ba36781c1e762e53fff2b506af96709f39fece",
+      "bytes": 72885,
+      "linhas": 660,
+      "url": "https://unstats.un.org/sdgapi/v1/sdg/Series/Data?seriesCode=ER_H2O_IWRMD&pageSize=100000",
+      "resposta": {
+        "sha256": "aef6d43cfa83868dd989ae6c0453baed634e3cf78b339e425d326ac588f89e39",
+        "bytes": 401272,
+        "linhas": 660
+      },
+      "edicao": "2026.Q3.G.01",
+      "descricao_onu": "Degree of integrated water resources management implementation (%)"
+    },
+    "DC_TOF_WASHL": {
+      "arquivo": "DC_TOF_WASHL.csv.gz",
+      "sha256": "54f33bc4b743e42bd94e74b5eab873133b629522252da7a190bce89e9ea1e3cb",
+      "bytes": 486349,
+      "linhas": 4289,
+      "url": "https://unstats.un.org/sdgapi/v1/sdg/Series/Data?seriesCode=DC_TOF_WASHL&pageSize=100000",
+      "resposta": {
+        "sha256": "3f6cbd0df5efdffa61c9da9d7d2d77261fc6338a38a01362846b173484e76895",
+        "bytes": 3311150,
+        "linhas": 4289
+      },
+      "edicao": "2026.Q3.G.01",
+      "descricao_onu": "Total official development assistance (gross disbursement) for water supply and sanitation, by recipient countries (millions of constant 2024 United States dollars)"
+    },
+    "SH_STA_WASHARI": {
+      "arquivo": "SH_STA_WASHARI.csv.gz",
+      "sha256": "6eb5bbd7e096900fc18bfa467160bdffb61c3307d9548f48e97cf412584bf2c4",
+      "bytes": 25085,
+      "linhas": 219,
+      "url": "https://unstats.un.org/sdgapi/v1/sdg/Series/Data?seriesCode=SH_STA_WASHARI&pageSize=100000",
+      "resposta": {
+        "sha256": "c733ea86f67f279347cb83be2a444599332bf335d21378318cc3753a56d3304b",
+        "bytes": 171637,
+        "linhas": 219
+      },
+      "edicao": "2026.Q3.G.01",
+      "descricao_onu": "Mortality rate attributed to unsafe water, unsafe sanitation and lack of hygiene from diarrhoea, intestinal nematode infections, malnutrition and acute respiratory infections (deaths per 100,000 population)"
+    },
+    "paises_onu": {
+      "arquivo": "paises_onu.json.gz",
+      "sha256": "d92fe6b010c99ddf9560d12e893afef2a978b69984ebb477a91697645c59b832",
+      "bytes": 27010,
+      "linhas": 262,
+      "url": "https://unstats.un.org/sdgapi/v1/sdg/GeoArea/Tree",
+      "resposta": {
+        "sha256": "9037b020ebb67f977cea7a5504a3cf2a0f470022565cc6a8120a89d278c3010e",
+        "bytes": 96757
+      }
+    },
+    "paises_ibge": {
+      "arquivo": "paises_ibge.json.gz",
+      "sha256": "032d34bfb71860cde153c25db74d0cfd17142f7ff7a8b8bcd02e67f6067e70d0",
+      "bytes": 6826,
+      "linhas": 193,
+      "url": "https://servicodados.ibge.gov.br/api/v1/paises/all",
+      "resposta": {
+        "sha256": "3234b381ca7bbe7f80763cacc672d5151a92dd5ebf3fd132f5a7d804314defed",
+        "bytes": 115190
+      }
+    }
+  }
+}

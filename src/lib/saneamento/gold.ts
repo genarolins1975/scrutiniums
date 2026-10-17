@@ -10,6 +10,7 @@ import type {
   JmpPaises,
   MetaSaneamento,
   Municipio,
+  Ods,
   Prestador,
   ReguladorCatalogo,
   TabelaMunicipios,
@@ -126,6 +127,11 @@ export function prestador(id: string): Prestador | null {
 
 export function jmpPaises(): JmpPaises {
   return ler<JmpPaises>("jmp_paises.json") ?? { paises: [], brasil: [] };
+}
+
+/** Referências mundiais (base global dos ODS da ONU). Arquivo ausente devolve null: a página não mostra referência. */
+export function ods(): Ods | null {
+  return ler<Ods>("ods.json");
 }
 
 export function controleSocietario(): CompanhiaAberta[] {

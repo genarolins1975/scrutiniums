@@ -220,7 +220,7 @@ export const CAPITULOS: Capitulo[] = EIXOS.flatMap((e) => e.capitulos);
 export const FERRAMENTAS = [
   { slug: "municipio", rotulo: "Meu município", descricao: "Busca por nome: carência, prestador, regulador, plano, investimento e comparação com o estado." },
   { slug: "comparar", rotulo: "Comparar municípios", descricao: "Até quatro municípios lado a lado, com período comum e link compartilhável." },
-  { slug: "internacional", rotulo: "Brasil no mundo", descricao: "Água e esgotamento no Brasil e em outros países pelo JMP da OMS e do UNICEF, e por que os números diferem do Censo e do SINISA." },
+  { slug: "internacional", rotulo: "Brasil no mundo", descricao: "Água e esgotamento no Brasil e em outros países pelo JMP da OMS e do UNICEF, outros indicadores dos ODS e por que os números diferem do Censo e do SINISA." },
   { slug: "metodologia", rotulo: "Método e fontes", descricao: "Fontes, matriz de viabilidade, conferências entre bases e downloads." },
 ] as const;
 
