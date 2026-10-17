@@ -11,6 +11,9 @@ import {
   type FormatoNumero,
   type Variacao,
 } from "@/lib/energia/evidencia";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
+import { unidadeNoIdioma } from "@/lib/energia/i18n/nucleo";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 
 /**
  * Número de destaque (KPI) do Setor Elétrico: rótulo, valor formatado em pt-BR,
@@ -95,7 +98,10 @@ export function Numero({
   const prova = ficha ? <ComproveNumero evidencia={ficha} endereco={endereco} /> : sobDemanda ? <ComproveNumero sobDemanda={sobDemanda} endereco={endereco} /> : null;
   const v = valor !== undefined ? valor : (evidencia?.valor_calculo ?? null);
   const ausente = v === null || !Number.isFinite(v);
-  const u = unidadeDestaque(unidade ?? evidencia?.unidade, formato);
+  const uBruta = unidadeDestaque(unidade ?? evidencia?.unidade, formato);
+  // unidade da gold em português (MWmed, "unidades consumidoras"): em inglês, a da tabela; sem entrada, marcada como trecho português
+  const uIdioma = uBruta ? unidadeNoIdioma(uBruta, idiomaEnergia()) : uBruta;
+  const u = uBruta && uIdioma === null ? <TrechoPortugues regiao="numero-unidade">{uBruta}</TrechoPortugues> : uIdioma;
   const per = periodo ?? evidencia?.periodo;
   const textoPer0 = typeof per === "string" ? per : per ? textoPeriodo(per) : null;
   const textoPer = recorte ? (textoPer0 ? `${recorte} · ${textoPer0}` : recorte) : textoPer0;
@@ -119,7 +125,7 @@ export function Numero({
               className="mr-2 inline-block h-4 w-4 border border-mineral align-middle"
               style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, transparent 1px 4px)" }}
             />
-            sem dado
+            {tx("sem dado", "no data")}
           </p>
         ) : (
           <p className="col-start-2 row-span-2 row-start-1 text-right font-serif text-[1.75rem] leading-none tabular-nums text-carvao sm:text-left sm:text-[2.25rem]">
@@ -158,7 +164,7 @@ export function Numero({
             className="inline-block h-4 w-4 border border-mineral"
             style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, transparent 1px 4px)" }}
           />
-          sem dado
+          {tx("sem dado", "no data")}
         </p>
       ) : (
         <p className={`mt-3 font-serif ${corpo} leading-none tabular-nums text-carvao`}>
