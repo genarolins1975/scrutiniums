@@ -5,6 +5,7 @@ import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl, type Esquema } from "@/lib/energia/estadoUrl";
 import { formatos } from "@/lib/energia/formato";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { TextoDaColuna } from "@/components/energia/TabelaInterativa";
 import {
   CHAVE_SEM_DADO,
   MIME_CSV,
@@ -399,7 +400,12 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
                   className="inline-flex min-h-[44px] items-center gap-2 border border-energia bg-energia-fundo px-3 text-left text-sm text-carvao hover:border-energia-dark"
                 >
                   <span>
-                    <span className="text-carvao-muted">{it.rotulo}:</span> {it.valor}
+                    <span className="text-carvao-muted">{it.rotulo}:</span>{" "}
+                    {it.tipo === "filtro" && it.coluna ? (
+                      <TextoDaColuna coluna={colunas.find((c) => c.id === it.coluna) ?? { id: it.coluna }}>{it.valor}</TextoDaColuna>
+                    ) : (
+                      it.valor
+                    )}
                   </span>
                   <span aria-hidden="true">✕</span>
                 </button>
@@ -596,7 +602,9 @@ function FiltroPopover({
                 {(opcoes[c.id] ?? []).map((o) => (
                   <label key={o.valor} className="flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
                     <input type="checkbox" className="h-4 w-4 shrink-0 accent-energia" checked={(filtros[c.id] ?? []).includes(o.valor)} onChange={() => alternar(c, o.valor)} />
-                    <span className={`min-w-0 flex-1 ${o.valor === CHAVE_SEM_DADO ? "italic text-carvao-muted" : ""}`}>{o.rotulo}</span>
+                    <span className={`min-w-0 flex-1 ${o.valor === CHAVE_SEM_DADO ? "italic text-carvao-muted" : ""}`}>
+                      {o.valor === CHAVE_SEM_DADO ? o.rotulo : <TextoDaColuna coluna={c}>{o.rotulo}</TextoDaColuna>}
+                    </span>
                     <span className="text-xs tabular-nums text-mineral">
                       {num(o.n, 0)}
                       <span className="sr-only"> {o.n === 1 ? substantivo[0] : substantivo[1]}</span>

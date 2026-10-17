@@ -57,6 +57,12 @@ export type ColunaTabela = {
    * ou valor da fonte) e saem identificados e intactos; os demais saem como texto comum.
    */
   literal?: { classe: ClasseLiteral; origem: string };
+  /**
+   * Texto da coluna que vem dos dados em português (gold), para a página inglesa: "nome" (empresa, usina, município, programa) sai
+   * marcado como nome próprio (<Nome>); "portugues" (descrição livre da fonte) sai em <TrechoPortugues regiao="tabela-<id>">. Vale para
+   * as células e para as opções do filtro. Em português nada muda; o arquivo baixado leva o valor como está.
+   */
+  idiomaTexto?: "nome" | "portugues";
 };
 
 export type Ordem = { coluna: string; direcao: Direcao } | null;

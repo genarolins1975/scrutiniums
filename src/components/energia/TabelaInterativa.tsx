@@ -8,6 +8,8 @@ import { TextoComDatas } from "@/components/TextoComDatas";
 import { defLiteral } from "@/lib/literais-fonte";
 import { FUSO_SEM_OFFSET_ENERGIA, formatos } from "@/lib/energia/formato";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import type { Idioma } from "@/lib/idioma";
 import {
   CHAVE_SEM_DADO,
@@ -129,6 +131,16 @@ function baixar(nome: string, conteudo: string | Uint8Array<ArrayBuffer>, tipo: 
   a.click();
   a.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+/**
+ * Conteúdo de célula (ou de opção de filtro) de uma coluna com `idiomaTexto`: na página inglesa, nome próprio em <Nome> e texto livre
+ * da fonte em <TrechoPortugues>; em português, o conteúdo como está. Exportado para a ListaConsultavel usar a mesma regra.
+ */
+export function TextoDaColuna({ coluna, children }: { coluna: Pick<ColunaTabela, "id" | "idiomaTexto">; children: ReactNode }) {
+  if (coluna.idiomaTexto === "nome") return <Nome>{children}</Nome>;
+  if (coluna.idiomaTexto === "portugues") return <TrechoPortugues regiao={`tabela-${coluna.id}`}>{children}</TrechoPortugues>;
+  return <>{children}</>;
 }
 
 function SemDado({ sobreFundoAtivo }: { sobreFundoAtivo: boolean }) {
@@ -431,7 +443,12 @@ export function TabelaInterativa({
                   className="inline-flex min-h-[44px] items-center gap-2 border border-energia bg-energia-fundo px-3 text-left text-sm text-carvao hover:border-energia-dark"
                 >
                   <span>
-                    <span className="text-carvao-muted">{it.rotulo}:</span> {it.valor}
+                    <span className="text-carvao-muted">{it.rotulo}:</span>{" "}
+                    {it.tipo === "filtro" && it.coluna ? (
+                      <TextoDaColuna coluna={colunas.find((c) => c.id === it.coluna) ?? { id: it.coluna }}>{it.valor}</TextoDaColuna>
+                    ) : (
+                      it.valor
+                    )}
                   </span>
                   <span aria-hidden="true">✕</span>
                 </button>
@@ -471,7 +488,10 @@ export function TabelaInterativa({
         <p className="mt-2 text-sm text-carvao-muted">
           {tx(
             <>A linha selecionada ({textoCelula(valorColuna(selecionadaFora, colRot), colRot, idioma)}) está fora dos filtros aplicados.</>,
-            <>The selected row ({textoCelula(valorColuna(selecionadaFora, colRot), colRot, idioma)}) is outside the applied filters.</>,
+            <>
+              The selected row (<TextoDaColuna coluna={colRot}>{textoCelula(valorColuna(selecionadaFora, colRot), colRot, idioma)}</TextoDaColuna>) is outside the
+              applied filters.
+            </>,
           )}{" "}
           <button type="button" onClick={limparTudo} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
             {tx("Mostrar todas as linhas", "Show all rows")}
@@ -572,8 +592,16 @@ export function TabelaInterativa({
                             {v}
                           </LiteralFonte>
                         ) : c.tipo === "texto" && typeof v === "string" ? (
-                          // texto do pipeline pode trazer competência ou data no meio da frase: legível, sem mudar o dia nem o fuso
-                          <TextoComDatas texto={textoCelula(v, c, idioma)} competencia="curta" fusoSemOffset={FUSO_SEM_OFFSET_ENERGIA} idioma={idioma} />
+                          // texto do pipeline pode trazer competência ou data no meio da frase: legível, sem mudar o dia nem o fuso; texto em
+                          // português marcado (idiomaTexto "portugues") mantém as datas na língua da frase
+                          <TextoDaColuna coluna={c}>
+                            <TextoComDatas
+                              texto={textoCelula(v, c, c.idiomaTexto === "portugues" ? "pt" : idioma)}
+                              competencia="curta"
+                              fusoSemOffset={FUSO_SEM_OFFSET_ENERGIA}
+                              idioma={c.idiomaTexto === "portugues" ? "pt" : idioma}
+                            />
+                          </TextoDaColuna>
                         ) : (
                           textoCelula(v, c, idioma)
                         );
@@ -759,7 +787,9 @@ function FiltroCategoria({
             {opcoes.map((o) => (
               <label key={o.valor} className="flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
                 <input type="checkbox" className="h-4 w-4 shrink-0 accent-energia" checked={marcadosSet.has(o.valor)} onChange={() => alternar(o.valor)} />
-                <span className={`min-w-0 flex-1 ${o.valor === CHAVE_SEM_DADO ? "italic text-carvao-muted" : ""}`}>{o.rotulo}</span>
+                <span className={`min-w-0 flex-1 ${o.valor === CHAVE_SEM_DADO ? "italic text-carvao-muted" : ""}`}>
+                  {o.valor === CHAVE_SEM_DADO ? o.rotulo : <TextoDaColuna coluna={coluna}>{o.rotulo}</TextoDaColuna>}
+                </span>
                 <span className="text-xs tabular-nums text-mineral">
                   {num(o.n, 0)}
                   <span className="sr-only"> {tx(o.n === 1 ? "linha" : "linhas", o.n === 1 ? "row" : "rows")}</span>

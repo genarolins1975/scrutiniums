@@ -1,4 +1,5 @@
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { TextoDaColuna } from "@/components/energia/TabelaInterativa";
 
 /**
  * Tabela equivalente de um gráfico (acessibilidade e auditoria): recolhida por
@@ -18,6 +19,7 @@ export function TabelaDados({
   csv,
   limite = 30,
   casas,
+  idiomaTexto,
 }: {
   titulo: string;
   colunas: string[];
@@ -26,6 +28,11 @@ export function TabelaDados({
   limite?: number;
   /** Casas decimais fixas por coluna numérica (null = até 2 casas); padroniza com o texto da página. */
   casas?: (number | null)[];
+  /**
+   * Por coluna (mesma posição de `colunas`): texto que vem dos dados em português. "nome" sai em <Nome> e "portugues" em
+   * <TrechoPortugues> na página inglesa; null ou ausente, como está. Em português nada muda.
+   */
+  idiomaTexto?: ("nome" | "portugues" | null)[];
 }) {
   const ult = linhas.slice(-limite);
   const en = idiomaEnergia() === "en";
@@ -55,7 +62,7 @@ export function TabelaDados({
               <tr key={i} className="odd:bg-papel">
                 {l.map((v, j) => (
                   <td key={j} className="px-2 py-1 text-carvao">
-                    {v === null || v === undefined ? <span className="text-mineral">{tx("sem dado", "no data")}</span> : typeof v === "number" ? formata(v, casas?.[j]) : v}
+                    {v === null || v === undefined ? <span className="text-mineral">{tx("sem dado", "no data")}</span> : typeof v === "number" ? formata(v, casas?.[j]) : idiomaTexto?.[j] ? <TextoDaColuna coluna={{ id: `dados-${j}`, idiomaTexto: idiomaTexto[j] ?? undefined }}>{v}</TextoDaColuna> : v}
                   </td>
                 ))}
               </tr>
