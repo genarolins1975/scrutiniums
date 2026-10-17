@@ -178,6 +178,7 @@ const PROSA_CONTA: Record<string, string> = {
   "total = Σ faixas (kWh da faixa × (TE + TUSD) da faixa ÷ 1000) − descontos + kWh sujeitos à bandeira × adicional ÷ 1000":
     "total = Σ bands (band kWh × band (TE + TUSD) ÷ 1000) − discounts + kWh subject to the tariff flag × surcharge ÷ 1000",
   "distribuidora com tarifa B1 mais próxima da mediana": "distribution utility with the B1 tariff closest to the median",
+  "distribuidora com tarifa B1 mais próxima da mediana nacional": "distribution utility with the B1 tariff closest to the national median",
   "Variação da tarifa B1 residencial de aplicação entre vigências; não é o efeito médio do processo tarifário.":
     "Change in the applied residential B1 tariff between validity periods; it is not the average effect of the tariff process.",
   "Desconto tarifário da classe rural.": "Tariff discount for the rural class.",
@@ -232,6 +233,54 @@ const PROSA_CONTA: Record<string, string> = {
     "Taxes (state ICMS, federal PIS/Pasep and Cofins) and the municipal Public Lighting Contribution are part of the bill but not of the ratified tariff. There is no structured official database by distribution utility and month with these effective rates; they are left out of all numbers in this module.",
   "Não incluídos. O resultado é uma estimativa sem tributos e sem iluminação pública.": "Not included. The result is an estimate without taxes and without public lighting.",
   "Tributos e iluminação pública compõem a fatura, não a tarifa homologada": "Taxes and public lighting are part of the bill, not of the ratified tariff",
+  // auditoria da página de tarifas: regras de leitura, critérios, licenças e arquivos
+  "Contribuição para Iluminação Pública": "Public Lighting Contribution",
+  "observatório, pelo código da componente (PRORET 7.1 não lido: acesso bloqueado); valor negativo em componente de custo listada em creditos.codigos vai para o grupo créditos":
+    "observatory, by component code (PRORET 7.1 not read: access blocked); a negative value in a cost component listed in creditos.codigos goes to the credits group",
+  "componente com sinal contrário à natureza do grupo de custo ou com módulo mais de 10 vezes a mediana da mesma componente entre as distribuidoras, com pelo menos 5% da tarifa":
+    "component with a sign contrary to the nature of the cost group or with an absolute value more than 10 times the median of the same component across distribution utilities, with at least 5% of the tariff",
+  "valor negativo na componente CFURH lido como crédito tarifário, provavelmente o repasse da repactuação da UBP (Lei nº 15.235/2025) às distribuidoras das áreas da Sudam e da Sudene; a regra de lançamento (PRORET) não pôde ser lida":
+    "negative value in the CFURH component read as a tariff credit, probably the transfer from the UBP renegotiation (Law 15,235/2025) to the distribution utilities in the Sudam and Sudene areas; the booking rule (PRORET) could not be read",
+  "valor igual repetido é ignorado; valor diferente para a mesma componente, vigência e ato: vale a última linha do arquivo, e o caso fica contado":
+    "a repeated equal value is ignored; a different value for the same component, validity period and act: the last row of the file prevails, and the case is counted",
+  "sinal contrário à natureza do grupo": "sign contrary to the nature of the group",
+  "módulo mais de 10 vezes a mediana da componente entre as distribuidoras que a publicam":
+    "absolute value more than 10 times the component's median across the distribution utilities that publish it",
+  "mês com valor acima de 5 vezes a mediana dos outros meses do ano na mesma distribuidora e linha":
+    "month with a value above 5 times the median of the other months of the year for the same distribution utility and row",
+  "Não há base oficial estruturada com receita de fornecimento, energia e tributos que passe na conferência de atípicos: o SAMP, avaliado para isso, traz meses isolados com valores declarados com erro de ordem de grandeza, e o dicionário não define as linhas de DscDetalheMercado. Sem regra de tratamento validada contra fonte independente, a tarifa média e a carga tributária observada não são publicadas.":
+    "There is no structured official database with supply revenue, energy and taxes that passes the outlier check: SAMP, assessed for this, has isolated months with values declared with an order-of-magnitude error, and the dictionary does not define the DscDetalheMercado rows. Without a treatment rule validated against an independent source, the average tariff and the observed tax burden are not published.",
+  "Creative Commons Atribuição-SemDerivações 3.0 (CC BY-ND 3.0), conforme o rodapé do portal gov.br": "Creative Commons Attribution-NoDerivs 3.0 (CC BY-ND 3.0), per the gov.br portal footer",
+  "Texto de lei, não protegido por direito autoral (Lei nº 9.610/1998, art. 8º, IV); reproduzido do portal da Câmara dos Deputados":
+    "Text of law, not protected by copyright (Law 9,610/1998, art. 8, IV); reproduced from the Chamber of Deputies portal",
+  "Subsídios Tarifários (ANEEL), mesmo CNPJ": "Tariff Subsidies (ANEEL), same CNPJ",
+  "Tarifas B1 vigentes e custo por perfil (CSV)": "B1 tariffs in force and cost by profile (CSV)",
+  "Histórico de tarifas de baixa tensão convencional (CSV)": "Conventional low-voltage tariff history (CSV)",
+  "Histórico e mudanças da tarifa B1 por distribuidora (JSON)": "B1 tariff history and changes by distribution utility (JSON)",
+  "Componentes da tarifa B1 (CSV)": "B1 tariff components (CSV)",
+  "Mudanças da tarifa B1 e IPCA (CSV)": "B1 tariff changes and IPCA (CSV)",
+  "Variação em 12, 60 e 120 meses e IPCA (CSV)": "Change over 12, 60 and 120 months and IPCA (CSV)",
+  "Bandeiras por mês (CSV)": "Tariff flags by month (CSV)",
+  "Subsídios tarifários por ano (CSV)": "Tariff subsidies by year (CSV)",
+  "Custeio da CDE por rubrica (CSV)": "CDE funding by budget line (CSV)",
+  "IPCA usado (CSV)": "IPCA used (CSV)",
+  "Vigências sobrepostas na fonte e escolha feita (CSV)": "Overlapping validity periods in the source and the choice made (CSV)",
+  "CNPJ único no ranking (crítica)": "Unique CNPJ in the ranking (critical)",
+  "TE + TUSD positiva no ranking (crítica)": "Positive TE + TUSD in the ranking (critical)",
+  "TE e TUSD não negativas (ressalva)": "Non-negative TE and TUSD (caveat)",
+  "tarifa fora de 200 a 3000 R$/MWh (ressalva, conferir no arquivo)": "tariff outside 200 to 3000 R$/MWh (caveat, check in the file)",
+  "data de referência não posterior à geração (crítica)": "reference date not later than generation (critical)",
+  "adicional de bandeira não negativo (crítica)": "non-negative tariff flag surcharge (critical)",
+  "número-índice do IPCA positivo (crítica)": "positive IPCA index number (critical)",
+  "participações da composição entre -100% e 200% (ressalva)": "composition shares between -100% and 200% (caveat)",
+  "grupo de custo da composição (energia, transmissão, distribuição, perdas, encargos) com soma negativa (ressalva)":
+    "composition cost group (energy, transmission, distribution, losses, charges) with a negative sum (caveat)",
+  "parcela CDE maior que o grupo de encargos que a contém (ressalva)": "CDE portion larger than the charges group that contains it (caveat)",
+  "componente com sinal contrário à natureza do grupo de custo ou com módulo mais de 10 vezes a mediana da mesma componente, com pelo menos 5% da tarifa (ressalva, conferida no arquivo original)":
+    "component with a sign contrary to the nature of the cost group or with an absolute value more than 10 times the median of the same component, with at least 5% of the tariff (caveat, checked in the original file)",
+  "valor negativo de componente de custo reclassificado como crédito (ressalva, com a lista)": "negative value of a cost component reclassified as credit (caveat, with the list)",
+  "incorporação registrada que não se confirma nos dados de tarifa (ressalva)": "recorded merger not confirmed in the tariff data (caveat)",
+  "custeio da CDE com despesa igual à receita no ano (ressalva)": "CDE funding with expense equal to revenue in the year (caveat)",
 };
 
 /* ---------- Inclusão energética ---------- */
@@ -286,4 +335,27 @@ export function dadoNo(texto: string | null | undefined, regiao: string, idioma:
 /** Bandeira no idioma (string). */
 export function bandeiraNoIdioma(b: string, idioma: Idioma): string {
   return idioma === "en" ? (BANDEIRAS[b] ?? b) : b;
+}
+
+/** dd/mm/aaaa → data inglesa ("Sep 30, 2026"), para as datas escritas dentro de um texto da gold. */
+function dataTextoEn(d: string): string {
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(d);
+  if (!m) return d;
+  const meses = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${meses[Number(m[2]) - 1]} ${Number(m[1])}, ${m[3]}`;
+}
+
+/**
+ * Motivo de uma distribuidora sem tarifa vigente, como a gold o escreve (três formas fixas, com CNPJ, sigla, ato e datas), em inglês.
+ * Forma que não casa com nenhuma das três volta como veio (null): quem chama a marca como trecho só em português.
+ */
+export function motivoSemVigenteEn(m: string): string | null {
+  const DATA = "(\\d{2}/\\d{2}/\\d{4})";
+  let r = new RegExp(`^incorporada pela distribuidora de CNPJ (\\d{14}) \\(sigla atual ([^)]+)\\), (REA nº [\\d.]+/\\d{4})( \\(provável\\))?; a tarifa unificada começa em ${DATA}$`).exec(m);
+  if (r) return `merged into the distribution utility with CNPJ ${r[1]} (current acronym ${r[2]}), ${r[3].replace("nº ", "")}${r[4] ? " (probable)" : ""}; the unified tariff starts on ${dataTextoEn(r[5])}`;
+  r = new RegExp(`^sem tarifa publicada desde ${DATA}; o conjunto não informa o motivo \\(incorporação, extinção ou troca de CNPJ\\)$`).exec(m);
+  if (r) return `no tariff published since ${dataTextoEn(r[1])}; the dataset does not give the reason (merger, extinction or change of CNPJ)`;
+  r = new RegExp(`^vigência encerrada em ${DATA}; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em ${DATA}$`).exec(m);
+  if (r) return `validity ended on ${dataTextoEn(r[1])}; the next tariff is not yet in the file generated by ANEEL on ${dataTextoEn(r[2])}`;
+  return null;
 }

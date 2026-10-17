@@ -53,7 +53,7 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { ContaGold } from "@/lib/energia/tipos-conta";
 import { infoDasDistribuidoras, lerIpca } from "../dados";
-import { Auditoria, Datas, FONTE_TARIFAS, Navegacao, ROTA_CONTA, ROTA_REAJUSTES, Recorte, Seguir, downloadsDoPainel } from "../partes";
+import { Auditoria, Datas, fonteTarifas, Navegacao, ROTA_CONTA, ROTA_REAJUSTES, Recorte, Seguir, downloadsDoPainel } from "../partes";
 
 /**
  * P050 do módulo Conta de luz em página própria: "O que mudou e quem financia os
@@ -339,7 +339,7 @@ export default function ContaReajustesPage() {
                   janelas={reaj.comparacao_inflacao?.janelas ?? []}
                   ultimos={reaj.ultimos}
                   dataReferencia={ref}
-                  fonte={FONTE_TARIFAS}
+                  fonte={fonteTarifas()}
                   info={info}
                   evidencia={comProcedimentoExterno(reaj.evidencia)}
                   endereco={`${ROTA_REAJUSTES}#reajustes`}
