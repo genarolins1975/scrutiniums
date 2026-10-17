@@ -142,6 +142,18 @@ export function traducaoDoDado(tabela: Record<string, string>, valor: string, id
   return Object.prototype.hasOwnProperty.call(tabela, valor) ? tabela[valor] : null;
 }
 
+/** Nome da projeção das malhas territoriais (geo/*.json, campo projecao.nome). */
+export const PROJECAO_EN: Record<string, string> = {
+  "Albers cônica equivalente": "Albers equal-area conic",
+};
+
+/** Qualidade declarada da malha do IBGE (campo malha.qualidade). */
+export const QUALIDADE_MALHA: Record<string, { pt: string; en: string }> = {
+  intermediaria: { pt: "intermediária", en: "intermediate" }, // i18n: dado (escolhido por idioma)
+  minima: { pt: "mínima", en: "minimum" }, // i18n: dado (escolhido por idioma)
+  maxima: { pt: "máxima", en: "maximum" }, // i18n: dado (escolhido por idioma)
+};
+
 /** Sinal de palavra portuguesa numa unidade: acento ou palavra comum das unidades da gold. */
 const PALAVRA_PT =
   /[ãõçáéíóúâêô]|(?:^|[^a-z])(?:de|da|do|das|dos|e|por|mil|dias?|horas?|meses|semanas?|anos?|usinas?|unidades?|consumidoras?|nominais|correntes|pessoas|localidades|empreendimentos|agentes|perfis|parcelas|carga|evento|consulta|atividade|indice)(?=$|[^a-z])/i;
