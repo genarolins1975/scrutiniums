@@ -45,6 +45,23 @@ describe('Judiciário: universos e definições',()=>{
   expect(indicadoresJudiciario.find(i=>i.id==='atendimentoAproximado')?.estado).toBe('APROXIMADO');
   expect(data.unidades.tempoBaixados).toBe('meses');
  });
+ it('reproduz custo por habitante e acervo parado como publicados, sem atribuir valor regional à UF',()=>{
+  expect(data.porHabitante).toMatchObject({valor:771.48,semInativos:653.38,pib:1.3,pagina:64});
+  const tjs=data.tribunais.filter(t=>t.ramo==='estadual');
+  expect(tjs.every(t=>typeof t.despesaPorHabitante==='number'&&t.despesaPorHabitanteSemInativos!<=t.despesaPorHabitante!)).toBe(true);
+  expect(data.tribunais.filter(t=>t.ramo!=='estadual').every(t=>t.despesaPorHabitante===null)).toBe(true);
+  expect(data.acervo.suspensos).toMatchObject({processosMilhoes:16.4,percentualPendentes:21.7});
+  expect(data.acervo.execucaoFiscal).toMatchObject({percentualPendentes:22,congestionamento:72.4});
+ });
+ it('entrada responde por perguntas, com as duas medidas de tempo juntas e sem ilustração decorativa',()=>{
+  const entrada=readFileSync('src/app'+BASE_JUDICIARIO+'/page.tsx','utf8');
+  expect(entrada).not.toContain('judiciario-por-dentro.webp');
+  expect(entrada).toContain('HalteresTribunais');
+  expect(entrada).toContain('PerguntasJudiciario');
+  const comparador=readFileSync('src/components/eficiencia/judiciario/Exploradores.tsx','utf8');
+  expect(comparador).toContain('HalteresTribunais');
+  expect(readFileSync('src/components/eficiencia/judiciario/EntradaInternacional.tsx','utf8')).not.toContain("'PRT'");
+ });
  it('confere os checksums dos downloads publicados',()=>{
   for(const [file,hash] of Object.entries(manifest.arquivos)){
    const bytes=readFileSync(join(process.cwd(),'public/eficiencia/judiciario',file));

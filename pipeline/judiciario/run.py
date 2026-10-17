@@ -23,7 +23,7 @@ OUT = ROOT / 'public/eficiencia/judiciario'
 HASHES = {
     'texto': 'd60a87ae35dea2511f714798eaf2234696642eb7b6821b6061e6e29fa4b3bedb',
     'recorte': 'fe0164e193c577560f697012cdad38113d175ab1c6d3f9c8cddfee7a4fca58ef',
-    'ampliado': '1f2c005be421e07e9eae010141ccee5ba10dcad8ba9ca96733f368fe5f58a946',
+    'ampliado': '1a07e1696473b187234809b3887172a387fd72b056a6f7196f49208efc149ec6',
 }
 BRANCHES = [('estadual', 'Justiça Estadual'), ('federal', 'Justiça Federal'),
             ('trabalho', 'Justiça do Trabalho')]
@@ -197,7 +197,49 @@ def expand(data):
         if abs(match.start(1)-column)>6:
             raise ValueError('Alinhamento da composição de pessoal mudou')
         components.append(dict(nome=name,valor=int(match[1].replace('.','')),pagina=71))
-    data.update(versao=2,calculo='judiciario-2',capturadoEm=seed['capturadoEm'],tribunais=tribunals,
+    def number(value):
+        return float(value.replace('.','').replace(',','.'))
+    def flat(page_number):
+        # Quebras de linha e hifenização do PDF não podem separar o padrão buscado.
+        return re.sub(r'-\n','',pages[str(page_number)]).replace('\n',' ')
+    def found(pattern,page_number):
+        match = re.search(pattern,flat(page_number))
+        if not match:
+            raise ValueError(f'Trecho ausente na p. {page_number}: {pattern}')
+        return match
+    cost = found(r'correspondem a ([\d,]+)% do PIB nacional ou a\s+([\d,]+)% dos gastos totais.*?R\$ ([\d.,]+) por habitante.*?'
+                 r'([\d,]+)% das despesas são referentes a gastos com inativos.*?a despesa por habitante\s+é de R\$ ([\d.,]+) e representa ([\d,]+)% do PIB',64)
+    per_capita = dict(valor=number(cost[3]),pib=number(cost[1]),gastosPublicos=number(cost[2]),
+                      inativosPercentual=number(cost[4]),semInativos=number(cost[5]),pibSemInativos=number(cost[6]),
+                      unidade='R$ por habitante, nominais de 2025',pagina=64,
+                      nota='Valores publicados pelo CNJ com a população adotada pela fonte; a Scrutiniums não recalcula denominadores.')
+    capita_rows = re.findall(r'^\s*([\d.]+,\d)\s+(TJ[A-Z]+)\s+([\d.]+,\d)\s*$',pages['113'],re.M)
+    if len(capita_rows) != 27 or {s for _,s,_ in capita_rows} != {t['sigla'] for t in tribunals if t['ramo']=='estadual'}:
+        raise ValueError('Despesa por habitante por TJ incompleta')
+    for without,sigla,total in capita_rows:
+        if number(without) > number(total):
+            raise ValueError('Despesa sem inativos maior que a total: '+sigla)
+        by_sigla[sigla].update(despesaPorHabitante=number(total),despesaPorHabitanteSemInativos=number(without),porHabitantePagina=113)
+    for t in tribunals:
+        t.setdefault('despesaPorHabitante',None)
+        t.setdefault('despesaPorHabitanteSemInativos',None)
+        t.setdefault('porHabitantePagina',None)
+    branch_capita = re.search(r'^\s*([\d.]+,\d)\s+TJ\s+([\d.]+,\d)\s*$',pages['113'],re.M)
+    if not branch_capita:
+        raise ValueError('Despesa por habitante da Justiça Estadual ausente')
+    data['ramos'][0].update(despesaPorHabitante=number(branch_capita[2]),despesaPorHabitanteSemInativos=number(branch_capita[1]))
+    stopped = found(r'com ([\d,]+) milhões de processos pen-?\s*dentes.*?Destes, ([\d,]+) milhões, ou seja, ([\d,]+)%,\s+estavam suspensos, sobrestados ou em arquivo provisório',214)
+    if number(stopped[1]) != data['nacional']['pendentesMilhoes']:
+        raise ValueError('Acervo da p. 214 diverge do sumário')
+    fiscal = found(r'execução fiscal representam aproximadamente ([\d,]+)% do total de\s+casos pendentes e ([\d,]+)% das execuções pendentes do Poder Judiciário, com taxa de congestionamento de ([\d,]+)%',229)
+    fiscal_stock = found(r'Do total de ([\d,]+) milhões execuções fiscais pendentes: ([\d,]+) milhões \(([\d,]+)%\) estão\s+na Justiça Estadual e ([\d,]+) milhões \(([\d,]+)%\) estão na Justiça Federal',229)
+    acervo = dict(suspensos=dict(processosMilhoes=number(stopped[2]),percentualPendentes=number(stopped[3]),pagina=214,
+                                 definicao='Suspensos, sobrestados ou em arquivo provisório, aguardando situação jurídica futura: repercussão geral, recurso repetitivo, IRDR, IAC, precatório, captura de réu ou outra causa.'),
+                  execucaoFiscal=dict(processosMilhoes=number(fiscal_stock[1]),percentualPendentes=number(fiscal[1]),
+                                      percentualExecucoes=number(fiscal[2]),congestionamento=number(fiscal[3]),
+                                      estadualPercentual=number(fiscal_stock[3]),federalPercentual=number(fiscal_stock[5]),pagina=229),
+                  nota='Os dois recortes são publicados separadamente sobre o acervo pendente; a fonte não informa a sobreposição, por isso não se somam.')
+    data.update(versao=2,calculo='judiciario-3',capturadoEm=seed['capturadoEm'],tribunais=tribunals,porHabitante=per_capita,acervo=acervo,
                 financeiro=dict(ramos=all_branches,total=sum(r['valor'] for r in all_branches),
                                 pessoal=components,pessoalTotal=sum(r['valor'] for r in components),
                                 series=seed['seriesDespesas'],convencao=seed['convencao'],
@@ -208,9 +250,9 @@ def expand(data):
                                limite='Satisfação do direito, histórico individual de tribunais, despesa por TRF e nominal histórico não disponíveis.'),
                 revisao=dict(portalRevalidado=False,originalBaixadoConferido=True,
                              nota='PDF integral da Biblioteca Digital baixado em 17/10/2026; checksum idêntico ao original identificado. Portal principal retorna 403; edição mais recente não confirmada. Variações e pessoal do sumário p. 22 não utilizados por inconsistência de ano.'))
-    data['fonte']['localizadores']='Páginas 22–24; tabelas 1/2 p. 40–41; finanças p. 62–71, 110–118, 132–139 e 157–165; conciliação p. 232–234; desempenho e tempos p. 310–313, 333, 351–353, 383–384, 397, 407, 438–440, 459 e 473.'
+    data['fonte']['localizadores']='Páginas 22–24; tabelas 1/2 p. 40–41; finanças e despesa por habitante p. 62–71, 110–118, 132–139 e 157–165; acervo suspenso p. 214; execução fiscal p. 229; conciliação p. 232–234; desempenho e tempos p. 310–313, 333, 351–353, 383–384, 397, 407, 438–440, 459 e 473.'
     data['unidades'].update(despesaTotal='R$ nominais de 2025',despesaPorBaixaAproximada='R$/baixa (aproximação)',
-                            ipcJus='%',congestionamento='%',iadOficial='%',congestionamentoBruto='%',
+                            ipcJus='%',congestionamento='%',iadOficial='%',despesaPorHabitante='R$ por habitante, nominais de 2025',despesaPorHabitanteSemInativos='R$ por habitante, nominais de 2025',congestionamentoBruto='%',
                             congestionamentoLiquido='%',magistrados='pessoas',servidores='pessoas')
     return data
 
@@ -264,6 +306,18 @@ def validate(data):
             actual=sum(t['despesaTotal'] for t in rows if t['ramo']==r['id'])
             if actual!=c['somaTribunais'] or r['despesaTotal']-actual!=c['residuo'] or abs(c['residuo'])>c['tolerancia']:
                 raise ValueError('Reconciliação financeira inválida')
+    capita=data['porHabitante']
+    if not (0<capita['semInativos']<capita['valor'] and 0<capita['pibSemInativos']<=capita['pib']<100 and 0<capita['inativosPercentual']<100):
+        raise ValueError('Despesa por habitante nacional incoerente')
+    for r in rows:
+        if r['ramo']=='estadual' and not (isinstance(r['despesaPorHabitante'],float) and 0<r['despesaPorHabitanteSemInativos']<=r['despesaPorHabitante']):
+            raise ValueError('Despesa por habitante ausente: '+r['sigla'])
+        if r['ramo']!='estadual' and r['despesaPorHabitante'] is not None:
+            raise ValueError('Despesa por habitante regional atribuída sem fonte: '+r['sigla'])
+    for key in ['suspensos','execucaoFiscal']:
+        part=data['acervo'][key]
+        if not (0<part['processosMilhoes']<data['nacional']['pendentesMilhoes'] and 0<part['percentualPendentes']<100):
+            raise ValueError('Recorte do acervo incoerente: '+key)
     # Reconciliação admite exclusivamente arredondamento declarado, não corrige os valores.
     for key, national_key in [('novos', 'novosMilhoes'), ('baixados', 'baixadosMilhoes'), ('pendentes', 'pendentesMilhoes')]:
         if sum(r[key] for r in data['ramos']) > data['nacional'][national_key] * 1_000_000 + 200_000:
@@ -275,7 +329,7 @@ def artifacts(data):
         return json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + '\n'
     files = {'snapshot.json': encoded(data)}
     for name, fields in [('ramos', ['id','nome','ano','novos','baixados','pendentes','idadePendente','conhecimento','execucao','cejuscs','atendimentoAproximado','resolucaoVolumes','nota','despesaTotal','despesaPorBaixaAproximada','iadOficial','congestionamentoBruto','congestionamentoLiquido','desempenhoPagina']),
-                         ('tribunais', ['id','sigla','uf','ramo','ano','tempoBaixados','idadePendentes','pagina','porte','despesaTotal','novos','pendentes','magistrados','servidores','ipcJus','ipcPagina','congestionamento','congestionamentoPagina','estruturaPagina'])]:
+                         ('tribunais', ['id','sigla','uf','ramo','ano','tempoBaixados','idadePendentes','pagina','porte','despesaTotal','novos','pendentes','magistrados','servidores','ipcJus','ipcPagina','congestionamento','congestionamentoPagina','estruturaPagina','despesaPorHabitante','despesaPorHabitanteSemInativos','porHabitantePagina'])]:
         stream = io.StringIO(newline='')
         writer = csv.DictWriter(stream, fields + ['unidades','fonte','url','captura'], delimiter=';')
         writer.writeheader()
