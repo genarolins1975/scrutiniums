@@ -42,6 +42,7 @@ LISTA = ("https://www.consumidor.gov.br/pages/publicacao/externo/"
          "publicacoes.json?indicadorTipoPublicacao=2")
 DOWNLOAD = "https://www.consumidor.gov.br/pages/publicacao/externo/{cod}/download"
 MESES = 12  # janela coletada; a base tem 58 arquivos desde agosto de 2021
+MIN_MUNICIPIOS = 5500  # mesmo piso do estban._carrega_municipios; o Brasil tem 5.570
 
 MES_NUM = {"janeiro": 1, "fevereiro": 2, "março": 3, "marco": 3, "abril": 4, "maio": 5,
            "junho": 6, "julho": 7, "agosto": 8, "setembro": 9, "outubro": 10,
@@ -137,15 +138,28 @@ def _linhas_do_zip(body):
 
 def collect(con, cfg=None):
     _ensure(con)
+    # O índice vem do coletor estban. Sem ele nenhuma linha casa com município e a
+    # competência ficaria gravada como absorvida com zero municípios, para sempre: foi o
+    # que aconteceu em 15/10/2026 (silver semeado de novo e IBGE fora do ar no estban).
+    try:
+        idx = _municipios(con)
+    except Exception:
+        idx = {}
+    if len(idx) < MIN_MUNICIPIOS:
+        return [{"key": "reclamacoes_consig", "ok": False,
+                 "error": f"índice do IBGE com {len(idx)} municípios (estban não o carregou); "
+                          "coleta adiada para não gravar competência sem município"}]
     try:
         pubs, _meta = _publicacoes()
     except Exception as e:
         return [{"key": "reclamacoes_consig", "ok": False, "error": str(e)[:200]}]
 
-    idx = _municipios(con)
     results = []
     for comp, cod in pubs[:MESES]:
-        if con.execute("SELECT 1 FROM reclam_consig_coleta WHERE competencia=?", (comp,)).fetchone():
+        # Competência com reclamação da categoria e nenhum município casado não está
+        # absorvida: é o estado que a rodada de 15/10/2026 deixou no silver, e é recoletada.
+        if con.execute("SELECT 1 FROM reclam_consig_coleta WHERE competencia=? "
+                       "AND NOT (consignado_inss > 0 AND municipios = 0)", (comp,)).fetchone():
             continue
         try:
             body, meta = common.http_get(DOWNLOAD.format(cod=cod), timeout=900, accept="*/*")
@@ -195,6 +209,9 @@ def collect(con, cfg=None):
                     except ValueError:
                         pass
 
+            if alvo and not por_mun:
+                raise RuntimeError(f"{alvo} reclamações da categoria e nenhuma casou com "
+                                   f"município do IBGE ({len(sem_casar)} cidades sem casar)")
             for ci, a in por_mun.items():
                 con.execute("INSERT OR REPLACE INTO reclam_consig_mun VALUES(?,?,?,?,?,?,?)",
                             (comp, ci, a["uf"], a["t"], a["i"], a["r"], a["s"]))
