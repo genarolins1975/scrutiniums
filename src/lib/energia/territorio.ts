@@ -1148,9 +1148,9 @@ export function valoresMedida(linhas: readonly LinhaMunicipio[], med: MedidaMuni
   return out;
 }
 
-export function classificacaoMedida(med: MedidaMunicipio, valores: readonly ValorClassificavel[]): Classificacao {
+export function classificacaoMedida(med: MedidaMunicipio, valores: readonly ValorClassificavel[], idioma: Idioma = idiomaEnergia()): Classificacao {
   const d = MEDIDA[med];
-  return d.cortes ? quebrasFixas(d.cortes, valores, { casas: d.casas }) : quebrasQuantis(valores, CORES_SEQUENCIAIS.length, { casas: d.casas });
+  return d.cortes ? quebrasFixas(d.cortes, valores, { casas: d.casas, idioma }) : quebrasQuantis(valores, CORES_SEQUENCIAIS.length, { casas: d.casas, idioma });
 }
 
 /* ================================================================ compatibilidade entre camadas */

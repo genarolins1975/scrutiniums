@@ -4,6 +4,8 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { TerritorioLinkPainel } from "@/components/energia/TerritorioLinkPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { TextoEnergia } from "@/components/energia/TextoEnergia";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Peças de servidor da página Minha região (/setor-eletrico/territorio, P002): estado de
@@ -20,10 +22,13 @@ export function TerritorioIndisponivel({ motivo }: { motivo?: string | null }) {
       <CabecalhoEnergia atual="territorio" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
-          titulo="Minha região indisponível nesta publicação"
+          titulo={tx("Minha região indisponível nesta publicação", "My region unavailable in this release")}
           motivo={
             motivo ??
-            "A gold do módulo Território (public/energia/gold/territorio.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."
+            tx(
+              "A gold do módulo Território (public/energia/gold/territorio.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe.",
+              "The gold file of the Territory module (public/energia/gold/territorio.json) was not generated or did not pass validation; the last valid release is kept when there is one.",
+            )
           }
         />
       </main>
@@ -35,15 +40,15 @@ export function TerritorioRecorte({ periodo, universo, unidade }: { periodo: Rea
   return (
     <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
         <dd className="mt-0.5">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5">{unidade}</dd>
       </div>
     </dl>
@@ -85,7 +90,7 @@ export function TerritorioAuditoria({ titulo, children, id }: { titulo: string; 
  */
 export function TerritorioTabela({ titulo, colunas, linhas, numericas = [] }: { titulo: string; colunas: string[]; linhas: ReactNode[][]; numericas?: number[] }) {
   return (
-    <div className="tabela-scroll" tabIndex={0} role="region" aria-label={`${titulo} (tabela rolável)`}>
+    <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx(`${titulo} (tabela rolável)`, `${titulo} (scrollable table)`)}>
       <table className="w-full min-w-[28rem] border-collapse text-xs tabular-nums [&_td]:px-2 [&_td]:py-1.5 [&_td]:text-carvao">
         <caption className="pb-2 text-left text-sm font-medium text-carvao">{titulo}</caption>
         <thead>
@@ -125,12 +130,12 @@ export function TerritorioSeguir({ ancora, href, pergunta, downloads }: { ancora
     <div className="space-y-3 border-t border-linha pt-3">
       {downloads.length > 0 && (
         <div>
-          <p className="rotulo text-mineral">Baixar os dados deste painel</p>
+          <p className="rotulo text-mineral">{tx("Baixar os dados deste painel", "Download this panel's data")}</p>
           <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
             {downloads.map((d) => (
               <li key={d.url}>
                 <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                  {d.rotulo}
+                  {tx<ReactNode>(d.rotulo, <TrechoPortugues regiao="territorio-download">{d.rotulo}</TrechoPortugues>)}
                 </a>
               </li>
             ))}
@@ -140,7 +145,7 @@ export function TerritorioSeguir({ ancora, href, pergunta, downloads }: { ancora
       <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
         <TerritorioLinkPainel ancora={ancora} />
         <p className="text-sm">
-          <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
+          <span className="rotulo mr-2 text-mineral">{tx("Próxima pergunta", "Next question")}</span>
           <Link href={href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
             {pergunta}
           </Link>

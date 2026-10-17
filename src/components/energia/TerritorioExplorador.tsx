@@ -13,26 +13,26 @@ import { coresParaClasses, descreveRegiao, moverNaLista, preenchimento } from "@
 import { LIMITE_COMPARACAO, alternarSelecao, buscarEntidades } from "@/lib/energia/tabela";
 import {
   CAMADAS,
-  COLUNAS_DISTRIBUIDORAS,
-  COLUNAS_ISOLADOS,
+  colunasDistribuidoras,
+  colunasIsolados,
   colunasSubmercados,
-  COLUNAS_UFS_INDICADORES,
-  COLUNAS_UFS_SUBMERCADO,
-  COLUNAS_USINAS,
-  COLUNAS_VINCULO,
+  colunasUfsIndicadores,
+  colunasUfsSubmercado,
+  colunasUsinas,
+  colunasVinculo,
   CORES_SEQUENCIAIS,
   COR_FONTE,
   ESQUEMA_TERRITORIO,
   ESTAGIOS_USINA,
   FONTES_USINA,
-  MEDIDA,
+  medidas,
   MEDIDAS_MUNICIPIO,
-  NOME_SUBMERCADO,
-  ROTULO_CAMADA,
-  ROTULO_ESTADO_SM,
-  ROTULO_ESTAGIO,
-  ROTULO_FONTE,
-  ROTULO_SITUACAO,
+  nomeSm,
+  rotulosCamada,
+  rotulosEstadoSm,
+  rotulosEstagio,
+  rotulosFonte,
+  rotulosSituacao,
   SUBMERCADOS,
   classificacaoMedida,
   colunasMunicipios,
@@ -75,6 +75,10 @@ import {
 } from "@/lib/energia/territorio";
 import type { MunicipiosTerritorio, UsinasTerritorio } from "@/lib/energia/tipos-territorio";
 import type { Submercado } from "@/lib/energia/tipos";
+import type { Idioma } from "@/lib/idioma";
+import { tx } from "@/lib/energia/idioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 
 /**
  * Explorador da página Minha região (P002): busca, quatro camadas no mesmo mapa
@@ -145,15 +149,19 @@ const CORES_SITUACAO: Record<SituacaoVinculo, string> = {
   so_sem_confirmacao: "var(--escala-div-neg-1)",
   sem_vinculo: "sem-dado",
 };
-const COR_VINCULO = { 1: "var(--cor-energia)", 2: "var(--escala-seq-3)", 0: "var(--escala-seq-2)" } as const;
+const COR_VINCULO = { 1: "var(--cor-energia)", 2: "var(--escala-seq-3)", 0: "var(--escala-seq-2)" } as const; // i18n: dado
 const COR_FORA_DA_AREA = "var(--escala-div-centro)";
 const COR_NAO_SE_APLICA = "var(--mapa-nao-se-aplica)";
 const CORES_COMP = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)"];
 const CLASSES_POTENCIA = [
-  { ate: 1, espessura: 4, rotulo: "menos de 1 MW" },
-  { ate: 100, espessura: 6, rotulo: "1 a menos de 100 MW" },
-  { ate: Infinity, espessura: 9, rotulo: "100 MW ou mais" },
+  { ate: 1, espessura: 4 },
+  { ate: 100, espessura: 6 },
+  { ate: Infinity, espessura: 9 },
 ];
+/** Rótulo de cada classe de potência das marcas, no idioma. */
+function rotulosPotencia(idioma: Idioma): string[] {
+  return [tx("menos de 1 MW", "less than 1 MW", idioma), tx("1 a menos de 100 MW", "1 to less than 100 MW", idioma), tx("100 MW ou mais", "100 MW or more", idioma)];
+}
 const classePotencia = (mw: number | null) => CLASSES_POTENCIA.findIndex((c) => (mw ?? 0) < c.ate);
 
 type ItemLegenda = { id: string; rotulo: string; cor: string; contagem?: number | null; forma?: "area" | "tracejado" | "ponto-redondo" | "ponto-quadrado" | "ponto-vazado" };
@@ -179,15 +187,17 @@ function Amostra({ item }: { item: ItemLegenda }) {
 }
 
 function Legenda({ titulo, itens, nota }: { titulo: string; itens: ItemLegenda[]; nota?: ReactNode }) {
+  const tx = useTx();
+  const idioma = useIdioma();
   return (
     <div>
       <p className="rotulo text-mineral">{titulo}</p>
-      <ul className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-carvao-muted" aria-label={`Legenda: ${titulo}`}>
+      <ul className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx(`Legenda: ${titulo}`, `Legend: ${titulo}`)}>
         {itens.map((i) => (
           <li key={i.id} className="flex items-center gap-1.5">
             <Amostra item={i} />
             {i.rotulo}
-            {i.contagem !== undefined && i.contagem !== null && <span className="tabular-nums">({num(i.contagem, 0)})</span>}
+            {i.contagem !== undefined && i.contagem !== null && <span className="tabular-nums">({num(i.contagem, 0, idioma)})</span>}
           </li>
         ))}
       </ul>
@@ -205,17 +215,26 @@ function Estado({ children, alerta = false }: { children: ReactNode; alerta?: bo
 }
 
 function Falha({ erro, arquivo, nome, repetir }: { erro: string; arquivo: string; nome: string; repetir: () => void }) {
+  const tx = useTx();
+  const link = (
+    <a href={arquivo} download className="text-energia-dark underline underline-offset-4">
+      {arquivo.split("/").at(-1)}
+    </a>
+  );
   return (
     <div role="alert" className="space-y-2 border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
       <p>
-        Não foi possível carregar {nome} ({erro}). Os mesmos dados estão em{" "}
-        <a href={arquivo} download className="text-energia-dark underline underline-offset-4">
-          {arquivo.split("/").at(-1)}
-        </a>
-        .
+        {tx(
+          <>
+            Não foi possível carregar {nome} ({erro}). Os mesmos dados estão em {link}.
+          </>,
+          <>
+            Could not load {nome} ({erro}). The same data are in {link}.
+          </>,
+        )}
       </p>
       <button type="button" onClick={repetir} className="inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-sm text-carvao hover:border-energia">
-        Tentar de novo
+        {tx("Tentar de novo", "Try again")}
       </button>
     </div>
   );
@@ -251,6 +270,8 @@ function Busca({
   /** Texto de `?busca=` (a busca da página inicial leva o que a pessoa digitou): preenche o campo e abre a lista ao chegar. */
   consultaDaUrl?: string;
 }) {
+  const tx = useTx();
+  const idioma = useIdioma();
   const uid = useId().replace(/:/g, "");
   const [consulta, setConsulta] = useState("");
   const [aberta, setAberta] = useState(false);
@@ -288,7 +309,7 @@ function Busca({
   return (
     <div className="relative min-w-0 flex-1">
       <label htmlFor={`${uid}-busca`} className="rotulo mb-1 block text-mineral">
-        Encontre a sua região
+        {tx("Encontre a sua região", "Find your region")}
       </label>
       <input
         id={`${uid}-busca`}
@@ -303,7 +324,7 @@ function Busca({
         autoComplete="off"
         spellCheck={false}
         value={consulta}
-        placeholder="Município, distribuidora, UF ou submercado"
+        placeholder={tx("Município, distribuidora, UF ou submercado", "Municipality, distribution utility, state or submarket")}
         onFocus={onFoco}
         onChange={(e) => {
           setConsulta(e.target.value);
@@ -336,11 +357,16 @@ function Busca({
         className="h-11 w-full border border-linha bg-superficie px-3 text-sm text-carvao placeholder:text-mineral focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
       />
       <p id={`${uid}-ajuda`} className="mt-1 text-xs text-carvao-muted">
-        {carregando ? "Carregando os 5.571 municípios do IBGE para a busca…" : "Digite parte do nome, a sigla da UF, o CNPJ ou o código IBGE. Setas percorrem a lista; Enter escolhe."}
+        {carregando
+          ? tx("Carregando os 5.571 municípios do IBGE para a busca…", "Loading the 5,571 IBGE municipalities for the search…")
+          : tx(
+              "Digite parte do nome, a sigla da UF, o CNPJ ou o código IBGE. Setas percorrem a lista; Enter escolhe.",
+              "Type part of the name, the state abbreviation, the CNPJ or the IBGE code. Arrow keys move through the list; Enter chooses.",
+            )}
       </p>
       <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-limite-busca="">
         <a href="#territorio-limites" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-          O que a página não permite concluir
+          {tx("O que a página não permite concluir", "What the page does not allow you to conclude")}
         </a>
       </p>
       <p className="sr-only" role="status" aria-live="polite" data-anuncio-busca="">
@@ -348,17 +374,20 @@ function Busca({
           ? ""
           : res.total === 0
             ? carregando
-              ? "Os municípios ainda estão chegando; tente de novo em instantes."
-              : "Nenhum resultado para essa busca."
+              ? tx("Os municípios ainda estão chegando; tente de novo em instantes.", "The municipalities are still arriving; try again in a moment.")
+              : tx("Nenhum resultado para essa busca.", "No results for this search.")
             : res.total > res.itens.length
-              ? `${num(res.total, 0)} resultados; mostrando ${num(res.itens.length, 0)}. Refine a busca.`
-              : `${num(res.total, 0)} ${res.total === 1 ? "resultado" : "resultados"}.`}
+              ? tx(
+                  `${num(res.total, 0)} resultados; mostrando ${num(res.itens.length, 0)}. Refine a busca.`,
+                  `${num(res.total, 0, idioma)} results; showing ${num(res.itens.length, 0, idioma)}. Refine the search.`,
+                )
+              : tx(`${num(res.total, 0)} ${res.total === 1 ? "resultado" : "resultados"}.`, `${num(res.total, 0, idioma)} ${res.total === 1 ? "result" : "results"}.`)}
       </p>
       <ul
         id={`${uid}-lista`}
         role="listbox"
         hidden={!aberta || consulta.trim() === ""}
-        aria-label="Resultados da busca"
+        aria-label={tx("Resultados da busca", "Search results")}
         onPointerDown={(e) => e.preventDefault()}
         className="absolute left-0 right-0 top-[4.25rem] z-30 max-h-72 overflow-y-auto border border-linha bg-superficie shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
       >
@@ -373,7 +402,7 @@ function Busca({
               i === ativo ? "bg-energia-fundo text-carvao shadow-[inset_4px_0_0_var(--cor-energia)]" : "text-carvao hover:bg-papel"
             }`}
           >
-            <span className="min-w-0">{e.rotulo}</span>
+            <span className="min-w-0">{e.tipo === "sm" ? e.rotulo : <Nome>{e.rotulo}</Nome>}</span>
             <span className="shrink-0 text-xs text-carvao-muted">
               {e.detalhe}
               {e.populacao ? ` · ${e.populacao}` : ""}
@@ -382,12 +411,17 @@ function Busca({
         ))}
         {res.total === 0 && (
           <li role="presentation" aria-hidden="true" className="px-3 py-2 text-xs text-carvao-muted">
-            {carregando ? "Os municípios ainda estão chegando; tente de novo em instantes." : "Nenhum resultado para essa busca."}
+            {carregando
+              ? tx("Os municípios ainda estão chegando; tente de novo em instantes.", "The municipalities are still arriving; try again in a moment.")
+              : tx("Nenhum resultado para essa busca.", "No results for this search.")}
           </li>
         )}
         {res.total > res.itens.length && (
           <li role="presentation" className="px-3 py-2 text-xs text-carvao-muted">
-            Mais {num(res.total - res.itens.length, 0)} resultados: refine a busca.
+            {tx(
+              `Mais ${num(res.total - res.itens.length, 0)} resultados: refine a busca.`,
+              `${num(res.total - res.itens.length, 0, idioma)} more results: refine the search.`,
+            )}
           </li>
         )}
       </ul>
@@ -398,6 +432,15 @@ function Busca({
 /* ---------------------------------------------------------------- explorador */
 
 export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
+  const tx = useTx();
+  const idioma = useIdioma();
+  const ROTULO_CAMADA = rotulosCamada(idioma);
+  const ROTULO_ESTADO_SM = rotulosEstadoSm(idioma);
+  const ROTULO_ESTAGIO = rotulosEstagio(idioma);
+  const ROTULO_FONTE = rotulosFonte(idioma);
+  const ROTULO_SITUACAO = rotulosSituacao(idioma);
+  const MEDIDA = medidas(idioma);
+  const rotuloPotencia = rotulosPotencia(idioma);
   const [v, definir] = useEstadoUrl(ESQUEMA_TERRITORIO);
   const [pedidoIndice, setPedidoIndice] = useState(false);
   const [pedidoMalha, setPedidoMalha] = useState(false);
@@ -439,15 +482,16 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
   const smPorId = useMemo(() => new Map(dados.submercados.map((s) => [s.id, s])), [dados.submercados]);
   const municipios = useMemo(() => (indice ? municipiosDoJson(indice) : null), [indice]);
   const porIbge = useMemo(() => new Map((municipios ?? []).map((m) => [m.ibge, m])), [municipios]);
-  const linhasMun = useMemo(() => (municipios ? municipios.map((m) => linhaMunicipio(m, idx)) : null), [municipios, idx]);
+  const linhasMun = useMemo(() => (municipios ? municipios.map((m) => linhaMunicipio(m, idx, idioma)) : null), [municipios, idx, idioma]);
   const usinas = useMemo(() => (arqUsinas ? usinasDoJson(arqUsinas, dados.limiteRegistroKw) : null), [arqUsinas, dados.limiteRegistroKw]);
   const usinasVisiveis = useMemo(() => (usinas ? filtrarUsinas(usinas, { fon: v.fon, est: v.est, reg: v.reg }) : null), [usinas, v.fon, v.est, v.reg]);
   const nomeMunicipio = useCallback((ibge: string) => {
     const m = porIbge.get(ibge);
-    return m ? `${m.nome} (${m.uf})` : `município ${ibge}`;
-  }, [porIbge]);
-  const linhasUsinas = useMemo(() => (usinasVisiveis ? usinasVisiveis.map((u) => linhaUsina(u, nomeMunicipio)) : null), [usinasVisiveis, nomeMunicipio]);
-  const entidades = useMemo(() => entidadesBusca(dados, municipios), [dados, municipios]);
+    return m ? `${m.nome} (${m.uf})` : tx(`município ${ibge}`, `municipality ${ibge}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- tx muda só com o idioma
+  }, [porIbge, idioma]);
+  const linhasUsinas = useMemo(() => (usinasVisiveis ? usinasVisiveis.map((u) => linhaUsina(u, nomeMunicipio, idioma)) : null), [usinasVisiveis, nomeMunicipio, idioma]);
+  const entidades = useMemo(() => entidadesBusca(dados, municipios, idioma), [dados, municipios, idioma]);
   const featMun = useMemo(() => new Map((geoMun?.features ?? []).map((f) => [f.id, f])), [geoMun]);
 
   /* entidade escolhida */
@@ -462,7 +506,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
     distribuidora: selDist,
     uf: selUf ?? (selMun ? ufPorSigla.get(selMun.uf) ?? null : null),
     usina: selUsi,
-  });
+  }, idioma);
 
   const selecionar = useCallback(
     (s: Selecao) => {
@@ -480,7 +524,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
   /** "Ver as usinas deste município": abre a camada Usinas com a busca da tabela já no nome do município. */
   const verUsinas = useCallback(
     (m: MunicipioT) => {
-      definir({ cam: "usinas", usiq: `${m.nome} ${m.uf}` });
+      definir({ cam: "usinas", usiq: `${m.nome} ${m.uf}` }); // i18n: dado
     },
     [definir],
   );
@@ -562,10 +606,11 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
   };
 
   const montagem: Montagem = (() => {
-    if (cUf.estado === "erro") return { ...vazio, falha: <Falha erro={cUf.erro} arquivo={dados.arquivos.geoUf} nome="a malha de UF do IBGE" repetir={repetirUf} /> };
+    if (cUf.estado === "erro")
+      return { ...vazio, falha: <Falha erro={cUf.erro} arquivo={dados.arquivos.geoUf} nome={tx("a malha de UF do IBGE", "the IBGE state map")} repetir={repetirUf} /> };
 
     if (cam === "submercado") {
-      if (!geoUf) return { ...vazio, carregando: "Carregando o mapa das UFs (IBGE)…" };
+      if (!geoUf) return { ...vazio, carregando: tx("Carregando o mapa das UFs (IBGE)…", "Loading the map of the states (IBGE)…") };
       const fills = geoUf.features.map((f) => {
         const s = ufPorSigla.get(f.uf)?.subsistema;
         return s ? fundoSubmercado(s) : "sem-dado";
@@ -584,7 +629,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         }
       }
       const destaques: PoligonoDestaque[] = [];
-      for (const u of dados.ufs.filter((x) => x.estado.startsWith("conferido por uma"))) {
+      for (const u of dados.ufs.filter((x) => x.estado === ROTULO_ESTADO_SM.provado_com_area_sem_carga)) {
         const f = featPorUf.get(u.uf);
         if (f) destaques.push({ id: `tracejado-${u.uf}`, d: f.d, estilo: "tracejado" });
       }
@@ -595,6 +640,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
       destaques.push(...destaquesBase());
       const e = dados.estadosMunicipio;
       const contaUf = (sm: Submercado) => dados.ufs.filter((u) => u.subsistema === sm).length;
+      const ufsPorSm = SUBMERCADOS.map((s) => tx(`${nomeSm(s, idioma)} com ${contaUf(s)} UFs`, `${nomeSm(s, idioma)} with ${contaUf(s)} states`)).join(", ");
       return {
         ...vazio,
         geo: geoUf,
@@ -603,18 +649,43 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         sobreposicoes,
         destaques,
         foco: centro(corr.uf ? featPorUf.get(corr.uf) : undefined),
-        titulo: "Submercado de cada UF (camada oficial da EPE, pertença conferida pela carga do ONS em dois dias)",
-        descricao: `Mapa das 27 UFs pintadas pelo submercado: ${SUBMERCADOS.map((s) => `${NOME_SUBMERCADO[s]} com ${contaUf(s)} UFs`).join(", ")}. A tabela abaixo do mapa traz as mesmas UFs.`,
+        titulo: tx(
+          "Submercado de cada UF (camada oficial da EPE, pertença conferida pela carga do ONS em dois dias)",
+          "Submarket of each state (official EPE layer, membership checked against the ONS load on two days)",
+        ),
+        descricao: tx(
+          `Mapa das 27 UFs pintadas pelo submercado: ${ufsPorSm}. A tabela abaixo do mapa traz as mesmas UFs.`,
+          `Map of the 27 states colored by submarket: ${ufsPorSm}. The table below the map shows the same states.`,
+        ),
         legenda: (
           <Legenda
-            titulo="Submercado (cor da UF)"
+            titulo={tx("Submercado (cor da UF)", "Submarket (state color)")}
             itens={[
-              ...SUBMERCADOS.map((s) => ({ id: s, rotulo: `${NOME_SUBMERCADO[s]} (UFs)`, cor: fundoSubmercado(s), contagem: contaUf(s) })),
-              { id: "fora", rotulo: "Município fora do SIN: submercado não se aplica", cor: COR_NAO_SE_APLICA, contagem: e.fora_do_sin ?? null },
-              { id: "isol", rotulo: "Município com localidade isolada, dentro do SIN (contorno tracejado)", cor: "var(--cor-superficie)", contagem: e.com_localidade_isolada ?? null, forma: "tracejado" },
-              { id: "toco", rotulo: "UF com área de carga sem carga nos dias conferidos (contorno tracejado)", cor: "var(--cor-superficie)", forma: "tracejado" },
+              ...SUBMERCADOS.map((s) => ({ id: s, rotulo: tx(`${nomeSm(s, idioma)} (UFs)`, `${nomeSm(s, idioma)} (states)`), cor: fundoSubmercado(s), contagem: contaUf(s) })),
+              {
+                id: "fora",
+                rotulo: tx("Município fora do SIN: submercado não se aplica", "Municipality outside the SIN: submarket does not apply"),
+                cor: COR_NAO_SE_APLICA,
+                contagem: e.fora_do_sin ?? null,
+              },
+              {
+                id: "isol",
+                rotulo: tx("Município com localidade isolada, dentro do SIN (contorno tracejado)", "Municipality with an isolated locality, inside the SIN (dashed outline)"),
+                cor: "var(--cor-superficie)",
+                contagem: e.com_localidade_isolada ?? null,
+                forma: "tracejado",
+              },
+              {
+                id: "toco",
+                rotulo: tx("UF com área de carga sem carga nos dias conferidos (contorno tracejado)", "State with a load area without load on the days checked (dashed outline)"),
+                cor: "var(--cor-superficie)",
+                forma: "tracejado",
+              },
             ]}
-            nota="A divisa é a da UF: o ONS não publica limite geográfico do submercado. Município fora do SIN não pertence ao submercado da cor da UF."
+            nota={tx(
+              "A divisa é a da UF: o ONS não publica limite geográfico do submercado. Município fora do SIN não pertence ao submercado da cor da UF.",
+              "The border is the state's: the ONS publishes no geographic boundary for the submarket. A municipality outside the SIN does not belong to the submarket of the state's color.",
+            )}
           />
         ),
         clique: ({ id }) => {
@@ -628,18 +699,19 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         dica: (id) => {
           if (/^\d{7}$/.test(id)) {
             const m = porIbge.get(id);
-            return m ? { titulo: `${m.nome} · ${m.uf}`, linhas: [textoSubmercadoMunicipio(m), m.sm_estado ? ROTULO_ESTADO_SM[m.sm_estado] : ""] } : null;
+            return m ? { titulo: `${m.nome} · ${m.uf}`, linhas: [textoSubmercadoMunicipio(m, idioma), m.sm_estado ? ROTULO_ESTADO_SM[m.sm_estado] : ""] } : null;
           }
           const u = ufPorSigla.get(ufDeFeature.get(id) ?? "");
-          return u ? { titulo: `${u.nome} · ${u.uf}`, linhas: [u.submercado, `pertença ${u.estado}`] } : null;
+          return u ? { titulo: `${u.nome} · ${u.uf}`, linhas: [u.submercado, tx(`pertença ${u.estado}`, `membership ${u.estado}`)] } : null;
         },
       };
     }
 
     if (cam === "usinas") {
-      if (!geoUf) return { ...vazio, carregando: "Carregando o mapa das UFs (IBGE)…" };
-      if (cUsinas.estado === "erro") return { ...vazio, falha: <Falha erro={cUsinas.erro} arquivo={dados.arquivos.usinas} nome="as usinas" repetir={repetirUsinas} /> };
-      if (!usinasVisiveis) return { ...vazio, carregando: "Carregando as usinas do SIGA…" };
+      if (!geoUf) return { ...vazio, carregando: tx("Carregando o mapa das UFs (IBGE)…", "Loading the map of the states (IBGE)…") };
+      if (cUsinas.estado === "erro")
+        return { ...vazio, falha: <Falha erro={cUsinas.erro} arquivo={dados.arquivos.usinas} nome={tx("as usinas", "the plants")} repetir={repetirUsinas} /> };
+      if (!usinasVisiveis) return { ...vazio, carregando: tx("Carregando as usinas do SIGA…", "Loading the SIGA plants…") };
       const grupos = new Map<string, { cor: string; ponta: "round" | "square"; espessura: number; d: string[]; vazado: boolean; ordem: number }>();
       for (const u of usinasVisiveis) {
         if (u.x === null || u.y === null) continue;
@@ -681,13 +753,22 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         pontos,
         pontoSelecionado: ponto,
         foco: ponto ?? centro(corr.uf ? featPorUf.get(corr.uf) : undefined),
-        titulo: `Usinas do SIGA de ${dataBR(dados.referencias.siga_data)} (ponto: coordenada informada à ANEEL)`,
-        descricao: `Mapa do Brasil por UF com ${inteiro(usinasVisiveis.length - semCoord)} usinas desenhadas como pontos. A tabela abaixo do mapa traz as mesmas usinas.`,
+        titulo: tx(
+          `Usinas do SIGA de ${dataBR(dados.referencias.siga_data)} (ponto: coordenada informada à ANEEL)`,
+          `SIGA plants of ${dataBR(dados.referencias.siga_data, idioma)} (point: coordinate reported to ANEEL)`,
+        ),
+        descricao: tx(
+          `Mapa do Brasil por UF com ${inteiro(usinasVisiveis.length - semCoord)} usinas desenhadas como pontos. A tabela abaixo do mapa traz as mesmas usinas.`,
+          `Map of Brazil by state with ${inteiro(usinasVisiveis.length - semCoord, idioma)} plants drawn as points. The table below the map shows the same plants.`,
+        ),
         legenda: (
           <div className="space-y-2">
-            <Legenda titulo="Fonte (cor)" itens={FONTES_USINA.filter((f) => v.fon.includes(f)).map((f) => ({ id: f, rotulo: ROTULO_FONTE[f], cor: COR_FONTE[f], contagem: contaFonte(f), forma: "ponto-redondo" as const }))} />
             <Legenda
-              titulo="Estágio (forma) e potência (tamanho)"
+              titulo={tx("Fonte (cor)", "Source (color)")}
+              itens={FONTES_USINA.filter((f) => v.fon.includes(f)).map((f) => ({ id: f, rotulo: ROTULO_FONTE[f], cor: COR_FONTE[f], contagem: contaFonte(f), forma: "ponto-redondo" as const }))}
+            />
+            <Legenda
+              titulo={tx("Estágio (forma) e potência (tamanho)", "Stage (shape) and capacity (size)")}
               itens={[
                 ...ESTAGIOS_USINA.filter((e) => v.est.includes(e)).map((e) => ({
                   id: e,
@@ -697,7 +778,10 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
                   forma: e === "operacao" ? ("ponto-redondo" as const) : e === "construcao" ? ("ponto-quadrado" as const) : ("ponto-vazado" as const),
                 })),
               ]}
-              nota={`Tamanho da marca: ${CLASSES_POTENCIA.map((c) => c.rotulo).join(", ")} (fiscalizada em operação, outorgada nas demais).${semCoord ? ` ${inteiro(semCoord)} usinas sem coordenada ficam só na tabela.` : ""}${v.reg ? "" : " Registros de até 10 kW fora do mapa (marque para incluir)."}`}
+              nota={tx(
+                `Tamanho da marca: ${rotuloPotencia.join(", ")} (fiscalizada em operação, outorgada nas demais).${semCoord ? ` ${inteiro(semCoord)} usinas sem coordenada ficam só na tabela.` : ""}${v.reg ? "" : " Registros de até 10 kW fora do mapa (marque para incluir)."}`,
+                `Mark size: ${rotuloPotencia.join(", ")} (inspected in operation, granted for the others).${semCoord ? ` ${inteiro(semCoord, idioma)} plants without coordinates are only in the table.` : ""}${v.reg ? "" : " Registrations of up to 10 kW are off the map (check to include)."}`,
+              )}
             />
           </div>
         ),
@@ -720,15 +804,17 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         },
         dica: (id) => {
           const u = ufPorSigla.get(ufDeFeature.get(id) ?? "");
-          return u ? { titulo: `${u.nome} · ${u.uf}`, linhas: ["Toque ou clique numa marca para ver a usina."] } : null;
+          return u ? { titulo: `${u.nome} · ${u.uf}`, linhas: [tx("Toque ou clique numa marca para ver a usina.", "Tap or click a mark to see the plant.")] } : null;
         },
       };
     }
 
     // camadas sobre a malha municipal
-    if (cMalha.estado === "erro") return { ...vazio, falha: <Falha erro={cMalha.erro} arquivo={dados.arquivos.geoMunicipios} nome="a malha municipal do IBGE" repetir={repetirMalha} /> };
-    if (cIndice.estado === "erro") return { ...vazio, falha: <Falha erro={cIndice.erro} arquivo={dados.arquivos.municipios} nome="o índice municipal" repetir={repetirIndice} /> };
-    if (!geoMun || !municipios || !linhasMun) return { ...vazio, carregando: "Carregando o mapa e o índice dos municípios (IBGE)…" };
+    if (cMalha.estado === "erro")
+      return { ...vazio, falha: <Falha erro={cMalha.erro} arquivo={dados.arquivos.geoMunicipios} nome={tx("a malha municipal do IBGE", "the IBGE municipal map")} repetir={repetirMalha} /> };
+    if (cIndice.estado === "erro")
+      return { ...vazio, falha: <Falha erro={cIndice.erro} arquivo={dados.arquivos.municipios} nome={tx("o índice municipal", "the municipal index")} repetir={repetirIndice} /> };
+    if (!geoMun || !municipios || !linhasMun) return { ...vazio, carregando: tx("Carregando o mapa e o índice dos municípios (IBGE)…", "Loading the map and the index of the municipalities (IBGE)…") };
 
     if (cam === "distribuidora") {
       const area = corr.dist;
@@ -747,14 +833,20 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         });
         legenda = (
           <Legenda
-            titulo={`Área de ${d?.sigla ?? "distribuidora"} pela relação oficial (municípios inteiros)`}
+            titulo={tx(
+              `Área de ${d?.sigla ?? "distribuidora"} pela relação oficial (municípios inteiros)`,
+              `Area of ${d?.sigla ?? "the distribution utility"} by the official list (whole municipalities)`,
+            )}
             itens={[
-              { id: "1", rotulo: "Vínculo confirmado", cor: COR_VINCULO[1], contagem: conta[1] },
-              { id: "2", rotulo: "Só pelo cadastro de MMGD", cor: COR_VINCULO[2], contagem: conta[2] },
-              { id: "0", rotulo: "Sem confirmação (ressalva)", cor: COR_VINCULO[0], contagem: conta[0] },
-              { id: "fora", rotulo: "Fora da área", cor: COR_FORA_DA_AREA },
+              { id: "1", rotulo: tx("Vínculo confirmado", "Confirmed link"), cor: COR_VINCULO[1], contagem: conta[1] },
+              { id: "2", rotulo: tx("Só pelo cadastro de MMGD", "Only through the MMGD register"), cor: COR_VINCULO[2], contagem: conta[2] },
+              { id: "0", rotulo: tx("Sem confirmação (ressalva)", "Unconfirmed (caveat)"), cor: COR_VINCULO[0], contagem: conta[0] },
+              { id: "fora", rotulo: tx("Fora da área", "Outside the area"), cor: COR_FORA_DA_AREA },
             ]}
-            nota="Não há polígono oficial de concessão acessível: a área é desenhada pelos municípios inteiros da relação, e município compartilhado aparece em todas as áreas."
+            nota={tx(
+              "Não há polígono oficial de concessão acessível: a área é desenhada pelos municípios inteiros da relação, e município compartilhado aparece em todas as áreas.",
+              "There is no accessible official concession polygon: the area is drawn from the whole municipalities in the list, and a shared municipality appears in every area.",
+            )}
           />
         );
       } else if (cand.length) {
@@ -775,11 +867,19 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         });
         legenda = (
           <Legenda
-            titulo="Áreas das distribuidoras que atendem o município escolhido (listadas, nenhuma escolhida)"
+            titulo={tx(
+              "Áreas das distribuidoras que atendem o município escolhido (listadas, nenhuma escolhida)",
+              "Areas of the distribution utilities serving the chosen municipality (listed, none chosen)",
+            )}
             itens={[
-              ...cand.map((i, k) => ({ id: String(i), rotulo: idx.get(i)?.sigla ?? `distribuidora ${i}`, cor: `color-mix(in srgb, ${CORES_COMP[k % 4]} 45%, var(--cor-superficie))`, contagem: conta.get(i) ?? 0 })),
-              { id: "varias", rotulo: "Em mais de uma dessas áreas", cor: "var(--cor-mineral)", contagem: varias },
-              { id: "fora", rotulo: "Fora dessas áreas", cor: COR_FORA_DA_AREA },
+              ...cand.map((i, k) => ({
+                id: String(i),
+                rotulo: idx.get(i)?.sigla ?? tx(`distribuidora ${i}`, `utility ${i}`),
+                cor: `color-mix(in srgb, ${CORES_COMP[k % 4]} 45%, var(--cor-superficie))`,
+                contagem: conta.get(i) ?? 0,
+              })),
+              { id: "varias", rotulo: tx("Em mais de uma dessas áreas", "In more than one of these areas"), cor: "var(--cor-mineral)", contagem: varias },
+              { id: "fora", rotulo: tx("Fora dessas áreas", "Outside these areas"), cor: COR_FORA_DA_AREA },
             ]}
           />
         );
@@ -794,9 +894,12 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         });
         legenda = (
           <Legenda
-            titulo="Quantas distribuidoras atendem cada município (relação oficial)"
+            titulo={tx("Quantas distribuidoras atendem cada município (relação oficial)", "How many distribution utilities serve each municipality (official list)")}
             itens={(Object.keys(ROTULO_SITUACAO) as SituacaoVinculo[]).map((s) => ({ id: s, rotulo: ROTULO_SITUACAO[s], cor: CORES_SITUACAO[s], contagem: conta[s] }))}
-            nota="Escolha uma distribuidora pela busca, pela tabela de distribuidoras ou pela ficha de um município para acender a área dela."
+            nota={tx(
+              "Escolha uma distribuidora pela busca, pela tabela de distribuidoras ou pela ficha de um município para acender a área dela.",
+              "Choose a distribution utility through the search, the utilities table or a municipality's sheet to highlight its area.",
+            )}
           />
         );
       }
@@ -808,13 +911,16 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         rotulos: true,
         destaques: destaquesBase(),
         foco: centro(corr.municipio ? featMun.get(corr.municipio) : undefined),
-        titulo: "Áreas das distribuidoras: municípios inteiros da relação oficial da ANEEL",
-        descricao: `Mapa dos ${inteiro(geoMun.features.length)} municípios do IBGE pintados pela distribuidora que os atende. A tabela abaixo do mapa traz os mesmos municípios.`,
+        titulo: tx("Áreas das distribuidoras: municípios inteiros da relação oficial da ANEEL", "Distribution utility areas: whole municipalities from ANEEL's official list"),
+        descricao: tx(
+          `Mapa dos ${inteiro(geoMun.features.length)} municípios do IBGE pintados pela distribuidora que os atende. A tabela abaixo do mapa traz os mesmos municípios.`,
+          `Map of the ${inteiro(geoMun.features.length, idioma)} IBGE municipalities colored by the distribution utility serving them. The table below the map shows the same municipalities.`,
+        ),
         legenda,
         clique: ({ id }) => id && /^\d{7}$/.test(id) && selecionar(sel?.tipo === "mun" && sel.id === id ? null : { tipo: "mun", id }),
         dica: (id) => {
           const m = porIbge.get(id);
-          return m ? { titulo: `${m.nome} · ${m.uf}`, linhas: [textoDistribuidoras(m, idx), ROTULO_SITUACAO[situacaoVinculo(m)]] } : null;
+          return m ? { titulo: `${m.nome} · ${m.uf}`, linhas: [textoDistribuidoras(m, idx, idioma), ROTULO_SITUACAO[situacaoVinculo(m)]] } : null;
         },
       };
     }
@@ -823,7 +929,11 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
     const med = v.med;
     const def = MEDIDA[med];
     const valores = valoresMedida(linhasMun, med);
-    const classes = classificacaoMedida(med, geoMun.features.map((f) => valores[f.id] as ValorClassificavel));
+    const classes = classificacaoMedida(
+      med,
+      geoMun.features.map((f) => valores[f.id] as ValorClassificavel),
+      idioma,
+    );
     const cores = coresParaClasses(CORES_SEQUENCIAIS, classes.classes.length);
     const fills = geoMun.features.map((f) => preenchimento(valores[f.id], classes, { classes: cores, semDado: "sem-dado", naoSeAplica: COR_NAO_SE_APLICA }));
     const destaques = destaquesBase();
@@ -847,24 +957,30 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
       rotulos: true,
       destaques,
       foco: centro(corr.municipio ? featMun.get(corr.municipio) : undefined),
-      titulo: `${def.rotulo} por município (${def.unidade})`,
-      descricao: `Mapa dos ${inteiro(geoMun.features.length)} municípios do IBGE pela medida ${def.rotulo}, em ${def.unidade}: ${inteiro(classes.validos)} com valor e ${inteiro(classes.semDado)} sem dado. A tabela abaixo do mapa traz os mesmos números.`,
+      titulo: tx(`${def.rotulo} por município (${def.unidade})`, `${def.rotulo} by municipality (${def.unidade})`),
+      descricao: tx(
+        `Mapa dos ${inteiro(geoMun.features.length)} municípios do IBGE pela medida ${def.rotulo}, em ${def.unidade}: ${inteiro(classes.validos)} com valor e ${inteiro(classes.semDado)} sem dado. A tabela abaixo do mapa traz os mesmos números.`,
+        `Map of the ${inteiro(geoMun.features.length, idioma)} IBGE municipalities by the measure ${def.rotulo}, in ${def.unidade}: ${inteiro(classes.validos, idioma)} with a value and ${inteiro(classes.semDado, idioma)} with no data. The table below the map shows the same figures.`,
+      ),
       legenda: (
         <Legenda
-          titulo={`Classes em ${def.unidade}`}
+          titulo={tx(`Classes em ${def.unidade}`, `Classes in ${def.unidade}`)}
           itens={[
             ...classes.classes.map((c, i) => ({ id: String(i), rotulo: c.rotulo, cor: cores[i], contagem: c.contagem })),
-            { id: "sem", rotulo: "sem dado", cor: "sem-dado", contagem: classes.semDado },
+            { id: "sem", rotulo: tx("sem dado", "no data"), cor: "sem-dado", contagem: classes.semDado }, // i18n: dado
           ]}
-          nota={`${ROTULO_METODO[classes.metodo]}. Cada classe inclui o limite inferior; zero é valor e fica na primeira classe. ${def.nota ?? ""}`}
+          nota={tx(
+            `${ROTULO_METODO[classes.metodo]}. Cada classe inclui o limite inferior; zero é valor e fica na primeira classe. ${def.nota ?? ""}`,
+            `${ROTULO_METODO[classes.metodo]}. Each class includes its lower bound; zero is a value and falls in the first class. ${def.nota ?? ""}`,
+          )}
         />
       ),
       clique: ({ id }) => id && /^\d{7}$/.test(id) && selecionar(sel?.tipo === "mun" && sel.id === id ? null : { tipo: "mun", id }),
       dica: (id) => {
         const m = porIbge.get(id);
         if (!m) return null;
-        const d = descreveRegiao(valores[id], classes, def.casas, def.unidade);
-        return { titulo: `${m.nome} · ${m.uf}`, linhas: [d.valor, d.classe ? `classe ${d.classe}` : ""].filter(Boolean) };
+        const d = descreveRegiao(valores[id], classes, def.casas, def.unidade, idioma);
+        return { titulo: `${m.nome} · ${m.uf}`, linhas: [d.valor, d.classe ? tx(`classe ${d.classe}`, `class ${d.classe}`) : ""].filter(Boolean) };
       },
     };
   })();
@@ -879,7 +995,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
   const rotuloSel = selMun ? `${selMun.nome} (${selMun.uf})` : selDist ? selDist.sigla : selUf ? (selUf.nome ?? selUf.uf) : selSm ? selSm.nome : selUsi ? selUsi.nome : null;
   const acaoLimpar = sel ? (
     <button type="button" onClick={limpar} className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao" data-limpar-escolha="">
-      Limpar a escolha
+      {tx("Limpar a escolha", "Clear the choice")}
     </button>
   ) : undefined;
 
@@ -890,7 +1006,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         m={selMun}
         dados={dados}
         idx={idx}
-        conjuntos={indice ? conjuntosDoMunicipio(selMun, indice.conjuntos.linhas, idx) : []}
+        conjuntos={indice ? conjuntosDoMunicipio(selMun, indice.conjuntos.linhas, idx, idioma) : []}
         submercado={selMun.sm && selMun.sm_estado !== "fora_do_sin" ? smPorId.get(selMun.sm) ?? null : null}
         uf={ufPorSigla.get(selMun.uf) ?? null}
         onSelecionar={selecionar}
@@ -898,34 +1014,47 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         acao={acaoLimpar}
       />
     ) : cIndice.estado === "erro" ? (
-      <Falha erro={cIndice.erro} arquivo={dados.arquivos.municipios} nome="o índice municipal" repetir={repetirIndice} />
+      <Falha erro={cIndice.erro} arquivo={dados.arquivos.municipios} nome={tx("o índice municipal", "the municipal index")} repetir={repetirIndice} />
     ) : municipios ? (
-      <Estado alerta>O código IBGE {sel.id} não está no índice municipal publicado.</Estado>
+      <Estado alerta>{tx(`O código IBGE ${sel.id} não está no índice municipal publicado.`, `The IBGE code ${sel.id} is not in the published municipal index.`)}</Estado>
     ) : (
-      <Estado>Carregando o índice dos municípios para a ficha…</Estado>
+      <Estado>{tx("Carregando o índice dos municípios para a ficha…", "Loading the municipal index for the sheet…")}</Estado>
     );
   } else if (sel?.tipo === "dist") {
-    ficha = selDist ? <FichaDistribuidora d={selDist} dados={dados} onSelecionar={selecionar} acao={acaoLimpar} /> : <Estado alerta>O CNPJ {sel.id} não tem município na relação oficial vigente.</Estado>;
+    ficha = selDist ? (
+      <FichaDistribuidora d={selDist} dados={dados} onSelecionar={selecionar} acao={acaoLimpar} />
+    ) : (
+      <Estado alerta>{tx(`O CNPJ ${sel.id} não tem município na relação oficial vigente.`, `The CNPJ ${sel.id} has no municipality in the official list in force.`)}</Estado>
+    );
   } else if (sel?.tipo === "uf") {
-    ficha = selUf ? <FichaUf u={selUf} s={selUf.subsistema ? smPorId.get(selUf.subsistema) ?? null : null} dados={dados} onSelecionar={selecionar} acao={acaoLimpar} /> : <Estado alerta>UF {sel.id} desconhecida.</Estado>;
+    ficha = selUf ? (
+      <FichaUf u={selUf} s={selUf.subsistema ? smPorId.get(selUf.subsistema) ?? null : null} dados={dados} onSelecionar={selecionar} acao={acaoLimpar} />
+    ) : (
+      <Estado alerta>{tx(`UF ${sel.id} desconhecida.`, `Unknown state ${sel.id}.`)}</Estado>
+    );
   } else if (sel?.tipo === "sm") {
-    ficha = selSm ? <FichaSubmercado s={selSm} dados={dados} onSelecionar={selecionar} acao={acaoLimpar} /> : <Estado alerta>Submercado desconhecido.</Estado>;
+    ficha = selSm ? <FichaSubmercado s={selSm} dados={dados} onSelecionar={selecionar} acao={acaoLimpar} /> : <Estado alerta>{tx("Submercado desconhecido.", "Unknown submarket.")}</Estado>;
   } else if (sel?.tipo === "usi") {
     ficha = selUsi ? (
       <FichaUsina u={selUsi} dados={dados} nomeMunicipio={nomeMunicipio} onSelecionar={selecionar} acao={acaoLimpar} />
     ) : cUsinas.estado === "erro" ? (
-      <Falha erro={cUsinas.erro} arquivo={dados.arquivos.usinas} nome="as usinas" repetir={repetirUsinas} />
+      <Falha erro={cUsinas.erro} arquivo={dados.arquivos.usinas} nome={tx("as usinas", "the plants")} repetir={repetirUsinas} />
     ) : usinas ? (
-      <Estado alerta>A usina {sel.id} não está no arquivo publicado.</Estado>
+      <Estado alerta>{tx(`A usina ${sel.id} não está no arquivo publicado.`, `The plant ${sel.id} is not in the published file.`)}</Estado>
     ) : (
-      <Estado>Carregando as usinas para a ficha…</Estado>
+      <Estado>{tx("Carregando as usinas para a ficha…", "Loading the plants for the sheet…")}</Estado>
     );
   } else {
     const c = dados.camadas.find((x) => x.id === (cam === "usinas" ? "usinas" : cam));
     ficha = (
       <div className="space-y-2 text-sm text-carvao-muted">
-        <p className="rotulo text-mineral">Nenhuma escolha</p>
-        <p className="text-carvao">Busque o seu município acima, toque no mapa ou escolha uma linha da tabela. A ficha diz de quem é cada número.</p>
+        <p className="rotulo text-mineral">{tx("Nenhuma escolha", "No choice")}</p>
+        <p className="text-carvao">
+          {tx(
+            "Busque o seu município acima, toque no mapa ou escolha uma linha da tabela. A ficha diz de quem é cada número.",
+            "Search for your municipality above, tap the map or choose a table row. The sheet says whose each figure is.",
+          )}
+        </p>
         {c && <p>{descricaoCamada(c.descricao)}</p>}
       </div>
     );
@@ -972,13 +1101,16 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
           />
           {sel && rotuloSel && (
             <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-0 text-sm" data-escolha="">
-              <span className="border border-energia bg-energia-fundo px-2 py-0.5 text-carvao">Escolhido: {rotuloSel}</span>
+              <span className="border border-energia bg-energia-fundo px-2 py-0.5 text-carvao">
+                {tx("Escolhido: ", "Chosen: ")}
+                {selSm ? rotuloSel : <Nome>{rotuloSel}</Nome>}
+              </span>
               {acaoLimpar}
             </p>
           )}
         </div>
         <fieldset className="min-w-0">
-          <legend className="rotulo mb-1 text-mineral">Camada do mapa</legend>
+          <legend className="rotulo mb-1 text-mineral">{tx("Camada do mapa", "Map layer")}</legend>
           <div className="flex flex-wrap gap-1.5">
             {CAMADAS.map((c) => (
               <label
@@ -996,7 +1128,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
       {/* opções da camada */}
       {cam === "municipio" && (
         <label className="flex flex-wrap items-center gap-2 text-sm text-carvao">
-          <span className="rotulo text-mineral">Medida do mapa municipal</span>
+          <span className="rotulo text-mineral">{tx("Medida do mapa municipal", "Municipal map measure")}</span>
           <select value={v.med} onChange={(e) => definir({ med: e.target.value as MedidaMunicipio })} className="h-11 min-w-0 max-w-full border border-linha bg-superficie px-2 text-sm text-carvao">
             {MEDIDAS_MUNICIPIO.map((m) => (
               <option key={m} value={m}>
@@ -1009,7 +1141,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
       {cam === "usinas" && (
         <div className="flex flex-col gap-3 md:flex-row md:flex-wrap">
           <fieldset className="min-w-0">
-            <legend className="rotulo mb-1 text-mineral">Fontes</legend>
+            <legend className="rotulo mb-1 text-mineral">{tx("Fontes", "Sources")}</legend>
             <div className="flex flex-wrap gap-1.5">
               {FONTES_USINA.map((f) => (
                 <label key={f} className="inline-flex min-h-[44px] items-center gap-2 border border-linha bg-superficie px-3 text-sm text-carvao">
@@ -1025,7 +1157,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
             </div>
           </fieldset>
           <fieldset className="min-w-0">
-            <legend className="rotulo mb-1 text-mineral">Estágios</legend>
+            <legend className="rotulo mb-1 text-mineral">{tx("Estágios", "Stages")}</legend>
             <div className="flex flex-wrap gap-1.5">
               {ESTAGIOS_USINA.map((e) => (
                 <label key={e} className="inline-flex min-h-[44px] items-center gap-2 border border-linha bg-superficie px-3 text-sm text-carvao">
@@ -1039,7 +1171,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
               ))}
               <label className="inline-flex min-h-[44px] items-center gap-2 border border-linha bg-superficie px-3 text-sm text-carvao">
                 <input type="checkbox" checked={v.reg} onChange={() => definir({ reg: !v.reg })} />
-                Incluir registros de até 10 kW
+                {tx("Incluir registros de até 10 kW", "Include registrations of up to 10 kW")}
               </label>
             </div>
           </fieldset>
@@ -1068,8 +1200,16 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
               dica={montagem.dica}
               ajuda={
                 <p>
-                  Malha territorial do IBGE{montagem.geo.malha.revisao ? `, revisão de ${montagem.geo.malha.revisao}` : ""} (qualidade {textoQualidadeMalha(montagem.geo.malha.qualidade)}), em projeção de áreas
-                  iguais. Pelo teclado, use a busca acima e a tabela abaixo.
+                  {tx(
+                    <>
+                      Malha territorial do IBGE{montagem.geo.malha.revisao ? `, revisão de ${montagem.geo.malha.revisao}` : ""} (qualidade {textoQualidadeMalha(montagem.geo.malha.qualidade, idioma)}), em projeção de áreas
+                      iguais. Pelo teclado, use a busca acima e a tabela abaixo.
+                    </>,
+                    <>
+                      IBGE territorial map{montagem.geo.malha.revisao ? `, revision of ${montagem.geo.malha.revisao}` : ""} ({textoQualidadeMalha(montagem.geo.malha.qualidade, idioma)} quality), in an equal-area
+                      projection. With the keyboard, use the search above and the table below.
+                    </>,
+                  )}
                 </p>
               }
             />
@@ -1077,7 +1217,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
             !montagem.falha && (
               <div className="flex h-[380px] items-center justify-center border border-linha bg-papel px-6 text-center sm:h-[540px]">
                 <p role="status" className="text-sm text-carvao-muted">
-                  {montagem.carregando ?? "Preparando o mapa…"}
+                  {montagem.carregando ?? tx("Preparando o mapa…", "Preparing the map…")}
                 </p>
               </div>
             )
@@ -1085,27 +1225,36 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
           {cam === "submercado" && !(geoMun && municipios) && cMalha.estado !== "carregando" && (
             <div className="flex flex-wrap items-center gap-3 border border-dashed border-linha px-4 py-3 text-sm text-carvao-muted">
               <p className="min-w-0 flex-[1_1_16rem]">
-                {inteiro(dados.estadosMunicipio.fora_do_sin ?? 0)} municípios estão fora do SIN e outros {inteiro(dados.estadosMunicipio.com_localidade_isolada ?? 0)} têm localidade isolada, mas ficam dentro do SIN. Para vê-los no mapa, a página carrega os municípios.
+                {tx(
+                  `${inteiro(dados.estadosMunicipio.fora_do_sin ?? 0)} municípios estão fora do SIN e outros ${inteiro(dados.estadosMunicipio.com_localidade_isolada ?? 0)} têm localidade isolada, mas ficam dentro do SIN. Para vê-los no mapa, a página carrega os municípios.`,
+                  `${inteiro(dados.estadosMunicipio.fora_do_sin ?? 0, idioma)} municipalities are outside the SIN and another ${inteiro(dados.estadosMunicipio.com_localidade_isolada ?? 0, idioma)} have an isolated locality but remain inside the SIN. To see them on the map, the page loads the municipalities.`,
+                )}
               </p>
               <button type="button" onClick={() => setPedidoMalha(true)} className="inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-carvao hover:bg-energia-fundo">
-                Mostrar os municípios fora do SIN
+                {tx("Mostrar os municípios fora do SIN", "Show the municipalities outside the SIN")}
               </button>
             </div>
           )}
           {corr.texto && (
             <div role="status" className="flex flex-wrap items-start gap-x-3 gap-y-1 border border-dashed border-mineral bg-papel px-4 py-3 text-sm leading-relaxed text-carvao" data-correspondencia={corr.valida ? (corr.aviso ? "aviso" : "valida") : "nao-passa"}>
-              <span className="rotulo shrink-0">{corr.valida ? (corr.aviso ? "Nesta camada, com ressalva" : "Nesta camada") : "A escolha não passa para esta camada"}</span>
+              <span className="rotulo shrink-0">
+                {corr.valida
+                  ? corr.aviso
+                    ? tx("Nesta camada, com ressalva", "In this layer, with a caveat")
+                    : tx("Nesta camada", "In this layer")
+                  : tx("A escolha não passa para esta camada", "The choice does not carry over to this layer")}
+              </span>
               <span className="min-w-0 flex-[1_1_16rem]">{corr.texto}</span>
             </div>
           )}
           {corr.candidatas.length > 0 && (
-            <ul className="flex flex-wrap gap-x-4 text-sm" aria-label="Distribuidoras do município escolhido">
+            <ul className="flex flex-wrap gap-x-4 text-sm" aria-label={tx("Distribuidoras do município escolhido", "Distribution utilities of the chosen municipality")}>
               {corr.candidatas.map((i) => {
                 const d = idx.get(i);
                 return d ? (
                   <li key={i}>
                     <button type="button" onClick={() => selecionar({ tipo: "dist", id: d.id })} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                      Ver a área de {d.sigla}
+                      {tx(`Ver a área de ${d.sigla}`, `See the area of ${d.sigla}`)}
                     </button>
                   </li>
                 ) : null;
@@ -1113,45 +1262,45 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
             </ul>
           )}
         </div>
-        <aside ref={fichaRef} aria-label="Ficha da escolha" className="min-w-0 scroll-mt-24 border border-linha bg-superficie p-4" data-ficha={sel ? sel.tipo : "nenhuma"}>
+        <aside ref={fichaRef} aria-label={tx("Ficha da escolha", "Sheet of the choice")} className="min-w-0 scroll-mt-24 border border-linha bg-superficie p-4" data-ficha={sel ? sel.tipo : "nenhuma"}>
           {ficha}
         </aside>
       </div>
 
       {/* tabela equivalente da camada */}
-      <Secao titulo={`Tabela equivalente do mapa: ${ROTULO_CAMADA[cam].toLowerCase()}`} id="territorio-tabela">
+      <Secao titulo={tx(`Tabela equivalente do mapa: ${ROTULO_CAMADA[cam].toLowerCase()}`, `Table equivalent to the map: ${ROTULO_CAMADA[cam].toLowerCase()}`)} id="territorio-tabela">
         {cam === "submercado" && (
           <>
             <TabelaInterativa
-              titulo="Submercado de cada UF (as UFs que o mapa pinta)"
-              colunas={COLUNAS_UFS_SUBMERCADO}
+              titulo={tx("Submercado de cada UF (as UFs que o mapa pinta)", "Submarket of each state (the states the map colors)")}
+              colunas={colunasUfsSubmercado(idioma)}
               linhas={dados.ufs}
               chaveLinha="id"
               colunaRotulo="uf"
-              fonte="EPE, WebMap (camada 24); ONS, Carga de Energia Verificada por área de carga"
+              fonte={tx("EPE, WebMap (camada 24); ONS, Carga de Energia Verificada por área de carga", "EPE, WebMap (layer 24); ONS, Verified Energy Load by load area")}
               versao={dados.versao}
               nomeArquivo="territorio-ufs-submercado"
               chaveUrl="ter.uf"
               ordemInicial={{ coluna: "uf", direcao: "asc" }}
               selecionado={idSel("uf")}
               onSelecionar={(id) => selecionar(id ? { tipo: "uf", id } : null)}
-              dicaBusca="UF ou submercado"
+              dicaBusca={tx("UF ou submercado", "State or submarket")}
             />
             {linhasMun && (
               <TabelaInterativa
-                titulo="Municípios com localidade isolada (marcas por cima da cor da UF)"
-                colunas={COLUNAS_ISOLADOS}
+                titulo={tx("Municípios com localidade isolada (marcas por cima da cor da UF)", "Municipalities with an isolated locality (marks on top of the state color)")}
+                colunas={colunasIsolados(idioma)}
                 linhas={linhasMun.filter((l) => l.isol_n > 0)}
                 chaveLinha="id"
                 colunaRotulo="municipio"
-                fonte="EPE, PASI (ciclo 2025), pelo módulo Inclusão; IBGE, estimativa de população"
+                fonte={tx("EPE, PASI (ciclo 2025), pelo módulo Inclusão; IBGE, estimativa de população", "EPE, PASI (2025 cycle), through the Inclusion module; IBGE, population estimate")}
                 versao={dados.versao}
                 nomeArquivo="territorio-municipios-isolados"
                 chaveUrl="ter.isol"
                 ordemInicial={{ coluna: "isol_pop", direcao: "desc" }}
                 selecionado={idSel("mun")}
                 onSelecionar={(id) => selecionar(id ? { tipo: "mun", id } : null)}
-                dicaBusca="Município ou UF"
+                dicaBusca={tx("Município ou UF", "Municipality or state")}
               />
             )}
           </>
@@ -1159,67 +1308,79 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         {cam === "distribuidora" &&
           (linhasMun ? (
             <TabelaInterativa
-              titulo="Distribuidoras de cada município (os municípios que o mapa pinta)"
-              colunas={COLUNAS_VINCULO}
+              titulo={tx("Distribuidoras de cada município (os municípios que o mapa pinta)", "Distribution utilities of each municipality (the municipalities the map colors)")}
+              colunas={colunasVinculo(idioma)}
               linhas={linhasMun}
               chaveLinha="id"
               colunaRotulo="municipio"
-              fonte="ANEEL, relação conjunto × município (IndQual e limites de continuidade), pelo módulo Perdas"
+              fonte={tx(
+                "ANEEL, relação conjunto × município (IndQual e limites de continuidade), pelo módulo Perdas",
+                "ANEEL, consumer set × municipality list (IndQual and continuity limits), through the Losses module",
+              )}
               versao={dados.versao}
               nomeArquivo="territorio-municipios-distribuidoras"
               chaveUrl="ter.vinc"
               ordemInicial={{ coluna: "municipio", direcao: "asc" }}
               selecionado={idSel("mun")}
               onSelecionar={(id) => selecionar(id ? { tipo: "mun", id } : null)}
-              dicaBusca="Município, UF, código IBGE ou sigla da distribuidora"
+              dicaBusca={tx("Município, UF, código IBGE ou sigla da distribuidora", "Municipality, state, IBGE code or utility acronym")}
             />
           ) : (
-            <Estado>A tabela dos municípios aparece com o índice municipal.</Estado>
+            <Estado>{tx("A tabela dos municípios aparece com o índice municipal.", "The municipalities table appears with the municipal index.")}</Estado>
           ))}
         {cam === "municipio" &&
           (linhasMun ? (
             <TabelaInterativa
-              titulo="Indicadores publicados por município (só valores do município)"
-              colunas={colunasMunicipios(v.med)}
+              titulo={tx("Indicadores publicados por município (só valores do município)", "Indicators published by municipality (only the municipality's values)")}
+              colunas={colunasMunicipios(v.med, idioma)}
               linhas={linhasMun}
               chaveLinha="id"
               colunaRotulo="municipio"
-              fonte="ANEEL (MMGD, SIGA), ANEEL e MDS (Tarifa Social), MME (Luz para Todos), EPE (PASI), IBGE (população), pelos módulos de origem"
+              fonte={tx(
+                "ANEEL (MMGD, SIGA), ANEEL e MDS (Tarifa Social), MME (Luz para Todos), EPE (PASI), IBGE (população), pelos módulos de origem",
+                "ANEEL (MMGD, SIGA), ANEEL and MDS (Social Tariff), MME (Luz para Todos), EPE (PASI), IBGE (population), through the source modules",
+              )}
               versao={dados.versao}
               nomeArquivo="territorio-municipios"
               chaveUrl="ter.mun"
               ordemInicial={{ coluna: v.med, direcao: "desc" }}
               selecionado={idSel("mun")}
               onSelecionar={(id) => selecionar(id ? { tipo: "mun", id } : null)}
-              dicaBusca="Município, UF ou código IBGE"
-              nota="Nenhuma coluna desta tabela é valor de distribuidora, conjunto, submercado ou UF: esses ficam nas tabelas de cada tipo de área."
+              dicaBusca={tx("Município, UF ou código IBGE", "Municipality, state or IBGE code")}
+              nota={tx(
+                "Nenhuma coluna desta tabela é valor de distribuidora, conjunto, submercado ou UF: esses ficam nas tabelas de cada tipo de área.",
+                "No column in this table is a value of a distribution utility, consumer set, submarket or state: those are in the tables for each type of area.",
+              )}
             />
           ) : (
-            <Estado>A tabela dos municípios aparece com o índice municipal.</Estado>
+            <Estado>{tx("A tabela dos municípios aparece com o índice municipal.", "The municipalities table appears with the municipal index.")}</Estado>
           ))}
         {cam === "usinas" &&
           (linhasUsinas ? (
             <TabelaInterativa
-              titulo="Usinas desenhadas no mapa (mesmo filtro de fontes, estágios e registros)"
-              colunas={COLUNAS_USINAS}
+              titulo={tx("Usinas desenhadas no mapa (mesmo filtro de fontes, estágios e registros)", "Plants drawn on the map (same filter of sources, stages and registrations)")}
+              colunas={colunasUsinas(idioma)}
               linhas={linhasUsinas}
               chaveLinha="id"
               colunaRotulo="nome"
-              fonte="ANEEL, SIGA, pelo módulo Expansão"
+              fonte={tx("ANEEL, SIGA, pelo módulo Expansão", "ANEEL, SIGA, through the Expansion module")}
               versao={dados.versao}
               nomeArquivo="territorio-usinas"
               chaveUrl="ter.usi"
               ordemInicial={{ coluna: "mw_fiscalizado", direcao: "desc" }}
               selecionado={idSel("usi")}
               onSelecionar={(id) => selecionar(id ? { tipo: "usi", id } : null)}
-              dicaBusca="Nome, CEG, tipo, UF ou município"
-              nota="Usina declarada em mais de um município aparece uma vez, com os municípios listados; a potência não é repartida."
+              dicaBusca={tx("Nome, CEG, tipo, UF ou município", "Name, CEG, type, state or municipality")}
+              nota={tx(
+                "Usina declarada em mais de um município aparece uma vez, com os municípios listados; a potência não é repartida.",
+                "A plant declared in more than one municipality appears once, with the municipalities listed; the capacity is not split.",
+              )}
             />
           ) : (
-            <Estado>A tabela das usinas aparece com o arquivo das usinas.</Estado>
+            <Estado>{tx("A tabela das usinas aparece com o arquivo das usinas.", "The plants table appears with the plants file.")}</Estado>
           ))}
         <p className="text-sm">
-          <span className="rotulo mr-2 text-mineral">Próxima pergunta desta camada</span>
+          <span className="rotulo mr-2 text-mineral">{tx("Próxima pergunta desta camada", "Next question for this layer")}</span>
           <a href={prox.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
             {prox.pergunta}
           </a>
@@ -1227,82 +1388,98 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
       </Secao>
 
       {/* tabelas por grão */}
-      <Secao titulo="Tabelas por tipo de área: cada número na tabela da sua área" nivel="analisar" id="territorio-graos">
+      <Secao titulo={tx("Tabelas por tipo de área: cada número na tabela da sua área", "Tables by type of area: each figure in its area's table")} nivel="analisar" id="territorio-graos">
         <TabelaInterativa
-          titulo="Submercados: preço, armazenamento e MMGD estimada (valores do submercado inteiro)"
-          colunas={colunasSubmercados(dados.submercados.find((x) => x.mmgd_ons_ref)?.mmgd_ons_ref ?? null)}
+          titulo={tx("Submercados: preço, armazenamento e MMGD estimada (valores do submercado inteiro)", "Submarkets: price, storage and estimated MMGD (values for the whole submarket)")}
+          colunas={colunasSubmercados(dados.submercados.find((x) => x.mmgd_ons_ref)?.mmgd_ons_ref ?? null, idioma)}
           linhas={dados.submercados}
           chaveLinha="id"
           colunaRotulo="nome"
-          fonte="CCEE, PLD horário (pelo módulo PLD); ONS, EAR diário e carga verificada"
+          fonte={tx("CCEE, PLD horário (pelo módulo PLD); ONS, EAR diário e carga verificada", "CCEE, hourly PLD (through the PLD module); ONS, daily EAR and verified load")}
           versao={dados.versao}
           nomeArquivo="territorio-submercados"
           chaveUrl="ter.sm"
           selecionado={idSel("sm")}
           onSelecionar={(id) => selecionar(id ? { tipo: "sm", id } : null)}
-          dicaBusca="Submercado ou UF"
+          dicaBusca={tx("Submercado ou UF", "Submarket or state")}
         />
         <TabelaInterativa
-          titulo="UFs: capacidade, Tarifa Social e sistemas isolados (valores da UF inteira)"
-          colunas={COLUNAS_UFS_INDICADORES}
+          titulo={tx("UFs: capacidade, Tarifa Social e sistemas isolados (valores da UF inteira)", "States: capacity, Social Tariff and isolated systems (values for the whole state)")}
+          colunas={colunasUfsIndicadores(idioma)}
           linhas={dados.ufs}
           chaveLinha="id"
           colunaRotulo="uf"
-          fonte="ANEEL, SIGA (pelo módulo Expansão); ANEEL, Beneficiários da CDE (pelo módulo Inclusão); EPE, PASI"
+          fonte={tx(
+            "ANEEL, SIGA (pelo módulo Expansão); ANEEL, Beneficiários da CDE (pelo módulo Inclusão); EPE, PASI",
+            "ANEEL, SIGA (through the Expansion module); ANEEL, CDE beneficiaries (through the Inclusion module); EPE, PASI",
+          )}
           versao={dados.versao}
           nomeArquivo="territorio-ufs"
           chaveUrl="ter.ufi"
-          nota={
+          nota={tx(
             <>
               Usinas em operação contadas na UF principal, sem os registros de até {num(dados.limiteRegistroKw, 0)} kW, que o município também deixa fora da contagem de usinas e que têm coluna própria; a capacidade em MW
               soma todas. {dados.notaMultiestadual} Desconto líquido: soma dos descontos do mês com os cancelamentos e refaturamentos, que entram no desconto e não na contagem de faturas; um mês pode fechar negativo.
-            </>
-          }
+            </>,
+            <>
+              Plants in operation counted in the main state, without the registrations of up to {num(dados.limiteRegistroKw, 0, idioma)} kW, which the municipality also leaves out of the plant count and which have
+              their own column; the capacity in MW adds up all of them. {dados.notaMultiestadual} Net discount: sum of the month&apos;s discounts with cancellations and rebillings, which enter the discount and not
+              the count of bills; a month can close negative.
+            </>,
+          )}
           ordemInicial={{ coluna: "cap_mw", direcao: "desc" }}
           selecionado={idSel("uf")}
           onSelecionar={(id) => selecionar(id ? { tipo: "uf", id } : null)}
-          dicaBusca="UF ou submercado"
+          dicaBusca={tx("UF ou submercado", "State or submarket")}
         />
         <TabelaInterativa
-          titulo="Distribuidoras: área e indicadores da área inteira"
-          colunas={COLUNAS_DISTRIBUIDORAS}
+          titulo={tx("Distribuidoras: área e indicadores da área inteira", "Distribution utilities: area and indicators for the whole area")}
+          colunas={colunasDistribuidoras(idioma)}
           linhas={dados.distribuidoras}
           chaveLinha="id"
           colunaRotulo="sigla"
-          fonte="ANEEL (relação de conjuntos, SAMP, Indicadores de Continuidade, Tarifas, MMGD, SCS), pelos módulos de origem"
+          fonte={tx(
+            "ANEEL (relação de conjuntos, SAMP, Indicadores de Continuidade, Tarifas, MMGD, SCS), pelos módulos de origem",
+            "ANEEL (consumer set list, SAMP, Continuity Indicators, Tariffs, MMGD, SCS), through the source modules",
+          )}
           versao={dados.versao}
           nomeArquivo="territorio-distribuidoras"
           chaveUrl="ter.dist"
           ordemInicial={{ coluna: "municipios", direcao: "desc" }}
           selecionado={idSel("dist")}
           onSelecionar={(id) => selecionar(id ? { tipo: "dist", id } : null)}
-          dicaBusca="Sigla, razão social, CNPJ ou UF"
-          nota={`Valores da área inteira: não descrevem um município. Taxa de perdas de ano parcial não é comparável à de ano completo; taxa negativa está como o SAMP publica (ressalva na ficha). ${textoSemTarifa(dados.distribuidoras) ?? ""}`}
+          dicaBusca={tx("Sigla, razão social, CNPJ ou UF", "Acronym, corporate name, CNPJ or state")}
+          nota={tx(
+            `Valores da área inteira: não descrevem um município. Taxa de perdas de ano parcial não é comparável à de ano completo; taxa negativa está como o SAMP publica (ressalva na ficha). ${textoSemTarifa(dados.distribuidoras) ?? ""}`,
+            `Values for the whole area: they do not describe a municipality. A loss rate for a partial year is not comparable to a full year's; a negative rate is as SAMP publishes it (caveat in the sheet). ${textoSemTarifa(dados.distribuidoras, idioma) ?? ""}`,
+          )}
         />
       </Secao>
 
       {/* comparação */}
-      <Secao titulo="Comparar até quatro municípios" nivel="analisar" id="territorio-comparar">
+      <Secao titulo={tx("Comparar até quatro municípios", "Compare up to four municipalities")} nivel="analisar" id="territorio-comparar">
         {!municipios ? (
           cIndice.estado === "erro" ? (
-            <Falha erro={cIndice.erro} arquivo={dados.arquivos.municipios} nome="o índice municipal" repetir={repetirIndice} />
+            <Falha erro={cIndice.erro} arquivo={dados.arquivos.municipios} nome={tx("o índice municipal", "the municipal index")} repetir={repetirIndice} />
           ) : (
             <div className="flex flex-wrap items-center gap-3 border border-dashed border-linha px-4 py-3">
-              <p className="min-w-0 flex-[1_1_16rem] text-sm text-carvao-muted">A comparação lê o índice municipal, carregado só quando pedido.</p>
+              <p className="min-w-0 flex-[1_1_16rem] text-sm text-carvao-muted">
+                {tx("A comparação lê o índice municipal, carregado só quando pedido.", "The comparison reads the municipal index, loaded only on request.")}
+              </p>
               <button type="button" onClick={() => setPedidoIndice(true)} className="inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-sm text-carvao hover:bg-energia-fundo">
-                {cIndice.estado === "carregando" ? "Carregando…" : "Carregar os municípios"}
+                {cIndice.estado === "carregando" ? tx("Carregando…", "Loading…") : tx("Carregar os municípios", "Load the municipalities")}
               </button>
             </div>
           )
         ) : (
           <>
             <Comparador
-              rotulo={`Municípios para comparar (até ${LIMITE_COMPARACAO})`}
+              rotulo={tx(`Municípios para comparar (até ${LIMITE_COMPARACAO})`, `Municipalities to compare (up to ${LIMITE_COMPARACAO})`)}
               entidades={entidadesCmp}
               selecionadas={v.cmp}
               onMudar={(ids) => definir({ cmp: ids })}
-              dicaBusca="Nome do município ou código IBGE"
-              vazio="Nenhum município escolhido. Escolha aqui ou pelo botão da ficha."
+              dicaBusca={tx("Nome do município ou código IBGE", "Municipality name or IBGE code")}
+              vazio={tx("Nenhum município escolhido. Escolha aqui ou pelo botão da ficha.", "No municipality chosen. Choose here or with the sheet's button.")}
             >
               {() => null}
             </Comparador>
@@ -1311,7 +1488,8 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
                 type="button"
                 onClick={() => {
                   const r = alternarSelecao(v.cmp, selMun.ibge, LIMITE_COMPARACAO);
-                  if (r.motivo === "limite") setAvisoCmp(`Limite de ${LIMITE_COMPARACAO} municípios: remova um para incluir ${selMun.nome}.`);
+                  if (r.motivo === "limite")
+                    setAvisoCmp(tx(`Limite de ${LIMITE_COMPARACAO} municípios: remova um para incluir ${selMun.nome}.`, `Limit of ${LIMITE_COMPARACAO} municipalities: remove one to include ${selMun.nome}.`));
                   else {
                     setAvisoCmp("");
                     definir({ cmp: r.ids });
@@ -1319,7 +1497,12 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
                 }}
                 className="inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-sm text-carvao hover:bg-energia-fundo"
               >
-                Incluir {selMun.nome} na comparação
+                {tx(
+                  <>Incluir {selMun.nome} na comparação</>,
+                  <>
+                    Include <Nome>{selMun.nome}</Nome> in the comparison
+                  </>,
+                )}
               </button>
             )}
             {avisoCmp && <p role="status" className="text-sm text-carvao">{avisoCmp}</p>}
@@ -1333,34 +1516,40 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
 
 /** Lado a lado, só valores do município; distribuidora e submercado aparecem como referência, sem número de outro grão. */
 function TabelaComparacao({ municipios, linhas }: { municipios: MunicipioT[]; linhas: LinhaMunicipio[] }) {
+  const tx = useTx();
+  const idioma = useIdioma();
   const porId = new Map(linhas.map((l) => [l.id, l]));
   const cols = municipios.map((m) => porId.get(m.ibge)!).filter(Boolean);
+  const sd = tx("sem dado", "no data");
+  const n = (v: number | null | undefined) => inteiro(v, idioma);
   const LINHAS: { rotulo: string; v: (l: LinhaMunicipio) => string }[] = [
-    { rotulo: "População estimada", v: (l) => inteiro(l.populacao) },
-    { rotulo: "Unidades de MMGD", v: (l) => inteiro(l.mmgd_un) },
-    { rotulo: "Potência de MMGD (kW)", v: (l) => (l.mmgd_kw === null ? "sem dado" : num(l.mmgd_kw, 0)) },
-    { rotulo: "MMGD por habitante (W)", v: (l) => (l.mmgd_w_hab === null ? "sem dado" : num(l.mmgd_w_hab, 1)) },
-    { rotulo: "Faturas com Tarifa Social", v: (l) => inteiro(l.tsee_faturas) },
-    { rotulo: "Tarifa Social por família do CadÚnico (proxy, %)", v: (l) => (l.tsee_proxy_pct === null ? "sem dado" : num(l.tsee_proxy_pct, 1)) },
-    { rotulo: "Luz para Todos (domicílios)", v: (l) => inteiro(l.lpt_dom) },
-    { rotulo: "Usinas em operação só no município", v: (l) => `${inteiro(l.usi_op_n)} (${num(l.usi_op_mw, 1)} MW)` },
-    { rotulo: "Registros de até 10 kW", v: (l) => inteiro(l.usi_reg_n) },
-    { rotulo: "Localidades isoladas", v: (l) => inteiro(l.isol_n) },
-    { rotulo: "Distribuidoras (referência, sem valor)", v: (l) => l.distribuidoras },
-    { rotulo: "Submercado (referência, sem valor)", v: (l) => l.submercado },
+    { rotulo: tx("População estimada", "Estimated population"), v: (l) => n(l.populacao) },
+    { rotulo: tx("Unidades de MMGD", "MMGD units"), v: (l) => n(l.mmgd_un) },
+    { rotulo: tx("Potência de MMGD (kW)", "MMGD capacity (kW)"), v: (l) => (l.mmgd_kw === null ? sd : num(l.mmgd_kw, 0, idioma)) },
+    { rotulo: tx("MMGD por habitante (W)", "MMGD per inhabitant (W)"), v: (l) => (l.mmgd_w_hab === null ? sd : num(l.mmgd_w_hab, 1, idioma)) },
+    { rotulo: tx("Faturas com Tarifa Social", "Bills with the Social Tariff"), v: (l) => n(l.tsee_faturas) },
+    { rotulo: tx("Tarifa Social por família do CadÚnico (proxy, %)", "Social Tariff per CadÚnico family (proxy, %)"), v: (l) => (l.tsee_proxy_pct === null ? sd : num(l.tsee_proxy_pct, 1, idioma)) },
+    { rotulo: tx("Luz para Todos (domicílios)", "Luz para Todos (households)"), v: (l) => n(l.lpt_dom) },
+    { rotulo: tx("Usinas em operação só no município", "Plants in operation only in the municipality"), v: (l) => `${n(l.usi_op_n)} (${num(l.usi_op_mw, 1, idioma)} MW)` },
+    { rotulo: tx("Registros de até 10 kW", "Registrations of up to 10 kW"), v: (l) => n(l.usi_reg_n) },
+    { rotulo: tx("Localidades isoladas", "Isolated localities"), v: (l) => n(l.isol_n) },
+    { rotulo: tx("Distribuidoras (referência, sem valor)", "Distribution utilities (reference, no value)"), v: (l) => l.distribuidoras },
+    { rotulo: tx("Submercado (referência, sem valor)", "Submarket (reference, no value)"), v: (l) => l.submercado },
   ];
   return (
-    <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Comparação de municípios (tabela rolável)">
+    <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx("Comparação de municípios (tabela rolável)", "Comparison of municipalities (scrollable table)")}>
       <table className="w-full min-w-[28rem] border-collapse text-xs tabular-nums" data-comparacao={cols.length}>
-        <caption className="pb-2 text-left text-sm font-medium text-carvao">Municípios lado a lado: valores do próprio município</caption>
+        <caption className="pb-2 text-left text-sm font-medium text-carvao">
+          {tx("Municípios lado a lado: valores do próprio município", "Municipalities side by side: the municipality's own values")}
+        </caption>
         <thead>
           <tr>
             <th scope="col" className="border-b border-linha px-2 py-1.5 text-left font-medium text-mineral">
-              Indicador
+              {tx("Indicador", "Indicator")}
             </th>
             {cols.map((l) => (
               <th key={l.id} scope="col" className="border-b border-linha px-2 py-1.5 text-right font-medium text-carvao">
-                {l.municipio} ({l.uf})
+                <Nome>{l.municipio}</Nome> ({l.uf})
               </th>
             ))}
           </tr>
@@ -1381,7 +1570,10 @@ function TabelaComparacao({ municipios, linhas }: { municipios: MunicipioT[]; li
         </tbody>
       </table>
       <p className="mt-2 text-xs text-carvao-muted">
-        Distribuidora e submercado entram como referência: os valores deles são da área inteira e do submercado inteiro, e ficam na ficha e nas tabelas de cada tipo de área.
+        {tx(
+          "Distribuidora e submercado entram como referência: os valores deles são da área inteira e do submercado inteiro, e ficam na ficha e nas tabelas de cada tipo de área.",
+          "Distribution utility and submarket are included as reference: their values are for the whole area and the whole submarket, and are in the sheet and in the tables for each type of area.",
+        )}
       </p>
     </div>
   );
