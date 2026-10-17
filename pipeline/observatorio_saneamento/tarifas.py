@@ -14,7 +14,8 @@ Formato de uma tabela de serviço:
   faixas [{de, ate, preco}]: R$/m³ do volume acima de `de` até `ate` (ate null = sem limite).
 Esgoto: tabela própria ou {"percentual": p} da conta de água.
 Categoria: consumoMaximo (m³/mês) quando o ato só define preço até um teto; acima dele o simulador não calcula.
-Tabela: metodoNaoVerificado quando o ato não diz por extenso uma regra de cobrança que a simulação assume.
+Tabela: metodoNaoVerificado quando o ato não diz por extenso uma regra de cobrança que a simulação assume;
+exemplosOficiais para contas calculadas por simulador ou planilha oficial do prestador ou do regulador.
 
 Uso:
     python3 -m pipeline.observatorio_saneamento.tarifas
@@ -414,6 +415,109 @@ def confere_reajuste_2026():
 
 
 
+# ---------------------------------------------------------------- CASAN (ARESC, ARIS, AGIR, CISAM-SUL)
+CS = [0, 10, 25, 50]
+# Tabela publicada pela CASAN, em vigor desde 01/04/2026 (R$/m³ por faixa; TFDI em R$/mês por economia).
+CASAN_2026 = {
+    "residencial": {"tfdi": 46.34, "precos": [3.08, 14.31, 19.14, 24.08]},
+    "social_anterior": {"tfdi": 8.63, "precos": [0.58, 4.11, 19.14, 24.08]},
+}
+# Aba "TABELA TARIFÁRIA 2025" da calculadora oficial: tabela anterior ao reajuste de 5,80%.
+CASAN_2025 = {
+    "residencial": {"tfdi": 43.80, "precos": [2.91, 13.53, 18.09, 22.76]},
+    "social_anterior": {"tfdi": 8.16, "precos": [0.55, 3.88, 18.09, 22.76]},
+}
+CASAN_REAJUSTE_2026 = "1.058"
+# Tarifa social da Lei 14.898/2024: metade da residencial na TFDI e na faixa de 0 a 15 m³; as demais faixas são as da residencial.
+CASAN_SOCIAL_FEDERAL = {"tfdi": 23.17, "precos": [1.54, 14.31, 19.14, 24.08]}
+
+casan = {
+    "id": "casan-2026",
+    "prestador": "Companhia Catarinense de Águas e Saneamento (CASAN)",
+    "prestadorSinisa": "casan-companhia-catarinense-de-aguas-e-saneamento",
+    "uf": "SC",
+    "regulador": "ARESC, ARIS, AGIR e CISAM-SUL",
+    "modelo": "Tarifa fixa de disponibilidade (TFDI) por economia e faixas progressivas sem consumo mínimo; esgoto a 100% do faturamento de água, inclusive a TFDI",
+    "ato": "Resolução ARESC nº 389, de 12/02/2026, e tabela tarifária publicada pela CASAN em abril de 2026",
+    "vigencia": "Tabela publicada pela CASAN como válida desde 01/04/2026; na Resolução ARESC 389 o reajuste é aplicável 30 dias após a publicação (art. 2º)",
+    "ultimoReajuste": "5,80% sobre tarifas de água e esgoto e sobre a tabela de serviços e infrações, pelo IPCA de outubro de 2024 a dezembro de 2025 (Resolução ARESC 389/2026, art. 1º)",
+    "area": "Municípios atendidos pela CASAN em Santa Catarina, em tabela estadual única",
+    "fontes": [
+        {"rotulo": "CASAN, Tabela tarifária de abril de 2026 (PDF)", "url": "https://www.casan.com.br/ckfinder/userfiles/files/Tarifas/2026/Tabela%20Tarif%C3%A1ria%2004-2026.pdf", "sha256": "30a8eeb2adf0ea8d9e6880c75f1238efedf9e26ad5c4a0f31b912b4ab7f6fc83", "localizador": "p.1: TFDI e faixas por categoria; tarifa social da Lei 14.898/2024; esgoto a 100% da água"},
+        {"rotulo": "CASAN, Calculadora tarifária 2026 (planilha oficial)", "url": "https://www.casan.com.br/ckfinder/userfiles/files/Tarifas/2026/calculadora_casan_tfdi%20-%202026%20final.xlsx", "sha256": "c672c20c8bc4f506fdbecbd8f617988a45ca8f453ad42e44244bb8792978cfbf", "localizador": "abas CALCULADORA (fórmulas, células G14 a G22, P25 e AE25), TABELA TARIFÁRIA 2026 e TABELA TARIFÁRIA 2025; recalculada com LibreOffice"},
+        {"rotulo": "CASAN, Calculadora da tarifa social, Lei 14.898/2024 (planilha oficial)", "url": "https://www.casan.com.br/ckfinder/userfiles/files/Tarifas/2026/calculadora_casan_tarifa_social%20-%202026%20final.xlsx", "sha256": "ac6fa62457e04f209c4967c2e708d0172f27f4e92290805d3567b9aac2b1d344", "localizador": "abas CALCULADORA (células G14 a G27) e TABELA TARIFÁRIA 2026; recalculada com LibreOffice"},
+        {"rotulo": "Resolução ARESC 389/2026", "url": "https://aresc.sc.gov.br/wp-content/uploads/2026/02/RESOLUCAO-ARESC-No-389.pdf", "sha256": "2a2e5e9c1179286ece4436dbdc3b18ea166f41760ea9d6fe27de64d51f1b7a38", "localizador": "arts. 1º a 3º; a Nota Técnica ARESC 002/2026, parte integrante, não foi lida"},
+        {"rotulo": "Resolução ARESC 321/2025 (reajuste anterior)", "url": "https://aresc.sc.gov.br/wp-content/uploads/2025/10/RESOLUCAO-ARESC-No-321.pdf", "sha256": "0bcf08b381daeec7a3a44e5ecbe7cfb62086a87d6e46475a0c2310a4e9f528bf", "localizador": "arts. 1º e considerandos: 5,56% e menção às Resoluções ARESC 258/2023 e 281/2024"},
+        {"rotulo": "CASAN, página Tarifas (acessada em 17/10/2026)", "url": "https://www.casan.com.br/menu-conteudo/index/url/tarifas", "sha256": "6ef2694bbb205997d1b295e1474b63c42e93e4ef522746265cae92f348631bd7", "localizador": "tabela, esgoto a 100% da água e agências que autorizaram o reajuste"},
+    ],
+    "unidade": "por economia (unidade autônoma)",
+    "categorias": {
+        "residencial": {
+            "rotulo": "Residencial",
+            "agua": tab(fixo=CASAN_2026["residencial"]["tfdi"], faixas=progressivo(CASAN_2026["residencial"]["precos"], CS)),
+            "esgoto": {"percentual": 100},
+        },
+        "social": {
+            "rotulo": "Residencial social (tarifa social federal)",
+            "agua": tab(fixo=CASAN_SOCIAL_FEDERAL["tfdi"], faixas=progressivo(CASAN_SOCIAL_FEDERAL["precos"], [0, 15, 25, 50])),
+            "esgoto": {"percentual": 100},
+        },
+        "social_anterior": {
+            "rotulo": "Residencial social anterior (solicitações até 10/12/2024)",
+            "agua": tab(fixo=CASAN_2026["social_anterior"]["tfdi"], faixas=progressivo(CASAN_2026["social_anterior"]["precos"], CS)),
+            "esgoto": {"percentual": 100},
+        },
+    },
+    "observacoes": [
+        "Método conferido na calculadora oficial da CASAN: cada faixa incide só sobre o volume dentro dela (a segunda faixa, rotulada \"11 a 25\", começa depois de 10 m³ nas fórmulas) e a TFDI soma-se ao volume. A planilha foi recalculada em 17/10/2026 para 10 consumos e todos os resultados são reproduzidos pelo gerador.",
+        "Esgoto a 100% do faturamento de água, inclusive a TFDI: a calculadora manda considerar \"Faturamento de Água + 100% do Faturamento de Esgoto (TFDI + Volume)\", e o total da fatura é o dobro do subtotal de água.",
+        "Barracão (PR) consta como atendido pela CASAN no SINISA 2024; a tabela é a estadual de Santa Catarina e a regulação desse município não foi verificada, por isso ele fica fora da associação.",
+        "A calculadora divide o volume pelo número de unidades autônomas; a simulação usa uma economia. Arredondamento com volume fracionário não verificado.",
+        "Tarifa social da Lei 14.898/2024: TFDI e faixa de 0 a 15 m³ à metade da residencial; as demais faixas, iguais às da residencial. A tabela social anterior vale só para solicitações recebidas até 10/12/2024 (nota da tabela da CASAN). Critérios de enquadramento não foram lidos em ato; a calculadora oficial da social não traz o total da fatura, e o dobro vem da nota da própria planilha.",
+        "A tabela da residencial social anterior não tem calculadora oficial; seus exemplos são cálculo manual a partir da tabela.",
+        "Comercial, micro e pequeno comércio, industrial, pública e pública especial constam da tabela e não foram simuladas; as soluções individuais de esgotamento sanitário têm tabela própria (Deliberação 021/2025 de ARIS, AGIR e CISAM-SUL) e também não.",
+        "A página da CASAN data a Resolução ARESC 389 de 13/01/2026; o ato original é de 12/02/2026. Os atos de ARIS (Deliberação 003/2026), AGIR (Decisão 321) e CISAM-SUL (Resolução CREFISBA 07/2026), citados pela CASAN, não foram lidos, e a data de publicação no Diário Oficial de Santa Catarina não foi verificada em fonte oficial.",
+        "Verificação cruzada feita pelo gerador: TFDI e faixas da residencial e da social anterior reproduzem a aba 2025 da calculadora vezes 1,058 ao centavo; a social da Lei 14.898/2024 é metade da residencial na TFDI e na primeira faixa. A tabela de março de 2025 (45,72) reproduz a de 2024 (43,31) vezes 1,0556, o reajuste da Resolução ARESC 321/2025.",
+    ],
+    "exemplosOficiais": {
+        "residencial": {"0": 92.68, "5": 123.48, "10": 154.28, "11": 182.90, "20": 440.48, "25": 583.58, "30": 774.98, "50": 1540.58, "51": 1588.74, "60": 2022.18},
+        "social": {"0": 46.34, "10": 77.14, "15": 92.54, "16": 121.16, "20": 235.64, "25": 378.74, "30": 570.14, "50": 1335.74, "51": 1383.90, "60": 1817.34},
+    },
+    "exemplos": {"social_anterior": {"10": 28.86, "20": 111.06}},
+    "acessado": "2026-10-17",
+}
+
+
+def confere_reajuste_casan():
+    """TFDI e faixas de 2026 = tabela de 2025 vezes 1,058 ao centavo; social federal = metade da residencial na TFDI e na faixa de 0 a 15 m³."""
+    fator = d(CASAN_REAJUSTE_2026)
+    centavo = Decimal("0.01")
+    erros = []
+
+    def q(x):
+        return d(x).quantize(centavo, rounding=ROUND_HALF_UP)
+
+    for cat, atual in CASAN_2026.items():
+        antes = CASAN_2025[cat]
+        if q(d(antes["tfdi"]) * fator) != d(atual["tfdi"]):
+            erros.append(f"CASAN {cat} TFDI: {antes['tfdi']} × {fator} = {q(d(antes['tfdi']) * fator)}, a tabela traz {atual['tfdi']}")
+        for i, (a, n) in enumerate(zip(antes["precos"], atual["precos"])):
+            if q(d(a) * fator) != d(n):
+                erros.append(f"CASAN {cat} faixa {i + 1}: {a} × {fator} = {q(d(a) * fator)}, a tabela traz {n}")
+    res = CASAN_2026["residencial"]
+    soc = CASAN_SOCIAL_FEDERAL
+    if q(d(res["tfdi"]) / 2) != d(soc["tfdi"]):
+        erros.append(f"CASAN social federal TFDI: metade de {res['tfdi']} é {q(d(res['tfdi']) / 2)}, a tabela traz {soc['tfdi']}")
+    if q(d(res["precos"][0]) / 2) != d(soc["precos"][0]):
+        erros.append(f"CASAN social federal 0 a 15 m³: metade de {res['precos'][0]} é {q(d(res['precos'][0]) / 2)}, a tabela traz {soc['precos'][0]}")
+    if res["precos"][1:] != soc["precos"][1:]:
+        erros.append("CASAN social federal: faixas acima de 15 m³ deveriam ser as da residencial")
+    # reajuste anterior (Resolução ARESC 321/2025): 43,31 × 1,0556 = 45,72
+    if q(d("43.31") * d("1.0556")) != d("45.72"):
+        erros.append("CASAN: 43,31 × 1,0556 não dá a TFDI de março de 2025 (45,72)")
+    return erros
+
+
 def d(x):
     return Decimal(str(x))
 
@@ -457,7 +561,7 @@ def main():
 
     sp_curitiba = sanepar(85, "curitiba", "Curitiba (esgoto a 85% da fatura de água; 50% no Água Solidária)")
     sp_demais = sanepar(80, "demais", "Demais localidades operadas pela SANEPAR (esgoto a 80% da fatura de água; 50% no Água Solidária), exceto Pontal do Paraná, Matinhos e Guaratuba")
-    lista = [compesa, copasa, sabesp, sp_curitiba, sp_demais, caesb, saneago]
+    lista = [compesa, copasa, sabesp, sp_curitiba, sp_demais, caesb, saneago, casan]
 
     def mun(pid):
         p = ps.get(pid)
@@ -474,15 +578,18 @@ def main():
     sp_demais["municipios"] = sorted(m for m in sanepar_mun if m not in ("4106902", "4119954", "4115705", "4109609"))
     caesb["municipios"] = ["5300108"]
     saneago["municipios"] = mun(saneago["prestadorSinisa"])
+    # Barracão (PR, 4102604) consta como atendido pela CASAN no SINISA 2024, mas a tabela estadual vale em Santa Catarina
+    casan["municipios"] = sorted(m for m in mun(casan["prestadorSinisa"]) if m.startswith("42"))
 
-    erros = confere_reajuste_2026()
+    erros = confere_reajuste_2026() + confere_reajuste_casan()
     for t in lista:
         t.setdefault("acessado", ACESSO)
-        for cat, ex in t.get("exemplos", {}).items():
-            for c, esperado in ex.items():
-                obtido = conta(t["categorias"][cat], int(c))
-                if obtido != d(esperado):
-                    erros.append(f"{t['id']} {cat} {c} m³: obtido {obtido}, esperado {esperado}")
+        for chave in ("exemplos", "exemplosOficiais"):
+            for cat, ex in t.get(chave, {}).items():
+                for c, esperado in ex.items():
+                    obtido = conta(t["categorias"][cat], int(c))
+                    if obtido != d(esperado):
+                        erros.append(f"{t['id']} {cat} {c} m³ ({chave}): obtido {obtido}, esperado {esperado}")
     if erros:
         raise SystemExit("exemplos não conferem:\n" + "\n".join(erros))
     os.makedirs(os.path.dirname(DESTINO), exist_ok=True)

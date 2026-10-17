@@ -65,6 +65,15 @@ ACRESCIMOS = [
      "decisao": "4,845% linear para as tarifas e para o custo mínimo fixo; estrutura tarifária homologada em anexo único", "ato": "Resolução Conjunta 1/2026 AGR/AMAE, 24/02/2026", "data": "2026-02-24",
      "vigencia": "a partir de 01/04/2026", "url": "https://www.saneago.com.br/2025/arquivos/Resolucao_Normativa_Conjunta_1-2026_AGR-AMAE_Reajuste_Tarifario_2026.pdf", "verificado": True,
      "obs": "Resolução conjunta da AGR com a AMAE (Rio Verde). Mesmo texto e mesma tabela nas resoluções conjuntas AGR/AR (25/02/2026) e AGR/ARM (assinada em 27/02/2026), conferidas na imagem do anexo."},
+    # CASAN (ARESC): reajustes anuais lidos nos atos publicados no site do regulador, em 17/10/2026.
+    {"prestador": "CASAN", "area": "Municípios atendidos pela CASAN em Santa Catarina", "regulador": "ARESC", "tipo": "reajuste", "pedido": "Processo ARESC 2745/2024; Nota Técnica ARESC 020/2024",
+     "decisao": "5,56% nas tarifas de água e esgoto e na tabela de serviços e infrações, pelo IPCA de abril de 2023 a setembro de 2024", "ato": "Resolução ARESC 321, 21/01/2025", "data": "2025-01-21",
+     "vigencia": "reajuste aplicável 30 dias após a publicação (a CASAN aplicou a tabela de março de 2025)", "url": "https://aresc.sc.gov.br/wp-content/uploads/2025/10/RESOLUCAO-ARESC-No-321.pdf", "verificado": True,
+     "obs": "O considerando cita a Resolução ARESC 258/2023 (reajuste anterior) e a 281/2024 (revisão tarifária), ambas não lidas."},
+    {"prestador": "CASAN", "area": "Municípios atendidos pela CASAN em Santa Catarina", "regulador": "ARESC", "tipo": "reajuste", "pedido": "Processo ARESC 113/2026; Nota Técnica ARESC 002/2026 (não lida)",
+     "decisao": "5,80% nas tarifas de água e esgoto e na tabela de serviços e infrações, pelo IPCA de outubro de 2024 a dezembro de 2025", "ato": "Resolução ARESC 389, 12/02/2026", "data": "2026-02-12",
+     "vigencia": "reajuste aplicável 30 dias após a publicação (art. 2º); a CASAN publica a tabela como válida desde 01/04/2026", "url": "https://aresc.sc.gov.br/wp-content/uploads/2026/02/RESOLUCAO-ARESC-No-389.pdf", "verificado": True,
+     "obs": "A página da CASAN data este ato de 13/01/2026; o original é de 12/02/2026. ARIS, AGIR e CISAM-SUL também autorizaram o reajuste, segundo a CASAN; esses atos não foram lidos."},
 ]
 
 
@@ -105,7 +114,7 @@ def main():
     for i, a in enumerate(atos):
         a["id"] = f"ato-{i + 1:03d}"
     with open(DESTINO, "w", encoding="utf-8") as fh:
-        json.dump({"levantado_em": "2026-10-14", "levantado_por_prestador": {"SANEAGO": "2026-10-17"}, "atos": atos}, fh, ensure_ascii=False, indent=1)
+        json.dump({"levantado_em": "2026-10-14", "levantado_por_prestador": {"SANEAGO": "2026-10-17", "CASAN": "2026-10-17"}, "atos": atos}, fh, ensure_ascii=False, indent=1)
         fh.write("\n")
     print(f"{len(atos)} atos; verificados {sum(a['verificado'] for a in atos)}")
 

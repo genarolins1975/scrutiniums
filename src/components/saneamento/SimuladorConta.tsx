@@ -71,7 +71,7 @@ export function SimuladorConta() {
     }
     return pts;
   }, []);
-  const cores = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)", "var(--escala-seq-3)", "var(--san-div-neg-2)", "var(--escala-seq-5)"];
+  const cores = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)", "var(--escala-seq-3)", "var(--san-div-neg-2)", "var(--escala-seq-5)", "var(--san-div-neg-1)"];
 
   const exportar = () => {
     const cab = ["tabela", "prestador", "uf", "regulador", "ato", "vigencia", "categoria", "consumo_m3", "agua_R$", "esgoto_R$", "total_R$"];
