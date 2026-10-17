@@ -5,10 +5,13 @@
  *
  * Não altera texto, estado, fonte nem definição de verbete: lê o acervo e a pergunta prática (perguntas-praticas.ts).
  */
+import type { Idioma } from "@/lib/idioma";
 import { normalizaBusca } from "../aprenda-busca";
 import { dataBR, plural } from "../formato";
+import { idiomaEnergia, tx } from "../idioma";
+import { rotuloGrupoConceito, rotuloModuloEn } from "../i18n/aprenda";
 import { DESTINOS_NAVEGACAO } from "../navegacao";
-import { CONCEITOS, GRUPOS, type Conceito, type GrupoConceito } from "./conceitos";
+import { CONCEITOS_IDIOMAS, GRUPOS, type Conceito, type GrupoConceito } from "./conceitos";
 import { perguntaPratica } from "./perguntas-praticas";
 import { provaDoVerbete } from "./provas";
 import { comVolta } from "./trilhas";
@@ -34,7 +37,8 @@ export type ItemDoIndice = {
   busca: string;
 };
 
-export type GrupoDoIndice = { id: string; nome: GrupoConceito; itens: ItemDoIndice[] };
+/** `nome` é a chave portuguesa do tema (âncora e filtro); `rotulo`, o nome que a página mostra no idioma dela. */
+export type GrupoDoIndice = { id: string; nome: GrupoConceito; rotulo: string; itens: ItemDoIndice[] };
 
 /** Identificador de âncora do tema: sem acento, espaço nem maiúscula (#g-preco, #g-qualidade-e-perdas). */
 export function idDoGrupo(g: string): string {
@@ -42,9 +46,10 @@ export function idDoGrupo(g: string): string {
 }
 
 /** Nome da página de destino pelo primeiro trecho do caminho ("/setor-eletrico/pld#cmo" → "Preço de curto prazo (PLD)"). */
-function rotuloDoModulo(href: string): string | null {
+function rotuloDoModulo(href: string, idioma: Idioma = idiomaEnergia()): string | null {
   const caminho = href.split("#")[0].split("?")[0];
   const segmento = caminho.replace(/^\/setor-eletrico\/?/, "").split("/")[0];
+  if (idioma === "en") return rotuloModuloEn(segmento);
   return DESTINOS_NAVEGACAO.find((d) => d.href === `/setor-eletrico/${segmento}`)?.rotulo ?? null;
 }
 
@@ -54,7 +59,7 @@ function rotuloDoModulo(href: string): string | null {
  */
 function rotuloDoPainel(rotulo: string | undefined, href: string): string {
   if (rotulo?.includes(":")) return rotulo;
-  return rotuloDoModulo(href) ?? rotulo ?? "Painel";
+  return rotuloDoModulo(href) ?? rotulo ?? tx("Painel", "Panel");
 }
 
 /**
@@ -78,10 +83,12 @@ export function destinoNoPainel(c: Conceito): DestinoNoPainel | null {
   return conferido ? { rotulo: destino.rotulo, href: comVolta(destino.href, `verbete:${c.slug}`) } : destino;
 }
 
-export function itemDoIndice(c: Conceito): ItemDoIndice {
+export function itemDoIndice(c: Conceito, idioma: Idioma = idiomaEnergia()): ItemDoIndice {
   const conferido = c.estado === "CONFERIDO";
   const estado: EstadoDoVerbete = !conferido ? "preparacao" : c.ressalva ? "ressalva" : "conferido";
-  const pergunta = conferido ? perguntaPratica(c.slug) : null;
+  const pergunta = conferido ? perguntaPratica(c.slug, idioma) : null;
+  // na página inglesa, o nome português do verbete também acha o verbete (quem lê a sigla por extenso numa fonte brasileira)
+  const nomeOriginal = idioma === "en" ? CONCEITOS_IDIOMAS.pt.find((x) => x.slug === c.slug)?.nome : undefined;
   const mesmoNome = !!c.sigla && c.sigla.toLowerCase() === c.nome.toLowerCase();
   // o que a busca lê: a definição de verbete conferido, ou a fonte planejada de verbete em preparação (nunca uma definição escrita à parte)
   const texto = conferido ? (c.emPalavrasSimples ?? c.emUmaFrase ?? "") : (c.fontePlanejada ?? "");
@@ -94,7 +101,17 @@ export function itemDoIndice(c: Conceito): ItemDoIndice {
     estado,
     painel: destinoNoPainel(c),
     busca: normalizaBusca(
-      [pergunta, c.sigla, c.nome, c.slug.replace(/-/g, " "), c.grupo, estado === "preparacao" ? "em preparação" : "", estado === "ressalva" ? "com ressalva" : "", texto]
+      [
+        pergunta,
+        c.sigla,
+        c.nome,
+        nomeOriginal,
+        c.slug.replace(/-/g, " "),
+        rotuloGrupoConceito(c.grupo, idioma),
+        estado === "preparacao" ? tx("em preparação", "in preparation", idioma) : "",
+        estado === "ressalva" ? tx("com ressalva", "with caveat", idioma) : "",
+        texto,
+      ]
         .filter(Boolean)
         .join(" "),
     ),
@@ -102,8 +119,14 @@ export function itemDoIndice(c: Conceito): ItemDoIndice {
 }
 
 /** Os verbetes agrupados por tema, na ordem de `GRUPOS`; só entram os temas que têm verbete. */
-export function gruposDoIndice(): GrupoDoIndice[] {
-  return GRUPOS.map((g) => ({ id: idDoGrupo(g), nome: g, itens: CONCEITOS.filter((c) => c.grupo === g).map(itemDoIndice) }));
+export function gruposDoIndice(idioma: Idioma = idiomaEnergia()): GrupoDoIndice[] {
+  const acervo = CONCEITOS_IDIOMAS[idioma];
+  return GRUPOS.map((g) => ({
+    id: idDoGrupo(g),
+    nome: g,
+    rotulo: rotuloGrupoConceito(g, idioma),
+    itens: acervo.filter((c) => c.grupo === g).map((c) => itemDoIndice(c, idioma)),
+  }));
 }
 
 export type ResumoDoAcervo = {
@@ -119,6 +142,7 @@ export type ResumoDoAcervo = {
 };
 
 export function resumoDoAcervo(): ResumoDoAcervo {
+  const CONCEITOS = CONCEITOS_IDIOMAS.pt;
   const conferidos = CONCEITOS.filter((c) => c.estado === "CONFERIDO");
   const datas = conferidos.map((c) => c.conferidoEm).filter((d): d is string => !!d).sort();
   return {
@@ -135,14 +159,21 @@ export function resumoDoAcervo(): ResumoDoAcervo {
 /** Período das conferências, em uma expressão ("em 07/10/2026" ou "entre 28/09/2026 e 07/10/2026"); vazio sem data. */
 function periodoDasConferencias(r: ResumoDoAcervo): string {
   if (!r.de || !r.ate) return "";
-  return r.de === r.ate ? ` em ${dataBR(r.de)}` : ` entre ${dataBR(r.de)} e ${dataBR(r.ate)}`;
+  return r.de === r.ate ? tx(` em ${dataBR(r.de)}`, ` on ${dataBR(r.de)}`) : tx(` entre ${dataBR(r.de)} e ${dataBR(r.ate)}`, ` between ${dataBR(r.de)} and ${dataBR(r.ate)}`);
 }
 
 /** Recorte da abertura: quantos verbetes, em que estado e quando foram conferidos. */
 export function recorteDoAcervo(r: ResumoDoAcervo): string {
   const quando = periodoDasConferencias(r);
-  if (r.pendentes === 0) return `${plural(r.total, "verbete", "verbetes")}, ${r.total === 1 ? "conferido" : "todos conferidos"} na fonte primária${quando}`;
-  return `${plural(r.total, "verbete", "verbetes")}: ${r.conferidos} conferidos na fonte primária${quando} e ${r.pendentes} em preparação`;
+  if (r.pendentes === 0)
+    return tx(
+      `${plural(r.total, "verbete", "verbetes")}, ${r.total === 1 ? "conferido" : "todos conferidos"} na fonte primária${quando}`,
+      `${plural(r.total, "entry", "entries")}, ${r.total === 1 ? "checked" : "all checked"} against the primary source${quando}`,
+    );
+  return tx(
+    `${plural(r.total, "verbete", "verbetes")}: ${r.conferidos} conferidos na fonte primária${quando} e ${r.pendentes} em preparação`,
+    `${plural(r.total, "entry", "entries")}: ${r.conferidos} checked against the primary source${quando} and ${r.pendentes} in preparation`,
+  );
 }
 
 /**
@@ -151,15 +182,30 @@ export function recorteDoAcervo(r: ResumoDoAcervo): string {
  */
 export function estadosDoAcervo(r: ResumoDoAcervo): string {
   const partes: string[] = [];
-  if (r.pendentes === 0) partes.push(r.total === 1 ? "O verbete está conferido na fonte primária." : `Os ${r.total} verbetes estão conferidos na fonte primária.`);
-  else partes.push(`${r.conferidos} de ${r.total} verbetes estão conferidos na fonte primária.`);
+  if (r.pendentes === 0)
+    partes.push(
+      r.total === 1
+        ? tx("O verbete está conferido na fonte primária.", "The entry is checked against the primary source.")
+        : tx(`Os ${r.total} verbetes estão conferidos na fonte primária.`, `All ${r.total} entries are checked against the primary source.`),
+    );
+  else partes.push(tx(`${r.conferidos} de ${r.total} verbetes estão conferidos na fonte primária.`, `${r.conferidos} of ${r.total} entries are checked against the primary source.`));
   if (r.comRessalva > 0) {
     const sujeito = r.comRessalva === 1 ? "O verbete marcado" : `Os ${r.comRessalva} verbetes marcados`;
-    partes.push(`${sujeito} com ◐ ${r.comRessalva === 1 ? "traz" : "trazem"} uma ressalva declarada no próprio verbete: a fonte que define o termo não foi lida ou não o define.`);
+    partes.push(
+      tx(
+        `${sujeito} com ◐ ${r.comRessalva === 1 ? "traz" : "trazem"} uma ressalva declarada no próprio verbete: a fonte que define o termo não foi lida ou não o define.`,
+        `${r.comRessalva === 1 ? "The entry marked" : `The ${r.comRessalva} entries marked`} with ◐ ${r.comRessalva === 1 ? "carries" : "carry"} a caveat declared in the entry itself: the source that defines the term was not read or does not define it.`,
+      ),
+    );
   }
   if (r.pendentes > 0) {
     const sujeito = r.pendentes === 1 ? "O verbete marcado" : `Os ${r.pendentes} verbetes marcados`;
-    partes.push(`${sujeito} com ○ ${r.pendentes === 1 ? "está" : "estão"} em preparação, sem definição publicada, com o que já foi consultado e o que falta.`);
+    partes.push(
+      tx(
+        `${sujeito} com ○ ${r.pendentes === 1 ? "está" : "estão"} em preparação, sem definição publicada, com o que já foi consultado e o que falta.`,
+        `${r.pendentes === 1 ? "The entry marked" : `The ${r.pendentes} entries marked`} with ○ ${r.pendentes === 1 ? "is" : "are"} in preparation, without a published definition, with what has already been consulted and what is missing.`,
+      ),
+    );
   }
   return partes.join(" ");
 }
