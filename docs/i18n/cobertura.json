@@ -10,10 +10,10 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "b389804ccf0409ca55ff3bfb417804379a744630d71ea631ee709303c1721273",
-    "arquivos_analisados": 1062,
-    "fontes_sha256": "d9dd11da1487595ce83973f3ea6a81d617b60d4304d84f2431efefd0ee87c0f9",
-    "pendencias_sha256": "93db82fb610456e1a4afef5484b3ffcae091f3aa2a15cb38ace6207183cb67d7",
+    "inventario_sha256": "babd92c791425489e2dea65ecd86ed977a1283f433fbeedae6771a9f2a3d45e2",
+    "arquivos_analisados": 1067,
+    "fontes_sha256": "e6c16a4a0e9ac8d91109c0b3b16696da3b5ddc85a79468e6a8851c7facfd3c63",
+    "pendencias_sha256": "c82eed9f049ad388202ce32627077e49848a7e16edc91551488149313de358e6",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -133,20 +133,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 203,
+        "arquivos": 207,
         "candidatos": {
-          "jsx_text": 626,
-          "atributos": 187,
-          "props": 630,
-          "outros_literais": 3260,
-          "templates": 382,
-          "expressoes_nao_resolvidas": 1998,
-          "chaves_objetos": 2452
+          "jsx_text": 569,
+          "atributos": 182,
+          "props": 634,
+          "outros_literais": 3281,
+          "templates": 385,
+          "expressoes_nao_resolvidas": 2134,
+          "chaves_objetos": 2497
         },
         "exclusoes": {
-          "importacoes": 837,
-          "atributos_tecnicos": 1168,
-          "tipos": 193
+          "importacoes": 870,
+          "atributos_tecnicos": 1154,
+          "tipos": 199
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -155,7 +155,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 9535,
+        "candidatos_nao_catalogados": 9682,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -167,14 +167,14 @@
         "paginas_pt_fora_do_adaptador": 4,
         "paginas_pt_literais_sem_irma": 12,
         "pares_estruturais": 12,
-        "fallbacks_declarados": 11,
+        "fallbacks_declarados": 8,
         "paridade_verificada": false,
         "parciais_declarados": 1
       },
       "conteudo_adicional": {
-        "arquivos": 3,
-        "linhas_nao_vazias": 45,
-        "candidatos_nao_catalogados": 65,
+        "arquivos": 4,
+        "linhas_nao_vazias": 90,
+        "candidatos_nao_catalogados": 115,
         "scripts_embutidos": {}
       },
       "cobertura_completa": false
@@ -280,17 +280,17 @@
       "interface": {
         "arquivos": 57,
         "candidatos": {
-          "jsx_text": 1001,
+          "jsx_text": 1005,
           "atributos": 231,
           "props": 1483,
-          "outros_literais": 2765,
-          "templates": 317,
-          "expressoes_nao_resolvidas": 2113,
-          "chaves_objetos": 3705
+          "outros_literais": 2777,
+          "templates": 319,
+          "expressoes_nao_resolvidas": 2119,
+          "chaves_objetos": 3718
         },
         "exclusoes": {
           "importacoes": 395,
-          "atributos_tecnicos": 1269,
+          "atributos_tecnicos": 1270,
           "tipos": 141
         },
         "scripts_embutidos": {},
@@ -300,7 +300,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 11615,
+        "candidatos_nao_catalogados": 11652,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -799,7 +799,7 @@
         "pt": "/sobre",
         "en": "/en/sobre",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/sobre/page.tsx",
           "en": "src/app/en/sobre/page.tsx"
@@ -810,7 +810,7 @@
         "pt": "/sobre/erros",
         "en": "/en/sobre/erros",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/sobre/erros/page.tsx",
           "en": "src/app/en/sobre/erros/page.tsx"
@@ -821,7 +821,7 @@
         "pt": "/sobre/governanca",
         "en": "/en/sobre/governanca",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/sobre/governanca/page.tsx",
           "en": "src/app/en/sobre/governanca/page.tsx"
@@ -841,7 +841,7 @@
       }
     ],
     "pares_estruturais": 13,
-    "fallbacks_declarados": 12,
+    "fallbacks_declarados": 9,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false
   },

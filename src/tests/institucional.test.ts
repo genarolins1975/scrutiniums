@@ -65,16 +65,17 @@ describe("campos institucionais", () => {
 
 describe("/sobre e rodapés", () => {
   it("a página tem política de correção, como citar e contato, e só renderiza as seções institucionais preenchidas", () => {
-    const p = ler("src/app/sobre/page.tsx");
+    const p = ler("src/components/institucional/SobreConteudo.tsx");
     for (const id of ['id="correcao"', 'id="citar"', 'id="contato"']) expect(p).toContain(id);
-    expect(p).toContain("secoesInstitucionais()");
-    expect(p).toContain('href="/sobre/erros"');
+    expect(p).toContain("secoesInstitucionais(INSTITUCIONAL, idioma)");
+    expect(p).toContain('h("/sobre/erros")');
     expect(p).not.toMatch(/projeto pessoal|associação|fundação|financiado por/i);
   });
 
   it("/sobre está no rodapé de todos os observatórios", () => {
     const footer = ler("src/components/layout/Footer.tsx");
-    expect(footer.match(/href="\/sobre"/g)?.length).toBe(2); // rodapé completo e compacto
+    expect(footer.match(/href="\/sobre"/g)?.length).toBe(1); // rodapé compacto
+    expect(footer).toContain('href={h("/sobre")}'); // rodapé completo, no idioma da página
     expect(ler("src/app/setor-eletrico/layout.tsx")).toContain("<Footer compacto />");
     expect(ler("src/app/eficiencia-estatal/layout.tsx")).toContain("<Footer />");
     expect(ler("src/app/gas-natural/layout.tsx")).toContain("<Footer />");
@@ -96,5 +97,6 @@ describe("/sobre e rodapés", () => {
     expect(dataOuNaoApurado(null)).toBe("não apurado");
     expect(dataOuNaoApurado("2026-09-05")).toBe("05/09/2026");
     expect(ler("src/app/sobre/erros/page.tsx")).toContain('export const dynamic = "force-static"');
+    expect(ler("src/app/en/sobre/erros/page.tsx")).toContain('export const dynamic = "force-static"');
   });
 });

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { navCabecalho } from "@/components/layout/navCabecalho";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
+import type { Idioma } from "@/lib/idioma";
 
 // Uma consulta por carregamento de página, compartilhada pelas duas linhas de abas.
 let consulta: Promise<boolean> | null = null;
@@ -20,7 +21,7 @@ function temSessao(): Promise<boolean> {
  * destino do visitante (funciona sem JavaScript) e, se o navegador tiver sessão,
  * passa a apontar para o painel, como para quem entrou pela página inicial.
  */
-export function AbasCabecalho({ logadoNoServidor, className }: { logadoNoServidor: boolean; className: string }) {
+export function AbasCabecalho({ logadoNoServidor, className, idioma = "pt" }: { logadoNoServidor: boolean; className: string; idioma?: Idioma }) {
   const [logado, setLogado] = useState(logadoNoServidor);
   useEffect(() => {
     if (logadoNoServidor) return;
@@ -34,7 +35,7 @@ export function AbasCabecalho({ logadoNoServidor, className }: { logadoNoServido
   }, [logadoNoServidor]);
   return (
     <>
-      {navCabecalho(logado).map((item) => (
+      {navCabecalho(logado, idioma).map((item) => (
         <Link key={item.label} href={item.href} prefetch={prefetchDoLink(item.href)} className={className}>
           {item.label}
         </Link>

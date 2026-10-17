@@ -9,6 +9,14 @@ import { documentoEstatico, modoDaPagina } from "./suporte/i18n-build";
 import { criarNavegadorI18n, type NavegadorI18n } from "./suporte/i18n-browser";
 import { INDICE_HOME, verificarHomeParcial, verificarHeadHome } from "./suporte/i18n-home";
 import { cenarioDinamico, verificarFallbackDinamico, type CapturaAnunciador } from "./suporte/i18n-dinamico";
+import { verificarCorpoTraduzido, verificarHeadTraduzido } from "./suporte/i18n-traduzido";
+
+/** Títulos esperados das irmãs traduzidas, escritos aqui e não lidos do catálogo. */
+const TITULOS_TRADUZIDOS: Record<string, { pt: string; en: string }> = {
+  "/sobre": { pt: "Sobre a Scrutiniums", en: "About Scrutiniums" },
+  "/sobre/erros": { pt: "Registro público de erros", en: "Public error log" },
+  "/sobre/governanca": { pt: "Governança editorial", en: "Editorial governance" },
+};
 import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
 
 const APP = join(process.cwd(), ".next", "server", "app");
@@ -72,64 +80,34 @@ describe("detector DOM de vazamento de idioma", () => {
 });
 
 describe(`Sobre: HTML estático PT/EN (${EXIGIR ? "build obrigatório" : "build local opcional"})`, () => {
-  it("gera os dois documentos estáticos com idioma correto e as mesmas fontes", (ctx) => {
+  it("gera os dois documentos estáticos com idioma correto, head próprio e alternates recíprocos", (ctx) => {
     const { pt, en } = documentos(ctx);
     expect(attr(tag(pt, "html"), "lang")).toBe("pt-BR");
     expect(attr(tag(en, "html"), "lang")).toBe("en");
-    expect(attr(tag(pt, "html"), "class")).toBeTruthy();
     expect(attr(tag(en, "html"), "class")).toBe(attr(tag(pt, "html"), "class"));
     for (const doc of [pt, en]) expect(attr(tag(doc, "body"), "class")).toBe("min-h-screen bg-marfim text-carvao");
     expect(texto(tag(pt, "title"))).toBe("Sobre a Scrutiniums · Scrutiniums");
-    expect(texto(tag(en, "title"))).toBe("Scrutiniums · Portuguese only");
-    expect(meta(en, "description")).toEqual(["Portuguese only"]);
+    expect(texto(tag(en, "title"))).toBe("About Scrutiniums · Scrutiniums");
     expect(meta(pt, "description")).toEqual(["Quem mantém a plataforma, como ela se financia, que regras editoriais seguem as notas, como erros são corrigidos e registrados, como citar, sob qual licença e como entrar em contato."]);
-  });
-
-  it("preserva canonical, omite hreflangs do fallback e impede indexação inglesa", (ctx) => {
-    const { pt, en } = documentos(ctx);
+    expect(meta(en, "description")).toEqual(["Who maintains the platform, how it is funded, which editorial rules the notes follow, how errors are corrected and recorded, how to cite, under which license and how to get in touch."]);
+    const alternates = [["en", "https://scrutiniums.com/en/sobre"], ["pt-BR", "https://scrutiniums.com/sobre"], ["x-default", "https://scrutiniums.com/sobre"]];
     for (const [doc, canonical] of [[pt, "https://scrutiniums.com/sobre"], [en, "https://scrutiniums.com/en/sobre"]] as const) {
       expect(links(doc, "canonical").map((e) => attr(e, "href"))).toEqual([canonical]);
       expect(links(doc, "alternate").filter((e) => attr(e, "hreflang") !== undefined)
-        .map((e) => [attr(e, "hreflang"), attr(e, "href")]).sort()).toEqual([]);
+        .map((e) => [attr(e, "hreflang"), attr(e, "href")]).sort()).toEqual(alternates);
+      expect(meta(doc, "robots").some((valor) => /\bnoindex\b/.test(valor))).toBe(false);
     }
-    expect(meta(en, "robots").some((valor) => /\bnoindex\b/.test(valor))).toBe(true);
-  });
-
-  it("preserva a imagem social PT e impede herança portuguesa no cartão EN", (ctx) => {
-    const { pt, en } = documentos(ctx);
     expect(meta(pt, "og:locale")).toEqual(["pt_BR"]);
-    expect(meta(pt, "og:locale:alternate")).toEqual(["en_US"]);
     expect(meta(en, "og:locale")).toEqual(["en_US"]);
-    expect(meta(en, "og:locale:alternate")).toEqual(["pt_BR"]);
-    for (const [doc, url] of [[pt, "https://scrutiniums.com/sobre"], [en, "https://scrutiniums.com/en/sobre"]] as const) {
-      expect(meta(doc, "og:url")).toEqual([url]);
-      expect(meta(doc, "og:site_name")).toEqual(["Scrutiniums"]);
-      expect(meta(doc, "og:type")).toEqual(["website"]);
-    }
-    expect(meta(pt, "og:image").length).toBeGreaterThan(0);
-    expect(meta(pt, "twitter:card")).toEqual(["summary_large_image"]);
-    expect(meta(en, "twitter:card")).toEqual(["summary"]);
-    for (const nome of ["og:image", "og:image:alt", "twitter:image", "twitter:image:alt"]) expect(meta(en, nome), nome).toEqual([]);
-    for (const nome of ["og:title", "twitter:title"]) expect(meta(en, nome), nome).toEqual(["Scrutiniums · Portuguese only"]);
-    for (const nome of ["og:description", "twitter:description"]) expect(meta(en, nome), nome).toEqual(["Portuguese only"]);
   });
 
-  it("conserva integralmente texto, números, atributos e links PT dentro da ilha EN", (ctx) => {
+  it("traduz o corpo inteiro, inclusive cabeçalho e rodapé, sem região portuguesa", (ctx) => {
     const { pt, en } = documentos(ctx);
-    const corpoPt = tag(pt, "body");
     const corpoEn = tag(en, "body");
-    const ilha = unico(corpoEn, (e) => attr(e, "data-i18n-estado") === "portugues_marcado", "ilha portuguesa");
-    const aviso = unico(corpoEn, (e) => attr(e, "data-i18n-aviso") !== undefined, "aviso visível");
-    expect(attr(ilha, "lang")).toBe("pt-BR");
-    expect(attr(aviso, "lang")).toBe("en");
-    expect(texto(aviso).trim()).toBe("Portuguese only");
-    expect(oculto(aviso)).toBe(false);
-    expect(conteudo(ilha)).toEqual(conteudo(corpoPt));
-    expect(conteudo(corpoEn)).toHaveLength(2);
-    expect(elementos(ilha).some((e) => e.tagName === "header")).toBe(true);
-    expect(elementos(ilha).some((e) => e.tagName === "footer")).toBe(true);
-    expect(texto(tag(ilha, "h1"))).toBe("Sobre a Scrutiniums");
-    expect(elementos(corpoPt).some((e) => attr(e, "data-i18n-estado") !== undefined)).toBe(false);
+    expect(elementos(corpoEn).some((e) => attr(e, "data-i18n-estado") !== undefined)).toBe(false);
+    expect(texto(tag(corpoEn, "h1"))).toBe("About Scrutiniums");
+    expect(elementos(corpoEn).some((e) => e.tagName === "header")).toBe(true);
+    expect(elementos(corpoEn).some((e) => e.tagName === "footer")).toBe(true);
     expect(vazamentos(en, "en")).toEqual([]);
     expect(vazamentos(pt, "pt")).toEqual([]);
   });
@@ -217,6 +195,12 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
       verificarHeadHome(pt, en);
       return;
     }
+    if (par.conteudo === "traduzido") {
+      const titulos = TITULOS_TRADUZIDOS[par.pt];
+      expect(titulos, `títulos esperados para ${par.pt}`).toBeDefined();
+      verificarHeadTraduzido(pt, en, par, titulos);
+      return;
+    }
     expect(par.conteudo).toBe("portugues_marcado");
     expect(meta(en, "robots").some((valor) => /\bnoindex\b/.test(valor))).toBe(true);
     expect(meta(en, "og:site_name")).toEqual(["Scrutiniums"]);
@@ -261,6 +245,10 @@ describe.each(PARES_DE_IDIOMA)("HTML de cada irmã declarada: $pt ↔ $en", (par
     if (par.conteudo === "parcialmente_traduzido") {
       expect(par.pt).toBe("/");
       verificarHomeParcial(pt, en);
+      return;
+    }
+    if (par.conteudo === "traduzido") {
+      verificarCorpoTraduzido(pt, en, par);
       return;
     }
     expect(par.conteudo).toBe("portugues_marcado");

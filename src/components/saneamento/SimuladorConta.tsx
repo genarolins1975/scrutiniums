@@ -47,6 +47,10 @@ export function SimuladorConta() {
   const fora = acimaDoLimite(cat, consumo);
   const conta = fora ? null : calcularConta(cat, consumo, adicionais);
   const l = fora ? null : leituras(t, catId, consumo);
+  // volume faturado pela tabela escolhida (inteiro quando o prestador despreza a fração de m³) e o que é mostrado ao leitor
+  const efetivo = conta?.consumo ?? consumo;
+  const fmtC = (x: number) => numero(x, x % 1 ? 1 : 0);
+  const algumaInteira = TARIFAS.some((x) => Object.values(x.categorias).some((c) => c.consumoInteiro));
 
   const comparacao = useMemo(
     () =>
@@ -71,7 +75,7 @@ export function SimuladorConta() {
     }
     return pts;
   }, []);
-  const cores = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)", "var(--escala-seq-3)", "var(--san-div-neg-2)", "var(--escala-seq-5)", "var(--san-div-neg-1)"];
+  const cores = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)", "var(--escala-seq-3)", "var(--san-div-neg-2)", "var(--escala-seq-5)", "var(--san-div-neg-1)", "var(--serie-comp-5)"];
 
   const exportar = () => baixarCsv("saneamento-contas-simuladas.csv", CABECALHO_EXPORTACAO, linhasExportacao(TARIFAS));
 
@@ -137,8 +141,13 @@ export function SimuladorConta() {
       <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <section aria-labelledby="fatura-titulo" className="min-w-0">
           <h3 id="fatura-titulo" className="font-serif text-xl text-carvao">
-            Conta simulada: {cat.rotulo.toLowerCase()}, {numero(consumo, consumo % 1 ? 1 : 0)} m³, 1 economia
+            Conta simulada: {cat.rotulo.toLowerCase()}, {fmtC(efetivo)} m³, 1 economia
           </h3>
+          {conta && efetivo !== consumo && (
+            <p className="mt-1 text-sm text-carvao-muted">
+              Esta tabela despreza a fração de metro cúbico: {fmtC(consumo)} m³ informados, {fmtC(efetivo)} m³ faturados.
+            </p>
+          )}
           <p className="mt-1 text-sm text-carvao-muted">
             {t.prestador} · {t.ato} · {t.vigencia}
           </p>
@@ -217,7 +226,7 @@ export function SimuladorConta() {
             <div className="border-t border-linha pt-4">
               <dt className="text-carvao-muted">Custo de mais 1 m³</dt>
               <dd className="font-serif text-2xl tabular-nums text-carvao">{l.m3Adicional == null ? "não definido no ato" : reais(l.m3Adicional)}</dd>
-              <dd className="text-xs text-carvao-muted">Quanto a conta sobe ao passar de {numero(consumo, consumo % 1 ? 1 : 0)} para {numero(consumo + 1, consumo % 1 ? 1 : 0)} m³ (água e esgoto).</dd>
+              <dd className="text-xs text-carvao-muted">Quanto a conta sobe ao passar de {fmtC(efetivo)} para {fmtC(efetivo + 1)} m³ (água e esgoto).</dd>
             </div>
           </dl>
           )}
@@ -255,7 +264,7 @@ export function SimuladorConta() {
           onSelecionar={(id) => id && set({ t: id })}
         />
         <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-          Consumo, número de economias e tipo de esgoto (convencional) são os mesmos em todas as barras. Mudam o ato e a data de vigência de cada
+          Consumo, número de economias e tipo de esgoto (convencional) são os mesmos em todas as barras{algumaInteira && consumo % 1 !== 0 ? ", salvo nas tabelas que desprezam a fração de metro cúbico (Corsan), que usam a parte inteira" : ""}. Mudam o ato e a data de vigência de cada
           tabela, que estão na ficha abaixo. Barra ausente: a categoria não tem preço definido no ato para o consumo escolhido (a social da Saneago acima de 20 m³) ou, no esgoto, a cobrança não foi verificada. A diferença de conta não mede qualidade
           nem eficiência do prestador.
         </p>

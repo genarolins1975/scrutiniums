@@ -1,0 +1,58 @@
+import type { Idioma } from "@/lib/idioma";
+import type { TextosPagina } from "./tipos";
+
+const pt = {
+  titulo: "Sobre a Scrutiniums",
+  descricaoMeta: "Quem mantém a plataforma, como ela se financia, que regras editoriais seguem as notas, como erros são corrigidos e registrados, como citar, sob qual licença e como entrar em contato.",
+  rotulo: "Institucional",
+  descricao: (lista: string) => `Plataforma de observatórios com dados oficiais, fonte e data em cada número: ${lista}.`,
+  correcaoTitulo: "Política de correção",
+  correcaoTexto: "Todo erro publicado entra no registro público de erros, com a superfície afetada, a gravidade, a data e o canal de detecção e a correção. Nada é apagado do registro, e campo não apurado fica como não apurado, nunca estimado. Uma auditoria automática roda todo dia 5 sobre as notas aprovadas; erro factual vira errata e entrada no registro.",
+  registroLink: "Registro público de erros",
+  registroContagem: (n: number) => (n === 1 ? "erro registrado" : "erros registrados"),
+  registroConvite: "Encontrou um erro? Escreva pelo contato abaixo, com o endereço da página e o número.",
+  governancaTitulo: "Governança editorial",
+  governancaTexto: "As notas do Observatório do crédito seguem uma Constituição editorial: todo número vem da camada gold, cada parágrafo declara se é evidência ou inferência, há temas vedados e três revisões independentes, e a checagem de números é feita por código.",
+  governancaLink: "Ler a Constituição editorial",
+  citarTitulo: "Como citar",
+  citarAntes: "Cite o observatório, a fonte primária, a data de referência e o endereço da página, de preferência com link. Cada indicador em",
+  citarLink: "Dados abertos",
+  citarDepois: "e cada gráfico do Observatório do crédito tem o botão Copiar citação, que monta esse texto com a data de acesso.",
+  apiAntes: "Para uso por programa, quem tem conta lê os arquivos pela",
+  apiLink: "API de leitura",
+  doi: "Séries depositadas com DOI:",
+  contatoTitulo: "Contato",
+  imprensa: "Imprensa:",
+  imprensaLink: "números citáveis e orientações",
+  dadosPessoais: "Dados pessoais:",
+  privacidadeLink: "política de privacidade",
+};
+
+const en: TextosPagina<typeof pt> = {
+  titulo: "About Scrutiniums",
+  descricaoMeta: "Who maintains the platform, how it is funded, which editorial rules the notes follow, how errors are corrected and recorded, how to cite, under which license and how to get in touch.",
+  rotulo: "Institutional",
+  descricao: (lista: string) => `A platform of observatories built on official data, with the source and date of every number: ${lista}.`,
+  correcaoTitulo: "Corrections policy",
+  correcaoTexto: "Every published error goes into the public error log, with the affected surface, the severity, the date and channel of detection and the fix. Nothing is deleted from the log, and a field that was not established stays marked as not established, never estimated. An automated audit runs on the 5th of every month over the approved notes; a factual error becomes an erratum and an entry in the log.",
+  registroLink: "Public error log",
+  registroContagem: (n: number) => (n === 1 ? "error recorded" : "errors recorded"),
+  registroConvite: "Found an error? Write to the contact below, with the page address and the number.",
+  governancaTitulo: "Editorial governance",
+  governancaTexto: "The notes of the credit observatory follow an Editorial Constitution: every number comes from the gold layer, each paragraph states whether it is evidence or inference, some topics are off limits, there are three independent reviews, and numbers are checked by code.",
+  governancaLink: "Read the Editorial Constitution",
+  citarTitulo: "How to cite",
+  citarAntes: "Cite the observatory, the primary source, the reference date and the page address, preferably with a link. Each indicator under",
+  citarLink: "Open data",
+  citarDepois: "and each chart of the credit observatory has a citation button that builds this text with the access date.",
+  apiAntes: "For programmatic use, account holders read the files through the",
+  apiLink: "read API",
+  doi: "Series deposited with a DOI:",
+  contatoTitulo: "Contact",
+  imprensa: "Press:",
+  imprensaLink: "quotable figures and guidance",
+  dadosPessoais: "Personal data:",
+  privacidadeLink: "privacy policy",
+};
+
+export const TEXTOS_SOBRE: Record<Idioma, TextosPagina<typeof pt>> = { pt, en };

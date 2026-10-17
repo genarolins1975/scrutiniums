@@ -15,9 +15,9 @@
       { "pt": "/imprensa", "conteudo": "portugues_marcado" },
       { "pt": "/observatorio-do-credito", "conteudo": "portugues_marcado" },
       { "pt": "/privacidade", "conteudo": "portugues_marcado" },
-      { "pt": "/sobre", "conteudo": "portugues_marcado" },
-      { "pt": "/sobre/erros", "conteudo": "portugues_marcado" },
-      { "pt": "/sobre/governanca", "conteudo": "portugues_marcado" },
+      { "pt": "/sobre", "conteudo": "traduzido" },
+      { "pt": "/sobre/erros", "conteudo": "traduzido" },
+      { "pt": "/sobre/governanca", "conteudo": "traduzido" },
       { "pt": "/termos", "conteudo": "portugues_marcado" }
     ]
   },
@@ -57,6 +57,7 @@
   "conteudo": [
     { "path": "config/institucional.json", "dominio": "plataforma", "formato": "json" },
     { "path": "docs/CONSTITUICAO.md", "dominio": "plataforma", "formato": "markdown" },
+    { "path": "docs/CONSTITUICAO.en.md", "dominio": "plataforma", "formato": "markdown" },
     { "path": "docs/obee/resultados/revisao-interativa-v3.html", "dinamico": true, "dominio": "eficiencia", "formato": "html" },
     { "path": "docs/api/contrato-gold.json", "dominio": "plataforma", "formato": "json" },
     { "path": "public/obs/data/gold/report.html", "dominio": "credito", "formato": "html" }

@@ -74,7 +74,7 @@ describe("seletor público no HTML inicial", () => {
     expect(pt["idioma.seletor"]).toBe("Idioma");
     expect(pt["idioma.portugues"]).toBe("Português");
     expect(pt["idioma.ingles"]).toBe("Inglês");
-    expect(renderizar("/sobre")).toBe("");
+    expect(renderizar("/termos")).toBe("");
   });
 
   it.each(PARES_DE_IDIOMA)("publica anchors canônicos iguais em $pt e $en, sem esperar efeito", (par) => {
@@ -109,7 +109,7 @@ describe("seletor público no HTML inicial", () => {
     const lerCookie = vi.fn(() => "scrutiniums_idioma=en");
     vi.stubGlobal("window", Object.defineProperty({}, "location", { get: lerLocalizacao }));
     vi.stubGlobal("document", Object.defineProperty({}, "cookie", { get: lerCookie }));
-    expect(renderizar("/sobre")).toBe("");
+    expect(renderizar("/termos")).toBe("");
     expect(lerLocalizacao).not.toHaveBeenCalled();
     expect(lerCookie).not.toHaveBeenCalled();
   });
