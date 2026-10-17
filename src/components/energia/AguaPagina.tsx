@@ -8,7 +8,8 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { ROTA_AGUA, paineisAgua, rotaPainel, type PainelAgua } from "@/lib/energia/agua";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import type { Natureza, Proveniencia } from "@/lib/energia/tipos";
-import { tx } from "@/lib/energia/idioma";
+import { traduzDownloads } from "@/lib/energia/i18n/agua-carga-rede";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 
@@ -116,7 +117,7 @@ export function AguaSeguir({
   downloads: { rotulo: string; url: string }[];
   extra?: ReactNode;
 }) {
-  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads} extra={extra} />;
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={traduzDownloads(downloads, idiomaEnergia())} extra={extra} />;
 }
 
 export function AguaAnalise({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {

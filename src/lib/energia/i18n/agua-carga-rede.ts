@@ -100,3 +100,97 @@ export const FONTE_INTERVALO_EN: Readonly<Record<string, string>> = {
   "erros fora da amostra de origens anteriores": "out-of-sample errors from earlier origins",
   "resíduos do treino": "training residuals",
 };
+
+/**
+ * Rótulos dos downloads publicados na gold (downloads[].rotulo de agua_detalhe, hidrologia, carga, carga_detalhe, rede e
+ * rede_detalhe). A chave troca cada número por "#": anos e contagens de dias vêm do rótulo da gold e voltam no mesmo lugar.
+ */
+export const DOWNLOAD_EN: Readonly<Record<string, string>> = {
+  // Carga
+  "Carga diária por subsistema e SIN (CSV)": "Daily load by subsystem and SIN (CSV)",
+  "Comparações de carga equivalentes (CSV)": "Equivalent load comparisons (CSV)",
+  "Revisões da carga diária (CSV)": "Daily load revisions (CSV)",
+  "Curva de carga horária desde # (CSV)": "Hourly load curve since # (CSV)",
+  "Pico diário desde # (CSV)": "Daily peak since # (CSV)",
+  "Perfil horário típico por mês (CSV)": "Typical hourly profile by month (CSV)",
+  "Carga verificada, MMGD e carga líquida por dia (CSV)": "Verified load, MMGD and net load by day (CSV)",
+  "Carga verificada, MMGD e carga líquida por hora desde # (CSV)": "Verified load, MMGD and net load by hour since # (CSV)",
+  "Decomposição estatística diária (CSV)": "Daily statistical breakdown (CSV)",
+  "Backtest por origem e variante (CSV)": "Backtest by origin and variant (CSV)",
+  "Temperatura ponderada por subsistema (CSV)": "Weighted temperature by subsystem (CSV)",
+  "Calendário oficial de feriados (CSV)": "Official holiday calendar (CSV)",
+  // Água e clima
+  "Temperatura diária por subsistema e SIN (CSV)": "Daily temperature by subsystem and SIN (CSV)",
+  "Temperatura diária por UF, desde # (CSV)": "Daily temperature by state, since # (CSV)",
+  "Precipitação diária por bacia, desde # (CSV)": "Daily rainfall by basin, since # (CSV)",
+  "Precipitação mensal por bacia e climatologia (CSV)": "Monthly rainfall by basin and climatology (CSV)",
+  "Previsão diária por bacia e por subsistema, rodada mais recente (CSV)": "Daily forecast by basin and by subsystem, latest run (CSV)",
+  "Manifesto espacial dos pontos de clima (CSV)": "Spatial manifest of the climate points (CSV)",
+  "EAR e ENA diárias por subsistema e SIN, desde #, com a captura usada (CSV)": "Daily EAR and ENA by subsystem and SIN, since #, with the capture used (CSV)",
+  "EAR e ENA diárias por REE e por bacia, desde # (CSV)": "Daily EAR and ENA by REE and by basin, since # (CSV)",
+  "EAR no fim do mês e ENA mensal por REE e por bacia, desde # (CSV)": "End-of-month EAR and monthly ENA by REE and by basin, since # (CSV)",
+  "Mudanças da capacidade de armazenamento (CSV)": "Changes in storage capacity (CSV)",
+  "Mudanças da MLT por usina (CSV)": "Changes in the MLT by plant (CSV)",
+  "Balanço de # dias por reservatório (CSV)": "#-day balance by reservoir (CSV)",
+  "Dados hidráulicos diários por reservatório, # dias (CSV)": "Daily hydraulic data by reservoir, # days (CSV)",
+  "Séries diárias de # dias dos reservatórios da lista (JSON)": "#-day daily series of the listed reservoirs (JSON)",
+  "Contornos das bacias do ONS, projetados e simplificados para o mapa (JSON)": "ONS basin outlines, projected and simplified for the map (JSON)",
+  "EAR diária por subsistema e SIN (CSV)": "Daily EAR by subsystem and SIN (CSV)",
+  "ENA diária por subsistema e SIN (CSV)": "Daily ENA by subsystem and SIN (CSV)",
+  // Rede
+  "Intercâmbio diário por fronteira (CSV)": "Daily interchange by boundary (CSV)",
+  "Série horária # (CSV)": "Hourly series # (CSV)",
+  "Fronteiras por dia (CSV)": "Boundaries by day (CSV)",
+  "Subsistemas por dia (CSV)": "Subsystems by day (CSV)",
+  "Balanço mensal (CSV)": "Monthly balance (CSV)",
+  "Horas com resíduo no balanço (CSV)": "Hours with a residual in the balance (CSV)",
+  "Exterior e Itaipu por mês (CSV)": "Exterior and Itaipu by month (CSV)",
+  "Indicador ATLS (CSV)": "ATLS indicator (CSV)",
+  "Interrupções de carga (CSV)": "Load interruptions (CSV)",
+  "Programado e verificado por hora (CSV)": "Scheduled and verified by hour (CSV)",
+  "Programado e verificado por dia (CSV)": "Scheduled and verified by day (CSV)",
+  "Conferência do programa com o PDO (CSV)": "Check of the schedule against the PDO (CSV)",
+};
+
+/** Rótulo de download no idioma; sem entrada na tabela, sai o rótulo da gold. */
+export function rotuloDownload(rotulo: string, idioma: Idioma): string {
+  if (idioma !== "en") return rotulo;
+  const numeros = rotulo.match(/\d+/g) ?? [];
+  const en = DOWNLOAD_EN[rotulo.replace(/\d+/g, "#")];
+  if (!en) return rotulo;
+  let i = 0;
+  return en.replace(/#/g, () => numeros[i++] ?? "#");
+}
+
+/** Os mesmos downloads, com o rótulo no idioma. */
+export function traduzDownloads<T extends { rotulo: string }>(downloads: readonly T[], idioma: Idioma): T[] {
+  return downloads.map((d) => ({ ...d, rotulo: rotuloDownload(d.rotulo, idioma) }));
+}
+
+/** Nome das séries da carga verificada (proveniencia.api.natureza_por_serie[].rotulo, sem o campo da fonte). */
+export const SERIE_API_CARGA_EN: Readonly<Record<string, string>> = {
+  MMGD: "MMGD",
+  "Carga global líquida de MMGD": "Global load net of MMGD",
+  "Carga global": "Global load",
+};
+
+/** Componentes das séries da carga verificada (proveniencia.api.natureza_por_serie[].componentes[].descricao). */
+export const COMPONENTE_API_CARGA_EN: Readonly<Record<string, string>> = {
+  "MMGD estimada pelo ONS, somada à carga líquida observada": "MMGD estimated by ONS, added to the observed net load",
+};
+
+/** Categorias do calendário da carga (carga_detalhe.calendario.categorias); o nome do feriado fica em português (nome próprio). */
+export const CATEGORIA_CALENDARIO_EN: Readonly<Record<string, string>> = {
+  "feriado por lei federal": "holiday under federal law",
+  "Sexta-feira da Paixão (Lei nº 9.093/1995; ementa conferida, texto não relido)": "Good Friday (Law No. 9,093/1995; summary checked, text not reread)",
+  "ponto facultativo federal (portaria anual), não feriado": "federal optional day off (annual ordinance), not a holiday",
+};
+
+/** Tipo de regra da validação física da carga (carga_detalhe.p025.validacao.regras[].tipo). */
+export const TIPO_REGRA_CARGA_EN: Readonly<Record<string, string>> = {
+  dominio: "domain",
+  faixa_plausivel: "plausible range",
+  salto: "jump",
+  conferencia: "cross-check",
+  registros_esperados: "expected records",
+};

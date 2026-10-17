@@ -10,7 +10,8 @@ import { carimbo, dataBR } from "@/lib/energia/formato";
 import type { Natureza } from "@/lib/energia/tipos";
 import type { FonteCarga } from "@/lib/energia/tipos-carga";
 import { datasLegiveis } from "@/lib/energia/visao";
-import { tx } from "@/lib/energia/idioma";
+import { traduzDownloads } from "@/lib/energia/i18n/agua-carga-rede";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 
@@ -92,7 +93,7 @@ export function CargaAviso({ children, tipo = "nota" }: { children: ReactNode; t
 
 /** Rodapé do painel: downloads, link compartilhável e a próxima pergunta, numa linha (SeguirPainel). */
 export function CargaSeguir({ ancora, proximo, downloads }: { ancora: string; proximo: { href: string; pergunta: string }; downloads: { rotulo: string; url: string }[] }) {
-  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads} />;
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={traduzDownloads(downloads, idiomaEnergia())} />;
 }
 
 /** Datas de referência de cada parte da página: cada número diz o seu dia, sem sugerir simultaneidade. */
