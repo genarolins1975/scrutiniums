@@ -4,7 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { COLUNAS_CONJUNTOS, arquivoConjuntosDoAno, carregarUmaVez, conjuntosDoCsv } from "@/lib/energia/qualidade";
+import { arquivoConjuntosDoAno, carregarUmaVez, colunasConjuntos, conjuntosDoCsv } from "@/lib/energia/qualidade";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { LinhaTabela } from "@/lib/energia/tabela";
 
 /**
@@ -17,6 +18,8 @@ import type { LinhaTabela } from "@/lib/energia/tabela";
 export function QualidadeConjuntos({ anoInicial, anoFinal, tamanhos, fonte }: { anoInicial: number; anoFinal: number; tamanhos: Record<string, string>; fonte: string }) {
   const esquema = useMemo(() => ({ ano: campo(tiposUrl.inteiro({ min: anoInicial, max: anoFinal }), anoFinal, { param: "cano" }) }), [anoInicial, anoFinal]);
   const [v, definir] = useEstadoUrl(esquema);
+  const idioma = useIdioma();
+  const tx = useTx();
   const [pedido, setPedido] = useState(false);
   const [linhas, setLinhas] = useState<LinhaTabela[] | null>(null);
   const [erro, setErro] = useState<string | null>(null);
@@ -34,13 +37,13 @@ export function QualidadeConjuntos({ anoInicial, anoFinal, tamanhos, fonte }: { 
     setLinhas(null);
     setErro(null);
     carregarUmaVez(arquivo, (r) => r.text()).then(
-      (t) => vivo && setLinhas(conjuntosDoCsv(t, v.ano)),
+      (t) => vivo && setLinhas(conjuntosDoCsv(t, v.ano, idioma)),
       (e: unknown) => vivo && setErro(e instanceof Error ? e.message : String(e)),
     );
     return () => {
       vivo = false;
     };
-  }, [pedido, arquivo, v.ano]);
+  }, [pedido, arquivo, v.ano, idioma]);
 
   const anos: number[] = [];
   for (let a = anoFinal; a >= anoInicial; a--) anos.push(a);
@@ -49,7 +52,7 @@ export function QualidadeConjuntos({ anoInicial, anoFinal, tamanhos, fonte }: { 
     <div className="space-y-3">
       <div className="flex flex-wrap items-end gap-3">
         <label className="flex flex-col gap-1 text-sm text-carvao">
-          <span className="rotulo text-mineral">Ano</span>
+          <span className="rotulo text-mineral">{tx("Ano", "Year")}</span>
           <select
             value={v.ano}
             onChange={(e) => definir({ ano: Number(e.target.value) })}
@@ -68,28 +71,35 @@ export function QualidadeConjuntos({ anoInicial, anoFinal, tamanhos, fonte }: { 
             onClick={() => setPedido(true)}
             className="inline-flex min-h-[44px] items-center border border-energia bg-superficie px-3 text-sm text-carvao hover:bg-energia-fundo focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
           >
-            Carregar os conjuntos de {v.ano} ({tamanhos[arquivo] ?? "arquivo anual por década"})
+            {tx(
+              <>
+                Carregar os conjuntos de {v.ano} ({tamanhos[arquivo] ?? "arquivo anual por década"})
+              </>,
+              <>
+                Load the consumer clusters of {v.ano} ({tamanhos[arquivo] ?? "annual file by decade"})
+              </>,
+            )}
           </button>
         )}
       </div>
       {pedido && !linhas && !erro && (
         <p role="status" className="text-sm text-carvao-muted">
-          Carregando os conjuntos de {v.ano}…
+          {tx(<>Carregando os conjuntos de {v.ano}…</>, <>Loading the consumer clusters of {v.ano}…</>)}
         </p>
       )}
       {erro && (
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-          Não foi possível carregar os conjuntos ({erro}).{" "}
+          {tx(<>Não foi possível carregar os conjuntos ({erro}).</>, <>The consumer clusters could not be loaded ({erro}).</>)}{" "}
           <a href={arquivo} download className="text-energia-dark underline underline-offset-4">
-            Baixar o arquivo do período
+            {tx("Baixar o arquivo do período", "Download the file for the period")}
           </a>
           .
         </p>
       )}
       {linhas && (
         <TabelaInterativa
-          titulo={`Conjuntos elétricos em ${v.ano}`}
-          colunas={COLUNAS_CONJUNTOS}
+          titulo={tx(`Conjuntos elétricos em ${v.ano}`, `Consumer clusters in ${v.ano}`)}
+          colunas={colunasConjuntos(idioma)}
           linhas={linhas}
           chaveLinha="id"
           colunaRotulo="nome"
@@ -98,9 +108,9 @@ export function QualidadeConjuntos({ anoInicial, anoFinal, tamanhos, fonte }: { 
           nomeArquivo={`qualidade-conjuntos-${v.ano}`}
           chaveUrl="tcj"
           ordemInicial={{ coluna: "razao_dec", direcao: "desc" }}
-          dicaBusca="Nome ou código do conjunto, distribuidora"
-          semLinhas={`Nenhum conjunto publicado para ${v.ano} no arquivo.`}
-          nota="Comparação com o limite em centésimos, como a ANEEL publica: DEC igual ao limite não é transgressão."
+          dicaBusca={tx("Nome ou código do conjunto, distribuidora", "Name or code of the consumer cluster, distribution utility")}
+          semLinhas={tx(`Nenhum conjunto publicado para ${v.ano} no arquivo.`, `No consumer cluster published for ${v.ano} in the file.`)}
+          nota={tx("Comparação com o limite em centésimos, como a ANEEL publica: DEC igual ao limite não é transgressão.", "Comparison with the limit in hundredths, as ANEEL publishes it: a DEC equal to the limit is not a violation.")}
         />
       )}
     </div>

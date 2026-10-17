@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { MENSAGEM_COPIA, copiarComFallback, type ResultadoCopia } from "@/lib/energia/evidencia";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Link compartilhável de um painel do módulo Perdas: copia o endereço atual (com o
  * período, a medida, a distribuidora e a ordem da tabela que estão na URL) apontando
  * para a âncora do painel. Sem JavaScript, o link da âncora continua funcionando.
  */
-export function PerdasLinkPainel({ ancora, rotulo = "Copiar link deste painel" }: { ancora: string; rotulo?: string }) {
+export function PerdasLinkPainel({ ancora, rotulo }: { ancora: string; rotulo?: string }) {
+  const tx = useTx();
   const [resultado, setResultado] = useState<ResultadoCopia | null>(null);
   const [endereco, setEndereco] = useState("");
   async function copiar(ev: React.MouseEvent<HTMLAnchorElement>) {
@@ -40,16 +42,20 @@ export function PerdasLinkPainel({ ancora, rotulo = "Copiar link deste painel" }
   return (
     <span className="inline-flex flex-wrap items-center gap-x-2">
       <a href={`#${ancora}`} onClick={copiar} className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-        {rotulo}
+        {rotulo ?? tx("Copiar link deste painel", "Copy link to this panel")}
       </a>
       <span role="status" className="text-xs text-carvao-muted">
-        {resultado === "copiado" ? MENSAGEM_COPIA.copiado : resultado ? "Não foi possível copiar: selecione o endereço abaixo e copie." : ""}
+        {resultado === "copiado"
+          ? tx(MENSAGEM_COPIA.copiado, "Copied to the clipboard.")
+          : resultado
+            ? tx("Não foi possível copiar: selecione o endereço abaixo e copie.", "Could not copy: select the address below and copy it.")
+            : ""}
       </span>
       {resultado && resultado !== "copiado" && (
         <input
           readOnly
           value={endereco}
-          aria-label="Endereço deste painel"
+          aria-label={tx("Endereço deste painel", "Address of this panel")}
           onFocus={(e) => e.currentTarget.select()}
           className="mt-1 h-11 w-full min-w-0 border border-linha bg-superficie px-2 text-xs text-carvao"
         />
