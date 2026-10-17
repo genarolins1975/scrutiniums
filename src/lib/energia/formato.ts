@@ -300,6 +300,27 @@ export function datasLegiveis(texto: string, idioma: Idioma = idiomaEnergia()): 
 }
 
 /**
+ * Valor já escrito pela gold em português (valor_exibido: "R$ 1,60 bilhão", "82.216 MWmed às 19h", "18,4%", "Amarela: R$ 0,01885/kWh")
+ * na grafia inglesa: troca os separadores dentro de cada número (milhar com ponto ou decimal com vírgula), as palavras de grandeza, a
+ * unidade MWmed, a hora e o nome da bandeira. O número é o mesmo; texto que não casa com nenhuma regra fica como veio. Regra
+ * compartilhada por todos os painéis (o Aprenda e a Geração tinham versões locais).
+ */
+export function valorExibidoNoIdioma(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma !== "en") return texto;
+  return texto
+    .replace(/\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+,\d+/g, (m) => m.replace(/\./g, "\u0000").replace(/,/g, ".").replace(/\u0000/g, ","))
+    .replace(/\bbilhões\b|\bbilhão\b/g, "billion") // i18n: dado (regra de tradução)
+    .replace(/\bmilhões\b|\bmilhão\b/g, "million") // i18n: dado (regra de tradução)
+    .replace(/(\d) mil\b/g, "$1 thousand")
+    .replace(/\bMWmed\b/g, "MWavg")
+    .replace(/ às (\d{1,2})h\b/g, " at $1:00") // i18n: dado (regra de tradução)
+    .replace(/^Verde:/, "Green:")
+    .replace(/^Amarela:/, "Yellow:")
+    .replace(/^Vermelha patamar (\d):/, "Red level $1:")
+    .replace(/^Vermelha:/, "Red:");
+}
+
+/**
  * Os formatadores presos a um idioma, para componente de cliente: `const f = formatos(useIdioma())`
  * e depois `f.num(v, 1)`, `f.dataBR(iso)`. Mesmas regras e assinaturas, sem o último argumento.
  */

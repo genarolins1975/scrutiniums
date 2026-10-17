@@ -5,7 +5,7 @@ import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 /**
  * Selo da taxonomia de natureza do dado. Forma (glifo), borda, rótulo e cor ao
  * mesmo tempo: a cor nunca é o único portador da categoria. Rótulo e definição são lidos no idioma da página (getters com tx),
- * também nos outros observatórios que usam o selo; em português não mudam.
+ * também nos outros observatórios que usam o selo; em português não mudam. O inglês é o mesmo de NATUREZA_EN (src/lib/energia/i18n/aprenda.ts).
  */
 export const NATUREZAS: Record<Natureza, { rotulo: string; glifo: string; borda: string; cor: string; definicao: string }> = {
   OBSERVADO: {
@@ -54,13 +54,13 @@ export function textoNatureza(n: Natureza, idioma: Idioma = idiomaEnergia()): { 
     case "OBSERVADO":
       return { rotulo: tx("Observado", "Observed", idioma), definicao: tx("Valor publicado diretamente pela fonte oficial ou primária.", "Value published directly by the official or primary source.", idioma) };
     case "CALCULADO":
-      return { rotulo: tx("Calculado", "Calculated", idioma), definicao: tx("Transformação determinística feita pela Scrutiniums, com fórmula publicada.", "Deterministic transformation performed by Scrutiniums, with a published formula.", idioma) };
+      return { rotulo: tx("Calculado", "Calculated", idioma), definicao: tx("Transformação determinística feita pela Scrutiniums, com fórmula publicada.", "Deterministic transformation made by Scrutiniums, with a published formula.", idioma) };
     case "ESTIMADO":
       return { rotulo: tx("Estimado", "Estimated", idioma), definicao: tx("Valor obtido por procedimento estatístico, com incerteza.", "Value obtained by a statistical procedure, with uncertainty.", idioma) };
     case "PREVISTO":
-      return { rotulo: tx("Previsto", "Forecast", idioma), definicao: tx("Valor para período futuro, sempre com modelo, versão e dados de origem.", "Value for a future period, always with the model, version and input data.", idioma) };
+      return { rotulo: tx("Previsto", "Forecast", idioma), definicao: tx("Valor para período futuro, sempre com modelo, versão e dados de origem.", "Value for a future period, always with model, version and source data.", idioma) };
     case "CENARIO":
-      return { rotulo: tx("Cenário", "Scenario", idioma), definicao: tx("Simulação condicional a uma hipótese declarada. Não é previsão.", "Simulation conditional on a declared assumption. It is not a forecast.", idioma) };
+      return { rotulo: tx("Cenário", "Scenario", idioma), definicao: tx("Simulação condicional a uma hipótese declarada. Não é previsão.", "Simulation conditional on a declared hypothesis. It is not a forecast.", idioma) };
   }
 }
 

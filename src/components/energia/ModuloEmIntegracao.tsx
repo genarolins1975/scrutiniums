@@ -3,7 +3,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
-import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
+import { conceitos as verbetes } from "@/lib/energia/conteudo/conceitos";
 import { Nome } from "@/components/i18n/Nome";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 
@@ -89,13 +89,13 @@ export function ModuloEmIntegracao({
                 <p className="mt-4 text-sm text-carvao-muted">{tx("Verbetes relacionados:", "Related entries:")}</p>
                 <ul className="mt-1 text-sm">
                   {conceitos.map((c) => {
-                    const v = CONCEITOS.find((x) => x.slug === c.slug);
+                    const v = verbetes().find((x) => x.slug === c.slug);
                     return (
                       <li key={c.slug}>
                         <Link href={`/setor-eletrico/aprenda/${c.slug}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
                           {v && v.nome !== c.rotulo ? (
                             <>
-                              {c.rotulo}: <Nome>{v.nome}</Nome>
+                              {c.rotulo}: {v.nome}
                             </>
                           ) : (
                             c.rotulo

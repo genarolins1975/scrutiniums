@@ -2,7 +2,8 @@
 
 import { useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
 import { createPortal } from "react-dom";
-import { carimbo, datasLegiveis } from "@/lib/energia/formato";
+import { carimbo, datasLegiveis, valorExibidoNoIdioma } from "@/lib/energia/formato";
+import { rotuloFicha } from "@/lib/energia/i18n/aprenda";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { unidadeNoIdioma } from "@/lib/energia/i18n/nucleo";
@@ -65,6 +66,7 @@ export type ComproveNumeroProps = {
 
 export function ComproveNumero({ evidencia, sobDemanda, variante = "link", rotulo: rotuloDado, endereco }: ComproveNumeroProps) {
   const tx = useTx();
+  const idioma = useIdioma();
   const rotulo = rotuloDado ?? tx("Comprove este número", "Check this number");
   const ref = useRef<HTMLDialogElement>(null);
   const gatilho = useRef<HTMLButtonElement>(null);
@@ -74,8 +76,11 @@ export function ComproveNumero({ evidencia, sobDemanda, variante = "link", rotul
   const [erro, setErro] = useState<string | null>(null);
   const ev = evidencia ?? carregada;
   // o nome que a página passa (sobDemanda) vale mais que o indicador técnico da gold, que pode citar códigos internos
-  const indicador = sobDemanda?.indicador ?? ev?.indicador ?? "";
-  const valorExibido = ev?.valor_exibido ?? sobDemanda?.valorExibido ?? "";
+  // em inglês, o indicador da gold sai pela tabela do Aprenda (rotuloFicha) e o valor escrito pela gold ganha a grafia inglesa; sem
+  // tradução exata, o indicador fica em português (no título do diálogo, marcado)
+  const indicadorGold = ev?.indicador ? (rotuloFicha(ev.indicador, idioma) ?? ev.indicador) : "";
+  const indicador = sobDemanda?.indicador ?? indicadorGold;
+  const valorExibido = ev?.valor_exibido ? valorExibidoNoIdioma(ev.valor_exibido, idioma) : (sobDemanda?.valorExibido ?? "");
   // o diálogo vai para o fim do <body> e só existe no cliente: o botão pode ficar dentro de um
   // parágrafo (variante "valor") sem que o <dialog> feche o <p> e quebre a hidratação
   const [alvo, setAlvo] = useState<HTMLElement | null>(null);
@@ -158,6 +163,8 @@ export function DialogoEvidencia({
   endereco?: string;
 }) {
   const tx = useTx();
+  const idioma = useIdioma();
+  const indicadorEn = ev?.indicador ? rotuloFicha(ev.indicador, idioma) : null;
   const tituloId = useId();
   const fechar = () => dialogo.current?.close();
   return (
@@ -175,10 +182,10 @@ export function DialogoEvidencia({
           <div className="min-w-0">
             <p className="rotulo text-mineral">{tx("Comprove este número", "Check this number")}</p>
             <h2 id={tituloId} className="mt-2 font-serif text-xl leading-snug text-carvao">
-              {titulo ?? (ev ? <TrechoPortugues regiao="comprove-indicador">{ev.indicador}</TrechoPortugues> : null)}
+              {titulo ?? (ev ? (indicadorEn ?? <TrechoPortugues regiao="comprove-indicador">{ev.indicador}</TrechoPortugues>) : null)}
             </h2>
             <p className="mt-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
-              <span className="font-medium tabular-nums text-carvao">{ev?.valor_exibido ?? valor}</span>
+              <span className="font-medium tabular-nums text-carvao">{ev?.valor_exibido ? valorExibidoNoIdioma(ev.valor_exibido, idioma) : valor}</span>
               {ev && (
                 <>
                   {` · ${textoPeriodo(ev.periodo)} · `}
@@ -261,7 +268,7 @@ export function ConteudoEvidencia({ evidencia: ev, acesso, endereco }: { evidenc
       <Secao n={1} titulo={tx("Valor exibido e valor de cálculo", "Displayed value and calculation value")}>
         <dl>
           <Linha rotulo={tx("Valor exibido", "Displayed value")}>
-            <span className="font-serif text-2xl tabular-nums text-carvao">{ev.valor_exibido}</span>
+            <span className="font-serif text-2xl tabular-nums text-carvao">{valorExibidoNoIdioma(ev.valor_exibido, idioma)}</span>
           </Linha>
           <Linha rotulo={tx("Valor de cálculo", "Calculation value")}>
             {ev.valor_calculo === null ? (
