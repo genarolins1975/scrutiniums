@@ -10,13 +10,14 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { quebrasQuantis } from "@/lib/energia/escalas";
 import { URL_GEO } from "@/lib/energia/geo";
+import { dadoNo, txEm } from "@/lib/energia/i18n/conta-inclusao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import type { Idioma } from "@/lib/idioma";
 import {
-  COLUNAS_LIMIARES,
   ESQUEMA_ORCAMENTO,
-  MEDIDAS_BASE,
-  NOME_TERRITORIO,
   TERRITORIOS_POF,
   codigoUf,
+  colunasLimiares,
   colunasTabelaPof,
   colunasUfsPof,
   dadosClassesPof,
@@ -24,7 +25,9 @@ import {
   linhasLimiaresPof,
   linhasTabelaPof,
   linhasUfsPof,
+  medidasBase,
   nomePof,
+  nomeTerritorio as nomeTerritorioEm,
   siglaDoCodigo,
   textoPrecisaoPof,
   valoresMapaPof,
@@ -53,19 +56,31 @@ import type { MedidaPof } from "@/lib/energia/tipos-inclusao";
  * não permite.
  */
 
-const CORES_MEDIDAS = ["var(--cor-energia)", "var(--serie-comp-2)", "var(--serie-referencia)"];
+const CORES_MEDIDAS = ["var(--cor-energia)", "var(--serie-comp-2)", "var(--serie-referencia)"]; // i18n: dado
 const CORES_TER = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)"];
-const OPCOES_BASE: readonly (readonly [BasePof, string])[] = [
-  ["despesa", "Na despesa total"],
-  ["renda", "Na renda"],
-];
+function opcoesBase(tx: <T>(pt: T, en: T) => T): readonly (readonly [BasePof, string])[] {
+  return [
+    ["despesa", tx("Na despesa total", "In total expense")],
+    ["renda", tx("Na renda", "In income")],
+  ];
+}
+// i18n: dado (o rótulo é o próprio percentual)
 const OPCOES_LIM: readonly (readonly [LimiarPof, string])[] = [
   ["3", "3%"],
   ["5", "5%"],
   ["10", "10%"],
 ];
 
-const nomeTerritorio = (t: string) => NOME_TERRITORIO[t] ?? t;
+/** Nome do território (Brasil e grandes regiões) no idioma da página. */
+function useNomeTerritorio(): (t: string) => string {
+  const idioma = useIdioma();
+  return (t: string) => nomeTerritorioEm(t, idioma);
+}
+
+/** "na despesa total" / "na renda" no idioma. */
+function naBase(base: BasePof, tx: <T>(pt: T, en: T) => T): string {
+  return base === "despesa" ? tx("na despesa total", "in total expense") : tx("na renda", "in income");
+}
 
 function InclusaoClassesPof({
   orc,
@@ -81,11 +96,14 @@ function InclusaoClassesPof({
   recorte?: ReactNode;
   notas?: ReactNode;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const nomeTerritorio = useNomeTerritorio();
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
   const principal = ters[0];
-  const medidas = MEDIDAS_BASE[v.base];
-  const dados = useMemo(() => dadosClassesPof(orc, principal, v.base), [orc, principal, v.base]);
+  const medidas = medidasBase(idioma)[v.base];
+  const dados = useMemo(() => dadosClassesPof(orc, principal, v.base, idioma), [orc, principal, v.base, idioma]);
   const total = medidas.map((m) => orc.linhas.find((l) => l.territorio === principal && l.classe === "7999")?.microdados[m.id]?.[0] ?? null);
   const refTotal = total[0];
 
@@ -93,17 +111,29 @@ function InclusaoClassesPof({
     <div className="space-y-6">
       <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
         {resposta}
-        <InclusaoOpcoes rotulo="Participação" nome="inclusao-pof-base" opcoes={OPCOES_BASE} valor={v.base} onMudar={(base) => definir({ base })} />
+        <InclusaoOpcoes rotulo={tx("Participação", "Share")} nome="inclusao-pof-base" opcoes={opcoesBase(tx)} valor={v.base} onMudar={(base) => definir({ base })} />
       </div>
       <GraficoBarras
-        titulo={`Energia elétrica ${v.base === "despesa" ? "na despesa total" : "na renda"} por classe de rendimento, ${nomeTerritorio(principal)} (${nomePof(orc)})`}
+        titulo={tx(
+          `Energia elétrica ${naBase(v.base, tx)} por classe de rendimento, ${nomeTerritorio(principal)} (${nomePof(orc)})`,
+          `Electricity ${naBase(v.base, tx)} by income class, ${nomeTerritorio(principal)} (${nomePof(orc)})`,
+        )}
         dados={dados}
         chaveCategoria="id"
         chaveRotulo="rotulo"
         series={medidas.map((m, i) => ({ id: m.id, rotulo: m.rotulo, cor: CORES_MEDIDAS[i] }))}
         unidade="%"
         casas={2}
-        referencias={refTotal !== null ? [{ valor: refTotal, rotulo: `${medidas[0].rotulo}, todas as famílias (${nomeTerritorio(principal)})` }] : []}
+        referencias={
+          refTotal !== null
+            ? [
+                {
+                  valor: refTotal,
+                  rotulo: tx(`${medidas[0].rotulo}, todas as famílias (${nomeTerritorio(principal)})`, `${medidas[0].rotulo}, all families (${nomeTerritorio(principal)})`),
+                },
+              ]
+            : []
+        }
         orientacao="horizontal"
         rotulosValor
         alturaMaxima={900}
@@ -116,27 +146,33 @@ function InclusaoClassesPof({
 }
 
 function InclusaoTerritoriosPof({ orc }: { orc: OrcamentoBase }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const nomeTerritorio = useNomeTerritorio();
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
-  const medidas = MEDIDAS_BASE[v.base];
+  const medidas = medidasBase(idioma)[v.base];
   const medidaComp: MedidaPof = medidas[0].id;
-  const comp = useMemo(() => dadosComparacaoPof(orc, ters, medidaComp), [orc, ters, medidaComp]);
-  const entidades = TERRITORIOS_POF.map((t) => ({ id: t, rotulo: NOME_TERRITORIO[t] }));
+  const comp = useMemo(() => dadosComparacaoPof(orc, ters, medidaComp, idioma), [orc, ters, medidaComp, idioma]);
+  const entidades = TERRITORIOS_POF.map((t) => ({ id: t, rotulo: nomeTerritorio(t) }));
   return (
     <div className="space-y-5">
       <Comparador
-        rotulo="Territórios (até 4; o primeiro detalha as medidas)"
+        rotulo={tx("Territórios (até 4; o primeiro detalha as medidas)", "Territories (up to 4; the first one details the measures)")}
         entidades={entidades}
         selecionadas={ters}
         onMudar={(ids) => definir({ ter: ids.length ? ids : ["BR"] })}
-        dicaBusca="Brasil ou região"
-        vazio="Sem território escolhido: vale o Brasil."
+        dicaBusca={tx("Brasil ou região", "Brazil or region")}
+        vazio={tx("Sem território escolhido: vale o Brasil.", "No territory chosen: Brazil applies.")}
       >
         {() => null}
       </Comparador>
       {ters.length > 1 ? (
         <GraficoBarras
-          titulo={`${medidas[0].rotulo} ${v.base === "despesa" ? "na despesa total" : "na renda"} por classe: ${ters.map(nomeTerritorio).join(", ")}`}
+          titulo={tx(
+            `${medidas[0].rotulo} ${naBase(v.base, tx)} por classe: ${ters.map(nomeTerritorio).join(", ")}`,
+            `${medidas[0].rotulo} ${naBase(v.base, tx)} by class: ${ters.map(nomeTerritorio).join(", ")}`,
+          )}
           dados={comp}
           chaveCategoria="id"
           chaveRotulo="rotulo"
@@ -149,7 +185,10 @@ function InclusaoTerritoriosPof({ orc }: { orc: OrcamentoBase }) {
         />
       ) : (
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          Escolha mais um território para ver as classes de rendimento lado a lado, na mesma escala. A figura principal, acima, segue o primeiro território escolhido.
+          {tx(
+            "Escolha mais um território para ver as classes de rendimento lado a lado, na mesma escala. A figura principal, acima, segue o primeiro território escolhido.",
+            "Choose one more territory to see the income classes side by side, on the same scale. The main figure, above, follows the first territory chosen.",
+          )}
         </p>
       )}
     </div>
@@ -157,35 +196,50 @@ function InclusaoTerritoriosPof({ orc }: { orc: OrcamentoBase }) {
 }
 
 function InclusaoLimiaresPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const nomeTerritorio = useNomeTerritorio();
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
   const principal = ters[0];
-  const limiares = useMemo(() => linhasLimiaresPof(orc, principal, v.lim), [orc, principal, v.lim]);
+  const limiares = useMemo(() => linhasLimiaresPof(orc, principal, v.lim, idioma), [orc, principal, v.lim, idioma]);
+  const limiaresTexto = orc.limiares_pct.map((x) => `${x.toLocaleString(tx("pt-BR", "en-US"))}%`).join(", ");
   return (
     <div className="space-y-4">
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-        Limiares de {orc.limiares_pct.map((x) => `${x.toLocaleString("pt-BR")}%`).join(", ")} da renda e da despesa total como análise de sensibilidade, não como definição de pobreza
-        energética: a leitura muda com o limiar, e a tabela mostra quanto. {nomeTerritorio(principal)}, famílias de cada classe acima do limiar escolhido.
+        {tx(
+          <>
+            Limiares de {limiaresTexto} da renda e da despesa total como análise de sensibilidade, não como definição de pobreza
+            energética: a leitura muda com o limiar, e a tabela mostra quanto. {nomeTerritorio(principal)}, famílias de cada classe acima do limiar escolhido.
+          </>,
+          <>
+            Thresholds of {limiaresTexto} of income and of total expense as a sensitivity analysis, not as a definition of energy poverty: the reading changes with the threshold,
+            and the table shows by how much. {nomeTerritorio(principal)}, families of each class above the chosen threshold.
+          </>,
+        )}
       </p>
-      <InclusaoOpcoes rotulo="Limiar" nome="inclusao-pof-lim" opcoes={OPCOES_LIM} valor={v.lim} onMudar={(lim) => definir({ lim })} />
+      <InclusaoOpcoes rotulo={tx("Limiar", "Threshold")} nome="inclusao-pof-lim" opcoes={OPCOES_LIM} valor={v.lim} onMudar={(lim) => definir({ lim })} />
       <GraficoBarras
-        titulo={`Famílias com energia acima de ${v.lim}% da renda e da despesa total, ${nomeTerritorio(principal)}`}
+        titulo={tx(
+          `Famílias com energia acima de ${v.lim}% da renda e da despesa total, ${nomeTerritorio(principal)}`,
+          `Families with energy above ${v.lim}% of income and of total expense, ${nomeTerritorio(principal)}`,
+        )}
         dados={limiares.map((l) => ({ id: l.id, rotulo: l.classe, renda: l.renda, despesa: l.despesa }))}
         chaveCategoria="id"
         chaveRotulo="rotulo"
         series={[
-          { id: "renda", rotulo: `Acima de ${v.lim}% da renda`, cor: "var(--serie-comp-1)" },
-          { id: "despesa", rotulo: `Acima de ${v.lim}% da despesa`, cor: "var(--serie-comp-3)" },
+          { id: "renda", rotulo: tx(`Acima de ${v.lim}% da renda`, `Above ${v.lim}% of income`), cor: "var(--serie-comp-1)" },
+          { id: "despesa", rotulo: tx(`Acima de ${v.lim}% da despesa`, `Above ${v.lim}% of expense`), cor: "var(--serie-comp-3)" },
         ]}
-        unidade="% das famílias"
+        unidade={tx("% das famílias", "% of families")}
         casas={1}
         orientacao="horizontal"
         rotulosValor
         alturaMaxima={900}
       />
       <TabelaInterativa
-        titulo={`Sensibilidade ao limiar de ${v.lim}%, ${nomeTerritorio(principal)}`}
-        colunas={COLUNAS_LIMIARES}
+        titulo={tx(`Sensibilidade ao limiar de ${v.lim}%, ${nomeTerritorio(principal)}`, `Sensitivity to the ${v.lim}% threshold, ${nomeTerritorio(principal)}`)}
+        colunas={colunasLimiares(idioma)}
         linhas={limiares}
         chaveLinha="id"
         colunaRotulo="classe"
@@ -193,21 +247,30 @@ function InclusaoLimiaresPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string
         versao={orc.referencia}
         nomeArquivo={`inclusao-pof-limiar-${v.lim}-${principal}`}
         chaveUrl="pof.limt"
-        nota={`${textoPrecisaoPof(orc.regra_precisao)} Zero na amostra não prova zero na população.`}
+        nota={tx(
+          `${textoPrecisaoPof(orc.regra_precisao, idioma)} Zero na amostra não prova zero na população.`,
+          `${textoPrecisaoPof(orc.regra_precisao, idioma)} Zero in the sample does not prove zero in the population.`,
+        )}
       />
     </div>
   );
 }
 
 function InclusaoTabelaPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const nomeTerritorio = useNomeTerritorio();
   const [v] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
   const principal = ters[0];
-  const tabela = useMemo(() => linhasTabelaPof(orc, principal), [orc, principal]);
-  const colunas = useMemo(() => colunasTabelaPof(orc), [orc]);
+  const tabela = useMemo(() => linhasTabelaPof(orc, principal, idioma), [orc, principal, idioma]);
+  const colunas = useMemo(() => colunasTabelaPof(orc, idioma), [orc, idioma]);
   return (
     <TabelaInterativa
-      titulo={`${nomePof(orc)}: energia no orçamento, ${nomeTerritorio(principal)}, por classe de rendimento`}
+      titulo={tx(
+        `${nomePof(orc)}: energia no orçamento, ${nomeTerritorio(principal)}, por classe de rendimento`,
+        `${nomePof(orc)}: energy in the budget, ${nomeTerritorio(principal)}, by income class`,
+      )}
       colunas={colunas}
       linhas={tabela}
       chaveLinha="id"
@@ -216,57 +279,68 @@ function InclusaoTabelaPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }
       versao={orc.referencia}
       nomeArquivo={`inclusao-pof-${principal}`}
       chaveUrl="pof.med"
-      nota={orc.formato_microdados}
+      nota={dadoNo(orc.formato_microdados, "formato-microdados-pof", idioma)}
     />
   );
 }
 
-const OPCOES_MAPA: readonly (readonly [MedidaMapaPof, string])[] = [
-  ["razao_medias_pct", "Razão de médias (despesa)"],
-  ["media_razoes_desp_pct", "Média das participações (despesa)"],
-  ["media_razoes_renda_pct", "Média das participações (renda)"],
-  ["energia_media", "Despesa média com energia"],
-];
+function opcoesMapa(idioma: Idioma): readonly (readonly [MedidaMapaPof, string])[] {
+  const tx = txEm(idioma);
+  return [
+    ["razao_medias_pct", tx("Razão de médias (despesa)", "Ratio of averages (expense)")],
+    ["media_razoes_desp_pct", tx("Média das participações (despesa)", "Average of shares (expense)")],
+    ["media_razoes_renda_pct", tx("Média das participações (renda)", "Average of shares (income)")],
+    ["energia_media", tx("Despesa média com energia", "Average electricity expense")],
+  ];
+}
 const CORES_MAPA = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
 
 function InclusaoMapaUfsPof({ orc, periodo, unidadeReais }: { orc: OrcamentoBase; periodo: string; unidadeReais: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const valores = useMemo(() => valoresMapaPof(orc, v.mapa), [orc, v.mapa]);
-  const ehReais = v.mapa === "energia_media";
+  const ehReais = v.mapa === "energia_media"; // i18n: dado
   const classes = useMemo(() => quebrasQuantis(Object.values(valores), CORES_MAPA.length, { casas: ehReais ? 0 : 1 }), [valores, ehReais]);
-  const linhas = useMemo(() => linhasUfsPof(orc), [orc]);
+  const linhas = useMemo(() => linhasUfsPof(orc, idioma), [orc, idioma]);
   const sel = linhas.some((l) => l.uf === v.uf) ? v.uf : null;
-  const rotulo = OPCOES_MAPA.find(([id]) => id === v.mapa)?.[1] ?? v.mapa;
+  const opcoes = opcoesMapa(idioma);
+  const rotulo = opcoes.find(([id]) => id === v.mapa)?.[1] ?? v.mapa;
   return (
     <div className="space-y-5">
-      <InclusaoOpcoes rotulo="Mapa" nome="inclusao-pof-mapa" opcoes={OPCOES_MAPA} valor={v.mapa} onMudar={(mapa) => definir({ mapa })} />
+      <InclusaoOpcoes rotulo={tx("Mapa", "Map")} nome="inclusao-pof-mapa" opcoes={opcoes} valor={v.mapa} onMudar={(mapa) => definir({ mapa })} />
       <MapaCoropletico
-        titulo={`${rotulo} por UF, todas as classes de rendimento (${nomePof(orc)})`}
+        titulo={tx(`${rotulo} por UF, todas as classes de rendimento (${nomePof(orc)})`, `${rotulo} by state, all income classes (${nomePof(orc)})`)}
         fonteGeometria={URL_GEO.uf}
         valores={valores}
         cores={CORES_MAPA}
         classificacao={classes}
         unidade={ehReais ? unidadeReais : "%"}
         casas={2}
-        rotuloRegiao={{ singular: "UF", plural: "UF" }}
+        rotuloRegiao={tx({ singular: "UF", plural: "UF" }, { singular: "state", plural: "states" })}
         selecionado={sel ? codigoUf(sel) : null}
         onSelecionar={(id) => definir({ uf: siglaDoCodigo(id) ?? "" })}
         rotulos
         periodo={periodo}
-        nota="Estimativa amostral por UF, só no total (a amostra por classe nas UF é pequena demais). Sem mapa municipal: a POF não permite."
+        nota={tx(
+          "Estimativa amostral por UF, só no total (a amostra por classe nas UF é pequena demais). Sem mapa municipal: a POF não permite.",
+          "Sample estimate by state, total only (the sample by class in the states is too small). No municipal map: the POF does not allow it.",
+        )}
       />
     </div>
   );
 }
 
 function InclusaoTabelaUfsPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
-  const linhas = useMemo(() => linhasUfsPof(orc), [orc]);
-  const colunas = useMemo(() => colunasUfsPof(orc), [orc]);
+  const linhas = useMemo(() => linhasUfsPof(orc, idioma), [orc, idioma]);
+  const colunas = useMemo(() => colunasUfsPof(orc, idioma), [orc, idioma]);
   const sel = linhas.some((l) => l.uf === v.uf) ? v.uf : null;
   return (
     <TabelaInterativa
-      titulo={`${nomePof(orc)} por UF (todas as classes), com coeficiente de variação`}
+      titulo={tx(`${nomePof(orc)} por UF (todas as classes), com coeficiente de variação`, `${nomePof(orc)} by state (all classes), with coefficient of variation`)}
       colunas={colunas}
       linhas={linhas}
       chaveLinha="id"
@@ -278,8 +352,11 @@ function InclusaoTabelaUfsPof({ orc, fonte }: { orc: OrcamentoBase; fonte: strin
       ordemInicial={{ coluna: "razao_medias_pct", direcao: "desc" }}
       selecionado={sel}
       onSelecionar={(id) => definir({ uf: id ?? "" })}
-      dicaBusca="Nome ou sigla da UF"
-      nota={`${textoPrecisaoPof(orc.regra_precisao)} A coluna de precisão diz o estado de cada valor.`}
+      dicaBusca={tx("Nome ou sigla da UF", "State name or abbreviation")}
+      nota={tx(
+        `${textoPrecisaoPof(orc.regra_precisao, idioma)} A coluna de precisão diz o estado de cada valor.`,
+        `${textoPrecisaoPof(orc.regra_precisao, idioma)} The precision column gives the status of each value.`,
+      )}
     />
   );
 }
@@ -307,27 +384,35 @@ export function InclusaoOrcamentoPainel({
   recorte?: ReactNode;
   notas?: ReactNode;
 }) {
+  const tx = useTx();
   return (
     <div className="space-y-6">
       <InclusaoClassesPof orc={classes} resposta={resposta} medidas={medidas} recorte={recorte} notas={notas} />
 
-      <SecaoDoPainel id="territorios" titulo="Brasil e grandes regiões, na mesma escala">
+      <SecaoDoPainel id="territorios" titulo={tx("Brasil e grandes regiões, na mesma escala", "Brazil and major regions, on the same scale")}>
         <InclusaoTerritoriosPof orc={classes} />
       </SecaoDoPainel>
 
-      <SecaoDoPainel id="limiares" titulo="Quantas famílias passam de um limiar de comprometimento?">
+      <SecaoDoPainel id="limiares" titulo={tx("Quantas famílias passam de um limiar de comprometimento?", "How many families exceed a burden threshold?")}>
         <InclusaoLimiaresPof orc={classes} fonte={fonte} />
       </SecaoDoPainel>
 
-      <SecaoDoPainel id="ufs" titulo="E por UF, no total das famílias?" lead="O peso da energia em cada UF, sem separar por faixa de renda: a amostra por classe nas UF é pequena demais.">
+      <SecaoDoPainel
+        id="ufs"
+        titulo={tx("E por UF, no total das famílias?", "And by state, for all families?")}
+        lead={tx(
+          "O peso da energia em cada UF, sem separar por faixa de renda: a amostra por classe nas UF é pequena demais.",
+          "The weight of energy in each state, without splitting by income bracket: the sample by class in the states is too small.",
+        )}
+      >
         <InclusaoMapaUfsPof orc={ufs} periodo={periodo} unidadeReais={unidadeReais} />
       </SecaoDoPainel>
 
-      <SecaoDoPainel id="todas-medidas" nivel="analisar" titulo="Todas as medidas do território, com a precisão de cada uma">
+      <SecaoDoPainel id="todas-medidas" nivel="analisar" titulo={tx("Todas as medidas do território, com a precisão de cada uma", "All measures for the territory, with the precision of each")}>
         <InclusaoTabelaPof orc={classes} fonte={fonte} />
       </SecaoDoPainel>
 
-      <SecaoDoPainel id="tabela-ufs" nivel="analisar" titulo="Por UF, só no total das famílias">
+      <SecaoDoPainel id="tabela-ufs" nivel="analisar" titulo={tx("Por UF, só no total das famílias", "By state, for all families only")}>
         <InclusaoTabelaUfsPof orc={ufs} fonte={fonte} />
       </SecaoDoPainel>
     </div>

@@ -48,13 +48,16 @@ import type {
 } from "./tipos-conta";
 import type { Evidencia } from "./evidencia";
 import { campo, tiposUrl, type Leitor } from "./estadoUrl";
-import { AUSENTE, dataBR, mesAno, num, pct, reais } from "./formato";
+import { AUSENTE, formatos } from "./formato";
+import { idiomaEnergia } from "./idioma";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "./tabela";
+import { bandeiraNoIdioma, dadoTexto, txEm } from "./i18n/conta-inclusao";
+import type { Idioma } from "@/lib/idioma";
 
 /* ---------- identidade visual (só tokens; cor nunca é o único portador) ---------- */
 
 /** Ordem de empilhamento dos grupos: custos positivos primeiro, itens que reduzem a tarifa por último. */
-export const ORDEM_GRUPOS: GrupoComponenteId[] = ["energia", "transmissao", "distribuicao", "perdas", "encargos", "outros", "creditos"];
+export const ORDEM_GRUPOS: GrupoComponenteId[] = ["energia", "transmissao", "distribuicao", "perdas", "encargos", "outros", "creditos"]; // i18n: dado
 
 /**
  * Cores dos grupos da composição. Validadas com o verificador de paleta (pares
@@ -67,7 +70,7 @@ export const COR_GRUPO: Record<GrupoComponenteId, string> = {
   transmissao: "var(--serie-solar)",
   distribuicao: "var(--serie-sm-n)",
   perdas: "var(--serie-termica)",
-  encargos: "var(--cor-energia)",
+  encargos: "var(--cor-energia)", // i18n: dado
   outros: "var(--serie-referencia)",
   creditos: "var(--serie-1)",
 };
@@ -99,7 +102,7 @@ export const COR_SUBSIDIO: Record<string, string> = {
   SCEE: "var(--serie-solar)",
   "Irrigação e Aquicultura": "var(--serie-sm-n)",
   "Geração Fonte Incentivada": "var(--serie-termica)",
-  Distribuidora: "var(--cor-energia)",
+  Distribuidora: "var(--cor-energia)", // i18n: dado
   "Lei 14.299/2022": "var(--serie-eolica)",
   Rural: "var(--serie-1)",
   "Água-esgoto-saneamento": "var(--serie-referencia)",
@@ -111,7 +114,7 @@ export function corSubsidio(categoria: string): string {
 }
 
 export const COR_GRUPO_CDE: Record<GrupoCdeId, string> = {
-  tarifa_social: "var(--cor-energia)",
+  tarifa_social: "var(--cor-energia)", // i18n: dado
   descontos_tarifarios: "var(--serie-solar)",
   ccc_luz_para_todos: "var(--serie-comp-1)",
   outras_despesas: "var(--serie-referencia)",
@@ -184,6 +187,11 @@ export function marcaBase(l: Pick<LinhaRanking, "dif_base_pct">): boolean {
   return l.dif_base_pct !== null && Math.abs(l.dif_base_pct) > LIMITE_DIFERENCA_BASE;
 }
 
+/** Tipo de distribuidora no idioma (o português é o da gold de Qualidade; o inglês segue a terminologia do observatório). */
+export function rotuloTipo(tipo: TipoDistribuidora, idioma: Idioma = idiomaEnergia()): string {
+  return idioma === "en" ? ROTULO_TIPO_EN[tipo] : ROTULO_TIPO[tipo];
+}
+
 /** Sigla exibida; o CNPJ entra quando a fonte não publica sigla (nunca uma sigla inventada). */
 export function rotuloDistribuidora(sigla: string | null | undefined, cnpj: string): string {
   return sigla && sigla.trim() ? sigla : `CNPJ ${cnpj}`;
@@ -193,7 +201,7 @@ export function rotuloDistribuidora(sigla: string | null | undefined, cnpj: stri
  * Linhas do ranking na ordem publicada (posição 1 = menor tarifa), com o custo do perfil escolhido. `info` traz UF, tipo e UCs de cada
  * distribuidora (`infoDistribuidoras`); sem ele, as três colunas ficam sem dado.
  */
-export function linhasRanking(vigentes: readonly TarifaVigente[], perfil: Perfil, info: Readonly<Record<string, InfoDistribuidora>> = {}): LinhaRanking[] {
+export function linhasRanking(vigentes: readonly TarifaVigente[], perfil: Perfil, info: Readonly<Record<string, InfoDistribuidora>> = {}, idioma: Idioma = idiomaEnergia()): LinhaRanking[] {
   // a outra régua: posição pela base econômica (a tarifa sem os componentes financeiros do processo tarifário), empate pela posição da aplicação
   const pelaBase = [...vigentes]
     .filter((v) => v.be_total !== null && v.be_total !== undefined)
@@ -221,7 +229,7 @@ export function linhasRanking(vigentes: readonly TarifaVigente[], perfil: Perfil
         fim: v.fim,
         ato: v.ato,
         uf: i?.uf ?? null,
-        tipo: i?.tipo ? ROTULO_TIPO[i.tipo] : null,
+        tipo: i?.tipo ? rotuloTipo(i.tipo, idioma) : null,
         ucs: i?.ucs ?? null,
         posicao_base: posicaoBase.get(v.cnpj) ?? null,
         dif_base_pct: dif === null ? null : Math.round(dif * 100) / 100,
@@ -230,18 +238,20 @@ export function linhasRanking(vigentes: readonly TarifaVigente[], perfil: Perfil
 }
 
 /** Colunas da tabela do ranking (P047): a mesma matriz vai para a tela e para a exportação. */
-export const COLUNAS_RANKING: ColunaTabela[] = [
-  { id: "posicao", rotulo: "Posição (1 = menor)", tipo: "numero", casas: 0 },
-  { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
-  { id: "uf", rotulo: "UF", tipo: "texto" },
-  { id: "tipo", rotulo: "Tipo", tipo: "texto" },
-  { id: "ucs", rotulo: "Consumidores (UCs)", tipo: "numero", casas: 0 },
-  { id: "nome", rotulo: "Razão social", tipo: "texto" },
+export function colunasRanking(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+  { id: "posicao", rotulo: tx("Posição (1 = menor)", "Position (1 = lowest)"), tipo: "numero", casas: 0 },
+  { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
+  { id: "uf", rotulo: tx("UF", "State"), tipo: "texto" },
+  { id: "tipo", rotulo: tx("Tipo", "Type"), tipo: "texto" },
+  { id: "ucs", rotulo: tx("Consumidores (UCs)", "Consumers (consumer units)"), tipo: "numero", casas: 0 },
+  { id: "nome", rotulo: tx("Razão social", "Legal name"), tipo: "texto" },
   { id: "id", rotulo: "CNPJ", tipo: "texto" },
   { id: "te", rotulo: "TE", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "tusd", rotulo: "TUSD", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   {
-    id: "total",
+    id: "total", // i18n: dado
     rotulo: "TE + TUSD",
     tipo: "numero",
     unidade: "R$/MWh",
@@ -251,36 +261,38 @@ export const COLUNAS_RANKING: ColunaTabela[] = [
     id: "custo_100",
     rotulo: "100 kWh",
     tipo: "numero",
-    unidade: "R$/mês",
+    unidade: tx("R$/mês", "R$/month"),
     casas: 2,
   },
   {
     id: "custo_200",
     rotulo: "200 kWh",
     tipo: "numero",
-    unidade: "R$/mês",
+    unidade: tx("R$/mês", "R$/month"),
     casas: 2,
   },
   {
     id: "custo_300",
     rotulo: "300 kWh",
     tipo: "numero",
-    unidade: "R$/mês",
+    unidade: tx("R$/mês", "R$/month"),
     casas: 2,
   },
   {
     id: "be_total",
-    rotulo: "Base econômica (TE + TUSD)",
+    rotulo: tx("Base econômica (TE + TUSD)", "Economic base (TE + TUSD)"),
     tipo: "numero",
     unidade: "R$/MWh",
     casas: 2,
   },
-  { id: "posicao_base", rotulo: "Posição pela base econômica", tipo: "numero", casas: 0 },
-  { id: "dif_base_pct", rotulo: "Aplicação contra a base", tipo: "percentual", casas: 1 },
-  { id: "inicio", rotulo: "Início da vigência", tipo: "data" },
-  { id: "fim", rotulo: "Fim da vigência", tipo: "data" },
-  { id: "ato", rotulo: "Ato da ANEEL", tipo: "texto" },
-];
+  { id: "posicao_base", rotulo: tx("Posição pela base econômica", "Position by economic base"), tipo: "numero", casas: 0 },
+  { id: "dif_base_pct", rotulo: tx("Aplicação contra a base", "Applied tariff vs. base"), tipo: "percentual", casas: 1 },
+  { id: "inicio", rotulo: tx("Início da vigência", "Validity start"), tipo: "data" },
+  { id: "fim", rotulo: tx("Fim da vigência", "Validity end"), tipo: "data" },
+  { id: "ato", rotulo: tx("Ato da ANEEL", "ANEEL act"), tipo: "texto" },
+  ];
+}
+export const COLUNAS_RANKING: ColunaTabela[] = colunasRanking("pt");
 
 export type LinhaEvolucao = {
   m: string;
@@ -346,7 +358,9 @@ export type LinhaEvento = {
 };
 
 /** Eventos da tarifa B1 de uma distribuidora (histórico sob demanda), do mais recente ao mais antigo. */
-export function linhasEventos(eventos: readonly EventoB1[]): LinhaEvento[] {
+export function linhasEventos(eventos: readonly EventoB1[], idioma: Idioma = idiomaEnergia()): LinhaEvento[] {
+  const f = formatos(idioma);
+  const tx = txEm(idioma);
   return [...eventos]
     .sort((a, b) => (a[0] < b[0] ? 1 : a[0] > b[0] ? -1 : 0))
     .map((e) => ({
@@ -359,7 +373,7 @@ export function linhasEventos(eventos: readonly EventoB1[]): LinhaEvento[] {
       variacao_te: e[6],
       variacao_tusd: e[7],
       ipca: e[8],
-      meses_ipca: `${mesAno(`${e[9]}-01`)} a ${mesAno(`${e[10]}-01`)}`,
+      meses_ipca: tx(`${f.mesAno(`${e[9]}-01`)} a ${f.mesAno(`${e[10]}-01`)}`, `${f.mesAno(`${e[9]}-01`)} to ${f.mesAno(`${e[10]}-01`)}`),
       perimetro: e[11],
     }));
 }
@@ -384,7 +398,11 @@ export type LinhaComposicao = {
 
 /** Série do ajuste de arredondamento no gráfico de composição: cinza neutro, sem o significado de nenhum grupo. */
 export const ID_AJUSTE = "ajuste";
-export const ROTULO_AJUSTE = "Ajuste de arredondamento (não é componente)";
+export function rotuloAjuste(idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  return tx("Ajuste de arredondamento (não é componente)", "Rounding adjustment (not a component)");
+}
+export const ROTULO_AJUSTE = rotuloAjuste("pt");
 export const COR_AJUSTE = "var(--serie-5)";
 
 /** Ajuste de uma linha: o alvo (tarifa em R$/MWh ou 100 em %) menos a soma das partes; zero quando a diferença não aparece nas duas casas. */
@@ -460,7 +478,9 @@ export function linhasComposicaoGrafico(
   vigentes: readonly Pick<TarifaVigente, "cnpj" | "posicao">[],
   unidade: UnidadeComposicao,
   ids: readonly string[],
+  idioma: Idioma = idiomaEnergia(),
 ): LinhaComposicao[] {
+  const tx = txEm(idioma);
   const todas = linhasComposicao(comp, vigentes, unidade);
   const porId = new Map(todas.map((l) => [l.id, l]));
   const out: LinhaComposicao[] = [];
@@ -468,7 +488,7 @@ export function linhasComposicaoGrafico(
   if (m) {
     const l = {
       id: ID_MEDIA,
-      sigla: `Média de ${m.n}`,
+      sigla: tx(`Média de ${m.n}`, `Average of ${m.n}`),
       posicao: null,
       total: m.total_rs_mwh,
       cde: unidade === "rs" ? m.cde_rs_mwh : m.cde_pct,
@@ -485,17 +505,18 @@ export function linhasComposicaoGrafico(
 }
 
 /** Colunas da tabela de composição (P048), na unidade exibida. */
-export function colunasComposicao(rotulo: ReadonlyMap<string, string>, emPct: boolean): ColunaTabela[] {
+export function colunasComposicao(rotulo: ReadonlyMap<string, string>, emPct: boolean, idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
   const tipo: ColunaTabela["tipo"] = emPct ? "percentual" : "numero";
   const unidade = emPct ? undefined : "R$/MWh";
   // as partes são publicadas com duas casas nas duas unidades: mostrar menos casas arredondaria de novo o que já foi arredondado
   const casas = 2;
   return [
-    { id: "posicao", rotulo: "Posição no ranking", tipo: "numero", casas: 0 },
-    { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
+    { id: "posicao", rotulo: tx("Posição no ranking", "Position in the ranking"), tipo: "numero", casas: 0 },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
     { id: "id", rotulo: "CNPJ", tipo: "texto" },
     {
-      id: "total",
+      id: "total", // i18n: dado
       rotulo: "TE + TUSD",
       tipo: "numero",
       unidade: "R$/MWh",
@@ -510,7 +531,7 @@ export function colunasComposicao(rotulo: ReadonlyMap<string, string>, emPct: bo
     })),
     {
       id: "cde",
-      rotulo: "Componentes CDE (dentro dos encargos)",
+      rotulo: tx("Componentes CDE (dentro dos encargos)", "CDE components (within sector charges)"),
       tipo,
       unidade,
       casas,
@@ -577,13 +598,14 @@ export function tarifaDaChave(tarifas: TarifasSim, chave: ChaveTarifa): number |
   return te + tusd;
 }
 
-const NOMES_LIGACAO: Record<Ligacao, string> = {
-  monofasico: "monofásica",
-  bifasico: "bifásica",
-  trifasico: "trifásica",
-};
-export function nomeLigacao(l: Ligacao): string {
-  return NOMES_LIGACAO[l];
+export function nomeLigacao(l: Ligacao, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const nomes: Record<Ligacao, string> = {
+    monofasico: tx("monofásica", "single-phase"),
+    bifasico: tx("bifásica", "two-phase"),
+    trifasico: tx("trifásica", "three-phase"),
+  };
+  return nomes[l];
 }
 
 /**
@@ -599,13 +621,15 @@ export function simular(
   ligacao: Ligacao,
   adicionalRsMwh: number | null,
   regras: Simulador["regras"],
+  idioma: Idioma = idiomaEnergia(),
 ): ResultadoSimulacao {
-  if (!Number.isFinite(kwh) || kwh < 0) return { disponivel: false, motivo: "consumo inválido" };
+  const tx = txEm(idioma);
+  if (!Number.isFinite(kwh) || kwh < 0) return { disponivel: false, motivo: tx("consumo inválido", "invalid consumption") };
   const minimo = regras.custo_disponibilidade_kwh[ligacao];
   if (minimo === undefined)
     return {
       disponivel: false,
-      motivo: `tipo de ligação desconhecido: ${ligacao}`,
+      motivo: tx(`tipo de ligação desconhecido: ${ligacao}`, `unknown connection type: ${ligacao}`),
     };
   const adic = adicionalRsMwh ?? 0;
   const linhas: LinhaMemoria[] = [];
@@ -617,17 +641,18 @@ export function simular(
   };
   let fat: number;
   let kwhBandeira: number;
-  const nomeLig = `ligação ${NOMES_LIGACAO[ligacao]}`;
+  const nomeLig = tx(`ligação ${nomeLigacao(ligacao, idioma)}`, `${nomeLigacao(ligacao, idioma)} connection`);
+  const abaixoDoMinimo = tx(`Consumo abaixo do custo de disponibilidade: faturados ${minimo} kWh (${nomeLig}).`, `Consumption below the availability cost: ${minimo} kWh billed (${nomeLig}).`);
   if (classe === "residencial" || classe === "rural" || classe === "demais") {
     const t = tarifaDaChave(tarifas, classe);
     if (t === null)
       return {
         disponivel: false,
-        motivo: "tarifa da classe não publicada para esta distribuidora na vigência",
+        motivo: tx("tarifa da classe não publicada para esta distribuidora na vigência", "class tariff not published for this distribution utility in the validity period"),
       };
     fat = Math.max(kwh, minimo);
-    linha("Energia faturada (TE + TUSD)", fat, t);
-    if (fat > kwh) obs.push(`Consumo abaixo do custo de disponibilidade: faturados ${minimo} kWh (${nomeLig}).`);
+    linha(tx("Energia faturada (TE + TUSD)", "Billed energy (TE + TUSD)"), fat, t);
+    if (fat > kwh) obs.push(abaixoDoMinimo);
     kwhBandeira = kwh;
   } else if (classe === "desconto_social") {
     const t1 = tarifaDaChave(tarifas, "ds1");
@@ -635,14 +660,14 @@ export function simular(
     if (t1 === null || t2 === null)
       return {
         disponivel: false,
-        motivo: "tarifas do Desconto Social não publicadas para esta distribuidora na vigência",
+        motivo: tx("tarifas do Desconto Social não publicadas para esta distribuidora na vigência", "Desconto Social tariffs not published for this distribution utility in the validity period"),
       };
     const lim = regras.desconto_social_limite_kwh;
     fat = Math.max(kwh, minimo);
-    linha(`Faixa 01, até ${lim} kWh, sem quotas da CDE`, Math.min(fat, lim), t1);
-    if (fat > lim) linha(`Faixa 02, acima de ${lim} kWh`, fat - lim, t2);
-    if (fat > kwh) obs.push(`Consumo abaixo do custo de disponibilidade: faturados ${minimo} kWh (${nomeLig}).`);
-    obs.push("Leitura por parcela das faixas homologadas; regra da REN não conferida (acervo da ANEEL bloqueado).");
+    linha(tx(`Faixa 01, até ${lim} kWh, sem quotas da CDE`, `Band 01, up to ${lim} kWh, without CDE quotas`), Math.min(fat, lim), t1);
+    if (fat > lim) linha(tx(`Faixa 02, acima de ${lim} kWh`, `Band 02, above ${lim} kWh`), fat - lim, t2);
+    if (fat > kwh) obs.push(abaixoDoMinimo);
+    obs.push(tx("Leitura por parcela das faixas homologadas; regra da REN não conferida (acervo da ANEEL bloqueado).", "Band-by-band reading of the ratified bands; REN rule not checked (ANEEL archive blocked)."));
     kwhBandeira = kwh;
   } else if (classe === "tarifa_social") {
     const t1 = tarifaDaChave(tarifas, "ts1");
@@ -650,24 +675,27 @@ export function simular(
     if (t1 === null || t2 === null)
       return {
         disponivel: false,
-        motivo: "tarifas da Tarifa Social não publicadas para esta distribuidora na vigência",
+        motivo: tx("tarifas da Tarifa Social não publicadas para esta distribuidora na vigência", "Tarifa Social tariffs not published for this distribution utility in the validity period"),
       };
     const lim = regras.tarifa_social_limite_kwh;
     const q1 = Math.min(kwh, lim);
-    linha(`Faixa 01, até ${lim} kWh`, q1, t1);
+    linha(tx(`Faixa 01, até ${lim} kWh`, `Band 01, up to ${lim} kWh`), q1, t1);
     // desconto integral da faixa 01 (regra conferida em simulador.regras_texto); o limite vem da gold, nunca do código
-    linha("Desconto integral na faixa 01 (custeado pela CDE)", q1, t1, -1);
-    if (kwh > lim) linha(`Faixa 02, acima de ${lim} kWh, sem desconto`, kwh - lim, t2);
+    linha(tx("Desconto integral na faixa 01 (custeado pela CDE)", "Full discount in band 01 (funded by the CDE)"), q1, t1, -1);
+    if (kwh > lim) linha(tx(`Faixa 02, acima de ${lim} kWh, sem desconto`, `Band 02, above ${lim} kWh, no discount`), kwh - lim, t2);
     obs.push(
-      `Custo de disponibilidade não aplicado: gratuidade até ${lim} kWh inclusive em ligação trifásica (ANEEL); acima de ${lim} kWh a regra do mínimo não foi conferida.`,
+      tx(
+        `Custo de disponibilidade não aplicado: gratuidade até ${lim} kWh inclusive em ligação trifásica (ANEEL); acima de ${lim} kWh a regra do mínimo não foi conferida.`,
+        `Availability cost not applied: free of charge up to ${lim} kWh, including on three-phase connections (ANEEL); above ${lim} kWh the minimum rule was not checked.`,
+      ),
     );
     fat = kwh;
     kwhBandeira = Math.max(kwh - lim, 0);
-    if (kwhBandeira < kwh) obs.push(`Bandeira aplicada só sobre a parcela acima de ${lim} kWh (leitura da página oficial da ANEEL).`);
+    if (kwhBandeira < kwh) obs.push(tx(`Bandeira aplicada só sobre a parcela acima de ${lim} kWh (leitura da página oficial da ANEEL).`, `Tariff flag applied only to the portion above ${lim} kWh (reading of ANEEL's official page).`));
   } else {
     return {
       disponivel: false,
-      motivo: `classe desconhecida: ${String(classe)}`,
+      motivo: tx(`classe desconhecida: ${String(classe)}`, `unknown class: ${String(classe)}`),
     };
   }
   const energia = linhas.reduce((s, l) => s + l.valor, 0);
@@ -710,10 +738,11 @@ export function curvaSimulacao(
   regras: Simulador["regras"],
   ate = 500,
   passo = 10,
+  idioma: Idioma = idiomaEnergia(),
 ): { kwh: string; total: number | null; energia: number | null }[] {
   const out: { kwh: string; total: number | null; energia: number | null }[] = [];
   for (let q = 0; q <= ate; q += passo) {
-    const r = simular(tarifas, classe, q, ligacao, adicionalRsMwh, regras);
+    const r = simular(tarifas, classe, q, ligacao, adicionalRsMwh, regras, idioma);
     out.push({
       kwh: String(q),
       total: r.disponivel ? r.total : null,
@@ -726,22 +755,26 @@ export function curvaSimulacao(
 /* ---------- P050: reajustes, bandeiras, subsídios e CDE ---------- */
 
 /** Colunas da tabela de variação contra o IPCA (P050). */
-export const COLUNAS_JANELA: ColunaTabela[] = [
-  { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
-  { id: "id", rotulo: "CNPJ", tipo: "texto" },
-  {
-    id: "variacao",
-    rotulo: "Variação da tarifa B1",
-    tipo: "percentual",
-    casas: 2,
-  },
-  {
-    id: "real",
-    rotulo: "Variação real (descontado o IPCA)",
-    tipo: "percentual",
-    casas: 2,
-  },
-];
+export function colunasJanela(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
+  const tx = txEm(idioma);
+  return [
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility"), tipo: "texto" },
+    { id: "id", rotulo: "CNPJ", tipo: "texto" },
+    {
+      id: "variacao",
+      rotulo: tx("Variação da tarifa B1", "Change in the B1 tariff"),
+      tipo: "percentual",
+      casas: 2,
+    },
+    {
+      id: "real",
+      rotulo: tx("Variação real (descontado o IPCA)", "Real change (IPCA discounted)"),
+      tipo: "percentual",
+      casas: 2,
+    },
+  ];
+}
+export const COLUNAS_JANELA: ColunaTabela[] = colunasJanela("pt");
 
 export type LinhaJanela = {
   id: string;
@@ -793,12 +826,13 @@ export function categoriasSubsidio(s: Subsidios): string[] {
 }
 
 /** Uma linha por ano, valores em R$ bilhões (conversão de unidade); ano parcial identificado no rótulo. */
-export function linhasSubsidios(s: Subsidios): Record<string, string | number | null>[] {
+export function linhasSubsidios(s: Subsidios, idioma: Idioma = idiomaEnergia()): Record<string, string | number | null>[] {
+  const tx = txEm(idioma);
   const cats = categoriasSubsidio(s);
   return s.anual.map((a) => {
     const l: Record<string, string | number | null> = {
       ano: a.ano,
-      rotulo: a.parcial ? `${a.ano} (${a.meses} ${a.meses === 1 ? "mês" : "meses"}, parcial)` : a.ano,
+      rotulo: a.parcial ? tx(`${a.ano} (${a.meses} ${a.meses === 1 ? "mês" : "meses"}, parcial)`, `${a.ano} (${a.meses} ${a.meses === 1 ? "month" : "months"}, partial)`) : a.ano,
       meses: a.meses,
       soma: emBilhoes(a.soma_categorias),
       total_publicado: emBilhoes(a.total_publicado),
@@ -828,7 +862,22 @@ export function linhasCde(f: FinanciamentoCde): Record<string, string | number |
 
 /* ---------- respostas curtas (regras determinísticas) ---------- */
 
-const rsKwh = (rsMwh: number | null | undefined, casas = 4) => (rsMwh === null || rsMwh === undefined || !Number.isFinite(rsMwh) ? AUSENTE : `${reais(rsMwh / 1000, casas)}/kWh`);
+const rsKwh = (rsMwh: number | null | undefined, casas = 4, idioma: Idioma = idiomaEnergia()) =>
+  rsMwh === null || rsMwh === undefined || !Number.isFinite(rsMwh) ? AUSENTE : `${formatos(idioma).reais(rsMwh / 1000, casas)}/kWh`;
+
+/** Ordinal inglês ("1st", "2nd", "23rd", "11th"), para as posições do ranking na página inglesa. */
+function ordinalEn(n: number): string {
+  const r100 = n % 100;
+  const r10 = n % 10;
+  const suf = r100 >= 11 && r100 <= 13 ? "th" : r10 === 1 ? "st" : r10 === 2 ? "nd" : r10 === 3 ? "rd" : "th";
+  return `${n}${suf}`;
+}
+
+/** Lista com vírgulas e "e" ("and" em inglês) antes do último item. */
+function listaE(xs: readonly string[], idioma: Idioma, sep = ", "): string {
+  if (xs.length <= 1) return xs[0] ?? "";
+  return `${xs.slice(0, -1).join(sep)} ${txEm(idioma)("e", "and")} ${xs[xs.length - 1]}`;
+}
 
 /**
  * Minúscula para usar um rótulo no meio da frase sem estragar siglas: só a palavra
@@ -840,50 +889,83 @@ export function minuscula(s: string): string {
 }
 
 /** Variação com verbo: "subiu 11,18%", "caiu 2,10%", "ficou estável (0,00%)". */
-export function verboVariacao(v: number | null | undefined, casas = 2): string {
-  if (v === null || v === undefined || !Number.isFinite(v)) return "não tem variação calculável";
+export function verboVariacao(v: number | null | undefined, casas = 2, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const f = formatos(idioma);
+  if (v === null || v === undefined || !Number.isFinite(v)) return tx("não tem variação calculável", "has no computable change");
   const r = Number(v.toFixed(casas));
-  if (r > 0) return `subiu ${pct(r, casas)}`;
-  if (r < 0) return `caiu ${pct(Math.abs(r), casas)}`;
-  return `ficou estável (${pct(0, casas)})`;
+  if (r > 0) return tx(`subiu ${f.pct(r, casas)}`, `rose ${f.pct(r, casas)}`);
+  if (r < 0) return tx(`caiu ${f.pct(Math.abs(r), casas)}`, `fell ${f.pct(Math.abs(r), casas)}`);
+  return tx(`ficou estável (${f.pct(0, casas)})`, `remained stable (${f.pct(0, casas)})`);
 }
 
 /** P047: quanto custa o perfil escolhido, do menor ao maior, e a mediana. */
-export function respostaTarifa(dataReferencia: string, resumo: ResumoTarifas, vigentes: readonly TarifaVigente[], perfil: Perfil): string {
+export function respostaTarifa(dataReferencia: string, resumo: ResumoTarifas, vigentes: readonly TarifaVigente[], perfil: Perfil, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { dataBR, reais } = formatos(idioma);
   const chave = String(perfil) as "100" | "200" | "300";
   const ord = [...vigentes].sort((a, b) => a.posicao - b.posicao);
   const menor = ord[0];
   const maior = ord[ord.length - 1];
-  if (!menor || !maior || resumo.n === 0) return `Em ${dataBR(dataReferencia)}, nenhuma distribuidora tem tarifa B1 residencial vigente no arquivo da ANEEL.`;
-  return (
+  if (!menor || !maior || resumo.n === 0)
+    return tx(
+      `Em ${dataBR(dataReferencia)}, nenhuma distribuidora tem tarifa B1 residencial vigente no arquivo da ANEEL.`,
+      `On ${dataBR(dataReferencia)}, no distribution utility has a residential B1 tariff in force in ANEEL's file.`,
+    );
+  const a = `${reais(menor.perfis[chave])} (${rotuloDistribuidora(menor.sigla, menor.cnpj)})`;
+  const b = `${reais(maior.perfis[chave])} (${rotuloDistribuidora(maior.sigla, maior.cnpj)})`;
+  return tx(
     `Em ${dataBR(dataReferencia)}, ${perfil} kWh no mês custam, só pela tarifa B1 residencial homologada (TE + TUSD, sem tributos e sem bandeira), ` +
-    `de ${reais(menor.perfis[chave])} (${rotuloDistribuidora(menor.sigla, menor.cnpj)}) a ${reais(maior.perfis[chave])} (${rotuloDistribuidora(maior.sigla, maior.cnpj)}) entre as ${resumo.n} distribuidoras com tarifa vigente no arquivo; ` +
-    `a mediana dessas ${resumo.n} é ${reais(resumo.perfis_mediana[chave])}, ou ${rsKwh(resumo.mediana)}.`
+      `de ${a} a ${b} entre as ${resumo.n} distribuidoras com tarifa vigente no arquivo; ` +
+      `a mediana dessas ${resumo.n} é ${reais(resumo.perfis_mediana[chave])}, ou ${rsKwh(resumo.mediana, 4, idioma)}.`,
+    `On ${dataBR(dataReferencia)}, ${perfil} kWh a month cost, on the ratified residential B1 tariff alone (TE + TUSD, without taxes and without the tariff flag), ` +
+      `from ${a} to ${b} among the ${resumo.n} distribution utilities with a tariff in force in the file; ` +
+      `the median of these ${resumo.n} is ${reais(resumo.perfis_mediana[chave])}, or ${rsKwh(resumo.mediana, 4, idioma)}.`,
   );
 }
 
 /** P047, histórico: quantas mudanças e a última, para a distribuidora em destaque. */
-export function respostaHistorico(sigla: string, eventos: readonly EventoB1[], vigencias: readonly VigenciaB1[]): string {
-  if (!vigencias.length) return `${sigla}: o arquivo não traz vigência da tarifa B1 residencial.`;
+export function respostaHistorico(sigla: string, eventos: readonly EventoB1[], vigencias: readonly VigenciaB1[], idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { dataBR, pct } = formatos(idioma);
+  if (!vigencias.length) return tx(`${sigla}: o arquivo não traz vigência da tarifa B1 residencial.`, `${sigla}: the file has no validity period for the residential B1 tariff.`);
   const ult = [...eventos].sort((a, b) => (a[0] < b[0] ? -1 : 1)).at(-1);
-  const base = `${sigla}: tarifa B1 publicada de ${dataBR(vigencias[0][0])} a ${dataBR(vigencias[vigencias.length - 1][1])}, com ${eventos.length} ${eventos.length === 1 ? "mudança" : "mudanças"} de valor ou de ato.`;
+  const d0 = dataBR(vigencias[0][0]);
+  const d1 = dataBR(vigencias[vigencias.length - 1][1]);
+  const base = tx(
+    `${sigla}: tarifa B1 publicada de ${d0} a ${d1}, com ${eventos.length} ${eventos.length === 1 ? "mudança" : "mudanças"} de valor ou de ato.`,
+    `${sigla}: B1 tariff published from ${d0} to ${d1}, with ${eventos.length} ${eventos.length === 1 ? "change" : "changes"} in value or act.`,
+  );
   if (!ult) return base;
-  const perimetro = ult[11] ? ` Essa mudança é de perímetro (incorporação, ${ult[11]}): compara áreas diferentes.` : "";
-  return `${base} Na última, em ${dataBR(ult[0])} (${ult[1]}), a tarifa ${verboVariacao(ult[5])}; o IPCA desde a mudança anterior foi ${pct(ult[8], 2)}.${perimetro}`;
+  const perimetro = ult[11] ? tx(` Essa mudança é de perímetro (incorporação, ${ult[11]}): compara áreas diferentes.`, ` This is a perimeter change (merger, ${ult[11]}): it compares different areas.`) : "";
+  return tx(
+    `${base} Na última, em ${dataBR(ult[0])} (${ult[1]}), a tarifa ${verboVariacao(ult[5], 2, idioma)}; o IPCA desde a mudança anterior foi ${pct(ult[8], 2)}.${perimetro}`,
+    `${base} In the latest, on ${dataBR(ult[0])} (${ult[1]}), the tariff ${verboVariacao(ult[5], 2, idioma)}; the IPCA since the previous change was ${pct(ult[8], 2)}.${perimetro}`,
+  );
 }
 
 /** P048: participação de cada grupo na composição média (a que fecha com o total). */
-export function respostaComposicao(comp: Composicao): string {
+export function respostaComposicao(comp: Composicao, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { pct, reais } = formatos(idioma);
   const m = comp.media;
-  if (!m || m.total_rs_mwh === null) return "Sem composição publicada na data: o conjunto de componentes não cobre as tarifas vigentes.";
-  const rot = new Map(comp.grupos.map((g) => [g.id, minuscula(g.rotulo)]));
+  if (!m || m.total_rs_mwh === null)
+    return tx("Sem composição publicada na data: o conjunto de componentes não cobre as tarifas vigentes.", "No composition published on the date: the component dataset does not cover the tariffs in force.");
+  const rot = new Map(comp.grupos.map((g) => [g.id, minuscula(dadoTexto(g.rotulo, idioma))]));
   const positivos = ORDEM_GRUPOS.filter((g) => (m.grupos_pct[g] ?? 0) > 0).sort((a, b) => (m.grupos_pct[b] ?? 0) - (m.grupos_pct[a] ?? 0));
   const negativos = ORDEM_GRUPOS.filter((g) => (m.grupos_pct[g] ?? 0) < 0);
   const partes = positivos.map((g) => `${rot.get(g)} ${pct(m.grupos_pct[g], 1)}`);
-  const lista = partes.length > 1 ? `${partes.slice(0, -1).join(", ")} e ${partes[partes.length - 1]}` : (partes[0] ?? "");
-  const reduz = negativos.length ? ` Itens com valor negativo reduzem a tarifa: ${negativos.map((g) => `${rot.get(g)} ${pct(m.grupos_pct[g], 1)}`).join(" e ")}.` : "";
-  const cde = m.cde_pct !== null ? ` As componentes CDE somam ${pct(m.cde_pct, 1)} da tarifa e já estão dentro dos encargos.` : "";
-  return `Na média simples das ${m.n} distribuidoras com componentes publicadas (tarifa média de ${reais(m.total_rs_mwh / 1000, 4)}/kWh), a tarifa B1 se divide em ${lista}.${reduz}${cde}`;
+  const lista = listaE(partes, idioma);
+  const negs = negativos.map((g) => `${rot.get(g)} ${pct(m.grupos_pct[g], 1)}`).join(tx(" e ", " and "));
+  const reduz = negativos.length ? tx(` Itens com valor negativo reduzem a tarifa: ${negs}.`, ` Items with a negative value reduce the tariff: ${negs}.`) : "";
+  const cde =
+    m.cde_pct !== null
+      ? tx(` As componentes CDE somam ${pct(m.cde_pct, 1)} da tarifa e já estão dentro dos encargos.`, ` CDE components add up to ${pct(m.cde_pct, 1)} of the tariff and are already within sector charges.`)
+      : "";
+  return tx(
+    `Na média simples das ${m.n} distribuidoras com componentes publicadas (tarifa média de ${reais(m.total_rs_mwh / 1000, 4)}/kWh), a tarifa B1 se divide em ${lista}.${reduz}${cde}`,
+    `In the simple average of the ${m.n} distribution utilities with published components (average tariff of ${reais(m.total_rs_mwh / 1000, 4)}/kWh), the B1 tariff splits into ${lista}.${reduz}${cde}`,
+  );
 }
 
 /**
@@ -891,43 +973,80 @@ export function respostaComposicao(comp: Composicao): string {
  * `bandeira` null quer dizer adicional não publicado: a frase diz que a bandeira
  * ficou fora, em vez de chamar a ausência de "sem acréscimo".
  */
-export function respostaSimulacao(r: ResultadoSimulacao, sigla: string, rotuloClasse: string, kwh: number, bandeira: string | null, rotuloEstimativa: string): string {
-  if (!r.disponivel) return `Simulação indisponível para ${sigla} (${rotuloClasse}): ${r.motivo}.`;
+export function respostaSimulacao(
+  r: ResultadoSimulacao,
+  sigla: string,
+  rotuloClasse: string,
+  kwh: number,
+  bandeira: string | null,
+  rotuloEstimativa: string,
+  idioma: Idioma = idiomaEnergia(),
+): string {
+  const tx = txEm(idioma);
+  const { reais, num } = formatos(idioma);
+  if (!r.disponivel) return tx(`Simulação indisponível para ${sigla} (${rotuloClasse}): ${r.motivo}.`, `Simulation unavailable for ${sigla} (${rotuloClasse}): ${r.motivo}.`);
+  const b = bandeira === null ? "" : minuscula(bandeiraNoIdioma(bandeira, idioma));
   const band =
     bandeira === null
-      ? ", sem a bandeira, cujo adicional não está publicado para o mês"
+      ? tx(", sem a bandeira, cujo adicional não está publicado para o mês", ", without the tariff flag, whose surcharge is not published for the month")
       : r.bandeira > 0
-        ? `, dos quais ${reais(r.bandeira)} de bandeira ${minuscula(bandeira)} sobre ${num(r.kwh_bandeira, 0)} kWh`
-        : `, sem acréscimo de bandeira (${minuscula(bandeira)})`;
-  return `Para ${num(kwh, 0)} kWh no mês na ${sigla}, classe ${minuscula(rotuloClasse)}, a estimativa é de ${reais(r.total)}${band}. ${rotuloEstimativa}`;
+        ? tx(`, dos quais ${reais(r.bandeira)} de bandeira ${b} sobre ${num(r.kwh_bandeira, 0)} kWh`, `, of which ${reais(r.bandeira)} from the ${b} tariff flag on ${num(r.kwh_bandeira, 0)} kWh`)
+        : tx(`, sem acréscimo de bandeira (${b})`, `, with no tariff flag surcharge (${b})`);
+  return tx(
+    `Para ${num(kwh, 0)} kWh no mês na ${sigla}, classe ${minuscula(rotuloClasse)}, a estimativa é de ${reais(r.total)}${band}. ${rotuloEstimativa}`,
+    `For ${num(kwh, 0)} kWh a month at ${sigla}, ${minuscula(rotuloClasse)} class, the estimate is ${reais(r.total)}${band}. ${rotuloEstimativa}`,
+  );
 }
 
 /** P050: variação da tarifa B1 na janela contra o IPCA do mesmo período. */
-export function respostaReajustes(j: JanelaInflacao): string {
-  if (j.mediana_pct === null || j.ipca_pct === null) return `Sem comparação com o IPCA na janela de ${j.meses} meses: falta índice ou tarifa nas duas datas.`;
+export function respostaReajustes(j: JanelaInflacao, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { dataBR, pct } = formatos(idioma);
+  if (j.mediana_pct === null || j.ipca_pct === null)
+    return tx(
+      `Sem comparação com o IPCA na janela de ${j.meses} meses: falta índice ou tarifa nas duas datas.`,
+      `No comparison with the IPCA in the ${j.meses}-month window: the index or the tariff is missing on the two dates.`,
+    );
   const fora = j.excluidas_sem_tarifa_nas_duas_datas + j.excluidas_mudanca_perimetro.length;
   const foraTxt = fora
-    ? ` ${fora === 1 ? "Fica fora 1 distribuidora" : `Ficam fora ${fora} distribuidoras`} (sem tarifa numa das datas ou com área alterada por incorporação).`
+    ? tx(
+        ` ${fora === 1 ? "Fica fora 1 distribuidora" : `Ficam fora ${fora} distribuidoras`} (sem tarifa numa das datas ou com área alterada por incorporação).`,
+        ` ${fora === 1 ? "1 distribution utility is left out" : `${fora} distribution utilities are left out`} (no tariff on one of the dates or area changed by a merger).`,
+      )
     : "";
-  return (
-    `De ${dataBR(j.de)} a ${dataBR(j.ate)} (${j.meses} meses), a tarifa B1 residencial ${verboVariacao(j.mediana_pct)} na mediana de ${j.n} distribuidoras, ` +
-    `contra IPCA de ${pct(j.ipca_pct, 2)}: ${j.acima_ipca} ficaram acima da inflação e ${j.abaixo_ou_igual_ipca} abaixo ou igual.${foraTxt}`
+  const v = verboVariacao(j.mediana_pct, 2, idioma);
+  return tx(
+    `De ${dataBR(j.de)} a ${dataBR(j.ate)} (${j.meses} meses), a tarifa B1 residencial ${v} na mediana de ${j.n} distribuidoras, ` +
+      `contra IPCA de ${pct(j.ipca_pct, 2)}: ${j.acima_ipca} ficaram acima da inflação e ${j.abaixo_ou_igual_ipca} abaixo ou igual.${foraTxt}`,
+    `From ${dataBR(j.de)} to ${dataBR(j.ate)} (${j.meses} months), the residential B1 tariff ${v} at the median of ${j.n} distribution utilities, ` +
+      `against IPCA of ${pct(j.ipca_pct, 2)}: ${j.acima_ipca} were above inflation and ${j.abaixo_ou_igual_ipca} at or below it.${foraTxt}`,
   );
 }
 
 /** P050: bandeira do mês e quantos meses publicados tiveram acréscimo. */
-export function respostaBandeira(b: Bandeiras): string {
+export function respostaBandeira(b: Bandeiras, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { mesAno } = formatos(idioma);
   const v = b.vigente;
   const publicados = b.acionamento.filter((a) => a.bandeira !== null);
-  const comAcrescimo = publicados.filter((a) => a.bandeira !== "Verde").length;
+  const comAcrescimo = publicados.filter((a) => a.bandeira !== "Verde").length; // i18n: dado
   const inicio = b.acionamento[0]?.m;
+  const m0 = inicio ? mesAno(`${inicio}-01`) : "";
+  const m1 = inicio ? mesAno(`${b.acionamento[b.acionamento.length - 1].m}-01`) : "";
   const historico = inicio
-    ? ` De ${mesAno(`${inicio}-01`)} a ${mesAno(`${b.acionamento[b.acionamento.length - 1].m}-01`)}, ${comAcrescimo} dos ${publicados.length} meses publicados tiveram bandeira diferente da verde.`
+    ? tx(
+        ` De ${m0} a ${m1}, ${comAcrescimo} dos ${publicados.length} meses publicados tiveram bandeira diferente da verde.`,
+        ` From ${m0} to ${m1}, ${comAcrescimo} of the ${publicados.length} published months had a tariff flag other than green.`,
+      )
     : "";
-  if (!v || !v.bandeira) return `O conjunto de bandeiras não traz acionamento publicado.${historico}`;
-  const valor = v.bandeira === "Verde" ? "sem acréscimo" : `acréscimo de ${rsKwh(v.rs_mwh, 5)} consumido`;
-  const aviso = v.aviso ? ` ${v.aviso}` : "";
-  return `A bandeira de ${mesAno(`${v.mes}-01`)} é ${minuscula(v.bandeira)}: ${valor}, fora dos sistemas isolados.${historico}${aviso}`;
+  if (!v || !v.bandeira) return tx(`O conjunto de bandeiras não traz acionamento publicado.${historico}`, `The tariff flag dataset has no published activation.${historico}`);
+  const valor = v.bandeira === "Verde" ? tx("sem acréscimo", "no surcharge") : tx(`acréscimo de ${rsKwh(v.rs_mwh, 5, idioma)} consumido`, `a surcharge of ${rsKwh(v.rs_mwh, 5, idioma)} consumed`); // i18n: dado
+  const aviso = v.aviso ? ` ${dadoTexto(v.aviso, idioma)}` : "";
+  const nome = minuscula(bandeiraNoIdioma(v.bandeira, idioma));
+  return tx(
+    `A bandeira de ${mesAno(`${v.mes}-01`)} é ${nome}: ${valor}, fora dos sistemas isolados.${historico}${aviso}`,
+    `The tariff flag for ${mesAno(`${v.mes}-01`)} is ${nome}: ${valor}, outside the isolated systems.${historico}${aviso}`,
+  );
 }
 
 /**
@@ -950,114 +1069,181 @@ export function valorNoModo(rs: number | null | undefined, ano: string, v: Valor
 }
 
 /** "em reais de ago/2026" ou "nominais"; a frase de moeda que acompanha todo número do painel. */
-export function rotuloMoeda(v: ValoresDoPainel): string {
-  return v.modo === "real" && v.base ? `em reais de ${v.base}` : "nominais, na moeda da época";
+export function rotuloMoeda(v: ValoresDoPainel, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  return v.modo === "real" && v.base ? tx(`em reais de ${v.base}`, `in ${v.base} reais`) : tx("nominais, na moeda da época", "nominal, in the currency of the time");
 }
 
 /** P050: subsídios do último ano completo e a maior categoria. */
-export function respostaSubsidios(s: Subsidios, v: ValoresDoPainel = VALORES_NOMINAIS): string {
+export function respostaSubsidios(s: Subsidios, v: ValoresDoPainel = VALORES_NOMINAIS, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { reais } = formatos(idioma);
   const ano = s.anual.find((a) => a.ano === s.ultimo_ano_completo);
-  if (!ano || ano.soma_categorias === null) return "Sem ano completo de subsídios tarifários publicado.";
+  if (!ano || ano.soma_categorias === null) return tx("Sem ano completo de subsídios tarifários publicado.", "No complete year of tariff subsidies published.");
   const total = valorNoModo(ano.soma_categorias, ano.ano, v);
+  const nominal = reais(ano.soma_categorias / BI, 2);
   if (total === null) {
-    return `Em ${ano.ano}, o valor em reais de ${v.base ?? "mês-base"} não pode ser calculado: o IPCA não cobre o ano. O valor nominal, na moeda da época, é ${reais(ano.soma_categorias / BI, 2)} bilhões.`;
+    return tx(
+      `Em ${ano.ano}, o valor em reais de ${v.base ?? "mês-base"} não pode ser calculado: o IPCA não cobre o ano. O valor nominal, na moeda da época, é ${nominal} bilhões.`,
+      `In ${ano.ano}, the value in ${v.base ?? "base-month"} reais cannot be calculated: the IPCA does not cover the year. The nominal value, in the currency of the time, is ${nominal} billion.`,
+    );
   }
   const cats = Object.entries(ano.categorias)
     .filter((e): e is [string, number] => e[1] !== null)
     .sort((a, b) => b[1] - a[1]);
   const maior = cats[0];
-  const maiorTxt = maior ? `; a maior categoria foi ${maior[0]} (${reais((valorNoModo(maior[1], ano.ano, v) as number) / BI, 2)} bilhões)` : "";
+  const valorMaior = maior ? reais((valorNoModo(maior[1], ano.ano, v) as number) / BI, 2) : "";
+  const maiorTxt = maior
+    ? tx(`; a maior categoria foi ${maior[0]} (${valorMaior} bilhões)`, `; the largest category was ${dadoTexto(maior[0], idioma)} (${valorMaior} billion)`)
+    : "";
   const moeda =
     v.modo === "real"
-      ? ` Valores ${rotuloMoeda(v)}, corrigidos pelo IPCA; o valor nominal, na moeda da época, é ${reais(ano.soma_categorias / BI, 2)} bilhões.`
-      : ` Valores ${rotuloMoeda(v)}.`;
-  return (
+      ? tx(
+          ` Valores ${rotuloMoeda(v, idioma)}, corrigidos pelo IPCA; o valor nominal, na moeda da época, é ${nominal} bilhões.`,
+          ` Values are ${rotuloMoeda(v, idioma)}, adjusted by the IPCA; the nominal value, in the currency of the time, is ${nominal} billion.`,
+        )
+      : tx(` Valores ${rotuloMoeda(v, idioma)}.`, ` Values are ${rotuloMoeda(v, idioma)}.`);
+  return tx(
     `Em ${ano.ano}, foram homologados ${reais(total / BI, 2)} bilhões para repasse da Conta de Desenvolvimento Energético (CDE) às distribuidoras, ` +
-    `para cobrir descontos a categorias de usuários${maiorTxt}. É o valor homologado, não o desembolso realizado, e não são transferências a famílias.${moeda}`
+      `para cobrir descontos a categorias de usuários${maiorTxt}. É o valor homologado, não o desembolso realizado, e não são transferências a famílias.${moeda}`,
+    `In ${ano.ano}, ${reais(total / BI, 2)} billion was ratified for transfer from the Energy Development Account (CDE) to distribution utilities, ` +
+      `to cover discounts to user categories${maiorTxt}. It is the ratified amount, not the actual disbursement, and these are not transfers to families.${moeda}`,
   );
 }
 
 /** P050: orçamento da CDE do último ano, peso das quotas e da Tarifa Social. */
-export function respostaCde(f: FinanciamentoCde | null, v: ValoresDoPainel = VALORES_NOMINAIS): string {
-  if (!f) return "O orçamento da CDE não foi publicado nesta gold.";
+export function respostaCde(f: FinanciamentoCde | null, v: ValoresDoPainel = VALORES_NOMINAIS, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { reais, pct } = formatos(idioma);
+  if (!f) return tx("O orçamento da CDE não foi publicado nesta gold.", "The CDE budget was not published in this release.");
   const t = f.totais.find((x) => x.ano === f.ultimo_ano);
-  if (!t || t.despesa === null) return `Sem orçamento da CDE publicado para ${f.ultimo_ano}.`;
+  if (!t || t.despesa === null) return tx(`Sem orçamento da CDE publicado para ${f.ultimo_ano}.`, `No CDE budget published for ${f.ultimo_ano}.`);
   const despesa = valorNoModo(t.despesa, t.ano, v);
+  const nominal = reais(t.despesa / BI, 2);
+  const moeda = rotuloMoeda(v, idioma);
   const valor =
     despesa === null
-      ? `${reais(t.despesa / BI, 2)} bilhões nominais (o IPCA não cobre o ano, e sem ele não há valor em reais)`
+      ? tx(`${nominal} bilhões nominais (o IPCA não cobre o ano, e sem ele não há valor em reais)`, `${nominal} billion nominal (the IPCA does not cover the year, and without it there is no value in reais)`)
       : v.modo === "real"
-        ? `${reais(despesa / BI, 2)} bilhões ${rotuloMoeda(v)} (${reais(t.despesa / BI, 2)} bilhões nominais)`
-        : `${reais(despesa / BI, 2)} bilhões ${rotuloMoeda(v)}`;
-  return (
+        ? tx(`${reais(despesa / BI, 2)} bilhões ${moeda} (${nominal} bilhões nominais)`, `${reais(despesa / BI, 2)} billion ${moeda} (${nominal} billion nominal)`)
+        : tx(`${reais(despesa / BI, 2)} bilhões ${moeda}`, `${reais(despesa / BI, 2)} billion ${moeda}`);
+  return tx(
     `O orçamento aprovado ou previsto da CDE para ${t.ano} é de ${valor}: ${pct(t.quotas_pct, 1)} das receitas vêm das quotas cobradas nas tarifas ` +
-    `de todos os consumidores, e a Tarifa Social responde por ${pct(t.tarifa_social_pct, 1)} das despesas.`
+      `de todos os consumidores, e a Tarifa Social responde por ${pct(t.tarifa_social_pct, 1)} das despesas.`,
+    `The approved or forecast CDE budget for ${t.ano} is ${valor}: ${pct(t.quotas_pct, 1)} of revenue comes from the quotas charged in the tariffs ` +
+      `of all consumers, and the Tarifa Social accounts for ${pct(t.tarifa_social_pct, 1)} of expenses.`,
   );
 }
 
 /* ---------- vereditos (r8): a resposta em palavras comuns, com os números da resposta completa ---------- */
 
 /** Rótulo de grupo sem o parêntese técnico: "Distribuição (fio B)" vira "distribuição". */
-const nomeGrupo = (rotulo: string) => minuscula(rotulo.replace(/\s*\([^)]*\)/g, ""));
+const nomeGrupo = (rotulo: string, idioma: Idioma = idiomaEnergia()) => minuscula(dadoTexto(rotulo, idioma).replace(/\s*\([^)]*\)/g, ""));
 
 /** Veredito do P047: o perfil escolhido do menor ao maior custo, só pela tarifa. A mediana fica na resposta completa e na linha do gráfico. */
-export function vereditoTarifa(dataReferencia: string, resumo: ResumoTarifas, vigentes: readonly TarifaVigente[], perfil: Perfil): string {
+export function vereditoTarifa(dataReferencia: string, resumo: ResumoTarifas, vigentes: readonly TarifaVigente[], perfil: Perfil, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { dataBR, reais } = formatos(idioma);
   const chave = String(perfil) as "100" | "200" | "300";
   const ord = [...vigentes].sort((a, b) => a.posicao - b.posicao);
   const menor = ord[0];
   const maior = ord[ord.length - 1];
-  if (!menor || !maior || resumo.n === 0) return `Em ${dataBR(dataReferencia)}, nenhuma distribuidora tem tarifa B1 residencial vigente no arquivo da ANEEL.`;
-  return `Em ${dataBR(dataReferencia)}, entre as ${resumo.n} distribuidoras com tarifa vigente no arquivo, ${perfil} kWh no mês custam de ${reais(menor.perfis[chave])} (${rotuloDistribuidora(menor.sigla, menor.cnpj)}) a ${reais(maior.perfis[chave])} (${rotuloDistribuidora(maior.sigla, maior.cnpj)}), conforme a distribuidora, só pela tarifa.`;
+  if (!menor || !maior || resumo.n === 0)
+    return tx(
+      `Em ${dataBR(dataReferencia)}, nenhuma distribuidora tem tarifa B1 residencial vigente no arquivo da ANEEL.`,
+      `On ${dataBR(dataReferencia)}, no distribution utility has a residential B1 tariff in force in ANEEL's file.`,
+    );
+  const a = `${reais(menor.perfis[chave])} (${rotuloDistribuidora(menor.sigla, menor.cnpj)})`;
+  const b = `${reais(maior.perfis[chave])} (${rotuloDistribuidora(maior.sigla, maior.cnpj)})`;
+  return tx(
+    `Em ${dataBR(dataReferencia)}, entre as ${resumo.n} distribuidoras com tarifa vigente no arquivo, ${perfil} kWh no mês custam de ${a} a ${b}, conforme a distribuidora, só pela tarifa.`,
+    `On ${dataBR(dataReferencia)}, among the ${resumo.n} distribution utilities with a tariff in force in the file, ${perfil} kWh a month cost from ${a} to ${b}, depending on the distribution utility, on the tariff alone.`,
+  );
 }
 
 /** Veredito do P048: os dois maiores grupos da tarifa B1 na média das distribuidoras, em %. Os demais grupos, os itens negativos e a CDE ficam na resposta completa. */
-export function vereditoComposicao(comp: Composicao): string {
+export function vereditoComposicao(comp: Composicao, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { pct } = formatos(idioma);
   const m = comp.media;
-  if (!m || m.total_rs_mwh === null) return "Sem composição publicada na data: o conjunto de componentes não cobre as tarifas vigentes.";
-  const rot = new Map(comp.grupos.map((g) => [g.id, nomeGrupo(g.rotulo)]));
+  if (!m || m.total_rs_mwh === null)
+    return tx("Sem composição publicada na data: o conjunto de componentes não cobre as tarifas vigentes.", "No composition published on the date: the component dataset does not cover the tariffs in force.");
+  const rot = new Map(comp.grupos.map((g) => [g.id, nomeGrupo(g.rotulo, idioma)]));
   const positivos = ORDEM_GRUPOS.filter((g) => (m.grupos_pct[g] ?? 0) > 0).sort((a, b) => (m.grupos_pct[b] ?? 0) - (m.grupos_pct[a] ?? 0));
   const [a, b] = positivos;
-  if (!a) return "Sem grupo com valor positivo na composição média.";
-  const dois = b ? `${rot.get(a)} (${pct(m.grupos_pct[a], 1)}) e ${rot.get(b)} (${pct(m.grupos_pct[b], 1)})` : `${rot.get(a)} (${pct(m.grupos_pct[a], 1)})`;
-  return `Na média das ${m.n} distribuidoras, a tarifa B1 vai sobretudo para ${dois}.`;
+  if (!a) return tx("Sem grupo com valor positivo na composição média.", "No group with a positive value in the average composition.");
+  const pa = `${rot.get(a)} (${pct(m.grupos_pct[a], 1)})`;
+  const dois = b ? `${pa} ${tx("e", "and")} ${rot.get(b)} (${pct(m.grupos_pct[b], 1)})` : pa;
+  return tx(`Na média das ${m.n} distribuidoras, a tarifa B1 vai sobretudo para ${dois}.`, `In the average of the ${m.n} distribution utilities, the B1 tariff goes mainly to ${dois}.`);
 }
 
 /** Veredito do P049: a estimativa mensal, sem tributos, para o consumo e a distribuidora escolhidos. A parcela da bandeira e os rótulos de estimativa ficam na resposta completa. */
-export function vereditoSimulacao(r: ResultadoSimulacao, sigla: string, kwh: number): string {
-  if (!r.disponivel) return `Simulação indisponível para ${sigla}: ${r.motivo}.`;
-  return `Para ${num(kwh, 0)} kWh no mês na ${sigla}, a estimativa é de ${reais(r.total)}, sem tributos e sem iluminação pública.`;
+export function vereditoSimulacao(r: ResultadoSimulacao, sigla: string, kwh: number, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { num, reais } = formatos(idioma);
+  if (!r.disponivel) return tx(`Simulação indisponível para ${sigla}: ${r.motivo}.`, `Simulation unavailable for ${sigla}: ${r.motivo}.`);
+  return tx(
+    `Para ${num(kwh, 0)} kWh no mês na ${sigla}, a estimativa é de ${reais(r.total)}, sem tributos e sem iluminação pública.`,
+    `For ${num(kwh, 0)} kWh a month at ${sigla}, the estimate is ${reais(r.total)}, without taxes and without public lighting.`,
+  );
 }
 
 /**
  * Veredito do P050 (reajustes): em quantas distribuidoras a tarifa B1 subiu mais que o IPCA do mesmo período, com o limite
  * de leitura: é a variação entre duas datas, não o efeito do processo tarifário.
  */
-export function vereditoReajustes(j: JanelaInflacao): string {
-  if (j.mediana_pct === null || j.ipca_pct === null) return `Sem comparação com o IPCA na janela de ${j.meses} meses: falta índice ou tarifa nas duas datas.`;
-  return `Em ${j.meses} meses até ${dataBR(j.ate)}, a tarifa B1 residencial subiu mais que o IPCA (${pct(j.ipca_pct, 2)}) em ${j.acima_ipca} de ${j.n} distribuidoras. É a variação entre duas datas, não o efeito do processo tarifário.`;
+export function vereditoReajustes(j: JanelaInflacao, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { dataBR, pct } = formatos(idioma);
+  if (j.mediana_pct === null || j.ipca_pct === null)
+    return tx(
+      `Sem comparação com o IPCA na janela de ${j.meses} meses: falta índice ou tarifa nas duas datas.`,
+      `No comparison with the IPCA in the ${j.meses}-month window: the index or the tariff is missing on the two dates.`,
+    );
+  return tx(
+    `Em ${j.meses} meses até ${dataBR(j.ate)}, a tarifa B1 residencial subiu mais que o IPCA (${pct(j.ipca_pct, 2)}) em ${j.acima_ipca} de ${j.n} distribuidoras. É a variação entre duas datas, não o efeito do processo tarifário.`,
+    `Over the ${j.meses} months to ${dataBR(j.ate)}, the residential B1 tariff rose more than the IPCA (${pct(j.ipca_pct, 2)}) at ${j.acima_ipca} of ${j.n} distribution utilities. It is the change between two dates, not the effect of the tariff process.`,
+  );
 }
 
 /** Veredito do P050 (bandeiras): a bandeira do mês e quantos meses publicados tiveram acréscimo. */
-export function vereditoBandeira(b: Bandeiras): string {
+export function vereditoBandeira(b: Bandeiras, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { mesAno } = formatos(idioma);
   const v = b.vigente;
   const publicados = b.acionamento.filter((a) => a.bandeira !== null);
-  const comAcrescimo = publicados.filter((a) => a.bandeira !== "Verde").length;
+  const comAcrescimo = publicados.filter((a) => a.bandeira !== "Verde").length; // i18n: dado
   const inicio = b.acionamento[0]?.m;
-  const historico = inicio ? ` Em ${comAcrescimo} dos ${publicados.length} meses publicados desde ${mesAno(`${inicio}-01`)}, a bandeira não foi verde.` : "";
-  if (!v || !v.bandeira) return `O conjunto de bandeiras não traz acionamento publicado.${historico}`;
-  const valor = v.bandeira === "Verde" ? "sem acréscimo" : `acréscimo de ${rsKwh(v.rs_mwh, 5)} consumido`;
-  return `A bandeira de ${mesAno(`${v.mes}-01`)} é ${minuscula(v.bandeira)}: ${valor}.${historico}`;
+  const m0 = inicio ? mesAno(`${inicio}-01`) : "";
+  const historico = inicio
+    ? tx(
+        ` Em ${comAcrescimo} dos ${publicados.length} meses publicados desde ${m0}, a bandeira não foi verde.`,
+        ` In ${comAcrescimo} of the ${publicados.length} months published since ${m0}, the tariff flag was not green.`,
+      )
+    : "";
+  if (!v || !v.bandeira) return tx(`O conjunto de bandeiras não traz acionamento publicado.${historico}`, `The tariff flag dataset has no published activation.${historico}`);
+  const valor = v.bandeira === "Verde" ? tx("sem acréscimo", "no surcharge") : tx(`acréscimo de ${rsKwh(v.rs_mwh, 5, idioma)} consumido`, `a surcharge of ${rsKwh(v.rs_mwh, 5, idioma)} consumed`); // i18n: dado
+  const nome = minuscula(bandeiraNoIdioma(v.bandeira, idioma));
+  return tx(`A bandeira de ${mesAno(`${v.mes}-01`)} é ${nome}: ${valor}.${historico}`, `The tariff flag for ${mesAno(`${v.mes}-01`)} is ${nome}: ${valor}.${historico}`);
 }
 
 /** Veredito do P050 (subsídios): quanto foi homologado para repasse da CDE no último ano completo, com a ressalva de que não é desembolso nem transferência a famílias. O orçamento e a maior categoria ficam na resposta completa. */
-export function vereditoSubsidios(s: Subsidios, v: ValoresDoPainel = VALORES_NOMINAIS): string {
+export function vereditoSubsidios(s: Subsidios, v: ValoresDoPainel = VALORES_NOMINAIS, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { reais } = formatos(idioma);
   const ano = s.anual.find((a) => a.ano === s.ultimo_ano_completo);
-  if (!ano || ano.soma_categorias === null) return "Sem ano completo de subsídios tarifários publicado.";
+  if (!ano || ano.soma_categorias === null) return tx("Sem ano completo de subsídios tarifários publicado.", "No complete year of tariff subsidies published.");
   const total = valorNoModo(ano.soma_categorias, ano.ano, v);
-  if (total === null) return `Em ${ano.ano}, o valor em reais de ${v.base ?? "mês-base"} não pode ser calculado: o IPCA não cobre o ano.`;
-  return (
+  if (total === null)
+    return tx(
+      `Em ${ano.ano}, o valor em reais de ${v.base ?? "mês-base"} não pode ser calculado: o IPCA não cobre o ano.`,
+      `In ${ano.ano}, the value in ${v.base ?? "base-month"} reais cannot be calculated: the IPCA does not cover the year.`,
+    );
+  return tx(
     `Em ${ano.ano}, foram homologados ${reais(total / BI, 2)} bilhões para repasse da Conta de Desenvolvimento Energético (CDE) às distribuidoras, ` +
-    `para cobrir descontos a categorias de usuários (valores ${rotuloMoeda(v)}). Não são desembolso realizado nem transferências a famílias.`
+      `para cobrir descontos a categorias de usuários (valores ${rotuloMoeda(v, idioma)}). Não são desembolso realizado nem transferências a famílias.`,
+    `In ${ano.ano}, ${reais(total / BI, 2)} billion was ratified for transfer from the Energy Development Account (CDE) to distribution utilities, ` +
+      `to cover discounts to user categories (values ${rotuloMoeda(v, idioma)}). These are neither actual disbursements nor transfers to families.`,
   );
 }
 
@@ -1065,12 +1251,17 @@ export function vereditoSubsidios(s: Subsidios, v: ValoresDoPainel = VALORES_NOM
  * Soma das parcelas já arredondadas contra o total arredondado, em reais: a nota que explica a diferença de R$ 0,01 quando existe
  * (cada valor é arredondado depois de calculado), ou null quando as parcelas fecham com o total.
  */
-export function notaArredondamentoSimulacao(parcelas: readonly number[], total: number): string | null {
+export function notaArredondamentoSimulacao(parcelas: readonly number[], total: number, idioma: Idioma = idiomaEnergia()): string | null {
+  const tx = txEm(idioma);
+  const { reais } = formatos(idioma);
   const centavos = (v: number) => Math.round(v * 100);
   const soma = parcelas.reduce((acc, v) => acc + centavos(v), 0);
   const t = centavos(total);
   if (soma === t) return null;
-  return `As parcelas somam ${reais(soma / 100)} e o total é ${reais(t / 100)}: cada valor é arredondado depois de calculado, e a soma dos valores arredondados pode diferir do total em R$ 0,01.`;
+  return tx(
+    `As parcelas somam ${reais(soma / 100)} e o total é ${reais(t / 100)}: cada valor é arredondado depois de calculado, e a soma dos valores arredondados pode diferir do total em R$ 0,01.`,
+    `The items add up to ${reais(soma / 100)} and the total is ${reais(t / 100)}: each value is rounded after it is calculated, and the sum of the rounded values may differ from the total by R$ 0.01.`,
+  );
 }
 
 /** Separa, numa frase de regra, o que fala de acesso a norma que o observatório não conseguiu ler (detalhe para Analisar) do resto. */
@@ -1081,23 +1272,49 @@ export function separaBloqueioDeNorma(texto: string): { leitor: string; tecnico:
 }
 
 /** Mesmo texto para o leitor de tela e para o rótulo do período no painel. */
-export function periodoReferencia(g: Pick<ContaGold, "data_referencia" | "gerado_pela_fonte_em">): string {
-  return `vigente em ${dataBR(g.data_referencia)} (arquivo gerado pela ANEEL em ${dataBR(g.gerado_pela_fonte_em)})`;
+export function periodoReferencia(g: Pick<ContaGold, "data_referencia" | "gerado_pela_fonte_em">, idioma: Idioma = idiomaEnergia()): string {
+  const { dataBR } = formatos(idioma);
+  const tx = txEm(idioma);
+  return tx(
+    `vigente em ${dataBR(g.data_referencia)} (arquivo gerado pela ANEEL em ${dataBR(g.gerado_pela_fonte_em)})`,
+    `in force on ${dataBR(g.data_referencia)} (file generated by ANEEL on ${dataBR(g.gerado_pela_fonte_em)})`,
+  );
 }
 
 /**
  * P047, "o que mudou": a mediana da data contra a do dia 1º do último mês da
  * evolução, com o motivo da diferença de cobertura (distribuidoras fora do ranking).
  */
-export function mudancaTarifa(dataReferencia: string, resumo: ResumoTarifas, evolucao: readonly LinhaEvolucao[], comparacao: ComparacaoMesmoConjunto | null = null): string {
+export function mudancaTarifa(
+  dataReferencia: string,
+  resumo: ResumoTarifas,
+  evolucao: readonly LinhaEvolucao[],
+  comparacao: ComparacaoMesmoConjunto | null = null,
+  idioma: Idioma = idiomaEnergia(),
+): string {
+  const tx = txEm(idioma);
+  const { dataBR, num, mesAno } = formatos(idioma);
   const ult = [...evolucao].reverse().find((p) => p.mediana !== null);
-  const hoje = `Em ${dataBR(dataReferencia)}, a mediana é ${num(resumo.mediana, 2)} R$/MWh entre ${resumo.n} distribuidoras com tarifa vigente.`;
+  const hoje = tx(
+    `Em ${dataBR(dataReferencia)}, a mediana é ${num(resumo.mediana, 2)} R$/MWh entre ${resumo.n} distribuidoras com tarifa vigente.`,
+    `On ${dataBR(dataReferencia)}, the median is ${num(resumo.mediana, 2)} R$/MWh among ${resumo.n} distribution utilities with a tariff in force.`,
+  );
   const fora = resumo.fora_vigencia_recente + resumo.fora_sem_tarifa_ha_mais_de_90_dias;
-  const foraDoRanking = `Ficam fora do ranking ${resumo.fora_vigencia_recente} com a vigência encerrada há até 90 dias (a tarifa seguinte ainda não está no arquivo) e ${resumo.fora_sem_tarifa_ha_mais_de_90_dias} sem tarifa há mais de 90 dias.`;
+  const foraDoRanking = tx(
+    `Ficam fora do ranking ${resumo.fora_vigencia_recente} com a vigência encerrada há até 90 dias (a tarifa seguinte ainda não está no arquivo) e ${resumo.fora_sem_tarifa_ha_mais_de_90_dias} sem tarifa há mais de 90 dias.`,
+    `Left out of the ranking are ${resumo.fora_vigencia_recente} whose validity ended up to 90 days ago (the next tariff is not yet in the file) and ${resumo.fora_sem_tarifa_ha_mais_de_90_dias} without a tariff for more than 90 days.`,
+  );
   // com a comparação no mesmo conjunto, a variação sai das distribuidoras que têm tarifa nas duas datas, e o texto diz quem saiu
-  if (comparacao) return `${hoje}${fora ? ` ${foraDoRanking}` : ""} ${textoComparacaoMesmoConjunto(comparacao)}`;
-  const antes = ult ? ` No dia 1º de ${mesAno(`${ult.m}-01`)}, era ${num(ult.mediana, 2)} R$/MWh entre ${ult.n}.` : "";
-  const motivo = fora ? ` ${foraDoRanking.replace(/\.$/, "")}; por isso as duas medianas não comparam o mesmo conjunto.` : "";
+  if (comparacao) return `${hoje}${fora ? ` ${foraDoRanking}` : ""} ${textoComparacaoMesmoConjunto(comparacao, idioma)}`;
+  const antes = ult
+    ? tx(` No dia 1º de ${mesAno(`${ult.m}-01`)}, era ${num(ult.mediana, 2)} R$/MWh entre ${ult.n}.`, ` On the 1st of ${mesAno(`${ult.m}-01`)}, it was ${num(ult.mediana, 2)} R$/MWh among ${ult.n}.`)
+    : "";
+  const motivo = fora
+    ? tx(
+        ` ${foraDoRanking.replace(/\.$/, "")}; por isso as duas medianas não comparam o mesmo conjunto.`,
+        ` ${foraDoRanking.replace(/\.$/, "")}; that is why the two medians do not compare the same set.`,
+      )
+    : "";
   return `${hoje}${antes}${motivo}`;
 }
 
@@ -1105,21 +1322,31 @@ export function mudancaTarifa(dataReferencia: string, resumo: ResumoTarifas, evo
  * A última mudança da tarifa B1 de uma distribuidora, em uma frase: a data, o ato, a variação com o verbo e o IPCA desde a mudança anterior.
  * É o dado que quem acompanha o reajuste procura (quando foi e quanto), ao lado da variação entre duas datas da janela.
  */
-export function textoUltimaMudanca(u: UltimoEvento): string {
+export function textoUltimaMudanca(u: UltimoEvento, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { dataBR, mesAno, pct } = formatos(idioma);
   const nome = rotuloDistribuidora(u[1], u[0]);
-  const perimetro = u[8] ? ` É mudança de perímetro (${u[8]}): compara áreas diferentes.` : "";
-  return `${nome}: a última mudança da tarifa B1 foi em ${dataBR(u[2])} (${u[3]}), quando a tarifa ${verboVariacao(u[4])}; o IPCA desde a mudança anterior (${mesAno(`${u[6]}-01`)} a ${mesAno(`${u[7]}-01`)}) foi ${pct(u[5], 2)}.${perimetro}`;
+  const perimetro = u[8] ? tx(` É mudança de perímetro (${u[8]}): compara áreas diferentes.`, ` It is a perimeter change (${u[8]}): it compares different areas.`) : "";
+  const v = verboVariacao(u[4], 2, idioma);
+  const m0 = mesAno(`${u[6]}-01`);
+  const m1 = mesAno(`${u[7]}-01`);
+  return tx(
+    `${nome}: a última mudança da tarifa B1 foi em ${dataBR(u[2])} (${u[3]}), quando a tarifa ${v}; o IPCA desde a mudança anterior (${m0} a ${m1}) foi ${pct(u[5], 2)}.${perimetro}`,
+    `${nome}: the latest change in the B1 tariff was on ${dataBR(u[2])} (${u[3]}), when the tariff ${v}; the IPCA since the previous change (${m0} to ${m1}) was ${pct(u[5], 2)}.${perimetro}`,
+  );
 }
 
 /** P050, "o que mudou" nos subsídios: categoria com a maior variação absoluta entre os dois últimos anos completos. */
-export function mudancaSubsidios(s: Subsidios, v: ValoresDoPainel = VALORES_NOMINAIS): string {
+export function mudancaSubsidios(s: Subsidios, v: ValoresDoPainel = VALORES_NOMINAIS, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { reais } = formatos(idioma);
   const completos = s.anual.filter((a) => !a.parcial);
-  if (completos.length < 2) return "Menos de dois anos completos publicados: sem comparação anual.";
+  if (completos.length < 2) return tx("Menos de dois anos completos publicados: sem comparação anual.", "Fewer than two complete years published: no annual comparison.");
   const [a0, a1] = completos.slice(-2);
   // cada ano na sua moeda: em reais, o fator do ano; a maior mudança é a da moeda escolhida
   const de0 = (x: number | null | undefined) => valorNoModo(x, a0.ano, v);
   const para1 = (x: number | null | undefined) => valorNoModo(x, a1.ano, v);
-  const moeda = ` Valores ${rotuloMoeda(v)}.`;
+  const moeda = tx(` Valores ${rotuloMoeda(v, idioma)}.`, ` Values are ${rotuloMoeda(v, idioma)}.`);
   let maior: { cat: string; de: number; para: number } | null = null;
   for (const cat of categoriasSubsidio(s)) {
     const de = de0(a0.categorias[cat]);
@@ -1129,40 +1356,63 @@ export function mudancaSubsidios(s: Subsidios, v: ValoresDoPainel = VALORES_NOMI
   }
   const t0 = de0(a0.soma_categorias);
   const t1 = para1(a1.soma_categorias);
-  const total = t0 !== null && t1 !== null ? ` O total passou de ${reais(t0 / BI, 2)} bilhões para ${reais(t1 / BI, 2)} bilhões.` : "";
-  if (!maior) return `Sem categoria com valor nos dois anos (${a0.ano} e ${a1.ano}).${total}${moeda}`;
-  return `De ${a0.ano} para ${a1.ano}, a maior mudança foi em ${maior.cat}: de ${reais(maior.de / BI, 2)} bilhões para ${reais(maior.para / BI, 2)} bilhões.${total}${moeda}`;
+  const total =
+    t0 !== null && t1 !== null
+      ? tx(` O total passou de ${reais(t0 / BI, 2)} bilhões para ${reais(t1 / BI, 2)} bilhões.`, ` The total went from ${reais(t0 / BI, 2)} billion to ${reais(t1 / BI, 2)} billion.`)
+      : "";
+  if (!maior) return tx(`Sem categoria com valor nos dois anos (${a0.ano} e ${a1.ano}).${total}${moeda}`, `No category with a value in both years (${a0.ano} and ${a1.ano}).${total}${moeda}`);
+  return tx(
+    `De ${a0.ano} para ${a1.ano}, a maior mudança foi em ${maior.cat}: de ${reais(maior.de / BI, 2)} bilhões para ${reais(maior.para / BI, 2)} bilhões.${total}${moeda}`,
+    `From ${a0.ano} to ${a1.ano}, the largest change was in ${dadoTexto(maior.cat, idioma)}: from ${reais(maior.de / BI, 2)} billion to ${reais(maior.para / BI, 2)} billion.${total}${moeda}`,
+  );
 }
 
 /**
  * P048, "o que mudou": distribuidoras com valor negativo em componente de custo
  * (lido como crédito) na vigência atual, contra a faixa histórica do código.
  */
-export function mudancaComposicao(comp: Composicao): string {
-  return textoCreditos(comp, "atual");
+export function mudancaComposicao(comp: Composicao, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  return textoCreditos(comp, tx("na vigência atual", "in the current validity period"), idioma);
 }
 
 /**
  * Mesmo texto de `mudancaComposicao`, com a vigência dita pela data de referência da página ("na vigência de 30/09/2026") no
  * lugar de "atual": o dado tem a própria data, e o texto de Entender não usa palavra de tempo relativo.
  */
-export function mudancaComposicaoEm(comp: Composicao, dataReferencia: string): string {
-  return textoCreditos(comp, `de ${dataBR(dataReferencia)}`);
+export function mudancaComposicaoEm(comp: Composicao, dataReferencia: string, idioma: Idioma = idiomaEnergia()): string {
+  const d = formatos(idioma).dataBR(dataReferencia);
+  const tx = txEm(idioma);
+  return textoCreditos(comp, tx(`na vigência de ${d}`, `in the validity period of ${d}`), idioma);
 }
 
-function textoCreditos(comp: Composicao, vigencia: string): string {
+/** `vigencia` é a expressão inteira ("na vigência de 30/09/2026", "in the validity period of Sep 30, 2026"). */
+function textoCreditos(comp: Composicao, vigencia: string, idioma: Idioma): string {
+  const tx = txEm(idioma);
+  const { dataBR, num } = formatos(idioma);
   const cr = comp.creditos;
   const valores = cr.distribuidoras.map((d) => d.valor).filter((v): v is number => v !== null && Number.isFinite(v));
-  if (!cr.distribuidoras.length) return `Nenhum valor negativo em componente de custo na vigência ${vigencia}.`;
+  if (!cr.distribuidoras.length) return tx(`Nenhum valor negativo em componente de custo ${vigencia}.`, `No negative value in a cost component ${vigencia}.`);
   const faixa = cr.faixa_historica;
   const historico = faixa
-    ? `, quando a faixa histórica do código, em ${faixa.n} vigências iniciadas até ${dataBR(faixa.vigencias_iniciadas_ate)}, ia de ${num(faixa.minimo, 2)} a ${num(faixa.maximo, 2)} R$/MWh`
+    ? tx(
+        `, quando a faixa histórica do código, em ${faixa.n} vigências iniciadas até ${dataBR(faixa.vigencias_iniciadas_ate)}, ia de ${num(faixa.minimo, 2)} a ${num(faixa.maximo, 2)} R$/MWh`,
+        `, when the code's historical range, over ${faixa.n} validity periods started up to ${dataBR(faixa.vigencias_iniciadas_ate)}, went from ${num(faixa.minimo, 2)} to ${num(faixa.maximo, 2)} R$/MWh`,
+      )
     : "";
-  const intervalo = valores.length ? ` (de ${num(Math.min(...valores), 2)} a ${num(Math.max(...valores), 2)} R$/MWh)` : "";
+  const intervalo = valores.length
+    ? tx(` (de ${num(Math.min(...valores), 2)} a ${num(Math.max(...valores), 2)} R$/MWh)`, ` (from ${num(Math.min(...valores), 2)} to ${num(Math.max(...valores), 2)} R$/MWh)`)
+    : "";
   // a componente aparece pela descrição do dicionário da fonte, não pelo código; sem descrição, o texto diz só "componente de custo"
   const descricoes = new Map(comp.grupos.flatMap((g) => g.componentes.map((c) => [c.codigo, c.descricao] as const)));
-  const nomes = cr.codigos.map((c) => descricoes.get(c) ?? "componente de custo");
-  return `${cr.distribuidoras.length} distribuidoras têm valor negativo na componente «${nomes.join(", ")}» na vigência ${vigencia}${intervalo}${historico}. O valor fica no grupo créditos, lido como crédito tarifário (leitura do observatório).`;
+  const nomes = cr.codigos.map((c) => {
+    const d = descricoes.get(c);
+    return d ? dadoTexto(d, idioma) : tx("componente de custo", "cost component");
+  });
+  return tx(
+    `${cr.distribuidoras.length} distribuidoras têm valor negativo na componente «${nomes.join(", ")}» ${vigencia}${intervalo}${historico}. O valor fica no grupo créditos, lido como crédito tarifário (leitura do observatório).`,
+    `${cr.distribuidoras.length} distribution utilities have a negative value in the component «${nomes.join(", ")}» ${vigencia}${intervalo}${historico}. The value goes to the credits group, read as a tariff credit (observatory's reading).`,
+  );
 }
 
 /* ---------- abertura (redesenho): referências do perfil, faixa de métricas e série em reais ---------- */
@@ -1251,16 +1501,31 @@ export function destaquesDoPerfil(vigentes: readonly TarifaVigente[], resumo: Re
 }
 
 /** Frase da distribuidora em destaque: custo do perfil, posição no ranking e diferença para a mediana, só descrição. */
-export function textoDestaquePerfil(d: DestaquePerfil): string {
-  const dif = d.diferenca === null ? "" : d.diferenca === 0 ? "; igual à mediana" : `; ${reais(Math.abs(d.diferenca))} ${d.diferenca > 0 ? "acima" : "abaixo"} da mediana`;
-  return `${d.sigla}: ${reais(d.valor)}, posição ${d.posicao} de ${d.n} (1 é a menor tarifa)${dif}.`;
+export function textoDestaquePerfil(d: DestaquePerfil, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { reais } = formatos(idioma);
+  const dif =
+    d.diferenca === null
+      ? ""
+      : d.diferenca === 0
+        ? tx("; igual à mediana", "; equal to the median")
+        : tx(`; ${reais(Math.abs(d.diferenca))} ${d.diferenca > 0 ? "acima" : "abaixo"} da mediana`, `; ${reais(Math.abs(d.diferenca))} ${d.diferenca > 0 ? "above" : "below"} the median`);
+  return tx(`${d.sigla}: ${reais(d.valor)}, posição ${d.posicao} de ${d.n} (1 é a menor tarifa)${dif}.`, `${d.sigla}: ${reais(d.valor)}, position ${d.posicao} of ${d.n} (1 is the lowest tariff)${dif}.`);
 }
 
 /** Leitura da figura das referências em uma frase (nome acessível do gráfico). */
-export function textoReferenciasPerfil(r: ReferenciasPerfil): string {
-  if (!r.menor || !r.maior || r.mediana === null) return `Sem referências do custo de ${r.perfil} kWh por mês nesta publicação.`;
-  const meio = r.p25 !== null && r.p75 !== null ? `; a metade central das distribuidoras fica entre ${reais(r.p25)} e ${reais(r.p75)}` : "";
-  return `Custo de ${r.perfil} kWh por mês, só pela tarifa B1 residencial: menor ${reais(r.menor.valor)} (${r.menor.sigla}), mediana ${reais(r.mediana)} e maior ${reais(r.maior.valor)} (${r.maior.sigla}), entre ${r.n} distribuidoras${meio}.`;
+export function textoReferenciasPerfil(r: ReferenciasPerfil, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { reais } = formatos(idioma);
+  if (!r.menor || !r.maior || r.mediana === null) return tx(`Sem referências do custo de ${r.perfil} kWh por mês nesta publicação.`, `No references for the cost of ${r.perfil} kWh a month in this publication.`);
+  const meio =
+    r.p25 !== null && r.p75 !== null
+      ? tx(`; a metade central das distribuidoras fica entre ${reais(r.p25)} e ${reais(r.p75)}`, `; the middle half of the distribution utilities is between ${reais(r.p25)} and ${reais(r.p75)}`)
+      : "";
+  return tx(
+    `Custo de ${r.perfil} kWh por mês, só pela tarifa B1 residencial: menor ${reais(r.menor.valor)} (${r.menor.sigla}), mediana ${reais(r.mediana)} e maior ${reais(r.maior.valor)} (${r.maior.sigla}), entre ${r.n} distribuidoras${meio}.`,
+    `Cost of ${r.perfil} kWh a month, on the residential B1 tariff alone: lowest ${reais(r.menor.valor)} (${r.menor.sigla}), median ${reais(r.mediana)} and highest ${reais(r.maior.valor)} (${r.maior.sigla}), among ${r.n} distribution utilities${meio}.`,
+  );
 }
 
 /**
@@ -1280,16 +1545,28 @@ export function notaFaixaTarifa(
     /** Menor e maior custo do perfil no ranking (e quem são), para dizer o que mudaria. */
     extremos: { menor: number | null; maior: number | null; siglaMenor?: string | null; siglaMaior?: string | null };
   } | null = null,
+  idioma: Idioma = idiomaEnergia(),
 ): string {
+  const tx = txEm(idioma);
+  const { reais, dataBR } = formatos(idioma);
   const chave = mais ? (String(mais.perfil) as "100" | "200" | "300") : null;
   const simples = mais && chave ? resumo.perfis_mediana[chave] : null;
   const pond =
     mais && mais.ponderada !== null
-      ? `Ponderada pelas UCs de cada distribuidora, a mediana de ${mais.perfil} kWh é ${reais(mais.ponderada)}${simples !== null ? ` (a simples é ${reais(simples)})` : ""}.`
-      : `Mediana simples das ${resumo.n} distribuidoras com tarifa vigente: cada uma conta uma vez, sem ponderar por consumidores.`;
-  const cobertura = mais?.cobertura ? ` ${textoCobertura(mais.cobertura, mais.perfil, mais.extremos)}` : "";
+      ? tx(
+          `Ponderada pelas UCs de cada distribuidora, a mediana de ${mais.perfil} kWh é ${reais(mais.ponderada)}${simples !== null ? ` (a simples é ${reais(simples)})` : ""}.`,
+          `Weighted by each distribution utility's consumer units, the median for ${mais.perfil} kWh is ${reais(mais.ponderada)}${simples !== null ? ` (the simple median is ${reais(simples)})` : ""}.`,
+        )
+      : tx(
+          `Mediana simples das ${resumo.n} distribuidoras com tarifa vigente: cada uma conta uma vez, sem ponderar por consumidores.`,
+          `Simple median of the ${resumo.n} distribution utilities with a tariff in force: each counts once, without weighting by consumers.`,
+        );
+  const cobertura = mais?.cobertura ? ` ${textoCobertura(mais.cobertura, mais.perfil, mais.extremos, idioma)}` : "";
   // o ranking de 30/09 não é o conjunto de 1º/09: quantas saíram fica dito junto da mediana
-  const saiu = comparacao && comparacao.saidas.n > 0 ? ` Em ${dataBR(comparacao.de)} eram ${comparacao.nDe}: ${comparacao.saidas.n} saíram do conjunto.` : "";
+  const saiu =
+    comparacao && comparacao.saidas.n > 0
+      ? tx(` Em ${dataBR(comparacao.de)} eram ${comparacao.nDe}: ${comparacao.saidas.n} saíram do conjunto.`, ` On ${dataBR(comparacao.de)} there were ${comparacao.nDe}: ${comparacao.saidas.n} left the set.`)
+      : "";
   return `${pond}${cobertura}${saiu}`;
 }
 
@@ -1328,22 +1605,35 @@ export function resumoSerieReal(evolucao: readonly LinhaEvolucao[], ultimoIpca: 
 }
 
 /** Frase da série em reais: primeiro e último mês com valor nas duas formas, e os meses sem IPCA publicado. */
-export function textoSerieReal(r: ResumoSerieReal | null): string {
-  if (!r) return "Sem mediana mensal publicada nesta publicação.";
-  const rs = (v: number) => `${num(v, 2)} R$/MWh`;
-  const mes = (m: string) => mesAno(`${m}-01`);
+export function textoSerieReal(r: ResumoSerieReal | null, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const f = formatos(idioma);
+  if (!r) return tx("Sem mediana mensal publicada nesta publicação.", "No monthly median in this publication.");
+  const rs = (v: number) => `${f.num(v, 2)} R$/MWh`;
+  const mes = (m: string) => f.mesAno(`${m}-01`);
   const base = r.base ? mes(r.base) : null;
+  const m0 = mes(r.primeira.m);
   const inicio =
     r.primeira.real !== null && base
-      ? `Em ${mes(r.primeira.m)}, a mediana era de ${rs(r.primeira.nominal)} nos valores da época e de ${rs(r.primeira.real)} em reais de ${base}`
-      : `Em ${mes(r.primeira.m)}, a mediana era de ${rs(r.primeira.nominal)} nos valores da época`;
+      ? tx(
+          `Em ${m0}, a mediana era de ${rs(r.primeira.nominal)} nos valores da época e de ${rs(r.primeira.real)} em reais de ${base}`,
+          `In ${m0}, the median was ${rs(r.primeira.nominal)} at the prices of the time and ${rs(r.primeira.real)} in ${base} reais`,
+        )
+      : tx(`Em ${m0}, a mediana era de ${rs(r.primeira.nominal)} nos valores da época`, `In ${m0}, the median was ${rs(r.primeira.nominal)} at the prices of the time`);
   // no mês-base os dois valores são o mesmo: dizer duas vezes o mesmo número soaria como dois resultados
-  const fim = r.ultimaComReal
-    ? r.ultimaComReal.nominal === r.ultimaComReal.real
-      ? `; em ${mes(r.ultimaComReal.m)}, de ${rs(r.ultimaComReal.nominal)} nas duas formas`
-      : `; em ${mes(r.ultimaComReal.m)}, de ${rs(r.ultimaComReal.nominal)} e de ${rs(r.ultimaComReal.real)}`
+  const u = r.ultimaComReal;
+  const fim = u
+    ? u.nominal === u.real
+      ? tx(`; em ${mes(u.m)}, de ${rs(u.nominal)} nas duas formas`, `; in ${mes(u.m)}, ${rs(u.nominal)} in both forms`)
+      : tx(`; em ${mes(u.m)}, de ${rs(u.nominal)} e de ${rs(u.real)}`, `; in ${mes(u.m)}, ${rs(u.nominal)} and ${rs(u.real)}`)
     : "";
-  const sem = r.semReal.length ? ` ${r.semReal.map(mes).join(", ")} ${r.semReal.length === 1 ? "fica" : "ficam"} sem valor em reais (IPCA do mês ainda não publicado).` : "";
+  const meses = r.semReal.map(mes).join(", ");
+  const sem = r.semReal.length
+    ? tx(
+        ` ${meses} ${r.semReal.length === 1 ? "fica" : "ficam"} sem valor em reais (IPCA do mês ainda não publicado).`,
+        ` ${meses} ${r.semReal.length === 1 ? "has" : "have"} no value in reais (IPCA for the month not yet published).`,
+      )
+    : "";
   return `${inicio}${fim}.${sem}`;
 }
 
@@ -1459,14 +1749,36 @@ export function compararMesmoConjunto(a: {
  * A comparação em três frases: a variação nas mesmas distribuidoras, quem saiu do ranking e com que mediana, e o limite de leitura
  * (não comparar o ranking com o conjunto maior da data de partida). Sem número fixo: tudo vem da comparação.
  */
-export function textoComparacaoMesmoConjunto(c: ComparacaoMesmoConjunto): string {
+export function textoComparacaoMesmoConjunto(c: ComparacaoMesmoConjunto, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { num, dataBR } = formatos(idioma);
   const rs = (v: number | null) => `${num(v, 2)} R$/MWh`;
-  const mesmas = `Nas mesmas ${c.nComum} distribuidoras, a mediana ${verboVariacao(c.variacaoPct)}, de ${rs(c.medianaDeComum)} em ${dataBR(c.de)} para ${rs(c.medianaAteComum)} em ${dataBR(c.ate)}.`;
+  const v = verboVariacao(c.variacaoPct, 2, idioma);
+  const de = dataBR(c.de);
+  const mesmas = tx(
+    `Nas mesmas ${c.nComum} distribuidoras, a mediana ${v}, de ${rs(c.medianaDeComum)} em ${de} para ${rs(c.medianaAteComum)} em ${dataBR(c.ate)}.`,
+    `In the same ${c.nComum} distribution utilities, the median ${v}, from ${rs(c.medianaDeComum)} on ${de} to ${rs(c.medianaAteComum)} on ${dataBR(c.ate)}.`,
+  );
   if (c.saidas.n === 0) return mesmas;
-  const coop = c.saidas.cooperativas === 0 ? "" : c.saidas.cooperativas === c.saidas.n ? "todas cooperativas" : `${c.saidas.cooperativas} cooperativas`;
-  const detalhe = [c.saidas.fimDaVigencia ? `vigência encerrada em ${dataBR(c.saidas.fimDaVigencia)}` : "", coop, c.saidas.fimDaVigencia ? "a tarifa seguinte ainda não está no arquivo da ANEEL" : ""].filter(Boolean).join("; ");
-  const saiu = `Em ${dataBR(c.de)} eram ${c.nDe} distribuidoras, com mediana de ${rs(c.medianaDeTodas)}; as ${c.saidas.n} que ficaram fora do ranking${detalhe ? ` (${detalhe})` : ""} tinham mediana de ${rs(c.saidas.mediana)}.`;
-  const limite = `Comparar a mediana do ranking com a das ${c.nDe} de ${dataBR(c.de)} mistura conjuntos diferentes; a comparação válida é a das mesmas ${c.nComum}.`;
+  const coop =
+    c.saidas.cooperativas === 0 ? "" : c.saidas.cooperativas === c.saidas.n ? tx("todas cooperativas", "all cooperatives") : tx(`${c.saidas.cooperativas} cooperativas`, `${c.saidas.cooperativas} cooperatives`);
+  const fim = c.saidas.fimDaVigencia ? dataBR(c.saidas.fimDaVigencia) : null;
+  const detalhe = [
+    fim ? tx(`vigência encerrada em ${fim}`, `validity ended on ${fim}`) : "",
+    coop,
+    fim ? tx("a tarifa seguinte ainda não está no arquivo da ANEEL", "the next tariff is not yet in ANEEL's file") : "",
+  ]
+    .filter(Boolean)
+    .join("; ");
+  const det = detalhe ? ` (${detalhe})` : "";
+  const saiu = tx(
+    `Em ${de} eram ${c.nDe} distribuidoras, com mediana de ${rs(c.medianaDeTodas)}; as ${c.saidas.n} que ficaram fora do ranking${det} tinham mediana de ${rs(c.saidas.mediana)}.`,
+    `On ${de} there were ${c.nDe} distribution utilities, with a median of ${rs(c.medianaDeTodas)}; the ${c.saidas.n} left out of the ranking${det} had a median of ${rs(c.saidas.mediana)}.`,
+  );
+  const limite = tx(
+    `Comparar a mediana do ranking com a das ${c.nDe} de ${de} mistura conjuntos diferentes; a comparação válida é a das mesmas ${c.nComum}.`,
+    `Comparing the ranking median with that of the ${c.nDe} on ${de} mixes different sets; the valid comparison is that of the same ${c.nComum}.`,
+  );
   return `${mesmas} ${saiu} ${limite}`;
 }
 
@@ -1474,22 +1786,29 @@ export function textoComparacaoMesmoConjunto(c: ComparacaoMesmoConjunto): string
  * Três valores típicos convivem na página: a média simples das distribuidoras com componentes, a mediana dessas mesmas e a mediana do
  * ranking. Uma frase diz o que cada um é e em que diferem (o cálculo e o conjunto). null sem composição média.
  */
-export function textoTresValoresTipicos(comp: Pick<Composicao, "media" | "mediana">, resumo: Pick<ResumoTarifas, "n" | "mediana">): string | null {
+export function textoTresValoresTipicos(comp: Pick<Composicao, "media" | "mediana">, resumo: Pick<ResumoTarifas, "n" | "mediana">, idioma: Idioma = idiomaEnergia()): string | null {
+  const tx = txEm(idioma);
+  const { num } = formatos(idioma);
   const m = comp.media;
   if (!m || m.total_rs_mwh === null || comp.mediana.mediana_do_total_rs_mwh === null || resumo.mediana === null) return null;
   const rs = (v: number) => num(v, 2);
   const conjuntos =
-    resumo.n === m.n ? `as duas medianas usam o mesmo conjunto de ${m.n}` : `${m.n} distribuidoras têm componentes publicadas e ${resumo.n} têm tarifa vigente`;
-  return (
+    resumo.n === m.n
+      ? tx(`as duas medianas usam o mesmo conjunto de ${m.n}`, `both medians use the same set of ${m.n}`)
+      : tx(`${m.n} distribuidoras têm componentes publicadas e ${resumo.n} têm tarifa vigente`, `${m.n} distribution utilities have published components and ${resumo.n} have a tariff in force`);
+  return tx(
     `Três valores típicos convivem nesta página: a média simples das ${m.n} distribuidoras com componentes (${rs(m.total_rs_mwh)} R$/MWh), a mediana dessas mesmas ${m.n} ` +
-    `(${rs(comp.mediana.mediana_do_total_rs_mwh)}) e a mediana das ${resumo.n} do ranking (${rs(resumo.mediana)}). Diferem no cálculo, média ou mediana, e no conjunto: ${conjuntos}.`
+      `(${rs(comp.mediana.mediana_do_total_rs_mwh)}) e a mediana das ${resumo.n} do ranking (${rs(resumo.mediana)}). Diferem no cálculo, média ou mediana, e no conjunto: ${conjuntos}.`,
+    `Three typical values coexist on this page: the simple average of the ${m.n} distribution utilities with components (${rs(m.total_rs_mwh)} R$/MWh), the median of the same ${m.n} ` +
+      `(${rs(comp.mediana.mediana_do_total_rs_mwh)}) and the median of the ${resumo.n} in the ranking (${rs(resumo.mediana)}). They differ in the calculation, average or median, and in the set: ${conjuntos}.`,
   );
 }
 
 /* ---------- UF, tipo e UCs de cada distribuidora ---------- */
 
 export type TipoDistribuidora = "concessionaria" | "permissionaria";
-export const ROTULO_TIPO: Record<TipoDistribuidora, string> = { concessionaria: "Concessionária", permissionaria: "Permissionária" };
+export const ROTULO_TIPO: Record<TipoDistribuidora, string> = { concessionaria: "Concessionária", permissionaria: "Permissionária" }; // i18n: dado
+export const ROTULO_TIPO_EN: Record<TipoDistribuidora, string> = { concessionaria: "Concession holder", permissionaria: "Permit holder" };
 
 export type InfoDistribuidora = {
   /** UF da área de atuação (ordem alfabética, "PR, SC"); null sem dado. */
@@ -1524,7 +1843,7 @@ export function infoDistribuidoras(cnpjs: readonly string[], qualidade: readonly
 /* ---------- grupos de pares: tipo e UF ---------- */
 
 export type GrupoRanking = "todas" | TipoDistribuidora;
-export const CAMPO_GRUPO = campo(tiposUrl.opcao(["todas", "concessionaria", "permissionaria"] as const), "todas", { param: "grupo" });
+export const CAMPO_GRUPO = campo(tiposUrl.opcao(["todas", "concessionaria", "permissionaria"] as const), "todas", { param: "grupo" }); // i18n: dado
 /** UF do filtro (duas letras, ou vazio para todas); o valor que não é UF do ranking é ignorado por `filtrarRanking`. */
 export const CAMPO_UF = campo(tiposUrl.texto({ max: 2 }), "", { param: "uf" });
 
@@ -1540,7 +1859,8 @@ export function ufsDoRanking(linhas: readonly Pick<LinhaRanking, "uf">[]): { uf:
 /** Distribuidoras do grupo escolhido (tipo e UF), na ordem do ranking. UF que não existe no ranking não filtra. */
 export function filtrarRanking(linhas: readonly LinhaRanking[], grupo: GrupoRanking, uf: string): LinhaRanking[] {
   const ufs = new Set(ufsDoRanking(linhas).map((x) => x.uf));
-  return linhas.filter((l) => (grupo === "todas" || l.tipo === ROTULO_TIPO[grupo]) && (!uf || !ufs.has(uf) || ufsDaLinha(l).includes(uf)));
+  // a linha traz o tipo no idioma da página (linhasRanking): vale o rótulo português ou o inglês
+  return linhas.filter((l) => (grupo === "todas" || l.tipo === ROTULO_TIPO[grupo] || l.tipo === ROTULO_TIPO_EN[grupo]) && (!uf || !ufs.has(uf) || ufsDaLinha(l).includes(uf)));
 }
 
 export type ResumoDoRanking = {
@@ -1570,19 +1890,32 @@ export function resumoDoRanking(linhas: readonly LinhaRanking[]): ResumoDoRankin
   };
 }
 
-export function rotuloGrupo(grupo: GrupoRanking, uf: string): string {
-  const tipo = grupo === "todas" ? "distribuidoras" : grupo === "concessionaria" ? "concessionárias" : "permissionárias";
-  return uf ? `${tipo} com área em ${uf}` : tipo;
+export function rotuloGrupo(grupo: GrupoRanking, uf: string, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const tipo =
+    grupo === "todas"
+      ? tx("distribuidoras", "distribution utilities")
+      : grupo === "concessionaria"
+        ? tx("concessionárias", "concession holders")
+        : tx("permissionárias", "permit holders");
+  return uf ? tx(`${tipo} com área em ${uf}`, `${tipo} with an area in ${uf}`) : tipo;
 }
 
 /** Frase do grupo de pares escolhido: menor, maior e mediana do custo do perfil entre as distribuidoras do grupo. */
-export function textoResumoDoRanking(r: ResumoDoRanking, perfil: Perfil, grupo: GrupoRanking, uf: string): string {
-  const nome = rotuloGrupo(grupo, uf);
-  if (!r.n || !r.menor || !r.maior || r.mediana === null) return `Nenhuma das ${nome} tem tarifa B1 residencial vigente na data.`;
-  const ucs = r.ucsMediana === null ? "" : ` A mediana é de ${num(r.ucsMediana, 0)} consumidores (UCs) por distribuidora.`;
-  return (
-    `Entre as ${r.n} ${nome}, ${perfil} kWh no mês custam de ${reais(r.menor.custo)} (${r.menor.sigla}) a ${reais(r.maior.custo)} (${r.maior.sigla}); ` +
-    `a mediana simples do grupo é ${reais(r.mediana)}.${ucs}`
+export function textoResumoDoRanking(r: ResumoDoRanking, perfil: Perfil, grupo: GrupoRanking, uf: string, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { num, reais } = formatos(idioma);
+  const nome = rotuloGrupo(grupo, uf, idioma);
+  if (!r.n || !r.menor || !r.maior || r.mediana === null) return tx(`Nenhuma das ${nome} tem tarifa B1 residencial vigente na data.`, `None of the ${nome} has a residential B1 tariff in force on the date.`);
+  const ucs =
+    r.ucsMediana === null
+      ? ""
+      : tx(` A mediana é de ${num(r.ucsMediana, 0)} consumidores (UCs) por distribuidora.`, ` The median is ${num(r.ucsMediana, 0)} consumers (consumer units) per distribution utility.`);
+  const a = `${reais(r.menor.custo)} (${r.menor.sigla})`;
+  const b = `${reais(r.maior.custo)} (${r.maior.sigla})`;
+  return tx(
+    `Entre as ${r.n} ${nome}, ${perfil} kWh no mês custam de ${a} a ${b}; a mediana simples do grupo é ${reais(r.mediana)}.${ucs}`,
+    `Among the ${r.n} ${nome}, ${perfil} kWh a month cost from ${a} to ${b}; the simple median of the group is ${reais(r.mediana)}.${ucs}`,
   );
 }
 
@@ -1616,10 +1949,13 @@ export function medianaPonderadaDoPerfil(
 }
 
 /** "88,8 mil UCs", "5.835 UCs": o peso da distribuidora em consumidores, para ler o extremo ao lado do valor. */
-export function textoUcs(ucs: number | null | undefined): string {
-  if (ucs === null || ucs === undefined || !Number.isFinite(ucs)) return "UCs não informadas";
-  if (ucs < 1000) return `${num(ucs, 0)} UCs`;
-  return `${num(ucs / 1000, ucs >= 100000 ? 0 : 1)} mil UCs`;
+export function textoUcs(ucs: number | null | undefined, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { num } = formatos(idioma);
+  if (ucs === null || ucs === undefined || !Number.isFinite(ucs)) return tx("UCs não informadas", "consumer units not reported");
+  if (ucs < 1000) return tx(`${num(ucs, 0)} UCs`, `${num(ucs, 0)} consumer units`);
+  const k = num(ucs / 1000, ucs >= 100000 ? 0 : 1);
+  return tx(`${k} mil UCs`, `${k} thousand consumer units`);
 }
 
 export type ReguaDoRanking = {
@@ -1642,20 +1978,37 @@ export function reguaDoRanking(linhas: readonly Pick<LinhaRanking, "sigla" | "po
 }
 
 /** Diz qual régua ordena o ranking, onde está a outra e quantas distribuidoras mudam de lugar (marcadas com †). */
-export function textoReguaDoRanking(r: ReguaDoRanking): string {
-  const base =
-    "O ranking ordena pela tarifa de aplicação (TE + TUSD homologadas), a que a distribuidora cobra. A base econômica, que tira os componentes financeiros do processo tarifário, é a outra régua: aparece na tabela e na dica de cada ponto marcado.";
-  if (!r.marcadas) return `${base} As duas diferem em menos de ${LIMITE_DIFERENCA_BASE}% em todas as distribuidoras.`;
-  const ex = r.exemplo
-    ? ` Por exemplo, ${r.exemplo.sigla} é a ${r.exemplo.posicao}ª pela aplicação e a ${r.exemplo.posicaoBase}ª pela base, com a aplicação ${pct(Math.abs(r.exemplo.difPct), 1)} ${r.exemplo.difPct < 0 ? "abaixo" : "acima"} da base.`
+export function textoReguaDoRanking(r: ReguaDoRanking, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { pct } = formatos(idioma);
+  const base = tx(
+    "O ranking ordena pela tarifa de aplicação (TE + TUSD homologadas), a que a distribuidora cobra. A base econômica, que tira os componentes financeiros do processo tarifário, é a outra régua: aparece na tabela e na dica de cada ponto marcado.",
+    "The ranking is ordered by the applied tariff (ratified TE + TUSD), the one the distribution utility charges. The economic base, which removes the financial components of the tariff process, is the other yardstick: it appears in the table and in the tooltip of each marked point.",
+  );
+  if (!r.marcadas)
+    return tx(`${base} As duas diferem em menos de ${LIMITE_DIFERENCA_BASE}% em todas as distribuidoras.`, `${base} The two differ by less than ${LIMITE_DIFERENCA_BASE}% at every distribution utility.`);
+  const e = r.exemplo;
+  const ex = e
+    ? tx(
+        ` Por exemplo, ${e.sigla} é a ${e.posicao}ª pela aplicação e a ${e.posicaoBase}ª pela base, com a aplicação ${pct(Math.abs(e.difPct), 1)} ${e.difPct < 0 ? "abaixo" : "acima"} da base.`,
+        ` For example, ${e.sigla} is ${ordinalEn(e.posicao)} by the applied tariff and ${ordinalEn(e.posicaoBase)} by the base, with the applied tariff ${pct(Math.abs(e.difPct), 1)} ${e.difPct < 0 ? "below" : "above"} the base.`,
+      )
     : "";
-  return `${base} Em ${r.marcadas} distribuidoras, marcadas com †, as duas diferem em mais de ${LIMITE_DIFERENCA_BASE}%.${ex}`;
+  return tx(
+    `${base} Em ${r.marcadas} distribuidoras, marcadas com †, as duas diferem em mais de ${LIMITE_DIFERENCA_BASE}%.${ex}`,
+    `${base} At ${r.marcadas} distribution utilities, marked with †, the two differ by more than ${LIMITE_DIFERENCA_BASE}%.${ex}`,
+  );
 }
 
 /** Dica de um ponto marcado: as duas posições e a diferença, em uma frase curta para o título do ponto. */
-export function dicaDaRegua(l: Pick<LinhaRanking, "posicao" | "posicao_base" | "dif_base_pct">): string | undefined {
+export function dicaDaRegua(l: Pick<LinhaRanking, "posicao" | "posicao_base" | "dif_base_pct">, idioma: Idioma = idiomaEnergia()): string | undefined {
   if (!marcaBase(l) || l.posicao_base === null || l.dif_base_pct === null) return undefined;
-  return `${l.posicao}ª pela aplicação, ${l.posicao_base}ª pela base econômica (aplicação ${pct(Math.abs(l.dif_base_pct), 1)} ${l.dif_base_pct < 0 ? "abaixo" : "acima"} da base)`;
+  const { pct } = formatos(idioma);
+  const tx = txEm(idioma);
+  return tx(
+    `${l.posicao}ª pela aplicação, ${l.posicao_base}ª pela base econômica (aplicação ${pct(Math.abs(l.dif_base_pct), 1)} ${l.dif_base_pct < 0 ? "abaixo" : "acima"} da base)`,
+    `${ordinalEn(l.posicao)} by the applied tariff, ${ordinalEn(l.posicao_base)} by the economic base (applied tariff ${pct(Math.abs(l.dif_base_pct), 1)} ${l.dif_base_pct < 0 ? "below" : "above"} the base)`,
+  );
 }
 
 export type SituacaoForaDoRanking = "encerrada" | "incorporada" | "sem-tarifa";
@@ -1706,16 +2059,27 @@ export function expandirFora(c: readonly ForaCompacto[]): ForaDoRankingDaTela[] 
 }
 
 /** O que a página diz de uma distribuidora escolhida que não está no ranking: o motivo, com a data, e o custo pela última tarifa que ela teve. */
-export function textoForaDoRanking(f: ForaDoRankingDaTela, perfil: Perfil, dataReferencia: string): string {
+export function textoForaDoRanking(f: ForaDoRankingDaTela, perfil: Perfil, dataReferencia: string, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { dataBR, reais } = formatos(idioma);
   const custo = f.custos?.[perfil === 100 ? 0 : perfil === 200 ? 1 : 2] ?? null;
   const motivo =
     f.situacao === "encerrada"
-      ? `a vigência da tarifa B1 terminou em ${dataBR(f.fim)} e a tarifa seguinte ainda não consta no arquivo de ${dataBR(dataReferencia)}`
+      ? tx(
+          `a vigência da tarifa B1 terminou em ${dataBR(f.fim)} e a tarifa seguinte ainda não consta no arquivo de ${dataBR(dataReferencia)}`,
+          `the validity of the B1 tariff ended on ${dataBR(f.fim)} and the next tariff is not yet in the file of ${dataBR(dataReferencia)}`,
+        )
       : f.situacao === "incorporada"
-        ? `a distribuidora foi incorporada por outra, e a tarifa dela deixou de ser publicada separada`
-        : `a última tarifa B1 terminou em ${dataBR(f.fim)}, há mais de 90 dias, e o arquivo não traz outra`;
-  const ultimo = custo === null ? "" : ` Pela última tarifa que teve, ${perfil} kWh custavam ${reais(custo)}; esse valor não entra no ranking nem na mediana.`;
-  return `${f.sigla} não está no ranking: ${motivo}.${ultimo}`;
+        ? tx(`a distribuidora foi incorporada por outra, e a tarifa dela deixou de ser publicada separada`, `the distribution utility was merged into another, and its tariff is no longer published separately`)
+        : tx(`a última tarifa B1 terminou em ${dataBR(f.fim)}, há mais de 90 dias, e o arquivo não traz outra`, `the last B1 tariff ended on ${dataBR(f.fim)}, more than 90 days ago, and the file has no other`);
+  const ultimo =
+    custo === null
+      ? ""
+      : tx(
+          ` Pela última tarifa que teve, ${perfil} kWh custavam ${reais(custo)}; esse valor não entra no ranking nem na mediana.`,
+          ` At the last tariff it had, ${perfil} kWh cost ${reais(custo)}; this value is not part of the ranking or the median.`,
+        );
+  return tx(`${f.sigla} não está no ranking: ${motivo}.${ultimo}`, `${f.sigla} is not in the ranking: ${motivo}.${ultimo}`);
 }
 
 /** Contagem por situação das que ficaram fora do ranking, para a linha de Entender; a data é a do fim da vigência que a maioria das encerradas tem. */
@@ -1728,15 +2092,26 @@ export function resumoForaDoRanking(fora: readonly Pick<ForaDoRanking, "situacao
 }
 
 /** A linha de Entender sobre quem ficou fora do ranking: a contagem e o motivo de cada grupo. A lista completa está em Auditar. */
-export function textoForaDoRankingLinha(r: ReturnType<typeof resumoForaDoRanking>): string | null {
+export function textoForaDoRankingLinha(r: ReturnType<typeof resumoForaDoRanking>, idioma: Idioma = idiomaEnergia()): string | null {
   if (!r.total) return null;
+  const tx = txEm(idioma);
+  const { num, dataBR } = formatos(idioma);
   const plural = (n: number, um: string, varios: string) => `${num(n, 0)} ${n === 1 ? um : varios}`;
+  const quando = r.dataEncerramento ? tx(` em ${dataBR(r.dataEncerramento)}`, ` on ${dataBR(r.dataEncerramento)}`) : tx(" há até 90 dias", " up to 90 days ago");
   const partes = [
-    r.encerradas ? `${plural(r.encerradas, "teve", "tiveram")} a vigência encerrada${r.dataEncerramento ? ` em ${dataBR(r.dataEncerramento)}` : " há até 90 dias"} e a tarifa seguinte ainda não está no arquivo` : "",
-    r.incorporadas ? `${plural(r.incorporadas, "foi incorporada", "foram incorporadas")} por outra distribuidora` : "",
-    r.semTarifa ? `${plural(r.semTarifa, "está sem tarifa", "estão sem tarifa")} há mais de 90 dias` : "",
+    r.encerradas
+      ? tx(
+          `${plural(r.encerradas, "teve", "tiveram")} a vigência encerrada${quando} e a tarifa seguinte ainda não está no arquivo`,
+          `${plural(r.encerradas, "had its", "had their")} validity ended${quando} and the next tariff is not yet in the file`,
+        )
+      : "",
+    r.incorporadas ? tx(`${plural(r.incorporadas, "foi incorporada", "foram incorporadas")} por outra distribuidora`, `${plural(r.incorporadas, "was merged", "were merged")} into another distribution utility`) : "",
+    r.semTarifa ? tx(`${plural(r.semTarifa, "está sem tarifa", "estão sem tarifa")} há mais de 90 dias`, `${plural(r.semTarifa, "has had", "have had")} no tariff for more than 90 days`) : "",
   ].filter(Boolean);
-  return `Fora do ranking: ${plural(r.total, "distribuidora", "distribuidoras")}. ${partes.join("; ")}.`;
+  return tx(
+    `Fora do ranking: ${plural(r.total, "distribuidora", "distribuidoras")}. ${partes.join("; ")}.`,
+    `Out of the ranking: ${plural(r.total, "distribution utility", "distribution utilities")}. ${partes.join("; ")}.`,
+  );
 }
 
 /** Piso de cobertura em UCs da regra de completude (a mesma de Qualidade: 99% das UCs). */
@@ -1818,38 +2193,83 @@ export function coberturaDoRanking(a: {
  * mudaria no menor e no maior com a última tarifa das que faltam. Abaixo do piso, a frase vira o aviso de que os extremos valem só
  * para as que têm tarifa.
  */
-export function textoCobertura(c: CoberturaRanking, perfil: Perfil, extremos: { menor: number | null; maior: number | null; siglaMenor?: string | null; siglaMaior?: string | null }): string {
-  const dist = `${c.n} de ${c.universo} distribuidoras (${num(c.pctDistribuidoras, 1)}%)`;
-  if (c.pctUcs === null) return `Cobertura: ${dist}; sem as UCs não há como medir o peso das que ficaram de fora, e o menor e o maior podem mudar quando elas publicarem a tarifa seguinte.`;
-  const base = `${dist} e ${num(c.pctUcs, 2)}% das UCs`;
-  const maiorFora = c.maiorFora ? `, a maior, ${c.maiorFora.sigla}, com ${textoUcs(c.maiorFora.ucs)}` : "";
-  const fora = `As ${c.nFora} que ficaram de fora, sem a tarifa seguinte no arquivo, somam ${num(c.pctUcsFora ?? 0, 2)}% das UCs${maiorFora}.`;
+export function textoCobertura(
+  c: CoberturaRanking,
+  perfil: Perfil,
+  extremos: { menor: number | null; maior: number | null; siglaMenor?: string | null; siglaMaior?: string | null },
+  idioma: Idioma = idiomaEnergia(),
+): string {
+  const tx = txEm(idioma);
+  const { num, reais } = formatos(idioma);
+  const dist = tx(`${c.n} de ${c.universo} distribuidoras (${num(c.pctDistribuidoras, 1)}%)`, `${c.n} of ${c.universo} distribution utilities (${num(c.pctDistribuidoras, 1)}%)`);
+  if (c.pctUcs === null)
+    return tx(
+      `Cobertura: ${dist}; sem as UCs não há como medir o peso das que ficaram de fora, e o menor e o maior podem mudar quando elas publicarem a tarifa seguinte.`,
+      `Coverage: ${dist}; without consumer units there is no way to measure the weight of those left out, and the lowest and highest may change when they publish their next tariff.`,
+    );
+  const base = tx(`${dist} e ${num(c.pctUcs, 2)}% das UCs`, `${dist} and ${num(c.pctUcs, 2)}% of consumer units`);
+  const maiorFora = c.maiorFora ? tx(`, a maior, ${c.maiorFora.sigla}, com ${textoUcs(c.maiorFora.ucs, idioma)}`, `, the largest, ${c.maiorFora.sigla}, with ${textoUcs(c.maiorFora.ucs, idioma)}`) : "";
+  const pctFora = num(c.pctUcsFora ?? 0, 2);
+  const fora = tx(
+    `As ${c.nFora} que ficaram de fora, sem a tarifa seguinte no arquivo, somam ${pctFora}% das UCs${maiorFora}.`,
+    `The ${c.nFora} left out, without the next tariff in the file, account for ${pctFora}% of consumer units${maiorFora}.`,
+  );
   const se = c.seMantidas[String(perfil) as "100" | "200" | "300"];
   const muda: string[] = [];
-  if (se.menor && extremos.menor !== null && se.menor.valor < extremos.menor) muda.push(`o menor custo de ${perfil} kWh seria ${reais(se.menor.valor)} (${se.menor.sigla}), e não ${reais(extremos.menor)}${extremos.siglaMenor ? ` (${extremos.siglaMenor})` : ""}`);
-  if (se.maior && extremos.maior !== null && se.maior.valor > extremos.maior) muda.push(`o maior seria ${reais(se.maior.valor)} (${se.maior.sigla}), e não ${reais(extremos.maior)}${extremos.siglaMaior ? ` (${extremos.siglaMaior})` : ""}`);
-  const efeito = muda.length ? `Com a última tarifa delas, ${muda.join("; ")}.` : "Com a última tarifa delas, o menor e o maior custo não mudariam.";
-  if (c.atingePiso) return `Cobertura: ${base}, acima do piso de ${num(c.piso * 100, 0)}% das UCs que Qualidade usa. ${fora} ${efeito}`;
-  return `Cobertura abaixo do piso de ${num(c.piso * 100, 0)}% das UCs que Qualidade usa: ${base}. O menor e o maior valem só para as ${c.n} com tarifa e podem mudar quando as demais publicarem. ${fora} ${efeito}`;
+  if (se.menor && extremos.menor !== null && se.menor.valor < extremos.menor) {
+    const s = extremos.siglaMenor ? ` (${extremos.siglaMenor})` : "";
+    muda.push(
+      tx(
+        `o menor custo de ${perfil} kWh seria ${reais(se.menor.valor)} (${se.menor.sigla}), e não ${reais(extremos.menor)}${s}`,
+        `the lowest cost of ${perfil} kWh would be ${reais(se.menor.valor)} (${se.menor.sigla}), not ${reais(extremos.menor)}${s}`,
+      ),
+    );
+  }
+  if (se.maior && extremos.maior !== null && se.maior.valor > extremos.maior) {
+    const s = extremos.siglaMaior ? ` (${extremos.siglaMaior})` : "";
+    muda.push(tx(`o maior seria ${reais(se.maior.valor)} (${se.maior.sigla}), e não ${reais(extremos.maior)}${s}`, `the highest would be ${reais(se.maior.valor)} (${se.maior.sigla}), not ${reais(extremos.maior)}${s}`));
+  }
+  const efeito = muda.length
+    ? tx(`Com a última tarifa delas, ${muda.join("; ")}.`, `With their last tariff, ${muda.join("; ")}.`)
+    : tx("Com a última tarifa delas, o menor e o maior custo não mudariam.", "With their last tariff, the lowest and highest cost would not change.");
+  const piso = num(c.piso * 100, 0);
+  if (c.atingePiso)
+    return tx(
+      `Cobertura: ${base}, acima do piso de ${piso}% das UCs que Qualidade usa. ${fora} ${efeito}`,
+      `Coverage: ${base}, above the ${piso}% consumer-unit floor that Quality of supply uses. ${fora} ${efeito}`,
+    );
+  return tx(
+    `Cobertura abaixo do piso de ${piso}% das UCs que Qualidade usa: ${base}. O menor e o maior valem só para as ${c.n} com tarifa e podem mudar quando as demais publicarem. ${fora} ${efeito}`,
+    `Coverage below the ${piso}% consumer-unit floor that Quality of supply uses: ${base}. The lowest and highest apply only to the ${c.n} with a tariff and may change when the others publish. ${fora} ${efeito}`,
+  );
 }
 
 /**
  * O que a busca por município achou: a(s) distribuidora(s) que a relação oficial liga ao município, onde cada uma está no ranking e o
  * custo do perfil, e as que não têm tarifa B1 vigente na data. Município com mais de uma distribuidora diz que a da casa está na fatura.
  */
-export function textoMunicipioEncontrado(m: MunicipioEncontrado, linhas: readonly LinhaRanking[], perfil: Perfil, dataReferencia: string): string {
+export function textoMunicipioEncontrado(m: MunicipioEncontrado, linhas: readonly LinhaRanking[], perfil: Perfil, dataReferencia: string, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { reais, dataBR } = formatos(idioma);
   const validos = m.vinculos.filter((v) => v.estado !== 0);
   const usados = validos.length ? validos : m.vinculos;
   const porId = new Map(linhas.map((l) => [l.id, l]));
+  const semConfirmacao = tx(", vínculo sem confirmação na relação da ANEEL", ", link not confirmed in ANEEL's list");
   const partes = usados.map((v) => {
     const l = porId.get(v.cnpj);
-    const sem = v.estado === 0 ? ", vínculo sem confirmação na relação da ANEEL" : "";
-    return l ? `${l.sigla} (posição ${l.posicao} de ${linhas.length}; ${reais(l.custo)} para ${perfil} kWh${sem})` : `${v.sigla || `CNPJ ${v.cnpj}`} (sem tarifa B1 vigente em ${dataBR(dataReferencia)}, fora do ranking${sem})`;
+    const sem = v.estado === 0 ? semConfirmacao : "";
+    const nome = v.sigla || `CNPJ ${v.cnpj}`;
+    return l
+      ? tx(`${l.sigla} (posição ${l.posicao} de ${linhas.length}; ${reais(l.custo)} para ${perfil} kWh${sem})`, `${l.sigla} (position ${l.posicao} of ${linhas.length}; ${reais(l.custo)} for ${perfil} kWh${sem})`)
+      : tx(`${nome} (sem tarifa B1 vigente em ${dataBR(dataReferencia)}, fora do ranking${sem})`, `${nome} (no B1 tariff in force on ${dataBR(dataReferencia)}, out of the ranking${sem})`);
   });
-  if (!partes.length) return `${m.nome} (${m.uf}): a relação da ANEEL não liga o município a uma distribuidora.`;
-  const lista = partes.length > 1 ? `${partes.slice(0, -1).join("; ")} e ${partes[partes.length - 1]}` : partes[0];
-  const varias = usados.length > 1 ? " O município tem mais de uma distribuidora; a da sua casa está no alto da fatura." : "";
-  return `${m.nome} (${m.uf}): atendido por ${lista}.${varias}`;
+  if (!partes.length) return tx(`${m.nome} (${m.uf}): a relação da ANEEL não liga o município a uma distribuidora.`, `${m.nome} (${m.uf}): ANEEL's list does not link the municipality to a distribution utility.`);
+  const lista = listaE(partes, idioma, "; ");
+  const varias =
+    usados.length > 1
+      ? tx(" O município tem mais de uma distribuidora; a da sua casa está no alto da fatura.", " The municipality has more than one distribution utility; the one serving your home is at the top of the bill.")
+      : "";
+  return tx(`${m.nome} (${m.uf}): atendido por ${lista}.${varias}`, `${m.nome} (${m.uf}): served by ${lista}.${varias}`);
 }
 
 /* ---------- busca por município ---------- */
@@ -1963,19 +2383,32 @@ export function buscarMunicipios(indice: IndiceMunicipios, preparado: readonly s
  * O que a busca por município achou na comparação com o IPCA: a variação da tarifa B1 de cada distribuidora do município na janela
  * escolhida, ou a razão de ela não ter variação na janela. Mesma regra de vínculo do ranking (o sem confirmação só entra sem outro).
  */
-export function textoMunicipioReajuste(m: MunicipioEncontrado, linhas: readonly LinhaJanela[], janela: Pick<JanelaInflacao, "meses" | "ipca_pct">): string {
+export function textoMunicipioReajuste(m: MunicipioEncontrado, linhas: readonly LinhaJanela[], janela: Pick<JanelaInflacao, "meses" | "ipca_pct">, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { pct } = formatos(idioma);
   const validos = m.vinculos.filter((v) => v.estado !== 0);
   const usados = validos.length ? validos : m.vinculos;
   const porId = new Map(linhas.map((l) => [l.id, l]));
   const partes = usados.map((v) => {
     const l = porId.get(v.cnpj);
+    const nome = v.sigla || `CNPJ ${v.cnpj}`;
     return l && l.variacao !== null
-      ? `${l.sigla} (tarifa B1 ${verboVariacao(l.variacao)} em ${janela.meses} meses, contra IPCA de ${pct(janela.ipca_pct, 2)})`
-      : `${v.sigla || `CNPJ ${v.cnpj}`} (sem variação nesta janela: sem tarifa B1 nas duas datas ou com a área alterada por incorporação)`;
+      ? tx(
+          `${l.sigla} (tarifa B1 ${verboVariacao(l.variacao, 2, idioma)} em ${janela.meses} meses, contra IPCA de ${pct(janela.ipca_pct, 2)})`,
+          `${l.sigla} (B1 tariff ${verboVariacao(l.variacao, 2, idioma)} over ${janela.meses} months, against IPCA of ${pct(janela.ipca_pct, 2)})`,
+        )
+      : tx(
+          `${nome} (sem variação nesta janela: sem tarifa B1 nas duas datas ou com a área alterada por incorporação)`,
+          `${nome} (no change in this window: no B1 tariff on both dates or area changed by a merger)`,
+        );
   });
-  if (!partes.length) return `${m.nome} (${m.uf}): a relação da ANEEL não liga o município a uma distribuidora.`;
-  const lista = partes.length > 1 ? `${partes.slice(0, -1).join("; ")} e ${partes[partes.length - 1]}` : partes[0];
-  return `${m.nome} (${m.uf}): atendido por ${lista}.${usados.length > 1 ? " O município tem mais de uma distribuidora; a da sua casa está no alto da fatura." : ""}`;
+  if (!partes.length) return tx(`${m.nome} (${m.uf}): a relação da ANEEL não liga o município a uma distribuidora.`, `${m.nome} (${m.uf}): ANEEL's list does not link the municipality to a distribution utility.`);
+  const lista = listaE(partes, idioma, "; ");
+  const varias =
+    usados.length > 1
+      ? tx(" O município tem mais de uma distribuidora; a da sua casa está no alto da fatura.", " The municipality has more than one distribution utility; the one serving your home is at the top of the bill.")
+      : "";
+  return tx(`${m.nome} (${m.uf}): atendido por ${lista}.${varias}`, `${m.nome} (${m.uf}): served by ${lista}.${varias}`);
 }
 
 /* ---------- valores nominais e em reais constantes (subsídios e orçamento da CDE) ---------- */
@@ -2008,7 +2441,7 @@ export function lerIpcaCsv(csv: string): { mes: string; indice: number }[] {
 }
 
 /** As mesmas linhas com as chaves de valor em reais do mês-base (cada ano pelo seu fator); ano sem fator vira null, nunca o nominal. */
-export function emReaisDoMesBase<L extends Record<string, string | number | null>>(linhas: readonly L[], chaves: readonly string[], fatores: Readonly<Record<string, FatorReal | null>>, chaveAno = "ano"): L[] {
+export function emReaisDoMesBase<L extends Record<string, string | number | null>>(linhas: readonly L[], chaves: readonly string[], fatores: Readonly<Record<string, FatorReal | null>>, chaveAno = "ano"): L[] { // i18n: dado
   return linhas.map((l) => {
     const f = fatores[String(l[chaveAno])] ?? null;
     const out: Record<string, string | number | null> = { ...l };
@@ -2040,7 +2473,7 @@ export function tabelaTemReal(r: ReaisDaTabela | undefined): boolean {
 /** As linhas de uma tabela de dinheiro em reais do mês-base: cada valor pelo fator do ano (ou o fator único); sem fator, null (nunca o nominal). */
 export function linhasEmReais<L extends Record<string, string | number | null | undefined>>(linhas: readonly L[], r: ReaisDaTabela): L[] {
   return linhas.map((l) => {
-    const f = r.fatorUnico !== undefined ? r.fatorUnico : (r.fatores?.[String(l[r.chaveAno ?? "ano"])] ?? null);
+    const f = r.fatorUnico !== undefined ? r.fatorUnico : (r.fatores?.[String(l[r.chaveAno ?? "ano"])] ?? null); // i18n: dado
     const out: Record<string, string | number | null | undefined> = { ...l };
     for (const c of r.chaves) {
       const v = l[c];
@@ -2113,20 +2546,31 @@ export function categoriasQueZeraram(s: Subsidios, piso = 1e8, fracao = 0.05): C
  * A frase do controle: quais categorias caíram a quase zero e desde quando, com o maior valor da série e o último, na moeda escolhida,
  * e o que a fonte diz (nada) sobre a mudança. null quando nenhuma categoria cai. Não afirma causa regulatória: o arquivo não traz.
  */
-export function textoCategoriasQueZeraram(lista: readonly CategoriaQueZerou[], v: ValoresDoPainel = VALORES_NOMINAIS): string | null {
+export function textoCategoriasQueZeraram(lista: readonly CategoriaQueZerou[], v: ValoresDoPainel = VALORES_NOMINAIS, idioma: Idioma = idiomaEnergia()): string | null {
   if (!lista.length) return null;
-  const nomes = lista.map((c) => c.categoria);
-  const juntos = nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}` : nomes[0];
-  const unidade = (x: number) => (Math.abs(x) >= 2 ? "bilhões" : "bilhão");
+  const tx = txEm(idioma);
+  const { reais } = formatos(idioma);
+  const nomes = lista.map((c) => dadoTexto(c.categoria, idioma));
+  const juntos = listaE(nomes, idioma);
+  const unidade = (x: number) => tx(Math.abs(x) >= 2 ? "bilhões" : "bilhão", "billion");
   const bi = (rs: number, ano: string) => {
     const x = valorNoModo(rs, ano, v);
-    return x === null ? `${reais(rs / BI, 2)} ${unidade(rs / BI)} nominais` : `${reais(x / BI, 2)} ${unidade(x / BI)}`;
+    return x === null ? `${reais(rs / BI, 2)} ${unidade(rs / BI)} ${tx("nominais", "nominal")}` : `${reais(x / BI, 2)} ${unidade(x / BI)}`;
   };
-  const detalhe = lista.map((c) => `${c.categoria}, de ${bi(c.pico, c.anoDoPico)} em ${c.anoDoPico} a ${bi(c.ultimo, c.anoUltimo)} em ${c.anoUltimo}`).join("; ");
-  const desde = Array.from(new Set(lista.map((c) => c.desde))).join(" e ");
-  return (
+  const detalhe = lista
+    .map((c) =>
+      tx(
+        `${c.categoria}, de ${bi(c.pico, c.anoDoPico)} em ${c.anoDoPico} a ${bi(c.ultimo, c.anoUltimo)} em ${c.anoUltimo}`,
+        `${dadoTexto(c.categoria, idioma)}, from ${bi(c.pico, c.anoDoPico)} in ${c.anoDoPico} to ${bi(c.ultimo, c.anoUltimo)} in ${c.anoUltimo}`,
+      ),
+    )
+    .join("; ");
+  const desde = Array.from(new Set(lista.map((c) => c.desde))).join(tx(" e ", " and "));
+  return tx(
     `${juntos} ${lista.length > 1 ? "ficam" : "fica"} em quase zero (até 5% do maior valor da série) desde ${desde}: ${detalhe}. ` +
-    `O arquivo da ANEEL traz esses valores, positivos, zero ou negativos, e não explica a mudança. Não é falta de dado, e o observatório não confirmou a causa regulatória. Valores ${rotuloMoeda(v)}.`
+      `O arquivo da ANEEL traz esses valores, positivos, zero ou negativos, e não explica a mudança. Não é falta de dado, e o observatório não confirmou a causa regulatória. Valores ${rotuloMoeda(v, idioma)}.`,
+    `${juntos} ${lista.length > 1 ? "have stayed" : "has stayed"} near zero (up to 5% of the largest value in the series) since ${desde}: ${detalhe}. ` +
+      `ANEEL's file carries these values, positive, zero or negative, and does not explain the change. It is not missing data, and the observatory has not confirmed the regulatory cause. Values are ${rotuloMoeda(v, idioma)}.`,
   );
 }
 
@@ -2135,43 +2579,76 @@ export function textoCategoriasQueZeraram(lista: readonly CategoriaQueZerou[], v
  * receitas do último ano que ainda não têm valor, os dois anos anteriores e a quota como residual. null sem orçamento ou sem a
  * participação do último ano.
  */
-export function notaQuotas(f: FinanciamentoCde | null, anosAntes = 2): string | null {
+export function notaQuotas(f: FinanciamentoCde | null, anosAntes = 2, idioma: Idioma = idiomaEnergia()): string | null {
   if (!f) return null;
+  const tx = txEm(idioma);
+  const { pct } = formatos(idioma);
   const serie = serieQuotas(f);
   const i = serie.findIndex((p) => p.ano === f.ultimo_ano);
   if (i < 0 || serie[i].pct === null) return null;
   const anteriores = serie.slice(Math.max(0, i - anosAntes), i).filter((p) => p.pct !== null);
-  const historico = anteriores.length ? ` Antes: ${anteriores.map((p) => `${pct(p.pct, 1)} em ${p.ano}`).join(" e ")}, também orçamento.` : "";
+  const lista = anteriores.map((p) => tx(`${pct(p.pct, 1)} em ${p.ano}`, `${pct(p.pct, 1)} in ${p.ano}`)).join(tx(" e ", " and "));
+  const historico = anteriores.length ? tx(` Antes: ${lista}, também orçamento.`, ` Before: ${lista}, also budget.`) : "";
   const semValor = f.totais.find((t) => t.ano === f.ultimo_ano)?.rubricas_sem_valor ?? [];
   const incompleta = receitasQueZeraram(f).length > 0 || semValor.length > 0;
-  const ressalva = incompleta ? ` Em ${f.ultimo_ano} há receitas ainda sem valor ou em zero: a participação de ${f.ultimo_ano} não é comparável à dos anos anteriores até elas entrarem.` : "";
-  return `Orçamento aprovado ou previsto pela ANEEL, não execução.${historico}${ressalva} A quota é o residual do orçamento: cobre o que as demais receitas não cobrem.`;
+  const ressalva = incompleta
+    ? tx(
+        ` Em ${f.ultimo_ano} há receitas ainda sem valor ou em zero: a participação de ${f.ultimo_ano} não é comparável à dos anos anteriores até elas entrarem.`,
+        ` In ${f.ultimo_ano} some revenues still have no value or are at zero: the ${f.ultimo_ano} share is not comparable to that of previous years until they come in.`,
+      )
+    : "";
+  return tx(
+    `Orçamento aprovado ou previsto pela ANEEL, não execução.${historico}${ressalva} A quota é o residual do orçamento: cobre o que as demais receitas não cobrem.`,
+    `Budget approved or forecast by ANEEL, not execution.${historico}${ressalva} The quota is the budget residual: it covers what the other revenues do not.`,
+  );
 }
 
 /**
  * A leitura do destaque das quotas: série dos anos anteriores, a quota como residual do orçamento e o que mudou nas outras receitas
  * do último ano. Tudo do orçamento publicado; o residual é a regra que a nota da gold cita (a quota cobre a diferença).
  */
-export function textoResidualQuotas(f: FinanciamentoCde | null, anosAntes = 2, v: ValoresDoPainel = VALORES_NOMINAIS): string | null {
+export function textoResidualQuotas(f: FinanciamentoCde | null, anosAntes = 2, v: ValoresDoPainel = VALORES_NOMINAIS, idioma: Idioma = idiomaEnergia()): string | null {
   if (!f) return null;
+  const tx = txEm(idioma);
+  const { pct, num } = formatos(idioma);
   const serie = serieQuotas(f);
   const i = serie.findIndex((p) => p.ano === f.ultimo_ano);
   if (i < 0 || serie[i].pct === null) return null;
   const anteriores = serie.slice(Math.max(0, i - anosAntes), i).filter((p) => p.pct !== null);
-  const historico = anteriores.length ? `${anteriores.map((p) => `${pct(p.pct, 1)} em ${p.ano}`).join(" e ")}, contra ` : "";
+  const antes = anteriores.map((p) => tx(`${pct(p.pct, 1)} em ${p.ano}`, `${pct(p.pct, 1)} in ${p.ano}`)).join(tx(" e ", " and "));
+  const historico = anteriores.length ? tx(`${antes}, contra `, `${antes}, against `) : "";
   const zeraram = receitasQueZeraram(f);
   const semValor = f.totais.find((t) => t.ano === f.ultimo_ano)?.rubricas_sem_valor ?? [];
-  const lista = (xs: string[]) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} e ${xs[xs.length - 1]}` : (xs[0] ?? ""));
-  const outras =
-    zeraram.length || semValor.length
-      ? ` Em ${f.ultimo_ano}, ${[
-          zeraram.length ? `${lista(zeraram.map((z) => z.fonte))} ${zeraram.length > 1 ? "aparecem" : "aparece"} como zero (em ${zeraram[0].anoAnterior}: ${lista(zeraram.map((z) => { const x = valorNoModo(z.anterior, z.anoAnterior, v); return x === null ? `R$ ${num(z.anterior / BI, 2)} bi nominais` : `R$ ${num(x / BI, 2)} bi${v.modo === "real" ? ` (${rotuloMoeda(v)})` : ""}`; }))})` : "",
-          semValor.length ? `${semValor.length} ${semValor.length === 1 ? "rubrica está sem valor publicado" : "rubricas estão sem valor publicado"}` : "",
-        ]
-          .filter(Boolean)
-          .join(" e ")}.`
-      : "";
-  return `A quota é o residual do orçamento: a despesa do ano é fixada e a quota cobre o que as demais receitas não cobrem. Participação das quotas: ${historico}${pct(serie[i].pct, 1)} em ${f.ultimo_ano}.${outras}`;
+  const lista = (xs: string[]) => listaE(xs, idioma);
+  const valorAnterior = (z: ReceitaQueZerou) => {
+    const x = valorNoModo(z.anterior, z.anoAnterior, v);
+    if (x === null) return tx(`R$ ${num(z.anterior / BI, 2)} bi nominais`, `R$ ${num(z.anterior / BI, 2)} billion nominal`);
+    const moeda = v.modo === "real" ? ` (${rotuloMoeda(v, idioma)})` : "";
+    return tx(`R$ ${num(x / BI, 2)} bi${moeda}`, `R$ ${num(x / BI, 2)} billion${moeda}`);
+  };
+  const fontes = zeraram.length ? lista(zeraram.map((z) => dadoTexto(z.fonte, idioma))) : "";
+  const valores = zeraram.length ? lista(zeraram.map(valorAnterior)) : "";
+  const partes = [
+    zeraram.length
+      ? tx(
+          `${fontes} ${zeraram.length > 1 ? "aparecem" : "aparece"} como zero (em ${zeraram[0].anoAnterior}: ${valores})`,
+          `${fontes} ${zeraram.length > 1 ? "appear" : "appears"} as zero (in ${zeraram[0].anoAnterior}: ${valores})`,
+        )
+      : "",
+    semValor.length
+      ? tx(
+          `${semValor.length} ${semValor.length === 1 ? "rubrica está sem valor publicado" : "rubricas estão sem valor publicado"}`,
+          `${semValor.length} ${semValor.length === 1 ? "budget line has no published value" : "budget lines have no published value"}`,
+        )
+      : "",
+  ]
+    .filter(Boolean)
+    .join(tx(" e ", " and "));
+  const outras = zeraram.length || semValor.length ? tx(` Em ${f.ultimo_ano}, ${partes}.`, ` In ${f.ultimo_ano}, ${partes}.`) : "";
+  return tx(
+    `A quota é o residual do orçamento: a despesa do ano é fixada e a quota cobre o que as demais receitas não cobrem. Participação das quotas: ${historico}${pct(serie[i].pct, 1)} em ${f.ultimo_ano}.${outras}`,
+    `The quota is the budget residual: the year's expense is set and the quota covers what the other revenues do not. Share of quotas: ${historico}${pct(serie[i].pct, 1)} in ${f.ultimo_ano}.${outras}`,
+  );
 }
 
 /* ---------- janelas de comparação com o IPCA no mesmo conjunto ---------- */
@@ -2211,10 +2688,15 @@ export function janelasNoMesmoConjunto(janelas: readonly JanelaInflacao[]): Jane
 }
 
 /** Frase das janelas no mesmo conjunto: a mediana da variação em cada janela entre as distribuidoras comuns às três, contra o IPCA do período. */
-export function textoJanelasNoMesmoConjunto(c: JanelasNoMesmoConjunto): string {
-  const partes = c.itens.map((i) => `${pct(i.medianaPct, 2)} em ${i.meses} meses (IPCA de ${pct(i.ipcaPct, 2)})`);
-  const lista = partes.length > 1 ? `${partes.slice(0, -1).join(", ")} e ${partes[partes.length - 1]}` : partes[0];
-  return `Nas ${c.n} distribuidoras com variação nas três janelas, a mediana da variação da tarifa B1 é de ${lista}.`;
+export function textoJanelasNoMesmoConjunto(c: JanelasNoMesmoConjunto, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  const { pct } = formatos(idioma);
+  const partes = c.itens.map((i) => tx(`${pct(i.medianaPct, 2)} em ${i.meses} meses (IPCA de ${pct(i.ipcaPct, 2)})`, `${pct(i.medianaPct, 2)} over ${i.meses} months (IPCA of ${pct(i.ipcaPct, 2)})`));
+  const lista = listaE(partes, idioma);
+  return tx(
+    `Nas ${c.n} distribuidoras com variação nas três janelas, a mediana da variação da tarifa B1 é de ${lista}.`,
+    `In the ${c.n} distribution utilities with a change in all three windows, the median change in the B1 tariff is ${lista}.`,
+  );
 }
 
 /* ---------- simulador: tarifa usada, classes iguais à residencial e leituras não conferidas ---------- */
@@ -2262,8 +2744,14 @@ export function igualdadeComResidencial(distribuidoras: readonly { tarifas: Part
 }
 
 /** "subgrupo B2, sem subclasse na fonte": a linha da fonte de que a tarifa vem. */
-export function descricaoDaTarifa(c: { subgrupo: string; subclasse: string }): string {
-  return `subgrupo ${c.subgrupo}${c.subclasse && c.subclasse !== "Não se aplica" ? `, subclasse ${c.subclasse}` : ", sem subclasse na fonte"}`;
+export function descricaoDaTarifa(c: { subgrupo: string; subclasse: string }, idioma: Idioma = idiomaEnergia()): string {
+  const tx = txEm(idioma);
+  // i18n: dado ("Não se aplica" é o valor que a fonte publica quando não há subclasse)
+  const temSubclasse = c.subclasse && c.subclasse !== "Não se aplica";
+  return tx(
+    `subgrupo ${c.subgrupo}${temSubclasse ? `, subclasse ${c.subclasse}` : ", sem subclasse na fonte"}`,
+    `subgroup ${c.subgrupo}${temSubclasse ? `, subclass ${dadoTexto(c.subclasse, idioma)}` : ", no subclass in the source"}`,
+  );
 }
 
 /* ---------- ficha "Comprove este número" com procedimento externo ---------- */
@@ -2273,17 +2761,25 @@ export function descricaoDaTarifa(c: { subgrupo: string; subclasse: string }): s
  * procedimento sobre o arquivo da fonte: filtros, fórmula, conferência com o valor exibido e a data de corte da captura. Só reescreve
  * o texto da reprodução; todos os outros campos da ficha seguem como a gold os publica.
  */
-export function comProcedimentoExterno(ev: Evidencia | null): Evidencia | null {
+export function comProcedimentoExterno(ev: Evidencia | null, idioma: Idioma = idiomaEnergia()): Evidencia | null {
   if (!ev) return ev;
-  const corte = ev.fonte.capturado_em ? dataBR(ev.fonte.capturado_em.slice(0, 10)) : null;
+  const tx = txEm(idioma);
+  const corte = ev.fonte.capturado_em ? formatos(idioma).dataBR(ev.fonte.capturado_em.slice(0, 10)) : null;
+  const filtros = ev.filtros.join("; ");
   const passos = [
-    "Sem o código do observatório: abra o arquivo da fonte indicado acima (o endereço é o da ANEEL; o sha256 identifica a cópia que foi usada).",
-    ev.filtros.length ? `Mantenha só as linhas que cumprem: ${ev.filtros.join("; ")}.` : "",
-    `Aplique a fórmula: ${ev.formula}.`,
-    `Confira o resultado com o valor exibido (${ev.valor_exibido}).`,
+    tx(
+      "Sem o código do observatório: abra o arquivo da fonte indicado acima (o endereço é o da ANEEL; o sha256 identifica a cópia que foi usada).",
+      "Without the observatory's code: open the source file indicated above (the address is ANEEL's; the sha256 identifies the copy that was used).",
+    ),
+    ev.filtros.length ? tx(`Mantenha só as linhas que cumprem: ${filtros}.`, `Keep only the rows that meet: ${filtros}.`) : "",
+    tx(`Aplique a fórmula: ${ev.formula}.`, `Apply the formula: ${ev.formula}.`),
+    tx(`Confira o resultado com o valor exibido (${ev.valor_exibido}).`, `Check the result against the displayed value (${ev.valor_exibido}).`),
     corte
-      ? `Data de corte: arquivo capturado em ${corte}. A fonte é atualizada depois dessa data; linhas novas mudam o resultado, e a cópia capturada fica identificada pelo sha256.`
-      : "Data de corte: a captura não informa a data; use a versão da fonte indicada acima.",
+      ? tx(
+          `Data de corte: arquivo capturado em ${corte}. A fonte é atualizada depois dessa data; linhas novas mudam o resultado, e a cópia capturada fica identificada pelo sha256.`,
+          `Cut-off date: file captured on ${corte}. The source is updated after that date; new rows change the result, and the captured copy is identified by the sha256.`,
+        )
+      : tx("Data de corte: a captura não informa a data; use a versão da fonte indicada acima.", "Cut-off date: the capture does not report the date; use the source version indicated above."),
   ];
   return { ...ev, reproducao: passos.filter(Boolean).join("\n") };
 }
@@ -2436,11 +2932,13 @@ export function compactarEntidades(vigentes: readonly Pick<TarifaVigente, "cnpj"
   return [...vigentes.map((v): EntidadeCompacta => [v.cnpj, v.sigla, v.nome, 1]), ...semVigente.map((v): EntidadeCompacta => [v.cnpj, v.sigla, v.nome, 0])];
 }
 
-export function expandirEntidades(c: readonly EntidadeCompacta[]): { id: string; rotulo: string; detalhe?: string; sinonimos: string[] }[] {
+export function expandirEntidades(c: readonly EntidadeCompacta[], idioma: Idioma = idiomaEnergia()): { id: string; rotulo: string; detalhe?: string; sinonimos: string[] }[] {
+  const tx = txEm(idioma);
+  const sem = tx("(sem tarifa vigente)", "(no tariff in force)");
   return c.map(([cnpj, sigla, nome, vigente]) => ({
     id: cnpj,
     rotulo: rotuloDistribuidora(sigla, cnpj),
-    detalhe: vigente ? (nome ?? undefined) : `${nome ?? ""} (sem tarifa vigente)`.trim(),
+    detalhe: vigente ? (nome ?? undefined) : `${nome ?? ""} ${sem}`.trim(),
     sinonimos: [cnpj],
   }));
 }

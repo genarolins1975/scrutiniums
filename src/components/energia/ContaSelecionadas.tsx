@@ -1,5 +1,7 @@
 "use client";
 
+import { useTx } from "@/lib/energia/useIdioma";
+
 /**
  * Distribuidoras selecionadas (?dist=): cada uma é uma etiqueta com o botão de tirar, mais o botão de limpar tudo e um aviso quando o
  * limite descarta uma. A escolha vem de um clique numa barra, num ponto, numa linha da tabela ou de uma lista, e ela atravessa os
@@ -23,14 +25,15 @@ export function ContaSelecionadas({
   aviso?: string | null;
   limite: number;
 }) {
+  const tx = useTx();
   return (
     <div className="min-w-0" data-selecionadas="">
       {ids.length > 0 && (
         <div>
           <p className="rotulo text-mineral">
-            Selecionadas ({ids.length} de até {limite})
+            {tx(`Selecionadas (${ids.length} de até ${limite})`, `Selected (${ids.length} of up to ${limite})`)}
           </p>
-          <ul className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1" aria-label="Distribuidoras selecionadas">
+          <ul className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1" aria-label={tx("Distribuidoras selecionadas", "Selected distribution utilities")}>
             {ids.map((id) => (
               <li key={id}>
                 <span className="inline-flex min-h-[44px] items-center gap-0.5 border border-energia bg-energia-fundo pl-2.5 text-sm text-carvao">
@@ -38,7 +41,7 @@ export function ContaSelecionadas({
                   <button
                     type="button"
                     onClick={() => aoTirar(id)}
-                    aria-label={`Tirar ${rotulo(id)} da seleção`}
+                    aria-label={tx(`Tirar ${rotulo(id)} da seleção`, `Remove ${rotulo(id)} from the selection`)}
                     className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-carvao-muted hover:text-carvao focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-energia"
                   >
                     <span aria-hidden="true">×</span>
@@ -52,7 +55,7 @@ export function ContaSelecionadas({
                 onClick={aoLimpar}
                 className="inline-flex min-h-[44px] items-center px-2 text-sm text-energia-dark underline underline-offset-4 hover:text-carvao focus-visible:outline focus-visible:outline-2 focus-visible:outline-energia"
               >
-                Limpar seleção
+                {tx("Limpar seleção", "Clear selection")}
               </button>
             </li>
           </ul>

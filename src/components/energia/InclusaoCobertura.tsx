@@ -9,15 +9,17 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { NAO_SE_APLICA, quebrasFixas, type ValorClassificavel } from "@/lib/energia/escalas";
 import { URL_GEO, type CamadaGeo } from "@/lib/energia/geo";
+import { txEm } from "@/lib/energia/i18n/conta-inclusao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import {
-  COLUNAS_COBERTURA_UF,
-  COLUNAS_MUNICIPIOS,
   ESQUEMA_COBERTURA,
   codigoUf,
+  colunasCoberturaUf,
+  colunasMunicipios,
   dadosSerieCobertura,
   itensFaixaCobertura,
   linhasCoberturaUf,
-  mes,
+  mes as mesEm,
   municipiosDoCsv,
   siglaDoCodigo,
   valoresMapaCobertura,
@@ -41,10 +43,17 @@ import type { CoberturaUf, SerieCoberturaMensal } from "@/lib/energia/tipos-incl
 
 const CORTES = [40, 60, 80, 100];
 const CORES = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
-const OPCOES_DEN: readonly (readonly [Denominador, string])[] = [
-  ["atualizadas", "Famílias com cadastro atualizado"],
-  ["cadastradas", "Todas as famílias cadastradas"],
-];
+function opcoesDen(tx: <T>(pt: T, en: T) => T): readonly (readonly [Denominador, string])[] {
+  return [
+    ["atualizadas", tx("Famílias com cadastro atualizado", "Families with an updated record")],
+    ["cadastradas", tx("Todas as famílias cadastradas", "All registered families")],
+  ];
+}
+
+/** "cadastro atualizado" / "todas as cadastradas", o denominador escolhido no título do mapa. */
+function nomeDen(den: Denominador, tx: <T>(pt: T, en: T) => T): string {
+  return den === "atualizadas" ? tx("cadastro atualizado", "updated record") : tx("todas as cadastradas", "all registered");
+}
 
 export function InclusaoCoberturaUf({
   ufs,
@@ -62,52 +71,62 @@ export function InclusaoCoberturaUf({
   recorte?: ReactNode;
   notas?: ReactNode;
 }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const mes = (m: string | null | undefined) => mesEm(m, idioma);
   const [v, definir] = useEstadoUrl(ESQUEMA_COBERTURA);
   const sel = ufs.some((u) => u.uf === v.uf) ? v.uf : null;
   const valores = useMemo(() => valoresMapaCobertura(ufs, v.den), [ufs, v.den]);
   const classes = useMemo(() => quebrasFixas(CORTES, Object.values(valores), { casas: 0 }), [valores]);
-  const linhas = useMemo(() => linhasCoberturaUf(ufs), [ufs]);
-  const itens = useMemo(() => itensFaixaCobertura(ufs), [ufs]);
+  const linhas = useMemo(() => linhasCoberturaUf(ufs, idioma), [ufs, idioma]);
+  const itens = useMemo(() => itensFaixaCobertura(ufs, idioma), [ufs, idioma]);
   const selecionar = (uf: string | null) => definir({ uf: uf ?? "" });
+  const porCem = tx("faturas por 100 famílias", "bills per 100 families");
   return (
     <div className="space-y-6">
       <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
         {resposta}
-        <InclusaoOpcoes rotulo="Denominador do mapa" nome="inclusao-cob-den" opcoes={OPCOES_DEN} valor={v.den} onMudar={(den) => definir({ den })} />
+        <InclusaoOpcoes rotulo={tx("Denominador do mapa", "Map denominator")} nome="inclusao-cob-den" opcoes={opcoesDen(tx)} valor={v.den} onMudar={(den) => definir({ den })} />
       </div>
       <MapaCoropletico
-        titulo={`Faturas com Tarifa Social por 100 famílias até ½ salário mínimo (${v.den === "atualizadas" ? "cadastro atualizado" : "todas as cadastradas"}), por UF, ${mes(mesRef)}`}
+        titulo={tx(
+          `Faturas com Tarifa Social por 100 famílias até ½ salário mínimo (${nomeDen(v.den, tx)}), por UF, ${mes(mesRef)}`,
+          `Bills with Tarifa Social per 100 families with up to ½ minimum wage (${nomeDen(v.den, tx)}), by state, ${mes(mesRef)}`,
+        )}
         fonteGeometria={URL_GEO.uf}
         valores={valores}
         cores={CORES}
         classificacao={classes}
-        unidade="faturas por 100 famílias"
+        unidade={porCem}
         casas={1}
-        rotuloRegiao={{ singular: "UF", plural: "UF" }}
+        rotuloRegiao={tx({ singular: "UF", plural: "UF" }, { singular: "state", plural: "states" })}
         selecionado={sel ? codigoUf(sel) : null}
         onSelecionar={(id) => selecionar(siglaDoCodigo(id))}
         rotulos
         periodo={mes(mesRef)}
-        nota={`Proxy, não taxa de cobertura: fatura não é família. Cortes fixos em ${CORTES.join(", ")}, os mesmos do mapa municipal.`}
+        nota={tx(
+          `Proxy, não taxa de cobertura: fatura não é família. Cortes fixos em ${CORTES.join(", ")}, os mesmos do mapa municipal.`,
+          `Proxy, not a coverage rate: a bill is not a family. Fixed cuts at ${CORTES.join(", ")}, the same as the municipal map.`,
+        )}
       />
       <GraficoPontos
-        titulo={`Faixa de sensibilidade ao denominador por UF, ${mes(mesRef)}`}
+        titulo={tx(`Faixa de sensibilidade ao denominador por UF, ${mes(mesRef)}`, `Sensitivity band to the denominator by state, ${mes(mesRef)}`)}
         itens={itens}
-        unidade="faturas por 100 famílias"
-        unidadeDiferenca="pontos"
+        unidade={porCem}
+        unidadeDiferenca={tx("pontos", "points")}
         casas={1}
-        rotuloValor="Por 100 famílias com cadastro atualizado"
-        rotuloReferencia="Por 100 famílias cadastradas (todas)"
-        corValor="var(--cor-energia)"
+        rotuloValor={tx("Por 100 famílias com cadastro atualizado", "Per 100 families with an updated record")}
+        rotuloReferencia={tx("Por 100 famílias cadastradas (todas)", "Per 100 registered families (all)")}
+        corValor="var(--cor-energia)" // i18n: dado
         corReferencia="var(--serie-referencia)"
         zeroNoEixo
-        ordemInicial={{ por: "valor", direcao: "desc" }}
+        ordemInicial={{ por: "valor", direcao: "desc" }} // i18n: dado
         selecionado={sel}
         onSelecionar={selecionar}
       />
       <TabelaInterativa
-        titulo={`Faturas e famílias por UF, ${mes(mesRef)} (proxy)`}
-        colunas={COLUNAS_COBERTURA_UF}
+        titulo={tx(`Faturas e famílias por UF, ${mes(mesRef)} (proxy)`, `Bills and families by state, ${mes(mesRef)} (proxy)`)}
+        colunas={colunasCoberturaUf(idioma)}
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="nome"
@@ -118,8 +137,11 @@ export function InclusaoCoberturaUf({
         ordemInicial={{ coluna: "razao_atualizadas", direcao: "desc" }}
         selecionado={sel}
         onSelecionar={selecionar}
-        dicaBusca="Nome ou sigla da UF"
-        nota="Numerador e denominador do mesmo mês. Famílias atualizadas: cadastro dentro do prazo de atualização exigido para a concessão (requisitos na regra de elegibilidade, modo Auditar)."
+        dicaBusca={tx("Nome ou sigla da UF", "State name or abbreviation")}
+        nota={tx(
+          "Numerador e denominador do mesmo mês. Famílias atualizadas: cadastro dentro do prazo de atualização exigido para a concessão (requisitos na regra de elegibilidade, modo Auditar).",
+          "Numerator and denominator from the same month. Updated families: record within the update deadline required for granting (requirements in the eligibility rule, Audit mode).",
+        )}
       />
       {recorte}
       {notas}
@@ -143,6 +165,9 @@ function carregar<T>(url: string, tipo: "json" | "texto"): Promise<T> {
 }
 
 export function InclusaoSerieCobertura({ url, unidade }: { url: string; unidade: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const mes = (m: string | null | undefined) => mesEm(m, idioma);
   const [serie, setSerie] = useState<SerieCoberturaMensal | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   useEffect(() => {
@@ -159,9 +184,9 @@ export function InclusaoSerieCobertura({ url, unidade }: { url: string; unidade:
   if (erro) {
     return (
       <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-        Não foi possível carregar a série mensal ({erro}). O mesmo dado está em{" "}
+        {tx(`Não foi possível carregar a série mensal (${erro}). O mesmo dado está em`, `The monthly series could not be loaded (${erro}). The same data is in the`)}{" "}
         <a href="/energia/series/inclusao_cobertura_mensal.csv" download className="text-energia-dark underline underline-offset-4">
-          série mensal da cobertura (CSV)
+          {tx("série mensal da cobertura (CSV)", "monthly coverage series (CSV)")}
         </a>
         .
       </p>
@@ -170,21 +195,39 @@ export function InclusaoSerieCobertura({ url, unidade }: { url: string; unidade:
   if (!serie) {
     return (
       <p role="status" className="text-sm text-carvao-muted">
-        Carregando a série mensal nacional (JSON publicado com a gold)…
+        {tx("Carregando a série mensal nacional (JSON publicado com a gold)…", "Loading the national monthly series (JSON published with the gold file)…")}
       </p>
     );
   }
   return (
     <GraficoLinhas
-      titulo={`UC com Tarifa Social por 100 famílias até ½ salário mínimo, Brasil, ${mes(serie.serie[0]?.m)} a ${mes(serie.serie.at(-1)?.m)} (proxy)`}
+      titulo={tx(
+        `UC com Tarifa Social por 100 famílias até ½ salário mínimo, Brasil, ${mes(serie.serie[0]?.m)} a ${mes(serie.serie.at(-1)?.m)} (proxy)`,
+        `Consumer units with Tarifa Social per 100 families with up to ½ minimum wage, Brazil, ${mes(serie.serie[0]?.m)} to ${mes(serie.serie.at(-1)?.m)} (proxy)`,
+      )}
       dados={dados}
       chaveX="m"
       formatoX="mes"
       series={[
-        { id: "atualizadas", rotulo: "Por 100 famílias com cadastro atualizado", sigla: "Atualizadas", cor: "var(--cor-energia)" },
-        { id: "cadastradas", rotulo: "Por 100 famílias cadastradas (todas)", sigla: "Cadastradas", cor: "var(--serie-referencia)", tracejada: true },
+        {
+          id: "atualizadas",
+          rotulo: tx("Por 100 famílias com cadastro atualizado", "Per 100 families with an updated record"),
+          sigla: tx("Atualizadas", "Updated"),
+          cor: "var(--cor-energia)", // i18n: dado
+        },
+        {
+          id: "cadastradas",
+          rotulo: tx("Por 100 famílias cadastradas (todas)", "Per 100 registered families (all)"),
+          sigla: tx("Cadastradas", "Registered"),
+          cor: "var(--serie-referencia)",
+          tracejada: true,
+        },
       ]}
-      banda={{ inferior: "cadastradas", superior: "atualizadas", rotulo: "Faixa de sensibilidade ao denominador (não é margem de erro)" }}
+      banda={{
+        inferior: "cadastradas", // i18n: dado
+        superior: "atualizadas", // i18n: dado
+        rotulo: tx("Faixa de sensibilidade ao denominador (não é margem de erro)", "Sensitivity band to the denominator (not a margin of error)"),
+      }}
       unidade={unidade}
       casas={1}
       zeroNoEixo
@@ -200,6 +243,9 @@ function mapaCodigos(geo: CamadaGeo): Map<string, string> {
 }
 
 export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { csvUrl: string; mes: string; fonte: string }) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const mes = (m: string | null | undefined) => mesEm(m, idioma);
   const [v, definir] = useEstadoUrl(ESQUEMA_COBERTURA);
   const [dados, setDados] = useState<{ geo: CamadaGeo; mun: MunicipioCobertura[] } | null>(null);
   const [erro, setErro] = useState<string | null>(null);
@@ -221,6 +267,7 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
   }, [ativo, dados, csvUrl]);
 
   const montado = useMemo(() => {
+    const tx = txEm(idioma);
     if (!dados) return null;
     const cod7 = mapaCodigos(dados.geo);
     const valores: Record<string, ValorClassificavel> = {};
@@ -235,26 +282,29 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
         atualizadas: m.atualizadas,
         razao_atualizadas: m.razao_atualizadas,
         razao_cadastradas: m.razao_cadastradas,
-        base: m.base_pequena ? "base pequena (fora da distribuição)" : "base suficiente",
+        base: m.base_pequena ? tx("base pequena (fora da distribuição)", "small base (outside the distribution)") : tx("base suficiente", "sufficient base"),
       };
     });
     const semGeometria = dados.mun.filter((m) => !cod7.has(m.cod6)).length;
     return { valores, linhas, semGeometria, classes: quebrasFixas(CORTES, Object.values(valores), { casas: 0 }) };
-  }, [dados, v.den]);
+  }, [dados, v.den, idioma]);
   const sel = montado && v.msel && montado.linhas.some((l) => l.id === v.msel) ? v.msel : null;
 
   if (!ativo) {
     return (
       <div className="flex flex-wrap items-center gap-3 border border-dashed border-linha px-4 py-3">
         <p className="max-w-prose2 text-sm text-carvao-muted">
-          O mapa municipal usa a malha de municípios do IBGE e o CSV de municípios, os dois arquivos mais pesados do módulo; eles só são baixados quando pedidos.
+          {tx(
+            "O mapa municipal usa a malha de municípios do IBGE e o CSV de municípios, os dois arquivos mais pesados do módulo; eles só são baixados quando pedidos.",
+            "The municipal map uses IBGE's municipal boundaries and the municipalities CSV, the two heaviest files of the module; they are only downloaded when requested.",
+          )}
         </p>
         <button
           type="button"
           onClick={() => definir({ mun: true })}
           className="rotulo inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-carvao hover:bg-energia-fundo"
         >
-          Carregar o mapa por município
+          {tx("Carregar o mapa por município", "Load the map by municipality")}
         </button>
       </div>
     );
@@ -262,9 +312,9 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
   if (erro) {
     return (
       <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-        Não foi possível carregar o mapa municipal ({erro}). Os mesmos números estão em{" "}
+        {tx(`Não foi possível carregar o mapa municipal (${erro}). Os mesmos números estão em`, `The municipal map could not be loaded (${erro}). The same numbers are in`)}{" "}
         <a href={csvUrl} download className="text-energia-dark underline underline-offset-4">
-          famílias e faturas por município (CSV)
+          {tx("famílias e faturas por município (CSV)", "families and bills by municipality (CSV)")}
         </a>
         .
       </p>
@@ -273,30 +323,36 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
   if (!dados || !montado) {
     return (
       <p role="status" className="text-sm text-carvao-muted">
-        Carregando a malha municipal e o CSV de municípios…
+        {tx("Carregando a malha municipal e o CSV de municípios…", "Loading the municipal boundaries and the municipalities CSV…")}
       </p>
     );
   }
   return (
     <div className="space-y-5">
       <MapaCoropletico
-        titulo={`Faturas com Tarifa Social por 100 famílias até ½ salário mínimo (${v.den === "atualizadas" ? "cadastro atualizado" : "todas as cadastradas"}), por município, ${mes(mesRef)}`}
+        titulo={tx(
+          `Faturas com Tarifa Social por 100 famílias até ½ salário mínimo (${nomeDen(v.den, tx)}), por município, ${mes(mesRef)}`,
+          `Bills with Tarifa Social per 100 families with up to ½ minimum wage (${nomeDen(v.den, tx)}), by municipality, ${mes(mesRef)}`,
+        )}
         geometria={dados.geo}
         valores={montado.valores}
         cores={CORES}
         classificacao={montado.classes}
-        unidade="faturas por 100 famílias"
+        unidade={tx("faturas por 100 famílias", "bills per 100 families")}
         casas={1}
-        rotuloRegiao={{ singular: "município", plural: "municípios" }}
+        rotuloRegiao={tx({ singular: "município", plural: "municípios" }, { singular: "municipality", plural: "municipalities" })}
         selecionado={sel}
         onSelecionar={selecionar}
         corNaoSeAplica="var(--mapa-nao-se-aplica)"
         periodo={mes(mesRef)}
-        nota={`Cinza liso: base pequena no denominador, fora da distribuição (o limite está nas limitações de \u201cSobre este dado\u201d). Município da fatura é o da unidade consumidora; o do cadastro é o da residência declarada.${montado.semGeometria ? ` ${montado.semGeometria} municípios do CSV sem polígono na malha ficam só na tabela.` : ""}`}
+        nota={tx(
+          `Cinza liso: base pequena no denominador, fora da distribuição (o limite está nas limitações de \u201cSobre este dado\u201d). Município da fatura é o da unidade consumidora; o do cadastro é o da residência declarada.${montado.semGeometria ? ` ${montado.semGeometria} municípios do CSV sem polígono na malha ficam só na tabela.` : ""}`,
+          `Plain gray: small base in the denominator, outside the distribution (the limit is in the limitations of \u201cAbout this data\u201d). The municipality of the bill is that of the consumer unit; that of the registry is the declared residence.${montado.semGeometria ? ` ${montado.semGeometria} municipalities in the CSV without a polygon in the boundaries appear only in the table.` : ""}`,
+        )}
       />
       <TabelaInterativa
-        titulo={`Municípios: faturas e famílias, ${mes(mesRef)} (proxy)`}
-        colunas={COLUNAS_MUNICIPIOS}
+        titulo={tx(`Municípios: faturas e famílias, ${mes(mesRef)} (proxy)`, `Municipalities: bills and families, ${mes(mesRef)} (proxy)`)}
+        colunas={colunasMunicipios(idioma)}
         linhas={montado.linhas}
         chaveLinha="id"
         colunaRotulo="municipio"
@@ -307,8 +363,11 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
         ordemInicial={{ coluna: "razao_atualizadas", direcao: "asc" }}
         selecionado={sel}
         onSelecionar={selecionar}
-        dicaBusca="Nome do município"
-        nota="Ordem inicial: menor razão primeiro. Razão baixa não prova exclusão: famílias não titulares da conta e sem ligação à rede contam no denominador."
+        dicaBusca={tx("Nome do município", "Municipality name")}
+        nota={tx(
+          "Ordem inicial: menor razão primeiro. Razão baixa não prova exclusão: famílias não titulares da conta e sem ligação à rede contam no denominador.",
+          "Initial order: lowest ratio first. A low ratio does not prove exclusion: families that do not hold the account and without a grid connection count in the denominator.",
+        )}
       />
     </div>
   );

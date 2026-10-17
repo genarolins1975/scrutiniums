@@ -4,6 +4,7 @@ import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import type { Natureza } from "@/lib/energia/tipos";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Peças de servidor comuns às duas páginas da Conta de luz (tarifas, composição e
@@ -18,13 +19,22 @@ import type { Natureza } from "@/lib/energia/tipos";
 export const ROTA_CONTA = "/setor-eletrico/conta-de-luz";
 export const ROTA_REAJUSTES = "/setor-eletrico/conta-de-luz/reajustes-e-subsidios";
 
-export const FONTE_TARIFAS = "ANEEL, Tarifas de aplicação das distribuidoras de energia elétrica";
+/** Fonte das tabelas de tarifas, como a citação e o CSV a escrevem, no idioma da página. */
+export function fonteTarifas(): string {
+  return tx("ANEEL, Tarifas de aplicação das distribuidoras de energia elétrica", "ANEEL, Applied tariffs of electricity distribution utilities");
+}
 
 /** Páginas do módulo, na ordem em que o leitor as percorre: o preço do mesmo consumo, e depois o que mudou e quem financia. */
 const PAGINAS = [
-  { id: "tarifas", href: ROTA_CONTA, rotulo: "Tarifas, composição e simulador" },
-  { id: "reajustes", href: ROTA_REAJUSTES, rotulo: "Reajustes, bandeiras e subsídios" },
+  { id: "tarifas", href: ROTA_CONTA },
+  { id: "reajustes", href: ROTA_REAJUSTES },
 ] as const;
+
+function rotuloPagina(id: (typeof PAGINAS)[number]["id"]): string {
+  return id === "tarifas"
+    ? tx("Tarifas, composição e simulador", "Tariffs, composition and simulator")
+    : tx("Reajustes, bandeiras e subsídios", "Adjustments, tariff flags and subsidies");
+}
 
 /**
  * Faixa de páginas irmãs do módulo (a página atual marcada com aria-current), no alto das duas páginas: quem chega pela página principal
@@ -35,7 +45,7 @@ const PAGINAS = [
  */
 export function Navegacao({ atual }: { atual: (typeof PAGINAS)[number]["id"] }) {
   return (
-    <nav aria-label="Páginas de Conta de luz" data-navegacao-local="faixa" className="border-b border-linha">
+    <nav aria-label={tx("Páginas de Conta de luz", "Electricity bill pages")} data-navegacao-local="faixa" className="border-b border-linha">
       <ol className="nav-faixa flex flex-wrap gap-x-6 text-sm">
         {PAGINAS.map((p) => {
           const ativo = p.id === atual;
@@ -48,7 +58,7 @@ export function Navegacao({ atual }: { atual: (typeof PAGINAS)[number]["id"] }) 
                   ativo ? "border-energia text-carvao" : "border-transparent text-carvao-muted hover:border-linha hover:text-carvao"
                 }`}
               >
-                {p.rotulo}
+                {rotuloPagina(p.id)}
               </ContaLinkFiltros>
             </li>
           );
@@ -63,15 +73,15 @@ export function Recorte({ periodo, universo, unidade }: { periodo: ReactNode; un
   return (
     <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
         <dd className="mt-0.5">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5">{unidade}</dd>
       </div>
     </dl>
@@ -81,7 +91,7 @@ export function Recorte({ periodo, universo, unidade }: { periodo: ReactNode; un
 /** Datas de referência de cada parte da página: cada número diz o seu dia, sem sugerir simultaneidade. */
 export function Datas({ itens }: { itens: { rotulo: string; texto: string; natureza: Natureza }[] }) {
   return (
-    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx("Datas de referência de cada parte", "Reference dates of each part")}>
       {itens.map((x) => (
         <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
           <span>

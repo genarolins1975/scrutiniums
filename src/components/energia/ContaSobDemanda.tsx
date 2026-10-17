@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Bloco montado só quando o leitor pede (contrato dos módulos, seção 5.1: tabelas
@@ -33,6 +34,7 @@ export function ContaSobDemanda({
   children: ReactNode;
 }) {
   const [aberto, setAberto] = useState(false);
+  const tx = useTx();
   const id = useId();
   const atingiaAntes = useRef(false);
   useEffect(() => {
@@ -72,7 +74,7 @@ export function ContaSobDemanda({
         className="inline-flex min-h-[44px] items-center gap-2 border border-linha bg-superficie px-3 text-left text-sm text-carvao hover:border-energia"
       >
         <span aria-hidden="true">{aberto ? "▾" : "▸"}</span>
-        {aberto ? `Ocultar ${rotulo}` : `Mostrar ${rotulo}`}
+        {aberto ? tx(`Ocultar ${rotulo}`, `Hide ${rotulo}`) : tx(`Mostrar ${rotulo}`, `Show ${rotulo}`)}
         {detalhe && <span className="text-xs text-carvao-muted">({detalhe})</span>}
       </button>
       <div id={id} className={aberto ? "mt-3" : "hidden"}>

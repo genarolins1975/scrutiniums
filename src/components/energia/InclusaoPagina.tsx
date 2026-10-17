@@ -4,7 +4,8 @@ import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLo
 import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
-import { PAINEIS_INCLUSAO, ROTA_INCLUSAO, rotaPainel, type DataMedida, type PainelInclusao } from "@/lib/energia/inclusao";
+import { ROTA_INCLUSAO, paineisInclusao, rotaPainel, type DataMedida, type PainelInclusao } from "@/lib/energia/inclusao";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Peças de servidor das páginas da Inclusão energética (a síntese em
@@ -22,18 +23,35 @@ import { PAINEIS_INCLUSAO, ROTA_INCLUSAO, rotaPainel, type DataMedida, type Pain
  * O que cada página oferece, em uma frase de fato (sem juízo): é o texto dos capítulos da síntese. A descrição da cobertura diz
  * "proxy" e o denominador, e não a pergunta da matriz, para o título da página não sugerir que a razão conta quem ficou de fora.
  */
-const DESCRICAO: Record<PainelInclusao, string> = {
-  p059: "Unidades consumidoras e faturas, cada uma em sua série, com mapa por UF e o custeio na CDE.",
-  p060: "Faturas por 100 famílias do Cadastro Único: uma proxy, com o denominador declarado, por UF e município.",
-  p061: "Despesa com energia por faixa de renda, região e UF, com a precisão de cada estimativa.",
-  p062: "Domicílios sem energia, sistemas isolados e Luz para Todos, cada um na sua unidade.",
-};
+function descricao(id: PainelInclusao): string {
+  const textos: Record<PainelInclusao, string> = {
+    p059: tx(
+      "Unidades consumidoras e faturas, cada uma em sua série, com mapa por UF e o custeio na CDE.",
+      "Consumer units and bills, each in its own series, with a map by state and the funding in the CDE.",
+    ),
+    p060: tx(
+      "Faturas por 100 famílias do Cadastro Único: uma proxy, com o denominador declarado, por UF e município.",
+      "Bills per 100 Cadastro Único families: a proxy, with the denominator stated, by state and municipality.",
+    ),
+    p061: tx(
+      "Despesa com energia por faixa de renda, região e UF, com a precisão de cada estimativa.",
+      "Electricity expense by income bracket, region and state, with the precision of each estimate.",
+    ),
+    p062: tx(
+      "Domicílios sem energia, sistemas isolados e Luz para Todos, cada um na sua unidade.",
+      "Households without energy, isolated systems and Luz para Todos, each in its own unit.",
+    ),
+  };
+  return textos[id];
+}
 
-/** A síntese e os quatro painéis como itens da navegação local; a descrição de cada item é o texto do capítulo. */
-const ITENS_INCLUSAO: ItemLocal[] = [
-  { id: "sintese", href: ROTA_INCLUSAO, rotulo: "Síntese" },
-  ...PAINEIS_INCLUSAO.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: DESCRICAO[p.id] })),
-];
+/** A síntese e os quatro painéis como itens da navegação local, no idioma da página; a descrição de cada item é o texto do capítulo. */
+function itensInclusao(): ItemLocal[] {
+  return [
+    { id: "sintese", href: ROTA_INCLUSAO, rotulo: tx("Síntese", "Overview") },
+    ...paineisInclusao().map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: descricao(p.id) })),
+  ];
+}
 
 /**
  * Navegação entre a síntese e os quatro painéis: faixa de páginas irmãs nas páginas filhas; a síntese não leva a faixa, porque
@@ -41,7 +59,7 @@ const ITENS_INCLUSAO: ItemLocal[] = [
  */
 export function InclusaoNavegacao({ atual }: { atual: PainelInclusao | "sintese" }) {
   if (atual === "sintese") return null;
-  return <NavegacaoLocal rotulo="Páginas da inclusão energética" itens={ITENS_INCLUSAO} atual={atual} />;
+  return <NavegacaoLocal rotulo={tx("Páginas da inclusão energética", "Energy inclusion pages")} itens={itensInclusao()} atual={atual} />;
 }
 
 /**
@@ -49,8 +67,16 @@ export function InclusaoNavegacao({ atual }: { atual: PainelInclusao | "sintese"
  * porque a figura principal da síntese já é o resumo dele e traz o link para o painel completo.
  */
 export function InclusaoCapitulos() {
-  const itens = ITENS_INCLUSAO.filter((i) => i.id !== "sintese" && i.id !== "p061");
-  return <NavegacaoLocal rotulo="Capítulos da inclusão energética" itens={itens} atual="sintese" variante="capitulos" titulo="Onde aprofundar" />;
+  const itens = itensInclusao().filter((i) => i.id !== "sintese" && i.id !== "p061"); // i18n: dado
+  return (
+    <NavegacaoLocal
+      rotulo={tx("Capítulos da inclusão energética", "Energy inclusion chapters")}
+      itens={itens}
+      atual="sintese" // i18n: dado
+      variante="capitulos" // i18n: dado
+      titulo={tx("Onde aprofundar", "Where to go deeper")}
+    />
+  );
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */
@@ -60,10 +86,13 @@ export function InclusaoIndisponivel({ motivo }: { motivo?: string | null }) {
       <CabecalhoEnergia atual="inclusao-energetica" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
-          titulo="Inclusão energética indisponível nesta publicação"
+          titulo={tx("Inclusão energética indisponível nesta publicação", "Energy inclusion unavailable in this publication")}
           motivo={
             motivo ??
-            "A gold do módulo Inclusão energética (public/energia/gold/inclusao.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."
+            tx(
+              "A gold do módulo Inclusão energética (public/energia/gold/inclusao.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe.",
+              "The Energy inclusion module's gold file (public/energia/gold/inclusao.json) was not generated or did not pass validation; the latest valid publication is kept when there is one.",
+            )
           }
         />
       </main>
@@ -76,15 +105,15 @@ export function InclusaoRecorte({ periodo, universo, unidade }: { periodo: React
   return (
     <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
         <dd className="mt-0.5">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5">{unidade}</dd>
       </div>
     </dl>
@@ -97,7 +126,7 @@ export function InclusaoRecorte({ periodo, universo, unidade }: { periodo: React
  */
 export function InclusaoDatas({ itens }: { itens: readonly DataMedida[] }) {
   return (
-    <ul className="flex flex-col gap-x-5 gap-y-1.5 text-xs text-carvao-muted sm:flex-row sm:flex-wrap" aria-label="Datas de referência de cada medida">
+    <ul className="flex flex-col gap-x-5 gap-y-1.5 text-xs text-carvao-muted sm:flex-row sm:flex-wrap" aria-label={tx("Datas de referência de cada medida", "Reference dates of each measure")}>
       {itens.map((x) => (
         <li key={x.id} className="inline-flex flex-wrap items-center gap-1.5">
           <span>
