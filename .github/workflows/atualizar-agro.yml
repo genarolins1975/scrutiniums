@@ -1,7 +1,7 @@
 name: Atualizar dados do Agronegócio
 
-# Domínio Agronegócio: recoleta IBGE (Contas Nacionais, LSPA, Censo Agro, PNAD Contínua,
-# IPCA), Comex Stat, BCB (Sicor e Selic), Tesouro Transparente, INPE PRODES, SEEG e
+# Domínio Agronegócio: recoleta IBGE (Contas Nacionais, LSPA, PAM, PPM, Abate, PEVS, Censo
+# Agro, PNAD Contínua, IPCA), Comex Stat, BCB (Sicor e Selic), Tesouro Transparente, INPE PRODES, SEEG e
 # MapBiomas, grava as sementes com o sha256 de cada original, reconstrói a gold
 # em public/agro e publica só se os testes do pipeline passarem. O Comex Stat fecha o
 # mês na primeira semana do mês seguinte; o LSPA sai por volta do dia 10; as Contas
