@@ -1,0 +1,3042 @@
+{
+  "startedAt": "2026-10-17T14:59:26.477Z",
+  "endedAt": "2026-10-17T15:02:41.103Z",
+  "codigoGit": null,
+  "snapshotSha256": "91594f8c74b06fb4a245d452304455e9af74c520ca764ca17052071f67d670e3",
+  "buildId": "_5tfTZAQcwuovsqP67dLo",
+  "modo": "producao",
+  "checks": [
+    {
+      "name": "Servidor pronto com banco exclusivamente local",
+      "passed": true
+    },
+    {
+      "name": "Anônimo exige sessão /observatorio",
+      "passed": true
+    },
+    {
+      "name": "Logado entra /observatorio",
+      "passed": true
+    },
+    {
+      "name": "Anônimo exige sessão /setor-eletrico",
+      "passed": true
+    },
+    {
+      "name": "Logado entra /setor-eletrico",
+      "passed": true
+    },
+    {
+      "name": "Anônimo exige sessão /eficiencia-estatal",
+      "passed": true
+    },
+    {
+      "name": "Logado entra /eficiencia-estatal",
+      "passed": true
+    },
+    {
+      "name": "Anônimo exige sessão /contas-publicas",
+      "passed": true
+    },
+    {
+      "name": "Logado entra /contas-publicas",
+      "passed": true
+    },
+    {
+      "name": "Anônimo exige sessão /contas-publicas-estaduais",
+      "passed": true
+    },
+    {
+      "name": "Logado entra /contas-publicas-estaduais",
+      "passed": true
+    },
+    {
+      "name": "Anônimo exige sessão /saneamento",
+      "passed": true
+    },
+    {
+      "name": "Logado entra /saneamento",
+      "passed": true
+    },
+    {
+      "name": "Anônimo exige sessão /gas-natural",
+      "passed": true
+    },
+    {
+      "name": "Logado entra /gas-natural",
+      "passed": true
+    },
+    {
+      "name": "Anônimo exige sessão /agronegocio",
+      "passed": true
+    },
+    {
+      "name": "Logado entra /agronegocio",
+      "passed": true
+    },
+    {
+      "name": "Rota desconhecida não vira painel /agronegocio/nao-existe",
+      "passed": true
+    },
+    {
+      "name": "Rota desconhecida não vira painel /agronegocio/cadeias/nao-existe",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/panorama",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/atlas",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/comparar",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/cadeias",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/producao",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/custos-renda",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/alimentos-consumo",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/credito-protecao",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/logistica-mercados",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/empresas-trabalho",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/clima-ambiente",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/politicas-inclusao",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/cadeias/soja",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/cadeias/milho",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/cadeias/arroz",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/cadeias/feijao",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/cadeias/cafe",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/cadeias/bovinos",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/cadeias/leite",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/aprenda",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/glossario",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/metodologia",
+      "passed": true
+    },
+    {
+      "name": "Acesso anônimo /agronegocio/sintese",
+      "passed": true
+    },
+    {
+      "name": "Download protegido snapshot.json",
+      "passed": true
+    },
+    {
+      "name": "Download protegido credito-ufs.csv",
+      "passed": true
+    },
+    {
+      "name": "Download protegido ocupacoes-2022.csv",
+      "passed": true
+    },
+    {
+      "name": "Download protegido manifesto.json",
+      "passed": true
+    },
+    {
+      "name": "Download protegido dicionario.json",
+      "passed": true
+    },
+    {
+      "name": "Download protegido catalogo-artefatos.json",
+      "passed": true
+    },
+    {
+      "name": "Nove destinos no seletor",
+      "passed": true
+    },
+    {
+      "name": "Agro tem entrada própria",
+      "passed": true
+    },
+    {
+      "name": "Seletor abre Agro e preserva cookie",
+      "passed": true
+    },
+    {
+      "name": "Rota 200  320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura  320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe inicio 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /panorama 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /panorama 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe panorama 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /atlas 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /atlas 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe atlas 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /comparar 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /comparar 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe comparar 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /producao 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /producao 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe producao 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /custos-renda 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /custos-renda 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe custos-renda 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /alimentos-consumo 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /alimentos-consumo 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe alimentos-consumo 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /credito-protecao 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /credito-protecao 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe credito-protecao 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /logistica-mercados 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /logistica-mercados 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe logistica-mercados 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /empresas-trabalho 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /empresas-trabalho 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe empresas-trabalho 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /clima-ambiente 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /clima-ambiente 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe clima-ambiente 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /politicas-inclusao 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /politicas-inclusao 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe politicas-inclusao 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/soja 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/soja 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-soja 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/milho 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/milho 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-milho 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/arroz 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/arroz 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-arroz 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/feijao 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/feijao 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-feijao 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/cafe 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/cafe 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-cafe 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/bovinos 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/bovinos 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-bovinos 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/leite 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/leite 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-leite 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /aprenda 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /aprenda 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe aprenda 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /glossario 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /glossario 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe glossario 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /metodologia 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /metodologia 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe metodologia 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /sintese 320",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /sintese 320",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe sintese 320",
+      "passed": true
+    },
+    {
+      "name": "Rota 200  390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura  390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe inicio 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /panorama 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /panorama 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe panorama 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /atlas 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /atlas 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe atlas 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /comparar 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /comparar 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe comparar 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /producao 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /producao 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe producao 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /custos-renda 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /custos-renda 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe custos-renda 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /alimentos-consumo 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /alimentos-consumo 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe alimentos-consumo 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /credito-protecao 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /credito-protecao 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe credito-protecao 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /logistica-mercados 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /logistica-mercados 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe logistica-mercados 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /empresas-trabalho 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /empresas-trabalho 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe empresas-trabalho 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /clima-ambiente 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /clima-ambiente 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe clima-ambiente 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /politicas-inclusao 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /politicas-inclusao 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe politicas-inclusao 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/soja 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/soja 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-soja 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/milho 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/milho 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-milho 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/arroz 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/arroz 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-arroz 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/feijao 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/feijao 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-feijao 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/cafe 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/cafe 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-cafe 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/bovinos 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/bovinos 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-bovinos 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/leite 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/leite 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-leite 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /aprenda 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /aprenda 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe aprenda 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /glossario 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /glossario 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe glossario 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /metodologia 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /metodologia 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe metodologia 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /sintese 390",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /sintese 390",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe sintese 390",
+      "passed": true
+    },
+    {
+      "name": "Rota 200  768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura  768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe inicio 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /panorama 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /panorama 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe panorama 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /atlas 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /atlas 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe atlas 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /comparar 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /comparar 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe comparar 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /producao 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /producao 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe producao 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /custos-renda 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /custos-renda 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe custos-renda 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /alimentos-consumo 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /alimentos-consumo 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe alimentos-consumo 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /credito-protecao 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /credito-protecao 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe credito-protecao 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /logistica-mercados 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /logistica-mercados 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe logistica-mercados 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /empresas-trabalho 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /empresas-trabalho 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe empresas-trabalho 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /clima-ambiente 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /clima-ambiente 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe clima-ambiente 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /politicas-inclusao 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /politicas-inclusao 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe politicas-inclusao 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/soja 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/soja 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-soja 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/milho 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/milho 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-milho 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/arroz 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/arroz 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-arroz 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/feijao 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/feijao 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-feijao 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/cafe 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/cafe 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-cafe 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/bovinos 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/bovinos 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-bovinos 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/leite 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/leite 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-leite 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /aprenda 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /aprenda 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe aprenda 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /glossario 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /glossario 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe glossario 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /metodologia 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /metodologia 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe metodologia 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /sintese 768",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /sintese 768",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe sintese 768",
+      "passed": true
+    },
+    {
+      "name": "Rota 200  1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo T1",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura  1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe inicio 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /panorama 1440",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /panorama 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe panorama 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /atlas 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo D1",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /atlas 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe atlas 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /comparar 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo T5",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /comparar 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe comparar 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias 1440",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /producao 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo A1",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo A2",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo A3",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo A4",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo A5",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo A6",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K7",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /producao 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe producao 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /custos-renda 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo B1",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo B2",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo B3",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo B4",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo B5",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo B6",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K1",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K2",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K3",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K4",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K10",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /custos-renda 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe custos-renda 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /alimentos-consumo 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo C1",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo C2",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo C3",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo C4",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo C5",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo C6",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /alimentos-consumo 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe alimentos-consumo 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /credito-protecao 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo D2",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo D3",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo D4",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo D5",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo D6",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /credito-protecao 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe credito-protecao 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /logistica-mercados 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo E1",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo E2",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo E3",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo E4",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo E5",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo E6",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K5",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K6",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K9",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /logistica-mercados 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe logistica-mercados 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /empresas-trabalho 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo F1",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo F2",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo F3",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo F4",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo F5",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo F6",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K8",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K12",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo X1",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /empresas-trabalho 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe empresas-trabalho 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /clima-ambiente 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo G1",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo G2",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo G3",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo G4",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo G5",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo G6",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /clima-ambiente 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe clima-ambiente 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /politicas-inclusao 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo H1",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo H2",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo H3",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo H4",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo H5",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo H6",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo K11",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /politicas-inclusao 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe politicas-inclusao 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/soja 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo T2",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/soja 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-soja 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/milho 1440",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/milho 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-milho 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/arroz 1440",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/arroz 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-arroz 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/feijao 1440",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/feijao 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-feijao 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/cafe 1440",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/cafe 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-cafe 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/bovinos 1440",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/bovinos 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-bovinos 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /cadeias/leite 1440",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /cadeias/leite 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe cadeias-leite 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /aprenda 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo T3",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo T7",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /aprenda 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe aprenda 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /glossario 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo T4",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /glossario 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe glossario 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /metodologia 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo T8",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /metodologia 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe metodologia 1440",
+      "passed": true
+    },
+    {
+      "name": "Rota 200 /sintese 1440",
+      "passed": true
+    },
+    {
+      "name": "Destino do catálogo T6",
+      "passed": true
+    },
+    {
+      "name": "Uma versão responsiva por figura /sintese 1440",
+      "passed": true
+    },
+    {
+      "name": "Sem overflow/axe sintese 1440",
+      "passed": true
+    },
+    {
+      "name": "32 laboratórios numéricos distintos",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios A2",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco A2",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow A2",
+      "passed": true
+    },
+    {
+      "name": "Conta independente A2",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite A2",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios A4",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco A4",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow A4",
+      "passed": true
+    },
+    {
+      "name": "Conta independente A4",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite A4",
+      "passed": true
+    },
+    {
+      "name": "Conversão não subtrai resultados em litros e mil litros",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios A5",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco A5",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow A5",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite A5",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios B1",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco B1",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow B1",
+      "passed": true
+    },
+    {
+      "name": "Conta independente B1",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite B1",
+      "passed": true
+    },
+    {
+      "name": "Margem compara hipóteses e diferença",
+      "passed": true
+    },
+    {
+      "name": "Mudar a unidade encerra comparação com a base anterior",
+      "passed": true
+    },
+    {
+      "name": "Limpar remove resultado e devolve foco ao primeiro controle",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios B2",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco B2",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow B2",
+      "passed": true
+    },
+    {
+      "name": "Conta independente B2",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite B2",
+      "passed": true
+    },
+    {
+      "name": "Cascata completa legível a 320 px",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios B3",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco B3",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow B3",
+      "passed": true
+    },
+    {
+      "name": "Conta independente B3",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite B3",
+      "passed": true
+    },
+    {
+      "name": "Matriz exporta as 25 combinações",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios B4",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco B4",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow B4",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite B4",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios B5",
+      "passed": true
+    },
+    {
+      "name": "B5 usa meses reais e foco",
+      "passed": true
+    },
+    {
+      "name": "B5 exporta os meses, índices e fonte preservados",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios B6",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco B6",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow B6",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite B6",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios C1",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco C1",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow C1",
+      "passed": true
+    },
+    {
+      "name": "Conta independente C1",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite C1",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios C5",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco C5",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow C5",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite C5",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios D2",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco D2",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow D2",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite D2",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios D3",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco D3",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow D3",
+      "passed": true
+    },
+    {
+      "name": "Conta independente D3",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite D3",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios D5",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco D5",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow D5",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite D5",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios E2",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco E2",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow E2",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite E2",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios E4",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco E4",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow E4",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite E4",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios E5",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco E5",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow E5",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite E5",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios F3",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco F3",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow F3",
+      "passed": true
+    },
+    {
+      "name": "Conta independente F3",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite F3",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios G3",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco G3",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow G3",
+      "passed": true
+    },
+    {
+      "name": "Conta independente G3",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite G3",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios G4",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco G4",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow G4",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite G4",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios H3",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco H3",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow H3",
+      "passed": true
+    },
+    {
+      "name": "Conta independente H3",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite H3",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios K1",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco K1",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow K1",
+      "passed": true
+    },
+    {
+      "name": "Conta independente K1",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite K1",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios K2",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco K2",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow K2",
+      "passed": true
+    },
+    {
+      "name": "Conta independente K2",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite K2",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios K3",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco K3",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow K3",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite K3",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios K4",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco K4",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow K4",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite K4",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios K5",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco K5",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow K5",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite K5",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios K6",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco K6",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow K6",
+      "passed": true
+    },
+    {
+      "name": "Conta independente K6",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite K6",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios K8",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco K8",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow K8",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite K8",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios K9",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco K9",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow K9",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite K9",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios K10",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco K10",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow K10",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite K10",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios K11",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco K11",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow K11",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite K11",
+      "passed": true
+    },
+    {
+      "name": "Parâmetros numéricos vazios K12",
+      "passed": true
+    },
+    {
+      "name": "Cenário calcula e recebe foco K12",
+      "passed": true
+    },
+    {
+      "name": "Resultado acessível e sem overflow K12",
+      "passed": true
+    },
+    {
+      "name": "CSV com natureza/fórmula/limite K12",
+      "passed": true
+    },
+    {
+      "name": "Divisor zero fica indisponível, sem NaN ou Infinity",
+      "passed": true
+    },
+    {
+      "name": "Comparador elimina repetição",
+      "passed": true
+    },
+    {
+      "name": "Fonte troca período para Censo 2022",
+      "passed": true
+    },
+    {
+      "name": "URL persiste medida e seleção",
+      "passed": true
+    },
+    {
+      "name": "Voltar restaura a medida",
+      "passed": true
+    },
+    {
+      "name": "Avançar restaura contratos",
+      "passed": true
+    },
+    {
+      "name": "Seleção vazia não vira zero",
+      "passed": true
+    },
+    {
+      "name": "Exportação integral mantém 27 UFs e metadados",
+      "passed": true
+    },
+    {
+      "name": "Reset retorna medida e UFs",
+      "passed": true
+    },
+    {
+      "name": "URL inválida cai em valores elegíveis",
+      "passed": true
+    },
+    {
+      "name": "Perfil Censo preserva UF na URL",
+      "passed": true
+    },
+    {
+      "name": "Perfil completo exporta 28 territórios × três categorias",
+      "passed": true
+    },
+    {
+      "name": "Cenário qualitativo não inventa risco",
+      "passed": true
+    },
+    {
+      "name": "Mecanismo e retorno de interpretação A6",
+      "passed": true
+    },
+    {
+      "name": "Mecanismo e retorno de interpretação C2",
+      "passed": true
+    },
+    {
+      "name": "Mecanismo e retorno de interpretação C6",
+      "passed": true
+    },
+    {
+      "name": "Mecanismo e retorno de interpretação D4",
+      "passed": true
+    },
+    {
+      "name": "Mecanismo e retorno de interpretação F1",
+      "passed": true
+    },
+    {
+      "name": "Mecanismo e retorno de interpretação F5",
+      "passed": true
+    },
+    {
+      "name": "Mecanismo e retorno de interpretação G6",
+      "passed": true
+    },
+    {
+      "name": "Mecanismo e retorno de interpretação H1",
+      "passed": true
+    },
+    {
+      "name": "Mecanismo e retorno de interpretação H4",
+      "passed": true
+    },
+    {
+      "name": "Mecanismo e retorno de interpretação H5",
+      "passed": true
+    },
+    {
+      "name": "Busca de conceito ignora acento",
+      "passed": true
+    },
+    {
+      "name": "Glossário vazio é explícito",
+      "passed": true
+    },
+    {
+      "name": "Percurso opcional preservado na URL",
+      "passed": true
+    },
+    {
+      "name": "Catálogo individualiza 13 bloqueios",
+      "passed": true
+    },
+    {
+      "name": "Busca retorna tarefa pelo ID",
+      "passed": true
+    },
+    {
+      "name": "Oficina tem cinco atividades sem nota",
+      "passed": true
+    },
+    {
+      "name": "Menu Agro mantém nove destinos 390",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /observatorio 390",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /setor-eletrico 390",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /eficiencia-estatal 390",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /contas-publicas 390",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /contas-publicas-estaduais 390",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /saneamento 390",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /gas-natural 390",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /agronegocio 390",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /eficiencia-estatal/judiciario 390",
+      "passed": true
+    },
+    {
+      "name": "Escape fecha menu e preserva foco 390",
+      "passed": true
+    },
+    {
+      "name": "Menu Agro mantém nove destinos 1440",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /observatorio 1440",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /setor-eletrico 1440",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /eficiencia-estatal 1440",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /contas-publicas 1440",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /contas-publicas-estaduais 1440",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /saneamento 1440",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /gas-natural 1440",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /agronegocio 1440",
+      "passed": true
+    },
+    {
+      "name": "Menu leva diretamente ao domínio /eficiencia-estatal/judiciario 1440",
+      "passed": true
+    },
+    {
+      "name": "Escape fecha menu e preserva foco 1440",
+      "passed": true
+    },
+    {
+      "name": "Home logada mantém entrada pelo seletor",
+      "passed": true
+    },
+    {
+      "name": "Impressão mantém fonte/período/unidade/ressalva",
+      "passed": true
+    },
+    {
+      "name": "Reflow em viewport equivalente a zoom 200%",
+      "passed": true
+    },
+    {
+      "name": "Comparação por teclado preserva foco",
+      "passed": true
+    },
+    {
+      "name": "Uso mínimo não transmite campos financeiros",
+      "passed": true
+    },
+    {
+      "name": "Sem exceções do navegador",
+      "passed": true
+    }
+  ],
+  "screens": [
+    {
+      "slug": "inicio",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "panorama",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "atlas",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "comparar",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "producao",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "custos-renda",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "alimentos-consumo",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "credito-protecao",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "logistica-mercados",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "empresas-trabalho",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "clima-ambiente",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "politicas-inclusao",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-soja",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-milho",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-arroz",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-feijao",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-cafe",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-bovinos",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-leite",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "aprenda",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "glossario",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "metodologia",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "sintese",
+      "width": 320,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "inicio",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "panorama",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "atlas",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "comparar",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "producao",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "custos-renda",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "alimentos-consumo",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "credito-protecao",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "logistica-mercados",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "empresas-trabalho",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "clima-ambiente",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "politicas-inclusao",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-soja",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-milho",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-arroz",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-feijao",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-cafe",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-bovinos",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-leite",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "aprenda",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "glossario",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "metodologia",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "sintese",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "inicio",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "panorama",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "atlas",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "comparar",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "producao",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "custos-renda",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "alimentos-consumo",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "credito-protecao",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "logistica-mercados",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "empresas-trabalho",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "clima-ambiente",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "politicas-inclusao",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-soja",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-milho",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-arroz",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-feijao",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-cafe",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-bovinos",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-leite",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "aprenda",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "glossario",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "metodologia",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "sintese",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "inicio",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "panorama",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "atlas",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "comparar",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "producao",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "custos-renda",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "alimentos-consumo",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "credito-protecao",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "logistica-mercados",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "empresas-trabalho",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "clima-ambiente",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "politicas-inclusao",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-soja",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-milho",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-arroz",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-feijao",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-cafe",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-bovinos",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "cadeias-leite",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "aprenda",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "glossario",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "metodologia",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "sintese",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    }
+  ],
+  "errors": [],
+  "nota": "Walkthrough automatizado do agente, não teste com participantes externos."
+}

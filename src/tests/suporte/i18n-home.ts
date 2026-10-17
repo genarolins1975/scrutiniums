@@ -19,8 +19,8 @@ const REGIOES_EN = ["home-titulo", "home-acoes", "home-rotulo", "home-introducao
 
 /** Esperados integrais independentes do formatador e do adaptador do Hero. */
 export const INTRODUCAO_HOME = {
-  pt: "Sete observatórios sobre crédito, setor elétrico, gás natural, saneamento, serviços públicos e contas da União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar.",
-  en: "Seven observatories on credit, the power sector, natural gas, basic sanitation, public services and the public accounts of the União (Brazil's federal government) and the states, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish.",
+  pt: "Oito observatórios sobre crédito, setor elétrico, agronegócio, gás natural, saneamento, serviços públicos e contas da União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar.",
+  en: "Eight observatories on credit, the power sector, agribusiness, natural gas, basic sanitation, public services and the public accounts of the União (Brazil's federal government) and the states, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish.",
 } as const;
 const CHAVES = {
   titulo: ["home.hero.titulo_inicio", "home.hero.titulo_destaque"],
@@ -43,13 +43,14 @@ const contagensIndice: Record<DominioId, { numeros: readonly number[]; chave: (t
   contas: { numeros: [PAINEIS_COM_DADOS.length, CAPITULOS.length], chave: "home.indice.capitulos_com_dados", pt: "capítulos com dados", en: "chapters with data" },
   estados: { numeros: [primariosEstaduais.cobertura.ufs], chave: "home.indice.unidades_federacao", pt: "unidades da Federação", en: "Federation Units" },
   saneamento: { numeros: [CAPITULOS_SANEAMENTO.filter((c) => c.situacao !== "em_preparacao").length, CAPITULOS_SANEAMENTO.length], chave: "home.indice.capitulos_com_dados", pt: "capítulos com dados", en: "chapters with data" },
+  agro: { numeros: [8], chave: "home.indice.paginas_por_pergunta", pt: "páginas por pergunta", en: "pages by question" },
   gas: { numeros: [PAGINAS_GAS.length], chave: "home.indice.paginas_por_pergunta", pt: "páginas por pergunta", en: "pages by question" },
 };
 export const INDICE_HOME = DOMINIOS.map((dominio, i) => {
   const contagem = contagensIndice[dominio.id];
   return {
     id: dominio.id, nome: dominio.nomeCurto, ordinal: String(i + 1).padStart(2, "0"),
-    href: `#obs-${dominio.id}`, imagem: `/home/${dominio.id}.webp`, chave: contagem.chave,
+    href: `#obs-${dominio.id}`, imagem: dominio.id === "agro" ? "/home/agro.svg" : `/home/${dominio.id}.webp`, chave: contagem.chave,
     pt: { valor: contagem.numeros.length === 2 ? contagem.numeros.join(" de ") : formatadorNumero("pt", {}).format(contagem.numeros[0]), unidade: contagem.pt },
     en: { valor: contagem.numeros.map((n) => formatadorNumero("en", {}).format(n)).join(" of "), unidade: contagem.en },
   };
@@ -67,7 +68,7 @@ function inglesa(chave: (typeof CHAVES)[keyof typeof CHAVES][number]): string {
 
 /** Comprova o nav inteiro antes de autorizar sua substituição na reconstrução PT. */
 function verificarIndiceHome(indicePt: Elemento, indiceEn: Elemento, corpoPt: Elemento, corpoEn: Elemento): void {
-  expect(INDICE_HOME.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados", "saneamento", "gas"]);
+  expect(INDICE_HOME.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados", "saneamento", "gas", "agro"]);
   expect(indicePt.tagName).toBe("nav");
   expect(indiceEn.tagName).toBe("nav");
   expect(attr(indicePt, "aria-label")).toBe("Índice dos observatórios");
@@ -86,7 +87,7 @@ function verificarIndiceHome(indicePt: Elemento, indiceEn: Elemento, corpoPt: El
   const lista = objeto(esperado.filhos[0], "índice PT sem lista");
   const ressalva = objeto(esperado.filhos[1], "índice PT sem ressalva");
   expect(lista.tag).toBe("ol");
-  expect(lista.filhos).toHaveLength(7);
+  expect(lista.filhos).toHaveLength(8);
   expect(ressalva.tag).toBe("p");
   expect(ressalva.filhos).toEqual(["Ilustrações editoriais de cada observatório. Não representam dados nem lugares específicos."]);
   expect(catalogoPt["home.indice.ilustracoes"]).toBe(ressalva.filhos[0]);
@@ -96,11 +97,11 @@ function verificarIndiceHome(indicePt: Elemento, indiceEn: Elemento, corpoPt: El
     const item = objeto(lista.filhos[i], `cartão ${esperadoCartao.id} sem li`);
     expect(item.tag).toBe("li");
     expect(item.filhos).toHaveLength(1);
-    expect(atributo(item, "class")).toBe(i === 6 ? "col-span-2 sm:col-span-1" : undefined);
+    expect(atributo(item, "class")).toBe(undefined);
     const anchor = objeto(item.filhos[0], "cartão sem âncora");
     expect(anchor.tag).toBe("a");
     expect(atributo(anchor, "href")).toBe(esperadoCartao.href);
-    expect(atributo(anchor, "class")).toBe(`group relative block overflow-hidden bg-carvao ${i === 6 ? "aspect-[2/1] sm:aspect-[4/5]" : "aspect-[4/5]"}`);
+    expect(atributo(anchor, "class")).toBe("group relative block overflow-hidden bg-carvao aspect-[4/5]");
     expect(anchor.filhos).toHaveLength(4);
     const imagem = objeto(anchor.filhos[0], "cartão sem imagem");
     expect(imagem.tag).toBe("img");
@@ -207,10 +208,10 @@ export function verificarHomeParcial(pt: No, en: No): void {
   const irmaosTitulo = filhos(tituloPt.parentNode!).filter(elemento);
   const introducaoPt = irmaosTitulo[irmaosTitulo.indexOf(tituloPt) + 1];
   expect(introducaoPt.tagName).toBe("p");
-  expect(DOMINIOS, "a quantidade por extenso deve corresponder aos sete observatórios publicados").toHaveLength(7);
+  expect(DOMINIOS, "a quantidade por extenso deve corresponder aos oito observatórios publicados").toHaveLength(8);
   expect(conteudo(introducaoPt), "texto PT completo, com espaços e quantidade preservados").toEqual([INTRODUCAO_HOME.pt]);
-  expect(catalogoPt[CHAVES.introducao[0]].replace("{observatorios}", "Sete observatórios")).toBe(INTRODUCAO_HOME.pt);
-  expect(inglesa(CHAVES.introducao[0]).replace("{observatorios}", "Seven observatories")).toBe(INTRODUCAO_HOME.en);
+  expect(catalogoPt[CHAVES.introducao[0]].replace("{observatorios}", "Oito observatórios")).toBe(INTRODUCAO_HOME.pt);
+  expect(inglesa(CHAVES.introducao[0]).replace("{observatorios}", "Eight observatories")).toBe(INTRODUCAO_HOME.en);
   const acoesPt = unico(heroPt, (e) => e.tagName === "div" && filhos(e).filter(elemento).length === 2
     && filhos(e).filter(elemento).every((a) => a.tagName === "a")
     && filhos(e).filter(elemento).some((a) => attr(a, "href") === "/cadastro"), "ações PT");

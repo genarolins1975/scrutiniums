@@ -18,6 +18,7 @@ export const ABAS_OBSERVATORIOS: { id: DominioId; href: string; rotulo: string }
   { id: "estados", href: "/contas-publicas-estaduais", rotulo: "Contas Estaduais" },
   { id: "saneamento", href: "/saneamento", rotulo: "Saneamento" }, // i18n: dado (nome próprio)
   { id: "gas", href: "/gas-natural", rotulo: "Gás Natural" }, // i18n: dado (nome próprio)
+  { id: "agro", href: "/agronegocio", rotulo: "Agronegócio" }, // i18n: dado (nome próprio)
 ];
 
 export function NavegacaoObservatorios({ atual }: { atual: DominioId }) {

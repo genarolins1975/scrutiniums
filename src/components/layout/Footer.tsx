@@ -78,6 +78,14 @@ export function Footer({ compacto = false, idioma = "pt" }: { compacto?: boolean
             <li><Link href={h("/gas-natural/dados")} prefetch={prefetchDoLink(h("/gas-natural/dados"))} className="hover:text-bronze-soft">{t.dadosMetodo}</Link></li>
           </ul>
         </nav>
+        <nav aria-label={tx("Observatório do Agronegócio Brasileiro", "Brazilian agribusiness observatory", idioma)}>
+          <p className="rotulo mb-4 text-mineral-soft"><Nome>Agronegócio</Nome></p>
+          <ul className="space-y-2 text-sm">
+            <li><LinkIdioma href="/agronegocio" prefetch={false} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">{t.mapaObservatorio}</LinkIdioma></li>
+            <li><LinkIdioma href="/agronegocio/aprenda" prefetch={false} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">{t.aprenda}</LinkIdioma></li>
+            <li><LinkIdioma href="/agronegocio/metodologia" className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">{t.metodologia}</LinkIdioma></li>
+          </ul>
+        </nav>
         <nav aria-label={t.institucional}>
           <p className="rotulo mb-4 text-mineral-soft">{t.institucional}</p>
           <ul className="space-y-2 text-sm">
@@ -166,6 +174,14 @@ function FooterCompacto() {
                 <Nome>Saneamento</Nome>
               </LinkIdioma>
             </li>
+          </ul>
+        </nav>
+        <nav aria-label={tx("Observatório do Agronegócio Brasileiro", "Brazilian agribusiness observatory", idioma)}>
+          <p className="rotulo mb-4 text-mineral-soft"><Nome>Agronegócio</Nome></p>
+          <ul className="space-y-2 text-sm">
+            <li><LinkIdioma href="/agronegocio" prefetch={false} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">{t.mapaObservatorio}</LinkIdioma></li>
+            <li><LinkIdioma href="/agronegocio/aprenda" prefetch={false} className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">{t.aprenda}</LinkIdioma></li>
+            <li><LinkIdioma href="/agronegocio/metodologia" className="inline-flex min-h-[44px] items-center hover:text-bronze-soft">{t.metodologia}</LinkIdioma></li>
           </ul>
         </nav>
         <nav aria-label={t.institucional}>

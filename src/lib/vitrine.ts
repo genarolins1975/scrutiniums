@@ -1,3 +1,4 @@
+import { CAPITULOS_AGRO } from '@/lib/agro/modelo';
 /**
  * Vitrine da página inicial: o que cada observatório já publica.
  *
@@ -256,5 +257,22 @@ export function vitrines(idioma: Idioma = "pt"): Record<DominioId, Vitrine> {
     estados: vitrineEstados(fmt),
     saneamento: vitrineSaneamento(),
     gas: vitrineGas(fmt),
+    agro: {
+      id: "agro",
+      imagem: "/home/agro.svg",
+      contagem: { valor: fmt(CAPITULOS_AGRO.length), unidade: "páginas por pergunta" },
+      contagemIndice: { tipo: "simples", quantidade: CAPITULOS_AGRO.length, unidade: "paginas_por_pergunta" },
+      paineis: [
+        { titulo: "Panorama Brasil", href: "/agronegocio/panorama", descricao: "Crédito rural, trabalho e segurança alimentar nos recortes próprios de cada fonte." },
+        { titulo: "Atlas e comparação", href: "/agronegocio/atlas", descricao: "UFs lado a lado com valores, denominadores e períodos identificados." },
+        { titulo: "Margem e caixa", href: "/agronegocio/custos-renda", descricao: "Cenários com parâmetros do usuário; sem lucro observado ou recomendação de investimento." },
+        { titulo: "Sete cadeias", href: "/agronegocio/cadeias", descricao: "Mecanismos de soja, milho, arroz, feijão, café, carne bovina e leite; cobertura dos dados por cadeia." },
+        { titulo: "Alimentos e orçamento", href: "/agronegocio/alimentos-consumo", descricao: "Segurança alimentar observada e cenários de orçamento familiar, sem transmitir entradas pessoais." },
+        { titulo: "Aprenda e experimente", href: "/agronegocio/aprenda", descricao: "Percursos, glossário, laboratórios e catálogo com categorias e limites." },
+      ],
+      fontes: "BCB/MDCR e SGS, MTE/Novo Caged e IBGE, por reuso de snapshots preservados na plataforma.",
+      situacao: "Cobertura parcial: produção física, comércio exterior, custos de referência e camadas ambientais ainda sem coleta validada. Explicações e cenários não substituem essas medições.",
+      metodologia: { href: "/agronegocio/metodologia", rotulo: "Cobertura, fontes e método" },
+    },
   };
 }

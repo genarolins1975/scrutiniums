@@ -163,7 +163,7 @@ describe("home PT/EN: navegador do build de produção", () => {
       expect(await nav.getAttribute("data-i18n-regiao")).toBe("home-indice");
       expect(await nav.locator(":scope > p").textContent()).toBe(en["home.indice.ilustracoes"].texto);
       const indice = nav.locator("ol > li > a");
-      expect(await indice.count()).toBe(7);
+      expect(await indice.count()).toBe(8);
       for (const [i, esperado] of INDICE_HOME.entries()) {
         const anchor = indice.nth(i);
         expect(await anchor.getAttribute("href")).toBe(esperado.href);

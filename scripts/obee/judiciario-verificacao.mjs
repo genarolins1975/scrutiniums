@@ -52,7 +52,7 @@ try{
  assert.ok(origin,'Next não informou a origem local');
  browser=await chromium.launch({executablePath:process.env.I18N_CHROMIUM_EXECUTABLE||undefined});
  const anonymous=await browser.newContext();
- const observatoryRoots=['/observatorio','/setor-eletrico','/eficiencia-estatal','/contas-publicas','/contas-publicas-estaduais','/saneamento','/gas-natural'];
+ const observatoryRoots=['/observatorio','/setor-eletrico','/eficiencia-estatal','/contas-publicas','/contas-publicas-estaduais','/saneamento','/gas-natural','/agronegocio'];
  for(const path of observatoryRoots){
   const response=await anonymous.request.get(origin+path,{maxRedirects:0});
   check('Observatório exige sessão: '+path,response.status()===307&&response.headers().location.includes('/entrar'));
@@ -67,7 +67,7 @@ try{
  await anonPage.goto(origin+PREFIX+'/metodos',{waitUntil:'networkidle'});
  await anonPage.getByLabel('Trocar de observatório e acessar a conta').click();
  check('Cabeçalho anônimo oferece entrada com retorno ao método',(await anonPage.getByRole('banner').getByRole('link',{name:'Entrar',exact:true}).getAttribute('href')).includes(encodeURIComponent(PREFIX+'/metodos')));
- check('Cabeçalho anônimo mantém oito destinos',await anonPage.getByRole('navigation',{name:'Observatórios da plataforma'}).getByRole('link').count()===8);
+ check('Cabeçalho anônimo mantém nove destinos',await anonPage.getByRole('navigation',{name:'Observatórios da plataforma'}).getByRole('link').count()===9);
 
  check('Seletor exige sessão',(await anonymous.request.get(origin+'/app/observatorios',{maxRedirects:0})).status()===307);
  check('Escolha do Judiciário exige sessão',(await anonymous.request.post(origin+'/app/observatorios/entrar',{form:{d:'judiciario'},headers:{origin},maxRedirects:0})).status()===307);
@@ -84,7 +84,7 @@ try{
   await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
   const card=page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true});
   check('Cartão próprio do Judiciário '+width+'px',await card.isVisible()&&await card.getByRole('button',{name:/Explorar Judiciário/}).isVisible());
-  check('Sete observatórios e Judiciário no seletor '+width+'px',await page.locator('input[name="d"]').count()===observatoryRoots.length+1);
+  check('Oito observatórios e Judiciário no seletor '+width+'px',await page.locator('input[name="d"]').count()===observatoryRoots.length+1);
   await card.locator('summary').click();
   check('Fonte e cobertura reais no cartão '+width+'px',(await card.innerText()).includes('57 tribunais')&&(await card.innerText()).includes('2009–2025'));
   await page.addScriptTag({content:axe});

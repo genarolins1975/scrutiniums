@@ -10,10 +10,10 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "81fa0497dc22b120d2f690894249cbdc229d93caeae253f350c0c47f59911e40",
-    "arquivos_analisados": 1178,
-    "fontes_sha256": "d1eca2efb9aa862a86914b20f34b81a9081dd2f5960ca4ae9872250fdba64aa9",
-    "pendencias_sha256": "6aec7fb6213b86ab065379f940f3ba6abc04684d423da747daf4e84cbff94363",
+    "inventario_sha256": "2b025680cd1d60990a0c71bb68d6288caaff6ca39d1079f72cec33919209c4b5",
+    "arquivos_analisados": 1219,
+    "fontes_sha256": "a237c01a786633805424472633de660a19a1b4fb2ec146a41131e2bfe142fb7b",
+    "pendencias_sha256": "8aa2b66f4c1549402a0e0868982455d0853a34cc662deda9f606dcdf9dec0968",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -63,6 +63,11 @@
       {
         "path": "src/app/setor-eletrico/atlas-inicial.css",
         "dominio": "energia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/agro/Agro.module.css",
+        "dominio": "agro",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
       {
@@ -140,18 +145,18 @@
       "interface": {
         "arquivos": 213,
         "candidatos": {
-          "jsx_text": 537,
-          "atributos": 201,
-          "props": 660,
-          "outros_literais": 3535,
-          "templates": 414,
-          "expressoes_nao_resolvidas": 2299,
-          "chaves_objetos": 2541
+          "jsx_text": 539,
+          "atributos": 206,
+          "props": 672,
+          "outros_literais": 3607,
+          "templates": 416,
+          "expressoes_nao_resolvidas": 2311,
+          "chaves_objetos": 2598
         },
         "exclusoes": {
-          "importacoes": 919,
-          "atributos_tecnicos": 1162,
-          "tipos": 206
+          "importacoes": 920,
+          "atributos_tecnicos": 1166,
+          "tipos": 211
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -160,7 +165,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 10187,
+        "candidatos_nao_catalogados": 10349,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -472,6 +477,54 @@
       },
       "cobertura_completa": false
     },
+    "agro": {
+      "nome": "Agronegócio",
+      "interface": {
+        "arquivos": 41,
+        "candidatos": {
+          "jsx_text": 381,
+          "atributos": 260,
+          "props": 369,
+          "outros_literais": 2326,
+          "templates": 15,
+          "expressoes_nao_resolvidas": 1086,
+          "chaves_objetos": 1328
+        },
+        "exclusoes": {
+          "importacoes": 195,
+          "atributos_tecnicos": 64,
+          "tipos": 73
+        },
+        "scripts_embutidos": {},
+        "chaves_catalogadas": {
+          "traduzidas": 0,
+          "portugues_marcado": 0,
+          "sem_traducao": 0,
+          "nomes_preservados": 0
+        },
+        "candidatos_nao_catalogados": 5765,
+        "percentual_traduzido": null
+      },
+      "rotas": {
+        "paginas_pt": 11,
+        "paginas_en": 0,
+        "handlers": 1,
+        "templates_com_parametros": 2,
+        "paginas_pt_literais": 9,
+        "paginas_pt_fora_do_adaptador": 2,
+        "paginas_pt_literais_sem_irma": 9,
+        "pares_estruturais": 0,
+        "fallbacks_declarados": 0,
+        "paridade_verificada": false
+      },
+      "conteudo_adicional": {
+        "arquivos": 0,
+        "linhas_nao_vazias": 0,
+        "candidatos_nao_catalogados": 0,
+        "scripts_embutidos": {}
+      },
+      "cobertura_completa": false
+    },
     "credito": {
       "nome": "Crédito",
       "interface": {
@@ -484,11 +537,11 @@
           "templates": 2609,
           "expressoes_nao_resolvidas": 8863,
           "chaves_objetos": 5020,
-          "textos": 149
+          "textos": 151
         },
         "exclusoes": {
           "importacoes": 21,
-          "atributos_tecnicos": 459,
+          "atributos_tecnicos": 463,
           "tipos": 0,
           "estilos": 1,
           "comentarios": 1
@@ -504,7 +557,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 29654,
+        "candidatos_nao_catalogados": 29656,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -530,10 +583,10 @@
   },
   "glossario": {
     "path": "config/glossario-en.json",
-    "sha256": "dafbad57c988602d2b3d055e15dcae2309dbf3f4af7c39ddc7638e9d548182a6",
+    "sha256": "f4ed12518809fd6b8043ee342b627e491b0d04fd771a83bf0520e7c0d4632e84",
     "fontes": 8,
     "termos": 28,
-    "nomes_preservados": 16,
+    "nomes_preservados": 17,
     "pendencias": [
       {
         "id": "editorial.contas_publicas_estaduais",
@@ -671,11 +724,11 @@
     "arquivos": {
       "pt": {
         "path": "src/i18n/pt.ts",
-        "sha256": "8258165bb69836877f5227bb44a2e26ab4b50e8e0e31c927fd834e6f9cf4c169"
+        "sha256": "612f526d13b1303952b3ff4d875b1158b461b7a53e0a9d5b7e2d8588ef7cba20"
       },
       "en": {
         "path": "src/i18n/en.ts",
-        "sha256": "77bfb16177abe514bdeff95be2b1a3c25fae858793ce8c0e944e4069f3bb2ce2"
+        "sha256": "5de5b80a143e4a23f4a5e56a264ba5c00282c7fa5e8abbdbae7756bdbc510ed2"
       }
     },
     "chaves": 22,
@@ -685,7 +738,7 @@
   },
   "terminologia_catalogo": {
     "path": "config/i18n-terminologia.json",
-    "sha256": "e8196fa2f174dff6c3902a5c678fb0e696c3229a27ab89971c79939eebae4e36",
+    "sha256": "0cdffa515973e4cbe1d7f76ad2c1aa4ead0e82e614f43f9fa60d77d3b3966bc0",
     "schema_version": 1,
     "mensagens": 22,
     "mensagens_vinculadas": 3,

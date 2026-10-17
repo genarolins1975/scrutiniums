@@ -371,11 +371,11 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         no.value = no.value.replace(antes, depois);
       };
       const adulteracoes: [string, (doc: No) => void][] = [
-        ["quantidade por extenso divergente do registro", (doc) => substituirTrecho(doc, "Seven observatories", "Eight observatories")],
-        ["quantidade numérica divergente do registro", (doc) => substituirTrecho(doc, "Seven observatories", "8 observatories")],
+        ["quantidade por extenso divergente do registro", (doc) => substituirTrecho(doc, "Eight observatories", "Nine observatories")],
+        ["quantidade numérica divergente do registro", (doc) => substituirTrecho(doc, "Eight observatories", "9 observatories")],
         ["última frase omitida", (doc) => substituirTrecho(doc,
           " Each dashboard identifies the data source, the reference period and what the data cannot establish.", "")],
-        ["placeholder não resolvido", (doc) => substituirTrecho(doc, "Seven observatories", "{observatorios}")],
+        ["placeholder não resolvido", (doc) => substituirTrecho(doc, "Eight observatories", "{observatorios}")],
         ["classe da introdução alterada", (doc) => {
           const classe = introducao(doc).attrs.find((a) => a.name === "class");
           if (!classe) throw new Error("Introdução sem classes");
@@ -461,7 +461,7 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         ["cartão removido", (doc) => {
           const lista = tag(indice(doc), "ol");
           const itens = filhos(lista).filter((e): e is Elemento => "tagName" in e);
-          expect(itens).toHaveLength(7);
+          expect(itens).toHaveLength(8);
           lista.childNodes = lista.childNodes.filter((no) => no !== itens[0]);
         }],
         ["cartões reordenados", (doc) => {

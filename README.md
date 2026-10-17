@@ -2,7 +2,7 @@
 
 Plataforma **gratuita** de inteligência analítica sobre o crédito e a economia brasileira: o Observatório Brasileiro de Crédito — carteira, inadimplência, instituições, produtos, Pix, bets e fraudes financeiras — com metodologia aberta, dados oficiais e glossário público. **Os painéis exigem conta gratuita**: a página inicial, a apresentação do Crédito (`/observatorio-do-credito`), as páginas de método e glossário, as institucionais e o fluxo de entrada e cadastro são públicos; painéis, downloads, arquivos de dados, API, feeds RSS e gráficos incorporáveis exigem sessão. Desde 13/10/2026, a fronteira entre a vitrine pública e a área com conta é uma lista de rotas abertas em `src/lib/rotasPublicas.ts`, aplicada pelo `src/middleware.ts` e pelo sitemap; rota nova nasce fechada. O cadastro pede e-mail, telefone verificado por SMS, CPF e perfil básico, e a sessão só nasce depois do telefone verificado. Quem é barrado num painel volta a ele depois de entrar ou concluir o cadastro. Sem plano pago, sem cartão.
 
-Desde setembro de 2026 a Scrutiniums é uma plataforma de observatórios sobre a mesma infraestrutura (sessão, telemetria, design system, sitemap): o **Observatório Brasileiro de Crédito**, o **Observatório Brasileiro do Setor Elétrico** (`/setor-eletrico`), o **Observatório Brasileiro de Eficiência Estatal** (`/eficiencia-estatal`), os de Contas Públicas Federais e Estaduais e o **Observatório Brasileiro de Gás Natural** (`/gas-natural`). Quem entra com conta escolhe o observatório em `/app/observatorios` e troca pelo cabeçalho sem novo login.
+Desde setembro de 2026 a Scrutiniums é uma plataforma de observatórios sobre a mesma infraestrutura (sessão, telemetria, design system, sitemap): o **Observatório Brasileiro de Crédito**, o **Observatório Brasileiro do Setor Elétrico** (`/setor-eletrico`), o **Observatório Brasileiro de Eficiência Estatal** (`/eficiencia-estatal`), os de Contas Públicas Federais e Estaduais e o **Observatório Brasileiro de Gás Natural** (`/gas-natural`). O **Observatório do Agronegócio Brasileiro** (`/agronegocio`) acrescenta oito capítulos e sete cadeias, com cobertura parcial explicitada. Quem entra com conta escolhe o observatório em `/app/observatorios` e troca pelo cabeçalho sem novo login.
 
 ## Stack
 
@@ -143,3 +143,15 @@ Contratos, cobertura, atualização e limites em [docs/obee/judiciario/](./docs/
 ## Documentação
 
 As decisões técnicas (banco, autenticação, máquina de estados do onboarding, rate limiting, tokens de design, telemetria sem PII) estão registradas em [ARCHITECTURE.md](./ARCHITECTURE.md). A arquitetura da plataforma de dois observatórios e do domínio Energia está em [docs/observatorios/](./docs/observatorios/README.md).
+
+## Agronegócio
+
+Observatório próprio com atlas de crédito/ocupação por UF, comparador, sete fichas, oito capítulos, percursos, cenários e síntese imprimível. Dados preservados e hipóteses não se misturam: produção física, custos de referência, comércio e camadas ambientais ainda não foram integrados. Apenas método e glossário são públicos; painéis/downloads exigem conta. [Escopo, fontes, reprodução, catálogo e limites](docs/agro/README.md).
+
+```sh
+python3 -m pipeline.agro.run --check
+python3 -m pipeline.agro.dicionario --check
+node scripts/agro/catalogo.mjs --check
+# depois de npm run build; pode usar I18N_CHROMIUM_EXECUTABLE para o Chromium local
+node scripts/agro/verificacao.mjs
+```
