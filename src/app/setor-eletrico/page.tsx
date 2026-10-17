@@ -3,7 +3,7 @@ import { DuasCamadasEnergia } from "@/components/energia/ComercializacaoDidatica
 import { LeiturasIntegradas } from "@/components/energia/LeiturasIntegradas";
 import Image from "next/image";
 import { PercursoVisualEnergia } from "@/components/energia/PercursoVisualEnergia";
-import { ETAPAS_ENERGIA } from "@/lib/energia/percurso-visual";
+import { ETAPAS_ENERGIA_IDIOMAS } from "@/lib/energia/percurso-visual";
 import { PerguntasExploraveis, LaboratorioEnergia } from "@/components/energia/ExploracaoInicial";
 import "./atlas-inicial.css";
 import type { Metadata, ResolvingMetadata } from "next";
@@ -24,7 +24,7 @@ import { Unidade } from "@/components/evidencia/Unidade";
 import { conjuntoLegivel, descreverVariacao, valorDestaque } from "@/lib/energia/evidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { LINKEDIN_URL } from "@/lib/contato";
-import { CONCEITOS, conceito } from "@/lib/energia/conteudo/conceitos";
+import { conceito, conceitos } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 import { dataBR, carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -81,7 +81,7 @@ import type { Natureza } from "@/lib/energia/tipos";
 import { listaEmPortugues, orgaosDasFontes } from "@/lib/energia/dados";
 import { SIGLAS, legendaDeSiglas } from "@/lib/energia/siglas";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
-import { tx } from "@/lib/energia/idioma";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { ORGAOS_EN, legendaDeOrgaosEn, listaEn, traduzDaGold, traduzModeloDaGold } from "@/lib/energia/i18n/entrada-visao";
@@ -730,7 +730,7 @@ export default function MapaDoObservatorio() {
   const escolhas = escolhasDeDistribuidora(distribuidoras, integra(perdas) ? perdas.referencia.ano : null);
   const busca = indiceBusca(
     DESTINOS_NAVEGACAO,
-    CONCEITOS,
+    conceitos(),
     distribuidoras.map((d) => ({ slug: d.slug, sigla: d.sigla, nome: d.nome, cnpj: d.cnpj, ufs: d.ufs, grupo: d.controle?.topo_nome ?? null })),
   );
   const fichas = new Set(DATASETS_INTEGRADOS.map((d) => d.slug));
@@ -820,7 +820,8 @@ export default function MapaDoObservatorio() {
               <a className="energia-explorar" href="#percurso-energia">{tx("Explorar o sistema", "Explore the system")} <span aria-hidden="true">↓</span></a>
             </div>
             <nav className="energia-cenario-pontos" aria-label={tx("Explore as etapas do sistema elétrico", "Explore the stages of the power system")}>
-              {ETAPAS_ENERGIA.map(e => <a key={e.id} href={`#etapa-${e.id}`} data-etapa={e.id}><span>{e.numero}</span>{e.nome}</a>)}
+              {ETAPAS_ENERGIA_IDIOMAS[idiomaEnergia()].map(e =>
+ <a key={e.id} href={`#etapa-${e.id}`} data-etapa={e.id}><span>{e.numero}</span>{e.nome}</a>)}
             </nav>
             <p className="energia-cenario-legenda">{tx("Ilustração conceitual gerada por IA · sem escala geográfica", "AI-generated conceptual illustration · not to geographic scale")}</p>
           </div>

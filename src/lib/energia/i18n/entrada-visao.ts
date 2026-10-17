@@ -8,7 +8,7 @@
  *
  * Só dado e conversão de texto: nada aqui lê o idioma da página. Quem chama escolhe a forma.
  */
-import { createElement, type ReactNode } from "react";
+import { createElement, type ComponentProps, type ReactNode } from "react";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { nomeSubmercado } from "../formato";
 
@@ -358,6 +358,11 @@ const GOLD_EN: Readonly<Record<string, string>> = {
   "Determinantes alinhados, últimos 90 dias (CSV)": "Aligned determinants, last 90 days (CSV)",
   "Revisões entre capturas das séries da Visão geral (CSV)": "Revisions between captures of the Overview series (CSV)",
   "Revisões entre capturas (CSV)": "Revisions between captures (CSV)",
+  // pld.json, regras.posicao_historica (o "percentil" que a Visão geral cita)
+  "Percentil da média diária do dia de referência na distribuição das médias diárias do mesmo submercado desde 01/01/2021, em valores nominais. Faixa baixa: abaixo do 25º percentil. Central: do 25º ao 75º. Alta: acima do 75º.":
+    "Percentile of the reference day's daily average within the distribution of daily averages of the same submarket since Jan 1, 2021, in nominal values. Low range: below the 25th percentile. Central: from the 25th to the 75th. High: above the 75th.",
+  // sintese.json, origens[].origem
+  "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)": "run context, identical to the published file (same gerado_em)",
 };
 
 /** A forma inglesa de um texto da gold, quando a tabela a tem; null quando não tem (quem chama decide o que mostrar). */
@@ -605,7 +610,7 @@ export function goldEmString(texto: string, idioma: "pt" | "en"): string {
 export function goldNoBloco(texto: string, idioma: "pt" | "en", regiao: string): ReactNode {
   if (idioma !== "en") return texto;
   const en = traduzModeloDaGold(texto);
-  return en ?? createElement(TrechoPortugues, { regiao }, texto);
+  return en ?? createElement(TrechoPortugues, { regiao } as ComponentProps<typeof TrechoPortugues>, texto);
 }
 
 /**
