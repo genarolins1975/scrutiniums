@@ -139,7 +139,8 @@ export function SobreEsteDado({ p, rotulo }: { p: Proveniencia; rotulo?: string 
         aria-haspopup="dialog"
       >
         <span aria-hidden="true">ⓘ</span> {rotulo ?? tx("Sobre este dado", "About this data")}
-        <span className="sr-only">: {indicador}</span>
+        {/* texto só para leitor de tela: o nome do indicador, em português, com lang (o aviso visível fica no diálogo) */}
+        <span className="sr-only">: {en ? <span lang="pt-BR" data-i18n-nome="">{p.indicador}</span> : p.indicador}</span>
       </button>
       <dialog
         ref={ref}
@@ -166,7 +167,7 @@ export function SobreEsteDado({ p, rotulo }: { p: Proveniencia; rotulo?: string 
               ✕
             </button>
           </header>
-          <div className="flex-1 overflow-y-auto px-6 py-2" tabIndex={0} role="region" aria-label={tx(`Proveniência: ${p.indicador}`, `Provenance: ${p.indicador}`)}>
+          <div className="flex-1 overflow-y-auto px-6 py-2" tabIndex={0} role="region" aria-label={tx(`Proveniência: ${p.indicador}`, "Provenance of this data")}>
             {montado && <dl>
               <Linha rotulo={tx("Natureza", "Nature of the data")}>
                 <strong>{n.rotulo}.</strong> {n.definicao}

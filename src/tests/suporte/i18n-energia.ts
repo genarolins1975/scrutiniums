@@ -15,14 +15,19 @@ const tecnicos = new Set(["script", "style", "template", "noscript"]);
 const ATRIBUTOS = ["aria-label", "aria-description", "title", "alt", "placeholder"];
 
 /** Nomes próprios que aparecem em prosa inglesa com a grafia original (sem marca). */
-const NOMES_LIVRES = ["Brasília", "São Paulo", "Paraná", "Maranhão", "Pará", "Amapá", "Goiás", "Piauí", "Ceará", "Rondônia", "Espírito Santo"];
+const NOMES_LIVRES = ["Brasília", "São Paulo", "Paraná", "Maranhão", "Pará", "Amapá", "Goiás", "Piauí", "Ceará", "Rondônia", "Espírito Santo",
+  // órgãos citados por nome numa lista de fontes montada em frase
+  "Câmara dos Deputados", "Senado Federal", "Banco Central do Brasil", "Tesouro Nacional"];
 
 const PT_FORTE = new RegExp("(?:^|[^\\p{L}])(?:de|da|das|dos|em|na|nas|nos|para|pelo|pela|pelos|pelas|com|que|uma|não|são|à|às|ao|aos|também|está|entre|quando|cada|até|desde|após|sem|mais|ou|é|energia|armazenada|usina|usinas|preço|preços|consumo|fonte|fontes|dados|valor|valores|ano|anos|mês|meses|dia|dias|hora|horas|média|leilão|leilões|tarifa|tarifas|conta|distribuidora|distribuidoras|geração|carga|rede|perdas|qualidade|mercado|regra|regras|ver|abrir|baixar|mostrar|fechar|todos|todas|nenhum|nenhuma|outros|outras|sobre|período|janela|observado|calculado|estimado|previsto|cenário|página|painel|semana|semanas|abaixo|acima|maior|menor|últimos|últimas|hoje|ontem)(?=$|[^\\p{L}])|\\p{L}(?:ção|ções|ões)(?=$|[^\\p{L}])", "iu");
 const PT_ATRIBUTO = new RegExp("(?:^|[^\\p{L}])(?:não|para|com|que|uma|também|está|abrir|baixar|ver|fechar|mostrar|página|painel)(?=$|[^\\p{L}])|\\p{L}(?:ção|ções)(?=$|[^\\p{L}])", "iu");
 const ACENTO = /[ãõçáéíóúâêôàÃÕÇÁÉÍÓÚÂÊÔÀ]/;
 
+/** Domínio, endereço e nome de arquivo são identificadores, não prosa ("scrutiniums.com", "pld_diario.csv"). */
+const IDENTIFICADOR = /(?:https?:\/\/\S+|\b[\w.-]+\.(?:com|br|org|gov|net|io|json|csv|xlsx|zip|png|svg|parquet|pdf)\b)/gi;
+
 function semNomesLivres(t: string): string {
-  return NOMES_LIVRES.reduce((r, n) => r.split(n).join(" "), t);
+  return NOMES_LIVRES.reduce((r, n) => r.split(n).join(" "), t).replace(IDENTIFICADOR, " ");
 }
 
 const ehElemento = (no: No): no is Elemento => "tagName" in no;
