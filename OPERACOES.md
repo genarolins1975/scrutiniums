@@ -290,6 +290,41 @@ buffer; não foi isolado. Reproduzido localmente com um arquivo de 36 MB reescri
     das três suítes e a saída do unittest: aponta o processo abortado, lista os testes
     Python reprovados e não atribui a causa quando não há como saber.
 
+**Quinta execução depois das correções (17/10/2026, run 39033304284).** O guarda
+corrigido funcionou: o vitest rodou os 299 arquivos (293 passaram, 5 reprovaram com 9
+testes), as suítes Python passaram (1.884 e 69 testes) e a cópia durável foi salva (482
+MB). Cinco causas, quatro delas herdadas do silver semeado de novo em 15/10:
+- **Consignado** (6 testes): o bloco de reclamações saiu vazio. Em 15/10 o estban não
+  carregou o índice de municípios do IBGE (tempo esgotado) e o `reclamacoes_consig`
+  gravou as 12 competências com zero municípios, dando-as por absorvidas; o estado
+  contaminado seguiu no cache e na cópia durável.
+- **Judicial** (1 teste): o silver semeado não tinha as tabelas `jud_*`, e o orçamento
+  de 600 s do coletor acabou no TJSP. O builder publicou 1 tribunal e 2 categorias,
+  com total trabalhista 0, contra 15 tribunais e 7 categorias em 24/09.
+- **Rural** (1 teste): UFs R$ 60.975.420,30 acima do total, soma exata de 2026-08,
+  2026-06 e 2026-02. Em 15/10 a Olinda serviu a um dos recortes, na mesma execução, a
+  fotografia de 14/10; a regra do #198 comparava só a hora da coleta.
+- **Inventário de tradução** (1 teste): `cmp/00058338.json` saiu da base, o `rsync
+  --delete` o apagou e a descoberta de fontes, que usa `git ls-files --cached`, falhou
+  com ENOENT.
+- **Conta e CPF** (arquivo não carregou): `conta-cpf-browser.test.ts` (15/10) exige
+  Chromium, que o `ci.yml` instala e este workflow não instalava.
+13. O `reclamacoes_consig` não coleta sem índice de ao menos 5.500 municípios, trata
+    competência sem município casado como falha e recoleta a herdada com reclamações e
+    zero municípios (autocura, sem limpar cache).
+14. O builder judicial grava stub declarado, com a lista de lacunas, quando falta
+    qualquer par tribunal e categoria da taxonomia; a sentinela mantém a última
+    publicação íntegra. Com o silver real de 17/10: 48 lacunas e a gold de 24/09 no ar.
+    Custo declarado: tribunal fora do ar de forma permanente congela a camada nacional.
+15. O Sicor recoleta o municipal do mês em que municipal e FonteRecursos diferem em
+    mais de R$ 0,05, e o FonteRecursos é refeito na mesma execução.
+16. A descoberta de fontes de tradução ignora arquivo rastreado e apagado da pasta de
+    trabalho; o workflow instala o Chromium antes do vitest, como o `ci.yml`.
+Pendências fora desta correção: ordem fixa dos tribunais no coletor judicial (todo dia
+lento gasta o orçamento no TJSP), `ok=True` com tribunais pulados, o ZIP de 2026-05 do
+consumidor.gov.br que traz `.7z` em vez de CSV, e a gold de energia, retida em 17/10 por
+outros testes com o workflow verde.
+
 **Produção e main.** Em 13/10/2026 às 10:43 UTC a produção servia o mesmo
 `gerado_em` do main (2026-09-24T15:25), em `/resumo` e em
 `/obs/data/gold/meta.json`. A leitura "Processado em 2026-08-12" relatada nesse dia
