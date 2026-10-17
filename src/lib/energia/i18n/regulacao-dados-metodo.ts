@@ -135,3 +135,66 @@ export function rotuloDado(tabela: Record<string, string>, valor: string, idioma
 export function traduzido(tabela: Record<string, string>, valor: string, idioma: Idioma = idiomaEnergia()): boolean {
   return idioma !== "en" || valor in tabela;
 }
+
+/** Frequência de atualização declarada pela fonte (campo frequencia_declarada, com a primeira letra em maiúscula). */
+export const FREQUENCIA_EN: Record<string, string> = {
+  Mensal: "Monthly",
+  "Diariamento, as 12h e 19h": "Daily, at 12h and 19h",
+  Anual: "Annual",
+  "Única": "One-off",
+  Trimestral: "Quarterly",
+  "Diária": "Daily",
+  Semanal: "Weekly",
+  Quinzenal: "Fortnightly",
+  "Não aplicável": "Not applicable",
+  "Mensal e diária": "Monthly and daily",
+  "Diariamente, 9:15h, 14:15 e 17h": "Daily, 9:15h, 14:15 and 17h",
+  "Conforme calendário dos processos de revisão tarifária das distribuidoras de energia elétrica": "According to the schedule of the distribution utilities' tariff review processes",
+  "Conforme envios dos agentes": "As agents submit",
+  "Sem atualização": "No updates",
+  "Semanalmente - Ordinário, Quando houver atualização - Regularização": "Weekly (ordinary); when there is an update (regularization)",
+  "A depender da ocorrência.": "Depending on occurrence.",
+  "Quando houver nova deliberação": "When there is a new decision",
+  "Periódica": "Periodic",
+  "A depender do surgimento de novos termos.": "Depending on new terms appearing.",
+  "Quando houver atualização": "When there is an update",
+  "Diariamente de 15 em 15 min": "Daily, every 15 min",
+  "Sob demanda": "On demand",
+};
+
+/** Licença declarada (campo licenca do catálogo e dos portais). Licença com nota de coleta longa fica sem entrada: sai marcada em português. */
+export const LICENCA_EN: Record<string, string> = {
+  "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons": "Open Data Commons Open Database License (ODbL)",
+  "Creative Commons Attribution": "Creative Commons Attribution",
+  "Creative Commons Attribution 4.0": "Creative Commons Attribution 4.0",
+  "Creative Commons Atribuição": "Creative Commons Attribution",
+  "Open Data Commons Open Database License (ODbL)": "Open Data Commons Open Database License (ODbL)",
+  "Creative Commons Atribuição 4.0 Internacional (CC BY 4.0), conforme o rodapé do portal da EPE": "Creative Commons Attribution 4.0 International (CC BY 4.0), according to the footer of the EPE portal",
+  "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons, conforme o portal de dados abertos da CVM": "Open Data Commons Open Database License (ODbL), according to the CVM open data portal",
+  "Creative Commons Attribution 4.0 (CC-BY-4.0), conforme o portal de dados abertos da CCEE": "Creative Commons Attribution 4.0 (CC-BY-4.0), according to the CCEE open data portal",
+  "Dados públicos do IBGE, uso livre com citação da fonte (política de dados abertos do IBGE)": "Public IBGE data, free use with source citation (IBGE open data policy)",
+  "Uso livre com citação da fonte (IBGE)": "Free use with source citation (IBGE)",
+  "Uso livre com citação da fonte (IBGE).": "Free use with source citation (IBGE).",
+  "Creative Commons Atribuição (CC-BY), conforme o portal de dados abertos do ONS": "Creative Commons Attribution (CC-BY), according to the ONS open data portal",
+  "Open Data Commons Open Database License (ODbL), conforme o portal de dados abertos da ANEEL": "Open Data Commons Open Database License (ODbL), according to the ANEEL open data portal",
+  "Conteúdo de portal do Governo Federal (gov.br), uso livre com citação da fonte": "Federal Government portal content (gov.br), free use with source citation",
+  "Ato oficial publicado no Diário Oficial da União; texto normativo de domínio público (Lei nº 9.610/1998, art. 8º, IV)":
+    "Official act published in the Official Gazette of the Union; normative text in the public domain (Lei nº 9.610/1998, art. 8º, IV)",
+  "Ato normativo da ANEEL: texto oficial de domínio público (Lei nº 9.610/1998, art. 8º, IV)": "ANEEL normative act: official text in the public domain (Lei nº 9.610/1998, art. 8º, IV)",
+  "Ato normativo federal: texto oficial de domínio público (Lei nº 9.610/1998, art. 8º, IV)": "Federal normative act: official text in the public domain (Lei nº 9.610/1998, art. 8º, IV)",
+  "Publicação da CCEE; números reproduzidos com atribuição, apenas para conferência": "CCEE publication; numbers reproduced with attribution, for cross-checking only",
+  "Outra (Aberta), conforme o campo de licença do portal de dados abertos do MME": "Other (Open), according to the license field of the MME open data portal",
+  "Creative Commons Atribuição (CC-BY), conforme o portal de dados abertos do ONS; documento do acervo digital do ONS":
+    "Creative Commons Attribution (CC-BY), according to the ONS open data portal; document from the ONS digital collection",
+  "Texto normativo de domínio público (Lei nº 9.610/1998, art. 8º, IV), no portal de Legislação Federal do Senado":
+    "Normative text in the public domain (Lei nº 9.610/1998, art. 8º, IV), on the Senate's Federal Legislation portal",
+  "Texto normativo e metadados de legislação federal: domínio público (Lei nº 9.610/1998, art. 8º, IV), portal de Legislação Federal do Senado":
+    "Normative text and federal legislation metadata: public domain (Lei nº 9.610/1998, art. 8º, IV), Senate's Federal Legislation portal",
+  "Conteúdo público do portal gov.br da ANEEL; reprodução com citação da fonte (política de uso do portal gov.br)":
+    "Public content of ANEEL's gov.br portal; reproduction with source citation (gov.br portal usage policy)",
+  "Dados públicos da EPE (WebMap EPE), uso com citação da fonte; direitos da camada: EPE, ONS e IBGE": "Public EPE data (WebMap EPE), use with source citation; layer rights: EPE, ONS and IBGE",
+  "Dados públicos do IBGE (API de localidades), uso livre com citação da fonte (termos de uso do servicodados.ibge.gov.br)":
+    "Public IBGE data (localities API), free use with source citation (servicodados.ibge.gov.br terms of use)",
+  "Dados públicos do IBGE; reprodução permitida com citação da fonte (IBGE, Sistema IBGE de Recuperação Automática, SIDRA)":
+    "Public IBGE data; reproduction allowed with source citation (IBGE, IBGE Automatic Retrieval System, SIDRA)",
+};
