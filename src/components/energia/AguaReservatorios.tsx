@@ -429,7 +429,7 @@ export function AguaReservatorios({
   return (
     <div className="space-y-6">
       <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
-        <RespostaCurta id="p020" vivo veredito={dec ? vereditoDecomposicao(dec, idioma) : semDec}>
+        <RespostaCurta id="p020" vivo veredito={dec ? comNomes(vereditoDecomposicao(dec, idioma), nomesRes, idioma) : semDec}>
           {dec ? comNomes(respostaDecomposicao(dec, idioma), nomesRes, idioma) : semDec}
         </RespostaCurta>
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
@@ -539,7 +539,7 @@ export function AguaReservatorios({
             dica={tx("Troca a conta da água e as séries diárias abaixo, em qualquer subsistema.", "Changes the water balance and the daily series below, in any subsystem.")}
           />
           {/* depois: a resposta fica na ordem do documento, abaixo do título e da lista, e não antes do título da seção */}
-          <RespostaCurta id="p020-balanco" vivo depois veredito={vereditoBalancoReservatorio(res, janela, semCadastro, idioma)}>
+          <RespostaCurta id="p020-balanco" vivo depois veredito={comNomes(vereditoBalancoReservatorio(res, janela, semCadastro, idioma), nomesRes, idioma)}>
             {comNomes(respostaBalanco(res, janela, semCadastro, idioma), nomesRes, idioma)}
           </RespostaCurta>
           {foraDaFaixa && (
@@ -637,6 +637,7 @@ export function AguaReservatorios({
               `Resíduo e transferência de ${nomeRes}, ${periodoJanela} (régua própria, porque são pequenos)`,
               `Residual and transfer of ${nomeRes}, ${periodoJanela} (own scale, because they are small)`,
             )}
+            nomesNoTitulo={[nomeRes]}
             dados={barrasBalancoResiduo(res, idioma).map((b) => ({ id: b.id, rotulo: b.rotulo, v: b.v }))}
             chaveCategoria="id"
             chaveRotulo="rotulo"

@@ -1,5 +1,6 @@
 "use client";
 
+import { comNomes } from "@/components/i18n/comNomes";
 import { useDeferredValue, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { campo, tiposUrl, type Esquema } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
@@ -60,6 +61,8 @@ import {
 
 export type TabelaInterativaProps = {
   titulo: string;
+  /** Nomes próprios no título ("Ceraçá losses by year"): na legenda da tabela inglesa saem marcados. */
+  nomesNoTitulo?: readonly string[];
   colunas: ColunaTabela[];
   linhas: LinhaTabela[];
   /** Campo com o identificador estável de cada linha (seleção sincronizada e chave de renderização). */
@@ -170,6 +173,7 @@ function versaoLegivel(v: string, idioma: Idioma): string {
 
 export function TabelaInterativa({
   titulo,
+  nomesNoTitulo,
   colunas,
   linhas,
   chaveLinha,
@@ -514,7 +518,12 @@ export function TabelaInterativa({
       <div ref={rolagemRef} className="tabela-scroll mt-2 max-w-full overflow-x-auto border-t border-linha" role="region" tabIndex={0} aria-label={tx(`${titulo} (tabela rolável)`, `${titulo} (scrollable table)`)}>
         <table id={`${uid}-tabela`} className="w-full border-collapse text-sm tabular-nums">
           <caption className="sr-only">
-            {tx(`${titulo}. ${num(filtradas.length, 0)} de ${plural(linhas.length, "linha", "linhas")}`, `${titulo}. ${num(filtradas.length, 0)} of ${plural(linhas.length, "row", "rows")}`)}
+            {tx<ReactNode>(
+              `${titulo}. ${num(filtradas.length, 0)} de ${plural(linhas.length, "linha", "linhas")}`,
+              <>
+                {comNomes(titulo, nomesNoTitulo, idioma)}. {num(filtradas.length, 0)} of {plural(linhas.length, "row", "rows")}
+              </>,
+            )}
             {ordem
               ? tx(
                   `, ordenada por ${colunas.find((c) => c.id === ordem.coluna)?.rotulo ?? ordem.coluna}, ${ordem.direcao === "asc" ? "crescente" : "decrescente"}`,

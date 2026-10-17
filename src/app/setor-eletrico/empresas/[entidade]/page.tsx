@@ -264,7 +264,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
         <CabecalhoModulo
           rotulo={tx("Perfil da distribuidora", "Distribution utility profile")}
           siglas={["CNPJ", "ANEEL", "SAMP", "DEC", "FEC", "TE", "TUSD", "REH", "SIGA", "CVM", "DFP", "ITR"]}
-          titulo={tx(`${d.sigla}: perdas, continuidade e tarifa`, `${d.sigla}: losses, continuity and tariff`)}
+          titulo={tx<ReactNode>(`${d.sigla}: perdas, continuidade e tarifa`, comNomes(`${d.sigla}: losses, continuity and tariff`, [d.sigla]))}
           lead={tx(
             <>
               {d.nome ?? "Razão social sem registro"} · CNPJ ({SIGLAS.CNPJ}) <span className="whitespace-nowrap">{cnpjFormatado(d.cnpj)}</span> · {d.classificacao ?? rotuloGrupo(d.grupo)} ·{" "}
@@ -455,6 +455,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
             <PainelEvidencia
               id="ficha"
               pergunta={tx(`Como a ${d.sigla} atende sua área?`, `How does ${d.sigla} serve its area?`)}
+              nomesNaPergunta={[d.sigla]}
               subtitulo={tx(
                 "Perdas, continuidade e tarifa residencial pelo mesmo CNPJ dos módulos de origem · %, horas, interrupções, R$/MWh",
                 "Losses, continuity and residential tariff by the same CNPJ in the source modules · %, hours, interruptions, R$/MWh",
@@ -629,6 +630,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                         `Tarifa B1 da ${d.sigla} por início de vigência (R$/MWh nominais, sem tributos)`,
                         `${d.sigla} B1 tariff by start of validity (nominal R$/MWh, before taxes)`,
                       )}
+                      nomesNoTitulo={[d.sigla]}
                       dados={evol.tarifa}
                       chaveX="inicio"
                       formatoX="data"
@@ -892,6 +894,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   {perdasSerie.length > 0 && (
                     <TabelaInterativa
                       titulo={tx(`Perdas da ${d.sigla} por ano`, `${d.sigla} losses by year`)}
+                      nomesNoTitulo={[d.sigla]}
                       colunas={COLUNAS_EVOLUCAO_PERDAS}
                       linhas={perdasSerie.map((x) => ({ ...x, id: x.ano }))}
                       chaveLinha="id"
@@ -907,6 +910,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   {evol.qualidade.length > 0 && (
                     <TabelaInterativa
                       titulo={tx(`DEC e FEC da ${d.sigla} por ano`, `${d.sigla} DEC and FEC by year`)}
+                      nomesNoTitulo={[d.sigla]}
                       colunas={COLUNAS_EVOLUCAO_QUALIDADE}
                       linhas={evol.qualidade.map((x) => ({ ...x, id: x.ano }))}
                       chaveLinha="id"
@@ -922,6 +926,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   {evol.tarifa.length > 0 && (
                     <TabelaInterativa
                       titulo={tx(`Vigências da tarifa B1 da ${d.sigla}`, `${d.sigla} B1 tariff validity periods`)}
+                      nomesNoTitulo={[d.sigla]}
                       colunas={COLUNAS_EVOLUCAO_TARIFA}
                       linhas={evol.tarifa.map((x) => ({ ...x, ato: atoNoIdioma(x.ato) ?? x.ato, id: `${x.inicio}|${x.ato}` }))}
                       chaveLinha="id"
@@ -1010,6 +1015,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   proximo={{
                     href: `${rotaPainel("p037")}?dist.cmp=${d.slug}#p037`,
                     pergunta: tx(`Como a ${d.sigla} se compara com outras distribuidoras?`, `How does ${d.sigla} compare with other distribution utilities?`),
+                    nomes: [d.sigla],
                   }}
                   downloads={[
                     ...downloadsDe(g.downloads, ["/energia/series/empresas_distribuidoras.csv"]),

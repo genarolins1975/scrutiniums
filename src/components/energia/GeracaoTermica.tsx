@@ -423,7 +423,7 @@ export function GeracaoTermica({
             </p>
             <TabelaInterativa
               titulo={tx("Tabela equivalente: parcela de cada motivo por usina", "Equivalent table: share of each reason by plant")}
-              colunas={[{ id: "motivo", rotulo: tx("Motivo", "Reason"), tipo: "texto" }, ...usinasComparadas.map((x) => ({ id: x.id, rotulo: x.nome ?? x.id, tipo: "percentual" as const, casas: 2 }))]}
+              colunas={[{ id: "motivo", rotulo: tx("Motivo", "Reason"), tipo: "texto" }, ...usinasComparadas.map((x) => ({ id: x.id, rotulo: x.nome ?? x.id, tipo: "percentual" as const, casas: 2, rotuloEhNome: true }))]}
               linhas={paraTabela(motivosUsinas, idioma)}
               chaveLinha="id"
               colunaRotulo="motivo"

@@ -1,5 +1,7 @@
 "use client";
 
+import type { ReactNode } from "react";
+import { Nome } from "@/components/i18n/Nome";
 import { comNomes } from "@/components/i18n/comNomes";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
@@ -67,6 +69,8 @@ export type GraficoLinhasProps = {
   /** Nomes próprios que aparecem no título (reservatório, bacia, usina): na página inglesa saem marcados e o gráfico passa a ser
    * nomeado pelo título visível (aria-labelledby) em vez de <title>. */
   nomesNoTitulo?: readonly string[];
+  /** Os nomes das séries são nomes próprios (uma empresa por série): legenda, dica e tabela os marcam com <Nome>. */
+  seriesSaoNomes?: boolean;
   dados: Ponto[];
   chaveX: string;
   series: SerieLinha[];
@@ -165,6 +169,7 @@ function quebraEmLinhas(texto: string, maxChars: number, maxLinhas: number): str
 export function GraficoLinhas({
   titulo,
   nomesNoTitulo,
+  seriesSaoNomes = false,
   dados,
   chaveX,
   series,
@@ -193,6 +198,7 @@ export function GraficoLinhas({
 }: GraficoLinhasProps) {
   const idioma = useIdioma();
   const marcaTitulo = idioma === "en" && !!nomesNoTitulo?.length;
+  const nomeSerie = (t: ReactNode) => (seriesSaoNomes ? <Nome>{t}</Nome> : t);
   const tx = useTx();
   const fmtX = (v: string, f: FormatoX | undefined, longo = false) => formatarX(v, f, longo, idioma);
   const fV = (v: number | null | undefined, c: number, u: string) => fmtV(v, c, u, idioma);
@@ -621,7 +627,7 @@ export function GraficoLinhas({
                         strokeDasharray={s.tracejada ? "4 3" : visivel ? undefined : "1 3"}
                       />
                     </svg>
-                    {s.rotulo}
+                    {nomeSerie(s.rotulo)}
                     {!visivel && <span className="italic">{tx("(oculta)", "(hidden)")}</span>}
                   </button>
                 </li>
@@ -645,7 +651,7 @@ export function GraficoLinhas({
                 <svg width="18" height="8" aria-hidden="true">
                   <line x1="0" y1="4" x2="18" y2="4" stroke={s.cor} strokeWidth="2.5" strokeDasharray={s.tracejada ? "4 3" : undefined} />
                 </svg>
-                {s.rotulo}
+                {nomeSerie(s.rotulo)}
               </li>
             ))}
             {banda && (
@@ -822,7 +828,7 @@ export function GraficoLinhas({
                 <li key={s.id} className="flex items-center justify-between gap-3 text-carvao">
                   <span className="flex items-center gap-1.5">
                     <span aria-hidden="true" className="inline-block h-2 w-2" style={{ background: s.cor }} />
-                    {s.rotulo}
+                    {nomeSerie(s.rotulo)}
                   </span>
                   <span className="tabular-nums">{fV(pa[s.id] as number | null, casas, unidade)}</span>
                 </li>
@@ -874,7 +880,7 @@ export function GraficoLinhas({
                     {formatoX === "hora" ? tx("Hora", "Hour") : formatoX === "mes" ? tx("Mês", "Month") : formatoX === "texto" ? tx("Item", "Item") : tx("Data", "Date")}
                   </th>
                   {seriesVis.map((s) => (
-                    <th key={s.id} scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{s.rotulo} ({unidade})</th>
+                    <th key={s.id} scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{nomeSerie(s.rotulo)} ({unidade})</th>
                   ))}
                   {banda && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{banda.rotulo} ({unidade})</th>}
                 </tr>

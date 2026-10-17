@@ -95,7 +95,7 @@ export function EmpresasEvolucaoFinancas({ entidades, contas, padrao, seriesInic
   const seriesGrafico = d.comDados.map((c) => ({ id: c, rotulo: nome(c), cor: corDe(c) }));
   const colunasTabela: ColunaTabela[] = [
     { id: "x", rotulo: freq === "anual" ? tx("Exercício", "Fiscal year") : tx("Fim do trimestre", "End of quarter"), tipo: freq === "anual" ? "texto" : "data" },
-    ...v.sel.map((c) => ({ id: c, rotulo: nome(c), tipo: "numero" as const, unidade: tx("R$ milhões", "R$ million"), casas: 1 })),
+    ...v.sel.map((c) => ({ id: c, rotulo: nome(c), tipo: "numero" as const, unidade: tx("R$ milhões", "R$ million"), casas: 1, rotuloEhNome: true })),
   ];
   const semDados = v.sel.filter((c) => !d.comDados.includes(c) && c in series);
   // o texto da escala vem do arquivo ("DFP 2019-12-31 individual: x1000"); em inglês, só o escopo muda de forma
@@ -185,6 +185,7 @@ export function EmpresasEvolucaoFinancas({ entidades, contas, padrao, seriesInic
               chaveX="x"
               formatoX={freq === "anual" ? "texto" : "data"}
               series={seriesGrafico}
+              seriesSaoNomes
               unidade={tx("R$ milhões", "R$ million")}
               casas={1}
               zeroNoEixo

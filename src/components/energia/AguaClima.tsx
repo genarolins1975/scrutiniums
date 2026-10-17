@@ -331,7 +331,7 @@ export function AguaClima({
     <div className="space-y-6">
       <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
         <div className="flex flex-col gap-3">
-          <RespostaCurta id="p019" vivo veredito={!bacia ? semChuva : ehMes ? vereditoChuvaMes(bacia, per, idioma) : vereditoChuva(bacia, idioma)}>
+          <RespostaCurta id="p019" vivo veredito={!bacia ? semChuva : comNomes(ehMes ? vereditoChuvaMes(bacia, per, idioma) : vereditoChuva(bacia, idioma), nomesBacias, idioma)}>
             {!bacia ? semChuva : comNomes(ehMes ? respostaChuvaMes(bacia, per, base, idioma) : respostaChuva(bacia, base, idioma), nomesBacias, idioma)}
           </RespostaCurta>
           {bacia && (
@@ -488,7 +488,7 @@ export function AguaClima({
             </p>
           )}
           {assoc && (
-            <RespostaCurta id="p019-associacao" vivo depois tamanho="sm" veredito={vereditoAssociacao(bacia, idioma) ?? assoc}>
+            <RespostaCurta id="p019-associacao" vivo depois tamanho="sm" veredito={comNomes(vereditoAssociacao(bacia, idioma) ?? assoc, nomesBacias, idioma)}>
               {comNomes(assoc, nomesBacias, idioma)}
             </RespostaCurta>
           )}

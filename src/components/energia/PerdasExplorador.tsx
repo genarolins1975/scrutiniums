@@ -222,7 +222,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
       <div className="grid gap-x-10 gap-y-4 xl:grid-cols-[minmax(0,1fr)_42rem] xl:items-start">
         <div className="flex min-w-0 flex-col gap-4">
           {resposta && veredito ? (
-            <RespostaCurta id="mapa" vivo veredito={veredito}>
+            <RespostaCurta id="mapa" vivo veredito={marcarNomes(veredito, Object.values(rotulos), idioma)}>
               {marcarNomes(resposta, Object.values(rotulos), idioma)}
             </RespostaCurta>
           ) : cargaAnual.estado === "erro" ? (

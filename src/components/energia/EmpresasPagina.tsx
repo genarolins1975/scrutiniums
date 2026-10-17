@@ -213,7 +213,7 @@ export function EmpresasSeguir({
   extra,
 }: {
   ancora: string;
-  proximo: { href: string; pergunta: string };
+  proximo: { href: string; pergunta: string; nomes?: readonly string[] };
   downloads: { rotulo: string; url: string }[];
   extra?: ReactNode;
 }) {

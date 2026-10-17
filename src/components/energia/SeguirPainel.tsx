@@ -1,8 +1,9 @@
+import { comNomes } from "@/components/i18n/comNomes";
 import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
 import { LinkDoPainel } from "@/components/energia/LinkDoPainel";
-import { tx } from "@/lib/energia/idioma";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 
 /**
  * Próximos passos de um painel numa linha só: baixar os dados, copiar o link com o recorte e seguir para a próxima pergunta.
@@ -17,7 +18,8 @@ export function SeguirPainel({
 }: {
   ancora: string;
   downloads: { rotulo: string; url: string }[];
-  proximo?: { href: string; pergunta: string };
+  /** `nomes`: nomes próprios dentro da pergunta, marcados na página inglesa. */
+  proximo?: { href: string; pergunta: string; nomes?: readonly string[] };
   extra?: ReactNode;
 }) {
   const link = "inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao";
@@ -50,7 +52,7 @@ export function SeguirPainel({
           <p className="text-sm">
             <span className="text-mineral">{tx("Próxima pergunta: ", "Next question: ")}</span>
             <Link href={proximo.href} className={link}>
-              {proximo.pergunta}
+              {comNomes(proximo.pergunta, proximo.nomes, idiomaEnergia())}
             </Link>
           </p>
         )}

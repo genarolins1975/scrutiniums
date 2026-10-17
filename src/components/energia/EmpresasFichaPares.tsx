@@ -50,6 +50,7 @@ export function EmpresasFichaPares({ slug, sigla, perdas, qualidade }: { slug: s
         <GraficoBarras
           rotulosSaoNomes
           titulo={tx(`Perdas totais das ${perdas.regra}, com a ${sigla} acesa`, `Total losses of ${perdas.regra}, with ${sigla} highlighted`)}
+          nomesNoTitulo={[sigla]}
           dados={janelaPerdas.crescente ? barras : barras.slice().reverse()}
           chaveCategoria="id"
           chaveRotulo="rotulo"

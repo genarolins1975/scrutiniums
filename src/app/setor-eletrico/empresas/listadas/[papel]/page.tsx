@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+import { comNomes as marcarNomes } from "@/components/i18n/comNomes";
 import type { Metadata, ResolvingMetadata } from "next";
 import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
@@ -161,7 +163,7 @@ export default function FichaListada({ params }: { params: { papel: string } }) 
         <CabecalhoModulo
           rotulo={tx("Empresas listadas", "Listed companies")}
           siglas={["IEE", "B3", "CVM", "FCA", "FRE", "SIGA", "SIGET", "ANEEL"]}
-          titulo={tx(`${nome}: ativos, controle, números e ações`, `${nome}: assets, control, numbers and shares`)}
+          titulo={tx<ReactNode>(`${nome}: ativos, controle, números e ações`, marcarNomes(`${nome}: assets, control, numbers and shares`, [nome], "en"))}
           lead={textoAtuacao(c)}
           recorte={comNomes(
             tx(

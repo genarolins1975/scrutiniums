@@ -1,3 +1,4 @@
+import { comNomes } from "@/components/i18n/comNomes";
 import { fonteLegivel } from "@/lib/energia/bastidor";
 import type { ReactNode } from "react";
 import type { Natureza, Proveniencia } from "@/lib/energia/tipos";
@@ -26,6 +27,8 @@ import type { Idioma } from "@/lib/idioma";
 export type RegraEditorial = {
   /** O que estou vendo: pergunta ou conclusão no título. */
   pergunta: string;
+  /** Nomes próprios dentro da pergunta ("How does Ceraçá serve its area?"): na página inglesa saem marcados. */
+  nomesNaPergunta?: readonly string[];
   /** Indicador · unidade (subtítulo técnico). */
   subtitulo: string;
   porQueImporta: ReactNode;
@@ -113,7 +116,7 @@ export function PainelEvidencia({
     <section id={id} aria-labelledby={`${id}-titulo`} data-nivel={nivel} data-painel-evidencia="" className="scroll-mt-28 border-t border-linha pt-6">
       <header>
         <Titulo id={`${id}-titulo`} className={`${nivelTitulo === 3 ? "ed-h3 text-[1.375rem]" : "ed-h2"} font-serif text-carvao`}>
-          {r.pergunta}
+          {comNomes(r.pergunta, r.nomesNaPergunta, idiomaEnergia())}
         </Titulo>
         <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-carvao-muted">
           <span>{r.subtitulo}</span>
