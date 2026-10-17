@@ -120,6 +120,17 @@ jobs:
         # ISO crua) retornava cedo por falta do diretório: passava sem verificar nada.
         run: npm run build
 
+      - name: Fluxos e telas do Judiciário com sessão local
+        run: node scripts/obee/judiciario-verificacao.mjs
+
+      - name: Evidência funcional do Judiciário
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: judiciario-verificacao
+          path: /tmp/judiciario-qa/resultado.json
+          if-no-files-found: ignore
+
       - name: Cobertura bilíngue confere com as fontes de código
         # Não depende da gold nem de saídas dos materializadores.
         run: node scripts/cobertura-i18n.mjs --check
