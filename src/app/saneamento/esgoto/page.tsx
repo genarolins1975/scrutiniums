@@ -6,6 +6,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Histograma } from "@/components/energia/Histograma";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FiguraJmp, FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
+import { NiveisTratamento } from "@/components/saneamento/Ilustracoes";
 import { montaHistograma } from "@/lib/energia/distribuicao";
 import { acimaDaCapacidade, agregado, agregados, etes, meta, municipios } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
@@ -284,18 +285,10 @@ export default function Pagina() {
               },
             ]}
           />
-          <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-2">
-            <GraficoBarras
-              titulo="Estações em operação por nível de tratamento informado"
-              dados={porNivel}
-              chaveCategoria="id"
-              chaveRotulo="rotulo"
-              series={[{ id: "v", rotulo: "estações", cor: "var(--cor-obee)" }]}
-              unidade="estações"
-              casas={0}
-              orientacao="horizontal"
-              rotulosValor
-            />
+          <div className="mt-10">
+            <NiveisTratamento contagem={Object.fromEntries(porNivel.map((n) => [n.id, n.v]))} emOperacao={operando.length} semNivel={semNivel} />
+          </div>
+          <div className="mt-10 max-w-3xl">
             <GraficoBarras
               titulo="Estações em operação por UF"
               dados={etesUf}

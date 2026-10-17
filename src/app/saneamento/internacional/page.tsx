@@ -6,6 +6,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { TabelaOds } from "@/components/saneamento/ReferenciaMundial";
+import { EscadaJmp } from "@/components/saneamento/Ilustracoes";
 import { agregado, jmpPaises, meta } from "@/lib/saneamento/gold";
 import {
   DEFINICOES_JMP,
@@ -168,6 +169,9 @@ export default function Pagina() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="mt-10">
+            <EscadaJmp />
           </div>
           <Nota>
             As definições são as da aba Ladders do arquivo do JMP, traduzidas livremente; o texto oficial está em inglês. O JMP não mede a qualidade do

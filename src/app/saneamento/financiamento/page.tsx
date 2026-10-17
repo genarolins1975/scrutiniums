@@ -4,6 +4,7 @@ import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Se
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
+import { TresTs } from "@/components/saneamento/Ilustracoes";
 import { agregado, agregados, fichas, prestadores } from "@/lib/saneamento/gold";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
@@ -85,6 +86,7 @@ export default function Pagina() {
         />
         <NestaPagina
           itens={[
+            { id: "quem-paga", rotulo: "Quem paga, no fim" },
             { id: "quem", rotulo: "Quem investe" },
             { id: "natureza", rotulo: "Por natureza do prestador" },
             { id: "por-uf", rotulo: "Por UF" },
@@ -101,6 +103,14 @@ export default function Pagina() {
             contexto: <>{numero(razaoPct(fb[f.id], totalFontes), 1)}% do investimento com origem declarada, água e esgoto, prestador e Estado.</>,
           }))}
         />
+
+        <Secao
+          id="quem-paga"
+          titulo="Quem paga, no fim?"
+          texto="Todo investimento em água e esgoto acaba pago por uma de três fontes. Empréstimos e financiamentos só adiantam o dinheiro."
+        >
+          <TresTs proprios={fb.proprios} onerosos={fb.onerosos} naoOnerosos={fb.nao_onerosos} />
+        </Secao>
 
         <Secao id="quem" titulo="Quem investe e com que dinheiro?" texto="Investimento de 2024 por serviço, por quem declara e por origem dos recursos, em bilhões de reais correntes.">
           <GraficoBarras

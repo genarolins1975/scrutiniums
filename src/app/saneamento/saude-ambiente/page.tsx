@@ -5,6 +5,7 @@ import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
+import { DiagramaF } from "@/components/saneamento/Ilustracoes";
 import { agregados, meta, municipiosComSaude, URL_SAUDE_MUNICIPIOS } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
@@ -202,6 +203,9 @@ export default function Pagina() {
             saneamento é mais indireta, ou o grupo não se separa nas tabulações públicas (a hepatite A fica dentro de &ldquo;outras hepatites virais&rdquo; na
             Lista de Morbidade do SIH).
           </Nota>
+          <div className="mt-10">
+            <DiagramaF />
+          </div>
         </Secao>
 
         <Secao

@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "2b025680cd1d60990a0c71bb68d6288caaff6ca39d1079f72cec33919209c4b5",
-    "arquivos_analisados": 1229,
-    "fontes_sha256": "bd8facb53d34030414c298dde91db06207009c0dcc47c50268a8bd07dc4a1550",
+    "arquivos_analisados": 1230,
+    "fontes_sha256": "7d104095bbe42e13041a7c0a29977aeb595db75e501c1bc5ea54e28bffcfad78",
     "pendencias_sha256": "1431f7d6e2cd7900378c0f400cb1954d4178b310304d436bb81a0ebb3fa1af40",
     "nao_classificadas": [
       {
@@ -288,20 +288,20 @@
     "saneamento": {
       "nome": "Saneamento",
       "interface": {
-        "arquivos": 60,
+        "arquivos": 61,
         "candidatos": {
-          "jsx_text": 1123,
-          "atributos": 267,
-          "props": 1725,
-          "outros_literais": 2991,
-          "templates": 371,
-          "expressoes_nao_resolvidas": 2406,
-          "chaves_objetos": 4113
+          "jsx_text": 1167,
+          "atributos": 294,
+          "props": 1753,
+          "outros_literais": 3174,
+          "templates": 391,
+          "expressoes_nao_resolvidas": 2738,
+          "chaves_objetos": 4295
         },
         "exclusoes": {
-          "importacoes": 428,
-          "atributos_tecnicos": 1442,
-          "tipos": 150
+          "importacoes": 441,
+          "atributos_tecnicos": 1539,
+          "tipos": 172
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -310,7 +310,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 12996,
+        "candidatos_nao_catalogados": 13812,
         "percentual_traduzido": null
       },
       "rotas": {
