@@ -2,7 +2,7 @@
 
 68 requisitos originais + X1. Contagem por tarefa de aprendizagem, sem contar instâncias de cadeia, cartões, controles ou tabelas alternativas. Cenário e explicação não satisfazem requisito de medição observada.
 
-Implementados no recorte declarado: 58; bloqueados: 11. Categorias: {"DADO OBSERVADO":9,"EXPLICAÇÃO CONCEITUAL":16,"CENÁRIO":33}.
+Implementados no recorte declarado: 59; bloqueados: 10. Categorias: {"DADO OBSERVADO":10,"EXPLICAÇÃO CONCEITUAL":16,"CENÁRIO":33}.
 
 | ID | Tarefa | Categoria | Estado | Rota | Limite |
 |---|---|---|---|---|---|
@@ -39,7 +39,7 @@ Implementados no recorte declarado: 58; bloqueados: 11. Categorias: {"DADO OBSER
 | F1 | Mapa visual dos agentes da cadeia | EXPLICAÇÃO CONCEITUAL | CONCEITUAL_SEM_MEDICAO | /agronegocio/empresas-trabalho#f1 | Sem mapa de empresas identificadas ou participação de mercado. Nenhum cadastro pessoal foi publicado. |
 | F2 | Atlas de emprego formal e remuneração com perímetro CNAE explícito e séries compatíveis. | DADO OBSERVADO | COM_DADOS | /agronegocio/empresas-trabalho#f2 | Dados parciais: somente seção A nacional; sem remuneração ou UF × CNAE. |
 | F3 | Decompositor de emprego | CENÁRIO | CENARIO | /agronegocio/empresas-trabalho#f3 | Mesmo período, perímetro e unidade. Na série observada da seção A, a variação é diferença de estoque; admissões setoriais não foram integradas. |
-| F4 | Comparador da estrutura produtiva | Não medido | BLOQUEADO | /agronegocio/empresas-trabalho#f4 | Sem Censo Agro de estabelecimentos, porte e pessoal por universo produtivo. Ocupação de pessoas do Censo Demográfico não substitui estrutura de estabelecimentos. |
+| F4 | Comparador da estrutura produtiva | DADO OBSERVADO | COM_DADOS | /agronegocio/produtores#f4 | Dados parciais: retrato nacional de 2017, sem recorte por estado, cadeia ou porte econômico. Estabelecimento não é produtor nem empresa. |
 | F5 | Ficha “Como ler uma empresa do agro” | EXPLICAÇÃO CONCEITUAL | CONCEITUAL_SEM_MEDICAO | /agronegocio/empresas-trabalho#f5 | Esquema conceitual sem balanço fictício ou recomendação de investimento. Nenhuma empresa foi selecionada como representativa do setor. |
 | F6 | Percurso “O agro e o trabalho no meu território” | Não medido | BLOQUEADO | /agronegocio/empresas-trabalho#f6 | Sem emprego formal por UF × CNAE agro e remuneração na mesma base. O perfil ocupacional X1 é outra medição, sem promessa de vaga ou salário. |
 | G1 | Explorador de camadas produção/clima/vegetação com seleção controlada e geometria/tempo compatíveis | Não medido | BLOQUEADO | /agronegocio/clima-ambiente#g1 | Sem camadas produção/clima/vegetação com geometria e período compatíveis. Série de temperatura de Energia ponderada por outro universo não é exposição agrícola. |

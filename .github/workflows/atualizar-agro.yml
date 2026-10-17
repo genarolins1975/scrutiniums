@@ -1,7 +1,8 @@
 name: Atualizar dados do Agronegócio
 
-# Domínio Agronegócio: recoleta as Contas Nacionais Trimestrais e o LSPA (IBGE) e o
-# Comex Stat (MDIC), grava as sementes com o sha256 de cada original, reconstrói a gold
+# Domínio Agronegócio: recoleta IBGE (Contas Nacionais, LSPA, Censo Agro, PNAD Contínua,
+# IPCA), Comex Stat, BCB (Sicor e Selic), Tesouro Transparente, INPE PRODES, SEEG e
+# MapBiomas, grava as sementes com o sha256 de cada original, reconstrói a gold
 # em public/agro e publica só se os testes do pipeline passarem. O Comex Stat fecha o
 # mês na primeira semana do mês seguinte; o LSPA sai por volta do dia 10; as Contas
 # Trimestrais saem no início de março, junho, setembro e dezembro. Resposta idêntica à
@@ -26,7 +27,7 @@ concurrency:
 jobs:
   pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4

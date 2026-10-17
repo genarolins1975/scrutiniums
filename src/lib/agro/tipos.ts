@@ -228,4 +228,33 @@ export type EconomiaAgro = {
         relacaoTroca: { ano: number; meses: number; soja: number | null; fertilizantes: number | null; relacao: number | null }[];
         fonte: string;
     };
+    produtores: {
+        ano: number;
+        tipologia: Record<'total' | 'familiar' | 'naoFamiliar', { estabelecimentos: number; area: number; pessoal: number; comProducao: number; valorProducao: number }>;
+        gruposArea: { id: string; nome: string; estabelecimentos: number | null; area: number | null; familiar: number | null }[];
+        fonte: string;
+    };
+    trabalho: {
+        trimestres: { periodo: string; ocupadosTotal: number | null; ocupadosAgro: number | null; rendimentoTotal: number | null; rendimentoAgro: number | null; participacao: number | null; razaoRendimento: number | null }[];
+        fonte: string;
+    };
+    prato: {
+        ultimoMes: string;
+        meses: { mes: string; geral: number | null; alimentacaoBebidas: number | null; domicilio: number | null; fora: number | null }[];
+        itens: { id: string; nome: string; doze: number | null; peso: number | null }[];
+        fonte: string;
+    };
+    apoio: {
+        juros: {
+            ultimoMes: string;
+            meses: ({ mes: string; valor: number; contratos: number; coberturaTaxa: number; selic: number | null } & Record<'geral' | 'pronaf' | 'pronamp' | 'demais' | 'equalizada' | 'controlada' | 'livre', number | null> & Record<'valor_equalizada' | 'valor_controlada' | 'valor_livre', number>)[];
+            fonte: string;
+        };
+        pagamentos: { acoes: Record<string, string>; anos: { ano: number; total: number; acoes: Record<string, number> }[]; ultimoMesPagamento: string; atualizadoNaFonte: string | null; fonte: string };
+    };
+    ambiente: {
+        prodes: { atualizado: string; anoPreliminar: number; taxaAmazoniaLegal: { inicio: number; fim: number; km2: number; estimada: boolean }[]; biomas: { id: string; nome: string; periodos: { inicio: number; fim: number; km2: number; anual: boolean; parcial: boolean }[] }[]; fonte: string };
+        emissoes: { versao: string | null; unidade: string; anos: { ano: number; agropecuaria: number; mudancaUsoTerra: number; mudancaUsoTerraRemocao: number | null }[]; fonte: string };
+        usoTerra: { url: string; unidade: string; anos: { ano: number; pastagem: number; agricultura: number; silvicultura: number; mosaico: number; vegetacaoNativa: number; total: number; agropecuaria: number }[]; fonte: string };
+    };
 };

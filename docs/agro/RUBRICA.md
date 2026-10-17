@@ -11,6 +11,10 @@ A arte usa tipografia e tokens existentes, ilustrações vetoriais do mecanismo,
 | /conjuntura | 9 | 9 | 9 | 8 | 9 | 8 | 8 | 9 |
 | /insumos | 9 | 9 | 9 | 8 | 8 | 7 | 8 | 9 |
 | /mercados | 9 | 9 | 9 | 8 | 9 | 8 | 8 | 9 |
+| /produtores | 9 | 9 | 9 | 8 | 9 | 8 | 8 | 9 |
+| /apoio | 9 | 9 | 9 | 8 | 8 | 8 | 8 | 9 |
+| /ambiente | 9 | 9 | 9 | 8 | 9 | 7 | 8 | 9 |
+| /prato | 9 | 9 | 9 | 8 | 9 | 8 | 8 | 9 |
 | /panorama | 9 | 9 | 9 | 8 | 9 | 9 | 8 | 9 |
 | /atlas | 9 | 9 | 9 | 8 | 9 | 9 | 8 | 9 |
 | /comparar | 9 | 9 | 9 | 8 | 9 | 9 | 8 | 9 |
@@ -35,7 +39,7 @@ A arte usa tipografia e tokens existentes, ilustrações vetoriais do mecanismo,
 | /metodologia | 8 | 9 | 9 | 8 | 9 | 9 | 8 | 9 |
 | /sintese | 9 | 9 | 9 | 8 | 9 | 9 | 8 | 9 |
 
-Páginas de perguntas (fase 1 da economia): dados observados com coleta automática, verificados a 320, 390, 768 e 1440 px. Insumos fica em 7 de comparabilidade porque o valor unitário de comércio exterior mistura produtos e não é preço na fazenda; a página diz isso, mas a referência certa (custo Conab, preço ao produtor) ainda falta. Profundidade em 8 nas quatro: sem recorte por estado, juros do crédito rural e consumo nacional de fertilizantes. A nota de didática das páginas antigas sem dado observado não foi revista nesta fase.
+Páginas de perguntas (fase 1 da economia): dados observados com coleta automática, verificados a 320, 390, 768 e 1440 px. Insumos fica em 7 de comparabilidade porque o valor unitário de comércio exterior mistura produtos e não é preço na fazenda; a página diz isso, mas a referência certa (custo Conab, preço ao produtor) ainda falta. Profundidade em 8 nas quatro: sem recorte por estado, juros do crédito rural e consumo nacional de fertilizantes. Fase 2: Ambiente fica em 7 de comparabilidade porque taxa PRODES e incremento mapeado não se comparam entre biomas e o SEEG não é inventário oficial; Apoio fica em 8 de didática porque equalização e subvenção exigem explicação que a página só resume. A nota de didática das páginas antigas sem dado observado não foi revista nestas fases.
 
 Limitações que permanecem: fontes bloqueadas, sem produção/custo de referência/comércio/ambiente observados; fichas de cadeia conceituais e parciais; comparação territorial com período da própria medida e sem produto/histórico conjunto; emprego formal apenas nacional; referência fiscal de programas não integrada. As explicações não preenchem esses vazios. Interação fica em 8 por faltar avaliação externa com pessoas e tecnologia assistiva; emulação de zoom/reflow não cobre todas as formas de ampliação de texto.
 

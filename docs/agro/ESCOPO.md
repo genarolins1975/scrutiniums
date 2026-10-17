@@ -1,6 +1,6 @@
 # Agronegócio: escopo e decisões
 
-Edição de 17/10/2026. Entrega **parcial em relação à especificação**, com oito capítulos, sete fichas de cadeia e, desde a fase 1 da economia do setor, quatro páginas de perguntas com coleta oficial automática (ver seção abaixo). Não foi entregue um observatório completo de produção por estado, preços, custos de referência e ambiente. Todas as páginas distinguem dado observado, explicação conceitual e cenário do usuário.
+Edição de 17/10/2026. Entrega **parcial em relação à especificação**, com oito capítulos, sete fichas de cadeia e oito páginas de perguntas sobre o setor com coleta oficial automática (fases 1 e 2, ver seção abaixo). Não foi entregue um observatório completo de produção por estado, preços, custos de referência e ambiente. Todas as páginas distinguem dado observado, explicação conceitual e cenário do usuário.
 
 Pergunta central: como produção, financiamento, trabalho e consumo se relacionam, e o que cada medida permite concluir? Economia e distribuição social aparecem em eixos separados; não existe nota de impacto ou ranking de eficiência.
 
@@ -13,14 +13,14 @@ Pergunta central: como produção, financiamento, trabalho e consumo se relacion
 | C — Alimentos e consumo | 4 | Orçamento hipotético; PNADC 2023/2024, Brasil e Grandes Regiões | C3, C4 |
 | D — Crédito e proteção | 5 | Crédito por UF/finalidade, Brasil por programa e modelos de financiamento/proteção | D6 |
 | E — Logística e mercados | 5 | Destinos de exportação (E3) e insumos importados (E6) observados no Comex Stat; armazenagem, concentração e decomposição FOB hipotéticas | E1 |
-| F — Empresas e trabalho | 4 | Seção A nacional; mecanismos e cenários de estoque/valor | F4, F6 |
+| F — Empresas e trabalho | 5 | Seção A nacional; estrutura de estabelecimentos e agricultura familiar no Censo Agro 2017 (F4); mecanismos e cenários de estoque/valor | F6 |
 | G — Clima e ambiente | 4 | Água, uso do solo e vulnerabilidade hipotéticos; limites de atribuição | G1, G2 |
 | H — Políticas e inclusão | 6 | Programas de crédito observados, alcance hipotético e leitura crítica | Custo fiscal e resultados não medidos |
 | T — Transversais | 8 | Explorador, histórias, percursos, glossário, comparação, impressão, oficinas e cobertura | Instâncias não aumentam a contagem |
 | K — Complementares | 11 | Caixa, VPL, operação, perdas, logística, câmbio, valor adicionado, HHI/CV, energia, custo por entrega e especialização | K7 |
 | X — Adicional | 1 | Grupo ocupacional qualificado por UF e sexo, Censo Demográfico 2022 | Não substitui emprego formal territorial |
 
-Total: **58 tarefas distintas implementadas**, de 69 contratos (68 originais + X1); **9 com dados observados, 16 conceituais e 33 cenários** (32 numéricos e um qualitativo). Existem 11 itens bloqueados integralmente. Um cenário operacional NÃO satisfaz a medição observada exigida no item original: o catálogo identifica isso em `medicaoRequerida`, além dos 13 bloqueios integrais. Quatro funções pedagógicas de uma seção não significam quatro novas estatísticas.
+Total: **59 tarefas distintas implementadas**, de 69 contratos (68 originais + X1); **10 com dados observados, 16 conceituais e 33 cenários** (32 numéricos e um qualitativo). Existem 10 itens bloqueados integralmente. Um cenário operacional NÃO satisfaz a medição observada exigida no item original: o catálogo identifica isso em `medicaoRequerida`, além dos 13 bloqueios integrais. Quatro funções pedagógicas de uma seção não significam quatro novas estatísticas.
 
 ## Economia do setor: fase 1 (coleta oficial automática)
 
@@ -34,6 +34,17 @@ Quatro páginas respondem às perguntas sobre o agro como negócio, todas com da
 | Para quem vendemos e de quem dependemos? | `/agronegocio/mercados` | Exportações por capítulo e por país, destinos da soja em grão, origem dos fertilizantes | Comex Stat |
 
 Decisões: agropecuária é a das Contas Nacionais (dentro da porteira), não o agronegócio ampliado; o recorte agro do comércio é por capítulo do Sistema Harmonizado (01 a 24, 41, 44, 47, 50 a 53), não a lista do Agrostat; valor unitário de comércio não é preço na fazenda; a relação de troca compara o mesmo intervalo de meses nos dois anos; safras de milho e feijão somam produção, nunca área. O Comex Stat aplica o intervalo de meses do período a cada ano quando há detalhe mensal, por isso séries anuais usam anos fechados e o acumulado do ano tem consulta própria. Conab (custos de referência) não respondeu na coleta de 17/10/2026 e continua fora.
+
+## Fase 2: perguntas 5 a 8
+
+| Pergunta | Rota | Medidas | Fonte |
+|---|---|---|---|
+| Quem produz, quem trabalha e quanto ganha no campo? | `/agronegocio/produtores` | Estabelecimentos, área, pessoal e valor da produção por agricultura familiar e faixa de área (F4); ocupados e renda do trabalho no campo | IBGE Censo Agro 2017 (SIDRA 6754, 6884, 6898); PNAD Contínua (SIDRA 5434, 5442) |
+| Quanto custa o apoio público e quem recebe? | `/agronegocio/apoio` | Taxa média contratada por programa e origem do recurso, contra a Selic; subvenções pagas pelo Tesouro por ação; crédito por programa | BCB Sicor (microdados) e SGS 4189; Tesouro Transparente (subsídios financeiros) |
+| Quanto se desmata e quanto o campo emite? | `/agronegocio/ambiente` | Taxa PRODES da Amazônia Legal, incremento mapeado nos demais biomas, emissões da agropecuária e da mudança de uso da terra, área de agropecuária e de vegetação nativa | INPE PRODES (TerraBrasilis); SEEG 13.0 (API); MapBiomas (estatísticas por bioma e estado) |
+| Quanto custa a comida para as famílias? | `/agronegocio/prato` | IPCA de alimentação no domicílio e fora, itens da cesta com peso, segurança alimentar | IBGE IPCA (SIDRA 1419 e 7060); PNADC (preservada) |
+
+Decisões: a taxa média do crédito rural usa só contratos sem indexador (código 9 da tabela de encargos do Sicor, cerca de 93% do valor), ponderada pelo valor; os grupos de fonte vêm da descrição oficial (equalizada, controlada, livre). Pagamentos do Tesouro são por data de pagamento e referem-se a safras anteriores. Taxa PRODES (Amazônia Legal) e incremento mapeado (demais biomas) não se somam; a estimativa preliminar do INPE fica marcada. SEEG é estimativa da sociedade civil, não inventário oficial; a licença de redistribuição não é explícita, só a citação. Custo de produção da Conab fica fora: licença CC BY-ND (sem derivação) e planilhas com formato diferente por aba. Subvenção ao seguro rural (PSR) fica fora: portal de dados do MAPA respondeu 403 e a execução mensal do Portal da Transparência exige baixar um arquivo por mês.
 
 ## Cobertura por cadeia
 
@@ -76,7 +87,7 @@ Não somar esta tabela à tabela anterior: é a mesma entrega, redistribuída pe
 | C | 1 | 1 | 2 | 4 |
 | D | 1 | 1 | 3 | 5 |
 | E | 2 | 0 | 6 | 8 |
-| F | 2 | 2 | 3 | 7 |
+| F | 3 | 2 | 3 | 8 |
 | G | 0 | 1 | 3 | 4 |
 | H | 1 | 4 | 2 | 7 |
 | T | 2 | 6 | 0 | 8 |
