@@ -111,7 +111,7 @@ try{
    const response=await page.goto(origin+PREFIX+(slug?'/'+slug:''),{waitUntil:'networkidle'});
    await page.evaluate(()=>document.fonts.ready);
    if(slug===''){
-    check('Ilustração carregada '+width+'px',await page.locator('img[alt^="Ilustração conceitual de um tribunal"]').evaluate(img=>img.complete&&img.naturalWidth>0));
+    check('Entrada mostra as duas medidas dos 27 TJs '+width+'px',await page.locator('#endereco ol li').count()===27&&await page.locator('#endereco [data-serie="1"]').count()>=27);
     if([390,1440].includes(width))await page.screenshot({path:join(out,'entrada-primeira-tela-'+width+'.png')});
    }
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
@@ -142,8 +142,13 @@ try{
  await page.waitForURL('**/tribunais/trf3');
  check('Busca abre ficha regional por teclado',(await page.locator('h1').innerText()).includes('TRF3'));
  await page.goto(origin+PREFIX,{waitUntil:'networkidle'});
- await page.getByRole('link',{name:/Começar esta comparação/}).click();
- check('Exemplo da entrada mantém três TJs de grande porte',await page.getByLabel('Porte oficial',{exact:true}).inputValue()==='Grande'&&await page.getByLabel('Tribunal 1',{exact:true}).inputValue()==='tjsp'&&await page.getByLabel('Tribunal 2',{exact:true}).inputValue()==='tjmg'&&await page.getByLabel('Tribunal 3',{exact:true}).inputValue()==='tjrs');
+ await page.locator('#endereco').getByRole('link',{name:'TJSP',exact:true}).click();
+ await page.waitForURL('**/tribunais/tjsp');
+ check('Halteres da entrada abrem a ficha do tribunal',(await page.locator('h1').innerText()).includes('TJSP'));
+ await page.goto(origin+PREFIX,{waitUntil:'networkidle'});
+ await page.getByRole('link',{name:/Comparar os tribunais/}).click();
+ await page.waitForURL('**/comparar');
+ check('Pergunta do endereço leva ao comparador',new URL(page.url()).pathname===PREFIX+'/comparar');
  await page.goto(origin+PREFIX+'/comparar',{waitUntil:'networkidle'});
  await page.getByLabel('Tribunal 1',{exact:true}).selectOption('tjsp');
  await page.getByLabel('Tribunal 2',{exact:true}).selectOption('tjpe');
