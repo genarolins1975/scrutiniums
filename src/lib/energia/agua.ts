@@ -132,11 +132,19 @@ export function listaTexto(itens: readonly string[], idioma: Idioma = idiomaEner
   return `${itens.slice(0, -1).join(", ")} ${tx("e", "and", idioma)} ${itens[itens.length - 1]}`;
 }
 
-/** "2001-2025" (período da base publicado pela gold) → "2001 a 2025"; sem hífen no texto visível. */
+/**
+ * "2001-2025" (período da base publicado pela gold) → "2001 a 2025" ("2001 to 2025" em inglês); sem hífen no texto
+ * visível. Também lê intervalo de datas ou meses ISO ("2001-01-01/2025-12-31", "2001-01/2025-12") e data ou mês isolado,
+ * escritos pelos formatadores no idioma. Forma desconhecida volta como veio.
+ */
 export function periodoBase(p: string | null | undefined, idioma: Idioma = idiomaEnergia()): string {
   if (!p) return tx("sem base", "no baseline", idioma);
-  const [a, b] = p.split("-");
-  return b && b !== a ? `${a} ${tx("a", "to", idioma)} ${b}` : a;
+  const anos = /^(\d{4})-(\d{4})$/.exec(p);
+  if (anos) return anos[2] !== anos[1] ? `${anos[1]} ${tx("a", "to", idioma)} ${anos[2]}` : anos[1];
+  const data = (x: string) => (/^\d{4}-\d{2}$/.test(x) ? mesAno(x, idioma) : /^\d{4}-\d{2}-\d{2}/.test(x) ? dataBR(x, idioma) : x);
+  const intervalo = /^([\d-]+)\/([\d-]+)$/.exec(p);
+  if (intervalo) return intervalo[1] === intervalo[2] ? data(intervalo[1]) : `${data(intervalo[1])} ${tx("a", "to", idioma)} ${data(intervalo[2])}`;
+  return data(p);
 }
 
 /** EAR em MWmês: recortes pequenos (Belo Monte, 28 MWmês de EAR máxima) com uma casa; os demais sem casa. */
@@ -1161,7 +1169,7 @@ export function evidenciaEnaArmazenavel<E extends FichaComRazao>(ev: E): E {
 export function textoMedianaEMlt(e: Pick<EntidadeEna, "p50_30d" | "periodo_base">, idioma: Idioma = idiomaEnergia()): string | null {
   if (e.p50_30d === null || !e.periodo_base) return null;
   return tx(
-    `Há dois “normais”: 100% é a MLT, a média de longo termo que o ONS calcula; ${pct(e.p50_30d, 1)} é a mediana da mesma janela em ${periodoBase(e.periodo_base)}, o valor do meio entre os anos da base. Uma média pode ficar acima da mediana quando poucos anos muito úmidos a puxam para cima.`,
+    `Há dois “normais”: 100% é a MLT, a média de longo termo que o ONS calcula; ${pct(e.p50_30d, 1)} é a mediana da mesma janela em ${periodoBase(e.periodo_base, "pt")}, o valor do meio entre os anos da base. Uma média pode ficar acima da mediana quando poucos anos muito úmidos a puxam para cima.`,
     `There are two “normals”: 100% is the MLT, the long-term average that ONS calculates; ${pct(e.p50_30d, 1, "en")} is the median of the same window in ${periodoBase(e.periodo_base, "en")}, the middle value across the baseline years. An average can sit above the median when a few very wet years pull it up.`,
     idioma,
   );
