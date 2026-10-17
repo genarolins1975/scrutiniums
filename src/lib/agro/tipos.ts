@@ -12,6 +12,7 @@ export type FonteAgro = {
     licenca: string;
     estadoAcesso: string;
     limite: string;
+    capturadoEm?: string;
 };
 export type CreditoUf = {
     id: string;
@@ -154,6 +155,7 @@ export type SnapshotAgro = {
         limite: string;
     };
     producao: ProducaoAgro[];
+    economia: EconomiaAgro | null;
     bloqueios: {
         id: string;
         estado: string;
@@ -180,4 +182,50 @@ export type ArtefatoAgro = {
     categoria: CategoriaArtefato | null;
     status: string;
     limitacao: string;
+};
+
+export type SetoresAgro = { agro: number; industria: number; servicos: number; va: number; pib: number };
+export type TaxaAgro = { periodo: string; agro: number | null; industria: number | null; servicos: number | null; pib: number | null };
+export type ComercioAno = { ano: number; meses: number; fob: number; kg: number; valorUnitario: number | null };
+export type PaisesAgro = { ano: number; fob: number; kg: number; paises: { pais: string; fob: number; kg: number; participacao: number }[] };
+export type EconomiaAgro = {
+    pib: {
+        unidade: string;
+        trimestres: ({ periodo: string } & SetoresAgro)[];
+        anual: ({ ano: number; participacaoVa: number; participacaoPib: number } & SetoresAgro)[];
+        ultimos4: { inicio: string; fim: string; agro: number; va: number; pib: number; participacaoVa: number; participacaoPib: number };
+        crescimento: { trimestral: TaxaAgro[]; acumulado4: TaxaAgro[]; acumuladoAno: TaxaAgro[]; anual: (Omit<TaxaAgro, 'periodo'> & { ano: number })[] };
+        fonte: string;
+    };
+    safra: {
+        mesReferencia: string;
+        anoSafra: number;
+        unidades: { producao: string; area: string; rendimento: string };
+        produtos: { id: string; nome: string; somaDeSafras?: string[]; anos: { ano: number; mesEstimativa: string; producao: number | null; area: number | null; rendimento: number | null }[] }[];
+        fonte: string;
+    };
+    comercio: {
+        atualizadoNaFonte: string;
+        ultimoMes: string;
+        anoCompleto: number;
+        capitulosAgro: string[];
+        definicaoAgro: string;
+        exportacoes: {
+            anual: { ano: number; total: number; agro: number; agroKg: number; participacao: number }[];
+            composicao: { capitulo: string; nome: string; fob: number; kg: number }[];
+            mensal: { mes: string; total: number; agro: number }[];
+            acumulado: { ano: number; meses: number; agro: number; agroAnterior: number; total: number; totalAnterior: number; variacaoAgro: number | null; participacao: number | null };
+            destinos: PaisesAgro;
+        };
+        soja: { ncm: string; anual: ComercioAno[]; destinos: PaisesAgro };
+        insumos: {
+            fertilizantes: ComercioAno[];
+            defensivos: ComercioAno[];
+            posicoes: { posicao: string; nome: string; anos: ComercioAno[] }[];
+            origensFertilizantes: PaisesAgro;
+            mesmoPeriodo: { soja: ComercioAno[]; fertilizantes: ComercioAno[]; defensivos: ComercioAno[]; relacao: (number | null)[] };
+        };
+        relacaoTroca: { ano: number; meses: number; soja: number | null; fertilizantes: number | null; relacao: number | null }[];
+        fonte: string;
+    };
 };

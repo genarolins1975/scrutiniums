@@ -14,7 +14,7 @@
       "nome": "BCB MDCR/Sicor — snapshot derivado preservado",
       "licenca": "ODbL, conforme catálogo registrado na origem",
       "estadoAcesso": "SNAPSHOT_PRESERVADO",
-      "limite": "Nova coleta oficial bloqueada por CONNECT 403; não se afirma edição mais recente."
+      "limite": "Snapshot preservado; nova coleta oficial desta fonte ainda não integrada ao Agro. Não se afirma edição mais recente."
     },
     {
       "id": "formal",
@@ -27,7 +27,7 @@
       "nome": "MTE/Novo Caged, republicado pelo BCB — snapshot derivado",
       "licenca": "Dados abertos do BCB; licença específica não revalidada nesta coleta",
       "estadoAcesso": "SNAPSHOT_PRESERVADO",
-      "limite": "Nova coleta oficial bloqueada por CONNECT 403; não se afirma edição mais recente."
+      "limite": "Snapshot preservado; nova coleta oficial desta fonte ainda não integrada ao Agro. Não se afirma edição mais recente."
     },
     {
       "id": "ocupacoes",
@@ -40,7 +40,7 @@
       "nome": "IBGE Censo Demográfico 2022, SIDRA 10282",
       "licenca": "IBGE, uso com citação; termos específicos do portal não revalidados nesta sessão",
       "estadoAcesso": "SNAPSHOT_PRESERVADO",
-      "limite": "Nova coleta oficial bloqueada por CONNECT 403; não se afirma edição mais recente."
+      "limite": "Snapshot preservado; nova coleta oficial desta fonte ainda não integrada ao Agro. Não se afirma edição mais recente."
     },
     {
       "id": "ocupacoes-metadados",
@@ -53,7 +53,7 @@
       "nome": "IBGE, metadados da tabela 10282",
       "licenca": "IBGE, uso com citação da fonte",
       "estadoAcesso": "SNAPSHOT_PRESERVADO",
-      "limite": "Nova coleta oficial bloqueada por CONNECT 403; não se afirma edição mais recente."
+      "limite": "Snapshot preservado; nova coleta oficial desta fonte ainda não integrada ao Agro. Não se afirma edição mais recente."
     },
     {
       "id": "alimentacao",
@@ -66,7 +66,7 @@
       "nome": "IBGE PNADC 2023/2024 — recorte conferido na origem",
       "licenca": "IBGE, uso com citação da fonte",
       "estadoAcesso": "SNAPSHOT_PRESERVADO",
-      "limite": "Nova coleta oficial bloqueada por CONNECT 403; não se afirma edição mais recente."
+      "limite": "Snapshot preservado; nova coleta oficial desta fonte ainda não integrada ao Agro. Não se afirma edição mais recente."
     },
     {
       "id": "inflacao",
@@ -79,7 +79,7 @@
       "nome": "IBGE IPCA, tabela 1737, número-índice",
       "licenca": "IBGE, uso com citação da fonte",
       "estadoAcesso": "SNAPSHOT_PRESERVADO",
-      "limite": "Nova coleta oficial bloqueada por CONNECT 403; não se afirma edição mais recente."
+      "limite": "Snapshot preservado; nova coleta oficial desta fonte ainda não integrada ao Agro. Não se afirma edição mais recente."
     },
     {
       "id": "geometria",
@@ -92,7 +92,7 @@
       "nome": "IBGE, malha de UFs já projetada pelo pipeline de Energia",
       "licenca": "IBGE, uso com citação da fonte",
       "estadoAcesso": "SNAPSHOT_PRESERVADO",
-      "limite": "Nova coleta oficial bloqueada por CONNECT 403; não se afirma edição mais recente."
+      "limite": "Snapshot preservado; nova coleta oficial desta fonte ainda não integrada ao Agro. Não se afirma edição mais recente."
     }
   ]
 }

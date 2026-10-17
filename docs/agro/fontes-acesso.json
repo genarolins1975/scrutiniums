@@ -74,5 +74,39 @@
       "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11326.htm",
       "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
     }
-  ]
+  ],
+  "sondagemPosterior": {
+    "data": "2026-10-17",
+    "nota": "Nova sondagem na mesma data, após mudança da política de rede do ambiente. Respostas HTTP observadas; a coleta da economia passou a usar IBGE e Comex Stat.",
+    "resultados": [
+      {
+        "url": "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos",
+        "status": 200
+      },
+      {
+        "url": "https://apisidra.ibge.gov.br/values/t/5938/n1/all/v/37/p/last",
+        "status": 200
+      },
+      {
+        "url": "https://api-comexstat.mdic.gov.br/general",
+        "status": 200
+      },
+      {
+        "url": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/",
+        "status": 200
+      },
+      {
+        "url": "https://www.ipeadata.gov.br/api/odata4/Metadados",
+        "status": 200
+      },
+      {
+        "url": "https://www.conab.gov.br",
+        "status": "sem resposta em 15 s"
+      },
+      {
+        "url": "https://www.cepea.org.br",
+        "status": 403
+      }
+    ]
+  }
 }
