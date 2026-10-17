@@ -130,6 +130,13 @@ export const DEFINICAO_EMPRESAS_EN: Tabela = {
     "Compare with distribution utilities of the same group (concession holder or permit holder) and, for continuity, of the same size in ANEEL's ranking (qualidade.porte); reference years that differ between modules are not compared.",
 };
 
+/** Classificação da distribuidora publicada pelas bases reguladas (distribuidoras.indice[].classificacao). */
+export const CLASSIFICACAO_DIST_EN: Tabela = {
+  Concessionária: "Concession holder",
+  Permissionária: "Permit holder",
+  "Permissionária de Serviço Público de Distribuição": "Public distribution service permit holder",
+};
+
 /** Descrição das séries de evolução das distribuidoras (distribuidoras.series_evolucao.*.chave e .unidade). */
 export const SERIE_EVOLUCAO_EN: Tabela = {
   "distribuidoras[cnpj]: linhas [ano, meses, completo, ...] na ordem de 'campos'": "distribuidoras[cnpj]: rows [ano, meses, completo, ...] in the order of 'campos'", // i18n: dado (nomes de campo do arquivo)
