@@ -300,7 +300,7 @@ export default function PerdasCustoContextoPage() {
                     g.evidencias.associacao ? (
                       <ComproveNumero
                         evidencia={g.evidencias.associacao}
-                        rotulo={tx("Comprove a associação da taxa de perdas totais com a renda", "Verify the association of the total loss rate with income")}
+                        rotulo={tx("Comprove a associação da taxa de perdas totais com a renda", "Check the association of the total loss rate with income")}
                       />
                     ) : undefined
                   }

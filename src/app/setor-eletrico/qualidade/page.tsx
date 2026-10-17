@@ -132,7 +132,7 @@ export async function generateMetadata(_props: unknown, anterior: ResolvingMetad
     ),
     description: tx(
       "DEC e FEC por conjunto, distribuidora e Brasil (ANEEL), realizado diante dos limites regulatórios, compensações pagas por violação de limites individuais, reclamações por unidade consumidora, IASC com amostra, atendimento emergencial e eventos de emergência.",
-      "DEC and FEC by consumer cluster, distribution utility and Brazil (ANEEL), actual values against the regulatory limits, compensation payments for violation of individual limits, complaints per consumer unit, IASC with its sample, emergency response and emergency events.",
+      "DEC and FEC by consumer set, distribution utility and Brazil (ANEEL), actual values against the regulatory limits, compensation payments for violation of individual limits, complaints per consumer unit, IASC with its sample, emergency response and emergency events.",
     ),
     alternates: { canonical: "/setor-eletrico/qualidade" },
   }, anterior);
@@ -278,7 +278,7 @@ export default function QualidadePage() {
       {regras.agregacao}
       {tx(
         " A linha tracejada é o limite agregado do mesmo ano (limites dos conjuntos ponderados pelas UCs), não um limite oficial nacional.",
-        " The dashed line is the aggregate limit of the same year (limits of the consumer clusters weighted by the UCs), not an official national limit.",
+        " The dashed line is the aggregate limit of the same year (limits of the consumer sets weighted by the UCs), not an official national limit.",
       )}{" "}
       {textoConcessionariasDesde(g, inicioConcessionarias)}
     </>
@@ -287,7 +287,7 @@ export default function QualidadePage() {
     <>
       {tx(
         "DEC e FEC são médias por UC: não dizem quanto tempo cada pessoa ficou sem energia, e parte das unidades fica muito acima da média do conjunto. O apurado exclui o que a regra expurga; comparar anos sem olhar as parcelas pode esconder eventos extremos.",
-        "DEC and FEC are averages per UC: they do not say how long each person was without power, and some units are far above the average of the consumer cluster. The assessed value excludes what the rule removes; comparing years without looking at the components can hide extreme events.",
+        "DEC and FEC are averages per UC: they do not say how long each person was without power, and some units are far above the average of the consumer set. The assessed value excludes what the rule removes; comparing years without looking at the components can hide extreme events.",
       )}
       {inicioParcelas ? tx(` Antes de ${inicioParcelas} a fonte usa outra desagregação.`, ` Before ${inicioParcelas} the source uses another breakdown.`) : ""}
     </>
@@ -296,7 +296,7 @@ export default function QualidadePage() {
     <>
       {tx(
         "No gráfico de pontos, o círculo é o apurado e o losango o limite agregado da distribuidora (limites dos conjuntos ponderados pelas UCs médias do ano); a diferença está escrita.",
-        "In the dot chart, the circle is the assessed value and the diamond the distribution utility's aggregate limit (limits of the consumer clusters weighted by the average UCs of the year); the difference is stated.",
+        "In the dot chart, the circle is the assessed value and the diamond the distribution utility's aggregate limit (limits of the consumer sets weighted by the average UCs of the year); the difference is stated.",
       )}{" "}
       {regras.limite_centesimos}
       {tx(" No histograma, à direita de 1 está o que passou do limite.", " In the histogram, what exceeded the limit is to the right of 1.")}
@@ -306,7 +306,7 @@ export default function QualidadePage() {
     <>
       {tx(
         "Abaixo do limite agregado não quer dizer que todos os conjuntos da distribuidora ficaram abaixo, nem que nenhum consumidor teve o limite individual violado. Limites diferem entre conjuntos e anos: uma razão menor não compara áreas com limites diferentes. A razão do Brasil não é um limite oficial nacional.",
-        "Below the aggregate limit does not mean that all of the distribution utility's consumer clusters were below it, nor that no consumer had an individual limit violated. Limits differ between consumer clusters and years: a lower ratio does not compare areas with different limits. Brazil's ratio is not an official national limit.",
+        "Below the aggregate limit does not mean that all of the distribution utility's consumer sets were below it, nor that no consumer had an individual limit violated. Limits differ between consumer sets and years: a lower ratio does not compare areas with different limits. Brazil's ratio is not an official national limit.",
       )}
     </>
   );
@@ -473,13 +473,13 @@ export default function QualidadePage() {
                 />
                 <Numero
                   variante="faixa"
-                  rotulo={tx("Conjuntos acima do limite de DEC", "Consumer clusters above the DEC limit")}
+                  rotulo={tx("Conjuntos acima do limite de DEC", "Consumer sets above the DEC limit")}
                   natureza="CALCULADO"
                   valor={m.conjuntos.pct}
                   formato="pct"
                   casas={1}
                   // a unidade da evidência começa com "%", que o formato já escreve colado ao número
-                  unidade={tx("dos conjuntos", "of the consumer clusters")}
+                  unidade={tx("dos conjuntos", "of the consumer sets")}
                   periodo={String(m.conjuntos.ano)}
                   evidencia={ev.conjuntos_acima_limite ?? null}
                   nota={
@@ -489,7 +489,7 @@ export default function QualidadePage() {
                           {num(m.conjuntos.acima, 0)} de {num(m.conjuntos.comLimite, 0)} conjuntos. {definicaoConjuntoCurta()}
                         </>,
                         <>
-                          {num(m.conjuntos.acima, 0)} of {num(m.conjuntos.comLimite, 0)} consumer clusters. {definicaoConjuntoCurta()}
+                          {num(m.conjuntos.acima, 0)} of {num(m.conjuntos.comLimite, 0)} consumer sets. {definicaoConjuntoCurta()}
                         </>,
                       )}
                       {m.conjuntos.pctAnterior !== null && tx(` Em ${m.conjuntos.anoAnterior}: ${pct(m.conjuntos.pctAnterior, 1)}.`, ` In ${m.conjuntos.anoAnterior}: ${pct(m.conjuntos.pctAnterior, 1)}.`)}
@@ -533,9 +533,9 @@ export default function QualidadePage() {
               como o consumidor é atendido.
             </>,
             <>
-              ANEEL measures the continuity of supply by <Termo slug="conjunto-eletrico">consumer cluster</Termo>: the <Termo slug="dec">DEC</Termo> says how many hours, on
+              ANEEL measures the continuity of supply by <Termo slug="conjunto-eletrico">consumer set</Termo>: the <Termo slug="dec">DEC</Termo> says how many hours, on
               average, each consumer unit was without power, and the <Termo slug="fec">FEC</Termo> how many times. This page shows these numbers for Brazil, the distribution utilities and
-              the consumer clusters, compares each one with the regulatory limit of the same year, and shows the <Termo slug="compensacao-continuidade">compensation payments</Termo> made to those
+              the consumer sets, compares each one with the regulatory limit of the same year, and shows the <Termo slug="compensacao-continuidade">compensation payments</Termo> made to those
               whose individual limit was violated and how consumers are served.
             </>,
           )}
@@ -549,14 +549,14 @@ export default function QualidadePage() {
               pergunta={p051.titulo}
               subtitulo={tx(
                 "DEC e FEC apurados, o que a regra conta para o limite, no Brasil, nas distribuidoras e nos conjuntos · horas e interrupções por UC",
-                "Assessed DEC and FEC, what the rule counts toward the limit, in Brazil, at the distribution utilities and in the consumer clusters · hours and interruptions per UC",
+                "Assessed DEC and FEC, what the rule counts toward the limit, in Brazil, at the distribution utilities and in the consumer sets · hours and interruptions per UC",
               )}
               natureza="CALCULADO"
               porQueImporta={
                 <>
                   {tx(
                     "DEC e FEC são os indicadores com que a ANEEL acompanha a continuidade do fornecimento: limites, ranking e compensações partem deles. A média nacional é ponderada pelas unidades consumidoras de cada conjunto em cada mês, então distribuidoras grandes pesam mais.",
-                    "DEC and FEC are the indicators ANEEL uses to monitor the continuity of supply: limits, ranking and compensation payments start from them. The national average is weighted by the consumer units of each consumer cluster in each month, so large distribution utilities weigh more.",
+                    "DEC and FEC are the indicators ANEEL uses to monitor the continuity of supply: limits, ranking and compensation payments start from them. The national average is weighted by the consumer units of each consumer set in each month, so large distribution utilities weigh more.",
                   )}
                 </>
               }
@@ -566,7 +566,7 @@ export default function QualidadePage() {
               naoConcluirNoCorpo
               proveniencia={prov.distribuidoras}
               complementares={[
-                { rotulo: tx("Conjuntos (valores da ANEEL)", "Consumer clusters (ANEEL values)"), p: prov.conjuntos },
+                { rotulo: tx("Conjuntos (valores da ANEEL)", "Consumer sets (ANEEL values)"), p: prov.conjuntos },
                 { rotulo: tx("Mapa por município", "Map by municipality"), p: prov.mapa },
               ]}
             >
@@ -630,7 +630,7 @@ export default function QualidadePage() {
                   universo={
                     <>
                       {textoUniversoBrasil(g)}
-                      {tx(<> Mapa: conjuntos com DEC em {g.mapa.ano}.</>, <> Map: consumer clusters with DEC in {g.mapa.ano}.</>)}
+                      {tx(<> Mapa: conjuntos com DEC em {g.mapa.ano}.</>, <> Map: consumer sets with DEC in {g.mapa.ano}.</>)}
                     </>
                   }
                   unidade={
@@ -705,7 +705,7 @@ export default function QualidadePage() {
 
                 <SecaoDoPainel
                   id="mapa-municipios"
-                  titulo={tx("Que conjuntos atendem cada município?", "Which consumer clusters serve each municipality?")}
+                  titulo={tx("Que conjuntos atendem cada município?", "Which consumer sets serve each municipality?")}
                   lead={tx(
                     <>
                       {num(g.mapa.municipios_com_valor, 0)} municípios com valor em {g.mapa.ano}. {definicaoConjunto()} Cada cor é o valor de um conjunto, não do município: como um município pode ter
@@ -713,9 +713,9 @@ export default function QualidadePage() {
                       de cada um e as distribuidoras.
                     </>,
                     <>
-                      {num(g.mapa.municipios_com_valor, 0)} municipalities with a value in {g.mapa.ano}. {definicaoConjunto()} Each colour is the value of a consumer cluster, not of the
+                      {num(g.mapa.municipios_com_valor, 0)} municipalities with a value in {g.mapa.ano}. {definicaoConjunto()} Each color is the value of a consumer set, not of the
                       municipality: since a municipality can have several clusters, the map paints the highest or the lowest of them, as you choose, and there is no municipal average. Click on a
-                      municipality, or search by name, to see the consumer clusters, the limit of each one and the distribution utilities.
+                      municipality, or search by name, to see the consumer sets, the limit of each one and the distribution utilities.
                     </>,
                   )}
                 >
@@ -783,7 +783,7 @@ export default function QualidadePage() {
                   <QualidadeTabela tabela="dist-p051" titulo={tx(`DEC, FEC e parcelas por distribuidora, ${ref}`, `DEC, FEC and components by distribution utility, ${ref}`)} linhas={n("dist-p051")} chaveUrl="tdist" avisosFec={avisos} />
                 </SecaoDoPainel>
 
-                <SecaoDoPainel id="conjuntos-do-ano" nivel="analisar" titulo={tx("Todos os conjuntos de um ano", "All consumer clusters of a year")}>
+                <SecaoDoPainel id="conjuntos-do-ano" nivel="analisar" titulo={tx("Todos os conjuntos de um ano", "All consumer sets of a year")}>
                   <QualidadeConjuntos anoInicial={Number(primeiroAno)} anoFinal={ref} tamanhos={tamanhos} fonte={fonteContinuidade()} />
                 </SecaoDoPainel>
 
@@ -866,7 +866,7 @@ export default function QualidadePage() {
                       limite: ela mostra quem está perto, quem passou e por quanto.
                     </>,
                     <>
-                      ANEEL sets DEC and FEC limits for each <Termo slug="conjunto-eletrico">consumer cluster</Termo> at the frequency of the tariff reviews. According to ANEEL, non-compliance
+                      ANEEL sets DEC and FEC limits for each <Termo slug="conjunto-eletrico">consumer set</Termo> at the frequency of the tariff reviews. According to ANEEL, non-compliance
                       has consequences for the distribution utility, such as a results plan and a limit on payouts to shareholders, and the continuity ranking starts from the distance to the
                       limit: it shows who is close, who exceeded it and by how much.
                     </>,
@@ -908,7 +908,7 @@ export default function QualidadePage() {
                       {num(c.com_limite, 0)} conjuntos com 12 meses e limite; {g.distribuidoras.length} distribuidoras com indicadores de continuidade ({g.distribuidoras.filter((d) => d.dec === null).length} sem valor anual); as encerradas ou absorvidas, listadas em Perdas e em Minha região, não têm
                     </>,
                     <>
-                      {num(c.com_limite, 0)} consumer clusters with 12 months and a limit; {g.distribuidoras.length} distribution utilities with continuity indicators ({g.distribuidoras.filter((d) => d.dec === null).length} with no annual value); those that closed or were absorbed, listed in Losses and in My region, have none
+                      {num(c.com_limite, 0)} consumer sets with 12 months and a limit; {g.distribuidoras.length} distribution utilities with continuity indicators ({g.distribuidoras.filter((d) => d.dec === null).length} with no annual value); those that closed or were absorbed, listed in Losses and in My region, have none
                     </>,
                   )}
                   unidade={tx(
@@ -938,15 +938,15 @@ export default function QualidadePage() {
 
                 <SecaoDoPainel
                   id="distribuicao-dos-conjuntos"
-                  titulo={tx("Como os conjuntos se distribuem diante do limite? A média esconde as caudas", "How are the consumer clusters distributed against the limit? The average hides the tails")}
+                  titulo={tx("Como os conjuntos se distribuem diante do limite? A média esconde as caudas", "How are the consumer sets distributed against the limit? The average hides the tails")}
                 >
                   <Histograma
-                    titulo={tx(`Conjuntos por razão DEC ÷ limite, ${c.ano}`, `Consumer clusters by DEC ÷ limit ratio, ${c.ano}`)}
+                    titulo={tx(`Conjuntos por razão DEC ÷ limite, ${c.ano}`, `Consumer sets by DEC ÷ limit ratio, ${c.ano}`)}
                     dados={histRazao}
-                    rotuloX={tx("DEC apurado ÷ limite do conjunto", "Assessed DEC ÷ limit of the consumer cluster")}
+                    rotuloX={tx("DEC apurado ÷ limite do conjunto", "Assessed DEC ÷ limit of the consumer set")}
                     unidade={tx("vezes o limite", "times the limit")}
                     casas={2}
-                    contagem={tx({ singular: "conjunto", plural: "conjuntos" }, { singular: "consumer cluster", plural: "consumer clusters" })}
+                    contagem={tx({ singular: "conjunto", plural: "conjuntos" }, { singular: "consumer set", plural: "consumer sets" })}
                     periodo={String(c.ano)}
                     valorAtual={{ valor: 1, rotulo: tx("Limite", "Limit") }}
                     cor="var(--cor-energia)"
@@ -956,38 +956,38 @@ export default function QualidadePage() {
                           ? ` A última faixa é aberta na fonte (${num(ultimaFaixaRazao.de, 2)} vezes o limite ou mais) e é desenhada até o máximo (${num(c.quantis_razao_dec.max, 2)}).`
                           : ""
                       } ${num(c.iguais_limite_dec, 0)} conjuntos com DEC igual ao limite não contam como acima.`,
-                      `P10 to P90 are percentiles: P90 is the ratio below which 90% of the consumer clusters lie. With bins of different widths, bar height is density, not count.${
+                      `P10 to P90 are percentiles: P90 is the ratio below which 90% of the consumer sets lie. With bins of different widths, bar height is density, not count.${
                         ultimaFaixaRazao && ultimaFaixaRazao.ate === null && c.quantis_razao_dec.max !== null
                           ? ` The last bin is open in the source (${num(ultimaFaixaRazao.de, 2)} times the limit or more) and is drawn up to the maximum (${num(c.quantis_razao_dec.max, 2)}).`
                           : ""
-                      } ${num(c.iguais_limite_dec, 0)} consumer clusters with DEC equal to the limit do not count as above.`,
+                      } ${num(c.iguais_limite_dec, 0)} consumer sets with DEC equal to the limit do not count as above.`,
                     )}
                   />
                 </SecaoDoPainel>
 
-                <SecaoDoPainel id="ano-a-ano" titulo={tx("Quantos conjuntos passaram do limite, ano a ano?", "How many consumer clusters exceeded the limit, year by year?")} lead={textoUniversosConjuntos(g)}>
+                <SecaoDoPainel id="ano-a-ano" titulo={tx("Quantos conjuntos passaram do limite, ano a ano?", "How many consumer sets exceeded the limit, year by year?")} lead={textoUniversosConjuntos(g)}>
                   <QualidadePar>
                     <GraficoLinhas
-                      titulo={tx(`Unidades consumidoras e conjuntos acima do limite de DEC, ${c.historico[0]?.ano ?? ""} a ${c.ano}`, `Consumer units and consumer clusters above the DEC limit, ${c.historico[0]?.ano ?? ""} to ${c.ano}`)}
+                      titulo={tx(`Unidades consumidoras e conjuntos acima do limite de DEC, ${c.historico[0]?.ano ?? ""} a ${c.ano}`, `Consumer units and consumer sets above the DEC limit, ${c.historico[0]?.ano ?? ""} to ${c.ano}`)}
                       dados={histUcs}
                       chaveX="ano" // i18n: dado
                       formatoX="texto"
                       series={[
                         { id: "pct_ucs_acima", rotulo: tx("% das unidades consumidoras (leitura principal)", "% of consumer units (main reading)"), sigla: "UCs", cor: "var(--cor-energia)" }, // i18n: dado
-                        { id: "pct_acima", rotulo: tx("% dos conjuntos", "% of consumer clusters"), sigla: tx("Conjuntos", "Clusters"), cor: "var(--serie-sm-se)" },
+                        { id: "pct_acima", rotulo: tx("% dos conjuntos", "% of consumer sets"), sigla: tx("Conjuntos", "Clusters"), cor: "var(--serie-sm-se)" },
                       ]}
                       unidade="%"
                       casas={1}
                       zeroNoEixo
                     />
                     <GraficoLinhas
-                      titulo={tx("Razão DEC ÷ limite dos conjuntos: mediana e percentil 90", "DEC ÷ limit ratio of the consumer clusters: median and 90th percentile")}
+                      titulo={tx("Razão DEC ÷ limite dos conjuntos: mediana e percentil 90", "DEC ÷ limit ratio of the consumer sets: median and 90th percentile")}
                       dados={histRazoes}
                       chaveX="ano" // i18n: dado
                       formatoX="texto"
                       series={[
-                        { id: "razao_p50", rotulo: tx("Mediana dos conjuntos", "Median of the consumer clusters"), sigla: tx("Mediana", "Median"), cor: "var(--cor-energia)" }, // i18n: dado
-                        { id: "razao_p90", rotulo: tx("Percentil 90 dos conjuntos", "90th percentile of the consumer clusters"), sigla: "P90", cor: "var(--serie-termica)" },
+                        { id: "razao_p50", rotulo: tx("Mediana dos conjuntos", "Median of the consumer sets"), sigla: tx("Mediana", "Median"), cor: "var(--cor-energia)" }, // i18n: dado
+                        { id: "razao_p90", rotulo: tx("Percentil 90 dos conjuntos", "90th percentile of the consumer sets"), sigla: "P90", cor: "var(--serie-termica)" },
                       ]}
                       unidade={tx("vezes o limite", "times the limit")}
                       casas={3}
@@ -1001,12 +1001,12 @@ export default function QualidadePage() {
                   nivel="analisar"
                   titulo={tx("Limite apertado ou folgado: faixa do limite × distância a ele", "Tight or loose limit: limit band × distance to it")}
                 >
-                  <QualidadeTabela tabela="matriz" titulo={tx(`Conjuntos por faixa de limite de DEC e por razão DEC ÷ limite, ${c.ano}`, `Consumer clusters by DEC limit band and by DEC ÷ limit ratio, ${c.ano}`)} linhas={n("matriz")} chaveUrl="tmat" />
+                  <QualidadeTabela tabela="matriz" titulo={tx(`Conjuntos por faixa de limite de DEC e por razão DEC ÷ limite, ${c.ano}`, `Consumer sets by DEC limit band and by DEC ÷ limit ratio, ${c.ano}`)} linhas={n("matriz")} chaveUrl="tmat" />
                 </SecaoDoPainel>
 
-                <SecaoDoPainel id="pontas" nivel="analisar" titulo={tx("As pontas: os conjuntos mais distantes do limite e os de maior DEC", "The tails: the consumer clusters furthest from the limit and those with the highest DEC")}>
-                  <QualidadeTabela tabela="cauda-razao" titulo={tx(`Conjuntos com maior razão DEC ÷ limite, ${c.ano}`, `Consumer clusters with the highest DEC ÷ limit ratio, ${c.ano}`)} linhas={n("cauda-razao")} chaveUrl="tcr" />
-                  <QualidadeTabela tabela="cauda-dec" titulo={tx(`Conjuntos com maior DEC, ${c.ano}`, `Consumer clusters with the highest DEC, ${c.ano}`)} linhas={n("cauda-dec")} chaveUrl="tcd" />
+                <SecaoDoPainel id="pontas" nivel="analisar" titulo={tx("As pontas: os conjuntos mais distantes do limite e os de maior DEC", "The tails: the consumer sets furthest from the limit and those with the highest DEC")}>
+                  <QualidadeTabela tabela="cauda-razao" titulo={tx(`Conjuntos com maior razão DEC ÷ limite, ${c.ano}`, `Consumer sets with the highest DEC ÷ limit ratio, ${c.ano}`)} linhas={n("cauda-razao")} chaveUrl="tcr" />
+                  <QualidadeTabela tabela="cauda-dec" titulo={tx(`Conjuntos com maior DEC, ${c.ano}`, `Consumer sets with the highest DEC, ${c.ano}`)} linhas={n("cauda-dec")} chaveUrl="tcd" />
                 </SecaoDoPainel>
 
                 <SecaoDoPainel id="dgc" nivel="auditar" titulo={tx("DGC calculado × DGC publicado no ranking da ANEEL", "Calculated DGC × DGC published in the ANEEL ranking")}>
@@ -1533,7 +1533,7 @@ export default function QualidadePage() {
                         {num(at.telefonico.padroes.ico_max_pct, 0)}%. INS e IAb não se agregam (a fonte não publica os numeradores): o gráfico conta os meses dentro do padrão.
                       </>,
                       <>
-                        Only the distribution utilities with a mandatory call centre ({tel ? `${tel.distribuidoras} in ${ref}, ${pctCobertura(tel.cobertura_ucs)} of the UCs` : "universe of the year not published"}).
+                        Only the distribution utilities with a mandatory call center ({tel ? `${tel.distribuidoras} in ${ref}, ${pctCobertura(tel.cobertura_ucs)} of the UCs` : "universe of the year not published"}).
                         Standards: INS of at least {num(at.telefonico.padroes.ins_min_pct, 0)}%, IAb of up to {num(at.telefonico.padroes.iab_max_pct, 0)}% and ICO of up to{" "}
                         {num(at.telefonico.padroes.ico_max_pct, 0)}%. INS and IAb are not aggregated (the source does not publish the numerators): the chart counts the months within the standard.
                       </>,
@@ -1636,7 +1636,7 @@ export default function QualidadePage() {
                     .map((x) =>
                       tx(
                         `${x.codigo} (${x.conjuntos_ativos} conjuntos ativos${x.dec_min !== null ? `, DEC de ${num(x.dec_min, 2)} a ${num(x.dec_max, 2)} h` : ""})`,
-                        `${x.codigo} (${x.conjuntos_ativos} active consumer clusters${x.dec_min !== null ? `, DEC from ${num(x.dec_min, 2)} to ${num(x.dec_max, 2)} h` : ""})`,
+                        `${x.codigo} (${x.conjuntos_ativos} active consumer sets${x.dec_min !== null ? `, DEC from ${num(x.dec_min, 2)} to ${num(x.dec_max, 2)} h` : ""})`,
                       ),
                     )
                     .join("; ")}

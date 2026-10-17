@@ -257,6 +257,24 @@ const FICHA_EN_PADROES: [RegExp, (...g: string[]) => string][] = [
   [/^reservatório (.+) \(([A-Z0-9]{3,8})\)$/, (r, c) => `${r} reservoir (${c})`],
 ];
 
+/** Padrões cuja parte variável é nome próprio (bacia, reservatório): a forma inglesa a mantém e a página a marca. */
+const FICHA_PADROES_COM_NOME: RegExp[] = [
+  /^Chuva de 30 dias na bacia (.+)$/,
+  /^bacia (.+) \(maior EAR máxima\)$/,
+  /^Resíduo do balanço de 30 dias em (.+)$/,
+  /^reservatório (.+) \(([A-Z0-9]{3,8})\)$/,
+];
+
+/** Nomes próprios que a forma inglesa de um rótulo de ficha mantém em português (para marcar com <Nome>). */
+export function nomesNaFicha(texto: string | null | undefined): string[] {
+  if (!texto) return [];
+  for (const re of FICHA_PADROES_COM_NOME) {
+    const m = re.exec(texto);
+    if (m) return [m[1]];
+  }
+  return [];
+}
+
 /** Rótulo de ficha (indicador, entidade ou unidade) no idioma; null quando não há forma inglesa conferida. */
 export function rotuloFicha(texto: string | null | undefined, idioma: Idioma): string | null {
   if (!texto) return null;

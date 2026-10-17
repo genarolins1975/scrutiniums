@@ -291,7 +291,7 @@ export default function DadosCatalogoPage() {
                     depois
                     painel="P067"
                     veredito={vereditoCatalogo(r)}
-                    prova={evPublicados ? <ComproveNumero evidencia={evPublicados} rotulo={tx("Comprove os conjuntos publicados", "Verify the published datasets")} endereco={ENDERECO} /> : undefined}
+                    prova={evPublicados ? <ComproveNumero evidencia={evPublicados} rotulo={tx("Comprove os conjuntos publicados", "Check the published datasets")} endereco={ENDERECO} /> : undefined}
                   >
                     {respostaCatalogo(r)}
                     </DadosResposta>

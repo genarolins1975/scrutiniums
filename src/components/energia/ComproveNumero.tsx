@@ -1,9 +1,10 @@
 "use client";
 
+import { comNomes } from "@/components/i18n/comNomes";
 import { useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { carimbo, datasLegiveis } from "@/lib/energia/formato";
-import { rotuloFicha } from "@/lib/energia/i18n/aprenda";
+import { nomesNaFicha, rotuloFicha } from "@/lib/energia/i18n/aprenda";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { MENSAGEM_COPIA_EN, unidadeNoIdioma, valorGoldNoIdioma } from "@/lib/energia/i18n/nucleo";
@@ -82,7 +83,9 @@ export function ComproveNumero({ evidencia, sobDemanda, variante = "link", rotul
   const indicador = sobDemanda?.indicador ?? indicadorGold;
   // indicador da gold sem forma inglesa conferida: em inglês, fica marcado como nome em português (lang) no texto para leitor de tela
   const semTraducao = idioma === "en" && !sobDemanda?.indicador && !!ev?.indicador && rotuloFicha(ev.indicador, idioma) === null;
-  const indicadorLido = semTraducao ? <span lang="pt-BR" data-i18n-nome="">{indicador}</span> : indicador;
+  const indicadorLido = semTraducao
+    ? <span lang="pt-BR" data-i18n-nome="">{indicador}</span>
+    : comNomes(indicador, sobDemanda?.indicador ? [] : nomesNaFicha(ev?.indicador), idioma);
   const valorExibido = ev?.valor_exibido ? valorGoldNoIdioma(ev.valor_exibido, idioma).texto : (sobDemanda?.valorExibido ?? "");
   // o diálogo vai para o fim do <body> e só existe no cliente: o botão pode ficar dentro de um
   // parágrafo (variante "valor") sem que o <dialog> feche o <p> e quebre a hidratação

@@ -1086,7 +1086,7 @@ export type DefinicaoMedida = {
 
 /** Medidas do mapa municipal, com rótulo, unidade e nota no idioma. */
 export function medidas(idioma: Idioma = idiomaEnergia()): Record<MedidaMunicipio, DefinicaoMedida> {
-  const absoluto = tx("Total absoluto: a cor acompanha o tamanho do município. Para comparar municípios, use a razão por habitante (MMGD por habitante) ou a proxy da Tarifa Social.", "Absolute total: the color follows the size of the municipality. To compare municipalities, use the ratio per inhabitant (MMGD per inhabitant) or the Social Tariff proxy.", idioma);
+  const absoluto = tx("Total absoluto: a cor acompanha o tamanho do município. Para comparar municípios, use a razão por habitante (MMGD por habitante) ou a proxy da Tarifa Social.", "Absolute total: the color follows the size of the municipality. To compare municipalities, use the ratio per inhabitant (MMGD per inhabitant) or the Tarifa Social proxy.", idioma);
   const absolutoSemRazao = tx("Total absoluto: a cor acompanha o tamanho do município; não há razão por habitante publicada para esta medida.", "Absolute total: the color follows the size of the municipality; there is no ratio per inhabitant published for this measure.", idioma);
   return {
     mmgd_w_hab: {
@@ -1099,25 +1099,25 @@ export function medidas(idioma: Idioma = idiomaEnergia()): Record<MedidaMunicipi
     mmgd_kw: { rotulo: tx("Potência de MMGD", "MMGD capacity", idioma), indicador: "mun_mmgd_kw", unidade: "kW", casas: 0, nota: absoluto },
     mmgd_un: { rotulo: tx("Unidades de MMGD", "MMGD units", idioma), indicador: "mun_mmgd_unidades", unidade: tx("unidades", "units", idioma), casas: 0, nota: absoluto },
     tsee_faturas: {
-      rotulo: tx("Faturas com Tarifa Social", "Bills with the Social Tariff", idioma),
+      rotulo: tx("Faturas com Tarifa Social", "Bills with the Tarifa Social", idioma),
       indicador: "mun_tsee_faturas",
       unidade: tx("faturas no mês", "bills in the month", idioma),
       casas: 0,
       nota: absoluto,
     },
     tsee_proxy_pct: {
-      rotulo: tx("Tarifa Social por família do CadÚnico (proxy)", "Social Tariff per CadUnico family (proxy)", idioma),
+      rotulo: tx("Tarifa Social por família do CadÚnico (proxy)", "Tarifa Social per Cadastro Único family (proxy)", idioma),
       indicador: "mun_tsee_proxy",
       unidade: "%",
       casas: 1,
       nota: tx(
         "Proxy, não cobertura: faturas com desconto divididas por famílias de baixa renda do Cadastro Único. Município com menos de 50 famílias no denominador tem razão instável (coluna própria na tabela).",
-        "Proxy, not coverage: discounted bills divided by low-income families in the Single Registry (CadUnico). A municipality with fewer than 50 families in the denominator has an unstable ratio (own column in the table).",
+        "Proxy, not coverage: discounted bills divided by low-income families in the Cadastro Único (federal social registry). A municipality with fewer than 50 families in the denominator has an unstable ratio (own column in the table).",
         idioma,
       ),
     },
     lpt_dom: {
-      rotulo: tx("Luz para Todos (domicílios)", "Light for All (households)", idioma),
+      rotulo: tx("Luz para Todos (domicílios)", "Luz para Todos (households)", idioma),
       indicador: "mun_lpt",
       unidade: tx("domicílios", "households", idioma),
       casas: 0,
@@ -1449,7 +1449,7 @@ export function vereditoTerritorio(g: Pick<GoldTerritorio, "resumo">, idioma: Id
 export function textoAtualidade(g: Pick<GoldTerritorio, "referencias">, idioma: Idioma = idiomaEnergia()): string {
   const r = g.referencias;
   const partes = [
-    r.tsee_mes_cde && tx(`Tarifa Social de ${textoReferencia(r.tsee_mes_cde, idioma)}`, `Social Tariff of ${textoReferencia(r.tsee_mes_cde, idioma)}`, idioma),
+    r.tsee_mes_cde && tx(`Tarifa Social de ${textoReferencia(r.tsee_mes_cde, idioma)}`, `Tarifa Social of ${textoReferencia(r.tsee_mes_cde, idioma)}`, idioma),
     r.populacao_ano !== null && tx(`população estimada de ${r.populacao_ano}`, `population estimate of ${r.populacao_ano}`, idioma),
   ].filter((x): x is string => typeof x === "string");
   const dias = r.areas_carga_dias.map((x) => dataBR(x, idioma));
@@ -1798,14 +1798,14 @@ export function colunasUfsIndicadores(idioma: Idioma = idiomaEnergia()): ColunaT
     { id: "cap_mw", rotulo: tx("Capacidade em operação (todas as usinas, em MW)", "Capacity in operation (all plants, in MW)", idioma), tipo: "numero", unidade: "MW", casas: 1 },
     {
       id: "tsee_faturas",
-      rotulo: tx("Faturas com Tarifa Social (contagem do mês)", "Bills with the Social Tariff (count for the month)", idioma),
+      rotulo: tx("Faturas com Tarifa Social (contagem do mês)", "Bills with the Tarifa Social (count for the month)", idioma),
       tipo: "numero",
       unidade: tx("faturas no mês", "bills in the month", idioma),
       casas: 0,
     },
     {
       id: "tsee_desconto",
-      rotulo: tx("Desconto líquido da Tarifa Social (com cancelamentos e refaturamentos)", "Net Social Tariff discount (with cancellations and rebillings)", idioma),
+      rotulo: tx("Desconto líquido da Tarifa Social (com cancelamentos e refaturamentos)", "Net Tarifa Social discount (with cancellations and rebillings)", idioma),
       tipo: "numero",
       unidade: tx("R$ líquidos no mês", "net R$ in the month", idioma),
       casas: 2,
@@ -1837,7 +1837,7 @@ export function colunasDistribuidoras(idioma: Idioma = idiomaEnergia()): ColunaT
     { id: "fec", rotulo: "FEC", tipo: "numero", unidade: tx("interrupções", "interruptions", idioma), casas: 2 },
     { id: "tarifa", rotulo: tx("Tarifa B1 sem tributos", "B1 tariff before taxes", idioma), tipo: "numero", unidade: "R$/MWh", casas: 2 },
     { id: "mmgd_mw", rotulo: tx("MMGD cadastrada", "Registered MMGD", idioma), tipo: "numero", unidade: "MW", casas: 1 },
-    { id: "tsee_pct", rotulo: tx("Residenciais com Tarifa Social", "Residential customers with the Social Tariff", idioma), tipo: "percentual", casas: 2 },
+    { id: "tsee_pct", rotulo: tx("Residenciais com Tarifa Social", "Residential customers with the Tarifa Social", idioma), tipo: "percentual", casas: 2 },
   ];
 }
 export const COLUNAS_DISTRIBUIDORAS: ColunaTabela[] = colunasDistribuidoras("pt");
@@ -1853,17 +1853,17 @@ export function colunasMunicipios(med: MedidaMunicipio | null, idioma: Idioma = 
     { id: "mmgd_un", rotulo: tx("Unidades de MMGD", "MMGD units", idioma), tipo: "numero", casas: 0 },
     { id: "mmgd_kw", rotulo: tx("Potência de MMGD", "MMGD capacity", idioma), tipo: "numero", unidade: "kW", casas: 0 },
     { id: "mmgd_w_hab", rotulo: tx("MMGD por habitante", "MMGD per inhabitant", idioma), tipo: "numero", unidade: tx("W/hab", "W/inhab.", idioma), casas: 1 },
-    { id: "tsee_faturas", rotulo: tx("Faturas com Tarifa Social", "Bills with the Social Tariff", idioma), tipo: "numero", casas: 0 },
+    { id: "tsee_faturas", rotulo: tx("Faturas com Tarifa Social", "Bills with the Tarifa Social", idioma), tipo: "numero", casas: 0 },
     {
       id: "tsee_desconto",
-      rotulo: tx("Desconto líquido da Tarifa Social (com cancelamentos e refaturamentos)", "Net Social Tariff discount (with cancellations and rebillings)", idioma),
+      rotulo: tx("Desconto líquido da Tarifa Social (com cancelamentos e refaturamentos)", "Net Tarifa Social discount (with cancellations and rebillings)", idioma),
       tipo: "numero",
       unidade: tx("R$ líquidos", "net R$", idioma),
       casas: 2,
     },
-    { id: "tsee_proxy_pct", rotulo: tx("Tarifa Social por família do CadÚnico (proxy)", "Social Tariff per CadUnico family (proxy)", idioma), tipo: "percentual", casas: 1 },
-    { id: "tsee_base_pequena", rotulo: tx("Menos de 50 famílias no CadÚnico", "Fewer than 50 families in CadUnico", idioma), tipo: "texto", categorica: true },
-    { id: "lpt_dom", rotulo: tx("Luz para Todos", "Light for All", idioma), tipo: "numero", unidade: tx("domicílios", "households", idioma), casas: 0 },
+    { id: "tsee_proxy_pct", rotulo: tx("Tarifa Social por família do CadÚnico (proxy)", "Tarifa Social per Cadastro Único family (proxy)", idioma), tipo: "percentual", casas: 1 },
+    { id: "tsee_base_pequena", rotulo: tx("Menos de 50 famílias no CadÚnico", "Fewer than 50 families in Cadastro Único", idioma), tipo: "texto", categorica: true },
+    { id: "lpt_dom", rotulo: tx("Luz para Todos", "Luz para Todos", idioma), tipo: "numero", unidade: tx("domicílios", "households", idioma), casas: 0 },
     { id: "usi_op_n", rotulo: tx("Usinas em operação só no município", "Plants in operation only in the municipality", idioma), tipo: "numero", casas: 0 },
     { id: "usi_op_mw", rotulo: tx("Potência em operação", "Capacity in operation", idioma), tipo: "numero", unidade: "MW", casas: 3 },
     { id: "usi_cart_n", rotulo: tx("Usinas a construir só no município", "Plants to be built only in the municipality", idioma), tipo: "numero", casas: 0 },
@@ -2244,7 +2244,7 @@ export function quartisDistribuidoras(dist: readonly LinhaDistribuidora[], idiom
     },
     { id: "dec_h", rotulo: tx("DEC da distribuidora", "DEC of the distribution utility", idioma), unidade: "h", casas: 2, v: (d) => d.dec_h },
     { id: "fec", rotulo: tx("FEC da distribuidora", "FEC of the distribution utility", idioma), unidade: tx("interrupções", "interruptions", idioma), casas: 2, v: (d) => d.fec },
-    { id: "tsee_pct", rotulo: tx("Residenciais com Tarifa Social", "Residential customers with the Social Tariff", idioma), unidade: "%", casas: 2, v: (d) => d.tsee_pct },
+    { id: "tsee_pct", rotulo: tx("Residenciais com Tarifa Social", "Residential customers with the Tarifa Social", idioma), unidade: "%", casas: 2, v: (d) => d.tsee_pct },
   ];
   const ucTotal = dist.reduce((a, d) => a + (d.ucs ?? 0), 0);
   return campos

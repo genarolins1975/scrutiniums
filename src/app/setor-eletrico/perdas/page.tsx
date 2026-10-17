@@ -437,7 +437,7 @@ export default function PerdasPage() {
               naoConcluirNoCorpo
             >
               <div className="grid gap-x-10 gap-y-5 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
-                <Resposta id="evolucao" veredito={vereditoEvolucao(g.nacional)} prova={<ComproveNumero evidencia={ev.taxa_nacional} rotulo={tx(`Comprove a taxa de ${ref}`, `Verify the ${ref} rate`)} />}>
+                <Resposta id="evolucao" veredito={vereditoEvolucao(g.nacional)} prova={<ComproveNumero evidencia={ev.taxa_nacional} rotulo={tx(`Comprove a taxa de ${ref}`, `Check the ${ref} rate`)} />}>
                   {respostaEvolucao(g.nacional, ref)}
                 </Resposta>
                 <Numero

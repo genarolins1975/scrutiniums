@@ -72,7 +72,7 @@ export function QualidadeConjuntosDoMunicipio({
             {n === 1 ? "O conjunto que atende" : `Os ${n.toLocaleString("pt-BR")} conjuntos que atendem`} {municipio}, com o limite de cada um
           </>,
           <>
-            {n === 1 ? "The consumer cluster that serves" : `The ${n.toLocaleString("en-US")} consumer clusters that serve`} <Nome>{municipio}</Nome>, with the limit of each one
+            {n === 1 ? "The consumer set that serves" : `The ${n.toLocaleString("en-US")} consumer sets that serve`} <Nome>{municipio}</Nome>, with the limit of each one
           </>,
         )}
       </h5>
@@ -80,12 +80,12 @@ export function QualidadeConjuntosDoMunicipio({
         {definicaoConjunto(idioma)}{" "}
         {tx(
           "Para saber qual é o seu, procure o nome do conjunto na fatura de energia, junto dos indicadores de continuidade, ou pergunte à distribuidora.",
-          "To learn which one is yours, look for the consumer cluster name on your electricity bill, next to the continuity indicators, or ask the distribution utility.",
+          "To learn which one is yours, look for the consumer set name on your electricity bill, next to the continuity indicators, or ask the distribution utility.",
         )}
       </p>
       {erro ? (
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-          {tx(<>Não foi possível carregar os valores dos conjuntos ({erro}).</>, <>The values of the consumer clusters could not be loaded ({erro}).</>)}{" "}
+          {tx(<>Não foi possível carregar os valores dos conjuntos ({erro}).</>, <>The values of the consumer sets could not be loaded ({erro}).</>)}{" "}
           <a href={arquivo} download className="text-energia-dark underline underline-offset-4">
             {tx("Baixar o arquivo do período", "Download the file for the period")}
           </a>
@@ -105,7 +105,7 @@ export function QualidadeConjuntosDoMunicipio({
               Carregando os valores dos {n === 1 ? "conjunto" : "conjuntos"} ({tamanho ?? "arquivo anual por década"}, o mesmo do explorador de Analisar)…
             </>,
             <>
-              Loading the values of the {n === 1 ? "consumer cluster" : "consumer clusters"} ({tamanho ?? "annual file by decade"}, the same as the Analyse explorer)…
+              Loading the values of the {n === 1 ? "consumer set" : "consumer sets"} ({tamanho ?? "annual file by decade"}, the same as the Analyse explorer)…
             </>,
           )}
         </p>
@@ -113,7 +113,7 @@ export function QualidadeConjuntosDoMunicipio({
         <>
           {linhas.length > 0 ? (
             <TabelaInterativa
-              titulo={tx(`Conjuntos que atendem ${municipio}, ${ano}`, `Consumer clusters serving ${municipio}, ${ano}`)}
+              titulo={tx(`Conjuntos que atendem ${municipio}, ${ano}`, `Consumer sets serving ${municipio}, ${ano}`)}
               colunas={colunasConjuntosMunicipio(idioma)}
               linhas={linhas}
               chaveLinha="id"
@@ -122,11 +122,11 @@ export function QualidadeConjuntosDoMunicipio({
               versao={String(ano)}
               nomeArquivo={`qualidade-conjuntos-${codigoMunicipio}-${ano}`}
               ordemInicial={{ coluna: "razao_dec", direcao: "desc" }}
-              dicaBusca={tx("Nome ou código do conjunto, distribuidora", "Name or code of the consumer cluster, distribution utility")}
+              dicaBusca={tx("Nome ou código do conjunto, distribuidora", "Name or code of the consumer set, distribution utility")}
               recolher={false}
               nota={tx(
                 "Valor e limite do conjunto inteiro, não do município. Comparação com o limite em centésimos, como a ANEEL publica: igual ao limite não é transgressão. Conjunto com menos de 12 meses publicados mostra a soma dos meses que existem, sem razão nem comparação com o limite.",
-                "Value and limit of the whole consumer cluster, not of the municipality. Comparison with the limit in hundredths, as ANEEL publishes it: equal to the limit is not a violation. A cluster with fewer than 12 months published shows the sum of the existing months, with no ratio and no comparison with the limit.",
+                "Value and limit of the whole consumer set, not of the municipality. Comparison with the limit in hundredths, as ANEEL publishes it: equal to the limit is not a violation. A cluster with fewer than 12 months published shows the sum of the existing months, with no ratio and no comparison with the limit.",
               )}
             />
           ) : (
@@ -136,7 +136,7 @@ export function QualidadeConjuntosDoMunicipio({
                   Nenhum dos conjuntos citados para {municipio} tem valor anual publicado em {ano}.
                 </>,
                 <>
-                  None of the consumer clusters listed for <Nome>{municipio}</Nome> has an annual value published in {ano}.
+                  None of the consumer sets listed for <Nome>{municipio}</Nome> has an annual value published in {ano}.
                 </>,
               )}
             </p>
@@ -153,14 +153,14 @@ export function QualidadeConjuntosDoMunicipio({
                   {semValor.length === 1 ? "Um conjunto citado não tem" : `${semValor.length.toLocaleString("pt-BR")} conjuntos citados não têm`} valor anual publicado em {ano} (menos de 12 meses ou sem limite): {semValor.join(", ")}.
                 </>,
                 <>
-                  {semValor.length === 1 ? "One listed consumer cluster has" : `${semValor.length.toLocaleString("en-US")} listed consumer clusters have`} no annual value published in {ano} (fewer than 12 months or no limit): {semValor.join(", ")}.
+                  {semValor.length === 1 ? "One listed consumer set has" : `${semValor.length.toLocaleString("en-US")} listed consumer sets have`} no annual value published in {ano} (fewer than 12 months or no limit): {semValor.join(", ")}.
                 </>,
               )}
             </p>
           )}
           <p className="text-sm">
             <a href="#conjuntos-do-ano" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-              {tx(<>Ver os conjuntos de todo o país em {ano}, com busca e exportação (Analisar)</>, <>See the consumer clusters of the whole country in {ano}, with search and export (Analyse)</>)}
+              {tx(<>Ver os conjuntos de todo o país em {ano}, com busca e exportação (Analisar)</>, <>See the consumer sets of the whole country in {ano}, with search and export (Analyse)</>)}
             </a>
           </p>
         </>

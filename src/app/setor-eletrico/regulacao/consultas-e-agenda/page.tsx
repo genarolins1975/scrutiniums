@@ -110,7 +110,7 @@ export default function ConsultasEAgendaPage() {
     </>,
     <>
       Each band runs from the start to the end of the contribution period written in the minutes; the dashed vertical line is the reading date, and the hollow end mark is the
-      end computed from the start and the duration. The legend above the chart shows the line and colour of each status, which is also written in the tooltip and the table. The
+      end computed from the start and the duration. The legend above the chart shows the line and color of each status, which is also written in the tooltip and the table. The
       status boxes filter the chart and the table at the same time, and the number in brackets counts the consultations in each status on the reading date. Choose a
       consultation to see its phases, the passage of the minutes the period was read from and the result.
     </>,

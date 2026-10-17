@@ -397,7 +397,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
               </p>
               <div className="flex flex-wrap items-center gap-x-6">
                 {evidSel ? (
-                  <ComproveNumero evidencia={evidSel} rotulo={tx(`Comprove a taxa de ${anoRef}`, `Verify the ${anoRef} rate`)} endereco={`https://scrutiniums.com/setor-eletrico/perdas?d=${sel.cnpj}#mapa`} />
+                  <ComproveNumero evidencia={evidSel} rotulo={tx(`Comprove a taxa de ${anoRef}`, `Check the ${anoRef} rate`)} endereco={`https://scrutiniums.com/setor-eletrico/perdas?d=${sel.cnpj}#mapa`} />
                 ) : cargaEvid.estado === "carregando" ? (
                   <span role="status" className="text-xs text-carvao-muted">
                     {tx(<>Carregando a evidência da taxa de {anoRef}.</>, <>Loading the evidence for the {anoRef} rate.</>)}

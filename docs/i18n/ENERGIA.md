@@ -90,11 +90,12 @@ Equivalentes de trabalho para o observatório inteiro. Usar exatamente estes; te
 | Aprenda | Learn |
 | verbete | entry |
 | trilha | learning path |
-| conjunto elétrico (continuidade) | consumer set |
+| conjunto elétrico (continuidade) | consumer set (nunca "cluster" nem "electrical set") |
 | Comprove este número | Check this number |
-| MWmês | MW-month |
+| MWmês | MWmonth |
 | potência fiscalizada; potência outorgada | inspected capacity; granted capacity |
 | Luz para Todos | Luz para Todos (rural electrification program); nunca "Light for All" |
+| Tarifa Social (no meio do texto) | Tarifa Social; nunca "Social Tariff" |
 | Cadastro Único (CadÚnico) | Cadastro Único (federal social registry) |
 | fato relevante | material fact |
 | exercício (contábil) | fiscal year |

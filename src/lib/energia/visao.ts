@@ -1083,7 +1083,7 @@ export function textoLimiteAgregado(d: DecDoAno, idioma: Idioma = idiomaEnergia(
   if (d.limite === null) return "";
   const base = tx(
     `Não existe limite nacional de DEC. O limite agregado de ${num(d.limite, 2, idioma)} h é a média dos limites de cada conjunto elétrico, ponderada pelas unidades consumidoras médias do ano, calculada pelo observatório.`,
-    `There is no national DEC limit. The aggregate limit of ${num(d.limite, 2, idioma)} h is the average of the limits of each electrical set, weighted by the average consumer units of the year, calculated by the observatory.`,
+    `There is no national DEC limit. The aggregate limit of ${num(d.limite, 2, idioma)} h is the average of the limits of each consumer set, weighted by the average consumer units of the year, calculated by the observatory.`,
     idioma,
   );
   const c = d.conjuntos;
@@ -1104,7 +1104,7 @@ export function textoDispersaoDec(d: DecDoAno, idioma: Idioma = idiomaEnergia())
   const h = (x: number) => num(x, 2, idioma);
   return tx(
     `O DEC apurado de cada conjunto elétrico em ${d.ano} vai de ${h(q.min)} h a ${h(q.max)} h; metade dos conjuntos ficou entre ${h(q.p25)} h e ${h(q.p75)} h, com mediana de ${h(q.p50)} h.`,
-    `The assessed DEC of each electrical set in ${d.ano} ranges from ${h(q.min)} h to ${h(q.max)} h; half of the sets were between ${h(q.p25)} h and ${h(q.p75)} h, with a median of ${h(q.p50)} h.`,
+    `The assessed DEC of each consumer set in ${d.ano} ranges from ${h(q.min)} h to ${h(q.max)} h; half of the sets were between ${h(q.p25)} h and ${h(q.p75)} h, with a median of ${h(q.p50)} h.`,
     idioma,
   );
 }

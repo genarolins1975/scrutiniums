@@ -105,7 +105,7 @@ export const DIA_SEMANA_EN: Readonly<Record<string, string>> = {
 };
 /** Feriados nacionais citados na conferência do ONS. */
 export const FERIADO_EN: Readonly<Record<string, string>> = {
-  "Dia do Trabalho": "Labour Day",
+  "Dia do Trabalho": "Labor Day",
   Tiradentes: "Tiradentes Day",
   feriado: "holiday",
 };
@@ -516,7 +516,7 @@ export const DESCRICAO_CAMADA_EN: Readonly<Record<string, string>> = {
   "Municípios inteiros agrupados pela relação oficial; município com mais de uma distribuidora tem marca própria.":
     "Whole municipalities grouped by the official list; a municipality with more than one distribution utility has its own mark.",
   "Indicadores publicados por município (MMGD, Tarifa Social, Luz para Todos, usinas declaradas só no município, localidades isoladas).":
-    "Indicators published by municipality (MMGD, Social Tariff, Light for All, plants declared only in the municipality, isolated localities).", // i18n: dado
+    "Indicators published by municipality (MMGD, Tarifa Social, Luz para Todos, plants declared only in the municipality, isolated localities).", // i18n: dado
   "Pontos do SIGA na mesma grade da malha. A coordenada é aproximada (centróide do empreendimento).":
     "SIGA points on the same grid as the map. The coordinate is approximate (centroid of the project).",
 };
@@ -563,23 +563,23 @@ export const INDICADOR_TERRITORIO_EN: Readonly<Record<string, string>> = {
   "Energia armazenada (EAR)": "Stored energy (EAR)",
   "Carga atendida por MMGD (estimativa do ONS)": "Load served by MMGD (ONS estimate)",
   "Capacidade instalada em operação (UF principal da usina)": "Installed capacity in operation (plant's main state)",
-  "Faturas com Tarifa Social": "Bills with the Social Tariff",
+  "Faturas com Tarifa Social": "Bills with the Tarifa Social",
   "Localidades em sistema isolado": "Localities in an isolated system",
   "Perdas totais sobre a energia injetada": "Total losses over injected energy", // i18n: dado
   "DEC apurado da distribuidora": "Measured DEC of the distribution utility",
   "FEC apurado da distribuidora": "Measured FEC of the distribution utility",
   "Tarifa residencial B1 vigente (TE + TUSD, sem tributos)": "Residential B1 tariff in force (TE + TUSD, before taxes)",
   "MMGD cadastrada na distribuidora": "MMGD registered with the distribution utility",
-  "Unidades com Tarifa Social na distribuidora": "Units with the Social Tariff in the distribution utility",
+  "Unidades com Tarifa Social na distribuidora": "Units with the Tarifa Social in the distribution utility",
   "DEC anual do conjunto elétrico": "Annual DEC of the consumer set",
   "FEC anual do conjunto elétrico": "Annual FEC of the consumer set",
   "População estimada": "Estimated population",
   "Unidades de MMGD cadastradas": "Registered MMGD units",
   "Potência de MMGD cadastrada": "Registered MMGD capacity",
   "Potência de MMGD por habitante": "MMGD capacity per inhabitant",
-  "Desconto da Tarifa Social": "Social Tariff discount",
-  "Faturas com Tarifa Social por família de baixa renda no Cadastro Único (proxy)": "Bills with the Social Tariff per low-income family in the Single Registry (proxy)", // i18n: dado
-  "Domicílios atendidos pelo Luz para Todos": "Households served by Light for All", // i18n: dado
+  "Desconto da Tarifa Social": "Tarifa Social discount",
+  "Faturas com Tarifa Social por família de baixa renda no Cadastro Único (proxy)": "Bills with the Tarifa Social per low-income family in the Cadastro Único (proxy)", // i18n: dado
+  "Domicílios atendidos pelo Luz para Todos": "Households served by Luz para Todos", // i18n: dado
   "Usinas em operação declaradas só neste município (sem os registros de até 10 kW)":
     "Plants in operation declared only in this municipality (without the registrations of up to 10 kW)",
   "Registros do SIGA de até 10 kW em operação declarados só neste município": "SIGA registrations of up to 10 kW in operation declared only in this municipality",

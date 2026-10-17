@@ -149,7 +149,7 @@ export function PerdasContexto({ pontos, linhas, ids, rotulos, ano, anoRelacao, 
         colunaRotulo="rotulo"
         fonte={tx(
           `IBGE, Censo ${censo} (tabelas 4714 e 10295); ANEEL, IndQual Município e limites de continuidade (relação conjunto × município); ANEEL, cadastro de MMGD (confirmação dos vínculos)`,
-          `IBGE, ${censo} Census (tables 4714 and 10295); ANEEL, IndQual municipal dataset and continuity limits (consumer cluster × municipality relation); ANEEL, MMGD register (confirmation of the links)`,
+          `IBGE, ${censo} Census (tables 4714 and 10295); ANEEL, IndQual municipal dataset and continuity limits (consumer set × municipality relation); ANEEL, MMGD register (confirmation of the links)`,
         )}
         versao={versao}
         nomeArquivo="perdas-contexto-territorial"

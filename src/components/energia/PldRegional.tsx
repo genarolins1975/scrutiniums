@@ -296,7 +296,7 @@ export function PldRegional({
               ? undefined
               : tx(
                   "A ficha Comprove é publicada para os últimos 12 meses; os demais períodos estão na tabela e no CSV diário.",
-                  "The Verify sheet is published for the last 12 months; the other periods are in the table and in the daily CSV.",
+                  "The proof sheet is published for the last 12 months; the other periods are in the table and in the daily CSV.",
                 )
           }
         />

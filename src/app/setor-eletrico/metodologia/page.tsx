@@ -425,7 +425,7 @@ Forecasts: SOURCE VINTAGE → INPUT VARIABLES → MODEL VERSION → PUBLICATION 
                         titulo={tx("Como refazer um número, passo a passo?", "How do I redo a number, step by step?")}
                         lead={tx(
                           "O exemplo refaz, com o arquivo que você baixa, o número de conjuntos publicados no catálogo. O caminho é o mesmo para qualquer número que tenha a ficha Comprove este número.",
-                          "The example redoes, with the file you download, the number of datasets published in the catalog. The path is the same for any number that has the Verify this number record.",
+                          "The example redoes, with the file you download, the number of datasets published in the catalog. The path is the same for any number that has the Check this number record.",
                         )}
                       >
                         <ol className="max-w-prose2 space-y-1 text-sm leading-relaxed text-carvao" data-passos="exemplo">
@@ -470,7 +470,7 @@ Forecasts: SOURCE VINTAGE → INPUT VARIABLES → MODEL VERSION → PUBLICATION 
                             {tx("A ficha mostra a fórmula, a fonte, a versão e a impressão digital dos arquivos de origem.", "The record shows the formula, the source, the version and the fingerprint of the source files.")}
                             {evPublicados && (
                               <span className="block">
-                                <ComproveNumero evidencia={evPublicados} rotulo={tx("Comprove os conjuntos publicados", "Verify the published datasets")} endereco={ENDERECO} />
+                                <ComproveNumero evidencia={evPublicados} rotulo={tx("Comprove os conjuntos publicados", "Check the published datasets")} endereco={ENDERECO} />
                               </span>
                             )}
                           </li>

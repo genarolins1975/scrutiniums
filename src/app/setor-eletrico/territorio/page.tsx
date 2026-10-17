@@ -88,8 +88,8 @@ function rotulosComplementares(): Record<string, string> {
     mmgd: tx("MMGD por município", "MMGD by municipality"),
     mmgd_ons: tx("MMGD estimada pelo ONS", "MMGD estimated by the ONS"),
     populacao: tx("População estimada (IBGE)", "Estimated population (IBGE)"),
-    tarifa_social: tx("Tarifa Social", "Social Tariff"),
-    luz_para_todos: tx("Luz para Todos", "Light for All"),
+    tarifa_social: tx("Tarifa Social", "Tarifa Social"),
+    luz_para_todos: tx("Luz para Todos", "Luz para Todos"),
     isolados: tx("Sistemas isolados (PASI)", "Isolated systems (PASI)"),
     usinas: tx("Usinas (SIGA)", "Plants (SIGA)"),
     pld_dia: tx("PLD do dia", "PLD of the day"),
@@ -246,7 +246,7 @@ export default function TerritorioPage() {
               {g.referencias.pld_dia ? ` through ${dataBR(g.referencias.pld_dia)}` : " no data"}; stored energy{g.referencias.ear_dia ? ` through ${dataBR(g.referencias.ear_dia)}` : " no data"}; B1 tariff
               {g.referencias.tarifa_data ? ` in force on ${dataBR(g.referencias.tarifa_data)}` : " no data"}; losses and continuity of {g.referencias.perdas_ano ?? "year with no data"} and{" "}
               {g.referencias.qualidade_ano ?? "year with no data"}; MMGD{g.referencias.mmgd_data_cadastro ? ` in the register of ${dataBR(g.referencias.mmgd_data_cadastro)}` : " no data"}; the
-              municipality&apos;s Social Tariff in {textoReferencia(g.referencias.tsee_mes_cde)} (the utility&apos;s has the SCS month in the sheet); SIGA plants of{" "}
+              municipality&apos;s Tarifa Social in {textoReferencia(g.referencias.tsee_mes_cde)} (the utility&apos;s has the SCS month in the sheet); SIGA plants of{" "}
               {g.referencias.siga_data ? dataBR(g.referencias.siga_data) : "date not recorded"}.
             </>,
           )}
@@ -300,7 +300,7 @@ export default function TerritorioPage() {
                   universo={textoUniverso(g)}
                   unidade={tx(
                     "R$/MWh (PLD e tarifa), % (perdas, EAR, Tarifa Social), horas e interrupções por unidade consumidora (DEC e FEC), unidades e kW (MMGD), MW (usinas), habitantes e domicílios.",
-                    "R$/MWh (PLD and tariff), % (losses, EAR, Social Tariff), hours and interruptions per consumer unit (DEC and FEC), units and kW (MMGD), MW (plants), inhabitants and households.",
+                    "R$/MWh (PLD and tariff), % (losses, EAR, Tarifa Social), hours and interruptions per consumer unit (DEC and FEC), units and kW (MMGD), MW (plants), inhabitants and households.",
                   )}
                 />
                 <div data-nivel="analisar" className="grid gap-4 md:grid-cols-3">

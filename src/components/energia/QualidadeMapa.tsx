@@ -178,10 +178,10 @@ export function QualidadeMapa({
     return (id: string): string | null => {
       const n = porCodigo.get(id)?.conjuntos.length ?? 0;
       if (n === 0) return null;
-      if (n === 1) return tx("valor do conjunto que atende o município", "value of the consumer cluster serving the municipality");
+      if (n === 1) return tx("valor do conjunto que atende o município", "value of the consumer set serving the municipality");
       return tx(
         `${maior ? "maior" : "menor"} valor entre os ${num(n, 0)} conjuntos que atendem o município`,
-        `${maior ? "highest" : "lowest"} value among the ${num(n, 0, idioma)} consumer clusters serving the municipality`,
+        `${maior ? "highest" : "lowest"} value among the ${num(n, 0, idioma)} consumer sets serving the municipality`,
       );
     };
   }, [municipios, v.med, idioma]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -195,7 +195,7 @@ export function QualidadeMapa({
   return (
     <div className="space-y-4">
       <fieldset className="flex flex-wrap items-center gap-x-4 gap-y-1">
-        <legend className="rotulo mb-1 text-mineral">{tx("Cor do mapa", "Map colour")}</legend>
+        <legend className="rotulo mb-1 text-mineral">{tx("Cor do mapa", "Map color")}</legend>
         {MEDIDAS_MAPA.map((m: MedidaMapa) => (
           <label key={m} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
             <input type="radio" name="qualidade-medida-mapa" value={m} checked={v.med === m} onChange={() => definir({ med: m })} className="h-4 w-4 accent-energia" />
@@ -214,7 +214,7 @@ export function QualidadeMapa({
             classificacao={classificacao}
             unidade={tx(
               `${med.unidade}, ${v.med.endsWith("max") ? "maior" : "menor"} entre os conjuntos do município`,
-              `${med.unidade}, ${v.med.endsWith("max") ? "highest" : "lowest"} among the municipality's consumer clusters`,
+              `${med.unidade}, ${v.med.endsWith("max") ? "highest" : "lowest"} among the municipality's consumer sets`,
             )}
             casas={2}
             rotuloRegiao={tx({ singular: "município", plural: "municípios" }, { singular: "municipality", plural: "municipalities" })}
@@ -225,7 +225,7 @@ export function QualidadeMapa({
             periodo={String(ano)}
             nota={tx(
               "Valor do conjunto inteiro que atende o município, não medido no município. Hachura: município sem conjunto com DEC no ano ou não citado na base da ANEEL.",
-              "Value of the whole consumer cluster serving the municipality, not measured in the municipality. Hatching: municipality with no consumer cluster with DEC in the year or not listed in the ANEEL database.",
+              "Value of the whole consumer set serving the municipality, not measured in the municipality. Hatching: municipality with no consumer set with DEC in the year or not listed in the ANEEL database.",
             )}
           />
         ) : carga.estado === "erro" ? (
@@ -234,7 +234,7 @@ export function QualidadeMapa({
             <p className="mt-2">
               {tx("A mesma informação está no arquivo", "The same information is in the file")}{" "}
               <a href={urlMunicipios} download className="text-energia-dark underline underline-offset-4">
-                {tx("DEC e FEC dos conjuntos por município (CSV)", "DEC and FEC of the consumer clusters by municipality (CSV)")}
+                {tx("DEC e FEC dos conjuntos por município (CSV)", "DEC and FEC of the consumer sets by municipality (CSV)")}
               </a>
               .{" "}
               <button type="button" className={BOTAO} onClick={() => setTentativa((t) => t + 1)}>
@@ -278,7 +278,7 @@ export function QualidadeMapa({
             </>,
           )}{" "}
           <a href="#municipio-escolhido" className="text-energia-dark underline underline-offset-4">
-            {tx("Ver os conjuntos, o limite de cada um e o histórico, logo abaixo", "See the consumer clusters, the limit of each one and the history, just below")}
+            {tx("Ver os conjuntos, o limite de cada um e o histórico, logo abaixo", "See the consumer sets, the limit of each one and the history, just below")}
           </a>
           .
         </p>
@@ -311,16 +311,16 @@ export function QualidadeMapa({
             )}
             <dl className="grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
               <div>
-                <dt className="rotulo text-mineral">{tx("Relação com os conjuntos", "Relation to the consumer clusters")}</dt>
+                <dt className="rotulo text-mineral">{tx("Relação com os conjuntos", "Relation to the consumer sets")}</dt>
                 <dd className="text-carvao-muted">{rotulosRelacao(idioma)[selecionado.relacao]}</dd>
               </div>
               <div>
-                <dt className="rotulo text-mineral">{tx("Conjuntos (código ANEEL)", "Consumer clusters (ANEEL code)")}</dt>
+                <dt className="rotulo text-mineral">{tx("Conjuntos (código ANEEL)", "Consumer sets (ANEEL code)")}</dt>
                 <dd className="break-words text-carvao-muted">{selecionado.conjuntos.length ? selecionado.conjuntos.join(", ") : tx("nenhum", "none")}</dd>
               </div>
               <div className="sm:col-span-2">
                 <dt className="rotulo text-mineral">{tx("Distribuidoras", "Distribution utilities")}</dt>
-                <dd className="text-carvao-muted">{selecionado.cnpjs.length ? selecionado.cnpjs.map(rotuloCnpj).join(", ") : tx("nenhuma com conjunto ativo no ano", "none with an active consumer cluster in the year")}</dd>
+                <dd className="text-carvao-muted">{selecionado.cnpjs.length ? selecionado.cnpjs.map(rotuloCnpj).join(", ") : tx("nenhuma com conjunto ativo no ano", "none with an active consumer set in the year")}</dd>
               </div>
             </dl>
             <div className="flex flex-wrap gap-2">
@@ -418,7 +418,7 @@ export function QualidadeMapa({
             <p className="text-sm text-carvao-muted">
               {tx(
                 "O histórico é da distribuidora inteira (todos os seus conjuntos), não do município: a fonte não publica série municipal.",
-                "The history is that of the whole distribution utility (all its consumer clusters), not of the municipality: the source does not publish a municipal series.",
+                "The history is that of the whole distribution utility (all its consumer sets), not of the municipality: the source does not publish a municipal series.",
               )}
             </p>
           </div>
@@ -426,7 +426,7 @@ export function QualidadeMapa({
           <p className="text-sm text-carvao-muted">
             {tx(
               "Escolha um município no mapa, na busca do mapa ou na tabela para ver os conjuntos que o atendem e o histórico das distribuidoras.",
-              "Choose a municipality on the map, in the map search or in the table to see the consumer clusters serving it and the history of the distribution utilities.",
+              "Choose a municipality on the map, in the map search or in the table to see the consumer sets serving it and the history of the distribution utilities.",
             )}
           </p>
         )}
@@ -434,7 +434,7 @@ export function QualidadeMapa({
 
       {municipios && (
         <TabelaInterativa
-          titulo={tx(`Municípios e conjuntos que os atendem, ${ano}`, `Municipalities and the consumer clusters serving them, ${ano}`)}
+          titulo={tx(`Municípios e conjuntos que os atendem, ${ano}`, `Municipalities and the consumer sets serving them, ${ano}`)}
           colunas={colunasMunicipios(idioma)}
           linhas={linhas}
           chaveLinha="id"
@@ -447,7 +447,7 @@ export function QualidadeMapa({
           selecionado={v.mun || null}
           onSelecionar={selecionar}
           dicaBusca={tx("Município, UF, distribuidora ou código IBGE", "Municipality, state (UF), distribution utility or IBGE code")}
-          nota={tx("DEC e FEC dos conjuntos inteiros; nenhuma média municipal é calculada.", "DEC and FEC of the whole consumer clusters; no municipal average is calculated.")}
+          nota={tx("DEC e FEC dos conjuntos inteiros; nenhuma média municipal é calculada.", "DEC and FEC of the whole consumer sets; no municipal average is calculated.")}
         />
       )}
     </div>

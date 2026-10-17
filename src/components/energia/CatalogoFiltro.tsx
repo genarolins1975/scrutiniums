@@ -41,7 +41,7 @@ function temas(tx: <T>(pt: T, en: T) => T): Record<string, string> {
 
 /** Estado do conjunto na escada do catálogo (código da gold): rótulo no idioma; código desconhecido sai como veio. */
 function rotuloEstado(estado: string, tx: <T>(pt: T, en: T) => T): string {
-  if (estado === "CATALOGADO") return tx(estado, "CATALOGUED"); // i18n: dado (código da gold)
+  if (estado === "CATALOGADO") return tx(estado, "CATALOGED"); // i18n: dado (código da gold)
   if (estado === "PUBLICADO") return tx(estado, "PUBLISHED"); // i18n: dado (código da gold)
   return estado;
 }

@@ -271,7 +271,7 @@ export function BlocosDistribuidora({ d, dados, compacto = false }: { d: LinhaDi
         detalhe={d.mmgd_ref ? tx(`cadastro de ${dataBR(d.mmgd_ref)}`, `register of ${dataBR(d.mmgd_ref, idioma)}`) : undefined}
       />
       <Item
-        rotulo={tx("Residenciais com Tarifa Social", "Residential customers with the Social Tariff")}
+        rotulo={tx("Residenciais com Tarifa Social", "Residential customers with the Tarifa Social")}
         valor={
           d.tsee_pct === null ? (
             <Ausente motivo={d.tsee_motivo} />
@@ -390,7 +390,7 @@ export function BlocosUf({ u, dados }: { u: LinhaUf; dados: DadosExplorador }) {
       <Item
         rotulo={tx(
           `Faturas com Tarifa Social${u.tsee_ref ? ` (${textoReferencia(u.tsee_ref)})` : ""}`,
-          `Bills with the Social Tariff${u.tsee_ref ? ` (${textoReferencia(u.tsee_ref, idioma)})` : ""}`,
+          `Bills with the Tarifa Social${u.tsee_ref ? ` (${textoReferencia(u.tsee_ref, idioma)})` : ""}`,
         )}
         valor={valorOu(u.tsee_faturas, 0, tx("faturas", "bills"), u.tsee_motivo, idioma)}
         detalhe={tx("contagem de faturas do mês; cancelamentos e refaturamentos não entram nela", "count of the month's bills; cancellations and rebillings do not enter it")}
@@ -398,7 +398,7 @@ export function BlocosUf({ u, dados }: { u: LinhaUf; dados: DadosExplorador }) {
       <Item
         rotulo={tx(
           `Desconto líquido da Tarifa Social${u.tsee_ref ? ` (${textoReferencia(u.tsee_ref)})` : ""}`,
-          `Net Social Tariff discount${u.tsee_ref ? ` (${textoReferencia(u.tsee_ref, idioma)})` : ""}`,
+          `Net Tarifa Social discount${u.tsee_ref ? ` (${textoReferencia(u.tsee_ref, idioma)})` : ""}`,
         )}
         valor={u.tsee_desconto === null ? <Ausente motivo={u.tsee_motivo} /> : `R$ ${num(u.tsee_desconto, 2, idioma)}`}
         detalhe={[liquido, def].filter(Boolean).join(" ") || undefined}
@@ -473,7 +473,7 @@ export function FichaMunicipio({
           <Item
             rotulo={tx(
               `Faturas com Tarifa Social (${textoReferencia(dados.referencias.tsee_mes_cde)})`,
-              `Bills with the Social Tariff (${textoReferencia(dados.referencias.tsee_mes_cde, idioma)})`,
+              `Bills with the Tarifa Social (${textoReferencia(dados.referencias.tsee_mes_cde, idioma)})`,
             )}
             valor={valorOu(m.tsee_faturas, 0, tx("faturas", "bills"), null, idioma)}
             detalhe={
@@ -481,12 +481,12 @@ export function FichaMunicipio({
                 ? defTsee ?? undefined
                 : tx(
                     `${num(m.tsee_proxy_pct, 1)}% por família de baixa renda do CadÚnico (proxy)${basePequena}${defTsee ? `; ${defTsee}` : ""}`,
-                    `${num(m.tsee_proxy_pct, 1, idioma)}% per low-income CadUnico family (proxy)${basePequena}${defTsee ? `; ${defTsee}` : ""}`,
+                    `${num(m.tsee_proxy_pct, 1, idioma)}% per low-income Cadastro Único family (proxy)${basePequena}${defTsee ? `; ${defTsee}` : ""}`,
                   )
             }
           />
           <Item
-            rotulo={tx("Domicílios atendidos pelo Luz para Todos (2004 em diante)", "Households served by Light for All (2004 onward)")}
+            rotulo={tx("Domicílios atendidos pelo Luz para Todos (2004 em diante)", "Households served by Luz para Todos (2004 onward)")}
             valor={m.lpt_dom === null ? <Ausente motivo={tx("município sem linha no arquivo do programa", "municipality without a row in the program file")} /> : n(m.lpt_dom)}
           />
           <Item

@@ -115,7 +115,7 @@ export function ModuloEmIntegracao({
           </section>
         </div>
         <section aria-labelledby="catalogo-h" className="mt-8 border border-linha bg-superficie p-6">
-          <h2 id="catalogo-h" className="font-serif text-xl text-carvao">{tx("Fontes catalogadas relacionadas", "Related catalogued sources")}</h2>
+          <h2 id="catalogo-h" className="font-serif text-xl text-carvao">{tx("Fontes catalogadas relacionadas", "Related cataloged sources")}</h2>
           <p className="mt-1 text-sm text-carvao-muted">
             {tx(
               "Registradas no catálogo com os metadados oficiais da fonte; ainda não coletadas pela plataforma.",
@@ -138,7 +138,7 @@ export function ModuloEmIntegracao({
               ))}
             </ul>
           ) : (
-            <p className="mt-3 text-sm text-mineral">{tx("Nenhuma fonte catalogada neste tema ainda.", "No source catalogued for this topic yet.")}</p>
+            <p className="mt-3 text-sm text-mineral">{tx("Nenhuma fonte catalogada neste tema ainda.", "No source cataloged for this topic yet.")}</p>
           )}
           <Link href="/setor-eletrico/dados" className="rotulo mt-4 inline-flex min-h-[44px] items-center text-carvao underline underline-offset-4">
             {tx("Catálogo completo →", "Full catalog →")}

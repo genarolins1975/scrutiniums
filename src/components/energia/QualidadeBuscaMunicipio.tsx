@@ -174,7 +174,7 @@ export function QualidadeBuscaMunicipio({ ano, urlMunicipios, idFicha = "municip
           )}
         </div>
         <p className="text-sm leading-snug text-carvao-muted md:min-w-0 md:flex-1">
-          {tx("DEC e FEC dos conjuntos que atendem o município, com o limite de cada um.", "DEC and FEC of the consumer clusters serving the municipality, with the limit of each one.")}
+          {tx("DEC e FEC dos conjuntos que atendem o município, com o limite de cada um.", "DEC and FEC of the consumer sets serving the municipality, with the limit of each one.")}
         </p>
       </div>
       <p role="status" aria-live="polite" className={aviso ? "mt-2 text-sm text-carvao-muted" : "sr-only"}>
@@ -195,7 +195,7 @@ export function QualidadeBuscaMunicipio({ ano, urlMunicipios, idFicha = "municip
           <div className="flex flex-wrap gap-2">
             {selecionado.conjuntos.length > 0 && (
               <a href={`#${idFicha}`} className={BOTAO}>
-                {tx("Ver os conjuntos, o limite de cada um e o histórico", "See the consumer clusters, the limit of each one and the history")}
+                {tx("Ver os conjuntos, o limite de cada um e o histórico", "See the consumer sets, the limit of each one and the history")}
               </a>
             )}
             <button type="button" className={BOTAO} onClick={limpar}>

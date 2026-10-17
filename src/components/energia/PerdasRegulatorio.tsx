@@ -133,7 +133,7 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
             <p data-resposta="regulatorio-distribuidora">{marcarNomes(fraseSelecaoRegulatorio(linhaSel, segmentos[sel]?.length ?? 0, idioma), [linhaSel.rotulo], idioma)}</p>
             <div className="mt-1">
               {prova.estado === "pronta" ? (
-                <ComproveNumero evidencia={prova.evidencia} rotulo={tx("Comprove este percentual", "Verify this percentage")} endereco={`https://scrutiniums.com/setor-eletrico/perdas/regulatorio?d=${linhaSel.id}#regulatorio`} />
+                <ComproveNumero evidencia={prova.evidencia} rotulo={tx("Comprove este percentual", "Check this percentage")} endereco={`https://scrutiniums.com/setor-eletrico/perdas/regulatorio?d=${linhaSel.id}#regulatorio`} />
               ) : prova.estado === "carregando" ? (
                 <span role="status" className="text-xs text-carvao-muted">
                   {tx("Carregando a evidência do trecho.", "Loading the evidence for the segment.")}

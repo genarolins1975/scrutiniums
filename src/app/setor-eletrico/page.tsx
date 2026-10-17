@@ -425,7 +425,7 @@ function DetalhesDoDestino({ d, c }: { d: DestinoNavegacao; c: CartaoDaPagina })
         ) : (
           <p>
             <span className="rotulo mr-1 text-mineral">{tx("Em integração", "Being integrated")}</span>{" "}
-            {tx("A página mostra o escopo, as perguntas e as fontes catalogadas, ainda sem números publicados.", "The page shows the scope, the questions and the catalogued sources, with no published numbers yet.")}
+            {tx("A página mostra o escopo, as perguntas e as fontes catalogadas, ainda sem números publicados.", "The page shows the scope, the questions and the cataloged sources, with no published numbers yet.")}
           </p>
         )}
         <p className="text-xs text-mineral">
@@ -454,7 +454,7 @@ function ItemDoIndice({ d }: { d: DestinoNavegacao }) {
         {estado === "integracao" && (
           <span className="rotulo text-mineral">
             {tx("Em integração", "Being integrated")}
-            <span className="sr-only">{tx(": a página mostra o escopo e as fontes catalogadas, sem números publicados", ": the page shows the scope and the catalogued sources, with no published numbers")}</span>
+            <span className="sr-only">{tx(": a página mostra o escopo e as fontes catalogadas, sem números publicados", ": the page shows the scope and the cataloged sources, with no published numbers")}</span>
           </span>
         )}
         {estado === "preparacao" && (
@@ -783,7 +783,7 @@ export default function MapaDoObservatorio() {
             emPreparacao.length ? `${listaPorExtenso(emPreparacao)} ${emPreparacao.length === 1 ? "está" : "estão"} em preparação, sem página.` : "",
           ],
           [
-            emIntegracao.length ? `${listaEn(emIntegracao)} ${emIntegracao.length === 1 ? "is" : "are"} being integrated: ${emIntegracao.length === 1 ? "it shows" : "they show"} the scope and the catalogued sources, with no numbers.` : "",
+            emIntegracao.length ? `${listaEn(emIntegracao)} ${emIntegracao.length === 1 ? "is" : "are"} being integrated: ${emIntegracao.length === 1 ? "it shows" : "they show"} the scope and the cataloged sources, with no numbers.` : "",
             emPreparacao.length ? `${listaEn(emPreparacao)} ${emPreparacao.length === 1 ? "is" : "are"} in preparation, with no page.` : "",
           ],
         )

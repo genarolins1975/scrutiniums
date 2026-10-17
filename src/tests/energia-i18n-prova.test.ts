@@ -13,6 +13,8 @@ describe("prova do Setor Elétrico bilíngue: normalização e detector", () => 
 
   it("palavras que parecem mês fora de data não viram mês", () => {
     expect(numerosNormalizados(corpo("<p>dez períodos, set de dados, the plant may stop, mar aberto</p>"))).toEqual([]);
+    // célula "May" ao lado do valor 155 numa tabela não é data
+    expect(numerosNormalizados(corpo("<table><tr><td>May</td><td>155</td></tr></table>"))).toEqual(["155"]);
   });
 
   it("acusa português sem marca e aceita nome próprio e trecho marcados", () => {

@@ -206,7 +206,7 @@ function ItemDestino({ d, atual, comPergunta = false }: { d: DestinoNavegacao; a
 function MarcaIntegracao({ d }: { d: DestinoNavegacao }) {
   if (d.integrado) return null;
   return (
-    <span className="text-xs tracking-normal text-carvao-muted" title={tx("Módulo em integração: escopo e fontes catalogadas, sem números publicados", "Module in integration: scope and sources catalogued, no figures published yet")}>
+    <span className="text-xs tracking-normal text-carvao-muted" title={tx("Módulo em integração: escopo e fontes catalogadas, sem números publicados", "Module in integration: scope and sources cataloged, no figures published yet")}>
       <span aria-hidden="true">○</span>
       <span className="sr-only">{tx("(em integração)", "(in integration)")}</span>
     </span>

@@ -207,7 +207,7 @@ export function PldLimites({
               ? undefined
               : tx(
                   "A ficha Comprove é publicada para o ano de referência; os demais anos estão na tabela e no CSV diário.",
-                  "The Verify sheet is published for the reference year; the other years are in the table and in the daily CSV.",
+                  "The proof sheet is published for the reference year; the other years are in the table and in the daily CSV.",
                 )
           }
         />

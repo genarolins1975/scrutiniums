@@ -272,7 +272,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
             </>,
             <>
               {d.nome ? <Nome>{d.nome}</Nome> : "Corporate name not recorded"} · CNPJ ({SIGLAS_IDIOMAS.en.CNPJ}) <span className="whitespace-nowrap">{cnpjFormatado(d.cnpj)}</span> ·{" "}
-              {classificacao ?? rotuloGrupo(d.grupo)} · {d.ufs.length ? `area in ${d.ufs.join(", ")}` : "no current electrical set (state not recorded)"} · {d.ativa ? "active" : "inactive"}.
+              {classificacao ?? rotuloGrupo(d.grupo)} · {d.ufs.length ? `area in ${d.ufs.join(", ")}` : "no current consumer set (state not recorded)"} · {d.ativa ? "active" : "inactive"}.
             </>,
           )}
           recorte={tx(

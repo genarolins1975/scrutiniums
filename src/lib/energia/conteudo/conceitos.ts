@@ -333,7 +333,7 @@ function montarConceitosBase(tx: TxIdioma): Conceito[] {
       porQueImporta:
         tx("Resume em uma grandeza, por subsistema, a energia que a água guardada nos reservatórios pode gerar na própria usina e nas usinas a jusante. Em percentual da EAR máxima, indica quanto da capacidade de armazenamento está ocupada.", "It summarizes in one quantity, by subsystem, the energy that the water stored in the reservoirs can generate at the plant itself and at the downstream plants. As a percentage of the maximum EAR, it indicates how much of the storage capacity is occupied."),
       comoEMedido:
-        tx("Em MWmês e em percentual da EAR máxima (a capacidade caso todos os reservatórios estivessem cheios), por dia e por subsistema, bacia, REE ou reservatório.", "In MW-month and as a percentage of the maximum EAR (the capacity if all reservoirs were full), by day and by subsystem, basin, REE or reservoir."),
+        tx("Em MWmês e em percentual da EAR máxima (a capacidade caso todos os reservatórios estivessem cheios), por dia e por subsistema, bacia, REE ou reservatório.", "In MWmonth and as a percentage of the maximum EAR (the capacity if all reservoirs were full), by day and by subsystem, basin, REE or reservoir."),
       relacoes: ["ena", "armazenamento", "ree"],
       fontes: [
         // i18n: dado
@@ -353,7 +353,7 @@ function montarConceitosBase(tx: TxIdioma): Conceito[] {
       conferidoEm: "2026-09-28",
       emUmaFrase: tx("Energia que os reservatórios guardariam se todos estivessem cheios.", "Energy the reservoirs would hold if they were all full."),
       porQueImporta: tx("É a referência dos percentuais de EAR: 60% significa 60% dessa capacidade máxima.", "It is the reference for EAR percentages: 60% means 60% of this maximum capacity."),
-      comoEMedido: tx("Em MWmês, por subsistema, no conjunto EAR Diário por Subsistema do ONS (campo EAR máxima).", "In MW-month, by subsystem, in the ONS dataset «EAR Diário por Subsistema» (maximum EAR field)."),
+      comoEMedido: tx("Em MWmês, por subsistema, no conjunto EAR Diário por Subsistema do ONS (campo EAR máxima).", "In MWmonth, by subsystem, in the ONS dataset «EAR Diário por Subsistema» (maximum EAR field)."),
       relacoes: ["ear"],
       // i18n: dado
       fontes: [ONS("ear-diario-por-subsistema", "EAR Diário por Subsistema", TRECHO_EAR)],
@@ -371,7 +371,7 @@ function montarConceitosBase(tx: TxIdioma): Conceito[] {
       porQueImporta:
         tx("Expressa em energia as vazões naturais que chegam aos reservatórios. O ONS indica que os dados servem de insumo para estudos energéticos e para a projeção do custo marginal de operação.", "It expresses in energy the natural flows that reach the reservoirs. The ONS indicates that the data serve as input for energy studies and for projecting the marginal operating cost."),
       comoEMedido:
-        tx("ENA bruta: produto das vazões naturais pelas produtividades das usinas a 65% dos volumes úteis. Publicada por dia em energia (colunas terminadas em _mwmed; o dicionário de dados do ONS descreve a unidade como MWmês) e em percentual da média de longo termo (MLT).", "Gross ENA: product of the natural flows by the productivities of the plants at 65% of the useful volumes. Published by day in energy (columns ending in _mwmed; the ONS data dictionary describes the unit as MW-month) and as a percentage of the long-term average (MLT)."),
+        tx("ENA bruta: produto das vazões naturais pelas produtividades das usinas a 65% dos volumes úteis. Publicada por dia em energia (colunas terminadas em _mwmed; o dicionário de dados do ONS descreve a unidade como MWmês) e em percentual da média de longo termo (MLT).", "Gross ENA: product of the natural flows by the productivities of the plants at 65% of the useful volumes. Published by day in energy (columns ending in _mwmed; the ONS data dictionary describes the unit as MWmonth) and as a percentage of the long-term average (MLT)."),
       relacoes: ["ear", "mlt"],
       fontes: [
         // i18n: dado
@@ -392,7 +392,7 @@ function montarConceitosBase(tx: TxIdioma): Conceito[] {
       emUmaFrase: tx("Média de longo termo: a referência em relação à qual o ONS publica a ENA em percentual.", "Long-term average: the reference against which the ONS publishes the ENA as a percentage."),
       porQueImporta: tx("Permite ler a ENA de subsistemas de tamanhos diferentes na mesma escala relativa: 100% corresponde ao valor da MLT.", "It allows reading the ENA of subsystems of different sizes on the same relative scale: 100% corresponds to the MLT value."),
       comoEMedido:
-        tx("O ONS publica a ENA bruta e a ENA armazenável em energia (colunas terminadas em _mwmed, descritas no dicionário como MWmês) e em percentual da MLT. O conjunto não informa como a MLT é calculada nem seu período de referência.", "The ONS publishes gross ENA and storable ENA in energy (columns ending in _mwmed, described in the dictionary as MW-month) and as a percentage of the MLT. The dataset does not report how the MLT is calculated or its reference period."),
+        tx("O ONS publica a ENA bruta e a ENA armazenável em energia (colunas terminadas em _mwmed, descritas no dicionário como MWmês) e em percentual da MLT. O conjunto não informa como a MLT é calculada nem seu período de referência.", "The ONS publishes gross ENA and storable ENA in energy (columns ending in _mwmed, described in the dictionary as MWmonth) and as a percentage of the MLT. The dataset does not report how the MLT is calculated or its reference period."),
       relacoes: ["ena"],
       fontes: [
         {

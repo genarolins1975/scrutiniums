@@ -48,10 +48,10 @@ function passos(): readonly (readonly [string, string])[] {
       ),
     ],
     [
-      tx("2. Comprove o número", "2. Verify the number"),
+      tx("2. Comprove o número", "2. Check the number"),
       tx(
         "Em Comprove este número, veja a fórmula, o numerador e o denominador, o arquivo e a impressão digital de origem e como refazer a conta.",
-        "In Verify this number, see the formula, the numerator and the denominator, the source file and fingerprint and how to redo the calculation.",
+        "In Check this number, see the formula, the numerator and the denominator, the source file and fingerprint and how to redo the calculation.",
       ),
     ],
     [

@@ -699,7 +699,7 @@ export const CARTOES: Record<string, CartaoDestino> = {
   dados: {
     get utilidade() { return tx("Encontrar o conjunto de origem de um número, ver o estado de cada fonte e baixar os arquivos para reproduzir.", "Find the source dataset of a number, see the status of each source and download the files to reproduce it."); },
     encontra: [
-      { get texto() { return tx("Catálogo de conjuntos com a escada de estados, do catalogado ao publicado", "Dataset catalog with the ladder of states, from catalogued to published"); }, href: "/setor-eletrico/dados#catalogo" },
+      { get texto() { return tx("Catálogo de conjuntos com a escada de estados, do catalogado ao publicado", "Dataset catalog with the ladder of states, from cataloged to published"); }, href: "/setor-eletrico/dados#catalogo" },
       { get texto() { return tx("Saúde das fontes: o que atrasou, falhou ou foi revisado", "Source health: what was late, failed or was revised"); }, href: "/setor-eletrico/dados/saude#saude" },
       { get texto() { return tx("Download e reprodução: sha256 de cada arquivo e conferência do que você baixou", "Download and reproduction: sha256 of each file and a check of what you downloaded"); }, href: "/setor-eletrico/dados/reproducao#reproducao" },
       { get texto() { return tx("Ficha de cada conjunto com capturas e sha256", "Sheet for each dataset with captures and sha256"); }, href: "/setor-eletrico/dados/ccee-pld-horario" },

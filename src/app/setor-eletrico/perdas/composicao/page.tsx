@@ -248,7 +248,7 @@ export default function PerdasComposicaoPage() {
                 <Resposta
                   id="composicao"
                   veredito={vereditoComposicao(g)}
-                  prova={<ComproveNumero evidencia={ev.pnt_bt_nacional} rotulo={tx(`Comprove a não técnica de ${ref}`, `Verify the ${ref} non-technical loss`)} />}
+                  prova={<ComproveNumero evidencia={ev.pnt_bt_nacional} rotulo={tx(`Comprove a não técnica de ${ref}`, `Check the ${ref} non-technical loss`)} />}
                 >
                   {marcarNomes(respostaComposicao(g), Object.values(rotulos), idioma)}
                 </Resposta>

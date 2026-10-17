@@ -76,7 +76,7 @@ export function QualidadeConjuntos({ anoInicial, anoFinal, tamanhos, fonte }: { 
                 Carregar os conjuntos de {v.ano} ({tamanhos[arquivo] ?? "arquivo anual por década"})
               </>,
               <>
-                Load the consumer clusters of {v.ano} ({tamanhos[arquivo] ?? "annual file by decade"})
+                Load the consumer sets of {v.ano} ({tamanhos[arquivo] ?? "annual file by decade"})
               </>,
             )}
           </button>
@@ -84,12 +84,12 @@ export function QualidadeConjuntos({ anoInicial, anoFinal, tamanhos, fonte }: { 
       </div>
       {pedido && !linhas && !erro && (
         <p role="status" className="text-sm text-carvao-muted">
-          {tx(<>Carregando os conjuntos de {v.ano}…</>, <>Loading the consumer clusters of {v.ano}…</>)}
+          {tx(<>Carregando os conjuntos de {v.ano}…</>, <>Loading the consumer sets of {v.ano}…</>)}
         </p>
       )}
       {erro && (
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-          {tx(<>Não foi possível carregar os conjuntos ({erro}).</>, <>The consumer clusters could not be loaded ({erro}).</>)}{" "}
+          {tx(<>Não foi possível carregar os conjuntos ({erro}).</>, <>The consumer sets could not be loaded ({erro}).</>)}{" "}
           <a href={arquivo} download className="text-energia-dark underline underline-offset-4">
             {tx("Baixar o arquivo do período", "Download the file for the period")}
           </a>
@@ -98,7 +98,7 @@ export function QualidadeConjuntos({ anoInicial, anoFinal, tamanhos, fonte }: { 
       )}
       {linhas && (
         <TabelaInterativa
-          titulo={tx(`Conjuntos elétricos em ${v.ano}`, `Consumer clusters in ${v.ano}`)}
+          titulo={tx(`Conjuntos elétricos em ${v.ano}`, `Consumer sets in ${v.ano}`)}
           colunas={colunasConjuntos(idioma)}
           linhas={linhas}
           chaveLinha="id"
@@ -108,8 +108,8 @@ export function QualidadeConjuntos({ anoInicial, anoFinal, tamanhos, fonte }: { 
           nomeArquivo={`qualidade-conjuntos-${v.ano}`}
           chaveUrl="tcj"
           ordemInicial={{ coluna: "razao_dec", direcao: "desc" }}
-          dicaBusca={tx("Nome ou código do conjunto, distribuidora", "Name or code of the consumer cluster, distribution utility")}
-          semLinhas={tx(`Nenhum conjunto publicado para ${v.ano} no arquivo.`, `No consumer cluster published for ${v.ano} in the file.`)}
+          dicaBusca={tx("Nome ou código do conjunto, distribuidora", "Name or code of the consumer set, distribution utility")}
+          semLinhas={tx(`Nenhum conjunto publicado para ${v.ano} no arquivo.`, `No consumer set published for ${v.ano} in the file.`)}
           nota={tx("Comparação com o limite em centésimos, como a ANEEL publica: DEC igual ao limite não é transgressão.", "Comparison with the limit in hundredths, as ANEEL publishes it: a DEC equal to the limit is not a violation.")}
         />
       )}

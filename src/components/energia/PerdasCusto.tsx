@@ -155,7 +155,7 @@ export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm,
           </p>
           <div className="mt-1">
             {prova.estado === "pronta" ? (
-              <ComproveNumero evidencia={prova.evidencia} rotulo={tx("Comprove este valor", "Verify this value")} endereco={`https://scrutiniums.com/setor-eletrico/perdas/custo-e-contexto?d=${linhaSel.id}#custo`} />
+              <ComproveNumero evidencia={prova.evidencia} rotulo={tx("Comprove este valor", "Check this value")} endereco={`https://scrutiniums.com/setor-eletrico/perdas/custo-e-contexto?d=${linhaSel.id}#custo`} />
             ) : prova.estado === "carregando" ? (
               <span role="status" className="text-xs text-carvao-muted">
                 {tx("Carregando a evidência do processo tarifário.", "Loading the evidence for the tariff process.")}
