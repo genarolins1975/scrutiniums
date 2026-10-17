@@ -6,6 +6,7 @@ import type {
   ControleSocietario,
   EteCatalogo,
   FichaMunicipio,
+  JmpPaises,
   MetaSaneamento,
   Municipio,
   Prestador,
@@ -120,6 +121,10 @@ export function prestadores(): Prestador[] {
 
 export function prestador(id: string): Prestador | null {
   return prestadores().find((p) => p.id === id) ?? null;
+}
+
+export function jmpPaises(): JmpPaises {
+  return ler<JmpPaises>("jmp_paises.json") ?? { paises: [], brasil: [] };
 }
 
 export function controleSocietario(): CompanhiaAberta[] {

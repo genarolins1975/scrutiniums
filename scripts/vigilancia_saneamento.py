@@ -20,6 +20,9 @@ O que é vigiado e quando acusa:
 - CVM, Formulário de Referência (posição acionária do capítulo 7): arquivo do FRE atualizado depois da
   captura quando a captura já tem LIMITE_DIAS_CVM dias (a CVM recebe versões novas o ano todo, então só a
   idade da captura torna a mudança acionável); arquivo do ano seguinte publicado a partir de junho.
+- JMP, OMS e UNICEF (comparação internacional): arquivo mundial de domicílios e arquivo do Brasil (fontes
+  da aba Data Summary), cada um com tamanho diferente do registrado ou Last-Modified posterior (o JMP
+  atualiza uma vez por ano ou a cada dois, em geral em julho ou agosto; qualquer mudança pede recoleta).
 - DATASUS, SIM (capítulo 13): a página da tabulação declara dados finais até um ano posterior ao fim da
   janela da gold; nota ausente (formato mudou) é vigia cego.
 
@@ -257,6 +260,29 @@ def cvm(meta, rede, hoje):
     return linhas
 
 
+def jmp(meta, rede, hoje):
+    j = meta.get("jmp")
+    if not j:
+        return ["- JMP: meta.json sem o bloco da comparação internacional; **não verificado**."]
+    linhas = []
+    # os dois arquivos mudam por conta própria: o do Brasil foi regenerado semanas depois do mundial na edição de 2025
+    for nome, url, reg in (("mundial", j["fonte"], j["xlsx"]), ("do Brasil", j["brasil_xlsx"]["url"], j["brasil_xlsx"])):
+        status, total, lm = _tenta(lambda: rede.tamanho(url))
+        if status not in (200, 206):
+            linhas.append(f"- JMP: o arquivo {nome} respondeu HTTP {status}; **não verificado** ({url}).")
+            continue
+        novo, antigo = (_data(lm) if lm else None), _data(reg.get("last_modified") or "")
+        if total is None and novo is None:
+            linhas.append(f"- JMP: o arquivo {nome} respondeu sem tamanho nem Last-Modified; **não verificado** ({url}).")
+            continue
+        if (total is not None and total != reg["bytes"]) or bool(novo and antigo and novo > antigo):
+            quando = f"Last-Modified {novo:%d/%m/%Y}" if novo else "sem Last-Modified"
+            tam = f"{total:,}".replace(",", ".") if total is not None else "?"
+            linhas.append(f"- JMP: o arquivo {nome} mudou desde a edição de {j['edicao_mes'][5:]}/{j['edicao_mes'][:4]} (captura de {j['capturado_em'][:10]}): "
+                          f"{quando}, {tam} bytes contra {reg['bytes']:,}: nova atualização do JMP.".replace(",", "."))
+    return linhas
+
+
 def datasus(meta, rede, hoje):
     s = meta.get("saude")
     if not s:
@@ -286,7 +312,7 @@ def verificar(rede=None, hoje=None, meta=None, snapshot=None, orcamento=ORCAMENT
     linhas = []
     for nome, f in (("SINISA", lambda: sinisa(meta, rede, snapshot)), ("SISAGUA", lambda: sisagua(meta, rede, hoje)),
                     ("CadÚnico", lambda: cadunico(meta, rede, hoje)), ("CVM", lambda: cvm(meta, rede, hoje)),
-                    ("DATASUS", lambda: datasus(meta, rede, hoje))):
+                    ("DATASUS", lambda: datasus(meta, rede, hoje)), ("JMP", lambda: jmp(meta, rede, hoje))):
         try:
             linhas.extend(f())
         except Exception as e:  # uma fonte fora do ar não cala as outras

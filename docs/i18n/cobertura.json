@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "b389804ccf0409ca55ff3bfb417804379a744630d71ea631ee709303c1721273",
-    "arquivos_analisados": 1048,
-    "fontes_sha256": "6234ef13e2d70ef998dc5b4f26c04c05c0b0b5eaced46dc10417ae2a9015cfc2",
+    "arquivos_analisados": 1050,
+    "fontes_sha256": "8f2d4ad55c2854ded4b4d464fe53a2dbbb585b910e4330c0e65940b5e0bd6bd6",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -273,20 +273,20 @@
     "saneamento": {
       "nome": "Saneamento",
       "interface": {
-        "arquivos": 55,
+        "arquivos": 57,
         "candidatos": {
-          "jsx_text": 930,
-          "atributos": 209,
-          "props": 1393,
-          "outros_literais": 2592,
-          "templates": 298,
-          "expressoes_nao_resolvidas": 1983,
-          "chaves_objetos": 3465
+          "jsx_text": 989,
+          "atributos": 231,
+          "props": 1482,
+          "outros_literais": 2741,
+          "templates": 312,
+          "expressoes_nao_resolvidas": 2088,
+          "chaves_objetos": 3693
         },
         "exclusoes": {
-          "importacoes": 382,
-          "atributos_tecnicos": 1192,
-          "tipos": 130
+          "importacoes": 394,
+          "atributos_tecnicos": 1266,
+          "tipos": 141
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -295,17 +295,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 10870,
+        "candidatos_nao_catalogados": 11536,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 25,
+        "paginas_pt": 26,
         "paginas_en": 0,
         "handlers": 0,
         "templates_com_parametros": 2,
-        "paginas_pt_literais": 23,
+        "paginas_pt_literais": 24,
         "paginas_pt_fora_do_adaptador": 2,
-        "paginas_pt_literais_sem_irma": 23,
+        "paginas_pt_literais_sem_irma": 24,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
