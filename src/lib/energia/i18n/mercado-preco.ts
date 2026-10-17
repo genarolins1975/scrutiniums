@@ -179,6 +179,43 @@ export const TEXTOS_CMO_EN: Readonly<Record<string, string>> = {
     "The versions of the models used by ONS are those validated with the agents and approved by ANEEL through a specific act (Grid Procedures, Submodule 4.3, item 1.7.1.3); the dataset does not identify the version or the deck of each value.",
 };
 
+/** Regras do resumo do PLD e exemplo sintético de liquidação (pld.json, regras; pld_detalhe.json, conceito.exemplo_liquidacao), texto exato publicado. */
+export const TEXTOS_PLD_ABERTURA_EN: Readonly<Record<string, string>> = {
+  "Último dia com as 24 horas publicadas para os quatro submercados.": "Latest day with all 24 hours published for the four submarkets.",
+  "Média aritmética simples das 24 horas do dia (horário local de Brasília).": "Simple arithmetic average of the 24 hours of the day (Brasília local time).", // i18n: dado
+  "Percentil da média diária do dia de referência na distribuição das médias diárias do mesmo submercado desde 01/01/2021, em valores nominais. Faixa baixa: abaixo do 25º percentil. Central: do 25º ao 75º. Alta: acima do 75º.":
+    "Percentile of the reference day's daily average in the distribution of daily averages of the same submarket since Jan 1, 2021, in nominal values. Low band: below the 25th percentile. Central: from the 25th to the 75th. High: above the 75th.",
+  "Desvio padrão amostral dos valores horários do período.": "Sample standard deviation of the hourly values in the period.",
+  "Fração das horas do período abaixo do 25º percentil, entre o 25º e o 75º e acima do 75º percentil da distribuição horária do submercado desde 01/01/2021.":
+    "Share of the hours in the period below the 25th percentile, between the 25th and the 75th, and above the 75th percentile of the submarket's hourly distribution since Jan 1, 2021.",
+  "Menor valor horário observado no ano civil até o dia de referência. Não é o piso regulatório: o piso vigente é o do ato da ANEEL, conferido na página Limites.":
+    "Lowest hourly value observed in the calendar year up to the reference day. It is not the regulatory floor: the floor in force is the one in the ANEEL act, checked on the Limits page.",
+  "Para cada hora, maior valor menos menor valor entre os quatro submercados. Contam-se as horas com diferença acima de R$ 1,00/MWh; diferenças menores são tratadas como coincidência nesta contagem.":
+    "For each hour, the highest value minus the lowest value among the four submarkets. Hours with a difference above R$ 1.00/MWh are counted; smaller differences are treated as coincidence in this count.",
+  "Exemplo sintético para explicar o mecanismo. As quantidades são hipotéticas e não representam a contabilização de nenhum agente nem de nenhum mês; o único número real é o PLD da hora indicada, publicado pela CCEE.":
+    "Synthetic example to explain the mechanism. The quantities are hypothetical and do not represent the accounting of any agent or any month; the only real number is the PLD of the stated hour, published by CCEE.",
+  "diferença (MWh) = geração verificada + compras contratadas − consumo verificado − vendas contratadas; valor no mercado de curto prazo (R$) = diferença × PLD da hora":
+    "difference (MWh) = verified generation + contracted purchases − verified consumption − contracted sales; value in the short-term market (R$) = difference × PLD of the hour",
+  "O preço de cada contrato é acertado entre as partes e não entra na conta: só a diferença entre o que foi contratado e o que foi verificado é valorada ao PLD. Neste exemplo as duas diferenças se compensam.":
+    "The price of each contract is agreed between the parties and does not enter the calculation: only the difference between what was contracted and what was verified is valued at the PLD. In this example the two differences offset each other.",
+  "Uma hora e um submercado. A contabilização real soma todas as horas do mês e a liquidação financeira é multilateral, com periodicidade máxima mensal (REN ANEEL nº 957/2021, art. 82).":
+    "One hour and one submarket. Real accounting adds up all the hours of the month, and financial settlement is multilateral, at most monthly (ANEEL REN No. 957/2021, art. 82).",
+  "Sem perdas de transmissão: o cálculo real ajusta as quantidades pelo fator de perdas (Decreto nº 5.163/2004, art. 57, § 5º).":
+    "No transmission losses: the real calculation adjusts the quantities by the loss factor (Decree No. 5.163/2004, art. 57, § 5).",
+  "Sem encargos, penalidades, garantias financeiras, sazonalização e modulação de contratos, nem mecanismos de compartilhamento de risco.":
+    "No charges, penalties, financial guarantees, contract seasonalization and modulation, or risk-sharing mechanisms.",
+  "Contratos, geração e consumo no mesmo submercado: o exemplo não trata diferenças de preço entre submercados.":
+    "Contracts, generation and consumption in the same submarket: the example does not deal with price differences between submarkets.",
+  "Crédito para diferença positiva e débito para negativa é a convenção deste exemplo; as regras algébricas da CCEE não estão acessíveis.":
+    "Credit for a positive difference and debit for a negative one is the convention of this example; the CCEE algebraic rules are not accessible.",
+  "Consumidor hipotético": "Hypothetical consumer",
+  "Gerador hipotético": "Hypothetical generator",
+  "débito": "debit",
+  "crédito": "credit",
+  "hora de maior PLD do Sudeste/Centro-Oeste no dia de referência": "hour with the highest Southeast/Center-West PLD on the reference day",
+  "CCEE, PLD horário por submercado": "CCEE, hourly PLD by submarket",
+};
+
 /** Critério da tabela de distribuidoras (gold mercado.json, livre_regulado.distribuidoras.criterio). */
 export const CRITERIOS_MERCADO_EN: Readonly<Record<string, string>> = {
   "as 30 maiores em energia livre faturada no ano; a tabela completa está no CSV": "the 30 largest by free-market energy billed in the year; the full table is in the CSV",

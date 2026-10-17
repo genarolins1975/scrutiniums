@@ -8,7 +8,7 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { carimbo } from "@/lib/energia/formato";
-import { DOWNLOADS_PLD_EN, TEXTOS_CMO_EN, TEXTOS_PLD_EN, traducaoExata } from "@/lib/energia/i18n/mercado-preco";
+import { DOWNLOADS_PLD_EN, TEXTOS_CMO_EN, TEXTOS_PLD_ABERTURA_EN, TEXTOS_PLD_EN, traducaoExata } from "@/lib/energia/i18n/mercado-preco";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { PAINEIS_PLD, ROTA_PLD, perguntaPainel, rotaPainel, type PainelPld } from "@/lib/energia/pld";
 import type { Natureza } from "@/lib/energia/tipos";
@@ -161,7 +161,7 @@ export function PldSeguir({ ancora, proximo, downloads }: { ancora: string; prox
  */
 export function PldTextoGold({ texto, regiao }: { texto: string; regiao: string }) {
   const idioma = idiomaEnergia();
-  const en = traducaoExata(TEXTOS_PLD_EN, texto, idioma) ?? traducaoExata(TEXTOS_CMO_EN, texto, idioma);
+  const en = traducaoExata(TEXTOS_PLD_EN, texto, idioma) ?? traducaoExata(TEXTOS_CMO_EN, texto, idioma) ?? traducaoExata(TEXTOS_PLD_ABERTURA_EN, texto, idioma);
   return en ? <>{en}</> : <TrechoPortugues regiao={regiao}>{texto}</TrechoPortugues>;
 }
 
