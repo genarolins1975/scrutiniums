@@ -60,3 +60,7 @@ Esta é uma avaliação do implementador, não revisão independente nem aceite 
 ## Integração e publicação
 
 A evidência acima é do build local, com conta de teste isolada. CI, revisão, merge e deploy serão registrados no PR deste redesenho. A conferência de produção distinguirá deploy/rotas públicas e barreiras de login de inspeção autenticada, que requer conta real.
+
+## Ajuste após CI
+
+A primeira execução integrada (`39024656779`, head `570807373`) aprovou build e fluxos do navegador; a suíte geral terminou com 6.399 testes aprovados, um pulado e uma falha: a regra compartilhada do OBEE proíbe cores hexadecimais nos componentes. As cores secundárias de composição/tempo foram trocadas pelos tokens existentes do próprio OBEE/Atlas, mantendo rubricas, dados, geometria e interações. Nenhum teste foi removido ou flexibilizado. A regra compartilhada e os quatro arquivos de regressão passaram localmente após o ajuste: 272 testes em cinco arquivos. As capturas versionadas acima documentam a composição anterior a esse alinhamento de tons; a nova execução do CI gera a evidência do build corrigido. O resultado definitivo está no PR #255: https://github.com/genarolins1975/scrutiniums/pull/255.
