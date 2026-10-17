@@ -4,6 +4,7 @@ import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/sa
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
 import { agregado, agregados, meta, municipios } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
@@ -207,6 +208,16 @@ export default function Pagina() {
             valor de 2024) ÷ {ANOS_ATE_META}, zero quando o valor já supera a meta. &quot;Sem dado&quot;: o consolidado oficial publica a UF sem o indicador; o
             Observatório não o recalcula.
           </Fonte>
+        </Secao>
+
+        <Secao
+          id="mundo"
+          titulo="Como o mundo mede o planejamento da água?"
+          texto="O ODS 6.5.1 pergunta a cada governo quanto da gestão integrada de recursos hídricos já funciona: leis, instituições, instrumentos e financiamento. É a régua internacional de governança da água; não mede plano de saneamento nem distância da meta legal."
+        >
+          <MundoNoCapitulo>
+            <FiguraOds codigo="ER_H2O_IWRMD" />
+          </MundoNoCapitulo>
         </Secao>
 
         <Secao

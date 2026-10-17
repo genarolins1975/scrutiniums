@@ -4,6 +4,7 @@ import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
 import { agregado, agregados, fichas, municipios } from "@/lib/saneamento/gold";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { inteiro } from "@/lib/saneamento/formato";
@@ -27,6 +28,10 @@ export default function Pagina() {
   const todas = fichas();
 
   const motivos = Object.entries(c?.motivos_interrupcoes ?? {}).map(([k, v]) => ({ id: k, rotulo: k === "Outro (especificar)" ? "Outro" : k, v }));
+  // A gold só soma o motivo de quem declarou interrupção e informou o motivo; quem declarou sem informar fica numa barra própria,
+  // para que as barras fechem com os municípios com interrupção sistemática.
+  const semMotivo = (c?.municipios_com_interrupcoes ?? 0) - motivos.reduce((s, m) => s + m.v, 0);
+  if (semMotivo > 0) motivos.push({ id: "sem-motivo", rotulo: "Sem motivo informado", v: semMotivo });
   const manancialUf = ufs
     .map((u) => ({ id: u.id, rotulo: u.nome, v: u.continuidade.motivos_interrupcoes[MANANCIAL] ?? 0 }))
     .filter((u) => u.v > 0)
@@ -95,7 +100,7 @@ export default function Pagina() {
         <Secao
           id="motivos"
           titulo="Por que houve racionamento?"
-          texto="Motivo principal declarado pelo prestador para as interrupções sistemáticas, em número de municípios. Um município, um motivo."
+          texto={`Motivo principal declarado pelo prestador para as interrupções sistemáticas, em número de municípios. Um município, um motivo.${semMotivo > 0 ? " A última barra reúne quem declarou interrupção sem informar o motivo." : ""}`}
         >
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
             <GraficoBarras
@@ -176,6 +181,16 @@ export default function Pagina() {
             naoPermite="Comparar a resiliência entre municípios: cada prestador aplica o conceito de colapso ao próprio sistema, e quem não registra aparece com zero ou sem dado."
           />
           <Nota>Zero declarado entra como zero; município que não informou o campo fica fora da contagem.</Nota>
+        </Secao>
+
+        <Secao
+          id="mundo"
+          titulo="O Brasil tem estresse hídrico?"
+          texto="A FAO mede, para cada país, quanto da água doce disponível é retirada por todos os usos. É a régua internacional de pressão sobre a água; a média nacional não mostra a bacia nem o município, onde o racionamento acontece."
+        >
+          <MundoNoCapitulo>
+            <FiguraOds codigo="ER_H2O_STRESS" />
+          </MundoNoCapitulo>
         </Secao>
 
         <Secao id="lacunas" titulo="O que ainda não está aqui">

@@ -29,6 +29,7 @@ from collections import Counter, defaultdict
 
 from . import controle
 from . import jmp
+from . import ods
 from . import saude
 from .desigualdades import SPECS as SPECS_DESIGUALDADES
 from .desigualdades import construir as construir_desigualdades
@@ -853,7 +854,7 @@ def construir():
     # --- agregados: Censo (tabulação do IBGE em cada nível) + SINISA consolidado oficial
     _, ag_uf_ind = planilha("agua_indicadores_uf")
     _, es_uf_ind = planilha("esgoto_indicadores_uf")
-    _, ag_uf_tec = planilha("agua_tecnica_uf")
+    meta_ag_uf_tec, ag_uf_tec = planilha("agua_tecnica_uf")
     _, es_uf_tec = planilha("esgoto_tecnica_uf")
     _, ag_uf_fin = planilha("agua_financeira_uf")
     _, es_uf_fin = planilha("esgoto_financeira_uf")
@@ -958,18 +959,187 @@ def construir():
         "A soma não reproduz o consolidado; divergência mantida em aberto.",
     })
     pop_at_mun = soma_mun("ag_pop_at")
+    pop_at_br = br["sinisa"]["agua"]["pop_atendida"]
+    dif_pop = None if pop_at_mun is None or pop_at_br is None else pop_at_mun - pop_at_br
     conferencias.append({
         "id": "agua_retificacao",
-        "descricao": "População atendida com rede de água: soma da base municipal retificada (25/05/2026) "
-                     "versus consolidado Brasil publicado antes da retificação.",
+        "descricao": "População atendida com rede de água (GTA0001 + GTA0002): soma da base municipal retificada "
+                     "contra o consolidado Brasil.",
         "valores": {
             "soma_municipal_retificada": pop_at_mun,
-            "consolidado_brasil": br["sinisa"]["agua"]["pop_atendida"],
-            "diferenca": None if pop_at_mun is None or br["sinisa"]["agua"]["pop_atendida"] is None
-            else pop_at_mun - br["sinisa"]["agua"]["pop_atendida"],
+            "consolidado_brasil": pop_at_br,
+            "diferenca": dif_pop,
         },
-        "conclusao": "UF, região e Brasil usam o consolidado oficial; municípios usam a base retificada. "
-                     "A diferença é publicada e não é redistribuída.",
+        "conclusao": "A soma municipal reproduz o consolidado Brasil, sem diferença. As colunas de ligações e economias "
+                     "têm conferência própria, logo abaixo; UF, região e Brasil usam o consolidado oficial e os "
+                     "municípios usam a base retificada."
+        if dif_pop == 0 else
+        "A soma municipal difere do consolidado Brasil. UF, região e Brasil usam o consolidado oficial; municípios "
+        "usam a base retificada. A diferença é publicada e não é redistribuída.",
+    })
+
+    # Contagens de ligações e economias: soma dos municípios (base retificada) contra o consolidado por UF, coluna a coluna.
+    unid_tec = {c["codigo"]: c["unidade"] for c in meta_ag_uf_tec["colunas"]}
+    nome_tec = {c["codigo"]: c["nome"] for c in meta_ag_uf_tec["colunas"]}
+    cols_cont = [c for c, u in unid_tec.items() if u in ("Ligações", "economias")]
+    por_uf_col = defaultdict(list)
+    for cod, l in ag_tec.items():
+        uf_m = UF_COD.get(cod[:2])
+        for c in cols_cont:
+            v = num(l.get(c))
+            if v is not None:
+                por_uf_col[(uf_m, c)].append(v)
+    detalhe_cont, comparacoes_cont = [], 0
+    for tid, l in sorted(ag_uf_tec.items()):
+        if tid not in UF_NOME:
+            continue
+        for c in cols_cont:
+            cons = num(l.get(c))
+            if cons is None:
+                continue
+            comparacoes_cont += 1
+            soma_m = somar(por_uf_col.get((tid, c), []))
+            if abs(soma_m - cons) >= 1:
+                detalhe_cont.append({
+                    "uf": tid, "codigo": c, "nome": nome_tec[c], "soma_municipal": soma_m, "consolidado_uf": cons,
+                    "diferenca_pct": r2((soma_m - cons) / cons * 100, 2) if cons else None,
+                })
+    detalhe_cont.sort(key=lambda d: (d["uf"], d["codigo"]))
+    ufs_div = sorted({d["uf"] for d in detalhe_cont})
+    pm, pu = manifesto["planilhas"]["agua_tecnica_municipio"], manifesto["planilhas"]["agua_tecnica_uf"]
+
+    def data_do_cabecalho(planilha_manifesto, rotulo):
+        """Data que a própria planilha declara no cabeçalho ("Data de publicação: dd/mm/aaaa"), em ISO; nulo se não declara."""
+        for linha in planilha_manifesto["cabecalho"]:
+            m = re.match(rf"\s*{rotulo}:\s*(\d{{2}})/(\d{{2}})/(\d{{4}})", str(linha))
+            if m:
+                return f"{m.group(3)}-{m.group(2)}-{m.group(1)}"
+        return None
+
+    datas_ret = {
+        "municipal_publicacao": data_do_cabecalho(pm, "Data de publicação"),
+        "municipal_retificacao": data_do_cabecalho(pm, "Data de retificação"),
+        "consolidado_uf_publicacao": data_do_cabecalho(pu, "Data de publicação"),
+        "consolidado_uf_retificacao": data_do_cabecalho(pu, "Data de retificação"),
+    }
+    br_data = lambda iso: "/".join(reversed(iso.split("-")))  # noqa: E731
+    texto_datas = (
+        f"A planilha técnica municipal declara publicação em {br_data(datas_ret['municipal_publicacao'])}"
+        + (f" e retificação em {br_data(datas_ret['municipal_retificacao'])}" if datas_ret["municipal_retificacao"] else "")
+        + f"; a consolidada por UF declara publicação em {br_data(datas_ret['consolidado_uf_publicacao'])}"
+        + (f" e retificação em {br_data(datas_ret['consolidado_uf_retificacao'])}." if datas_ret["consolidado_uf_retificacao"] else ", sem data de retificação.")
+    )
+    conferencias.append({
+        "id": "agua_retificacao_contagens",
+        "descricao": "Ligações, economias e domicílios de água (GTA0003 a GTA0018): soma dos municípios (base retificada) "
+                     "contra o consolidado de cada UF.",
+        "valores": {
+            "colunas_comparadas": len(cols_cont),
+            "comparacoes_uf_coluna": comparacoes_cont,
+            "comparacoes_com_diferenca": len(detalhe_cont),
+            "ufs_com_diferenca": len(ufs_div),
+            "maior_diferenca_relativa_pct": max((abs(d["diferenca_pct"]) for d in detalhe_cont if d["diferenca_pct"] is not None), default=0),
+        },
+        "datas": datas_ret,
+        "detalhe": detalhe_cont,
+        "conclusao": (f"{texto_datas} Em {len(detalhe_cont)} das {comparacoes_cont} comparações por UF e coluna a soma dos "
+                      f"municípios difere do consolidado, todas em {', '.join(ufs_div)}; nas demais as somas coincidem. "
+                      "UF e Brasil usam o consolidado oficial; os municípios usam a base retificada. A diferença é "
+                      "publicada e não é redistribuída.")
+        if detalhe_cont else
+        f"{texto_datas} As somas municipais coincidem com o consolidado de todas as UF nas {comparacoes_cont} comparações.",
+    })
+    # Colunas em que a soma dos municípios não é o consolidado da UF, e o que reproduz cada uma (GTA0019, GTA3006, volumes).
+    def tec_uf(tid, c):
+        return num(ag_uf_tec[tid].get(c))
+
+    por_uf = defaultdict(lambda: defaultdict(list))
+    n19_igual = n19_vazio = n19_dif = 0
+    vazios_por_uf = Counter()
+    for cod, l in ag_tec.items():
+        uf_m = UF_COD.get(cod[:2])
+        for c in ("GTA0019", "GTA3006", "GTA1009", "GTA1014"):
+            v = num(l.get(c))
+            if v is not None:
+                por_uf[uf_m][c].append(v)
+        a19, g1, g2 = num(l.get("GTA0019")), num(l.get("GTA0001")), num(l.get("GTA0002"))
+        if g1 is None and g2 is None:
+            continue
+        if a19 is None:
+            n19_vazio += 1
+            vazios_por_uf[uf_m] += 1
+        elif a19 == (g1 or 0) + (g2 or 0):
+            n19_igual += 1
+        else:
+            n19_dif += 1
+    ufs_ids = sorted(UF_NOME)
+    ufs19_igual = sum(1 for t in ufs_ids if tec_uf(t, "GTA0019") is not None and tec_uf(t, "GTA0019") == soma(tec_uf(t, "GTA0001"), tec_uf(t, "GTA0002")))
+    ufs19_dif = sum(1 for t in ufs_ids if somar(por_uf[t]["GTA0019"]) != tec_uf(t, "GTA0019"))
+    # GTA3006: nas UFs com valor, o consolidado é a parte inteira da média de dias por município que informou o campo; as UFs
+    # em branco ficam à parte, porque branco não se distingue de ausência na planilha.
+    ufs3006_valor = ufs3006_igual = ufs3006_branco = ufs3006_branco_pos = ufs3006_branco_zero_int = 0
+    for t in ufs_ids:
+        xs = por_uf[t]["GTA3006"]
+        media = somar(xs) / len(xs) if xs else 0
+        v = tec_uf(t, "GTA3006")
+        if v is not None:
+            ufs3006_valor += 1
+            if v <= media < v + 1:
+                ufs3006_igual += 1
+        else:
+            ufs3006_branco += 1
+            if media > 0:
+                ufs3006_branco_pos += 1
+            if media < 1:
+                ufs3006_branco_zero_int += 1
+    dias_br = somar([x for t in ufs_ids for x in por_uf[t]["GTA3006"]])
+    # GTA1014: diferença para a soma municipal contra a água importada (GTA1009) que o consolidado não repete
+    ufs1014_dif = ufs1014_fecha = 0
+    for t in ufs_ids:
+        c14, c09 = tec_uf(t, "GTA1014"), tec_uf(t, "GTA1009")
+        if c14 is None:
+            continue
+        d14 = c14 - somar(por_uf[t]["GTA1014"])
+        if abs(d14) <= 0.05:
+            continue
+        ufs1014_dif += 1
+        if c09 is not None and abs(d14 + (somar(por_uf[t]["GTA1009"]) - c09)) <= 0.05:
+            ufs1014_fecha += 1
+    maior_vazio = vazios_por_uf.most_common(1)[0] if vazios_por_uf else None
+    conferencias.append({
+        "id": "agua_colunas_sem_soma",
+        "descricao": "Colunas técnicas de água em que a soma dos municípios não é o consolidado da UF: população total "
+                     "atendida (GTA0019), dias de colapso (GTA3006) e volume de entrada (GTA1014).",
+        "valores": {
+            "gta0019_municipios_iguais_a_gta0001_mais_gta0002": n19_igual,
+            "gta0019_municipios_vazios": n19_vazio,
+            "gta0019_municipios_diferentes": n19_dif,
+            "gta0019_ufs_consolidado_igual_a_gta0001_mais_gta0002": ufs19_igual,
+            "gta0019_ufs_com_soma_municipal_diferente": ufs19_dif,
+            "gta3006_ufs_com_valor": ufs3006_valor,
+            "gta3006_ufs_com_valor_igual_a_media_truncada": ufs3006_igual,
+            "gta3006_ufs_em_branco": ufs3006_branco,
+            "gta3006_ufs_em_branco_com_media_municipal_positiva": ufs3006_branco_pos,
+            "gta3006_soma_municipal_dias": r2(dias_br),
+            "gta3006_consolidado_brasil": tec_uf("BR", "GTA3006"),
+            "gta1014_ufs_com_diferenca": ufs1014_dif,
+            "gta1014_ufs_que_fecham_com_agua_importada": ufs1014_fecha,
+        },
+        "conclusao": (
+            f"GTA0019: o consolidado de {ufs19_igual} das {len(ufs_ids)} UFs é igual a GTA0001 + GTA0002, a soma que o "
+            f"Observatório usa no município; a coluna GTA0019 da planilha municipal está vazia em {n19_vazio} municípios"
+            + (f" ({maior_vazio[1]} em {maior_vazio[0]})" if maior_vazio else "")
+            + f" e difere dessa soma em {n19_dif}, por isso a soma municipal de GTA0019 não fecha em {ufs19_dif} UFs. "
+            f"GTA3006: nas {ufs3006_valor} UFs com valor, o consolidado é a parte inteira da média de dias por município que "
+            f"informou o campo ({ufs3006_igual} de {ufs3006_valor}), e não a soma de dias; nas {ufs3006_branco} UFs em branco a "
+            f"parte inteira da média é zero ({ufs3006_branco_pos} com média positiva, abaixo de 1 dia), compatível com branco "
+            "para parte inteira zero, mas a planilha não distingue branco de ausência e isso não foi verificado. O painel de "
+            "resiliência usa a soma municipal e a rotula como tal. "
+            f"GTA1014: das {ufs1014_dif} UFs com diferença, {ufs1014_fecha} fecham exatamente com a água importada (soma "
+            "municipal de GTA1009 menos o GTA1009 consolidado); nas demais a diferença não se reproduz e a causa não foi "
+            "estabelecida. A planilha não declara essas agregações no cabeçalho: as regras de GTA0019 e GTA3006 foram "
+            "deduzidas dos números."
+        ),
     })
     inv_mun = soma_mun("inv_ag")
     inv_cons = br["sinisa"]["agua"]["investimento"]["total"] if br["sinisa"]["agua"]["investimento"] else None
@@ -1109,6 +1279,8 @@ def construir():
     controle_gold, meta["cvm"] = controle.construir(controle.declarados(aba("Detalhamento Prestadores Serv")), lista_prest)
     # Comparação internacional (JMP, OMS e UNICEF): estimativas por país, arquivo próprio.
     jmp_gold, meta["jmp"] = jmp.construir()
+    # Referências mundiais por capítulo (base global dos ODS da ONU): arquivo próprio.
+    ods_gold, meta["ods"] = ods.construir()
     return {
         "reguladores": lista_reg,
         "meta": meta,
@@ -1119,6 +1291,7 @@ def construir():
         "etes": lista_etes,
         "controle": controle_gold,
         "jmp": jmp_gold,
+        "ods": ods_gold,
     }
 
 
@@ -1310,6 +1483,9 @@ def arquivos(g):
     out["jmp_paises.json"] = json_bytes(g["jmp"])
     cab_j, linhas_j = jmp.linhas_csv(g["jmp"])
     out["jmp_paises.csv"] = csv_bytes(cab_j, linhas_j)
+    out["ods.json"] = json_bytes(g["ods"])
+    cab_o, linhas_o = ods.linhas_csv(g["ods"])
+    out["ods_paises.csv"] = csv_bytes(cab_o, linhas_o)
     cab_p = ["id", "nome", "sigla", "natureza", "abrangencia", "ufs", "municipios_agua", "municipios_esgoto",
              "populacao_atendida_agua", "populacao_atendida_esgoto", "perdas_distribuicao_pct",
              "investimento_agua", "investimento_esgoto"]

@@ -1,0 +1,22 @@
+{
+  "arquivos": {
+    "despesas-historico.csv": "a509bdb5e6d50f902970c93178b890dc6c5eb535bb3773294e0564397dce00a4",
+    "ramos.csv": "456d4e94c1f243ef43926c9e86c74127256c505d90951e7db8b724baf7a84d67",
+    "snapshot.json": "d3d516a84bc550559eb217ac09d810e5d6b107de8e7cfeb599c796be33746bb3",
+    "tribunais.csv": "ec81beca1b14b6029155d7d26deac79daa0ac6b0ee1a355d8bdd65ed3f224ea4"
+  },
+  "calculo": "judiciario-2",
+  "fonte": {
+    "id": "cnj",
+    "localizadores": "Páginas 22–24; tabelas 1/2 p. 40–41; finanças p. 62–71, 110–118, 132–139 e 157–165; conciliação p. 232–234; desempenho e tempos p. 310–313, 333, 351–353, 383–384, 397, 407, 438–440, 459 e 473.",
+    "nome": "CNJ — Justiça em Números 2026",
+    "referencia": "Ano-base 2025; edição 2026",
+    "sha256": "7aafbf664cbd3edadf46492151988468e154fe9cb131b460fe7dde335c3dca19",
+    "url": "https://bibliotecadigital.cnj.jus.br/bitstream/123456789/1126/1/relatorio_justica_em_numeros2026_1.pdf"
+  },
+  "sementes": {
+    "ampliado": "1f2c005be421e07e9eae010141ccee5ba10dcad8ba9ca96733f368fe5f58a946",
+    "recorte": "fe0164e193c577560f697012cdad38113d175ab1c6d3f9c8cddfee7a4fca58ef",
+    "texto": "d60a87ae35dea2511f714798eaf2234696642eb7b6821b6061e6e29fa4b3bedb"
+  }
+}

@@ -5,8 +5,9 @@ import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Histograma } from "@/components/energia/Histograma";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FiguraJmp, FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
 import { montaHistograma } from "@/lib/energia/distribuicao";
-import { agregado, agregados, etes, meta, municipios } from "@/lib/saneamento/gold";
+import { acimaDaCapacidade, agregado, agregados, etes, meta, municipios } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
@@ -77,7 +78,7 @@ export default function Pagina() {
   const utilGrafico = util.filter((v) => v <= 200);
   const foraGrafico = util.length - utilGrafico.length;
   const histUtil = utilGrafico.length >= 5 ? montaHistograma(utilGrafico, { limites: [0, 25, 50, 75, 100, 125, 150, 175, 200] }) : null;
-  const acima100 = util.filter((v) => v > 100).length;
+  const acima100 = operando.filter((e) => acimaDaCapacidade(e) === true).length;
   const etesUf = ufs
     .map((u) => ({ id: u.id, rotulo: u.nome, v: operando.filter((e) => e.uf === u.id).length }))
     .sort((a, b) => b.v - a.v);
@@ -188,6 +189,21 @@ export default function Pagina() {
             naoPermite="Converter volumes em pessoas, nem medir a carga poluidora removida: o indicador ignora a eficiência da estação e a água que não vira esgoto."
           />
           <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), consolidado por UF, indicadores IES2002 e IES2003.</Fonte>
+        </Secao>
+
+        <Secao
+          id="mundo"
+          titulo="Quanto do esgoto é tratado em outros países?"
+          texto="A ONU acompanha o esgoto doméstico tratado com segurança em cada país, e o JMP, a população ligada à rede com tratamento. São medidas próprias, com definição internacional; ficam ao lado das brasileiras, não no lugar delas."
+        >
+          <MundoNoCapitulo>
+            <FiguraOds
+              codigo="EN_WWT_WWDS"
+              titulo="Esgoto doméstico tratado com segurança"
+              extra={<>No SINISA 2024, o esgoto tratado sobre a água consumida (IES2003) do Brasil é {numero(ind.IES2003, 1)}%.</>}
+            />
+            <FiguraJmp campo="rede_tratada" />
+          </MundoNoCapitulo>
         </Secao>
 
         <Secao

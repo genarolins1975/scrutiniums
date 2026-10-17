@@ -334,7 +334,16 @@ export type ReguladorCatalogo = {
 
 export type EteCatalogo = Ete & { municipio: string; uf: string; prestador: string; corpo_receptor?: string | null; linha: number };
 
-export type Conferencia = { id: string; descricao: string; valores: Record<string, number | null>; conclusao: string };
+export type DivergenciaContagem = { uf: string; codigo: string; nome: string; soma_municipal: number; consolidado_uf: number; diferenca_pct: number | null };
+export type Conferencia = {
+  id: string;
+  descricao: string;
+  valores: Record<string, number | null>;
+  conclusao: string;
+  /** Só na conferência das contagens de água: datas das duas planilhas e as comparações que não fecham. */
+  datas?: { municipal_publicacao: string; municipal_retificacao: string | null; consolidado_uf_publicacao: string; consolidado_uf_retificacao: string | null };
+  detalhe?: DivergenciaContagem[];
+};
 
 /** Contadores [com o resultado medido, com resultado válido]. */
 export type ParSisagua = [number, number];
@@ -404,6 +413,7 @@ export type MetaSaneamento = {
   saude?: MetaSaude;
   cvm?: MetaCvm;
   jmp?: MetaJmp;
+  ods?: MetaOds;
   desigualdades: {
     proveniencia: { capturado_em: string };
     residuos_cor_raca: { universo: number; agua: number; esgoto: number };
@@ -571,6 +581,34 @@ export type PaisJmp = EstimativaJmp & {
   renda: string | null;
 };
 export type JmpPaises = { paises: PaisJmp[]; brasil: EstimativaJmp[] };
+
+/** Valor da base global dos ODS da ONU como publicado; ausência é null, nunca zero. Natureza: C, CA, E, G, M ou N. */
+export type PontoOds = { ano: number; valor: number | null; natureza: string | null };
+export type TresOds = { brasil: PontoOds | null; mundo: PontoOds | null; alc: PontoOds | null };
+export type PaisOds = { m49: number; nome: string; nome_origem: "IBGE" | "ONU"; valor: number; natureza: string | null };
+export type SerieOds = TresOds & {
+  codigo: string;
+  indicador: string;
+  unidade_onu: string;
+  /** Ano mais recente em que o Brasil tem valor; Brasil, mundo, região e países são comparados nele. */
+  ano_comparado: number;
+  fonte_brasil: string[];
+  historico: { brasil: [number, number][]; mundo: [number, number][]; alc: [number, number][] };
+  paises: PaisOds[];
+  recortes?: Record<string, TresOds>;
+  recorte_dimensao?: string;
+  edicao: string;
+  descricao_onu: string;
+};
+export type Ods = { series: Record<string, SerieOds> };
+export type MetaOds = {
+  fonte: string;
+  capturado_em: string;
+  edicoes: string[];
+  paises_onu: number;
+  paises_ibge: number;
+  series: Record<string, { ano_comparado: number; paises: number; sha256: string }>;
+};
 
 export type MetaJmp = {
   fonte: string;

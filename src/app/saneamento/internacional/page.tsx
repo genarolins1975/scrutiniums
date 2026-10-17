@@ -5,6 +5,7 @@ import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { TabelaOds } from "@/components/saneamento/ReferenciaMundial";
 import { agregado, jmpPaises, meta } from "@/lib/saneamento/gold";
 import {
   DEFINICOES_JMP,
@@ -353,6 +354,14 @@ export default function Pagina() {
             lista ficam com o nome em inglês do JMP); IBGE, Censo Demográfico 2022; Ministério das Cidades, SINISA 2025 (ano de referência 2024). Arquivo em{" "}
             <a className="text-obee-dark underline" href="/saneamento/gold/jmp_paises.csv">jmp_paises.csv</a>.
           </Fonte>
+        </Secao>
+
+        <Secao
+          id="ods"
+          titulo="Além do acesso: o que mais os ODS medem sobre água e saneamento?"
+          texto="A base global dos Objetivos de Desenvolvimento Sustentável reúne, com definição única, indicadores de esgoto tratado, qualidade dos corpos d'água, estresse hídrico, gestão da água, ajuda internacional e mortalidade. Cada um aparece também no capítulo que mede algo parecido no Brasil, com a nota do que muda."
+        >
+          <TabelaOds />
         </Secao>
       </main>
     </>

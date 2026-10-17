@@ -41,6 +41,7 @@ const ARQUIVOS: [string, string][] = [
   ["saude_municipios.csv", "SIH e SIM, 2022 a 2024: internações e óbitos por infecções intestinais, leptospirose e esquistossomose, soma dos três anos por município de residência"],
   ["controle_societario.csv", "CVM, Formulário de Referência: acionistas, controlador e cadeia de controle das companhias abertas prestadoras de água e esgoto, uma linha por acionista"],
   ["jmp_paises.csv", "JMP (OMS e UNICEF), 2024: água e esgotamento por degrau de serviço em cada país ou área, em percentual da população, com região e faixa de renda"],
+  ["ods_paises.csv", "ONU, base global dos ODS: oito séries de referência mundial (água e esgotamento gerenciados com segurança, esgoto tratado, qualidade dos corpos d'água, estresse hídrico, gestão da água, ajuda oficial e mortalidade), uma linha por país no ano comparado"],
   ["meta.json", "Proveniência: arquivos de origem, sha256, datas, cobertura e conferências"],
 ];
 
@@ -52,6 +53,7 @@ export default function Pagina() {
   const consultasSaude = m?.saude?.consultas ?? [];
   const cvm = m?.cvm;
   const jmp = m?.jmp;
+  const ods = m?.ods;
 
   const linhasViab = VIABILIDADE.map((v) => ({
     pergunta: v.pergunta,
@@ -143,6 +145,33 @@ export default function Pagina() {
                   ))}
                 </dl>
                 <p className="mt-2 text-sm leading-relaxed text-carvao">{c.conclusao}</p>
+                {c.detalhe && c.detalhe.length > 0 && (
+                  <div className="tabela-scroll mt-3" tabIndex={0} role="region" aria-label="Colunas que não fecham (rolável)">
+                    <table className="w-full min-w-[40rem] border-collapse text-sm">
+                      <caption className="sr-only">Colunas de contagem em que a soma dos municípios difere do consolidado da UF</caption>
+                      <thead>
+                        <tr className="border-b border-carvao text-left">
+                          <th scope="col" className="py-2 pr-4 font-medium">UF e coluna</th>
+                          <th scope="col" className="py-2 pr-4 text-right font-medium">Soma dos municípios</th>
+                          <th scope="col" className="py-2 pr-4 text-right font-medium">Consolidado da UF</th>
+                          <th scope="col" className="py-2 text-right font-medium">Diferença</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {c.detalhe.map((d) => (
+                          <tr key={`${d.uf}-${d.codigo}`} className="border-b border-linha align-top">
+                            <th scope="row" className="py-2 pr-4 text-left font-normal">
+                              {d.uf}, {d.codigo}: {d.nome}
+                            </th>
+                            <td className="py-2 pr-4 text-right tabular-nums">{inteiro(d.soma_municipal)}</td>
+                            <td className="py-2 pr-4 text-right tabular-nums">{inteiro(d.consolidado_uf)}</td>
+                            <td className="py-2 text-right tabular-nums">{d.diferenca_pct == null ? "sem dado" : `${numero(d.diferenca_pct, 2)}%`}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </article>
             ))}
           </div>
@@ -343,6 +372,44 @@ export default function Pagina() {
                         <th scope="row" className="py-1 pr-4 text-left font-normal">{nome}</th>
                         <td className="py-1 pr-4 text-right tabular-nums">{inteiro(bytes as number)}</td>
                         <td className="py-1 font-mono [overflow-wrap:anywhere]">{sha}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          )}
+
+          {ods && (
+            <details className="mt-6">
+              <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm font-medium text-obee-dark underline underline-offset-4">
+                Séries da base global dos ODS, referências mundiais por capítulo ({Object.keys(ods.series).length} séries)
+              </summary>
+              <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                ONU, base global dos indicadores dos ODS (unstats.un.org/sdgapi), edição {ods.edicoes.join(", ")}, consulta em {data(ods.capturado_em.slice(0, 10))}. Só
+                a versão global de cada série é lida, e uma linha repetida para a mesma área, ano e recorte faz a coleta falhar. Em cada série, o ano
+                comparado é o mais recente em que o Brasil tem valor; mundo, América Latina e Caribe e os {ods.paises_onu} países e territórios da
+                classificação da ONU são tomados nesse ano. Nomes de {ods.paises_ibge} países em português pela API de países do IBGE, pelo código M49;
+                os demais ficam com o nome em inglês da ONU.
+              </p>
+              <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Séries dos ODS com sha256 (rolável)">
+                <table className="w-full min-w-[40rem] border-collapse text-xs">
+                  <caption className="sr-only">Séries dos ODS, ano comparado, países com valor e sha256 do seed</caption>
+                  <thead>
+                    <tr className="border-b border-carvao text-left">
+                      <th scope="col" className="py-2 pr-4 font-medium">Série</th>
+                      <th scope="col" className="py-2 pr-4 text-right font-medium">Ano comparado</th>
+                      <th scope="col" className="py-2 pr-4 text-right font-medium">Países com valor</th>
+                      <th scope="col" className="py-2 font-medium">sha256</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(ods.series).map(([codigo, s]) => (
+                      <tr key={codigo} className="border-b border-linha align-top">
+                        <th scope="row" className="py-1 pr-4 text-left font-normal">{codigo}</th>
+                        <td className="py-1 pr-4 text-right tabular-nums">{s.ano_comparado}</td>
+                        <td className="py-1 pr-4 text-right tabular-nums">{inteiro(s.paises)}</td>
+                        <td className="py-1 font-mono [overflow-wrap:anywhere]">{s.sha256}</td>
                       </tr>
                     ))}
                   </tbody>

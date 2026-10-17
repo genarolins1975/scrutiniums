@@ -1,6 +1,6 @@
 # Acesso à Justiça — OBEE
 
-Seis páginas sob `/eficiencia-estatal/acesso-justica`: panorama, cobertura, tempo-resposta, conciliacao, recursos e dados. Integração no panorama do OBEE, no mapa de serviços e no sitemap.
+Seis páginas sob `/eficiencia-estatal/acesso-justica`: panorama, cobertura, tempo-resposta, conciliacao, recursos e dados. Integração no panorama do OBEE e no mapa de serviços. Painéis e downloads exigem sessão e não entram no sitemap. O panorama conecta o módulo de funcionamento do Judiciário, em `/eficiencia-estatal/judiciario`, preservando estas URLs.
 
 ## Dados e limites
 

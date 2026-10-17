@@ -46,9 +46,9 @@ ACRESCIMOS = [
      "vigencia": "publicação", "url": "https://www.arpe.pe.gov.br/resolucao-arpe-n-347", "verificado": True,
      "obs": "Desconto de leilão citado na imprensa não verificado em ato."},
     {"prestador": "SABESP", "area": "Contrato de Concessão 01/2024, URAE-1", "regulador": "ARSESP", "tipo": "estrutura (Residencial Social II, Lei 14.898/2024)", "pedido": "não se aplica",
-     "decisao": "50% de desconto sobre a tarifa residencial até 15 m³", "ato": "Deliberação 1.699/2025", "data": "2025",
-     "vigencia": "01/06/2025", "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl16992025.pdf", "verificado": True,
-     "obs": "Conferido nos valores da Tabela 1 de 2026: 20,21 = 40,42 ÷ 2 e 3,20 = 6,40 ÷ 2."},
+     "decisao": "50% de desconto sobre a tarifa residencial até 15 m³", "ato": "Deliberação 1.699, 01/08/2025", "data": "2025-08-01",
+     "vigencia": "01/06/2025 (efeitos retroativos)", "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl16992025.pdf", "verificado": True,
+     "obs": "Data e vigência lidas no PDF (cabeçalho: \"de 01 de Agosto de 2025\"; art. 5º: vigor na publicação, com efeitos retroativos a 1º de junho de 2025). Conferido nos valores da Tabela 1 de 2026: 20,21 = 40,42 ÷ 2 e 3,20 = 6,40 ÷ 2."},
     # Saneago (AGR): reajustes anuais lidos nos atos publicados no site da prestadora, em 17/10/2026.
     {"prestador": "SANEAGO", "area": "Municípios atendidos pela Saneago em Goiás", "regulador": "AGR", "tipo": "reajuste", "pedido": "Nota Técnica Conjunta 4/2023 (processo 202200052000382)",
      "decisao": "7,02% sobre a tabela de fevereiro de 2022, para as tarifas de água e esgoto e para a tarifa básica", "ato": "Resolução Normativa AGR 203, 27/02/2023", "data": "2023-02-27",
@@ -74,6 +74,36 @@ ACRESCIMOS = [
      "decisao": "5,80% nas tarifas de água e esgoto e na tabela de serviços e infrações, pelo IPCA de outubro de 2024 a dezembro de 2025", "ato": "Resolução ARESC 389, 12/02/2026", "data": "2026-02-12",
      "vigencia": "reajuste aplicável 30 dias após a publicação (art. 2º); a CASAN publica a tabela como válida desde 01/04/2026", "url": "https://aresc.sc.gov.br/wp-content/uploads/2026/02/RESOLUCAO-ARESC-No-389.pdf", "verificado": True,
      "obs": "A página da CASAN data este ato de 13/01/2026; o original é de 12/02/2026. ARIS, AGIR e CISAM-SUL também autorizaram o reajuste, segundo a CASAN; esses atos não foram lidos."},
+    # CORSAN (AGERGS): atos citados nos comunicados da Corsan; as resoluções em si não foram localizadas (levantamento de 17/10/2026).
+    {"prestador": "CORSAN", "area": "Municípios do Apêndice 1 da Tabela I (298, em julho de 2026)", "regulador": "AGERGS", "tipo": "reajuste", "pedido": "não publicado",
+     "decisao": "4,68% (reproduzido nos preços da Tabela I de janeiro de 2026 sobre a de janeiro de 2025); a mesma data-base passou a ser 1º de janeiro", "ato": "Reajuste anual de 2026, citado no comunicado da Corsan de 30/11/2025", "data": "2025-11-30",
+     "vigencia": "a partir de 01/01/2026", "url": "https://www.corsan.com.br/comunicado-de-reajuste-tarifario-anual-2/", "verificado": False,
+     "obs": "Ato da AGERGS não localizado; valores conferidos nas tabelas publicadas pela Corsan. O comunicado trata também de Erechim (5,34%), Santa Cruz do Sul, Canoas e Esteio e dos 15 municípios da AGESAN."},
+    {"prestador": "CORSAN", "area": "Municípios do Apêndice 1 da Tabela I (298, em julho de 2026)", "regulador": "AGERGS", "tipo": "revisão extraordinária (criação da categoria Residencial Social, Lei 14.898/2024)", "pedido": "não publicado",
+     "decisao": "5,76% sobre as tarifas (reproduzido nos preços da Tabela I de julho de 2026 sobre a de janeiro) e criação da categoria Residencial Social", "ato": "Resolução Decisória AGERGS RED 892, 09/06/2026", "data": "2026-06-09",
+     "vigencia": "a partir de 01/07/2026; descontos da categoria social a partir das faturas de agosto", "url": "https://corsan.com.br/comunicado-de-criacao-de-categoria-residencial-social-e-revisao-tarifaria/", "verificado": False,
+     "obs": "RED 892/2026 conhecida pelo comunicado da Corsan de 12/06/2026 e pelo Anexo 5; a íntegra não foi localizada. O comunicado lista 247 municípios e o Anexo 5 aplica a Tabela I a 298."},
+    # CORSAN, tabelas próprias do RS e AGESAN (levantamento de 17/10/2026): tabelas lidas nos PDFs da Corsan; os atos dos reguladores não foram lidos.
+    {"prestador": "CORSAN", "area": "Canoas e Esteio", "regulador": "AGERGS", "tipo": "revisão extraordinária (criação da categoria Residencial Social, Lei 14.898/2024)", "pedido": "não publicado",
+     "decisao": "5,76% (reproduzido nos preços da Tabela I de julho de 2026 sobre a de janeiro de 2026, em preço-base e serviço básico) e criação da categoria Residencial Social", "ato": "Revisão tarifária de Canoas e Esteio, citada no comunicado da Corsan de 12/06/2026", "data": "2026-06-12",
+     "vigencia": "a partir de 01/07/2026", "url": "https://www.corsan.com.br/wp-content/uploads/2026/06/ANEXO-1_COMUNICADO-REVISAO-TARIFARIA_CANOAS-E-ESTEIO.pdf", "verificado": False,
+     "obs": "O PDF cita a Resolução Normativa 74/2026 da AGERGS e a Resolução CSR 05/2026 da AGESAN só para a cobrança pela disponibilidade do esgoto; não nomeia o regulador nem o ato da tabela. O comunicado trata a revisão junto com a RED 892/2026 da AGERGS. Ato específico não localizado; valores conferidos na tabela publicada pela Corsan."},
+    {"prestador": "CORSAN", "area": "Santa Cruz do Sul", "regulador": "AGERST", "tipo": "reajuste", "pedido": "não publicado",
+     "decisao": "tabela com serviço básico 2,00% e preço-base 2,02% acima dos de janeiro de 2026", "ato": "Tabela tarifária de Santa Cruz do Sul a partir de 18/09/2026, publicada pela Corsan", "data": "2026-09-18",
+     "vigencia": "a partir de 18/09/2026", "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/AGERST_Tabela_Tarifaria_Santa_Cruz_do_Sul_2026.pdf", "verificado": False,
+     "obs": "O PDF cita resoluções da AGERST (a nº 12/2018, sobre a disponibilidade do esgoto, e a Resolução Normativa 92/2026, sobre a tarifa social), mas não nomeia o ato que aprovou o novo serviço básico e o novo preço-base, que não foi localizado. Valores lidos na tabela da Corsan."},
+    {"prestador": "CORSAN", "area": "Santa Cruz do Sul", "regulador": "AGERST", "tipo": "criação da categoria Residencial Social (Lei 14.898/2024)", "pedido": "não publicado",
+     "decisao": "a nova tarifa social, denominada \"Resid. Social Lei 14.898/24\", é aplicável às famílias do art. 2º da Lei 14.898/2024; a tabela de 18/09/2026 traz a linha da categoria", "ato": "Resolução Normativa AGERST 92/2026, citada na tabela da Corsan", "data": "2026",
+     "vigencia": "não informada no trecho lido; a tabela que traz a linha vale desde 18/09/2026", "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/AGERST_Tabela_Tarifaria_Santa_Cruz_do_Sul_2026.pdf", "verificado": False,
+     "obs": "Resolução conhecida pela nota da tabela da Corsan; a íntegra, o dia e a data de publicação não foram localizados. Os valores da categoria foram lidos na tabela."},
+    {"prestador": "CORSAN", "area": "Erechim", "regulador": "não identificado", "tipo": "reajuste", "pedido": "não publicado",
+     "decisao": "5,34% (comunicado da Corsan de 30/11/2025); a tabela de janeiro de 2025 de Erechim não foi lida, então o percentual não foi reproduzido", "ato": "Reajuste anual de 2026 de Erechim, citado no comunicado da Corsan de 30/11/2025", "data": "2025-11-30",
+     "vigencia": "a partir de 01/01/2026", "url": "https://www.corsan.com.br/wp-content/uploads/2025/11/Tabela-Tarifaria-Erechim_2026-x.pdf", "verificado": False,
+     "obs": "Ato não localizado; tabela de janeiro de 2026 lida no PDF da Corsan. Não foi localizada tabela posterior."},
+    {"prestador": "CORSAN", "area": "15 municípios regulados pela AGESAN (Campo Bom, Igrejinha, Portão, Sapucaia do Sul, Canela e outros)", "regulador": "AGESAN", "tipo": "revisão extraordinária (criação da categoria Residencial Social, Lei 14.898/2024)", "pedido": "não publicado",
+     "decisao": "Tabela I do Anexo 4 (agosto de 2026) igual à dos 298 municípios, com a linha da Residencial Social da Lei 14.898/2024", "ato": "Resolução CSR AGESAN 11/2026, citada no Anexo 4 da Corsan", "data": "2026",
+     "vigencia": "a partir de 01/07/2026", "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/ANEXO-4-AGESAN_AGOSTO-2026.pdf", "verificado": False,
+     "obs": "Resolução da AGESAN não localizada; Anexo 4 em imagem, conferido visualmente contra o Anexo 5. O Anexo cita também a Resolução CSR 05/2026 da AGESAN e a Resolução Normativa 74/2026 da AGERGS, só para a cobrança pela disponibilidade do esgoto, que a simulação não calcula; elas não entram no catálogo."},
 ]
 
 
@@ -114,7 +144,7 @@ def main():
     for i, a in enumerate(atos):
         a["id"] = f"ato-{i + 1:03d}"
     with open(DESTINO, "w", encoding="utf-8") as fh:
-        json.dump({"levantado_em": "2026-10-14", "levantado_por_prestador": {"SANEAGO": "2026-10-17", "CASAN": "2026-10-17"}, "atos": atos}, fh, ensure_ascii=False, indent=1)
+        json.dump({"levantado_em": "2026-10-14", "levantado_por_prestador": {"SANEAGO": "2026-10-17", "CASAN": "2026-10-17", "CORSAN": "2026-10-17"}, "atos": atos}, fh, ensure_ascii=False, indent=1)
         fh.write("\n")
     print(f"{len(atos)} atos; verificados {sum(a['verificado'] for a in atos)}")
 

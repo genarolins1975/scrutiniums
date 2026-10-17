@@ -128,6 +128,18 @@ python3 -m unittest pipeline.tests.test_gas
 
 Páginas, decisões de método e lacunas em [docs/gas/](./docs/gas/README.md).
 
+## Judiciário brasileiro no OBEE
+
+Módulo em `/eficiencia-estatal/judiciario`: recursos, tempos, filas, entrega, acesso e comparação, com 57 fichas (27 TJs, 6 TRFs e 24 TRTs), dados oficiais de 2025 e série financeira real de 2009–2025. Fonte: CNJ, Justiça em Números 2026; original e checksum conferidos em 17/10/2026. Sem nota própria de eficiência ou inferência de cumprimento do direito a partir de baixas. Histórico individual e despesa por TRF permanecem ausentes. Painéis e downloads exigem sessão; métodos são públicos.
+
+```bash
+python3 -m pipeline.judiciario.run
+python3 -m pipeline.judiciario.run --check
+python3 -m unittest pipeline.tests.test_judiciario
+```
+
+Contratos, cobertura, atualização e limites em [docs/obee/judiciario/](./docs/obee/judiciario/README.md). O capítulo de Acesso à Justiça mantém suas URLs e sua base de Defensorias.
+
 ## Documentação
 
 As decisões técnicas (banco, autenticação, máquina de estados do onboarding, rate limiting, tokens de design, telemetria sem PII) estão registradas em [ARCHITECTURE.md](./ARCHITECTURE.md). A arquitetura da plataforma de dois observatórios e do domínio Energia está em [docs/observatorios/](./docs/observatorios/README.md).

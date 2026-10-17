@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "81fa0497dc22b120d2f690894249cbdc229d93caeae253f350c0c47f59911e40",
-    "arquivos_analisados": 1153,
-    "fontes_sha256": "b6a71af41e1e2c503cb382e7c332821709f4e0e4af5635238a5fef9559bce934",
-    "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
+    "arquivos_analisados": 1173,
+    "fontes_sha256": "923496988911735cc2371397105219ff04353ce3a60828da0344e76ebd27ba3c",
+    "pendencias_sha256": "2ff4104e36c6f1a74e5b3ec4409d41f39b56f1608e5d8667a23aac40ff64c0ac",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -86,6 +86,11 @@
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
       {
+        "path": "src/components/eficiencia/judiciario/Judiciario.module.css",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
         "path": "src/components/eficiencia/mobilidade/mobilidade.module.css",
         "dominio": "eficiencia",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
@@ -128,20 +133,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 212,
+        "arquivos": 213,
         "candidatos": {
-          "jsx_text": 538,
-          "atributos": 191,
+          "jsx_text": 537,
+          "atributos": 201,
           "props": 660,
-          "outros_literais": 3496,
-          "templates": 411,
-          "expressoes_nao_resolvidas": 2293,
-          "chaves_objetos": 2517
+          "outros_literais": 3535,
+          "templates": 414,
+          "expressoes_nao_resolvidas": 2299,
+          "chaves_objetos": 2541
         },
         "exclusoes": {
-          "importacoes": 916,
+          "importacoes": 919,
           "atributos_tecnicos": 1162,
-          "tipos": 204
+          "tipos": 206
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -150,7 +155,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 10106,
+        "candidatos_nao_catalogados": 10187,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -273,20 +278,20 @@
     "saneamento": {
       "nome": "Saneamento",
       "interface": {
-        "arquivos": 57,
+        "arquivos": 59,
         "candidatos": {
-          "jsx_text": 1001,
-          "atributos": 231,
-          "props": 1483,
-          "outros_literais": 2765,
-          "templates": 317,
-          "expressoes_nao_resolvidas": 2113,
-          "chaves_objetos": 3705
+          "jsx_text": 1121,
+          "atributos": 264,
+          "props": 1551,
+          "outros_literais": 2953,
+          "templates": 351,
+          "expressoes_nao_resolvidas": 2340,
+          "chaves_objetos": 3883
         },
         "exclusoes": {
-          "importacoes": 395,
-          "atributos_tecnicos": 1269,
-          "tipos": 141
+          "importacoes": 416,
+          "atributos_tecnicos": 1429,
+          "tipos": 150
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -295,7 +300,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 11615,
+        "candidatos_nao_catalogados": 12463,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -321,20 +326,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 200,
+        "arquivos": 217,
         "candidatos": {
-          "jsx_text": 2333,
-          "atributos": 635,
-          "props": 1072,
-          "outros_literais": 6289,
-          "templates": 634,
-          "expressoes_nao_resolvidas": 6099,
-          "chaves_objetos": 3705
+          "jsx_text": 2659,
+          "atributos": 894,
+          "props": 1191,
+          "outros_literais": 6940,
+          "templates": 654,
+          "expressoes_nao_resolvidas": 6800,
+          "chaves_objetos": 4186
         },
         "exclusoes": {
-          "importacoes": 728,
-          "atributos_tecnicos": 3032,
-          "tipos": 375
+          "importacoes": 809,
+          "atributos_tecnicos": 3109,
+          "tipos": 409
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -343,17 +348,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 20767,
+        "candidatos_nao_catalogados": 23324,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 65,
+        "paginas_pt": 68,
         "paginas_en": 0,
         "handlers": 3,
-        "templates_com_parametros": 5,
-        "paginas_pt_literais": 60,
-        "paginas_pt_fora_do_adaptador": 5,
-        "paginas_pt_literais_sem_irma": 60,
+        "templates_com_parametros": 7,
+        "paginas_pt_literais": 61,
+        "paginas_pt_fora_do_adaptador": 7,
+        "paginas_pt_literais_sem_irma": 61,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false

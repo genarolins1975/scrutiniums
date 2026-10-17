@@ -14,15 +14,18 @@ Formato de uma tabela de serviço:
   faixas [{de, ate, preco}]: R$/m³ do volume acima de `de` até `ate` (ate null = sem limite).
 Esgoto: tabela própria ou {"percentual": p} da conta de água.
 Categoria: consumoMaximo (m³/mês) quando o ato só define preço até um teto; acima dele o simulador não calcula.
+Categoria: consumoInteiro quando o prestador despreza a fração de metro cúbico.
+Água: exponencial {preco, minimoM3, degraus [{de, n}]} para o preço-base vezes o consumo elevado ao expoente da faixa (Corsan).
 Tabela: metodoNaoVerificado quando o ato não diz por extenso uma regra de cobrança que a simulação assume;
 exemplosOficiais para contas calculadas por simulador ou planilha oficial do prestador ou do regulador.
 
 Uso:
     python3 -m pipeline.observatorio_saneamento.tarifas
 """
+import copy
 import json
 import os
-from decimal import ROUND_HALF_UP, Decimal
+from decimal import ROUND_FLOOR, ROUND_HALF_UP, Decimal
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(os.path.dirname(AQUI))
@@ -518,8 +521,345 @@ def confere_reajuste_casan():
     return erros
 
 
+# ---------------------------------------------------------------- CORSAN (AGERGS e outras agências), Tabela I
+# Coluna BASICA da Tabela de Exponenciais da Corsan (categoria Residencial B): primeiro consumo de cada faixa e expoente.
+CORSAN_EXP_BASICA = [
+    (1, 1.0), (10, 1.0), (11, 1.0), (12, 1.0), (13, 1.0), (14, 1.0), (15, 1.0), (16, 1.0), (17, 1.0), (18, 1.0), (19, 1.0), (20, 1.0),
+    (21, 1.01), (22, 1.02), (23, 1.03), (24, 1.04), (25, 1.05), (26, 1.06), (27, 1.07), (28, 1.08), (29, 1.08), (30, 1.09), (31, 1.09),
+    (36, 1.10), (41, 1.10), (46, 1.11), (51, 1.11), (101, 1.13), (151, 1.1287), (201, 1.1275), (301, 1.1250), (501, 1.1200),
+    (1001, 1.1100), (2001, 1.1000), (9001, 1.0858),
+]
+# Tabela I (R$): preço-base do m³, serviço básico, tarifa mínima "sem HD", m³ do mínimo, expoente do mínimo,
+# esgoto coletado e tratado (R$/m³). Industrial usa o expoente 1,03 da coluna IND no consumo de 30 m³.
+CORSAN_T1 = {
+    "2025-01": {
+        "bica": (3.96, 15.72, 55.32, 10, 1.0, 1.98, 2.77),
+        "social": (3.32, 15.72, 48.92, 10, 1.0, 1.66, 2.32),
+        "res_b": (8.26, 39.20, 121.80, 10, 1.0, 4.13, 5.78),
+        "comercial": (9.40, 69.92, 257.92, 20, 1.0, 4.70, 6.58),
+        "publica": (9.40, 139.68, 327.68, 20, 1.0, 4.70, 6.58),
+        "industrial": (10.69, 139.68, 494.83, 30, 1.03, 5.34, 7.48),
+    },
+    "2026-01": {
+        "bica": (4.15, 16.46, 57.96, 10, 1.0, 2.07, 2.90),
+        "social": (3.48, 16.46, 51.26, 10, 1.0, 1.74, 2.43),
+        "res_b": (8.65, 41.03, 127.53, 10, 1.0, 4.32, 6.05),
+        "comercial": (9.84, 73.19, 269.99, 20, 1.0, 4.92, 6.88),
+        "publica": (9.84, 146.22, 343.02, 20, 1.0, 4.92, 6.88),
+        "industrial": (11.19, 146.22, 517.98, 30, 1.03, 5.59, 7.83),
+    },
+    "2026-07": {
+        "bica": (4.39, 17.41, 61.31, 10, 1.0, 2.19, 3.07),
+        "social": (3.68, 17.41, 54.21, 10, 1.0, 1.84, 2.57),
+        "res_b": (9.15, 43.39, 134.89, 10, 1.0, 4.57, 6.40),
+        "social_lei": (4.58, 21.70, 67.44, 10, 1.0, 2.28, 3.20),
+        "comercial": (10.41, 77.41, 285.61, 20, 1.0, 5.20, 7.28),
+        "publica": (10.41, 154.64, 362.84, 20, 1.0, 5.20, 7.28),
+        "industrial": (11.83, 154.64, 547.66, 30, 1.03, 5.91, 8.28),
+    },
+}
+CORSAN_REAJUSTES = [("2025-01", "2026-01", "1.0468"), ("2026-01", "2026-07", "1.0576")]
+# Tabelas próprias do RS (mesma estrutura da Tabela I), lidas de cada PDF em 17/10/2026. A linha "social_lei" é a Resid. Social
+# Lei 14.898/24. Erechim: só janeiro de 2026 (a tabela traz um esgoto a menos e não tem a linha da Lei 14.898/2024).
+CORSAN_CANOAS_ESTEIO = {
+    "2026-01": {
+        "bica": (3.95, 15.62, 55.12, 10, 1.0, 1.97, 2.76),
+        "social": (3.32, 15.62, 48.82, 10, 1.0, 1.66, 2.32),
+        "res_b": (8.21, 38.96, 121.06, 10, 1.0, 4.10, 5.74),
+        "comercial": (9.34, 69.48, 256.28, 20, 1.0, 4.67, 6.53),
+        "publica": (9.34, 138.80, 325.60, 20, 1.0, 4.67, 6.53),
+        "industrial": (10.59, 138.80, 490.62, 30, 1.03, 5.29, 7.41),
+    },
+    "2026-07": {
+        "bica": (4.18, 16.52, 58.32, 10, 1.0, 2.09, 2.92),
+        "social": (3.51, 16.52, 51.62, 10, 1.0, 1.75, 2.45),
+        "res_b": (8.68, 41.20, 128.00, 10, 1.0, 4.34, 6.07),
+        "social_lei": (4.34, 20.60, 64.00, 10, 1.0, 2.17, 3.03),
+        "comercial": (9.88, 73.48, 271.08, 20, 1.0, 4.94, 6.91),
+        "publica": (9.88, 146.79, 344.39, 20, 1.0, 4.94, 6.91),
+        "industrial": (11.20, 146.79, 518.88, 30, 1.03, 5.60, 7.84),
+    },
+}
+CORSAN_SANTA_CRUZ = {
+    "2026-01": {
+        "bica": (3.79, 15.03, 52.93, 10, 1.0, 1.89, 2.65),
+        "social": (3.20, 15.03, 47.03, 10, 1.0, 1.60, 2.24),
+        "res_b": (7.91, 37.50, 116.60, 10, 1.0, 3.95, 5.53),
+        "comercial": (8.98, 66.92, 246.52, 20, 1.0, 4.49, 6.28),
+        "publica": (8.98, 133.64, 313.24, 20, 1.0, 4.49, 6.28),
+        "industrial": (10.19, 133.64, 472.17, 30, 1.03, 5.09, 7.13),
+    },
+    "2026-09": {
+        "bica": (3.87, 15.33, 54.03, 10, 1.0, 1.93, 2.70),
+        "social": (3.26, 15.33, 47.93, 10, 1.0, 1.63, 2.28),
+        "social_lei": (4.03, 19.13, 59.48, 10, 1.0, 2.01, 2.82),
+        "res_b": (8.07, 38.25, 118.95, 10, 1.0, 4.03, 5.64),
+        "comercial": (9.16, 68.26, 251.46, 20, 1.0, 4.58, 6.41),
+        "publica": (9.16, 136.31, 319.51, 20, 1.0, 4.58, 6.41),
+        "industrial": (10.39, 136.31, 481.49, 30, 1.03, 5.19, 7.27),
+    },
+}
+CORSAN_ERECHIM = {
+    "2026-01": {
+        "bica": (3.34, 13.21, 46.61, 10, 1.0, 1.67, 2.33),
+        "social": (2.79, 13.21, 41.11, 10, 1.0, 1.39, 1.95),
+        "res_b": (6.95, 32.95, 102.45, 10, 1.0, 3.47, 4.86),
+        "comercial": (7.90, 58.79, 216.79, 20, 1.0, 3.95, 5.53),
+        "publica": (7.90, 117.40, 275.40, 20, 1.0, 3.95, 5.53),
+        "industrial": (8.97, 117.40, 415.40, 30, 1.03, 4.48, 6.27),
+    },
+}
+# 15 municípios regulados pela AGESAN: a Tabela I do Anexo 4 (agosto de 2026) é igual à do Anexo 5, e eles entram na mesma tabela.
+CORSAN_AGESAN = [
+    "Campo Bom", "Igrejinha", "Portão", "Sapucaia do Sul", "Canela", "Nova Hartz", "Riozinho", "Tramandaí", "Capela de Santana",
+    "Nova Santa Rita", "Rolante", "Três Coroas", "Estância Velha", "Parobé", "Sapiranga",
+]
+CORSAN_APENDICE = os.path.join(AQUI, "curadoria", "corsan_anexo5_apendice1.json")
+CORSAN_SINISA = "corsan-companhia-riograndense-de-saneamento"
+
+_RB = CORSAN_T1["2026-07"]["res_b"]
+_SL = CORSAN_T1["2026-07"]["social_lei"]
+
+
+def corsan_categorias(res_b, social_lei=None):
+    """Residencial B (ligação com hidrômetro, sem consumo mínimo) e, quando a tabela traz, a Residencial Social da Lei 14.898/2024.
+    Até 20 m³ o expoente é 1,0 em todas as colunas da Tabela de Exponenciais. A tabela cobra o excedente de 15 m³ ao preço-base
+    da Residencial B mas não diz como isso se combina com o expoente, então a social só vai até 15 m³."""
+    degraus = [{"de": de, "n": n} for de, n in CORSAN_EXP_BASICA]
+    cats = {
+        "residencial": {
+            "rotulo": "Residencial (categoria básica)",
+            "consumoInteiro": True,
+            "agua": {"fixo": res_b[1], "faixas": [], "exponencial": {"preco": res_b[0], "minimoM3": 0, "degraus": degraus}},
+            "esgoto": tab(faixas=[f(0, None, res_b[6])]),
+        }
+    }
+    if social_lei:
+        cats["social"] = {
+            "rotulo": "Residencial social (tarifa social federal, Lei 14.898/2024)",
+            "consumoMaximo": 15,
+            "consumoInteiro": True,
+            "agua": {"fixo": social_lei[1], "faixas": [], "exponencial": {"preco": social_lei[0], "minimoM3": 0, "degraus": degraus}},
+            "esgoto": tab(faixas=[f(0, None, social_lei[6])]),
+        }
+    return cats
+
+
+corsan = {
+    "id": "corsan-2026",
+    "prestador": "Companhia Riograndense de Saneamento (CORSAN)",
+    "prestadorSinisa": CORSAN_SINISA,
+    "uf": "RS",
+    "regulador": "AGERGS, AGESAN e outras agências",
+    "modelo": "Serviço básico por economia mais água medida pelo preço-base vezes o consumo elevado a um expoente por faixa, sem consumo mínimo na ligação com hidrômetro; esgoto a 70% do preço-base por m³ de água (tratado)",
+    "ato": "Tabela I do Anexo 5 da Corsan (estrutura tarifária em vigor desde 01/07/2026); revisão de 5,76% pela Resolução Decisória AGERGS RED nº 892/2026, de 09/06/2026",
+    "vigencia": "Desde 01/07/2026 (Anexo 5 e comunicado da Corsan de 12/06/2026); a RED 892/2026 não foi lida",
+    "ultimoReajuste": "5,76% sobre a tabela de janeiro de 2026, que já trazia 4,68% sobre a de janeiro de 2025 (valores reproduzidos nas três tabelas)",
+    "area": "298 municípios do Apêndice 1 do Anexo 5 e 15 municípios da AGESAN (Anexo 4, mesma Tabela I); Erechim, Santa Cruz do Sul, Canoas e Esteio têm tabela própria, em entradas à parte",
+    "fontes": [
+        {"rotulo": "Corsan, Anexo 5: Tabela Tarifária de julho de 2026 (PDF)", "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/ANEXO-5-TABELA-TARIFARIA_AGOSTO-2026.pdf", "sha256": "031db370dd42c1817ac3347926b449059de812500830ba12cbecf01dd43547e3", "localizador": "Tabela I e observações, PDF p.1-2; Apêndice 1 (298 municípios)"},
+        {"rotulo": "Corsan, Tabela de Exponenciais (PDF)", "url": "https://corsan.com.br/wp-content/uploads/2025/11/16095743-tabela-exponenciais.pdf", "sha256": "17a7825765898491fdb6c46e767746326bab78cb89f9b8f349dd63c4e1022b03", "localizador": "coluna BASICA (Residencial B); conferida na imagem"},
+        {"rotulo": "Corsan, Tabela Tarifária de janeiro de 2026 (298 municípios)", "url": "https://www.corsan.com.br/wp-content/uploads/2025/11/Tabela-Tarifaria-298-municipios_2026-x.pdf", "sha256": "ce501a76014007379a05853c9536947b8a2225d425c574daab2248ea21a94b61", "localizador": "Tabela I; base do reajuste de julho"},
+        {"rotulo": "Corsan, Tabela Tarifária de janeiro de 2025 (298 municípios)", "url": "https://corsan.com.br/upload/arquivos/202501/09174612-5-2025-tabela-tarifaria-298-municipios.pdf", "sha256": "7ddfa02868f80fca6177ecab7ee54a391df411bba2abb7e80492730ad3cac3ed", "localizador": "Tabela I; base do reajuste de janeiro de 2026"},
+        {"rotulo": "Corsan, comunicado de criação da categoria Residencial Social e revisão tarifária (12/06/2026)", "url": "https://corsan.com.br/comunicado-de-criacao-de-categoria-residencial-social-e-revisao-tarifaria/", "sha256": "312e37e943d3b00580ba534cea4f90116a13e6564bf6b4604c9f5adea3bb2425", "localizador": "texto: RED 892/2026 e revisão de 5,76%; lista de municípios do Anexo 2"},
+        {"rotulo": "Corsan, tabela dos 249 municípios do comunicado (PDF)", "url": "https://corsan.com.br/wp-content/uploads/2026/06/AGERGS_2026_TABELA-TARIFARIA-249-MUNICIPIOS_TABELA-I.pdf", "sha256": "9a274a17a7382f9ca86d9fcefcfd6a892bade4316eb9a27456287514e74d2951", "localizador": "Tabela I, valores idênticos aos do Anexo 5"},
+        {"rotulo": "Corsan, Anexo 4: Tabela Tarifária dos 15 municípios da AGESAN, agosto de 2026 (PDF em imagem)", "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/ANEXO-4-AGESAN_AGOSTO-2026.pdf", "sha256": "877d82dc9805c3f95f38965c0e442c52623cbb12a4af0abb025deee77f8cb00c", "localizador": "Tabela I, página 1: valores iguais aos do Anexo 5 (conferidos visualmente, o PDF não tem texto); a lista dos 15 municípios vem do título do Anexo 4 na página Sistema Tarifário"},
+        {"rotulo": "Corsan, página Sistema Tarifário", "url": "https://www.corsan.com.br/sistematarifario/", "sha256": "dd7e69fd5683a37e4d26a10e3e1d7765eddd3e55f3f9b52b810d47098e7294de", "localizador": "forma de cobrança: serviço básico mais consumo medido com o exponencial de cada faixa"},
+        {"rotulo": "AGERGS, Regulamento dos Serviços de Água e Esgoto da Corsan (RSAE 2008)", "url": "https://agergs.rs.gov.br/upload/arquivo1974.pdf", "sha256": "517289235820d3db0ffb65bc7e92765c416aaeeee1b0a2fcdc76e9815e879309", "localizador": "itens 3.31 e 3.32, arts. 67 (frações de m³ desprezadas), 92 e 93"},
+    ],
+    "unidade": "por economia",
+    "categorias": corsan_categorias(_RB, _SL),
+    "metodoNaoVerificado": "A fórmula da água (serviço básico mais preço-base vezes o consumo elevado ao expoente) foi conferida nas tarifas mínimas oficiais, mas duas leituras não foram verificadas em conta ou exemplo oficial: o expoente de um consumo que não coincide com uma linha da tabela (de 32 a 35 m³ usa-se a linha de 31; usar a de 36 somaria R$ 15,96 à água de 35 m³) e o esgoto cobrado pelo preço impresso de R$ 6,40 por m³ de água medida. Até 31 m³ a primeira leitura não pesa. Na tarifa social da Lei 14.898/2024, a mínima publicada (R$ 67,44) é metade da mínima da Residencial B (R$ 134,89 ÷ 2 = R$ 67,445) e não fecha com o serviço básico mais 10 m³ aos preços impressos (R$ 21,70 + 10 × R$ 4,58 = R$ 67,50); a simulação usa os preços impressos e fica R$ 0,06 acima da mínima publicada a 10 m³.",
+    "observacoes": [
+        "Água: serviço básico mais o preço-base do m³ vezes o consumo elevado ao expoente da faixa (PB × C^n). A tabela publica a tarifa mínima de R$ 134,89 para a Residencial B (R$ 43,39 mais 10 m³ a R$ 9,15), que é a da ligação sem hidrômetro e coincide com a conta medida de exatamente 10 m³. A fórmula foi conferida em números oficiais: a tarifa mínima de cada categoria nas tabelas de janeiro de 2025, janeiro de 2026 e julho de 2026 é reproduzida ao centavo, inclusive a industrial, que só fecha com o expoente 1,03 da coluna IND no consumo de 30 m³ (R$ 547,66 em julho de 2026; com 1,02 seriam R$ 534,52).",
+        "Ligação com hidrômetro: o Regulamento da AGERGS manda cobrar o serviço básico mais o consumo medido (art. 92, alínea a) e reserva a demanda mínima de consumo às economias não hidrometradas (art. 69), por isso a simulação não aplica mínimo de 10 m³: com consumo zero a conta é só o serviço básico, e a 5 m³ são R$ 121,14. A coluna \"tarifa mínima sem HD\" vale para a ligação sem hidrômetro, não simulada.",
+        "Faixa do expoente: a tabela lista o primeiro consumo de cada faixa (1, 10, 11 a 31, 36, 41, 46, 51, 101, 151...); a simulação usa o expoente da última linha que não passa do consumo (32 a 35 m³ usam a linha de 31). A tabela não diz o limite superior de cada faixa, e essa leitura vem do texto \"exponencial definido para cada faixa de consumo\" na página Sistema Tarifário.",
+        "Esgoto: \"à razão de 70% para ESGOTO TRATADO e 50% para ESGOTO COLETADO do valor do m³ de consumo na primeira faixa\" (Anexo 5), ou seja, R$ 6,40 por m³ de água faturada (R$ 4,57 quando só há coleta), sem expoente e sem serviço básico próprio; o Anexo 5 diz que é cobrado \"de acordo com o consumo ou volume mínimo da categoria\", e a simulação lê o consumo para a ligação medida (o volume mínimo vale para a não hidrometrada). A simulação usa o esgoto coletado e tratado; onde só há coleta, a conta de esgoto é a de R$ 4,57 por m³, não simulada. A cobrança pela disponibilidade do esgoto (imóvel sem ligação) segue as Resoluções Normativa AGERGS 74/2026 e CSR AGESAN 05/2026, não lidas, e não é simulada.",
+        "Consumo em metros cúbicos inteiros: o Regulamento da AGERGS manda desprezar as frações de metro cúbico na leitura (art. 67), e a simulação trunca o consumo informado.",
+        "Arredondamento não verificado: os preços impressos têm duas casas, mas o preço-base de julho parece vir de 8,65 vezes 1,0576 (9,148...) e o esgoto, de 70% desse valor (6,404...); a simulação usa os valores impressos. Com o valor sem arredondar, a água cairia até R$ 0,29 e o esgoto subiria até R$ 0,38 a 100 m³, com efeito líquido de poucos centavos (R$ 0,08 a 100 m³ e R$ 0,06 a 200 m³; conta minha).",
+        "A tabela oficial faz o valor da água cair ao passar de 200 para 201 m³ (de R$ 3.662,43 para R$ 3.659,77) e nos degraus seguintes (300, 500, 1.000, 2.000 e 9.000 m³), porque o expoente diminui em consumos altos; a simulação reproduz a tabela como está (conta minha).",
+        "Cobertura: a Tabela I vale, segundo o Anexo 5, para os 298 municípios do Apêndice 1, todos casados com o IBGE e com o prestador no SINISA 2024, e, pelo Anexo 4 (agosto de 2026, mesma Tabela I), para os 15 municípios da AGESAN, também casados e sem sobreposição com os 298. O comunicado de 12/06/2026 cita a RED 892/2026 da AGERGS e lista 247 municípios (o arquivo se chama 249); os outros 51 do Apêndice 1 não estão nessa lista. A RED 892/2026 e as Resoluções CSR AGESAN 05/2026 e 11/2026 não foram lidas.",
+        "Residencial social da Lei 14.898/2024: água até 15 m³ a R$ 21,70 de serviço básico mais R$ 4,58 por m³ (expoente 1,0 até 20 m³ em todas as colunas da Tabela de Exponenciais) e esgoto tratado a R$ 3,20 por m³. Os preços impressos são metade dos da Residencial B (a mínima, R$ 67,44, é metade de R$ 134,89 com arredondamento de centavos). A tabela cobra o excedente de 15 m³ ao preço-base da Residencial B (R$ 9,15), sem dizer como isso se combina com o expoente; por isso a categoria só vai até 15 m³ e acima disso o simulador não calcula. Os descontos da categoria valem a partir das faturas de agosto de 2026, segundo o comunicado de 12/06/2026; a elegibilidade (art. 2º da Lei 14.898/2024) não é verificada.",
+        "Outras categorias da Tabela I (bica pública, residencial social anterior, comercial, pública e industrial) não foram simuladas.",
+        "A revisão de 5,76% de julho de 2026 e o reajuste de 4,68% de janeiro de 2026 são reproduzidos nos valores (preço-base, serviço básico e esgoto em todas as categorias, com diferença de até R$ 0,01 em esgoto tratado); os atos da AGERGS não foram lidos, e a RED 892/2026 consta só como citada pela Corsan.",
+    ],
+    "exemplos": {"residencial": {"0": 43.39, "5": 121.14, "10": 198.89, "11": 214.44, "20": 354.39, "21": 375.88, "25": 472.08, "30": 608.20, "31": 628.16, "35": 708.41, "36": 745.15, "50": 1066.91, "51": 1088.95, "100": 2201.91, "101": 2373.64, "150": 3636.11, "151": 3645.10, "200": 4942.43}, "social": {"0": 21.70, "5": 60.60, "10": 99.50, "15": 138.40}},
+    "acessado": "2026-10-17",
+}
+
+
+_FONTE_EXP = next(x for x in corsan["fontes"] if x["rotulo"].startswith("Corsan, Tabela de Exponenciais"))
+_FONTE_SISTEMA = next(x for x in corsan["fontes"] if x["rotulo"] == "Corsan, página Sistema Tarifário")
+_FONTE_RSAE = next(x for x in corsan["fontes"] if x["rotulo"].startswith("AGERGS, Regulamento"))
+_NOTA_EXP_PROPRIA = ("A Tabela de Exponenciais é a mesma publicada pela Corsan para todas as tabelas: as tabelas próprias a citam \"em anexo\" "
+                     "sem reproduzi-la, e o Observatório assume que vale a mesma (a coluna social é igual à básica).")
+_METODO_PROPRIO = ("A fórmula da água (serviço básico mais preço-base vezes o consumo elevado ao expoente) foi conferida nas tarifas mínimas "
+                   "oficiais desta tabela, mas duas leituras não foram verificadas em conta ou exemplo oficial: o expoente de um consumo que não "
+                   "coincide com uma linha da Tabela de Exponenciais (de 32 a 35 m³ usa-se a linha de 31) e o esgoto cobrado pelo preço impresso "
+                   "por m³ de água medida. Até 31 m³ a primeira leitura não pesa.")
+
+
+def corsan_proprio(ident, recorte, linhas, **campos):
+    """Entrada de uma tabela própria da Corsan: parte da entrada dos 298 municípios e troca preços, fontes e textos."""
+    t = copy.deepcopy(corsan)
+    t.update({"id": ident, "recorte": recorte, "variante": True, "categorias": corsan_categorias(linhas["res_b"], linhas.get("social_lei"))})
+    t.update(campos)
+    return t
+
+
+corsan_canoas_esteio = corsan_proprio(
+    "corsan-canoas-esteio-2026", "Canoas e Esteio", CORSAN_CANOAS_ESTEIO["2026-07"],
+    regulador="AGERGS (pelo comunicado da Corsan de 12/06/2026; ato não lido)",
+    ato="Tabela I de Canoas e Esteio da Corsan (estrutura tarifária em vigor desde 01/07/2026); revisão de 5,76% divulgada no comunicado de 12/06/2026",
+    vigencia="Desde 01/07/2026 (Anexo 3 da página Sistema Tarifário e Anexo 1 do comunicado de 12/06/2026, com a mesma Tabela I)",
+    ultimoReajuste="5,76% sobre a tabela de janeiro de 2026 (preço-base e serviço básico de todas as categorias reproduzidos ao centavo; a tarifa mínima difere em até R$ 0,04 por vir de valores sem arredondar)",
+    area="Canoas e Esteio (tabela própria; não vale para os 298 municípios do Anexo 5)",
+    fontes=[
+        {"rotulo": "Corsan, Anexo 3: Tabela Tarifária de Canoas e Esteio, agosto de 2026 (PDF)", "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/ANEXO-3-CANOAS-E-ESTEIO_AGOSTO-2026.pdf", "sha256": "c7b35ca7b31955d25d3ba8d2dc65101a3ff589fc10b63dd3f4aac26213f9987b", "localizador": "Tabela I: Residencial B R$ 41,20 de serviço básico e R$ 8,68 de preço-base; social Lei 14.898/24 R$ 20,60 e R$ 4,34"},
+        {"rotulo": "Corsan, Anexo 1 do comunicado de revisão tarifária de 12/06/2026: Canoas e Esteio (PDF)", "url": "https://www.corsan.com.br/wp-content/uploads/2026/06/ANEXO-1_COMUNICADO-REVISAO-TARIFARIA_CANOAS-E-ESTEIO.pdf", "sha256": "e759d2ea0b1e501e143033a216181db8fea0356d3f3edde20abbffc03d0088df", "localizador": "Tabela I, a partir de 01 de julho de 2026: igual à do Anexo 3"},
+        {"rotulo": "Corsan, Tabela Tarifária de Canoas e Esteio, janeiro de 2026 (PDF)", "url": "https://www.corsan.com.br/wp-content/uploads/2025/11/Tabela-Tarifaria-Canoas-e-Esteio_2026-x.pdf", "sha256": "99195fb10b6b767c87b81b13eb53266bfd98353c0ab44aa0dac1aa01b4f5c556", "localizador": "Tabela I de janeiro de 2026 (base da conferência do reajuste de julho)"},
+        _FONTE_EXP, _FONTE_SISTEMA, _FONTE_RSAE,
+    ],
+    metodoNaoVerificado=_METODO_PROPRIO,
+    observacoes=[
+        "Regras da água, do esgoto, do consumo inteiro e da ligação com hidrômetro iguais às da tabela dos 298 municípios (ver a ficha da Corsan, RS): serviço básico mais preço-base × C^n sem mínimo na ligação medida; esgoto tratado a R$ 6,07 por m³ de água (70% do preço-base); fração de metro cúbico desprezada (art. 67 do RSAE). " + _NOTA_EXP_PROPRIA,
+        "Conferência: a tarifa mínima de cada categoria é reproduzida ao centavo em julho de 2026, inclusive a social da Lei 14.898/2024 (R$ 20,60 + 10 × R$ 4,34 = R$ 64,00, que também é metade da mínima de R$ 128,00 da Residencial B); em janeiro de 2026 só a industrial difere em R$ 0,01, por vir de valores sem arredondar.",
+        "Residencial social da Lei 14.898/2024: água até 15 m³ a R$ 20,60 de serviço básico mais R$ 4,34 por m³ e esgoto tratado a R$ 3,03 por m³, metade dos preços da Residencial B. O excedente de 15 m³ é cobrado ao preço-base da Residencial B (R$ 8,68), sem regra publicada de como isso se combina com o expoente; por isso a categoria só vai até 15 m³. A elegibilidade (art. 2º da Lei 14.898/2024) não é verificada.",
+        "Cobertura: a tabela vale para Canoas e Esteio, casados com o IBGE e com a Corsan no SINISA 2024. O PDF cita a Resolução Normativa 74/2026 da AGERGS e a Resolução CSR 05/2026 da AGESAN só para a disponibilidade do esgoto e não nomeia o regulador nem o ato da tabela; o comunicado de 12/06/2026 divulga a revisão de 5,76% de Canoas e Esteio junto com a da RED 892/2026 da AGERGS, e o ato específico não foi lido.",
+        "Reajuste: a tabela de julho de 2026 é a de janeiro de 2026 vezes 1,0576 em preço-base e serviço básico de todas as categorias, ao centavo; a tabela de janeiro de 2025 de Canoas e Esteio não foi lida.",
+        "Outras categorias (bica pública, residencial social anterior, comercial, pública e industrial) não foram simuladas.",
+    ],
+    exemplos={"residencial": {"0": 41.20, "5": 114.95, "10": 188.70, "15": 262.45, "20": 336.20, "25": 447.84, "30": 576.96, "40": 786.09, "50": 1012.08},
+              "social": {"0": 20.60, "5": 57.45, "10": 94.30, "15": 131.15}},
+)
+
+corsan_santa_cruz = corsan_proprio(
+    "corsan-santa-cruz-2026", "Santa Cruz do Sul", CORSAN_SANTA_CRUZ["2026-09"],
+    regulador="AGERST (nomeada no PDF da tabela; ato não lido)",
+    ato="Tabela I de Santa Cruz do Sul da Corsan (estrutura tarifária a partir de 18/09/2026)",
+    vigencia="Desde 18/09/2026 (Anexo 2 da página Sistema Tarifário)",
+    ultimoReajuste="Tabela de 18/09/2026 sobre a de janeiro de 2026: 2,00% no serviço básico (38,25 ÷ 37,50) e 2,02% no preço-base (8,07 ÷ 7,91); o ato que a aprovou não foi lido",
+    area="Santa Cruz do Sul (tabela própria; não vale para os 298 municípios do Anexo 5)",
+    fontes=[
+        {"rotulo": "Corsan, Anexo 2: Tabela Tarifária de Santa Cruz do Sul, a partir de 18/09/2026 (PDF)", "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/AGERST_Tabela_Tarifaria_Santa_Cruz_do_Sul_2026.pdf", "sha256": "50de8bace66a70e21fe869be6e83b2aabbe19b1ded426015729017c7f11c1039", "localizador": "Tabela I: Residencial B R$ 38,25 de serviço básico e R$ 8,07 de preço-base; social Lei 14.898/24 R$ 19,13 e R$ 4,03"},
+        {"rotulo": "Corsan, Tabela Tarifária de Santa Cruz do Sul, janeiro de 2026 (PDF)", "url": "https://www.corsan.com.br/wp-content/uploads/2025/11/Tabela-Tarifaria-Santa-Cruz-do-Sul_2026-x.pdf", "sha256": "a45e991b918116e473060be17599b5a5691c188ab1c39085818e7b6f93681f74", "localizador": "Tabela I de janeiro de 2026 (comunicado de 30/11/2025: reajuste de 4,68%)"},
+        _FONTE_EXP, _FONTE_SISTEMA, _FONTE_RSAE,
+    ],
+    metodoNaoVerificado=_METODO_PROPRIO + " Na tarifa social da Lei 14.898/2024, a mínima publicada (R$ 59,48) é metade da mínima da Residencial B (R$ 118,95 ÷ 2 = R$ 59,475) e não fecha com o serviço básico mais 10 m³ aos preços impressos (R$ 19,13 + 10 × R$ 4,03 = R$ 59,43); a simulação usa os preços impressos e fica R$ 0,05 abaixo da mínima publicada a 10 m³.",
+    observacoes=[
+        "Regras da água, do esgoto, do consumo inteiro e da ligação com hidrômetro iguais às da tabela dos 298 municípios (ver a ficha da Corsan, RS): serviço básico mais preço-base × C^n sem mínimo na ligação medida; esgoto tratado a R$ 5,64 por m³ de água (70% do preço-base); fração de metro cúbico desprezada (art. 67 do RSAE). " + _NOTA_EXP_PROPRIA,
+        "Conferência: a tarifa mínima de cada categoria é reproduzida ao centavo na tabela de setembro de 2026, exceto a social da Lei 14.898/2024 (ver o aviso do método); em janeiro de 2026 só a industrial difere em R$ 0,01, por vir de valores sem arredondar.",
+        "Residencial social da Lei 14.898/2024: água até 15 m³ a R$ 19,13 de serviço básico mais R$ 4,03 por m³ e esgoto tratado a R$ 2,82 por m³, metade dos preços da Residencial B com arredondamento de centavos. O excedente de 15 m³ é cobrado ao preço-base da Residencial B (R$ 8,07), sem regra publicada de como isso se combina com o expoente; por isso a categoria só vai até 15 m³. A elegibilidade (art. 2º da Lei 14.898/2024) não é verificada.",
+        "Cobertura: a tabela vale para Santa Cruz do Sul, casado com o IBGE e com a Corsan no SINISA 2024. O PDF cita resoluções da AGERST (a nº 12/2018, sobre a disponibilidade do esgoto, e a Resolução Normativa 92/2026, sobre a tarifa social), mas não nomeia o ato que aprovou a tabela, e nenhum dos atos citados foi lido.",
+        "Outras categorias (bica pública, residencial social anterior, comercial, pública e industrial) não foram simuladas.",
+    ],
+    exemplos={"residencial": {"0": 38.25, "5": 106.80, "10": 175.35, "15": 243.90, "20": 312.45, "25": 416.23, "30": 536.25, "40": 730.66, "50": 940.73},
+              "social": {"0": 19.13, "5": 53.38, "10": 87.63, "15": 121.88}},
+)
+
+corsan_erechim = corsan_proprio(
+    "corsan-erechim-2026", "Erechim", CORSAN_ERECHIM["2026-01"],
+    regulador="não identificado nas fontes lidas",
+    ato="Tabela I de Erechim da Corsan (estrutura tarifária a partir de 01/01/2026); reajuste de 5,34% divulgado no comunicado de 30/11/2025",
+    vigencia="Desde 01/01/2026 (Anexo 1 da página Sistema Tarifário); não foi localizada tabela posterior",
+    ultimoReajuste="5,34% em janeiro de 2026, segundo o comunicado da Corsan de 30/11/2025; a tabela de janeiro de 2025 de Erechim não foi lida, e o percentual não foi reproduzido",
+    area="Erechim (tabela própria; não vale para os 298 municípios do Anexo 5)",
+    fontes=[
+        {"rotulo": "Corsan, Anexo 1: Tabela Tarifária de Erechim, a partir de 01/01/2026 (PDF)", "url": "https://www.corsan.com.br/wp-content/uploads/2025/11/Tabela-Tarifaria-Erechim_2026-x.pdf", "sha256": "d4975dff86cf22cd2b1001e01785d4ec44c8495bc250a2880ef6430b39e59f41", "localizador": "Tabela I: Residencial B R$ 32,95 de serviço básico e R$ 6,95 de preço-base"},
+        _FONTE_EXP, _FONTE_SISTEMA, _FONTE_RSAE,
+    ],
+    metodoNaoVerificado=_METODO_PROPRIO,
+    observacoes=[
+        "Regras da água, do esgoto, do consumo inteiro e da ligação com hidrômetro iguais às da tabela dos 298 municípios (ver a ficha da Corsan, RS): serviço básico mais preço-base × C^n sem mínimo na ligação medida; esgoto tratado a R$ 4,86 por m³ de água (70% do preço-base); fração de metro cúbico desprezada (art. 67 do RSAE). " + _NOTA_EXP_PROPRIA,
+        "Conferência: a tarifa mínima de cada categoria é reproduzida ao centavo, exceto a industrial, que difere em R$ 0,01 por vir de valores sem arredondar.",
+        "A tabela de janeiro de 2026 não traz a linha da Residencial Social da Lei 14.898/2024, que nas tabelas de julho de 2026 lidas (298 municípios, AGESAN, Canoas e Esteio e Santa Cruz do Sul) aparece; por isso só a Residencial B é simulada e Erechim não entra nas comparações da tarifa social. Se houve revisão de Erechim em meados de 2026, ela não consta nas fontes lidas.",
+        "Cobertura: a tabela vale para Erechim, casado com o IBGE e com a Corsan no SINISA 2024. O PDF não nomeia o regulador.",
+        "Outras categorias (bica pública, residencial social anterior, comercial, pública e industrial) não foram simuladas.",
+    ],
+    exemplos={"residencial": {"0": 32.95, "5": 92.00, "10": 151.05, "15": 210.10, "20": 269.15, "25": 358.54, "30": 461.92, "40": 629.37, "50": 810.32}},
+)
+CORSAN_VARIANTES = [corsan_canoas_esteio, corsan_santa_cruz, corsan_erechim]
+
+
+def confere_linhas_corsan(nome, ed, linhas, erros, proprio=False):
+    """Uma edição da Tabela I: tarifa mínima = serviço básico + preço-base × m³ do mínimo ^ expoente, esgoto a 50% e 70% do
+    preço-base (tolerância de R$ 0,01) e, na linha da Lei 14.898/2024, preços e mínima iguais à metade da Residencial B (R$ 0,01).
+    A mínima da social não é serviço básico mais 10 m³ ao preço impresso: o desvio documentado é de até R$ 0,06. Nas tabelas
+    próprias, a industrial das edições de janeiro difere em R$ 0,01 (mínima calculada sobre valores sem arredondar)."""
+    centavo = Decimal("0.01")
+
+    def q(x):
+        return d(x).quantize(centavo, rounding=ROUND_HALF_UP)
+
+    for cat, (pb, sb, minima, vm, n, col, trat) in linhas.items():
+        calc = q(d(sb) + d(pb) * (d(vm) ** d(n)))
+        if cat == "social_lei":
+            rb = linhas["res_b"]
+            for i, rot in ((0, "preço-base"), (1, "serviço básico"), (2, "tarifa mínima")):
+                if abs(d(linhas["social_lei"][i]) - d(rb[i]) / 2) > d("0.01"):
+                    erros.append(f"{nome} {ed} social Lei 14.898 {rot}: {linhas['social_lei'][i]} não é metade de {rb[i]}")
+            if abs(calc - d(minima)) > d("0.06"):
+                erros.append(f"{nome} {ed} social Lei 14.898: serviço básico + preço-base × 10 = {calc}, a tabela traz {minima} (desvio acima de R$ 0,06)")
+        else:
+            tolerancia = d("0.01") if proprio and cat == "industrial" else d(0)
+            if abs(calc - d(minima)) > tolerancia:
+                erros.append(f"{nome} {ed} {cat}: tarifa mínima {sb} + {pb} × {vm}^{n} = {calc}, a tabela traz {minima}")
+        if abs(d(col) - d(pb) / 2) > d("0.01") or abs(d(trat) - d(pb) * d("0.7")) > d("0.01"):
+            erros.append(f"{nome} {ed} {cat}: esgoto {col}/{trat} não é 50%/70% do preço-base {pb}")
+
+
+def confere_cadeia_corsan(nome, tabelas, de, para, fator, erros):
+    """Edição `para` = edição `de` × fator em preço-base e serviço básico (ao centavo) e em esgoto (R$ 0,01)."""
+    centavo = Decimal("0.01")
+
+    def q(x):
+        return d(x).quantize(centavo, rounding=ROUND_HALF_UP)
+
+    for cat, a in tabelas[de].items():
+        b = tabelas[para][cat]
+        for i, rot in ((0, "preço-base"), (1, "serviço básico")):
+            if q(d(a[i]) * d(fator)) != d(b[i]):
+                erros.append(f"{nome} {cat} {de}→{para} {rot}: {a[i]} × {fator} = {q(d(a[i]) * d(fator))}, a tabela traz {b[i]}")
+        for i, rot in ((5, "esgoto coletado"), (6, "esgoto tratado")):
+            if abs(q(d(a[i]) * d(fator)) - d(b[i])) > d("0.01"):
+                erros.append(f"{nome} {cat} {de}→{para} {rot}: {a[i]} × {fator} = {q(d(a[i]) * d(fator))}, a tabela traz {b[i]}")
+
+
+def confere_corsan():
+    """Confere todas as tabelas da Corsan: linhas de cada edição, cadeias de reajuste, água de 10 m³ da Residencial B igual à mínima
+    publicada e a conta da social (serviço básico + 10 m³ ao preço impresso) dentro do desvio documentado de R$ 0,06."""
+    erros = []
+    for ed, linhas in CORSAN_T1.items():
+        confere_linhas_corsan("CORSAN", ed, linhas, erros)
+    for nome, tabelas in (("Canoas e Esteio", CORSAN_CANOAS_ESTEIO), ("Santa Cruz do Sul", CORSAN_SANTA_CRUZ), ("Erechim", CORSAN_ERECHIM)):
+        for ed, linhas in tabelas.items():
+            confere_linhas_corsan(nome, ed, linhas, erros, proprio=True)
+    for de, para, fator in CORSAN_REAJUSTES:
+        confere_cadeia_corsan("CORSAN", CORSAN_T1, de, para, fator, erros)
+    confere_cadeia_corsan("Canoas e Esteio", CORSAN_CANOAS_ESTEIO, "2026-01", "2026-07", "1.0576", erros)
+    for entrada, tabela in ((corsan, CORSAN_T1["2026-07"]), (corsan_canoas_esteio, CORSAN_CANOAS_ESTEIO["2026-07"]),
+                            (corsan_santa_cruz, CORSAN_SANTA_CRUZ["2026-09"]), (corsan_erechim, CORSAN_ERECHIM["2026-01"])):
+        rb = entrada["categorias"]["residencial"]["agua"]
+        if d(conta_servico(rb, 10)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP) != d(tabela["res_b"][2]):
+            erros.append(f"{entrada['id']}: a água de 10 m³ da Residencial B não é a tarifa mínima da tabela")
+        if "social" in entrada["categorias"]:
+            sl = entrada["categorias"]["social"]["agua"]
+            if abs(d(conta_servico(sl, 10)) - d(tabela["social_lei"][2])) > d("0.06"):
+                erros.append(f"{entrada['id']}: a água social de 10 m³ passa de R$ 0,06 da mínima publicada")
+    return erros
+
+
 def d(x):
     return Decimal(str(x))
+
+
+def expoente(e, c):
+    """Expoente da faixa: o do último degrau que começa em consumo menor ou igual; 1 antes do primeiro."""
+    n = d(1)
+    for g in e["degraus"]:
+        if d(g["de"]) <= d(c):
+            n = d(g["n"])
+    return n
 
 
 def conta_servico(t, c):
@@ -527,6 +867,10 @@ def conta_servico(t, c):
     total = d(t.get("fixo", 0))
     if "minimo" in t:
         total += d(t["minimo"]["valor"])
+    if "exponencial" in t:
+        e = t["exponencial"]
+        base = max(c, d(e["minimoM3"]))
+        total += d(e["preco"]) * (base ** expoente(e, base))
     for fx in t["faixas"]:
         de = d(fx["de"])
         ate = d(fx["ate"]) if fx["ate"] is not None else None
@@ -537,6 +881,8 @@ def conta_servico(t, c):
 
 
 def conta(cat, c):
+    if cat.get("consumoInteiro"):
+        c = d(c).to_integral_value(rounding=ROUND_FLOOR)
     agua = conta_servico(cat["agua"], c)
     if "esgoto" not in cat:
         esgoto = Decimal(0)
@@ -553,6 +899,33 @@ def municipios_por_prestador():
     return ps
 
 
+def municipios_corsan(do_prestador, nomes=None):
+    """Nomes (por padrão, o Apêndice 1 do Anexo 5) casados com o IBGE pelos municípios do RS; todo nome precisa casar e estar no vínculo SINISA."""
+    import unicodedata
+
+    def chave(nome):
+        return unicodedata.normalize("NFD", nome).encode("ascii", "ignore").decode().lower().replace("-", " ").strip()
+
+    if nomes is None:
+        with open(CORSAN_APENDICE, encoding="utf-8") as fh:
+            nomes = json.load(fh)["municipios"]
+    with open(os.path.join(GOLD, "municipios.json"), encoding="utf-8") as fh:
+        dados = json.load(fh)
+    ix = {c: i for i, c in enumerate(dados["campos"])}
+    por_nome = {}
+    for linha in dados["linhas"]:
+        if linha[ix["uf"]] == "RS":
+            por_nome.setdefault(chave(linha[ix["nome"]]), []).append(linha[ix["id"]])
+    sem = [n for n in nomes if len(por_nome.get(chave(n), [])) != 1]
+    if sem:
+        raise SystemExit(f"Corsan: nomes sem município único no IBGE: {sem}")
+    ids = sorted(por_nome[chave(n)][0] for n in nomes)
+    fora = [m for m in ids if m not in do_prestador]
+    if fora:
+        raise SystemExit(f"Corsan: municípios fora do vínculo SINISA: {fora}")
+    return ids
+
+
 def main():
     ps = municipios_por_prestador()
     with open(os.path.join(GOLD, "reguladores.json"), encoding="utf-8") as fh:
@@ -561,7 +934,7 @@ def main():
 
     sp_curitiba = sanepar(85, "curitiba", "Curitiba (esgoto a 85% da fatura de água; 50% no Água Solidária)")
     sp_demais = sanepar(80, "demais", "Demais localidades operadas pela SANEPAR (esgoto a 80% da fatura de água; 50% no Água Solidária), exceto Pontal do Paraná, Matinhos e Guaratuba")
-    lista = [compesa, copasa, sabesp, sp_curitiba, sp_demais, caesb, saneago, casan]
+    lista = [compesa, copasa, sabesp, sp_curitiba, sp_demais, caesb, saneago, casan, corsan] + CORSAN_VARIANTES
 
     def mun(pid):
         p = ps.get(pid)
@@ -580,8 +953,13 @@ def main():
     saneago["municipios"] = mun(saneago["prestadorSinisa"])
     # Barracão (PR, 4102604) consta como atendido pela CASAN no SINISA 2024, mas a tabela estadual vale em Santa Catarina
     casan["municipios"] = sorted(m for m in mun(casan["prestadorSinisa"]) if m.startswith("42"))
+    do_corsan = mun(corsan["prestadorSinisa"])
+    corsan["municipios"] = sorted(set(municipios_corsan(do_corsan)) | set(municipios_corsan(do_corsan, CORSAN_AGESAN)))
+    corsan_canoas_esteio["municipios"] = municipios_corsan(do_corsan, ["Canoas", "Esteio"])
+    corsan_santa_cruz["municipios"] = municipios_corsan(do_corsan, ["Santa Cruz do Sul"])
+    corsan_erechim["municipios"] = municipios_corsan(do_corsan, ["Erechim"])
 
-    erros = confere_reajuste_2026() + confere_reajuste_casan()
+    erros = confere_reajuste_2026() + confere_reajuste_casan() + confere_corsan()
     for t in lista:
         t.setdefault("acessado", ACESSO)
         for chave in ("exemplos", "exemplosOficiais"):
@@ -590,6 +968,13 @@ def main():
                     obtido = conta(t["categorias"][cat], int(c))
                     if obtido != d(esperado):
                         erros.append(f"{t['id']} {cat} {c} m³ ({chave}): obtido {obtido}, esperado {esperado}")
+    # Nenhum município pode cair em duas tabelas da Corsan (Porto União, SC, consta em duas tabelas de outros prestadores desde antes: fora desta checagem)
+    vistos = {}
+    for t in (corsan, *CORSAN_VARIANTES):
+        for m in t["municipios"]:
+            if m in vistos:
+                erros.append(f"município {m} em duas tabelas da Corsan: {vistos[m]} e {t['id']}")
+            vistos[m] = t["id"]
     if erros:
         raise SystemExit("exemplos não conferem:\n" + "\n".join(erros))
     os.makedirs(os.path.dirname(DESTINO), exist_ok=True)

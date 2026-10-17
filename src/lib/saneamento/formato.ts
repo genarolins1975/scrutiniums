@@ -41,6 +41,14 @@ export function data(v: string | null | undefined): string {
   return iso ? `${iso[3]}/${iso[2]}/${iso[1]}` : v;
 }
 
+/** "2025-08" → "agosto de 2025". */
+export function mesPorExtenso(m: string | undefined): string {
+  const iso = /^(\d{4})-(\d{2})/.exec(m ?? "");
+  if (!iso) return SEM_DADO;
+  const nomes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+  return `${nomes[Number(iso[2]) - 1]} de ${iso[1]}`;
+}
+
 /** "202412" → "dez/2024". */
 export function mesAno(m: string | undefined): string {
   if (!m) return SEM_DADO;
