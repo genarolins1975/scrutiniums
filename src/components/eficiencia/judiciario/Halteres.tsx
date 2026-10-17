@@ -22,7 +22,7 @@ export function HalteresTribunais({linhas,medida:inicial='tempoBaixados',selecio
   <p className={s.dumbbellLegend}><span><i data-serie="0" aria-hidden="true"/>Duração média dos baixados</span><span><i data-serie="1" aria-hidden="true"/>Idade média dos pendentes</span><span><i data-serie="mediana" aria-hidden="true"/>Mediana das médias · {n(mediana,mediana!==null&&mediana%1?1:0)} meses</span></p>
   <div className={s.dumbbellAxis} aria-hidden="true"><span/><div>{marcas.map(v=><b key={v} style={{left:x(v)}}>{v}</b>)}</div><span/></div>
   <ol className={s.dumbbellRows}>{ordenadas.map(l=>{const menor=Math.min(l.tempoBaixados,l.idadePendentes),maior=Math.max(l.tempoBaixados,l.idadePendentes);return <li key={l.id} className={selecionados.includes(l.id)?s.selected:undefined}>
-   <Link href={BASE_JUDICIARIO+'/tribunais/'+l.id}>{l.sigla}</Link>
+   <Link href={BASE_JUDICIARIO+'/tribunais/'+l.id} prefetch={false}>{l.sigla}</Link>
    <div className={s.dumbbellTrack} role="img" aria-label={`${l.sigla}: baixados duraram ${l.tempoBaixados} meses; pendentes têm ${l.idadePendentes} meses`}>
     {mediana!==null&&<span className={s.dumbbellMedian} style={{left:x(mediana)}}/>}
     <span className={s.dumbbellLink} style={{left:x(menor),width:100*(maior-menor)/topo+'%'}}/>
