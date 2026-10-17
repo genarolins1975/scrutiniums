@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
 import { Fonte, Nota, Secao } from "@/components/saneamento/Editorial";
+import { PosicaoMunicipio } from "@/components/saneamento/PosicaoMunicipio";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { agregado, fichaMunicipio, meta, municipio, municipios, prestadores } from "@/lib/saneamento/gold";
 import { ROTA } from "@/lib/saneamento/capitulos";
@@ -219,6 +220,10 @@ export default function Pagina({ params }: { params: { id: string } }) {
         <Secao id="comparacao" titulo="Como o município se compara?" texto={
           <>Cada linha tem sua fonte e seu ano. Pares: mediana dos municípios da mesma região com {porte != null ? ROTULO_PORTE[porte] : "porte semelhante"} ({inteiro(grupo.length)} municípios). A mediana dos pares não é meta nem referência de eficiência.</>
         }>
+          <PosicaoMunicipio
+            uf={m.uf}
+            linhas={linhas.map((l) => ({ rotulo: l.rotulo, fonte: l.fonte, m: l.m, uf: l.uf, br: l.br, pares: l.pares.v }))}
+          />
           <Comparacao linhas={linhas} uf={m.uf} grupo={grupo.length} />
           <Nota>
             As colunas não têm o mesmo universo. Município e pares comparam só municípios com indicador. UF e Brasil são os consolidados do SINISA e do
