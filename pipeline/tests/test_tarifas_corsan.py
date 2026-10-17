@@ -2,7 +2,7 @@ import json
 import unittest
 from decimal import Decimal
 
-from pipeline.observatorio_saneamento import tarifas
+from pipeline.observatorio_saneamento import atos, tarifas
 
 
 class TabelaI(unittest.TestCase):
@@ -190,6 +190,22 @@ class TabelasProprias(unittest.TestCase):
         self.assertIn("não identificado", tarifas.corsan_erechim["regulador"])
         self.assertIn("não foi localizada tabela posterior", tarifas.corsan_erechim["vigencia"])
         self.assertIn("18/09/2026", tarifas.corsan_santa_cruz["vigencia"])
+
+    def test_atos_da_corsan_um_ato_por_entrada_e_com_o_objeto_certo(self):
+        corsan = [a for a in atos.ACRESCIMOS if a["prestador"] == "CORSAN"]
+        self.assertEqual(len(corsan), 7)
+        self.assertTrue(all(not a["verificado"] for a in corsan))
+        # A CSR 05/2026 trata da disponibilidade do esgoto; só a CSR 11/2026 fundamenta a tarifa social.
+        self.assertFalse(any("05/2026" in a["ato"] for a in corsan))
+        csr = [a for a in corsan if "CSR" in a["ato"]]
+        self.assertEqual([a["ato"] for a in csr], ["Resolução CSR AGESAN 11/2026, citada no Anexo 4 da Corsan"])
+        self.assertIn("Residencial Social", csr[0]["tipo"])
+        # O PDF de Santa Cruz do Sul cita a AGERST e a Resolução Normativa 92/2026.
+        sc = [a for a in corsan if a["area"] == "Santa Cruz do Sul"]
+        self.assertIn("Resolução Normativa AGERST 92/2026, citada na tabela da Corsan", [a["ato"] for a in sc])
+        for texto in [a["obs"] for a in sc] + tarifas.corsan_santa_cruz["observacoes"] + [tarifas.corsan_santa_cruz["regulador"]]:
+            self.assertNotIn("não nomeia o regulador", texto)
+            self.assertNotIn("nome do arquivo", texto)
 
 
 if __name__ == "__main__":

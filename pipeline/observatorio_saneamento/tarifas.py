@@ -725,7 +725,7 @@ corsan_canoas_esteio = corsan_proprio(
         "Regras da água, do esgoto, do consumo inteiro e da ligação com hidrômetro iguais às da tabela dos 298 municípios (ver a ficha da Corsan, RS): serviço básico mais preço-base × C^n sem mínimo na ligação medida; esgoto tratado a R$ 6,07 por m³ de água (70% do preço-base); fração de metro cúbico desprezada (art. 67 do RSAE). " + _NOTA_EXP_PROPRIA,
         "Conferência: a tarifa mínima de cada categoria é reproduzida ao centavo em julho de 2026, inclusive a social da Lei 14.898/2024 (R$ 20,60 + 10 × R$ 4,34 = R$ 64,00, que também é metade da mínima de R$ 128,00 da Residencial B); em janeiro de 2026 só a industrial difere em R$ 0,01, por vir de valores sem arredondar.",
         "Residencial social da Lei 14.898/2024: água até 15 m³ a R$ 20,60 de serviço básico mais R$ 4,34 por m³ e esgoto tratado a R$ 3,03 por m³, metade dos preços da Residencial B. O excedente de 15 m³ é cobrado ao preço-base da Residencial B (R$ 8,68), sem regra publicada de como isso se combina com o expoente; por isso a categoria só vai até 15 m³. A elegibilidade (art. 2º da Lei 14.898/2024) não é verificada.",
-        "Cobertura: a tabela vale para Canoas e Esteio, casados com o IBGE e com a Corsan no SINISA 2024. O PDF não nomeia o regulador; o comunicado de 12/06/2026 divulga a revisão de 5,76% de Canoas e Esteio junto com a da RED 892/2026 da AGERGS, e o ato específico não foi lido.",
+        "Cobertura: a tabela vale para Canoas e Esteio, casados com o IBGE e com a Corsan no SINISA 2024. O PDF cita a Resolução Normativa 74/2026 da AGERGS e a Resolução CSR 05/2026 da AGESAN só para a disponibilidade do esgoto e não nomeia o regulador nem o ato da tabela; o comunicado de 12/06/2026 divulga a revisão de 5,76% de Canoas e Esteio junto com a da RED 892/2026 da AGERGS, e o ato específico não foi lido.",
         "Reajuste: a tabela de julho de 2026 é a de janeiro de 2026 vezes 1,0576 em preço-base e serviço básico de todas as categorias, ao centavo; a tabela de janeiro de 2025 de Canoas e Esteio não foi lida.",
         "Outras categorias (bica pública, residencial social anterior, comercial, pública e industrial) não foram simuladas.",
     ],
@@ -735,7 +735,7 @@ corsan_canoas_esteio = corsan_proprio(
 
 corsan_santa_cruz = corsan_proprio(
     "corsan-santa-cruz-2026", "Santa Cruz do Sul", CORSAN_SANTA_CRUZ["2026-09"],
-    regulador="AGERST (nome do arquivo publicado pela Corsan; ato não lido)",
+    regulador="AGERST (nomeada no PDF da tabela; ato não lido)",
     ato="Tabela I de Santa Cruz do Sul da Corsan (estrutura tarifária a partir de 18/09/2026)",
     vigencia="Desde 18/09/2026 (Anexo 2 da página Sistema Tarifário)",
     ultimoReajuste="Tabela de 18/09/2026 sobre a de janeiro de 2026: 2,00% no serviço básico (38,25 ÷ 37,50) e 2,02% no preço-base (8,07 ÷ 7,91); o ato que a aprovou não foi lido",
@@ -750,7 +750,7 @@ corsan_santa_cruz = corsan_proprio(
         "Regras da água, do esgoto, do consumo inteiro e da ligação com hidrômetro iguais às da tabela dos 298 municípios (ver a ficha da Corsan, RS): serviço básico mais preço-base × C^n sem mínimo na ligação medida; esgoto tratado a R$ 5,64 por m³ de água (70% do preço-base); fração de metro cúbico desprezada (art. 67 do RSAE). " + _NOTA_EXP_PROPRIA,
         "Conferência: a tarifa mínima de cada categoria é reproduzida ao centavo na tabela de setembro de 2026, exceto a social da Lei 14.898/2024 (ver o aviso do método); em janeiro de 2026 só a industrial difere em R$ 0,01, por vir de valores sem arredondar.",
         "Residencial social da Lei 14.898/2024: água até 15 m³ a R$ 19,13 de serviço básico mais R$ 4,03 por m³ e esgoto tratado a R$ 2,82 por m³, metade dos preços da Residencial B com arredondamento de centavos. O excedente de 15 m³ é cobrado ao preço-base da Residencial B (R$ 8,07), sem regra publicada de como isso se combina com o expoente; por isso a categoria só vai até 15 m³. A elegibilidade (art. 2º da Lei 14.898/2024) não é verificada.",
-        "Cobertura: a tabela vale para Santa Cruz do Sul, casado com o IBGE e com a Corsan no SINISA 2024. O PDF não nomeia o regulador: \"AGERST\" é o nome do arquivo publicado pela Corsan, e o ato que aprovou a tabela não foi lido.",
+        "Cobertura: a tabela vale para Santa Cruz do Sul, casado com o IBGE e com a Corsan no SINISA 2024. O PDF cita resoluções da AGERST (a nº 12/2018, sobre a disponibilidade do esgoto, e a Resolução Normativa 92/2026, sobre a tarifa social), mas não nomeia o ato que aprovou a tabela, e nenhum dos atos citados foi lido.",
         "Outras categorias (bica pública, residencial social anterior, comercial, pública e industrial) não foram simuladas.",
     ],
     exemplos={"residencial": {"0": 38.25, "5": 106.80, "10": 175.35, "15": 243.90, "20": 312.45, "25": 416.23, "30": 536.25, "40": 730.66, "50": 940.73},

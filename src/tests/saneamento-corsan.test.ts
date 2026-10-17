@@ -162,16 +162,30 @@ describe("Corsan: registro da tabela", () => {
 });
 
 describe("Corsan: atos e página de reajustes", () => {
-  const lista = (atos as { atos: { prestador: string; verificado: boolean; ato: string; area: string }[] }).atos;
+  const lista = (atos as { atos: { prestador: string; verificado: boolean; ato: string; area: string; tipo: string; obs: string }[] }).atos;
 
-  it("o catálogo registra os seis atos como não lidos no texto oficial", () => {
+  it("o catálogo registra os sete atos como não lidos no texto oficial, um ato por entrada", () => {
     const c = lista.filter((a) => a.prestador === "CORSAN");
-    expect(c).toHaveLength(6);
+    expect(c).toHaveLength(7);
     expect(c.every((a) => !a.verificado)).toBe(true);
     expect(c.map((a) => a.ato).join(" ")).toContain("RED 892, 09/06/2026");
-    for (const trecho of ["Canoas e Esteio", "Santa Cruz do Sul a partir de 18/09/2026", "Erechim", "Resoluções CSR AGESAN 05/2026 e 11/2026"]) {
+    for (const trecho of ["Canoas e Esteio", "Santa Cruz do Sul a partir de 18/09/2026", "Erechim", "Resolução CSR AGESAN 11/2026", "Resolução Normativa AGERST 92/2026"]) {
       expect(c.some((a) => `${a.ato} ${a.area}`.includes(trecho)), trecho).toBe(true);
     }
+    // A CSR 05/2026 trata da disponibilidade do esgoto, não da tarifa social: não é ato de nenhuma entrada.
+    expect(c.some((a) => a.ato.includes("05/2026"))).toBe(false);
+    expect(c.filter((a) => a.ato.includes("CSR")).every((a) => a.tipo.includes("Residencial Social"))).toBe(true);
+  });
+
+  it("o PDF de Santa Cruz do Sul cita a AGERST e a Resolução Normativa 92/2026; nenhuma frase diz o contrário", () => {
+    const sc = lista.filter((a) => a.prestador === "CORSAN" && a.area === "Santa Cruz do Sul");
+    expect(sc.map((a) => a.ato)).toContain("Resolução Normativa AGERST 92/2026, citada na tabela da Corsan");
+    const textos = [...sc.map((a) => a.obs), ...tarifa("corsan-santa-cruz-2026")!.observacoes, tarifa("corsan-santa-cruz-2026")!.regulador];
+    for (const t of textos) {
+      expect(t).not.toContain("não nomeia o regulador");
+      expect(t).not.toContain("nome do arquivo");
+    }
+    expect(textos.join(" ")).toContain("92/2026");
   });
 
   it("a página de reajustes mostra os atos da Corsan e a data de levantamento", () => {

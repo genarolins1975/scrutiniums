@@ -149,7 +149,7 @@ export const VIABILIDADE: LinhaViabilidade[] = [
     periodo: "2023 a 2026",
     unidadeGeografica: "Prestador",
     unidadeObservacao: "Ato regulatório",
-    cobertura: "2 estudos de caso; 41 atos, 33 lidos no texto oficial",
+    cobertura: "2 estudos de caso; 42 atos, 33 lidos no texto oficial",
     atualizacao: "A cada ato",
     acesso: "Portais dos reguladores; AGENERSA indisponível na consulta",
     limitacoes: "Série de conta comparada à inflação depende das tabelas anteriores, não coletadas",
