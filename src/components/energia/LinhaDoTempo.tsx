@@ -1,5 +1,7 @@
 "use client";
 
+import { comNomes } from "@/components/i18n/comNomes";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { Fragment, useId, useState } from "react";
 import { formatos } from "@/lib/energia/formato";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
@@ -184,7 +186,7 @@ export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroContro
                     {e.orgao ? ` · ${e.orgao}` : ""}
                   </p>
                   <Titulo id={idTitulo} className="mt-0.5 font-serif text-lg leading-snug text-carvao">
-                    {e.titulo}
+                    {comNomes(e.titulo, e.nomesNoTitulo, idioma)}
                   </Titulo>
                   <dl className="mt-1.5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-0.5 text-sm">
                     <dt className="text-carvao-muted">{tx("Publicação", "Publication")}</dt>
@@ -212,7 +214,7 @@ export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroContro
                     {e.dispositivo && (
                       <Fragment>
                         <dt className="text-carvao-muted">{tx("Dispositivo", "Provision")}</dt>
-                        <dd className="text-carvao">{e.dispositivo}</dd>
+                        <dd className="text-carvao">{e.citacoesEmPortugues ? <TrechoPortugues regiao="linha-dispositivo">{e.dispositivo}</TrechoPortugues> : e.dispositivo}</dd>
                       </Fragment>
                     )}
                   </dl>
@@ -220,7 +222,7 @@ export function LinhaDoTempo({ titulo, eventos, categorias, filtro: filtroContro
                   {url && e.fonte ? (
                     <a href={url} target="_blank" rel="noopener noreferrer" className="rotulo mt-1 inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
                       {tx("Fonte primária: ", "Primary source: ")}
-                      {e.fonte.rotulo}
+                      {e.citacoesEmPortugues ? <TrechoPortugues regiao="linha-fonte">{e.fonte.rotulo}</TrechoPortugues> : e.fonte.rotulo}
                       <span className="sr-only">{tx(" (abre em nova aba)", " (opens in a new tab)")}</span>
                     </a>
                   ) : (

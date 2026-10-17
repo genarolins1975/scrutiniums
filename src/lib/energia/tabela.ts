@@ -60,9 +60,10 @@ export type ColunaTabela = {
   /**
    * Texto da coluna que vem dos dados em português (gold), para a página inglesa: "nome" (empresa, usina, município, programa) sai
    * marcado como nome próprio (<Nome>); "portugues" (descrição livre da fonte) sai em <TrechoPortugues regiao="tabela-<id>">. Vale para
-   * as células e para as opções do filtro. Em português nada muda; o arquivo baixado leva o valor como está.
+   * as células e para as opções do filtro; "codigo" (hash, rota, identificador técnico) sai em <code> na página inglesa. Em português
+   * nada muda; o arquivo baixado leva o valor como está.
    */
-  idiomaTexto?: "nome" | "portugues";
+  idiomaTexto?: "nome" | "portugues" | "codigo";
   /** O rótulo da coluna é um nome próprio (uma coluna por usina, por exemplo): o cabeçalho sai marcado com <Nome>. */
   rotuloEhNome?: boolean;
 };

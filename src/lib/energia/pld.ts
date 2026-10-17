@@ -924,6 +924,8 @@ export function eventosAtos(atos: readonly AtoLimite[], idioma: Idioma = idiomaE
     dispositivo: a.dispositivo ?? undefined,
     orgao: "ANEEL",
     fonte: { rotulo: a.documento_titulo ?? a.ato, url: a.documento_url ?? a.url },
+    nomesNoTitulo: [a.ato],
+    citacoesEmPortugues: true,
   }));
 }
 

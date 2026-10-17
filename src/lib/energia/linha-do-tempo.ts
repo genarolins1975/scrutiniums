@@ -46,6 +46,10 @@ export type EventoDatado = {
   orgao?: string;
   /** Fonte primária: o próprio ato. Null quando ainda não localizada. */
   fonte: { rotulo: string; url: string } | null;
+  /** Nomes próprios no título (o ato por extenso): na página inglesa saem marcados com <Nome>. */
+  nomesNoTitulo?: readonly string[];
+  /** Dispositivo e rótulo da fonte citados do ato em português: na página inglesa saem com o aviso "Portuguese only". */
+  citacoesEmPortugues?: boolean;
 };
 
 export type BaseData = "publicacao" | "vigencia";

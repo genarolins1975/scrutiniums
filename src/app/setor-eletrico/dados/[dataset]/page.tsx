@@ -166,7 +166,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
         <CabecalhoModulo
           rotulo={`${e.orgao}${e.tema === "outros" ? "" : ` · ${rotuloTema(e.tema)}`}`}
           // o título é o nome oficial do conjunto: em inglês, marcado como nome e precedido do que ele é
-          titulo={tx<ReactNode>(nome.nome, <>Dataset: <Nome>{nome.nome}</Nome></>) as string}
+          titulo={tx<ReactNode>(nome.nome, <>Dataset: <Nome>{nome.nome}</Nome></>)}
           lead={marcado(fraseAbertura({ orgao: e.orgao, cadencias, paginas: paginasNoIdioma }))}
           recorte={tx(
             `${periodo} · última captura ${ultimaCaptura ? carimbo(ultimaCaptura) : "sem registro"} · etapa no catálogo: ${ROTULO_ESTADO_DADOS[e.estado].toLowerCase()}`,

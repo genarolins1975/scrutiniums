@@ -140,7 +140,14 @@ function baixar(nome: string, conteudo: string | Uint8Array<ArrayBuffer>, tipo: 
 export function TextoDaColuna({ coluna, children }: { coluna: Pick<ColunaTabela, "id" | "idiomaTexto">; children: ReactNode }) {
   if (coluna.idiomaTexto === "nome") return <Nome>{children}</Nome>;
   if (coluna.idiomaTexto === "portugues") return <TrechoPortugues regiao={`tabela-${coluna.id}`}>{children}</TrechoPortugues>;
+  if (coluna.idiomaTexto === "codigo") return <CodigoNoIngles>{children}</CodigoNoIngles>;
   return <>{children}</>;
+}
+
+/** Identificador técnico: <code> na página inglesa (não é prosa de nenhum idioma); em português, como sempre foi. */
+function CodigoNoIngles({ children }: { children: ReactNode }) {
+  const idioma = useIdioma();
+  return idioma === "en" ? <code className="text-[0.95em]">{children}</code> : <>{children}</>;
 }
 
 function SemDado({ sobreFundoAtivo }: { sobreFundoAtivo: boolean }) {

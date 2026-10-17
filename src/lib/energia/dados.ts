@@ -1013,7 +1013,7 @@ export const COLUNAS_MANIFESTO: ColunaTabela[] = [
   { id: "parquet", get rotulo() { return tx("Parquet equivalente", "Equivalent Parquet"); }, tipo: "texto", categorica: true },
   { id: "validacao", get rotulo() { return tx("Validação automática", "Automatic validation"); }, tipo: "texto", categorica: true },
   // impressão digital: identificador, não prosa (na página inglesa sai como está, sem tradução)
-  { id: "sha256", rotulo: "sha256", tipo: "texto", ordenavel: false, idiomaTexto: "nome" },
+  { id: "sha256", rotulo: "sha256", tipo: "texto", ordenavel: false, idiomaTexto: "codigo" },
 ];
 
 /** Veredito da validação automática de um arquivo publicado (só os CSV são validados um a um; os demais não se aplicam). */

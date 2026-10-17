@@ -33,7 +33,8 @@ export function CabecalhoModulo({
 }: {
   /** Rótulo acima do título (módulo ou seção). Omitido na abertura de módulo, onde repetiria a navegação; útil em página filha, como migalha. */
   rotulo?: string;
-  titulo: string;
+  /** Texto, ou nó com nome próprio marcado (<Nome>) na página inglesa. */
+  titulo: ReactNode;
   /** Texto longo de apresentação. Com `lead`, vai para o bloco recolhível; sem `lead`, é a abertura recolhida. */
   children?: ReactNode;
   /** Fontes e datas de referência por extenso. Com `lead`, vai para o bloco recolhível; sem `lead`, fica à vista. */
