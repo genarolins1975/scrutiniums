@@ -111,14 +111,14 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
             <p data-resposta="composicao-distribuidora">
               {naGrafico
                 ? tx(
-                    `${naGrafico.rotulo}, ${anoRef}: técnicas ${num(naGrafico.tecnica, 2)}% e não técnicas ${num(naGrafico.nao_tecnica, 2)}% da energia injetada; perdas totais de ${num(naGrafico.total, 2)}% sobre a mesma base (decomposição ${ROTULO_DECOMPOSICAO[naGrafico.decomposicao]}${naGrafico.residuo_mwh ? `, diferença de ${num(naGrafico.residuo_mwh, 0)} MWh no ano` : ""}).`,
+                    <>{`${naGrafico.rotulo}, ${anoRef}: técnicas ${num(naGrafico.tecnica, 2)}% e não técnicas ${num(naGrafico.nao_tecnica, 2)}% da energia injetada; perdas totais de ${num(naGrafico.total, 2)}% sobre a mesma base (decomposição ${ROTULO_DECOMPOSICAO[naGrafico.decomposicao]}${naGrafico.residuo_mwh ? `, diferença de ${num(naGrafico.residuo_mwh, 0)} MWh no ano` : ""}).`}</>,
                     <>
                       <Nome>{naGrafico.rotulo}</Nome>
                       {`, ${anoRef}: technical ${num(naGrafico.tecnica, 2, idioma)}% and non-technical ${num(naGrafico.nao_tecnica, 2, idioma)}% of the injected energy; total losses of ${num(naGrafico.total, 2, idioma)}% on the same base (decomposition ${ROTULO_DECOMPOSICAO[naGrafico.decomposicao]}${naGrafico.residuo_mwh ? `, difference of ${num(naGrafico.residuo_mwh, 0, idioma)} MWh in the year` : ""}).`}
                     </>,
                   )
                 : tx(
-                    `${rotulos[sel] ?? sel} não está no gráfico de ${anoRef}: ${motivos[sel] ?? "sem dado"}.`,
+                    <>{`${rotulos[sel] ?? sel} não está no gráfico de ${anoRef}: ${motivos[sel] ?? "sem dado"}.`}</>,
                     <>
                       <Nome>{rotulos[sel] ?? sel}</Nome>
                       {` is not in the ${anoRef} chart: ${motivos[sel] ?? "no data"}.`}
