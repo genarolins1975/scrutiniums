@@ -140,6 +140,16 @@ export const NOTAS_PLD_EN: Readonly<Record<string, string>> = {
     "Hour × day selection for the last 90 days, read on demand; the full hourly history is in the hourly CMO and PLD file (CSV, under Download the data).",
 };
 
+/** Regras e notas de método fixas da gold do PLD (pld_detalhe.json: regional.regra_*, limites, previsões), texto exato publicado. */
+export const TEXTOS_PLD_EN: Readonly<Record<string, string>> = {
+  "Dois submercados estão separados numa hora quando |PLD_A − PLD_B| > R$ 0,01/MWh (mais de um centavo), sempre na mesma hora e na mesma publicação da CCEE. Diferenças de exatamente um centavo são frequentes e ficam contadas à parte (horas_diferenca_de_um_centavo), sem entrar na separação.":
+    "Two submarkets are divergent in an hour when |PLD_A − PLD_B| > R$ 0.01/MWh (more than one cent), always in the same hour and in the same CCEE publication. Differences of exactly one cent are frequent and are counted separately (in their own column), outside the divergence count.",
+  "horas_acima_1 e horas_acima_10 contam as horas com diferença acima de R$ 1,00/MWh e de R$ 10,00/MWh. A gold de operação pld.json (resumo por janela) usa R$ 1,00/MWh: nas mesmas janelas, horas_acima_1 da amplitude é o número dela (controle publicado); horas_com_separacao usa R$ 0,01/MWh e por isso é maior.":
+    "The columns \"above 1\" and \"above 10\" count the hours with a difference above R$ 1.00/MWh and above R$ 10.00/MWh. The operation gold file pld.json (summary by window) uses R$ 1.00/MWh: in the same windows, the spread column \"above 1\" equals its figure (published check); the divergence count uses R$ 0.01/MWh and is therefore larger.",
+  "Fluxo verificado pelo ONS na fronteira, na mesma hora, com sinal positivo da primeira para a segunda ponta. Fluxo de até 1 MWmed em módulo é tratado como nulo. A contagem é descritiva: os limites de intercâmbio não estão integrados e nenhuma hora é classificada como congestionada.":
+    "Flow verified by ONS at the border, in the same hour, with a positive sign from the first to the second end. Flow of up to 1 MWavg in absolute value is treated as zero. The count is descriptive: the interchange limits are not integrated and no hour is classified as congested.",
+};
+
 /** Critério da tabela de distribuidoras (gold mercado.json, livre_regulado.distribuidoras.criterio). */
 export const CRITERIOS_MERCADO_EN: Readonly<Record<string, string>> = {
   "as 30 maiores em energia livre faturada no ano; a tabela completa está no CSV": "the 30 largest by free-market energy billed in the year; the full table is in the CSV",

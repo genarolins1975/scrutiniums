@@ -8,7 +8,8 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { carimbo } from "@/lib/energia/formato";
-import { tx } from "@/lib/energia/idioma";
+import { DOWNLOADS_PLD_EN, TEXTOS_PLD_EN, traducaoExata } from "@/lib/energia/i18n/mercado-preco";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { PAINEIS_PLD, ROTA_PLD, perguntaPainel, rotaPainel, type PainelPld } from "@/lib/energia/pld";
 import type { Natureza } from "@/lib/energia/tipos";
 import type { Controle, FonteTextual } from "@/lib/energia/tipos-pld";
@@ -148,7 +149,19 @@ export function PldAviso({ children, tipo = "nota" }: { children: ReactNode; tip
 
 /** Rodapé do painel: downloads, link compartilhável e a próxima pergunta, numa linha (SeguirPainel). */
 export function PldSeguir({ ancora, proximo, downloads }: { ancora: string; proximo: { href: string; pergunta: string }; downloads: { rotulo: string; url: string }[] }) {
-  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads} />;
+  const idioma = idiomaEnergia();
+  // rótulos fixos da gold (pld_detalhe.json, downloads[].rotulo) pela tabela exata; rótulo novo da fonte segue como publicado
+  const lista = downloads.map((d) => ({ ...d, rotulo: traducaoExata(DOWNLOADS_PLD_EN, d.rotulo, idioma) ?? d.rotulo }));
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={lista} />;
+}
+
+/**
+ * Texto fixo da gold do PLD (regras, notas de método): a forma inglesa vem da tabela exata (TEXTOS_PLD_EN); texto que não está na
+ * tabela sai em português marcado, nunca traduzido por aproximação.
+ */
+export function PldTextoGold({ texto, regiao }: { texto: string; regiao: string }) {
+  const en = traducaoExata(TEXTOS_PLD_EN, texto, idiomaEnergia());
+  return en ? <>{en}</> : <TrechoPortugues regiao={regiao}>{texto}</TrechoPortugues>;
 }
 
 /** Datas de referência de cada parte da página: cada número diz o seu dia, sem sugerir simultaneidade. `ate` já vem escrito (data ou data e hora). */
