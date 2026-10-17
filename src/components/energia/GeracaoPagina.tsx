@@ -154,7 +154,7 @@ export function GeracaoDocumentos({ documentos }: { documentos: EvidenciaDocumen
               </span>
             )}
             {d.versao ? tx(`, versão ${d.versao}`, `, version ${d.versao}`) : ""}
-            {d.data_documento ? tx(` de ${d.data_documento.replaceAll("-", "/")}`, ` of ${dataBR(d.data_documento)}`) : ""}
+            {d.data_documento ? tx(` de ${d.data_documento.replaceAll("-", "/")}`, ` of ${dataBR(d.data_documento.replace(/^(\d{2})-(\d{2})-(\d{4})$/, "$3-$2-$1"))}`) : ""}
             {d.capturado_em ? tx(`; capturado em ${carimbo(d.capturado_em)}`, `; captured on ${carimbo(d.capturado_em)}`) : tx("; sem captura registrada", "; no capture recorded")}.
           </p>
           {d.trecho ? (

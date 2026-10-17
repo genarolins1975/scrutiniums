@@ -1,4 +1,4 @@
-import { createElement, type ReactNode } from "react";
+import { createElement, type ComponentProps, type ReactNode } from "react";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import type { Idioma } from "@/lib/idioma";
 
@@ -9,6 +9,9 @@ import type { Idioma } from "@/lib/idioma";
  * entrada não é inventado: em texto corrido sai marcado como português (TrechoPortugues) e, onde só cabe texto, a função
  * que chama usa o nome curto inglês da categoria pelo identificador.
  */
+
+/** Props do TrechoPortugues; o filho vai como argumento do createElement. */
+type PropsTrecho = ComponentProps<typeof TrechoPortugues>;
 
 /** `tx` preso a um idioma explícito: `const tx = txEm(idioma)` e depois `tx("pt", "en")`. */
 export function txEm(idioma: Idioma): <T>(pt: T, en: T) => T {
@@ -165,7 +168,7 @@ export function rotuloGold(pt: string, idioma: Idioma, reserva?: string, tabela:
 export function rotuloGoldNo(pt: string, idioma: Idioma, regiao: string, tabela: Record<string, string> = ROTULOS_GOLD_GERACAO_EN): ReactNode {
   if (idioma !== "en") return pt;
   const en = tabela[pt];
-  return en ?? createElement(TrechoPortugues, { regiao, children: pt });
+  return en ?? createElement(TrechoPortugues, { regiao } as PropsTrecho, pt);
 }
 
 /**
@@ -182,5 +185,5 @@ export function valorExibidoNoIdioma(texto: string, idioma: Idioma): string {
 /** Prosa da gold sem versão inglesa (nota, regra, descrição publicada): em inglês, marcada como trecho só em português. */
 export function trechoPt(texto: string, regiao: string, idioma: Idioma, como: "span" | "div" = "span"): ReactNode {
   if (idioma !== "en") return texto;
-  return createElement(TrechoPortugues, { regiao, como, children: texto });
+  return createElement(TrechoPortugues, { regiao, como } as PropsTrecho, texto);
 }
