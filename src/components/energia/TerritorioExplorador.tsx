@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Comparador } from "@/components/energia/Comparador";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
-import { FichaDistribuidora, FichaMunicipio, FichaSubmercado, FichaUf, FichaUsina } from "@/components/energia/TerritorioFicha";
+import { ComNomes, FichaDistribuidora, FichaMunicipio, FichaSubmercado, FichaUf, FichaUsina } from "@/components/energia/TerritorioFicha";
 import { TerritorioMapa, type DicaMapa, type GrupoPontosMapa, type PoligonoDestaque, type RotuloMapa, type SobreposicaoMapa } from "@/components/energia/TerritorioMapa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { ROTULO_METODO, type ValorClassificavel } from "@/lib/energia/escalas";
@@ -1338,7 +1338,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
               colunaRotulo="municipio"
               fonte={tx(
                 "ANEEL (MMGD, SIGA), ANEEL e MDS (Tarifa Social), MME (Luz para Todos), EPE (PASI), IBGE (população), pelos módulos de origem",
-                "ANEEL (MMGD, SIGA), ANEEL and MDS (Social Tariff), MME (Luz para Todos), EPE (PASI), IBGE (population), through the source modules",
+                "ANEEL (MMGD, SIGA), ANEEL and MDS (Social Tariff), MME (Light for All), EPE (PASI), IBGE (population), through the source modules",
               )}
               versao={dados.versao}
               nomeArquivo="territorio-municipios"
@@ -1423,7 +1423,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
             </>,
             <>
               Plants in operation counted in the main state, without the registrations of up to {num(dados.limiteRegistroKw, 0, idioma)} kW, which the municipality also leaves out of the plant count and which have
-              their own column; the capacity in MW adds up all of them. {dados.notaMultiestadual} Net discount: sum of the month&apos;s discounts with cancellations and rebillings, which enter the discount and not
+              their own column; the capacity in MW adds up all of them. <ComNomes texto={dados.notaMultiestadual ?? ""} nomes={dados.nomesMultiestadual} /> Net discount: sum of the month&apos;s discounts with cancellations and rebillings, which enter the discount and not
               the count of bills; a month can close negative.
             </>,
           )}
@@ -1528,8 +1528,8 @@ function TabelaComparacao({ municipios, linhas }: { municipios: MunicipioT[]; li
     { rotulo: tx("Potência de MMGD (kW)", "MMGD capacity (kW)"), v: (l) => (l.mmgd_kw === null ? sd : num(l.mmgd_kw, 0, idioma)) },
     { rotulo: tx("MMGD por habitante (W)", "MMGD per inhabitant (W)"), v: (l) => (l.mmgd_w_hab === null ? sd : num(l.mmgd_w_hab, 1, idioma)) },
     { rotulo: tx("Faturas com Tarifa Social", "Bills with the Social Tariff"), v: (l) => n(l.tsee_faturas) },
-    { rotulo: tx("Tarifa Social por família do CadÚnico (proxy, %)", "Social Tariff per CadÚnico family (proxy, %)"), v: (l) => (l.tsee_proxy_pct === null ? sd : num(l.tsee_proxy_pct, 1, idioma)) },
-    { rotulo: tx("Luz para Todos (domicílios)", "Luz para Todos (households)"), v: (l) => n(l.lpt_dom) },
+    { rotulo: tx("Tarifa Social por família do CadÚnico (proxy, %)", "Social Tariff per CadUnico family (proxy, %)"), v: (l) => (l.tsee_proxy_pct === null ? sd : num(l.tsee_proxy_pct, 1, idioma)) },
+    { rotulo: tx("Luz para Todos (domicílios)", "Light for All (households)"), v: (l) => n(l.lpt_dom) },
     { rotulo: tx("Usinas em operação só no município", "Plants in operation only in the municipality"), v: (l) => `${n(l.usi_op_n)} (${num(l.usi_op_mw, 1, idioma)} MW)` },
     { rotulo: tx("Registros de até 10 kW", "Registrations of up to 10 kW"), v: (l) => n(l.usi_reg_n) },
     { rotulo: tx("Localidades isoladas", "Isolated localities"), v: (l) => n(l.isol_n) },

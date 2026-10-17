@@ -378,9 +378,19 @@ export default function EmissoesPage() {
                   chaveUrl="em.tab" // i18n: dado
                   ordemInicial={{ coluna: "ano", direcao: "desc" }} // i18n: dado
                   dicaBusca={tx("Ano", "Year")}
-                  nota={tx(
+                  nota={tx<ReactNode>(
                     `Valores como o MCTI publica, com 4 casas. As colunas do MDL servem só a projetos de MDL e não substituem o fator médio. O controle compara o anual publicado com a média simples dos 12 meses${e.evidencia?.reconciliacao?.tolerancia ? ` (tolerância de ${e.evidencia.reconciliacao.tolerancia})` : ""}.`,
-                    `Values as the MCTI publishes them, with 4 decimal places. The CDM columns only serve CDM projects and do not replace the average factor. The check compares the published annual factor with the simple average of the 12 months${e.evidencia?.reconciliacao?.tolerancia ? ` (tolerance of ${e.evidencia.reconciliacao.tolerancia})` : ""}.`,
+                    <>
+                      Values as the MCTI publishes them, with 4 decimal places. The CDM columns only serve CDM projects and do not replace the average factor. The check compares the published annual
+                      factor with the simple average of the 12 months
+                      {e.evidencia?.reconciliacao?.tolerancia ? (
+                        <>
+                          {" "}
+                          (tolerance of <TrechoPortugues regiao="transicao-tolerancia">{e.evidencia.reconciliacao.tolerancia}</TrechoPortugues>)
+                        </>
+                      ) : null}
+                      .
+                    </>,
                   )}
                 />
                 <TransicaoRecorte
@@ -533,7 +543,7 @@ export default function EmissoesPage() {
                       { id: "periodo", rotulo: tx("Período", "Period"), tipo: "texto" },
                       { id: "anterior", rotulo: tx("Publicação anterior", "Previous release"), tipo: "numero", unidade: "tCO2/MWh", casas: 4 },
                       { id: "atual", rotulo: tx("Publicação corrigida", "Corrected release"), tipo: "numero", unidade: "tCO2/MWh", casas: 4 },
-                      { id: "arquivo", rotulo: tx("Planilha", "Spreadsheet"), tipo: "texto", categorica: true },
+                      { id: "arquivo", rotulo: tx("Planilha", "Spreadsheet"), tipo: "texto", categorica: true, idiomaTexto: "nome" },
                     ]}
                     linhas={e.revisoes_declaradas_pela_fonte.map((x, i) => ({
                       id: `${x.serie}-${x.periodo}-${i}`,
@@ -570,7 +580,7 @@ export default function EmissoesPage() {
                         rotuloDado(x.rotulo, SERIE_MCTI_EN, idioma),
                         x.periodo,
                         x.valores.map((v) => `${v.recurso}: ${fator(v.valor)}`).join("; "),
-                        x.recurso_vigente,
+                        <Nome key="vigente">{x.recurso_vigente}</Nome>,
                       ])}
                     />
                   ) : (
@@ -580,12 +590,12 @@ export default function EmissoesPage() {
                     titulo={tx("Valores descartados na leitura", "Values discarded when reading")}
                     colunas={tx(["Data na planilha", "Valor", "Motivo", "Planilha"], ["Date in the spreadsheet", "Value", "Reason", "Spreadsheet"])}
                     numericas={[1]}
-                    linhas={e.descartes.map((x) => [datasLegiveis(x.data), fator(x.valor), tx<ReactNode>(x.motivo, notaGold(x.motivo, "transicao-descarte")), x.arquivo])}
+                    linhas={e.descartes.map((x) => [datasLegiveis(x.data), fator(x.valor), tx<ReactNode>(x.motivo, notaGold(x.motivo, "transicao-descarte")), <Nome key="arquivo">{x.arquivo}</Nome>])}
                   />
                   <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
                     {e.problemas_de_leitura.map((x) => (
                       <li key={x.texto}>
-                        <TrechoPortugues regiao="transicao-mcti-leitura">{x.texto}</TrechoPortugues> ({x.arquivo})
+                        <TrechoPortugues regiao="transicao-mcti-leitura">{x.texto}</TrechoPortugues> (<Nome>{x.arquivo}</Nome>)
                       </li>
                     ))}
                   </ul>
@@ -647,15 +657,17 @@ export default function EmissoesPage() {
                         linhas={e.pagina_vigente.planilhas.map((p) => [
                           p.titulo ? tx<ReactNode>(p.titulo, <Nome>{p.titulo}</Nome>) : tx("sem título", "untitled"),
                           <a key={p.url} href={p.url} className="break-all text-energia-dark underline underline-offset-4 hover:text-carvao">
-                            {p.arquivo}
+                            <Nome>{p.arquivo}</Nome>
                           </a>,
                         ])}
                       />
                       {e.pagina_vigente.links_ocultos_ignorados.length > 0 && (
                         <p className="max-w-prose2 text-sm text-carvao-muted">
-                          {tx(
+                          {tx<ReactNode>(
                             `Âncoras sem texto, invisíveis ao leitor, ignoradas: ${e.pagina_vigente.links_ocultos_ignorados.join(", ")}.`,
-                            `Anchors without text, invisible to the reader, ignored: ${e.pagina_vigente.links_ocultos_ignorados.join(", ")}.`,
+                            <>
+                              Anchors without text, invisible to the reader, ignored: <Nome>{e.pagina_vigente.links_ocultos_ignorados.join(", ")}</Nome>.
+                            </>,
                           )}
                         </p>
                       )}
@@ -669,12 +681,12 @@ export default function EmissoesPage() {
                       <ul className="mt-2 list-disc space-y-1 pl-5 text-carvao-muted">
                         {e.notas_da_fonte.map((x, i) => (
                           <li key={i}>
-                            <TrechoPortugues regiao="transicao-mcti-nota">{x.texto}</TrechoPortugues> ({x.arquivo})
+                            <TrechoPortugues regiao="transicao-mcti-nota">{x.texto}</TrechoPortugues> (<Nome>{x.arquivo}</Nome>)
                           </li>
                         ))}
                         {e.notas_margem_construcao.map((x, i) => (
                           <li key={`bm-${i}`}>
-                            <TrechoPortugues regiao="transicao-mcti-nota">{x.texto}</TrechoPortugues> ({x.arquivo})
+                            <TrechoPortugues regiao="transicao-mcti-nota">{x.texto}</TrechoPortugues> (<Nome>{x.arquivo}</Nome>)
                           </li>
                         ))}
                       </ul>

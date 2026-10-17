@@ -14,7 +14,7 @@ import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { dataBR } from "@/lib/energia/formato";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { NOTA_TRANSICAO_EN, daTabela } from "@/lib/energia/i18n/expansao-transicao-territorio";
+import { DOWNLOAD_EXPANSAO_TRANSICAO_EN, NOTA_TRANSICAO_EN, daTabela, downloadsNoIdioma } from "@/lib/energia/i18n/expansao-transicao-territorio";
 
 /**
  * Peças de servidor das páginas Transição e ambiente (a abertura em
@@ -163,7 +163,7 @@ export function TransicaoDatas({ itens }: { itens: { rotulo: string; texto: stri
 
 /** Rodapé do painel: downloads, link compartilhável e a próxima pergunta, numa linha (SeguirPainel). */
 export function TransicaoSeguir({ ancora, href, pergunta, downloads }: { ancora: string; href: string; pergunta: string; downloads: { rotulo: string; url: string }[] }) {
-  return <SeguirPainel ancora={ancora} proximo={{ href, pergunta }} downloads={downloads} />;
+  return <SeguirPainel ancora={ancora} proximo={{ href, pergunta }} downloads={downloadsNoIdioma(downloads, DOWNLOAD_EXPANSAO_TRANSICAO_EN, idiomaEnergia())} />;
 }
 
 /** Seção de Analisar: tabelas completas, séries detalhadas e comparações; continua no HTML do servidor. */
@@ -222,7 +222,7 @@ export function TransicaoDocumento({ doc }: { doc: DocumentoFonte }) {
           </>,
         )}{" "}
         <a href={doc.url} className="break-all text-energia-dark underline underline-offset-4 hover:text-carvao">
-          {doc.url}
+          <Nome>{doc.url}</Nome>
         </a>
       </figcaption>
     </figure>

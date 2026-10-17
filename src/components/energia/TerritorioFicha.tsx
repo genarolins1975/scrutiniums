@@ -48,6 +48,23 @@ import { useIdioma, useTx } from "@/lib/energia/useIdioma";
  * defasagem escrita.
  */
 
+/**
+ * Frase gerada em inglês que cita nomes próprios em português (usinas, municípios): cada ocorrência de um dos nomes sai marcada
+ * como nome próprio. Em português, o texto puro.
+ */
+export function ComNomes({ texto, nomes }: { texto: string; nomes: readonly string[] }) {
+  const idioma = useIdioma();
+  const validos = nomes.filter(Boolean);
+  if (idioma !== "en" || !validos.length) return <>{texto}</>;
+  const escapa = (n: string) => n.replace(/[.*+?^$(){}|[\]\\]/g, "\\$&");
+  const re = new RegExp("(" + validos.map(escapa).join("|") + ")", "g");
+  return (
+    <>
+      {texto.split(re).map((parte, i) => (validos.includes(parte) ? <Nome key={i}>{parte}</Nome> : parte))}
+    </>
+  );
+}
+
 const LINK = "inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao";
 const BOTAO_LINK = "inline-flex min-h-[44px] items-center text-left text-energia-dark underline underline-offset-4 hover:text-carvao focus:outline-none focus-visible:ring-2 focus-visible:ring-energia";
 
@@ -362,7 +379,11 @@ export function BlocosUf({ u, dados }: { u: LinhaUf; dados: DadosExplorador }) {
             )
           )
         }
-        detalhe={[u.cap_origem, reconcilia, dados.notaMultiestadual].filter(Boolean).join(". ") || undefined}
+        detalhe={
+          [u.cap_origem, reconcilia, dados.notaMultiestadual].filter(Boolean).join(". ") ? (
+            <ComNomes texto={[u.cap_origem, reconcilia, dados.notaMultiestadual].filter(Boolean).join(". ")} nomes={dados.nomesMultiestadual} />
+          ) : undefined
+        }
       />
       <Item
         rotulo={tx(
@@ -458,12 +479,12 @@ export function FichaMunicipio({
                 ? defTsee ?? undefined
                 : tx(
                     `${num(m.tsee_proxy_pct, 1)}% por família de baixa renda do CadÚnico (proxy)${basePequena}${defTsee ? `; ${defTsee}` : ""}`,
-                    `${num(m.tsee_proxy_pct, 1, idioma)}% per low-income CadÚnico family (proxy)${basePequena}${defTsee ? `; ${defTsee}` : ""}`,
+                    `${num(m.tsee_proxy_pct, 1, idioma)}% per low-income CadUnico family (proxy)${basePequena}${defTsee ? `; ${defTsee}` : ""}`,
                   )
             }
           />
           <Item
-            rotulo={tx("Domicílios atendidos pelo Luz para Todos (2004 em diante)", "Households served by Luz para Todos (2004 onward)")}
+            rotulo={tx("Domicílios atendidos pelo Luz para Todos (2004 em diante)", "Households served by Light for All (2004 onward)")}
             valor={m.lpt_dom === null ? <Ausente motivo={tx("município sem linha no arquivo do programa", "municipality without a row in the program file")} /> : n(m.lpt_dom)}
           />
           <Item

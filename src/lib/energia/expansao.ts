@@ -62,6 +62,7 @@ import {
   ORGAO_EN,
   SITUACAO_CRONOGRAMA_EN,
   SITUACAO_SIGET_EN,
+  SIGA_TIPO_EN,
   TITULO_FIGURA_EN,
   VIABILIDADE_EN,
   atoNormativoEn,
@@ -1942,7 +1943,7 @@ export function linhasCamadas(g: Pick<ExpansaoGold, "cenarios">, idioma: Idioma 
     fora_do_siga_dez2035: c.pde_anexo_i3?.parcela_fora_do_siga?.dez2035_gw ?? null,
     realizado: c.realizado_siga_gw,
     carteira: c.carteira_ralie_gw,
-    tipos_siga: c.siga_tipos ? c.siga_tipos.join(", ") : null,
+    tipos_siga: c.siga_tipos ? c.siga_tipos.map((t) => rotuloDado(t, SIGA_TIPO_EN, idioma)).join(", ") : null,
   }));
 }
 export type LinhaCamada = ReturnType<typeof linhasCamadas>[number];

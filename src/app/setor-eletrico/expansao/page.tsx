@@ -21,9 +21,9 @@ import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvi
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, datasLegiveis } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { tx } from "@/lib/energia/idioma";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { DOWNLOAD_EXPANSAO_TRANSICAO_EN, downloadsNoIdioma, mesPorExtensoEn } from "@/lib/energia/i18n/expansao-transicao-territorio";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
-import { mesPorExtensoEn } from "@/lib/energia/i18n/expansao-transicao-territorio";
 import {
   notaEtapas,
   perguntaCapacidade,
@@ -501,7 +501,7 @@ export default function ExpansaoPage() {
                   <SeguirPainel
                     ancora="chegando"
                     proximo={{ href: rotaPainel("p040"), pergunta: painel("p040").pergunta }}
-                    downloads={g.downloads}
+                    downloads={downloadsNoIdioma(g.downloads, DOWNLOAD_EXPANSAO_TRANSICAO_EN, idiomaEnergia())}
                     extra={
                       <p className="max-w-prose2 pb-1 text-xs text-carvao-muted">
                         {tx(

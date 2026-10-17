@@ -1,4 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
+import { Nome } from "@/components/i18n/Nome";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -357,7 +358,7 @@ export default function CenariosPage() {
                           <a href={c.caderno_de_dados} className="break-all text-energia-dark underline underline-offset-4">
                             ZIP file
                           </a>{" "}
-                          (sha256 <span className="break-all">{c.vintage.sha256 ?? "no data"}</span>).
+                          (sha256 <span className="break-all">{c.vintage.sha256 ? <Nome>{c.vintage.sha256}</Nome> : "no data"}</span>).
                         </>,
                       )}
                     </ExpansaoNota>

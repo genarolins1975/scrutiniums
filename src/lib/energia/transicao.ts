@@ -484,7 +484,7 @@ function situacaoAno(a: Pick<MmgdAno, "parcial" | "cobertura_declarada">, dataCa
 /** Conexões por ano (Brasil) e estoque ao fim de cada ano, como publicados; o rótulo marca ano parcial e cobertura. */
 export function linhasAnual(m: Pick<BlocoMmgd, "anual" | "data_cadastro">, idioma: Idioma = idiomaEnergia()): LinhaAnual[] {
   return m.anual.map((a) => {
-    const marca = a.parcial ? tx(" (parcial)", " (partial)", idioma) : a.cobertura_declarada ? tx(" (fora da cobertura)", " (outside coverage)", idioma) : "";
+    const marca = a.parcial ? tx(" (parcial)", " (partial)", idioma) : a.cobertura_declarada ? tx(" (fora da cobertura)", " (not covered)", idioma) : "";
     return {
       id: String(a.ano),
       ano: a.ano,

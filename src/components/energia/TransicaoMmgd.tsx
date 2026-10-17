@@ -377,7 +377,7 @@ export function TransicaoMmgdPerfil({ perfis, anoReferencia }: { perfis: BlocoMm
                   {l.rotulo}
                   {l.rotulo !== l.id && (
                     <span data-nivel="analisar" className="ml-1 text-carvao-muted">
-                      ({l.id})
+                      (<Nome>{l.id}</Nome>)
                     </span>
                   )}
                 </th>

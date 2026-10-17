@@ -133,7 +133,7 @@ export const NOTA_TRANSICAO_EN: Readonly<Record<string, string>> = {
   "Unidades em UF onde a distribuidora (CNPJ) não tem conjunto elétrico ficam no município publicado, sinalizadas e contadas, sem correção, em duas classes pelo CEP publicado: provável município errado (CEP na área da distribuidora) e provável distribuidora errada (CEP, código e UF na UF do município), além das indeterminadas.":
     "Units in a state where the distribution utility (CNPJ) has no consumer set stay in the published municipality, flagged and counted, without correction, in two classes by the published postal code (CEP): probable wrong municipality (CEP in the utility's area) and probable wrong utility (CEP, code and state in the municipality's state), plus the undetermined ones.",
   "Potência ausente não vira zero: a unidade conta, a soma de kW é das potências informadas, unidades_sem_potencia marca a soma parcial e potência nula marca agregado sem nenhuma potência.":
-    "Missing capacity does not become zero: the unit counts, the kW sum is of the reported capacities, unidades_sem_potencia marks the partial sum and null capacity marks an aggregate with no capacity at all.", // i18n: dado
+    "Missing capacity does not become zero: the unit counts, the kW sum is of the reported capacities, the count of units without capacity marks the partial sum and null capacity marks an aggregate with no capacity at all.", // i18n: dado
   "Fator médio (inventários) e fatores de margem (MDL) são séries separadas e não se substituem.":
     "The average factor (inventories) and the margin factors (CDM) are separate series and do not replace each other.",
   "Os fatores do MCTI são de CO2, em tCO2/MWh; não são CO2 equivalente.": "The MCTI factors are for CO2, in tCO2/MWh; they are not CO2 equivalent.",
@@ -199,6 +199,7 @@ export const SERIE_MCTI_EN: Readonly<Record<string, string>> = {
 export const RESULTADO_CONTROLE_EN: Readonly<Record<string, string>> = {
   aprovada: "passed",
   aprovado: "passed",
+  ressalva: "caveat", // i18n: dado
   reprovada: "failed",
   reprovado: "failed",
 };
@@ -514,7 +515,7 @@ export const DESCRICAO_CAMADA_EN: Readonly<Record<string, string>> = {
   "Municípios inteiros agrupados pela relação oficial; município com mais de uma distribuidora tem marca própria.":
     "Whole municipalities grouped by the official list; a municipality with more than one distribution utility has its own mark.",
   "Indicadores publicados por município (MMGD, Tarifa Social, Luz para Todos, usinas declaradas só no município, localidades isoladas).":
-    "Indicators published by municipality (MMGD, Social Tariff, Luz para Todos, plants declared only in the municipality, isolated localities).",
+    "Indicators published by municipality (MMGD, Social Tariff, Light for All, plants declared only in the municipality, isolated localities).", // i18n: dado
   "Pontos do SIGA na mesma grade da malha. A coordenada é aproximada (centróide do empreendimento).":
     "SIGA points on the same grid as the map. The coordinate is approximate (centroid of the project).",
 };
@@ -540,4 +541,154 @@ export const REGRA_COMPATIBILIDADE_EN: Readonly<Record<string, string>> = {
     "Does not apply: a plant's submarket depends on its grid connection point, which SIGA does not publish; the plant's state or municipality does not decide it.",
   "Não se aplica: usina de geração centralizada não é atendida pela distribuidora do município em que está.":
     "Does not apply: a centralized generation plant is not served by the distribution utility of the municipality where it is located.",
+};
+/** Pergunta do painel P002 (pergunta da gold). */
+export const PERGUNTA_TERRITORIO_EN: Readonly<Record<string, string>> = {
+  "O que acontece na minha região?": "What is happening in my region?",
+};
+/** Grão territorial pelo id da gold (tabela de compatibilidade). */
+export const ID_GRAO_EN: Readonly<Record<string, string>> = {
+  submercado: "submarket",
+  uf: "state",
+  distribuidora: "distribution utility",
+  conjunto: "consumer set",
+  municipio: "municipality",
+  usina: "plant",
+};
+/** Indicador do catálogo territorial (indicadores[].rotulo da gold). */
+export const INDICADOR_TERRITORIO_EN: Readonly<Record<string, string>> = {
+  "PLD médio do dia": "Average PLD of the day",
+  "PLD médio do mês": "Average PLD of the month",
+  "Energia armazenada (EAR)": "Stored energy (EAR)",
+  "Carga atendida por MMGD (estimativa do ONS)": "Load served by MMGD (ONS estimate)",
+  "Capacidade instalada em operação (UF principal da usina)": "Installed capacity in operation (plant's main state)",
+  "Faturas com Tarifa Social": "Bills with the Social Tariff",
+  "Localidades em sistema isolado": "Localities in an isolated system",
+  "Perdas totais sobre a energia injetada": "Total losses over injected energy", // i18n: dado
+  "DEC apurado da distribuidora": "Measured DEC of the distribution utility",
+  "FEC apurado da distribuidora": "Measured FEC of the distribution utility",
+  "Tarifa residencial B1 vigente (TE + TUSD, sem tributos)": "Residential B1 tariff in force (TE + TUSD, before taxes)",
+  "MMGD cadastrada na distribuidora": "MMGD registered with the distribution utility",
+  "Unidades com Tarifa Social na distribuidora": "Units with the Social Tariff in the distribution utility",
+  "DEC anual do conjunto elétrico": "Annual DEC of the consumer set",
+  "FEC anual do conjunto elétrico": "Annual FEC of the consumer set",
+  "População estimada": "Estimated population",
+  "Unidades de MMGD cadastradas": "Registered MMGD units",
+  "Potência de MMGD cadastrada": "Registered MMGD capacity",
+  "Potência de MMGD por habitante": "MMGD capacity per inhabitant",
+  "Desconto da Tarifa Social": "Social Tariff discount",
+  "Faturas com Tarifa Social por família de baixa renda no Cadastro Único (proxy)": "Bills with the Social Tariff per low-income family in the Single Registry (proxy)", // i18n: dado
+  "Domicílios atendidos pelo Luz para Todos": "Households served by Light for All", // i18n: dado
+  "Usinas em operação declaradas só neste município (sem os registros de até 10 kW)":
+    "Plants in operation declared only in this municipality (without the registrations of up to 10 kW)",
+  "Registros do SIGA de até 10 kW em operação declarados só neste município": "SIGA registrations of up to 10 kW in operation declared only in this municipality",
+  "Localidades atendidas por sistema isolado": "Localities served by an isolated system",
+  "Potência da usina": "Plant capacity",
+};
+/** Unidade do catálogo territorial (indicadores[].unidade da gold). */
+export const UNIDADE_TERRITORIO_EN: Readonly<Record<string, string>> = {
+  "domicílios": "households",
+  "R$ no mês": "R$ in the month",
+  kW: "kW",
+  "faturas no mês": "bills in the month",
+  "horas por unidade consumidora no ano": "hours per consumer unit in the year",
+  "registros; kW fiscalizados": "registrations; inspected kW",
+  "interrupções por unidade consumidora no ano": "interruptions per consumer unit in the year",
+  "W por habitante": "W per inhabitant",
+  MWmed: "MWavg",
+  "localidades; habitantes": "localities; inhabitants",
+  "R$/MWh": "R$/MWh",
+  "unidades consumidoras; % das residenciais": "consumer units; % of residential",
+  habitantes: "inhabitants",
+  "usinas; MW fiscalizados": "plants; inspected MW",
+  unidades: "units", // i18n: dado
+  "unidades; MW": "units; MW",
+  MW: "MW",
+  "% da EAR máxima": "% of maximum EAR",
+  "%": "%",
+};
+/** Módulo de origem de um indicador (indicadores[].pagina.rotulo da gold). */
+export const MODULO_TERRITORIO_EN: Readonly<Record<string, string>> = {
+  "Água e clima": "Water and climate",
+  "Expansão": "Expansion",
+  "Qualidade do serviço": "Service quality",
+  "Conta de luz": "Electricity bill",
+  "Inclusão energética": "Energy inclusion",
+  "Transição e ambiente": "Transition and environment",
+  PLD: "PLD",
+  Perdas: "Losses",
+};
+/** Condição de uma correspondência entre grãos (compatibilidade[].condicao da gold, como publicada). */
+export const CONDICAO_COMPATIBILIDADE_EN: Readonly<Record<string, string>> = {
+  "vínculo com estado 1 (confirmado) ou 2 (só pelo cadastro de MMGD); estado 0 aparece com ressalva":
+    "confirmed link or only through the MMGD register; the unconfirmed link appears with a caveat",
+  "estado 'provado' ou 'provado_com_area_sem_carga'; com 'com_localidade_isolada' a seleção leva ao submercado da UF com aviso de que localidades do município estão fora do SIN; com 'fora_do_sin' a seleção não passa (submercado nulo, não se aplica)":
+    "state's submarket checked (by all areas or by one of them); with an isolated locality, the selection leads to the state's submarket with a warning that localities of the municipality are outside the SIN; outside the SIN, the selection does not carry over (null submarket, does not apply)",
+  "só quando todos os municípios de vínculo válido no SIN estão em UFs com pertença provada; com parte_fora_do_sin, a seleção leva ao submercado com aviso de que municípios da área estão fora do SIN":
+    "only when all validly linked municipalities in the SIN are in states with checked membership; with part of the area outside the SIN, the selection leads to the submarket with a warning that municipalities in the area are outside the SIN",
+};
+/** Rótulo dos arquivos para baixar do painel P002 (downloads[].rotulo da gold). */
+export const DOWNLOAD_TERRITORIO_EN: Readonly<Record<string, string>> = {
+  "Índice territorial por município (CSV)": "Territorial index by municipality (CSV)",
+  "Distribuidoras: área e indicadores da distribuidora inteira (CSV)": "Distribution utilities: area and indicators for the whole utility (CSV)",
+  "Conjuntos elétricos que atendem cada município (CSV)": "Consumer sets serving each municipality (CSV)",
+  "Usinas do SIGA com municípios declarados e conferência da coordenada (CSV)": "SIGA plants with declared municipalities and coordinate check (CSV)",
+  "Conferência das áreas de carga do ONS (CSV)": "Check of the ONS load areas (CSV)",
+  "Alternativas de pertença das áreas de carga testadas, com as duas estatísticas (CSV)": "Membership alternatives tested for the load areas, with both statistics (CSV)",
+};
+/** Rótulo dos arquivos para baixar da Expansão e da Transição (downloads[].rotulo das golds). */
+export const DOWNLOAD_EXPANSAO_TRANSICAO_EN: Readonly<Record<string, string>> = {
+  "Usinas do SIGA com estágio, potência e coordenadas (CSV)": "SIGA plants with stage, capacity and coordinates (CSV)",
+  "Pontos das usinas para mapa (JSON)": "Plant points for the map (JSON)",
+  "Capacidade em operação por UF, tipo e origem (CSV)": "Capacity in operation by state, type and origin (CSV)",
+  "Carteira do RALIE por usina (CSV)": "RALIE portfolio by plant (CSV)",
+  "Unidades geradoras do RALIE com previsão (CSV)": "RALIE generating units with a forecast (CSV)",
+  "Trajetória e desfecho das usinas do RALIE desde 2021 (CSV)": "Trajectory and outcome of RALIE plants since 2021 (CSV)",
+  "Confiabilidade das previsões por fotografia (CSV)": "Reliability of the forecasts by snapshot (CSV)",
+  "Liberações comerciais e desvio em relação ao prazo outorgado vigente, por ano e tipo (CSV)":
+    "Releases for commercial operation and deviation from the current granted deadline, by year and type (CSV)",
+  "Atos de revogação e extinção de outorga (CSV)": "Grant revocation and extinction acts (CSV)",
+  "Leilões de transmissão por lote (CSV)": "Transmission auctions by lot (CSV)",
+  "Empreendimentos de transmissão do SIGET (CSV)": "SIGET transmission projects (CSV)",
+  "Contratos de concessão de transmissão por data de assinatura (CSV)": "Transmission concession contracts by signature date (CSV)",
+  "Linhas de transmissão existentes e planejadas do WebMap da EPE (JSON)": "Existing and planned transmission lines from the EPE WebMap (JSON)",
+  "PDE 2035: figuras usadas (CSV)": "PDE 2035: figures used (CSV)",
+  "MMGD por município, ano e fonte (CSV)": "MMGD by municipality, year and source (CSV)",
+  "MMGD por município, com população (CSV)": "MMGD by municipality, with population (CSV)",
+  "MMGD por UF, mês e fonte (CSV)": "MMGD by state, month and source (CSV)",
+  "MMGD por distribuidora, UF e ano (CSV)": "MMGD by distribution utility, state and year (CSV)",
+  "MMGD por classe, modalidade, porte e fonte (CSV)": "MMGD by class, modality, size and source (CSV)",
+  "MMGD estimada pelo ONS, diária (CSV)": "MMGD estimated by the ONS, daily (CSV)",
+  "MMGD estimada pelo ONS, mensal (CSV)": "MMGD estimated by the ONS, monthly (CSV)",
+  "Fatores de emissão do MCTI (CSV)": "MCTI emission factors (CSV)",
+  "Margem de operação diária do MCTI (CSV)": "MCTI daily operating margin (CSV)",
+};
+/** Arquivos para baixar com o rótulo no idioma (tabela exata; sem entrada, o rótulo publicado). */
+export function downloadsNoIdioma<D extends { rotulo: string }>(ds: readonly D[], tabela: Readonly<Record<string, string>>, idioma: Idioma): D[] {
+  return idioma === "en" ? ds.map((d) => ({ ...d, rotulo: tabela[d.rotulo] ?? d.rotulo })) : [...ds];
+}
+/** Módulo do observatório pelo id (insumos e relatórios internos do Território). */
+export const MODULO_ID_EN: Readonly<Record<string, string>> = {
+  agua: "Water and climate",
+  carga: "Load",
+  conta: "Electricity bill",
+  expansao: "Expansion",
+  geo: "Geography",
+  inclusao: "Energy inclusion",
+  perdas: "Losses",
+  pld: "PLD",
+  qualidade: "Service quality",
+  transicao: "Transition and environment",
+};
+/** Seção de relatório interno citada como evidência de bloqueio. */
+export const SECAO_RELATORIO_EN: Readonly<Record<string, string>> = {
+  "seção de bloqueios": "section on blocked items",
+};
+/** Conjunto de dados da fonte citado em título de tabela do Território. */
+export const CONJUNTO_TERRITORIO_EN: Readonly<Record<string, string>> = {
+  "Carga de Energia Verificada (API por área de carga)": "Verified Energy Load (API by load area)",
+};
+/** Tipo do SIGA como a correspondência do PDE o publica (siga_tipos da gold). */
+export const SIGA_TIPO_EN: Readonly<Record<string, string>> = {
+  "UTE de origem Biomassa": "UTE of biomass origin",
 };

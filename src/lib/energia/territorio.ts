@@ -30,7 +30,9 @@ import {
   DESCRICAO_CAMADA_EN,
   GRAO_NO_MUNICIPIO_EN,
   GRAO_TERRITORIO_EN,
+  MODULO_ID_EN,
   OUTORGA_SIGA_EN,
+  SECAO_RELATORIO_EN,
   REGRA_COMPATIBILIDADE_EN,
   rotuloDado,
 } from "./i18n/expansao-transicao-territorio";
@@ -378,6 +380,16 @@ export function usinasDaUf(usinas: readonly Pick<UsinaT, "uf" | "estagio" | "reg
  * Usinas em operação declaradas em municípios de mais de uma UF: entram inteiras na UF principal, sem repartir a potência. O texto cita as
  * duas maiores. O código IBGE do município começa pelo código da UF; `ufPorCodigo` traduz esse código na sigla.
  */
+/** Nomes das usinas que a nota multiestadual cita (as duas maiores), para a página inglesa marcá-los como nome próprio. */
+export function nomesMultiestadual(usinas: readonly UsinaT[], ufPorCodigo: ReadonlyMap<string, string>): string[] {
+  return usinas
+    .filter((u) => u.estagio === "operacao" && !u.registro_ate_10kw)
+    .filter((u) => new Set(u.municipios.map((m) => ufPorCodigo.get(m.slice(0, 2))).filter(Boolean)).size > 1)
+    .sort((a, b) => (b.mw_fiscalizado ?? 0) - (a.mw_fiscalizado ?? 0))
+    .slice(0, 2)
+    .map((u) => u.nome);
+}
+
 export function notaMultiestadual(usinas: readonly UsinaT[], ufPorCodigo: ReadonlyMap<string, string>, idioma: Idioma = idiomaEnergia()): string | null {
   const multi = usinas
     .filter((u) => u.estagio === "operacao" && !u.registro_ate_10kw)
@@ -881,6 +893,8 @@ export type DadosExplorador = {
   limiteRegistroKw: number;
   /** Usinas declaradas em mais de uma UF, que entram inteiras na UF principal; null sem o arquivo de usinas. */
   notaMultiestadual: string | null;
+  /** Nomes de usina citados na nota multiestadual (nome próprio na página inglesa). */
+  nomesMultiestadual: string[];
   estadosVinculo: Record<string, string>;
   /** Municípios por estado do submercado (resumo da gold), para a legenda antes de o índice chegar. */
   estadosMunicipio: Partial<Record<EstadoSubmercadoMunicipio, number>>;
@@ -912,6 +926,7 @@ export function dadosExplorador(
   const fontes: Partial<Record<ChaveFonte, FonteCurta>> = {};
   const porUf = usinas ? usinasDaUf(usinas) : null;
   const vazia: UsinasDaUf = { usinas: 0, registros: 0, um_municipio: 0, multimunicipio: 0, sem_municipio: 0 };
+  const ufPorCodigo = new Map(g.ufs.filter((u) => u.codigo).map((u) => [String(u.codigo), u.uf]));
   for (const k of CHAVES_FONTE) {
     const f = fonteCurta(g.proveniencia[k], idioma);
     if (f) fontes[k] = f;
@@ -932,7 +947,8 @@ export function dadosExplorador(
     fontes,
     arquivos: { municipios: g.series.municipios, usinas: g.series.usinas, geoUf: g.geometria.uf, geoMunicipios: g.geometria.municipios },
     limiteRegistroKw: g.resumo.usinas.limite_registro_kw,
-    notaMultiestadual: usinas ? notaMultiestadual(usinas, new Map(g.ufs.filter((u) => u.codigo).map((u) => [String(u.codigo), u.uf])), idioma) : null,
+    notaMultiestadual: usinas ? notaMultiestadual(usinas, ufPorCodigo, idioma) : null,
+    nomesMultiestadual: usinas ? nomesMultiestadual(usinas, ufPorCodigo) : [],
     estadosVinculo: { 0: rotulosVinculo(idioma)[0], 1: rotulosVinculo(idioma)[1], 2: rotulosVinculo(idioma)[2] },
     estadosMunicipio: g.resumo.municipios_por_estado_submercado,
     versao: g.data_referencia,
@@ -1090,18 +1106,18 @@ export function medidas(idioma: Idioma = idiomaEnergia()): Record<MedidaMunicipi
       nota: absoluto,
     },
     tsee_proxy_pct: {
-      rotulo: tx("Tarifa Social por família do CadÚnico (proxy)", "Social Tariff per CadÚnico family (proxy)", idioma),
+      rotulo: tx("Tarifa Social por família do CadÚnico (proxy)", "Social Tariff per CadUnico family (proxy)", idioma),
       indicador: "mun_tsee_proxy",
       unidade: "%",
       casas: 1,
       nota: tx(
         "Proxy, não cobertura: faturas com desconto divididas por famílias de baixa renda do Cadastro Único. Município com menos de 50 famílias no denominador tem razão instável (coluna própria na tabela).",
-        "Proxy, not coverage: discounted bills divided by low-income families in the Cadastro Único (CadÚnico). A municipality with fewer than 50 families in the denominator has an unstable ratio (own column in the table).",
+        "Proxy, not coverage: discounted bills divided by low-income families in the Single Registry (CadUnico). A municipality with fewer than 50 families in the denominator has an unstable ratio (own column in the table).",
         idioma,
       ),
     },
     lpt_dom: {
-      rotulo: tx("Luz para Todos (domicílios)", "Luz para Todos (households)", idioma),
+      rotulo: tx("Luz para Todos (domicílios)", "Light for All (households)", idioma),
       indicador: "mun_lpt",
       unidade: tx("domicílios", "households", idioma),
       casas: 0,
@@ -1845,9 +1861,9 @@ export function colunasMunicipios(med: MedidaMunicipio | null, idioma: Idioma = 
       unidade: tx("R$ líquidos", "net R$", idioma),
       casas: 2,
     },
-    { id: "tsee_proxy_pct", rotulo: tx("Tarifa Social por família do CadÚnico (proxy)", "Social Tariff per CadÚnico family (proxy)", idioma), tipo: "percentual", casas: 1 },
-    { id: "tsee_base_pequena", rotulo: tx("Menos de 50 famílias no CadÚnico", "Fewer than 50 families in CadÚnico", idioma), tipo: "texto", categorica: true },
-    { id: "lpt_dom", rotulo: tx("Luz para Todos", "Luz para Todos", idioma), tipo: "numero", unidade: tx("domicílios", "households", idioma), casas: 0 },
+    { id: "tsee_proxy_pct", rotulo: tx("Tarifa Social por família do CadÚnico (proxy)", "Social Tariff per CadUnico family (proxy)", idioma), tipo: "percentual", casas: 1 },
+    { id: "tsee_base_pequena", rotulo: tx("Menos de 50 famílias no CadÚnico", "Fewer than 50 families in CadUnico", idioma), tipo: "texto", categorica: true },
+    { id: "lpt_dom", rotulo: tx("Luz para Todos", "Light for All", idioma), tipo: "numero", unidade: tx("domicílios", "households", idioma), casas: 0 },
     { id: "usi_op_n", rotulo: tx("Usinas em operação só no município", "Plants in operation only in the municipality", idioma), tipo: "numero", casas: 0 },
     { id: "usi_op_mw", rotulo: tx("Potência em operação", "Capacity in operation", idioma), tipo: "numero", unidade: "MW", casas: 3 },
     { id: "usi_cart_n", rotulo: tx("Usinas a construir só no município", "Plants to be built only in the municipality", idioma), tipo: "numero", casas: 0 },
@@ -2085,9 +2101,10 @@ export function evidenciaLegivel(evidencia: string, idioma: Idioma = idiomaEnerg
   }
   const rel = /^docs\/observatorios\/energia\/modulos\/(\w+)\.md, (.+)$/.exec(evidencia);
   if (rel) {
-    const modulo = `${rel[1].charAt(0).toUpperCase()}${rel[1].slice(1)}`;
+    const modulo = idioma === "en" ? (MODULO_ID_EN[rel[1]] ?? rel[1]) : `${rel[1].charAt(0).toUpperCase()}${rel[1].slice(1)}`;
+    const secao = idioma === "en" ? (SECAO_RELATORIO_EN[rel[2]] ?? rel[2]) : rel[2];
     return {
-      texto: tx(`relatório interno do módulo ${modulo}, ${rel[2]} (não publicado no site)`, `internal report of the ${modulo} module, ${rel[2]} (not published on the site)`, idioma),
+      texto: tx(`relatório interno do módulo ${modulo}, ${secao} (não publicado no site)`, `internal report of the ${modulo} module, ${secao} (not published on the site)`, idioma),
       href: null,
     };
   }

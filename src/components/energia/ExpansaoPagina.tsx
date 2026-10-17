@@ -13,7 +13,8 @@ import { datasLegiveis, num } from "@/lib/energia/formato";
 import type { Download, Natureza } from "@/lib/energia/tipos";
 import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
-import { tx } from "@/lib/energia/idioma";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { DOWNLOAD_EXPANSAO_TRANSICAO_EN, downloadsNoIdioma } from "@/lib/energia/i18n/expansao-transicao-territorio";
 
 /**
  * Peças de servidor das páginas da Expansão da oferta e da rede (a abertura em
@@ -171,7 +172,13 @@ export function ExpansaoDatas({ itens }: { itens: { rotulo: string; texto: strin
 /** Rodapé do painel: downloads, link compartilhável e a próxima pergunta, numa linha (SeguirPainel). */
 export function ExpansaoSeguir({ id, downloads }: { id: PainelExpansao; downloads: Download[] }) {
   const prox = painel(proximoPainel(id));
-  return <SeguirPainel ancora={id} proximo={{ href: rotaPainel(prox.id), pergunta: prox.pergunta }} downloads={downloads} />;
+  return (
+    <SeguirPainel
+      ancora={id}
+      proximo={{ href: rotaPainel(prox.id), pergunta: prox.pergunta }}
+      downloads={downloadsNoIdioma(downloads, DOWNLOAD_EXPANSAO_TRANSICAO_EN, idiomaEnergia())}
+    />
+  );
 }
 
 /** Seção de Analisar: tabelas completas, séries detalhadas e comparações; continua no HTML do servidor. */
