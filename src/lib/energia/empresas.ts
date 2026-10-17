@@ -59,7 +59,7 @@ import type { Download } from "./tipos";
 import { campo, tiposUrl, type Leitor } from "./estadoUrl";
 import { dataBR, num, pct } from "./formato";
 import { idiomaEnergia, tx } from "./idioma";
-import { SIGLAS } from "./siglas";
+import { SIGLAS, SIGLAS_IDIOMAS } from "./siglas";
 import { LIMITE_COMPARACAO, type ColunaTabela, type EntidadeBuscavel, type LinhaTabela } from "./tabela";
 import {
   CONTA_CVM_EN,
@@ -322,7 +322,7 @@ export function respostaCadastro(c: Cadastro, idioma: Idioma = idiomaEnergia()):
     partes.push(
       tx(
         `Os ativos de transmissão não estão nesta publicação: os dados do SIGET (${SIGLAS.SIGET}) não foram integrados.`,
-        "Transmission assets are not in this release: SIGET (Transmission Management System) data have not been integrated.",
+        `Transmission assets are not in this release: SIGET (${SIGLAS_IDIOMAS.en.SIGET}) data have not been integrated.`,
         idioma,
       ),
     );
@@ -1394,7 +1394,7 @@ export function respostaFicha(d: Distribuidora, idioma: Idioma = idiomaEnergia()
       partes.push(
         tx(
           `Em ${p.ano}, a ${d.sigla} registrou perda total negativa, de ${pct(p.taxa_total_pct, 2, idioma)} da energia injetada na rede${incompleto}. Valor negativo quer dizer que a medida publicada pelo SAMP é negativa; o observatório mostra o valor como a fonte o entrega, sem corrigi-lo e sem explicar a causa.`,
-          `In ${p.ano}, ${d.sigla} recorded negative total losses, of ${pct(p.taxa_total_pct, 2, idioma)} of the energy injected into the grid${incompleto}. A negative value means the measure published by SAMP is negative; the observatory shows the value as the source delivers it, without correcting it or explaining the cause.`,
+          `In ${p.ano}, ${d.sigla} recorded negative total losses, of ${pct(p.taxa_total_pct, 2, idioma)} of the energy injected into the grid${incompleto}. A negative value means the measure published by SAMP is negative; the observatory shows the value as the source delivers it, without correcting it or stating a reason.`,
           idioma,
         ),
       );
@@ -3178,7 +3178,7 @@ export function passosVinculo(g: Pick<EmpresasGold, "cadastro" | "controle" | "d
       titulo: tx("Ativo", "Asset", idioma),
       liga: tx(
         `pelo CEG (${SIGLAS.CEG}) da usina e pelo módulo de transmissão do SIGET (${SIGLAS.SIGET}), com o CNPJ do contrato`,
-        "by the plant's CEG (Unique Code of Generation Projects) and by the SIGET (Transmission Management System) transmission module, with the contract's CNPJ",
+        `by the plant's CEG (${SIGLAS_IDIOMAS.en.CEG}) and by the SIGET (${SIGLAS_IDIOMAS.en.SIGET}) transmission module, with the contract's CNPJ`,
         idioma,
       ),
       contagem: tx(

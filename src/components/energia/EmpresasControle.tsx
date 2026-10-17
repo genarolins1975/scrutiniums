@@ -7,7 +7,7 @@ import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { COLUNAS_GRUPOS, COR_MEDIDA, ESQUEMA_CONTROLE, ROTULO_MOTIVO, arvoreDe, carregarJson, cnpjFormatado, entidadesCadeia, inteiro, type ArvoreSocietaria } from "@/lib/energia/empresas";
-import { SIGLAS } from "@/lib/energia/siglas";
+import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import { buscarEntidades, type EntidadeBuscavel, type LinhaTabela } from "@/lib/energia/tabela";
 import type { CadeiaSocietaria } from "@/lib/energia/tipos-empresas";
 import { MOTIVO_PARADA_GOLD_EN, temTraducao, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
@@ -97,7 +97,7 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
             {I(linhasGrupos.length)}, e a lista inteira está no{" "}
           </>,
           <>
-            The chart shows {I(barras.length)} of the {I(linhasGrupos.length)} largest controlling groups{totalGrupos ? `, out of ${I(totalGrupos)} groups in the database` : ""}; each group is identified by the CNPJ (national registry of legal entities) of whoever is at the top of the declared chain. The table below lists the{" "}
+            The chart shows {I(barras.length)} of the {I(linhasGrupos.length)} largest controlling groups{totalGrupos ? `, out of ${I(totalGrupos)} groups in the database` : ""}; each group is identified by the CNPJ ({SIGLAS_IDIOMAS.en.CNPJ}) of whoever is at the top of the declared chain. The table below lists the{" "}
             {I(linhasGrupos.length)}, and the full list is in the{" "}
           </>,
         )}

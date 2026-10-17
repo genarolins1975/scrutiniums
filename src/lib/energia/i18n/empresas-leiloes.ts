@@ -51,7 +51,7 @@ export const REGIME_EN: Tabela = {
 /** Notas curtas da gold de Empresas. */
 export const NOTA_EMPRESAS_EN: Tabela = {
   "CNPJ diferente nas duas fontes; causa não verificada (troca de proprietário entre as datas dos arquivos ou divergência de cadastro): cada fonte tem uma única captura.":
-    "Different CNPJ in the two sources; cause not verified (change of owner between the file dates or a registry discrepancy): each source has a single capture.",
+    "Different CNPJ in the two sources; reason not verified (change of owner between the file dates or a registry discrepancy): each source has a single capture.",
   "Cobertura das companhias abertas; não é o setor inteiro.": "Coverage of publicly held companies; not the whole sector.",
   "usinas de todas as fases do SIGA (operação, construção e construção não iniciada)": "plants in all SIGA phases (operation, construction and construction not started)",
 };
@@ -285,7 +285,7 @@ export const DEFINICAO_LISTADAS_EN: Tabela = {
   "Papéis da carteira do dia do Índice de Energia Elétrica (IEE) da B3, ligados à companhia pelo código CVM publicado pela B3 e conferido no código de negociação declarado no FCA da CVM.":
     "Stocks in the day's portfolio of the B3 Electric Power Index (IEE), linked to the company by the CVM code published by B3 and checked against the ticker declared in the company's CVM registration form (FCA).",
   "O IEE é uma carteira teórica da B3 revista a cada quatro meses: entra e sai papel. Companhias de energia listadas fora do índice (por liquidez ou critério da B3) não estão neste painel.":
-    "The IEE is a B3 theoretical portfolio reviewed every four months: stocks enter and leave. Listed power companies outside the index (because of liquidity or B3 criteria) are not in this panel.",
+    "The IEE is a B3 theoretical portfolio reviewed every four months: stocks enter and leave. Listed power companies outside the index (on liquidity or B3 criteria) are not in this panel.",
   "Empresa sob controle da companhia listada: a cadeia de controladores únicos declarada à ANEEL (Composição Societária, Polímero) que sobe a partir dela passa pela companhia. Inclui a própria companhia. Controle compartilhado interrompe a cadeia: a SPE em que a companhia divide o controle com outro sócio não entra.":
     // i18n: dado (inglês com o nome próprio da base, Composição Societária)
     "Company under the listed company's control: the chain of single controlling shareholders declared to ANEEL (Composição Societária, Polímero) that rises from it passes through the listed company. It includes the company itself. Shared control breaks the chain: an SPV in which the company shares control with another shareholder is not included.",

@@ -8,7 +8,7 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { PAINEIS_EMPRESAS, ROTA_EMPRESAS, painel, rotaPainel, type PainelEmpresas, type PassoVinculo } from "@/lib/energia/empresas";
 import { tx } from "@/lib/energia/idioma";
-import { SIGLAS } from "@/lib/energia/siglas";
+import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import type { Natureza } from "@/lib/energia/tipos";
 
 /**
@@ -260,7 +260,7 @@ export function EmpresasComoLer({ partes = ["perdas", "continuidade", "tarifa"] 
       <p className="rotulo text-mineral">{titulo}</p>
       {tem("perdas") && perdas && (
         <p>
-          <span className="text-carvao">{tx(`Perdas totais (SAMP, ${SIGLAS.SAMP}).`, "Total losses (SAMP, Market Information Monitoring System for Economic Regulation, from ANEEL).")}</span>{" "}
+          <span className="text-carvao">{tx(`Perdas totais (SAMP, ${SIGLAS.SAMP}).`, `Total losses (SAMP, ${SIGLAS_IDIOMAS.en.SAMP}).`)}</span>{" "}
           {perdas}{" "}
           {tx(
             "A taxa é a perda total medida, em % da energia injetada na rede da própria distribuidora.",
@@ -270,13 +270,13 @@ export function EmpresasComoLer({ partes = ["perdas", "continuidade", "tarifa"] 
       )}
       {tem("continuidade") && dec && (
         <p>
-          <span className="text-carvao">{tx(`DEC (${SIGLAS.DEC}).`, "DEC (equivalent interruption duration per consumer unit).")}</span> {dec}
+          <span className="text-carvao">{tx(`DEC (${SIGLAS.DEC}).`, `DEC (${SIGLAS_IDIOMAS.en.DEC}).`)}</span> {dec}
           {horas ? ` ${horas}` : ""}
         </p>
       )}
       {tem("continuidade") && fec && (
         <p>
-          <span className="text-carvao">{tx(`FEC (${SIGLAS.FEC}).`, "FEC (equivalent interruption frequency per consumer unit).")}</span> {fec}
+          <span className="text-carvao">{tx(`FEC (${SIGLAS.FEC}).`, `FEC (${SIGLAS_IDIOMAS.en.FEC}).`)}</span> {fec}
         </p>
       )}
       {tem("continuidade") && (
@@ -294,8 +294,7 @@ export function EmpresasComoLer({ partes = ["perdas", "continuidade", "tarifa"] 
             tributos e sem bandeira. O ato é a resolução homologatória em que a ANEEL a publica ({SIGLAS.REH}, REH).
           </p>,
           <p>
-            <span className="text-carvao">B1 tariff.</span> The residential tariff is, in the ANEEL dataset, that of subgroup B1. The value is the sum of the energy tariff (TE) and the distribution
-            system use tariff (TUSD), in R$/MWh, excluding taxes and without the tariff flag. The act is the ratifying resolution in which ANEEL publishes it (ANEEL Ratifying Resolution, REH).
+            <span className="text-carvao">B1 tariff.</span> The residential tariff is, in the ANEEL dataset, that of subgroup B1. The value is the sum of the {SIGLAS_IDIOMAS.en.TE} (TE) and the {SIGLAS_IDIOMAS.en.TUSD} (TUSD), in R$/MWh, excluding taxes and without the tariff flag. The act is the ratifying resolution in which ANEEL publishes it ({SIGLAS_IDIOMAS.en.REH}, REH).
           </p>,
         )}
     </div>

@@ -56,7 +56,7 @@ import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { tx } from "@/lib/energia/idioma";
 import { DEFINICAO_EMPRESAS_EN, DOWNLOAD_EMPRESAS_EN, REGIME_EN, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
-import { SIGLAS } from "@/lib/energia/siglas";
+import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { RalieResumo } from "@/lib/energia/empresas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
@@ -171,11 +171,11 @@ export default function PaginaP036() {
           titulo={painel("p036").pergunta}
           lead={tx(
             `Donos de usinas e de linhas de transmissão, pelo CNPJ (${SIGLAS.CNPJ}) que a ANEEL (${SIGLAS.ANEEL}) publica no registro do ativo.`,
-            "Owners of plants and transmission lines, by the CNPJ (national registry of legal entities) that ANEEL (the Brazilian electricity regulatory agency) publishes in the asset's record.",
+            `Owners of plants and transmission lines, by the CNPJ (${SIGLAS_IDIOMAS.en.CNPJ}) that ANEEL (${SIGLAS_IDIOMAS.en.ANEEL}) publishes in the asset's record.`,
           )}
           recorte={tx(
             `Usinas do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · linhas do SIGET (${SIGLAS.SIGET}) de ${dataTexto(t?.data)} · MW, km de circuito e contagens`,
-            `SIGA (ANEEL Generation Information System) plants as of ${dataSiga} · SIGET (Transmission Management System) lines as of ${dataTexto(t?.data)} · MW, circuit km and counts`,
+            `SIGA (${SIGLAS_IDIOMAS.en.SIGA}) plants as of ${dataSiga} · SIGET (${SIGLAS_IDIOMAS.en.SIGET}) lines as of ${dataTexto(t?.data)} · MW, circuit km and counts`,
           )}
           fonte={tx("ANEEL, cadastros de geração, de transmissão e de agentes", "ANEEL, generation, transmission and agent registries")}
           referencia={tx(
@@ -189,8 +189,8 @@ export default function PaginaP036() {
           datas={
             <EmpresasDatas
               itens={[
-                { rotulo: tx(`SIGA (${SIGLAS.SIGA})`, "SIGA (ANEEL Generation Information System)"), texto: tx(`até ${dataSiga}`, `up to ${dataSiga}`), natureza: "OBSERVADO" },
-                ...(t ? [{ rotulo: tx(`SIGET (${SIGLAS.SIGET})`, "SIGET (Transmission Management System)"), texto: tx(`até ${dataTexto(t.data)}`, `up to ${dataTexto(t.data)}`), natureza: "OBSERVADO" as const }] : []),
+                { rotulo: tx(`SIGA (${SIGLAS.SIGA})`, `SIGA (${SIGLAS_IDIOMAS.en.SIGA})`), texto: tx(`até ${dataSiga}`, `up to ${dataSiga}`), natureza: "OBSERVADO" },
+                ...(t ? [{ rotulo: tx(`SIGET (${SIGLAS.SIGET})`, `SIGET (${SIGLAS_IDIOMAS.en.SIGET})`), texto: tx(`até ${dataTexto(t.data)}`, `up to ${dataTexto(t.data)}`), natureza: "OBSERVADO" as const }] : []),
                 { rotulo: tx("Cadastro de agentes", "Agent registry"), texto: tx(`de ${dataTexto(c.agentes.data)}`, `as of ${dataTexto(c.agentes.data)}`), natureza: "OBSERVADO" },
                 {
                   rotulo: tx("Agentes de Geração (conferência)", "Agentes de Geração (cross-check)"),

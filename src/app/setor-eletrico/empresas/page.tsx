@@ -56,7 +56,7 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import { comValorExibido, type Evidencia } from "@/lib/energia/evidencia";
 import { tx } from "@/lib/energia/idioma";
 import { DOWNLOAD_EMPRESAS_EN, LIMITACAO_EMPRESAS_EN, traduzir, universoPerdas } from "@/lib/energia/i18n/empresas-leiloes";
-import { SIGLAS } from "@/lib/energia/siglas";
+import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import { lerManifestoLogos } from "@/lib/energia/logos";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 import type { ListadasGold } from "@/lib/energia/tipos-listadas";
@@ -333,7 +333,7 @@ export default function EmpresasPage() {
             </>,
             <>
               The page brings together who operates plants and lines, how each distribution utility serves its area, what publicly held companies report to CVM and who controls how much
-              of the installed capacity. Every link between company and asset is the CNPJ (national registry of legal entities) published by the official source in the same record; none is
+              of the installed capacity. Every link between company and asset is the CNPJ ({SIGLAS_IDIOMAS.en.CNPJ}) published by the official source in the same record; none is
               made by name similarity.
             </>,
           )}
@@ -385,7 +385,7 @@ export default function EmpresasPage() {
                       Usinas do SIGA ({SIGLAS.SIGA}) de {dataSiga}, {inteiro(a.usinas)} em todas as fases; linhas do SIGET ({SIGLAS.SIGET}) de {dataTexto(t?.data)}. Potência fiscalizada em operação, em MW.
                     </>,
                     <>
-                      SIGA (ANEEL Generation Information System) plants as of {dataSiga}, {inteiro(a.usinas)} in all phases; SIGET (Transmission Management System) lines as of {dataTexto(t?.data)}.
+                      SIGA ({SIGLAS_IDIOMAS.en.SIGA}) plants as of {dataSiga}, {inteiro(a.usinas)} in all phases; SIGET ({SIGLAS_IDIOMAS.en.SIGET}) lines as of {dataTexto(t?.data)}.
                       Inspected capacity in operation, in MW.
                     </>,
                   ),
@@ -434,8 +434,7 @@ export default function EmpresasPage() {
                       referência de cada módulo de origem, e tarifa vigente na data do arquivo de tarifas.
                     </>,
                     <>
-                      {inteiro(d.resumo.distribuidoras)} distribution utilities by CNPJ; losses for {anoPerdas ?? "no data"} (SAMP balance, Market Information Monitoring System for Economic Regulation,
-                      from ANEEL) and continuity of supply for {anoQualidade ?? "no data"}, the reference year of each source module, and the tariff in force on the date of the tariff file.
+                      {inteiro(d.resumo.distribuidoras)} distribution utilities by CNPJ; losses for {anoPerdas ?? "no data"} (SAMP balance, {SIGLAS_IDIOMAS.en.SAMP}) and continuity of supply for {anoQualidade ?? "no data"}, the reference year of each source module, and the tariff in force on the date of the tariff file.
                     </>,
                   ),
                   limite: tx(
@@ -504,8 +503,8 @@ export default function EmpresasPage() {
                       até {dataTexto(f.periodos.ultimo_trimestre)}, em R$ nominais.
                     </>,
                     <>
-                      Publicly held companies registered with CVM (Brazilian Securities and Exchange Commission): standardized financial statements (DFP) from {f.periodos.exercicios[0] ?? "no data"} to{" "}
-                      {f.periodos.ultimo_exercicio ?? "no data"} and quarterly information (ITR) up to {dataTexto(f.periodos.ultimo_trimestre)}, in nominal R$.
+                      Publicly held companies registered with CVM ({SIGLAS_IDIOMAS.en.CVM}): {SIGLAS_IDIOMAS.en.DFP} (DFP) from {f.periodos.exercicios[0] ?? "no data"} to{" "}
+                      {f.periodos.ultimo_exercicio ?? "no data"} and {SIGLAS_IDIOMAS.en.ITR} (ITR) up to {dataTexto(f.periodos.ultimo_trimestre)}, in nominal R$.
                     </>,
                   ),
                   limite: tx(
@@ -530,7 +529,7 @@ export default function EmpresasPage() {
                       unidade={tx("pontos", "points")}
                       nota={tx(
                         `${grupo ? `${inteiro(grupo.participantes)} grupos; fronteira de ${mwTexto(ct.fronteira.mw)}. ` : ""}HHI é o ${SIGLAS.HHI}, de 0 a 10.000; as faixas são as do Guia do CADE (${SIGLAS.CADE}). O período vai do primeiro trimestre de declarações considerado (${inicioJanela}) à data do SIGA.`,
-                        `${grupo ? `${inteiro(grupo.participantes)} groups; boundary of ${mwTexto(ct.fronteira.mw)}. ` : ""}HHI is the Herfindahl-Hirschman Index, from 0 to 10,000; the bands are those of the CADE Guide (CADE, Brazil's competition authority). The period runs from the first quarter of declarations considered (${inicioJanela}) to the SIGA date.`,
+                        `${grupo ? `${inteiro(grupo.participantes)} groups; boundary of ${mwTexto(ct.fronteira.mw)}. ` : ""}HHI is the ${SIGLAS_IDIOMAS.en.HHI}, from 0 to 10,000; the bands are those of the CADE Guide (${SIGLAS_IDIOMAS.en.CADE}). The period runs from the first quarter of declarations considered (${inicioJanela}) to the SIGA date.`,
                       )}
                       endereco={ancoraPainel("p039")}
                     />
