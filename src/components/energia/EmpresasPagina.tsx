@@ -7,7 +7,8 @@ import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { PAINEIS_EMPRESAS, ROTA_EMPRESAS, painel, rotaPainel, type PainelEmpresas, type PassoVinculo } from "@/lib/energia/empresas";
-import { SIGLAS } from "@/lib/energia/siglas";
+import { tx } from "@/lib/energia/idioma";
+import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
 import type { Natureza } from "@/lib/energia/tipos";
 
 /**
@@ -23,11 +24,18 @@ import type { Natureza } from "@/lib/energia/tipos";
  */
 
 /** A abertura e as quatro páginas de painel como itens da navegação local; a descrição de cada uma é a pergunta que ela responde. */
-const ITENS_EMPRESAS = [
-  { id: "sintese", href: ROTA_EMPRESAS, rotulo: "Visão geral", descricao: "Quem atua no setor elétrico?" },
-  { id: "listadas", href: `${ROTA_EMPRESAS}/listadas`, rotulo: "Listadas na bolsa", descricao: "Quem são as companhias listadas de energia elétrica?" },
-  ...PAINEIS_EMPRESAS.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta })),
-];
+function itensEmpresas() {
+  return [
+    { id: "sintese", href: ROTA_EMPRESAS, rotulo: tx("Visão geral", "Overview"), descricao: tx("Quem atua no setor elétrico?", "Who operates in the power sector?") },
+    {
+      id: "listadas",
+      href: `${ROTA_EMPRESAS}/listadas`,
+      rotulo: tx("Listadas na bolsa", "Listed on the stock exchange"),
+      descricao: tx("Quem são as companhias listadas de energia elétrica?", "Who are the listed electric power companies?"),
+    },
+    ...PAINEIS_EMPRESAS.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta })),
+  ];
+}
 
 /**
  * Faixa de páginas irmãs nas páginas filhas, com a atual marcada (na ficha de uma distribuidora, nenhuma). A abertura não leva a faixa:
@@ -35,7 +43,7 @@ const ITENS_EMPRESAS = [
  */
 export function EmpresasNavegacao({ atual }: { atual: PainelEmpresas | "sintese" | "ficha" | "listadas" }) {
   if (atual === "sintese") return null;
-  return <NavegacaoLocal rotulo="Páginas do módulo Empresas" itens={ITENS_EMPRESAS} atual={atual} />;
+  return <NavegacaoLocal rotulo={tx("Páginas do módulo Empresas", "Pages of the Companies module")} itens={itensEmpresas()} atual={atual} />;
 }
 
 export type CapituloEmpresas = {
@@ -62,8 +70,8 @@ export function EmpresasCapitulos({ itens, nivelTitulo = 2 }: { itens: CapituloE
   const Titulo = nivelTitulo === 2 ? "h2" : "h3";
   const TituloItem = nivelTitulo === 2 ? "h3" : "h4";
   return (
-    <nav aria-label="Capítulos de Empresas" data-navegacao-local="capitulos" className="scroll-mt-28 pb-6" id="caminhos">
-      <Titulo className={`${nivelTitulo === 2 ? "ed-h2" : "ed-h3"} font-serif text-carvao`}>Quatro painéis para aprofundar</Titulo>
+    <nav aria-label={tx("Capítulos de Empresas", "Companies chapters")} data-navegacao-local="capitulos" className="scroll-mt-28 pb-6" id="caminhos">
+      <Titulo className={`${nivelTitulo === 2 ? "ed-h2" : "ed-h3"} font-serif text-carvao`}>{tx("Quatro painéis para aprofundar", "Four panels to go deeper")}</Titulo>
       <ol className="mt-4 grid gap-4 md:grid-cols-2">
         {itens.map((c) => {
           const p = painel(c.id);
@@ -82,13 +90,13 @@ export function EmpresasCapitulos({ itens, nivelTitulo = 2 }: { itens: CapituloE
               {c.numero}
               <p className="text-xs leading-relaxed text-carvao-muted">{c.contexto}</p>
               <p className="text-sm leading-relaxed text-carvao-muted">
-                <span className="rotulo mr-2 text-mineral">Não permite concluir</span>
+                <span className="rotulo mr-2 text-mineral">{tx("Não permite concluir", "Does not allow concluding")}</span>
                 {c.limite}
               </p>
               {c.extra}
               <Link href={rotaPainel(c.id)} className="inline-flex min-h-[44px] items-center self-start text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
-                Abrir {p.rotulo}
-                <span className="sr-only">: gráficos, tabelas, dados e evidências</span>
+                {tx("Abrir", "Open")} {p.rotulo}
+                <span className="sr-only">{tx(": gráficos, tabelas, dados e evidências", ": charts, tables, data and evidence")}</span>
                 <span aria-hidden="true" className="ml-1.5">
                   →
                 </span>
@@ -111,7 +119,9 @@ export function EmpresasPassosVinculo({ passos }: { passos: PassoVinculo[] }) {
       <ol className="grid gap-x-0 gap-y-5 md:grid-cols-4">
         {passos.map((p, i) => (
           <li key={p.id} className={`min-w-0 md:pr-5 ${i > 0 ? "md:border-l md:border-linha md:pl-5" : ""}`}>
-            <p className="rotulo text-mineral">Elo {i + 1}</p>
+            <p className="rotulo text-mineral">
+              {tx("Elo", "Link")} {i + 1}
+            </p>
             <p className="ed-h3 mt-1 font-serif text-carvao">
               {p.titulo}
               {i < passos.length - 1 && (
@@ -120,14 +130,18 @@ export function EmpresasPassosVinculo({ passos }: { passos: PassoVinculo[] }) {
                 </span>
               )}
             </p>
-            <p className="mt-1.5 text-sm leading-relaxed text-carvao-muted">Documentado {p.liga}.</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-carvao-muted">
+              {tx("Documentado", "Documented")} {p.liga}.
+            </p>
             <p className="mt-1.5 text-sm leading-relaxed text-carvao">{p.contagem}.</p>
           </li>
         ))}
       </ol>
       <figcaption className="max-w-prose2 pt-1 text-xs leading-relaxed text-carvao-muted">
-        Cada elo usa o identificador que a própria fonte publica no mesmo registro; nenhum é feito por semelhança de nome. As contagens são de universos
-        diferentes e não se somam.
+        {tx(
+          "Cada elo usa o identificador que a própria fonte publica no mesmo registro; nenhum é feito por semelhança de nome. As contagens são de universos diferentes e não se somam.",
+          "Each link uses the identifier that the source itself publishes in the same record; none is made by name similarity. The counts are from different universes and are not added together.",
+        )}
       </figcaption>
     </figure>
   );
@@ -140,10 +154,13 @@ export function EmpresasIndisponivel({ motivo }: { motivo?: string | null }) {
       <CabecalhoEnergia atual="empresas" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
-          titulo="Empresas indisponível nesta publicação"
+          titulo={tx("Empresas indisponível nesta publicação", "Companies unavailable in this release")}
           motivo={
             motivo ??
-            "Os dados do módulo Empresas não foram gerados ou não passaram na validação desta publicação. A última publicação válida é mantida quando existe, e nenhum número de reserva é exibido."
+            tx(
+              "Os dados do módulo Empresas não foram gerados ou não passaram na validação desta publicação. A última publicação válida é mantida quando existe, e nenhum número de reserva é exibido.",
+              "The Companies module data were not generated or did not pass validation in this release. The last valid release is kept when there is one, and no fallback number is shown.",
+            )
           }
         />
       </main>
@@ -156,15 +173,15 @@ export function EmpresasRecorte({ periodo, universo, unidade }: { periodo: React
   return (
     <dl data-recorte-painel="" className="grid gap-x-6 gap-y-2 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
         <dd className="mt-0.5">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5">{unidade}</dd>
       </div>
     </dl>
@@ -174,7 +191,7 @@ export function EmpresasRecorte({ periodo, universo, unidade }: { periodo: React
 /** Datas de referência de cada fonte: cada número diz o seu dia, sem sugerir simultaneidade (bloco "Fontes, datas e siglas"). */
 export function EmpresasDatas({ itens }: { itens: { rotulo: string; texto: string; natureza: Natureza }[] }) {
   return (
-    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada fonte">
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx("Datas de referência de cada fonte", "Reference dates of each source")}>
       {itens.map((x) => (
         <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
           <span>
@@ -218,7 +235,9 @@ export function EmpresasNota({ children }: { children: ReactNode }) {
 }
 
 export type ParteComoLer = "perdas" | "continuidade" | "tarifa";
-const NOME_PARTE: Record<ParteComoLer, string> = { perdas: "perdas", continuidade: "continuidade", tarifa: "tarifa" };
+function nomeParte(x: ParteComoLer): string {
+  return x === "perdas" ? tx("perdas", "losses") : x === "continuidade" ? tx("continuidade", "continuity of supply") : tx("tarifa", "tariff");
+}
 
 /**
  * Como ler as perdas, a continuidade e a tarifa, junto dos números: a taxa de perdas, DEC e FEC com a frase que os verbetes publicam,
@@ -231,41 +250,53 @@ export function EmpresasComoLer({ partes = ["perdas", "continuidade", "tarifa"] 
   const perdas = conceito("perdas-de-energia")?.emUmaFrase;
   const dec = conceito("dec")?.emUmaFrase;
   const fec = conceito("fec")?.emUmaFrase;
-  // conversão de centésimos de hora em minutos, como o verbete do DEC a publica (sem número escrito aqui)
-  const horas = conceito("dec")?.limitacoes?.find((x) => x.startsWith("Centésimos de hora"));
-  const nomes = partes.map((x) => NOME_PARTE[x]);
-  const titulo = `Como ler ${nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}` : nomes[0]}`;
+  // conversão de centésimos de hora em minutos, como o verbete do DEC a publica (sem número escrito aqui), no idioma do verbete
+  const horas = conceito("dec")?.limitacoes?.find((x) => x.startsWith("Centésimos de hora") || x.startsWith("Hundredths of an hour"));
+  const nomes = partes.map(nomeParte);
+  const lista = nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} ${tx("e", "and")} ${nomes[nomes.length - 1]}` : nomes[0];
+  const titulo = tx(`Como ler ${lista}`, `How to read ${lista}`);
   return (
     <div className="space-y-1.5 border-l-2 border-linha pl-3 text-sm leading-relaxed text-carvao-muted" data-como-ler={partes.join(" ")}>
       <p className="rotulo text-mineral">{titulo}</p>
       {tem("perdas") && perdas && (
         <p>
-          <span className="text-carvao">Perdas totais (SAMP, {SIGLAS.SAMP}).</span> {perdas} A taxa é a perda total medida, em % da energia injetada na rede da própria distribuidora.
+          <span className="text-carvao">{tx(`Perdas totais (SAMP, ${SIGLAS.SAMP}).`, `Total losses (SAMP, ${SIGLAS_IDIOMAS.en.SAMP}).`)}</span>{" "}
+          {perdas}{" "}
+          {tx(
+            "A taxa é a perda total medida, em % da energia injetada na rede da própria distribuidora.",
+            "The rate is the measured total loss, as a % of the energy injected into the distribution utility's own grid.",
+          )}
         </p>
       )}
       {tem("continuidade") && dec && (
         <p>
-          <span className="text-carvao">DEC ({SIGLAS.DEC}).</span> {dec}
+          <span className="text-carvao">{tx(`DEC (${SIGLAS.DEC}).`, `DEC (${SIGLAS_IDIOMAS.en.DEC}).`)}</span> {dec}
           {horas ? ` ${horas}` : ""}
         </p>
       )}
       {tem("continuidade") && fec && (
         <p>
-          <span className="text-carvao">FEC ({SIGLAS.FEC}).</span> {fec}
+          <span className="text-carvao">{tx(`FEC (${SIGLAS.FEC}).`, `FEC (${SIGLAS_IDIOMAS.en.FEC}).`)}</span> {fec}
         </p>
       )}
       {tem("continuidade") && (
         <p>
-          O limite de DEC e de FEC é o que a ANEEL fixa para cada distribuidora. A diferença é o valor apurado menos o limite: diferença negativa quer dizer abaixo do limite, ou seja, dentro dele;
-          diferença positiva, acima do limite.
+          {tx(
+            "O limite de DEC e de FEC é o que a ANEEL fixa para cada distribuidora. A diferença é o valor apurado menos o limite: diferença negativa quer dizer abaixo do limite, ou seja, dentro dele; diferença positiva, acima do limite.",
+            "The DEC and FEC limit is the one ANEEL sets for each distribution utility. The difference is the measured value minus the limit: a negative difference means below the limit, that is, within it; a positive difference, above the limit.",
+          )}
         </p>
       )}
-      {tem("tarifa") && (
-        <p>
-          <span className="text-carvao">Tarifa B1.</span> A tarifa residencial é, no conjunto de dados da ANEEL, a do subgrupo B1. O valor é a soma da {SIGLAS.TE} (TE) e da {SIGLAS.TUSD} (TUSD), em R$/MWh, sem
-          tributos e sem bandeira. O ato é a resolução homologatória em que a ANEEL a publica ({SIGLAS.REH}, REH).
-        </p>
-      )}
+      {tem("tarifa") &&
+        tx(
+          <p>
+            <span className="text-carvao">Tarifa B1.</span> A tarifa residencial é, no conjunto de dados da ANEEL, a do subgrupo B1. O valor é a soma da {SIGLAS.TE} (TE) e da {SIGLAS.TUSD} (TUSD), em R$/MWh, sem
+            tributos e sem bandeira. O ato é a resolução homologatória em que a ANEEL a publica ({SIGLAS.REH}, REH).
+          </p>,
+          <p>
+            <span className="text-carvao">B1 tariff.</span> The residential tariff is, in the ANEEL dataset, that of subgroup B1. The value is the sum of the {SIGLAS_IDIOMAS.en.TE} (TE) and the {SIGLAS_IDIOMAS.en.TUSD} (TUSD), in R$/MWh, excluding taxes and without the tariff flag. The act is the ratifying resolution in which ANEEL publishes it ({SIGLAS_IDIOMAS.en.REH}, REH).
+          </p>,
+        )}
     </div>
   );
 }

@@ -8,8 +8,13 @@
  * conversão de unidade de exibição (R$ para R$ milhões, índice base 1 para base 100) e as
  * frases curtas geradas por regra determinística a partir dos números publicados. Nenhuma
  * frase compara companhias por mérito: a ordem padrão é o peso no índice.
+ *
+ * Idioma: as frases têm as duas formas lado a lado (tx) e recebem o idioma por último (padrão: o
+ * da página); os mapas de rótulo leem o idioma na hora do acesso, por getter.
  */
+import type { Idioma } from "@/lib/idioma";
 import { dataBR, num, pct } from "./formato";
+import { idiomaEnergia, tx } from "./idioma";
 import type {
   Acionista,
   BolsaListada,
@@ -20,7 +25,10 @@ import type {
 } from "./tipos-listadas";
 
 export const ROTA_LISTADAS = "/setor-eletrico/empresas/listadas";
-export const SEM_DADO = "sem dado";
+/** Ausência dentro de frase, no idioma pedido. */
+export function semDado(idioma: Idioma = idiomaEnergia()): string {
+  return tx("sem dado", "no data", idioma);
+}
 
 export function rotaFicha(c: Pick<CompanhiaListada, "slug">): string {
   return `${ROTA_LISTADAS}/${c.slug}`;
@@ -43,21 +51,45 @@ export function logoDe(logos: ManifestoLogos | null | undefined, papel: string):
   return logos?.logos.find((x) => x.papel === papel) ?? null;
 }
 
-export function mw(v: number | null | undefined, casas = 0): string {
-  return temValor(v) ? `${num(v, casas)} MW` : SEM_DADO;
+export function mw(v: number | null | undefined, casas = 0, idioma: Idioma = idiomaEnergia()): string {
+  return temValor(v) ? `${num(v, casas, idioma)} MW` : semDado(idioma);
 }
 
-export function emMilhoesTexto(v: number | null | undefined, casas = 0): string {
-  return temValor(v) ? `R$ ${num(v, casas)} milhões` : SEM_DADO;
+export function emMilhoesTexto(v: number | null | undefined, casas = 0, idioma: Idioma = idiomaEnergia()): string {
+  return temValor(v) ? tx(`R$ ${num(v, casas, idioma)} milhões`, `R$ ${num(v, casas, idioma)} million`, idioma) : semDado(idioma);
 }
 
 /* ================================================================ atuação */
 
 export type Segmento = "geracao" | "transmissao" | "distribuicao";
 export const SEGMENTOS: readonly { id: Segmento; rotulo: string; unidade: string }[] = [
-  { id: "geracao", rotulo: "Geração", unidade: "MW sob controle" },
-  { id: "transmissao", rotulo: "Transmissão", unidade: "km de circuito em operação" },
-  { id: "distribuicao", rotulo: "Distribuição", unidade: "unidades consumidoras" },
+  {
+    id: "geracao",
+    get rotulo() {
+      return tx("Geração", "Generation");
+    },
+    get unidade() {
+      return tx("MW sob controle", "MW under control");
+    },
+  },
+  {
+    id: "transmissao",
+    get rotulo() {
+      return tx("Transmissão", "Transmission");
+    },
+    get unidade() {
+      return tx("km de circuito em operação", "circuit km in operation");
+    },
+  },
+  {
+    id: "distribuicao",
+    get rotulo() {
+      return tx("Distribuição", "Distribution");
+    },
+    get unidade() {
+      return tx("unidades consumidoras", "consumer units");
+    },
+  },
 ];
 
 /** Medida de cada segmento por companhia, na unidade própria do segmento (nada se soma entre colunas). */
@@ -73,7 +105,7 @@ export type CelulaMatriz = { valor: number | null; fracao: number; texto: string
  * Matriz de atuação: uma linha por companhia (ordem do peso no IEE) e uma coluna por segmento. A barra de cada célula é a fração do
  * maior valor da MESMA coluna (escala própria por unidade); ausência do segmento é "não atua" e não vira barra zero.
  */
-export function matrizAtuacao(g: ListadasGold): { papel: string; slug: string; celulas: Record<Segmento, CelulaMatriz> }[] {
+export function matrizAtuacao(g: ListadasGold, idioma: Idioma = idiomaEnergia()): { papel: string; slug: string; celulas: Record<Segmento, CelulaMatriz> }[] {
   const max = Object.fromEntries(
     SEGMENTOS.map((s) => [s.id, Math.max(0, ...g.companhias.map((c) => medidaSegmento(c, s.id) ?? 0))]),
   ) as Record<Segmento, number>;
@@ -85,12 +117,12 @@ export function matrizAtuacao(g: ListadasGold): { papel: string; slug: string; c
         const v = medidaSegmento(c, s.id);
         const texto =
           v === null
-            ? "não atua"
+            ? tx("não atua", "not active", idioma)
             : s.id === "geracao"
-              ? `${num(v, 0)} MW`
+              ? `${num(v, 0, idioma)} MW`
               : s.id === "transmissao"
-                ? `${num(v, 0)} km`
-                : `${num(v / 1e6, 2)} milhões de UCs`;
+                ? `${num(v, 0, idioma)} km`
+                : tx(`${num(v / 1e6, 2, idioma)} milhões de UCs`, `${num(v / 1e6, 2, idioma)} million consumer units`, idioma);
         return [s.id, { valor: v, fracao: v && max[s.id] ? v / max[s.id] : 0, texto }];
       }),
     ) as Record<Segmento, CelulaMatriz>,
@@ -121,23 +153,30 @@ export function controladoresFre(c: CompanhiaListada): Acionista[] {
  * Frase de controle, só com o que a companhia declara: controladores no FRE (com a fatia das ações ordinárias, que é a que vota),
  * pessoas físicas do grupo de controle somadas, e a falta de controlador quando nenhum é marcado.
  */
-export function textoControle(c: CompanhiaListada): string {
+export function textoControle(c: CompanhiaListada, idioma: Idioma = idiomaEnergia()): string {
   const fre = c.controle.fre;
-  if (!fre) return "Sem Formulário de Referência lido para a companhia.";
+  if (!fre) return tx("Sem Formulário de Referência lido para a companhia.", "No Reference Form (FRE) read for the company.", idioma);
   const ctrl = controladoresFre(c);
   const pf = fre.pessoas_fisicas;
-  const partes = ctrl.map((a) => `${a.nome} (${pct(a.pct_on, 1)} das ordinárias)`);
-  if (pf && pf.controladores > 0) partes.push(`${pf.controladores} ${pf.controladores === 1 ? "pessoa física" : "pessoas físicas"} (${pct(pf.pct_on, 1)} das ordinárias, somadas)`);
-  if (!partes.length) return "Nenhum acionista marcado como controlador no Formulário de Referência.";
-  const acordo = ctrl.some((a) => a.acordo) ? " Há acordo de acionistas entre os controladores." : "";
-  return `Controle declarado: ${partes.join("; ")}.${acordo}`;
+  const partes = ctrl.map((a) => tx(`${a.nome} (${pct(a.pct_on, 1, idioma)} das ordinárias)`, `${a.nome} (${pct(a.pct_on, 1, idioma)} of common shares)`, idioma));
+  if (pf && pf.controladores > 0)
+    partes.push(
+      tx(
+        `${pf.controladores} ${pf.controladores === 1 ? "pessoa física" : "pessoas físicas"} (${pct(pf.pct_on, 1, idioma)} das ordinárias, somadas)`,
+        `${pf.controladores} ${pf.controladores === 1 ? "individual" : "individuals"} (${pct(pf.pct_on, 1, idioma)} of common shares, combined)`,
+        idioma,
+      ),
+    );
+  if (!partes.length) return tx("Nenhum acionista marcado como controlador no Formulário de Referência.", "No shareholder marked as controlling in the Reference Form (FRE).", idioma);
+  const acordo = ctrl.some((a) => a.acordo) ? tx(" Há acordo de acionistas entre os controladores.", " There is a shareholders' agreement among the controlling shareholders.", idioma) : "";
+  return tx(`Controle declarado: ${partes.join("; ")}.${acordo}`, `Declared control: ${partes.join("; ")}.${acordo}`, idioma);
 }
 
 /** Agrupamento pela espécie de controle que a própria companhia declara no FCA (Estatal, Privado, Estatal Holding...). */
 export function porEspecieControle(g: ListadasGold): { especie: string; papeis: string[] }[] {
   const m = new Map<string, string[]>();
   for (const c of g.companhias) {
-    const e = c.controle.especie_fca ?? "não declarada";
+    const e = c.controle.especie_fca ?? "não declarada"; // i18n: dado (chave; a tela traduz pela tabela ESPECIE_CONTROLE_EN)
     m.set(e, [...(m.get(e) ?? []), c.papel]);
   }
   return Array.from(m.entries())
@@ -146,13 +185,27 @@ export function porEspecieControle(g: ListadasGold): { especie: string; papeis: 
 }
 
 export const MOTIVO_TOPO: Record<string, string> = {
-  sem_controlador: "nenhum sócio controlador declarado acima",
-  compartilhado: "controle compartilhado entre sócios",
-  pessoa_fisica: "controlador pessoa física",
-  sem_cnpj: "controlador sem CNPJ (estrangeiro ou ente sem documento)",
-  sem_declaracao: "sem declaração à ANEEL na janela",
-  ambigua: "declarações que discordam sobre o controlador",
-  ciclo: "ciclo na cadeia declarada",
+  get sem_controlador() {
+    return tx("nenhum sócio controlador declarado acima", "no controlling shareholder declared above");
+  },
+  get compartilhado() {
+    return tx("controle compartilhado entre sócios", "control shared among shareholders");
+  },
+  get pessoa_fisica() {
+    return tx("controlador pessoa física", "individual controlling shareholder");
+  },
+  get sem_cnpj() {
+    return tx("controlador sem CNPJ (estrangeiro ou ente sem documento)", "controlling shareholder without CNPJ (foreign or entity without a document)");
+  },
+  get sem_declaracao() {
+    return tx("sem declaração à ANEEL na janela", "no declaration to ANEEL in the window");
+  },
+  get ambigua() {
+    return tx("declarações que discordam sobre o controlador", "declarations that disagree on the controlling shareholder");
+  },
+  get ciclo() {
+    return tx("ciclo na cadeia declarada", "cycle in the declared chain");
+  },
 };
 
 export type ParticipacaoCruzada = {
@@ -188,14 +241,34 @@ export function comPonto(t: string): string {
  * Frase de uma participação cruzada e do efeito dela nas medidas de ativos: a investida só entra nas medidas da investidora quando
  * está na cadeia de controladores únicos dela (ANEEL). Controle compartilhado ou outro controlador deixam a investida fora.
  */
-export function textoCruzada(x: ParticipacaoCruzada, nome: (c: CompanhiaListada) => string): string {
-  const base = `${nome(x.de)} declara ${pct(x.pctTotal, 1)} do total de ações da ${nome(x.em)} (${pct(x.pctOn, 1)} das ordinárias)${x.controlador ? ", como controladora" : ""}${x.acordo ? " em acordo de acionistas" : ""}.`;
+export function textoCruzada(x: ParticipacaoCruzada, nome: (c: CompanhiaListada) => string, idioma: Idioma = idiomaEnergia()): string {
+  const de = nome(x.de);
+  const em = nome(x.em);
+  const base = tx(
+    `${de} declara ${pct(x.pctTotal, 1, idioma)} do total de ações da ${em} (${pct(x.pctOn, 1, idioma)} das ordinárias)${x.controlador ? ", como controladora" : ""}${x.acordo ? " em acordo de acionistas" : ""}.`,
+    `${de} declares ${pct(x.pctTotal, 1, idioma)} of the total shares of ${em} (${pct(x.pctOn, 1, idioma)} of common shares)${x.controlador ? ", as controlling shareholder" : ""}${x.acordo ? " under a shareholders' agreement" : ""}.`,
+    idioma,
+  );
   const naCadeia = [x.em.controle.topo_cnpj, ...x.em.controle.cadeia_acima.map((c) => c.cnpj)].includes(x.de.cnpj ?? "");
-  if (naCadeia) return `${base} A ${nome(x.em)} está na cadeia de controle da ${nome(x.de)}, e os ativos dela entram nas medidas da ${nome(x.de)}.`;
+  if (naCadeia)
+    return tx(
+      `${base} A ${em} está na cadeia de controle da ${de}, e os ativos dela entram nas medidas da ${de}.`,
+      `${base} ${em} is in the control chain of ${de}, and its assets are included in the measures of ${de}.`,
+      idioma,
+    );
   if (x.em.controle.motivo_parada === "compartilhado" && x.em.controle.topo_cnpj === x.em.cnpj)
-    return `${base} O controle da ${nome(x.em)} é compartilhado, sem controlador único na cadeia declarada à ANEEL: os ativos dela não entram nas medidas da ${nome(x.de)} e aparecem só na ficha da ${nome(x.em)}.`;
+    return tx(
+      `${base} O controle da ${em} é compartilhado, sem controlador único na cadeia declarada à ANEEL: os ativos dela não entram nas medidas da ${de} e aparecem só na ficha da ${em}.`,
+      `${base} Control of ${em} is shared, with no single controlling shareholder in the chain declared to ANEEL: its assets are not included in the measures of ${de} and appear only in the profile of ${em}.`,
+      idioma,
+    );
   const outro = controladoresFre(x.em).filter((a) => (a.cnpj ?? "").slice(0, 8) !== (x.de.cnpj ?? "").slice(0, 8));
-  return `${base} A ${nome(x.em)} tem outro controlador${outro.length ? ` (${outro.map((a) => a.nome).join(", ")})` : ""}: os ativos dela não entram nas medidas da ${nome(x.de)}.`;
+  const quem = outro.length ? ` (${outro.map((a) => a.nome).join(", ")})` : "";
+  return tx(
+    `${base} A ${em} tem outro controlador${quem}: os ativos dela não entram nas medidas da ${de}.`,
+    `${base} ${em} has another controlling shareholder${quem}: its assets are not included in the measures of ${de}.`,
+    idioma,
+  );
 }
 
 /* ================================================================ bolsa */
@@ -228,36 +301,72 @@ export function estreiasDepoisDe2020(g: ListadasGold): CompanhiaListada[] {
 /* ================================================================ frases */
 
 /** Resposta curta do panorama, só com contagens e datas da gold. */
-export function respostaPanorama(g: ListadasGold): string {
+export function respostaPanorama(g: ListadasGold, idioma: Idioma = idiomaEnergia()): string {
   const n = contagemAtuacao(g);
   const tres = g.companhias.filter((c) => c.atuacao.geracao && c.atuacao.transmissao && c.atuacao.distribuicao).length;
-  return (
-    `A carteira do Índice de Energia Elétrica da B3 de ${dataBR(g.datas.carteira_iee)} tem ${g.universo.papeis} papéis de ${g.universo.companhias} companhias. ` +
-    `${n.geracao} controlam usinas em operação, ${n.transmissao} controlam linhas de transmissão e ${n.distribuicao} controlam distribuidoras; ` +
-    `${tres} ${tres === 1 ? "atua" : "atuam"} nos três segmentos.`
+  return tx(
+    `A carteira do Índice de Energia Elétrica da B3 de ${dataBR(g.datas.carteira_iee, idioma)} tem ${g.universo.papeis} papéis de ${g.universo.companhias} companhias. ` +
+      `${n.geracao} controlam usinas em operação, ${n.transmissao} controlam linhas de transmissão e ${n.distribuicao} controlam distribuidoras; ` +
+      `${tres} ${tres === 1 ? "atua" : "atuam"} nos três segmentos.`,
+    `The portfolio of the B3 Electric Power Index (IEE) as of ${dataBR(g.datas.carteira_iee, idioma)} has ${g.universo.papeis} stocks from ${g.universo.companhias} companies. ` +
+      `${n.geracao} control plants in operation, ${n.transmissao} control transmission lines and ${n.distribuicao} control distribution utilities; ` +
+      `${tres} ${tres === 1 ? "is" : "are"} active in all three segments.`,
+    idioma,
   );
 }
 
 /** Frase de atuação da ficha. */
-export function textoAtuacao(c: CompanhiaListada): string {
+export function textoAtuacao(c: CompanhiaListada, idioma: Idioma = idiomaEnergia()): string {
   const s: string[] = [];
-  if (c.atuacao.geracao) s.push(`geração (${mw(c.geracao.mw_controle)} em ${num(c.geracao.usinas_controle, 0)} usinas sob controle)`);
-  if (c.atuacao.transmissao && c.transmissao) s.push(`transmissão (${num(c.transmissao.km_circuito_operacao, 0)} km de circuito em ${c.transmissao.concessionarias} concessionárias)`);
-  if (c.atuacao.distribuicao && c.distribuicao)
-    s.push(`distribuição (${c.distribuicao.distribuidoras.length} ${c.distribuicao.distribuidoras.length === 1 ? "distribuidora" : "distribuidoras"}, ${num((c.distribuicao.unidades_consumidoras ?? 0) / 1e6, 2)} milhões de unidades consumidoras)`);
-  if (!s.length) return "Nenhum ativo de geração, transmissão ou distribuição sob controle da companhia nas bases da ANEEL lidas.";
-  return `Sob controle da companhia, pela cadeia declarada à ANEEL: ${s.join("; ")}.`;
+  if (c.atuacao.geracao)
+    s.push(
+      tx(
+        `geração (${mw(c.geracao.mw_controle, 0, idioma)} em ${num(c.geracao.usinas_controle, 0, idioma)} usinas sob controle)`,
+        `generation (${mw(c.geracao.mw_controle, 0, idioma)} in ${num(c.geracao.usinas_controle, 0, idioma)} plants under control)`,
+        idioma,
+      ),
+    );
+  if (c.atuacao.transmissao && c.transmissao)
+    s.push(
+      tx(
+        `transmissão (${num(c.transmissao.km_circuito_operacao, 0, idioma)} km de circuito em ${c.transmissao.concessionarias} concessionárias)`,
+        `transmission (${num(c.transmissao.km_circuito_operacao, 0, idioma)} circuit km in ${c.transmissao.concessionarias} ${c.transmissao.concessionarias === 1 ? "concession holder" : "concession holders"})`,
+        idioma,
+      ),
+    );
+  if (c.atuacao.distribuicao && c.distribuicao) {
+    const n = c.distribuicao.distribuidoras.length;
+    const ucs = num((c.distribuicao.unidades_consumidoras ?? 0) / 1e6, 2, idioma);
+    s.push(
+      tx(
+        `distribuição (${n} ${n === 1 ? "distribuidora" : "distribuidoras"}, ${ucs} milhões de unidades consumidoras)`,
+        `distribution (${n} ${n === 1 ? "distribution utility" : "distribution utilities"}, ${ucs} million consumer units)`,
+        idioma,
+      ),
+    );
+  }
+  if (!s.length)
+    return tx(
+      "Nenhum ativo de geração, transmissão ou distribuição sob controle da companhia nas bases da ANEEL lidas.",
+      "No generation, transmission or distribution asset under the company's control in the ANEEL databases read.",
+      idioma,
+    );
+  return tx(`Sob controle da companhia, pela cadeia declarada à ANEEL: ${s.join("; ")}.`, `Under the company's control, by the chain declared to ANEEL: ${s.join("; ")}.`, idioma);
 }
 
 /** Frase de desempenho em bolsa: janela, retorno de preço e retorno total, sem adjetivo. */
-export function textoBolsa(b: BolsaListada | null): string {
-  if (!b || b.motivo || !b.retorno_12m) return "Sem série de cotações do papel para 12 meses.";
+export function textoBolsa(b: BolsaListada | null, idioma: Idioma = idiomaEnergia()): string {
+  if (!b || b.motivo || !b.retorno_12m) return tx("Sem série de cotações do papel para 12 meses.", "No 12-month price series for the stock.", idioma);
   const r = b.retorno_12m;
-  return `De ${dataBR(r.de)} a ${dataBR(r.ate)}, o preço ajustado variou ${sinalPct(r.preco_pct)} e o retorno com proventos reinvestidos foi ${sinalPct(r.total_pct)}.`;
+  return tx(
+    `De ${dataBR(r.de, idioma)} a ${dataBR(r.ate, idioma)}, o preço ajustado variou ${sinalPct(r.preco_pct, 1, idioma)} e o retorno com proventos reinvestidos foi ${sinalPct(r.total_pct, 1, idioma)}.`,
+    `From ${dataBR(r.de, idioma)} to ${dataBR(r.ate, idioma)}, the adjusted price changed ${sinalPct(r.preco_pct, 1, idioma)} and the return with distributions reinvested was ${sinalPct(r.total_pct, 1, idioma)}.`,
+    idioma,
+  );
 }
 
-export function sinalPct(v: number | null | undefined, casas = 1): string {
-  if (!temValor(v)) return SEM_DADO;
+export function sinalPct(v: number | null | undefined, casas = 1, idioma: Idioma = idiomaEnergia()): string {
+  if (!temValor(v)) return semDado(idioma);
   const s = v > 0 ? "+" : v < 0 ? "−" : "";
-  return `${s}${num(Math.abs(v), casas)}%`;
+  return `${s}${num(Math.abs(v), casas, idioma)}%`;
 }

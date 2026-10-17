@@ -18,13 +18,16 @@ import {
   projetar,
   raioPonto,
   resumoAtivos,
+  rotuloFase,
   rotuloTipo,
   textoResumoAtivos,
   type IdFaseMapa,
   type ProjecaoMalha,
   type TipoUsina,
 } from "@/lib/energia/empresas";
-import { num } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 import { URL_GEO, comFolga, lerViewBox, validaCamada, type CamadaGeo } from "@/lib/energia/geo";
 import type { AtivosMapa } from "@/lib/energia/tipos-empresas";
 
@@ -72,6 +75,9 @@ const LARGURA_SSR = 760;
 
 export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, versao }: EmpresasMapaAtivosProps) {
   const uid = useId().replace(/:/g, "");
+  const tx = useTx();
+  const idioma = useIdioma();
+  const { num } = formatos(idioma);
   const [v, definir] = useEstadoUrl(ESQUEMA_ATIVOS);
   const [carga, setCarga] = useState<Carga>({ estado: "ocioso", ativos: null, uf: null, erro: "" });
   const [tentativa, setTentativa] = useState(0);
@@ -109,8 +115,10 @@ export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, ve
 
   const filtro = useMemo(() => ({ fase: v.fase, tipos: v.tipos, vinculo: v.vinculo, grupo: v.grupo }), [v.fase, v.tipos, v.vinculo, v.grupo]);
   const indices = useMemo(() => (j ? filtrarAtivos(j, filtro) : []), [j, filtro]);
-  const linhas = useMemo(() => (j ? linhasAtivos(j, indices) : []), [j, indices]);
+  const linhas = useMemo(() => (j ? linhasAtivos(j, indices, idioma) : []), [j, indices, idioma]);
   const resumo = useMemo(() => resumoAtivos(linhas), [linhas]);
+  // a fase fica como a gold a publica nas linhas (chave do resumo); a tabela a mostra no idioma da página
+  const linhasTabela = useMemo(() => linhas.map((l) => ({ ...l, fase: rotuloFase(l.fase, idioma) })), [linhas, idioma]);
   // projeção feita uma vez por arquivo (mesma ordem do arquivo)
   const xy = useMemo(() => {
     if (!j || !geo) return null;
@@ -172,7 +180,7 @@ export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, ve
     if (iSel >= 0) {
       ctx.beginPath();
       ctx.arc(xy.xs[iSel], xy.ys[iSel], 9 / s, 0, 2 * Math.PI);
-      ctx.strokeStyle = corDoToken(c, "var(--cor-energia-dark)");
+      ctx.strokeStyle = corDoToken(c, "var(--cor-energia-dark)"); // i18n: dado
       ctx.lineWidth = 2.5 / s;
       ctx.stroke();
     }
@@ -209,14 +217,17 @@ export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, ve
     return (
       <div className="space-y-2 border border-dashed border-linha bg-papel px-4 py-5">
         <p className="text-sm text-carvao">
-          O mapa e a lista das usinas vêm de um arquivo próprio (coordenadas oficiais do SIGA de {dataTexto(dataSiga)}, cerca de 2,8 MB), carregado só quando você pede.
+          {tx(
+            <>O mapa e a lista das usinas vêm de um arquivo próprio (coordenadas oficiais do SIGA de {dataTexto(dataSiga, idioma)}, cerca de 2,8 MB), carregado só quando você pede.</>,
+            <>The map and the list of plants come from a file of their own (official SIGA coordinates as of {dataTexto(dataSiga, idioma)}, about 2.8 MB), loaded only when you ask for it.</>,
+          )}
         </p>
         <button
           type="button"
           onClick={() => definir({ mapa: true })}
           className="rotulo inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-energia-dark hover:bg-energia-fundo"
         >
-          Carregar o mapa e a lista das usinas
+          {tx("Carregar o mapa e a lista das usinas", "Load the map and the list of plants")}
         </button>
       </div>
     );
@@ -225,20 +236,21 @@ export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, ve
   return (
     <figure className="space-y-3" aria-labelledby={`${uid}-t`}>
       <figcaption id={`${uid}-t`} className="font-serif text-base text-carvao">
-        Usinas do SIGA por fonte e vínculo de propriedade <span className="font-sans text-sm text-mineral">(SIGA de {dataTexto(dataSiga)})</span>
+        {tx("Usinas do SIGA por fonte e vínculo de propriedade", "SIGA plants by source and ownership link")}{" "}
+        <span className="font-sans text-sm text-mineral">{tx(`(SIGA de ${dataTexto(dataSiga, idioma)})`, `(SIGA as of ${dataTexto(dataSiga, idioma)})`)}</span>
       </figcaption>
 
       <fieldset className="space-y-3 border border-linha bg-superficie p-3 text-sm">
-        <legend className="rotulo px-1 text-mineral">Filtros do mapa e da lista</legend>
-        <div role="radiogroup" aria-label="Fase no SIGA" className="flex flex-wrap gap-2">
-          {[...FASES_MAPA.map((f) => ({ id: f.id as IdFaseMapa, rotulo: f.rotulo })), { id: "todas" as IdFaseMapa, rotulo: "Todas as fases" }].map((f) => (
+        <legend className="rotulo px-1 text-mineral">{tx("Filtros do mapa e da lista", "Map and list filters")}</legend>
+        <div role="radiogroup" aria-label={tx("Fase no SIGA", "Phase in SIGA")} className="flex flex-wrap gap-2">
+          {[...FASES_MAPA.map((f) => ({ id: f.id as IdFaseMapa, rotulo: f.rotulo })), { id: "todas" as IdFaseMapa, rotulo: tx("Todas as fases", "All phases") }].map((f) => ( // i18n: dado
             <label key={f.id} className={`inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-3 ${v.fase === f.id ? "border-energia bg-energia-fundo text-carvao" : "border-linha text-carvao-muted"}`}>
               <input type="radio" name={`${uid}-fase`} checked={v.fase === f.id} onChange={() => definir({ fase: f.id })} className="accent-energia" />
               {f.rotulo}
             </label>
           ))}
         </div>
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Tipo de usina">
+        <div className="flex flex-wrap gap-2" role="group" aria-label={tx("Tipo de usina", "Plant type")}>
           {TIPOS_USINA.map((t) => (
             <label key={t.id} className={`inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-3 ${v.tipos.includes(t.id) ? "border-energia bg-energia-fundo text-carvao" : "border-linha text-carvao-muted"}`}>
               <input type="checkbox" checked={v.tipos.includes(t.id)} onChange={() => alternarTipo(t.id)} className="accent-energia" />
@@ -248,11 +260,11 @@ export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, ve
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <div role="radiogroup" aria-label="Vínculo de propriedade" className="flex flex-wrap gap-2">
+          <div role="radiogroup" aria-label={tx("Vínculo de propriedade", "Ownership link")} className="flex flex-wrap gap-2">
             {(
               [
-                ["todos", "Todos os vínculos"],
-                ["sem_vinculo", "Só vínculo incompleto"],
+                ["todos", tx("Todos os vínculos", "All links")], // i18n: dado
+                ["sem_vinculo", tx("Só vínculo incompleto", "Incomplete link only")],
               ] as const
             ).map(([id, rot]) => (
               <label key={id} className={`inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-3 ${v.vinculo === id ? "border-energia bg-energia-fundo text-carvao" : "border-linha text-carvao-muted"}`}>
@@ -262,18 +274,18 @@ export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, ve
             ))}
           </div>
           <label className="inline-flex min-h-[44px] flex-wrap items-center gap-2 text-carvao-muted">
-            Grupo do proprietário majoritário
+            {tx("Grupo do proprietário majoritário", "Group of the majority owner")}
             <select
               value={v.grupo}
               onChange={(e) => definir({ grupo: e.target.value })}
               className="min-h-[44px] max-w-full border border-linha bg-superficie px-2 text-carvao"
               disabled={!j}
             >
-              <option value="">Todos os grupos</option>
-              {grupoForaDoArquivo && <option value={v.grupo}>CNPJ {v.grupo} (fora dos 200 maiores)</option>}
+              <option value="">{tx("Todos os grupos", "All groups")}</option>
+              {grupoForaDoArquivo && <option value={v.grupo}>{tx(`CNPJ ${v.grupo} (fora dos 200 maiores)`, `CNPJ ${v.grupo} (outside the 200 largest)`)}</option>}
               {(j?.grupos ?? []).map(([cnpj, nome]) => (
                 <option key={cnpj} value={cnpj}>
-                  {nomeOuCnpj(nome, cnpj)}
+                  {nomeOuCnpj(nome, cnpj, idioma)}
                 </option>
               ))}
             </select>
@@ -281,40 +293,48 @@ export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, ve
           {temFiltro && (
             <button
               type="button"
-              onClick={() => definir({ fase: "operacao", tipos: [], vinculo: "todos", grupo: "" })}
+              onClick={() => definir({ fase: "operacao", tipos: [], vinculo: "todos", grupo: "" })} // i18n: dado
               className="rotulo inline-flex min-h-[44px] items-center px-2 text-carvao-muted underline underline-offset-4 hover:text-carvao"
             >
-              Limpar filtros
+              {tx("Limpar filtros", "Clear filters")}
             </button>
           )}
         </div>
       </fieldset>
 
       <p role="status" aria-live="polite" className="text-sm text-carvao">
-        {carga.estado === "pronto" ? textoResumoAtivos(resumo) : carga.estado === "carregando" ? "Carregando as usinas e a malha de UF…" : ""}
-        {grupoAtual ? ` Grupo: ${nomeOuCnpj(grupoAtual[1], grupoAtual[0])}.` : ""}
+        {carga.estado === "pronto" ? textoResumoAtivos(resumo, idioma) : carga.estado === "carregando" ? tx("Carregando as usinas e a malha de UF…", "Loading the plants and the state boundaries…") : ""}
+        {grupoAtual ? tx(` Grupo: ${nomeOuCnpj(grupoAtual[1], grupoAtual[0], idioma)}.`, ` Group: ${nomeOuCnpj(grupoAtual[1], grupoAtual[0], idioma)}.`) : ""}
       </p>
       {grupoForaDoArquivo && (
         <p className="text-sm text-carvao-muted">
-          O CNPJ {v.grupo} não está entre os 200 maiores grupos que o arquivo do mapa identifica; as usinas dele estão no CSV de usinas e proprietários.
+          {tx(
+            <>O CNPJ {v.grupo} não está entre os 200 maiores grupos que o arquivo do mapa identifica; as usinas dele estão no CSV de usinas e proprietários.</>,
+            <>CNPJ {v.grupo} is not among the 200 largest groups that the map file identifies; its plants are in the plants and owners CSV.</>,
+          )}
         </p>
       )}
 
       <div ref={caixa} className="relative w-full border border-linha bg-superficie" data-estado={carga.estado} style={vb ? { height: altura } : { minHeight: 320 }}>
         {carga.estado === "carregando" && (
           <div role="status" className="flex h-[320px] items-center justify-center px-6 text-center text-sm text-carvao-muted">
-            Carregando o arquivo das usinas e a malha de UF do IBGE.
+            {tx("Carregando o arquivo das usinas e a malha de UF do IBGE.", "Loading the plants file and the IBGE state boundaries.")}
           </div>
         )}
         {carga.estado === "erro" && (
           <div role="alert" className="flex h-[320px] flex-col items-center justify-center gap-3 px-6 text-center text-sm text-carvao">
-            <p>Não foi possível carregar o mapa ({carga.erro}). As mesmas usinas estão no CSV de usinas e proprietários.</p>
+            <p>
+              {tx(
+                <>Não foi possível carregar o mapa ({carga.erro}). As mesmas usinas estão no CSV de usinas e proprietários.</>,
+                <>The map could not be loaded ({carga.erro}). The same plants are in the plants and owners CSV.</>,
+              )}
+            </p>
             <button
               type="button"
               className="rotulo inline-flex min-h-[44px] items-center border border-linha bg-superficie px-4 text-energia-dark hover:border-carvao"
               onClick={() => setTentativa((t) => t + 1)}
             >
-              Tentar de novo
+              {tx("Tentar de novo", "Try again")}
             </button>
           </div>
         )}
@@ -325,48 +345,67 @@ export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, ve
             style={{ width: largura, height: altura }}
             className="block cursor-crosshair"
             role="img"
-            aria-label={`Mapa das usinas do recorte sobre as UF do Brasil. ${textoResumoAtivos(resumo)} A tabela abaixo traz as mesmas usinas.`}
+            aria-label={tx(
+              `Mapa das usinas do recorte sobre as UF do Brasil. ${textoResumoAtivos(resumo, idioma)} A tabela abaixo traz as mesmas usinas.`,
+              `Map of the plants in the selection over Brazil's states. ${textoResumoAtivos(resumo, idioma)} The table below lists the same plants.`,
+            )}
           />
         )}
       </div>
 
-      <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted" aria-label="Legenda do mapa">
+      <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted" aria-label={tx("Legenda do mapa", "Map legend")}>
         {TIPOS_USINA.map((t) => (
           <span key={t.id} className="inline-flex items-center gap-1.5">
             <span aria-hidden="true" className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: t.cor }} />
-            {rotuloTipo(t.id)}
+            {rotuloTipo(t.id, idioma)}
           </span>
         ))}
         <span className="inline-flex items-center gap-1.5">
           <span aria-hidden="true" className="inline-block h-2.5 w-2.5 rounded-full border border-carvao" />
-          anel vazado: vínculo incompleto ({ROTULO_ESTADO_VINCULO.sem_proprietario.toLocaleLowerCase("pt-BR")}, sem CNPJ ou soma diferente de 100%)
+          {tx(
+            `anel vazado: vínculo incompleto (${ROTULO_ESTADO_VINCULO.sem_proprietario.toLocaleLowerCase("pt-BR")}, sem CNPJ ou soma diferente de 100%)`,
+            `hollow ring: incomplete link (${ROTULO_ESTADO_VINCULO.sem_proprietario.toLocaleLowerCase("en-US")}, no CNPJ or a sum other than 100%)`,
+          )}
         </span>
-        <span>Tamanho do ponto: até 30 MW, de 30 a 300 MW e acima de 300 MW (marca, não escala de área).</span>
+        <span>
+          {tx(
+            "Tamanho do ponto: até 30 MW, de 30 a 300 MW e acima de 300 MW (marca, não escala de área).",
+            "Point size: up to 30 MW, from 30 to 300 MW and above 300 MW (a marker, not an area scale).",
+          )}
+        </span>
       </div>
 
       <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-acesso-mapa="">
-        Pelo teclado ou com leitor de tela, escolha a usina na lista abaixo: a linha escolhida acende o ponto no mapa.
+        {tx(
+          "Pelo teclado ou com leitor de tela, escolha a usina na lista abaixo: a linha escolhida acende o ponto no mapa.",
+          "With the keyboard or a screen reader, choose the plant in the list below: the chosen row highlights the point on the map.",
+        )}
       </p>
 
       {j && iSel >= 0 && (
         <div aria-live="polite" className="border border-energia bg-energia-fundo px-4 py-3 text-sm text-carvao">
-          <p className="font-medium">{j.nome[iSel] ?? `Núcleo ${j.nucleo[iSel]}`}</p>
+          <p className="font-medium">{j.nome[iSel] ? <Nome>{j.nome[iSel]}</Nome> : tx(`Núcleo ${j.nucleo[iSel]}`, `Core ${j.nucleo[iSel]}`)}</p>
           <p className="mt-1 text-carvao-muted">
-            {rotuloTipo(j.tipo[iSel])} · {j.fase[iSel]} · {j.uf[iSel] ?? "UF sem dado"} · {j.mw[iSel] === null ? "potência sem dado" : `${num(j.mw[iSel] as number, 2)} MW ${j.fase[iSel] === "Operação" ? "fiscalizados" : "outorgados"}`} ·{" "}
+            {rotuloTipo(j.tipo[iSel], idioma)} · {rotuloFase(j.fase[iSel], idioma)} · {j.uf[iSel] ?? tx("UF sem dado", "state: no data")} ·{" "}
+            {j.mw[iSel] === null
+              ? tx("potência sem dado", "capacity: no data")
+              : // i18n: dado (a comparação usa o valor da gold)
+                tx(`${num(j.mw[iSel] as number, 2)} MW ${j.fase[iSel] === "Operação" ? "fiscalizados" : "outorgados"}`, `${num(j.mw[iSel] as number, 2)} MW ${j.fase[iSel] === "Operação" ? "inspected" : "granted"}`)}{" "}
+            ·{" "}
             {ROTULO_ESTADO_VINCULO[j.estados[j.estado[iSel]]] ?? j.estados[j.estado[iSel]]}
-            {j.grupo[iSel] >= 0 ? ` · grupo ${nomeOuCnpj(j.grupos[j.grupo[iSel]][1], j.grupos[j.grupo[iSel]][0])}` : ""}
+            {j.grupo[iSel] >= 0 ? tx(` · grupo ${nomeOuCnpj(j.grupos[j.grupo[iSel]][1], j.grupos[j.grupo[iSel]][0], idioma)}`, ` · group ${nomeOuCnpj(j.grupos[j.grupo[iSel]][1], j.grupos[j.grupo[iSel]][0], idioma)}`) : ""}
           </p>
           <button type="button" onClick={() => definir({ sel: "" })} className="rotulo mt-1 inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-            Limpar a escolha
+            {tx("Limpar a escolha", "Clear the choice")}
           </button>
         </div>
       )}
 
       {j && (
         <TabelaInterativa
-          titulo="Usinas do recorte do mapa (tabela equivalente)"
+          titulo={tx("Usinas do recorte do mapa (tabela equivalente)", "Plants in the map selection (equivalent table)")}
           colunas={COLUNAS_ATIVOS}
-          linhas={linhas}
+          linhas={linhasTabela}
           chaveLinha="id"
           colunaRotulo="nome"
           fonte={fonte}
@@ -375,12 +414,18 @@ export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, ve
           chaveUrl="at.tab"
           selecionado={v.sel || null}
           onSelecionar={(id) => definir({ sel: id ?? "" })}
-          dicaBusca="Nome, núcleo do CEG ou UF"
+          dicaBusca={tx("Nome, núcleo do CEG ou UF", "Name, CEG core or state")}
           tamanhoPagina={25}
           nota={
             semCoordenada !== null && semCoordenada > 0
-              ? `${inteiro(semCoordenada)} usinas do SIGA sem coordenada publicada ficam fora do mapa e desta lista; estão no CSV de usinas e proprietários. Potência fiscalizada em operação e outorgada nas demais fases: não somar entre fases.`
-              : "Potência fiscalizada em operação e outorgada nas demais fases: não somar entre fases."
+              ? tx(
+                  `${inteiro(semCoordenada, idioma)} usinas do SIGA sem coordenada publicada ficam fora do mapa e desta lista; estão no CSV de usinas e proprietários. Potência fiscalizada em operação e outorgada nas demais fases: não somar entre fases.`,
+                  `${inteiro(semCoordenada, idioma)} SIGA plants without published coordinates are left out of the map and of this list; they are in the plants and owners CSV. Inspected capacity in operation and granted capacity in the other phases: do not add across phases.`,
+                )
+              : tx(
+                  "Potência fiscalizada em operação e outorgada nas demais fases: não somar entre fases.",
+                  "Inspected capacity in operation and granted capacity in the other phases: do not add across phases.",
+                )
           }
         />
       )}

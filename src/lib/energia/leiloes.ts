@@ -2,18 +2,51 @@
  * Lógica pura das páginas de Leilões (ACR e transmissão): linhas de gráfico e tabela, frases citáveis derivadas da gold,
  * o modelo do laboratório de leilão descendente e a escolha do logotipo de um grupo a partir do manifesto de logos.
  * A conta dos números publicados roda no pipeline (pipeline/energia/modulos/leiloes.py); aqui só se arruma o que a gold traz.
+ *
+ * Idioma: as frases têm as duas formas lado a lado (tx) e recebem o idioma por último (padrão: o da página); os mapas de
+ * rótulo leem o idioma na hora do acesso, por getter.
  */
+import type { Idioma } from "@/lib/idioma";
 import { dataBR, mesAno, num, pct, reais } from "./formato";
+import { idiomaEnergia, tx } from "./idioma";
 import type { IdCategoria, IdEntrada, IdSituacao, LeiloesGold } from "./tipos-leiloes";
 
 export const ROTA_LEILOES = "/setor-eletrico/leiloes";
 export const ROTA_LEILOES_TRANSMISSAO = `${ROTA_LEILOES}/transmissao`;
-export const FONTE_LEILOES = "ANEEL, Resultado de Leilões de Geração";
-export const FONTE_TRANSMISSAO = "ANEEL, Resultado de Leilões de Transmissão";
+
+/** Fonte dos leilões de geração (conjunto aberto da ANEEL). */
+export function fonteLeiloes(idioma: Idioma = idiomaEnergia()): string {
+  return tx("ANEEL, Resultado de Leilões de Geração", "ANEEL, generation auction results", idioma);
+}
+/** Fonte dos leilões de transmissão (conjunto aberto da ANEEL). */
+export function fonteTransmissao(idioma: Idioma = idiomaEnergia()): string {
+  return tx("ANEEL, Resultado de Leilões de Transmissão", "ANEEL, transmission auction results", idioma);
+}
 
 export const PAGINAS_LEILOES = [
-  { id: "acr", href: ROTA_LEILOES, rotulo: "Geração no ACR", descricao: "O que o mercado regulado comprou, de quem, a que preço, e o que já opera?" },
-  { id: "transmissao", href: ROTA_LEILOES_TRANSMISSAO, rotulo: "Transmissão", descricao: "Quanto de receita anual os leilões de linhas contrataram, corrigida pelo IPCA, e com que deságio?" },
+  {
+    id: "acr",
+    href: ROTA_LEILOES,
+    get rotulo() {
+      return tx("Geração no ACR", "Generation in the ACR");
+    },
+    get descricao() {
+      return tx("O que o mercado regulado comprou, de quem, a que preço, e o que já opera?", "What did the regulated market buy, from whom, at what price, and what is already operating?");
+    },
+  },
+  {
+    id: "transmissao",
+    href: ROTA_LEILOES_TRANSMISSAO,
+    get rotulo() {
+      return tx("Transmissão", "Transmission");
+    },
+    get descricao() {
+      return tx(
+        "Quanto de receita anual os leilões de linhas contrataram, corrigida pelo IPCA, e com que deságio?",
+        "How much annual revenue did the transmission line auctions contract, adjusted by the IPCA, and at what discount?",
+      );
+    },
+  },
 ] as const;
 
 export const ORDEM_CATEGORIAS: readonly IdCategoria[] = ["uhe", "pch", "eolica", "solar", "biomassa", "gas", "oleo", "carvao"];
@@ -31,19 +64,35 @@ export const COR_CATEGORIA_LEILAO: Record<IdCategoria, string> = {
 };
 /** Nome curto da categoria para eixo e legenda; o nome completo vem da gold. */
 export const CURTO_CATEGORIA: Record<IdCategoria, string> = {
-  uhe: "Hidrelétrica",
-  pch: "PCH e CGH",
-  eolica: "Eólica",
-  solar: "Solar",
-  biomassa: "Biomassa",
-  gas: "Gás natural",
-  oleo: "Óleo",
-  carvao: "Carvão",
+  get uhe() {
+    return tx("Hidrelétrica", "Hydropower");
+  },
+  get pch() {
+    return tx("PCH e CGH", "PCH and CGH");
+  },
+  get eolica() {
+    return tx("Eólica", "Wind");
+  },
+  get solar() {
+    return tx("Solar", "Solar");
+  },
+  get biomassa() {
+    return tx("Biomassa", "Biomass");
+  },
+  get gas() {
+    return tx("Gás natural", "Natural gas");
+  },
+  get oleo() {
+    return tx("Óleo", "Oil");
+  },
+  get carvao() {
+    return tx("Carvão", "Coal");
+  },
 };
 
 export const ORDEM_SITUACOES: readonly IdSituacao[] = ["operacao", "construcao", "nao_iniciada", "encerrada", "sem_registro", "sem_ceg"];
 export const COR_SITUACAO: Record<IdSituacao, string> = {
-  operacao: "var(--cor-energia)",
+  operacao: "var(--cor-energia)", // i18n: dado
   construcao: "var(--escala-seq-3)",
   nao_iniciada: "var(--escala-seq-2)",
   encerrada: "var(--escala-div-neg-1)",
@@ -51,22 +100,42 @@ export const COR_SITUACAO: Record<IdSituacao, string> = {
   sem_ceg: "var(--serie-referencia)",
 };
 export const CURTO_SITUACAO: Record<IdSituacao, string> = {
-  operacao: "Em operação",
-  construcao: "Em construção",
-  nao_iniciada: "Obra não iniciada",
-  encerrada: "Outorga encerrada",
-  sem_registro: "Sem situação identificada",
-  sem_ceg: "Sem código da usina",
+  get operacao() {
+    return tx("Em operação", "In operation");
+  },
+  get construcao() {
+    return tx("Em construção", "Under construction");
+  },
+  get nao_iniciada() {
+    return tx("Obra não iniciada", "Works not started");
+  },
+  get encerrada() {
+    return tx("Outorga encerrada", "Grant terminated");
+  },
+  get sem_registro() {
+    return tx("Sem situação identificada", "No status identified");
+  },
+  get sem_ceg() {
+    return tx("Sem código da usina", "No plant code");
+  },
 };
 export const ROTULO_ENTRADA: Record<IdEntrada, string> = {
-  antes_do_leilao: "Já operava antes do leilão (ampliação ou usina existente)",
-  ate_ano_a: "Entrou em operação até o fim do ano A",
-  depois_ano_a: "Entrou em operação depois do ano A",
-  sem_data: "Sem data de entrada no SIGA",
+  get antes_do_leilao() {
+    return tx("Já operava antes do leilão (ampliação ou usina existente)", "Already operating before the auction (expansion or existing plant)");
+  },
+  get ate_ano_a() {
+    return tx("Entrou em operação até o fim do ano A", "Started operation by the end of year A");
+  },
+  get depois_ano_a() {
+    return tx("Entrou em operação depois do ano A", "Started operation after year A");
+  },
+  get sem_data() {
+    return tx("Sem data de entrada no SIGA", "No start date in SIGA");
+  },
 };
 export const COR_ENTRADA: Record<IdEntrada, string> = {
   antes_do_leilao: "var(--cor-mineral-soft)",
-  ate_ano_a: "var(--cor-energia)",
+  ate_ano_a: "var(--cor-energia)", // i18n: dado
   depois_ano_a: "var(--escala-div-neg-1)",
   sem_data: "var(--serie-referencia)",
 };
@@ -76,15 +145,16 @@ export const COR_TIPO_LEILAO: Record<string, string> = {
   "A-4": "var(--escala-seq-3)",
   "A-5": "var(--escala-seq-4)",
   "A-6": "var(--escala-seq-5)",
-  "A-7": "var(--cor-energia-dark)",
+  "A-7": "var(--cor-energia-dark)", // i18n: dado
   LER: "var(--serie-comp-2)",
   FA: "var(--serie-comp-3)",
   Estruturante: "var(--serie-comp-1)",
 };
 
 /** "MWmédio" com separador de milhar e uma casa. */
-export const mwmed = (v: number | null | undefined, casas = 1) => (v == null ? "sem dado" : `${num(v, casas)} MWmédio`);
-export const rsMwh = (v: number | null | undefined, casas = 2) => (v == null ? "sem dado" : `${reais(v, casas)}/MWh`);
+export const mwmed = (v: number | null | undefined, casas = 1, idioma: Idioma = idiomaEnergia()) =>
+  v == null ? tx("sem dado", "no data", idioma) : tx(`${num(v, casas, idioma)} MWmédio`, `${num(v, casas, idioma)} MWavg`, idioma);
+export const rsMwh = (v: number | null | undefined, casas = 2, idioma: Idioma = idiomaEnergia()) => (v == null ? tx("sem dado", "no data", idioma) : `${reais(v, casas, idioma)}/MWh`);
 
 /** Anos do primeiro ao último leilão, inclusive os anos sem leilão na base (que viram ausência, nunca zero). */
 /**
@@ -151,9 +221,9 @@ export function participacao(g: Pick<LeiloesGold, "entrega" | "totais">, s: IdSi
   return t ? (100 * g.entrega.total[s].energia_mwmed) / t : null;
 }
 
-/** Nome de exibição de um leilão: "39º LEN (A-5)". */
-export function nomeLeilao(l: { nome: string | null; tipo: string; leilao: string }): string {
-  return `${l.nome ?? `Leilão ${numeroAneel(l.leilao)}`} (${l.tipo})`;
+/** Nome de exibição de um leilão: "39º LEN (A-5)". Sem nome, o número como a ANEEL o designa ("Auction No. 10/2013" em inglês). */
+export function nomeLeilao(l: { nome: string | null; tipo: string; leilao: string }, idioma: Idioma = idiomaEnergia()): string {
+  return `${l.nome ?? tx(`Leilão ${numeroAneel(l.leilao)}`, `Auction No. ${numeroAneel(l.leilao)}`, idioma)} (${l.tipo})`;
 }
 
 export type FraseCitavel = { id: string; texto: string; referencia: string };
@@ -162,15 +232,28 @@ export type FraseCitavel = { id: string; texto: string; referencia: string };
  * Frases para citação, todas calculadas da gold com período e fonte. Regras: só fatos medidos, sem adjetivo; a categoria
  * entra só quando tem preço no primeiro e no último ano de venda; o grupo é dito como "controla a usina" na data do cadastro, nunca como vencedor.
  */
-export function frasesCitaveis(g: LeiloesGold): FraseCitavel[] {
+export function frasesCitaveis(g: LeiloesGold, idioma: Idioma = idiomaEnergia()): FraseCitavel[] {
   const out: FraseCitavel[] = [];
   const ref = g.referencias;
-  const base = `${FONTE_LEILOES} (arquivo gerado em ${dataBR(ref.arquivo_gerado_em ?? ref.ultimo_leilao)})`;
+  const D = (iso: string | null | undefined) => dataBR(iso, idioma);
+  const N = (v: number | null | undefined) => num(v, 0, idioma);
+  const P = (v: number | null | undefined, casas = 1) => pct(v, casas, idioma);
+  const M = (v: number | null | undefined) => mwmed(v, 1, idioma);
+  const R = (v: number | null | undefined) => rsMwh(v, 2, idioma);
+  const base = tx(`${fonteLeiloes(idioma)} (arquivo gerado em ${D(ref.arquivo_gerado_em ?? ref.ultimo_leilao)})`, `${fonteLeiloes(idioma)} (file generated on ${D(ref.arquivo_gerado_em ?? ref.ultimo_leilao)})`, idioma);
   const t = g.totais;
   out.push({
-    id: "total",
-    texto: `Entre ${dataBR(ref.primeiro_leilao)} e ${dataBR(ref.ultimo_leilao)}, os ${num(g.cobertura.leiloes, 0)} leilões de geração do ACR na base aberta da ANEEL contrataram ${mwmed(t.energia_mwmed)} em ${num(t.empreendimentos, 0)} vendas${t.usinas_distintas ? ` de ${num(t.usinas_distintas, 0)} usinas distintas (a mesma usina pode vender em mais de um leilão)` : ""}.`,
-    referencia: `${base}. Não inclui leilões de energia existente, de ajuste, de reserva de capacidade e de sistemas isolados.`,
+    id: "total", // i18n: dado
+    texto: tx(
+      `Entre ${D(ref.primeiro_leilao)} e ${D(ref.ultimo_leilao)}, os ${N(g.cobertura.leiloes)} leilões de geração do ACR na base aberta da ANEEL contrataram ${M(t.energia_mwmed)} em ${N(t.empreendimentos)} vendas${t.usinas_distintas ? ` de ${N(t.usinas_distintas)} usinas distintas (a mesma usina pode vender em mais de um leilão)` : ""}.`,
+      `Between ${D(ref.primeiro_leilao)} and ${D(ref.ultimo_leilao)}, the ${N(g.cobertura.leiloes)} ACR generation auctions in ANEEL's open database contracted ${M(t.energia_mwmed)} in ${N(t.empreendimentos)} sales${t.usinas_distintas ? ` from ${N(t.usinas_distintas)} distinct plants (the same plant can sell in more than one auction)` : ""}.`,
+      idioma,
+    ),
+    referencia: tx(
+      `${base}. Não inclui leilões de energia existente, de ajuste, de reserva de capacidade e de sistemas isolados.`,
+      `${base}. Does not include existing energy, adjustment, capacity reserve or isolated systems auctions.`,
+      idioma,
+    ),
   });
   const op = participacao(g, "operacao");
   const enc = participacao(g, "encerrada");
@@ -178,15 +261,27 @@ export function frasesCitaveis(g: LeiloesGold): FraseCitavel[] {
   if (op != null && ref.siga) {
     out.push({
       id: "entrega",
-      texto: `${pct(op, 1)} da energia contratada nesses leilões vem de usinas que estavam em operação no cadastro da ANEEL em ${dataBR(ref.siga)}; ${pct(enc, 1)} vem de usinas com outorga revogada ou extinta desde 2015 e ${pct(sem, 1)} de usinas fora do cadastro sem ato de encerramento identificado.`,
-      referencia: `${base}; ANEEL, SIGA de ${dataBR(ref.siga)} e atos de outorga até ${dataBR(ref.atos)}. Situação da usina, não cumprimento do contrato.`,
+      texto: tx(
+        `${P(op)} da energia contratada nesses leilões vem de usinas que estavam em operação no cadastro da ANEEL em ${D(ref.siga)}; ${P(enc)} vem de usinas com outorga revogada ou extinta desde 2015 e ${P(sem)} de usinas fora do cadastro sem ato de encerramento identificado.`,
+        `${P(op)} of the energy contracted in these auctions comes from plants that were in operation in the ANEEL registry on ${D(ref.siga)}; ${P(enc)} comes from plants whose grant was revoked or extinguished since 2015 and ${P(sem)} from plants outside the registry with no termination act identified.`,
+        idioma,
+      ),
+      referencia: tx(
+        `${base}; ANEEL, SIGA de ${D(ref.siga)} e atos de outorga até ${D(ref.atos)}. Situação da usina, não cumprimento do contrato.`,
+        `${base}; ANEEL, SIGA as of ${D(ref.siga)} and grant acts up to ${D(ref.atos)}. Plant status, not contract compliance.`,
+        idioma,
+      ),
     });
   }
   const u = g.ultimo_leilao;
   if (u.preco_medio != null) {
     out.push({
       id: "ultimo",
-      texto: `O leilão mais recente da base, o ${nomeLeilao(u)}, de ${dataBR(u.data)}, contratou ${mwmed(u.energia_mwmed)} a ${rsMwh(u.preco_medio)} em média (ponderada pela energia), com deságio agregado de ${pct(u.desagio_agregado_pct, 2)} sobre o preço teto.`,
+      texto: tx(
+        `O leilão mais recente da base, o ${nomeLeilao(u, idioma)}, de ${D(u.data)}, contratou ${M(u.energia_mwmed)} a ${R(u.preco_medio)} em média (ponderada pela energia), com deságio agregado de ${P(u.desagio_agregado_pct, 2)} sobre o preço teto.`,
+        `The most recent auction in the database, the ${nomeLeilao(u, idioma)}, on ${D(u.data)}, contracted ${M(u.energia_mwmed)} at ${R(u.preco_medio)} on average (weighted by energy), with an aggregate discount of ${P(u.desagio_agregado_pct, 2)} below the ceiling price.`,
+        idioma,
+      ),
       referencia: base,
     });
   }
@@ -194,48 +289,87 @@ export function frasesCitaveis(g: LeiloesGold): FraseCitavel[] {
     const c = g.por_categoria.find((x) => x.id === k);
     if (!c?.primeiro_ano || !c.ultimo_ano || c.primeiro_ano.ano === c.ultimo_ano.ano) continue;
     if (c.primeiro_ano.preco_medio_real == null || c.ultimo_ano.preco_medio_real == null) continue;
+    const mes = mesAno(ref.ipca_ate, idioma);
     out.push({
       id: `preco-${k}`,
-      texto: `Em reais de ${mesAno(ref.ipca_ate)}, a energia ${k === "eolica" ? "eólica" : "solar"} foi contratada a ${rsMwh(c.primeiro_ano.preco_medio_real)} em ${c.primeiro_ano.ano} e a ${rsMwh(c.ultimo_ano.preco_medio_real)} em ${c.ultimo_ano.ano} (médias ponderadas pela energia vendida no ano; em valores da época, ${rsMwh(c.primeiro_ano.preco_medio)} e ${rsMwh(c.ultimo_ano.preco_medio)}).`,
-      referencia: `${base}; IBGE, IPCA (tabela 1737) até ${mesAno(ref.ipca_ate)}. O preço corrigido é régua de comparação, não o preço vigente do contrato.`,
+      texto: tx(
+        `Em reais de ${mes}, a energia ${k === "eolica" ? "eólica" : "solar"} foi contratada a ${R(c.primeiro_ano.preco_medio_real)} em ${c.primeiro_ano.ano} e a ${R(c.ultimo_ano.preco_medio_real)} em ${c.ultimo_ano.ano} (médias ponderadas pela energia vendida no ano; em valores da época, ${R(c.primeiro_ano.preco_medio)} e ${R(c.ultimo_ano.preco_medio)}).`,
+        `In reais of ${mes}, ${k === "eolica" ? "wind" : "solar"} energy was contracted at ${R(c.primeiro_ano.preco_medio_real)} in ${c.primeiro_ano.ano} and at ${R(c.ultimo_ano.preco_medio_real)} in ${c.ultimo_ano.ano} (averages weighted by the energy sold in the year; in values of the time, ${R(c.primeiro_ano.preco_medio)} and ${R(c.ultimo_ano.preco_medio)}).`,
+        idioma,
+      ),
+      referencia: tx(
+        `${base}; IBGE, IPCA (tabela 1737) até ${mes}. O preço corrigido é régua de comparação, não o preço vigente do contrato.`,
+        `${base}; IBGE, IPCA (table 1737) up to ${mes}. The adjusted price is a yardstick for comparison, not the current contract price.`,
+        idioma,
+      ),
     });
   }
   const q = g.desagio.geral;
   if (q.mediana != null) {
     out.push({
       id: "desagio",
-      texto: `Metade das ${num(q.n, 0)} vendas com preço teve deságio de até ${pct(q.mediana, 2)} sobre o preço teto; um quarto teve deságio acima de ${pct(q.p75, 2)}.`,
-      referencia: `${base}. Deságio mede a distância ao teto do edital; o número de proponentes não está no arquivo.`,
+      texto: tx(
+        `Metade das ${N(q.n)} vendas com preço teve deságio de até ${P(q.mediana, 2)} sobre o preço teto; um quarto teve deságio acima de ${P(q.p75, 2)}.`,
+        `Half of the ${N(q.n)} sales with a price had a discount of up to ${P(q.mediana, 2)} below the ceiling price; a quarter had a discount above ${P(q.p75, 2)}.`,
+        idioma,
+      ),
+      referencia: tx(
+        `${base}. Deságio mede a distância ao teto do edital; o número de proponentes não está no arquivo.`,
+        `${base}. The discount measures the distance from the tender's ceiling; the number of bidders is not in the file.`,
+        idioma,
+      ),
     });
   }
   const gc = g.grupos_controle?.maiores[0];
   if (gc && ref.siga) {
     out.push({
       id: "grupo",
-      texto: `Pelo controle das usinas em ${dataBR(ref.siga)}, o grupo ${gc.nome ?? "sem nome publicado"} reúne a maior parcela da energia contratada nesses leilões: ${mwmed(gc.energia_mwmed)} em ${num(gc.empreendimentos, 0)} vendas. Esse grupo não é necessariamente o vencedor na data do leilão.`,
-      referencia: `${base}; ANEEL, SIGA e Composição Societária, como publicados no módulo Empresas.`,
+      texto: tx(
+        `Pelo controle das usinas em ${D(ref.siga)}, o grupo ${gc.nome ?? "sem nome publicado"} reúne a maior parcela da energia contratada nesses leilões: ${M(gc.energia_mwmed)} em ${N(gc.empreendimentos)} vendas. Esse grupo não é necessariamente o vencedor na data do leilão.`,
+        `By control of the plants on ${D(ref.siga)}, the ${gc.nome ?? "unnamed"} group holds the largest share of the energy contracted in these auctions: ${M(gc.energia_mwmed)} in ${N(gc.empreendimentos)} sales. This group is not necessarily the winner on the auction date.`,
+        idioma,
+      ),
+      referencia: tx(
+        `${base}; ANEEL, SIGA e Composição Societária, como publicados no módulo Empresas.`,
+        `${base}; ANEEL, SIGA and Composição Societária (shareholding structure), as published in the Companies module.`,
+        idioma,
+      ),
     });
   }
   return out;
 }
 
 /** Frases citáveis da página de transmissão, do último ano com leilão no arquivo. */
-export function frasesTransmissao(g: LeiloesGold): FraseCitavel[] {
+export function frasesTransmissao(g: LeiloesGold, idioma: Idioma = idiomaEnergia()): FraseCitavel[] {
   const t = g.transmissao;
   const u = t.por_ano.at(-1);
   if (!u) return [];
-  const base = `${FONTE_TRANSMISSAO}, até ${dataBR(t.periodo.fim)}; IBGE, IPCA até ${mesAno(g.referencias.ipca_ate)}`;
+  const mes = mesAno(g.referencias.ipca_ate, idioma);
+  const base = tx(
+    `${fonteTransmissao(idioma)}, até ${dataBR(t.periodo.fim, idioma)}; IBGE, IPCA até ${mes}`,
+    `${fonteTransmissao(idioma)}, up to ${dataBR(t.periodo.fim, idioma)}; IBGE, IPCA up to ${mes}`,
+    idioma,
+  );
   const out: FraseCitavel[] = [
     {
       id: "ultimo-ano",
-      texto: `Os leilões de transmissão de ${u.ano} contrataram ${num(u.lotes_contratados, 0)} lotes com receita anual permitida (RAP) de R$ ${num(u.rap_vencedora_rs_mi, 1)} milhões em valores da época, ou R$ ${num(u.rap_vencedora_real_rs_mi, 1)} milhões em reais de ${mesAno(g.referencias.ipca_ate)}, com deságio agregado de ${pct(u.desagio_agregado_pct, 2)} sobre a RAP do edital.`,
+      texto: tx(
+        `Os leilões de transmissão de ${u.ano} contrataram ${num(u.lotes_contratados, 0, idioma)} lotes com receita anual permitida (RAP) de R$ ${num(u.rap_vencedora_rs_mi, 1, idioma)} milhões em valores da época, ou R$ ${num(u.rap_vencedora_real_rs_mi, 1, idioma)} milhões em reais de ${mes}, com deságio agregado de ${pct(u.desagio_agregado_pct, 2, idioma)} sobre a RAP do edital.`,
+        `The ${u.ano} transmission auctions contracted ${num(u.lotes_contratados, 0, idioma)} lots with an allowed annual revenue (RAP) of R$ ${num(u.rap_vencedora_rs_mi, 1, idioma)} million in values of the time, or R$ ${num(u.rap_vencedora_real_rs_mi, 1, idioma)} million in reais of ${mes}, with an aggregate discount of ${pct(u.desagio_agregado_pct, 2, idioma)} below the tender RAP.`,
+        idioma,
+      ),
       referencia: base,
     },
   ];
   if (t.desagio_lotes.mediana != null) {
+    const inicio = t.periodo.inicio?.slice(0, 4);
     out.push({
       id: "desagio-lotes",
-      texto: `Nos ${num(t.desagio_lotes.n, 0)} lotes contratados desde ${t.periodo.inicio?.slice(0, 4) ?? "o início do arquivo"}, o deságio mediano foi de ${pct(t.desagio_lotes.mediana, 2)}; ${num(t.lotes_desagio_zero, 0)} lotes saíram sem deságio.`,
+      texto: tx(
+        `Nos ${num(t.desagio_lotes.n, 0, idioma)} lotes contratados desde ${inicio ?? "o início do arquivo"}, o deságio mediano foi de ${pct(t.desagio_lotes.mediana, 2, idioma)}; ${num(t.lotes_desagio_zero, 0, idioma)} lotes saíram sem deságio.`,
+        `In the ${num(t.desagio_lotes.n, 0, idioma)} lots contracted since ${inicio ?? "the start of the file"}, the median discount was ${pct(t.desagio_lotes.mediana, 2, idioma)}; ${num(t.lotes_desagio_zero, 0, idioma)} lots were awarded with no discount.`,
+        idioma,
+      ),
       referencia: base,
     });
   }

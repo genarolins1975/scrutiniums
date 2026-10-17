@@ -7,6 +7,8 @@ import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { janelaDosPares, rotaEntidade, type Pares } from "@/lib/energia/empresas";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 
 /**
  * Ficha da distribuidora, pares: as distribuidoras do mesmo grupo (e, na continuidade, do mesmo
@@ -18,6 +20,7 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
  * próxima dela e a altura visível vai até a linha dela (janelaDosPares); "Mostrar todas" abre a lista inteira.
  */
 export function EmpresasFichaPares({ slug, sigla, perdas, qualidade }: { slug: string; sigla: string; perdas: Pares | null; qualidade: Pares | null }) {
+  const tx = useTx();
   const ids = useMemo(() => Array.from(new Set([...(perdas?.itens ?? []), ...(qualidade?.itens ?? [])].map((i) => i.id))), [perdas, qualidade]);
   const esquema = useMemo(() => ({ par: campo(tiposUrl.opcao(ids), "", { param: "par" }) }), [ids.join(",")]); // eslint-disable-line react-hooks/exhaustive-deps
   const [v, definir] = useEstadoUrl(esquema);
@@ -33,16 +36,24 @@ export function EmpresasFichaPares({ slug, sigla, perdas, qualidade }: { slug: s
     <div className="space-y-5">
       {(perdas || qualidade) && (
         <p className="max-w-prose2 text-xs text-carvao-muted" data-ordem-pares="">
-          Os gráficos abrem com a {sigla} à vista: a ordem parte da ponta mais próxima dela. &ldquo;Mostrar todas&rdquo; abre a lista inteira.
+          {tx(
+            <>
+              Os gráficos abrem com a {sigla} à vista: a ordem parte da ponta mais próxima dela. &ldquo;Mostrar todas&rdquo; abre a lista inteira.
+            </>,
+            <>
+              The charts open with <Nome>{sigla}</Nome> in view: the order starts from the end closest to it. &ldquo;Show all&rdquo; opens the whole list.
+            </>,
+          )}
         </p>
       )}
       {perdas && janelaPerdas && (
         <GraficoBarras
-          titulo={`Perdas totais das ${perdas.regra}, com a ${sigla} acesa`}
+          rotulosSaoNomes
+          titulo={tx(`Perdas totais das ${perdas.regra}, com a ${sigla} acesa`, `Total losses of ${perdas.regra}, with ${sigla} highlighted`)}
           dados={janelaPerdas.crescente ? barras : barras.slice().reverse()}
           chaveCategoria="id"
           chaveRotulo="rotulo"
-          series={[{ id: "perdas", rotulo: "Perdas totais", cor: "var(--serie-comp-1)" }]}
+          series={[{ id: "perdas", rotulo: tx("Perdas totais", "Total losses"), cor: "var(--serie-comp-1)" }]}
           unidade="%"
           casas={2}
           orientacao="horizontal"
@@ -54,14 +65,15 @@ export function EmpresasFichaPares({ slug, sigla, perdas, qualidade }: { slug: s
       )}
       {qualidade && janelaDec && (
         <GraficoPontos
-          titulo={`DEC diante do limite nas ${qualidade.regra}`}
+          rotulosSaoNomes
+          titulo={tx(`DEC diante do limite nas ${qualidade.regra}`, `DEC against the limit in ${qualidade.regra}`)}
           itens={qualidade.itens.map((i) => ({ id: i.id, rotulo: i.rotulo, valor: i.valor, referencia: i.referencia }))}
           unidade="h"
           casas={2}
-          rotuloValor="DEC apurado"
-          rotuloReferencia="Limite regulatório"
+          rotuloValor={tx("DEC apurado", "Measured DEC")}
+          rotuloReferencia={tx("Limite regulatório", "Regulatory limit")}
           zeroNoEixo
-          ordemInicial={{ por: "valor", direcao: janelaDec.crescente ? "asc" : "desc" }}
+          ordemInicial={{ por: "valor", direcao: janelaDec.crescente ? "asc" : "desc" }} // i18n: dado
           selecionado={sel}
           onSelecionar={escolher}
           alturaMaxima={janelaDec.alturaMaxima}
@@ -69,12 +81,12 @@ export function EmpresasFichaPares({ slug, sigla, perdas, qualidade }: { slug: s
       )}
       {sel !== slug && (
         <p aria-live="polite" className="text-sm text-carvao">
-          Escolhida: {rotulo}.{" "}
+          {tx("Escolhida", "Chosen")}: <Nome>{rotulo}</Nome>.{" "}
           <Link href={rotaEntidade(sel)} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            Abrir a ficha de {rotulo}
+            {tx(<>Abrir a ficha de {rotulo}</>, <>Open the profile of <Nome>{rotulo}</Nome></>)}
           </Link>{" "}
           <button type="button" onClick={() => escolher(null)} className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-            Voltar à {sigla}
+            {tx(<>Voltar à {sigla}</>, <>Back to <Nome>{sigla}</Nome></>)}
           </button>
         </p>
       )}

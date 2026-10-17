@@ -5,7 +5,9 @@ import { MapaCoropletico } from "@/components/energia/MapaCoropletico";
 import { TransicaoOpcoes } from "@/components/energia/TransicaoOpcoes";
 import { quebrasFixas } from "@/lib/energia/escalas";
 import { codigoUf, siglaDoCodigo } from "@/lib/energia/expansao";
+import { formatos } from "@/lib/energia/formato";
 import { URL_GEO } from "@/lib/energia/geo";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Uma visão por vez, com a escolha acima: a página monta as visões no servidor e o navegador mostra só a escolhida (o HTML inicial
@@ -31,6 +33,8 @@ export function LeiloesMapaUf({
   ufs: { uf: string; energia: number; empreendimentos: number; preco: number | null; fontes: string }[];
   periodo: string;
 }) {
+  const tx = useTx();
+  const f = formatos(useIdioma());
   const [sel, setSel] = useState<string | null>(null);
   const valores = useMemo(() => {
     const v: Record<string, number | null> = {};
@@ -42,35 +46,47 @@ export function LeiloesMapaUf({
   }, [ufs]);
   const classes = useMemo(() => quebrasFixas([250, 1000, 2500, 5000], Object.values(valores), { casas: 0 }), [valores]);
   const u = ufs.find((x) => x.uf === sel);
-  const fmt = (v: number, c = 1) => v.toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c });
+  const fmt = (v: number, c = 1) => f.num(v, c);
+  const mwmedio = tx("MWmédio", "MWavg");
   return (
     <div className="grid gap-x-8 gap-y-4 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start">
       <MapaCoropletico
-        titulo={`Energia contratada nos leilões do ACR por UF principal do empreendimento, ${periodo}`}
+        titulo={tx(`Energia contratada nos leilões do ACR por UF principal do empreendimento, ${periodo}`, `Energy contracted in ACR auctions by the project's main state, ${periodo}`)}
         fonteGeometria={URL_GEO.uf}
         valores={valores}
         cores={CORES}
         classificacao={classes}
-        unidade="MWmédio"
+        unidade={mwmedio}
         casas={1}
-        rotuloRegiao={{ singular: "UF", plural: "UF" }}
+        rotuloRegiao={tx({ singular: "UF", plural: "UF" }, { singular: "state", plural: "states" })}
         selecionado={sel ? codigoUf(sel) : null}
         onSelecionar={(id) => setSel(id ? siglaDoCodigo(id) : null)}
         rotulos
         periodo={periodo}
-        nota="UF principal informada pela ANEEL: usina em mais de uma UF conta inteira numa só. UF sem empreendimento contratado aparece hachurada (sem dado), não como zero."
+        nota={tx(
+          "UF principal informada pela ANEEL: usina em mais de uma UF conta inteira numa só. UF sem empreendimento contratado aparece hachurada (sem dado), não como zero.",
+          "Main state reported by ANEEL: a plant in more than one state counts in full in just one. A state with no project contracted appears hatched (no data), not as zero.",
+        )}
       />
-      <aside aria-label="UF selecionada" aria-live="polite" className="min-w-0 border-t border-linha pt-4 text-sm lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+      <aside aria-label={tx("UF selecionada", "Selected state")} aria-live="polite" className="min-w-0 border-t border-linha pt-4 text-sm lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
         {u ? (
           <dl className="space-y-2">
             <dt className="rotulo text-mineral">{u.uf}</dt>
-            <dd className="font-serif text-2xl text-carvao">{fmt(u.energia)} MWmédio</dd>
-            <dd className="text-carvao-muted">{u.empreendimentos} vendas</dd>
-            <dd className="text-carvao-muted">Preço médio da época: {u.preco == null ? "sem dado" : `R$ ${fmt(u.preco, 2)}/MWh`}</dd>
-            <dd className="text-carvao-muted">Por fonte: {u.fontes}</dd>
+            <dd className="font-serif text-2xl text-carvao">
+              {fmt(u.energia)} {mwmedio}
+            </dd>
+            <dd className="text-carvao-muted">
+              {u.empreendimentos} {tx("vendas", u.empreendimentos === 1 ? "sale" : "sales")}
+            </dd>
+            <dd className="text-carvao-muted">
+              {tx("Preço médio da época", "Average price at the time")}: {u.preco == null ? tx("sem dado", "no data") : `R$ ${fmt(u.preco, 2)}/MWh`}
+            </dd>
+            <dd className="text-carvao-muted">
+              {tx("Por fonte", "By source")}: {u.fontes}
+            </dd>
           </dl>
         ) : (
-          <p className="text-carvao-muted">Escolha uma UF no mapa ou na busca para ver o que foi contratado nela.</p>
+          <p className="text-carvao-muted">{tx("Escolha uma UF no mapa ou na busca para ver o que foi contratado nela.", "Choose a state on the map or in the search to see what was contracted there.")}</p>
         )}
       </aside>
     </div>
@@ -97,6 +113,8 @@ export function LeiloesPrecoAno({
   ipcaAte: string;
   iniciais: string[];
 }) {
+  const tx = useTx();
+  const f = formatos(useIdioma());
   const [ativas, setAtivas] = useState<string[]>(iniciais);
   const [real, setReal] = useState<"real" | "nominal">("real");
   const [tabelaAberta, setTabelaAberta] = useState(false);
@@ -118,7 +136,8 @@ export function LeiloesPrecoAno({
   const sx = (ano: string) => M.e + ((anos.indexOf(ano) + 0.5) / anos.length) * (W - M.e - M.d);
   const sy = (x: number) => M.t + (1 - x / ymax) * (H - M.t - M.b);
   const passo = W < 520 ? 4 : 2;
-  const fmt = (x: number | null, c = 2) => (x == null ? "sem dado" : x.toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c }));
+  const fmt = (x: number | null, c = 2) => (x == null ? tx("sem dado", "no data") : f.num(x, c));
+  const mwmedio = tx("MWmédio", "MWavg");
   // rótulos diretos no fim de cada série, afastados quando ficariam sobrepostos (mínimo de 13 px entre eles)
   const finais = categorias
     .filter((c) => ativas.includes(c.id))
@@ -136,11 +155,11 @@ export function LeiloesPrecoAno({
   }
   const yRotulo = Object.fromEntries(finais.map((f) => [f.id, f.y]));
   const alterna = (id: string) => setAtivas((a) => (a.includes(id) ? a.filter((x) => x !== id) : [...a, id]));
-  const unidade = real === "real" ? `R$/MWh de ${ipcaAte}` : "R$/MWh da data de cada leilão";
+  const unidade = real === "real" ? tx(`R$/MWh de ${ipcaAte}`, `R$/MWh of ${ipcaAte}`) : tx("R$/MWh da data de cada leilão", "R$/MWh as of each auction date");
   return (
     <div ref={ref} className="space-y-3">
       <fieldset className="flex flex-wrap items-center gap-2">
-        <legend className="rotulo mb-1 text-mineral">Fontes</legend>
+        <legend className="rotulo mb-1 text-mineral">{tx("Fontes", "Sources")}</legend>
         {categorias.map((c) => (
           <label
             key={c.id}
@@ -152,16 +171,36 @@ export function LeiloesPrecoAno({
           </label>
         ))}
       </fieldset>
-      <TransicaoOpcoes rotulo="Reais" nome="leiloes-preco-real" opcoes={[["real", `de ${ipcaAte} (IPCA)`], ["nominal", "da época"]] as const} valor={real} onMudar={setReal} />
-      <p className="text-sm font-medium text-carvao">Preço médio de venda por fonte e ano do leilão, ponderado pela energia ({unidade})</p>
-      <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="block max-w-full" role="img" aria-label={`Preço médio por fonte e ano, em ${unidade}; os valores estão na tabela abaixo.`}>
+      <TransicaoOpcoes
+        rotulo={tx("Reais", "Reais")}
+        nome="leiloes-preco-real"
+        opcoes={
+          [
+            ["real", tx(`de ${ipcaAte} (IPCA)`, `of ${ipcaAte} (IPCA)`)],
+            ["nominal", tx("da época", "of the time")],
+          ] as const
+        }
+        valor={real}
+        onMudar={setReal}
+      />
+      <p className="text-sm font-medium text-carvao">
+        {tx(`Preço médio de venda por fonte e ano do leilão, ponderado pela energia (${unidade})`, `Average sale price by source and auction year, weighted by energy (${unidade})`)}
+      </p>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        width={W}
+        height={H}
+        className="block max-w-full"
+        role="img"
+        aria-label={tx(`Preço médio por fonte e ano, em ${unidade}; os valores estão na tabela abaixo.`, `Average price by source and year, in ${unidade}; the values are in the table below.`)}
+      >
         {Array.from({ length: ymax / 100 + 1 }, (_, i) => i * 100)
           .filter((t, _, arr) => arr.length <= 8 || t % 200 === 0)
           .map((t) => (
             <g key={t}>
               <line x1={M.e} x2={W - M.d} y1={sy(t)} y2={sy(t)} stroke="var(--cor-grade)" />
               <text x={M.e - 6} y={sy(t) + 4} textAnchor="end" fontSize="11" fill="var(--cor-carvao-muted)">
-                {t.toLocaleString("pt-BR")}
+                {f.num(t, 0)}
               </text>
             </g>
           ))}
@@ -184,7 +223,7 @@ export function LeiloesPrecoAno({
                 <path d={d} fill="none" stroke={c.cor} strokeWidth="1.5" strokeDasharray="2 4" />
                 {ps.map((p) => (
                   <circle key={p.ano} cx={sx(p.ano)} cy={sy(v(p)!)} r="4.5" fill={c.cor} stroke="var(--cor-superficie)" strokeWidth="1.5">
-                    <title>{`${c.rotulo}, ${p.ano}: R$ ${fmt(v(p))}/MWh (${fmt(p.energia, 1)} MWmédio)`}</title>
+                    <title>{`${c.rotulo}, ${p.ano}: R$ ${fmt(v(p))}/MWh (${fmt(p.energia, 1)} ${mwmedio})`}</title>
                   </circle>
                 ))}
                 {largura >= 520 && (
@@ -196,38 +235,53 @@ export function LeiloesPrecoAno({
             );
           })}
       </svg>
-      <p className="text-xs text-carvao-muted">Cada ponto é um ano com venda da fonte; o pontilhado só liga esses anos e não indica valor nos anos sem venda.</p>
+      <p className="text-xs text-carvao-muted">
+        {tx(
+          "Cada ponto é um ano com venda da fonte; o pontilhado só liga esses anos e não indica valor nos anos sem venda.",
+          "Each point is a year with sales of the source; the dotted line only connects those years and does not indicate a value in years without sales.",
+        )}
+      </p>
       <details onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
-        <summary className="min-h-[44px] cursor-pointer text-sm text-carvao-muted underline underline-offset-4">Tabela equivalente</summary>
+        <summary className="min-h-[44px] cursor-pointer text-sm text-carvao-muted underline underline-offset-4">{tx("Tabela equivalente", "Equivalent table")}</summary>
         {/* montada só ao abrir: as linhas já estão na tabela de download e não pesam no HTML inicial */}
-        {tabelaAberta && <div className="tabela-scroll mt-2 max-h-[28rem] overflow-y-auto" tabIndex={0} role="region" aria-label="Preço médio por fonte e ano (tabela rolável)">
-          <table className="w-full min-w-[36rem] border-collapse text-xs tabular-nums">
-            <thead>
-              <tr>
-                {["Ano", "Fonte", "Leilões", "Energia (MWmédio)", "Preço da época (R$/MWh)", `Preço de ${ipcaAte} (R$/MWh)`, "Teto médio da época (R$/MWh)"].map((h) => (
-                  <th key={h} scope="col" className="sticky top-0 border-b border-linha bg-papel px-2 py-1.5 text-left font-medium text-mineral">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {pontos
-                .filter((p) => ativas.includes(p.categoria))
-                .map((p) => (
-                  <tr key={`${p.ano}-${p.categoria}`} className="border-b border-linha">
-                    <td className="px-2 py-1">{p.ano}</td>
-                    <td className="px-2 py-1">{categorias.find((c) => c.id === p.categoria)?.rotulo ?? p.categoria}</td>
-                    <td className="px-2 py-1 text-right">{p.leiloes}</td>
-                    <td className="px-2 py-1 text-right">{fmt(p.energia, 1)}</td>
-                    <td className="px-2 py-1 text-right">{fmt(p.preco)}</td>
-                    <td className="px-2 py-1 text-right">{fmt(p.precoReal)}</td>
-                    <td className="px-2 py-1 text-right">{fmt(p.teto)}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>}
+        {tabelaAberta && (
+          <div className="tabela-scroll mt-2 max-h-[28rem] overflow-y-auto" tabIndex={0} role="region" aria-label={tx("Preço médio por fonte e ano (tabela rolável)", "Average price by source and year (scrollable table)")}>
+            <table className="w-full min-w-[36rem] border-collapse text-xs tabular-nums">
+              <thead>
+                <tr>
+                  {[
+                    tx("Ano", "Year"),
+                    tx("Fonte", "Source"),
+                    tx("Leilões", "Auctions"),
+                    tx("Energia (MWmédio)", "Energy (MWavg)"),
+                    tx("Preço da época (R$/MWh)", "Price at the time (R$/MWh)"),
+                    tx(`Preço de ${ipcaAte} (R$/MWh)`, `Price of ${ipcaAte} (R$/MWh)`),
+                    tx("Teto médio da época (R$/MWh)", "Average ceiling at the time (R$/MWh)"),
+                  ].map((h) => (
+                    <th key={h} scope="col" className="sticky top-0 border-b border-linha bg-papel px-2 py-1.5 text-left font-medium text-mineral">
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {pontos
+                  .filter((p) => ativas.includes(p.categoria))
+                  .map((p) => (
+                    <tr key={`${p.ano}-${p.categoria}`} className="border-b border-linha">
+                      <td className="px-2 py-1">{p.ano}</td>
+                      <td className="px-2 py-1">{categorias.find((c) => c.id === p.categoria)?.rotulo ?? p.categoria}</td>
+                      <td className="px-2 py-1 text-right">{p.leiloes}</td>
+                      <td className="px-2 py-1 text-right">{fmt(p.energia, 1)}</td>
+                      <td className="px-2 py-1 text-right">{fmt(p.preco)}</td>
+                      <td className="px-2 py-1 text-right">{fmt(p.precoReal)}</td>
+                      <td className="px-2 py-1 text-right">{fmt(p.teto)}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </details>
     </div>
   );
