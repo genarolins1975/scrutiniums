@@ -9,6 +9,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { agregado, meta } from "@/lib/saneamento/gold";
 import { EIXOS, FERRAMENTAS, ROTA, rotaCapitulo } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
+import { respostasDosCapitulos } from "@/lib/saneamento/respostas";
 import { data, inteiro, numero, reaisCompacto } from "@/lib/saneamento/formato";
 
 export const dynamic = "force-static";
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
 export default function Pagina() {
   const m = meta();
   const br = agregado("BR");
+  const respostas = respostasDosCapitulos();
   const mor = br?.censo2022.moradores;
   const invTotal =
     br?.sinisa.agua.investimento?.total != null && br?.sinisa.esgoto.investimento?.total != null
@@ -139,8 +141,8 @@ export default function Pagina() {
             Cinco eixos, catorze perguntas
           </h2>
           <p className="mt-3 max-w-prose2 text-[0.95rem] leading-relaxed text-carvao-muted">
-            Cada capítulo responde a uma pergunta e declara sua situação. Capítulo em preparação não vira link: diz o que falta e de que
-            depende.
+            Cada capítulo traz a resposta curta, o número que a sustenta e a fonte; a cobertura, o método e os limites estão no capítulo.
+            Capítulo em preparação não vira link: diz o que falta e de que depende.
           </p>
           <div className="mt-8">
             {EIXOS.map((e) => (
@@ -155,8 +157,10 @@ export default function Pagina() {
                 </h3>
                 <p className="mt-1 max-w-prose2 text-sm text-carvao-muted">{e.resumo}</p>
                 <ol className="mt-4 grid grid-cols-1 gap-x-10 md:grid-cols-2">
-                  {e.capitulos.map((c) => (
-                    <li key={c.numero} className="border-t border-linha py-3">
+                  {e.capitulos.map((c) => {
+                    const r = c.situacao === "em_preparacao" ? undefined : respostas[c.numero];
+                    return (
+                    <li key={c.numero} className="border-t border-linha py-4" data-capitulo={c.numero}>
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
                         {c.situacao === "em_preparacao" ? (
                           <p className="text-base text-carvao-muted">
@@ -171,7 +175,18 @@ export default function Pagina() {
                         )}
                         <SeloSituacao situacao={c.situacao} />
                       </div>
-                      <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.situacao === "em_preparacao" ? c.pendencia : c.resumo}</p>
+                      {r ? (
+                        <div data-resposta="">
+                          <p className="mt-3 flex flex-wrap items-baseline gap-x-2">
+                            <span className="font-serif text-[1.55rem] leading-none tabular-nums text-carvao">{r.valor}</span>
+                            <span className="text-sm text-carvao">{r.rotulo}</span>
+                          </p>
+                          <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{r.frase}</p>
+                          <p className="mt-1 text-xs text-mineral">{r.fonte}</p>
+                        </div>
+                      ) : (
+                        <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.situacao === "em_preparacao" ? c.pendencia : c.resumo}</p>
+                      )}
                       {c.subpaineis && (
                         <ul className="mt-3 grid grid-cols-1 gap-x-6 sm:grid-cols-2">
                           {c.subpaineis.map((s) => (
@@ -184,7 +199,8 @@ export default function Pagina() {
                         </ul>
                       )}
                     </li>
-                  ))}
+                    );
+                  })}
                 </ol>
               </section>
             ))}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -166,6 +166,15 @@ export default function Pagina() {
           recorte={<>SINISA 2024: {inteiro(vinculos)} vínculos prestador × município de água; tabelas verificadas de {new Set(TARIFAS.map((t) => t.prestadorSinisa)).size} prestadores, vigentes em 2026.</>}
           situacao={cap.situacao}
           pendencia={cap.pendencia}
+        />
+        <NestaPagina
+          itens={[
+            { id: "regra", rotulo: "O que a lei garante" },
+            { id: "declaracoes", rotulo: "Declarações de 2024" },
+            { id: "desconto", rotulo: "Quanto reduz a conta" },
+            { id: "orcamento", rotulo: "Peso na renda" },
+            { id: "cobertura", rotulo: "Chega às famílias?" },
+          ]}
         />
 
         <Secao id="regra" titulo="O que a lei garante">

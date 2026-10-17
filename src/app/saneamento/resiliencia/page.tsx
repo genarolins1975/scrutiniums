@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -8,6 +8,7 @@ import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMu
 import { agregado, agregados, fichas, municipios } from "@/lib/saneamento/gold";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { inteiro } from "@/lib/saneamento/formato";
+import { MANANCIAL } from "@/lib/saneamento/respostas";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -17,7 +18,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/saneamento/resiliencia" },
 };
 
-const MANANCIAL = "Baixa disponibilidade do manancial";
 
 export default function Pagina() {
   const cap = capituloPorSlug("resiliencia")!;
@@ -74,6 +74,15 @@ export default function Pagina() {
           recorte={<>{inteiro(c?.municipios_participantes)} municípios do módulo de água do SINISA 2024; motivo informado só por quem declarou interrupção sistemática.</>}
           situacao={cap.situacao}
           pendencia={cap.pendencia}
+        />
+        <NestaPagina
+          itens={[
+            { id: "motivos", rotulo: "Motivos do racionamento" },
+            { id: "manancial", rotulo: "Falta de água bruta" },
+            { id: "colapso", rotulo: "Colapso do sistema" },
+            { id: "mundo", rotulo: "Estresse hídrico" },
+            { id: "lacunas", rotulo: "O que ainda falta" },
+          ]}
         />
 
         <Numeros

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -89,6 +89,23 @@ export default function Pagina() {
           }
           situacao={cap.situacao}
           pendencia={cap.pendencia}
+        />
+        <NestaPagina
+          itens={[
+            { id: "por-uf", rotulo: "Racionamento por UF" },
+            { id: "municipios", rotulo: "Municípios com racionamento" },
+            { id: "mundo", rotulo: "No mundo" },
+            { id: "qualidade", rotulo: "Monitoramento da qualidade" },
+            { id: "qualidade-resultados", rotulo: "O que os registros mostram" },
+            { id: "qualidade-procedencia", rotulo: "E. coli na vigilância" },
+            { id: "qualidade-atlas", rotulo: "Atlas da qualidade" },
+            { id: "qualidade-plano", rotulo: "Análises exigidas" },
+            { id: "qualidade-populacao", rotulo: "População com controle" },
+            { id: "qualidade-quimica", rotulo: "Substâncias químicas" },
+            { id: "qualidade-serie", rotulo: "Evolução desde 2014" },
+            { id: "qualidade-uf", rotulo: "Qualidade por UF" },
+            { id: "qualidade-conferencia", rotulo: "Conferência dos registros" },
+          ]}
         />
 
         <Numeros

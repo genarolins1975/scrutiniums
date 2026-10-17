@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Histograma } from "@/components/energia/Histograma";
@@ -106,6 +106,16 @@ export default function Pagina() {
               serviço delegado sem atendimento, que entram no denominador da consolidação oficial.
             </>
           }
+        />
+        <NestaPagina
+          itens={[
+            { id: "destino", rotulo: "Destino do esgoto" },
+            { id: "cadeia", rotulo: "Do consumo ao tratamento" },
+            { id: "mundo", rotulo: "No mundo" },
+            { id: "atlas", rotulo: "Atlas municipal" },
+            { id: "factiveis", rotulo: "Ligações possíveis" },
+            { id: "estacoes", rotulo: "Estações de tratamento" },
+          ]}
         />
 
         <Numeros

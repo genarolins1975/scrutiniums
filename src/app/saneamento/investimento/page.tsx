@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -115,6 +115,15 @@ export default function Pagina() {
           }
           situacao={cap.situacao}
           pendencia={cap.pendencia}
+        />
+        <NestaPagina
+          itens={[
+            { id: "atlas", rotulo: "Por habitante" },
+            { id: "por-uf", rotulo: "Por UF" },
+            { id: "destino", rotulo: "Ampliar ou repor" },
+            { id: "carencia", rotulo: "Investimento e carência" },
+            { id: "obras", rotulo: "Obras e serviço" },
+          ]}
         />
 
         <Numeros
