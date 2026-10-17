@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasBusca } from "@/components/energia/EmpresasBusca";
+import { MapaCadeia, VitrineListadas } from "@/components/energia/EmpresasEntrada";
 import {
   EmpresasCapitulos,
   EmpresasDatas,
@@ -47,11 +48,14 @@ import {
   vereditoFinancas,
 } from "@/lib/energia/empresas";
 import { evidenciasReceita } from "@/lib/energia/empresas-arquivos";
-import { carimbo } from "@/lib/energia/formato";
+import { cadeiaDoSetor, ucsDistribuidoras, vitrineListadas } from "@/lib/energia/empresas-entrada";
+import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { comValorExibido, type Evidencia } from "@/lib/energia/evidencia";
 import { SIGLAS } from "@/lib/energia/siglas";
+import { lerManifestoLogos } from "@/lib/energia/logos";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
+import type { ListadasGold } from "@/lib/energia/tipos-listadas";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -70,10 +74,10 @@ const MEDIDAS = [
 ] as const;
 
 /**
- * Abertura de Empresas: a entrada para ativos, perfil da distribuidora, finanças e controle, unificados pelo CNPJ que a fonte oficial
- * publica. Na primeira tela, as medidas do cadastro de usinas com data e fonte e a busca por empresa (que leva à ficha útil); logo
- * depois, os quatro caminhos, cada um com a resposta curta, um número com a ficha de prova e o limite da leitura; só então os quatro
- * elos entre empresa, participação, ativo e controle, o recorte e as medidas que não se somam. A página não repete os gráficos dos painéis.
+ * Abertura de Empresas, executiva e didática: quatro números do setor (geração, transmissão, distribuição e listadas); a vitrine das
+ * companhias listadas do IEE, que é a entrada mais procurada; o mapa da cadeia (o que cada elo faz, como é remunerado e quantos agentes
+ * declaram o ramo); a busca; os quatro painéis de aprofundamento com a resposta curta e um número com prova; e, recolhidos no fim, os
+ * elos pelo CNPJ, o recorte, as medidas que não se somam e os downloads. A página não repete os gráficos dos painéis.
  */
 export default function EmpresasPage() {
   const g = lerGold<EmpresasGold>("empresas.json");
@@ -108,6 +112,10 @@ export default function EmpresasPage() {
     .slice(0, 4)
     .map((x) => ({ rotulo: x.sigla, href: rotaEntidade(x.slug) }));
   const entidades = entidadesBuscaEmpresas(g);
+  const listadas = lerGold<ListadasGold>("listadas.json");
+  const logos = lerManifestoLogos();
+  const cartoes = integra(listadas) ? vitrineListadas(listadas, logos) : [];
+  const ucs = ucsDistribuidoras(g);
   const semMmgd = prov.ativos.limitacoes.find((x) => /micro e minigera/i.test(x)) ?? "Micro e minigeração distribuída não está no SIGA e fica fora das medidas de capacidade.";
 
   const oQueMudou = (
@@ -138,9 +146,13 @@ export default function EmpresasPage() {
         <CabecalhoModulo
           siglas={["CNPJ", "SIGA", "SIGET", "CVM", "DFP", "ITR", "HHI", "CADE"]}
           titulo="Quem atua no setor elétrico?"
-          lead={`Donos de usinas e de linhas, distribuidoras, companhias abertas e grupos de controle, ligados pelo CNPJ (${SIGLAS.CNPJ}) publicado pela fonte oficial.`}
-          recorte={`Usinas do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · demais fontes com datas próprias`}
-          fonte={`ANEEL, ${SIGLAS.ANEEL} (cadastros de geração e de transmissão); CVM, ${SIGLAS.CVM} (demonstrações anuais e trimestrais)`}
+          lead="Quem gera, transmite e distribui a energia do país, quem controla essas empresas e como as companhias abertas se saem. Comece pelas listadas na bolsa, pelo mapa do setor ou pela busca."
+          recorte={
+            integra(listadas)
+              ? `Dados de ${dataSiga} (usinas) a ${dataTexto(listadas.datas.carteira_iee)} (bolsa); cada número traz a sua data`
+              : `Usinas do SIGA de ${dataSiga}; cada número traz a sua data`
+          }
+          fonte="ANEEL (cadastros de geração, transmissão e agentes), CVM (demonstrações) e B3 (carteira do IEE e cotações)"
           referencia={
             <>
               SIGA de {dataSiga}; SIGET de {dataTexto(t?.data)}; cadastro de agentes de {dataTexto(datas.cadastro_agentes)}; composição societária declarada à ANEEL de {janela}; CVM com DFP até{" "}
@@ -166,60 +178,80 @@ export default function EmpresasPage() {
           metricas={
             <FaixaMetricas
               colunas={4}
-              rotulo="Indicadores do cadastro de usinas"
+              rotulo="O setor elétrico em quatro números"
               nota={
                 <>
-                  {g.definicoes.vinculo.replace(/^Vínculo provado = /, "Vínculo provado: ")} {semMmgd} Dos {inteiro(a.operacao.usinas)} registros em operação, {inteiro(a.sem_vinculo_total)} ficam sem vínculo
-                  completo, todos identificados com o motivo.
+                  Cada número tem a sua fonte e a sua data; nenhum se soma ao outro. {semMmgd}
                 </>
               }
             >
-              <Numero variante="faixa" rotulo="Usinas em operação" natureza="CALCULADO" valor={a.operacao.usinas} formato="num" casas={0} unidade="usinas" periodo={`SIGA de ${dataSiga}`} />
               <Numero
                 variante="faixa"
-                rotulo="Potência fiscalizada"
+                rotulo="Potência em operação"
                 natureza="CALCULADO"
                 valor={a.operacao.mw_fiscalizado}
                 formato="num"
-                casas={1}
+                casas={0}
                 unidade="MW"
                 periodo={`SIGA de ${dataSiga}`}
-                nota="Capacidade instalada, não é energia gerada."
+                nota={`Em ${inteiro(a.operacao.usinas)} usinas. Capacidade instalada, não é energia gerada.`}
               />
               <Numero
                 variante="faixa"
-                rotulo="Proprietários identificados"
+                rotulo="Transmissão em operação"
                 natureza="CALCULADO"
-                valor={a.proprietarios_cnpj}
+                valor={t ? t.resumo.km_circuito_operacao : null}
                 formato="num"
                 casas={0}
-                unidade="CNPJ"
-                periodo={`SIGA de ${dataSiga}, todas as fases`}
-                nota="CNPJ distintos; matriz e filial contam separadas."
+                unidade="km de circuito"
+                periodo={`SIGET de ${dataTexto(t?.data)}`}
+                nota={t ? `Em ${inteiro(t.resumo.cnpjs_com_modulos)} concessionárias.` : undefined}
+                motivoAusencia="O SIGET não está integrado nesta publicação."
               />
               <Numero
                 variante="faixa"
-                rotulo="Potência com donos identificados"
-                natureza="CALCULADO"
-                evidencia={comValorExibido(a.evidencia, pctTexto(a.evidencia.valor_calculo, 2))}
-                formato="pct"
-                casas={2}
-                unidade="da potência"
-                endereco={ancoraPainel("p036")}
+                rotulo="Distribuidoras ativas"
+                natureza="OBSERVADO"
+                valor={d.resumo.ativas}
+                formato="num"
+                casas={0}
+                unidade="distribuidoras"
+                periodo={`índice de ${dataTexto(g.gerado_em.slice(0, 10))}`}
+                nota={
+                  ucs.ucs !== null
+                    ? `${num(ucs.ucs / 1e6, 1)} milhões de unidades consumidoras em ${ucs.ano}, nas ${inteiro(ucs.distribuidoras)} com continuidade publicada.`
+                    : undefined
+                }
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Companhias no Índice de Energia Elétrica"
+                natureza="OBSERVADO"
+                valor={cartoes.length || null}
+                formato="num"
+                casas={0}
+                unidade="companhias"
+                periodo={integra(listadas) ? `carteira do IEE de ${dataTexto(listadas.datas.carteira_iee)}` : "sem dado"}
+                nota="Listadas na B3; a vitrine logo abaixo leva à ficha de cada uma."
+                motivoAusencia="A base das companhias listadas não foi publicada nesta atualização."
               />
             </FaixaMetricas>
           }
         >
-          Quatro perguntas sobre quem atua no setor: quem opera as usinas e as linhas, como cada distribuidora atende a sua área, como evoluem os números que as companhias abertas reportam e quem
-          controla quanto da capacidade instalada. Toda ligação entre empresa e ativo é o CNPJ publicado pela fonte oficial no mesmo registro; nenhuma é feita por semelhança de nome.
+          A página reúne quem opera usinas e linhas, como cada distribuidora atende a sua área, o que as companhias abertas reportam à CVM e quem controla quanto da
+          capacidade instalada. Toda ligação entre empresa e ativo é o CNPJ ({SIGLAS.CNPJ}) publicado pela fonte oficial no mesmo registro; nenhuma é feita por semelhança
+          de nome.
         </CabecalhoModulo>
         <EmpresasNavegacao atual="sintese" />
 
-        <AtalhoLeitura href="/setor-eletrico/empresas/analise" titulo="Controle, resultado e investimento na mesma leitura" texto="Selecione uma companhia, confronte lucro e caixa e avance aos segmentos de negócio." />
+        {integra(listadas) && cartoes.length > 0 && <VitrineListadas cartoes={cartoes} logos={logos} dataCarteira={dataTexto(listadas.datas.carteira_iee)} />}
+        <MapaCadeia elos={cadeiaDoSetor(g)} dataAgentes={dataTexto(datas.cadastro_agentes)} />
+
         <ModoProfundidade>
           <Bloco id="empresas">
             <section id="busca" aria-labelledby="busca-titulo" className="scroll-mt-28 pb-6">
-              <h2 id="busca-titulo" className="ed-h2 font-serif text-carvao">
+              <p className="rotulo text-mineral">Busca</p>
+              <h2 id="busca-titulo" className="ed-h2 mt-1 font-serif text-carvao">
                 Qual empresa você procura?
               </h2>
               <div className="mt-2">
@@ -236,20 +268,18 @@ export default function EmpresasPage() {
                       {respostaCadastro(c)}
                     </RespostaCurta>
                   ),
-                  numero: t ? (
+                  numero: (
                     <Numero
                       variante="faixa"
-                      rotulo="Módulos de transmissão ligados ao CNPJ"
+                      rotulo="Potência com donos identificados"
                       natureza="CALCULADO"
-                      evidencia={comValorExibido(t.evidencia, pctTexto(t.evidencia.valor_calculo, 1))}
+                      evidencia={comValorExibido(a.evidencia, pctTexto(a.evidencia.valor_calculo, 2))}
                       formato="pct"
-                      casas={1}
-                      unidade="dos módulos"
-                      nota={`${inteiro(t.resumo.modulos_com_cnpj)} de ${inteiro(t.resumo.modulos)} módulos; ${inteiro(t.resumo.cnpjs_com_modulos)} concessionárias com módulos.`}
+                      casas={2}
+                      unidade="da potência"
+                      nota={`${inteiro(a.proprietarios_cnpj)} proprietários com CNPJ; ${inteiro(a.sem_vinculo_total)} registros em operação sem vínculo completo, todos com o motivo.${t ? ` Na transmissão, ${pctTexto(t.evidencia.valor_calculo, 1)} dos módulos estão ligados ao CNPJ.` : ""}`}
                       endereco={ancoraPainel("p036")}
                     />
-                  ) : (
-                    <Numero variante="faixa" rotulo="Módulos de transmissão ligados ao CNPJ" natureza="CALCULADO" valor={null} motivoAusencia="O SIGET não está integrado nesta publicação." />
                   ),
                   contexto: (
                     <>
@@ -369,6 +399,19 @@ export default function EmpresasPage() {
               ]}
             />
 
+            <AtalhoLeitura href="/setor-eletrico/empresas/analise" titulo="Controle, resultado e investimento na mesma leitura" texto="Selecione uma companhia, confronte lucro e caixa e avance aos segmentos de negócio." />
+
+            <details id="metodo" className="group mt-8 scroll-mt-28 border-t border-linha pt-4">
+              <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 text-carvao [&::-webkit-details-marker]:hidden">
+                <span>
+                  <span className="rotulo block text-mineral">Método, fontes e downloads</span>
+                  <span className="ed-h3 font-serif">Como uma empresa se liga a ativos, grupos e demonstrações</span>
+                </span>
+                <span aria-hidden="true" className="text-xl text-energia-dark transition-transform group-open:rotate-45">
+                  +
+                </span>
+              </summary>
+              <div className="pt-4">
             <PainelEvidencia
               id="entrada"
               pergunta="Como uma empresa se liga a ativos, grupos e demonstrações?"
@@ -428,6 +471,8 @@ export default function EmpresasPage() {
                 </div>
               </div>
             </PainelEvidencia>
+              </div>
+            </details>
           </Bloco>
         </ModoProfundidade>
       </main>
