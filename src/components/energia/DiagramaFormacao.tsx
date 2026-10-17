@@ -4,12 +4,11 @@ import Link from "@/components/i18n/LinkIdioma";
 import { useState } from "react";
 import type { NoFormacao } from "@/lib/energia/conteudo/pld";
 import { TIPOS_RELACAO_IDIOMAS } from "@/lib/energia/conteudo/pld";
-import { rotuloNaturezaIdioma } from "@/lib/energia/i18n/mercado-preco";
 import { tx } from "@/lib/energia/idioma";
 import { useIdioma } from "@/lib/energia/useIdioma";
 import type { Natureza } from "@/lib/energia/tipos";
 import type { Idioma } from "@/lib/idioma";
-import { NATUREZAS } from "@/components/evidencia/SeloNatureza";
+import { NATUREZAS, textoNatureza } from "@/components/evidencia/SeloNatureza";
 
 export type EstadoNo = { texto: string; natureza?: Natureza; ref?: string; historico?: { rotulo: string; href: string } } | null;
 export type NoComEstado = NoFormacao & { estado: EstadoNo };
@@ -130,7 +129,7 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
             <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-mineral">
               {atual.estado.natureza && (
                 <span>
-                  {NATUREZAS[atual.estado.natureza].glifo} {rotuloNaturezaIdioma(atual.estado.natureza, NATUREZAS[atual.estado.natureza].rotulo, idioma)}
+                  {NATUREZAS[atual.estado.natureza].glifo} {textoNatureza(atual.estado.natureza, idioma).rotulo}
                 </span>
               )}
               {atual.estado.ref && (

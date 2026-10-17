@@ -154,18 +154,3 @@ export const TEXTOS_PLD_EN: Readonly<Record<string, string>> = {
 export const CRITERIOS_MERCADO_EN: Readonly<Record<string, string>> = {
   "as 30 maiores em energia livre faturada no ano; a tabela completa está no CSV": "the 30 largest by free-market energy billed in the year; the full table is in the CSV",
 };
-
-/**
- * Rótulo da natureza do dado no idioma da página, para os painéis do grupo que escrevem a natureza em texto corrido
- * (o selo compartilhado, NATUREZAS em SeloNatureza, só tem o português).
- */
-const NATUREZA_EN: Readonly<Record<string, string>> = {
-  OBSERVADO: "Observed",
-  CALCULADO: "Calculated",
-  ESTIMADO: "Estimated",
-  PREVISTO: "Forecast",
-  CENARIO: "Scenario",
-};
-export function rotuloNaturezaIdioma(natureza: string, rotuloPt: string, idioma: Idioma): string {
-  return idioma === "en" ? (NATUREZA_EN[natureza] ?? rotuloPt) : rotuloPt;
-}

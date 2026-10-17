@@ -958,7 +958,7 @@ export function linhasAtos(atos: readonly AtoLimite[], idioma: Idioma = idiomaEn
 export function colunasAtos(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
     { id: "ano", rotulo: tx("Ano de vigência", "Year in force", idioma), tipo: "numero", casas: 0 }, // i18n: dado
-    { id: "ato", rotulo: tx("Ato", "Act", idioma), tipo: "texto" },
+    { id: "ato", rotulo: tx("Ato", "Act", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "publicacao", rotulo: tx("Publicação", "Publication", idioma), tipo: "data" },
     { id: "inicio", rotulo: tx("Início da vigência", "Start of validity", idioma), tipo: "data" },
     { id: "fim", rotulo: tx("Fim da vigência", "End of validity", idioma), tipo: "data" },
@@ -966,7 +966,7 @@ export function colunasAtos(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
     { id: "teto_h", rotulo: tx("Teto horário", "Hourly cap", idioma), tipo: "numero", unidade: "R$/MWh", casas: 2 },
     { id: "teto_e", rotulo: tx("Teto estrutural", "Structural cap", idioma), tipo: "numero", unidade: "R$/MWh", casas: 2 },
     { id: "nivel", rotulo: tx("Nível de conferência", "Level of checking", idioma), tipo: "texto", categorica: true },
-    { id: "documento", rotulo: tx("Documento em que os valores foram lidos", "Document in which the values were read", idioma), tipo: "texto" },
+    { id: "documento", rotulo: tx("Documento em que os valores foram lidos", "Document in which the values were read", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "oficial", rotulo: tx("Endereço oficial", "Official address", idioma), tipo: "texto" },
     { id: "copia", rotulo: tx("Cópia lida", "Copy read", idioma), tipo: "texto" },
     { id: "sha256", rotulo: tx("sha256 do documento", "Document sha256", idioma), tipo: "texto" },
@@ -997,8 +997,8 @@ export function colunasRegimes(idioma: Idioma = idiomaEnergia()): ColunaTabela[]
     { id: "piso", rotulo: tx("Piso", "Floor", idioma), tipo: "numero", unidade: "R$/MWh", casas: 2 },
     { id: "teto_h", rotulo: tx("Teto horário", "Hourly cap", idioma), tipo: "numero", unidade: "R$/MWh", casas: 2 },
     { id: "teto_e", rotulo: tx("Teto estrutural", "Structural cap", idioma), tipo: "numero", unidade: "R$/MWh", casas: 2 },
-    { id: "ato_piso", rotulo: tx("Ato do piso", "Floor act", idioma), tipo: "texto" },
-    { id: "ato_tetos", rotulo: tx("Ato dos tetos", "Caps act", idioma), tipo: "texto" },
+    { id: "ato_piso", rotulo: tx("Ato do piso", "Floor act", idioma), tipo: "texto", idiomaTexto: "nome" },
+    { id: "ato_tetos", rotulo: tx("Ato dos tetos", "Caps act", idioma), tipo: "texto", idiomaTexto: "nome" },
   ];
 }
 export const COLUNAS_REGIMES: ColunaTabela[] = colunasRegimes("pt");
@@ -1459,8 +1459,8 @@ export function colunasPerimetros(idioma: Idioma = idiomaEnergia()): ColunaTabel
     { id: "n", rotulo: tx("Nº de meses", "No. of months", idioma), tipo: "numero", casas: 0 },
     { id: "natureza", rotulo: tx("Natureza do peso", "Nature of the weight", idioma), tipo: "texto", categorica: true },
     { id: "mmgd", rotulo: tx("Inclui MMGD", "Includes MMGD", idioma), tipo: "texto", categorica: true },
-    { id: "componente", rotulo: tx("Componente estimado", "Estimated component", idioma), tipo: "texto" },
-    { id: "trecho", rotulo: tx("Trecho da descrição do ONS", "Excerpt from the ONS description", idioma), tipo: "texto" },
+    { id: "componente", rotulo: tx("Componente estimado", "Estimated component", idioma), tipo: "texto", idiomaTexto: "portugues" },
+    { id: "trecho", rotulo: tx("Trecho da descrição do ONS", "Excerpt from the ONS description", idioma), tipo: "texto", idiomaTexto: "portugues" },
     { id: "conferido", rotulo: tx("Trecho conferido na captura", "Excerpt checked in the capture", idioma), tipo: "texto", categorica: true },
     { id: "erro_com_se", rotulo: tx("SE/CO: erro médio contra a carga com MMGD", "SE/CW: average error against load with MMGD", idioma), tipo: "numero", unidade: mw, casas: 1 },
     { id: "erro_sem_se", rotulo: tx("SE/CO: erro médio contra a carga sem MMGD", "SE/CW: average error against load without MMGD", idioma), tipo: "numero", unidade: mw, casas: 1 },

@@ -3,12 +3,11 @@
 import Link from "@/components/i18n/LinkIdioma";
 import type { NoComEstado } from "@/components/energia/DiagramaFormacao";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { NATUREZAS } from "@/components/evidencia/SeloNatureza";
+import { NATUREZAS, textoNatureza } from "@/components/evidencia/SeloNatureza";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { TIPOS_RELACAO_IDIOMAS } from "@/lib/energia/conteudo/pld";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { rotuloNaturezaIdioma } from "@/lib/energia/i18n/mercado-preco";
 import { tx } from "@/lib/energia/idioma";
 import { useIdioma } from "@/lib/energia/useIdioma";
 import type { Idioma } from "@/lib/idioma";
@@ -162,7 +161,7 @@ export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: R
             <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-mineral">
               {atual.estado.natureza && (
                 <span>
-                  {NATUREZAS[atual.estado.natureza].glifo} {rotuloNaturezaIdioma(atual.estado.natureza, NATUREZAS[atual.estado.natureza].rotulo, idioma)}
+                  {NATUREZAS[atual.estado.natureza].glifo} {textoNatureza(atual.estado.natureza, idioma).rotulo}
                 </span>
               )}
               {atual.estado.historico && (

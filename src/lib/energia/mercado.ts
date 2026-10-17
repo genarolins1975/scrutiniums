@@ -207,7 +207,7 @@ export function nomeSubsistema(id: string, idioma: Idioma = idiomaEnergia()): st
 
 export function colunasDistribuidoras(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto" },
+    { id: "sigla", rotulo: tx("Distribuidora", "Distribution utility", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "livre_gwh", rotulo: tx("Livre faturado", "Free market billed", idioma), tipo: "numero", unidade: "GWh", casas: 0 },
     { id: "cativo_gwh", rotulo: tx("Cativo faturado", "Captive billed", idioma), tipo: "numero", unidade: "GWh", casas: 0 },
     { id: "livre_pct", rotulo: tx("Livre na energia faturada", "Free market share of billed energy", idioma), tipo: "percentual", casas: 1 },
@@ -240,7 +240,7 @@ export function colunasSamp(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
     { id: "livre_uc", rotulo: tx("Unidades livres (SAMP)", "Free consumer units (SAMP)", idioma), tipo: "numero", casas: 0 },
     { id: "epe_livre_uc", rotulo: tx("Unidades livres (EPE)", "Free consumer units (EPE)", idioma), tipo: "numero", casas: 0 },
     { id: "razao", rotulo: "SAMP ÷ EPE", tipo: "percentual", casas: 1 },
-    { id: "ocorrencias", rotulo: tx("Ocorrências", "Occurrences", idioma), tipo: "texto" },
+    { id: "ocorrencias", rotulo: tx("Ocorrências", "Occurrences", idioma), tipo: "texto", idiomaTexto: "portugues" },
   ];
 }
 
