@@ -755,6 +755,8 @@ describe("páginas renderizadas no servidor", () => {
       /^Usinas em operação$/, /^Potência fiscalizada$/, /^Proprietários identificados$/, /^Quatro maiores grupos/, /^Dez maiores grupos/, /^Fronteira de usinas$/,
       /^Distribuidoras pelo CNPJ$/, /^Com continuidade publicada$/, /^Com tarifa residencial vigente$/, /^Companhias abertas no cadastro$/, /^Com demonstrações anuais/,
       /^Com informações trimestrais/, /^Valores reapresentados$/, /^Duração das interrupções/, /^Frequência das interrupções/, /^Tarifa residencial B1 vigente$/,
+      // faixa da abertura: os quatro números do setor (potência, circuitos e contagens), que a gold não acompanha de ficha
+      /^Potência em operação$/, /^Transmissão em operação$/, /^Distribuidoras ativas$/, /^Companhias no Índice de Energia Elétrica$/,
     ];
     const paginas = { sintese, ...html, ...fichas } as Record<string, string>;
     for (const [k, h] of Object.entries(paginas)) {
@@ -767,9 +769,10 @@ describe("páginas renderizadas no servidor", () => {
         expect(prova, `${k} ${b.rotulo}: ficha de prova`).toBe(true);
       }
     }
-    // as fichas que a gold publica aparecem: abertura (cadastro, transmissão, taxa nacional, receita, HHI), páginas filhas e ficha com perdas
+    // as fichas que a gold publica aparecem: abertura (potência com donos identificados, taxa nacional, receita, HHI; a cobertura dos
+    // módulos de transmissão fica na nota do primeiro painel e a prova dela na página de ativos), páginas filhas e ficha com perdas
     const comprove = (h: string) => blocosMetrica(h).filter((b) => b.texto.includes("Comprove este número")).length;
-    expect(comprove(sintese)).toBeGreaterThanOrEqual(5);
+    expect(comprove(sintese)).toBeGreaterThanOrEqual(4);
     expect(comprove(html.p036)).toBeGreaterThanOrEqual(2);
     for (const id of ["p037", "p038", "p039"] as const) expect(comprove(html[id]), id).toBeGreaterThanOrEqual(1);
     expect(comprove(fichas["cemig-d"])).toBeGreaterThanOrEqual(2);
@@ -785,14 +788,16 @@ describe("páginas renderizadas no servidor", () => {
 
   it("todo href interno aponta para página existente, ficha gerada, verbete ou arquivo publicado", () => {
     const slugs = new Set(slugsEstaticos(G.distribuidoras.indice));
+    const slugsListadas = new Set(json<{ companhias: { slug: string }[] }>("public/energia/gold/listadas.json").companhias.map((c) => c.slug));
     for (const [k, h] of Object.entries({ ...html, sintese, ...fichas })) {
       const hrefs = Array.from(principal(h).matchAll(/href="(\/[^"#?]*)/g)).map((x) => x[1]);
       for (const href of Array.from(new Set(hrefs))) {
         const arquivo = existsSync(join(raiz, "public", href));
         const pagina = existsSync(join(raiz, "src/app", href, "page.tsx"));
         const ficha = /^\/setor-eletrico\/empresas\/[^/]+$/.test(href) && slugs.has(href.split("/").at(-1)!);
+        const listada = /^\/setor-eletrico\/empresas\/listadas\/[^/]+$/.test(href) && slugsListadas.has(href.split("/").at(-1)!);
         const verbete = /^\/setor-eletrico\/aprenda\/[^/]+$/.test(href) && !!conceito(href.split("/").at(-1)!);
-        expect(arquivo || pagina || ficha || verbete, `${k}: ${href}`).toBe(true);
+        expect(arquivo || pagina || ficha || listada || verbete, `${k}: ${href}`).toBe(true);
       }
     }
     expect(rotaEntidade("cemig-d")).toBe("/setor-eletrico/empresas/cemig-d");
@@ -849,7 +854,7 @@ describe("Empresas no sistema editorial: abertura, páginas filhas e ficha", () 
   const SLUGS = ["cemig-d", "emt", "ambar-amazonas", "cerbranorte", "certhil", "cpfl-piratining", "uhenpal"];
   const fi = Object.fromEntries(SLUGS.map((s) => [s, renderToStaticMarkup(createElement(Ficha, { params: { entidade: s } }))]));
 
-  it("abertura: um só h1 com a pergunta da página, faixa com as medidas do cadastro, busca e os quatro caminhos antes do painel", () => {
+  it("abertura: um só h1 com a pergunta da página, faixa com os quatro números do setor, vitrine das listadas, mapa da cadeia, busca e os quatro painéis antes do método", () => {
     expect(abertura).toContain('data-abertura="editorial"');
     expect((abertura.match(/<h1\b/g) ?? []).length).toBe(1);
     const titulo = tituloH1(abertura);
@@ -860,12 +865,14 @@ describe("Empresas no sistema editorial: abertura, páginas filhas e ficha", () 
     const faixa = abertura.slice(abertura.indexOf("data-faixa-metricas"), abertura.indexOf("data-faixa-metricas") + 20000);
     const txt = textoDe(faixa);
     expect(txt).toContain(num(a.operacao.usinas, 0));
-    expect(txt).toContain(num(a.operacao.mw_fiscalizado!, 1));
-    expect(txt).toContain(num(a.proprietarios_cnpj, 0));
+    expect(txt).toContain(num(a.operacao.mw_fiscalizado!, 0));
+    expect(txt).toContain(num(G.cadastro.transmissao!.resumo.km_circuito_operacao, 0));
+    expect(txt).toContain(`${num(G.distribuidoras.resumo.ativas, 0)} distribuidoras`);
+    expect(txt).toContain("Companhias no Índice de Energia Elétrica");
     expect(txt).toContain("não é energia gerada");
-    // sem faixa de irmãs (os mesmos destinos são os capítulos) e a ordem: busca, caminhos, elos, medidas, próximos passos
+    // sem faixa de irmãs (os mesmos destinos são os capítulos) e a ordem: listadas, cadeia, busca, painéis, elos, medidas, próximos passos
     expect(abertura).not.toContain('data-navegacao-local="faixa"');
-    const ordem = ["data-busca-empresa", 'data-navegacao-local="capitulos"', 'id="entrada"', "data-vinculo", 'id="medidas"', "data-seguir-painel"].map((x) => abertura.indexOf(x));
+    const ordem = ["data-vitrine-listadas", "data-mapa-cadeia", "data-busca-empresa", 'data-navegacao-local="capitulos"', 'id="entrada"', "data-vinculo", 'id="medidas"', "data-seguir-painel"].map((x) => abertura.indexOf(x));
     expect(ordem.every((i) => i > 0)).toBe(true);
     expect([...ordem].sort((x, y) => x - y)).toEqual(ordem);
     expect((abertura.match(/data-notas-painel=""/g) ?? []).length).toBe(1);
