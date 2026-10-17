@@ -475,3 +475,69 @@ export const HIPOTESE_PDE_EN: Readonly<Record<string, string>> = {
   "Expansão indicativa escolhida pelo menor custo total que atende aos critérios de suprimento de energia e potência.":
     "Indicative expansion chosen by the lowest total cost that meets the energy and capacity supply criteria.", // i18n: dado
 };
+
+/* ================================================================ Território */
+
+/** Grão territorial (graos[].rotulo da gold). */
+export const GRAO_TERRITORIO_EN: Readonly<Record<string, string>> = {
+  Submercado: "Submarket",
+  "Unidade da federação": "State",
+  "Área de atuação da distribuidora": "Distribution utility service area",
+  "Conjunto elétrico": "Consumer set",
+  "Município": "Municipality",
+  Usina: "Power plant",
+};
+/** De quem é o número na ficha de um município (graos[].rotulo_no_municipio da gold). */
+export const GRAO_NO_MUNICIPIO_EN: Readonly<Record<string, string>> = {
+  "do submercado a que a UF do município pertence (área de carga do ONS); não é um valor do município":
+    "of the submarket the municipality's state belongs to (ONS load area); not a value of the municipality",
+  "da UF do município": "of the municipality's state",
+  "da distribuidora que atende o município (valor da área inteira da distribuidora, não do município)":
+    "of the distribution utility serving the municipality (value for the utility's whole area, not for the municipality)",
+  "do conjunto elétrico que atende o município (o conjunto pode cobrir outros municípios ou só parte deste)":
+    "of the consumer set serving the municipality (the set may cover other municipalities or only part of this one)",
+  "do município": "of the municipality",
+  "da usina (ponto); uma usina declarada em vários municípios não tem a potência repartida":
+    "of the plant (point); a plant declared in several municipalities does not have its capacity split",
+};
+/** Nome de camada do mapa (camadas[].rotulo da gold). */
+export const CAMADA_TERRITORIO_EN: Readonly<Record<string, string>> = {
+  Submercados: "Submarkets",
+  "Áreas das distribuidoras": "Distribution utility areas",
+  "Municípios": "Municipalities",
+  Usinas: "Power plants",
+};
+/** Descrição de camada do mapa (camadas[].descricao da gold, como publicada). */
+export const DESCRICAO_CAMADA_EN: Readonly<Record<string, string>> = {
+  "Cada UF pintada pelo subsistema da camada oficial da EPE, com a pertença das suas áreas de carga provada pela soma da carga do ONS. A divisa é a da UF: o ONS não publica limite geográfico do submercado. Os municípios fora do SIN (sm_estado 'fora_do_sin' no índice municipal) recebem marca própria por cima: a cor da UF não vale para eles.":
+    "Each state colored by the subsystem of the official EPE layer, with the membership of its load areas checked by the sum of the ONS load. The border is the state's: the ONS publishes no geographic boundary for the submarket. Municipalities outside the SIN get their own mark on top: the state's color does not hold for them.",
+  "Municípios inteiros agrupados pela relação oficial; município com mais de uma distribuidora tem marca própria.":
+    "Whole municipalities grouped by the official list; a municipality with more than one distribution utility has its own mark.",
+  "Indicadores publicados por município (MMGD, Tarifa Social, Luz para Todos, usinas declaradas só no município, localidades isoladas).":
+    "Indicators published by municipality (MMGD, Social Tariff, Luz para Todos, plants declared only in the municipality, isolated localities).",
+  "Pontos do SIGA na mesma grade da malha. A coordenada é aproximada (centróide do empreendimento).":
+    "SIGA points on the same grid as the map. The coordinate is approximate (centroid of the project).",
+};
+/** Regra de compatibilidade entre grãos (compatibilidade[].regra da gold). */
+export const REGRA_COMPATIBILIDADE_EN: Readonly<Record<string, string>> = {
+  "Pela relação oficial conjunto × município (módulo Perdas). Um vínculo leva à distribuidora; com mais de um, a seleção lista as distribuidoras e não escolhe por conta própria.":
+    "Through the official consumer set × municipality list (Losses module). One link leads to the distribution utility; with more than one, the selection lists the utilities and does not choose on its own.",
+  "Pela relação IndQual Município (módulo Qualidade). O DEC exibido é do conjunto inteiro.":
+    "Through the IndQual Municipality list (Quality module). The DEC shown is for the whole consumer set.",
+  "Pela UF do município (subsistema da UF na camada oficial da EPE, com a pertença das áreas de carga do ONS provada pela soma). Município cuja sede é localidade isolada do PASI, ou com ao menos metade da população em localidades isoladas, está fora do SIN: o submercado não se aplica a ele.":
+    "Through the municipality's state (the state's subsystem in the official EPE layer, with the membership of the ONS load areas checked by the sum). A municipality whose seat is an isolated locality of the PASI, or with at least half of its population in isolated localities, is outside the SIN: the submarket does not apply to it.",
+  "Usinas que o SIGA declara no município (nome oficial do IBGE). A coordenada é conferida, não decide.":
+    "Plants that SIGA declares in the municipality (official IBGE name). The coordinate is checked, it does not decide.",
+  "A área da distribuidora é o conjunto dos municípios da relação; selecionar a distribuidora destaca os municípios, não seleciona um deles.":
+    "The distribution utility's area is the set of municipalities in the list; selecting the utility highlights the municipalities, it does not select one of them.",
+  "Submercados das UFs dos municípios de vínculo válido da distribuidora que estão no SIN; com mais de um, a seleção lista todos. Municípios fora do SIN não contam e são informados à parte (area.fora_do_sin).":
+    "Submarkets of the states of the utility's validly linked municipalities that are in the SIN; with more than one, the selection lists all of them. Municipalities outside the SIN do not count and are reported separately.",
+  "UFs cujas áreas de carga o ONS soma no submercado.": "States whose load areas the ONS adds up in the submarket.",
+  "Selecionar um submercado não seleciona município: o submercado contém centenas de municípios e os seus números não são de nenhum deles.":
+    "Selecting a submarket does not select a municipality: the submarket contains hundreds of municipalities and its figures belong to none of them.",
+  "Municípios declarados pelo SIGA para a usina (um ou mais).": "Municipalities declared by SIGA for the plant (one or more).",
+  "Não se aplica: o submercado de uma usina depende do ponto de conexão à rede, que o SIGA não publica; a UF ou o município da usina não decidem.":
+    "Does not apply: a plant's submarket depends on its grid connection point, which SIGA does not publish; the plant's state or municipality does not decide it.",
+  "Não se aplica: usina de geração centralizada não é atendida pela distribuidora do município em que está.":
+    "Does not apply: a centralized generation plant is not served by the distribution utility of the municipality where it is located.",
+};
