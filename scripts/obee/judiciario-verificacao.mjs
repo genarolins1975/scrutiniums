@@ -52,7 +52,7 @@ try{
  assert.ok(origin,'Next não informou a origem local');
  browser=await chromium.launch({executablePath:process.env.I18N_CHROMIUM_EXECUTABLE||undefined});
  const anonymous=await browser.newContext();
- const observatoryRoots=['/observatorio','/setor-eletrico','/eficiencia-estatal','/contas-publicas','/contas-publicas-estaduais','/saneamento','/gas-natural'];
+ const observatoryRoots=['/observatorio','/setor-eletrico','/eficiencia-estatal','/contas-publicas','/contas-publicas-estaduais','/saneamento','/gas-natural','/agronegocio'];
  for(const path of observatoryRoots){
   const response=await anonymous.request.get(origin+path,{maxRedirects:0});
   check('Observatório exige sessão: '+path,response.status()===307&&response.headers().location.includes('/entrar'));
@@ -67,7 +67,7 @@ try{
  await anonPage.goto(origin+PREFIX+'/metodos',{waitUntil:'networkidle'});
  await anonPage.getByLabel('Trocar de observatório e acessar a conta').click();
  check('Cabeçalho anônimo oferece entrada com retorno ao método',(await anonPage.getByRole('banner').getByRole('link',{name:'Entrar',exact:true}).getAttribute('href')).includes(encodeURIComponent(PREFIX+'/metodos')));
- check('Cabeçalho anônimo mantém oito destinos',await anonPage.getByRole('navigation',{name:'Observatórios da plataforma'}).getByRole('link').count()===8);
+ check('Cabeçalho anônimo mantém nove destinos',await anonPage.getByRole('navigation',{name:'Observatórios da plataforma'}).getByRole('link').count()===9);
 
  check('Seletor exige sessão',(await anonymous.request.get(origin+'/app/observatorios',{maxRedirects:0})).status()===307);
  check('Escolha do Judiciário exige sessão',(await anonymous.request.post(origin+'/app/observatorios/entrar',{form:{d:'judiciario'},headers:{origin},maxRedirects:0})).status()===307);
@@ -84,7 +84,7 @@ try{
   await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
   const card=page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true});
   check('Cartão próprio do Judiciário '+width+'px',await card.isVisible()&&await card.getByRole('button',{name:/Explorar Judiciário/}).isVisible());
-  check('Sete observatórios e Judiciário no seletor '+width+'px',await page.locator('input[name="d"]').count()===observatoryRoots.length+1);
+  check('Oito observatórios e Judiciário no seletor '+width+'px',await page.locator('input[name="d"]').count()===observatoryRoots.length+1);
   await card.locator('summary').click();
   check('Fonte e cobertura reais no cartão '+width+'px',(await card.innerText()).includes('57 tribunais')&&(await card.innerText()).includes('2009–2025'));
   await page.addScriptTag({content:axe});
@@ -231,11 +231,16 @@ try{
   const series=await seriesDownload;await series.saveAs(join(out,'internacional-historico-'+width+'.csv'));
   const seriesCsv=await readFile(join(out,'internacional-historico-'+width+'.csv'),'utf8');
   check('CSV histórico não duplica 2017–2018 nem promove 2026 '+width+'px',seriesCsv.split('\r\n').length===41&&(seriesCsv.match(/"2017-2018"/g)||[]).length===4&&!seriesCsv.includes('"2026"'));
-  const social=page.getByRole('button',{name:/Ver a decisão cumprida/});await social.focus();await page.keyboard.press('Enter');
+  const social=page.getByRole('button',{name:/Ver a decisão cumprida/});
+  await social.evaluate(e=>{window.__contrastePergunta=null;const observer=new MutationObserver(()=>{if(e.getAttribute('aria-pressed')!=='true')return;const style=getComputedStyle(e);const luminancia=color=>{const rgb=color.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>{const c=v/255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4;});return rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722;};const a=luminancia(style.color),b=luminancia(style.backgroundColor);window.__contrastePergunta={valor:(Math.max(a,b)+.05)/(Math.min(a,b)+.05),texto:style.color,fundo:style.backgroundColor};observer.disconnect();});observer.observe(e,{attributes:true,attributeFilter:['aria-pressed']});});
+  await social.focus();await page.keyboard.press('Enter');
+  const primeiroQuadro=await page.evaluate(()=>window.__contrastePergunta);if(!primeiroQuadro||primeiroQuadro.valor<4.5)console.error('Contraste da pergunta selecionada: '+JSON.stringify(primeiroQuadro));check('Pergunta mantém contraste desde a seleção '+width+'px',!!primeiroQuadro&&primeiroQuadro.valor>=4.5);
   check('Pergunta social muda o indicador por teclado '+width+'px',await page.getByLabel('Indicador internacional',{exact:true}).inputValue()==='f_7_6'&&await social.getAttribute('aria-pressed')==='true');
   await page.addScriptTag({content:axe});
-  const issues=await page.evaluate(async()=>{const r=await axe.run(document.querySelector('main'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}});return r.violations.map(v=>v.id);});
-  check('Histórico e controles internacionais acessíveis '+width+'px',issues.length===0&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+  const issues=await page.evaluate(async()=>{const r=await axe.run(document.querySelector('main'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}});return r.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({html:n.html,summary:n.failureSummary}))}));});
+  const overflowInternacional=await page.evaluate(()=>({documento:document.documentElement.scrollWidth,janela:innerWidth,elementos:[...document.querySelectorAll('main *')].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&(r.right>innerWidth+1||r.left< -1);}).slice(0,8).map(e=>({tag:e.tagName,classe:e.className,html:e.outerHTML.slice(0,500)}))}));
+  if(issues.length||overflowInternacional.documento>overflowInternacional.janela+1)console.error('Diagnóstico internacional '+width+'px: '+JSON.stringify({issues,overflow:overflowInternacional}));
+  check('Histórico e controles internacionais acessíveis '+width+'px',issues.length===0&&overflowInternacional.documento<=overflowInternacional.janela+1);
   await page.screenshot({path:join(out,'internacional-historico-'+width+'.png'),fullPage:true});
   await page.goto(origin+PREFIX+'/internacional?referencia=selecionados&p1=&p2=&p3=',{waitUntil:'networkidle'});
   check('Referência vazia permanece ausência, sem overflow '+width+'px',await page.getByText('Selecione ao menos um país estrangeiro para formar esta referência.',{exact:true}).isVisible()&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));

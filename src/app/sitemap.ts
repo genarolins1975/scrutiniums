@@ -46,6 +46,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...ufs.map((u) => rota(`/observatorio/states/${u.uf}`, 0.8, "daily")),
     ...municipios.map((m) => rota(`/observatorio/presenca/${m.cod}`, 0.5, "weekly")),
     rota("/glossario", 0.8, "monthly"),
+    rota("/agronegocio/metodologia", 0.7, "monthly"),
+    rota("/agronegocio/glossario", 0.7, "monthly"),
     ...MODULOS_ENERGIA.map((m) => rota(m.href, m.integrado ? 0.9 : 0.5, m.integrado ? "daily" : "monthly")),
     ...DESTINOS_NAVEGACAO.filter((d) => d.publicado && !MODULOS_ENERGIA.some((m) => m.href === d.href) && !d.href.includes("#")).map((d) => rota(d.href, 0.8, "weekly")),
     rota("/setor-eletrico/metodologia", 0.7, "monthly"),

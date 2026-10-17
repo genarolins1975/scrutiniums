@@ -6,7 +6,7 @@
  * telemetria e sitemap leem daqui. Um novo observatório é uma entrada nova.
  */
 
-export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados" | "saneamento" | "gas";
+export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados" | "saneamento" | "gas" | "agro";
 
 export type Dominio = {
   id: DominioId;
@@ -144,6 +144,20 @@ export const DOMINIOS: Dominio[] = [
     acento: "gas",
     prefixosTelemetria: ["gas:"],
   },
+  {
+    id: "agro",
+    nome: "Observatório do Agronegócio Brasileiro",
+    nomeCurto: "Agronegócio",
+    pergunta: "Como o campo se conecta à alimentação, à renda, ao trabalho e aos mercados?",
+    descricao: "Sete cadeias organizadas por perguntas econômicas e sociais. Crédito rural e trabalho a partir de bases públicas preservadas, explicações dos mecanismos e cenários de orçamento, margem, financiamento e investimento. A cobertura de cada medição e as limitações aparecem junto do conteúdo.",
+    descricaoCurta: "Do campo à mesa: crédito rural, trabalho e cenários de orçamento, margem e investimento. Produção, comércio e ambiente com cobertura explicitada.",
+    chips: ["Sete cadeias", "Crédito rural", "Trabalho", "Cenários"],
+    rotaRaiz: "/agronegocio",
+    rotaApresentacao: "/agronegocio",
+    cta: "Explorar Agronegócio",
+    acento: "energia",
+    prefixosTelemetria: ["agro:"],
+  },
 ];
 
 export const COOKIE_OBSERVATORIO = "scrutiniums_observatorio";
@@ -175,5 +189,6 @@ export function dominioDoCaminho(caminho: string): DominioId | null {
   if (caminho === "/contas-publicas-estaduais" || caminho.startsWith("/contas-publicas-estaduais/")) return "estados";
   if (caminho === "/saneamento" || caminho.startsWith("/saneamento/")) return "saneamento";
   if (caminho === "/gas-natural" || caminho.startsWith("/gas-natural/")) return "gas";
+  if (caminho === "/agronegocio" || caminho.startsWith("/agronegocio/")) return "agro";
   return null;
 }

@@ -52,6 +52,7 @@ const nextConfig = {
       {source: "/energia/series/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/eficiencia/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/eficiencia/judiciario/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/agro/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/saneamento/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/gas/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       // API de leitura (/dados/api): exige sessão (src/lib/rotasPublicas.ts); cache privado do navegador
