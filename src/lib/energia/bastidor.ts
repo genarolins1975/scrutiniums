@@ -1,4 +1,6 @@
 import { conjuntoLegivel } from "@/lib/energia/evidencia";
+import { dataBR } from "@/lib/energia/formato";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Texto de coleta e de engenharia dentro de frases escritas para a gold: código HTTP, desafio de navegador,
@@ -30,7 +32,12 @@ export function partirBastidor(texto: string): { leitor: string; tecnico: string
 export function fraseDeRecusa(evidencia: string, quem: string): string {
   if (!/HTTP [45]\d{2}|\bcurl\b|desafio (?:do Cloudflare|de navegador)|cf-mitigated|Acesso bloqueado/i.test(evidencia)) return "";
   const data = /(\d{2}\/\d{2}\/\d{4})/.exec(evidencia)?.[1];
-  return data ? `Em ${data}, os servidores ${quem} recusaram as consultas automáticas do observatório.` : `Os servidores ${quem} recusaram as consultas automáticas do observatório.`;
+  // em inglês, "da ANEEL" vira "the ANEEL servers"; a data da evidência (dd/mm/aaaa) vai para a forma inglesa
+  const orgao = quem.replace(/^d[oa]s?\s+/, "");
+  const dataEn = data ? dataBR(data.split("/").reverse().join("-"), "en") : null;
+  return data
+    ? tx(`Em ${data}, os servidores ${quem} recusaram as consultas automáticas do observatório.`, `On ${dataEn}, the ${orgao} servers refused the observatory's automated requests.`)
+    : tx(`Os servidores ${quem} recusaram as consultas automáticas do observatório.`, `The ${orgao} servers refused the observatory's automated requests.`);
 }
 
 /** Troca, dentro de uma frase, a descrição técnica da recusa pela forma que o leitor entende. */
