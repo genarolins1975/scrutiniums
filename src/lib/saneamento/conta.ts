@@ -89,6 +89,31 @@ export function calcularConta(cat: Categoria, consumo: number, adicionais: { rot
   };
 }
 
+export const CONSUMOS_EXPORTACAO = [5, 10, 15, 20, 30];
+export const CABECALHO_EXPORTACAO = ["tabela", "prestador", "uf", "regulador", "ato", "vigencia", "categoria", "consumo_m3", "agua_R$", "esgoto_R$", "total_R$", "situacao"] as const;
+
+/**
+ * Uma linha por tabela, categoria e consumo. Categoria com teto de consumo mantém a linha acima do teto, com os valores vazios e a
+ * situação dita, para que quem lê o arquivo distinga preço indefinido de linha omitida.
+ */
+export function linhasExportacao(tabelas: TarifaVerificada[], consumos: number[] = CONSUMOS_EXPORTACAO): (string | number | null)[][] {
+  const linhas: (string | number | null)[][] = [];
+  for (const t of tabelas) {
+    for (const cat of Object.values(t.categorias)) {
+      for (const m3 of consumos) {
+        const base = [t.id, t.prestador, t.uf, t.regulador, t.ato, t.vigencia, cat.rotulo, m3];
+        if (acimaDoLimite(cat, m3)) {
+          linhas.push([...base, null, null, null, `sem preço no ato acima de ${cat.consumoMaximo} m³`]);
+          continue;
+        }
+        const r = calcularConta(cat, m3);
+        linhas.push([...base, r.agua, r.esgoto, r.total, "calculada"]);
+      }
+    }
+  }
+  return linhas;
+}
+
 /** Preço médio efetivo (R$/m³) e custo do metro cúbico seguinte (nulo quando o seguinte passa do teto da categoria). */
 export function leituras(t: TarifaVerificada, categoria: string, consumo: number) {
   const cat = t.categorias[categoria];

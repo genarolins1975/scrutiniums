@@ -7,7 +7,8 @@ import TarifaSocialPage from "@/app/saneamento/tarifa-social/page";
 import atos from "@/lib/saneamento/dados/atos.json";
 import { prestador } from "@/lib/saneamento/gold";
 import { TARIFAS, periodoConsultaTarifas, prestadorComTarifa, tarifa } from "@/lib/saneamento/tarifas";
-import { acimaDoLimite, calcularConta, leituras } from "@/lib/saneamento/conta";
+import { CABECALHO_EXPORTACAO, CONSUMOS_EXPORTACAO, acimaDoLimite, calcularConta, leituras, linhasExportacao } from "@/lib/saneamento/conta";
+import { csv } from "@/lib/saneamento/csv";
 import { reais } from "@/lib/saneamento/formato";
 
 /**
@@ -58,6 +59,34 @@ describe("Saneago: cálculo da conta", () => {
 
   it("nenhuma outra tabela tem teto de consumo", () => {
     for (const t of TARIFAS) for (const [k, c] of Object.entries(t.categorias)) expect(c.consumoMaximo != null, `${t.id} ${k}`).toBe(t.id === ID && k === "social");
+  });
+});
+
+describe("Saneago: exportação CSV das contas simuladas", () => {
+  const linhas = linhasExportacao(TARIFAS);
+  const col = (nome: (typeof CABECALHO_EXPORTACAO)[number]) => CABECALHO_EXPORTACAO.indexOf(nome);
+
+  it("traz uma linha por tabela, categoria e consumo, inclusive acima do teto da categoria", () => {
+    const categorias = TARIFAS.reduce((n, t) => n + Object.keys(t.categorias).length, 0);
+    expect(linhas).toHaveLength(categorias * CONSUMOS_EXPORTACAO.length);
+    for (const l of linhas) expect(l).toHaveLength(CABECALHO_EXPORTACAO.length);
+  });
+
+  it("acima do teto a linha fica com os valores vazios e a situação dita, e nas demais vem calculada", () => {
+    const social = linhas.filter((l) => l[col("tabela")] === ID && l[col("categoria")] === "Residencial social");
+    expect(social.map((l) => l[col("consumo_m3")])).toEqual(CONSUMOS_EXPORTACAO);
+    const a30 = social.find((l) => l[col("consumo_m3")] === 30)!;
+    expect([a30[col("agua_R$")], a30[col("esgoto_R$")], a30[col("total_R$")]]).toEqual([null, null, null]);
+    expect(a30[col("situacao")]).toBe("sem preço no ato acima de 20 m³");
+    const a20 = social.find((l) => l[col("consumo_m3")] === 20)!;
+    expect(a20[col("total_R$")]).toBe(129.23);
+    expect(a20[col("situacao")]).toBe("calculada");
+    expect(linhas.filter((l) => l[col("situacao")] !== "calculada")).toHaveLength(1);
+  });
+
+  it("no arquivo, a célula vazia é ausência e a situação aparece na linha", () => {
+    const texto = csv(CABECALHO_EXPORTACAO, linhas);
+    expect(texto).toContain(";30;;;;sem preço no ato acima de 20 m³");
   });
 });
 
