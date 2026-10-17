@@ -1,9 +1,10 @@
-import type { Categoria, TabelaServico, TarifaVerificada } from "./tarifas";
+import type { Categoria, Exponencial, TabelaServico, TarifaVerificada } from "./tarifas";
 
 /**
  * Conta mensal simulada a partir de uma tabela verificada. Regra única, igual à
  * do gerador (pipeline/observatorio_saneamento/tarifas.py): parte fixa, valor
- * mínimo que cobre os primeiros m³ e, acima dele, cada m³ no preço da sua faixa.
+ * mínimo que cobre os primeiros m³ e, acima dele, cada m³ no preço da sua faixa
+ * ou, quando a tabela traz exponencial, o preço-base vezes o consumo elevado ao expoente da faixa.
  * Aritmética em décimos de milésimo de centavo para não acumular erro binário;
  * arredondamento só no fim, ao centavo (nenhum ato consultado traz regra própria).
  */
@@ -33,6 +34,20 @@ function servico(t: TabelaServico, c: number, nome: "agua" | "esgoto"): { total:
     total += int(t.minimo.valor);
     linhas.push({ servico: nome, rotulo: `Valor até ${fmt(t.minimo.m3)} m³ (cobrado mesmo com consumo menor)`, volume: Math.min(c, t.minimo.m3), preco: null, valor: t.minimo.valor });
   }
+  if (t.exponencial) {
+    const e = t.exponencial;
+    const base = Math.max(c, e.minimoM3);
+    const n = expoente(e, base);
+    const v = Math.round(e.preco * Math.pow(base, n) * ESCALA);
+    total += v;
+    linhas.push({
+      servico: nome,
+      rotulo: c <= e.minimoM3 ? `Mínimo de ${fmt(e.minimoM3)} m³ (cobrado mesmo com consumo menor)` : `Consumo: volume elevado a ${fmtExpoente(n)}`,
+      volume: base,
+      preco: e.preco,
+      valor: reais(v),
+    });
+  }
   for (const f of t.faixas) {
     const vol = Math.max(0, (f.ate == null ? c : Math.min(c, f.ate)) - f.de);
     if (vol <= 0) continue;
@@ -53,12 +68,21 @@ function fmt(n: number) {
   return n.toLocaleString("pt-BR", { maximumFractionDigits: 3 });
 }
 
+const fmtExpoente = (n: number) => n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+
+/** Expoente da faixa: o do último degrau que começa em consumo menor ou igual; 1 antes do primeiro. */
+export function expoente(e: Exponencial, consumo: number): number {
+  let n = 1;
+  for (const d of e.degraus) if (d.de <= consumo) n = d.n;
+  return n;
+}
+
 /** Categoria com teto de consumo no ato (como a tarifa social da Saneago, até 20 m³): acima dele não há preço definido. */
 export const acimaDoLimite = (cat: Categoria, consumo: number) => cat.consumoMaximo != null && consumo > cat.consumoMaximo;
 
 /** Quem chama confere `acimaDoLimite` antes: calcular acima do teto seria inventar um preço que o ato não traz. */
 export function calcularConta(cat: Categoria, consumo: number, adicionais: { rotulo: string; percentual: number }[] = []): Conta {
-  const c = Math.max(0, consumo);
+  const c = cat.consumoInteiro ? Math.floor(Math.max(0, consumo)) : Math.max(0, consumo);
   if (acimaDoLimite(cat, c)) throw new RangeError(`${cat.rotulo}: o ato só define preço até ${cat.consumoMaximo} m³ por mês`);
   const a = servico(cat.agua, c, "agua");
   let esgoto: { total: number; linhas: LinhaConta[] } | null = null;

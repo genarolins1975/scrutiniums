@@ -58,7 +58,9 @@ class TabelaDaCasan(unittest.TestCase):
         publicada.pop("municipios")
         esperada.pop("municipios", None)
         self.assertEqual(publicada, esperada)
-        self.assertTrue(all(m.startswith("42") for m in json.load(open(tarifas.DESTINO, encoding="utf-8"))["tarifas"][-1]["municipios"]))
+        with open(tarifas.DESTINO, encoding="utf-8") as fh:
+            municipios = {t["id"]: t for t in json.load(fh)["tarifas"]}["casan-2026"]["municipios"]
+        self.assertTrue(all(m.startswith("42") for m in municipios))
 
     def test_fontes_tem_sha256_e_url_https(self):
         self.assertGreaterEqual(len(tarifas.casan["fontes"]), 5)

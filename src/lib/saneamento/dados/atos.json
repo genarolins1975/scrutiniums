@@ -2,7 +2,8 @@
  "levantado_em": "2026-10-14",
  "levantado_por_prestador": {
   "SANEAGO": "2026-10-17",
-  "CASAN": "2026-10-17"
+  "CASAN": "2026-10-17",
+  "CORSAN": "2026-10-17"
  },
  "atos": [
   {
@@ -216,6 +217,36 @@
    "id": "ato-014"
   },
   {
+   "prestador": "CORSAN",
+   "area": "Municípios do Apêndice 1 da Tabela I (298, em julho de 2026)",
+   "regulador": "AGERGS",
+   "tipo": "reajuste",
+   "pedido": "não publicado",
+   "decisao": "4,68% (reproduzido nos preços da Tabela I de janeiro de 2026 sobre a de janeiro de 2025); a mesma data-base passou a ser 1º de janeiro",
+   "ato": "Reajuste anual de 2026, citado no comunicado da Corsan de 30/11/2025",
+   "data": "2025-11-30",
+   "vigencia": "a partir de 01/01/2026",
+   "url": "https://www.corsan.com.br/comunicado-de-reajuste-tarifario-anual-2/",
+   "verificado": false,
+   "obs": "Ato da AGERGS não localizado; valores conferidos nas tabelas publicadas pela Corsan. O comunicado trata também de Erechim (5,34%), Santa Cruz do Sul, Canoas e Esteio e dos 15 municípios da AGESAN.",
+   "id": "ato-015"
+  },
+  {
+   "prestador": "CORSAN",
+   "area": "Municípios do Apêndice 1 da Tabela I (298, em julho de 2026)",
+   "regulador": "AGERGS",
+   "tipo": "revisão extraordinária (criação da categoria Residencial Social, Lei 14.898/2024)",
+   "pedido": "não publicado",
+   "decisao": "5,76% sobre as tarifas (reproduzido nos preços da Tabela I de julho de 2026 sobre a de janeiro) e criação da categoria Residencial Social",
+   "ato": "Resolução Decisória AGERGS RED 892, 09/06/2026",
+   "data": "2026-06-09",
+   "vigencia": "a partir de 01/07/2026; descontos da categoria social a partir das faturas de agosto",
+   "url": "https://corsan.com.br/comunicado-de-criacao-de-categoria-residencial-social-e-revisao-tarifaria/",
+   "verificado": false,
+   "obs": "RED 892/2026 conhecida pelo comunicado da Corsan de 12/06/2026 e pelo Anexo 5; a íntegra não foi localizada. O comunicado lista 247 municípios e o Anexo 5 aplica a Tabela I a 298.",
+   "id": "ato-016"
+  },
+  {
    "prestador": "SABESP",
    "area": "Contratos de programa/convênios (pré-URAE-1)",
    "regulador": "ARSESP",
@@ -228,7 +259,7 @@
    "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl13942023.pdf",
    "verificado": true,
    "obs": "NT.F-0012-2023 p.21",
-   "id": "ato-015"
+   "id": "ato-017"
   },
   {
    "prestador": "SABESP",
@@ -243,7 +274,7 @@
    "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl13952023.pdf",
    "verificado": true,
    "obs": "",
-   "id": "ato-016"
+   "id": "ato-018"
   },
   {
    "prestador": "SABESP",
@@ -258,7 +289,7 @@
    "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl14282023.pdf",
    "verificado": true,
    "obs": "",
-   "id": "ato-017"
+   "id": "ato-019"
   },
   {
    "prestador": "SABESP",
@@ -273,7 +304,7 @@
    "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl14832023.pdf",
    "verificado": true,
    "obs": "",
-   "id": "ato-018"
+   "id": "ato-020"
   },
   {
    "prestador": "SABESP",
@@ -288,7 +319,7 @@
    "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl15142024.pdf",
    "verificado": true,
    "obs": "",
-   "id": "ato-019"
+   "id": "ato-021"
   },
   {
    "prestador": "SABESP",
@@ -303,7 +334,7 @@
    "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl15392024.pdf",
    "verificado": true,
    "obs": "Em 2025 não houve reajuste: tarifas vigoraram até o 1º reajuste",
-   "id": "ato-020"
+   "id": "ato-022"
   },
   {
    "prestador": "SABESP",
@@ -318,7 +349,7 @@
    "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl16992025.pdf",
    "verificado": true,
    "obs": "Conferido nos valores da Tabela 1 de 2026: 20,21 = 40,42 ÷ 2 e 3,20 = 6,40 ÷ 2.",
-   "id": "ato-021"
+   "id": "ato-023"
   },
   {
    "prestador": "SABESP",
@@ -333,7 +364,7 @@
    "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/deli1748.pdf",
    "verificado": true,
    "obs": "",
-   "id": "ato-022"
+   "id": "ato-024"
   },
   {
    "prestador": "SABESP",
@@ -348,7 +379,7 @@
    "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/1749.pdf",
    "verificado": true,
    "obs": "",
-   "id": "ato-023"
+   "id": "ato-025"
   },
   {
    "prestador": "SABESP",
@@ -363,7 +394,7 @@
    "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/DELIBERA%C3%87%C3%83O%20ARSESP%20N%C2%BA%201.768,%20de%2028%20de%20janeiro%20de%202026b.pdf",
    "verificado": true,
    "obs": "",
-   "id": "ato-024"
+   "id": "ato-026"
   },
   {
    "prestador": "SABESP",
@@ -378,7 +409,7 @@
    "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/deliberacao-1769.pdf",
    "verificado": true,
    "obs": "",
-   "id": "ato-025"
+   "id": "ato-027"
   },
   {
    "prestador": "SANEAGO",
@@ -393,7 +424,7 @@
    "url": "https://www.saneago.com.br/2016/arquivos/Resolucao203-2023_AGR_CR.pdf",
    "verificado": true,
    "obs": "Lido no Diário Oficial de Goiás de 01/03/2023, p.90-91 (PDF em imagem). Tarifa básica residencial normal de R$ 15,67.",
-   "id": "ato-026"
+   "id": "ato-028"
   },
   {
    "prestador": "SANEAGO",
@@ -408,7 +439,7 @@
    "url": "https://www.saneago.com.br/2024/arquivos/res-AGR-242-2024-CR.pdf",
    "verificado": true,
    "obs": "",
-   "id": "ato-027"
+   "id": "ato-029"
   },
   {
    "prestador": "SANEAGO",
@@ -423,7 +454,7 @@
    "url": "https://www.saneago.com.br/2025/arquivos/Res_Normativa_AGR_283_2025.pdf",
    "verificado": true,
    "obs": "",
-   "id": "ato-028"
+   "id": "ato-030"
   },
   {
    "prestador": "SANEAGO",
@@ -438,7 +469,7 @@
    "url": "https://www.saneago.com.br/2025/arquivos/Resolucao_Normativa_Conjunta_1-2026_AGR-AMAE_Reajuste_Tarifario_2026.pdf",
    "verificado": true,
    "obs": "Resolução conjunta da AGR com a AMAE (Rio Verde). Mesmo texto e mesma tabela nas resoluções conjuntas AGR/AR (25/02/2026) e AGR/ARM (assinada em 27/02/2026), conferidas na imagem do anexo.",
-   "id": "ato-029"
+   "id": "ato-031"
   },
   {
    "prestador": "SANEPAR",
@@ -453,7 +484,7 @@
    "url": "https://www.legislacao.pr.gov.br/legislacao/listarAtosAno.do?action=exibir&codAto=292325",
    "verificado": true,
    "obs": "",
-   "id": "ato-030"
+   "id": "ato-032"
   },
   {
    "prestador": "SANEPAR",
@@ -468,7 +499,7 @@
    "url": "https://www.legislacao.pr.gov.br/legislacao/listarAtosAno.do?action=exibir&codAto=323870",
    "verificado": true,
    "obs": "",
-   "id": "ato-031"
+   "id": "ato-033"
   },
   {
    "prestador": "SANEPAR",
@@ -483,7 +514,7 @@
    "url": "https://www.legislacao.pr.gov.br/legislacao/listarAtosAno.do?action=exibir&codAto=360557",
    "verificado": true,
    "obs": "",
-   "id": "ato-032"
+   "id": "ato-034"
   },
   {
    "prestador": "SANEPAR",
@@ -498,7 +529,7 @@
    "url": "https://www.legislacao.pr.gov.br/legislacao/listarAtosAno.do?action=exibir&codAto=368129",
    "verificado": true,
    "obs": "",
-   "id": "ato-033"
+   "id": "ato-035"
   },
   {
    "prestador": "SANEPAR",
@@ -513,7 +544,7 @@
    "url": "https://www.legislacao.pr.gov.br/legislacao/listarAtosAno.do?action=exibir&codAto=391404",
    "verificado": true,
    "obs": "",
-   "id": "ato-034"
+   "id": "ato-036"
   },
   {
    "prestador": "SANEPAR",
@@ -528,7 +559,7 @@
    "url": "https://www.legislacao.pr.gov.br/legislacao/listarAtosAno.do?action=exibir&codAto=397939",
    "verificado": true,
    "obs": "",
-   "id": "ato-035"
+   "id": "ato-037"
   }
  ]
 }

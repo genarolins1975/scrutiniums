@@ -71,7 +71,7 @@ export function SimuladorConta() {
     }
     return pts;
   }, []);
-  const cores = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)", "var(--escala-seq-3)", "var(--san-div-neg-2)", "var(--escala-seq-5)", "var(--san-div-neg-1)"];
+  const cores = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)", "var(--escala-seq-3)", "var(--san-div-neg-2)", "var(--escala-seq-5)", "var(--san-div-neg-1)", "var(--serie-comp-5)"];
 
   const exportar = () => baixarCsv("saneamento-contas-simuladas.csv", CABECALHO_EXPORTACAO, linhasExportacao(TARIFAS));
 
