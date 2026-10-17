@@ -133,7 +133,7 @@ Dar prioridade à busca, classificação e reprodução. Evitar hero alto, indic
 
 - **Todos os painéis exigem conta.** As únicas rotas abertas são as de `src/lib/rotasPublicas.ts`; nenhuma mudança de layout pode abrir painel sem login nem apontar a barra superior para o login quando há sessão.
 - Ao mexer em abas, barra superior, cards ou rotas, conferir **logado e deslogado, em todos os observatórios**, e corrigir README ou documentação que diga outra coisa.
-- Destinos novos entram na navegação do módulo (ordem pela procura: o mais procurado logo depois da visão geral), na busca, no mapa do observatório e no sitemap.
+- Destinos novos entram na navegação do módulo (ordem pela procura: o mais procurado logo depois da visão geral), na busca e no mapa do observatório. O sitemap só lista rotas públicas (`ehRotaPublica`): painel protegido fica fora dele, e nunca se abre um painel só para aparecer no sitemap.
 
 ## 5. Contrato dos componentes
 
@@ -289,7 +289,7 @@ O usuário autoriza em frases curtas ("abre o PR", "faz o merge quando o CI pass
 
 1. **PR** com resumo do que mudou para o leitor, verificações feitas e pendências reais; acompanhar o PR.
 2. **CI e revisão automática**: corrigir falhas e achados procedentes (Codex, Claude Code Review) e responder cada thread. Se o CI não aparece, checar conflito com o main: PR em conflito não roda testes.
-3. **Conflitos** em arquivos gerados (ex.: `docs/i18n/cobertura.json`) se resolvem regenerando com a ferramenta do repositório (`node scripts/cobertura-i18n.mjs`), nunca à mão; o mesmo vale para `metricas.json`, `arquivos.json` e `manifesto.json` (`executar_modulo.py`).
+3. **Conflitos** em arquivos gerados se resolvem regenerando com a ferramenta do repositório, nunca à mão: `docs/i18n/cobertura.json` com `node scripts/cobertura-i18n.mjs`; no Setor Elétrico, `public/energia/gold/metricas.json`, `arquivos.json` e `manifesto.json` com `python3 pipeline/energia/executar_modulo.py <módulo> --sem-coleta` (um módulo qualquer já integrado basta, porque os três são derivados de todos os registros). Em outros domínios, usar o gerador próprio do domínio, não o de energia.
 4. **Merge** só com autorização explícita do usuário nesta conversa; "faz o merge quando ficar verde" vale para o PR em questão.
 5. **Produção**: depois do merge, conferir o deploy da Vercel no commit do main (status do commit no GitHub) e só então dizer "está no ar", com o horário e os links das rotas. Os painéis exigem login: dizer o que foi verificado (deploy, cabeçalhos, rotas públicas) e o que só ele pode ver logado. Mudança de navegação ou acesso exige conferência logado e deslogado.
 6. **Encerramento**: uma linha com o estado final e a próxima decisão dele, se houver.
