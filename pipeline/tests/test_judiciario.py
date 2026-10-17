@@ -50,6 +50,22 @@ class JudiciarioTest(unittest.TestCase):
         self.assertEqual(components['Terceirizados(as)'],6_103_408_415)
         self.assertEqual(finance['pessoalTotal'],148_461_823_305)
 
+    def test_published_per_capita_and_stopped_stock(self):
+        d=self.data
+        self.assertEqual(d['porHabitante']['valor'],771.48)
+        self.assertEqual(d['porHabitante']['semInativos'],653.38)
+        self.assertEqual((d['porHabitante']['pib'],d['porHabitante']['inativosPercentual']),(1.3,15.3))
+        rows={r['sigla']:r for r in d['tribunais']}
+        self.assertEqual((rows['TJDFT']['despesaPorHabitante'],rows['TJDFT']['despesaPorHabitanteSemInativos']),(1412.8,1152.3))
+        self.assertEqual(rows['TJAM']['despesaPorHabitante'],251.7)
+        self.assertIsNone(rows['TRF3']['despesaPorHabitante'])
+        self.assertEqual(d['ramos'][0]['despesaPorHabitante'],497.3)
+        self.assertEqual((d['acervo']['suspensos']['processosMilhoes'],d['acervo']['suspensos']['percentualPendentes']),(16.4,21.7))
+        self.assertEqual((d['acervo']['execucaoFiscal']['percentualPendentes'],d['acervo']['execucaoFiscal']['congestionamento']),(22.0,72.4))
+        bad=copy.deepcopy(d)
+        bad['tribunais'][0]['despesaPorHabitante']=None
+        with self.assertRaises(ValueError): validate(bad)
+
     def test_no_silent_missing_or_zero_denominator(self):
         for a, b in [(None, 1), (1, None), (1, 0), (1, -1), (float('nan'), 1), (True, 1)]:
             self.assertIsNone(divide(a, b))

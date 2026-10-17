@@ -101,6 +101,7 @@ describe("idioma dos rótulos administrativos com agregações reais", () => {
       estados: 0,
       saneamento: 0,
       gas: 0,
+      agro: 0,
       plataforma: 1,
     });
   });

@@ -10,7 +10,7 @@ import type { Idioma } from "@/lib/idioma";
 
 // Abas do cabeçalho: os observatórios do registro e a imprensa (navCabecalho). Quem tem
 // conta vai ao painel; o visitante, à seção do observatório na página inicial.
-// Com sete observatórios as abas não cabem na linha da marca nem a 1440 px: ficam
+// Com oito observatórios as abas não cabem na linha da marca nem a 1440 px: ficam
 // sempre numa segunda linha, que quebra em vez de rolar, para nenhuma aba ficar escondida.
 
 /**
@@ -43,7 +43,7 @@ export function PublicHeaderView({ authenticated = false, idioma = "pt" }: { aut
   const t = TEXTOS_LAYOUT[idioma];
   return (
     <header className="border-b border-linha bg-marfim">
-      <div className="mx-auto flex max-w-page items-center justify-between gap-6 px-6 py-5">
+      <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-x-6 gap-y-3 px-6 py-5">
         <Link
           href={hrefNoIdioma("/", idioma)}
           aria-label={t.inicio}
@@ -51,7 +51,7 @@ export function PublicHeaderView({ authenticated = false, idioma = "pt" }: { aut
         >
           <LogoWordmark />
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="ml-auto flex items-center gap-4">
           <Link
             href={authenticated ? "/app/conta" : hrefNoIdioma("/entrar", idioma)}
             className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-bronze sm:inline-flex"

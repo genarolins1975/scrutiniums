@@ -26,8 +26,8 @@ function paginas(dir: string, out: string[] = []): string[] {
 }
 
 describe("registro de domínios", () => {
-  it("seis observatórios, ids e rotas estáveis, acento próprio", () => {
-    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados", "saneamento", "gas"]);
+  it("oito observatórios, ids e rotas estáveis, acento próprio", () => {
+    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados", "saneamento", "gas", "agro"]);
     expect(DOMINIOS[5].rotaRaiz).toBe("/saneamento");
     expect(dominioDoCaminho("/saneamento/municipio/2611606")).toBe("saneamento");
     expect(dominioDaSecao("saneamento:acesso")).toBe("saneamento");
@@ -37,6 +37,10 @@ describe("registro de domínios", () => {
     expect(dominioDoCaminho("/gas-natural/gas-de-cozinha")).toBe("gas");
     expect(dominioDoCaminho("/gas-naturalx")).toBeNull();
     expect(dominioDaSecao("gas:producao")).toBe("gas");
+    expect(DOMINIOS[7].rotaRaiz).toBe("/agronegocio");
+    expect(dominioDoCaminho("/agronegocio/atlas")).toBe("agro");
+    expect(dominioDoCaminho("/agronegociox")).toBeNull();
+    expect(dominioDaSecao("agro:panorama")).toBe("agro");
     const [c, e, f, contas] = DOMINIOS;
     expect(contas.rotaRaiz).toBe("/contas-publicas");
     expect(DOMINIOS[4].rotaRaiz).toBe("/contas-publicas-estaduais");

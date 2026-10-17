@@ -63,6 +63,7 @@ describe("mensagens literais do índice da home", () => {
 // As expectativas vêm dos registros de origem, não de contagem, contagemIndice
 // ou de outro resultado do adaptador. Nenhuma fonte publicada é simulada ou alterada.
 const CONTAGENS_REAIS = {
+  agro: { tipo: "simples", quantidade: 12, unidade: "paginas_por_pergunta" },
   credito: {
     tipo: "simples",
     quantidade: ABAS_OBSERVATORIO.reduce((n, aba) => n + Number(
@@ -91,7 +92,7 @@ const CONTAGENS_REAIS = {
   gas: { tipo: "simples", quantidade: PAGINAS_GAS.length, unidade: "paginas_por_pergunta" },
 } satisfies Record<DominioId, ContagemIndice>;
 
-describe("sete contagens semânticas derivadas das fontes reais", () => {
+describe("oito contagens semânticas derivadas das fontes reais", () => {
   let padrao: ReturnType<typeof vitrines>;
   let portugues: ReturnType<typeof vitrines>;
   let ingles: ReturnType<typeof vitrines>;

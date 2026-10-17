@@ -1,0 +1,52 @@
+name: Interface do Agronegócio
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'public/agro/**'
+      - 'pipeline/agro/**'
+      - 'scripts/agro/**'
+      - '.github/workflows/agro-interface.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/agro/**'
+      - 'pipeline/agro/**'
+      - 'scripts/agro/**'
+      - '.github/workflows/agro-interface.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: agro-interface-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  interface:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npx --no-install playwright install --with-deps chromium
+      - name: Derivadas reproduzíveis
+        run: |
+          python3 -m pipeline.agro.run --check
+          python3 -m pipeline.agro.dicionario --check
+          node scripts/agro/catalogo.mjs --check
+      - run: npm run build
+      - run: node scripts/agro/verificacao.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agronegocio-interface
+          path: /tmp/agro-qa/
+          if-no-files-found: error
+      - run: git diff --exit-code

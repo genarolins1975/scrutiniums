@@ -21,7 +21,7 @@ describe("entrada do Judiciário no seletor", () => {
 
   it("oferece o Judiciário ao lado do OBEE e preserva todos os observatórios", () => {
     expect(OPCOES_OBSERVATORIOS.map((d) => d.id)).toEqual([
-      "credito", "energia", "eficiencia", "judiciario", "contas", "estados", "saneamento", "gas",
+      "credito", "energia", "eficiencia", "judiciario", "contas", "estados", "saneamento", "gas", "agro",
     ]);
     for (const d of DOMINIOS) expect(OPCOES_OBSERVATORIOS.find((o) => o.id === d.id)?.rotaRaiz).toBe(d.rotaRaiz);
   });

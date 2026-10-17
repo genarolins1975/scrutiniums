@@ -30,9 +30,13 @@ export function descobrirFontes(raiz, manifesto, { apenasCodigo = false } = {}) 
   for (const path of manifesto.ui.raizes) if (!statSync(localizar(path)).isDirectory()) throw Error(`Raiz de interface inválida: ${path}`);
   const ler = path => readFileSync(caminho(path));
   const resultado = { ui: [], gold: [], conteudo: [], naoClassificadas: [], excluidas: [], materializados: [] };
-  const arquivos = new Set(execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], {
+  const git = args => execFileSync('git', ['ls-files', '-z', ...args], {
     cwd: base, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024,
-  }).split('\0').filter(Boolean));
+  }).split('\0').filter(Boolean);
+  // Rastreado e apagado da pasta de trabalho não é fonte: a gold do dia sai com rsync --delete e
+  // remove o que deixou de existir (17/10/2026: cmp/00058338.json, ENOENT no inventário).
+  const apagados = new Set(git(['--deleted']));
+  const arquivos = new Set(git(['--cached', '--others', '--exclude-standard']).filter(path => !apagados.has(path)));
   const integridade = new Set();
   const exigirDominio = dominio => { if (!dominios.has(dominio)) throw Error(`Domínio i18n desconhecido: ${dominio}`); };
   const dominioDe = (path, grupo) => {

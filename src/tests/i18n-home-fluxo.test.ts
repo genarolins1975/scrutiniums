@@ -43,6 +43,7 @@ const VITRINES: Record<DominioId, Vitrine> = {
   estados: vitrineSintetica("estados"),
   saneamento: vitrineSintetica("saneamento"),
   gas: vitrineSintetica("gas"),
+  agro: vitrineSintetica("agro"),
 };
 
 function usuario(onboardingStatus: string): User {
@@ -141,10 +142,10 @@ describe("metadados das entradas da home", () => {
   it("preserva a descrição PT, o título herdado e a imagem do pai ao acrescentar idiomas", async () => {
     const openGraph: NonNullable<Awaited<ResolvingMetadata>["openGraph"]> = {
       title: {
-        absolute: "Scrutiniums: Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais, Contas Públicas Estaduais, Saneamento e Gás Natural",
+        absolute: "Scrutiniums: Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais, Contas Públicas Estaduais, Saneamento, Gás Natural e Agronegócio",
         template: null,
       },
-      description: "Sete observatórios, a mesma filosofia de evidência: dados oficiais, fonte e data em cada número, metodologia aberta. Gratuito. Painéis com cadastro gratuito.",
+      description: "Oito observatórios, a mesma filosofia de evidência: dados oficiais, fonte e data em cada número, metodologia aberta. Gratuito. Painéis com cadastro gratuito.",
       siteName: "Scrutiniums", locale: "pt_BR", type: "website", url: null,
       images: [{
         url: "https://scrutiniums.com/opengraph-image?b5ad3ed804227d3b",
@@ -159,7 +160,7 @@ describe("metadados das entradas da home", () => {
     const resultado = await metadataPt({}, parent);
 
     expect(resultado).toEqual({
-      description: "Da informação dispersa ao conhecimento verificável. Uma plataforma, observatórios de Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais, Contas Públicas Estaduais, Saneamento e Gás Natural, com bases públicas, registros oficiais e método declarado. Gratuita. Painéis com cadastro gratuito.",
+      description: "Da informação dispersa ao conhecimento verificável. Uma plataforma, observatórios de Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais, Contas Públicas Estaduais, Saneamento, Gás Natural e Agronegócio, com bases públicas, registros oficiais e método declarado. Gratuita. Painéis com cadastro gratuito.",
       alternates: { canonical: "/", languages: { "pt-BR": "/", en: "/en", "x-default": "/" } },
       openGraph: { ...antes, title: { absolute: antes.title.absolute }, url: "/", locale: "pt_BR", alternateLocale: "en_US" },
     });
