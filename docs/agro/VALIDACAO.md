@@ -35,3 +35,9 @@ Fechamento local: 44 testes dos dois arquivos de HTML/navegador da home PT/EN ap
 O gate de navegação completo detectou um contraste transitório no comparador internacional do Judiciário: texto claro enquanto o fundo ainda fazia transição a partir do branco. A troca foi tornada imediata, sem alterar dados ou limiares da auditoria. O roteiro passou a medir também o contraste no primeiro quadro da seleção por teclado, além da auditoria Axe posterior, com diagnóstico detalhado em caso de falha.
 
 A revisão identificou dois contratos incompletos: as decomposições A2/E5 declaravam barras sem renderização e a contagem de visitas do novo domínio não recebia eventos. A2/E5 passaram a ter barras divergentes com origem zero e tabela equivalente, verificadas com contribuições positivas, negativas e nulas em quatro larguras. Visitas usam apenas `agro:paginas`: sem usuário no registro, caminho, consulta ou parâmetros. O painel administrativo informa que usuários únicos/ativos do Agro não são medidos.
+
+Rodapés completo e compacto: grades redistribuídas para oito e seis elementos, respectivamente, sem coluna institucional órfã. Roteiro verifica PT/EN e compacto em 768, 1024, 1280 e 1440 px, além das quatro larguras do restante da interface.
+
+A conferência de 320 px encontrou também o cabeçalho público sem quebra entre marca e ação de cadastro. A linha agora pode quebrar, preservando ambos os destinos; o teste PT/EN passa a exigir largura absoluta compatível com o viewport, além de comparar os idiomas.
+
+Regressão da revisão: 638 verificações locais em modo de desenvolvimento no commit `35c2c4b1b`; depois, 18 verificações específicas de cabeçalho/rodapés em seis larguras, todas aprovadas. As quatro imagens `decomposicao-*`/`rodape-*` registram essas inspeções. O roteiro de CI acrescenta 12 casos de rodapé à suíte de produção; o resultado definitivo fica no run do SHA integrado, sem confundir a regressão em desenvolvimento com build de produção.

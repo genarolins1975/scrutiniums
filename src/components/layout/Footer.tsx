@@ -16,8 +16,8 @@ export function Footer({ compacto = false, idioma = "pt" }: { compacto?: boolean
   const h = (href: string) => hrefNoIdioma(href, idioma);
   return (
     <footer className="border-t border-linha-escura bg-carvao text-marfim">
-      <div className="mx-auto grid grid-cols-1 max-w-page gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-8">
-        <div className="min-w-0 [overflow-wrap:anywhere] [&>span>span]:min-w-0 sm:col-span-2">
+      <div className="mx-auto grid grid-cols-1 max-w-page gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="min-w-0 [overflow-wrap:anywhere] [&>span>span]:min-w-0">
           <LogoWordmark onDark />
           <p className="mt-4 max-w-sm text-sm text-mineral-soft">
             {t.plataforma}
@@ -123,7 +123,7 @@ function FooterCompacto() {
   const link = "inline-flex min-h-[32px] items-center hover:text-bronze-soft [@media(pointer:coarse)]:min-h-[44px]";
   return (
     <footer className="border-t border-linha-escura bg-carvao text-marfim">
-      <div className="ed-pagina grid gap-x-10 gap-y-5 py-8 md:grid-cols-[auto_1fr_1fr_1fr_1fr]">
+      <div className="ed-pagina grid gap-x-10 gap-y-5 py-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-[minmax(0,2fr)_repeat(5,minmax(0,1fr))]">
         <div>
           <LogoWordmark onDark />
           <p className="mt-2 text-xs text-mineral-soft">

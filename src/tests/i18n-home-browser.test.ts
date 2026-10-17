@@ -101,6 +101,7 @@ describe("home PT/EN: navegador do build de produção", () => {
             return auditoria.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => ({ html: n.html })) }));
           });
           resultados.push({ html: await page.content(), violacoes, larguraDocumento: await page.evaluate(() => document.documentElement.scrollWidth) });
+          expect(resultados.at(-1)!.larguraDocumento, caminho + " cabe no viewport").toBeLessThanOrEqual(largura + 1);
           expect(falhas, caminho).toEqual([]);
         } finally { await page.close(); }
       }

@@ -52,6 +52,14 @@ try{
  const cases={A2:{a0:10,y0:2,a1:20,y1:3},A4:{produto:'leite',quantidade:2,origem:'mil-litros',destino:'litro',massa:0},A5:{qa:100,aa:20,qb:90,ab:10},B1:{preco:100,rendimento:50,area:2,variavel:2000,operacional:1000,economico:500,escopo:'operacional'},B4:{custo:1000,preco:100},B6:{q0:100,p0:10,q1:120,p1:7,c0:600,c1:700},C1:{g0:100,v0:10,g1:200,v1:20,g2:300,v2:0},C5:{r0:1000,g0:300,r1:5000,g1:700,alta:10},D3:{principal:12000,taxa:0,meses:12,sistema:'sac'},D5:{exposto:10000,perda:40,franquia:1000,limite:2000,participacao:80},E2:{capacidade:10,inicial:0},F3:{inicial:100,admissoes:20,desligamentos:20,ajustes:0},G3:{retirada:100,retorno:30,estoque:10},H3:{alcance:20,universo:100},K1:{inicial:0},K2:{investimento:1000,vida:3,receita:600,custo:100,residual:0,taxa:0},K6:{rr:100,rd:100,cr:100,cd:50,base:5,novo:6,repasseR:50,repasseC:100},K11:{ca:1000,ea:100,cb:2400,eb:200,compativel:'sim'}};
  cases.B2=cases.B3=cases.B1;
  for(let k=0;k<12;k++){cases.E2['entrada'+k]=k===0?20:0;cases.E2['saida'+k]=k===0?5:0;cases.K1['entrada'+k]=k===5?5000:0;cases.K1['saida'+k]=k<3?1000:0;}
+ const footerPage=await anon.newPage();footerPage.on('pageerror',e=>errors.push(e.message));
+ for(const width of [768,1024,1280,1440])for(const path of ['/','/en','/agronegocio/glossario']){
+  await footerPage.setViewportSize({width,height:1000});await footerPage.goto(origin+path,{waitUntil:'networkidle'});
+  const grid=footerPage.locator('footer > div.grid');const layout=await grid.evaluate(e=>{const items=[...e.children].map(x=>x.getBoundingClientRect());const last=Math.max(...items.map(x=>x.top));return{lastRow:items.filter(x=>Math.abs(x.top-last)<2).length,overflow:document.documentElement.scrollWidth>innerWidth+1};});
+  check('Rodapé sem coluna órfã ou overflow '+path+' '+width,layout.lastRow>=2&&!layout.overflow);
+  if(width===1440)await footerPage.locator('footer').screenshot({path:out+'/rodape-'+(path==='/en'?'en':path==='/'?'completo':'compacto')+'-'+width+'.png'});
+ }
+ await footerPage.close();
  await page.setViewportSize({width:390,height:844});
  const numeric=catalog.artefatos.filter(r=>r.categoria==='CENÁRIO'&&r.id!=='G5');check('32 laboratórios numéricos distintos',numeric.length===32);
  for(const item of numeric){
