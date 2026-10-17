@@ -21,7 +21,7 @@ export const AUSENTE = "–";
  * cabeçalho deste arquivo e `dataHora` em SobreEsteDado). Só o domínio Energia usa; texto-datas
  * não assume fuso sem que o chamador o informe.
  */
-export const FUSO_SEM_OFFSET_ENERGIA = "Brasília";
+export const FUSO_SEM_OFFSET_ENERGIA = "Brasília"; // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
 
 export function num(v: number | null | undefined, casas = 1, idioma: Idioma = idiomaEnergia()): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return AUSENTE;
@@ -52,7 +52,7 @@ export function sinal(v: number | null | undefined, casas = 1, sufixo = "", idio
 }
 
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-const MESES_LONGOS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+const MESES_LONGOS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]; // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const MONTHS_LONG = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -77,7 +77,7 @@ export function dataExtenso(iso: string | null | undefined, idioma: Idioma = idi
   if (!iso) return AUSENTE;
   const [a, m, d] = iso.slice(0, 10).split("-");
   if (idioma === "en") return `${MONTHS_LONG[Number(m) - 1]} ${Number(d)}, ${a}`;
-  return `${Number(d)} de ${MESES_LONGOS[Number(m) - 1]} de ${a}`;
+  return `${Number(d)} de ${MESES_LONGOS[Number(m) - 1]} de ${a}`; // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
 }
 
 export function dataCurta(iso: string, idioma: Idioma = idiomaEnergia()): string {
@@ -100,7 +100,7 @@ export function mesAnoCurto(anomes: string, idioma: Idioma = idiomaEnergia()): s
 /** "AAAA-MM-DDTHH:MM" local → "27/09/2026 às 16h" ("Sep 27, 2026, 16:00" em inglês). */
 export function horaLocal(ref: string, idioma: Idioma = idiomaEnergia()): string {
   if (idioma === "en") return `${dataBR(ref, "en")}, ${ref.slice(11, 13)}:00`;
-  return `${dataBR(ref, "pt")} às ${ref.slice(11, 13)}h`;
+  return `${dataBR(ref, "pt")} às ${ref.slice(11, 13)}h`; // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
 }
 
 /** Carimbo UTC ("...Z") exibido no horário de Brasília. */
@@ -114,7 +114,7 @@ export function carimbo(iso: string | null | undefined, idioma: Idioma = idiomaE
         timeZone: "America/Sao_Paulo", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", hourCycle: "h23",
       }).formatToParts(d).map((x) => [x.type, x.value]),
     );
-    return `${p.month} ${p.day}, ${p.year}, ${p.hour}:${p.minute} (Brasília time)`;
+    return `${p.month} ${p.day}, ${p.year}, ${p.hour}:${p.minute} (Brasília time)`; // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
   }
   return d.toLocaleString(LOCALE.pt, {
     timeZone: "America/Sao_Paulo",
@@ -123,7 +123,7 @@ export function carimbo(iso: string | null | undefined, idioma: Idioma = idiomaE
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-  }) + " (Brasília)";
+  }) + " (Brasília)"; // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
 }
 
 /**
@@ -132,10 +132,10 @@ export function carimbo(iso: string | null | undefined, idioma: Idioma = idiomaE
  * não sair "1 dias". Unidade que não é contagem (MWmed, R$/MWh, %) passa inalterada.
  */
 const SINGULAR: Record<string, string> = {
-  dias: "dia", horas: "hora", meses: "mês", semanas: "semana", anos: "ano", usinas: "usina",
-  distribuidoras: "distribuidora", conjuntos: "conjunto", "municípios": "município", consultas: "consulta",
-  atos: "ato", eventos: "evento", unidades: "unidade", "famílias": "família", empresas: "empresa",
-  "interrupções": "interrupção", "reclamações": "reclamação", agentes: "agente", projetos: "projeto",
+  dias: "dia", horas: "hora", meses: "mês", semanas: "semana", anos: "ano", usinas: "usina", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  distribuidoras: "distribuidora", conjuntos: "conjunto", "municípios": "município", consultas: "consulta", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  atos: "ato", eventos: "evento", unidades: "unidade", "famílias": "família", empresas: "empresa", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  "interrupções": "interrupção", "reclamações": "reclamação", agentes: "agente", projetos: "projeto", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
 };
 
 const SINGULAR_EN: Record<string, string> = {
@@ -183,36 +183,36 @@ export function nomeSubmercado(id: string, idioma: Idioma = idiomaEnergia(), cur
 
 /** Rótulo legível das chaves de regra e definição publicadas na gold. */
 const ROTULOS_REGRA: Record<string, string> = {
-  calibracao: "Calibração",
+  calibracao: "Calibração", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
   carga_sin: "Carga do SIN",
-  comparacao_anual: "Comparação anual",
+  comparacao_anual: "Comparação anual", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
   desvio_principal: "Desvio principal",
-  dia_referencia: "Dia de referência",
-  diaria: "Média diária",
-  diferenca_preco: "Diferença de preço",
-  diferenca_submercados: "Diferença entre submercados",
+  dia_referencia: "Dia de referência", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  diaria: "Média diária", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  diferenca_preco: "Diferença de preço", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  diferenca_submercados: "Diferença entre submercados", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
   ear_sin: "EAR do SIN",
-  ena_30d: "ENA de 30 dias",
+  ena_30d: "ENA de 30 dias", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
   estados: "Estados do modelo",
-  extremo_12m: "Extremo em 12 meses",
+  extremo_12m: "Extremo em 12 meses", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
   faixa_usual: "Faixa usual",
   fluxo: "Fluxo",
-  hes: "Hidráulica, eólica e solar",
+  hes: "Hidráulica, eólica e solar", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
   imutabilidade: "Imutabilidade",
-  limites: "Limites",
-  liquido: "Saldo líquido",
-  look_ahead: "Sem uso de dado futuro",
-  media_diaria: "Média diária",
-  menor_valor_ano: "Menor valor observado no ano",
-  padrao_historico: "Padrão histórico",
-  participacao: "Participação",
-  permanencia: "Permanência",
-  posicao_historica: "Posição histórica",
-  termica_contexto: "Contexto térmico",
+  limites: "Limites", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  liquido: "Saldo líquido", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  look_ahead: "Sem uso de dado futuro", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  media_diaria: "Média diária", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  menor_valor_ano: "Menor valor observado no ano", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  padrao_historico: "Padrão histórico", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  participacao: "Participação", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  permanencia: "Permanência", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  posicao_historica: "Posição histórica", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
+  termica_contexto: "Contexto térmico", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
   volatilidade: "Volatilidade",
   alvo: "Alvo",
   entregas: "Entregas",
-  cenario_de_elegibilidade: "Cenário de elegibilidade",
+  cenario_de_elegibilidade: "Cenário de elegibilidade", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
   corte_operacional: "Corte operacional",
   quantis: "Quantis",
 };
@@ -234,7 +234,7 @@ const ROTULOS_REGRA_EN: Record<string, string> = {
   fluxo: "Flow",
   hes: "Hydro, wind and solar",
   imutabilidade: "Immutability",
-  limites: "Limits",
+  limites: "Limits", // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
   liquido: "Net balance",
   look_ahead: "No use of future data",
   media_diaria: "Daily average",
@@ -264,7 +264,7 @@ export function normaLegivel(id: string, idioma: Idioma = idiomaEnergia()): stri
   const m = /^LEI-(\d+)-(\d{4})-(\d{2})-(\d{2})$/.exec(id);
   if (!m) return id;
   if (idioma === "en") return `Law ${Number(m[1]).toLocaleString(LOCALE.en)} of ${dataBR(`${m[2]}-${m[3]}-${m[4]}`, "en")}`;
-  return `Lei ${Number(m[1]).toLocaleString(LOCALE.pt)}, de ${m[4]}/${m[3]}/${m[2]}`;
+  return `Lei ${Number(m[1]).toLocaleString(LOCALE.pt)}, de ${m[4]}/${m[3]}/${m[2]}`; // i18n: dado (ramo ou tabela portuguesa da infraestrutura bilíngue)
 }
 
 /**
