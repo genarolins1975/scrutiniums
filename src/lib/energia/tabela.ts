@@ -107,13 +107,18 @@ export function textoData(v: string, idioma: Idioma = idiomaEnergia()): string {
 /** Texto exibido na célula (pt-BR, sinal de menos tipográfico); ausência é "sem dado", nunca "0". */
 /** Coluna numérica que guarda um ano civil ("Ano", "Ano de operação"): o ano nunca leva separador de milhar ("2026", não "2.026"). */
 export function ehColunaDeAno(c: ColunaTabela): boolean {
-  return c.tipo === "numero" && (c.casas ?? 1) === 0 && /^ano(\s|$)/i.test(c.rotulo);
+  // o rótulo pode estar nos dois idiomas ("Ano", "Year"); ano nunca leva separador de milhar
+  return c.tipo === "numero" && (c.casas ?? 1) === 0 && /^(?:ano|year)(\s|$)/i.test(c.rotulo);
 }
+
+const SIM_NAO_EN: Record<string, string> = { sim: "yes", "não": "no", Sim: "Yes", "Não": "No", SIM: "YES", "NÃO": "NO" };
 
 export function textoCelula(v: string | number | null, c: ColunaTabela, idioma: Idioma = idiomaEnergia()): string {
   if (v === null) return textoSemDado(idioma);
   if (typeof v === "number") return ehColunaDeAno(c) && Number.isInteger(v) ? String(v) : num(v, c.casas ?? 1, idioma);
   if (c.tipo === "data") return textoData(v, idioma);
+  // sim/não da base: na página inglesa, yes/no (o valor do filtro e do arquivo baixado continua o da base)
+  if (idioma === "en" && SIM_NAO_EN[v] !== undefined) return SIM_NAO_EN[v];
   // célula de texto que é só uma data ISO (mês, dia ou instante) sai no formato do site; o arquivo baixado segue ISO
   if (c.tipo === "texto" && /^\d{4}-\d{2}(-\d{2}(T\d{2}:\d{2}(:\d{2})?Z?)?)?$/.test(v)) return textoData(v, idioma);
   // data ISO dentro de um texto (um ato "DSP-RET 2016-11-24", uma nota) também sai no formato do site

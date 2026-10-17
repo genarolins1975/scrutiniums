@@ -3,6 +3,8 @@ import { dataBR, nomeMes, num, pct, reais, sinal } from "@/lib/energia/formato";
 import { idiomaEnergia, tx, tx as traduz } from "@/lib/energia/idioma";
 import type { Idioma } from "@/lib/idioma";
 import { MENSAGEM_COPIA_EN } from "@/lib/energia/i18n/nucleo";
+import { rotuloFicha, valorExibidoNoIdioma as valorFichaNoIdioma } from "@/lib/energia/i18n/aprenda";
+import { hrefNoIdioma } from "@/lib/i18n-href";
 
 /**
  * Evidência "Comprove este número" (seção 11.5 da especificação): contrato do
@@ -300,6 +302,13 @@ export function comValorExibido(ev: Evidencia, texto: string): Evidencia {
 }
 
 /** Referência ABNT simplificada sem data de acesso: espelho de `citacao()` no Python. */
+/** Endereço da página citada na irmã inglesa, quando ela tem tradução publicada. */
+function enderecoEmIngles(endereco: string): string {
+  const base = "https://scrutiniums.com";
+  if (!endereco.startsWith(base + "/")) return hrefNoIdioma(endereco, "en");
+  return base + hrefNoIdioma(endereco.slice(base.length), "en");
+}
+
 export function citacaoBase(ev: Evidencia, endereco: string = SITE, idioma: Idioma = idiomaEnergia()): string {
   const pub = diaBrasilia(ev.versao?.publicacao);
   const ano = pub ? pub.slice(0, 4) : tx("s.d.", "n.d.", idioma);
@@ -317,11 +326,11 @@ export function citacaoBase(ev: Evidencia, endereco: string = SITE, idioma: Idio
       `Dados primários: ${ev.fonte?.orgao}, ${ev.fonte?.conjunto} (${recurso}${captura}). ` +
       `Versão ${ev.versao?.pipeline}, ${codigo}, publicada em ${publicada}. ` +
       `Disponível em: ${endereco}.`,
-    `SCRUTINIUMS. ${ev.indicador}: ${valor}, ${ev.entidade}, ${textoPeriodo(ev.periodo, idioma)}. ` +
+    `SCRUTINIUMS. ${rotuloFicha(ev.indicador, "en") ?? ev.indicador}: ${valorFichaNoIdioma(valor, "en")}, ${rotuloFicha(ev.entidade, "en") ?? ev.entidade}, ${textoPeriodo(ev.periodo, idioma)}. ` +
       `Brazilian Power Sector Observatory, ${ano}. ` +
       `Primary data: ${ev.fonte?.orgao}, ${ev.fonte?.conjunto} (${recurso}${captura}). ` +
       `Version ${ev.versao?.pipeline}, ${codigo}, published on ${publicada}. ` +
-      `Available at: ${endereco}.`,
+      `Available at: ${enderecoEmIngles(endereco)}.`,
     idioma,
   );
 }
