@@ -6,13 +6,17 @@ import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { Alert } from "@/components/ui/Alert";
+import type { Idioma } from "@/lib/idioma";
+import { hrefNoIdioma } from "@/lib/i18n-href";
+import { TEXTOS_ENTRAR } from "@/i18n/paginas/entrar";
 
 /**
  * Login principal: e-mail + senha → POST /api/auth/login.
  * `de` (destino pós-login, já validado no servidor da página) é repassado
  * no corpo; a API revalida e só o aplica com onboarding completo.
  */
-export function EntrarSenhaForm({ de }: { de?: string }) {
+export function EntrarSenhaForm({ de, idioma = "pt" }: { de?: string; idioma?: Idioma }) {
+  const t = TEXTOS_ENTRAR[idioma];
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,8 +31,8 @@ export function EntrarSenhaForm({ de }: { de?: string }) {
     const em = email.trim().toLowerCase();
     const emOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em);
     const pOk = password.length >= 1;
-    setEmailError(emOk ? undefined : "Informe um e-mail válido.");
-    setPasswordError(pOk ? undefined : "Informe sua senha.");
+    setEmailError(emOk ? undefined : t.erroEmail);
+    setPasswordError(pOk ? undefined : t.erroSenha);
     if (!emOk || !pOk) return;
 
     setSubmitting(true);
@@ -44,14 +48,14 @@ export function EntrarSenhaForm({ de }: { de?: string }) {
         return;
       }
       if (res.status === 429) {
-        setServerError("Muitas tentativas. Aguarde um instante e tente novamente.");
+        setServerError(t.erroMuitasTentativas);
       } else if (res.status === 401 || res.status === 400) {
-        setServerError("E-mail ou senha inválidos.");
+        setServerError(t.erroCredenciais);
       } else {
-        setServerError("Não foi possível entrar agora. Tente novamente.");
+        setServerError(t.erroEntrar);
       }
     } catch {
-      setServerError("Não foi possível entrar agora. Verifique sua conexão.");
+      setServerError(t.erroEntrarConexao);
     } finally {
       setSubmitting(false);
     }
@@ -62,7 +66,7 @@ export function EntrarSenhaForm({ de }: { de?: string }) {
       {serverError && <Alert kind="erro">{serverError}</Alert>}
 
       <Field
-        label="E-mail"
+        label={t.email}
         name="email"
         type="email"
         autoComplete="email"
@@ -75,7 +79,7 @@ export function EntrarSenhaForm({ de }: { de?: string }) {
       />
 
       <Field
-        label="Senha"
+        label={t.senha}
         name="current-password"
         type="password"
         autoComplete="current-password"
@@ -87,24 +91,24 @@ export function EntrarSenhaForm({ de }: { de?: string }) {
       />
 
       <Button type="submit" full disabled={submitting}>
-        {submitting ? "Entrando…" : "Entrar"}
+        {submitting ? t.entrando : t.entrar}
       </Button>
 
       <div className="flex flex-col items-center gap-2 border-t border-linha pt-5 text-center">
         <p className="text-sm text-carvao-muted">
-          Prefere ou precisa entrar sem senha?{" "}
+          {t.prefereSms}{" "}
           <Link
-            href="/entrar/sms"
+            href={hrefNoIdioma("/entrar/sms", idioma)}
             className="text-bronze-dark underline underline-offset-4 hover:text-carvao"
           >
-            Entrar com código por SMS
+            {t.entrarComSms}
           </Link>
         </p>
         <Link
-          href="/cadastro"
+          href={hrefNoIdioma("/cadastro", idioma)}
           className="rotulo min-h-[44px] py-3 text-carvao-muted underline underline-offset-4 hover:text-bronze"
         >
-          Ainda não tenho cadastro
+          {t.semCadastro}
         </Link>
       </div>
     </form>

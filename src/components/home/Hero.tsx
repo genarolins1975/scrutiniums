@@ -7,6 +7,7 @@ import { DOMINIOS, type DominioId } from "@/lib/dominios";
 import { ACESSO, observatoriosPorExtenso } from "@/lib/acesso";
 import { formatarContagemIndice } from "@/lib/i18n-home-indice";
 import type { Idioma } from "@/lib/idioma";
+import { hrefNoIdioma } from "@/lib/i18n-href";
 import type { Vitrine } from "@/lib/vitrine";
 
 function partesIntroducaoHero(idioma: Idioma) {
@@ -50,7 +51,7 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
             <div data-i18n-regiao={idioma === "en" ? "home-acoes" : undefined} className="flex flex-wrap items-center gap-x-6 gap-y-3">
               <BotaoLink href="/cadastro">{idioma === "en" ? en["acesso.criar_conta"].texto : ACESSO.ctaConta}</BotaoLink>
               <Link
-                href="/entrar"
+                href={hrefNoIdioma("/entrar", idioma)}
                 className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
               >
                 {idioma === "en" ? en["home.hero.ja_cadastrado"].texto : pt["home.hero.ja_cadastrado"]}
