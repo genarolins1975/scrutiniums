@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { empilharPontos } from "@/lib/energia/conta";
+import { useTx } from "@/lib/energia/useIdioma";
 import { dominioBonito, escalaLinear, rotuloTick, ticksQueCabem } from "@/lib/energia/escalas";
 
 /**
@@ -88,6 +89,7 @@ export function ContaPontos({
   aoEscolher?: (id: string) => void;
 }) {
   const raiz = useRef<HTMLDivElement>(null);
+  const tx = useTx();
   const [largura, setLargura] = useState(LARGURA_SSR);
   useEffect(() => {
     const el = raiz.current;
@@ -124,8 +126,8 @@ export function ContaPontos({
   const menor = extremos && pontos.length ? pontos.reduce((a, b) => (b.valor < a.valor ? b : a)) : null;
   const maior = extremos && pontos.length ? pontos.reduce((a, b) => (b.valor > a.valor ? b : a)) : null;
   const nomeados: { id: string; texto: string; tipo: "menor" | "maior" | "escolhido" }[] = [];
-  if (menor) nomeados.push({ id: menor.id, texto: `Menor: ${menor.rotulo}`, tipo: "menor" });
-  if (maior && maior.id !== menor?.id) nomeados.push({ id: maior.id, texto: `Maior: ${maior.rotulo}`, tipo: "maior" });
+  if (menor) nomeados.push({ id: menor.id, texto: tx(`Menor: ${menor.rotulo}`, `Lowest: ${menor.rotulo}`), tipo: "menor" }); // i18n: dado
+  if (maior && maior.id !== menor?.id) nomeados.push({ id: maior.id, texto: tx(`Maior: ${maior.rotulo}`, `Highest: ${maior.rotulo}`), tipo: "maior" }); // i18n: dado
   for (const id of escolhidos) {
     const p = doPonto.get(id);
     if (p && id !== menor?.id && id !== maior?.id) nomeados.push({ id, texto: p.rotulo, tipo: "escolhido" });
