@@ -24,6 +24,27 @@ export const MENSAGEM_COPIA_EN: Readonly<Record<"copiado" | "selecionado" | "fal
   falhou: "Could not copy: select the text in the block and copy it.",
 };
 
+/* ---------- Carga ---------- */
+
+/** Rótulo das janelas de comparação da carga (carga_detalhe.p025.comparacoes.janelas[].rotulo). */
+export const JANELA_CARGA_EN: Readonly<Record<string, string>> = {
+  "últimos 7 dias": "last 7 days",
+  "últimos 28 dias (4 semanas)": "last 28 days (4 weeks)",
+  "mês corrente até o último dia": "current month up to the latest day",
+  "último mês completo": "last complete month",
+  "últimas 52 semanas": "last 52 weeks",
+};
+
+/**
+ * O que cada regime do ONS acrescentou à carga, como a página o extrai da descrição publicada (carga_detalhe.regimes[].descricao,
+ * primeira frase sem "Inclui").
+ */
+export const ACRESCIMO_REGIME_EN: Readonly<Record<string, string>> = {
+  "a previsão de geração de usinas não despachadas pelo ONS": "the generation forecast of plants not dispatched by ONS",
+  "a estimativa da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos":
+    "the estimate of distributed micro and mini generation (MMGD), based on forecast weather data",
+};
+
 /* ---------- Água e clima ---------- */
 
 /** Abrangência de uma revisão da MLT (agua_detalhe.armazenamento.mlt.revisoes_no_mes[].abrangencia). */
