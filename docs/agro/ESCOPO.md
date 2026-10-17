@@ -1,6 +1,6 @@
 # Agronegócio: escopo e decisões
 
-Edição de 17/10/2026. Entrega **parcial em relação à especificação**, com oito capítulos, sete fichas de cadeia e oito páginas de perguntas sobre o setor com coleta oficial automática (fases 1 e 2, ver seção abaixo). Não foi entregue um observatório completo de produção por estado, preços, custos de referência e ambiente. Todas as páginas distinguem dado observado, explicação conceitual e cenário do usuário.
+Edição de 17/10/2026. Entrega **parcial em relação à especificação**, com oito capítulos, doze fichas de cadeia com produção por estado e comércio exterior e oito páginas de perguntas sobre o setor, todos com coleta oficial automática (fases 1 a 3, ver seções abaixo). Não foi entregue um observatório completo de preços, custos de referência, calendário agrícola e ambiente territorial. Todas as páginas distinguem dado observado, explicação conceitual e cenário do usuário.
 
 Pergunta central: como produção, financiamento, trabalho e consumo se relacionam, e o que cada medida permite concluir? Economia e distribuição social aparecem em eixos separados; não existe nota de impacto ou ranking de eficiência.
 
@@ -8,7 +8,7 @@ Pergunta central: como produção, financiamento, trabalho e consumo se relacion
 
 | Capítulo | Artefatos implementados | Cobertura substantiva | Bloqueados |
 |---|---:|---|---|
-| A — Produção e produtividade | 4 | Unidades, decomposição hipotética, escala versus rendimento e guia conceitual de leitura da safra | A1, A3 |
+| A — Produção e produtividade | 5 | Produção por estado das doze cadeias (A1, IBGE); unidades, decomposição hipotética, escala versus rendimento e guia conceitual | A3 |
 | B — Custos e renda | 6 | Cenários de lavoura; IPCA geral observado só para converter valores informados | Nenhum widget bloqueado; referências Conab não medidas |
 | C — Alimentos e consumo | 4 | Orçamento hipotético; PNADC 2023/2024, Brasil e Grandes Regiões | C3, C4 |
 | D — Crédito e proteção | 5 | Crédito por UF/finalidade, Brasil por programa e modelos de financiamento/proteção | D6 |
@@ -20,7 +20,7 @@ Pergunta central: como produção, financiamento, trabalho e consumo se relacion
 | K — Complementares | 11 | Caixa, VPL, operação, perdas, logística, câmbio, valor adicionado, HHI/CV, energia, custo por entrega e especialização | K7 |
 | X — Adicional | 1 | Grupo ocupacional qualificado por UF e sexo, Censo Demográfico 2022 | Não substitui emprego formal territorial |
 
-Total: **59 tarefas distintas implementadas**, de 69 contratos (68 originais + X1); **10 com dados observados, 16 conceituais e 33 cenários** (32 numéricos e um qualitativo). Existem 10 itens bloqueados integralmente. Um cenário operacional NÃO satisfaz a medição observada exigida no item original: o catálogo identifica isso em `medicaoRequerida`, além dos 13 bloqueios integrais. Quatro funções pedagógicas de uma seção não significam quatro novas estatísticas.
+Total: **60 tarefas distintas implementadas**, de 69 contratos (68 originais + X1); **11 com dados observados, 16 conceituais e 33 cenários** (32 numéricos e um qualitativo). Existem 9 itens bloqueados integralmente. Um cenário operacional NÃO satisfaz a medição observada exigida no item original: o catálogo identifica isso em `medicaoRequerida`, além dos 13 bloqueios integrais. Quatro funções pedagógicas de uma seção não significam quatro novas estatísticas.
 
 ## Economia do setor: fase 1 (coleta oficial automática)
 
@@ -46,17 +46,34 @@ Decisões: agropecuária é a das Contas Nacionais (dentro da porteira), não o 
 
 Decisões: a taxa média do crédito rural usa só contratos sem indexador (código 9 da tabela de encargos do Sicor, cerca de 93% do valor), ponderada pelo valor; os grupos de fonte vêm da descrição oficial (equalizada, controlada, livre). Pagamentos do Tesouro são por data de pagamento e referem-se a safras anteriores. Taxa PRODES (Amazônia Legal) e incremento mapeado (demais biomas) não se somam; a estimativa preliminar do INPE fica marcada. SEEG é estimativa da sociedade civil, não inventário oficial; a licença de redistribuição não é explícita, só a citação. Custo de produção da Conab fica fora: licença CC BY-ND (sem derivação) e planilhas com formato diferente por aba. Subvenção ao seguro rural (PSR) fica fora: portal de dados do MAPA respondeu 403 e a execução mensal do Portal da Transparência exige baixar um arquivo por mês.
 
+## Fase 3: cadeias com produção e comércio, simuladores depois do dado
+
+Doze cadeias, escolhidas por duas lentes declaradas na página `/agronegocio/cadeias`: as maiores exportações do agro (soja, café, carnes, açúcar, celulose, milho, algodão) e alimentos de peso na cesta do IPCA (arroz, feijão, leite, frango, carne). Juntas, somam cerca de 82% das exportações do recorte agro em 2025 (Comex Stat, coleta de 17/10/2026). Ficam de fora, entre outras, suco de laranja e fumo, além de trigo, frutas, hortaliças, ovos e pescado.
+
+Cada ficha mostra produção do último ano por estado, série de dez anos, exportação e importação por ano, principais destinos e, quando existe, o item do IPCA. O módulo é `pipeline/agro/producao.py` (sementes `producao.json.gz` e `comexcadeias.json.gz`), coletado na mesma rotina das demais fontes.
+
+| Cadeia | Produção (IBGE) | Comércio (posições SH) | IPCA |
+|---|---|---|---|
+| Soja | PAM, quantidade, área e valor | 1201, 2304, 1507 | Óleo de soja |
+| Milho | PAM | 1005 | Não |
+| Cana-de-açúcar | PAM | 1701, 2207 (inclui álcool de outras origens) | Açúcar refinado |
+| Café | PAM | 0901 | Café moído |
+| Algodão | PAM, em caroço | 5201, pluma | Não |
+| Arroz | PAM, em casca | 1006 | Arroz |
+| Feijão | PAM | 0713 (leguminosas secas, inclui outros grãos) | Feijão-carioca |
+| Carne bovina | Abate trimestral (carcaça) e rebanho PPM | 0201, 0202 | Carnes (bovina e suína) |
+| Frango | Abate trimestral (carcaça) | 0207 (inclui outras aves) | Frango inteiro |
+| Carne suína | Abate trimestral (carcaça) e rebanho PPM | 0203 | Não |
+| Leite | PPM, mil litros e valor | 0401 a 0406 | Leite longa vida |
+| Celulose | PEVS, madeira em tora para papel e celulose (m³) | 4703 | Não |
+
+Decisões: cada cadeia mantém sua medida física; toneladas, litros, cabeças e metros cúbicos não se somam. Abate é o local do frigorífico, só sob inspeção, e estados com dado sigiloso ficam sem valor, nunca zero; as barras dizem quanto do total os estados com valor somam. Rebanho é estoque em 31 de dezembro, não produção. A PEVS mede madeira, não a celulose produzida, que não tem série oficial do IBGE. O atlas abre na produção por estado e mantém crédito e ocupações como outras medidas.
+
+Nos capítulos de custos, alimentos, logística e ambiente, o dado observado do tema abre a página, com link à pergunta correspondente; os simuladores vêm depois, recolhidos e marcados como modelo didático. Nenhum simulador foi removido. A ilustração do cartão da home troca prédio e fábrica por lavoura, silos, floresta plantada e pasto.
+
 ## Cobertura por cadeia
 
-| Cadeia | Produção física e calendário observado | Crédito preservado | Outros conteúdos |
-|---|---|---|---|
-| Soja | Não integrado | Item Soja entre maiores itens do custeio | História conceitual e cenários de lavoura |
-| Milho | Não integrado; safras não somadas como área física | Item Milho no custeio | Usos e safras conceituais; cenários |
-| Arroz | Não integrado; casca não equivale a beneficiado | Item Arroz no custeio | Beneficiamento conceitual; cenários |
-| Feijão | Não integrado | Não identificado nos 15 maiores preservados; não é zero | História conceitual; cenários |
-| Café | Não integrado | Item Café no custeio e investimento | Unidades e processamento conceituais; cenários |
-| Carne bovina | Rebanho, abate e carcaça não integrados | Item Bovinos, **sem separar corte de leite** | Fluxos e unidades próprios; não usa margem por hectare de lavoura |
-| Leite | Litros, vacas e rendimento não integrados | Não atribuímos o item genérico Bovinos ao leite | Volume e perecibilidade conceituais; caixa |
+Produção por estado e comércio exterior das doze cadeias estão na seção da fase 3. O crédito rural preservado segue o recorte dos 15 maiores itens por finalidade: soja, milho, arroz, café e bovinos aparecem; feijão, leite e as cinco cadeias novas não aparecem nesse recorte, o que não é zero. O item Bovinos não separa corte de leite.
 
 Território: 27 UFs para crédito e grupo ocupacional; Brasil no emprego formal; Brasil e cinco Grandes Regiões na segurança alimentar. Não há estatística agro municipal nova. Não cruzamos UF × produto × programa quando a fonte preservada não permite esse grão.
 

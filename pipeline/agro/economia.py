@@ -16,7 +16,7 @@ import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 
-from . import ambiente, apoio, sociedade
+from . import ambiente, apoio, producao, sociedade
 from .run import ROOT, SEED, numero
 
 MANIFESTO = 'coletas.json'
@@ -59,6 +59,7 @@ FONTES = {
     **sociedade.FONTES,
     **apoio.FONTES,
     **ambiente.FONTES,
+    **producao.FONTES,
     'comex': {'arquivo': 'comex.json.gz', 'url': 'https://comexstat.mdic.gov.br/', 'nome': 'MDIC, Comex Stat (exportação e importação por capítulo, posição, NCM e país)', 'licenca': 'Dados abertos do governo federal; citar a fonte', 'limite': 'Valores FOB em US$ correntes e massa líquida em kg. O recorte agro por capítulo SH não é o Agrostat/MAPA. Valor unitário de comércio não é preço pago ou recebido na fazenda.'},
 }
 
@@ -134,7 +135,7 @@ def coletar_bundles():
     ultimo = max(periodos)
     escolhidos = sorted({ultimo, *[f'{a}12' for a in range(int(ultimo[:4]) - ANOS_LSPA, int(ultimo[:4])) if f'{a}12' in periodos]})
     lspa = {'ultimoPeriodo': ultimo, 'consultas': {'safra': sidra(f'/6588/periodos/{"|".join(escolhidos)}/variaveis/{"|".join(VARIAVEIS_LSPA)}?localidades=N1[all]&classificacao=48[{",".join(PRODUTOS_LSPA)}]')}}
-    return {'cnt': cnt, 'lspa': lspa, 'comex': comex, **sociedade.coletar(_baixar), **apoio.coletar(), **ambiente.coletar()}
+    return {'cnt': cnt, 'lspa': lspa, 'comex': comex, **sociedade.coletar(_baixar), **apoio.coletar(), **ambiente.coletar(), **producao.coletar(_baixar, _comex, _consulta_comex, atualizado)}
 
 
 # ---------------------------------------------------------------- normalização
@@ -368,7 +369,7 @@ def normalizar_comex(bundle):
 
 
 def normalizar(coletas):
-    return {'pib': normalizar_cnt(coletas['cnt']), 'safra': normalizar_lspa(coletas['lspa']), 'comercio': normalizar_comex(coletas['comex']), **sociedade.normalizar(coletas), **apoio.normalizar(coletas), **ambiente.normalizar(coletas)}
+    return {'pib': normalizar_cnt(coletas['cnt']), 'safra': normalizar_lspa(coletas['lspa']), 'comercio': normalizar_comex(coletas['comex']), **sociedade.normalizar(coletas), **apoio.normalizar(coletas), **ambiente.normalizar(coletas), **producao.normalizar(coletas)}
 
 
 # ---------------------------------------------------------------- sementes

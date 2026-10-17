@@ -2,12 +2,12 @@
 
 68 requisitos originais + X1. Contagem por tarefa de aprendizagem, sem contar instâncias de cadeia, cartões, controles ou tabelas alternativas. Cenário e explicação não satisfazem requisito de medição observada.
 
-Implementados no recorte declarado: 59; bloqueados: 10. Categorias: {"DADO OBSERVADO":10,"EXPLICAÇÃO CONCEITUAL":16,"CENÁRIO":33}.
+Implementados no recorte declarado: 60; bloqueados: 9. Categorias: {"DADO OBSERVADO":11,"EXPLICAÇÃO CONCEITUAL":16,"CENÁRIO":33}.
 
 | ID | Tarefa | Categoria | Estado | Rota | Limite |
 |---|---|---|---|---|---|
-| A1 | Atlas “De onde vem o que consumimos?” | Não medido | BLOQUEADO | /agronegocio/producao#a1 | Sem PAM/PPM com área/quantidade/valor por território integrados; a safra nacional do LSPA não tem recorte por estado. Crédito não substitui produção. |
-| A2 | Decompositor “Mais terra ou maior rendimento?” | CENÁRIO | CENARIO | /agronegocio/producao#a2 | Uma cultura, mesma unidade, mesmo perímetro. Sem decomposição observada publicada enquanto PAM/PPM não forem validadas. |
+| A1 | Atlas “De onde vem o que consumimos?” | DADO OBSERVADO | COM_DADOS | /agronegocio/producao#a1 | Dados parciais: medida física própria de cada cadeia, sem calendário regional nem produção municipal. Abate é o local do frigorífico e tem estados sob sigilo, que ficam sem valor. |
+| A2 | Decompositor “Mais terra ou maior rendimento?” | CENÁRIO | CENARIO | /agronegocio/producao#a2 | Uma cultura, mesma unidade, mesmo perímetro. A decomposição observada por estado não é publicada; área e produção da PAM estão na ficha de cada lavoura. |
 | A3 | Calendário visual regional | Não medido | BLOQUEADO | /agronegocio/producao#a3 | Sem calendário Conab/ZARC por cultura, região e parâmetros validado. Não se publica calendário genérico ou recomendação. |
 | A4 | Laboratório de unidades | CENÁRIO | CENARIO | /agronegocio/producao#a4 | Saca exige massa informada. Arroba aqui é unidade de massa de 15 kg; não transforma peso vivo em carcaça. Litros e cabeças não viram massa por suposição. |
 | A5 | Régua de produtividade entre pares | CENÁRIO | CENARIO | /agronegocio/producao#a5 | Comparação hipotética da mesma cultura e período. Irrigação, clima, sistema e composição não são controlados. |
