@@ -3,19 +3,23 @@
 import Link from "@/components/i18n/LinkIdioma";
 import { useState } from "react";
 import type { NoFormacao } from "@/lib/energia/conteudo/pld";
-import { TIPOS_RELACAO } from "@/lib/energia/conteudo/pld";
+import { TIPOS_RELACAO_IDIOMAS } from "@/lib/energia/conteudo/pld";
+import { rotuloNaturezaIdioma } from "@/lib/energia/i18n/mercado-preco";
+import { tx } from "@/lib/energia/idioma";
+import { useIdioma } from "@/lib/energia/useIdioma";
 import type { Natureza } from "@/lib/energia/tipos";
+import type { Idioma } from "@/lib/idioma";
 import { NATUREZAS } from "@/components/evidencia/SeloNatureza";
 
 export type EstadoNo = { texto: string; natureza?: Natureza; ref?: string; historico?: { rotulo: string; href: string } } | null;
 export type NoComEstado = NoFormacao & { estado: EstadoNo };
 
-function Conferencia({ estado }: { estado: "CONFERIDO" | "PENDENTE" | undefined }) {
+function Conferencia({ estado, idioma }: { estado: "CONFERIDO" | "PENDENTE" | undefined; idioma: Idioma }) {
   if (!estado) return null;
   return estado === "CONFERIDO" ? (
-    <span className="rotulo !text-xs text-sucesso">● conferido na fonte</span>
+    <span className="rotulo !text-xs text-sucesso">{tx("● conferido na fonte", "● verified at the source", idioma)}</span>
   ) : (
-    <span className="rotulo !text-xs text-aviso">○ conferência documental pendente</span>
+    <span className="rotulo !text-xs text-aviso">{tx("○ conferência documental pendente", "○ document verification pending", idioma)}</span>
   );
 }
 
@@ -29,6 +33,8 @@ function Conferencia({ estado }: { estado: "CONFERIDO" | "PENDENTE" | undefined 
  */
 export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
   const [sel, setSel] = useState("reservatorios");
+  const idioma = useIdioma();
+  const TIPOS_RELACAO = TIPOS_RELACAO_IDIOMAS[idioma];
   const por = Object.fromEntries(nos.map((n) => [n.id, n]));
   const atual = por[sel] ?? nos[0];
 
@@ -69,13 +75,15 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
   const rel = atual.relacaoSaida;
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-      <div role="group" aria-label="Etapas da formação do PLD">
+      <div role="group" aria-label={tx("Etapas da formação do PLD", "Stages of PLD formation", idioma)}>
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
           {botao("afluencias")}
           <span aria-hidden="true" className="text-mineral">→</span>
           {botao("reservatorios")}
         </div>
-        <p className="rotulo mt-3 text-center !text-xs text-mineral" aria-hidden="true">+ junto com</p>
+        <p className="rotulo mt-3 text-center !text-xs text-mineral" aria-hidden="true">
+          {tx("+ junto com", "+ together with", idioma)}
+        </p>
         <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-4">
           {botao("carga")}
           {botao("renovaveis")}
@@ -93,39 +101,43 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
       </div>
 
       <section id="formacao-painel" aria-live="polite" aria-labelledby="formacao-painel-titulo" className="scroll-mt-28 border border-linha bg-superficie p-5 md:p-6 lg:sticky lg:top-24 lg:self-start">
-        <p className="rotulo text-mineral">Etapa selecionada</p>
+        <p className="rotulo text-mineral">{tx("Etapa selecionada", "Selected stage", idioma)}</p>
         <h3 id="formacao-painel-titulo" className="mt-1 font-serif text-xl text-carvao">
           {atual.titulo}
           {atual.sigla ? <span className="ml-2 text-base text-mineral">({atual.sigla})</span> : null}
         </h3>
 
-        <p className="rotulo mt-4 text-mineral">O que é</p>
+        <p className="rotulo mt-4 text-mineral">{tx("O que é", "What it is", idioma)}</p>
         <p className="mt-1 text-sm leading-relaxed text-carvao">{atual.oQueE}</p>
         <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-mineral">
-          Fonte: {atual.fonteOQueE} <Conferencia estado={atual.conferenciaOQueE} />
+          {tx("Fonte:", "Source:", idioma)} {atual.fonteOQueE} <Conferencia estado={atual.conferenciaOQueE} idioma={idioma} />
         </p>
 
         {atual.mecanismo && (
           <>
-            <p className="rotulo mt-4 text-mineral">Por que importa para o preço</p>
+            <p className="rotulo mt-4 text-mineral">{tx("Por que importa para o preço", "Why it matters for the price", idioma)}</p>
             <p className="mt-1 text-sm leading-relaxed text-carvao">{atual.mecanismo}</p>
             <p className="mt-1 text-xs text-mineral">
-              <Conferencia estado={atual.conferenciaMecanismo} />
+              <Conferencia estado={atual.conferenciaMecanismo} idioma={idioma} />
             </p>
           </>
         )}
 
-        <p className="rotulo mt-4 text-mineral">Estado atual</p>
+        <p className="rotulo mt-4 text-mineral">{tx("Estado atual", "Current state", idioma)}</p>
         {atual.estado ? (
           <div className="mt-1 text-sm leading-relaxed text-carvao">
             <p>{atual.estado.texto}</p>
             <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-mineral">
               {atual.estado.natureza && (
                 <span>
-                  {NATUREZAS[atual.estado.natureza].glifo} {NATUREZAS[atual.estado.natureza].rotulo}
+                  {NATUREZAS[atual.estado.natureza].glifo} {rotuloNaturezaIdioma(atual.estado.natureza, NATUREZAS[atual.estado.natureza].rotulo, idioma)}
                 </span>
               )}
-              {atual.estado.ref && <span>Referência: {atual.estado.ref}</span>}
+              {atual.estado.ref && (
+                <span>
+                  {tx("Referência:", "Reference:", idioma)} {atual.estado.ref}
+                </span>
+              )}
               {atual.estado.historico && (
                 <Link href={atual.estado.historico.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
                   {atual.estado.historico.rotulo}
@@ -134,17 +146,17 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
             </p>
           </div>
         ) : (
-          <p className="mt-1 text-sm text-mineral">Dado desta etapa ainda não integrado ao portal.</p>
+          <p className="mt-1 text-sm text-mineral">{tx("Dado desta etapa ainda não integrado ao portal.", "Data for this stage not yet integrated into the portal.", idioma)}</p>
         )}
 
         {rel && (
           <div className="mt-4 border-t border-linha pt-3">
-            <p className="rotulo text-mineral">Ligação com a próxima etapa</p>
+            <p className="rotulo text-mineral">{tx("Ligação com a próxima etapa", "Link to the next stage", idioma)}</p>
             <p className="mt-1 text-sm text-carvao">
               <strong className="font-medium">{TIPOS_RELACAO[rel.tipo].rotulo}.</strong> {rel.texto}
             </p>
             <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-mineral">
-              Base: {rel.fonte} <Conferencia estado={rel.conferencia} />
+              {tx("Base:", "Basis:", idioma)} {rel.fonte} <Conferencia estado={rel.conferencia} idioma={idioma} />
             </p>
           </div>
         )}
@@ -157,7 +169,7 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
           )}
           {atual.conceito && (
             <Link href={`/setor-eletrico/aprenda/${atual.conceito}`} className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-              Verbete
+              {tx("Verbete", "Glossary entry", idioma)}
             </Link>
           )}
         </div>
