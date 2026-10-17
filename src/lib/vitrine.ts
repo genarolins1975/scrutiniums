@@ -152,7 +152,7 @@ function vitrineEficiencia(fmt: FormatarNumero): Vitrine {
     imagem: "/home/eficiencia.webp",
     contagem: { valor: fmt(quantidade), unidade: "temas publicados" },
     contagemIndice: { tipo: "simples", quantidade, unidade: "temas_publicados" },
-    paineis: publicadas.map((d) => ({ titulo: d.titulo, href: d.href as string, descricao: d.descricao })),
+    paineis: publicadas.flatMap((d) => [{ titulo: d.titulo, href: d.href as string, descricao: d.descricao }, ...(d.id === "justica" ? [{ titulo: "Judiciário: filas e tempos", href: "/eficiencia-estatal/judiciario", descricao: "Despesas, filas e tempos em três ramos; 57 tribunais, série financeira e indicadores oficiais, sem nota própria de eficiência." }] : [])]),
     fontes:
       "Tesouro (Siconfi), INEP, IBGE, Ministério da Saúde, MDS, Ministério das Cidades, CNJ e Sinesp, declaradas tema a tema, com a página de métodos de cada tema.",
     situacao:

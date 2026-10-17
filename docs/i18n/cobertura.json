@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "b389804ccf0409ca55ff3bfb417804379a744630d71ea631ee709303c1721273",
-    "arquivos_analisados": 1050,
-    "fontes_sha256": "9e17287b6c9739c9c28bff739b1ac86d994bfc065d0e1e851d84c3541ca6c226",
-    "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
+    "arquivos_analisados": 1062,
+    "fontes_sha256": "d9dd11da1487595ce83973f3ea6a81d617b60d4304d84f2431efefd0ee87c0f9",
+    "pendencias_sha256": "93db82fb610456e1a4afef5484b3ffcae091f3aa2a15cb38ace6207183cb67d7",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -86,6 +86,11 @@
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
       {
+        "path": "src/components/eficiencia/judiciario/Judiciario.module.css",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
         "path": "src/components/eficiencia/mobilidade/mobilidade.module.css",
         "dominio": "eficiencia",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
@@ -133,10 +138,10 @@
           "jsx_text": 626,
           "atributos": 187,
           "props": 630,
-          "outros_literais": 3256,
+          "outros_literais": 3260,
           "templates": 382,
           "expressoes_nao_resolvidas": 1998,
-          "chaves_objetos": 2449
+          "chaves_objetos": 2452
         },
         "exclusoes": {
           "importacoes": 837,
@@ -150,7 +155,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 9528,
+        "candidatos_nao_catalogados": 9535,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -321,20 +326,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 200,
+        "arquivos": 212,
         "candidatos": {
-          "jsx_text": 2333,
-          "atributos": 635,
-          "props": 1072,
-          "outros_literais": 6289,
-          "templates": 634,
-          "expressoes_nao_resolvidas": 6099,
-          "chaves_objetos": 3705
+          "jsx_text": 2570,
+          "atributos": 801,
+          "props": 1180,
+          "outros_literais": 6855,
+          "templates": 652,
+          "expressoes_nao_resolvidas": 6615,
+          "chaves_objetos": 4139
         },
         "exclusoes": {
-          "importacoes": 728,
-          "atributos_tecnicos": 3032,
-          "tipos": 375
+          "importacoes": 783,
+          "atributos_tecnicos": 3063,
+          "tipos": 390
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -343,17 +348,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 20767,
+        "candidatos_nao_catalogados": 22812,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 65,
+        "paginas_pt": 68,
         "paginas_en": 0,
         "handlers": 3,
-        "templates_com_parametros": 5,
-        "paginas_pt_literais": 60,
-        "paginas_pt_fora_do_adaptador": 5,
-        "paginas_pt_literais_sem_irma": 60,
+        "templates_com_parametros": 7,
+        "paginas_pt_literais": 61,
+        "paginas_pt_fora_do_adaptador": 7,
+        "paginas_pt_literais_sem_irma": 61,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
