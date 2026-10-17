@@ -132,7 +132,7 @@ export function RegulacaoAviso({ children, tipo = "nota" }: { children: ReactNod
 }
 
 /** Datas de referência de cada parte da página (conferência dos atos, geração dos recursos, verificação das páginas): cada uma diz o seu dia. */
-export function RegulacaoDatas({ itens }: { itens: { rotulo: string; texto: string; natureza: Natureza }[] }) {
+export function RegulacaoDatas({ itens }: { itens: { rotulo: string; texto: ReactNode; natureza: Natureza }[] }) {
   return (
     <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx("Datas de referência de cada parte", "Reference dates of each part")}>
       {itens.map((x) => (

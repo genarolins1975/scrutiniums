@@ -19,7 +19,7 @@ export function comNomes(texto: string | null | undefined, idioma: Idioma = idio
   for (const m of texto.matchAll(NOME_ATO)) {
     const i = m.index ?? 0;
     if (i > ultimo) partes.push(texto.slice(ultimo, i));
-    partes.push(createElement(Nome, { key: `n${i}`, children: m[0] }));
+    partes.push(createElement(Nome, { key: `n${i}` } as unknown as { children: ReactNode }, m[0]));
     ultimo = i + m[0].length;
   }
   if (!partes.length) return texto;
