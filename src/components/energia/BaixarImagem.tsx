@@ -1,6 +1,6 @@
 "use client";
 
-import { idiomaDoCaminho, porIdioma } from "@/lib/energia/idioma";
+import { idiomaDoCaminhoEnergia, porIdioma } from "@/lib/energia/idioma";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { Idioma } from "@/lib/idioma";
 import { useEffect, useRef, useState, type RefObject } from "react";
@@ -191,7 +191,7 @@ function lerPainel(raiz: HTMLElement): { fonte: string | null; versao: string | 
   const painel = raiz.closest("section[data-painel-evidencia]");
   if (!painel) return { fonte: null, versao: null, ancora: null };
   const rodape = Array.from(painel.children).find((c) => c.tagName === "FOOTER");
-  const { fonte, versao } = extrairFonteEVersao(rodape?.querySelector("p")?.textContent, idiomaDoCaminho(window.location.pathname));
+  const { fonte, versao } = extrairFonteEVersao(rodape?.querySelector("p")?.textContent, idiomaDoCaminhoEnergia(window.location.pathname));
   return { fonte, versao, ancora: painel.id || null };
 }
 

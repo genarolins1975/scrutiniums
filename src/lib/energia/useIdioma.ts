@@ -1,16 +1,16 @@
 import { usePathname } from "next/navigation";
 import type { Idioma } from "@/lib/idioma";
-import { idiomaDoCaminho } from "./idioma";
+import { idiomaDoCaminhoEnergia } from "./idioma";
 
 /* Sem "use client": é módulo de hooks, importado por componentes de cliente. */
 
 /**
- * Idioma para componentes de cliente. Lê o endereço pelo roteador, que é o mesmo no SSR e no
+ * Idioma para componentes de cliente (inglês só dentro de /en/setor-eletrico). Lê o endereço pelo roteador, que é o mesmo no SSR e no
  * navegador (a hidratação não diverge) e já traz o destino durante uma navegação. Fora do App
  * Router (teste que renderiza o componente isolado) vale português.
  */
 export function useIdioma(): Idioma {
-  return idiomaDoCaminho(usePathname());
+  return idiomaDoCaminhoEnergia(usePathname());
 }
 
 /** Versão de cliente de tx(): devolve a função já presa ao idioma da página. */

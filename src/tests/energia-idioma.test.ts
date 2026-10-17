@@ -36,6 +36,10 @@ describe("idioma do Setor Elétrico pelo endereço", () => {
   it("dentro de um render, segue o endereço da página (armazenamento do Next ainda no lugar)", () => {
     expect(emRender("/en/setor-eletrico/leiloes", () => idiomaEnergia())).toBe("en");
     expect(emRender("/setor-eletrico/leiloes", () => idiomaEnergia())).toBe("pt");
+    // fora do Setor Elétrico (home e institucionais em inglês), as peças do observatório ficam em português
+    expect(emRender("/en", () => idiomaEnergia())).toBe("pt");
+    expect(emRender("/en/sobre", () => [idiomaEnergia(), dataBR("2026-10-17")])).toEqual(["pt", "17/10/2026"]);
+    expect(emRender("/en/setor-eletricox", () => idiomaEnergia())).toBe("pt");
     expect(emRender("/en/setor-eletrico", () => [tx("Leilões", "Auctions"), num(1552.5, 1), dataBR("2026-10-17")])).toEqual(["Auctions", "1,552.5", "Oct 17, 2026"]);
   });
 

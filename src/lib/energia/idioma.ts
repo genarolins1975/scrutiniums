@@ -21,10 +21,20 @@ export function idiomaDoCaminho(caminho: string | null | undefined): Idioma {
   return caminho === "/en" || caminho?.startsWith("/en/") || caminho?.startsWith("/en?") ? "en" : "pt";
 }
 
+/**
+ * Idioma automático só dentro do Setor Elétrico (/en/setor-eletrico). Fora dele (a home inglesa, as páginas
+ * institucionais), as peças do Setor Elétrico que aparecem (vitrines, formatadores) ficam em português: essas
+ * páginas passam o idioma explicitamente onde há tradução e marcam o resto como português.
+ */
+export function idiomaDoCaminhoEnergia(caminho: string | null | undefined): Idioma {
+  const c = caminho?.split(/[?#]/)[0] ?? "";
+  return c === "/en/setor-eletrico" || c.startsWith("/en/setor-eletrico/") ? "en" : "pt";
+}
+
 export function idiomaEnergia(): Idioma {
   const store = staticGenerationAsyncStorage.getStore();
-  if (store?.urlPathname) return idiomaDoCaminho(store.urlPathname);
-  if (typeof window !== "undefined") return idiomaDoCaminho(window.location.pathname);
+  if (store?.urlPathname) return idiomaDoCaminhoEnergia(store.urlPathname);
+  if (typeof window !== "undefined") return idiomaDoCaminhoEnergia(window.location.pathname);
   return "pt";
 }
 
