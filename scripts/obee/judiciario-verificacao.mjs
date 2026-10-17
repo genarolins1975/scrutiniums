@@ -37,12 +37,14 @@ try{
  await db.$client.close();
  const env={NODE_ENV:'production',NEXT_TELEMETRY_DISABLED:'1',DATABASE_URL:process.env.DATABASE_URL,COOKIE_SECRET:secret};
  for(const key of ['PATH','LANG','LC_ALL','TZ','TMPDIR','TEMP','TMP','NODE_EXTRA_CA_CERTS'])if(process.env[key]!==undefined)env[key]=process.env[key];
- child=spawn(process.execPath,[join(ROOT,'node_modules/next/dist/bin/next'),'start','--hostname','127.0.0.1','--port','0'],{cwd:ROOT,env,stdio:['ignore','pipe','pipe']});
+ // Next usa localhost na URL interna de redirects de Route Handlers locais.
+ // Usar a mesma origem evita trocar o host e perder o cookie da fixture no POST.
+ child=spawn(process.execPath,[join(ROOT,'node_modules/next/dist/bin/next'),'start','--hostname','localhost','--port','0'],{cwd:ROOT,env,stdio:['ignore','pipe','pipe']});
  let logs='';const collect=chunk=>{logs=(logs+chunk).slice(-64000);};child.stdout.on('data',collect);child.stderr.on('data',collect);
  let origin='';
  for(let i=0;i<100;i++){
   if(child.exitCode!==null)throw Error('Next encerrou: '+logs);
-  const match=logs.match(/http:\/\/127\.0\.0\.1:\d+/);
+  const match=logs.match(/http:\/\/localhost:\d+/);
   if(match){origin=match[0];try{if((await fetch(origin+'/api/auth/eu')).status===401)break;}catch{}}
   await new Promise(r=>setTimeout(r,300));
  }
@@ -85,8 +87,10 @@ try{
   await page.screenshot({path:join(out,'seletor-'+width+'.png'),fullPage:true});
  }
  const choice=page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true});
- await choice.getByRole('button',{name:/Explorar Judiciário/}).focus();await page.keyboard.press('Enter');
- await page.waitForURL('**'+PREFIX);
+ await choice.getByRole('button',{name:/Explorar Judiciário/}).focus();
+ const navigation=page.waitForNavigation({waitUntil:'networkidle',timeout:20000});
+ await page.keyboard.press('Enter');await navigation;
+ await page.screenshot({path:join(out,'seletor-destino.png'),fullPage:true});
  check('Cartão abre o Judiciário por teclado',new URL(page.url()).pathname===PREFIX);
  check('Escolha preserva a sessão',(await context.request.get(origin+'/api/auth/eu')).status()===204);
  check('Cookie guarda o Judiciário',(await context.cookies()).some(c=>c.name==='scrutiniums_observatorio'&&c.value==='judiciario'&&c.httpOnly));

@@ -136,7 +136,7 @@ export default async function EscolhaObservatorioPage() {
                     <input type="hidden" name="d" value={d.id} />
                     <button type="submit">
                       {recente ? "Continuar" : "Explorar"} {d.nomeCurto}
-                      <span aria-hidden="true">↗</span>
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M4 16 16 4M4 4h12v12" /></svg>
                       <span className="sr-only"> — entrar no {d.nome}</span>
                     </button>
                   </form>
