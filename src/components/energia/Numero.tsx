@@ -14,6 +14,7 @@ import {
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { unidadeNoIdioma } from "@/lib/energia/i18n/nucleo";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { num } from "@/lib/energia/formato";
 
 /**
  * Número de destaque (KPI) do Setor Elétrico: rótulo, valor formatado em pt-BR,
@@ -105,7 +106,9 @@ export function Numero({
   const per = periodo ?? evidencia?.periodo;
   const textoPer0 = typeof per === "string" ? per : per ? textoPeriodo(per) : null;
   const textoPer = recorte ? (textoPer0 ? `${recorte} · ${textoPer0}` : recorte) : textoPer0;
-  const vari = variacao ? descreverVariacao(variacao) : null;
+  const variPt = variacao ? descreverVariacao(variacao) : null;
+  // a frase da variação vem de evidencia.ts em português; em inglês, a mesma regra (mesmo arredondamento e sinal) escrita aqui
+  const vari = variPt && variacao && idiomaEnergia() === "en" ? { ...variPt, ...variacaoEn(variacao, variPt.direcao) } : variPt;
   const corpo = tamanho === "grande" ? "text-[2rem]" : "text-2xl";
 
   if (variante === "faixa") {
@@ -191,4 +194,14 @@ export function Numero({
       {prova && <div className="mt-auto pt-2">{prova}</div>}
     </div>
   );
+}
+
+/** Texto e leitura da variação em inglês, com o mesmo arredondamento de descreverVariacao (evidencia.ts). */
+function variacaoEn(v: Variacao, direcao: "alta" | "queda" | "estavel" | null): { texto?: string; leitura: string } {
+  const casas = v.casas ?? 1;
+  const sufixo = v.sufixo ?? "";
+  if (direcao === null) return { texto: "no data", leitura: `Change ${v.referencia}: no data.` }; // i18n: dado (ramo inglês)
+  const arred = Number((v.valor as number).toFixed(casas));
+  if (direcao === "estavel") return { leitura: `Stable ${v.referencia} (${num(0, casas)}${sufixo}).` };
+  return { leitura: `${direcao === "alta" ? "Up" : "Down"} ${num(Math.abs(arred), casas)}${sufixo} ${v.referencia}.` };
 }

@@ -120,7 +120,7 @@ export function BuscaObservatorio({ itens, exemplos, regiao }: { itens: ItemBusc
           >
             <a href={hrefNoIdioma(i.href, idioma)} tabIndex={-1} className="flex min-h-[44px] flex-col justify-center px-3 py-2">
               <span className="text-sm text-carvao">
-                <span className="rotulo mr-2 text-mineral">{i.tipo}</span>
+                <span className="rotulo mr-2 text-mineral">{rotuloTipo(i.tipo, tx)}</span>
                 {i.titulo}
               </span>
               {i.detalhe && <span className="mt-0.5 text-xs leading-snug text-carvao-muted">{i.detalhe}</span>}
@@ -148,4 +148,22 @@ export function BuscaObservatorio({ itens, exemplos, regiao }: { itens: ItemBusc
       )}
     </div>
   );
+}
+
+/** Tipo do item do índice (chave portuguesa de busca.ts) no idioma da página. */
+function rotuloTipo(tipo: ItemBusca["tipo"], tx: <T>(pt: T, en: T) => T): string {
+  switch (tipo) {
+    case "Página":
+      return tx(tipo, "Page");
+    case "Painel":
+      return tx(tipo, "Panel");
+    case "Pergunta":
+      return tx(tipo, "Question");
+    case "Conceito":
+      return tx(tipo, "Concept");
+    case "Distribuidora":
+      return tx(tipo, "Distribution utility");
+    default:
+      return tipo;
+  }
 }

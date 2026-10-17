@@ -4,6 +4,7 @@
  * mostra em <TrechoPortugues> (nunca em português solto). Não altera a gold nem o pipeline.
  */
 import type { Idioma } from "@/lib/idioma";
+import { valorExibidoNoIdioma } from "@/lib/energia/formato";
 
 /** Frequência de atualização declarada na proveniência (campo `frequencia`). */
 export const FREQUENCIA_EN: Record<string, string> = {
@@ -148,6 +149,24 @@ export const MENSAGEM_COPIA_EN: Record<"copiado" | "selecionado" | "falhou", str
   selecionado: "Text selected: use Ctrl+C (or Copy, in the menu) to copy.",
   falhou: "Could not copy: select the text of the block and copy it.",
 };
+
+/**
+ * valor_exibido da gold na forma inglesa: número na grafia inglesa (valorExibidoNoIdioma) e a unidade escrita depois dele traduzida
+ * pela tabela UNIDADE_EN ("61,6% da EAR máxima" → "61.6% of maximum stored energy (EAR)"). `portugues` diz se sobrou palavra
+ * portuguesa sem tradução: quem mostra marca o valor original com TrechoPortugues.
+ */
+export function valorGoldNoIdioma(valor: string, idioma: Idioma): { texto: string; portugues: boolean } {
+  if (idioma !== "en") return { texto: valor, portugues: false };
+  let t = valorExibidoNoIdioma(valor, "en");
+  const chaves = Object.keys(UNIDADE_EN).sort((a, b) => b.length - a.length);
+  for (const k of chaves) {
+    if (t.endsWith(k) && (t.length === k.length || /[\d\s]$/.test(t.slice(0, t.length - k.length)) || k.startsWith("%"))) {
+      t = t.slice(0, t.length - k.length) + UNIDADE_EN[k];
+      break;
+    }
+  }
+  return { texto: t, portugues: PALAVRA_PT.test(t) };
+}
 
 /** Nome da projeção das malhas territoriais (geo/*.json, campo projecao.nome). */
 export const PROJECAO_EN: Record<string, string> = {
