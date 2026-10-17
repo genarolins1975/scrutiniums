@@ -83,6 +83,23 @@ ACRESCIMOS = [
      "decisao": "5,76% sobre as tarifas (reproduzido nos preços da Tabela I de julho de 2026 sobre a de janeiro) e criação da categoria Residencial Social", "ato": "Resolução Decisória AGERGS RED 892, 09/06/2026", "data": "2026-06-09",
      "vigencia": "a partir de 01/07/2026; descontos da categoria social a partir das faturas de agosto", "url": "https://corsan.com.br/comunicado-de-criacao-de-categoria-residencial-social-e-revisao-tarifaria/", "verificado": False,
      "obs": "RED 892/2026 conhecida pelo comunicado da Corsan de 12/06/2026 e pelo Anexo 5; a íntegra não foi localizada. O comunicado lista 247 municípios e o Anexo 5 aplica a Tabela I a 298."},
+    # CORSAN, tabelas próprias do RS e AGESAN (levantamento de 17/10/2026): tabelas lidas nos PDFs da Corsan; os atos dos reguladores não foram lidos.
+    {"prestador": "CORSAN", "area": "Canoas e Esteio", "regulador": "AGERGS", "tipo": "revisão extraordinária (criação da categoria Residencial Social, Lei 14.898/2024)", "pedido": "não publicado",
+     "decisao": "5,76% (reproduzido nos preços da Tabela I de julho de 2026 sobre a de janeiro de 2026, em preço-base e serviço básico) e criação da categoria Residencial Social", "ato": "Revisão tarifária de Canoas e Esteio, citada no comunicado da Corsan de 12/06/2026", "data": "2026-06-12",
+     "vigencia": "a partir de 01/07/2026", "url": "https://www.corsan.com.br/wp-content/uploads/2026/06/ANEXO-1_COMUNICADO-REVISAO-TARIFARIA_CANOAS-E-ESTEIO.pdf", "verificado": False,
+     "obs": "O PDF não nomeia o regulador; o comunicado trata a revisão junto com a RED 892/2026 da AGERGS. Ato específico não localizado; valores conferidos na tabela publicada pela Corsan."},
+    {"prestador": "CORSAN", "area": "Santa Cruz do Sul", "regulador": "AGERST", "tipo": "reajuste", "pedido": "não publicado",
+     "decisao": "tabela com serviço básico 2,00% e preço-base 2,02% acima dos de janeiro de 2026, e linha da Residencial Social da Lei 14.898/2024", "ato": "Tabela tarifária de Santa Cruz do Sul a partir de 18/09/2026, publicada pela Corsan em arquivo da AGERST", "data": "2026-09-18",
+     "vigencia": "a partir de 18/09/2026", "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/AGERST_Tabela_Tarifaria_Santa_Cruz_do_Sul_2026.pdf", "verificado": False,
+     "obs": "AGERST é o nome do arquivo; o PDF não nomeia o regulador e o ato que aprovou a tabela não foi localizado. Valores lidos na tabela da Corsan."},
+    {"prestador": "CORSAN", "area": "Erechim", "regulador": "não identificado", "tipo": "reajuste", "pedido": "não publicado",
+     "decisao": "5,34% (comunicado da Corsan de 30/11/2025); a tabela de janeiro de 2025 de Erechim não foi lida, então o percentual não foi reproduzido", "ato": "Reajuste anual de 2026 de Erechim, citado no comunicado da Corsan de 30/11/2025", "data": "2025-11-30",
+     "vigencia": "a partir de 01/01/2026", "url": "https://www.corsan.com.br/wp-content/uploads/2025/11/Tabela-Tarifaria-Erechim_2026-x.pdf", "verificado": False,
+     "obs": "Ato não localizado; tabela de janeiro de 2026 lida no PDF da Corsan. Não foi localizada tabela posterior."},
+    {"prestador": "CORSAN", "area": "15 municípios regulados pela AGESAN (Campo Bom, Igrejinha, Portão, Sapucaia do Sul, Canela e outros)", "regulador": "AGESAN", "tipo": "revisão extraordinária (criação da categoria Residencial Social, Lei 14.898/2024)", "pedido": "não publicado",
+     "decisao": "Tabela I do Anexo 4 (agosto de 2026) igual à dos 298 municípios, com a linha da Residencial Social da Lei 14.898/2024", "ato": "Resoluções CSR AGESAN 05/2026 e 11/2026, citadas no Anexo 4 da Corsan", "data": "2026",
+     "vigencia": "a partir de 01/07/2026", "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/ANEXO-4-AGESAN_AGOSTO-2026.pdf", "verificado": False,
+     "obs": "Resoluções da AGESAN não localizadas; Anexo 4 em imagem, conferido visualmente contra o Anexo 5."},
 ]
 
 

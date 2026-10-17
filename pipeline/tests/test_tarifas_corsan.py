@@ -58,32 +58,138 @@ class ResidencialB(unittest.TestCase):
         self.assertEqual(tarifas.conta_servico(esgoto, 5), Decimal("32.00"))
         self.assertEqual(tarifas.conta_servico(esgoto, 0), Decimal("0"))
 
-    def test_municipios_sao_os_298_do_apendice_1_dentro_do_vinculo_sinisa(self):
+    def test_municipios_sao_os_298_do_apendice_1_mais_os_15_da_agesan_dentro_do_vinculo_sinisa(self):
         with open(tarifas.CORSAN_APENDICE, encoding="utf-8") as fh:
             ap = json.load(fh)
         self.assertEqual(len(ap["municipios"]), 298)
         self.assertEqual(len(set(ap["municipios"])), 298)
         self.assertRegex(ap["sha256"], r"^[a-f0-9]{64}$")
+        self.assertEqual(len(tarifas.CORSAN_AGESAN), 15)
+        self.assertFalse(set(tarifas.CORSAN_AGESAN) & set(ap["municipios"]), "os 15 da AGESAN não estão no Apêndice 1")
         with open(tarifas.DESTINO, encoding="utf-8") as fh:
             t = {x["id"]: x for x in json.load(fh)["tarifas"]}["corsan-2026"]
-        self.assertEqual(len(t["municipios"]), 298)
+        self.assertEqual(len(t["municipios"]), 313)
+        self.assertEqual(len(set(t["municipios"])), 313)
         self.assertTrue(all(m.startswith("43") for m in t["municipios"]))
         for fora in ("4304606", "4307005", "4307708", "4316808"):  # Canoas, Erechim, Esteio, Santa Cruz do Sul
             self.assertNotIn(fora, t["municipios"])
+        for dentro in ("4303905", "4319901", "4321600"):  # Campo Bom, Sapiranga, Tramandaí (AGESAN)
+            self.assertIn(dentro, t["municipios"])
 
-    def test_json_publicado_traz_a_mesma_tabela(self):
+    def test_json_publicado_traz_as_mesmas_tabelas(self):
         with open(tarifas.DESTINO, encoding="utf-8") as fh:
-            publicada = {t["id"]: t for t in json.load(fh)["tarifas"]}["corsan-2026"]
-        esperada = json.loads(json.dumps(tarifas.corsan))
-        publicada.pop("municipios")
-        esperada.pop("municipios", None)
-        self.assertEqual(publicada, esperada)
+            publicadas = {t["id"]: t for t in json.load(fh)["tarifas"]}
+        for entrada in (tarifas.corsan, *tarifas.CORSAN_VARIANTES):
+            publicada = publicadas[entrada["id"]]
+            esperada = json.loads(json.dumps(entrada))
+            publicada = {k: v for k, v in publicada.items() if k != "municipios"}
+            esperada.pop("municipios", None)
+            self.assertEqual(publicada, esperada, entrada["id"])
 
     def test_fontes_tem_sha256_e_url_https(self):
         self.assertGreaterEqual(len(tarifas.corsan["fontes"]), 6)
-        for f in tarifas.corsan["fontes"]:
-            self.assertRegex(f["sha256"], r"^[a-f0-9]{64}$")
-            self.assertTrue(f["url"].startswith("https://"))
+        for entrada in (tarifas.corsan, *tarifas.CORSAN_VARIANTES):
+            for f in entrada["fontes"]:
+                self.assertRegex(f["sha256"], r"^[a-f0-9]{64}$", entrada["id"])
+                self.assertTrue(f["url"].startswith("https://"), entrada["id"])
+
+
+class ResidencialSocialLei14898(unittest.TestCase):
+    """Linha "Resid. Social Lei 14.898/24": preços impressos, até 15 m³ (expoente 1,0 até 20 m³ em todas as colunas)."""
+
+    def conta(self, entrada, m3):
+        return tarifas.conta(entrada["categorias"]["social"], m3)
+
+    def test_so_vai_ate_15_m3_e_despreza_a_fracao(self):
+        for entrada in (tarifas.corsan, tarifas.corsan_canoas_esteio, tarifas.corsan_santa_cruz):
+            cat = entrada["categorias"]["social"]
+            self.assertEqual(cat["consumoMaximo"], 15, entrada["id"])
+            self.assertTrue(cat["consumoInteiro"], entrada["id"])
+        self.assertNotIn("social", tarifas.corsan_erechim["categorias"])
+
+    def test_exemplos_calculados_fora_do_gerador(self):
+        esperados = [
+            (tarifas.corsan, {"0": "21.70", "5": "60.60", "10": "99.50", "15": "138.40"}),
+            (tarifas.corsan_canoas_esteio, {"0": "20.60", "5": "57.45", "10": "94.30", "15": "131.15"}),
+            (tarifas.corsan_santa_cruz, {"0": "19.13", "5": "53.38", "10": "87.63", "15": "121.88"}),
+        ]
+        for entrada, ex in esperados:
+            for m3, v in ex.items():
+                self.assertEqual(self.conta(entrada, int(m3)), Decimal(v), f"{entrada['id']} {m3} m³")
+            self.assertEqual({k: Decimal(str(x)) for k, x in entrada["exemplos"]["social"].items()}, {k: Decimal(v) for k, v in ex.items()}, entrada["id"])
+
+    def test_preco_impresso_e_metade_da_residencial_b_com_centavos_de_arredondamento(self):
+        for tabela in (tarifas.CORSAN_T1["2026-07"], tarifas.CORSAN_CANOAS_ESTEIO["2026-07"], tarifas.CORSAN_SANTA_CRUZ["2026-09"]):
+            rb, sl = tabela["res_b"], tabela["social_lei"]
+            for i in (0, 1, 2):  # preço-base, serviço básico, tarifa mínima
+                self.assertLessEqual(abs(Decimal(str(sl[i])) - Decimal(str(rb[i])) / 2), Decimal("0.01"))
+
+    def test_minima_publicada_fecha_em_canoas_e_esteio_e_difere_em_centavos_nas_outras(self):
+        # água de 10 m³ ao preço impresso contra a tarifa mínima publicada (que é metade da mínima da Residencial B)
+        casos = [
+            (tarifas.corsan, Decimal("67.50"), Decimal("67.44")),
+            (tarifas.corsan_canoas_esteio, Decimal("64.00"), Decimal("64.00")),
+            (tarifas.corsan_santa_cruz, Decimal("59.43"), Decimal("59.48")),
+        ]
+        for entrada, simulada, publicada in casos:
+            agua = tarifas.conta_servico(entrada["categorias"]["social"]["agua"], 10)
+            self.assertEqual(agua, simulada, entrada["id"])
+        self.assertEqual(Decimal(str(tarifas.CORSAN_T1["2026-07"]["social_lei"][2])), Decimal("67.44"))
+        self.assertEqual(Decimal(str(tarifas.CORSAN_CANOAS_ESTEIO["2026-07"]["social_lei"][2])), Decimal("64.00"))
+        self.assertEqual(Decimal(str(tarifas.CORSAN_SANTA_CRUZ["2026-09"]["social_lei"][2])), Decimal("59.48"))
+
+    def test_linha_social_alterada_e_apontada(self):
+        original = tarifas.CORSAN_CANOAS_ESTEIO["2026-07"]["social_lei"]
+        tarifas.CORSAN_CANOAS_ESTEIO["2026-07"]["social_lei"] = (4.60,) + original[1:]
+        try:
+            erros = tarifas.confere_corsan()
+        finally:
+            tarifas.CORSAN_CANOAS_ESTEIO["2026-07"]["social_lei"] = original
+        self.assertTrue(any("Canoas e Esteio" in e and "social Lei 14.898" in e for e in erros), erros)
+
+
+class TabelasProprias(unittest.TestCase):
+    def test_conferencias_das_edicoes_e_da_cadeia_de_canoas_e_esteio(self):
+        self.assertEqual(tarifas.confere_corsan(), [])
+
+    def test_residencial_b_confere_a_minima_ao_centavo_em_todas_as_edicoes(self):
+        for tabelas in (tarifas.CORSAN_CANOAS_ESTEIO, tarifas.CORSAN_SANTA_CRUZ, tarifas.CORSAN_ERECHIM):
+            for ed, linhas in tabelas.items():
+                pb, sb, minima = (Decimal(str(x)) for x in linhas["res_b"][:3])
+                self.assertEqual((sb + pb * 10).quantize(Decimal("0.01")), minima, ed)
+
+    def test_exemplos_da_residencial_b_calculados_fora_do_gerador(self):
+        esperados = [
+            (tarifas.corsan_canoas_esteio, {"0": "41.20", "10": "188.70", "30": "576.96", "50": "1012.08"}),
+            (tarifas.corsan_santa_cruz, {"0": "38.25", "10": "175.35", "30": "536.25", "50": "940.73"}),
+            (tarifas.corsan_erechim, {"0": "32.95", "10": "151.05", "30": "461.92", "50": "810.32"}),
+        ]
+        for entrada, ex in esperados:
+            for m3, v in ex.items():
+                self.assertEqual(tarifas.conta(entrada["categorias"]["residencial"], int(m3)), Decimal(v), f"{entrada['id']} {m3} m³")
+
+    def test_variantes_sao_marcadas_e_nao_dividem_municipio(self):
+        ids = [x["id"] for x in tarifas.CORSAN_VARIANTES]
+        self.assertEqual(ids, ["corsan-canoas-esteio-2026", "corsan-santa-cruz-2026", "corsan-erechim-2026"])
+        for x in tarifas.CORSAN_VARIANTES:
+            self.assertTrue(x["variante"], x["id"])
+            self.assertTrue(x["recorte"], x["id"])
+            self.assertEqual(x["prestadorSinisa"], tarifas.corsan["prestadorSinisa"])
+        with open(tarifas.DESTINO, encoding="utf-8") as fh:
+            pub = {t["id"]: t for t in json.load(fh)["tarifas"]}
+        self.assertEqual(pub["corsan-canoas-esteio-2026"]["municipios"], ["4304606", "4307708"])
+        self.assertEqual(pub["corsan-santa-cruz-2026"]["municipios"], ["4316808"])
+        self.assertEqual(pub["corsan-erechim-2026"]["municipios"], ["4307005"])
+        todos = [m for t in (tarifas.corsan, *tarifas.CORSAN_VARIANTES) for m in pub[t["id"]]["municipios"]]
+        self.assertEqual(len(todos), len(set(todos)), "nenhum município em duas tabelas da Corsan")
+        self.assertEqual(len(todos), 313 + 4)
+
+    def test_vigencia_e_regulador_nao_afirmam_o_que_nao_foi_lido(self):
+        self.assertIn("ato não lido", tarifas.corsan_canoas_esteio["regulador"])
+        self.assertIn("ato não lido", tarifas.corsan_santa_cruz["regulador"])
+        self.assertIn("não identificado", tarifas.corsan_erechim["regulador"])
+        self.assertIn("não foi localizada tabela posterior", tarifas.corsan_erechim["vigencia"])
+        self.assertIn("18/09/2026", tarifas.corsan_santa_cruz["vigencia"])
 
 
 if __name__ == "__main__":
