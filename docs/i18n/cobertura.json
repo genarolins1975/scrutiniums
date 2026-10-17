@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "2b025680cd1d60990a0c71bb68d6288caaff6ca39d1079f72cec33919209c4b5",
-    "arquivos_analisados": 1238,
-    "fontes_sha256": "376a6fa3b00a3360c3e96e00d280861bacc9c90b253b195d25d32a1d9eb224ce",
+    "arquivos_analisados": 1239,
+    "fontes_sha256": "a87afbcf87d2234b320f5e20004818d5c2b1c0c5b97ea9257b8b30c76f0ba3ad",
     "pendencias_sha256": "ffb8a50b65776fc82e60fe0d7e98acbddc31d50cb609ba1a14cd4f6fa4ed2714",
     "nao_classificadas": [
       {
@@ -480,20 +480,20 @@
     "agro": {
       "nome": "Agronegócio",
       "interface": {
-        "arquivos": 53,
+        "arquivos": 54,
         "candidatos": {
-          "jsx_text": 453,
-          "atributos": 250,
-          "props": 724,
-          "outros_literais": 2608,
-          "templates": 172,
-          "expressoes_nao_resolvidas": 1921,
-          "chaves_objetos": 1586
+          "jsx_text": 466,
+          "atributos": 272,
+          "props": 829,
+          "outros_literais": 2897,
+          "templates": 230,
+          "expressoes_nao_resolvidas": 2146,
+          "chaves_objetos": 1761
         },
         "exclusoes": {
-          "importacoes": 263,
-          "atributos_tecnicos": 79,
-          "tipos": 89
+          "importacoes": 275,
+          "atributos_tecnicos": 81,
+          "tipos": 97
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -502,7 +502,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 7714,
+        "candidatos_nao_catalogados": 8601,
         "percentual_traduzido": null
       },
       "rotas": {

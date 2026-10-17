@@ -1,8 +1,7 @@
 {
   "total": 69,
-  "implementados": 59,
+  "implementados": 60,
   "bloqueados": [
-    "A1",
     "A3",
     "C3",
     "C4",
@@ -14,15 +13,14 @@
     "K7"
   ],
   "porCategoria": {
-    "DADO OBSERVADO": 10,
+    "DADO OBSERVADO": 11,
     "EXPLICAÇÃO CONCEITUAL": 16,
     "CENÁRIO": 33
   },
   "porGrupo": {
     "A": {
-      "implementados": 4,
+      "implementados": 5,
       "bloqueados": [
-        "A1",
         "A3"
       ]
     },
@@ -83,9 +81,9 @@
   },
   "porCapitulo": {
     "A": {
-      "implementados": 4,
+      "implementados": 5,
       "porCategoria": {
-        "DADO OBSERVADO": 0,
+        "DADO OBSERVADO": 1,
         "EXPLICAÇÃO CONCEITUAL": 1,
         "CENÁRIO": 3
       }
