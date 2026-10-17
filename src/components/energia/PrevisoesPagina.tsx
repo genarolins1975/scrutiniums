@@ -292,7 +292,7 @@ export function PrevisoesAuditoria({ titulo, id, children }: { titulo: string; i
 }
 
 /** Lista de definição compacta (rótulo e valor) para fichas e metadados da rodada; `nivel` esconde a linha em Entender. */
-export function PrevisoesFichaLinha({ rotulo, children, nivel }: { rotulo: string; children: ReactNode; nivel?: "analisar" | "auditar" }) {
+export function PrevisoesFichaLinha({ rotulo, children, nivel }: { rotulo: ReactNode; children: ReactNode; nivel?: "analisar" | "auditar" }) {
   return (
     <div data-nivel={nivel} className="border-t border-linha py-3 md:grid md:grid-cols-[13rem_1fr] md:gap-6">
       <dt className="rotulo text-mineral">{rotulo}</dt>

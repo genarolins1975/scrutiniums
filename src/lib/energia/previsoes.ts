@@ -14,7 +14,7 @@ import { semCaminhosDeArquivo } from "./bastidor";
 import { diaBrasilia } from "./evidencia";
 import { dataBR, dataCurta, nomeSubmercado, num, plural, reais } from "./formato";
 import { idiomaEnergia, tx, tx as txIdioma } from "./idioma";
-import { textoRegistroModelos as reg, traducaoPrevisoes } from "./i18n/mercado-preco";
+import { MODOS_EMISSAO_EN, textoRegistroModelos as reg, traducaoExata, traducaoPrevisoes } from "./i18n/mercado-preco";
 import type { Idioma } from "@/lib/idioma";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
 import type { ModelosGold, Proveniencia, Submercado } from "./tipos";
@@ -284,9 +284,10 @@ export function temRodada(at: PrevisoesDesempenhoGold["previsao_atual"]): at is 
 
 /** Emissão da rodada em uma frase: modo, instante em Brasília e atraso sobre o prazo das 08h00. */
 function modoEmissao(modo: string, idioma: Idioma): string {
-  if (modo === "agendada") return tx("pelo agendamento", "by the schedule", idioma);
+  // o modo pode chegar já na forma inglesa (linhasArquivo escreve no idioma da página)
+  if (modo === "agendada" || modo === MODOS_EMISSAO_EN.agendada) return tx("pelo agendamento", "by the schedule", idioma);
   if (modo === "manual") return tx("manualmente", "manually", idioma);
-  return `(${modo})`;
+  return `(${traducaoExata(MODOS_EMISSAO_EN, modo, idioma) ?? modo})`;
 }
 
 export function textoEmissao(r: { emitido_em: string; atraso_min: number | null; modo: string; prazo: string | null }, idioma: Idioma = idiomaEnergia()): string {
@@ -678,7 +679,7 @@ export function linhasArquivo(brutas: readonly Record<string, string>[], estados
       emitido: instanteBR(r.emitido_em, idioma),
       atraso_min: numeroCsv(r.atraso_min),
       atraso_origem: r.atraso_origem ?? "",
-      modo: r.modo ?? "",
+      modo: r.modo ? traducaoExata(MODOS_EMISSAO_EN, r.modo, idioma) ?? r.modo : "",
       horizonte: r.horizonte,
       entrega: r.entrega,
       submercado: r.submercado,
@@ -1263,9 +1264,11 @@ export function termosPrevisoes(
   const faixa = /A faixa entre P10 e P90[^.]*\./.exec(def.quantis ?? "")?.[0];
   if (p10 && faixa) {
     const faixaLimpa = faixa.replace(/\s*\(cobertura nominal\)/, "");
-    const faixaEn = faixaLimpa === "A faixa entre P10 e P90 pretende conter o preço em 80% dos casos;" || faixaLimpa === "A faixa entre P10 e P90 pretende conter o preço em 80% dos casos."
-      ? "The band between P10 and P90 is meant to contain the price in 80% of cases."
-      : faixaLimpa;
+    const faixaEn =
+      traducaoPrevisoes(faixaLimpa, "en") ??
+      (faixaLimpa === "A faixa entre P10 e P90 pretende conter o preço em 80% dos casos;" || faixaLimpa === "A faixa entre P10 e P90 pretende conter o preço em 80% dos casos."
+        ? "The band between P10 and P90 is meant to contain the price in 80% of cases."
+        : faixaLimpa);
     itens.push({
       termo: tx("P10 e P90", "P10 and P90"),
       texto: tx(`P10 é o valor que o preço tem 10% de chance de não superar. ${faixaLimpa}`, `P10 is the value that the price has a 10% chance of not exceeding. ${faixaEn}`),

@@ -122,7 +122,7 @@ export function PrevisoesArquivo({
         <p className="text-xs text-carvao-muted" data-recorte-arquivo="">
           {tx(
             `Recorte: ${v.em ? `registros incluídos até ${dataBR(v.em)}` : "todos os dias"}${v.rod ? `; só a ${rodadas.find((r) => r.run_id === v.rod)?.rotulo.toLowerCase() ?? "rodada escolhida"}` : ""}.`,
-            `Selection: ${v.em ? `records included up to ${dataBR(v.em)}` : "all days"}${v.rod ? `; only the ${rodadas.find((r) => r.run_id === v.rod)?.rotulo.toLowerCase() ?? "chosen run"}` : ""}.`,
+            `Selection: ${v.em ? `records included up to ${dataBR(v.em)}` : "all days"}${v.rod ? `; only the ${rodadas.find((r) => r.run_id === v.rod)?.rotulo.replace(/^./, (c) => c.toLowerCase()) ?? "chosen run"}` : ""}.`,
           )}
         </p>
       )}
@@ -264,10 +264,10 @@ export function PrevisoesArquivo({
               {reg.substitui ? tx(`substitui ${reg.substitui}`, `replaces ${reg.substitui}`) : tx("registro original (não substitui outro)", "original record (does not replace another)")}
             </Item>
             <Item rotulo={tx("sha256 do registro", "Record sha256")} nivel="analisar">
-              <span className="font-mono text-xs">{reg.sha256}</span>
+              <code className="font-mono text-xs">{reg.sha256}</code>
             </Item>
             <Item rotulo={tx("Registro anterior", "Previous record")} nivel="analisar">
-              <span className="font-mono text-xs">{reg.anterior || tx("início do encadeamento particionado", "start of the partitioned chain")}</span>
+              <code className="font-mono text-xs">{reg.anterior || tx("início do encadeamento particionado", "start of the partitioned chain")}</code>
             </Item>
           </dl>
         </section>
@@ -278,7 +278,8 @@ export function PrevisoesArquivo({
 
 /** Emissão em uma palavra: agendada pela rotina ou manual. */
 function modoEmissao(modo: string, idioma: Idioma): string {
-  if (modo === "agendada") return tx("pelo agendamento", "by the schedule", idioma);
+  // linhasArquivo escreve o modo no idioma da página: "agendada" ou "scheduled"
+  if (modo === "agendada" || modo === "scheduled") return tx("pelo agendamento", "by the schedule", idioma);
   if (modo.startsWith("manual")) return tx("manualmente", "manually", idioma);
   return modo || tx("modo não registrado", "mode not recorded", idioma);
 }

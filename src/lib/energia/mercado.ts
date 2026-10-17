@@ -1,7 +1,7 @@
 import type { Idioma } from "@/lib/idioma";
 import { mesAno, mesAnoCurto, nomeSubmercado, num, pct } from "./formato";
 import { idiomaEnergia, tx } from "./idioma";
-import { EFEITOS_MERCADO_EN, traducaoExata } from "./i18n/mercado-preco";
+import { EFEITOS_MERCADO_EN, MEDIDAS_INFOMERCADO_EN, TOLERANCIAS_MERCADO_EN, traducaoExata } from "./i18n/mercado-preco";
 import { datasLegiveis } from "./visao";
 import type { Proveniencia } from "./tipos";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
@@ -61,7 +61,7 @@ export const CSV_MERCADO = {
   distribuidorasMes: { get rotulo() { return tx("Distribuidoras por mês, SAMP (CSV)", "Distribution utilities by month, SAMP (CSV)"); }, url: "/energia/series/mercado_distribuidoras_mensal.csv" },
   desligamentos: { get rotulo() { return tx("Desligamentos da CCEE (CSV)", "CCEE disconnections (CSV)"); }, url: "/energia/series/mercado_ccee_desligamentos.csv" },
   agentesAneel: { get rotulo() { return tx("Agentes cadastrados na ANEEL (CSV)", "Agents registered with ANEEL (CSV)"); }, url: "/energia/series/mercado_agentes_aneel.csv" },
-  contaBandeira: { get rotulo() { return tx("Conta Bandeira por distribuidora (CSV)", "Conta Bandeira (tariff flag account) by distribution utility (CSV)"); }, url: "/energia/series/mercado_conta_bandeira.csv" },
+  contaBandeira: { get rotulo() { return tx("Conta Bandeira por distribuidora (CSV)", "Tariff flag account by distribution utility (CSV)"); }, url: "/energia/series/mercado_conta_bandeira.csv" },
   encargosMme: { get rotulo() { return tx("Encargos no boletim do MME (CSV)", "Charges in the MME bulletin (CSV)"); }, url: "/energia/series/mercado_encargos_mme.csv" },
 } as const;
 
@@ -288,7 +288,8 @@ function medidaInfoMercado(m: string, idioma: Idioma): string {
     case "gsf_12m_pct":
       return tx("GSF de 12 meses (%)", "12-month GSF (%)", idioma);
   }
-  return m.replace(/_/g, " ");
+  // em português, o código sem sublinhado (como sempre foi); em inglês, o rótulo da tabela exata quando existe
+  return traducaoExata(MEDIDAS_INFOMERCADO_EN, m, idioma) ?? m.replace(/_/g, " ");
 }
 
 export function linhasInfoMercado(c: ConferenciaInfoMercado[], idioma: Idioma = idiomaEnergia()): LinhaTabela[] {
@@ -300,7 +301,8 @@ export function linhasInfoMercado(c: ConferenciaInfoMercado[], idioma: Idioma = 
     publicado: x.publicado,
     calculado: x.calculado,
     diferenca: x.diferenca,
-    tolerancia: x.tolerancia,
+    // tolerância da gold pela tabela exata (todas as publicadas têm forma inglesa; os números são os mesmos)
+    tolerancia: traducaoExata(TOLERANCIAS_MERCADO_EN, x.tolerancia, idioma) ?? x.tolerancia,
     resultado: rotuloResultado(x.resultado, idioma),
     pagina: x.pagina,
   }));

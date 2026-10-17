@@ -209,7 +209,7 @@ export function PldPeriodos({
         </p>
         <div className="mt-3">
           <GraficoLinhas
-            titulo={tx(`PLD dos quatro submercados, ${at.rotulo.toLowerCase()}`, `PLD of the four submarkets, ${at.rotulo.toLowerCase()}`)}
+            titulo={tx(`PLD dos quatro submercados, ${at.rotulo.toLowerCase()}`, `PLD of the four submarkets, ${at.rotulo.charAt(0).toLowerCase()}${at.rotulo.slice(1)}`)}
             dados={at.serie}
             chaveX="x"
             series={SMS.map((s) => ({ id: s.id, rotulo: rotuloSm(s.id, idioma), sigla: siglaSm(s.id, idioma), cor: s.cor, tracejada: s.tracejada }))}

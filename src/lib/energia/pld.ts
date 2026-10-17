@@ -1147,7 +1147,7 @@ export function respostaP011(h: BlocoHistorico, sm: Submercado, idioma: Idioma =
   } else {
     const mm = p.mesmo_mes;
     const anos = Array.from(new Set(h.sazonal_mes.find((s) => s.sm === sm && s.mes === mm.mes)?.anos ?? []));
-    const faixaAnos = anos.length ? tx(` de ${anos[0]} a ${anos[anos.length - 1]}`, ` from ${anos[0]} to ${anos[anos.length - 1]}`, idioma) : "";
+    const faixaAnos = anos.length ? tx(` de ${anos[0]} a ${anos[anos.length - 1]}`, ` ${anos[0]} to ${anos[anos.length - 1]}`, idioma) : "";
     const abertura = tx(
       `Em ${dataBR(p.dia, idioma)}, a média diária do PLD ${DO_SM[sm]} foi ${R(p.media_dia)}/MWh: `,
       `On ${dataBR(p.dia, idioma)}, the daily average PLD ${doSm(sm, idioma)} was ${R(p.media_dia)}/MWh: `,
@@ -1200,9 +1200,9 @@ export function vereditoP011(h: BlocoHistorico, sm: Submercado, idioma: Idioma =
   const anos = Array.from(new Set(h.sazonal_mes.find((s) => s.sm === sm && s.mes === mm.mes)?.anos ?? []));
   const faixaAnos =
     anos.length > 1
-      ? tx(` de ${anos[0]} a ${anos[anos.length - 1]}`, ` from ${anos[0]} to ${anos[anos.length - 1]}`, idioma)
+      ? tx(` de ${anos[0]} a ${anos[anos.length - 1]}`, ` ${anos[0]} to ${anos[anos.length - 1]}`, idioma)
       : anos.length === 1
-        ? tx(` de ${anos[0]}`, ` of ${anos[0]}`, idioma)
+        ? tx(` de ${anos[0]}`, ` ${anos[0]}`, idioma)
         : "";
   const centavos = (v: number) => Math.round(v * 100);
   const frenteMediana =

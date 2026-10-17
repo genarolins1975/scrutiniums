@@ -236,7 +236,7 @@ export default function MercadoMreGsfPage() {
               subtitulo={tx(`GSF · % da garantia física ajustada · mensal desde ${mesAno(m.mensal[0]?.mes ?? "2023-05")}`, `GSF · % of the adjusted physical guarantee · monthly since ${mesAno(m.mensal[0]?.mes ?? "2023-05")}`)}
               natureza="CALCULADO"
               proveniencia={prov.gsf}
-              complementares={[{ rotulo: tx("Risco hidrológico do ACR (Conta Bandeira)", "ACR hydrological risk (Conta Bandeira, the tariff flag account)"), p: prov.risco_hidrologico_acr }]}
+              complementares={[{ rotulo: tx("Risco hidrológico do ACR (Conta Bandeira)", "ACR hydrological risk (tariff flag account)"), p: prov.risco_hidrologico_acr }]}
               porQueImporta={
                 tx(
                   <>
@@ -341,7 +341,7 @@ export default function MercadoMreGsfPage() {
                   )}
                 >
                   <GraficoBarras
-                    titulo={tx("Risco hidrológico do ACR por ano, por origem (Conta Bandeira)", "ACR hydrological risk by year, by origin (Conta Bandeira)")}
+                    titulo={tx("Risco hidrológico do ACR por ano, por origem (Conta Bandeira)", "ACR hydrological risk by year, by origin (tariff flag account)")}
                     dados={rh}
                     chaveCategoria="ano" // i18n: dado
                     chaveRotulo="rotulo"

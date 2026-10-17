@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";
@@ -8,7 +8,8 @@ import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { carimbo, mesAno } from "@/lib/energia/formato";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { DEFINICOES_MERCADO_EN, traducaoExata } from "@/lib/energia/i18n/mercado-preco";
+import { DEFINICOES_MERCADO_EN, PAGINAS_CATALOGO_EN, TITULOS_CATALOGO_MERCADO_EN, identificador, marcadoMercado, traducaoExata } from "@/lib/energia/i18n/mercado-preco";
+import { Nome } from "@/components/i18n/Nome";
 import { datasLegiveis } from "@/lib/energia/visao";
 import {
   PAGINAS_MERCADO,
@@ -157,7 +158,13 @@ export function MercadoDefinicoes({ g, chaves }: { g: MercadoGold; chaves: (keyo
       {chaves.map((k) => (
         <div key={k}>
           <dt className="font-medium text-carvao">{nome[k] ?? k}</dt>
-          <dd className="mt-0.5 leading-relaxed text-carvao-muted">{traducaoExata(DEFINICOES_MERCADO_EN, g.definicoes[k], idioma) ?? <TextoGold regiao="mercado-definicao">{g.definicoes[k]}</TextoGold>}</dd>
+          <dd className="mt-0.5 leading-relaxed text-carvao-muted">
+            {traducaoExata(DEFINICOES_MERCADO_EN, g.definicoes[k], idioma) !== null ? (
+              marcadoMercado(traducaoExata(DEFINICOES_MERCADO_EN, g.definicoes[k], idioma), idioma)
+            ) : (
+              <TextoGold regiao="mercado-definicao">{g.definicoes[k]}</TextoGold>
+            )}
+          </dd>
         </div>
       ))}
     </dl>
@@ -196,12 +203,13 @@ export function MercadoPendenciasAuditoria({ g }: { g: Pick<MercadoGold, "penden
     ...g.bloqueios.map((b) => ({ tipo: tx("Bloqueio", "Blocked item"), id: b.id, descricao: b.descricao, efeito: b.efeito, evidencia: b.evidencia as { url: string; capturado_em?: string | null; sha256?: string | null; observacao: string }, alternativas: b.alternativas })),
   ];
   if (!itens.length) return null;
+  const idioma = idiomaEnergia();
   return (
     <ul className="space-y-3 text-sm leading-relaxed text-carvao-muted [overflow-wrap:anywhere]" data-pendencias="">
       {itens.map((i) => (
         <li key={`${i.tipo}:${i.id}`}>
           <span className="text-carvao">
-            {i.tipo} ({i.id})
+            {i.tipo} ({identificador(i.id, idioma)})
           </span>
           : <TextoGold regiao="mercado-pendencia">{datasLegiveis(i.descricao)}</TextoGold> {tx("Efeito:", "Effect:")} <TextoGold regiao="mercado-pendencia">{datasLegiveis(i.efeito)}</TextoGold> {tx("Evidência:", "Evidence:")}{" "}
           <TextoGold regiao="mercado-pendencia">{datasLegiveis(i.evidencia.observacao)}</TextoGold>{" "}
@@ -210,7 +218,7 @@ export function MercadoPendenciasAuditoria({ g }: { g: Pick<MercadoGold, "penden
             <span className="sr-only">{tx(" (abre em nova aba)", " (opens in a new tab)")}</span>
           </a>
           {i.evidencia.capturado_em ? tx(`, capturado em ${carimbo(i.evidencia.capturado_em)}`, `, captured on ${carimbo(i.evidencia.capturado_em)}`) : ""}
-          {i.evidencia.sha256 ? `, sha256 ${i.evidencia.sha256}` : ""}.
+          {i.evidencia.sha256 ? <>, sha256 {identificador(i.evidencia.sha256, idioma)}</> : ""}.
           {i.alternativas.length > 0 && (
             <>
               {" "}
@@ -230,6 +238,7 @@ export function MercadoPendenciasAuditoria({ g }: { g: Pick<MercadoGold, "penden
  */
 export function MercadoAusencias({ id, titulo, lead, itens }: { id: string; titulo: string; lead?: ReactNode; itens: ItemAusenteMercado[] }) {
   if (!itens.length) return null;
+  const idioma = idiomaEnergia();
   return (
     <SecaoDoPainel id={id} titulo={titulo} lead={lead}>
       <ul className="grid gap-x-8 gap-y-4 md:grid-cols-2" data-ausencias="">
@@ -239,11 +248,11 @@ export function MercadoAusencias({ id, titulo, lead, itens }: { id: string; titu
             <p className="mt-1 leading-relaxed text-carvao-muted">
               {i.emPortugues && i.efeito ? (
                 <>
-                  {i.prefixo}
+                  {marcadoMercado(i.prefixo, idioma)}
                   <TextoGold regiao="mercado-ausencia">{i.efeito}</TextoGold>
                 </>
               ) : (
-                i.texto
+                marcadoMercado(i.texto, idioma)
               )}
             </p>
           </li>
@@ -314,5 +323,80 @@ export function MercadoIndisponivel({ motivo }: { motivo?: string | null }) {
         </p>
       </main>
     </>
+  );
+}
+
+/** Título de conjunto do catálogo na página inglesa: código da fonte em <code>, título descritivo pela tabela exata, nome oficial em <Nome>. */
+function tituloCatalogo(titulo: string): ReactNode {
+  const idioma = idiomaEnergia();
+  if (idioma !== "en") return titulo;
+  if (/^[A-Z0-9_]+$/.test(titulo)) return identificador(titulo, idioma);
+  const en = traducaoExata(TITULOS_CATALOGO_MERCADO_EN, titulo, idioma);
+  return en ? marcadoMercado(en, idioma, ["Boletim de Monitoramento do Sistema Elétrico"]) : <Nome>{titulo}</Nome>; // i18n: dado
+}
+
+/** Páginas em que a fonte aparece, com o nome do módulo no idioma da página (sem entrada na tabela, o nome sai marcado). */
+function paginasCatalogo(rotulos: string): ReactNode {
+  const idioma = idiomaEnergia();
+  if (idioma !== "en") return rotulos;
+  const partes = rotulos.split("; ");
+  return partes.map((r, i) => (
+    <Fragment key={r}>
+      {i > 0 ? "; " : ""}
+      {traducaoExata(PAGINAS_CATALOGO_EN, r, idioma) ?? (r === "no page" ? r : <Nome>{r}</Nome>)}
+    </Fragment>
+  ));
+}
+
+/**
+ * Fontes do módulo no catálogo (linhas de linhasCatalogoMercado: órgão, conjunto, estado, onde aparece), na mesma forma do resumo em
+ * tabela (TabelaDados), com o conjunto e as páginas no idioma da página: código da fonte como código, nome oficial como nome.
+ */
+export function MercadoCatalogo({ titulo, colunas, linhas, limite = 60 }: { titulo: string; colunas: string[]; linhas: (string | number | null)[][]; limite?: number }) {
+  const en = idiomaEnergia() === "en";
+  const n = (x: number) => x.toLocaleString(en ? "en-US" : "pt-BR");
+  const ult = linhas.slice(-limite);
+  return (
+    <details className="mt-4 border-t border-linha pt-3">
+      <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
+        {tx(
+          `Resumo em tabela (${ult.length === linhas.length ? `${linhas.length} linhas` : `últimas ${ult.length} de ${linhas.length} linhas`})`,
+          `Table summary (${ult.length === linhas.length ? `${n(linhas.length)} ${linhas.length === 1 ? "row" : "rows"}` : `last ${n(ult.length)} of ${n(linhas.length)} rows`})`,
+        )}
+      </summary>
+      <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={tx(`${titulo} (tabela rolável)`, `${titulo} (scrollable table)`)}>
+        <table className="w-full min-w-[28rem] border-collapse text-xs tabular-nums">
+          <caption className="sr-only">{titulo}</caption>
+          <thead>
+            <tr>
+              {colunas.map((c) => (
+                <th key={c} scope="col" className="border-b border-linha px-2 py-1.5 text-left font-medium text-mineral">
+                  {c}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {ult.map((l, i) => (
+              <tr key={i} className="odd:bg-papel">
+                {l.map((v, j) => (
+                  <td key={j} className="px-2 py-1 text-carvao">
+                    {v === null || v === undefined ? (
+                      <span className="text-mineral">{tx("sem dado", "no data")}</span>
+                    ) : j === 1 ? (
+                      tituloCatalogo(String(v))
+                    ) : j === 3 ? (
+                      paginasCatalogo(String(v))
+                    ) : (
+                      v
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </details>
   );
 }

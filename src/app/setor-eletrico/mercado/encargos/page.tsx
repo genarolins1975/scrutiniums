@@ -33,7 +33,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { dataBR, mesAno, num, pct } from "@/lib/energia/formato";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { NOTAS_REVISAO_EN, TIPOS_ENCARGO_EN, rotuloCategoria } from "@/lib/energia/i18n/mercado-preco";
+import { NOTAS_REVISAO_EN, TIPOS_ENCARGO_EN, TOLERANCIAS_MERCADO_EN, rotuloCategoria, traducaoExata } from "@/lib/energia/i18n/mercado-preco";
 import {
   CSV_MERCADO,
   ROTULO_RESULTADO,
@@ -399,13 +399,19 @@ export default function MercadoEncargosPage() {
 
                 <MercadoAusencias id="ainda-nao" titulo={tx("O que esta página ainda não mostra?", "What does this page not yet show?")} itens={ausentes} />
 
-                <SecaoDoPainel id="encargos-analise" nivel="analisar" titulo={tx("Liquidação, pagamento e ESS por tipo, mês a mês, e a Conta Bandeira", "Settlement, payment and ESS by type, month by month, and the Conta Bandeira")}>
+                <SecaoDoPainel id="encargos-analise" nivel="analisar" titulo={tx<ReactNode>(
+                    "Liquidação, pagamento e ESS por tipo, mês a mês, e a Conta Bandeira",
+                    <>
+                      Settlement, payment and ESS by type, month by month, and the <Nome>Conta Bandeira</Nome> (tariff flag account)
+                    </>,
+                  )}
+                >
                   <MercadoTabelasSobDemanda conjunto="encargos-analise" versao={versao} downloads={[{ ...CSV_MERCADO.ccee }]} />
                   <TabelaDados
-                    titulo={tx("Componentes do ACR na Conta Bandeira por ano (R$ milhões, soma nacional)", "ACR components in the Conta Bandeira by year (R$ million, national total)")}
+                    titulo={tx("Componentes do ACR na Conta Bandeira por ano (R$ milhões, soma nacional)", "ACR components in the tariff flag account by year (R$ million, national total)")}
                     colunas={tx(
                       ["Ano", "Meses", "ESS e EER", "Ressarcimento CONER", "Resultado no MCP", "CCEAR por disponibilidade", "Receita faturada das bandeiras", "Repasse à Conta Bandeira"],
-                      ["Year", "Months", "ESS and EER", "CONER reimbursement", "Result in the MCP (short-term market)", "CCEAR by availability", "Billed tariff flag revenue", "Transfer to the Conta Bandeira"],
+                      ["Year", "Months", "ESS and EER", "CONER reimbursement", "Result in the MCP (short-term market)", "CCEAR by availability", "Billed tariff flag revenue", "Transfer to the tariff flag account"],
                     )}
                     linhas={e.acr_conta_bandeira_anual.map((a) => [
                       a.ano,
@@ -432,7 +438,7 @@ export default function MercadoEncargosPage() {
                       </>,
                       <>
                         ESS by type and month × MME monitoring bulletin: {resumoMme.tipos.aprovados} of {resumoMme.tipos.conferidos} checks within the tolerance (
-                        <TextoGold regiao="mercado-tolerancia">{resumoMme.tolerancia}</TextoGold>); demand response: {resumoMme.resposta_demanda.aprovados} of {resumoMme.resposta_demanda.conferidos}.
+                        {traducaoExata(TOLERANCIAS_MERCADO_EN, resumoMme.tolerancia, idioma) ?? <TextoGold regiao="mercado-tolerancia">{resumoMme.tolerancia}</TextoGold>}); demand response: {resumoMme.resposta_demanda.aprovados} of {resumoMme.resposta_demanda.conferidos}.
                       </>,
                     )}
                     {consol &&
@@ -447,7 +453,8 @@ export default function MercadoEncargosPage() {
                           {" "}
                           Annual consolidation for {consol.ano}: MME publishes R$ {num(consol.mme_bilhoes_rs, 1)} billion
                           {consol.mme_variacao_pct !== null ? <> and a change of {num(consol.mme_variacao_pct, 0)}% over {consol.ano_base}</> : null}; the sum of the open dataset gives {reaisCurto(consol.ccee_rs)}
-                          {consol.ccee_variacao_pct !== null ? <> and {num(consol.ccee_variacao_pct, 1)}%</> : null}: {ROTULO_RESULTADO[consol.resultado]} (<TextoGold regiao="mercado-tolerancia">{consol.tolerancia}</TextoGold>).
+                          {consol.ccee_variacao_pct !== null ? <> and {num(consol.ccee_variacao_pct, 1)}%</> : null}: {ROTULO_RESULTADO[consol.resultado]} (
+                          {traducaoExata(TOLERANCIAS_MERCADO_EN, consol.tolerancia, idioma) ?? <TextoGold regiao="mercado-tolerancia">{consol.tolerancia}</TextoGold>}).
                         </>,
                       )}
                     {ultimaEdicao &&

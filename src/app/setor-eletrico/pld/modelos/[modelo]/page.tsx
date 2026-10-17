@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+import type { Idioma } from "@/lib/idioma";
 import type { Metadata, ResolvingMetadata } from "next";
 import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { notFound } from "next/navigation";
@@ -25,7 +27,7 @@ import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { textoRegistroModelos, traducaoPrevisoes } from "@/lib/energia/i18n/mercado-preco";
+import { CONFIG_MODELOS_EN, marcadoMercado, textoRegistroModelos, traducaoExata, traducaoPrevisoes } from "@/lib/energia/i18n/mercado-preco";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { semCaminhosDeArquivo } from "@/lib/energia/bastidor";
 import type { ModelosGold } from "@/lib/energia/tipos";
@@ -102,12 +104,19 @@ function Gold({ texto, regiao = "previsoes-ficha" }: { texto: string | null | un
 }
 
 /** Valor de configuração em texto legível (lista, objeto por frequência ou número). */
+/** Arquivos do código do modelo ("pipeline/.../variaveis.py (b0) e modelos_pld.py"): na página inglesa, a ligação em inglês e os arquivos como código. */
+function codigoImplementacao(texto: string, idioma: Idioma): ReactNode {
+  if (idioma !== "en") return texto;
+  return marcadoMercado(texto.replace(/ e /g, " and ").replace(/\(sazonal\)/g, "(seasonal)"), idioma);
+}
+
 function textoConfig(v: unknown): string {
   const locale = idiomaEnergia() === "en" ? "en-US" : "pt-BR";
   if (Array.isArray(v)) return v.map((x) => (typeof x === "number" ? x.toLocaleString(locale) : String(x))).join("; ");
   if (v && typeof v === "object") return Object.entries(v as Record<string, unknown>).map(([k, x]) => `${k}: ${textoConfig(x)}`).join("; ");
   if (typeof v === "number") return v.toLocaleString(locale);
-  return String(v);
+  // valor de texto da configuração publicada: forma inglesa pela tabela exata (nomes de série como ear_pct ficam como estão)
+  return traducaoExata(CONFIG_MODELOS_EN, String(v), idiomaEnergia()) ?? String(v);
 }
 
 export default function FichaModelo({ params }: { params: { modelo: string } }) {
@@ -445,7 +454,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                     </PrevisoesFichaLinha>
                     {impl && (
                       <PrevisoesFichaLinha rotulo={tx("Código", "Code")}>
-                        {impl.codigo ?? tx("não informado", "not reported")}
+                        {impl.codigo ? codigoImplementacao(impl.codigo, idioma) : tx("não informado", "not reported")}
                         {impl.mesma_definicao_da_pesquisa === false
                           ? tx("; reimplementação do observatório, não a definição exata da pesquisa", "; reimplementation by the observatory, not the exact research definition")
                           : ""}
@@ -472,14 +481,14 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                     {f.configuracao ? (
                       <PrevisoesFichaLinha rotulo={tx("Configuração", "Configuration")}>
                         <span className="block">
-                          sha256 <span className="font-mono text-xs">{f.configuracao.sha256}</span>
+                          sha256 <code className="font-mono text-xs">{f.configuracao.sha256}</code>
                         </span>
                         <ul className="mt-1 space-y-0.5 text-xs text-carvao-muted">
                           {Object.entries(f.configuracao)
                             .filter(([k]) => k !== "sha256")
                             .map(([k, x]) => (
                               <li key={k}>
-                                <span className="font-mono">{k}</span>: {textoConfig(x)}
+                                <code className="font-mono">{k}</code>: {textoConfig(x)}
                               </li>
                             ))}
                         </ul>

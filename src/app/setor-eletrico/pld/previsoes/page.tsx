@@ -34,7 +34,7 @@ import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, datasLegiveis, nomeSubmercado, num, plural } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
-import { traducaoPrevisoes } from "@/lib/energia/i18n/mercado-preco";
+import { GOVERNANCA_PREVISOES_EN, identificador, traducaoExata, traducaoPrevisoes } from "@/lib/energia/i18n/mercado-preco";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import {
   colunasRevisoes,
@@ -97,6 +97,11 @@ function Gold({ texto, regiao = "previsoes-gold" }: { texto: string | null | und
   if (!texto) return null;
   const en = traducaoPrevisoes(texto, idiomaEnergia());
   return en ? <>{en}</> : <TrechoPortugues regiao={regiao}>{texto}</TrechoPortugues>;
+}
+
+/** Estado curto de um achado da governança na página inglesa: forma inglesa pela tabela exata; sem entrada, o texto publicado marcado. */
+function estadoAchado(estado: string): ReactNode {
+  return traducaoExata(GOVERNANCA_PREVISOES_EN, estado, "en") ?? <TrechoPortugues regiao="previsoes-achados">{estado}</TrechoPortugues>;
 }
 
 export default function PrevisoesPage() {
@@ -234,7 +239,7 @@ export default function PrevisoesPage() {
       {ultimaRodada
         ? tx(
             `Última inclusão no arquivo em ${dataBR(ultimaRodada.registrado)}: ${ultimaRodada.rotulo.toLowerCase()}, com ${ultimaRodada.celulas} registros.`,
-            `Latest inclusion in the archive on ${dataBR(ultimaRodada.registrado)}: ${ultimaRodada.rotulo.toLowerCase()}, with ${ultimaRodada.celulas} records.`,
+            `Latest inclusion in the archive on ${dataBR(ultimaRodada.registrado)}: ${ultimaRodada.rotulo.charAt(0).toLowerCase()}${ultimaRodada.rotulo.slice(1)}, with ${ultimaRodada.celulas} records.`,
           )
         : tx("Nenhum registro incluído.", "No record included.")}{" "}
       <Gold texto={g.prospectivo.leitura} />
@@ -572,7 +577,7 @@ export default function PrevisoesPage() {
                     <PrevisoesAuditoria id="rodada" titulo={tx("A rodada: corte, emissão, código e condições da referência experimental", "The run: cutoff, issue, code and conditions of the experimental benchmark")}>
                       <dl>
                         <PrevisoesFichaLinha rotulo={tx("Identificador", "Identifier")}>
-                          <span className="font-mono text-xs">{at.run_id}</span>
+                          <code className="font-mono text-xs">{at.run_id}</code>
                         </PrevisoesFichaLinha>
                         <PrevisoesFichaLinha rotulo={tx("Corte e prazo", "Cutoff and deadline")}>
                           {tx(
@@ -585,7 +590,7 @@ export default function PrevisoesPage() {
                           {at.alertas.length ? tx(`Alertas registrados: ${textoAlertas(at.alertas)}.`, `Recorded alerts: ${textoAlertas(at.alertas, idioma)}.`) : ""}
                         </PrevisoesFichaLinha>
                         <PrevisoesFichaLinha rotulo={tx("Versão do código", "Code version")}>
-                          <span className="font-mono text-xs">{at.versao_codigo ?? tx("não registrada", "not recorded")}</span>
+                          <code className="font-mono text-xs">{at.versao_codigo ?? tx("não registrada", "not recorded")}</code>
                         </PrevisoesFichaLinha>
                         <PrevisoesFichaLinha rotulo={tx("Referência experimental", "Experimental benchmark")}>
                           {ref.autorizada ? tx("autorizada", "authorized") : tx("não autorizada", "not authorized")} (<TrechoPortugues regiao="previsoes-referencia">{ref.fundamento}</TrechoPortugues>);{" "}
@@ -779,20 +784,22 @@ export default function PrevisoesPage() {
                       )}
                     </p>
                     <dl>
-                      <PrevisoesFichaLinha rotulo={tx(`Achado A08 (${g.governanca.achados.A08.estado})`, `Finding A08 (${g.governanca.achados.A08.estado.toLowerCase()})`)}>
+                      <PrevisoesFichaLinha rotulo={tx<ReactNode>(`Achado A08 (${g.governanca.achados.A08.estado})`, <>Finding A08 ({estadoAchado(g.governanca.achados.A08.estado)})</>)}>
                         <TrechoPortugues regiao="previsoes-achados">
                           {g.governanca.achados.A08.diagnostico} Correção: {g.governanca.achados.A08.correcao} {g.governanca.achados.A08.confirmacao}
                         </TrechoPortugues>
                       </PrevisoesFichaLinha>
-                      <PrevisoesFichaLinha rotulo={tx(`Achado A09 (${g.governanca.achados.A09.estado})`, `Finding A09 (${g.governanca.achados.A09.estado.toLowerCase()})`)}>
+                      <PrevisoesFichaLinha rotulo={tx<ReactNode>(`Achado A09 (${g.governanca.achados.A09.estado})`, <>Finding A09 ({estadoAchado(g.governanca.achados.A09.estado)})</>)}>
                         <TrechoPortugues regiao="previsoes-achados">{g.governanca.achados.A09.leitura}</TrechoPortugues>
                       </PrevisoesFichaLinha>
                     </dl>
                     <p className="text-xs text-mineral">
-                      {tx(
-                        `${num(todas.length, 0)} linhas no CSV; para reproduzir: python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta.`,
-                        `${num(todas.length, 0)} rows in the CSV; to reproduce: python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta.`,
+                      {tx(`${num(todas.length, 0)} linhas no CSV; para reproduzir:`, `${num(todas.length, 0)} rows in the CSV; to reproduce:`)}{" "}
+                      {identificador(
+                        "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta", // i18n: dado
+                        idioma,
                       )}
+                      .
                     </p>
                   </PrevisoesAuditoria>
 

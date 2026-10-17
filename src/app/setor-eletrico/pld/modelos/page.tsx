@@ -36,7 +36,7 @@ import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { traducaoPrevisoes } from "@/lib/energia/i18n/mercado-preco";
+import { GOVERNANCA_PREVISOES_EN, traducaoExata, traducaoPrevisoes } from "@/lib/energia/i18n/mercado-preco";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import type { Idioma } from "@/lib/idioma";
 import {
@@ -541,7 +541,7 @@ export default function ModelosPage() {
                   <PrevisoesAuditoria id="configuracao" titulo={tx("Configuração congelada, dados de entrada e pendências da governança", "Frozen configuration, input data and governance pending items")}>
                     <dl>
                       <PrevisoesFichaLinha rotulo={tx("Configuração", "Configuration")}>
-                        sha256 <span className="font-mono text-xs">{g.dados.configuracao_sha256}</span>;{" "}
+                        sha256 <code className="font-mono text-xs">{g.dados.configuracao_sha256}</code>;{" "}
                         {g.dados.configuracao_registrada_sha256 === g.dados.configuracao_sha256
                           ? tx("confere com a registrada no registro de modelos", "matches the one recorded in the model registry")
                           : tx("diferente da registrada no registro de modelos", "different from the one recorded in the model registry")}
@@ -571,7 +571,14 @@ export default function ModelosPage() {
                         <TrechoPortugues regiao="previsoes-governanca">{g.governanca.estados}</TrechoPortugues>
                       </PrevisoesFichaLinha>
                       {g.governanca.pendencias.map((p) => (
-                        <PrevisoesFichaLinha key={p.id} rotulo={`${p.id}: ${p.titulo}`}>
+                        <PrevisoesFichaLinha
+                          key={p.id}
+                          rotulo={
+                            <>
+                              {p.id}: {traducaoExata(GOVERNANCA_PREVISOES_EN, p.titulo, idioma) ?? <TrechoPortugues regiao="previsoes-governanca">{p.titulo}</TrechoPortugues>}
+                            </>
+                          }
+                        >
                           <TrechoPortugues regiao="previsoes-governanca">
                             {p.descricao} Encaminhamento: {p.encaminhamento} Responsável: {p.responsavel}. Estado: {p.estado.replace(/_/g, " ").toLowerCase()}.
                           </TrechoPortugues>
@@ -880,7 +887,7 @@ export default function ModelosPage() {
                         <PrevisoesFichaLinha key={k} rotulo={tx(`Revisões em ${k.split(":")[1] ?? k}`, `Revisions in ${k.split(":")[1] ?? k}`)}>
                           {tx(
                             `${r.observacoes_revisadas} observações revisadas pelo ONS entre capturas; maior revisão ${r.maior_revisao === null ? "sem registro" : `${r.maior_revisao.toLocaleString("pt-BR")} p.p.`}. O teste retrospectivo do modelo com hidrologia usa o valor revisado.`,
-                            `${r.observacoes_revisadas} observations revised by ONS between captures; largest revision ${r.maior_revisao === null ? "no record" : `${num(r.maior_revisao, 2)} pp`}. The retrospective test of the model with hydrology uses the revised value.`,
+                            `${r.observacoes_revisadas} observations revised by ONS between captures; largest revision ${r.maior_revisao === null ? "no record" : `${r.maior_revisao.toLocaleString("en-US")} pp`}. The retrospective test of the model with hydrology uses the revised value.`,
                           )}
                         </PrevisoesFichaLinha>
                       ))}

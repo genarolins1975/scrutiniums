@@ -441,7 +441,7 @@ export default function MercadoAgentesPage() {
                     linhas={linhasParcelas(g)}
                     chaveLinha="id"
                     colunaRotulo="mes"
-                    fonte="CCEE, PARCELA_CARGA_CONSUMO"
+                    fonte={tx("CCEE, PARCELA_CARGA_CONSUMO", "CCEE, open dataset of consumption load parcels")}
                     versao={versao}
                     nomeArquivo="mercado-parcelas"
                     chaveUrl="parc"

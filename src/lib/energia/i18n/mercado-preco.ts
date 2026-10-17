@@ -1,3 +1,5 @@
+import { createElement, Fragment, type ReactNode } from "react";
+import { Nome } from "@/components/i18n/Nome";
 import type { Idioma } from "@/lib/idioma";
 
 /**
@@ -132,6 +134,8 @@ export const DOWNLOADS_PLD_EN: Readonly<Record<string, string>> = {
   "PLD, CMO do DESSEM e fluxo nas fronteiras, últimas 168 horas (JSON)": "PLD, DESSEM CMO and flow at the boundaries, last 168 hours (JSON)",
   "Separação diária por par de submercados e fluxo na fronteira (CSV)": "Daily divergence by pair of submarkets and flow at the boundary (CSV)",
   "Amplitude diária entre submercados (CSV)": "Daily spread between submarkets (CSV)",
+  "PLD horário, quatro submercados (CSV)": "Hourly PLD, four submarkets (CSV)",
+  "PLD médio diário, quatro submercados (CSV)": "Daily average PLD, four submarkets (CSV)",
 };
 
 /** Notas fixas que a gold do PLD publica ao lado de figuras e tabelas (texto original, antes de qualquer troca). */
@@ -308,6 +312,8 @@ export const TEXTOS_PREVISOES_EN: Readonly<Record<string, string>> = {
   "07h00 de Brasília do dia de origem; dado como estava no corte": "07:00 Brasília time on the origin day; data as it was at the cutoff", // i18n: dado
   "Coeficiente na unidade original: R$/MWh de correção por R$/MWh (ou por ponto percentual) da variável.":
     "Coefficient in the original unit: R$/MWh of correction per R$/MWh (or per percentage point) of the variable.",
+  "A faixa entre P10 e P90 pretende conter o preço em 80% dos casos; se contém de fato só se sabe com a calibração, verificada nos testes.":
+    "The band between P10 and P90 is meant to contain the price in 80% of cases; whether it actually does is only known from calibration, checked in the tests.",
 };
 
 /** Forma inglesa de uma frase fixa da gold de previsões ou do registro de modelos; null sem entrada (a página marca o trecho em português). */
@@ -318,4 +324,148 @@ export function traducaoPrevisoes(pt: string | null | undefined, idioma: Idioma)
 /** Critério da tabela de distribuidoras (gold mercado.json, livre_regulado.distribuidoras.criterio). */
 export const CRITERIOS_MERCADO_EN: Readonly<Record<string, string>> = {
   "as 30 maiores em energia livre faturada no ano; a tabela completa está no CSV": "the 30 largest by free-market energy billed in the year; the full table is in the CSV",
+};
+
+/* ---------------------------------------------------------------- Marcas de idioma dentro de frases já traduzidas */
+
+/** Nomes próprios em português que as frases inglesas do grupo citam por extenso (conta setorial, publicação oficial, organização da fonte). */
+export const NOMES_MERCADO_PRECO: readonly string[] = ["Preço de Liquidação das Diferenças", "Boletim de Monitoramento", "Conta Bandeira"]; // i18n: dado
+
+/**
+ * Identificador técnico no meio de uma frase: código de conjunto ou de campo com sublinhado (COD_PARCELA_CARGA,
+ * infomercado_dados_gerais), caminho de arquivo (pipeline/energia/previsoes/variaveis.py) e impressão digital hexadecimal.
+ */
+const IDENTIFICADOR_MP = new RegExp(
+  String.raw`(?<![\p{L}\p{N}_./-])(?:[\w-]+(?:\/[\w.-]+)*\.(?:py|yml|ts|json|csv|parquet)\b|[A-Za-z0-9][\w.-]*_[\w.-]*|(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{12,64})(?![\p{L}\p{N}_])`,
+  "gu",
+);
+
+const ESTILO_IDENTIFICADOR = { fontFamily: "inherit", fontSize: "inherit", overflowWrap: "anywhere" } as const;
+
+/** Identificador técnico solto (hash, id da gold, comando): na página inglesa em <code> com a fonte do texto ao redor; em português, o texto puro. */
+export function identificador(texto: string | null | undefined, idioma: Idioma): ReactNode {
+  if (!texto) return texto ?? "";
+  if (idioma !== "en") return texto;
+  return createElement("code", { style: ESTILO_IDENTIFICADOR, translate: "no" }, texto);
+}
+
+const escapar = (t: string) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/**
+ * Frase com nomes próprios e identificadores dentro: em português, o texto como veio; em inglês, os nomes (NOMES_MERCADO_PRECO e os
+ * de `nomes`) em <Nome> e os identificadores técnicos em <code>. O texto não muda, só ganha as marcas.
+ */
+export function marcadoMercado(texto: string | null | undefined, idioma: Idioma, nomes: readonly string[] = []): ReactNode {
+  if (!texto || idioma !== "en") return texto ?? "";
+  const lista = [...nomes, ...NOMES_MERCADO_PRECO].sort((a, b) => b.length - a.length);
+  const achados: { i: number; f: number; tipo: "nome" | "codigo" }[] = [];
+  for (const m of texto.matchAll(new RegExp(`(?<![\\p{L}\\p{N}])(?:${lista.map(escapar).join("|")})(?![\\p{L}\\p{N}])`, "gu"))) {
+    achados.push({ i: m.index ?? 0, f: (m.index ?? 0) + m[0].length, tipo: "nome" });
+  }
+  for (const m of texto.matchAll(IDENTIFICADOR_MP)) {
+    const t = m[0].replace(/[.,:;/-]+$/, "");
+    if (t) achados.push({ i: m.index ?? 0, f: (m.index ?? 0) + t.length, tipo: "codigo" });
+  }
+  achados.sort((a, b) => a.i - b.i || b.f - a.f);
+  const partes: ReactNode[] = [];
+  let ultimo = 0;
+  for (const a of achados) {
+    if (a.i < ultimo) continue;
+    if (a.i > ultimo) partes.push(texto.slice(ultimo, a.i));
+    const trecho = texto.slice(a.i, a.f);
+    partes.push(
+      a.tipo === "nome"
+        ? createElement(Nome, { key: `n${a.i}` } as unknown as { children: ReactNode }, trecho)
+        : createElement("code", { key: `c${a.i}`, style: ESTILO_IDENTIFICADOR, translate: "no" }, trecho),
+    );
+    ultimo = a.f;
+  }
+  if (!partes.length) return texto;
+  if (ultimo < texto.length) partes.push(texto.slice(ultimo));
+  return createElement(Fragment, null, ...partes);
+}
+
+/** Tolerâncias das conferências do módulo Mercado (gold mercado.json, campo tolerancia), texto exato publicado; os números são os mesmos. */
+export const TOLERANCIAS_MERCADO_EN: Readonly<Record<string, string>> = {
+  "5,5 MW médios (0,5 do arredondamento a MW médio inteiro e até 5 da diferença entre os conjuntos por classe e por ambiente)":
+    "5.5 MWavg (0.5 from rounding to a whole MWavg and up to 5 from the difference between the datasets by class and by environment)",
+  "maior entre 1 MWh e 10⁻⁶ do total nacional do mês; 1 unidade consumidora": "the greater of 1 MWh and 10⁻⁶ of the national total for the month; 1 consumer unit", // i18n: dado (tabela de tradução)
+  "0,006 p.p. (o InfoMercado publica duas casas decimais)": "0.006 pp (InfoMercado publishes two decimal places)",
+  "0,05 p.p. (o InfoMercado publica uma casa decimal)": "0.05 pp (InfoMercado publishes one decimal place)",
+  "0,5 mil R$ por tipo e mês no boletim do MME; R$ 0,06 milhão por mês no InfoMercado": "R$ 0.5 thousand per type and month in the MME bulletin; R$ 0.06 million per month in InfoMercado",
+  "5 MW médios por mês na identidade entre os conjuntos; 5,5 MW médios no consumo do InfoMercado; 0,005 MW médio na exportação; 0,05 p.p. na variação":
+    "5 MWavg per month in the identity between the datasets; 5.5 MWavg in InfoMercado consumption; 0.005 MWavg in exports; 0.05 pp in the change",
+  "R$ 0,005 milhão (duas casas decimais em milhões)": "R$ 0.005 million (two decimal places in millions)",
+  "0,006 p.p. (duas casas decimais publicadas)": "0.006 pp (two decimal places published)",
+  "1 GWh (o boletim publica GWh inteiros)": "1 GWh (the bulletin publishes whole GWh)",
+  "0,5 MW médio (o InfoMercado publica MW médios inteiros)": "0.5 MWavg (InfoMercado publishes whole MWavg)",
+  "R$ 0,06 milhão (diferença de dois números publicados com uma ou duas casas decimais em milhões)": "R$ 0.06 million (difference between two numbers published with one or two decimal places in millions)",
+  "R$ 0,010 milhão (2 parcelas publicadas com duas casas decimais em milhões)": "R$ 0.010 million (2 components published with two decimal places in millions)",
+  "0,05 p.p. (o boletim publica uma casa decimal)": "0.05 pp (the bulletin publishes one decimal place)",
+  "0,005 MW médio (o InfoMercado publica duas casas decimais)": "0.005 MWavg (InfoMercado publishes two decimal places)",
+  "R$ 0,05 bilhão no total; 1 p.p. na variação": "R$ 0.05 billion in the total; 1 pp in the change", // i18n: dado (tabela de tradução)
+  "R$ 0,005 milhão (1 parcela publicada com duas casas decimais em milhões)": "R$ 0.005 million (1 component published with two decimal places in millions)",
+  "R$ 0,005 bilhão (duas casas decimais em bilhões)": "R$ 0.005 billion (two decimal places in billions)",
+  "R$ 0,06 milhão (diferença de números publicados com uma ou duas casas decimais em milhões)": "R$ 0.06 million (difference between numbers published with one or two decimal places in millions)",
+  "0,5 mil R$ por tipo e mês; 6 mil R$ no total sem a resposta da demanda": "R$ 0.5 thousand per type and month; R$ 6 thousand in the total excluding demand response", // i18n: dado (tabela de tradução)
+  "3% do número da EPE (universos diferentes, publicações independentes)": "3% of the EPE figure (different universes, independent publications)",
+  "0 agente": "0 agents",
+};
+
+/** Medidas conferidas com o InfoMercado que não têm rótulo próprio em português (o português mostra o código sem sublinhado). */
+export const MEDIDAS_INFOMERCADO_EN: Readonly<Record<string, string>> = {
+  geracao_mre_mwmed: "MRE generation (MWavg)",
+  encargos_servicos_ancilares_milhoes_rs: "Ancillary service charges (R$ million)",
+  encargos_resposta_demanda_milhoes_rs: "Demand response charges (R$ million)",
+  encargos_deslocamento_hidraulico_milhoes_rs: "Hydro displacement charges (R$ million)",
+  encargos_suporte_reativo_milhoes_rs: "Reactive power support charges (R$ million)",
+  encargos_restricao_operacao_milhoes_rs: "Operating restriction charges (R$ million)",
+  encargos_importacao_milhoes_rs: "Import charges (R$ million)",
+  encargos_do_conjunto_milhoes_rs: "Charges in the dataset (R$ million)",
+  pagamento_ess_milhoes_rs: "ESS payment (R$ million)",
+  liquidar_bilhoes_rs: "Amount to be settled (R$ billion)",
+};
+
+/** Títulos descritivos do catálogo nas fontes do módulo Mercado (catalogo.json, titulo); os demais são nomes de conjunto e ficam como estão. */
+export const TITULOS_CATALOGO_MERCADO_EN: Readonly<Record<string, string>> = {
+  "InfoMercado mensal (PDF): sumário executivo e composição dos encargos, usados para conferir os números calculados":
+    "Monthly InfoMercado (PDF): executive summary and breakdown of charges, used to check the calculated numbers",
+  "Consumo mensal de energia elétrica por classe (planilha formatada; conferência)": "Monthly electricity consumption by class (formatted spreadsheet; check)",
+  "Consumo mensal de energia elétrica: dados abertos (SAM), cativo e livre": "Monthly electricity consumption: open data (SAM), captive and free",
+  "Boletim de Monitoramento do Sistema Elétrico: edições mensais (encargos de serviços do sistema e consumo por ambiente) e consolidação anual (conferência anual)":
+    "Power System Monitoring Bulletin (Boletim de Monitoramento do Sistema Elétrico): monthly editions (system service charges and consumption by environment) and annual consolidation (annual check)", // i18n: dado (tabela de tradução)
+};
+
+/** Páginas do observatório em que a fonte aparece (catalogo.json, paginas[].rotulo): nomes dos módulos no glossário inglês. */
+export const PAGINAS_CATALOGO_EN: Readonly<Record<string, string>> = {
+  Mercado: "Market",
+  Empresas: "Companies",
+  "Regulação": "Regulation",
+  "Conta de luz": "Electricity bill",
+  "Leilões": "Auctions",
+  "Geração": "Generation",
+  Carga: "Load",
+  Rede: "Grid",
+  PLD: "PLD",
+};
+
+/** Modo de emissão das rodadas de previsão (gold previsoes_desempenho.json, rodadas[].modo e o CSV do arquivo). */
+export const MODOS_EMISSAO_EN: Readonly<Record<string, string>> = {
+  agendada: "scheduled",
+  manual: "manual",
+  "manual (registro transcrito de artefato externo)": "manual (record transcribed from an external artifact)",
+};
+
+/** Valores de texto da configuração publicada dos modelos (gold previsoes_desempenho.json, fichas[].configuracao). */
+export const CONFIG_MODELOS_EN: Readonly<Record<string, string>> = {
+  "domingo (semanal)": "Sunday (weekly)",
+  "erro quadrático na validação interna": "squared error in internal validation",
+};
+
+/** Pendências da pesquisa e estados dos achados da governança das previsões (títulos e estados curtos, texto exato publicado). */
+export const GOVERNANCA_PREVISOES_EN: Readonly<Record<string, string>> = {
+  "Última etapa de validação da pesquisa": "Final validation stage of the research",
+  "C2 pode amplificar o sinal de preço; previsões mensais negativas": "C2 can amplify the price signal; negative monthly forecasts",
+  "corrigido no código; aguarda rodada agendada real no prazo": "fixed in the code; awaiting a real scheduled run on time",
+  "distinção mantida; hipótese LAT1D documentada e com sensibilidade": "distinction kept; LAT1D assumption documented, with a sensitivity analysis",
 };

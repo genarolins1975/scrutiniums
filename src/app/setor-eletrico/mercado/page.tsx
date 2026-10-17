@@ -14,6 +14,7 @@ import {
   MercadoAusencias,
   MercadoAviso,
   MercadoCapitulos,
+  MercadoCatalogo,
   MercadoDefinicoes,
   MercadoIndisponivel,
   MercadoLimitacoes,
@@ -38,7 +39,7 @@ import { catalogoDados } from "@/lib/energia/datasets";
 import { carimbo, dataBR, mesAno, num, pct } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { CLASSES_MERCADO_EN, CRITERIOS_MERCADO_EN, PERGUNTAS_MERCADO_EN, rotuloCategoria, traducaoExata } from "@/lib/energia/i18n/mercado-preco";
+import { CLASSES_MERCADO_EN, CRITERIOS_MERCADO_EN, PERGUNTAS_MERCADO_EN, TOLERANCIAS_MERCADO_EN, rotuloCategoria, traducaoExata } from "@/lib/energia/i18n/mercado-preco";
 import {
   colunasDistribuidoras,
   CSV_MERCADO,
@@ -530,7 +531,7 @@ export default function MercadoPage() {
                         {ROTULO_RESULTADO[planilha.resultado]}.
                       </>,
                       <>
-                        EPE formatted spreadsheet × long open-data table: {num(planilha.comparacoes, 0)} comparisons, {num(planilha.falhas, 0)} above the tolerance ({planilha.tolerancia}); result{" "}
+                        EPE formatted spreadsheet × long open-data table: {num(planilha.comparacoes, 0)} comparisons, {num(planilha.falhas, 0)} above the tolerance ({traducaoExata(TOLERANCIAS_MERCADO_EN, planilha.tolerancia, idioma) ?? <TextoGold regiao="mercado-tolerancia">{planilha.tolerancia}</TextoGold>}); result{" "}
                         {ROTULO_RESULTADO[planilha.resultado]}.
                       </>,
                     )}
@@ -587,11 +588,10 @@ export default function MercadoPage() {
                     )}
                   </p>
                   <MercadoTabelasSobDemanda conjunto="livre-auditoria" versao={versao} downloads={[CSV_MERCADO.nacional, CSV_MERCADO.ccee].map((d) => ({ ...d }))} />
-                  <TabelaDados
+                  <MercadoCatalogo
                     titulo={tx("Fontes do módulo no catálogo do observatório: publicadas nestas páginas e conjuntos de contratos ainda não integrados", "Module sources in the observatory catalog: published on these pages and contract datasets not yet integrated")}
                     colunas={tx(["Órgão", "Conjunto", "Estado no catálogo", "Onde aparece"], ["Body", "Dataset", "Status in the catalog", "Where it appears"])}
                     linhas={linhasCatalogoMercado(entradasCatalogo)}
-                    casas={[null, null, null, null]}
                     limite={60}
                   />
                   <MercadoPendenciasAuditoria g={g} />

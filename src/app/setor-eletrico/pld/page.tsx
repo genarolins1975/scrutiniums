@@ -32,6 +32,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
 import { carimbo, dataBR, dataCurta, horaLocal, num, reais, rotuloRegra } from "@/lib/energia/formato";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { identificador, marcadoMercado } from "@/lib/energia/i18n/mercado-preco";
 import type { Idioma } from "@/lib/idioma";
 import { textoAmplitude } from "@/lib/energia/resumos";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
@@ -816,9 +817,12 @@ export default function PldPage() {
                       casas={[null, null, 2, 2, 2, 2]}
                     />
                     <p className="text-xs text-mineral [overflow-wrap:anywhere]">
-                      {tx(
+                      {tx<ReactNode>(
                         `Versão dos dados ${pld.snapshot.id ? snapshotLegivel(pld.snapshot.id) : "sem identificador"} · sha256 ${pld.snapshot.sha256} · série de ${horaLocal(pld.primeira_hora)} a ${horaLocal(pld.ultima_hora)} (horário de Brasília)`,
-                        `Data version ${pld.snapshot.id ? snapshotLegivel(pld.snapshot.id) : "no identifier"} · sha256 ${pld.snapshot.sha256} · series from ${horaLocal(pld.primeira_hora)} to ${horaLocal(pld.ultima_hora)} (Brasília time)`,
+                        <>
+                          Data version {pld.snapshot.id ? snapshotLegivel(pld.snapshot.id) : "no identifier"} · sha256 {identificador(pld.snapshot.sha256, idioma)} · series from {horaLocal(pld.primeira_hora)} to{" "}
+                          {horaLocal(pld.ultima_hora)} (Brasília time)
+                        </>,
                       )}
                     </p>
                   </SecaoDoPainel>
@@ -917,11 +921,9 @@ export default function PldPage() {
                         <>
                           {tx("o documento não pôde ser lido nesta publicação.", "the document could not be read in this publication.")}{" "}
                           <TrechoPortugues regiao="pld-bloqueio">{bloqueioCcee.consequencia}</TrechoPortugues>
+                          {/* a frase da recusa já sai no idioma da página, com a data da evidência nos dois */}
                           {fraseDeRecusa(bloqueioCcee.evidencia, "da CCEE") // i18n: dado
-                            ? tx(
-                                ` ${fraseDeRecusa(bloqueioCcee.evidencia, "da CCEE")}`,
-                                " The CCEE servers refused the observatory's automated requests.",
-                              )
+                            ? ` ${fraseDeRecusa(bloqueioCcee.evidencia, "da CCEE")}` // i18n: dado
                             : ""}
                           <span data-nivel="auditar">
                             {" "}
@@ -1009,7 +1011,7 @@ export default function PldPage() {
                 <TrechoPortugues regiao="trecho-pld">“{cPld.fontes[0].trecho}”</TrechoPortugues>
                 <footer className="mt-2 text-xs text-mineral">
                   <a href={cPld.fontes[0].url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
-                    {cPld.fontes[0].documento}
+                    {marcadoMercado(cPld.fontes[0].documento, idioma)}
                   </a>
                 </footer>
               </blockquote>
@@ -1269,9 +1271,11 @@ export default function PldPage() {
                               </a>
                             </>
                           ) : null}
-                          {tx(
+                          {tx<ReactNode>(
                             `. Captura de ${carimbo(d.doc.capturado_em)}; sha256 ${d.doc.sha256 ?? "não registrado"}.`,
-                            `. Captured on ${carimbo(d.doc.capturado_em)}; sha256 ${d.doc.sha256 ?? "not recorded"}.`,
+                            <>
+                              . Captured on {carimbo(d.doc.capturado_em)}; sha256 {d.doc.sha256 ? identificador(d.doc.sha256, idioma) : "not recorded"}.
+                            </>,
                           )}{" "}
                           <TrechoPortugues regiao="pld-licenca">{d.doc.licenca}</TrechoPortugues>
                         </p>
