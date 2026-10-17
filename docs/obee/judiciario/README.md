@@ -80,3 +80,10 @@ O script de navegador usa build de produção, PGlite e sessão exclusivamente l
 | Produção | Estado real, SHA, PR e verificação registrados em `VALIDACAO.md` e na resposta final. |
 
 A entrega cobre os três ramos com dados reais, sem representar esta lista como atendimento integral da especificação. Próxima melhoria estrutural: base histórica estruturada por tribunal, com controle de revisões, graus, fases e mudanças institucionais como a criação do TRF6.
+
+
+## Brasil e outros países
+
+Rota protegida `/eficiencia-estatal/judiciario/internacional`: 16 escores oficiais WJP, edição explicitamente adotada 2025, 143 países/jurisdições; referências por região, renda registrada na fonte, mundo e seleção. Brasil excluído da referência; mediana com pesos iguais entre países. Série de dez edições entre 2015 e 2025 sob demanda, preservando a edição conjunta 2017–2018 e lacunas. Tabelas/CSVs, URL compartilhável, consulta de todos os países e agenda de resultados para as pessoas.
+
+Dados próprios e manifesto em `public/eficiencia/judiciario/internacional*`, sob a mesma barreira de sessão/cache privado. Reprodução offline: `python3 -m pipeline.judiciario.internacional`; conferência: acrescentar `--check`. Original XLSX fixado e preservado em `pipeline/judiciario/seed/wjp-historico.xlsx`. Sem dependências novas, conversão de escores em meses/percentuais ou estimativa causal de ganho. [Origem, comparabilidade e validação](INTERNACIONAL.md).

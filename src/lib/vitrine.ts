@@ -152,9 +152,9 @@ function vitrineEficiencia(fmt: FormatarNumero): Vitrine {
     imagem: "/home/eficiencia.webp",
     contagem: { valor: fmt(quantidade), unidade: "temas publicados" },
     contagemIndice: { tipo: "simples", quantidade, unidade: "temas_publicados" },
-    paineis: publicadas.flatMap((d) => [{ titulo: d.titulo, href: d.href as string, descricao: d.descricao }, ...(d.id === "justica" ? [{ titulo: "Judiciário: filas e tempos", href: "/eficiencia-estatal/judiciario", descricao: "Despesas, filas e tempos em três ramos; 57 tribunais, série financeira e indicadores oficiais, sem nota própria de eficiência." }] : [])]),
+    paineis: publicadas.flatMap((d) => [{ titulo: d.titulo, href: d.href as string, descricao: d.descricao }, ...(d.id === "justica" ? [{ titulo: "Judiciário: filas e tempos", href: "/eficiencia-estatal/judiciario", descricao: "Despesas, filas e tempos em três ramos; 57 tribunais e comparação internacional WJP de acesso, demora e cumprimento, sem nota própria de eficiência." }] : [])]),
     fontes:
-      "Tesouro (Siconfi), INEP, IBGE, Ministério da Saúde, MDS, Ministério das Cidades, CNJ e Sinesp, declaradas tema a tema, com a página de métodos de cada tema.",
+      "Tesouro (Siconfi), INEP, IBGE, Ministério da Saúde, MDS, Ministério das Cidades, CNJ, Sinesp e WJP, declaradas tema a tema, com a página de métodos de cada tema.",
     situacao:
       `Valores e referências por tema e um índice experimental de resultados nas 26 capitais, com memória de cálculo e testes de sensibilidade; sem conclusões sobre a gestão.` +
       (semPainel > 0 ? ` ${semPainel} temas do mapa ainda não têm painel publicado.` : ""),

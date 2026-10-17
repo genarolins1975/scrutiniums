@@ -77,3 +77,7 @@ O estado de PR, CI, merge, commit integrado e deploy deve ser consultado nas evi
 ### Gate remoto de Mobilidade
 
 A auditoria de Mobilidade também foi acionada pela integração no mapa do OBEE. No primeiro run, instalação/build/contratos passaram; a auditoria encerrou antes de produzir arquivos. O workflow instalava Chromium de Playwright 1.56, mas o projeto e os imports dos scripts usam 1.64.1. O symlink criado dentro de um diretório existente não alterava a resolução. A instalação foi alinhada ao lockfile com `npx --no-install playwright install --with-deps chromium`, mantendo integralmente as auditorias e sem alterar dependências. Os resultados finais desse novo SHA constam no CI remoto do PR.
+
+## Extensão internacional — 17/10/2026
+
+WJP 2025: 143 países/jurisdições, 16 escores e dez edições históricas. Dados, decisões metodológicas, evidência visual e resultados próprios em [INTERNACIONAL.md](INTERNACIONAL.md). A bateria ampliada passou em 60 telas e 211 verificações. Não altera o snapshot CNJ nem converte escores em ganho monetário. A publicação desta extensão depende do CI e deploy próprios, sem reaproveitar o estado de publicação do módulo anterior.
