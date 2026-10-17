@@ -52,7 +52,7 @@ export function conteudo(no: No): Forma[] {
   return saida;
 }
 
-const nomesProprios = lerNomesPreservados(
+export const nomesProprios = lerNomesPreservados(
   readFileSync(new URL("../../../config/glossario-en.json", import.meta.url), "utf8"),
   criarContextoProdutos(fileURLToPath(new URL("../../../", import.meta.url))),
 );

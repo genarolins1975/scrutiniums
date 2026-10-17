@@ -4,7 +4,7 @@ Fase 3 do [plano](PLANO.md). Todas as páginas de `/setor-eletrico` têm irmã e
 
 ## Como a página sabe o idioma
 
-A URL decide. `/en/...` é inglês; o resto, português. Não há cookie, cabeçalho nem redirecionamento.
+A URL decide. No servidor, `idiomaEnergia()` lê o endereço da renderização no armazenamento do Next (`urlPathname`, o mesmo que o Next usa nos metadados), o que vale para componente de servidor, componente de cliente renderizado no servidor e `generateMetadata`; no navegador, o endereço da janela. Uma caixa no cache de requisição do React foi testada e descartada: componentes de cliente renderizados no servidor não têm esse cache. O armazenamento é interno do Next 14.2.35 (fixado no `package.json`); `src/tests/energia-idioma.test.ts` falha se ele mudar. `/en/...` é inglês; o resto, português. Não há cookie, cabeçalho nem redirecionamento.
 
 | Onde | Como ler o idioma | Texto | Números e datas |
 |---|---|---|---|
@@ -90,6 +90,14 @@ Equivalentes de trabalho para o observatório inteiro. Usar exatamente estes; te
 | Aprenda | Learn |
 | verbete | entry |
 | trilha | learning path |
+| conjunto elétrico (continuidade) | consumer set |
+| Comprove este número | Check this number |
+| MWmês | MW-month |
+| potência fiscalizada; potência outorgada | inspected capacity; granted capacity |
+| Luz para Todos | Luz para Todos (rural electrification program); nunca "Light for All" |
+| Cadastro Único (CadÚnico) | Cadastro Único (federal social registry) |
+| fato relevante | material fact |
+| exercício (contábil) | fiscal year |
 | Conta de luz; Água e clima; Carga; Rede; Geração; Expansão; Transição; Território; Empresas; Leilões; Mercado; Regulação; Perdas; Qualidade; Inclusão energética; Dados; Metodologia; Visão geral | Electricity bill; Water and climate; Load; Grid; Generation; Expansion; Transition; Territory; Companies; Auctions; Market; Regulation; Losses; Quality of supply; Energy inclusion; Data; Methodology; Overview |
 
 ## Verificação
