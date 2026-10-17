@@ -186,6 +186,17 @@ export const CATEGORIA_CALENDARIO_EN: Readonly<Record<string, string>> = {
   "ponto facultativo federal (portaria anual), não feriado": "federal optional day off (annual ordinance), not a holiday",
 };
 
+/** Definições conferidas dos fluxos do indicador ATLS (rede_detalhe.restricoes.atls.fluxos[].definicao). */
+export const DEFINICAO_FLUXO_EN: Readonly<Record<string, string>> = {
+  "Fluxo da Interligação Nordeste-Sudeste/Centro-Oeste": "Northeast-Southeast/Center-West interconnection flow",
+  "Fluxo sentido Norte-Sul": "North-to-South flow",
+  "Geração de Itaipu": "Itaipu generation",
+  "Interligação Nordeste-Norte": "Northeast-North interconnection",
+  "Recebimento da Região Nordeste": "Intake by the Northeast region",
+  "Recebimento pela Região Sul": "Intake by the South region",
+  "Recebimento pelo Sudeste": "Intake by the Southeast",
+};
+
 /** Tipo de regra da validação física da carga (carga_detalhe.p025.validacao.regras[].tipo). */
 export const TIPO_REGRA_CARGA_EN: Readonly<Record<string, string>> = {
   dominio: "domain",
