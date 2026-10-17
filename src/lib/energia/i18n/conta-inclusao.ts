@@ -281,6 +281,32 @@ const PROSA_CONTA: Record<string, string> = {
   "valor negativo de componente de custo reclassificado como crédito (ressalva, com a lista)": "negative value of a cost component reclassified as credit (caveat, with the list)",
   "incorporação registrada que não se confirma nos dados de tarifa (ressalva)": "recorded merger not confirmed in the tariff data (caveat)",
   "custeio da CDE com despesa igual à receita no ano (ressalva)": "CDE funding with expense equal to revenue in the year (caveat)",
+  // página de reajustes, bandeiras e subsídios
+  "o IBGE publica a variação com duas casas decimais; a razão de índices de duas casas pode diferir no arredondamento":
+    "IBGE publishes the change with two decimal places; the ratio of two-decimal indices may differ in rounding",
+  confirmada: "confirmed",
+  aprovado: "approved",
+  "previsto (consulta pública)": "forecast (public consultation)",
+  "Rubrica 'Subsídio Baixa Renda': valor do orçamento aprovado da CDE para os descontos da Tarifa Social de Energia Elétrica, que chegam às famílias beneficiárias como desconto na fatura (dicionário do conjunto).":
+    "Budget line 'Subsídio Baixa Renda' (low-income subsidy): amount of the approved CDE budget for the Tarifa Social discounts, which reach beneficiary families as a discount on the bill (dataset dictionary).",
+  "Demais rubricas 'Subsídio ...' do orçamento aprovado: compensam distribuidoras e transmissoras por descontos concedidos a categorias (rural, irrigação e aquicultura, água e esgoto, fontes incentivadas, distribuidoras pequenas, micro e minigeração distribuída). Não são transferências a famílias.":
+    "Other 'Subsídio ...' budget lines of the approved budget: they compensate distribution utilities and transmission companies for discounts granted to categories (rural, irrigation and aquaculture, water and sewage, incentivized sources, small distribution utilities, distributed micro and mini generation). They are not transfers to families.",
+  "Rubricas 'CCC' (Conta de Consumo de Combustíveis) e 'Programa Luz para Todos - PLPT', com o nome publicado.":
+    "Budget lines 'CCC' (Fuel Consumption Account) and 'Programa Luz para Todos - PLPT', with the published name.",
+  "Demais rubricas de despesa com o nome publicado pela ANEEL (carvão mineral, subvenções, indenizações, restos a pagar e outras).":
+    "Other expense budget lines with the name published by ANEEL (mineral coal, grants, indemnities, outstanding payables and others).",
+  "Rubricas 'Quotas CDE Uso', 'Quotas CDE Energia' e 'Quotas CDE - GD' do orçamento aprovado: encargo cobrado nas tarifas, fixado para cobrir o que as demais receitas não cobrem (as componentes com CDE no código aparecem dentro da TUSD e da TE no conjunto de componentes tarifárias).":
+    "Budget lines 'Quotas CDE Uso', 'Quotas CDE Energia' and 'Quotas CDE - GD' of the approved budget: a charge collected in the tariffs, set to cover what the other revenues do not (the components with CDE in the code appear within the TUSD and the TE in the tariff components dataset).",
+  "Demais rubricas de receita com o nome publicado (uso de bem público, multas, recursos da União, aportes previstos em lei, saldo anterior e outras disponibilidades).":
+    "Other revenue budget lines with the published name (use of public assets, fines, federal funds, contributions provided for by law, previous balance and other available funds).",
+  "As rubricas de desconto do custeio da CDE e as categorias do conjunto de subsídios tarifários não coincidem em valor: um traz o valor anual da conta por rubrica, o outro os repasses mensais homologados por distribuidora. Os dois não se somam.":
+    "The discount budget lines of the CDE funding and the categories of the tariff subsidies dataset do not match in value: one gives the account's annual amount by budget line, the other the ratified monthly transfers by distribution utility. The two do not add up.",
+  "Orçamento anual da CDE por rubrica, como publicado pela ANEEL: valores aprovados ou previstos, não o que foi efetivamente gasto. A despesa é igual à receita em todos os anos porque a quota anual é fixada para cobrir a diferença entre a necessidade de recursos da conta e as demais fontes (página Gestão de Recursos Tarifários da ANEEL), e os totais conferem com os orçamentos divulgados pela ANEEL (reconciliacao_externa). A Tarifa Social (baixa renda) é custeada aqui e não aparece no conjunto de subsídios tarifários, que trata só dos descontos a categorias de usuários.":
+    "Annual CDE budget by budget line, as published by ANEEL: approved or forecast amounts, not what was actually spent. Expense equals revenue in every year because the annual quota is set to cover the difference between the account's funding needs and the other sources (ANEEL's Gestão de Recursos Tarifários page), and the totals match the budgets announced by ANEEL (reconciliacao_externa). The Tarifa Social (low income) is funded here and does not appear in the tariff subsidies dataset, which covers only discounts to user categories.",
+  "títulos das notícias oficiais da ANEEL lidos no índice de busca em 30/09/2026; o corpo das páginas exige autenticação no gov.br (conteúdo restrito durante o defeso eleitoral) e não foi guardado no bronze":
+    "titles of ANEEL's official news read from the search index on Sep 30, 2026; the body of the pages requires gov.br authentication (content restricted during the electoral blackout period) and was not stored in the bronze layer",
+  "O efeito médio de cada processo tarifário (todas as classes) e o calendário dos processos são publicados em calculostarifarios.aneel.gov.br e git.aneel.gov.br, que responderam 403 com desafio de navegador (Cloudflare) em 30/09/2026; não há recurso equivalente no portal de dados abertos. O módulo mostra a variação da tarifa B1 residencial, que é outra medida.":
+    "The average effect of each tariff process (all classes) and the process calendar are published at calculostarifarios.aneel.gov.br and git.aneel.gov.br, which responded 403 with a browser challenge (Cloudflare) on Sep 30, 2026; there is no equivalent resource on the open data portal. The module shows the change in the residential B1 tariff, which is a different measure.",
 };
 
 /* ---------- Inclusão energética ---------- */
