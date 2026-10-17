@@ -852,6 +852,27 @@
         }
       ],
       "nota": "A descrição inglesa do BCB contém public services. No quadro português correspondente, página 67, Serviços Públicos é o rótulo do macrossetor cuja linha inglesa se chama Utilities; não é um par literal de descrições genéricas. Utilities designa o recorte setorial específico da fonte e não substitui genericamente serviços públicos. Não acrescentar essential à home, nem usar a expressão como sinônimo de civil service, public administration, government efficiency ou Eficiência Estatal."
+    },
+    "nome.observatorio_agro": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Agronegócio",
+      "en": "Agronegócio",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "agro",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory with credit data and learning tools.",
+      "contexto": "Nome curto preservado do registro DOMINIOS. A explicação descreve uma parte observada e a função didática do produto, sem traduzir sua denominação nem afirmar cobertura integral de produção, comércio e ambiente.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "1.2.2 Credit",
+          "localizacao": "Seção 1.2.2, Credit",
+          "pagina": 25
+        }
+      ],
+      "nota": "O BCB sustenta credit como termo financeiro, não o nome do produto Scrutiniums nem seus resultados. Learning tools descreve os artefatos do próprio projeto. Não é uma tradução técnica abrangente de agronegócio e não afirma benefício econômico ou social comprovado."
     }
   },
   "pendencias": [

@@ -101,6 +101,7 @@ describe("home PT/EN: navegador do build de produção", () => {
             return auditoria.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => ({ html: n.html })) }));
           });
           resultados.push({ html: await page.content(), violacoes, larguraDocumento: await page.evaluate(() => document.documentElement.scrollWidth) });
+          expect(resultados.at(-1)!.larguraDocumento, caminho + " cabe no viewport").toBeLessThanOrEqual(largura + 1);
           expect(falhas, caminho).toEqual([]);
         } finally { await page.close(); }
       }
@@ -163,7 +164,7 @@ describe("home PT/EN: navegador do build de produção", () => {
       expect(await nav.getAttribute("data-i18n-regiao")).toBe("home-indice");
       expect(await nav.locator(":scope > p").textContent()).toBe(en["home.indice.ilustracoes"].texto);
       const indice = nav.locator("ol > li > a");
-      expect(await indice.count()).toBe(7);
+      expect(await indice.count()).toBe(8);
       for (const [i, esperado] of INDICE_HOME.entries()) {
         const anchor = indice.nth(i);
         expect(await anchor.getAttribute("href")).toBe(esperado.href);

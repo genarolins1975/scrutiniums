@@ -16,6 +16,10 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 const GUIAS: Record<OpcaoObservatorioId, { chamada: string; temas: [string, string][] }> = {
+  agro: {
+    chamada: "Do campo à mesa e aos mercados.",
+    temas: [["Crédito e trabalho", "Registros públicos com universo, período e limites"], ["Sete cadeias", "Mecanismos e cobertura de cada medição"], ["Cenários econômicos e sociais", "Margem, caixa, financiamento e orçamento alimentar"]],
+  },
   judiciario: {
     chamada: "Recursos, filas e tempos da Justiça brasileira.",
     temas: [["Recursos e despesas", "Série financeira e composição dos gastos"], ["Tempos e filas", "Duração dos processos, pendências e congestionamento"], ["Comparar tribunais", "57 fichas e comparação dentro de cada ramo"]],
@@ -54,7 +58,9 @@ const GUIAS: Record<OpcaoObservatorioId, { chamada: string; temas: [string, stri
 function Simbolo({ id }: { id: OpcaoObservatorioId }) {
   return (
     <svg viewBox="0 0 80 80" fill="none" aria-hidden="true" className={styles.simbolo}>
-      {id === "credito" ? <>
+      {id === "agro" ? <>
+        <path d="M40 67V16M40 31C23 31 21 17 23 12c12 1 18 8 17 19ZM40 46c17 0 20-14 18-19-12 1-18 8-18 19ZM40 59c-17 0-20-13-18-18 12 1 18 7 18 18Z" />
+      </> : id === "credito" ? <>
         <path d="M12 29 40 13l28 16H12Zm5 34h46M12 69h56M23 36v20m17-20v20m17-20v20" />
         <circle cx="40" cy="24" r="3" />
       </> : id === "judiciario" ? <>

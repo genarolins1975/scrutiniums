@@ -59,6 +59,17 @@ describe("telemetry: allowlist de seções", () => {
     expect(nomes).toContain("view:obs:overview");
     expect(nomes.some((n) => n.includes("inventada"))).toBe(false);
   });
+
+  it("agrega visitas do Agro sem identificar o visitante", async () => {
+    const userId = await criarUsuario("agro@exemplo.com", "COMPLETE");
+    expect(await trackView("agro:paginas", userId)).toBe(true);
+    const eventos = await db.select().from(schema.productEvents);
+    const evento = eventos.find(e => e.name === "view:agro:paginas");
+    expect(evento?.userId).toBeNull();
+    const stats = await getAdminStats();
+    expect(stats.visitasPorDominio.agro).toBe(1);
+    expect(stats.ranking.find(r => r.secao === "agro:paginas")).toMatchObject({visitas30d:1, usuarios30d:0});
+  });
 });
 
 describe("sugestões: máquina completa (tabela → estatísticas do painel)", () => {

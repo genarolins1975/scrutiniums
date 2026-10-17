@@ -1,0 +1,89 @@
+name: Atualizar dados do Agronegócio
+
+# Domínio Agronegócio: recoleta as Contas Nacionais Trimestrais e o LSPA (IBGE) e o
+# Comex Stat (MDIC), grava as sementes com o sha256 de cada original, reconstrói a gold
+# em public/agro e publica só se os testes do pipeline passarem. O Comex Stat fecha o
+# mês na primeira semana do mês seguinte; o LSPA sai por volta do dia 10; as Contas
+# Trimestrais saem no início de março, junho, setembro e dezembro. Resposta idêntica à
+# já integrada não gera commit. Separado dos outros domínios.
+on:
+  schedule:
+    - cron: "41 11 9,24 * *" # dias 9 e 24, 08:41 em São Paulo
+  workflow_dispatch:
+    inputs:
+      sem_coleta:
+        description: "Pular coleta e só reconstruir a gold a partir das sementes"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: atualizar-agro
+  cancel-in-progress: false
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Coletar e reconstruir
+        run: |
+          if [ "${{ inputs.sem_coleta }}" != "true" ]; then
+            python3 -m pipeline.agro.economia --coleta
+          fi
+          python3 -m pipeline.agro.run
+          python3 -m pipeline.agro.dicionario
+
+      - name: Testes do pipeline
+        id: testes
+        continue-on-error: true
+        run: python3 -m unittest pipeline.tests.test_agro -v
+
+      - name: Reter publicação reprovada
+        if: steps.testes.outcome == 'failure'
+        run: |
+          git checkout -- public/agro pipeline/agro/seed docs/agro/dicionario-indicadores.json
+          git clean -fdq public/agro pipeline/agro/seed
+          echo "::error::testes reprovaram a gold do Agro; publicação retida"
+          exit 1
+
+      - name: Commit e push
+        if: steps.testes.outcome == 'success'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          git add public/agro pipeline/agro/seed docs/agro/dicionario-indicadores.json
+          if git diff --cached --quiet; then
+            echo "Sem mudanças nos dados do Agro."
+            exit 0
+          fi
+          git commit -m "Atualiza dados do Agronegócio (pipeline automático)"
+          for tentativa in 1 2 3 4; do
+            git fetch origin main
+            # se o main avançou durante a coleta, a gold é refeita a partir das sementes já
+            # capturadas, com o código novo, e só segue com os testes verdes
+            if ! git rebase origin/main; then
+              git rebase --abort
+              echo "::error::conflito ao trazer o main; publicação retida"
+              exit 1
+            fi
+            python3 -m pipeline.agro.run
+            python3 -m pipeline.agro.dicionario
+            python3 -m unittest pipeline.tests.test_agro
+            git add public/agro pipeline/agro/seed docs/agro/dicionario-indicadores.json
+            git diff --cached --quiet || git commit --amend --no-edit
+            git push origin HEAD:main && exit 0
+            sleep $((tentativa * 5))
+          done
+          echo "::error::não foi possível publicar após 4 tentativas"
+          exit 1

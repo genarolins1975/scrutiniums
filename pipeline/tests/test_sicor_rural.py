@@ -114,6 +114,79 @@ class FotografiaAlinhada(unittest.TestCase):
         self.assertEqual(sicor._desalinhados(con), [])
 
 
+class FotografiaPeloValor(unittest.TestCase):
+    """17/10/2026: UFs (municipal) R$ 60.975.420,30 acima do total (FonteRecursos), com o
+    nacional coletado DEPOIS do municipal em todos os meses. Por mês: 2026-08 +71.056.736,54
+    (municipal 15/10 16:00, FonteRecursos 15/10 16:17 idêntico ao centavo à medição de 14/10);
+    2026-06 -9.982.816,24 (o municipal é que veio igual ao de 14/10); 2026-02 -98.500,00
+    (FonteRecursos um dia depois do municipal). A hora da coleta não prova a fotografia."""
+
+    def _silver(self, mes, vm, vf, quando_mun, quando_fonte):
+        con = sqlite3.connect(":memory:")
+        sicor._ensure(con)
+        self._grava(con, mes, vm, vf)
+        con.executemany("INSERT INTO sicor_coleta VALUES(?,?,?,?,1)",
+                        [("mun", mes, quando_mun, 1), ("fonte", mes, quando_fonte, 1)])
+        return con
+
+    @staticmethod
+    def _grava(con, mes, vm=None, vf=None):
+        if vm is not None:
+            con.execute("DELETE FROM sicor_mun WHERE mes=?", (mes,))
+            con.execute("INSERT INTO sicor_mun VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                        (mes, "5101837", "0001", "0430", "1", 1, vm, 0, 0.0, 0, 0.0, 0, 0.0, 0.0, 0.0))
+        if vf is not None:
+            con.execute("DELETE FROM sicor_fonte WHERE mes=?", (mes,))
+            con.execute("INSERT INTO sicor_fonte VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                        (mes, "RECURSOS LIVRES", "0001", "0", "1", 1, vf, 0, 0.0, 0, 0.0, 0, 0.0))
+
+    def _coleta(self, con, valor_hoje):
+        """Coleta com a Olinda servindo a mesma fotografia aos dois recortes."""
+        ordem = []
+
+        def fake(recurso):
+            def fn(c, mes):
+                ordem.append((recurso, mes))
+                if recurso == "mun":
+                    self._grava(c, mes, vm=valor_hoje)
+                elif recurso == "fonte":
+                    self._grava(c, mes, vf=valor_hoje)
+                return 1, {}
+            return fn
+
+        alvos = {f"_coleta_{r}": fake(r) for r in ("uf", "fonte", "faixa", "genero", "if", "mun", "produto")}
+        alvos["_coleta_nomes"] = lambda _con, _mes: (0, {})
+        with mock.patch.multiple(sicor, **alvos), mock.patch.object(sicor, "CAP_LEVES", 40), \
+                mock.patch.object(sicor.common, "record_lineage"):
+            sicor.collect(con, {})
+        return ordem
+
+    def test_mesma_execucao_valores_diferentes_refaz_o_par(self):
+        m = _mes(2)  # 2026-08 em 17/10: o mês final da janela
+        con = self._silver(m, 34_476_964_402.59, 34_405_907_666.05,
+                           "2026-10-15T16:00:13+00:00", "2026-10-15T16:17:14+00:00")
+        self.assertEqual(sicor._desalinhados(con), [], "pela hora, o par parecia alinhado")
+        ordem = self._coleta(con, 34_519_397_258.41)
+        self.assertIn(("mun", m), ordem, "mês fechado que não fecha ao centavo volta a ser coletado")
+        self.assertGreater(ordem.index(("fonte", m)), ordem.index(("mun", m)), "o nacional vem depois do municipal")
+        self.assertEqual(sicor._divergentes(con), [], "depois da coleta, os dois recortes fecham ao centavo")
+
+    def test_nacional_de_outro_dia_com_valor_diferente_refaz_o_par(self):
+        m = _mes(8)  # 2026-02 em 17/10
+        con = self._silver(m, 19_914_865_304.34, 19_914_963_804.34,
+                           "2026-10-15T16:13:07+00:00", "2026-10-16T14:45:03+00:00")
+        self.assertIn(("mun", m), self._coleta(con, 19_914_963_804.34))
+        self.assertEqual(sicor._divergentes(con), [])
+
+    def test_par_que_fecha_nao_e_refeito(self):
+        m = _mes(5)
+        con = self._silver(m, 31_833_696_093.82, 31_833_696_093.82,
+                           "2026-10-15T16:09:39+00:00", "2026-10-15T16:29:37+00:00")
+        ordem = self._coleta(con, 1.0)
+        self.assertNotIn(("mun", m), ordem, "mês fechado que fecha ao centavo não custa requisição pesada")
+        self.assertNotIn(("fonte", m), ordem)
+
+
 class OlindaIntermitente(unittest.TestCase):
     """13/10/2026: HTTP 500 "Erro desconhecido" em ~1 s, intermitente, nos 16 meses
     do municipal; com 2 tentativas o rural.json saiu sem UFs e municípios."""

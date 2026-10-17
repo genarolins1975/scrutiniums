@@ -6,7 +6,7 @@
  * telemetria e sitemap leem daqui. Um novo observatório é uma entrada nova.
  */
 
-export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados" | "saneamento" | "gas";
+export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados" | "saneamento" | "gas" | "agro";
 
 export type Dominio = {
   id: DominioId;
@@ -144,6 +144,20 @@ export const DOMINIOS: Dominio[] = [
     acento: "gas",
     prefixosTelemetria: ["gas:"],
   },
+  {
+    id: "agro",
+    nome: "Observatório do Agronegócio Brasileiro",
+    nomeCurto: "Agronegócio",
+    pergunta: "Como está o agronegócio brasileiro e o que ele representa para o país?",
+    descricao: "Tamanho do setor na economia, safra, custo dos insumos importados e destino das exportações, com dados do IBGE e do Comex Stat atualizados automaticamente. Sete cadeias, crédito rural, trabalho e cenários de margem e orçamento completam o observatório. A cobertura de cada medição e as limitações aparecem junto do conteúdo.",
+    descricaoCurta: "Peso na economia, safra, insumos e exportações com dados oficiais atualizados; crédito rural, trabalho e cenários. Produção por estado e ambiente com cobertura explicitada.",
+    chips: ["Peso na economia", "Safra", "Insumos", "Exportações"],
+    rotaRaiz: "/agronegocio",
+    rotaApresentacao: "/agronegocio",
+    cta: "Explorar Agronegócio",
+    acento: "energia",
+    prefixosTelemetria: ["agro:"],
+  },
 ];
 
 export const COOKIE_OBSERVATORIO = "scrutiniums_observatorio";
@@ -175,5 +189,6 @@ export function dominioDoCaminho(caminho: string): DominioId | null {
   if (caminho === "/contas-publicas-estaduais" || caminho.startsWith("/contas-publicas-estaduais/")) return "estados";
   if (caminho === "/saneamento" || caminho.startsWith("/saneamento/")) return "saneamento";
   if (caminho === "/gas-natural" || caminho.startsWith("/gas-natural/")) return "gas";
+  if (caminho === "/agronegocio" || caminho.startsWith("/agronegocio/")) return "agro";
   return null;
 }

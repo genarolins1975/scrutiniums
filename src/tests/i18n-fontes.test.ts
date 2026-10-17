@@ -76,6 +76,14 @@ describe("descoberta Git das fontes de i18n", () => {
     expect(depois.gold).toEqual([{ path: "public/gold/novo.json", dominio: "plataforma" }]);
   });
 
+  it("ignora arquivo rastreado que foi apagado da pasta de trabalho (gold do dia com rsync --delete)", () => {
+    gravar("public/gold/fica.json", '{"nome":"Fica"}');
+    gravar("public/gold/sai.json", '{"nome":"Sai"}');
+    execFileSync("git", ["add", "public/gold"], { cwd: raiz });
+    rmSync(join(raiz, "public/gold/sai.json"));
+    expect(descobrirFontes(raiz, manifesto()).gold).toEqual([{ path: "public/gold/fica.json", dominio: "plataforma" }]);
+  });
+
   it("separa exclusões justificadas e arquivos observados sem extrator", () => {
     gravar("src/app.js", 'const titulo = "Aplicativo";');
     gravar("src/app.min.js", 'const titulo="Aplicativo";');

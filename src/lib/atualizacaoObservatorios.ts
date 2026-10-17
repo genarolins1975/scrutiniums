@@ -17,6 +17,16 @@ import { goldGas } from "@/lib/gas/gold";
 import { mesExtenso } from "@/lib/gas/formato";
 
 export function atualizacaoObservatorio(id: OpcaoObservatorioId): { rotulo: string; linhas: string[] } {
+  if (id === "agro") {
+    try {
+      const s = JSON.parse(readFileSync(join(process.cwd(), "public", "agro", "gold", "snapshot.json"), "utf-8"));
+      return { rotulo: "Fontes e cobertura", linhas: [
+        `Crédito rural: ${s.credito.janela.ini} a ${s.credito.janela.fim}; snapshot original de ${s.credito.capturaOriginal.slice(0, 10)}.`,
+        `Emprego formal nacional, seção A: ${s.trabalho.formal.periodo}. Grupo ocupacional por UF: Censo 2022.`,
+        "Cobertura parcial. Produção, comércio e ambiente sem bases validadas; cenários não são medições.",
+      ] };
+    } catch { return { rotulo: "Fontes e cobertura", linhas: ["Dados indisponíveis no momento."] }; }
+  }
   if (id === "judiciario") {
     try {
       const s = JSON.parse(readFileSync(join(process.cwd(), "public", "eficiencia", "judiciario", "snapshot.json"), "utf-8"));

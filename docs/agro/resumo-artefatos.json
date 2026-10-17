@@ -1,0 +1,160 @@
+{
+  "total": 69,
+  "implementados": 58,
+  "bloqueados": [
+    "A1",
+    "A3",
+    "C3",
+    "C4",
+    "D6",
+    "E1",
+    "F4",
+    "F6",
+    "G1",
+    "G2",
+    "K7"
+  ],
+  "porCategoria": {
+    "DADO OBSERVADO": 9,
+    "EXPLICAÇÃO CONCEITUAL": 16,
+    "CENÁRIO": 33
+  },
+  "porGrupo": {
+    "A": {
+      "implementados": 4,
+      "bloqueados": [
+        "A1",
+        "A3"
+      ]
+    },
+    "B": {
+      "implementados": 6,
+      "bloqueados": []
+    },
+    "C": {
+      "implementados": 4,
+      "bloqueados": [
+        "C3",
+        "C4"
+      ]
+    },
+    "D": {
+      "implementados": 5,
+      "bloqueados": [
+        "D6"
+      ]
+    },
+    "E": {
+      "implementados": 5,
+      "bloqueados": [
+        "E1"
+      ]
+    },
+    "F": {
+      "implementados": 4,
+      "bloqueados": [
+        "F4",
+        "F6"
+      ]
+    },
+    "G": {
+      "implementados": 4,
+      "bloqueados": [
+        "G1",
+        "G2"
+      ]
+    },
+    "H": {
+      "implementados": 6,
+      "bloqueados": []
+    },
+    "T": {
+      "implementados": 8,
+      "bloqueados": []
+    },
+    "K": {
+      "implementados": 11,
+      "bloqueados": [
+        "K7"
+      ]
+    },
+    "X": {
+      "implementados": 1,
+      "bloqueados": []
+    }
+  },
+  "porCapitulo": {
+    "A": {
+      "implementados": 4,
+      "porCategoria": {
+        "DADO OBSERVADO": 0,
+        "EXPLICAÇÃO CONCEITUAL": 1,
+        "CENÁRIO": 3
+      }
+    },
+    "B": {
+      "implementados": 11,
+      "porCategoria": {
+        "DADO OBSERVADO": 0,
+        "EXPLICAÇÃO CONCEITUAL": 0,
+        "CENÁRIO": 11
+      }
+    },
+    "C": {
+      "implementados": 4,
+      "porCategoria": {
+        "DADO OBSERVADO": 1,
+        "EXPLICAÇÃO CONCEITUAL": 1,
+        "CENÁRIO": 2
+      }
+    },
+    "D": {
+      "implementados": 5,
+      "porCategoria": {
+        "DADO OBSERVADO": 1,
+        "EXPLICAÇÃO CONCEITUAL": 1,
+        "CENÁRIO": 3
+      }
+    },
+    "E": {
+      "implementados": 8,
+      "porCategoria": {
+        "DADO OBSERVADO": 2,
+        "EXPLICAÇÃO CONCEITUAL": 0,
+        "CENÁRIO": 6
+      }
+    },
+    "F": {
+      "implementados": 7,
+      "porCategoria": {
+        "DADO OBSERVADO": 2,
+        "EXPLICAÇÃO CONCEITUAL": 2,
+        "CENÁRIO": 3
+      }
+    },
+    "G": {
+      "implementados": 4,
+      "porCategoria": {
+        "DADO OBSERVADO": 0,
+        "EXPLICAÇÃO CONCEITUAL": 1,
+        "CENÁRIO": 3
+      }
+    },
+    "H": {
+      "implementados": 7,
+      "porCategoria": {
+        "DADO OBSERVADO": 1,
+        "EXPLICAÇÃO CONCEITUAL": 4,
+        "CENÁRIO": 2
+      }
+    },
+    "T": {
+      "implementados": 8,
+      "porCategoria": {
+        "DADO OBSERVADO": 2,
+        "EXPLICAÇÃO CONCEITUAL": 6,
+        "CENÁRIO": 0
+      }
+    }
+  }
+}

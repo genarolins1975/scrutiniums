@@ -189,6 +189,9 @@ jobs:
         run: |
           set +e
           npm ci || exit 1
+          # o vitest inclui testes de navegador que exigem Chromium (conta-cpf-browser, desde
+          # 15/10/2026); em 17/10/2026 ele falhou ao carregar e reteve a gold. Mesmo passo do ci.yml
+          npx --no-install playwright install --with-deps chromium || exit 1
           node scripts/minify-obs.mjs || exit 1
           npx vitest run --reporter=default --reporter=json --outputFile.json=vitest-resultado.json
           V=$?
