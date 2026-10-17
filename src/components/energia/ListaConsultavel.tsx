@@ -3,12 +3,13 @@
 import { useDeferredValue, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl, type Esquema } from "@/lib/energia/estadoUrl";
-import { carimbo, num, plural } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import {
   CHAVE_SEM_DADO,
   MIME_CSV,
   MIME_XLSX,
-  TEXTO_SEM_DADO,
+  textoSemDado,
   criarIndiceBusca,
   descreverRecorte,
   filtrarLinhas,
@@ -119,6 +120,9 @@ const campoCls = "min-h-[44px] border border-linha bg-superficie px-3 text-sm te
 
 export function ListaConsultavel(p: PropsListaConsultavel) {
   const { colunas, linhas, chaveLinha, colunaRotulo, prefixo, paramAberto, ordemInicial, opcoesOrdem, filtrosDaBarra, filtrosOcultos = [], tamanhoPagina = 10 } = p;
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { num, plural, carimbo } = formatos(idioma);
   const uid = useId();
   const topoRef = useRef<HTMLDivElement>(null);
   const barraRef = useRef<HTMLDivElement>(null);
@@ -151,9 +155,9 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
   const filtradas = useMemo(() => filtrarLinhas(ordenadas, colunas, { busca: buscaAdiada, filtros }, indice), [ordenadas, colunas, buscaAdiada, filtros, indice]);
   const opcoes = useMemo(() => {
     const out: Record<string, OpcaoFiltro[]> = {};
-    for (const c of categoricas) out[c.id] = opcoesFiltro(linhas, c, filtrarLinhas(linhas, colunas, { busca: buscaAdiada, filtros }, indice, c.id));
+    for (const c of categoricas) out[c.id] = opcoesFiltro(linhas, c, filtrarLinhas(linhas, colunas, { busca: buscaAdiada, filtros }, indice, c.id), idioma);
     return out;
-  }, [categoricas, linhas, colunas, buscaAdiada, filtros, indice]);
+  }, [categoricas, linhas, colunas, buscaAdiada, filtros, indice, idioma]);
 
   const idDe = (l: LinhaTabela) => String(l[chaveLinha] ?? "");
   const paginaPedida = typeof estado.pagina === "number" ? estado.pagina : 1;
@@ -162,7 +166,7 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
   const itemAberto = aberto ? linhas.find((l) => idDe(l) === aberto) : undefined;
   const abertoNoRecorte = !!itemAberto && filtradas.some((l) => idDe(l) === aberto);
 
-  const recorte = descreverRecorte(colunas, { busca: buscaAdiada, filtros, ordem });
+  const recorte = descreverRecorte(colunas, { busca: buscaAdiada, filtros, ordem }, idioma);
   const itensFiltro = recorte.filter((r) => r.tipo !== "ordem");
   const colunasDaBarra = filtrosDaBarra.map((id) => categoricas.find((c) => c.id === id)).filter((c): c is ColunaTabela => !!c);
   const colunasExtras = categoricas.filter((c) => !filtrosDaBarra.includes(c.id) && !filtrosOcultos.includes(c.id));
@@ -203,13 +207,13 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
     for (const c of categoricas) m[FILTRO + c.id] = [];
     definir(m, { historico: "push" });
     setFiltroAberto(null);
-    setAnuncio("Busca e filtros removidos: todos os itens.");
+    setAnuncio(tx("Busca e filtros removidos: todos os itens.", "Search and filters removed: all items."));
   };
 
   const remover = (it: ItemRecorte) => {
     if (it.tipo === "busca") definir({ busca: "", pagina: 1 }, { historico: "push" });
     else if (it.coluna) definir({ [FILTRO + it.coluna]: [], pagina: 1 });
-    setAnuncio(`Filtro removido: ${it.rotulo}.`);
+    setAnuncio(tx(`Filtro removido: ${it.rotulo}.`, `Filter removed: ${it.rotulo}.`));
     buscaRef.current?.focus();
   };
 
@@ -217,19 +221,29 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
     const alvo = paginar(filtradas.length, n, tamanhoPagina);
     if (alvo.pagina === pag.pagina) return;
     definir({ pagina: alvo.pagina });
-    setAnuncio(`Página ${alvo.pagina} de ${alvo.paginas}: itens ${num(alvo.inicio + 1, 0)} a ${num(alvo.fim, 0)} de ${num(filtradas.length, 0)}.`);
+    setAnuncio(
+      tx(
+        `Página ${alvo.pagina} de ${alvo.paginas}: itens ${num(alvo.inicio + 1, 0)} a ${num(alvo.fim, 0)} de ${num(filtradas.length, 0)}.`,
+        `Page ${alvo.pagina} of ${alvo.paginas}: items ${num(alvo.inicio + 1, 0)} to ${num(alvo.fim, 0)} of ${num(filtradas.length, 0)}.`,
+      ),
+    );
     window.requestAnimationFrame(() => topoRef.current?.scrollIntoView({ block: "start", behavior: "instant" as ScrollBehavior }));
   };
 
   const exportar = (formato: "csv" | "xlsx") => {
     if (!filtradas.length) {
-      setAnuncio("Nada para exportar: o recorte atual não tem resultado. Limpe a busca ou os filtros.");
+      setAnuncio(
+        tx(
+          "Nada para exportar: o recorte atual não tem resultado. Limpe a busca ou os filtros.",
+          "Nothing to export: the current selection has no results. Clear the search or the filters.",
+        ),
+      );
       return;
     }
     const nome = nomeArquivo(p.nomeDoArquivo, recorte, formato, p.versao);
     if (formato === "csv") baixar(nome, gerarCsv(colunas, filtradas), MIME_CSV);
-    else baixar(nome, gerarXlsx(colunas, filtradas, { titulo: p.rotulo, fonte: p.fonte, versao: p.versao, recorte: recorte.map((r) => `${r.rotulo}: ${r.valor}`).join("; "), geradoEm: carimbo(new Date().toISOString()) }), MIME_XLSX);
-    setAnuncio(`Arquivo ${nome} gerado com ${plural(filtradas.length, "linha", "linhas")}.`);
+    else baixar(nome, gerarXlsx(colunas, filtradas, { titulo: p.rotulo, fonte: p.fonte, versao: p.versao, recorte: recorte.map((r) => `${r.rotulo}: ${r.valor}`).join("; "), geradoEm: carimbo(new Date().toISOString()), idioma }), MIME_XLSX);
+    setAnuncio(tx(`Arquivo ${nome} gerado com ${plural(filtradas.length, "linha", "linhas")}.`, `File ${nome} generated with ${plural(filtradas.length, "row", "rows")}.`));
   };
 
   const ctx: ContextoLista = {
@@ -242,16 +256,23 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
 
   const opcaoDaOrdem = opcoesOrdem.find((o) => ordem && o.ordem.coluna === ordem.coluna && o.ordem.direcao === ordem.direcao);
   const idOrdemAtual = opcaoDaOrdem?.id ?? (ordem ? "__outra" : "__nenhuma");
-  const rotuloOrdemAtual = opcaoDaOrdem?.rotulo ?? (ordem ? `${colunas.find((c) => c.id === ordem.coluna)?.rotulo ?? ordem.coluna}, ${ordem.direcao === "asc" ? "crescente" : "decrescente"}` : "ordem original");
+  const rotuloOrdemAtual =
+    opcaoDaOrdem?.rotulo ??
+    (ordem
+      ? `${colunas.find((c) => c.id === ordem.coluna)?.rotulo ?? ordem.coluna}, ${ordem.direcao === "asc" ? tx("crescente", "ascending") : tx("decrescente", "descending")}`
+      : tx("ordem original", "original order"));
   const comRecorte = itensFiltro.length > 0;
   const [s, ps] = p.substantivo;
   const resumo =
     filtradas.length === 0
-      ? `Nenhum ${s} corresponde à busca e aos filtros.`
+      ? tx(`Nenhum ${s} corresponde à busca e aos filtros.`, `No ${s} matches the search and filters.`)
       : comRecorte
-        ? `${num(filtradas.length, 0)} de ${num(linhas.length, 0)} ${ps} correspondem à busca e aos filtros.`
+        ? tx(
+            `${num(filtradas.length, 0)} de ${num(linhas.length, 0)} ${ps} correspondem à busca e aos filtros.`,
+            `${num(filtradas.length, 0)} of ${num(linhas.length, 0)} ${ps} match the search and filters.`,
+          )
         : `${num(linhas.length, 0)} ${ps}.`;
-  const faixa = filtradas.length > 0 ? ` Mostrando ${num(pag.inicio + 1, 0)} a ${num(pag.fim, 0)}.` : "";
+  const faixa = filtradas.length > 0 ? tx(` Mostrando ${num(pag.inicio + 1, 0)} a ${num(pag.fim, 0)}.`, ` Showing ${num(pag.inicio + 1, 0)} to ${num(pag.fim, 0)}.`) : "";
 
   /** Um item da lista. Função de render e não componente: o detalhe aberto guarda estado (leitura sob demanda) e não pode remontar a cada digitação. */
   const item = (l: LinhaTabela, i: number, foraDoRecorte = false) => {
@@ -271,7 +292,7 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
               onClick={() => definir({ aberto: open ? "" : id })}
               className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"
             >
-              {open ? "Ocultar o detalhe" : p.rotuloDetalhe}
+              {open ? tx("Ocultar o detalhe", "Hide the details") : p.rotuloDetalhe}
               <span aria-hidden="true" className="ml-1.5 text-[0.7em]">
                 {open ? "▴" : "▾"}
               </span>
@@ -326,7 +347,7 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
         {colunasExtras.length > 0 && (
           <FiltroPopover
             id={`${uid}-f-mais`}
-            rotulo="Mais filtros"
+            rotulo={tx("Mais filtros", "More filters")}
             colunas={colunasExtras}
             opcoes={opcoes}
             filtros={filtros}
@@ -338,7 +359,7 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
         )}
         {opcoesOrdem.length > 0 && (
           <label className="flex min-w-0 flex-col gap-1 text-xs text-mineral">
-            <span className="rotulo">Ordenar por</span>
+            <span className="rotulo">{tx("Ordenar por", "Sort by")}</span>
             <select
               value={idOrdemAtual}
               onChange={(e) => {
@@ -347,8 +368,12 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
               }}
               className={campoCls}
             >
-              {idOrdemAtual === "__outra" && <option value="__outra">{rotuloOrdemAtual} (escolhida na tabela)</option>}
-              {idOrdemAtual === "__nenhuma" && <option value="__nenhuma">Ordem original</option>}
+              {idOrdemAtual === "__outra" && (
+                <option value="__outra">
+                  {rotuloOrdemAtual} {tx("(escolhida na tabela)", "(chosen in the table)")}
+                </option>
+              )}
+              {idOrdemAtual === "__nenhuma" && <option value="__nenhuma">{tx("Ordem original", "Original order")}</option>}
               {opcoesOrdem.map((o) => (
                 <option key={o.id} value={o.id}>
                   {o.rotulo}
@@ -362,7 +387,7 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
       {itensFiltro.length > 0 && (
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <span id={`${uid}-ativos`} className="rotulo text-mineral">
-            Filtros ativos
+            {tx("Filtros ativos", "Active filters")}
           </span>
           <ul aria-labelledby={`${uid}-ativos`} className="flex flex-wrap gap-2">
             {itensFiltro.map((it) => (
@@ -370,7 +395,7 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
                 <button
                   type="button"
                   onClick={() => remover(it)}
-                  aria-label={`Remover filtro ${it.rotulo}: ${it.valor}`}
+                  aria-label={tx(`Remover filtro ${it.rotulo}: ${it.valor}`, `Remove filter ${it.rotulo}: ${it.valor}`)}
                   className="inline-flex min-h-[44px] items-center gap-2 border border-energia bg-energia-fundo px-3 text-left text-sm text-carvao hover:border-energia-dark"
                 >
                   <span>
@@ -383,7 +408,7 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
           </ul>
           {itensFiltro.length > 1 && (
             <button type="button" onClick={limparTudo} className="rotulo inline-flex min-h-[44px] items-center px-2 text-energia-dark underline underline-offset-4 hover:text-carvao">
-              Limpar tudo
+              {tx("Limpar tudo", "Clear all")}
             </button>
           )}
         </div>
@@ -395,14 +420,14 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
           {faixa}
         </p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-0">
-          <span className="text-xs text-carvao-muted">Baixar o recorte atual:</span>
+          <span className="text-xs text-carvao-muted">{tx("Baixar o recorte atual:", "Download the current selection:")}</span>
           {(["csv", "xlsx"] as const).map((f) => (
             <button
               key={f}
               type="button"
               onClick={() => exportar(f)}
               aria-disabled={filtradas.length === 0 || undefined}
-              aria-label={`Baixar o recorte atual em ${f.toUpperCase()}`}
+              aria-label={tx(`Baixar o recorte atual em ${f.toUpperCase()}`, `Download the current selection as ${f.toUpperCase()}`)}
               className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"
             >
               {f.toUpperCase()}
@@ -419,53 +444,60 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
       {itemAberto && !abertoNoRecorte && (
         <div className="mt-3 border border-aviso bg-superficie p-3" data-fora-do-recorte="true">
           <p className="text-sm leading-relaxed text-carvao">
-            O item que o link abriu está fora da busca e dos filtros atuais.{" "}
+            {tx("O item que o link abriu está fora da busca e dos filtros atuais.", "The item opened by the link is outside the current search and filters.")}{" "}
             <button type="button" onClick={limparTudo} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-              Mostrar todos os itens
+              {tx("Mostrar todos os itens", "Show all items")}
             </button>
           </p>
-          <ol aria-label="Item aberto pelo link">{item(itemAberto, 0, true)}</ol>
+          <ol aria-label={tx("Item aberto pelo link", "Item opened by the link")}>{item(itemAberto, 0, true)}</ol>
         </div>
       )}
 
       {filtradas.length === 0 ? (
         <div className="mt-4 border border-dashed border-mineral bg-papel p-5 text-sm leading-relaxed text-carvao-muted" data-estado="vazio">
-          {p.semResultado ?? <>Nenhum item corresponde à busca e aos filtros.</>}{" "}
+          {p.semResultado ?? <>{tx("Nenhum item corresponde à busca e aos filtros.", "No item matches the search and filters.")}</>}{" "}
           <button type="button" onClick={limparTudo} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            Limpar busca e filtros
+            {tx("Limpar busca e filtros", "Clear search and filters")}
           </button>
         </div>
       ) : (
-        <ol aria-label={`${p.rotulo}, página ${pag.pagina} de ${pag.paginas}`} className="mt-2 divide-y divide-linha border-y border-linha" data-lista="itens">
+        <ol aria-label={tx(`${p.rotulo}, página ${pag.pagina} de ${pag.paginas}`, `${p.rotulo}, page ${pag.pagina} of ${pag.paginas}`)} className="mt-2 divide-y divide-linha border-y border-linha" data-lista="itens">
           {visiveis.map((l, i) => item(l, i))}
         </ol>
       )}
 
       {pag.paginas > 1 && (
-        <nav aria-label={`Paginação: ${p.rotulo}`} className="mt-3 flex flex-wrap items-center gap-2">
+        <nav aria-label={tx(`Paginação: ${p.rotulo}`, `Pagination: ${p.rotulo}`)} className="mt-3 flex flex-wrap items-center gap-2">
           <button type="button" className={botao} aria-disabled={pag.pagina === 1 || undefined} onClick={() => irPara(1)}>
             <span aria-hidden="true" className="mr-1">
               «
             </span>
-            Primeira
+            {tx("Primeira", "First")}
           </button>
           <button type="button" className={botao} aria-disabled={pag.pagina === 1 || undefined} onClick={() => irPara(pag.pagina - 1)}>
             <span aria-hidden="true" className="mr-1">
               ‹
             </span>
-            Anterior
+            {tx("Anterior", "Previous")}
           </button>
           <p className="px-1 text-sm tabular-nums text-carvao-muted">
-            Página {pag.pagina} de {pag.paginas}
+            {tx(
+              <>
+                Página {pag.pagina} de {pag.paginas}
+              </>,
+              <>
+                Page {pag.pagina} of {pag.paginas}
+              </>,
+            )}
           </p>
           <button type="button" className={botao} aria-disabled={pag.pagina === pag.paginas || undefined} onClick={() => irPara(pag.pagina + 1)}>
-            Próxima
+            {tx("Próxima", "Next")}
             <span aria-hidden="true" className="ml-1">
               ›
             </span>
           </button>
           <button type="button" className={botao} aria-disabled={pag.pagina === pag.paginas || undefined} onClick={() => irPara(pag.paginas)}>
-            Última
+            {tx("Última", "Last")}
             <span aria-hidden="true" className="ml-1">
               »
             </span>
@@ -474,7 +506,15 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
       )}
 
       <p className="mt-3 border-t border-linha pt-2 text-xs leading-relaxed text-mineral">
-        Fonte: {p.fonte}. “{TEXTO_SEM_DADO}” indica ausência na fonte, nunca zero; nos arquivos baixados a ausência é célula vazia. Ordem atual: {rotuloOrdemAtual}.
+        {tx(
+          <>
+            Fonte: {p.fonte}. “{textoSemDado(idioma)}” indica ausência na fonte, nunca zero; nos arquivos baixados a ausência é célula vazia. Ordem atual: {rotuloOrdemAtual}.
+          </>,
+          <>
+            Source: {p.fonte}. “{textoSemDado(idioma)}” means missing in the source, never zero; in downloaded files a missing value is an empty cell. Current order:{" "}
+            {rotuloOrdemAtual}.
+          </>,
+        )}
       </p>
       <p className="sr-only" aria-live="polite">
         {anuncio}
@@ -505,6 +545,8 @@ function FiltroPopover({
   /** O que a lista conta (conjunto, indicador): o leitor de tela ouve "77 conjuntos" e não "77 itens". */
   substantivo: readonly [string, string];
 }) {
+  const tx = useTx();
+  const { num } = formatos(useIdioma());
   const resumo = useRef<HTMLElement>(null);
   const marcadosNoGrupo = colunas.reduce((s, c) => s + (filtros[c.id]?.length ?? 0), 0);
   const ativo = marcadosNoGrupo > 0;
@@ -546,7 +588,10 @@ function FiltroPopover({
         <div className="space-y-4">
           {colunas.map((c) => (
             <fieldset key={c.id}>
-              <legend className="rotulo text-mineral">Filtrar por {c.rotulo}</legend>
+              <legend className="rotulo text-mineral">
+                {tx("Filtrar por ", "Filter by ")}
+                {c.rotulo}
+              </legend>
               <div className="mt-2 grid max-h-64 grid-cols-1 gap-x-4 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3">
                 {(opcoes[c.id] ?? []).map((o) => (
                   <label key={o.valor} className="flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
@@ -561,7 +606,8 @@ function FiltroPopover({
               </div>
               {(filtros[c.id]?.length ?? 0) > 0 && (
                 <button type="button" onClick={() => onMudar(c.id, [])} className="rotulo mt-1 inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                  Limpar {c.rotulo}
+                  {tx("Limpar ", "Clear ")}
+                  {c.rotulo}
                 </button>
               )}
             </fieldset>
