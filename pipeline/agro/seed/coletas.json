@@ -31,6 +31,48 @@
       "capturadoEm": "2026-10-17T18:03:46+00:00"
     },
     {
+      "id": "censoagro",
+      "arquivo": "censoagro.json.gz",
+      "url": "https://sidra.ibge.gov.br/pesquisa/censo-agropecuario/censo-agropecuario-2017",
+      "nome": "IBGE, Censo Agropecuário 2017 (SIDRA 6754, 6884 e 6898)",
+      "licenca": "Dados públicos do IBGE; citar a fonte",
+      "limite": "Retrato de 2017 (referência de outubro de 2016 a setembro de 2017). Estabelecimento não é produtor nem empresa. Agricultura familiar segue a Lei 11.326/2006 e o Decreto 9.064/2017.",
+      "arquivoRepositorio": "pipeline/agro/seed/censoagro.json.gz",
+      "commitRepositorio": "",
+      "sha256Original": "f856b348948ca252cc7e5607fcf992ded64350160c72c809373f17b282cbaa35",
+      "sha256Arquivo": "e6d3c99b098196cd85a8062554a8d92df3859686ff762a25c5f075bb37c0d807",
+      "estadoAcesso": "COLETA_OFICIAL",
+      "capturadoEm": "2026-10-17T19:10:33+00:00"
+    },
+    {
+      "id": "pnadc",
+      "arquivo": "pnadc.json.gz",
+      "url": "https://sidra.ibge.gov.br/tabela/5434",
+      "nome": "IBGE, PNAD Contínua trimestral (SIDRA 5434 e 5442)",
+      "licenca": "Dados públicos do IBGE; citar a fonte",
+      "limite": "Pessoas ocupadas no grupamento agricultura, pecuária, produção florestal, pesca e aquicultura, pelo trabalho principal. Rendimento habitual real do trabalho principal, a preços do último trimestre. Estimativa amostral.",
+      "arquivoRepositorio": "pipeline/agro/seed/pnadc.json.gz",
+      "commitRepositorio": "",
+      "sha256Original": "002b3142af751ba92856d38bfb1100b4d323208a249286837a1fdf0ff296a607",
+      "sha256Arquivo": "a596c0523c84590724b9d5ed9ff92c099961497d05ab1f5938c212209d2201ca",
+      "estadoAcesso": "COLETA_OFICIAL",
+      "capturadoEm": "2026-10-17T19:10:33+00:00"
+    },
+    {
+      "id": "ipca",
+      "arquivo": "ipca.json.gz",
+      "url": "https://sidra.ibge.gov.br/tabela/7060",
+      "nome": "IBGE, IPCA (SIDRA 1419 e 7060)",
+      "licenca": "Dados públicos do IBGE; citar a fonte",
+      "limite": "Preços ao consumidor das famílias com renda de 1 a 40 salários mínimos, em 16 áreas urbanas. Mede o que a família paga, não o preço recebido pelo produtor.",
+      "arquivoRepositorio": "pipeline/agro/seed/ipca.json.gz",
+      "commitRepositorio": "",
+      "sha256Original": "b88ef6bfa6aefdafe286379eda39a524d0e50b352796e3784abda4239e04bef2",
+      "sha256Arquivo": "e97fd306ce4aad7fdcc20a324ea968268d2e56ff8c91f4c98fcbd3f390bba45f",
+      "estadoAcesso": "COLETA_OFICIAL",
+      "capturadoEm": "2026-10-17T19:10:33+00:00"
+    },
+    {
       "id": "comex",
       "arquivo": "comex.json.gz",
       "url": "https://comexstat.mdic.gov.br/",

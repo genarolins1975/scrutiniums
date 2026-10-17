@@ -53,4 +53,8 @@ export const PERGUNTAS_AGRO = [
     { id: 'conjuntura', numero: 2, titulo: 'Como vai o negócio neste ano?', curto: 'Conjuntura do ano' },
     { id: 'insumos', numero: 3, titulo: 'Quanto custam os insumos importados?', curto: 'Insumos importados' },
     { id: 'mercados', numero: 4, titulo: 'Para quem vendemos e de quem dependemos?', curto: 'Mercados e dependência' },
+    { id: 'produtores', numero: 5, titulo: 'Quem produz, quem trabalha e quanto ganha no campo?', curto: 'Produtores e trabalho' },
+    { id: 'apoio', numero: 6, titulo: 'Quanto custa o apoio público e quem recebe?', curto: 'Apoio público' },
+    { id: 'ambiente', numero: 7, titulo: 'Quanto se desmata e quanto o campo emite?', curto: 'Desmatamento e emissões' },
+    { id: 'prato', numero: 8, titulo: 'Quanto custa a comida para as famílias?', curto: 'Comida no prato' },
 ] as const;

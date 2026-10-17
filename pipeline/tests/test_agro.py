@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from pathlib import Path
-from pipeline.agro import run,capturar,economia
+from pipeline.agro import run,capturar,economia,sociedade
 
 class AgroDadosTest(unittest.TestCase):
     @classmethod
@@ -151,6 +151,30 @@ class AgroEconomiaTest(unittest.TestCase):
             with self.assertRaises(ValueError):economia.gravar(ruim,dest)
             self.assertEqual([p.name for p in dest.iterdir()],['marcador'])
 
+
+class AgroSociedadeTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        _,cls.coletas=economia.carregar();cls.e=sociedade.normalizar(cls.coletas)
+    def test_censo_familiar_e_nao_familiar_somam_o_total(self):
+        t=self.e['produtores']['tipologia']
+        for k in ['estabelecimentos','area','pessoal','valorProducao']:
+            self.assertLessEqual(abs(t['familiar'][k]+t['naoFamiliar'][k]-t['total'][k]),max(2,t['total'][k]*1e-4))
+        self.assertEqual(sum(g['estabelecimentos'] or 0 for g in self.e['produtores']['gruposArea']),t['total']['estabelecimentos'])
+    def test_tipologia_que_nao_soma_e_recusada(self):
+        b=copy.deepcopy(self.coletas['censoagro']);resp=b['consultas']['pessoal']['resposta']
+        r=next(r for r in resp[0]['resultados'] if '46304' in r['classificacoes'][0]['categoria']);r['series'][0]['serie']['2017']=str(float(r['series'][0]['serie']['2017'])*2)
+        with self.assertRaisesRegex(ValueError,'não somam'):sociedade.normalizar_censo(b)
+    def test_pnadc_parcela_e_razao_do_mesmo_trimestre(self):
+        for r in self.e['trabalho']['trimestres']:
+            self.assertAlmostEqual(r['participacao'],100*r['ocupadosAgro']/r['ocupadosTotal']);self.assertAlmostEqual(r['razaoRendimento'],r['rendimentoAgro']/r['rendimentoTotal'])
+        self.assertTrue(all(r['ocupadosAgro']>1e6 for r in self.e['trabalho']['trimestres']))
+    def test_ipca_meses_consecutivos_e_itens_do_ultimo_mes(self):
+        p=self.e['prato'];self.assertEqual(p['meses'][-1]['mes'],p['ultimoMes'])
+        self.assertEqual(len(p['meses']),len({m['mes'] for m in p['meses']}))
+        self.assertTrue(all(i['peso'] is None or 0<=i['peso']<=100 for i in p['itens']))
+        b=copy.deepcopy(self.coletas['ipca']);serie=b['consultas']['serie2020']['resposta'][0]['resultados'][0]['series'][0]['serie'];serie.pop(sorted(serie)[5])
+        with self.assertRaisesRegex(ValueError,'mês ausente'):sociedade.normalizar_ipca(b)
 
 class AgroCapturaTest(unittest.TestCase):
     def test_cobertura_exige_cada_indicador_ano_e_territorio(self):

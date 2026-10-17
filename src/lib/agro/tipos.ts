@@ -228,4 +228,20 @@ export type EconomiaAgro = {
         relacaoTroca: { ano: number; meses: number; soja: number | null; fertilizantes: number | null; relacao: number | null }[];
         fonte: string;
     };
+    produtores: {
+        ano: number;
+        tipologia: Record<'total' | 'familiar' | 'naoFamiliar', { estabelecimentos: number; area: number; pessoal: number; comProducao: number; valorProducao: number }>;
+        gruposArea: { id: string; nome: string; estabelecimentos: number | null; area: number | null; familiar: number | null }[];
+        fonte: string;
+    };
+    trabalho: {
+        trimestres: { periodo: string; ocupadosTotal: number; ocupadosAgro: number; rendimentoTotal: number; rendimentoAgro: number; participacao: number; razaoRendimento: number }[];
+        fonte: string;
+    };
+    prato: {
+        ultimoMes: string;
+        meses: { mes: string; geral: number | null; alimentacaoBebidas: number | null; domicilio: number | null; fora: number | null }[];
+        itens: { id: string; nome: string; doze: number | null; peso: number | null }[];
+        fonte: string;
+    };
 };
