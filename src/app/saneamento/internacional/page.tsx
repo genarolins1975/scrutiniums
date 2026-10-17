@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
@@ -118,6 +118,15 @@ export default function Pagina() {
               e territórios; comparação em {ANO}. Percentual da população.
             </>
           }
+        />
+        <NestaPagina
+          itens={[
+            { id: "definicoes", rotulo: "O que o JMP mede" },
+            { id: "serie", rotulo: "Evolução desde 2000" },
+            { id: "posicao", rotulo: "Posição entre os países" },
+            { id: "conciliacao", rotulo: "JMP, Censo e SINISA" },
+            { id: "ods", rotulo: "Outros indicadores dos ODS" },
+          ]}
         />
 
         <Numeros

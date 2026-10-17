@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Fonte, Nota, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Fonte, NestaPagina, Nota, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { QuadroSocietario } from "@/components/saneamento/QuadroSocietario";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -100,6 +100,14 @@ export default function Pagina({ params }: { params: { id: string } }) {
             )}
           </p>
         </header>
+        <NestaPagina
+          itens={[
+            { id: "medidas", rotulo: "Operação, finanças e investimento" },
+            { id: "balanco", rotulo: "Balanço" },
+            ...(controle && cvm ? [{ id: "controle", rotulo: "Controle" }] : []),
+            { id: "municipios", rotulo: "Municípios e contratos" },
+          ]}
+        />
 
         <Secao id="medidas" titulo="Operação, finanças e investimento declarados" texto="Fórmulas oficiais do SINISA aplicadas às somas que o prestador declarou em todos os municípios em que atua, ano de referência 2024.">
           <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Medidas do prestador (rolável)">

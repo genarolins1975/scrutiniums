@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
@@ -108,6 +108,16 @@ export default function Pagina() {
               (população estimada pelo IBGE para 2024).
             </>
           }
+        />
+        <NestaPagina
+          itens={[
+            { id: "atlas", rotulo: "Onde faltam" },
+            { id: "pessoas-ou-proporcao", rotulo: "Pessoas ou proporção" },
+            { id: "sem-rede-usa", rotulo: "Quem não tem rede usa o quê" },
+            { id: "evolucao", rotulo: "Evolução entre os Censos" },
+            { id: "mundo", rotulo: "No mundo" },
+            { id: "conceitos", rotulo: "Conceitos" },
+          ]}
         />
 
         <Numeros

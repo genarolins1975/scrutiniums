@@ -154,3 +154,33 @@ export function Indisponivel({ titulo, children }: { titulo: string; children: R
     </div>
   );
 }
+
+/**
+ * Atalhos para as seções de uma página longa, logo depois da abertura. No celular os atalhos ficam numa linha que rola só dentro da
+ * barra (a página não rola de lado); no desktop quebram em linhas. Cada item aponta para o `id` de uma `Secao`; o teste
+ * `saneamento-entrada` confere que a lista cobre todas as seções da página, na ordem, e que nenhum atalho aponta para âncora ausente.
+ */
+export function NestaPagina({ itens }: { itens: { id: string; rotulo: string }[] }) {
+  return (
+    <nav aria-label="Nesta página" data-nesta-pagina="" className="mb-10 border-y border-linha py-3">
+      <p className="rotulo text-mineral">
+        Nesta página · {itens.length} seções
+      </p>
+      <ol className="tabela-scroll mt-2 flex gap-2 pb-1 lg:flex-wrap">
+        {itens.map((x, i) => (
+          <li key={x.id} className="shrink-0">
+            <a
+              href={`#${x.id}`}
+              className="inline-flex min-h-[44px] items-center gap-2 whitespace-nowrap border border-linha bg-superficie px-3 text-sm text-carvao hover:border-obee hover:text-obee-dark"
+            >
+              <span aria-hidden="true" className="text-xs tabular-nums text-mineral">
+                {i + 1}
+              </span>
+              {x.rotulo}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}

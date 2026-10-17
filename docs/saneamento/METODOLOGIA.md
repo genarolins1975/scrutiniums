@@ -13,6 +13,12 @@ A versão pública desta página está em `/saneamento/metodologia`. Este docume
 7. **Sem dado pessoal, com uma exceção declarada.** Bases agregadas por município, prestador ou estação. Exceção, capítulo 7: o nome de pessoa física que a companhia aberta declara à CVM como controladora ou participante de acordo de acionistas aparece na posição acionária, como consta no FRE público; CPF não é coletado nem publicado, e as demais pessoas físicas entram somadas, sem nome.
 8. **Divergências explicadas.** Calculadas, publicadas em `meta.json` e na página de método; nunca redistribuídas.
 
+## Respostas da entrada e navegação (`src/lib/saneamento/respostas.ts`)
+
+Na entrada, cada capítulo traz um número com o que ele mede e a fonte, mais uma frase factual que responde à pergunta do capítulo. O cálculo usa os mesmos campos e a mesma formatação da página do capítulo; o teste `saneamento-entrada` renderiza cada capítulo e confere que o valor da entrada aparece nele. Os cálculos que antes viviam só numa página e agora são compartilhados ficam no mesmo módulo: as três origens do investimento (`fontesDe`), o motivo de interrupção ligado ao manancial, a janela do SIH e do SIM e os nove anos até o prazo legal. Sem o dado na gold, o capítulo não ganha resposta e a entrada mostra o resumo de cobertura. Os números escolhidos não são indicadores-síntese nem ordem de mérito: cada um é o primeiro número da pergunta do capítulo, com o universo dito no rótulo.
+
+As páginas com quatro seções ou mais e a continuidade (13 seções, cerca de 38 telas no celular) têm a barra "Nesta página", logo depois da abertura, com um atalho por seção. O mesmo teste confere que os atalhos cobrem todas as seções com título, na ordem do documento, sem âncora ausente; na ficha do prestador, o atalho do controle societário só aparece quando a seção aparece.
+
 ## Medidas municipais (`src/lib/saneamento/medidas.ts`)
 
 | Medida | Numerador | Denominador | Fonte |

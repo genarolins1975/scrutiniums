@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
@@ -9,7 +9,7 @@ import { capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { numero, reaisCompacto } from "@/lib/saneamento/formato";
 import { NATUREZA_CURTA } from "@/lib/saneamento/rotulos";
-import type { Agregado, Investimento } from "@/lib/saneamento/tipos";
+import { FONTES_INVESTIMENTO, fontesDe, type ChaveFonte } from "@/lib/saneamento/respostas";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -19,20 +19,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/saneamento/financiamento" },
 };
 
-const FONTES = [
-  { id: "proprios", rotulo: "Recursos próprios", cor: "var(--cor-obee)" },
-  { id: "onerosos", rotulo: "Onerosos (empréstimos e financiamentos)", cor: "var(--serie-comp-1)" },
-  { id: "nao_onerosos", rotulo: "Não onerosos (transferências e doações)", cor: "var(--serie-comp-3)" },
-] as const;
-type ChaveFonte = (typeof FONTES)[number]["id"];
-
-function fontesDe(a: Agregado): Record<ChaveFonte, number> {
-  const out: Record<ChaveFonte, number> = { proprios: 0, onerosos: 0, nao_onerosos: 0 };
-  for (const inv of [a.sinisa.agua.investimento, a.sinisa.esgoto.investimento] as (Investimento | null)[]) {
-    for (const f of FONTES) out[f.id] += (inv?.prestador_fontes?.[f.id] ?? 0) + (inv?.estado_fontes?.[f.id] ?? 0);
-  }
-  return out;
-}
+const FONTES = FONTES_INVESTIMENTO;
 
 export default function Pagina() {
   const cap = capituloPorSlug("financiamento")!;
@@ -95,6 +82,15 @@ export default function Pagina() {
           recorte={<>Investimento de 2024 declarado por prestadores e Estados ao SINISA, valores correntes. As fontes somam {reaisCompacto(totalFontes)}.</>}
           situacao={cap.situacao}
           pendencia={cap.pendencia}
+        />
+        <NestaPagina
+          itens={[
+            { id: "quem", rotulo: "Quem investe" },
+            { id: "natureza", rotulo: "Por natureza do prestador" },
+            { id: "por-uf", rotulo: "Por UF" },
+            { id: "mundo", rotulo: "Ajuda internacional" },
+            { id: "contratacoes", rotulo: "Financiamentos contratados" },
+          ]}
         />
 
         <Numeros

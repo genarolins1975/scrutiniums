@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Fonte, Nota, Secao } from "@/components/saneamento/Editorial";
+import { Fonte, NestaPagina, Nota, Secao } from "@/components/saneamento/Editorial";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { agregado, fichaMunicipio, meta, municipio, municipios, prestadores } from "@/lib/saneamento/gold";
 import { ROTA } from "@/lib/saneamento/capitulos";
@@ -215,6 +215,18 @@ export default function Pagina({ params }: { params: { id: string } }) {
             </Link>
           </p>
         </header>
+        <NestaPagina
+          itens={[
+            { id: "comparacao", rotulo: "Comparação" },
+            { id: "agua-esgoto", rotulo: "Água e esgoto" },
+            { id: "quem-presta", rotulo: "Quem presta e regula" },
+            { id: "conta", rotulo: "Conta e tarifa social" },
+            { id: "metas", rotulo: "Metas e plano" },
+            { id: "investimento", rotulo: "Investimento" },
+            { id: "continuidade", rotulo: "Continuidade" },
+            { id: "qualidade", rotulo: "Qualidade da água" },
+          ]}
+        />
 
         <Secao id="comparacao" titulo="Como o município se compara?" texto={
           <>Cada linha tem sua fonte e seu ano. Pares: mediana dos municípios da mesma região com {porte != null ? ROTULO_PORTE[porte] : "porte semelhante"} ({inteiro(grupo.length)} municípios). A mediana dos pares não é meta nem referência de eficiência.</>
