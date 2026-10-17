@@ -98,7 +98,8 @@ export function vazamentos(doc: No, idioma: "pt" | "en", nomes: readonly string[
     const portugues = new RegExp("(?:^|[^\\p{L}])(?:não|são|dados)(?=$|[^\\p{L}])|[\\p{L}]+(?:ção|ções)\\b", "iu");
     const ingles = new RegExp("\\b(?:the|are|with|only|your|Portuguese|English|Language)\\b", "iu");
     if (idioma === "en" && portugues.test(restante)) erros.push(`portugues-sem-marca: ${valor}`);
-    if (idioma === "pt" && ingles.test(restante)) erros.push(`ingles-na-pagina-portuguesa: ${valor}`);
+    // citação original em inglês marcada com lang="en" é legítima na página portuguesa
+    if (idioma === "pt" && lang !== "en" && ingles.test(restante)) erros.push(`ingles-na-pagina-portuguesa: ${valor}`);
   };
   const visita = (no: No, dentro: boolean, lang: string) => {
     if ("value" in no) { verifica(no.value, dentro, lang); return; }

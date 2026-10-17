@@ -69,7 +69,7 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
         },
         {
           orgao: "ONS",
-          documento: tx("Página Energia Agora, Balanço de Energia (texto de apresentação), acessada em 01/10/2026", "Energia Agora page, Energy Balance (introductory text), accessed on Oct 1, 2026"),
+          documento: tx("Página Energia Agora, Balanço de Energia (texto de apresentação), acessada em 01/10/2026", "«Energia Agora» page, Energy Balance (introductory text), accessed on Oct 1, 2026"),
           url: "https://www.ons.org.br/paginas/energia-agora/balanco-de-energia",
           trecho:
             // i18n: dado

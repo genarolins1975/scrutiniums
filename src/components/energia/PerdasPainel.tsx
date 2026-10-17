@@ -123,7 +123,7 @@ export function ReferenciaPerdas({ g }: { g: PerdasGold }) {
  * Resposta do painel. Com `veredito` (e o `id` do painel), vira a resposta em duas camadas: o veredito em palavras comuns
  * fica à vista e o texto completo (`children`) passa a Analisar e Auditar, sem sair do HTML do servidor.
  */
-export function Resposta({ children, prova, veredito, id, vivo = false }: { children: ReactNode; prova?: ReactNode; veredito?: string; id?: string; vivo?: boolean }) {
+export function Resposta({ children, prova, veredito, id, vivo = false }: { children: ReactNode; prova?: ReactNode; veredito?: ReactNode; id?: string; vivo?: boolean }) {
   return (
     <div>
       {veredito && id ? (

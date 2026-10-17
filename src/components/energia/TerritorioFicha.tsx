@@ -35,6 +35,7 @@ import {
 } from "@/lib/energia/territorio";
 import type { IdGraoTerritorio, LinkModulo } from "@/lib/energia/tipos-territorio";
 import { Nome } from "@/components/i18n/Nome";
+import { hrefNoIdioma } from "@/lib/i18n-href";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { OUTORGA_SIGA_EN, rotuloDado } from "@/lib/energia/i18n/expansao-transicao-territorio";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
@@ -152,6 +153,7 @@ function valorOu(v: number | null | undefined, casas: number, unidade: string, m
 
 function Links({ itens, titulo }: { itens: LinkModulo[]; titulo?: string }) {
   const tx = useTx();
+  const idioma = useIdioma();
   if (!itens.length) return null;
   return (
     <div>
@@ -159,7 +161,7 @@ function Links({ itens, titulo }: { itens: LinkModulo[]; titulo?: string }) {
       <ul className="flex flex-wrap gap-x-4 text-sm">
         {itens.map((l) => (
           <li key={l.href}>
-            <a href={l.href} className={LINK}>
+            <a href={hrefNoIdioma(l.href, idioma)} className={LINK}>
               {l.rotulo}
             </a>
           </li>

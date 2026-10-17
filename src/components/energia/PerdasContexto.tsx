@@ -96,6 +96,7 @@ export function PerdasContexto({ pontos, linhas, ids, rotulos, ano, anoRelacao, 
         ))}
       </fieldset>
       <GraficoDispersao
+        rotulosSaoNomes
         titulo={tx(
           `Renda média da área e ${y === "taxa" ? "taxa de perdas totais" : "perdas não técnicas"}, concessionárias, ${ano}`,
           `Average income of the area and ${y === "taxa" ? "total loss rate" : "non-technical losses"}, concession holders, ${ano}`,

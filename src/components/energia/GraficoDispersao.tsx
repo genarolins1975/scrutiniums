@@ -3,6 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { formatos } from "@/lib/energia/formato";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 import { casasMarcas, dominioLegivel, textoValor } from "@/lib/energia/distribuicao";
 import {
   afastaRotulos,
@@ -51,6 +52,8 @@ export type RodapeDispersao = {
 };
 
 export type GraficoDispersaoProps = {
+  /** Os rótulos dos pontos são nomes próprios (distribuidora, empresa): na página inglesa saem marcados (<Nome>, ou lang no SVG). */
+  rotulosSaoNomes?: boolean;
   titulo: string;
   pontos: PontoDispersao[];
   eixoX: EixoDispersao;
@@ -91,8 +94,12 @@ export function GraficoDispersao({
   altura = 340,
   corPontos = "var(--cor-mineral)",
   corDestaque = "var(--cor-energia)", // i18n: dado
+  rotulosSaoNomes = false,
 }: GraficoDispersaoProps) {
   const idioma = useIdioma();
+  const marcaNome = rotulosSaoNomes && idioma === "en";
+  const attrNome = marcaNome ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {};
+  const nomeHtml = (t: React.ReactNode) => (marcaNome ? <Nome>{t}</Nome> : t);
   const tx = useTx();
   const { num, plural } = formatos(idioma);
   const entidade = entidadeDada ?? tx({ singular: "ponto", plural: "pontos" }, { singular: "point", plural: "points" });
@@ -336,6 +343,7 @@ export function GraficoDispersao({
                   stroke="var(--cor-superficie)"
                   strokeWidth="3"
                   paintOrder="stroke"
+                  {...attrNome}
                 >
                   {r.texto}
                 </text>
@@ -374,7 +382,7 @@ export function GraficoDispersao({
               transform: acima ? "translateY(-100%)" : undefined,
             }}
           >
-            <p className="font-medium text-carvao">{pa.rotulo}</p>
+            <p className="font-medium text-carvao">{nomeHtml(pa.rotulo)}</p>
             <dl className="mt-1 space-y-0.5">
               <div className="flex justify-between gap-3">
                 <dt className="text-mineral">{eixoX.rotulo}</dt>
@@ -457,7 +465,7 @@ export function GraficoDispersao({
             <tbody>
               {linhasTabela.map((p) => (
                 <tr key={p.id} className="border-b border-linha">
-                  <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">{p.rotulo}</th>
+                  <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">{nomeHtml(p.rotulo)}</th>
                   <td className={`px-2 py-1 ${typeof p.x === "number" && Number.isFinite(p.x) ? "text-carvao" : "text-mineral"}`}>{textoValor(p.x, casasX, "")}</td>
                   <td className={`px-2 py-1 ${typeof p.y === "number" && Number.isFinite(p.y) ? "text-carvao" : "text-mineral"}`}>{textoValor(p.y, casasY, "")}</td>
                   {ids.length > 0 && <td className="px-2 py-1 text-carvao">{ids.includes(p.id) ? tx("sim", "yes") : ""}</td>}

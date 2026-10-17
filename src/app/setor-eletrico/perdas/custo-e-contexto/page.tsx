@@ -223,7 +223,7 @@ export default function PerdasCustoContextoPage() {
               naoConcluirNoCorpo
             >
               <div className="space-y-6">
-                <Resposta id="custo" veredito={vereditoCusto(custo, g.referencia.tarifa_consultada_em)}>
+                <Resposta id="custo" veredito={marcarNomes(vereditoCusto(custo, g.referencia.tarifa_consultada_em), nomes, idioma)}>
                   {marcarNomes(respostaCusto(custo, g.referencia.tarifa_consultada_em), nomes, idioma)}
                 </Resposta>
                 <PerdasCusto linhas={custo} urlEvidencias={g.series.evidencias_tarifa} ids={ids} rotulos={rotulos} consultadaEm={g.referencia.tarifa_consultada_em} anosArquivos={anosTarifa} versao={versao} />
@@ -295,7 +295,7 @@ export default function PerdasCustoContextoPage() {
               <div className="space-y-6">
                 <Resposta
                   id="contexto"
-                  veredito={vereditoAssociacao(assoc)}
+                  veredito={marcarNomes(vereditoAssociacao(assoc), nomes, idioma)}
                   prova={
                     g.evidencias.associacao ? (
                       <ComproveNumero

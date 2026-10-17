@@ -337,7 +337,7 @@ export function AprendaVerbete({ c }: { c: Conceito }) {
                             {tx("Trecho literal do documento", "Literal excerpt from the document")}
                           </summary>
                           <blockquote className="border-l-2 border-linha pl-4 text-carvao-muted">
-                            {f.trechoEmIngles ? <>“{f.trecho}”</> : <TrechoPortugues regiao={`trecho-${c.slug}`}>“{f.trecho}”</TrechoPortugues>}
+                            {f.trechoEmIngles ? <span lang="en">“{f.trecho}”</span> : <TrechoPortugues regiao={`trecho-${c.slug}`}>“{f.trecho}”</TrechoPortugues>}
                           </blockquote>
                         </details>
                       )}

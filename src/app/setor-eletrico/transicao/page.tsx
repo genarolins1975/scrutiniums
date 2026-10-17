@@ -15,7 +15,8 @@ import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvi
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { tx } from "@/lib/energia/idioma";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { marcarNomes } from "@/lib/energia/i18n/qualidade-perdas";
 import {
   grandezas,
   ligacaoGeracao,
@@ -133,7 +134,7 @@ export default function TransicaoPage() {
   const sd = semDado();
   const pendencias = g.pendencias.join(" ") || tx("sem motivo registrado", "no reason recorded");
   const respostas = {
-    p063: <RespostaCurta id="p063" tamanho="sm" veredito={vereditoMmgd(m)}>{respostaMmgd(m)}</RespostaCurta>,
+    p063: <RespostaCurta id="p063" tamanho="sm" veredito={marcarNomes(vereditoMmgd(m), m.ufs.map((u) => u.nome), idiomaEnergia())}>{marcarNomes(respostaMmgd(m), m.ufs.map((u) => u.nome), idiomaEnergia())}</RespostaCurta>,
     ons: o ? <RespostaCurta id="ons" tamanho="sm" veredito={vereditoOns(o) || respostaOns(o)}>{respostaOns(o)}</RespostaCurta> : null,
     p064: e ? <RespostaCurta id="p064" tamanho="sm" veredito={vereditoEmissoes(e) || respostaEmissoes(e)}>{respostaEmissoes(e)}</RespostaCurta> : null,
   };

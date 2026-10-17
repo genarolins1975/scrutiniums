@@ -20,7 +20,7 @@ export function RespostaCurta({
   depois = false,
 }: {
   id: string;
-  veredito: string;
+  veredito: ReactNode;
   children?: ReactNode;
   vivo?: boolean;
   atributo?: string;

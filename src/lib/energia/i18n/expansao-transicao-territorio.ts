@@ -1,5 +1,6 @@
 import type { Idioma } from "@/lib/idioma";
 import type { ColunaTabela } from "../tabela";
+import type { Proveniencia } from "../tipos";
 
 /**
  * Tabelas de tradução (português → inglês) dos módulos Expansão, Transição e Território do Setor Elétrico: rótulos de categoria
@@ -692,3 +693,18 @@ export const CONJUNTO_TERRITORIO_EN: Readonly<Record<string, string>> = {
 export const SIGA_TIPO_EN: Readonly<Record<string, string>> = {
   "UTE de origem Biomassa": "UTE of biomass origin",
 };
+
+/**
+ * Órgão da fonte quando a gold o descreve em frase (proveniência do Território): tabela exata; órgão sem entrada (ANEEL, ONS, CCEE)
+ * fica como veio.
+ */
+export const ORGAO_FONTE_EN: Readonly<Record<string, string>> = {
+  "ANEEL, EPE, ONS e IBGE (via módulos do observatório e coletas próprias)": "ANEEL, EPE, ONS and IBGE (through the observatory's modules and its own collections)",
+  "EPE (direitos da camada: EPE, ONS e IBGE)": "EPE (layer rights: EPE, ONS and IBGE)",
+};
+
+/** Proveniência com o órgão da fonte no idioma da página (o resto da ficha não muda). */
+export function provenienciaNoIdioma<P extends Proveniencia>(p: P, idioma: Idioma): P {
+  const orgao = daTabela(p.fonte.orgao, ORGAO_FONTE_EN, idioma);
+  return orgao === null || orgao === p.fonte.orgao ? p : { ...p, fonte: { ...p.fonte, orgao } };
+}

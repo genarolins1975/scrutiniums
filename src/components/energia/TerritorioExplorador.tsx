@@ -79,6 +79,7 @@ import type { Idioma } from "@/lib/idioma";
 import { tx } from "@/lib/energia/idioma";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { Nome } from "@/components/i18n/Nome";
+import { hrefNoIdioma } from "@/lib/i18n-href";
 
 /**
  * Explorador da página Minha região (P002): busca, quatro camadas no mesmo mapa
@@ -1381,7 +1382,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
           ))}
         <p className="text-sm">
           <span className="rotulo mr-2 text-mineral">{tx("Próxima pergunta desta camada", "Next question for this layer")}</span>
-          <a href={prox.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+          <a href={hrefNoIdioma(prox.href, idioma)} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
             {prox.pergunta}
           </a>
         </p>

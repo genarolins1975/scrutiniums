@@ -312,6 +312,7 @@ export function valorExibidoNoIdioma(texto: string, idioma: Idioma = idiomaEnerg
     .replace(/\bbilhões\b|\bbilhão\b/g, "billion") // i18n: dado (regra de tradução)
     .replace(/\bmilhões\b|\bmilhão\b/g, "million") // i18n: dado (regra de tradução)
     .replace(/(\d) mil\b/g, "$1 thousand")
+    .replace(/(\d) de (\d)/g, "$1 of $2") // i18n: dado (regra de tradução)
     .replace(/\bMWmed\b/g, "MWavg")
     .replace(/ às (\d{1,2})h\b/g, " at $1:00") // i18n: dado (regra de tradução)
     .replace(/^Verde:/, "Green:")

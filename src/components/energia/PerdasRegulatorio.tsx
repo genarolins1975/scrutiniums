@@ -96,6 +96,7 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
       <GraficoPontos
         titulo={tx("Percentual técnico regulatório implícito: trecho mais recente e trecho anterior", "Implicit regulatory technical percentage: latest segment and previous segment")}
         itens={itens}
+        rotulosSaoNomes
         unidade="%"
         casas={3}
         rotuloValor={tx("Trecho mais recente", "Latest segment")}

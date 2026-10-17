@@ -476,7 +476,7 @@ function situacaoAno(a: Pick<MmgdAno, "parcial" | "cobertura_declarada">, dataCa
   // i18n: dado (valores da gold)
   if (a.cobertura_declarada === "fora") return tx("fora da cobertura declarada pela ANEEL (antes de dez/2008)", `outside the coverage declared by ANEEL (before ${mesAno("2008-12", idioma)})`, idioma);
   // i18n: dado (valores da gold)
-  if (a.cobertura_declarada === "parcial") return tx("cobertura declarada só em dezembro", "coverage declared only in December", idioma);
+  if (a.cobertura_declarada === "parcial") return tx("cobertura declarada só em dezembro", "coverage declared for December only", idioma);
   if (a.parcial) return tx(`parcial, até ${dataBR(dataCadastro, idioma)}`, `partial, through ${dataBR(dataCadastro, idioma)}`, idioma);
   return tx("ano completo", "full year", idioma);
 }

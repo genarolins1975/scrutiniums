@@ -32,9 +32,11 @@ import {
   PERGUNTA_TERRITORIO_EN,
   RESULTADO_CONTROLE_EN,
   UNIDADE_TERRITORIO_EN,
+  provenienciaNoIdioma,
   rotuloDado,
 } from "@/lib/energia/i18n/expansao-transicao-territorio";
 import { lerGold } from "@/lib/energia/gold";
+import { hrefNoIdioma } from "@/lib/i18n-href";
 import {
   motivoLegivel,
   ID_PAINEL,
@@ -137,7 +139,7 @@ export default function TerritorioPage() {
   const semData = tx("sem data", "no date");
   const complementares: ProvenienciaComplementar[] = Object.entries(g.proveniencia)
     .filter(([k, p]) => k !== "indice" && p)
-    .map(([k, p]) => ({ rotulo: ROTULO_COMPLEMENTAR[k] ?? k, p: p! }));
+    .map(([k, p]) => ({ rotulo: ROTULO_COMPLEMENTAR[k] ?? k, p: provenienciaNoIdioma(p!, idioma) }));
   const semArea = distribuidorasSemArea(g);
   const ev = g.evidencias;
   // o sha256 de cada arquivo que o índice leu, recalculado sobre o arquivo servido na hora de montar a página
@@ -280,7 +282,7 @@ export default function TerritorioPage() {
               comoInterpretar={comoInterpretar}
               naoConcluir={naoConcluir}
               naoConcluirNoCorpo
-              proveniencia={g.proveniencia.indice}
+              proveniencia={provenienciaNoIdioma(g.proveniencia.indice, idioma)}
               complementares={complementares}
             >
               <div className="space-y-6">
@@ -435,7 +437,7 @@ export default function TerritorioPage() {
                       daGold(i.unidade, UNIDADE_TERRITORIO_EN, "territorio-indicador"),
                       idioma === "en" ? textoNatureza(i.natureza, idioma).rotulo.toLowerCase() : i.natureza.toLowerCase(),
                       daGold(i.rotulo_no_municipio, GRAO_NO_MUNICIPIO_EN, "territorio-indicador"),
-                      <a key={i.id} href={i.pagina.href} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+                      <a key={i.id} href={hrefNoIdioma(i.pagina.href, idioma)} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
                         {daGold(i.pagina.rotulo, MODULO_TERRITORIO_EN, "territorio-indicador")}
                       </a>,
                     ])}
@@ -670,7 +672,7 @@ export default function TerritorioPage() {
                         <p className="text-carvao-muted">
                           {tx("Evidência:", "Evidence:")}{" "}
                           {evidencia.href ? (
-                            <a href={evidencia.href} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+                            <a href={hrefNoIdioma(evidencia.href, idioma)} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
                               {evidencia.texto}
                             </a>
                           ) : (

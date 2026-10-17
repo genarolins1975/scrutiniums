@@ -31,7 +31,8 @@ import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { Nome } from "@/components/i18n/Nome";
 import { carimbo } from "@/lib/energia/formato";
-import { tx } from "@/lib/energia/idioma";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { marcarNomes } from "@/lib/energia/i18n/qualidade-perdas";
 import { MOTIVO_CEP_EN, RESULTADO_CONTROLE_EN } from "@/lib/energia/i18n/expansao-transicao-territorio";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
@@ -314,8 +315,8 @@ export default function MmgdPage() {
               complementares={[{ rotulo: tx("Por habitante (ANEEL e IBGE)", "Per inhabitant (ANEEL and IBGE)"), p: m.proveniencia.por_habitante }]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p063" veredito={vereditoMmgd(m) || respostaMmgd(m)}>
-                  {respostaMmgd(m)}
+                <RespostaCurta id="p063" veredito={marcarNomes(vereditoMmgd(m) || respostaMmgd(m), m.ufs.map((u) => u.nome), idiomaEnergia())}>
+                  {marcarNomes(respostaMmgd(m), m.ufs.map((u) => u.nome), idiomaEnergia())}
                 </RespostaCurta>
                 <TransicaoMmgdUf
                   linhas={linhasUfs(m.ufs)}

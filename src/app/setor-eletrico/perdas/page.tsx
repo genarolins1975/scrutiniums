@@ -377,7 +377,7 @@ export default function PerdasPage() {
                 versao={versao}
                 anoRelacao={g.mapa.ano_relacao}
                 respostaGeral={
-                  <RespostaCurta id="geral" veredito={vereditoGeral(g)} depois>
+                  <RespostaCurta id="geral" veredito={marcarNomes(vereditoGeral(g), Object.values(rotulos), idioma)} depois>
                     {marcarNomes(respostaGeral(g), Object.values(rotulos), idioma)}
                   </RespostaCurta>
                 }

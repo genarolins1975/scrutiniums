@@ -136,7 +136,7 @@ export function AprendaProva({ prova, volta, alternativa }: { prova: Prova | nul
         {ev.fonte.capturado_em ? tx(` Capturada em ${dataRef(diaBrasilia(ev.fonte.capturado_em))}.`, ` Captured on ${dataRef(diaBrasilia(ev.fonte.capturado_em))}.`) : ""}
         {conjunto.codigos.length > 0 && (
           <span data-nivel="analisar">
-            {tx(" Código do conjunto na fonte:", " Dataset code at the source:")} {conjunto.codigos.join(", ")}.
+            {tx(" Código do conjunto na fonte:", " Dataset code at the source:")} <Nome>{conjunto.codigos.join(", ")}</Nome>.
           </span>
         )}
       </p>

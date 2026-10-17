@@ -95,6 +95,7 @@ export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm,
         dados={dados}
         chaveCategoria="id"
         chaveRotulo="rotulo"
+        rotulosSaoNomes
         series={[
           { id: "pt", rotulo: tx("Técnicas", "Technical"), cor: "var(--escala-seq-4)" },
           { id: "pnt", rotulo: tx("Não técnicas", "Non-technical"), cor: "var(--serie-termica)" },

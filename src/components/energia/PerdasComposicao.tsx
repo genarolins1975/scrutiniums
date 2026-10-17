@@ -84,6 +84,7 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
         dados={dados}
         chaveCategoria="id"
         chaveRotulo="rotulo"
+        rotulosSaoNomes
         series={[
           { id: "tecnica", rotulo: tx("Técnicas", "Technical"), cor: "var(--escala-seq-4)" },
           { id: "nao_tecnica", rotulo: tx("Não técnicas", "Non-technical"), cor: "var(--serie-termica)" },

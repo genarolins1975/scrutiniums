@@ -106,6 +106,21 @@ const FICHA_EN: Record<string, string> = {
   "ENA bruta de 30 dias do SIN": "30-day gross ENA of the SIN",
   "Geração térmica despachada pelo ONS, últimos 12 meses completos": "Thermal generation dispatched by the ONS, last 12 complete months",
   "Taxa de perdas totais na distribuição": "Total loss rate in distribution", // i18n: dado (tabela de tradução)
+  // geração (geracao_detalhe.json, evidencias)
+  "Geração do SIN nos últimos 30 dias (todas as categorias, com MMGD)": "SIN generation over the last 30 days (all categories, with MMGD)",
+  "Participação de Eólica na geração do SIN, últimos 30 dias": "Wind share of SIN generation, last 30 days",
+  "Participação de Solar MMGD (estimativa do ONS) na geração do SIN, últimos 30 dias": "Solar MMGD (ONS estimate) share of SIN generation, last 30 days",
+  "Participação de Gás natural na geração do SIN, últimos 30 dias": "Natural gas share of SIN generation, last 30 days",
+  "MMGD estimada pelo ONS no primeiro dia em que aparece na Geração por Usina": "MMGD estimated by the ONS on the first day it appears in the ONS generation by plant dataset",
+  "Parcela da geração térmica por inflexibilidade (declarada pelo agente ou geração acima do despachado), últimos 12 meses completos":
+    "Share of thermal generation due to inflexibility (declared by the agent, or generation above the dispatched amount), last 12 complete months",
+  "Taxa de restrição (eólicas), últimos 12 meses completos": "Restriction rate (wind plants), last 12 complete months",
+  "Energia não gerada estimada por restrição de operação (fotovoltaicas), últimos 12 meses completos": "Estimated energy not generated due to operating restriction (photovoltaic plants), last 12 complete months",
+  "Taxa de restrição (fotovoltaicas), últimos 12 meses completos": "Restriction rate (photovoltaic plants), last 12 complete months",
+  "Fator de capacidade de Eólica, últimos 12 meses completos": "Wind capacity factor, last 12 complete months",
+  "Fator de capacidade de Solar centralizada, últimos 12 meses completos": "Centralized solar capacity factor, last 12 complete months",
+  "Potência instalada das usinas despachadas pelo ONS em operação comercial": "Installed capacity of the plants dispatched by the ONS in commercial operation",
+  "Usinas com todos os municípios declarados reconhecidos no cadastro do IBGE": "Plants with all declared municipalities recognized in the IBGE register",
   // entidade
   SIN: "SIN",
   Brasil: "Brazil",
@@ -205,6 +220,9 @@ export function valorExibidoNoIdioma(v: string, idioma: Idioma): string {
     .replace(/\bmilhões\b|\bmilhão\b/g, "million")
     .replace(/\bMWmed\b/g, "MWavg")
     .replace(/ às (\d{1,2})h\b/g, " at $1:00")
+    .replace(/^(\S+) horas$/, "$1 hours")
+    .replace(/^1 hora$/, "1 hour")
+    .replace(/^([\d.,]+) de ([\d.,]+)$/, "$1 of $2")
     .replace(/^Verde:/, "Green:")
     .replace(/^Amarela:/, "Yellow:")
     .replace(/^Vermelha patamar (\d):/, "Red level $1:")

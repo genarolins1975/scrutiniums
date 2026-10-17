@@ -188,6 +188,7 @@ export function QualidadeLimites({
           `${r.titulo}, ${v.cls === "permissionaria" ? "permit holders" : "concession holders"}, ${ano}`,
         )}
         itens={itens}
+        rotulosSaoNomes
         unidade={r.unidade}
         casas={2}
         rotuloValor={tx(`${r.nome} apurado`, `Assessed ${r.nome}`)}
