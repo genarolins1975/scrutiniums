@@ -82,6 +82,42 @@ export const MENSAGEM_COPIA_EN: Readonly<Record<"copiado" | "selecionado" | "fal
 /** "sim"/"não" das colunas categóricas. */
 export const SIM_NAO_EN: Readonly<Record<string, string>> = { sim: "yes", "não": "no" };
 
+/* ================================================================ Transição */
+
+/** Fonte de geração da MMGD (rótulo publicado pela gold). */
+export const FONTE_MMGD_EN: Readonly<Record<string, string>> = {
+  "Solar fotovoltaica": "Solar photovoltaic",
+  "Termelétrica (biogás, biomassa e outros combustíveis)": "Thermal (biogas, biomass and other fuels)",
+  "Hidráulica": "Hydro",
+  "Eólica": "Wind",
+  "Fonte não informada": "Source not reported",
+};
+/** Dia da semana como a gold o publica. */
+export const DIA_SEMANA_EN: Readonly<Record<string, string>> = {
+  segunda: "Monday",
+  "terça": "Tuesday",
+  quarta: "Wednesday",
+  quinta: "Thursday",
+  sexta: "Friday",
+  "sábado": "Saturday",
+  domingo: "Sunday",
+};
+/** Feriados nacionais citados na conferência do ONS. */
+export const FERIADO_EN: Readonly<Record<string, string>> = {
+  "Dia do Trabalho": "Labour Day",
+  Tiradentes: "Tiradentes Day",
+  feriado: "holiday",
+};
+/** Notas curtas da gold da Transição com versão inglesa. */
+export const NOTA_TRANSICAO_EN: Readonly<Record<string, string>> = {
+  "Uma única captura do cadastro integrada até aqui: as revisões por registro tardio serão medidas a partir da próxima captura.":
+    "A single capture of the register integrated so far: revisions due to late registration will be measured from the next capture on.",
+  "Ainda não há duas capturas do cadastro para medir revisões.": "There are not yet two captures of the register to measure revisions.",
+};
+/** Modelo do aviso sobre o total de uma distribuidora na MMGD (texto gerado pelo pipeline). */
+export const AVISO_DISTRIBUIDORA =
+  /^O total inclui ([\d.]+) unidades \(([\d,]+) MW\) cadastradas com este CNPJ em ([A-Z, ]+), onde ele não tem conjunto elétrico, com CEP, código do empreendimento e UF publicada na UF do município: provavelmente são de outra distribuidora e inflam o total desta\.$/; // i18n: dado
+
 /* ================================================================ Expansão */
 
 /** Estágio do SIGA (rótulo publicado na gold e o das constantes). */
