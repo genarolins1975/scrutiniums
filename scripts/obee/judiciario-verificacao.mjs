@@ -49,6 +49,11 @@ try{
  assert.ok(origin,'Next não informou a origem local');
  browser=await chromium.launch({executablePath:process.env.I18N_CHROMIUM_EXECUTABLE||undefined});
  const anonymous=await browser.newContext();
+ const observatoryRoots=['/observatorio','/setor-eletrico','/eficiencia-estatal','/contas-publicas','/contas-publicas-estaduais','/saneamento','/gas-natural'];
+ for(const path of observatoryRoots){
+  const response=await anonymous.request.get(origin+path,{maxRedirects:0});
+  check('Observatório exige sessão: '+path,response.status()===307&&response.headers().location.includes('/entrar'));
+ }
  for(const path of [PREFIX,PREFIX+'/comparar',PREFIX+'/tribunais/tjsp','/eficiencia/judiciario/snapshot.json']){
   const response=await anonymous.request.get(origin+path,{maxRedirects:0});
   check('Protegido sem sessão: '+path,response.status()===307&&response.headers().location.includes('/entrar'));
@@ -58,7 +63,8 @@ try{
  const context=await browser.newContext({acceptDownloads:true,viewport:{width:1440,height:1000}});
  await context.addCookies([{name:'scrutiniums_session',value:cookie,url:origin,httpOnly:true,sameSite:'Lax',secure:false}]);
  check('Sessão real da fixture no banco',(await context.request.get(origin+'/api/auth/eu')).status()===204);
- const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
+ for(const path of observatoryRoots)check('Observatório com sessão: '+path,(await context.request.get(origin+path)).status()===200);
+ const page=await context.newPage();page.on('pageerror',e=>errors.push(page.url()+': '+e.message));
  page.on('console',message=>{if(message.type()==='error')errors.push('Console: '+message.text());});
  const axe=await readFile(require.resolve('axe-core/axe.min.js'),'utf8');
  const slugs=['','panorama','recursos','tempo','filas','entrega','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
@@ -80,6 +86,7 @@ try{
  await page.getByLabel('Tribunal 2',{exact:true}).selectOption('tjpe');
  await page.getByLabel('Tribunal 3',{exact:true}).selectOption('tjac');
  await page.getByLabel('Medida dos tribunais',{exact:true}).selectOption('idadePendentes');
+ await page.screenshot({path:join(out,'comparacao-tres-tribunais.png'),fullPage:true});
  const shared=page.url();check('Seleção compartilhável',shared.includes('t1=tjsp')&&shared.includes('t3=tjac')&&shared.includes('medida=idadePendentes'));
  await page.reload({waitUntil:'networkidle'});
  check('Reload preserva recorte',await page.getByLabel('Tribunal 2',{exact:true}).inputValue()==='tjpe'&&await page.getByLabel('Medida dos tribunais',{exact:true}).inputValue()==='idadePendentes');
@@ -138,8 +145,9 @@ try{
  for(const logged of [true,false]){
   const ctx=logged?context:await browser.newContext();
   if(logged){
-   const response=await ctx.request.get(origin+'/',{maxRedirects:0});
-   check('Home logada preserva destino do seletor',response.status()===307&&response.headers().location==='/app/observatorios');
+   await page.goto(origin+'/',{waitUntil:'networkidle'});
+   await page.waitForURL('**/app/observatorios');
+   check('Home logada preserva destino do seletor',new URL(page.url()).pathname==='/app/observatorios');
    const selector=await ctx.request.get(origin+'/app/observatorios');
    check('Seletor mantém acesso ao OBEE',selector.status()===200&&(await selector.text()).includes('/eficiencia-estatal'));
   }else{

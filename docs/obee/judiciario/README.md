@@ -27,6 +27,7 @@ Localizadores: tabelas 1/2, p. 40–41; despesa por ramo, figura 30/p. 64; finan
 - Os três ramos não são o total do Judiciário. A referência financeira nacional mantém os seis segmentos da figura 30; não se soma o STF de uma seção diferente.
 - IPC-Jus é o indicador oficial, sem reprodução de DEA/SFA pela Scrutiniums. O Federal é consolidado das áreas judiciárias por seção e grau; não comparar percentuais entre ramos nem convertê-los em qualidade jurídica.
 - Financeiro histórico: os rótulos da fonte têm resolução de R$ 100 milhões. O CNJ informa IPCA e base 2025, mas o trecho não explicita mês-base versus média anual; não inventamos essa convenção nem recalculamos o ajuste.
+- Categoria de despesa é a publicada pelo CNJ; não houve reconciliação independente do estágio contábil com SIAFI/Siconfi nem dedução de receitas.
 - TJs conciliam exatamente em despesa. TRTs somam R$ 27.664.994.118, enquanto a figura do ramo publica R$ 27.664.994.120. O resíduo de R$ 2 permanece explícito; tolerância máxima de R$ 12,50 decorre de R$ 0,50 para cada uma das 24 parcelas e o total, apresentados em reais inteiros. Nenhuma parcela foi ajustada.
 - A nota de variações/pessoal do sumário p. 22 menciona outros anos; essas variações e as contagens de pessoal do sumário não são usadas. As contagens institucionais empregadas vêm das tabelas com ano-base declarado.
 

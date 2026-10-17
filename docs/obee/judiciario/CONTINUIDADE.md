@@ -1,5 +1,7 @@
 # Judiciário — continuidade
 
+**Estado atual:** implementação v2 com 57 tribunais e finanças de 17 anos; fonte integral conferida. Build de 718 páginas, pipeline integrado (1.854 testes, 6 pulados), Vitest (6.353 aprovados, 1 pulado) e QA final (52 telas/113 verificações, zero erros) concluídos. Commits de implementação `ba9893c53` e integração de main `d7409e8ac`. Correção SSR financeira e evidências estão sendo salvas para abrir o PR. Falta acompanhar CI remoto, merge e deploy. O bloqueio inicial de acesso ao PDF/GitHub foi superado.
+
 ## Objetivo e aceite
 
 Executar a especificação fornecida em `Prompt_Codex_Judiciario_Scrutiniums.txt`, em 17/10/2026: seis capítulos, panorama, comparação de até três tribunais compatíveis, fichas, método, dados reproduzíveis e integração ao OBEE. A entrega integral requer Justiça Estadual, Federal e do Trabalho, dados financeiros e pelo menos cinco anos quando comparáveis, validação e produção comprovada. Não declarar entrega integral antes desses requisitos.
