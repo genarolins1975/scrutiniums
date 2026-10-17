@@ -150,6 +150,35 @@ export const TEXTOS_PLD_EN: Readonly<Record<string, string>> = {
     "Flow verified by ONS at the border, in the same hour, with a positive sign from the first to the second end. Flow of up to 1 MWavg in absolute value is treated as zero. The count is descriptive: the interchange limits are not integrated and no hour is classified as congested.",
 };
 
+/** Textos fixos da comparação CMO × PLD (pld_detalhe.json, cmo_pld.nao_equivalencia e cmo_pld.produtos), texto exato publicado. */
+export const TEXTOS_CMO_EN: Readonly<Record<string, string>> = {
+  "O CMO semanal do DECOMP é um valor para a semana operativa inteira, por patamar de carga e em média semanal (descrição do ONS); não é uma média de valores horários.":
+    "The weekly DECOMP CMO is a value for the whole operating week, by load level and as a weekly average (ONS description); it is not an average of hourly values.",
+  "O CMO semi-horário do DESSEM publicado pelo ONS é o do subsistema, média das barras ponderada pelas cargas; os conjuntos do ONS não identificam deck, versão ou revisão do modelo por valor.":
+    "The half-hourly DESSEM CMO published by ONS is the subsystem one, an average of the buses weighted by their loads; the ONS datasets do not identify the model deck, version or revision for each value.",
+  "O PLD é calculado pela CCEE para cada hora do dia seguinte, com base no CMO e com a aplicação dos limites mínimo e máximos vigentes; a descrição pública integrada não detalha as diferenças de configuração entre a execução da CCEE e a do ONS.":
+    "The PLD is calculated by CCEE for each hour of the following day, based on the CMO and applying the minimum and maximum limits in force; the integrated public description does not detail the configuration differences between the CCEE run and the ONS run.",
+  "Agregar as duas meias horas por duração alinha a resolução, mas não torna as séries iguais: mesmo nas horas com o PLD entre os limites, o PLD e o CMO do ONS diferem (ver relação por ano).":
+    "Aggregating the two half hours by duration aligns the resolution but does not make the series equal: even in hours with the PLD between the limits, the PLD and the ONS CMO differ (see the relation by year).",
+  "CMO semanal (DECOMP)": "Weekly CMO (DECOMP)",
+  "CMO semi-horário (DESSEM)": "Half-hourly CMO (DESSEM)",
+  "PLD horário": "Hourly PLD",
+  "NEWAVE, DECOMP e DESSEM, segundo a CCEE": "NEWAVE, DECOMP and DESSEM, according to CCEE",
+  "semana operativa de sábado a sexta, com valores por patamar de carga (leve, médio, pesado) e média semanal":
+    "operating week from Saturday to Friday, with values by load level (light, medium, heavy) and a weekly average",
+  "subsistema": "subsystem",
+  "submercado": "submarket",
+  "meia hora; o instante publicado marca o início da meia hora": "half hour; the published instant marks the start of the half hour",
+  "subsistema: média dos CMOs das barras do subsistema ponderada pelas cargas (descrição do ONS; Manual de Metodologia do DESSEM, CEPEL, seção 22.6)":
+    "subsystem: average of the CMOs of the subsystem's buses weighted by their loads (ONS description; DESSEM Methodology Manual, CEPEL, section 22.6)",
+  "hora (HORA 0 a 23, horário de Brasília)": "hour (HOUR 0 to 23, Brasília time)", // i18n: dado
+  "horas com PLD entre os limites vigentes, fora de dias no teto estrutural": "hours with the PLD between the limits in force, excluding days at the structural cap",
+  "diariamente, para cada hora do dia seguinte (descrição oficial da CCEE)": "daily, for each hour of the following day (official CCEE description)",
+  "não identificados por valor no conjunto da CCEE": "not identified per value in the CCEE dataset",
+  "As versões dos modelos usados pelo ONS são as validadas com os agentes e homologadas pela ANEEL por ato específico (Procedimentos de Rede, Submódulo 4.3, item 1.7.1.3); o conjunto de dados não identifica a versão nem o deck de cada valor.":
+    "The versions of the models used by ONS are those validated with the agents and approved by ANEEL through a specific act (Grid Procedures, Submodule 4.3, item 1.7.1.3); the dataset does not identify the version or the deck of each value.",
+};
+
 /** Critério da tabela de distribuidoras (gold mercado.json, livre_regulado.distribuidoras.criterio). */
 export const CRITERIOS_MERCADO_EN: Readonly<Record<string, string>> = {
   "as 30 maiores em energia livre faturada no ano; a tabela completa está no CSV": "the 30 largest by free-market energy billed in the year; the full table is in the CSV",
