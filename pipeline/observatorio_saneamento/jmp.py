@@ -67,15 +67,19 @@ def _baixar(url, timeout=600):
         return r.read(), r.headers.get("Last-Modified"), r.url
 
 
+def _gravar_gz(nome, bruto, **extra):
+    """Grava o seed comprimido e devolve o registro do manifesto: sha256 e tamanho do conteúdo descomprimido."""
+    (SEED / f"{nome}.gz").write_bytes(gzip.compress(bruto, mtime=0))
+    return {"arquivo": f"{nome}.gz", "sha256": sha(bruto), "bytes": len(bruto), **extra}
+
+
 def _gravar_csv(nome, cabecalho, linhas):
     buf = io.StringIO()
     w = csv.writer(buf, delimiter=";", lineterminator="\n")
     w.writerow(cabecalho)
     for l in linhas:
         w.writerow(["" if v is None else v for v in l])
-    bruto = buf.getvalue().encode("utf-8")
-    (SEED / f"{nome}.gz").write_bytes(gzip.compress(bruto, mtime=0))
-    return {"arquivo": f"{nome}.gz", "sha256": sha(bruto), "bytes": len(bruto), "linhas": len(linhas)}
+    return _gravar_gz(nome, buf.getvalue().encode("utf-8"), linhas=len(linhas))
 
 
 MESES = {m: i for i, m in enumerate(
@@ -137,11 +141,11 @@ def coletar():
     fontes = fontes_do_brasil((r[0], r[1]) for r in wb_br["Data Summary"].iter_rows(values_only=True))
     if not fontes:
         raise ValueError("aba Data Summary do arquivo do Brasil sem nenhuma fonte reconhecida")
-    (SEED / "brasil_fontes.json.gz").write_bytes(gzip.compress(json.dumps(fontes, ensure_ascii=False).encode("utf-8"), mtime=0))
+    arquivos["brasil_fontes"] = _gravar_gz("brasil_fontes.json", json.dumps(fontes, ensure_ascii=False, sort_keys=True).encode("utf-8"), linhas=len(fontes))
     paises_bruto, _, _ = _baixar(URL_PAISES_IBGE, 120)
     paises = json.loads(gzip.decompress(paises_bruto) if paises_bruto[:2] == b"\x1f\x8b" else paises_bruto)
     reduzido = [{"iso3": p["id"]["ISO-3166-1-ALPHA-3"], "nome": p["nome"]["abreviado"]} for p in paises]
-    (SEED / "paises_ibge.json.gz").write_bytes(gzip.compress(json.dumps(reduzido, ensure_ascii=False, sort_keys=True).encode("utf-8"), mtime=0))
+    arquivos["paises_ibge"] = _gravar_gz("paises_ibge.json", json.dumps(reduzido, ensure_ascii=False, sort_keys=True).encode("utf-8"), linhas=len(reduzido))
     manifesto = {
         "capturado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
         "url": URL_JMP,
@@ -161,12 +165,17 @@ def coletar():
 # construção da gold
 # ---------------------------------------------------------------------------
 
-def _ler_csv(manifesto, chave):
+def _bruto(manifesto, chave):
+    """Conteúdo descomprimido de um seed, conferido contra o sha256 do manifesto: nenhum seed é lido sem conferência."""
     a = manifesto["arquivos"][chave]
     bruto = gzip.decompress((SEED / a["arquivo"]).read_bytes())
-    if sha(bruto) != a["sha256"]:
+    if sha(bruto) != a["sha256"] or len(bruto) != a["bytes"]:
         raise ValueError(f"seed do JMP alterado: {a['arquivo']}")
-    return list(csv.DictReader(io.StringIO(bruto.decode("utf-8")), delimiter=";"))
+    return bruto
+
+
+def _ler_csv(manifesto, chave):
+    return list(csv.DictReader(io.StringIO(_bruto(manifesto, chave).decode("utf-8")), delimiter=";"))
 
 
 def _bloco(l, prefixo, extras, area):
@@ -210,9 +219,9 @@ def _conferir(linhas, prefixo, aba):
 def construir():
     manifesto = json.loads((SEED / "manifesto.json").read_text(encoding="utf-8"))
     agua, esgoto = _ler_csv(manifesto, "agua"), _ler_csv(manifesto, "esgoto")
-    ibge = {p["iso3"]: p["nome"] for p in json.loads(gzip.decompress((SEED / "paises_ibge.json.gz").read_bytes()))}
+    ibge = {p["iso3"]: p["nome"] for p in json.loads(_bruto(manifesto, "paises_ibge"))}
     conf = {"agua": _conferir(agua, "wat", "água"), "esgoto": _conferir(esgoto, "san", "esgoto")}
-    fontes_brasil = json.loads(gzip.decompress((SEED / "brasil_fontes.json.gz").read_bytes()))
+    fontes_brasil = json.loads(_bruto(manifesto, "brasil_fontes"))
     ano = manifesto["periodo"][1]
 
     def por(linhas):

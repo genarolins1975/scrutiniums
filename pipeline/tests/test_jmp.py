@@ -58,6 +58,19 @@ class SeedPublicado(unittest.TestCase):
         self.assertRegex(self.manifesto["xlsx"]["sha256"], r"^[a-f0-9]{64}$")
         self.assertEqual(self.manifesto["periodo"], [2000, 2024])
 
+    def test_os_quatro_seeds_tem_sha256_e_a_leitura_recusa_seed_alterado(self):
+        self.assertEqual(set(self.manifesto["arquivos"]), {"agua", "esgoto", "brasil_fontes", "paises_ibge"})
+        for chave, a in self.manifesto["arquivos"].items():
+            jmp._bruto(self.manifesto, chave)  # confere o conteúdo contra o sha256 e o tamanho registrados
+            self.assertRegex(a["sha256"], r"^[a-f0-9]{64}$", chave)
+        adulterado = json.loads(json.dumps(self.manifesto))
+        adulterado["arquivos"]["paises_ibge"]["sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "seed do JMP alterado"):
+            jmp._bruto(adulterado, "paises_ibge")
+        adulterado["arquivos"]["brasil_fontes"]["bytes"] += 1
+        with self.assertRaisesRegex(ValueError, "seed do JMP alterado"):
+            jmp._bruto(adulterado, "brasil_fontes")
+
     def test_so_as_colunas_usadas_entram_no_seed(self):
         for chave, colunas in (("agua", jmp.COLUNAS_AGUA), ("esgoto", jmp.COLUNAS_ESGOTO)):
             bruto = gzip.decompress((jmp.SEED / self.manifesto["arquivos"][chave]["arquivo"]).read_bytes()).decode("utf-8")

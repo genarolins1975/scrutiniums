@@ -64,7 +64,7 @@ O saneamento não tem coleta diária: a gold sai do seed versionado, e a proveni
 | SINISA, ZIPs integrados | Tamanho diferente do registrado (retificação de arquivo já integrado) | Recoletar e reconstruir a gold |
 | SISAGUA | Arquivo registrado reescrito 60 dias ou mais depois do Last-Modified registrado; arquivo anual novo a partir de março do ano seguinte | Recoletar e reconstruir a gold |
 | CadÚnico | Mês mais recente da API, até o mês corrente, 3 ou mais meses à frente do mês da gold | `coletar --so-cadunico` e `gold` |
-| JMP | Arquivo mundial de domicílios com tamanho diferente do registrado (nova atualização do JMP, em geral em julho ou agosto) | `jmp --coletar` e `gold` |
+| JMP | Arquivo mundial de domicílios ou arquivo do Brasil com tamanho ou Last-Modified diferentes do registrado (nova atualização do JMP, em geral em julho ou agosto) | `jmp --coletar` e `gold` |
 | CVM, FRE | Arquivo do ano atualizado depois da captura, com a captura já tendo 90 dias ou mais; arquivo do ano seguinte publicado a partir de junho | `controle --coletar` e `gold` |
 | DATASUS, SIM | A página da tabulação declara dados finais até ano posterior ao fim da janela da gold; nota ausente (vigia cego) | `saude --coletar` e `gold`, com a nova janela |
 

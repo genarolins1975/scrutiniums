@@ -34,6 +34,7 @@ class RedeFalsa:
         jmp = meta.get("jmp")
         if jmp:
             self.tamanhos[jmp["fonte"]] = (206, jmp["xlsx"]["bytes"], jmp["xlsx"]["last_modified"])
+            self.tamanhos[jmp["brasil_xlsx"]["url"]] = (206, jmp["brasil_xlsx"]["bytes"], jmp["brasil_xlsx"]["last_modified"])
         sim = (meta.get("saude") or {}).get("definicoes", {}).get("sim")
         if sim:
             self.textos[sim["url"]] = (200, "<html>Dados finais dispon\ufffdveis at\ufffd 2024 - data de extra\ufffd\ufffdo 02/12/2025.</html>")
@@ -270,6 +271,16 @@ class VigiliaSaneamento(unittest.TestCase):
         self.assertIn("nova atualização do JMP", linhas[0])
         rede.tamanhos[j["fonte"]] = (206, j["xlsx"]["bytes"], "Tue, 25 Aug 2026 06:00:00 GMT")
         self.assertEqual(len([l for l in self.rodar(rede) if "JMP" in l]), 1)
+
+    def test_jmp_acusa_o_arquivo_do_brasil_mesmo_com_o_mundial_igual(self):
+        j = self.meta["jmp"]
+        rede = self.novo()
+        rede.tamanhos[j["brasil_xlsx"]["url"]] = (206, j["brasil_xlsx"]["bytes"] + 5, j["brasil_xlsx"]["last_modified"])
+        linhas = [l for l in self.rodar(rede) if "JMP" in l]
+        self.assertEqual(len(linhas), 1)
+        self.assertIn("arquivo do Brasil", linhas[0])
+        rede.tamanhos[j["fonte"]] = (206, j["xlsx"]["bytes"] + 5, j["xlsx"]["last_modified"])
+        self.assertEqual(len([l for l in self.rodar(rede) if "JMP" in l]), 2)  # cada arquivo tem a sua linha
 
     def test_jmp_fora_do_ar_ou_sem_tamanho_e_data_e_nao_verificado(self):
         j = self.meta["jmp"]

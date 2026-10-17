@@ -1,5 +1,5 @@
 {
-  "capturado_em": "2026-10-17T00:16:54+00:00",
+  "capturado_em": "2026-10-17T00:30:47+00:00",
   "url": "https://washdata.org/data/country/WLD/household/download",
   "url_final": "https://washdata.org/media/4671/download",
   "edicao": "August 2025",
@@ -37,6 +37,18 @@
       "sha256": "2567c16283ec34d8f152c9ea18bbb4ab95ef8be6fb7e0ab064307051f15c7792",
       "bytes": 2156052,
       "linhas": 5651
+    },
+    "brasil_fontes": {
+      "arquivo": "brasil_fontes.json.gz",
+      "sha256": "c119843cff8d5173f521c5e60972350a8e570f1509733038b6df8af924e317de",
+      "bytes": 7092,
+      "linhas": 83
+    },
+    "paises_ibge": {
+      "arquivo": "paises_ibge.json.gz",
+      "sha256": "f4a1891ddc8d4c5c6c4346304a95ab32dd3af5461ffb8ef2037bb57e0315d4fb",
+      "bytes": 7431,
+      "linhas": 193
     }
   }
 }
