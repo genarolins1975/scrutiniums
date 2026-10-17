@@ -7,7 +7,7 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { DominioId } from "@/lib/dominios";
+import type { OpcaoObservatorioId } from "@/lib/opcoesObservatorios";
 import { gold, integra } from "@/lib/energia/gold";
 import { metaEducacao } from "@/lib/eficiencia/dados";
 import { carimbo, dataBR, mesAno } from "@/lib/energia/formato";
@@ -16,7 +16,21 @@ import custos from "@/lib/contas-publicas/snapshots/custos.json";
 import { goldGas } from "@/lib/gas/gold";
 import { mesExtenso } from "@/lib/gas/formato";
 
-export function atualizacaoObservatorio(id: DominioId): { rotulo: string; linhas: string[] } {
+export function atualizacaoObservatorio(id: OpcaoObservatorioId): { rotulo: string; linhas: string[] } {
+  if (id === "judiciario") {
+    try {
+      const s = JSON.parse(readFileSync(join(process.cwd(), "public", "eficiencia", "judiciario", "snapshot.json"), "utf-8"));
+      const anos = s.cobertura.anosFinanceiros;
+      return { rotulo: "Fontes e cobertura", linhas: [
+        `CNJ, Justiça em Números. Dados por tribunal: ${s.ano}.`,
+        `${s.tribunais.length} tribunais da Justiça Estadual, Federal e do Trabalho.`,
+        `Série financeira dos ramos: ${anos[0]}–${anos[anos.length - 1]}. Fonte capturada em ${dataBR(s.capturadoEm)}.`,
+        "Módulo do OBEE. Sem histórico individual ou despesa por TRF; indicadores não comprovam cumprimento do direito.",
+      ] };
+    } catch {
+      return { rotulo: "Fontes e cobertura", linhas: ["Dados indisponíveis no momento."] };
+    }
+  }
   if (id === "saneamento") {
     try {
       const m = JSON.parse(readFileSync(join(process.cwd(), "public", "saneamento", "gold", "meta.json"), "utf-8"));

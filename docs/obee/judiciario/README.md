@@ -2,6 +2,8 @@
 
 Rota canônica: `/eficiencia-estatal/judiciario`. Entrada, panorama, seis capítulos (recursos, tempo, filas, entrega, acesso e comparação), métodos e 57 fichas. Integração no mapa do OBEE, vitrine da home e capítulo existente de Acesso à Justiça. Painéis e downloads exigem sessão; método segue a exceção pública já existente no projeto.
 
+A escolha pós-login em `/app/observatorios` tem cartão próprio **Judiciário**, ao lado de Eficiência Estatal, com acesso direto ao módulo, fontes e cobertura e indicação de último acesso. A opção continua vinculada ao domínio analítico do OBEE. O POST aceita apenas opções cadastradas; o cookie registra a opção escolhida, sem dados pessoais.
+
 ## Cobertura implementada
 
 - Justiça Estadual, Federal e do Trabalho: casos novos, baixados, pendentes, idade média dos pendentes por fase, centros de solução de conflitos, despesa e IAD/congestionamento oficiais em 2025.
