@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "2b025680cd1d60990a0c71bb68d6288caaff6ca39d1079f72cec33919209c4b5",
-    "arquivos_analisados": 1219,
-    "fontes_sha256": "a237c01a786633805424472633de660a19a1b4fb2ec146a41131e2bfe142fb7b",
-    "pendencias_sha256": "8cffd87d45c2709b16a276dc13056b3e245b7c6e8b34fc2b3d560803ca899c80",
+    "arquivos_analisados": 1220,
+    "fontes_sha256": "1b7ac4a88c9eee6c1d1af66aa06ff4d3dc93866e2829ab2acf6299f8dc9138ef",
+    "pendencias_sha256": "15c0a17e31748c9d5e89da31bf62066dec303468c7f581b7474f7c489a136fde",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -147,11 +147,11 @@
         "candidatos": {
           "jsx_text": 539,
           "atributos": 206,
-          "props": 672,
-          "outros_literais": 3607,
-          "templates": 416,
-          "expressoes_nao_resolvidas": 2311,
-          "chaves_objetos": 2598
+          "props": 674,
+          "outros_literais": 3610,
+          "templates": 417,
+          "expressoes_nao_resolvidas": 2312,
+          "chaves_objetos": 2599
         },
         "exclusoes": {
           "importacoes": 920,
@@ -165,7 +165,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 10349,
+        "candidatos_nao_catalogados": 10357,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -480,20 +480,20 @@
     "agro": {
       "nome": "Agronegócio",
       "interface": {
-        "arquivos": 41,
+        "arquivos": 42,
         "candidatos": {
-          "jsx_text": 381,
-          "atributos": 260,
-          "props": 369,
-          "outros_literais": 2326,
-          "templates": 15,
-          "expressoes_nao_resolvidas": 1086,
-          "chaves_objetos": 1328
+          "jsx_text": 385,
+          "atributos": 265,
+          "props": 370,
+          "outros_literais": 2329,
+          "templates": 19,
+          "expressoes_nao_resolvidas": 1115,
+          "chaves_objetos": 1333
         },
         "exclusoes": {
-          "importacoes": 195,
-          "atributos_tecnicos": 64,
-          "tipos": 73
+          "importacoes": 198,
+          "atributos_tecnicos": 67,
+          "tipos": 72
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -502,7 +502,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 5765,
+        "candidatos_nao_catalogados": 5816,
         "percentual_traduzido": null
       },
       "rotas": {

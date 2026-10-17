@@ -41,3 +41,5 @@
 @media(max-width:767px){.figure>.figureMobile{display:block}.figure>.figureDesktop{display:none}}
 
 .result{scroll-margin-top:24px}
+
+.decomposition{margin:28px 0 16px}.decompositionRow{margin:24px 0}.decompositionRow>div:first-child{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;font-size:14px;line-height:1.6;margin-bottom:10px}.decompositionRow strong{font-weight:500;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.decompositionTrack{position:relative;height:24px;background:var(--cor-papel)}.decompositionTrack i{position:absolute;top:-4px;bottom:-4px;border-left:1px solid var(--cor-carvao);z-index:1}.decompositionTrack>span{position:absolute;height:100%;background:var(--cor-energia)}.decompositionTrack>span[data-sinal=negativo]{background:var(--cor-bronze-dark)}.decompositionAxis{display:flex;justify-content:space-between;gap:16px;font-size:12px;line-height:1.6;color:var(--cor-carvao-muted);font-variant-numeric:tabular-nums}

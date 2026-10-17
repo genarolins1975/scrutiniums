@@ -3,7 +3,8 @@ import { getDb, newId, schema } from "./db";
 /**
  * Telemetria de navegação da área logada — SEM PII.
  * Registramos apenas QUAL seção foi aberta e QUANDO, associada ao id
- * interno do usuário (nunca e-mail/telefone). A lista de seções é fechada
+ * interno do usuário (nunca e-mail/telefone), exceto Agro: somente seção/data,
+ * sem associação ao visitante. A lista de seções é fechada
  * (allowlist): qualquer valor fora dela é descartado silenciosamente,
  * impedindo gravação de caminhos arbitrários no banco.
  */
@@ -130,6 +131,8 @@ export const VIEW_SECTIONS = [
   "gas:dados",
   "gas:metodologia",
   // Plataforma (páginas Next)
+  // Agro usa somente contagem agregada, sem identificar usuários ou parâmetros.
+  "agro:paginas",
   "app:conta",
   "app:observatorios",
 ] as const;
@@ -255,6 +258,7 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "gas:dados": "Gás Natural · Dados e downloads",
   "gas:metodologia": "Gás Natural · Método e glossário",
   "app:conta": "Plataforma · Conta",
+  "agro:paginas": "Agronegócio · Páginas",
   "app:observatorios": "Plataforma · Escolha do observatório",
 };
 
@@ -280,7 +284,7 @@ export async function trackView(section: string, userId: string): Promise<boolea
     await db.insert(schema.productEvents).values({
       id: newId(),
       name: `${VIEW_EVENT_PREFIX}${section}`,
-      userId,
+      userId: section.startsWith("agro:") ? null : userId,
       createdAt: new Date(),
     });
     return true;

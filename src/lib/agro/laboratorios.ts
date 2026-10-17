@@ -24,7 +24,7 @@ export type ResultadoLab = {
         unidade: string;
     }[];
     nota: string;
-    visual?: 'cascata' | 'sensibilidade' | 'linha' | 'barras';
+    visual?: 'cascata' | 'sensibilidade' | 'barras';
     matriz?: {
         linhas: number[];
         colunas: number[];

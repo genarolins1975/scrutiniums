@@ -161,14 +161,15 @@ export default async function AdminPage() {
               itens={stats.ranking.slice(0, 12).map((r) => ({
                 rotulo: sectionLabel(r.secao),
                 valor: r.visitas30d,
-                detalhe: `${fmtNumber(r.usuarios30d)} usuário${r.usuarios30d === 1 ? "" : "s"} · ${fmtNumber(r.visitasTotal)} desde o início`,
+                detalhe: `${r.dominio === "agro" ? "Usuários não identificados" : `${fmtNumber(r.usuarios30d)} usuário${r.usuarios30d === 1 ? "" : "s"}`} · ${fmtNumber(r.visitasTotal)} desde o início`,
               }))}
             />
           )}
           {stats.ranking.length > 0 && (
             <p className="mt-6 text-xs text-mineral">
               Janela de 30 dias, com o acumulado desde o início ao lado. Visitas de todas as contas,
-              inclusive administradores.
+              inclusive administradores. No Agronegócio, visitas são agregadas sem identificação;
+              não entram na contagem de usuários ativos.
             </p>
           )}
         </section>
