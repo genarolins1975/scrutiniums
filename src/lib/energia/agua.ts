@@ -245,6 +245,16 @@ export function nomeProprio(nome: string | null | undefined, idioma: Idioma = id
 const GRUPOS_EN: Record<string, string> = { "OUTRAS - SUL": "Other South basins", "OUTRAS- SUDESTE": "Other Southeast basins" };
 
 /**
+ * Nomes próprios (reservatório, REE, bacia) como as frases os escrevem, a partir dos nomes do ONS: a lista que comNomes
+ * (AguaLegenda) marca em <Nome> nas frases montadas aqui, na página inglesa. Os dois grupos do ONS não são nome próprio.
+ */
+export function nomesProprios(...nomesOns: readonly (readonly (string | null | undefined)[])[]): string[] {
+  const s = new Set<string>(Object.values(NOMES));
+  for (const l of nomesOns) for (const n of l) if (n && !GRUPOS_EN[n.trim()]) s.add(nomeProprio(n, "pt"));
+  return Array.from(s);
+}
+
+/**
  * Entidade de uma ficha de prova ("reservatório SERRA DA MESA (TOSMES)") como o leitor a lê: sem o código da usina no fim
  * e com o nome em maiúsculas e minúsculas. O código fica na tabela e no arquivo.
  */
@@ -948,7 +958,7 @@ export function textoQuebraRee(q: AguaQuebraPerimetroRee, idioma: Idioma = idiom
 
 export function colunasQuebraRee(idioma: Idioma = idiomaEnergia()): ColunaTabela[] {
   return [
-    { id: "nome", rotulo: "REE", tipo: "texto" },
+    { id: "nome", rotulo: "REE", tipo: "texto", idiomaTexto: "nome" },
     { id: "antes", rotulo: tx("EAR máxima antes", "Maximum EAR before", idioma), tipo: "numero", unidade: uMwmes(idioma), casas: 0 },
     { id: "depois", rotulo: tx("EAR máxima depois", "Maximum EAR after", idioma), tipo: "numero", unidade: uMwmes(idioma), casas: 0 },
     { id: "situacao", rotulo: tx("Situação", "Status", idioma), tipo: "texto", categorica: true },
@@ -1588,7 +1598,8 @@ export function linhasMltAnos(mlt: AguaMlt, idioma: Idioma = idiomaEnergia()): L
   return a.ano.map((ano, i) => ({
     id: `${ano}-${a.mes[i]}`,
     ano,
-    mes: a.mes[i] === 1 || a.mes[i] === 7 ? nomeMes(a.mes[i], idioma, true) : String(a.mes[i]),
+    // em inglês, "(month end)" depois do nome: a tabela compara o fim do mês, e o nome do mês não fica colado ao número da coluna seguinte
+    mes: a.mes[i] === 1 || a.mes[i] === 7 ? tx(nomeMes(a.mes[i], "pt", true), `${nomeMes(a.mes[i], "en", true)} (month end)`, idioma) : String(a.mes[i]),
     comparadas: a.usinas_comparadas[i],
     diferentes: a.usinas_com_mlt_diferente[i],
   }));
@@ -2012,7 +2023,7 @@ export function colunasCoberturaChuva(idioma: Idioma = idiomaEnergia()): ColunaT
     { id: "rotulo", rotulo: tx("Bacia", "Basin", idioma), tipo: "texto", idiomaTexto: "nome" },
     { id: "pontos", rotulo: tx("Pontos de grade", "Grid points", idioma), tipo: "numero", casas: 0 },
     { id: "passos", rotulo: tx("Passo da grade", "Grid spacing", idioma), tipo: "texto" },
-    { id: "poligonos", rotulo: tx("Polígonos do ONS", "ONS polygons", idioma), tipo: "texto" },
+    { id: "poligonos", rotulo: tx("Polígonos do ONS", "ONS polygons", idioma), tipo: "texto", idiomaTexto: "nome" },
   ];
 }
 export const COLUNAS_COBERTURA_CHUVA: ColunaTabela[] = colunasCoberturaChuva("pt");

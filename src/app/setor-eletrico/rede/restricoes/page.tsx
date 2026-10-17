@@ -1,4 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
+import type { ReactNode } from "react";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -98,9 +99,12 @@ export default function RedeRestricoesPage() {
           siglas={["SIN", "ONS", "CCEE", "ATLS"]}
           rotulo={tx("Rede · Restrições publicadas", "Grid · Published restrictions")}
           titulo={perguntaPainel("p030")}
-          lead={tx(
+          lead={tx<ReactNode>(
             "Horas em que fluxos acompanhados pelo ONS ficaram acima do limite estabelecido (indicador ATLS, Atendimento aos Limites Sistêmicos) e cortes de carga.",
-            "Hours in which flows tracked by ONS were above the established limit (ATLS indicator, Atendimento aos Limites Sistêmicos, compliance with system limits) and load cuts.",
+            <>
+              Hours in which flows tracked by ONS were above the established limit (ATLS indicator, <Nome>Atendimento aos Limites Sistêmicos</Nome>, compliance with system limits)
+              and load cuts.
+            </>,
           )}
           recorte={tx(
             `${m.fluxosAcima ? `ATLS de ${m.fluxosAcima.periodo}` : "ATLS"} · cortes de carga de ${dataBR(u12.inicio)} a ${dataBR(u12.fim)} · horas e MWh`,
@@ -211,7 +215,7 @@ export default function RedeRestricoesPage() {
               pergunta={tx("Horas acima do limite e cortes de carga publicados", "Hours above the limit and published load cuts")}
               subtitulo={tx(
                 "Horas acima do limite sistêmico (ATLS, Atendimento aos Limites Sistêmicos) e cortes de carga · horas e MWh",
-                "Hours above the system limit (ATLS, Atendimento aos Limites Sistêmicos) and load cuts · hours and MWh",
+                "Hours above the system limit (ATLS, compliance with system limits) and load cuts · hours and MWh",
               )}
               natureza="CALCULADO"
               porQueImporta={tx(

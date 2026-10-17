@@ -3,6 +3,7 @@
 import { useMemo, type ReactNode } from "react";
 import { AguaEscolha, AguaLista } from "@/components/energia/AguaControles";
 import { AguaLegenda } from "@/components/energia/AguaLegenda";
+import { Nome } from "@/components/i18n/Nome";
 import { AguaRestaurar } from "@/components/energia/AguaRestaurar";
 import { AguaTabela } from "@/components/energia/AguaTabela";
 import { Comparador } from "@/components/energia/Comparador";
@@ -317,9 +318,12 @@ export function AguaAfluencia({
         onSelecionar={selecionar}
         chaveUrl="afl"
         recolher
-        nota={tx(
+        nota={tx<ReactNode>(
           "Sem ENA de 30 dias: falta ENA em algum dia da janela, ou não há MLT; os grupos “Outras do Sul” e “Outras do Sudeste”, que o ONS publica agrupados, não têm MLT. Com menos de 5 anos na base, não há faixa.",
-          "No 30-day ENA: ENA is missing on some day of the window, or there is no MLT; the groups “Outras do Sul” and “Outras do Sudeste”, which ONS publishes grouped, have no MLT. With fewer than 5 years in the baseline, there is no range.",
+          <>
+            No 30-day ENA: ENA is missing on some day of the window, or there is no MLT; the groups “<Nome>Outras do Sul</Nome>” and “<Nome>Outras do Sudeste</Nome>”, which ONS
+            publishes grouped, have no MLT. With fewer than 5 years in the baseline, there is no range.
+          </>,
         )}
       />
 

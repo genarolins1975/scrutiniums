@@ -24,6 +24,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
+import { comNomes, UnidadeMwmes } from "@/components/energia/AguaLegenda";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
@@ -34,6 +35,7 @@ import {
   colunasEventos,
   colunasFimDeAno,
   colunasQuebraRee,
+  nomesProprios,
   colunasReservatoriosPorAno,
   colunasResumo,
   colunasRevisoesCapturas,
@@ -83,7 +85,7 @@ export async function generateMetadata(_props: unknown, anterior: ResolvingMetad
   }, anterior);
 }
 
-const fonte = () => tx("ONS, EAR Diário por Subsistema, por REE e por Bacia (captura mais recente de cada ano)", "ONS, EAR Diário por Subsistema, por REE e por Bacia (daily EAR by subsystem, REE and basin; most recent capture of each year)");
+const fonte = () => tx("ONS, EAR Diário por Subsistema, por REE e por Bacia (captura mais recente de cada ano)", "ONS, daily EAR by subsystem, REE and basin (most recent capture of each year)");
 const URLS_P017 = ["agua_subsistemas_diario", "agua_ear_recortes_diario", "agua_ear_recortes_mensal", "agua_capacidade_eventos"];
 
 export default function AguaPage() {
@@ -271,7 +273,7 @@ export default function AguaPage() {
               demanda, e por que o armazenamento mudou, reservatório por reservatório.
             </>,
             <>
-              The <Termo slug="ear">EAR</Termo> (stored energy) is the energy that the water held in the reservoirs would produce in the plants, in <Unidade u="MWmês" />; the{" "}
+              The <Termo slug="ear">EAR</Termo> (stored energy) is the energy that the water held in the reservoirs would produce in the plants, in <UnidadeMwmes />; the{" "}
               <Termo slug="ena">ENA</Termo> (natural inflow energy) is the energy of the natural flows reaching them, compared with the <Termo slug="mlt">MLT</Termo> (long-term
               average). The four pages answer, in this order: how much is stored, whether the incoming water is above normal, how rainfall and temperature relate to water and to
               demand, and why storage changed, reservoir by reservoir.
@@ -373,7 +375,7 @@ export default function AguaPage() {
                     linhas={linhasEventos(a.capacidade.eventos)}
                     chaveLinha="id"
                     colunaRotulo="data"
-                    fonte={tx("ONS, EAR Diário por Reservatório e por Subsistema", "ONS, EAR Diário por Reservatório e por Subsistema (daily EAR by reservoir and by subsystem)")}
+                    fonte={tx("ONS, EAR Diário por Reservatório e por Subsistema", "ONS, daily EAR by reservoir and by subsystem")}
                     versao={versao}
                     nomeArquivo="agua-capacidade-eventos"
                     chaveUrl="cap"
@@ -386,7 +388,7 @@ export default function AguaPage() {
                     linhas={linhasFimDeAno(a.capacidade)}
                     chaveLinha="id"
                     colunaRotulo="ano" // i18n: dado
-                    fonte={tx("ONS, EAR Diário por Subsistema", "ONS, EAR Diário por Subsistema (daily EAR by subsystem)")}
+                    fonte={tx("ONS, EAR Diário por Subsistema", "ONS, daily EAR by subsystem")}
                     versao={versao}
                     nomeArquivo="agua-ear-maxima-fim-de-ano"
                     ordemInicial={{ coluna: "ano", direcao: "desc" }} // i18n: dado
@@ -397,7 +399,7 @@ export default function AguaPage() {
                 {quebra && (
                   <AguaAnalise id="perimetro-ree" titulo={tx("A reconfiguração dos REE no fim de 2017", "The reconfiguration of the REEs at the end of 2017")}>
                     <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-texto="quebra-ree">
-                      {textoQuebraRee(quebra)}
+                      {comNomes(textoQuebraRee(quebra), nomesProprios(quebra.novos, quebra.comparacao.map((c) => c.nome)))}
                     </p>
                     <TabelaInterativa
                       titulo={tx(`EAR máxima de cada REE antes e depois de ${dataBR(quebra.data)}`, `Maximum EAR of each REE before and after ${dataBR(quebra.data)}`)}
@@ -405,7 +407,7 @@ export default function AguaPage() {
                       linhas={linhasQuebraRee(quebra)}
                       chaveLinha="id"
                       colunaRotulo="nome"
-                      fonte={tx("ONS, EAR Diário por REE", "ONS, EAR Diário por REE (daily EAR by REE)")}
+                      fonte={tx("ONS, EAR Diário por REE", "ONS, daily EAR by REE")}
                       versao={quebra.data}
                       nomeArquivo="agua-ree-reconfiguracao"
                     />
@@ -428,7 +430,7 @@ export default function AguaPage() {
                     linhas={linhasReservatoriosPorAno(rec)}
                     chaveLinha="id"
                     colunaRotulo="ano" // i18n: dado
-                    fonte={tx("ONS, EAR Diário por Reservatório e por Subsistema", "ONS, EAR Diário por Reservatório e por Subsistema (daily EAR by reservoir and by subsystem)")}
+                    fonte={tx("ONS, EAR Diário por Reservatório e por Subsistema", "ONS, daily EAR by reservoir and by subsystem")}
                     versao={versao}
                     nomeArquivo="agua-reconciliacao-reservatorios"
                     semLinhas={tx("Nenhum ano fora da tolerância.", "No year outside the tolerance.")}
@@ -444,7 +446,7 @@ export default function AguaPage() {
                     linhas={linhasRevisoesCapturas(rec.revisoes_entre_capturas_30d)}
                     chaveLinha="id"
                     colunaRotulo="sm"
-                    fonte={tx("ONS, EAR Diário por Subsistema (duas capturas)", "ONS, EAR Diário por Subsistema (daily EAR by subsystem; two captures)")}
+                    fonte={tx("ONS, EAR Diário por Subsistema (duas capturas)", "ONS, daily EAR by subsystem (two captures)")}
                     versao={versao}
                     nomeArquivo="agua-ear-revisoes-capturas"
                     semLinhas={tx("Nenhuma revisão entre as capturas.", "No revision between the captures.")}
@@ -455,7 +457,7 @@ export default function AguaPage() {
                     linhas={linhasCapturas(rec.captura_por_ano)}
                     chaveLinha="id"
                     colunaRotulo="ano" // i18n: dado
-                    fonte={tx("ONS, EAR Diário por Subsistema", "ONS, EAR Diário por Subsistema (daily EAR by subsystem)")}
+                    fonte={tx("ONS, EAR Diário por Subsistema", "ONS, daily EAR by subsystem")}
                     versao={versao}
                     nomeArquivo="agua-ear-capturas"
                   />

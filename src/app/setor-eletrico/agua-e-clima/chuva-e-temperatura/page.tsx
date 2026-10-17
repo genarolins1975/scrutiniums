@@ -373,7 +373,7 @@ export default function ClimaPage() {
                       colunaRotulo="rotulo"
                       fonte={tx(
                         `ONS, Precipitação Diária Observada${perVal ? ` (${perVal})` : ""}; NASA POWER (IMERG)`,
-                        `ONS, Precipitação Diária Observada (observed daily precipitation)${perVal ? ` (${perVal})` : ""}; NASA POWER (IMERG)`,
+                        `ONS, observed daily precipitation${perVal ? ` (${perVal})` : ""}; NASA POWER (IMERG)`,
                       )}
                       versao={c.validacao_estacoes.periodo?.fim ?? g.gerado_em}
                       nomeArquivo="agua-validacao-imerg-estacoes"

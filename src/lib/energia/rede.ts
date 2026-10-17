@@ -22,7 +22,7 @@
 import type { Idioma } from "@/lib/idioma";
 import { formatos, mesAno } from "./formato";
 import { idiomaEnergia, porIdioma, tx } from "./idioma";
-import { DEFINICAO_FLUXO_EN, rotuloDaGold } from "./i18n/agua-carga-rede";
+import { DEFINICAO_FLUXO_EN, amostraPdo, rotuloDaGold } from "./i18n/agua-carga-rede";
 import type { ColunaTabela, LinhaTabela, ValorCelula } from "./tabela";
 import type { Submercado } from "./tipos";
 import type {
@@ -2737,7 +2737,7 @@ export function textoConferenciaPdo(p: Pick<ProgramadoRede, "versao_programa">, 
     : "";
   return tx(
     `Programa do exterior conferido com o PDO das conversoras em ${f.num(c.dias_comparados, 0)} de ${f.num(c.dias, 0)} dias da amostra (${c.amostra}${sem}): ${f.num(c.horas_conferem, 0)} de ${f.num(c.horas, 0)} horas conferem dentro de ${f.num(c.tolerancia_mwmed, 1)} MWmed, ${f.num(c.horas_com_programa_ou_pdo_conferem, 0)} de ${f.num(c.horas_com_programa_ou_pdo, 0)} entre as horas com programa ou PDO diferente de zero.`,
-    `Exterior schedule checked against the converter stations' PDO on ${f.num(c.dias_comparados, 0)} of ${f.num(c.dias, 0)} sample days (${c.amostra}${sem}): ${f.num(c.horas_conferem, 0)} of ${f.num(c.horas, 0)} hours agree within ${f.num(c.tolerancia_mwmed, 1)} MWavg, ${f.num(c.horas_com_programa_ou_pdo_conferem, 0)} of ${f.num(c.horas_com_programa_ou_pdo, 0)} among the hours with a nonzero schedule or PDO.`,
+    `Exterior schedule checked against the converter stations' PDO on ${f.num(c.dias_comparados, 0)} of ${f.num(c.dias, 0)} sample days (${amostraPdo(c.amostra, "en")}${sem}): ${f.num(c.horas_conferem, 0)} of ${f.num(c.horas, 0)} hours agree within ${f.num(c.tolerancia_mwmed, 1)} MWavg, ${f.num(c.horas_com_programa_ou_pdo_conferem, 0)} of ${f.num(c.horas_com_programa_ou_pdo, 0)} among the hours with a nonzero schedule or PDO.`,
     idioma,
   );
 }

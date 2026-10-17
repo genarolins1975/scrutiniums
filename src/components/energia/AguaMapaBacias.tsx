@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import type { Classificacao, ValorClassificavel } from "@/lib/energia/escalas";
 import { formatos } from "@/lib/energia/formato";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { Nome } from "@/components/i18n/Nome";
 import { URL_GEO, caixaDoCaminho, comFolga, lerViewBox, pontoRotulo, textoViewBox, validaCamada, type CamadaGeo, type Ponto } from "@/lib/energia/geo";
-import { vizinhaNoMapa, type DirecaoMapa } from "@/lib/energia/agua";
+import { nomesProprios, vizinhaNoMapa, type DirecaoMapa } from "@/lib/energia/agua";
+import { comNomes } from "@/components/energia/AguaLegenda";
 import { descreveRegiao, preenchimento, validaCores } from "@/lib/energia/mapa-coropletico";
 
 /**
@@ -360,7 +361,7 @@ export function AguaMapaBacias({
           {foco && focoDesc ? (
             <>
               <span className="rotulo mr-2 text-mineral">{foco === selecionado && !ativoFeature ? tx("Seleção", "Selection") : tx("Em foco", "In focus")}</span>
-              <strong className="font-medium">{nomes[foco] ?? foco}</strong>: <span className="tabular-nums">{focoDesc.valor}</span>
+              <strong className="font-medium">{comNomes(nomes[foco] ?? foco, nomesProprios([foco]), idioma)}</strong>: <span className="tabular-nums">{focoDesc.valor}</span>
               {focoDesc.classe && <span className="text-carvao-muted">{tx(`, classe ${focoDesc.classe}`, `, class ${focoDesc.classe}`)}</span>}
             </>
           ) : (
@@ -405,9 +406,9 @@ export function AguaMapaBacias({
             )}
           </p>
           {nota && <p>{nota}</p>}
-          {notaSemContorno && <p data-nota-sem-contorno="">{notaSemContorno}</p>}
+          {notaSemContorno && <p data-nota-sem-contorno="">{comNomes(notaSemContorno, nomesProprios(), idioma)}</p>}
           {geo && semPoligono.length > 0 && (
-            <p>{tx(`Sem polígono nesta camada: ${semPoligono.map((id) => nomes[id] ?? id).join(", ")}.`, `No polygon in this layer: ${semPoligono.map((id) => nomes[id] ?? id).join(", ")}.`)}</p>
+            <p>{tx<ReactNode>(`Sem polígono nesta camada: ${semPoligono.map((id) => nomes[id] ?? id).join(", ")}.`, comNomes(`No polygon in this layer: ${semPoligono.map((id) => nomes[id] ?? id).join(", ")}.`, nomesProprios(semPoligono), idioma))}</p>
           )}
           {geo && (
             <details data-fonte-do-mapa="">

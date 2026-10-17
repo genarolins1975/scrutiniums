@@ -1,4 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
+import type { ReactNode } from "react";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -12,6 +13,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
+import Link from "@/components/i18n/LinkIdioma";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
@@ -35,7 +37,7 @@ import {
 } from "@/lib/energia/carga";
 import { carimbo, dataBR, mesAno, num, plural, sinal, valorExibidoNoIdioma } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
-import { TIPO_REGRA_CARGA_EN, rotuloDaGold } from "@/lib/energia/i18n/agua-carga-rede";
+import { TIPO_REGRA_CARGA_EN, motivoJanelaTemperatura, rotuloDaGold } from "@/lib/energia/i18n/agua-carga-rede";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
@@ -357,9 +359,23 @@ export default function CargaPage() {
                     versao={a.referencia.fim}
                     nomeArquivo="carga-a07-regioes"
                     chaveUrl="a07"
-                    nota={tx(
+                    nota={tx<ReactNode>(
                       `Temperatura de ${dataBR(a.janela_modelo.inicio)} a ${dataBR(a.janela_modelo.fim)} (${a.janela_modelo.dias} de ${a.janela_modelo.dias_janela} dias)${a.janela_modelo.motivo ? `: ${a.janela_modelo.motivo}` : ""}.`,
-                      `Temperature from ${dataBR(a.janela_modelo.inicio)} to ${dataBR(a.janela_modelo.fim)} (${a.janela_modelo.dias} of ${a.janela_modelo.dias_janela} days)${a.janela_modelo.motivo ? ` (reason, in Portuguese: ${a.janela_modelo.motivo})` : ""}.`,
+                      <>
+                        Temperature from {dataBR(a.janela_modelo.inicio)} to {dataBR(a.janela_modelo.fim)} ({a.janela_modelo.dias} of {a.janela_modelo.dias_janela} days)
+                        {a.janela_modelo.motivo ? (
+                          motivoJanelaTemperatura(a.janela_modelo.motivo, "en") ? (
+                            `: ${motivoJanelaTemperatura(a.janela_modelo.motivo, "en")}`
+                          ) : (
+                            <>
+                              : <TrechoPortugues regiao="carga-motivo-temperatura">{a.janela_modelo.motivo}</TrechoPortugues>
+                            </>
+                          )
+                        ) : (
+                          ""
+                        )}
+                        .
+                      </>,
                     )}
                   />
                   <TabelaInterativa
@@ -391,13 +407,13 @@ export default function CargaPage() {
                       </>,
                       <>
                         The split of the difference into calendar, temperature, seasonality, trend and residual, by region and model variant, is on the{" "}
-                        <a href={`${rotaPainel("p027")}#p027`} className="text-energia-dark underline underline-offset-4">
+                        <Link href={`${rotaPainel("p027")}#p027`} className="text-energia-dark underline underline-offset-4">
                           Climate and calendar
-                        </a>{" "}
+                        </Link>{" "}
                         page; the MMGD share of the verified load, on the{" "}
-                        <a href={`${rotaPainel("p026")}#p026`} className="text-energia-dark underline underline-offset-4">
+                        <Link href={`${rotaPainel("p026")}#p026`} className="text-energia-dark underline underline-offset-4">
                           MMGD and hourly profile
-                        </a>{" "}
+                        </Link>{" "}
                         page.
                       </>,
                     )}
@@ -422,7 +438,7 @@ export default function CargaPage() {
                             : "janela incompleta ou com valor fora do domínio: a variação não existe com esta captura."}
                         </>,
                         <>
-                          Capture of {carimbo(cap.capturado_em)} (sha256 {cap.sha256.slice(0, 12)}…):{" "}
+                          Capture of {carimbo(cap.capturado_em)} (sha256 <code>{cap.sha256.slice(0, 12)}…</code>):{" "}
                           {cap.janela_completa && cap.variacao_pct !== null
                             ? `complete window, change of ${sinal(cap.variacao_pct, 2)}% over the same dates of ${a.referencia.inicio_anterior.slice(0, 4)}.`
                             : "incomplete window or with an out-of-domain value: the change does not exist with this capture."}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, type ReactNode } from "react";
+import { comNomes } from "@/components/energia/AguaLegenda";
 import { CargaEscolha, CargaLista } from "@/components/energia/CargaControles";
 import { Comparador } from "@/components/energia/Comparador";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
@@ -51,6 +52,7 @@ import {
 } from "@/lib/energia/carga";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { formatos } from "@/lib/energia/formato";
+import { NOME_CARGA_DIARIA } from "@/lib/energia/i18n/agua-carga-rede";
 import { porIdioma } from "@/lib/energia/idioma";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "@/lib/energia/tabela";
 import type { Regiao } from "@/lib/energia/tipos";
@@ -322,7 +324,9 @@ export function CargaPerfil({
                 grupoCursor="perfil-sin"
               />
             </CursorSincronizado>
-            {globalContraDiaria && sm === "SIN" && <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">{globalContraDiaria}</p>}
+            {globalContraDiaria && sm === "SIN" && (
+              <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">{comNomes(globalContraDiaria, [NOME_CARGA_DIARIA], idioma)}</p>
+            )}
             <TabelaInterativa
               titulo={tx("Tabela equivalente: perfil típico hora a hora", "Equivalent table: typical profile hour by hour")}
               colunas={colunasPerfil(idioma)}

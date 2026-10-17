@@ -3,6 +3,7 @@
 import { useMemo, type ReactNode } from "react";
 import { AguaEscolha, AguaLista } from "@/components/energia/AguaControles";
 import { AguaFaixaDaData } from "@/components/energia/AguaFaixaDaData";
+import { TextoUnidadeMwmes } from "@/components/energia/AguaLegenda";
 import { AguaRestaurar } from "@/components/energia/AguaRestaurar";
 import { AguaTabela } from "@/components/energia/AguaTabela";
 import { Comparador } from "@/components/energia/Comparador";
@@ -47,7 +48,6 @@ import {
   textoPasso,
   textoPesoSubsistemas,
   textoPeriodoDoRecorte,
-  textoUnidadeMwmes,
   vereditoArmazenamento,
   type EntidadeEar,
   type PontoMensalEar,
@@ -400,7 +400,7 @@ export function AguaArmazenamento({
         <div>
           <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
           <dd className="mt-0.5">
-            {textoUnidadeMwmes(idioma)}
+            <TextoUnidadeMwmes idioma={idioma} />
             {tx(", e % da EAR máxima do próprio recorte; p.p., pontos percentuais: de 60% para 62% são 2 p.p.", ", and % of the area's own maximum EAR; pp, percentage points: from 60% to 62% is 2 pp.")}
           </dd>
         </div>

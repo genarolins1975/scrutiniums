@@ -2,7 +2,7 @@
 
 import { useMemo, type ReactNode } from "react";
 import { AguaEscolha, AguaLista } from "@/components/energia/AguaControles";
-import { AguaLegenda } from "@/components/energia/AguaLegenda";
+import { AguaLegenda, comNomes } from "@/components/energia/AguaLegenda";
 import { AguaMapaBacias } from "@/components/energia/AguaMapaBacias";
 import { AguaRestaurar } from "@/components/energia/AguaRestaurar";
 import { AguaTabela } from "@/components/energia/AguaTabela";
@@ -42,7 +42,9 @@ import {
   mediaDiariaImerg,
   mesExtenso,
   mesPreliminar,
+  ehGrupoOns,
   nomeProprio,
+  nomesProprios,
   nomeRegiao,
   notaAnomaliaTemperatura,
   notaChuvaBacia,
@@ -81,7 +83,9 @@ import type { Evidencia } from "@/lib/energia/evidencia";
 import { formatos } from "@/lib/energia/formato";
 import { porIdioma } from "@/lib/energia/idioma";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
+import { modeloPrevisao } from "@/lib/energia/i18n/agua-carga-rede";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { Proveniencia, Regiao } from "@/lib/energia/tipos";
 import type { AguaClima as DadosClima, AguaPrecipitacaoBacia, AguaPrevisao, AguaTemperatura } from "@/lib/energia/tipos-agua";
@@ -264,6 +268,8 @@ export function AguaClima({
   const classes = useMemo(() => classificacaoChuva(valores, idioma), [valores, idioma]);
   const linhas = useMemo(() => linhasChuva(precipitacao, per, idioma), [precipitacao, per, idioma]);
   const nomes = useMemo(() => Object.fromEntries(precipitacao.map((b) => [b.bacia, rotuloRecorte("bacia", b.bacia, idioma)])), [precipitacao, idioma]);
+  // nomes próprios das bacias, para marcar em <Nome> nas frases montadas em agua.ts (página inglesa)
+  const nomesBacias = useMemo(() => nomesProprios(precipitacao.map((b) => b.bacia)), [precipitacao]);
   const historico = useMemo(() => (bacia ? serieMensalChuva(bacia) : []), [bacia]);
   const escolhidas = useMemo(
     () => (v.cmp as string[]).map((id) => precipitacao.find((b) => b.bacia === id)).filter((b): b is AguaPrecipitacaoBacia => !!b),
@@ -325,7 +331,7 @@ export function AguaClima({
       <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
         <div className="flex flex-col gap-3">
           <RespostaCurta id="p019" vivo veredito={!bacia ? semChuva : ehMes ? vereditoChuvaMes(bacia, per, idioma) : vereditoChuva(bacia, idioma)}>
-            {!bacia ? semChuva : ehMes ? respostaChuvaMes(bacia, per, base, idioma) : respostaChuva(bacia, base, idioma)}
+            {!bacia ? semChuva : comNomes(ehMes ? respostaChuvaMes(bacia, per, base, idioma) : respostaChuva(bacia, base, idioma), nomesBacias, idioma)}
           </RespostaCurta>
           {bacia && (
             <details data-cautela="chuva" className="max-w-prose2 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao-muted">
@@ -342,7 +348,15 @@ export function AguaClima({
           )}
         </div>
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-          <AguaLista rotulo={tx("Bacia", "Basin")} opcoes={precipitacao.map((b) => ({ id: b.bacia, rotulo: nomes[b.bacia] }))} valor={bacia?.bacia ?? ""} onEscolher={(x) => selecionar(x)} />
+          <AguaLista
+            rotulo={tx("Bacia", "Basin")}
+            // em inglês, a opção é o nome da bacia, marcado como nome próprio (o rótulo da lista já diz "Basin"); os grupos do ONS dizem o que agrupam
+            opcoes={precipitacao.map((b) =>
+              ehGrupoOns(b.bacia) ? { id: b.bacia, rotulo: nomes[b.bacia] } : { id: b.bacia, rotulo: tx(nomes[b.bacia], nomeProprio(b.bacia, "en")), nome: true },
+            )}
+            valor={bacia?.bacia ?? ""}
+            onEscolher={(x) => selecionar(x)}
+          />
           <AguaLista
             rotulo={tx("Período do mapa", "Map period")}
             opcoes={periodos.map((p) => ({ id: p, rotulo: rotuloPeriodoMapa(p, dia30, idioma) }))}
@@ -374,9 +388,13 @@ export function AguaClima({
 
       <AguaLegenda
         periodo={tx(`Chuva: ${periodoMapa}; média da base em ${baseTxt}`, `Rainfall: ${periodoMapa}; baseline average in ${baseTxt}`)}
-        universo={tx(
+        universo={tx<ReactNode>(
           "Chuva estimada por satélite (IMERG, produto de chuva da NASA: a versão Final é calibrada por pluviômetros, e a Late, dos dias mais recentes, não é): média dos pontos de grade dentro do contorno de cada bacia do Operador Nacional do Sistema Elétrico (ONS), ponderada pela área",
-          "Satellite-estimated rainfall (IMERG, NASA's rainfall product: the Final version is calibrated against rain gauges, and the Late version, for the most recent days, is not): average of the grid points inside the outline of each basin of the national grid operator (Operador Nacional do Sistema Elétrico, ONS), weighted by area",
+          <>
+            Satellite-estimated rainfall (IMERG, NASA&apos;s rainfall product: the Final version is calibrated against rain gauges, and the Late version, for the most recent days, is
+            not): average of the grid points inside the outline of each basin of the national grid operator (<Nome>Operador Nacional do Sistema Elétrico</Nome>, ONS), weighted by
+            area
+          </>,
         )}
         unidade={tx(
           "mm de chuva acumulada; anomalia em % da média da base; percentil: a posição da chuva entre as dos mesmos dias de anos anteriores",
@@ -396,17 +414,21 @@ export function AguaClima({
         selecionado={bacia?.bacia ?? null}
         onSelecionar={selecionar}
         chaveUrl="chu"
-        nota={tx(
+        nota={tx<ReactNode>(
           `Percentil e cobertura só na janela de 30 dias. A correlação com a ENA é associação descritiva (${baseAssoc}), não causa.${
             bacia && !ehMes && bacia.media_30d_base !== null
               ? ` A média de ${nomes[bacia.bacia]}, ${f.num(bacia.media_30d_base, 1)} mm, usa ${baseTxt}${inicioCsvDiario ? `, mas o CSV diário público começa em ${inicioCsvDiario}` : ""}: ela não se reproduz só com esse arquivo.`
               : ""
           }`,
-          `Percentile and coverage only for the 30-day window. The correlation with ENA is a descriptive association (${baseAssoc}), not a cause.${
-            bacia && !ehMes && bacia.media_30d_base !== null
-              ? ` The average for the ${nomes[bacia.bacia]}, ${f.num(bacia.media_30d_base, 1)} mm, uses ${baseTxt}${inicioCsvDiario ? `, but the public daily CSV starts in ${inicioCsvDiario}` : ""}: it cannot be reproduced from that file alone.`
-              : ""
-          }`,
+          comNomes(
+            `Percentile and coverage only for the 30-day window. The correlation with ENA is a descriptive association (${baseAssoc}), not a cause.${
+              bacia && !ehMes && bacia.media_30d_base !== null
+                ? ` The average for the ${nomes[bacia.bacia]}, ${f.num(bacia.media_30d_base, 1)} mm, uses ${baseTxt}${inicioCsvDiario ? `, but the public daily CSV starts in ${inicioCsvDiario}` : ""}: it cannot be reproduced from that file alone.`
+                : ""
+            }`,
+            nomesBacias,
+            idioma,
+          ),
         )}
       />
 
@@ -465,7 +487,7 @@ export function AguaClima({
           )}
           {assoc && (
             <RespostaCurta id="p019-associacao" vivo depois tamanho="sm" veredito={vereditoAssociacao(bacia, idioma) ?? assoc}>
-              {assoc}
+              {comNomes(assoc, nomesBacias, idioma)}
             </RespostaCurta>
           )}
         </SecaoDoPainel>
@@ -477,7 +499,7 @@ export function AguaClima({
           entidades={precipitacao.map((b) => ({ id: b.bacia, rotulo: nomes[b.bacia], sinonimos: [b.bacia] }))}
           selecionadas={escolhidas.map((b) => b.bacia)}
           onMudar={(ids) => definir({ cmp: ids })}
-          dicaBusca={tx("Buscar, por exemplo Grande, Paranaíba, São Francisco", "Search, for example Grande, Paranaíba, São Francisco")}
+          dicaBusca={tx("Buscar, por exemplo Grande, Paranaíba, São Francisco", "Search, for example Grande, Paranaíba, Tocantins")}
           vazio={tx("Nenhuma bacia escolhida. Escolha até quatro para ver a chuva mensal e a média na mesma escala.", "No basin chosen. Choose up to four to see monthly rainfall and the average on the same scale.")}
         >
           {() => null}
@@ -650,7 +672,7 @@ export function AguaClima({
           {previsao ? (
             <>
               <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-texto="previsao">
-                {bacia ? respostaPrevisao(previsao, bacia.bacia, idioma) : ""}
+                {bacia ? comNomes(respostaPrevisao(previsao, bacia.bacia, idioma), nomesBacias, idioma) : ""}
               </p>
               <p className="text-sm leading-relaxed text-carvao-muted">
                 {tx(
@@ -696,7 +718,7 @@ export function AguaClima({
                 linhas={linhasPrevisaoChuva(previsao, idioma)}
                 chaveLinha="id"
                 colunaRotulo="rotulo"
-                fonte={tx(`${previsao.modelo} (previsão); NASA POWER IMERG (média)`, `${previsao.modelo} (forecast); NASA POWER IMERG (average)`)}
+                fonte={tx(`${previsao.modelo} (previsão); NASA POWER IMERG (média)`, `${modeloPrevisao(previsao.modelo, "en")} (forecast); NASA POWER IMERG (average)`)}
                 versao={previsao.emitida_em}
                 nomeArquivo="agua-previsao-chuva"
                 selecionado={bacia?.bacia ?? null}
@@ -708,7 +730,7 @@ export function AguaClima({
                 linhas={linhasPrevisaoTemperatura(previsao, idioma)}
                 chaveLinha="id"
                 colunaRotulo="rotulo"
-                fonte={tx(`${previsao.modelo} (previsão); NASA POWER MERRA-2 (média)`, `${previsao.modelo} (forecast); NASA POWER MERRA-2 (average)`)}
+                fonte={tx(`${previsao.modelo} (previsão); NASA POWER MERRA-2 (média)`, `${modeloPrevisao(previsao.modelo, "en")} (forecast); NASA POWER MERRA-2 (average)`)}
                 versao={previsao.emitida_em}
                 nomeArquivo="agua-previsao-temperatura"
                 recolher

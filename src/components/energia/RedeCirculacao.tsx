@@ -5,6 +5,7 @@ import { Comparador } from "@/components/energia/Comparador";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import Link from "@/components/i18n/LinkIdioma";
 import { RedeEscolha, RedeLista } from "@/components/energia/RedeControles";
 import { RedeEsquemaFluxos, type FluxoEsquema } from "@/components/energia/RedeEsquemaFluxos";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
@@ -536,9 +537,9 @@ export function RedeCirculacao({
               <>
                 The four boundaries between subsystems published by ONS{escala === "hora" ? "; Argentina and Uruguay connected to the South" : ""}. The interchange with other
                 countries is in{" "}
-                <a href={rotaPainel("p029")} className="text-energia-dark underline underline-offset-4">
+                <Link href={rotaPainel("p029")} className="text-energia-dark underline underline-offset-4">
                   Balance and exterior
-                </a>
+                </Link>
                 .
               </>,
             )}

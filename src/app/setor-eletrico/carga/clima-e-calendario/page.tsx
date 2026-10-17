@@ -39,7 +39,8 @@ const fonteModelo = () =>
   );
 
 const colunasCoef = (): ColunaTabela[] => [
-  { id: "variavel", rotulo: tx("Variável", "Variable"), tipo: "texto" },
+  // nomes das variáveis do modelo: identificadores em português, marcados como nome na página inglesa
+  { id: "variavel", rotulo: tx("Variável", "Variable"), tipo: "texto", idiomaTexto: "nome" },
   { id: "grupo", rotulo: tx("Grupo", "Group"), tipo: "texto", categorica: true },
   { id: "coeficiente", rotulo: tx("Coeficiente (log)", "Coefficient (log)"), tipo: "numero", casas: 6 },
   { id: "ativa", rotulo: tx("Ativa no treino", "Active in training"), tipo: "texto", categorica: true },
@@ -132,6 +133,15 @@ export default function ClimaCalendarioPage() {
     ? (Object.keys(ROTULO_GRUPO) as (keyof typeof ROTULO_GRUPO)[])
         .map((gr) => `${rotuloGrupo(gr).toLowerCase()} (${p.especificacao.variaveis.filter((x) => x.grupo === gr).map((x) => x.nome).join(", ")})`)
         .join("; ")
+    : "";
+  // em inglês, os nomes das variáveis (identificadores do modelo, em português) saem como código
+  const variaveisPorGrupoEn: ReactNode = p
+    ? (Object.keys(ROTULO_GRUPO) as (keyof typeof ROTULO_GRUPO)[]).map((gr, i) => (
+        <span key={gr}>
+          {i ? "; " : ""}
+          {rotuloGrupo(gr).toLowerCase()} (<code>{p.especificacao.variaveis.filter((x) => x.grupo === gr).map((x) => x.nome).join(", ")}</code>)
+        </span>
+      ))
     : "";
   const dobras = p ? REGIOES.map((r) => `${nomeRegiao(r)} ${p.especificacao.nos_temperatura[r].map((x) => `${num(x, 2)} °C`).join(tx(" e ", " and "))}`).join("; ") : "";
   const produtos = Array.from(porProduto.entries())
@@ -321,7 +331,7 @@ export default function ClimaCalendarioPage() {
                           . Dobras de temperatura: {dobras}.
                         </>,
                         <>
-                          Variables by group: {variaveisPorGrupo}. Temperature breakpoints: {dobras}.
+                          Variables by group: {variaveisPorGrupoEn}. Temperature breakpoints: {dobras}.
                         </>,
                       )}
                     </p>

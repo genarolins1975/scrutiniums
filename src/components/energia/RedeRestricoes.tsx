@@ -10,6 +10,7 @@ import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Nome } from "@/components/i18n/Nome";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
@@ -447,9 +448,19 @@ export function RedeRestricoes({
           nomeArquivo="rede-perturbacoes-recentes"
           chaveUrl="pr"
           ordemInicial={{ coluna: "inicio", direcao: "desc" }}
-          nota={tx(
+          nota={tx<ReactNode>(
             `${num(r.interrupcoes.registros_abaixo_de_100mw, 0)} dos ${num(r.interrupcoes.registros, 0)} registros têm carga interrompida abaixo de 100 MW${criterioCorte ? `, embora a descrição do conjunto diga “${criterioCorte}”` : ""}; os registros são publicados como vieram.`,
-            `${num(r.interrupcoes.registros_abaixo_de_100mw, 0)} of the ${num(r.interrupcoes.registros, 0)} records have interrupted load below 100 MW${criterioCorte ? `, although the dataset description says, in Portuguese, “${criterioCorte}”` : ""}; the records are published as they came.`,
+            <>
+              {num(r.interrupcoes.registros_abaixo_de_100mw, 0)} of the {num(r.interrupcoes.registros, 0)} records have interrupted load below 100 MW
+              {criterioCorte ? (
+                <>
+                  , although the dataset description says <TrechoPortugues regiao="rede-criterio-corte">“{criterioCorte}”</TrechoPortugues>
+                </>
+              ) : (
+                ""
+              )}
+              ; the records are published as they came.
+            </>,
           )}
         />
       </SecaoDoPainel>

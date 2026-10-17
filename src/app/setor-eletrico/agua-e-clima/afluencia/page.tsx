@@ -23,6 +23,7 @@ import {
   colunasPmo,
   colunasRevisoesCapturas,
   colunasRevisoesMlt,
+  nomesProprios,
   colunasUnidade,
   curtoRegiao,
   entidadesEna,
@@ -59,6 +60,9 @@ import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { AguaDetalheGold } from "@/lib/energia/tipos-agua";
 import { tx } from "@/lib/energia/idioma";
+import { comNomes } from "@/components/energia/AguaLegenda";
+import { NOME_RELATORIO_PMO } from "@/lib/energia/i18n/agua-carga-rede";
+import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 
 export const dynamic = "force-static";
@@ -73,7 +77,7 @@ export async function generateMetadata(_props: unknown, anterior: ResolvingMetad
   }, anterior);
 }
 
-const fonte = () => tx("ONS, ENA Diário por Subsistema, por REE e por Bacia (captura mais recente de cada ano)", "ONS, ENA Diário por Subsistema, por REE e por Bacia (daily ENA by subsystem, REE and basin; most recent capture of each year)");
+const fonte = () => tx("ONS, ENA Diário por Subsistema, por REE e por Bacia (captura mais recente de cada ano)", "ONS, daily ENA by subsystem, REE and basin (most recent capture of each year)");
 
 export default function AfluenciaPage() {
   const g = lerGold<AguaDetalheGold>("agua_detalhe.json");
@@ -150,14 +154,14 @@ export default function AfluenciaPage() {
             "High inflow does not mean a full reservoir: storage also depends on how much is generated, spilled and transferred.",
           )}
           recorte={tx(`Até ${dataBR(g.dias_referencia.ena)} · SIN, REE e bacias · % da MLT`, `Through ${dataBR(g.dias_referencia.ena)} · SIN, REEs and basins · % of MLT`)}
-          fonte={tx("ONS, ENA Diário", "ONS, ENA Diário (daily ENA)")}
+          fonte={tx("ONS, ENA Diário", "ONS, daily ENA")}
           referencia={tx(
             <>
               ONS, ENA Diário por Subsistema, por REE e por Bacia, até {dataBR(g.dias_referencia.ena)}; MLT do Relatório Executivo do PMO; processado em {carimbo(g.gerado_em)}.
             </>,
             <>
-              ONS, ENA Diário por Subsistema, por REE e por Bacia (daily ENA by subsystem, REE and basin), through {dataBR(g.dias_referencia.ena)}; MLT from the PMO Executive Report
-              (Relatório Executivo do PMO); processed on {carimbo(g.gerado_em)}.
+              ONS, <Nome>ENA Diário por Subsistema, por REE e por Bacia</Nome> (daily ENA by subsystem, REE and basin), through {dataBR(g.dias_referencia.ena)}; MLT from the PMO
+              Executive Report (<Nome>Relatório Executivo do PMO</Nome>); processed on {carimbo(g.gerado_em)}.
             </>,
           )}
           datas={
@@ -237,8 +241,8 @@ export default function AfluenciaPage() {
                         em 15 de julho, em que cada degrau é uma troca de versão, e as mudanças por usina.
                       </>,
                       <>
-                        Under Analyze: the MLT of the ONS ENA files against that of the monthly report of the Monthly Operation Program (Programa Mensal de Operação, PMO), the MLT of
-                        each subsystem on January 15 and July 15, where each step is a change of version, and the changes by plant.
+                        Under Analyze: the MLT of the ONS ENA files against that of the monthly report of the Monthly Operation Program (<Nome>Programa Mensal de Operação</Nome>, PMO), the MLT of
+                        each subsystem on 15 January and 15 July, where each step is a change of version, and the changes by plant.
                       </>,
                     )}
                   </p>
@@ -300,7 +304,7 @@ export default function AfluenciaPage() {
                   <PequenosMultiplos
                     titulo={tx(
                       `MLT implícita de cada subsistema no dia 15 de janeiro e no dia 15 de julho${desdeImplicita ? `, desde ${desdeImplicita}` : ""}`,
-                      `Implicit MLT of each subsystem on January 15 and July 15${desdeImplicita ? `, since ${desdeImplicita}` : ""}`,
+                      `Implicit MLT of each subsystem on 15 January and 15 July${desdeImplicita ? `, since ${desdeImplicita}` : ""}`,
                     )}
                     dados={serieMltJanJul(f.mlt)}
                     chaveX="x"
@@ -315,8 +319,8 @@ export default function AfluenciaPage() {
                       titulo: nomeRegiao(sm),
                       series: [
                         // o mesmo rótulo em todos os painéis: a legenda os junta em dois (a cor é a do subsistema, e o título do painel o nomeia)
-                        { id: `${sm}_1`, rotulo: tx("15 de janeiro", "January 15"), cor: COR_REGIAO[sm], espessura: 2 },
-                        { id: `${sm}_7`, rotulo: tx("15 de julho", "July 15"), cor: COR_REGIAO[sm], tracejada: true, espessura: 2 },
+                        { id: `${sm}_1`, rotulo: tx("15 de janeiro", "15 January"), cor: COR_REGIAO[sm], espessura: 2 },
+                        { id: `${sm}_7`, rotulo: tx("15 de julho", "15 July"), cor: COR_REGIAO[sm], tracejada: true, espessura: 2 },
                       ],
                     }))}
                   />
@@ -328,7 +332,7 @@ export default function AfluenciaPage() {
                         {f.mlt.anos_regra}.
                       </>,
                       <>
-                        Solid line: January 15; dashed line: July 15. Implicit MLT = ENA ÷ (% of MLT ÷ 100), read from the files themselves. It grows as plants come in and changes when
+                        Solid line: 15 January; dashed line: 15 July. Implicit MLT = ENA ÷ (% of MLT ÷ 100), read from the files themselves. It grows as plants come in and changes when
                         ONS changes the version of the reference; January and July show the rainy and the dry season, and each step is a change of version.{" "}
                         <TrechoPortugues regiao="agua-mlt-anos-regra">{f.mlt.anos_regra}</TrechoPortugues>.
                       </>,
@@ -349,7 +353,7 @@ export default function AfluenciaPage() {
                   />
                   <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-carvao" data-textos="mlt">
                     {textosMlt(f.mlt, g.dias_referencia.ena.slice(0, 4)).map((t) => (
-                      <li key={t}>{t}</li>
+                      <li key={t}>{comNomes(t, [NOME_RELATORIO_PMO])}</li>
                     ))}
                   </ul>
                   <TabelaInterativa
@@ -360,7 +364,7 @@ export default function AfluenciaPage() {
                     colunaRotulo="mes"
                     fonte={tx(
                       "ONS, Relatório Executivo do PMO (tabela MLT das ENAs) e ENA Diário por Subsistema",
-                      "ONS, Relatório Executivo do PMO (MLT table of the ENAs) and ENA Diário por Subsistema (daily ENA by subsystem)",
+                      "ONS, PMO Executive Report (MLT table of the ENAs) and daily ENA by subsystem",
                     )}
                     versao={versao}
                     nomeArquivo="agua-mlt-pmo"
@@ -377,7 +381,7 @@ export default function AfluenciaPage() {
                     linhas={linhasRevisoesMlt(f.mlt)}
                     chaveLinha="id"
                     colunaRotulo="data"
-                    fonte={tx("ONS, ENA Diário por Reservatório", "ONS, ENA Diário por Reservatório (daily ENA by reservoir)")}
+                    fonte={tx("ONS, ENA Diário por Reservatório", "ONS, daily ENA by reservoir")}
                     versao={versao}
                     nomeArquivo="agua-mlt-revisoes"
                     nota={tx(
@@ -391,7 +395,7 @@ export default function AfluenciaPage() {
                     linhas={linhasMltAnos(f.mlt)}
                     chaveLinha="id"
                     colunaRotulo="ano" // i18n: dado
-                    fonte={tx("ONS, ENA Diário por Reservatório", "ONS, ENA Diário por Reservatório (daily ENA by reservoir)")}
+                    fonte={tx("ONS, ENA Diário por Reservatório", "ONS, daily ENA by reservoir")}
                     versao={versao}
                     nomeArquivo="agua-mlt-anos"
                     ordemInicial={{ coluna: "ano", direcao: "desc" }} // i18n: dado
@@ -406,7 +410,7 @@ export default function AfluenciaPage() {
                         subsistema nas mesmas colunas: é a mesma unidade, MWmed (média do dia).
                       </>,
                       <>
-                        The ONS data dictionaries call the ENA columns by subsystem, REE and basin MWmonth (MWmês), and those by reservoir MWavg (MWmed). The sum of the plants
+                        The ONS data dictionaries call the ENA columns by subsystem, REE and basin MWmonth (<Nome>MWmês</Nome>), and those by reservoir MWavg (MWmed). The sum of the plants
                         reproduces the subsystem in the same columns: it is the same unit, MWavg (average over the day).
                       </>,
                     )}
@@ -417,7 +421,7 @@ export default function AfluenciaPage() {
                     linhas={linhasUnidade(f.mlt)}
                     chaveLinha="id"
                     colunaRotulo="sm"
-                    fonte={tx("ONS, ENA Diário por Reservatório e por Subsistema", "ONS, ENA Diário por Reservatório e por Subsistema (daily ENA by reservoir and by subsystem)")}
+                    fonte={tx("ONS, ENA Diário por Reservatório e por Subsistema", "ONS, daily ENA by reservoir and by subsystem")}
                     versao={versao}
                     nomeArquivo="agua-ena-unidade"
                     nota={tx(
@@ -440,7 +444,7 @@ export default function AfluenciaPage() {
                         </>,
                         <>
                           REEs that appear in the ENA file after the start of the dataset:{" "}
-                          {reeNovos}; the range of those REEs uses only
+                          {comNomes(reeNovos, nomesProprios(f.ree_novos_por_data.flatMap((x) => x.novos)))}; the range of those REEs uses only
                           years of the current perimeter.
                         </>,
                       )}
@@ -456,7 +460,7 @@ export default function AfluenciaPage() {
                     linhas={linhasRevisoesCapturas(f.revisoes_entre_capturas_30d)}
                     chaveLinha="id"
                     colunaRotulo="sm"
-                    fonte={tx("ONS, ENA Diário por Subsistema (duas capturas)", "ONS, ENA Diário por Subsistema (daily ENA by subsystem; two captures)")}
+                    fonte={tx("ONS, ENA Diário por Subsistema (duas capturas)", "ONS, daily ENA by subsystem (two captures)")}
                     versao={versao}
                     nomeArquivo="agua-ena-revisoes-capturas"
                     semLinhas={tx("Nenhuma revisão entre as capturas.", "No revision between the captures.")}
@@ -467,7 +471,7 @@ export default function AfluenciaPage() {
                     linhas={linhasCapturas(f.captura_por_ano)}
                     chaveLinha="id"
                     colunaRotulo="ano" // i18n: dado
-                    fonte={tx("ONS, ENA Diário por Subsistema", "ONS, ENA Diário por Subsistema (daily ENA by subsystem)")}
+                    fonte={tx("ONS, ENA Diário por Subsistema", "ONS, daily ENA by subsystem")}
                     versao={versao}
                     nomeArquivo="agua-ena-capturas"
                   />

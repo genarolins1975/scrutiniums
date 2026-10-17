@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { AguaEscolha, AguaLista } from "@/components/energia/AguaControles";
-import { AguaLegenda } from "@/components/energia/AguaLegenda";
+import { AguaLegenda, comNomes, TextoUnidadeMwmes } from "@/components/energia/AguaLegenda";
 import { AguaRestaurar } from "@/components/energia/AguaRestaurar";
 import { AguaTabela } from "@/components/energia/AguaTabela";
 import { Comparador } from "@/components/energia/Comparador";
@@ -15,6 +15,7 @@ import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
+import { Nome } from "@/components/i18n/Nome";
 import {
   COR_REGIAO,
   SUBSISTEMAS,
@@ -30,6 +31,7 @@ import {
   linhasReservatorios,
   motivoSemBalanco,
   nomeProprio,
+  nomesProprios,
   nomeRegiao,
   notaVazoesCoincidem,
   reservatorioDaParcela,
@@ -45,7 +47,6 @@ import {
   textoOutraJanelaDaEar,
   textoParcelasFaltantes,
   textoPartesDaEar,
-  textoUnidadeMwmes,
   textoVolumeForaDaFaixa,
   vereditoBalancoReservatorio,
   vereditoDecomposicao,
@@ -253,7 +254,12 @@ export function MedidasBalanco({
         casas={2}
         unidade="hm³"
         periodo={periodo}
-        nota={tx(`reservatório ${nomeRes}: variação observada menos afluência mais defluência.`, `${nomeRes} reservoir: observed change minus inflow plus outflow.`)}
+        nota={tx<ReactNode>(
+          `reservatório ${nomeRes}: variação observada menos afluência mais defluência.`,
+          <>
+            <Nome>{nomeRes}</Nome> reservoir: observed change minus inflow plus outflow.
+          </>,
+        )}
         motivoAusencia={textoMotivo}
         endereco={endereco}
       />
@@ -320,6 +326,11 @@ export function AguaReservatorios({
   };
   const escolhidos = (v.cmp as string[]).filter((id) => lista.some((r) => r.id === id));
   const outraJanela = textoOutraJanelaDaEar(dec, armazenamento, idioma);
+  // nomes próprios dos reservatórios, para marcar em <Nome> nas frases montadas em agua.ts (página inglesa)
+  const nomesRes = useMemo(
+    () => nomesProprios(lista.map((r) => r.nome), decomposicao.flatMap((d) => [...d.maiores_quedas, ...d.maiores_altas].map((x) => x.nome ?? x.cod))),
+    [lista, decomposicao],
+  );
   const foraDaFaixa = res ? volumeForaDaFaixa(res.vol_util_pct_fim) : null;
   const opcoesRes = useMemo(
     () =>
@@ -332,6 +343,7 @@ export function AguaReservatorios({
         .map((r) => ({
           id: r.id,
           rotulo: `${nomeProprio(r.nome, idioma)}${r.balanco_calculado ? "" : porIdioma(idioma, { pt: " (sem balanço)", en: " (no balance)" })}`,
+          nome: true,
           grupo: r.subsistema && (SUBSISTEMAS as readonly string[]).includes(r.subsistema) ? nomeRegiao(r.subsistema as Submercado, idioma) : undefined,
         })),
     [lista, idioma],
@@ -418,7 +430,7 @@ export function AguaReservatorios({
     <div className="space-y-6">
       <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
         <RespostaCurta id="p020" vivo veredito={dec ? vereditoDecomposicao(dec, idioma) : semDec}>
-          {dec ? respostaDecomposicao(dec, idioma) : semDec}
+          {dec ? comNomes(respostaDecomposicao(dec, idioma), nomesRes, idioma) : semDec}
         </RespostaCurta>
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
           <AguaEscolha
@@ -465,9 +477,14 @@ export function AguaReservatorios({
             )}
             universo={tx(
               `${dec.n_reservatorios} reservatórios que contam na EAR ${de}. ${textoPartesDaEar(decomposicao, lista, "pt")}`,
-              `${dec.n_reservatorios} reservoirs that count in the EAR ${de}. ${textoPartesDaEar(decomposicao, lista, "en")}`,
+              comNomes(`${dec.n_reservatorios} reservoirs that count in the EAR ${de}. ${textoPartesDaEar(decomposicao, lista, "en")}`, nomesRes, "en"),
             )}
-            unidade={tx(`${textoUnidadeMwmes("pt")}; a EAR e a variação dos reservatórios usam esta unidade`, `${textoUnidadeMwmes("en")}; the EAR and the change of the reservoirs use this unit`)}
+            unidade={
+              <TextoUnidadeMwmes
+                idioma={idioma}
+                sufixo={tx("; a EAR e a variação dos reservatórios usam esta unidade", "; the EAR and the change of the reservoirs use this unit")}
+              />
+            }
           />
           <p className="text-sm text-carvao-muted">
             {tx("Escolher uma barra troca o reservatório da conta da água, mais abaixo (", "Choosing a bar changes the reservoir of the water balance, further down (")}
@@ -484,7 +501,7 @@ export function AguaReservatorios({
             linhas={linhasDec}
             chaveLinha="id"
             colunaRotulo="rotulo"
-            fonte={tx("ONS, EAR Diário por Reservatório", "ONS, EAR Diário por Reservatório (daily EAR by reservoir)")}
+            fonte={tx("ONS, EAR Diário por Reservatório", "ONS, daily EAR by reservoir")}
             versao={dec.fim}
             nomeArquivo={`agua-decomposicao-ear-${dec.sm}`}
             selecionado={barraSel}
@@ -503,7 +520,12 @@ export function AguaReservatorios({
       {res && (
         <SecaoDoPainel
           id="balanco"
-          titulo={tx(`Como foi a conta da água em ${nomeRes}?`, `How did the water balance of ${nomeRes} turn out?`)}
+          titulo={tx<ReactNode>(
+            `Como foi a conta da água em ${nomeRes}?`,
+            <>
+              How did the water balance of <Nome>{nomeRes}</Nome> turn out?
+            </>,
+          )}
           lead={tx(
             "A conta de 30 dias, em hm³ (milhões de metros cúbicos): o que entrou (afluência), o que saiu (defluência, pelas turbinas, pelos vertedouros e por outras estruturas) e o resíduo, a diferença que sobra quando a conta não fecha.",
             "The 30-day balance, in hm³ (millions of cubic meters): what came in (inflow), what went out (outflow, through the turbines, the spillways and other structures) and the residual, the difference left over when the balance does not close.",
@@ -518,7 +540,7 @@ export function AguaReservatorios({
           />
           {/* depois: a resposta fica na ordem do documento, abaixo do título e da lista, e não antes do título da seção */}
           <RespostaCurta id="p020-balanco" vivo depois veredito={vereditoBalancoReservatorio(res, janela, semCadastro, idioma)}>
-            {respostaBalanco(res, janela, semCadastro, idioma)}
+            {comNomes(respostaBalanco(res, janela, semCadastro, idioma), nomesRes, idioma)}
           </RespostaCurta>
           {foraDaFaixa && (
             <p data-aviso="volume-fora-da-faixa" className="max-w-prose2 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao-muted">
@@ -646,9 +668,13 @@ export function AguaReservatorios({
             chaveUrl="res"
             dicaBusca={tx("Nome, bacia ou identificador", "Name, basin or identifier")}
             recolher
-            nota={tx(
+            nota={tx<ReactNode>(
               `Sem balanço: ${f.plural(lista.filter((r) => !r.balanco_calculado).length, "reservatório", "reservatórios")} nesta lista, com o motivo exato na coluna Observação (modo Analisar) e no CSV. Nada é preenchido; o resíduo nunca é zerado por ajuste. ${textoVolumeForaDaFaixa(lista, "pt")}`,
-              `Without a balance: ${f.plural(lista.filter((r) => !r.balanco_calculado).length, "reservoir", "reservoirs")} in this list, with the exact reason in the Note column (Analyze mode) and in the CSV. Nothing is filled in; the residual is never zeroed by adjustment. ${textoVolumeForaDaFaixa(lista, "en")}`,
+              comNomes(
+                `Without a balance: ${f.plural(lista.filter((r) => !r.balanco_calculado).length, "reservoir", "reservoirs")} in this list, with the exact reason in the Note column (Analyze mode) and in the CSV. Nothing is filled in; the residual is never zeroed by adjustment. ${textoVolumeForaDaFaixa(lista, "en")}`,
+                nomesRes,
+                "en",
+              ),
             )}
           />
         </SecaoDoPainel>
@@ -661,7 +687,12 @@ export function AguaReservatorios({
           id="serie-diaria"
           titulo={
             nomeRes
-              ? tx(`Como o volume e as vazões variaram dia a dia em ${nomeRes}?`, `How did the volume and flows of ${nomeRes} vary day by day?`)
+              ? tx<ReactNode>(
+                  `Como o volume e as vazões variaram dia a dia em ${nomeRes}?`,
+                  <>
+                    How did the volume and flows of <Nome>{nomeRes}</Nome> vary day by day?
+                  </>,
+                )
               : tx("Como o volume e as vazões variaram dia a dia?", "How did the volume and flows vary day by day?")
           }
           lead={tx(

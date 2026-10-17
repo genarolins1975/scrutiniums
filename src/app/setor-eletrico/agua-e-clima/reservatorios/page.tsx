@@ -12,13 +12,16 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
+import { comNomes, UnidadeMwmes } from "@/components/energia/AguaLegenda";
 import { Unidade } from "@/components/evidencia/Unidade";
+import { Nome } from "@/components/i18n/Nome";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
   colunasDecomposicaoSubsistemas,
   entidadesEar,
   linhasDecomposicaoSubsistemas,
   nomeProprio,
+  nomesProprios,
   perguntaPainel,
   revisoesCapturaUnica,
   rotaPainel,
@@ -49,7 +52,7 @@ export async function generateMetadata(_props: unknown, anterior: ResolvingMetad
 const fonte = () =>
   tx(
     "ONS, Dados Hidráulicos por Reservatório (base diária) e Reservatórios (cadastro)",
-    "ONS, Dados Hidráulicos por Reservatório (daily hydraulic data by reservoir) and Reservatórios (register)",
+    "ONS, daily hydraulic data by reservoir and reservoir register",
   );
 
 export default function ReservatoriosPage() {
@@ -167,7 +170,8 @@ export default function ReservatoriosPage() {
               ONS, EAR Diário por Reservatório e Dados Hidráulicos por Reservatório, até {dataBR(g.dias_referencia.reservatorios)}; processado em {carimbo(g.gerado_em)}.
             </>,
             <>
-              ONS, EAR Diário por Reservatório and Dados Hidráulicos por Reservatório (daily EAR and hydraulic data by reservoir), through {dataBR(g.dias_referencia.reservatorios)};
+              ONS, <Nome>EAR Diário por Reservatório</Nome> and <Nome>Dados Hidráulicos por Reservatório</Nome> (daily EAR and hydraulic data by reservoir), through{" "}
+              {dataBR(g.dias_referencia.reservatorios)};
               processed on {carimbo(g.gerado_em)}.
             </>,
           )}
@@ -191,8 +195,8 @@ export default function ReservatoriosPage() {
               saiu (defluência, pelas turbinas, pelos vertedouros e por outras estruturas) e o resíduo, a diferença que sobra quando a conta não fecha.
             </>,
             <>
-              The <Termo slug="ear">EAR</Termo> (stored energy) of a subsystem is the sum of the energy held in each reservoir, in <Unidade u="MWmês" />.{" "}
-              {r ? textoPartesDaEar(r.decomposicao_ear, r.lista) : textoPartesDaEar([], [])} This page shows which reservoirs explain the 30-day change and, in each one, the water
+              The <Termo slug="ear">EAR</Termo> (stored energy) of a subsystem is the sum of the energy held in each reservoir, in <UnidadeMwmes />.{" "}
+              {comNomes(r ? textoPartesDaEar(r.decomposicao_ear, r.lista) : textoPartesDaEar([], []), nomesProprios((r?.lista ?? []).map((x) => x.nome), (r?.decomposicao_ear ?? []).flatMap((d) => [...d.maiores_quedas, ...d.maiores_altas].map((x) => x.nome ?? x.cod))))} This page shows which reservoirs explain the 30-day change and, in each one, the water
               balance, in hm³ (millions of cubic meters): what came in (inflow), what went out (outflow, through the turbines, the spillways and other structures) and the residual, the
               difference left over when the balance does not close.
             </>,
@@ -276,7 +280,7 @@ export default function ReservatoriosPage() {
                       colunaRotulo="sm"
                       fonte={tx(
                         "ONS, EAR Diário por Reservatório e por Subsistema; ENA Diário por Subsistema; Balanço de Energia",
-                        "ONS, EAR Diário por Reservatório e por Subsistema; ENA Diário por Subsistema; Balanço de Energia (daily EAR by reservoir and subsystem; daily ENA by subsystem; energy balance)",
+                        "ONS, daily EAR by reservoir and by subsystem; daily ENA by subsystem; energy balance",
                       )}
                       versao={r.decomposicao_ear[0]?.fim ?? r.fim}
                       nomeArquivo="agua-decomposicao-subsistemas"
@@ -294,7 +298,7 @@ export default function ReservatoriosPage() {
                 {r && (
                   <SecaoDoPainel id="regras-p020" nivel="auditar" titulo={tx("Regras, cobertura, fontes e arquivos", "Rules, coverage, sources and files")}>
                     <AguaRegras regras={g.regras} chaves={["balanco_reservatorio", "decomposicao_ear", "capacidade"]} />
-                    <p className="text-sm text-carvao-muted">{textoSemCadastro(semCadastroNomes ?? [])}</p>
+                    <p className="text-sm text-carvao-muted">{comNomes(textoSemCadastro(semCadastroNomes ?? []), nomesProprios(r.lista.map((x) => x.nome)))}</p>
                     <p className="text-sm text-carvao-muted">
                       <TrechoPortugues regiao="agua-criterio-lista">{r.criterio_lista}</TrechoPortugues>.
                     </p>

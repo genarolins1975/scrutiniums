@@ -1,4 +1,4 @@
-import { dataBR } from "@/lib/energia/formato";
+import { dataBR, nomeMes } from "@/lib/energia/formato";
 import type { Idioma } from "@/lib/idioma";
 
 /**
@@ -210,3 +210,50 @@ export const TIPO_REGRA_CARGA_EN: Readonly<Record<string, string>> = {
   conferencia: "cross-check",
   registros_esperados: "expected records",
 };
+
+/* ---------- Água e clima (segunda rodada) ---------- */
+
+/** Modelo da previsão do tempo, como a gold o descreve (agua_detalhe.clima.previsao.modelo). */
+export const MODELO_PREVISAO_EN: Readonly<Record<string, string>> = {
+  "ECMWF IFS 0,25° (dados abertos do ECMWF), rodada de 00Z pela API de rodadas individuais do Open-Meteo":
+    "ECMWF IFS 0.25° (ECMWF open data), 00Z run through the Open-Meteo single-runs API",
+};
+
+/** Descrição do modelo da previsão no idioma; sem entrada na tabela, a da gold. */
+export function modeloPrevisao(modelo: string, idioma: Idioma): string {
+  return rotuloDaGold(MODELO_PREVISAO_EN, modelo, idioma);
+}
+
+/* ---------- Rede e Carga (segunda rodada) ---------- */
+
+/** Mês por extenso em português ("janeiro") → número do mês; null se não for mês. */
+function numeroDoMes(nome: string): number | null {
+  for (let m = 1; m <= 12; m++) if (nomeMes(m, "pt", true) === nome.toLowerCase()) return m;
+  return null;
+}
+
+/**
+ * Amostra da conferência do programa do exterior com o PDO (rede_detalhe.programado.versao_programa.conferencia_pdo.amostra), como o
+ * pipeline a escreve: "últimos N dias publicados e dias A e B de cada mês desde <mês> de <ano>". Os números saem da própria gold.
+ */
+export function amostraPdo(amostra: string, idioma: Idioma): string {
+  if (idioma !== "en") return amostra;
+  const m = /^últimos (\d+) dias publicados e dias (\d+) e (\d+) de cada mês desde ([a-zç]+) de (\d{4})$/.exec(amostra);
+  const mes = m ? numeroDoMes(m[4]) : null;
+  if (!m || !mes) return amostra;
+  return `last ${m[1]} published days and days ${m[2]} and ${m[3]} of each month since ${nomeMes(mes, "en", true)} ${m[5]}`;
+}
+
+/**
+ * Motivo de a temperatura da janela da carga ter menos dias (carga_detalhe.a07.janela_modelo.motivo), como o pipeline o escreve:
+ * "a temperatura de dd/mm/aaaa ainda não estava publicada pela NASA POWER na última captura". null sem forma inglesa conferida.
+ */
+export function motivoJanelaTemperatura(motivo: string, idioma: Idioma): string | null {
+  if (idioma !== "en") return motivo;
+  const m = /^a temperatura de (\d{2})\/(\d{2})\/(\d{4}) ainda não estava publicada pela NASA POWER na última captura$/.exec(motivo);
+  return m ? `the temperature for ${dataBR(`${m[3]}-${m[2]}-${m[1]}`, "en")} had not yet been published by NASA POWER at the latest capture` : null;
+}
+
+/** Nomes de publicações e conjuntos do ONS citados em frases montadas em src/lib/energia: na página inglesa, marcados em <Nome>. */
+export const NOME_RELATORIO_PMO = "Relatório Executivo do PMO"; // i18n: dado (nome próprio, marcado em <Nome>)
+export const NOME_CARGA_DIARIA = "Carga de Energia Diária"; // i18n: dado (nome próprio, marcado em <Nome>)
