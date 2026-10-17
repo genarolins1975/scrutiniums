@@ -98,6 +98,8 @@ describe("rotas do Setor Elétrico nos dois idiomas", () => {
     expect(hrefNoIdioma("/setor-eletrico/pld?sub=SE#historico", "en")).toBe("/en/setor-eletrico/pld?sub=SE#historico");
     expect(hrefNoIdioma("/setor-eletrico/pld", "pt")).toBe("/setor-eletrico/pld");
     expect(hrefNoIdioma("/energia/gold/pld.json", "en")).toBe("/energia/gold/pld.json");
+    // destino de redirecionamento de alias de distribuidora (ficha com parâmetro) também fica em inglês
+    expect(hrefNoIdioma("/setor-eletrico/empresas/rge", "en")).toBe("/en/setor-eletrico/empresas/rge");
   });
 
   it("a irmã inglesa de um painel continua exigindo conta e leva ao login inglês com o destino", async () => {

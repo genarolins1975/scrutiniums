@@ -62,6 +62,7 @@ import { alertasDePerdas, arvoreDoArquivo, evidenciaPerdas, evidenciasReceita, e
 import { comValorExibido } from "@/lib/energia/evidencia";
 import { carimbo, datasLegiveis, sinal } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
+import { hrefNoIdioma } from "@/lib/i18n-href";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { CLASSIFICACAO_DIST_EN, DEFINICAO_EMPRESAS_EN, NOMES_FONTES, atoNoIdioma, comNomes, motivoTarifa, traduzir } from "@/lib/energia/i18n/empresas-leiloes";
 import { SIGLAS, SIGLAS_IDIOMAS } from "@/lib/energia/siglas";
@@ -149,7 +150,8 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
   const r = resolverEntidade(g.distribuidoras.indice, params.entidade);
   if (!r) notFound();
   // slug alternativo (outra sigla publicada pelas fontes): rota de apoio que leva à ficha principal
-  if (!r.principal) permanentRedirect(rotaEntidade(r.dist.slug));
+  // alias de slug: redireciona para a ficha principal no mesmo idioma (a irmã inglesa leva a /en)
+  if (!r.principal) permanentRedirect(hrefNoIdioma(rotaEntidade(r.dist.slug), idiomaEnergia()));
 
   const en = idiomaEnergia() === "en";
   const d = r.dist;

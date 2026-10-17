@@ -12,7 +12,7 @@
   "escopo": {
     "inventario_sha256": "81fa0497dc22b120d2f690894249cbdc229d93caeae253f350c0c47f59911e40",
     "arquivos_analisados": 1173,
-    "fontes_sha256": "923496988911735cc2371397105219ff04353ce3a60828da0344e76ebd27ba3c",
+    "fontes_sha256": "2246e075d857879ddbdb32feaadef45c92b519134c20e09d499d6c0c8a201249",
     "pendencias_sha256": "2ff4104e36c6f1a74e5b3ec4409d41f39b56f1608e5d8667a23aac40ff64c0ac",
     "nao_classificadas": [
       {
@@ -193,7 +193,7 @@
           "chaves_objetos": 35700
         },
         "exclusoes": {
-          "importacoes": 4859,
+          "importacoes": 4860,
           "atributos_tecnicos": 8481,
           "tipos": 3705
         },
