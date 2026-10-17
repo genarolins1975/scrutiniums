@@ -1,10 +1,10 @@
-import GovernancaPage from "../../../sobre/governanca/page";
-import { PortuguesApenas } from "@/components/i18n/PortuguesApenas";
-import { metadadosPortuguesApenas } from "@/lib/i18n-metadata";
+import { GovernancaConteudo } from "@/components/institucional/GovernancaConteudo";
+import { TEXTOS_GOVERNANCA } from "@/i18n/paginas/governanca";
+import { metadadosIngleses } from "@/lib/i18n-metadata";
 
 export const dynamic = "force-static";
-export const metadata = metadadosPortuguesApenas("/sobre/governanca");
+export const metadata = metadadosIngleses("/sobre/governanca", { titulo: TEXTOS_GOVERNANCA.en.titulo, descricao: TEXTOS_GOVERNANCA.en.descricaoMeta });
 
 export default function GovernancaInglesPage() {
-  return <PortuguesApenas><GovernancaPage /></PortuguesApenas>;
+  return <GovernancaConteudo idioma="en" />;
 }

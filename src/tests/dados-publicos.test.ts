@@ -74,7 +74,7 @@ describe("integração: rotas públicas registradas", () => {
     // o cabeçalho traz só as abas dos observatórios; dados e resumo do Crédito ficam no rodapé
     const footer = readFileSync(join(process.cwd(), "src/components/layout/Footer.tsx"), "utf-8");
     expect(footer).toContain('href="/dados"');
-    expect(footer).toContain('href="/resumo"');
+    expect(footer).toContain('href={h("/resumo")}');
   });
 
   it("páginas estáticas: force-static declarado (nunca fs em runtime serverless)", () => {

@@ -7,5 +7,12 @@
  "conselho_consultivo": [],
  "api": { "aviso_previo_quebra_dias": null },
  "dados": { "licenca_id": "cc-by-4.0", "licenca_derivados": "Os dados derivados publicados pela Scrutiniums (séries, tabelas, arquivos da API e gráficos) estão sob a licença Creative Commons Atribuição 4.0 Internacional (CC BY 4.0): podem ser copiados, adaptados e usados, inclusive para fins comerciais, desde que citem a Scrutiniums e a fonte primária. Dados de terceiros seguem a licença da fonte original." },
- "zenodo": { "criadores": [], "comunidade": "", "doi_conceito": "" }
+ "zenodo": { "criadores": [], "comunidade": "", "doi_conceito": "" },
+ "en": {
+  "_leia": "Tradução de cortesia dos campos acima, usada nas páginas em inglês. Campo PT preenchido exige o EN correspondente (src/tests/institucional.test.ts); o texto em português prevalece.",
+  "natureza_juridica": "individual",
+  "financiamento": "Funded with the maintainer's own resources, with no external funding, sponsorship or advertising.",
+  "conflitos_de_interesse": "The person responsible for the platform holds board and executive positions at entities in the financial system. Because the editorial notes have no human review, nobody is in a position to recuse themselves; for that reason the notes do not cover named financial institutions, deposit insurance and resolution regimes, or Open Finance and its participants, and a code-based validator blocks these topics. The full rules are in the Editorial Constitution, published at /en/sobre/governanca.",
+  "licenca_derivados": "Derived data published by Scrutiniums (series, tables, API files and charts) are licensed under Creative Commons Attribution 4.0 International (CC BY 4.0): they may be copied, adapted and used, including for commercial purposes, provided that Scrutiniums and the primary source are credited. Third-party data follow the license of the original source."
+ }
 }

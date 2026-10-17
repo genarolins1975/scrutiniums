@@ -7,7 +7,7 @@ describe("registro de irmãs por idioma", () => {
     expect(PARES_DE_IDIOMA.map(({ pt, conteudo }) => ({ pt, conteudo })))
       .toEqual(inventario.rotas.literais);
     expect(PARES_DE_IDIOMA).toContainEqual({
-      pt: "/sobre", en: "/en/sobre", conteudo: "portugues_marcado",
+      pt: "/sobre", en: "/en/sobre", conteudo: "traduzido",
     });
     for (const par of PARES_DE_IDIOMA) {
       expect(par.en).toBe(par.pt === "/" ? "/en" : "/en" + par.pt);
@@ -17,7 +17,7 @@ describe("registro de irmãs por idioma", () => {
   });
 
   it("consulta as duas grafias e devolve o par canônico sem carregar query ou fragmento", () => {
-    const esperado = { pt: "/sobre", en: "/en/sobre", conteudo: "portugues_marcado" };
+    const esperado = { pt: "/sobre", en: "/en/sobre", conteudo: "traduzido" };
     for (const href of [
       "/sobre", "/sobre/", "/en/sobre", "/en/sobre/",
       "/sobre?origem=menu#contato", "/en/sobre/?q=a+b&q=a%20b#contato",

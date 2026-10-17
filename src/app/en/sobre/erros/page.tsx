@@ -1,10 +1,10 @@
-import ErrosPage from "../../../sobre/erros/page";
-import { PortuguesApenas } from "@/components/i18n/PortuguesApenas";
-import { metadadosPortuguesApenas } from "@/lib/i18n-metadata";
+import { ErrosConteudo } from "@/components/institucional/ErrosConteudo";
+import { TEXTOS_ERROS } from "@/i18n/paginas/erros";
+import { metadadosIngleses } from "@/lib/i18n-metadata";
 
 export const dynamic = "force-static";
-export const metadata = metadadosPortuguesApenas("/sobre/erros");
+export const metadata = metadadosIngleses("/sobre/erros", { titulo: TEXTOS_ERROS.en.titulo, descricao: TEXTOS_ERROS.en.descricaoMeta });
 
 export default function ErrosInglesPage() {
-  return <PortuguesApenas><ErrosPage /></PortuguesApenas>;
+  return <ErrosConteudo idioma="en" />;
 }

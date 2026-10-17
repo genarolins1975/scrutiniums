@@ -65,6 +65,10 @@ A introdução completa da home ganha uma mensagem tipada com um único argument
 
 O índice da home acrescenta nove mensagens: navegação, seis unidades, conectivo da contagem parcial e ressalva das ilustrações. Os sete nomes dos produtos permanecem em português, com explicações já registradas no glossário. Um campo numérico separado reutiliza as mesmas quantidades das vitrines; o adaptador inglês não lê suas strings portuguesas, e o caminho PT devolve a contagem existente intacta. A home continua consultando as vitrines uma vez e compartilhando-as com as seções inferiores. O catálogo passa a 22 mensagens, com 18 chaves declaradas em uso na home; são seis regiões traduzidas e três portuguesas entre as nove regiões. Cabeçalho, seções e rodapé conservam os marcadores. Números, âncoras, ordem, imagens e treze pares de rotas permanecem iguais. A prova integral dos sete cartões precede sua reconstrução PT; quantidades simples, numeradores e denominadores têm negativos próprios. Esse recorte não traduz as páginas dos observatórios.
 
+## Estado `traduzido` e prova genérica (15/10/2026)
+
+Sobre, Erros e Governança são as primeiras irmãs com o estado `traduzido`: conteúdo, cabeçalho e rodapé em inglês, indexáveis, com alternates recíprocos e oferta no seletor. Os textos de cada página ficam em `src/i18n/paginas/<pagina>.ts`, com a forma inglesa tipada a partir da portuguesa (chave ausente reprova o `tsc`); as 22 mensagens do catálogo e seus contratos de terminologia continuam como estão. A prova dessas páginas é genérica (`src/tests/suporte/i18n-traduzido.ts`), sem oráculo por página: nenhum português sem marca, mesmos destinos de link (irmãs traduzidas trocadas por `/en`), mesmo multiconjunto de números, mesma estrutura de títulos e head inglês indexável. Trechos que continuam em português, como as entradas do registro de erros, ficam em região marcada e nomeada. A Constituição em inglês é tradução de cortesia (`docs/CONSTITUICAO.en.md`), com prevalência do português e conferência de artigos e itens contra o texto público.
+
 ## Fases seguintes
 
 | Fase | Série de entregas, sempre com CI verde entre PRs |

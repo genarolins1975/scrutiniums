@@ -71,3 +71,25 @@ export function metadadosPortuguesApenas(caminho: string): Metadata {
     twitter: { card: "summary", title: titulo, description: aviso, images: [] },
   };
 }
+
+/** Metadados de uma irmã inglesa com tradução publicada: indexável, com alternates recíprocos. */
+export function metadadosIngleses(caminho: string, textos: { titulo: string; descricao: string }): Metadata {
+  const par = parDeIdioma(caminho);
+  if (!par || !traducaoPublicada(caminho)) throw new Error(`Página sem tradução publicada: ${caminho}`);
+  return {
+    title: textos.titulo,
+    description: textos.descricao,
+    alternates: alternativasDeIdioma(caminho, "en"),
+    openGraph: {
+      title: `${textos.titulo} · Scrutiniums`,
+      description: textos.descricao,
+      siteName: "Scrutiniums",
+      type: "website",
+      url: par.en,
+      locale: "en_US",
+      alternateLocale: "pt_BR",
+      images: [],
+    },
+    twitter: { card: "summary", title: `${textos.titulo} · Scrutiniums`, description: textos.descricao, images: [] },
+  };
+}

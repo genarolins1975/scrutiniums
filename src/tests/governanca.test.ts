@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { OMISSOES, blocos, constituicaoPublica, textoPublico } from "@/lib/governanca";
+import { OMISSOES, blocos, constituicaoPublica, constituicaoPublicaEn, textoPublico } from "@/lib/governanca";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 
 /**
@@ -41,7 +41,24 @@ describe("Constituição pública", () => {
     expect(ehRotaPublica("/sobre/governanca")).toBe(true);
     const p = readFileSync(join(process.cwd(), "src/app/sobre/governanca/page.tsx"), "utf-8");
     expect(p).toContain('export const dynamic = "force-static"');
-    expect(p).toContain("constituicaoPublica()");
-    expect(readFileSync(join(process.cwd(), "src/app/sobre/page.tsx"), "utf-8")).toContain('href="/sobre/governanca"');
+    expect(readFileSync(join(process.cwd(), "src/components/institucional/GovernancaConteudo.tsx"), "utf-8")).toContain("constituicaoPublica()");
+    expect(readFileSync(join(process.cwd(), "src/components/institucional/SobreConteudo.tsx"), "utf-8")).toContain('h("/sobre/governanca")');
+  });
+});
+
+describe("Constituição em inglês (tradução de cortesia)", () => {
+  const en = constituicaoPublicaEn();
+  const ptPublico = constituicaoPublica();
+  const resumo = (b: ReturnType<typeof constituicaoPublica>) => b.map((x) => (x.tipo === "lista" ? `lista:${x.ordenada}:${x.itens.length}` : x.tipo === "artigo" ? `artigo:${x.id}` : x.tipo));
+
+  it("tem os mesmos artigos, na mesma ordem, e o mesmo número de itens por lista", () => {
+    expect(resumo(en)).toEqual(resumo(ptPublico));
+  });
+
+  it("não nomeia as entidades omitidas no português público e declara a versão portuguesa como prevalente", () => {
+    const texto = readFileSync(join(process.cwd(), "docs", "CONSTITUICAO.en.md"), "utf-8");
+    expect(texto).not.toMatch(/FGC|Fundo Garantidor|Associação Open Finance|AOF/);
+    expect(texto).toContain("board and executive positions at entities in the financial system");
+    expect(readFileSync(join(process.cwd(), "src/i18n/paginas/governanca.ts"), "utf-8")).toContain("the Portuguese version prevails");
   });
 });
