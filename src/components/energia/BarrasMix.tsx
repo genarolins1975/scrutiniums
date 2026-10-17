@@ -1,5 +1,6 @@
 import type { FonteGeracao, Mix } from "@/lib/energia/tipos";
 import { TabelaDados } from "@/components/energia/TabelaDados";
+import { tx } from "@/lib/energia/idioma";
 
 export const COR_FONTE: Record<FonteGeracao, string> = {
   hidraulica: "var(--serie-hidraulica)",
@@ -7,12 +8,12 @@ export const COR_FONTE: Record<FonteGeracao, string> = {
   eolica: "var(--serie-eolica)",
   solar: "var(--serie-solar)",
 };
-export const NOME_FONTE: Record<FonteGeracao, string> = {
-  hidraulica: "Hidráulica",
-  termica: "Térmica",
-  eolica: "Eólica",
-  solar: "Solar",
-};
+export function nomeFonte(): Record<FonteGeracao, string> {
+  return tx(
+    { hidraulica: "Hidráulica", termica: "Térmica", eolica: "Eólica", solar: "Solar" },
+    { hidraulica: "Hydropower", termica: "Thermal", eolica: "Wind", solar: "Solar" },
+  );
+}
 export const ORDEM_FONTES: FonteGeracao[] = ["hidraulica", "termica", "eolica", "solar"];
 /** Texto sobre o segmento com contraste AA: branco só sobre o azul da hidráulica. */
 // Rótulo sobre a barra com contraste AA: sobre a térmica (laranja) nem branco
@@ -40,9 +41,11 @@ export function BarrasMix({
   /** Inclui a tabela equivalente (participação e total), quando a página não tem outra. */
   tabela?: boolean;
 }) {
+  const NOME_FONTE = nomeFonte();
+  const loc = tx("pt-BR", "en-US");
   return (
     <div>
-      <ul className="mb-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted" aria-label="Legenda">
+      <ul className="mb-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted" aria-label={tx("Legenda", "Legend")}>
         {ORDEM_FONTES.map((f) => (
           <li key={f} className="flex items-center gap-1.5">
             <span aria-hidden="true" className="inline-block h-2.5 w-2.5" style={{ background: COR_FONTE[f] }} />
@@ -58,19 +61,19 @@ export function BarrasMix({
               {l.detalhe && <span className="block text-xs text-mineral">{l.detalhe}</span>}
             </p>
             {l.mix ? (
-              <div className="flex h-8 w-full gap-[2px]" role="img" aria-label={`${l.rotulo}: ${ORDEM_FONTES.map((f) => `${NOME_FONTE[f]} ${l.mix!.participacao[f].toLocaleString("pt-BR")}%`).join(", ")}`}>
+              <div className="flex h-8 w-full gap-[2px]" role="img" aria-label={`${l.rotulo}: ${ORDEM_FONTES.map((f) => `${NOME_FONTE[f]} ${l.mix!.participacao[f].toLocaleString(loc)}%`).join(", ")}`}>
                 {ORDEM_FONTES.map((f) => {
                   const p = l.mix!.participacao[f];
                   return (
                     <div
                       key={f}
-                      title={`${NOME_FONTE[f]}: ${p.toLocaleString("pt-BR")}% · ${l.mix!.mwmed[f].toLocaleString("pt-BR")} MWmed`}
+                      title={`${NOME_FONTE[f]}: ${p.toLocaleString(loc)}% · ${l.mix!.mwmed[f].toLocaleString(loc)} ${tx("MWmed", "MWavg")}`}
                       className="flex h-full items-center overflow-hidden first:rounded-l-[3px] last:rounded-r-[3px]"
                       style={{ width: `${p}%`, background: COR_FONTE[f] }}
                     >
                       {p >= 6 && (
                         <span className={`px-1.5 text-[0.7rem] font-medium tabular-nums ${TEXTO_SOBRE[f]}`}>
-                          {parte(l.mix!, f).toLocaleString("pt-BR", { maximumFractionDigits: 0 })}%
+                          {parte(l.mix!, f).toLocaleString(loc, { maximumFractionDigits: 0 })}%
                         </span>
                       )}
                     </div>
@@ -78,15 +81,15 @@ export function BarrasMix({
                 })}
               </div>
             ) : (
-              <p className="text-sm text-mineral">sem dado para esta janela</p>
+              <p className="text-sm text-mineral">{tx("sem dado para esta janela", "no data for this window")}</p>
             )}
           </li>
         ))}
       </ul>
       {tabela && (
         <TabelaDados
-          titulo="Participação de cada fonte na geração verificada, por linha do gráfico"
-          colunas={["Linha", ...ORDEM_FONTES.map((f) => `${NOME_FONTE[f]} (%)`), "Total (MWmed)"]}
+          titulo={tx("Participação de cada fonte na geração verificada, por linha do gráfico", "Share of each source in verified generation, by chart row")}
+          colunas={[tx("Linha", "Row"), ...ORDEM_FONTES.map((f) => `${NOME_FONTE[f]} (%)`), tx("Total (MWmed)", "Total (MWavg)")]}
           linhas={linhas.map((l) => [l.rotulo, ...ORDEM_FONTES.map((f) => l.mix?.participacao[f] ?? null), l.mix?.total_mwmed ?? null])}
           casas={[null, 1, 1, 1, 1, 0]}
         />
