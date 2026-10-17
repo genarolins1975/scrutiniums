@@ -86,7 +86,8 @@ const MES_DATA: [RegExp, string[]][] = [
   [new RegExp(`(?<![\\p{L}])(${alternativa(ABREV_PT)})(?=/\\d)`, "giu"), ABREV_PT],
   [new RegExp(`(?<![\\p{L}])(${alternativa(LONGO_PT)})(?= de \\d)`, "giu"), LONGO_PT],
   [new RegExp(`(?<![\\p{L}])(${alternativa(LONGO_EN)})(?= \\d)`, "gu"), LONGO_EN],
-  [new RegExp(`(?<![\\p{L}])(${alternativa(ABREV_EN)})(?= (?:\\d|\u2019\\d))`, "gu"), ABREV_EN],
+  // abreviado inglês só antes de dia (1 a 31 não seguido de dígito), de ano com quatro dígitos ou de ’aa: "Jan 155" numa tabela não é data
+  [new RegExp(`(?<![\\p{L}])(${alternativa(ABREV_EN)})(?= (?:(?:[12]\\d|3[01]|0?[1-9])(?!\\d)|\\d{4}|\u2019\\d))`, "gu"), ABREV_EN],
 ];
 
 function textoVisivel(no: No): string {

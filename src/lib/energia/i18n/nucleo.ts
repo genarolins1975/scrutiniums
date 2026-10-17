@@ -59,6 +59,12 @@ export const FREQUENCIA_EN: Record<string, string> = {
 
 /** Unidade declarada na proveniência ou na série (campo `unidade`). Unidade física sem palavra (MWh, %, R$/MWh) passa como está. */
 export const UNIDADE_EN: Record<string, string> = {
+  "% da MLT da ENA bruta": "% of the MLT of gross ENA",
+  "% da MLT armazenável": "% of the storable MLT",
+  mudanças: "changes",
+  mudança: "change",
+  semanas: "weeks",
+  semana: "week",
   "horas (DEC); interrupções (FEC)": "hours (DEC); interruptions (FEC)",
   "R$/MWh (nominal)": "R$/MWh (nominal)",
   "% da MLT": "% of the long-term average (MLT)",

@@ -1,3 +1,4 @@
+import { comNomes } from "@/components/i18n/comNomes";
 import type { ReactNode } from "react";
 import type { Natureza, Periodo } from "@/lib/energia/tipos";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
@@ -37,6 +38,8 @@ import { num } from "@/lib/energia/formato";
 
 export type NumeroProps = {
   rotulo: string;
+  /** Nomes próprios dentro do rótulo ("30-day rainfall, Paranaíba basin"): na página inglesa saem marcados. */
+  nomesNoRotulo?: readonly string[];
   /** Valor na unidade exibida. Omitido, vem de `evidencia.valor_calculo`. null é ausência. */
   valor?: number | null;
   formato?: FormatoNumero;
@@ -77,6 +80,7 @@ export type NumeroProps = {
 
 export function Numero({
   rotulo,
+  nomesNoRotulo,
   valor,
   formato = "num",
   casas = 1,
@@ -116,10 +120,10 @@ export function Numero({
     // variação, sem cartão nem faixa de cor; a cor de série, quando há, vira um marcador pequeno antes do rótulo. No celular a medida é
     // uma linha de lista (rótulo e contexto à esquerda, valor e unidade à direita); a partir de 640 px, uma coluna da faixa.
     return (
-      <div role="group" aria-label={rotulo} data-metrica="" className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-0.5 sm:block">
+      <div role="group" aria-label={nomesNoRotulo?.length && idiomaEnergia() === "en" ? undefined : rotulo} data-metrica="" className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-0.5 sm:block">
         <p className="flex items-start gap-2 text-[0.8125rem] leading-snug text-carvao-muted sm:mb-1.5">
           {cor && <span aria-hidden="true" className="mt-[0.3em] inline-block h-2 w-2 shrink-0" style={{ background: cor }} />}
-          <span>{rotulo}</span>
+          <span>{comNomes(rotulo, nomesNoRotulo, idiomaEnergia())}</span>
         </p>
         {ausente ? (
           <p className="col-start-2 row-span-2 row-start-1 inline-flex items-center gap-2 font-serif text-xl leading-none text-carvao-muted sm:block">
@@ -157,9 +161,9 @@ export function Numero({
   }
 
   return (
-    <div role="group" aria-label={rotulo} className="relative flex h-full flex-col border border-linha bg-superficie p-5">
+    <div role="group" aria-label={nomesNoRotulo?.length && idiomaEnergia() === "en" ? undefined : rotulo} className="relative flex h-full flex-col border border-linha bg-superficie p-5">
       {cor && <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px]" style={{ background: cor }} />}
-      <p className="rotulo text-mineral">{rotulo}</p>
+      <p className="rotulo text-mineral">{comNomes(rotulo, nomesNoRotulo, idiomaEnergia())}</p>
       {ausente ? (
         <p className="mt-3 inline-flex items-center gap-2 font-serif text-xl leading-none text-carvao-muted">
           <span

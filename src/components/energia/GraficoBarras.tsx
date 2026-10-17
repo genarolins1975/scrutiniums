@@ -1,5 +1,6 @@
 "use client";
 
+import { comNomes } from "@/components/i18n/comNomes";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import {
@@ -63,6 +64,9 @@ export type LinhaBarras = Record<string, string | number | null | undefined>;
 
 export type GraficoBarrasProps = {
   titulo: string;
+  /** Nomes próprios que aparecem no título (reservatório, bacia, usina): na página inglesa saem marcados e o gráfico passa a ser
+   * nomeado pelo título visível (aria-labelledby) em vez de <title>. */
+  nomesNoTitulo?: readonly string[];
   dados: LinhaBarras[];
   /** Identificador estável da categoria (ex.: código da distribuidora), usado na seleção. */
   chaveCategoria: string;
@@ -145,6 +149,7 @@ function pathBarra(x: number, y: number, w: number, h: number, lado: Lado): stri
 
 export function GraficoBarras({
   titulo,
+  nomesNoTitulo,
   dados: dadosTodos,
   chaveCategoria,
   chaveRotulo,
@@ -165,6 +170,7 @@ export function GraficoBarras({
   seriesSaoNomes = false,
 }: GraficoBarrasProps) {
   const idioma = useIdioma();
+  const marcaTitulo = idioma === "en" && !!nomesNoTitulo?.length;
   // atributos de nome próprio para o texto do SVG (onde <Nome>, que é span, não cabe) e o nome marcado na parte HTML
   const attrNome = rotulosSaoNomes && idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {};
   const nomeHtml = (t: ReactNode) => (rotulosSaoNomes ? <Nome>{t}</Nome> : t);
@@ -773,12 +779,12 @@ export function GraficoBarras({
       height={h}
       viewBox={`0 0 ${w} ${h}`}
       role="group"
-      aria-labelledby={`${uid}-t`}
+      aria-labelledby={marcaTitulo ? `${uid}-p` : `${uid}-t`}
       aria-describedby={`${uid}-i`}
       className="block overflow-visible"
       data-svg-grafico=""
     >
-      <title id={`${uid}-t`}>{titulo}</title>
+      {marcaTitulo ? null : <title id={`${uid}-t`}>{titulo}</title>}
       {vertical &&
         ticksEixo.map((t) => (
           <text key={t} x={plot.x0 - 8} y={r1(escala(t) + 4)} textAnchor="end" fontSize={FS} fill="var(--cor-mineral)" className="tabular-nums" aria-hidden="true">
@@ -808,8 +814,8 @@ export function GraficoBarras({
 
   return (
     <div ref={raiz} className="relative w-full" data-grafico="barras" data-orientacao={vertical ? "vertical" : "horizontal"} data-rotulos={vertical ? undefined : rotuloEmCima ? "acima" : "lateral"} data-parcial={corta ? "sim" : undefined}>
-      <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
-        {titulo}
+      <p id={marcaTitulo ? `${uid}-p` : undefined} className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
+        {comNomes(titulo, nomesNoTitulo, idioma)}
         {unidade.length > 1 && (
           <span className="font-normal text-mineral">
             {tx(", em ", ", in ")}
@@ -938,9 +944,9 @@ export function GraficoBarras({
             `Chart data as a table (${nLoc(nTotal)} ${nTotal === 1 ? "row" : "rows"})`,
           )}
         </summary>
-        <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
+        <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={marcaTitulo ? "Chart data as a table (scrollable)" : tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
           <table className="w-full border-collapse tabular-nums">
-            <caption className="sr-only">{tx(`${titulo}, em ${unidade}`, `${titulo}, in ${unidade}`)}</caption>
+            <caption className="sr-only">{marcaTitulo ? <>{comNomes(titulo, nomesNoTitulo, idioma)}, in {unidade}</> : tx(`${titulo}, em ${unidade}`, `${titulo}, in ${unidade}`)}</caption>
             <thead className="sticky top-0 bg-superficie">
               <tr className="text-left text-mineral">
                 <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">

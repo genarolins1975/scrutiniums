@@ -1,11 +1,12 @@
 "use client";
 
+import { Nome } from "@/components/i18n/Nome";
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { dominioBonito, escalaLinear, rotuloTick, type Dominio, type EscalaLinear } from "@/lib/energia/escalas";
 import { LIMITE_COMPARACAO, alternarSelecao, buscarEntidades, type EntidadeBuscavel } from "@/lib/energia/tabela";
-import { useTx } from "@/lib/energia/useIdioma";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 
 /**
  * Comparador de até quatro entidades (distribuidoras, submercados, usinas,
@@ -89,6 +90,7 @@ export function Comparador({
   renderizarItem,
 }: ComparadorProps) {
   const tx = useTx();
+  const idioma = useIdioma();
   const dicaBusca = dicaBuscaDada ?? tx("Digite para buscar", "Type to search");
   const uid = useId();
   const max = Math.max(1, Math.min(LIMITE_COMPARACAO, Math.floor(maxPedido) || LIMITE_COMPARACAO));
@@ -253,16 +255,21 @@ export function Comparador({
           <ul aria-label={tx("Selecionadas para comparação", "Selected for comparison")} className="mt-3 flex flex-wrap gap-2">
             {selecionadas.map((e, i) => (
               <li key={e.id} data-id={e.id} className="inline-flex items-center border border-energia bg-energia-fundo pl-3 text-sm text-carvao">
-                <span>{e.rotulo}</span>
+                <span>{e.nome ? <Nome>{e.rotulo}</Nome> : e.rotulo}</span>
                 <button
                   type="button"
                   ref={(el) => {
                     remocoes.current[i] = el;
                   }}
                   onClick={() => remover(e.id, i)}
-                  aria-label={tx(`Remover ${e.rotulo} da comparação`, `Remove ${e.rotulo} from the comparison`)}
+                  aria-label={e.nome && idioma === "en" ? undefined : tx(`Remover ${e.rotulo} da comparação`, `Remove ${e.rotulo} from the comparison`)}
                   className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-carvao-muted hover:text-carvao"
                 >
+                  {e.nome && idioma === "en" && (
+                    <span className="sr-only">
+                      Remove <Nome>{e.rotulo}</Nome> from the comparison
+                    </span>
+                  )}
                   <span aria-hidden="true">✕</span>
                 </button>
               </li>
@@ -331,7 +338,7 @@ export function Comparador({
                       <span aria-hidden="true" className="w-4 shrink-0 text-energia-dark">
                         {marcada ? "✓" : ""}
                       </span>
-                      <span className="min-w-0 flex-1">{e.rotulo}</span>
+                      <span className="min-w-0 flex-1">{e.nome ? <Nome>{e.rotulo}</Nome> : e.rotulo}</span>
                       {e.detalhe && <span className={`text-xs ${emFoco ? "text-carvao-muted" : "text-mineral"}`}>{e.detalhe}</span>}
                     </li>
                   );

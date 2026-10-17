@@ -157,6 +157,7 @@ export function MedidasClima({
       <Numero
         variante="faixa"
         rotulo={tx(`${ehMes ? "Chuva do mês" : "Chuva de 30 dias"}, ${nomeBacia}`, `${ehMes ? "Rainfall for the month" : "30-day rainfall"}, ${nomeBacia}`)}
+        nomesNoRotulo={[nomeBacia]}
         natureza="ESTIMADO"
         evidencia={
           chuvaPadrao && evidencias?.chuva30d
@@ -464,6 +465,7 @@ export function AguaClima({
         <SecaoDoPainel id="historico" titulo={tx("Como a chuva de cada mês se compara com a média do mês?", "How does each month's rainfall compare with the month average?")}>
           <GraficoLinhas
             titulo={tx(`${nomes[bacia.bacia]}: chuva em cada um dos últimos ${mesesHistorico} e a média do mesmo mês`, `${nomes[bacia.bacia]}: rainfall in each of the last ${mesesHistorico} and the average of the same month`)}
+            nomesNoTitulo={[nomes[bacia.bacia]]}
             dados={historico}
             chaveX="m"
             formatoX="mes"
@@ -496,7 +498,7 @@ export function AguaClima({
       <SecaoDoPainel id="comparar-bacias" nivel="analisar" titulo={tx("Como a chuva mensal se compara entre bacias?", "How does monthly rainfall compare across basins?")}>
         <Comparador
           rotulo={tx(`Bacias comparadas (até ${LIMITE_COMPARACAO})`, `Basins compared (up to ${LIMITE_COMPARACAO})`)}
-          entidades={precipitacao.map((b) => ({ id: b.bacia, rotulo: nomes[b.bacia], sinonimos: [b.bacia] }))}
+          entidades={precipitacao.map((b) => ({ id: b.bacia, rotulo: nomes[b.bacia], sinonimos: [b.bacia], nome: true }))}
           selecionadas={escolhidas.map((b) => b.bacia)}
           onMudar={(ids) => definir({ cmp: ids })}
           dicaBusca={tx("Buscar, por exemplo Grande, Paranaíba, São Francisco", "Search, for example Grande, Paranaíba, Tocantins")}
@@ -518,6 +520,7 @@ export function AguaClima({
             paineis={escolhidas.map((b) => ({
               id: b.bacia,
               titulo: nomes[b.bacia],
+              tituloEhNome: true,
               // a mesma grandeza tem a mesma cor e o mesmo rótulo em todos os painéis e na seção da bacia (chuva estimada no mês); o nome da bacia é o título do painel
               series: [
                 { id: b.bacia, rotulo: tx("Chuva no mês", "Rainfall in the month"), cor: "var(--serie-hidraulica)", espessura: 2 },
@@ -691,6 +694,7 @@ export function AguaClima({
               {bacia && (
                 <GraficoBarras
                   titulo={tx(`Chuva prevista por dia na bacia do ${nomeProprio(bacia.bacia, "pt")} (dia UTC)`, `Forecast rainfall by day in the ${nomeProprio(bacia.bacia, "en")} basin (UTC day)`)}
+                  nomesNoTitulo={[nomeProprio(bacia.bacia, "en")]}
                   dados={prev.map((p) => ({ d: p.d, rotulo: f.dataBR(p.d), mm: p.mm }))}
                   chaveCategoria="d"
                   chaveRotulo="rotulo"

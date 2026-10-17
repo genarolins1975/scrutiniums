@@ -1,5 +1,6 @@
 "use client";
 
+import { Nome } from "@/components/i18n/Nome";
 import { useEffect, useId, useRef, useState } from "react";
 import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { useCursorSincronizado } from "@/components/energia/CursorSincronizado";
@@ -41,6 +42,8 @@ import { dominiosPaineis, formatarX, indiceDoValorX, painelSemDado, type EscalaP
 export type PainelMultiplo = {
   id: string;
   titulo: string;
+  /** O título do painel é nome próprio (bacia, usina): na página inglesa sai marcado com <Nome>. */
+  tituloEhNome?: boolean;
   /** Colunas de `dados` desenhadas no painel; padrão: uma série com a coluna `id`, na cor do gráfico. */
   series?: SerieLinha[];
   /** Observação curta sob o título (ex.: "sem medição até 2019"). */
@@ -301,7 +304,8 @@ export function PequenosMultiplos({
                   {paineis.flatMap((p) =>
                     seriesDe(p).map((s, j, ss) => (
                       <th key={`${p.id}-${s.id}`} scope="col" className="border-b border-linha px-2 py-1.5 text-right font-medium">
-                        {ss.length > 1 ? `${p.titulo} · ${s.rotulo}` : p.titulo} ({unidade})
+                        {p.tituloEhNome ? <Nome>{p.titulo}</Nome> : p.titulo}
+                        {ss.length > 1 ? ` · ${s.rotulo}` : ""} ({unidade})
                       </th>
                     )),
                   )}
@@ -439,7 +443,7 @@ function Painel({
     <div ref={ref} className="px-3 pb-2 pt-2">
       <div className="flex min-h-[2.5rem] flex-wrap items-baseline justify-between gap-x-3">
         <Titulo id={`${uid}-t`} className="text-sm font-medium text-carvao">
-          {painel.titulo}
+          {painel.tituloEhNome ? <Nome>{painel.titulo}</Nome> : painel.titulo}
         </Titulo>
         <span aria-hidden="true" className="text-xs tabular-nums text-carvao-muted" data-leitura="">
           {leituraCabecalho}

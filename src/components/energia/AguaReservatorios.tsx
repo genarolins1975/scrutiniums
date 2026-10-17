@@ -612,6 +612,7 @@ export function AguaReservatorios({
               `Balanço hídrico de ${nomeRes}, ${periodoJanela} (${rotuloConvencao(res.convencao_defluencia, "pt")})`,
               `Water balance of ${nomeRes}, ${periodoJanela} (${rotuloConvencao(res.convencao_defluencia, "en")})`,
             )}
+            nomesNoTitulo={[nomeRes]}
             dados={barrasBalancoTotais(res, idioma).map((b) => ({ id: b.id, rotulo: b.rotulo, v: b.v }))}
             chaveCategoria="id"
             chaveRotulo="rotulo"
@@ -622,6 +623,7 @@ export function AguaReservatorios({
           />
           <GraficoBarras
             titulo={tx(`Como a defluência de ${nomeRes} se divide, ${periodoJanela} (régua própria)`, `How the outflow of ${nomeRes} breaks down, ${periodoJanela} (own scale)`)}
+            nomesNoTitulo={[nomeRes]}
             dados={barrasBalancoDefluencia(res, idioma).map((b) => ({ id: b.id, rotulo: b.rotulo, v: b.v }))}
             chaveCategoria="id"
             chaveRotulo="rotulo"
@@ -709,6 +711,7 @@ export function AguaReservatorios({
                   <CursorSincronizado>
                     <GraficoLinhas
                       titulo={tx(`Volume útil de ${nomeRes}`, `Useful volume of ${nomeRes}`)}
+                      nomesNoTitulo={[nomeRes]}
                       dados={serieSel}
                       chaveX="d"
                       series={[{ id: "vol", rotulo: tx("Volume útil", "Useful volume"), cor: "var(--serie-hidraulica)", espessura: 2.5 }]}
@@ -719,6 +722,7 @@ export function AguaReservatorios({
                     />
                     <GraficoLinhas
                       titulo={tx(`Vazões de ${nomeRes}`, `Flows of ${nomeRes}`)}
+                      nomesNoTitulo={[nomeRes]}
                       dados={serieSel}
                       chaveX="d"
                       series={traduzSeries(
@@ -756,7 +760,7 @@ export function AguaReservatorios({
       <SecaoDoPainel id="comparar" nivel="analisar" titulo={tx("Até quatro reservatórios na mesma escala", "Up to four reservoirs on the same scale")}>
         <Comparador
           rotulo={tx(`Reservatórios comparados (até ${LIMITE_COMPARACAO})`, `Reservoirs compared (up to ${LIMITE_COMPARACAO})`)}
-          entidades={lista.map((r) => ({ id: r.id, rotulo: nomeProprio(r.nome, idioma), detalhe: r.subsistema ?? undefined, sinonimos: [r.nome, r.id] }))}
+          entidades={lista.map((r) => ({ id: r.id, rotulo: nomeProprio(r.nome, idioma), detalhe: r.subsistema ?? undefined, sinonimos: [r.nome, r.id], nome: true }))}
           selecionadas={escolhidos}
           onMudar={(ids) => definir({ cmp: ids })}
           dicaBusca={tx("Buscar, por exemplo Serra da Mesa, Furnas, Sobradinho", "Search, for example Serra da Mesa, Furnas, Sobradinho")}
@@ -780,6 +784,7 @@ export function AguaReservatorios({
             paineis={seriesComp.map((s) => ({
               id: s.id,
               titulo: nomeProprio(s.nome, idioma),
+              tituloEhNome: true,
               series: [{ id: s.id, rotulo: tx("Volume útil", "Useful volume"), cor: "var(--serie-hidraulica)", espessura: 2 }],
             }))}
           />

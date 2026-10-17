@@ -732,7 +732,8 @@ export function gerarXlsx(colunas: readonly ColunaTabela[], linhas: readonly Lin
  */
 export const LIMITE_COMPARACAO = 4;
 
-export type EntidadeBuscavel = { id: string; rotulo: string; detalhe?: string; sinonimos?: readonly string[] };
+/** `nome`: o rótulo é nome próprio (reservatório, usina, empresa); na página inglesa sai marcado. */
+export type EntidadeBuscavel = { id: string; rotulo: string; detalhe?: string; sinonimos?: readonly string[]; nome?: boolean };
 
 /**
  * Entidades que contêm todos os termos (sem acento e sem caixa) no rótulo,

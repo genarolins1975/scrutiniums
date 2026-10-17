@@ -1,5 +1,6 @@
 "use client";
 
+import { comNomes } from "@/components/i18n/comNomes";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { BaixarImagem } from "@/components/energia/BaixarImagem";
@@ -63,6 +64,9 @@ type Ponto = Record<string, string | number | null | undefined>;
 
 export type GraficoLinhasProps = {
   titulo: string;
+  /** Nomes próprios que aparecem no título (reservatório, bacia, usina): na página inglesa saem marcados e o gráfico passa a ser
+   * nomeado pelo título visível (aria-labelledby) em vez de <title>. */
+  nomesNoTitulo?: readonly string[];
   dados: Ponto[];
   chaveX: string;
   series: SerieLinha[];
@@ -160,6 +164,7 @@ function quebraEmLinhas(texto: string, maxChars: number, maxLinhas: number): str
 
 export function GraficoLinhas({
   titulo,
+  nomesNoTitulo,
   dados,
   chaveX,
   series,
@@ -187,6 +192,7 @@ export function GraficoLinhas({
   chaveUrl,
 }: GraficoLinhasProps) {
   const idioma = useIdioma();
+  const marcaTitulo = idioma === "en" && !!nomesNoTitulo?.length;
   const tx = useTx();
   const fmtX = (v: string, f: FormatoX | undefined, longo = false) => formatarX(v, f, longo, idioma);
   const fV = (v: number | null | undefined, c: number, u: string) => fmtV(v, c, u, idioma);
@@ -511,12 +517,13 @@ export function GraficoLinhas({
 
   return (
     <div ref={ref} className="relative w-full">
-      <p className={semTitulo ? "sr-only" : "mb-1 text-sm font-medium text-carvao"} data-titulo-grafico="true">
-        {titulo}
+      <p id={marcaTitulo ? `${uid}-p` : undefined} className={semTitulo ? "sr-only" : "mb-1 text-sm font-medium text-carvao"} data-titulo-grafico="true">
+        {comNomes(titulo, nomesNoTitulo, idioma)}
         {unidade.length > 1 && <span className={semTitulo ? undefined : "font-normal text-mineral"}>{tx(", em ", ", in ")}{unidade}</span>}
       </p>
+      {marcaTitulo && <span id={`${uid}-h`} className="sr-only">Use the arrow keys to move through the points.</span>}
       {zoom && N > 2 && (
-        <div role="group" aria-label={tx(`Intervalo do gráfico: ${titulo}`, `Chart range: ${titulo}`)} className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1" data-controles="intervalo">
+        <div role="group" aria-label={marcaTitulo ? "Chart range" : tx(`Intervalo do gráfico: ${titulo}`, `Chart range: ${titulo}`)} className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1" data-controles="intervalo">
           {periodos.length > 0 && <span className="rotulo mr-1 text-mineral">{tx("Período", "Period")}</span>}
           {periodos.map((p) => {
             const [a, b] = p.indices;
@@ -687,7 +694,7 @@ export function GraficoLinhas({
           height={h}
           viewBox={`0 0 ${w} ${h}`}
           role="img"
-          aria-labelledby={`${uid}-t`}
+          aria-labelledby={marcaTitulo ? `${uid}-p ${uid}-h` : `${uid}-t`}
           aria-describedby={zoom ? `${uid}-d` : undefined}
           tabIndex={0}
           onKeyDown={teclado}
@@ -695,7 +702,7 @@ export function GraficoLinhas({
           className="block overflow-visible focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
           data-svg-grafico=""
         >
-          <title id={`${uid}-t`}>{tx(`${titulo}. Use as setas para percorrer os pontos.`, `${titulo}. Use the arrow keys to move through the points.`)}</title>
+          {marcaTitulo ? null : <title id={`${uid}-t`}>{tx(`${titulo}. Use as setas para percorrer os pontos.`, `${titulo}. Use the arrow keys to move through the points.`)}</title>}
           {yt.map((v) => (
             <g key={v}>
               <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
@@ -843,14 +850,15 @@ export function GraficoLinhas({
             : tx(`Dados do gráfico em tabela (${n.toLocaleString("pt-BR")} ${n === 1 ? "linha" : "linhas"})`, `Chart data as a table (${nLoc(n)} ${n === 1 ? "row" : "rows"})`)}
         </summary>
         {tabelaAberta && (
-          <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
+          <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={marcaTitulo ? "Chart data as a table (scrollable)" : tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
             <table className="w-full border-collapse tabular-nums">
               <caption className="sr-only">
+                {marcaTitulo && <>{comNomes(titulo, nomesNoTitulo, idioma)}</>}
                 {tx(
                   `${titulo}, em ${unidade}` +
                     (ampliado ? `; intervalo de ${rotuloX(i0)} a ${rotuloX(i1)}` : "") +
                     (nomesOcultas.length ? `; séries ocultas no gráfico e na tabela: ${nomesOcultas.join(", ")}` : ""),
-                  `${titulo}, in ${unidade}` +
+                  `${marcaTitulo ? "" : titulo}, in ${unidade}` +
                     (ampliado ? `; range from ${rotuloX(i0)} to ${rotuloX(i1)}` : "") +
                     (nomesOcultas.length ? `; series hidden in the chart and the table: ${nomesOcultas.join(", ")}` : ""),
                 )}
