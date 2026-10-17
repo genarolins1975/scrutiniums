@@ -7,6 +7,7 @@ import io
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 from pipeline.agro import run,capturar
 
@@ -78,6 +79,47 @@ class AgroDadosTest(unittest.TestCase):
         self.assertEqual(hashlib.sha256(raw).hexdigest(),source['sha256Original']);self.assertEqual(len(self.fontes['geometria']['features']),27)
 
 class AgroCapturaTest(unittest.TestCase):
+    def test_cobertura_exige_cada_indicador_ano_e_territorio(self):
+        rows=[{'indicador':i,'ano':a,'territorio':t,'valor':None} for i in ['quantidade','valorProducao'] for a in [2024,2025] for t in {'BR',*run.SIGLAS}]
+        capturar.validar_cobertura(rows,['quantidade','valorProducao'],[2024,2025])
+        variants=[
+            [r for r in rows if r['indicador']!='valorProducao'],
+            [r for r in rows if not(r['indicador']=='valorProducao' and r['ano']==2024 and r['territorio']=='51')],
+            rows+[{'indicador':'quantidade','ano':2023,'territorio':'BR'}],
+        ]
+        for variant in variants:
+            with self.subTest(variant=variants.index(variant)):
+                with self.assertRaisesRegex(ValueError,'Cobertura por indicador'):capturar.validar_cobertura(variant,['quantidade','valorProducao'],[2024,2025])
+
+    def fixture_captura(self,completa):
+        meta={'variaveis':[{'id':1,'nome':'Quantidade produzida'},{'id':2,'nome':'Valor da produção'}],'classificacoes':[{'id':3,'categorias':[{'id':4,'nome':'Leite'}]}]}
+        periods=[{'id':'2024'},{'id':'2025'}]
+        payload=[{'id':str(i),'unidade':unit,'resultados':[{'series':[{'localidade':{'id':t,'nome':'Fixture de teste'},'serie':{'2024':'X' if t=='51' else '-','2025':'2'}} for t in {'1',*run.SIGLAS}]}]} for i,unit in [(1,'Mil litros'),(2,'Mil Reais')]][:2 if completa else 1]
+        return [(obj,json.dumps(obj).encode()) for obj in [meta,periods,payload]]
+
+    def test_captura_incompleta_nao_sobrescreve_candidato_anterior(self):
+        with tempfile.TemporaryDirectory() as folder:
+            old=Path(folder)/'leite';old.mkdir();(old/'normalizado.json').write_bytes(b'anterior');(old/'manifesto.json').write_bytes(b'manifesto anterior')
+            before={p.name:p.read_bytes() for p in old.iterdir()}
+            with patch.object(capturar,'OUT',Path(folder)),patch.object(capturar,'baixar_json',side_effect=self.fixture_captura(False)) as fetch:
+                with self.assertRaisesRegex(ValueError,'Cobertura por indicador'):capturar.capturar('leite',2)
+                self.assertEqual(fetch.call_count,3)
+            self.assertEqual({p.name:p.read_bytes() for p in old.iterdir()},before)
+
+    def test_captura_completa_promove_com_unidades_e_hashes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(capturar,'OUT',Path(folder)),patch.object(capturar,'baixar_json',side_effect=self.fixture_captura(True)):
+                result=capturar.capturar('leite',2)
+            self.assertEqual(result['observacoes'],112)
+            dest=Path(folder)/'leite';data=json.loads((dest/'normalizado.json').read_text());manifest=json.loads((dest/'manifesto.json').read_text())
+            self.assertEqual({r['indicador'] for r in data['observacoes']},{'quantidade','valorProducao'})
+            self.assertEqual({r['valor'] for r in data['observacoes']},{None,0,2000})
+            for name,sha in manifest['arquivos'].items():self.assertEqual(hashlib.sha256((dest/name).read_bytes()).hexdigest(),sha)
+
+    def test_metadados_com_ids_de_variaveis_repetidos_sao_rejeitados(self):
+        with self.assertRaisesRegex(ValueError,'Identificador de variável repetido'):
+            capturar.variaveis({'variaveis':[{'id':1,'nome':'Quantidade produzida'},{'id':1,'nome':'Valor da produção'}]},'leite')
+
     def test_unidades_milk_mass_e_dinheiro_sao_explicitas(self):
         self.assertEqual(capturar.unidade_canonica('Mil litros','quantidade','leite'),('L',1000))
         self.assertEqual(capturar.unidade_canonica('Toneladas','quantidade','soja'),('t',1))

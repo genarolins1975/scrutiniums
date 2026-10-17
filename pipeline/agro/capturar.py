@@ -62,7 +62,9 @@ def variaveis(meta,fonte):
     for field,names in mappings.items():
         matches=[v for v in meta['variaveis'] if normalizar_texto(v['nome']) in names]
         if len(matches)!=1: raise ValueError(f'Variável {field} não unívoca nos metadados')
-        result[str(matches[0]['id'])]=field
+        key=str(matches[0]['id'])
+        if key in result: raise ValueError('Identificador de variável repetido nos metadados')
+        result[key]=field
     return result
 
 
@@ -100,6 +102,13 @@ def normalizar_resposta(payload,mapping,cadeia,fonte_id):
     return rows
 
 
+def validar_cobertura(rows,indicadores,anos):
+    expected={(indicador,ano,territorio) for indicador in set(indicadores) for ano in set(anos) for territorio in {'BR',*SIGLAS}}
+    actual={(r['indicador'],r['ano'],r['territorio']) for r in rows}
+    if actual!=expected:
+        raise ValueError(f'Cobertura por indicador, ano e território inválida: ausentes={sorted(expected-actual)[:3]}, extras={sorted(actual-expected)[:3]}')
+
+
 def capturar(fonte,anos=5):
     if not 2<=anos<=12: raise ValueError('Recorte de dois a doze anos')
     table={'pam':'5457','rebanho':'3939','leite':'74'}[fonte]
@@ -117,8 +126,7 @@ def capturar(fonte,anos=5):
         query=urllib.parse.urlencode({'localidades':'N1[1]|N3[all]','classificacao':f'{classification}[{category}]'})
         path=f'/{table}/periodos/'+ '|'.join(map(str,years))+'/variaveis/'+'|'.join(mapping)+'?'+query
         payload=get(path,product+'.json');parsed=normalizar_resposta(payload,mapping,product,'ibge-'+fonte)
-        for year in years:
-            if {r['territorio'] for r in parsed if r['ano']==year}!={'BR',*SIGLAS}: raise ValueError('Resposta sem todas as UFs e Brasil')
+        validar_cobertura(parsed,mapping.values(),years)
         rows.extend(parsed)
     validar_unicos(rows,['cadeia','territorio','ano','indicador'])
     stamp=datetime.now(timezone.utc).isoformat()
