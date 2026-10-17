@@ -1,4 +1,4 @@
-import { createElement, type ReactNode } from "react";
+import { createElement, type ComponentType, type ReactNode } from "react";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import type { Idioma } from "@/lib/idioma";
 
@@ -195,6 +195,43 @@ const PROSA_CONTA: Record<string, string> = {
   "Os valores são repasses da CDE às distribuidoras para compensar descontos tarifários concedidos a categorias de usuários. Não são transferências a famílias. A Tarifa Social (baixa renda) é custeada pela CDE por outra rubrica e não integra este conjunto.":
     "The values are CDE transfers to distribution utilities to offset tariff discounts granted to user categories. They are not transfers to families. The Tarifa Social (low income) is funded by the CDE under another budget line and is not part of this dataset.",
   "orçamento anual aprovado ou previsto pela ANEEL (não é execução)": "annual budget approved or forecast by ANEEL (not execution)",
+  // regras do simulador (texto, aplicação, partes e motivos), como a gold as publica
+  "Tarifa Social (Lei nº 12.212/2010, art. 1º, na redação da Lei nº 15.235/2025): desconto de 100% sobre a parcela do consumo até 80 kWh/mês e de 0% sobre a parcela acima de 80 kWh/mês, incidente sobre a tarifa da classe residencial. Beneficiários não pagam CDE nem Proinfa (página da ANEEL), por isso a ANEEL homologa uma tarifa própria da subclasse (Residencial Tarifa Social, faixas 01 e 02).":
+    "Tarifa Social (Law 12,212/2010, art. 1, as worded by Law 15,235/2025): a 100% discount on the portion of consumption up to 80 kWh/month and 0% on the portion above 80 kWh/month, applied to the residential class tariff. Beneficiaries do not pay the CDE or Proinfa (ANEEL page), so ANEEL ratifies a tariff specific to the subclass (Residential Tarifa Social, bands 01 and 02).",
+  "Faixa 01 (até 80 kWh): valor calculado com a tarifa da faixa 01 e abatido integralmente. Faixa 02 (acima de 80 kWh): tarifa homologada da faixa 02, sem desconto.":
+    "Band 01 (up to 80 kWh): amount calculated with the band 01 tariff and fully deducted. Band 02 (above 80 kWh): ratified band 02 tariff, without discount.",
+  "Desconto de 100% até 80 kWh/mês e de 0% acima, sobre a tarifa da classe residencial": "100% discount up to 80 kWh/month and 0% above, on the residential class tariff",
+  "Tarifa própria da subclasse (faixas 01 e 02), porque beneficiários não pagam CDE nem Proinfa": "Tariff specific to the subclass (bands 01 and 02), because beneficiaries do not pay the CDE or Proinfa",
+  "Desconto Social (Lei nº 10.438/2002, art. 13, § 3º-I, incluído pela Lei nº 15.235/2025): desde 1º/1/2026, famílias do CadÚnico com renda per capita acima de meio e até um salário mínimo têm isenção das quotas da CDE para consumo mensal de até 120 kWh, em uma unidade consumidora.":
+    "Desconto Social (Law 10,438/2002, art. 13, § 3-I, added by Law 15,235/2025): since Jan 1, 2026, CadÚnico families with per capita income above half and up to one minimum wage are exempt from CDE quotas for monthly consumption of up to 120 kWh, in one consumer unit.",
+  "Leitura por parcela, seguindo as faixas homologadas pela ANEEL (Residencial Desconto Social, faixas 01 e 02): até 120 kWh com a tarifa da faixa 01 e o excedente com a da faixa 02.":
+    "Band-by-band reading, following the bands ratified by ANEEL (Residential Desconto Social, bands 01 and 02): up to 120 kWh at the band 01 tariff and the excess at the band 02 tariff.",
+  "O texto da REN que regulamenta a aplicação não pôde ser lido (bloqueio de acesso ao acervo da ANEEL); por isso a leitura é declarada.":
+    "The text of the REN that regulates the application could not be read (access to the ANEEL archive is blocked); that is why the reading is declared.",
+  "Isenção das quotas da CDE até 120 kWh/mês desde 1º/1/2026": "Exemption from CDE quotas up to 120 kWh/month since Jan 1, 2026",
+  "Aplicação por parcela: faixa 01 até 120 kWh e faixa 02 no excedente": "Band-by-band application: band 01 up to 120 kWh and band 02 on the excess",
+  "a REN que regulamenta a aplicação não pôde ser lida (acervo da ANEEL bloqueado)": "the REN that regulates the application could not be read (ANEEL archive blocked)",
+  "Custo de disponibilidade do grupo B: valor em reais equivalente a 30 kWh (monofásico), 50 kWh (bifásico) ou 100 kWh (trifásico), cobrado como valor mínimo quando o consumo é menor (páginas oficiais da ANEEL; a REN nº 1.000/2021 é a norma de origem, mas seu texto não pôde ser lido no acervo da ANEEL, que bloqueou o acesso automatizado).":
+    "Group B availability cost: an amount in reais equivalent to 30 kWh (single-phase), 50 kWh (two-phase) or 100 kWh (three-phase), charged as a minimum when consumption is lower (ANEEL's official pages; REN 1,000/2021 is the source rule, but its text could not be read in the ANEEL archive, which blocked automated access).",
+  "Classes residencial, rural, demais classes e Desconto Social: energia faturada = maior entre o consumo e o mínimo da ligação. Tarifa Social: sem mínimo até 80 kWh (página da ANEEL); acima de 80 kWh o mínimo não é aplicado, e isso é declarado como regra não conferida.":
+    "Residential, rural, other classes and Desconto Social: billed energy = the greater of consumption and the connection minimum. Tarifa Social: no minimum up to 80 kWh (ANEEL page); above 80 kWh the minimum is not applied, and this is declared as an unchecked rule.",
+  "Mínimo de 30, 50 ou 100 kWh (monofásico, bifásico, trifásico) nas classes residencial, rural, demais e Desconto Social":
+    "Minimum of 30, 50 or 100 kWh (single-phase, two-phase, three-phase) in the residential, rural, other and Desconto Social classes",
+  "Tarifa Social sem mínimo até 80 kWh, inclusive em ligação trifásica": "Tarifa Social with no minimum up to 80 kWh, including on three-phase connections",
+  "Tarifa Social acima de 80 kWh: mínimo não aplicado": "Tarifa Social above 80 kWh: minimum not applied",
+  "a REN nº 1.000/2021 não pôde ser lida; a regra do mínimo para a Tarifa Social acima de 80 kWh não foi conferida":
+    "REN 1,000/2021 could not be read; the minimum rule for the Tarifa Social above 80 kWh was not checked",
+  "Bandeira tarifária: acréscimo por kWh consumido conforme o patamar acionado no mês (verde sem acréscimo). Não se aplica a consumidores de sistemas isolados.":
+    "Tariff flag: a surcharge per kWh consumed according to the level activated in the month (green with no surcharge). It does not apply to consumers in isolated systems.",
+  "Adicional × kWh consumido. Tarifa Social: aplicado só sobre a parcela acima de 80 kWh, porque a ANEEL informa que, até 80 kWh, a fatura pode conter apenas cobranças não associadas à energia consumida; a regra específica da REN não foi lida.":
+    "Surcharge × kWh consumed. Tarifa Social: applied only to the portion above 80 kWh, because ANEEL states that, up to 80 kWh, the bill may contain only charges not associated with the energy consumed; the specific REN rule was not read.",
+  "Adicional por kWh consumido conforme o patamar do mês; não se aplica a sistemas isolados": "Surcharge per kWh consumed according to the month's level; does not apply to isolated systems",
+  "Tarifa Social: bandeira só sobre a parcela acima de 80 kWh": "Tarifa Social: tariff flag only on the portion above 80 kWh",
+  "leitura da página da ANEEL sobre a fatura até 80 kWh; a regra específica da REN não foi lida": "reading of ANEEL's page on the bill up to 80 kWh; the specific REN rule was not read",
+  "Tributos (ICMS estadual, PIS/Pasep e Cofins federais) e Contribuição para Iluminação Pública municipal compõem a fatura mas não a tarifa homologada. Não há base oficial estruturada por distribuidora e mês com essas alíquotas efetivas; ficam fora de todos os números deste módulo.":
+    "Taxes (state ICMS, federal PIS/Pasep and Cofins) and the municipal Public Lighting Contribution are part of the bill but not of the ratified tariff. There is no structured official database by distribution utility and month with these effective rates; they are left out of all numbers in this module.",
+  "Não incluídos. O resultado é uma estimativa sem tributos e sem iluminação pública.": "Not included. The result is an estimate without taxes and without public lighting.",
+  "Tributos e iluminação pública compõem a fatura, não a tarifa homologada": "Taxes and public lighting are part of the bill, not of the ratified tariff",
 };
 
 /* ---------- Inclusão energética ---------- */
@@ -241,7 +278,9 @@ export function dadoNo(texto: string | null | undefined, regiao: string, idioma:
   if (idioma !== "en") return texto;
   const en = dadoEn(texto);
   if (en !== null) return en;
-  return createElement(TrechoPortugues, { regiao, como }, texto);
+  // o filho vai como terceiro argumento de createElement; o tipo do componente o declara opcional só para isso
+  const Trecho = TrechoPortugues as ComponentType<{ regiao: string; como?: "span" | "div"; children?: ReactNode }>;
+  return createElement(Trecho, { regiao, como }, texto);
 }
 
 /** Bandeira no idioma (string). */

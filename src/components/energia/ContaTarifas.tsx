@@ -223,7 +223,9 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
   );
   const nomeGrupo = `${linhas.length} ${rotuloGrupo(grupo, uf, idioma)}`;
   // a linha de referência é a mediana das N do ranking, com o filtro ou sem ele; o texto da frase diz "do grupo" quando é a do grupo
-  const rotuloMediana = tx(`Mediana das ${resumo.n}${filtrado ? ", todas" : ""}`, `Median of the ${resumo.n}${filtrado ? ", all" : ""}`);
+  // i18n: dado (forma portuguesa; a tela usa rotuloMedianaTela, no idioma da página)
+  const rotuloMediana = `Mediana das ${resumo.n}${filtrado ? ", todas" : ""}`;
+  const rotuloMedianaTela = tx(rotuloMediana, `Median of the ${resumo.n}${filtrado ? ", all" : ""}`);
 
   return (
     <div className="space-y-5">
@@ -349,7 +351,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
               referencias={[
                 {
                   valor: resumo.perfis_mediana[chavePerfil] ?? NaN,
-                  rotulo: rotuloMediana,
+                  rotulo: rotuloMedianaTela,
                 },
               ].filter((r) => Number.isFinite(r.valor))}
               selecionado={naLista ? destaque : null}
@@ -380,7 +382,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
               casas={2}
               orientacao="horizontal"
               // uma linha só: três tracejados iguais (1º quartil, mediana, 3º quartil) só se distinguem pela ordem da legenda; os quartis estão na faixa de pontos e na tabela
-              referencias={[{ valor: resumo.mediana ?? NaN, rotulo: rotuloMediana }].filter((r) => Number.isFinite(r.valor))}
+              referencias={[{ valor: resumo.mediana ?? NaN, rotulo: rotuloMedianaTela }].filter((r) => Number.isFinite(r.valor))}
               selecionado={naLista ? destaque : null}
               onSelecionar={selecionar}
               alturaCategoria={44}
@@ -431,9 +433,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
       {recorte}
       {notas}
 
-      <ContaSobDemanda
-        chaveUrl="tar"
-        abreEm="analisar"
+      <ContaSobDemanda chaveUrl="tar" abreEm="analisar"
         rotulo={tx("a tabela das distribuidoras", "the distribution utility table")}
         detalhe={tx(`${linhas.length} linhas, ordenável e exportável`, `${linhas.length} rows, sortable and exportable`)}
       >

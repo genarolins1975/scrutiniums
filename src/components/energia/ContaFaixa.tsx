@@ -84,7 +84,8 @@ export function ContaFaixa({
     idioma,
   );
   const semVigente = tx("Nenhuma distribuidora com tarifa vigente na data.", "No distribution utility with a tariff in force on the date.");
-  const porMes = tx("R$/mês", "R$/month");
+  // a unidade dos três destaques fica escrita em português no próprio Numero (a forma de sempre) e a página inglesa a troca aqui
+  const unidadeEn: { unidade?: string } = idioma === "en" ? { unidade: "R$/month" } : {};
   const abaixoDoPiso = cobertura !== null && cobertura.atingePiso === false;
   return (
     <FaixaMetricas
@@ -103,7 +104,8 @@ export function ContaFaixa({
         valor={r.menor?.valor ?? null}
         formato="reais"
         casas={2}
-        unidade={porMes}
+        unidade="R$/mês" // i18n: dado (a forma inglesa vem de unidadeEn)
+        {...unidadeEn}
         periodo={r.menor ? `${r.menor.sigla} (${ucsDe(r.menor.cnpj)}), ${data}` : data}
         motivoAusencia={semVigente}
         cor="var(--serie-1)"
@@ -115,7 +117,8 @@ export function ContaFaixa({
         valor={r.mediana}
         formato="reais"
         casas={2}
-        unidade={porMes}
+        unidade="R$/mês" // i18n: dado (a forma inglesa vem de unidadeEn)
+        {...unidadeEn}
         periodo={tx(`${perfil} kWh/mês, ${data}`, `${perfil} kWh/month, ${data}`)}
         variacao={
           comparacao && comparacao.variacaoPct !== null
@@ -140,7 +143,8 @@ export function ContaFaixa({
         valor={r.maior?.valor ?? null}
         formato="reais"
         casas={2}
-        unidade={porMes}
+        unidade="R$/mês" // i18n: dado (a forma inglesa vem de unidadeEn)
+        {...unidadeEn}
         periodo={r.maior ? `${r.maior.sigla} (${ucsDe(r.maior.cnpj)}), ${data}` : data}
         motivoAusencia={semVigente}
         cor="var(--serie-1)"
