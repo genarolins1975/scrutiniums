@@ -7,6 +7,10 @@ A arte usa tipografia e tokens existentes, ilustrações vetoriais do mecanismo,
 | Rota em /agronegocio | Arte | Hierarquia | Tipografia | Profundidade | Didática | Comparabilidade | Interação/acessibilidade | Responsividade |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | / | 9 | 9 | 9 | 8 | 9 | 8 | 8 | 9 |
+| /tamanho | 9 | 9 | 9 | 8 | 9 | 8 | 8 | 9 |
+| /conjuntura | 9 | 9 | 9 | 8 | 9 | 8 | 8 | 9 |
+| /insumos | 9 | 9 | 9 | 8 | 8 | 7 | 8 | 9 |
+| /mercados | 9 | 9 | 9 | 8 | 9 | 8 | 8 | 9 |
 | /panorama | 9 | 9 | 9 | 8 | 9 | 9 | 8 | 9 |
 | /atlas | 9 | 9 | 9 | 8 | 9 | 9 | 8 | 9 |
 | /comparar | 9 | 9 | 9 | 8 | 9 | 9 | 8 | 9 |
@@ -30,6 +34,8 @@ A arte usa tipografia e tokens existentes, ilustrações vetoriais do mecanismo,
 | /glossario | 9 | 9 | 9 | 8 | 9 | 8 | 8 | 9 |
 | /metodologia | 8 | 9 | 9 | 8 | 9 | 9 | 8 | 9 |
 | /sintese | 9 | 9 | 9 | 8 | 9 | 9 | 8 | 9 |
+
+Páginas de perguntas (fase 1 da economia): dados observados com coleta automática, verificados a 320, 390, 768 e 1440 px. Insumos fica em 7 de comparabilidade porque o valor unitário de comércio exterior mistura produtos e não é preço na fazenda; a página diz isso, mas a referência certa (custo Conab, preço ao produtor) ainda falta. Profundidade em 8 nas quatro: sem recorte por estado, juros do crédito rural e consumo nacional de fertilizantes. A nota de didática das páginas antigas sem dado observado não foi revista nesta fase.
 
 Limitações que permanecem: fontes bloqueadas, sem produção/custo de referência/comércio/ambiente observados; fichas de cadeia conceituais e parciais; comparação territorial com período da própria medida e sem produto/histórico conjunto; emprego formal apenas nacional; referência fiscal de programas não integrada. As explicações não preenchem esses vazios. Interação fica em 8 por faltar avaliação externa com pessoas e tecnologia assistiva; emulação de zoom/reflow não cobre todas as formas de ampliação de texto.
 

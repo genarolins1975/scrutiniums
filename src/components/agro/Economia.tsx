@@ -112,7 +112,7 @@ export function ConjunturaAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaA
             <Metrica rotulo={`Exportações agro, ${mesesAgro(a.ano, a.meses)}`} valor={`US$ ${bi(a.agro)} bi`} nota={`Comex Stat · ${sinalAgro(a.variacaoAgro)} sobre o mesmo período de ${a.ano - 1} · dólares correntes`}/>
             <Metrica rotulo="Crédito rural contratado em 12 meses" valor={`R$ ${bi(c.nacional.valor)} bi`} nota={`BCB/Sicor · ${mesAgro(c.janela.ini)} a ${mesAgro(c.janela.fim)} · ${sinalAgro(c.anteriorAdjacente.variacaoPct)} sobre os 12 meses anteriores · snapshot preservado, não coleta desta edição`}/>
         </dl>
-        <SecaoAgro titulo="A safra cresce com mais área ou com mais produtividade?" texto={`A soja, maior lavoura do país, deve render ${sinalAgro(soja.variacao)} em produção, com área ${sinalAgro(variacaoPctAgro(soja.atual.area, soja.anterior?.area))} e rendimento ${sinalAgro(variacaoPctAgro(soja.atual.rendimento, soja.anterior?.rendimento))}.`}>
+        <SecaoAgro titulo="A safra cresce com mais área ou com mais produtividade?" texto={`Na soja, maior lavoura do país, a produção estimada varia ${sinalAgro(soja.variacao)}: área colhida ${sinalAgro(variacaoPctAgro(soja.atual.area, soja.anterior?.area))} e rendimento por hectare ${sinalAgro(variacaoPctAgro(soja.atual.rendimento, soja.anterior?.rendimento))}.`}>
             <span className={s.status}>Dado observado · estimativa oficial de safra</span>
             <BarrasAgro titulo="Safra de grãos, ano a ano" unidade="milhões de toneladas" periodo={`${graos[0].ano} a ${safra.atual.ano}`} linhas={graos.map(g => ({ nome: g.mesEstimativa.endsWith('-12') ? String(g.ano) : `${g.ano}, estimativa de ${mesAgro(g.mesEstimativa)}`, valor: g.producao == null ? null : g.producao / 1e6, focal: g.ano === safra.atual.ano }))} nota="Cereais, leguminosas e oleaginosas. Anos anteriores: estimativa de dezembro do próprio LSPA, depois substituída pela Produção Agrícola Municipal. O ano corrente ainda pode ser revisto."/>
             <TabelaAgro titulo={`Produção, área e rendimento · ${safra.atual.ano} contra ${safra.atual.ano - 1}`} colunas={colsSafra} linhas={linhasSafra}/>
@@ -179,7 +179,7 @@ export function MercadosAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaAgr
     return <>
         <dl className={`${s.metrics} ${s.metrics4}`}>
             <Metrica rotulo={`Maior destino das exportações agro em ${dest.ano}`} valor={pct(dest.paises[0].participacao)} nota={`${dest.paises[0].pais} · US$ ${bi(dest.paises[0].fob)} bi de US$ ${bi(dest.fob)} bi · Comex Stat`}/>
-            <Metrica rotulo="Cinco maiores destinos somados" valor={pct(concentracaoAgro(dest.paises, 5))} nota={`${dest.paises.slice(0, 5).map(p => p.pais).join(', ')} · ${dest.paises.length} países no ano`}/>
+            <Metrica rotulo="Cinco maiores destinos somados" valor={pct(concentracaoAgro(dest.paises, 5))} nota={`${dest.paises.slice(0, 5).map(p => p.pais).join(', ')} · ${dest.paises.length} destinos no ano, entre países e territórios`}/>
             <Metrica rotulo="Maior comprador da soja em grão" valor={pct(soja.paises[0].participacao)} nota={`${soja.paises[0].pais} · ${dest.ano} · NCM 12019000`}/>
             <Metrica rotulo="Maior origem dos fertilizantes importados" valor={pct(origens.paises[0].participacao)} nota={`${origens.paises[0].pais} · ${origens.ano} · três maiores: ${pct(concentracaoAgro(origens.paises, 3))}`}/>
         </dl>
