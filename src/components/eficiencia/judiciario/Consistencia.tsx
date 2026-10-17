@@ -16,7 +16,8 @@ const casosDe=(posicao:number)=>Math.round(20*Math.pow(250,posicao/100));
 /** Modelo didático: só a conta da variação do acaso; nenhum dado de vara real. */
 export function LaboratorioConsistencia(){
  const [taxa,setTaxa]=useState(50),[posicao,setPosicao]=useState(54),[observada,setObservada]=useState(54);
- const p=taxa/100,casos=casosDe(posicao),o=observada/100;
+ // A taxa observada vira contagem inteira de decisões procedentes: k de n, nunca fração de decisão.
+ const p=taxa/100,casos=casosDe(posicao),procedentes=Math.round(observada/100*casos),o=procedentes/casos;
  const [i95,s95]=limitesAcaso(p,casos,1.96),[i998,s998]=limitesAcaso(p,casos,3.09);
  const fora95=o<i95||o>s95,fora998=o<i998||o>s998;
  const W=560,H=310,E=52,D=30,T=14,B=48;
@@ -28,11 +29,11 @@ export function LaboratorioConsistencia(){
    <p className={s.eyebrow} id="laboratorio-titulo">Modelo didático · acaso ou divergência?</p>
    <label htmlFor="lab-taxa"><span>Taxa de procedência do grupo de varas<output htmlFor="lab-taxa">{taxa}%</output></span><input id="lab-taxa" type="range" min={10} max={90} value={taxa} onChange={e=>setTaxa(+e.target.value)}/></label>
    <label htmlFor="lab-casos"><span>Processos julgados pela vara<output htmlFor="lab-casos">{n(casos)}</output></span><input id="lab-casos" type="range" min={0} max={100} value={posicao} onChange={e=>setPosicao(+e.target.value)}/></label>
-   <label htmlFor="lab-observada"><span>Taxa observada na vara<output htmlFor="lab-observada">{observada}%</output></span><input id="lab-observada" type="range" min={0} max={100} value={observada} onChange={e=>setObservada(+e.target.value)}/></label>
+   <label htmlFor="lab-observada"><span>Procedentes na vara<output htmlFor="lab-observada lab-casos">{n(procedentes)} de {n(casos)} ({pct(o)})</output></span><input id="lab-observada" type="range" min={0} max={100} value={observada} aria-valuetext={`${procedentes} de ${casos} decisões procedentes, ${pct(o)}`} onChange={e=>setObservada(+e.target.value)}/></label>
    <p role="status" className={fora95?s.funnelOut:s.funnelIn}>{!fora95?`Dentro do acaso. Com ${n(casos)} casos sorteados e taxa real de ${taxa}%, a vara fica entre ${pct(i95)} e ${pct(s95)} em 95% das vezes.`:!fora998?`Fora do limite de 95% (${pct(i95)} a ${pct(s95)}), dentro de 99,8%. Entre muitas varas, algumas caem aqui por acaso.`:`Fora de 99,8% (${pct(i998)} a ${pct(s998)}). Se os casos foram de fato sorteados, dificilmente é acaso.`}</p>
   </div>
   <figure className={s.funnelFigure}>
-   <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Funil: limites do acaso em torno de ${taxa}% e a vara escolhida com ${n(casos)} casos e ${observada}%`}>
+   <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Funil: limites do acaso em torno de ${taxa}% e a vara escolhida com ${n(procedentes)} procedentes em ${n(casos)} casos`}>
     {[0,.25,.5,.75,1].map(v=><g key={v}><line x1={E} x2={W-D} y1={y(v)} y2={y(v)} className={s.seriesGrid}/><text x={E-6} y={y(v)+4} textAnchor="end" className={s.seriesAxis}>{n(v*100)}%</text></g>)}
     {ESCALA.map(c=><text key={c} data-secundario={[50,200,2000].includes(c)||undefined} x={x(c)} y={H-B+24} textAnchor="middle" className={s.seriesAxis}>{n(c)}</text>)}
     <path d={faixa(3.09)} className={s.funnelOuter}/><path d={faixa(1.96)} className={s.funnelInner}/>
