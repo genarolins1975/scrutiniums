@@ -68,3 +68,12 @@ export function constituicaoPublica(): Bloco[] {
   const interno = readFileSync(join(process.cwd(), "docs", "CONSTITUICAO.md"), "utf-8");
   return blocos(textoPublico(interno));
 }
+
+/**
+ * Tradução de cortesia (docs/CONSTITUICAO.en.md), escrita já sem os nomes omitidos.
+ * Prevalece o texto português; src/tests/governanca.test.ts confere que as duas
+ * versões têm os mesmos artigos e o mesmo número de itens.
+ */
+export function constituicaoPublicaEn(): Bloco[] {
+  return blocos(readFileSync(join(process.cwd(), "docs", "CONSTITUICAO.en.md"), "utf-8"));
+}

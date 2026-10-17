@@ -46,7 +46,8 @@ describe("sitemap dos pares publicados", () => {
     const inglesas = entradas.filter((e) => new URL(e.url).pathname === "/en" || new URL(e.url).pathname.startsWith("/en/"));
     const esperadas = PARES_DE_IDIOMA.filter((par) => ehRotaPublica(par.pt) && traducaoPublicada(par.pt) && !par.pt.startsWith("/entrar/sms")).map((par) => base + par.en);
     expect(inglesas.map((e) => e.url).sort()).toEqual(esperadas.sort());
-    expect(inglesas.map((e) => e.url)).not.toContain(base + "/en/sobre");
+    expect(inglesas.map((e) => e.url)).not.toContain(base + "/en/termos");
+    expect(inglesas.map((e) => e.url)).toContain(base + "/en/sobre");
     expect(new Set(entradas.map((e) => e.url)).size).toBe(entradas.length);
     for (const entrada of entradas) expect(ehRotaPublica(new URL(entrada.url).pathname), entrada.url).toBe(true);
   });

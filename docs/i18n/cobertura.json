@@ -10,9 +10,9 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "b389804ccf0409ca55ff3bfb417804379a744630d71ea631ee709303c1721273",
-    "arquivos_analisados": 1050,
-    "fontes_sha256": "9e17287b6c9739c9c28bff739b1ac86d994bfc065d0e1e851d84c3541ca6c226",
+    "inventario_sha256": "babd92c791425489e2dea65ecd86ed977a1283f433fbeedae6771a9f2a3d45e2",
+    "arquivos_analisados": 1055,
+    "fontes_sha256": "9a2b6c2d98d20cf71414b395ceff7f42c4b4a5ea032bb20f835c627e32ceadc9",
     "pendencias_sha256": "79aaefacfde83e0b7c259de94a85eb16c145a1ae6cde4460f7b7781f39eb984d",
     "nao_classificadas": [
       {
@@ -128,20 +128,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 203,
+        "arquivos": 207,
         "candidatos": {
-          "jsx_text": 626,
-          "atributos": 187,
-          "props": 630,
-          "outros_literais": 3256,
-          "templates": 382,
-          "expressoes_nao_resolvidas": 1998,
-          "chaves_objetos": 2449
+          "jsx_text": 569,
+          "atributos": 182,
+          "props": 634,
+          "outros_literais": 3277,
+          "templates": 385,
+          "expressoes_nao_resolvidas": 2134,
+          "chaves_objetos": 2494
         },
         "exclusoes": {
-          "importacoes": 837,
-          "atributos_tecnicos": 1168,
-          "tipos": 193
+          "importacoes": 870,
+          "atributos_tecnicos": 1154,
+          "tipos": 199
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -150,7 +150,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 9528,
+        "candidatos_nao_catalogados": 9675,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -162,14 +162,14 @@
         "paginas_pt_fora_do_adaptador": 4,
         "paginas_pt_literais_sem_irma": 12,
         "pares_estruturais": 12,
-        "fallbacks_declarados": 11,
+        "fallbacks_declarados": 8,
         "paridade_verificada": false,
         "parciais_declarados": 1
       },
       "conteudo_adicional": {
-        "arquivos": 3,
-        "linhas_nao_vazias": 45,
-        "candidatos_nao_catalogados": 65,
+        "arquivos": 4,
+        "linhas_nao_vazias": 90,
+        "candidatos_nao_catalogados": 115,
         "scripts_embutidos": {}
       },
       "cobertura_completa": false
@@ -794,7 +794,7 @@
         "pt": "/sobre",
         "en": "/en/sobre",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/sobre/page.tsx",
           "en": "src/app/en/sobre/page.tsx"
@@ -805,7 +805,7 @@
         "pt": "/sobre/erros",
         "en": "/en/sobre/erros",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/sobre/erros/page.tsx",
           "en": "src/app/en/sobre/erros/page.tsx"
@@ -816,7 +816,7 @@
         "pt": "/sobre/governanca",
         "en": "/en/sobre/governanca",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/sobre/governanca/page.tsx",
           "en": "src/app/en/sobre/governanca/page.tsx"
@@ -836,7 +836,7 @@
       }
     ],
     "pares_estruturais": 13,
-    "fallbacks_declarados": 12,
+    "fallbacks_declarados": 9,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false
   },

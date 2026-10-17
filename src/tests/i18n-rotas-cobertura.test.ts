@@ -106,7 +106,7 @@ describe("irmãs literais declaradas no inventário", () => {
     {}, { ...rotas, schema_version: 2 }, { ...rotas, ignorar: true }, { ...rotas, literais: [] },
     { ...rotas, literais: [...rotas.literais, ...rotas.literais] },
     ...["/sobre/", "/en/sobre", "/sobre?x=1", "/sobre#x", "/sobre//erros", "/./sobre", "/%73obre", "/[slug]", "/(grupo)/sobre", "/sobre\\erros"].map((pt) => ({ ...rotas, literais: [{ pt, conteudo: "portugues_marcado" }] })),
-    { ...rotas, literais: [{ pt: "/sobre", conteudo: "traduzido" }] },
+    { ...rotas, literais: [{ pt: "/sobre", conteudo: "automatico" }] },
     { ...rotas, literais: [{ ...rotas.literais[0], aberta: true }] },
   ])("recusa declaração inválida ou ainda não suportada %#", (declaracao) => {
     const raiz = fixture();

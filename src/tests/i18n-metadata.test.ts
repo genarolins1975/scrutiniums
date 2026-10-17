@@ -34,7 +34,7 @@ describe("composição dos metadados portugueses com irmãs declaradas", () => {
       title: "Título da folha",
       description: "Descrição da folha",
       alternates: {
-        canonical: "/sobre",
+        canonical: "/termos",
         types: { "application/rss+xml": "/feed.xml" },
         media: { "only screen and (max-width: 600px)": "/sobre-movel" },
       },
@@ -46,7 +46,7 @@ describe("composição dos metadados portugueses com irmãs declaradas", () => {
     Object.freeze(anterior.openGraph);
     Object.freeze(origem);
 
-    const resultado = metadadosPortuguesComAlternativas("/sobre", origem, anterior);
+    const resultado = metadadosPortuguesComAlternativas("/termos", origem, anterior);
 
     expect(resultado).toEqual({
       ...origemAntes,
@@ -56,7 +56,7 @@ describe("composição dos metadados portugueses com irmãs declaradas", () => {
       openGraph: {
         ...anteriorAntes.openGraph,
         title: { absolute: "Título já resolvido · Scrutiniums" },
-        url: "/sobre",
+        url: "/termos",
         locale: "pt_BR",
         alternateLocale: "en_US",
       },
@@ -75,13 +75,13 @@ describe("composição dos metadados portugueses com irmãs declaradas", () => {
         type: "website",
       },
     };
-    const resultado = metadadosPortuguesComAlternativas("/sobre", origem, metadadosDoPai());
+    const resultado = metadadosPortuguesComAlternativas("/termos", origem, metadadosDoPai());
 
     expect(resultado.openGraph).toEqual({
       title: "Título social próprio",
       description: "Descrição social própria",
       type: "website",
-      url: "/sobre",
+      url: "/termos",
       locale: "pt_BR",
       alternateLocale: "en_US",
     });
@@ -97,11 +97,11 @@ describe("composição dos metadados portugueses com irmãs declaradas", () => {
       },
       twitter: { card: "summary", title: "Cartão próprio", images: [] },
     };
-    const resultado = metadadosPortuguesComAlternativas("/sobre", origem, metadadosDoPai());
+    const resultado = metadadosPortuguesComAlternativas("/termos", origem, metadadosDoPai());
 
     expect(resultado.openGraph).toEqual({
       ...origem.openGraph,
-      url: "/sobre",
+      url: "/termos",
       locale: "pt_BR",
       alternateLocale: "en_US",
     });
@@ -110,12 +110,12 @@ describe("composição dos metadados portugueses com irmãs declaradas", () => {
   });
 
   it("não inventa título, imagem ou tipo quando o pai também não tem OG", () => {
-    const resultado = metadadosPortuguesComAlternativas("/sobre", {}, { openGraph: null });
-    expect(resultado.openGraph).toEqual({ url: "/sobre", locale: "pt_BR", alternateLocale: "en_US" });
+    const resultado = metadadosPortuguesComAlternativas("/termos", {}, { openGraph: null });
+    expect(resultado.openGraph).toEqual({ url: "/termos", locale: "pt_BR", alternateLocale: "en_US" });
   });
 
   it.each([null, undefined])("recusa a remoção explícita de OG com %s", (openGraph) => {
-    expect(() => metadadosPortuguesComAlternativas("/sobre", { openGraph }, metadadosDoPai()))
+    expect(() => metadadosPortuguesComAlternativas("/termos", { openGraph }, metadadosDoPai()))
       .toThrow("Open Graph removido explicitamente não é suportado");
   });
 
