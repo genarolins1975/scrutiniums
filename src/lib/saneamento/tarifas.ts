@@ -30,6 +30,8 @@ export type TarifaVerificada = {
   metodoNaoVerificado?: string;
   observacoes: string[];
   exemplos: Record<string, Record<string, number>>;
+  /** Contas calculadas pela planilha ou simulador oficial do prestador ou do regulador, recalculadas na coleta. */
+  exemplosOficiais?: Record<string, Record<string, number>>;
   municipios: string[];
   acessado: string;
 };

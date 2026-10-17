@@ -76,6 +76,14 @@ const REGULADORES = [
     social: "Tabela própria até 20 m³, cerca de 53% abaixo da residencial normal, e básica pela metade (Resolução Conjunta 1/2026)",
     documentos: "Resoluções no site da Saneago e da AGR lidas; Nota Técnica Conjunta 12/2021 (Goiânia) lida; Nota Técnica Conjunta 1/2026 não localizada",
   },
+  {
+    sigla: "ARESC, ARIS, AGIR e CISAM-SUL",
+    prestador: "CASAN (SC)",
+    modelo: "Reajuste anual pelo IPCA acumulado, por resolução da ARESC com nota técnica; revisão periódica por resolução própria (Resolução ARESC 281/2024, não lida)",
+    estrutura: "TFDI por economia e quatro faixas sem consumo mínimo; esgoto a 100% do faturamento de água, inclusive a TFDI; planilha oficial de cálculo publicada",
+    social: "Lei 14.898/2024: metade da residencial na TFDI e até 15 m³; tabela social anterior só para solicitações até 10/12/2024",
+    documentos: "Resoluções ARESC 321/2025 e 389/2026, tabela e duas planilhas da CASAN lidas; notas técnicas e atos de ARIS, AGIR e CISAM-SUL não lidos",
+  },
 ];
 
 export default function Pagina() {

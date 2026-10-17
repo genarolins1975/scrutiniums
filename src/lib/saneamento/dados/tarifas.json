@@ -2589,6 +2589,391 @@
     "5222203",
     "5222302"
    ]
+  },
+  {
+   "id": "casan-2026",
+   "prestador": "Companhia Catarinense de Águas e Saneamento (CASAN)",
+   "prestadorSinisa": "casan-companhia-catarinense-de-aguas-e-saneamento",
+   "uf": "SC",
+   "regulador": "ARESC, ARIS, AGIR e CISAM-SUL",
+   "modelo": "Tarifa fixa de disponibilidade (TFDI) por economia e faixas progressivas sem consumo mínimo; esgoto a 100% do faturamento de água, inclusive a TFDI",
+   "ato": "Resolução ARESC nº 389, de 12/02/2026, e tabela tarifária publicada pela CASAN em abril de 2026",
+   "vigencia": "Tabela publicada pela CASAN como válida desde 01/04/2026; na Resolução ARESC 389 o reajuste é aplicável 30 dias após a publicação (art. 2º)",
+   "ultimoReajuste": "5,80% sobre tarifas de água e esgoto e sobre a tabela de serviços e infrações, pelo IPCA de outubro de 2024 a dezembro de 2025 (Resolução ARESC 389/2026, art. 1º)",
+   "area": "Municípios atendidos pela CASAN em Santa Catarina, em tabela estadual única",
+   "fontes": [
+    {
+     "rotulo": "CASAN, Tabela tarifária de abril de 2026 (PDF)",
+     "url": "https://www.casan.com.br/ckfinder/userfiles/files/Tarifas/2026/Tabela%20Tarif%C3%A1ria%2004-2026.pdf",
+     "sha256": "30a8eeb2adf0ea8d9e6880c75f1238efedf9e26ad5c4a0f31b912b4ab7f6fc83",
+     "localizador": "p.1: TFDI e faixas por categoria; tarifa social da Lei 14.898/2024; esgoto a 100% da água"
+    },
+    {
+     "rotulo": "CASAN, Calculadora tarifária 2026 (planilha oficial)",
+     "url": "https://www.casan.com.br/ckfinder/userfiles/files/Tarifas/2026/calculadora_casan_tfdi%20-%202026%20final.xlsx",
+     "sha256": "c672c20c8bc4f506fdbecbd8f617988a45ca8f453ad42e44244bb8792978cfbf",
+     "localizador": "abas CALCULADORA (fórmulas, células G14 a G22, P25 e AE25), TABELA TARIFÁRIA 2026 e TABELA TARIFÁRIA 2025; recalculada com LibreOffice"
+    },
+    {
+     "rotulo": "CASAN, Calculadora da tarifa social, Lei 14.898/2024 (planilha oficial)",
+     "url": "https://www.casan.com.br/ckfinder/userfiles/files/Tarifas/2026/calculadora_casan_tarifa_social%20-%202026%20final.xlsx",
+     "sha256": "ac6fa62457e04f209c4967c2e708d0172f27f4e92290805d3567b9aac2b1d344",
+     "localizador": "abas CALCULADORA (células G14 a G27) e TABELA TARIFÁRIA 2026; recalculada com LibreOffice"
+    },
+    {
+     "rotulo": "Resolução ARESC 389/2026",
+     "url": "https://aresc.sc.gov.br/wp-content/uploads/2026/02/RESOLUCAO-ARESC-No-389.pdf",
+     "sha256": "2a2e5e9c1179286ece4436dbdc3b18ea166f41760ea9d6fe27de64d51f1b7a38",
+     "localizador": "arts. 1º a 3º; a Nota Técnica ARESC 002/2026, parte integrante, não foi lida"
+    },
+    {
+     "rotulo": "Resolução ARESC 321/2025 (reajuste anterior)",
+     "url": "https://aresc.sc.gov.br/wp-content/uploads/2025/10/RESOLUCAO-ARESC-No-321.pdf",
+     "sha256": "0bcf08b381daeec7a3a44e5ecbe7cfb62086a87d6e46475a0c2310a4e9f528bf",
+     "localizador": "arts. 1º e considerandos: 5,56% e menção às Resoluções ARESC 258/2023 e 281/2024"
+    },
+    {
+     "rotulo": "CASAN, página Tarifas (acessada em 17/10/2026)",
+     "url": "https://www.casan.com.br/menu-conteudo/index/url/tarifas",
+     "sha256": "6ef2694bbb205997d1b295e1474b63c42e93e4ef522746265cae92f348631bd7",
+     "localizador": "tabela, esgoto a 100% da água e agências que autorizaram o reajuste"
+    }
+   ],
+   "unidade": "por economia (unidade autônoma)",
+   "categorias": {
+    "residencial": {
+     "rotulo": "Residencial",
+     "agua": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": 10,
+        "preco": 3.08
+       },
+       {
+        "de": 10,
+        "ate": 25,
+        "preco": 14.31
+       },
+       {
+        "de": 25,
+        "ate": 50,
+        "preco": 19.14
+       },
+       {
+        "de": 50,
+        "ate": null,
+        "preco": 24.08
+       }
+      ],
+      "fixo": 46.34
+     },
+     "esgoto": {
+      "percentual": 100
+     }
+    },
+    "social": {
+     "rotulo": "Residencial social (tarifa social federal)",
+     "agua": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": 15,
+        "preco": 1.54
+       },
+       {
+        "de": 15,
+        "ate": 25,
+        "preco": 14.31
+       },
+       {
+        "de": 25,
+        "ate": 50,
+        "preco": 19.14
+       },
+       {
+        "de": 50,
+        "ate": null,
+        "preco": 24.08
+       }
+      ],
+      "fixo": 23.17
+     },
+     "esgoto": {
+      "percentual": 100
+     }
+    },
+    "social_anterior": {
+     "rotulo": "Residencial social anterior (solicitações até 10/12/2024)",
+     "agua": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": 10,
+        "preco": 0.58
+       },
+       {
+        "de": 10,
+        "ate": 25,
+        "preco": 4.11
+       },
+       {
+        "de": 25,
+        "ate": 50,
+        "preco": 19.14
+       },
+       {
+        "de": 50,
+        "ate": null,
+        "preco": 24.08
+       }
+      ],
+      "fixo": 8.63
+     },
+     "esgoto": {
+      "percentual": 100
+     }
+    }
+   },
+   "observacoes": [
+    "Método conferido na calculadora oficial da CASAN: cada faixa incide só sobre o volume dentro dela (a segunda faixa, rotulada \"11 a 25\", começa depois de 10 m³ nas fórmulas) e a TFDI soma-se ao volume. A planilha foi recalculada em 17/10/2026 para 10 consumos e todos os resultados são reproduzidos pelo gerador.",
+    "Esgoto a 100% do faturamento de água, inclusive a TFDI: a calculadora manda considerar \"Faturamento de Água + 100% do Faturamento de Esgoto (TFDI + Volume)\", e o total da fatura é o dobro do subtotal de água.",
+    "Barracão (PR) consta como atendido pela CASAN no SINISA 2024; a tabela é a estadual de Santa Catarina e a regulação desse município não foi verificada, por isso ele fica fora da associação.",
+    "A calculadora divide o volume pelo número de unidades autônomas; a simulação usa uma economia. Arredondamento com volume fracionário não verificado.",
+    "Tarifa social da Lei 14.898/2024: TFDI e faixa de 0 a 15 m³ à metade da residencial; as demais faixas, iguais às da residencial. A tabela social anterior vale só para solicitações recebidas até 10/12/2024 (nota da tabela da CASAN). Critérios de enquadramento não foram lidos em ato; a calculadora oficial da social não traz o total da fatura, e o dobro vem da nota da própria planilha.",
+    "A tabela da residencial social anterior não tem calculadora oficial; seus exemplos são cálculo manual a partir da tabela.",
+    "Comercial, micro e pequeno comércio, industrial, pública e pública especial constam da tabela e não foram simuladas; as soluções individuais de esgotamento sanitário têm tabela própria (Deliberação 021/2025 de ARIS, AGIR e CISAM-SUL) e também não.",
+    "A página da CASAN data a Resolução ARESC 389 de 13/01/2026; o ato original é de 12/02/2026. Os atos de ARIS (Deliberação 003/2026), AGIR (Decisão 321) e CISAM-SUL (Resolução CREFISBA 07/2026), citados pela CASAN, não foram lidos, e a data de publicação no Diário Oficial de Santa Catarina não foi verificada em fonte oficial.",
+    "Verificação cruzada feita pelo gerador: TFDI e faixas da residencial e da social anterior reproduzem a aba 2025 da calculadora vezes 1,058 ao centavo; a social da Lei 14.898/2024 é metade da residencial na TFDI e na primeira faixa. A tabela de março de 2025 (45,72) reproduz a de 2024 (43,31) vezes 1,0556, o reajuste da Resolução ARESC 321/2025."
+   ],
+   "exemplosOficiais": {
+    "residencial": {
+     "0": 92.68,
+     "5": 123.48,
+     "10": 154.28,
+     "11": 182.9,
+     "20": 440.48,
+     "25": 583.58,
+     "30": 774.98,
+     "50": 1540.58,
+     "51": 1588.74,
+     "60": 2022.18
+    },
+    "social": {
+     "0": 46.34,
+     "10": 77.14,
+     "15": 92.54,
+     "16": 121.16,
+     "20": 235.64,
+     "25": 378.74,
+     "30": 570.14,
+     "50": 1335.74,
+     "51": 1383.9,
+     "60": 1817.34
+    }
+   },
+   "exemplos": {
+    "social_anterior": {
+     "10": 28.86,
+     "20": 111.06
+    }
+   },
+   "acessado": "2026-10-17",
+   "municipios": [
+    "4200101",
+    "4200200",
+    "4200309",
+    "4200408",
+    "4200507",
+    "4200556",
+    "4200606",
+    "4200705",
+    "4200804",
+    "4200903",
+    "4201000",
+    "4201208",
+    "4201257",
+    "4201307",
+    "4201505",
+    "4201604",
+    "4201703",
+    "4201802",
+    "4201901",
+    "4202057",
+    "4202081",
+    "4202099",
+    "4202107",
+    "4202131",
+    "4202156",
+    "4202206",
+    "4202305",
+    "4202438",
+    "4202503",
+    "4202537",
+    "4202578",
+    "4202602",
+    "4202701",
+    "4202800",
+    "4203105",
+    "4203154",
+    "4203253",
+    "4203402",
+    "4203501",
+    "4203808",
+    "4204004",
+    "4204103",
+    "4204152",
+    "4204178",
+    "4204194",
+    "4204202",
+    "4204301",
+    "4204400",
+    "4204459",
+    "4204558",
+    "4204608",
+    "4204707",
+    "4204756",
+    "4204806",
+    "4204905",
+    "4205001",
+    "4205100",
+    "4205159",
+    "4205175",
+    "4205191",
+    "4205209",
+    "4205308",
+    "4205407",
+    "4205431",
+    "4205456",
+    "4205605",
+    "4205704",
+    "4206405",
+    "4206603",
+    "4206652",
+    "4206751",
+    "4206801",
+    "4206900",
+    "4207007",
+    "4207403",
+    "4207502",
+    "4207577",
+    "4207601",
+    "4207650",
+    "4207684",
+    "4207700",
+    "4207759",
+    "4207809",
+    "4207908",
+    "4208005",
+    "4208104",
+    "4208500",
+    "4208609",
+    "4208955",
+    "4209151",
+    "4209177",
+    "4209201",
+    "4209409",
+    "4209458",
+    "4209508",
+    "4209607",
+    "4209706",
+    "4209805",
+    "4209854",
+    "4209904",
+    "4210001",
+    "4210050",
+    "4210100",
+    "4210209",
+    "4210308",
+    "4210407",
+    "4210506",
+    "4210555",
+    "4210704",
+    "4210852",
+    "4210902",
+    "4211009",
+    "4211108",
+    "4211405",
+    "4211603",
+    "4211652",
+    "4211751",
+    "4211850",
+    "4211892",
+    "4212007",
+    "4212056",
+    "4212106",
+    "4212239",
+    "4212254",
+    "4212270",
+    "4212304",
+    "4212601",
+    "4212650",
+    "4212700",
+    "4212809",
+    "4212908",
+    "4213005",
+    "4213104",
+    "4213302",
+    "4213351",
+    "4213401",
+    "4213609",
+    "4213708",
+    "4213906",
+    "4214102",
+    "4214201",
+    "4214300",
+    "4214409",
+    "4214508",
+    "4214607",
+    "4214706",
+    "4214805",
+    "4214904",
+    "4215075",
+    "4215109",
+    "4215208",
+    "4215307",
+    "4215356",
+    "4215406",
+    "4215505",
+    "4215604",
+    "4215679",
+    "4215687",
+    "4215703",
+    "4215752",
+    "4215901",
+    "4216008",
+    "4216057",
+    "4216107",
+    "4216354",
+    "4216404",
+    "4216503",
+    "4216602",
+    "4216800",
+    "4216909",
+    "4217105",
+    "4217204",
+    "4217501",
+    "4217600",
+    "4217808",
+    "4217907",
+    "4217956",
+    "4218251",
+    "4218400",
+    "4218509",
+    "4218608",
+    "4218806",
+    "4218855",
+    "4218905",
+    "4218954",
+    "4219101",
+    "4219176",
+    "4219200",
+    "4219358",
+    "4219408",
+    "4219507",
+    "4219606",
+    "4219705"
+   ]
   }
  ]
 }

@@ -7,8 +7,10 @@ const conta = (id: string, cat: string, c: number) => calcularConta(tarifa(id)!.
 describe("Saneamento: simulador de conta com tabelas verificadas", () => {
   it("reproduz os exemplos conferidos à mão em cada tabela", () => {
     for (const t of TARIFAS) {
-      for (const [cat, ex] of Object.entries(t.exemplos)) {
-        for (const [c, esperado] of Object.entries(ex)) expect(conta(t.id, cat, Number(c))).toBe(esperado);
+      for (const exemplos of [t.exemplos, t.exemplosOficiais ?? {}]) {
+        for (const [cat, ex] of Object.entries(exemplos)) {
+          for (const [c, esperado] of Object.entries(ex)) expect(conta(t.id, cat, Number(c))).toBe(esperado);
+        }
       }
     }
   });

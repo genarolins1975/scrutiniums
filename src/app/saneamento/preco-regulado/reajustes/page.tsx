@@ -30,7 +30,7 @@ type Ato = {
 };
 
 /** Ordem de apresentação; prestador fora da lista entra depois, em ordem alfabética, e nunca some da página. */
-const ORDEM = ["SABESP", "SANEPAR", "COPASA", "COMPESA", "CAESB", "SANEAGO"];
+const ORDEM = ["SABESP", "SANEPAR", "COPASA", "COMPESA", "CAESB", "SANEAGO", "CASAN"];
 
 const dataBr = (iso: string) => iso.split("-").reverse().join("/");
 

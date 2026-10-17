@@ -31,7 +31,7 @@ Critérios: dado real com fonte e período (D), método e ressalvas visíveis (M
 | `/saneamento/acesso` | sim | sim | sim | sim | 9 | Atlas, pessoas e proporção, composição das fontes, evolução |
 | `/saneamento/continuidade` | sim | sim | sim | parcial | 8 | SISAGUA integrado para quatro parâmetros e o plano de coliformes de SAA; demais parâmetros pendentes |
 | `/saneamento/esgoto` | sim | sim | sim | sim | 9 | Mapa de estações não publicado por coordenadas inconsistentes |
-| `/saneamento/preco-regulado` e 5.1 a 5.5 | sim | sim | sim | parcial | 8 | Amostra de seis prestadores; série da conta contra inflação ausente; Saneago com cobrança por faixa inferida |
+| `/saneamento/preco-regulado` e 5.1 a 5.5 | sim | sim | sim | parcial | 8 | Amostra de sete prestadores; série da conta contra inflação ausente; Saneago com cobrança por faixa inferida |
 | `/saneamento/tarifa-social` | sim | sim | sim | parcial | 8 | Economias com tarifa social por 100 famílias elegíveis do CadÚnico; famílias beneficiadas não publicadas |
 | `/saneamento/prestadores` e fichas | sim | sim | sim | parcial | 8 | Controle societário só das 17 companhias abertas com FRE na CVM; os demais prestadores seguem sem esse dado |
 | `/saneamento/prestadores/comparar` | sim | sim | sim | parcial | 8 | Sem seleção automática de pares |
